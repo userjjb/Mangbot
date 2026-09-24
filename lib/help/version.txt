@@ -1,0 +1,734 @@
+=== Version Information ===
+
+This file was last updated for MAngband 1.5.3.
+
+Below, you will find the original text of 'version.txt', which was a
+copy of Angband 2.7.9 file, with no changes related to MAngband. Since
+that time, a lot has happend. It would probably make sense to just
+copy-paste the 'version.txt' file from the newest Angband distribution,
+however, as the two codebases diverged, MAngband started to accumulate
+it's own history. Therefore, I made a consiousness decision NOT to merge
+the latest Angband file, but instead to fill in the blanks myself. The
+structure of the document will retain the top-down format, i.e. the
+further down you scroll, the further back in time you get, back to
+original Moria notes.
+
+Please note, that my goal here is not to list each and every contributor
+(please see AUTHORS and CHANGELOG), but to mark down important
+milestones in the game history.
+
+=== The story so far ===
+
+MAngband was created by Keldon Jones, in 1997. At that time, the latest
+Angband version was 2.7.9, which was a lovechild of Ben Harrison, who
+rewrote an insanely large amount of code, unifying and refactoring
+things, bringing several diverging codebases (the EMX port, the Amiga
+port, the Windows port, etc) back into fold. Of particular note was a
+"Z-Term" interface, which created a proper abstraction layer on top of
+different display frontends. From then on, porting Angband to a new
+platform was a matter of writing a main-xxx file, implementing 10-20
+functions, responsible for initializing windows, drawing text on screen,
+plotting graphics and playing sounds. We're still using this idiom in
+2020s.
+
+When Keldon Jones set out to make a multi-player version, he had split
+the Angband code into two parts, the client and the server. The server
+would, naturally, process all gameplay-related things, like dungeon
+generation and monster turns, while the client would allow players to
+interact with the world. There is a common misconception, that MAngband
+client is just a glorified dumb terminal, not too different from 'telnet'.
+
+That is not true at all. The client retained all the interface bits of
+the Angband program, like item query and directional prompts, the
+ability to read and write user preferences files, the macro system and
+all that jazz. MAngband client did not ever send raw keystrokes to the
+server, each command and interesting action was assigned to a network
+packet, each with it's own schema. Upon receiving those, the server did
+not transfer those to keystrokes either, but did required,
+command-specific, processing.
+
+One very fortunate bit of Ben Harrison's refactor was the fact, that
+each interface element that required redrawing on screen was assigned
+each own "redraw flag". For example, when player's hit points were
+updated, say, due to a monster attack, a special bit flag "PR_HP" was
+set. At some point, after each dungeon turn, the game would check if
+that flag is set. Then, and only then, would it call the appropriate
+"prt_hp" function to actually plot new values onto the screen.
+
+This allowed Keldon Jones to "hook into" this system. He did not have to
+hack each and every function to inject new network code. Instead, at the
+appropriate time, the server would check, if "PR_HP" was set. If it was,
+it meant that it's time to *re-send* those values to the client! The
+various functions and parts of code that were actually responsible for
+setting those flags remained identical to Angband. On the client-side
+the same flags were set once a network update was received. Then, the
+drawing-to-screen proceeded as usual.
+
+(Preempting ahead, this ingenious solution allowed us to port large bits
+of Angband code from later versions, without changing anything! This
+whole process of placing network stuff in-between Angband stuff is now
+known as "Keldonizing", and MAngband, generally tries to follow this
+principle).
+
+Another fortunate thing was the separation of each game command into
+"cmd_" and "do_cmd_" functions. The "cmd_" functions were responsible
+for getting player input, and checking for errors. The "do_cmd_"
+functions were performing the actual action. For example, pressing 'E'
+would invoke 'cmd_eat' function, which would query the player, "Which
+item?". After picking a strip of beef jerky, the "do_cmd_eat" function
+would handle all necessary things, like restoring her hunger level, and
+removing said strip from her inventory.
+
+As you might've already guessed, the "cmd_" functions went to the client
+and the "do_cmd_" functions went to the server! In-between, Keldon
+injected his network layer stuff, so that a network packet would
+transmit player's intent. It would be appropriate to note here, that a
+"command queue" concept was introduced. Similar to the "keyboard queue"
+on the client, this server-side queue would hold all requested commands,
+and only execute the related "do_cmd_" functions once the player would
+have enough energy.
+
+"Energy" was another concept already present in Angband. As different
+monsters had different "speed" ratings, the turn order was always
+shifting around. A monster, or a player, would only be able to act as
+they had reached enough. A full-turn action would require 100 energy, a
+half-turn action would require 50 energy. Depending on monster/player
+speed, each tick would add a different amount to the counter. Thus, fast
+monsters could reach the desired "100" value faster. Therefore, turning
+such turn-based game into "real-time" was relatively straight-forward:
+you just run ticks on a timer, and add appropriate energy, already
+balanced well, by speed.
+
+Finally, the "amount of energy needed to perform full-turn action" was
+also hacked upon. Each dungeon level got assigned a pre-defined factor,
+so that the deeper players went, the slower the game would play.
+
+And thus, the transition to real-time was made, without compromising any
+of the Angband concepts. I would also add, that since that time, several
+other online roguelikes were made out of the MAngband codebase, and they
+all rely heavily of this.
+
+Finally, a concept of "ghosts" was introduced. This gave players a
+chance to avoid permadeath, and to continue playing even after death.
+Ghosts could float up from the dungeon and resurrect themselves at the
+temple (shop '4') losing 50% of their experience. Along those lines, PvP
+(player-versus-player) combat was added, making it a true multi-player
+roguelike.
+
+Keldon Jones wrote many other fine things, which would be too numerous
+to list. You might want to examine the CHANGELOG file to see some of his
+patch notes. However, I believe that the most important thing he did,
+was providing us with a template, so that we could turn any roguelike
+game into a multiplayer/real-time experience. We owe it all to him.
+
+== Reign of Alex Dingle ==
+
+After about a year of hacking on MAngband, Keldon Jones went to 
+create other interesting things. True to Angband tradition, a new
+maintainer had to be chosen. Keep in mind, that beside taking care of
+the codebase, a MAngband maintainer is also responsible for hosting the
+"flagship" server, so that people could actually play the game.
+
+Alex Dingle was responsible for turning this proof-of-concept game into
+a proper MMO. Things like player houses, wilderness, ability to
+resurrect other players by reading a Scroll of Life, proper XP sharing
+between party members, healing prayers for priests and paladins (along
+with an option to target friendly characters and not just
+monsters/hostile players), ensuring that things like "slow monster"
+spells actually affect other players, multitude of interface
+improvements, DM menu and admin characters, the list goes on and on.
+
+Most of the MAngband "traditions" come from this era (years 1998-2002,
+version 0.5.4D to 0.7.0). The most important technical achievement was
+the switch to proper TCP/IP, leaving UDP/IP and the various hacks on top
+of it behind. A lot of fine-tuning to the game speed and command
+handling was done to make the gameplay as smooth as possible for a
+real-time game.
+
+And don't forget that casting polymorph onto other players now turned
+them into fruitbats :-)
+
+== Reign of Crimson ==
+
+During the Alex Dingle's reign, lots and lots of patches were added by
+Crimson, who had been an invaluable contributor, and was a natural
+choice to be the next maintainer.
+
+Robert L. Seifer, aka Crimson, maintained a rolling-release policy, so
+that the game was constantly being updated on the live server. Due to
+this fact, the version history is a bit muddied during his era.
+
+There was a huge list of bugs, server crashes and other problems that
+persisted from the very early days of MAngband, dating back to Keldon
+era. Most of those were now addressed, players would no longer encounter
+empty items or crash the server by sending wrong item indexes.
+
+In addition, Crimson maintained an "Ironman" variant, similar to Angband
+ironman challenge. Closer to the end of his reign, this variant was
+folded back into MAngband codebase, making it a server option.
+
+An IRC channel #mangband was also maintained by him and a first ever
+IRC-to-game bridge was deployed. This allowed people on IRC to chat with
+players in the game and vice-versa.
+
+Crimson also added audit code, which tracked all player-to-player
+item/gold transactions, to prevent abuse and "cheeze".
+
+At the very end of his time, an SVN repository was created, to hold the
+code in a proper version-controlled system. As he was looking for the
+next maintainer, he wanted to make sure the code history would get
+preserved.
+
+== MAngband Project Team ==
+
+Graham King (aka Jug) became the 4th maintainer. During his reign, a
+"MAngband Project Team" was formed, which finally turned MAngband
+development into a true open-source process. This was another milestone,
+that changed the way MAngband was developed forever.
+
+From now on, bugs would be tracked on an issue tracker (trac), changes
+and patches would be accepted from all over the world in a timely
+fashion, and all discussions related to the future of the game would
+happen "in the open", and not over private emails between maintainers
+and contributors.
+
+He has also cleaned up the source code significantly, removed rogue bits
+of code that crept in from PernMangband, removed the dedicated console
+protocol in favor of telnet (thus nuking a specialized "console"
+program), simplified the IRC bridge interface (allowing for a very easy
+way to write new bridges and bots), introduced online highscores and
+brought an unseen-before stability to the server. The "stable" version
+of 1.1.0 became a cornerstone, which allowed us to host server instances
+uninterrupted for years.
+
+For the first time ever, new code from upsteam Angband has began to pour
+back into MAngband. Angband development has been sporadic, with huge
+downtimes, but during that time a new dev.team (led by takkaria) took
+over, so there were a lot of new and exciting improvements, which
+MAngband absorbed. That included new monsters and spells from Angband
+3.0.6, along with several new game mechanics and re-balancing.
+
+Most importantly, the band, that has formed under his command, worked
+long and hard to release 1.1.0, fixing over 100+ critical bugs, in a
+true team effort. A set of guidelines was formed (what "MAngband is and
+isn't", "how to work with issues", "how to format commits") which is
+still serving us.
+
+At around 2013, the development was moved from svn to git, and trac was
+dumped in favour of github issues. All commit history and ticket history
+was preserved. This was also Jug's doing, and has saved us from bitrot
+doom.
+
+== The long haul to 1.5.0 ==
+
+After releasing 1.1.0 the MAngband Project Team decided it's time for a
+major rewrite, that would simplify and improve lots of important aspects
+of the game, to make modding and future work easier. One of the driving
+ideas was to allow variant development that doesn't break protocol
+compatibility ("generalizing" parts of the protocol).
+
+This long haul took about 10 years, culminating, finally in the release
+of 1.5.0 version. There have been around 2000 commits, and 1000 closed
+issues, so it would be pointless to list it all here. Thankfully, all
+that is documented in our source repository and the closed
+ticket/issues.
+
+Among interesting changes, was the move to automake/autoconf build
+system (instead of custom Makefiles for each platform), addition of
+virtually all Angband features (to a certain date), complete rewrite of
+the lower-level network layers and the introduction of Time Bubbles, which,
+in my mind, add the last missing piece to the whole "online roguelike"
+concept. That's also the version that finally added custom House Building.
+
+This is pretty much where we are now. I would like to conclude this by
+three additional "chapters".
+
+== On XPilot, netcode and GPL ==
+
+When MAngband was conceived, the whole low-level networking code was
+copy-pasted from a classic Unix game, called "XPilot". XPilot was a
+fast-paced arcade game, which pitted players, who controlled
+physics-based space fighters in a deathmatch arena, with a top-down
+perspective.
+
+This brought two important consequences.
+
+Firstly, the game was using the UDP protocol, which is best-suited for
+twitch-based games, where losing a packet or two, is considered fine, as
+long as you receive subsequent updates. Since it was pretty clear that
+this approach is not suitable for online roguelikes, where each and
+every packet is of deadly importance and the order of packets *MUST* be
+sequential, a new "guaranteed delivery" protocol was written *on top* of
+UDP, turning it into a crude version of TCP.
+
+About 3 years later, that "piggyback" protocol was replaced by a TCP
+proper. No UDP packets were any longer involved, although the code, at
+places, looked like they were. This work was done by our second
+maintainer, Alex Dingle, and was instrumental to making MAngband what it
+is today. This version is known as 0.7.0 and is still considered a
+classic milestone in MAngband history.
+
+Secondly, XPilot was sporting the GPL license. Angband and therefore,
+MAngband, were under the "Angband/Moria license". The two are completely
+incompatible with each other.
+
+It placed in MAngband into a legally grey area: it couldn't switch to
+GPL without nuking all the Angband code, and it couldn't switch to Moria
+license, without nuking the network code. Thus, no "free" linux
+distribution would ever accept the game into their repositories.
+Thankfully, the XPilot team never tried to enforce the GPL copyright,
+nor did the Angband maintainers tried to enforce the Moria license.
+
+To complicate matters even more, additional code written by MAngband
+maintainers over time, was explicitly non-GPL.
+
+Two interesting developments happened since then. First, the "Angband
+open-source initiative" began in the early 2000s, and finished in 2009.
+That is an interesting story in itself, best described elsewhere, but
+long story short, around 200+ contributors were tracked down and asked
+to re-license their work for GPL. Bits of codes that weren't
+re-licensed, were nuked from the codebase.
+
+This could've freed MAngband from this horrible entanglement, however,
+that would've also meant that we would have to nuke all of the Keldon's
+code. That task was conceived impossible, as MAngband *was* and *is*
+Keldon Jones. In addition, the several maintainers who had added their
+own invaluable contributions were explicitly against GPL.
+
+The second interesting development was at around 2011, when new
+low-level network code was written for MAngband. We have nuked and
+removed all and any traces of XPilot from the codebase, finally freeing
+MAngband from this entanglement! The first release with the new netcode
+was 1.5.0, done under MAngband Project Team.
+
+As of now, Angband is dual-licensed under GPL and Moria licenses, so
+that each variant maintainer could continue with either path. To wit:
+MAngband opts for the Angband/Moria license each time it ports new
+things from Angband.
+
+In conclusion: MAngband is covered by Moria/Angband license. It is not a
+GPL game.
+
+On the technical side of things, the new netcode is no longer a mess of
+"fake-TCP-over-UDP-tunred-into-real-TCP", it was written with TCP in
+mind, simplifying things tenfold.
+
+== On variants ==
+
+Being a variant by itself, MAngband has also spawned several notorious
+variants.
+
+First came PernMAngband, which was developed in conjunction with
+PernAngband, by DarkGod (yes, it was easy enough to add the same change
+to an Angband variant, AND a MAngband variant, due to codebases being
+practically identical). For a while, we shared the same metaserver, as
+the clients were compatible.
+
+The games eventually became known as Tome and TomeNet. TomeNet is
+probably the most popular online roguelike, and has tons of own history
+to document, so I direct you elsewhere.
+
+Around the same time, PWMAngband began development. The one and only
+author, PowerWyrm, has adopted parts of all then-existing forks,
+adding even more stuff on top of them. The game is still in
+development, and, unbelievably, has all the latest codebase changes from
+Angband (unlike MAngband, which is still stuck in 2.7-3.2 era).
+
+MAngband, at it's core, still resembles Angband 2.7.9 (with bits of
+3.0.6-3.2 sprinkled in), PWMAngband, on the other hand, looks like
+Angband 4.1 (which is *vastly* different, due to 20+ years of
+refactoring).
+
+There were others, like the cheeze server, pvp server, Berendol's
+variant, and many other minor variants, but those did not persist to the
+present day.
+
+
+=== Original 'version.txt' follows. ===
+
+This file was last updated for Angband 2.7.9.
+
+Make sure to read the newsgroup "rec.games.roguelike.angband" if possible.
+
+Angband 2.7.9 is the result of a lot of work by a lot of people, and as such
+has a rather complicated version history.  Worse yet, this version history
+spans more than ten years (!) time, and multiple platforms.  But some history
+is better than none, so here we go...
+
+
+=== Brief Version History ===
+
+First came "VMS Moria", by Robert Alan Koeneke (1985).
+
+Then came "Umoria" (Unix Moria), by James E. Wilson (1989).
+
+In 1990, Alex Cutler and Andy Astrand, with the help of other students
+at the University of Warwick, created Angband 1.0, based on the existing
+code for Umoria 5.2.1.  They wanted to expand the game, keeping or even
+strengthening the grounding in Tolkien lore, while adding more monsters
+and items, including unique monsters and artifact items, plus activation,
+pseudo-sensing, level feelings, and special dungeon rooms.
+
+Over time, Sean Marsh, Geoff Hill, Charles Teague, and others, worked on
+the source, releasing a copy known as "Angband 2.4.frog_knows" at some
+point, which ran only on Unix systems, but which was ported by various
+people to various other systems.
+
+Then Charles Swiger (cs4w+@andrew.cmu.edu) attempted to clean up the mess,
+resulting in several versions, starting sometime around November, 1993, with
+Angband 2.5.1 (more or less) and leading up to Angband 2.6.2 in late 1994.
+Several people ported (the primarily Unix/NeXT centered) Angband 2.6.1 to
+other platforms, including Keith Randall, who made a Macintosh port that
+added support for color usage.  Some of the changes during this period were
+based on suggestions from the "net", PC Angband 1.40, UMoria 5.5, and some
+of the Angband "variations", such as FAngband.
+
+Finally, I (Ben Harrison) took over in late 1994 when Charles Swiger left.
+Initially my intention was simply to clean up what had become, after ten
+years, a rather unholy mess, but the deeper I delved into the code, the
+more it became apparent that drastic changes were needed, so, starting
+with MacAngband 2.6.1, I began a more or less total rewrite, resulting,
+eventually, in Angband 2.7.0, released around January first, 1995.
+
+Angband 2.7.0 was a very clean (but very buggy) rewrite that, among other
+things, allowed extremely simple porting to multiple platforms, starting
+with Unix and Macintosh, and by the time most of the bugs were cleaned up,
+in Angband 2.7.2, including X11, and various IBM machines.  Angband 2.7.4
+was released to the "ftp.cis.ksu.edu" site, and quickly gained acceptance,
+perhaps helped by the OS2 and Windows and Amiga and Linux ports.  Angband
+2.7.5 and 2.7.6 added important capabilities such as macros and user pref
+files, and continued to clean up the source.  Angband 2.7.8 was designed
+to supply another "stable" version that we can all give to our friends,
+with new "help files" and "spoiler files" for the "online help", plus a
+variety of minor tweaks and some new features.  Angband 2.7.9 optimized
+a few things, and tweaked a few other things, and cleaned up a few other
+things, and introduced a few minor semantic changes.
+
+It is very hard to pin down, along the way from 2.6.2 to 2.7.0, and thence
+to 2.7.8, exactly what was added exactly when.  Most of these steps involved
+so many changes as to make "diff files" not very useful, since often the diff
+files were as long as the code itself.  Most of the changes, with the notable
+exception of the creation of the new "main-xxx.c" files for the various new
+platforms, and a few other exceptions generally noted in the source, were
+written by myself, either spontaneously, or, more commonly, as the result of
+a suggestion or comment by an Angband player.  So if you have any problems
+with anything that you do not recognize from older versions, you can blame
+them on me.  And if you like the new features and such, you can send me a
+brief little "thank you" email (to benh@voicenet.com) or something...
+
+The Official Angband Home Page ("http://www.voicenet.com/~benh/Angband/")
+was created along with Angband 2.7.9 to serve as an up to date description
+of any bugs found in various versions, and to list all of the people whose
+email addresses I kept having to look up.
+
+
+=== Some of the changes from Angband 2.6.1 to Angband 2.7.9 ===
+
+The most important modification was a massive "code level cleanup" that made
+all of my other modifications much simpler and safer.  This cleanup was so
+massive that in many places the code is no longer recognizable, for example,
+via "diff -r", often because it was rewritten from scratch.
+
+The second most important modification was the design of a generic "term.c"
+package, which allows Angband to be ported to a new machine with as few as 50
+lines of code.  Angband 2.7.9 thus runs without modification on many machines,
+including Macintosh, PowerMac, Unix/X11, Unix/Curses, Amiga, Windows, OS2-386,
+DOS-386, and even DOS-286.
+
+It would be difficult to list all of the changes between Angband 2.6.1 and
+Angband 2.7.9, because many of them were made in passing during the massive
+code level cleanup.  Many of the changes are invisible to the user, but still
+provide increased simplicity and efficiency, and decreased code size, or make
+other more visable changes possible.  For example, the new "project()" code
+that handles all bolts, beams, and balls, the new "update_view()" code that
+simplifies line of sight computation, or the new "generate()" code that builds
+new levels in the dungeon.  Many changes have been made to increase efficiency,
+including the new "process_monsters()" and "update_monsters()" functions, and
+the new "objdes()" and "lite_spot()" routines.  The generic "Term" package
+yielded efficient screen updates, and enabled the efficient use of "color".
+
+But anyway, here are a few things that come to mind, in no particular order,
+and with very little time or effort.  Somehow I managed to put off updating
+this file to the very end, and it will just have to do for now.  The recent
+changes (and bug fixes) can be found at the Official Angband Home Page.
+
+    color
+    macros
+    keymaps
+    user pref files
+    generic feature array, with template file
+    generic object array, with template file
+    generic artifact array, with template file
+    generic ego-item array, with template file
+    generic monster array, with template fils
+    generic vault array, with template file
+    binary image files for the template files
+    special stat effect tables
+    a special table of spells
+    a special table of options
+    inventory tagging
+    inventory restrictions
+    using objects off the floor
+    various new runtime options
+    the new "destroy" command
+    the new "examine" command
+    the new "note" command
+    the new "dump screen" command
+    the new "load screen" command
+    the new "un-inscribe" command
+    the new "change visuals" command
+    the new "change colors" command
+    the new "change macros" command
+    the new "save game" command
+    the new "fire" vs "throw" commands
+    rearranged equipment slots
+    a standard bow slot
+    an extra inventory slot
+    an underlying keyset
+    refueling torches
+    better monster memory
+    nicer targetting mode
+    object stacking
+    the recall window
+    the choice window
+    the mirror window
+    new high score code
+    special lighting effects
+    intelligent monsters
+    new monster flags
+    text formatting code
+    much cleaner store code
+    generic spell projections
+    scrolls of *identify*
+    maximize mode
+    preserve mode
+    new inscription code
+    new message recall code
+    new spell and prayer code
+    massive cleanup of effects code
+    new object allocation routines
+    powerful (but simple) on line help
+    robust savefile cheat preventers
+    new official cheating options
+    new blindness code
+    new hallucination code
+    optimized object description code
+    new keypress input routines
+    actual object discounts
+    fractional (assymptotic) speed
+    postponing updates/redraws
+    run-time price determination
+    better wizard commands
+    the automatic player
+    launchers of extra shots
+    elemental ignore flags
+    new ego-item types
+    new player ghost creation
+    no more sliding objects
+    no more sliding monsters
+    new object flags
+    new chest trap code
+    regularized the artifact code
+    regularized the ego-item code
+    new monster abilities
+    new monster spell attacks
+    some new store owners
+    run-time skill computation
+    player kills vs anscestor kills
+    better room illumination code
+    better group monster code
+    table access through pointers
+    more redefinable constants
+    slightly new screen layout
+    extreme code cleaning
+    extreme optimizations
+
+
+=== A Posting from the Original Author ===
+
+From: koeneke@ionet.net (Robert Alan Koeneke)
+Newsgroups: rec.games.roguelike.angband,rec.games.roguelike.moria
+Subject: Early history of Moria
+Date: Wed, 21 Feb 1996 04:20:51 GMT
+
+I had some email show up asking about the origin of Moria, and its
+relation to Rogue.  So I thought I would just post some text on the
+early days of Moria.
+
+First of all, yes, I really am the Robert Koeneke who wrote the first
+Moria.  I had a lot of mail accussing me of pulling their leg and
+such.  I just recently connected to Internet (yes, I work for a
+company in the dark ages where Internet is concerned) and 
+was real surprised to find Moria in the news groups...  Angband was an
+even bigger surprise, since I have never seen it.  I probably spoke to
+its originator though...  I have given permission to lots of people
+through the years to enhance, modify, or whatever as long as they
+freely distributed the results.  I have always been a proponent of
+sharing games, not selling them.
+
+Anyway...
+
+Around 1980 or 81 I was enrolled in engineering courses at the
+University of Oklahoma.  The engineering lab ran on a PDP 1170 under
+an early version of UNIX.  I was always good at computers, so it was
+natural for me to get to know the system administrators.  They invited
+me one night to stay and play some games, an early startrek game, The
+Colossal Cave Adventure (later just 'Adventure'), and late one night,
+a new dungeon game called 'Rogue'.
+
+So yes, I was exposed to Rogue before Moria was even a gleam in my
+eye.  In fact, Rogue was directly responsible for millions of hours of
+play time wasted on Moria and its descendents...
+
+Soon after playing Rogue (and man, was I HOOKED), I got a job in a
+different department as a student assistant in computers.  I worked on
+one of the early VAX 11/780's running VMS, and no games were available
+for it at that time.  The engineering lab got a real geek of an
+administrator who thought the only purpose of a computer was WORK!
+Imagine...  Soooo, no more games, and no more rogue!
+
+This was intolerable!  So I decided to write my own rogue game, Moria
+Beta 1.0.  I had three languages available on my VMS system.  Fortran
+IV, PASCAL V1.?, and BASIC.  Since most of the game was string
+manipulation, I wrote the first attempt at Moria in VMS BASIC, and it
+looked a LOT like Rogue, at least what I could remember of it.  Then I
+began getting ideas of how to improve it, how it should work
+differently, and I pretty much didn't touch it for about a year.
+
+Around 1983, two things happened that caused Moria to be born in its
+recognizable form.  I was engaged to be married, and the only cure for
+THAT is to work so hard you can't think about it; and I was enrolled
+for fall to take an operating systems class in PASCAL.
+
+So, I investigated the new version of VMS PASCAL and found out it had
+a new feature.  Variable length strings!  Wow...
+
+That summer I finished Moria 1.0 in VMS PASCAL.  I learned more about
+data structures, optimization, and just plain programming that summer
+then in all of my years in school.  I soon drew a crowd of devoted
+Moria players...  All at OU.
+
+I asked Jimmey Todd, a good friend of mine, to write a better
+character generator for the game, and so the skills and history were
+born.  Jimmey helped out on many of the functions in the game as well.
+This would have been about Moria 2.0
+
+In the following two years, I listened a lot to my players and kept
+making enhancements to the game to fix problems, to challenge them,
+and to keep them going.  If anyone managed to win, I immediately found
+out how, and 'enhanced' the game to make it harder.  I once vowed it
+was 'unbeatable', and a week later a friend of mine beat it!  His
+character, 'Iggy', was placed into the game as 'The Evil Iggy', and
+immortalized...  And of course, I went in and plugged up the trick he
+used to win...
+
+Around 1985 I started sending out source to other universities.  Just
+before a OU / Texas football clash, I was asked to send a copy to the
+Univeristy of Texas...  I couldn't resist...  I modified it so that
+the begger on the town level was 'An OU football fan' and they moved
+at maximum rate.  They also multiplied at maximum rate...  So the
+first step you took and woke one up, it crossed the floor increasing
+to hundreds of them and pounded you into oblivion...  I soon received
+a call and provided instructions on how to 'de-enhance' the game!
+
+Around 1986 - 87 I released Moria 4.7, my last official release.  I
+was working on a Moria 5.0 when I left OU to go to work for American
+Airlines (and yes, I still work there).  Moria 5.0 was a complete
+rewrite, and contained many neat enhancements, features, you name it.
+It had water, streams, lakes, pools, with water monsters.  It had
+'mysterious orbs' which could be carried like torches for light but
+also gave off magical aura's (like protection from fire, or aggrivate
+monster...).  It had new weapons and treasures...  I left it with the
+student assistants at OU to be finished, but I guess it soon died on
+the vine.  As far as I know, that source was lost...
+
+I gave permission to anyone who asked to work on the game.  Several
+people asked if they could convert it to 'C', and I said fine as long
+as a complete credit history was maintained, and that it could NEVER
+be sold, only given.  So I guess one or more of them succeeded in
+their efforts to rewrite it in 'C'.
+
+I have since received thousands of letters from all over the world
+from players telling about their exploits, and from administrators
+cursing the day I was born...  I received mail from behind the iron
+curtain (while it was still standing) talking about the game on VAX's
+(which supposedly couldn't be there due to export laws).  I used to
+have a map with pins for every letter I received, but I gave up on
+that!
+
+I am very happy to learn my creation keeps on going...  I plan to
+download it and Angband and play them...  Maybe something has been
+added that will surprise me!  That would be nice...  I never got to
+play Moria and be surprised...
+
+Robert Alan Koeneke
+koeneke@ionet.net
+
+
+=== Previous Versions (outdated) ===
+
+
+                          VMS Moria Version 4.8
+Version 0.1  : 03/25/83
+Version 1.0  : 05/01/84
+Version 2.0  : 07/10/84
+Version 3.0  : 11/20/84
+Version 4.0  : 01/20/85
+
+Modules :
+     V1.0  Dungeon Generator      - RAK
+           Character Generator    - RAK & JWT
+           Moria Module           - RAK
+           Miscellaneous          - RAK & JWT
+     V2.0  Town Level & Misc      - RAK
+     V3.0  Internal Help & Misc   - RAK
+     V4.0  Source Release Version - RAK
+
+Robert Alan Koeneke               Jimmey Wayne Todd Jr.
+Student/University of Oklahoma    Student/University of Oklahoma
+
+
+
+
+
+                        Umoria Version 5.2 (formerly UNIX Moria)
+Version 4.83 :  5/14/87
+Version 4.85 : 10/26/87
+Version 4.87 :  5/27/88
+Version 5.0  :  11/2/89
+Version 5.2  :   5/9/90
+
+James E. Wilson, U.C. Berkeley
+                 wilson@ernie.Berkeley.EDU
+                 ...!ucbvax!ucbernie!wilson
+
+Other contributors:
+D. G. Kneller         - MSDOS Moria port
+Christopher J. Stuart - recall, options, inventory, and running code
+Curtis McCauley       - Macintosh Moria port
+Stephen A. Jacobs     - Atari ST Moria port
+William Setzer        - object naming code
+David J. Grabiner     - numerous bug reports, and consistency checking
+Dan Bernstein         - UNIX hangup signal fix, many bug fixes
+and many others...
+
+
+
+
+Copyright (c) 1989 James E. Wilson, Robert A. Keoneke
+  This software may be copied and distributed for educational, research, and
+  not for profit purposes provided that this copyright and statement are
+  included in all such copies.
+
+Umoria Version 5.2, patch level 1
+
+Angband Version 2.0   Alex Cutler, Andy Astrand, Sean Marsh, Geoff Hill, 
+                      Charles Teague.
+
+Angband Version 2.4   :  5/09/93
+
+Angband Version 2.5   : 12/05/93 Charles Swiger.
+
+Angband Version 2.6   :  9/04/94
+
+Angband Version 2.7   :  1/1/95  Ben Harrison
