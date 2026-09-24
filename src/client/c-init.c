@@ -557,6 +557,9 @@ static void Setup_loop()
 	Term_clear();
 	Term_fresh();
 
+	/* Headless tool mode has its own loop */
+	if (tool_mode) tool_loop();
+
 	Game_loop();
 }
 

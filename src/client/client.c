@@ -87,6 +87,7 @@ const static char frontends[][8] = {
 #ifdef USE_GCU
 	"gcu",
 #endif
+	"tool",
 };
 static int num_frontends = sizeof(frontends) / 8;
 static void show_version()
@@ -152,6 +153,8 @@ static void show_help()
 	{ extern const char help_gcu[];
 	printf("%s", help_gcu); }
 #endif
+	{ extern const char help_tool[];
+	printf("%s", help_tool); }
 }
 static bool exit_promptly(int argc, char *argv[])
 {
@@ -228,6 +231,13 @@ int main(int argc, char *argv[])
 	init_stuff();
 
 	/* Attempt to initialize a visual module */
+
+	/* Headless tool mode -- only when asked for explicitly */
+	if (!done && !strcmp(prefer_module, "tool"))
+	{
+		if (0 == init_tool()) done = TRUE;
+		if (done) ANGBAND_SYS = "tool";
+	}
 #ifdef USE_SDL
 	/* Attempt to use the "main-sdl.c" support */
 	if (!done && (!strcmp(prefer_module, "sdl") || STRZERO(prefer_module)))

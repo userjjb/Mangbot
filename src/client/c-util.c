@@ -555,6 +555,14 @@ event_type inkey_ex(void)
 	/* Initialise keypress */
 	ke.key = 0;
 	ke.type = EVT_KBRD;
+
+	/* Tool mode -- nobody is at the keyboard; cancel whatever is asking */
+	if (tool_mode)
+	{
+		tool_blocked_input("inkey");
+		ke.key = ESCAPE;
+		return (ke);
+	}
 	
 	/* Hack -- Use the "inkey_next" pointer */
 	if (inkey_next && *inkey_next && !inkey_xtra)

@@ -302,6 +302,14 @@ void do_handle_message(cptr mesg, u16b type)
 
 	//TODO: older code used tons of hacks here, maybe return them
 
+	/* Tool mode -- report it; never show it (a -more- prompt would block) */
+	if (tool_mode)
+	{
+		tool_emit_message(mesg, type);
+		c_message_add(mesg, type);
+		return;
+	}
+
 	/* Hack -- we're shopping/party_managing, where icky mode doesn't matter
 	 * or we're not in icky mode at all, so let's display the message. */
 	if (!topline_icky && (party_mode || shopping || (!screen_icky && !section_icky_col)))

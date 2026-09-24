@@ -457,6 +457,16 @@ extern void pktlog_recv(byte id, cptr name, const char *buf, int len, int res);
 extern void pktlog_send(const char *buf, int len);
 extern int pktlog_send_cb(int data1, void *data2);
 
+/* c-tool.c */
+extern bool tool_mode;
+extern void tool_loop(void);
+extern void tool_emit_message(cptr mesg, u16b type);
+extern void tool_emit_popup(void);
+extern void tool_blocked_input(cptr where);
+
+/* main-tool.c */
+extern errr init_tool(void);
+
 /* net-client.c */
 extern cptr pktlog_recv_name(byte pkt, char *buf, size_t len);
 

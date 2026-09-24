@@ -14,7 +14,7 @@ endif
 
 mangclient_SOURCES = \
 		src/client/c-birth.c src/client/c-cmd.c src/client/c-files.c \
-		src/client/c-pktlog.c \
+		src/client/c-pktlog.c src/client/c-tool.c src/client/main-tool.c \
 		src/client/c-init.c src/client/c-inven.c src/client/c-spell.c \
 		src/client/c-store.c src/client/c-tables.c src/client/c-util.c \
 		src/client/c-xtra1.c src/client/c-xtra2.c src/client/client.c \

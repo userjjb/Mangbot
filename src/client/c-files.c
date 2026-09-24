@@ -1789,6 +1789,13 @@ void show_popup(void)
 	byte n;
 	int cols = 80; //TODO: fixme
 
+	/* Tool mode -- report the popup instead of drawing it */
+	if (tool_mode)
+	{
+		if (special_line_onscreen) tool_emit_popup();
+		return;
+	}
+
 	/* Hack -- if the screen is already icky, ignore this command */
 	if (screen_icky && !shopping) return;
 
