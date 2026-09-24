@@ -496,11 +496,19 @@ void get_char_name(void)
 
 	/* Display some helpful information XXX XXX XXX */
 
-	/* Choose a name */
-	choose_name();
+	/* Tool mode -- name/pass are preset; hash exactly like enter_password() */
+	if (no_prompt)
+	{
+		MD5Password(pass);
+	}
+	else
+	{
+		/* Choose a name */
+		choose_name();
 
-	/* Enter password */
-	enter_password();
+		/* Enter password */
+		enter_password();
+	}
 	
 	/* Capitalize the name */
 	nick[0] = toupper(nick[0]);

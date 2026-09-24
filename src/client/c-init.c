@@ -475,6 +475,12 @@ static void Setup_loop()
 				/* Send login */
 				client_login();
 			}
+			/* Tool mode -- never run the interactive birth screens */
+			if (no_prompt && (state == PLAYER_NAMED || state == PLAYER_BONE))
+			{
+				quit(format("Character '%s' %s; log in interactively first.",
+				     nick, (state == PLAYER_BONE ? "is dead" : "does not exist")));
+			}
 			/* No character is ready */
 			if (state == PLAYER_NAMED)
 			{
@@ -869,6 +875,8 @@ int client_failed(void)
 	if (try_count++ > 2000)
 	{
 		try_count = 0;
+		/* Tool mode -- don't ask, just fail */
+		if (no_prompt) return 0;
 		/* Prompt for auto-retry [grk] */
 		put_str("Couldn't connect to server, keep trying? [Y/N]", 21, 1);
 		/* Make sure the message is shown */
@@ -897,6 +905,45 @@ int client_failed(void)
 	Term_fresh();
 
 	return 1;
+}
+
+/*
+ * Tool mode -- fetch the password without prompting.
+ * Sources, in order of preference: --passfile PATH (first line),
+ * MANG_PASS environment variable, "pass" in the config file.
+ * (No --pass option: command lines are visible to other users.)
+ */
+static void read_noprompt_password(void)
+{
+	char path[1024] = { 0 };
+	const char *env;
+
+	if (clia_read_string(path, sizeof(path), "passfile"))
+	{
+		FILE *fp = fopen(path, "r");
+		char buf[MAX_CHARS] = { 0 };
+		size_t n;
+
+		if (!fp) quit(format("Unable to open password file '%s'", path));
+		if (!fgets(buf, sizeof(buf), fp)) buf[0] = '\0';
+		fclose(fp);
+
+		/* Strip trailing newline */
+		n = strlen(buf);
+		while (n && (buf[n - 1] == '\n' || buf[n - 1] == '\r')) buf[--n] = '\0';
+		my_strcpy(pass, buf, MAX_CHARS);
+	}
+	else if ((env = getenv("MANG_PASS")) != NULL)
+	{
+		my_strcpy(pass, env, MAX_CHARS);
+	}
+
+	/* Match enter_password(), whose prompt accepts at most 15 characters */
+	pass[15] = '\0';
+
+	/* "passwd" is the built-in placeholder, refused by enter_password() too */
+	if (STRZERO(pass) || streq(pass, "passwd"))
+		quit("No password given (use --passfile PATH, MANG_PASS, or 'pass' in the config).");
 }
 
 /*
@@ -950,6 +997,10 @@ void client_init(void)
 
 	/* Nick from command line */
 	clia_read_string(nick, MAX_CHARS, "nick");
+
+	/* Non-interactive login (--noprompt) */
+	clia_read_bool(&no_prompt, "noprompt");
+	if (no_prompt) read_noprompt_password();
 
 	/* Get character name and pass */
 	get_char_name();

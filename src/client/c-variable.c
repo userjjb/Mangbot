@@ -4,6 +4,7 @@
 
 char nick[MAX_CHARS];
 char pass[MAX_CHARS];
+bool no_prompt = FALSE;	/* Tool mode: never block on login prompts */
 
 char real_name[MAX_CHARS];
 

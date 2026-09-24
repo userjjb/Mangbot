@@ -53,6 +53,8 @@ void pktlog_init(void)
 #include "../server/net-game.h"
 #undef PCOMMAND
 #undef PACKET
+	/* Handled outside the server's packet table */
+	send_names[PKT_LOGIN] = "PKT_LOGIN";
 
 	gettimeofday(&pktlog_t0, NULL);
 	pktlog_note("pktlog started");
@@ -147,9 +149,19 @@ static cptr pktlog_send_name(const char *buf, int len, char *tmp, size_t tmplen)
 /* A chunk of client->server bytes about to hit the socket */
 void pktlog_send(const char *buf, int len)
 {
+	static bool first_send = TRUE;
 	char tmp[80];
 
 	if (!pktlog_fp) return;
+
+	/* The connection opens with a bare u16 "conntype", not a packet */
+	if (first_send && len >= 2)
+	{
+		first_send = FALSE;
+		pktlog_record("S", 0, "HANDSHAKE", buf, 2, 1);
+		buf += 2;
+		len -= 2;
+	}
 
 	/* Split out leading keepalives ("%c%l" = 5 bytes) */
 	while (len >= 5 && (byte)buf[0] == PKT_KEEPALIVE)

@@ -43,6 +43,7 @@ extern event_type inkey_ex(void);
 /* variable.c */
 extern char nick[MAX_CHARS];
 extern char pass[MAX_CHARS];
+extern bool no_prompt;
 
 extern char real_name[MAX_CHARS];
 

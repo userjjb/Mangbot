@@ -132,6 +132,9 @@ static void show_help()
 	printf("      --userdir PATH        Writable user dir location.\n");
 	printf("      --nick NICKNAME       Character name to use.\n");
 	printf("      --pktlog PATH         Append a JSON-lines packet log to PATH.\n");
+	printf("      --noprompt            Log in without prompts (existing character only).\n");
+	printf("                            Put it before another --option, not before SERVER.\n");
+	printf("      --passfile PATH       Password for --noprompt (else MANG_PASS or config).\n");
 	printf("\nDisplay modules might support additional arguments.\n");
 #ifdef USE_SDL
 	{ extern const char help_sdl[];
