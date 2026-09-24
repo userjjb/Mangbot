@@ -1710,6 +1710,10 @@ int recv_cursor(connection_type *ct) {
 
 	if (cq_scanf(&ct->rbuf, "%c%c%c", &vis, &x, &y) < 3) return 0;
 
+	/* Tool mode -- track own position. Note: the server's send_cursor()
+	 * is called as (vis, y, x) for the player, so "x" here holds y. */
+	if (tool_mode) tool_note_cursor(vis, x, y);
+
 	/* Hack -- ignore weird states */
 	if ((byte)vis > 1)
 	{
