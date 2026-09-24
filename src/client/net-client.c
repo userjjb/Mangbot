@@ -84,6 +84,7 @@ void network_loop()
 
 int client_close(int data1, data data2) {
 	connection_type *ct = (connection_type*)data2;
+	pktlog_note("connection closed");
 	/* 0_0` */
 	quit("Connection closed.");
 	return 0;
@@ -103,6 +104,15 @@ int client_read(int data1, data data2) { /* return -1 on error */
 		next_scheme = schemes[next_pkt];
 		result = (*handlers[next_pkt])(ct);
 		last_pkt = next_pkt;
+
+		/* Debug -- log every fully-parsed (or fatally broken) packet */
+		if (pktlog_enabled() && result != 0)
+		{
+			char tmp[80];
+			pktlog_recv(next_pkt, pktlog_recv_name(next_pkt, tmp, sizeof(tmp)),
+			            &ct->rbuf.buf[start_pos],
+			            (result == -1 ? ct->rbuf.len : ct->rbuf.pos) - start_pos, result);
+		}
 
 		/* Unable to continue */
 		if (result != 1) break;
@@ -147,6 +157,13 @@ int connected_to_server(int data1, data data2) {
 
 	/* Prepare packet-handling tables */
 	setup_tables();
+
+	/* Debug -- route outgoing data through the packet logger */
+	if (pktlog_enabled())
+	{
+		serv->send_cb = pktlog_send_cb;
+		pktlog_note("connected to server");
+	}
 
 	/* Is connected! */
 	connected = 1;
@@ -2190,6 +2207,27 @@ void setup_tables()
 #include "net-client.h"
 #undef PACKET
 
+}
+
+
+/* Debug -- human-readable name of a server->client packet */
+cptr pktlog_recv_name(byte pkt, char *buf, size_t len)
+{
+	if (handlers[pkt] == recv_stream)
+	{
+		strnfmt(buf, len, "STREAM:%s", streams[stream_ref[pkt]].mark);
+		return buf;
+	}
+	if (handlers[pkt] == recv_indicator || handlers[pkt] == recv_indicator_str)
+	{
+		strnfmt(buf, len, "IND:%s", indicators[indicator_refs[pkt]].mark);
+		return buf;
+	}
+#define PACKET(PKT, SCHEME, FUNC) if (pkt == PKT) return #PKT;
+#include "net-client.h"
+#undef PACKET
+	if (handlers[pkt] == recv_undef) return "UNDEFINED";
+	return NULL;
 }
 
 

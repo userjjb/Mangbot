@@ -131,6 +131,7 @@ static void show_help()
 	printf("      --libdir PATH         Readable asset dir location.\n");
 	printf("      --userdir PATH        Writable user dir location.\n");
 	printf("      --nick NICKNAME       Character name to use.\n");
+	printf("      --pktlog PATH         Append a JSON-lines packet log to PATH.\n");
 	printf("\nDisplay modules might support additional arguments.\n");
 #ifdef USE_SDL
 	{ extern const char help_sdl[];
@@ -204,6 +205,9 @@ int main(int argc, char *argv[])
 
 	/* Client Config-file */
 	conf_init(NULL);
+
+	/* Optional packet logger (--pktlog PATH) */
+	pktlog_init();
 
 	/* Pick preferred module */
 	pick_module(prefer_module, sizeof(prefer_module), argc, argv);

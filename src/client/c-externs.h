@@ -448,6 +448,17 @@ extern bool clia_read_string(char *dst, int len, const char *key);
 extern bool clia_read_int(s32b *dst, const char *key);
 extern bool clia_read_bool(bool *dst, const char *key);
 
+/* c-pktlog.c */
+extern bool pktlog_enabled(void);
+extern void pktlog_init(void);
+extern void pktlog_note(cptr msg);
+extern void pktlog_recv(byte id, cptr name, const char *buf, int len, int res);
+extern void pktlog_send(const char *buf, int len);
+extern int pktlog_send_cb(int data1, void *data2);
+
+/* net-client.c */
+extern cptr pktlog_recv_name(byte pkt, char *buf, size_t len);
+
 /* c-init.c */
 extern bool sync_data(void);
 extern bool client_login(void);
