@@ -832,6 +832,9 @@ bool client_setup()
 
 	send_options();
 
+	/* Tool mode -- distinctive glyphs (e.g. house doors) */
+	if (tool_mode) tool_setup_visuals();
+
 	/* Send visual preferences */
 	for (i = 0; i < VISUAL_INFO_PR + 1; i++)
 	{

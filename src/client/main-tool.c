@@ -2,7 +2,7 @@
  * File: main-tool.c
  * Purpose: Headless "display module" for tool-driven clients (-mtool).
  *
- * Provides a single in-memory term (z-term keeps its screen buffer) with
+ * Provides a single large in-memory term (z-term keeps its screen buffer) with
  * no-op output hooks and no keyboard. Selecting it turns on tool mode:
  * login never prompts, and c-init.c runs tool_loop() (c-tool.c) instead
  * of the interactive Game_loop().
@@ -56,7 +56,10 @@ errr init_tool(void)
 {
 	term *t = &tool_term_body;
 
-	term_init(t, 80, 24, 256);
+	/* Big enough that the dungeon stream subscribes at the full level size
+	 * (MAX_WID x MAX_HGT = 198 x 66, plus sidebar and status lines). The
+	 * server then pins the panel at (0,0), so map coordinates are absolute. */
+	term_init(t, MAX_WID + SCREEN_CLIP_X + 1, MAX_HGT + 4, 256);
 
 	t->attr_blank = TERM_WHITE;
 	t->char_blank = ' ';

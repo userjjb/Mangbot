@@ -8,7 +8,8 @@
  * lines from stdin.
  *
  * Events (one JSON object per line, always with "ev" and "t"):
- *   ready        {nick}                     -- in the game, loop running
+ *   ready        {nick, door}               -- in the game; door = map glyph
+ *                                             of closed house doors
  *   message      {type, text}
  *   popup        {header, lines[]}          -- e.g. MOTD, examine text
  *   pause        {}                         -- server asked for "any key"
@@ -110,6 +111,29 @@ static void tool_row_text(cave_view_type *row, int wid, char *buf, size_t len)
 }
 
 /*** Hooks called from the rest of the client ***/
+
+/* Server feature indices (server/mdefines.h); closed house doors */
+#define TOOL_FEAT_HOME_HEAD	0x71
+#define TOOL_FEAT_HOME_TAIL	0x78
+
+/* Map glyph for closed house doors (unused by any game data) */
+#define TOOL_HOUSE_DOOR_CHAR	'0'
+
+/*
+ * client_setup() -- adjust the visual tables before they're uploaded.
+ * The server draws our map with them, so closed house doors become
+ * unambiguous. (The *open* house door mimics a plain open door on the
+ * server, so it can't be told apart this way.)
+ */
+void tool_setup_visuals(void)
+{
+	int i;
+
+	for (i = TOOL_FEAT_HOME_HEAD; i <= TOOL_FEAT_HOME_TAIL && i < z_info.f_max; i++)
+	{
+		Client_setup.f_char[i] = TOOL_HOUSE_DOOR_CHAR;
+	}
+}
 
 /* do_handle_message() */
 void tool_emit_message(cptr mesg, u16b type)
@@ -580,6 +604,7 @@ void tool_loop(void)
 
 	tool_ev_begin("ready");
 	tool_kv_str("nick", nick);
+	tool_kv_str("door", format("%c", TOOL_HOUSE_DOOR_CHAR));
 	tool_ev_end();
 
 	while (TRUE)
