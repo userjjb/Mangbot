@@ -93,6 +93,11 @@ def direction(frm, to):
     return DIRS.get((to[0] - frm[0], to[1] - frm[1]))
 
 
+def _by_edge(tile):
+    y, x = tile
+    return y <= 1 or y >= MAX_HGT - 2 or x <= 1 or x >= MAX_WID - 2
+
+
 def _near_blocked(pos, dist):
     y, x = pos
     return any(max(abs(y - by), abs(x - bx)) <= dist for by, bx in extra_blocked)
@@ -128,9 +133,11 @@ def goto(client, goals, rows=None, step_timeout=3.0, max_replans=10, deadline=No
             before = client.pos
             _send_hop(client, hop)
             arrived = _wait_arrival(client, hop, step_timeout)
-            if not arrived:
+            if not arrived and not _by_edge(hop):
                 # The server sometimes ignores a command sent just as a
                 # previous run ends -- try the same hop once more first.
+                # (Not next to the level edge: if the first command was only
+                # slow, both run, and the extra step would leave the level.)
                 _send_hop(client, hop)
                 arrived = _wait_arrival(client, hop, step_timeout)
             if not arrived:

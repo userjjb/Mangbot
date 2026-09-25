@@ -159,9 +159,17 @@ class Cataloger:
                 if (ny, nx) not in inner and rows[ny][nx] != "#" and nav.inside(ny, nx):
                     inner.add((ny, nx))
                     todo.append((ny, nx))
+        if len(inner) >= 2000:
+            # Not enclosed, so not an arena: don't go bumping walls
+            self.say(f"  not shut in after all (open ground around {self.c.pos})")
+            self.c.in_arena = False
+            return
         ys = [p[0] for p in inner]
         xs = [p[1] for p in inner]
-        box = {(y, x) for y in range(min(ys) - 2, max(ys) + 3) for x in range(min(xs) - 2, max(xs) + 3)}
+        # The arena itself: interior plus its wall ring. No wider margin -- near
+        # a no-go zone goto() walks its own path tile by tile, so it never
+        # bumps the wall, and a margin could shut us in right after leaving.
+        box = {(y, x) for y in range(min(ys) - 1, max(ys) + 2) for x in range(min(xs) - 1, max(xs) + 2)}
         self.say(f"  in an arena ({min(ys)}-{max(ys)}, {min(xs)}-{max(xs)}); leaving")
         for _ in range(tries):
             rows = self.c.map()
@@ -364,6 +372,7 @@ class Cataloger:
         if include_start:
             remaining.add(self.world)
         remaining -= set(done)
+        boxed = {}
         if done:
             self.say("already done: " + ", ".join(wild.world_name(sq) for sq in sorted(done)))
         summary = {}
@@ -386,6 +395,9 @@ class Cataloger:
                 self.upkeep()
                 self.say(f"  moved unexpectedly ({e}); now in {wild.world_name(self.world)} -- re-planning")
             except wild.Boxed as e:
+                boxed[self.world] = boxed.get(self.world, 0) + 1
+                if boxed[self.world] > 3:
+                    raise Danger(f"repeatedly unable to move in {wild.world_name(self.world)}: {e}")
                 self.say(f"  {e}; trying the arena way out")
                 self.c.in_arena = True
                 self.upkeep()
