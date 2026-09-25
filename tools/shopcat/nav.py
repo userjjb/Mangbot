@@ -1,8 +1,8 @@
 """Route planning on the tool-mode map (198x66, absolute coordinates).
 
-The server's pathfind reaches ~25 tiles, so longer trips are split into
-waypoints along a client-side shortest path. The map only holds glyphs, so
-passability is a conservative guess; the server has the final word.
+Movement walks a client-side shortest path step by step (see goto() for why
+not the server's pathfind). The map only holds glyphs, so passability is a
+guess; bumping into something unseen makes us replan around it.
 """
 import heapq
 import time
@@ -26,7 +26,6 @@ COST = {"~": 2, "%": 2, " ": 2,
                    # next step leaves)
 MAX_HGT, MAX_WID = 66, 198
 
-HOP = 18                                    # waypoint spacing (< server pathfind reach)
 
 # Tiles to keep out of on the current level, whatever the map shows (e.g. an
 # arena found the hard way). The caller swaps this set when the level changes.
@@ -98,21 +97,14 @@ def _by_edge(tile, dist=1):
     return y <= dist or y >= MAX_HGT - 1 - dist or x <= dist or x >= MAX_WID - 1 - dist
 
 
-def _near_blocked(pos, dist):
-    y, x = pos
-    return any(max(abs(y - by), abs(x - bx)) <= dist for by, bx in extra_blocked)
-
-
-def _send_hop(client, hop):
-    here = client.pos
-    if max(abs(hop[0] - here[0]), abs(hop[1] - here[1])) <= 1:
-        client.send(f"walk {direction(here, hop)}")
-    else:
-        client.send(f"pathfind {hop[0]} {hop[1]}")
-
-
 def goto(client, goals, rows=None, step_timeout=3.0, max_replans=10, deadline=None):
-    """Move the character to any tile in goals. Returns the tile reached or None."""
+    """Move the character to any tile in goals. Returns the tile reached or None.
+
+    Walks our own shortest path one step at a time (a couple of steps queued
+    ahead). We don't use the server's pathfind: it searches 25 tiles around
+    the player treating never-seen grids as open, including the row/column
+    just past the level edge -- and a route along it walks off the level. It
+    also knows nothing about our no-go zones."""
     goals = set(goals) - extra_blocked
     avoid = set()
     for _ in range(max_replans):
@@ -124,59 +116,56 @@ def goto(client, goals, rows=None, step_timeout=3.0, max_replans=10, deadline=No
         path = shortest_path(rows, client.pos, goals, avoid)
         if not path:
             return None
-        while path:
-            # Near a no-go zone, walk our own path tile by tile: the server's
-            # pathfinding doesn't know about it (and happily bumps an arena
-            # wall it hasn't seen).
-            # Same near the level border: the server's pathfinding treats the
-            # unseen row/column just past the edge as walkable, and stepping
-            # onto it moves us to the next level.
-            ahead = path[:HOP]
-            careful = (extra_blocked and _near_blocked(client.pos, 25)) or \
-                any(_by_edge(t, 2) for t in [client.pos, *ahead])
-            hop = path[0] if careful else ahead[-1]
-            before = client.pos
-            _send_hop(client, hop)
-            arrived = _wait_arrival(client, hop, step_timeout)
-            if not arrived and not _by_edge(hop):
-                # The server sometimes ignores a command sent just as a
-                # previous run ends -- try the same hop once more first.
-                # (Not next to the level edge: if the first command was only
-                # slow, both run, and the extra step would leave the level.)
-                _send_hop(client, hop)
-                arrived = _wait_arrival(client, hop, step_timeout)
-            if not arrived:
-                # Didn't make it: if we never moved, the next tile is probably
-                # blocked; otherwise the hop target is. Avoid it and replan.
-                avoid.add(path[0] if client.pos == before else hop)
-                rows = None
-                break
-            path = path[path.index(hop) + 1:]
-        else:
-            if client.pos in goals:
-                return client.pos
+        start = client.pos
+        done = _walk_path(client, path, step_timeout, deadline)
+        if done < len(path):
+            # Stuck or pushed off course. If we couldn't take the next step
+            # at all, that tile is probably blocked; avoid it and replan.
+            if client.pos == (path[done - 1] if done else start):
+                avoid.add(path[done])
+            rows = None
     return client.pos if client.pos in goals else None
+
+
+def _walk_path(client, path, timeout, deadline=None, ahead=2):
+    """Walk along path, keeping up to `ahead` steps queued. Returns how many
+    tiles of path were reached. Stops early if a step doesn't happen within
+    `timeout` s or we end up off the path; raises Jumped on a jump."""
+    sent = done = 0
+    here = client.pos
+    seen = len(client.trail)
+    last_move = time.time()
+    while done < len(path):
+        # Near the edge, one step at a time (a mis-step could leave the level)
+        limit = 1 if _by_edge(path[done], 2) else ahead
+        while sent < len(path) and sent - done < limit:
+            frm = path[sent - 1] if sent else here
+            client.send(f"walk {direction(frm, path[sent])}")
+            sent += 1
+        evs = client.collect(0.05)
+        if any(e["ev"] == "message" and "blocking your way" in e["text"] for e in evs):
+            # Walked into something we couldn't see (wall, tree, door)
+            client.collect(0.3)
+            return done
+        new = client.trail[seen:]
+        seen += len(new)
+        for p in new:
+            last = path[done - 1] if done else here
+            if max(abs(p[0] - last[0]), abs(p[1] - last[1])) > 1:
+                raise Jumped(f"moved {last} -> {p}")
+            if done < len(path) and p == path[done]:
+                done += 1
+                last_move = time.time()
+            else:
+                # Off the planned path (a step was dropped or went astray):
+                # let the queued steps settle, then replan from where we are
+                client.collect(0.5)
+                return done
+        if time.time() - last_move > timeout or (deadline and time.time() > deadline):
+            client.collect(0.3)
+            return done
+    return done
 
 
 class Jumped(RuntimeError):
     """Position jumped more than one tile: a level change or a teleport."""
-
-
-def _wait_arrival(client, target, timeout):
-    """Wait until pos == target; give up after `timeout` seconds without movement.
-    Raises Jumped if we suddenly end up somewhere else (new level, teleport),
-    since coordinates then no longer mean what the plan assumed."""
-    last_move = time.time()
-    last_pos = client.pos
-    seen = len(client.trail)
-    while client.pos != target:
-        client.collect(0.1)
-        new = client.trail[seen:]
-        seen += len(new)
-        for p in new:
-            if max(abs(p[0] - last_pos[0]), abs(p[1] - last_pos[1])) > 1:
-                raise Jumped(f"moved {last_pos} -> {p}")
-            last_pos, last_move = p, time.time()
-        if not new and time.time() - last_move > timeout:
-            return False
-    return True
