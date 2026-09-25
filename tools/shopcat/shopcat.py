@@ -50,7 +50,7 @@ def now():
 
 
 class Cataloger:
-    def __init__(self, client, out, examine=True, retries=2, retry_delay=30.0, verbose=True):
+    def __init__(self, client, out, examine=True, retries=2, retry_delay=30.0, verbose=True, nogo_file=None):
         self.c = client
         self.out = out
         self.examine = examine
@@ -64,6 +64,11 @@ class Cataloger:
         self.refuel_below = 3000  # lantern turns; a flask adds 7500, the lantern holds 15000
         self.warned_oil = False
         self.warned_food = False
+        self.no_go = {}           # depth -> tiles to stay out of (arenas)
+        self.nogo_file = nogo_file  # remembered across runs
+        if nogo_file and os.path.exists(nogo_file):
+            with open(nogo_file) as f:
+                self.no_go = {int(d): {tuple(t) for t in tiles} for d, tiles in json.load(f).items()}
 
     def say(self, *a):
         if self.verbose:
@@ -80,6 +85,10 @@ class Cataloger:
         st = self.c.status()
         self.depth = st["ind"].get("depth", [None])[0]
         self.world = wild.world_coords(self.depth) if self.depth is not None else None
+        nav.extra_blocked = self.no_go.setdefault(self.depth, set())
+        if self.c.in_arena:
+            self.escape_arena()
+            st = self.c.status()
         if st.get("ghost"):
             raise RuntimeError("character is dead (ghost) -- stopping")
         if time.time() >= self.next_light_check:
@@ -135,6 +144,53 @@ class Cataloger:
             self.say(f"  swapping in a fresh torch ({turns} turns left)")
             self.c.send(f"custom w item={pack_torches[0]['item']}")
             self.c.collect(1.0)
+
+    def escape_arena(self, tries=4):
+        """Walk into the arena wall until we're let out, then keep away from it.
+        (Bumping an arena wall from outside teleports you in; from inside,
+        alone, it lets you out with a short teleport.)"""
+        rows = self.c.map()
+        y0, x0 = self.c.pos
+        # The arena interior: everything reachable from here without crossing '#'
+        inner, todo = {(y0, x0)}, [(y0, x0)]
+        while todo and len(inner) < 2000:
+            cy, cx = todo.pop()
+            for ny, nx in nav.neighbours(cy, cx, len(rows), len(rows[0])):
+                if (ny, nx) not in inner and rows[ny][nx] != "#" and nav.inside(ny, nx):
+                    inner.add((ny, nx))
+                    todo.append((ny, nx))
+        ys = [p[0] for p in inner]
+        xs = [p[1] for p in inner]
+        box = {(y, x) for y in range(min(ys) - 2, max(ys) + 3) for x in range(min(xs) - 2, max(xs) + 3)}
+        self.say(f"  in an arena ({min(ys)}-{max(ys)}, {min(xs)}-{max(xs)}); leaving")
+        for _ in range(tries):
+            rows = self.c.map()
+            here = self.c.pos
+            walls = [nb for nb in nav.neighbours(*here, len(rows), len(rows[0])) if rows[nb[0]][nb[1]] == "#"]
+            if not walls:
+                # Walk to the interior tile nearest a wall first
+                edge = [p for p in inner if any(rows[n[0]][n[1]] == "#"
+                                                 for n in nav.neighbours(*p, len(rows), len(rows[0])))]
+                saved, nav.extra_blocked = nav.extra_blocked, set()
+                try:
+                    nav.goto(self.c, edge, rows=rows, deadline=time.time() + 30)
+                except nav.Jumped:
+                    pass
+                finally:
+                    nav.extra_blocked = saved
+                continue
+            self.c.send(f"walk {nav.direction(here, walls[0])}")
+            self.c.collect(1.5)
+            if not self.c.in_arena:
+                break
+        self.no_go.setdefault(self.depth, set()).update(box)
+        nav.extra_blocked = self.no_go[self.depth]
+        if self.nogo_file:
+            with open(self.nogo_file, "w") as f:
+                json.dump({str(d): sorted(t) for d, t in self.no_go.items()}, f)
+        if self.c.in_arena:
+            raise Danger("stuck in an arena")
+        self.say(f"  out of the arena at {self.c.pos}")
 
     def rest(self, hp, mhp, max_secs=180):
         """Rest ('R' toggles resting) until HP is back to 90%; give up if it keeps falling."""
@@ -298,7 +354,7 @@ class Cataloger:
 
     # --- the wilderness -------------------------------------------------
 
-    def tour(self, targets, explore_secs, include_start=True, return_home=True):
+    def tour(self, targets, explore_secs, include_start=True, return_home=True, done=()):
         """Visit each target level (world coords), explore it, catalog it.
         Day or night -- at night the lantern shows the way and lit houses
         still show up at a distance."""
@@ -307,6 +363,9 @@ class Cataloger:
         remaining = set(targets)
         if include_start:
             remaining.add(self.world)
+        remaining -= set(done)
+        if done:
+            self.say("already done: " + ", ".join(wild.world_name(sq) for sq in sorted(done)))
         summary = {}
         while remaining:
             here = self.world
@@ -318,12 +377,18 @@ class Cataloger:
                     for k, v in self.run().items():
                         summary[k] = summary.get(k, 0) + v
                     remaining.discard(here)
+                    self.write({"time": now(), "depth": self.depth, "world": list(here),
+                                "level": wild.world_name(here), "result": "level_done"})
                     continue
                 route = wild.plan_tour(here, remaining, via=[*targets, *remaining])
                 self.cross_to(route[1])
             except nav.Jumped as e:
                 self.upkeep()
                 self.say(f"  moved unexpectedly ({e}); now in {wild.world_name(self.world)} -- re-planning")
+            except wild.Boxed as e:
+                self.say(f"  {e}; trying the arena way out")
+                self.c.in_arena = True
+                self.upkeep()
         if return_home:
             self.go_to((0, 0), targets)
         return summary
@@ -378,10 +443,16 @@ def main():
     ap.add_argument("--explore-secs", type=float, default=240,
                     help="time limit for uncovering each wilderness level's map")
     ap.add_argument("--no-return", action="store_true", help="don't walk back to town at the end")
+    ap.add_argument("--resume", action="store_true",
+                    help="with --wilderness: skip levels that already have records in --out")
     ap.add_argument("--pktlog")
     ap.add_argument("--events", help="append every client event to this file (debug)")
     args = ap.parse_args()
 
+    done = set()
+    if args.resume and os.path.exists(args.out):
+        with open(args.out) as f:
+            done = {tuple(r["world"]) for r in map(json.loads, f) if r.get("result") == "level_done"}
     evlog = open(args.events, "a", buffering=1) if args.events else None
     client = MangClient(args.client, args.libdir, args.nick, args.passfile, args.host, args.port,
                         config=args.config, pktlog=args.pktlog, cwd=repo,
@@ -390,9 +461,10 @@ def main():
         client.wait_ready()
         with open(args.out, "a") as out:
             cat = Cataloger(client, out, examine=not args.no_examine, retries=args.retries,
-                            retry_delay=args.retry_delay)
+                            retry_delay=args.retry_delay, nogo_file=args.out + ".nogo.json")
             if args.wilderness:
-                summary = cat.tour(wild.DEFAULT_TARGETS, args.explore_secs, return_home=not args.no_return)
+                summary = cat.tour(wild.DEFAULT_TARGETS, args.explore_secs, return_home=not args.no_return,
+                                   done=done)
             else:
                 summary = cat.run(args.max_doors, args.door)
         print(json.dumps({"summary": summary}), file=sys.stderr)

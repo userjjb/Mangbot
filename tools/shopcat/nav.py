@@ -28,6 +28,10 @@ MAX_HGT, MAX_WID = 66, 198
 
 HOP = 18                                    # waypoint spacing (< server pathfind reach)
 
+# Tiles to keep out of on the current level, whatever the map shows (e.g. an
+# arena found the hard way). The caller swaps this set when the level changes.
+extra_blocked = set()
+
 
 def passable(ch):
     return ch not in BLOCKED
@@ -65,7 +69,8 @@ def shortest_path(rows, start, goals, avoid=()):
             continue
         for nb in neighbours(*cur, hgt, wid):
             ch = rows[nb[0]][nb[1]]
-            if nb not in goals and (not passable(ch) or nb in avoid or not inside(*nb)):
+            if nb not in goals and (not passable(ch) or nb in avoid or nb in extra_blocked
+                                    or not inside(*nb)):
                 continue
             nd = d + COST.get(ch, 1)
             if nd < dist.get(nb, 1 << 30):
@@ -86,6 +91,11 @@ def stand_spots(rows, door):
 
 def direction(frm, to):
     return DIRS.get((to[0] - frm[0], to[1] - frm[1]))
+
+
+def _near_blocked(pos, dist):
+    y, x = pos
+    return any(max(abs(y - by), abs(x - bx)) <= dist for by, bx in extra_blocked)
 
 
 def _send_hop(client, hop):
@@ -110,7 +120,11 @@ def goto(client, goals, rows=None, step_timeout=3.0, max_replans=10, deadline=No
         if not path:
             return None
         while path:
-            hop = path[min(HOP, len(path)) - 1]
+            # Near a no-go zone, walk our own path tile by tile: the server's
+            # pathfinding doesn't know about it (and happily bumps an arena
+            # wall it hasn't seen).
+            careful = extra_blocked and _near_blocked(client.pos, 25)
+            hop = path[0] if careful else path[min(HOP, len(path)) - 1]
             before = client.pos
             _send_hop(client, hop)
             arrived = _wait_arrival(client, hop, step_timeout)

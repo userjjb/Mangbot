@@ -32,6 +32,7 @@ class MangClient:
         self.pos = None           # (y, x), absolute
         self.door_glyph = "0"
         self.trail = []           # every position seen, in order
+        self.in_arena = False     # stepped into a wilderness PvP "fighting pit"
         threading.Thread(target=self._reader, daemon=True).start()
 
     # --- plumbing -------------------------------------------------------
@@ -45,6 +46,11 @@ class MangClient:
             if ev.get("ev") == "pos":
                 self.pos = (ev["y"], ev["x"])
                 self.trail.append(self.pos)
+            elif ev.get("ev") == "message":
+                if "You enter an ancient fighting pit" in ev["text"]:
+                    self.in_arena = True
+                elif "You leave the arena" in ev["text"]:
+                    self.in_arena = False
             if self.log:
                 self.log(ev)
             self.events.put(ev)

@@ -24,6 +24,8 @@ def main():
         with open(path) as f:
             for line in f:
                 rec = json.loads(line)
+                if "door_y" not in rec:
+                    continue          # e.g. level_done markers
                 key = (rec["depth"], rec["door_y"], rec["door_x"])
                 # An incomplete shop visit doesn't replace an earlier complete one
                 if rec["result"] in ("ejected", "locked", "no_door", "none", "unreachable") and key in latest:

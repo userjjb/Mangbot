@@ -128,6 +128,10 @@ def cross(client, way, rows=None, timeout=8.0):
     return None
 
 
+class Boxed(RuntimeError):
+    """Nothing is reachable -- probably shut in (e.g. inside an arena)."""
+
+
 def sweep_points(arrival, dy=12, dx=20):
     """Waypoints covering the level in a boustrophedon, starting from the
     edge we arrived on."""
@@ -150,7 +154,7 @@ def explore(client, budget, say=print, check=None, near=8):
     at a distance; the floor only shows by day. `check()` runs between legs."""
     end = time.time() + budget
     first = len(client.trail)
-    legs = skipped = failed = 0
+    legs = skipped = failed = streak = 0
     for pt in sweep_points(client.pos):
         if time.time() >= end:
             break
@@ -169,6 +173,9 @@ def explore(client, budget, say=print, check=None, near=8):
         got = nav.goto(client, goals, rows=rows, deadline=min(end, time.time() + 40))
         legs += 1
         failed += got is None
+        streak = streak + 1 if got is None else 0
+        if streak >= 6:
+            raise Boxed(f"{streak} waypoints in a row not reached from {client.pos}")
     rows = client.map()
     say(f"  explored: {legs} legs ({failed} not reached, {skipped} skipped), "
         f"{'budget used up' if time.time() >= end else 'sweep complete'}")
