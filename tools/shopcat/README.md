@@ -23,7 +23,7 @@ python3 report.py catalog.jsonl -o stock.csv
 Add `--wilderness` to also cover the 12 levels around town: two screens out
 along each cardinal direction (1N, 2N, 1E, 2E, 1S, 2S, 1W, 2W) and one along
 each diagonal (1N 1E, 1N 1W, 1S 1E, 1S 1W). The character walks off level
-edges to travel, uncovers each level's map (`--explore-secs`, default 240),
+edges to travel, uncovers each level's map (`--explore-secs`, default 480),
 catalogs its doors, and walks back to town (`--no-return` to stay put).
 
 Useful options: `--no-examine` (listing only, faster), `--door Y,X`

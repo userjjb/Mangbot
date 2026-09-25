@@ -12,8 +12,9 @@ DIRS = {(-1, -1): 7, (-1, 0): 8, (-1, 1): 9, (0, -1): 4, (0, 1): 6, (1, -1): 1, 
 
 # Walls/secret doors, closed doors, rubble, NPC shop entrances, house doors
 # ('0' in tool mode), traps, trees (and treasure veins in the dungeon) --
-# "There is a tree blocking your way."
-BLOCKED = set("#+:1234567^*") | {"0"}
+# "There is a tree blocking your way." -- and '=': logs/fences in the
+# wilderness (also a ring on the floor, but that's rare and not worth the bumps)
+BLOCKED = set("#+:1234567^*=") | {"0"}
 # Allowed but avoided: water/mud, crops (in the dungeon '%' is a vein,
 # which the server will refuse -- goto() then routes around it), and unknown
 # ground (' '). Like the server's own pathfinding, unseen grids are assumed

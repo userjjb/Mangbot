@@ -531,7 +531,7 @@ def main():
     ap.add_argument("--retry-delay", type=float, default=30.0, help="seconds before revisiting a door")
     ap.add_argument("--wilderness", action="store_true",
                     help="tour the 12 levels around town (2 out on the cardinals, 1 on the diagonals)")
-    ap.add_argument("--explore-secs", type=float, default=240,
+    ap.add_argument("--explore-secs", type=float, default=480,
                     help="time limit for uncovering each wilderness level's map")
     ap.add_argument("--no-return", action="store_true", help="don't walk back to town at the end")
     ap.add_argument("--resume", action="store_true",
