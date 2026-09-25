@@ -475,24 +475,45 @@ static void Setup_loop()
 				/* Send login */
 				client_login();
 			}
-			/* Tool mode -- never run the interactive birth screens */
-			if (no_prompt && (state == PLAYER_NAMED || state == PLAYER_BONE))
+			/* Tool mode -- never run the interactive birth screens;
+			 * only create a character if --birth says what it is */
+			if (no_prompt && !tool_birth_spec[0] && (state == PLAYER_NAMED || state == PLAYER_BONE))
 			{
-				quit(format("Character '%s' %s; log in interactively first.",
+				quit(format("Character '%s' %s; log in interactively first (or use --birth).",
 				     nick, (state == PLAYER_BONE ? "is dead" : "does not exist")));
 			}
 			/* No character is ready */
 			if (state == PLAYER_NAMED)
 			{
 				/* Generate one */
-				get_char_info();
+				if (no_prompt)
+				{
+					cptr err;
+					int tries = 0;
+
+					/* The race/class/stat lists come with the login reply */
+					while (!race_info || !c_info || !stat_names)
+					{
+						if (++tries > 500) quit("No race/class lists from the server.");
+						network_loop();
+						Term_xtra(TERM_XTRA_DELAY, 10);
+					}
+					if ((err = tool_birth_apply()) != NULL) quit(err);
+				}
+				else get_char_info();
 				send_char_info();
 				send_play(PLAY_ROLL);
 			}
 			/* Character is dead! */
 			if (state == PLAYER_BONE)
 			{
-				if (get_bone_decision())
+				/* Tool mode with --birth: a dead character is replaced
+				 * by a new one of the same name */
+				if (no_prompt)
+				{
+					send_play(PLAY_RESTART);
+				}
+				else if (get_bone_decision())
 				{
 					/* Ask for similar one */
 					send_play(PLAY_REROLL);
@@ -1007,6 +1028,9 @@ void client_init(void)
 	/* Non-interactive login (--noprompt) */
 	clia_read_bool(&no_prompt, "noprompt");
 	if (no_prompt) read_noprompt_password();
+
+	/* Tool mode: character to create if it doesn't exist (--birth SPEC) */
+	clia_read_string(tool_birth_spec, sizeof(tool_birth_spec), "birth");
 
 	/* Get character name and pass */
 	get_char_name();

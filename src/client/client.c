@@ -136,6 +136,9 @@ static void show_help()
 	printf("      --noprompt            Log in without prompts (existing character only).\n");
 	printf("                            Put it before another --option, not before SERVER.\n");
 	printf("      --passfile PATH       Password for --noprompt (else MANG_PASS or config).\n");
+	printf("      --birth RACE:CLASS:SEX:STATS  With --noprompt: create the character if it\n");
+	printf("                            doesn't exist (or is dead), e.g.\n");
+	printf("                            Half-Orc:Warrior:m:DEX,STR,CON,WIS,CHR,INT\n");
 	printf("\nDisplay modules might support additional arguments.\n");
 #ifdef USE_SDL
 	{ extern const char help_sdl[];

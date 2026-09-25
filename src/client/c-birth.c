@@ -528,6 +528,87 @@ void get_char_name(void)
 }
 
 /*
+ * Tool mode -- the character to create, from --birth, as
+ * "RACE:CLASS:SEX:STAT,STAT,..." e.g. "Half-Orc:Warrior:m:DEX,STR,CON,WIS,CHR,INT".
+ * Names match the server's lists case-insensitively; stats not listed
+ * follow in their usual order. Empty means "never create a character".
+ */
+char tool_birth_spec[160] = "";
+
+static int tool_birth_find(cptr want, int max, cptr (*name_of)(int))
+{
+	int i;
+
+	for (i = 0; i < max; i++)
+	{
+		if (!my_stricmp(want, name_of(i))) return i;
+	}
+	return -1;
+}
+
+static cptr tool_race_name(int i) { return p_name + race_info[i].name; }
+static cptr tool_class_name(int i) { return c_name + c_info[i].name; }
+static cptr tool_stat_name(int i)
+{
+	/* The server sends e.g. "STR: "; match on the letters only */
+	static char buf[16];
+	int n = 0;
+	cptr s;
+
+	for (s = stat_names[i]; *s && n < (int)sizeof(buf) - 1; s++)
+	{
+		if (isalpha((unsigned char)*s)) buf[n++] = *s;
+	}
+	buf[n] = '\0';
+	return buf;
+}
+
+/*
+ * Fill race, pclass, sex and stat_order from tool_birth_spec (instead of
+ * get_char_info()'s menus). Needs the race/class/stat lists the server
+ * sends with its login reply. Returns NULL on success, else an error.
+ */
+cptr tool_birth_apply(void)
+{
+	char buf[160], *f[4], *s, *tok;
+	int i, n = 0, used[A_CAP];
+
+	my_strcpy(buf, tool_birth_spec, sizeof(buf));
+	for (s = buf; n < 4; n++)
+	{
+		f[n] = s;
+		if (n == 3) break;
+		if (!(s = strchr(s, ':'))) return "Birth spec: expected RACE:CLASS:SEX:STATS";
+		*s++ = '\0';
+	}
+
+	if ((race = tool_birth_find(f[0], z_info.p_max, tool_race_name)) < 0)
+		return format("Birth spec: no race '%s' on this server", f[0]);
+	if ((pclass = tool_birth_find(f[1], z_info.c_max, tool_class_name)) < 0)
+		return format("Birth spec: no class '%s' on this server", f[1]);
+	if (!my_stricmp(f[2], "m") || !my_stricmp(f[2], "male")) sex = TRUE;
+	else if (!my_stricmp(f[2], "f") || !my_stricmp(f[2], "female")) sex = FALSE;
+	else return format("Birth spec: sex must be m or f, not '%s'", f[2]);
+
+	/* Listed stats first, in the given order; the rest after them */
+	for (i = 0; i < A_MAX; i++) used[i] = 0;
+	n = 0;
+	for (tok = strtok(f[3], ","); tok; tok = strtok(NULL, ","))
+	{
+		i = tool_birth_find(tok, A_MAX, tool_stat_name);
+		if (i < 0) return format("Birth spec: no stat '%s'", tok);
+		if (used[i]) return format("Birth spec: stat '%s' listed twice", tok);
+		used[i] = 1;
+		stat_order[n++] = i;
+	}
+	for (i = 0; i < A_MAX; i++)
+	{
+		if (!used[i]) stat_order[n++] = i;
+	}
+	return NULL;
+}
+
+/*
  * Get the other info for this character.
  */
 void get_char_info(void)

@@ -44,6 +44,8 @@ extern event_type inkey_ex(void);
 extern char nick[MAX_CHARS];
 extern char pass[MAX_CHARS];
 extern bool no_prompt;
+extern char tool_birth_spec[160];
+extern cptr tool_birth_apply(void);
 
 extern char real_name[MAX_CHARS];
 
