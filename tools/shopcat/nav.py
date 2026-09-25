@@ -93,9 +93,9 @@ def direction(frm, to):
     return DIRS.get((to[0] - frm[0], to[1] - frm[1]))
 
 
-def _by_edge(tile):
+def _by_edge(tile, dist=1):
     y, x = tile
-    return y <= 1 or y >= MAX_HGT - 2 or x <= 1 or x >= MAX_WID - 2
+    return y <= dist or y >= MAX_HGT - 1 - dist or x <= dist or x >= MAX_WID - 1 - dist
 
 
 def _near_blocked(pos, dist):
@@ -113,7 +113,7 @@ def _send_hop(client, hop):
 
 def goto(client, goals, rows=None, step_timeout=3.0, max_replans=10, deadline=None):
     """Move the character to any tile in goals. Returns the tile reached or None."""
-    goals = set(goals)
+    goals = set(goals) - extra_blocked
     avoid = set()
     for _ in range(max_replans):
         if client.pos in goals:
@@ -128,8 +128,13 @@ def goto(client, goals, rows=None, step_timeout=3.0, max_replans=10, deadline=No
             # Near a no-go zone, walk our own path tile by tile: the server's
             # pathfinding doesn't know about it (and happily bumps an arena
             # wall it hasn't seen).
-            careful = extra_blocked and _near_blocked(client.pos, 25)
-            hop = path[0] if careful else path[min(HOP, len(path)) - 1]
+            # Same near the level border: the server's pathfinding treats the
+            # unseen row/column just past the edge as walkable, and stepping
+            # onto it moves us to the next level.
+            ahead = path[:HOP]
+            careful = (extra_blocked and _near_blocked(client.pos, 25)) or \
+                any(_by_edge(t, 2) for t in [client.pos, *ahead])
+            hop = path[0] if careful else ahead[-1]
             before = client.pos
             _send_hop(client, hop)
             arrived = _wait_arrival(client, hop, step_timeout)
