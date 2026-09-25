@@ -5,10 +5,16 @@ line on stdin (see src/client/c-tool.c for the full list).
 """
 import json
 import os
+import re
 import queue
 import subprocess
 import threading
 import time
+
+
+# "The Crow bites you." etc. -- something is attacking us
+RE_ATTACKED = re.compile(r" (hits|bites|claws|stings|touches|kicks|butts|crushes|engulfs|crawls on|spits on|"
+                         r"gazes at|wails at|punches|grabs) you")
 
 
 class ClientExited(RuntimeError):
@@ -33,6 +39,7 @@ class MangClient:
         self.door_glyph = "0"
         self.trail = []           # every position seen, in order
         self.in_arena = False     # stepped into a wilderness PvP "fighting pit"
+        self.hits = 0             # times something attacked us (see RE_ATTACKED)
         threading.Thread(target=self._reader, daemon=True).start()
 
     # --- plumbing -------------------------------------------------------
@@ -51,6 +58,8 @@ class MangClient:
                     self.in_arena = True
                 elif "You leave the arena" in ev["text"]:
                     self.in_arena = False
+                if RE_ATTACKED.search(ev["text"]):
+                    self.hits += 1
             if self.log:
                 self.log(ev)
             self.events.put(ev)

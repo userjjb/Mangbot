@@ -117,7 +117,10 @@ def goto(client, goals, rows=None, step_timeout=3.0, max_replans=10, deadline=No
         if not path:
             return None
         start = client.pos
+        hits = client.hits
         done = _walk_path(client, path, step_timeout, deadline)
+        if client.hits - hits >= 3:
+            return None           # under attack: let the caller fight/rest first
         if done < len(path):
             # Stuck or pushed off course. If we couldn't take the next step
             # at all, that tile is probably blocked; avoid it and replan.
@@ -134,6 +137,7 @@ def _walk_path(client, path, timeout, deadline=None, ahead=2):
     sent = done = 0
     here = client.pos
     seen = len(client.trail)
+    hits = client.hits
     last_move = time.time()
     while done < len(path):
         # Near the edge, one step at a time (a mis-step could leave the level)
@@ -143,6 +147,10 @@ def _walk_path(client, path, timeout, deadline=None, ahead=2):
             client.send(f"walk {direction(frm, path[sent])}")
             sent += 1
         evs = client.collect(0.05)
+        if client.hits - hits >= 3:
+            # Under attack: stop so the caller can deal with it
+            client.collect(0.3)
+            return done
         if any(e["ev"] == "message" and "blocking your way" in e["text"] for e in evs):
             # Walked into something we couldn't see (wall, tree, door)
             client.collect(0.3)

@@ -64,6 +64,7 @@ class Cataloger:
         self.refuel_below = 3000  # lantern turns; a flask adds 7500, the lantern holds 15000
         self.warned_oil = False
         self.warned_food = False
+        self.hits_seen = 0
         self.no_go = {}           # depth -> tiles to stay out of (arenas)
         self.nogo_file = nogo_file  # remembered across runs
         if nogo_file and os.path.exists(nogo_file):
@@ -94,8 +95,13 @@ class Cataloger:
         if time.time() >= self.next_light_check:
             self.light_up()
             self.next_light_check = time.time() + 20
+        if self.c.hits != self.hits_seen:
+            self.hits_seen = self.c.hits
+            self.fight()
+            st = self.c.status()
         hp, mhp = st["ind"].get("hp", [1, 1])[:2]
         if mhp and hp < self.rest_below * mhp:
+            self.fight()
             self.rest(hp, mhp)
         hunger = st["ind"].get("hunger", [3])[0]
         if hunger <= FOOD_HUNGRY:
@@ -249,6 +255,21 @@ class Cataloger:
         self.say(f"  restocked ({', '.join(bought) or 'nothing affordable'}): "
                  f"{food} rations, {oil} flasks, {gold} gold left")
 
+    def fight(self, rounds=12):
+        """Attack monsters next to us (walking into a monster attacks it).
+        Monsters are the letters on the map; other players are '@'."""
+        for _ in range(rounds):
+            rows = self.c.map()
+            here = self.c.pos
+            foes = [nb for nb in nav.neighbours(*here, len(rows), len(rows[0]))
+                    if rows[nb[0]][nb[1]].isalpha()]
+            if not foes:
+                return
+            self.c.send(f"walk {nav.direction(here, foes[0])}")
+            self.c.collect(0.6)
+            if self.c.pos != here:
+                return            # it moved away and we stepped into its place
+
     def rest(self, hp, mhp, max_secs=180):
         """Rest ('R' toggles resting) until HP is back to 90%; give up if it keeps falling."""
         self.say(f"  resting (hp {hp}/{mhp})")
@@ -279,6 +300,9 @@ class Cataloger:
         if not spots:
             return "unreachable", None
         at = nav.goto(self.c, spots)
+        if at is None and self.c.hits != self.hits_seen:
+            self.upkeep()                 # interrupted by an attack: deal with it, try again
+            at = nav.goto(self.c, spots)
         if at is None:
             return "unreachable", None
         self.c.collect(0.3)
