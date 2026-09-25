@@ -55,10 +55,14 @@ class ClientExited(RuntimeError):
 
 class MangClient:
     def __init__(self, binary, libdir, nick, passfile, host="localhost", port=18346,
-                 config=None, pktlog=None, cwd=None, log=None):
+                 config=None, pktlog=None, cwd=None, log=None, birth=None):
         args = [binary, "-mtool", "--libdir", libdir]
         if config:
             args += ["--config", config]
+        if birth:
+            # Create the character if it doesn't exist (or is dead), e.g.
+            # "Half-Orc:Warrior:m:DEX,STR,CON,WIS,CHR,INT"
+            args += ["--birth", birth]
         if pktlog:
             args += ["--pktlog", pktlog]
         # --noprompt is implied by -mtool; SERVER PORT must come last.

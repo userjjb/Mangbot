@@ -46,7 +46,8 @@ file make a stopped tour easy to restart.
 
 ### The character
 
-- Must already exist (create it once with the normal client), be dedicated to
+- Must already exist (create it once with the normal client, or with
+  `newchar.py`, below), be dedicated to
   the tool (a login elsewhere with the same name kicks the other session) and
   own no houses (opening your own house doesn't show a store).
 - **Not a Half-Troll** or anything else with REGEN: regeneration costs food in
@@ -57,6 +58,32 @@ file make a stopped tour easy to restart.
   buys them itself at the General Store before leaving town.
 - Each concurrently running client needs its own `--config` file (the client
   rewrites it on exit).
+
+### Throwaway characters (`newchar.py`)
+
+For dungeon work, where characters die, `newchar.py` makes one without the
+interactive birth screens:
+
+```sh
+python3 newchar.py --nick Dive03 --host localhost --port 28346 \
+    [--birth Half-Orc:Warrior:m:DEX,STR,CON,WIS,CHR,INT] [--privdir DIR]
+```
+
+- Writes `DIR/<nick>.pass` (a random password) and `DIR/<nick>.mangrc`, mode
+  600, unless they exist (default `DIR`: `../../../runs/private`).
+- Logs in with the client's `--birth RACE:CLASS:SEX:STATS` (tool mode only):
+  if the character doesn't exist the client creates it from the spec instead
+  of showing the birth menus. Names are the server's, case-insensitive; the
+  stat list is the priority order (the best roll goes to the first stat,
+  before race/class bonuses); unlisted stats follow. **A dead character is
+  replaced by a new one of the same name**, so only use `--birth` for throwaways.
+- Wields the starting weapon and light, wears the armour, and prints race,
+  class, stats, HP, blows (`skills2[0]` in `status`) and equipment.
+- The default build is a Half-Orc Warrior with DEX > STR > CON > WIS > CHR >
+  INT. It starts with a Broad Sword (2 blows); a lighter weapon bought in town
+  gives more.
+- The tool-mode command `suicide NICK` (NICK must be the logged-in character)
+  kills a throwaway for good, e.g. to reroll it.
 
 ## How it works
 
