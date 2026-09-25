@@ -31,6 +31,8 @@
  *   leave                                   -- leave the store
  *   eat ITEM                                -- ITEM = inventory index (a=0)
  *   custom KEY [store] [item=N] [dir=N] [value=N] [entry=TEXT]
+ *   suicide NICK                            -- kill this character for good
+ *                                             (NICK must match; for throwaways)
  *   commands | status | inven | map         -- queries
  *   quit                                    -- leave the game and exit
  */
@@ -551,6 +553,19 @@ static void tool_do_command(char *line)
 			else { tool_error(line, format("bad argument '%s'", tok)); return; }
 		}
 		tool_send_custom(line, key, store_cmd, item, dir, (s32b)value, entry);
+	}
+	else if (streq(verb, "suicide"))
+	{
+		/* Irreversible: insist on the character's name, like get_check() */
+		char who[MAX_CHARS] = { 0 };
+
+		if (sscanf(line, "%*s %79s", who) < 1 || my_stricmp(who, nick))
+		{
+			tool_error(line, "usage: suicide NICK (the logged-in character's name)");
+			return;
+		}
+		send_suicide();
+		tool_ack(line);
 	}
 	else if (streq(verb, "commands")) tool_query_commands();
 	else if (streq(verb, "status")) tool_query_status();
