@@ -540,7 +540,24 @@ static cptr inkey_next = NULL;
  * be stripped, and then the "ascii 28" symbols will be stripped as well, leaving
  * the "default action" keys in the "key queue".  Again, this may not work.
  */
+static event_type inkey_ex_aux(void);
+
+/*
+ * Get a keypress (see inkey_ex_aux()). With --pktlog, every key the
+ * client's commands and prompts consume is logged, so a human's play can
+ * be studied next to the packets it produced.
+ */
 event_type inkey_ex(void)
+{
+	/* Keys still pending from a keymap expansion */
+	bool from_keymap = (inkey_next && *inkey_next && !inkey_xtra);
+	event_type ke = inkey_ex_aux();
+
+	if (ke.key && pktlog_enabled()) pktlog_key(ke.key, from_keymap);
+	return (ke);
+}
+
+static event_type inkey_ex_aux(void)
 {
 	bool cursor_state;
 	event_type kk;
@@ -1080,7 +1097,23 @@ void prt(cptr str, int row, int col)
  */
 
 /* APD -- added private so passwords will not be displayed. */
+static bool askfor_aux_body(char *buf, int len, char m_private);
+
+/*
+ * Get some input (see askfor_aux_body()). Private input (passwords) is
+ * kept out of the --pktlog key log.
+ */
 bool askfor_aux(char *buf, int len, char m_private)
+{
+	bool res;
+
+	if (m_private) pktlog_mute_keys(TRUE);
+	res = askfor_aux_body(buf, len, m_private);
+	if (m_private) pktlog_mute_keys(FALSE);
+	return (res);
+}
+
+static bool askfor_aux_body(char *buf, int len, char m_private)
 {
 	int y, x;
 

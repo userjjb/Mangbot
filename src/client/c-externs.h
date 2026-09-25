@@ -455,6 +455,8 @@ extern bool clia_read_bool(bool *dst, const char *key);
 extern bool pktlog_enabled(void);
 extern void pktlog_init(void);
 extern void pktlog_note(cptr msg);
+extern void pktlog_key(char key, bool keymap);
+extern void pktlog_mute_keys(bool mute);
 extern void pktlog_recv(byte id, cptr name, const char *buf, int len, int res);
 extern void pktlog_send(const char *buf, int len);
 extern int pktlog_send_cb(int data1, void *data2);

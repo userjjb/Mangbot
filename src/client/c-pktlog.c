@@ -10,7 +10,10 @@
  *
  * dir is "R" (server->client, one record per parsed packet), "S"
  * (client->server, one record per flushed chunk; keepalives are split out),
- * or "E" (event/note). "len" counts the packet id byte.
+ * "E" (event/note), or "K" (a key consumed by a command or prompt:
+ * {"key","code","keymap","icky"}; icky = a menu/popup screen was up).
+ * "len" counts the packet id byte. Password hashes in sent packets are
+ * blanked to X, and private (password) input is never key-logged.
  */
 
 #include "c-angband.h"
@@ -19,6 +22,9 @@
 #include "../common/net-imps.h"
 
 static FILE *pktlog_fp = NULL;
+
+/* While > 0 keys aren't logged (password prompts) */
+static int pktlog_muted = 0;
 static struct timeval pktlog_t0;
 
 /* Names of client->server packets (from the server's table) */
@@ -57,7 +63,9 @@ void pktlog_init(void)
 	send_names[PKT_LOGIN] = "PKT_LOGIN";
 
 	gettimeofday(&pktlog_t0, NULL);
-	pktlog_note("pktlog started");
+	/* Wall clock of t=0, to line the log up with other recordings */
+	pktlog_note(format("pktlog started epoch=%ld.%06ld",
+	                   (long)pktlog_t0.tv_sec, (long)pktlog_t0.tv_usec));
 }
 
 static double pktlog_elapsed(void)
@@ -111,6 +119,36 @@ void pktlog_note(cptr msg)
 	pktlog_json_str(msg);
 	fprintf(pktlog_fp, "}\n");
 	fflush(pktlog_fp);
+}
+
+/* A key consumed by a command or prompt (dir "K"); keymap = it came from
+ * a keymap's action string rather than straight from the keyboard/macro */
+void pktlog_key(char key, bool keymap)
+{
+	char buf[2];
+
+	if (!pktlog_fp) return;
+	if (pktlog_muted)
+	{
+		/* Keep the timing, never the key (e.g. a password) */
+		fprintf(pktlog_fp, "{\"t\":%.3f,\"dir\":\"K\",\"muted\":true}\n", pktlog_elapsed());
+		fflush(pktlog_fp);
+		return;
+	}
+	buf[0] = key;
+	buf[1] = '\0';
+	fprintf(pktlog_fp, "{\"t\":%.3f,\"dir\":\"K\",\"key\":", pktlog_elapsed());
+	pktlog_json_str(buf);
+	fprintf(pktlog_fp, ",\"code\":%d,\"keymap\":%s,\"icky\":%d}\n",
+	        (byte)key, keymap ? "true" : "false", screen_icky ? 1 : 0);
+	fflush(pktlog_fp);
+}
+
+/* Stop/resume logging keys, around password prompts (calls nest) */
+void pktlog_mute_keys(bool mute)
+{
+	pktlog_muted += (mute ? 1 : -1);
+	if (pktlog_muted < 0) pktlog_muted = 0;
 }
 
 /* One parsed server->client packet; name is resolved by net-client.c */
@@ -171,7 +209,23 @@ void pktlog_send(const char *buf, int len)
 		len -= 5;
 	}
 	if (len <= 0) return;
-	pktlog_record("S", (byte)buf[0], pktlog_send_name(buf, len, tmp, sizeof(tmp)), buf, len, 1);
+	{
+		/* Never log password hashes ("$1$" + 32 hex, as sent by login and
+		 * password change): on the wire they work like the password */
+		char *copy = malloc(len);
+		int i, j;
+
+		if (!copy) return;
+		memcpy(copy, buf, len);
+		for (i = 0; i + 3 <= len; i++)
+		{
+			if (memcmp(copy + i, "$1$", 3)) continue;
+			for (j = i + 3; j < len && j < i + 3 + 32 && isxdigit((unsigned char)copy[j]); j++)
+				copy[j] = 'X';
+		}
+		pktlog_record("S", (byte)copy[0], pktlog_send_name(copy, len, tmp, sizeof(tmp)), copy, len, 1);
+		free(copy);
+	}
 }
 
 /* Connection wrapper: copy pending output to the socket buffer, logging it */
