@@ -23,3 +23,4 @@ stamp-h1
 src/server/mangband
 src/client/mangclient
 .dirstamp
+__pycache__/
