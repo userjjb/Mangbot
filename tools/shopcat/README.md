@@ -122,5 +122,15 @@ item.
   door is currently open is only found if it was seen closed.
 - Only grids the character has seen are on the map; in the town by day that's
   nearly everything.
+- **Server bug (MAngband 1.5.3): more than 10 wilderness arenas crash the
+  server.** `wild_add_dwelling()` (server/wilderness.c:1171) stores each
+  arena ("ancient fighting pit") in `arenas[num_arenas]` with no bounds
+  check; `MAX_ARENAS` is 10 and `num_arenas` only grows. Generating the 11th
+  arena overwrites neighbouring globals (`k_name`), and the server segfaults
+  shortly after (in `object_desc()`). On the test server the levels around
+  town hold 10 arenas; generating 2E adds the 11th. Nothing a client can do
+  about it; the operator would need to raise `MAX_ARENAS` / add the check.
+- Travel is step-by-step walking (~0.5 s per tile); the server's faster
+  pathfind is avoided because it can route off the level edge.
 - Check the server operator's policy on automated clients before using this
   anywhere but a private server.
