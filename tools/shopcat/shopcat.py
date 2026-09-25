@@ -15,7 +15,7 @@ import sys
 import time
 from collections import deque
 
-from mang import MangClient, ClientExited
+from mang import MangClient, ClientExited, meta_servers
 import nav
 import wild
 
@@ -528,8 +528,10 @@ def main():
     here = os.path.dirname(os.path.abspath(__file__))
     repo = os.path.abspath(os.path.join(here, "..", ".."))
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[1])
-    ap.add_argument("--nick", required=True)
-    ap.add_argument("--passfile", required=True, help="file whose first line is the password")
+    ap.add_argument("--list-servers", action="store_true",
+                    help="show the metaserver's server list (as the normal client does) and exit")
+    ap.add_argument("--nick")
+    ap.add_argument("--passfile", help="file whose first line is the password")
     ap.add_argument("--host", default="localhost")
     ap.add_argument("--port", type=int, default=18346)
     ap.add_argument("--client", default=os.path.join(repo, "mangclient"))
@@ -553,6 +555,14 @@ def main():
     ap.add_argument("--pktlog")
     ap.add_argument("--events", help="append every client event to this file (debug)")
     args = ap.parse_args()
+
+    if args.list_servers:
+        for s in meta_servers():
+            ok = "  <- compatible" if s["version"] == "1.5.3" else ""
+            print(f"--host {s['host']:32s} --port {s['port']}   {s['line']}{ok}")
+        return
+    if not args.nick or not args.passfile:
+        ap.error("--nick and --passfile are required")
 
     done = set()
     if args.resume and os.path.exists(args.out):

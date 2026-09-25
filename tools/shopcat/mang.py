@@ -17,6 +17,38 @@ RE_ATTACKED = re.compile(r" (hits|bites|claws|stings|touches|kicks|butts|crushes
                          r"gazes at|wails at|punches|grabs) you")
 
 
+def meta_servers(host="mangband.org", port=8802, timeout=15):
+    """The server list the normal client shows when started without a host.
+
+    The metaserver sends NUL-separated entries: a server line ("HOST Number of
+    players: N ... Version: X.Y.Z ..."), then "%PORT" for it; lines starting
+    with a space are headings. Returns dicts: host, port, version, line."""
+    import socket
+    with socket.create_connection((host, port), timeout=timeout) as s:
+        buf = b""
+        while True:
+            try:
+                d = s.recv(8192)
+            except socket.timeout:
+                break
+            if not d:
+                break
+            buf += d
+    servers, last = [], None
+    for raw in buf.split(b"\0"):
+        e = raw.decode("latin1").strip("\n")
+        if not e.strip():
+            continue
+        if e.startswith("%") and last is not None:
+            last["port"] = int(e[1:])
+        elif not e.startswith(" "):
+            m = re.search(r"Version: (\S+)", e)
+            last = {"host": e.split()[0], "port": None, "version": m.group(1) if m else None,
+                    "line": e.strip()}
+            servers.append(last)
+    return servers
+
+
 class ClientExited(RuntimeError):
     pass
 

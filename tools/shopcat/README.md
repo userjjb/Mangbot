@@ -27,6 +27,7 @@ python3 report.py ~/mang-runs/catalog.jsonl -o stock.csv
 
 | Option | Meaning |
 |---|---|
+| `--list-servers` | Print the metaserver's server list with `--host`/`--port` for each (the list the normal client shows); the client speaks 1.5.3 only |
 | `--wilderness` | Also cover 1N 2N 1E 2E 1S 2S 1W 2W and the four diagonals (1N 1E, …), then walk back to town (`--no-return` to stay put) |
 | `--explore-secs N` | Time to spend uncovering each wilderness level's map (default 480) |
 | `--resume` | With `--wilderness`: skip levels that have a `level_done` record in `--out` |
