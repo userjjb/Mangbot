@@ -35,6 +35,9 @@ Give each concurrently running client its own `--config` file: the client
 rewrites its config file on exit.
 
 The character must already exist (create it once with the normal client) and
+should not be a Half-Troll (or anything with REGEN): regeneration costs food
+in the wilderness -- a Ration of Food every ~100 s -- while other characters
+at normal speed use almost none (and nobody digests in town). It
 should be dedicated to the tool: logging in elsewhere with the same name kicks
 the other session. It should own no houses (opening your own house doesn't
 show a store).

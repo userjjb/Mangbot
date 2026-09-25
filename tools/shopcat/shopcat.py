@@ -63,6 +63,7 @@ class Cataloger:
         self.next_light_check = 0.0
         self.refuel_below = 3000  # lantern turns; a flask adds 7500, the lantern holds 15000
         self.warned_oil = False
+        self.warned_food = False
 
     def say(self, *a):
         if self.verbose:
@@ -94,8 +95,12 @@ class Cataloger:
                 self.say(f"  eating {food[0]['name']} (hunger={hunger})")
                 self.c.send(f"eat {food[0]['item']}")
                 self.c.collect(1.0)
-            else:
+            elif hunger <= 1 and self.depth != 0:
+                # Weak and nothing to eat; nobody digests in town, so stop out here
+                raise Danger(f"weak from hunger (hunger={hunger}) and no food")
+            elif not self.warned_food:
                 self.say(f"  WARNING: hungry (hunger={hunger}) and no food")
+                self.warned_food = True
         return st
 
     def light_up(self):
@@ -340,6 +345,8 @@ class Cataloger:
             self.say(f"  WARNING: arrived in {wild.world_name(self.world)}, expected {wild.world_name(sq)}")
 
     def go_to(self, sq, via):
+        if self.world is None:
+            self.upkeep()
         while self.world != sq:
             try:
                 self.cross_to(wild.plan_tour(self.world, [sq], via=[*via, self.world])[1])
