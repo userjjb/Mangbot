@@ -35,6 +35,8 @@ def light_turns(name):
 # Worth another try later: someone inside, owner threw us out, owner left the
 # door open, or no answer at all
 RETRYABLE = ("locked", "ejected", "no_door", "none")
+# Visits that say nothing new about a door (report.py keeps the earlier record)
+INCOMPLETE = RETRYABLE + ("unreachable",)
 
 RE_COSTS = re.compile(r"This house costs (\d+) gold")
 RE_ASK = re.compile(r"\bfor sale\s+(\d+)")
@@ -42,7 +44,7 @@ RE_INSCR = re.compile(r"\s*\{[^}]*\}\s*$")
 
 
 class Danger(RuntimeError):
-    """HP is low and not recovering -- stop before the character dies."""
+    """Stop for the character's safety (HP falling, starving, stuck, dead)."""
 
 
 def now():
@@ -65,6 +67,7 @@ class Cataloger:
         self.warned_oil = False
         self.warned_food = False
         self.hits_seen = 0
+        self.broke_at = None      # gold we had when the last restock could afford no food
         self.no_go = {}           # depth -> tiles to stay out of (arenas)
         self.nogo_file = nogo_file  # remembered across runs
         if nogo_file and os.path.exists(nogo_file):
@@ -86,12 +89,14 @@ class Cataloger:
         st = self.c.status()
         self.depth = st["ind"].get("depth", [None])[0]
         self.world = wild.world_coords(self.depth) if self.depth is not None else None
+        if self.depth is not None and self.depth > 0:
+            raise Danger(f"left the surface (dungeon level {self.depth}, trapdoor?)")
         nav.extra_blocked = self.no_go.setdefault(self.depth, set())
         if self.c.in_arena:
             self.escape_arena()
             st = self.c.status()
         if st.get("ghost"):
-            raise RuntimeError("character is dead (ghost) -- stopping")
+            raise Danger("character is dead (ghost)")
         if time.time() >= self.next_light_check:
             self.light_up()
             self.next_light_check = time.time() + 20
@@ -218,6 +223,8 @@ class Cataloger:
         food, oil, gold = self.supplies()
         if food >= want_food and oil >= want_oil:
             return
+        if self.broke_at is not None and gold <= self.broke_at:
+            return                # couldn't afford anything with this much last time
         rows = self.c.map()
         shop = [(y, x) for y, r in enumerate(rows) for x, ch in enumerate(r) if ch == "1"]
         if not shop or gold <= 0:
@@ -244,14 +251,19 @@ class Cataloger:
             if n <= 0:
                 continue
             self.c.send(f"custom p store item={item['slot']} value={n} entry={item['price'] * n}")
-            self.c.collect(1.5)
-            gold -= n * item["price"]
-            bought.append(f"{n} x {key}")
-            ev, _ = self.c.wait(lambda e: e["ev"] == "store", 1)
-            store = ev or store
+            # The server answers with messages and a refreshed listing (slots
+            # shift when a stack sells out); use that for the next purchase
+            ev, seen = self.c.wait(lambda e: e["ev"] == "store", 3)
+            if any(e["ev"] == "message" and e["text"].startswith("You bought") for e in seen):
+                gold -= n * item["price"]
+                bought.append(f"{n} x {key}")
+            if ev is None:
+                break             # no fresh listing: don't buy from a stale one
+            store = ev
         self.c.send("leave")
         self.c.collect(0.5)
         food, oil, gold = self.supplies()
+        self.broke_at = None if any("Ration" in b for b in bought) else gold
         self.say(f"  restocked ({', '.join(bought) or 'nothing affordable'}): "
                  f"{food} rations, {oil} flasks, {gold} gold left")
 
@@ -274,21 +286,19 @@ class Cataloger:
         """Rest ('R' toggles resting) until HP is back to 90%; give up if it keeps falling."""
         self.say(f"  resting (hp {hp}/{mhp})")
         start_hp, end = hp, time.time() + max_secs
-        last_up, best = time.time(), hp
-        self.c.send("custom R")
         while time.time() < end:
-            self.c.collect(2.0)
-            hp = self.c.status()["ind"]["hp"][0]
+            st = self.c.status()
+            hp = st["ind"]["hp"][0]
             if hp >= 0.9 * mhp:
                 return
-            if hp > best:
-                best, last_up = hp, time.time()
             if hp < 0.3 * mhp and hp < start_hp:
                 raise Danger(f"hp {hp}/{mhp} and falling -- something is attacking")
-            if time.time() - last_up > 8:
-                # Resting was interrupted (or never started): toggle it on again
+            # 'R' toggles resting, so send it only when we aren't resting
+            # (state indicator = [paralyzed, searching, resting])
+            if not st["ind"].get("state", [0, 0, 0])[2]:
+                self.fight()
                 self.c.send("custom R")
-                last_up = time.time()
+            self.c.collect(2.0)
         self.say(f"  still at hp {hp}/{mhp} after resting {max_secs}s")
 
     # --- one door -------------------------------------------------------
@@ -404,6 +414,7 @@ class Cataloger:
                 self.say(f"  waiting {wake - time.time():.0f}s before retrying")
                 while time.time() < wake:
                     self.c.collect(min(5.0, max(0.1, wake - time.time())))
+                    self.upkeep()         # fight/rest/eat while we wait
                 continue
             item = due[0]
             queue.remove(item)
@@ -454,10 +465,13 @@ class Cataloger:
             try:
                 if here == (0, 0):
                     self.restock()
-                elif self.supplies()[0] <= 1 and self.supplies()[2] > 0:
-                    self.say("  running out of food -- back to town to restock")
-                    self.go_to((0, 0), [*targets, here])
-                    continue
+                else:
+                    food, _, gold = self.supplies()
+                    # Head home only if a restock could buy something
+                    if food <= 1 and gold > 0 and (self.broke_at is None or gold > self.broke_at):
+                        self.say("  running out of food -- back to town to restock")
+                        self.go_to((0, 0), [*targets, here])
+                        continue
                 if here in remaining:
                     self.say(f"== {wild.world_name(here)}")
                     if here != (0, 0):

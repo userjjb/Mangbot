@@ -13,8 +13,7 @@ import time
 from collections import deque
 
 import nav
-
-MAX_HGT, MAX_WID = 66, 198
+from nav import MAX_HGT, MAX_WID
 
 # keypad direction and world step for each way out of a level
 EXITS = {"N": (8, (0, 1)), "S": (2, (0, -1)), "E": (6, (1, 0)), "W": (4, (-1, 0))}
@@ -38,7 +37,8 @@ _COORDS = {world_index(x, y): (x, y) for x in range(-30, 31) for y in range(-30,
 
 
 def world_coords(depth):
-    return _COORDS[depth]
+    """World square of a surface level, or None for a dungeon level (depth > 0)."""
+    return _COORDS.get(depth) if depth <= 0 else None
 
 
 def world_name(xy):
@@ -170,9 +170,15 @@ def explore(client, budget, say=print, check=None, near=8):
             # Waypoint is a wall/tree etc.: any walkable tile close to it will do
             goals = [(y, x) for y in range(pt[0] - 3, pt[0] + 4) for x in range(pt[1] - 3, pt[1] + 4)
                      if nav.inside(y, x) and nav.passable(rows[y][x])]
+            if not goals:
+                skipped += 1      # nowhere to stand here (e.g. a block of trees)
+                continue
+        hits = client.hits
         got = nav.goto(client, goals, rows=rows, deadline=min(end, time.time() + 40))
         legs += 1
         failed += got is None
+        if got is None and client.hits - hits >= 3:
+            continue              # cut short by an attack, not a sign of being shut in
         streak = streak + 1 if got is None else 0
         if streak >= 6:
             raise Boxed(f"{streak} waypoints in a row not reached from {client.pos}")

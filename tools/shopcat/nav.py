@@ -98,6 +98,14 @@ def _by_edge(tile, dist=1):
     return y <= dist or y >= MAX_HGT - 1 - dist or x <= dist or x >= MAX_WID - 1 - dist
 
 
+def _near_no_go(tile, dist=2):
+    if not extra_blocked:
+        return False
+    y, x = tile
+    return any((y + dy, x + dx) in extra_blocked
+               for dy in range(-dist, dist + 1) for dx in range(-dist, dist + 1))
+
+
 def goto(client, goals, rows=None, step_timeout=3.0, max_replans=10, deadline=None):
     """Move the character to any tile in goals. Returns the tile reached or None.
 
@@ -141,8 +149,10 @@ def _walk_path(client, path, timeout, deadline=None, ahead=2):
     hits = client.hits
     last_move = time.time()
     while done < len(path):
-        # Near the edge, one step at a time (a mis-step could leave the level)
-        limit = 1 if _by_edge(path[done], 2) else ahead
+        # One step at a time near the level edge or a no-go zone: if a queued
+        # step is refused, the next one would be taken from the wrong tile and
+        # could leave the level or bump an arena wall
+        limit = 1 if (_by_edge(path[done], 2) or _near_no_go(path[done])) else ahead
         while sent < len(path) and sent - done < limit:
             frm = path[sent - 1] if sent else here
             client.send(f"walk {direction(frm, path[sent])}")

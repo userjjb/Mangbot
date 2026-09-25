@@ -145,5 +145,9 @@ item.
   only grows. Generating the 11th arena overwrites neighbouring globals
   (`k_name`) and the server segfaults shortly after (in `object_desc()`). On
   the test server this happens on entering 2E. Only the operator can fix it.
+- The tool-mode client code (`c-tool.c`, `c-pktlog.c`, `main-tool.c`) is only
+  wired into the autotools build (`src/client/Makefile.am`) and uses POSIX
+  stdin handling; the Visual Studio/Xcode/Android/Borland project files would
+  need those sources (and, on Windows, a different stdin reader) to link.
 - Check the server operator's policy on automated clients before using this
   anywhere but a private server.

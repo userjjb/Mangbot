@@ -9,6 +9,8 @@ import csv
 import json
 import sys
 
+from shopcat import INCOMPLETE
+
 FIELDS = ["time", "depth", "level", "door_y", "door_x", "store_name", "owner", "slot", "name", "full_name",
           "count", "price_each", "ask_price", "weight_each", "gc", "ga", "attr", "examine_text"]
 
@@ -28,7 +30,7 @@ def main():
                     continue          # e.g. level_done markers
                 key = (rec["depth"], rec["door_y"], rec["door_x"])
                 # An incomplete shop visit doesn't replace an earlier complete one
-                if rec["result"] in ("ejected", "locked", "no_door", "none", "unreachable") and key in latest:
+                if rec["result"] in INCOMPLETE and key in latest:
                     continue
                 latest[key] = rec
 

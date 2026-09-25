@@ -40,7 +40,10 @@ class MangClient:
         self.trail = []           # every position seen, in order
         self.in_arena = False     # stepped into a wilderness PvP "fighting pit"
         self.hits = 0             # times something attacked us (see RE_ATTACKED)
+        self.stderr_tail = []     # last lines the client wrote to stderr
         threading.Thread(target=self._reader, daemon=True).start()
+        # Drain stderr continuously: a full pipe would block the client
+        threading.Thread(target=self._stderr_reader, daemon=True).start()
 
     # --- plumbing -------------------------------------------------------
 
@@ -65,10 +68,15 @@ class MangClient:
             self.events.put(ev)
         self.events.put(None)
 
+    def _stderr_reader(self):
+        for line in self.proc.stderr:
+            self.stderr_tail = (self.stderr_tail + [line.rstrip()])[-20:]
+
     def _get(self, timeout):
         ev = self.events.get(timeout=timeout)
         if ev is None:
-            err = self.proc.stderr.read().strip()
+            self.proc.wait(5)
+            err = "\n".join(self.stderr_tail).strip()
             raise ClientExited(err or f"client exited with {self.proc.poll()}")
         return ev
 
@@ -101,7 +109,9 @@ class MangClient:
 
     def query(self, cmd, reply, timeout=10):
         self.send(cmd)
-        ev, _ = self.wait(lambda e: e["ev"] in (reply, "error"), timeout)
+        # Only an error about *this* command counts (a late error from an
+        # earlier command must not fail an unrelated query)
+        ev, _ = self.wait(lambda e: e["ev"] == reply or (e["ev"] == "error" and e.get("cmd") == cmd), timeout)
         if ev is None or ev["ev"] == "error":
             raise RuntimeError(f"{cmd}: {ev and ev.get('text') or 'timeout'}")
         return ev
