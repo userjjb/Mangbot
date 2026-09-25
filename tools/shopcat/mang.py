@@ -31,6 +31,7 @@ class MangClient:
         self.log = log            # optional callable(ev) for every event
         self.pos = None           # (y, x), absolute
         self.door_glyph = "0"
+        self.trail = []           # every position seen, in order
         threading.Thread(target=self._reader, daemon=True).start()
 
     # --- plumbing -------------------------------------------------------
@@ -43,6 +44,7 @@ class MangClient:
                 continue
             if ev.get("ev") == "pos":
                 self.pos = (ev["y"], ev["x"])
+                self.trail.append(self.pos)
             if self.log:
                 self.log(ev)
             self.events.put(ev)

@@ -9,7 +9,7 @@ import csv
 import json
 import sys
 
-FIELDS = ["time", "depth", "door_y", "door_x", "store_name", "owner", "slot", "name", "full_name",
+FIELDS = ["time", "depth", "level", "door_y", "door_x", "store_name", "owner", "slot", "name", "full_name",
           "count", "price_each", "ask_price", "weight_each", "gc", "ga", "attr", "examine_text"]
 
 

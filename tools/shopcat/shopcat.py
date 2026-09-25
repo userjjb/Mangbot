@@ -17,10 +17,20 @@ from collections import deque
 
 from mang import MangClient, ClientExited
 import nav
+import wild
 
 STORE_PC = 2
 FOOD_HUNGRY = 2       # hunger indicator: 0-1 weak, 2 hungry, 3 normal, 4 full, 5 gorged
 TV_FOOD = 80
+TV_LITE = 39
+TV_FLASK = 77
+
+RE_TURNS = re.compile(r"with (\d+) turns of light")
+
+
+def light_turns(name):
+    m = RE_TURNS.search(name)
+    return int(m.group(1)) if m else None
 
 # Worth another try later: someone inside, owner threw us out, owner left the
 # door open, or no answer at all
@@ -29,6 +39,10 @@ RETRYABLE = ("locked", "ejected", "no_door", "none")
 RE_COSTS = re.compile(r"This house costs (\d+) gold")
 RE_ASK = re.compile(r"\bfor sale\s+(\d+)")
 RE_INSCR = re.compile(r"\s*\{[^}]*\}\s*$")
+
+
+class Danger(RuntimeError):
+    """HP is low and not recovering -- stop before the character dies."""
 
 
 def now():
@@ -44,6 +58,11 @@ class Cataloger:
         self.retry_delay = retry_delay
         self.verbose = verbose
         self.depth = None
+        self.world = None
+        self.rest_below = 0.5     # rest when HP falls below this fraction
+        self.next_light_check = 0.0
+        self.refuel_below = 3000  # lantern turns; a flask adds 7500, the lantern holds 15000
+        self.warned_oil = False
 
     def say(self, *a):
         if self.verbose:
@@ -56,11 +75,18 @@ class Cataloger:
     # --- upkeep ---------------------------------------------------------
 
     def upkeep(self):
-        """Eat if hungry; stop if dead. Returns status."""
+        """Eat if hungry; rest if hurt; stop if dead. Returns status."""
         st = self.c.status()
         self.depth = st["ind"].get("depth", [None])[0]
+        self.world = wild.world_coords(self.depth) if self.depth is not None else None
         if st.get("ghost"):
             raise RuntimeError("character is dead (ghost) -- stopping")
+        if time.time() >= self.next_light_check:
+            self.light_up()
+            self.next_light_check = time.time() + 20
+        hp, mhp = st["ind"].get("hp", [1, 1])[:2]
+        if mhp and hp < self.rest_below * mhp:
+            self.rest(hp, mhp)
         hunger = st["ind"].get("hunger", [3])[0]
         if hunger <= FOOD_HUNGRY:
             food = [it for it in self.c.inven() if it["tval"] == TV_FOOD and not it["equip"]]
@@ -71,6 +97,60 @@ class Cataloger:
             else:
                 self.say(f"  WARNING: hungry (hunger={hunger}) and no food")
         return st
+
+    def light_up(self):
+        """Keep a light burning: wield a lantern if we have one (else a torch),
+        and refill the lantern from a flask of oil when it runs low."""
+        inv = self.c.inven()
+        if not inv:
+            return
+        worn = [it for it in inv if it["equip"] and it["tval"] == TV_LITE]
+        pack_lanterns = [it for it in inv if not it["equip"] and it["tval"] == TV_LITE and "Lantern" in it["name"]]
+        pack_torches = [it for it in inv if not it["equip"] and it["tval"] == TV_LITE and "Torch" in it["name"]]
+        flasks = [it for it in inv if not it["equip"] and it["tval"] == TV_FLASK]
+
+        if not worn or ("Lantern" not in worn[0]["name"] and pack_lanterns):
+            pick = (pack_lanterns or pack_torches)
+            if pick:
+                self.say(f"  wielding {pick[0]['name']}")
+                self.c.send(f"custom w item={pick[0]['item']}")
+                self.c.collect(1.0)
+            return
+
+        turns = light_turns(worn[0]["name"])
+        if "Lantern" in worn[0]["name"] and turns is not None and turns < self.refuel_below:
+            if flasks:
+                self.say(f"  refilling lantern ({turns} turns left, {flasks[0]['number']} flasks)")
+                self.c.send(f"custom F item={flasks[0]['item']}")
+                self.c.collect(1.0)
+            elif not self.warned_oil:
+                self.say(f"  WARNING: lantern at {turns} turns and no oil left")
+                self.warned_oil = True
+        elif "Torch" in worn[0]["name"] and turns is not None and turns < 500 and pack_torches:
+            self.say(f"  swapping in a fresh torch ({turns} turns left)")
+            self.c.send(f"custom w item={pack_torches[0]['item']}")
+            self.c.collect(1.0)
+
+    def rest(self, hp, mhp, max_secs=180):
+        """Rest ('R' toggles resting) until HP is back to 90%; give up if it keeps falling."""
+        self.say(f"  resting (hp {hp}/{mhp})")
+        start_hp, end = hp, time.time() + max_secs
+        last_up, best = time.time(), hp
+        self.c.send("custom R")
+        while time.time() < end:
+            self.c.collect(2.0)
+            hp = self.c.status()["ind"]["hp"][0]
+            if hp >= 0.9 * mhp:
+                return
+            if hp > best:
+                best, last_up = hp, time.time()
+            if hp < 0.3 * mhp and hp < start_hp:
+                raise Danger(f"hp {hp}/{mhp} and falling -- something is attacking")
+            if time.time() - last_up > 8:
+                # Resting was interrupted (or never started): toggle it on again
+                self.c.send("custom R")
+                last_up = time.time()
+        self.say(f"  still at hp {hp}/{mhp} after resting {max_secs}s")
 
     # --- one door -------------------------------------------------------
 
@@ -131,7 +211,9 @@ class Cataloger:
 
     def visit(self, door, rows):
         kind, detail = self.open_door(door, rows)
-        rec = {"time": now(), "depth": self.depth, "door_y": door[0], "door_x": door[1], "result": kind}
+        rec = {"time": now(), "depth": self.depth, "world": list(self.world) if self.world else None,
+               "level": wild.world_name(self.world) if self.world else None,
+               "door_y": door[0], "door_x": door[1], "result": kind}
         if kind == "shop":
             items, complete = self.read_shop(detail)
             rec.update(store_name=detail["name"], owner=detail["owner"], flag=detail["flag"],
@@ -152,7 +234,7 @@ class Cataloger:
         rows = self.c.map()
         g = self.c.door_glyph
         doors = [(y, x) for y, r in enumerate(rows) for x, ch in enumerate(r) if ch == g]
-        self.say(f"depth {self.depth}: {len(doors)} house doors on the map")
+        self.say(f"{wild.world_name(self.world)} (depth {self.depth}): {len(doors)} house doors on the map")
         if only:
             missing = [d for d in only if d not in doors]
             if missing:
@@ -185,7 +267,17 @@ class Cataloger:
             queue.remove(item)
             door, tries, _ = item
             self.upkeep()
-            rec = self.visit(door, rows)
+            try:
+                rec = self.visit(door, rows)
+            except nav.Jumped as e:
+                where = self.world
+                self.upkeep()
+                self.say(f"  door {door}: moved unexpectedly ({e})")
+                if self.world != where:
+                    raise            # a different level: let tour() re-plan
+                rec = {"time": now(), "depth": self.depth, "world": list(self.world),
+                       "level": wild.world_name(self.world), "door_y": door[0], "door_x": door[1],
+                       "result": "none"}
             rec["attempt"] = tries + 1
             self.write(rec)
             kind = rec["result"]
@@ -198,6 +290,61 @@ class Cataloger:
                 summary[kind] = summary.get(kind, 0) + 1
             rows = self.c.map()   # the map fills in as we explore
         return summary
+
+    # --- the wilderness -------------------------------------------------
+
+    def tour(self, targets, explore_secs, include_start=True, return_home=True):
+        """Visit each target level (world coords), explore it, catalog it.
+        Day or night -- at night the lantern shows the way and lit houses
+        still show up at a distance."""
+        self.upkeep()
+        targets = list(targets)
+        remaining = set(targets)
+        if include_start:
+            remaining.add(self.world)
+        summary = {}
+        while remaining:
+            here = self.world
+            try:
+                if here in remaining:
+                    self.say(f"== {wild.world_name(here)}")
+                    if here != (0, 0):
+                        wild.explore(self.c, explore_secs, say=self.say, check=self.upkeep)
+                    for k, v in self.run().items():
+                        summary[k] = summary.get(k, 0) + v
+                    remaining.discard(here)
+                    continue
+                route = wild.plan_tour(here, remaining, via=[*targets, *remaining])
+                self.cross_to(route[1])
+            except nav.Jumped as e:
+                self.upkeep()
+                self.say(f"  moved unexpectedly ({e}); now in {wild.world_name(self.world)} -- re-planning")
+        if return_home:
+            self.go_to((0, 0), targets)
+        return summary
+
+    def cross_to(self, sq):
+        """Step into the neighbouring level sq."""
+        here = self.world
+        way = wild.step_dir(here, sq)
+        self.say(f"  -> heading {way} to {wild.world_name(sq)}")
+        depth = wild.cross(self.c, way)
+        if depth is None:
+            # Edge not reached yet: explore toward it and try once more
+            wild.explore(self.c, 120, say=self.say, check=self.upkeep)
+            depth = wild.cross(self.c, way)
+        if depth is None:
+            raise RuntimeError(f"could not leave {wild.world_name(here)} heading {way}")
+        self.upkeep()
+        if self.world != sq:
+            self.say(f"  WARNING: arrived in {wild.world_name(self.world)}, expected {wild.world_name(sq)}")
+
+    def go_to(self, sq, via):
+        while self.world != sq:
+            try:
+                self.cross_to(wild.plan_tour(self.world, [sq], via=[*via, self.world])[1])
+            except nav.Jumped:
+                self.upkeep()
 
 
 def main():
@@ -219,6 +366,11 @@ def main():
                     help="only visit this door (repeatable)")
     ap.add_argument("--retries", type=int, default=2)
     ap.add_argument("--retry-delay", type=float, default=30.0, help="seconds before revisiting a door")
+    ap.add_argument("--wilderness", action="store_true",
+                    help="tour the 12 levels around town (2 out on the cardinals, 1 on the diagonals)")
+    ap.add_argument("--explore-secs", type=float, default=240,
+                    help="time limit for uncovering each wilderness level's map")
+    ap.add_argument("--no-return", action="store_true", help="don't walk back to town at the end")
     ap.add_argument("--pktlog")
     ap.add_argument("--events", help="append every client event to this file (debug)")
     args = ap.parse_args()
@@ -230,9 +382,16 @@ def main():
     try:
         client.wait_ready()
         with open(args.out, "a") as out:
-            summary = Cataloger(client, out, examine=not args.no_examine, retries=args.retries,
-                                retry_delay=args.retry_delay).run(args.max_doors, args.door)
+            cat = Cataloger(client, out, examine=not args.no_examine, retries=args.retries,
+                            retry_delay=args.retry_delay)
+            if args.wilderness:
+                summary = cat.tour(wild.DEFAULT_TARGETS, args.explore_secs, return_home=not args.no_return)
+            else:
+                summary = cat.run(args.max_doors, args.door)
         print(json.dumps({"summary": summary}), file=sys.stderr)
+    except Danger as e:
+        print(f"stopping: {e}", file=sys.stderr)
+        sys.exit(2)
     except ClientExited as e:
         print(f"client exited: {e}", file=sys.stderr)
         sys.exit(1)
