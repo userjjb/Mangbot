@@ -218,10 +218,14 @@ class Cataloger:
         oil = sum(it["number"] for it in inv if it["tval"] == TV_FLASK and not it["equip"])
         return food, oil, self.c.status()["ind"]["gold"][0]
 
+    def has_lantern(self):
+        return any(it["tval"] == TV_LITE and "Lantern" in it["name"] for it in self.c.inven())
+
     def restock(self, want_food=10, want_oil=6):
         """In town: buy food and oil at the General Store ('1') with what gold we have."""
         food, oil, gold = self.supplies()
-        if food >= want_food and oil >= want_oil:
+        want_lantern = not self.has_lantern()
+        if food >= want_food and oil >= want_oil and not want_lantern:
             return
         if self.broke_at is not None and gold <= self.broke_at:
             return                # couldn't afford anything with this much last time
@@ -243,7 +247,9 @@ class Cataloger:
             self.say("  restock: the General Store didn't open")
             return
         bought = []
-        for key, have, want in (("Ration", food, want_food), ("Flask", oil, want_oil)):
+        # A lantern first (the light for night travel), then food, then oil
+        for key, have, want in (("Brass Lantern", 0, 1 if want_lantern else 0),
+                                ("Ration", food, want_food), ("Flask", oil, want_oil)):
             item = next((it for it in store["items"] if key in it["name"]), None)
             if not item or have >= want or not item["price"]:
                 continue
@@ -264,6 +270,8 @@ class Cataloger:
         self.c.collect(0.5)
         food, oil, gold = self.supplies()
         self.broke_at = None if any("Ration" in b for b in bought) else gold
+        if any("Lantern" in b for b in bought):
+            self.next_light_check = 0.0   # wield it at the next upkeep
         self.say(f"  restocked ({', '.join(bought) or 'nothing affordable'}): "
                  f"{food} rations, {oil} flasks, {gold} gold left")
 

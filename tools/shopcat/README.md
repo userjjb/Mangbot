@@ -52,8 +52,9 @@ file make a stopped tour easy to restart.
 - **Not a Half-Troll** or anything else with REGEN: regeneration costs food in
   the wilderness (a Ration of Food every ~100 s); other characters at normal
   speed use very little, and nobody digests in town.
-- Give it a Brass Lantern, some Flasks of oil and food; a little gold lets it
-  restock at the General Store.
+- It needs a light for night travel: a Brass Lantern and Flasks of oil. With a
+  little gold (~50 for the lantern, 5 per flask or ration) the wilderness tour
+  buys them itself at the General Store before leaving town.
 - Each concurrently running client needs its own `--config` file (the client
   rewrites it on exit).
 
@@ -84,7 +85,8 @@ file make a stopped tour easy to restart.
      lantern with `F` from a Flask of oil below 3000 turns;
    - fights back when attacked (walks into adjacent monsters), rests (`R`)
      below half HP, stops if HP keeps falling while resting;
-   - in town, restocks food (to 10) and oil (to 6) with the gold it has; when
+   - in town, buys a Brass Lantern if it has none, and restocks food (to 10)
+     and oil (to 6) with the gold it has; when
      down to one ration elsewhere, walks back to town to restock.
 
 ### Wilderness (`wild.py`)
