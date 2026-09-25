@@ -200,6 +200,55 @@ class Cataloger:
             raise Danger("stuck in an arena")
         self.say(f"  out of the arena at {self.c.pos}")
 
+    def supplies(self):
+        """(rations of food, flasks of oil, gold)"""
+        inv = self.c.inven()
+        food = sum(it["number"] for it in inv if it["tval"] == TV_FOOD and not it["equip"])
+        oil = sum(it["number"] for it in inv if it["tval"] == TV_FLASK and not it["equip"])
+        return food, oil, self.c.status()["ind"]["gold"][0]
+
+    def restock(self, want_food=10, want_oil=6):
+        """In town: buy food and oil at the General Store ('1') with what gold we have."""
+        food, oil, gold = self.supplies()
+        if food >= want_food and oil >= want_oil:
+            return
+        rows = self.c.map()
+        shop = [(y, x) for y, r in enumerate(rows) for x, ch in enumerate(r) if ch == "1"]
+        if not shop or gold <= 0:
+            return
+        at = nav.goto(self.c, nav.stand_spots(rows, shop[0]))
+        if at is None:
+            self.say("  restock: can't reach the General Store")
+            return
+        store = None
+        for _ in range(3):
+            self.c.send(f"walk {nav.direction(self.c.pos, shop[0])}")
+            store, _ = self.c.wait(lambda e: e["ev"] == "store", 3)
+            if store:
+                break
+        if not store:
+            self.say("  restock: the General Store didn't open")
+            return
+        bought = []
+        for key, have, want in (("Ration", food, want_food), ("Flask", oil, want_oil)):
+            item = next((it for it in store["items"] if key in it["name"]), None)
+            if not item or have >= want or not item["price"]:
+                continue
+            n = min(want - have, item["number"], gold // item["price"])
+            if n <= 0:
+                continue
+            self.c.send(f"custom p store item={item['slot']} value={n} entry={item['price'] * n}")
+            self.c.collect(1.5)
+            gold -= n * item["price"]
+            bought.append(f"{n} x {key}")
+            ev, _ = self.c.wait(lambda e: e["ev"] == "store", 1)
+            store = ev or store
+        self.c.send("leave")
+        self.c.collect(0.5)
+        food, oil, gold = self.supplies()
+        self.say(f"  restocked ({', '.join(bought) or 'nothing affordable'}): "
+                 f"{food} rations, {oil} flasks, {gold} gold left")
+
     def rest(self, hp, mhp, max_secs=180):
         """Rest ('R' toggles resting) until HP is back to 90%; give up if it keeps falling."""
         self.say(f"  resting (hp {hp}/{mhp})")
@@ -379,6 +428,12 @@ class Cataloger:
         while remaining:
             here = self.world
             try:
+                if here == (0, 0):
+                    self.restock()
+                elif self.supplies()[0] <= 1 and self.supplies()[2] > 0:
+                    self.say("  running out of food -- back to town to restock")
+                    self.go_to((0, 0), [*targets, here])
+                    continue
                 if here in remaining:
                     self.say(f"== {wild.world_name(here)}")
                     if here != (0, 0):
