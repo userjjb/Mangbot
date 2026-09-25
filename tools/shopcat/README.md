@@ -63,10 +63,14 @@ file make a stopped tour easy to restart.
 1. The client subscribes the map at the full level size (198×66), so map rows
    and positions are absolute, and draws closed house doors as `0`.
 2. Doors are visited nearest-first. `nav.py` plans a shortest path on the map
-   and walks it step by step (two steps queued; ~0.5 s per tile). The server's
-   own pathfind is not used: it treats never-seen ground as open, including the
-   row past the level edge, so it can walk off the level, and it bumps arena
-   walls it hasn't seen.
+   (preferring straight stretches) and follows it: long straight stretches are
+   *run* (`.` + direction, like shift+direction; stopped with a walk request
+   just before the stretch ends), the rest is walked a step at a time. That
+   averages ~0.25 s per tile (walking alone ~0.5 s; the server's run logic
+   stops whenever the surroundings change). Near the level edge and no-go
+   zones it only walks. The server's own pathfind is not used: it treats
+   never-seen ground as open, including the row past the level edge, so it can
+   walk off the level, and it bumps arena walls it hasn't seen.
 3. Standing next to a door, `open DIR` gives one of:
 
    | result | meaning |
@@ -137,7 +141,7 @@ item.
 
 - Covers the current level, or with `--wilderness` the town and the 12 levels
   around it (`wild.DEFAULT_TARGETS`).
-- Travel is slow (~0.5 s per tile): a full wilderness tour takes a few hours.
+- Travel averages ~0.25 s per tile: a full wilderness tour takes a couple of hours.
 - Fighting is minimal (melee whatever is adjacent); a low-level character can
   still get into trouble, and the HP checks then stop the run.
 - A shop whose door is open looks like an ordinary open door on the map, so it

@@ -73,10 +73,16 @@ def shortest_path(rows, start, goals, avoid=()):
                                     or not inside(*nb)):
                 continue
             nd = d + COST.get(ch, 1)
-            if nd < dist.get(nb, 1 << 30):
+            old = dist.get(nb, 1 << 30)
+            if nd < old:
                 dist[nb] = nd
                 prev[nb] = cur
                 heapq.heappush(heap, (nd, nb))
+            elif nd == old and cur in prev and prev[nb] != cur and \
+                    (nb[0] - cur[0], nb[1] - cur[1]) == (cur[0] - prev[cur][0], cur[1] - prev[cur][1]):
+                # Equally short, but keeps going straight: prefer it (long
+                # straight stretches can be run instead of walked)
+                prev[nb] = cur
     return None
 
 
@@ -127,7 +133,7 @@ def goto(client, goals, rows=None, step_timeout=3.0, max_replans=10, deadline=No
             return None
         start = client.pos
         hits = client.hits
-        done = _walk_path(client, path, step_timeout, deadline)
+        done = _move_path(client, path, step_timeout, deadline)
         if client.hits - hits >= 3:
             return None           # under attack: let the caller fight/rest first
         if done < len(path):
@@ -139,12 +145,110 @@ def goto(client, goals, rows=None, step_timeout=3.0, max_replans=10, deadline=No
     return client.pos if client.pos in goals else None
 
 
-def _walk_path(client, path, timeout, deadline=None, ahead=2):
+RUN_MIN = 5          # straight stretches at least this long are run, not walked
+RUN_STOP_EARLY = 1   # stop a run this many tiles before the stretch ends (reaction time)
+
+
+def _straight_len(path, start, here):
+    """Length of the straight stretch of path beginning at index start."""
+    frm = path[start - 1] if start else here
+    d = (path[start][0] - frm[0], path[start][1] - frm[1])
+    n = 1
+    while start + n < len(path):
+        a, b = path[start + n - 1], path[start + n]
+        if (b[0] - a[0], b[1] - a[1]) != d:
+            break
+        n += 1
+    return n
+
+
+def _move_path(client, path, timeout, deadline=None):
+    """Follow path: run along long straight stretches, walk the rest.
+    Returns how many tiles of path were reached (see _walk_path)."""
+    done = 0
+    here = client.pos
+    while done < len(path):
+        n = _straight_len(path, done, here)
+        stretch = path[done:done + n]
+        # Past the stop point a run may overshoot a tile or two; only run where
+        # that is harmless (not near the level edge or a no-go zone)
+        beyond = [(stretch[-1][0] + k * (stretch[-1][0] - (path[done + n - 2] if n > 1 else here)[0]),
+                   stretch[-1][1] + k * (stretch[-1][1] - (path[done + n - 2] if n > 1 else here)[1]))
+                  for k in (1, 2)]
+        risky = any(_by_edge(t, 2) or _near_no_go(t) for t in stretch + beyond)
+        if n >= RUN_MIN and not risky:
+            got = _run_stretch(client, path, done, n, timeout, here)
+            if got is None:       # went astray: stopped; caller replans
+                return done
+            if client.pos != (path[got - 1] if got else here):
+                return got
+            if got > done:
+                done = got
+                continue
+            # The run didn't get going (something in view stops it at once):
+            # walk this stretch instead
+
+        # Walk this stretch (at most up to the next run-able one)
+        got = _walk_path(client, path[:done + n], timeout, deadline, start=done, here=here)
+        if got < done + n:
+            return got
+        done = got
+        if deadline and time.time() > deadline:
+            return done
+    return done
+
+
+def _run_stretch(client, path, done, n, timeout, here):
+    """Run along path[done:done+n] and stop RUN_STOP_EARLY tiles before its end.
+    Returns the new count of path tiles reached, or None if we left the path."""
+    frm = path[done - 1] if done else here
+    d = direction(frm, path[done])
+    stop_at = done + n - RUN_STOP_EARLY
+    seen = len(client.trail)
+    last = frm
+    last_move = time.time()
+    stopped = False
+    client.send(f"custom . dir={d}")
+    while True:
+        client.collect(0.03)
+        new = client.trail[seen:]
+        seen += len(new)
+        for p in new:
+            if max(abs(p[0] - last[0]), abs(p[1] - last[1])) > 1:
+                raise Jumped(f"moved {last} -> {p}")
+            last = p
+            if done < len(path) and p == path[done]:
+                done += 1
+                last_move = time.time()
+            else:
+                # The run turned (followed a corridor) or overshot: stop it
+                if not stopped:
+                    client.send("walk 5")
+                client.collect(0.4)
+                return None
+        if not stopped and done >= stop_at:
+            client.send("walk 5")         # a walk request stops a run (and is swallowed)
+            stopped = True
+            last_move = time.time()
+        if time.time() - last_move > (0.6 if stopped else 1.0):
+            # The run ended (we stopped it, or something interesting stopped it)
+            if not stopped:
+                client.send("walk 5")     # harmless if the run already ended
+                client.collect(0.3)
+                # A late step can still arrive; take it if it's on the path
+                for p in client.trail[seen:]:
+                    if done < len(path) and p == path[done]:
+                        done += 1
+            return done
+
+
+def _walk_path(client, path, timeout, deadline=None, ahead=2, start=0, here=None):
     """Walk along path, keeping up to `ahead` steps queued. Returns how many
     tiles of path were reached. Stops early if a step doesn't happen within
-    `timeout` s or we end up off the path; raises Jumped on a jump."""
-    sent = done = 0
-    here = client.pos
+    `timeout` s or we end up off the path; raises Jumped on a jump.
+    `start`/`here`: continue from path[start] (reached from `here` if start is 0)."""
+    sent = done = start
+    here = client.pos if here is None else here
     seen = len(client.trail)
     hits = client.hits
     last_move = time.time()
