@@ -490,8 +490,12 @@ class Recover(Goal):
             return None
         if too_deep and w.standing_on == "<":
             p.take_stairs("<")
+            if self.prev is not None:
+                p.resume_after = self.prev
             return ("done", f"healed; back up from {w.depth_ft} ft (max_depth {md})")
-        return ("done", f"healed at {w.depth_ft} ft")
+        if self.prev is not None:
+            p.resume_after = self.prev
+        return ("done", f"healed at {w.depth_ft} ft" + (f"; resuming '{self.prev.describe()}'" if self.prev else ""))
 
 
 class Flee(Goal):
@@ -701,6 +705,7 @@ class Pilot:
         self.emergency_t = 0.0
         self.think_warned = 0.0
         self.picked_t = 0.0
+        self.resume_after = None
         self.autodestroy_t = 0.0
         self.parking = None
         self.light_t = self.light_warned = 0.0
@@ -1034,6 +1039,14 @@ class Pilot:
             g = self.goal.describe()
             self.goal = None
             self.mover.stop()
+            if self.resume_after is not None:
+                # An emergency interrupted this goal: carry on with it (the
+                # Navigator had to re-send its climb after every stair hop)
+                self.goal, self.resume_after = self.resume_after, None
+                self.log("goal", goal=self.goal.describe(), why="resumed after recovering")
+                self.news.append({"t": round(time.time(), 3), "what": "resumed",
+                                  "detail": f"{g}: {detail}; resumed '{self.goal.describe()}'", "goal": None})
+                return True
             self.notify({"done": "goal_done", "failed": "goal_failed"}.get(status, status),
                         f"{g}: {detail}" if detail else g)
         return True
