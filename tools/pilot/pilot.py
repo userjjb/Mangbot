@@ -449,6 +449,8 @@ class Pilot:
         self.emergency_t = 0.0
         self.think_warned = 0.0
         self.picked_t = 0.0
+        self.seen_drained = None
+        self.seen_blows = None
         self.unreachable = set()       # frontier tiles we failed to reach (this level)
         self.level_seen = None
         self.phase_t = self.cure_t = self.noescape_t = 0.0
@@ -722,9 +724,29 @@ class Pilot:
             self.notify("idle_recall", "no word from the agent: recalling to town")
             self.set_goal(Recall())
 
+    STAT_NAMES = ("STR", "INT", "WIS", "DEX", "CON", "CHR")
+
+    def watch_character(self):
+        """Tell the agent when a stat gets drained or the blows change (the
+        user lost a blow to a DEX-draining invisible monster)."""
+        ind = self.w.ind
+        if not ind:
+            return
+        drained = tuple(n for i, n in enumerate(self.STAT_NAMES)
+                        if len(ind.get(f"stat{i}", [])) >= 2 and ind[f"stat{i}"][0] < ind[f"stat{i}"][1])
+        blows = ind.get("skills2", [None])[0]
+        if self.seen_drained is not None and drained != self.seen_drained:
+            new = [d for d in drained if d not in self.seen_drained]
+            if new:
+                self.notify("stat_drained", f"{', '.join(new)} drained (blows {blows}); restore at the Alchemist/Temple")
+        if self.seen_blows is not None and blows is not None and blows != self.seen_blows:
+            self.notify("blows_changed", f"blows per round {self.seen_blows} -> {blows}")
+        self.seen_drained, self.seen_blows = drained, blows
+
     def tick(self):
         self.w.drain()
         self.w.refresh()
+        self.watch_character()
         self.handle_requests()
         if not self.running:
             return
