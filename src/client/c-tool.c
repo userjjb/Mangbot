@@ -49,6 +49,9 @@
  *   suicide NICK                            -- kill this character for good
  *                                             (NICK must match; for throwaways)
  *   commands | status | inven | map         -- queries
+ *   minimap                                 -- query: the (M)ap screen's rows, after
+ *                                             'custom M'; its frame shows the
+ *                                             wilderness position, e.g. [14N, 2W]
  *   quit                                    -- leave the game and exit
  */
 
@@ -760,6 +763,27 @@ static void tool_do_command(char *line)
 		}
 		send_suicide();
 		tool_ack(line);
+	}
+	else if (streq(verb, "minimap"))
+	{
+		int st, n;
+		char buf[1024];
+
+		for (st = 0; st < known_streams; st++)
+		{
+			if (streams[st].mark && streq(streams[st].mark, "MINIMAP_ASCII")) break;
+		}
+		if (st >= known_streams) { tool_error(line, "no minimap stream"); return; }
+		tool_ev_begin("minimap");
+		printf(",\"rows\":[");
+		for (n = 0; n < p_ptr->stream_hgt[st]; n++)
+		{
+			tool_row_text(stream_cave(st, n), p_ptr->stream_wid[st], buf, sizeof(buf));
+			if (n) putchar(',');
+			tool_json_str(buf);
+		}
+		printf("]");
+		tool_ev_end();
 	}
 	else if (streq(verb, "commands")) tool_query_commands();
 	else if (streq(verb, "status")) tool_query_status();
