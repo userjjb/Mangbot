@@ -352,6 +352,9 @@ class Shop(Goal):
                     return None   # still waiting
                 self.done_log.append(verdict or f"{self.last} (no answer)")
                 self.pending = None
+                w.status_t = 0            # re-read gold before the next purchase
+                w.inven_dirty = True
+                return None
             if not w.store:
                 return ("failed", "thrown out of the store")
             if self.sells:
@@ -569,8 +572,11 @@ class Pilot:
         if w.hp_frac < o["flee_hp"] and (mons_near or now - w.last_hit_t < 5):
             return self.escape("low HP")
         # 3. Arrival into danger (connected stairs: the way back is underfoot)
-        stairs_pending = w.last_stairs_cmd and now - w.last_stairs_cmd[1] < 3
-        if now - w.level_t < 3 and w.standing_on in ("<", ">") and not stairs_pending:
+        # A stairs command gets no answer at all if it comes too soon after the
+        # level change (seen: '<' 0.7 s after arriving was ignored), so retry
+        # after 1.2 s while still on the stairs
+        stairs_pending = w.last_stairs_cmd and now - w.last_stairs_cmd[1] < 1.2
+        if now - w.level_t < 6 and w.standing_on in ("<", ">") and not stairs_pending:
             danger = self.dangers()
             # A pack only counts if its members are within 5 levels of ours (a
             # pack of jackals is XP for a level-11 warrior, not a threat)
@@ -632,8 +638,8 @@ class Pilot:
         again and again doesn't shake a pack (it burned 10 scrolls in 10 s)."""
         w = self.w
         now = time.time()
-        if w.last_stairs_cmd and now - w.last_stairs_cmd[1] < 3:
-            return True           # already on our way
+        if w.last_stairs_cmd and now - w.last_stairs_cmd[1] < 1.2:
+            return True           # already on our way (retried after 1.2 s)
         if w.standing_on in ("<", ">"):
             self.take_stairs(w.standing_on)
             self.notify("emergency", f"{why}: took the stairs underfoot ({w.standing_on})")
@@ -818,6 +824,11 @@ class Pilot:
     def request_goal(self, args):
         if not args:
             return {"ok": False, "error": "usage: goal NAME [ARGS]"}
+        # Unread attention events belong to what came before: move them to the
+        # news, so the next 'wait' answers about this goal
+        with self.att_cond:
+            self.news += self.attention
+            self.attention = []
         name, rest = args[0], args[1:]
         if name == "dive":
             g = Dive(rest[0] if rest else (self.w.depth_ft + 50))
