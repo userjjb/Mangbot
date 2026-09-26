@@ -914,8 +914,12 @@ class Pilot:
             seen = [(ts, t) for ts, t in w.messages if now - ts < 3 and t.startswith("You see ")
                     and "no items" not in t]
             junk = [j.strip().lower() for j in o.get("junk", "").split(",") if j.strip()]
-            if seen and any(f"of {j}" in seen[-1][1].lower() or seen[-1][1].lower().rstrip(".").endswith(j)
-                            for j in junk):
+            if w.ind.get("class_") == "Warrior":
+                junk += ["book of magic spells", "holy book of prayers"]   # can't read them
+            if seen and (any(f"of {j}" in seen[-1][1].lower() or seen[-1][1].lower().rstrip(".").endswith(j)
+                             or j.startswith("book") and j in seen[-1][1].lower() or
+                             j.startswith("holy book") and j in seen[-1][1].lower() for j in junk)
+                         or " Broken " in seen[-1][1]):
                 seen = []         # known junk: leave it (it filled the pack on the way down)
             if seen and seen[-1][0] > self.picked_t and w.pos == self.seen_pos(seen[-1][0]):
                 self.picked_t = now
@@ -1299,7 +1303,17 @@ class Pilot:
             if not args:
                 return {"ok": False, "error": f"usage: {c} ITEMLETTER"}
             try:
-                item = self.item_index(args[0], equip=(c == "takeoff"))
+                if c in ("destroy", "drop", "quaff", "read", "eat", "fuel") and not \
+                        (len(args[0]) == 1 or args[0].isdigit()):
+                    # by name: only the pack (a name that matched nothing there once
+                    # fell through to the equipment -- "You destroy (nothing)")
+                    name = args[0].replace("_", " ").lower()
+                    it = next((i for i in self.w.items() if name in i["name"].lower()), None)
+                    if it is None:
+                        return {"ok": False, "error": f"nothing in the pack matches '{args[0]}'"}
+                    item = it["item"]
+                else:
+                    item = self.item_index(args[0], equip=(c == "takeoff"))
             except ValueError as e:
                 return {"ok": False, "error": str(e)}
             extra = ""
@@ -1316,7 +1330,8 @@ class Pilot:
             t0 = time.time()
             self.cmd(f"custom {key} item={item}{extra}", f"agent: {c} {args}")
             pack = self.pack_now()
-            said = [t for ts, t in self.w.messages if ts >= t0]
+            noise = ("You enter a maze", "Looks like", "You feel", "You hear", "You have found")
+            said = [t for ts, t in self.w.messages if ts >= t0 and not t.startswith(noise)]
             return {"ok": True, "said": said[-4:], "pack": pack}
         if c == "wearall":
             # Put on every weapon/armour/light in the pack whose slot is empty

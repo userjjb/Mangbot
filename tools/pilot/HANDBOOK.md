@@ -107,6 +107,20 @@ of Phase Door and cure potions: it will use them.
 
 Orders are remembered across pilot restarts.
 
+## Lessons from earlier missions
+
+- **Never go down without a Word of Recall for the way back.** Walking home by stairs took 20
+  minutes (and 16 minutes down): it ate most of a 45-minute mission.
+- Before reading Word of Recall in town, know where it lands: your deepest level so far, or
+  `max_depth` if that order is set (the pilot inscribes `@R` then). It once landed at 1000 ft next
+  to four Black ogres.
+- Do item actions one at a time, by name, and read the reply (it shows the pack afterwards).
+  Several destroys sent with letters from an old report hit the wrong items.
+- Without Free Action, a monster that paralyses (Illusionists, Carrion Crawlers, Ghouls...) is a
+  reason to leave the level, not to fight.
+- Leave the pack to the pilot's `junk` and `autodestroy` orders; add `average` to `autodestroy`
+  when the pack fills too fast.
+
 ## How good players play (the user's advice and observed play)
 
 - **Dive by stair-scumming.** With connected stairs you always stand on a
