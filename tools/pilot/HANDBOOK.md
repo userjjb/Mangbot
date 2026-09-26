@@ -119,6 +119,19 @@ Orders are remembered across pilot restarts.
   pack (Salt Water empties your stomach).
 - Depth checkpoints: see-invisible and free action by 1000 ft; the four basic
   resistances by 1250 ft.
+- **Breeders** (lice, worms; the `breeders` event): no XP and they multiply fast. Kill one or two
+  quickly, otherwise leave the area.
+- **Invisible monsters** are usually harmless, but one that drains a stat ("You feel very clumsy")
+  is a real threat: leave. A drained DEX can cost a blow; a Potion of Restore <stat> (store 5) fixes it.
+- **Meet packs in a corridor** so they reach you one at a time (the `choke` order does this).
+- **Money** (how the user turns loot into gold):
+  - sell unknown potions and scrolls found early: they're usually bad, and selling identifies them
+    and pays a little;
+  - sell whatever you won't use (spare bows, weapons);
+  - identify items worth identifying before selling (wands, rings, good weapons: an identified Wand
+    of Slow Monster fetched 225), but not `{average}` gear, which sells the same;
+  - buy discounted things (`{75% off}` Word of Recall, Identify);
+  - until the weapon is about (+8,+8), discounted Enchant To-Hit/To-Dam scrolls are good buys.
 - Town: sell the starting kit. Buy a lantern and flasks of oil, light armour,
   a light weapon (more blows), Phase Door, Cure Light Wounds potions,
   +to-damage scrolls, Word of Recall.
