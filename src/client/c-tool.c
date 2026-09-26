@@ -43,6 +43,9 @@
  *                                             (yes expires after 5 s)
  *   option NAME yes|no                      -- set a game option (sent to server)
  *   options                                 -- query: every option and its value
+ *   chat TEXT                               -- send a chat line (as typed after ':';
+ *                                             "Name: text" is private). Only
+ *                                             when the user asks for it
  *   suicide NICK                            -- kill this character for good
  *                                             (NICK must match; for throwaways)
  *   commands | status | inven | map         -- queries
@@ -732,6 +735,18 @@ static void tool_do_command(char *line)
 		}
 		printf("}");
 		tool_ev_end();
+	}
+	else if (streq(verb, "chat"))
+	{
+		/* The rest of the line, as the chat prompt would take it (59 chars) */
+		char msg[60];
+		cptr s = line + strlen("chat");
+
+		while (*s == ' ') s++;
+		if (!*s) { tool_error(line, "usage: chat TEXT"); return; }
+		my_strcpy(msg, s, sizeof(msg));
+		send_msg(msg);
+		tool_ack(line);
 	}
 	else if (streq(verb, "suicide"))
 	{
