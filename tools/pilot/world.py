@@ -48,6 +48,8 @@ class World:
         self.hits_taken = 0                    # "... hits you" style messages
         self.last_hit_t = 0.0
         self.pos_t = 0.0
+        self.store = None                      # last store listing while inside a store
+        self.store_t = 0.0
         client.log = self._on_event            # every event, from the reader thread
 
     # --- events ---------------------------------------------------------
@@ -71,6 +73,7 @@ class World:
                 if self.pos and new != self.pos:
                     # Stepped: what's under us now is whatever the map showed there
                     self.standing_on = self.memory.get(new)
+                    self.store = None
                 self.pos = new
                 self.pos_t = time.time()
             elif k == "level":
@@ -106,6 +109,10 @@ class World:
                     self.standing_on = None if self.standing_on == ">" else self.standing_on
                 if "yanked upwards" in t or "yanked downwards" in t:
                     self.last_stairs_cmd = None
+            elif k == "store":
+                self.store, self.store_t = ev, time.time()
+            elif k == "store_leave":
+                self.store = None
             elif k == "monlist":
                 self.monlist = self.g.parse_monlist(ev["lines"])
             elif k == "itemlist":

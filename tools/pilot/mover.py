@@ -11,7 +11,7 @@ import time
 
 DIRS = {(-1, -1): 7, (-1, 0): 8, (-1, 1): 9, (0, -1): 4, (0, 1): 6, (1, -1): 1, (1, 0): 2, (1, 1): 3}
 WALLS = set("#%*") | set("12345678") | {"0", " "}
-COST = {"+": 3, "^": 25, "'": 1}
+COST = {"+": 3, "^": 25, "'": 1, "8": 50}
 MAX_HGT, MAX_WID = 66, 198
 
 
@@ -28,6 +28,9 @@ def plan(world, goals, avoid=(), monster_cost=40, max_cost=4000):
     mon = {(y, x) for y, x, _ in world.monsters}
     avoid = set(avoid)
     mem = world.memory
+    # On the surface (town, wilderness) unseen ground is mostly open -- at
+    # night the floor isn't even drawn -- while trees and fences block
+    surface = (world.depth or 0) <= 0
     dist = {start: 0}
     prev = {}
     heap = [(0, start)]
@@ -46,10 +49,16 @@ def plan(world, goals, avoid=(), monster_cost=40, max_cost=4000):
             if not (0 < nb[0] < MAX_HGT - 1 and 0 < nb[1] < MAX_WID - 1):
                 continue
             ch = mem.get(nb, " ")
-            if nb not in goals and (not passable(ch) or nb in avoid):
+            if surface:
+                # '8' (the Tavern entrance) is allowed: new characters start inside
+                # the Tavern and must walk out through it (COST keeps it a last resort)
+                ok = ch not in "#*=%0" and ch not in "1234567" if ch != " " else True
+            else:
+                ok = passable(ch)
+            if nb not in goals and (not ok or nb in avoid):
                 continue
             # (a hair more for diagonals: of equally short paths, prefer straight ones)
-            nd = d + COST.get(ch, 1) + (0.001 if dy and dx else 0) \
+            nd = d + COST.get(ch, 1) + (1 if ch == " " else 0) + (0.001 if dy and dx else 0) \
                 + (monster_cost if nb in mon and nb not in goals else 0)
             if nd < dist.get(nb, 1 << 30):
                 dist[nb] = nd
@@ -83,7 +92,11 @@ class Mover:
         self.goals = set(goals)
         self.avoid = set(avoid)
         self.replans = 0
-        return self._plan()
+        ok = self._plan()
+        near = min(self.goals, key=lambda g: max(abs(g[0] - self.w.pos[0]), abs(g[1] - self.w.pos[1]))) \
+            if self.w.pos and self.goals else None
+        self.log(goals=len(self.goals), nearest=near, path=len(self.path), ok=ok)
+        return ok
 
     def stop(self):
         self.goals = None

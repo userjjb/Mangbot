@@ -247,6 +247,83 @@ class Recall(Goal):
         return None
 
 
+class Shop(Goal):
+    """In town: walk into store N, sell and buy, leave.
+    sells: [(item index, count)]; buys: [(name substring, count)]."""
+
+    def __init__(self, store, buys=(), sells=()):
+        self.store = str(store)
+        # Sell from the end of the pack first: selling shifts the letters after it
+        self.buys, self.sells = list(buys), sorted(sells, reverse=True)
+        self.name = f"shop {store}" + "".join(f" buy {n}:{c}" for n, c in buys) + \
+            "".join(f" sell {chr(97 + i)}:{c}" for i, c in sells)
+        self.state = "walk"
+        self.t = 0.0
+        self.done_log = []
+        self.pending = None
+
+    def tick(self, p):
+        w = p.w
+        if w.depth:
+            return ("failed", "not in town")
+        if self.state == "walk":
+            door = w.find(self.store)
+            if not door:
+                return ("failed", f"store {self.store} not on the map")
+            # Next to the door; unseen ground counts (at night the floor isn't drawn)
+            spots = [(door[0][0] + dy, door[0][1] + dx) for dy in (-1, 0, 1) for dx in (-1, 0, 1)
+                     if (dy or dx) and w.memory.get((door[0][0] + dy, door[0][1] + dx), " ") not in "#%*=012345678"]
+            if w.pos in spots:
+                p.cmd(f"walk {direction(w.pos, door[0])}", f"enter store {self.store}", hold=0.3)
+                self.state, self.t = "enter", time.time()
+                return None
+            if not p.mover.active and not p.mover.go(spots):
+                return ("failed", "can't reach the store")
+            if p.mover.tick() == "stuck":
+                return ("failed", "stuck on the way to the store")
+            return None
+        if self.state == "enter":
+            if w.store and w.store_t >= self.t:
+                self.state = "trade"
+                return None
+            if time.time() - self.t > 4:
+                self.state = "walk"
+            return None
+        if self.state == "trade":
+            if self.pending and w.store_t < self.pending and time.time() - self.pending < 4:
+                return None       # waiting for the refreshed listing
+            self.pending = None
+            if not w.store:
+                return ("failed", "thrown out of the store")
+            if self.sells:
+                idx, n = self.sells.pop(0)
+                p.c.send("confirm yes")
+                p.cmd(f"custom s store item={idx} value={n}", f"sell {idx}x{n}", hold=0.2)
+                self.done_log.append(f"sold {chr(97 + idx)} x{n}")
+                self.pending = time.time()
+                return None
+            if self.buys:
+                name, n = self.buys.pop(0)
+                it = next((i for i in w.store["items"] if name.lower() in i["name"].lower()), None)
+                if not it:
+                    self.done_log.append(f"no {name} in stock")
+                    return None
+                gold = w.ind.get("gold", [0])[0]
+                n = min(n, it["number"], gold // max(1, it["price"]))
+                if n <= 0:
+                    self.done_log.append(f"can't afford {it['name']} ({it['price']})")
+                    return None
+                p.cmd(f"custom p store item={it['slot']} value={n} entry={it['price'] * n}",
+                      f"buy {it['name']} x{n}", hold=0.2)
+                self.done_log.append(f"bought {n} x {it['name']} @ {it['price']}")
+                self.pending = time.time()
+                return None
+            p.cmd("leave", "leave store", hold=0.3)
+            w.store = None
+            return ("done", "; ".join(self.done_log) or "nothing to do")
+        return None
+
+
 class RestGoal(Goal):
     name = "rest"
 
@@ -267,7 +344,7 @@ class Pilot:
     def __init__(self, client, rundir, orders=None, say=print):
         self.c = client
         self.w = World(client)
-        self.mover = Mover(client, self.w)
+        self.mover = Mover(client, self.w, log=lambda *a, **k: self.log("move", **k))
         self.orders = dict(DEFAULT_ORDERS, **(orders or {}))
         self.rundir = rundir
         os.makedirs(rundir, exist_ok=True)
@@ -397,6 +474,8 @@ class Pilot:
             return True
         if now < self.busy_until:
             return True
+        if w.store and isinstance(self.goal, Shop):
+            return False          # any command would leave the store
         mons_near = [m for m in w.monsters if w.dist(m[:2]) <= 7]
         # 2. Emergency
         if w.hp_frac < o["flee_hp"] and (mons_near or now - w.last_hit_t < 5):
@@ -575,6 +654,22 @@ class Pilot:
         if c == "option":
             self.c.send(f"option {args[0]} {args[1]}")
             return {"ok": True}
+        if c == "dump":
+            path = os.path.join(self.rundir, "world_dump.json")
+            with open(path, "w") as f:
+                json.dump({"pos": self.w.pos, "depth": self.w.depth, "rows": self.w.rows,
+                           "memory": [[y, x, ch] for (y, x), ch in self.w.memory.items()],
+                           "monsters": [[y, x, r.idx] for y, x, r in self.w.monsters]}, f)
+            return {"ok": True, "file": path}
+        if c == "plan":
+            # debug: path from here to Y,X on the remembered map
+            from mover import plan as _plan
+            goals = self.resolve_target(" ".join(args))
+            path = _plan(self.w, goals) if goals else None
+            around = {f"{dy},{dx}": self.w.memory.get((self.w.pos[0] + dy, self.w.pos[1] + dx), " ")
+                      for dy in (-1, 0, 1) for dx in (-1, 0, 1)}
+            return {"ok": True, "goals": goals, "path": path, "pos": self.w.pos, "around": around,
+                    "depth": self.w.depth, "memory": len(self.w.memory)}
         if c == "raw":
             self.cmd(" ".join(args), "agent: raw")
             return {"ok": True}
@@ -598,6 +693,19 @@ class Pilot:
             g = Explore(until=kw.get("until"), radius=int(kw["radius"]) if "radius" in kw else None)
         elif name == "goto":
             g = Goto(" ".join(rest))
+        elif name == "shop":
+            # goal shop STORE [buy NAME:N]... [sell LETTER:N]...
+            buys, sells, i = [], [], 1
+            while i < len(rest):
+                kind, spec = rest[i], rest[i + 1] if i + 1 < len(rest) else ""
+                what, _, n = spec.rpartition(":")
+                what, n = (what, int(n)) if what else (spec, 1)
+                if kind == "buy":
+                    buys.append((what.replace("_", " "), n))
+                elif kind == "sell":
+                    sells.append((self.item_index(what), n))
+                i += 2
+            g = Shop(rest[0], buys, sells)
         elif name == "recall":
             g = Recall()
         elif name == "rest":
