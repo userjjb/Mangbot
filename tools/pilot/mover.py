@@ -91,8 +91,9 @@ class Mover:
         self.stop_sent = False
         self.use_runs = True
         self.free = None
+        self.resume_goals = None
 
-    RUN_MIN = 5
+    RUN_MIN = 3
 
     def _straight(self, i):
         """Length of the straight stretch of path starting at index i."""
@@ -111,8 +112,8 @@ class Mover:
         w = self.w
         start, end, t0 = self.running
         # progress already accounted for by tick(); here: stop or give up
-        if w.monsters and not self.stop_sent:
-            self.c.send("walk 5")            # something came into view: stop running
+        if self._monster_near(5) and not self.stop_sent:
+            self.c.send("walk 5")            # something close: stop running
             self.stop_sent = True
         if not self.stop_sent and self.done >= end - 1:
             self.c.send("walk 5")            # a walk request ends a run (and is swallowed)
@@ -124,11 +125,22 @@ class Mover:
             self.sent = self.done
         return "moving"
 
-    def free_run(self, d):
+    def _runnable(self, i):
+        """Could a run start at path index i (straight stretch, nothing close)?"""
+        return self.use_runs and self._straight(i) >= self.RUN_MIN and not self._monster_near(5)
+
+    def _monster_near(self, r):
+        w = self.w
+        return any(w.dist(m[:2]) <= r for m in w.monsters)
+
+    def free_run(self, d, keep_goals=False):
         """Run in direction d and let the server's run logic follow the
-        corridor until something interesting (for exploring: we don't know
-        where it ends). tick() returns 'arrived' when the run is over."""
+        corridor until something interesting. tick() returns 'arrived' when
+        the run is over -- or, with keep_goals (a run along the way to our
+        goals), carries on towards the goals from wherever the run ended."""
+        goals = self.goals if keep_goals else None
         self.stop()
+        self.resume_goals = goals
         self.goals = {"free-run"}
         self.path = []
         self.free = (time.time(), self.w.pos)
@@ -141,14 +153,28 @@ class Mover:
         if w.pos != self.free_pos:
             self.free_pos = w.pos
             self.last_progress = time.time()
-        if w.monsters and not self.stop_sent:
+        if self._monster_near(5) and not self.stop_sent:
             self.c.send("walk 5")
             self.stop_sent = True
-        if time.time() - self.last_progress > 0.7:
+        if self.resume_goals and w.pos in self.resume_goals and not self.stop_sent:
+            self.c.send("walk 5")          # ran onto the goal: stop there
+            self.stop_sent = True
+        if time.time() - self.last_progress > 0.5:
             moved = w.pos != self.free[1]
             self.free = None
-            self.goals = None
             self.stop_sent = False
+            goals, self.resume_goals = self.resume_goals, None
+            if goals:
+                # carry on to the goals from here (no replan budget used up)
+                self.goals = goals
+                if w.pos in goals:
+                    self.goals = None
+                    return "arrived"
+                if not self._plan():
+                    self.goals = None
+                    return "stuck"
+                return "moving"
+            self.goals = None
             return "arrived" if moved else "stuck"
         return "moving"
 
@@ -247,19 +273,26 @@ class Mover:
             return "moving"
         if self.running is not None:
             return self._run_tick()
-        # A long straight stretch with nothing in view: run it (~4x faster
-        # than walking; the user runs almost everything)
-        if self.sent == self.done and not w.monsters and self.use_runs:
+        # Run whenever we can: the user runs 61% of their steps at ~0.11 s per
+        # tile, walking takes ~0.5 s. Straight stretches are run and stopped a
+        # tile early; in a corridor we run and let the server follow the bends
+        # (replanning when the run ends), as a human holding the key does.
+        if self.sent == self.done and self.use_runs and not self._monster_near(5):
+            frm = self.path[self.done - 1] if self.done else self.here
+            d = direction(frm, self.path[self.done])
             n = self._straight(self.done)
             if n >= self.RUN_MIN:
-                frm = self.path[self.done - 1] if self.done else self.here
-                d = direction(frm, self.path[self.done])
                 self.c.send(f"custom . dir={d}")
                 self.running = (self.done, self.done + n, time.time())
                 self.stop_sent = False
                 self.last_progress = time.time()
                 return "moving"
+            if self.in_corridor() and len(self.path) - self.done >= 3:
+                self.free_run(d, keep_goals=True)
+                return "moving"
         while self.sent < len(self.path) and self.sent - self.done < self.AHEAD:
+            if self.sent > self.done and self._runnable(self.sent):
+                break             # let the queued steps land, then run from there
             frm = self.path[self.sent - 1] if self.sent else self.here
             d = direction(frm, self.path[self.sent])
             if d is None:
