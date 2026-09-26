@@ -67,6 +67,8 @@ def main():
             print(f"ATTENTION {ev['what']}: {ev.get('detail') or ''}")
     else:
         print(json.dumps(out))
+    if out.get("note"):
+        print("NOTE: " + out["note"])
 
 
 if __name__ == "__main__":

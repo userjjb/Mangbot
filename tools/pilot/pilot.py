@@ -1568,6 +1568,12 @@ class Pilot:
         name, rest = args[0], args[1:]
         if name == "dive":
             g = Dive(rest[0] if rest else (self.w.depth_ft + 50))
+            md = int(self.orders.get("max_depth", 0))
+            if md and g.target_ft > md:
+                # say so (a 'dive 700' was silently capped by max_depth 650)
+                self.set_goal(g)
+                return {"ok": True, "goal": g.describe(),
+                        "note": f"capped at max_depth {md} ft (order max_depth=... to change)"}
         elif name == "explore":
             kw = dict(a.split("=", 1) for a in rest if "=" in a)
             g = Explore(until=kw.get("until"), radius=int(kw["radius"]) if "radius" in kw else None)
