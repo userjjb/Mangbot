@@ -144,6 +144,7 @@ class Explore(Goal):
         if p.level_seen != w.level_t:
             p.level_seen = w.level_t
             p.unreachable = set()
+            p.visited = set()
         if p.mover.active:
             was_free = p.mover.free is not None
             st = p.mover.tick()
@@ -159,12 +160,14 @@ class Explore(Goal):
         # Where we've stood is explored: unknown squares next to it are unlit
         # rock our light didn't reach, not a way on (the explorer once "failed"
         # because the only frontier left was the square it stood on)
-        p.unreachable.add(w.pos)
+        p.visited.add(w.pos)
         frontier = [f for f in p.frontier(center=self.center if self.radius else None, radius=self.radius)
-                    if f != w.pos]
+                    if f != w.pos and f not in p.visited]
         if not frontier:
             return ("done", "nothing left to explore")
-        if self.fails > 10 or not p.mover.go(frontier, avoid=p.unreachable):
+        # (targets we failed to reach are dropped from the frontier, not avoided
+        # as path squares: that once made walked corridors impassable)
+        if self.fails > 10 or not p.mover.go(frontier):
             return ("failed", "frontier unreachable")
         self.target = p.mover.path[-1] if p.mover.path else None
         # In a corridor with nothing about: run along it the way the path
@@ -201,6 +204,7 @@ class Dive(Goal):
         self.pillared_done = False
         self.need_search = False
         self.stuck = 0
+        self.explore_fails = 0
 
     def tick(self, p):
         w = p.w
@@ -304,6 +308,12 @@ class Dive(Goal):
                 self.need_search = False
             return None
         if r and r[0] == "failed":
+            # Often transient (monsters in the way): forget what failed, try again
+            self.explore_fails += 1
+            if self.explore_fails < 4:
+                p.unreachable = set()
+                self.explore = None
+                return None
             return ("failed", "no stairs found: " + r[1])
         if r and r[1] == "nothing left to explore" and not w.find("<>"):
             # Walled in: look for secret doors, then explore again
@@ -648,6 +658,7 @@ class Pilot:
         self.seen_drained = None
         self.seen_blows = None
         self.unreachable = set()       # frontier tiles we failed to reach (this level)
+        self.visited = set()           # squares we've stood on while exploring (not frontier)
         self.level_seen = None
         self.phase_t = self.cure_t = self.noescape_t = 0.0
         self.escaping_to_stairs = False
