@@ -132,6 +132,7 @@ class Explore(Goal):
         self.target = None
         self.no_run_at = None
         self.run_from = None
+        self.loot = {}
 
     def tick(self, p):
         w = p.w
@@ -152,6 +153,9 @@ class Explore(Goal):
             p.level_seen = w.level_t
             p.unreachable = set()
             p.visited = set()
+        if not p.mover.active or self.loot.get("looting"):
+            if p.loot_step(self.loot):
+                return None
         if p.mover.active:
             was_free = p.mover.free is not None
             st = p.mover.tick()
@@ -1031,6 +1035,32 @@ class Pilot:
                     any(c in i["name"] for c in CURE_POTIONS) for i in w.items(tval=TV_POTION)))) if ok]
             self.notify("emergency", f"{why}: " + (f"waiting to use {', '.join(left)} again, fighting on"
                                                    if left else "nothing left to escape with, fighting on"))
+        return False
+
+    def loot_step(self, state):
+        """Fetch items seen within loot_radius (dive and explore share this).
+        state: a dict kept by the goal ({'looted': set, 'looting': bool, 'level': t}).
+        Returns True while fetching."""
+        w = self.w
+        lr = int(self.orders.get("loot_radius", 0))
+        if state.get("level") != w.level_t:
+            state.update(level=w.level_t, looted=set(), looting=False)
+        if not lr or w.monsters:
+            state["looting"] = False
+            return False
+        if state["looting"]:
+            st = self.mover.tick()
+            if st == "moving":
+                return True
+            state["looting"] = False
+            return False
+        items = [t for t in self.resolve_target("item") if w.dist(t) <= lr and t not in state["looted"]]
+        if items and not self.mover.active:
+            tgt = min(items, key=w.dist)
+            state["looted"].add(tgt)
+            if self.mover.go([tgt]):
+                state["looting"] = True
+                return True
         return False
 
     def recall_started(self, now):
