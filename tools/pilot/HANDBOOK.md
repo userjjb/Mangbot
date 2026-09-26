@@ -24,7 +24,7 @@ Attention events:
 |---|---|
 | `goal_done`, `goal_failed` | the goal finished (the detail says why) |
 | `interesting` | a dive stopped for something in `stop_on`: a unique, items, a pillared room (these often hold stairs; explore them), danger |
-| `danger_avoided` | arrived next to a pack or an out-of-depth monster and went straight back up the stairs |
+| `danger_avoided` | (news, doesn't wake you) arrived next to a pack or an out-of-depth monster and went straight back up the stairs. Shown under "Since last report" |
 | `emergency` | HP fell below `flee_hp`: the pilot took the stairs underfoot, read Phase Door, or quaffed a cure |
 | `fight_going_badly` | HP below `think_hp` while fighting: decide whether to flee (e.g. `stairs`, or `read` Phase Door) |
 | `low_supply` | out of food (it recalls), etc. |
@@ -54,7 +54,9 @@ Attention events:
 | `goal dive FEET` | stair-scum down to FEET: take a `>` when one is known, otherwise go up and down the staircase underfoot for a fresh level; explore if no stairs are known. Stops early for `stop_on` things |
 | `goal explore [until=stairs] [radius=N]` | walk to unexplored edges until nothing is left (or a `>` is seen, or within N squares) |
 | `goal goto Y,X` / `goto >` / `goto <` / `goto item` | walk there |
-| `goal recall` | read Word of Recall (takes ~15-35 s to work; the pilot stays safe meanwhile) |
+| `goal hunt NAME` | walk up to the monster called NAME and fight it (standing still; the server swings for you). Ends when it's slain or out of sight 15 s |
+| `goal shop N [buy NAME:COUNT]... [sell NAME_OR_LETTER:COUNT]...` | town only: walk into store N (1 General, 2 Armoury, 3 Weaponsmith, 4 Temple, 5 Alchemist, 6 Magic shop, 7 Black market), sell, buy (by part of the name; spaces as `_`, e.g. `buy Cure_Light:5`), leave. The result lists what the shopkeeper actually said ("I don't want that!" for worthless or cursed items) |
+| `goal recall` | read Word of Recall (takes ~15-35 s to work; the pilot stays safe meanwhile). From town it takes you to your deepest level so far |
 | `goal rest` | rest until healed |
 | `goal wait SECS` | stand still |
 | `stop` | cancel the goal (safe idle) |
@@ -64,7 +66,16 @@ Attention events:
 `wear L`, `takeoff L`, `quaff L`, `read L`, `eat L`, `fuel L` (refill a lantern
 from a flask), `inspect L`, `destroy L [N]`, `drop L [N]`, `inscribe L TEXT`,
 `pickup` (what's underfoot), `stairs [<|>]`. L is the pack letter from the
-report.
+report. With `pickup=all` (the default) the pilot picks up whatever it walks
+onto when nothing is next to it. Letters shift when items come and go (and
+when identifying re-sorts the pack): check `status` before a series of
+actions, and act from the last letter backwards.
+
+What the pilot does by itself in an emergency (HP below `flee_hp`): take
+the staircase underfoot; with a monster next to you, read Phase Door (at most
+every 2.5 s: repeated phasing doesn't shake a pack); otherwise walk to stairs
+within 20 squares, or quaff Cure Light/Serious/Critical Wounds. Keep plenty
+of Phase Door and cure potions: it will use them.
 
 ## Standing orders (`order key=value ...`)
 
@@ -77,6 +88,9 @@ report.
 | `danger_level` | 6 | a monster this many levels above yours counts as danger |
 | `idle_recall_s` | 180 | recall to town after this long without a goal or a word from you |
 | `stop_on` | unique,items,pillared,danger | what makes a dive stop and ask you |
+| `pickup` | all | all or none |
+
+Orders are remembered across pilot restarts.
 
 ## How good players play (the user's advice and observed play)
 
