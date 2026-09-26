@@ -31,6 +31,12 @@ Attention events:
 | `low_supply` | out of food (it recalls), no flasks for the lantern, no light at all |
 | `idle_recall` | nobody answered for a while: it's recalling to town |
 | `parked` | the pilot is logging out for an update (at a safe moment). It comes back within a minute or two with `started`; then re-issue your goal |
+| `pack_full` | "You have no room for ...": make room (destroy/drop junk, or recall and sell) |
+| `stat_drained`, `blows_changed` | a stat was drained or the blows per round changed (a drained DEX can cost a blow: restore it in town, store 5) |
+| `breeders` | 3+ breeding monsters (lice, worms) in view: they multiply fast and give no XP. Kill one or two quickly; more than that, leave the area (stairs, or recall) |
+| `afraid` | afraid (a warrior can't melee then) and cornered with nothing to cure it: the pilot phased away. Normally, when afraid, the pilot kites over ground already walked until the fear wears off, and only in danger quaffs Boldness/Heroism/Berserk |
+| `fearer` | a monster that frightens you again and again is near (e.g. Poltergeist, Ghost, Banshee, Priest, molds): the pilot moves away from it (phases if it's dangerous and adjacent). Usually best to leave that area or level |
+| `tactic`, `resumed` | (news) the pilot backed into a corridor against a pack, kited while afraid, or resumed your goal after recovering from an emergency |
 | `dead` | the character died |
 
 ## The situation report (`status`)
