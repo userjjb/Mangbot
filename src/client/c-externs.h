@@ -467,6 +467,7 @@ extern void tool_loop(void);
 extern void tool_emit_message(cptr mesg, u16b type);
 extern void tool_emit_popup(void);
 extern void tool_blocked_input(cptr where);
+extern void tool_note_term_fresh(byte win);
 extern void tool_note_cursor(byte vis, byte y, byte x);
 extern void tool_setup_visuals(void);
 

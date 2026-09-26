@@ -16,6 +16,8 @@
  *   interactive  {header}                   -- remote browser; ESC sent back
  *   confirm      {type, id, prompt, answer} -- declined unless "confirm yes"
  *                                             was sent within the last 5 s
+ *   monlist      {lines[]}                  -- the server's list of visible monsters
+ *   itemlist     {lines[]}                  -- ... and of seen objects
  *   level        {depth}                    -- depth changed (also once at start)
  *   store        {flag, name, owner, num, items[]}
  *   store_leave  {}                         -- server closed the store
@@ -186,6 +188,29 @@ void tool_emit_popup(void)
 
 	/* Popup handled */
 	special_line_onscreen = FALSE;
+}
+
+/* recv_term_info() -- a remote window was refreshed (NTERM_FRESH) */
+void tool_note_term_fresh(byte win)
+{
+	byte st = window_to_stream[win];
+	int wid = p_ptr->stream_wid[st];
+	int n;
+	char buf[1024];
+
+	if (win != NTERM_WIN_MONLIST && win != NTERM_WIN_ITEMLIST) return;
+	if (!p_ptr->stream_hgt[st]) return;
+
+	tool_ev_begin(win == NTERM_WIN_MONLIST ? "monlist" : "itemlist");
+	printf(",\"lines\":[");
+	for (n = 0; n <= last_remote_line[win] && n < p_ptr->stream_hgt[st]; n++)
+	{
+		tool_row_text(stream_cave(st, n), wid, buf, sizeof(buf));
+		if (n) putchar(',');
+		tool_json_str(buf);
+	}
+	printf("]");
+	tool_ev_end();
 }
 
 /* inkey_ex() / Term_inkey() -- some prompt wants a key */

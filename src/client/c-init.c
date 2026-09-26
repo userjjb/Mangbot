@@ -798,6 +798,9 @@ void init_subscriptions()
 			if (st_ptr->addr == NTERM_WIN_OVERHEAD) window_flag[0] |= (1L << n);
 			/* HACK! Enforce Special View on window 0 */
 			if (st_ptr->addr == NTERM_WIN_SPECIAL) window_flag[0] |= (1L << n);
+			/* Tool mode: the monster and item lists too (c-tool.c reports them) */
+			if (tool_mode && (st_ptr->addr == NTERM_WIN_MONLIST || st_ptr->addr == NTERM_WIN_ITEMLIST))
+				window_flag[0] |= (1L << n);
 			/* Save "string" */
 			window_flag_desc[n] = st_ptr->window_desc;
 		}

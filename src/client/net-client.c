@@ -1576,6 +1576,9 @@ int recv_term_info(connection_type *ct) {
 	if (flag & NTERM_FRESH)
 	{
 		p_ptr->window |= streams[window_to_stream[win]].window_flag;
+
+		/* Tool mode: report the monster/item lists */
+		if (tool_mode) tool_note_term_fresh(win);
 	}
 
 	/* Icky test */
