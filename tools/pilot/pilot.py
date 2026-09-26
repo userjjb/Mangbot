@@ -643,6 +643,7 @@ class Pilot:
         self.emergency_t = 0.0
         self.think_warned = 0.0
         self.picked_t = 0.0
+        self.light_t = self.light_warned = 0.0
         # Where the town's '>' is (remembered across runs: the town never changes)
         self.town_file = os.path.join(os.path.dirname(rundir.rstrip("/")), "town.json")
         self.town_stairs = None
@@ -824,6 +825,9 @@ class Pilot:
         if o.get("choke") == "on" and not w.adjacent_monsters() and w.standing_on not in ("<", ">"):
             if self.choke_tick(now):
                 return True
+        # 3c. Light
+        if not w.adjacent_monsters() and self.keep_light(now):
+            return True
         # 4. Hunger
         if w.hunger <= 2 and not w.monsters:
             food = w.items(tval=TV_FOOD)
@@ -1026,6 +1030,40 @@ class Pilot:
             self.notify("breeders", f"{len(br)} breeding monsters in view ({br[0].name}): leave this level "
                                     "(stairs, or recall)")
 
+    def keep_light(self, now):
+        """Refill the lantern (or swap torches) before the light goes out --
+        Dive03 explored in the dark for minutes after "Your light has gone
+        out!", which is why nothing around it ever showed up on the map."""
+        w = self.w
+        if now < self.light_t or now < self.busy_until or w.store:
+            return False
+        self.light_t = now + 5
+        worn = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
+        m = re.search(r"with (\d+) turns", worn["name"]) if worn else None
+        turns = int(m.group(1)) if m else None
+        if worn and "Lantern" in worn["name"] and turns is not None and turns < 3000:
+            flask = next((i for i in w.items(tval=TV_FLASK)), None)
+            if flask:
+                self.cmd(f"custom F item={flask['item']}", f"refill lantern ({turns} turns left)", hold=0.6)
+                return True
+            if now - self.light_warned > 120:
+                self.light_warned = now
+                self.notify("low_supply", f"lantern at {turns} turns and no flasks of oil")
+        elif worn and "Torch" in worn["name"] and turns is not None and turns < 500:
+            torch = next((i for i in w.items(tval=TV_LITE) if "Torch" in i["name"]), None)
+            if torch:
+                self.cmd(f"custom w item={torch['item']}", f"fresh torch ({turns} turns left)", hold=0.6)
+                return True
+        elif not worn:
+            spare = next((i for i in w.items(tval=TV_LITE)), None)
+            if spare:
+                self.cmd(f"custom w item={spare['item']}", "wield a light", hold=0.6)
+                return True
+            if now - self.light_warned > 120:
+                self.light_warned = now
+                self.notify("low_supply", "no light source")
+        return False
+
     STAT_NAMES = ("STR", "INT", "WIS", "DEX", "CON", "CHR")
 
     def watch_character(self):
@@ -1163,6 +1201,9 @@ class Pilot:
         if c == "option":
             self.c.send(f"option {args[0]} {args[1]}")
             return {"ok": True}
+        if c == "options":
+            opts = self.c.query("options", "options")["list"]
+            return {"ok": True, "options": {k: v for k, v in opts.items() if not args or any(a in k for a in args)}}
         if c == "dump":
             path = os.path.join(self.rundir, "world_dump.json")
             with open(path, "w") as f:

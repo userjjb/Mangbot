@@ -28,7 +28,7 @@ Attention events:
 | `danger_seen` | a monster far above your level came into view: the pilot dropped the goal and is heading for the stairs |
 | `emergency` | HP fell below `flee_hp`: the pilot took the stairs underfoot, read Phase Door, or quaffed a cure |
 | `fight_going_badly` | HP below `think_hp` while fighting: decide whether to flee (e.g. `stairs`, or `read` Phase Door) |
-| `low_supply` | out of food (it recalls), etc. |
+| `low_supply` | out of food (it recalls), no flasks for the lantern, no light at all |
 | `idle_recall` | nobody answered for a while: it's recalling to town |
 | `dead` | the character died |
 
