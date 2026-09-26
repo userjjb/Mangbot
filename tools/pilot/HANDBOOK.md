@@ -66,7 +66,9 @@ Attention events:
 
 ## Actions (immediate)
 
-`wearall` (put on everything that fills an empty slot), `wear L`, `takeoff L`, `quaff L`, `read L`, `eat L`, `fuel L` (refill a lantern
+`wearall` (put on everything that fills an empty slot), `wear L`, `takeoff L`, `quaff L`, `read L [TARGET]`
+(TARGET = the item a scroll works on, e.g. `read Identify Rapier` or `read Enchant_Weapon_To-Dam Rapier`;
+without it the game picks the first item in the pack), `eat L`, `fuel L` (refill a lantern
 from a flask), `inspect L`, `destroy L [N|all]`, `drop L [N|all]`, `inscribe L TEXT`,
 `pickup` (what's underfoot), `stairs [<|>]`. L is the pack letter from the
 report, **or part of the item's name** with spaces as `_` (e.g. `destroy Salt_Water`,

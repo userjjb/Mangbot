@@ -1327,6 +1327,15 @@ class Pilot:
                     self.c.send("confirm yes")
             if c in ("aim",):
                 extra = f" dir={args[1] if len(args) > 1 else 5}"
+            if c == "read" and len(args) > 1:
+                # A scroll that works on another item (Identify, Enchant...): the
+                # client sends that item in the direction byte (COMMAND_SECOND_DIR);
+                # without it the server picked the first pack item
+                try:
+                    target = self.item_index(args[1], equip=True)
+                except ValueError as e:
+                    return {"ok": False, "error": str(e)}
+                extra = f" dir={target}"
             t0 = time.time()
             self.cmd(f"custom {key} item={item}{extra}", f"agent: {c} {args}")
             pack = self.pack_now()
