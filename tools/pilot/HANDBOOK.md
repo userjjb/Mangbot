@@ -52,6 +52,7 @@ Attention events:
 | command | what the pilot does |
 |---|---|
 | `goal dive FEET` | stair-scum down to FEET: take a `>` when one is known, otherwise go up and down the staircase underfoot for a fresh level; explore if no stairs are known. Stops early for `stop_on` things |
+| `goal search` | search for secret doors at dead ends, corridor ends and room corners (a dive does this by itself when a level seems to have no stairs) |
 | `goal explore [until=stairs] [radius=N]` | walk to unexplored edges until nothing is left (or a `>` is seen, or within N squares) |
 | `goal goto Y,X` / `goto >` / `goto <` / `goto item` | walk there |
 | `goal hunt NAME` | walk up to the monster called NAME and fight it (standing still; the server swings for you). Ends when it's slain or out of sight 15 s |

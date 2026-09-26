@@ -146,7 +146,12 @@ class Explore(Goal):
                 p.unreachable |= p.mover.avoid | ({self.target} if self.target else set())
             if st in ("moving",):
                 return None
-        frontier = p.frontier(center=self.center if self.radius else None, radius=self.radius)
+        # Where we've stood is explored: unknown squares next to it are unlit
+        # rock our light didn't reach, not a way on (the explorer once "failed"
+        # because the only frontier left was the square it stood on)
+        p.unreachable.add(w.pos)
+        frontier = [f for f in p.frontier(center=self.center if self.radius else None, radius=self.radius)
+                    if f != w.pos]
         if not frontier:
             return ("done", "nothing left to explore")
         if self.fails > 10 or not p.mover.go(frontier, avoid=p.unreachable):
@@ -184,6 +189,7 @@ class Dive(Goal):
         self.looted = set()
         self.looting = False
         self.pillared_done = False
+        self.need_search = False
 
     def tick(self, p):
         w = p.w
@@ -263,12 +269,20 @@ class Dive(Goal):
             if st != "stuck":
                 return None
         if self.explore is None:
-            self.explore = Explore(until="stairs")
+            self.explore = Search() if self.need_search else Explore(until="stairs")
         r = self.explore.tick(p)
+        if isinstance(self.explore, Search):
+            if r and r[0] == "failed":
+                return ("failed", "no stairs: explored and searched every dead end")
+            if r:
+                self.explore = None
+                self.need_search = False
+            return None
         if r and r[0] == "failed":
             return ("failed", "no stairs found: " + r[1])
         if r and r[1] == "nothing left to explore" and not w.find("<>"):
-            return ("failed", "explored the level, no stairs seen")
+            # Walled in: look for secret doors, then explore again
+            self.need_search = True
         if r:
             self.explore = None
         return None
@@ -276,6 +290,62 @@ class Dive(Goal):
     def _stairs(self, p, which):
         p.take_stairs(which)
         self.pending = time.time()
+        return None
+
+
+class Search(Goal):
+    """Look for secret doors: stand at each dead end (and corridor ends) and
+    search a few times -- the user's doc lore: dead ends, lone doors,
+    corridor ends. Done when a new door/opening shows up (explore again)."""
+
+    def __init__(self, tries=8):
+        self.name = "search dead ends"
+        self.tries = tries
+        self.spots = None
+        self.searching = 0
+        self.known = None
+
+    def dead_ends(self, w):
+        mem = w.memory
+        out = []
+        for (y, x), ch in mem.items():
+            if ch in "#%*: +12345678":
+                continue
+            # Few open squares around: a dead end, the end of a (two-wide)
+            # corridor, or a room corner -- where secret doors tend to be
+            n = sum(1 for dy in (-1, 0, 1) for dx in (-1, 0, 1)
+                    if (dy or dx) and mem.get((y + dy, x + dx), " ") not in "#%*: ")
+            if n <= 3:
+                out.append((y, x))
+        return out
+
+    def tick(self, p):
+        w = p.w
+        if self.known is None:
+            self.known = len(p.frontier())
+            self.spots = sorted(self.dead_ends(w), key=w.dist)
+        if len(p.frontier()) > self.known:
+            return ("done", "found a way on")
+        if self.searching:
+            if time.time() < p.busy_until:
+                return None
+            self.searching -= 1
+            p.cmd("custom s", "search for secret doors", hold=0.45)
+            return None
+        if p.mover.active:
+            st = p.mover.tick()
+            if st == "moving":
+                return None
+            if st == "arrived":
+                self.searching = self.tries
+                return None
+        if not self.spots:
+            return ("failed", "searched every dead end, nothing found")
+        spot = self.spots.pop(0)
+        if w.pos == spot:
+            self.searching = self.tries
+        elif not p.mover.go([spot]):
+            return None
         return None
 
 
@@ -481,6 +551,7 @@ class Pilot:
         self.emergency_t = 0.0
         self.think_warned = 0.0
         self.picked_t = 0.0
+        self.breeder_level = None
         self.choke_state = None
         self.choke_t = self.choke_done_t = 0.0
         self.seen_drained = None
@@ -808,6 +879,16 @@ class Pilot:
         self.choke_done_t = now
         return False
 
+    def watch_breeders(self):
+        """Breeders (lice, worms...) multiply without end and block every path:
+        tell the agent once per level that it's time to leave."""
+        w = self.w
+        br = [r for *_, r in w.monsters if "MULTIPLY" in r.flags]
+        if len(br) >= 4 and self.breeder_level != w.level_t:
+            self.breeder_level = w.level_t
+            self.notify("breeders", f"{len(br)} breeding monsters in view ({br[0].name}): leave this level "
+                                    "(stairs, or recall)")
+
     STAT_NAMES = ("STR", "INT", "WIS", "DEX", "CON", "CHR")
 
     def watch_character(self):
@@ -831,6 +912,7 @@ class Pilot:
         self.w.drain()
         self.w.refresh()
         self.watch_character()
+        self.watch_breeders()
         self.handle_requests()
         if not self.running:
             return
@@ -968,6 +1050,8 @@ class Pilot:
                     sells.append((self.item_index(key) if len(key) == 1 else key, n))
                 i += 2
             g = Shop(rest[0], buys, sells)
+        elif name == "search":
+            g = Search()
         elif name == "hunt":
             g = Hunt(" ".join(rest))
         elif name == "recall":
