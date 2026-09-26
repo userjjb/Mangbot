@@ -118,6 +118,7 @@ class Explore(Goal):
         self.name = "explore" + (f" until {until}" if until else "") + (f" radius {radius}" if radius else "")
         self.center = None
         self.fails = 0
+        self.target = None
 
     def tick(self, p):
         w = p.w
@@ -125,17 +126,30 @@ class Explore(Goal):
             self.center = w.pos
         if self.until == "stairs" and w.find(">"):
             return ("done", "stairs down seen")
+        if p.level_seen != w.level_t:
+            p.level_seen = w.level_t
+            p.unreachable = set()
         if p.mover.active:
             st = p.mover.tick()
             if st == "stuck":
                 self.fails += 1
+                # remember what we couldn't get to (and what blocked us)
+                p.unreachable |= p.mover.avoid | ({self.target} if self.target else set())
             if st in ("moving",):
                 return None
         frontier = p.frontier(center=self.center if self.radius else None, radius=self.radius)
         if not frontier:
             return ("done", "nothing left to explore")
-        if self.fails > 10 or not p.mover.go(frontier):
+        if self.fails > 10 or not p.mover.go(frontier, avoid=p.unreachable):
             return ("failed", "frontier unreachable")
+        self.target = p.mover.path[-1] if p.mover.path else None
+        # In a corridor with nothing about: run along it the way the path
+        # starts, and let the run follow the corridor (as the user explores)
+        m = p.mover
+        if m.path and not w.monsters and m.in_corridor() and not self.radius:
+            d = direction(w.pos, m.path[0])
+            if d:
+                m.free_run(d)
         return None
 
 
@@ -421,6 +435,8 @@ class Pilot:
         self.emergency_t = 0.0
         self.think_warned = 0.0
         self.picked_t = 0.0
+        self.unreachable = set()       # frontier tiles we failed to reach (this level)
+        self.level_seen = None
         self.phase_t = self.cure_t = self.noescape_t = 0.0
         self.escaping_to_stairs = False
         self.full_warned = 0.0
@@ -478,7 +494,7 @@ class Pilot:
         mem = self.w.memory
         out = []
         for (y, x), ch in mem.items():
-            if ch in "#%* " or ch in "12345678":
+            if ch in "#%*: " or ch in "12345678" or (y, x) in self.unreachable:
                 continue
             if center and radius and max(abs(y - center[0]), abs(x - center[1])) > radius:
                 continue
