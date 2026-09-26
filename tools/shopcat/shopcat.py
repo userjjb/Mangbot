@@ -305,7 +305,7 @@ class Cataloger:
             # (state indicator = [paralyzed, searching, resting])
             if not st["ind"].get("state", [0, 0, 0])[2]:
                 self.fight()
-                self.c.send("custom R")
+                self.c.send("rest")   # PKT_REST (toggle); there is no custom R
             self.c.collect(2.0)
         self.say(f"  still at hp {hp}/{mhp} after resting {max_secs}s")
 

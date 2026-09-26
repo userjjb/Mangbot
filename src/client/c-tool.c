@@ -36,6 +36,8 @@
  *   examine SLOT                            -- in a store; reply is a popup
  *   leave                                   -- leave the store
  *   eat ITEM                                -- ITEM = inventory index (a=0)
+ *   rest                                    -- toggle resting (PKT_REST; the
+ *                                             'state' indicator shows it)
  *   custom KEY [store] [item=N] [dir=N] [value=N] [entry=TEXT]
  *   confirm yes|no                          -- answer the next confirm prompt
  *                                             (yes expires after 5 s)
@@ -632,6 +634,12 @@ static void tool_do_command(char *line)
 	else if (streq(verb, "leave"))
 	{
 		send_store_leave();
+		tool_ack(line);
+	}
+	else if (streq(verb, "rest"))
+	{
+		/* Not a custom command: a fixed packet the server treats as a toggle */
+		send_rest();
 		tool_ack(line);
 	}
 	else if (streq(verb, "eat"))
