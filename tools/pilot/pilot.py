@@ -627,6 +627,9 @@ class Shop(Goal):
                 return ("failed", "thrown out of the store")
             if self.sells:
                 idx, n = self.sells.pop(0)
+                force = isinstance(idx, str) and idx.startswith("!")
+                if force:
+                    idx = idx[1:]
                 if isinstance(idx, str):
                     # By name, resolved now (identifying items re-sorts the pack)
                     it = next((i for i in w.items() if idx.lower() in i["name"].lower()), None)
@@ -635,6 +638,14 @@ class Shop(Goal):
                         return None
                     idx = it["item"]
                     w.inven_dirty = True
+                else:
+                    it = next((i for i in w.items() if i["item"] == idx), None)
+                if it and not force and p.probably_special(it["name"]):
+                    # Wormtongue's armour was sold unseen for 17 gold: it was Soft
+                    # Studded Leather of Resistance (buyback 19834)
+                    self.done_log.append(f"NOT sold (probably special, inspect it first; sell !NAME to force): "
+                                         f"{it['name']}")
+                    return None
                 p.c.send("confirm yes")
                 p.cmd(f"custom s store item={idx} value={n}", f"sell {idx}x{n}", hold=0.2)
                 self.last = f"sell {chr(97 + idx)} x{n}"
@@ -709,6 +720,7 @@ class Pilot:
         self.emergency_t = 0.0
         self.think_warned = 0.0
         self.picked_t = 0.0
+        self.unique_names = None
         self.fear_t = 0.0
         self.skipped_items = set()     # (level, square) of junk we chose to leave
         self.resume_after = None
@@ -1036,6 +1048,17 @@ class Pilot:
             self.notify("emergency", f"{why}: " + (f"waiting to use {', '.join(left)} again, fighting on"
                                                    if left else "nothing left to escape with, fighting on"))
         return False
+
+    def probably_special(self, name):
+        """A unique's drop (inscribed with its name) or an {excellent}/{special}
+        feeling: worth inspecting (or identifying) before selling."""
+        m = re.search(r"\{([^}]*)\}", name)
+        tags = m.group(1).lower() if m else ""
+        if any(f in tags for f in ("excellent", "special", "artifact")):
+            return True
+        if not self.unique_names:
+            self.unique_names = {r.name.lower() for r in self.w.g.races.values() if "UNIQUE" in r.flags}
+        return any(u in tags for u in self.unique_names)
 
     def loot_step(self, state):
         """Fetch items seen within loot_radius (dive and explore share this).
@@ -1504,7 +1527,7 @@ class Pilot:
                     buys.append((what.replace("_", " "), n))
                 elif kind == "sell":
                     key = what.replace("_", " ")
-                    sells.append((self.item_index(key) if len(key) == 1 else key, n))
+                    sells.append((self.item_index(key) if len(key) == 1 else key, n))   # '!NAME' forces
                 i += 2
             g = Shop(rest[0], buys, sells)
         elif name == "search":

@@ -116,6 +116,11 @@ Orders are remembered across pilot restarts.
 - Before reading Word of Recall in town, know where it lands: your deepest level so far, or
   `max_depth` if that order is set (the pilot inscribes `@R` then). It once landed at 1000 ft next
   to four Black ogres.
+- **Inspect every unique's drop (and anything {excellent}/{special}) before selling it.**
+  Wormtongue's armour was sold unseen for 17 gold: it was Soft Studded Leather of Resistance (all
+  four basic resistances; buying it back cost 19834). The shop goal now refuses to sell such items
+  unless you write `sell !NAME:1`. `inspect NAME` shows what the character knows; wearing it or
+  reading Identify on it tells more.
 - Do item actions one at a time, by name, and read the reply (it shows the pack afterwards).
   Several destroys sent with letters from an old report hit the wrong items.
 - Without Free Action, a monster that paralyses (Illusionists, Carrion Crawlers, Ghouls...) is a
