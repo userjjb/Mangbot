@@ -200,6 +200,7 @@ class Dive(Goal):
         self.looting = False
         self.pillared_done = False
         self.need_search = False
+        self.stuck = 0
 
     def tick(self, p):
         w = p.w
@@ -252,8 +253,12 @@ class Dive(Goal):
         if w.standing_on is None and self.probed != (w.level_t, w.pos) and not self.walking:
             self.probed = (w.level_t, w.pos)
             return self._stairs(p, ">")
-        # A '>' we know about?
+        # A '>' we know about? (in town: also where we saw it before -- the town
+        # never changes, and its staircase isn't lit at night)
         downs = w.find(">")
+        if not downs and w.depth == 0 and p.town_stairs:
+            downs = [tuple(p.town_stairs)]
+            w.memory.setdefault(downs[0], ">")
         if w.standing_on == ">":
             return self._stairs(p, ">")
         if downs and not self.walking:
@@ -264,9 +269,15 @@ class Dive(Goal):
             if st == "arrived" or (st == "idle" and w.pos in downs):
                 self.walking = False
                 return self._stairs(p, ">")
-            if st in ("stuck", "idle"):
-                # stuck, or the mover was stopped (a fight): replan next tick
+            if st == "idle":
+                # the mover was stopped (a fight): walk on next tick
                 self.walking = False
+                return None
+            if st == "stuck":
+                self.walking = False
+                self.stuck += 1
+                if self.stuck < 5:
+                    return None
             else:
                 return None
         # Scum: back up the staircase we're on, then down again
@@ -622,6 +633,12 @@ class Pilot:
         self.emergency_t = 0.0
         self.think_warned = 0.0
         self.picked_t = 0.0
+        # Where the town's '>' is (remembered across runs: the town never changes)
+        self.town_file = os.path.join(os.path.dirname(rundir.rstrip("/")), "town.json")
+        self.town_stairs = None
+        if os.path.exists(self.town_file):
+            with open(self.town_file) as f:
+                self.town_stairs = json.load(f).get("stairs")
         self.recall_t = 0.0
         self.flee_t = 0.0
         self.wear_queue = False
@@ -993,6 +1010,8 @@ class Pilot:
         br = [r for *_, r in w.monsters if "MULTIPLY" in r.flags]
         if len(br) >= 3 and self.breeder_level != w.level_t:
             self.breeder_level = w.level_t
+            if isinstance(self.goal, Dive):
+                return            # a dive is leaving this level anyway
             self.notify("breeders", f"{len(br)} breeding monsters in view ({br[0].name}): leave this level "
                                     "(stairs, or recall)")
 
@@ -1033,9 +1052,19 @@ class Pilot:
                 return
         self.wear_queue = False
 
+    def note_town_stairs(self):
+        w = self.w
+        if w.depth == 0 and not self.town_stairs:
+            st = w.find(">")
+            if st:
+                self.town_stairs = list(st[0])
+                with open(self.town_file, "w") as f:
+                    json.dump({"stairs": self.town_stairs}, f)
+
     def tick(self):
         self.w.drain()
         self.w.refresh()
+        self.note_town_stairs()
         if self.wear_queue:
             self.wear_step()
         self.watch_character()
