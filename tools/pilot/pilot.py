@@ -128,7 +128,7 @@ class Explore(Goal):
 
     def tick(self, p):
         w = p.w
-        if (w.depth or 0) <= 0:
+        if not w.in_dungeon:
             # On the surface the "frontier" runs off the level edge into the
             # wilderness (it once wandered from town to 2S 2E)
             return ("failed", "explore is for dungeon levels, not the town or wilderness")
@@ -833,7 +833,7 @@ class Pilot:
 
     def idle(self):
         w = self.w
-        if (w.depth or 0) > 0 and not self.idle_recalled and \
+        if w.in_dungeon and not self.idle_recalled and \
                 time.time() - self.last_agent > self.orders["idle_recall_s"]:
             self.idle_recalled = True
             self.notify("idle_recall", "no word from the agent: recalling to town")

@@ -30,7 +30,7 @@ def plan(world, goals, avoid=(), monster_cost=40, max_cost=4000):
     mem = world.memory
     # On the surface (town, wilderness) unseen ground is mostly open -- at
     # night the floor isn't even drawn -- while trees and fences block
-    surface = (world.depth or 0) <= 0
+    surface = not getattr(world, "in_dungeon", (world.depth or 0) > 0)
     dist = {start: 0}
     prev = {}
     heap = [(0, start)]

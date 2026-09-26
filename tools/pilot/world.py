@@ -48,6 +48,8 @@ class World:
         self.hits_taken = 0                    # "... hits you" style messages
         self.last_hit_t = 0.0
         self.pos_t = 0.0
+        self.in_dungeon = None                 # see _level_kind(): the depth byte alone can't tell
+        self.recalled = None                   # 'down'/'up' from the recall message, until the level changes
         self.store = None                      # last store listing while inside a store
         self.store_t = 0.0
         client.log = self._on_event            # every event, from the reader thread
@@ -91,6 +93,8 @@ class World:
                 else:
                     self.arrived_by = "other"
                     self.standing_on = None
+                self.in_dungeon = self._level_kind(old, sc)
+                self.recalled = None
                 self.last_stairs_cmd = None
             elif k == "message":
                 t = ev["text"]
@@ -109,6 +113,7 @@ class World:
                     self.standing_on = None if self.standing_on == ">" else self.standing_on
                 if "yanked upwards" in t or "yanked downwards" in t:
                     self.last_stairs_cmd = None
+                    self.recalled = "down" if "downwards" in t else "up"
             elif k == "store":
                 self.store, self.store_t = ev, time.time()
             elif k == "store_leave":
@@ -118,6 +123,23 @@ class World:
             elif k == "itemlist":
                 self.itemlist = [l for l in ev["lines"] if l.strip()]
         return out
+
+    def _level_kind(self, old_depth, stairs):
+        """Dungeon or surface after a level change. The depth indicator is one
+        signed byte, so far wilderness squares (index < -127) show up as
+        positive depths: judge by how we got here instead."""
+        d = self.depth
+        if d == 0:
+            return False                       # town
+        if d < 0:
+            return False                       # wilderness (index still in range)
+        if self.recalled == "down" or (stairs and stairs[0] == ">"):
+            return True
+        if stairs and stairs[0] == "<":
+            return True                        # up a dungeon staircase, not to town
+        if self.in_dungeon is None:
+            return True                        # logged in down here
+        return self.in_dungeon                 # trapdoor/teleport level stay; walking an edge stays surface
 
     # --- queries ----------------------------------------------------------
 
@@ -134,6 +156,8 @@ class World:
             self.status_t = now
             if self.depth is None:
                 self.depth = self.ind.get("depth", [0])[0]
+            if self.in_dungeon is None and self.depth is not None:
+                self.in_dungeon = self.depth > 0
         if self.inven_dirty or now - self.inven_t > inven_every:
             self.inven = self.c.inven()
             self.inven_t = now
