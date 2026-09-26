@@ -222,6 +222,41 @@ class Dive(Goal):
         return None
 
 
+class Hunt(Goal):
+    """Go and fight a monster by name: walk next to it, then stand still (the
+    server's auto-retaliate does the hitting). Done when it's slain; failed
+    when it's been out of sight for lost_s."""
+
+    def __init__(self, name, lost_s=15):
+        self.target = name.lower()
+        self.name = f"hunt {name}"
+        self.lost_s = lost_s
+        self.last_seen = time.time()
+        self.goal_tile = None
+
+    def tick(self, p):
+        w = p.w
+        if any(t.startswith("You have slain") and self.target in t.lower() or
+               t.startswith("You have destroyed") and self.target in t.lower() for t in w.recent(3)):
+            return ("done", "slain")
+        mons = [(y, x, r) for y, x, r in w.monsters if self.target in r.name.lower()]
+        if not mons:
+            if time.time() - self.last_seen > self.lost_s:
+                return ("failed", "lost sight of it")
+            return None
+        self.last_seen = time.time()
+        y, x, r = min(mons, key=lambda m: w.dist(m[:2]))
+        if w.dist((y, x)) <= 1:
+            p.mover.stop()
+            return None           # adjacent: auto-retaliate fights
+        near = [(y + dy, x + dx) for dy in (-1, 0, 1) for dx in (-1, 0, 1) if dy or dx]
+        if not p.mover.active or self.goal_tile != (y, x):
+            self.goal_tile = (y, x)
+            p.mover.go(near)
+        p.mover.tick()
+        return None
+
+
 class Recall(Goal):
     name = "recall"
 
@@ -254,9 +289,12 @@ class Shop(Goal):
     def __init__(self, store, buys=(), sells=()):
         self.store = str(store)
         # Sell from the end of the pack first: selling shifts the letters after it
-        self.buys, self.sells = list(buys), sorted(sells, reverse=True)
+        # (names are resolved when their turn comes)
+        self.buys = list(buys)
+        self.sells = sorted([s for s in sells if isinstance(s[0], int)], reverse=True) + \
+            [s for s in sells if isinstance(s[0], str)]
         self.name = f"shop {store}" + "".join(f" buy {n}:{c}" for n, c in buys) + \
-            "".join(f" sell {chr(97 + i)}:{c}" for i, c in sells)
+            "".join(f" sell {chr(97 + i) if isinstance(i, int) else i}:{c}" for i, c in sells)
         self.state = "walk"
         self.t = 0.0
         self.done_log = []
@@ -290,16 +328,31 @@ class Shop(Goal):
                 self.state = "walk"
             return None
         if self.state == "trade":
-            if self.pending and w.store_t < self.pending and time.time() - self.pending < 4:
-                return None       # waiting for the refreshed listing
-            self.pending = None
+            if self.pending:
+                # The server's answer: a refreshed listing and/or a message
+                said = [t for ts, t in w.messages if ts >= self.pending]
+                verdict = next((t for t in said if t.startswith(("You sold", "You bought", "I don't want",
+                                                                 "You do not have enough", "You cannot carry",
+                                                                 "You have no room", "That item"))), None)
+                if verdict is None and w.store_t < self.pending and time.time() - self.pending < 4:
+                    return None   # still waiting
+                self.done_log.append(verdict or f"{self.last} (no answer)")
+                self.pending = None
             if not w.store:
                 return ("failed", "thrown out of the store")
             if self.sells:
                 idx, n = self.sells.pop(0)
+                if isinstance(idx, str):
+                    # By name, resolved now (identifying items re-sorts the pack)
+                    it = next((i for i in w.items() if idx.lower() in i["name"].lower()), None)
+                    if not it:
+                        self.done_log.append(f"no {idx} to sell")
+                        return None
+                    idx = it["item"]
+                    w.inven_dirty = True
                 p.c.send("confirm yes")
                 p.cmd(f"custom s store item={idx} value={n}", f"sell {idx}x{n}", hold=0.2)
-                self.done_log.append(f"sold {chr(97 + idx)} x{n}")
+                self.last = f"sell {chr(97 + idx)} x{n}"
                 self.pending = time.time()
                 return None
             if self.buys:
@@ -315,7 +368,7 @@ class Shop(Goal):
                     return None
                 p.cmd(f"custom p store item={it['slot']} value={n} entry={it['price'] * n}",
                       f"buy {it['name']} x{n}", hold=0.2)
-                self.done_log.append(f"bought {n} x {it['name']} @ {it['price']}")
+                self.last = f"buy {it['name']} x{n}"
                 self.pending = time.time()
                 return None
             p.cmd("leave", "leave store", hold=0.3)
@@ -345,14 +398,21 @@ class Pilot:
         self.c = client
         self.w = World(client)
         self.mover = Mover(client, self.w, log=lambda *a, **k: self.log("move", **k))
-        self.orders = dict(DEFAULT_ORDERS, **(orders or {}))
         self.rundir = rundir
         os.makedirs(rundir, exist_ok=True)
+        # Standing orders persist across restarts
+        self.orders_file = os.path.join(rundir, "orders.json")
+        saved = {}
+        if os.path.exists(self.orders_file):
+            with open(self.orders_file) as f:
+                saved = {k: v for k, v in json.load(f).items() if k in DEFAULT_ORDERS}
+        self.orders = dict(DEFAULT_ORDERS, **saved, **(orders or {}))
         self.dlog = open(os.path.join(rundir, "decisions.jsonl"), "a", buffering=1)
         self.say = say
         self.goal = None
         self.requests = queue.Queue()
         self.attention = []            # pending attention events (for wait-attention)
+        self.news = []                 # informational events since the last report
         self.att_cond = threading.Condition()
         self.last_agent = time.time()
         self.busy_until = 0.0
@@ -360,6 +420,10 @@ class Pilot:
         self.last_action = None
         self.emergency_t = 0.0
         self.think_warned = 0.0
+        self.picked_t = 0.0
+        self.phase_t = self.cure_t = self.noescape_t = 0.0
+        self.escaping_to_stairs = False
+        self.full_warned = 0.0
         self.running = True
 
     # --- logging / attention -------------------------------------------------
@@ -369,10 +433,18 @@ class Pilot:
                "hp": self.w.hp, **kw}
         self.dlog.write(json.dumps(rec) + "\n")
 
+    # Events that don't need a decision (the pilot already acted): shown in
+    # the next report instead of waking the agent
+    NEWS = {"danger_avoided", "started"}
+
     def notify(self, what, detail=None):
         ev = {"t": round(time.time(), 3), "what": what, "detail": detail,
               "goal": self.goal.describe() if self.goal else None}
         self.log("attention", what=what, detail=detail)
+        if what in self.NEWS:
+            self.news.append(ev)
+            self.news = self.news[-20:]
+            return
         with self.att_cond:
             self.attention.append(ev)
             self.att_cond.notify_all()
@@ -481,10 +553,16 @@ class Pilot:
         if w.hp_frac < o["flee_hp"] and (mons_near or now - w.last_hit_t < 5):
             return self.escape("low HP")
         # 3. Arrival into danger (connected stairs: the way back is underfoot)
-        if now - w.level_t < 3 and w.standing_on in ("<", ">"):
+        stairs_pending = w.last_stairs_cmd and now - w.last_stairs_cmd[1] < 3
+        if now - w.level_t < 3 and w.standing_on in ("<", ">") and not stairs_pending:
             danger = self.dangers()
-            if len(mons_near) >= o["arrival_pack"] or (danger and "danger" in o["stop_on"]):
-                why = f"arrived next to {len(mons_near)} monsters" + (f" incl. {danger[0].name}" if danger else "")
+            # A pack only counts if its members are within 5 levels of ours (a
+            # pack of jackals is XP for a level-11 warrior, not a threat)
+            lev = w.ind.get("level", [1])[0]
+            threats = [m for m in mons_near if m[2].level >= lev - 5]
+            if len(threats) >= o["arrival_pack"] or (danger and "danger" in o["stop_on"]):
+                why = f"arrived next to {len(threats)} monsters ({threats[0][2].name if threats else ''})" + \
+                    (f" incl. {danger[0].name} (lvl {danger[0].level})" if danger else "")
                 self.take_stairs(w.standing_on)
                 self.notify("danger_avoided", why)
                 return True
@@ -500,7 +578,7 @@ class Pilot:
         # 5. Adjacent monster: let the server's auto-retaliate fight
         adj = w.adjacent_monsters()
         if adj:
-            if self.mover.active and not isinstance(self.goal, Goto):
+            if self.mover.active and not isinstance(self.goal, (Goto,)):
                 self.mover.stop()
             if w.resting:
                 self.stop_resting()
@@ -509,6 +587,18 @@ class Pilot:
                 self.notify("fight_going_badly",
                             f"HP {w.hp[0]}/{w.hp[1]} fighting {', '.join(sorted({r.name for *_, r in adj}))}")
             return not isinstance(self.goal, Goto)
+        # Pick up what we're standing on ("You see a ..." right after a step)
+        if o["pickup"] == "all" and not adj and not w.store:
+            seen = [(ts, t) for ts, t in w.messages if now - ts < 3 and t.startswith("You see ")
+                    and "no items" not in t]
+            if seen and seen[-1][0] > self.picked_t and w.pos == self.seen_pos(seen[-1][0]):
+                self.picked_t = now
+                self.cmd("custom ,", f"pick up: {seen[-1][1][8:]}", hold=0.4)   # "Stay" picks up; "g" did nothing
+                return True
+        full = [t for ts, t in w.messages if now - ts < 3 and t.startswith("You have no room for")]
+        if full and now - self.full_warned > 30:
+            self.full_warned = now
+            self.notify("pack_full", full[-1])
         # 6. Rest when hurt and alone
         if w.hp_frac < o["rest_below"] and not w.monsters and not isinstance(self.goal, (Recall,)):
             if not self.mover.active or isinstance(self.goal, Dive):
@@ -521,28 +611,53 @@ class Pilot:
         return False
 
     def escape(self, why):
+        """Emergency: stairs underfoot > (in melee) Phase Door > (not in melee)
+        walk to nearby stairs, else a cure potion. Rate-limited: Phase Door
+        again and again doesn't shake a pack (it burned 10 scrolls in 10 s)."""
         w = self.w
-        if time.time() - self.emergency_t < 1.0:
-            return True
-        self.emergency_t = time.time()
-        self.mover.stop()
+        now = time.time()
+        if w.last_stairs_cmd and now - w.last_stairs_cmd[1] < 3:
+            return True           # already on our way
         if w.standing_on in ("<", ">"):
             self.take_stairs(w.standing_on)
             self.notify("emergency", f"{why}: took the stairs underfoot ({w.standing_on})")
             return True
+        adj = w.adjacent_monsters()
+        can_read = not w.flag("blind") and not w.flag("confused")
         pd = w.tagged("r", 1) or next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
-        if pd and not w.flag("blind") and not w.flag("confused"):
+        if adj and pd and can_read and now - self.phase_t > 2.5:
+            self.phase_t = now
             self.cmd(f"custom r item={pd['item']}", f"{why}: phase door", hold=0.6)
-            self.notify("emergency", f"{why}: read Phase Door")
+            self.notify("emergency", f"{why}: read Phase Door ({', '.join(sorted({r.name for *_, r in adj}))} adjacent)")
             return True
-        for name in CURE_POTIONS:
-            pot = next((i for i in w.items(tval=TV_POTION) if name in i["name"]), None)
-            if pot:
-                self.cmd(f"custom q item={pot['item']}", f"{why}: quaff {name}", hold=0.6)
-                self.notify("emergency", f"{why}: quaffed {name}")
+        if not adj:
+            # Out of melee: make for stairs if some are close, else heal
+            stairs = [p for p in w.find("<>") if w.dist(p) <= 20]
+            if stairs and not self.mover.active:
+                if self.mover.go(stairs):
+                    self.escaping_to_stairs = True
+                    self.notify("emergency", f"{why}: heading for the stairs {min(w.dist(p) for p in stairs)} away")
+            if self.mover.active and self.escaping_to_stairs:
+                st = self.mover.tick()
+                if st == "arrived" and w.standing_on in ("<", ">"):
+                    self.take_stairs(w.standing_on)
                 return True
-        self.notify("emergency", f"{why}: no escape available, fighting on")
+        if now - self.cure_t > 1.5:
+            for name in CURE_POTIONS:
+                pot = next((i for i in w.items(tval=TV_POTION) if name in i["name"]), None)
+                if pot:
+                    self.cure_t = now
+                    self.cmd(f"custom q item={pot['item']}", f"{why}: quaff {name}", hold=0.6)
+                    self.notify("emergency", f"{why}: quaffed {name}")
+                    return True
+        if now - self.noescape_t > 10:
+            self.noescape_t = now
+            self.notify("emergency", f"{why}: nothing left to escape with, fighting on")
         return False
+
+    def seen_pos(self, t):
+        """Where we were at time t (for 'You see' messages): the position then."""
+        return self.w.pos if self.w.pos_t <= t + 0.5 else None
 
     def set_goal(self, goal):
         self.mover.stop()
@@ -626,6 +741,8 @@ class Pilot:
                     return {"ok": False, "error": f"no order {k}"}
                 cur = self.orders[k]
                 self.orders[k] = type(cur)(v) if not isinstance(cur, str) else v
+            with open(self.orders_file, "w") as f:
+                json.dump(self.orders, f)
             return {"ok": True, "orders": self.orders}
         if c in self.ACTIONS:
             key = self.ACTIONS[c]
@@ -646,7 +763,7 @@ class Pilot:
             self.cmd(f"custom {{ item={item} entry={' '.join(args[1:])}", f"agent: inscribe {args}")
             return {"ok": True}
         if c == "pickup":
-            self.cmd("custom g", "agent: pickup")
+            self.cmd("custom ,", "agent: pickup")
             return {"ok": True}
         if c == "stairs":
             self.take_stairs(args[0] if args else (self.w.standing_on or ">"))
@@ -703,9 +820,12 @@ class Pilot:
                 if kind == "buy":
                     buys.append((what.replace("_", " "), n))
                 elif kind == "sell":
-                    sells.append((self.item_index(what), n))
+                    key = what.replace("_", " ")
+                    sells.append((self.item_index(key) if len(key) == 1 else key, n))
                 i += 2
             g = Shop(rest[0], buys, sells)
+        elif name == "hunt":
+            g = Hunt(" ".join(rest))
         elif name == "recall":
             g = Recall()
         elif name == "rest":
@@ -761,6 +881,10 @@ class Pilot:
             near = sorted(stairs, key=w.dist)[:4]
             lines.append("Known stairs: " + ", ".join(f"{w.memory[p]} at {p[0]},{p[1]} ({w.dist(p)} away)"
                                                      for p in near))
+        if self.news:
+            lines.append("Since last report: " + " | ".join(
+                f"{time.strftime('%H:%M:%S', time.localtime(e['t']))} {e['what']}: {e['detail']}" for e in self.news))
+            self.news = []
         lines.append("Recent messages: " + " | ".join(w.recent(30)[-12:]))
         lines.append("Orders: " + ", ".join(f"{k}={v}" for k, v in self.orders.items()))
         return "\n".join(lines)
