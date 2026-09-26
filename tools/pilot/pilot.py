@@ -700,6 +700,7 @@ class Pilot:
         self.emergency_t = 0.0
         self.think_warned = 0.0
         self.picked_t = 0.0
+        self.parking = None
         self.light_t = self.light_warned = 0.0
         # Where the town's '>' is (remembered across runs: the town never changes)
         self.town_file = os.path.join(os.path.dirname(rundir.rstrip("/")), "town.json")
@@ -1174,6 +1175,20 @@ class Pilot:
                 with open(self.town_file, "w") as f:
                     json.dump({"stairs": self.town_stairs}, f)
 
+    def park_tick(self):
+        """Parking: log out once it's safe (restarting mid-fight is dangerous)."""
+        w = self.w
+        near = [m for m in w.monsters if w.dist(m[:2]) <= 15]
+        safe = not near and w.hp_frac >= 0.7 and not w.store and \
+            not (w.last_stairs_cmd and time.time() - w.last_stairs_cmd[1] < 3)
+        if safe or time.time() - self.parking > 300:
+            self.notify("parked", "logging out for a Pilot update; back in a minute -- "
+                                  "re-issue your goal when you see 'started'"
+                        + ("" if safe else " (parked after 5 min without a safe moment)"))
+            with self.att_cond:
+                self.att_cond.wait(1.5)   # let a waiting Navigator collect the event
+            self.running = False
+
     def tick(self):
         self.w.drain()
         self.w.refresh()
@@ -1186,6 +1201,9 @@ class Pilot:
         if not self.running:
             return
         if self.reflexes():
+            return
+        if self.parking:
+            self.park_tick()
             return
         if self.step_goal():
             return
@@ -1332,6 +1350,12 @@ class Pilot:
         if c == "quit":
             self.running = False
             return {"ok": True}
+        if c == "park":
+            # Log out at the next safe moment (for a Pilot update): the goal is
+            # dropped now, the logout waits until nothing is close and HP is OK
+            self.set_goal(None)
+            self.parking = time.time()
+            return {"ok": True, "note": "will log out when safe"}
         return {"ok": False, "error": f"unknown command {c}"}
 
     def request_goal(self, args):
