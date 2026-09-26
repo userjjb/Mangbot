@@ -68,7 +68,10 @@ Attention events:
 `wearall` (put on everything that fills an empty slot), `wear L`, `takeoff L`, `quaff L`, `read L`, `eat L`, `fuel L` (refill a lantern
 from a flask), `inspect L`, `destroy L [N]`, `drop L [N]`, `inscribe L TEXT`,
 `pickup` (what's underfoot), `stairs [<|>]`. L is the pack letter from the
-report. With `pickup=all` (the default) the pilot picks up whatever it walks
+report, **or part of the item's name** with spaces as `_` (e.g. `destroy Salt_Water`,
+`quaff Cure_Light`), which is safer: a name is looked up at the moment the pilot acts. Each item
+action answers with what the game said and the pack as it is *now*: use those letters for the
+next action. With `pickup=all` (the default) the pilot picks up whatever it walks
 onto when nothing is next to it. Letters shift when items come and go (and
 when identifying re-sorts the pack): check `status` before a series of
 actions, and act from the last letter backwards.
@@ -98,6 +101,7 @@ of Phase Door and cure potions: it will use them.
 | `max_depth` | 0 | feet, 0 = no limit: dives stop there, exploring below it is refused, and after an emergency escape down the stairs the pilot rests and comes back up |
 | `loot_radius` | 10 | during a dive, fetch items seen within this many squares (0 = never) |
 | `pickup` | all | all or none |
+| `junk` | Salt Water, Blindness, ... | comma list: items "of" these are never picked up (unknown items still are) |
 
 Orders are remembered across pilot restarts.
 

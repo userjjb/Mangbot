@@ -58,6 +58,10 @@ def main():
     out = call(sock, {"cmd": cmd, "args": args}, 40)
     if "report" in out:
         print(out["report"])
+    elif "pack" in out:
+        for line in out.get("said", []):
+            print(line)
+        print("Pack now: " + "; ".join(out["pack"]))
     elif "events" in out:
         for ev in out["events"]:
             print(f"ATTENTION {ev['what']}: {ev.get('detail') or ''}")

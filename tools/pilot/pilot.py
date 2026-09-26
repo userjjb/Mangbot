@@ -57,6 +57,10 @@ DEFAULT_ORDERS = {
     "pillared": "explore",       # dive: explore pillared rooms for a '>' by itself (or: ask, ignore)
     "loot_radius": 10,           # dive: fetch items seen within this many squares (0 = off)
     "choke": "on",               # meet packs in a corridor, not in the open (the user's advice)
+    "junk": "Salt Water,Blindness,Weakness,Sleep,Poison,Lose Memories,Confusion,Sickliness,"
+            "Apple Juice,Slime Mold,Darkness,Aggravate Monster,Curse Weapon,Curse Armour,"
+            "Summon Undead,Summon Monster,Treasure Detection,Detect Invisible",
+                                 # items "of <these>" aren't picked up (unknown items still are)
     "max_depth": 0,              # feet; 0 = no limit. Dives stop there, explore refuses below it,
                                  # and after an emergency trip down the stairs we come back up
 }
@@ -906,6 +910,10 @@ class Pilot:
         if o["pickup"] == "all" and not adj and not w.store:
             seen = [(ts, t) for ts, t in w.messages if now - ts < 3 and t.startswith("You see ")
                     and "no items" not in t]
+            junk = [j.strip().lower() for j in o.get("junk", "").split(",") if j.strip()]
+            if seen and any(f"of {j}" in seen[-1][1].lower() or seen[-1][1].lower().rstrip(".").endswith(j)
+                            for j in junk):
+                seen = []         # known junk: leave it (it filled the pack on the way down)
             if seen and seen[-1][0] > self.picked_t and w.pos == self.seen_pos(seen[-1][0]):
                 self.picked_t = now
                 self.cmd("custom ,", f"pick up: {seen[-1][1][8:]}", hold=0.4)   # "Stay" picks up; "g" did nothing
@@ -1201,9 +1209,29 @@ class Pilot:
     ACTIONS = {"wear": "w", "takeoff": "t", "quaff": "q", "read": "r", "eat": "E", "fuel": "F",
                "destroy": "k", "drop": "d", "inspect": "I", "aim": "a", "use": "u", "zap": "z"}
 
-    def item_index(self, letter):
-        """Inventory letter (a, b, ...) as in the report -> item index."""
-        return ord(letter) - ord("a") if len(letter) == 1 and letter.isalpha() else int(letter)
+    def item_index(self, letter, equip=False):
+        """Inventory letter (a, b, ...) as in the report, or part of an item's
+        name (spaces as '_'; resolved now, so it can't go stale) -> item index."""
+        if len(letter) == 1 and letter.isalpha():
+            return ord(letter) - ord("a")
+        if letter.isdigit():
+            return int(letter)
+        name = letter.replace("_", " ").lower()
+        pool = self.w.items(equip=True) + self.w.items() if equip else self.w.items() + self.w.items(equip=True)
+        it = next((i for i in pool if name in i["name"].lower()), None)
+        if it is None:
+            raise ValueError(f"no item matching '{letter}'")
+        return it["item"]
+
+    def pack_now(self, wait=0.7):
+        """Re-read the pack right after an action (the report lagged behind a
+        batch of destroys, and the Navigator then acted on stale letters)."""
+        self.c.collect(wait)
+        self.w.drain()
+        self.w.inven = self.c.inven()
+        self.w.inven_t = time.time()
+        self.w.inven_dirty = False
+        return [f"{chr(97 + i['item'])}) {i['name']}" for i in self.w.items()]
 
     def do_request(self, req):
         c = req.get("cmd")
@@ -1230,7 +1258,10 @@ class Pilot:
             key = self.ACTIONS[c]
             if not args:
                 return {"ok": False, "error": f"usage: {c} ITEMLETTER"}
-            item = self.item_index(args[0])
+            try:
+                item = self.item_index(args[0], equip=(c == "takeoff"))
+            except ValueError as e:
+                return {"ok": False, "error": str(e)}
             extra = ""
             if c in ("destroy", "drop"):
                 extra = f" value={args[1] if len(args) > 1 else 1}"
@@ -1238,16 +1269,22 @@ class Pilot:
                     self.c.send("confirm yes")
             if c in ("aim",):
                 extra = f" dir={args[1] if len(args) > 1 else 5}"
+            t0 = time.time()
             self.cmd(f"custom {key} item={item}{extra}", f"agent: {c} {args}")
-            return {"ok": True}
+            pack = self.pack_now()
+            said = [t for ts, t in self.w.messages if ts >= t0]
+            return {"ok": True, "said": said[-4:], "pack": pack}
         if c == "wearall":
             # Put on every weapon/armour/light in the pack whose slot is empty
             self.wear_queue = True
             return {"ok": True}
         if c == "inscribe":
-            item = self.item_index(args[0])
+            try:
+                item = self.item_index(args[0])
+            except ValueError as e:
+                return {"ok": False, "error": str(e)}
             self.cmd(f"custom {{ item={item} entry={' '.join(args[1:])}", f"agent: inscribe {args}")
-            return {"ok": True}
+            return {"ok": True, "pack": self.pack_now()}
         if c == "pickup":
             self.cmd("custom ,", "agent: pickup")
             return {"ok": True}
