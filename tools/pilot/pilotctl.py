@@ -47,7 +47,13 @@ def main():
     cmd, args = argv[0], argv[1:]
     if cmd == "wait":
         t = float(args[0]) if args else 600
-        out = call(sock, {"cmd": "wait-attention", "timeout": t}, t + 30)
+        try:
+            out = call(sock, {"cmd": "wait-attention", "timeout": t}, t + 30)
+        except (ConnectionError, FileNotFoundError, json.JSONDecodeError, OSError) as e:
+            # the Pilot was restarted (parked for an update) while we waited
+            print(f"(Pilot not answering: {e.__class__.__name__}; it may be restarting -- "
+                  "wait 20 s and try again, then re-issue your goal)")
+            return
         for ev in out.get("events", []):
             print(f"ATTENTION {ev['what']}: {ev.get('detail') or ''}  (goal: {ev.get('goal')})")
         if not out.get("events"):
@@ -55,7 +61,11 @@ def main():
         if out.get("report"):
             print(out["report"])
         return
-    out = call(sock, {"cmd": cmd, "args": args}, 40)
+    try:
+        out = call(sock, {"cmd": cmd, "args": args}, 40)
+    except (ConnectionError, FileNotFoundError, json.JSONDecodeError, OSError) as e:
+        print(f"(Pilot not answering: {e.__class__.__name__}; it may be restarting -- wait 20 s and retry)")
+        return
     if "report" in out:
         print(out["report"])
     elif "pack" in out:

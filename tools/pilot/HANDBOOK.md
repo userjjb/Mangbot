@@ -36,6 +36,7 @@ Attention events:
 | `breeders` | 3+ breeding monsters (lice, worms) in view: they multiply fast and give no XP. Kill one or two quickly; more than that, leave the area (stairs, or recall) |
 | `afraid` | afraid (a warrior can't melee then) and cornered with nothing to cure it: the pilot phased away. Normally, when afraid, the pilot kites over ground already walked until the fear wears off, and only in danger quaffs Boldness/Heroism/Berserk |
 | `fearer` | a monster that frightens you again and again is near (e.g. Poltergeist, Ghost, Banshee, Priest, molds): the pilot moves away from it (phases if it's dangerous and adjacent). Usually best to leave that area or level |
+| `emergency_loop` | third emergency in 90 s and no stairs nearby: phasing and potions aren't working; recall or leave the area (with stairs known, the pilot leaves by itself) |
 | `tactic`, `resumed` | (news) the pilot backed into a corridor against a pack, kited while afraid, or resumed your goal after recovering from an emergency |
 | `dead` | the character died |
 
@@ -131,6 +132,16 @@ Orders are remembered across pilot restarts.
   Several destroys sent with letters from an old report hit the wrong items.
 - Without Free Action, a monster that paralyses (Illusionists, Carrion Crawlers, Ghouls...) is a
   reason to leave the level, not to fight.
+- **Budget two Word of Recall per trip**: the pilot reads one by itself below 30% HP, and each of
+  two trips in mission 2 cost a whole scroll that way.
+- Cure Light Wounds heals only ~20 HP: at 200+ max HP buy Cure Serious/Critical Wounds. The pilot
+  drinks the weakest first, the strongest only below 30% HP. Against weak monsters `flee_hp=0.4`
+  saves potions.
+- **Buy Potions of Boldness or Heroism whenever the store has them.** Without them, leave a level
+  with Priests or packs of paladins (they scare and summon): two trips were lost to fear.
+- A character with a 1d6 weapon, 3 blows and AC ~30 struggled against groups at 650-700 ft;
+  450-550 ft earned XP and gold more safely until the gear improves.
+- `max_depth` caps dives (the pilot now says so): raise it first when you mean to go deeper.
 - Leave the pack to the pilot's `junk` and `autodestroy` orders; add `average` to `autodestroy`
   when the pack fills too fast.
 

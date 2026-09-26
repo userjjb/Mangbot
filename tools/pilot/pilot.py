@@ -720,6 +720,8 @@ class Pilot:
         self.emergency_t = 0.0
         self.think_warned = 0.0
         self.picked_t = 0.0
+        self.emerg_times = []
+        self.loop_warned = 0.0
         self.retreating = False
         self.fearers_seen = set()
         self.unique_names = None
@@ -760,11 +762,13 @@ class Pilot:
 
     # Events that don't need a decision (the pilot already acted): shown in
     # the next report instead of waking the agent
-    NEWS = {"danger_avoided", "started", "tactic"}
+    NEWS = {"danger_avoided", "started", "tactic", "resumed"}
 
     def notify(self, what, detail=None):
         ev = {"t": round(time.time(), 3), "what": what, "detail": detail,
               "goal": self.goal.describe() if self.goal else None}
+        if what == "emergency":
+            self.emerg_times.append(time.time())
         self.log("attention", what=what, detail=detail)
         if what in self.NEWS:
             self.news.append(ev)
@@ -918,6 +922,12 @@ class Pilot:
         # in danger cure it (Boldness/Heroism/Berserk) or phase away.
         if w.flag("afraid") and mons_near:
             danger = w.hp_frac < o["think_hp"] or bool(self.dangers())
+            # (just arrived: no walked ground to kite over -- the stairs underfoot
+            # are the cheapest way out)
+            if not w.walked - {w.pos} and w.standing_on in ("<", ">") and len(mons_near) >= 2:
+                self.take_stairs(w.standing_on)
+                self.notify("tactic", "afraid on arrival among monsters: took the stairs back")
+                return True
             if not danger and self.retreat_step(mons_near):
                 if now - self.fear_t > 20:
                     self.fear_t = now
@@ -1018,6 +1028,25 @@ class Pilot:
             return True
         return False
 
+    def emergency_loop(self, now):
+        """Three emergency actions within 90 s: phasing and drinking isn't
+        working (HP stuck around 50%, monsters always in view): leave by stairs
+        if some are known, else tell the Navigator."""
+        self.emerg_times = [t for t in self.emerg_times if now - t < 90]
+        if len(self.emerg_times) < 3 or now - self.loop_warned < 60:
+            return False
+        self.loop_warned = now
+        stairs = [p for p in self.w.find("<>") if self.w.dist(p) <= 30]
+        if stairs and not isinstance(self.goal, Flee):
+            prev = self.goal
+            self.set_goal(Flee("emergency loop"))
+            self.resume_after = prev
+            self.notify("tactic", "third emergency in 90 s: leaving by the stairs")
+            return True
+        self.notify("emergency_loop", "third emergency in 90 s and no stairs known nearby: "
+                                      "consider Word of Recall or leaving this area")
+        return False
+
     def escape(self, why):
         """Emergency: stairs underfoot > (in melee) Phase Door > (not in melee)
         walk to nearby stairs, else a cure potion. Rate-limited: Phase Door
@@ -1026,6 +1055,8 @@ class Pilot:
         now = time.time()
         if w.last_stairs_cmd and now - w.last_stairs_cmd[1] < 1.2:
             return True           # already on our way (retried after 1.2 s)
+        if self.emergency_loop(now):
+            return True
         if w.standing_on in ("<", ">"):
             which = w.standing_on
             self.take_stairs(which)
@@ -1067,7 +1098,10 @@ class Pilot:
                     self.take_stairs(w.standing_on)
                 return True
         if now - self.cure_t > 1.5:
-            for name in CURE_POTIONS:
+            # Weakest first unless HP is collapsing: with ~240 max HP, Cure Serious
+            # went first and was gone when it mattered (Navigator mission 2)
+            order = CURE_POTIONS if w.hp_frac < 0.3 else tuple(reversed(CURE_POTIONS[:3])) + CURE_POTIONS[3:]
+            for name in order:
                 pot = next((i for i in w.items(tval=TV_POTION) if name in i["name"]), None)
                 if pot:
                     self.cure_t = now
@@ -1647,6 +1681,11 @@ class Pilot:
         else:
             lines.append("Monsters in view: none")
         lines.append("Items seen: " + ("; ".join(l.strip() for l in w.itemlist) if w.itemlist else "?"))
+        near_items = sorted(self.resolve_target("item"), key=w.dist)[:8] if w.pos else []
+        if near_items:
+            lines.append("Item squares nearby (glyph at y,x, distance): " + ", ".join(
+                f"{w.memory.get(p, '?')} at {p[0]},{p[1]} ({w.dist(p)})" for p in near_items)
+                + "  -- 'goal goto Y,X' then 'pickup'")
         stairs = w.find("<>")
         if stairs:
             near = sorted(stairs, key=w.dist)[:4]
