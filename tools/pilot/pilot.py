@@ -1205,8 +1205,11 @@ class Pilot:
         """Parking: log out once it's safe (restarting mid-fight is dangerous)."""
         w = self.w
         near = [m for m in w.monsters if w.dist(m[:2]) <= 15]
+        # (never during a pending recall: a logout reset its depth once, and
+        # Dive03 landed at 1000 ft instead of the @R750 it had asked for)
         safe = not near and w.hp_frac >= 0.7 and not w.store and \
-            not (w.last_stairs_cmd and time.time() - w.last_stairs_cmd[1] < 3)
+            not (w.last_stairs_cmd and time.time() - w.last_stairs_cmd[1] < 3) and \
+            not self.recall_started(time.time()) and not isinstance(self.goal, Recall)
         if safe or time.time() - self.parking > 300:
             self.notify("parked", "logging out for a Pilot update; back in a minute -- "
                                   "re-issue your goal when you see 'started'"
@@ -1228,7 +1231,7 @@ class Pilot:
             return
         if self.reflexes():
             return
-        if self.parking:
+        if self.parking and not isinstance(self.goal, Recall):
             self.park_tick()
             return
         if self.step_goal():
@@ -1403,7 +1406,8 @@ class Pilot:
         if c == "park":
             # Log out at the next safe moment (for a Pilot update): the goal is
             # dropped now, the logout waits until nothing is close and HP is OK
-            self.set_goal(None)
+            if not isinstance(self.goal, Recall):
+                self.set_goal(None)       # a pending recall is allowed to finish first
             self.parking = time.time()
             return {"ok": True, "note": "will log out when safe"}
         return {"ok": False, "error": f"unknown command {c}"}
