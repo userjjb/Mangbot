@@ -67,7 +67,7 @@ Attention events:
 ## Actions (immediate)
 
 `wearall` (put on everything that fills an empty slot), `wear L`, `takeoff L`, `quaff L`, `read L`, `eat L`, `fuel L` (refill a lantern
-from a flask), `inspect L`, `destroy L [N]`, `drop L [N]`, `inscribe L TEXT`,
+from a flask), `inspect L`, `destroy L [N|all]`, `drop L [N|all]`, `inscribe L TEXT`,
 `pickup` (what's underfoot), `stairs [<|>]`. L is the pack letter from the
 report, **or part of the item's name** with spaces as `_` (e.g. `destroy Salt_Water`,
 `quaff Cure_Light`), which is safer: a name is looked up at the moment the pilot acts. Each item
@@ -102,6 +102,7 @@ of Phase Door and cure potions: it will use them.
 | `max_depth` | 0 | feet, 0 = no limit: dives stop there, exploring below it is refused, and after an emergency escape down the stairs the pilot rests and comes back up |
 | `loot_radius` | 10 | during a dive, fetch items seen within this many squares (0 = never) |
 | `pickup` | all | all or none |
+| `autodestroy` | worthless,cursed | pseudo-ID feelings (`{average}`, `{worthless}`, `{cursed}`...) whose items the pilot destroys by itself (never items you inscribed with `@` or `!`). Add `average` when pack space matters more than the few coins they sell for |
 | `junk` | Salt Water, Blindness, ... | comma list: items "of" these are never picked up (unknown items still are) |
 
 Orders are remembered across pilot restarts.

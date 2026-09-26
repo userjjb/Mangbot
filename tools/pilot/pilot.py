@@ -57,6 +57,7 @@ DEFAULT_ORDERS = {
     "pillared": "explore",       # dive: explore pillared rooms for a '>' by itself (or: ask, ignore)
     "loot_radius": 10,           # dive: fetch items seen within this many squares (0 = off)
     "choke": "on",               # meet packs in a corridor, not in the open (the user's advice)
+    "autodestroy": "worthless,cursed",   # pseudo-ID feelings whose items get destroyed (add 'average')
     "junk": "Salt Water,Blindness,Weakness,Sleep,Poison,Lose Memories,Confusion,Sickliness,"
             "Apple Juice,Slime Mold,Darkness,Aggravate Monster,Curse Weapon,Curse Armour,"
             "Summon Undead,Summon Monster,Treasure Detection,Detect Invisible",
@@ -700,6 +701,7 @@ class Pilot:
         self.emergency_t = 0.0
         self.think_warned = 0.0
         self.picked_t = 0.0
+        self.autodestroy_t = 0.0
         self.parking = None
         self.light_t = self.light_warned = 0.0
         # Where the town's '>' is (remembered across runs: the town never changes)
@@ -923,6 +925,8 @@ class Pilot:
         if full and now - self.full_warned > 30:
             self.full_warned = now
             self.notify("pack_full", full[-1])
+        if not w.monsters and not w.store and self.auto_destroy(now):
+            return True
         # 6. Rest when hurt and alone
         if w.hp_frac < o["rest_below"] and not w.monsters and not isinstance(self.goal, (Recall,)):
             if not self.mover.active or isinstance(self.goal, Dive):
@@ -1129,6 +1133,24 @@ class Pilot:
                 self.notify("low_supply", "no light source")
         return False
 
+    def auto_destroy(self, now):
+        """Destroy pack items whose pseudo-ID feeling is on the autodestroy list
+        (the Navigator was cleaning the pack by hand every few minutes)."""
+        w = self.w
+        feelings = [f.strip() for f in self.orders.get("autodestroy", "").split(",") if f.strip()]
+        if not feelings or now < self.busy_until or now - self.autodestroy_t < 2 or w.inven_dirty:
+            return False
+        for it in w.items():
+            m = re.search(r"\{([^}]*)\}", it["name"])
+            if m and any(re.search(rf"\b{re.escape(f)}\b", m.group(1)) for f in feelings) \
+                    and "@" not in m.group(1) and "!" not in m.group(1):
+                self.autodestroy_t = now
+                self.c.send("confirm yes")
+                self.cmd(f"custom k item={it['item']} value={it['number']}", f"autodestroy {it['name']}", hold=0.6)
+                w.inven_dirty = True
+                return True
+        return False
+
     STAT_NAMES = ("STR", "INT", "WIS", "DEX", "CON", "CHR")
 
     def watch_character(self):
@@ -1282,7 +1304,11 @@ class Pilot:
                 return {"ok": False, "error": str(e)}
             extra = ""
             if c in ("destroy", "drop"):
-                extra = f" value={args[1] if len(args) > 1 else 1}"
+                n = args[1] if len(args) > 1 else "1"
+                if n == "all":
+                    it = next((i for i in self.w.inven if i["item"] == item), None)
+                    n = it["number"] if it else 1
+                extra = f" value={n}"
                 if c == "destroy":
                     self.c.send("confirm yes")
             if c in ("aim",):
