@@ -884,7 +884,7 @@ class Pilot:
         tell the agent once per level that it's time to leave."""
         w = self.w
         br = [r for *_, r in w.monsters if "MULTIPLY" in r.flags]
-        if len(br) >= 4 and self.breeder_level != w.level_t:
+        if len(br) >= 3 and self.breeder_level != w.level_t:
             self.breeder_level = w.level_t
             self.notify("breeders", f"{len(br)} breeding monsters in view ({br[0].name}): leave this level "
                                     "(stairs, or recall)")
