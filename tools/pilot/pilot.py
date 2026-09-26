@@ -50,7 +50,8 @@ DEFAULT_ORDERS = {
     "rest_to": 0.95,
     "arrival_pack": 4,     # this many monsters in view on arrival -> leave by the stairs
     "danger_level": 6,     # a monster this many levels above ours in view -> leave/avoid
-    "idle_recall_s": 180,  # no goal and no agent contact for this long -> recall to town
+    "idle_recall_s": 600,  # no goal and no agent contact for this long -> recall to town
+                           # (long enough for a slow agent turn; 180 s fired mid-thought)
     "pickup": "all",       # all | none
     "stop_on": "unique,danger",  # what makes a dive stop and ask (also: items, pillared)
     "pillared": "explore",       # dive: explore pillared rooms for a '>' by itself (or: ask, ignore)
@@ -127,6 +128,10 @@ class Explore(Goal):
 
     def tick(self, p):
         w = p.w
+        if (w.depth or 0) <= 0:
+            # On the surface the "frontier" runs off the level edge into the
+            # wilderness (it once wandered from town to 2S 2E)
+            return ("failed", "explore is for dungeon levels, not the town or wilderness")
         if self.center is None:
             self.center = w.pos
         if self.until == "stairs" and w.find(">"):

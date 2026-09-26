@@ -53,7 +53,7 @@ Attention events:
 |---|---|
 | `goal dive FEET` | stair-scum down to FEET: take a `>` when one is known, otherwise go up and down the staircase underfoot for a fresh level; explore if no stairs are known. Stops early for `stop_on` things |
 | `goal search` | search for secret doors at dead ends, corridor ends and room corners (a dive does this by itself when a level seems to have no stairs) |
-| `goal explore [until=stairs] [radius=N]` | walk to unexplored edges until nothing is left (or a `>` is seen, or within N squares) |
+| `goal explore [until=stairs] [radius=N]` | (dungeon only) walk to unexplored edges until nothing is left (or a `>` is seen, or within N squares) |
 | `goal goto Y,X` / `goto >` / `goto <` / `goto item` | walk there |
 | `goal hunt NAME` | walk up to the monster called NAME and fight it (standing still; the server swings for you). Ends when it's slain or out of sight 15 s |
 | `goal shop N [buy NAME:COUNT]... [sell NAME_OR_LETTER:COUNT]...` | town only: walk into store N (1 General, 2 Armoury, 3 Weaponsmith, 4 Temple, 5 Alchemist, 6 Magic shop, 7 Black market), sell, buy (by part of the name; spaces as `_`, e.g. `buy Cure_Light:5`), leave. The result lists what the shopkeeper actually said ("I don't want that!" for worthless or cursed items) |
@@ -87,7 +87,7 @@ of Phase Door and cure potions: it will use them.
 | `rest_below` / `rest_to` | 0.7 / 0.95 | rest when hurt and alone |
 | `arrival_pack` | 4 | this many monsters near the stairs on arrival: leave at once |
 | `danger_level` | 6 | a monster this many levels above yours counts as danger |
-| `idle_recall_s` | 180 | recall to town after this long without a goal or a word from you |
+| `idle_recall_s` | 600 | recall to town after this long without a goal or a word from you |
 | `stop_on` | unique,danger | what makes a dive stop and ask you (add `items`, `pillared` to be asked about those too) |
 | `pillared` | explore | during a dive, explore pillared rooms for a `>` without asking (`ask` = stop and ask; `ignore`) |
 | `choke` | on | when a pack (3+) comes at you in the open, back into a corridor within 10 squares and fight them there one at a time (experimental) |

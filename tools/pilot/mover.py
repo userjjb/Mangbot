@@ -78,7 +78,7 @@ class Mover:
     STEP_TIMEOUT = 1.5  # s without progress -> replan
 
     def __init__(self, client, world, log=None):
-        self.c, self.w, self.log = client, world, log or (lambda *a: None)
+        self.c, self.w, self.log = client, world, log or (lambda *a, **k: None)
         self.goals = None
         self.path = []
         self.sent = 0           # steps of path sent
