@@ -135,12 +135,14 @@ class Explore(Goal):
             # wilderness (it once wandered from town to 2S 2E)
             return ("failed", "explore is for dungeon levels, not the town or wilderness")
         md = int(p.orders.get("max_depth", 0))
-        if md and w.depth_ft > md and self.until != "stairs":
+        if md and w.depth_ft > md and self.until not in ("stairs", "upstairs"):
             return ("failed", f"{w.depth_ft} ft is below max_depth {md}: go up first")
         if self.center is None:
             self.center = w.pos
         if self.until == "stairs" and w.find(">"):
             return ("done", "stairs down seen")
+        if self.until == "upstairs" and w.find("<"):
+            return ("done", "stairs up seen")
         if p.level_seen != w.level_t:
             p.level_seen = w.level_t
             p.unreachable = set()
@@ -193,6 +195,7 @@ class Dive(Goal):
     def __init__(self, target_ft):
         self.target_ft = int(target_ft)
         self.name = f"dive {self.target_ft}ft"
+        self.start_ft = None
         self.level_seen = None
         self.pending = None      # stairs command sent at time t
         self.walking = False
@@ -215,7 +218,12 @@ class Dive(Goal):
         if md and self.target_ft > md:
             self.target_ft = md
             self.name = f"dive {md}ft (max_depth)"
-        if w.depth_ft >= self.target_ft:
+        up = self.target_ft < self.start_ft if self.start_ft is not None else False
+        if self.start_ft is None:
+            self.start_ft = w.depth_ft
+            up = self.target_ft < self.start_ft
+        want, other = ("<", ">") if up else (">", "<")
+        if (not up and w.depth_ft >= self.target_ft) or (up and w.depth_ft <= self.target_ft):
             return ("done", f"reached {w.depth_ft} ft")
         if self.pending and w.level_t < self.pending and time.time() - self.pending < 3:
             return None           # waiting for the level change
@@ -246,10 +254,10 @@ class Dive(Goal):
                     return None
                 self.looting = False
         # ... and explore a pillared room for a '>' (the user: they often hold stairs)
-        if p.orders.get("pillared") == "explore" and not self.pillared_done and not w.find(">") \
+        if p.orders.get("pillared") == "explore" and not self.pillared_done and not w.find(want) \
                 and p.pillared():
             if self.explore is None:
-                self.explore = Explore(until="stairs", radius=15)
+                self.explore = Explore(until="upstairs" if want == "<" else "stairs", radius=15)
             r = self.explore.tick(p)
             if r is None:
                 return None
@@ -259,15 +267,15 @@ class Dive(Goal):
         # once here -- at worst "I see no down staircase here."
         if w.standing_on is None and self.probed != (w.level_t, w.pos) and not self.walking:
             self.probed = (w.level_t, w.pos)
-            return self._stairs(p, ">")
+            return self._stairs(p, want)
         # A '>' we know about? (in town: also where we saw it before -- the town
         # never changes, and its staircase isn't lit at night)
-        downs = w.find(">")
-        if not downs and w.depth == 0 and p.town_stairs:
+        downs = w.find(want)
+        if not downs and w.depth == 0 and p.town_stairs and not up:
             downs = [tuple(p.town_stairs)]
             w.memory.setdefault(downs[0], ">")
-        if w.standing_on == ">":
-            return self._stairs(p, ">")
+        if w.standing_on == want:
+            return self._stairs(p, want)
         downs = [d for d in downs if (w.level_t, d) not in self.bad_stairs]
         if downs and not self.walking:
             if p.mover.go(downs):
@@ -278,7 +286,7 @@ class Dive(Goal):
             st = p.mover.tick()
             if st == "arrived" or (st == "idle" and w.pos in downs):
                 self.walking = False
-                return self._stairs(p, ">")
+                return self._stairs(p, want)
             if st == "idle":
                 # the mover was stopped (a fight): walk on next tick
                 self.walking = False
@@ -290,26 +298,27 @@ class Dive(Goal):
                     return None
             else:
                 return None
-        # Scum: back up the staircase we're on, then down again
-        if w.standing_on == "<":
-            return self._stairs(p, "<")
+        # Scum: back the way we came on the staircase we're on, then again
+        if w.standing_on == other:
+            return self._stairs(p, other)
         # No stairs under us: explore until we see some (either kind)
         self.expire_bad(w)
-        ups = [u for u in w.find("<") if (w.level_t, u) not in self.bad_stairs]
+        ups = [u for u in w.find(other) if (w.level_t, u) not in self.bad_stairs]
         if ups and (self.explore is None or not isinstance(self.explore, Explore) or not p.mover.active):
             if not p.mover.active and not p.mover.go(ups):
                 # no path to any of them (it spun here re-planning 20x a second)
                 self.mark_bad(w, ups)
             else:
                 st = p.mover.tick()
-                if st == "arrived" and w.standing_on == "<":
-                    return self._stairs(p, "<")
+                if st == "arrived" and w.standing_on == other:
+                    return self._stairs(p, other)
                 if st in ("moving", "idle"):
                     return None
                 if st == "stuck":
                     self.mark_bad(w, ups)
         if self.explore is None:
-            self.explore = Search() if self.need_search else Explore(until="stairs")
+            self.explore = Search() if self.need_search else \
+                Explore(until="upstairs" if want == "<" else "stairs")
         r = self.explore.tick(p)
         if isinstance(self.explore, Search):
             if r and r[0] == "failed":
@@ -512,6 +521,7 @@ class Recall(Goal):
     def __init__(self):
         self.read_t = None
         self.start_depth = None
+        self.inscribed = False
 
     def tick(self, p):
         w = p.w
@@ -523,6 +533,16 @@ class Recall(Goal):
             it = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
             if not it:
                 return ("failed", "no Word of Recall")
+            # From town, recall goes to the deepest level ever reached -- which
+            # can be below max_depth (it took Dive03 back to 1000 ft, where it had
+            # died). Inscribe @R<feet> first: the recall depth (inscription guide).
+            md = int(p.orders.get("max_depth", 0))
+            if w.depth == 0 and md and f"@R{md}" not in it["name"]:
+                if not self.inscribed:
+                    self.inscribed = True
+                    p.cmd(f"custom {{ item={it['item']} entry=@R{md}", f"recall depth {md} ft", hold=1.0)
+                    w.inven_dirty = True
+                    return None
             p.cmd(f"custom r item={it['item']}", f"read {it['name']}")
             self.read_t = time.time()
             return None
@@ -963,7 +983,10 @@ class Pilot:
                     return True
         if now - self.noescape_t > 10:
             self.noescape_t = now
-            self.notify("emergency", f"{why}: nothing left to escape with, fighting on")
+            left = [n for n, ok in (("Phase Door", pd), ("cure potions", any(
+                    any(c in i["name"] for c in CURE_POTIONS) for i in w.items(tval=TV_POTION)))) if ok]
+            self.notify("emergency", f"{why}: " + (f"waiting to use {', '.join(left)} again, fighting on"
+                                                   if left else "nothing left to escape with, fighting on"))
         return False
 
     def recall_started(self, now):
@@ -1307,7 +1330,7 @@ class Pilot:
         elif name == "search":
             g = Search()
         elif name == "hunt":
-            g = Hunt(" ".join(rest))
+            g = Hunt(" ".join(rest).replace("_", " "))   # 'hunt Black_ogre', like shop names
         elif name == "recall":
             g = Recall()
         elif name == "rest":
