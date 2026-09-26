@@ -206,6 +206,8 @@ class Dive(Goal):
         self.stuck = 0
         self.explore_fails = 0
         self.bad_stairs = set()     # (level, tile) of stairs we couldn't reach
+        self.bad_t = {}
+        self.bad_cleared = 0
 
     def tick(self, p):
         w = p.w
@@ -271,7 +273,7 @@ class Dive(Goal):
             if p.mover.go(downs):
                 self.walking = True
             else:
-                self.bad_stairs |= {(w.level_t, d) for d in downs}
+                self.mark_bad(w, downs)
         if self.walking:
             st = p.mover.tick()
             if st == "arrived" or (st == "idle" and w.pos in downs):
@@ -292,11 +294,12 @@ class Dive(Goal):
         if w.standing_on == "<":
             return self._stairs(p, "<")
         # No stairs under us: explore until we see some (either kind)
+        self.expire_bad(w)
         ups = [u for u in w.find("<") if (w.level_t, u) not in self.bad_stairs]
         if ups and (self.explore is None or not isinstance(self.explore, Explore) or not p.mover.active):
             if not p.mover.active and not p.mover.go(ups):
                 # no path to any of them (it spun here re-planning 20x a second)
-                self.bad_stairs |= {(w.level_t, u) for u in ups}
+                self.mark_bad(w, ups)
             else:
                 st = p.mover.tick()
                 if st == "arrived" and w.standing_on == "<":
@@ -304,7 +307,7 @@ class Dive(Goal):
                 if st in ("moving", "idle"):
                     return None
                 if st == "stuck":
-                    self.bad_stairs |= {(w.level_t, u) for u in ups}
+                    self.mark_bad(w, ups)
         if self.explore is None:
             self.explore = Search() if self.need_search else Explore(until="stairs")
         r = self.explore.tick(p)
@@ -323,12 +326,34 @@ class Dive(Goal):
                 self.explore = None
                 return None
             return ("failed", "no stairs found: " + r[1])
+        if r and r[1] == "nothing left to explore" and w.find("<>") and self.bad_stairs:
+            # Stairs are known but were marked unreachable (e.g. planned before
+            # the map had loaded): try them again, a few times
+            self.bad_cleared += 1
+            if self.bad_cleared > 3:
+                return ("failed", "stairs known but unreachable, nothing left to explore")
+            self.bad_stairs = set()
+            self.explore = None
+            return None
         if r and r[1] == "nothing left to explore" and not w.find("<>"):
             # Walled in: look for secret doors, then explore again
             self.need_search = True
         if r:
             self.explore = None
         return None
+
+    def mark_bad(self, w, tiles):
+        now = time.time()
+        for t in tiles:
+            self.bad_stairs.add((w.level_t, t))
+            self.bad_t[(w.level_t, t)] = now
+
+    def expire_bad(self, w):
+        """Unreachable stairs get another try after 15 s (the map fills in)."""
+        now = time.time()
+        for k in [k for k, t in self.bad_t.items() if now - t > 15]:
+            self.bad_stairs.discard(k)
+            del self.bad_t[k]
 
     def _stairs(self, p, which):
         p.take_stairs(which)
@@ -1209,6 +1234,15 @@ class Pilot:
         if c == "option":
             self.c.send(f"option {args[0]} {args[1]}")
             return {"ok": True}
+        if c == "goalstate":
+            g = self.goal
+            st = {k: (repr(v)[:120]) for k, v in (vars(g).items() if g else [])}
+            if g and getattr(g, "explore", None) is not None:
+                st["explore_state"] = {k: repr(v)[:80] for k, v in vars(g.explore).items()}
+            return {"ok": True, "goal": g.describe() if g else None, "state": st,
+                    "mover": {"active": self.mover.active, "path": len(self.mover.path),
+                              "free": self.mover.free is not None, "running": self.mover.running is not None},
+                    "standing_on": self.w.standing_on, "busy": self.busy_until - time.time()}
         if c == "options":
             opts = self.c.query("options", "options")["list"]
             return {"ok": True, "options": {k: v for k, v in opts.items() if not args or any(a in k for a in args)}}
