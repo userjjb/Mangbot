@@ -30,13 +30,22 @@ ATTR_MAX = 63
 
 
 class Race:
-    __slots__ = ("idx", "name", "char", "color", "level", "flags", "spells", "blows", "speed", "hp")
+    __slots__ = ("idx", "name", "char", "color", "level", "flags", "spells", "blows", "speed", "hp",
+                 "spell_freq")
 
     def __init__(self, idx, name):
         self.idx, self.name = idx, name
         self.char, self.color, self.level = "?", "w", 0
         self.flags, self.spells, self.blows = set(), set(), []
         self.speed, self.hp = 110, "1d1"
+        self.spell_freq = 0     # casts 1 time in N (0 = no spells)
+
+    @property
+    def repeat_fearer(self):
+        """Frightens you again and again: a terrifying touch, or scares often (the
+        user: more trouble than they're worth; walk or phase away)."""
+        return any("TERRIFY" in b for b in self.blows) or \
+            ("SCARE" in self.spells and 0 < self.spell_freq <= 5)
 
     def __repr__(self):
         return f"Race({self.idx}, {self.name!r}, lvl {self.level})"
@@ -63,7 +72,12 @@ def load_races(path=None):
         elif line.startswith("F:"):
             cur.flags.update(f.strip() for f in line[2:].split("|") if f.strip())
         elif line.startswith("S:"):
-            cur.spells.update(f.strip() for f in line[2:].split("|") if f.strip() and not f.strip().startswith("1_IN"))
+            for f in line[2:].split("|"):
+                f = f.strip()
+                if f.startswith("1_IN_"):
+                    cur.spell_freq = int(f[5:])
+                elif f:
+                    cur.spells.add(f)
         elif line.startswith("B:"):
             cur.blows.append(line[2:])
     return races

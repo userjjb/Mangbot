@@ -720,6 +720,8 @@ class Pilot:
         self.emergency_t = 0.0
         self.think_warned = 0.0
         self.picked_t = 0.0
+        self.retreating = False
+        self.fearers_seen = set()
         self.unique_names = None
         self.fear_t = 0.0
         self.skipped_items = set()     # (level, square) of junk we chose to leave
@@ -911,21 +913,47 @@ class Pilot:
         if o.get("choke") == "on" and not w.adjacent_monsters() and w.standing_on not in ("<", ">"):
             if self.choke_tick(now):
                 return True
-        # 3b'. Afraid: a frightened warrior can't melee (auto-retaliate stops),
-        # so don't stand there: a potion that cures fear, else step away by Phase
-        if w.flag("afraid") and mons_near and now - self.fear_t > 3:
-            self.fear_t = now
-            pot = next((i for i in w.items(tval=TV_POTION)
-                        if any(n in i["name"] for n in ("Boldness", "Heroism", "Berserk"))), None)
-            if pot:
-                self.cmd(f"custom q item={pot['item']}", f"afraid: quaff {pot['name']}", hold=0.6)
-                self.notify("tactic", f"afraid next to monsters: quaffed {pot['name']}")
+        # 3b'. Afraid (a warrior can't melee). The user: if not in danger, don't
+        # spend consumables -- kite over cleared ground until it wears off; only
+        # in danger cure it (Boldness/Heroism/Berserk) or phase away.
+        if w.flag("afraid") and mons_near:
+            danger = w.hp_frac < o["think_hp"] or bool(self.dangers())
+            if not danger and self.retreat_step(mons_near):
+                if now - self.fear_t > 20:
+                    self.fear_t = now
+                    self.notify("tactic", "afraid: kiting over cleared ground until it wears off")
                 return True
-            pd = next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
-            if pd and w.adjacent_monsters() and not w.flag("blind") and not w.flag("confused"):
-                self.cmd(f"custom r item={pd['item']}", "afraid: phase door away", hold=0.6)
-                self.notify("afraid", "afraid (can't melee) with monsters adjacent: phased away; "
-                                      "carry Potions of Boldness/Heroism")
+            if now - self.fear_t > 3:
+                self.fear_t = now
+                pot = next((i for i in w.items(tval=TV_POTION)
+                            if any(n in i["name"] for n in ("Boldness", "Heroism", "Berserk"))), None)
+                if pot:
+                    self.cmd(f"custom q item={pot['item']}", f"afraid and in danger: quaff {pot['name']}", hold=0.6)
+                    self.notify("tactic", f"afraid and in danger: quaffed {pot['name']}")
+                    return True
+                pd = next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
+                if pd and w.adjacent_monsters() and not w.flag("blind") and not w.flag("confused"):
+                    self.cmd(f"custom r item={pd['item']}", "afraid: phase door away", hold=0.6)
+                    self.notify("afraid", "afraid (can't melee) and cornered: phased away")
+                    return True
+        # 3b''. Monsters that frighten you again and again: not worth it. Walk
+        # away over cleared ground (phase if it's dangerous and next to us), and
+        # tell the Navigator once per level.
+        fearers = [m for m in mons_near if m[2].repeat_fearer]
+        if fearers and not isinstance(self.goal, (Flee, Recall)):
+            f = fearers[0][2]
+            if (w.level_t, f.name) not in self.fearers_seen:
+                self.fearers_seen.add((w.level_t, f.name))
+                self.notify("fearer", f"{f.name} (lvl {f.level}) keeps frightening: moving away from it; "
+                                      "consider leaving the level")
+            dangerous = f.level >= w.ind.get("level", [1])[0] - 2
+            if dangerous and w.adjacent_monsters() and now - self.phase_t > 2.5:
+                pd = next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
+                if pd and not w.flag("blind") and not w.flag("confused"):
+                    self.phase_t = now
+                    self.cmd(f"custom r item={pd['item']}", f"phase away from {f.name}", hold=0.6)
+                    return True
+            if self.retreat_step(fearers):
                 return True
         # 3c. Light
         if not w.adjacent_monsters() and self.keep_light(now):
@@ -1047,6 +1075,30 @@ class Pilot:
                     any(c in i["name"] for c in CURE_POTIONS) for i in w.items(tval=TV_POTION)))) if ok]
             self.notify("emergency", f"{why}: " + (f"waiting to use {', '.join(left)} again, fighting on"
                                                    if left else "nothing left to escape with, fighting on"))
+        return False
+
+    def retreat_step(self, threats, reach=15):
+        """Move away from threats over ground we've already walked this level
+        (the user: kiting into unknown areas piles on more monsters). Returns
+        True while retreating."""
+        w = self.w
+        if self.mover.active and self.retreating:
+            st = self.mover.tick()
+            if st == "moving":
+                return True
+            self.retreating = False
+        if not threats or not w.pos:
+            return False
+        def far(t):
+            return min(w.dist(t, m[:2]) for m in threats)
+        here = far(w.pos)
+        cands = [t for t in w.walked if w.dist(t) <= reach and far(t) >= max(here + 2, 4)]
+        if not cands:
+            return False
+        best = max(cands, key=lambda t: (far(t), -w.dist(t)))
+        if self.mover.go([best]):
+            self.retreating = True
+            return True
         return False
 
     def probably_special(self, name):

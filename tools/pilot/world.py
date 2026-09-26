@@ -49,6 +49,7 @@ class World:
         self.last_hit_t = 0.0
         self.pos_t = 0.0
         self.in_dungeon = None                 # see _level_kind(): the depth byte alone can't tell
+        self.walked = set()                    # squares walked on this level
         self.recalled = None                   # 'down'/'up' from the recall message, until the level changes
         self.store = None                      # last store listing while inside a store
         self.store_t = 0.0
@@ -78,11 +79,13 @@ class World:
                     self.store = None
                 self.pos = new
                 self.pos_t = time.time()
+                self.walked.add(new)           # squares we've been on (safe retreat ground)
             elif k == "level":
                 old = self.depth
                 self.depth = ev["depth"]
                 self.level_t = time.time()
                 self.memory = {}
+                self.walked = set()
                 self.rows = None
                 self.monsters, self.itemlist = [], []
                 sc = self.last_stairs_cmd
