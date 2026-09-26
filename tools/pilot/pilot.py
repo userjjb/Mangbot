@@ -705,6 +705,7 @@ class Pilot:
         self.emergency_t = 0.0
         self.think_warned = 0.0
         self.picked_t = 0.0
+        self.skipped_items = set()     # (level, square) of junk we chose to leave
         self.resume_after = None
         self.autodestroy_t = 0.0
         self.parking = None
@@ -802,7 +803,10 @@ class Pilot:
         if t in ("<", ">", "stairs"):
             return w.find("<>" if t == "stairs" else t)
         if t == "item":
-            return [p for p, ch in w.memory.items() if ch not in "#%.'+<>^;:*=~ 12345678"]
+            # not the square we're on, nor items the junk filter left lying (a
+            # 'goto item' ended at once, standing on a junk item it wouldn't take)
+            return [p for p, ch in w.memory.items() if ch not in "#%.'+<>^;:*=~ 12345678"
+                    and p != w.pos and (w.level_t, p) not in self.skipped_items]
         m = re.match(r"^(\d+)[ ,](\d+)$", str(t))
         if m:
             return [(int(m.group(1)), int(m.group(2)))]
@@ -926,6 +930,7 @@ class Pilot:
                              j.startswith("holy book") and j in seen[-1][1].lower() for j in junk)
                          or " Broken " in seen[-1][1]):
                 seen = []         # known junk: leave it (it filled the pack on the way down)
+                self.skipped_items.add((w.level_t, w.pos))
             if seen and seen[-1][0] > self.picked_t and w.pos == self.seen_pos(seen[-1][0]):
                 self.picked_t = now
                 self.cmd("custom ,", f"pick up: {seen[-1][1][8:]}", hold=0.4)   # "Stay" picks up; "g" did nothing
