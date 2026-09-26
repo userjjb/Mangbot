@@ -56,7 +56,7 @@ Attention events:
 | `goal explore [until=stairs] [radius=N]` | (dungeon only) walk to unexplored edges until nothing is left (or a `>` is seen, or within N squares) |
 | `goal goto Y,X` / `goto >` / `goto <` / `goto item` | walk there |
 | `goal hunt NAME` | walk up to the monster called NAME and fight it (standing still; the server swings for you). Ends when it's slain or out of sight 15 s |
-| `goal shop N [buy NAME:COUNT]... [sell NAME_OR_LETTER:COUNT]...` | town only: walk into store N (1 General, 2 Armoury, 3 Weaponsmith, 4 Temple, 5 Alchemist, 6 Magic shop, 7 Black market), sell, buy (by part of the name; spaces as `_`, e.g. `buy Cure_Light:5`), leave. The result lists what the shopkeeper actually said ("I don't want that!" for worthless or cursed items) |
+| `goal shop N [buy NAME:COUNT]... [sell NAME_OR_LETTER:COUNT]...` | town only: walk into store N (1 General, 2 Armoury, 3 Weaponsmith, 4 Temple, 5 Alchemist, 6 Magic shop, 7 Black market), sell, buy (by part of the name; spaces as `_`, e.g. `buy Cure_Light:5`; the cheapest matching item is bought), leave. The result lists what the shopkeeper actually said ("I don't want that!" for worthless or cursed items) |
 | `goal recall` | read Word of Recall (takes ~15-35 s to work; the pilot stays safe meanwhile). From town it takes you to your deepest level so far |
 | `goal rest` | rest until healed |
 | `goal wait SECS` | stand still |
@@ -64,7 +64,7 @@ Attention events:
 
 ## Actions (immediate)
 
-`wear L`, `takeoff L`, `quaff L`, `read L`, `eat L`, `fuel L` (refill a lantern
+`wearall` (put on everything that fills an empty slot), `wear L`, `takeoff L`, `quaff L`, `read L`, `eat L`, `fuel L` (refill a lantern
 from a flask), `inspect L`, `destroy L [N]`, `drop L [N]`, `inscribe L TEXT`,
 `pickup` (what's underfoot), `stairs [<|>]`. L is the pack letter from the
 report. With `pickup=all` (the default) the pilot picks up whatever it walks

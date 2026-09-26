@@ -492,7 +492,10 @@ class Shop(Goal):
                 return None
             if self.buys:
                 name, n = self.buys.pop(0)
-                it = next((i for i in w.store["items"] if name.lower() in i["name"].lower()), None)
+                # The cheapest match: the first one can be an expensive enchanted
+                # piece (bought a Cloak [1,+4] for 592 instead of a plain one)
+                matches = [i for i in w.store["items"] if name.lower() in i["name"].lower()]
+                it = min(matches, key=lambda i: i["price"]) if matches else None
                 if not it:
                     self.done_log.append(f"no {name} in stock")
                     return None
@@ -556,6 +559,7 @@ class Pilot:
         self.emergency_t = 0.0
         self.think_warned = 0.0
         self.picked_t = 0.0
+        self.wear_queue = False
         self.breeder_level = None
         self.choke_state = None
         self.choke_t = self.choke_done_t = 0.0
@@ -913,9 +917,29 @@ class Pilot:
             self.notify("blows_changed", f"blows per round {self.seen_blows} -> {blows}")
         self.seen_drained, self.seen_blows = drained, blows
 
+    WEAR_TVALS = {21: "weapon", 22: "weapon", 23: "weapon", 19: "bow", 39: "light", 30: "boots", 31: "gloves",
+                  32: "helm", 33: "helm", 34: "shield", 35: "cloak", 36: "body", 37: "body", 38: "body",
+                  40: "amulet"}
+
+    def wear_step(self):
+        """One item per call (letters shift after each): wear what fills an empty slot."""
+        w = self.w
+        if time.time() < self.busy_until or w.inven_dirty:
+            return
+        worn = {self.WEAR_TVALS.get(i["tval"]) for i in w.items(equip=True)}
+        for it in w.items():
+            kind = self.WEAR_TVALS.get(it["tval"])
+            if kind and kind not in worn:
+                self.cmd(f"custom w item={it['item']}", f"wear {it['name']}", hold=0.8)
+                w.inven_dirty = True
+                return
+        self.wear_queue = False
+
     def tick(self):
         self.w.drain()
         self.w.refresh()
+        if self.wear_queue:
+            self.wear_step()
         self.watch_character()
         self.watch_breeders()
         self.handle_requests()
@@ -983,6 +1007,10 @@ class Pilot:
             if c in ("aim",):
                 extra = f" dir={args[1] if len(args) > 1 else 5}"
             self.cmd(f"custom {key} item={item}{extra}", f"agent: {c} {args}")
+            return {"ok": True}
+        if c == "wearall":
+            # Put on every weapon/armour/light in the pack whose slot is empty
+            self.wear_queue = True
             return {"ok": True}
         if c == "inscribe":
             item = self.item_index(args[0])
