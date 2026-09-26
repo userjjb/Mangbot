@@ -119,6 +119,8 @@ class Explore(Goal):
         self.center = None
         self.fails = 0
         self.target = None
+        self.no_run_at = None
+        self.run_from = None
 
     def tick(self, p):
         w = p.w
@@ -130,7 +132,11 @@ class Explore(Goal):
             p.level_seen = w.level_t
             p.unreachable = set()
         if p.mover.active:
+            was_free = p.mover.free is not None
             st = p.mover.tick()
+            if st == "stuck" and was_free:
+                self.no_run_at = self.run_from      # a run can't start here: walk
+                st = "arrived"
             if st == "stuck":
                 self.fails += 1
                 # remember what we couldn't get to (and what blocked us)
@@ -145,10 +151,15 @@ class Explore(Goal):
         self.target = p.mover.path[-1] if p.mover.path else None
         # In a corridor with nothing about: run along it the way the path
         # starts, and let the run follow the corridor (as the user explores)
+        # Run instead of walking hop by hop: along corridors (the run follows
+        # them), and across dark rooms, where the unknown is always just one
+        # square away (60 of 71 explore plans were single steps)
         m = p.mover
-        if m.path and not w.monsters and m.in_corridor() and not self.radius:
+        if m.path and not m._monster_near(5) and not self.radius and \
+                (m.in_corridor() or len(m.path) <= 2) and self.no_run_at != w.pos:
             d = direction(w.pos, m.path[0])
             if d:
+                self.run_from = w.pos
                 m.free_run(d)
         return None
 
