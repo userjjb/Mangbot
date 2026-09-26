@@ -205,6 +205,7 @@ class Dive(Goal):
         self.need_search = False
         self.stuck = 0
         self.explore_fails = 0
+        self.bad_stairs = set()     # (level, tile) of stairs we couldn't reach
 
     def tick(self, p):
         w = p.w
@@ -265,9 +266,12 @@ class Dive(Goal):
             w.memory.setdefault(downs[0], ">")
         if w.standing_on == ">":
             return self._stairs(p, ">")
+        downs = [d for d in downs if (w.level_t, d) not in self.bad_stairs]
         if downs and not self.walking:
             if p.mover.go(downs):
                 self.walking = True
+            else:
+                self.bad_stairs |= {(w.level_t, d) for d in downs}
         if self.walking:
             st = p.mover.tick()
             if st == "arrived" or (st == "idle" and w.pos in downs):
@@ -288,15 +292,19 @@ class Dive(Goal):
         if w.standing_on == "<":
             return self._stairs(p, "<")
         # No stairs under us: explore until we see some (either kind)
-        ups = w.find("<")
-        if ups:
-            if not p.mover.active:
-                p.mover.go(ups)
-            st = p.mover.tick()
-            if st == "arrived":
-                return self._stairs(p, "<")
-            if st != "stuck":
-                return None
+        ups = [u for u in w.find("<") if (w.level_t, u) not in self.bad_stairs]
+        if ups and (self.explore is None or not isinstance(self.explore, Explore) or not p.mover.active):
+            if not p.mover.active and not p.mover.go(ups):
+                # no path to any of them (it spun here re-planning 20x a second)
+                self.bad_stairs |= {(w.level_t, u) for u in ups}
+            else:
+                st = p.mover.tick()
+                if st == "arrived" and w.standing_on == "<":
+                    return self._stairs(p, "<")
+                if st in ("moving", "idle"):
+                    return None
+                if st == "stuck":
+                    self.bad_stairs |= {(w.level_t, u) for u in ups}
         if self.explore is None:
             self.explore = Search() if self.need_search else Explore(until="stairs")
         r = self.explore.tick(p)
