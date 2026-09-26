@@ -14,7 +14,9 @@
  *   popup        {header, lines[]}          -- e.g. MOTD, examine text
  *   pause        {}                         -- server asked for "any key"
  *   interactive  {header}                   -- remote browser; ESC sent back
- *   confirm      {type, id, prompt, answer} -- always declined
+ *   confirm      {type, id, prompt, answer} -- declined unless "confirm yes"
+ *                                             was sent within the last 5 s
+ *   level        {depth}                    -- depth changed (also once at start)
  *   store        {flag, name, owner, num, items[]}
  *   store_leave  {}                         -- server closed the store
  *   blocked_input {where}                   -- a prompt wanted a key; got ESC
@@ -31,6 +33,8 @@
  *   leave                                   -- leave the store
  *   eat ITEM                                -- ITEM = inventory index (a=0)
  *   custom KEY [store] [item=N] [dir=N] [value=N] [entry=TEXT]
+ *   confirm yes|no                          -- answer the next confirm prompt
+ *                                             (yes expires after 5 s)
  *   suicide NICK                            -- kill this character for good
  *                                             (NICK must match; for throwaways)
  *   commands | status | inven | map         -- queries
@@ -54,6 +58,12 @@ static int tool_blocked = 0;
 /* Own position, from the server's MCURSOR_PLAYER cursor packets */
 static int tool_py = -1, tool_px = -1;
 
+/* "confirm yes": answer the next confirm prompt with yes until this time */
+static double tool_confirm_until = 0;
+
+/* Last depth reported by a level event (-9999: none yet) */
+static long tool_last_depth = -9999;
+
 /* Partial command line from stdin */
 static char tool_cmd_buf[1024];
 static int tool_cmd_len = 0;
@@ -71,6 +81,13 @@ static void tool_json_str(cptr s)
 		else putchar(c);
 	}
 	putchar('"');
+}
+
+static double tool_now(void)
+{
+	struct timeval now;
+	gettimeofday(&now, NULL);
+	return (double)now.tv_sec + (double)now.tv_usec / 1000000.0;
 }
 
 static void tool_ev_begin(cptr ev)
@@ -247,13 +264,18 @@ static void tool_process_requests(void)
 	}
 	if (confirm_requested)
 	{
-		/* Always decline (not answering is how get_check() says no) */
+		/* Decline (not answering is how get_check() says no) unless the
+		 * tool asked for a yes just before (e.g. selling to a store) */
+		bool yes = (tool_now() < tool_confirm_until);
+
 		confirm_requested = FALSE;
+		tool_confirm_until = 0;
+		if (yes) send_confirm(confirm_type, confirm_id);
 		tool_ev_begin("confirm");
 		tool_kv_int("type", confirm_type);
 		tool_kv_int("id", confirm_id);
 		tool_kv_str("prompt", confirm_prompt);
-		printf(",\"answer\":false");
+		printf(",\"answer\":%s", yes ? "true" : "false");
 		tool_ev_end();
 	}
 	if (enter_store)
@@ -554,6 +576,18 @@ static void tool_do_command(char *line)
 		}
 		tool_send_custom(line, key, store_cmd, item, dir, (s32b)value, entry);
 	}
+	else if (streq(verb, "confirm"))
+	{
+		char ans[8] = { 0 };
+
+		if (sscanf(line, "%*s %7s", ans) < 1 || (!streq(ans, "yes") && !streq(ans, "no")))
+		{
+			tool_error(line, "usage: confirm yes|no");
+			return;
+		}
+		tool_confirm_until = streq(ans, "yes") ? tool_now() + 5.0 : 0;
+		tool_ack(line);
+	}
 	else if (streq(verb, "suicide"))
 	{
 		/* Irreversible: insist on the character's name, like get_check() */
@@ -605,6 +639,29 @@ static void tool_poll_stdin(void)
 	}
 }
 
+/* Report depth changes (the "depth" indicator) as level events */
+static void tool_check_level(void)
+{
+	static int ind = -1;
+	long depth;
+
+	if (ind < 0 || ind >= known_indicators || !indicators[ind].mark
+	    || strcmp(indicators[ind].mark, "depth"))
+	{
+		for (ind = 0; ind < known_indicators; ind++)
+		{
+			if (indicators[ind].mark && streq(indicators[ind].mark, "depth")) break;
+		}
+		if (ind >= known_indicators) { ind = -1; return; }
+	}
+	depth = (long)coffers[coffer_refs[ind]];
+	if (depth == tool_last_depth) return;
+	tool_last_depth = depth;
+	tool_ev_begin("level");
+	tool_kv_int("depth", depth);
+	tool_ev_end();
+}
+
 /*** Main loop ***/
 
 void tool_loop(void)
@@ -631,6 +688,9 @@ void tool_loop(void)
 
 		/* Service server requests */
 		tool_process_requests();
+
+		/* Level changes */
+		tool_check_level();
 
 		/* Read commands */
 		tool_poll_stdin();
