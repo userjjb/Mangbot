@@ -939,7 +939,12 @@ class Pilot:
         # 3b''. Monsters that frighten you again and again: not worth it. Walk
         # away over cleared ground (phase if it's dangerous and next to us), and
         # tell the Navigator once per level.
-        fearers = [m for m in mons_near if m[2].repeat_fearer]
+        # (stationary ones -- mushroom patches, molds -- only matter next to us:
+        # step away quietly, no event)
+        still = [m for m in w.adjacent_monsters() if m[2].repeat_fearer and "NEVER_MOVE" in m[2].flags]
+        if still and self.retreat_step(still, reach=6):
+            return True
+        fearers = [m for m in mons_near if m[2].repeat_fearer and "NEVER_MOVE" not in m[2].flags]
         if fearers and not isinstance(self.goal, (Flee, Recall)):
             f = fearers[0][2]
             if (w.level_t, f.name) not in self.fearers_seen:
