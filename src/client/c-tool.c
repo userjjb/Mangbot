@@ -8,8 +8,9 @@
  * lines from stdin.
  *
  * Events (one JSON object per line, always with "ev" and "t"):
- *   ready        {nick, door}               -- in the game; door = map glyph
- *                                             of closed house doors
+ *   ready        {nick, door, visuals}      -- in the game; door = map glyph
+ *                                             of closed house doors; visuals =
+ *                                             glyphs set from --visuals FILE
  *   message      {type, text}
  *   popup        {header, lines[]}          -- e.g. MOTD, examine text
  *   pause        {}                         -- server asked for "any key"
@@ -25,7 +26,8 @@
  *   pos          {y, x}                     -- own position (absolute), on change
  *   ack          {cmd}                      -- command accepted and sent
  *   error        {text[, cmd]}
- *   (replies)    commands, status, inven, map -- see tool_do_command()
+ *   (replies)    commands, status, inven, map -- see tool_do_command();
+ *                map has rows[] (chars) and attrs[] (chr(48+attr) per cell)
  *
  * Commands (one per line; DIR is a keypad digit 1-9, 5/0 = none):
  *   walk DIR                                -- also leaves a store
@@ -37,6 +39,8 @@
  *   custom KEY [store] [item=N] [dir=N] [value=N] [entry=TEXT]
  *   confirm yes|no                          -- answer the next confirm prompt
  *                                             (yes expires after 5 s)
+ *   option NAME yes|no                      -- set a game option (sent to server)
+ *   options                                 -- query: every option and its value
  *   suicide NICK                            -- kill this character for good
  *                                             (NICK must match; for throwaways)
  *   commands | status | inven | map         -- queries
@@ -65,6 +69,9 @@ static double tool_confirm_until = 0;
 
 /* Last depth reported by a level event (-9999: none yet) */
 static long tool_last_depth = -9999;
+
+/* Glyphs set from --visuals */
+static int tool_visuals = 0;
 
 /* Partial command line from stdin */
 static char tool_cmd_buf[1024];
@@ -149,10 +156,54 @@ static void tool_row_text(cave_view_type *row, int wid, char *buf, size_t len)
 void tool_setup_visuals(void)
 {
 	int i;
+	char path[1024] = { 0 };
 
 	for (i = TOOL_FEAT_HOME_HEAD; i <= TOOL_FEAT_HOME_TAIL && i < z_info.f_max; i++)
 	{
 		Client_setup.f_char[i] = TOOL_HOUSE_DOOR_CHAR;
+	}
+
+	/*
+	 * --visuals FILE: more glyphs, one per line "KIND INDEX CHARCODE ATTR"
+	 * with KIND r (monster race), k (object kind) or v (flavour), e.g.
+	 * "r 57 111 21" = race 57 drawn as 'o' in colour 21. The tool picks
+	 * pairs that tell every race apart on the map. Attrs must be 1..63
+	 * (the map stream can't carry bit 0x40), chars printable.
+	 */
+	if (clia_read_string(path, sizeof(path), "visuals"))
+	{
+		FILE *fp = fopen(path, "r");
+		char line[128];
+
+		if (!fp) quit(format("Unable to open visuals file '%s'", path));
+		while (fgets(line, sizeof(line), fp))
+		{
+			char kind;
+			int idx, c, a;
+
+			if (sscanf(line, " %c %d %d %d", &kind, &idx, &c, &a) != 4) continue;
+			if (c < 33 || c > 126 || a < 1 || a > 63 || idx < 0) continue;
+			if (kind == 'r' && idx < z_info.r_max && idx > 0)
+			{
+				/* (race 0 is the player's own '@') */
+				Client_setup.r_char[idx] = (char)c;
+				Client_setup.r_attr[idx] = (byte)a;
+				tool_visuals++;
+			}
+			else if (kind == 'k' && idx < z_info.k_max)
+			{
+				Client_setup.k_char[idx] = (char)c;
+				Client_setup.k_attr[idx] = (byte)a;
+				tool_visuals++;
+			}
+			else if (kind == 'v' && idx < MAX_FLVR_IDX)
+			{
+				Client_setup.flvr_x_char[idx] = (char)c;
+				Client_setup.flvr_x_attr[idx] = (byte)a;
+				tool_visuals++;
+			}
+		}
+		fclose(fp);
 	}
 }
 
@@ -519,6 +570,24 @@ static void tool_query_map(void)
 		tool_json_str(buf);
 	}
 	printf("]");
+
+	/* Colours, one character per cell: chr(48 + attr) for attr < 64
+	 * (the stream can't carry attrs with bit 0x40 anyway), '~' otherwise */
+	printf(",\"attrs\":[");
+	for (n = 0; n < hgt; n++)
+	{
+		int i;
+
+		for (i = 0; i < wid && i < (int)sizeof(buf) - 1; i++)
+		{
+			byte a = stream_cave(st, n)[i].a;
+			buf[i] = (a < 64) ? (char)('0' + a) : '~';
+		}
+		buf[i] = '\0';
+		if (n) putchar(',');
+		tool_json_str(buf);
+	}
+	printf("]");
 	tool_ev_end();
 }
 
@@ -613,6 +682,49 @@ static void tool_do_command(char *line)
 		tool_confirm_until = streq(ans, "yes") ? tool_now() + 5.0 : 0;
 		tool_ack(line);
 	}
+	else if (streq(verb, "option"))
+	{
+		char name[64] = { 0 }, val[8] = { 0 }, cmd[80];
+		int i;
+
+		if (sscanf(line, "%*s %63s %7s", name, val) < 2 || (!streq(val, "yes") && !streq(val, "no")))
+		{
+			tool_error(line, "usage: option NAME yes|no");
+			return;
+		}
+		for (i = 0; i < options_max; i++)
+		{
+			if (option_info[i].o_text && streq(option_info[i].o_text, name)) break;
+		}
+		if (i >= options_max)
+		{
+			tool_error(line, "no such option on this server");
+			return;
+		}
+		/* Same path as a pref file line "Y:name" / "X:name" */
+		strnfmt(cmd, sizeof(cmd), "%c:%s", streq(val, "yes") ? 'Y' : 'X', name);
+		process_pref_file_command(cmd);
+		send_options();
+		tool_ack(line);
+	}
+	else if (streq(verb, "options"))
+	{
+		int i;
+		bool first = TRUE;
+
+		tool_ev_begin("options");
+		printf(",\"list\":{");
+		for (i = 0; i < options_max; i++)
+		{
+			if (!option_info[i].o_text) continue;
+			if (!first) putchar(',');
+			first = FALSE;
+			tool_json_str(option_info[i].o_text);
+			printf(":%s", p_ptr->options[i] ? "true" : "false");
+		}
+		printf("}");
+		tool_ev_end();
+	}
 	else if (streq(verb, "suicide"))
 	{
 		/* Irreversible: insist on the character's name, like get_check() */
@@ -702,6 +814,7 @@ void tool_loop(void)
 	tool_ev_begin("ready");
 	tool_kv_str("nick", nick);
 	tool_kv_str("door", format("%c", TOOL_HOUSE_DOOR_CHAR));
+	tool_kv_int("visuals", tool_visuals);
 	tool_ev_end();
 
 	while (TRUE)

@@ -136,6 +136,7 @@ static void show_help()
 	printf("      --noprompt            Log in without prompts (existing character only).\n");
 	printf("                            Put it before another --option, not before SERVER.\n");
 	printf("      --passfile PATH       Password for --noprompt (else MANG_PASS or config).\n");
+	printf("      --visuals FILE        Tool mode: extra glyphs (\"r|k|v INDEX CHARCODE ATTR\" lines).\n");
 	printf("      --birth RACE:CLASS:SEX:STATS  With --noprompt: create the character if it\n");
 	printf("                            doesn't exist (or is dead), e.g.\n");
 	printf("                            Half-Orc:Warrior:m:DEX,STR,CON,WIS,CHR,INT\n");
