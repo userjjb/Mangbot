@@ -1,0 +1,106 @@
+# Pilot handbook (for the agent playing the character)
+
+You steer one MAngband character. A program called the **pilot** plays it
+second to second: it moves, fights, escapes, rests and eats on its own. You
+decide *strategy*: where to go, when to explore or dive, what to wear, what to
+keep, when to go to town. You talk to the pilot with `pilotctl.py`. You never
+need to know how the pilot is written.
+
+Run commands from `github/tools/pilot/` with `python3 pilotctl.py --nick NAME
+...` (after `module load python3/3.12.4`).
+
+## Your turn: `wait`
+
+`pilotctl.py --nick NAME wait [SECS]` blocks until the pilot needs you, then
+prints the attention events and a **situation report**. React, give the next
+goal, and wait again. While you're waiting, the pilot keeps the character
+safe. If nobody gives it anything to do for a few minutes (`idle_recall_s`),
+it reads Word of Recall and goes back to town. That is the rule for
+unattended characters.
+
+Attention events:
+
+| event | meaning |
+|---|---|
+| `goal_done`, `goal_failed` | the goal finished (the detail says why) |
+| `interesting` | a dive stopped for something in `stop_on`: a unique, items, a pillared room (these often hold stairs; explore them), danger |
+| `danger_avoided` | arrived next to a pack or an out-of-depth monster and went straight back up the stairs |
+| `emergency` | HP fell below `flee_hp`: the pilot took the stairs underfoot, read Phase Door, or quaffed a cure |
+| `fight_going_badly` | HP below `think_hp` while fighting: decide whether to flee (e.g. `stairs`, or `read` Phase Door) |
+| `low_supply` | out of food (it recalls), etc. |
+| `idle_recall` | nobody answered for a while: it's recalling to town |
+| `dead` | the character died |
+
+## The situation report (`status`)
+
+- Character line: level, HP, depth (50 ft per dungeon level; Town = 0), gold,
+  blows per round, speed. Then stats, hunger and conditions.
+- **Standing on**: `<` or `>` when you're on a staircase. That is your fastest
+  escape: stairs work even when confused.
+- Equipment, then **Pack** with the letters to use in commands (`a)`, `b)`...).
+- A **map** around you: `@` is you; letters are monsters (named in the next
+  line); `#` wall, `.` floor, `+` closed door, `'` open door, `<` `>` stairs,
+  `^` trap. Other symbols are objects: `!` potion, `?` scroll, `=` ring, `"`
+  amulet, `|` `/` `\` weapons, `(` `[` `]` `)` armour, `$` gold, `~` light or
+  tool, `_` staff, `-` wand or rod, `,` food or mushroom.
+- **Monsters in view**: names, level (compare with yours), UNIQUE, distance.
+- **Items seen**: the server's list of objects seen on this level.
+- Known stairs, recent messages, standing orders.
+
+## Goals (one at a time; a new goal replaces the old)
+
+| command | what the pilot does |
+|---|---|
+| `goal dive FEET` | stair-scum down to FEET: take a `>` when one is known, otherwise go up and down the staircase underfoot for a fresh level; explore if no stairs are known. Stops early for `stop_on` things |
+| `goal explore [until=stairs] [radius=N]` | walk to unexplored edges until nothing is left (or a `>` is seen, or within N squares) |
+| `goal goto Y,X` / `goto >` / `goto <` / `goto item` | walk there |
+| `goal recall` | read Word of Recall (takes ~15-35 s to work; the pilot stays safe meanwhile) |
+| `goal rest` | rest until healed |
+| `goal wait SECS` | stand still |
+| `stop` | cancel the goal (safe idle) |
+
+## Actions (immediate)
+
+`wear L`, `takeoff L`, `quaff L`, `read L`, `eat L`, `fuel L` (refill a lantern
+from a flask), `inspect L`, `destroy L [N]`, `drop L [N]`, `inscribe L TEXT`,
+`pickup` (what's underfoot), `stairs [<|>]`. L is the pack letter from the
+report.
+
+## Standing orders (`order key=value ...`)
+
+| order | default | meaning |
+|---|---|---|
+| `flee_hp` | 0.5 | emergency escape below this fraction of max HP |
+| `think_hp` | 0.65 | ask you below this while fighting |
+| `rest_below` / `rest_to` | 0.7 / 0.95 | rest when hurt and alone |
+| `arrival_pack` | 4 | this many monsters near the stairs on arrival: leave at once |
+| `danger_level` | 6 | a monster this many levels above yours counts as danger |
+| `idle_recall_s` | 180 | recall to town after this long without a goal or a word from you |
+| `stop_on` | unique,items,pillared,danger | what makes a dive stop and ask you |
+
+## How good players play (the user's advice and observed play)
+
+- **Dive by stair-scumming.** With connected stairs you always stand on a
+  staircase after taking one. Go up and down until a `>` shows up close by,
+  then take it. Stop for interesting things: a good item in view, a possible
+  vault, a lit room full of stuff. **Pillared rooms** (columns in the middle or
+  along the edges) often hold stairs: explore them.
+- **Fight by standing still.** The server attacks adjacent monsters for you at
+  your full blow rate. Walking away is how you disengage.
+- **Escape order:** the staircase underfoot, then Phase Door, then a cure
+  potion. Word of Recall is slow (not an emergency escape). Phase Door
+  alone often won't shake a pack.
+- Below **60–70% HP**, or when a kill takes unusually long, think about more
+  than just fighting. The real killers are **summoners** and **packs that
+  breathe or cast at range**. Leave those levels.
+- Avoid molds and jellies (stationary, not worth the risk). Uniques drop good
+  items worth identifying (their drops are inscribed with the unique's name).
+- **Pack space runs out before food.** Keep ~1 spare ration. Destroy
+  `{average}` weapons and armour you won't use. Rings and amulets found very
+  shallow are usually bad. Don't quaff unknown potions without food in the
+  pack (Salt Water empties your stomach).
+- Depth checkpoints: see-invisible and free action by 1000 ft; the four basic
+  resistances by 1250 ft.
+- Town: sell the starting kit. Buy a lantern and flasks of oil, light armour,
+  a light weapon (more blows), Phase Door, Cure Light Wounds potions,
+  +to-damage scrolls, Word of Recall.
