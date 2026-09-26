@@ -52,7 +52,9 @@ DEFAULT_ORDERS = {
     "danger_level": 6,     # a monster this many levels above ours in view -> leave/avoid
     "idle_recall_s": 180,  # no goal and no agent contact for this long -> recall to town
     "pickup": "all",       # all | none
-    "stop_on": "unique,items,pillared,danger",   # what makes a dive stop and ask
+    "stop_on": "unique,danger",  # what makes a dive stop and ask (also: items, pillared)
+    "pillared": "explore",       # dive: explore pillared rooms for a '>' by itself (or: ask, ignore)
+    "loot_radius": 10,           # dive: fetch items seen within this many squares (0 = off)
 }
 
 
@@ -178,6 +180,9 @@ class Dive(Goal):
         self.explore = None
         self.reported = set()
         self.probed = None
+        self.looted = set()
+        self.looting = False
+        self.pillared_done = False
 
     def tick(self, p):
         w = p.w
@@ -192,9 +197,35 @@ class Dive(Goal):
             self.level_seen = w.level_t
             self.walking = False
             self.explore = None
+            self.looted = set()
+            self.pillared_done = False
             why = p.interesting()
             if why:
                 return ("interesting", why)
+        # Standing orders that save asking the agent: loot what's close...
+        lr = int(p.orders.get("loot_radius", 0))
+        if lr and not self.walking and not w.monsters:
+            items = [t for t in p.resolve_target("item") if w.dist(t) <= lr and t not in self.looted]
+            if items and not p.mover.active:
+                tgt = min(items, key=w.dist)
+                self.looted.add(tgt)
+                if p.mover.go([tgt]):
+                    self.looting = True
+            if getattr(self, "looting", False):
+                st = p.mover.tick()
+                if st == "moving":
+                    return None
+                self.looting = False
+        # ... and explore a pillared room for a '>' (the user: they often hold stairs)
+        if p.orders.get("pillared") == "explore" and not self.pillared_done and not w.find(">") \
+                and p.pillared():
+            if self.explore is None:
+                self.explore = Explore(until="stairs", radius=15)
+            r = self.explore.tick(p)
+            if r is None:
+                return None
+            self.explore = None
+            self.pillared_done = True
         # Nothing known about the tile underfoot (e.g. just logged in): try '>'
         # once here -- at worst "I see no down staircase here."
         if w.standing_on is None and self.probed != (w.level_t, w.pos) and not self.walking:

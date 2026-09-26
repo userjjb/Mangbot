@@ -87,7 +87,9 @@ of Phase Door and cure potions: it will use them.
 | `arrival_pack` | 4 | this many monsters near the stairs on arrival: leave at once |
 | `danger_level` | 6 | a monster this many levels above yours counts as danger |
 | `idle_recall_s` | 180 | recall to town after this long without a goal or a word from you |
-| `stop_on` | unique,items,pillared,danger | what makes a dive stop and ask you |
+| `stop_on` | unique,danger | what makes a dive stop and ask you (add `items`, `pillared` to be asked about those too) |
+| `pillared` | explore | during a dive, explore pillared rooms for a `>` without asking (`ask` = stop and ask; `ignore`) |
+| `loot_radius` | 10 | during a dive, fetch items seen within this many squares (0 = never) |
 | `pickup` | all | all or none |
 
 Orders are remembered across pilot restarts.
