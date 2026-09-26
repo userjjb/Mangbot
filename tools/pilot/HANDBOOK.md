@@ -89,6 +89,7 @@ of Phase Door and cure potions: it will use them.
 | `idle_recall_s` | 180 | recall to town after this long without a goal or a word from you |
 | `stop_on` | unique,danger | what makes a dive stop and ask you (add `items`, `pillared` to be asked about those too) |
 | `pillared` | explore | during a dive, explore pillared rooms for a `>` without asking (`ask` = stop and ask; `ignore`) |
+| `choke` | on | when a pack (3+) comes at you in the open, back into a corridor within 10 squares and fight them there one at a time (experimental) |
 | `loot_radius` | 10 | during a dive, fetch items seen within this many squares (0 = never) |
 | `pickup` | all | all or none |
 

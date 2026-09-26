@@ -55,6 +55,7 @@ DEFAULT_ORDERS = {
     "stop_on": "unique,danger",  # what makes a dive stop and ask (also: items, pillared)
     "pillared": "explore",       # dive: explore pillared rooms for a '>' by itself (or: ask, ignore)
     "loot_radius": 10,           # dive: fetch items seen within this many squares (0 = off)
+    "choke": "on",               # meet packs in a corridor, not in the open (the user's advice)
 }
 
 
@@ -480,6 +481,8 @@ class Pilot:
         self.emergency_t = 0.0
         self.think_warned = 0.0
         self.picked_t = 0.0
+        self.choke_state = None
+        self.choke_t = self.choke_done_t = 0.0
         self.seen_drained = None
         self.seen_blows = None
         self.unreachable = set()       # frontier tiles we failed to reach (this level)
@@ -498,7 +501,7 @@ class Pilot:
 
     # Events that don't need a decision (the pilot already acted): shown in
     # the next report instead of waking the agent
-    NEWS = {"danger_avoided", "started"}
+    NEWS = {"danger_avoided", "started", "tactic"}
 
     def notify(self, what, detail=None):
         ev = {"t": round(time.time(), 3), "what": what, "detail": detail,
@@ -632,6 +635,11 @@ class Pilot:
                 self.take_stairs(w.standing_on)
                 self.notify("danger_avoided", why)
                 return True
+        # 3b. A pack coming at us in the open: back into a corridor so they
+        # trickle into melee one at a time ("retreat behind a turn")
+        if o.get("choke") == "on" and not w.adjacent_monsters() and w.standing_on not in ("<", ">"):
+            if self.choke_tick(now):
+                return True
         # 4. Hunger
         if w.hunger <= 2 and not w.monsters:
             food = w.items(tval=TV_FOOD)
@@ -754,6 +762,51 @@ class Pilot:
             self.idle_recalled = True
             self.notify("idle_recall", "no word from the agent: recalling to town")
             self.set_goal(Recall())
+
+    def choke_tick(self, now):
+        w = self.w
+        lev = w.ind.get("level", [1])[0]
+        pack = [m for m in w.monsters if w.dist(m[:2]) <= 10 and m[2].level >= lev - 5]
+        if self.choke_state == "going":
+            st = self.mover.tick()
+            if st == "moving":
+                return True
+            self.choke_state = "holding"
+            self.choke_t = now
+            self.log("act", cmd="-", why=f"holding the corridor at {w.pos}")
+            return True
+        if self.choke_state == "holding":
+            if not pack or now - self.choke_t > 25:
+                self.choke_state = None
+                return False
+            return True           # stand; auto-retaliate greets them one by one
+        if len(pack) < 3 or self.mover.in_corridor() or now - self.choke_done_t < 15:
+            return False
+        # A corridor square within 10 steps, further from the pack than we are
+        cy = sum(m[0] for m in pack) / len(pack)
+        cx = sum(m[1] for m in pack) / len(pack)
+        d_now = max(abs(w.pos[0] - cy), abs(w.pos[1] - cx))
+        mem = w.memory
+        cands = []
+        for (y, x), ch in mem.items():
+            if w.dist((y, x)) > 10 or ch in "#%*: 12345678" or ch in "<>" and False:
+                continue
+            if max(abs(y - cy), abs(x - cx)) <= d_now:
+                continue
+            open_ = sum(1 for dy in (-1, 0, 1) for dx in (-1, 0, 1)
+                        if (dy or dx) and mem.get((y + dy, x + dx), " ") not in "#%*: ")
+            if open_ <= 2:
+                cands.append((y, x))
+        if not cands:
+            self.choke_done_t = now
+            return False
+        if self.mover.go(cands):
+            self.choke_state = "going"
+            self.choke_done_t = now
+            self.notify("tactic", f"{len(pack)} monsters coming ({pack[0][2].name}): backing into a corridor")
+            return True
+        self.choke_done_t = now
+        return False
 
     STAT_NAMES = ("STR", "INT", "WIS", "DEX", "CON", "CHR")
 
