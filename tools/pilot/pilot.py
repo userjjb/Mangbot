@@ -705,6 +705,7 @@ class Pilot:
         self.emergency_t = 0.0
         self.think_warned = 0.0
         self.picked_t = 0.0
+        self.fear_t = 0.0
         self.skipped_items = set()     # (level, square) of junk we chose to leave
         self.resume_after = None
         self.autodestroy_t = 0.0
@@ -893,6 +894,22 @@ class Pilot:
         # trickle into melee one at a time ("retreat behind a turn")
         if o.get("choke") == "on" and not w.adjacent_monsters() and w.standing_on not in ("<", ">"):
             if self.choke_tick(now):
+                return True
+        # 3b'. Afraid: a frightened warrior can't melee (auto-retaliate stops),
+        # so don't stand there: a potion that cures fear, else step away by Phase
+        if w.flag("afraid") and mons_near and now - self.fear_t > 3:
+            self.fear_t = now
+            pot = next((i for i in w.items(tval=TV_POTION)
+                        if any(n in i["name"] for n in ("Boldness", "Heroism", "Berserk"))), None)
+            if pot:
+                self.cmd(f"custom q item={pot['item']}", f"afraid: quaff {pot['name']}", hold=0.6)
+                self.notify("tactic", f"afraid next to monsters: quaffed {pot['name']}")
+                return True
+            pd = next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
+            if pd and w.adjacent_monsters() and not w.flag("blind") and not w.flag("confused"):
+                self.cmd(f"custom r item={pd['item']}", "afraid: phase door away", hold=0.6)
+                self.notify("afraid", "afraid (can't melee) with monsters adjacent: phased away; "
+                                      "carry Potions of Boldness/Heroism")
                 return True
         # 3c. Light
         if not w.adjacent_monsters() and self.keep_light(now):
