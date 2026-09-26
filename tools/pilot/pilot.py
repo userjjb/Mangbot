@@ -57,6 +57,8 @@ DEFAULT_ORDERS = {
     "pillared": "explore",       # dive: explore pillared rooms for a '>' by itself (or: ask, ignore)
     "loot_radius": 10,           # dive: fetch items seen within this many squares (0 = off)
     "choke": "on",               # meet packs in a corridor, not in the open (the user's advice)
+    "max_depth": 0,              # feet; 0 = no limit. Dives stop there, explore refuses below it,
+                                 # and after an emergency trip down the stairs we come back up
 }
 
 
@@ -132,6 +134,9 @@ class Explore(Goal):
             # On the surface the "frontier" runs off the level edge into the
             # wilderness (it once wandered from town to 2S 2E)
             return ("failed", "explore is for dungeon levels, not the town or wilderness")
+        md = int(p.orders.get("max_depth", 0))
+        if md and w.depth_ft > md and self.until != "stairs":
+            return ("failed", f"{w.depth_ft} ft is below max_depth {md}: go up first")
         if self.center is None:
             self.center = w.pos
         if self.until == "stairs" and w.find(">"):
@@ -198,6 +203,10 @@ class Dive(Goal):
 
     def tick(self, p):
         w = p.w
+        md = int(p.orders.get("max_depth", 0))
+        if md and self.target_ft > md:
+            self.target_ft = md
+            self.name = f"dive {md}ft (max_depth)"
         if w.depth_ft >= self.target_ft:
             return ("done", f"reached {w.depth_ft} ft")
         if self.pending and w.level_t < self.pending and time.time() - self.pending < 3:
@@ -389,6 +398,60 @@ class Hunt(Goal):
         return None
 
 
+class Recover(Goal):
+    """After an emergency escape by the stairs: rest on the staircase, take it
+    again if threatened (the arrival rule), and once healed go back up if we
+    came down past max_depth -- rather than carrying on at the new depth
+    (Dive03 kept exploring at 1000 ft after fleeing down and died there)."""
+
+    def __init__(self, came_by, prev_goal=None):
+        self.came_by = came_by
+        self.name = f"recover (fled by {came_by})"
+        self.prev = prev_goal
+        self.level = None
+
+    def tick(self, p):
+        w = p.w
+        if self.level is None:
+            self.level = w.level_t
+        md = int(p.orders.get("max_depth", 0))
+        too_deep = md and w.depth_ft > md
+        if w.hp_frac < p.orders["rest_to"]:
+            if not w.monsters:
+                p.start_resting()
+            return None
+        if too_deep and w.standing_on == "<":
+            p.take_stairs("<")
+            return ("done", f"healed; back up from {w.depth_ft} ft (max_depth {md})")
+        return ("done", f"healed at {w.depth_ft} ft")
+
+
+class Flee(Goal):
+    """Get away from something too dangerous: to the nearest known stairs and
+    take them."""
+
+    def __init__(self, why):
+        self.name = f"flee ({why})"
+        self.started = False
+
+    def tick(self, p):
+        w = p.w
+        if w.standing_on in ("<", ">"):
+            p.take_stairs(w.standing_on)
+            return ("done", "left by the stairs")
+        stairs = w.find("<>")
+        if not stairs:
+            return ("failed", "no stairs known")
+        if not self.started or not p.mover.active:
+            if not p.mover.go(stairs):
+                return ("failed", "no path to stairs")
+            self.started = True
+        st = p.mover.tick()
+        if st == "stuck":
+            return ("failed", "stuck on the way to the stairs")
+        return None
+
+
 class Recall(Goal):
     name = "recall"
 
@@ -559,6 +622,8 @@ class Pilot:
         self.emergency_t = 0.0
         self.think_warned = 0.0
         self.picked_t = 0.0
+        self.recall_t = 0.0
+        self.flee_t = 0.0
         self.wear_queue = False
         self.breeder_level = None
         self.choke_state = None
@@ -715,6 +780,17 @@ class Pilot:
                 self.take_stairs(w.standing_on)
                 self.notify("danger_avoided", why)
                 return True
+        # 3a. Something far above our level in view: leave before it reaches us
+        # (not only on arrival -- Dive03 met Stone trolls while exploring)
+        near_danger = [r for y, x, r in w.monsters if w.dist((y, x)) <= 12 and r in self.dangers()]
+        if near_danger and not isinstance(self.goal, (Flee, Recover)) and now - self.flee_t > 10 \
+                and "danger" in o["stop_on"]:
+            self.flee_t = now
+            prev = self.goal.describe() if self.goal else None
+            self.set_goal(Flee(near_danger[0].name))
+            self.notify("danger_seen", f"{near_danger[0].name} (lvl {near_danger[0].level}) in view"
+                                       f"{' while ' + prev if prev else ''}: heading for the stairs")
+            return True
         # 3b. A pack coming at us in the open: back into a corridor so they
         # trickle into melee one at a time ("retreat behind a turn")
         if o.get("choke") == "on" and not w.adjacent_monsters() and w.standing_on not in ("<", ">"):
@@ -732,7 +808,7 @@ class Pilot:
         # 5. Adjacent monster: let the server's auto-retaliate fight
         adj = w.adjacent_monsters()
         if adj:
-            if self.mover.active and not isinstance(self.goal, (Goto,)):
+            if self.mover.active and not isinstance(self.goal, (Goto, Flee)):
                 self.mover.stop()
             if w.resting:
                 self.stop_resting()
@@ -740,7 +816,7 @@ class Pilot:
                 self.think_warned = now
                 self.notify("fight_going_badly",
                             f"HP {w.hp[0]}/{w.hp[1]} fighting {', '.join(sorted({r.name for *_, r in adj}))}")
-            return not isinstance(self.goal, Goto)
+            return not isinstance(self.goal, (Goto, Flee))
         # Pick up what we're standing on ("You see a ..." right after a step)
         if o["pickup"] == "all" and not adj and not w.store:
             seen = [(ts, t) for ts, t in w.messages if now - ts < 3 and t.startswith("You see ")
@@ -773,13 +849,29 @@ class Pilot:
         if w.last_stairs_cmd and now - w.last_stairs_cmd[1] < 1.2:
             return True           # already on our way (retried after 1.2 s)
         if w.standing_on in ("<", ">"):
-            self.take_stairs(w.standing_on)
-            self.notify("emergency", f"{why}: took the stairs underfoot ({w.standing_on})")
+            which = w.standing_on
+            self.take_stairs(which)
+            self.notify("emergency", f"{why}: took the stairs underfoot ({which})")
+            # then heal on the other side instead of carrying on with the goal
+            if not isinstance(self.goal, Recover):
+                self.goal = Recover(which, self.goal)
+                self.log("goal", goal=self.goal.describe())
             return True
         adj = w.adjacent_monsters()
         can_read = not w.flag("blind") and not w.flag("confused")
         pd = w.tagged("r", 1) or next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
-        if adj and pd and can_read and now - self.phase_t > 2.5:
+        # Last resort, started early because it takes 15-35 s: Word of Recall
+        if w.hp_frac < 0.3 and can_read and not self.recall_started(now):
+            wor = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
+            if wor and w.in_dungeon:
+                self.recall_t = now
+                self.cmd(f"custom r item={wor['item']}", f"{why}: word of recall (last resort)", hold=0.5)
+                self.notify("emergency", f"{why}: read Word of Recall as a last resort")
+                return True
+        # Rate-limited (repeated phasing doesn't shake a pack), except when HP
+        # is collapsing with something next to us
+        collapsing = w.hp_frac < 0.35
+        if adj and pd and can_read and (now - self.phase_t > 2.5 or (collapsing and now - self.phase_t > 0.7)):
             self.phase_t = now
             self.cmd(f"custom r item={pd['item']}", f"{why}: phase door", hold=0.6)
             self.notify("emergency", f"{why}: read Phase Door ({', '.join(sorted({r.name for *_, r in adj}))} adjacent)")
@@ -808,6 +900,12 @@ class Pilot:
             self.noescape_t = now
             self.notify("emergency", f"{why}: nothing left to escape with, fighting on")
         return False
+
+    def recall_started(self, now):
+        """A Word of Recall is already under way (read recently, or the message)."""
+        if now - self.recall_t < 40:
+            return True
+        return any("air about you becomes charged" in t for t in self.w.recent(40))
 
     def seen_pos(self, t):
         """Where we were at time t (for 'You see' messages): the position then."""

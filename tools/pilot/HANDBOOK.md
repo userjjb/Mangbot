@@ -25,6 +25,7 @@ Attention events:
 | `goal_done`, `goal_failed` | the goal finished (the detail says why) |
 | `interesting` | a dive stopped for something in `stop_on`: a unique, items, a pillared room (these often hold stairs; explore them), danger |
 | `danger_avoided` | (news, doesn't wake you) arrived next to a pack or an out-of-depth monster and went straight back up the stairs. Shown under "Since last report" |
+| `danger_seen` | a monster far above your level came into view: the pilot dropped the goal and is heading for the stairs |
 | `emergency` | HP fell below `flee_hp`: the pilot took the stairs underfoot, read Phase Door, or quaffed a cure |
 | `fight_going_badly` | HP below `think_hp` while fighting: decide whether to flee (e.g. `stairs`, or `read` Phase Door) |
 | `low_supply` | out of food (it recalls), etc. |
@@ -73,9 +74,12 @@ when identifying re-sorts the pack): check `status` before a series of
 actions, and act from the last letter backwards.
 
 What the pilot does by itself in an emergency (HP below `flee_hp`): take
-the staircase underfoot; with a monster next to you, read Phase Door (at most
+the staircase underfoot (then it rests on the other side, and comes back up if
+that's below `max_depth`; the goal is dropped and you're told); with a monster next to you, read Phase Door (at most
 every 2.5 s: repeated phasing doesn't shake a pack); otherwise walk to stairs
-within 20 squares, or quaff Cure Light/Serious/Critical Wounds. Keep plenty
+within 20 squares, or quaff Cure Light/Serious/Critical Wounds. Below 35% HP
+with something adjacent it phases again at once; below 30% it also reads Word
+of Recall (it takes 15-35 s to work, so it starts early). Keep plenty
 of Phase Door and cure potions: it will use them.
 
 ## Standing orders (`order key=value ...`)
@@ -91,6 +95,7 @@ of Phase Door and cure potions: it will use them.
 | `stop_on` | unique,danger | what makes a dive stop and ask you (add `items`, `pillared` to be asked about those too) |
 | `pillared` | explore | during a dive, explore pillared rooms for a `>` without asking (`ask` = stop and ask; `ignore`) |
 | `choke` | on | when a pack (3+) comes at you in the open, back into a corridor within 10 squares and fight them there one at a time (experimental) |
+| `max_depth` | 0 | feet, 0 = no limit: dives stop there, exploring below it is refused, and after an emergency escape down the stairs the pilot rests and comes back up |
 | `loot_radius` | 10 | during a dive, fetch items seen within this many squares (0 = never) |
 | `pickup` | all | all or none |
 
