@@ -47,6 +47,8 @@ class World:
         self.last_stairs_cmd = None            # ('<'|'>', t) sent, awaiting the level change
         self.hits_taken = 0                    # "... hits you" style messages
         self.last_hit_t = 0.0
+        self.unseen = (0.0, "")                # last message from an unseen monster acting on us
+        self.heard = (0.0, "")                 # last "You hear a door burst open!"
         self.hp_hist = collections.deque(maxlen=40)   # (t, hp), one per status poll
         self.pos_t = 0.0
         self.in_dungeon = None                 # see _level_kind(): the depth byte alone can't tell
@@ -66,6 +68,11 @@ class World:
     RE_ATTACK = re.compile(r" (hits|bites|claws|stings|touches|kicks|butts|crushes|engulfs|crawls on|spits on|"
                            r"gazes at|wails at|punches|grabs|fires an arrow|casts a magic missile|"
                            r"points at you and curses|breathes|misses) you")
+
+    # An unseen monster acting on us (monster2.c names it "it"/"something")
+    RE_UNSEEN = re.compile(r"^(It|Something) (hits|bites|claws|stings|touches|kicks|butts|crushes|engulfs|"
+                           r"crawls on|spits on|gazes at|wails at|punches|grabs|breathes|casts|magically|"
+                           r"mumbles|fires|points at you|commands you|drains|tries to|concentrates)")
 
     def drain(self):
         """Apply queued events. Returns the list applied (for the pilot's triggers)."""
@@ -111,6 +118,10 @@ class World:
                         or t.startswith("Was wearing") or t.startswith("You destroy") \
                         or t.startswith("You feel") or "in your pack" in t:
                     self.inven_dirty = True
+                if self.RE_UNSEEN.match(t):
+                    self.unseen = (time.time(), t)
+                elif t.startswith("You hear a door burst open"):
+                    self.heard = (time.time(), t)
                 if self.RE_ATTACK.search(t):
                     self.hits_taken += 1
                     self.last_hit_t = time.time()

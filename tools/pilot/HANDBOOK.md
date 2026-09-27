@@ -25,11 +25,12 @@ Attention events:
 | `goal_done`, `goal_failed` | the goal finished (the detail says why) |
 | `interesting` | a dive stopped for something in `stop_on`: a unique, items, a pillared room (these often hold stairs; explore them), danger |
 | `danger_avoided` | (news, doesn't wake you) arrived next to a pack or an out-of-depth monster and went straight back up the stairs. Shown under "Since last report" |
-| `danger_seen` | a monster far above your level came into view: the pilot dropped the goal and is heading for the stairs |
+| `danger_seen` | a dangerous monster came into view: the pilot dropped the goal and is heading for the stairs. The detail says why. Danger means: `danger_level` above yours, a unique above your level, a breather whose two strongest breaths would kill you at your current HP, breathers whose breaths together would (hound packs), a paralyser while you lack Free Action (`free_action` order), or a summoner within 5 levels of yours (summons appear next to *you* and stay after it dies) |
 | `emergency` | HP fell below `flee_hp`: the pilot took the stairs underfoot, read Phase Door, or quaffed a cure |
 | `fight_going_badly` | HP below `think_hp` while fighting: decide whether to flee (e.g. `stairs`, or `read` Phase Door) |
 | `low_supply` | out of food (it recalls), no flasks for the lantern, no light at all |
 | `idle_recall` | nobody answered for a while: it's recalling to town |
+| `unseen_attacker` | something you can't see is attacking ("It hits you", "It breathes...", or HP falling with nothing in view): the pilot heads for the stairs. Also raised (without fleeing) on "You hear a door burst open!". Without See Invisible, leaving the level is the answer |
 | `recall_cancelled` | a second Word of Recall was read, which cancels the first: no recall is pending now. Read one again if you still want to go |
 | `parked` | the pilot is logging out for an update (at a safe moment). It comes back within a minute or two with `started`; then re-issue your goal |
 | `pack_full` | "You have no room for ...": make room (destroy/drop junk, or recall and sell) |
@@ -105,6 +106,7 @@ of Phase Door and cure potions: it will use them.
 | `rest_below` / `rest_to` | 0.7 / 0.95 | rest when hurt and alone |
 | `arrival_pack` | 4 | this many monsters near the stairs on arrival: leave at once |
 | `danger_level` | 6 | a monster this many levels above yours counts as danger |
+| `free_action` | no | set `yes` once the character has Free Action: paralysers then stop counting as danger |
 | `idle_recall_s` | 600 | recall to town after this long without a goal or a word from you |
 | `stop_on` | unique,danger | what makes a dive stop and ask you (add `items`, `pillared` to be asked about those too) |
 | `pillared` | explore | during a dive, explore pillared rooms for a `>` without asking (`ask` = stop and ask; `ignore`) |

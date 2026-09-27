@@ -58,6 +58,7 @@ DEFAULT_ORDERS = {
     "rest_to": 0.95,
     "arrival_pack": 4,     # this many monsters in view on arrival -> leave by the stairs
     "danger_level": 6,     # a monster this many levels above ours in view -> leave/avoid
+    "free_action": "no",   # yes once the character has Free Action: paralysers stop counting as danger
     "idle_recall_s": 600,  # no goal and no agent contact for this long -> recall to town
                            # (long enough for a slow agent turn; 180 s fired mid-thought)
     "pickup": "all",       # all | none
@@ -752,6 +753,7 @@ class Pilot:
                 self.town_stairs = json.load(f).get("stairs")
         self.recall_t = 0.0
         self.sidestep_t = 0.0
+        self.unseen_warned = self.heard_warned = 0.0
         self.flee_t = 0.0
         self.wear_queue = False
         self.breeder_level = None
@@ -861,10 +863,35 @@ class Pilot:
                 return True
         return False
 
-    def dangers(self):
+    def danger_why(self, r, pack_breath=0):
+        """Why monster race r is too dangerous to fight now, or None."""
         lev = self.w.ind.get("level", [1])[0]
-        dl = self.orders["danger_level"]
-        return [r for _, _, r in self.w.monsters if r.level >= lev + dl or "UNIQUE" in r.flags and r.level > lev]
+        hp = self.w.hp[0]
+        if r.level >= lev + self.orders["danger_level"]:
+            return f"lvl {r.level}"
+        if "UNIQUE" in r.flags and r.level > lev:
+            return f"unique, lvl {r.level}"
+        # Engage a breather only if two of its breaths can't kill us (Advisor
+        # memo, Addendum 2 item 8); a pack of breathers (hounds) breathes together
+        if r.max_breath and 2 * r.max_breath >= hp:
+            return f"breathes up to {r.max_breath}"
+        if r.max_breath and pack_breath >= hp:
+            return f"its pack breathes up to {pack_breath} in all"
+        if r.paralyser and self.orders.get("free_action") != "yes" and r.level >= lev - 10:
+            return "paralyses (no Free Action)"
+        # Summons land next to us and stay after the summoner dies (memo §1.2)
+        if r.summoner and r.level >= lev - 5:
+            return "summons"
+        return None
+
+    def dangers(self):
+        mons = self.w.monsters
+        pack_breath = sum(r.max_breath for *_, r in mons)
+        return [r for _, _, r in mons if self.danger_why(r, pack_breath)]
+
+    def danger_text(self, r):
+        pack_breath = sum(x.max_breath for *_, x in self.w.monsters)
+        return f"{r.name} ({self.danger_why(r, pack_breath) or f'lvl {r.level}'})"
 
     def interesting(self):
         so = set(self.orders["stop_on"].split(","))
@@ -911,7 +938,7 @@ class Pilot:
             threats = [m for m in mons_near if m[2].level >= lev - 5]
             if len(threats) >= o["arrival_pack"] or (danger and "danger" in o["stop_on"]):
                 why = f"arrived next to {len(threats)} monsters ({threats[0][2].name if threats else ''})" + \
-                    (f" incl. {danger[0].name} (lvl {danger[0].level})" if danger else "")
+                    (f" incl. {self.danger_text(danger[0])}" if danger else "")
                 self.take_stairs(w.standing_on)
                 self.notify("danger_avoided", why)
                 return True
@@ -923,8 +950,14 @@ class Pilot:
             self.flee_t = now
             prev = self.goal.describe() if self.goal else None
             self.set_goal(Flee(near_danger[0].name))
-            self.notify("danger_seen", f"{near_danger[0].name} (lvl {near_danger[0].level}) in view"
+            self.notify("danger_seen", f"{self.danger_text(near_danger[0])} in view"
                                        f"{' while ' + prev if prev else ''}: heading for the stairs")
+            return True
+        # 3a'. Something we can't see is attacking (an invisible monster, or one
+        # out of sight): we can't fight it, so leave (Advisor memo, Addendum 2
+        # item 3). Also HP falling with nothing in view and nothing else to
+        # explain it.
+        if self.unseen_tick(now):
             return True
         # 3b. A pack coming at us in the open: back into a corridor so they
         # trickle into melee one at a time ("retreat behind a turn")
@@ -1177,6 +1210,32 @@ class Pilot:
             self.notify("emergency", f"{why}: " + (f"waiting to use {', '.join(left)} again, fighting on"
                                                    if left else "nothing left to escape with, fighting on"))
         return False
+
+    def unseen_tick(self, now):
+        w = self.w
+        if not w.in_dungeon:
+            return False
+        if now - w.heard[0] < 2 and w.heard[0] > self.heard_warned:
+            self.heard_warned = w.heard[0]
+            self.notify("unseen_attacker", "heard a door burst open: something is coming; be ready to leave")
+        cause = None
+        if now - w.unseen[0] < 3:
+            cause = w.unseen[1]
+        elif not w.monsters and w.damage_rate(3.0) > 0 and not w.flag("poisoned") and not w.flag("cut") \
+                and w.hunger > 1 and now - w.level_t > 3:
+            cause = f"losing HP ({w.damage_rate(3.0):.0f}/s) with nothing in view"
+        if not cause or isinstance(self.goal, (Flee, Recall, Recover)) or now - self.unseen_warned < 20:
+            return False
+        self.unseen_warned = now
+        prev = self.goal.describe() if self.goal else None
+        if w.find("<>"):
+            self.set_goal(Flee("unseen attacker"))
+            self.notify("unseen_attacker", f"'{cause}': something unseen is attacking"
+                                           f"{' while ' + prev if prev else ''}; heading for the stairs")
+        else:
+            self.notify("unseen_attacker", f"'{cause}': something unseen is attacking and no stairs are known: "
+                                           "consider Word of Recall or Phase Door")
+        return True
 
     def sidestep(self, threats):
         """One step to a free square next to none of threats (stationary
