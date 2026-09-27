@@ -552,7 +552,7 @@ class Flee(Goal):
         # flights kept taking '>' past max_depth)
         md = int(p.orders.get("max_depth", 0))
         ok = "<" if md and w.depth_ft >= md and w.find("<") else "<>"
-        if w.standing_on in ok:
+        if w.standing_on and w.standing_on in ok:     # (None in "<>" crashed a flee, mission 6)
             p.take_stairs(w.standing_on)
             self.took = (w.level_t, time.time())
             return None
