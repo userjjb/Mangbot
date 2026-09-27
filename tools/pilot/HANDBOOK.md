@@ -18,6 +18,11 @@ safe. If nobody gives it anything to do for a few minutes (`idle_recall_s`),
 it reads Word of Recall and goes back to town. That is the rule for
 unattended characters.
 
+`wait SECS --brief` prints a short report instead: the character and stats
+lines, what you're standing on, monsters in view, known stairs and the news.
+Use it for routine turns (it keeps your context small), and `status` when you
+need the map, equipment, pack or messages.
+
 Attention events:
 
 | event | meaning |

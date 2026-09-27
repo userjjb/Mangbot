@@ -9,7 +9,8 @@
     pilotctl.py wear|takeoff|quaff|read|eat|fuel|inspect LETTER
     pilotctl.py destroy|drop LETTER [COUNT]
     pilotctl.py inscribe LETTER TEXT...    | pickup | stairs [<|>]
-    pilotctl.py wait [SECS]                # block until the pilot asks for attention
+    pilotctl.py wait [SECS] [--brief]      # block until the pilot asks for attention
+                                           # (--brief: status lines, monsters, stairs, news only)
     pilotctl.py attention                  # pending attention events, without waiting
 """
 import json
@@ -35,6 +36,17 @@ def call(sock, req, timeout):
     return json.loads(buf)
 
 
+BRIEF_KEEP = ("Standing on:", "Monsters in view:", "Known stairs:", "Since last report:")
+
+
+def brief_report(report):
+    """The first two lines (character, stats) and the few lines that change
+    decisions; the map, equipment, pack, messages and orders are left out
+    (use `status` when you need them)."""
+    lines = report.split("\n")
+    return "\n".join(lines[:2] + [l for l in lines[2:] if l.startswith(BRIEF_KEEP)])
+
+
 def main():
     argv = sys.argv[1:]
     nick = os.environ.get("PILOT_NICK", "dive01")
@@ -46,6 +58,8 @@ def main():
     sock = os.path.join(RUNS, "pilot", nick.lower(), "ctl.sock")
     cmd, args = argv[0], argv[1:]
     if cmd == "wait":
+        brief = "--brief" in args
+        args = [a for a in args if a != "--brief"]
         t = float(args[0]) if args else 600
         try:
             out = call(sock, {"cmd": "wait-attention", "timeout": t}, t + 30)
@@ -59,7 +73,7 @@ def main():
         if not out.get("events"):
             print("(no attention events)")
         if out.get("report"):
-            print(out["report"])
+            print(brief_report(out["report"]) if brief else out["report"])
         return
     try:
         out = call(sock, {"cmd": cmd, "args": args}, 40)
