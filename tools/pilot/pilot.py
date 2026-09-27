@@ -1067,8 +1067,9 @@ class Pilot:
         return False
 
     def escape(self, why):
-        """Emergency: stairs underfoot > (in melee) Phase Door > (not in melee)
-        walk to nearby stairs, else a cure potion. Rate-limited: Phase Door
+        """Emergency: stairs underfoot > out of combat, rest (never potions)
+        > (in melee) Phase Door > (not in melee) walk to nearby stairs, else
+        a cure potion. Rate-limited: Phase Door
         again and again doesn't shake a pack (it burned 10 scrolls in 10 s)."""
         w = self.w
         now = time.time()
@@ -1088,6 +1089,20 @@ class Pilot:
         adj = w.adjacent_monsters()
         can_read = not w.flag("blind") and not w.flag("confused")
         pd = w.tagged("r", 1) or next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
+        # Out of combat, potions and scrolls are a waste: rest instead (the
+        # user). In combat = something next to us, hit in the last 3 s (ranged
+        # attacks count), or HP falling with a monster in view (not poison or
+        # a cut on its own).
+        rate = w.damage_rate(3.0)
+        in_combat = adj or now - w.last_hit_t <= 3 or (rate > 0 and w.monsters)
+        if not in_combat and \
+                not (self.mover.active and self.escaping_to_stairs):
+            if not w.monsters:
+                self.start_resting()
+                return True
+            # something in view but not fighting (asleep, slow): back off over
+            # walked ground, out of its sight, and rest there
+            return self.retreat_step([m for m in w.monsters if w.dist(m[:2]) <= 7] or w.monsters)
         # Last resort, started early because it takes 15-35 s: Word of Recall
         if w.hp_frac < 0.3 and can_read and not self.recall_started(now):
             wor = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
@@ -1123,7 +1138,6 @@ class Pilot:
             # the turn auto-retaliate eats). Weakest adequate first (Cure Serious
             # went first and was gone when it mattered, mission 2); when HP is
             # collapsing, at least 10% of max HP.
-            rate = w.damage_rate(3.0)
             need = max(rate * 2.0, 0.1 * w.hp[1] if w.hp_frac < 0.3 else 0)
             pots = sorted(((heal_of(i["name"]), i) for i in w.items(tval=TV_POTION) if heal_of(i["name"])),
                           key=lambda p: p[0])
@@ -1149,7 +1163,7 @@ class Pilot:
                     self.notify("emergency", f"{why}: read Word of Recall (potions too weak for the damage)")
                     return True
                 if not adj:
-                    pick = pots[-1]      # nothing to hit back at: any HP helps
+                    pick = pots[-1]      # shot at, nothing to hit back: any HP helps
             if pick:
                 pot = pick[1]
                 self.cure_t = now

@@ -140,7 +140,8 @@ Orders are remembered across pilot restarts.
   also cures stun, confusion, blindness and poison) and save for Healing. The pilot measures how
   fast HP is falling and drinks the weakest potion that out-heals it. When no potion can keep up
   and death is seconds away, it escapes instead (Phase Door, then Word of Recall) rather than
-  wasting turns drinking. Against weak monsters `flee_hp=0.4` saves potions.
+  wasting turns drinking. **Out of combat it never drinks for HP: it rests** (and backs away
+  first if a monster is in view but not fighting). Against weak monsters `flee_hp=0.4` saves potions.
 - **Buy Potions of Boldness or Heroism whenever the store has them.** Without them, leave a level
   with Priests or packs of paladins (they scare and summon): two trips were lost to fear.
 - A character with a 1d6 weapon, 3 blows and AC ~30 struggled against groups at 650-700 ft;

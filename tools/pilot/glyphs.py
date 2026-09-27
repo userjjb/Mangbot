@@ -47,8 +47,38 @@ class Race:
         return any("TERRIFY" in b for b in self.blows) or \
             ("SCARE" in self.spells and 0 < self.spell_freq <= 5)
 
+    @property
+    def summoner(self):
+        return any(s.startswith("S_") for s in self.spells)
+
+    @property
+    def paralyser(self):
+        """Casts Hold Person, or (if it can reach you) a paralysing blow."""
+        return "HOLD" in self.spells or ("NEVER_MOVE" not in self.flags and
+                                         any(b.split(":")[1:2] == ["PARALYZE"] for b in self.blows))
+
+    @property
+    def max_hp(self):
+        n, _, m = self.hp.partition("d")
+        return int(n) * int(m or 1)
+
+    @property
+    def max_breath(self):
+        """Its strongest breath at full HP, before resists (server melee2.c:
+        HP / 3 or / 6, capped, by element). 0 if it doesn't breathe."""
+        return max((min(self.max_hp // d, cap) for b, (d, cap) in BREATHS.items() if b in self.spells),
+                   default=0)
+
     def __repr__(self):
         return f"Race({self.idx}, {self.name!r}, lvl {self.level})"
+
+
+# Breath damage = monster HP / divisor, capped (server melee2.c:630-860)
+BREATHS = {"BR_ACID": (3, 1600), "BR_ELEC": (3, 1600), "BR_FIRE": (3, 1600), "BR_COLD": (3, 1600),
+           "BR_POIS": (3, 800), "BR_NETH": (6, 550), "BR_LITE": (6, 400), "BR_DARK": (6, 400),
+           "BR_CONF": (6, 400), "BR_SOUN": (6, 500), "BR_CHAO": (6, 500), "BR_DISE": (6, 500),
+           "BR_NEXU": (6, 400), "BR_TIME": (3, 150), "BR_INER": (6, 200), "BR_GRAV": (3, 200),
+           "BR_SHAR": (6, 500), "BR_PLAS": (6, 150), "BR_WALL": (6, 200), "BR_MANA": (3, 250)}
 
 
 def load_races(path=None):
