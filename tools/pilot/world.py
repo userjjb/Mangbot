@@ -47,6 +47,7 @@ class World:
         self.last_stairs_cmd = None            # ('<'|'>', t) sent, awaiting the level change
         self.hits_taken = 0                    # "... hits you" style messages
         self.last_hit_t = 0.0
+        self.hp_hist = collections.deque(maxlen=40)   # (t, hp), one per status poll
         self.pos_t = 0.0
         self.in_dungeon = None                 # see _level_kind(): the depth byte alone can't tell
         self.walked = set()                    # squares walked on this level
@@ -162,6 +163,8 @@ class World:
         if now - self.status_t > status_every:
             st = self.c.status()
             self.ind = st["ind"]
+            if "hp" in self.ind:
+                self.hp_hist.append((now, self.ind["hp"][0]))
             self.ghost = st.get("ghost", False)
             if st["y"] >= 0:
                 self.pos = (st["y"], st["x"])
@@ -199,6 +202,14 @@ class World:
     def hp_frac(self):
         hp, mhp = self.hp
         return hp / mhp if mhp else 1.0
+
+    def damage_rate(self, window=3.0):
+        """HP lost per second over the last `window` seconds (drops only:
+        heals in between don't hide the damage coming in)."""
+        now = time.time()
+        pts = [(t, h) for t, h in self.hp_hist if now - t <= window]
+        lost = sum(max(0, a[1] - b[1]) for a, b in zip(pts, pts[1:]))
+        return lost / window
 
     @property
     def depth_ft(self):

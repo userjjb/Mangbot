@@ -135,9 +135,12 @@ Orders are remembered across pilot restarts.
   reason to leave the level, not to fight.
 - **Budget two Word of Recall per trip**: the pilot reads one by itself below 30% HP, and each of
   two trips in mission 2 cost a whole scroll that way.
-- Cure Light Wounds heals only ~20 HP: at 200+ max HP buy Cure Serious/Critical Wounds. The pilot
-  drinks the weakest first, the strongest only below 30% HP. Against weak monsters `flee_hp=0.4`
-  saves potions.
+- Potions heal a fixed amount: Cure Light 15 HP, Cure Serious 20-24, Cure Critical 25-29,
+  Healing 300, *Healing* 1200. At 200+ max HP the Cure potions are small, so buy Cure Critical (it
+  also cures stun, confusion, blindness and poison) and save for Healing. The pilot measures how
+  fast HP is falling and drinks the weakest potion that out-heals it. When no potion can keep up
+  and death is seconds away, it escapes instead (Phase Door, then Word of Recall) rather than
+  wasting turns drinking. Against weak monsters `flee_hp=0.4` saves potions.
 - **Buy Potions of Boldness or Heroism whenever the store has them.** Without them, leave a level
   with Priests or packs of paladins (they scare and summon): two trips were lost to fear.
 - A character with a 1d6 weapon, 3 blows and AC ~30 struggled against groups at 650-700 ft;

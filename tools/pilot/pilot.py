@@ -42,6 +42,14 @@ from mover import Mover, direction, passable     # noqa: E402
 
 TV_SCROLL, TV_POTION, TV_FOOD, TV_FLASK, TV_LITE = 70, 75, 80, 77, 39
 CURE_POTIONS = ("Cure Critical Wounds", "Cure Serious Wounds", "Cure Light Wounds", "Healing")
+# HP each potion heals (server use-obj.c:483-540; CSW 20-24, CCW 25-29). Longest
+# names first, so "*Healing*" isn't read as "Healing".
+HEALS = (("*Healing*", 1200), ("Cure Critical Wounds", 25), ("Cure Serious Wounds", 20),
+         ("Cure Light Wounds", 15), ("Healing", 300), ("of Life", 5000))
+
+
+def heal_of(name):
+    return next((hp for n, hp in HEALS if n in name), 0)
 
 DEFAULT_ORDERS = {
     "flee_hp": 0.5,        # emergency below this HP fraction
@@ -1109,16 +1117,45 @@ class Pilot:
                     self.take_stairs(w.standing_on)
                 return True
         if now - self.cure_t > 1.5:
-            # Weakest first unless HP is collapsing: with ~240 max HP, Cure Serious
-            # went first and was gone when it mattered (Navigator mission 2)
-            order = CURE_POTIONS if w.hp_frac < 0.3 else tuple(reversed(CURE_POTIONS[:3])) + CURE_POTIONS[3:]
-            for name in order:
-                pot = next((i for i in w.items(tval=TV_POTION) if name in i["name"]), None)
-                if pot:
-                    self.cure_t = now
-                    self.cmd(f"custom q item={pot['item']}", f"{why}: quaff {name}", hold=0.6)
-                    self.notify("emergency", f"{why}: quaffed {name}")
+            # Heal or escape, by numbers (Advisor memo P3: quaffing CLW while
+            # taking 100+ a turn is the commonest fatal mistake). A potion must
+            # out-heal what comes in before the next one can land (~1.5 s, plus
+            # the turn auto-retaliate eats). Weakest adequate first (Cure Serious
+            # went first and was gone when it mattered, mission 2); when HP is
+            # collapsing, at least 10% of max HP.
+            rate = w.damage_rate(3.0)
+            need = max(rate * 2.0, 0.1 * w.hp[1] if w.hp_frac < 0.3 else 0)
+            pots = sorted(((heal_of(i["name"]), i) for i in w.items(tval=TV_POTION) if heal_of(i["name"])),
+                          key=lambda p: p[0])
+            good = [p for p in pots if p[0] > need]
+            pick = good[0] if good else None
+            dire = rate > 0 and w.hp[0] < rate * 8      # dead in under ~8 s at this rate
+            if pots and not good and not dire:
+                pick = pots[-1]          # slow damage: the biggest potion still helps
+            elif pots and not good:
+                # Every potion is too small for this damage: escape instead
+                if now - self.noescape_t > 10:
+                    self.noescape_t = now
+                    self.notify("emergency", f"{why}: losing ~{rate:.0f} HP/s, more than the best potion heals "
+                                             f"({pots[-1][0]}): escaping instead")
+                if adj and pd and can_read and now - self.phase_t > 0.7:
+                    self.phase_t = now
+                    self.cmd(f"custom r item={pd['item']}", f"{why}: phase door (potions too weak)", hold=0.6)
                     return True
+                wor = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
+                if wor and can_read and w.in_dungeon and not self.recall_started(now):
+                    self.recall_t = now
+                    self.cmd(f"custom r item={wor['item']}", f"{why}: word of recall (potions too weak)", hold=0.5)
+                    self.notify("emergency", f"{why}: read Word of Recall (potions too weak for the damage)")
+                    return True
+                if not adj:
+                    pick = pots[-1]      # nothing to hit back at: any HP helps
+            if pick:
+                pot = pick[1]
+                self.cure_t = now
+                self.cmd(f"custom q item={pot['item']}", f"{why}: quaff {pot['name']}", hold=0.6)
+                self.notify("emergency", f"{why}: quaffed {pot['name']}" + (f" (losing ~{rate:.0f} HP/s)" if rate else ""))
+                return True
         if now - self.noescape_t > 10:
             self.noescape_t = now
             left = [n for n, ok in (("Phase Door", pd), ("cure potions", any(
