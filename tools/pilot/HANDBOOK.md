@@ -147,6 +147,11 @@ Orders are remembered across pilot restarts.
 - **Rubble** (`:`) doesn't seal a level: the pilot digs through it when its path needs to (a few
   turns each). Only a hard wall stops it.
 - **Count your Word of Recall in the pack after every recall** and before going down.
+- **A Disenchanter eye or mold next to your path: `goal hunt` it at once.** The pilot paths
+  around stationary monsters, and every gaze removes a plus from your gear (mission 6 lost +2,+2
+  on the weapon and +1-2 on four armour pieces while going around one).
+- "It commands you to return" is a Tengu or Blink dog teleporting you next to it: harmless by
+  itself, though the pilot treats it as an unseen attacker and leaves the level.
 - **Compare found armour and weapons with what you wear before selling them** (`inspect`): found
   `{good}` gear is often an upgrade. And take `average` out of `autodestroy` before fetching a
   plain base-item upgrade (a Small Metal Shield [3] was destroyed on pickup).
