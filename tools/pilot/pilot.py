@@ -1213,8 +1213,8 @@ class Pilot:
 
     def unseen_tick(self, now):
         w = self.w
-        if not w.in_dungeon:
-            return False
+        if not w.in_dungeon or w.flag("blind"):
+            return False          # (blind, everything is "it": fight on)
         if now - w.heard[0] < 2 and w.heard[0] > self.heard_warned:
             self.heard_warned = w.heard[0]
             self.notify("unseen_attacker", "heard a door burst open: something is coming; be ready to leave")
