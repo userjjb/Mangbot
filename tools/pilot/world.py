@@ -51,6 +51,8 @@ class World:
         self.in_dungeon = None                 # see _level_kind(): the depth byte alone can't tell
         self.walked = set()                    # squares walked on this level
         self.recalled = None                   # 'down'/'up' from the recall message, until the level changes
+        self.recall_cancelled = False          # set on "A tension leaves"; the pilot reports and clears it
+        self.recall_pending = False            # a Word of Recall is active ("becomes charged" until the level changes)
         self.store = None                      # last store listing while inside a store
         self.store_t = 0.0
         client.log = self._on_event            # every event, from the reader thread
@@ -98,6 +100,7 @@ class World:
                     self.standing_on = None
                 self.in_dungeon = self._level_kind(old, sc)
                 self.recalled = None
+                self.recall_pending = False
                 self.last_stairs_cmd = None
             elif k == "message":
                 t = ev["text"]
@@ -114,6 +117,12 @@ class World:
                     self.standing_on = None if self.standing_on == "<" else self.standing_on
                 if t.startswith("I see no down staircase"):
                     self.standing_on = None if self.standing_on == ">" else self.standing_on
+                # A second read cancels the first (server spells2.c:1191-1199)
+                if t.startswith("The air about you becomes charged"):
+                    self.recall_pending = True
+                if t.startswith("A tension leaves the air around you"):
+                    self.recall_pending = False
+                    self.recall_cancelled = True
                 if "yanked upwards" in t or "yanked downwards" in t:
                     self.last_stairs_cmd = None
                     self.recalled = "down" if "downwards" in t else "up"

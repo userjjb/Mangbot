@@ -26,6 +26,10 @@ def plan(world, goals, avoid=(), monster_cost=40, max_cost=4000):
     if not start or not goals:
         return None
     mon = {(y, x) for y, x, _ in world.monsters}
+    # Next to a monster that never moves (molds, jellies, floating eyes): the
+    # server's auto-retaliate would fight it (and a floating eye's gaze paralyses)
+    still = {(y + dy, x + dx) for y, x, r in world.monsters if "NEVER_MOVE" in getattr(r, "flags", ())
+             for dy in (-1, 0, 1) for dx in (-1, 0, 1)}
     avoid = set(avoid)
     mem = world.memory
     # On the surface (town, wilderness) unseen ground is mostly open -- at
@@ -59,7 +63,8 @@ def plan(world, goals, avoid=(), monster_cost=40, max_cost=4000):
                 continue
             # (a hair more for diagonals: of equally short paths, prefer straight ones)
             nd = d + COST.get(ch, 1) + (1 if ch == " " else 0) + (0.001 if dy and dx else 0) \
-                + (monster_cost if nb in mon and nb not in goals else 0)
+                + (monster_cost if nb in mon and nb not in goals else 0) \
+                + (monster_cost if nb in still and nb not in goals else 0)
             if nd < dist.get(nb, 1 << 30):
                 dist[nb] = nd
                 prev[nb] = cur

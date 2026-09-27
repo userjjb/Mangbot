@@ -38,7 +38,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "shopcat"))
 from mang import MangClient, ClientExited      # noqa: E402
 import glyphs                                   # noqa: E402
 from world import World                          # noqa: E402
-from mover import Mover, direction               # noqa: E402
+from mover import Mover, direction, passable     # noqa: E402
 
 TV_SCROLL, TV_POTION, TV_FOOD, TV_FLASK, TV_LITE = 70, 75, 80, 77, 39
 CURE_POTIONS = ("Cure Critical Wounds", "Cure Serious Wounds", "Cure Light Wounds", "Healing")
@@ -556,10 +556,15 @@ class Recall(Goal):
                     p.cmd(f"custom {{ item={it['item']} entry=@R{md}", f"recall depth {md} ft", hold=1.0)
                     w.inven_dirty = True
                     return None
+            if p.recall_started(time.time()):
+                # Already under way (e.g. the last-resort recall): a second read would cancel it
+                p.log("note", text="recall already under way: not reading another")
+                self.read_t = time.time()
+                return None
             p.cmd(f"custom r item={it['item']}", f"read {it['name']}")
-            self.read_t = time.time()
+            self.read_t = p.recall_t = time.time()
             return None
-        if time.time() - self.read_t > 60:
+        if time.time() - self.read_t > (120 if w.recall_pending else 60):
             return ("failed", "recall didn't happen")
         return None
 
@@ -738,6 +743,7 @@ class Pilot:
             with open(self.town_file) as f:
                 self.town_stairs = json.load(f).get("stairs")
         self.recall_t = 0.0
+        self.sidestep_t = 0.0
         self.flee_t = 0.0
         self.wear_queue = False
         self.breeder_level = None
@@ -949,10 +955,15 @@ class Pilot:
         # 3b''. Monsters that frighten you again and again: not worth it. Walk
         # away over cleared ground (phase if it's dangerous and next to us), and
         # tell the Navigator once per level.
-        # (stationary ones -- mushroom patches, molds -- only matter next to us:
-        # step away quietly, no event)
-        still = [m for m in w.adjacent_monsters() if m[2].repeat_fearer and "NEVER_MOVE" in m[2].flags]
-        if still and self.retreat_step(still, reach=6):
+        # Monsters that never move (molds, jellies, mushroom patches, floating
+        # eyes) only matter next to us, and there auto-retaliate fights them: a
+        # poison-mold cluster killed a forum player, a death mold disenchants, a
+        # floating eye paralyses. Step away quietly (no event), unless the
+        # Navigator is hunting that very monster.
+        hunting = self.goal.target if isinstance(self.goal, Hunt) else None
+        still = [m for m in w.adjacent_monsters() if "NEVER_MOVE" in m[2].flags
+                 and not (hunting and hunting in m[2].name.lower())]
+        if still and (self.retreat_step(still, reach=6) or self.sidestep(still)):
             return True
         fearers = [m for m in mons_near if m[2].repeat_fearer and "NEVER_MOVE" not in m[2].flags]
         if fearers and not isinstance(self.goal, (Flee, Recall)):
@@ -1116,6 +1127,26 @@ class Pilot:
                                                    if left else "nothing left to escape with, fighting on"))
         return False
 
+    def sidestep(self, threats):
+        """One step to a free square next to none of threats (stationary
+        monsters: one square away is enough). Returns True if a step was sent."""
+        w = self.w
+        now = time.time()
+        if now - self.sidestep_t < 0.8:
+            return True               # the last step is still on its way
+        occupied = {m[:2] for m in w.monsters}
+        cands = [(w.pos[0] + dy, w.pos[1] + dx) for dy in (-1, 0, 1) for dx in (-1, 0, 1) if dy or dx]
+        cands = [t for t in cands if passable(w.memory.get(t, " ")) and t not in occupied
+                 and all(w.dist(t, m[:2]) > 1 for m in threats)]
+        if not cands:
+            return False
+        # prefer ground we've walked (known safe), then fewer monsters next to it
+        best = min(cands, key=lambda t: (t not in w.walked,
+                                         sum(1 for m in w.monsters if w.dist(t, m[:2]) <= 1)))
+        self.sidestep_t = now
+        self.cmd(f"walk {direction(w.pos, best)}", f"step away from {threats[0][2].name}", hold=0.3)
+        return True
+
     def retreat_step(self, threats, reach=15):
         """Move away from threats over ground we've already walked this level
         (the user: kiting into unknown areas piles on more monsters). Returns
@@ -1178,10 +1209,11 @@ class Pilot:
         return False
 
     def recall_started(self, now):
-        """A Word of Recall is already under way (read recently, or the message)."""
-        if now - self.recall_t < 40:
-            return True
-        return any("air about you becomes charged" in t for t in self.w.recent(40))
+        """A Word of Recall is already under way: the server said so ("becomes
+        charged", until the level changes or it's cancelled), or we read one in
+        the last few seconds and the message hasn't arrived yet. Reading another
+        would cancel it."""
+        return self.w.recall_pending or now - self.recall_t < 5
 
     def seen_pos(self, t):
         """Where we were at time t (for 'You see' messages): the position then."""
@@ -1406,6 +1438,9 @@ class Pilot:
             self.wear_step()
         self.watch_character()
         self.watch_breeders()
+        if self.w.recall_cancelled:
+            self.w.recall_cancelled = False
+            self.notify("recall_cancelled", "a Word of Recall was cancelled (a second one was read): no recall is pending now")
         self.handle_requests()
         if not self.running:
             return
@@ -1500,6 +1535,10 @@ class Pilot:
             except ValueError as e:
                 return {"ok": False, "error": str(e)}
             extra = ""
+            if c == "read" and "Word of Recall" in next((i["name"] for i in self.w.inven if i["item"] == item), "") \
+                    and self.recall_started(time.time()) and "force" not in args[1:]:
+                return {"ok": False, "error": "a recall is already under way: reading another cancels it "
+                                              "(add 'force' to cancel it on purpose)"}
             if c in ("destroy", "drop"):
                 n = args[1] if len(args) > 1 else "1"
                 if n == "all":
@@ -1510,7 +1549,7 @@ class Pilot:
                     self.c.send("confirm yes")
             if c in ("aim",):
                 extra = f" dir={args[1] if len(args) > 1 else 5}"
-            if c == "read" and len(args) > 1:
+            if c == "read" and len(args) > 1 and args[1] != "force":
                 # A scroll that works on another item (Identify, Enchant...): the
                 # client sends that item in the direction byte (COMMAND_SECOND_DIR);
                 # without it the server picked the first pack item

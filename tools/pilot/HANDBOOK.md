@@ -30,6 +30,7 @@ Attention events:
 | `fight_going_badly` | HP below `think_hp` while fighting: decide whether to flee (e.g. `stairs`, or `read` Phase Door) |
 | `low_supply` | out of food (it recalls), no flasks for the lantern, no light at all |
 | `idle_recall` | nobody answered for a while: it's recalling to town |
+| `recall_cancelled` | a second Word of Recall was read, which cancels the first: no recall is pending now. Read one again if you still want to go |
 | `parked` | the pilot is logging out for an update (at a safe moment). It comes back within a minute or two with `started`; then re-issue your goal |
 | `pack_full` | "You have no room for ...": make room (destroy/drop junk, or recall and sell) |
 | `stat_drained`, `blows_changed` | a stat was drained or the blows per round changed (a drained DEX can cost a blow: restore it in town, store 5) |
@@ -66,7 +67,7 @@ Attention events:
 | `goal goto Y,X` / `goto >` / `goto <` / `goto item` | walk there |
 | `goal hunt NAME` (spaces as `_`) | walk up to the monster called NAME and fight it (standing still; the server swings for you). Ends when it's slain or out of sight 15 s |
 | `goal shop N [buy NAME:COUNT]... [sell NAME_OR_LETTER:COUNT]...` | town only: walk into store N (1 General, 2 Armoury, 3 Weaponsmith, 4 Temple, 5 Alchemist, 6 Magic shop, 7 Black market), sell, buy (by part of the name; spaces as `_`, e.g. `buy Cure_Light:5`; the cheapest matching item is bought), leave. The result lists what the shopkeeper actually said ("I don't want that!" for worthless or cursed items) |
-| `goal recall` | read Word of Recall (takes ~15-35 s to work; the pilot stays safe meanwhile). From town it takes you to your deepest level so far, or to `max_depth` if that order is set (the pilot inscribes the scroll `@R<feet>` first) |
+| `goal recall` | read Word of Recall (takes ~15-35 s to work; the pilot stays safe meanwhile). From town it takes you to your deepest level so far, or to `max_depth` if that order is set (the pilot inscribes the scroll `@R<feet>` first). A second Word of Recall **cancels** the first, so while one is pending the pilot won't read another (neither this goal nor `read`, unless you add `force` to cancel it on purpose) |
 | `goal rest` | rest until healed |
 | `goal wait SECS` | stand still |
 | `stop` | cancel the goal (safe idle) |
@@ -160,7 +161,11 @@ Orders are remembered across pilot restarts.
 - Below **60–70% HP**, or when a kill takes unusually long, think about more
   than just fighting. The real killers are **summoners** and **packs that
   breathe or cast at range**. Leave those levels.
-- Avoid molds and jellies (stationary, not worth the risk). Uniques drop good
+- Avoid molds and jellies (stationary, not worth the risk). The pilot does this
+  by itself: it paths around anything that never moves (molds, jellies,
+  floating eyes, mushroom patches) and steps away if it finds itself next to
+  one, because the server's auto-retaliate would otherwise fight it. To fight
+  one on purpose, use `goal hunt NAME`. Uniques drop good
   items worth identifying (their drops are inscribed with the unique's name).
 - **Pack space runs out before food.** Keep ~1 spare ration. Destroy
   `{average}` weapons and armour you won't use. Rings and amulets found very
