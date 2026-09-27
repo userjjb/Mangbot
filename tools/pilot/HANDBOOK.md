@@ -37,7 +37,7 @@ Attention events:
 | `fight_going_badly` | HP below `think_hp` while fighting: decide whether to flee (e.g. `stairs`, or `read` Phase Door) |
 | `low_supply` | out of food (it recalls), no flasks for the lantern, no light at all |
 | `idle_recall` | nobody answered for a while: it's recalling to town |
-| `unseen_attacker` | something you can't see is attacking ("It hits you", "It breathes...", or HP falling with nothing in view): the pilot heads for the stairs. Also raised (without fleeing) on "You hear a door burst open!". Without See Invisible, leaving the level is the answer |
+| `unseen_attacker` | something you can't see is attacking ("It hits you", "It breathes...", or HP falling steadily while nothing has been in view for several seconds): the pilot heads for the stairs (at or below `max_depth` it prefers an up staircase). Also raised (without fleeing) on "You hear a door burst open!". Without See Invisible, leaving the level is the answer |
 | `stuck` | the goal has gone nowhere for 2 minutes (at most 10 squares visited, not fighting): the pilot cleared its command queue and restarted the move. If it repeats, give a different goal (`goto` the stairs, or another level) |
 | `recall_cancelled` | a second Word of Recall was read, which cancels the first: no recall is pending now. Read one again if you still want to go |
 | `parked` | the pilot is logging out for an update (at a safe moment). It comes back within a minute or two with `started`; then re-issue your goal |
@@ -115,6 +115,7 @@ of Phase Door and cure potions: it will use them.
 | `arrival_pack` | 4 | this many monsters near the stairs on arrival: leave at once |
 | `danger_level` | 6 | a monster this many levels above yours counts as danger |
 | `free_action` | no | set `yes` once the character has Free Action: paralysers then stop counting as danger |
+| `unseen_hp` | on | `off`: HP loss with nothing in view no longer counts as an unseen attacker (the "It ..." messages still do) |
 | `idle_recall_s` | 600 | recall to town after this long without a goal or a word from you |
 | `stop_on` | unique,danger | what makes a dive stop and ask you (add `items`, `pillared` to be asked about those too) |
 | `pillared` | explore | during a dive, explore pillared rooms for a `>` without asking (`ask` = stop and ask; `ignore`) |
@@ -143,6 +144,11 @@ Orders are remembered across pilot restarts.
   Several destroys sent with letters from an old report hit the wrong items.
 - Without Free Action, a monster that paralyses (Illusionists, Carrion Crawlers, Ghouls...) is a
   reason to leave the level, not to fight.
+- **Rubble** (`:`) doesn't seal a level: the pilot digs through it when its path needs to (a few
+  turns each). Only a hard wall stops it.
+- **Count your Word of Recall in the pack after every recall** and before going down.
+- **Put on an unknown ring or amulet when that slot is empty** before deciding to sell it (a
+  Resist Lightning amulet went for 21 gold with the neck slot empty).
 - **Budget two Word of Recall per trip**: the pilot reads one by itself below 30% HP, and each of
   two trips in mission 2 cost a whole scroll that way.
 - Potions heal a fixed amount: Cure Light 15 HP, Cure Serious 20-24, Cure Critical 25-29,

@@ -47,6 +47,7 @@ class World:
         self.last_stairs_cmd = None            # ('<'|'>', t) sent, awaiting the level change
         self.hits_taken = 0                    # "... hits you" style messages
         self.last_hit_t = 0.0
+        self.monster_seen_t = 0.0             # last map with a monster on it
         self.unseen = (0.0, "")                # last message from an unseen monster acting on us
         self.heard = (0.0, "")                 # last "You hear a door burst open!"
         self.hp_hist = collections.deque(maxlen=40)   # (t, hp), one per status poll
@@ -67,7 +68,7 @@ class World:
 
     RE_ATTACK = re.compile(r" (hits|bites|claws|stings|touches|kicks|butts|crushes|engulfs|crawls on|spits on|"
                            r"gazes at|wails at|punches|grabs|fires an arrow|casts a magic missile|"
-                           r"points at you and curses|breathes|misses) you")
+                           r"points at you and curses|breathes|misses|releases spores at) you")
 
     # An unseen monster acting on us (monster2.c names it "it"/"something")
     RE_UNSEEN = re.compile(r"^(It|Something) (hits|bites|claws|stings|touches|kicks|butts|crushes|engulfs|"
@@ -195,6 +196,8 @@ class World:
         self.map_t = time.time()
         self.map_pos = self.pos
         self.monsters = self.g.monsters(self.rows, self.attrs, skip=self.pos)
+        if self.monsters:
+            self.monster_seen_t = self.map_t
         mon_at = {(y, x) for y, x, _ in self.monsters}
         for y, r in enumerate(self.rows):
             for x, ch in enumerate(r):

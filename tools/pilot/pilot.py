@@ -59,7 +59,8 @@ DEFAULT_ORDERS = {
     "rest_to": 0.95,
     "arrival_pack": 4,     # this many monsters in view on arrival -> leave by the stairs
     "danger_level": 6,     # a monster this many levels above ours in view -> leave/avoid
-    "free_action": "no",   # yes once the character has Free Action: paralysers stop counting as danger
+    "free_action": "no",
+    "unseen_hp": "on",     # off: don't treat HP loss with nothing in view as an unseen attacker   # yes once the character has Free Action: paralysers stop counting as danger
     "idle_recall_s": 600,  # no goal and no agent contact for this long -> recall to town
                            # (long enough for a slow agent turn; 180 s fired mid-thought)
     "pickup": "all",       # all | none
@@ -519,13 +520,30 @@ class Flee(Goal):
     def __init__(self, why):
         self.name = f"flee ({why})"
         self.started = False
+        self.took = None
 
     def tick(self, p):
         w = p.w
-        if w.standing_on in ("<", ">"):
+        if self.took:
+            # Report once the new level is in (the report showed the old depth
+            # and stairs right after "left by the stairs", mission 4)
+            if w.level_t != self.took[0]:
+                return ("done", f"left by the stairs; now at {w.depth_ft} ft")
+            if time.time() - self.took[1] > 5:
+                return ("done", "took the stairs, but no level change seen")
+            if time.time() - self.took[1] > 1.5 and len(self.took) == 2 and w.standing_on in ("<", ">"):
+                p.take_stairs(w.standing_on)      # a stairs command right after arriving can be ignored
+                self.took = self.took + (True,)
+            return None
+        # At or below max_depth, go up if an up staircase is known (mission 4:
+        # flights kept taking '>' past max_depth)
+        md = int(p.orders.get("max_depth", 0))
+        ok = "<" if md and w.depth_ft >= md and w.find("<") else "<>"
+        if w.standing_on in ok:
             p.take_stairs(w.standing_on)
-            return ("done", "left by the stairs")
-        stairs = w.find("<>")
+            self.took = (w.level_t, time.time())
+            return None
+        stairs = w.find(ok)
         if not stairs:
             return ("failed", "no stairs known")
         if not self.started or not p.mover.active:
@@ -756,6 +774,7 @@ class Pilot:
         self.sidestep_t = 0.0
         self.unseen_warned = self.heard_warned = 0.0
         self.pos_hist = collections.deque()
+        self.gaps_logged = set()
         self.stuck_t = 0.0
         self.flee_t = 0.0
         self.wear_queue = False
@@ -1217,6 +1236,25 @@ class Pilot:
                                                    if left else "nothing left to escape with, fighting on"))
         return False
 
+    def watch_perception(self):
+        """Log when the server's monster list names something our map decode
+        doesn't show (mission 4: a Yellow mold hit us while the pilot saw
+        nothing). Once per level and name, with the map around us."""
+        w = self.w
+        if not w.monlist or not w.rows or not w.pos:
+            return
+        seen = {r.name for *_, r in w.monsters}
+        for name, n, ch in w.monlist:
+            if name in seen or (w.level_t, name) in self.gaps_logged:
+                continue
+            self.gaps_logged.add((w.level_t, name))
+            y, x = w.pos
+            crop = [(r[max(0, x - 12):x + 13], a[max(0, x - 12):x + 13])
+                    for r, a in zip(w.rows[max(0, y - 6):y + 7], w.attrs[max(0, y - 6):y + 7])]
+            self.log("perception_gap", name=name, count=n, our_char=ch, pos=w.pos,
+                     map_age=round(time.time() - w.map_t, 2), crop=crop,
+                     monsters=[(my, mx, r.name) for my, mx, r in w.monsters])
+
     def watch_progress(self):
         """A goal that goes nowhere: at most 10 different squares in 2 minutes
         while not fighting (mission 3 circled a '>' for 10 minutes, and no
@@ -1249,8 +1287,13 @@ class Pilot:
         cause = None
         if now - w.unseen[0] < 3:
             cause = w.unseen[1]
-        elif not w.monsters and w.damage_rate(3.0) > 0 and not w.flag("poisoned") and not w.flag("cut") \
-                and w.hunger > 1 and now - w.level_t > 3:
+        elif self.orders.get("unseen_hp") == "on" and now - w.monster_seen_t > 4 and \
+                now - w.last_hit_t > 4 and w.hp[0] < w.hp[1] and w.damage_rate(3.0) >= max(2.0, 0.01 * w.hp[1]) \
+                and not w.flag("poisoned") and not w.flag("cut") and w.hunger > 1 and now - w.level_t > 4:
+            # HP falling steadily although nothing has been in view -- or hit us
+            # by name ("The Yellow mold ...") -- for 4 s: the fight's own damage
+            # stays in the 3-s window after a kill, which fired this after nearly
+            # every kill in mission 4
             cause = f"losing HP ({w.damage_rate(3.0):.0f}/s) with nothing in view"
         if not cause or isinstance(self.goal, (Flee, Recall, Recover)) or now - self.unseen_warned < 20:
             return False
@@ -1581,6 +1624,7 @@ class Pilot:
         self.watch_character()
         self.watch_breeders()
         self.watch_progress()
+        self.watch_perception()
         if self.w.recall_cancelled:
             self.w.recall_cancelled = False
             self.notify("recall_cancelled", "a Word of Recall was cancelled (a second one was read): no recall is pending now")

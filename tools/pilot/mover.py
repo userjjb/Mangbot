@@ -11,7 +11,7 @@ import time
 
 DIRS = {(-1, -1): 7, (-1, 0): 8, (-1, 1): 9, (0, -1): 4, (0, 1): 6, (1, -1): 1, (1, 0): 2, (1, 1): 3}
 WALLS = set("#%*:") | set("12345678") | {"0", " "}   # ':' rubble ("blocking your way")
-COST = {"+": 3, "^": 25, "'": 1, "8": 50}
+COST = {"+": 3, "^": 25, "'": 1, "8": 50, ":": 15}
 MAX_HGT, MAX_WID = 66, 198
 
 
@@ -58,7 +58,7 @@ def plan(world, goals, avoid=(), monster_cost=40, max_cost=4000):
                 # the Tavern and must walk out through it (COST keeps it a last resort)
                 ok = ch not in "#*=%0:" and ch not in "1234567" if ch != " " else True
             else:
-                ok = passable(ch)
+                ok = passable(ch) or ch == ":"     # rubble: dig through (costly)
             if nb not in goals and (not ok or nb in avoid):
                 continue
             # (a hair more for diagonals: of equally short paths, prefer straight ones)
@@ -97,6 +97,8 @@ class Mover:
         self.use_runs = True
         self.free = None
         self.resume_goals = None
+        self.dig_t0 = self.dig_last = 0.0
+        self.dig_n = 0
 
     RUN_MIN = 3
 
@@ -204,6 +206,37 @@ class Mover:
         self.sent = self.done
         self.last_progress = time.time()
 
+    def _dig_tick(self):
+        """The next square is rubble: tunnel ('T') until "You have removed the
+        rubble" (a few turns for a warrior), then walk on. Mission 4 lost a Word
+        of Recall on a level sealed by rubble."""
+        tile = self.path[self.done]
+        w = self.w
+        if any(ts > self.dig_t0 and t.startswith("You have removed the rubble") for ts, t in w.messages):
+            w.memory[tile] = "."
+            self.dig_t0 = 0.0
+            self.last_progress = time.time()
+            return "moving"
+        now = time.time()
+        if not self.dig_t0:
+            self.dig_t0, self.dig_n = now, 0
+        if self.dig_n >= 40 or any(ts > self.dig_t0 and ("impossible" in t or "cannot" in t)
+                                   for ts, t in w.messages):
+            # can't dig it: treat as wall and replan
+            w.memory[tile] = "#"
+            self.avoid.add(tile)
+            self.dig_t0 = 0.0
+            if not self._plan():
+                self.stop()
+                return "stuck"
+            return "moving"
+        if now - self.dig_last > 0.6:
+            frm = self.path[self.done - 1] if self.done else self.here
+            self.c.send(f"custom T dir={direction(frm, tile)}")
+            self.dig_last, self.dig_n = now, self.dig_n + 1
+        self.last_progress = now          # digging is progress (no step timeout)
+        return "moving"
+
     def stop(self):
         if self.running is not None or self.free is not None:
             self.c.send("walk 5")
@@ -276,7 +309,13 @@ class Mover:
         bumped = [ts for ts, t in w.messages if ts > self.last_progress and "blocking your way" in t]
         if bumped and self.done < len(self.path):
             # Walked into rubble/a wall/a door we didn't know about: remember it
-            w.memory[self.path[self.done]] = "#"
+            rubble = any("rubble" in t for ts, t in w.messages if ts > self.last_progress)
+            w.memory[self.path[self.done]] = ":" if rubble else "#"
+            if rubble:
+                self.c.send("clear")      # drop the steps queued behind the bump
+                self.sent = self.done
+                self.last_progress = time.time()
+                return "moving"           # next tick digs it
             self.avoid.add(self.path[self.done])
             self.replans += 1
             if self.replans > self.max_replans or not self._plan():
@@ -295,6 +334,8 @@ class Mover:
             return "moving"
         if self.running is not None:
             return self._run_tick()
+        if self.sent == self.done and self.w.memory.get(self.path[self.done]) == ":":
+            return self._dig_tick()
         # Run whenever we can: the user runs 61% of their steps at ~0.11 s per
         # tile, walking takes ~0.5 s. Straight stretches are run and stopped a
         # tile early; in a corridor we run and let the server follow the bends
@@ -315,6 +356,8 @@ class Mover:
         while self.sent < len(self.path) and self.sent - self.done < self.AHEAD:
             if self.sent > self.done and self._runnable(self.sent):
                 break             # let the queued steps land, then run from there
+            if self.w.memory.get(self.path[self.sent]) == ":":
+                break             # rubble ahead: stop there and dig
             frm = self.path[self.sent - 1] if self.sent else self.here
             d = direction(frm, self.path[self.sent])
             if d is None:
