@@ -47,6 +47,7 @@ class World:
         self.last_stairs_cmd = None            # ('<'|'>', t) sent, awaiting the level change
         self.hits_taken = 0                    # "... hits you" style messages
         self.last_hit_t = 0.0
+        self.explained_t = 0.0                # last trap/cut/poison message (HP loss that isn't a monster)
         self.monster_seen_t = 0.0             # last map with a monster on it
         self.unseen = (0.0, "")                # last message from an unseen monster acting on us
         self.heard = (0.0, "")                 # last "You hear a door burst open!"
@@ -74,6 +75,11 @@ class World:
     RE_UNSEEN = re.compile(r"^(It|Something) (hits|bites|claws|stings|touches|kicks|butts|crushes|engulfs|"
                            r"crawls on|spits on|gazes at|wails at|punches|grabs|breathes|casts|magically|"
                            r"mumbles|fires|points at you|commands you|drains|tries to|concentrates)")
+
+    # HP loss that isn't a monster (mission 5: a graze and a spiked pit read as
+    # an unseen attacker)
+    RE_HURT_OTHER = re.compile(r"trap|pit|impaled|graze|cut|bleed|poison|dart|You feel very sick|"
+                               r"burn|freeze|acid|You are hit|starv|faint", re.I)
 
     def drain(self):
         """Apply queued events. Returns the list applied (for the pilot's triggers)."""
@@ -119,6 +125,11 @@ class World:
                         or t.startswith("Was wearing") or t.startswith("You destroy") \
                         or t.startswith("You feel") or "in your pack" in t:
                     self.inven_dirty = True
+                if (re.match(r"You have .*\([a-w]\)\.$", t) or t.startswith("You destroy")) and \
+                        self.standing_on and self.standing_on not in TERRAIN and self.depth:
+                    self.standing_on = "."    # the item underfoot is gone (report showed it after pickup)
+                if self.RE_HURT_OTHER.search(t):
+                    self.explained_t = time.time()
                 if self.RE_UNSEEN.match(t):
                     self.unseen = (time.time(), t)
                 elif t.startswith("You hear a door burst open"):

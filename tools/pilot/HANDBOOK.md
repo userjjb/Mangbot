@@ -147,6 +147,9 @@ Orders are remembered across pilot restarts.
 - **Rubble** (`:`) doesn't seal a level: the pilot digs through it when its path needs to (a few
   turns each). Only a hard wall stops it.
 - **Count your Word of Recall in the pack after every recall** and before going down.
+- **Compare found armour and weapons with what you wear before selling them** (`inspect`): found
+  `{good}` gear is often an upgrade. And take `average` out of `autodestroy` before fetching a
+  plain base-item upgrade (a Small Metal Shield [3] was destroyed on pickup).
 - **Put on an unknown ring or amulet when that slot is empty** before deciding to sell it (a
   Resist Lightning amulet went for 21 gold with the neck slot empty).
 - **Budget two Word of Recall per trip**: the pilot reads one by itself below 30% HP, and each of

@@ -110,9 +110,18 @@ class Goto(Goal):
         self.target = target
         self.name = f"goto {target}"
         self.started = False
+        self.arrived_t = None
 
     def tick(self, p):
         w = p.w
+        if self.arrived_t:
+            # An item underfoot is picked up ~0.6 s after arriving: report after
+            # that, or the Navigator sees it still on the floor (mission 5)
+            if any(ts > self.arrived_t and t.startswith(("You have ", "You have no room")) for ts, t in w.messages) \
+                    or time.time() - self.arrived_t > 1.5:
+                w.inven_dirty = True
+                return ("done", None)
+            return None
         if not self.started:
             goals = p.resolve_target(self.target)
             if not goals:
@@ -124,6 +133,10 @@ class Goto(Goal):
             self.started = True
         st = p.mover.tick()
         if st == "arrived":
+            if any(time.time() - ts < 1.0 and t.startswith("You see ") and "no items" not in t
+                   for ts, t in w.messages):
+                self.arrived_t = time.time()
+                return None
             return ("done", None)
         if st == "stuck":
             return ("failed", "stuck")
@@ -775,6 +788,7 @@ class Pilot:
         self.unseen_warned = self.heard_warned = 0.0
         self.pos_hist = collections.deque()
         self.gaps_logged = set()
+        self.gap_since = {}
         self.stuck_t = 0.0
         self.flee_t = 0.0
         self.wear_queue = False
@@ -1244,8 +1258,14 @@ class Pilot:
         if not w.monlist or not w.rows or not w.pos:
             return
         seen = {r.name for *_, r in w.monsters}
+        now = time.time()
         for name, n, ch in w.monlist:
-            if name in seen or (w.level_t, name) in self.gaps_logged:
+            if name in seen:
+                self.gap_since.pop(name, None)
+                continue
+            # (the monster list and the map arrive separately: only a gap that
+            # lasts counts)
+            if now - self.gap_since.setdefault(name, now) < 1.5 or (w.level_t, name) in self.gaps_logged:
                 continue
             self.gaps_logged.add((w.level_t, name))
             y, x = w.pos
@@ -1289,7 +1309,8 @@ class Pilot:
             cause = w.unseen[1]
         elif self.orders.get("unseen_hp") == "on" and now - w.monster_seen_t > 4 and \
                 now - w.last_hit_t > 4 and w.hp[0] < w.hp[1] and w.damage_rate(3.0) >= max(2.0, 0.01 * w.hp[1]) \
-                and not w.flag("poisoned") and not w.flag("cut") and w.hunger > 1 and now - w.level_t > 4:
+                and not w.flag("poisoned") and not w.flag("cut") and w.hunger > 1 and now - w.level_t > 4 \
+                and now - w.explained_t > 10:
             # HP falling steadily although nothing has been in view -- or hit us
             # by name ("The Yellow mold ...") -- for 4 s: the fight's own damage
             # stays in the 3-s window after a kill, which fired this after nearly
