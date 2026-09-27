@@ -193,6 +193,17 @@ class Mover:
         self.log(goals=len(self.goals), nearest=near, path=len(self.path), ok=ok)
         return ok
 
+    def requeue(self):
+        """Drop the steps queued on the server (so a command sent now runs
+        before them, not after) and send them again on the next tick."""
+        self.c.send("clear")
+        if self.running is not None or self.free is not None:
+            self.c.send("walk 5")
+            self.running = None
+            self.free = None
+        self.sent = self.done
+        self.last_progress = time.time()
+
     def stop(self):
         if self.running is not None or self.free is not None:
             self.c.send("walk 5")
@@ -245,7 +256,12 @@ class Mover:
             self.last_progress = time.time()
         if w.pos != (self.path[self.done - 1] if self.done else self.here):
             # Off the path (pushed, a step dropped, a teleport, a run that
-            # followed a corridor bend or overshot): stop any run and replan
+            # followed a corridor bend or overshot): stop any run and replan.
+            # Steps sent ahead may still be queued on the server; left there,
+            # every later step runs one behind (mission 3: 10 minutes circling
+            # a '>' one square away), so empty the queue first (before the
+            # run-stopping 'walk 5', which it would drop).
+            self.c.send("clear")
             if self.running is not None:
                 self.c.send("walk 5")
                 self.running = None
@@ -270,6 +286,7 @@ class Mover:
         if time.time() - self.last_progress > self.STEP_TIMEOUT:
             # Something blocks the next step (a monster, a door that didn't
             # open, an unseen wall): avoid that tile and replan
+            self.c.send("clear")
             self.avoid.add(self.path[self.done])
             self.replans += 1
             if self.replans > self.max_replans or not self._plan():

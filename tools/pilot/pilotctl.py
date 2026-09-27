@@ -73,7 +73,8 @@ def main():
         if not out.get("events"):
             print("(no attention events)")
         if out.get("report"):
-            print(brief_report(out["report"]) if brief else out["report"])
+            # a quiet timeout: the short form (progress check), unless there's news
+            print(brief_report(out["report"]) if brief or not out.get("events") else out["report"])
         return
     try:
         out = call(sock, {"cmd": cmd, "args": args}, 40)

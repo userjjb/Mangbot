@@ -22,6 +22,7 @@ orders, actions, and wait-attention (block until the pilot needs a decision).
 See HANDBOOK.md for the player's view; design_pilot.md for the why.
 """
 import argparse
+import collections
 import json
 import os
 import queue
@@ -677,11 +678,11 @@ class Shop(Goal):
                 gold = w.ind.get("gold", [0])[0]
                 n = min(n, it["number"], gold // max(1, it["price"]))
                 if n <= 0:
-                    self.done_log.append(f"can't afford {it['name']} ({it['price']})")
+                    self.done_log.append(f"can't afford {it['name']} ({it['price']} each, the cheapest in stock)")
                     return None
                 p.cmd(f"custom p store item={it['slot']} value={n} entry={it['price'] * n}",
                       f"buy {it['name']} x{n}", hold=0.2)
-                self.last = f"buy {it['name']} x{n}"
+                self.last = f"buy {it['name']} x{n} at {it['price']} each"
                 self.pending = time.time()
                 return None
             p.cmd("leave", "leave store", hold=0.3)
@@ -754,6 +755,8 @@ class Pilot:
         self.recall_t = 0.0
         self.sidestep_t = 0.0
         self.unseen_warned = self.heard_warned = 0.0
+        self.pos_hist = collections.deque()
+        self.stuck_t = 0.0
         self.flee_t = 0.0
         self.wear_queue = False
         self.breeder_level = None
@@ -780,13 +783,13 @@ class Pilot:
     # the next report instead of waking the agent
     NEWS = {"danger_avoided", "started", "tactic", "resumed"}
 
-    def notify(self, what, detail=None):
+    def notify(self, what, detail=None, news=False):
         ev = {"t": round(time.time(), 3), "what": what, "detail": detail,
               "goal": self.goal.describe() if self.goal else None}
         if what == "emergency":
             self.emerg_times.append(time.time())
         self.log("attention", what=what, detail=detail)
-        if what in self.NEWS:
+        if what in self.NEWS or news:
             self.news.append(ev)
             self.news = self.news[-20:]
             return
@@ -1061,7 +1064,10 @@ class Pilot:
                 self.skipped_items.add((w.level_t, w.pos))
             if seen and seen[-1][0] > self.picked_t and w.pos == self.seen_pos(seen[-1][0]):
                 self.picked_t = now
-                self.cmd("custom ,", f"pick up: {seen[-1][1][8:]}", hold=0.4)   # "Stay" picks up; "g" did nothing
+                if self.mover.active:
+                    self.mover.requeue()   # steps queued ahead ran first: the pickup landed a square later
+                # (it waits for energy after the step: ~0.6 s at normal speed)
+                self.cmd("custom ,", f"pick up: {seen[-1][1][8:]}", hold=0.8)   # "Stay" picks up; "g" did nothing
                 return True
         full = [t for ts, t in w.messages if now - ts < 3 and t.startswith("You have no room for")]
         if full and now - self.full_warned > 30:
@@ -1210,6 +1216,28 @@ class Pilot:
             self.notify("emergency", f"{why}: " + (f"waiting to use {', '.join(left)} again, fighting on"
                                                    if left else "nothing left to escape with, fighting on"))
         return False
+
+    def watch_progress(self):
+        """A goal that goes nowhere: at most 10 different squares in 2 minutes
+        while not fighting (mission 3 circled a '>' for 10 minutes, and no
+        event woke the Navigator). Clear the server queue, restart the move,
+        and say so."""
+        w, now = self.w, time.time()
+        if w.pos:
+            self.pos_hist.append((now, w.pos, w.depth))
+        while self.pos_hist and now - self.pos_hist[0][0] > 120:
+            self.pos_hist.popleft()
+        idle_goal = isinstance(self.goal, (Wait, RestGoal, Search, Recall, Recover, Shop)) or self.goal is None
+        if idle_goal or w.adjacent_monsters() or w.resting or now - self.stuck_t < 120 or \
+                not self.pos_hist or now - self.pos_hist[0][0] < 110 or \
+                len({(p, d) for _, p, d in self.pos_hist}) > 10:
+            return
+        self.stuck_t = now
+        self.c.send("clear")
+        self.mover.stop()
+        self.notify("stuck", f"'{self.goal.describe()}' has gone nowhere for 2 minutes "
+                             f"(around {w.pos}): cleared the command queue and restarted the move. "
+                             "If it happens again, give another goal")
 
     def unseen_tick(self, now):
         w = self.w
@@ -1421,8 +1449,12 @@ class Pilot:
             self.breeder_level = w.level_t
             if isinstance(self.goal, Dive):
                 return            # a dive is leaving this level anyway
+            # Weak ones (Blue worm masses at clvl 19) are only news: they wake
+            # the Navigator for nothing (mission 3)
+            lev = w.ind.get("level", [1])[0]
+            weak = all(r.level <= lev - 10 for r in br) and len(br) < 8
             self.notify("breeders", f"{len(br)} breeding monsters in view ({br[0].name}): leave this level "
-                                    "(stairs, or recall)")
+                                    "(stairs, or recall)" + (" if they get in the way" if weak else ""), news=weak)
 
     def keep_light(self, now):
         """Refill the lantern (or swap torches) before the light goes out --
@@ -1548,6 +1580,7 @@ class Pilot:
             self.wear_step()
         self.watch_character()
         self.watch_breeders()
+        self.watch_progress()
         if self.w.recall_cancelled:
             self.w.recall_cancelled = False
             self.notify("recall_cancelled", "a Word of Recall was cancelled (a second one was read): no recall is pending now")
@@ -1870,7 +1903,7 @@ class Handler(socketserver.StreamRequestHandler):
                 evs, pilot.attention = pilot.attention, []
             pilot.last_agent = time.time()
             out = {"ok": True, "events": evs}
-            if evs:
+            if pilot.running:        # (a quiet timeout gets one too: mission 3 missed a stall)
                 reply = queue.Queue()
                 pilot.requests.put(({"cmd": "status"}, reply))
                 try:

@@ -21,7 +21,9 @@ unattended characters.
 `wait SECS --brief` prints a short report instead: the character and stats
 lines, what you're standing on, monsters in view, known stairs and the news.
 Use it for routine turns (it keeps your context small), and `status` when you
-need the map, equipment, pack or messages.
+need the map, equipment, pack or messages. A `wait` that times out with no
+events always prints the short form: check that the depth or position is
+changing (the pilot also raises `stuck` if a goal goes nowhere for 2 minutes).
 
 Attention events:
 
@@ -36,11 +38,12 @@ Attention events:
 | `low_supply` | out of food (it recalls), no flasks for the lantern, no light at all |
 | `idle_recall` | nobody answered for a while: it's recalling to town |
 | `unseen_attacker` | something you can't see is attacking ("It hits you", "It breathes...", or HP falling with nothing in view): the pilot heads for the stairs. Also raised (without fleeing) on "You hear a door burst open!". Without See Invisible, leaving the level is the answer |
+| `stuck` | the goal has gone nowhere for 2 minutes (at most 10 squares visited, not fighting): the pilot cleared its command queue and restarted the move. If it repeats, give a different goal (`goto` the stairs, or another level) |
 | `recall_cancelled` | a second Word of Recall was read, which cancels the first: no recall is pending now. Read one again if you still want to go |
 | `parked` | the pilot is logging out for an update (at a safe moment). It comes back within a minute or two with `started`; then re-issue your goal |
 | `pack_full` | "You have no room for ...": make room (destroy/drop junk, or recall and sell) |
 | `stat_drained`, `blows_changed` | a stat was drained or the blows per round changed (a drained DEX can cost a blow: restore it in town, store 5) |
-| `breeders` | 3+ breeding monsters (lice, worms) in view: they multiply fast and give no XP. Kill one or two quickly; more than that, leave the area (stairs, or recall) |
+| `breeders` | (news only when they're weak and fewer than 8) 3+ breeding monsters (lice, worms) in view: they multiply fast and give no XP. Kill one or two quickly; more than that, leave the area (stairs, or recall) |
 | `afraid` | afraid (a warrior can't melee then) and cornered with nothing to cure it: the pilot phased away. Normally, when afraid, the pilot kites over ground already walked until the fear wears off, and only in danger quaffs Boldness/Heroism/Berserk |
 | `fearer` | a monster that frightens you again and again is near (e.g. Poltergeist, Ghost, Banshee, Priest, molds): the pilot moves away from it (phases if it's dangerous and adjacent). Usually best to leave that area or level |
 | `emergency_loop` | third emergency in 90 s and no stairs nearby: phasing and potions aren't working; recall or leave the area (with stairs known, the pilot leaves by itself) |
@@ -69,8 +72,8 @@ Attention events:
 |---|---|
 | `goal dive FEET` (shallower than now = climb) | stair-scum down to FEET: take a `>` when one is known, otherwise go up and down the staircase underfoot for a fresh level; explore if no stairs are known. Stops early for `stop_on` things |
 | `goal search` | search for secret doors at dead ends, corridor ends and room corners (a dive does this by itself when a level seems to have no stairs) |
-| `goal explore [until=stairs] [radius=N]` | (dungeon only) walk to unexplored edges until nothing is left (or a `>` is seen, or within N squares) |
-| `goal goto Y,X` / `goto >` / `goto <` / `goto item` | walk there |
+| `goal explore [until=stairs] [radius=N]` | (dungeon only) walk to unexplored edges until nothing is left (or a `>` is seen, or within N squares). It fetches items within `loot_radius` on the way, but not distant ones it saw earlier: when it's done, collect those from the report's item squares with `goto` |
+| `goal goto Y,X` / `goto >` / `goto <` / `goto item` | walk there. With `pickup=all`, an item on the target square is picked up by itself, about half a second after arriving (it waits for the character's turn): check the pack before a manual `pickup` |
 | `goal hunt NAME` (spaces as `_`) | walk up to the monster called NAME and fight it (standing still; the server swings for you). Ends when it's slain or out of sight 15 s |
 | `goal shop N [buy NAME:COUNT]... [sell NAME_OR_LETTER:COUNT]...` | town only: walk into store N (1 General, 2 Armoury, 3 Weaponsmith, 4 Temple, 5 Alchemist, 6 Magic shop, 7 Black market), sell, buy (by part of the name; spaces as `_`, e.g. `buy Cure_Light:5`; the cheapest matching item is bought), leave. The result lists what the shopkeeper actually said ("I don't want that!" for worthless or cursed items) |
 | `goal recall` | read Word of Recall (takes ~15-35 s to work; the pilot stays safe meanwhile). From town it takes you to your deepest level so far, or to `max_depth` if that order is set (the pilot inscribes the scroll `@R<feet>` first). A second Word of Recall **cancels** the first, so while one is pending the pilot won't read another (neither this goal nor `read`, unless you add `force` to cancel it on purpose) |
@@ -83,7 +86,7 @@ Attention events:
 `wearall` (put on everything that fills an empty slot), `wear L`, `takeoff L`, `quaff L`, `read L [TARGET]`
 (TARGET = the item a scroll works on, e.g. `read Identify Rapier` or `read Enchant_Weapon_To-Dam Rapier`;
 without it the game picks the first item in the pack), `eat L`, `fuel L` (refill a lantern
-from a flask), `inspect L`, `destroy L [N|all]`, `drop L [N|all]`, `inscribe L TEXT`,
+from a flask; rarely needed: the pilot refills the lantern by itself when it runs low), `inspect L`, `destroy L [N|all]`, `drop L [N|all]`, `inscribe L TEXT`,
 `pickup` (what's underfoot), `stairs [<|>]`. L is the pack letter from the
 report, **or part of the item's name** with spaces as `_` (e.g. `destroy Salt_Water`,
 `quaff Cure_Light`), which is safer: a name is looked up at the moment the pilot acts. Each item
