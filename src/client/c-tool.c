@@ -36,6 +36,8 @@
  *   examine SLOT                            -- in a store; reply is a popup
  *   leave                                   -- leave the store
  *   eat ITEM                                -- ITEM = inventory index (a=0)
+ *   clear                                   -- drop our queued commands on the server
+ *                                             (PKT_CLEAR, what ESC sends)
  *   rest                                    -- toggle resting (PKT_REST; the
  *                                             'state' indicator shows it)
  *   custom KEY [store] [item=N] [dir=N] [value=N] [entry=TEXT]
@@ -640,6 +642,14 @@ static void tool_do_command(char *line)
 	else if (streq(verb, "leave"))
 	{
 		send_store_leave();
+		tool_ack(line);
+	}
+	else if (streq(verb, "clear"))
+	{
+		/* What ESC sends: the server empties our command queue (sent before
+		 * logging out -- the test server crashed on queued commands of a
+		 * player who had just disconnected) */
+		send_clear();
 		tool_ack(line);
 	}
 	else if (streq(verb, "rest"))

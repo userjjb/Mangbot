@@ -1393,6 +1393,7 @@ class Pilot:
             self.notify("parked", "logging out for a Pilot update; back in a minute -- "
                                   "re-issue your goal when you see 'started'"
                         + ("" if safe else " (parked after 5 min without a safe moment)"))
+            self.c.send("clear")      # empty our server-side command queue first
             with self.att_cond:
                 self.att_cond.wait(1.5)   # let a waiting Navigator collect the event
             self.running = False
