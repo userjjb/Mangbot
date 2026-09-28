@@ -55,6 +55,39 @@ def one_of(name):
     return re.sub(r"^\d+ (\S+?)s of ", r"a \1 of ", name)
 
 
+def recall_level(name):
+    """The dungeon level a Word of Recall read in town takes us to, from its
+    inscription, as the server reads it (spells2.c:1153): the *last* @R wins;
+    a number divisible by 50 is feet, anything else a level number. None when
+    there's no valid @R (the server then uses the deepest level ever reached,
+    and so does a value deeper than that). The forum: a typo ('@r') recalled
+    a player onto Morgoth."""
+    level = None
+    for m in re.finditer(r"@R(-?\d*)", name):
+        n = int(m.group(1)) if m.group(1) not in ("", "-") else 0
+        level = n // 50 if n % 50 == 0 else n
+    return level or None
+
+
+def choke_tier(mem, pos):
+    """How well a square limits a pack's access (lower is better), None for
+    open ground. Corridors here are two wide (WIDE_CORRIDORS; doors come in
+    pairs; Advisor memo A5), so a square with <= 2 open neighbours (dead end,
+    one-wide tunnel) is rare: 0 = that, 1 = <= 3 (a corner or the end of a
+    two-wide corridor), 2 = a straight two-wide corridor (<= 5 neighbours and
+    <= 10 open squares in the 5x5 around; a room's edge has 14)."""
+    y, x = pos
+    def is_open(p):
+        return mem.get(p, " ") not in "#%*: "
+    near = sum(1 for dy in (-1, 0, 1) for dx in (-1, 0, 1) if (dy or dx) and is_open((y + dy, x + dx)))
+    if near <= 2:
+        return 0
+    if near <= 3:
+        return 1
+    area = sum(1 for dy in range(-2, 3) for dx in range(-2, 3) if (dy or dx) and is_open((y + dy, x + dx)))
+    return 2 if near <= 5 and area <= 10 else None
+
+
 def heal_of(name):
     return next((hp for n, hp in HEALS if n in name), 0)
 
@@ -592,7 +625,8 @@ class Recall(Goal):
     def __init__(self):
         self.read_t = None
         self.start_depth = None
-        self.inscribed = False
+        self.inscribed = 0           # tries at inscribing @R
+        self.inscribe_t = 0.0
 
     def tick(self, p):
         w = p.w
@@ -607,13 +641,20 @@ class Recall(Goal):
             # From town, recall goes to the deepest level ever reached -- which
             # can be below max_depth (it took Dive03 back to 1000 ft, where it had
             # died). Inscribe @R<feet> first: the recall depth (inscription guide).
-            md = int(p.orders.get("max_depth", 0))
-            if w.depth == 0 and md and f"@R{md}" not in it["name"]:
-                if not self.inscribed:
-                    self.inscribed = True
-                    p.cmd(f"custom {{ item={it['item']} entry=@R{md}", f"recall depth {md} ft", hold=1.0)
-                    w.inven_dirty = True
-                    return None
+            # Check what the server will read from it, not a substring
+            # ("@R7500" contains "@R750"; a later @R overrides an earlier one).
+            md = int(p.orders.get("max_depth", 0)) // 50 * 50
+            if w.depth == 0 and md and recall_level(it["name"]) != md // 50:
+                if time.time() - self.inscribe_t < 2.5:
+                    return None           # (wait for the pack to show the new inscription)
+                if self.inscribed >= 3:
+                    return ("failed", f"couldn't inscribe @R{md} on the Word of Recall "
+                                      f"(it reads '{it['name']}'): not reading it")
+                self.inscribed += 1
+                self.inscribe_t = time.time()
+                p.cmd(f"custom {{ item={it['item']} entry=@R{md}", f"recall depth {md} ft", hold=1.0)
+                w.inven_dirty = True
+                return None
             if p.recall_started(time.time()):
                 # Already under way (e.g. the last-resort recall): a second read would cancel it
                 p.log("note", text="recall already under way: not reading another")
@@ -1588,7 +1629,7 @@ class Pilot:
                 self.choke_state = None
                 return False
             return True           # stand; auto-retaliate greets them one by one
-        if len(pack) < 3 or self.mover.in_corridor() or now - self.choke_done_t < 15:
+        if len(pack) < 3 or choke_tier(w.memory, w.pos) is not None or now - self.choke_done_t < 15:
             return False
         # A corridor square within 10 steps, further from the pack than we are
         cy = sum(m[0] for m in pack) / len(pack)
@@ -1601,13 +1642,14 @@ class Pilot:
                 continue
             if max(abs(y - cy), abs(x - cx)) <= d_now:
                 continue
-            open_ = sum(1 for dy in (-1, 0, 1) for dx in (-1, 0, 1)
-                        if (dy or dx) and mem.get((y + dy, x + dx), " ") not in "#%*: ")
-            if open_ <= 2:
-                cands.append((y, x))
+            tier = choke_tier(mem, (y, x))
+            if tier is not None:
+                cands.append((tier, (y, x)))
         if not cands:
             self.choke_done_t = now
             return False
+        best = min(t for t, _ in cands)
+        cands = [c for t, c in cands if t == best]
         if self.mover.go(cands):
             self.choke_state = "going"
             self.choke_done_t = now
@@ -1864,6 +1906,12 @@ class Pilot:
                     and self.recall_started(time.time()) and "force" not in args[1:]:
                 return {"ok": False, "error": "a recall is already under way: reading another cancels it "
                                               "(add 'force' to cancel it on purpose)"}
+            iname = next((i["name"] for i in self.w.inven if i["item"] == item), "")
+            if c == "read" and "Word of Recall" in iname and self.w.depth == 0 and recall_level(iname) is None \
+                    and "force" not in args[1:]:
+                return {"ok": False, "error": f"'{iname}' has no valid @R inscription: it would recall to the "
+                                              "deepest level ever reached. Inscribe it (inscribe ITEM @R<feet>), "
+                                              "use goal recall (it inscribes max_depth), or add 'force'"}
             if c in ("destroy", "drop"):
                 n = args[1] if len(args) > 1 else "1"
                 if n == "all":

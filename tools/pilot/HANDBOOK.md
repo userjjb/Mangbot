@@ -119,7 +119,7 @@ of Phase Door and cure potions: it will use them.
 | `idle_recall_s` | 600 | recall to town after this long without a goal or a word from you |
 | `stop_on` | unique,danger | what makes a dive stop and ask you (add `items`, `pillared` to be asked about those too) |
 | `pillared` | explore | during a dive, explore pillared rooms for a `>` without asking (`ask` = stop and ask; `ignore`) |
-| `choke` | on | when a pack (3+) comes at you in the open, back into a corridor within 10 squares and fight them there one at a time (experimental) |
+| `choke` | on | when a pack (3+) comes at you in the open, back into a corridor within 10 squares and fight them there (experimental). Corridors here are **two wide** (doorways too), so up to 3 reach you at once; it prefers a dead end or one-wide spot, then a corner or corridor end, then a straight corridor |
 | `max_depth` | 0 | feet, 0 = no limit: dives stop there, exploring below it is refused, and after an emergency escape down the stairs the pilot rests and comes back up |
 | `loot_radius` | 10 | during a dive, fetch items seen within this many squares (0 = never) |
 | `pickup` | all | all or none |
@@ -133,8 +133,11 @@ Orders are remembered across pilot restarts.
 - **Never go down without a Word of Recall for the way back.** Walking home by stairs took 20
   minutes (and 16 minutes down): it ate most of a 45-minute mission.
 - Before reading Word of Recall in town, know where it lands: your deepest level so far, or
-  `max_depth` if that order is set (the pilot inscribes `@R` then). It once landed at 1000 ft next
-  to four Black ogres.
+  `max_depth` if that order is set (the pilot inscribes `@R` then, checks the scroll reads that
+  depth, and won't read it if it can't). It once landed at 1000 ft next to four Black ogres. The
+  server reads the **last** `@R` on the scroll: a multiple of 50 is feet (`@R750`), anything else
+  a level number (`@R15` = 750 ft); a typo (`@r750`) means your deepest level. In town, `read` of
+  a Word of Recall with no valid `@R` is refused unless you add `force`.
 - **Inspect every unique's drop (and anything {excellent}/{special}) before selling it.**
   Wormtongue's armour was sold unseen for 17 gold: it was Soft Studded Leather of Resistance (all
   four basic resistances; buying it back cost 19834). The shop goal now refuses to sell such items
@@ -215,7 +218,8 @@ Orders are remembered across pilot restarts.
   quickly, otherwise leave the area.
 - **Invisible monsters** are usually harmless, but one that drains a stat ("You feel very clumsy")
   is a real threat: leave. A drained DEX can cost a blow; a Potion of Restore <stat> (store 5) fixes it.
-- **Meet packs in a corridor** so they reach you one at a time (the `choke` order does this).
+- **Meet packs in a corridor** so fewer reach you at once (the `choke` order does this). Corridors
+  are two wide here, so a dead end, a corner or a one-wide tunnel is better than a straight stretch.
 - **Money** (how the user turns loot into gold):
   - sell unknown potions and scrolls found early: they're usually bad, and selling identifies them
     and pays a little;
