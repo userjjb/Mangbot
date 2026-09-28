@@ -259,3 +259,14 @@ Orders are remembered across pilot restarts.
   ones first), cheap unenchanted armour for every empty slot (cloak, gloves, boots, leather shield,
   cap: good AC for the price), a lantern and flasks of oil, Phase Door, Cure Light Wounds potions,
   Word of Recall.
+  - Buy the cheap essentials (CLW, Phase Door) first and enchant scrolls last, one at a time: the
+    shop goal doesn't ask before paying (`buy To-Dam:3` spent 302 of 366 gold in mission 8).
+  - Prices seen with CHR 4 (mission 8): Phase Door 24, CLW 23, Flask of oil 5, Dagger 16, Soft
+    Leather Armour 24, Small Leather Shield 41, Hard Leather Cap 12, Cloak 5, Enchant To-Dam ~150-200
+    (151 at 25% off), Enchant To-Hit 52 at 75% off; CCW 152 at the Temple (mission 7). The starting
+    Broad Sword sold for 102 and the Chain Mail for 358. Stock runs out (the Temple had no CLW twice)
+    and not every weapon is stocked (no Main Gauche or Rapier in mission 8; a Dagger gave 4 blows).
+  - `inspect` doesn't show blows: wield the weapon and watch for `blows_changed` (or the status line).
+- Near town (50-150 ft), climbing by stairs saves a Word of Recall.
+- Monster levels come from this server's `monster.txt`, which differs from Vanilla Angband (e.g.
+  White jelly is level 2, Radiation eye level 3 here). Trust the level the pilot shows.
