@@ -715,6 +715,19 @@ void gather_settings()
 	/* Hitpoint warning */
 	Client_setup.settings[3] = p_ptr->hitpoint_warn;
 
+	/* Tool mode: the warning level also slows our time bubble below
+	 * that much HP (xtra2.c), which gives the Pilot time to react.
+	 * Default 6 (60%), --hpwarn N (0..9) to change it. */
+	if (tool_mode)
+	{
+		s32b warn = 6;
+		clia_read_int(&warn, "hpwarn");
+		if (warn < 0) warn = 0;
+		if (warn > 9) warn = 9;
+		p_ptr->hitpoint_warn = (byte)warn;
+		Client_setup.settings[3] = (byte)warn;
+	}
+
 	/* Support slash fx */
 	Client_setup.settings[5] = (refresh_char_aux) ? TRUE : FALSE;
 }
@@ -823,7 +836,9 @@ bool client_login()
 {
 	u16b version = CLIENT_VERSION;
 
-	send_login(version, real_name, host_name, nick, pass);
+	/* Tool mode: don't show our Unix login and host in the player list */
+	if (tool_mode) send_login(version, "player", "localhost", nick, pass);
+	else send_login(version, real_name, host_name, nick, pass);
 
 	return TRUE;
 }

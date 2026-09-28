@@ -37,17 +37,17 @@ Attention events:
 | `fight_going_badly` | HP below `think_hp` while fighting: decide whether to flee (e.g. `stairs`, or `read` Phase Door) |
 | `low_supply` | out of food (it recalls), no flasks for the lantern, no light at all |
 | `idle_recall` | nobody answered for a while: it's recalling to town |
-| `unseen_attacker` | something you can't see is attacking ("It hits you", "It breathes...", or HP falling steadily while nothing has been in view for several seconds): the pilot heads for the stairs (at or below `max_depth` it prefers an up staircase). Also raised (without fleeing) on "You hear a door burst open!". Without See Invisible, leaving the level is the answer |
-| `stuck` | the goal has gone nowhere for 2 minutes (at most 10 squares visited, not fighting): the pilot cleared its command queue and restarted the move. If it repeats, give a different goal (`goto` the stairs, or another level) |
+| `unseen_attacker` | something you can't see is attacking ("It hits you", "It breathes...", or HP falling steadily while nothing has been in view for several seconds): the pilot heads for the stairs (at or below `max_depth` it prefers an up staircase). Also raised (without fleeing) on "You hear a door burst open!". Minor ones at HP above `think_hp` are news only and the pilot carries on: "It commands you to return" (a Tengu or Blink dog teleporting you to it), a magic missile, an arrow or bolt from the dark. Without See Invisible, leaving the level is the answer |
+| `stuck` | the goal has gone nowhere for 2 minutes (at most 10 squares visited, no fighting in those 2 minutes): the pilot cleared its command queue and restarted the move. If it repeats, give a different goal (`goto` the stairs, or another level) |
 | `recall_cancelled` | a second Word of Recall was read, which cancels the first: no recall is pending now. Read one again if you still want to go |
 | `parked` | the pilot is logging out for an update (at a safe moment). It comes back within a minute or two with `started`; then re-issue your goal |
 | `pack_full` | "You have no room for ...": make room (destroy/drop junk, or recall and sell) |
-| `stat_drained`, `blows_changed` | a stat was drained or the blows per round changed (a drained DEX can cost a blow: restore it in town, store 5) |
+| `stat_drained`, `blows_changed` | a stat was drained (also a second drain of a stat already drained) or the blows per round changed (a drained DEX can cost a blow: restore it in town, store 5) |
 | `breeders` | (news only when they're weak and fewer than 8) 3+ breeding monsters (lice, worms) in view: they multiply fast and give no XP. Kill one or two quickly; more than that, leave the area (stairs, or recall) |
 | `afraid` | afraid (a warrior can't melee then) and cornered with nothing to cure it: the pilot phased away. Normally, when afraid, the pilot kites over ground already walked until the fear wears off, and only in danger quaffs Boldness/Heroism/Berserk |
 | `fearer` | a monster that frightens you again and again is near (e.g. Poltergeist, Ghost, Banshee, Priest, molds): the pilot moves away from it (phases if it's dangerous and adjacent). Usually best to leave that area or level |
 | `emergency_loop` | third emergency in 90 s and no stairs nearby: phasing and potions aren't working; recall or leave the area (with stairs known, the pilot leaves by itself) |
-| `tactic`, `resumed` | (news) the pilot backed into a corridor against a pack, kited while afraid, or resumed your goal after recovering from an emergency |
+| `tactic`, `resumed` | (news) the pilot backed into a corridor against a pack, kited while afraid, cured a status in a fight, killed a stationary monster in its way, or resumed your goal after recovering from an emergency |
 | `dead` | the character died |
 
 ## The situation report (`status`)
@@ -147,11 +147,21 @@ Orders are remembered across pilot restarts.
 - **Rubble** (`:`) doesn't seal a level: the pilot digs through it when its path needs to (a few
   turns each). Only a hard wall stops it.
 - **Count your Word of Recall in the pack after every recall** and before going down.
-- **A Disenchanter eye or mold next to your path: `goal hunt` it at once.** The pilot paths
-  around stationary monsters, and every gaze removes a plus from your gear (mission 6 lost +2,+2
-  on the weapon and +1-2 on four armour pieces while going around one).
+- **Disenchanters and stationary monsters in the way**: every disenchanting gaze or touch removes
+  a plus from your gear (mission 6 lost +2,+2 on the weapon and +1-2 on four armour pieces going
+  around a Disenchanter eye). Now, next to a stationary monster at or below your level that
+  disenchants, or that sits by the square the pilot is walking to (e.g. beside the stairs), the
+  pilot stands and kills it (`tactic` news). A disenchanter above your level makes it leave the
+  level (`danger_seen`). It never melees a paralysing one (floating eye) without `free_action=yes`:
+  if one blocks the only stairs, pick other stairs. Others it still paths around; `goal hunt` for
+  any you want dead.
 - "It commands you to return" is a Tengu or Blink dog teleporting you next to it: harmless by
-  itself, though the pilot treats it as an unseen attacker and leaves the level.
+  itself; at good HP the pilot carries on.
+- **Status cures in a fight** (by itself, cheapest potion that works): stunned → Cure Critical
+  Wounds or better (only CCW+ cures stun and poison); confused → Cure Serious or better; blind →
+  Cure Light or better; poisoned → Cure/Neutralize Poison or CCW, only once HP is below
+  `think_hp`. Out of a fight it rests them off. Carry a few CCW once stunners appear (you get a
+  `tactic` note when it has nothing to cure a status with).
 - **Compare found armour and weapons with what you wear before selling them** (`inspect`): found
   `{good}` gear is often an upgrade. And take `average` out of `autodestroy` before fetching a
   plain base-item upgrade (a Small Metal Shield [3] was destroyed on pickup).

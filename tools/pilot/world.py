@@ -49,6 +49,7 @@ class World:
         self.last_hit_t = 0.0
         self.explained_t = 0.0                # last trap/cut/poison message (HP loss that isn't a monster)
         self.monster_seen_t = 0.0             # last map with a monster on it
+        self.fight_t = 0.0                     # last time we hit, missed or killed something
         self.unseen = (0.0, "")                # last message from an unseen monster acting on us
         self.heard = (0.0, "")                 # last "You hear a door burst open!"
         self.hp_hist = collections.deque(maxlen=40)   # (t, hp), one per status poll
@@ -137,6 +138,9 @@ class World:
                 if self.RE_ATTACK.search(t):
                     self.hits_taken += 1
                     self.last_hit_t = time.time()
+                if re.match(r"You (hit|miss|have slain|have destroyed|smite|bite|claw)", t) or \
+                        re.match(r"(The|It) .* (dies|is destroyed|flees)", t):
+                    self.fight_t = time.time()
                 if t.startswith("I see no up staircase"):
                     self.standing_on = None if self.standing_on == "<" else self.standing_on
                 if t.startswith("I see no down staircase"):

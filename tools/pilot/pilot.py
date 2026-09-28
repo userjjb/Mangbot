@@ -49,8 +49,25 @@ HEALS = (("*Healing*", 1200), ("Cure Critical Wounds", 25), ("Cure Serious Wound
          ("Cure Light Wounds", 15), ("Healing", 300), ("of Life", 5000))
 
 
+def one_of(name):
+    """'2 Potions of Boldness' -> 'a Potion of Boldness' (what one use takes;
+    mission 6's news said 'quaffed 2 Potions' when 1 was left)."""
+    return re.sub(r"^\d+ (\S+?)s of ", r"a \1 of ", name)
+
+
 def heal_of(name):
     return next((hp for n, hp in HEALS if n in name), 0)
+
+# What each potion cures (Advisor memo, Erratum: server use-obj.c:483-545).
+# Only CCW and better cure stun and poison; CLW only reduces confusion.
+# Cheapest first.
+STATUS_CURES = {
+    "stun": ("Cure Critical Wounds", "Healing", "*Healing*", "of Life"),
+    "poisoned": ("Cure Poison", "Neutralize Poison", "Cure Critical Wounds", "Healing", "*Healing*", "of Life"),
+    "confused": ("Cure Serious Wounds", "Cure Critical Wounds", "Healing", "*Healing*", "of Life"),
+    "blind": ("Cure Light Wounds", "Cure Serious Wounds", "Cure Critical Wounds", "Healing", "*Healing*",
+              "of Life"),
+}
 
 DEFAULT_ORDERS = {
     "flee_hp": 0.5,        # emergency below this HP fraction
@@ -796,6 +813,8 @@ class Pilot:
         self.choke_state = None
         self.choke_t = self.choke_done_t = 0.0
         self.seen_drained = None
+        self.still_goals = (None, set())      # (level, mover goals) before a stationary-monster fight
+        self.still_fighting = None            # (level, position) of the stationary monster we're killing
         self.seen_blows = None
         self.unreachable = set()       # frontier tiles we failed to reach (this level)
         self.visited = set()           # squares we've stood on while exploring (not frontier)
@@ -961,6 +980,10 @@ class Pilot:
         # 2. Emergency
         if w.hp_frac < o["flee_hp"] and (mons_near or now - w.last_hit_t < 5):
             return self.escape("low HP")
+        # 2a. Status cures, in combat only (out of combat, rest it off: the
+        # user). Stun can become a knock-out; blind or confused can't read.
+        if self.status_tick(now, mons_near):
+            return True
         # 3. Arrival into danger (connected stairs: the way back is underfoot)
         # A stairs command gets no answer at all if it comes too soon after the
         # level change (seen: '<' 0.7 s after arriving was ignored), so retry
@@ -1022,7 +1045,7 @@ class Pilot:
                             if any(n in i["name"] for n in ("Boldness", "Heroism", "Berserk"))), None)
                 if pot:
                     self.cmd(f"custom q item={pot['item']}", f"afraid and in danger: quaff {pot['name']}", hold=0.6)
-                    self.notify("tactic", f"afraid and in danger: quaffed {pot['name']}")
+                    self.notify("tactic", f"afraid and in danger: quaffed {one_of(pot['name'])}")
                     return True
                 pd = next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
                 if pd and w.adjacent_monsters() and not w.flag("blind") and not w.flag("confused"):
@@ -1040,6 +1063,8 @@ class Pilot:
         hunting = self.goal.target if isinstance(self.goal, Hunt) else None
         still = [m for m in w.adjacent_monsters() if "NEVER_MOVE" in m[2].flags
                  and not (hunting and hunting in m[2].name.lower())]
+        if still and self.still_fight_tick(now, still):
+            return True
         if still and (self.retreat_step(still, reach=6) or self.sidestep(still)):
             return True
         fearers = [m for m in mons_near if m[2].repeat_fearer and "NEVER_MOVE" not in m[2].flags]
@@ -1240,7 +1265,7 @@ class Pilot:
                 pot = pick[1]
                 self.cure_t = now
                 self.cmd(f"custom q item={pot['item']}", f"{why}: quaff {pot['name']}", hold=0.6)
-                self.notify("emergency", f"{why}: quaffed {pot['name']}" + (f" (losing ~{rate:.0f} HP/s)" if rate else ""))
+                self.notify("emergency", f"{why}: quaffed {one_of(pot['name'])}" + (f" (losing ~{rate:.0f} HP/s)" if rate else ""))
                 return True
         if now - self.noescape_t > 10:
             self.noescape_t = now
@@ -1286,7 +1311,10 @@ class Pilot:
         while self.pos_hist and now - self.pos_hist[0][0] > 120:
             self.pos_hist.popleft()
         idle_goal = isinstance(self.goal, (Wait, RestGoal, Search, Recall, Recover, Shop)) or self.goal is None
-        if idle_goal or w.adjacent_monsters() or w.resting or now - self.stuck_t < 120 or \
+        # (a fight in the window doesn't count: mission 6 fired this in a
+        # corridor fight with a wolf pack)
+        fighting = now - max(w.last_hit_t, w.fight_t) < 120
+        if idle_goal or fighting or w.adjacent_monsters() or w.resting or now - self.stuck_t < 120 or \
                 not self.pos_hist or now - self.pos_hist[0][0] < 110 or \
                 len({(p, d) for _, p, d in self.pos_hist}) > 10:
             return
@@ -1296,6 +1324,82 @@ class Pilot:
         self.notify("stuck", f"'{self.goal.describe()}' has gone nowhere for 2 minutes "
                              f"(around {w.pos}): cleared the command queue and restarted the move. "
                              "If it happens again, give another goal")
+
+    def still_fight_tick(self, now, still):
+        """A stationary monster next to us that blocks the way (sits by the
+        square the mover is heading for) or disenchants: kill it if it's weak,
+        by standing still (auto-retaliate). Mission 6 stalled a step from the
+        only '>' beside a Disenchanter eye, stepping away and back while its
+        gaze disenchanted the weapon and armour. A disenchanter too strong to
+        kill: leave the level, never path around it."""
+        w = self.w
+        lev = w.ind.get("level", [1])[0]
+        goals = self.mover.goals if self.mover.active and self.mover.goals else set()
+        if goals:
+            self.still_goals = (w.level_t, set(goals))
+        elif self.still_goals[0] == w.level_t:
+            goals = self.still_goals[1]       # (the mover was stopped for the fight)
+
+        def disenchants(r):
+            return any("UN_BONUS" in b or "DISENCHANT" in b for b in r.blows)
+
+        def killable(r):
+            paralyses = any(b.split(":")[1:2] == ["PARALYZE"] for b in r.blows)
+            return r.level <= lev and not (paralyses and self.orders.get("free_action") != "yes")
+
+        targets = [m for m in still if disenchants(m[2]) or any(w.dist(g, m[:2]) <= 1 for g in goals)]
+        fight = [m for m in targets if killable(m[2])]
+        if fight and (w.hp_frac >= self.orders["think_hp"] or self.still_fighting == (w.level_t, fight[0][:2])):
+            m = fight[0]
+            self.mover.stop()
+            if self.still_fighting != (w.level_t, m[:2]):
+                self.still_fighting = (w.level_t, m[:2])
+                why = "disenchants" if disenchants(m[2]) else "blocks the way"
+                self.notify("tactic", f"{m[2].name} (lvl {m[2].level}, never moves) {why}: killing it")
+            return True
+        bad = [m for m in targets if disenchants(m[2]) and not killable(m[2])]
+        if bad and not isinstance(self.goal, (Flee, Recall, Recover)):
+            prev = self.goal.describe() if self.goal else None
+            self.set_goal(Flee(bad[0][2].name))
+            self.notify("danger_seen", f"{bad[0][2].name} (lvl {bad[0][2].level}) disenchants and is too strong "
+                                       f"to kill{' while ' + prev if prev else ''}: heading for the stairs")
+            return True
+        return False
+
+    def status_tick(self, now, mons_near):
+        """Quaff the cheapest potion that cures a dangerous status in a fight
+        (Advisor memo P4 + Erratum): stun at once, blind/confused when
+        something is near, poison only when HP is also getting low."""
+        w = self.w
+        if not w.in_dungeon or now - self.cure_t <= 1.5:
+            return False
+        in_combat = w.adjacent_monsters() or now - w.last_hit_t <= 3
+        if not in_combat:
+            return False
+        want = []
+        if w.flag("stun"):
+            want.append("stun")
+        if mons_near and w.flag("confused"):
+            want.append("confused")
+        if mons_near and w.flag("blind"):
+            want.append("blind")
+        if w.flag("poisoned") and w.hp_frac < self.orders["think_hp"]:
+            want.append("poisoned")
+        pots = list(w.items(tval=TV_POTION))
+        for status in want:
+            for cure in STATUS_CURES[status]:
+                pot = next((i for i in pots if cure in i["name"]
+                            and not (cure == "Healing" and "*Healing*" in i["name"])), None)
+                if pot:
+                    self.cure_t = now
+                    self.cmd(f"custom q item={pot['item']}", f"{status} in combat: quaff {pot['name']}", hold=0.6)
+                    self.notify("tactic", f"{status} in combat: quaffed {one_of(pot['name'])}")
+                    return True
+            if now - getattr(self, "nocure_t", 0) > 20:
+                self.nocure_t = now
+                self.notify("tactic", f"{status} in combat and no potion cures it "
+                                      f"(needs {' / '.join(STATUS_CURES[status][:2])})")
+        return False
 
     def unseen_tick(self, now):
         w = self.w
@@ -1319,6 +1423,14 @@ class Pilot:
         if not cause or isinstance(self.goal, (Flee, Recall, Recover)) or now - self.unseen_warned < 20:
             return False
         self.unseen_warned = now
+        # Minor, at good HP: teleport-to ("It commands you to return": Tengu,
+        # blink dogs), a magic missile or an arrow from the dark. Mission 6 fled
+        # levels over these; tell the Navigator and carry on.
+        if re.search(r"commands you to return|magic missile|fires an arrow|fires a bolt|mumbles", cause) \
+                and w.hp_frac >= self.orders["think_hp"]:
+            self.notify("unseen_attacker", f"'{cause}': minor attack from something unseen; carrying on "
+                                           f"(HP {w.hp_frac:.0%})", news=True)
+            return False
         prev = self.goal.describe() if self.goal else None
         if w.find("<>"):
             self.set_goal(Flee("unseen attacker"))
@@ -1580,11 +1692,16 @@ class Pilot:
         ind = self.w.ind
         if not ind:
             return
-        drained = tuple(n for i, n in enumerate(self.STAT_NAMES)
-                        if len(ind.get(f"stat{i}", [])) >= 2 and ind[f"stat{i}"][0] < ind[f"stat{i}"][1])
+        # Per stat (current, top); a drain lowers current with top unchanged
+        # (an equipment change moves both). Missions 5 and 6: a second drain of
+        # an already drained stat (DEX 15 -> 14) said nothing when this only
+        # compared which stats were drained.
+        drained = {n: tuple(ind[f"stat{i}"][:2]) for i, n in enumerate(self.STAT_NAMES)
+                   if len(ind.get(f"stat{i}", [])) >= 2}
         blows = ind.get("skills2", [None])[0]
-        if self.seen_drained is not None and drained != self.seen_drained:
-            new = [d for d in drained if d not in self.seen_drained]
+        if self.seen_drained is not None:
+            new = [n for n, (cur, top) in drained.items() if n in self.seen_drained
+                   and cur < self.seen_drained[n][0] and top == self.seen_drained[n][1]]
             if new:
                 self.notify("stat_drained", f"{', '.join(new)} drained (blows {blows}); restore at the Alchemist/Temple")
         if self.seen_blows is not None and blows is not None and blows != self.seen_blows:
