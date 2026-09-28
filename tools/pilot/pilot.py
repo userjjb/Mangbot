@@ -854,6 +854,7 @@ class Pilot:
         self.choke_state = None
         self.choke_t = self.choke_done_t = 0.0
         self.seen_drained = None
+        self.dead = False
         self.still_goals = (None, set())      # (level, mover goals) before a stationary-monster fight
         self.still_fighting = None            # (level, position) of the stationary monster we're killing
         self.seen_blows = None
@@ -1009,9 +1010,14 @@ class Pilot:
         w, o = self.w, self.orders
         now = time.time()
         if w.ghost or w.hp[0] <= 0 and w.hp[1] > 0 and w.ind:
-            if self.running:
-                self.notify("dead", "the character died")
-                self.running = False
+            if not self.dead:
+                # Stay up to tell the Navigator (mission 7: the pilot exited at
+                # death, and the Navigator only got "Connection refused")
+                self.dead = True
+                self.mover.stop()
+                self.goal = None
+                self.notify("dead", "the character died (now a ghost); the pilot does nothing more. "
+                                    "Status and attention still work; 'quit' to stop the pilot")
             return True
         if now < self.busy_until:
             return True
@@ -1019,8 +1025,15 @@ class Pilot:
             return False          # any command would leave the store
         mons_near = [m for m in w.monsters if w.dist(m[:2]) <= 7]
         # 2. Emergency
+        # Never fall through to the goal here, even when escape() has nothing
+        # usable this instant: in mission 7 the explore goal kept re-planning
+        # (the mover sends 'clear' and queues walks), which wiped every queued
+        # Phase Door, potion and Word of Recall, and the walks took the turns.
+        # Dive03 died at 750 ft without one of them being read.
         if w.hp_frac < o["flee_hp"] and (mons_near or now - w.last_hit_t < 5):
-            return self.escape("low HP")
+            if not self.escape("low HP") and self.mover.active and not self.escaping_to_stairs:
+                self.mover.stop()
+            return True
         # 2a. Status cures, in combat only (out of combat, rest it off: the
         # user). Stun can become a knock-out; blind or confused can't read.
         if self.status_tick(now, mons_near):
@@ -1260,7 +1273,10 @@ class Pilot:
         if not adj:
             # Out of melee: make for stairs if some are close, else heal
             stairs = [p for p in w.find("<>") if w.dist(p) <= 20]
-            if stairs and not self.mover.active:
+            # (a new move sends 'clear', which would drop a read or quaff still
+            # waiting in the server's queue for our next turn)
+            used_recently = now - max(self.phase_t, self.cure_t, self.recall_t) < 2.0
+            if stairs and not self.mover.active and not used_recently:
                 if self.mover.go(stairs):
                     self.escaping_to_stairs = True
                     self.notify("emergency", f"{why}: heading for the stairs {min(w.dist(p) for p in stairs)} away")
@@ -1867,6 +1883,8 @@ class Pilot:
         args = req.get("args", [])
         if c == "status":
             return {"ok": True, "report": self.report()}
+        if self.dead and c not in ("attention", "quit", "orders", "events", "news", "map", "inventory"):
+            return {"ok": False, "error": "the character is dead (a ghost): the pilot does nothing more"}
         if c == "goal":
             return self.request_goal(args)
         if c == "stop":
@@ -2176,11 +2194,15 @@ def main():
     visuals = os.path.join(rundir, "visuals.txt")
     glyphs.write_visuals(visuals, glyphs.assign(glyphs.load_races()))
     evlog = open(os.path.join(rundir, "events.jsonl"), "a", buffering=1)
+    # --hpwarn 0: no time bubble slowdown at low HP for now. The pilot's timers
+    # (holds, step timeouts, potion/phase spacing) are wall-clock, and at 30%
+    # HP time runs at 30%: in mission 7 re-plans fired between our turns.
     client = MangClient(args.client, args.libdir, nick,
                         args.passfile or os.path.join(priv, nick.lower() + ".pass"),
                         args.host, args.port, config=args.config or os.path.join(priv, nick.lower() + ".mangrc"),
-                        cwd=repo, pktlog=args.pktlog, extra_args=["--visuals", visuals])
+                        cwd=repo, pktlog=args.pktlog, extra_args=["--visuals", visuals, "--hpwarn", "0"])
     say = lambda *a: print(time.strftime("%H:%M:%S"), *a, file=sys.stderr, flush=True)
+    pilot = None
     try:
         ready = client.wait_ready()
         say(f"in the game as {nick}: {ready}")
@@ -2204,6 +2226,13 @@ def main():
         say("pilot stopping")
     except ClientExited as e:
         say(f"client exited: {e}")
+        if pilot is not None and pilot.dead:
+            # keep answering status/attention so the Navigator learns of the death
+            pilot.running = True
+            while pilot.running:
+                pilot.handle_requests()
+                time.sleep(0.2)
+            say("pilot stopping (dead)")
         sys.exit(1)
     finally:
         client.quit()
