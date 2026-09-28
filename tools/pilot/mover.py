@@ -99,6 +99,7 @@ class Mover:
         self.resume_goals = None
         self.dig_t0 = self.dig_last = 0.0
         self.dig_n = 0
+        self.hold_clear_until = 0.0   # the pilot: a read/quaff is waiting in the server queue
 
     RUN_MIN = 3
 
@@ -195,10 +196,16 @@ class Mover:
         self.log(goals=len(self.goals), nearest=near, path=len(self.path), ok=ok)
         return ok
 
+    def _clear(self):
+        """Empty our server-side command queue -- unless the pilot has a read
+        or quaff waiting there (mission 7: these clears wiped every escape)."""
+        if time.time() >= self.hold_clear_until:
+            self.c.send("clear")
+
     def requeue(self):
         """Drop the steps queued on the server (so a command sent now runs
         before them, not after) and send them again on the next tick."""
-        self.c.send("clear")
+        self._clear()
         if self.running is not None or self.free is not None:
             self.c.send("walk 5")
             self.running = None
@@ -294,7 +301,7 @@ class Mover:
             # every later step runs one behind (mission 3: 10 minutes circling
             # a '>' one square away), so empty the queue first (before the
             # run-stopping 'walk 5', which it would drop).
-            self.c.send("clear")
+            self._clear()
             if self.running is not None:
                 self.c.send("walk 5")
                 self.running = None
@@ -312,7 +319,7 @@ class Mover:
             rubble = any("rubble" in t for ts, t in w.messages if ts > self.last_progress)
             w.memory[self.path[self.done]] = ":" if rubble else "#"
             if rubble:
-                self.c.send("clear")      # drop the steps queued behind the bump
+                self._clear()      # drop the steps queued behind the bump
                 self.sent = self.done
                 self.last_progress = time.time()
                 return "moving"           # next tick digs it
@@ -325,7 +332,7 @@ class Mover:
         if time.time() - self.last_progress > self.STEP_TIMEOUT:
             # Something blocks the next step (a monster, a door that didn't
             # open, an unseen wall): avoid that tile and replan
-            self.c.send("clear")
+            self._clear()
             self.avoid.add(self.path[self.done])
             self.replans += 1
             if self.replans > self.max_replans or not self._plan():

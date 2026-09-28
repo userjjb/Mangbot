@@ -50,6 +50,13 @@ HEALS = (("*Healing*", 1200), ("Cure Critical Wounds", 25), ("Cure Serious Wound
          ("Cure Light Wounds", 15), ("Healing", 300), ("of Life", 5000))
 
 
+# Items whose use the pilot verifies and resends (not unknown scrolls: a
+# resend could read a second one)
+USE_VERIFY = ("Phase Door", "Word of Recall", "Teleport", "Cure Light Wounds", "Cure Serious Wounds",
+              "Cure Critical Wounds", "Healing", "Boldness", "Heroism", "Berserk", "Cure Poison",
+              "Neutralize Poison")
+
+
 def one_of(name):
     """'2 Potions of Boldness' -> 'a Potion of Boldness' (what one use takes;
     mission 6's news said 'quaffed 2 Potions' when 1 was left)."""
@@ -889,6 +896,9 @@ class Pilot:
         self.choke_t = self.choke_done_t = 0.0
         self.seen_drained = None
         self.dead = False
+        self.pending_use = None               # a read/quaff to verify (verify_use)
+        self.group_warned = None
+        self.mons_log_t = 0.0
         self.drains_here = (None, 0)          # (level, stat drains seen on it)
         self.still_goals = (None, set())      # (level, mover goals) before a stationary-monster fight
         self.still_fighting = None            # (level, position) of the stationary monster we're killing
@@ -933,6 +943,40 @@ class Pilot:
         self.last_action = (time.time(), line, why)
         self.busy_until = time.time() + hold
         self.log("act", cmd=line, why=why)
+        # Verify the pilot's own escapes and cures by their effect (post-mortem
+        # memo §4.2: both Dive03 deaths were escapes that never ran)
+        m = re.match(r"custom [rq] item=(\d+)$", line)
+        if m and not why.startswith("agent:") and self.w.in_dungeon:
+            it = next((i for i in self.w.items() if i["item"] == int(m.group(1))), None)
+            core = next((c for c in USE_VERIFY if it and c in it["name"]), None)
+            if core:
+                self.pending_use = {"line": line, "t": time.time(), "core": core, "tries": 0, "why": why}
+                self.mover.hold_clear_until = time.time() + 3.0
+
+    def verify_use(self):
+        """A pending read/quaff: done when the server says what's left ("You
+        have 9 Scrolls of Phase Door (j)." / "You have no more ...") or a
+        recall starts; resent (twice at most) if nothing within 2.5 s."""
+        p, now = self.pending_use, time.time()
+        if not p:
+            return
+        said = [t for ts, t in self.w.messages if ts >= p["t"] - 0.05]
+        if any(t.startswith("You have") and p["core"] in t for t in said) or \
+                any("The air about you becomes charged" in t for t in said):
+            self.pending_use = None
+            return
+        if now - p["t"] < 2.5:
+            return
+        if p["tries"] >= 2 or not self.w.in_dungeon:
+            self.pending_use = None
+            self.notify("tactic", f"'{p['why']}' still shows no effect after 2 resends: giving up on it")
+            return
+        p["tries"] += 1
+        p["t"] = now
+        self.mover.hold_clear_until = now + 3.0
+        self.c.send(p["line"])
+        self.log("act", cmd=p["line"], why=f"resend (no effect seen): {p['why']}")
+        self.notify("tactic", f"'{p['why']}' showed no effect: resent it")
 
     def take_stairs(self, which):
         self.mover.stop()
@@ -1454,11 +1498,10 @@ class Pilot:
         """Worst-case melee of everything that can reach us this turn, the
         Borg's way: max dice x speed, +150 per stat/exp-drain blow, +200 for a
         paralysing blow without Free Action. Monsters that never move don't
-        count (they only matter next to us, and we step away), and the drain
-        weight only for monsters within 10 levels of ours (weak drainers are
-        left to the second-drain rule). Replayed over Dive03's logs, it fired
-        at the mission-7 death and in the other near-deaths, not on ordinary
-        orc and wolf packs."""
+        count (they only matter next to us, and we step away). Drain weight 50
+        (the Advisor's run post-mortem replay; the Borg uses 150). Replayed
+        over Dive03's logs, 0.3x fired 5-14 s before every drop below 50% HP,
+        0.6x only 1-5 s before."""
         w = self.w
         lev = w.ind.get("level", [1])[0]
         ac = w.ind.get("armor", [0])[0]
@@ -1470,9 +1513,7 @@ class Pilot:
             if w.dist((y, x)) > 1 + math.ceil(sx):
                 continue
             mx, drains = r.worst_melee
-            g = mx * sx
-            if r.level >= lev - 10:
-                g += 150 * drains
+            g = mx * sx + 50 * drains     # (drain weight 50: post-mortem memo §2 replay)
             if r.paralyse_blow_power > ac * 3 / 4 and self.orders.get("free_action") != "yes":
                 g += 200
             if g:
@@ -1481,9 +1522,11 @@ class Pilot:
         return total, who
 
     def group_tick(self, now):
-        """Tiers against current HP (the Borg's): > 0.3x: just arrived, take
-        the stairs back; > 0.6x: escape now (stairs underfoot, else Phase
-        Door); > 1.0x: that, and leave the level by the nearest stairs."""
+        """Tiers against current HP (Borg memo, tuned by the post-mortem memo):
+        > 0.3x: disengage (just arrived: the stairs back; not yet in melee:
+        back away); > 0.6x: escape now (stairs underfoot, else Phase Door;
+        no stairs known: start Word of Recall now, it takes 15-35 s);
+        > 1.0x: that, and leave the level by the nearest stairs."""
         w = self.w
         if not w.in_dungeon or not w.monsters:
             return False
@@ -1500,6 +1543,12 @@ class Pilot:
                 self.notify("danger_avoided", f"arrived next to {names} (worst-case melee {g:.0f} vs HP {hp}): "
                                               "took the stairs back")
                 return True
+            if not w.adjacent_monsters() and isinstance(self.goal, (Explore, Hunt, Goto, Dive)):
+                if self.group_warned != (w.level_t, names):
+                    self.group_warned = (w.level_t, names)
+                    self.notify("tactic", f"{names} can deal {g:.0f} at worst (HP {hp}): backing away, "
+                                          "not walking into them")
+                return self.retreat_step([m for m in w.monsters if "NEVER_MOVE" not in m[2].flags])
             return False
         if on_stairs:
             self.take_stairs(w.standing_on)
@@ -1512,9 +1561,18 @@ class Pilot:
             self.set_goal(Flee("a dangerous group"))
             self.notify("danger_seen", f"group danger: {names} can deal {g:.0f} per turn at worst, HP {hp}"
                                        f"{' while ' + prev if prev else ''}: leaving the level")
+        can_read = not w.flag("blind") and not w.flag("confused")
+        if not w.find("<>") and can_read and not self.recall_started(now):
+            wor = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
+            if wor:
+                self.recall_t = now
+                self.cmd(f"custom r item={wor['item']}", f"group danger {g:.0f} vs HP {hp}: word of recall",
+                         hold=0.5)
+                self.notify("emergency", f"{names} can deal {g:.0f} (HP {hp}) and no stairs are known: "
+                                         "read Word of Recall now (it takes 15-35 s)")
+                return True
         pd = w.tagged("r", 1) or next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
-        if w.adjacent_monsters() and pd and not w.flag("blind") and not w.flag("confused") \
-                and now - self.phase_t > 2.5:
+        if w.adjacent_monsters() and pd and can_read and now - self.phase_t > 2.5:
             self.phase_t = now
             self.cmd(f"custom r item={pd['item']}", f"group danger {g:.0f} vs HP {hp}: phase door", hold=0.6)
             self.notify("tactic", f"{names} can deal {g:.0f} (HP {hp}): phased away")
@@ -1971,6 +2029,13 @@ class Pilot:
         self.note_town_stairs()
         if self.wear_queue:
             self.wear_step()
+        self.verify_use()
+        w, now = self.w, time.time()
+        if w.in_dungeon and w.monsters and now - self.mons_log_t >= 1.0:
+            # a steady record for replays (post-mortem memo §4.6: an 86 s gap
+            # before the mission-7 death)
+            self.mons_log_t = now
+            self.log("mons", monsters=[(y, x, r.name) for y, x, r in w.monsters])
         self.watch_character()
         self.watch_breeders()
         self.watch_progress()
