@@ -32,7 +32,7 @@ ATTR_MAX = 63
 
 class Race:
     __slots__ = ("idx", "name", "char", "color", "level", "flags", "spells", "blows", "speed", "hp",
-                 "spell_freq", "danger", "speed_x", "melee_avg")
+                 "spell_freq", "danger", "speed_x", "melee_avg", "melee_max", "drain_blows")
 
     def __init__(self, idx, name):
         self.idx, self.name = idx, name
@@ -44,6 +44,8 @@ class Race:
         self.danger = None      # 0 trivial .. 5 leave on sight, for our warrior
         self.speed_x = None     # actions per normal-speed player turn
         self.melee_avg = None   # damage per monster turn if every blow hits
+        self.melee_max = None   # the same with every die at its maximum
+        self.drain_blows = None  # blows that drain a stat or experience (LOSE_*, EXP_*)
 
     @property
     def repeat_fearer(self):
@@ -89,6 +91,21 @@ class Race:
         return sx * avg
 
     @property
+    def worst_melee(self):
+        """(max melee per monster turn, drain blows), from the table or the blows."""
+        if self.melee_max is not None:
+            return self.melee_max, self.drain_blows
+        mx, dr = 0.0, 0
+        for b in self.blows:
+            parts = b.split(":")
+            if len(parts) > 2 and "d" in parts[2]:
+                n, m = parts[2].split("d")
+                mx += int(n) * int(m)
+            if len(parts) > 1 and parts[1].startswith(("LOSE_", "EXP_")):
+                dr += 1
+        return mx, dr
+
+    @property
     def max_hp(self):
         n, _, m = self.hp.partition("d")
         return int(n) * int(m or 1)
@@ -127,6 +144,9 @@ def load_danger(races, path=DANGER_TABLE):
         r.danger = int(row["danger"])
         r.speed_x = float(row["speed_x"])
         r.melee_avg = float(row["melee_avg"])
+        if row.get("melee_max"):
+            r.melee_max = float(row["melee_max"])
+            r.drain_blows = int(row["drain_blows"])
     return races
 
 

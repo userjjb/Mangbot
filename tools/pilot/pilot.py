@@ -23,6 +23,7 @@ See HANDBOOK.md for the player's view; design_pilot.md for the why.
 """
 import argparse
 import collections
+import math
 import json
 import os
 import queue
@@ -888,6 +889,7 @@ class Pilot:
         self.choke_t = self.choke_done_t = 0.0
         self.seen_drained = None
         self.dead = False
+        self.drains_here = (None, 0)          # (level, stat drains seen on it)
         self.still_goals = (None, set())      # (level, mover goals) before a stationary-monster fight
         self.still_fighting = None            # (level, position) of the stationary monster we're killing
         self.seen_blows = None
@@ -1096,6 +1098,9 @@ class Pilot:
         if w.hp_frac < o["flee_hp"] and (mons_near or now - w.last_hit_t < 5):
             if not self.escape("low HP") and self.mover.active and not self.escaping_to_stairs:
                 self.mover.stop()
+            return True
+        # 2'. Group danger (the Borg's rule, Advisor memo 2026-09-28 §3.1)
+        if self.group_tick(now):
             return True
         # 2a. Status cures, in combat only (out of combat, rest it off: the
         # user). Stun can become a knock-out; blind or confused can't read.
@@ -1444,6 +1449,77 @@ class Pilot:
         self.notify("stuck", f"'{self.goal.describe()}' has gone nowhere for 2 minutes "
                              f"(around {w.pos}): cleared the command queue and restarted the move. "
                              "If it happens again, give another goal")
+
+    def group_danger(self):
+        """Worst-case melee of everything that can reach us this turn, the
+        Borg's way: max dice x speed, +150 per stat/exp-drain blow, +200 for a
+        paralysing blow without Free Action. Monsters that never move don't
+        count (they only matter next to us, and we step away), and the drain
+        weight only for monsters within 10 levels of ours (weak drainers are
+        left to the second-drain rule). Replayed over Dive03's logs, it fired
+        at the mission-7 death and in the other near-deaths, not on ordinary
+        orc and wolf packs."""
+        w = self.w
+        lev = w.ind.get("level", [1])[0]
+        ac = w.ind.get("armor", [0])[0]
+        total, who = 0.0, []
+        for y, x, r in w.monsters:
+            if "NEVER_MOVE" in r.flags:
+                continue
+            sx = r.speed_x if r.speed_x is not None else max(1.0, (r.speed - 100) / 10)
+            if w.dist((y, x)) > 1 + math.ceil(sx):
+                continue
+            mx, drains = r.worst_melee
+            g = mx * sx
+            if r.level >= lev - 10:
+                g += 150 * drains
+            if r.paralyse_blow_power > ac * 3 / 4 and self.orders.get("free_action") != "yes":
+                g += 200
+            if g:
+                total += g
+                who.append(r.name)
+        return total, who
+
+    def group_tick(self, now):
+        """Tiers against current HP (the Borg's): > 0.3x: just arrived, take
+        the stairs back; > 0.6x: escape now (stairs underfoot, else Phase
+        Door); > 1.0x: that, and leave the level by the nearest stairs."""
+        w = self.w
+        if not w.in_dungeon or not w.monsters:
+            return False
+        g, who = self.group_danger()
+        hp = max(w.hp[0], 1)
+        if g <= 0.3 * hp:
+            return False
+        names = ", ".join(f"{n} x{c}" if c > 1 else n for n, c in collections.Counter(who).items())
+        stairs_pending = w.last_stairs_cmd and now - w.last_stairs_cmd[1] < 1.2
+        on_stairs = w.standing_on in ("<", ">") and not stairs_pending
+        if g <= 0.6 * hp:
+            if now - w.level_t < 6 and on_stairs:
+                self.take_stairs(w.standing_on)
+                self.notify("danger_avoided", f"arrived next to {names} (worst-case melee {g:.0f} vs HP {hp}): "
+                                              "took the stairs back")
+                return True
+            return False
+        if on_stairs:
+            self.take_stairs(w.standing_on)
+            self.notify("danger_avoided", f"{names} can deal {g:.0f} (HP {hp}): took the stairs underfoot")
+            return True
+        if g > hp and not isinstance(self.goal, (Flee, Recall, Recover)) and w.find("<>") \
+                and now - self.flee_t > 10:
+            self.flee_t = now
+            prev = self.goal.describe() if self.goal else None
+            self.set_goal(Flee("a dangerous group"))
+            self.notify("danger_seen", f"group danger: {names} can deal {g:.0f} per turn at worst, HP {hp}"
+                                       f"{' while ' + prev if prev else ''}: leaving the level")
+        pd = w.tagged("r", 1) or next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
+        if w.adjacent_monsters() and pd and not w.flag("blind") and not w.flag("confused") \
+                and now - self.phase_t > 2.5:
+            self.phase_t = now
+            self.cmd(f"custom r item={pd['item']}", f"group danger {g:.0f} vs HP {hp}: phase door", hold=0.6)
+            self.notify("tactic", f"{names} can deal {g:.0f} (HP {hp}): phased away")
+            return True
+        return False
 
     def still_fight_tick(self, now, still):
         """A stationary monster next to us that blocks the way (sits by the
@@ -1828,6 +1904,18 @@ class Pilot:
                    and cur < self.seen_drained[n][0] and top == self.seen_drained[n][1]]
             if new:
                 self.notify("stat_drained", f"{', '.join(new)} drained (blows {blows}); restore at the Alchemist/Temple")
+                # Second drain on this level from something in view: leave
+                # (Borg memo §3.2; mission 7's scorpion drained STR three times)
+                w = self.w
+                if w.monsters and w.in_dungeon:
+                    n = self.drains_here[1] + 1 if self.drains_here[0] == w.level_t else 1
+                    self.drains_here = (w.level_t, n)
+                    if n >= 2 and w.find("<>") and not isinstance(self.goal, (Flee, Recall, Recover)):
+                        prev = self.goal.describe() if self.goal else None
+                        self.set_goal(Flee("stat drain"))
+                        self.notify("danger_seen", f"drained twice on this level ({', '.join(new)}) with "
+                                                   f"{', '.join(sorted({r.name for *_, r in w.monsters}))} in view"
+                                                   f"{' while ' + prev if prev else ''}: leaving the level")
         if self.seen_blows is not None and blows is not None and blows != self.seen_blows:
             self.notify("blows_changed", f"blows per round {self.seen_blows} -> {blows}")
         self.seen_drained, self.seen_blows = drained, blows
