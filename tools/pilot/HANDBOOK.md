@@ -253,6 +253,8 @@ Orders are remembered across pilot restarts.
     of Slow Monster fetched 225), but not `{average}` gear, which sells the same;
   - buy discounted things (`{75% off}` Word of Recall, Identify);
   - until the weapon is about (+8,+8), discounted Enchant To-Hit/To-Dam scrolls are good buys.
-- Town: sell the starting kit. Buy a lantern and flasks of oil, light armour,
-  a light weapon (more blows), Phase Door, Cure Light Wounds potions,
-  +to-damage scrolls, Word of Recall.
+- Town: sell the starting kit (the Broad Sword and Chain Mail fetch a lot compared with their use:
+  the user). Buy a Main Gauche (light: more blows), Enchant To-Hit/To-Dam scrolls for it (discounted
+  ones first), cheap unenchanted armour for every empty slot (cloak, gloves, boots, leather shield,
+  cap: good AC for the price), a lantern and flasks of oil, Phase Door, Cure Light Wounds potions,
+  Word of Recall.
