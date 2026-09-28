@@ -668,6 +668,37 @@ class Recall(Goal):
         return None
 
 
+class Resurrect(Goal):
+    """A ghost floats up: '<' works anywhere for a ghost (cmd2.c:37), one
+    level per press; in town, walking onto the Temple's entrance ('4')
+    resurrects (cmd1.c:2047). It costs half the experience for good."""
+    name = "resurrect"
+
+    def __init__(self):
+        self.up_t = 0.0
+
+    def tick(self, p):
+        w = p.w
+        if not w.ghost:
+            return ("done", "resurrected")
+        if w.depth:
+            # (a stairs command too soon after arriving is ignored: retry)
+            if time.time() - w.level_t > 1.2 and time.time() - self.up_t > 1.5:
+                self.up_t = time.time()
+                p.take_stairs("<")
+            return None
+        door = w.find("4")
+        if not door:
+            return ("failed", "the Temple (4) isn't on the map")
+        if w.dist(door[0]) == 1:
+            p.cmd(f"walk {direction(w.pos, door[0])}", "walk onto the Temple entrance", hold=1.0)
+            return None
+        if not p.mover.active and not p.mover.go([door[0]]):
+            return ("failed", "can't reach the Temple")
+        p.mover.tick()
+        return None
+
+
 class Shop(Goal):
     """In town: walk into store N, sell and buy, leave.
     sells: [(item index, count)]; buys: [(name substring, count)]."""
@@ -1009,6 +1040,8 @@ class Pilot:
     def reflexes(self):
         w, o = self.w, self.orders
         now = time.time()
+        if self.dead and not w.ghost and w.hp[0] > 0:
+            self.dead = False                 # resurrected
         if w.ghost or w.hp[0] <= 0 and w.hp[1] > 0 and w.ind:
             if not self.dead:
                 # Stay up to tell the Navigator (mission 7: the pilot exited at
@@ -1016,8 +1049,10 @@ class Pilot:
                 self.dead = True
                 self.mover.stop()
                 self.goal = None
-                self.notify("dead", "the character died (now a ghost); the pilot does nothing more. "
-                                    "Status and attention still work; 'quit' to stop the pilot")
+                self.notify("dead", "the character died (now a ghost): 'goal resurrect' floats it up to town "
+                                    "and resurrects it at the Temple (halves the experience for good)")
+            if w.ghost and isinstance(self.goal, Resurrect):
+                return False
             return True
         if now < self.busy_until:
             return True
@@ -1883,8 +1918,9 @@ class Pilot:
         args = req.get("args", [])
         if c == "status":
             return {"ok": True, "report": self.report()}
-        if self.dead and c not in ("attention", "quit", "orders", "events", "news", "map", "inventory"):
-            return {"ok": False, "error": "the character is dead (a ghost): the pilot does nothing more"}
+        if self.dead and c not in ("attention", "quit", "orders", "events", "news", "map", "inventory") and \
+                not (c == "goal" and args[:1] == ["resurrect"]):
+            return {"ok": False, "error": "the character is dead (a ghost): only 'goal resurrect' works"}
         if c == "goal":
             return self.request_goal(args)
         if c == "stop":
@@ -2064,6 +2100,8 @@ class Pilot:
             g = Hunt(" ".join(rest).replace("_", " "))   # 'hunt Black_ogre', like shop names
         elif name == "recall":
             g = Recall()
+        elif name == "resurrect":
+            g = Resurrect()
         elif name == "rest":
             g = RestGoal()
         elif name == "wait":
