@@ -19,6 +19,7 @@ Names, levels and flags come from lib/edit/monster.txt. A live server might
 use different data; the monster list (whose lines show the race name next to
 our glyph) is the authority when they disagree -- see check_monlist().
 """
+import csv
 import os
 import re
 
@@ -31,7 +32,7 @@ ATTR_MAX = 63
 
 class Race:
     __slots__ = ("idx", "name", "char", "color", "level", "flags", "spells", "blows", "speed", "hp",
-                 "spell_freq")
+                 "spell_freq", "danger", "speed_x", "melee_avg")
 
     def __init__(self, idx, name):
         self.idx, self.name = idx, name
@@ -39,6 +40,10 @@ class Race:
         self.flags, self.spells, self.blows = set(), set(), []
         self.speed, self.hp = 110, "1d1"
         self.spell_freq = 0     # casts 1 time in N (0 = no spells)
+        # From the Advisor's danger table (danger_table.csv), when it has this race:
+        self.danger = None      # 0 trivial .. 5 leave on sight, for our warrior
+        self.speed_x = None     # actions per normal-speed player turn
+        self.melee_avg = None   # damage per monster turn if every blow hits
 
     @property
     def repeat_fearer(self):
@@ -56,6 +61,32 @@ class Race:
         """Casts Hold Person, or (if it can reach you) a paralysing blow."""
         return "HOLD" in self.spells or ("NEVER_MOVE" not in self.flags and
                                          any(b.split(":")[1:2] == ["PARALYZE"] for b in self.blows))
+
+    @property
+    def paralyse_blow_power(self):
+        """To-hit power of its paralysing blow (melee1.c: effect power 2 + 3 x
+        level), or 0 if it has none."""
+        return 2 + 3 * self.level if any(b.split(":")[1:2] == ["PARALYZE"] for b in self.blows) else 0
+
+    @property
+    def no_save_blows(self):
+        """Blow effects that blind or confuse with no saving throw (only the
+        resist blocks them; Advisor danger-table memo §1.3)."""
+        return {e for e in (b.split(":")[1:2] for b in self.blows) for e in e if e in ("BLIND", "CONFUSE")}
+
+    @property
+    def per_turn(self):
+        """Melee damage per normal player turn if every blow hits: speed x blows."""
+        avg = self.melee_avg
+        if avg is None:
+            avg = 0.0
+            for b in self.blows:
+                dice = b.split(":")[2:3]
+                if dice and "d" in dice[0]:
+                    n, m = dice[0].split("d")
+                    avg += int(n) * (int(m) + 1) / 2
+        sx = self.speed_x if self.speed_x is not None else max(1.0, (self.speed - 100) / 10)
+        return sx * avg
 
     @property
     def max_hp(self):
@@ -78,7 +109,25 @@ BREATHS = {"BR_ACID": (3, 1600), "BR_ELEC": (3, 1600), "BR_FIRE": (3, 1600), "BR
            "BR_POIS": (3, 800), "BR_NETH": (6, 550), "BR_LITE": (6, 400), "BR_DARK": (6, 400),
            "BR_CONF": (6, 400), "BR_SOUN": (6, 500), "BR_CHAO": (6, 500), "BR_DISE": (6, 500),
            "BR_NEXU": (6, 400), "BR_TIME": (3, 150), "BR_INER": (6, 200), "BR_GRAV": (3, 200),
-           "BR_SHAR": (6, 500), "BR_PLAS": (6, 150), "BR_WALL": (6, 200), "BR_MANA": (3, 250)}
+           "BR_SHAR": (6, 500), "BR_PLAS": (6, 150), "BR_WALL": (6, 200)}
+# (no BR_MANA: a no-op in 1.5, melee2.c:876; danger-table memo §3.8)
+
+DANGER_TABLE = os.path.join(HERE, "danger_table.csv")
+
+
+def load_danger(races, path=DANGER_TABLE):
+    """Merge the Advisor's danger table (Advisor/data/monsters/danger_table.csv,
+    copied here; levels 0-40, keyed by monster.txt N: = Race.idx)."""
+    if not os.path.exists(path):
+        return races
+    for row in csv.DictReader(open(path, encoding="utf-8")):
+        r = races.get(int(row["idx"]))
+        if r is None or r.name != row["name"]:
+            continue              # a different monster.txt: don't trust the row
+        r.danger = int(row["danger"])
+        r.speed_x = float(row["speed_x"])
+        r.melee_avg = float(row["melee_avg"])
+    return races
 
 
 def load_races(path=None):
@@ -110,7 +159,7 @@ def load_races(path=None):
                     cur.spells.add(f)
         elif line.startswith("B:"):
             cur.blows.append(line[2:])
-    return races
+    return load_danger(races)
 
 
 def _glyph_chars(fname):

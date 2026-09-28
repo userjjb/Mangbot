@@ -109,8 +109,10 @@ DEFAULT_ORDERS = {
     "rest_to": 0.95,
     "arrival_pack": 4,     # this many monsters in view on arrival -> leave by the stairs
     "danger_level": 6,     # a monster this many levels above ours in view -> leave/avoid
-    "free_action": "no",
-    "unseen_hp": "on",     # off: don't treat HP loss with nothing in view as an unseen attacker   # yes once the character has Free Action: paralysers stop counting as danger
+    "free_action": "no",   # yes once the character has Free Action: paralysers stop counting as danger
+    "resist_blind": "no",  # yes once worn: monsters that blind with their blows stop counting as danger
+    "resist_conf": "no",   # the same for confusing blows
+    "unseen_hp": "on",     # off: don't treat HP loss with nothing in view as an unseen attacker
     "idle_recall_s": 600,  # no goal and no agent contact for this long -> recall to town
                            # (long enough for a slow agent turn; 180 s fired mid-thought)
     "pickup": "all",       # all | none
@@ -995,18 +997,44 @@ class Pilot:
         """Why monster race r is too dangerous to fight now, or None."""
         lev = self.w.ind.get("level", [1])[0]
         hp = self.w.hp[0]
-        if r.level >= lev + self.orders["danger_level"]:
+        o = self.orders
+        if r.level >= lev + o["danger_level"]:
             return f"lvl {r.level}"
         if "UNIQUE" in r.flags and r.level > lev:
             return f"unique, lvl {r.level}"
+        # The Advisor's danger table (memo 2026-09-27 §3): 5 = leave on sight;
+        # 4 = lethal until we've outgrown it by about 8 levels
+        if r.danger == 5:
+            return "rated 5: leave on sight"
+        if r.danger == 4 and lev < r.level + 8:
+            return f"rated 4: lethal until clvl {r.level + 8}"
+        # A capital D is an ancient dragon (level 40+), always out of depth here
+        if r.char == "D":
+            return "ancient dragon"
+        # Fast heavy melee (Azog, Beorn, the chieftains passed every other rule)
+        if r.per_turn >= max(hp, 1) / 3 and "NEVER_MOVE" not in r.flags:
+            return f"melee ~{r.per_turn:.0f} per turn"
         # Engage a breather only if two of its breaths can't kill us (Advisor
         # memo, Addendum 2 item 8); a pack of breathers (hounds) breathes together
         if r.max_breath and 2 * r.max_breath >= hp:
             return f"breathes up to {r.max_breath}"
         if r.max_breath and pack_breath >= hp:
             return f"its pack breathes up to {pack_breath} in all"
-        if r.paralyser and self.orders.get("free_action") != "yes" and r.level >= lev - 10:
+        # (a paralysing blow whose to-hit can't beat our armour lands only on the
+        # 5% floor, e.g. a floating eye: memo §3.7; Hold spells still count)
+        ac = self.w.ind.get("armor", [0])[0]
+        weak_blow = "HOLD" not in r.spells and 0 < r.paralyse_blow_power <= ac * 3 / 4
+        if r.paralyser and o.get("free_action") != "yes" and r.level >= lev - 10 and not weak_blow:
             return "paralyses (no Free Action)"
+        if "BRAIN_SMASH" in r.spells and not all(o.get(k) == "yes" for k in
+                                                   ("free_action", "resist_blind", "resist_conf")):
+            return "Brain Smash (needs Free Action + resist blindness + resist confusion)"
+        # Blinding/confusing blows get no saving throw (memo §1.3). Stationary
+        # ones are only stepped away from (and never fought, still_fight_tick).
+        nosave = {e for e in r.no_save_blows
+                  if o.get("resist_blind" if e == "BLIND" else "resist_conf") != "yes"}
+        if nosave and "NEVER_MOVE" not in r.flags and r.level >= lev - 10:
+            return ("blinds" if "BLIND" in nosave else "confuses") + " with its blows (no save)"
         # Summons land next to us and stay after the summoner dies (memo §1.2)
         if r.summoner and r.level >= lev - 5:
             return "summons"
@@ -1437,7 +1465,10 @@ class Pilot:
 
         def killable(r):
             paralyses = any(b.split(":")[1:2] == ["PARALYZE"] for b in r.blows)
-            return r.level <= lev and not (paralyses and self.orders.get("free_action") != "yes")
+            nosave = {e for e in r.no_save_blows
+                      if self.orders.get("resist_blind" if e == "BLIND" else "resist_conf") != "yes"}
+            return r.level <= lev and not (paralyses and self.orders.get("free_action") != "yes") \
+                and not nosave
 
         targets = [m for m in still if disenchants(m[2]) or any(w.dist(g, m[:2]) <= 1 for g in goals)]
         fight = [m for m in targets if killable(m[2])]

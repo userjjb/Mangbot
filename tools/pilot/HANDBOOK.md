@@ -32,7 +32,7 @@ Attention events:
 | `goal_done`, `goal_failed` | the goal finished (the detail says why) |
 | `interesting` | a dive stopped for something in `stop_on`: a unique, items, a pillared room (these often hold stairs; explore them), danger |
 | `danger_avoided` | (news, doesn't wake you) arrived next to a pack or an out-of-depth monster and went straight back up the stairs. Shown under "Since last report" |
-| `danger_seen` | a dangerous monster came into view: the pilot dropped the goal and is heading for the stairs. The detail says why. Danger means: `danger_level` above yours, a unique above your level, a breather whose two strongest breaths would kill you at your current HP, breathers whose breaths together would (hound packs), a paralyser while you lack Free Action (`free_action` order), or a summoner within 5 levels of yours (summons appear next to *you* and stay after it dies) |
+| `danger_seen` | a dangerous monster came into view: the pilot dropped the goal and is heading for the stairs. The detail says why. Danger means: `danger_level` above yours, a unique above your level, a breather whose two strongest breaths would kill you at your current HP, breathers whose breaths together would (hound packs), a paralyser while you lack Free Action (`free_action` order; a paralysing blow too weak to get through your armour doesn't count), or a summoner within 5 levels of yours (summons appear next to *you* and stay after it dies). Also, from the Advisor's danger table: a monster rated 5 ("leave on sight"), one rated 4 until you're 8 levels above it, any capital `D`, one whose melee per turn (speed × blows, all hitting) is a third of your current HP or more, Brain Smash without Free Action + both resists below, and a monster within 10 levels that blinds or confuses with its *blows* (no saving throw) while you lack the resist |
 | `emergency` | HP fell below `flee_hp`: the pilot took the stairs underfoot, read Phase Door, or quaffed a cure |
 | `fight_going_badly` | HP below `think_hp` while fighting: decide whether to flee (e.g. `stairs`, or `read` Phase Door) |
 | `low_supply` | out of food (it recalls), no flasks for the lantern, no light at all |
@@ -116,6 +116,7 @@ of Phase Door and cure potions: it will use them.
 | `arrival_pack` | 4 | this many monsters near the stairs on arrival: leave at once |
 | `danger_level` | 6 | a monster this many levels above yours counts as danger |
 | `free_action` | no | set `yes` once the character has Free Action: paralysers then stop counting as danger |
+| `resist_blind`, `resist_conf` | no | set `yes` once the character resists blindness / confusion (check the `C` sheet, not item text): monsters that blind / confuse with their blows then stop counting as danger |
 | `unseen_hp` | on | `off`: HP loss with nothing in view no longer counts as an unseen attacker (the "It ..." messages still do) |
 | `idle_recall_s` | 600 | recall to town after this long without a goal or a word from you |
 | `stop_on` | unique,danger | what makes a dive stop and ask you (add `items`, `pillared` to be asked about those too) |
@@ -159,8 +160,9 @@ Orders are remembered across pilot restarts.
   level (`danger_seen`). It never melees a paralysing one (floating eye) without `free_action=yes`:
   if one blocks the only stairs, pick other stairs. Others it still paths around; `goal hunt` for
   any you want dead.
-- "It commands you to return" is a Tengu or Blink dog teleporting you next to it: harmless by
-  itself; at good HP the pilot carries on.
+- "It commands you to return" is teleport-to: harmless from a Tengu or Blink dog, and at good HP
+  the pilot carries on. Not harmless from Orfax, a Quasit, Imp, Evil eye (it then casts Hold), Phase
+  spider, Vampire, Mage or Draebor: you can't walk away from these; leave by stairs or Phase Door.
 - **Status cures in a fight** (by itself, cheapest potion that works): stunned → Cure Critical
   Wounds or better (only CCW+ cures stun and poison); confused → Cure Serious or better; blind →
   Cure Light or better; poisoned → Cure/Neutralize Poison or CCW, only once HP is below
@@ -181,7 +183,7 @@ Orders are remembered across pilot restarts.
   wasting turns drinking. **Out of combat it never drinks for HP: it rests** (and backs away
   first if a monster is in view but not fighting). Against weak monsters `flee_hp=0.4` saves potions.
 - **Buy Potions of Boldness or Heroism whenever the store has them.** Without them, leave a level
-  with Priests or packs of paladins (they scare and summon): two trips were lost to fear.
+  with Priests (they summon) or packs of Novice paladins (they scare): two trips were lost to fear.
 - A character with a 1d6 weapon, 3 blows and AC ~30 struggled against groups at 650-700 ft;
   450-550 ft earned XP and gold more safely until the gear improves.
 - `max_depth` caps dives (the pilot now says so): raise it first when you mean to go deeper.
@@ -203,12 +205,34 @@ Orders are remembered across pilot restarts.
 - Below **60–70% HP**, or when a kill takes unusually long, think about more
   than just fighting. The real killers are **summoners** and **packs that
   breathe or cast at range**. Leave those levels.
-- Avoid molds and jellies (stationary, not worth the risk). The pilot does this
+- Avoid molds and jellies (most are stationary; the Ochre jelly, +10 speed, and the Gelatinous
+  cube move and chase). The pilot does this
   by itself: it paths around anything that never moves (molds, jellies,
   floating eyes, mushroom patches) and steps away if it finds itself next to
   one, because the server's auto-retaliate would otherwise fight it. To fight
   one on purpose, use `goal hunt NAME`. Uniques drop good
   items worth identifying (their drops are inscribed with the unique's name).
+- **Monsters that kill a diving warrior (0–1500 ft)** (Advisor danger-table memo, checked in the
+  server code; the pilot's `danger_table.csv` rates every monster to level 40):
+  - Paralysis stacks until you die: without Free Action, leave any level with a paralyser that can
+    reach you (Carrion crawlers, Ghouls, Homunculus, Evil eyes, Ogre mages, Basilisks).
+  - Monsters that blind or confuse *with their blows* (Umber hulk, Hummerhorn, Giant firefly,
+    ticks, Catoblepas, molds and mushroom patches) get no saving throw: only the resist helps.
+    Blind or confused, you can't read scrolls (staffs still work).
+  - Your saving throw is only about 15% + clvl, and resist fear comes only at clvl 30.
+  - Fast monsters (+10) act twice per turn: Grip and Fang, Azog, Beorn, Mim, the 5-headed hydra,
+    the chieftains. Their damage per turn is twice what the dice say.
+  - Armour doesn't reduce breath, bolts, or fire/cold/acid/lightning/poison bites.
+  - Uniques at 350–1000 ft (Mughash, Wormtongue, Lagduf, Brodda, Grishnákh, Orfax, Golfimbul,
+    Boldor, Ufthak, Ulfast, Nar, Shagrat, Gorbag, Bolg) outclass an under-levelled character. Leave
+    unless you fight them in a corridor with the stairs underfoot.
+  - A capital `D` is an ancient dragon, always out of depth above 2000 ft: leave.
+  - Floating eyes are harmless unless something else attacks you while you're paralysed.
+  - A room packed with `T` at 1050–1500 ft is a troll pit drawn 10 levels deeper: leave. Don't
+    open vaults (permanent walls) or pits: most forum deaths at these depths came from them.
+  - Gear to aim for: Free Action by 1000 ft (the most valuable item), resist poison by ~1000 ft
+    (air hounds, Basilisk), resist confusion and blindness from ~800 ft (no-save blows start
+    there; until then carry CCW).
 - **Pack space runs out before food.** Keep ~1 spare ration. Destroy
   `{average}` weapons and armour you won't use. Rings and amulets found very
   shallow are usually bad. Don't quaff unknown potions without food in the
