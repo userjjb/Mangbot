@@ -2361,6 +2361,8 @@ class Pilot:
             g = Goto(" ".join(rest))
         elif name == "shop":
             # goal shop STORE [buy NAME:N]... [sell LETTER:N]...
+            list_stock = "list" in rest[1:]
+            rest = [a for i_, a in enumerate(rest) if not (i_ and a == "list")]
             buys, sells, i = [], [], 1
             while i < len(rest):
                 kind, spec = rest[i], rest[i + 1] if i + 1 < len(rest) else ""
@@ -2374,7 +2376,7 @@ class Pilot:
                     key = what.replace("_", " ")
                     sells.append((self.item_index(key) if len(key) == 1 else key, n))   # '!NAME' forces
                 i += 2
-            g = Shop(rest[0], buys, sells, list_stock="list" in rest[1:2] or "list" in rest)
+            g = Shop(rest[0], buys, sells, list_stock=list_stock)
         elif name == "search":
             g = Search()
         elif name == "hunt":
