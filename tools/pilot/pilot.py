@@ -394,12 +394,19 @@ class Dive(Goal):
                     return None
             else:
                 return None
+        # On a climb, scumming by a '>' costs two level changes and goes one
+        # deeper: only a close one, never below max_depth (mission 11: at 50 ft
+        # on the way to town it walked 15 squares to a '>' and went to 100 ft)
+        md = int(p.orders.get("max_depth", 0))
+        climbing = want == "<"
+        scum_ok = not climbing or not md or w.depth_ft + 50 <= md
         # Scum: back the way we came on the staircase we're on, then again
-        if w.standing_on == other:
+        if w.standing_on == other and scum_ok:
             return self._stairs(p, other)
         # No stairs under us: explore until we see some (either kind)
         self.expire_bad(w)
-        ups = [u for u in w.find(other) if (w.level_t, u) not in self.bad_stairs]
+        ups = [u for u in w.find(other) if (w.level_t, u) not in self.bad_stairs
+               and scum_ok and (not climbing or w.dist(u) <= 8)]
         if ups and (self.explore is None or not isinstance(self.explore, Explore) or not p.mover.active):
             if not p.mover.active and not p.mover.go(ups):
                 # no path to any of them (it spun here re-planning 20x a second)
@@ -1083,7 +1090,7 @@ class Pilot:
 
     def danger_why(self, r, pack_breath=0):
         """Why monster race r is too dangerous to fight now, or None."""
-        lev = self.w.ind.get("level", [1])[0]
+        lev = self.w.clvl
         hp = self.w.hp[0]
         o = self.orders
         if r.level >= lev + o["danger_level"]:
@@ -1206,7 +1213,7 @@ class Pilot:
             danger = self.dangers()
             # A pack only counts if its members are within 5 levels of ours (a
             # pack of jackals is XP for a level-11 warrior, not a threat)
-            lev = w.ind.get("level", [1])[0]
+            lev = w.clvl
             threats = [m for m in mons_near if m[2].level >= lev - 5]
             if len(threats) >= o["arrival_pack"] or (danger and "danger" in o["stop_on"]):
                 why = f"arrived next to {len(threats)} monsters ({threats[0][2].name if threats else ''})" + \
@@ -1290,7 +1297,7 @@ class Pilot:
                 self.fearers_seen.add((w.level_t, f.name))
                 self.notify("fearer", f"{f.name} (lvl {f.level}) keeps frightening: moving away from it; "
                                       "consider leaving the level")
-            dangerous = f.level >= w.ind.get("level", [1])[0] - 2
+            dangerous = f.level >= w.clvl - 2
             if dangerous and w.adjacent_monsters() and now - self.phase_t > 2.5:
                 pd = next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
                 if pd and not w.flag("blind") and not w.flag("confused"):
@@ -1584,7 +1591,7 @@ class Pilot:
         over Dive03's logs, 0.3x fired 5-14 s before every drop below 50% HP,
         0.6x only 1-5 s before."""
         w = self.w
-        lev = w.ind.get("level", [1])[0]
+        lev = w.clvl
         ac = w.ind.get("armor", [0])[0]
         total, who = 0.0, []
         for y, x, r in w.monsters:
@@ -1683,7 +1690,7 @@ class Pilot:
         gaze disenchanted the weapon and armour. A disenchanter too strong to
         kill: leave the level, never path around it."""
         w = self.w
-        lev = w.ind.get("level", [1])[0]
+        lev = w.clvl
         goals = self.mover.goals if self.mover.active and self.mover.goals else set()
         if goals:
             self.still_goals = (w.level_t, set(goals))
@@ -1926,7 +1933,7 @@ class Pilot:
 
     def choke_tick(self, now):
         w = self.w
-        lev = w.ind.get("level", [1])[0]
+        lev = w.clvl
         pack = [m for m in w.monsters if w.dist(m[:2]) <= 10 and m[2].level >= lev - 5]
         if self.choke_state == "going":
             st = self.mover.tick()
@@ -1981,7 +1988,7 @@ class Pilot:
                 return            # a dive is leaving this level anyway
             # Weak ones (Blue worm masses at clvl 19) are only news: they wake
             # the Navigator for nothing (mission 3)
-            lev = w.ind.get("level", [1])[0]
+            lev = w.clvl
             weak = all(r.level <= lev - 10 for r in br) and len(br) < 8
             self.notify("breeders", f"{len(br)} breeding monsters in view ({br[0].name}): leave this level "
                                     "(stairs, or recall)" + (" if they get in the way" if weak else ""), news=weak)
@@ -2436,7 +2443,7 @@ class Pilot:
                          for s, v in zip(("STR", "INT", "WIS", "DEX", "CON", "CHR"),
                                          (ind.get(f"stat{i}", [0]) for i in range(6))))
         lines.append(f"{ind.get('hist_name_', '?')} the {ind.get('race_', '?')} {ind.get('class_', '?')}, "
-                     f"level {ind.get('level', ['?'])[0]}, HP {w.hp[0]}/{w.hp[1]}, "
+                     f"level {w.clvl}" + (f" (max {ind['level'][0]})" if len(ind.get('level', [])) > 1 and ind['level'][0] != w.clvl else "") + f", HP {w.hp[0]}/{w.hp[1]}, "
                      f"{'Town' if not w.depth else str(w.depth_ft) + ' ft'}, gold {ind.get('gold', [0])[0]}, "
                      f"blows {ind.get('skills2', ['?'])[0]}, speed {ind.get('speed', [0])[0]}")
         cond = [k for k in ("blind", "confused", "afraid", "poisoned", "cut", "stun") if w.flag(k)]

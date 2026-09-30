@@ -11,6 +11,8 @@ Run commands from `github/tools/pilot/` with `python3 pilotctl.py --nick NAME
 
 ## Your turn: `wait`
 
+(Your Bash tool times out after 120 s by default: for `wait` longer than ~110 s pass a Bash
+`timeout` of (SECS + 60) × 1000, e.g. 300000 for `wait 240`.)
 `pilotctl.py --nick NAME wait [SECS]` blocks until the pilot needs you, then
 prints the attention events and a **situation report**. React, give the next
 goal, and wait again. While you're waiting, the pilot keeps the character
@@ -284,7 +286,11 @@ Orders are remembered across pilot restarts.
 - Selling: potions and scrolls fetch 7-9 each (not worth the walk); unknown items sell at their
   plain base value, so Identify (Alchemist, 20-80) anything that might be magical first. Never
   sell Staffs of Door/Stair Location or Teleportation.
-- Near town (50-150 ft), climbing by stairs saves a Word of Recall.
+- Near town (50-150 ft), climbing by stairs saves a Word of Recall. A climb (`goal dive` to a
+  shallower depth) uses a `>` to get a fresh level only if it's within 8 squares and the level
+  below is within `max_depth`; otherwise it explores for a `<`.
+- The status line's level is your current level; after an experience loss (resurrection halves
+  it) it also shows the highest level you reached, e.g. "level 8 (max 10)".
 - **Never go below 150 ft with fewer than 3 cure potions**, even with a Word of Recall in hand
   (mission 10 spent the cure money on a bargain WoR and died at 250 ft).
 - **A rated-4 unique with a pack (Mughash and his kobolds at 250 ft), or a fast unique near your

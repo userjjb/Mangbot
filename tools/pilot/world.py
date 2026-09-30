@@ -271,6 +271,15 @@ class World:
     def resting(self):
         return bool(self.ind.get("state", [0, 0, 0])[2])
 
+    @property
+    def clvl(self):
+        """The current character level. The server's 'level' indicator is
+        (max level ever, current level) (xtra1.c:166): after an experience
+        loss (resurrection halves it) the first value stays high, and the
+        pilot used it everywhere (mission 11: 10 instead of 8)."""
+        lv = self.ind.get("level", [1])
+        return lv[1] if len(lv) > 1 else lv[0]
+
     def flag(self, name):
         return bool(self.ind.get(name, [0])[0])
 
