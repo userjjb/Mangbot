@@ -1910,10 +1910,19 @@ class Pilot:
                 self.light_warned = now
                 self.notify("low_supply", f"lantern at {turns} turns and no flasks of oil")
         elif worn and "Torch" in worn["name"] and turns is not None and turns < 500:
-            torch = next((i for i in w.items(tval=TV_LITE) if "Torch" in i["name"]), None)
+            # only a torch with more light left (burnt-out spares were swapped
+            # ~2100 times while Dive04 idled in town)
+            def left(i):
+                t = re.search(r"with (\d+) turns", i["name"])
+                return int(t.group(1)) if t else 0
+            torch = max((i for i in w.items(tval=TV_LITE) if "Torch" in i["name"] and left(i) > turns),
+                        key=left, default=None)
             if torch:
                 self.cmd(f"custom w item={torch['item']}", f"fresh torch ({turns} turns left)", hold=0.6)
                 return True
+            if now - self.light_warned > 120:
+                self.light_warned = now
+                self.notify("low_supply", f"torch at {turns} turns and no fresher torch: buy torches or a lantern")
         elif not worn:
             spare = next((i for i in w.items(tval=TV_LITE)), None)
             if spare:
