@@ -285,6 +285,12 @@ Orders are remembered across pilot restarts.
   plain base value, so Identify (Alchemist, 20-80) anything that might be magical first. Never
   sell Staffs of Door/Stair Location or Teleportation.
 - Near town (50-150 ft), climbing by stairs saves a Word of Recall.
+- **Restock when Phase Door drops below 4** (not 2), and don't explore 250 ft and deeper with only
+  2 Phase and 1-2 potions: uniques like Bullroarer turn up there (mission 9: 24/115 HP).
+- `stuck` with "no known path" to stairs you can see in the report: a plain `goal explore` gets it
+  moving again. `goal explore until=stairs` ends at once when any stairs are already known.
+- With `pickup=all` the pilot picks up what you dropped (a dead torch came back): `destroy` junk
+  instead of dropping it.
 - "Connection refused" after a fight: first check whether the character died (the pilot stays up
   after a death since 785f608; `status` says so). Only then treat it as a Pilot crash.
 - Monster levels come from this server's `monster.txt`, which differs from Vanilla Angband (e.g.

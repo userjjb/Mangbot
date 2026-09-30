@@ -721,7 +721,7 @@ class Shop(Goal):
         self.buys = list(buys)
         self.sells = sorted([s for s in sells if isinstance(s[0], int)], reverse=True) + \
             [s for s in sells if isinstance(s[0], str)]
-        self.name = f"shop {store}" + "".join(f" buy {n}:{c}" for n, c in buys) + \
+        self.name = f"shop {store}" + "".join(f" buy {b[0]}:{b[1]}" + (f"@{b[2]}" if len(b) > 2 and b[2] else "") for b in buys) + \
             "".join(f" sell {chr(97 + i) if isinstance(i, int) else i}:{c}" for i, c in sells)
         self.state = "walk"
         self.t = 0.0
@@ -949,6 +949,22 @@ class Pilot:
     # --- low-level actions ---------------------------------------------------
 
     def cmd(self, line, why, hold=0.4):
+        # One read/quaff of ours at a time: until the last one is confirmed its
+        # stack can still shrink and shift the pack letters (mission 9 read
+        # "item=7" as Word of Recall 5 s after a potion stack ran out, then
+        # read the real one as "item=5")
+        if self.pending_use and re.match(r"custom [rq] item=", line) and not why.startswith("agent:"):
+            self.log("note", text=f"held (a read/quaff is still unconfirmed): {why}")
+            self.busy_until = time.time() + 0.3
+            # (callers set their rate-limit clock before calling: undo it, so
+            # this is retried as soon as the last use is confirmed)
+            if "recall" in why.lower():
+                self.recall_t = 0.0
+            elif "phase" in why.lower():
+                self.phase_t = 0.0
+            else:
+                self.cure_t = 0.0
+            return
         self.c.send(line)
         self.last_action = (time.time(), line, why)
         self.busy_until = time.time() + hold
@@ -974,6 +990,8 @@ class Pilot:
         if any(t.startswith("You have") and p["core"] in t for t in said) or \
                 any("The air about you becomes charged" in t for t in said):
             self.pending_use = None
+            self.w.inven_dirty = True          # re-read the pack now, before the next use
+            self.w.refresh()
             return
         if now - p["t"] < 2.5:
             return
@@ -1265,7 +1283,9 @@ class Pilot:
         if not w.adjacent_monsters() and self.keep_light(now):
             return True
         # 4. Hunger
-        if w.hunger <= 2 and not w.monsters:
+        # (not just "nothing on the map this instant": mission 9 ate a ration
+        # with Bullroarer a step out of view)
+        if w.hunger <= 2 and not w.monsters and now - w.monster_seen_t > 5 and now - w.last_hit_t > 5:
             food = w.items(tval=TV_FOOD)
             if food:
                 self.cmd(f"eat {food[0]['item']}", f"hungry ({w.hunger})", hold=1.0)
