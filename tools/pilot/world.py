@@ -72,6 +72,13 @@ class World:
                            r"gazes at|wails at|punches|grabs|fires an arrow|casts a magic missile|"
                            r"points at you and curses|breathes|misses|releases spores at) you")
 
+    # Visible monsters' ranged attacks have no "you" in the message ("The Kobold
+    # archer fires an arrow!", "The Dark hound breathes darkness."): the Advisor's
+    # message study found RE_ATTACK never matched them, so HP lost to them read
+    # as an unseen attacker
+    RE_RANGED = re.compile(r"^The .+ (fires an? \w+|breathes \w+|casts an? (magic missile|stinking cloud|"
+                           r"fearful illusion|spell, burning your eyes|[a-z ]*(bolt|ball)))")
+
     # An unseen monster acting on us (monster2.c names it "it"/"something")
     RE_UNSEEN = re.compile(r"^(It|Something) (hits|bites|claws|stings|touches|kicks|butts|crushes|engulfs|"
                            r"crawls on|spits on|gazes at|wails at|punches|grabs|breathes|casts|magically|"
@@ -135,7 +142,7 @@ class World:
                     self.unseen = (time.time(), t)
                 elif t.startswith("You hear a door burst open"):
                     self.heard = (time.time(), t)
-                if self.RE_ATTACK.search(t):
+                if self.RE_ATTACK.search(t) or self.RE_RANGED.match(t):
                     self.hits_taken += 1
                     self.last_hit_t = time.time()
                 if re.match(r"You (hit|miss|have slain|have destroyed|smite|bite|claw)", t) or \
