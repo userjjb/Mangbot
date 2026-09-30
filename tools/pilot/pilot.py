@@ -1260,6 +1260,8 @@ class Pilot:
             if self.retreat_step(fearers):
                 return True
         # 3c. Light
+        if self.town_light(now):
+            return True
         if not w.adjacent_monsters() and self.keep_light(now):
             return True
         # 4. Hunger
@@ -1927,6 +1929,23 @@ class Pilot:
             self.notify("breeders", f"{len(br)} breeding monsters in view ({br[0].name}): leave this level "
                                     "(stairs, or recall)" + (" if they get in the way" if weak else ""), news=weak)
 
+    def town_light(self, now):
+        """In town with nothing to do, take the light off: resting in town
+        burns fuel ~10x faster (time runs at 1000% while resting, xtra2.c;
+        the Advisor's shops memo), which is how Dive04's torches all died.
+        keep_light wields it again in the dungeon."""
+        w = self.w
+        if w.depth != 0 or w.store or now < self.busy_until or now < self.light_t:
+            return False
+        idle = self.goal is None or isinstance(self.goal, (Wait, RestGoal))
+        worn = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
+        if idle and worn and now - self.last_agent > 20:
+            self.light_t = now + 5
+            self.cmd(f"custom t item={worn['item']}", "in town and idle: light off (it burns while resting)",
+                     hold=0.6)
+            return True
+        return False
+
     def keep_light(self, now):
         """Refill the lantern (or swap torches) before the light goes out --
         Dive03 explored in the dark for minutes after "Your light has gone
@@ -1960,8 +1979,11 @@ class Pilot:
             if now - self.light_warned > 120:
                 self.light_warned = now
                 self.notify("low_supply", f"torch at {turns} turns and no fresher torch: buy torches or a lantern")
-        elif not worn:
-            spare = next((i for i in w.items(tval=TV_LITE)), None)
+        elif not worn and w.depth != 0:
+            def light_left(i):
+                t = re.search(r"with (\d+) turns", i["name"])
+                return int(t.group(1)) if t else (1 if "Lantern" in i["name"] else 0)
+            spare = max((i for i in w.items(tval=TV_LITE) if light_left(i) > 0), key=light_left, default=None)
             if spare:
                 self.cmd(f"custom w item={spare['item']}", "wield a light", hold=0.6)
                 return True

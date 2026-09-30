@@ -268,6 +268,22 @@ Orders are remembered across pilot restarts.
     Broad Sword sold for 102 and the Chain Mail for 358. Stock runs out (the Temple had no CLW twice)
     and not every weapon is stocked (no Main Gauche or Rapier in mission 8; a Dagger gave 4 blows).
   - `inspect` doesn't show blows: wield the weapon and watch for `blows_changed` (or the status line).
+- **Which store sells what** (the Advisor's shops memo, 2026-09-29, from the server code):
+  **cures (CLW/CSW/CCW), Boldness and Heroism only at the Temple (4)**; Phase Door, Word of Recall,
+  Enchant and Identify only at the Alchemist (5); Staff of Teleportation at the Magic shop (6).
+  **No store sells Scrolls of Teleportation.** Brass Lanterns (~55) and Flasks at the General
+  Store (1). The Armoury's owner charges a Half-Orc least (135%, others 154-170%, Black market ×3).
+- **Stock changes every ~33 s**: if something's missing, `goal wait 40` in town (not `rest`) and
+  look again with `goal shop N list`. Always take a `{N% off}` line first.
+- **Light burns in town, ~10× faster while resting** (time runs 10× while resting with nothing in
+  view). The pilot takes the light off when idle in town and puts the best one back on in the
+  dungeon. Store torches and lanterns come half full: buy a lantern early, refill with flasks.
+- Shopping lists per depth band and budget: `memos/2026-09-29-shops.md` §3. From 500 ft carry
+  3 CCW, 5+ Phase Door and 1-2 WoR; the first big purchase after the basics is a Staff of
+  Teleportation (3,100+, the only buyable long escape; works blind and confused).
+- Selling: potions and scrolls fetch 7-9 each (not worth the walk); unknown items sell at their
+  plain base value, so Identify (Alchemist, 20-80) anything that might be magical first. Never
+  sell Staffs of Door/Stair Location or Teleportation.
 - Near town (50-150 ft), climbing by stairs saves a Word of Recall.
 - "Connection refused" after a fight: first check whether the character died (the pilot stays up
   after a death since 785f608; `status` says so). Only then treat it as a Pilot crash.

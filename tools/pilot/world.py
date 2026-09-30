@@ -80,14 +80,26 @@ class World:
                            r"fearful illusion|spell, burning your eyes|[a-z ]*(bolt|ball)))")
 
     # An unseen monster acting on us (monster2.c names it "it"/"something")
+    # (the Advisor's message catalogue, 2026-09-29: added the ~20 real unseen
+    # attacks it missed -- Brain Smash, Hold, boulders, storms...; dropped
+    # "concentrates", which is the monster healing or hasting itself)
     RE_UNSEEN = re.compile(r"^(It|Something) (hits|bites|claws|stings|touches|kicks|butts|crushes|engulfs|"
                            r"crawls on|spits on|gazes at|wails at|punches|grabs|breathes|casts|magically|"
-                           r"mumbles|fires|points at you|commands you|drains|tries to|concentrates)")
+                           r"mumbles|fires|points at you|commands you|drains|tries to|drools on you|"
+                           r"releases spores|hurls|makes a strange noise|invokes|gestures|looks deep|"
+                           r"gazes deep|stares deep|creates a mesmerising|screams|draws psychic|"
+                           r"makes a high pitched shriek|teleports you|makes you)")
 
     # HP loss that isn't a monster (mission 5: a graze and a spiked pit read as
     # an unseen attacker)
-    RE_HURT_OTHER = re.compile(r"trap|pit|impaled|graze|cut|bleed|poison|dart|You feel very sick|"
-                               r"burn|freeze|acid|You are hit|starv|faint", re.I)
+    # Anchored (the catalogue: the old substring form matched "Your light is
+    # growing faint", "Cutlass", "pitched shriek"; it missed earthquakes and hunger)
+    RE_HURT_OTHER = re.compile(r"^(You found a trap|You fall into|You are impaled|You have been given|"
+                               r"You have been stunned|You have been (hit|burned)|A small dart|"
+                               r"You are (poisoned|enveloped|hit|bashed|crushed|severely crushed|getting weak)|"
+                               r"You feel very sick|You faint|You are covered in|You are burned|You are frozen|"
+                               r"You are struck|Your .* (burns|melts|freezes)|You bleed|You are bleeding|"
+                               r"Oops|You starve)")
 
     def drain(self):
         """Apply queued events. Returns the list applied (for the pilot's triggers)."""
