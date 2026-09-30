@@ -1563,9 +1563,10 @@ class Pilot:
     def group_tick(self, now):
         """Tiers against current HP (Borg memo, tuned by the post-mortem memo):
         > 0.3x: disengage (just arrived: the stairs back; not yet in melee:
-        back away); > 0.6x: escape now (stairs underfoot, else Phase Door;
-        no stairs known: start Word of Recall now, it takes 15-35 s);
-        > 1.0x: that, and leave the level by the nearest stairs."""
+        back away); > 0.6x: the stairs underfoot; Phase Door only once HP is
+        below think_hp; > 1.0x: leave the level by the nearest stairs, Phase
+        Door when adjacent (every 10 s at most), and with no stairs known start
+        Word of Recall now (it takes 15-34 player turns)."""
         w = self.w
         if not w.in_dungeon or not w.monsters:
             return False
@@ -1601,7 +1602,7 @@ class Pilot:
             self.notify("danger_seen", f"group danger: {names} can deal {g:.0f} per turn at worst, HP {hp}"
                                        f"{' while ' + prev if prev else ''}: leaving the level")
         can_read = not w.flag("blind") and not w.flag("confused")
-        if not w.find("<>") and can_read and not self.recall_started(now):
+        if g > hp and not w.find("<>") and can_read and not self.recall_started(now):
             wor = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
             if wor:
                 self.recall_t = now
@@ -1610,8 +1611,12 @@ class Pilot:
                 self.notify("emergency", f"{names} can deal {g:.0f} (HP {hp}) and no stairs are known: "
                                          "read Word of Recall now (it takes 15-35 s)")
                 return True
+        # Phase only when it's really going badly: at 0.6-1.0x only once HP is
+        # already below think_hp, and at most every 10 s (mission 9: a lone
+        # Giant red frog, 58 worst-case vs 97 HP, cost 4 Phase Doors at full HP)
         pd = w.tagged("r", 1) or next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
-        if w.adjacent_monsters() and pd and can_read and now - self.phase_t > 2.5:
+        hurting = g > hp or w.hp_frac < self.orders["think_hp"]
+        if w.adjacent_monsters() and pd and can_read and hurting and now - self.phase_t > 10:
             self.phase_t = now
             self.cmd(f"custom r item={pd['item']}", f"group danger {g:.0f} vs HP {hp}: phase door", hold=0.6)
             self.notify("tactic", f"{names} can deal {g:.0f} (HP {hp}): phased away")
