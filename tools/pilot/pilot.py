@@ -713,8 +713,9 @@ class Shop(Goal):
     """In town: walk into store N, sell and buy, leave.
     sells: [(item index, count)]; buys: [(name substring, count)]."""
 
-    def __init__(self, store, buys=(), sells=()):
+    def __init__(self, store, buys=(), sells=(), list_stock=False):
         self.store = str(store)
+        self.list_stock = list_stock
         # Sell from the end of the pack first: selling shifts the letters after it
         # (names are resolved when their turn comes)
         self.buys = list(buys)
@@ -770,6 +771,11 @@ class Shop(Goal):
                 return None
             if not w.store:
                 return ("failed", "thrown out of the store")
+            if self.list_stock:
+                # (mission 8 guessed names one shop trip at a time)
+                self.list_stock = False
+                self.done_log.append("stock: " + "; ".join(
+                    f"{i['name']} {i['price']}" for i in w.store["items"]))
             if self.sells:
                 idx, n = self.sells.pop(0)
                 force = isinstance(idx, str) and idx.startswith("!")
@@ -797,13 +803,17 @@ class Shop(Goal):
                 self.pending = time.time()
                 return None
             if self.buys:
-                name, n = self.buys.pop(0)
+                name, n, cap = (self.buys.pop(0) + (None,))[:3]
                 # The cheapest match: the first one can be an expensive enchanted
                 # piece (bought a Cloak [1,+4] for 592 instead of a plain one)
                 matches = [i for i in w.store["items"] if name.lower() in i["name"].lower()]
                 it = min(matches, key=lambda i: i["price"]) if matches else None
                 if not it:
                     self.done_log.append(f"no {name} in stock")
+                    return None
+                if cap is not None and it["price"] > cap:
+                    # (mission 8: 'buy To-Dam:3' spent 302 of 366 gold)
+                    self.done_log.append(f"NOT bought: {it['name']} costs {it['price']}, over your cap {cap}")
                     return None
                 gold = w.ind.get("gold", [0])[0]
                 n = min(n, it["number"], gold // max(1, it["price"]))
@@ -1494,6 +1504,33 @@ class Pilot:
                              f"(around {w.pos}): cleared the command queue and restarted the move. "
                              "If it happens again, give another goal")
 
+    def monster_info(self, name):
+        """This server's facts about a monster (monster.txt + the Advisor's
+        danger table) and what the pilot makes of it now (post-mortem memo §5:
+        the Navigator used Vanilla lore, which differs here)."""
+        q = name.lower()
+        found = [r for r in self.w.g.races.values() if q in r.name.lower()]
+        if not found:
+            return f"no monster matching '{name}'"
+        exact = [r for r in found if r.name.lower() == q]
+        out = []
+        for r in (exact or found)[:6]:
+            mx, drains = r.worst_melee
+            why = self.danger_why(r)
+            flags = sorted(f for f in r.flags if f in ("UNIQUE", "NEVER_MOVE", "MULTIPLY", "INVISIBLE",
+                                                       "PASS_WALL", "KILL_WALL", "FRIENDS", "EMPTY_MIND"))
+            out.append(f"{r.name} ({r.char}): lvl {r.level} ({r.level * 50} ft), speed {r.speed - 110:+d}, "
+                       f"HP {r.hp}; blows {', '.join(r.blows) or 'none'}; "
+                       f"spells 1 in {r.spell_freq}: {', '.join(sorted(r.spells))}" if r.spells else
+                       f"{r.name} ({r.char}): lvl {r.level} ({r.level * 50} ft), speed {r.speed - 110:+d}, "
+                       f"HP {r.hp}; blows {', '.join(r.blows) or 'none'}; no spells")
+            out[-1] += (f"; flags {', '.join(flags) or '-'}; max breath {r.max_breath}; "
+                        f"melee per turn ~{r.per_turn:.0f} (worst {mx * (r.speed_x or 1):.0f}, drain blows {drains})"
+                        f"; Advisor rating {r.danger if r.danger is not None else '?'}/5"
+                        f"; for you now: {'DANGER: ' + why if why else 'no danger rule fires'}")
+        more = len(exact or found) - 6
+        return "\n".join(out) + (f"\n(+{more} more)" if more > 0 else "")
+
     def group_danger(self):
         """Worst-case melee of everything that can reach us this turn, the
         Borg's way: max dice x speed, +150 per stat/exp-drain blow, +200 for a
@@ -2111,6 +2148,8 @@ class Pilot:
         args = req.get("args", [])
         if c == "status":
             return {"ok": True, "report": self.report()}
+        if c == "monster":
+            return {"ok": True, "text": self.monster_info(" ".join(args).replace("_", " "))}
         if self.dead and c not in ("attention", "quit", "orders", "events", "news", "map", "inventory") and \
                 not (c == "goal" and args[:1] == ["resurrect"]):
             return {"ok": False, "error": "the character is dead (a ghost): only 'goal resurrect' works"}
@@ -2279,14 +2318,16 @@ class Pilot:
             while i < len(rest):
                 kind, spec = rest[i], rest[i + 1] if i + 1 < len(rest) else ""
                 what, _, n = spec.rpartition(":")
-                what, n = (what, int(n)) if what else (spec, 1)
+                what, n = (what, n) if what else (spec, "1")
+                n, _, cap = n.partition("@")        # NAME:COUNT@MAXPRICE (each)
+                n = int(n)
                 if kind == "buy":
-                    buys.append((what.replace("_", " "), n))
+                    buys.append((what.replace("_", " "), n, int(cap) if cap else None))
                 elif kind == "sell":
                     key = what.replace("_", " ")
                     sells.append((self.item_index(key) if len(key) == 1 else key, n))   # '!NAME' forces
                 i += 2
-            g = Shop(rest[0], buys, sells)
+            g = Shop(rest[0], buys, sells, list_stock="list" in rest[1:2] or "list" in rest)
         elif name == "search":
             g = Search()
         elif name == "hunt":

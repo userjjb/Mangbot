@@ -12,6 +12,7 @@
     pilotctl.py wait [SECS] [--brief]      # block until the pilot asks for attention
                                            # (--brief: status lines, monsters, stairs, news only)
     pilotctl.py attention                  # pending attention events, without waiting
+    pilotctl.py monster NAME               # this server's data for a monster + the pilot's verdict
 """
 import json
 import os
@@ -87,6 +88,8 @@ def main():
         for line in out.get("said", []):
             print(line)
         print("Pack now: " + "; ".join(out["pack"]))
+    elif "text" in out:
+        print(out["text"])
     elif "events" in out:
         for ev in out["events"]:
             print(f"ATTENTION {ev['what']}: {ev.get('detail') or ''}")
