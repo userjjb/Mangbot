@@ -40,7 +40,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "shopcat"))
 from mang import MangClient, ClientExited      # noqa: E402
 import glyphs                                   # noqa: E402
 from world import World                          # noqa: E402
-from mover import Mover, direction, passable     # noqa: E402
+from mover import Mover, direction, passable, plan   # noqa: E402
 
 TV_SCROLL, TV_POTION, TV_FOOD, TV_FLASK, TV_LITE = 70, 75, 80, 77, 39
 CURE_POTIONS = ("Cure Critical Wounds", "Cure Serious Wounds", "Cure Light Wounds", "Healing")
@@ -229,9 +229,12 @@ class Explore(Goal):
             return ("failed", f"{w.depth_ft} ft is below max_depth {md}: go up first")
         if self.center is None:
             self.center = w.pos
-        if self.until == "stairs" and w.find(">"):
+        # (only stairs we can reach: a Phase Door once left us in a pocket cut
+        # off from a known '<', and this ended at once -- the Advisor's mission 9
+        # replay)
+        if self.until == "stairs" and w.find(">") and plan(w, w.find(">")):
             return ("done", "stairs down seen")
-        if self.until == "upstairs" and w.find("<"):
+        if self.until == "upstairs" and w.find("<") and plan(w, w.find("<")):
             return ("done", "stairs up seen")
         if p.level_seen != w.level_t:
             p.level_seen = w.level_t
@@ -907,6 +910,7 @@ class Pilot:
         self.seen_drained = None
         self.dead = False
         self.pending_use = None               # a read/quaff to verify (verify_use)
+        self.held_t = 0.0
         self.group_warned = None
         self.mons_log_t = 0.0
         self.drains_here = (None, 0)          # (level, stat drains seen on it)
@@ -933,6 +937,12 @@ class Pilot:
     NEWS = {"danger_avoided", "started", "tactic", "resumed"}
 
     def notify(self, what, detail=None, news=False):
+        if what in ("emergency", "tactic") and time.time() - self.held_t < 0.05 and detail and \
+                any(k in detail for k in ("quaffed", "read ", "phase")):
+            # the action this reports was held, not sent (mission 10 reported 3
+            # CLW quaffs with 1 CLW in the pack)
+            self.log("note", text=f"not reported (held): {detail}")
+            return
         ev = {"t": round(time.time(), 3), "what": what, "detail": detail,
               "goal": self.goal.describe() if self.goal else None}
         if what == "emergency":
@@ -956,6 +966,7 @@ class Pilot:
         if self.pending_use and re.match(r"custom [rq] item=", line) and not why.startswith("agent:"):
             self.log("note", text=f"held (a read/quaff is still unconfirmed): {why}")
             self.busy_until = time.time() + 0.3
+            self.held_t = time.time()     # notify() drops the caller's "quaffed ..." report
             # (callers set their rate-limit clock before calling: undo it, so
             # this is retried as soon as the last use is confirmed)
             if "recall" in why.lower():
@@ -985,6 +996,9 @@ class Pilot:
         recall starts; resent (twice at most) if nothing within 2.5 s."""
         p, now = self.pending_use, time.time()
         if not p:
+            return
+        if self.dead or self.w.ghost:
+            self.pending_use = None           # (mission 10 kept resending after death)
             return
         said = [t for ts, t in self.w.messages if ts >= p["t"] - 0.05]
         if any(t.startswith("You have") and p["core"] in t for t in said) or \
@@ -1082,6 +1096,11 @@ class Pilot:
             return "rated 5: leave on sight"
         if r.danger == 4 and lev < r.level + 8:
             return f"rated 4: lethal until clvl {r.level + 8}"
+        # A fast unique near our level: we can't walk away from it (mission 9:
+        # Bullroarer, +10, cost 93 -> 51 HP while the pilot backed away)
+        sx = r.speed_x if r.speed_x is not None else max(1.0, (r.speed - 100) / 10)
+        if "UNIQUE" in r.flags and sx >= 2 and r.level >= lev - 8 and r.per_turn >= max(hp, 1) / 8:
+            return f"fast unique (x{sx:.0f} speed)"
         # A capital D is an ancient dragon (level 40+), always out of depth here
         if r.char == "D":
             return "ancient dragon"
@@ -1214,7 +1233,10 @@ class Pilot:
             return True
         # 3b. A pack coming at us in the open: back into a corridor so they
         # trickle into melee one at a time ("retreat behind a turn")
-        if o.get("choke") == "on" and not w.adjacent_monsters() and w.standing_on not in ("<", ">"):
+        # (never while fleeing: mission 10 backed into a corridor twice instead
+        # of walking to the stairs away from Mughash, and died there)
+        if o.get("choke") == "on" and not w.adjacent_monsters() and w.standing_on not in ("<", ">") \
+                and not isinstance(self.goal, (Flee, Recover, Recall)):
             if self.choke_tick(now):
                 return True
         # 3b'. Afraid (a warrior can't melee). The user: if not in danger, don't
@@ -1572,7 +1594,10 @@ class Pilot:
             if w.dist((y, x)) > 1 + math.ceil(sx):
                 continue
             mx, drains = r.worst_melee
-            g = mx * sx + 50 * drains     # (drain weight 50: post-mortem memo §2 replay)
+            # (no drain term: the Advisor's mission 9 replay found it alone put a
+            # lone Giant red frog at 0.6x; drains have their own rule, the second
+            # drain on a level -> leave)
+            g = mx * sx
             if r.paralyse_blow_power > ac * 3 / 4 and self.orders.get("free_action") != "yes":
                 g += 200
             if g:
@@ -1592,6 +1617,11 @@ class Pilot:
             return False
         g, who = self.group_danger()
         hp = max(w.hp[0], 1)
+        # Floor from the HP actually being lost (mission 9: a Cave spider swarm
+        # took 77 -> 35 HP with one spider in view, and the sum stayed at 0.23x)
+        lost = w.damage_rate(3.0) * 3.0
+        if lost > g:
+            g, who = lost, who + ["(HP falling ~%.0f/s)" % w.damage_rate(3.0)]
         if g <= 0.3 * hp:
             return False
         names = ", ".join(f"{n} x{c}" if c > 1 else n for n, c in collections.Counter(who).items())
@@ -1603,7 +1633,9 @@ class Pilot:
                 self.notify("danger_avoided", f"arrived next to {names} (worst-case melee {g:.0f} vs HP {hp}): "
                                               "took the stairs back")
                 return True
-            if not w.adjacent_monsters() and isinstance(self.goal, (Explore, Hunt, Goto, Dive)):
+            fast = any((r.speed_x or 1) > 1 for y, x, r in w.monsters if "NEVER_MOVE" not in r.flags
+                       and w.dist((y, x)) <= 6)
+            if not w.adjacent_monsters() and not fast and isinstance(self.goal, (Explore, Hunt, Goto, Dive)):
                 if self.group_warned != (w.level_t, names):
                     self.group_warned = (w.level_t, names)
                     self.notify("tactic", f"{names} can deal {g:.0f} at worst (HP {hp}): backing away, "
