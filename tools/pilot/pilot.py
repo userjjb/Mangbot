@@ -918,6 +918,7 @@ class Pilot:
         self.dead = False
         self.pending_use = None               # a read/quaff to verify (verify_use)
         self.held_t = 0.0
+        self.redraw_t, self.redraw_level = 0.0, None
         self.group_warned = None
         self.mons_log_t = 0.0
         self.drains_here = (None, 0)          # (level, stat drains seen on it)
@@ -2120,7 +2121,15 @@ class Pilot:
         if time.time() < self.busy_until or w.inven_dirty:
             return
         worn = {self.WEAR_TVALS.get(i["tval"]) for i in w.items(equip=True)}
-        for it in w.items():
+
+        def light_left(i):
+            t = re.search(r"with (\d+) turns", i["name"])
+            return int(t.group(1)) if t else 0
+        # (the best light first: mission 12 put on a 403-turn torch with a
+        # full lantern in the pack)
+        for it in sorted(w.items(), key=lambda i: -light_left(i) if i["tval"] == TV_LITE else 0):
+            if it["tval"] == TV_LITE and light_left(it) == 0:
+                continue
             kind = self.WEAR_TVALS.get(it["tval"])
             if kind and kind not in worn:
                 self.cmd(f"custom w item={it['item']}", f"wear {it['name']}", hold=0.8)
@@ -2163,6 +2172,17 @@ class Pilot:
             self.wear_step()
         self.verify_use()
         w, now = self.w, time.time()
+        # Full resync from the server after a level change or a loss (the
+        # game-state survey, 2026-10-03: the client's copy is right, ours drifts)
+        if (w.need_redraw or self.redraw_level != w.level_t) and now - self.redraw_t > 2:
+            self.redraw_t, self.redraw_level = now, w.level_t
+            w.need_redraw = False
+            self.c.send("redraw")
+            w.inven_dirty = True
+            w.status_t = 0
+        while w.losses:
+            t, text = w.losses.pop(0)
+            self.notify("lost", text, news=True)
         if w.in_dungeon and w.monsters and now - self.mons_log_t >= 1.0:
             # a steady record for replays (post-mortem memo §4.6: an 86 s gap
             # before the mission-7 death)
@@ -2482,10 +2502,19 @@ class Pilot:
             near = sorted(stairs, key=w.dist)[:4]
             lines.append("Known stairs: " + ", ".join(f"{w.memory[p]} at {p[0]},{p[1]} ({w.dist(p)} away)"
                                                      for p in near))
-        if self.news:
+        # Consumables at a glance (also in --brief: the Navigator decided
+        # without the pack, the game-state survey)
+        cons = [i["name"] for i in w.items(tval=(TV_POTION, TV_SCROLL, TV_FOOD, TV_FLASK, 55, 65, 66))]
+        drained = [n for n, (cur, top) in (self.seen_drained or {}).items() if cur < top]
+        lines.append("Supplies: " + ("; ".join(cons) or "none")
+                     + (" | RECALL PENDING" if w.recall_pending else "")
+                     + f" | max_depth {self.orders.get('max_depth')}"
+                     + (f" | drained: {', '.join(drained)}" if drained else ""))
+        # News of the last 10 minutes, every time (status calls used to clear it)
+        recent = [e for e in self.news if time.time() - e["t"] < 600][-12:]
+        if recent:
             lines.append("Since last report: " + " | ".join(
-                f"{time.strftime('%H:%M:%S', time.localtime(e['t']))} {e['what']}: {e['detail']}" for e in self.news))
-            self.news = []
+                f"{time.strftime('%H:%M:%S', time.localtime(e['t']))} {e['what']}: {e['detail']}" for e in recent))
         lines.append("Recent messages: " + " | ".join(w.recent(30)[-12:]))
         lines.append("Orders: " + ", ".join(f"{k}={v}" for k, v in self.orders.items()))
         return "\n".join(lines)

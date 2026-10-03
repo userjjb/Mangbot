@@ -50,6 +50,8 @@ class World:
         self.explained_t = 0.0                # last trap/cut/poison message (HP loss that isn't a monster)
         self.monster_seen_t = 0.0             # last map with a monster on it
         self.fight_t = 0.0                     # last time we hit, missed or killed something
+        self.need_redraw = False               # ask the server for a full resync (tool verb 'redraw')
+        self.losses = []                       # (t, message): items/gold lost or destroyed
         self.unseen = (0.0, "")                # last message from an unseen monster acting on us
         self.heard = (0.0, "")                 # last "You hear a door burst open!"
         self.hp_hist = collections.deque(maxlen=40)   # (t, hp), one per status poll
@@ -135,7 +137,9 @@ class World:
                     self.standing_on = None
                 self.in_dungeon = self._level_kind(old, sc)
                 self.recalled = None
-                self.recall_pending = False
+                # (not recall_pending: the server's countdown keeps running across
+                # a level change by stairs, and a second read would cancel it --
+                # the game-state survey; cleared when the recall happens)
                 self.last_stairs_cmd = None
             elif k == "message":
                 t = ev["text"]
@@ -160,6 +164,14 @@ class World:
                 if re.match(r"You (hit|miss|have slain|have destroyed|smite|bite|claw)", t) or \
                         re.match(r"(The|It) .* (dies|is destroyed|flees)", t):
                     self.fight_t = time.time()
+                # Things that change the pack or purse behind our back (the survey:
+                # mission 10's lost gold was Smeagol): resync and tell the agent
+                if re.search(r"was destroyed!|was stolen|stole |Your pack overflows|Your purse feels lighter|"
+                             r"You have no room for|destroyed!$", t):
+                    self.inven_dirty = True
+                    self.status_t = 0
+                    self.need_redraw = True
+                    self.losses.append((time.time(), t))
                 if t.startswith("I see no up staircase"):
                     self.standing_on = None if self.standing_on == "<" else self.standing_on
                 if t.startswith("I see no down staircase"):
@@ -171,6 +183,7 @@ class World:
                     self.recall_pending = False
                     self.recall_cancelled = True
                 if "yanked upwards" in t or "yanked downwards" in t:
+                    self.recall_pending = False
                     self.last_stairs_cmd = None
                     self.recalled = "down" if "downwards" in t else "up"
             elif k == "store":
@@ -295,6 +308,15 @@ class World:
         return [p for p, ch in self.memory.items() if ch in chars]
 
     def items(self, *, tval=None, name=None, equip=False):
+        # A fresh copy for every decision (a local query to our own client,
+        # cheap): a cached pack let a stale letter read the wrong item
+        if time.time() - self.inven_t > 0.25 and getattr(self, "c", None) is not None:
+            try:
+                self.inven = self.c.inven()
+                self.inven_t = time.time()
+                self.inven_dirty = False
+            except Exception:
+                pass
         out = []
         for it in self.inven:
             if it["equip"] != equip:

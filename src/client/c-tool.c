@@ -37,6 +37,7 @@
  *   leave                                   -- leave the store
  *   eat ITEM                                -- ITEM = inventory index (a=0)
  *   clear                                   -- drop our queued commands on the server
+ *   redraw                                  -- ask the server to resend all our state (PKT_REDRAW)
  *                                             (PKT_CLEAR, what ESC sends)
  *   rest                                    -- toggle resting (PKT_REST; the
  *                                             'state' indicator shows it)
@@ -650,6 +651,13 @@ static void tool_do_command(char *line)
 		 * logging out -- the test server crashed on queued commands of a
 		 * player who had just disconnected) */
 		send_clear();
+		tool_ack(line);
+	}
+	else if (streq(verb, "redraw"))
+	{
+		/* A full resync (net-game.c recv_redraw): inventory, equipment,
+		 * indicators, map. The Advisor's game-state survey (2026-10-03). */
+		send_redraw();
 		tool_ack(line);
 	}
 	else if (streq(verb, "rest"))

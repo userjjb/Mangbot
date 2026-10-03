@@ -75,7 +75,7 @@ Attention events:
 |---|---|
 | `goal dive FEET` (shallower than now = climb) | stair-scum down to FEET: take a `>` when one is known, otherwise go up and down the staircase underfoot for a fresh level; explore if no stairs are known. Stops early for `stop_on` things |
 | `goal search` | search for secret doors at dead ends, corridor ends and room corners (a dive does this by itself when a level seems to have no stairs) |
-| `goal explore [until=stairs] [radius=N]` | (dungeon only) walk to unexplored edges until nothing is left (or a `>` is seen, or within N squares). It fetches items within `loot_radius` on the way, but not distant ones it saw earlier: when it's done, collect those from the report's item squares with `goto` |
+| `goal explore [until=stairs] [radius=N]` | (dungeon only) walk to unexplored edges until nothing is left (or a `>` it can reach is seen, or within N squares). It fetches items within `loot_radius` on the way, but not distant ones it saw earlier: when it's done, collect those from the report's item squares with `goto` |
 | `goal goto Y,X` / `goto >` / `goto <` / `goto item` | walk there. With `pickup=all`, an item on the target square is picked up by itself, about half a second after arriving (it waits for the character's turn): check the pack before a manual `pickup` |
 | `goal hunt NAME` (spaces as `_`) | walk up to the monster called NAME and fight it (standing still; the server swings for you). Ends when it's slain or out of sight 15 s |
 | `goal shop N [list] [buy NAME:COUNT[@MAX]]... [sell NAME_OR_LETTER:COUNT]...` | `list`: the result starts with the store's whole stock and prices (use it alone to look before buying). `@MAX`: don't pay more than MAX each (e.g. `buy To-Dam:2@120`). Town only: walk into store N (1 General, 2 Armoury, 3 Weaponsmith, 4 Temple, 5 Alchemist, 6 Magic shop, 7 Black market), sell, buy (by part of the name; spaces as `_`, e.g. `buy Cure_Light:5`; the cheapest matching item is bought), leave. The result lists what the shopkeeper actually said ("I don't want that!" for worthless or cursed items) |
@@ -286,6 +286,13 @@ Orders are remembered across pilot restarts.
 - Selling: potions and scrolls fetch 7-9 each (not worth the walk); unknown items sell at their
   plain base value, so Identify (Alchemist, 20-80) anything that might be magical first. Never
   sell Staffs of Door/Stair Location or Teleportation.
+- **Don't sell unknown potions, wands or staffs blind once found at 200 ft or deeper** (mission
+  12 sold 2 Potions of Speed and 2 of Heroism for 8 each; two unknown wands identified later
+  sold for 285). Quaff-test potions when safe (food in the pack), and Identify wands/staffs first.
+  Discounts vanish when the stock rolls over (~33 s): `list` again after any wait.
+- The report's `Supplies:` line (also in `--brief`) lists your potions, scrolls, food, flasks,
+  staffs and wands with counts, a pending recall, max_depth and drained stats. `lost` news means
+  something was destroyed, stolen or overflowed (e.g. "Your purse feels lighter": a thief).
 - Near town (50-150 ft), climbing by stairs saves a Word of Recall. A climb (`goal dive` to a
   shallower depth) uses a `>` to get a fresh level only if it's within 8 squares and the level
   below is within `max_depth`; otherwise it explores for a `<`.
@@ -300,7 +307,7 @@ Orders are remembered across pilot restarts.
 - **Restock when Phase Door drops below 4** (not 2), and don't explore 250 ft and deeper with only
   2 Phase and 1-2 potions: uniques like Bullroarer turn up there (mission 9: 24/115 HP).
 - `stuck` with "no known path" to stairs you can see in the report: a plain `goal explore` gets it
-  moving again. `goal explore until=stairs` ends at once when any stairs are already known.
+  moving again. (`goal explore until=stairs` now ends only at stairs it can reach.)
 - With `pickup=all` the pilot picks up what you dropped (a dead torch came back): `destroy` junk
   instead of dropping it.
 - "Connection refused" after a fight: first check whether the character died (the pilot stays up

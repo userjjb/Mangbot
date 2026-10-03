@@ -37,7 +37,7 @@ def call(sock, req, timeout):
     return json.loads(buf)
 
 
-BRIEF_KEEP = ("Standing on:", "Monsters in view:", "Known stairs:", "Since last report:")
+BRIEF_KEEP = ("Standing on:", "Supplies:", "Monsters in view:", "Known stairs:", "Since last report:")
 
 
 def brief_report(report):
