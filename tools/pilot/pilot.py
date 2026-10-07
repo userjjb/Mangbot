@@ -1229,7 +1229,10 @@ class Pilot:
                  not (k == "hp" and (abs(model[k][0] - fresh[k][0]) <= 3 or w.adjacent_monsters()))}
         self.audit_runs += 1
         self.log("audit_check", n=self.audit_runs, differences=len(diffs),
-                 exp=st["ind"].get("exp"), clvl=w.clvl, depth_ft=w.depth_ft)   # (exp: for XP-rate studies)
+                 exp=st["ind"].get("exp"), clvl=w.clvl, depth_ft=w.depth_ft,   # (exp: for XP-rate studies)
+                 stats={n: st["ind"].get(f"stat{i}") for i, n in enumerate(self.STAT_NAMES)},
+                 blows=st["ind"].get("skills2", [None])[0], ac=st["ind"].get("armor"),
+                 gold=st["ind"].get("gold", [None])[0])
         for k in diffs:
             self.audit_counts[k] = self.audit_counts.get(k, 0) + 1
         if diffs:
