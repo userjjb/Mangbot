@@ -119,8 +119,8 @@ of Phase Door and cure potions: it will use them.
 | `rest_below` / `rest_to` | 0.7 / 0.95 | rest when hurt and alone |
 | `arrival_pack` | 4 | this many monsters near the stairs on arrival: leave at once |
 | `danger_level` | 6 | a monster this many levels above yours counts as danger |
-| `free_action` | no | set `yes` once the character has Free Action: paralysers then stop counting as danger |
-| `resist_blind`, `resist_conf` | no | set `yes` once the character resists blindness / confusion (check the `C` sheet, not item text): monsters that blind / confuse with their blows then stop counting as danger |
+| `free_action` | no | only used until the pilot has read the character sheet's grid (a few seconds after login): from then on Free Action is known from the `Abilities:` line, whatever this says |
+| `resist_blind`, `resist_conf` | no | the same for resist blindness / confusion (monsters that blind / confuse with their blows stop counting as danger once you have the resist) |
 | `unseen_hp` | on | `off`: HP loss with nothing in view no longer counts as an unseen attacker (the "It ..." messages still do) |
 | `idle_recall_s` | 600 | recall to town after this long without a goal or a word from you |
 | `stop_on` | unique,danger | what makes a dive stop and ask you (add `items`, `pillared` to be asked about those too) |
@@ -290,6 +290,16 @@ Orders are remembered across pilot restarts.
   12 sold 2 Potions of Speed and 2 of Heroism for 8 each; two unknown wands identified later
   sold for 285). Quaff-test potions when safe (food in the pack), and Identify wands/staffs first.
   Discounts vanish when the stock rolls over (~33 s): `list` again after any wait.
+- **New report lines:** `Abilities:` is the character sheet's resist/ability grid (free_act,
+  see_invis, res_conf, ...), read from the game, so trust it over item names. `Standing on:`
+  shows the item under you. `State audit:` counts how often the pilot's picture of the
+  character differed from a fresh check (and it resynced). Wait reports show the news since your
+  previous wait; `status` shows the last 10 minutes.
+- **An item command whose reply says "no change in the pack or equipment yet: it may not have
+  happened" didn't do anything you can see**: check before assuming it worked. The pilot reports
+  its own actions that showed no effect as `tactic` "no effect seen".
+- **The shop goal refuses to sell unknown flavours** (unidentified potions, scrolls, wands,
+  staffs, rods, rings, amulets): identify or try them first, or `sell !NAME` to force.
 - The report's `Supplies:` line (also in `--brief`) lists your potions, scrolls, food, flasks,
   staffs and wands with counts, a pending recall, max_depth and drained stats. `lost` news means
   something was destroyed, stolen or overflowed (e.g. "Your purse feels lighter": a thief).

@@ -51,6 +51,8 @@ class World:
         self.monster_seen_t = 0.0             # last map with a monster on it
         self.fight_t = 0.0                     # last time we hit, missed or killed something
         self.need_redraw = False               # ask the server for a full resync (tool verb 'redraw')
+        self.flags, self.flags_t = None, 0.0    # {flag: slots granting it} from the resist grid
+        self.floor, self.floor_t = None, 0.0    # the item under us (tool query 'floor')
         self.losses = []                       # (t, message): items/gold lost or destroyed
         self.unseen = (0.0, "")                # last message from an unseen monster acting on us
         self.heard = (0.0, "")                 # last "You hear a door burst open!"
@@ -60,7 +62,8 @@ class World:
         self.walked = set()                    # squares walked on this level
         self.recalled = None                   # 'down'/'up' from the recall message, until the level changes
         self.recall_cancelled = False          # set on "A tension leaves"; the pilot reports and clears it
-        self.recall_pending = False            # a Word of Recall is active ("becomes charged" until the level changes)
+        self.recall_pending_t = 0.0
+        self.recall_pending = False            # a Word of Recall is active ("becomes charged" until "yanked" or "A tension leaves")
         self.store = None                      # last store listing while inside a store
         self.store_t = 0.0
         client.log = self._on_event            # every event, from the reader thread
@@ -179,6 +182,7 @@ class World:
                 # A second read cancels the first (server spells2.c:1191-1199)
                 if t.startswith("The air about you becomes charged"):
                     self.recall_pending = True
+                    self.recall_pending_t = time.time()
                 if t.startswith("A tension leaves the air around you"):
                     self.recall_pending = False
                     self.recall_cancelled = True
@@ -233,9 +237,27 @@ class World:
             if self.in_dungeon is None and self.depth is not None:
                 self.in_dungeon = self.depth > 0
         if self.inven_dirty or now - self.inven_t > inven_every:
+            equip_before = [i["name"] for i in self.inven if i["equip"]] if self.inven else None
             self.inven = self.c.inven()
             self.inven_t = now
             self.inven_dirty = False
+            if equip_before != [i["name"] for i in self.inven if i["equip"]]:
+                self.flags_t = 0              # equipment changed: re-read the resist grid
+        # The resist/ability grid and the floor item, straight from the client
+        # (the game-state survey: facts, not guesses from item names)
+        if now - self.flags_t > 10:
+            self.flags_t = now
+            try:
+                self.flags = self.c.query("flags", "flags")["flags"]
+            except Exception:
+                pass
+        if now - self.floor_t > 1.0:
+            self.floor_t = now
+            try:
+                fl = self.c.query("floor", "floor")
+                self.floor = fl["name"] or None
+            except Exception:
+                pass
 
     def refresh_map(self):
         m = self.c.query("map", "map")
@@ -283,6 +305,24 @@ class World:
     @property
     def resting(self):
         return bool(self.ind.get("state", [0, 0, 0])[2])
+
+    def has(self, flag):
+        """True/False from the character sheet's grid (e.g. 'free_act',
+        'see_invis', 'res_conf'), or None while it hasn't been read."""
+        if not self.flags:
+            return None
+        return bool(self.flags.get(flag))
+
+    def listed_only(self):
+        """Races the server's monster list names that the map decode doesn't
+        show (mission 4's Yellow mold): present, position unknown."""
+        seen = {r.name for *_, r in self.monsters}
+        out = []
+        for name, _n, _ch in self.monlist or []:
+            r = self.g.by_name.get(name)
+            if r is not None and name not in seen:
+                out.append(r)
+        return out
 
     @property
     def clvl(self):

@@ -801,6 +801,11 @@ class Shop(Goal):
                     w.inven_dirty = True
                 else:
                     it = next((i for i in w.items() if i["item"] == idx), None)
+                if it and not force and p.unknown_flavour(it):
+                    # (mission 12 sold 2 Potions of Speed and 2 of Heroism for 8 each)
+                    self.done_log.append(f"NOT sold (unknown: identify or try it first; sell !NAME to force): "
+                                         f"{it['name']}")
+                    return None
                 if it and not force and p.probably_special(it["name"]):
                     # Wormtongue's armour was sold unseen for 17 gold: it was Soft
                     # Studded Leather of Resistance (buyback 19834)
@@ -918,6 +923,10 @@ class Pilot:
         self.dead = False
         self.pending_use = None               # a read/quaff to verify (verify_use)
         self.held_t = 0.0
+        self.expects = []                     # actions waiting for their effect (verify_effects)
+        self.news_wait_t = 0.0                # news shown by wait reports up to here
+        self.audit_t, self.audit_runs, self.audit_counts = 0.0, 0, {}
+        self.effect_failures = 0
         self.redraw_t, self.redraw_level = 0.0, None
         self.group_warned = None
         self.mons_log_t = 0.0
@@ -988,6 +997,7 @@ class Pilot:
         self.last_action = (time.time(), line, why)
         self.busy_until = time.time() + hold
         self.log("act", cmd=line, why=why)
+        self.expect_effect(line, why)
         # Verify the pilot's own escapes and cures by their effect (post-mortem
         # memo §4.2: both Dive03 deaths were escapes that never ran)
         m = re.match(r"custom [rq] item=(\d+)$", line)
@@ -997,6 +1007,81 @@ class Pilot:
             if core:
                 self.pending_use = {"line": line, "t": time.time(), "core": core, "tries": 0, "why": why}
                 self.mover.hold_clear_until = time.time() + 3.0
+
+    # Commands whose effect shows in the pack, the equipment or the level
+    # (the game-state survey, rule 3: an action is done when its signal comes)
+    EFFECTS = (
+        (re.compile(r"custom [wt] item="), "equip"),
+        (re.compile(r"custom [kdEF] item=|eat \d|custom ,"), "pack"),
+        (re.compile(r"custom [<>]$"), "level"),
+    )
+
+    def effect_sig(self, kind):
+        w = self.w
+        if kind == "level":
+            return w.level_t
+        return tuple((i["name"], i["number"]) for i in w.items(equip=(kind == "equip")))
+
+    def expect_effect(self, line, why):
+        if why.startswith("agent:"):
+            return                          # the agent gets its own answer (do_request)
+        for rx, kind in self.EFFECTS:
+            if rx.match(line):
+                self.expects.append({"kind": kind, "t": time.time(), "why": why,
+                                     "sig": self.effect_sig(kind)})
+                return
+
+    def verify_effects(self):
+        """Report actions whose effect never showed (3 s), instead of
+        letting them pass as done."""
+        now = time.time()
+        keep = []
+        for e in self.expects:
+            if self.effect_sig(e["kind"]) != e["sig"]:
+                continue                    # confirmed
+            if now - e["t"] < 3.0:
+                keep.append(e)
+                continue
+            self.log("note", text=f"effect_failed ({e['kind']} unchanged after 3 s): {e['why']}")
+            self.effect_failures += 1
+            if e["kind"] != "level":      # (stairs are retried by the goals themselves)
+                self.notify("tactic", f"no effect seen: {e['why']}")
+        self.expects = keep
+
+    def audit_tick(self, now):
+        """The state audit (the game-state survey, 'measurement'): every 30 s
+        compare the pilot's model with a fresh query, log each difference by
+        field ('audit' records in decisions.jsonl), count them, and resync
+        (redraw) when anything differs; in town also every 2 minutes."""
+        w = self.w
+        if w.depth == 0 and now - self.redraw_t > 120:
+            w.need_redraw = True
+        if now - self.audit_t < 30 or w.store or now < self.busy_until:
+            return
+        self.audit_t = now
+        model = {"pack": [(i["name"], i["number"]) for i in w.inven if not i["equip"]],
+                 "equip": [i["name"] for i in w.inven if i["equip"]],
+                 "hp": list(w.hp), "gold": w.ind.get("gold", [None])[0],
+                 "depth": w.depth, "pos": w.pos}
+        try:
+            st = self.c.status()
+            inv = self.c.inven()
+        except Exception:
+            return
+        fresh = {"pack": [(i["name"], i["number"]) for i in inv if not i["equip"]],
+                 "equip": [i["name"] for i in inv if i["equip"]],
+                 "hp": st["ind"].get("hp", [0, 1])[:2], "gold": st["ind"].get("gold", [None])[0],
+                 "depth": st["ind"].get("depth", [None])[0],
+                 "pos": (st["y"], st["x"]) if st["y"] >= 0 else w.pos}
+        diffs = {k: (model[k], fresh[k]) for k in model if model[k] != fresh[k] and
+                 not (k == "hp" and abs(model[k][0] - fresh[k][0]) <= 3)}
+        self.audit_runs += 1
+        for k in diffs:
+            self.audit_counts[k] = self.audit_counts.get(k, 0) + 1
+        if diffs:
+            self.log("audit", diffs={k: [str(a)[:200], str(b)[:200]] for k, (a, b) in diffs.items()})
+            w.need_redraw = True
+            w.inven, w.inven_t = inv, now          # the fresh copy wins
 
     def verify_use(self):
         """A pending read/quaff: done when the server says what's left ("You
@@ -1125,15 +1210,15 @@ class Pilot:
         # 5% floor, e.g. a floating eye: memo §3.7; Hold spells still count)
         ac = self.w.ind.get("armor", [0])[0]
         weak_blow = "HOLD" not in r.spells and 0 < r.paralyse_blow_power <= ac * 3 / 4
-        if r.paralyser and o.get("free_action") != "yes" and r.level >= lev - 10 and not weak_blow:
+        if r.paralyser and not self.has_ability("free_action") and r.level >= lev - 10 and not weak_blow:
             return "paralyses (no Free Action)"
-        if "BRAIN_SMASH" in r.spells and not all(o.get(k) == "yes" for k in
+        if "BRAIN_SMASH" in r.spells and not all(self.has_ability(k) for k in
                                                    ("free_action", "resist_blind", "resist_conf")):
             return "Brain Smash (needs Free Action + resist blindness + resist confusion)"
         # Blinding/confusing blows get no saving throw (memo §1.3). Stationary
         # ones are only stepped away from (and never fought, still_fight_tick).
         nosave = {e for e in r.no_save_blows
-                  if o.get("resist_blind" if e == "BLIND" else "resist_conf") != "yes"}
+                  if not self.has_ability("resist_blind" if e == "BLIND" else "resist_conf")}
         if nosave and "NEVER_MOVE" not in r.flags and r.level >= lev - 10:
             return ("blinds" if "BLIND" in nosave else "confuses") + " with its blows (no save)"
         # Summons land next to us and stay after the summoner dies (memo §1.2)
@@ -1225,6 +1310,9 @@ class Pilot:
         # 3a. Something far above our level in view: leave before it reaches us
         # (not only on arrival -- Dive03 met Stone trolls while exploring)
         near_danger = [r for y, x, r in w.monsters if w.dist((y, x)) <= 12 and r in self.dangers()]
+        # (and one the server's monster list names but the map decode misses:
+        # present, position unknown -- the game-state survey, rule 4)
+        near_danger += [r for r in w.listed_only() if self.danger_why(r)]
         if near_danger and not isinstance(self.goal, (Flee, Recover)) and now - self.flee_t > 10 \
                 and "danger" in o["stop_on"]:
             self.flee_t = now
@@ -1556,6 +1644,17 @@ class Pilot:
                              f"(around {w.pos}): cleared the command queue and restarted the move. "
                              "If it happens again, give another goal")
 
+    ABILITY_FLAGS = {"free_action": "free_act", "resist_blind": "res_blind", "resist_conf": "res_conf",
+                     "see_invisible": "see_invis"}
+
+    def has_ability(self, order):
+        """Free Action, a resist...: from the character sheet's grid (tool
+        query 'flags') once read, else from the order of the same name."""
+        known = self.w.has(self.ABILITY_FLAGS.get(order, order)) if hasattr(self.w, "has") else None
+        if known is not None:
+            return known
+        return self.orders.get(order) == "yes"
+
     def monster_info(self, name):
         """This server's facts about a monster (monster.txt + the Advisor's
         danger table) and what the pilot makes of it now (post-mortem memo §5:
@@ -1606,7 +1705,7 @@ class Pilot:
             # lone Giant red frog at 0.6x; drains have their own rule, the second
             # drain on a level -> leave)
             g = mx * sx
-            if r.paralyse_blow_power > ac * 3 / 4 and self.orders.get("free_action") != "yes":
+            if r.paralyse_blow_power > ac * 3 / 4 and not self.has_ability("free_action"):
                 g += 200
             if g:
                 total += g
@@ -1704,8 +1803,8 @@ class Pilot:
         def killable(r):
             paralyses = any(b.split(":")[1:2] == ["PARALYZE"] for b in r.blows)
             nosave = {e for e in r.no_save_blows
-                      if self.orders.get("resist_blind" if e == "BLIND" else "resist_conf") != "yes"}
-            return r.level <= lev and not (paralyses and self.orders.get("free_action") != "yes") \
+                      if not self.has_ability("resist_blind" if e == "BLIND" else "resist_conf")}
+            return r.level <= lev and not (paralyses and not self.has_ability("free_action")) \
                 and not nosave
 
         targets = [m for m in still if disenchants(m[2]) or any(w.dist(g, m[:2]) <= 1 for g in goals)]
@@ -1845,6 +1944,13 @@ class Pilot:
             self.retreating = True
             return True
         return False
+
+    FLAVOURED = {75, 70, 65, 55, 66, 45, 40}     # potion, scroll, wand, staff, rod, ring, amulet
+
+    def unknown_flavour(self, it):
+        """An unidentified flavoured item ('a Blue Speckled Potion', 'a Copper
+        Wand'): it sells at its plain base value, whatever it is."""
+        return it.get("tval") in self.FLAVOURED and " of " not in it["name"]
 
     def probably_special(self, name):
         """A unique's drop (inscribed with its name) or an {excellent}/{special}
@@ -2171,6 +2277,7 @@ class Pilot:
         if self.wear_queue:
             self.wear_step()
         self.verify_use()
+        self.verify_effects()
         w, now = self.w, time.time()
         # Full resync from the server after a level change or a loss (the
         # game-state survey, 2026-10-03: the client's copy is right, ours drifts)
@@ -2183,6 +2290,7 @@ class Pilot:
         while w.losses:
             t, text = w.losses.pop(0)
             self.notify("lost", text, news=True)
+        self.audit_tick(now)
         if w.in_dungeon and w.monsters and now - self.mons_log_t >= 1.0:
             # a steady record for replays (post-mortem memo §4.6: an 86 s gap
             # before the mission-7 death)
@@ -2253,6 +2361,10 @@ class Pilot:
         c = req.get("cmd")
         args = req.get("args", [])
         if c == "status":
+            if req.get("since_wait"):
+                # a wait report: the news since the previous wait (the survey)
+                since, self.news_wait_t = self.news_wait_t, time.time()
+                return {"ok": True, "report": self.report(news_since=since)}
             return {"ok": True, "report": self.report()}
         if c == "monster":
             return {"ok": True, "text": self.monster_info(" ".join(args).replace("_", " "))}
@@ -2324,11 +2436,16 @@ class Pilot:
                     return {"ok": False, "error": str(e)}
                 extra = f" dir={target}"
             t0 = time.time()
+            before = (self.effect_sig("pack"), self.effect_sig("equip"))
             self.cmd(f"custom {key} item={item}{extra}", f"agent: {c} {args}")
             pack = self.pack_now()
             noise = ("You enter a maze", "Looks like", "You feel", "You hear", "You have found")
             said = [t for ts, t in self.w.messages if ts >= t0 and not t.startswith(noise)]
-            return {"ok": True, "said": said[-4:], "pack": pack}
+            out = {"ok": True, "said": said[-4:], "pack": pack}
+            if c != "inspect" and (self.effect_sig("pack"), self.effect_sig("equip")) == before:
+                # (the game-state survey: never report as done what didn't happen)
+                out["note"] = "no change in the pack or equipment yet: it may not have happened"
+            return out
         if c == "wearall":
             # Put on every weapon/armour/light in the pack whose slot is empty
             self.wear_queue = True
@@ -2455,7 +2572,7 @@ class Pilot:
 
     # --- the situation report ------------------------------------------------
 
-    def report(self, rows=11, cols=33):
+    def report(self, rows=11, cols=33, news_since=None):
         w = self.w
         ind = w.ind
         lines = []
@@ -2471,6 +2588,7 @@ class Pilot:
         lines.append(f"{stats}  | {hunger}" + (f" | {', '.join(cond)}" if cond else "")
                      + (" | resting" if w.resting else ""))
         lines.append(f"Standing on: {w.standing_on or 'floor/unknown'}"
+                     f"{' (item: ' + w.floor + ')' if w.floor else ''}"
                      f"{' (arrived by ' + w.arrived_by + ')' if w.arrived_by else ''}"
                      f" | goal: {self.goal.describe() if self.goal else 'none (idle)'}")
         lines.append("Equipment: " + "; ".join(i["name"] for i in w.items(equip=True)))
@@ -2507,11 +2625,21 @@ class Pilot:
         cons = [i["name"] for i in w.items(tval=(TV_POTION, TV_SCROLL, TV_FOOD, TV_FLASK, 55, 65, 66))]
         drained = [n for n, (cur, top) in (self.seen_drained or {}).items() if cur < top]
         lines.append("Supplies: " + ("; ".join(cons) or "none")
-                     + (" | RECALL PENDING" if w.recall_pending else "")
+                     + (f" | RECALL PENDING (read {time.time() - w.recall_pending_t:.0f} s ago; it takes "
+                        "15-34 turns)" if w.recall_pending else "")
                      + f" | max_depth {self.orders.get('max_depth')}"
                      + (f" | drained: {', '.join(drained)}" if drained else ""))
+        if w.flags:
+            # from the character sheet's grid (tool query 'flags'): facts, not guesses
+            ab = [k for k, v in w.flags.items() if v and k not in ("stealth", "search", "infra", "tunnel")]
+            lines.append("Abilities: " + (", ".join(ab) if ab else "none"))
+        if self.audit_runs:
+            lines.append(f"State audit: {self.audit_runs} checks"
+                         + ("; differences: " + ", ".join(f"{k} {n}" for k, n in self.audit_counts.items())
+                            if self.audit_counts else ", no differences"))
         # News of the last 10 minutes, every time (status calls used to clear it)
-        recent = [e for e in self.news if time.time() - e["t"] < 600][-12:]
+        recent = [e for e in self.news if (e["t"] > news_since if news_since is not None
+                                           else time.time() - e["t"] < 600)][-12:]
         if recent:
             lines.append("Since last report: " + " | ".join(
                 f"{time.strftime('%H:%M:%S', time.localtime(e['t']))} {e['what']}: {e['detail']}" for e in recent))
@@ -2542,7 +2670,7 @@ class Handler(socketserver.StreamRequestHandler):
             out = {"ok": True, "events": evs}
             if pilot.running:        # (a quiet timeout gets one too: mission 3 missed a stall)
                 reply = queue.Queue()
-                pilot.requests.put(({"cmd": "status"}, reply))
+                pilot.requests.put(({"cmd": "status", "since_wait": True}, reply))
                 try:
                     out["report"] = reply.get(timeout=10)["report"]
                 except queue.Empty:

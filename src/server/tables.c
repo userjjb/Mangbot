@@ -770,7 +770,9 @@ const indicator_type indicators[MAX_INDICATORS] =
 		(PR_STUDY),  "study"
 	},
 	{
-		INDICATOR_PKT(DEPTH, TINY, 1),   	IPW_2,	ROW_DEPTH, COL_DEPTH,
+		/* NORMAL (16 bits), not TINY: a signed byte wraps in the far
+		 * wilderness (test-server change; the Advisor's game-state survey) */
+		INDICATOR_PKT(DEPTH, NORMAL, 1),   	IPW_2,	ROW_DEPTH, COL_DEPTH,
 		(0),
 		"Lev \aw%3d",
 		(PR_DEPTH),  "depth"

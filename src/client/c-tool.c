@@ -38,6 +38,8 @@
  *   eat ITEM                                -- ITEM = inventory index (a=0)
  *   clear                                   -- drop our queued commands on the server
  *   redraw                                  -- ask the server to resend all our state (PKT_REDRAW)
+ *   flags                                   -- query: resist/ability grid {flag: slots granting it}
+ *   floor                                   -- query: the item under us {name, tval, number}
  *                                             (PKT_CLEAR, what ESC sends)
  *   rest                                    -- toggle resting (PKT_REST; the
  *                                             'state' indicator shows it)
@@ -543,6 +545,61 @@ static void tool_query_inven(void)
 	tool_ev_end();
 }
 
+/*
+ * flags: the character sheet's resist/ability grid (PKT_OBJFLAGS), which the
+ * client already stores in p_ptr->hist_flags. For each flag, the equipment
+ * slots that grant it ("a".."l", "@" = the character itself). Free Action,
+ * See Invisible and the resists become facts, not guesses (the Advisor's
+ * game-state survey, 2026-10-03).
+ */
+static cptr tool_flag_names[32] =
+{
+	"res_acid", "res_elec", "res_fire", "res_cold", "res_pois", "res_fear", "res_lite", "res_dark",
+	"res_blind", "res_conf", "res_sound", "res_shard", "res_nexus", "res_nether", "res_chaos", "res_disen",
+	"slow_digest", "feather", "perm_lite", "regen", "telepathy", "see_invis", "free_act", "hold_life",
+	"stealth", "search", "infra", "tunnel", "speed", "blows", "shots", "might"
+};
+
+static void tool_query_flags(void)
+{
+	int f, i;
+	cptr slots = "abcdefghijkl@";
+
+	tool_ev_begin("flags");
+	printf(",\"flags\":{");
+	for (f = 0; f < 32; f++)
+	{
+		int off = 7 + f;
+		char buf[16];
+		int n = 0;
+
+		for (i = 0; i < 13 && i < MAX_OBJFLAGS_ROWS; i++)
+		{
+			char c;
+			if (off >= MAX_OBJFLAGS_COLS) break;
+			c = p_ptr->hist_flags[i][off].c;
+			if (c && c != '.' && c != ' ') buf[n++] = slots[i];
+		}
+		buf[n] = '\0';
+		if (f) putchar(',');
+		tool_json_str(tool_flag_names[f]);
+		putchar(':');
+		tool_json_str(buf);
+	}
+	printf("}");
+	tool_ev_end();
+}
+
+/* floor: the item under the character (only the top one: the client keeps no piles) */
+static void tool_query_floor(void)
+{
+	tool_ev_begin("floor");
+	tool_kv_str("name", floor_item.tval ? floor_name : "");
+	tool_kv_int("tval", floor_item.tval);
+	tool_kv_int("number", floor_item.number);
+	tool_ev_end();
+}
+
 static void tool_query_map(void)
 {
 	int st, wid, hgt, n;
@@ -807,6 +864,8 @@ static void tool_do_command(char *line)
 	else if (streq(verb, "status")) tool_query_status();
 	else if (streq(verb, "inven")) tool_query_inven();
 	else if (streq(verb, "map")) tool_query_map();
+	else if (streq(verb, "flags")) tool_query_flags();
+	else if (streq(verb, "floor")) tool_query_floor();
 	else
 	{
 		tool_error(line, "Unknown command");
