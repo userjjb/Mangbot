@@ -28,6 +28,7 @@ import math
 import json
 import os
 import queue
+import random
 import re
 import socket
 import socketserver
@@ -850,6 +851,96 @@ class Town(Goal):
             return ("failed", f"no path to the {edge} edge")
         p.mover.tick()
         return None
+
+
+class TownFarm(Goal):
+    """In town: kill townspeople who drop gold until gold reaches a target
+    (the user, 2026-10-07: when a purchase is a little short, this is faster
+    than a short dive, and it saves the Word of Recall a dive would burn)."""
+    TARGETS = ("Singing, happy drunk", "Aimless-looking merchant", "Squint-eyed rogue",
+               "Mean-looking mercenary", "Battle-scarred veteran")
+
+    def __init__(self, gold, minutes=10):
+        self.target_gold, self.end = int(gold), time.time() + 60 * float(minutes)
+        self.name = f"townfarm to {self.target_gold} gold"
+        self.light_t = self.wander_t = 0.0
+        self.chasing = None
+        self.sweep = []
+
+    def tick(self, p):
+        w = p.w
+        if w.depth != 0:
+            return ("failed", "townfarm is for the town")
+        gold = w.ind.get("gold", [0])[0]
+        if gold >= self.target_gold:
+            return ("done", f"{gold} gold")
+        if time.time() > self.end:
+            return ("done", f"time's up at {gold} gold")
+        # light, to see them at night
+        if not any(i["tval"] == TV_LITE for i in w.items(equip=True)) and time.time() - self.light_t > 5:
+            def left(i):
+                t = re.search(r"with (\d+) turns", i["name"])
+                return int(t.group(1)) if t else (1 if "Lantern" in i["name"] else 0)
+            lite = max((i for i in w.items(tval=TV_LITE) if left(i) > 0), key=left, default=None)
+            if lite:
+                self.light_t = time.time()
+                p.light_t = time.time() + 30
+                p.cmd(f"custom w item={lite['item']}", "townfarm: light on", hold=0.8)
+                return None
+        # gold lying around (a kill's drop): walk over it (pickup takes it)
+        coins = [q for q, ch in w.memory.items() if ch == "$" and w.dist(q) <= 15]
+        if coins:
+            if w.pos in coins:
+                w.memory[w.pos] = "."            # (stepping on it picked it up)
+                return None
+            if not p.mover.active or p.mover.goals != set(coins):
+                p.mover.go(coins)
+            p.mover.tick()
+            return None
+        prey = [(y, x, r) for y, x, r in w.monsters if r.name in self.TARGETS]
+        if prey:
+            y, x, r = min(prey, key=lambda m: w.dist(m[:2]))
+            if w.dist((y, x)) <= 1:
+                p.mover.stop()
+                return None                      # adjacent: auto-retaliate fights
+            near = [(y + dy, x + dx) for dy in (-1, 0, 1) for dx in (-1, 0, 1) if dy or dx]
+            if not p.mover.active or self.chasing != (y, x):
+                self.chasing = (y, x)
+                p.mover.go(near)
+            p.mover.tick()
+            return None
+        # nobody worth it in view: sweep the town in a zig-zag (the user: few
+        # townspeople are visible from the streets by the shops), rows ~7 apart
+        st = p.mover.tick() if p.mover.active else "idle"
+        if st in ("arrived", "idle", "stuck") or time.time() - self.wander_t > 40:
+            self.wander_t = time.time()
+            if not self.sweep:
+                self.sweep = self.sweep_points(w)
+            while self.sweep:
+                wy, wx = self.sweep.pop(0)
+                cand = [q for q, ch in w.memory.items() if ch == "." and abs(q[0] - wy) <= 3
+                        and abs(q[1] - wx) <= 6 and w.dist(q) > 4]
+                if cand and p.mover.go([min(cand, key=lambda q: abs(q[0] - wy) + abs(q[1] - wx))]):
+                    break
+        return None
+
+    @staticmethod
+    def sweep_points(w):
+        """Waypoints for a boustrophedon over the known town: across each row
+        band, alternating direction, starting with the band nearest us."""
+        floor = [q for q, ch in w.memory.items() if ch == "." and 2 < q[0] < MAX_HGT - 3 and 2 < q[1] < MAX_WID - 3]
+        if not floor:
+            return []
+        y0, y1 = min(q[0] for q in floor), max(q[0] for q in floor)
+        x0, x1 = min(q[1] for q in floor), max(q[1] for q in floor)
+        rows = list(range(y0 + 2, y1 + 1, 7)) or [y0]
+        start = min(range(len(rows)), key=lambda i: abs(rows[i] - (w.pos or (y0, x0))[0]))
+        rows = rows[start:] + rows[:start]
+        pts = []
+        for i, yy in enumerate(rows):
+            xs = list(range(x0 + 4, x1 - 3, 20)) + [x1 - 4]
+            pts += [(yy, xx) for xx in (xs if i % 2 == 0 else xs[::-1])]
+        return pts
 
 
 class Shop(Goal):
@@ -2946,6 +3037,10 @@ class Pilot:
             g = Recall()
         elif name == "town":
             g = Town()
+        elif name == "townfarm":
+            if not rest:
+                return {"ok": False, "error": "usage: goal townfarm GOLD [MINUTES]"}
+            g = TownFarm(rest[0], rest[1] if len(rest) > 1 else 10)
         elif name == "resurrect":
             g = Resurrect()
         elif name == "rest":
