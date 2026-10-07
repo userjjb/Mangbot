@@ -63,7 +63,8 @@ def main():
             recs.append(e)
     ts = [e["t"] for e in recs]
     for n in notes:
-        q = "QUESTION" if n.get("question") else "note"
+        q = "NAVIGATOR" if n.get("who") == "navigator" else "QUESTION" if n.get("question") else \
+            "TO NAVIGATOR" if n["note"].startswith("!") else "note"
         print(f"=== {hms(n['t'])} {q}: {n['note']}")
         if "depth_ft" in n:
             print(f"    at {n.get('depth_ft')} ft {n.get('pos')}, HP {n.get('hp')}, clvl {n.get('clvl')}, "

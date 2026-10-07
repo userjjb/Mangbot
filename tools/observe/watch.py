@@ -8,7 +8,9 @@ press Enter: it's logged with a timestamp and a snapshot of the moment
 (position, HP, goal, monsters, the Pilot's last actions) in
 runs/pilot/<nick>/commentary.jsonl and in the Pilot's decision log, for
 later cross-reference (tools/observe/notes.py). Start a note with '?' to ask
-why the Pilot did something; the Architect answers those.
+why the Pilot did something; the Architect answers those. Start it with '!'
+to message the Navigator playing the character: it's woken at once, and its
+answers show in the feed as NAVIGATOR: ...
 
     python3 watch.py [--nick dive04]
 
@@ -28,7 +30,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "pilot"))
 from pilotctl import call, RUNS      # noqa: E402
 
-FEED_KINDS = ("act", "attention", "goal", "goal_done", "goal_failed", "user_note", "audit")
+FEED_KINDS = ("act", "attention", "goal", "goal_done", "goal_failed", "user_note", "audit", "nav_say")
 
 
 def feed_line(e):
@@ -40,6 +42,10 @@ def feed_line(e):
         txt = f"{e.get('what')}: {e.get('detail') or ''}"
     elif k == "user_note":
         txt = f"YOU: {e.get('note')}"
+    elif k == "nav_say":
+        txt = f"NAVIGATOR: {e.get('text')}"
+    elif k == "attention" and e.get("what") == "user_message":
+        txt = "(sent to the Navigator)"
     elif k == "audit":
         txt = f"audit difference: {', '.join(e.get('diffs', {}))}"
     else:
@@ -135,7 +141,7 @@ def draw(scr, sock, feed, buf, msg, scroll):
     shown = rows[max(0, end - (fh - 1)):max(0, end)]
     for i, (t, k, piece) in enumerate(shown):
         attr = curses.A_BOLD if k in ("attention", "goal_failed") else 0
-        if k == "user_note":
+        if k in ("user_note", "nav_say"):
             attr = curses.A_REVERSE
         scr.addnstr(fy + 1 + i, fx, f"{t:8} {piece}", fw, attr)
     # the note line
@@ -154,7 +160,8 @@ def main(scr, args):
     curses.curs_set(1)
     scr.nodelay(True)
     scr.keypad(True)
-    buf, msg, scroll, last = "", "type a note and press Enter ('?' = a question for the Architect)", 0, 0.0
+    buf, msg, scroll, last = "", ("type a note + Enter;  '!' = message the Navigator now;  "
+                                  "'?' = a question for the Architect"), 0, 0.0
     while True:
         now = time.time()
         if now - last >= 0.5:

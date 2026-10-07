@@ -13,6 +13,7 @@
                                            # (--brief: status lines, monsters, stairs, news only)
     pilotctl.py attention                  # pending attention events, without waiting
     pilotctl.py monster NAME               # this server's data for a monster + the pilot's verdict
+    pilotctl.py say TEXT...                # answer the user (shown in their viewer, logged)
 """
 import json
 import os

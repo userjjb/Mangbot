@@ -1837,6 +1837,9 @@ class Pilot:
                "monsters": [(y, x, r.name) for y, x, r in w.monsters][:12],
                "standing_on": w.standing_on, "recent": recent}
         self.log("user_note", **{k: v for k, v in rec.items() if k != "t"})
+        if text.startswith("!"):
+            # a message for the Navigator: an attention event wakes its wait
+            self.notify("user_message", text[1:].strip())
         with open(os.path.join(self.rundir, "commentary.jsonl"), "a") as f:
             f.write(json.dumps(rec) + "\n")
         return f"noted at {time.strftime('%H:%M:%S')} ({w.depth_ft} ft, HP {w.hp[0]}/{w.hp[1]}, " \
@@ -2646,10 +2649,17 @@ class Pilot:
             return {"ok": True, "report": self.report(rows=rows, cols=cols, news_since=time.time() - 600)}
         if c == "note":
             return {"ok": True, "text": self.user_note(" ".join(args))}
+        if c == "say":
+            # the Navigator answering the user (shown in the observer's viewer)
+            text = " ".join(args)
+            self.log("nav_say", text=text)
+            with open(os.path.join(self.rundir, "commentary.jsonl"), "a") as f:
+                f.write(json.dumps({"t": round(time.time(), 3), "who": "navigator", "note": text}) + "\n")
+            return {"ok": True, "text": "said"}
         if c == "monster":
             return {"ok": True, "text": self.monster_info(" ".join(args).replace("_", " "))}
         if self.dead and c not in ("attention", "quit", "orders", "events", "news", "map", "inventory",
-                                   "note", "view") and \
+                                   "note", "view", "say") and \
                 not (c == "goal" and args[:1] == ["resurrect"]):
             return {"ok": False, "error": "the character is dead (a ghost): only 'goal resurrect' works"}
         if c == "goal":
