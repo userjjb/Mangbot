@@ -108,7 +108,7 @@ def flavour_key(name):
     """'2 Puce Potions {tried}' -> 'Puce Potion' (the flavour table's key)."""
     n = re.sub(r"\{.*?\}", "", name).strip()
     n = re.sub(r"^(a|an|the|\d+) ", "", n)
-    n = re.sub(r"(Potion|Scroll|Wand|Staff|Rod|Ring|Amulet)s\b", r"\1", n)
+    n = re.sub(r"(Potion|Scroll|Wand|Staff|Rod|Ring|Amulet|Mushroom)s\b", r"\1", n)
     return re.sub(r"\s*\(.*?\)", "", n).strip()
 
 
@@ -116,7 +116,7 @@ def kind_key(name):
     """'a Potion of Weakness' / '3 Wands of Magic Missile (10 charges)' -> 'Potion of Weakness'."""
     n = re.sub(r"\{.*?\}|\(.*?\)|\[.*?\]", "", name).strip()
     n = re.sub(r"^(a|an|\d+) ", "", n)
-    n = re.sub(r"(Potion|Scroll|Wand|Staff|Rod|Ring|Amulet)s\b", r"\1", n)
+    n = re.sub(r"(Potion|Scroll|Wand|Staff|Rod|Ring|Amulet|Mushroom)s\b", r"\1", n)
     return re.sub(r"\s+[-+]\d+.*$", "", n).strip()
 
 
@@ -876,8 +876,11 @@ class TownFarm(Goal):
             return ("done", f"{gold} gold")
         if time.time() > self.end:
             return ("done", f"time's up at {gold} gold")
-        # light, to see them at night
-        if not any(i["tval"] == TV_LITE for i in w.items(equip=True)) and time.time() - self.light_t > 5:
+        # light, to see them at night (a dead or dying torch counts as none:
+        # mission 14 stood 2 min in the dark with a lantern in the pack)
+        worn = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
+        wt = re.search(r"with (\d+) turns", worn["name"]) if worn else None
+        if (not worn or (wt and int(wt.group(1)) < 100)) and time.time() - self.light_t > 5:
             def left(i):
                 t = re.search(r"with (\d+) turns", i["name"])
                 return int(t.group(1)) if t else (1 if "Lantern" in i["name"] else 0)
@@ -1170,6 +1173,7 @@ class Pilot:
         self.eat_t = 0.0
         self.flavour_watch = None
         self.weapons_t, self.weapon_tips = 0.0, set()
+        self.found_t = time.time()
         self.effect_failures = 0
         self.redraw_t, self.redraw_level = 0.0, None
         self.group_warned = None
@@ -1284,7 +1288,8 @@ class Pilot:
     def pack_kinds(self):
         """{(tval, name)} of the pack, names without counts/inscriptions."""
         return {(i["tval"], kind_key(i["name"]) if " of " in i["name"] else flavour_key(i["name"]))
-                for i in self.w.items() if i["tval"] in self.FLAVOURED}
+                for i in self.w.items() if i["tval"] in self.FLAVOURED or
+                (i["tval"] == TV_FOOD and "Mushroom" in i["name"])}
 
     def watch_flavours(self):
         self.flavour_watch = {"t": time.time(), "before": self.pack_kinds(),
@@ -2115,7 +2120,8 @@ class Pilot:
             self.notify("danger_seen", f"group danger: {names} can deal {g:.0f} per turn at worst, HP {hp}"
                                        f"{' while ' + prev if prev else ''}: leaving the level")
         can_read = not w.flag("blind") and not w.flag("confused")
-        if g > hp and not w.find("<>") and can_read and not self.recall_started(now):
+        far = not any(w.dist(q) <= 25 for q in w.find("<>"))   # (mission 14: stairs 66 away)
+        if g > hp and far and can_read and not self.recall_started(now):
             wor = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
             if wor:
                 self.recall_t = now
@@ -2359,15 +2365,17 @@ class Pilot:
             return f"it's {f['kind']}: worth more known, use or Identify it"
         if it.get("number", 1) >= 2 and n == 1:
             return None
-        if it["tval"] in (75, 70) and self.deepest_ft < 1000:
+        if it["tval"] in (75, 70, TV_FOOD) and self.deepest_ft < 1000:
             return None
-        if it["tval"] in (75, 70):
+        if it["tval"] in (75, 70, TV_FOOD):
             return "an unknown potion/scroll found below 1000 ft: Identify it (expected value 87-750)"
         return "an unknown wand/staff/rod/ring/amulet: Identify it first (worth 50-700 known)"
 
     def unknown_flavour(self, it):
         """An unidentified flavoured item ('a Blue Speckled Potion', 'a Copper
-        Wand'): it sells at its plain base value, whatever it is."""
+        Wand', 'a Blue Mushroom'): it sells at its plain base value, whatever it is."""
+        if it.get("tval") == TV_FOOD:
+            return "Mushroom" in it["name"] and " of " not in it["name"]
         return it.get("tval") in self.FLAVOURED and " of " not in it["name"]
 
     def probably_special(self, name):
@@ -2446,7 +2454,31 @@ class Pilot:
                 return True
             self.notify({"done": "goal_done", "failed": "goal_failed"}.get(status, status),
                         f"{g}: {detail}" if detail else g)
+            if status == "failed" and g.startswith("flee"):
+                self.flee_failed()
         return True
+
+    def flee_failed(self):
+        """A flee that can't reach the stairs, with monsters close: don't go
+        idle among them (mission 14: Lagduf's pack, stairs 66 away, the
+        Navigator had to read Word of Recall itself) -- start a recall and
+        phase out of reach while it charges."""
+        w, now = self.w, time.time()
+        near = [m for m in w.monsters if w.dist(m[:2]) <= 5]
+        if not w.in_dungeon or not near or w.flag("blind") or w.flag("confused"):
+            return
+        if not self.recall_started(now):
+            wor = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
+            if wor:
+                self.recall_t = now
+                self.cmd(f"custom r item={wor['item']}", "flee failed with monsters close: word of recall", hold=0.5)
+                self.notify("emergency", f"couldn't reach the stairs with {len(near)} monsters close: read Word of "
+                                         "Recall (15-34 turns); phasing while it charges")
+                return
+        pd = w.tagged("r", 1) or next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
+        if pd and w.adjacent_monsters() and now - self.phase_t > 2.5:
+            self.phase_t = now
+            self.cmd(f"custom r item={pd['item']}", "flee failed, monsters adjacent: phase door", hold=0.6)
 
     def idle(self):
         w = self.w
@@ -2555,12 +2587,12 @@ class Pilot:
                 self.light_warned = now
                 self.notify("low_supply", f"lantern at {turns} turns and no flasks of oil")
         elif worn and "Torch" in worn["name"] and turns is not None and turns < 500:
-            # only a torch with more light left (burnt-out spares were swapped
-            # ~2100 times while Dive04 idled in town)
+            # only a light with more left (burnt-out spares were swapped ~2100
+            # times while Dive04 idled in town); a lantern in the pack counts
             def left(i):
                 t = re.search(r"with (\d+) turns", i["name"])
                 return int(t.group(1)) if t else 0
-            torch = max((i for i in w.items(tval=TV_LITE) if "Torch" in i["name"] and left(i) > turns),
+            torch = max((i for i in w.items(tval=TV_LITE) if left(i) > turns),
                         key=left, default=None)
             if torch:
                 self.cmd(f"custom w item={torch['item']}", f"fresh torch ({turns} turns left)", hold=0.6)
@@ -2712,6 +2744,15 @@ class Pilot:
             self.c.send("redraw")
             w.inven_dirty = True
             w.status_t = 0
+        for ts, t in w.messages:
+            if ts > self.found_t:
+                m = re.match(r"You have (.+) \([a-w]\)\.$", t)
+                if m and (self.probably_special(m.group(1)) or re.search(r"\{(good|excellent|special|magical)",
+                                                                       m.group(1))):
+                    # (mission 14: Farmer Maggot's Lance came into the pack unannounced; it sold for 391)
+                    self.notify("found", f"picked up {m.group(1)}: identify it before selling (`sell !NAME`)",
+                                news=True)
+        self.found_t = now
         while w.losses:
             t, text = w.losses.pop(0)
             self.notify("lost", text, news=True)

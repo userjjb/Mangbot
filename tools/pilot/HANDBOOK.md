@@ -338,6 +338,12 @@ Orders are remembered across pilot restarts.
 - The report's `Supplies:` line (also in `--brief`) lists your potions, scrolls, food, flasks,
   staffs and wands with counts, a pending recall, max_depth and drained stats. `lost` news means
   something was destroyed, stolen or overflowed (e.g. "Your purse feels lighter": a thief).
+- **At night `townfarm` earns little** (mission 14: ~7 gold/min; few townspeople about): selling
+  identified spare staffs and wands is faster (Object Location 151/84, Magic Missile 84).
+- **Unique drops turn up in town too** (Farmer Maggot's Lance {good}: identified (+4,+4), sold for
+  391). `found` news now flags picked-up items that look special: identify, then `sell !NAME`.
+- **After an Enchant scroll**, the weapon's name (and the `Weapons:` line) shows the new plus only
+  once the weapon is identified; the enchantment is there anyway.
 - Near town (50-150 ft), climbing by stairs saves a Word of Recall.
 - `goal recall` puts a light on first (reading needs light: at night in town the pilot keeps it
   off while idle), and if a recall fails it quotes the game's reason. It now finishes only when
