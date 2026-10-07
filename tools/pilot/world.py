@@ -51,6 +51,7 @@ class World:
         self.monster_seen_t = 0.0             # last map with a monster on it
         self.fight_t = 0.0                     # last time we hit, missed or killed something
         self.need_redraw = False               # ask the server for a full resync (tool verb 'redraw')
+        self.arrive_pos = None                 # first position on the current level
         self.flags, self.flags_t = None, 0.0    # {flag: slots granting it} from the resist grid
         self.floor, self.floor_t = None, 0.0    # the item under us (tool query 'floor')
         self.losses = []                       # (t, message): items/gold lost or destroyed
@@ -121,6 +122,8 @@ class World:
                     self.store = None
                 self.pos = new
                 self.pos_t = time.time()
+                if self.arrive_pos is None:
+                    self.arrive_pos = new          # where we came onto this level
                 self.walked.add(new)           # squares we've been on (safe retreat ground)
             elif k == "level":
                 old = self.depth
@@ -128,6 +131,7 @@ class World:
                 self.level_t = time.time()
                 self.memory = {}
                 self.walked = set()
+                self.arrive_pos = None
                 self.rows = None
                 self.monsters, self.itemlist = [], []
                 sc = self.last_stairs_cmd

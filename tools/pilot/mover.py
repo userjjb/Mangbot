@@ -133,9 +133,14 @@ class Mover:
             self.sent = self.done
         return "moving"
 
+    def runs_ok(self):
+        """No runs on the surface: at night a run in town crossed the open
+        ground and went off the map edge into the wilderness (mission 13)."""
+        return self.use_runs and getattr(self.w, "in_dungeon", True) is not False
+
     def _runnable(self, i):
         """Could a run start at path index i (straight stretch, nothing close)?"""
-        return self.use_runs and self._straight(i) >= self.RUN_MIN and not self._monster_near(5)
+        return self.runs_ok() and self._straight(i) >= self.RUN_MIN and not self._monster_near(5)
 
     def _monster_near(self, r):
         w = self.w
@@ -347,7 +352,7 @@ class Mover:
         # tile, walking takes ~0.5 s. Straight stretches are run and stopped a
         # tile early; in a corridor we run and let the server follow the bends
         # (replanning when the run ends), as a human holding the key does.
-        if self.sent == self.done and self.use_runs and not self._monster_near(5):
+        if self.sent == self.done and self.runs_ok() and not self._monster_near(5):
             frm = self.path[self.done - 1] if self.done else self.here
             d = direction(frm, self.path[self.done])
             n = self._straight(self.done)

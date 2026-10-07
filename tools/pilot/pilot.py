@@ -40,7 +40,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "shopcat"))
 from mang import MangClient, ClientExited      # noqa: E402
 import glyphs                                   # noqa: E402
 from world import World                          # noqa: E402
-from mover import Mover, direction, passable, plan   # noqa: E402
+from mover import Mover, direction, passable, plan, MAX_HGT, MAX_WID   # noqa: E402
 
 TV_SCROLL, TV_POTION, TV_FOOD, TV_FLASK, TV_LITE = 70, 75, 80, 77, 39
 CURE_POTIONS = ("Cure Critical Wounds", "Cure Serious Wounds", "Cure Light Wounds", "Healing")
@@ -647,12 +647,15 @@ class Recall(Goal):
         self.start_depth = None
         self.inscribed = 0           # tries at inscribing @R
         self.inscribe_t = 0.0
+        self.light_t = 0.0
 
     def tick(self, p):
         w = p.w
         if self.start_depth is None:
             self.start_depth = w.depth
-        if self.read_t and w.depth != self.start_depth:
+        # Done only when the recall itself happened ("yanked" clears the pending
+        # flag): taking stairs while it's pending is not arriving (mission 13)
+        if self.read_t and w.depth != self.start_depth and not w.recall_pending:
             return ("done", f"arrived at {w.depth_ft} ft")
         if self.read_t is None:
             it = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
@@ -675,6 +678,15 @@ class Recall(Goal):
                 p.cmd(f"custom {{ item={it['item']} entry=@R{md}", f"recall depth {md} ft", hold=1.0)
                 w.inven_dirty = True
                 return None
+            # No light, no reading (mission 13: at night in town the light was off
+            # for idling, and the read failed with "You have no light to read by")
+            if not any(i["tval"] == TV_LITE for i in w.items(equip=True)):
+                lite = next((i for i in w.items(tval=TV_LITE) if "0 turns" not in i["name"]), None)
+                if lite and time.time() - self.light_t > 2:
+                    self.light_t = time.time()
+                    p.light_t = time.time() + 30      # (town_light: don't take it off again)
+                    p.cmd(f"custom w item={lite['item']}", "light on to read Word of Recall", hold=0.8)
+                    return None
             if p.recall_started(time.time()):
                 # Already under way (e.g. the last-resort recall): a second read would cancel it
                 p.log("note", text="recall already under way: not reading another")
@@ -684,7 +696,11 @@ class Recall(Goal):
             self.read_t = p.recall_t = time.time()
             return None
         if time.time() - self.read_t > (120 if w.recall_pending else 60):
-            return ("failed", "recall didn't happen")
+            # say why, if the game did (e.g. "You have no light to read by.")
+            why = next((t for ts, t in reversed(w.messages) if ts >= self.read_t and t.startswith(
+                ("You have no light", "You can't see", "You are too confused", "You cannot read",
+                 "A tension leaves"))), None)
+            return ("failed", "recall didn't happen" + (f": the game said '{why}'" if why else ""))
         return None
 
 
@@ -715,6 +731,61 @@ class Resurrect(Goal):
             return None
         if not p.mover.active and not p.mover.go([door[0]]):
             return ("failed", "can't reach the Temple")
+        p.mover.tick()
+        return None
+
+
+EDGE_DIR = {"E": 6, "W": 4, "N": 8, "S": 2}
+
+
+def edge_of(pos):
+    """The map edge a surface position is on (where walking out leaves the
+    sector), or None."""
+    if not pos:
+        return None
+    y, x = pos
+    if x >= MAX_WID - 3:
+        return "E"
+    if x <= 2:
+        return "W"
+    if y <= 2:
+        return "N"
+    if y >= MAX_HGT - 3:
+        return "S"
+    return None
+
+
+class Town(Goal):
+    """From the wilderness back to town: leave each sector by the edge we came
+    in through (a stack of arrival edges; mission 13 ran off the town map at
+    night and no goal could walk back)."""
+    name = "town"
+
+    def __init__(self):
+        self.step_t = 0.0
+
+    def tick(self, p):
+        w = p.w
+        if w.depth == 0:
+            return ("done", "in town")
+        if w.in_dungeon:
+            return ("failed", "in the dungeon: use goal dive 0 or goal recall")
+        edge = p.wild_trail[-1] if p.wild_trail else edge_of(w.arrive_pos or w.pos)
+        if edge is None:
+            return ("failed", "don't know which edge leads back: read Word of Recall")
+        d = EDGE_DIR[edge]
+        if edge_of(w.pos) == edge:
+            if time.time() - self.step_t > 0.8:
+                self.step_t = time.time()
+                p.mover.stop()
+                p.cmd(f"walk {d}", f"town: step off the {edge} edge", hold=0.5)
+            return None
+        line = [(y, MAX_WID - 2) for y in range(2, MAX_HGT - 2)] if edge == "E" else \
+            [(y, 1) for y in range(2, MAX_HGT - 2)] if edge == "W" else \
+            [(1, x) for x in range(2, MAX_WID - 2)] if edge == "N" else \
+            [(MAX_HGT - 2, x) for x in range(2, MAX_WID - 2)]
+        if not p.mover.active and not p.mover.go(line):
+            return ("failed", f"no path to the {edge} edge")
         p.mover.tick()
         return None
 
@@ -926,6 +997,8 @@ class Pilot:
         self.expects = []                     # actions waiting for their effect (verify_effects)
         self.news_wait_t = 0.0                # news shown by wait reports up to here
         self.audit_t, self.audit_runs, self.audit_counts = 0.0, 0, {}
+        self.wild_trail, self.trail_level = [], None
+        self.eat_t = 0.0
         self.effect_failures = 0
         self.redraw_t, self.redraw_level = 0.0, None
         self.group_warned = None
@@ -1405,9 +1478,15 @@ class Pilot:
         # with Bullroarer a step out of view)
         if w.hunger <= 2 and not w.monsters and now - w.monster_seen_t > 5 and now - w.last_hit_t > 5:
             food = w.items(tval=TV_FOOD)
-            if food:
+            # one meal, then wait for the hunger indicator to catch up (mission 13
+            # ate 2 rations in a row: 3 -> 1, "Full", no news)
+            if food and now - self.eat_t > 10:
+                self.eat_t = now
                 self.cmd(f"eat {food[0]['item']}", f"hungry ({w.hunger})", hold=1.0)
+                self.notify("tactic", f"hungry: ate {one_of(food[0]['name'])}")
                 return True
+            if food:
+                return False
             if w.hunger <= 1 and not isinstance(self.goal, Recall) and w.depth:
                 self.notify("low_supply", "weak from hunger and no food: recalling")
                 self.set_goal(Recall())
@@ -2291,6 +2370,18 @@ class Pilot:
             t, text = w.losses.pop(0)
             self.notify("lost", text, news=True)
         self.audit_tick(now)
+        # The wilderness trail: the edge we came in by, per sector (Town goal)
+        if self.trail_level != w.level_t and w.arrive_pos is not None:
+            self.trail_level = w.level_t
+            if w.depth == 0 or w.in_dungeon:
+                self.wild_trail = []
+            elif isinstance(self.goal, Town) and self.wild_trail:
+                self.wild_trail.pop()             # retracing: one sector closer
+            elif edge_of(w.arrive_pos):
+                self.wild_trail.append(edge_of(w.arrive_pos))
+                if len(self.wild_trail) == 1:
+                    self.notify("left_town", f"walked off the town map into the wilderness ({w.depth_ft} ft); "
+                                             "'goal town' walks back")
         if w.in_dungeon and w.monsters and now - self.mons_log_t >= 1.0:
             # a steady record for replays (post-mortem memo §4.6: an 86 s gap
             # before the mission-7 death)
@@ -2559,6 +2650,8 @@ class Pilot:
             g = Hunt(" ".join(rest).replace("_", " "))   # 'hunt Black_ogre', like shop names
         elif name == "recall":
             g = Recall()
+        elif name == "town":
+            g = Town()
         elif name == "resurrect":
             g = Resurrect()
         elif name == "rest":
@@ -2595,11 +2688,13 @@ class Pilot:
         lines.append("Pack: " + "; ".join(f"{chr(97 + i['item'])}) {i['name']}" for i in w.items()))
         if w.rows and w.pos:
             y0, x0 = w.pos
-            lines.append(f"Map (you are @ at {y0},{x0}; rows {max(0, y0 - rows)}-{y0 + rows}):")
+            # Every row, numbered, and the column range: blank rows used to be
+            # dropped, so line numbers didn't match rows (mission 13)
+            lines.append(f"Map (you are @ at {y0},{x0}; columns {max(0, x0 - cols)}-{x0 + cols}; "
+                         "each line starts with its row):")
             for y in range(max(0, y0 - rows), min(len(w.rows), y0 + rows + 1)):
                 seg = w.rows[y][max(0, x0 - cols):x0 + cols + 1]
-                if seg.strip():
-                    lines.append("  " + seg.rstrip())
+                lines.append(f"  {y:2d}|" + seg.rstrip())
         if w.monsters:
             seen = {}
             for y, x, r in w.monsters:

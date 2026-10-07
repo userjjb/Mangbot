@@ -81,6 +81,7 @@ Attention events:
 | `goal shop N [list] [buy NAME:COUNT[@MAX]]... [sell NAME_OR_LETTER:COUNT]...` | `list`: the result starts with the store's whole stock and prices (use it alone to look before buying). `@MAX`: don't pay more than MAX each (e.g. `buy To-Dam:2@120`). Town only: walk into store N (1 General, 2 Armoury, 3 Weaponsmith, 4 Temple, 5 Alchemist, 6 Magic shop, 7 Black market), sell, buy (by part of the name; spaces as `_`, e.g. `buy Cure_Light:5`; the cheapest matching item is bought), leave. The result lists what the shopkeeper actually said ("I don't want that!" for worthless or cursed items) |
 | `goal resurrect` | (only as a ghost, after `dead`) float up one level per `<` to town, then walk onto the Temple entrance (`4`), which resurrects. **It halves the experience for good.** Do it at once: a ghost left in the dungeon keeps getting hit (Dive03's ghost was poisoned while logged out and faded away forever on the next login). Untested so far |
 | `monster NAME` | (a query, not a goal) this server's data for a monster (level, speed, blows, spells, flags, breath, melee per turn, the Advisor's 0-5 rating) and whether a danger rule fires for you now. Monster data here differs from Vanilla Angband: ask this instead of relying on memory |
+| `goal town` | (wilderness only) walk back to town: it leaves each wilderness sector by the edge you came in through. The town has edges into the wilderness (`left_town` news if you walk off it); mission 13 ran off the west edge at night |
 | `goal recall` | read Word of Recall (takes ~15-35 s to work; the pilot stays safe meanwhile). From town it takes you to your deepest level so far, or to `max_depth` if that order is set (the pilot inscribes the scroll `@R<feet>` first). A second Word of Recall **cancels** the first, so while one is pending the pilot won't read another (neither this goal nor `read`, unless you add `force` to cancel it on purpose) |
 | `goal rest` | rest until healed |
 | `goal wait SECS` | stand still |
@@ -303,7 +304,14 @@ Orders are remembered across pilot restarts.
 - The report's `Supplies:` line (also in `--brief`) lists your potions, scrolls, food, flasks,
   staffs and wands with counts, a pending recall, max_depth and drained stats. `lost` news means
   something was destroyed, stolen or overflowed (e.g. "Your purse feels lighter": a thief).
-- Near town (50-150 ft), climbing by stairs saves a Word of Recall. A climb (`goal dive` to a
+- Near town (50-150 ft), climbing by stairs saves a Word of Recall.
+- `goal recall` puts a light on first (reading needs light: at night in town the pilot keeps it
+  off while idle), and if a recall fails it quotes the game's reason. It now finishes only when
+  the recall happens, not when you take stairs while it's pending.
+- **Don't quaff-test unknown potions when STR is drained to a blow breakpoint** (mission 13: a
+  Potion of Weakness cost a blow). Test them with food in the pack and nothing to lose.
+- The report's map lines start with their row number (`43|...`), and the header gives the
+  column range, so `goto Y,X` coordinates can be read straight off it. A climb (`goal dive` to a
   shallower depth) uses a `>` to get a fresh level only if it's within 8 squares and the level
   below is within `max_depth`; otherwise it explores for a `<`.
 - The status line's level is your current level; after an experience loss (resurrection halves
