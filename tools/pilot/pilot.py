@@ -959,6 +959,7 @@ class RestGoal(Goal):
 class Pilot:
     def __init__(self, client, rundir, orders=None, say=print):
         self.c = client
+        self.recent_acts = collections.deque(maxlen=40)   # for the observer's note snapshots
         self.w = World(client)
         self.mover = Mover(client, self.w, log=lambda *a, **k: self.log("move", **k))
         self.rundir = rundir
@@ -1053,6 +1054,10 @@ class Pilot:
     def log(self, kind, **kw):
         rec = {"t": round(time.time(), 3), "kind": kind, "depth": self.w.depth, "pos": self.w.pos,
                "hp": self.w.hp, **kw}
+        if kind in ("act", "attention", "goal", "goal_done", "goal_failed", "note"):
+            self.recent_acts.append({"t": rec["t"], "kind": kind,
+                                     "what": kw.get("cmd") or kw.get("what") or kw.get("goal") or kw.get("text"),
+                                     "why": kw.get("why") or kw.get("detail")})
         self.dlog.write(json.dumps(rec) + "\n")
 
     # Events that don't need a decision (the pilot already acted): shown in
@@ -1223,7 +1228,8 @@ class Pilot:
         diffs = {k: (model[k], fresh[k]) for k in model if model[k] != fresh[k] and
                  not (k == "hp" and (abs(model[k][0] - fresh[k][0]) <= 3 or w.adjacent_monsters()))}
         self.audit_runs += 1
-        self.log("audit_check", n=self.audit_runs, differences=len(diffs))
+        self.log("audit_check", n=self.audit_runs, differences=len(diffs),
+                 exp=st["ind"].get("exp"), clvl=w.clvl, depth_ft=w.depth_ft)   # (exp: for XP-rate studies)
         for k in diffs:
             self.audit_counts[k] = self.audit_counts.get(k, 0) + 1
         if diffs:
@@ -1612,6 +1618,10 @@ class Pilot:
         if w.resting and (w.hp_frac >= o["rest_to"] or w.monsters) and not isinstance(self.goal, RestGoal):
             self.stop_resting()
             return True
+        if w.resting and not w.monsters:
+            # keep resting to rest_to (the Advisor's mission 13 replay: the rest
+            # ended once HP passed rest_below and the explorer walked off at 76%)
+            return True
         return False
 
     def emergency_loop(self, now):
@@ -1808,6 +1818,26 @@ class Pilot:
         if known is not None:
             return known
         return self.orders.get(order) == "yes"
+
+    def user_note(self, text):
+        """The user's commentary while watching (tools/observe/watch.py or
+        pilotctl note): logged with a snapshot of the moment, in the
+        decision log (kind user_note) and in commentary.jsonl, so it can be
+        cross-referenced with the play. A note starting with '?' is a
+        question for the Architect."""
+        w = self.w
+        recent = list(self.recent_acts)[-8:]
+        rec = {"t": round(time.time(), 3), "note": text, "question": text.startswith("?"),
+               "depth_ft": w.depth_ft, "pos": w.pos, "hp": list(w.hp), "clvl": w.clvl,
+               "goal": self.goal.describe() if self.goal else None,
+               "last_action": list(self.last_action) if self.last_action else None,
+               "monsters": [(y, x, r.name) for y, x, r in w.monsters][:12],
+               "standing_on": w.standing_on, "recent": recent}
+        self.log("user_note", **{k: v for k, v in rec.items() if k != "t"})
+        with open(os.path.join(self.rundir, "commentary.jsonl"), "a") as f:
+            f.write(json.dumps(rec) + "\n")
+        return f"noted at {time.strftime('%H:%M:%S')} ({w.depth_ft} ft, HP {w.hp[0]}/{w.hp[1]}, " \
+               f"goal {rec['goal']})"
 
     def monster_info(self, name):
         """This server's facts about a monster (monster.txt + the Advisor's
@@ -2606,9 +2636,17 @@ class Pilot:
                 since, self.news_wait_t = self.news_wait_t, time.time()
                 return {"ok": True, "report": self.report(news_since=since)}
             return {"ok": True, "report": self.report()}
+        if c == "view":
+            # (the observer's viewer: a bigger map, no side effects)
+            rows = int(args[0]) if args else 11
+            cols = int(args[1]) if len(args) > 1 else 33
+            return {"ok": True, "report": self.report(rows=rows, cols=cols, news_since=time.time() - 600)}
+        if c == "note":
+            return {"ok": True, "text": self.user_note(" ".join(args))}
         if c == "monster":
             return {"ok": True, "text": self.monster_info(" ".join(args).replace("_", " "))}
-        if self.dead and c not in ("attention", "quit", "orders", "events", "news", "map", "inventory") and \
+        if self.dead and c not in ("attention", "quit", "orders", "events", "news", "map", "inventory",
+                                   "note", "view") and \
                 not (c == "goal" and args[:1] == ["resurrect"]):
             return {"ok": False, "error": "the character is dead (a ghost): only 'goal resurrect' works"}
         if c == "goal":
