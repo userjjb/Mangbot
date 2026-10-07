@@ -1,0 +1,1367 @@
+2:09-25 20:55:22 d0 GOAL shop 3 sell t:1 sell u:1 sell v:1 sell w:1
+9:09-25 20:55:40 d0 ATT goal_done shop 3 sell t:1 sell u:1 sell v:1 sell w:1: sold w x1; sold v x1; sold u x1; sold t x1
+11:09-25 20:55:41 dNone MSG Selling a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit} (w).
+13:09-25 20:55:41 dNone CONFIRM Accept 216 gold?
+15:09-25 20:55:41 dNone MSG You sold a Lead-Filled Mace (3d4) (+3,+3) {good - Bullroarer the Hobbit} for 216 gold.
+17:09-25 20:55:41 dNone MSG You have no more Lead-Filled Maces (3d4) (+3,+3) {good - Bullroarer the Hobbit}.
+19:09-25 20:55:41 dNone MSG Selling a Morning Star (2d6) {average} (v).
+21:09-25 20:55:41 dNone CONFIRM Accept 170 gold?
+23:09-25 20:55:41 dNone MSG You sold a Morning Star (2d6) (+0,+0) for 170 gold.
+24:09-25 20:55:41 dNone MSG You have no more Morning Stars (2d6) (+0,+0).
+26:09-25 20:55:41 dNone MSG Selling a Tulwar (2d4) {good} (u).
+28:09-25 20:55:41 dNone CONFIRM Accept 86 gold?
+30:09-25 20:55:41 dNone MSG You sold a Tulwar (2d4) (+1,+5) for 86 gold.
+32:09-25 20:55:41 dNone MSG You have no more Tulwars (2d4) (+1,+5).
+34:09-25 20:55:41 dNone MSG Selling a Short Sword (1d7) {average} (t).
+36:09-25 20:55:41 dNone CONFIRM Accept 39 gold?
+38:09-25 20:55:41 dNone MSG You sold a Short Sword (1d7) (+0,+0) for 39 gold.
+39:09-25 20:55:41 dNone MSG You have no more Short Swords (1d7) (+0,+0).
+41:09-25 20:55:48 d0 GOAL shop 6 sell j:1 sell k:1 sell l:1 sell m:1 sell n:1 sell o:1 sell p:1 sell q:1 sell r:1
+46:09-25 20:56:03 dNone MSG Selling a Rhodonite Ring (r).
+48:09-25 20:56:03 dNone CONFIRM Accept 21 gold?
+50:09-25 20:56:03 dNone MSG You sold a Ring of Stupidity (-4) {cursed} for 21 gold.
+52:09-25 20:56:03 dNone MSG You have no more Rings of Stupidity (-4) {cursed}.
+62:09-25 20:56:07 dNone MSG Selling a Golden Staff (p).
+64:09-25 20:56:07 dNone CONFIRM Accept 33 gold?
+66:09-25 20:56:07 dNone MSG You sold a Staff of Sleep Monsters (10 charges) for 33 gold.
+68:09-25 20:56:07 dNone MSG You have no more Staffs of Sleep Monsters (10 charges).
+70:09-25 20:56:07 dNone MSG Selling a Balsa Staff (o).
+72:09-25 20:56:07 dNone CONFIRM Accept 33 gold?
+74:09-25 20:56:07 dNone MSG You sold a Staff of Detect Invisible (11 charges) for 33 gold.
+76:09-25 20:56:07 dNone MSG You have no more Staffs of Detect Invisible (11 charges).
+78:09-25 20:56:07 dNone MSG Selling a Maple Staff (n).
+80:09-25 20:56:07 dNone CONFIRM Accept 33 gold?
+86:09-25 20:56:07 dNone MSG Selling a Lead Wand (m).
+88:09-25 20:56:07 dNone CONFIRM Accept 24 gold?
+90:09-25 20:56:07 dNone MSG You sold a Wand of Heal Monster (17 charges) for 24 gold.
+92:09-25 20:56:07 dNone MSG You have no more Wands of Heal Monster (17 charges).
+95:09-25 20:56:08 dNone MSG Selling a Steel-Plated Wand (l).
+97:09-25 20:56:08 dNone CONFIRM Accept 24 gold?
+99:09-25 20:56:08 dNone MSG You sold a Wand of Confuse Monster (17 charges) for 24 gold.
+101:09-25 20:56:08 dNone MSG You have no more Wands of Confuse Monster (17 charges).
+103:09-25 20:56:08 dNone MSG Selling a Copper-Plated Wand (k).
+105:09-25 20:56:08 dNone CONFIRM Accept 24 gold?
+107:09-25 20:56:08 dNone MSG You sold a Wand of Slow Monster (13 charges) for 24 gold.
+109:09-25 20:56:08 dNone MSG You have no more Wands of Slow Monster (13 charges).
+113:09-25 20:56:11 d0 ATT goal_done shop 6 sell j:1 sell k:1 sell l:1 sell m:1 sell n:1 sell o:1 sell p:1 sell q:1 sell r:1: sold r x1; sold q x1; sold p x1; sold o x1; sold n x1; sold m x1; sold l x1; sold k x1; sold j x1
+115:09-25 20:56:47 d0 GOAL shop 6 sell Heal Monster:1 sell Stupidity:1
+123:09-25 20:56:55 d0 ATT goal_done shop 6 sell Heal Monster:1 sell Stupidity:1: sold j x1; sold k x1
+124:09-25 20:56:55 d0 GOAL shop 2 sell Soft Leather:1
+128:09-25 20:57:15 d0 ATT goal_done shop 2 sell Soft Leather:1: sold l x1
+131:09-25 20:57:17 dNone MSG Selling Soft Leather Armour [4,+1] {Bullroarer the Hobbit} (l).
+133:09-25 20:57:17 dNone CONFIRM Accept 58 gold?
+135:09-25 20:57:17 dNone MSG You sold Soft Leather Armour [4,+1] {Bullroarer the Hobbit} for 58 gold.
+136:09-25 20:57:17 dNone MSG You have no more Soft Leather Armours [4,+1] {Bullroarer the Hobbit}.
+175:09-25 20:58:19 d0 ACT custom k item=12 value=1 | agent: destroy ['m']
+176:09-25 20:58:21 dNone MSG You destroy a Ring of Stupidity.
+177:09-25 20:58:21 dNone MSG You have no more Rings of Stupidity.
+178:09-25 20:58:21 d0 ACT custom k item=11 value=1 | agent: destroy ['l']
+179:09-25 20:58:22 dNone MSG You destroy a Wand of Heal Monster.
+180:09-25 20:58:22 dNone MSG You have no more Wands of Heal Monster.
+181:09-25 20:58:30 d0 ACT custom r item=10 | agent: read ['k']
+182:09-25 20:58:31 dNone MSG You have no more Scrolls titled "it mungrea a" {tried}.
+183:09-25 20:58:32 d0 ACT custom r item=9 | agent: read ['j']
+184:09-25 20:58:34 dNone MSG You have no more Scrolls of Magic Mapping.
+185:09-25 20:58:35 d0 ACT custom r item=8 | agent: read ['i']
+187:09-25 20:58:36 dNone MSG You have no more Scrolls of Monster Confusion.
+188:09-25 20:58:37 d0 ACT custom r item=7 | agent: read ['h']
+189:09-25 20:58:39 dNone MSG You have no more Scrolls titled "kliwex potri" {tried}.
+190:09-25 20:58:40 d0 ACT custom { item=2 entry=@q1 | agent: inscribe ['c', '@q1']
+193:09-25 20:59:15 d0 GOAL dive 600ft
+950:09-25 21:02:19 d0 GOAL dive 600ft
+1011:09-25 21:02:32 d1 ACT custom g | pick up: a Scroll titled "it mungrea a" {tried}.
+1013:09-25 21:02:34 d1 MSG You see a Scroll titled "it mungrea a" {tried}.
+1824:09-25 21:05:15 d8 MSG You feel less confused now.
+2224:09-25 21:06:20 d8 MSG You feel something roll beneath your feet.
+2803:09-25 21:08:36 d8 GOAL hunt Wormtongue
+2816:09-25 21:08:53 d8 ATT goal_failed hunt Wormtongue: lost sight of it
+2817:09-25 21:08:59 d8 GOAL goto item
+2819:09-25 21:09:03 d8 ATT goal_done goto item
+2822:09-25 21:09:20 d8 ACT custom , | agent: raw
+2824:09-25 21:09:38 d8 GOAL dive 600ft
+3069:09-25 21:10:27 d9 MSG You feel less confused now.
+3346:09-25 21:11:17 d8 MSG You feel the Robe (h) in your pack is cursed...
+3915:09-25 21:12:55 d8 MSG You feel something roll beneath your feet.
+4060:09-25 21:13:14 d8 MSG You feel much better.
+4065:09-25 21:14:00 d8 GOAL recall
+4069:09-25 21:14:21 d0 ATT goal_done recall: arrived at 0 ft
+4070:09-25 21:14:22 d8 MSG You feel yourself yanked upwards!
+4072:09-25 21:14:28 d0 GOAL shop 2 sell Robe:1
+4076:09-25 21:14:46 d0 ATT goal_done shop 2 sell Robe:1: I don't want that!
+4077:09-25 21:14:46 d0 GOAL shop 5 buy Phase:15 buy Recall:1
+4104:09-25 21:15:21 d0 ACT custom k item=7 value=1 | agent: destroy ['h']
+4105:09-25 21:15:22 d0 MSG You destroy a Robe [2] {cursed}.
+4106:09-25 21:15:22 d0 MSG You have no more Robes [2] {cursed}.
+4107:09-25 21:15:22 d0 ACT custom { item=5 entry=@r1 | agent: inscribe ['f', '@r1']
+4109:09-25 21:15:24 d0 GOAL recall
+4113:09-25 21:15:39 d10 ATT goal_done recall: arrived at 500 ft
+4114:09-25 21:15:40 d0 MSG You feel yourself yanked downwards!
+4115:09-25 21:15:40 d0 MSG You feel strangely lucky...
+4117:09-25 21:15:46 d10 GOAL dive 600ft
+4137:09-25 21:16:25 d9 MSG You feel strangely lucky...
+4150:09-25 21:16:36 d10 GOAL explore until stairs radius 15
+4151:09-25 21:17:20 d10 ATT goal_done explore until stairs radius 15: nothing left to explore
+4153:09-25 21:17:37 d10 GOAL dive 600ft
+4165:09-25 21:17:45 d9 MSG You feel your luck is turning...
+4367:09-25 21:18:24 d12 ATT goal_done dive 600ft: reached 600 ft
+4372:09-25 21:19:52 d12 GOAL explore
+4415:09-25 21:21:22 d12 GOAL {'t': 1790385682.33, 'kind': 'goal', 'depth': 12, 'pos': [19, 38], 'hp': [152, 152], 'goal': None}
+4418:09-25 21:22:05 d12 GOAL explore
+4458:09-25 21:23:05 d12 GOAL {'t': 1790385785.472, 'kind': 'goal', 'depth': 12, 'pos': [18, 38], 'hp': [152, 152], 'goal': None}
+4461:09-25 21:23:49 d12 GOAL explore
+4462:09-25 21:24:49 d12 GOAL {'t': 1790385889.692, 'kind': 'goal', 'depth': 12, 'pos': [5, 53], 'hp': [152, 152], 'goal': None}
+4514:09-25 21:25:08 d12 GOAL dive 750ft
+4515:09-25 21:25:15 d12 GOAL goto item
+4517:09-25 21:25:30 d12 ATT goal_done goto item
+4518:09-25 21:25:31 d12 GOAL goto item
+4519:09-25 21:25:31 d12 ATT goal_done goto item
+4520:09-25 21:25:31 d12 GOAL goto item
+4521:09-25 21:25:31 d12 ATT goal_done goto item
+4524:09-25 21:25:38 d12 ACT custom w item=7 | agent: wear ['h']
+4527:09-25 21:25:47 d12 ACT custom w item=7 | agent: wear ['h']
+4530:09-25 21:25:49 d12 GOAL dive 750ft
+4535:09-25 21:26:09 d12 MSG You feel your luck is turning...
+4657:09-25 21:26:22 d13 MSG You feel much better.
+4706:09-25 21:26:30 d13 MSG You feel much better.
+4744:09-25 21:26:34 d13 MSG You feel much better.
+4782:09-25 21:26:38 d13 MSG You feel much better.
+4788:09-25 21:26:41 d13 MSG You feel much better.
+4805:09-25 21:26:45 d13 MSG You feel much better.
+4829:09-25 21:26:47 d13 MSG You feel something roll beneath your feet.
+4879:09-25 21:26:57 d13 MSG You feel much better.
+4885:09-25 21:26:59 d13 MSG You feel much better.
+4889:09-25 21:26:59 d13 GOAL dive 750ft
+4913:09-25 21:27:04 d13 MSG You feel much better.
+4948:09-25 21:27:09 d13 GOAL goto <
+4951:09-25 21:27:11 d13 ATT goal_failed goto <: no known path
+4954:09-25 21:27:22 d13 GOAL recall
+4956:09-25 21:27:22 d13 GOAL shop 3 sell Katana:1
+4957:09-25 21:27:22 d13 ATT goal_failed shop 3 sell Katana:1: not in town
+4960:09-25 21:27:37 d13 MSG You feel the Katana (g) in your pack is good...
+4961:09-25 21:27:44 d13 MSG You feel yourself yanked upwards!
+4964:09-25 21:28:10 d0 GOAL shop 3 sell Katana:1
+4970:09-25 21:28:35 d0 ATT goal_done shop 3 sell Katana:1: You sold a Katana (3d4) (+5,+3) {good - Brodda, the Easterling} for 172 gold.
+4971:09-25 21:28:35 d0 GOAL shop 5 buy Recall:1 buy Phase:8
+4973:09-25 21:28:36 d0 MSG Selling a Katana (3d4) {good - Brodda, the Easterling} (g).
+4975:09-25 21:28:36 d0 CONFIRM Accept 172 gold?
+4977:09-25 21:28:36 d0 MSG You sold a Katana (3d4) (+5,+3) {good - Brodda, the Easterling} for 172 gold.
+4979:09-25 21:28:36 d0 MSG You have no more Katanas (3d4) (+5,+3) {good - Brodda, the Easterling}.
+5011:09-25 22:10:37 d0 GOAL shop 5 buy Phase:8 buy Recall:1
+5036:09-25 22:10:54 d0 GOAL recall
+5040:09-25 22:11:10 d15 ATT goal_done recall: arrived at 750 ft
+5041:09-25 22:11:10 d15 GOAL dive 800ft
+5043:09-25 22:11:11 d0 MSG You feel yourself yanked downwards!
+5044:09-25 22:11:11 d0 MSG You feel strangely lucky...
+5064:09-25 22:11:44 d15 MSG You feel the Dagger (f) in your pack is good...
+5071:09-25 22:13:19 d15 MSG You feel the Cutlass (g) in your pack is good...
+5072:09-25 22:13:30 d15 ATT goal_failed dive 800ft: no stairs found: frontier unreachable
+5074:09-25 22:14:01 d15 GOAL dive 800ft
+5075:09-25 22:14:02 d15 ATT goal_failed dive 800ft: explored the level, no stairs seen
+5076:09-25 22:14:12 d15 ACT options | agent: raw
+5078:09-25 22:15:11 d15 GOAL dive 800ft
+5589:09-25 22:24:06 d15 MSG You feel less confused now.
+5798:09-25 22:24:56 d15 ATT goal_failed dive 800ft: no stairs found: frontier unreachable
+5849:09-25 22:25:06 d15 GOAL recall
+5853:09-25 22:25:28 d0 ATT goal_done recall: arrived at 0 ft
+5854:09-25 22:25:29 d15 MSG You feel yourself yanked upwards!
+5863:09-25 22:26:01 d0 GOAL shop 3 sell Cutlass:1
+5869:09-25 22:26:15 d0 ATT goal_done shop 3 sell Cutlass:1: You sold a Cutlass (1d7) (+5,+5) for 37 gold.
+5870:09-25 22:26:15 d0 GOAL shop 5 buy Recall:2
+5872:09-25 22:26:17 d0 MSG Selling a Cutlass (1d7) {good} (f).
+5874:09-25 22:26:17 d0 CONFIRM Accept 37 gold?
+5876:09-25 22:26:17 d0 MSG You sold a Cutlass (1d7) (+5,+5) for 37 gold.
+5878:09-25 22:26:17 d0 MSG You have no more Cutlasses (1d7) (+5,+5).
+5884:09-25 22:26:21 d0 GOAL recall
+5893:09-25 22:26:37 d15 ATT goal_done recall: arrived at 750 ft
+5894:09-25 22:26:37 d15 GOAL dive 800ft
+5896:09-25 22:26:39 d0 MSG You feel yourself yanked downwards!
+5897:09-25 22:26:39 d0 MSG You feel your luck is turning...
+5929:09-25 22:27:08 d16 ATT goal_done dive 800ft: reached 800 ft
+5931:09-25 22:27:10 d15 MSG You feel your luck is turning...
+5937:09-25 22:27:36 d16 GOAL dive 900ft
+5945:09-25 22:27:44 d16 MSG You feel there is something special about this level.
+6030:09-25 22:28:05 d16 MSG You feel the Mace (g) in your pack is good...
+6131:09-25 22:28:28 d18 ATT goal_done dive 900ft: reached 900 ft
+6145:09-25 22:29:14 d18 MSG You feel the Light Crossbow (h) in your pack is average...
+6146:09-25 22:31:28 d18 ATT idle_recall no word from the agent: recalling to town
+6147:09-25 22:31:28 d18 GOAL recall
+6151:09-25 22:31:43 d0 ATT goal_done recall: arrived at 0 ft
+6152:09-25 22:31:44 d18 MSG You feel yourself yanked upwards!
+6154:09-25 22:33:56 d0 GOAL explore
+6241:09-25 22:39:38 d-31 ATT goal_failed explore: frontier unreachable
+6243:09-25 23:12:59 d0 GOAL recall
+6247:09-25 23:13:16 d18 ATT goal_done recall: arrived at 900 ft
+6248:09-25 23:13:16 d18 GOAL explore
+6249:09-25 23:13:17 d-31 MSG You feel yourself yanked downwards!
+6250:09-25 23:13:17 d-31 MSG You feel there is something special about this level.
+6340:09-25 23:13:45 d18 GOAL {'t': 1790392425.353, 'kind': 'goal', 'depth': 18, 'pos': [56, 171], 'hp': [64, 202], 'goal': None}
+6341:09-25 23:13:45 d18 MSG You feel much better.
+6347:09-25 23:13:48 d18 MSG You feel much better.
+6369:09-25 23:13:52 d18 MSG You feel much better.
+6377:09-25 23:13:54 d18 MSG You feel much better.
+6414:09-25 23:14:02 d18 MSG You feel much better.
+6421:09-25 23:14:03 d18 MSG You feel your luck is turning...
+6495:09-25 23:14:15 d19 MSG You feel less confused now.
+6505:09-25 23:14:47 d19 GOAL explore
+6664:09-25 23:15:55 d20 MSG You feel much better.
+6721:09-25 23:16:00 d20 MSG You feel less confused now.
+6758:09-26 03:07:00 d0 GOAL goto 28,114
+6759:09-26 03:07:01 d0 ATT goal_done goto 28,114
+6766:09-26 03:07:43 d0 GOAL shop 3 buy Main Gauche:1
+6771:09-26 03:07:49 d0 GOAL shop 2 buy Hard Leather Armour:1 buy Leather Shield:1 buy Cap:1 buy Gloves:1 buy Boots:1
+6883:09-26 03:11:25 d20 MSG You feel something roll beneath your feet.
+6961:09-26 04:06:59 d20 MSG The Battle-scarred veteran picks up a Potion of Blindness.
+6973:09-26 04:26:48 d0 GOAL shop 5 buy Phase:8
+6994:09-26 04:27:55 d0 ACT custom { item=3 entry=@r1 | agent: inscribe ['d', '@r1']
+6996:09-26 04:27:56 d0 ACT custom { item=2 entry=@q1 | agent: inscribe ['c', '@q1']
+6998:09-26 04:27:58 d0 GOAL dive 900ft
+7001:09-26 04:28:03 d0 ATT goal_failed dive 900ft: no stairs found: explore is for dungeon levels, not the town or wilderness
+7006:09-26 04:28:30 d0 GOAL dive 900ft
+7017:09-26 04:28:38 d0 ATT goal_failed dive 900ft: no stairs found: explore is for dungeon levels, not the town or wilderness
+7043:09-26 04:29:10 d0 GOAL dive 900ft
+7164:09-26 04:30:11 d1 ATT goal_failed dive 900ft: no stairs found: frontier unreachable
+7171:09-26 04:30:58 d1 GOAL dive 900ft
+7177:09-26 04:31:13 d1 ATT goal_failed dive 900ft: no stairs found: frontier unreachable
+7179:09-26 04:31:53 d1 ACT options | agent: raw
+7182:09-26 04:32:37 d1 ACT custom F item=1 | agent: fuel ['b']
+7185:09-26 04:32:38 d1 ACT custom F item=1 | agent: fuel ['b']
+7189:09-26 04:33:16 d1 GOAL dive 900ft
+7200:09-26 04:33:23 d1 ACT custom , | pick up: a Scroll of Summon Monster.
+7201:09-26 04:33:25 d1 MSG You see a Scroll of Summon Monster.
+7202:09-26 04:33:25 d1 MSG You have a Scroll of Summon Monster (d).
+7216:09-26 04:44:01 d2 GOAL dive 900ft
+7220:09-26 04:52:49 d2 GOAL dive 900ft
+7224:09-26 04:53:51 d2 GOAL dive 900ft
+7328:09-26 04:54:39 d4 ACT custom , | pick up: a Light Blue Potion.
+7329:09-26 04:54:40 d4 MSG You see a Light Blue Potion.
+7331:09-26 04:54:41 d4 MSG You have a Light Blue Potion (d).
+7410:09-26 04:55:07 d5 ACT custom , | pick up: a Clotted Red Potion.
+7411:09-26 04:55:08 d5 MSG You see a Clotted Red Potion.
+7412:09-26 04:55:09 d5 MSG You have a Clotted Red Potion (e).
+7416:09-26 04:55:16 d5 MSG You feel the Cloak (i) in your pack is average...
+7423:09-26 04:56:33 d5 MSG You feel your luck is turning...
+7474:09-26 04:56:51 d8 ACT custom , | pick up: a Yellow Speckled Potion.
+7479:09-26 04:56:53 d8 MSG You see a Yellow Speckled Potion.
+7480:09-26 04:56:54 d8 MSG You have a Yellow Speckled Potion (f).
+7544:09-26 04:57:07 d8 ACT custom , | pick up: a Blue Speckled Potion.
+7545:09-26 04:57:09 d8 MSG You see a Blue Speckled Potion.
+7546:09-26 04:57:10 d8 MSG You have a Blue Speckled Potion (g).
+7565:09-26 04:57:17 d8 ACT custom , | pick up: a Potion of Slow Poison.
+7566:09-26 04:57:19 d8 MSG You see a Potion of Slow Poison.
+7567:09-26 04:57:20 d8 MSG You have a Potion of Slow Poison (c).
+7576:09-26 04:57:25 d8 ACT custom , | pick up: a Green Potion.
+7577:09-26 04:57:26 d8 MSG You see a Green Potion.
+7578:09-26 04:57:27 d8 MSG You have a Green Potion (i).
+7914:09-26 04:58:43 d9 MSG You feel there is something special about this level.
+8191:09-26 04:59:30 d9 MSG You feel there is something special about this level.
+8194:09-26 04:59:31 d10 MSG You feel the Rapier (q) in your pack is excellent...
+8277:09-26 04:59:44 d10 MSG You feel the Hard Studded Leather (n) in your pack is average...
+8415:09-26 05:00:02 d9 MSG You feel the Pair of Hard Leather Boots (p) in your pack is good...
+8437:09-26 05:00:04 d9 MSG You feel something roll beneath your feet.
+8459:09-26 05:00:06 d9 GOAL recover (fled by >)
+8505:09-26 05:00:09 d9 MSG You feel much better.
+8515:09-26 05:00:11 d9 MSG You feel much better.
+8531:09-26 05:00:12 d9 MSG You feel much better.
+8542:09-26 05:00:14 d9 MSG You feel much better.
+8597:09-26 05:00:23 d9 MSG You feel much better.
+8606:09-26 05:00:25 d9 MSG You feel much better.
+8669:09-26 05:00:39 d9 ATT goal_done recover (fled by >): healed at 450 ft
+8681:09-26 05:00:49 d9 ACT custom w item=16 | agent: wear ['q']
+8685:09-26 05:01:00 d9 GOAL recall
+8689:09-26 05:01:17 d0 ATT goal_done recall: arrived at 0 ft
+8690:09-26 05:01:18 d9 MSG You feel yourself yanked upwards!
+8694:09-26 05:02:13 d0 MSG You feel the Tulwar (q) in your pack is average...
+8719:09-26 15:15:25 d0 GOAL goto item
+8720:09-26 15:15:25 d0 ACT custom , | pick up: a Clear Potion.
+8721:09-26 15:15:25 d0 ATT goal_done goto item
+8722:09-26 15:15:26 d0 MSG You see a Clear Potion.
+8723:09-26 15:15:27 d0 MSG You have a Clear Potion (k).
+8724:09-26 15:15:31 d0 GOAL goto 17,46
+8725:09-26 15:15:32 d0 ATT goal_done goto 17,46
+8727:09-26 15:15:36 d0 GOAL shop 5 sell Light Blue:1 sell Clotted Red:1 sell Yellow Speckled:1 sell Blue Speckled:1 sell Green Potion:1 sell Clear Potion:1 sell Summon Monster:1
+8737:09-26 15:16:02 d0 MSG Selling a Light Blue Potion (f).
+8739:09-26 15:16:02 d0 CONFIRM Accept 9 gold?
+8741:09-26 15:16:02 d0 MSG You sold a Potion of Heroism for 9 gold.
+8743:09-26 15:16:02 d0 MSG You have no more Potions of Heroism.
+8745:09-26 15:16:02 d0 MSG Selling a Clotted Red Potion (f).
+8747:09-26 15:16:02 d0 CONFIRM Accept 9 gold?
+8749:09-26 15:16:02 d0 MSG You sold a Potion of Clumsiness for 9 gold.
+8751:09-26 15:16:02 d0 MSG You have no more Potions of Clumsiness.
+8754:09-26 15:16:02 d0 ATT goal_done shop 5 sell Light Blue:1 sell Clotted Red:1 sell Yellow Speckled:1 sell Blue Speckled:1 sell Green Potion:1 sell Clear Potion:1 sell Summon Monster:1: You sold a Potion of Heroism for 9 gold.; You sol
+8755:09-26 15:16:02 d0 MSG Selling a Yellow Speckled Potion (f).
+8757:09-26 15:16:02 d0 CONFIRM Accept 9 gold?
+8759:09-26 15:16:02 d0 MSG You sold a Potion of Infravision for 9 gold.
+8760:09-26 15:16:02 d0 MSG You have no more Potions of Infravision.
+8762:09-26 15:16:03 d0 MSG Selling a Blue Speckled Potion (f).
+8764:09-26 15:16:03 d0 CONFIRM Accept 9 gold?
+8766:09-26 15:16:03 d0 MSG You sold a Potion of Sleep for 9 gold.
+8768:09-26 15:16:03 d0 MSG You have no more Potions of Sleep.
+8770:09-26 15:16:03 d0 MSG Selling a Green Potion (f).
+8772:09-26 15:16:03 d0 CONFIRM Accept 9 gold?
+8774:09-26 15:16:03 d0 MSG You sold a Potion of Slowness for 9 gold.
+8776:09-26 15:16:03 d0 MSG You have no more Potions of Slowness.
+8778:09-26 15:16:03 d0 MSG Selling a Clear Potion (f).
+8780:09-26 15:16:03 d0 CONFIRM Accept 9 gold?
+8782:09-26 15:16:03 d0 MSG You sold a Potion of Water for 9 gold.
+8784:09-26 15:16:03 d0 MSG You have no more Potions of Water.
+8787:09-26 15:16:07 d0 ACT custom k item=5 value=1 | agent: destroy ['f']
+8788:09-26 15:16:07 d0 GOAL shop 2 sell Hard Studded:1 sell Cloak:1 sell Boots:1
+8789:09-26 15:16:09 d0 MSG You destroy a Scroll of Summon Monster.
+8790:09-26 15:16:09 d0 MSG You have no more Scrolls of Summon Monster.
+8798:09-26 15:16:23 d0 ATT goal_done shop 2 sell Hard Studded:1 sell Cloak:1 sell Boots:1: You sold Hard Studded Leather (-1) [7,+0] for 98 gold.; You sold a Cloak [1,+0] for 1 gold.; You sold a Pair of Hard Leather Boots [3,+4] for 6 go
+8800:09-26 15:16:24 d0 MSG Selling Hard Studded Leather [7] {average} (g).
+8802:09-26 15:16:24 d0 CONFIRM Accept 98 gold?
+8804:09-26 15:16:24 d0 MSG You sold Hard Studded Leather (-1) [7,+0] for 98 gold.
+8805:09-26 15:16:24 d0 MSG You have no more Hard Studded Leathers (-1) [7,+0].
+8809:09-26 15:16:25 d0 MSG Selling a Cloak [1] {average} (g).
+8811:09-26 15:16:25 d0 CONFIRM Accept 1 gold?
+8813:09-26 15:16:25 d0 MSG You sold a Cloak [1,+0] for 1 gold.
+8814:09-26 15:16:25 d0 MSG You have no more Cloaks [1,+0].
+8816:09-26 15:16:25 d0 MSG Selling a Pair of Hard Leather Boots [3] {good} (g).
+8818:09-26 15:16:25 d0 CONFIRM Accept 6 gold?
+8820:09-26 15:16:25 d0 MSG You sold a Pair of Hard Leather Boots [3,+4] for 6 gold.
+8822:09-26 15:16:25 d0 MSG You have no more Pairs of Hard Leather Boots [3,+4].
+8828:09-26 15:16:29 d0 ACT custom I item=6 | agent: inspect ['g']
+8832:09-26 15:16:36 d0 GOAL shop 3 sell Main Gauche:1 sell Tulwar:1
+8838:09-26 15:16:41 d0 ATT goal_done shop 3 sell Main Gauche:1 sell Tulwar:1: You sold a Main Gauche (1d5) (+0,+0) for 11 gold.; You sold a Tulwar (2d4) (+0,+0) for 86 gold.
+8840:09-26 15:16:42 d0 MSG Selling a Main Gauche (1d5) (+0,+0) (g).
+8842:09-26 15:16:42 d0 CONFIRM Accept 11 gold?
+8844:09-26 15:16:42 d0 MSG You sold a Main Gauche (1d5) (+0,+0) for 11 gold.
+8845:09-26 15:16:42 d0 MSG You have no more Main Gauches (1d5) (+0,+0).
+8847:09-26 15:16:42 d0 MSG Selling a Tulwar (2d4) {average} (g).
+8849:09-26 15:16:42 d0 CONFIRM Accept 86 gold?
+8851:09-26 15:16:42 d0 MSG You sold a Tulwar (2d4) (+0,+0) for 86 gold.
+8852:09-26 15:16:42 d0 MSG You have no more Tulwars (2d4) (+0,+0).
+8897:09-26 15:17:19 d0 GOAL recall
+8903:09-26 15:17:34 d0 MSG You feel yourself yanked downwards!
+8921:09-26 15:17:36 d20 ATT goal_done recall: arrived at 1000 ft
+8932:09-26 15:18:23 d20 GOAL hunt Black_ogre
+8933:09-26 15:18:38 d20 ATT goal_failed hunt Black_ogre: lost sight of it
+8934:09-26 15:18:44 d20 GOAL hunt ogre
+9013:09-26 15:18:54 d20 MSG You feel much better.
+9016:09-26 15:18:55 d20 MSG You feel much better.
+9050:09-26 15:19:04 d20 MSG You feel much better.
+9053:09-26 15:19:05 d20 MSG You feel much better.
+9056:09-26 15:19:06 d20 MSG You feel much better.
+9058:09-26 15:19:07 d20 GOAL recall
+9062:09-26 15:19:18 d0 ATT goal_done recall: arrived at 0 ft
+9063:09-26 15:19:20 d20 MSG You feel yourself yanked upwards!
+9077:09-26 15:19:51 d0 GOAL dive 450ft
+9095:09-26 15:21:15 d0 GOAL dive 450ft
+9107:09-26 15:21:35 d0 ACT custom , | pick up: a Potion of Blindness.
+9114:09-26 15:21:37 d0 MSG You see a Potion of Blindness.
+9116:09-26 15:21:37 d0 MSG You have a Potion of Blindness (d).
+9225:09-26 15:22:52 d3 MSG You feel the Dagger (h) in your pack is average...
+9236:09-26 15:23:39 d3 ACT custom , | pick up: a Potion of Salt Water.
+9237:09-26 15:23:40 d3 MSG You see a Potion of Salt Water.
+9238:09-26 15:23:41 d3 MSG You have a Potion of Salt Water (d).
+9305:09-26 15:27:07 d3 MSG You feel the Soft Leather Armour (i) in your pack is average...
+9344:09-26 15:27:43 d3 ACT custom , | pick up: a Scroll of Treasure Detection.
+9354:09-26 15:27:44 d3 MSG You see a Scroll of Treasure Detection.
+9356:09-26 15:27:45 d3 MSG You have a Scroll of Treasure Detection (i).
+9380:09-26 15:28:45 d3 ACT custom , | pick up: a Potion of Weakness.
+9381:09-26 15:28:46 d3 MSG You see a Potion of Weakness.
+9383:09-26 15:28:47 d3 MSG You have a Potion of Weakness (f).
+9607:09-26 15:29:43 d4 ACT custom , | pick up: a Scroll of Light.
+9615:09-26 15:29:45 d4 MSG You see a Scroll of Light.
+9617:09-26 15:29:45 d4 MSG You have a Scroll of Light (k).
+9649:09-26 15:29:51 d5 ACT custom , | pick up: a Birch Staff.
+9653:09-26 15:29:52 d5 MSG You see a Birch Staff.
+9654:09-26 15:29:53 d5 MSG You have a Birch Staff (m).
+9816:09-26 15:30:52 d5 MSG You feel the Hard Leather Cap (p) in your pack is average...
+9835:09-26 15:30:56 d5 ACT custom , | pick up: a Scroll of Identify.
+9836:09-26 15:30:58 d5 MSG You see a Scroll of Identify.
+9837:09-26 15:30:58 d5 MSG You have a Scroll of Identify (l).
+9965:09-26 15:31:35 d6 ACT custom , | pick up: a Scroll of Satisfy Hunger.
+9966:09-26 15:31:36 d6 MSG You see a Scroll of Satisfy Hunger.
+9967:09-26 15:31:37 d6 MSG You have a Scroll of Satisfy Hunger (o).
+9996:09-26 15:31:45 d7 ACT custom , | pick up: a Copper Wand.
+9997:09-26 15:31:47 d7 MSG You see a Copper Wand.
+10013:09-26 15:32:04 d7 ACT custom , | pick up: a Potion of Slow Poison.
+10020:09-26 15:32:05 d7 MSG You see a Potion of Slow Poison.
+10021:09-26 15:32:06 d7 MSG You have 2 Potions of Slow Poison (i).
+10032:09-26 15:32:12 d7 ACT custom , | pick up: a Red Speckled Potion.
+10039:09-26 15:32:14 d7 MSG You see a Red Speckled Potion.
+10040:09-26 15:32:14 d7 MSG You have a Red Speckled Potion (k).
+10090:09-26 15:33:02 d8 MSG You feel the Pair of Hard Leather Boots (t) in your pack is average...
+10114:09-26 15:33:51 d8 ACT custom , | pick up: a Red Potion.
+10123:09-26 15:33:52 d8 MSG You see a Red Potion.
+10124:09-26 15:33:53 d8 MSG You have a Red Potion (l).
+10180:09-26 15:35:53 d8 ACT custom k item=21 value=1 | agent: destroy ['v']
+10181:09-26 15:35:53 d8 ACT custom k item=7 value=1 | agent: destroy ['h']
+10182:09-26 15:35:53 d8 ACT custom k item=6 value=1 | agent: destroy ['g']
+10183:09-26 15:35:53 d8 ACT custom k item=5 value=1 | agent: destroy ['f']
+10184:09-26 15:35:53 d8 ACT custom k item=3 value=1 | agent: destroy ['d']
+10185:09-26 15:35:54 d8 MSG You destroy a Dagger (1d4) {average}.
+10186:09-26 15:35:54 d8 MSG You have no more Daggers (1d4) {average}.
+10187:09-26 15:35:55 d8 MSG You destroy a Potion of Weakness.
+10188:09-26 15:35:55 d8 MSG You have no more Potions of Weakness.
+10189:09-26 15:35:56 d8 MSG You destroy a Potion of Blindness.
+10190:09-26 15:35:56 d8 MSG You have no more Potions of Blindness.
+10191:09-26 15:35:56 d8 MSG You destroy a Potion of Salt Water.
+10192:09-26 15:35:56 d8 MSG You have no more Potions of Salt Water.
+10193:09-26 15:35:57 d8 MSG You destroy a Slimy Mushroom.
+10194:09-26 15:35:57 d8 MSG You have no more Slimy Mushrooms.
+10195:09-26 15:35:58 d8 ACT custom k item=7 value=1 | agent: destroy ['h']
+10196:09-26 15:36:00 d8 MSG You destroy a Red Potion.
+10197:09-26 15:36:00 d8 MSG You have no more Red Potions.
+10198:09-26 15:36:01 d8 ACT custom k item=6 value=1 | agent: destroy ['g']
+10199:09-26 15:36:02 d8 MSG You destroy a Red Speckled Potion.
+10200:09-26 15:36:02 d8 MSG You have no more Red Speckled Potions.
+10201:09-26 15:36:04 d8 ACT custom k item=5 value=1 | agent: destroy ['f']
+10204:09-26 15:36:07 d8 ACT custom k item=3 value=1 | agent: destroy ['d']
+10212:09-26 15:37:28 d9 ATT goal_done dive 450ft: reached 450 ft
+10220:09-26 15:37:36 d9 GOAL explore
+10238:09-26 15:38:16 d9 GOAL explore
+10274:09-26 15:39:51 d9 MSG You feel the Bolts (r) in your pack are average...
+10290:09-26 15:40:16 d9 MSG You feel the Soft Studded Leather (n) in your pack is cursed...
+10291:09-26 15:40:27 d9 MSG You feel the Cutlass (q) in your pack is excellent...
+10302:09-26 15:41:25 d9 ACT custom k item=13 value=1 | agent: destroy ['Soft_Studded']
+10303:09-26 15:41:27 d9 MSG You destroy Soft Studded Leather [5] {cursed}.
+10304:09-26 15:41:27 d9 MSG You have no more Soft Studded Leathers [5] {cursed}.
+10306:09-26 15:43:03 d8 GOAL dive 0ft
+10309:09-26 15:43:12 d9 MSG You feel the Bolts (p) in your pack are average...
+10420:09-26 15:43:52 d7 ACT custom , | pick up: a Scroll titled "kliwex potri" {tried}.
+10421:09-26 15:43:54 d7 MSG You see a Scroll titled "kliwex potri" {tried}.
+10422:09-26 15:43:54 d7 MSG You have a Scroll titled "kliwex potri" {tried} (l).
+10431:09-26 15:44:02 d7 MSG You see a Potion of Slow Poison.
+10529:09-26 15:44:28 d6 MSG You feel the Hard Leather Armour (o) in your pack is average...
+10765:09-26 15:45:33 d6 ACT custom , | pick up: a Vermilion Potion.
+10766:09-26 15:45:34 d6 MSG You see a Vermilion Potion.
+10768:09-26 15:45:35 d6 MSG You have a Vermilion Potion (i).
+10787:09-26 15:45:39 d7 ACT custom , | pick up: a Black Potion.
+10792:09-26 15:45:41 d7 MSG You see a Black Potion.
+10793:09-26 15:45:42 d7 MSG You have a Black Potion (j).
+10901:09-26 15:46:00 d7 MSG You see a Ring of Stupidity.
+10906:09-26 15:46:03 d7 MSG You feel less confused now.
+10937:09-26 15:46:12 d6 MSG You feel the Long Sword (v) in your pack is average...
+11006:09-26 15:46:27 d6 ACT custom k item=4 value=1 | agent: destroy ['Slimy_Mushroom']
+11010:09-26 15:46:28 d7 ACT custom k item=22 value=1 | agent: destroy ['Bolts']
+11014:09-26 15:46:29 d7 ACT custom k item=16 value=1 | agent: destroy ['Soft_Leather_Armour']
+11018:09-26 15:46:29 d7 ACT custom k item=18 value=1 | agent: destroy ['Hard_Leather_Cap']
+11019:09-26 15:46:30 d7 MSG You destroy a Slimy Mushroom.
+11020:09-26 15:46:30 d7 MSG You have no more Slimy Mushrooms.
+11021:09-26 15:46:30 d7 MSG You destroy (nothing).
+11027:09-26 15:46:32 d6 MSG You destroy Soft Leather Armour [4] {average}.
+11028:09-26 15:46:32 d6 MSG You have no more Soft Leather Armours [4] {average}.
+11030:09-26 15:46:32 d6 MSG You destroy a Pair of Hard Leather Boots [3] {average}.
+11031:09-26 15:46:32 d6 MSG You have no more Pairs of Hard Leather Boots [3] {average}.
+11044:09-26 15:46:34 d7 ACT custom k item=19 value=1 | agent: destroy ['Bolts']
+11053:09-26 15:46:36 d7 MSG You destroy a Bolt (1d5) {average}.
+11059:09-26 15:46:37 d6 ACT custom k item=0 value=1 | agent: destroy ['Magic_Spells']
+11069:09-26 15:46:39 d6 MSG You destroy a Book of Magic Spells [Magic for Beginners].
+11070:09-26 15:46:39 d6 MSG You have no more Books of Magic Spells [Magic for Beginners].
+11088:09-26 15:46:43 d6 ACT custom k item=19 value=26 | agent: destroy ['Bolts', '26']
+11091:09-26 15:46:45 d6 MSG You destroy 26 Bolts (1d5) {average}.
+11092:09-26 15:46:45 d6 MSG You have no more Bolts (1d5) {average}.
+11170:09-26 15:47:05 d7 MSG You feel the Tulwar (t) in your pack is good...
+11171:09-26 15:47:05 d7 MSG You feel the Whip (v) in your pack is average...
+11252:09-26 15:47:28 d7 ACT custom k item=0 value=1 | agent: destroy ['Holy_Book']
+11261:09-26 15:47:30 d7 MSG You destroy a Holy Book of Prayers [Beginners Handbook].
+11262:09-26 15:47:30 d7 MSG You have no more Holy Books of Prayers [Beginners Handbook].
+11263:09-26 15:47:30 d7 ACT custom k item=3 value=1 | agent: destroy ['Slimy_Mushroom']
+11271:09-26 15:47:32 d7 ACT custom k item=20 value=1 | agent: destroy ['Whip']
+11272:09-26 15:47:32 d7 MSG You destroy a Slimy Mushroom.
+11273:09-26 15:47:32 d7 MSG You have no more Slimy Mushrooms.
+11275:09-26 15:47:34 d6 ACT custom k item=17 value=1 | agent: destroy ['Hard_Leather_Cap']
+11279:09-26 15:47:35 d6 MSG You destroy a Whip (1d3) {average}.
+11280:09-26 15:47:35 d6 MSG You have no more Whips (1d3) {average}.
+11286:09-26 15:47:36 d7 MSG You destroy a Hard Leather Cap [2] {average}.
+11287:09-26 15:47:36 d7 MSG You have no more Hard Leather Caps [2] {average}.
+11342:09-26 15:47:54 d7 MSG You see a Scroll of Monster Confusion.
+11365:09-26 15:47:59 d6 MSG You feel the Hard Leather Armour (q) in your pack is average...
+11638:09-26 15:49:04 d6 MSG You feel the Robe (q) in your pack is average...
+11639:09-26 15:49:04 d6 MSG You feel the Cloak (t) in your pack is cursed...
+11640:09-26 15:49:04 d6 MSG You feel the Rapier (u) in your pack is average...
+11684:09-26 15:49:36 d5 ACT custom , | pick up: a Bubbling Potion.
+11688:09-26 15:49:37 d5 ATT pack_full You have no room for a Bubbling Potion.
+11690:09-26 15:49:38 d5 MSG You see a Bubbling Potion.
+11691:09-26 15:49:38 d5 MSG You have no room for a Bubbling Potion.
+11711:09-26 15:49:43 d6 ACT custom , | pick up: an Iron Wand.
+11712:09-26 15:49:44 d6 MSG You see an Iron Wand.
+11714:09-26 15:49:45 d6 MSG You have no room for an Iron Wand.
+11721:09-26 15:49:47 d6 ACT custom k item=19 value=1 | agent: destroy ['Cloak']
+11732:09-26 15:49:49 d5 ACT custom k item=16 value=1 | agent: destroy ['Robe']
+11733:09-26 15:49:49 d6 MSG You destroy a Cloak [1] {cursed}.
+11734:09-26 15:49:49 d6 MSG You have no more Cloaks [1] {cursed}.
+11740:09-26 15:49:50 d5 MSG You destroy a Robe [2] {average}.
+11741:09-26 15:49:50 d5 MSG You have no more Robes [2] {average}.
+11742:09-26 15:49:51 d5 ACT custom k item=3 value=1 | agent: destroy ['White_Mushroom']
+11749:09-26 15:49:52 d5 ACT custom , | pick up: a Scroll of Satisfy Hunger.
+11750:09-26 15:49:52 d5 MSG You destroy a White Mushroom.
+11751:09-26 15:49:52 d5 MSG You have no more White Mushrooms.
+11752:09-26 15:49:52 d5 ACT custom k item=2 value=2 | agent: destroy ['Black_Mushroom', '2']
+11753:09-26 15:49:54 d5 MSG You see a Scroll of Satisfy Hunger.
+11755:09-26 15:49:54 d5 MSG You have 2 Scrolls of Satisfy Hunger (m).
+11756:09-26 15:49:54 d5 MSG You destroy 2 Black Mushrooms.
+11757:09-26 15:49:54 d5 MSG You have no more Black Mushrooms.
+11786:09-26 15:50:13 d5 GOAL dive 0ft
+11809:09-26 15:50:17 d6 ACT custom , | pick up: a Scroll titled "kliwex potri" {tried}.
+11817:09-26 15:50:19 d6 MSG You see a Scroll titled "kliwex potri" {tried}.
+11819:09-26 15:50:19 d6 MSG You have 2 Scrolls titled "kliwex potri" {tried} (m).
+11895:09-26 15:50:45 d5 ACT custom , | pick up: a Runed Staff.
+11899:09-26 15:50:46 d5 MSG You see a Runed Staff.
+11901:09-26 15:50:47 d5 MSG You have a Runed Staff (p).
+11934:09-26 15:50:56 d6 ACT custom , | pick up: a Scroll of Blessing.
+11938:09-26 15:50:56 d6 ATT pack_full You have no room for a Scroll of Blessing.
+11943:09-26 15:50:57 d6 MSG You see a Scroll of Blessing.
+11945:09-26 15:50:58 d6 MSG You have no room for a Scroll of Blessing.
+11986:09-26 15:51:09 d6 ACT custom k item=18 value=1 | agent: destroy ['Broken_Dagger']
+11995:09-26 15:51:10 d6 MSG You destroy a Broken Dagger (1d1).
+11996:09-26 15:51:10 d6 MSG You have no more Broken Daggers (1d1).
+11997:09-26 15:51:11 d6 ACT custom k item=1 value=1 | agent: destroy ['Slime_Mold']
+12006:09-26 15:51:12 d6 ACT custom k item=10 value=1 | agent: destroy ['Treasure_Detection']
+12007:09-26 15:51:12 d6 MSG You destroy a Slime Mold.
+12008:09-26 15:51:12 d6 MSG You have no more Slime Molds.
+12017:09-26 15:51:14 d6 MSG You destroy a Scroll of Treasure Detection.
+12018:09-26 15:51:14 d6 MSG You have no more Scrolls of Treasure Detection.
+12266:09-26 15:52:01 d5 MSG You feel the Dagger (q) in your pack is good...
+14320:09-26 16:03:16 d0 ATT goal_done dive 0ft: reached 0 ft
+14323:09-26 16:03:23 d0 GOAL shop 5 sell Vermilion:1 sell Black Potion:1 sell kliwex:2
+14329:09-26 16:03:45 d0 ATT goal_done shop 5 sell Vermilion:1 sell Black Potion:1 sell kliwex:2: You sold a Potion of Detect Invisible for 9 gold.; You sold a Potion of Resist Heat for 9 gold.; You sold 2 Scrolls of Door/Stair Location fo
+14330:09-26 16:03:46 d0 GOAL shop 6 sell Birch Staff:1 sell Runed Staff:1
+14332:09-26 16:03:46 d0 MSG Selling a Vermilion Potion (f).
+14334:09-26 16:03:46 d0 CONFIRM Accept 9 gold?
+14336:09-26 16:03:46 d0 MSG You sold a Potion of Detect Invisible for 9 gold.
+14338:09-26 16:03:46 d0 MSG You have no more Potions of Detect Invisible.
+14340:09-26 16:03:47 d0 MSG Selling a Black Potion (f).
+14342:09-26 16:03:47 d0 CONFIRM Accept 9 gold?
+14344:09-26 16:03:47 d0 MSG You sold a Potion of Resist Heat for 9 gold.
+14346:09-26 16:03:47 d0 MSG You have no more Potions of Resist Heat.
+14348:09-26 16:03:47 d0 MSG Selling 2 Scrolls titled "kliwex potri" {tried} (j).
+14350:09-26 16:03:47 d0 CONFIRM Accept 18 gold?
+14352:09-26 16:03:47 d0 MSG You sold 2 Scrolls of Door/Stair Location for 18 gold.
+14354:09-26 16:03:47 d0 MSG You have no more Scrolls of Door/Stair Location.
+14360:09-26 16:03:51 d0 ATT goal_done shop 6 sell Birch Staff:1 sell Runed Staff:1: You sold a Staff of Darkness (15 charges) for 32 gold.; You sold a Staff of Light (11 charges) for 32 gold.
+14362:09-26 16:03:52 d0 MSG Selling a Birch Staff (j).
+14364:09-26 16:03:52 d0 CONFIRM Accept 32 gold?
+14366:09-26 16:03:52 d0 MSG You sold a Staff of Darkness (15 charges) for 32 gold.
+14368:09-26 16:03:52 d0 MSG You have no more Staffs of Darkness (15 charges).
+14370:09-26 16:03:52 d0 MSG Selling a Runed Staff (j).
+14372:09-26 16:03:52 d0 CONFIRM Accept 32 gold?
+14374:09-26 16:03:52 d0 MSG You sold a Staff of Light (11 charges) for 32 gold.
+14376:09-26 16:03:52 d0 MSG You have no more Staffs of Light (11 charges).
+14378:09-26 16:03:56 d0 GOAL shop 3 sell Dagger:1 sell Rapier:1 sell Tulwar:1 sell Long Sword:1
+14386:09-26 16:04:05 d0 ATT goal_done shop 3 sell Dagger:1 sell Rapier:1 sell Tulwar:1 sell Long Sword:1: You sold a Dagger (1d4) (+3,+1) for 4 gold.; You sold a Rapier (1d6) (+0,+0) for 18 gold.; You sold a Tulwar (2d4) (+4,+5) for 86 go
+14387:09-26 16:04:05 d0 GOAL shop 2 sell Hard Leather Armour:2
+14389:09-26 16:04:06 d0 MSG Selling a Dagger (1d4) {good} (l).
+14391:09-26 16:04:06 d0 CONFIRM Accept 4 gold?
+14393:09-26 16:04:06 d0 MSG You sold a Dagger (1d4) (+3,+1) for 4 gold.
+14395:09-26 16:04:06 d0 MSG You have no more Daggers (1d4) (+3,+1).
+14397:09-26 16:04:06 d0 MSG Selling a Rapier (1d6) {average} (l).
+14399:09-26 16:04:06 d0 CONFIRM Accept 18 gold?
+14401:09-26 16:04:06 d0 MSG You sold a Rapier (1d6) (+0,+0) for 18 gold.
+14402:09-26 16:04:06 d0 MSG You have no more Rapiers (1d6) (+0,+0).
+14404:09-26 16:04:06 d0 MSG Selling a Tulwar (2d4) {good} (l).
+14406:09-26 16:04:06 d0 CONFIRM Accept 86 gold?
+14408:09-26 16:04:06 d0 MSG You sold a Tulwar (2d4) (+4,+5) for 86 gold.
+14410:09-26 16:04:06 d0 MSG You have no more Tulwars (2d4) (+4,+5).
+14412:09-26 16:04:07 d0 MSG Selling a Long Sword (2d5) {average} (l).
+14414:09-26 16:04:07 d0 CONFIRM Accept 129 gold?
+14416:09-26 16:04:07 d0 MSG You sold a Long Sword (2d5) (+0,+0) for 129 gold.
+14417:09-26 16:04:07 d0 MSG You have no more Long Swords (2d5) (+0,+0).
+14422:09-26 16:04:09 d0 ATT goal_done shop 2 sell Hard Leather Armour:2: You sold Hard Leather Armour (-1) [6,+0] for 74 gold.
+14424:09-26 16:04:10 d0 MSG Selling Hard Leather Armour [6] {average} (j).
+14426:09-26 16:04:10 d0 CONFIRM Accept 74 gold?
+14428:09-26 16:04:10 d0 MSG You sold Hard Leather Armour (-1) [6,+0] for 74 gold.
+14430:09-26 16:04:10 d0 MSG You have no more Hard Leather Armours (-1) [6,+0].
+14456:09-26 16:04:49 d0 GOAL {'t': 1790453089.803, 'kind': 'goal', 'depth': 0, 'pos': [27, 114], 'hp': [220, 220], 'goal': None}
+14459:09-26 16:05:30 d0 GOAL {'t': 1790453130.799, 'kind': 'goal', 'depth': 0, 'pos': [27, 114], 'hp': [220, 220], 'goal': None}
+14465:09-26 16:14:23 d0 ACT custom r item=7 | agent: read ['Identify']
+14467:09-26 16:14:24 d0 MSG You have no more Scrolls of Identify.
+14468:09-26 16:14:29 d0 GOAL shop 2 sell Hard Leather Armour:1
+14478:09-26 16:14:44 d0 ATT goal_done shop 2 sell Hard Leather Armour:1: You sold Hard Leather Armour (-1) [6,+0] for 74 gold.
+14480:09-26 16:14:45 d0 MSG Selling Hard Leather Armour [6] {average} (j).
+14482:09-26 16:14:45 d0 CONFIRM Accept 74 gold?
+14484:09-26 16:14:45 d0 MSG You sold Hard Leather Armour (-1) [6,+0] for 74 gold.
+14486:09-26 16:14:45 d0 MSG You have no more Hard Leather Armours (-1) [6,+0].
+14505:09-26 16:15:04 d0 ACT custom { item=6 entry=@r1 | agent: inscribe ['g', '@r1']
+14508:09-26 16:15:14 d0 ACT custom I item=5 | agent: inspect ['Phase_Door']
+14510:09-26 16:15:21 d0 GOAL recall
+14516:09-26 16:15:28 d0 GOAL {'t': 1790453728.723, 'kind': 'goal', 'depth': 0, 'pos': [37, 111], 'hp': [220, 220], 'goal': None}
+14519:09-26 16:15:37 d0 MSG You feel yourself yanked downwards!
+14532:09-26 16:16:48 d20 GOAL goto item
+14533:09-26 16:16:48 d20 ATT goal_done goto item
+14535:09-26 16:16:53 d20 GOAL goto item
+14536:09-26 16:16:53 d20 ATT goal_done goto item
+14537:09-26 16:16:59 d20 GOAL goto 18,117
+14538:09-26 16:17:00 d20 ATT goal_done goto 18,117
+14550:09-26 16:17:01 d20 MSG You see a Ruby Ring.
+14570:09-26 16:17:04 d20 ACT custom , | agent: pickup
+14574:09-26 16:17:06 d20 MSG You have a Ruby Ring (j).
+14575:09-26 16:17:13 d20 GOAL dive 750ft
+14615:09-26 16:19:47 d20 MSG You feel the Dagger (k) in your pack is average...
+14643:09-26 16:19:53 d20 MSG You feel bolder now.
+14707:09-26 16:19:59 d20 GOAL recover (fled by >)
+14716:09-26 16:20:01 d20 MSG You feel there is something special about this level.
+14764:09-26 16:20:16 d20 ATT goal_done recover (fled by >): healed at 1000 ft
+14765:09-26 16:20:23 d20 ACT custom k item=10 value=1 | agent: destroy ['Dagger']
+14766:09-26 16:20:23 d20 GOAL dive 750ft
+14769:09-26 16:20:24 d20 MSG You destroy a Dagger (1d4) {average}.
+14770:09-26 16:20:24 d20 MSG You have no more Daggers (1d4) {average}.
+14773:09-26 16:20:25 d20 MSG You feel there is something special about this level.
+14986:09-26 16:21:02 d20 MSG You feel much better.
+14989:09-26 16:21:02 d20 MSG You feel the Light Crossbow (k) in your pack is good...
+14993:09-26 16:21:03 d20 MSG You feel much better.
+15021:09-26 16:21:08 d20 MSG You feel yourself moving slower!
+15047:09-26 16:21:10 d20 MSG You feel yourself speed up.
+15051:09-26 16:21:11 d20 MSG You feel much better.
+15063:09-26 16:21:12 d20 MSG You feel something roll beneath your feet.
+15084:09-26 16:21:14 d20 MSG You feel much better.
+15090:09-26 16:21:15 d20 MSG You feel much better.
+15094:09-26 16:21:16 d20 MSG You feel much better.
+15114:09-26 16:21:19 d20 GOAL recall
+15115:09-26 16:21:19 d20 MSG You feel much better.
+15155:09-26 16:21:25 d20 MSG You feel much better.
+15167:09-26 16:21:26 d20 MSG You feel much better.
+15178:09-26 16:21:27 d20 MSG You feel much better.
+15197:09-26 16:21:29 d20 MSG You feel much better.
+15202:09-26 16:21:30 d20 MSG You feel much better.
+15237:09-26 16:21:36 d0 ATT goal_done recall: arrived at 0 ft
+15247:09-26 16:21:37 d20 MSG You feel yourself yanked upwards!
+15254:09-26 16:21:49 d0 GOAL shop 3 sell Light Crossbow:1
+15256:09-26 16:21:56 d0 GOAL {'t': 1790454116.985, 'kind': 'goal', 'depth': 0, 'pos': [20, 74], 'hp': [230, 230], 'goal': None}
+15261:09-26 16:22:07 d0 GOAL shop 3 sell Light Crossbow:1
+15265:09-26 16:22:13 d0 ATT goal_done shop 3 sell Light Crossbow:1: You sold a Light Crossbow (x3) (+2,+3) for 60 gold.
+15266:09-26 16:22:13 d0 GOAL shop 6 sell Ruby Ring:1
+15268:09-26 16:22:14 d0 MSG Selling a Light Crossbow (x3) {good} (j).
+15270:09-26 16:22:14 d0 CONFIRM Accept 60 gold?
+15272:09-26 16:22:14 d0 MSG You sold a Light Crossbow (x3) (+2,+3) for 60 gold.
+15274:09-26 16:22:14 d0 MSG You have no more Light Crossbows (x3) (+2,+3).
+15279:09-26 16:22:21 d0 ATT goal_done shop 6 sell Ruby Ring:1: You sold a Ring of Searching (-2) {cursed} for 20 gold.
+15281:09-26 16:22:22 d0 MSG Selling a Ruby Ring (i).
+15283:09-26 16:22:22 d0 CONFIRM Accept 20 gold?
+15285:09-26 16:22:22 d0 MSG You sold a Ring of Searching (-2) {cursed} for 20 gold.
+15287:09-26 16:22:22 d0 MSG You have no more Rings of Searching (-2) {cursed}.
+15324:09-26 16:22:58 d0 GOAL recall
+15330:09-26 16:23:12 d13 ATT goal_done recall: arrived at 650 ft
+15331:09-26 16:23:13 d0 MSG You feel yourself yanked downwards!
+15332:09-26 16:23:13 d0 MSG You feel your luck is turning...
+15334:09-26 16:23:17 d13 GOAL explore
+15489:09-26 16:23:44 d13 MSG You feel much better.
+15501:09-26 16:23:46 d13 MSG You feel much better.
+15514:09-26 16:23:48 d13 MSG You feel much better.
+15518:09-26 16:23:49 d13 MSG You feel much better.
+15648:09-26 16:25:07 d13 MSG You feel something roll beneath your feet.
+15761:09-26 16:25:19 d13 MSG You feel much better.
+15763:09-26 16:25:23 d13 GOAL rest
+15764:09-26 16:25:23 d13 ATT goal_failed rest: monsters in view
+15785:09-26 16:25:28 d13 MSG You feel much better.
+15787:09-26 16:25:29 d13 GOAL hunt Grishnakh
+15800:09-26 16:25:32 d13 MSG You feel much better.
+15827:09-26 16:25:45 d13 GOAL rest
+15828:09-26 16:25:45 d13 ATT goal_done rest
+15829:09-26 16:25:50 d13 GOAL goto item
+15830:09-26 16:25:50 d13 ACT custom , | pick up: an Icky Green Potion.
+15831:09-26 16:25:50 d13 ATT goal_done goto item
+15832:09-26 16:25:50 d13 GOAL goto item
+15833:09-26 16:25:50 d13 ATT goal_done goto item
+15834:09-26 16:25:50 d13 GOAL goto item
+15835:09-26 16:25:50 d13 ATT goal_done goto item
+15836:09-26 16:25:50 d13 GOAL goto item
+15837:09-26 16:25:50 d13 ATT goal_done goto item
+15838:09-26 16:25:50 d13 GOAL goto item
+15839:09-26 16:25:50 d13 ATT goal_done goto item
+15840:09-26 16:25:50 d13 GOAL goto item
+15841:09-26 16:25:50 d13 ATT goal_done goto item
+15842:09-26 16:25:51 d13 MSG You see an Icky Green Potion.
+15843:09-26 16:25:52 d13 MSG You have an Icky Green Potion (f).
+15844:09-26 16:26:00 d13 ACT custom , | agent: pickup
+15845:09-26 16:26:08 d13 GOAL goto 27,68
+15846:09-26 16:26:13 d13 ATT goal_done goto 27,68
+15847:09-26 16:26:13 d13 GOAL goto item
+15848:09-26 16:26:13 d13 ATT goal_done goto item
+15849:09-26 16:26:13 d13 GOAL goto item
+15850:09-26 16:26:13 d13 ATT goal_done goto item
+15851:09-26 16:26:13 d13 GOAL goto item
+15852:09-26 16:26:13 d13 ATT goal_done goto item
+15854:09-26 16:26:26 d13 GOAL goto 26,68
+15855:09-26 16:26:26 d13 ATT goal_done goto 26,68
+15856:09-26 16:26:26 d13 GOAL goto 26,69
+15857:09-26 16:26:26 d13 ATT goal_done goto 26,69
+15858:09-26 16:26:26 d13 GOAL goto 26,70
+15859:09-26 16:26:27 d13 ATT goal_done goto 26,70
+15860:09-26 16:26:27 d13 GOAL goto 27,71
+15862:09-26 16:26:28 d13 ATT goal_done goto 27,71
+15863:09-26 16:26:28 d13 GOAL goto 28,70
+15865:09-26 16:26:28 d13 ATT goal_done goto 28,70
+15866:09-26 16:26:28 d13 GOAL goto 28,68
+15869:09-26 16:26:30 d13 ATT goal_done goto 28,68
+15870:09-26 16:26:30 d13 GOAL goto 25,49
+15883:09-26 16:26:41 d13 ATT goal_done goto 25,49
+15896:09-26 16:26:47 d13 GOAL explore
+15899:09-26 16:27:04 d13 ACT custom , | pick up: a Potion of Heroism.
+15900:09-26 16:27:06 d13 MSG You see a Potion of Heroism.
+15901:09-26 16:27:07 d13 MSG You have a Potion of Heroism (e).
+15984:09-26 16:28:42 d13 MSG You feel something roll beneath your feet.
+16022:09-26 16:29:17 d13 MSG You feel something roll beneath your feet.
+16134:09-26 16:30:29 d13 MSG You feel bolder now.
+16152:09-26 16:30:30 d13 ACT custom q item=4 | agent: quaff ['Heroism']
+16167:09-26 16:30:32 d13 MSG You feel better.
+16168:09-26 16:30:32 d13 MSG You feel like a hero!
+16169:09-26 16:30:32 d13 MSG You have no more Potions of Heroism.
+16205:09-26 16:31:52 d13 ACT custom , | pick up: a Mulberry Staff.
+16206:09-26 16:31:53 d13 MSG You see a Mulberry Staff.
+16207:09-26 16:31:54 d13 MSG You have a Mulberry Staff (k).
+16413:09-26 16:37:29 d13 MSG You see a Scroll of Summon Monster.
+16414:09-26 16:37:47 d13 MSG You see a Scroll of Summon Monster.
+16415:09-26 16:37:51 d13 GOAL goto item
+16416:09-26 16:37:51 d13 ATT goal_done goto item
+16417:09-26 16:37:51 d13 GOAL goto item
+16418:09-26 16:37:51 d13 ATT goal_done goto item
+16419:09-26 16:37:52 d13 GOAL goto item
+16420:09-26 16:37:52 d13 ATT goal_done goto item
+16422:09-26 16:37:57 d13 ACT custom , | agent: pickup
+16423:09-26 16:38:06 d13 GOAL goto 41,144
+16424:09-26 16:38:11 d13 ATT goal_done goto 41,144
+16425:09-26 16:38:11 d13 ACT custom , | agent: pickup
+16426:09-26 16:38:11 d13 GOAL goto 41,119
+16427:09-26 16:38:13 d13 MSG You see a Scroll of Summon Monster.
+16428:09-26 16:38:13 d13 MSG You have a Scroll of Summon Monster (g).
+16430:09-26 16:38:20 d13 ATT goal_done goto 41,119
+16431:09-26 16:38:20 d13 ACT custom , | agent: pickup
+16432:09-26 16:38:20 d13 GOAL goto 45,126
+16435:09-26 16:38:24 d13 ATT goal_done goto 45,126
+16436:09-26 16:38:24 d13 ACT custom , | agent: pickup
+16438:09-26 16:38:34 d13 ACT custom k item=6 value=1 | agent: destroy ['Summon_Monster']
+16439:09-26 16:38:35 d13 GOAL recall
+16441:09-26 16:38:35 d13 MSG You destroy a Scroll of Summon Monster.
+16442:09-26 16:38:35 d13 MSG You have no more Scrolls of Summon Monster.
+16445:09-26 16:38:46 d0 ATT goal_done recall: arrived at 0 ft
+16446:09-26 16:38:48 d13 MSG You feel yourself yanked upwards!
+16448:09-26 16:38:54 d0 GOAL shop 2 sell Soft Studded:1
+16449:09-26 16:39:00 d0 GOAL {'t': 1790455140.63, 'kind': 'goal', 'depth': 0, 'pos': [31, 75], 'hp': [244, 244], 'goal': None}
+16452:09-26 16:39:26 d0 GOAL shop 2 sell Soft Studded:1
+16456:09-26 16:39:27 d0 ATT goal_done shop 2 sell Soft Studded:1: You sold Soft Studded Leather of Resistance [5,+6] {Wormtongue, Agent of Saruman} for 17 gold.
+16457:09-26 16:39:27 d0 GOAL shop 6 sell Mulberry:1
+16459:09-26 16:39:28 d0 MSG Selling Soft Studded Leather [5] {Wormtongue, Agent of Saruman} (l).
+16461:09-26 16:39:28 d0 CONFIRM Accept 17 gold?
+16463:09-26 16:39:28 d0 MSG You sold Soft Studded Leather of Resistance [5,+6] {Wormtongue, Agent of Saruman} for 17 gold.
+16465:09-26 16:39:28 d0 MSG You have no more Soft Studded Leathers of Resistance [5,+6] {Wormtongue, Agent of Saru}.
+16470:09-26 16:39:36 d0 ATT goal_done shop 6 sell Mulberry:1: You sold a Staff of Slow Monsters (8 charges) for 32 gold.
+16473:09-26 16:39:38 d0 MSG Selling a Mulberry Staff (k).
+16475:09-26 16:39:38 d0 CONFIRM Accept 32 gold?
+16477:09-26 16:39:38 d0 MSG You sold a Staff of Slow Monsters (8 charges) for 32 gold.
+16479:09-26 16:39:38 d0 MSG You have no more Staffs of Slow Monsters (8 charges).
+16487:09-26 16:39:42 d0 GOAL shop 1 buy Ration:3
+16489:09-26 16:39:42 d0 MSG Selling an Icky Green Potion (f).
+16491:09-26 16:39:42 d0 CONFIRM Accept 9 gold?
+16493:09-26 16:39:42 d0 MSG You sold a Potion of Slime Mold Juice for 9 gold.
+16495:09-26 16:39:42 d0 MSG You have no more Potions of Slime Mold Juice.
+16514:09-26 16:39:53 d0 GOAL shop 2 buy of Resistance:1
+16517:09-26 16:39:59 d0 ATT goal_done shop 2 buy of Resistance:1: can't afford Soft Studded Leather of Resistance [5,+6] (19834)
+16526:09-26 16:40:20 d0 GOAL shop 5 buy Boldness:3
+16541:09-26 16:40:27 d0 ATT goal_done shop 5 buy Boldness:3: no Boldness in stock
+16548:09-26 16:40:32 d0 GOAL shop 5 buy Heroism:2
+16551:09-26 16:40:32 d0 ATT goal_done shop 5 buy Heroism:2: no Heroism in stock
+16553:09-26 16:40:36 d0 GOAL {'t': 1790455236.676, 'kind': 'goal', 'depth': 0, 'pos': [37, 111], 'hp': [244, 244], 'goal': None}
+16556:09-26 16:40:49 d0 GOAL recall
+16560:09-26 16:41:00 d13 ATT goal_done recall: arrived at 650 ft
+16561:09-26 16:41:02 d0 MSG You feel yourself yanked downwards!
+16562:09-26 16:41:02 d0 MSG You feel there is something special about this level.
+16564:09-26 16:41:06 d13 GOAL explore
+16603:09-26 16:41:35 d13 MSG You feel less confused now.
+16616:09-26 16:42:16 d13 MSG You see a Staff of Sleep Monsters.
+16617:09-26 16:42:20 d13 MSG You feel the Rounded Pebbles (l) in your pack are average...
+16633:09-26 16:42:24 d13 ACT custom , | pick up: a Copper-Plated Rod.
+16635:09-26 16:42:26 d13 MSG You see a Copper-Plated Rod.
+16636:09-26 16:42:26 d13 MSG You have a Copper-Plated Rod (k).
+16637:09-26 16:43:49 d13 MSG You see a Staff of Sleep Monsters.
+16639:09-26 16:44:02 d13 MSG You feel the Cutlass (l) in your pack is average...
+16674:09-26 16:45:19 d13 GOAL {'t': 1790455519.825, 'kind': 'goal', 'depth': 13, 'pos': [5, 145], 'hp': [244, 244], 'goal': None}
+16678:09-26 16:45:31 d13 ACT custom k item=12 value=21 | agent: destroy ['Rounded_Pebbles', 'all']
+16679:09-26 16:45:32 d13 ACT custom k item=11 value=1 | agent: destroy ['Cutlass']
+16680:09-26 16:45:33 d13 MSG You destroy 21 Rounded Pebbles (1d2) {average}.
+16681:09-26 16:45:33 d13 MSG You have no more Rounded Pebbles (1d2) {average}.
+16682:09-26 16:45:33 d13 GOAL explore
+16683:09-26 16:45:33 d13 MSG You destroy a Cutlass (1d7) {average}.
+16684:09-26 16:45:33 d13 MSG You have no more Cutlasses (1d7) {average}.
+16690:09-26 16:47:49 d13 MSG You feel the Broad Sword (l) in your pack is good...
+16772:09-26 16:49:27 d13 MSG You see a Bubbling Potion.
+16823:09-26 16:49:31 d13 MSG You feel much better.
+16825:09-26 16:49:32 d13 MSG You feel bolder now.
+16826:09-26 16:49:32 d13 GOAL dive 700ft
+16828:09-26 16:49:32 d13 MSG You feel much better.
+16843:09-26 16:49:35 d13 ATT goal_done dive 650ft (max_depth): reached 650 ft
+16848:09-26 16:49:36 d13 MSG It picks up a Bubbling Potion.
+16849:09-26 16:49:37 d13 MSG You feel much better.
+16872:09-26 16:49:39 d13 MSG You feel much better.
+16883:09-26 16:49:41 d13 MSG You feel much better.
+16899:09-26 16:49:45 d13 MSG It picks up a Scroll of Blessing.
+16920:09-26 16:49:48 d13 MSG You feel yourself yanked upwards!
+16922:09-26 16:49:49 d0 MSG You feel bolder now.
+16924:09-26 16:49:58 d0 GOAL shop 6 sell Copper-Plated:1
+16926:09-26 16:50:13 d0 GOAL {'t': 1790455813.571, 'kind': 'goal', 'depth': 0, 'pos': [23, 116], 'hp': [244, 244], 'goal': None}
+16932:09-26 16:50:32 d0 GOAL shop 6 sell Copper-Plated:1
+16936:09-26 16:50:34 d0 ATT goal_done shop 6 sell Copper-Plated:1: You sold a Rod of Illumination for 42 gold.
+16937:09-26 16:50:34 d0 GOAL shop 3 sell Broad Sword:1
+16939:09-26 16:50:35 d0 MSG Selling a Copper-Plated Rod (i).
+16941:09-26 16:50:35 d0 CONFIRM Accept 42 gold?
+16943:09-26 16:50:35 d0 MSG You sold a Rod of Illumination for 42 gold.
+16945:09-26 16:50:35 d0 MSG You have no more Rods of Illumination.
+16954:09-26 16:50:44 d0 ATT goal_done shop 3 sell Broad Sword:1: You sold a Broad Sword (2d5) (+3,+2) for 110 gold.
+16956:09-26 16:50:45 d0 MSG Selling a Broad Sword (2d5) {good} (i).
+16958:09-26 16:50:45 d0 CONFIRM Accept 110 gold?
+16960:09-26 16:50:45 d0 MSG You sold a Broad Sword (2d5) (+3,+2) for 110 gold.
+16962:09-26 16:50:45 d0 MSG You have no more Broad Swords (2d5) (+3,+2).
+16984:09-26 16:51:07 d0 GOAL recall
+16990:09-26 16:51:18 d14 ATT goal_done recall: arrived at 700 ft
+16991:09-26 16:51:20 d0 MSG You feel yourself yanked downwards!
+16994:09-26 16:51:23 d14 GOAL explore
+17009:09-26 16:51:34 d14 MSG You feel bolder now.
+17074:09-26 16:51:47 d14 MSG You feel much better.
+17075:09-26 16:51:47 d14 MSG You feel less confused now.
+17099:09-26 16:51:49 d14 MSG You feel much better.
+17106:09-26 16:51:51 d14 MSG You feel much better.
+17108:09-26 16:51:54 d14 MSG You feel bolder now.
+17109:09-26 16:52:09 d0 ATT goal_failed explore: explore is for dungeon levels, not the town or wilderness
+17111:09-26 16:52:11 d14 MSG You feel yourself yanked upwards!
+17119:09-26 16:52:33 d0 GOAL rest
+17120:09-26 16:52:33 d0 ATT goal_done rest
+17126:09-26 16:54:29 d0 GOAL {'t': 1790456069.427, 'kind': 'goal', 'depth': 0, 'pos': [37, 111], 'hp': [244, 244], 'goal': None}
+17237:09-27 11:08:04 d0 GOAL shop 5 buy Identify:1 sell Slow Poison:2 sell Satisfy Hunger:2 sell Scroll of Light:1
+17244:09-27 11:08:08 d0 ACT custom p store item=15 value=1 entry=39 | buy 4 Scrolls of Identify {50% off} x1
+17246:09-27 11:08:08 d0 ATT goal_done shop 5 buy Identify:1 sell Slow Poison:2 sell Satisfy Hunger:2 sell Scroll of Light:1: You sold 2 Potions of Slow Poison for 22 gold.; You sold 2 Scrolls of Satisfy Hunger for 8 gold.; You sold a Scro
+17248:09-27 11:08:09 d0 MSG Selling 2 Potions of Slow Poison (d).
+17250:09-27 11:08:09 d0 CONFIRM Accept 22 gold?
+17252:09-27 11:08:09 d0 MSG You sold 2 Potions of Slow Poison for 22 gold.
+17253:09-27 11:08:09 d0 MSG You have no more Potions of Slow Poison.
+17255:09-27 11:08:09 d0 MSG Selling 2 Scrolls of Satisfy Hunger (h).
+17257:09-27 11:08:09 d0 CONFIRM Accept 8 gold?
+17259:09-27 11:08:09 d0 MSG You sold 2 Scrolls of Satisfy Hunger for 8 gold.
+17260:09-27 11:08:09 d0 MSG You have no more Scrolls of Satisfy Hunger.
+17262:09-27 11:08:09 d0 MSG Selling a Scroll of Light (g).
+17264:09-27 11:08:09 d0 CONFIRM Accept 7 gold?
+17266:09-27 11:08:09 d0 MSG You sold a Scroll of Light for 7 gold.
+17267:09-27 11:08:09 d0 MSG You have no more Scrolls of Light.
+17271:09-27 11:08:10 d0 MSG You have a Scroll of Identify {50% off} (g).
+17273:09-27 11:08:14 d0 ACT custom r item=6 dir=24 | agent: read ['Identify', 'Rapier']
+17274:09-27 11:08:15 d0 ACT custom I item=24 | agent: inspect ['Rapier']
+17276:09-27 11:08:16 d0 MSG You have no more Scrolls of Identify {50% off}.
+17291:09-27 11:08:34 d0 CONFIRM Accept 7 gold?
+17296:09-27 11:08:41 d0 GOAL dive 450ft
+17306:09-27 11:08:57 d1 ACT custom , | pick up: a Magenta Potion.
+17311:09-27 11:08:58 d1 MSG You see a Magenta Potion.
+17312:09-27 11:08:59 d1 MSG You have a Magenta Potion (e).
+17323:09-27 11:09:02 d1 ACT custom , | pick up: a Scroll of Object Detection.
+17328:09-27 11:09:03 d1 MSG You see a Scroll of Object Detection.
+17329:09-27 11:09:04 d1 MSG You have a Scroll of Object Detection (h).
+17467:09-27 11:25:16 d4 GOAL goto >
+17468:09-27 11:25:17 d4 ATT goal_done goto >
+17469:09-27 11:25:23 d4 GOAL dive 450ft
+17619:09-27 11:26:02 d9 ATT goal_done dive 450ft: reached 450 ft
+17623:09-27 11:26:08 d9 GOAL explore
+17720:09-27 11:29:05 d9 ACT custom k item=8 value=1 | autodestroy a Short Bow (x2) {average}
+17721:09-27 11:29:06 d9 MSG You feel the Short Bow (i) in your pack is average...
+17722:09-27 11:29:06 d9 MSG You destroy a Short Bow (x2) {average}.
+17723:09-27 11:29:06 d9 MSG You have no more Short Bows (x2) {average}.
+17788:09-27 11:30:30 d9 MSG You feel something roll beneath your feet.
+17793:09-27 11:31:22 d9 ACT custom , | pick up: a Rosewood Staff.
+17794:09-27 11:31:23 d9 MSG You see a Staff of Detect Invisible.
+17795:09-27 11:31:23 d9 MSG You see a Rosewood Staff.
+17843:09-27 11:35:12 d9 ACT custom , | pick up: a Scroll titled "munger toxmung".
+17851:09-27 11:35:14 d9 MSG You see a Scroll titled "munger toxmung".
+17852:09-27 11:35:15 d9 MSG You have a Scroll titled "munger toxmung" (i).
+17861:09-27 11:35:43 d9 ACT custom , | pick up: a Ring of Slow Digestion.
+17862:09-27 11:35:44 d9 MSG You see a Ring of Slow Digestion.
+17888:09-27 11:36:44 d9 GOAL goto 41,79
+17894:09-27 11:38:00 d9 ACT custom , | pick up: a Rosewood Staff.
+17895:09-27 11:38:00 d9 ATT goal_done goto 41,79
+17896:09-27 11:38:01 d9 MSG You see a Rosewood Staff.
+17897:09-27 11:38:02 d9 MSG You have a Rosewood Staff (j).
+17898:09-27 11:38:07 d9 ACT custom , | agent: pickup
+17899:09-27 11:38:07 d9 GOAL goto 40,77
+17900:09-27 11:38:08 d9 ATT goal_done goto 40,77
+17901:09-27 11:38:09 d9 MSG You see a Staff of Detect Invisible.
+17903:09-27 11:38:14 d9 GOAL goto 27,50
+17904:09-27 11:38:28 d9 ACT custom , | pick up: a Potion of Berserk Strength.
+17905:09-27 11:38:28 d9 ATT goal_done goto 27,50
+17906:09-27 11:38:28 d9 ACT custom , | agent: pickup
+17907:09-27 11:38:29 d9 MSG You see a Potion of Berserk Strength.
+17908:09-27 11:38:30 d9 MSG You have a Potion of Berserk Strength (d).
+17909:09-27 11:38:41 d9 GOAL goto 40,17
+17912:09-27 11:40:07 d9 ACT custom , | pick up: a Bubbling Potion.
+17913:09-27 11:40:07 d9 ATT goal_done goto 40,17
+17914:09-27 11:40:07 d9 ACT custom , | agent: pickup
+17915:09-27 11:40:07 d9 GOAL explore
+17916:09-27 11:40:08 d9 MSG You see a Bubbling Potion.
+17917:09-27 11:40:09 d9 MSG You have a Bubbling Potion (g).
+17918:09-27 11:40:34 d9 ACT custom , | pick up: a Copper Wand.
+17919:09-27 11:40:36 d9 MSG You see a Copper Wand.
+17920:09-27 11:40:36 d9 MSG You have a Copper Wand (l).
+18075:09-27 11:45:03 d9 ATT goal_done explore: nothing left to explore
+18076:09-27 11:45:13 d9 ACT custom k item=13 value=25 | agent: destroy ['Iron_Spikes', 'all']
+18077:09-27 11:45:13 d9 GOAL dive 500ft
+18078:09-27 11:45:14 d9 MSG You destroy 25 Iron Spikes.
+18079:09-27 11:45:14 d9 MSG You have no more Iron Spikes.
+18121:09-27 11:46:08 d10 ATT goal_done dive 500ft: reached 500 ft
+18123:09-27 11:46:10 d9 MSG You feel strangely lucky...
+18125:09-27 11:46:14 d10 GOAL explore
+18189:09-27 11:49:27 d10 MSG You feel less confused now.
+18195:09-27 11:49:51 d10 MSG You feel the Robe (n) in your pack is good...
+18233:09-27 11:51:34 d10 MSG You feel less confused now.
+18352:09-27 11:54:21 d10 MSG You feel something roll beneath your feet.
+18392:09-27 11:55:04 d10 MSG You feel less confused now.
+18584:09-27 11:55:46 d10 ACT custom , | pick up: a Molybdenum Rod.
+18592:09-27 11:55:47 d10 MSG You see a Molybdenum Rod.
+18595:09-27 11:55:48 d10 GOAL recall
+18599:09-27 11:55:49 d10 MSG You have a Molybdenum Rod (l).
+18645:09-27 11:55:58 d0 ATT goal_done recall: arrived at 0 ft
+18656:09-27 11:56:00 d10 MSG You feel yourself yanked upwards!
+18658:09-27 11:56:06 d0 GOAL shop 3 sell Lance:1
+18660:09-27 11:56:15 d0 ACT custom k item=14 value=1 | autodestroy a Lance (2d8) {cursed}
+18662:09-27 11:56:15 d0 ATT goal_done shop 3 sell Lance:1: no Lance to sell
+18663:09-27 11:56:16 d0 GOAL shop 2 sell Robe:1
+18664:09-27 11:56:16 d0 MSG You feel the Lance (o) in your pack is cursed...
+18666:09-27 11:56:17 d0 MSG You destroy a Lance (2d8) {cursed}.
+18667:09-27 11:56:17 d0 MSG You have no more Lances (2d8) {cursed}.
+18671:09-27 11:56:19 d0 ATT goal_done shop 2 sell Robe:1: You sold a Robe [2,+1] for 2 gold.
+18673:09-27 11:56:20 d0 MSG Selling a Robe [2] {good} (n).
+18675:09-27 11:56:20 d0 CONFIRM Accept 2 gold?
+18677:09-27 11:56:20 d0 MSG You sold a Robe [2,+1] for 2 gold.
+18679:09-27 11:56:20 d0 MSG You have no more Robes [2,+1].
+18681:09-27 11:56:30 d0 GOAL shop 6 sell Molybdenum Rod:1 sell Copper Wand:1 sell Rosewood Staff:1
+18687:09-27 11:56:39 d0 ATT goal_done shop 6 sell Molybdenum Rod:1 sell Copper Wand:1 sell Rosewood Staff:1: You sold a Rod of Light for 42 gold.; You sold a Wand of Haste Monster (9 charges) for 24 gold.; You sold a Staff of Object Locat
+18689:09-27 11:56:40 d0 MSG Selling a Molybdenum Rod (k).
+18691:09-27 11:56:40 d0 CONFIRM Accept 42 gold?
+18693:09-27 11:56:40 d0 MSG You sold a Rod of Light for 42 gold.
+18695:09-27 11:56:40 d0 MSG You have no more Rods of Light.
+18697:09-27 11:56:40 d0 MSG Selling a Copper Wand (k).
+18699:09-27 11:56:40 d0 CONFIRM Accept 24 gold?
+18701:09-27 11:56:40 d0 MSG You sold a Wand of Haste Monster (9 charges) for 24 gold.
+18703:09-27 11:56:40 d0 MSG You have no more Wands of Haste Monster (9 charges).
+18705:09-27 11:56:41 d0 MSG Selling a Rosewood Staff (k).
+18707:09-27 11:56:41 d0 CONFIRM Accept 33 gold?
+18709:09-27 11:56:41 d0 MSG You sold a Staff of Object Location (20 charges) for 33 gold.
+18711:09-27 11:56:41 d0 MSG You have no more Staffs of Object Location (20 charges).
+18723:09-27 11:56:51 d0 MSG Selling a Magenta Potion (f).
+18725:09-27 11:56:51 d0 CONFIRM Accept 9 gold?
+18727:09-27 11:56:51 d0 MSG You sold a Potion of Confusion for 9 gold.
+18729:09-27 11:56:51 d0 MSG You have no more Potions of Confusion.
+18731:09-27 11:56:51 d0 MSG Selling a Bubbling Potion (f).
+18733:09-27 11:56:51 d0 CONFIRM Accept 9 gold?
+18735:09-27 11:56:51 d0 MSG You sold a Potion of Neutralize Poison for 9 gold.
+18737:09-27 11:56:51 d0 MSG You have no more Potions of Neutralize Poison.
+18739:09-27 11:56:51 d0 MSG Selling a Scroll titled "munger toxmung" (h).
+18741:09-27 11:56:51 d0 CONFIRM Accept 9 gold?
+18743:09-27 11:56:51 d0 MSG You sold a Scroll of Summon Undead for 9 gold.
+18745:09-27 11:56:51 d0 MSG You have no more Scrolls of Summon Undead.
+18747:09-27 11:56:52 d0 MSG Selling a Scroll of Object Detection (g).
+18749:09-27 11:56:52 d0 CONFIRM Accept 7 gold?
+18751:09-27 11:56:52 d0 MSG You sold a Scroll of Object Detection for 7 gold.
+18752:09-27 11:56:52 d0 MSG You have no more Scrolls of Object Detection.
+18758:09-27 11:56:59 d0 GOAL {'t': 1790524619.472, 'kind': 'goal', 'depth': 0, 'pos': [37, 111], 'hp': [256, 256], 'goal': None}
+18759:09-27 12:05:08 d0 GOAL {'t': 1790525108.874, 'kind': 'goal', 'depth': 0, 'pos': [37, 111], 'hp': [256, 256], 'goal': None}
+18762:09-27 12:05:58 d0 GOAL goto 27,115
+18763:09-27 12:06:03 d0 ATT goal_done goto 27,115
+18765:09-27 12:06:08 d0 GOAL goto 26,115
+18766:09-27 12:06:08 d0 ATT goal_done goto 26,115
+18767:09-27 12:06:08 d0 GOAL goto 22,116
+18769:09-27 12:06:10 d0 ATT goal_done goto 22,116
+18771:09-27 12:06:15 d0 ACT custom , | agent: pickup
+18772:09-27 12:06:26 d0 GOAL recall
+18778:09-27 12:06:36 d12 ATT goal_done recall: arrived at 600 ft
+18779:09-27 12:06:38 d0 MSG You feel yourself yanked downwards!
+18780:09-27 12:06:38 d0 MSG You feel there is something special about this level.
+18783:09-27 12:06:41 d12 GOAL explore
+18839:09-27 12:07:00 d12 MSG You feel something roll beneath your feet.
+18922:09-27 12:07:10 d12 MSG You feel much better.
+18983:09-27 12:07:23 d12 MSG You feel something roll beneath your feet.
+19020:09-27 12:07:30 d12 MSG You see a Corundum Ring.
+19022:09-27 12:07:30 d12 ACT custom , | pick up: a Corundum Ring.
+19032:09-27 12:07:32 d12 MSG You have a Corundum Ring (h).
+19061:09-27 12:07:37 d12 MSG You feel much better.
+19087:09-27 12:08:52 d12 ACT custom k item=8 value=1 | autodestroy a Set of Gauntlets [2] {average}
+19088:09-27 12:08:53 d12 MSG You feel the Set of Gauntlets (i) in your pack is average...
+19089:09-27 12:08:53 d12 MSG You destroy a Set of Gauntlets [2] {average}.
+19090:09-27 12:08:53 d12 MSG You have no more Sets of Gauntlets [2] {average}.
+19091:09-27 12:08:57 d12 ATT goal_failed explore: frontier unreachable
+19092:09-27 12:09:07 d12 GOAL goto 17,64
+19093:09-27 12:09:07 d12 ATT goal_failed goto 17,64: no known path
+19094:09-27 12:09:08 d12 GOAL goto 16,64
+19095:09-27 12:09:08 d12 ATT goal_failed goto 16,64: no known path
+19096:09-27 12:09:08 d12 GOAL goto 15,65
+19097:09-27 12:09:08 d12 ATT goal_failed goto 15,65: no known path
+19098:09-27 12:09:08 d12 GOAL goto 15,66
+19099:09-27 12:09:08 d12 ATT goal_failed goto 15,66: no known path
+19100:09-27 12:09:26 d12 GOAL dive 550ft
+19101:09-27 12:09:26 d12 ATT goal_failed dive 550ft: no stairs found: frontier unreachable
+19102:09-27 12:09:31 d12 GOAL search dead ends
+19163:09-27 12:10:55 d12 ATT goal_done search dead ends: found a way on
+19165:09-27 12:10:59 d12 GOAL explore
+19166:09-27 12:11:10 d12 ATT goal_failed explore: frontier unreachable
+19167:09-27 12:11:22 d12 GOAL goto 7,90
+19179:09-27 12:11:29 d12 ATT goal_failed goto 7,90: stuck
+19183:09-27 12:11:45 d12 GOAL recall
+19187:09-27 12:12:03 d0 ATT goal_done recall: arrived at 0 ft
+19188:09-27 12:12:05 d12 MSG You feel yourself yanked upwards!
+19190:09-27 12:12:08 d0 GOAL shop 6 sell Corundum:1
+19194:09-27 12:12:21 d0 ATT goal_done shop 6 sell Corundum:1: You sold a Ring of Feather Falling for 21 gold.
+19196:09-27 12:12:22 d0 MSG Selling a Corundum Ring (g).
+19198:09-27 12:12:22 d0 CONFIRM Accept 21 gold?
+19200:09-27 12:12:22 d0 MSG You sold a Ring of Feather Falling for 21 gold.
+19202:09-27 12:12:22 d0 MSG You have no more Rings of Feather Falling.
+19239:09-27 12:12:55 d0 GOAL recall
+19245:09-27 12:13:11 d12 ATT goal_done recall: arrived at 600 ft
+19246:09-27 12:13:13 d0 MSG You feel yourself yanked downwards!
+19247:09-27 12:13:13 d0 MSG You feel your luck is turning...
+19249:09-27 12:13:15 d12 GOAL explore
+19307:09-27 12:15:03 d12 ACT custom , | pick up: a Redwood Staff.
+19308:09-27 12:15:04 d12 MSG You see a Redwood Staff.
+19309:09-27 12:15:06 d12 MSG You have a Redwood Staff (h).
+19313:09-27 12:15:24 d12 ACT custom k item=8 value=1 | autodestroy a Pair of Soft Leather Boots [2] {worthless}
+19314:09-27 12:15:26 d12 MSG You feel the Pair of Soft Leather Boots (i) in your pack is worthless...
+19315:09-27 12:15:26 d12 MSG You destroy a Pair of Soft Leather Boots [2] {worthless}.
+19316:09-27 12:15:26 d12 MSG You have no more Pairs of Soft Leather Boots [2] {worthless}.
+19317:09-27 12:15:42 d12 GOAL flee (unseen attacker)
+19321:09-27 12:15:44 d12 MSG You feel very clumsy.
+19323:09-27 12:15:45 d12 MSG You feel very clumsy.
+19327:09-27 12:15:46 d12 MSG You feel very clumsy.
+19331:09-27 12:15:47 d12 MSG You feel very clumsy.
+19335:09-27 12:15:57 d12 MSG You feel bolder now.
+19337:09-27 12:16:08 d12 ATT goal_done flee (unseen attacker): left by the stairs
+19339:09-27 12:16:10 d12 MSG You feel there is something special about this level.
+19341:09-27 12:16:19 d13 GOAL explore
+19342:09-27 12:16:19 d13 ATT goal_failed explore: 650 ft is below max_depth 600: go up first
+19345:09-27 12:16:26 d13 MSG You feel your luck is turning...
+19353:09-27 12:16:32 d12 GOAL explore
+19395:09-27 12:16:58 d12 ACT custom , | pick up: a Scroll of Magic Mapping.
+19402:09-27 12:17:00 d12 MSG You see a Scroll of Magic Mapping.
+19403:09-27 12:17:01 d12 MSG You have a Scroll of Magic Mapping (h).
+19404:09-27 12:17:08 d12 GOAL flee (unseen attacker)
+19410:09-27 12:17:19 d12 GOAL explore
+19412:09-27 12:18:13 d12 ACT custom , | pick up: a Ring of Teleportation {cursed}.
+19413:09-27 12:18:14 d12 MSG You see a Ring of Teleportation {cursed}.
+19414:09-27 12:18:15 d12 MSG You have a Ring of Teleportation {cursed} (j).
+19417:09-27 12:18:15 d12 GOAL flee (unseen attacker)
+19419:09-27 12:18:15 d12 ACT custom k item=9 value=1 | autodestroy a Ring of Teleportation {cursed}
+19420:09-27 12:18:18 d12 MSG You destroy a Ring of Teleportation {cursed}.
+19421:09-27 12:18:18 d12 MSG You have no more Rings of Teleportation {cursed}.
+19423:09-27 12:18:27 d12 GOAL explore
+19426:09-27 12:18:55 d12 GOAL flee (unseen attacker)
+19428:09-27 12:19:05 d12 GOAL goto 38,47
+19439:09-27 12:19:13 d12 ACT custom , | pick up: a Nickel-Plated Wand.
+19440:09-27 12:19:14 d12 ATT goal_done goto 38,47
+19441:09-27 12:19:15 d12 MSG You see a Nickel-Plated Wand.
+19442:09-27 12:19:15 d12 MSG You have a Nickel-Plated Wand (i).
+19443:09-27 12:19:28 d12 GOAL explore
+19447:09-27 12:19:52 d12 ACT custom k item=10 value=1 | autodestroy a Set of Leather Gloves [1] {cursed}
+19448:09-27 12:19:53 d12 MSG You feel the Set of Leather Gloves (k) in your pack is cursed...
+19449:09-27 12:19:54 d12 MSG You destroy a Set of Leather Gloves [1] {cursed}.
+19450:09-27 12:19:54 d12 MSG You have no more Sets of Leather Gloves [1] {cursed}.
+19451:09-27 12:20:26 d12 GOAL flee (unseen attacker)
+19455:09-27 12:20:35 d12 ACT custom r item=6 | agent: read ['Word_of_Recall']
+19458:09-27 12:20:47 d0 ATT goal_failed flee (unseen attacker): no stairs known
+19459:09-27 12:20:48 d12 MSG You feel yourself yanked upwards!
+19461:09-27 12:20:52 d0 GOAL shop 6 sell Nickel:1 sell Redwood:1
+19466:09-27 12:21:06 d0 ATT goal_done shop 6 sell Nickel:1 sell Redwood:1: You sold a Wand of Trap/Door Destruction (8 charges) for 24 gold.; You sold a Staff of Door/Stair Location (13 charges) for 33 gold.
+19468:09-27 12:21:07 d0 MSG Selling a Nickel-Plated Wand (h).
+19470:09-27 12:21:07 d0 CONFIRM Accept 24 gold?
+19472:09-27 12:21:07 d0 MSG You sold a Wand of Trap/Door Destruction (8 charges) for 24 gold.
+19474:09-27 12:21:07 d0 MSG You have no more Wands of Trap/Door Destruction (8 charges).
+19476:09-27 12:21:07 d0 MSG Selling a Redwood Staff (h).
+19478:09-27 12:21:07 d0 CONFIRM Accept 33 gold?
+19480:09-27 12:21:07 d0 MSG You sold a Staff of Door/Stair Location (13 charges) for 33 gold.
+19482:09-27 12:21:07 d0 MSG You have no more Staffs of Door/Stair Location (13 charges).
+19504:09-27 12:21:38 d0 GOAL recall
+19510:09-27 12:21:55 d12 ATT goal_done recall: arrived at 600 ft
+19511:09-27 12:21:56 d0 MSG You feel yourself yanked downwards!
+19512:09-27 12:21:56 d0 MSG You feel strangely lucky...
+19514:09-27 12:22:00 d12 GOAL explore
+19541:09-27 12:22:42 d12 MSG You feel less confused now.
+19580:09-27 12:24:24 d12 MSG You feel something roll beneath your feet.
+19637:09-27 12:26:23 d12 GOAL flee (unseen attacker)
+19644:09-27 12:26:31 d12 GOAL explore
+19659:09-27 12:26:45 d12 GOAL flee (unseen attacker)
+19670:09-27 12:26:50 d12 ACT custom , | pick up: an Ivory Amulet.
+19671:09-27 12:26:51 d12 GOAL explore
+19672:09-27 12:26:52 d12 MSG You see an Ivory Amulet.
+19673:09-27 12:26:52 d12 MSG You have an Ivory Amulet (i).
+19688:09-27 12:27:49 d12 GOAL flee (unseen attacker)
+19697:09-27 12:28:10 d12 ATT goal_done flee (unseen attacker): left by the stairs
+19699:09-27 12:28:12 d12 MSG You feel there is something special about this level.
+19710:09-27 12:28:26 d12 GOAL explore
+19773:09-27 12:28:55 d12 GOAL flee (unseen attacker)
+19781:09-27 12:29:06 d12 GOAL hunt Giant salamander
+19783:09-27 12:29:08 d12 ATT goal_done hunt Giant salamander: slain
+19788:09-27 12:29:15 d12 GOAL explore
+19789:09-27 12:29:20 d12 MSG You see a Potion of Slime Mold Juice.
+19790:09-27 12:29:59 d12 GOAL flee (unseen attacker)
+19796:09-27 12:30:08 d12 GOAL rest
+19797:09-27 12:30:08 d12 ATT goal_done rest
+19798:09-27 12:30:08 d12 GOAL explore
+19799:09-27 12:30:16 d12 MSG You see a Potion of Slime Mold Juice.
+19800:09-27 12:30:34 d12 GOAL flee (unseen attacker)
+19811:09-27 12:30:44 d12 ATT goal_done flee (unseen attacker): left by the stairs
+19813:09-27 12:30:46 d12 MSG You feel there is something special about this level.
+19819:09-27 12:30:55 d12 GOAL explore
+19944:09-27 12:32:06 d12 GOAL flee (unseen attacker)
+19953:09-27 12:32:15 d12 ATT goal_done flee (unseen attacker): left by the stairs
+19967:09-27 12:32:28 d12 GOAL explore
+19975:09-27 12:33:01 d12 GOAL flee (unseen attacker)
+19984:09-27 12:33:15 d12 ATT goal_done flee (unseen attacker): left by the stairs
+19986:09-27 12:33:17 d12 MSG You feel strangely lucky...
+19992:09-27 12:33:30 d12 GOAL explore
+19995:09-27 12:33:34 d12 GOAL flee (unseen attacker)
+20005:09-27 12:33:40 d12 ATT goal_done flee (unseen attacker): left by the stairs
+20024:09-27 12:33:54 d12 GOAL explore
+20036:09-27 12:34:45 d12 GOAL flee (unseen attacker)
+20048:09-27 12:34:50 d12 ATT goal_done flee (unseen attacker): left by the stairs
+20050:09-27 12:34:52 d12 MSG You feel your luck is turning...
+20056:09-27 12:34:56 d12 GOAL explore
+20130:09-27 12:35:29 d12 MSG You feel something roll beneath your feet.
+20167:09-27 12:35:34 d12 GOAL flee (unseen attacker)
+20177:09-27 12:35:36 d12 ACT custom , | pick up: a Scroll titled "skinej glenur".
+20178:09-27 12:35:37 d12 MSG You see a Scroll titled "skinej glenur".
+20179:09-27 12:35:38 d12 MSG You have a Scroll titled "skinej glenur" (i).
+20189:09-27 12:35:51 d12 ATT goal_done flee (unseen attacker): left by the stairs
+20195:09-27 12:35:53 d12 MSG You feel strangely lucky...
+20210:09-27 12:35:57 d11 GOAL explore
+20351:09-27 12:36:22 d11 MSG You feel something roll beneath your feet.
+20352:09-27 12:36:23 d11 GOAL flee (unseen attacker)
+20365:09-27 12:36:35 d11 ATT goal_done flee (unseen attacker): left by the stairs
+20366:09-27 12:36:35 d11 GOAL hunt Novice ranger
+20382:09-27 12:36:50 d12 ATT goal_failed hunt Novice ranger: lost sight of it
+20383:09-27 12:36:57 d12 GOAL explore
+20397:09-27 12:38:11 d12 ACT custom k item=10 value=1 | autodestroy a Shovel (1d2) {cursed}
+20398:09-27 12:38:13 d12 MSG You feel the Shovel (k) in your pack is cursed...
+20399:09-27 12:38:13 d12 MSG You destroy a Shovel (1d2) {cursed}.
+20400:09-27 12:38:13 d12 MSG You have no more Shovels (1d2) {cursed}.
+20407:09-27 12:38:40 d12 GOAL flee (unseen attacker)
+20422:09-27 12:38:42 d12 MSG You see a Potion of Sleep.
+20425:09-27 12:38:59 d12 ATT goal_done flee (unseen attacker): left by the stairs
+20427:09-27 12:39:01 d12 MSG You feel there is something special about this level.
+20429:09-27 12:39:04 d13 GOAL recall
+20433:09-27 12:39:22 d0 ATT goal_done recall: arrived at 0 ft
+20434:09-27 12:39:23 d13 MSG You feel yourself yanked upwards!
+20436:09-27 12:39:27 d0 ACT custom I item=8 | agent: inspect ['Ivory_Amulet']
+20437:09-27 12:39:28 d0 GOAL shop 6 sell Ivory:1
+20438:09-27 12:39:29 d0 MSG Examining an Ivory Amulet...
+20442:09-27 12:39:43 d0 ATT goal_done shop 6 sell Ivory:1: You sold an Amulet of Resist Lightning for 21 gold.
+20445:09-27 12:39:45 d0 MSG Selling an Ivory Amulet (i).
+20447:09-27 12:39:45 d0 CONFIRM Accept 21 gold?
+20449:09-27 12:39:45 d0 MSG You sold an Amulet of Resist Lightning for 21 gold.
+20451:09-27 12:39:45 d0 MSG You have no more Amulets of Resist Lightning.
+20460:09-27 12:39:51 d0 MSG Selling a Scroll titled "skinej glenur" (h).
+20462:09-27 12:39:51 d0 CONFIRM Accept 9 gold?
+20464:09-27 12:39:51 d0 MSG You sold a Scroll of Remove Curse for 9 gold.
+20466:09-27 12:39:51 d0 MSG You have no more Scrolls of Remove Curse.
+20468:09-27 12:39:51 d0 MSG Selling a Scroll of Magic Mapping (g).
+20470:09-27 12:39:51 d0 CONFIRM Accept 18 gold?
+20472:09-27 12:39:51 d0 MSG You sold a Scroll of Magic Mapping for 18 gold.
+20473:09-27 12:39:51 d0 MSG You have no more Scrolls of Magic Mapping.
+20486:09-27 12:40:07 d0 ACT custom p store item=5 value=2 entry=30 | buy 99 Potions of Boldness x2
+20493:09-27 12:40:09 d0 MSG You have 2 Potions of Boldness (d).
+20499:09-27 12:40:16 d0 GOAL {'t': 1790527216.077, 'kind': 'goal', 'depth': 0, 'pos': [27, 114], 'hp': [261, 261], 'goal': None}
+20500:09-27 12:43:48 d0 GOAL {'t': 1790527428.551, 'kind': 'goal', 'depth': 0, 'pos': [27, 114], 'hp': [261, 261], 'goal': None}
+20503:09-27 12:44:30 d0 GOAL dive 550ft
+20585:09-27 12:45:16 d2 MSG You see a Potion of Slow Poison.
+20595:09-27 12:45:23 d4 ACT custom , | pick up: a Potion of Resist Heat.
+20596:09-27 12:45:24 d4 MSG You see a Potion of Resist Heat.
+20598:09-27 12:45:25 d4 MSG You have a Potion of Resist Heat (e).
+20634:09-27 12:45:39 d5 ACT custom k item=10 value=1 | autodestroy a Dagger (1d4) {average}
+20642:09-27 12:45:41 d5 MSG You feel the Dagger (k) in your pack is average...
+20644:09-27 12:45:41 d5 MSG You destroy a Dagger (1d4) {average}.
+20645:09-27 12:45:41 d5 MSG You have no more Daggers (1d4) {average}.
+20713:09-27 12:45:55 d5 ACT custom k item=10 value=20 | autodestroy 20 Bolts (1d5) {average}
+20722:09-27 12:45:56 d5 MSG You feel the Bolts (k) in your pack are average...
+20723:09-27 12:45:56 d5 MSG You destroy 20 Bolts (1d5) {average}.
+20724:09-27 12:45:56 d5 MSG You have no more Bolts (1d5) {average}.
+20747:09-27 12:46:02 d5 MSG You see a Scroll of Treasure Detection.
+20786:09-27 12:47:25 d7 ACT custom , | pick up: a Scroll titled "nelggar payjo".
+20791:09-27 12:47:26 d7 MSG You see a Scroll titled "nelggar payjo".
+20792:09-27 12:47:27 d7 MSG You have a Scroll titled "nelggar payjo" (k).
+20817:09-27 12:48:19 d8 ACT custom k item=11 value=1 | autodestroy a Spear (1d6) {average}
+20818:09-27 12:48:20 d8 MSG You feel the Spear (l) in your pack is average...
+20819:09-27 12:48:20 d8 MSG You destroy a Spear (1d6) {average}.
+20820:09-27 12:48:20 d8 MSG You have no more Spears (1d6) {average}.
+20826:09-27 12:49:19 d8 MSG You feel strangely lucky...
+20842:09-27 12:49:23 d7 ACT custom , | pick up: a Scroll of Identify.
+20843:09-27 12:49:24 d7 MSG You see a Scroll of Identify.
+20844:09-27 12:49:25 d7 MSG You have a Scroll of Identify (k).
+20877:09-27 12:49:35 d8 MSG You see a Staff of Detect Invisible.
+20882:09-27 12:49:51 d8 MSG You feel strangely lucky...
+20890:09-27 12:49:54 d7 ACT custom , | pick up: a Scroll titled "monwhon".
+20891:09-27 12:49:55 d7 MSG You see a Scroll titled "monwhon".
+20892:09-27 12:49:56 d7 MSG You have a Scroll titled "monwhon" (m).
+20985:09-27 12:50:16 d8 ACT custom , | pick up: a Potion of Water.
+20986:09-27 12:50:18 d8 MSG You see a Potion of Water.
+20988:09-27 12:50:19 d8 MSG You have a Potion of Water (d).
+21136:09-27 12:52:03 d10 ACT custom , | pick up: an Elm Staff.
+21144:09-27 12:52:04 d10 MSG You see an Elm Staff.
+21145:09-27 12:52:05 d10 MSG You have an Elm Staff (o).
+21217:09-27 12:52:27 d11 ATT goal_done dive 550ft: reached 550 ft
+21221:09-27 12:52:32 d11 GOAL explore
+21269:09-27 12:53:55 d11 GOAL flee (unseen attacker)
+21275:09-27 12:53:56 d11 ATT goal_failed flee (unseen attacker): stuck on the way to the stairs
+21280:09-27 12:54:07 d11 GOAL goto 60,148
+21281:09-27 12:54:26 d11 ACT custom , | pick up: a Runed Rod.
+21282:09-27 12:54:27 d11 ATT goal_done goto 60,148
+21283:09-27 12:54:28 d11 MSG You see a Runed Rod.
+21284:09-27 12:54:28 d11 MSG You have a Runed Rod (o).
+21285:09-27 12:54:32 d11 ACT custom , | agent: pickup
+21286:09-27 12:54:43 d11 ACT custom k item=16 value=1 | agent: destroy ['Empty_Bottle']
+21287:09-27 12:54:44 d11 GOAL explore
+21288:09-27 12:54:44 d11 MSG You destroy an Empty Bottle.
+21289:09-27 12:54:44 d11 MSG You have no more Empty Bottles.
+21327:09-27 12:55:44 d11 MSG You feel something roll beneath your feet.
+21372:09-27 12:55:52 d11 ACT custom , | pick up: a Potion of Resist Heat.
+21379:09-27 12:55:54 d11 MSG You see a Potion of Resist Heat.
+21380:09-27 12:55:55 d11 MSG You have 2 Potions of Resist Heat (f).
+21381:09-27 12:55:55 d11 MSG You feel the Hard Leather Armour (q) in your pack is good...
+21382:09-27 12:55:57 d11 ACT custom , | pick up: a Scroll of Satisfy Hunger.
+21383:09-27 12:55:59 d11 MSG You see a Scroll of Satisfy Hunger.
+21384:09-27 12:56:00 d11 MSG You have a Scroll of Satisfy Hunger (m).
+21426:09-27 13:00:39 d11 ACT custom , | pick up: a Scroll of Light.
+21431:09-27 13:00:41 d11 MSG You see a Scroll of Light.
+21432:09-27 13:00:41 d11 MSG You have a Scroll of Light (m).
+21435:09-27 13:00:44 d11 MSG You feel very sickly.
+21437:09-27 13:02:36 d11 ACT custom , | pick up: a Scroll of Identify.
+21438:09-27 13:02:37 d11 MSG You see a Scroll of Identify.
+21439:09-27 13:02:39 d11 MSG You have 2 Scrolls of Identify (l).
+21440:09-27 13:02:50 d11 ATT goal_done explore: nothing left to explore
+21441:09-27 13:03:00 d11 ACT custom r item=11 dir=16 | agent: read ['Identify', 'Runed_Rod']
+21442:09-27 13:03:02 d11 MSG In your pack: a Rod of Trap Location (q).
+21443:09-27 13:03:02 d11 MSG You have a Scroll of Identify.
+21444:09-27 13:03:07 d11 GOAL goto 16,148
+21458:09-27 13:03:57 d11 ATT goal_done goto 16,148
+21461:09-27 13:04:02 d11 ACT custom , | agent: pickup
+21462:09-27 13:04:03 d11 ACT custom k item=19 value=1 | autodestroy a Small Metal Shield [3] {average}
+21463:09-27 13:04:04 d11 MSG You feel the Small Metal Shield (t) in your pack is average...
+21464:09-27 13:04:04 d11 MSG You destroy a Small Metal Shield [3] {average}.
+21465:09-27 13:04:04 d11 MSG You have no more Small Metal Shields [3] {average}.
+21466:09-27 13:04:10 d11 GOAL recall
+21470:09-27 13:04:32 d0 ATT goal_done recall: arrived at 0 ft
+21471:09-27 13:04:33 d11 MSG You feel yourself yanked upwards!
+21473:09-27 13:04:38 d0 GOAL shop 6 sell Trap Location:1 sell Elm Staff:1
+21478:09-27 13:04:53 d0 ATT goal_done shop 6 sell Trap Location:1 sell Elm Staff:1: You sold a Rod of Trap Location for 47 gold.; You sold a Staff of Trap Location (9 charges) for 33 gold.
+21480:09-27 13:04:54 d0 MSG Selling a Rod of Trap Location (p).
+21482:09-27 13:04:54 d0 CONFIRM Accept 47 gold?
+21484:09-27 13:04:54 d0 MSG You sold a Rod of Trap Location for 47 gold.
+21485:09-27 13:04:54 d0 MSG You have no more Rods of Trap Location.
+21487:09-27 13:04:55 d0 MSG Selling an Elm Staff (p).
+21489:09-27 13:04:55 d0 CONFIRM Accept 33 gold?
+21491:09-27 13:04:55 d0 MSG You sold a Staff of Trap Location (9 charges) for 33 gold.
+21493:09-27 13:04:55 d0 MSG You have no more Staffs of Trap Location (9 charges).
+21495:09-27 13:04:59 d0 GOAL shop 2 sell Hard Leather Armour:1
+21499:09-27 13:05:07 d0 ATT goal_done shop 2 sell Hard Leather Armour:1: You sold Hard Leather Armour (-1) [6,+6] for 72 gold.
+21502:09-27 13:05:09 d0 MSG Selling Hard Leather Armour [6] {good} (p).
+21504:09-27 13:05:09 d0 CONFIRM Accept 72 gold?
+21506:09-27 13:05:09 d0 MSG You sold Hard Leather Armour (-1) [6,+6] for 72 gold.
+21508:09-27 13:05:09 d0 MSG You have no more Hard Leather Armours (-1) [6,+6].
+21518:09-27 13:05:19 d0 MSG Selling a Scroll titled "nelggar payjo" (n).
+21520:09-27 13:05:19 d0 CONFIRM Accept 9 gold?
+21522:09-27 13:05:19 d0 MSG You sold a Scroll of Trap Detection for 9 gold.
+21524:09-27 13:05:19 d0 MSG You have no more Scrolls of Trap Detection.
+21526:09-27 13:05:19 d0 MSG Selling a Scroll titled "monwhon" (n).
+21528:09-27 13:05:19 d0 CONFIRM Accept 9 gold?
+21530:09-27 13:05:19 d0 MSG You sold a Scroll of Detect Invisible for 9 gold.
+21531:09-27 13:05:19 d0 MSG You have no more Scrolls of Detect Invisible.
+21533:09-27 13:05:19 d0 MSG Selling a Potion of Water (d).
+21535:09-27 13:05:19 d0 CONFIRM Accept 1 gold?
+21537:09-27 13:05:19 d0 MSG You sold a Potion of Water for 1 gold.
+21538:09-27 13:05:19 d0 MSG You have no more Potions of Water.
+21554:09-27 13:08:09 d0 GOAL {'t': 1790528889.1, 'kind': 'goal', 'depth': 0, 'pos': [37, 111], 'hp': [251, 251], 'goal': None}
+21558:09-27 13:34:56 d0 GOAL recall
+21564:09-27 13:35:10 d14 ATT goal_done recall: arrived at 700 ft
+21565:09-27 13:35:11 d0 MSG You feel yourself yanked downwards!
+21568:09-27 13:35:17 d14 GOAL explore
+21638:09-27 13:36:38 d14 ACT custom , | pick up: a Silver Amulet.
+21639:09-27 13:36:40 d14 MSG You see a Silver Amulet.
+21640:09-27 13:36:40 d14 MSG You have a Silver Amulet (n).
+21659:09-27 13:37:55 d14 ACT custom , | pick up: a Staff of Object Location.
+21660:09-27 13:37:57 d14 MSG You see a Staff of Object Location.
+21661:09-27 13:37:58 d14 MSG You have a Staff of Object Location (n).
+21724:09-27 13:38:10 d14 MSG You feel something roll beneath your feet.
+21801:09-27 13:39:23 d14 GOAL explore
+21812:09-27 13:39:35 d14 ACT custom , | pick up: a Scroll of Trap Detection.
+21813:09-27 13:39:36 d14 MSG You see a Scroll of Trap Detection.
+21814:09-27 13:39:38 d14 MSG You have a Scroll of Trap Detection (m).
+22033:09-27 13:44:50 d14 GOAL explore
+22067:09-27 13:45:44 d14 GOAL flee (unseen attacker)
+22069:09-27 13:45:44 d14 ATT goal_failed flee (unseen attacker): error: TypeError("'in <string>' requires string as left operand, not NoneType")
+22115:09-27 13:45:52 d14 MSG You feel something roll beneath your feet.
+22150:09-27 13:47:04 d14 GOAL dive 750ft
+22155:09-27 13:47:25 d15 ATT goal_done dive 750ft: reached 750 ft
+22157:09-27 13:47:27 d14 MSG You feel there is something special about this level.
+22159:09-27 13:47:31 d15 GOAL explore
+22223:09-27 13:47:47 d15 GOAL flee (unseen attacker)
+22243:09-27 13:47:55 d14 ATT goal_done flee (unseen attacker): left by the stairs; now at 700 ft
+22245:09-27 13:47:57 d15 MSG You feel strangely lucky...
+22247:09-27 13:48:02 d14 GOAL dive 800ft
+22303:09-27 13:48:20 d14 MSG You feel the Hard Leather Armour (q) in your pack is average...
+22375:09-27 13:49:53 d14 MSG You feel the Set of Leather Gloves (r) in your pack is average...
+22391:09-27 13:50:08 d14 GOAL goto 25,109
+22398:09-27 13:50:36 d14 GOAL hunt Disenchanter eye
+22399:09-27 13:50:37 d14 ACT custom k item=16 value=1 | autodestroy Hard Leather Armour [6] {average}
+22400:09-27 13:50:37 d14 ATT goal_done hunt Disenchanter eye: slain
+22405:09-27 13:50:39 d14 MSG You destroy Hard Leather Armour [6] {average}.
+22406:09-27 13:50:39 d14 MSG You have no more Hard Leather Armours [6] {average}.
+22407:09-27 13:50:39 d14 ACT custom k item=16 value=1 | autodestroy a Set of Leather Gloves [1] {average}
+22408:09-27 13:50:40 d14 MSG You destroy a Set of Leather Gloves [1] {average}.
+22409:09-27 13:50:40 d14 MSG You have no more Sets of Leather Gloves [1] {average}.
+22410:09-27 13:50:44 d14 ACT custom w item=15 | agent: wear ['Silver_Amulet']
+22411:09-27 13:50:45 d14 GOAL dive 800ft
+22413:09-27 13:50:46 d14 MSG You are wearing a Silver Amulet (e).
+22416:09-27 13:50:47 d14 MSG You feel there is something special about this level.
+22490:09-27 13:50:57 d14 MSG You feel something roll beneath your feet.
+22508:09-27 13:51:01 d14 MSG You feel there is something special about this level.
+22576:09-27 13:51:13 d15 GOAL flee (unseen attacker)
+22581:09-27 13:51:15 d14 ATT goal_done flee (unseen attacker): left by the stairs; now at 700 ft
+22583:09-27 13:51:15 d15 MSG You feel very clumsy.
+22590:09-27 13:51:25 d14 GOAL dive 800ft
+22602:09-27 13:51:29 d14 ACT custom q item=3 | afraid and in danger: quaff 2 Potions of Boldness
+22603:09-27 13:51:29 d14 ATT tactic afraid and in danger: quaffed 2 Potions of Boldness
+22612:09-27 13:51:30 d14 MSG You feel bolder now.
+22613:09-27 13:51:30 d14 MSG You have a Potion of Boldness.
+22868:09-27 13:54:07 d16 ATT goal_done dive 800ft: reached 800 ft
+22872:09-27 13:54:13 d16 GOAL explore
+22921:09-27 13:55:55 d16 MSG You feel something roll beneath your feet.
+22931:09-27 13:56:57 d16 ACT custom k item=15 value=1 | autodestroy a Whip (1d3) {average}
+22932:09-27 13:56:59 d16 MSG You feel the Whip (p) in your pack is average...
+22933:09-27 13:56:59 d16 MSG You destroy a Whip (1d3) {average}.
+22934:09-27 13:56:59 d16 MSG You have no more Whips (1d3) {average}.
+22952:09-27 13:57:18 d16 GOAL recall
+22956:09-27 13:57:36 d0 ATT goal_done recall: arrived at 0 ft
+22957:09-27 13:57:37 d16 MSG You feel yourself yanked upwards!
+22969:09-27 13:58:45 d0 GOAL {'t': 1790531925.276, 'kind': 'goal', 'depth': 0, 'pos': [37, 111], 'hp': [251, 251], 'goal': None}
+22974:09-27 22:15:12 d0 GOAL {'t': 1790561712.53, 'kind': 'goal', 'depth': 0, 'pos': [37, 111], 'hp': [251, 251], 'goal': None}
+22977:09-27 22:16:04 d0 GOAL shop 6 sell Object Location:1
+22981:09-27 22:16:09 d0 ATT goal_done shop 6 sell Object Location:1: You sold a Staff of Object Location (16 charges) for 94 gold.
+22983:09-27 22:16:10 d0 MSG Selling a Staff of Object Location (o).
+22985:09-27 22:16:10 d0 CONFIRM Accept 94 gold?
+22987:09-27 22:16:10 d0 MSG You sold a Staff of Object Location (16 charges) for 94 gold.
+22989:09-27 22:16:10 d0 MSG You have no more Staffs of Object Location (16 charges).
+22991:09-27 22:16:14 d0 GOAL shop 5 buy Cure Critical:3
+22994:09-27 22:16:18 d0 ATT goal_done shop 5 buy Cure Critical:3: no Cure Critical in stock
+22996:09-27 22:16:22 d0 GOAL shop 4 buy Cure Critical:3
+22998:09-27 22:16:27 d0 ACT custom p store item=6 value=2 entry=304 | buy 30 Potions of Cure Critical Wounds x2
+23004:09-27 22:16:29 d0 MSG You have 2 Potions of Cure Critical Wounds (i).
+23006:09-27 22:16:35 d0 GOAL recall
+23012:09-27 22:16:48 d15 ATT goal_done recall: arrived at 750 ft
+23013:09-27 22:16:50 d0 MSG You feel yourself yanked downwards!
+23016:09-27 22:16:55 d15 GOAL explore
+23050:09-27 22:17:10 d15 ACT custom , | pick up: a Scroll of Remove Curse.
+23052:09-27 22:17:11 d15 MSG You see a Scroll of Remove Curse.
+23053:09-27 22:17:12 d15 MSG You have a Scroll of Remove Curse (m).
+23086:09-27 22:17:46 d15 ACT custom , | pick up: an Amber Amulet.
+23087:09-27 22:17:48 d15 MSG You see an Amber Amulet.
+23088:09-27 22:17:48 d15 MSG You have an Amber Amulet (q).
+23223:09-27 22:18:33 d15 MSG You see a Scroll of Summon Monster.
+23244:09-27 22:19:23 d15 MSG You feel much better.
+23245:09-27 22:19:23 d15 MSG You feel less confused now.
+23433:09-27 22:26:14 d15 MSG You feel something roll beneath your feet.
+23465:09-27 22:26:20 d15 ACT custom , | pick up: a Scroll of Light.
+23466:09-27 22:26:21 d15 MSG You see a Scroll of Light.
+23468:09-27 22:26:22 d15 MSG You have 2 Scrolls of Light (n).
+23492:09-27 22:27:44 d15 ACT custom k item=17 value=1 | autodestroy a Light Crossbow (x3) {average}
+23493:09-27 22:27:45 d15 MSG You feel the Light Crossbow (r) in your pack is average...
+23494:09-27 22:27:46 d15 MSG You destroy a Light Crossbow (x3) {average}.
+23495:09-27 22:27:46 d15 MSG You have no more Light Crossbows (x3) {average}.
+23506:09-27 22:28:26 d15 MSG You feel very weak.
+23519:09-27 22:28:28 d15 MSG You feel very weak.
+23543:09-27 22:28:32 d15 MSG You feel very weak.
+23544:09-27 22:28:33 d15 ACT custom q item=8 | low HP: quaff 2 Potions of Cure Critical Wounds
+23545:09-27 22:28:33 d15 ATT emergency low HP: quaffed a Potion of Cure Critical Wounds (losing ~11 HP/s)
+23547:09-27 22:28:34 d15 MSG You feel a sudden stirring nearby!
+23568:09-27 22:28:36 d15 MSG You feel very weak.

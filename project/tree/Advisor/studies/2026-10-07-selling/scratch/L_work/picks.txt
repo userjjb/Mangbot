@@ -1,0 +1,125 @@
+dive01 | 09-25 22:00:55 | d1 | a Scroll titled "xtox ipta sour"
+dive01 | 09-25 22:01:54 | d3 | a Gold Wand
+dive03 | 09-26 04:26:51 | d20 | 9 Potions of Cure Light Wounds
+dive03 | 09-26 04:33:25 | d1 | a Scroll of Summon Monster
+dive03 | 09-26 04:54:18 | d1 | 9 Scrolls of Phase Door {@r1}
+dive03 | 09-26 04:54:41 | d4 | a Light Blue Potion
+dive03 | 09-26 04:55:09 | d5 | a Clotted Red Potion
+dive03 | 09-26 04:56:54 | d8 | a Yellow Speckled Potion
+dive03 | 09-26 04:57:10 | d8 | a Blue Speckled Potion
+dive03 | 09-26 04:57:20 | d8 | a Potion of Slow Poison
+dive03 | 09-26 04:57:27 | d8 | a Green Potion
+dive03 | 09-26 15:15:27 | d0 | a Clear Potion
+dive03 | 09-26 15:21:37 | d0 | a Potion of Blindness
+dive03 | 09-26 15:23:41 | d3 | a Potion of Salt Water
+dive03 | 09-26 15:27:45 | d3 | a Scroll of Treasure Detection
+dive03 | 09-26 15:28:47 | d3 | a Potion of Weakness
+dive03 | 09-26 15:29:45 | d4 | a Scroll of Light
+dive03 | 09-26 15:29:53 | d5 | a Birch Staff
+dive03 | 09-26 15:30:58 | d5 | a Scroll of Identify
+dive03 | 09-26 15:31:37 | d6 | a Scroll of Satisfy Hunger
+dive03 | 09-26 15:32:06 | d7 | 2 Potions of Slow Poison
+dive03 | 09-26 15:32:14 | d7 | a Red Speckled Potion
+dive03 | 09-26 15:33:53 | d8 | a Red Potion
+dive03 | 09-26 15:43:54 | d7 | a Scroll titled "kliwex potri" {tried}
+dive03 | 09-26 15:45:35 | d6 | a Vermilion Potion
+dive03 | 09-26 15:45:42 | d7 | a Black Potion
+dive03 | 09-26 15:46:28 | d6 | 8 Potions of Cure Light Wounds {@q1}
+dive03 | 09-26 15:47:18 | d7 | NOROOM a Staff of Cure Light Wounds
+dive03 | 09-26 15:49:38 | d5 | NOROOM a Bubbling Potion
+dive03 | 09-26 15:49:45 | d6 | NOROOM an Iron Wand
+dive03 | 09-26 15:49:54 | d5 | 2 Scrolls of Satisfy Hunger
+dive03 | 09-26 15:50:19 | d6 | 2 Scrolls titled "kliwex potri" {tried}
+dive03 | 09-26 15:50:47 | d5 | a Runed Staff
+dive03 | 09-26 15:50:58 | d6 | NOROOM a Scroll of Blessing
+dive03 | 09-26 16:25:52 | d13 | an Icky Green Potion
+dive03 | 09-26 16:27:07 | d13 | a Potion of Heroism
+dive03 | 09-26 16:29:20 | d13 | 2 Scrolls of Word of Recall {@R650}
+dive03 | 09-26 16:31:54 | d13 | a Mulberry Staff
+dive03 | 09-26 16:38:13 | d13 | a Scroll of Summon Monster
+dive03 | 09-26 16:42:26 | d13 | a Copper-Plated Rod
+dive03 | 09-27 11:08:59 | d1 | a Magenta Potion
+dive03 | 09-27 11:09:04 | d1 | a Scroll of Object Detection
+dive03 | 09-27 11:35:15 | d9 | a Scroll titled "munger toxmung"
+dive03 | 09-27 11:38:02 | d9 | a Rosewood Staff
+dive03 | 09-27 11:38:30 | d9 | a Potion of Berserk Strength
+dive03 | 09-27 11:40:09 | d9 | a Bubbling Potion
+dive03 | 09-27 11:40:36 | d9 | a Copper Wand
+dive03 | 09-27 11:55:21 | d10 | 14 Potions of Cure Light Wounds
+dive03 | 09-27 11:55:49 | d10 | a Molybdenum Rod
+dive03 | 09-27 12:07:37 | d12 | 6 Scrolls of Phase Door {@r1}
+dive03 | 09-27 12:07:37 | d12 | 12 Potions of Cure Light Wounds
+dive03 | 09-27 12:15:06 | d12 | a Redwood Staff
+dive03 | 09-27 12:17:01 | d12 | a Scroll of Magic Mapping
+dive03 | 09-27 12:18:15 | d12 | a Ring of Teleportation {cursed}
+dive03 | 09-27 12:19:15 | d12 | a Nickel-Plated Wand
+dive03 | 09-27 12:26:52 | d12 | an Ivory Amulet
+dive03 | 09-27 12:35:38 | d12 | a Scroll titled "skinej glenur"
+dive03 | 09-27 12:45:25 | d4 | a Potion of Resist Heat
+dive03 | 09-27 12:47:27 | d7 | a Scroll titled "nelggar payjo"
+dive03 | 09-27 12:49:25 | d7 | a Scroll of Identify
+dive03 | 09-27 12:49:56 | d7 | a Scroll titled "monwhon"
+dive03 | 09-27 12:50:19 | d8 | a Potion of Water
+dive03 | 09-27 12:52:05 | d10 | an Elm Staff
+dive03 | 09-27 12:52:18 | d9 | 10 Scrolls of Phase Door {@r1}
+dive03 | 09-27 12:54:28 | d11 | a Runed Rod
+dive03 | 09-27 12:55:55 | d11 | 2 Potions of Resist Heat
+dive03 | 09-27 12:56:00 | d11 | a Scroll of Satisfy Hunger
+dive03 | 09-27 13:00:41 | d11 | a Scroll of Light
+dive03 | 09-27 13:02:39 | d11 | 2 Scrolls of Identify
+dive03 | 09-27 13:03:02 | d11 | a Scroll of Identify
+dive03 | 09-27 13:36:40 | d14 | a Silver Amulet
+dive03 | 09-27 13:37:58 | d14 | a Staff of Object Location
+dive03 | 09-27 13:39:38 | d14 | a Scroll of Trap Detection
+dive03 | 09-27 22:17:12 | d15 | a Scroll of Remove Curse
+dive03 | 09-27 22:17:48 | d15 | an Amber Amulet
+dive03 | 09-27 22:26:22 | d15 | 2 Scrolls of Light
+dive04 | 09-28 01:37:44 | d1 | a Scroll titled "xtox ipta sour"
+dive04 | 09-28 01:43:49 | d1 | a Light Brown Potion
+dive04 | 09-28 01:49:43 | d1 | a Scroll titled "mikoxy urmur i"
+dive04 | 09-28 01:53:59 | d2 | 3 Potions of Cure Light Wounds
+dive04 | 09-28 02:02:32 | d2 | a Magenta Potion
+dive04 | 09-28 02:05:53 | d2 | a Scroll titled "blaa marsef"
+dive04 | 09-29 21:37:17 | d2 | a Metallic Blue Potion
+dive04 | 09-29 21:37:38 | d2 | an Icky Green Potion
+dive04 | 09-29 21:44:33 | d5 | a Lead Wand
+dive04 | 09-29 22:10:44 | d3 | a Violet Potion
+dive04 | 09-29 22:15:37 | d5 | a Copper Wand
+dive04 | 09-29 22:21:18 | d5 | a Clear Potion
+dive04 | 09-29 22:24:20 | d5 | a Cloudy Potion
+dive04 | 09-29 22:25:32 | d5 | a Runed Staff
+dive04 | 09-29 22:37:59 | d2 | a Rosewood Staff
+dive04 | 09-29 22:38:27 | d2 | a Scroll titled "monwhon"
+dive04 | 09-29 22:46:19 | d2 | a Scroll titled "heaks khonis"
+dive04 | 09-29 22:46:20 | d2 | a Green Potion
+dive04 | 09-29 22:48:13 | d2 | a Red Potion
+dive04 | 09-29 22:50:10 | d2 | a Clear Potion
+dive04 | 09-29 22:58:42 | d3 | 4 Potions of Cure Light Wounds
+dive04 | 09-29 22:59:23 | d2 | a Blue Speckled Potion
+dive04 | 09-29 22:59:27 | d2 | an Orange Speckled Potion
+dive04 | 09-29 22:59:44 | d2 | 2 Scrolls titled "monwhon"
+dive04 | 09-29 22:59:55 | d2 | 2 Scrolls of Phase Door {25% off}
+dive04 | 09-29 23:00:06 | d2 | 2 Orange Speckled Potions
+dive04 | 09-29 23:00:45 | d2 | 3 Scrolls titled "monwhon"
+dive04 | 09-29 23:01:02 | d2 | a Scroll of Identify
+dive04 | 09-29 23:01:24 | d2 | a Light Blue Potion
+dive04 | 09-29 23:01:46 | d3 | 2 Clear Potions
+dive04 | 09-29 23:02:06 | d3 | a Cloudy Potion
+dive04 | 09-29 23:02:52 | d1 | 2 Light Blue Potions
+dive04 | 09-29 23:03:15 | d2 | 2 Red Potions
+dive04 | 09-29 23:03:36 | d2 | 3 Scrolls of Phase Door {25% off}
+dive04 | 09-29 23:03:47 | d1 | 5 Potions of Cure Light Wounds
+dive04 | 09-29 23:04:22 | d2 | a Scroll titled "it mungrea a"
+dive04 | 10-03 12:26:59 | d4 | a Vermilion Potion
+dive04 | 10-03 12:31:33 | d4 | a Potion of Boldness
+dive04 | 10-03 12:33:02 | d4 | a Wand of Heal Monster
+dive04 | 10-03 12:33:18 | d4 | a Scroll of Blessing
+dive04 | 10-03 12:33:51 | d5 | a Maple Staff
+dive04 | 10-03 12:41:05 | d5 | a Bronze Wand
+dive04 | 10-03 12:41:49 | d5 | an Aluminum-Plated Wand
+dive04 | 10-03 12:42:10 | d5 | a Scroll titled "ishx therbin"
+dive04 | 10-03 12:46:08 | d4 | a Scroll of Light
+dive04 | 10-07 08:57:05 | d6 | 12 Potions of Cure Light Wounds
+dive04 | 10-07 09:07:12 | d7 | a Scroll of Identify
+dive04 | 10-07 09:08:17 | d9 | a Staff of Object Location
+dive04 | 10-07 09:14:06 | d9 | a Puce Potion

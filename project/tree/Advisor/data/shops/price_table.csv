@@ -1,0 +1,30 @@
+item,cost,store,table_entries,buy_min,buy_max,sell_min,sell_max
+Brass Lantern,35,General Store,2,53,55,15,17
+Wooden Torch,2,General Store,4,3,3,1,1
+Flask of oil,3,General Store,6,5,5,1,1
+Potion of Cure Light Wounds,15,Temple,1,23,24,6,7
+Potion of Cure Serious Wounds,40,Temple,2,62,64,16,18
+Potion of Cure Critical Wounds,100,Temple,2,154,159,41,46
+Scroll of Phase Door,15,Alchemy shop,3,23,24,6,7
+Scroll of Word of Recall,150,Alchemy shop,4,233,242,59,68
+Scroll of Teleportation,40,(not stocked),0,,,,
+Staff of Teleportation,2000,Magic-User store,2,3100,3400,600,900
+Scroll of Enchant Weapon To-Hit,125,Alchemy shop,2,194,201,49,56
+Scroll of Enchant Armour (object.txt: Enchant Armor),125,Alchemy shop,2,194,201,49,56
+Main Gauche,25,Weaponsmith,1,36,41,10,14
+Rapier,42,Weaponsmith,1,61,68,16,23
+Dagger,10,Weaponsmith,1,15,16,4,6
+Short Sword,90,Weaponsmith,1,131,146,34,50
+Soft Leather Armour,18,Armoury,2,24,29,7,12
+Hard Leather Armour,150,Armoury,2,203,243,57,98
+Small Leather Shield,30,Armoury,2,41,49,11,20
+Large Leather Shield,120,Armoury,1,162,194,46,78
+Hard Leather Cap,12,Armoury,2,16,19,5,8
+Soft Leather Boots,7,Armoury,2,9,11,3,5
+Hard Leather Boots,12,Armoury,2,16,19,5,8
+Set of Leather Gloves,3,Armoury,2,4,5,1,2
+Cloak,3,General Store,3,5,5,1,1
+Ration of Food,3,General Store,5,5,5,1,1
+Potion of Boldness,10,Temple,1,15,16,4,5
+Potion of Heroism,35,Temple,1,54,56,14,16
+Potion of Berserk Strength,100,(not stocked),0,,,,

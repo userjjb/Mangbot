@@ -1,0 +1,100 @@
+idx,name,level,symbol,color,danger,response,threats,neutraliser,safe_when,notes
+151,Baby multi-hued dragon,11,d,v,3,CAREFUL,5x breath hp/3~43 each; melee weak,one elemental resist blocks that breath only; kill fast,clvl15+/AC50+,FORCE_MAXHP so avg=max HP=130; ~8% cast chance/turn (1_IN_12)
+152,Hippogriff,11,H,U,1,FIGHT,weak melee 2d5x2=20max,none needed,always,"no spells, no status"
+153,Zombified orc,11,z,s,1,FIGHT,weak melee 1d4x3=12max,none,always,"undead, no status attacks"
+154,Gnome mage,11,h,r,2,CAREFUL,BO_COLD ~31dmg; S_MONSTER summon,rCold; kill fast before summon,clvl14+/HP150+,25% cast chance (1_IN_4); melee trivial
+155,Black mamba,12,J,D,1,FIGHT,"BITE poison 4d4, dmg bypasses rPois",none (dmg unresisted; rPois blocks status only),always,"1 blow only, RAND_50 erratic"
+156,White wolf,12,C,w,2,CAREFUL,FRIENDS pack; weak individual bite,corridor to fight 1 at a time,HP150+,pack multiplies low per-wolf dmg
+157,Grape jelly,12,j,v,2,CAREFUL,TOUCH exp-drain if meleed; DRAIN_MANA spell,don't melee it (NEVER_MOVE),avoid melee always,classic 'trap' jelly; hold_life blocks most exp loss
+158,Nether worm mass,12,w,D,2,CAREFUL,MULTIPLY breeder; weak touch,kill fast / leave area before swarm grows,HP150+,"MAX_REPRO=100 per A1, swarm builds slowly"
+159,"Golfimbul, the Hill Orc Chief",12,o,y,4,AVOID,4 blows up to 1d12+1d12+1d10+1d10=44max; ESCORT orc pack; HP240,kill fast/ranged; corridor vs escorts,clvl18+/HP200+/AC50+,already-known unique confirmed; pure melee brute + reinforcements
+160,Master yeek,12,y,U,3,CAREFUL,BLIND+SLOW combo (skill_sav only); BA_POIS 2d12; S_MONSTER summon,high save; kill fast,save 35%+,25% cast chance; weak melee 1d8
+161,Priest,12,p,g,3,CAREFUL,CAUSE_2 ~36dmg (save all-or-nothing); SCARE fear-lock; HEAL self-sustain,resist_fear; kill fast before many casts,clvl30 (fear immune) or save 40%+,33% cast chance; weak melee 2d3x2
+162,Dark elven priest,12,h,g,3,CAREFUL,CAUSE_2 ~36dmg; BLIND+CONF (save-only); HEAL self-sustain; melee 1d9+1d10,save 35%+; rBlind/rConf,HP180+/save35%+,matches already-known 'dark elven priests cast'; 20% cast chance
+163,Air spirit,12,E,B,2,CAREFUL,INVISIBLE ambush; damage negligible (1d3),See Invisible,"with SI, or always (dmg trivial)",only the surprise/invisibility is notable
+164,Skeleton human,12,s,w,1,FIGHT,weak melee 1d8,none,always,"undead, no status"
+165,Zombified human,12,z,s,1,FIGHT,weak melee 1d4x2,none,always,
+166,Tiger,12,f,o,2,CAREFUL,"3 blows 1d8+1d8+1d6=22max, no status",AC/HP buffer,HP150+,pure melee animal
+167,Moaning spirit,12,G,u,3,CAREFUL,INVISIBLE+PASS_WALL ambush; WAIL:TERRIFY fear-lock; TOUCH:LOSE_DEX permanent stat drain,See Invisible; resist_fear; sustain DEX,with SI,fear blocks melee retaliation while it drains DEX
+168,Swordsman,12,p,u,2,CAREFUL,"2 blows 3d5x2=30max, no status",AC/HP,HP150+,"solid physical hitter, no spells"
+169,Stegocentipede,12,c,u,2,CAREFUL,3 blows 2d4x3=24max,AC/HP,HP150+,pure melee
+170,Spotted jelly,12,j,o,2,CAREFUL,ACID melee up to 34max if meleed; NEVER_MOVE,don't melee it,avoid melee always,acid damages armor too
+171,Drider,13,S,b,3,CAREFUL,3 blows up to 30max; CONF spell (save-only); poison bite,save 35%+; rConf,HP160+,12.5% cast chance
+172,Killer brown beetle,13,K,u,1,FIGHT,weak melee 3d4,none,always,
+173,"Boldor, King of the Yeeks",13,y,v,4,AVOID,ESCORT+ESCORTS yeek swarm; BLIND+SLOW spells; HEAL self-sustain; 26max melee,fight in corridor 1-at-a-time; kill fast,clvl18+/HP200+,"brings kin group (S_KIN) - swarm is the main danger, not Boldor alone"
+174,Ogre,13,O,U,2,CAREFUL,FRIENDS pack; 2d8=16max/blow,corridor,HP150+,no spells
+175,Creeping mithril coins,13,$,B,2,CAREFUL,mimic ambush; poison touch bypasses rPois for dmg; 25max melee,expect mimics,HP150+,disguised as gold pile
+176,Illusionist,13,p,R,3,CAREFUL,"HOLD (paralyze, needs FA or save); SLOW; CONF; weak melee",Free Action,with FA,"33% cast chance, big status kit, low direct dmg"
+177,Druid,13,p,G,4,AVOID,BO_FIRE ~45dmg unresisted; HOLD paralyze; S_ANIMAL summon; melee 2d4x2,Free Action; rFire,"with FA and rFire, HP180+",stat block far nastier than 'druid' name suggests
+178,Black orc,13,o,D,2,CAREFUL,FRIENDS pack; ARROW_2 ranged; 24max melee,corridor,HP160+,11% ranged cast chance
+179,Ochre jelly,13,j,U,3,CAREFUL,ACTIVELY MOVES (no NEVER_MOVE) unlike other jellies; ACID melee up to 34max degrades armor; TAKE_ITEM,"AC/HP; can't just avoid melee, it chases",HP180+,CONTRADICTS 'jellies are traps only if meleed' - this one opens doors and pursues
+180,Giant flea,14,I,s,2,CAREFUL,MULTIPLY breeder; trivial dmg 1d2,kill fast / leave,"always (dmg negligible), swarm risk if left",
+181,Ufthak of Cirith Ungol,14,o,g,4,AVOID,4 blows 3d4x4=48max; ESCORT pack; HP320,corridor; kill fast,clvl18+/HP220+,NOT in brief's already-known unique list but hits as hard - flag to Advisor
+182,Giant white dragon fly,14,F,w,1,FIGHT,BR_COLD trivial (hp13.5avg->~4.5dmg),none,always,'dragon' name but trivial due to tiny HP pool
+183,Blue icky thing,14,i,b,2,CAREFUL,MULTIPLY breeder; BLIND/CONF/SCARE spells,kill fast,HP150+,"12.5% cast chance, weak melee"
+185,Flesh golem,14,g,R,1,FIGHT,weak melee 1d6x2,none,always,
+186,Warg,14,C,s,2,CAREFUL,FRIENDS pack; weak 1d8 bite,corridor,HP150+,
+187,Giant black louse,14,l,D,1,FIGHT,MULTIPLY breeder but trivial 1d2 bite,kill fast to cap swarm,always,
+188,Lurker,14,.,w,2,CAREFUL,CHAR_CLEAR+ATTR_CLEAR+INVISIBLE ambush (undetectable floor lurker); 16max melee,See Invisible,with SI,NEVER_MOVE - only triggers if you step adjacent
+189,Wererat,15,r,D,3,CAREFUL,CAUSE_2 ~36dmg (save-only); BA_POIS 2d12; 28max melee,save 35%+,HP180+,11% cast chance
+190,Black ogre,15,O,D,3,CAREFUL,"FRIENDS pack; 2d8x2=32max/blow, multiplied by pack",corridor,HP180+,no spells but hard-hitting pack
+191,Magic mushroom patch,15,",",B,2,CAREFUL,4 spore touches=CONFUSE/HALLU on hit if meleed (0 direct dmg); BLINK/SLOW/SCARE/DARKNESS spell 50% freq,don't melee it,avoid melee,NEVER_MOVE trap; very high 50% spell-cast rate but spells non-damaging
+192,Guardian naga,15,n,B,2,CAREFUL,"3 blows up to 32max, no status",AC/HP,HP180+,"pure melee tank, HP264"
+193,Light hound,15,Z,o,2,CAREFUL,FRIENDS pack; BR_LITE breath tiny (hp21avg->~3.5dmg) blinds if unresisted,rBlind; corridor,HP150+,"weak pack, breath trivial due to low HP"
+194,Dark hound,15,Z,D,2,CAREFUL,"FRIENDS pack; BR_DARK tiny breath, blinds",rBlind; corridor,HP150+,same as light hound but dark
+195,Half-orc,15,o,s,3,CAREFUL,FRIENDS pack; 3d4x2=24max/blow,corridor,HP180+,pack of decent melee orcs
+196,Giant tarantula,15,S,o,2,CAREFUL,"poison bite x3=18max, dmg bypasses rPois",AC/HP,HP150+,
+197,Giant clear centipede,15,c,w,2,CAREFUL,INVISIBLE (ATTR_CLEAR); weak melee 16max,See Invisible,with SI,
+198,Mirkwood spider,15,S,g,3,CAREFUL,"FRIENDS pack; poison bites x3=20max, dmg bypasses rPois",corridor,HP180+,
+200,Griffon,15,H,u,2,CAREFUL,2 blows 3d4+2d6=24max,AC/HP,HP150+,"HP240, tanky but not hard-hitting"
+201,Homunculus,15,u,y,4,AVOID,HIT:PARALYZE blow (needs FA or save); repeats each connecting hit,Free Action,with FA,classic paralysis-without-FA lethal case; low raw dmg but paralysis is the killer
+202,Gnome mage,15,h,r,3,CAREFUL,FRIENDS pack of casters; BO_COLD ~31dmg each; S_MONSTER summon,rCold; kill fast,HP180+,"pack version of #154, more dangerous stacked"
+203,Clear hound,15,Z,w,3,CAREFUL,INVISIBLE (ATTR_CLEAR) + FRIENDS pack; melee up to 20max,See Invisible,with SI,"unlike other Z's, no breath at all"
+204,Clay golem,15,g,U,1,FIGHT,weak melee 1d8x2,none,always,
+205,Umber hulk,16,X,U,4,AVOID,GAZE:CONFUSE on melee hit has NO save besides resist_conf (player has none); KILL_WALL ambush; HP200,resist confusion (item) only counter,with rConf,melee confusion has no skill_sav fallback per A1 - classic deadly confuser
+206,Orc captain,18,o,o,4,AVOID,3 blows 3d5x3=45max; ESCORT pack; ARROW_2 ranged,corridor; kill fast,HP220+,single orc already 'dangerous' melee tier; escort pushes it lethal
+207,Gelatinous cube,16,j,G,3,CAREFUL,"ACTIVELY MOVES (no NEVER_MOVE, opens/bashes doors); ACID melee 30max; TAKE_ITEM; HP360 (hard to kill)",AC/HP; can't out-wait it like other jellies,HP200+,another mobile jelly - contradicts 'jellies are traps only if meleed'
+208,Giant green dragon fly,16,F,g,1,FIGHT,BR_POIS trivial (hp13.5avg->~4.5dmg),none,always,trivial despite dragonfly name
+210,Hummerhorn,16,I,y,3,CAREFUL,MULTIPLY breeder; CONFUSE on every hit with NO save besides resist_conf,rConf; kill fast before swarm,with rConf,low dmg (2d2) but confusion-on-hit + breeder swarm is a real lock risk
+211,"Ulfast, Son of Ulfang",16,p,U,4,AVOID,4 blows 3d5x4=60max; HP340; TAKE_ITEM,kill fast; high AC/HP,clvl20+/HP220+,"already-known unique confirmed; pure melee brute, no spells"
+212,Quasit,16,u,o,3,CAREFUL,INVISIBLE; BITE:LOSE_DEX stat drain; BLINK/TPORT/TELE_TO/BLIND/CONF/SCARE kit,See Invisible; sustain DEX,with SI,"low direct dmg but very disruptive, can drag you (TELE_TO)"
+213,Imp,17,u,g,3,CAREFUL,INVISIBLE; poison melee 24max unresisted dmg; same TELE_TO/BLIND/CONF/SCARE kit as quasit,See Invisible,with SI,
+214,Forest troll,17,T,g,2,CAREFUL,FRIENDS pack; REGENERATE (hard to kill); low melee 14max,corridor; sustained dmg output,HP180+,tanky slog rather than burst danger
+215,"Nar, the Dwarf",17,h,y,4,AVOID,CAUSE_2 ~36dmg + MIND_BLAST 8d8~36dmg (both save-only-or-nothing); HEAL self-sustain; BLIND/CONF; 4 blows 3d5x4=60max; HP450,save40%+; kill fast/ranged,clvl22+/HP240+,already-known unique confirmed; one of the nastiest in-band
+216,2-headed hydra,17,M,u,2,CAREFUL,24max melee; SCARE spell; HP300 (tanky),AC/HP,HP180+,"grind fight, moderate dmg"
+217,Water spirit,17,E,b,1,FIGHT,weak melee 16max,none,always,
+218,Giant red scorpion,17,S,r,2,CAREFUL,STING:LOSE_STR permanent stat drain; 15max melee,sustain STR,HP180+,
+219,Earth spirit,17,E,u,2,CAREFUL,PASS_WALL ambush; weak 16max melee,none specific; watch corners,HP180+,can attack through walls unexpectedly
+220,Fire spirit,18,E,r,2,CAREFUL,FIRE melee 24max,rFire,HP180+ or with rFire,
+221,Fire hound,18,Z,r,3,CAREFUL,FRIENDS pack; BR_FIRE hp/3~12-20; 30max melee,rFire; corridor,HP200+/rFire,900ft appearance (dl18) - see hound-depth contradiction note
+222,Cold hound,18,Z,w,3,CAREFUL,FRIENDS pack; BR_COLD hp/3~12-20; 30max melee,rCold; corridor,HP200+/rCold,900ft
+223,Energy hound,18,Z,b,3,CAREFUL,FRIENDS pack; BR_ELEC hp/3~12-20; 30max melee,rElec; corridor,HP200+/rElec,appears at dl18/900ft - CONTRADICTS already-known claim of ~1000ft for 'energy' hounds
+224,Potion mimic,18,!,w,3,CAREFUL,ambush mimic; CAUSE_2~36dmg; BO_COLD~31dmg; BLIND/CONF/SCARE,save 35%+; expect mimics,HP200+,"17% cast chance, real spellcasting kit behind a disguise"
+225,Blink dog,18,C,B,2,CAREFUL,FRIENDS pack; TELE_TO disruption; weak 8max melee,corridor,HP180+,low dmg but can relocate you
+226,Uruk,16,o,B,3,CAREFUL,FRIENDS pack; 3d5x2=30max/blow; ARROW_2 ranged,corridor,HP180+,
+227,"Shagrat, the Orc Captain",19,o,g,4,AVOID,4 blows 3d8+3d8+3d5+3d5=78max; ESCORT pack; HP400,corridor; kill fast,clvl22+/HP220+,
+228,"Gorbag, the Orc Captain",19,o,g,4,AVOID,"identical stat block to Shagrat: 78max melee, ESCORT, HP400",corridor; kill fast,clvl22+/HP220+,stat-for-stat clone of Shagrat
+229,Shambling mound,18,",",g,2,CAREFUL,"SHRIEK alarm (draws other monsters, no direct dmg); weak 16max melee",kill fast/leave area,HP180+,"danger is amplification of nearby threats, not itself"
+231,Giant black dragon fly,18,F,s,1,FIGHT,NEVER_BLOW (no melee at all); BR_ACID trivial (~4.5dmg),none,always,cannot melee you at all; harmless despite dragonfly name
+232,Stone golem,19,g,W,2,CAREFUL,"20max melee, no status",AC/HP,HP180+,"AC75 (hard for you to hit, not a player-danger factor)"
+233,Red mold,19,m,r,1,FIGHT,SPORE:FIRE 4d4 if meleed,don't melee it,avoid melee,"NEVER_MOVE trap, low dmg"
+234,Giant gold dragon fly,19,F,y,1,FIGHT,BR_SOUN trivial (~2-4dmg + minor stun),none,always,trivial despite dragonfly name
+235,"Bolg, Son of Azog",20,o,v,4,AVOID,4 blows 3d6x4=72max; ESCORT pack; HP500,corridor; kill fast,clvl24+/HP240+,already-known unique confirmed; highest HP unique in band
+236,Phase spider,20,S,B,3,CAREFUL,FRIENDS pack; poison bites 20max; BLINK/TELE_TO disruption,corridor,HP200+,
+237,3-headed hydra,20,M,o,3,CAREFUL,"36max melee; SCARE; HP500 (very tanky, long fight)",AC/HP; ranged kill,HP220+,
+238,Earth hound,20,Z,u,4,AVOID,FRIENDS pack; BR_SHAR hp/6~11-20+cuts; 4 blows=34max,corridor; rShards helps little (weak resist in 1.5),HP220+,"appears dl20/1000ft, not ~900ft as already-known claims"
+239,Air hound,20,Z,g,4,AVOID,FRIENDS pack; BR_POIS hp/3~22-40 (nastier breath tier); 4 blows=34max,rPois; corridor,HP220+/rPois,"named 'air' but breathes poison, not wind"
+240,Sabre-tooth tiger,20,f,y,3,CAREFUL,"4 blows 1d10x4=40max, no status, HP280",AC/HP,HP220+,pure melee brute animal
+241,Water hound,20,Z,s,4,AVOID,FRIENDS pack; BR_ACID hp/3~22-40 (also damages armor); 4 blows=34max,rAcid; corridor,HP220+/rAcid,"named 'water' but breathes acid, not water/ice"
+242,Chimaera,20,H,r,4,AVOID,BR_FIRE up to hp/3=100dmg (HP up to 300!); 3 blows up to 48max,rFire essential,with rFire/HP240+,breath hits the scale's own '100+ unresisted' lethal example - far nastier than name
+243,Quylthulg,20,Q,y,3,CAREFUL,"S_MONSTER summon (any random monster, unbounded danger); NEVER_BLOW so itself harmless","kill fast at range before repeated casts, or avoid",never fully safe - summon risk persists,matches already-known 'Q's summon'; itself cannot melee
+244,Sasquatch,20,Y,g,3,CAREFUL,36max melee; HP380 (tanky),AC/HP,HP220+,pure melee
+245,Werewolf,20,C,D,3,CAREFUL,"44max melee; HP440 (very tanky, long exposure)",AC/HP; ranged/allies to shorten fight,HP240+,"no status, but toughest non-unique in-band by HP"
+246,Dark elven lord,20,h,s,4,AVOID,BO_FIRE~45dmg / BO_COLD~31dmg; HASTE self-buff; BLIND/CONF; 39max melee,rFire/rCold; save 35%+,HP240+/with fire+cold resist,matches already-known 'dark elven casters'; haste doubles its actions
+550,Giant tan bat,15,b,U,2,CAREFUL,TERRIFY on bite (fear-lock if save fails); trivial dmg,resist_fear/high save,HP150+,weak dmg but frequent fear checks
+561,Crebain,16,B,D,2,CAREFUL,FRIENDS pack; SHRIEK alarm; trivial 1d4 melee,kill fast/avoid open areas,HP150+,danger is aggregation of other monsters via alarm
+564,Grizzly bear,16,q,U,2,CAREFUL,"4 blows up to 38max, no status",AC/HP,HP180+,hard-hitting pure melee animal
+580,Ranger,20,p,W,3,CAREFUL,2 blows 5d4x2=40max; BO_COLD~31/BO_ELEC~25; MISSILE/ARROW_2 ranged; S_ANIMAL summon,corridor to block LOS; rCold/rElec,HP220+,ranged+melee+summon combo
+581,Paladin,20,p,w,4,AVOID,2 blows 4d5x2=40max; CAUSE_2~36dmg(save-only); HEAL self-sustain; SLOW/SCARE/BLIND,save 35%+; kill fast,HP240+/save40%+,strong melee AND direct-dmg spell AND self-heal - a step above the dl12 Priest
+588,Evil eye,18,e,g,4,AVOID,TELE_TO can pull you adjacent even without approaching; HOLD paralyzes (needs FA); gaze exp-drain,Free Action,with FA,NEVER_MOVE but NOT a 'safe unless meleed' trap - TELE_TO breaks that pattern
+592,Neekerbreeker,19,I,D,2,CAREFUL,MULTIPLY breeder; SHRIEK alarm; trivial 2d2 bite,kill fast,HP180+,

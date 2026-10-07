@@ -1,0 +1,3306 @@
+161.831 MSG You hit Farmer Maggot..
+162.243 MSG Farmer Maggot mumbles something about mushrooms..
+163.257 MSG You hit Farmer Maggot..
+163.749 MSG Farmer Maggot asks if you have seen his dogs..
+163.749 MSG Farmer Maggot seems sad about something..
+163.831 MSG You hit Farmer Maggot..
+164.75 MSG Farmer Maggot seems sad about something..
+164.83 MSG You hit Farmer Maggot..
+165.751 MSG Farmer Maggot asks if you have seen his dogs..
+165.751 MSG Farmer Maggot tells you to get off his land..
+165.831 MSG You hit Farmer Maggot..
+166.751 MSG Farmer Maggot tells you to get off his land..
+166.751 MSG Farmer Maggot asks if you have seen his dogs..
+167.844 MSG You hit the Filthy street urchin..
+167.844 MSG You have slain the Filthy street urchin..
+167.844 IND:level c30101
+168.336 MSG You hit Farmer Maggot..
+168.616 MSG The Filthy street urchin begs you for money..
+168.616 MSG The Filthy street urchin touches you..
+168.616 MSG You quickly protect your money pouch!.
+168.616 MSG There is a puff of smoke!.
+168.763 MSG Farmer Maggot mumbles something about mushrooms..
+168.843 MSG You hit Farmer Maggot..
+169.763 MSG Farmer Maggot mumbles something about mushrooms..
+169.763 MSG Farmer Maggot tells you to get off his land..
+170.776 MSG You hit Farmer Maggot..
+171.27 MSG Farmer Maggot tells you to get off his land..
+171.27 MSG Farmer Maggot seems sad about something..
+171.35 MSG You hit Farmer Maggot..
+171.843 MSG You miss Farmer Maggot..
+172.212 S CUSTOM:'w' 1505
+172.269 MSG Farmer Maggot seems sad about something..
+172.269 MSG Farmer Maggot mumbles something about mushrooms..
+172.337 MSG You are wielding a Broad Sword (2d5) (+0,+0) (a)..
+172.337 INVEN ('f', 0, 0, 0, '(nothing)', '')
+172.337 INVEN ('g', 0, 0, 0, '(nothing)', '')
+172.337 INVEN ('h', 0, 0, 0, '(nothing)', '')
+172.337 INVEN ('i', 0, 0, 0, '(nothing)', '')
+172.337 INVEN ('j', 0, 0, 0, '(nothing)', '')
+172.337 INVEN ('k', 0, 0, 0, '(nothing)', '')
+172.337 INVEN ('l', 0, 0, 0, '(nothing)', '')
+172.337 INVEN ('m', 0, 0, 0, '(nothing)', '')
+172.337 INVEN ('n', 0, 0, 0, '(nothing)', '')
+172.337 INVEN ('o', 0, 0, 0, '(nothing)', '')
+172.337 INVEN ('p', 0, 0, 0, '(nothing)', '')
+172.337 INVEN ('q', 0, 0, 0, '(nothing)', '')
+172.337 INVEN ('r', 0, 0, 0, '(nothing)', '')
+172.337 INVEN ('s', 0, 0, 0, '(nothing)', '')
+172.337 INVEN ('t', 0, 0, 0, '(nothing)', '')
+172.337 INVEN ('u', 0, 0, 0, '(nothing)', '')
+172.337 INVEN ('v', 0, 0, 0, '(nothing)', '')
+172.337 INVEN ('w', 0, 0, 0, '(nothing)', '')
+172.337 INVEN ('x', 0, 0, 0, '(nothing)', '')
+172.337 EQUIP a 23  Broad Sword (2d5) (+0,+0)
+172.602 MSG You hit Farmer Maggot..
+173.27 MSG Farmer Maggot asks if you have seen his dogs..
+173.35 MSG You miss Farmer Maggot..
+173.603 MSG You hit Farmer Maggot..
+174.269 MSG Farmer Maggot asks if you have seen his dogs..
+174.269 MSG Farmer Maggot mumbles something about mushrooms..
+174.351 MSG You miss Farmer Maggot..
+174.603 MSG You hit Farmer Maggot..
+175.11 MSG You miss Farmer Maggot..
+175.269 MSG Farmer Maggot tells you to get off his land..
+175.269 MSG Farmer Maggot mumbles something about mushrooms..
+175.349 MSG You hit Farmer Maggot..
+176.089 S CUSTOM:'w' 1504
+176.269 MSG Farmer Maggot mumbles something about mushrooms..
+176.269 MSG Farmer Maggot asks if you have seen his dogs..
+176.337 MSG You are wearing Chain Mail (-2) [14,+0] (g)..
+176.337 INVEN ('e', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('f', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('g', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('h', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('i', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('j', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('k', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('l', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('m', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('n', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('o', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('p', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('q', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('r', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('s', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('t', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('u', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('v', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('w', 0, 0, 0, '(nothing)', '')
+176.337 INVEN ('x', 0, 0, 0, '(nothing)', '')
+176.337 EQUIP g 37 hain Mail (-2) [14,+0]
+176.603 MSG You hit Farmer Maggot..
+177.109 MSG You miss Farmer Maggot..
+177.27 MSG Farmer Maggot asks if you have seen his dogs..
+177.27 MSG Farmer Maggot tells you to get off his land..
+177.35 MSG You hit Farmer Maggot..
+178.269 MSG Farmer Maggot seems sad about something..
+178.269 MSG Farmer Maggot asks if you have seen his dogs..
+178.349 MSG You hit Farmer Maggot..
+179.269 MSG Farmer Maggot mumbles something about mushrooms..
+179.269 MSG Farmer Maggot tells you to get off his land..
+179.349 MSG You hit Farmer Maggot..
+180.269 MSG Farmer Maggot asks if you have seen his dogs..
+180.351 MSG You hit Farmer Maggot..
+180.351 MSG It was a good hit!.
+180.6 MSG You hit Farmer Maggot..
+181.11 MSG You miss Farmer Maggot..
+181.27 MSG Farmer Maggot tells you to get off his land..
+181.27 MSG Farmer Maggot seems sad about something..
+181.35 MSG You hit Farmer Maggot..
+182.109 MSG You miss Farmer Maggot..
+182.271 MSG Farmer Maggot mumbles something about mushrooms..
+182.271 MSG Farmer Maggot seems sad about something..
+182.35 MSG You hit Farmer Maggot..
+182.601 MSG Farmer Maggot flees in terror!.
+182.855 MSG You hit Farmer Maggot..
+185.295 MSG Farmer Maggot recovers his courage..
+186.83 MSG You hit Farmer Maggot..
+186.843 MSG You have slain Farmer Maggot..
+186.843 MSG Farmer Maggot was slain by Dive03..
+186.843 IND:level c30101
+191.805 S PKT_MESSAGE 2e4661726d6572204d616767
+191.805 MSG [Dive03] Farmer Maggot is a unique. He's being annoying.
+193.736 PKT_FLOOR 310002290f00012201006120536d616c6c204d6574616c20536869656c64205b335d207b4661726d6572204d6167676f747d0000
+193.736 MSG You see a Small Metal Shield [3] {Farmer Maggot}..
+195.404 S CUSTOM:',' 00
+195.406 MSG You have a Small Metal Shield [3] {Farmer Maggot} (e)..
+195.406 PKT_FLOOR 310000000000000000000000
+195.406 INVEN ('e', 34, 1, 65, 'a Small Metal Shield [3] {Farmer Maggot}', '')
+219.106 S PKT_MESSAGE 2e556e69717565732064726f
+219.106 MSG [Dive03] Uniques drop good gear worth identifying. Or pseudo-id-ing .
+228.074 S CUSTOM:'t' 1618
+228.077 MSG Was wielding a Broad Sword (2d5) (+0,+0) (f)..
+228.077 INVEN ('f', 23, 1, 150, 'a Broad Sword (2d5) (+0,+0)', '')
+228.077 EQUIP a 0 nothing)
+229.864 S CUSTOM:'t' 161e
+229.866 MSG Was wearing Chain Mail (-2) [14,+0] (e)..
+229.866 INVEN ('e', 37, 1, 220, 'Chain Mail (-2) [14,+0]', '')
+229.866 INVEN ('f', 34, 1, 65, 'a Small Metal Shield [3] {Farmer Maggot}', '')
+229.866 INVEN ('g', 23, 1, 150, 'a Broad Sword (2d5) (+0,+0)', '')
+229.866 EQUIP g 0 nothing)
+236.098 S CUSTOM:'s' 330600000001
+236.1 MSG Selling a Broad Sword (2d5) (+0,+0) (g)..
+236.1 MSG You eventually agree upon the price..
+237.936 S PKT_CONFIRM 3e0100
+237.937 MSG Taken!.
+237.937 MSG You sold a Broad Sword (2d5) (+0,+0) for 115 gold..
+237.937 MSG You have no more Broad Swords (2d5) (+0,+0)..
+237.937 INVEN ('g', 0, 0, 0, '(nothing)', '')
+237.937 INVEN ('h', 0, 0, 0, '(nothing)', '')
+237.937 INVEN ('i', 0, 0, 0, '(nothing)', '')
+237.937 INVEN ('j', 0, 0, 0, '(nothing)', '')
+237.937 INVEN ('k', 0, 0, 0, '(nothing)', '')
+237.937 INVEN ('l', 0, 0, 0, '(nothing)', '')
+237.937 INVEN ('m', 0, 0, 0, '(nothing)', '')
+237.937 INVEN ('n', 0, 0, 0, '(nothing)', '')
+237.937 INVEN ('o', 0, 0, 0, '(nothing)', '')
+237.937 INVEN ('p', 0, 0, 0, '(nothing)', '')
+237.937 INVEN ('q', 0, 0, 0, '(nothing)', '')
+237.937 INVEN ('r', 0, 0, 0, '(nothing)', '')
+237.937 INVEN ('s', 0, 0, 0, '(nothing)', '')
+237.937 INVEN ('t', 0, 0, 0, '(nothing)', '')
+237.937 INVEN ('u', 0, 0, 0, '(nothing)', '')
+237.937 INVEN ('v', 0, 0, 0, '(nothing)', '')
+237.937 INVEN ('w', 0, 0, 0, '(nothing)', '')
+237.937 INVEN ('x', 0, 0, 0, '(nothing)', '')
+247.798 S CUSTOM:'.' 4706
+250.361 S CUSTOM:'.' 4703
+250.787 MSG It picks up a Crimson Potion..
+256.027 S CUSTOM:'p' 320800000001023430
+256.029 MSG Agreed!.
+256.029 MSG You bought a Brass Lantern (with 7500 turns of light) {25% off} for 40 gold..
+256.029 MSG You have a Brass Lantern (with 7500 turns of light) {25% off} (e)..
+256.03 INVEN ('e', 39, 1, 50, 'a Brass Lantern (with 7500 turns of light) {25% off}', '')
+256.03 INVEN ('f', 37, 1, 220, 'Chain Mail (-2) [14,+0]', '')
+256.03 INVEN ('g', 34, 1, 65, 'a Small Metal Shield [3] {Farmer Maggot}', '')
+258.547 S CUSTOM:'p' 3205000000010134
+258.549 MSG Accepted!.
+258.549 MSG You bought a Flask of oil for 4 gold..
+258.549 MSG You have a Flask of oil (b)..
+258.549 INVEN ('b', 77, 1, 10, 'a Flask of oil', '')
+258.549 INVEN ('c', 75, 1, 4, 'a Potion of Berserk Strength', '')
+258.549 INVEN ('d', 70, 1, 5, 'a Scroll of Word of Recall', '')
+258.549 INVEN ('e', 39, 3, 90, '3 Wooden Torches (with 1500 turns of light)', '')
+258.549 INVEN ('f', 39, 1, 50, 'a Brass Lantern (with 7500 turns of light) {25% off}', '')
+258.55 INVEN ('g', 37, 1, 220, 'Chain Mail (-2) [14,+0]', '')
+258.55 INVEN ('h', 34, 1, 65, 'a Small Metal Shield [3] {Farmer Maggot}', '')
+269.602 S CUSTOM:'p' 3202000000010134
+269.604 MSG Taken!.
+269.604 MSG You bought a Ration of Food for 4 gold..
+269.604 MSG You have 8 Rations of Food (a)..
+269.604 INVEN ('a', 80, 8, 80, '8 Rations of Food', '')
+289.633 S CUSTOM:'s' 330400000003
+289.635 MSG Selling 3 Wooden Torches (with 1500 turns of light) (e)..
+289.635 MSG You eventually agree upon the price..
+290.883 S PKT_CONFIRM 3e0100
+290.883 MSG Accepted!.
+290.883 MSG You sold 3 Wooden Torches (with 1500 turns of light) for 3 gold..
+290.883 MSG You have no more Wooden Torches (with 1500 turns of light)..
+290.883 INVEN ('e', 39, 1, 50, 'a Brass Lantern (with 7500 turns of light) {25% off}', '')
+290.883 INVEN ('f', 37, 1, 220, 'Chain Mail (-2) [14,+0]', '')
+290.883 INVEN ('g', 34, 1, 65, 'a Small Metal Shield [3] {Farmer Maggot}', '')
+290.883 INVEN ('h', 0, 0, 0, '(nothing)', '')
+290.883 INVEN ('i', 0, 0, 0, '(nothing)', '')
+290.883 INVEN ('j', 0, 0, 0, '(nothing)', '')
+290.883 INVEN ('k', 0, 0, 0, '(nothing)', '')
+290.883 INVEN ('l', 0, 0, 0, '(nothing)', '')
+290.883 INVEN ('m', 0, 0, 0, '(nothing)', '')
+290.883 INVEN ('n', 0, 0, 0, '(nothing)', '')
+290.883 INVEN ('o', 0, 0, 0, '(nothing)', '')
+290.883 INVEN ('p', 0, 0, 0, '(nothing)', '')
+290.883 INVEN ('q', 0, 0, 0, '(nothing)', '')
+290.883 INVEN ('r', 0, 0, 0, '(nothing)', '')
+290.883 INVEN ('s', 0, 0, 0, '(nothing)', '')
+290.883 INVEN ('t', 0, 0, 0, '(nothing)', '')
+290.883 INVEN ('u', 0, 0, 0, '(nothing)', '')
+290.883 INVEN ('v', 0, 0, 0, '(nothing)', '')
+290.883 INVEN ('w', 0, 0, 0, '(nothing)', '')
+290.883 INVEN ('x', 0, 0, 0, '(nothing)', '')
+295.19 S CUSTOM:'p' 320b000000010134
+295.192 MSG Agreed!.
+295.192 MSG You bought a Cloak [1,+0] for 4 gold..
+295.192 MSG You have a Cloak [1,+0] (g)..
+295.192 INVEN ('g', 35, 1, 10, 'a Cloak [1,+0]', '')
+295.192 INVEN ('h', 34, 1, 65, 'a Small Metal Shield [3] {Farmer Maggot}', '')
+300.784 S CUSTOM:'.' 4704
+301.421 S CUSTOM:'.' 4701
+301.902 S CUSTOM:'.' 4704
+301.959 MSG You cannot run in that direction..
+301.974 MSG You hit the Mean-looking mercenary..
+303.48 MSG You miss the Mean-looking mercenary..
+303.972 MSG You hit the Mean-looking mercenary..
+304.973 MSG You miss the Mean-looking mercenary..
+305.48 MSG You hit the Mean-looking mercenary..
+305.75 S CUSTOM:'.' 4709
+306.233 S CUSTOM:'.' 4709
+306.603 S CUSTOM:'.' 4704
+308.74 S CUSTOM:'.' 4701
+309.145 S CUSTOM:'.' 4704
+317.606 S CUSTOM:'.' 4704
+318.824 S CUSTOM:'.' 4701
+329.822 S CUSTOM:'p' 320e000000010134
+329.824 MSG Taken!.
+329.824 MSG You bought a Set of Leather Gloves [1,+0] for 4 gold..
+329.824 MSG You have a Set of Leather Gloves [1,+0] (i)..
+329.824 INVEN ('i', 31, 1, 5, 'a Set of Leather Gloves [1,+0]', '')
+333.407 S CUSTOM:'p' 320d00000001023339
+333.409 MSG Agreed!.
+333.409 MSG You bought a Metal Cap [3,+0] for 39 gold..
+333.409 MSG You have a Metal Cap [3,+0] (i)..
+333.409 INVEN ('i', 32, 1, 20, 'a Metal Cap [3,+0]', '')
+333.409 INVEN ('j', 31, 1, 5, 'a Set of Leather Gloves [1,+0]', '')
+351.36 S CUSTOM:'p' 320800000001023439
+351.362 MSG Fine..
+351.362 MSG You bought Hard Leather Armour (-1) [6,+0] {25% off} for 49 gold..
+351.362 MSG You have Hard Leather Armour (-1) [6,+0] {25% off} (g)..
+351.362 INVEN ('g', 36, 1, 100, 'Hard Leather Armour (-1) [6,+0] {25% off}', '')
+351.362 INVEN ('h', 35, 1, 10, 'a Cloak [1,+0]', '')
+351.362 INVEN ('i', 34, 1, 65, 'a Small Metal Shield [3] {Farmer Maggot}', '')
+351.362 INVEN ('j', 32, 1, 20, 'a Metal Cap [3,+0]', '')
+351.362 INVEN ('k', 31, 1, 5, 'a Set of Leather Gloves [1,+0]', '')
+356.315 S CUSTOM:'w' 1507
+356.317 MSG You are wearing a Cloak [1,+0] (h)..
+356.317 INVEN ('h', 34, 1, 65, 'a Small Metal Shield [3] {Farmer Maggot}', '')
+356.317 INVEN ('i', 32, 1, 20, 'a Metal Cap [3,+0]', '')
+356.317 INVEN ('j', 31, 1, 5, 'a Set of Leather Gloves [1,+0]', '')
+356.317 INVEN ('k', 0, 0, 0, '(nothing)', '')
+356.317 INVEN ('l', 0, 0, 0, '(nothing)', '')
+356.317 INVEN ('m', 0, 0, 0, '(nothing)', '')
+356.317 INVEN ('n', 0, 0, 0, '(nothing)', '')
+356.317 INVEN ('o', 0, 0, 0, '(nothing)', '')
+356.317 INVEN ('p', 0, 0, 0, '(nothing)', '')
+356.317 INVEN ('q', 0, 0, 0, '(nothing)', '')
+356.317 INVEN ('r', 0, 0, 0, '(nothing)', '')
+356.317 INVEN ('s', 0, 0, 0, '(nothing)', '')
+356.317 INVEN ('t', 0, 0, 0, '(nothing)', '')
+356.317 INVEN ('u', 0, 0, 0, '(nothing)', '')
+356.317 INVEN ('v', 0, 0, 0, '(nothing)', '')
+356.317 INVEN ('w', 0, 0, 0, '(nothing)', '')
+356.317 INVEN ('x', 0, 0, 0, '(nothing)', '')
+356.317 EQUIP h 35  Cloak [1,+0]
+357.684 S CUSTOM:'w' 1507
+357.686 MSG You are wearing a Small Metal Shield [3] {Farmer Maggot} (i)..
+357.687 INVEN ('h', 32, 1, 20, 'a Metal Cap [3,+0]', '')
+357.687 INVEN ('i', 31, 1, 5, 'a Set of Leather Gloves [1,+0]', '')
+357.687 INVEN ('j', 0, 0, 0, '(nothing)', '')
+357.687 INVEN ('k', 0, 0, 0, '(nothing)', '')
+357.687 INVEN ('l', 0, 0, 0, '(nothing)', '')
+357.687 INVEN ('m', 0, 0, 0, '(nothing)', '')
+357.687 INVEN ('n', 0, 0, 0, '(nothing)', '')
+357.687 INVEN ('o', 0, 0, 0, '(nothing)', '')
+357.687 INVEN ('p', 0, 0, 0, '(nothing)', '')
+357.687 INVEN ('q', 0, 0, 0, '(nothing)', '')
+357.687 INVEN ('r', 0, 0, 0, '(nothing)', '')
+357.687 INVEN ('s', 0, 0, 0, '(nothing)', '')
+357.687 INVEN ('t', 0, 0, 0, '(nothing)', '')
+357.687 INVEN ('u', 0, 0, 0, '(nothing)', '')
+357.687 INVEN ('v', 0, 0, 0, '(nothing)', '')
+357.687 INVEN ('w', 0, 0, 0, '(nothing)', '')
+357.687 INVEN ('x', 0, 0, 0, '(nothing)', '')
+357.687 EQUIP i 34  Small Metal Shield [3] {Farmer Maggot}
+358.723 S CUSTOM:'w' 1507
+358.725 MSG You are wearing a Metal Cap [3,+0] (j)..
+358.725 INVEN ('h', 31, 1, 5, 'a Set of Leather Gloves [1,+0]', '')
+358.725 INVEN ('i', 0, 0, 0, '(nothing)', '')
+358.725 INVEN ('j', 0, 0, 0, '(nothing)', '')
+358.725 INVEN ('k', 0, 0, 0, '(nothing)', '')
+358.725 INVEN ('l', 0, 0, 0, '(nothing)', '')
+358.725 INVEN ('m', 0, 0, 0, '(nothing)', '')
+358.725 INVEN ('n', 0, 0, 0, '(nothing)', '')
+358.725 INVEN ('o', 0, 0, 0, '(nothing)', '')
+358.725 INVEN ('p', 0, 0, 0, '(nothing)', '')
+358.725 INVEN ('q', 0, 0, 0, '(nothing)', '')
+358.725 INVEN ('r', 0, 0, 0, '(nothing)', '')
+358.725 INVEN ('s', 0, 0, 0, '(nothing)', '')
+358.725 INVEN ('t', 0, 0, 0, '(nothing)', '')
+358.725 INVEN ('u', 0, 0, 0, '(nothing)', '')
+358.725 INVEN ('v', 0, 0, 0, '(nothing)', '')
+358.725 INVEN ('w', 0, 0, 0, '(nothing)', '')
+358.725 INVEN ('x', 0, 0, 0, '(nothing)', '')
+358.725 EQUIP j 32  Metal Cap [3,+0]
+359.41 S CUSTOM:'w' 1507
+359.412 MSG You are wearing a Set of Leather Gloves [1,+0] (k)..
+359.412 INVEN ('h', 0, 0, 0, '(nothing)', '')
+359.412 INVEN ('i', 0, 0, 0, '(nothing)', '')
+359.412 INVEN ('j', 0, 0, 0, '(nothing)', '')
+359.412 INVEN ('k', 0, 0, 0, '(nothing)', '')
+359.412 INVEN ('l', 0, 0, 0, '(nothing)', '')
+359.413 INVEN ('m', 0, 0, 0, '(nothing)', '')
+359.413 INVEN ('n', 0, 0, 0, '(nothing)', '')
+359.413 INVEN ('o', 0, 0, 0, '(nothing)', '')
+359.413 INVEN ('p', 0, 0, 0, '(nothing)', '')
+359.413 INVEN ('q', 0, 0, 0, '(nothing)', '')
+359.413 INVEN ('r', 0, 0, 0, '(nothing)', '')
+359.413 INVEN ('s', 0, 0, 0, '(nothing)', '')
+359.413 INVEN ('t', 0, 0, 0, '(nothing)', '')
+359.413 INVEN ('u', 0, 0, 0, '(nothing)', '')
+359.413 INVEN ('v', 0, 0, 0, '(nothing)', '')
+359.413 INVEN ('w', 0, 0, 0, '(nothing)', '')
+359.413 INVEN ('x', 0, 0, 0, '(nothing)', '')
+359.413 EQUIP k 31  Set of Leather Gloves [1,+0]
+360.938 S CUSTOM:'w' 1505
+360.941 MSG You are wearing Chain Mail (-2) [14,+0] (g)..
+360.941 INVEN ('f', 36, 1, 100, 'Hard Leather Armour (-1) [6,+0] {25% off}', '')
+360.941 INVEN ('g', 0, 0, 0, '(nothing)', '')
+360.941 INVEN ('h', 0, 0, 0, '(nothing)', '')
+360.941 INVEN ('i', 0, 0, 0, '(nothing)', '')
+360.941 INVEN ('j', 0, 0, 0, '(nothing)', '')
+360.941 INVEN ('k', 0, 0, 0, '(nothing)', '')
+360.941 INVEN ('l', 0, 0, 0, '(nothing)', '')
+360.941 INVEN ('m', 0, 0, 0, '(nothing)', '')
+360.941 INVEN ('n', 0, 0, 0, '(nothing)', '')
+360.941 INVEN ('o', 0, 0, 0, '(nothing)', '')
+360.941 INVEN ('p', 0, 0, 0, '(nothing)', '')
+360.941 INVEN ('q', 0, 0, 0, '(nothing)', '')
+360.941 INVEN ('r', 0, 0, 0, '(nothing)', '')
+360.941 INVEN ('s', 0, 0, 0, '(nothing)', '')
+360.941 INVEN ('t', 0, 0, 0, '(nothing)', '')
+360.941 INVEN ('u', 0, 0, 0, '(nothing)', '')
+360.941 INVEN ('v', 0, 0, 0, '(nothing)', '')
+360.941 INVEN ('w', 0, 0, 0, '(nothing)', '')
+360.941 INVEN ('x', 0, 0, 0, '(nothing)', '')
+360.941 EQUIP g 37 hain Mail (-2) [14,+0]
+364.507 S CUSTOM:'w' 1505
+364.509 MSG Was wearing Chain Mail (-2) [14,+0] (f)..
+364.509 MSG You are wearing Hard Leather Armour (-1) [6,+0] {25% off} (g)..
+364.509 INVEN ('f', 37, 1, 220, 'Chain Mail (-2) [14,+0]', '')
+364.509 INVEN ('g', 0, 0, 0, '(nothing)', '')
+364.509 INVEN ('h', 0, 0, 0, '(nothing)', '')
+364.509 INVEN ('i', 0, 0, 0, '(nothing)', '')
+364.509 INVEN ('j', 0, 0, 0, '(nothing)', '')
+364.509 INVEN ('k', 0, 0, 0, '(nothing)', '')
+364.509 INVEN ('l', 0, 0, 0, '(nothing)', '')
+364.509 INVEN ('m', 0, 0, 0, '(nothing)', '')
+364.509 INVEN ('n', 0, 0, 0, '(nothing)', '')
+364.509 INVEN ('o', 0, 0, 0, '(nothing)', '')
+364.509 INVEN ('p', 0, 0, 0, '(nothing)', '')
+364.509 INVEN ('q', 0, 0, 0, '(nothing)', '')
+364.509 INVEN ('r', 0, 0, 0, '(nothing)', '')
+364.509 INVEN ('s', 0, 0, 0, '(nothing)', '')
+364.509 INVEN ('t', 0, 0, 0, '(nothing)', '')
+364.509 INVEN ('u', 0, 0, 0, '(nothing)', '')
+364.509 INVEN ('v', 0, 0, 0, '(nothing)', '')
+364.509 INVEN ('w', 0, 0, 0, '(nothing)', '')
+364.509 INVEN ('x', 0, 0, 0, '(nothing)', '')
+364.509 EQUIP g 36 ard Leather Armour (-1) [6,+0] {25% off}
+365.026 MSG You hit the Filthy street urchin..
+365.026 MSG You have slain the Filthy street urchin..
+365.026 IND:level c30101
+368.073 S CUSTOM:'s' 330500000001
+368.075 MSG Selling Chain Mail (-2) [14,+0] (f)..
+368.075 MSG You eventually agree upon the price..
+368.936 S PKT_CONFIRM 3e0100
+368.936 MSG Fine..
+368.936 MSG You sold Chain Mail (-2) [14,+0] for 385 gold..
+368.936 MSG You have no more Chain Mails (-2) [14,+0]..
+368.937 INVEN ('f', 0, 0, 0, '(nothing)', '')
+368.937 INVEN ('g', 0, 0, 0, '(nothing)', '')
+368.937 INVEN ('h', 0, 0, 0, '(nothing)', '')
+368.937 INVEN ('i', 0, 0, 0, '(nothing)', '')
+368.937 INVEN ('j', 0, 0, 0, '(nothing)', '')
+368.937 INVEN ('k', 0, 0, 0, '(nothing)', '')
+368.937 INVEN ('l', 0, 0, 0, '(nothing)', '')
+368.937 INVEN ('m', 0, 0, 0, '(nothing)', '')
+368.937 INVEN ('n', 0, 0, 0, '(nothing)', '')
+368.937 INVEN ('o', 0, 0, 0, '(nothing)', '')
+368.937 INVEN ('p', 0, 0, 0, '(nothing)', '')
+368.937 INVEN ('q', 0, 0, 0, '(nothing)', '')
+368.937 INVEN ('r', 0, 0, 0, '(nothing)', '')
+368.937 INVEN ('s', 0, 0, 0, '(nothing)', '')
+368.937 INVEN ('t', 0, 0, 0, '(nothing)', '')
+368.937 INVEN ('u', 0, 0, 0, '(nothing)', '')
+368.937 INVEN ('v', 0, 0, 0, '(nothing)', '')
+368.937 INVEN ('w', 0, 0, 0, '(nothing)', '')
+368.937 INVEN ('x', 0, 0, 0, '(nothing)', '')
+384.014 S CUSTOM:'.' 4708
+384.212 S CUSTOM:'.' 4704
+384.849 S CUSTOM:'.' 4706
+386.488 S CUSTOM:'.' 4703
+397.49 S PKT_MESSAGE 2e492077616e742061206761
+397.49 MSG [Dive03] I want a gauche.
+414.677 S PKT_MESSAGE 2e4920736f6c64206d792073
+414.677 MSG [Dive03] I sold my starting armor/weapon they are expensive and we c.
+428.634 S PKT_MESSAGE 2e2e2e2e63616e2062757920
+428.635 MSG [Dive03] ...can buy a lot with the money we get.
+429.776 S CUSTOM:'.' 4708
+430.486 S CUSTOM:'.' 4706
+432.624 S CUSTOM:'.' 4709
+432.734 S CUSTOM:'.' 4708
+443.361 S CUSTOM:'.' 4703
+443.92 S CUSTOM:'.' 4706
+444.565 S CUSTOM:'.' 4702
+445.249 S CUSTOM:'.' 4704
+453.957 S CUSTOM:'.' 4708
+454.117 S CUSTOM:'.' 4704
+454.224 S CUSTOM:'.' 4708
+454.571 S CUSTOM:'.' 4708
+454.574 MSG You cannot run in that direction..
+454.746 S CUSTOM:'.' 4704
+454.973 S CUSTOM:'.' 4708
+467.052 S CUSTOM:'.' 4702
+467.3 S CUSTOM:'.' 4701
+468.235 MSG You hit the Mean-looking mercenary..
+469.21 MSG You miss the Mean-looking mercenary..
+469.703 MSG You hit the Mean-looking mercenary..
+470.208 MSG You miss the Mean-looking mercenary..
+470.701 MSG You hit the Mean-looking mercenary..
+471.444 S CUSTOM:'.' 4708
+471.904 S CUSTOM:'.' 4708
+472.196 S CUSTOM:'.' 4704
+473.474 S CUSTOM:'.' 4701
+473.817 S CUSTOM:'.' 4704
+478.832 S CUSTOM:'p' 320100000001023339
+478.835 MSG Taken!.
+478.835 MSG You bought a Main Gauche (1d5) (+0,+0) for 39 gold..
+478.835 MSG You have a Main Gauche (1d5) (+0,+0) (f)..
+478.835 INVEN ('f', 23, 1, 30, 'a Main Gauche (1d5) (+0,+0)', '')
+483.888 S CUSTOM:'w' 1505
+483.89 MSG You are wielding a Main Gauche (1d5) (+0,+0) (a)..
+483.89 INVEN ('f', 0, 0, 0, '(nothing)', '')
+483.89 INVEN ('g', 0, 0, 0, '(nothing)', '')
+483.89 INVEN ('h', 0, 0, 0, '(nothing)', '')
+483.89 INVEN ('i', 0, 0, 0, '(nothing)', '')
+483.89 INVEN ('j', 0, 0, 0, '(nothing)', '')
+483.89 INVEN ('k', 0, 0, 0, '(nothing)', '')
+483.89 INVEN ('l', 0, 0, 0, '(nothing)', '')
+483.89 INVEN ('m', 0, 0, 0, '(nothing)', '')
+483.89 INVEN ('n', 0, 0, 0, '(nothing)', '')
+483.89 INVEN ('o', 0, 0, 0, '(nothing)', '')
+483.89 INVEN ('p', 0, 0, 0, '(nothing)', '')
+483.89 INVEN ('q', 0, 0, 0, '(nothing)', '')
+483.89 INVEN ('r', 0, 0, 0, '(nothing)', '')
+483.89 INVEN ('s', 0, 0, 0, '(nothing)', '')
+483.89 INVEN ('t', 0, 0, 0, '(nothing)', '')
+483.89 INVEN ('u', 0, 0, 0, '(nothing)', '')
+483.89 INVEN ('v', 0, 0, 0, '(nothing)', '')
+483.89 INVEN ('w', 0, 0, 0, '(nothing)', '')
+483.89 INVEN ('x', 0, 0, 0, '(nothing)', '')
+483.89 EQUIP a 23  Main Gauche (1d5) (+0,+0)
+488.128 S CUSTOM:'.' 4707
+488.378 S CUSTOM:'.' 4704
+488.962 S CUSTOM:'.' 4701
+489.658 MSG There is a wall blocking your way..
+500.042 S CUSTOM:'.' 4708
+500.267 S CUSTOM:'.' 4706
+501.414 S CUSTOM:'.' 4702
+502.132 S CUSTOM:'.' 4706
+505.82 S CUSTOM:'.' 4706
+506.358 S CUSTOM:'.' 4709
+506.738 S CUSTOM:'.' 4706
+507.741 S CUSTOM:'.' 4702
+509.012 S CUSTOM:'.' 4702
+509.155 MSG You hit the Mean-looking mercenary..
+509.649 MSG You have slain the Mean-looking mercenary..
+509.649 MSG You feel something roll beneath your feet..
+509.649 PKT_FLOOR 31000b210e00014b00006120476f6c6420537065636b6c656420506f74696f6e0000
+509.649 IND:level c30101
+512.729 S CUSTOM:',' 00
+512.732 MSG You have a Gold Speckled Potion (d)..
+512.732 PKT_FLOOR 310000000000000000000000
+512.732 INVEN ('d', 75, 1, 4, 'a Gold Speckled Potion', '')
+512.732 INVEN ('e', 70, 1, 5, 'a Scroll of Word of Recall', '')
+512.732 INVEN ('f', 39, 1, 50, 'a Brass Lantern (with 7500 turns of light) {25% off}', '')
+519.425 S CUSTOM:'s' 330300000001
+519.428 MSG Selling a Gold Speckled Potion (d)..
+519.428 MSG You eventually agree upon the price..
+520.513 S PKT_CONFIRM 3e0100
+520.513 MSG Done!.
+520.513 MSG You sold a Potion of Blindness for 10 gold..
+520.513 MSG Arrgghh!.
+520.513 MSG You have no more Potions of Blindness..
+520.513 INVEN ('d', 70, 1, 5, 'a Scroll of Word of Recall', '')
+520.513 INVEN ('e', 39, 1, 50, 'a Brass Lantern (with 7500 turns of light) {25% off}', '')
+520.513 INVEN ('f', 0, 0, 0, '(nothing)', '')
+520.513 INVEN ('g', 0, 0, 0, '(nothing)', '')
+520.513 INVEN ('h', 0, 0, 0, '(nothing)', '')
+520.513 INVEN ('i', 0, 0, 0, '(nothing)', '')
+520.513 INVEN ('j', 0, 0, 0, '(nothing)', '')
+520.513 INVEN ('k', 0, 0, 0, '(nothing)', '')
+520.513 INVEN ('l', 0, 0, 0, '(nothing)', '')
+520.513 INVEN ('m', 0, 0, 0, '(nothing)', '')
+520.513 INVEN ('n', 0, 0, 0, '(nothing)', '')
+520.513 INVEN ('o', 0, 0, 0, '(nothing)', '')
+520.513 INVEN ('p', 0, 0, 0, '(nothing)', '')
+520.513 INVEN ('q', 0, 0, 0, '(nothing)', '')
+520.513 INVEN ('r', 0, 0, 0, '(nothing)', '')
+520.513 INVEN ('s', 0, 0, 0, '(nothing)', '')
+520.513 INVEN ('t', 0, 0, 0, '(nothing)', '')
+520.513 INVEN ('u', 0, 0, 0, '(nothing)', '')
+520.513 INVEN ('v', 0, 0, 0, '(nothing)', '')
+520.513 INVEN ('w', 0, 0, 0, '(nothing)', '')
+520.513 INVEN ('x', 0, 0, 0, '(nothing)', '')
+530.594 MSG You feel the Small Metal Shield (i) you are wearing on your arm is good....
+530.594 EQUIP i 34  Small Metal Shield [3] {good - Farmer Maggot}
+539.578 S CUSTOM:'p' 320c0000000603313038
+539.58 MSG Okay..
+539.58 MSG You bought 6 Scrolls of Phase Door {25% off} for 108 gold..
+539.58 MSG You have 6 Scrolls of Phase Door {25% off} (d)..
+539.58 INVEN ('d', 70, 6, 30, '6 Scrolls of Phase Door {25% off}', '')
+539.58 INVEN ('e', 70, 1, 5, 'a Scroll of Word of Recall', '')
+539.58 INVEN ('f', 39, 1, 50, 'a Brass Lantern (with 7500 turns of light) {25% off}', '')
+546.664 S CUSTOM:'p' 32120000000403353638
+546.666 MSG You do not have enough gold..
+549.424 S CUSTOM:'p' 32120000000303343236
+551.519 S CUSTOM:'p' 32120000000203323834
+551.522 MSG Okay..
+551.522 MSG You bought 2 Scrolls of Enchant Weapon To-Dam {25% off} for 284 gold..
+551.522 MSG You have 2 Scrolls of Enchant Weapon To-Dam {25% off} (f)..
+551.522 INVEN ('f', 70, 2, 10, '2 Scrolls of Enchant Weapon To-Dam {25% off}', '')
+551.522 INVEN ('g', 39, 1, 50, 'a Brass Lantern (with 7500 turns of light) {25% off}', '')
+560.204 S CUSTOM:'r' 1d0518
+560.206 MSG Your Main Gauche glows brightly!.
+560.206 MSG You have a Scroll of Enchant Weapon To-Dam {25% off}..
+560.206 INVEN ('f', 70, 1, 5, 'a Scroll of Enchant Weapon To-Dam {25% off}', '')
+560.206 EQUIP a 23  Main Gauche (1d5) (+0,+1)
+562.299 S CUSTOM:'r' 1d0518
+562.301 MSG Your Main Gauche glows brightly!.
+562.302 MSG You have no more Scrolls of Enchant Weapon To-Dam {25% off}..
+562.302 INVEN ('f', 39, 1, 50, 'a Brass Lantern (with 7500 turns of light) {25% off}', '')
+562.302 INVEN ('g', 0, 0, 0, '(nothing)', '')
+562.302 INVEN ('h', 0, 0, 0, '(nothing)', '')
+562.302 INVEN ('i', 0, 0, 0, '(nothing)', '')
+562.302 INVEN ('j', 0, 0, 0, '(nothing)', '')
+562.302 INVEN ('k', 0, 0, 0, '(nothing)', '')
+562.302 INVEN ('l', 0, 0, 0, '(nothing)', '')
+562.302 INVEN ('m', 0, 0, 0, '(nothing)', '')
+562.302 INVEN ('n', 0, 0, 0, '(nothing)', '')
+562.302 INVEN ('o', 0, 0, 0, '(nothing)', '')
+562.302 INVEN ('p', 0, 0, 0, '(nothing)', '')
+562.302 INVEN ('q', 0, 0, 0, '(nothing)', '')
+562.302 INVEN ('r', 0, 0, 0, '(nothing)', '')
+562.302 INVEN ('s', 0, 0, 0, '(nothing)', '')
+562.302 INVEN ('t', 0, 0, 0, '(nothing)', '')
+562.302 INVEN ('u', 0, 0, 0, '(nothing)', '')
+562.302 INVEN ('v', 0, 0, 0, '(nothing)', '')
+562.302 INVEN ('w', 0, 0, 0, '(nothing)', '')
+562.302 INVEN ('x', 0, 0, 0, '(nothing)', '')
+562.302 EQUIP a 23  Main Gauche (1d5) (+0,+2)
+566.297 S PKT_CLEAR 7b
+579.269 S PKT_MESSAGE 2e57652067657420736f206d
+579.269 MSG [Dive03] We get so many attacks, +dam to weapon is good.
+590.01 S CUSTOM:'{' 190303407231
+590.012 MSG Inscribing 6 Scrolls of Phase Door {25% off}..
+590.012 INVEN ('d', 70, 6, 30, '6 Scrolls of Phase Door {@r1}', '')
+645.971 S CUSTOM:'w' 1505
+645.973 MSG Your light source is a Brass Lantern (with 7500 turns of light) {25% off} (f)..
+645.973 INVEN ('a', 80, 8, 80, '8 Rations of Food', '')
+645.973 INVEN ('b', 77, 1, 10, 'a Flask of oil', '')
+645.973 INVEN ('c', 75, 1, 4, 'a Potion of Berserk Strength', '')
+645.973 INVEN ('d', 70, 6, 30, '6 Scrolls of Phase Door {@r1}', '')
+645.973 INVEN ('e', 70, 1, 5, 'a Scroll of Word of Recall', '')
+645.973 INVEN ('f', 0, 0, 0, '(nothing)', '')
+645.973 INVEN ('g', 0, 0, 0, '(nothing)', '')
+645.973 INVEN ('h', 0, 0, 0, '(nothing)', '')
+645.973 INVEN ('i', 0, 0, 0, '(nothing)', '')
+645.973 INVEN ('j', 0, 0, 0, '(nothing)', '')
+645.973 INVEN ('k', 0, 0, 0, '(nothing)', '')
+645.973 INVEN ('l', 0, 0, 0, '(nothing)', '')
+645.973 INVEN ('m', 0, 0, 0, '(nothing)', '')
+645.973 INVEN ('n', 0, 0, 0, '(nothing)', '')
+645.973 INVEN ('o', 0, 0, 0, '(nothing)', '')
+645.973 INVEN ('p', 0, 0, 0, '(nothing)', '')
+645.973 INVEN ('q', 0, 0, 0, '(nothing)', '')
+645.973 INVEN ('r', 0, 0, 0, '(nothing)', '')
+645.973 INVEN ('s', 0, 0, 0, '(nothing)', '')
+645.973 INVEN ('t', 0, 0, 0, '(nothing)', '')
+645.973 INVEN ('u', 0, 0, 0, '(nothing)', '')
+645.973 INVEN ('v', 0, 0, 0, '(nothing)', '')
+645.973 INVEN ('w', 0, 0, 0, '(nothing)', '')
+645.973 INVEN ('x', 0, 0, 0, '(nothing)', '')
+645.973 EQUIP f 39  Brass Lantern (with 7500 turns of light) {25% off}
+647.846 S CUSTOM:'F' 2201
+647.849 MSG You fuel your lamp..
+647.849 MSG You have no more Flasks of oil..
+647.849 INVEN ('b', 75, 1, 4, 'a Potion of Berserk Strength', '')
+647.849 INVEN ('c', 70, 6, 30, '6 Scrolls of Phase Door {@r1}', '')
+647.849 INVEN ('d', 70, 1, 5, 'a Scroll of Word of Recall', '')
+647.849 INVEN ('e', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('f', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('g', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('h', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('i', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('j', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('k', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('l', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('m', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('n', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('o', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('p', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('q', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('r', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('s', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('t', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('u', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('v', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('w', 0, 0, 0, '(nothing)', '')
+647.849 INVEN ('x', 0, 0, 0, '(nothing)', '')
+647.849 EQUIP f 39  Brass Lantern (with 14996 turns of light) {25% off}
+650.977 S CUSTOM:'E' 2400
+650.98 MSG That tastes good..
+650.98 MSG You are full!.
+650.98 MSG You have 7 Rations of Food..
+650.98 INVEN ('a', 80, 7, 70, '7 Rations of Food', '')
+652.427 S CUSTOM:'.' 4708
+652.851 S CUSTOM:'.' 4704
+653.155 S CUSTOM:'.' 4706
+654.431 S CUSTOM:'.' 4703
+658.348 S CUSTOM:'s' 330000000007
+658.351 MSG Selling 7 Rations of Food (a)..
+658.351 MSG You eventually agree upon the price..
+660.025 S PKT_CONFIRM 3e0100
+660.025 MSG Taken!.
+660.025 MSG You sold 7 Rations of Food for 14 gold..
+660.025 MSG You have no more Rations of Food..
+660.025 INVEN ('a', 75, 1, 4, 'a Potion of Berserk Strength', '')
+660.025 INVEN ('b', 70, 6, 30, '6 Scrolls of Phase Door {@r1}', '')
+660.025 INVEN ('c', 70, 1, 5, 'a Scroll of Word of Recall', '')
+660.025 INVEN ('d', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('e', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('f', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('g', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('h', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('i', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('j', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('k', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('l', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('m', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('n', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('o', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('p', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('q', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('r', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('s', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('t', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('u', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('v', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('w', 0, 0, 0, '(nothing)', '')
+660.025 INVEN ('x', 0, 0, 0, '(nothing)', '')
+671.7 S CUSTOM:'.' 4704
+674.39 EQUIP f 39  Brass Lantern (with 14900 turns of light) {25% off}
+679.08 S CUSTOM:'.' 4706
+680.789 S CUSTOM:'.' 4703
+680.888 S CUSTOM:'.' 4702
+699.38 S CUSTOM:'p' 320d00000002023430
+699.382 MSG Done!.
+699.382 MSG You bought 2 Scrolls of Identify {75% off} for 40 gold..
+699.382 MSG You have 2 Scrolls of Identify {75% off} (d)..
+699.382 INVEN ('d', 70, 2, 10, '2 Scrolls of Identify {75% off}', '')
+713.616 EQUIP f 39  Brass Lantern (with 14800 turns of light) {25% off}
+715.43 S CUSTOM:'l' 340f
+715.431 MSG Examining 20 Scrolls of Enchant Weapon To-Hit....
+726.958 S PKT_MESSAGE 2e4b65797072657373657320
+726.959 MSG [Dive03] Keypresses are being laggy.
+735.704 S PKT_MESSAGE 2e416c6c206f757466697474
+735.704 MSG [Dive03] All outfitted, imeto dive.
+738.921 S CUSTOM:'.' 4708
+739.527 S CUSTOM:'.' 4704
+740.312 S CUSTOM:'.' 4708
+741.243 S CUSTOM:'.' 4707
+741.75 S CUSTOM:'.' 4704
+743.078 S CUSTOM:'.' 4708
+743.771 S CUSTOM:'.' 4704
+744.202 EQUIP f 39  Brass Lantern (with 14700 turns of light) {25% off}
+744.843 S CUSTOM:'.' 4701
+745.048 S CUSTOM:'.' 4704
+747.661 S CUSTOM:'.' 4707
+748.064 S CUSTOM:'.' 4704
+748.639 S CUSTOM:'.' 4707
+749.603 S CUSTOM:'.' 4703
+751.649 S CUSTOM:'>' 04
+751.652 MSG You enter a maze of down staircases..
+751.656 MSG This level can't be all bad....
+751.656 IND:depth da01
+751.657 PKT_FLOOR 310000000000000000000000
+753.342 S CUSTOM:'.' 4701
+753.645 S CUSTOM:'.' 4701
+754.323 S CUSTOM:'.' 4704
+754.519 S CUSTOM:'.' 4704
+754.95 S CUSTOM:'.' 4707
+755.282 S CUSTOM:'.' 4707
+755.487 S CUSTOM:'.' 4707
+755.709 S CUSTOM:'.' 4707
+772.587 S PKT_MESSAGE 2e4d61702061726561732074
+772.587 MSG [Dive03] Map areas that look like this often have up and down stairs.
+784.32 PKT_FLOOR 31000828020001240100612046696c74687920526167205b315d0000
+784.32 MSG You see a Filthy Rag [1]..
+785.473 S CUSTOM:'.' 4707
+785.481 PKT_FLOOR 310000000000000000000000
+785.718 S CUSTOM:'.' 4704
+787.568 S CUSTOM:'>' 04
+787.57 MSG You enter a maze of down staircases..
+787.575 MSG This level can't be all bad....
+787.576 IND:depth da02
+787.576 PKT_FLOOR 310000000000000000000000
+789.814 EQUIP f 39  Brass Lantern (with 14600 turns of light) {25% off}
+789.854 S CUSTOM:'<' 02
+789.856 MSG You enter a maze of up staircases..
+789.868 MSG Looks like any other level..
+789.868 IND:depth da01
+789.868 PKT_FLOOR 310000000000000000000000
+790.787 S CUSTOM:'>' 04
+790.789 MSG You enter a maze of down staircases..
+790.802 MSG Looks like any other level..
+790.802 IND:depth da02
+790.802 PKT_FLOOR 310000000000000000000000
+792.917 S CUSTOM:'.' 4704
+793.105 S CUSTOM:'.' 4704
+793.329 S CUSTOM:'.' 4704
+793.543 S CUSTOM:'.' 4704
+793.809 S CUSTOM:'.' 4704
+794.081 S CUSTOM:'.' 4704
+794.326 S CUSTOM:'.' 4704
+794.58 S CUSTOM:'.' 4704
+795.002 S CUSTOM:'.' 4706
+795.507 S CUSTOM:'.' 4706
+795.536 S CUSTOM:'.' 4706
+795.583 S CUSTOM:'.' 4706
+795.613 S CUSTOM:'.' 4706
+795.645 S CUSTOM:'.' 4706
+795.674 S CUSTOM:'.' 4706
+795.704 S CUSTOM:'.' 4706
+795.737 S CUSTOM:'.' 4706
+795.766 S CUSTOM:'.' 4706
+795.811 S CUSTOM:'.' 4706
+795.845 S CUSTOM:'.' 4706
+795.875 S CUSTOM:'.' 4706
+795.904 S CUSTOM:'.' 4706
+796.166 S CUSTOM:'.' 4709
+796.169 MSG You cannot run in that direction..
+796.459 S CUSTOM:'.' 4706
+796.716 S CUSTOM:'.' 4706
+797.193 S CUSTOM:'.' 4709
+797.548 S CUSTOM:'.' 4708
+797.996 S CUSTOM:'.' 4708
+798.332 S CUSTOM:'.' 4708
+798.918 S CUSTOM:'.' 4708
+799.546 S CUSTOM:'.' 4702
+800.764 S CUSTOM:'.' 4702
+801.184 S CUSTOM:'.' 4702
+801.52 S CUSTOM:'.' 4703
+802.984 S CUSTOM:'<' 02
+802.987 MSG You enter a maze of up staircases..
+803.002 MSG Looks like any other level..
+803.002 IND:depth da01
+803.002 PKT_FLOOR 310000000000000000000000
+803.161 MSG You hit the Clear icky thing..
+803.161 MSG The Clear icky thing flees in terror!.
+804.9 S CUSTOM:'>' 04
+804.903 MSG You enter a maze of down staircases..
+804.907 MSG Looks like any other level..
+804.907 IND:depth da02
+804.907 PKT_FLOOR 310000000000000000000000
+806.108 S CUSTOM:'.' 4703
+806.372 S CUSTOM:'.' 4703
+807.451 S CUSTOM:'.' 4704
+807.952 S CUSTOM:'.' 4704
+807.998 S CUSTOM:'.' 4704
+808.027 S CUSTOM:'.' 4704
+808.06 S CUSTOM:'.' 4704
+808.089 S CUSTOM:'.' 4704
+808.122 S CUSTOM:'.' 4704
+808.152 S CUSTOM:'.' 4704
+808.182 S CUSTOM:'.' 4704
+808.228 S CUSTOM:'.' 4704
+808.261 S CUSTOM:'.' 4704
+808.295 S CUSTOM:'.' 4704
+808.323 S CUSTOM:'.' 4704
+808.356 S CUSTOM:'.' 4704
+808.485 S CUSTOM:'.' 4704470447044704
+808.526 S CUSTOM:'.' 4704
+808.555 S CUSTOM:'.' 4704
+808.584 S CUSTOM:'.' 4704
+808.708 S CUSTOM:'.' 470447044704
+808.713 S CUSTOM:'.' 4704
+808.756 S CUSTOM:'.' 4704
+808.785 S CUSTOM:'.' 4704
+808.818 S CUSTOM:'.' 4704
+808.847 S CUSTOM:'.' 4704
+809.048 S CUSTOM:'.' 4706
+809.557 S CUSTOM:'.' 4706
+809.586 S CUSTOM:'.' 4706
+809.615 S CUSTOM:'.' 4706
+809.648 S CUSTOM:'.' 4706
+809.869 MSG There is a wall blocking your way..
+810.696 S CUSTOM:'.' 4706
+814.414 EQUIP f 39  Brass Lantern (with 14500 turns of light) {25% off}
+814.732 S CUSTOM:'<' 02
+814.734 MSG You enter a maze of up staircases..
+814.747 MSG Looks like any other level..
+814.748 IND:depth da01
+814.748 PKT_FLOOR 310000000000000000000000
+815.529 S CUSTOM:'>' 04
+815.532 MSG You enter a maze of down staircases..
+815.535 MSG Looks like any other level..
+815.535 IND:depth da02
+815.535 PKT_FLOOR 310000000000000000000000
+816.283 S CUSTOM:'<' 02
+816.285 MSG You enter a maze of up staircases..
+816.294 MSG Looks like any other level..
+816.294 IND:depth da01
+816.294 PKT_FLOOR 310000000000000000000000
+817.148 S CUSTOM:'>' 04
+817.15 MSG You enter a maze of down staircases..
+817.161 MSG Looks like any other level..
+817.161 IND:depth da02
+817.161 PKT_FLOOR 310000000000000000000000
+819.867 S CUSTOM:'<' 02
+819.869 MSG You enter a maze of up staircases..
+819.88 MSG Looks like any other level..
+819.88 IND:depth da01
+819.88 PKT_FLOOR 310000000000000000000000
+820.386 S CUSTOM:'>' 04
+820.466 MSG You enter a maze of down staircases..
+820.481 MSG Looks like any other level..
+820.481 IND:depth da02
+820.481 PKT_FLOOR 310000000000000000000000
+822.011 S CUSTOM:'.' 4702
+822.615 S CUSTOM:'.' 4704
+822.897 S CUSTOM:'.' 4701
+823.01 S CUSTOM:'.' 4702
+823.012 MSG You cannot run in that direction..
+823.387 S CUSTOM:'.' 4703
+823.511 S CUSTOM:'.' 4702
+824.081 S CUSTOM:'.' 4702
+824.444 S CUSTOM:'.' 4708
+825.295 S CUSTOM:'.' 4707
+825.581 S CUSTOM:'.' 4707
+825.829 S CUSTOM:'.' 4707
+826.217 S CUSTOM:'.' 4707
+826.934 S CUSTOM:'.' 4703
+827.237 S CUSTOM:'.' 4703
+827.442 S CUSTOM:'.' 4706
+828.883 S CUSTOM:'<' 02
+828.885 MSG You enter a maze of up staircases..
+828.894 MSG Looks like any other level..
+828.894 IND:depth da01
+828.894 PKT_FLOOR 310000000000000000000000
+829.63 S CUSTOM:'>' 04
+829.632 MSG You enter a maze of down staircases..
+829.641 MSG Looks like any other level..
+829.641 IND:depth da02
+829.641 PKT_FLOOR 310000000000000000000000
+831.003 S CUSTOM:'.' 4703
+831.238 S CUSTOM:'.' 4703
+831.453 S CUSTOM:'.' 4703
+831.697 S CUSTOM:'.' 4703
+832.985 MSG You have found 13 gold pieces worth of copper..
+833.571 S CUSTOM:'.' 4707
+833.767 S CUSTOM:'.' 4707
+833.953 S CUSTOM:'.' 4707
+834.158 S CUSTOM:'.' 4707
+835.704 S CUSTOM:'<' 02
+835.707 MSG You enter a maze of up staircases..
+835.719 MSG Looks like any other level..
+835.72 IND:depth da01
+835.72 PKT_FLOOR 310000000000000000000000
+836.4 S CUSTOM:'>' 04
+836.402 MSG You enter a maze of down staircases..
+836.413 MSG Looks like any other level..
+836.413 IND:depth da02
+836.413 PKT_FLOOR 310000000000000000000000
+837.076 S CUSTOM:'<' 02
+837.078 MSG You enter a maze of up staircases..
+837.08 MSG Looks like any other level..
+837.081 IND:depth da01
+837.081 PKT_FLOOR 310000000000000000000000
+838.648 S CUSTOM:'>' 04
+838.651 MSG You enter a maze of down staircases..
+838.653 MSG Looks like any other level..
+838.653 IND:depth da02
+838.653 PKT_FLOOR 310000000000000000000000
+839.626 MSG The Kobold wakes up..
+840.321 MSG You hit the Kobold..
+840.321 MSG You have slain the Kobold..
+840.321 IND:level c30101
+840.986 MSG You have found 49 gold pieces worth of copper..
+843.303 PKT_FLOOR 31000b210b00014d04006120466c61736b206f66206f696c0000
+843.303 MSG You see a Flask of oil..
+845.762 S CUSTOM:',' 00
+845.764 MSG You have a Flask of oil (a)..
+845.764 PKT_FLOOR 310000000000000000000000
+845.764 INVEN ('a', 77, 1, 10, 'a Flask of oil', '')
+845.764 INVEN ('b', 75, 1, 4, 'a Potion of Berserk Strength', '')
+845.764 INVEN ('c', 70, 6, 30, '6 Scrolls of Phase Door {@r1}', '')
+845.764 INVEN ('d', 70, 1, 5, 'a Scroll of Word of Recall', '')
+845.764 INVEN ('e', 70, 2, 10, '2 Scrolls of Identify {75% off}', '')
+846.561 S CUSTOM:'.' 4701
+846.777 S CUSTOM:'.' 4704
+847.149 S CUSTOM:'.' 4704
+847.346 MSG You miss Grip, Farmer Maggot's dog..
+847.466 MSG You hit Grip, Farmer Maggot's dog..
+847.626 MSG Grip, Farmer Maggot's dog flees in terror!.
+848.651 S CUSTOM:'.' 4704
+848.865 MSG Grip, Farmer Maggot's dog turns to fight!.
+849.01 S CUSTOM:'.' 4704
+849.599 MSG You hit Grip, Farmer Maggot's dog..
+849.599 MSG You have slain Grip, Farmer Maggot's dog..
+849.599 MSG Welcome to level 2..
+849.599 MSG Welcome to level 3..
+849.599 MSG Welcome to level 4..
+849.599 MSG Grip, Farmer Maggot's dog was slain by Dive03..
+849.599 IND:level c30404
+850.543 S CUSTOM:'.' 4708
+850.558 MSG You have found 27 gold pieces worth of copper..
+852.505 S CUSTOM:'.' 4709
+852.819 S CUSTOM:'.' 4706
+853.486 S CUSTOM:'.' 4703
+853.819 S CUSTOM:'.' 4703
+854.012 EQUIP f 39  Brass Lantern (with 14400 turns of light) {25% off}
+854.221 S CUSTOM:'.' 4706
+854.496 S CUSTOM:'.' 4706
+854.699 S CUSTOM:'.' 4706
+854.926 S CUSTOM:'.' 4706
+855.16 S CUSTOM:'.' 4706
+855.589 S CUSTOM:'.' 4706
+857.336 S CUSTOM:'>' 04
+857.339 MSG You enter a maze of down staircases..
+857.348 MSG This level can't be all bad....
+857.348 IND:depth da03
+857.348 PKT_FLOOR 310000000000000000000000
+859.079 S CUSTOM:'<' 02
+859.081 MSG You enter a maze of up staircases..
+859.092 MSG Looks like any other level..
+859.093 IND:depth da02
+859.093 PKT_FLOOR 310000000000000000000000
+861.825 MSG The Jackal wakes up..
+862.44 MSG You hit the Jackal..
+862.44 MSG You have slain the Jackal..
+862.44 IND:level c30404
+862.572 MSG The Jackal wakes up..
+862.893 MSG You miss the Jackal..
+862.893 MSG You hit the Jackal..
+862.894 MSG You have slain the Jackal..
+862.894 IND:level c30404
+863.147 MSG You hit the Jackal..
+863.147 MSG You have slain the Jackal..
+863.147 IND:level c30404
+863.358 MSG You hit the Jackal..
+863.358 MSG You have slain the Jackal..
+863.359 IND:level c30404
+865.36 S CUSTOM:'.' 4704
+867.185 PKT_FLOOR 31000a210e00014b0000612056696f6c657420506f74696f6e0000
+867.185 MSG You see a Violet Potion..
+868.681 S CUSTOM:',' 00
+868.683 MSG You have a Violet Potion (c)..
+868.683 PKT_FLOOR 310000000000000000000000
+868.683 INVEN ('c', 75, 1, 4, 'a Violet Potion', '')
+868.683 INVEN ('d', 70, 6, 30, '6 Scrolls of Phase Door {@r1}', '')
+868.683 INVEN ('e', 70, 1, 5, 'a Scroll of Word of Recall', '')
+868.683 INVEN ('f', 70, 2, 10, '2 Scrolls of Identify {75% off}', '')
+869.269 S CUSTOM:'.' 4706
+869.483 S CUSTOM:'.' 4709
+869.706 S CUSTOM:'.' 4706
+870.705 MSG The Kobold archer fires an arrow!.
+872.093 MSG There is a wall blocking your way..
+872.446 S CUSTOM:'.' 4706
+874.225 MSG The Kobold archer hits you..
+874.265 MSG You hit the Kobold archer..
+874.412 MSG The Kobold archer flees in terror!.
+874.572 MSG You miss the Kobold archer..
+874.719 MSG You hit the Kobold archer..
+874.719 MSG You have slain the Kobold archer..
+874.719 MSG Welcome to level 5..
+874.719 IND:level c30505
+875.404 MSG You have found 25 gold pieces worth of copper..
+876.077 S PKT_REST 48
+878.345 EQUIP f 39  Brass Lantern (with 14300 turns of light) {25% off}
+885.217 S PKT_MESSAGE 2e4f7563682c207468617420
+885.217 MSG [Dive03] Ouch, that kobold hurt.
+886.194 S CUSTOM:'.' 4706
+887.039 S CUSTOM:'.' 4703
+887.178 S CUSTOM:'.' 4702
+887.181 MSG You cannot run in that direction..
+887.792 S CUSTOM:'.' 4701
+888.371 S CUSTOM:'.' 4707
+888.595 S CUSTOM:'.' 4704
+889.147 S CUSTOM:'.' 4701
+889.327 S CUSTOM:'.' 4702
+889.701 S CUSTOM:'.' 4702
+890.016 S CUSTOM:'.' 4702
+890.597 S CUSTOM:'.' 4708
+890.899 S CUSTOM:'.' 4706
+892.373 S CUSTOM:'.' 4703
+892.675 S CUSTOM:'.' 4703
+892.679 MSG You have found 21 gold pieces worth of copper..
+893.148 S CUSTOM:'.' 4707
+893.476 S CUSTOM:'.' 4707
+893.976 S CUSTOM:'.' 4708
+894.194 S CUSTOM:'.' 4708
+894.396 S CUSTOM:'.' 4708
+897.179 S CUSTOM:'>' 04
+897.182 MSG You enter a maze of down staircases..
+897.185 MSG This level can't be all bad....
+897.186 IND:depth da03
+897.186 PKT_FLOOR 310000000000000000000000
+899.508 S CUSTOM:'.' 4707
+899.762 S CUSTOM:'.' 4707
+900.038 S CUSTOM:'.' 4707
+900.051 PKT_FLOOR 3100013f01000146000061205363726f6c6c206f6620506861736520446f6f720000
+900.051 MSG You see a Scroll of Phase Door..
+901.835 S CUSTOM:',' 00
+901.838 MSG You have a Scroll of Phase Door (d)..
+901.838 PKT_FLOOR 310000000000000000000000
+901.838 INVEN ('d', 70, 1, 5, 'a Scroll of Phase Door', '')
+901.838 INVEN ('e', 70, 6, 30, '6 Scrolls of Phase Door {@r1}', '')
+901.838 INVEN ('f', 70, 1, 5, 'a Scroll of Word of Recall', '')
+901.838 INVEN ('g', 70, 2, 10, '2 Scrolls of Identify {75% off}', '')
+903.305 EQUIP f 39  Brass Lantern (with 14200 turns of light) {25% off}
+932.927 S PKT_OPTIONS 743cf2e7c8f3196f97013a11
+932.928 INVEN ('a', 77, 1, 10, 'a Flask of oil', '')
+932.928 INVEN ('b', 75, 1, 4, 'a Potion of Berserk Strength', '')
+932.928 INVEN ('c', 75, 1, 4, 'a Violet Potion', '')
+932.929 INVEN ('d', 70, 1, 5, 'a Scroll of Phase Door', '')
+932.929 INVEN ('e', 70, 6, 30, '6 Scrolls of Phase Door {@r1}', '')
+932.929 INVEN ('f', 70, 1, 5, 'a Scroll of Word of Recall', '')
+932.929 INVEN ('g', 70, 2, 10, '2 Scrolls of Identify {75% off}', '')
+932.929 INVEN ('h', 0, 0, 0, '(nothing)', '')
+932.929 INVEN ('i', 0, 0, 0, '(nothing)', '')
+932.929 INVEN ('j', 0, 0, 0, '(nothing)', '')
+932.929 INVEN ('k', 0, 0, 0, '(nothing)', '')
+932.929 INVEN ('l', 0, 0, 0, '(nothing)', '')
+932.929 INVEN ('m', 0, 0, 0, '(nothing)', '')
+932.929 INVEN ('n', 0, 0, 0, '(nothing)', '')
+932.929 INVEN ('o', 0, 0, 0, '(nothing)', '')
+932.929 INVEN ('p', 0, 0, 0, '(nothing)', '')
+932.929 INVEN ('q', 0, 0, 0, '(nothing)', '')
+932.929 INVEN ('r', 0, 0, 0, '(nothing)', '')
+932.929 INVEN ('s', 0, 0, 0, '(nothing)', '')
+932.929 INVEN ('t', 0, 0, 0, '(nothing)', '')
+932.929 INVEN ('u', 0, 0, 0, '(nothing)', '')
+932.929 INVEN ('v', 0, 0, 0, '(nothing)', '')
+932.929 INVEN ('w', 0, 0, 0, '(nothing)', '')
+932.929 INVEN ('x', 0, 0, 0, '(nothing)', '')
+932.929 EQUIP a 23  Main Gauche (1d5) (+0,+2)
+932.929 EQUIP b 0 nothing)
+932.929 EQUIP c 0 nothing)
+932.929 EQUIP d 0 nothing)
+932.929 EQUIP e 0 nothing)
+932.929 EQUIP f 39  Brass Lantern (with 14152 turns of light) {25% off}
+932.929 EQUIP g 36 ard Leather Armour (-1) [6,+0] {25% off}
+932.929 EQUIP h 35  Cloak [1,+0]
+932.929 EQUIP i 34  Small Metal Shield [3] {good - Farmer Maggot}
+932.929 EQUIP j 32  Metal Cap [3,+0]
+932.929 EQUIP k 31  Set of Leather Gloves [1,+0]
+932.929 EQUIP l 0 nothing)
+932.929 IND:level c30505
+932.929 IND:depth da03
+932.929 PKT_FLOOR 310000000000000000000000
+958.059 S CUSTOM:'>' 04
+958.061 MSG You enter a maze of down staircases..
+958.064 MSG This level can't be all bad....
+958.064 IND:depth da04
+958.064 PKT_FLOOR 310000000000000000000000
+959.297 S CUSTOM:'.' 4702
+959.687 S CUSTOM:'.' 4702
+959.922 S CUSTOM:'.' 4703
+959.97 EQUIP f 39  Brass Lantern (with 14100 turns of light) {25% off}
+960.528 S CUSTOM:'.' 4707
+962.677 MSG There is a wall blocking your way..
+963.105 S CUSTOM:'<' 02
+963.303 MSG You enter a maze of up staircases..
+963.318 MSG Looks like any other level..
+963.318 IND:depth da03
+963.318 PKT_FLOOR 310000000000000000000000
+966.451 MSG The Kobold shaman wakes up..
+966.611 MSG You hit the Giant black ant..
+966.65 MSG The Giant black ant misses you..
+966.757 MSG You hit the Giant black ant..
+966.757 MSG You have slain the Giant black ant..
+966.757 IND:level c30505
+967.584 MSG You hit the Kobold shaman..
+967.584 MSG You have slain the Kobold shaman..
+967.584 IND:level c30505
+968.242 MSG You have found 19 gold pieces worth of copper..
+968.821 S CUSTOM:'.' 4704
+985.151 S CUSTOM:'>' 04
+985.154 MSG You enter a maze of down staircases..
+985.156 MSG This level can't be all bad....
+985.157 IND:depth da04
+985.157 PKT_FLOOR 310000000000000000000000
+986.681 S CUSTOM:'.' 4703
+986.995 S CUSTOM:'.' 4703
+987.182 MSG You hit the Kobold..
+987.182 MSG You miss the Kobold..
+987.182 MSG You hit the Kobold..
+987.182 MSG You have slain the Kobold..
+987.182 IND:level c30505
+988.731 S CUSTOM:'.' 4702
+989.291 S CUSTOM:'.' 4701
+989.83 S CUSTOM:'.' 4704
+990.214 S CUSTOM:'.' 4707
+990.838 S CUSTOM:'.' 4707
+991.39 S CUSTOM:'.' 4706
+991.529 MSG You found a trap!.
+991.529 MSG A small dart hits you!.
+991.529 MSG You feel yourself moving slower!.
+1003.89 MSG You feel yourself speed up..
+1006.955 EQUIP f 39  Brass Lantern (with 14000 turns of light) {25% off}
+1013.694 S PKT_CLEAR 7b
+1042.094 S PKT_MESSAGE 2e5472617073206f6674656e
+1042.094 MSG [Dive03] Traps often spring on you with no warning.
+1045.314 PKT_FLOOR 31000a210e00014b000061205075636520506f74696f6e0000
+1045.314 MSG You see a Puce Potion..
+1047.138 S CUSTOM:',' 00
+1047.14 MSG You have a Puce Potion (d)..
+1047.14 PKT_FLOOR 310000000000000000000000
+1047.14 INVEN ('d', 75, 1, 4, 'a Puce Potion', '')
+1047.14 INVEN ('e', 70, 1, 5, 'a Scroll of Phase Door', '')
+1047.14 INVEN ('f', 70, 6, 30, '6 Scrolls of Phase Door {@r1}', '')
+1047.14 INVEN ('g', 70, 1, 5, 'a Scroll of Word of Recall', '')
+1047.14 INVEN ('h', 70, 2, 10, '2 Scrolls of Identify {75% off}', '')
+1064.833 S PKT_MESSAGE 2e596f752077696c6c207365
+1064.834 MSG [Dive03] You will see generated structures like vaults frequently.
+1068.287 EQUIP f 39  Brass Lantern (with 13900 turns of light) {25% off}
+1072.797 S PKT_MESSAGE 2e576f727468206578706c6f
+1072.797 MSG [Dive03] Worth exploring, but dangerous.
+1073.836 S CUSTOM:'.' 4708
+1074.464 S CUSTOM:'.' 4708
+1076.156 S CUSTOM:'<' 02
+1076.159 MSG You enter a maze of up staircases..
+1076.167 MSG This level can't be all bad....
+1076.168 IND:depth da03
+1076.168 PKT_FLOOR 310000000000000000000000
+1077.077 S CUSTOM:'>' 04
+1077.08 MSG You enter a maze of down staircases..
+1077.086 MSG Looks like any other level..
+1077.087 IND:depth da04
+1077.087 PKT_FLOOR 310000000000000000000000
+1078.426 S CUSTOM:'.' 4709
+1078.741 S CUSTOM:'.' 4709
+1078.816 S CUSTOM:'.' 4709
+1079.266 S CUSTOM:'.' 4709
+1080.352 S CUSTOM:'>' 04
+1080.354 MSG You enter a maze of down staircases..
+1080.367 MSG Looks like any other level..
+1080.367 IND:depth da05
+1080.367 PKT_FLOOR 310000000000000000000000
+1081.542 S CUSTOM:'.' 4703
+1081.758 S CUSTOM:'.' 4703
+1081.971 S CUSTOM:'.' 4703
+1082.226 S CUSTOM:'.' 4703
+1082.806 S CUSTOM:'.' 4703
+1083.629 S CUSTOM:'.' 4706
+1083.856 S CUSTOM:'.' 4706
+1084.306 S CUSTOM:'.' 4706
+1084.856 S CUSTOM:'.' 4706
+1084.86 PKT_FLOOR 31000f2d0500014100006120436f707065722d506c617465642057616e640000
+1084.861 MSG You see a Copper-Plated Wand..
+1086.124 S CUSTOM:',' 00
+1086.126 MSG You have a Copper-Plated Wand (i)..
+1086.126 PKT_FLOOR 310000000000000000000000
+1086.126 INVEN ('i', 65, 1, 10, 'a Copper-Plated Wand', '')
+1088.128 MSG You hit the Small kobold..
+1088.128 MSG You have slain the Small kobold..
+1088.128 IND:level c30505
+1088.886 PKT_FLOOR 3100022d05000141000061204c6561642057616e640000
+1088.886 MSG You see a Lead Wand..
+1089.536 S CUSTOM:',' 00
+1089.539 MSG You have a Lead Wand (j)..
+1089.539 PKT_FLOOR 310000000000000000000000
+1089.539 INVEN ('j', 65, 1, 10, 'a Lead Wand', '')
+1090.688 PKT_FLOOR 3100097c0100011701006120536d616c6c2053776f72642028316436290000
+1090.688 MSG You see a Small Sword (1d6)..
+1091.471 S CUSTOM:',' 00
+1091.474 MSG You have a Small Sword (1d6) (k)..
+1091.474 PKT_FLOOR 310000000000000000000000
+1091.474 INVEN ('k', 23, 1, 75, 'a Small Sword (1d6)', '')
+1091.895 PKT_FLOOR 31000f290f00012201006120536d616c6c204c65617468657220536869656c64205b325d0000
+1091.895 MSG You see a Small Leather Shield [2]..
+1092.578 S CUSTOM:',' 00
+1092.58 MSG You have a Small Leather Shield [2] (k)..
+1092.58 PKT_FLOOR 310000000000000000000000
+1092.58 INVEN ('k', 34, 1, 50, 'a Small Leather Shield [2]', '')
+1092.58 INVEN ('l', 23, 1, 75, 'a Small Sword (1d6)', '')
+1093.928 MSG You feel the Small Sword (l) in your pack is average....
+1093.928 INVEN ('l', 23, 1, 75, 'a Small Sword (1d6) {average}', '')
+1093.94 MSG You combine some items in your pack..
+1093.94 INVEN ('f', 70, 1, 5, 'a Scroll of Word of Recall', '')
+1093.94 INVEN ('g', 70, 2, 10, '2 Scrolls of Identify {75% off}', '')
+1093.94 INVEN ('h', 65, 1, 10, 'a Copper-Plated Wand', '')
+1093.94 INVEN ('i', 65, 1, 10, 'a Lead Wand', '')
+1093.94 INVEN ('j', 34, 1, 50, 'a Small Leather Shield [2]', '')
+1093.94 INVEN ('k', 23, 1, 75, 'a Small Sword (1d6) {average}', '')
+1093.94 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1093.94 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1093.94 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1093.94 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1093.94 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1093.94 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1093.94 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1093.94 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1093.94 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1093.94 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1093.94 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1093.94 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1093.94 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1094.175 S CUSTOM:'.' 4704
+1094.977 S CUSTOM:'.' 4701
+1095.282 S CUSTOM:'.' 4701
+1095.533 S CUSTOM:'.' 4701
+1095.773 S CUSTOM:'.' 4702
+1095.939 MSG You hit the Rock lizard..
+1095.939 MSG You have slain the Rock lizard..
+1095.939 IND:level c30505
+1112.268 S PKT_MESSAGE 2e5365652c2074686520736d
+1112.268 MSG [Dive03] See, the small sword got pseudo-ided as averag.
+1112.725 MSG You feel the Small Leather Shield (j) in your pack is average....
+1112.725 INVEN ('j', 34, 1, 50, 'a Small Leather Shield [2] {average}', '')
+1121.5 EQUIP f 39  Brass Lantern (with 13800 turns of light) {25% off}
+1125.056 S CUSTOM:'k' 180900000001
+1125.058 MSG You destroy a Small Leather Shield [2] {average}..
+1125.058 MSG You have no more Small Leather Shields [2] {average}..
+1125.058 INVEN ('j', 23, 1, 75, 'a Small Sword (1d6) {average}', '')
+1125.058 INVEN ('k', 0, 0, 0, '(nothing)', '')
+1125.058 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1125.058 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1125.058 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1125.058 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1125.058 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1125.058 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1125.058 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1125.058 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1125.058 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1125.058 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1125.058 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1125.059 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1125.059 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1126.321 S CUSTOM:'k' 180900000001
+1126.323 MSG You destroy a Small Sword (1d6) {average}..
+1126.323 MSG You have no more Small Swords (1d6) {average}..
+1126.323 INVEN ('j', 0, 0, 0, '(nothing)', '')
+1126.323 INVEN ('k', 0, 0, 0, '(nothing)', '')
+1126.323 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1126.323 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1126.323 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1126.323 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1126.323 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1126.323 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1126.323 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1126.323 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1126.323 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1126.323 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1126.323 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1126.323 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1126.323 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1128.31 S CUSTOM:'.' 4704
+1135.902 S CUSTOM:'>' 04
+1135.905 MSG You enter a maze of down staircases..
+1135.914 MSG You like the look of this place....
+1135.914 IND:depth da06
+1135.914 PKT_FLOOR 310000000000000000000000
+1136.072 MSG You hit the Kobold archer..
+1136.152 MSG The Kobold archer fires an arrow!.
+1136.232 MSG You hit the Kobold archer..
+1136.232 MSG The Kobold archer flees in terror!.
+1136.393 MSG You hit the Kobold archer..
+1136.393 MSG You have slain the Kobold archer..
+1136.393 MSG Welcome to level 6..
+1136.393 IND:level c30606
+1137.932 S CUSTOM:'.' 4702
+1138.346 S CUSTOM:'.' 4704
+1138.348 MSG You cannot run in that direction..
+1138.848 S CUSTOM:'.' 4701
+1139.349 S CUSTOM:'.' 4701
+1139.382 S CUSTOM:'.' 4701
+1139.41 S CUSTOM:'.' 4701
+1139.452 S CUSTOM:'.' 4707
+1140.023 S CUSTOM:'.' 4707
+1140.29 S CUSTOM:'.' 4707
+1140.601 S CUSTOM:'.' 4704
+1141.079 S CUSTOM:'.' 4704
+1141.339 MSG You hit the Metallic red centipede..
+1141.339 MSG You miss the Metallic red centipede..
+1141.339 MSG You hit the Metallic red centipede..
+1141.34 MSG You have slain the Metallic red centipede..
+1141.34 IND:level c30606
+1141.584 S CUSTOM:'.' 4704
+1141.617 S CUSTOM:'.' 4704
+1141.646 S CUSTOM:'.' 4704
+1141.692 S CUSTOM:'.' 4704
+1141.725 S CUSTOM:'.' 4704
+1141.756 S CUSTOM:'.' 4704
+1141.784 S CUSTOM:'.' 4704
+1141.817 S CUSTOM:'.' 4704
+1141.849 S CUSTOM:'.' 4704
+1141.878 S CUSTOM:'.' 4704
+1141.924 S CUSTOM:'.' 4704
+1141.957 S CUSTOM:'.' 4704
+1141.986 S CUSTOM:'.' 4704
+1142.016 S CUSTOM:'.' 4704
+1142.048 S CUSTOM:'.' 4704
+1142.076 S CUSTOM:'.' 4704
+1142.109 S CUSTOM:'.' 4704
+1142.504 S CUSTOM:'.' 4703
+1142.767 S CUSTOM:'.' 4703
+1143.004 S CUSTOM:'.' 4703
+1143.269 S CUSTOM:'.' 4703
+1143.569 S CUSTOM:'.' 4706
+1144.16 S CUSTOM:'.' 4709
+1144.425 S CUSTOM:'.' 4706
+1144.427 MSG You cannot run in that direction..
+1144.847 S CUSTOM:'.' 4709
+1145.209 S CUSTOM:'.' 4706
+1146.624 S CUSTOM:'>' 04
+1146.626 MSG You enter a maze of down staircases..
+1146.633 MSG Looks like any other level..
+1146.633 IND:depth da07
+1146.633 PKT_FLOOR 310000000000000000000000
+1147.923 S CUSTOM:'<' 02
+1147.926 MSG You enter a maze of up staircases..
+1147.939 MSG Looks like any other level..
+1147.939 IND:depth da06
+1147.939 PKT_FLOOR 310000000000000000000000
+1148.614 S CUSTOM:'>' 04
+1148.616 MSG You enter a maze of down staircases..
+1148.618 MSG Looks like any other level..
+1148.619 IND:depth da07
+1148.619 PKT_FLOOR 310000000000000000000000
+1148.858 MSG The Rattlesnake wakes up..
+1151.94 MSG You hit the Rattlesnake..
+1151.94 MSG It was a good hit!.
+1151.94 MSG The Rattlesnake flees in terror!.
+1153.391 MSG You hit the Rattlesnake..
+1153.392 MSG You have slain the Rattlesnake..
+1153.392 IND:level c30606
+1154.291 S CUSTOM:'.' 4709
+1155.538 MSG You miss Bullroarer the Hobbit..
+1155.632 MSG You hit Bullroarer the Hobbit..
+1155.845 MSG Bullroarer the Hobbit hits you..
+1155.952 MSG You hit Bullroarer the Hobbit..
+1156.111 MSG You miss Bullroarer the Hobbit..
+1156.273 MSG You hit Bullroarer the Hobbit..
+1156.273 MSG It was a good hit!.
+1156.432 MSG You hit Bullroarer the Hobbit..
+1156.432 MSG Bullroarer the Hobbit flees in terror!.
+1157.608 S CUSTOM:'.' 4704
+1158.038 S CUSTOM:'.' 4707
+1158.363 S CUSTOM:'.' 4707
+1159.364 MSG Bullroarer the Hobbit turns to fight!.
+1159.528 S CUSTOM:'.' 4704
+1160.019 MSG You hit Bullroarer the Hobbit..
+1160.019 MSG You miss Bullroarer the Hobbit..
+1160.019 MSG You hit Bullroarer the Hobbit..
+1160.019 MSG You have slain Bullroarer the Hobbit..
+1160.019 MSG Welcome to level 7..
+1160.019 MSG Welcome to level 8..
+1160.019 MSG You feel something roll beneath your feet..
+1160.019 PKT_FLOOR 3100085c01000115010061204c6561642d46696c6c6564204d6163652028336434290000
+1160.019 MSG Bullroarer the Hobbit was slain by Dive03..
+1160.019 IND:level c30808
+1162.159 PKT_FLOOR 31000f28020001240100536f6674204c6561746865722041726d6f7572205b345d207b42756c6c726f617265722074686520486f626269747d0000
+1162.159 MSG You see Soft Leather Armour [4] {Bullroarer the Hobbit}..
+1163.98 S CUSTOM:',' 00
+1163.982 MSG You have Soft Leather Armour [4] {Bullroarer the Hobbit} (j)..
+1163.982 PKT_FLOOR 310000000000000000000000
+1163.982 INVEN ('j', 36, 1, 80, 'Soft Leather Armour [4] {Bullroarer the Hobbit}', '')
+1164.506 PKT_FLOOR 3100085c01000115010061204c6561642d46696c6c6564204d616365202833643429207b42756c6c726f617265722074686520486f626269747d0000
+1164.507 MSG You see a Lead-Filled Mace (3d4) {Bullroarer the Hobbit}..
+1164.871 S CUSTOM:',' 00
+1165.138 MSG You have a Lead-Filled Mace (3d4) {Bullroarer the Hobbit} (k)..
+1165.138 PKT_FLOOR 310000000000000000000000
+1165.138 INVEN ('k', 21, 1, 180, 'a Lead-Filled Mace (3d4) {Bullroarer the Hobbit}', '')
+1166.898 PKT_FLOOR 31000f7d07000113010061204c6f6e6720426f772028783329207b42756c6c726f617265722074686520486f626269747d0000
+1166.898 MSG You see a Long Bow (x3) {Bullroarer the Hobbit}..
+1167.462 S CUSTOM:',' 00
+1167.539 MSG You have a Long Bow (x3) {Bullroarer the Hobbit} (l)..
+1167.539 PKT_FLOOR 310000000000000000000000
+1167.539 INVEN ('l', 19, 1, 40, 'a Long Bow (x3) {Bullroarer the Hobbit}', '')
+1168.772 S CUSTOM:'.' 4706
+1169.244 EQUIP f 39  Brass Lantern (with 13700 turns of light) {25% off}
+1169.998 PKT_FLOOR 3100092d0500014100006120537465656c2d506c617465642057616e640000
+1169.998 MSG You see a Steel-Plated Wand..
+1171.248 S CUSTOM:',' 00
+1171.251 MSG You have a Steel-Plated Wand (j)..
+1171.251 PKT_FLOOR 310000000000000000000000
+1171.251 INVEN ('j', 65, 1, 10, 'a Steel-Plated Wand', '')
+1171.251 INVEN ('k', 36, 1, 80, 'Soft Leather Armour [4] {Bullroarer the Hobbit}', '')
+1171.251 INVEN ('l', 21, 1, 180, 'a Lead-Filled Mace (3d4) {Bullroarer the Hobbit}', '')
+1171.251 INVEN ('m', 19, 1, 40, 'a Long Bow (x3) {Bullroarer the Hobbit}', '')
+1171.902 S CUSTOM:'.' 4701
+1172.202 S CUSTOM:'.' 4704
+1173.588 S CUSTOM:'.' 4704
+1185.292 S CUSTOM:'r' 1d060a
+1185.295 MSG In your pack: Soft Leather Armour [4,+1] {Bullroarer the Hobbit} (k)..
+1185.295 MSG You have a Scroll of Identify {75% off}..
+1185.295 INVEN ('g', 70, 1, 5, 'a Scroll of Identify {75% off}', '')
+1185.295 INVEN ('k', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1191.649 S CUSTOM:'<' 02
+1191.652 MSG You enter a maze of up staircases..
+1191.659 MSG You like the look of this place....
+1191.659 IND:depth da06
+1191.659 PKT_FLOOR 310000000000000000000000
+1192.297 S CUSTOM:'>' 04
+1192.3 MSG You enter a maze of down staircases..
+1192.31 MSG Looks like any other level..
+1192.311 IND:depth da07
+1192.311 PKT_FLOOR 310000000000000000000000
+1193.242 S CUSTOM:'<' 02
+1193.244 MSG You enter a maze of up staircases..
+1193.259 MSG Looks like any other level..
+1193.259 IND:depth da06
+1193.259 PKT_FLOOR 310000000000000000000000
+1195.137 S CUSTOM:'>' 04
+1195.14 MSG You enter a maze of down staircases..
+1195.15 MSG Looks like any other level..
+1195.151 IND:depth da07
+1195.151 PKT_FLOOR 310000000000000000000000
+1196.471 S CUSTOM:'.' 4709
+1196.697 S CUSTOM:'.' 4709
+1196.884 S CUSTOM:'.' 4709
+1197.108 S CUSTOM:'.' 4709
+1197.323 S CUSTOM:'.' 4709
+1198.263 S CUSTOM:'.' 4701
+1198.574 S CUSTOM:'.' 4701
+1198.643 S CUSTOM:'.' 4701
+1198.847 S CUSTOM:'.' 4701
+1199.082 S CUSTOM:'.' 4701
+1199.477 S CUSTOM:'.' 4701
+1213.0 S PKT_MESSAGE 2e476f696e6720757020616e
+1213.0 MSG [Dive03] Going up and down on stairs to generate new levels....
+1217.645 EQUIP f 39  Brass Lantern (with 13600 turns of light) {25% off}
+1227.109 S PKT_MESSAGE 2e49732063616c6c65642073
+1227.109 MSG [Dive03] Is called stair-scumming. A quick way to dive.
+1228.341 S CUSTOM:'<' 02
+1228.343 MSG You enter a maze of up staircases..
+1228.351 MSG You feel strangely lucky....
+1228.352 IND:depth da06
+1228.352 PKT_FLOOR 310000000000000000000000
+1229.775 S CUSTOM:'>' 04
+1229.777 MSG You enter a maze of down staircases..
+1229.79 MSG Looks like any other level..
+1229.79 IND:depth da07
+1229.79 PKT_FLOOR 310000000000000000000000
+1231.355 S CUSTOM:'.' 4701
+1231.54 S CUSTOM:'.' 4701
+1231.737 S CUSTOM:'.' 4701
+1231.739 MSG You cannot run in that direction..
+1232.396 S CUSTOM:'.' 4704
+1232.597 S CUSTOM:'.' 4704
+1233.077 S CUSTOM:'.' 4704
+1233.647 S CUSTOM:'.' 4704
+1234.146 S CUSTOM:'.' 4704
+1234.794 PKT_FLOOR 3100013f01000146200061205363726f6c6c207469746c656420226b6c6977657820706f747269220000
+1234.794 MSG You see a Scroll titled "kliwex potri"..
+1235.924 S CUSTOM:',' 00
+1235.926 MSG You have a Scroll titled "kliwex potri" (h)..
+1235.926 PKT_FLOOR 310000000000000000000000
+1235.926 INVEN ('h', 70, 1, 5, 'a Scroll titled "kliwex potri"', '')
+1235.926 INVEN ('i', 65, 1, 10, 'a Copper-Plated Wand', '')
+1235.926 INVEN ('j', 65, 1, 10, 'a Lead Wand', '')
+1235.926 INVEN ('k', 65, 1, 10, 'a Steel-Plated Wand', '')
+1235.926 INVEN ('l', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1235.926 INVEN ('m', 21, 1, 180, 'a Lead-Filled Mace (3d4) {Bullroarer the Hobbit}', '')
+1235.926 INVEN ('n', 19, 1, 40, 'a Long Bow (x3) {Bullroarer the Hobbit}', '')
+1236.511 S CUSTOM:'.' 4706
+1236.736 S CUSTOM:'.' 4706
+1237.033 S CUSTOM:'.' 4706
+1237.311 MSG You miss Fang, Farmer Maggot's dog..
+1237.311 MSG You hit Fang, Farmer Maggot's dog..
+1237.311 MSG You miss Fang, Farmer Maggot's dog..
+1237.311 MSG You hit Fang, Farmer Maggot's dog..
+1237.403 MSG Fang, Farmer Maggot's dog flees in terror!.
+1237.506 S CUSTOM:'.' 4706
+1237.575 S CUSTOM:'.' 4706
+1238.203 MSG You hit Fang, Farmer Maggot's dog..
+1238.203 MSG You have slain Fang, Farmer Maggot's dog..
+1238.203 MSG Fang, Farmer Maggot's dog was slain by Dive03..
+1238.203 IND:level c30808
+1238.429 S CUSTOM:'.' 4706
+1239.482 S CUSTOM:'.' 4706
+1240.111 S CUSTOM:'.' 4709
+1240.591 S CUSTOM:'.' 4709
+1240.993 S CUSTOM:'.' 4706
+1241.384 S CUSTOM:'.' 4706
+1253.867 S PKT_MESSAGE 2e44616e67726f7573207468
+1253.868 MSG [Dive03] Dangrous though because a pack may generate on the stairs.
+1270.763 EQUIP f 39  Brass Lantern (with 13500 turns of light) {25% off}
+1271.434 S PKT_MESSAGE 2e416e642073686f76652079
+1271.434 MSG [Dive03] And shove you off. Leaving you in danger with no quick.
+1274.088 S PKT_MESSAGE 2e7265747265617400
+1274.088 MSG [Dive03] retreat.
+1275.501 S CUSTOM:'>' 04
+1275.503 MSG I see no down staircase here..
+1276.002 S CUSTOM:'<' 02
+1276.004 MSG You enter a maze of up staircases..
+1276.016 MSG You feel strangely lucky....
+1276.016 IND:depth da06
+1276.016 PKT_FLOOR 310000000000000000000000
+1276.754 S CUSTOM:'>' 04
+1276.757 MSG You enter a maze of down staircases..
+1276.763 MSG Looks like any other level..
+1276.763 IND:depth da07
+1276.763 PKT_FLOOR 310000000000000000000000
+1277.483 S CUSTOM:'<' 02
+1277.485 MSG You enter a maze of up staircases..
+1277.496 MSG Looks like any other level..
+1277.496 IND:depth da06
+1277.496 PKT_FLOOR 310000000000000000000000
+1277.983 S CUSTOM:'>' 04
+1278.122 MSG You enter a maze of down staircases..
+1278.137 MSG Looks like any other level..
+1278.137 IND:depth da07
+1278.137 PKT_FLOOR 310000000000000000000000
+1279.909 MSG You hit the Large kobold..
+1280.228 MSG The Large kobold hits you..
+1280.388 MSG You hit the Large kobold..
+1280.708 MSG You miss the Large kobold..
+1280.868 MSG You hit the Large kobold..
+1281.028 MSG The Large kobold flees in terror!.
+1281.19 MSG You miss the Large kobold..
+1281.509 MSG You hit the Large kobold..
+1281.509 MSG You have slain the Large kobold..
+1281.509 IND:level c30808
+1282.641 PKT_FLOOR 3100013f01000146200061205363726f6c6c207469746c6564202273687520666f72656e67220000
+1282.641 MSG You see a Scroll titled "shu foreng"..
+1283.976 S CUSTOM:',' 00
+1283.978 MSG You have a Scroll titled "shu foreng" (i)..
+1283.978 PKT_FLOOR 310000000000000000000000
+1283.978 INVEN ('i', 70, 1, 5, 'a Scroll titled "shu foreng"', '')
+1283.978 INVEN ('j', 65, 1, 10, 'a Copper-Plated Wand', '')
+1283.978 INVEN ('k', 65, 1, 10, 'a Lead Wand', '')
+1283.978 INVEN ('l', 65, 1, 10, 'a Steel-Plated Wand', '')
+1283.978 INVEN ('m', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1283.978 INVEN ('n', 21, 1, 180, 'a Lead-Filled Mace (3d4) {Bullroarer the Hobbit}', '')
+1283.978 INVEN ('o', 19, 1, 40, 'a Long Bow (x3) {Bullroarer the Hobbit}', '')
+1284.828 S CUSTOM:'.' 4703
+1285.069 S CUSTOM:'.' 4706
+1285.072 MSG You cannot run in that direction..
+1285.572 S CUSTOM:'.' 4707
+1285.798 S CUSTOM:'.' 4709
+1286.275 S CUSTOM:'.' 4704
+1286.706 S CUSTOM:'.' 4704
+1286.922 S CUSTOM:'.' 4704
+1287.135 S CUSTOM:'.' 4704
+1287.355 S CUSTOM:'.' 4704
+1287.616 S CUSTOM:'.' 4704
+1287.852 S CUSTOM:'.' 4704
+1288.104 S CUSTOM:'.' 4704
+1288.331 S CUSTOM:'.' 4704
+1288.681 S CUSTOM:'.' 4704
+1289.309 S CUSTOM:'.' 4703
+1289.576 S CUSTOM:'.' 4703
+1289.889 S CUSTOM:'.' 4706
+1290.398 S CUSTOM:'.' 4706
+1290.945 S CUSTOM:'.' 4709
+1291.15 S CUSTOM:'.' 4708
+1291.339 S CUSTOM:'.' 4709
+1291.917 S CUSTOM:'.' 4703
+1293.174 S CUSTOM:'<' 02
+1293.176 MSG You enter a maze of up staircases..
+1293.189 MSG You like the look of this place....
+1293.19 IND:depth da06
+1293.19 PKT_FLOOR 310000000000000000000000
+1293.908 S CUSTOM:'>' 04
+1293.911 MSG You enter a maze of down staircases..
+1293.922 MSG Looks like any other level..
+1293.922 IND:depth da07
+1293.922 PKT_FLOOR 310000000000000000000000
+1295.242 S CUSTOM:'.' 4701
+1295.438 S CUSTOM:'.' 4701
+1295.617 S CUSTOM:'.' 4701
+1295.83 S CUSTOM:'.' 4701
+1295.832 MSG You cannot run in that direction..
+1296.549 S CUSTOM:'.' 4709
+1296.753 S CUSTOM:'.' 4709
+1296.957 S CUSTOM:'.' 4709
+1297.785 S CUSTOM:'<' 02
+1297.788 MSG You enter a maze of up staircases..
+1297.802 MSG Looks like any other level..
+1297.803 IND:depth da06
+1297.803 PKT_FLOOR 310000000000000000000000
+1298.369 S CUSTOM:'>' 04
+1298.428 MSG You enter a maze of down staircases..
+1298.443 MSG Looks like any other level..
+1298.443 IND:depth da07
+1298.443 PKT_FLOOR 310000000000000000000000
+1299.19 S CUSTOM:'<' 02
+1299.192 MSG You enter a maze of up staircases..
+1299.203 MSG Looks like any other level..
+1299.203 IND:depth da06
+1299.203 PKT_FLOOR 310000000000000000000000
+1300.055 S CUSTOM:'>' 04
+1300.057 MSG You enter a maze of down staircases..
+1300.068 MSG Looks like any other level..
+1300.068 IND:depth da07
+1300.068 PKT_FLOOR 310000000000000000000000
+1301.301 S CUSTOM:'.' 4702
+1301.482 MSG You hit the Skeleton kobold..
+1301.525 S CUSTOM:'.' 4702
+1301.588 MSG The Skeleton kobold hits you..
+1302.241 MSG You hit the Skeleton kobold..
+1302.241 MSG It was a good hit!.
+1302.309 MSG The Novice priest wakes up..
+1302.401 MSG You miss the Skeleton kobold..
+1302.561 MSG You hit the Skeleton kobold..
+1302.561 MSG You have destroyed the Skeleton kobold..
+1302.561 IND:level c30808
+1302.962 MSG The Novice priest wakes up..
+1304.069 MSG The Novice priest casts a fearful illusion..
+1304.069 MSG You refuse to be frightened..
+1305.107 MSG There is a wall blocking your way..
+1305.282 MSG You hit the Novice priest..
+1305.282 MSG The Novice priest flees in terror!.
+1305.442 MSG You hit the Novice priest..
+1305.442 MSG You have slain the Novice priest..
+1305.442 IND:level c30808
+1305.841 MSG You hit the Novice priest..
+1305.842 MSG You have slain the Novice priest..
+1305.842 IND:level c30808
+1306.428 MSG You hit the Novice priest..
+1306.428 MSG You have slain the Novice priest..
+1306.428 IND:level c30808
+1307.015 MSG You miss the Novice priest..
+1307.015 MSG You hit the Novice priest..
+1307.015 MSG You have slain the Novice priest..
+1307.015 IND:level c30808
+1307.601 MSG You hit the Novice priest..
+1307.601 MSG You have slain the Novice priest..
+1307.601 IND:level c30808
+1308.014 MSG You hit the Novice priest..
+1308.014 MSG You have slain the Novice priest..
+1308.014 IND:level c30808
+1308.188 MSG You hit the Novice priest..
+1308.188 MSG You miss the Novice priest..
+1308.188 MSG You hit the Novice priest..
+1308.188 MSG You miss the Novice priest..
+1308.188 MSG The Novice priest flees in terror!.
+1308.32 MSG You hit the Novice priest..
+1308.32 MSG You have slain the Novice priest..
+1308.32 IND:level c30808
+1308.735 MSG You hit the Novice priest..
+1308.735 MSG The Novice priest flees in terror!.
+1308.802 MSG You hit the Novice priest..
+1308.802 MSG You have slain the Novice priest..
+1308.802 IND:level c30808
+1309.361 MSG You hit the Novice priest..
+1309.361 MSG You have slain the Novice priest..
+1309.361 IND:level c30808
+1309.455 MSG You hit the Novice priest..
+1309.455 MSG The Novice priest flees in terror!.
+1309.6 MSG You hit the Novice priest..
+1309.6 MSG You have slain the Novice priest..
+1309.6 IND:level c30808
+1310.174 MSG You miss the Novice priest..
+1310.174 MSG You hit the Novice priest..
+1310.174 MSG The Novice priest flees in terror!.
+1310.241 MSG You miss the Novice priest..
+1310.401 MSG You hit the Novice priest..
+1310.401 MSG You have slain the Novice priest..
+1310.401 IND:level c30808
+1311.615 MSG You miss the Novice priest..
+1311.615 MSG You hit the Novice priest..
+1311.615 MSG You have slain the Novice priest..
+1311.615 MSG Welcome to level 9..
+1311.615 IND:level c30909
+1312.21 MSG You have found 50 gold pieces worth of silver..
+1313.325 PKT_FLOOR 3100075f0f000137200061204d61706c652053746166660000
+1313.325 MSG You see a Maple Staff..
+1314.434 S CUSTOM:',' 00
+1314.436 MSG You have a Maple Staff (m)..
+1314.436 PKT_FLOOR 310000000000000000000000
+1314.436 INVEN ('m', 55, 1, 50, 'a Maple Staff', '')
+1314.436 INVEN ('n', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1314.436 INVEN ('o', 21, 1, 180, 'a Lead-Filled Mace (3d4) {Bullroarer the Hobbit}', '')
+1314.436 INVEN ('p', 19, 1, 40, 'a Long Bow (x3) {Bullroarer the Hobbit}', '')
+1314.976 PKT_FLOOR 3100013f01000146000061205363726f6c6c206f6620576f7264206f6620526563616c6c0000
+1314.976 MSG You see a Scroll of Word of Recall..
+1315.544 S CUSTOM:',' 00
+1315.614 MSG You have 2 Scrolls of Word of Recall (f)..
+1315.614 PKT_FLOOR 310000000000000000000000
+1315.614 INVEN ('f', 70, 2, 10, '2 Scrolls of Word of Recall', '')
+1316.316 PKT_FLOOR 3100013f01000146200061205363726f6c6c207469746c656420226f726e74612070726f6b220000
+1316.316 MSG You see a Scroll titled "ornta prok"..
+1316.842 EQUIP f 39  Brass Lantern (with 13400 turns of light) {25% off}
+1317.182 S CUSTOM:',' 00
+1317.184 MSG You have a Scroll titled "ornta prok" (j)..
+1317.184 PKT_FLOOR 310000000000000000000000
+1317.184 INVEN ('j', 70, 1, 5, 'a Scroll titled "ornta prok"', '')
+1317.184 INVEN ('k', 65, 1, 10, 'a Copper-Plated Wand', '')
+1317.184 INVEN ('l', 65, 1, 10, 'a Lead Wand', '')
+1317.184 INVEN ('m', 65, 1, 10, 'a Steel-Plated Wand', '')
+1317.184 INVEN ('n', 55, 1, 50, 'a Maple Staff', '')
+1317.184 INVEN ('o', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1317.184 INVEN ('p', 21, 1, 180, 'a Lead-Filled Mace (3d4) {Bullroarer the Hobbit}', '')
+1317.184 INVEN ('q', 19, 1, 40, 'a Long Bow (x3) {Bullroarer the Hobbit}', '')
+1317.71 PKT_FLOOR 3100087c010001170100612042726f6b656e2053776f72642028316432290000
+1317.71 MSG You see a Broken Sword (1d2)..
+1320.506 S CUSTOM:'k' 18f500000001
+1320.508 MSG You destroy a Broken Sword (1d2)..
+1320.508 PKT_FLOOR 31000126010000000000286e6f7468696e67290000
+1321.517 PKT_FLOOR 31000e3d0400012d0100612054757271756f6973652052696e670000
+1321.517 MSG You see a Turquoise Ring..
+1323.131 S CUSTOM:',' 00
+1323.133 MSG You have a Turquoise Ring (o)..
+1323.133 PKT_FLOOR 310000000000000000000000
+1323.133 INVEN ('o', 45, 1, 2, 'a Turquoise Ring', '')
+1323.133 INVEN ('p', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1323.133 INVEN ('q', 21, 1, 180, 'a Lead-Filled Mace (3d4) {Bullroarer the Hobbit}', '')
+1323.133 INVEN ('r', 19, 1, 40, 'a Long Bow (x3) {Bullroarer the Hobbit}', '')
+1324.411 MSG You have found 25 gold pieces worth of silver..
+1325.68 PKT_FLOOR 310001210e00014b00006120436c6f75647920506f74696f6e0000
+1325.68 MSG You see a Cloudy Potion..
+1326.427 S CUSTOM:',' 00
+1326.43 MSG You have a Cloudy Potion (e)..
+1326.43 PKT_FLOOR 310000000000000000000000
+1326.43 INVEN ('e', 75, 1, 4, 'a Cloudy Potion', '')
+1326.43 INVEN ('f', 70, 7, 35, '7 Scrolls of Phase Door {@r1}', '')
+1326.43 INVEN ('g', 70, 2, 10, '2 Scrolls of Word of Recall', '')
+1326.43 INVEN ('h', 70, 1, 5, 'a Scroll of Identify {75% off}', '')
+1326.43 INVEN ('i', 70, 1, 5, 'a Scroll titled "kliwex potri"', '')
+1326.43 INVEN ('j', 70, 1, 5, 'a Scroll titled "shu foreng"', '')
+1326.43 INVEN ('k', 70, 1, 5, 'a Scroll titled "ornta prok"', '')
+1326.43 INVEN ('l', 65, 1, 10, 'a Copper-Plated Wand', '')
+1326.43 INVEN ('m', 65, 1, 10, 'a Lead Wand', '')
+1326.43 INVEN ('n', 65, 1, 10, 'a Steel-Plated Wand', '')
+1326.43 INVEN ('o', 55, 1, 50, 'a Maple Staff', '')
+1326.43 INVEN ('p', 45, 1, 2, 'a Turquoise Ring', '')
+1326.43 INVEN ('q', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1326.43 INVEN ('r', 21, 1, 180, 'a Lead-Filled Mace (3d4) {Bullroarer the Hobbit}', '')
+1326.43 INVEN ('s', 19, 1, 40, 'a Long Bow (x3) {Bullroarer the Hobbit}', '')
+1328.055 S CUSTOM:'.' 4702
+1328.158 S CUSTOM:'.' 4703
+1328.188 MSG You cannot run in that direction..
+1328.515 S CUSTOM:'.' 4703
+1328.869 S CUSTOM:'.' 4706
+1329.285 S CUSTOM:'.' 4703
+1329.545 S CUSTOM:'.' 4703
+1329.757 S CUSTOM:'.' 4706
+1330.413 S CUSTOM:'.' 4707
+1330.639 S CUSTOM:'.' 4707
+1330.836 S CUSTOM:'.' 4707
+1331.051 S CUSTOM:'.' 4707
+1331.238 S CUSTOM:'.' 4708
+1331.659 S CUSTOM:'.' 4707
+1331.841 MSG You feel the Long Bow (s) in your pack is good....
+1331.841 INVEN ('s', 19, 1, 40, 'a Long Bow (x3) {good - Bullroarer the Hobbit}', '')
+1334.857 S CUSTOM:'w' 1512
+1334.86 MSG You are shooting with a Long Bow (x3) {good - Bullroarer the Hobbit} (b)..
+1334.86 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1334.86 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1334.86 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1334.86 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1334.86 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1334.86 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1334.86 EQUIP b 19  Long Bow (x3) {good - Bullroarer the Hobbit}
+1342.324 S CUSTOM:'r' 1d070f
+1342.326 MSG In your pack: a Ring of Aggravate Monster {cursed} (p)..
+1342.326 MSG You have no more Scrolls of Identify {75% off}..
+1342.326 INVEN ('h', 70, 1, 5, 'a Scroll titled "kliwex potri"', '')
+1342.326 INVEN ('i', 70, 1, 5, 'a Scroll titled "shu foreng"', '')
+1342.326 INVEN ('j', 70, 1, 5, 'a Scroll titled "ornta prok"', '')
+1342.326 INVEN ('k', 65, 1, 10, 'a Copper-Plated Wand', '')
+1342.326 INVEN ('l', 65, 1, 10, 'a Lead Wand', '')
+1342.326 INVEN ('m', 65, 1, 10, 'a Steel-Plated Wand', '')
+1342.326 INVEN ('n', 55, 1, 50, 'a Maple Staff', '')
+1342.326 INVEN ('o', 45, 1, 2, 'a Ring of Aggravate Monster {cursed}', '')
+1342.326 INVEN ('p', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1342.326 INVEN ('q', 21, 1, 180, 'a Lead-Filled Mace (3d4) {Bullroarer the Hobbit}', '')
+1342.326 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1342.326 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1342.326 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1342.326 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1342.326 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1342.326 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1342.326 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1345.158 S CUSTOM:'k' 180e00000001
+1345.16 MSG You destroy a Ring of Aggravate Monster {cursed}..
+1345.16 MSG You have no more Rings of Aggravate Monster {cursed}..
+1345.16 INVEN ('o', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1345.16 INVEN ('p', 21, 1, 180, 'a Lead-Filled Mace (3d4) {Bullroarer the Hobbit}', '')
+1345.16 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1345.16 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1345.16 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1345.16 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1345.16 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1345.16 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1345.16 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1345.16 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1362.264 S PKT_MESSAGE 2e52696e677320616e642061
+1362.264 MSG [Dive03] Rings and amulets are usually bad this shallow.
+1363.524 S CUSTOM:'<' 02
+1363.527 MSG You enter a maze of up staircases..
+1363.534 MSG You feel there is something special about this level..
+1363.534 IND:depth da06
+1363.534 PKT_FLOOR 310000000000000000000000
+1365.577 S CUSTOM:'>' 04
+1365.58 MSG You enter a maze of down staircases..
+1365.586 MSG Looks like any other level..
+1365.586 IND:depth da07
+1365.586 PKT_FLOOR 310000000000000000000000
+1366.404 S CUSTOM:'<' 02
+1366.406 MSG You enter a maze of up staircases..
+1366.413 MSG Looks like any other level..
+1366.413 IND:depth da06
+1366.413 PKT_FLOOR 310000000000000000000000
+1366.933 S CUSTOM:'>' 04
+1367.041 MSG You enter a maze of down staircases..
+1367.054 MSG Looks like any other level..
+1367.054 IND:depth da07
+1367.054 PKT_FLOOR 310000000000000000000000
+1368.038 S CUSTOM:'<' 02
+1368.04 MSG You enter a maze of up staircases..
+1368.053 MSG Looks like any other level..
+1368.053 IND:depth da06
+1368.053 PKT_FLOOR 310000000000000000000000
+1368.65 S CUSTOM:'>' 04
+1368.68 MSG You enter a maze of down staircases..
+1368.693 MSG Looks like any other level..
+1368.693 IND:depth da07
+1368.693 PKT_FLOOR 310000000000000000000000
+1370.001 S CUSTOM:'.' 4707
+1370.242 S CUSTOM:'.' 4707
+1370.897 S CUSTOM:'.' 4703
+1371.141 S CUSTOM:'.' 4703
+1371.325 S CUSTOM:'.' 4702
+1373.16 EQUIP f 39  Brass Lantern (with 13300 turns of light) {25% off}
+1374.148 S CUSTOM:'<' 02
+1374.15 MSG You enter a maze of up staircases..
+1374.161 MSG Looks like any other level..
+1374.161 IND:depth da06
+1374.161 PKT_FLOOR 310000000000000000000000
+1374.981 S CUSTOM:'>' 04
+1374.983 MSG You enter a maze of down staircases..
+1374.987 MSG Looks like any other level..
+1374.988 IND:depth da07
+1374.988 PKT_FLOOR 310000000000000000000000
+1376.22 S CUSTOM:'.' 4707
+1376.417 S CUSTOM:'.' 4707
+1376.6 S CUSTOM:'.' 4707
+1376.787 S CUSTOM:'.' 4707
+1377.572 S CUSTOM:'.' 4704
+1377.766 S CUSTOM:'.' 4704
+1379.52 S CUSTOM:'>' 04
+1379.523 MSG You enter a maze of down staircases..
+1379.534 MSG Looks like any other level..
+1379.534 IND:depth da08
+1379.534 PKT_FLOOR 310000000000000000000000
+1379.706 MSG You hit the White harpy..
+1379.706 MSG You have slain the White harpy..
+1379.706 IND:level c30909
+1380.431 S CUSTOM:'<' 02
+1380.433 MSG You enter a maze of up staircases..
+1380.44 MSG Looks like any other level..
+1380.441 IND:depth da07
+1380.441 PKT_FLOOR 310000000000000000000000
+1382.081 S CUSTOM:'>' 04
+1382.084 MSG You enter a maze of down staircases..
+1382.092 MSG Looks like any other level..
+1382.092 IND:depth da08
+1382.092 PKT_FLOOR 310000000000000000000000
+1383.008 S CUSTOM:'<' 02
+1383.01 MSG You enter a maze of up staircases..
+1383.013 MSG Looks like any other level..
+1383.013 IND:depth da07
+1383.013 PKT_FLOOR 310000000000000000000000
+1385.359 MSG You hit the Green icky thing..
+1385.68 MSG The Green icky thing flees in terror!.
+1388.561 S CUSTOM:'>' 04
+1388.564 MSG You enter a maze of down staircases..
+1388.572 MSG Looks like any other level..
+1388.573 IND:depth da08
+1388.573 PKT_FLOOR 310000000000000000000000
+1389.667 S CUSTOM:'<' 02
+1389.67 MSG You enter a maze of up staircases..
+1389.681 MSG Looks like any other level..
+1389.681 IND:depth da07
+1389.681 PKT_FLOOR 310000000000000000000000
+1390.733 MSG The Metallic blue centipede wakes up..
+1391.853 MSG You hit the Metallic blue centipede..
+1391.853 MSG The Metallic blue centipede flees in terror!.
+1392.013 MSG You hit the Metallic blue centipede..
+1392.013 MSG You have slain the Metallic blue centipede..
+1392.013 IND:level c30909
+1393.312 PKT_FLOOR 3100022f010001160100612053706561722028316436290000
+1393.312 MSG You see a Spear (1d6)..
+1394.533 S CUSTOM:',' 00
+1394.535 MSG You have a Spear (1d6) (p)..
+1394.535 PKT_FLOOR 310000000000000000000000
+1394.535 INVEN ('p', 22, 1, 50, 'a Spear (1d6)', '')
+1394.535 INVEN ('q', 21, 1, 180, 'a Lead-Filled Mace (3d4) {Bullroarer the Hobbit}', '')
+1396.306 PKT_FLOOR 3100097c010001170100612054756c7761722028326434290000
+1396.306 MSG You see a Tulwar (2d4)..
+1396.885 S CUSTOM:',' 00
+1396.947 MSG You have a Tulwar (2d4) (p)..
+1396.947 PKT_FLOOR 310000000000000000000000
+1396.947 INVEN ('p', 23, 1, 100, 'a Tulwar (2d4)', '')
+1396.947 INVEN ('q', 22, 1, 50, 'a Spear (1d6)', '')
+1396.947 INVEN ('r', 21, 1, 180, 'a Lead-Filled Mace (3d4) {Bullroarer the Hobbit}', '')
+1397.725 S CUSTOM:'.' 4706
+1398.735 PKT_FLOOR 310004210e00014b000061204372696d736f6e20506f74696f6e0000
+1398.735 MSG You see a Crimson Potion..
+1400.045 S CUSTOM:',' 00
+1400.047 MSG You have a Crimson Potion (f)..
+1400.047 PKT_FLOOR 310000000000000000000000
+1400.047 INVEN ('f', 75, 1, 4, 'a Crimson Potion', '')
+1400.047 INVEN ('g', 70, 7, 35, '7 Scrolls of Phase Door {@r1}', '')
+1400.047 INVEN ('h', 70, 2, 10, '2 Scrolls of Word of Recall', '')
+1400.047 INVEN ('i', 70, 1, 5, 'a Scroll titled "kliwex potri"', '')
+1400.047 INVEN ('j', 70, 1, 5, 'a Scroll titled "shu foreng"', '')
+1400.047 INVEN ('k', 70, 1, 5, 'a Scroll titled "ornta prok"', '')
+1400.047 INVEN ('l', 65, 1, 10, 'a Copper-Plated Wand', '')
+1400.047 INVEN ('m', 65, 1, 10, 'a Lead Wand', '')
+1400.047 INVEN ('n', 65, 1, 10, 'a Steel-Plated Wand', '')
+1400.047 INVEN ('o', 55, 1, 50, 'a Maple Staff', '')
+1400.047 INVEN ('p', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1400.047 INVEN ('q', 23, 1, 100, 'a Tulwar (2d4)', '')
+1400.047 INVEN ('r', 22, 1, 50, 'a Spear (1d6)', '')
+1400.047 INVEN ('s', 21, 1, 180, 'a Lead-Filled Mace (3d4) {Bullroarer the Hobbit}', '')
+1400.691 S CUSTOM:'.' 4707
+1402.676 S CUSTOM:'>' 04
+1402.679 MSG You enter a maze of down staircases..
+1402.692 MSG Looks like any other level..
+1402.692 IND:depth da08
+1402.692 PKT_FLOOR 310000000000000000000000
+1404.065 S CUSTOM:'.' 4706
+1405.084 S CUSTOM:'.' 4703
+1405.968 MSG You have found 25 gold pieces worth of silver..
+1406.504 S CUSTOM:'.' 4704
+1407.016 S CUSTOM:'.' 4707
+1407.198 MSG You feel the Tulwar (q) in your pack is average....
+1407.198 INVEN ('q', 23, 1, 100, 'a Tulwar (2d4) {average}', '')
+1407.327 S CUSTOM:'.' 4704
+1408.181 S CUSTOM:'.' 4704
+1408.812 MSG You hit the Brown yeek..
+1408.812 MSG You have slain the Brown yeek..
+1408.812 IND:level c30909
+1408.849 S CUSTOM:'.' 4704
+1410.066 MSG You hit the Giant white ant..
+1410.066 MSG You have slain the Giant white ant..
+1410.066 IND:level c30909
+1412.533 PKT_FLOOR 31000f210e00014b000061204c696768742042726f776e20506f74696f6e0000
+1412.533 MSG You see a Light Brown Potion..
+1413.768 S CUSTOM:',' 00
+1413.771 MSG You have a Light Brown Potion (g)..
+1413.771 PKT_FLOOR 310000000000000000000000
+1413.771 INVEN ('g', 75, 1, 4, 'a Light Brown Potion', '')
+1413.771 INVEN ('h', 70, 7, 35, '7 Scrolls of Phase Door {@r1}', '')
+1413.771 INVEN ('i', 70, 2, 10, '2 Scrolls of Word of Recall', '')
+1413.771 INVEN ('j', 70, 1, 5, 'a Scroll titled "kliwex potri"', '')
+1413.771 INVEN ('k', 70, 1, 5, 'a Scroll titled "shu foreng"', '')
+1413.771 INVEN ('l', 70, 1, 5, 'a Scroll titled "ornta prok"', '')
+1413.771 INVEN ('m', 65, 1, 10, 'a Copper-Plated Wand', '')
+1413.771 INVEN ('n', 65, 1, 10, 'a Lead Wand', '')
+1413.771 INVEN ('o', 65, 1, 10, 'a Steel-Plated Wand', '')
+1413.771 INVEN ('p', 55, 1, 50, 'a Maple Staff', '')
+1413.771 INVEN ('q', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1413.771 INVEN ('r', 23, 1, 100, 'a Tulwar (2d4) {average}', '')
+1413.771 INVEN ('s', 22, 1, 50, 'a Spear (1d6)', '')
+1413.771 INVEN ('t', 21, 1, 180, 'a Lead-Filled Mace (3d4) {Bullroarer the Hobbit}', '')
+1414.724 S CUSTOM:'.' 4704
+1414.879 EQUIP f 39  Brass Lantern (with 13200 turns of light) {25% off}
+1414.961 S CUSTOM:'.' 4707
+1415.225 S CUSTOM:'.' 4704
+1415.227 MSG You cannot run in that direction..
+1416.62 S CUSTOM:'<' 02
+1416.622 MSG You enter a maze of up staircases..
+1416.626 MSG You have a good feeling....
+1416.626 IND:depth da07
+1416.626 PKT_FLOOR 310000000000000000000000
+1417.302 S CUSTOM:'>' 04
+1417.305 MSG You enter a maze of down staircases..
+1417.32 MSG Looks like any other level..
+1417.32 IND:depth da08
+1417.32 PKT_FLOOR 310000000000000000000000
+1418.813 S CUSTOM:'.' 4701
+1418.996 S CUSTOM:'.' 4701
+1419.278 S CUSTOM:'.' 4701
+1419.28 MSG You cannot run in that direction..
+1420.102 S CUSTOM:'.' 4709
+1420.553 S CUSTOM:'.' 4709
+1422.453 S CUSTOM:'<' 02
+1422.455 MSG You enter a maze of up staircases..
+1422.466 MSG Looks like any other level..
+1422.466 IND:depth da07
+1422.466 PKT_FLOOR 310000000000000000000000
+1423.034 S CUSTOM:'>' 04
+1423.092 MSG You enter a maze of down staircases..
+1423.105 MSG Looks like any other level..
+1423.105 IND:depth da08
+1423.105 PKT_FLOOR 310000000000000000000000
+1424.122 S CUSTOM:'<' 02
+1424.124 MSG You enter a maze of up staircases..
+1424.133 MSG Looks like any other level..
+1424.133 IND:depth da07
+1424.133 PKT_FLOOR 310000000000000000000000
+1424.69 S CUSTOM:'>' 04
+1424.759 MSG You enter a maze of down staircases..
+1424.772 MSG Looks like any other level..
+1424.772 IND:depth da08
+1424.772 PKT_FLOOR 310000000000000000000000
+1425.623 S CUSTOM:'<' 02
+1425.625 MSG You enter a maze of up staircases..
+1425.638 MSG Looks like any other level..
+1425.638 IND:depth da07
+1425.638 PKT_FLOOR 310000000000000000000000
+1426.416 S CUSTOM:'>' 04
+1426.418 MSG You enter a maze of down staircases..
+1426.425 MSG Looks like any other level..
+1426.425 IND:depth da08
+1426.425 PKT_FLOOR 310000000000000000000000
+1429.642 S CUSTOM:'.' 4708
+1430.278 MSG The Large kobold wakes up..
+1430.892 MSG You hit the Large kobold..
+1431.478 MSG The Large kobold hits you..
+1431.545 MSG You hit the Large kobold..
+1431.705 MSG You miss the Large kobold..
+1431.878 MSG You hit the Large kobold..
+1432.037 MSG You have slain the Large kobold..
+1432.037 IND:level c30909
+1432.819 S CUSTOM:'.' 4703
+1432.963 S CUSTOM:'.' 4702
+1433.536 S CUSTOM:'.' 4701
+1433.538 MSG You cannot run in that direction..
+1435.495 S CUSTOM:'.' 4709
+1435.744 S CUSTOM:'.' 4708
+1436.377 S CUSTOM:'.' 4706
+1437.02 MSG There is a wall blocking your way..
+1438.925 S CUSTOM:'>' 04
+1438.928 MSG You enter a maze of down staircases..
+1438.933 MSG Looks like any other level..
+1438.933 IND:depth da09
+1438.933 PKT_FLOOR 310000000000000000000000
+1439.668 S CUSTOM:'<' 02
+1439.671 MSG You enter a maze of up staircases..
+1439.679 MSG Looks like any other level..
+1439.679 IND:depth da08
+1439.679 PKT_FLOOR 310000000000000000000000
+1439.851 MSG You hit the Novice ranger..
+1440.172 MSG You have slain the Novice ranger..
+1440.172 IND:level c30909
+1440.292 MSG The Novice ranger wakes up..
+1440.332 MSG You hit the Novice ranger..
+1440.332 MSG It was a great hit!.
+1440.332 MSG The Novice ranger flees in terror!.
+1440.372 MSG The Novice ranger wakes up..
+1440.372 MSG The Novice ranger hits you..
+1440.372 MSG The Novice ranger wakes up..
+1440.372 MSG The Novice ranger hits you..
+1440.385 MSG The Novice ranger wakes up..
+1440.492 MSG You hit the Novice ranger..
+1440.652 MSG You have slain the Novice ranger..
+1440.652 IND:level c30909
+1440.685 S CUSTOM:'<' 02
+1440.839 MSG The Novice ranger wakes up..
+1440.839 MSG The Novice ranger fires an arrow..
+1440.959 MSG The Novice ranger wakes up..
+1441.291 MSG I see no up staircase here..
+1441.304 MSG You hit the Novice ranger..
+1441.304 MSG You have slain the Novice ranger..
+1441.304 IND:level c30909
+1441.438 MSG It casts a magic missile..
+1441.438 MSG The Novice ranger hits you..
+1441.478 MSG You hit the Novice ranger..
+1441.598 MSG The Novice ranger casts a magic missile..
+1441.638 MSG You hit the Novice ranger..
+1441.638 MSG The Novice ranger flees in terror!.
+1441.797 MSG You hit the Novice ranger..
+1441.797 MSG You have slain the Novice ranger..
+1441.797 IND:level c30909
+1441.957 MSG You hit the Novice ranger..
+1442.052 MSG It fires an arrow..
+1442.117 MSG You hit the Novice ranger..
+1442.264 MSG The Novice ranger misses you..
+1442.264 MSG The Novice ranger hits you..
+1442.279 MSG You hit the Novice ranger..
+1442.439 MSG The Novice ranger flees in terror!.
+1442.544 MSG The Novice ranger turns to fight!.
+1442.598 MSG You hit the Novice ranger..
+1442.599 MSG You have slain the Novice ranger..
+1442.599 IND:level c30909
+1442.638 MSG The Novice ranger misses you..
+1442.638 MSG The Novice ranger hits you..
+1442.77 MSG You hit the Novice ranger..
+1443.092 MSG You have slain the Novice ranger..
+1443.092 MSG Welcome to level 10..
+1443.093 IND:level c30a0a
+1443.25 MSG You hit the Novice ranger..
+1443.25 MSG The Novice ranger flees in terror!.
+1443.411 MSG You hit the Novice ranger..
+1443.731 MSG You miss the Novice ranger..
+1443.825 MSG The Novice ranger fires an arrow..
+1443.838 MSG The Novice ranger misses you..
+1443.838 MSG The Novice ranger hits you..
+1443.891 MSG You hit the Novice ranger..
+1443.985 MSG The Novice ranger fires an arrow..
+1444.064 MSG You miss the Novice ranger..
+1444.226 MSG You hit the Novice ranger..
+1444.226 MSG The Novice ranger flees in terror!.
+1444.386 MSG You hit the Novice ranger..
+1444.386 MSG You have slain the Novice ranger..
+1444.386 IND:level c30a0a
+1444.424 MSG The Novice ranger casts a magic missile..
+1444.451 MSG The Novice ranger misses you..
+1444.451 MSG The Novice ranger hits you..
+1444.544 MSG You hit the Novice ranger..
+1444.544 MSG The Novice ranger flees in terror!.
+1444.705 MSG You hit the Novice ranger..
+1444.864 MSG You have slain the Novice ranger..
+1444.864 IND:level c30a0a
+1445.024 MSG You hit the Novice ranger..
+1445.024 MSG The Novice ranger hits you..
+1445.185 MSG You hit the Novice ranger..
+1445.357 MSG You have slain the Novice ranger..
+1445.357 IND:level c30a0a
+1445.517 MSG You hit the Novice ranger..
+1445.637 MSG The Novice ranger hits you..
+1445.637 MSG The Novice ranger misses you..
+1445.677 MSG You hit the Novice ranger..
+1445.837 MSG It was a good hit!.
+1445.837 MSG You have slain the Novice ranger..
+1445.837 IND:level c30a0a
+1447.994 S PKT_REST 48
+1448.011 MSG It fires an arrow..
+1450.402 S PKT_REST 48
+1452.22 MSG You have found 22 gold pieces worth of copper..
+1454.344 MSG It fires an arrow..
+1454.867 MSG You have found 21 gold pieces worth of silver..
+1455.848 PKT_FLOOR 3100013f01000146000061205363726f6c6c206f6620576f7264206f6620526563616c6c0000
+1455.848 MSG You see a Scroll of Word of Recall..
+1456.767 S CUSTOM:',' 00
+1456.769 MSG You have 3 Scrolls of Word of Recall (i)..
+1456.769 PKT_FLOOR 310000000000000000000000
+1456.769 INVEN ('i', 70, 3, 15, '3 Scrolls of Word of Recall', '')
+1457.457 S CUSTOM:'.' 4706
+1457.638 MSG You hit the Novice ranger..
+1457.638 MSG The Novice ranger flees in terror!.
+1457.797 MSG You hit the Novice ranger..
+1457.797 MSG You have slain the Novice ranger..
+1457.797 IND:level c30a0a
+1459.63 S PKT_REST 48
+1460.091 EQUIP f 39  Brass Lantern (with 13100 turns of light) {25% off}
+1461.263 MSG You feel the Spear (s) in your pack is average....
+1461.263 MSG You feel the Lead-Filled Mace (t) in your pack is good....
+1461.263 INVEN ('s', 22, 1, 50, 'a Spear (1d6) {average}', '')
+1461.263 INVEN ('t', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1464.956 MSG You have found 51 gold pieces worth of silver..
+1466.803 PKT_FLOOR 31000b2f010001160100612054726964656e742028316438290000
+1466.803 MSG You see a Trident (1d8)..
+1468.237 S CUSTOM:',' 00
+1468.239 MSG You have a Trident (1d8) (t)..
+1468.239 PKT_FLOOR 310000000000000000000000
+1468.239 INVEN ('t', 22, 1, 70, 'a Trident (1d8)', '')
+1468.239 INVEN ('u', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1468.729 PKT_FLOOR 3100022f010001160100612053706561722028316436290000
+1468.729 MSG You see a Spear (1d6)..
+1469.16 S CUSTOM:',' 00
+1469.371 MSG You have a Spear (1d6) (t)..
+1469.371 PKT_FLOOR 310000000000000000000000
+1469.371 INVEN ('t', 22, 1, 50, 'a Spear (1d6)', '')
+1469.371 INVEN ('u', 22, 1, 70, 'a Trident (1d8)', '')
+1469.371 INVEN ('v', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1470.138 PKT_FLOOR 31000c3d0400012d0100612052686f646f6e6974652052696e670000
+1470.138 MSG You see a Rhodonite Ring..
+1470.828 S CUSTOM:',' 00
+1470.83 MSG You have a Rhodonite Ring (q)..
+1470.83 PKT_FLOOR 310000000000000000000000
+1470.83 INVEN ('q', 45, 1, 2, 'a Rhodonite Ring', '')
+1470.83 INVEN ('r', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1470.83 INVEN ('s', 23, 1, 100, 'a Tulwar (2d4) {average}', '')
+1470.83 INVEN ('t', 22, 1, 50, 'a Spear (1d6) {average}', '')
+1470.83 INVEN ('u', 22, 1, 50, 'a Spear (1d6)', '')
+1470.83 INVEN ('v', 22, 1, 70, 'a Trident (1d8)', '')
+1470.83 INVEN ('w', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1472.144 PKT_FLOOR 3100097c010001170100612054756c7761722028326434290000
+1472.144 MSG You see a Tulwar (2d4)..
+1472.703 S CUSTOM:',' 00
+1472.797 MSG You have no room for a Tulwar (2d4)..
+1483.429 S PKT_MESSAGE 2e4f7574206f662073706163
+1483.429 MSG [Dive03] Out of space, make room.
+1483.876 EQUIP f 39  Brass Lantern (with 13000 turns of light) {25% off}
+1484.958 S CUSTOM:'F' 2200
+1484.961 MSG You fuel your lamp..
+1484.961 MSG Your lamp is full..
+1484.961 MSG You have no more Flasks of oil..
+1484.961 INVEN ('a', 75, 1, 4, 'a Potion of Berserk Strength', '')
+1484.961 INVEN ('b', 75, 1, 4, 'a Violet Potion', '')
+1484.961 INVEN ('c', 75, 1, 4, 'a Puce Potion', '')
+1484.961 INVEN ('d', 75, 1, 4, 'a Cloudy Potion', '')
+1484.961 INVEN ('e', 75, 1, 4, 'a Crimson Potion', '')
+1484.961 INVEN ('f', 75, 1, 4, 'a Light Brown Potion', '')
+1484.961 INVEN ('g', 70, 7, 35, '7 Scrolls of Phase Door {@r1}', '')
+1484.961 INVEN ('h', 70, 3, 15, '3 Scrolls of Word of Recall', '')
+1484.961 INVEN ('i', 70, 1, 5, 'a Scroll titled "kliwex potri"', '')
+1484.961 INVEN ('j', 70, 1, 5, 'a Scroll titled "shu foreng"', '')
+1484.961 INVEN ('k', 70, 1, 5, 'a Scroll titled "ornta prok"', '')
+1484.961 INVEN ('l', 65, 1, 10, 'a Copper-Plated Wand', '')
+1484.961 INVEN ('m', 65, 1, 10, 'a Lead Wand', '')
+1484.961 INVEN ('n', 65, 1, 10, 'a Steel-Plated Wand', '')
+1484.961 INVEN ('o', 55, 1, 50, 'a Maple Staff', '')
+1484.961 INVEN ('p', 45, 1, 2, 'a Rhodonite Ring', '')
+1484.961 INVEN ('q', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1484.961 INVEN ('r', 23, 1, 100, 'a Tulwar (2d4) {average}', '')
+1484.961 INVEN ('s', 22, 1, 50, 'a Spear (1d6) {average}', '')
+1484.961 INVEN ('t', 22, 1, 50, 'a Spear (1d6)', '')
+1484.961 INVEN ('u', 22, 1, 70, 'a Trident (1d8)', '')
+1484.961 INVEN ('v', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1484.961 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1484.961 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1484.961 EQUIP f 39  Brass Lantern (with 15000 turns of light) {25% off}
+1486.805 S CUSTOM:',' 00
+1486.807 MSG You have a Tulwar (2d4) (s)..
+1486.807 PKT_FLOOR 310000000000000000000000
+1486.807 INVEN ('s', 23, 1, 100, 'a Tulwar (2d4)', '')
+1486.807 INVEN ('t', 22, 1, 50, 'a Spear (1d6) {average}', '')
+1486.807 INVEN ('u', 22, 1, 50, 'a Spear (1d6)', '')
+1486.807 INVEN ('v', 22, 1, 70, 'a Trident (1d8)', '')
+1486.807 INVEN ('w', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1490.449 S CUSTOM:'>' 04
+1490.452 MSG You enter a maze of down staircases..
+1490.465 MSG You feel there is something special about this level..
+1490.465 IND:depth da09
+1490.465 PKT_FLOOR 310000000000000000000000
+1492.092 S CUSTOM:'.' 4703
+1492.414 S CUSTOM:'.' 4703
+1492.699 S CUSTOM:'.' 4703
+1492.915 S CUSTOM:'.' 4703
+1493.715 MSG There is a wall blocking your way..
+1494.293 S CUSTOM:'.' 4704
+1494.501 S CUSTOM:'.' 4704
+1494.84 S CUSTOM:'.' 4704
+1495.158 MSG You feel the Tulwar (s) in your pack is good....
+1495.158 INVEN ('s', 23, 1, 100, 'a Tulwar (2d4) {good}', '')
+1495.382 S CUSTOM:'.' 4706
+1495.89 S CUSTOM:'.' 4706
+1496.106 S CUSTOM:'.' 4706
+1496.409 S CUSTOM:'.' 4709
+1497.096 S CUSTOM:'.' 4709
+1497.351 S CUSTOM:'.' 4706
+1497.479 S CUSTOM:'.' 4703
+1497.481 MSG You cannot run in that direction..
+1498.138 S CUSTOM:'.' 4706
+1498.364 S CUSTOM:'.' 4703
+1498.409 MSG You hit the Baby white dragon..
+1498.862 MSG The Baby white dragon claws you..
+1498.862 MSG The Baby white dragon misses you..
+1499.036 MSG You hit the Baby white dragon..
+1499.356 MSG You miss the Baby white dragon..
+1499.516 MSG You hit the Baby white dragon..
+1500.011 MSG You miss the Baby white dragon..
+1500.063 MSG The Baby white dragon claws you..
+1500.063 MSG The Baby white dragon bites you..
+1500.171 MSG You hit the Baby white dragon..
+1500.664 MSG The Baby white dragon flees in terror!.
+1500.823 MSG You miss the Baby white dragon..
+1500.996 MSG You hit the Baby white dragon..
+1500.997 MSG You have slain the Baby white dragon..
+1500.997 MSG You feel something roll beneath your feet..
+1500.997 PKT_FLOOR 3100022401000164000073696c7665720000
+1500.997 IND:level c30a0a
+1501.948 MSG You have found 30 gold pieces worth of copper..
+1501.948 PKT_FLOOR 310000000000000000000000
+1502.596 MSG You have found 26 gold pieces worth of silver..
+1503.251 MSG You have found 37 gold pieces worth of silver..
+1512.247 S CUSTOM:'k' 181300000001
+1512.25 MSG You destroy a Spear (1d6) {average}..
+1512.25 MSG You have no more Spears (1d6) {average}..
+1512.25 INVEN ('t', 22, 1, 50, 'a Spear (1d6)', '')
+1512.25 INVEN ('u', 22, 1, 70, 'a Trident (1d8)', '')
+1512.25 INVEN ('v', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1512.25 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1512.25 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1514.72 S CUSTOM:'.' 4707
+1514.925 S CUSTOM:'.' 4704
+1515.631 S CUSTOM:'.' 4704
+1515.836 S CUSTOM:'.' 4704
+1516.03 S CUSTOM:'.' 4704
+1516.235 S CUSTOM:'.' 4704
+1516.461 S CUSTOM:'.' 4704
+1516.695 S CUSTOM:'.' 4704
+1517.313 S CUSTOM:'.' 4704
+1517.94 PKT_FLOOR 31000f5f0f0001372000612042616c73612053746166660000
+1517.94 MSG You see a Balsa Staff..
+1518.476 MSG You feel the Trident (u) in your pack is cursed....
+1518.476 INVEN ('u', 22, 1, 70, 'a Trident (1d8) {cursed}', '')
+1518.965 S CUSTOM:',' 00
+1518.967 MSG You have a Balsa Staff (p)..
+1518.967 PKT_FLOOR 310000000000000000000000
+1518.967 INVEN ('p', 55, 1, 50, 'a Balsa Staff', '')
+1518.967 INVEN ('q', 45, 1, 2, 'a Rhodonite Ring', '')
+1518.967 INVEN ('r', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1518.967 INVEN ('s', 23, 1, 100, 'a Tulwar (2d4) {average}', '')
+1518.967 INVEN ('t', 23, 1, 100, 'a Tulwar (2d4) {good}', '')
+1518.967 INVEN ('u', 22, 1, 50, 'a Spear (1d6)', '')
+1518.967 INVEN ('v', 22, 1, 70, 'a Trident (1d8) {cursed}', '')
+1518.967 INVEN ('w', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1519.817 S CUSTOM:'.' 4709
+1519.819 MSG You cannot run in that direction..
+1520.04 S CUSTOM:'.' 4709
+1520.501 S CUSTOM:'.' 4706
+1520.735 S CUSTOM:'.' 4709
+1520.895 S CUSTOM:'.' 4708
+1521.382 S CUSTOM:'.' 4708
+1522.322 S CUSTOM:'<' 02
+1522.324 MSG You enter a maze of up staircases..
+1522.331 MSG You like the look of this place....
+1522.332 IND:depth da08
+1522.332 PKT_FLOOR 310000000000000000000000
+1522.504 MSG You hit the Large kobold..
+1522.584 MSG The Kobold shaman wakes up..
+1522.584 MSG The Kobold shaman hits you..
+1522.663 MSG You hit the Large kobold..
+1522.756 MSG The Large kobold hits you..
+1522.823 MSG You hit the Large kobold..
+1522.903 MSG The Large kobold wakes up..
+1522.903 MSG The Large kobold hits you..
+1522.983 MSG You hit the Large kobold..
+1523.29 MSG The Kobold shaman wakes up..
+1523.29 MSG The Kobold shaman hits you..
+1523.29 MSG You have been given a graze..
+1523.303 MSG You miss the Large kobold..
+1523.343 MSG The Kobold shaman wakes up..
+1523.463 MSG You hit the Large kobold..
+1523.475 MSG The Large kobold wakes up..
+1523.475 MSG The Large kobold hits you..
+1523.53 MSG The Large kobold wakes up..
+1523.595 MSG The Kobold shaman wakes up..
+1523.622 MSG You hit the Large kobold..
+1523.637 MSG The Kobold shaman wakes up..
+1523.769 MSG The Kobold shaman points at you and curses..
+1523.796 MSG You hit the Large kobold..
+1523.876 MSG The Kobold shaman wakes up..
+1523.956 MSG You hit the Large kobold..
+1523.956 MSG The Large kobold flees in terror!.
+1524.049 MSG The Large kobold turns to fight!.
+1524.088 MSG The Large kobold hits you..
+1524.116 MSG You miss the Large kobold..
+1524.116 MSG The Kobold shaman wakes up..
+1524.276 MSG You hit the Large kobold..
+1524.276 MSG You have slain the Large kobold..
+1524.276 IND:level c30a0a
+1524.368 MSG The Kobold shaman hits you..
+1524.436 MSG You hit the Large kobold..
+1524.583 MSG The Large kobold wakes up..
+1524.595 MSG You hit the Large kobold..
+1524.65 MSG The Kobold shaman misses you..
+1524.729 MSG The Kobold shaman creates a mesmerising illusion..
+1524.729 MSG You disbelieve the feeble spell..
+1524.757 MSG You hit the Large kobold..
+1524.769 MSG The Large kobold hits you..
+1524.837 MSG You are no longer bleeding..
+1524.902 MSG The Kobold shaman casts a magic missile..
+1524.916 MSG You hit the Large kobold..
+1524.982 MSG The Large kobold wakes up..
+1525.076 MSG The Kobold shaman points at you and curses..
+1525.076 MSG You resist the effects!.
+1525.089 MSG You hit the Large kobold..
+1525.248 MSG You miss the Large kobold..
+1525.276 MSG The Large kobold misses you..
+1525.37 MSG The Large kobold wakes up..
+1525.41 MSG You hit the Large kobold..
+1525.423 MSG The Kobold shaman points at you and curses..
+1525.423 MSG You resist the effects!.
+1525.45 MSG The Kobold shaman hits you..
+1525.515 MSG The Kobold shaman points at you and curses..
+1525.515 MSG You resist the effects!.
+1525.553 S CUSTOM:'r' 1d0600
+1525.553 MSG The Kobold shaman points at you and curses..
+1525.553 MSG You resist the effects!.
+1525.553 MSG The Kobold shaman casts a magic missile..
+1525.69 MSG The Large kobold misses you..
+1525.89 MSG The Large kobold wakes up..
+1525.942 MSG The Kobold shaman hits you..
+1526.035 PKT_FLOOR 310000000000000000000000
+1526.035 MSG You have 6 Scrolls of Phase Door {@r1}..
+1526.035 INVEN ('g', 70, 6, 30, '6 Scrolls of Phase Door {@r1}', '')
+1526.157 MSG The Large kobold wakes up..
+1526.716 MSG You miss the Kobold shaman..
+1526.716 MSG You hit the Kobold shaman..
+1526.716 MSG You have slain the Kobold shaman..
+1526.716 MSG Welcome to level 11..
+1526.716 MSG The Large kobold wakes up..
+1526.716 IND:level c30b0b
+1526.862 MSG The Kobold shaman casts a magic missile..
+1527.13 MSG The Large kobold wakes up..
+1527.25 MSG You hit the Kobold shaman..
+1527.25 MSG It was a good hit!.
+1527.25 MSG You have slain the Kobold shaman..
+1527.25 IND:level c30b0b
+1527.33 S CUSTOM:'r' 1d0600
+1527.333 PKT_FLOOR 310000000000000000000000
+1527.333 MSG You have 5 Scrolls of Phase Door {@r1}..
+1527.333 INVEN ('g', 70, 5, 25, '5 Scrolls of Phase Door {@r1}', '')
+1527.61 MSG The Kobold shaman creates a mesmerising illusion..
+1527.61 MSG You disbelieve the feeble spell..
+1528.329 MSG The Kobold shaman casts a magic missile..
+1528.69 MSG You miss the Large kobold..
+1528.69 MSG You hit the Large kobold..
+1528.703 MSG You have slain the Large kobold..
+1528.703 IND:level c30b0b
+1529.395 MSG You hit the Large kobold..
+1529.395 MSG You miss the Large kobold..
+1529.395 MSG You hit the Large kobold..
+1529.768 MSG The Kobold shaman points at you and curses..
+1529.823 MSG You miss the Large kobold..
+1529.982 MSG You hit the Large kobold..
+1529.982 MSG The Large kobold flees in terror!.
+1529.982 MSG The Large kobold turns to fight!.
+1530.062 MSG The Large kobold hits you..
+1530.155 MSG You miss the Large kobold..
+1530.224 S CUSTOM:'r' 1d0600
+1530.583 MSG The Large kobold misses you..
+1530.782 PKT_FLOOR 310000000000000000000000
+1530.782 MSG You have 4 Scrolls of Phase Door {@r1}..
+1530.782 INVEN ('g', 70, 4, 20, '4 Scrolls of Phase Door {@r1}', '')
+1530.822 MSG The Large kobold wakes up..
+1530.969 MSG You hit the Large kobold..
+1531.116 MSG The Large kobold hits you..
+1531.129 MSG You hit the Large kobold..
+1531.141 MSG The Large kobold wakes up..
+1531.209 MSG The Kobold shaman points at you and curses..
+1531.288 MSG You hit the Large kobold..
+1531.862 MSG The Large kobold wakes up..
+1531.875 EQUIP f 39  Brass Lantern (with 14900 turns of light) {25% off}
+1532.902 MSG The Large kobold hits you..
+1533.595 MSG The Large kobold wakes up..
+1533.742 MSG You hit the Large kobold..
+1533.902 MSG You miss the Large kobold..
+1533.955 MSG The Large kobold wakes up..
+1534.018 S CUSTOM:'q' 2300
+1534.369 MSG The Large kobold hits you..
+1534.529 MSG You feel much better..
+1534.529 MSG You feel like a killing machine!.
+1534.529 MSG You have no more Potions of Berserk Strength..
+1534.529 INVEN ('a', 75, 1, 4, 'a Violet Potion', '')
+1534.529 INVEN ('b', 75, 1, 4, 'a Puce Potion', '')
+1534.529 INVEN ('c', 75, 1, 4, 'a Cloudy Potion', '')
+1534.529 INVEN ('d', 75, 1, 4, 'a Crimson Potion', '')
+1534.529 INVEN ('e', 75, 1, 4, 'a Light Brown Potion', '')
+1534.529 INVEN ('f', 70, 4, 20, '4 Scrolls of Phase Door {@r1}', '')
+1534.529 INVEN ('g', 70, 3, 15, '3 Scrolls of Word of Recall', '')
+1534.529 INVEN ('h', 70, 1, 5, 'a Scroll titled "kliwex potri"', '')
+1534.529 INVEN ('i', 70, 1, 5, 'a Scroll titled "shu foreng"', '')
+1534.529 INVEN ('j', 70, 1, 5, 'a Scroll titled "ornta prok"', '')
+1534.529 INVEN ('k', 65, 1, 10, 'a Copper-Plated Wand', '')
+1534.529 INVEN ('l', 65, 1, 10, 'a Lead Wand', '')
+1534.529 INVEN ('m', 65, 1, 10, 'a Steel-Plated Wand', '')
+1534.529 INVEN ('n', 55, 1, 50, 'a Maple Staff', '')
+1534.529 INVEN ('o', 55, 1, 50, 'a Balsa Staff', '')
+1534.529 INVEN ('p', 45, 1, 2, 'a Rhodonite Ring', '')
+1534.529 INVEN ('q', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1534.529 INVEN ('r', 23, 1, 100, 'a Tulwar (2d4) {average}', '')
+1534.529 INVEN ('s', 23, 1, 100, 'a Tulwar (2d4) {good}', '')
+1534.529 INVEN ('t', 22, 1, 50, 'a Spear (1d6)', '')
+1534.529 INVEN ('u', 22, 1, 70, 'a Trident (1d8) {cursed}', '')
+1534.529 INVEN ('v', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1534.529 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1534.529 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1534.703 MSG The Kobold shaman casts a magic missile..
+1534.716 MSG You hit the Large kobold..
+1534.716 MSG It was a great hit!.
+1534.716 MSG You have slain the Large kobold..
+1534.716 IND:level c30b0b
+1534.875 MSG You miss the Large kobold..
+1535.035 MSG You hit the Large kobold..
+1535.276 MSG The Kobold shaman casts a magic missile..
+1535.703 MSG The Large kobold hits you..
+1535.97 MSG The Large kobold wakes up..
+1536.476 MSG The Kobold shaman creates a mesmerising illusion..
+1536.476 MSG You are confused!.
+1536.476 MSG There is a wall blocking your way..
+1536.662 MSG The Kobold shaman points at you and curses..
+1537.076 MSG The Kobold shaman casts a magic missile..
+1537.076 MSG The Large kobold hits you..
+1537.182 MSG The Kobold shaman points at you and curses..
+1537.301 MSG The Large kobold hits you..
+1537.489 MSG The Large kobold misses you..
+1537.634 S CUSTOM:'>' 04
+1537.637 MSG You enter a maze of down staircases..
+1537.65 MSG You feel your luck is turning....
+1537.65 IND:depth da09
+1537.65 PKT_FLOOR 310000000000000000000000
+1537.899 S CUSTOM:'>' 04
+1538.288 MSG I see no down staircase here..
+1540.063 S PKT_REST 48
+1540.088 MSG You feel less confused now..
+1541.478 S PKT_REST 48
+1542.595 MSG You feel less Berserk..
+1544.411 S PKT_REST 48
+1545.303 MSG You hear a door burst open!.
+1547.93 MSG You hit the Giant red frog..
+1547.93 MSG You miss the Giant red frog..
+1547.93 MSG You hit the Giant red frog..
+1547.93 MSG You have slain the Giant red frog..
+1547.93 IND:level c30b0b
+1549.027 S PKT_REST 48
+1551.076 EQUIP f 39  Brass Lantern (with 14800 turns of light) {25% off}
+1552.676 MSG You feel the Spear (t) in your pack is cursed....
+1552.676 INVEN ('t', 22, 1, 50, 'a Spear (1d6) {cursed}', '')
+1556.387 S CUSTOM:'k' 181300000001
+1556.389 MSG You destroy a Spear (1d6) {cursed}..
+1556.389 MSG You have no more Spears (1d6) {cursed}..
+1556.389 INVEN ('t', 22, 1, 70, 'a Trident (1d8) {cursed}', '')
+1556.389 INVEN ('u', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1556.389 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1556.389 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1556.389 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1560.699 S CUSTOM:'k' 181300000001
+1560.701 MSG You destroy a Trident (1d8) {cursed}..
+1560.701 MSG You have no more Tridents (1d8) {cursed}..
+1560.701 INVEN ('t', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1560.701 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1560.701 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1560.701 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1560.701 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1571.978 S PKT_MESSAGE 2e546861742077617320616c
+1571.979 MSG [Dive03] That was almost death.
+1579.234 EQUIP f 39  Brass Lantern (with 14700 turns of light) {25% off}
+1584.983 S PKT_MESSAGE 2e49276d207573656420746f
+1584.983 MSG [Dive03] I'm used to have function keys as hotkeys.
+1597.466 S PKT_MESSAGE 2e42757420696e2074686973
+1597.466 MSG [Dive03] But in this env on the SCC I can't use them.
+1611.182 S PKT_MESSAGE 2e48616420746f2064657370
+1611.183 MSG [Dive03] Had to desperately use my phase door manually.
+1618.176 S CUSTOM:'>' 04
+1618.178 MSG I see no down staircase here..
+1619.139 S CUSTOM:'<' 02
+1619.141 MSG You enter a maze of up staircases..
+1619.154 MSG You feel there is something special about this level..
+1619.154 IND:depth da08
+1619.154 PKT_FLOOR 310000000000000000000000
+1620.68 S CUSTOM:'>' 04
+1620.682 MSG You enter a maze of down staircases..
+1620.687 MSG Looks like any other level..
+1620.687 IND:depth da09
+1620.687 PKT_FLOOR 310000000000000000000000
+1622.509 S CUSTOM:'.' 4706
+1622.702 S CUSTOM:'.' 4706
+1622.907 S CUSTOM:'.' 4706
+1623.13 S CUSTOM:'.' 4706
+1623.365 S CUSTOM:'.' 4706
+1624.141 S CUSTOM:'.' 4706
+1624.346 S CUSTOM:'.' 4706
+1624.572 S CUSTOM:'.' 4706
+1624.806 S CUSTOM:'.' 4706
+1625.022 S CUSTOM:'.' 4706
+1625.266 S CUSTOM:'.' 4706
+1625.471 S CUSTOM:'.' 4706
+1625.723 S CUSTOM:'.' 4706
+1626.048 S CUSTOM:'.' 4706
+1626.293 S CUSTOM:'.' 4706
+1626.545 S CUSTOM:'.' 4706
+1626.94 S CUSTOM:'.' 4708
+1627.358 S CUSTOM:'.' 4704
+1627.937 S CUSTOM:'.' 4701
+1628.194 S CUSTOM:'.' 4707
+1628.649 S CUSTOM:'.' 4707
+1628.8 S CUSTOM:'.' 4704
+1629.307 S CUSTOM:'.' 4704
+1629.34 S CUSTOM:'.' 4704
+1629.369 S CUSTOM:'.' 4704
+1629.4 S CUSTOM:'.' 4704
+1629.554 EQUIP f 39  Brass Lantern (with 14600 turns of light) {25% off}
+1629.571 S CUSTOM:'.' 4709
+1630.111 S CUSTOM:'.' 4709
+1630.411 S CUSTOM:'.' 4706
+1630.971 PKT_FLOOR 3100097c010001170100612053686f72742053776f72642028316437290000
+1630.971 MSG You see a Short Sword (1d7)..
+1632.082 S CUSTOM:',' 00
+1632.085 MSG You have a Short Sword (1d7) (r)..
+1632.085 PKT_FLOOR 310000000000000000000000
+1632.085 INVEN ('r', 23, 1, 80, 'a Short Sword (1d7)', '')
+1632.085 INVEN ('s', 23, 1, 100, 'a Tulwar (2d4) {average}', '')
+1632.085 INVEN ('t', 23, 1, 100, 'a Tulwar (2d4) {good}', '')
+1632.085 INVEN ('u', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1632.912 S CUSTOM:'.' 4704
+1633.109 S CUSTOM:'.' 4704
+1633.332 S CUSTOM:'.' 4704
+1633.536 S CUSTOM:'.' 4704
+1634.05 S CUSTOM:'.' 4704
+1634.081 S CUSTOM:'.' 4704
+1634.11 S CUSTOM:'.' 4704
+1635.886 S CUSTOM:'>' 04
+1635.889 MSG You enter a maze of down staircases..
+1635.9 MSG You feel your luck is turning....
+1635.901 IND:depth da0a
+1635.901 PKT_FLOOR 310000000000000000000000
+1637.247 S CUSTOM:'.' 4704
+1637.484 S CUSTOM:'.' 4704
+1637.971 S CUSTOM:'.' 4704
+1638.033 S CUSTOM:'.' 47044704
+1638.102 S CUSTOM:'.' 4704
+1638.219 S CUSTOM:'.' 4704470447044704
+1638.234 S CUSTOM:'.' 4704
+1638.262 S CUSTOM:'.' 4704
+1638.296 S CUSTOM:'.' 4704
+1638.344 S CUSTOM:'.' 4704
+1638.464 S CUSTOM:'.' 470447044704
+1638.467 S CUSTOM:'.' 4704
+1638.503 S CUSTOM:'.' 4704
+1638.524 S CUSTOM:'.' 4704
+1638.557 S CUSTOM:'.' 4704
+1638.605 S CUSTOM:'.' 4704
+1638.633 S CUSTOM:'.' 4704
+1638.664 S CUSTOM:'.' 4704
+1638.696 S CUSTOM:'.' 4704
+1638.725 S CUSTOM:'.' 4704
+1638.758 S CUSTOM:'.' 4704
+1638.802 S CUSTOM:'.' 4704
+1638.835 S CUSTOM:'.' 4704
+1638.865 S CUSTOM:'.' 4704
+1638.898 S CUSTOM:'.' 4704
+1638.93 S CUSTOM:'.' 4704
+1638.96 S CUSTOM:'.' 4704
+1638.988 S CUSTOM:'.' 4704
+1639.022 S CUSTOM:'.' 4704
+1639.051 S CUSTOM:'.' 4704
+1639.099 S CUSTOM:'.' 4704
+1639.132 S CUSTOM:'.' 4704
+1639.164 S CUSTOM:'.' 4704
+1639.194 S CUSTOM:'.' 4704
+1639.713 S CUSTOM:'.' 4704
+1640.283 S CUSTOM:'.' 4706
+1640.796 S CUSTOM:'.' 4706
+1640.832 S CUSTOM:'.' 4706
+1640.858 S CUSTOM:'.' 4706
+1640.891 S CUSTOM:'.' 4706
+1640.92 S CUSTOM:'.' 4706
+1640.95 S CUSTOM:'.' 4706
+1640.998 S CUSTOM:'.' 4706
+1641.027 S CUSTOM:'.' 4706
+1641.06 S CUSTOM:'.' 4706
+1641.089 S CUSTOM:'.' 4706
+1641.118 S CUSTOM:'.' 4706
+1641.151 S CUSTOM:'.' 4706
+1641.18 S CUSTOM:'.' 4706
+1641.227 S CUSTOM:'.' 4706
+1641.256 S CUSTOM:'.' 4706
+1641.289 S CUSTOM:'.' 4706
+1641.319 S CUSTOM:'.' 4706
+1641.347 S CUSTOM:'.' 4706
+1641.381 S CUSTOM:'.' 4706
+1641.425 S CUSTOM:'.' 4706
+1641.458 S CUSTOM:'.' 4706
+1641.486 S CUSTOM:'.' 4706
+1641.519 S CUSTOM:'.' 4706
+1641.55 S CUSTOM:'.' 4706
+1641.581 S CUSTOM:'.' 4706
+1641.611 S CUSTOM:'.' 4706
+1641.644 S CUSTOM:'.' 4706
+1641.688 S CUSTOM:'.' 4706
+1641.72 S CUSTOM:'.' 4706
+1641.75 S CUSTOM:'.' 4706
+1641.779 S CUSTOM:'.' 4706
+1641.812 S CUSTOM:'.' 4706
+1641.841 S CUSTOM:'.' 4706
+1641.86 MSG The Novice mage hits you..
+1641.886 S CUSTOM:'.' 4706
+1641.918 S CUSTOM:'.' 4706
+1641.947 S CUSTOM:'.' 4706
+1641.979 S CUSTOM:'.' 4706
+1642.009 S CUSTOM:'.' 4706
+1642.446 MSG You miss the Novice mage..
+1642.606 MSG You hit the Novice mage..
+1642.781 MSG You have slain the Novice mage..
+1642.781 IND:level c30b0b
+1644.085 PKT_FLOOR 31000f7b0f000e1100003134204172726f77732028316434290000
+1644.085 MSG You see 14 Arrows (1d4)..
+1644.92 PKT_FLOOR 310000000000000000000000
+1645.588 S CUSTOM:'.' 4706
+1645.812 S CUSTOM:'.' 4706
+1646.312 S CUSTOM:'.' 4706
+1646.9 S CUSTOM:'.' 4706
+1647.44 S CUSTOM:'.' 4706
+1658.136 S PKT_MESSAGE 2e4e6f7420776f7274682066
+1658.136 MSG [Dive03] Not worth fighting molds and jellys if you can avoid them.
+1659.752 S CUSTOM:'>' 04
+1659.754 MSG I see no down staircase here..
+1660.991 S CUSTOM:'<' 02
+1660.993 MSG You enter a maze of up staircases..
+1661.006 MSG You like the look of this place....
+1661.007 IND:depth da09
+1661.007 PKT_FLOOR 310000000000000000000000
+1661.734 S CUSTOM:'>' 04
+1661.736 MSG You enter a maze of down staircases..
+1661.738 MSG Looks like any other level..
+1661.739 IND:depth da0a
+1661.739 PKT_FLOOR 310000000000000000000000
+1662.483 S CUSTOM:'<' 02
+1662.485 MSG You enter a maze of up staircases..
+1662.5 MSG Looks like any other level..
+1662.501 IND:depth da09
+1662.501 PKT_FLOOR 310000000000000000000000
+1663.236 S CUSTOM:'>' 04
+1663.239 MSG You enter a maze of down staircases..
+1663.247 MSG Looks like any other level..
+1663.248 IND:depth da0a
+1663.248 PKT_FLOOR 310000000000000000000000
+1665.977 S CUSTOM:'.' 4703
+1665.979 MSG You cannot run in that direction..
+1666.222 S CUSTOM:'.' 4707
+1666.436 S CUSTOM:'.' 4707
+1667.686 PKT_FLOOR 31000c3d0400012d0100612052686f646f6e6974652052696e670000
+1667.686 MSG You see a Rhodonite Ring..
+1668.852 S CUSTOM:',' 00
+1668.855 MSG You have a Rhodonite Ring (q)..
+1668.855 PKT_FLOOR 310000000000000000000000
+1668.855 INVEN ('q', 45, 1, 2, 'a Rhodonite Ring', '')
+1668.855 INVEN ('r', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1668.855 INVEN ('s', 23, 1, 80, 'a Short Sword (1d7)', '')
+1668.855 INVEN ('t', 23, 1, 100, 'a Tulwar (2d4) {average}', '')
+1668.855 INVEN ('u', 23, 1, 100, 'a Tulwar (2d4) {good}', '')
+1668.855 INVEN ('v', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1670.264 S CUSTOM:'.' 4706
+1670.556 S CUSTOM:'.' 4706
+1670.688 S CUSTOM:'.' 4706
+1670.968 S CUSTOM:'.' 4709
+1671.246 S CUSTOM:'.' 4706
+1671.312 EQUIP f 39  Brass Lantern (with 14500 turns of light) {25% off}
+1671.852 S CUSTOM:'.' 4702
+1672.603 PKT_FLOOR 31000b5f0f00013720006120476f6c64656e2053746166660000
+1672.603 MSG You see a Golden Staff..
+1673.738 S CUSTOM:',' 00
+1673.74 MSG You have a Golden Staff (p)..
+1673.74 PKT_FLOOR 310000000000000000000000
+1673.74 INVEN ('p', 55, 1, 50, 'a Golden Staff', '')
+1673.74 INVEN ('q', 45, 1, 2, 'a Rhodonite Ring', '')
+1673.74 INVEN ('r', 45, 1, 2, 'a Rhodonite Ring', '')
+1673.74 INVEN ('s', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1673.74 INVEN ('t', 23, 1, 80, 'a Short Sword (1d7)', '')
+1673.74 INVEN ('u', 23, 1, 100, 'a Tulwar (2d4) {average}', '')
+1673.74 INVEN ('v', 23, 1, 100, 'a Tulwar (2d4) {good}', '')
+1673.74 INVEN ('w', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1674.764 S CUSTOM:'.' 4704
+1675.202 S CUSTOM:'.' 4701
+1675.923 S CUSTOM:'.' 4701
+1676.441 S CUSTOM:'.' 4706
+1676.967 S CUSTOM:'.' 4706
+1678.31 S CUSTOM:'<' 02
+1678.313 MSG You enter a maze of up staircases..
+1678.328 MSG You feel there is something special about this level..
+1678.328 IND:depth da09
+1678.328 PKT_FLOOR 310000000000000000000000
+1679.715 S CUSTOM:'>' 04
+1679.717 MSG You enter a maze of down staircases..
+1679.726 MSG Looks like any other level..
+1679.726 IND:depth da0a
+1679.726 PKT_FLOOR 310000000000000000000000
+1680.986 S CUSTOM:'.' 4708
+1681.235 S CUSTOM:'.' 4708
+1681.792 S CUSTOM:'.' 4709
+1681.99 S CUSTOM:'.' 4709
+1682.122 S CUSTOM:'.' 4708
+1682.773 S CUSTOM:'.' 4706
+1683.105 S CUSTOM:'.' 4702
+1683.812 PKT_FLOOR 3100085c01000115010061204d6f726e696e6720537461722028326436290000
+1683.812 MSG You see a Morning Star (2d6)..
+1685.202 S CUSTOM:',' 00
+1685.204 MSG You have no room for a Morning Star (2d6)..
+1697.4 S CUSTOM:'k' 181400000001
+1697.402 MSG You destroy a Tulwar (2d4) {average}..
+1697.402 MSG You have no more Tulwars (2d4) {average}..
+1697.402 INVEN ('u', 23, 1, 100, 'a Tulwar (2d4) {good}', '')
+1697.402 INVEN ('v', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1697.402 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1697.402 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1698.313 S CUSTOM:',' 00
+1698.315 MSG You have a Morning Star (2d6) (v)..
+1698.315 PKT_FLOOR 310000000000000000000000
+1698.315 INVEN ('v', 21, 1, 150, 'a Morning Star (2d6)', '')
+1698.315 INVEN ('w', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1699.027 S CUSTOM:'.' 4701
+1699.371 S CUSTOM:'.' 4701
+1699.373 MSG You cannot run in that direction..
+1699.631 S CUSTOM:'.' 4704
+1699.87 S CUSTOM:'.' 4701
+1700.012 S CUSTOM:'.' 4702
+1700.44 S CUSTOM:'.' 4701
+1700.722 S CUSTOM:'.' 4702
+1700.871 S CUSTOM:'.' 4701
+1702.282 S CUSTOM:'.' 4702
+1703.293 S CUSTOM:'<' 02
+1703.295 MSG You enter a maze of up staircases..
+1703.3 MSG You like the look of this place....
+1703.3 IND:depth da09
+1703.3 PKT_FLOOR 310000000000000000000000
+1704.065 S CUSTOM:'>' 04
+1704.067 MSG You enter a maze of down staircases..
+1704.072 MSG Looks like any other level..
+1704.072 IND:depth da0a
+1704.072 PKT_FLOOR 310000000000000000000000
+1705.48 S CUSTOM:'.' 4709
+1705.665 S CUSTOM:'.' 4709
+1705.909 S CUSTOM:'.' 4709
+1706.489 S CUSTOM:'.' 4709
+1706.657 S CUSTOM:'.' 4708
+1707.325 MSG The Kobold wakes up..
+1707.901 S CUSTOM:'.' 4708
+1708.713 S CUSTOM:'.' 4708
+1709.763 S CUSTOM:'.' 4709
+1710.006 MSG You hit the Grey mushroom patch..
+1710.006 MSG You have destroyed the Grey mushroom patch..
+1710.006 IND:level c30b0b
+1710.704 S CUSTOM:'.' 4704
+1711.362 S CUSTOM:'.' 4704
+1712.048 S CUSTOM:'.' 4704
+1712.711 MSG You hit the Kobold..
+1712.711 MSG You have slain the Kobold..
+1712.711 IND:level c30b0b
+1713.356 S CUSTOM:'.' 4702
+1714.206 MSG You hit the Jackal..
+1714.206 MSG You have slain the Jackal..
+1714.206 IND:level c30b0b
+1714.952 MSG You hit the Jackal..
+1714.952 MSG You have slain the Jackal..
+1714.952 IND:level c30b0b
+1715.379 S CUSTOM:'.' 4703
+1715.528 S CUSTOM:'.' 4702
+1715.911 MSG You hit the Jackal..
+1715.911 MSG You have slain the Jackal..
+1715.911 IND:level c30b0b
+1716.761 S CUSTOM:'.' 4703
+1717.35 MSG You hit the Jackal..
+1717.35 MSG You have slain the Jackal..
+1717.35 IND:level c30b0b
+1717.791 S CUSTOM:'.' 4703
+1717.871 EQUIP f 39  Brass Lantern (with 14400 turns of light) {25% off}
+1717.898 MSG You hit the Jackal..
+1717.898 MSG You have slain the Jackal..
+1717.898 IND:level c30b0b
+1718.409 S CUSTOM:'.' 4703
+1718.445 MSG The Jackal bites you..
+1718.537 MSG You hit the Jackal..
+1718.537 MSG You have slain the Jackal..
+1718.537 IND:level c30b0b
+1718.698 MSG You hit the Jackal..
+1718.699 MSG You have slain the Jackal..
+1718.699 IND:level c30b0b
+1718.871 MSG You hit the Jackal..
+1718.871 MSG You have slain the Jackal..
+1718.871 IND:level c30b0b
+1719.417 MSG The Jackal wakes up..
+1719.51 MSG You hit the Jackal..
+1719.51 MSG You have slain the Jackal..
+1719.51 IND:level c30b0b
+1719.697 MSG You hit the Jackal..
+1719.697 MSG You have slain the Jackal..
+1719.697 IND:level c30b0b
+1719.897 MSG The Jackal wakes up..
+1720.323 MSG You hit the Jackal..
+1720.323 MSG You have slain the Jackal..
+1720.323 IND:level c30b0b
+1720.431 MSG You hit the Jackal..
+1720.431 MSG You have slain the Jackal..
+1720.431 IND:level c30b0b
+1721.083 MSG The Jackal wakes up..
+1721.592 MSG You hit the Jackal..
+1721.592 MSG You have slain the Jackal..
+1721.592 IND:level c30b0b
+1722.365 MSG You hit the Jackal..
+1722.365 MSG You have slain the Jackal..
+1722.365 IND:level c30b0b
+1722.978 MSG You hit the Jackal..
+1722.978 MSG You have slain the Jackal..
+1722.978 IND:level c30b0b
+1723.031 MSG You hit the Jackal..
+1723.031 MSG You have slain the Jackal..
+1723.031 IND:level c30b0b
+1723.258 MSG You hit the Jackal..
+1723.258 MSG You have slain the Jackal..
+1723.258 IND:level c30b0b
+1723.577 MSG You hit the Jackal..
+1723.577 MSG You have slain the Jackal..
+1723.577 IND:level c30b0b
+1723.831 MSG You hit the Jackal..
+1723.831 MSG You have slain the Jackal..
+1723.831 IND:level c30b0b
+1723.844 MSG You hit the Jackal..
+1723.844 MSG You have slain the Jackal..
+1723.844 IND:level c30b0b
+1725.097 MSG You hit the Jackal..
+1725.097 MSG You have slain the Jackal..
+1725.097 IND:level c30b0b
+1726.668 S CUSTOM:'.' 4708
+1726.908 S CUSTOM:'.' 4707
+1727.281 S CUSTOM:'.' 4704
+1728.77 S CUSTOM:'<' 02
+1728.773 MSG You enter a maze of up staircases..
+1728.778 MSG You like the look of this place....
+1728.778 IND:depth da09
+1728.778 PKT_FLOOR 310000000000000000000000
+1729.468 S CUSTOM:'>' 04
+1729.47 MSG You enter a maze of down staircases..
+1729.485 MSG Looks like any other level..
+1729.485 IND:depth da0a
+1729.485 PKT_FLOOR 310000000000000000000000
+1730.882 S CUSTOM:'.' 4702
+1733.057 MSG It blinks away..
+1733.352 MSG You hit the Blue icky thing..
+1733.352 MSG The Blue icky thing casts a fearful illusion..
+1733.352 MSG You are terrified!.
+1733.404 MSG It makes a high pitched shriek..
+1733.404 MSG You feel a sudden stirring nearby!.
+1734.031 MSG The Blue icky thing crawls on you..
+1734.031 MSG You are poisoned!.
+1734.031 MSG The Blue icky thing crawls on you..
+1734.031 MSG The Blue icky thing hits you..
+1735.631 S CUSTOM:'<' 02
+1735.633 MSG You enter a maze of up staircases..
+1735.644 MSG Looks like any other level..
+1735.645 IND:depth da09
+1735.645 PKT_FLOOR 310000000000000000000000
+1736.031 MSG You feel bolder now..
+1736.031 MSG You are no longer poisoned..
+1747.023 S PKT_MESSAGE 2e5468617420776173206120
+1747.023 MSG [Dive03] That was a pit of nope.
+1749.64 S CUSTOM:'<' 02
+1749.642 MSG I see no up staircase here..
+1750.179 S CUSTOM:'>' 04
+1750.182 MSG You enter a maze of down staircases..
+1750.192 MSG You feel there is something special about this level..
+1750.192 IND:depth da0a
+1750.192 PKT_FLOOR 310000000000000000000000
+1752.154 S CUSTOM:'.' 4704
+1752.625 S CUSTOM:'.' 4704
+1753.399 S CUSTOM:'.' 4706
+1754.044 MSG You hit the Novice warrior..
+1754.337 MSG The Novice warrior flees in terror!.
+1754.497 MSG You hit the Novice warrior..
+1754.497 MSG You have slain the Novice warrior..
+1754.497 IND:level c30b0b
+1755.137 MSG You have found 24 gold pieces worth of copper..
+1757.178 S CUSTOM:'.' 4706
+1757.736 S CUSTOM:'.' 4706
+1759.336 PKT_FLOOR 3100013f01000146200061205363726f6c6c207469746c656420226974206d756e677265612061220000
+1759.336 MSG You see a Scroll titled "it mungrea a"..
+1760.377 S CUSTOM:',' 00
+1760.38 MSG You have no room for a Scroll titled "it mungrea a"..
+1763.349 MSG You hit the Bandit..
+1763.349 MSG You have slain the Bandit..
+1763.349 IND:level c30b0b
+1764.009 PKT_FLOOR 3100022d05000141000061204c6561642057616e640000
+1764.009 MSG You see a Lead Wand..
+1764.669 MSG You have found 15 gold pieces worth of copper..
+1764.669 PKT_FLOOR 310000000000000000000000
+1772.617 EQUIP f 39  Brass Lantern (with 14300 turns of light) {25% off}
+1778.82 S PKT_MESSAGE 2e49276c6c206368616e6365
+1778.82 MSG [Dive03] I'll chance drinking some potions to manually id them.
+1783.709 S PKT_MESSAGE 2e544f206d616b6520737061
+1783.71 MSG [Dive03] TO make space.
+1785.655 S CUSTOM:'q' 2300
+1785.657 MSG The potion makes you vomit!.
+1785.657 MSG You are getting faint from hunger!.
+1785.657 MSG You are paralyzed!.
+1785.657 MSG You have no more Potions of Salt Water..
+1785.657 INVEN ('a', 75, 1, 4, 'a Puce Potion', '')
+1785.657 INVEN ('b', 75, 1, 4, 'a Cloudy Potion', '')
+1785.657 INVEN ('c', 75, 1, 4, 'a Crimson Potion', '')
+1785.657 INVEN ('d', 75, 1, 4, 'a Light Brown Potion', '')
+1785.657 INVEN ('e', 70, 4, 20, '4 Scrolls of Phase Door {@r1}', '')
+1785.657 INVEN ('f', 70, 3, 15, '3 Scrolls of Word of Recall', '')
+1785.657 INVEN ('g', 70, 1, 5, 'a Scroll titled "kliwex potri"', '')
+1785.657 INVEN ('h', 70, 1, 5, 'a Scroll titled "shu foreng"', '')
+1785.657 INVEN ('i', 70, 1, 5, 'a Scroll titled "ornta prok"', '')
+1785.657 INVEN ('j', 65, 1, 10, 'a Copper-Plated Wand', '')
+1785.657 INVEN ('k', 65, 1, 10, 'a Lead Wand', '')
+1785.657 INVEN ('l', 65, 1, 10, 'a Steel-Plated Wand', '')
+1785.657 INVEN ('m', 55, 1, 50, 'a Maple Staff', '')
+1785.657 INVEN ('n', 55, 1, 50, 'a Balsa Staff', '')
+1785.657 INVEN ('o', 55, 1, 50, 'a Golden Staff', '')
+1785.657 INVEN ('p', 45, 1, 2, 'a Rhodonite Ring', '')
+1785.657 INVEN ('q', 45, 1, 2, 'a Rhodonite Ring', '')
+1785.657 INVEN ('r', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1785.657 INVEN ('s', 23, 1, 80, 'a Short Sword (1d7)', '')
+1785.657 INVEN ('t', 23, 1, 100, 'a Tulwar (2d4) {good}', '')
+1785.657 INVEN ('u', 21, 1, 150, 'a Morning Star (2d6)', '')
+1785.657 INVEN ('v', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1785.657 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1785.657 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1785.657 IND:level c30b0b
+1787.642 MSG You can move again..
+1791.647 PKT_FLOOR 3100022d05000141000061204c6561642057616e640000
+1791.647 MSG You see a Lead Wand..
+1792.532 S CUSTOM:',' 00
+1792.535 MSG You have a Lead Wand (m)..
+1792.535 PKT_FLOOR 310000000000000000000000
+1792.535 INVEN ('m', 65, 1, 10, 'a Lead Wand', '')
+1792.535 INVEN ('n', 55, 1, 50, 'a Maple Staff', '')
+1792.535 INVEN ('o', 55, 1, 50, 'a Balsa Staff', '')
+1792.535 INVEN ('p', 55, 1, 50, 'a Golden Staff', '')
+1792.535 INVEN ('q', 45, 1, 2, 'a Rhodonite Ring', '')
+1792.535 INVEN ('r', 45, 1, 2, 'a Rhodonite Ring', '')
+1792.535 INVEN ('s', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1792.535 INVEN ('t', 23, 1, 80, 'a Short Sword (1d7)', '')
+1792.535 INVEN ('u', 23, 1, 100, 'a Tulwar (2d4) {good}', '')
+1792.535 INVEN ('v', 21, 1, 150, 'a Morning Star (2d6)', '')
+1792.535 INVEN ('w', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1794.208 S CUSTOM:'q' 2300
+1794.21 MSG You feel very weak..
+1794.21 MSG You have no more Potions of Weakness..
+1794.211 INVEN ('a', 75, 1, 4, 'a Cloudy Potion', '')
+1794.211 INVEN ('b', 75, 1, 4, 'a Crimson Potion', '')
+1794.211 INVEN ('c', 75, 1, 4, 'a Light Brown Potion', '')
+1794.211 INVEN ('d', 70, 4, 20, '4 Scrolls of Phase Door {@r1}', '')
+1794.211 INVEN ('e', 70, 3, 15, '3 Scrolls of Word of Recall', '')
+1794.211 INVEN ('f', 70, 1, 5, 'a Scroll titled "kliwex potri"', '')
+1794.211 INVEN ('g', 70, 1, 5, 'a Scroll titled "shu foreng"', '')
+1794.211 INVEN ('h', 70, 1, 5, 'a Scroll titled "ornta prok"', '')
+1794.211 INVEN ('i', 65, 1, 10, 'a Copper-Plated Wand', '')
+1794.211 INVEN ('j', 65, 1, 10, 'a Lead Wand', '')
+1794.211 INVEN ('k', 65, 1, 10, 'a Steel-Plated Wand', '')
+1794.211 INVEN ('l', 65, 1, 10, 'a Lead Wand', '')
+1794.211 INVEN ('m', 55, 1, 50, 'a Maple Staff', '')
+1794.211 INVEN ('n', 55, 1, 50, 'a Balsa Staff', '')
+1794.211 INVEN ('o', 55, 1, 50, 'a Golden Staff', '')
+1794.211 INVEN ('p', 45, 1, 2, 'a Rhodonite Ring', '')
+1794.211 INVEN ('q', 45, 1, 2, 'a Rhodonite Ring', '')
+1794.211 INVEN ('r', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1794.211 INVEN ('s', 23, 1, 80, 'a Short Sword (1d7)', '')
+1794.211 INVEN ('t', 23, 1, 100, 'a Tulwar (2d4) {good}', '')
+1794.211 INVEN ('u', 21, 1, 150, 'a Morning Star (2d6)', '')
+1794.211 INVEN ('v', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1794.211 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1794.211 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1794.211 IND:level c30b0b
+1795.924 PKT_FLOOR 3100013f01000146200061205363726f6c6c207469746c656420226974206d756e677265612061220000
+1795.924 MSG You see a Scroll titled "it mungrea a"..
+1798.721 S CUSTOM:',' 00
+1798.724 MSG You have a Scroll titled "it mungrea a" (i)..
+1798.724 PKT_FLOOR 310000000000000000000000
+1798.724 INVEN ('i', 70, 1, 5, 'a Scroll titled "it mungrea a"', '')
+1798.724 INVEN ('j', 65, 1, 10, 'a Copper-Plated Wand', '')
+1798.724 INVEN ('k', 65, 1, 10, 'a Lead Wand', '')
+1798.724 INVEN ('l', 65, 1, 10, 'a Steel-Plated Wand', '')
+1798.724 INVEN ('m', 65, 1, 10, 'a Lead Wand', '')
+1798.724 INVEN ('n', 55, 1, 50, 'a Maple Staff', '')
+1798.724 INVEN ('o', 55, 1, 50, 'a Balsa Staff', '')
+1798.724 INVEN ('p', 55, 1, 50, 'a Golden Staff', '')
+1798.724 INVEN ('q', 45, 1, 2, 'a Rhodonite Ring', '')
+1798.724 INVEN ('r', 45, 1, 2, 'a Rhodonite Ring', '')
+1798.724 INVEN ('s', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1798.724 INVEN ('t', 23, 1, 80, 'a Short Sword (1d7)', '')
+1798.724 INVEN ('u', 23, 1, 100, 'a Tulwar (2d4) {good}', '')
+1798.724 INVEN ('v', 21, 1, 150, 'a Morning Star (2d6)', '')
+1798.724 INVEN ('w', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1799.402 MSG You faint from the lack of food..
+1799.402 MSG You are paralyzed!.
+1799.402 MSG You can move again..
+1801.362 MSG You feel the Short Sword (t) in your pack is average....
+1801.362 INVEN ('t', 23, 1, 80, 'a Short Sword (1d7) {average}', '')
+1804.989 S CUSTOM:'r' 1d0400
+1804.991 MSG The air about you becomes charged....
+1804.991 MSG You have 2 Scrolls of Word of Recall..
+1804.991 INVEN ('e', 70, 2, 10, '2 Scrolls of Word of Recall', '')
+1807.895 MSG You faint from the lack of food..
+1807.895 MSG You are paralyzed!.
+1809.855 MSG You can move again..
+1810.262 S PKT_MESSAGE 2e49276d207374617276696e
+1810.262 MSG [Dive03] I'm starving.
+1813.775 MSG You faint from the lack of food..
+1813.775 MSG You are paralyzed!.
+1813.775 MSG You can move again..
+1815.409 S PKT_MESSAGE 2e54496d6520746f206c6561
+1815.409 MSG [Dive03] TIme to leave.
+1816.388 MSG You faint from the lack of food..
+1816.388 MSG You are paralyzed!.
+1816.388 MSG You can move again..
+1817.043 MSG You faint from the lack of food..
+1817.043 MSG You are paralyzed!.
+1818.348 MSG You feel yourself yanked upwards!.
+1818.363 IND:depth da00
+1818.363 PKT_FLOOR 310000000000000000000000
+1819.148 MSG You can move again..
+1819.559 S CUSTOM:'.' 4704
+1820.234 S CUSTOM:'.' 4702
+1821.558 S CUSTOM:'.' 4701
+1821.71 MSG You faint from the lack of food..
+1821.71 MSG You are paralyzed!.
+1821.892 S CUSTOM:'.' 4702
+1822.603 MSG You can move again..
+1823.094 S CUSTOM:'.' 4702
+1823.437 S CUSTOM:'.' 4703
+1824.062 S CUSTOM:'.' 4706
+1825.164 S CUSTOM:'.' 4703
+1825.242 MSG You have found 26 gold pieces worth of copper..
+1825.457 S CUSTOM:'.' 4703
+1825.986 S CUSTOM:'.' 4703
+1826.475 S CUSTOM:'.' 4706
+1826.561 MSG You feel the Morning Star (v) in your pack is average....
+1826.561 INVEN ('v', 21, 1, 150, 'a Morning Star (2d6) {average}', '')
+1827.482 MSG You hit the Filthy street urchin..
+1827.482 MSG You have slain the Filthy street urchin..
+1827.482 IND:level c30b0b
+1827.535 EQUIP f 39  Brass Lantern (with 14200 turns of light) {25% off}
+1828.442 MSG You hit the Filthy street urchin..
+1828.442 MSG You have slain the Filthy street urchin..
+1828.442 IND:level c30b0b
+1828.664 S CUSTOM:'.' 4706
+1829.369 S CUSTOM:'.' 4709
+1829.641 MSG You faint from the lack of food..
+1829.641 MSG You are paralyzed!.
+1829.746 S CUSTOM:'.' 4708
+1830.215 S CUSTOM:'.' 4709
+1830.684 S CUSTOM:'.' 4709
+1830.988 MSG You can move again..
+1831.165 S CUSTOM:'.' 4709
+1831.528 S CUSTOM:'.' 4709
+1832.29 S CUSTOM:'.' 4706
+1834.309 MSG You faint from the lack of food..
+1834.309 MSG You are paralyzed!.
+1834.309 MSG You can move again..
+1835.186 S CUSTOM:'.' 4706
+1835.241 MSG You faint from the lack of food..
+1835.241 MSG You are paralyzed!.
+1835.787 S CUSTOM:'.' 4706
+1835.922 MSG You can move again..
+1836.188 S CUSTOM:'.' 4706
+1836.579 S CUSTOM:'.' 4706
+1837.098 S CUSTOM:'.' 4703
+1837.389 MSG You faint from the lack of food..
+1837.389 MSG You are paralyzed!.
+1837.511 S CUSTOM:'.' 4706
+1838.353 S CUSTOM:'.' 4706
+1838.882 MSG You can move again..
+1840.362 MSG You faint from the lack of food..
+1840.362 MSG You are paralyzed!.
+1840.362 MSG You can move again..
+1840.894 MSG There is a wall blocking your way..
+1843.455 MSG You faint from the lack of food..
+1843.455 MSG You are paralyzed!.
+1843.455 MSG You can move again..
+1857.492 EQUIP f 39  Brass Lantern (with 14100 turns of light) {25% off}
+1864.503 S PKT_MESSAGE 2e4e6f20737061636500
+1864.503 MSG [Dive03] No space.
+1865.351 S CUSTOM:'d' 170000000001
+1865.353 MSG Dropped a Cloudy Potion (a)..
+1865.354 PKT_FLOOR 310001210e00014b00006120436c6f75647920506f74696f6e0000
+1865.354 MSG You have no more Cloudy Potions..
+1865.354 INVEN ('a', 75, 1, 4, 'a Crimson Potion', '')
+1865.354 INVEN ('b', 75, 1, 4, 'a Light Brown Potion', '')
+1865.354 INVEN ('c', 70, 4, 20, '4 Scrolls of Phase Door {@r1}', '')
+1865.354 INVEN ('d', 70, 2, 10, '2 Scrolls of Word of Recall', '')
+1865.354 INVEN ('e', 70, 1, 5, 'a Scroll titled "kliwex potri"', '')
+1865.354 INVEN ('f', 70, 1, 5, 'a Scroll titled "shu foreng"', '')
+1865.354 INVEN ('g', 70, 1, 5, 'a Scroll titled "ornta prok"', '')
+1865.354 INVEN ('h', 70, 1, 5, 'a Scroll titled "it mungrea a"', '')
+1865.354 INVEN ('i', 65, 1, 10, 'a Copper-Plated Wand', '')
+1865.354 INVEN ('j', 65, 1, 10, 'a Lead Wand', '')
+1865.354 INVEN ('k', 65, 1, 10, 'a Steel-Plated Wand', '')
+1865.354 INVEN ('l', 65, 1, 10, 'a Lead Wand', '')
+1865.354 INVEN ('m', 55, 1, 50, 'a Maple Staff', '')
+1865.354 INVEN ('n', 55, 1, 50, 'a Balsa Staff', '')
+1865.354 INVEN ('o', 55, 1, 50, 'a Golden Staff', '')
+1865.354 INVEN ('p', 45, 1, 2, 'a Rhodonite Ring', '')
+1865.354 INVEN ('q', 45, 1, 2, 'a Rhodonite Ring', '')
+1865.354 INVEN ('r', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1865.354 INVEN ('s', 23, 1, 80, 'a Short Sword (1d7) {average}', '')
+1865.354 INVEN ('t', 23, 1, 100, 'a Tulwar (2d4) {good}', '')
+1865.354 INVEN ('u', 21, 1, 150, 'a Morning Star (2d6) {average}', '')
+1865.354 INVEN ('v', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1865.354 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1865.354 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1867.03 S CUSTOM:'.' 4704
+1867.041 PKT_FLOOR 310000000000000000000000
+1867.347 MSG You faint from the lack of food..
+1867.348 MSG You are paralyzed!.
+1868.973 MSG You can move again..
+1869.96 MSG You faint from the lack of food..
+1869.96 MSG You are paralyzed!.
+1869.96 MSG You can move again..
+1870.454 MSG You faint from the lack of food..
+1870.454 MSG You are paralyzed!.
+1870.454 MSG You can move again..
+1870.481 MSG There is a wall blocking your way..
+1873.915 S CUSTOM:'p' 3202000000020138
+1873.917 MSG Done!.
+1873.917 MSG You bought 2 Rations of Food for 8 gold..
+1873.917 MSG You have 2 Rations of Food (a)..
+1873.917 INVEN ('a', 80, 2, 20, '2 Rations of Food', '')
+1873.917 INVEN ('b', 75, 1, 4, 'a Crimson Potion', '')
+1873.917 INVEN ('c', 75, 1, 4, 'a Light Brown Potion', '')
+1873.917 INVEN ('d', 70, 4, 20, '4 Scrolls of Phase Door {@r1}', '')
+1873.917 INVEN ('e', 70, 2, 10, '2 Scrolls of Word of Recall', '')
+1873.917 INVEN ('f', 70, 1, 5, 'a Scroll titled "kliwex potri"', '')
+1873.917 INVEN ('g', 70, 1, 5, 'a Scroll titled "shu foreng"', '')
+1873.917 INVEN ('h', 70, 1, 5, 'a Scroll titled "ornta prok"', '')
+1873.917 INVEN ('i', 70, 1, 5, 'a Scroll titled "it mungrea a"', '')
+1873.917 INVEN ('j', 65, 1, 10, 'a Copper-Plated Wand', '')
+1873.917 INVEN ('k', 65, 1, 10, 'a Lead Wand', '')
+1873.917 INVEN ('l', 65, 1, 10, 'a Steel-Plated Wand', '')
+1873.917 INVEN ('m', 65, 1, 10, 'a Lead Wand', '')
+1873.917 INVEN ('n', 55, 1, 50, 'a Maple Staff', '')
+1873.917 INVEN ('o', 55, 1, 50, 'a Balsa Staff', '')
+1873.917 INVEN ('p', 55, 1, 50, 'a Golden Staff', '')
+1873.917 INVEN ('q', 45, 1, 2, 'a Rhodonite Ring', '')
+1873.917 INVEN ('r', 45, 1, 2, 'a Rhodonite Ring', '')
+1873.917 INVEN ('s', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1873.917 INVEN ('t', 23, 1, 80, 'a Short Sword (1d7) {average}', '')
+1873.917 INVEN ('u', 23, 1, 100, 'a Tulwar (2d4) {good}', '')
+1873.917 INVEN ('v', 21, 1, 150, 'a Morning Star (2d6) {average}', '')
+1873.917 INVEN ('w', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1880.32 MSG You faint from the lack of food..
+1880.32 MSG You are paralyzed!.
+1881.307 MSG You can move again..
+1882.787 MSG You faint from the lack of food..
+1882.787 MSG You are paralyzed!.
+1886.873 MSG You can move again..
+1886.873 MSG You faint from the lack of food..
+1886.873 MSG You are paralyzed!.
+1887.227 MSG You can move again..
+1888.213 MSG You faint from the lack of food..
+1888.213 MSG You are paralyzed!.
+1888.708 MSG You can move again..
+1894.128 S CUSTOM:'E' 2400
+1894.13 MSG That tastes good..
+1894.13 MSG You are no longer hungry..
+1894.13 MSG You have a Ration of Food..
+1894.13 INVEN ('a', 80, 1, 10, 'a Ration of Food', '')
+1896.659 S CUSTOM:'E' 2400
+1896.661 MSG That tastes good..
+1896.661 MSG You are full!.
+1896.661 MSG You have no more Rations of Food..
+1896.661 INVEN ('a', 75, 1, 4, 'a Crimson Potion', '')
+1896.661 INVEN ('b', 75, 1, 4, 'a Light Brown Potion', '')
+1896.661 INVEN ('c', 70, 4, 20, '4 Scrolls of Phase Door {@r1}', '')
+1896.661 INVEN ('d', 70, 2, 10, '2 Scrolls of Word of Recall', '')
+1896.661 INVEN ('e', 70, 1, 5, 'a Scroll titled "kliwex potri"', '')
+1896.661 INVEN ('f', 70, 1, 5, 'a Scroll titled "shu foreng"', '')
+1896.661 INVEN ('g', 70, 1, 5, 'a Scroll titled "ornta prok"', '')
+1896.661 INVEN ('h', 70, 1, 5, 'a Scroll titled "it mungrea a"', '')
+1896.661 INVEN ('i', 65, 1, 10, 'a Copper-Plated Wand', '')
+1896.661 INVEN ('j', 65, 1, 10, 'a Lead Wand', '')
+1896.661 INVEN ('k', 65, 1, 10, 'a Steel-Plated Wand', '')
+1896.661 INVEN ('l', 65, 1, 10, 'a Lead Wand', '')
+1896.661 INVEN ('m', 55, 1, 50, 'a Maple Staff', '')
+1896.661 INVEN ('n', 55, 1, 50, 'a Balsa Staff', '')
+1896.661 INVEN ('o', 55, 1, 50, 'a Golden Staff', '')
+1896.661 INVEN ('p', 45, 1, 2, 'a Rhodonite Ring', '')
+1896.661 INVEN ('q', 45, 1, 2, 'a Rhodonite Ring', '')
+1896.661 INVEN ('r', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1896.661 INVEN ('s', 23, 1, 80, 'a Short Sword (1d7) {average}', '')
+1896.661 INVEN ('t', 23, 1, 100, 'a Tulwar (2d4) {good}', '')
+1896.661 INVEN ('u', 21, 1, 150, 'a Morning Star (2d6) {average}', '')
+1896.661 INVEN ('v', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1896.661 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1896.661 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1897.976 S CUSTOM:'.' 4706
+1898.257 S CUSTOM:'.' 4706
+1898.923 PKT_FLOOR 310001210e00014b00006120436c6f75647920506f74696f6e0000
+1898.923 MSG You see a Cloudy Potion..
+1899.798 S CUSTOM:',' 00
+1899.8 MSG You have a Cloudy Potion (c)..
+1899.8 PKT_FLOOR 310000000000000000000000
+1899.8 INVEN ('c', 75, 1, 4, 'a Cloudy Potion', '')
+1899.8 INVEN ('d', 70, 4, 20, '4 Scrolls of Phase Door {@r1}', '')
+1899.8 INVEN ('e', 70, 2, 10, '2 Scrolls of Word of Recall', '')
+1899.8 INVEN ('f', 70, 1, 5, 'a Scroll titled "kliwex potri"', '')
+1899.8 INVEN ('g', 70, 1, 5, 'a Scroll titled "shu foreng"', '')
+1899.8 INVEN ('h', 70, 1, 5, 'a Scroll titled "ornta prok"', '')
+1899.8 INVEN ('i', 70, 1, 5, 'a Scroll titled "it mungrea a"', '')
+1899.8 INVEN ('j', 65, 1, 10, 'a Copper-Plated Wand', '')
+1899.801 INVEN ('k', 65, 1, 10, 'a Lead Wand', '')
+1899.801 INVEN ('l', 65, 1, 10, 'a Steel-Plated Wand', '')
+1899.801 INVEN ('m', 65, 1, 10, 'a Lead Wand', '')
+1899.801 INVEN ('n', 55, 1, 50, 'a Maple Staff', '')
+1899.801 INVEN ('o', 55, 1, 50, 'a Balsa Staff', '')
+1899.801 INVEN ('p', 55, 1, 50, 'a Golden Staff', '')
+1899.801 INVEN ('q', 45, 1, 2, 'a Rhodonite Ring', '')
+1899.801 INVEN ('r', 45, 1, 2, 'a Rhodonite Ring', '')
+1899.801 INVEN ('s', 36, 1, 80, 'Soft Leather Armour [4,+1] {Bullroarer the Hobbit}', '')
+1899.801 INVEN ('t', 23, 1, 80, 'a Short Sword (1d7) {average}', '')
+1899.801 INVEN ('u', 23, 1, 100, 'a Tulwar (2d4) {good}', '')
+1899.801 INVEN ('v', 21, 1, 150, 'a Morning Star (2d6) {average}', '')
+1899.801 INVEN ('w', 21, 1, 180, 'a Lead-Filled Mace (3d4) {good - Bullroarer the Hobbit}', '')
+1902.026 EQUIP f 39  Brass Lantern (with 14000 turns of light) {25% off}
+1917.705 S PKT_MESSAGE 2e4f6b2c20534343206a6f62
+1917.705 MSG [Dive03] Ok, SCC job about to end. Time to wrap up.

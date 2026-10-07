@@ -1,0 +1,39 @@
+pattern,kind,purpose,file,line
+startswith 'You have ',substr,inven_dirty / pickup confirm,world.py,124
+startswith 'You see ',substr,inven_dirty; pickup trigger,world.py,124
+'no more' in,substr,inven_dirty,world.py,124
+startswith 'You are wearing',substr,inven_dirty,world.py,125
+startswith 'You are wielding',substr,inven_dirty,world.py,125
+startswith 'Was wearing',substr,inven_dirty,world.py,126
+startswith 'You destroy',substr,inven_dirty; standing_on cleared,world.py,126
+startswith 'You feel',substr,inven_dirty (stat change),world.py,127
+'in your pack' in,substr,inven_dirty,world.py,127
+You have .*\([a-w]\)\.$,regex,standing_on='.' after pickup,world.py,129
+RE_HURT_OTHER,regex,explained_t: HP loss not from monster,world.py,82
+RE_UNSEEN,regex,unseen attacker -> Flee/notify,world.py,76
+startswith 'You hear a door burst open',substr,heard warn,world.py,136
+RE_ATTACK,regex,hits_taken/last_hit_t,world.py,71
+^You (hit|miss|have slain|have destroyed|smite|bite|claw),regex,fight_t,world.py,141
+^(The|It) .* (dies|is destroyed|flees),regex,fight_t,world.py,142
+startswith 'I see no up staircase',substr,clear standing_on,world.py,144
+startswith 'I see no down staircase',substr,clear standing_on,world.py,146
+startswith 'The air about you becomes charged',substr,recall_pending,world.py,149
+startswith 'A tension leaves the air around you',substr,recall cancelled,world.py,151
+'yanked upwards'/'yanked downwards' in,substr,recalled direction,world.py,154
+startswith 'You have removed the rubble',substr,dig success,mover.py,222
+'impossible'/'cannot' in,substr,dig failure,mover.py,230
+'blocking your way' in,substr,bumped obstacle,mover.py,316
+'rubble' in,substr,bump = rubble,mover.py,319
+startswith 'You have slain'/'You have destroyed' (+target),substr,Hunt done,pilot.py,536
+startswith You sold/bought/I don't want/You do not have enough/You cannot carry/You have no room/That item,substr,store verdict,pilot.py,761
+'The air about you becomes charged' in,substr,pending_use done (read WoR),pilot.py,965
+startswith 'You have no room for',substr,pack_full notify,pilot.py,1296
+commands you to return|magic missile|fires an arrow|fires a bolt|mumbles,regex,minor unseen attack (on cause),pilot.py,1686
+"startswith ('You enter a maze','Looks like','You feel','You hear','You have found') [exclusion]",substr,noise filter in agent 'said',pilot.py,2175
+"startswith ('You have ','You have no room') after arrival",substr,Goto pickup confirmed,pilot.py,180
+"startswith 'You see ' and 'no items' not in",substr,Goto: item underfoot on arrival,pilot.py,196
+"startswith 'You see ' and 'no items' not in (<3 s)",substr,pickup trigger (custom ','),pilot.py,1278
+"seen text vs junk list: 'of <j>' in / endswith j / 'book'/'holy book' in / ' Broken ' in",substr,skip known junk pickup,pilot.py,1283
+"startswith 'You see no' (itemlist[0])",substr,itemlist empty test,pilot.py,1106
+"startswith 'You have' and core in text",substr,pending_use confirmation,pilot.py,964
+"'Word of Recall'/'Phase Door' in item name",substr,inventory item names (not messages),pilot.py,648

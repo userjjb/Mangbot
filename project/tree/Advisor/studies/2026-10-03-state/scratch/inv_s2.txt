@@ -1,0 +1,3742 @@
+153.536 S CUSTOM:'.' 4704
+154.055 MSG You hit the Mean-looking mercenary..
+154.282 MSG You have slain the Mean-looking mercenary..
+154.282 IND:level c30e0e
+155.195 PKT_FLOOR 31000f2c0f00015000006120526174696f6e206f6620466f6f640000
+155.195 MSG You see a Ration of Food..
+157.893 S CUSTOM:',' 00
+157.896 MSG You have 2 Rations of Food (a)..
+157.896 PKT_FLOOR 310000000000000000000000
+157.896 INVEN ('a', 80, 2, 20, '2 Rations of Food', '')
+159.615 S CUSTOM:'.' 4706
+161.126 S CUSTOM:'.' 4709
+162.459 S CUSTOM:'.' 4701
+162.708 S CUSTOM:'.' 4702
+162.945 S CUSTOM:'.' 4701
+163.712 S CUSTOM:'.' 4702
+166.443 S CUSTOM:'s' 330300000001
+166.445 MSG Selling a Light Brown Potion (d)..
+166.445 MSG You eventually agree upon the price..
+167.646 S PKT_CONFIRM 3e0100
+167.646 MSG Done!.
+167.646 MSG You sold a Potion of Apple Juice for 9 gold..
+167.646 MSG The shopkeeper curses at you..
+167.646 MSG You have no more Potions of Apple Juice..
+167.646 INVEN ('d', 75, 1, 4, 'a Cloudy Potion', '')
+167.646 INVEN ('e', 70, 7, 35, '7 Scrolls of Phase Door {@r1}', '')
+167.646 INVEN ('f', 70, 3, 15, '3 Scrolls of Phase Door {75% off}', '')
+167.646 INVEN ('g', 70, 1, 5, 'a Scroll of Word of Recall', '')
+167.646 INVEN ('h', 0, 0, 0, '(nothing)', '')
+167.646 INVEN ('i', 0, 0, 0, '(nothing)', '')
+167.646 INVEN ('j', 0, 0, 0, '(nothing)', '')
+167.646 INVEN ('k', 0, 0, 0, '(nothing)', '')
+167.646 INVEN ('l', 0, 0, 0, '(nothing)', '')
+167.646 INVEN ('m', 0, 0, 0, '(nothing)', '')
+167.646 INVEN ('n', 0, 0, 0, '(nothing)', '')
+167.646 INVEN ('o', 0, 0, 0, '(nothing)', '')
+167.646 INVEN ('p', 0, 0, 0, '(nothing)', '')
+167.646 INVEN ('q', 0, 0, 0, '(nothing)', '')
+167.646 INVEN ('r', 0, 0, 0, '(nothing)', '')
+167.646 INVEN ('s', 0, 0, 0, '(nothing)', '')
+167.646 INVEN ('t', 0, 0, 0, '(nothing)', '')
+167.646 INVEN ('u', 0, 0, 0, '(nothing)', '')
+167.646 INVEN ('v', 0, 0, 0, '(nothing)', '')
+167.646 INVEN ('w', 0, 0, 0, '(nothing)', '')
+167.646 INVEN ('x', 0, 0, 0, '(nothing)', '')
+169.28 S CUSTOM:'s' 330300000001
+169.282 MSG Selling a Cloudy Potion (d)..
+169.282 MSG You eventually agree upon the price..
+170.025 S PKT_CONFIRM 3e0100
+170.025 MSG Taken!.
+170.025 MSG You sold a Potion of Slow Poison for 9 gold..
+170.025 MSG The shopkeeper laughs loudly..
+170.025 MSG You have no more Potions of Slow Poison..
+170.025 INVEN ('d', 70, 7, 35, '7 Scrolls of Phase Door {@r1}', '')
+170.025 INVEN ('e', 70, 3, 15, '3 Scrolls of Phase Door {75% off}', '')
+170.025 INVEN ('f', 70, 1, 5, 'a Scroll of Word of Recall', '')
+170.025 INVEN ('g', 0, 0, 0, '(nothing)', '')
+170.025 INVEN ('h', 0, 0, 0, '(nothing)', '')
+170.025 INVEN ('i', 0, 0, 0, '(nothing)', '')
+170.025 INVEN ('j', 0, 0, 0, '(nothing)', '')
+170.025 INVEN ('k', 0, 0, 0, '(nothing)', '')
+170.025 INVEN ('l', 0, 0, 0, '(nothing)', '')
+170.025 INVEN ('m', 0, 0, 0, '(nothing)', '')
+170.025 INVEN ('n', 0, 0, 0, '(nothing)', '')
+170.025 INVEN ('o', 0, 0, 0, '(nothing)', '')
+170.025 INVEN ('p', 0, 0, 0, '(nothing)', '')
+170.025 INVEN ('q', 0, 0, 0, '(nothing)', '')
+170.025 INVEN ('r', 0, 0, 0, '(nothing)', '')
+170.025 INVEN ('s', 0, 0, 0, '(nothing)', '')
+170.025 INVEN ('t', 0, 0, 0, '(nothing)', '')
+170.025 INVEN ('u', 0, 0, 0, '(nothing)', '')
+170.025 INVEN ('v', 0, 0, 0, '(nothing)', '')
+170.025 INVEN ('w', 0, 0, 0, '(nothing)', '')
+170.025 INVEN ('x', 0, 0, 0, '(nothing)', '')
+174.293 EQUIP f 39  Brass Lantern (with 9500 turns of light) {25% off}
+185.674 S PKT_MESSAGE 2e506f74696f6e7320656172
+185.674 MSG [Dive03] Potions early on are usually bad, we may as well sell them.
+195.168 S PKT_MESSAGE 2e5468617420776179207765
+195.168 MSG [Dive03] That way we get a free ID and a bit of money.
+223.373 EQUIP f 39  Brass Lantern (with 9400 turns of light) {25% off}
+223.612 S CUSTOM:'p' 321300000001023339
+223.614 MSG You do not have enough gold..
+233.274 S CUSTOM:'s' 330300000001
+233.276 MSG Selling a Scroll of Phase Door {@r1} (d)..
+233.276 MSG You eventually agree upon the price..
+234.845 S PKT_CONFIRM 3e0100
+234.845 MSG Agreed!.
+234.845 MSG You sold a Scroll of Phase Door {@r1} for 7 gold..
+234.845 MSG You have 6 Scrolls of Phase Door {@r1}..
+234.845 INVEN ('d', 70, 6, 30, '6 Scrolls of Phase Door {@r1}', '')
+234.845 INVEN ('e', 70, 3, 15, '3 Scrolls of Phase Door {75% off}', '')
+241.552 S CUSTOM:'s' 330300000001
+241.555 MSG Selling a Scroll of Phase Door {@r1} (d)..
+241.555 MSG You eventually agree upon the price..
+242.663 S PKT_CONFIRM 3e0100
+242.663 MSG Accepted!.
+242.663 MSG You sold a Scroll of Phase Door {@r1} for 7 gold..
+242.663 MSG You have 5 Scrolls of Phase Door {@r1}..
+242.663 INVEN ('d', 70, 5, 25, '5 Scrolls of Phase Door {@r1}', '')
+242.663 INVEN ('e', 70, 3, 15, '3 Scrolls of Phase Door {75% off}', '')
+246.616 S CUSTOM:'p' 321300000001023339
+246.618 MSG Accepted!.
+246.618 MSG You bought a Scroll of Identify {on sale} for 39 gold..
+246.618 MSG You have a Scroll of Identify {on sale} (g)..
+246.618 INVEN ('g', 70, 1, 5, 'a Scroll of Identify {on sale}', '')
+256.686 S CUSTOM:'r' 1d0619
+256.688 MSG Shooting missiles with: a Long Bow (x3) (+2,+5) {good - Bullroarer the Hobbit} (b)..
+256.688 MSG You have no more Scrolls of Identify {on sale}..
+256.688 INVEN ('g', 0, 0, 0, '(nothing)', '')
+256.688 INVEN ('h', 0, 0, 0, '(nothing)', '')
+256.688 INVEN ('i', 0, 0, 0, '(nothing)', '')
+256.688 INVEN ('j', 0, 0, 0, '(nothing)', '')
+256.688 INVEN ('k', 0, 0, 0, '(nothing)', '')
+256.688 INVEN ('l', 0, 0, 0, '(nothing)', '')
+256.688 INVEN ('m', 0, 0, 0, '(nothing)', '')
+256.688 INVEN ('n', 0, 0, 0, '(nothing)', '')
+256.688 INVEN ('o', 0, 0, 0, '(nothing)', '')
+256.688 INVEN ('p', 0, 0, 0, '(nothing)', '')
+256.688 INVEN ('q', 0, 0, 0, '(nothing)', '')
+256.688 INVEN ('r', 0, 0, 0, '(nothing)', '')
+256.688 INVEN ('s', 0, 0, 0, '(nothing)', '')
+256.688 INVEN ('t', 0, 0, 0, '(nothing)', '')
+256.688 INVEN ('u', 0, 0, 0, '(nothing)', '')
+256.688 INVEN ('v', 0, 0, 0, '(nothing)', '')
+256.688 INVEN ('w', 0, 0, 0, '(nothing)', '')
+256.688 INVEN ('x', 0, 0, 0, '(nothing)', '')
+256.688 EQUIP b 19  Long Bow (x3) (+2,+5) {good - Bullroarer the Hobbit}
+259.454 S CUSTOM:'t' 1619
+259.456 MSG Was shooting with a Long Bow (x3) (+2,+5) {good - Bullroarer the Hobbit} (g)..
+259.456 INVEN ('g', 19, 1, 40, 'a Long Bow (x3) (+2,+5) {good - Bullroarer the Hobbit}', '')
+259.456 EQUIP b 0 nothing)
+268.764 S PKT_MESSAGE 2e49446564206974656d7320
+268.764 MSG [Dive03] IDed items sell for more.
+272.706 EQUIP f 39  Brass Lantern (with 9300 turns of light) {25% off}
+283.674 S PKT_MESSAGE 2e4920646f6e277420706c61
+283.675 MSG [Dive03] I don't plan to use this bow and we need the money.
+284.861 S CUSTOM:'.' 4709
+285.215 S CUSTOM:'.' 4706
+285.828 S CUSTOM:'.' 4704
+288.578 S CUSTOM:'.' 4701
+292.14 S CUSTOM:'s' 330600000001
+292.142 MSG Selling a Long Bow (x3) (+2,+5) {good - Bullroarer the Hobbit} (g)..
+292.142 MSG You eventually agree upon the price..
+292.948 S PKT_CONFIRM 3e0100
+292.948 MSG Agreed!.
+292.948 MSG You sold a Long Bow (x3) (+2,+5) {good - Bullroarer the Hobbit} for 353 gold..
+292.948 MSG You have no more Long Bows (x3) (+2,+5) {good - Bullroarer the Hobbit}..
+292.948 INVEN ('g', 0, 0, 0, '(nothing)', '')
+292.948 INVEN ('h', 0, 0, 0, '(nothing)', '')
+292.948 INVEN ('i', 0, 0, 0, '(nothing)', '')
+292.948 INVEN ('j', 0, 0, 0, '(nothing)', '')
+292.948 INVEN ('k', 0, 0, 0, '(nothing)', '')
+292.948 INVEN ('l', 0, 0, 0, '(nothing)', '')
+292.948 INVEN ('m', 0, 0, 0, '(nothing)', '')
+292.948 INVEN ('n', 0, 0, 0, '(nothing)', '')
+292.948 INVEN ('o', 0, 0, 0, '(nothing)', '')
+292.948 INVEN ('p', 0, 0, 0, '(nothing)', '')
+292.948 INVEN ('q', 0, 0, 0, '(nothing)', '')
+292.948 INVEN ('r', 0, 0, 0, '(nothing)', '')
+292.948 INVEN ('s', 0, 0, 0, '(nothing)', '')
+292.948 INVEN ('t', 0, 0, 0, '(nothing)', '')
+292.948 INVEN ('u', 0, 0, 0, '(nothing)', '')
+292.948 INVEN ('v', 0, 0, 0, '(nothing)', '')
+292.948 INVEN ('w', 0, 0, 0, '(nothing)', '')
+292.948 INVEN ('x', 0, 0, 0, '(nothing)', '')
+306.252 EQUIP f 39  Brass Lantern (with 9200 turns of light) {25% off}
+315.603 S CUSTOM:'.' 4706
+317.304 S CUSTOM:'.' 4702
+317.306 MSG You cannot run in that direction..
+317.845 S CUSTOM:'.' 4703
+318.095 S CUSTOM:'.' 4702
+318.732 S CUSTOM:'.' 4708
+319.273 S CUSTOM:'.' 4704
+324.192 S CUSTOM:'p' 321300000001023539
+324.195 MSG Accepted!.
+324.195 MSG You bought a Scroll of Word of Recall {75% off} for 59 gold..
+324.195 MSG You have a Scroll of Word of Recall {75% off} (g)..
+324.195 INVEN ('f', 70, 1, 5, 'a Scroll of Word of Recall', '')
+324.195 INVEN ('g', 70, 1, 5, 'a Scroll of Word of Recall {75% off}', '')
+336.245 S CUSTOM:'.' 4706
+336.635 S CUSTOM:'.' 4709
+337.184 S CUSTOM:'.' 4706
+337.358 EQUIP f 39  Brass Lantern (with 9100 turns of light) {25% off}
+337.41 S CUSTOM:'.' 4702
+345.041 S CUSTOM:'.' 4707
+345.343 S CUSTOM:'.' 4708
+382.716 EQUIP f 39  Brass Lantern (with 9000 turns of light) {25% off}
+386.373 S CUSTOM:'.' 4704
+394.513 S CUSTOM:'.' 4702
+395.1 S CUSTOM:'.' 4701
+395.302 S CUSTOM:'.' 4702
+405.266 S CUSTOM:'p' 32150000000203313936
+405.269 MSG Agreed!.
+405.269 MSG You bought 2 Scrolls of Enchant Weapon To-Hit {50% off} for 196 gold..
+405.269 MSG You have 2 Scrolls of Enchant Weapon To-Hit {50% off} (h)..
+405.269 INVEN ('h', 70, 2, 10, '2 Scrolls of Enchant Weapon To-Hit {50% off}', '')
+411.868 S CUSTOM:'r' 1d0718
+411.87 MSG Your Main Gauche glows brightly!.
+411.87 MSG You have a Scroll of Enchant Weapon To-Hit {50% off}..
+411.87 INVEN ('h', 70, 1, 5, 'a Scroll of Enchant Weapon To-Hit {50% off}', '')
+411.87 EQUIP a 23  Main Gauche (1d5) (+1,+2)
+414.417 S CUSTOM:'r' 1d0718
+414.419 MSG Your Main Gauche glows brightly!.
+414.419 MSG You have no more Scrolls of Enchant Weapon To-Hit {50% off}..
+414.419 INVEN ('h', 0, 0, 0, '(nothing)', '')
+414.419 INVEN ('i', 0, 0, 0, '(nothing)', '')
+414.419 INVEN ('j', 0, 0, 0, '(nothing)', '')
+414.419 INVEN ('k', 0, 0, 0, '(nothing)', '')
+414.419 INVEN ('l', 0, 0, 0, '(nothing)', '')
+414.419 INVEN ('m', 0, 0, 0, '(nothing)', '')
+414.419 INVEN ('n', 0, 0, 0, '(nothing)', '')
+414.419 INVEN ('o', 0, 0, 0, '(nothing)', '')
+414.419 INVEN ('p', 0, 0, 0, '(nothing)', '')
+414.419 INVEN ('q', 0, 0, 0, '(nothing)', '')
+414.419 INVEN ('r', 0, 0, 0, '(nothing)', '')
+414.419 INVEN ('s', 0, 0, 0, '(nothing)', '')
+414.419 INVEN ('t', 0, 0, 0, '(nothing)', '')
+414.419 INVEN ('u', 0, 0, 0, '(nothing)', '')
+414.419 INVEN ('v', 0, 0, 0, '(nothing)', '')
+414.419 INVEN ('w', 0, 0, 0, '(nothing)', '')
+414.419 INVEN ('x', 0, 0, 0, '(nothing)', '')
+414.419 EQUIP a 23  Main Gauche (1d5) (+2,+2)
+419.419 S CUSTOM:'r' 1d0600
+419.421 MSG The air about you becomes charged....
+419.421 MSG You have no more Scrolls of Word of Recall {75% off}..
+419.421 INVEN ('g', 0, 0, 0, '(nothing)', '')
+419.421 INVEN ('h', 0, 0, 0, '(nothing)', '')
+419.421 INVEN ('i', 0, 0, 0, '(nothing)', '')
+419.421 INVEN ('j', 0, 0, 0, '(nothing)', '')
+419.422 INVEN ('k', 0, 0, 0, '(nothing)', '')
+419.422 INVEN ('l', 0, 0, 0, '(nothing)', '')
+419.422 INVEN ('m', 0, 0, 0, '(nothing)', '')
+419.422 INVEN ('n', 0, 0, 0, '(nothing)', '')
+419.422 INVEN ('o', 0, 0, 0, '(nothing)', '')
+419.422 INVEN ('p', 0, 0, 0, '(nothing)', '')
+419.422 INVEN ('q', 0, 0, 0, '(nothing)', '')
+419.422 INVEN ('r', 0, 0, 0, '(nothing)', '')
+419.422 INVEN ('s', 0, 0, 0, '(nothing)', '')
+419.422 INVEN ('t', 0, 0, 0, '(nothing)', '')
+419.422 INVEN ('u', 0, 0, 0, '(nothing)', '')
+419.422 INVEN ('v', 0, 0, 0, '(nothing)', '')
+419.422 INVEN ('w', 0, 0, 0, '(nothing)', '')
+419.422 INVEN ('x', 0, 0, 0, '(nothing)', '')
+425.142 EQUIP f 39  Brass Lantern (with 8900 turns of light) {25% off}
+428.102 MSG You feel yourself yanked downwards!.
+428.116 MSG You feel there is something special about this level..
+428.116 IND:depth da0d
+428.116 PKT_FLOOR 310000000000000000000000
+430.177 S CUSTOM:'.' 4706
+431.17 S CUSTOM:'.' 4703
+431.181 MSG The White wolf wakes up..
+431.401 S CUSTOM:'.' 4702
+432.041 S CUSTOM:'.' 4707
+432.433 S CUSTOM:'.' 4707
+433.009 MSG You hit the White wolf..
+433.009 MSG It was a good hit!.
+433.009 MSG You hit the White wolf..
+433.009 MSG You have slain the White wolf..
+433.009 IND:level c30e0e
+433.249 S CUSTOM:'.' 4704
+433.769 MSG You hit the White wolf..
+433.822 MSG The White wolf flees in terror!.
+433.995 MSG You miss the White wolf..
+435.962 S CUSTOM:'.' 4703
+436.547 S CUSTOM:'.' 4702
+436.968 MSG You hit the White wolf..
+437.009 MSG The White wolf bites you..
+437.129 MSG You hit the White wolf..
+437.129 MSG The White wolf flees in terror!.
+437.302 MSG You hit the White wolf..
+437.302 MSG You have slain the White wolf..
+437.302 IND:level c30e0e
+437.802 S CUSTOM:'.' 4701
+438.55 S CUSTOM:'.' 4701
+439.966 S CUSTOM:'.' 4707
+439.968 MSG You cannot run in that direction..
+441.436 MSG There is a wall blocking your way..
+442.037 S CUSTOM:'.' 4706
+442.77 S CUSTOM:'.' 4706
+444.824 S CUSTOM:'.' 4706
+445.341 MSG You miss the White wolf..
+445.341 MSG You hit the White wolf..
+445.341 MSG You have slain the White wolf..
+445.341 IND:level c30e0e
+445.885 S CUSTOM:'.' 4706
+447.249 MSG You hit the Novice ranger..
+447.249 MSG You have slain the Novice ranger..
+447.249 IND:level c30e0e
+447.9 MSG You hit the Novice ranger..
+447.9 MSG You have slain the Novice ranger..
+447.9 IND:level c30e0e
+448.699 PKT_FLOOR 31000d210e00014b000061204368617274726575736520506f74696f6e0000
+448.699 MSG You see a Chartreuse Potion..
+449.288 MSG You hit the Novice ranger..
+449.288 MSG You miss the Novice ranger..
+449.288 MSG The Novice ranger flees in terror!.
+449.368 MSG You hit the Novice ranger..
+449.368 MSG You have slain the Novice ranger..
+449.368 IND:level c30e0e
+450.248 S CUSTOM:',' 00
+450.25 MSG You have a Chartreuse Potion (d)..
+450.25 PKT_FLOOR 310000000000000000000000
+450.25 INVEN ('d', 75, 1, 4, 'a Chartreuse Potion', '')
+450.25 INVEN ('e', 70, 5, 25, '5 Scrolls of Phase Door {@r1}', '')
+450.25 INVEN ('f', 70, 3, 15, '3 Scrolls of Phase Door {75% off}', '')
+450.25 INVEN ('g', 70, 1, 5, 'a Scroll of Word of Recall', '')
+450.782 MSG You hit the Novice ranger..
+450.782 MSG You have slain the Novice ranger..
+450.782 IND:level c30e0e
+450.795 MSG You hit the Novice ranger..
+450.795 MSG You have slain the Novice ranger..
+450.795 IND:level c30e0e
+451.835 MSG You hit the Novice ranger..
+451.835 MSG You have slain the Novice ranger..
+451.835 IND:level c30e0e
+452.5 MSG You hit the Novice ranger..
+452.5 MSG You miss the Novice ranger..
+452.5 MSG You hit the Novice ranger..
+452.5 MSG You have slain the Novice ranger..
+452.5 IND:level c30e0e
+453.591 MSG You have found 52 gold pieces worth of silver..
+453.768 MSG You hit the Novice ranger..
+454.102 MSG The Novice ranger flees in terror!.
+454.26 MSG You miss the Novice ranger..
+454.433 MSG You hit the Novice ranger..
+454.433 MSG You have slain the Novice ranger..
+454.433 IND:level c30e0e
+454.609 MSG You miss the Novice ranger..
+454.767 MSG You hit the Novice ranger..
+455.102 MSG You have slain the Novice ranger..
+455.102 MSG You feel something roll beneath your feet..
+455.102 PKT_FLOOR 31000724010001640000636f707065720000
+455.102 IND:level c30e0e
+455.881 MSG You have found 77 gold pieces worth of silver..
+455.881 PKT_FLOOR 310000000000000000000000
+456.475 MSG It casts a magic missile..
+456.604 MSG You have found 55 gold pieces worth of silver..
+456.741 MSG The Novice ranger hits you..
+456.741 MSG The Novice ranger misses you..
+456.781 MSG You hit the Novice ranger..
+456.942 MSG The Novice ranger flees in terror!.
+457.114 MSG You hit the Novice ranger..
+457.114 MSG You have slain the Novice ranger..
+457.114 IND:level c30e0e
+457.715 MSG You hit the Novice ranger..
+457.715 MSG The Novice ranger flees in terror!.
+457.781 MSG You hit the Novice ranger..
+457.781 MSG You have slain the Novice ranger..
+457.781 IND:level c30e0e
+458.433 MSG You have found 29 gold pieces worth of silver..
+459.188 PKT_FLOOR 3100013f01000146200061205363726f6c6c207469746c6564202269736878207468657262696e220000
+459.188 MSG You see a Scroll titled "ishx therbin"..
+460.651 S CUSTOM:',' 00
+460.653 MSG You have a Scroll titled "ishx therbin" (h)..
+460.653 PKT_FLOOR 310000000000000000000000
+460.653 INVEN ('h', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+461.234 MSG You hit the Novice ranger..
+461.234 MSG The Novice ranger flees in terror!.
+461.247 MSG You hit the Novice ranger..
+461.247 MSG You have slain the Novice ranger..
+461.247 IND:level c30e0e
+462.582 MSG You have found 17 gold pieces worth of copper..
+463.327 S CUSTOM:'.' 4703
+463.876 PKT_FLOOR 31000f7d07000113010061204c6f6e6720426f7720287833290000
+463.876 MSG You see a Long Bow (x3)..
+465.138 S CUSTOM:',' 00
+465.14 MSG You have a Long Bow (x3) (i)..
+465.141 PKT_FLOOR 310000000000000000000000
+465.141 INVEN ('i', 19, 1, 40, 'a Long Bow (x3)', '')
+465.862 S CUSTOM:'.' 4703
+466.389 S CUSTOM:'.' 4703
+467.017 S CUSTOM:'.' 4702
+468.148 S CUSTOM:'.' 4704
+468.675 S CUSTOM:'.' 4704
+469.123 S CUSTOM:'.' 4702
+469.702 MSG You hit the Manes..
+469.795 MSG You miss the Manes..
+469.968 MSG You hit the Manes..
+470.128 MSG You have destroyed the Manes..
+470.128 IND:level c30e0e
+470.647 MSG You hit the Manes..
+470.968 MSG You have destroyed the Manes..
+470.968 IND:level c30e0e
+471.527 MSG You miss the Manes..
+471.527 MSG You hit the Manes..
+471.795 MSG You miss the Manes..
+471.968 MSG You hit the Manes..
+471.968 MSG You have destroyed the Manes..
+471.968 IND:level c30e0e
+473.14 S CUSTOM:'.' 4702
+473.86 MSG The Manes misses you..
+473.94 MSG You hit the Manes..
+474.06 MSG The Manes hits you..
+474.1 MSG You hit the Manes..
+474.434 MSG You have destroyed the Manes..
+474.434 IND:level c30e0e
+474.607 MSG You hit the Manes..
+474.873 MSG The Manes hits you..
+474.941 MSG You hit the Manes..
+475.273 MSG The Manes hits you..
+476.221 MSG You hit the Manes..
+476.221 MSG You have destroyed the Manes..
+476.221 IND:level c30e0e
+476.5 MSG You hit the Manes..
+476.608 MSG You miss the Manes..
+476.781 MSG You hit the Manes..
+476.941 MSG You have destroyed the Manes..
+476.941 IND:level c30e0e
+478.913 MSG You hit the Manes..
+478.928 MSG You miss the Manes..
+478.928 MSG You hit the Manes..
+478.928 MSG You have destroyed the Manes..
+478.928 IND:level c30e0e
+478.981 MSG You hit the Manes..
+478.993 EQUIP f 39  Brass Lantern (with 8800 turns of light) {25% off}
+479.58 MSG The Manes misses you..
+479.753 MSG You hit the Manes..
+479.753 MSG You have destroyed the Manes..
+479.753 IND:level c30e0e
+480.354 MSG You hit the Manes..
+480.421 MSG You have destroyed the Manes..
+480.421 IND:level c30e0e
+482.339 MSG You hit the Manes..
+482.339 MSG You miss the Manes..
+482.354 MSG You hit the Manes..
+482.354 MSG You have destroyed the Manes..
+482.354 IND:level c30e0e
+485.661 MSG You hit the Manes..
+485.661 MSG It was a good hit!.
+485.673 MSG You miss the Manes..
+485.673 MSG You hit the Manes..
+485.673 MSG You have destroyed the Manes..
+485.673 IND:level c30e0e
+491.351 S CUSTOM:'.' 4702
+491.958 S CUSTOM:'.' 4702
+493.232 S CUSTOM:'.' 4701
+493.638 S CUSTOM:'.' 4701
+494.913 MSG You hit the Manes..
+494.928 MSG You have destroyed the Manes..
+494.928 IND:level c30e0e
+495.714 MSG You hit the Manes..
+495.714 MSG You miss the Manes..
+495.726 MSG You hit the Manes..
+495.726 MSG You have destroyed the Manes..
+495.726 IND:level c30e0e
+496.356 S CUSTOM:'.' 4704
+496.913 S CUSTOM:'.' 4702
+497.522 S CUSTOM:'.' 4701
+497.634 MSG It points at you and curses..
+497.634 MSG You resist the effects!.
+502.328 MSG You feel the Long Bow (i) in your pack is average....
+502.328 INVEN ('i', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+504.286 MSG You hit the Novice paladin..
+504.286 MSG You miss the Novice paladin..
+504.299 MSG You hit the Novice paladin..
+504.299 MSG The Novice paladin flees in terror!.
+504.459 MSG You hit the Novice paladin..
+504.459 MSG You have slain the Novice paladin..
+504.459 IND:level c30e0e
+505.646 MSG You hit the Novice paladin..
+505.646 MSG You miss the Novice paladin..
+505.646 MSG You hit the Novice paladin..
+505.646 MSG The Novice paladin flees in terror!.
+505.659 MSG You hit the Novice paladin..
+505.659 MSG You have slain the Novice paladin..
+505.659 IND:level c30e0e
+506.366 MSG You miss the Novice paladin..
+506.366 MSG You hit the Novice paladin..
+506.461 MSG You have slain the Novice paladin..
+506.461 MSG Welcome to level 15..
+506.461 IND:level c30f0f
+522.65 S PKT_MESSAGE 2e416c776179732062657374
+522.65 MSG [Dive03] Always best to retreat behind a turn, to let enemies.
+529.491 S PKT_MESSAGE 2e547269636b6c6520696e74
+529.491 MSG [Dive03] Trickle into melee range.
+530.994 S CUSTOM:'.' 4701
+531.007 MSG You have found 17 gold pieces worth of copper..
+531.59 S CUSTOM:'.' 4704
+531.953 S CUSTOM:'.' 4707
+532.187 S CUSTOM:'.' 4708
+532.706 PKT_FLOOR 310004210e00014b000061204461726b2052656420506f74696f6e0000
+532.706 MSG You see a Dark Red Potion..
+533.821 S CUSTOM:',' 00
+533.824 MSG You have a Dark Red Potion (e)..
+533.824 PKT_FLOOR 310000000000000000000000
+533.824 INVEN ('e', 75, 1, 4, 'a Dark Red Potion', '')
+533.824 INVEN ('f', 70, 5, 25, '5 Scrolls of Phase Door {@r1}', '')
+533.824 INVEN ('g', 70, 3, 15, '3 Scrolls of Phase Door {75% off}', '')
+533.824 INVEN ('h', 70, 1, 5, 'a Scroll of Word of Recall', '')
+533.824 INVEN ('i', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+533.824 INVEN ('j', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+534.413 S CUSTOM:'.' 4704
+534.834 S CUSTOM:'.' 4701
+534.993 EQUIP f 39  Brass Lantern (with 8700 turns of light) {25% off}
+535.11 S CUSTOM:'.' 4704
+535.744 S CUSTOM:'.' 4704
+536.051 S CUSTOM:'.' 4708
+536.243 S CUSTOM:'.' 4704
+536.658 S CUSTOM:'.' 4704
+537.66 MSG You are no longer full..
+538.014 S CUSTOM:'.' 4704
+539.599 S CUSTOM:'.' 4707
+540.09 S CUSTOM:'.' 4704
+540.603 S CUSTOM:'.' 4704
+540.636 S CUSTOM:'.' 4704
+540.664 S CUSTOM:'.' 4704
+540.697 S CUSTOM:'.' 4704
+540.727 S CUSTOM:'.' 4704
+540.757 S CUSTOM:'.' 4704
+540.791 S CUSTOM:'.' 4704
+540.836 S CUSTOM:'.' 4704
+540.867 S CUSTOM:'.' 4704
+540.897 S CUSTOM:'.' 4704
+540.93 S CUSTOM:'.' 4704
+540.958 S CUSTOM:'.' 4704
+540.989 S CUSTOM:'.' 4704
+541.022 S CUSTOM:'.' 4704
+541.051 S CUSTOM:'.' 4704
+541.097 S CUSTOM:'.' 4704
+541.13 S CUSTOM:'.' 4704
+541.159 S CUSTOM:'.' 4704
+541.192 S CUSTOM:'.' 4704
+541.221 S CUSTOM:'.' 4704
+541.253 S CUSTOM:'.' 4704
+541.298 S CUSTOM:'.' 4704
+541.332 S CUSTOM:'.' 4704
+541.359 S CUSTOM:'.' 4704
+541.389 S CUSTOM:'.' 4704
+541.422 S CUSTOM:'.' 4704
+541.452 S CUSTOM:'.' 4704
+541.484 S CUSTOM:'.' 4704
+541.514 S CUSTOM:'.' 4704
+541.559 S CUSTOM:'.' 4704
+541.621 S CUSTOM:'.' 4704
+541.651 S CUSTOM:'.' 4704
+541.686 S CUSTOM:'.' 4704
+541.716 S CUSTOM:'.' 4704
+541.758 S CUSTOM:'.' 4704
+541.789 S CUSTOM:'.' 4704
+541.822 S CUSTOM:'.' 4704
+541.853 S CUSTOM:'.' 4704
+541.882 S CUSTOM:'.' 4704
+541.914 S CUSTOM:'.' 4704
+541.946 S CUSTOM:'.' 4704
+541.987 S CUSTOM:'.' 4704
+542.024 S CUSTOM:'.' 4704
+542.057 S CUSTOM:'.' 4704
+542.085 S CUSTOM:'.' 4704
+542.111 S CUSTOM:'.' 4704
+542.145 S CUSTOM:'.' 4704
+542.174 S CUSTOM:'.' 4704
+542.218 S CUSTOM:'.' 4704
+542.252 S CUSTOM:'.' 4704
+542.281 S CUSTOM:'.' 4704
+542.313 S CUSTOM:'.' 4704
+542.343 S CUSTOM:'.' 4704
+542.372 S CUSTOM:'.' 4704
+542.406 S CUSTOM:'.' 4704
+542.453 S CUSTOM:'.' 4704
+542.482 S CUSTOM:'.' 4704
+542.511 S CUSTOM:'.' 4704
+542.544 S CUSTOM:'.' 4704
+542.574 S CUSTOM:'.' 4704
+542.604 S CUSTOM:'.' 4704
+542.637 S CUSTOM:'.' 4704
+542.639 MSG You cannot run in that direction..
+542.686 S CUSTOM:'.' 4704
+542.714 S CUSTOM:'.' 4704
+542.743 S CUSTOM:'.' 4704
+542.773 S CUSTOM:'.' 4704
+542.805 S CUSTOM:'.' 4704
+542.839 S CUSTOM:'.' 4704
+543.203 S CUSTOM:'.' 4701
+543.487 S CUSTOM:'.' 4702
+543.602 S CUSTOM:'.' 4703
+543.79 S CUSTOM:'.' 4701
+544.762 S CUSTOM:'.' 4703
+545.478 S CUSTOM:'.' 4709
+545.72 S CUSTOM:'.' 4709
+545.822 S CUSTOM:'.' 4708
+546.28 S CUSTOM:'.' 4708
+546.435 S CUSTOM:'.' 4709
+546.962 S CUSTOM:'.' 4704
+547.492 S CUSTOM:'.' 4704
+547.691 S CUSTOM:'.' 4708
+548.353 S CUSTOM:'.' 4704
+548.785 S CUSTOM:'.' 4708
+549.305 S CUSTOM:'.' 4704
+549.464 S CUSTOM:'.' 4708
+550.278 S CUSTOM:'.' 4703
+550.54 S CUSTOM:'.' 4703
+550.974 S CUSTOM:'.' 4706
+551.233 S CUSTOM:'.' 4703
+551.793 S CUSTOM:'.' 4702
+552.052 S CUSTOM:'.' 4703
+552.302 S CUSTOM:'.' 4706
+552.952 S CUSTOM:'.' 4706
+553.456 S CUSTOM:'.' 4706
+553.485 S CUSTOM:'.' 4706
+553.519 S CUSTOM:'.' 4706
+553.563 S CUSTOM:'.' 4706
+553.593 S CUSTOM:'.' 4706
+553.633 S CUSTOM:'.' 4706
+553.655 S CUSTOM:'.' 4706
+553.686 S CUSTOM:'.' 4706
+553.714 S CUSTOM:'.' 4706
+554.35 S CUSTOM:'.' 4706
+554.927 S CUSTOM:'.' 4709
+555.11 S CUSTOM:'.' 4708
+556.176 S CUSTOM:'.' 4708
+557.421 S CUSTOM:'.' 4708
+559.725 S CUSTOM:'.' 4704
+559.924 EQUIP f 39  Brass Lantern (with 8600 turns of light) {25% off}
+596.364 S CUSTOM:'.' 4708
+596.901 S CUSTOM:'.' 4707
+598.292 S CUSTOM:'.' 4708
+599.454 S CUSTOM:'.' 4704
+600.925 S CUSTOM:'.' 4704
+601.378 MSG It releases spores at you..
+601.907 S CUSTOM:'.' 4704
+602.886 S CUSTOM:'.' 4704
+603.377 S CUSTOM:'.' 4704
+603.581 S CUSTOM:'.' 4704
+603.8 S CUSTOM:'.' 4704
+604.176 S CUSTOM:'.' 4702
+604.526 S CUSTOM:'.' 4702
+604.8 S CUSTOM:'.' 4703
+605.074 S CUSTOM:'.' 4706
+605.593 S CUSTOM:'.' 4709
+605.962 S CUSTOM:'.' 4706
+606.733 S CUSTOM:'.' 4708
+606.991 EQUIP f 39  Brass Lantern (with 8500 turns of light) {25% off}
+607.243 S CUSTOM:'.' 4709
+607.53 S CUSTOM:'.' 4708
+608.096 S CUSTOM:'.' 4706
+608.34 S CUSTOM:'.' 4703
+608.721 S CUSTOM:'.' 4706
+609.212 S CUSTOM:'.' 4706
+609.215 MSG You cannot run in that direction..
+610.531 S CUSTOM:'T' 0a06
+610.533 MSG You dig in the rubble..
+611.542 S CUSTOM:'T' 0a06
+612.442 S CUSTOM:'T' 0a06
+613.312 S CUSTOM:'T' 0a06
+614.028 S CUSTOM:'.' 4706
+614.03 MSG You cannot run in that direction..
+614.648 S CUSTOM:'.' 4704
+615.12 S CUSTOM:'.' 4701
+615.272 S CUSTOM:'.' 4703
+615.559 S CUSTOM:'.' 4706
+616.384 S CUSTOM:'.' 4702
+616.677 S CUSTOM:'.' 4706
+617.176 S CUSTOM:'.' 4703
+617.479 S CUSTOM:'.' 4706
+618.119 S CUSTOM:'.' 4709
+618.737 S CUSTOM:'.' 4709
+618.905 S CUSTOM:'.' 4708
+619.547 S CUSTOM:'.' 4704
+619.765 S CUSTOM:'.' 4708
+620.315 S CUSTOM:'.' 4703
+620.414 S CUSTOM:'.' 4702
+620.83 S CUSTOM:'.' 4703
+621.144 S CUSTOM:'.' 4706
+621.647 S CUSTOM:'.' 4706
+621.992 S CUSTOM:'.' 4702
+622.399 S CUSTOM:'.' 4706
+622.741 S CUSTOM:'.' 4702
+623.011 S CUSTOM:'.' 4706
+624.409 S CUSTOM:'.' 4706
+624.79 S CUSTOM:'.' 4706
+625.056 S CUSTOM:'.' 4706
+625.399 S CUSTOM:'.' 4708
+625.928 S CUSTOM:'.' 4708
+626.04 S CUSTOM:'.' 4709
+626.264 S CUSTOM:'.' 4708
+627.445 S CUSTOM:'.' 4708
+627.711 S CUSTOM:'.' 4707
+627.963 S CUSTOM:'.' 4708
+628.414 S CUSTOM:'.' 4707
+628.844 S CUSTOM:'.' 4708
+629.41 S CUSTOM:'.' 4709
+630.199 S CUSTOM:'.' 4707
+630.368 S CUSTOM:'.' 4708
+630.906 S CUSTOM:'.' 4707
+631.317 S CUSTOM:'.' 4707
+631.728 S CUSTOM:'.' 4707
+632.023 S CUSTOM:'.' 4707
+632.427 S CUSTOM:'.' 4701
+633.033 S CUSTOM:'.' 4703
+633.249 S CUSTOM:'.' 4702
+633.524 EQUIP f 39  Brass Lantern (with 8400 turns of light) {25% off}
+633.749 S CUSTOM:'.' 4706
+634.021 S CUSTOM:'.' 4709
+634.306 S CUSTOM:'.' 4706
+634.822 S CUSTOM:'.' 4706
+634.849 S CUSTOM:'.' 4706
+634.885 S CUSTOM:'.' 4706
+634.914 S CUSTOM:'.' 4706
+634.946 S CUSTOM:'.' 4706
+634.976 S CUSTOM:'.' 4706
+635.009 S CUSTOM:'.' 4706
+635.05 S CUSTOM:'.' 4706
+635.081 S CUSTOM:'.' 4706
+635.11 S CUSTOM:'.' 4706
+635.142 S CUSTOM:'.' 4706
+635.176 S CUSTOM:'.' 4706
+635.205 S CUSTOM:'.' 4706
+635.249 S CUSTOM:'.' 4706
+635.282 S CUSTOM:'.' 4706
+635.311 S CUSTOM:'.' 4706
+635.353 S CUSTOM:'.' 4706
+635.374 S CUSTOM:'.' 4706
+635.405 S CUSTOM:'.' 4706
+635.434 S CUSTOM:'.' 4706
+635.483 S CUSTOM:'.' 4706
+635.511 S CUSTOM:'.' 4706
+635.545 S CUSTOM:'.' 4706
+635.575 S CUSTOM:'.' 4706
+635.605 S CUSTOM:'.' 4706
+635.634 S CUSTOM:'.' 4706
+635.838 S CUSTOM:'.' 4707
+636.273 S CUSTOM:'.' 4708
+636.82 S CUSTOM:'.' 4701
+636.973 S CUSTOM:'.' 4702
+637.192 S CUSTOM:'.' 4701
+637.327 S CUSTOM:'.' 4702
+637.967 S CUSTOM:'.' 4702
+640.405 S CUSTOM:'<' 02
+640.407 MSG You enter a maze of up staircases..
+640.418 MSG You feel there is something special about this level..
+640.418 IND:depth da0c
+640.418 PKT_FLOOR 310000000000000000000000
+642.736 S CUSTOM:'.' 4701
+643.256 S CUSTOM:'.' 4702
+643.695 S CUSTOM:'.' 4702
+643.834 S CUSTOM:'.' 4703
+644.581 S CUSTOM:'.' 4706
+645.147 S CUSTOM:'.' 4702
+645.657 S CUSTOM:'.' 4706
+645.66 MSG You failed to pick the lock..
+646.059 S CUSTOM:'.' 4706
+646.627 S CUSTOM:'.' 4706
+646.99 MSG You have picked the lock..
+646.99 IND:level c30f0f
+648.965 S CUSTOM:'.' 4706
+649.778 S CUSTOM:'.' 4706
+650.328 S CUSTOM:'.' 4706
+651.474 S CUSTOM:'.' 4708
+652.211 S CUSTOM:'.' 4708
+652.641 S CUSTOM:'.' 4708
+653.358 S CUSTOM:'.' 4708
+654.233 S CUSTOM:'.' 4706
+655.042 S CUSTOM:'.' 4706
+655.53 S CUSTOM:'.' 4708
+655.859 S CUSTOM:'.' 4706
+656.661 S CUSTOM:'.' 4706
+656.663 MSG You cannot run in that direction..
+657.154 S CUSTOM:'S' 06
+657.623 S CUSTOM:'.' 4702
+658.064 S CUSTOM:'.' 4708
+658.525 S CUSTOM:'.' 4702
+659.23 S CUSTOM:'.' 4708
+659.654 S CUSTOM:'.' 4702
+660.142 S CUSTOM:'.' 4708
+660.149 MSG You have found a secret door..
+660.149 IND:level c30f0f
+660.783 S CUSTOM:'S' 06
+662.006 S CUSTOM:'.' 4703
+662.322 EQUIP f 39  Brass Lantern (with 8300 turns of light) {25% off}
+662.423 S CUSTOM:'.' 4703
+663.152 S CUSTOM:'.' 4706
+663.685 S CUSTOM:'.' 4706
+664.186 S CUSTOM:'.' 4708
+664.754 S CUSTOM:'.' 4706
+665.304 S CUSTOM:'.' 4706
+665.806 S CUSTOM:'.' 4706
+665.853 S CUSTOM:'.' 4706
+665.881 S CUSTOM:'.' 4706
+665.913 S CUSTOM:'.' 4706
+665.945 S CUSTOM:'.' 4706
+665.978 S CUSTOM:'.' 4706
+666.009 S CUSTOM:'.' 4706
+666.034 S CUSTOM:'.' 4706
+666.067 S CUSTOM:'.' 4706
+666.367 S CUSTOM:'.' 4701
+666.966 PKT_FLOOR 31000b210b00014d04006120466c61736b206f66206f696c0000
+666.966 MSG You see a Flask of oil..
+669.356 S CUSTOM:',' 00
+669.358 MSG You have 6 Flasks of oil (b)..
+669.358 PKT_FLOOR 310000000000000000000000
+669.358 INVEN ('b', 77, 6, 60, '6 Flasks of oil', '')
+670.367 S CUSTOM:'.' 4706
+670.871 S CUSTOM:'.' 4706
+670.901 S CUSTOM:'.' 4706
+670.935 S CUSTOM:'.' 4706
+670.964 S CUSTOM:'.' 4706
+671.009 S CUSTOM:'.' 4706
+671.038 S CUSTOM:'.' 4706
+671.069 S CUSTOM:'.' 4706
+671.101 S CUSTOM:'.' 4706
+671.131 S CUSTOM:'.' 4706
+671.164 S CUSTOM:'.' 4706
+671.193 S CUSTOM:'.' 4706
+671.237 S CUSTOM:'.' 4706
+671.27 S CUSTOM:'.' 4706
+671.299 S CUSTOM:'.' 4706
+671.329 S CUSTOM:'.' 4706
+671.361 S CUSTOM:'.' 4706
+671.407 S CUSTOM:'.' 4706
+671.935 S CUSTOM:'.' 4709
+672.173 S CUSTOM:'.' 4708
+672.202 MSG You cannot run in that direction..
+672.493 S CUSTOM:'.' 4706
+673.128 S CUSTOM:'.' 4701
+673.568 S CUSTOM:'.' 4703
+674.198 S CUSTOM:'.' 4704
+674.71 S CUSTOM:'.' 4704
+674.74 S CUSTOM:'.' 4704
+674.777 S CUSTOM:'.' 4704
+674.8 S CUSTOM:'.' 4704
+674.83 S CUSTOM:'.' 4704
+674.875 S CUSTOM:'.' 4704
+675.464 S CUSTOM:'.' 4704
+675.809 S CUSTOM:'.' 4701
+675.969 S CUSTOM:'.' 4702
+676.32 S CUSTOM:'.' 4702
+676.673 S CUSTOM:'.' 4702
+677.155 S CUSTOM:'.' 4706
+677.672 S CUSTOM:'.' 4703
+677.765 S CUSTOM:'.' 4702
+678.228 S CUSTOM:'.' 4701
+678.464 S CUSTOM:'.' 4702
+679.348 S CUSTOM:'.' 4702
+679.887 S CUSTOM:'.' 4702
+680.172 S CUSTOM:'.' 4702
+680.651 S CUSTOM:'.' 4708
+681.269 S CUSTOM:'.' 4708
+681.532 S CUSTOM:'.' 4708
+681.708 S CUSTOM:'.' 4709
+682.04 S CUSTOM:'.' 4706
+684.529 S CUSTOM:'.' 4708
+685.438 S CUSTOM:'.' 4708
+685.85 S CUSTOM:'.' 4706
+685.922 EQUIP f 39  Brass Lantern (with 8200 turns of light) {25% off}
+686.361 S CUSTOM:'.' 4703
+686.492 S CUSTOM:'.' 4702
+686.813 S CUSTOM:'.' 4706
+687.518 S CUSTOM:'.' 4709
+687.648 S CUSTOM:'.' 4708
+687.938 S CUSTOM:'.' 4709
+688.191 S CUSTOM:'.' 4706
+689.389 S CUSTOM:'.' 4706
+689.893 S CUSTOM:'.' 4706
+689.927 S CUSTOM:'.' 4706
+689.958 S CUSTOM:'.' 4706
+689.987 S CUSTOM:'.' 4706
+690.029 S CUSTOM:'.' 4706
+690.066 S CUSTOM:'.' 4706
+690.095 S CUSTOM:'.' 4706
+690.128 S CUSTOM:'.' 4706
+690.157 S CUSTOM:'.' 4706
+690.19 S CUSTOM:'.' 4706
+690.22 S CUSTOM:'.' 4706
+690.266 S CUSTOM:'.' 4706
+690.297 S CUSTOM:'.' 4706
+690.33 S CUSTOM:'.' 4706
+690.359 S CUSTOM:'.' 4706
+690.389 S CUSTOM:'.' 4706
+690.419 S CUSTOM:'.' 4706
+690.451 S CUSTOM:'.' 4706
+690.497 S CUSTOM:'.' 4706
+690.756 S CUSTOM:'.' 4706
+690.989 S CUSTOM:'.' 4706
+691.216 S CUSTOM:'.' 4706
+691.507 S CUSTOM:'.' 4706
+691.782 S CUSTOM:'.' 4706
+692.182 S CUSTOM:'.' 4706
+692.789 S CUSTOM:'.' 4707
+693.056 S CUSTOM:'.' 4707
+693.267 S CUSTOM:'.' 4707
+693.78 S CUSTOM:'.' 4708
+694.762 S CUSTOM:'.' 4702
+695.123 S CUSTOM:'.' 4703
+695.225 S CUSTOM:'.' 4702
+696.584 S CUSTOM:'.' 4703
+696.589 PKT_FLOOR 310006280200012401006120526f6265205b325d0000
+696.589 MSG You see a Robe [2]..
+698.453 S CUSTOM:',' 00
+698.455 MSG You have a Robe [2] (j)..
+698.455 PKT_FLOOR 310000000000000000000000
+698.455 INVEN ('j', 36, 1, 20, 'a Robe [2]', '')
+698.455 INVEN ('k', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+699.046 S CUSTOM:'.' 4702
+699.685 S CUSTOM:'.' 4706
+700.636 S CUSTOM:'.' 4708
+701.471 S CUSTOM:'.' 4708
+701.75 S CUSTOM:'.' 4706
+702.512 S CUSTOM:'.' 4706
+702.88 S CUSTOM:'.' 4706
+703.312 S CUSTOM:'.' 4706
+703.314 MSG You cannot run in that direction..
+703.644 S CUSTOM:'.' 4702
+704.566 S CUSTOM:'.' 4704
+704.967 S CUSTOM:'.' 4702
+705.526 S CUSTOM:'.' 4702
+705.881 S CUSTOM:'.' 4702
+706.168 S CUSTOM:'.' 4706
+707.063 S CUSTOM:'.' 4706
+707.383 S CUSTOM:'.' 4706
+707.388 EQUIP f 39  Brass Lantern (with 8100 turns of light) {25% off}
+707.89 S CUSTOM:'.' 4706
+707.924 S CUSTOM:'.' 4706
+707.95 S CUSTOM:'.' 4706
+707.983 S CUSTOM:'.' 4706
+708.139 S CUSTOM:'.' 4706
+708.384 S CUSTOM:'.' 4706
+708.652 S CUSTOM:'.' 4706
+708.964 S CUSTOM:'.' 4706
+710.112 S CUSTOM:'.' 4706
+711.494 S CUSTOM:'.' 4706
+712.457 S CUSTOM:'.' 4703
+712.808 S CUSTOM:'.' 4706
+713.594 S CUSTOM:'.' 4706
+714.395 PKT_FLOOR 3100075f0f0001372000616e204f616b2053746166660000
+714.395 MSG You see an Oak Staff..
+715.439 S CUSTOM:',' 00
+715.442 MSG You have an Oak Staff (j)..
+715.442 PKT_FLOOR 310000000000000000000000
+715.442 INVEN ('j', 55, 1, 50, 'an Oak Staff', '')
+715.442 INVEN ('k', 36, 1, 20, 'a Robe [2]', '')
+715.442 INVEN ('l', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+715.993 S CUSTOM:'.' 4702
+716.175 MSG You hit the Creeping copper coins..
+716.842 MSG The Creeping copper coins flees in terror!.
+717.68 MSG You hit the Creeping copper coins..
+718.335 MSG There is a wall blocking your way..
+718.521 MSG You miss the Creeping copper coins..
+718.651 S CUSTOM:'.' 4706
+719.161 S CUSTOM:'.' 4706
+719.521 MSG You hit the Creeping copper coins..
+719.521 MSG You have slain the Creeping copper coins..
+719.521 IND:level c30f0f
+720.154 S CUSTOM:'.' 4706
+720.188 MSG You have found 33 gold pieces worth of copper..
+720.624 S CUSTOM:'.' 4706
+720.854 MSG You have found 27 gold pieces worth of copper..
+721.391 S CUSTOM:'.' 4706
+722.341 S CUSTOM:'.' 4702
+722.77 S CUSTOM:'.' 4704
+723.521 MSG You feel the Robe (k) in your pack is average....
+723.521 INVEN ('k', 36, 1, 20, 'a Robe [2] {average}', '')
+724.695 S CUSTOM:'.' 4708
+725.181 S CUSTOM:'.' 4709
+725.517 S CUSTOM:'.' 4706
+725.961 S CUSTOM:'.' 4709
+726.232 S CUSTOM:'.' 4708
+739.653 EQUIP f 39  Brass Lantern (with 8000 turns of light) {25% off}
+801.774 S CUSTOM:'.' 4708
+802.717 S CUSTOM:'.' 4706
+803.119 EQUIP f 39  Brass Lantern (with 7900 turns of light) {25% off}
+804.949 S CUSTOM:'.' 4703
+805.26 S CUSTOM:'.' 4706
+805.891 S CUSTOM:'.' 4706
+806.656 S CUSTOM:'.' 4708
+807.183 S CUSTOM:'.' 4704
+807.682 S CUSTOM:'.' 4701
+808.037 S CUSTOM:'.' 4706
+809.184 S CUSTOM:'.' 4708
+810.016 PKT_FLOOR 3100013f01000146200061205363726f6c6c206f66204964656e746966790000
+810.017 MSG You see a Scroll of Identify..
+811.069 S CUSTOM:',' 00
+811.071 MSG You have a Scroll of Identify (i)..
+811.071 PKT_FLOOR 310000000000000000000000
+811.071 INVEN ('i', 70, 1, 5, 'a Scroll of Identify', '')
+811.071 INVEN ('j', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+811.071 INVEN ('k', 55, 1, 50, 'an Oak Staff', '')
+811.071 INVEN ('l', 36, 1, 20, 'a Robe [2] {average}', '')
+811.071 INVEN ('m', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+812.009 S CUSTOM:'.' 4703
+812.112 S CUSTOM:'.' 4702
+812.556 S CUSTOM:'.' 4703
+812.919 S CUSTOM:'.' 4706
+813.313 S CUSTOM:'.' 4703
+813.723 S CUSTOM:'.' 4706
+813.799 MSG You hit the Kobold shaman..
+813.799 MSG The Kobold shaman flees in terror!.
+813.958 MSG You miss the Kobold shaman..
+814.132 MSG You hit the Kobold shaman..
+814.132 MSG You have slain the Kobold shaman..
+814.132 IND:level c30f0f
+814.685 S CUSTOM:'.' 4706
+814.972 MSG You hit the Snaga..
+815.132 MSG You miss the Snaga..
+815.252 S CUSTOM:'.' 4708
+815.586 MSG The Snaga misses you..
+815.799 MSG You hit the Snaga..
+815.799 MSG You miss the Snaga..
+815.799 MSG You hit the Snaga..
+815.799 MSG You have slain the Snaga..
+815.799 IND:level c30f0f
+815.972 MSG You hit the Snaga..
+816.104 MSG The Snaga hits you..
+816.132 MSG You hit the Snaga..
+816.638 MSG The Snaga flees in terror!.
+816.798 MSG You hit the Snaga..
+816.798 MSG It was a great hit!.
+816.798 MSG You have slain the Snaga..
+816.798 IND:level c30f0f
+816.931 MSG The Snaga hits you..
+816.971 MSG You hit the Snaga..
+817.132 MSG You miss the Snaga..
+817.305 MSG You hit the Snaga..
+817.693 S CUSTOM:'.' 4704
+817.866 MSG The Snaga hits you..
+818.145 MSG The Snaga misses you..
+818.478 MSG You miss the Snaga..
+818.639 MSG You hit the Snaga..
+818.639 MSG The Snaga flees in terror!.
+818.812 MSG You hit the Snaga..
+818.812 MSG You have slain the Snaga..
+818.812 IND:level c30f0f
+819.08 MSG You miss the Snaga..
+819.479 MSG You hit the Snaga..
+819.732 MSG The Snaga hits you..
+819.811 MSG You hit the Snaga..
+820.105 MSG The Snaga hits you..
+820.145 MSG You hit the Snaga..
+820.145 MSG You have slain the Snaga..
+820.145 IND:level c30f0f
+820.305 MSG You hit the Snaga..
+820.811 MSG The Snaga flees in terror!.
+820.971 MSG You hit the Snaga..
+820.971 MSG You have slain the Snaga..
+820.971 IND:level c30f0f
+820.986 MSG The Snaga hits you..
+821.144 MSG You hit the Snaga..
+821.772 MSG The Snaga misses you..
+821.812 MSG You hit the Snaga..
+821.972 MSG You have slain the Snaga..
+821.972 IND:level c30f0f
+822.145 MSG You hit the Snaga..
+822.479 MSG You miss the Snaga..
+822.639 MSG You hit the Snaga..
+822.639 MSG The Snaga flees in terror!.
+822.812 MSG You miss the Snaga..
+822.972 MSG You hit the Snaga..
+822.972 MSG You have slain the Snaga..
+822.972 IND:level c30f0f
+823.879 PKT_FLOOR 3100013d0400012d01006120506561726c2052696e670000
+823.879 MSG You see a Pearl Ring..
+825.274 S CUSTOM:',' 00
+825.276 MSG You have a Pearl Ring (l)..
+825.276 PKT_FLOOR 310000000000000000000000
+825.276 INVEN ('l', 45, 1, 2, 'a Pearl Ring', '')
+825.276 INVEN ('m', 36, 1, 20, 'a Robe [2] {average}', '')
+825.276 INVEN ('n', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+826.098 PKT_FLOOR 3100062c0f00015000006120426c7565204d757368726f6f6d0000
+826.098 MSG You see a Blue Mushroom..
+827.372 MSG You hit the Snaga..
+827.372 MSG The Snaga flees in terror!.
+827.385 MSG You hit the Snaga..
+827.385 MSG You have slain the Snaga..
+827.385 IND:level c30f0f
+828.196 PKT_FLOOR 3100013f01000146000061205363726f6c6c206f6620506861736520446f6f720000
+828.196 MSG You see a Scroll of Phase Door..
+829.211 MSG You hit the Snaga..
+829.211 MSG You miss the Snaga..
+829.213 S CUSTOM:',' 00
+829.518 MSG You have 6 Scrolls of Phase Door {@r1} (f)..
+829.518 PKT_FLOOR 310000000000000000000000
+829.518 INVEN ('f', 70, 6, 30, '6 Scrolls of Phase Door {@r1}', '')
+829.533 MSG You hit the Snaga..
+829.533 MSG You have slain the Snaga..
+829.533 MSG You feel something roll beneath your feet..
+829.533 PKT_FLOOR 31000a210e00014b00006120506f74696f6e206f66204265727365726b20537472656e6774680000
+829.533 IND:level c30f0f
+833.014 MSG Scribe begins a new game..
+836.441 S CUSTOM:'{' 190603407231
+836.443 MSG Inscribing 3 Scrolls of Phase Door {75% off}..
+836.443 INVEN ('g', 70, 3, 15, '3 Scrolls of Phase Door {@r1}', '')
+839.652 S CUSTOM:'d' 170500000006
+839.654 MSG Dropped 6 Scrolls of Phase Door {@r1} (f)..
+839.654 MSG You have no more Scrolls of Phase Door {@r1}..
+839.654 INVEN ('f', 70, 3, 15, '3 Scrolls of Phase Door {@r1}', '')
+839.654 INVEN ('g', 70, 1, 5, 'a Scroll of Word of Recall', '')
+839.654 INVEN ('h', 70, 1, 5, 'a Scroll of Identify', '')
+839.654 INVEN ('i', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+839.654 INVEN ('j', 55, 1, 50, 'an Oak Staff', '')
+839.654 INVEN ('k', 45, 1, 2, 'a Pearl Ring', '')
+839.654 INVEN ('l', 36, 1, 20, 'a Robe [2] {average}', '')
+839.654 INVEN ('m', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+839.654 INVEN ('n', 0, 0, 0, '(nothing)', '')
+839.654 INVEN ('o', 0, 0, 0, '(nothing)', '')
+839.654 INVEN ('p', 0, 0, 0, '(nothing)', '')
+839.654 INVEN ('q', 0, 0, 0, '(nothing)', '')
+839.654 INVEN ('r', 0, 0, 0, '(nothing)', '')
+839.654 INVEN ('s', 0, 0, 0, '(nothing)', '')
+839.654 INVEN ('t', 0, 0, 0, '(nothing)', '')
+839.654 INVEN ('u', 0, 0, 0, '(nothing)', '')
+839.654 INVEN ('v', 0, 0, 0, '(nothing)', '')
+839.654 INVEN ('w', 0, 0, 0, '(nothing)', '')
+839.654 INVEN ('x', 0, 0, 0, '(nothing)', '')
+840.861 MSG [Dive03:Scribe] Hi! This is Claude, talking through the character.
+841.261 MSG [Dive03:Scribe] Scribe. I can read your chat notes live and answer.
+841.661 MSG [Dive03:Scribe] here..
+843.097 S CUSTOM:'d' 170500000003
+843.099 MSG Dropped 3 Scrolls of Phase Door {@r1} (f)..
+843.099 MSG You have no more Scrolls of Phase Door {@r1}..
+843.099 INVEN ('f', 70, 1, 5, 'a Scroll of Word of Recall', '')
+843.099 INVEN ('g', 70, 1, 5, 'a Scroll of Identify', '')
+843.099 INVEN ('h', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+843.099 INVEN ('i', 55, 1, 50, 'an Oak Staff', '')
+843.099 INVEN ('j', 45, 1, 2, 'a Pearl Ring', '')
+843.099 INVEN ('k', 36, 1, 20, 'a Robe [2] {average}', '')
+843.099 INVEN ('l', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+843.099 INVEN ('m', 0, 0, 0, '(nothing)', '')
+843.099 INVEN ('n', 0, 0, 0, '(nothing)', '')
+843.099 INVEN ('o', 0, 0, 0, '(nothing)', '')
+843.099 INVEN ('p', 0, 0, 0, '(nothing)', '')
+843.099 INVEN ('q', 0, 0, 0, '(nothing)', '')
+843.099 INVEN ('r', 0, 0, 0, '(nothing)', '')
+843.099 INVEN ('s', 0, 0, 0, '(nothing)', '')
+843.099 INVEN ('t', 0, 0, 0, '(nothing)', '')
+843.099 INVEN ('u', 0, 0, 0, '(nothing)', '')
+843.099 INVEN ('v', 0, 0, 0, '(nothing)', '')
+843.099 INVEN ('w', 0, 0, 0, '(nothing)', '')
+843.099 INVEN ('x', 0, 0, 0, '(nothing)', '')
+844.194 S CUSTOM:',' 00
+844.196 MSG You have a Potion of Berserk Strength (c)..
+844.196 PKT_FLOOR 310000000000000000000000
+844.196 INVEN ('c', 75, 1, 4, 'a Potion of Berserk Strength', '')
+844.196 INVEN ('d', 75, 7, 28, '7 Potions of Cure Light Wounds {@q1}', '')
+844.196 INVEN ('e', 75, 1, 4, 'a Chartreuse Potion', '')
+844.196 INVEN ('f', 75, 1, 4, 'a Dark Red Potion', '')
+844.196 INVEN ('g', 70, 1, 5, 'a Scroll of Word of Recall', '')
+844.196 INVEN ('h', 70, 1, 5, 'a Scroll of Identify', '')
+844.196 INVEN ('i', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+844.196 INVEN ('j', 55, 1, 50, 'an Oak Staff', '')
+844.196 INVEN ('k', 45, 1, 2, 'a Pearl Ring', '')
+844.196 INVEN ('l', 36, 1, 20, 'a Robe [2] {average}', '')
+844.196 INVEN ('m', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+845.745 S CUSTOM:',' 00
+846.114 PKT_FLOOR 3100013f01000646000036205363726f6c6c73206f6620506861736520446f6f72207b4072317d0000
+846.114 MSG You see 6 Scrolls of Phase Door {@r1}..
+847.033 PKT_FLOOR 3100013f01000346000033205363726f6c6c73206f6620506861736520446f6f72207b4072317d0000
+847.033 MSG You see 3 Scrolls of Phase Door {@r1}..
+847.533 S CUSTOM:',' 00
+847.692 MSG You have 3 Scrolls of Phase Door {@r1} (g)..
+847.692 PKT_FLOOR 310000000000000000000000
+847.692 INVEN ('g', 70, 3, 15, '3 Scrolls of Phase Door {@r1}', '')
+847.692 INVEN ('h', 70, 1, 5, 'a Scroll of Word of Recall', '')
+847.692 INVEN ('i', 70, 1, 5, 'a Scroll of Identify', '')
+847.692 INVEN ('j', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+847.692 INVEN ('k', 55, 1, 50, 'an Oak Staff', '')
+847.692 INVEN ('l', 45, 1, 2, 'a Pearl Ring', '')
+847.692 INVEN ('m', 36, 1, 20, 'a Robe [2] {average}', '')
+847.692 INVEN ('n', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+847.989 PKT_FLOOR 3100013f01000646000036205363726f6c6c73206f6620506861736520446f6f72207b4072317d0000
+847.989 MSG You see 6 Scrolls of Phase Door {@r1}..
+848.333 S CUSTOM:',' 00
+848.652 MSG You have 6 Scrolls of Phase Door {@r1} (g)..
+848.652 PKT_FLOOR 310000000000000000000000
+848.652 INVEN ('g', 70, 6, 30, '6 Scrolls of Phase Door {@r1}', '')
+848.652 INVEN ('h', 70, 3, 15, '3 Scrolls of Phase Door {@r1}', '')
+848.652 INVEN ('i', 70, 1, 5, 'a Scroll of Word of Recall', '')
+848.652 INVEN ('j', 70, 1, 5, 'a Scroll of Identify', '')
+848.652 INVEN ('k', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+848.652 INVEN ('l', 55, 1, 50, 'an Oak Staff', '')
+848.652 INVEN ('m', 45, 1, 2, 'a Pearl Ring', '')
+848.652 INVEN ('n', 36, 1, 20, 'a Robe [2] {average}', '')
+848.652 INVEN ('o', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+852.477 PKT_FLOOR 3100062c0f00015000006120426c7565204d757368726f6f6d0000
+852.477 MSG You see a Blue Mushroom..
+853.9 MSG You have found 28 gold pieces worth of copper..
+853.9 PKT_FLOOR 310000000000000000000000
+854.317 EQUIP f 39  Brass Lantern (with 7800 turns of light) {25% off}
+854.559 PKT_FLOOR 31000f7d070001130100612053686f727420426f7720287832290000
+854.559 MSG You see a Short Bow (x2)..
+855.236 S CUSTOM:',' 00
+855.239 MSG You have a Short Bow (x2) (o)..
+855.239 PKT_FLOOR 310000000000000000000000
+855.239 INVEN ('o', 19, 1, 30, 'a Short Bow (x2)', '')
+855.239 INVEN ('p', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+855.887 MSG You have found 50 gold pieces worth of silver..
+856.781 MSG You have found 35 gold pieces worth of copper..
+863.694 S CUSTOM:'d' 170600000006
+863.696 MSG Dropped 6 Scrolls of Phase Door {@r1} (g)..
+863.696 PKT_FLOOR 3100013f01000646000036205363726f6c6c73206f6620506861736520446f6f72207b4072317d0000
+863.696 MSG You have no more Scrolls of Phase Door {@r1}..
+863.696 INVEN ('g', 70, 3, 15, '3 Scrolls of Phase Door {@r1}', '')
+863.696 INVEN ('h', 70, 1, 5, 'a Scroll of Word of Recall', '')
+863.696 INVEN ('i', 70, 1, 5, 'a Scroll of Identify', '')
+863.696 INVEN ('j', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+863.696 INVEN ('k', 55, 1, 50, 'an Oak Staff', '')
+863.696 INVEN ('l', 45, 1, 2, 'a Pearl Ring', '')
+863.696 INVEN ('m', 36, 1, 20, 'a Robe [2] {average}', '')
+863.696 INVEN ('n', 19, 1, 30, 'a Short Bow (x2)', '')
+863.696 INVEN ('o', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+863.696 INVEN ('p', 0, 0, 0, '(nothing)', '')
+863.697 INVEN ('q', 0, 0, 0, '(nothing)', '')
+863.697 INVEN ('r', 0, 0, 0, '(nothing)', '')
+863.697 INVEN ('s', 0, 0, 0, '(nothing)', '')
+863.697 INVEN ('t', 0, 0, 0, '(nothing)', '')
+863.697 INVEN ('u', 0, 0, 0, '(nothing)', '')
+863.697 INVEN ('v', 0, 0, 0, '(nothing)', '')
+863.697 INVEN ('w', 0, 0, 0, '(nothing)', '')
+863.697 INVEN ('x', 0, 0, 0, '(nothing)', '')
+866.996 S CUSTOM:'d' 170600000003
+866.998 MSG Dropped 3 Scrolls of Phase Door {@r1} (g)..
+866.998 PKT_FLOOR 3100013f01000946000039205363726f6c6c73206f6620506861736520446f6f72207b4072317d0000
+866.998 MSG You have no more Scrolls of Phase Door {@r1}..
+866.998 INVEN ('g', 70, 1, 5, 'a Scroll of Word of Recall', '')
+866.998 INVEN ('h', 70, 1, 5, 'a Scroll of Identify', '')
+866.998 INVEN ('i', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+866.998 INVEN ('j', 55, 1, 50, 'an Oak Staff', '')
+866.998 INVEN ('k', 45, 1, 2, 'a Pearl Ring', '')
+866.998 INVEN ('l', 36, 1, 20, 'a Robe [2] {average}', '')
+866.998 INVEN ('m', 19, 1, 30, 'a Short Bow (x2)', '')
+866.998 INVEN ('n', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+866.998 INVEN ('o', 0, 0, 0, '(nothing)', '')
+866.998 INVEN ('p', 0, 0, 0, '(nothing)', '')
+866.998 INVEN ('q', 0, 0, 0, '(nothing)', '')
+866.998 INVEN ('r', 0, 0, 0, '(nothing)', '')
+866.998 INVEN ('s', 0, 0, 0, '(nothing)', '')
+866.998 INVEN ('t', 0, 0, 0, '(nothing)', '')
+866.998 INVEN ('u', 0, 0, 0, '(nothing)', '')
+866.998 INVEN ('v', 0, 0, 0, '(nothing)', '')
+866.998 INVEN ('w', 0, 0, 0, '(nothing)', '')
+866.998 INVEN ('x', 0, 0, 0, '(nothing)', '')
+869.523 S CUSTOM:',' 00
+869.525 MSG You have 9 Scrolls of Phase Door {@r1} (g)..
+869.525 PKT_FLOOR 310000000000000000000000
+869.525 INVEN ('g', 70, 9, 45, '9 Scrolls of Phase Door {@r1}', '')
+869.525 INVEN ('h', 70, 1, 5, 'a Scroll of Word of Recall', '')
+869.525 INVEN ('i', 70, 1, 5, 'a Scroll of Identify', '')
+869.525 INVEN ('j', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+869.525 INVEN ('k', 55, 1, 50, 'an Oak Staff', '')
+869.525 INVEN ('l', 45, 1, 2, 'a Pearl Ring', '')
+869.525 INVEN ('m', 36, 1, 20, 'a Robe [2] {average}', '')
+869.525 INVEN ('n', 19, 1, 30, 'a Short Bow (x2)', '')
+869.525 INVEN ('o', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+870.73 S CUSTOM:'.' 4708
+871.817 S CUSTOM:'.' 4708
+872.796 S CUSTOM:'.' 4706
+873.65 MSG You hit the Giant spider..
+873.784 MSG It was a great hit!.
+873.784 MSG The Giant spider flees in terror!.
+874.454 S CUSTOM:'.' 4706
+875.044 S CUSTOM:'.' 4706
+875.737 S CUSTOM:'.' 4709
+877.004 S CUSTOM:'.' 4706
+878.193 S CUSTOM:'.' 4706
+878.703 S CUSTOM:'.' 4706
+878.733 S CUSTOM:'.' 4706
+878.765 S CUSTOM:'.' 4706
+878.796 S CUSTOM:'.' 4706
+878.829 S CUSTOM:'.' 4706
+878.859 S CUSTOM:'.' 4706
+878.905 S CUSTOM:'.' 4706
+878.934 S CUSTOM:'.' 4706
+878.966 S CUSTOM:'.' 4706
+878.998 S CUSTOM:'.' 4706
+879.027 S CUSTOM:'.' 4706
+879.058 S CUSTOM:'.' 4706
+879.087 S CUSTOM:'.' 4706
+879.134 S CUSTOM:'.' 4706
+879.164 S CUSTOM:'.' 4706
+879.196 S CUSTOM:'.' 4706
+879.226 S CUSTOM:'.' 4706
+879.257 S CUSTOM:'.' 4706
+879.287 S CUSTOM:'.' 4706
+879.319 S CUSTOM:'.' 4706
+879.358 MSG You hit the Giant spider..
+879.358 MSG It was a good hit!.
+879.358 MSG You hit the Giant spider..
+879.358 MSG You have slain the Giant spider..
+879.358 IND:level c30f0f
+879.367 S CUSTOM:'.' 4706
+879.4 S CUSTOM:'.' 4706
+879.445 S CUSTOM:'.' 4706
+879.468 S CUSTOM:'.' 4706
+879.49 S CUSTOM:'.' 4706
+879.518 S CUSTOM:'.' 4706
+879.55 S CUSTOM:'.' 4706
+879.596 S CUSTOM:'.' 4706
+879.626 S CUSTOM:'.' 4706
+879.658 S CUSTOM:'.' 4706
+879.689 S CUSTOM:'.' 4706
+879.718 S CUSTOM:'.' 4706
+880.172 S CUSTOM:'.' 4706
+880.722 S CUSTOM:'.' 4706
+882.127 S CUSTOM:'.' 4706
+883.481 S CUSTOM:'.' 4709
+884.099 S CUSTOM:'.' 4708
+884.626 PKT_FLOOR 3100013f01000146200061205363726f6c6c207469746c656420226865616b73206b686f6e6973220000
+884.626 MSG You see a Scroll titled "heaks khonis"..
+885.917 S CUSTOM:',' 00
+885.919 MSG You have a Scroll titled "heaks khonis" (k)..
+885.919 PKT_FLOOR 310000000000000000000000
+885.919 INVEN ('k', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+885.919 INVEN ('l', 55, 1, 50, 'an Oak Staff', '')
+885.919 INVEN ('m', 45, 1, 2, 'a Pearl Ring', '')
+885.919 INVEN ('n', 36, 1, 20, 'a Robe [2] {average}', '')
+885.919 INVEN ('o', 19, 1, 30, 'a Short Bow (x2)', '')
+885.919 INVEN ('p', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+886.55 S CUSTOM:'.' 4708
+887.334 S CUSTOM:'.' 4708
+887.336 MSG You have picked the lock..
+887.336 IND:level c30f0f
+887.62 S CUSTOM:'.' 4708
+888.042 S CUSTOM:'.' 4708
+888.746 S CUSTOM:'.' 4708
+896.319 S CUSTOM:'d' 170d00000001
+896.321 MSG Dropped a Robe [2] {average} (n)..
+896.321 PKT_FLOOR 310006280200012401006120526f6265205b325d207b617665726167657d0000
+896.321 MSG You have no more Robes [2] {average}..
+896.321 INVEN ('n', 19, 1, 30, 'a Short Bow (x2)', '')
+896.321 INVEN ('o', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+896.322 INVEN ('p', 0, 0, 0, '(nothing)', '')
+896.322 INVEN ('q', 0, 0, 0, '(nothing)', '')
+896.322 INVEN ('r', 0, 0, 0, '(nothing)', '')
+896.322 INVEN ('s', 0, 0, 0, '(nothing)', '')
+896.322 INVEN ('t', 0, 0, 0, '(nothing)', '')
+896.322 INVEN ('u', 0, 0, 0, '(nothing)', '')
+896.322 INVEN ('v', 0, 0, 0, '(nothing)', '')
+896.322 INVEN ('w', 0, 0, 0, '(nothing)', '')
+896.322 INVEN ('x', 0, 0, 0, '(nothing)', '')
+900.128 S CUSTOM:'r' 1d080c
+900.13 MSG In your pack: a Ring of Slow Digestion (m)..
+900.13 MSG You have no more Scrolls of Identify..
+900.13 INVEN ('i', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+900.13 INVEN ('j', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+900.13 INVEN ('k', 55, 1, 50, 'an Oak Staff', '')
+900.13 INVEN ('l', 45, 1, 2, 'a Ring of Slow Digestion', '')
+900.13 INVEN ('m', 19, 1, 30, 'a Short Bow (x2)', '')
+900.13 INVEN ('n', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+900.13 INVEN ('o', 0, 0, 0, '(nothing)', '')
+900.13 INVEN ('p', 0, 0, 0, '(nothing)', '')
+900.13 INVEN ('q', 0, 0, 0, '(nothing)', '')
+900.13 INVEN ('r', 0, 0, 0, '(nothing)', '')
+900.131 INVEN ('s', 0, 0, 0, '(nothing)', '')
+900.131 INVEN ('t', 0, 0, 0, '(nothing)', '')
+900.131 INVEN ('u', 0, 0, 0, '(nothing)', '')
+900.131 INVEN ('v', 0, 0, 0, '(nothing)', '')
+900.131 INVEN ('w', 0, 0, 0, '(nothing)', '')
+900.131 INVEN ('x', 0, 0, 0, '(nothing)', '')
+902.317 EQUIP f 39  Brass Lantern (with 7700 turns of light) {25% off}
+902.327 S CUSTOM:'w' 150b
+902.329 MSG You are wearing a Ring of Slow Digestion (d)..
+902.329 INVEN ('l', 19, 1, 30, 'a Short Bow (x2)', '')
+902.329 INVEN ('m', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+902.329 INVEN ('n', 0, 0, 0, '(nothing)', '')
+902.329 INVEN ('o', 0, 0, 0, '(nothing)', '')
+902.329 INVEN ('p', 0, 0, 0, '(nothing)', '')
+902.329 INVEN ('q', 0, 0, 0, '(nothing)', '')
+902.329 INVEN ('r', 0, 0, 0, '(nothing)', '')
+902.329 INVEN ('s', 0, 0, 0, '(nothing)', '')
+902.329 INVEN ('t', 0, 0, 0, '(nothing)', '')
+902.329 INVEN ('u', 0, 0, 0, '(nothing)', '')
+902.329 INVEN ('v', 0, 0, 0, '(nothing)', '')
+902.329 INVEN ('w', 0, 0, 0, '(nothing)', '')
+902.329 INVEN ('x', 0, 0, 0, '(nothing)', '')
+902.329 EQUIP d 45  Ring of Slow Digestion
+903.542 S CUSTOM:'.' 4708
+903.544 PKT_FLOOR 310000000000000000000000
+903.779 S CUSTOM:'.' 4707
+904.777 S CUSTOM:'.' 4707
+904.936 S CUSTOM:'.' 4708
+905.971 S CUSTOM:'.' 4708
+907.811 S CUSTOM:'>' 04
+907.814 MSG You enter a maze of down staircases..
+907.825 MSG You feel there is something special about this level..
+907.825 IND:depth da0d
+907.825 PKT_FLOOR 310000000000000000000000
+908.872 S CUSTOM:'.' 4704
+909.881 S CUSTOM:'.' 4704
+910.209 MSG The Black mamba misses you..
+910.503 MSG You hit the Black mamba..
+910.503 MSG You miss the Black mamba..
+910.503 MSG You hit the Black mamba..
+910.677 MSG You miss the Black mamba..
+911.144 MSG You hit the Black mamba..
+911.144 MSG The Black mamba flees in terror!.
+911.169 MSG You hit the Black mamba..
+911.169 MSG You have slain the Black mamba..
+911.169 IND:level c30f0f
+911.294 S CUSTOM:'.' 4704
+912.474 S CUSTOM:'.' 4704
+913.239 S CUSTOM:'.' 4702
+913.737 S CUSTOM:'.' 4706
+914.05 S CUSTOM:'.' 4702
+914.13 MSG You cannot run in that direction..
+914.484 S CUSTOM:'.' 4701
+914.685 S CUSTOM:'.' 4702
+915.65 S CUSTOM:'.' 4702
+916.041 S CUSTOM:'.' 4702
+916.375 S CUSTOM:'.' 4702
+916.806 S CUSTOM:'.' 4702
+917.178 S CUSTOM:'.' 4706
+918.484 S CUSTOM:'.' 4703
+918.784 S CUSTOM:'.' 4706
+919.816 S CUSTOM:'.' 4706
+920.199 S CUSTOM:'.' 4706
+920.796 S CUSTOM:'.' 4706
+921.935 S CUSTOM:'.' 4703
+923.03 S CUSTOM:'.' 4703
+923.406 S CUSTOM:'.' 4706
+924.474 S CUSTOM:'.' 4704
+924.747 S CUSTOM:'.' 4707
+925.112 S CUSTOM:'.' 4707
+925.406 S CUSTOM:'.' 4707
+925.717 S CUSTOM:'.' 4707
+926.916 MSG You hit the Scruffy looking hobbit..
+927.076 MSG You have slain the Scruffy looking hobbit..
+927.076 IND:level c30f0f
+927.986 S CUSTOM:'.' 4704
+928.606 S CUSTOM:'.' 4707
+929.212 S CUSTOM:'.' 4704
+929.488 S CUSTOM:'.' 4707
+929.515 EQUIP f 39  Brass Lantern (with 7600 turns of light) {25% off}
+929.88 S CUSTOM:'.' 4708
+930.683 S CUSTOM:'.' 4708
+931.011 S CUSTOM:'.' 4706
+932.633 S CUSTOM:'S' 06
+933.263 S CUSTOM:'.' 4704
+933.45 S CUSTOM:'.' 4706
+934.0 S CUSTOM:'.' 4704
+934.009 MSG You have found a secret door..
+934.009 IND:level c30f0f
+934.15 S CUSTOM:'.' 4706
+934.422 S CUSTOM:'.' 4704
+934.564 S CUSTOM:'.' 4706
+934.827 S CUSTOM:'S' 06
+936.115 S CUSTOM:'.' 4708
+936.117 MSG You failed to pick the lock..
+936.682 S CUSTOM:'.' 4708
+936.782 MSG You have picked the lock..
+936.782 IND:level c30f0f
+937.065 S CUSTOM:'.' 4708
+937.665 S CUSTOM:'.' 4708
+938.328 S CUSTOM:'S' 06
+938.761 S CUSTOM:'.' 4706
+939.65 MSG You feel the Short Bow (l) in your pack is average....
+939.65 INVEN ('l', 19, 1, 30, 'a Short Bow (x2) {average}', '')
+944.382 MSG The Rattlesnake misses you..
+944.503 MSG You hit the Rattlesnake..
+944.995 MSG The Rattlesnake flees in terror!.
+945.168 MSG You hit the Rattlesnake..
+945.168 MSG You have slain the Rattlesnake..
+945.168 IND:level c30f0f
+946.139 S CUSTOM:'.' 4707
+946.528 S CUSTOM:'S' 06
+950.583 EQUIP f 39  Brass Lantern (with 7500 turns of light) {25% off}
+953.478 S CUSTOM:'.' 4702
+954.675 S CUSTOM:'.' 4702
+955.511 S CUSTOM:'.' 4703
+958.465 S CUSTOM:'.' 4706
+961.589 S CUSTOM:'.' 4709
+961.721 S CUSTOM:'.' 4708
+963.443 S CUSTOM:'.' 4707
+963.826 S CUSTOM:'.' 4704
+966.315 EQUIP f 39  Brass Lantern (with 7400 turns of light) {25% off}
+970.661 S CUSTOM:'.' 4702
+971.899 S CUSTOM:'.' 4702
+972.087 S CUSTOM:'.' 4703
+974.301 MSG You have found a secret door..
+974.301 IND:level c30f0f
+975.091 S CUSTOM:'.' 4706
+975.747 S CUSTOM:'.' 4706
+980.435 S CUSTOM:'S' 06
+981.514 EQUIP f 39  Brass Lantern (with 7300 turns of light) {25% off}
+981.815 S CUSTOM:'.' 4704
+983.668 S CUSTOM:'.' 4701
+983.755 MSG You cannot run in that direction..
+983.793 S CUSTOM:'.' 4702
+984.19 S CUSTOM:'.' 4701
+984.502 S CUSTOM:'.' 4704
+985.079 S CUSTOM:'.' 4708
+986.044 S CUSTOM:'.' 4702
+987.416 S CUSTOM:'.' 4702
+988.115 S CUSTOM:'.' 4706
+988.751 S CUSTOM:'.' 4703
+989.093 S CUSTOM:'.' 4703
+989.376 S CUSTOM:'.' 4703
+989.711 S CUSTOM:'.' 4703
+990.005 S CUSTOM:'.' 4706
+991.025 S CUSTOM:'.' 4703
+991.386 S CUSTOM:'.' 4706
+991.949 S CUSTOM:'.' 4706
+991.955 MSG You have found 39 gold pieces worth of silver..
+992.456 S CUSTOM:'.' 4702
+993.585 S CUSTOM:'.' 4704
+994.261 S CUSTOM:'.' 4707
+994.505 S CUSTOM:'.' 4704
+995.132 S CUSTOM:'.' 4704
+995.563 S CUSTOM:'.' 4702
+996.692 S CUSTOM:'.' 4701
+997.024 S CUSTOM:'.' 4702
+997.743 S CUSTOM:'.' 4702
+997.745 MSG You cannot run in that direction..
+997.967 MSG You hit the Baby blue dragon..
+997.967 MSG It was a good hit!.
+997.967 MSG You hit the Baby blue dragon..
+997.997 S CUSTOM:'.' 4703
+998.593 MSG It was a good hit!.
+998.593 MSG You hit the Baby blue dragon..
+998.594 MSG The Baby blue dragon flees in terror!.
+999.288 MSG The Baby blue dragon breathes lightning..
+1000.069 S CUSTOM:'.' 4703
+1000.073 MSG You found a trap!.
+1000.073 MSG A strange white mist surrounds you!.
+1000.073 MSG You are paralyzed!.
+1000.62 MSG The Baby blue dragon turns to fight!.
+1001.955 MSG The Baby blue dragon misses you..
+1001.955 MSG The Baby blue dragon bites you..
+1003.288 MSG The Baby blue dragon claws you..
+1003.288 MSG The Baby blue dragon misses you..
+1003.647 MSG You can move again..
+1003.822 MSG You hit the Baby blue dragon..
+1003.822 MSG The Baby blue dragon flees in terror!.
+1003.981 MSG You hit the Baby blue dragon..
+1003.981 MSG You have slain the Baby blue dragon..
+1003.981 IND:level c30f0f
+1005.145 S CUSTOM:'.' 4702
+1005.154 MSG You have found 43 gold pieces worth of silver..
+1005.793 S CUSTOM:'.' 4706
+1005.821 MSG You have found 40 gold pieces worth of silver..
+1006.429 S CUSTOM:'.' 4703
+1006.488 MSG You have found 35 gold pieces worth of silver..
+1007.311 S CUSTOM:'.' 4702
+1007.313 MSG You cannot run in that direction..
+1008.253 S CUSTOM:'.' 4708
+1008.262 MSG You found a trap!.
+1008.262 MSG You fall into a spiked pit!.
+1008.262 MSG You are impaled!.
+1008.262 MSG You have been given a graze..
+1009.647 MSG You are no longer bleeding..
+1009.827 S CUSTOM:'.' 4708
+1010.98 EQUIP f 39  Brass Lantern (with 7200 turns of light) {25% off}
+1011.407 MSG You found a trap!.
+1011.407 MSG A small dart hits you!.
+1011.407 MSG You feel very sickly..
+1012.527 MSG You hit the Blue yeek..
+1012.527 MSG You have slain the Blue yeek..
+1012.527 IND:level c30f0f
+1013.709 MSG You have found 22 gold pieces worth of copper..
+1014.78 S CUSTOM:'.' 4706
+1016.813 S CUSTOM:'.' 4708
+1017.488 S CUSTOM:'.' 4704
+1018.167 MSG You found a trap!.
+1018.167 MSG You are enveloped in a cloud of smoke!.
+1018.341 MSG You miss the Novice paladin..
+1018.394 MSG The Black harpy claws you..
+1018.394 MSG The Black harpy bites you..
+1018.5 MSG You miss the Novice paladin..
+1018.673 MSG You hit the Novice paladin..
+1018.833 MSG The Novice paladin flees in terror!.
+1019.007 MSG You miss the Black harpy..
+1019.099 MSG The Black harpy claws you..
+1019.099 MSG The Black harpy misses you..
+1019.168 MSG You miss the Black harpy..
+1019.341 MSG You hit the Black harpy..
+1019.341 MSG The Black harpy flees in terror!.
+1019.5 MSG You hit the Black harpy..
+1019.501 MSG You have slain the Black harpy..
+1019.501 IND:level c30f0f
+1020.65 S CUSTOM:'.' 4703
+1020.834 MSG You miss the Blue ooze..
+1020.994 MSG You hit the Blue ooze..
+1020.994 MSG You have destroyed the Blue ooze..
+1020.994 IND:level c30f0f
+1021.679 S CUSTOM:'.' 4706
+1022.532 S CUSTOM:'.' 4706
+1023.229 S CUSTOM:'.' 4706
+1023.566 MSG The Novice paladin turns to fight!.
+1023.873 MSG You hit the Novice paladin..
+1023.873 MSG You have slain the Novice paladin..
+1023.873 IND:level c30f0f
+1024.568 S CUSTOM:'.' 4709
+1024.581 MSG You have found 29 gold pieces worth of silver..
+1031.056 S CUSTOM:'.' 4702
+1032.147 S CUSTOM:'.' 4702
+1033.946 S CUSTOM:'.' 4704
+1035.339 S CUSTOM:'.' 4704
+1035.77 S CUSTOM:'.' 4701
+1036.21 S CUSTOM:'.' 4707
+1036.778 S CUSTOM:'.' 4708
+1036.78 PKT_FLOOR 31000f2d050001410000612057616e64206f6620536c6f77204d6f6e737465720000
+1036.78 MSG You see a Wand of Slow Monster..
+1038.325 S CUSTOM:',' 00
+1038.327 MSG You have a Wand of Slow Monster (k)..
+1038.327 PKT_FLOOR 310000000000000000000000
+1038.327 INVEN ('k', 65, 1, 10, 'a Wand of Slow Monster', '')
+1038.327 INVEN ('l', 55, 1, 50, 'an Oak Staff', '')
+1038.327 INVEN ('m', 19, 1, 30, 'a Short Bow (x2) {average}', '')
+1038.327 INVEN ('n', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+1040.086 S CUSTOM:'.' 4702
+1040.853 S CUSTOM:'.' 4703
+1041.286 S CUSTOM:'.' 4709
+1041.558 S CUSTOM:'.' 4706
+1043.83 S CUSTOM:'>' 04
+1043.833 MSG You enter a maze of down staircases..
+1043.848 MSG You feel there is something special about this level..
+1043.848 IND:depth da0e
+1043.848 PKT_FLOOR 310000000000000000000000
+1045.139 S CUSTOM:'.' 4708
+1045.883 S CUSTOM:'.' 4701
+1046.119 S CUSTOM:'.' 4704
+1046.618 S CUSTOM:'.' 4704
+1047.617 PKT_FLOOR 3100013d0400012d0100612043616c636974652052696e670000
+1047.617 MSG You see a Calcite Ring..
+1048.997 S CUSTOM:',' 00
+1048.999 MSG You have a Calcite Ring (m)..
+1048.999 PKT_FLOOR 310000000000000000000000
+1048.999 INVEN ('m', 45, 1, 2, 'a Calcite Ring', '')
+1048.999 INVEN ('n', 19, 1, 30, 'a Short Bow (x2) {average}', '')
+1048.999 INVEN ('o', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+1051.16 S CUSTOM:'>' 04
+1051.162 MSG You enter a maze of down staircases..
+1051.166 MSG Looks like any other level..
+1051.167 IND:depth da0f
+1051.167 PKT_FLOOR 310000000000000000000000
+1052.218 S CUSTOM:'.' 4701
+1052.779 S CUSTOM:'.' 4704
+1053.308 S CUSTOM:'.' 4704
+1053.38 EQUIP f 39  Brass Lantern (with 7100 turns of light) {25% off}
+1053.815 S CUSTOM:'.' 4704
+1053.844 S CUSTOM:'.' 4704
+1053.875 S CUSTOM:'.' 4704
+1053.924 S CUSTOM:'.' 4704
+1053.953 S CUSTOM:'.' 4704
+1053.984 S CUSTOM:'.' 4704
+1054.014 S CUSTOM:'.' 4704
+1054.047 S CUSTOM:'.' 4704
+1054.077 S CUSTOM:'.' 4704
+1054.106 S CUSTOM:'.' 4704
+1054.138 S CUSTOM:'.' 4704
+1054.611 S CUSTOM:'.' 4704
+1055.397 S CUSTOM:'.' 4702
+1056.201 S CUSTOM:'.' 4706
+1056.716 S CUSTOM:'.' 4706
+1056.746 S CUSTOM:'.' 4706
+1056.775 S CUSTOM:'.' 4706
+1056.805 S CUSTOM:'.' 4706
+1056.838 S CUSTOM:'.' 4706
+1056.867 S CUSTOM:'.' 4706
+1056.916 S CUSTOM:'.' 4706
+1056.945 S CUSTOM:'.' 4706
+1056.976 S CUSTOM:'.' 4706
+1057.006 S CUSTOM:'.' 4706
+1057.036 S CUSTOM:'.' 4706
+1057.068 S CUSTOM:'.' 4706
+1057.098 S CUSTOM:'.' 4706
+1057.141 S CUSTOM:'.' 4706
+1057.266 S CUSTOM:'.' 470647064706
+1057.269 S CUSTOM:'.' 4706
+1057.295 S CUSTOM:'.' 4706
+1057.33 S CUSTOM:'.' 4706
+1057.374 S CUSTOM:'.' 4706
+1057.506 S CUSTOM:'.' 4706470647064706
+1057.529 S CUSTOM:'.' 4706
+1057.562 S CUSTOM:'.' 4706
+1057.592 S CUSTOM:'.' 4706
+1057.637 S CUSTOM:'.' 4706
+1057.671 S CUSTOM:'.' 4706
+1057.701 S CUSTOM:'.' 4706
+1057.73 S CUSTOM:'.' 4706
+1057.763 S CUSTOM:'.' 4706
+1057.795 S CUSTOM:'.' 4706
+1057.824 S CUSTOM:'.' 4706
+1057.871 S CUSTOM:'.' 4706
+1057.902 S CUSTOM:'.' 4706
+1057.932 S CUSTOM:'.' 4706
+1057.966 S CUSTOM:'.' 4706
+1057.994 S CUSTOM:'.' 4706
+1058.025 S CUSTOM:'.' 4706
+1058.056 S CUSTOM:'.' 4706
+1058.086 S CUSTOM:'.' 4706
+1058.134 S CUSTOM:'.' 4706
+1058.163 S CUSTOM:'.' 4706
+1058.195 S CUSTOM:'.' 4706
+1058.226 S CUSTOM:'.' 4706
+1058.258 S CUSTOM:'.' 4706
+1058.287 S CUSTOM:'.' 4706
+1058.317 S CUSTOM:'.' 4706
+1058.363 S CUSTOM:'.' 4706
+1058.392 S CUSTOM:'.' 4706
+1058.425 S CUSTOM:'.' 4706
+1058.454 S CUSTOM:'.' 4706
+1058.488 S CUSTOM:'.' 4706
+1058.517 S CUSTOM:'.' 4706
+1058.551 S CUSTOM:'.' 4706
+1058.595 S CUSTOM:'.' 4706
+1058.597 MSG You cannot run in that direction..
+1058.624 S CUSTOM:'.' 4706
+1058.656 S CUSTOM:'.' 4706
+1058.685 S CUSTOM:'.' 4706
+1058.715 S CUSTOM:'.' 4706
+1059.098 S CUSTOM:'.' 4707
+1059.286 S CUSTOM:'.' 4708
+1059.828 S CUSTOM:'.' 4708
+1060.149 S CUSTOM:'.' 4709
+1060.581 S CUSTOM:'.' 4701
+1061.051 S CUSTOM:'.' 4704
+1061.501 S CUSTOM:'.' 4701
+1062.038 S CUSTOM:'.' 4704
+1062.332 S CUSTOM:'.' 4701
+1062.541 S CUSTOM:'.' 4702
+1063.283 S CUSTOM:'.' 4702
+1063.784 S CUSTOM:'.' 4706
+1064.707 S CUSTOM:'.' 4702
+1065.225 S CUSTOM:'.' 4706
+1065.507 S CUSTOM:'.' 4706
+1065.762 S CUSTOM:'.' 4706
+1066.019 S CUSTOM:'.' 4706
+1066.43 S CUSTOM:'.' 4706
+1068.111 MSG It wails at you..
+1068.111 MSG You are terrified!.
+1068.247 S CUSTOM:'.' 4706
+1068.538 MSG It wails at you..
+1068.538 MSG It touches you..
+1068.538 MSG You feel very clumsy..
+1069.205 MSG It wails at you..
+1069.442 S CUSTOM:'.' 4706
+1069.659 MSG It touches you..
+1069.659 MSG You feel very clumsy..
+1070.385 S CUSTOM:'.' 4706
+1070.446 MSG It touches you..
+1070.446 MSG You feel very clumsy..
+1071.149 S CUSTOM:'.' 4709
+1072.939 MSG It wails at you..
+1072.939 MSG It touches you..
+1072.94 MSG You feel very clumsy..
+1074.438 S CUSTOM:'.' 4708
+1074.472 MSG It casts a fearful illusion..
+1075.028 S CUSTOM:'.' 4708
+1075.113 MSG You refuse to be frightened..
+1075.355 S CUSTOM:'.' 4708
+1075.619 MSG It wails at you..
+1075.619 MSG It touches you..
+1075.619 MSG You feel very clumsy..
+1075.901 S CUSTOM:'.' 4706
+1075.98 MSG It wails at you..
+1076.344 S CUSTOM:'.' 4706
+1076.472 MSG It touches you..
+1076.472 MSG You feel very clumsy..
+1076.941 S CUSTOM:'.' 4708
+1076.979 MSG It wails at you..
+1076.979 MSG It touches you..
+1076.979 MSG You feel very clumsy..
+1077.195 S CUSTOM:'.' 4709
+1077.552 MSG It touches you..
+1077.552 MSG You feel very clumsy..
+1078.98 EQUIP f 39  Brass Lantern (with 7000 turns of light) {25% off}
+1080.219 MSG It touches you..
+1080.219 MSG You feel very clumsy..
+1081.885 MSG It wails at you..
+1081.885 MSG You stand your ground!.
+1081.885 MSG It touches you..
+1081.885 MSG You feel very clumsy..
+1082.326 S CUSTOM:'q' 2302
+1082.328 MSG You feel much better..
+1082.328 MSG You feel bolder now..
+1082.328 MSG You feel like a killing machine!.
+1082.328 MSG You have no more Potions of Berserk Strength..
+1082.328 INVEN ('c', 75, 7, 28, '7 Potions of Cure Light Wounds {@q1}', '')
+1082.328 INVEN ('d', 75, 1, 4, 'a Chartreuse Potion', '')
+1082.328 INVEN ('e', 75, 1, 4, 'a Dark Red Potion', '')
+1082.328 INVEN ('f', 70, 9, 45, '9 Scrolls of Phase Door {@r1}', '')
+1082.328 INVEN ('g', 70, 1, 5, 'a Scroll of Word of Recall', '')
+1082.328 INVEN ('h', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+1082.328 INVEN ('i', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+1082.328 INVEN ('j', 65, 1, 10, 'a Wand of Slow Monster', '')
+1082.328 INVEN ('k', 55, 1, 50, 'an Oak Staff', '')
+1082.328 INVEN ('l', 45, 1, 2, 'a Calcite Ring', '')
+1082.328 INVEN ('m', 19, 1, 30, 'a Short Bow (x2) {average}', '')
+1082.328 INVEN ('n', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+1082.328 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1082.328 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1082.328 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1082.328 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1082.328 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1082.328 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1082.328 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1082.328 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1082.328 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1082.328 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1082.552 MSG It wails at you..
+1082.552 MSG You stand your ground!.
+1083.218 MSG It wails at you..
+1083.218 MSG You stand your ground!.
+1083.53 MSG You hit it..
+1083.53 MSG You miss it..
+1087.526 MSG There is a wall blocking your way..
+1088.432 MSG You hit the Large white snake..
+1088.432 MSG The Large white snake flees in terror!.
+1089.085 MSG You hit the Large white snake..
+1089.085 MSG You have slain the Large white snake..
+1089.085 IND:level c30f0f
+1091.673 S CUSTOM:'.' 4709
+1091.936 S CUSTOM:'.' 4706
+1092.761 S CUSTOM:'.' 4706
+1093.214 S CUSTOM:'.' 4708
+1093.622 S CUSTOM:'.' 4708
+1094.003 S CUSTOM:'.' 4708
+1094.76 S CUSTOM:'.' 4708
+1095.908 S CUSTOM:'.' 4708
+1095.913 MSG You have found 17 gold pieces worth of copper..
+1096.29 S CUSTOM:'.' 4708
+1097.113 S CUSTOM:'.' 4706
+1097.607 S CUSTOM:'S' 06
+1097.802 S CUSTOM:'.' 4704
+1098.346 S CUSTOM:'.' 4704
+1098.348 MSG You cannot run in that direction..
+1098.792 S CUSTOM:'.' 4702
+1099.112 MSG You feel less Berserk..
+1099.592 S CUSTOM:'.' 4703
+1099.637 S CUSTOM:'.' 4702
+1100.378 S CUSTOM:'S' 06
+1100.874 S CUSTOM:'.' 4702
+1101.306 S CUSTOM:'.' 4703
+1101.426 S CUSTOM:'.' 4702
+1101.736 S CUSTOM:'.' 4704
+1102.375 S CUSTOM:'.' 4701
+1102.377 MSG You cannot run in that direction..
+1102.587 S CUSTOM:'.' 4704
+1102.88 S CUSTOM:'.' 4701
+1103.084 S CUSTOM:'.' 4702
+1103.322 S CUSTOM:'.' 4701
+1103.822 S CUSTOM:'.' 4704
+1104.025 S CUSTOM:'.' 4701
+1104.137 S CUSTOM:'.' 4702
+1104.567 S CUSTOM:'.' 4703
+1104.879 S CUSTOM:'.' 4706
+1105.72 S CUSTOM:'.' 4706
+1107.461 S CUSTOM:'.' 4708
+1107.911 S CUSTOM:'.' 4701
+1108.933 S CUSTOM:'.' 4706
+1109.782 S CUSTOM:'.' 4704
+1110.178 EQUIP f 39  Brass Lantern (with 6900 turns of light) {25% off}
+1110.717 S CUSTOM:'.' 4707
+1110.973 S CUSTOM:'.' 4704
+1111.804 S CUSTOM:'.' 4701
+1112.006 S CUSTOM:'.' 4702
+1113.053 S CUSTOM:'.' 4704
+1113.057 MSG You hit it..
+1113.057 MSG You miss it..
+1113.057 MSG You hit it..
+1113.342 S CUSTOM:'.' 4701
+1113.725 MSG It wails at you..
+1113.725 MSG You are terrified!.
+1113.726 MSG It touches you..
+1113.726 MSG You feel very clumsy..
+1113.727 S CUSTOM:'.' 4704
+1114.471 MSG It casts a fearful illusion..
+1114.522 S CUSTOM:'.' 4702
+1115.072 MSG You cannot run in that direction..
+1115.806 MSG It wails at you..
+1115.806 MSG It touches you..
+1115.806 MSG You feel very clumsy..
+1116.472 MSG It touches you..
+1116.472 MSG You feel very clumsy..
+1117.137 MSG It wails at you..
+1117.806 MSG It touches you..
+1117.806 MSG You feel very clumsy..
+1118.626 S CUSTOM:'r' 1d0600
+1118.628 MSG The air about you becomes charged....
+1118.628 MSG You have no more Scrolls of Word of Recall..
+1118.628 INVEN ('g', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+1118.628 INVEN ('h', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+1118.628 INVEN ('i', 65, 1, 10, 'a Wand of Slow Monster', '')
+1118.628 INVEN ('j', 55, 1, 50, 'an Oak Staff', '')
+1118.628 INVEN ('k', 45, 1, 2, 'a Calcite Ring', '')
+1118.628 INVEN ('l', 19, 1, 30, 'a Short Bow (x2) {average}', '')
+1118.628 INVEN ('m', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+1118.628 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1118.628 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1118.628 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1118.628 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1118.628 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1118.628 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1118.628 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1118.628 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1118.628 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1118.628 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1118.628 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1119.137 MSG It wails at you..
+1119.137 MSG It touches you..
+1119.781 S CUSTOM:'.' 4704
+1120.44 S CUSTOM:'.' 4707
+1120.524 MSG It wails at you..
+1120.524 MSG It touches you..
+1120.685 S CUSTOM:'.' 4704
+1121.097 S CUSTOM:'.' 4704
+1121.311 MSG It wails at you..
+1121.311 MSG You stand your ground!.
+1121.311 MSG It touches you..
+1121.774 S CUSTOM:'.' 4704
+1122.275 S CUSTOM:'.' 4704
+1122.849 S CUSTOM:'.' 4704
+1123.032 MSG It wails at you..
+1123.032 MSG You stand your ground!.
+1123.032 MSG It touches you..
+1123.615 S CUSTOM:'.' 4704
+1123.698 MSG It wails at you..
+1123.698 MSG It touches you..
+1124.365 MSG It wails at you..
+1124.365 MSG You stand your ground!.
+1125.272 MSG There is a wall blocking your way..
+1125.363 MSG It wails at you..
+1127.284 S CUSTOM:'.' 4706
+1127.312 MSG It touches you..
+1127.921 S CUSTOM:'.' 4706
+1128.176 MSG You feel yourself yanked upwards!.
+1128.193 IND:depth da00
+1128.193 PKT_FLOOR 310000000000000000000000
+1144.808 S PKT_MESSAGE 2e496e76697369626c65206d
+1144.809 MSG [Dive03] Invisible monsters are usually just annoyances, but that.
+1150.093 S PKT_MESSAGE 2e6f6e65207761732061206c
+1150.093 MSG [Dive03] one was a legit threat.
+1150.858 S CUSTOM:'.' 4702
+1151.52 S CUSTOM:'.' 4703
+1151.663 S CUSTOM:'.' 4702
+1152.603 EQUIP f 39  Brass Lantern (with 6800 turns of light) {25% off}
+1153.154 S CUSTOM:'.' 4706
+1153.258 MSG You feel bolder now..
+1153.715 S CUSTOM:'.' 4706
+1154.442 S CUSTOM:'.' 4706
+1154.457 MSG You have found 26 gold pieces worth of copper..
+1155.677 S CUSTOM:'.' 4706
+1157.464 S CUSTOM:'.' 4709
+1157.764 S CUSTOM:'.' 4706
+1158.679 S CUSTOM:'.' 4709
+1159.75 MSG You hit Farmer Maggot..
+1159.827 S CUSTOM:'.' 4702
+1160.244 MSG Farmer Maggot seems sad about something..
+1160.284 MSG You hit Farmer Maggot..
+1161.243 MSG Farmer Maggot mumbles something about mushrooms..
+1161.243 MSG Farmer Maggot tells you to get off his land..
+1161.283 MSG You hit Farmer Maggot..
+1162.243 MSG Farmer Maggot asks if you have seen his dogs..
+1162.243 MSG Farmer Maggot seems sad about something..
+1162.283 MSG You hit Farmer Maggot..
+1162.79 MSG You miss Farmer Maggot..
+1162.906 MSG [Dive03:Scribe] Noted. What was the invisible one, and how could.
+1162.95 MSG You hit Farmer Maggot..
+1163.244 MSG Farmer Maggot tells you to get off his land..
+1163.244 MSG Farmer Maggot seems sad about something..
+1163.284 MSG You hit Farmer Maggot..
+1163.306 MSG [Dive03:Scribe] you tell it was a real threat? The pilot only sees.
+1163.456 MSG You hit Farmer Maggot..
+1163.706 MSG [Dive03:Scribe] 'It hits you' messages for those..
+1163.79 MSG You hit Farmer Maggot..
+1164.244 MSG Farmer Maggot asks if you have seen his dogs..
+1164.244 MSG Farmer Maggot tells you to get off his land..
+1164.283 MSG You hit Farmer Maggot..
+1164.616 MSG You miss Farmer Maggot..
+1164.791 MSG You hit Farmer Maggot..
+1165.243 MSG Farmer Maggot seems sad about something..
+1165.243 MSG Farmer Maggot asks if you have seen his dogs..
+1165.283 MSG You hit Farmer Maggot..
+1165.457 MSG You miss Farmer Maggot..
+1165.616 MSG You hit Farmer Maggot..
+1165.616 MSG Farmer Maggot flees in terror!.
+1165.791 MSG You hit Farmer Maggot..
+1166.683 S CUSTOM:'.' 4702
+1166.736 MSG You miss Farmer Maggot..
+1167.201 S CUSTOM:'.' 4702
+1167.243 MSG You hit Farmer Maggot..
+1167.256 MSG Farmer Maggot tells you to get off his land..
+1167.256 MSG Farmer Maggot mumbles something about mushrooms..
+1167.376 MSG You hit Farmer Maggot..
+1167.376 MSG You have slain Farmer Maggot..
+1168.088 S CUSTOM:'.' 4708
+1168.418 S CUSTOM:'.' 4709
+1169.618 MSG You bump into Scribe..
+1170.615 S CUSTOM:'.' 4704
+1171.301 S CUSTOM:'.' 4701
+1171.579 S CUSTOM:'.' 4702
+1171.97 S CUSTOM:'.' 4706
+1176.977 S CUSTOM:'.' 4709
+1177.21 S CUSTOM:'.' 4706
+1178.818 S CUSTOM:'.' 4702
+1179.202 EQUIP f 39  Brass Lantern (with 6700 turns of light) {25% off}
+1181.14 S CUSTOM:'.' 4703
+1181.142 MSG You cannot run in that direction..
+1181.224 S CUSTOM:'.' 4702
+1181.952 S CUSTOM:'.' 4702
+1182.839 S CUSTOM:'.' 4709
+1183.832 S CUSTOM:'.' 4708
+1184.137 MSG You hit the Mean-looking mercenary..
+1184.416 MSG The Mean-looking mercenary hits you..
+1184.444 MSG You miss the Mean-looking mercenary..
+1184.603 MSG You hit the Mean-looking mercenary..
+1184.775 MSG You miss the Mean-looking mercenary..
+1184.937 MSG You hit the Mean-looking mercenary..
+1185.109 MSG You have slain the Mean-looking mercenary..
+1185.109 IND:level c30f0f
+1185.751 S CUSTOM:'.' 4708
+1185.764 PKT_FLOOR 31000828020001240100612046696c74687920526167205b315d0000
+1185.764 MSG You see a Filthy Rag [1]..
+1186.436 S CUSTOM:'.' 4701
+1186.441 PKT_FLOOR 310000000000000000000000
+1186.866 S CUSTOM:'.' 4704
+1194.582 S CUSTOM:'p' 320e0000000203323934
+1194.585 MSG Taken!.
+1194.585 MSG You bought 2 Scrolls of Enchant Weapon To-Dam {25% off} for 294 gold..
+1194.585 MSG You have 2 Scrolls of Enchant Weapon To-Dam {25% off} (g)..
+1194.585 INVEN ('g', 70, 2, 10, '2 Scrolls of Enchant Weapon To-Dam {25% off}', '')
+1194.585 INVEN ('h', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+1194.585 INVEN ('i', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+1194.585 INVEN ('j', 65, 1, 10, 'a Wand of Slow Monster', '')
+1194.585 INVEN ('k', 55, 1, 50, 'an Oak Staff', '')
+1194.585 INVEN ('l', 45, 1, 2, 'a Calcite Ring', '')
+1194.585 INVEN ('m', 19, 1, 30, 'a Short Bow (x2) {average}', '')
+1194.585 INVEN ('n', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+1198.587 S PKT_CLEAR 7b
+1202.796 S CUSTOM:'r' 1d0618
+1202.798 MSG Your Main Gauche glows brightly!.
+1202.799 MSG You have a Scroll of Enchant Weapon To-Dam {25% off}..
+1202.799 INVEN ('g', 70, 1, 5, 'a Scroll of Enchant Weapon To-Dam {25% off}', '')
+1202.799 EQUIP a 23  Main Gauche (1d5) (+2,+3)
+1204.732 S CUSTOM:'r' 1d0618
+1204.734 MSG Your Main Gauche glows brightly!.
+1204.734 MSG You have no more Scrolls of Enchant Weapon To-Dam {25% off}..
+1204.734 INVEN ('g', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+1204.734 INVEN ('h', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+1204.734 INVEN ('i', 65, 1, 10, 'a Wand of Slow Monster', '')
+1204.734 INVEN ('j', 55, 1, 50, 'an Oak Staff', '')
+1204.734 INVEN ('k', 45, 1, 2, 'a Calcite Ring', '')
+1204.734 INVEN ('l', 19, 1, 30, 'a Short Bow (x2) {average}', '')
+1204.734 INVEN ('m', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+1204.734 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1204.734 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1204.734 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1204.734 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1204.734 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1204.734 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1204.734 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1204.734 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1204.734 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1204.734 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1204.734 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1204.734 EQUIP a 23  Main Gauche (1d5) (+2,+4)
+1207.535 S CUSTOM:'.' 4706
+1209.499 S CUSTOM:'.' 4707
+1209.989 S CUSTOM:'.' 4704
+1211.402 EQUIP f 39  Brass Lantern (with 6600 turns of light) {25% off}
+1212.232 S CUSTOM:'.' 4701
+1215.86 S CUSTOM:'s' 330b00000001
+1215.863 MSG Selling a Short Bow (x2) {average} (l)..
+1215.863 MSG You eventually agree upon the price..
+1216.272 S PKT_CONFIRM 3e0100
+1216.272 MSG Accepted!.
+1216.272 MSG You sold a Short Bow (x2) (+0,+0) for 22 gold..
+1216.272 MSG You have no more Short Bows (x2) (+0,+0)..
+1216.272 INVEN ('l', 19, 1, 40, 'a Long Bow (x3) {average}', '')
+1216.272 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1216.272 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1216.272 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1216.272 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1216.272 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1216.272 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1216.272 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1216.272 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1216.272 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1216.272 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1216.272 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1216.272 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1217.697 S CUSTOM:'s' 330b00000001
+1217.699 MSG Selling a Long Bow (x3) {average} (l)..
+1217.699 MSG You eventually agree upon the price..
+1218.348 S PKT_CONFIRM 3e0100
+1218.348 MSG Fine..
+1218.348 MSG You sold a Long Bow (x3) (+0,+0) for 52 gold..
+1218.348 MSG You have no more Long Bows (x3) (+0,+0)..
+1218.348 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1218.348 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1218.348 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1218.348 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1218.348 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1218.348 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1218.348 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1218.348 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1218.348 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1218.348 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1218.348 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1218.348 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1218.348 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1231.691 S PKT_MESSAGE 2e446f6e277420626f746865
+1231.691 MSG [Dive03] Don't bother IDing average gear, it doesn't sell for more.
+1237.144 MSG Dive01 has entered the game..
+1241.707 S CUSTOM:'.' 4706
+1243.652 S CUSTOM:'.' 4709
+1244.441 EQUIP f 39  Brass Lantern (with 6500 turns of light) {25% off}
+1244.505 S CUSTOM:'.' 4708
+1260.023 S CUSTOM:'p' 320b0000000103393037
+1260.025 MSG You do not have enough gold..
+1271.783 S CUSTOM:'.' 4702
+1272.254 S CUSTOM:'.' 4703
+1272.941 S CUSTOM:'.' 4703
+1279.01 S CUSTOM:'.' 4704
+1279.525 S CUSTOM:'.' 4704
+1280.18 S CUSTOM:'.' 4701
+1286.168 MSG [Dive03:Scribe] Noted: skip IDing average gear, it sells the same..
+1286.596 MSG Dive01 has left the game..
+1286.973 EQUIP f 39  Brass Lantern (with 6400 turns of light) {25% off}
+1289.78 MSG Dive01 has entered the game..
+1296.724 S CUSTOM:'s' 330300000001
+1296.726 MSG Selling a Chartreuse Potion (d)..
+1296.726 MSG You eventually agree upon the price..
+1297.892 S PKT_CONFIRM 3e0100
+1297.892 MSG Agreed!.
+1297.892 MSG You sold a Potion of Poison for 9 gold..
+1297.892 MSG The shopkeeper howls in agony!.
+1297.892 MSG You have no more Potions of Poison..
+1297.892 INVEN ('d', 75, 1, 4, 'a Dark Red Potion', '')
+1297.892 INVEN ('e', 70, 9, 45, '9 Scrolls of Phase Door {@r1}', '')
+1297.892 INVEN ('f', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+1297.892 INVEN ('g', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+1297.892 INVEN ('h', 65, 1, 10, 'a Wand of Slow Monster', '')
+1297.892 INVEN ('i', 55, 1, 50, 'an Oak Staff', '')
+1297.892 INVEN ('j', 45, 1, 2, 'a Calcite Ring', '')
+1297.892 INVEN ('k', 0, 0, 0, '(nothing)', '')
+1297.892 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1297.892 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1297.892 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1297.892 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1297.892 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1297.892 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1297.892 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1297.892 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1297.892 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1297.892 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1297.892 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1297.892 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1297.892 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1299.451 S CUSTOM:'s' 330300000001
+1299.453 MSG Selling a Dark Red Potion (d)..
+1299.453 MSG You eventually agree upon the price..
+1299.933 S PKT_CONFIRM 3e0100
+1299.933 MSG Agreed!.
+1299.933 MSG You sold a Potion of Lose Memories for 9 gold..
+1299.933 MSG Arrgghh!.
+1299.933 MSG You have no more Potions of Lose Memories..
+1299.933 INVEN ('d', 70, 9, 45, '9 Scrolls of Phase Door {@r1}', '')
+1299.933 INVEN ('e', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+1299.933 INVEN ('f', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+1299.933 INVEN ('g', 65, 1, 10, 'a Wand of Slow Monster', '')
+1299.933 INVEN ('h', 55, 1, 50, 'an Oak Staff', '')
+1299.933 INVEN ('i', 45, 1, 2, 'a Calcite Ring', '')
+1299.933 INVEN ('j', 0, 0, 0, '(nothing)', '')
+1299.933 INVEN ('k', 0, 0, 0, '(nothing)', '')
+1299.933 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1299.933 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1299.933 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1299.933 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1299.933 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1299.933 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1299.933 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1299.933 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1299.933 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1299.933 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1299.934 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1299.934 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1299.934 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1316.176 S CUSTOM:'.' 4709
+1316.295 S CUSTOM:'.' 4708
+1317.606 S CUSTOM:'.' 4706
+1317.891 S CUSTOM:'.' 4709
+1330.879 EQUIP f 39  Brass Lantern (with 6300 turns of light) {25% off}
+1332.797 S CUSTOM:'s' 330600000001
+1332.799 MSG Selling a Wand of Slow Monster (g)..
+1332.799 MSG You eventually agree upon the price..
+1334.071 S PKT_CONFIRM 3e0100
+1334.072 MSG Taken!.
+1334.072 MSG You sold a Wand of Slow Monster (8 charges) for 225 gold..
+1334.072 MSG The shopkeeper giggles..
+1334.072 MSG You have no more Wands of Slow Monster (8 charges)..
+1334.072 INVEN ('g', 55, 1, 50, 'an Oak Staff', '')
+1334.072 INVEN ('h', 45, 1, 2, 'a Calcite Ring', '')
+1334.072 INVEN ('i', 0, 0, 0, '(nothing)', '')
+1334.072 INVEN ('j', 0, 0, 0, '(nothing)', '')
+1334.072 INVEN ('k', 0, 0, 0, '(nothing)', '')
+1334.072 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1334.072 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1334.072 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1334.072 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1334.072 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1334.072 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1334.072 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1334.072 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1334.072 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1334.072 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1334.072 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1334.072 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1334.072 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1338.52 S CUSTOM:'s' 330700000001
+1338.522 MSG Selling a Calcite Ring (h)..
+1338.522 MSG You eventually agree upon the price..
+1340.063 S PKT_CONFIRM 3e0100
+1340.063 MSG Accepted!.
+1340.063 MSG You sold a Ring of Teleportation {cursed} for 20 gold..
+1340.063 MSG Arrgghh!.
+1340.063 MSG You have no more Rings of Teleportation {cursed}..
+1340.063 INVEN ('h', 0, 0, 0, '(nothing)', '')
+1340.063 INVEN ('i', 0, 0, 0, '(nothing)', '')
+1340.063 INVEN ('j', 0, 0, 0, '(nothing)', '')
+1340.063 INVEN ('k', 0, 0, 0, '(nothing)', '')
+1340.063 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1340.063 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1340.063 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1340.063 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1340.063 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1340.063 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1340.063 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1340.063 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1340.063 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1340.063 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1340.063 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1340.063 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1340.063 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1350.561 S CUSTOM:'s' 330600000001
+1350.563 MSG Selling an Oak Staff (g)..
+1350.563 MSG You eventually agree upon the price..
+1355.125 S CUSTOM:'.' 4701
+1356.041 S CUSTOM:'.' 4702
+1360.209 S CUSTOM:'p' 320a00000001023738
+1360.212 MSG Taken!.
+1360.212 MSG You bought a Scroll of Identify for 78 gold..
+1360.212 MSG You have a Scroll of Identify (e)..
+1360.212 INVEN ('e', 70, 1, 5, 'a Scroll of Identify', '')
+1360.212 INVEN ('f', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+1360.212 INVEN ('g', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+1360.212 INVEN ('h', 55, 1, 50, 'an Oak Staff', '')
+1365.605 S PKT_CLEAR 7b
+1368.294 S CUSTOM:'r' 1d0407
+1368.297 MSG In your pack: a Staff of Summoning (3 charges) (h)..
+1368.297 MSG You have no more Scrolls of Identify..
+1368.297 INVEN ('e', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+1368.297 INVEN ('f', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+1368.297 INVEN ('g', 55, 1, 50, 'a Staff of Summoning (3 charges)', '')
+1368.297 INVEN ('h', 0, 0, 0, '(nothing)', '')
+1368.297 INVEN ('i', 0, 0, 0, '(nothing)', '')
+1368.297 INVEN ('j', 0, 0, 0, '(nothing)', '')
+1368.297 INVEN ('k', 0, 0, 0, '(nothing)', '')
+1368.297 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1368.297 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1368.297 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1368.297 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1368.297 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1368.297 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1368.297 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1368.297 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1368.297 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1368.297 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1368.297 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1368.297 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1368.297 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1374.291 EQUIP f 39  Brass Lantern (with 6200 turns of light) {25% off}
+1374.774 S CUSTOM:'.' 4709
+1375.774 S CUSTOM:'.' 4708
+1377.741 S CUSTOM:'s' 330600000001
+1377.743 MSG I don't want that!.
+1380.786 S CUSTOM:'.' 4701
+1383.967 S CUSTOM:'k' 180600000001
+1383.969 MSG You destroy a Staff of Summoning (3 charges)..
+1383.969 MSG You have no more Staffs of Summoning (3 charges)..
+1383.969 INVEN ('g', 0, 0, 0, '(nothing)', '')
+1383.969 INVEN ('h', 0, 0, 0, '(nothing)', '')
+1383.969 INVEN ('i', 0, 0, 0, '(nothing)', '')
+1383.969 INVEN ('j', 0, 0, 0, '(nothing)', '')
+1383.969 INVEN ('k', 0, 0, 0, '(nothing)', '')
+1383.969 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1383.969 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1383.969 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1383.969 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1383.969 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1383.969 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1383.969 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1383.969 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1383.969 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1383.969 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1383.969 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1383.969 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1383.969 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1392.384 S PKT_CLEAR 7b
+1392.486 S CUSTOM:'.' 4701
+1392.967 S CUSTOM:'.' 4702
+1404.363 MSG Dive01 has entered the game..
+1410.865 S CUSTOM:'p' 32120000000203323934
+1410.867 MSG Okay..
+1410.867 MSG You bought 2 Scrolls of Enchant Weapon To-Dam {25% off} for 294 gold..
+1410.867 MSG You have 2 Scrolls of Enchant Weapon To-Dam {25% off} (e)..
+1410.867 INVEN ('e', 70, 2, 10, '2 Scrolls of Enchant Weapon To-Dam {25% off}', '')
+1410.867 INVEN ('f', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+1410.867 INVEN ('g', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+1414.25 EQUIP f 39  Brass Lantern (with 6100 turns of light) {25% off}
+1417.734 S CUSTOM:'p' 32060000000103343638
+1417.736 MSG You do not have enough gold..
+1431.114 S CUSTOM:'r' 1d0418
+1431.116 MSG Your Main Gauche glows brightly!.
+1431.116 MSG You have a Scroll of Enchant Weapon To-Dam {25% off}..
+1431.116 INVEN ('e', 70, 1, 5, 'a Scroll of Enchant Weapon To-Dam {25% off}', '')
+1431.116 EQUIP a 23  Main Gauche (1d5) (+2,+5)
+1433.545 S CUSTOM:'r' 1d0418
+1433.548 MSG Your Main Gauche glows brightly!.
+1433.548 MSG You have no more Scrolls of Enchant Weapon To-Dam {25% off}..
+1433.548 INVEN ('e', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+1433.548 INVEN ('f', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+1433.548 INVEN ('g', 0, 0, 0, '(nothing)', '')
+1433.548 INVEN ('h', 0, 0, 0, '(nothing)', '')
+1433.548 INVEN ('i', 0, 0, 0, '(nothing)', '')
+1433.548 INVEN ('j', 0, 0, 0, '(nothing)', '')
+1433.548 INVEN ('k', 0, 0, 0, '(nothing)', '')
+1433.548 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1433.548 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1433.548 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1433.548 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1433.548 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1433.548 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1433.548 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1433.548 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1433.548 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1433.548 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1433.548 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1433.548 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1433.548 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1433.548 EQUIP a 23  Main Gauche (1d5) (+2,+6)
+1446.193 S CUSTOM:'s' 330400000001
+1446.195 MSG Selling a Scroll titled "ishx therbin" (e)..
+1446.195 MSG You eventually agree upon the price..
+1450.435 S CUSTOM:'s' 330500000001
+1450.437 MSG Selling a Scroll titled "heaks khonis" (f)..
+1450.437 MSG You eventually agree upon the price..
+1454.297 S CUSTOM:'.' 4709
+1454.903 S CUSTOM:'.' 4708
+1456.023 EQUIP f 39  Brass Lantern (with 6000 turns of light) {25% off}
+1456.124 S CUSTOM:'.' 4706
+1457.28 S CUSTOM:'.' 4709
+1457.42 S CUSTOM:'.' 4708
+1458.298 S CUSTOM:'.' 4706
+1458.716 MSG You hit the Blubbering idiot..
+1458.716 MSG You have slain the Blubbering idiot..
+1458.716 IND:level c30f0f
+1459.196 MSG You hit the Pitiful-looking beggar..
+1459.196 MSG You have slain the Pitiful-looking beggar..
+1459.196 IND:level c30f0f
+1459.399 S CUSTOM:'.' 4701
+1460.129 S CUSTOM:'.' 4703
+1460.695 S CUSTOM:'.' 4706
+1462.462 MSG You hit the Singing, happy drunk..
+1462.462 MSG You have slain the Singing, happy drunk..
+1462.462 IND:level c30f0f
+1463.113 S CUSTOM:'.' 4706
+1463.115 MSG You have found 31 gold pieces worth of copper..
+1463.884 S CUSTOM:'.' 4702
+1464.54 S CUSTOM:'.' 4706
+1464.797 S CUSTOM:'.' 4708
+1465.116 MSG You hit the Scruffy little dog..
+1465.116 MSG You have slain the Scruffy little dog..
+1465.116 IND:level c30f0f
+1466.183 S CUSTOM:'.' 4708
+1466.463 S CUSTOM:'.' 4701
+1467.239 S CUSTOM:'.' 4704
+1469.505 S CUSTOM:'.' 4701
+1470.271 S CUSTOM:'.' 4704
+1470.752 S CUSTOM:'.' 4701
+1470.942 S CUSTOM:'.' 4702
+1471.494 S CUSTOM:'.' 4704
+1471.702 EQUIP f 39  Brass Lantern (with 5900 turns of light) {25% off}
+1490.932 S PKT_MESSAGE 2e4f75722064657820776173
+1490.932 MSG [Dive03] Our dex was so drained by that invis monster, we need to.
+1494.742 S PKT_MESSAGE 2e726573746f726520697400
+1494.742 MSG [Dive03] restore it.
+1498.433 MSG Dive01 has entered the game..
+1500.054 S CUSTOM:'p' 32060000000103343638
+1500.056 MSG Agreed!.
+1500.057 MSG You bought a Potion of Restore Dexterity for 468 gold..
+1500.057 MSG You have a Potion of Restore Dexterity (d)..
+1500.057 INVEN ('d', 75, 1, 4, 'a Potion of Restore Dexterity', '')
+1500.057 INVEN ('e', 70, 9, 45, '9 Scrolls of Phase Door {@r1}', '')
+1500.057 INVEN ('f', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+1500.057 INVEN ('g', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+1503.828 S CUSTOM:'q' 2303
+1503.83 MSG You feel less clumsy..
+1503.83 MSG You have no more Potions of Restore Dexterity..
+1503.83 INVEN ('d', 70, 9, 45, '9 Scrolls of Phase Door {@r1}', '')
+1503.83 INVEN ('e', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+1503.83 INVEN ('f', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+1503.83 INVEN ('g', 0, 0, 0, '(nothing)', '')
+1503.83 INVEN ('h', 0, 0, 0, '(nothing)', '')
+1503.83 INVEN ('i', 0, 0, 0, '(nothing)', '')
+1503.83 INVEN ('j', 0, 0, 0, '(nothing)', '')
+1503.83 INVEN ('k', 0, 0, 0, '(nothing)', '')
+1503.83 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1503.83 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1503.83 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1503.83 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1503.83 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1503.83 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1503.83 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1503.83 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1503.83 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1503.83 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1503.83 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1503.83 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1503.83 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1507.614 S PKT_CLEAR 7b
+1520.808 EQUIP f 39  Brass Lantern (with 5800 turns of light) {25% off}
+1521.842 S PKT_MESSAGE 2e416c6d6f737420616c6c20
+1521.843 MSG [Dive03] Almost all our money, but it dropped us from 4 to 3 blows.
+1539.698 S CUSTOM:'.' 4706
+1544.898 S CUSTOM:'F' 2201
+1544.9 MSG You fuel your lamp..
+1544.9 MSG You have 5 Flasks of oil..
+1544.9 INVEN ('b', 77, 5, 50, '5 Flasks of oil', '')
+1544.9 EQUIP f 39  Brass Lantern (with 13243 turns of light) {25% off}
+1546.513 S PKT_REDRAW 6f
+1546.515 INVEN ('a', 80, 2, 20, '2 Rations of Food', '')
+1546.515 INVEN ('b', 77, 5, 50, '5 Flasks of oil', '')
+1546.515 INVEN ('c', 75, 7, 28, '7 Potions of Cure Light Wounds {@q1}', '')
+1546.515 INVEN ('d', 70, 9, 45, '9 Scrolls of Phase Door {@r1}', '')
+1546.515 INVEN ('e', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+1546.515 INVEN ('f', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+1546.515 INVEN ('g', 0, 0, 0, '(nothing)', '')
+1546.515 INVEN ('h', 0, 0, 0, '(nothing)', '')
+1546.515 INVEN ('i', 0, 0, 0, '(nothing)', '')
+1546.515 INVEN ('j', 0, 0, 0, '(nothing)', '')
+1546.515 INVEN ('k', 0, 0, 0, '(nothing)', '')
+1546.515 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1546.515 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1546.515 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1546.515 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1546.515 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1546.515 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1546.515 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1546.515 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1546.515 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1546.515 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1546.515 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1546.515 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1546.515 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1546.515 EQUIP a 23  Main Gauche (1d5) (+2,+6)
+1546.515 EQUIP b 0 nothing)
+1546.515 EQUIP c 0 nothing)
+1546.515 EQUIP d 45  Ring of Slow Digestion
+1546.515 EQUIP e 0 nothing)
+1546.515 EQUIP f 39  Brass Lantern (with 13239 turns of light) {25% off}
+1546.515 EQUIP g 36 ard Leather Armour (-1) [6,+0] {25% off}
+1546.515 EQUIP h 35  Cloak [1,+0]
+1546.515 EQUIP i 34  Small Metal Shield [3] {good - Farmer Maggot}
+1546.515 EQUIP j 32  Metal Cap [3,+0]
+1546.515 EQUIP k 31  Set of Leather Gloves [1,+0]
+1546.515 EQUIP l 0 nothing)
+1546.515 IND:level c30f0f
+1546.515 IND:depth da00
+1546.515 PKT_FLOOR 310000000000000000000000
+1548.172 S CUSTOM:'E' 2400
+1548.175 MSG That tastes good..
+1548.175 MSG You are full!.
+1548.175 MSG You have a Ration of Food..
+1548.175 INVEN ('a', 80, 1, 10, 'a Ration of Food', '')
+1549.715 S CUSTOM:'.' 4708
+1550.836 S CUSTOM:'.' 4709
+1551.121 S CUSTOM:'.' 4706
+1551.738 S CUSTOM:'.' 4702
+1552.513 S CUSTOM:'.' 4706
+1552.58 MSG You hit the Scrawny cat..
+1552.58 MSG You have slain the Scrawny cat..
+1552.581 IND:level c30f0f
+1553.189 S CUSTOM:'.' 4706
+1553.509 S CUSTOM:'.' 4702
+1554.394 S CUSTOM:'.' 4706
+1554.798 S CUSTOM:'.' 4702
+1555.048 EQUIP f 39  Brass Lantern (with 13200 turns of light) {25% off}
+1555.436 S CUSTOM:'.' 4701
+1555.797 S CUSTOM:'.' 4706
+1560.833 S CUSTOM:'.' 4708
+1562.23 S CUSTOM:'.' 4706
+1562.817 S CUSTOM:'.' 4703
+1563.915 S CUSTOM:'.' 4702
+1564.113 MSG You hit the Village idiot..
+1564.113 MSG You have slain the Village idiot..
+1564.113 IND:level c30f0f
+1564.797 S CUSTOM:'.' 4701
+1565.046 MSG You hit the Blubbering idiot..
+1565.046 MSG You have slain the Blubbering idiot..
+1565.046 IND:level c30f0f
+1565.654 S CUSTOM:'.' 4702
+1566.328 S CUSTOM:'.' 4708
+1566.76 S CUSTOM:'.' 4702
+1567.399 EQUIP f 39  Brass Lantern (with 13100 turns of light) {25% off}
+1567.399 IND:depth dafd
+1567.399 PKT_FLOOR 310000000000000000000000
+1567.791 S CUSTOM:'.' 4708
+1568.141 IND:depth da00
+1568.141 PKT_FLOOR 310000000000000000000000
+1572.407 S CUSTOM:'.' 4709
+1572.539 S CUSTOM:'.' 4708
+1573.131 S CUSTOM:'.' 4708
+1573.543 S CUSTOM:'.' 4708
+1573.787 S CUSTOM:'.' 4708
+1574.918 S CUSTOM:'.' 4707
+1574.96 MSG [Dive03:Scribe] Ouch. Good lesson: I'll make the pilot flag stat.
+1575.36 MSG [Dive03:Scribe] drain and blow loss to the agent. Out of curiosity:.
+1575.761 MSG [Dive03:Scribe] what was it, and where do you restore DEX.
+1575.85 S CUSTOM:'.' 4704
+1576.161 MSG [Dive03:Scribe] (Alchemist potion or Temple)?.
+1577.968 S CUSTOM:'.' 4704
+1579.278 S CUSTOM:'.' 4701
+1579.539 S CUSTOM:'.' 4704
+1579.78 EQUIP f 39  Brass Lantern (with 13000 turns of light) {25% off}
+1580.825 S CUSTOM:'.' 4708
+1581.129 S CUSTOM:'.' 4704
+1583.152 MSG You hit the Filthy street urchin..
+1583.152 MSG You have slain the Filthy street urchin..
+1583.152 IND:level c30f0f
+1583.273 MSG You hit the Filthy street urchin..
+1583.273 MSG You have slain the Filthy street urchin..
+1583.273 IND:level c30f0f
+1583.766 MSG You hit the Filthy street urchin..
+1583.766 MSG You have slain the Filthy street urchin..
+1583.766 IND:level c30f0f
+1584.259 MSG You hit the Filthy street urchin..
+1584.259 MSG You have slain the Filthy street urchin..
+1584.259 IND:level c30f0f
+1585.339 MSG You hit the Filthy street urchin..
+1585.339 MSG You have slain the Filthy street urchin..
+1585.339 IND:level c30f0f
+1605.015 S PKT_MESSAGE 2e46726f6d206120706f7469
+1605.016 MSG [Dive03] From a potion.
+1605.826 S CUSTOM:'.' 4704
+1607.549 S CUSTOM:'.' 4701
+1608.234 S CUSTOM:'.' 4704
+1608.898 EQUIP f 39  Brass Lantern (with 12900 turns of light) {25% off}
+1609.113 S CUSTOM:'.' 4707
+1609.369 S CUSTOM:'.' 4704
+1612.817 S CUSTOM:'.' 4706
+1613.081 S CUSTOM:'.' 4703
+1613.192 S CUSTOM:'.' 4702
+1613.776 S CUSTOM:'.' 4703
+1614.041 S CUSTOM:'.' 4706
+1616.544 S CUSTOM:'.' 4703
+1617.101 S CUSTOM:'.' 4706
+1617.445 S CUSTOM:'.' 4702
+1618.031 MSG Dive01 has entered the game..
+1618.42 S CUSTOM:'.' 4706
+1618.758 S CUSTOM:'.' 4704
+1619.331 S CUSTOM:'.' 4701
+1626.871 EQUIP f 39  Brass Lantern (with 12800 turns of light) {25% off}
+1632.865 S PKT_MESSAGE 2e426f7567687420696e2074
+1632.866 MSG [Dive03] Bought in the "5" store.
+1633.727 S CUSTOM:'.' 4708
+1634.383 S CUSTOM:'.' 4706
+1634.578 S CUSTOM:'.' 4704
+1635.402 S CUSTOM:'.' 4701
+1635.617 S CUSTOM:'.' 4704
+1641.844 EQUIP f 39  Brass Lantern (with 12700 turns of light) {25% off}
+1643.889 S CUSTOM:'.' 4701
+1644.015 S CUSTOM:'.' 4702
+1644.741 S CUSTOM:'.' 4701
+1645.074 S CUSTOM:'.' 4702
+1646.202 S CUSTOM:'.' 4704
+1646.355 S CUSTOM:'.' 4708
+1646.484 MSG You hit the Squint-eyed rogue..
+1646.485 MSG You have slain the Squint-eyed rogue..
+1646.485 IND:level c30f0f
+1647.285 S CUSTOM:'.' 4709
+1647.297 MSG You have found 32 gold pieces worth of copper..
+1647.947 S CUSTOM:'.' 4702
+1648.961 S CUSTOM:'.' 4708
+1649.293 S CUSTOM:'.' 4706
+1651.828 S CUSTOM:'.' 4703
+1651.925 MSG You hit the Squint-eyed rogue..
+1651.925 MSG You have slain the Squint-eyed rogue..
+1651.925 IND:level c30f0f
+1652.514 S CUSTOM:'.' 4703
+1652.757 S CUSTOM:'.' 4706
+1653.603 S CUSTOM:'.' 4709
+1653.876 S CUSTOM:'.' 4706
+1655.512 MSG The Squint-eyed rogue recovers his courage..
+1655.884 MSG You hit the Squint-eyed rogue..
+1655.884 MSG You have slain the Squint-eyed rogue..
+1655.884 IND:level c30f0f
+1656.754 S CUSTOM:'.' 4706
+1656.764 MSG You have found 20 gold pieces worth of copper..
+1657.527 S CUSTOM:'.' 4704
+1657.817 MSG You hit the Boil-covered wretch..
+1657.817 MSG You have slain the Boil-covered wretch..
+1657.817 IND:level c30f0f
+1658.125 S CUSTOM:'.' 4701
+1658.537 S CUSTOM:'.' 4708
+1658.696 S CUSTOM:'.' 4709
+1659.658 MSG You hit the Filthy street urchin..
+1659.658 MSG You have slain the Filthy street urchin..
+1659.658 IND:level c30f0f
+1660.195 S CUSTOM:'.' 4708
+1660.978 EQUIP f 39  Brass Lantern (with 12600 turns of light) {25% off}
+1661.361 S CUSTOM:'.' 4707
+1661.636 S CUSTOM:'.' 4708
+1665.258 IND:depth daff
+1665.258 PKT_FLOOR 310000000000000000000000
+1666.764 S CUSTOM:'.' 4708
+1668.235 S CUSTOM:'.' 4706
+1668.785 S CUSTOM:'.' 4706
+1669.289 S CUSTOM:'.' 4706
+1669.318 S CUSTOM:'.' 4706
+1669.352 S CUSTOM:'.' 4706
+1669.395 S CUSTOM:'.' 4706
+1669.427 S CUSTOM:'.' 4706
+1669.456 S CUSTOM:'.' 4706
+1669.489 S CUSTOM:'.' 4706
+1669.518 S CUSTOM:'.' 4706
+1669.548 S CUSTOM:'.' 4706
+1669.594 S CUSTOM:'.' 4706
+1669.628 S CUSTOM:'.' 4706
+1669.657 S CUSTOM:'.' 4706
+1669.69 S CUSTOM:'.' 4706
+1669.719 S CUSTOM:'.' 4706
+1669.753 S CUSTOM:'.' 4706
+1669.778 S CUSTOM:'.' 4706
+1669.828 S CUSTOM:'.' 4706
+1669.856 S CUSTOM:'.' 4706
+1669.886 S CUSTOM:'.' 4706
+1669.918 S CUSTOM:'.' 4706
+1669.947 S CUSTOM:'.' 4706
+1669.981 S CUSTOM:'.' 4706
+1670.01 S CUSTOM:'.' 4706
+1670.059 S CUSTOM:'.' 4706
+1670.086 S CUSTOM:'.' 4706
+1670.119 S CUSTOM:'.' 4706
+1670.149 S CUSTOM:'.' 4706
+1670.179 S CUSTOM:'.' 4706
+1670.21 S CUSTOM:'.' 4706
+1670.242 S CUSTOM:'.' 4706
+1670.287 S CUSTOM:'.' 4706
+1670.344 S CUSTOM:'.' 4706
+1670.35 S CUSTOM:'.' 4706
+1670.379 S CUSTOM:'.' 4706
+1670.409 S CUSTOM:'.' 4706
+1670.439 S CUSTOM:'.' 4706
+1670.586 S CUSTOM:'.' 4706470647064706
+1670.609 S CUSTOM:'.' 4706
+1670.728 S CUSTOM:'.' 4706
+1671.925 MSG You miss the Soldier ant..
+1672.044 MSG You hit the Soldier ant..
+1672.097 MSG The Soldier ant misses you..
+1672.178 MSG You hit the Soldier ant..
+1672.178 MSG You have slain the Soldier ant..
+1672.178 IND:level c30f0f
+1673.316 S CUSTOM:'.' 4703
+1673.58 S CUSTOM:'.' 4701
+1673.921 S CUSTOM:'.' 4702
+1674.217 S CUSTOM:'.' 4703
+1674.337 S CUSTOM:'.' 4702
+1674.785 S CUSTOM:'.' 4703
+1674.953 S CUSTOM:'.' 4702
+1675.552 IND:depth da00
+1675.552 PKT_FLOOR 310000000000000000000000
+1675.631 EQUIP f 39  Brass Lantern (with 12500 turns of light) {25% off}
+1676.305 S CUSTOM:'.' 4703
+1676.548 S CUSTOM:'.' 4706
+1676.853 S CUSTOM:'.' 4702
+1677.098 S CUSTOM:'.' 4706
+1680.409 S CUSTOM:'.' 4702
+1683.029 S CUSTOM:'.' 4706
+1684.402 PKT_FLOOR 31000828020001240100612046696c74687920526167205b315d0000
+1684.402 MSG You see a Filthy Rag [1]..
+1686.211 S CUSTOM:',' 00
+1686.213 MSG You have a Filthy Rag [1] (g)..
+1686.213 PKT_FLOOR 310000000000000000000000
+1686.213 INVEN ('g', 36, 1, 20, 'a Filthy Rag [1]', '')
+1687.019 S CUSTOM:'.' 4704
+1688.137 EQUIP f 39  Brass Lantern (with 12400 turns of light) {25% off}
+1689.998 S CUSTOM:'.' 4706
+1690.51 S CUSTOM:'.' 4704
+1691.433 S CUSTOM:'.' 4706
+1691.934 S CUSTOM:'.' 4703
+1692.069 S CUSTOM:'.' 4702
+1692.136 MSG You cannot run in that direction..
+1695.212 S CUSTOM:'.' 4704
+1696.508 S CUSTOM:'.' 4701
+1700.386 S CUSTOM:'s' 330600000001
+1700.388 MSG Selling a Filthy Rag [1] (g)..
+1700.388 MSG You eventually agree upon the price..
+1701.094 S PKT_CONFIRM 3e0100
+1701.095 MSG Fine..
+1701.095 MSG You sold a Filthy Rag [1,-1] for 1 gold..
+1701.095 MSG Arrgghh!.
+1701.095 MSG You have no more Filthy Rags [1,-1]..
+1701.095 INVEN ('g', 0, 0, 0, '(nothing)', '')
+1701.095 INVEN ('h', 0, 0, 0, '(nothing)', '')
+1701.095 INVEN ('i', 0, 0, 0, '(nothing)', '')
+1701.095 INVEN ('j', 0, 0, 0, '(nothing)', '')
+1701.095 INVEN ('k', 0, 0, 0, '(nothing)', '')
+1701.095 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1701.095 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1701.095 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1701.095 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1701.095 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1701.095 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1701.095 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1701.095 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1701.095 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1701.095 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1701.095 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1701.095 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1701.095 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1704.663 S CUSTOM:'.' 4709
+1704.938 S CUSTOM:'.' 4706
+1706.43 EQUIP f 39  Brass Lantern (with 12300 turns of light) {25% off}
+1707.954 S CUSTOM:'.' 4702
+1717.59 S CUSTOM:'.' 4707
+1717.593 MSG You cannot run in that direction..
+1717.727 S CUSTOM:'.' 4708
+1717.905 S CUSTOM:'.' 4707
+1718.646 S CUSTOM:'.' 4704
+1718.932 S CUSTOM:'.' 4707
+1719.197 S CUSTOM:'.' 4708
+1719.694 S CUSTOM:'.' 4704
+1720.39 MSG You hit the Scrawny cat..
+1720.39 MSG You have slain the Scrawny cat..
+1720.39 IND:level c30f0f
+1720.432 S CUSTOM:'.' 4701
+1721.019 S CUSTOM:'.' 4707
+1722.405 S CUSTOM:'.' 4708
+1722.95 S CUSTOM:'.' 4704
+1724.815 EQUIP f 39  Brass Lantern (with 12200 turns of light) {25% off}
+1725.052 S CUSTOM:'.' 4701
+1725.667 S CUSTOM:'.' 4704
+1726.409 S CUSTOM:'.' 4701
+1726.776 MSG You hit the Filthy street urchin..
+1726.777 MSG You have slain the Filthy street urchin..
+1726.777 IND:level c30f0f
+1727.421 S CUSTOM:'.' 4702
+1727.429 MSG The Filthy street urchin begs you for money..
+1727.429 MSG The Filthy street urchin misses you..
+1727.51 MSG You miss the Filthy street urchin..
+1727.628 MSG You hit the Filthy street urchin..
+1727.629 MSG You have slain the Filthy street urchin..
+1727.629 IND:level c30f0f
+1727.763 MSG You hit the Filthy street urchin..
+1727.763 MSG You have slain the Filthy street urchin..
+1727.763 IND:level c30f0f
+1727.883 MSG You hit the Filthy street urchin..
+1727.883 MSG You have slain the Filthy street urchin..
+1727.883 IND:level c30f0f
+1728.123 MSG You hit the Filthy street urchin..
+1728.123 MSG You have slain the Filthy street urchin..
+1728.123 IND:level c30f0f
+1728.462 S CUSTOM:'.' 4702
+1728.536 MSG You hit the Village idiot..
+1728.536 MSG You have slain the Village idiot..
+1728.536 IND:level c30f0f
+1729.578 S CUSTOM:'.' 4702
+1729.831 S CUSTOM:'.' 4704
+1730.197 S CUSTOM:'.' 4708
+1730.854 S CUSTOM:'.' 4709
+1732.332 S CUSTOM:'>' 04
+1732.335 MSG You enter a maze of down staircases..
+1732.337 MSG This level can't be all bad....
+1732.338 IND:depth da01
+1732.338 PKT_FLOOR 310000000000000000000000
+1733.529 S CUSTOM:'.' 4703
+1734.038 S CUSTOM:'.' 4707
+1734.958 S CUSTOM:'<' 02
+1734.96 MSG You enter a maze of up staircases..
+1734.965 IND:depth da00
+1734.965 PKT_FLOOR 310000000000000000000000
+1735.447 S CUSTOM:'>' 04
+1735.457 MSG You enter a maze of down staircases..
+1735.469 MSG Looks like any other level..
+1735.47 IND:depth da01
+1735.47 PKT_FLOOR 310000000000000000000000
+1736.843 S CUSTOM:'.' 4703
+1737.639 S CUSTOM:'.' 4706
+1738.62 S CUSTOM:'.' 4706
+1738.628 PKT_FLOOR 31000a210e00014b00006120506f74696f6e206f662053616c742057617465720000
+1738.628 MSG You see a Potion of Salt Water..
+1739.802 S CUSTOM:',' 00
+1739.804 MSG You have a Potion of Salt Water (c)..
+1739.804 PKT_FLOOR 310000000000000000000000
+1739.804 INVEN ('c', 75, 1, 4, 'a Potion of Salt Water', '')
+1739.804 INVEN ('d', 75, 7, 28, '7 Potions of Cure Light Wounds {@q1}', '')
+1739.804 INVEN ('e', 70, 9, 45, '9 Scrolls of Phase Door {@r1}', '')
+1739.804 INVEN ('f', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+1739.804 INVEN ('g', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+1742.143 S CUSTOM:'k' 180200000001
+1742.145 MSG You destroy a Potion of Salt Water..
+1742.145 MSG You have no more Potions of Salt Water..
+1742.145 INVEN ('c', 75, 7, 28, '7 Potions of Cure Light Wounds {@q1}', '')
+1742.145 INVEN ('d', 70, 9, 45, '9 Scrolls of Phase Door {@r1}', '')
+1742.145 INVEN ('e', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+1742.145 INVEN ('f', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+1742.145 INVEN ('g', 0, 0, 0, '(nothing)', '')
+1742.145 INVEN ('h', 0, 0, 0, '(nothing)', '')
+1742.145 INVEN ('i', 0, 0, 0, '(nothing)', '')
+1742.145 INVEN ('j', 0, 0, 0, '(nothing)', '')
+1742.145 INVEN ('k', 0, 0, 0, '(nothing)', '')
+1742.145 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1742.145 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1742.145 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1742.145 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1742.145 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1742.145 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1742.145 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1742.145 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1742.145 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1742.145 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1742.145 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1742.145 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1742.145 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1742.73 S CUSTOM:'.' 4704
+1744.65 S CUSTOM:'<' 02
+1744.652 MSG You enter a maze of up staircases..
+1744.658 IND:depth da00
+1744.658 PKT_FLOOR 310000000000000000000000
+1745.158 S CUSTOM:'>' 04
+1745.161 MSG You enter a maze of down staircases..
+1745.162 MSG Looks like any other level..
+1745.163 IND:depth da01
+1745.163 PKT_FLOOR 310000000000000000000000
+1746.277 S CUSTOM:'.' 4701
+1747.299 S CUSTOM:'.' 4706
+1747.629 MSG You hit the Small kobold..
+1747.629 MSG You have slain the Small kobold..
+1747.629 IND:level c30f0f
+1747.955 S CUSTOM:'.' 4706
+1748.603 PKT_FLOOR 3100013f01000146200061205363726f6c6c207469746c656420226a6f20656c70726f6b220000
+1748.603 MSG You see a Scroll titled "jo elprok"..
+1749.786 S CUSTOM:',' 00
+1749.789 MSG You have a Scroll titled "jo elprok" (g)..
+1749.789 PKT_FLOOR 310000000000000000000000
+1749.789 INVEN ('g', 70, 1, 5, 'a Scroll titled "jo elprok"', '')
+1750.323 S CUSTOM:'.' 4703
+1750.574 S CUSTOM:'.' 4706
+1751.832 S CUSTOM:'.' 4703
+1752.125 S CUSTOM:'.' 4706
+1752.616 MSG You hit the Fruit bat..
+1752.616 MSG You have slain the Fruit bat..
+1752.616 IND:level c30f0f
+1753.046 S CUSTOM:'.' 4706
+1754.098 S CUSTOM:'.' 4706
+1754.269 MSG You hit Smeagol..
+1754.416 MSG It was a great hit!.
+1754.562 MSG You hit the Large white snake..
+1754.562 MSG The Large white snake flees in terror!.
+1754.709 MSG You hit the Large white snake..
+1754.709 MSG You have slain the Large white snake..
+1754.709 IND:level c30f0f
+1755.029 EQUIP f 39  Brass Lantern (with 12100 turns of light) {25% off}
+1755.52 S CUSTOM:'.' 4708
+1756.135 MSG You hit Smeagol..
+1756.414 S CUSTOM:'.' 4708
+1757.706 S CUSTOM:'.' 4708
+1758.413 S CUSTOM:'.' 4706
+1758.695 MSG Smeagol misses you..
+1758.802 MSG You hit Smeagol..
+1759.863 S CUSTOM:'.' 4706
+1760.081 MSG The White worm mass wakes up..
+1761.881 MSG You hit Smeagol..
+1762.264 S CUSTOM:'.' 4703
+1762.909 MSG Dive01 has attained level 4..
+1763.081 MSG You hit Smeagol..
+1763.133 S CUSTOM:'.' 4703
+1763.269 MSG Smeagol misses you..
+1763.774 MSG You miss Smeagol..
+1764.508 S CUSTOM:'.' 4703
+1765.108 S CUSTOM:'.' 4706
+1765.822 S CUSTOM:'.' 4706
+1766.314 S CUSTOM:'.' 4706
+1766.786 S CUSTOM:'.' 4706
+1767.694 S CUSTOM:'.' 4706
+1768.283 MSG You hit the White worm mass..
+1768.428 MSG You have destroyed the White worm mass..
+1768.922 S CUSTOM:'.' 4706
+1769.639 S CUSTOM:'.' 4706
+1770.229 MSG You miss the White worm mass..
+1770.229 MSG You hit the White worm mass..
+1770.229 MSG You have destroyed the White worm mass..
+1770.895 MSG You hit the White worm mass..
+1770.895 MSG It was a good hit!.
+1770.895 MSG You have destroyed the White worm mass..
+1771.964 S CUSTOM:'.' 4704
+1772.857 S CUSTOM:'.' 4708
+1773.722 MSG You hit Smeagol..
+1774.469 S CUSTOM:'.' 4708
+1775.448 S CUSTOM:'.' 4704
+1776.929 S CUSTOM:'.' 4704
+1777.071 MSG Dive01 has left the game..
+1777.615 MSG Smeagol misses you..
+1777.72 MSG You hit Smeagol..
+1778.015 MSG Smeagol misses you..
+1778.162 MSG You hit Smeagol..
+1778.815 MSG Smeagol misses you..
+1778.921 MSG You hit Smeagol..
+1779.668 MSG Smeagol flees in terror!.
+1779.815 MSG You hit Smeagol..
+1780.623 S CUSTOM:'.' 4702
+1780.88 S CUSTOM:'.' 4703
+1780.975 MSG Smeagol recovers his courage..
+1781.854 MSG You hit Smeagol..
+1782.979 S CUSTOM:'.' 4707
+1783.256 MSG You have slain Smeagol..
+1783.256 MSG Smeagol was slain by Dive03..
+1783.256 IND:level c30f0f
+1783.931 S CUSTOM:'.' 4704
+1783.935 PKT_FLOOR 3100097c010001170100612054756c776172202832643429207b536d6561676f6c7d0000
+1783.935 MSG You see a Tulwar (2d4) {Smeagol}..
+1785.444 S CUSTOM:',' 00
+1785.447 MSG You have a Tulwar (2d4) {Smeagol} (h)..
+1785.447 PKT_FLOOR 310000000000000000000000
+1785.447 INVEN ('h', 23, 1, 100, 'a Tulwar (2d4) {Smeagol}', '')
+1786.474 S CUSTOM:'.' 4709
+1787.051 S CUSTOM:'.' 4708
+1787.053 MSG You cannot run in that direction..
+1787.382 S CUSTOM:'.' 4704
+1787.677 S CUSTOM:'.' 4707
+1787.969 S CUSTOM:'.' 4708
+1788.979 S CUSTOM:'.' 4707
+1789.316 S CUSTOM:'.' 4708
+1789.969 S CUSTOM:'.' 4704
+1790.392 S CUSTOM:'.' 4708
+1790.633 S CUSTOM:'.' 4704
+1790.811 S CUSTOM:'.' 4708
+1791.51 S CUSTOM:'.' 4704
+1791.561 MSG You hit the Large white snake..
+1791.561 MSG You have slain the Large white snake..
+1791.561 IND:level c30f0f
+1792.027 S CUSTOM:'.' 4703
+1792.44 S CUSTOM:'.' 4703
+1792.732 S CUSTOM:'.' 4703
+1792.834 S CUSTOM:'.' 4702
+1792.853 MSG You cannot run in that direction..
+1793.232 S CUSTOM:'.' 4702
+1793.408 S CUSTOM:'.' 4703
+1793.59 S CUSTOM:'.' 4702
+1794.181 S CUSTOM:'.' 4703
+1794.416 S CUSTOM:'.' 4706
+1794.988 EQUIP f 39  Brass Lantern (with 12000 turns of light) {25% off}
+1795.045 S CUSTOM:'.' 4709
+1795.244 S CUSTOM:'.' 4708
+1795.769 S CUSTOM:'.' 4709
+1795.909 S CUSTOM:'.' 4708
+1796.546 S CUSTOM:'.' 4709
+1797.2 S CUSTOM:'.' 4706
+1797.704 S CUSTOM:'.' 4706
+1797.736 S CUSTOM:'.' 4706
+1797.782 S CUSTOM:'.' 4706
+1797.814 S CUSTOM:'.' 4706
+1797.843 S CUSTOM:'.' 4706
+1797.875 S CUSTOM:'.' 4706
+1797.905 S CUSTOM:'.' 4706
+1797.939 S CUSTOM:'.' 4706
+1797.967 S CUSTOM:'.' 4706
+1797.996 S CUSTOM:'.' 4706
+1798.044 S CUSTOM:'.' 4706
+1798.076 S CUSTOM:'.' 4706
+1798.106 S CUSTOM:'.' 4706
+1798.139 S CUSTOM:'.' 4706
+1798.168 S CUSTOM:'.' 4706
+1798.201 S CUSTOM:'.' 4706
+1798.23 S CUSTOM:'.' 4706
+1798.263 S CUSTOM:'.' 4706
+1798.308 S CUSTOM:'.' 4706
+1798.34 S CUSTOM:'.' 4706
+1798.37 S CUSTOM:'.' 4706
+1798.402 S CUSTOM:'.' 4706
+1798.431 S CUSTOM:'.' 4706
+1798.461 S CUSTOM:'.' 4706
+1798.494 S CUSTOM:'.' 4706
+1798.538 S CUSTOM:'.' 4706
+1798.571 S CUSTOM:'.' 4706
+1798.6 S CUSTOM:'.' 4706
+1798.634 S CUSTOM:'.' 4706
+1798.662 S CUSTOM:'.' 4706
+1798.695 S CUSTOM:'.' 4706
+1798.725 S CUSTOM:'.' 4706
+1799.041 MSG You hit the White icky thing..
+1799.041 MSG You have slain the White icky thing..
+1799.041 IND:level c30f0f
+1799.563 S CUSTOM:'.' 4704
+1799.849 S CUSTOM:'.' 4707
+1800.075 S CUSTOM:'.' 4708
+1800.162 MSG You cannot run in that direction..
+1800.529 S CUSTOM:'.' 4706
+1800.813 S CUSTOM:'.' 4706
+1801.538 PKT_FLOOR 31000f5d0f00011f01006120536574206f66204c65617468657220476c6f766573205b315d0000
+1801.538 MSG You see a Set of Leather Gloves [1]..
+1802.795 S CUSTOM:',' 00
+1802.798 MSG You have a Set of Leather Gloves [1] (h)..
+1802.798 PKT_FLOOR 310000000000000000000000
+1802.798 INVEN ('h', 31, 1, 5, 'a Set of Leather Gloves [1]', '')
+1802.798 INVEN ('i', 23, 1, 100, 'a Tulwar (2d4) {Smeagol}', '')
+1803.506 S CUSTOM:'.' 4701
+1803.654 S CUSTOM:'.' 4702
+1804.292 S CUSTOM:'.' 4702
+1804.507 S CUSTOM:'.' 4701
+1804.752 S CUSTOM:'.' 4704
+1805.358 S CUSTOM:'.' 4701
+1805.79 S CUSTOM:'.' 4704
+1813.287 S PKT_PARTY 3f000244697665303100
+1813.287 MSG That player is not currently in the game..
+1816.162 S PKT_CLEAR 7ba603
+1819.275 S PKT_KEY a81b4704
+1820.037 S CUSTOM:'.' 4704
+1822.635 S CUSTOM:'<' 02
+1822.638 MSG You enter a maze of up staircases..
+1822.642 IND:depth da00
+1822.642 PKT_FLOOR 310000000000000000000000
+1824.532 S CUSTOM:'>' 04
+1824.534 MSG You enter a maze of down staircases..
+1824.548 MSG This level can't be all bad....
+1824.548 IND:depth da01
+1824.548 PKT_FLOOR 310000000000000000000000
+1825.852 S CUSTOM:'.' 4709
+1826.068 S CUSTOM:'.' 4709
+1826.238 S CUSTOM:'.' 4709
+1826.713 S CUSTOM:'.' 4701
+1826.95 S CUSTOM:'.' 4701
+1827.135 S CUSTOM:'.' 4701
+1828.202 S CUSTOM:'<' 02
+1828.205 MSG You enter a maze of up staircases..
+1828.215 IND:depth da00
+1828.215 PKT_FLOOR 310000000000000000000000
+1828.644 S CUSTOM:'>' 04
+1828.708 MSG You enter a maze of down staircases..
+1828.72 MSG Looks like any other level..
+1828.72 IND:depth da01
+1828.72 PKT_FLOOR 310000000000000000000000
+1829.882 S CUSTOM:'.' 4709
+1830.027 EQUIP f 39  Brass Lantern (with 11900 turns of light) {25% off}
+1830.075 S CUSTOM:'.' 4709
+1830.274 S CUSTOM:'.' 4709
+1830.783 S CUSTOM:'.' 4706
+1830.786 MSG You cannot run in that direction..
+1831.157 S CUSTOM:'.' 4703
+1831.391 S CUSTOM:'.' 4706
+1831.587 MSG You feel the Set of Leather Gloves (h) in your pack is cursed....
+1831.587 INVEN ('h', 31, 1, 5, 'a Set of Leather Gloves [1] {cursed}', '')
+1832.047 S CUSTOM:'.' 4706
+1838.331 S CUSTOM:'k' 180700000001
+1838.333 MSG You destroy a Set of Leather Gloves [1] {cursed}..
+1838.333 MSG You have no more Sets of Leather Gloves [1] {cursed}..
+1838.333 INVEN ('h', 23, 1, 100, 'a Tulwar (2d4) {Smeagol}', '')
+1838.333 INVEN ('i', 0, 0, 0, '(nothing)', '')
+1838.333 INVEN ('j', 0, 0, 0, '(nothing)', '')
+1838.333 INVEN ('k', 0, 0, 0, '(nothing)', '')
+1838.333 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1838.333 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1838.333 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1838.333 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1838.333 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1838.333 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1838.333 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1838.333 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1838.333 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1838.333 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1838.333 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1838.333 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1838.333 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1839.026 PKT_FLOOR 3100013f01000146200061205363726f6c6c207469746c65642022676172766976206d6963706f220000
+1839.026 MSG You see a Scroll titled "garviv micpo"..
+1840.267 S CUSTOM:',' 00
+1840.269 MSG You have a Scroll titled "garviv micpo" (h)..
+1840.269 PKT_FLOOR 310000000000000000000000
+1840.269 INVEN ('h', 70, 1, 5, 'a Scroll titled "garviv micpo"', '')
+1840.269 INVEN ('i', 23, 1, 100, 'a Tulwar (2d4) {Smeagol}', '')
+1840.828 S CUSTOM:'.' 4701
+1841.075 S CUSTOM:'.' 4704
+1841.437 S CUSTOM:'.' 4704
+1841.669 S CUSTOM:'.' 4704
+1841.877 S CUSTOM:'.' 4704
+1842.11 S CUSTOM:'.' 4704
+1842.353 S CUSTOM:'.' 4704
+1842.932 S CUSTOM:'.' 4704
+1843.56 S CUSTOM:'.' 4704
+1844.669 S CUSTOM:'<' 02
+1844.671 MSG You enter a maze of up staircases..
+1844.682 IND:depth da00
+1844.682 PKT_FLOOR 310000000000000000000000
+1845.411 S CUSTOM:'>' 04
+1845.414 MSG You enter a maze of down staircases..
+1845.427 MSG This level can't be all bad....
+1845.427 IND:depth da01
+1845.427 PKT_FLOOR 310000000000000000000000
+1846.364 S CUSTOM:'<' 02
+1846.366 MSG You enter a maze of up staircases..
+1846.375 IND:depth da00
+1846.375 PKT_FLOOR 310000000000000000000000
+1846.814 S CUSTOM:'>' 04
+1846.868 MSG You enter a maze of down staircases..
+1846.88 MSG Looks like any other level..
+1846.88 IND:depth da01
+1846.88 PKT_FLOOR 310000000000000000000000
+1847.63 S CUSTOM:'<' 02
+1847.633 MSG You enter a maze of up staircases..
+1847.641 IND:depth da00
+1847.641 PKT_FLOOR 310000000000000000000000
+1848.048 S CUSTOM:'>' 04
+1848.133 MSG You enter a maze of down staircases..
+1848.147 MSG Looks like any other level..
+1848.148 IND:depth da01
+1848.148 PKT_FLOOR 310000000000000000000000
+1848.806 S CUSTOM:'<' 02
+1848.808 MSG You enter a maze of up staircases..
+1848.814 IND:depth da00
+1848.814 PKT_FLOOR 310000000000000000000000
+1849.209 S CUSTOM:'>' 04
+1849.307 MSG You enter a maze of down staircases..
+1849.319 MSG Looks like any other level..
+1849.319 IND:depth da01
+1849.319 PKT_FLOOR 310000000000000000000000
+1849.952 S CUSTOM:'<' 02
+1849.954 MSG You enter a maze of up staircases..
+1849.961 IND:depth da00
+1849.961 PKT_FLOOR 310000000000000000000000
+1850.384 S CUSTOM:'>' 04
+1850.454 MSG You enter a maze of down staircases..
+1850.466 MSG Looks like any other level..
+1850.467 IND:depth da01
+1850.467 PKT_FLOOR 310000000000000000000000
+1851.741 S CUSTOM:'.' 4703
+1852.024 S CUSTOM:'.' 4702
+1852.619 S CUSTOM:'.' 4707
+1853.121 S CUSTOM:'.' 4706
+1854.012 S CUSTOM:'.' 4707
+1854.315 S CUSTOM:'.' 4707
+1855.866 S CUSTOM:'.' 4707
+1856.81 S CUSTOM:'<' 02
+1856.813 MSG You enter a maze of up staircases..
+1856.828 IND:depth da00
+1856.828 PKT_FLOOR 310000000000000000000000
+1857.395 S CUSTOM:'>' 04
+1857.398 MSG You enter a maze of down staircases..
+1857.4 MSG Looks like any other level..
+1857.4 IND:depth da01
+1857.401 PKT_FLOOR 310000000000000000000000
+1858.881 S CUSTOM:'.' 4708
+1859.625 S CUSTOM:'.' 4708
+1859.969 S CUSTOM:'.' 4706
+1860.614 S CUSTOM:'.' 4706
+1861.192 S CUSTOM:'.' 4703
+1861.475 S CUSTOM:'.' 4706
+1862.123 S CUSTOM:'.' 4704
+1862.556 S CUSTOM:'.' 4707
+1862.808 S CUSTOM:'.' 4704
+1863.365 S CUSTOM:'.' 4704
+1863.874 S CUSTOM:'.' 4704
+1863.907 S CUSTOM:'.' 4704
+1864.225 EQUIP f 39  Brass Lantern (with 11800 turns of light) {25% off}
+1864.458 S CUSTOM:'.' 4702
+1864.742 S CUSTOM:'.' 4706
+1865.173 S CUSTOM:'.' 4703
+1865.265 S CUSTOM:'.' 4702
+1865.293 MSG You cannot run in that direction..
+1865.702 S CUSTOM:'.' 4706
+1865.949 S CUSTOM:'.' 4703
+1866.097 S CUSTOM:'.' 4702
+1866.582 S CUSTOM:'.' 4703
+1867.437 S CUSTOM:'<' 02
+1867.439 MSG You enter a maze of up staircases..
+1867.454 IND:depth da00
+1867.454 PKT_FLOOR 310000000000000000000000
+1867.906 S CUSTOM:'>' 04
+1867.947 MSG You enter a maze of down staircases..
+1867.959 MSG Looks like any other level..
+1867.96 IND:depth da01
+1867.96 PKT_FLOOR 310000000000000000000000
+1868.866 S CUSTOM:'<' 02
+1868.868 MSG You enter a maze of up staircases..
+1868.881 IND:depth da00
+1868.881 PKT_FLOOR 310000000000000000000000
+1869.368 S CUSTOM:'>' 04
+1869.373 MSG You enter a maze of down staircases..
+1869.385 MSG Looks like any other level..
+1869.385 IND:depth da01
+1869.385 PKT_FLOOR 310000000000000000000000
+1870.081 S CUSTOM:'<' 02
+1870.083 MSG You enter a maze of up staircases..
+1870.094 IND:depth da00
+1870.094 PKT_FLOOR 310000000000000000000000
+1870.613 S CUSTOM:'>' 04
+1870.615 MSG You enter a maze of down staircases..
+1870.626 MSG Looks like any other level..
+1870.626 IND:depth da01
+1870.626 PKT_FLOOR 310000000000000000000000
+1871.427 S CUSTOM:'<' 02
+1871.429 MSG You enter a maze of up staircases..
+1871.442 IND:depth da00
+1871.442 PKT_FLOOR 310000000000000000000000
+1871.848 S CUSTOM:'>' 04
+1871.933 MSG You enter a maze of down staircases..
+1871.945 MSG Looks like any other level..
+1871.946 IND:depth da01
+1871.946 PKT_FLOOR 310000000000000000000000
+1872.838 S CUSTOM:'<' 02
+1872.84 MSG You enter a maze of up staircases..
+1872.855 IND:depth da00
+1872.855 PKT_FLOOR 310000000000000000000000
+1873.211 S CUSTOM:'>' 04
+1873.346 MSG You enter a maze of down staircases..
+1873.36 MSG Looks like any other level..
+1873.361 IND:depth da01
+1873.361 PKT_FLOOR 310000000000000000000000
+1874.358 MSG The Fruit bat wakes up..
+1874.772 S CUSTOM:'.' 4708
+1874.919 MSG The Fruit bat misses you..
+1874.945 MSG You hit the Fruit bat..
+1874.945 MSG You have slain the Fruit bat..
+1874.945 IND:level c30f0f
+1875.407 S CUSTOM:'.' 4704
+1876.224 PKT_FLOOR 3100013f01000146200061205363726f6c6c207469746c6564202278746f78206970746120736f7572220000
+1876.224 MSG You see a Scroll titled "xtox ipta sour"..
+1877.57 S CUSTOM:',' 00
+1877.573 MSG You have a Scroll titled "xtox ipta sour" (i)..
+1877.573 PKT_FLOOR 310000000000000000000000
+1877.573 INVEN ('i', 70, 1, 5, 'a Scroll titled "xtox ipta sour"', '')
+1877.573 INVEN ('j', 23, 1, 100, 'a Tulwar (2d4) {Smeagol}', '')
+1878.335 S CUSTOM:'.' 4706
+1880.116 S CUSTOM:'<' 02
+1880.119 MSG You enter a maze of up staircases..
+1880.134 IND:depth da00
+1880.134 PKT_FLOOR 310000000000000000000000
+1880.652 S CUSTOM:'>' 04
+1880.655 MSG You enter a maze of down staircases..
+1880.665 MSG Looks like any other level..
+1880.666 IND:depth da01
+1880.666 PKT_FLOOR 310000000000000000000000
+1881.932 PKT_FLOOR 31000f5d0f00011f01006120536574206f66204c65617468657220476c6f766573205b315d0000
+1881.932 MSG You see a Set of Leather Gloves [1]..
+1883.005 S CUSTOM:',' 00
+1883.007 MSG You have a Set of Leather Gloves [1] (j)..
+1883.007 PKT_FLOOR 310000000000000000000000
+1883.007 INVEN ('j', 31, 1, 5, 'a Set of Leather Gloves [1]', '')
+1883.007 INVEN ('k', 23, 1, 100, 'a Tulwar (2d4) {Smeagol}', '')
+1883.68 S CUSTOM:'.' 4703
+1883.683 MSG You cannot run in that direction..
+1883.905 S CUSTOM:'.' 4703
+1884.129 S CUSTOM:'.' 4703
+1884.472 S CUSTOM:'.' 4702
+1884.697 S CUSTOM:'.' 4703
+1885.04 S CUSTOM:'.' 4706
+1885.255 S CUSTOM:'.' 4703
+1885.425 S CUSTOM:'.' 4702
+1886.124 S CUSTOM:'.' 4708
+1886.557 S CUSTOM:'.' 4707
+1887.014 S CUSTOM:'.' 4707
+1887.25 S CUSTOM:'.' 4708
+1887.356 S CUSTOM:'.' 4707
+1887.676 S CUSTOM:'.' 4707
+1887.859 S CUSTOM:'.' 4708
+1888.002 S CUSTOM:'.' 4707
+1888.622 S CUSTOM:'.' 4707
+1889.489 S CUSTOM:'<' 02
+1889.492 MSG You enter a maze of up staircases..
+1889.508 IND:depth da00
+1889.508 PKT_FLOOR 310000000000000000000000
+1889.907 S CUSTOM:'>' 04
+1890.0 MSG You enter a maze of down staircases..
+1890.012 MSG Looks like any other level..
+1890.013 IND:depth da01
+1890.013 PKT_FLOOR 310000000000000000000000
+1891.355 S CUSTOM:'.' 4708
+1891.357 MSG You cannot run in that direction..
+1891.715 S CUSTOM:'.' 4706
+1891.812 MSG The Soldier ant wakes up..
+1892.498 S CUSTOM:'.' 4706
+1892.865 MSG The Rock lizard wakes up..
+1893.093 MSG You hit the Rock lizard..
+1893.093 MSG You have slain the Rock lizard..
+1893.093 IND:level c30f0f
+1893.736 S CUSTOM:'.' 4702
+1893.812 MSG The Soldier ant bites you..
+1893.904 MSG You hit the Soldier ant..
+1893.904 MSG You have slain the Soldier ant..
+1893.904 IND:level c30f0f
+1894.372 S CUSTOM:'.' 4702
+1894.904 MSG You miss the Large white snake..
+1895.012 MSG You hit the Large white snake..
+1895.024 MSG The Large white snake bites you..
+1895.024 MSG The Large white snake misses you..
+1895.159 MSG You miss the Large white snake..
+1895.465 MSG You hit the Large white snake..
+1895.465 MSG You have slain the Large white snake..
+1895.465 IND:level c30f0f
+1896.222 S CUSTOM:'.' 4707
+1896.474 S CUSTOM:'.' 4704
+1897.926 S CUSTOM:'.' 4704
+1898.185 EQUIP f 39  Brass Lantern (with 11700 turns of light) {25% off}
+1898.452 S CUSTOM:'.' 4704
+1898.963 S CUSTOM:'.' 4704
+1899.284 S CUSTOM:'.' 4701
+1899.825 PKT_FLOOR 3100087c010001170100612042726f6b656e2053776f72642028316432290000
+1899.825 MSG You see a Broken Sword (1d2)..
+1900.965 S CUSTOM:',' 00
+1900.968 MSG You have a Broken Sword (1d2) (k)..
+1900.968 PKT_FLOOR 310000000000000000000000
+1900.968 INVEN ('k', 23, 1, 30, 'a Broken Sword (1d2)', '')
+1900.968 INVEN ('l', 23, 1, 100, 'a Tulwar (2d4) {Smeagol}', '')
+1901.563 S CUSTOM:'.' 4706
+1902.02 S CUSTOM:'.' 4709
+1902.366 S CUSTOM:'.' 4706
+1902.539 S CUSTOM:'.' 4704
+1903.177 S CUSTOM:'.' 4704
+1903.949 S CUSTOM:'.' 4704
+1904.366 S CUSTOM:'.' 4704
+1904.878 S CUSTOM:'.' 4704
+1904.907 S CUSTOM:'.' 4704
+1904.94 S CUSTOM:'.' 4704
+1904.97 S CUSTOM:'.' 4704
+1904.999 S CUSTOM:'.' 4704
+1905.031 S CUSTOM:'.' 4704
+1905.076 S CUSTOM:'.' 4704
+1905.109 S CUSTOM:'.' 4704
+1905.139 S CUSTOM:'.' 4704
+1905.167 S CUSTOM:'.' 4704
+1905.201 S CUSTOM:'.' 4704
+1905.233 S CUSTOM:'.' 4704
+1905.262 S CUSTOM:'.' 4704
+1905.306 S CUSTOM:'.' 4704
+1905.34 S CUSTOM:'.' 4704
+1905.985 MSG You hit the Small kobold..
+1905.985 MSG You have slain the Small kobold..
+1905.985 IND:level c30f0f
+1906.767 S CUSTOM:'.' 4704
+1906.771 MSG You have found 16 gold pieces worth of copper..
+1907.198 S CUSTOM:'.' 4707
+1907.316 S CUSTOM:'.' 4708
+1907.652 MSG You hit the Clear icky thing..
+1907.652 MSG You have slain the Clear icky thing..
+1907.652 IND:level c30f0f
+1908.206 S CUSTOM:'.' 4708
+1909.268 S CUSTOM:'.' 4708
+1909.465 MSG You hit the White icky thing..
+1909.465 MSG You have slain the White icky thing..
+1909.465 IND:level c30f0f
+1909.984 S CUSTOM:'.' 4708
+1910.642 S CUSTOM:'.' 4706
+1911.024 S CUSTOM:'.' 4702
+1911.659 PKT_FLOOR 3100013f01000146000061205363726f6c6c207469746c656420226974206d756e67726561206122207b74726965647d0000
+1911.659 MSG You see a Scroll titled "it mungrea a" {tried}..
+1912.224 MSG You feel the Set of Leather Gloves (j) in your pack is average....
+1912.224 INVEN ('j', 31, 1, 5, 'a Set of Leather Gloves [1] {average}', '')
+1912.916 S CUSTOM:',' 00
+1912.919 MSG You have a Scroll titled "it mungrea a" {tried} (j)..
+1912.919 PKT_FLOOR 310000000000000000000000
+1912.919 INVEN ('j', 70, 1, 5, 'a Scroll titled "it mungrea a" {tried}', '')
+1912.919 INVEN ('k', 31, 1, 5, 'a Set of Leather Gloves [1] {average}', '')
+1912.919 INVEN ('l', 23, 1, 30, 'a Broken Sword (1d2)', '')
+1912.919 INVEN ('m', 23, 1, 100, 'a Tulwar (2d4) {Smeagol}', '')
+1913.532 S CUSTOM:'.' 4706
+1914.465 S CUSTOM:'.' 4706
+1915.555 S CUSTOM:'.' 4706
+1916.212 S CUSTOM:'.' 4706
+1917.239 MSG You hit the Soldier ant..
+1917.239 MSG You have slain the Soldier ant..
+1917.239 IND:level c30f0f
+1917.712 S CUSTOM:'.' 4706
+1918.587 S CUSTOM:'.' 4706
+1919.528 S CUSTOM:'.' 4703
+1919.678 S CUSTOM:'.' 4702
+1920.123 S CUSTOM:'.' 4703
+1920.449 S CUSTOM:'.' 4706
+1920.906 S CUSTOM:'.' 4702
+1920.909 MSG You cannot run in that direction..
+1921.269 S CUSTOM:'.' 4703
+1921.41 S CUSTOM:'.' 4702
+1921.945 S CUSTOM:'.' 4706
+1922.82 S CUSTOM:'.' 4702
+1922.975 S CUSTOM:'.' 4703
+1923.046 S CUSTOM:'.' 4702
+1923.708 S CUSTOM:'.' 4701
+1923.965 S CUSTOM:'.' 4704
+1923.984 EQUIP f 39  Brass Lantern (with 11600 turns of light) {25% off}
+1924.652 S CUSTOM:'.' 4704
+1924.705 MSG You feel the Broken Sword (l) in your pack is average....
+1924.705 INVEN ('l', 23, 1, 30, 'a Broken Sword (1d2) {average}', '')
+1925.504 S CUSTOM:'.' 4707
+1926.042 S CUSTOM:'.' 4704
+1927.03 S CUSTOM:'<' 02
+1927.033 MSG You enter a maze of up staircases..
+1927.039 IND:depth da00
+1927.039 PKT_FLOOR 310000000000000000000000
+1927.82 S CUSTOM:'.' 4703
+1928.242 S CUSTOM:'.' 4702
+1928.41 S CUSTOM:'.' 4703
+1928.549 S CUSTOM:'.' 4702
+1929.229 S CUSTOM:'.' 4706
+1930.065 S CUSTOM:'.' 4703
+1930.416 S CUSTOM:'.' 4706
+1932.116 S CUSTOM:'.' 4703
+1935.447 S CUSTOM:'s' 330a00000001
+1935.45 MSG Selling a Set of Leather Gloves [1] {average} (k)..
+1935.45 MSG You eventually agree upon the price..
+1936.158 S PKT_CONFIRM 3e0100
+1936.158 MSG Fine..
+1936.158 MSG You sold a Set of Leather Gloves [1,+0] for 1 gold..
+1936.158 MSG You have no more Sets of Leather Gloves [1,+0]..
+1936.158 INVEN ('k', 23, 1, 30, 'a Broken Sword (1d2) {average}', '')
+1936.158 INVEN ('l', 23, 1, 100, 'a Tulwar (2d4) {Smeagol}', '')
+1936.158 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1936.158 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1936.158 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1936.158 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1936.158 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1936.158 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1936.158 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1936.158 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1936.158 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1936.158 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1936.158 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1936.158 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1936.158 EQUIP k 31  Set of Leather Gloves [1,+0]
+1940.91 S CUSTOM:'.' 4706
+1941.583 S CUSTOM:'.' 4709
+1941.869 S CUSTOM:'.' 4706
+1942.301 S CUSTOM:'.' 4702
+1942.371 EQUIP f 39  Brass Lantern (with 11500 turns of light) {25% off}
+1944.577 S CUSTOM:'s' 330a00000001
+1944.579 MSG Selling a Broken Sword (1d2) {average} (k)..
+1944.579 MSG You eventually agree upon the price..
+1945.37 S PKT_CONFIRM 3e0100
+1945.37 MSG Agreed!.
+1945.37 MSG You sold a Broken Sword (1d2) (-2,-4) for 1 gold..
+1945.37 MSG You hear someone sobbing....
+1945.37 MSG You have no more Broken Swords (1d2) (-2,-4)..
+1945.37 INVEN ('k', 23, 1, 100, 'a Tulwar (2d4) {Smeagol}', '')
+1945.37 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1945.37 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1945.37 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1945.37 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1945.37 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1945.37 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1945.37 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1945.37 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1945.37 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1945.37 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1945.37 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1945.37 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1945.37 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1948.723 S CUSTOM:'.' 4706
+1950.656 S CUSTOM:'.' 4703
+1950.737 S CUSTOM:'.' 4702
+1950.935 S CUSTOM:'.' 4701
+1955.828 S CUSTOM:'s' 330900000001
+1955.831 MSG Selling a Scroll titled "it mungrea a" {tried} (j)..
+1955.831 MSG You eventually agree upon the price..
+1956.731 S PKT_CONFIRM 3e0100
+1956.732 MSG Okay..
+1956.732 MSG You sold a Scroll of Summon Monster for 9 gold..
+1956.732 MSG Arrgghh!.
+1956.732 MSG You have no more Scrolls of Summon Monster..
+1956.732 INVEN ('j', 23, 1, 100, 'a Tulwar (2d4) {Smeagol}', '')
+1956.732 INVEN ('k', 0, 0, 0, '(nothing)', '')
+1956.732 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1956.732 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1956.732 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1956.732 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1956.732 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1956.732 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1956.732 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1956.732 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1956.732 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1956.732 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1956.732 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1956.732 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1956.732 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1968.572 S CUSTOM:'p' 321400000001023539
+1968.574 MSG Fine..
+1968.574 MSG You bought a Scroll of Identify {25% off} for 59 gold..
+1968.574 MSG You have a Scroll of Identify {25% off} (e)..
+1968.574 INVEN ('e', 70, 1, 5, 'a Scroll of Identify {25% off}', '')
+1968.574 INVEN ('f', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+1968.574 INVEN ('g', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+1968.574 INVEN ('h', 70, 1, 5, 'a Scroll titled "jo elprok"', '')
+1968.574 INVEN ('i', 70, 1, 5, 'a Scroll titled "garviv micpo"', '')
+1968.574 INVEN ('j', 70, 1, 5, 'a Scroll titled "xtox ipta sour"', '')
+1968.574 INVEN ('k', 23, 1, 100, 'a Tulwar (2d4) {Smeagol}', '')
+1974.24 S CUSTOM:'r' 1d040a
+1974.242 MSG In your pack: a Tulwar of Slay Demon (2d4) (+7,+3) {Smeagol} (k)..
+1974.242 MSG You have no more Scrolls of Identify {25% off}..
+1974.242 INVEN ('e', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+1974.242 INVEN ('f', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+1974.242 INVEN ('g', 70, 1, 5, 'a Scroll titled "jo elprok"', '')
+1974.242 INVEN ('h', 70, 1, 5, 'a Scroll titled "garviv micpo"', '')
+1974.242 INVEN ('i', 70, 1, 5, 'a Scroll titled "xtox ipta sour"', '')
+1974.243 INVEN ('j', 23, 1, 100, 'a Tulwar of Slay Demon (2d4) (+7,+3) {Smeagol}', '')
+1974.243 INVEN ('k', 0, 0, 0, '(nothing)', '')
+1974.243 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1974.243 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1974.243 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1974.243 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1974.243 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1974.243 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1974.243 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1974.243 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1974.243 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1974.243 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1974.243 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1974.243 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1974.243 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1979.063 S CUSTOM:'.' 4708
+1979.517 EQUIP f 39  Brass Lantern (with 11400 turns of light) {25% off}
+1979.612 S CUSTOM:'.' 4704
+1980.544 S CUSTOM:'.' 4701
+1980.768 S CUSTOM:'.' 4704
+1982.48 S CUSTOM:'.' 4701
+1986.714 S CUSTOM:'s' 330900000001
+1986.716 MSG I don't want that!.
+1989.729 S CUSTOM:'.' 4706
+1990.063 S CUSTOM:'.' 4709
+1990.838 S CUSTOM:'.' 4706
+1991.047 S CUSTOM:'.' 4702
+1992.75 S CUSTOM:'s' 330900000001
+1992.752 MSG Selling a Tulwar of Slay Demon (2d4) (+7,+3) {Smeagol} (j)..
+1992.752 MSG You eventually agree upon the price..
+1993.517 S PKT_CONFIRM 3e0100
+1993.518 MSG Taken!.
+1993.518 MSG You sold a Tulwar of Slay Demon (2d4) (+7,+3) {Smeagol} for 2021 gold..
+1993.518 MSG You have no more Tulwars of Slay Demon (2d4) (+7,+3) {Smeagol}..
+1993.518 INVEN ('j', 0, 0, 0, '(nothing)', '')
+1993.518 INVEN ('k', 0, 0, 0, '(nothing)', '')
+1993.518 INVEN ('l', 0, 0, 0, '(nothing)', '')
+1993.518 INVEN ('m', 0, 0, 0, '(nothing)', '')
+1993.518 INVEN ('n', 0, 0, 0, '(nothing)', '')
+1993.518 INVEN ('o', 0, 0, 0, '(nothing)', '')
+1993.518 INVEN ('p', 0, 0, 0, '(nothing)', '')
+1993.518 INVEN ('q', 0, 0, 0, '(nothing)', '')
+1993.518 INVEN ('r', 0, 0, 0, '(nothing)', '')
+1993.518 INVEN ('s', 0, 0, 0, '(nothing)', '')
+1993.518 INVEN ('t', 0, 0, 0, '(nothing)', '')
+1993.518 INVEN ('u', 0, 0, 0, '(nothing)', '')
+1993.518 INVEN ('v', 0, 0, 0, '(nothing)', '')
+1993.518 INVEN ('w', 0, 0, 0, '(nothing)', '')
+1993.518 INVEN ('x', 0, 0, 0, '(nothing)', '')
+1996.062 S CUSTOM:'.' 4706
+1998.229 S CUSTOM:'.' 4706
+1998.836 EQUIP f 39  Brass Lantern (with 11300 turns of light) {25% off}
+1998.946 S CUSTOM:'.' 4702
+1999.184 S CUSTOM:'.' 4701
+2004.312 S CUSTOM:'p' 320f0000000103313137
+2004.314 MSG Okay..
+2004.314 MSG You bought a Scroll of Word of Recall {50% off} for 117 gold..
+2004.314 MSG You have a Scroll of Word of Recall {50% off} (e)..
+2004.314 INVEN ('e', 70, 1, 5, 'a Scroll of Word of Recall {50% off}', '')
+2004.314 INVEN ('f', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+2004.314 INVEN ('g', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+2004.314 INVEN ('h', 70, 1, 5, 'a Scroll titled "jo elprok"', '')
+2004.314 INVEN ('i', 70, 1, 5, 'a Scroll titled "garviv micpo"', '')
+2004.314 INVEN ('j', 70, 1, 5, 'a Scroll titled "xtox ipta sour"', '')
+2009.147 S CUSTOM:'p' 321500000001023938
+2009.15 MSG Okay..
+2009.15 MSG You bought a Scroll of Enchant Weapon To-Hit {50% off} for 98 gold..
+2009.15 MSG You have a Scroll of Enchant Weapon To-Hit {50% off} (f)..
+2009.15 INVEN ('f', 70, 1, 5, 'a Scroll of Enchant Weapon To-Hit {50% off}', '')
+2009.15 INVEN ('g', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+2009.15 INVEN ('h', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+2009.15 INVEN ('i', 70, 1, 5, 'a Scroll titled "jo elprok"', '')
+2009.15 INVEN ('j', 70, 1, 5, 'a Scroll titled "garviv micpo"', '')
+2009.15 INVEN ('k', 70, 1, 5, 'a Scroll titled "xtox ipta sour"', '')
+2042.514 S PKT_MESSAGE 2e556e74696c206f75722077
+2042.514 MSG [Dive03] Until our weapon is ~+8 +8, buying +hit and +dmg scrolls on.
+2045.701 EQUIP f 39  Brass Lantern (with 11200 turns of light) {25% off}
+2047.792 S PKT_MESSAGE 2e646973636f756e74206973
+2047.792 MSG [Dive03] discount is a good idea.
+2054.926 MSG [Dive03:Scribe] Got it: until the weapon is about +8,+8, buy.
+2055.327 MSG [Dive03:Scribe] discounted +hit/+dam scrolls. Adding that to the.
+2055.727 MSG [Dive03:Scribe] town shopping rules..
+2056.327 S CUSTOM:'r' 1d0518
+2056.33 MSG Your Main Gauche glows brightly!.
+2056.33 MSG You have no more Scrolls of Enchant Weapon To-Hit {50% off}..
+2056.33 INVEN ('f', 70, 1, 5, 'a Scroll titled "ishx therbin"', '')
+2056.33 INVEN ('g', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+2056.33 INVEN ('h', 70, 1, 5, 'a Scroll titled "jo elprok"', '')
+2056.33 INVEN ('i', 70, 1, 5, 'a Scroll titled "garviv micpo"', '')
+2056.33 INVEN ('j', 70, 1, 5, 'a Scroll titled "xtox ipta sour"', '')
+2056.33 INVEN ('k', 0, 0, 0, '(nothing)', '')
+2056.33 INVEN ('l', 0, 0, 0, '(nothing)', '')
+2056.33 INVEN ('m', 0, 0, 0, '(nothing)', '')
+2056.33 INVEN ('n', 0, 0, 0, '(nothing)', '')
+2056.33 INVEN ('o', 0, 0, 0, '(nothing)', '')
+2056.33 INVEN ('p', 0, 0, 0, '(nothing)', '')
+2056.33 INVEN ('q', 0, 0, 0, '(nothing)', '')
+2056.33 INVEN ('r', 0, 0, 0, '(nothing)', '')
+2056.33 INVEN ('s', 0, 0, 0, '(nothing)', '')
+2056.33 INVEN ('t', 0, 0, 0, '(nothing)', '')
+2056.33 INVEN ('u', 0, 0, 0, '(nothing)', '')
+2056.33 INVEN ('v', 0, 0, 0, '(nothing)', '')
+2056.33 INVEN ('w', 0, 0, 0, '(nothing)', '')
+2056.33 INVEN ('x', 0, 0, 0, '(nothing)', '')
+2056.33 EQUIP a 23  Main Gauche (1d5) (+3,+6)
+2062.632 S CUSTOM:'.' 4709
+2063.427 S CUSTOM:'.' 4708
+2073.763 S CUSTOM:'.' 4701
+2074.506 S CUSTOM:'.' 4702
+2075.195 S CUSTOM:'.' 4701
+2085.166 EQUIP f 39  Brass Lantern (with 11100 turns of light) {25% off}
+2087.439 S CUSTOM:'s' 330500000001
+2087.442 MSG Selling a Scroll titled "ishx therbin" (f)..
+2087.442 MSG You eventually agree upon the price..
+2088.031 S PKT_CONFIRM 3e0100
+2088.031 MSG Accepted!.
+2088.031 MSG You sold a Scroll of Satisfy Hunger for 9 gold..
+2088.031 MSG You have no more Scrolls of Satisfy Hunger..
+2088.031 INVEN ('f', 70, 1, 5, 'a Scroll titled "heaks khonis"', '')
+2088.031 INVEN ('g', 70, 1, 5, 'a Scroll titled "jo elprok"', '')
+2088.031 INVEN ('h', 70, 1, 5, 'a Scroll titled "garviv micpo"', '')
+2088.031 INVEN ('i', 70, 1, 5, 'a Scroll titled "xtox ipta sour"', '')
+2088.031 INVEN ('j', 0, 0, 0, '(nothing)', '')
+2088.031 INVEN ('k', 0, 0, 0, '(nothing)', '')
+2088.031 INVEN ('l', 0, 0, 0, '(nothing)', '')
+2088.031 INVEN ('m', 0, 0, 0, '(nothing)', '')
+2088.031 INVEN ('n', 0, 0, 0, '(nothing)', '')
+2088.031 INVEN ('o', 0, 0, 0, '(nothing)', '')
+2088.031 INVEN ('p', 0, 0, 0, '(nothing)', '')
+2088.031 INVEN ('q', 0, 0, 0, '(nothing)', '')
+2088.031 INVEN ('r', 0, 0, 0, '(nothing)', '')
+2088.031 INVEN ('s', 0, 0, 0, '(nothing)', '')
+2088.031 INVEN ('t', 0, 0, 0, '(nothing)', '')
+2088.031 INVEN ('u', 0, 0, 0, '(nothing)', '')
+2088.032 INVEN ('v', 0, 0, 0, '(nothing)', '')
+2088.032 INVEN ('w', 0, 0, 0, '(nothing)', '')
+2088.032 INVEN ('x', 0, 0, 0, '(nothing)', '')
+2089.311 S CUSTOM:'s' 330500000001
+2089.314 MSG Selling a Scroll titled "heaks khonis" (f)..
+2089.314 MSG You eventually agree upon the price..
+2090.068 S PKT_CONFIRM 3e0100
+2090.068 MSG Okay..
+2090.068 MSG You sold a Scroll of Light for 9 gold..
+2090.068 MSG You have no more Scrolls of Light..
+2090.068 INVEN ('f', 70, 1, 5, 'a Scroll titled "jo elprok"', '')
+2090.068 INVEN ('g', 70, 1, 5, 'a Scroll titled "garviv micpo"', '')
+2090.068 INVEN ('h', 70, 1, 5, 'a Scroll titled "xtox ipta sour"', '')
+2090.068 INVEN ('i', 0, 0, 0, '(nothing)', '')
+2090.068 INVEN ('j', 0, 0, 0, '(nothing)', '')
+2090.068 INVEN ('k', 0, 0, 0, '(nothing)', '')
+2090.068 INVEN ('l', 0, 0, 0, '(nothing)', '')
+2090.068 INVEN ('m', 0, 0, 0, '(nothing)', '')
+2090.068 INVEN ('n', 0, 0, 0, '(nothing)', '')
+2090.068 INVEN ('o', 0, 0, 0, '(nothing)', '')
+2090.068 INVEN ('p', 0, 0, 0, '(nothing)', '')
+2090.068 INVEN ('q', 0, 0, 0, '(nothing)', '')
+2090.068 INVEN ('r', 0, 0, 0, '(nothing)', '')
+2090.068 INVEN ('s', 0, 0, 0, '(nothing)', '')
+2090.068 INVEN ('t', 0, 0, 0, '(nothing)', '')
+2090.068 INVEN ('u', 0, 0, 0, '(nothing)', '')
+2090.068 INVEN ('v', 0, 0, 0, '(nothing)', '')
+2090.068 INVEN ('w', 0, 0, 0, '(nothing)', '')
+2090.068 INVEN ('x', 0, 0, 0, '(nothing)', '')
+2091.118 S CUSTOM:'s' 330500000001
+2091.12 MSG Selling a Scroll titled "jo elprok" (f)..
+2091.12 MSG You eventually agree upon the price..
+2091.814 S PKT_CONFIRM 3e0100
+2091.815 MSG Accepted!.
+2091.815 MSG You sold a Scroll of Object Detection for 9 gold..
+2091.815 MSG You have no more Scrolls of Object Detection..
+2091.815 INVEN ('f', 70, 1, 5, 'a Scroll titled "garviv micpo"', '')
+2091.815 INVEN ('g', 70, 1, 5, 'a Scroll titled "xtox ipta sour"', '')
+2091.815 INVEN ('h', 0, 0, 0, '(nothing)', '')
+2091.815 INVEN ('i', 0, 0, 0, '(nothing)', '')
+2091.815 INVEN ('j', 0, 0, 0, '(nothing)', '')
+2091.815 INVEN ('k', 0, 0, 0, '(nothing)', '')
+2091.815 INVEN ('l', 0, 0, 0, '(nothing)', '')
+2091.815 INVEN ('m', 0, 0, 0, '(nothing)', '')
+2091.815 INVEN ('n', 0, 0, 0, '(nothing)', '')
+2091.815 INVEN ('o', 0, 0, 0, '(nothing)', '')
+2091.815 INVEN ('p', 0, 0, 0, '(nothing)', '')
+2091.815 INVEN ('q', 0, 0, 0, '(nothing)', '')
+2091.815 INVEN ('r', 0, 0, 0, '(nothing)', '')
+2091.815 INVEN ('s', 0, 0, 0, '(nothing)', '')
+2091.815 INVEN ('t', 0, 0, 0, '(nothing)', '')
+2091.815 INVEN ('u', 0, 0, 0, '(nothing)', '')
+2091.815 INVEN ('v', 0, 0, 0, '(nothing)', '')
+2091.815 INVEN ('w', 0, 0, 0, '(nothing)', '')
+2091.815 INVEN ('x', 0, 0, 0, '(nothing)', '')
+2093.008 S CUSTOM:'s' 330500000001
+2093.01 MSG Selling a Scroll titled "garviv micpo" (f)..
+2093.01 MSG You eventually agree upon the price..
+2093.668 S PKT_CONFIRM 3e0100
+2093.668 MSG Agreed!.
+2093.668 MSG You sold a Scroll of Treasure Detection for 9 gold..
+2093.668 MSG You have no more Scrolls of Treasure Detection..
+2093.668 INVEN ('f', 70, 1, 5, 'a Scroll titled "xtox ipta sour"', '')
+2093.668 INVEN ('g', 0, 0, 0, '(nothing)', '')
+2093.668 INVEN ('h', 0, 0, 0, '(nothing)', '')
+2093.668 INVEN ('i', 0, 0, 0, '(nothing)', '')
+2093.669 INVEN ('j', 0, 0, 0, '(nothing)', '')
+2093.669 INVEN ('k', 0, 0, 0, '(nothing)', '')
+2093.669 INVEN ('l', 0, 0, 0, '(nothing)', '')
+2093.669 INVEN ('m', 0, 0, 0, '(nothing)', '')
+2093.669 INVEN ('n', 0, 0, 0, '(nothing)', '')
+2093.669 INVEN ('o', 0, 0, 0, '(nothing)', '')
+2093.669 INVEN ('p', 0, 0, 0, '(nothing)', '')
+2093.669 INVEN ('q', 0, 0, 0, '(nothing)', '')
+2093.669 INVEN ('r', 0, 0, 0, '(nothing)', '')
+2093.669 INVEN ('s', 0, 0, 0, '(nothing)', '')
+2093.669 INVEN ('t', 0, 0, 0, '(nothing)', '')
+2093.669 INVEN ('u', 0, 0, 0, '(nothing)', '')
+2093.669 INVEN ('v', 0, 0, 0, '(nothing)', '')
+2093.669 INVEN ('w', 0, 0, 0, '(nothing)', '')
+2093.669 INVEN ('x', 0, 0, 0, '(nothing)', '')
+2094.863 S CUSTOM:'s' 330500000001
+2094.866 MSG Selling a Scroll titled "xtox ipta sour" (f)..
+2094.866 MSG You eventually agree upon the price..
+2095.556 S PKT_CONFIRM 3e0100
+2095.556 MSG Fine..
+2095.556 MSG You sold a Scroll of Blessing for 9 gold..
+2095.556 MSG You have no more Scrolls of Blessing..
+2095.556 INVEN ('f', 0, 0, 0, '(nothing)', '')
+2095.556 INVEN ('g', 0, 0, 0, '(nothing)', '')
+2095.556 INVEN ('h', 0, 0, 0, '(nothing)', '')
+2095.556 INVEN ('i', 0, 0, 0, '(nothing)', '')
+2095.556 INVEN ('j', 0, 0, 0, '(nothing)', '')
+2095.556 INVEN ('k', 0, 0, 0, '(nothing)', '')
+2095.556 INVEN ('l', 0, 0, 0, '(nothing)', '')
+2095.556 INVEN ('m', 0, 0, 0, '(nothing)', '')
+2095.556 INVEN ('n', 0, 0, 0, '(nothing)', '')
+2095.556 INVEN ('o', 0, 0, 0, '(nothing)', '')
+2095.556 INVEN ('p', 0, 0, 0, '(nothing)', '')
+2095.556 INVEN ('q', 0, 0, 0, '(nothing)', '')
+2095.556 INVEN ('r', 0, 0, 0, '(nothing)', '')
+2095.556 INVEN ('s', 0, 0, 0, '(nothing)', '')
+2095.556 INVEN ('t', 0, 0, 0, '(nothing)', '')
+2095.556 INVEN ('u', 0, 0, 0, '(nothing)', '')
+2095.556 INVEN ('v', 0, 0, 0, '(nothing)', '')
+2095.556 INVEN ('w', 0, 0, 0, '(nothing)', '')
+2095.556 INVEN ('x', 0, 0, 0, '(nothing)', '')
+2114.597 S CUSTOM:'.' 4709
+2116.365 S CUSTOM:'.' 4708
+2129.566 EQUIP f 39  Brass Lantern (with 11000 turns of light) {25% off}
+2154.555 S PKT_MESSAGE 2e4f6b2c206261636b20696e
+2154.555 MSG [Dive03] Ok, back in a better place money wise, improved weapon, and.
+2168.713 S PKT_MESSAGE 2e6120576f5220746f206765
+2168.713 MSG [Dive03] a WoR to get back out of the dungeon on the next dive.
+2174.241 MSG [Dive03:Scribe] Nice. When you're done, Ctrl-X ends the recording;.
+2174.64 MSG [Dive03:Scribe] I'll study how you made the money, then the pilot.
+2175.041 MSG [Dive03:Scribe] can take Dive03 again if you like..
+2178.897 EQUIP f 39  Brass Lantern (with 10900 turns of light) {25% off}
+2180.991 S PKT_MESSAGE 2e596f7572207475726e206e
+2180.991 MSG [Dive03] Your turn now.

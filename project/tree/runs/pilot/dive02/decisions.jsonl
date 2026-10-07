@@ -1,0 +1,21 @@
+{"t": 1790383959.426, "kind": "attention", "depth": null, "pos": null, "hp": [0, 1], "what": "started", "detail": "in the game at None (depth)"}
+{"t": 1790383963.53, "kind": "goal", "depth": 0, "pos": [27, 91], "hp": [20, 20], "goal": "shop 5 buy Phase Door:2 buy Cure Light:1"}
+{"t": 1790383963.53, "kind": "move", "depth": 0, "pos": [27, 91], "hp": [20, 20], "goals": 0, "nearest": null, "path": 0, "ok": false}
+{"t": 1790383963.53, "kind": "attention", "depth": 0, "pos": [27, 91], "hp": [20, 20], "what": "goal_failed", "detail": "shop 5 buy Phase Door:2 buy Cure Light:1: can't reach the store"}
+{"t": 1790383979.272, "kind": "attention", "depth": null, "pos": null, "hp": [0, 1], "what": "started", "detail": "in the game at None (depth)"}
+{"t": 1790383983.725, "kind": "goal", "depth": 0, "pos": [27, 91], "hp": [20, 20], "goal": "shop 5 buy Phase Door:2 buy Cure Light:1"}
+{"t": 1790383983.725, "kind": "move", "depth": 0, "pos": [27, 91], "hp": [20, 20], "goals": 0, "nearest": null, "path": 0, "ok": false}
+{"t": 1790383983.726, "kind": "attention", "depth": 0, "pos": [27, 91], "hp": [20, 20], "what": "goal_failed", "detail": "shop 5 buy Phase Door:2 buy Cure Light:1: can't reach the store"}
+{"t": 1790383997.761, "kind": "attention", "depth": null, "pos": null, "hp": [0, 1], "what": "started", "detail": "in the game at None (depth)"}
+{"t": 1790384002.266, "kind": "goal", "depth": 0, "pos": [27, 91], "hp": [20, 20], "goal": "shop 5 buy Phase Door:2 buy Cure Light:1"}
+{"t": 1790384002.266, "kind": "move", "depth": 0, "pos": [27, 91], "hp": [20, 20], "goals": 3, "nearest": [37, 111], "path": 0, "ok": false}
+{"t": 1790384002.266, "kind": "attention", "depth": 0, "pos": [27, 91], "hp": [20, 20], "what": "goal_failed", "detail": "shop 5 buy Phase Door:2 buy Cure Light:1: can't reach the store"}
+{"t": 1790384026.197, "kind": "attention", "depth": null, "pos": null, "hp": [0, 1], "what": "started", "detail": "in the game at None (depth)"}
+{"t": 1790384050.599, "kind": "attention", "depth": null, "pos": null, "hp": [0, 1], "what": "started", "detail": "in the game at None (depth)"}
+{"t": 1790384068.29, "kind": "attention", "depth": null, "pos": null, "hp": [0, 1], "what": "started", "detail": "in the game at None (depth)"}
+{"t": 1790384072.744, "kind": "goal", "depth": 0, "pos": [27, 91], "hp": [20, 20], "goal": "shop 5 buy Phase Door:2 buy Cure Light:1"}
+{"t": 1790384072.759, "kind": "move", "depth": 0, "pos": [27, 91], "hp": [20, 20], "goals": 3, "nearest": [37, 111], "path": 28, "ok": true}
+{"t": 1790384086.443, "kind": "act", "depth": 0, "pos": [37, 111], "hp": [20, 20], "cmd": "walk 1", "why": "enter store 5"}
+{"t": 1790384086.999, "kind": "act", "depth": 0, "pos": [37, 111], "hp": [20, 20], "cmd": "custom p store item=4 value=2 entry=46", "why": "buy 14 Scrolls of Phase Door x2"}
+{"t": 1790384087.554, "kind": "act", "depth": 0, "pos": [37, 111], "hp": [20, 20], "cmd": "leave", "why": "leave store"}
+{"t": 1790384087.554, "kind": "attention", "depth": 0, "pos": [37, 111], "hp": [20, 20], "what": "goal_done", "detail": "shop 5 buy Phase Door:2 buy Cure Light:1: bought 2 x 14 Scrolls of Phase Door @ 23; no Cure Light in stock"}

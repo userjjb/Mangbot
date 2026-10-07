@@ -1,0 +1,1827 @@
+text,count,events
+Looks like any other level.,2240,level.feeling|level.feeling.0
+You enter a maze of down staircases.,1378,level.change.stairs_down
+You enter a maze of up staircases.,1323,level.change.stairs_up
+Your light source is a Wooden Torch (with # turns of light) (f).,1152,item.wield
+Light source was a Wooden Torch (with # turns of light) (f).,1035,item.drop|item.takeoff
+You hit the Cave orc.,333,player.hit_monster
+You hit the Hill orc.,281,player.hit_monster
+You hit the Snaga.,211,player.hit_monster
+You hit the Manes.,154,player.hit_monster
+You hit the Lemure.,134,player.hit_monster
+You hit the Blue worm mass.,127,player.hit_monster
+You hit the Giant black louse.,115,player.hit_monster
+You have slain the Giant black louse.,115,item.count|player.kill
+Light source was a Wooden Torch (with # turns of light) (g).,113,item.drop|item.takeoff
+There is a wall blocking your way.,108,arena.blocked|move.blocked.town_edge|move.blocked.wall
+You failed to pick the lock.,102,door.lockpick_fail
+You hit the Giant flea.,97,player.hit_monster
+You have slain the Giant flea.,97,item.count|player.kill
+There is rubble blocking your way.,92,move.blocked.rubble
+The Hill orc hits you.,91,attack.melee.hit|player.hit_monster.ranged
+You hit the Black orc.,91,player.hit_monster
+You hit the White wolf.,89,player.hit_monster
+The White wolf bites you.,85,attack.melee.hit
+You hit the Pseudo-dragon.,79,player.hit_monster
+You eventually agree upon the price.,78,store.haggle
+You hit the Novice warrior.,72,player.hit_monster
+You miss the Cave orc.,71,player.miss
+You have found # gold pieces worth of copper.,67,item.count|pickup.gold
+You hit the Novice priest.,65,player.hit_monster
+The Cave orc hits you.,64,attack.melee.hit|player.hit_monster.ranged
+You hit the Warg.,64,player.hit_monster
+You hit the Jackal.,58,player.hit_monster
+You have slain the Jackal.,58,item.count|player.kill
+You feel much better.,58,heal.hp|heal.large
+You miss the Hill orc.,57,player.miss
+You hit the Half-orc.,56,player.hit_monster
+You hit the Battle-scarred veteran.,54,player.hit_monster
+You have slain the Snaga.,53,item.count|player.kill
+It fires an arrow!,53,attack.ranged.arrow
+The Manes hits you.,51,attack.melee.hit|player.hit_monster.ranged
+You have destroyed the Blue worm mass.,51,item.count|player.kill
+You have # Scrolls of Phase Door {@r#}.,50,item.count
+You hit the Kobold archer.,49,player.hit_monster
+The Giant black louse bites you.,49,attack.melee.hit
+It was a good hit!,48,player.hit_crit
+You hit the Black ogre.,47,player.hit_monster
+You have slain the Hill orc.,46,item.count|player.kill
+The Lemure hits you.,45,attack.melee.hit|player.hit_monster.ranged
+Your light is growing faint.,45,light.low
+The Yellow mold releases spores at you.,45,attack.melee.hit
+You have slain the Cave orc.,44,item.count|player.kill
+The Black orc hits you.,44,attack.melee.hit|player.hit_monster.ranged
+The Snaga flees in terror!,43,monster.flee
+The Hill orc flees in terror!,43,monster.flee
+You have found # gold pieces worth of silver.,43,item.count|pickup.gold
+It hits you.,43,attack.melee.hit
+The Snaga hits you.,42,attack.melee.hit|player.hit_monster.ranged
+You miss the Snaga.,42,player.miss
+The Cave orc flees in terror!,42,monster.flee
+The Hill orc misses you.,42,attack.melee.miss
+You hit the Large kobold.,42,player.hit_monster
+You hit the Dark hound.,42,player.hit_monster
+You hit the Mean-looking mercenary.,41,player.hit_monster
+The Cave orc misses you.,40,attack.melee.miss
+You have destroyed the Manes.,40,item.count|player.kill
+You hear a door burst open!,39,door.burst
+I see no down staircase here.,38,escape.stairs.refused
+You miss the Lemure.,38,player.miss
+You hit the Orc shaman.,38,player.hit_monster
+You have # Potions of Cure Light Wounds {@q#}.,37,item.count
+You hit the Novice ranger.,37,player.hit_monster
+The Half-orc hits you.,37,attack.melee.hit|player.hit_monster.ranged
+You hit the Fire hound.,37,player.hit_monster
+You hit the Gnome mage.,37,player.hit_monster
+"You hit Grishnakh, the Hill Orc.",35,player.hit_monster
+"You hit Wormtongue, Agent of Saruman.",34,player.hit_monster
+You hit the Swordsman.,34,player.hit_monster
+You hit the Green jelly.,33,player.hit_monster
+Okay.,32,store.haggle
+It was a great hit!,32,player.hit_crit
+The air about you becomes charged...,31,dm.effect|escape.recall_start
+You hit the Novice rogue.,31,player.hit_monster
+You miss the Manes.,31,player.miss
+The White wolf misses you.,31,attack.melee.miss
+Accepted!,30,store.haggle
+You hit Mughash the Kobold Lord.,29,player.hit_monster
+The Uruk hits you.,29,attack.melee.hit|player.hit_monster.ranged
+You hit the Cave spider.,28,player.hit_monster
+The Pseudo-dragon claws you.,28,attack.melee.hit
+You have slain the White wolf.,28,item.count|player.kill
+The Tiger claws you.,28,attack.melee.hit
+You have slain the Novice priest.,27,item.count|player.kill
+You have slain the Novice warrior.,27,item.count|player.kill
+You hit the Dark elven warrior.,27,player.hit_monster
+Agreed!,26,store.haggle
+"You hit Brodda, the Easterling.",26,player.hit_monster
+You hit the Wolf.,26,player.hit_monster
+"Grishnakh, the Hill Orc hits you.",26,attack.melee.hit
+You hit the Killer brown beetle.,26,player.hit_monster
+You hit the Novice mage.,25,player.hit_monster
+"You hit Lagduf, the Snaga.",25,player.hit_monster
+Fine.,24,store.haggle
+The Snaga misses you.,24,attack.melee.miss
+You have picked the lock.,24,door.lockpick_ok|item.count
+You miss the Black orc.,24,player.miss
+The Warg bites you.,23,attack.melee.hit
+The Manes misses you.,23,attack.melee.miss
+You hit the Tengu.,23,player.hit_monster
+You hit the Uruk.,23,player.hit_monster
+Taken!,22,store.haggle
+You feel something roll beneath your feet.,22,floor.item_under
+You have been given a graze.,22,item.count|status.cut.on
+You are no longer bleeding.,22,status.cut.off
+You have slain the Cave spider.,22,item.count|player.kill
+The Novice priest hits you.,21,attack.melee.hit|player.hit_monster.ranged
+The Novice priest flees in terror!,21,monster.flee
+Welcome to level #.,21,exp.level_up
+You miss the Half-orc.,21,player.miss
+You hit the Cave bear.,21,player.hit_monster
+Done!,20,store.haggle
+This level can't be all bad...,20,level.feeling|level.feeling.9
+You hit the Rot jelly.,20,player.hit_monster
+You hit the Large grey snake.,20,player.hit_monster
+The Cave orc wakes up.,20,monster.wake
+The Novice warrior hits you.,20,attack.melee.hit|player.hit_monster.ranged
+The Novice warrior flees in terror!,20,monster.flee
+You hit the Stone troll.,20,player.hit_monster
+You hit the Priest.,20,player.hit_monster
+The Black ogre hits you.,20,attack.melee.hit|player.hit_monster.ranged
+You hit the Blue yeek.,20,player.hit_monster
+The White wolf flees in terror!,20,monster.flee
+You found a trap!,19,trap.found_walk
+This house costs # gold.,19,house.price
+You have slain the Blue yeek.,19,item.count|player.kill
+The Rot jelly misses you.,18,attack.melee.miss
+You hit the Zombified kobold.,18,player.hit_monster
+You hit the Baby black dragon.,18,player.hit_monster
+You hit the King cobra.,18,player.hit_monster
+You hit the Red worm mass.,18,player.hit_monster
+The Blue yeek hits you.,18,attack.melee.hit|player.hit_monster.ranged
+The Black orc misses you.,18,attack.melee.miss
+The Tiger misses you.,18,attack.melee.miss
+The Novice paladin hits you.,18,attack.melee.hit|player.hit_monster.ranged
+You feel yourself yanked upwards!,17,escape.recall_activate
+The Kobold archer fires an arrow!,17,attack.ranged.arrow
+It casts a magic missile.,17,attack.spell.missile
+You have slain the Novice ranger.,17,item.count|player.kill
+You hit the Panther.,17,player.hit_monster
+It blinks away.,17,monster.blink
+The Jackal wakes up.,17,monster.wake
+You hit the Red jelly.,17,player.hit_monster
+It fires an arrow.,17,attack.ranged.arrow
+You hit the Baby white dragon.,17,player.hit_monster
+The Village idiot drools on you.,16,attack.melee.hit
+"Lagduf, the Snaga hits you.",16,attack.melee.hit
+You hit the Hippogriff.,16,player.hit_monster
+You hit the Giant white mouse.,16,player.hit_monster
+You have slain the Giant white mouse.,16,item.count|player.kill
+You miss the White wolf.,16,player.miss
+You hit the Village idiot.,15,player.hit_monster
+You have destroyed the Lemure.,15,item.count|player.kill
+The Giant black louse misses you.,15,attack.melee.miss
+You feel there is something special about this level.,15,level.feeling|level.feeling.1
+The Dark hound breathes darkness.,15,attack.breath.darkness
+You have slain the Black orc.,15,item.count|player.kill
+The Black orc fires an arrow!,15,attack.ranged.arrow
+The Giant flea bites you.,15,attack.melee.hit
+The Manes wakes up.,15,monster.wake
+I see no up staircase here.,14,escape.stairs.refused
+You are confused!,14,status.confused.on
+You feel less confused now.,14,status.confused.off
+You hit the Rattlesnake.,14,player.hit_monster
+The Hill orc wakes up.,14,monster.wake
+You feel yourself yanked downwards!,14,escape.recall_activate
+The Green jelly misses you.,14,attack.melee.miss
+The Wolf bites you.,14,attack.melee.hit
+It mumbles.,14,attack.spell.unknown
+You hit the Squint-eyed rogue.,14,player.hit_monster
+You miss the Pseudo-dragon.,14,player.miss
+You have slain the Dark hound.,14,item.count|player.kill
+The Dark elven priest hits you.,14,attack.melee.hit|player.hit_monster.ranged
+The Tiger bites you.,14,attack.melee.hit
+You miss the Giant flea.,14,player.miss
+You have slain the Warg.,14,item.count|player.kill
+You miss the Novice warrior.,13,player.miss
+You have slain the Novice rogue.,13,item.count|player.kill
+You hit the Skeleton human.,13,player.hit_monster
+The Cave spider wakes up.,13,monster.wake
+The Panther claws you.,13,attack.melee.hit
+You hit it.,13,player.hit_monster
+You fuel your lamp.,13,light.refuel
+You miss the Large kobold.,13,player.miss
+You hit the Baby red dragon.,13,player.hit_monster
+The Black orc flees in terror!,13,monster.flee
+The Zombified orc hits you.,13,attack.melee.hit|player.hit_monster.ranged
+You hit the Blink dog.,13,player.hit_monster
+You hit the Bloodshot eye.,12,player.hit_monster
+You hit the Brown yeek.,12,player.hit_monster
+You miss the Giant black louse.,12,player.miss
+The Novice ranger flees in terror!,12,monster.flee
+The Warg flees in terror!,12,monster.flee
+The Stone troll hits you.,12,attack.melee.hit|player.hit_monster.ranged
+The Black ogre misses you.,12,attack.melee.miss
+The Novice paladin misses you.,12,attack.melee.miss
+The Pseudo-dragon bites you.,12,attack.melee.hit
+You miss the Dark hound.,12,player.miss
+The Cave bear claws you.,12,attack.melee.hit
+You miss the Blue worm mass.,12,player.miss
+The Novice ranger misses you.,12,attack.melee.miss
+The Disenchanter eye gazes at you.,12,attack.melee.hit
+You hit the Master yeek.,12,player.hit_monster
+You miss the Warg.,12,player.miss
+You bought # Potions of Cure Light Wounds for # gold.,11,store.bought|store.floor_buy_ok
+You have slain the Kobold archer.,11,item.count|player.kill
+You have slain the Novice mage.,11,item.count|player.kill
+"Wormtongue, Agent of Saruman misses you.",11,attack.melee.miss
+The Dark elven warrior hits you.,11,attack.melee.hit|player.hit_monster.ranged
+You miss the Mean-looking mercenary.,11,player.miss
+You have slain the Mean-looking mercenary.,11,item.count|player.kill
+You have slain the Wolf.,11,item.count|player.kill
+The Half-orc misses you.,11,attack.melee.miss
+You have slain the Fire hound.,11,item.count|player.kill
+You have # Flasks of oil.,11,item.count
+You miss the Black ogre.,11,player.miss
+You hit the Yellow mold.,11,player.hit_monster
+The Orc shaman hits you.,11,attack.melee.hit|player.hit_monster.ranged
+The Pseudo-dragon misses you.,11,attack.melee.miss
+It breathes darkness.,11,attack.breath.darkness
+You refuse to be frightened.,11,resist.fear|resist.fear.save
+You hit the Dark elven priest.,11,player.hit_monster
+You hit the Zombified orc.,11,player.hit_monster
+You hit the Skeleton orc.,11,player.hit_monster
+You hit the Baby multi-hued dragon.,11,player.hit_monster
+The Dark hound claws you.,11,attack.melee.hit
+The Novice priest wakes up.,10,monster.wake
+You feel strangely lucky...,10,level.feeling|level.feeling.6
+You feel your luck is turning...,10,level.feeling|level.feeling.7
+The Novice warrior misses you.,10,attack.melee.miss
+You hit the Grey icky thing.,10,player.hit_monster
+Darkness surrounds you.,10,light.darkness
+You have slain the Battle-scarred veteran.,10,item.count|player.kill
+You miss the Battle-scarred veteran.,10,player.miss
+You hit the Kobold.,10,player.hit_monster
+You hit the Novice paladin.,10,player.hit_monster
+You hit the Green naga.,10,player.hit_monster
+You are poisoned!,10,status.poisoned.on
+You are no longer poisoned.,10,status.poisoned.off
+The Black orc wakes up.,10,monster.wake
+You hit the Stegocentipede.,10,player.hit_monster
+You have a Scroll of Word of Recall {@R#}.,10,item.count
+"Grishnakh, the Hill Orc misses you.",10,attack.melee.miss
+You have # Potions of Cure Light Wounds.,10,item.count
+You have found # gold pieces worth of garnets.,10,item.count|pickup.gold
+The Clear hound claws you.,10,attack.melee.hit
+You have slain the Gnome mage.,10,item.count|player.kill
+Yipee!,9,store.comment.great
+The Novice mage flees in terror!,9,monster.flee
+The Novice mage hits you.,9,attack.melee.hit|player.hit_monster.ranged
+"Brodda, the Easterling hits you.",9,attack.melee.hit
+The Novice rogue flees in terror!,9,monster.flee
+You have a good feeling...,9,item.count|level.feeling|level.feeling.5
+The Fire hound flees in terror!,9,monster.flee
+You resist the effects!,9,dead_code|resist.morph.save|resist.nexus.save|resist.polymorph|resist.save|resist.sleep.save|resist.slow.save
+The sun has fallen.,9,time.dusk
+The Zombified kobold hits you.,9,attack.melee.hit|player.hit_monster.ranged
+You have slain the Orc shaman.,9,item.count|player.kill
+That tastes good.,9,hunger.eat
+You are terrified!,9,status.afraid.on
+You feel bolder now.,9,status.afraid.off
+The Stegocentipede misses you.,9,attack.melee.miss
+The Stegocentipede bites you.,9,attack.melee.hit
+The Swordsman hits you.,9,attack.melee.hit|player.hit_monster.ranged
+The Tengu blinks away.,9,monster.blink
+You hit the Baby gold dragon.,9,player.hit_monster
+You miss the Killer brown beetle.,9,player.miss
+The Warg misses you.,9,attack.melee.miss
+You hit the Clear icky thing.,8,player.hit_monster
+The Novice priest misses you.,8,attack.melee.miss
+"Wormtongue, Agent of Saruman hits you.",8,attack.melee.hit
+"Lagduf, the Snaga misses you.",8,attack.melee.miss
+"You miss Lagduf, the Snaga.",8,player.miss
+You hit the Black harpy.,8,player.hit_monster
+The Shrieker mushroom patch makes a high pitched shriek.,8,attack.spell.shriek
+The Giant salamander breathes fire.,8,attack.breath.fire
+The Large kobold hits you.,8,attack.melee.hit|player.hit_monster.ranged
+Mughash the Kobold Lord hits you.,8,attack.melee.hit
+The Jackal bites you.,8,attack.melee.hit
+You hit the Giant salamander.,8,player.hit_monster
+The Orc shaman flees in terror!,8,monster.flee
+You hit the White jelly.,8,player.hit_monster
+You hit the Green worm mass.,8,player.hit_monster
+The Dark hound flees in terror!,8,monster.flee
+You bought a Scroll of Word of Recall {#% off} for # gold.,8,store.bought|store.floor_buy_ok
+You hit the Baby green dragon.,8,player.hit_monster
+The Black harpy claws you.,8,attack.melee.hit
+You miss the Uruk.,8,player.miss
+You bought # Scrolls of Phase Door for # gold.,7,store.bought|store.floor_buy_ok
+I don't want that!,7,store.sell.fail
+You have slain the Village idiot.,7,item.count|player.kill
+You hit the Rock lizard.,7,player.hit_monster
+The Kobold archer flees in terror!,7,monster.flee
+You hit the Wood spider.,7,player.hit_monster
+You bought a Scroll of Word of Recall for # gold.,7,store.bought|store.floor_buy_ok
+The Lemure misses you.,7,attack.melee.miss
+The Dark elven warrior misses you.,7,attack.melee.miss
+You have no more Scrolls of Word of Recall.,7,item.count
+The sun has risen.,7,time.dawn
+You hit the Giant black ant.,7,player.hit_monster
+You hit the Wild cat.,7,player.hit_monster
+You have been stunned.,7,item.count|status.stun.on
+You are no longer stunned.,7,status.stun.off
+You hit the Disenchanter mold.,7,player.hit_monster
+You hit the Copperhead snake.,7,player.hit_monster
+You have found # gold pieces worth of gold.,7,item.count|pickup.gold
+You hit the White worm mass.,7,player.hit_monster
+You have slain the Kobold.,7,item.count|player.kill
+You hit the Large yellow snake.,7,player.hit_monster
+You like the look of this place...,7,level.feeling|level.feeling.8
+You have destroyed the Red worm mass.,7,item.count|player.kill
+You hit the Green mold.,7,player.hit_monster
+"You miss Wormtongue, Agent of Saruman.",7,player.miss
+You hit the Metallic green centipede.,7,player.hit_monster
+You are getting hungry.,7,hunger.hungry
+You are no longer hungry.,7,hunger.ok
+You have # Rations of Food.,7,item.count
+You hit the Red mold.,7,player.hit_monster
+It casts a fearful illusion.,7,attack.spell.scare
+You are too afraid to attack the Novice paladin!,7,attack.refused.afraid
+The Dark hound bites you.,7,attack.melee.hit
+Wow. I'm going to name my new villa in your honour.,6,store.comment.great
+You have # Rations of Food (a).,6,item.count|pickup
+You hit the Blubbering idiot.,6,player.hit_monster
+You have slain the Blubbering idiot.,6,item.count|player.kill
+You have slain the Clear icky thing.,6,item.count|player.kill
+The Kobold archer hits you.,6,attack.melee.hit|player.hit_monster.ranged
+You miss the Large grey snake.,6,player.miss
+There is a puff of smoke!,6,monster.thief.teleport
+You hit the Creeping copper coins.,6,player.hit_monster
+The Cave orc turns to fight!,6,monster.fear.off
+You see a Dagger (#d#).,6,pickup.see
+The Spotted jelly misses you.,6,attack.melee.miss
+You have destroyed the Zombified kobold.,6,item.count|player.kill
+You hit the Boil-covered wretch.,6,player.hit_monster
+You have slain the Boil-covered wretch.,6,item.count|player.kill
+The Baby black dragon claws you.,6,attack.melee.hit
+You are blind!,6,status.blind.on
+You can see again.,6,status.blind.off
+You hit the Fruit bat.,6,player.hit_monster
+You have slain the Fruit bat.,6,item.count|player.kill
+The Wolf flees in terror!,6,monster.flee
+The Fruit bat bites you.,6,attack.melee.hit
+The Fire hound claws you.,6,attack.melee.hit
+It magically summons help!,6,summon.monster
+You have slain the Squint-eyed rogue.,6,item.count|player.kill
+You hit the Aimless-looking merchant.,6,player.hit_monster
+You miss Mughash the Kobold Lord.,6,player.miss
+You hit the Small kobold.,6,player.hit_monster
+The Novice rogue wakes up.,6,monster.wake
+You have slain the Metallic green centipede.,6,item.count|player.kill
+You hit the Giant green frog.,6,player.hit_monster
+You hit the Illusionist.,6,player.hit_monster
+The Novice priest casts a fearful illusion.,6,attack.spell.scare
+You have slain the Cave bear.,6,item.count|player.kill
+You hit the Giant spider.,6,player.hit_monster
+It gestures in shadow.,6,attack.spell.darkness
+You have no more Scrolls of Word of Recall {@R#}.,6,item.count
+The Novice paladin casts a fearful illusion.,6,attack.spell.scare
+It points at you and curses.,6,attack.spell.cause_1
+The Kobold shaman hits you.,6,attack.melee.hit|player.hit_monster.ranged
+The Tengu hits you.,6,attack.melee.hit|player.hit_monster.ranged
+You miss the Jackal.,6,player.miss
+The Giant flea misses you.,6,attack.melee.miss
+The Uruk fires an arrow!,6,attack.ranged.arrow
+The Novice ranger fires an arrow.,6,attack.ranged.arrow
+The Novice ranger hits you.,6,attack.melee.hit|player.hit_monster.ranged
+You hit the Giant white tick.,6,player.hit_monster
+You miss the Swordsman.,6,player.miss
+The White jelly misses you.,6,attack.melee.miss
+The Gnome mage flees in terror!,6,monster.flee
+Dive# has entered the game.,6,player.join
+You've made my day!,5,store.comment.good
+The shopkeeper smiles gleefully.,5,store.comment.great
+You bought # Flasks of oil for # gold.,5,store.bought|store.floor_buy_ok
+You have # Scrolls of Phase Door {@r#} (f).,5,item.count|pickup
+You hit the Filthy street urchin.,5,player.hit_monster
+You have slain the Filthy street urchin.,5,item.count|player.kill
+You are no longer full.,5,hunger.not_full
+You have slain the Rock lizard.,5,item.count|player.kill
+You hit the Grey mushroom patch.,5,player.hit_monster
+You have destroyed the Grey mushroom patch.,5,item.count|player.kill
+The Novice mage wakes up.,5,monster.wake
+The Large grey snake flees in terror!,5,monster.flee
+You have slain the Large grey snake.,5,item.count|player.kill
+The Rattlesnake flees in terror!,5,monster.flee
+You hit the Skeleton kobold.,5,player.hit_monster
+The Novice warrior wakes up.,5,monster.wake
+"You miss Brodda, the Easterling.",5,player.miss
+The Lemure wakes up.,5,monster.wake
+You have found a secret door.,5,door.found_secret|item.count
+You have slain the Wild cat.,5,item.count|player.kill
+You hit the Spotted jelly.,5,player.hit_monster
+You hit the Pitiful-looking beggar.,5,player.hit_monster
+You have slain the Pitiful-looking beggar.,5,item.count|player.kill
+You bought # Scrolls of Word of Recall for # gold.,5,store.bought|store.floor_buy_ok
+You have slain the Grey icky thing.,5,item.count|player.kill
+You miss the Fire hound.,5,player.miss
+The Stone troll bites you.,5,attack.melee.hit
+The Novice mage misses you.,5,attack.melee.miss
+Your light has gone out!,5,light.out
+You have slain the Aimless-looking merchant.,5,item.count|player.kill
+The Giant white mouse bites you.,5,attack.melee.hit
+You see a Scroll of Summon Monster.,5,pickup.see
+You have slain the Large kobold.,5,item.count|player.kill
+You have slain the Black ogre.,5,item.count|player.kill
+The Black ogre wakes up.,5,monster.wake
+You hit the Scruffy looking hobbit.,5,player.hit_monster
+You have slain the Small kobold.,5,item.count|player.kill
+You hit the Blubbering icky thing.,5,player.hit_monster
+You have slain the Novice paladin.,5,item.count|player.kill
+The Zombified kobold misses you.,5,attack.melee.miss
+You miss the Green naga.,5,player.miss
+You hit the Kobold shaman.,5,player.hit_monster
+You have slain the Kobold shaman.,5,item.count|player.kill
+The Novice rogue misses you.,5,attack.melee.miss
+The Pseudo-dragon flees in terror!,5,monster.flee
+The Blue yeek misses you.,5,attack.melee.miss
+You bought # Scrolls of Phase Door {#% off} for # gold.,5,store.bought|store.floor_buy_ok
+You have slain the Swordsman.,5,item.count|player.kill
+You miss the Novice priest.,5,player.miss
+The Panther misses you.,5,attack.melee.miss
+The Cave bear misses you.,5,attack.melee.miss
+You hit the Cave lizard.,5,player.hit_monster
+The Orc shaman misses you.,5,attack.melee.miss
+The Phase spider bites you.,5,attack.melee.hit
+You hit the Tiger.,5,player.hit_monster
+You have # Potions of Cure Serious Wounds.,5,item.count
+You hit the Black naga.,5,player.hit_monster
+You miss the Cave bear.,5,player.miss
+You hit the Blue jelly.,5,player.hit_monster
+The Swordsman misses you.,5,attack.melee.miss
+You miss the Zombified human.,5,player.miss
+It touches you.,5,attack.melee.hit
+You feel very clumsy.,5,stat.drain
+It wails at you.,5,attack.melee.hit
+You miss the Baby white dragon.,5,player.miss
+The Baby white dragon misses you.,5,attack.melee.miss
+The Wood spider wakes up.,5,monster.wake
+You have slain the Wood spider.,5,item.count|player.kill
+Dive# has left the game.,5,player.leave
+The Village idiot flees in terror!,4,monster.flee
+The Rot jelly touches you.,4,attack.melee.hit
+You miss the Rot jelly.,4,player.miss
+You miss the Rattlesnake.,4,player.miss
+Your purse feels lighter.,4,gold.stolen
+# coins were stolen!,4,gold.stolen
+You see a Robe [#].,4,pickup.see
+You hit the Night lizard.,4,player.hit_monster
+You have a Scroll of Word of Recall.,4,item.count
+You have # Scrolls of Word of Recall (g).,4,item.count|pickup
+You have slain the Black harpy.,4,item.count|player.kill
+You have slain the Dark elven warrior.,4,item.count|player.kill
+The Snaga wakes up.,4,monster.wake
+The Skeleton human hits you.,4,attack.melee.hit|player.hit_monster.ranged
+You have slain the Giant black ant.,4,item.count|player.kill
+You are covered in acid!,4,attack.melee.effect.acid
+You hit the Black mamba.,4,player.hit_monster
+You hit the Scruffy little dog.,4,player.hit_monster
+You have slain the Scruffy little dog.,4,item.count|player.kill
+You miss the Wolf.,4,player.miss
+You have slain the Copperhead snake.,4,item.count|player.kill
+You have slain the Panther.,4,item.count|player.kill
+You have slain the Rattlesnake.,4,item.count|player.kill
+You have slain the Half-orc.,4,item.count|player.kill
+You are enveloped in flames!,4,attack.melee.effect.fire|damage.element.fire
+You miss the Stone troll.,4,player.miss
+The Gnome mage hits you.,4,attack.melee.hit|player.hit_monster.ranged
+You have killed it.,4,item.count|player.kill
+It claws you.,4,attack.melee.hit
+It bites you.,4,attack.melee.hit
+The Squint-eyed rogue hits you.,4,attack.melee.hit|player.hit_monster.ranged
+You hit the Mangy-looking leper.,4,player.hit_monster
+You have slain the Mangy-looking leper.,4,item.count|player.kill
+You see a Potion of Cure Light Wounds.,4,pickup.see
+The Squint-eyed rogue misses you.,4,attack.melee.miss
+"You hit the Singing, happy drunk.",4,player.hit_monster
+You have destroyed the White worm mass.,4,item.count|player.kill
+You see a Scroll of Phase Door.,4,pickup.see
+You hear a sudden stirring in the distance!,4,monster.aggravate.wake
+The Kobold archer wakes up.,4,monster.wake
+You see a Potion of Slow Poison.,4,pickup.see
+You have slain the Brown yeek.,4,item.count|player.kill
+The Priest hits you.,4,attack.melee.hit|player.hit_monster.ranged
+The Large kobold flees in terror!,4,monster.flee
+You miss the Kobold archer.,4,player.miss
+The Black ogre flees in terror!,4,monster.flee
+You have slain the Scruffy looking hobbit.,4,item.count|player.kill
+The Small kobold hits you.,4,attack.melee.hit|player.hit_monster.ranged
+The Novice paladin points at you and curses.,4,attack.spell.cause_1
+You miss the Zombified kobold.,4,player.miss
+You see Hard Leather Armour [#].,4,pickup.see
+The Metallic green centipede wakes up.,4,monster.wake
+The White jelly touches you.,4,attack.melee.hit
+You have destroyed the Green worm mass.,4,item.count|player.kill
+The Novice rogue hits you.,4,attack.melee.hit|player.hit_monster.ranged
+You have slain the Giant green frog.,4,item.count|player.kill
+You bastard!,4,store.comment.worthless
+You have slain the Pseudo-dragon.,4,item.count|player.kill
+"You miss Grishnakh, the Hill Orc.",4,player.miss
+The Wild cat claws you.,4,attack.melee.hit
+The Cave bear bites you.,4,attack.melee.hit
+The Cave bear flees in terror!,4,monster.flee
+The Novice priest points at you and curses.,4,attack.spell.cause_1
+It teleports away.,4,monster.teleport
+You hit the Crow.,4,player.hit_monster
+The Dark elven priest misses you.,4,attack.melee.miss
+The Black harpy misses you.,4,attack.melee.miss
+You hit the Clear hound.,4,player.hit_monster
+Inscribing # Scrolls of Word of Recall {#% off}.,4,item.inscribe
+The Red jelly misses you.,4,attack.melee.miss
+You miss the Tengu.,4,player.miss
+The Swordsman flees in terror!,4,monster.flee
+The Zombified human hits you.,4,attack.melee.hit|player.hit_monster.ranged
+You hit the Zombified human.,4,player.hit_monster
+You hit the Dark elven mage.,4,player.hit_monster
+The Uruk misses you.,4,attack.melee.miss
+You hit the Giant white centipede.,4,player.hit_monster
+The Crow bites you.,4,attack.melee.hit
+The Baby white dragon claws you.,4,attack.melee.hit
+The Baby gold dragon claws you.,4,attack.melee.hit
+You hit the Red naga.,4,player.hit_monster
+The Killer brown beetle flees in terror!,4,monster.flee
+You have slain the Killer brown beetle.,4,item.count|player.kill
+You hit the Nighthawk.,4,player.hit_monster
+The Blink dog blinks away.,4,monster.blink
+The Blink dog flees in terror!,4,monster.flee
+You hit the Disenchanter eye.,4,player.hit_monster
+You miss the Gnome mage.,4,player.miss
+The Killer brown beetle bites you.,4,attack.melee.hit
+The Giant red scorpion stings you.,4,attack.melee.hit
+You feel very weak.,4,stat.drain
+You hit the Large brown snake.,4,player.hit_monster
+You miss the Cave spider.,4,player.miss
+"You hit Grip, Farmer Maggot's dog.",4,player.hit_monster
+"You sold a Tulwar (#d#) (+#,+#) for # gold.",3,store.sold
+"You have no more Tulwars (#d#) (+#,+#).",3,item.count
+The shopkeeper beats his head against the counter.,3,store.comment.worthless
+The shopkeeper jumps for joy.,3,store.comment.great
+You bought # Rations of Food for # gold.,3,store.bought|store.floor_buy_ok
+You have # Potions of Cure Light Wounds (c).,3,item.count|pickup
+The Green worm mass wakes up.,3,monster.wake
+You miss the Novice mage.,3,player.miss
+You hit the Giant red frog.,3,player.hit_monster
+You have # Potions of Cure Light Wounds {@q#} (c).,3,item.count|pickup
+"Brodda, the Easterling misses you.",3,attack.melee.miss
+The Dark elven warrior flees in terror!,3,monster.flee
+The Brown yeek hits you.,3,attack.melee.hit|player.hit_monster.ranged
+The Brown yeek misses you.,3,attack.melee.miss
+You have a Scroll of Word of Recall (g).,3,item.count|pickup
+You have destroyed the Skeleton human.,3,item.count|player.kill
+The Rock lizard bites you.,3,attack.melee.hit
+You see a Cutlass (#d#).,3,pickup.see
+The Spotted jelly touches you.,3,attack.melee.hit
+You have destroyed the Green jelly.,3,item.count|player.kill
+You see a Light Crossbow (x#).,3,pickup.see
+You cannot run in that direction.,3,command.refused.run_blocked
+The Grey icky thing flees in terror!,3,monster.flee
+The Half-orc flees in terror!,3,monster.flee
+You hit the Giant yellow centipede.,3,player.hit_monster
+You have slain the Giant yellow centipede.,3,item.count|player.kill
+It breathes fire.,3,attack.breath.fire
+It casts a frost bolt.,3,attack.spell.bolt.frost
+You hear something appear nearby.,3,summon.heard
+"It mumbles, and you hear puzzling noises.",3,attack.spell.conf
+You disbelieve the feeble spell.,3,resist.confuse|resist.confuse.save
+The Mean-looking mercenary hits you.,3,attack.melee.hit|player.hit_monster.ranged
+"You have slain the Singing, happy drunk.",3,item.count|player.kill
+You see a Ration of Food.,3,pickup.see
+The Priest flees in terror!,3,monster.flee
+The Large kobold misses you.,3,attack.melee.miss
+You have # Potions of Cure Light Wounds {@q#} (e).,3,item.count|pickup
+You are paralyzed!,3,status.paralyzed.on
+You can move again.,3,status.paralyzed.off
+You have slain the Large yellow snake.,3,item.count|player.kill
+You have destroyed the Yellow mold.,3,item.count|player.kill
+You see a Scroll of Light.,3,pickup.see
+You see a Slimy Mushroom.,3,pickup.see
+You see a Scroll of Identify.,3,pickup.see
+You hit the Large white snake.,3,player.hit_monster
+You have slain the Large white snake.,3,item.count|player.kill
+You see a Scroll of Satisfy Hunger.,3,pickup.see
+You hit the Raven.,3,player.hit_monster
+The Giant salamander flees in terror!,3,monster.flee
+You have slain the Giant salamander.,3,item.count|player.kill
+You destroy a Dagger (#d#) {average}.,3,item.destroy
+You have no more Daggers (#d#) {average}.,3,item.count
+You destroy a Slimy Mushroom.,3,item.destroy
+You have no more Slimy Mushrooms.,3,item.count
+The Kobold misses you.,3,attack.melee.miss
+The Green naga flees in terror!,3,monster.flee
+You stand your ground!,3,resist.fear
+The Grey icky thing touches you.,3,attack.melee.hit
+You see a Book of Magic Spells [Magic for Beginners].,3,pickup.see
+You hit the Shrieker mushroom patch.,3,player.hit_monster
+You have destroyed the Shrieker mushroom patch.,3,item.count|player.kill
+You have Hard Leather Armour [#] (q).,3,item.count|pickup
+You see a White Mushroom.,3,pickup.see
+The Kobold wakes up.,3,monster.wake
+You see a Bubbling Potion.,3,pickup.see
+"You sold Hard Leather Armour (-#) [#,+#] for # gold.",3,store.sold
+Damn!,3,store.comment.bad
+"You have no more Hard Leather Armours (-#) [#,+#].",3,item.count
+Inscribing # Scrolls of Word of Recall.,3,item.inscribe
+The Stegocentipede stings you.,3,attack.melee.hit
+You have # Potions of Cure Light Wounds (e).,3,item.count|pickup
+The Orc shaman casts a magic missile.,3,attack.spell.missile
+You fell into a pit!,3,trap.pit
+You have slain the Cave lizard.,3,item.count|player.kill
+"You hit Boldor, King of the Yeeks.",3,player.hit_monster
+You miss it.,3,player.miss
+You bought # Potions of Cure Serious Wounds for # gold.,3,store.bought|store.floor_buy_ok
+You have slain the Crow.,3,item.count|player.kill
+You miss the Brown yeek.,3,player.miss
+The Black harpy bites you.,3,attack.melee.hit
+The Clear hound bites you.,3,attack.melee.hit
+You have # Scrolls of Word of Recall {#% off} (g).,3,item.count|pickup
+You have destroyed the Skeleton orc.,3,item.count|player.kill
+You see # Iron Spikes.,3,pickup.see
+You see a Staff of Detect Invisible.,3,pickup.see
+The Skeleton orc hits you.,3,attack.melee.hit|player.hit_monster.ranged
+The Wolf misses you.,3,attack.melee.miss
+The Tengu commands you to return.,3,escape.teleport_to.forced
+It commands you to return.,3,escape.teleport_to.forced
+The Tengu misses you.,3,attack.melee.miss
+You have destroyed the Tengu.,3,item.count|player.kill
+The Pseudo-dragon creates a mesmerising illusion.,3,attack.spell.conf
+The Dark elven mage hits you.,3,attack.melee.hit|player.hit_monster.ranged
+The Dark elven mage misses you.,3,attack.melee.miss
+The Uruk flees in terror!,3,monster.flee
+The Hill orc turns to fight!,3,monster.fear.off
+You have slain the Dark elven priest.,3,item.count|player.kill
+The King cobra flees in terror!,3,monster.flee
+You have slain the King cobra.,3,item.count|player.kill
+You see a Set of Leather Gloves [#].,3,pickup.see
+The shopkeeper sniggers.,3,store.comment.good
+You hit the Giant white ant.,3,player.hit_monster
+You miss the Novice ranger.,3,player.miss
+The Wood spider bites you.,3,attack.melee.hit
+The Wood spider misses you.,3,attack.melee.miss
+The Baby white dragon bites you.,3,attack.melee.hit
+The Dark hound misses you.,3,attack.melee.miss
+The Giant red scorpion misses you.,3,attack.melee.miss
+The Giant red scorpion bites you.,3,attack.melee.hit
+Your Dagger glows brightly!,3,item.artifact_created|item.enchant.start
+You hear someone sobbing...,2,store.comment.worthless
+You have # Flasks of oil (a).,2,item.count|pickup
+You have no more Scrolls of Magic Mapping.,2,item.count
+Inscribing # Potions of Cure Light Wounds.,2,item.inscribe
+You miss the Clear icky thing.,2,player.miss
+You hit the Giant white rat.,2,player.hit_monster
+You have slain the Giant white rat.,2,item.count|player.kill
+You have slain the Bloodshot eye.,2,item.count|player.kill
+The Novice mage creates a mesmerising illusion.,2,attack.spell.conf
+You have destroyed the Rot jelly.,2,item.count|player.kill
+The Rattlesnake wakes up.,2,monster.wake
+"Wormtongue, Agent of Saruman wakes up.",2,monster.wake
+"Wormtongue, Agent of Saruman touches you.",2,attack.melee.hit
+"Wormtongue, Agent of Saruman insults you!",2,attack.melee.harmless
+The Skeleton kobold hits you.,2,attack.melee.hit|player.hit_monster.ranged
+You have destroyed the Skeleton kobold.,2,item.count|player.kill
+The Novice paladin wakes up.,2,monster.wake
+The Night lizard flees in terror!,2,monster.flee
+You have slain the Night lizard.,2,item.count|player.kill
+Inscribing # Scrolls of Phase Door.,2,item.inscribe
+The Hippogriff misses you.,2,attack.melee.miss
+"You are wielding a Main Gauche (#d#) (+#,+#) (a).",2,item.wield
+You miss the Dark elven warrior.,2,player.miss
+You have a Potion of Cure Light Wounds {@q#}.,2,item.count
+Cool!,2,store.comment.good
+You have a Scroll of Word of Recall {#% off}.,2,item.count
+It breathes sound.,2,attack.breath.sound
+Your Metal Cap is damaged!,2,item.damage.acid
+The Baby black dragon bites you.,2,attack.melee.hit
+The Baby black dragon flees in terror!,2,monster.flee
+You hit the Homunculus.,2,player.hit_monster
+The Panther flees in terror!,2,monster.flee
+The Giant black dragon fly breathes acid.,2,attack.breath.acid
+You miss the Grey icky thing.,2,player.miss
+Your Hard Leather Armour is damaged!,2,item.damage.acid
+The Umber hulk hits you.,2,attack.melee.hit|player.hit_monster.ranged
+The Fire hound misses you.,2,attack.melee.miss
+The Fire hound breathes fire.,2,attack.breath.fire
+You have slain the Stone troll.,2,item.count|player.kill
+The Gnome mage gestures in shadow.,2,attack.spell.darkness
+You die.,2,player.death
+The Squint-eyed rogue touches you.,2,attack.melee.hit
+You grab hold of your backpack!,2,item.stolen.saved
+The Squint-eyed rogue insults you!,2,attack.melee.harmless
+"You bought a Small Leather Shield [#,+#] for # gold.",2,store.bought|store.floor_buy_ok
+"You bought a Hard Leather Cap [#,+#] {#% off} for # gold.",2,store.bought|store.floor_buy_ok
+"You bought a Set of Leather Gloves [#,+#] for # gold.",2,store.bought|store.floor_buy_ok
+"You bought a Cloak [#,+#] for # gold.",2,store.bought|store.floor_buy_ok
+"You are wearing a Cloak [#,+#] (h).",2,item.wield
+"You are wearing a Small Leather Shield [#,+#] (i).",2,item.wield
+"You are wearing a Hard Leather Cap [#,+#] {#% off} (j).",2,item.wield
+"You are wearing a Set of Leather Gloves [#,+#] (k).",2,item.wield
+The Squint-eyed rogue flees in terror!,2,monster.flee
+You have # Scrolls of Phase Door (d).,2,item.count|pickup
+The Mangy-looking leper begs you for money.,2,attack.melee.harmless
+You see a Flask of oil.,2,pickup.see
+You have # Flasks of oil (b).,2,item.count|pickup
+You have # Scrolls of Phase Door {@r#} (e).,2,item.count|pickup
+You see a Cloak [#].,2,pickup.see
+The Giant white mouse wakes up.,2,monster.wake
+You see a Black Mushroom.,2,pickup.see
+The Brown yeek wakes up.,2,monster.wake
+You see a Pair of Hard Leather Boots [#].,2,pickup.see
+You see a Rapier (#d#).,2,pickup.see
+The Priest misses you.,2,attack.melee.miss
+You have slain the Priest.,2,item.count|player.kill
+You see a Tulwar (#d#).,2,pickup.see
+The Giant salamander wakes up.,2,monster.wake
+The White wolf wakes up.,2,monster.wake
+The Kobold archer misses you.,2,attack.melee.miss
+You miss the Baby red dragon.,2,player.miss
+The Baby red dragon claws you.,2,attack.melee.hit
+Mughash the Kobold Lord flees in terror!,2,monster.flee
+You have no more Potions of Heroism.,2,item.count
+The shopkeeper howls in agony!,2,store.comment.worthless
+You sold a Potion of Water for # gold.,2,store.sold
+The shopkeeper curses at you.,2,store.comment.bad
+You have no more Potions of Water.,2,item.count
+You destroy a Scroll of Summon Monster.,2,item.destroy
+You have no more Scrolls of Summon Monster.,2,item.count
+You have # Flasks of oil (c).,2,item.count|pickup
+The Illusionist stares deep into your eyes!,2,attack.spell.hold
+The Illusionist misses you.,2,attack.melee.miss
+The Illusionist teleports away.,2,monster.teleport
+The Scruffy looking hobbit hits you.,2,attack.melee.hit|player.hit_monster.ranged
+The Scruffy looking hobbit misses you.,2,attack.melee.miss
+The Large yellow snake flees in terror!,2,monster.flee
+The Small kobold wakes up.,2,monster.wake
+The Blubbering icky thing wakes up.,2,monster.wake
+The Blubbering icky thing flees in terror!,2,monster.flee
+You have slain the Blubbering icky thing.,2,item.count|player.kill
+You see a Scroll of Treasure Detection.,2,pickup.see
+The Metallic blue centipede wakes up.,2,monster.wake
+You see a Slime Mold.,2,pickup.see
+The Red worm mass wakes up.,2,monster.wake
+You have a Slimy Mushroom (d).,2,item.count|pickup
+You see a Copper Wand.,2,pickup.see
+You have slain the Raven.,2,item.count|player.kill
+The Green mold wakes up.,2,monster.wake
+You miss the Giant salamander.,2,player.miss
+The Giant salamander misses you.,2,attack.melee.miss
+You see # Bolts (#d#).,2,pickup.see
+The Novice paladin flees in terror!,2,monster.flee
+You see Soft Studded Leather [#].,2,pickup.see
+The White worm mass wakes up.,2,monster.wake
+The Green naga misses you.,2,attack.melee.miss
+You have slain the Green naga.,2,item.count|player.kill
+The Grey icky thing wakes up.,2,monster.wake
+"You see a Scroll titled ""kliwex potri"" {tried}.",2,pickup.see
+The Radiation eye wakes up.,2,monster.wake
+You see a Whip (#d#).,2,pickup.see
+You destroy # Bolts (#d#) {average}.,2,item.destroy
+You have no more Bolts (#d#) {average}.,2,item.count
+You destroy a Whip (#d#) {average}.,2,item.destroy
+You have no more Whips (#d#) {average}.,2,item.count
+You feel the Hard Leather Armour (q) in your pack is average...,2,pseudoid.pack
+The Copperhead snake flees in terror!,2,monster.flee
+The Copperhead snake wakes up.,2,monster.wake
+The Copperhead snake misses you.,2,attack.melee.miss
+You hit the Spotted mushroom patch.,2,player.hit_monster
+You have destroyed the Spotted mushroom patch.,2,item.count|player.kill
+You have destroyed the White jelly.,2,item.count|player.kill
+The White harpy claws you.,2,attack.melee.hit
+You hit the White harpy.,2,player.hit_monster
+You have slain the White harpy.,2,item.count|player.kill
+You hit the Salamander.,2,player.hit_monster
+You have slain the Salamander.,2,item.count|player.kill
+I think I'll retire!,2,store.comment.great
+Selling Hard Leather Armour [#] {average} (j).,2,store.sell
+You have no more Scrolls of Identify.,2,item.count
+You have a Dagger (#d#) (k).,2,item.count|pickup
+You fall into a spiked pit!,2,trap.pit_spiked
+You are impaled!,2,status.cut.on
+You feel the Dagger (k) in your pack is average...,2,pseudoid.pack
+It drains power from your muscles!,2,attack.spell.slow
+"Boldor, King of the Yeeks casts a spell, burning your eyes!",2,attack.spell.blind
+You miss the Stegocentipede.,2,player.miss
+"Grishnakh, the Hill Orc flees in terror!",2,monster.flee
+The Metallic green centipede crawls on you.,2,attack.melee.hit
+You miss the Cave lizard.,2,player.miss
+You miss the Giant spider.,2,player.miss
+The Giant spider bites you.,2,attack.melee.hit
+The Giant spider misses you.,2,attack.melee.miss
+You are full!,2,hunger.full
+You have a Ration of Food.,2,item.count
+"Wormtongue, Agent of Saruman makes obscene gestures!",2,attack.melee.harmless
+The Baby green dragon claws you.,2,attack.melee.hit
+"Boldor, King of the Yeeks misses you.",2,attack.melee.miss
+You hit a teleport trap!,2,escape.teleport
+You have # Potions of Cure Serious Wounds (f).,2,item.count|pickup
+You see # Rounded Pebbles (#d#).,2,pickup.see
+It points at you and curses horribly.,2,attack.spell.cause_2
+The Dark elven priest creates a mesmerising illusion.,2,attack.spell.conf
+"The Dark elven priest casts a spell, burning your eyes!",2,attack.spell.blind
+You miss the Dark elven priest.,2,player.miss
+The Dark elven priest flees in terror!,2,monster.flee
+You see a Staff of Sleep Monsters.,2,pickup.see
+You miss the Zombified orc.,2,player.miss
+The Zombified orc misses you.,2,attack.melee.miss
+You have destroyed the Zombified orc.,2,item.count|player.kill
+The Black harpy flees in terror!,2,monster.flee
+The Phase spider commands you to return.,2,escape.teleport_to.forced
+The Phase spider blinks away.,2,monster.blink
+The Priest casts a fearful illusion.,2,attack.spell.scare
+The Priest magically summons help!,2,summon.monster
+The Clear hound misses you.,2,attack.melee.miss
+You have slain the Clear hound.,2,item.count|player.kill
+You have a Potion of Cure Serious Wounds.,2,item.count
+You have no more Potions of Cure Serious Wounds.,2,item.count
+You hit the Phase spider.,2,player.hit_monster
+"You sold a Broad Sword (#d#) (+#,+#) for # gold.",2,store.sold
+"You have no more Broad Swords (#d#) (+#,+#).",2,item.count
+You are too afraid to attack the Kobold shaman!,2,attack.refused.afraid
+The Kobold shaman misses you.,2,attack.melee.miss
+The Kobold shaman creates a mesmerising illusion.,2,attack.spell.conf
+You are too confused!,2,command.refused.confused|item.use.cant_confused
+You have a Flask of oil.,2,item.count
+You see a Magenta Potion.,2,pickup.see
+You see a Rosewood Staff.,2,pickup.see
+The Black naga flees in terror!,2,monster.flee
+You have slain the Black naga.,2,item.count|player.kill
+You miss the Kobold shaman.,2,player.miss
+You miss the Fruit bat.,2,player.miss
+The Cave lizard bites you.,2,attack.melee.hit
+You have destroyed the Red jelly.,2,item.count|player.kill
+The Cave bear wakes up.,2,monster.wake
+The Giant black ant flees in terror!,2,monster.flee
+You hit the Clear worm mass.,2,player.hit_monster
+The Jackal misses you.,2,attack.melee.miss
+The Zombified human misses you.,2,attack.melee.miss
+"You sold a Robe [#,+#] for # gold.",2,store.sold
+"You have no more Robes [#,+#].",2,item.count
+You sold a Staff of Object Location (# charges) for # gold.,2,store.sold
+You have no more Staffs of Object Location (# charges).,2,item.count
+You sold a Potion of Confusion for # gold.,2,store.sold
+You have no more Potions of Confusion.,2,item.count
+You have slain the Uruk.,2,item.count|player.kill
+The Orc captain misses you.,2,attack.melee.miss
+You have a Scroll of Word of Recall {#% off} (g).,2,item.count|pickup
+You have slain the Giant white centipede.,2,item.count|player.kill
+The King cobra bites you.,2,attack.melee.hit
+You have slain the Baby white dragon.,2,item.count|player.kill
+The Baby gold dragon bites you.,2,attack.melee.hit
+You see a Potion of Slime Mold Juice.,2,pickup.see
+The Killer brown beetle wakes up.,2,monster.wake
+You have slain the Giant white ant.,2,item.count|player.kill
+The Novice ranger casts a magic missile.,2,attack.spell.missile
+You have a very good feeling...,2,item.count|level.feeling|level.feeling.4
+You see a Potion of Resist Heat.,2,pickup.see
+The Cave lizard flees in terror!,2,monster.flee
+The Nighthawk claws you.,2,attack.melee.hit
+You hit the Giant grey rat.,2,player.hit_monster
+You have slain the Giant grey rat.,2,item.count|player.kill
+The Baby multi-hued dragon claws you.,2,attack.melee.hit
+The Baby multi-hued dragon misses you.,2,attack.melee.miss
+The Baby multi-hued dragon bites you.,2,attack.melee.hit
+You miss the Master yeek.,2,player.miss
+The Master yeek flees in terror!,2,monster.flee
+You have slain the Master yeek.,2,item.count|player.kill
+The Blink dog commands you to return.,2,escape.teleport_to.forced
+You have slain the Blink dog.,2,item.count|player.kill
+The Blink dog bites you.,2,attack.melee.hit
+The White wolf turns to fight!,2,monster.fear.off
+You miss the Orc shaman.,2,player.miss
+Your Hard Leather Armour (g) was disenchanted!,2,item.disenchant
+Your Cloak (h) was disenchanted!,2,item.disenchant
+Your Pair of Hard Leather Boots (l) was disenchanted!,2,item.disenchant
+Your Rapier of Slay Troll (a) was disenchanted!,2,item.disenchant
+You hit the Yellow worm mass.,2,player.hit_monster
+You miss the Baby black dragon.,2,player.miss
+You hit the Metallic red centipede.,2,player.hit_monster
+"You see a Scroll titled ""xtox ipta sour"".",2,pickup.see
+You have # Potions of Cure Light Wounds (d).,2,item.count|pickup
+The Large brown snake flees in terror!,2,monster.flee
+You have slain the Large brown snake.,2,item.count|player.kill
+Light source was a Wooden Torch (with # turns of light) (j).,2,item.drop|item.takeoff
+You hit the Radiation eye.,2,player.hit_monster
+"Grip, Farmer Maggot's dog bites you.",2,attack.melee.hit
+You have # Iron Spikes (n).,2,item.count|pickup
+Light source was a Wooden Torch (with # turns of light) (k).,2,item.drop|item.takeoff
+You have # Scrolls of Phase Door (c).,1,item.count|pickup
+Selling a Lead-Filled Mace (#d#) {good - Bullroarer the Hobbit} (w).,1,store.sell
+"You sold a Lead-Filled Mace (#d#) (+#,+#) {good - Bullroarer the Hobbit} for # gold.",1,store.sold
+"You have no more Lead-Filled Maces (#d#) (+#,+#) {good - Bullroarer the Hobbit}.",1,item.count
+Selling a Morning Star (#d#) {average} (v).,1,store.sell
+"You sold a Morning Star (#d#) (+#,+#) for # gold.",1,store.sold
+"You have no more Morning Stars (#d#) (+#,+#).",1,item.count
+Selling a Tulwar (#d#) {good} (u).,1,store.sell
+Selling a Short Sword (#d#) {average} (t).,1,store.sell
+"You sold a Short Sword (#d#) (+#,+#) for # gold.",1,store.sold
+"You have no more Short Swords (#d#) (+#,+#).",1,item.count
+Selling a Rhodonite Ring (r).,1,store.sell
+You sold a Ring of Stupidity (-#) {cursed} for # gold.,1,store.sold
+You have no more Rings of Stupidity (-#) {cursed}.,1,item.count
+Selling a Golden Staff (p).,1,store.sell
+You sold a Staff of Sleep Monsters (# charges) for # gold.,1,store.sold
+You have no more Staffs of Sleep Monsters (# charges).,1,item.count
+Selling a Balsa Staff (o).,1,store.sell
+You sold a Staff of Detect Invisible (# charges) for # gold.,1,store.sold
+You have no more Staffs of Detect Invisible (# charges).,1,item.count
+Selling a Maple Staff (n).,1,store.sell
+You sold a Staff of Cure Light Wounds (# charges) for # gold.,1,store.sold
+You have no more Staffs of Cure Light Wounds (# charges).,1,item.count
+Selling a Lead Wand (m).,1,store.sell
+You sold a Wand of Heal Monster (# charges) for # gold.,1,store.sold
+You have no more Wands of Heal Monster (# charges).,1,item.count
+You reorder some items in your pack.,1,inventory.reorder
+Selling a Steel-Plated Wand (l).,1,store.sell
+You sold a Wand of Confuse Monster (# charges) for # gold.,1,store.sold
+You have no more Wands of Confuse Monster (# charges).,1,item.count
+Selling a Copper-Plated Wand (k).,1,store.sell
+You sold a Wand of Slow Monster (# charges) for # gold.,1,store.sold
+You have no more Wands of Slow Monster (# charges).,1,item.count
+"Selling Soft Leather Armour [#,+#] {Bullroarer the Hobbit} (l).",1,store.sell
+"You sold Soft Leather Armour [#,+#] {Bullroarer the Hobbit} for # gold.",1,store.sold
+"You have no more Soft Leather Armours [#,+#] {Bullroarer the Hobbit}.",1,item.count
+The Blubbering idiot drools on you.,1,attack.melee.hit
+You destroy a Ring of Stupidity.,1,item.destroy
+You have no more Rings of Stupidity.,1,item.count
+You destroy a Wand of Heal Monster.,1,item.destroy
+You have no more Wands of Heal Monster.,1,item.count
+"You have no more Scrolls titled ""it mungrea a"" {tried}.",1,item.count
+Your hands begin to glow.,1,scroll.monster_confusion
+You have no more Scrolls of Monster Confusion.,1,item.count
+"You have no more Scrolls titled ""kliwex potri"" {tried}.",1,item.count
+Your hands stop glowing.,1,status.confusing_hands.off
+The Village idiot appears confused.,1,player.attack.confused_target
+The Filthy street urchin begs you for money.,1,attack.melee.harmless
+The Filthy street urchin misses you.,1,attack.melee.miss
+You miss the Filthy street urchin.,1,player.miss
+The Rock lizard wakes up.,1,monster.wake
+The Rock lizard misses you.,1,attack.melee.miss
+The Rock lizard flees in terror!,1,monster.flee
+"You see a Scroll titled ""it mungrea a"" {tried}.",1,pickup.see
+The Clear icky thing flees in terror!,1,monster.flee
+The Clear icky thing misses you.,1,attack.melee.miss
+You miss the Grey mushroom patch.,1,player.miss
+The Novice mage blinks away.,1,monster.blink
+You have slain the Giant red frog.,1,item.count|player.kill
+The Wood spider flees in terror!,1,monster.flee
+You have a Robe [#] (h).,1,item.count|pickup
+The Spotted jelly wakes up.,1,monster.wake
+The Creeping copper coins hits you.,1,attack.melee.hit|player.hit_monster.ranged
+The Creeping copper coins misses you.,1,attack.melee.miss
+The Creeping copper coins flees in terror!,1,monster.flee
+You have slain the Creeping copper coins.,1,item.count|player.kill
+It creates a mesmerising illusion.,1,attack.spell.conf
+You feel the Robe (h) in your pack is cursed...,1,pseudoid.pack
+You have a Scroll of Phase Door {@r#}.,1,item.count
+You have no more Scrolls of Phase Door {@r#}.,1,item.count
+You have # Scrolls of Phase Door (f).,1,item.count|pickup
+You destroy a Robe [#] {cursed}.,1,item.destroy
+You have no more Robes [#] {cursed}.,1,item.count
+The Black harpy wakes up.,1,monster.wake
+You miss the Black harpy.,1,player.miss
+You miss the Hippogriff.,1,player.miss
+The Hippogriff hits you.,1,attack.melee.hit|player.hit_monster.ranged
+The Hippogriff bites you.,1,attack.melee.hit
+The Hippogriff flees in terror!,1,monster.flee
+You have slain the Hippogriff.,1,item.count|player.kill
+"Brodda, the Easterling flees in terror!",1,monster.flee
+"You have slain Brodda, the Easterling.",1,item.count|player.kill
+"Brodda, the Easterling was slain by Dive#.",1,monster.death.unique
+"You see a Katana (#d#) {Brodda, the Easterling}.",1,pickup.see
+"You have a Katana (#d#) {Brodda, the Easterling} (h).",1,item.count|pickup
+"Was wielding a Main Gauche (#d#) (+#,+#) (h).",1,item.drop|item.takeoff
+"You are wielding a Katana (#d#) {Brodda, the Easterling} (a).",1,item.wield
+"Was wielding a Katana (#d#) {Brodda, the Easterling} (h).",1,item.drop|item.takeoff
+You feel the Katana (g) in your pack is good...,1,pseudoid.pack
+"Selling a Katana (#d#) {good - Brodda, the Easterling} (g).",1,store.sell
+"You sold a Katana (#d#) (+#,+#) {good - Brodda, the Easterling} for # gold.",1,store.sold
+"You have no more Katanas (#d#) (+#,+#) {good - Brodda, the Easterling}.",1,item.count
+You do not have enough gold.,1,store.floor_buy_fail|store.purchase.fail
+You have # Scrolls of Phase Door {@r#} (d).,1,item.count|pickup
+You have # Scrolls of Word of Recall {#% off} (e).,1,item.count|pickup
+You have a Dagger (#d#) (f).,1,item.count|pickup
+You miss the Skeleton human.,1,player.miss
+You feel the Dagger (f) in your pack is good...,1,pseudoid.pack
+You have a Cutlass (#d#) (g).,1,item.count|pickup
+You feel the Cutlass (g) in your pack is good...,1,pseudoid.pack
+The Giant gold dragon fly breathes sound.,1,attack.breath.sound
+You miss the Spotted jelly.,1,player.miss
+You have destroyed the Spotted jelly.,1,item.count|player.kill
+The Zombified kobold wakes up.,1,monster.wake
+You have destroyed the Disenchanter mold.,1,item.count|player.kill
+You have slain the Black mamba.,1,item.count|player.kill
+A gas of scintillating colors surrounds you!,1,trap.gas.confuse
+You have no more Scrolls of Word of Recall {#% off}.,1,item.count
+Selling a Cutlass (#d#) {good} (f).,1,store.sell
+"You sold a Cutlass (#d#) (+#,+#) for # gold.",1,store.sold
+"You have no more Cutlasses (#d#) (+#,+#).",1,item.count
+You have # Scrolls of Word of Recall (e).,1,item.count|pickup
+The Green jelly touches you.,1,attack.melee.hit
+You have destroyed the Homunculus.,1,item.count|player.kill
+You see a Mace (#d#).,1,pickup.see
+You have a Mace (#d#) (g).,1,item.count|pickup
+You feel the Mace (g) in your pack is good...,1,pseudoid.pack
+You have a Light Crossbow (x#) (h).,1,item.count|pickup
+It breathes light.,1,attack.breath.light
+It breathes.,1,attack.breath.unknown
+You are hit by something!,1,attack.unseen.hit.confusion|attack.unseen.hit.dark|attack.unseen.hit.force|attack.unseen.hit.holy_orb|attack.unseen.hit.lite|attack.unseen.hit.mana|attack.unseen.hit.meteor|attack.unseen.hit.missile|attack.unseen.hit.plasma|attack.unseen.hit.sound|attack.unseen.hit.water
+You feel the Light Crossbow (h) in your pack is average...,1,pseudoid.pack
+You miss the Wild cat.,1,player.miss
+It breathes acid.,1,attack.breath.acid
+Some of your Scrolls of Phase Door {@r#} (d) were destroyed!,1,item.destroyed
+The Umber hulk gazes at you.,1,attack.melee.hit
+The Umber hulk bites you.,1,attack.melee.hit
+You fell through a trap door!,1,level.change.trapdoor
+The Fire hound bites you.,1,attack.melee.hit
+The Stone troll misses you.,1,attack.melee.miss
+The Stone troll flees in terror!,1,monster.flee
+"The Novice mage casts a spell, burning your eyes!",1,attack.spell.blind
+You have been killed by a Black ogre.,1,item.count|player.death.ghost_form
+The Boil-covered wretch drools on you.,1,attack.melee.hit
+"You bought a Main Gauche (#d#) (+#,+#) for # gold.",1,store.bought|store.floor_buy_ok
+"You have a Main Gauche (#d#) (+#,+#) (a).",1,item.count|pickup
+"You bought Hard Leather Armour (-#) [#,+#] for # gold.",1,store.bought|store.floor_buy_ok
+"You have Hard Leather Armour (-#) [#,+#] (a).",1,item.count|pickup
+"You have a Small Leather Shield [#,+#] (b).",1,item.count|pickup
+"You have a Hard Leather Cap [#,+#] {#% off} (c).",1,item.count|pickup
+"You have a Set of Leather Gloves [#,+#] (d).",1,item.count|pickup
+"You bought a Pair of Hard Leather Boots [#,+#] for # gold.",1,store.bought|store.floor_buy_ok
+"You have a Pair of Hard Leather Boots [#,+#] (e).",1,item.count|pickup
+You bought a Brass Lantern (with # turns of light) for # gold.,1,store.bought|store.floor_buy_ok
+You have a Brass Lantern (with # turns of light) (a).,1,item.count|pickup
+"You have a Cloak [#,+#] (e).",1,item.count|pickup
+You have a Scroll of Word of Recall (c).,1,item.count|pickup
+Your light source is a Brass Lantern (with # turns of light) (f).,1,item.wield
+"You are wearing Hard Leather Armour (-#) [#,+#] (g).",1,item.wield
+"You are wearing a Pair of Hard Leather Boots [#,+#] (l).",1,item.wield
+The Battle-scarred veteran picks up a Potion of Blindness.,1,
+The Squint-eyed rogue dances around you!,1,attack.melee.harmless
+You miss the Village idiot.,1,player.miss
+You have a Scroll of Summon Monster (d).,1,item.count|pickup
+You have a Cloak [#] (g).,1,item.count|pickup
+You see a Light Blue Potion.,1,pickup.see
+You have a Light Blue Potion (d).,1,item.count|pickup
+You see a Clotted Red Potion.,1,pickup.see
+You have a Clotted Red Potion (e).,1,item.count|pickup
+You feel the Cloak (i) in your pack is average...,1,pseudoid.pack
+You see a Yellow Speckled Potion.,1,pickup.see
+You have a Yellow Speckled Potion (f).,1,item.count|pickup
+You see a Blue Speckled Potion.,1,pickup.see
+You have a Blue Speckled Potion (g).,1,item.count|pickup
+You have a Potion of Slow Poison (c).,1,item.count|pickup
+You see a Green Potion.,1,pickup.see
+You have a Green Potion (i).,1,item.count|pickup
+You have a Black Mushroom (b).,1,item.count|pickup
+The Brown yeek flees in terror!,1,monster.flee
+The White icky thing wakes up.,1,monster.wake
+You have a Pair of Hard Leather Boots [#] (o).,1,item.count|pickup
+You have a Rapier (#d#) (p).,1,item.count|pickup
+You see Hard Studded Leather [#].,1,pickup.see
+You have Hard Studded Leather [#] (n).,1,item.count|pickup
+You feel the Rapier (q) in your pack is excellent...,1,pseudoid.pack
+You have a Tulwar (#d#) (r).,1,item.count|pickup
+You feel the Hard Studded Leather (n) in your pack is average...,1,pseudoid.pack
+The Large kobold wakes up.,1,monster.wake
+You feel the Pair of Hard Leather Boots (p) in your pack is good...,1,pseudoid.pack
+The Kobold archer turns to fight!,1,monster.fear.off
+The Baby red dragon bites you.,1,attack.melee.hit
+The Baby red dragon flees in terror!,1,monster.flee
+You have slain the Baby red dragon.,1,item.count|player.kill
+Mughash the Kobold Lord misses you.,1,attack.melee.miss
+You have slain Mughash the Kobold Lord.,1,item.count|player.kill
+Mughash the Kobold Lord was slain by Dive#.,1,monster.death.unique
+"Was wielding a Main Gauche (#d#) (+#,+#) (q).",1,item.drop|item.takeoff
+You are wielding a Rapier (#d#) {excellent} (a).,1,item.wield
+You feel the Tulwar (q) in your pack is average...,1,pseudoid.pack
+You see a Clear Potion.,1,pickup.see
+You have a Clear Potion (k).,1,item.count|pickup
+Selling a Light Blue Potion (f).,1,store.sell
+You sold a Potion of Heroism for # gold.,1,store.sold
+Selling a Clotted Red Potion (f).,1,store.sell
+You sold a Potion of Clumsiness for # gold.,1,store.sold
+You have no more Potions of Clumsiness.,1,item.count
+Selling a Yellow Speckled Potion (f).,1,store.sell
+You sold a Potion of Infravision for # gold.,1,store.sold
+You have no more Potions of Infravision.,1,item.count
+Selling a Blue Speckled Potion (f).,1,store.sell
+You sold a Potion of Sleep for # gold.,1,store.sold
+You have no more Potions of Sleep.,1,item.count
+Selling a Green Potion (f).,1,store.sell
+You sold a Potion of Slowness for # gold.,1,store.sold
+You have no more Potions of Slowness.,1,item.count
+Selling a Clear Potion (f).,1,store.sell
+You hit the Scrawny cat.,1,player.hit_monster
+You have slain the Scrawny cat.,1,item.count|player.kill
+Selling Hard Studded Leather [#] {average} (g).,1,store.sell
+"You sold Hard Studded Leather (-#) [#,+#] for # gold.",1,store.sold
+"You have no more Hard Studded Leathers (-#) [#,+#].",1,item.count
+Selling a Cloak [#] {average} (g).,1,store.sell
+"You sold a Cloak [#,+#] for # gold.",1,store.sold
+"You have no more Cloaks [#,+#].",1,item.count
+Selling a Pair of Hard Leather Boots [#] {good} (g).,1,store.sell
+"You sold a Pair of Hard Leather Boots [#,+#] for # gold.",1,store.sold
+"You have no more Pairs of Hard Leather Boots [#,+#].",1,item.count
+"Examining a Main Gauche (#d#) (+#,+#)...",1,item.examine
+"Selling a Main Gauche (#d#) (+#,+#) (g).",1,store.sell
+"You sold a Main Gauche (#d#) (+#,+#) for # gold.",1,store.sold
+"You have no more Main Gauches (#d#) (+#,+#).",1,item.count
+Selling a Tulwar (#d#) {average} (g).,1,store.sell
+The Illusionist hits you.,1,attack.melee.hit|player.hit_monster.ranged
+The Squint-eyed rogue gives you the finger!,1,attack.melee.harmless
+The Squint-eyed rogue insults your mother!,1,attack.melee.harmless
+You see a Potion of Blindness.,1,pickup.see
+You have a Potion of Blindness (d).,1,item.count|pickup
+You have a Dagger (#d#) (h).,1,item.count|pickup
+The Novice priest concentrates on his wounds.,1,monster.heal
+The Novice priest looks healthier.,1,monster.death.note|monster.death.spell_by_monster|monster.effect.player_spell|monster.effect.spell_by_monster|monster.heal
+The Novice priest recovers his courage.,1,monster.recover_courage
+You feel the Dagger (h) in your pack is average...,1,pseudoid.pack
+You see a Potion of Salt Water.,1,pickup.see
+You have a Potion of Salt Water (d).,1,item.count|pickup
+You see Soft Leather Armour [#].,1,pickup.see
+You have Soft Leather Armour [#] (i).,1,item.count|pickup
+You feel the Soft Leather Armour (i) in your pack is average...,1,pseudoid.pack
+You have a Scroll of Treasure Detection (i).,1,item.count|pickup
+You see a Potion of Weakness.,1,pickup.see
+You have a Potion of Weakness (f).,1,item.count|pickup
+You have a Slime Mold (b).,1,item.count|pickup
+You have a Scroll of Light (k).,1,item.count|pickup
+You see a Birch Staff.,1,pickup.see
+You have a Birch Staff (m).,1,item.count|pickup
+You see a Hard Leather Cap [#].,1,pickup.see
+You have a Hard Leather Cap [#] (p).,1,item.count|pickup
+You feel the Hard Leather Cap (p) in your pack is average...,1,pseudoid.pack
+You have a Scroll of Identify (l).,1,item.count|pickup
+You have a Pair of Hard Leather Boots [#] (r).,1,item.count|pickup
+The Snaga turns to fight!,1,monster.fear.off
+You have a Scroll of Satisfy Hunger (o).,1,item.count|pickup
+You have # Potions of Slow Poison (i).,1,item.count|pickup
+You see a Red Speckled Potion.,1,pickup.see
+You have a Red Speckled Potion (k).,1,item.count|pickup
+You feel the Pair of Hard Leather Boots (t) in your pack is average...,1,pseudoid.pack
+You see a Red Potion.,1,pickup.see
+You have a Red Potion (l).,1,item.count|pickup
+The Giant black ant misses you.,1,attack.melee.miss
+You destroy a Potion of Weakness.,1,item.destroy
+You have no more Potions of Weakness.,1,item.count
+You destroy a Potion of Blindness.,1,item.destroy
+You have no more Potions of Blindness.,1,item.count
+You destroy a Potion of Salt Water.,1,item.destroy
+You have no more Potions of Salt Water.,1,item.count
+You destroy a Red Potion.,1,item.destroy
+You have no more Red Potions.,1,item.count
+You destroy a Red Speckled Potion.,1,item.destroy
+You have no more Red Speckled Potions.,1,item.count
+You destroy a Potion of Cure Light Wounds {@q#}.,1,item.destroy
+You destroy a Flask of oil.,1,item.destroy
+You have # Bolts (#d#) (p).,1,item.count|pickup
+You have Soft Studded Leather [#] (n).,1,item.count|pickup
+You have a Cutlass (#d#) (q).,1,item.count|pickup
+You feel the Bolts (r) in your pack are average...,1,pseudoid.pack
+The Green naga crushes you.,1,attack.melee.hit
+You feel the Soft Studded Leather (n) in your pack is cursed...,1,pseudoid.pack
+You feel the Cutlass (q) in your pack is excellent...,1,pseudoid.pack
+You destroy Soft Studded Leather [#] {cursed}.,1,item.destroy
+You have no more Soft Studded Leathers [#] {cursed}.,1,item.count
+You feel the Bolts (p) in your pack are average...,1,pseudoid.pack
+The Green mold releases spores at you.,1,attack.melee.hit
+You miss the Green mold.,1,player.miss
+You have destroyed the Green mold.,1,item.count|player.kill
+"You have a Scroll titled ""kliwex potri"" {tried} (l).",1,item.count|pickup
+You have Hard Leather Armour [#] (o).,1,item.count|pickup
+You feel the Hard Leather Armour (o) in your pack is average...,1,pseudoid.pack
+You hit the Metallic blue centipede.,1,player.hit_monster
+You have slain the Metallic blue centipede.,1,item.count|player.kill
+You have a Book of Magic Spells [Magic for Beginners] (a).,1,item.count|pickup
+You hit the Yellow mushroom patch.,1,player.hit_monster
+You have destroyed the Yellow mushroom patch.,1,item.count|player.kill
+You see a Vermilion Potion.,1,pickup.see
+You have a Vermilion Potion (i).,1,item.count|pickup
+You hit the Giant brown bat.,1,player.hit_monster
+You have slain the Giant brown bat.,1,item.count|player.kill
+You see a Black Potion.,1,pickup.see
+You have a Black Potion (j).,1,item.count|pickup
+The Blue yeek wakes up.,1,monster.wake
+You see a Ring of Stupidity.,1,pickup.see
+You see a Long Sword (#d#).,1,pickup.see
+You have a Long Sword (#d#) (v).,1,item.count|pickup
+You feel the Long Sword (v) in your pack is average...,1,pseudoid.pack
+You have no room for Soft Studded Leather [#].,1,inventory.full|item.count
+You have # Potions of Cure Light Wounds {@q#} (h).,1,item.count|pickup
+You destroy (nothing).,1,item.destroy
+You have (nothing).,1,item.count
+You destroy Soft Leather Armour [#] {average}.,1,item.destroy
+You have no more Soft Leather Armours [#] {average}.,1,item.count
+You destroy a Pair of Hard Leather Boots [#] {average}.,1,item.destroy
+You have no more Pairs of Hard Leather Boots [#] {average}.,1,item.count
+You destroy a Bolt (#d#) {average}.,1,item.destroy
+You have # Bolts (#d#) {average}.,1,item.count
+You destroy a Book of Magic Spells [Magic for Beginners].,1,item.destroy
+You have no more Books of Magic Spells [Magic for Beginners].,1,item.count
+You have a Whip (#d#) (s).,1,item.count|pickup
+You see a Holy Book of Prayers [Beginners Handbook].,1,pickup.see
+You have a Holy Book of Prayers [Beginners Handbook] (a).,1,item.count|pickup
+You have a Tulwar (#d#) (s).,1,item.count|pickup
+You have a Slimy Mushroom (e).,1,item.count|pickup
+The Bloodshot eye wakes up.,1,monster.wake
+You feel the Tulwar (t) in your pack is good...,1,pseudoid.pack
+You feel the Whip (v) in your pack is average...,1,pseudoid.pack
+You have a Cloak [#] (s).,1,item.count|pickup
+You see a Staff of Cure Light Wounds.,1,pickup.see
+You have no room for a Staff of Cure Light Wounds.,1,inventory.full|item.count
+You destroy a Holy Book of Prayers [Beginners Handbook].,1,item.destroy
+You have no more Holy Books of Prayers [Beginners Handbook].,1,item.count
+You destroy a Hard Leather Cap [#] {average}.,1,item.destroy
+You have no more Hard Leather Caps [#] {average}.,1,item.count
+You have a Rapier (#d#) (r).,1,item.count|pickup
+You see a Scroll of Monster Confusion.,1,pickup.see
+You have a Robe [#] (p).,1,item.count|pickup
+You have a White Mushroom (d).,1,item.count|pickup
+You have # Black Mushrooms (c).,1,item.count|pickup
+You feel the Robe (q) in your pack is average...,1,pseudoid.pack
+You feel the Cloak (t) in your pack is cursed...,1,pseudoid.pack
+You feel the Rapier (u) in your pack is average...,1,pseudoid.pack
+You hit the Purple mushroom patch.,1,player.hit_monster
+You have destroyed the Purple mushroom patch.,1,item.count|player.kill
+The Kobold hits you.,1,attack.melee.hit|player.hit_monster.ranged
+You have no room for a Bubbling Potion.,1,inventory.full|item.count
+You see an Iron Wand.,1,pickup.see
+You have no room for an Iron Wand.,1,inventory.full|item.count
+You destroy a Cloak [#] {cursed}.,1,item.destroy
+You have no more Cloaks [#] {cursed}.,1,item.count
+You destroy a Robe [#] {average}.,1,item.destroy
+You have no more Robes [#] {average}.,1,item.count
+You destroy a White Mushroom.,1,item.destroy
+You have no more White Mushrooms.,1,item.count
+You have # Scrolls of Satisfy Hunger (m).,1,item.count|pickup
+You destroy # Black Mushrooms.,1,item.destroy
+You have no more Black Mushrooms.,1,item.count
+"Wormtongue, Agent of Saruman casts a frost bolt.",1,attack.spell.bolt.frost
+"Wormtongue, Agent of Saruman gives you the finger!",1,attack.melee.harmless
+"You have # Scrolls titled ""kliwex potri"" {tried} (m).",1,item.count|pickup
+You see a Broken Dagger (#d#).,1,pickup.see
+You have a Broken Dagger (#d#) (q).,1,item.count|pickup
+You have a Dagger (#d#) (r).,1,item.count|pickup
+You have a White Mushroom (c).,1,item.count|pickup
+You see a Runed Staff.,1,pickup.see
+You have a Runed Staff (p).,1,item.count|pickup
+You see a Scroll of Blessing.,1,pickup.see
+You have no room for a Scroll of Blessing.,1,inventory.full|item.count
+You destroy a Broken Dagger (#d#).,1,item.destroy
+You have no more Broken Daggers (#d#).,1,item.count
+You destroy a Slime Mold.,1,item.destroy
+You have no more Slime Molds.,1,item.count
+You destroy a Scroll of Treasure Detection.,1,item.destroy
+You have no more Scrolls of Treasure Detection.,1,item.count
+You feel the Dagger (q) in your pack is good...,1,pseudoid.pack
+You miss the White jelly.,1,player.miss
+You miss the White harpy.,1,player.miss
+The White harpy bites you.,1,attack.melee.hit
+The Giant yellow centipede bites you.,1,attack.melee.hit
+The Giant yellow centipede misses you.,1,attack.melee.miss
+You miss the Green worm mass.,1,player.miss
+Selling a Vermilion Potion (f).,1,store.sell
+You sold a Potion of Detect Invisible for # gold.,1,store.sold
+You have no more Potions of Detect Invisible.,1,item.count
+Selling a Black Potion (f).,1,store.sell
+You sold a Potion of Resist Heat for # gold.,1,store.sold
+The shopkeeper giggles.,1,store.comment.good
+You have no more Potions of Resist Heat.,1,item.count
+"Selling # Scrolls titled ""kliwex potri"" {tried} (j).",1,store.sell
+You sold # Scrolls of Door/Stair Location for # gold.,1,store.sold
+You have no more Scrolls of Door/Stair Location.,1,item.count
+Selling a Birch Staff (j).,1,store.sell
+You sold a Staff of Darkness (# charges) for # gold.,1,store.sold
+You have no more Staffs of Darkness (# charges).,1,item.count
+Selling a Runed Staff (j).,1,store.sell
+You sold a Staff of Light (# charges) for # gold.,1,store.sold
+You have no more Staffs of Light (# charges).,1,item.count
+Selling a Dagger (#d#) {good} (l).,1,store.sell
+"You sold a Dagger (#d#) (+#,+#) for # gold.",1,store.sold
+"You have no more Daggers (#d#) (+#,+#).",1,item.count
+Selling a Rapier (#d#) {average} (l).,1,store.sell
+"You sold a Rapier (#d#) (+#,+#) for # gold.",1,store.sold
+"You have no more Rapiers (#d#) (+#,+#).",1,item.count
+Selling a Tulwar (#d#) {good} (l).,1,store.sell
+Selling a Long Sword (#d#) {average} (l).,1,store.sell
+"You sold a Long Sword (#d#) (+#,+#) for # gold.",1,store.sold
+"You have no more Long Swords (#d#) (+#,+#).",1,item.count
+In your pack: # Rations of Food (a).,1,item.identify|item.identify_full
+The Battle-scarred veteran hits you.,1,attack.melee.hit|player.hit_monster.ranged
+The Pitiful-looking beggar begs you for money.,1,attack.melee.harmless
+You bought # Scrolls of Phase Door {on sale} for # gold.,1,store.bought|store.floor_buy_ok
+You have # Scrolls of Phase Door {on sale} (g).,1,item.count|pickup
+You have # Scrolls of Word of Recall (h).,1,item.count|pickup
+Inscribing # Scrolls of Phase Door {on sale}.,1,item.inscribe
+You combine some items in your pack.,1,inventory.combine
+Examining # Scrolls of Phase Door {@r#}...,1,item.examine
+You have # Scrolls of Word of Recall {@R#}.,1,item.count
+You miss the Illusionist.,1,player.miss
+The Illusionist flees in terror!,1,monster.flee
+You have slain the Illusionist.,1,item.count|player.kill
+You see a Ruby Ring.,1,pickup.see
+You have a Ruby Ring (j).,1,item.count|pickup
+You miss the Large yellow snake.,1,player.miss
+You miss the Red mold.,1,player.miss
+You have destroyed the Red mold.,1,item.count|player.kill
+You have a Light Crossbow (x#) (k).,1,item.count|pickup
+You feel the Light Crossbow (k) in your pack is good...,1,pseudoid.pack
+You feel yourself moving slower!,1,status.slow.on
+You feel yourself speed up.,1,status.slow.off
+"Boldor, King of the Yeeks teleports away.",1,monster.teleport
+You miss the Blue yeek.,1,player.miss
+You have no more Potions of Cure Light Wounds {@q#}.,1,item.count
+"You miss the Singing, happy drunk.",1,player.miss
+Selling a Light Crossbow (x#) {good} (j).,1,store.sell
+"You sold a Light Crossbow (x#) (+#,+#) for # gold.",1,store.sold
+"You have no more Light Crossbows (x#) (+#,+#).",1,item.count
+Selling a Ruby Ring (i).,1,store.sell
+You sold a Ring of Searching (-#) {cursed} for # gold.,1,store.sold
+You have no more Rings of Searching (-#) {cursed}.,1,item.count
+You have # Scrolls of Word of Recall {@R#} (f).,1,item.count|pickup
+Inscribing # Scrolls of Word of Recall {@R#}.,1,item.inscribe
+"Grishnakh, the Hill Orc turns to fight!",1,monster.fear.off
+The White wolf recovers its courage.,1,monster.recover_courage
+The Hill orc recovers his courage.,1,monster.recover_courage
+"You have slain Grishnakh, the Hill Orc.",1,item.count|player.kill
+"Grishnakh, the Hill Orc was slain by Dive#.",1,monster.death.unique
+You see an Icky Green Potion.,1,pickup.see
+You have an Icky Green Potion (f).,1,item.count|pickup
+You have found # gold pieces worth of adamantite.,1,item.count|pickup.gold
+You see a Potion of Heroism.,1,pickup.see
+You have a Potion of Heroism (e).,1,item.count|pickup
+The Small kobold misses you.,1,attack.melee.miss
+You miss the Small kobold.,1,player.miss
+You see a Scroll of Word of Recall.,1,pickup.see
+You have # Scrolls of Word of Recall {@R#} (i).,1,item.count|pickup
+You see a Battle Axe (#d#).,1,pickup.see
+You feel better.,1,heal.hp|heal.medium
+You feel like a hero!,1,status.hero.on
+The heroism wears off.,1,status.hero.off
+You see a Mulberry Staff.,1,pickup.see
+You have a Mulberry Staff (k).,1,item.count|pickup
+You have slain the Giant spider.,1,item.count|player.kill
+"Wormtongue, Agent of Saruman defiles you!",1,attack.melee.harmless
+The Bandit hits you.,1,attack.melee.hit|player.hit_monster.ranged
+The Bandit touches you.,1,attack.melee.hit
+"Wormtongue, Agent of Saruman humiliates you!",1,attack.melee.harmless
+"Wormtongue, Agent of Saruman flees in terror!",1,monster.flee
+"You have slain Wormtongue, Agent of Saruman.",1,item.count|player.kill
+"Wormtongue, Agent of Saruman was slain by Dive#.",1,monster.death.unique
+The Baby green dragon bites you.,1,attack.melee.hit
+You miss the Baby green dragon.,1,player.miss
+The Baby green dragon flees in terror!,1,monster.flee
+You have slain the Baby green dragon.,1,item.count|player.kill
+"Boldor, King of the Yeeks blinks away.",1,monster.blink
+"Boldor, King of the Yeeks hits you.",1,attack.melee.hit
+It sounds REALLY healthy!,1,monster.heal
+You have a Scroll of Summon Monster (g).,1,item.count|pickup
+"You see Soft Studded Leather [#] {Wormtongue, Agent of Saruman}.",1,pickup.see
+"You have Soft Studded Leather [#] {Wormtongue, Agent of Saruman} (m).",1,item.count|pickup
+"Selling Soft Studded Leather [#] {Wormtongue, Agent of Saruman} (l).",1,store.sell
+"You sold Soft Studded Leather of Resistance [#,+#] {Wormtongue, Agent of Saruman} for # gold.",1,store.sold
+"You have no more Soft Studded Leathers of Resistance [#,+#] {Wormtongue, Agent of Saru}.",1,item.count
+Selling a Mulberry Staff (k).,1,store.sell
+You sold a Staff of Slow Monsters (# charges) for # gold.,1,store.sold
+You have no more Staffs of Slow Monsters (# charges).,1,item.count
+Selling an Icky Green Potion (f).,1,store.sell
+You sold a Potion of Slime Mold Juice for # gold.,1,store.sold
+You have no more Potions of Slime Mold Juice.,1,item.count
+You have # Scrolls of Word of Recall {@R#} (g).,1,item.count|pickup
+The Village idiot recovers his courage.,1,monster.recover_courage
+You have # Rounded Pebbles (#d#) (k).,1,item.count|pickup
+You have a Cutlass (#d#) (k).,1,item.count|pickup
+You feel the Rounded Pebbles (l) in your pack are average...,1,pseudoid.pack
+The Priest wakes up.,1,monster.wake
+You see a Copper-Plated Rod.,1,pickup.see
+You have a Copper-Plated Rod (k).,1,item.count|pickup
+You feel the Cutlass (l) in your pack is average...,1,pseudoid.pack
+The Zombified orc wakes up.,1,monster.wake
+You destroy # Rounded Pebbles (#d#) {average}.,1,item.destroy
+You have no more Rounded Pebbles (#d#) {average}.,1,item.count
+You destroy a Cutlass (#d#) {average}.,1,item.destroy
+You have no more Cutlasses (#d#) {average}.,1,item.count
+You see a Broad Sword (#d#).,1,pickup.see
+You have a Broad Sword (#d#) (l).,1,item.count|pickup
+You feel the Broad Sword (l) in your pack is good...,1,pseudoid.pack
+The Phase spider misses you.,1,attack.melee.miss
+You miss the Tiger.,1,player.miss
+You are too afraid to attack the Priest!,1,attack.refused.afraid
+You are too afraid to attack the Clear hound!,1,attack.refused.afraid
+It picks up a Bubbling Potion.,1,
+You miss the Clear hound.,1,player.miss
+You miss the Phase spider.,1,player.miss
+You have slain the Phase spider.,1,item.count|player.kill
+It picks up a Scroll of Blessing.,1,
+Selling a Copper-Plated Rod (i).,1,store.sell
+You sold a Rod of Illumination for # gold.,1,store.sold
+You have no more Rods of Illumination.,1,item.count
+Selling a Broad Sword (#d#) {good} (i).,1,store.sell
+You bought # Scrolls of Word of Recall {#% off} for # gold.,1,store.bought|store.floor_buy_ok
+The Kobold shaman casts a magic missile.,1,attack.spell.missile
+You have no more Flasks of oil.,1,item.count
+Selling # Potions of Slow Poison (d).,1,store.sell
+You sold # Potions of Slow Poison for # gold.,1,store.sold
+You have no more Potions of Slow Poison.,1,item.count
+Selling # Scrolls of Satisfy Hunger (h).,1,store.sell
+You sold # Scrolls of Satisfy Hunger for # gold.,1,store.sold
+You have no more Scrolls of Satisfy Hunger.,1,item.count
+Selling a Scroll of Light (g).,1,store.sell
+You sold a Scroll of Light for # gold.,1,store.sold
+You have no more Scrolls of Light.,1,item.count
+You bought a Scroll of Identify {#% off} for # gold.,1,store.bought|store.floor_buy_ok
+You have a Scroll of Identify {#% off} (g).,1,item.count|pickup
+"Attacking monsters with: a Rapier of Slay Troll (#d#) (+#,+#) (a).",1,item.identify|item.identify_full
+You have no more Scrolls of Identify {#% off}.,1,item.count
+"Examining a Rapier of Slay Troll (#d#) (+#,+#)...",1,item.examine
+Selling a Potion of Cure Light Wounds (d).,1,store.sell
+You sold a Potion of Cure Light Wounds for # gold.,1,store.sold
+You have a Magenta Potion (e).,1,item.count|pickup
+You see a Scroll of Object Detection.,1,pickup.see
+You have a Scroll of Object Detection (h).,1,item.count|pickup
+A pungent green gas surrounds you!,1,trap.gas.poison
+You see a Small Leather Shield [#].,1,pickup.see
+The Skeleton orc wakes up.,1,monster.wake
+The Skeleton orc misses you.,1,attack.melee.miss
+You see a Short Bow (x#).,1,pickup.see
+You have a Short Bow (x#) (i).,1,item.count|pickup
+You feel the Short Bow (i) in your pack is average...,1,pseudoid.pack
+You destroy a Short Bow (x#) {average}.,1,item.destroy
+You have no more Short Bows (x#) {average}.,1,item.count
+You have # Iron Spikes (i).,1,item.count|pickup
+You miss the Black naga.,1,player.miss
+"You see a Scroll titled ""munger toxmung"".",1,pickup.see
+"You have a Scroll titled ""munger toxmung"" (i).",1,item.count|pickup
+You have # White Mushrooms (b).,1,item.count|pickup
+You see a Ring of Slow Digestion.,1,pickup.see
+The Blue worm mass wakes up.,1,monster.wake
+You have a Rosewood Staff (j).,1,item.count|pickup
+You see a Potion of Berserk Strength.,1,pickup.see
+You have a Potion of Berserk Strength (d).,1,item.count|pickup
+You have a Bubbling Potion (g).,1,item.count|pickup
+You have a Copper Wand (l).,1,item.count|pickup
+The Rot jelly wakes up.,1,monster.wake
+The Giant black ant turns to fight!,1,monster.fear.off
+The Blue worm mass crawls on you.,1,attack.melee.hit
+You are covered with frost!,1,attack.melee.effect.cold
+One of your Potions of Cure Light Wounds (e) was destroyed!,1,item.destroyed
+You destroy # Iron Spikes.,1,item.destroy
+You have no more Iron Spikes.,1,item.count
+You hit the Floating eye.,1,player.hit_monster
+You have slain the Floating eye.,1,item.count|player.kill
+You have a Robe [#] (n).,1,item.count|pickup
+You feel the Robe (n) in your pack is good...,1,pseudoid.pack
+You miss the Scruffy looking hobbit.,1,player.miss
+You have destroyed the Clear worm mass.,1,item.count|player.kill
+The Pseudo-dragon casts a fearful illusion.,1,attack.spell.scare
+The Blue jelly misses you.,1,attack.melee.miss
+You have destroyed the Blue jelly.,1,item.count|player.kill
+The Dark elven warrior wakes up.,1,monster.wake
+The Dark elven mage creates a mesmerising illusion.,1,attack.spell.conf
+The Dark elven mage gestures in shadow.,1,attack.spell.darkness
+You have destroyed the Zombified human.,1,item.count|player.kill
+You have slain the Dark elven mage.,1,item.count|player.kill
+You see a Lance (#d#).,1,pickup.see
+You have a Lance (#d#) (o).,1,item.count|pickup
+A small dart barely misses you.,1,attack.melee.miss|trap.dart.miss
+You see a Molybdenum Rod.,1,pickup.see
+You have a Molybdenum Rod (l).,1,item.count|pickup
+You feel the Lance (o) in your pack is cursed...,1,pseudoid.pack
+You destroy a Lance (#d#) {cursed}.,1,item.destroy
+You have no more Lances (#d#) {cursed}.,1,item.count
+Selling a Robe [#] {good} (n).,1,store.sell
+Selling a Molybdenum Rod (k).,1,store.sell
+You sold a Rod of Light for # gold.,1,store.sold
+You have no more Rods of Light.,1,item.count
+Selling a Copper Wand (k).,1,store.sell
+You sold a Wand of Haste Monster (# charges) for # gold.,1,store.sold
+You have no more Wands of Haste Monster (# charges).,1,item.count
+Selling a Rosewood Staff (k).,1,store.sell
+Selling a Magenta Potion (f).,1,store.sell
+The shopkeeper wails in anguish!,1,store.comment.worthless
+Selling a Bubbling Potion (f).,1,store.sell
+You sold a Potion of Neutralize Poison for # gold.,1,store.sold
+You have no more Potions of Neutralize Poison.,1,item.count
+"Selling a Scroll titled ""munger toxmung"" (h).",1,store.sell
+You sold a Scroll of Summon Undead for # gold.,1,store.sold
+You have no more Scrolls of Summon Undead.,1,item.count
+Selling a Scroll of Object Detection (g).,1,store.sell
+You sold a Scroll of Object Detection for # gold.,1,store.sold
+You have no more Scrolls of Object Detection.,1,item.count
+The Black orc turns to fight!,1,monster.fear.off
+The Orc captain hits you.,1,attack.melee.hit|player.hit_monster.ranged
+You see a Corundum Ring.,1,pickup.see
+You have a Corundum Ring (h).,1,item.count|pickup
+The Stegocentipede flees in terror!,1,monster.flee
+You have slain the Stegocentipede.,1,item.count|player.kill
+You see a Set of Gauntlets [#].,1,pickup.see
+You have a Set of Gauntlets [#] (i).,1,item.count|pickup
+You feel the Set of Gauntlets (i) in your pack is average...,1,pseudoid.pack
+You destroy a Set of Gauntlets [#] {average}.,1,item.destroy
+You have no more Sets of Gauntlets [#] {average}.,1,item.count
+Selling a Corundum Ring (g).,1,store.sell
+You sold a Ring of Feather Falling for # gold.,1,store.sold
+You have no more Rings of Feather Falling.,1,item.count
+The Dark elven priest gestures in shadow.,1,attack.spell.darkness
+You see a Pair of Soft Leather Boots [#].,1,pickup.see
+You have a Pair of Soft Leather Boots [#] (h).,1,item.count|pickup
+The Red jelly wakes up.,1,monster.wake
+You see a Redwood Staff.,1,pickup.see
+You have a Redwood Staff (h).,1,item.count|pickup
+You feel the Pair of Soft Leather Boots (i) in your pack is worthless...,1,pseudoid.pack
+You destroy a Pair of Soft Leather Boots [#] {worthless}.,1,item.destroy
+You have no more Pairs of Soft Leather Boots [#] {worthless}.,1,item.count
+The Novice warrior turns to fight!,1,monster.fear.off
+The Novice warrior recovers his courage.,1,monster.recover_courage
+You see a Scroll of Magic Mapping.,1,pickup.see
+You have a Scroll of Magic Mapping (h).,1,item.count|pickup
+You see a Ring of Teleportation {cursed}.,1,pickup.see
+You have a Ring of Teleportation {cursed} (j).,1,item.count|pickup
+You destroy a Ring of Teleportation {cursed}.,1,item.destroy
+You have no more Rings of Teleportation {cursed}.,1,item.count
+The King cobra misses you.,1,attack.melee.miss
+The Yellow mushroom patch releases spores at you.,1,attack.melee.hit
+You miss the King cobra.,1,player.miss
+You see a Nickel-Plated Wand.,1,pickup.see
+You have a Nickel-Plated Wand (i).,1,item.count|pickup
+You have a Set of Leather Gloves [#] (k).,1,item.count|pickup
+You feel the Set of Leather Gloves (k) in your pack is cursed...,1,pseudoid.pack
+You destroy a Set of Leather Gloves [#] {cursed}.,1,item.destroy
+You have no more Sets of Leather Gloves [#] {cursed}.,1,item.count
+Selling a Nickel-Plated Wand (h).,1,store.sell
+You sold a Wand of Trap/Door Destruction (# charges) for # gold.,1,store.sold
+You have no more Wands of Trap/Door Destruction (# charges).,1,item.count
+Selling a Redwood Staff (h).,1,store.sell
+You sold a Staff of Door/Stair Location (# charges) for # gold.,1,store.sold
+You have no more Staffs of Door/Stair Location (# charges).,1,item.count
+The Pseudo-dragon wakes up.,1,monster.wake
+The Pseudo-dragon recovers its courage.,1,monster.recover_courage
+The Baby gold dragon wakes up.,1,monster.wake
+You miss the Baby gold dragon.,1,player.miss
+The Baby gold dragon flees in terror!,1,monster.flee
+You have slain the Baby gold dragon.,1,item.count|player.kill
+The Red naga flees in terror!,1,monster.flee
+You miss the Red naga.,1,player.miss
+You have slain the Red naga.,1,item.count|player.kill
+You see an Ivory Amulet.,1,pickup.see
+You have an Ivory Amulet (i).,1,item.count|pickup
+The Kobold shaman wakes up.,1,monster.wake
+One of your Scrolls of Phase Door {@r#} (f) was destroyed!,1,item.destroyed
+The Giant salamander recovers its courage.,1,monster.recover_courage
+You are splashed with acid!,1,damage.element.acid
+Your Small Leather Shield is damaged!,1,item.damage.acid
+You have disarmed the discolored spot.,1,item.count|trap.disarm_ok
+The Skeleton kobold misses you.,1,attack.melee.miss
+You miss the Skeleton kobold.,1,player.miss
+The Giant white rat wakes up.,1,monster.wake
+The Giant white rat misses you.,1,attack.melee.miss
+A strange white mist surrounds you!,1,trap.gas.paralyze
+"Lagduf, the Snaga flees in terror!",1,monster.flee
+"You have slain Lagduf, the Snaga.",1,item.count|player.kill
+"Lagduf, the Snaga was slain by Dive#.",1,monster.death.unique
+"You see a Scroll titled ""skinej glenur"".",1,pickup.see
+"You have a Scroll titled ""skinej glenur"" (i).",1,item.count|pickup
+The Gnome mage misses you.,1,attack.melee.miss
+You see a Shovel (#d#).,1,pickup.see
+You have a Shovel (#d#) (k).,1,item.count|pickup
+You feel the Shovel (k) in your pack is cursed...,1,pseudoid.pack
+You destroy a Shovel (#d#) {cursed}.,1,item.destroy
+You have no more Shovels (#d#) {cursed}.,1,item.count
+You see a Potion of Sleep.,1,pickup.see
+Examining an Ivory Amulet...,1,item.examine
+Selling an Ivory Amulet (i).,1,store.sell
+You sold an Amulet of Resist Lightning for # gold.,1,store.sold
+You have no more Amulets of Resist Lightning.,1,item.count
+"Selling a Scroll titled ""skinej glenur"" (h).",1,store.sell
+You sold a Scroll of Remove Curse for # gold.,1,store.sold
+You have no more Scrolls of Remove Curse.,1,item.count
+Selling a Scroll of Magic Mapping (g).,1,store.sell
+You sold a Scroll of Magic Mapping for # gold.,1,store.sold
+You bought # Potions of Boldness for # gold.,1,store.bought|store.floor_buy_ok
+You have # Potions of Boldness (d).,1,item.count|pickup
+You have # Potions of Cure Serious Wounds (g).,1,item.count|pickup
+You have a Potion of Resist Heat (e).,1,item.count|pickup
+You have # Bolts (#d#) (k).,1,item.count|pickup
+You feel the Bolts (k) in your pack are average...,1,pseudoid.pack
+You see a Spear (#d#).,1,pickup.see
+You have a Spear (#d#) (k).,1,item.count|pickup
+"You see a Scroll titled ""nelggar payjo"".",1,pickup.see
+"You have a Scroll titled ""nelggar payjo"" (k).",1,item.count|pickup
+You feel the Spear (l) in your pack is average...,1,pseudoid.pack
+You destroy a Spear (#d#) {average}.,1,item.destroy
+You have no more Spears (#d#) {average}.,1,item.count
+You have a Scroll of Identify (k).,1,item.count|pickup
+"You see a Scroll titled ""monwhon"".",1,pickup.see
+"You have a Scroll titled ""monwhon"" (m).",1,item.count|pickup
+You see an Empty Bottle.,1,pickup.see
+You have an Empty Bottle (n).,1,item.count|pickup
+The Nighthawk wakes up.,1,monster.wake
+You miss the Nighthawk.,1,player.miss
+The Nighthawk bites you.,1,attack.melee.hit
+You have slain the Nighthawk.,1,item.count|player.kill
+You see a Potion of Water.,1,pickup.see
+You have a Potion of Water (d).,1,item.count|pickup
+The Yellow worm mass wakes up.,1,monster.wake
+The Kobold flees in terror!,1,monster.flee
+You see an Elm Staff.,1,pickup.see
+You have an Elm Staff (o).,1,item.count|pickup
+You have # Scrolls of Phase Door {@r#} (j).,1,item.count|pickup
+You miss the Wood spider.,1,player.miss
+You have disarmed the pit.,1,item.count|trap.disarm_ok
+You see a Runed Rod.,1,pickup.see
+You have a Runed Rod (o).,1,item.count|pickup
+You destroy an Empty Bottle.,1,item.destroy
+You have no more Empty Bottles.,1,item.count
+You have # Potions of Resist Heat (f).,1,item.count|pickup
+You feel the Hard Leather Armour (q) in your pack is good...,1,pseudoid.pack
+You have a Scroll of Satisfy Hunger (m).,1,item.count|pickup
+The Fruit bat wakes up.,1,monster.wake
+The Fruit bat misses you.,1,attack.melee.miss
+You have a Scroll of Light (m).,1,item.count|pickup
+A small dart hits you!,1,trap.dart.drain_con|trap.dart.drain_dex|trap.dart.drain_str|trap.dart.slow
+You feel very sickly.,1,stat.drain
+You have # Scrolls of Identify (l).,1,item.count|pickup
+In your pack: a Rod of Trap Location (q).,1,item.identify|item.identify_full
+You have a Scroll of Identify.,1,item.count
+You see a Small Metal Shield [#].,1,pickup.see
+You have a Small Metal Shield [#] (t).,1,item.count|pickup
+You feel the Small Metal Shield (t) in your pack is average...,1,pseudoid.pack
+You destroy a Small Metal Shield [#] {average}.,1,item.destroy
+You have no more Small Metal Shields [#] {average}.,1,item.count
+Selling a Rod of Trap Location (p).,1,store.sell
+You sold a Rod of Trap Location for # gold.,1,store.sold
+You have no more Rods of Trap Location.,1,item.count
+Selling an Elm Staff (p).,1,store.sell
+You sold a Staff of Trap Location (# charges) for # gold.,1,store.sold
+You have no more Staffs of Trap Location (# charges).,1,item.count
+Selling Hard Leather Armour [#] {good} (p).,1,store.sell
+"Selling a Scroll titled ""nelggar payjo"" (n).",1,store.sell
+You sold a Scroll of Trap Detection for # gold.,1,store.sold
+You have no more Scrolls of Trap Detection.,1,item.count
+"Selling a Scroll titled ""monwhon"" (n).",1,store.sell
+You sold a Scroll of Detect Invisible for # gold.,1,store.sold
+You have no more Scrolls of Detect Invisible.,1,item.count
+Selling a Potion of Water (d).,1,store.sell
+You have a Scroll of Word of Recall {#% off} (j).,1,item.count|pickup
+You have # Scrolls of Word of Recall {#% off} (j).,1,item.count|pickup
+The Giant grey rat misses you.,1,attack.melee.miss
+You see a Silver Amulet.,1,pickup.see
+You have a Silver Amulet (n).,1,item.count|pickup
+You see a Staff of Object Location.,1,pickup.see
+You have a Staff of Object Location (n).,1,item.count|pickup
+You miss the Baby multi-hued dragon.,1,player.miss
+The Baby multi-hued dragon flees in terror!,1,monster.flee
+You have slain the Baby multi-hued dragon.,1,item.count|player.kill
+The Baby white dragon flees in terror!,1,monster.flee
+The Master yeek misses you.,1,attack.melee.miss
+You have found # gold pieces worth of diamonds.,1,item.count|pickup.gold
+You miss the Blink dog.,1,player.miss
+You miss the Giant white tick.,1,player.miss
+The Giant white tick misses you.,1,attack.melee.miss
+The Giant white tick flees in terror!,1,monster.flee
+You have slain the Giant white tick.,1,item.count|player.kill
+You see a Scroll of Trap Detection.,1,pickup.see
+You have a Scroll of Trap Detection (m).,1,item.count|pickup
+The White jelly wakes up.,1,monster.wake
+You see a Gnome Skeleton.,1,pickup.see
+You have a Gnome Skeleton (q).,1,item.count|pickup
+The Orc shaman blinks away.,1,monster.blink
+You have a Set of Leather Gloves [#] (r).,1,item.count|pickup
+You feel the Set of Leather Gloves (r) in your pack is average...,1,pseudoid.pack
+Your Hard Leather Cap (j) was disenchanted!,1,item.disenchant
+You have slain the Disenchanter eye.,1,item.count|player.kill
+You destroy Hard Leather Armour [#] {average}.,1,item.destroy
+You have no more Hard Leather Armours [#] {average}.,1,item.count
+You destroy a Set of Leather Gloves [#] {average}.,1,item.destroy
+You have no more Sets of Leather Gloves [#] {average}.,1,item.count
+You are wearing a Silver Amulet (e).,1,item.wield
+The Master yeek hits you.,1,attack.melee.hit|player.hit_monster.ranged
+You have a Potion of Boldness.,1,item.count
+The Gnome mage wakes up.,1,monster.wake
+The Yellow mold wakes up.,1,monster.wake
+You have destroyed the Yellow worm mass.,1,item.count|player.kill
+There is a closed door blocking your way.,1,move.blocked.door
+The Baby black dragon misses you.,1,attack.melee.miss
+The Baby black dragon breathes acid.,1,attack.breath.acid
+You have slain the Baby black dragon.,1,item.count|player.kill
+You have a Whip (#d#) (p).,1,item.count|pickup
+You feel the Whip (p) in your pack is average...,1,pseudoid.pack
+The Killer brown beetle misses you.,1,attack.melee.miss
+You have # Scrolls of Word of Recall (j).,1,item.count|pickup
+Selling a Staff of Object Location (o).,1,store.sell
+You bought # Potions of Cure Critical Wounds for # gold.,1,store.bought|store.floor_buy_ok
+You have # Potions of Cure Critical Wounds (i).,1,item.count|pickup
+You have an excellent feeling...,1,item.count|level.feeling|level.feeling.3
+You see a Scroll of Remove Curse.,1,pickup.see
+You have a Scroll of Remove Curse (m).,1,item.count|pickup
+You see an Amber Amulet.,1,pickup.see
+You have an Amber Amulet (q).,1,item.count|pickup
+The Warg recovers its courage.,1,monster.recover_courage
+You miss the Red worm mass.,1,player.miss
+You see a Book of Magic Spells [Conjurings and Tricks].,1,pickup.see
+The Novice rogue touches you.,1,attack.melee.hit
+The Giant white ant misses you.,1,attack.melee.miss
+The Giant white ant flees in terror!,1,monster.flee
+The Cave lizard wakes up.,1,monster.wake
+The Gnome mage blinks away.,1,monster.blink
+You have # Scrolls of Light (n).,1,item.count|pickup
+You have a Light Crossbow (x#) (r).,1,item.count|pickup
+You feel the Light Crossbow (r) in your pack is average...,1,pseudoid.pack
+You destroy a Light Crossbow (x#) {average}.,1,item.destroy
+You have no more Light Crossbows (x#) {average}.,1,item.count
+You are enveloped in a cloud of smoke!,1,summon
+*** LOW HITPOINT WARNING! ***,1,danger.low_hp
+You feel a sudden stirring nearby!,1,monster.aggravate.speedup
+You have been killed by an Uruk.,1,item.count|player.death.ghost_form
+The Metallic red centipede flees in terror!,1,monster.flee
+You have slain the Metallic red centipede.,1,item.count|player.kill
+You miss the Giant white mouse.,1,player.miss
+"[Dive#] Our dex was so drained by that invis monster, we need to",1,chat.channel
+[Dive#] restore it,1,chat.channel
+"[Dive#] Almost all our money, but it dropped us from # to # blows",1,chat.channel
+[Dive#] From a potion,1,chat.channel
+"You have a Scroll titled ""xtox ipta sour"" (b).",1,item.count|pickup
+A black gas surrounds you!,1,trap.gas.blind
+"[Dive#] Bought in the ""#"" store",1,chat.channel
+You have # Rounded Pebbles (#d#) (d).,1,item.count|pickup
+You see a Gold Wand.,1,pickup.see
+You have a Gold Wand (c).,1,item.count|pickup
+You feel the Rounded Pebbles (e) in your pack are cursed...,1,pseudoid.pack
+The Small kobold flees in terror!,1,monster.flee
+"You have a Scroll titled ""xtox ipta sour"" (g).",1,item.count|pickup
+You miss the Large brown snake.,1,player.miss
+The Clear icky thing touches you.,1,attack.melee.hit
+"Was wielding a Broad Sword (#d#) (+#,+#) (i).",1,item.drop|item.takeoff
+"Selling a Broad Sword (#d#) (+#,+#) (i).",1,store.sell
+"You bought a Dagger (#d#) (+#,+#) for # gold.",1,store.bought|store.floor_buy_ok
+"You have a Dagger (#d#) (+#,+#) (i).",1,item.count|pickup
+"Examining a Dagger (#d#) (+#,+#)...",1,item.examine
+"You are wielding a Dagger (#d#) (+#,+#) (a).",1,item.wield
+"Was wearing Chain Mail (-#) [#,+#] (i).",1,item.drop|item.takeoff
+"Selling Chain Mail (-#) [#,+#] (i).",1,store.sell
+"You sold Chain Mail (-#) [#,+#] for # gold.",1,store.sold
+"You have no more Chain Mails (-#) [#,+#].",1,item.count
+"You bought Soft Leather Armour [#,+#] for # gold.",1,store.bought|store.floor_buy_ok
+"You have Soft Leather Armour [#,+#] (i).",1,item.count|pickup
+"You have a Small Leather Shield [#,+#] (j).",1,item.count|pickup
+"You bought a Pair of Soft Leather Boots [#,+#] {#% off} for # gold.",1,store.bought|store.floor_buy_ok
+"You have a Pair of Soft Leather Boots [#,+#] {#% off} (k).",1,item.count|pickup
+"You have a Set of Leather Gloves [#,+#] (k).",1,item.count|pickup
+"You have a Hard Leather Cap [#,+#] {#% off} (k).",1,item.count|pickup
+"You are wearing Soft Leather Armour [#,+#] (g).",1,item.wield
+"You are wearing a Pair of Soft Leather Boots [#,+#] {#% off} (l).",1,item.wield
+"You have a Cloak [#,+#] (i).",1,item.count|pickup
+You bought # Scrolls of Enchant Weapon To-Dam {#% off} for # gold.,1,store.bought|store.floor_buy_ok
+You have # Scrolls of Enchant Weapon To-Dam {#% off} (g).,1,item.count|pickup
+You bought a Scroll of Enchant Weapon To-Hit {#% off} for # gold.,1,store.bought|store.floor_buy_ok
+You have a Scroll of Enchant Weapon To-Hit {#% off} (g).,1,item.count|pickup
+You have a Scroll of Enchant Weapon To-Dam {#% off}.,1,item.count
+You have no more Scrolls of Enchant Weapon To-Dam {#% off}.,1,item.count
+You have no more Scrolls of Enchant Weapon To-Hit {#% off}.,1,item.count
+You see a Light Brown Potion.,1,pickup.see
+You have a Light Brown Potion (e).,1,item.count|pickup
+The Grey mushroom patch releases spores at you.,1,attack.melee.hit
+The Soldier ant bites you.,1,attack.melee.hit
+You hit the Soldier ant.,1,player.hit_monster
+You have slain the Soldier ant.,1,item.count|player.kill
+You have a Set of Leather Gloves [#] (j).,1,item.count|pickup
+You have a Robe [#] (j).,1,item.count|pickup
+The Giant white centipede flees in terror!,1,monster.flee
+You have slain the Radiation eye.,1,item.count|player.kill
+"You see a Scroll titled ""mikoxy urmur i"".",1,pickup.see
+"You have a Scroll titled ""mikoxy urmur i"" (i).",1,item.count|pickup
+You feel the Set of Leather Gloves (m) in your pack is average...,1,pseudoid.pack
+You feel the Robe (l) in your pack is good...,1,pseudoid.pack
+The Cave spider bites you.,1,attack.melee.hit
+The Giant black ant bites you.,1,attack.melee.hit
+You miss the Giant black ant.,1,player.miss
+You miss the Novice rogue.,1,player.miss
+"You miss Grip, Farmer Maggot's dog.",1,player.miss
+"Grip, Farmer Maggot's dog flees in terror!",1,monster.flee
+"You have slain Grip, Farmer Maggot's dog.",1,item.count|player.kill
+"Grip, Farmer Maggot's dog was slain by Dive#.",1,monster.death.unique
+You hit the Grey mold.,1,player.hit_monster
+You have destroyed the Grey mold.,1,item.count|player.kill
+You see a Holy Book of Prayers [Holy Infusions].,1,pickup.see
+The Floating eye wakes up.,1,monster.wake
+You have a Magenta Potion (f).,1,item.count|pickup
+The Metallic green centipede flees in terror!,1,monster.flee
+The Giant green frog wakes up.,1,monster.wake
+The Giant green frog bites you.,1,attack.melee.hit
+You feel like a killing machine!,1,status.berserk.on
+You have no more Potions of Berserk Strength.,1,item.count
+"You see a Scroll titled ""blaa marsef"".",1,pickup.see
+"You have a Scroll titled ""blaa marsef"" (j).",1,item.count|pickup
+You feel less Berserk.,1,status.berserk.off
+You see a Sling (x#).,1,pickup.see
+You have a Sling (x#) (o).,1,item.count|pickup
+Examining a Robe [#] {good}...,1,item.examine
+Selling a Light Brown Potion (d).,1,store.sell
+You sold a Potion of Apple Juice for # gold.,1,store.sold
+You have no more Potions of Apple Juice.,1,item.count
+Selling a Magenta Potion (d).,1,store.sell
+"Selling a Scroll titled ""xtox ipta sour"" (f).",1,store.sell
+You sold a Scroll of Blessing for # gold.,1,store.sold
+You have no more Scrolls of Blessing.,1,item.count
+"Selling a Scroll titled ""mikoxy urmur i"" (f).",1,store.sell
+You sold a Scroll of Identify for # gold.,1,store.sold
+The shopkeeper laughs loudly.,1,store.comment.good
+"Selling a Scroll titled ""blaa marsef"" (f).",1,store.sell
+You sold a Scroll of Darkness for # gold.,1,store.sold
+You have no more Scrolls of Darkness.,1,item.count
+Selling a Robe [#] {good} (h).,1,store.sell
+Selling a Set of Leather Gloves [#] {average} (h).,1,store.sell
+"You sold a Set of Leather Gloves [#,+#] for # gold.",1,store.sold
+"You have no more Sets of Leather Gloves [#,+#].",1,item.count
+Selling a Sling (x#) (h).,1,store.sell
+"You sold a Sling (x#) (+#,+#) for # gold.",1,store.sold
+"You have no more Slings (x#) (+#,+#).",1,item.count
+You have # Scrolls of Phase Door {#% off} (d).,1,item.count|pickup

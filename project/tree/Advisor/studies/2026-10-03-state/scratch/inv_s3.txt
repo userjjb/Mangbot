@@ -1,0 +1,1248 @@
+152.564 S CUSTOM:'.' 4703
+152.937 S CUSTOM:'.' 4706
+153.83 S CUSTOM:'.' 4703
+154.183 S CUSTOM:'.' 4706
+154.732 S CUSTOM:'.' 4706
+155.014 S CUSTOM:'.' 4709
+155.329 S CUSTOM:'.' 4706
+155.76 S CUSTOM:'.' 4703
+157.327 S CUSTOM:'.' 4706
+158.042 S CUSTOM:'.' 4706
+158.338 S CUSTOM:'.' 4706
+158.533 S CUSTOM:'.' 4703
+158.835 S CUSTOM:'.' 4706
+159.868 S CUSTOM:'.' 4706
+160.967 S CUSTOM:'.' 4704
+161.287 S CUSTOM:'.' 4703
+161.424 EQUIP f 39  Brass Lantern (with 3900 turns of light) {25% off}
+161.856 S CUSTOM:'.' 4706
+162.347 S CUSTOM:'.' 4703
+162.728 S CUSTOM:'.' 4703
+163.043 S CUSTOM:'.' 4706
+163.337 S CUSTOM:'.' 4706
+163.641 S CUSTOM:'.' 4706
+164.15 S CUSTOM:'.' 4706
+164.357 S CUSTOM:'.' 4706
+164.61 S CUSTOM:'.' 4706
+164.893 S CUSTOM:'.' 4706
+165.235 S CUSTOM:'.' 4706
+165.52 S CUSTOM:'.' 4706
+165.943 S CUSTOM:'.' 4703
+166.186 S CUSTOM:'.' 4703
+166.41 S CUSTOM:'.' 4703
+166.644 S CUSTOM:'.' 4703
+166.861 S CUSTOM:'.' 4702
+167.076 S CUSTOM:'.' 4703
+167.09 IND:depth da95
+167.09 PKT_FLOOR 310000000000000000000000
+167.5 S CUSTOM:'.' 4703
+167.917 S CUSTOM:'.' 4703
+168.222 S CUSTOM:'.' 4706
+168.614 S CUSTOM:'.' 4706
+169.451 IND:depth dac8
+169.452 PKT_FLOOR 310000000000000000000000
+170.143 S CUSTOM:'.' 4702
+170.428 S CUSTOM:'.' 4702
+170.819 S CUSTOM:'.' 4702
+170.959 S CUSTOM:'.' 4701
+171.163 S CUSTOM:'.' 4703
+171.625 S CUSTOM:'.' 4703
+171.694 S CUSTOM:'.' 4702
+171.786 S CUSTOM:'.' 4701
+172.042 S CUSTOM:'.' 4703
+172.394 S CUSTOM:'.' 4703
+172.737 S CUSTOM:'.' 4703
+173.11 S CUSTOM:'.' 4702
+173.403 S CUSTOM:'.' 4703
+173.943 S CUSTOM:'.' 4706
+174.353 S CUSTOM:'.' 4703
+174.563 S CUSTOM:'.' 4702
+174.94 S CUSTOM:'.' 4703
+174.955 EQUIP f 39  Brass Lantern (with 3800 turns of light) {25% off}
+175.296 S CUSTOM:'.' 4703
+175.577 S CUSTOM:'.' 4703
+175.717 S CUSTOM:'.' 4702
+176.359 S CUSTOM:'.' 4704
+176.597 S CUSTOM:'.' 4702
+176.806 S CUSTOM:'.' 4703
+177.782 S CUSTOM:'.' 4703
+177.954 S CUSTOM:'.' 4702
+178.195 S CUSTOM:'.' 4703
+179.215 S CUSTOM:'.' 4703
+179.613 S CUSTOM:'.' 4703
+179.967 S CUSTOM:'.' 4706
+180.381 S CUSTOM:'.' 4703
+180.899 S CUSTOM:'.' 4703
+181.184 IND:depth daf8
+181.184 PKT_FLOOR 310000000000000000000000
+181.288 S CUSTOM:'.' 4703
+181.844 S CUSTOM:'.' 4703
+182.684 S CUSTOM:'.' 4703
+182.775 S CUSTOM:'.' 4702
+183.23 S CUSTOM:'.' 4702
+185.054 S PKT_TERM_INIT a663
+187.892 S PKT_KEY a81b7b4703
+188.166 S CUSTOM:'.' 4706
+188.628 S CUSTOM:'.' 4703
+188.817 S CUSTOM:'.' 4702
+189.173 S CUSTOM:'.' 4703
+189.389 S CUSTOM:'.' 4706
+189.825 S CUSTOM:'.' 4703
+190.357 EQUIP f 39  Brass Lantern (with 3700 turns of light) {25% off}
+190.536 S CUSTOM:'.' 4703
+190.862 S CUSTOM:'.' 4703
+191.136 S CUSTOM:'.' 4706
+191.834 S CUSTOM:'.' 4703
+192.385 S CUSTOM:'.' 4706
+192.911 S CUSTOM:'.' 4703
+193.306 S CUSTOM:'.' 4703
+193.636 S CUSTOM:'.' 4706
+194.077 S CUSTOM:'.' 4703
+194.418 S CUSTOM:'.' 4703
+194.725 S CUSTOM:'.' 4706
+195.055 S CUSTOM:'.' 4703
+195.358 S CUSTOM:'.' 4703
+195.685 S CUSTOM:'.' 4706
+196.593 S CUSTOM:'.' 4703
+197.015 S CUSTOM:'.' 4706
+198.23 S CUSTOM:'.' 4703
+198.567 S CUSTOM:'.' 4709
+198.843 S CUSTOM:'.' 4703
+199.226 S CUSTOM:'.' 4703
+199.45 S CUSTOM:'.' 4703
+199.906 S CUSTOM:'.' 4702
+200.077 S CUSTOM:'.' 4703
+200.447 S CUSTOM:'.' 4703
+200.752 S CUSTOM:'.' 4703
+201.13 S CUSTOM:'.' 4702
+201.327 S CUSTOM:'.' 4703
+201.849 S CUSTOM:'.' 4706
+202.396 MSG You hit the Wolf..
+202.408 MSG The Wolf bites you..
+202.516 MSG You hit the Wolf..
+202.65 MSG You have slain the Wolf..
+202.65 IND:level c31010
+203.515 S CUSTOM:'.' 4703
+203.84 S CUSTOM:'.' 4706
+204.762 S CUSTOM:'.' 4706
+204.764 MSG You cannot run in that direction..
+206.086 S CUSTOM:'.' 4709
+206.472 S CUSTOM:'.' 4706
+206.841 S CUSTOM:'.' 4703
+207.193 S CUSTOM:'.' 4703
+207.496 S CUSTOM:'.' 4703
+207.528 EQUIP f 39  Brass Lantern (with 3600 turns of light) {25% off}
+208.016 S CUSTOM:'.' 4703
+208.77 S CUSTOM:'.' 4703
+209.24 S CUSTOM:'.' 4702
+209.636 S CUSTOM:'.' 4703
+210.302 S CUSTOM:'.' 4706
+210.592 S CUSTOM:'.' 4708
+210.76 S CUSTOM:'.' 4709
+211.063 S CUSTOM:'.' 4706
+211.651 S CUSTOM:'.' 4706
+211.955 S CUSTOM:'.' 4703
+212.29 S CUSTOM:'.' 4706
+212.839 S CUSTOM:'.' 4706
+213.547 S CUSTOM:'.' 4709
+213.871 S CUSTOM:'.' 4703
+214.193 S CUSTOM:'.' 4703
+214.456 S CUSTOM:'.' 4703
+214.479 S CUSTOM:'.' 4702
+214.682 S CUSTOM:'.' 4701
+214.717 IND:depth da24
+214.717 PKT_FLOOR 310000000000000000000000
+214.767 S CUSTOM:'.' 4703
+215.118 S CUSTOM:'.' 4703
+215.405 S CUSTOM:'.' 4703
+215.726 S CUSTOM:'.' 4703
+216.092 S CUSTOM:'.' 4703
+216.344 S CUSTOM:'.' 4702
+216.619 S CUSTOM:'.' 4706
+217.678 S CUSTOM:'.' 4709
+217.942 S CUSTOM:'.' 4706
+219.79 S CUSTOM:'.' 4703
+220.191 S CUSTOM:'.' 4706
+221.363 S PKT_TERM_INIT a663
+223.338 S PKT_KEY a81b7b4703
+223.593 S CUSTOM:'.' 4706
+224.113 S CUSTOM:'.' 4706
+224.365 S CUSTOM:'.' 4709
+224.639 S CUSTOM:'.' 4706
+225.138 S CUSTOM:'.' 4708
+225.393 S CUSTOM:'.' 4706
+225.953 S CUSTOM:'.' 4703
+226.101 EQUIP f 39  Brass Lantern (with 3500 turns of light) {25% off}
+226.279 S CUSTOM:'.' 4706
+226.894 S CUSTOM:'.' 4709
+227.166 S CUSTOM:'.' 4706
+227.717 S CUSTOM:'.' 4703
+228.039 S CUSTOM:'.' 4702
+228.225 S CUSTOM:'.' 4703
+228.576 S CUSTOM:'.' 4702
+228.763 S CUSTOM:'.' 4703
+229.084 S CUSTOM:'.' 4706
+229.437 S CUSTOM:'.' 4706
+229.671 S CUSTOM:'.' 4706
+230.103 S CUSTOM:'.' 4703
+230.389 S CUSTOM:'.' 4703
+230.45 IND:depth da6f
+230.45 PKT_FLOOR 310000000000000000000000
+230.611 S CUSTOM:'.' 4703
+231.319 S CUSTOM:'.' 4702
+231.61 S CUSTOM:'.' 4702
+231.895 S CUSTOM:'.' 4702
+232.287 S CUSTOM:'.' 4703
+232.459 S CUSTOM:'.' 4702
+232.696 S CUSTOM:'.' 4701
+233.022 S CUSTOM:'.' 4703
+233.141 S CUSTOM:'.' 4702
+233.462 S CUSTOM:'.' 4702
+233.777 S CUSTOM:'.' 4702
+234.051 S CUSTOM:'.' 4702
+234.333 S CUSTOM:'.' 4702
+234.577 S CUSTOM:'.' 4702
+234.814 S CUSTOM:'.' 4703
+235.136 S CUSTOM:'.' 4703
+235.186 S CUSTOM:'.' 4702
+235.595 S CUSTOM:'.' 4702
+235.85 S CUSTOM:'.' 4702
+236.095 S CUSTOM:'.' 4703
+236.226 S CUSTOM:'.' 4702
+236.515 S CUSTOM:'.' 4702
+236.91 S CUSTOM:'.' 4702
+237.162 S CUSTOM:'.' 4701
+237.166 S CUSTOM:'.' 4702
+237.238 S CUSTOM:'.' 4703
+237.371 S CUSTOM:'.' 4701
+237.52 S CUSTOM:'.' 4703
+237.535 S CUSTOM:'.' 4702
+237.615 S CUSTOM:'.' 4701
+237.777 S CUSTOM:'.' 4703
+237.81 S CUSTOM:'.' 4702
+238.099 S CUSTOM:'.' 4702
+238.333 S CUSTOM:'.' 4702
+238.358 S CUSTOM:'.' 4703
+238.504 S CUSTOM:'.' 4702
+238.717 S CUSTOM:'.' 4701
+238.796 S CUSTOM:'.' 4702
+238.951 S CUSTOM:'.' 4703
+239.115 S CUSTOM:'.' 4702
+239.426 S CUSTOM:'.' 4702
+239.671 S CUSTOM:'.' 4702
+239.82 S CUSTOM:'.' 4703
+239.912 S CUSTOM:'.' 4702
+240.022 S CUSTOM:'.' 4701
+240.186 S CUSTOM:'.' 4703
+240.233 S CUSTOM:'.' 4702
+240.314 S CUSTOM:'.' 4701
+240.472 S CUSTOM:'.' 4703
+240.635 IND:depth da8f
+240.635 PKT_FLOOR 310000000000000000000000
+240.698 S CUSTOM:'.' 4702
+240.871 S CUSTOM:'.' 4703
+241.029 S CUSTOM:'.' 4702
+241.196 S CUSTOM:'.' 4701
+241.338 S CUSTOM:'.' 4703
+241.386 S CUSTOM:'.' 4702
+241.477 S CUSTOM:'.' 4701
+241.638 S CUSTOM:'.' 4703
+241.688 EQUIP f 39  Brass Lantern (with 3400 turns of light) {25% off}
+241.759 S CUSTOM:'.' 4702
+241.866 S CUSTOM:'.' 4701
+242.069 S CUSTOM:'.' 4703
+242.131 S CUSTOM:'.' 4702
+242.215 S CUSTOM:'.' 4701
+242.402 S CUSTOM:'.' 4703
+242.434 S CUSTOM:'.' 4702
+242.507 S CUSTOM:'.' 4701
+242.702 S CUSTOM:'.' 4703
+242.745 S CUSTOM:'.' 4702
+242.797 S CUSTOM:'.' 4701
+242.987 S CUSTOM:'.' 4703
+243.018 S CUSTOM:'.' 4702
+243.073 S CUSTOM:'.' 4701
+243.267 S CUSTOM:'.' 4703
+243.28 S CUSTOM:'.' 4702
+243.352 S CUSTOM:'.' 4701
+243.51 S CUSTOM:'.' 4703
+243.553 S CUSTOM:'.' 4702
+243.61 S CUSTOM:'.' 4701
+243.784 S CUSTOM:'.' 4703
+243.807 S CUSTOM:'.' 4702
+243.908 S CUSTOM:'.' 4701
+244.067 S CUSTOM:'.' 4703
+244.58 S CUSTOM:'.' 4703
+244.614 S CUSTOM:'.' 4703
+244.643 S CUSTOM:'.' 4703
+244.676 S CUSTOM:'.' 4703
+244.706 S CUSTOM:'.' 4703
+244.737 S CUSTOM:'.' 4703
+244.77 S CUSTOM:'.' 4703
+244.791 S CUSTOM:'.' 4702
+244.948 S CUSTOM:'.' 4701
+245.122 S CUSTOM:'.' 4703
+245.155 S CUSTOM:'.' 4702
+245.217 S CUSTOM:'.' 4701
+245.364 S CUSTOM:'.' 4703
+245.658 S CUSTOM:'.' 4703
+245.74 S CUSTOM:'.' 4702
+245.871 S CUSTOM:'.' 4701
+246.273 S CUSTOM:'.' 4706
+246.646 S CUSTOM:'.' 4706
+246.84 S CUSTOM:'.' 4706
+247.108 S CUSTOM:'.' 4703
+247.217 S CUSTOM:'.' 4702
+247.318 S CUSTOM:'.' 4701
+247.506 S CUSTOM:'.' 4703
+247.528 S CUSTOM:'.' 4702
+247.602 S CUSTOM:'.' 4701
+247.886 S CUSTOM:'.' 4701
+247.97 S CUSTOM:'.' 4702
+248.047 S CUSTOM:'.' 4703
+248.263 S CUSTOM:'.' 4702
+248.304 S CUSTOM:'.' 4701
+248.502 S CUSTOM:'.' 4703
+248.524 S CUSTOM:'.' 4702
+248.615 S CUSTOM:'.' 4701
+248.766 S CUSTOM:'.' 4703
+248.796 S CUSTOM:'.' 4702
+248.872 S CUSTOM:'.' 4701
+249.049 S CUSTOM:'.' 4703
+249.092 S CUSTOM:'.' 4702
+249.15 S CUSTOM:'.' 4701
+249.359 S CUSTOM:'.' 4703
+249.453 S CUSTOM:'.' 4702
+249.556 S CUSTOM:'.' 4701
+249.691 S CUSTOM:'.' 4703
+249.801 S CUSTOM:'.' 4702
+249.857 S CUSTOM:'.' 4701
+250.009 IND:depth daab
+250.009 PKT_FLOOR 310000000000000000000000
+250.043 S CUSTOM:'.' 4703
+250.413 S CUSTOM:'.' 4703
+250.655 S CUSTOM:'.' 4702
+250.863 S CUSTOM:'.' 4701
+251.013 S CUSTOM:'.' 4703
+251.067 S CUSTOM:'.' 4701
+251.168 MSG It fires an arrow..
+251.18 S CUSTOM:'.' 4703
+251.767 S CUSTOM:'.' 4703
+251.991 S CUSTOM:'.' 4703
+251.994 MSG You cannot run in that direction..
+252.105 S CUSTOM:'.' 4702
+252.178 S CUSTOM:'.' 4701
+252.394 S CUSTOM:'.' 4703
+252.463 S CUSTOM:'.' 4702
+252.536 S CUSTOM:'.' 4701
+252.833 S CUSTOM:'.' 4703
+253.235 S CUSTOM:'.' 4706
+253.767 MSG You hit the Novice ranger..
+253.767 MSG You have slain the Novice ranger..
+253.767 IND:level c31010
+254.982 S CUSTOM:'.' 4703
+255.333 S CUSTOM:'.' 4703
+255.505 S CUSTOM:'.' 4702
+255.655 S CUSTOM:'.' 4701
+255.834 S CUSTOM:'.' 4703
+255.903 S CUSTOM:'.' 4702
+255.947 S CUSTOM:'.' 4701
+256.061 EQUIP f 39  Brass Lantern (with 3300 turns of light) {25% off}
+256.156 S CUSTOM:'.' 4703
+256.159 MSG You cannot run in that direction..
+256.459 S CUSTOM:'.' 4703
+256.732 S CUSTOM:'.' 4703
+256.746 S CUSTOM:'.' 4702
+256.827 S CUSTOM:'.' 4701
+257.024 S CUSTOM:'.' 4703
+257.535 S CUSTOM:'.' 4703
+257.567 S CUSTOM:'.' 4703
+257.989 S CUSTOM:'.' 4703
+258.197 S CUSTOM:'.' 4702
+258.278 S CUSTOM:'.' 4701
+258.457 S CUSTOM:'.' 4703
+258.467 S CUSTOM:'.' 4701
+258.483 S CUSTOM:'.' 4702
+258.964 S CUSTOM:'.' 4703
+259.288 S CUSTOM:'.' 4703
+259.392 S CUSTOM:'.' 4702
+259.45 S CUSTOM:'.' 4701
+259.634 S CUSTOM:'.' 4703
+259.723 S CUSTOM:'.' 4702
+259.952 S CUSTOM:'.' 4703
+260.338 S CUSTOM:'.' 4703
+260.638 S CUSTOM:'.' 4703
+260.717 S CUSTOM:'.' 4701
+260.733 S CUSTOM:'.' 4702
+260.927 S CUSTOM:'.' 4703
+261.24 S CUSTOM:'.' 4703
+261.488 S CUSTOM:'.' 4702
+261.605 S CUSTOM:'.' 4701
+261.751 S CUSTOM:'.' 4703
+261.821 S CUSTOM:'.' 4702
+261.875 S CUSTOM:'.' 4701
+262.044 S CUSTOM:'.' 4703
+262.162 S CUSTOM:'.' 4702
+262.177 S CUSTOM:'.' 4701
+262.374 S CUSTOM:'.' 4703
+262.406 S CUSTOM:'.' 4702
+262.478 S CUSTOM:'.' 4701
+262.655 S CUSTOM:'.' 4703
+262.689 S CUSTOM:'.' 4702
+262.723 S CUSTOM:'.' 4701
+262.782 IND:depth dac3
+262.782 PKT_FLOOR 310000000000000000000000
+262.899 S CUSTOM:'.' 4703
+262.942 S CUSTOM:'.' 4702
+262.976 S CUSTOM:'.' 4701
+263.144 S CUSTOM:'.' 4703
+263.188 S CUSTOM:'.' 4702
+263.228 S CUSTOM:'.' 4701
+263.415 S CUSTOM:'.' 4703
+263.44 S CUSTOM:'.' 4702
+263.502 S CUSTOM:'.' 4701
+263.689 S CUSTOM:'.' 4703
+263.703 S CUSTOM:'.' 4702
+263.758 S CUSTOM:'.' 4701
+263.938 S CUSTOM:'.' 4703
+263.963 S CUSTOM:'.' 4702
+264.003 S CUSTOM:'.' 4701
+264.19 S CUSTOM:'.' 4703
+264.226 S CUSTOM:'.' 4702
+264.271 S CUSTOM:'.' 4701
+264.457 S CUSTOM:'.' 4703
+264.479 S CUSTOM:'.' 4702
+264.512 S CUSTOM:'.' 4701
+264.739 S CUSTOM:'.' 4703
+264.753 S CUSTOM:'.' 4702
+264.826 S CUSTOM:'.' 4701
+265.043 S CUSTOM:'.' 4703
+265.552 S CUSTOM:'.' 4703
+265.58 S CUSTOM:'.' 4703
+265.76 S CUSTOM:'.' 4703
+265.966 S CUSTOM:'.' 4702
+266.035 S CUSTOM:'.' 4701
+266.248 S CUSTOM:'.' 4703
+266.27 S CUSTOM:'.' 4702
+266.313 S CUSTOM:'.' 4701
+266.522 S CUSTOM:'.' 4703
+266.554 S CUSTOM:'.' 4702
+266.613 S CUSTOM:'.' 4701
+266.782 S CUSTOM:'.' 4702
+266.785 S CUSTOM:'.' 4703
+266.898 S CUSTOM:'.' 4701
+267.055 S CUSTOM:'.' 4703
+267.077 S CUSTOM:'.' 4702
+267.132 S CUSTOM:'.' 4701
+267.359 S CUSTOM:'.' 4703
+267.369 S CUSTOM:'.' 4702
+267.435 S CUSTOM:'.' 4701
+267.65 S CUSTOM:'.' 4702
+267.653 S CUSTOM:'.' 4703
+267.714 S CUSTOM:'.' 4701
+267.924 S CUSTOM:'.' 4703
+267.986 S CUSTOM:'.' 4702
+268.02 S CUSTOM:'.' 4701
+268.235 S CUSTOM:'.' 4702
+268.238 S CUSTOM:'.' 4703
+268.312 S CUSTOM:'.' 4701
+268.521 S CUSTOM:'.' 4703
+268.531 S CUSTOM:'.' 4702
+268.583 S CUSTOM:'.' 4701
+268.662 EQUIP f 39  Brass Lantern (with 3200 turns of light) {25% off}
+268.78 S CUSTOM:'.' 4703
+268.817 S CUSTOM:'.' 4702
+268.867 S CUSTOM:'.' 4701
+269.073 S CUSTOM:'.' 4703
+269.106 S CUSTOM:'.' 4702
+269.157 S CUSTOM:'.' 4701
+269.426 S CUSTOM:'.' 4703
+269.542 S CUSTOM:'.' 4702
+269.608 S CUSTOM:'.' 4701
+269.784 S CUSTOM:'.' 4703
+269.837 S CUSTOM:'.' 4702
+269.871 S CUSTOM:'.' 4701
+270.076 S CUSTOM:'.' 4702
+270.083 S CUSTOM:'.' 4703
+270.163 S CUSTOM:'.' 4701
+270.33 S CUSTOM:'.' 4703
+270.354 S CUSTOM:'.' 4702
+270.427 S CUSTOM:'.' 4701
+270.625 S CUSTOM:'.' 4703
+270.678 S CUSTOM:'.' 4702
+270.987 S CUSTOM:'.' 4702
+271.289 S CUSTOM:'.' 4702
+271.534 S CUSTOM:'.' 4702
+271.773 S CUSTOM:'.' 4702
+272.256 S CUSTOM:'.' 4701
+272.427 S CUSTOM:'.' 4702
+272.497 S CUSTOM:'.' 4701
+272.555 IND:depth dad7
+272.555 PKT_FLOOR 310000000000000000000000
+272.632 S CUSTOM:'.' 4703
+272.657 S CUSTOM:'.' 4702
+272.716 S CUSTOM:'.' 4701
+272.884 S CUSTOM:'.' 4703
+272.899 S CUSTOM:'.' 4702
+272.99 S CUSTOM:'.' 4701
+273.166 S CUSTOM:'.' 4702
+273.169 S CUSTOM:'.' 4703
+273.232 S CUSTOM:'.' 4701
+273.429 S CUSTOM:'.' 4703
+273.451 S CUSTOM:'.' 4702
+273.517 S CUSTOM:'.' 4701
+273.693 S CUSTOM:'.' 4703
+273.714 S CUSTOM:'.' 4702
+273.777 S CUSTOM:'.' 4701
+273.943 S CUSTOM:'.' 4703
+273.977 S CUSTOM:'.' 4702
+274.021 S CUSTOM:'.' 4701
+274.229 S CUSTOM:'.' 4703
+274.737 S CUSTOM:'.' 4703
+276.313 MSG You hit the Blue yeek..
+276.314 MSG You have slain the Blue yeek..
+276.314 IND:level c31010
+276.322 S CUSTOM:'.' 4702
+280.396 IND:depth dae7
+280.396 PKT_FLOOR 310000000000000000000000
+280.513 EQUIP f 39  Brass Lantern (with 3100 turns of light) {25% off}
+282.539 S CUSTOM:'.' 4702
+282.541 MSG You cannot run in that direction..
+282.774 S CUSTOM:'.' 4703
+282.847 S CUSTOM:'.' 4702
+283.117 S CUSTOM:'.' 4703
+283.16 S CUSTOM:'.' 4702
+283.235 S CUSTOM:'.' 4701
+283.417 S CUSTOM:'.' 4703
+283.472 S CUSTOM:'.' 4702
+283.533 S CUSTOM:'.' 4701
+283.701 S CUSTOM:'.' 4703
+283.743 S CUSTOM:'.' 4702
+284.022 S CUSTOM:'.' 4702
+284.114 S CUSTOM:'.' 4703
+284.278 S CUSTOM:'.' 4701
+284.504 S CUSTOM:'.' 4703
+284.645 S CUSTOM:'.' 4702
+284.923 S CUSTOM:'.' 4703
+285.008 S CUSTOM:'.' 4702
+285.376 S CUSTOM:'.' 4702
+285.61 S CUSTOM:'.' 4702
+285.845 S CUSTOM:'.' 4703
+285.955 S CUSTOM:'.' 4702
+287.502 S CUSTOM:'F' 2201
+287.504 MSG You fuel your lamp..
+287.504 MSG You have 4 Flasks of oil..
+287.504 INVEN ('b', 77, 4, 40, '4 Flasks of oil', '')
+287.504 EQUIP f 39  Brass Lantern (with 10563 turns of light) {25% off}
+288.166 S CUSTOM:'.' 4706
+288.532 S CUSTOM:'.' 4703
+288.534 MSG You cannot run in that direction..
+288.594 S CUSTOM:'.' 4702
+288.693 S CUSTOM:'.' 4701
+288.861 S CUSTOM:'.' 4703
+288.974 S CUSTOM:'.' 4702
+289.216 S CUSTOM:'.' 4703
+289.373 S CUSTOM:'.' 4702
+289.428 S CUSTOM:'.' 4701
+289.576 S CUSTOM:'.' 4703
+289.628 S CUSTOM:'.' 4702
+289.691 S CUSTOM:'.' 4701
+289.858 S CUSTOM:'.' 4703
+289.87 S CUSTOM:'.' 4702
+289.953 S CUSTOM:'.' 4701
+290.122 S CUSTOM:'.' 4703
+290.143 S CUSTOM:'.' 4702
+290.218 S CUSTOM:'.' 4701
+290.4 S CUSTOM:'.' 4703
+290.426 S CUSTOM:'.' 4702
+290.51 S CUSTOM:'.' 4701
+290.714 S CUSTOM:'.' 4702
+290.718 S CUSTOM:'.' 4703
+290.802 S CUSTOM:'.' 4701
+291.033 S CUSTOM:'.' 4702
+291.036 S CUSTOM:'.' 4703
+291.294 S CUSTOM:'.' 4703
+291.387 S CUSTOM:'.' 4702
+291.6 S CUSTOM:'.' 4701
+291.791 S CUSTOM:'.' 4702
+291.815 S CUSTOM:'.' 4703
+292.145 S CUSTOM:'.' 4703
+292.237 S CUSTOM:'.' 4702
+292.442 S CUSTOM:'.' 4701
+292.597 S CUSTOM:'.' 4703
+292.648 S CUSTOM:'.' 4702
+292.74 S CUSTOM:'.' 4701
+292.91 S CUSTOM:'.' 4703
+292.992 S CUSTOM:'.' 4702
+293.31 S CUSTOM:'.' 4703
+293.381 S CUSTOM:'.' 4702
+293.471 S CUSTOM:'.' 4701
+293.698 S CUSTOM:'.' 4703
+293.77 S CUSTOM:'.' 4702
+293.874 S CUSTOM:'.' 4701
+294.089 S CUSTOM:'.' 4703
+294.142 S CUSTOM:'.' 4702
+294.273 IND:depth daf3
+294.273 PKT_FLOOR 310000000000000000000000
+294.372 S CUSTOM:'.' 4702
+294.588 S CUSTOM:'.' 4703
+294.89 S CUSTOM:'.' 4703
+294.906 S CUSTOM:'.' 4702
+295.068 S CUSTOM:'.' 4701
+295.264 S CUSTOM:'.' 4703
+295.274 S CUSTOM:'.' 4702
+295.421 S CUSTOM:'.' 4701
+295.514 S CUSTOM:'.' 4703
+295.597 S CUSTOM:'.' 4702
+295.706 S CUSTOM:'.' 4701
+295.868 S CUSTOM:'.' 4703
+295.889 S CUSTOM:'.' 4702
+296.007 EQUIP f 39  Brass Lantern (with 10500 turns of light) {25% off}
+296.013 S CUSTOM:'.' 4701
+296.171 S CUSTOM:'.' 4703
+296.193 S CUSTOM:'.' 4702
+296.332 S CUSTOM:'.' 4701
+296.481 S CUSTOM:'.' 4703
+296.823 S CUSTOM:'.' 4703
+296.896 S CUSTOM:'.' 4702
+297.027 S CUSTOM:'.' 4701
+297.225 S CUSTOM:'.' 4703
+297.258 S CUSTOM:'.' 4702
+297.528 S CUSTOM:'.' 4703
+297.769 S CUSTOM:'.' 4702
+297.805 S CUSTOM:'.' 4703
+297.937 S CUSTOM:'.' 4701
+298.131 S CUSTOM:'.' 4702
+298.202 S CUSTOM:'.' 4701
+298.31 S CUSTOM:'.' 4703
+298.651 S CUSTOM:'.' 4703
+298.795 S CUSTOM:'.' 4702
+298.927 S CUSTOM:'.' 4701
+299.08 S CUSTOM:'.' 4703
+299.113 S CUSTOM:'.' 4702
+299.213 S CUSTOM:'.' 4701
+299.373 S CUSTOM:'.' 4703
+299.655 S CUSTOM:'.' 4703
+299.669 S CUSTOM:'.' 4702
+299.802 S CUSTOM:'.' 4701
+300.039 S CUSTOM:'.' 4703
+300.061 S CUSTOM:'.' 4702
+300.143 S CUSTOM:'.' 4701
+300.299 S CUSTOM:'.' 4703
+300.344 S CUSTOM:'.' 4702
+300.444 S CUSTOM:'.' 4701
+300.595 S CUSTOM:'.' 4703
+300.636 S CUSTOM:'.' 4702
+300.686 S CUSTOM:'.' 4701
+300.866 S CUSTOM:'.' 4702
+300.869 S CUSTOM:'.' 4703
+300.942 S CUSTOM:'.' 4701
+301.1 S CUSTOM:'.' 4703
+301.15 S CUSTOM:'.' 4702
+301.234 S CUSTOM:'.' 4701
+301.421 S CUSTOM:'.' 4703
+301.432 S CUSTOM:'.' 4702
+301.525 S CUSTOM:'.' 4701
+301.715 S CUSTOM:'.' 4703
+301.789 S CUSTOM:'.' 4701
+301.997 S CUSTOM:'.' 4703
+302.008 S CUSTOM:'.' 4702
+302.07 S CUSTOM:'.' 4701
+302.262 S CUSTOM:'.' 4703
+302.572 S CUSTOM:'.' 4703
+302.819 S CUSTOM:'.' 4702
+302.917 S CUSTOM:'.' 4701
+303.119 S CUSTOM:'.' 4703
+303.162 S CUSTOM:'.' 4702
+303.274 IND:depth dafb
+303.274 PKT_FLOOR 310000000000000000000000
+303.452 S CUSTOM:'.' 4703
+303.775 S CUSTOM:'.' 4703
+303.847 S CUSTOM:'.' 4702
+303.968 S CUSTOM:'.' 4701
+304.213 S CUSTOM:'.' 4702
+304.286 S CUSTOM:'.' 4701
+304.487 S CUSTOM:'.' 4703
+304.55 S CUSTOM:'.' 4702
+304.663 S CUSTOM:'.' 4701
+304.868 S CUSTOM:'.' 4703
+305.211 S CUSTOM:'.' 4703
+306.259 S PKT_TERM_INIT a663
+308.845 S PKT_KEY a81b7b4702
+309.084 S CUSTOM:'.' 4703
+309.156 S CUSTOM:'.' 4702
+309.249 S CUSTOM:'.' 4701
+309.435 S CUSTOM:'.' 4703
+309.507 S CUSTOM:'.' 4702
+309.643 S CUSTOM:'.' 4701
+309.786 S CUSTOM:'.' 4703
+309.85 S CUSTOM:'.' 4702
+309.942 S CUSTOM:'.' 4701
+310.101 S CUSTOM:'.' 4703
+310.286 EQUIP f 39  Brass Lantern (with 10400 turns of light) {25% off}
+310.432 S CUSTOM:'.' 4703
+310.804 S CUSTOM:'.' 4702
+310.863 S CUSTOM:'.' 4701
+310.94 S CUSTOM:'.' 4703
+311.181 S CUSTOM:'.' 4703
+311.546 S CUSTOM:'.' 4703
+311.606 S CUSTOM:'.' 4702
+311.69 S CUSTOM:'.' 4701
+312.281 S CUSTOM:'.' 4706
+312.75 S CUSTOM:'.' 4706
+313.297 S CUSTOM:'.' 4709
+313.603 S CUSTOM:'.' 4706
+314.004 S CUSTOM:'.' 4703
+314.056 S CUSTOM:'.' 4702
+314.483 S CUSTOM:'.' 4706
+314.944 S CUSTOM:'.' 4709
+315.316 S CUSTOM:'.' 4706
+315.749 S CUSTOM:'.' 4709
+316.069 S CUSTOM:'.' 4708
+316.392 S CUSTOM:'.' 4706
+316.823 S CUSTOM:'.' 4703
+317.488 S CUSTOM:'.' 4701
+317.505 S CUSTOM:'.' 4702
+317.605 S CUSTOM:'.' 4703
+317.766 S CUSTOM:'.' 4701
+317.942 S CUSTOM:'.' 4703
+318.016 S CUSTOM:'.' 4701
+318.234 S CUSTOM:'.' 4703
+318.24 S CUSTOM:'.' 4702
+318.28 S CUSTOM:'.' 4701
+318.497 S CUSTOM:'.' 4702
+318.57 S CUSTOM:'.' 4701
+318.781 S CUSTOM:'.' 4702
+318.87 S CUSTOM:'.' 4701
+318.877 S CUSTOM:'.' 4703
+319.068 S CUSTOM:'.' 4701
+319.081 S CUSTOM:'.' 4702
+319.165 IND:depth daff
+319.165 PKT_FLOOR 310000000000000000000000
+319.268 S CUSTOM:'.' 4703
+319.311 S CUSTOM:'.' 4702
+319.353 S CUSTOM:'.' 4701
+319.656 S CUSTOM:'.' 4702
+319.824 S CUSTOM:'.' 4703
+319.897 S CUSTOM:'.' 4702
+320.263 S CUSTOM:'.' 4706
+321.089 S CUSTOM:'.' 4703
+321.131 S CUSTOM:'.' 4702
+321.215 S CUSTOM:'.' 4701
+321.379 S CUSTOM:'.' 4703
+321.431 S CUSTOM:'.' 4702
+321.475 S CUSTOM:'.' 4701
+321.664 S CUSTOM:'.' 4703
+321.687 S CUSTOM:'.' 4702
+321.753 S CUSTOM:'.' 4701
+321.948 S CUSTOM:'.' 4703
+321.96 S CUSTOM:'.' 4702
+322.032 S CUSTOM:'.' 4701
+322.229 S CUSTOM:'.' 4703
+322.681 S CUSTOM:'.' 4708
+323.767 PKT_FLOOR 3100097c01000117010061204461676765722028316434290000
+323.767 MSG You see a Dagger (1d4)..
+325.22 EQUIP f 39  Brass Lantern (with 10300 turns of light) {25% off}
+325.253 S CUSTOM:',' 00
+325.256 MSG You have a Dagger (1d4) (f)..
+325.256 PKT_FLOOR 310000000000000000000000
+325.256 INVEN ('f', 23, 1, 12, 'a Dagger (1d4)', '')
+325.256 INVEN ('g', 21, 1, 120, 'a Mace (2d4) {good}', '')
+325.256 INVEN ('h', 19, 1, 110, 'a Light Crossbow (x3) {average}', '')
+325.848 S CUSTOM:'.' 4702
+325.86 S CUSTOM:'.' 4701
+326.017 S CUSTOM:'.' 4703
+326.106 S CUSTOM:'.' 4702
+326.128 S CUSTOM:'.' 4701
+326.296 S CUSTOM:'.' 4703
+326.31 S CUSTOM:'.' 4702
+326.391 S CUSTOM:'.' 4701
+326.569 S CUSTOM:'.' 4702
+326.64 S CUSTOM:'.' 4701
+326.81 S CUSTOM:'.' 4703
+326.857 S CUSTOM:'.' 4702
+326.958 S CUSTOM:'.' 4701
+327.019 MSG This house costs 13017 gold..
+327.175 S CUSTOM:'.' 4703
+327.216 S CUSTOM:'.' 4702
+327.305 S CUSTOM:'.' 4701
+327.576 S CUSTOM:'.' 4703
+327.648 S CUSTOM:'.' 4702
+328.181 S CUSTOM:'.' 4703
+328.283 S CUSTOM:'.' 4702
+328.602 S CUSTOM:'.' 4702
+328.855 S CUSTOM:'.' 4702
+329.111 S CUSTOM:'.' 4702
+329.367 S CUSTOM:'.' 4702
+329.369 MSG You cannot run in that direction..
+329.638 S CUSTOM:'.' 4702
+329.776 S CUSTOM:'.' 4703
+330.099 S CUSTOM:'.' 4703
+330.538 S CUSTOM:'.' 4703
+330.701 S CUSTOM:'.' 4702
+330.726 MSG You feel the Dagger (f) in your pack is average....
+330.726 INVEN ('f', 23, 1, 12, 'a Dagger (1d4) {average}', '')
+330.809 S CUSTOM:'.' 4701
+330.979 S CUSTOM:'.' 4703
+331.059 S CUSTOM:'.' 4702
+331.154 S CUSTOM:'.' 4701
+331.319 S CUSTOM:'.' 4703
+331.986 S CUSTOM:'.' 4703
+332.007 S CUSTOM:'.' 4702
+332.176 S CUSTOM:'.' 4701
+332.191 MSG This house costs 35769 gold..
+332.338 S CUSTOM:'.' 4702
+332.498 S CUSTOM:'.' 4701
+332.616 S CUSTOM:'.' 4703
+332.7 MSG You cannot run in that direction..
+332.7 MSG This house costs 35769 gold..
+332.722 S CUSTOM:'.' 4702
+332.862 S CUSTOM:'.' 4701
+333.181 S CUSTOM:'.' 4706
+333.207 MSG You cannot run in that direction..
+333.207 MSG This house costs 35769 gold..
+333.475 S CUSTOM:'.' 4703
+333.56 S CUSTOM:'.' 4702
+333.711 MSG You cannot run in that direction..
+334.112 S CUSTOM:'.' 4706
+334.525 S CUSTOM:'.' 4702
+334.815 S CUSTOM:'.' 4702
+335.11 S CUSTOM:'.' 4702
+335.431 S CUSTOM:'.' 4702
+335.463 S CUSTOM:'.' 4703
+335.587 S CUSTOM:'.' 4701
+335.592 IND:depth da00
+335.592 PKT_FLOOR 310000000000000000000000
+335.781 S CUSTOM:'.' 4703
+335.842 S CUSTOM:'.' 4702
+335.971 S CUSTOM:'.' 4701
+336.117 S CUSTOM:'.' 4703
+336.248 S CUSTOM:'.' 4702
+338.472 EQUIP f 39  Brass Lantern (with 10200 turns of light) {25% off}
+339.07 S CUSTOM:'.' 4706
+346.683 S CUSTOM:'t' 1621
+346.686 MSG Was wearing a Metal Cap [3,-2] (e)..
+346.686 INVEN ('e', 32, 1, 20, 'a Metal Cap [3,-2]', '')
+346.686 INVEN ('f', 23, 1, 12, 'a Dagger (1d4) {good}', '')
+346.686 INVEN ('g', 23, 1, 12, 'a Dagger (1d4) {average}', '')
+346.686 INVEN ('h', 21, 1, 120, 'a Mace (2d4) {good}', '')
+346.686 INVEN ('i', 19, 1, 110, 'a Light Crossbow (x3) {average}', '')
+346.686 EQUIP j 0 nothing)
+347.494 S CUSTOM:'.' 4706
+348.495 S CUSTOM:'.' 4704
+349.789 S CUSTOM:'.' 4701
+355.45 S CUSTOM:'s' 330600000001
+355.452 MSG Selling a Dagger (1d4) {average} (g)..
+355.452 MSG You eventually agree upon the price..
+356.583 S PKT_CONFIRM 3e0100
+356.584 MSG Okay..
+356.584 MSG You sold a Dagger (1d4) (+0,+0) for 5 gold..
+356.584 MSG You have no more Daggers (1d4) (+0,+0)..
+356.584 INVEN ('f', 23, 1, 12, 'a Dagger (1d4) {good}', '')
+356.584 INVEN ('g', 21, 1, 120, 'a Mace (2d4) {good}', '')
+356.584 INVEN ('h', 19, 1, 110, 'a Light Crossbow (x3) {average}', '')
+356.584 INVEN ('i', 0, 0, 0, '(nothing)', '')
+356.584 INVEN ('j', 0, 0, 0, '(nothing)', '')
+356.584 INVEN ('k', 0, 0, 0, '(nothing)', '')
+356.584 INVEN ('l', 0, 0, 0, '(nothing)', '')
+356.584 INVEN ('m', 0, 0, 0, '(nothing)', '')
+356.584 INVEN ('n', 0, 0, 0, '(nothing)', '')
+356.584 INVEN ('o', 0, 0, 0, '(nothing)', '')
+356.584 INVEN ('p', 0, 0, 0, '(nothing)', '')
+356.584 INVEN ('q', 0, 0, 0, '(nothing)', '')
+356.584 INVEN ('r', 0, 0, 0, '(nothing)', '')
+356.584 INVEN ('s', 0, 0, 0, '(nothing)', '')
+356.584 INVEN ('t', 0, 0, 0, '(nothing)', '')
+356.584 INVEN ('u', 0, 0, 0, '(nothing)', '')
+356.584 INVEN ('v', 0, 0, 0, '(nothing)', '')
+356.584 INVEN ('w', 0, 0, 0, '(nothing)', '')
+356.584 INVEN ('x', 0, 0, 0, '(nothing)', '')
+359.233 MSG You hit the Battle-scarred veteran..
+359.233 MSG You miss the Battle-scarred veteran..
+359.233 MSG You hit the Battle-scarred veteran..
+359.246 MSG You miss the Battle-scarred veteran..
+359.246 MSG You hit the Battle-scarred veteran..
+359.246 MSG You have slain the Battle-scarred veteran..
+359.246 IND:level c31010
+359.539 S CUSTOM:'.' 4704
+359.552 MSG You have found 43 gold pieces worth of copper..
+360.116 S CUSTOM:'.' 4704
+360.498 EQUIP f 39  Brass Lantern (with 10100 turns of light) {25% off}
+360.914 S CUSTOM:'.' 4701
+365.113 S CUSTOM:'s' 330400000001
+365.115 MSG I don't want that!.
+370.678 S CUSTOM:'k' 180400000001
+370.681 MSG You destroy a Metal Cap [3,-2]..
+370.681 MSG You have no more Metal Caps [3,-2]..
+370.681 INVEN ('e', 23, 1, 12, 'a Dagger (1d4) {good}', '')
+370.681 INVEN ('f', 21, 1, 120, 'a Mace (2d4) {good}', '')
+370.681 INVEN ('g', 19, 1, 110, 'a Light Crossbow (x3) {average}', '')
+370.681 INVEN ('h', 0, 0, 0, '(nothing)', '')
+370.681 INVEN ('i', 0, 0, 0, '(nothing)', '')
+370.681 INVEN ('j', 0, 0, 0, '(nothing)', '')
+370.681 INVEN ('k', 0, 0, 0, '(nothing)', '')
+370.681 INVEN ('l', 0, 0, 0, '(nothing)', '')
+370.681 INVEN ('m', 0, 0, 0, '(nothing)', '')
+370.681 INVEN ('n', 0, 0, 0, '(nothing)', '')
+370.681 INVEN ('o', 0, 0, 0, '(nothing)', '')
+370.681 INVEN ('p', 0, 0, 0, '(nothing)', '')
+370.681 INVEN ('q', 0, 0, 0, '(nothing)', '')
+370.681 INVEN ('r', 0, 0, 0, '(nothing)', '')
+370.681 INVEN ('s', 0, 0, 0, '(nothing)', '')
+370.681 INVEN ('t', 0, 0, 0, '(nothing)', '')
+370.681 INVEN ('u', 0, 0, 0, '(nothing)', '')
+370.681 INVEN ('v', 0, 0, 0, '(nothing)', '')
+370.681 INVEN ('w', 0, 0, 0, '(nothing)', '')
+370.681 INVEN ('x', 0, 0, 0, '(nothing)', '')
+374.964 S CUSTOM:'.' 4709
+375.359 S CUSTOM:'.' 4706
+376.046 S CUSTOM:'.' 4703
+378.977 MSG You hit the Battle-scarred veteran..
+378.977 MSG You have slain the Battle-scarred veteran..
+378.978 IND:level c31010
+379.048 S CUSTOM:'s' 330600000001
+379.051 MSG Selling a Light Crossbow (x3) {average} (g)..
+379.051 MSG You eventually agree upon the price..
+379.97 S PKT_CONFIRM 3e0100
+379.971 MSG Done!.
+379.971 MSG You sold a Light Crossbow (x3) (+0,+0) for 63 gold..
+379.971 MSG You have no more Light Crossbows (x3) (+0,+0)..
+379.971 INVEN ('g', 0, 0, 0, '(nothing)', '')
+379.971 INVEN ('h', 0, 0, 0, '(nothing)', '')
+379.971 INVEN ('i', 0, 0, 0, '(nothing)', '')
+379.971 INVEN ('j', 0, 0, 0, '(nothing)', '')
+379.971 INVEN ('k', 0, 0, 0, '(nothing)', '')
+379.971 INVEN ('l', 0, 0, 0, '(nothing)', '')
+379.971 INVEN ('m', 0, 0, 0, '(nothing)', '')
+379.971 INVEN ('n', 0, 0, 0, '(nothing)', '')
+379.971 INVEN ('o', 0, 0, 0, '(nothing)', '')
+379.971 INVEN ('p', 0, 0, 0, '(nothing)', '')
+379.971 INVEN ('q', 0, 0, 0, '(nothing)', '')
+379.971 INVEN ('r', 0, 0, 0, '(nothing)', '')
+379.971 INVEN ('s', 0, 0, 0, '(nothing)', '')
+379.971 INVEN ('t', 0, 0, 0, '(nothing)', '')
+379.971 INVEN ('u', 0, 0, 0, '(nothing)', '')
+379.971 INVEN ('v', 0, 0, 0, '(nothing)', '')
+379.971 INVEN ('w', 0, 0, 0, '(nothing)', '')
+379.971 INVEN ('x', 0, 0, 0, '(nothing)', '')
+383.915 S CUSTOM:'.' 4706
+383.924 PKT_FLOOR 3100087c010001170100612042726f6b656e2053776f72642028316432290000
+383.924 MSG You see a Broken Sword (1d2)..
+384.277 S CUSTOM:'.' 4709
+384.431 PKT_FLOOR 310000000000000000000000
+384.583 S CUSTOM:'.' 4706
+385.132 S CUSTOM:'.' 4704
+385.669 S CUSTOM:'.' 4701
+386.539 PKT_FLOOR 3100087c010001170100612042726f6b656e2053776f72642028316432290000
+388.162 S CUSTOM:',' 00
+388.165 MSG You have a Broken Sword (1d2) (e)..
+388.165 PKT_FLOOR 310000000000000000000000
+388.165 INVEN ('e', 23, 1, 30, 'a Broken Sword (1d2)', '')
+388.165 INVEN ('f', 23, 1, 12, 'a Dagger (1d4) {good}', '')
+388.165 INVEN ('g', 21, 1, 120, 'a Mace (2d4) {good}', '')
+391.381 S CUSTOM:'s' 330400000001
+391.383 MSG Selling a Broken Sword (1d2) (e)..
+391.383 MSG You eventually agree upon the price..
+391.913 S PKT_CONFIRM 3e0100
+391.914 MSG Agreed!.
+391.914 MSG You sold a Broken Sword (1d2) (-2,-4) for 1 gold..
+391.914 MSG The shopkeeper beats his head against the counter..
+391.914 MSG You have no more Broken Swords (1d2) (-2,-4)..
+391.914 INVEN ('e', 23, 1, 12, 'a Dagger (1d4) {good}', '')
+391.914 INVEN ('f', 21, 1, 120, 'a Mace (2d4) {good}', '')
+391.914 INVEN ('g', 0, 0, 0, '(nothing)', '')
+391.914 INVEN ('h', 0, 0, 0, '(nothing)', '')
+391.914 INVEN ('i', 0, 0, 0, '(nothing)', '')
+391.914 INVEN ('j', 0, 0, 0, '(nothing)', '')
+391.914 INVEN ('k', 0, 0, 0, '(nothing)', '')
+391.914 INVEN ('l', 0, 0, 0, '(nothing)', '')
+391.914 INVEN ('m', 0, 0, 0, '(nothing)', '')
+391.914 INVEN ('n', 0, 0, 0, '(nothing)', '')
+391.914 INVEN ('o', 0, 0, 0, '(nothing)', '')
+391.914 INVEN ('p', 0, 0, 0, '(nothing)', '')
+391.914 INVEN ('q', 0, 0, 0, '(nothing)', '')
+391.914 INVEN ('r', 0, 0, 0, '(nothing)', '')
+391.914 INVEN ('s', 0, 0, 0, '(nothing)', '')
+391.914 INVEN ('t', 0, 0, 0, '(nothing)', '')
+391.914 INVEN ('u', 0, 0, 0, '(nothing)', '')
+391.914 INVEN ('v', 0, 0, 0, '(nothing)', '')
+391.914 INVEN ('w', 0, 0, 0, '(nothing)', '')
+391.914 INVEN ('x', 0, 0, 0, '(nothing)', '')
+394.457 S CUSTOM:'.' 4706
+394.565 EQUIP f 39  Brass Lantern (with 10000 turns of light) {25% off}
+395.065 S CUSTOM:'.' 4709
+395.34 S CUSTOM:'.' 4706
+396.646 S CUSTOM:'.' 4709
+397.399 S CUSTOM:'.' 4708
+408.547 S CUSTOM:'p' 320a0000000103393932
+408.549 MSG Done!.
+408.55 MSG You bought a Staff of Perception (13 charges) for 992 gold..
+408.55 MSG You have a Staff of Perception (13 charges) (e)..
+408.55 INVEN ('e', 55, 1, 50, 'a Staff of Perception (13 charges)', '')
+408.55 INVEN ('f', 23, 1, 12, 'a Dagger (1d4) {good}', '')
+408.55 INVEN ('g', 21, 1, 120, 'a Mace (2d4) {good}', '')
+413.536 MSG You hit the Boil-covered wretch..
+413.536 MSG You have slain the Boil-covered wretch..
+413.536 IND:level c31010
+432.763 EQUIP f 39  Brass Lantern (with 9900 turns of light) {25% off}
+436.285 S PKT_MESSAGE 2e506572206974656d20636f
+436.285 MSG [Dive03] Per item cost-wise, IDing with the staff is cheaper, ....
+454.627 S PKT_MESSAGE 2e657370656369616c6c7920
+454.627 MSG [Dive03] especially with using recharge scrolls after the initial....
+459.052 S PKT_MESSAGE 2e7075726368617365206f66
+459.052 MSG [Dive03] purchase of the staff.
+465.625 MSG [Dive03:Scribe] Noted: a Staff of Identify plus Recharge scrolls.
+466.025 MSG [Dive03:Scribe] beats buying Identify scrolls per item..
+468.514 S CUSTOM:'{' 190403407531
+468.516 MSG Inscribing a Staff of Perception (13 charges)..
+468.516 INVEN ('e', 55, 1, 50, 'a Staff of Perception (13 charges) {@u1}', '')
+472.263 S CUSTOM:'u' 1f0405
+472.265 MSG In your pack: a Dagger (1d4) (+5,+1) (f)..
+472.265 MSG You have 12 charges remaining..
+472.265 INVEN ('e', 55, 1, 50, 'a Staff of Perception (12 charges) {@u1}', '')
+472.265 INVEN ('f', 23, 1, 12, 'a Dagger (1d4) (+5,+1)', '')
+476.562 S CUSTOM:'u' 1f0406
+476.564 MSG In your pack: a Mace (2d4) (+6,+6) (g)..
+476.564 MSG You have 11 charges remaining..
+476.564 INVEN ('e', 55, 1, 50, 'a Staff of Perception (11 charges) {@u1}', '')
+476.564 INVEN ('g', 21, 1, 120, 'a Mace (2d4) (+6,+6)', '')
+482.095 EQUIP f 39  Brass Lantern (with 9800 turns of light) {25% off}
+483.336 S CUSTOM:'.' 4701
+484.494 S CUSTOM:'.' 4707
+484.711 S CUSTOM:'.' 4704
+485.07 MSG You hit the Mean-looking mercenary..
+485.07 MSG It was a great hit!.
+485.188 MSG You hit the Mean-looking mercenary..
+485.188 MSG You have slain the Mean-looking mercenary..
+485.188 IND:level c31010
+485.914 MSG You have found 25 gold pieces worth of copper..
+486.396 S CUSTOM:'.' 4704
+489.227 S CUSTOM:'s' 330500000001
+489.229 MSG Selling a Dagger (1d4) (+5,+1) (f)..
+489.229 MSG You eventually agree upon the price..
+490.0 S PKT_CONFIRM 3e0100
+490.0 MSG Done!.
+490.0 MSG You sold a Dagger (1d4) (+5,+1) for 275 gold..
+490.0 MSG You have no more Daggers (1d4) (+5,+1)..
+490.001 INVEN ('f', 21, 1, 120, 'a Mace (2d4) (+6,+6)', '')
+490.001 INVEN ('g', 0, 0, 0, '(nothing)', '')
+490.001 INVEN ('h', 0, 0, 0, '(nothing)', '')
+490.001 INVEN ('i', 0, 0, 0, '(nothing)', '')
+490.001 INVEN ('j', 0, 0, 0, '(nothing)', '')
+490.001 INVEN ('k', 0, 0, 0, '(nothing)', '')
+490.001 INVEN ('l', 0, 0, 0, '(nothing)', '')
+490.001 INVEN ('m', 0, 0, 0, '(nothing)', '')
+490.001 INVEN ('n', 0, 0, 0, '(nothing)', '')
+490.001 INVEN ('o', 0, 0, 0, '(nothing)', '')
+490.001 INVEN ('p', 0, 0, 0, '(nothing)', '')
+490.001 INVEN ('q', 0, 0, 0, '(nothing)', '')
+490.001 INVEN ('r', 0, 0, 0, '(nothing)', '')
+490.001 INVEN ('s', 0, 0, 0, '(nothing)', '')
+490.001 INVEN ('t', 0, 0, 0, '(nothing)', '')
+490.001 INVEN ('u', 0, 0, 0, '(nothing)', '')
+490.001 INVEN ('v', 0, 0, 0, '(nothing)', '')
+490.001 INVEN ('w', 0, 0, 0, '(nothing)', '')
+490.001 INVEN ('x', 0, 0, 0, '(nothing)', '')
+491.273 S CUSTOM:'s' 330500000001
+491.276 MSG Selling a Mace (2d4) (+6,+6) (f)..
+491.276 MSG You eventually agree upon the price..
+494.113 S PKT_CONFIRM 3e0100
+494.114 MSG Done!.
+494.114 MSG You sold a Mace (2d4) (+6,+6) for 599 gold..
+494.114 MSG You have no more Maces (2d4) (+6,+6)..
+494.114 INVEN ('f', 0, 0, 0, '(nothing)', '')
+494.114 INVEN ('g', 0, 0, 0, '(nothing)', '')
+494.114 INVEN ('h', 0, 0, 0, '(nothing)', '')
+494.114 INVEN ('i', 0, 0, 0, '(nothing)', '')
+494.114 INVEN ('j', 0, 0, 0, '(nothing)', '')
+494.114 INVEN ('k', 0, 0, 0, '(nothing)', '')
+494.114 INVEN ('l', 0, 0, 0, '(nothing)', '')
+494.114 INVEN ('m', 0, 0, 0, '(nothing)', '')
+494.114 INVEN ('n', 0, 0, 0, '(nothing)', '')
+494.114 INVEN ('o', 0, 0, 0, '(nothing)', '')
+494.114 INVEN ('p', 0, 0, 0, '(nothing)', '')
+494.114 INVEN ('q', 0, 0, 0, '(nothing)', '')
+494.114 INVEN ('r', 0, 0, 0, '(nothing)', '')
+494.114 INVEN ('s', 0, 0, 0, '(nothing)', '')
+494.114 INVEN ('t', 0, 0, 0, '(nothing)', '')
+494.114 INVEN ('u', 0, 0, 0, '(nothing)', '')
+494.114 INVEN ('v', 0, 0, 0, '(nothing)', '')
+494.114 INVEN ('w', 0, 0, 0, '(nothing)', '')
+494.114 INVEN ('x', 0, 0, 0, '(nothing)', '')
+498.529 S CUSTOM:'.' 4706
+500.49 S CUSTOM:'.' 4702
+500.67 S CUSTOM:'.' 4701
+500.762 MSG You cannot run in that direction..
+501.009 S CUSTOM:'.' 4704
+501.394 S CUSTOM:'.' 4701
+501.744 S CUSTOM:'.' 4702
+507.61 S CUSTOM:'p' 32100000000203323236
+507.613 MSG Agreed!.
+507.613 MSG You bought 2 Scrolls of Word of Recall {50% off} for 226 gold..
+507.613 MSG You have 2 Scrolls of Word of Recall {50% off} (e)..
+507.613 INVEN ('e', 70, 2, 10, '2 Scrolls of Word of Recall {50% off}', '')
+507.613 INVEN ('f', 55, 1, 50, 'a Staff of Perception (11 charges) {@u1}', '')
+513.174 EQUIP f 39  Brass Lantern (with 9700 turns of light) {25% off}
+516.637 S CUSTOM:'p' 32150000000203323834
+516.639 MSG Okay..
+516.639 MSG You bought 2 Scrolls of Enchant Weapon To-Dam {25% off} for 284 gold..
+516.639 MSG You have 2 Scrolls of Enchant Weapon To-Dam {25% off} (f)..
+516.639 INVEN ('f', 70, 2, 10, '2 Scrolls of Enchant Weapon To-Dam {25% off}', '')
+516.639 INVEN ('g', 55, 1, 50, 'a Staff of Perception (11 charges) {@u1}', '')
+528.747 S CUSTOM:'r' 1d0518
+528.749 MSG Your Main Gauche glows brightly!.
+528.749 MSG The enchantment failed..
+528.749 MSG You have a Scroll of Enchant Weapon To-Dam {25% off}..
+528.749 INVEN ('f', 70, 1, 5, 'a Scroll of Enchant Weapon To-Dam {25% off}', '')
+532.464 S CUSTOM:'r' 1d0518
+532.466 MSG Your Main Gauche glows brightly!.
+532.466 MSG You have no more Scrolls of Enchant Weapon To-Dam {25% off}..
+532.466 INVEN ('f', 55, 1, 50, 'a Staff of Perception (11 charges) {@u1}', '')
+532.466 INVEN ('g', 0, 0, 0, '(nothing)', '')
+532.466 INVEN ('h', 0, 0, 0, '(nothing)', '')
+532.466 INVEN ('i', 0, 0, 0, '(nothing)', '')
+532.466 INVEN ('j', 0, 0, 0, '(nothing)', '')
+532.466 INVEN ('k', 0, 0, 0, '(nothing)', '')
+532.466 INVEN ('l', 0, 0, 0, '(nothing)', '')
+532.466 INVEN ('m', 0, 0, 0, '(nothing)', '')
+532.466 INVEN ('n', 0, 0, 0, '(nothing)', '')
+532.466 INVEN ('o', 0, 0, 0, '(nothing)', '')
+532.466 INVEN ('p', 0, 0, 0, '(nothing)', '')
+532.466 INVEN ('q', 0, 0, 0, '(nothing)', '')
+532.466 INVEN ('r', 0, 0, 0, '(nothing)', '')
+532.466 INVEN ('s', 0, 0, 0, '(nothing)', '')
+532.466 INVEN ('t', 0, 0, 0, '(nothing)', '')
+532.466 INVEN ('u', 0, 0, 0, '(nothing)', '')
+532.466 INVEN ('v', 0, 0, 0, '(nothing)', '')
+532.466 INVEN ('w', 0, 0, 0, '(nothing)', '')
+532.466 INVEN ('x', 0, 0, 0, '(nothing)', '')
+532.466 EQUIP a 23  Main Gauche (1d5) (+3,+7)
+543.672 S CUSTOM:'.' 4709
+544.093 S CUSTOM:'.' 4706
+544.663 S CUSTOM:'.' 4703
+550.484 MSG You hit the Mean-looking mercenary..
+550.484 MSG You have slain the Mean-looking mercenary..
+550.484 IND:level c31010
+550.692 S CUSTOM:'.' 4708
+551.586 S CUSTOM:'.' 4702
+551.996 S CUSTOM:'.' 4701
+552.0 MSG You have found 31 gold pieces worth of copper..
+552.601 S CUSTOM:'.' 4707
+552.828 S CUSTOM:'.' 4708
+552.853 EQUIP f 39  Brass Lantern (with 9600 turns of light) {25% off}
+553.369 S CUSTOM:'.' 4709
+566.518 S CUSTOM:'p' 321f00000001023331
+566.52 MSG Agreed!.
+566.52 MSG You bought an Amulet of Slow Digestion {90% off} for 31 gold..
+566.52 MSG You have an Amulet of Slow Digestion {90% off} (g)..
+566.52 INVEN ('g', 40, 1, 3, 'an Amulet of Slow Digestion {90% off}', '')
+570.954 S CUSTOM:'w' 1506
+570.956 MSG You are wearing an Amulet of Slow Digestion {90% off} (e)..
+570.956 INVEN ('g', 0, 0, 0, '(nothing)', '')
+570.956 INVEN ('h', 0, 0, 0, '(nothing)', '')
+570.956 INVEN ('i', 0, 0, 0, '(nothing)', '')
+570.956 INVEN ('j', 0, 0, 0, '(nothing)', '')
+570.956 INVEN ('k', 0, 0, 0, '(nothing)', '')
+570.956 INVEN ('l', 0, 0, 0, '(nothing)', '')
+570.956 INVEN ('m', 0, 0, 0, '(nothing)', '')
+570.956 INVEN ('n', 0, 0, 0, '(nothing)', '')
+570.956 INVEN ('o', 0, 0, 0, '(nothing)', '')
+570.956 INVEN ('p', 0, 0, 0, '(nothing)', '')
+570.956 INVEN ('q', 0, 0, 0, '(nothing)', '')
+570.956 INVEN ('r', 0, 0, 0, '(nothing)', '')
+570.956 INVEN ('s', 0, 0, 0, '(nothing)', '')
+570.956 INVEN ('t', 0, 0, 0, '(nothing)', '')
+570.956 INVEN ('u', 0, 0, 0, '(nothing)', '')
+570.956 INVEN ('v', 0, 0, 0, '(nothing)', '')
+570.956 INVEN ('w', 0, 0, 0, '(nothing)', '')
+570.956 INVEN ('x', 0, 0, 0, '(nothing)', '')
+570.956 EQUIP e 40 n Amulet of Slow Digestion {90% off}
+576.187 MSG You hit the Battle-scarred veteran..
+576.187 MSG You have slain the Battle-scarred veteran..
+576.187 IND:level c31010
+590.111 S PKT_MESSAGE 2e456d70747920616d756c65
+590.111 MSG [Dive03] Empty amulet slot, may as well buy the slow digest at such.
+599.013 EQUIP f 39  Brass Lantern (with 9500 turns of light) {25% off}
+610.543 S PKT_MESSAGE 2e6120646565702064697363
+610.543 MSG [Dive03] a deep discount. So if we find two good rings we can get .
+617.734 S PKT_MESSAGE 2e726964206f662074686520
+617.734 MSG [Dive03] rid of the current ring.
+621.147 S CUSTOM:'.' 4704
+621.158 PKT_FLOOR 310004210e00014b00006120506f74696f6e206f662043757265204c6967687420576f756e64730000
+621.158 MSG You see a Potion of Cure Light Wounds..
+622.976 S CUSTOM:',' 00
+622.978 MSG You have 14 Potions of Cure Light Wounds {@q1} (c)..
+622.978 PKT_FLOOR 310000000000000000000000
+622.978 INVEN ('c', 75, 14, 56, '14 Potions of Cure Light Wounds {@q1}', '')
+624.07 MSG [Dive03:Scribe] Got it: fill empty slots with cheap useful items.
+624.298 S CUSTOM:'.' 4701
+624.47 MSG [Dive03:Scribe] (discounted Amulet of Slow Digestion), which also.
+624.87 MSG [Dive03:Scribe] frees the ring slots for better rings later..
+632.732 MSG You hit the Mean-looking mercenary..
+632.732 MSG You have slain the Mean-looking mercenary..
+632.732 IND:level c31010
+644.398 EQUIP f 39  Brass Lantern (with 9400 turns of light) {25% off}
+646.523 S PKT_CLEAR 7b
+647.749 S CUSTOM:'.' 4706
+647.758 PKT_FLOOR 3100087c010001170100612042726f6b656e2053776f72642028316432290000
+647.758 MSG You see a Broken Sword (1d2)..
+649.593 S CUSTOM:',' 00
+649.595 MSG You have a Broken Sword (1d2) (g)..
+649.595 PKT_FLOOR 310000000000000000000000
+649.595 INVEN ('g', 23, 1, 30, 'a Broken Sword (1d2)', '')
+650.116 S CUSTOM:'.' 4704
+650.309 S CUSTOM:'.' 4704
+653.662 S CUSTOM:'s' 330600000001
+653.665 MSG Selling a Broken Sword (1d2) (g)..
+653.665 MSG You eventually agree upon the price..
+654.221 S PKT_CONFIRM 3e0100
+654.221 MSG Taken!.
+654.221 MSG You sold a Broken Sword (1d2) (-7,-10) {cursed} for 1 gold..
+654.221 MSG You hear someone sobbing....
+654.221 MSG You have no more Broken Swords (1d2) (-7,-10) {cursed}..
+654.221 INVEN ('g', 0, 0, 0, '(nothing)', '')
+654.221 INVEN ('h', 0, 0, 0, '(nothing)', '')
+654.221 INVEN ('i', 0, 0, 0, '(nothing)', '')
+654.221 INVEN ('j', 0, 0, 0, '(nothing)', '')
+654.221 INVEN ('k', 0, 0, 0, '(nothing)', '')
+654.221 INVEN ('l', 0, 0, 0, '(nothing)', '')
+654.221 INVEN ('m', 0, 0, 0, '(nothing)', '')
+654.221 INVEN ('n', 0, 0, 0, '(nothing)', '')
+654.221 INVEN ('o', 0, 0, 0, '(nothing)', '')
+654.221 INVEN ('p', 0, 0, 0, '(nothing)', '')
+654.221 INVEN ('q', 0, 0, 0, '(nothing)', '')
+654.221 INVEN ('r', 0, 0, 0, '(nothing)', '')
+654.221 INVEN ('s', 0, 0, 0, '(nothing)', '')
+654.221 INVEN ('t', 0, 0, 0, '(nothing)', '')
+654.221 INVEN ('u', 0, 0, 0, '(nothing)', '')
+654.221 INVEN ('v', 0, 0, 0, '(nothing)', '')
+654.221 INVEN ('w', 0, 0, 0, '(nothing)', '')
+654.221 INVEN ('x', 0, 0, 0, '(nothing)', '')
+658.249 S CUSTOM:'.' 4704
+659.307 S CUSTOM:'.' 4701
+666.762 S CUSTOM:'.' 4709
+667.076 S CUSTOM:'.' 4706
+667.811 S CUSTOM:'.' 4709
+668.086 S CUSTOM:'.' 4706
+669.425 EQUIP f 39  Brass Lantern (with 9300 turns of light) {25% off}
+670.139 S CUSTOM:'.' 4709
+670.271 S CUSTOM:'.' 4708
+676.063 S CUSTOM:'.' 4702
+676.531 S CUSTOM:'.' 4701
+676.75 S CUSTOM:'.' 4702
+689.647 S CUSTOM:'.' 4706
+689.649 MSG You cannot run in that direction..
+689.94 S CUSTOM:'.' 4709
+690.427 S CUSTOM:'.' 4706
+690.87 S CUSTOM:'.' 4708
+691.569 S CUSTOM:'.' 4707
+691.724 S CUSTOM:'.' 4708
+691.931 S CUSTOM:'.' 4706
+698.536 S CUSTOM:'.' 4702
+698.91 S CUSTOM:'.' 4701
+699.477 EQUIP f 39  Brass Lantern (with 9200 turns of light) {25% off}
+699.626 S CUSTOM:'.' 4704
+731.263 S PKT_MESSAGE 2e4f6b2c206261636b20696e
+731.263 MSG [Dive03] Ok, back in town and ready for you to take over again..
+738.04 MSG [Dive03:Scribe] Thanks! Taking over now (your client will be.
+738.44 MSG [Dive03:Scribe] disconnected)..

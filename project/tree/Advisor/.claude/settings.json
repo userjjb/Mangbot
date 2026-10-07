@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(/projectnb/jbrcs/mangband/Advisor/.claude/hooks/inbox.sh *)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/projectnb/jbrcs/mangband/Advisor/.claude/hooks/inbox.sh hook-session /projectnb/jbrcs/mangband/memos/to_advisor",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/projectnb/jbrcs/mangband/Advisor/.claude/hooks/inbox.sh hook-post /projectnb/jbrcs/mangband/memos/to_advisor",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/projectnb/jbrcs/mangband/Advisor/.claude/hooks/inbox.sh hook-stop /projectnb/jbrcs/mangband/memos/to_advisor",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

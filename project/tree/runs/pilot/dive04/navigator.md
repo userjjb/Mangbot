@@ -1,0 +1,71 @@
+- 01:36 town 100% | mission 8 start: clvl1 20HP 208g, 1 WoR | shop: flasks at 1, CLW+Phase at 5 | objective 1
+- 01:39 town 100% | bought 8 flasks (40), 5 Phase (120, 24 each!), 2 CLW (46) at temple; alchemist had no CLW; 2g left; uninscribed WoR read refused (works) | max_depth=100, dive 50 | clvl 1
+- 01:42 50ft 97% | clvl 2, breeders (white mice); user advice arrived: sell Broad Sword + Chain Mail, buy Main Gauche, enchants, cheap armour | goal dive 0 (climb to town, 1 level) | follow outfitting advice while it's cheap to get back
+- 01:44 town 100% | sold Broad Sword 102, Chain Mail 358(!); weaponsmith had no Main Gauche/Rapier, bought Dagger 16 -> 4 blows (inspect shows no blows line; status did); armoury: Soft Leather 24, Small Leather Shield 41, Soft Boots 8, Leather Gloves 4, Hard Leather Cap 12; general: Cloak 5; temple CLW 23 each; Phase 24 each | follow user advice | cheap AC
+- 01:47 town 100% | alchemist: 2 Enchant To-Dam 302 (151 each even at 25% off - MISTAKE, asked for 3 without price check, left 12g, no gold for more CLW), To-Hit 52 (75% off); dagger now (+1,+2), 4 blows | dive 50 | supplies thin: 2 CLW 5 Phase 1 WoR
+- 01:48 50ft 100% | clvl 3; tactic: killed 'Radiation eye (lvl 3)' blocking the way (level looks wrong: Radiation eye is deep in vanilla); earlier confused with no cure | keep exploring | fine
+- 01:51 50ft 100% | clvl 3, level quiet | dive 100 then explore | more XP
+- 01:58 100ft 100% | clvl 4 66HP 149g; choke vs Jackal pack worked; killed Grey mold/Shrieker in the way | max_depth=150, keep exploring | on plan
+- 02:04 100ft 100% | clvl 5 72HP 164g, 28 min used | goal dive 0 (climb 2 levels by stairs, keep the only WoR) | time budget; stairs cheaper than a WoR here
+- 02:05 100ft 56% | fight_going_badly vs Novice priest on the way up; pilot quaffed Berserk when afraid (tactic), killed it, clvl 6 | let it continue climbing | weak monster
+- 02:06 town 100% | reached town by stairs (2 levels in ~1.5 min), WoR kept; sold 2 unknown potions + 3 scrolls 9 each (Apple Juice, Confusion, Blessing, Identify, Darkness), Robe [2,+1] 3, gloves 2, sling 2 | temple out of CLW; bought 3 Phase 57 (25% off) | end idle in town: clvl 6 77HP 159g, 3 CLW 8 Phase 1 WoR 8 flasks 3 rations | 31 min used, mission done
+- 21:35 town 100% | mission 9 start: clvl6 77HP 159g, light dead (0-turn torches) | shop 1: sold 2 dead torches 2g, 46 spikes 46g, bought Brass Lantern 41 (25% off), wore it, dropped last dead torch | objective 1: light
+- 21:38 town 100% | no CLW at Temple or Alchemist; bought 2 Cure Serious 124 (62 each, pricey), 42g left; can't afford a 2nd WoR so going down by stairs | max_depth=500 (rule clvl+4), dive 300 first | step down as HP/levels allow
+- 21:38 300ft 100% | reached 300 ft in ~2 min, gold 66 | explore | XP at a moderate depth first
+- 21:40 250ft 62% | unseen caster (curses) at 300 + fear, pilot fled up to 250, rested | dive 300 again then explore | recovered
+- 21:42 250ft 96% | cave spider swarm at 300: 2 CLW + 2 Phase used, emergency loop -> stairs up to 250, auto-resumed explore | let it explore 250 | supplies now 1 CLW 2 CSW 6 Phase
+- 21:46 250ft 94% | clvl7 97HP; STR drained 18/50->18/40 (Giant red frog), blows still 4; group-danger phase vs frog+icky thing (62 vs 97) | continue explore | minor
+- 21:47 250ft 100% | a single Giant red frog (lvl 7) scored 58 (with +50 drain) vs 92-97 HP -> pilot phased 4 times (Phase 6->2), STR drained twice, blows 4->3, flee 'stuck on the way to the stairs' | goal dive 0 (climb to town by stairs, keep WoR), restock Phase, sell wand | 2 Phase too few; group-danger overcautious for one frog
+- 21:52 250ft 100% | pilot updated (group danger calmer at good HP); re-issue | goal dive 0 (stairs to town) to restock Phase at 5 | 2 Phase left
+- 21:54 town 21% | stuck in dead end (goto < 'no known path'), explore freed it; then Bullroarer (lvl5 unique) caught me, fled; all potions + Phase used, pilot read WoR (my read refused: already pending, good), killed Bullroarer at 24/115 -> clvl 8, recalled to town; his drop left behind | restock | CLOSE CALL #1 (HP ~21%)
+- 21:58 town 100% | clvl8 115HP 236g, pack empty of consumables (0 potions, 0 Phase, 0 WoR); STR 18/30, 3 blows | shop 5 list (Restore STR 465, WoR 233 / 175 at 25% off, Phase 23/19); sold Boldness 9, Slime Mold 9; Wand of Heal Monster 15 at shop 6 (5 refused it) | restock
+- 22:00 town 100% | temple has 34 CLW 23; every `goal shop N buy ...` now fails in pilotctl with "ValueError('too many values to unpack (expected 2)')" (with or without :N, with or without @MAX); sell and list still work; retried after 45 s, same | STOP: Pilot error; stay idle in town | can't go down with no potions/Phase/WoR
+- 22:06 town 100% | mission 10 start: clvl8 115HP 248g, 1 CLW 0 Phase 0 WoR | shop 5 list: WoR {on sale} 121 (!), Phase 24 | bought WoR 1@125 (121) + Phase 5@25 (120), both worked; 7g left, so only 1 CLW | a WoR on sale beats walking; Phase > CLW as escape
+- 22:08 town 100% | 1 CLW 5 Phase 1 WoR | max_depth=350, dive 150 | level up close to town, cures thin
+- 22:11 150ft 100% | lice breeding, level quiet otherwise (+10g) | dive 200 | leave breeders
+- 22:14 200ft 100% | yellow worm breeders | dive 250 | leave breeders, go a bit deeper for XP
+- 22:16 250ft 100% | Smeagol at 200 (monster query: spd+20, invisible, eats gold, rating 2) - ignored, kept diving; now 250ft 62g | explore | XP
+- 22:27 250ft 100% | clvl10 135HP; found Copper Wand, Runed Staff, 3 unknown potions; lantern shows 9900 turns though 8 flasks still in pack (?); gold went 62->32->67->52 (thief? not seen in news) | keep exploring till ~22:33 then climb | budget
+- 22:28 250ft 95% | danger_seen: Mughash (rated 4) + 3 Large kobolds + 2 Small kobolds, < 32 away; pilot backed into a corridor (choke) twice instead of walking straight to the stairs, then group-danger phased at 76 HP | let the flee run | MISTAKE (mine): with 1 CLW I should have ordered goto < / stairs at once, and should not have explored 250ft with 1 cure (handbook: not with <4 Phase and 1-2 potions)
+- 22:29 250ft 58%->dead | fight_going_badly 78/135, Mughash adjacent, < 9 away; I sent goto < but the character was already dead within ~10 s: Phase x4, "CLW" quaffed 3x (had only 1 - the others were unknown potions?), WoR read, stunned, killed by a Large kobold | DEATH | too little escape stock vs a unique + pack; the pilot phased next to the pack rather than walking the 9 squares
+- 22:30 town 100% | goal resurrect worked in ~1 min (floated 5 levels, Temple); XP drop to clvl 8 ("Dropped back to level 8"), but status line still says level 10; all gear lost; 100g | bought Dagger 13 (@20 cap), wielded, stop | death = stop condition; end idle in town
+- 22:33 town 100% | mission 11 start: status says clvl10 HP115 (115 = clvl8 HP last time, so 8 is likely true), 87g, empty pack | max_depth=150, shop 1 list | rebuild
+- 22:37 town 100% | bought 2 torches 6, 2 rations 10, picked 27g off the town floor, 3 CLW 69, 1 Phase 19 (25% off), Cloak 5; wearall wielded torch+cloak; 5g left | dive 50 | essentials done, max_depth 150
+- 22:38 100ft 100% | reached 100 ft quickly, torch on | explore | XP and gold at a safe depth
+- 22:40 100ft 100% | green worm breeders, +55g | dive 150 (take >) then explore | leave breeders; 150 is the mission cap
+- 22:42 150ft 100% | 150 level small, nothing left, no XP | climb to 100, explore | fresh level
+- 22:49 100ft 97% | breeders (worms + white mice), no loot | dive 150 | leave
+- 22:54 150ft 100% | 198g now, quiet level | keep exploring until ~23:00 | then climb by stairs
+- 22:58 150ft 100% | 205g, found Rosewood Staff, 3 unknown potions, 2 unknown scrolls; torch 1600 | goal dive 0 (climb by stairs) | 25 min used, leave ~8 min for climb + town
+- 23:04 100ft 100% | climbing: at 50 ft the pilot took a > (15 away) back to 100 instead of searching for a <; now on < | let it continue (stair-scum up) | PILOT: dive 0 went down a level
+- 23:06 town 100% | back in town by stairs (150->town 8 min incl. the 50->100 detour), 293g | sold 3 unknown potions + 2 scrolls 8 each at 5, bought 2 Phase 48 | restock escapes
+- 23:07 town 100% | bought 2 CLW 46; pilot took the torch off when idle in town (good); wore found Hard Leather Cap [2] + Leather Gloves [1]; read found Identify on Rosewood Staff = Object Location (16) | stop, end idle | budget used: 7 CLW 5 Phase 239g, no WoR
+- 12:18 town 100% | mission 12 start: clvl8 (max10) 115HP 239g, 7 CLW 5 Phase, no WoR | shop 1 lantern@55 + flasks | light first
+- 12:22 town 100% | bought Lantern 53 + 3 flasks 15 (shop 1), Soft Leather 23 + Soft Boots 11 + Small Metal Shield 81 (no leather shield) (shop 2), 2 Phase 48; sold unknowns: turned out 2 Potions of SPEED + 2 Heroism sold for 8 each (MISTAKE: unknown potions can be valuable; store resells Speed at 121), bought 1 Heroism back 56 | wearall wielded a torch not the lantern; wore lantern by name | 56g, 7 CLW 7 Phase 1 Hero
+- 12:23 town 100% | max_depth=300 | goal dive 200 | step down, XP
+- 12:25 50ft 98% | dart trap drained STR 18/30->18/20 (blows still 3) | continue dive 200 | trap, not a monster
+- 12:24 200ft 100% | reached 200 ft, 90g | explore | XP at 200 first
+- 12:33 250ft 100% | clvl9 129HP 222g, 200ft quiet (mushroom patch killed in the way) | dive 250 done, explore | XP; climb by ~12:45
+- 12:40 300ft 100% | unseen 'It touches you' at 250 -> pilot fled down a > to 300 (fine, within max_depth); 285g | goal dive 0 (climb by stairs) | 18 min left, walking home takes ~10
+- 12:41 250ft 100% | climbing: arrived at 250 ON a > with Bullroarer ADJACENT; pilot: danger_avoided + danger_seen "fast unique (x2 speed)" at first sight, flee went down the > to 300; I also sent `stairs` which took me back up to a fresh 250 (HP 123/129) | re-issue dive 0 | new fast-unique rule worked; no fight
+- 12:45 250ft 98% | 'It fires an arrow' unseen: news only at 100% HP, carried on (good) | let climb run | -
+- 12:47 town 100% | climb 250->town in ~5 min incl. one >-scum at 250; clvl 10 135HP 529g | sell + restock | -
+- 12:49 town 100% | wore found Soft Studded Leather [5]; sold Glaive 138, Robe 2; WoR discount gone (cap refused, good); bought WoR 242 + 3 Identify 243: Maple Staff = Cure Light Wounds (kept), wands Magic Missile 105 + Stinking Cloud 180 sold; 2nd WoR 242; destroyed 2 spare Soft Leather + Heal Monster wand | stop, end idle | 243g, 7 CLW 7 Phase 2 WoR 1 Hero 1 Bold; STR still 18/20 (Restore 483)
+- 08:49 town 100% | mission 13 start: clvl10 135HP 233g, 7 CLW 7 Phase 2 WoR; Abilities: res_dark; audit 2 checks no diffs | shop 4 list, buy CLW | restock before 450 ft
+- 08:51 town 100% | bought 4 CLW 92 (23 each); then `goal shop 5 list buy Phase_Door:4@25` (echo dropped "list") wandered in town 4 min between 27,114 and 43,114 without entering, no stuck event | stop; `shop 5 list` alone worked at once, then `shop 5 buy Phase_Door:4@24` bought 4 for 92 | PILOT: list+buy combined loops
+- 08:55 town 100% | 49g, 11 CLW 11 Phase 2 WoR; no open/disarm command for the chest | leave chest; max_depth=450, goal recall | mission objective 2
+- 08:56 town 100% | goal recall inscribed @R450 (verify ok) but failed after ~60 s "recall didn't happen"; my manual read said "You have no light to read by." (night, pilot had taken the lantern off in town) | wear Brass_Lantern, goal recall again -> landed 300 ft in ~15 s | PILOT: recall goal doesn't put a light on at night and doesn't say why it failed
+- 08:57 300ft 100% | at 300 ft (expected: max reached 300), 1 WoR left | goal dive 350 | step deeper for real fights
+- 09:00 350ft 100% | dart trap at 300 drained STR 18/20->18/10 (blows 3); reached 350, 96g | goal explore | XP and fights at 350
+- 09:00 350ft 98% | red worm mass breeders x4 next to the start | goal dive 400 | leave breeders, go deeper
+- 09:01 400ft 100% | reached 400 quickly | goal explore | fights + XP
+- 09:05 400ft 100% | 400 quiet (jelly/mold killed in the way), 225g | goal dive 450 | find real fights, 24 min left
+- 09:07 450ft 100% | cave spider x8 on arrival at 400 -> danger_avoided back up (good); reached 450, found Identify scroll | goal explore | XP; recall by ~09:22
+- 09:10 400ft 96% | unseen caster at 450 (magic missile = news, then 'fearful illusion' -> flee 80 squares to < , fine) | goal dive 450 then explore | fresh 450 level
+- 09:13 450ft 100% | clvl 11 146HP (Black harpy); rations went 3->1 and hunger 'Full' with no news why (2 eaten?); audit 47 checks, 1 hp difference | keep exploring to ~09:19 | XP
+- 09:17 450ft 100% | quaff-tested unknown Puce Potion = Weakness: STR 18/10->18, blows 3->2 | MISTAKE (mine): a drained-STR warrior at the blow breakpoint shouldn't quaff-test; budget nearly used anyway
+- 09:17 450ft 100% | on < at 450, 12 min left | goal recall then `stairs <` while pending | test WoR pending across a stairs change, then home
+- 09:18 town 100% | WoR read on < at 450, then `stairs <` to 400: recall goal said "goal_done: arrived at 400 ft" (wrong: it took the stairs as the arrival) but Supplies still showed RECALL PENDING and it took me to town ~45 s later | sell + restock | WoR survives a stairs change (good); recall goal ends too early on a level change
+- 09:19 town 100% | loot: Main Gauche, Rapier, Sabre, Cloak; wielded Rapier then Sabre: both 2 blows at STR 18 -> keep Sabre (1d7) | shop 3 sell Rapier, Main Gauche, Dagger | upgrade damage
+- 09:19 -200ft 100% | the shop 3 goal failed "not in town": depth now -200 ft (wilderness), @ at 23,196 on the east edge of the map; dive 0 refused ("not the town or wilderness"), goto 22,197/198 "no known path" | STOP: no way to walk back to town with the Pilot's goals; no WoR left | PILOT: something walked off the town edge (between 09:19:05 Town and 09:19:29 -200 ft, only my wear commands and the shop 3 goal)
+- 09:22 -200ft 100% | idle in the wilderness next to town, no monsters, no WoR; audit 66 checks, 1 hp difference | end mission, report | needs a Pilot way back to town (or an Architect fix)

@@ -1,0 +1,143 @@
+08:49:06.974 goal {"depth": 0, "pos": [34, 121], "hp": [135, 135], "goal": null}
+08:49:06.975 attention {"depth": 0, "pos": [34, 121], "hp": [135, 135], "what": "parked", "detail": "logging out for a Pilot update; back in a minute -- re-issue your goal when you see 'started'"}
+08:49:10.740 attention {"depth": null, "pos": null, "hp": [0, 1], "what": "started", "detail": "in the game at None (depth)"}
+08:49:57.602 goal {"depth": 0, "pos": [34, 121], "hp": [135, 135], "goal": "shop 4"}
+08:49:58.790 act {"depth": 0, "pos": [27, 114], "hp": [135, 135], "cmd": "walk 7", "why": "enter store 4"}
+08:49:59.297 act {"depth": 0, "pos": [27, 114], "hp": [135, 135], "cmd": "leave", "why": "leave store"}
+08:49:59.297 attention {"depth": 0, "pos": [27, 114], "hp": [135, 135], "what": "goal_done", "detail": "shop 4: stock: 64 Holy Books of Prayers [Beginners Handbook] 39; 3 Holy Books of Prayers [Beginners Handbook] {25% off} 29; 8 Holy Books of Prayers [Words of Wisdom] 155; 14 Holy Books of Prayers [Chants and Blessings] 465; 14 Potions of Boldness 16; 32 Potions of Heroism 54; 50 Potions of Cure Light Wounds 23; 68 Potions of Cure Serious
+08:50:04.085 goal {"depth": 0, "pos": [27, 114], "hp": [135, 135], "goal": "shop 4 buy Cure Light:4@23"}
+08:50:04.085 act {"depth": 0, "pos": [27, 114], "hp": [135, 135], "cmd": "walk 7", "why": "enter store 4"}
+08:50:04.440 act {"depth": 0, "pos": [27, 114], "hp": [135, 135], "cmd": "custom p store item=6 value=4 entry=92", "why": "buy 50 Potions of Cure Light Wounds x4"}
+08:50:04.696 act {"depth": 0, "pos": [27, 114], "hp": [135, 135], "cmd": "leave", "why": "leave store"}
+08:50:04.696 attention {"depth": 0, "pos": [27, 114], "hp": [135, 135], "what": "goal_done", "detail": "shop 4 buy Cure Light:4@23: You bought 4 Potions of Cure Light Wounds for 92 gold."}
+08:50:08.112 goal {"depth": 0, "pos": [27, 114], "hp": [135, 135], "goal": "shop 5 buy Phase Door:4@25"}
+08:55:09.985 goal {"depth": 0, "pos": [44, 114], "hp": [135, 135], "goal": null}
+08:55:10.036 goal {"depth": 0, "pos": [44, 114], "hp": [135, 135], "goal": "shop 5"}
+08:55:11.576 act {"depth": 0, "pos": [39, 111], "hp": [135, 135], "cmd": "walk 7", "why": "enter store 5"}
+08:55:12.135 act {"depth": 0, "pos": [39, 111], "hp": [135, 135], "cmd": "leave", "why": "leave store"}
+08:55:12.135 attention {"depth": 0, "pos": [39, 111], "hp": [135, 135], "what": "goal_done", "detail": "shop 5: stock: 21 Potions of Resist Heat 47; 22 Potions of Resist Cold 47; a Potion of Restore Strength 465; a Potion of Restore Wisdom 465; a Potion of Restore Dexterity 465; 19 Potions of Restore Constitution 465; 2 Potions of Restore Charisma 465; 95 Scrolls of Phase Door 23; 36 Scrolls of Word of Recall 233; 88 Scrolls of Identify 78
+08:55:16.616 goal {"depth": 0, "pos": [39, 111], "hp": [135, 135], "goal": "shop 5 buy Phase Door:4@24"}
+08:55:16.616 act {"depth": 0, "pos": [39, 111], "hp": [135, 135], "cmd": "walk 7", "why": "enter store 5"}
+08:55:16.972 act {"depth": 0, "pos": [39, 111], "hp": [135, 135], "cmd": "custom p store item=7 value=4 entry=92", "why": "buy 95 Scrolls of Phase Door x4"}
+08:55:17.230 act {"depth": 0, "pos": [39, 111], "hp": [135, 135], "cmd": "leave", "why": "leave store"}
+08:55:17.230 attention {"depth": 0, "pos": [39, 111], "hp": [135, 135], "what": "goal_done", "detail": "shop 5 buy Phase Door:4@24: You bought 4 Scrolls of Phase Door for 92 gold."}
+08:55:25.548 goal {"depth": 0, "pos": [39, 111], "hp": [135, 135], "goal": "recall"}
+08:55:25.548 act {"depth": 0, "pos": [39, 111], "hp": [135, 135], "cmd": "custom { item=7 entry=@R450", "why": "recall depth 450 ft"}
+08:55:26.563 act {"depth": 0, "pos": [39, 111], "hp": [135, 135], "cmd": "custom r item=7", "why": "read 2 Scrolls of Word of Recall {@R450}"}
+08:56:26.597 attention {"depth": 0, "pos": [39, 111], "hp": [135, 135], "what": "goal_failed", "detail": "recall: recall didn't happen"}
+08:56:38.468 act {"depth": 0, "pos": [39, 111], "hp": [135, 135], "cmd": "custom I item=7", "why": "agent: inspect ['Word_of_Recall']"}
+08:56:39.224 act {"depth": 0, "pos": [39, 111], "hp": [135, 135], "cmd": "custom r item=7", "why": "agent: read ['Word_of_Recall']"}
+08:56:44.874 act {"depth": 0, "pos": [39, 111], "hp": [135, 135], "cmd": "custom w item=14", "why": "agent: wear ['Brass_Lantern']"}
+08:56:45.630 goal {"depth": 0, "pos": [39, 111], "hp": [135, 135], "goal": "recall"}
+08:56:45.630 act {"depth": 0, "pos": [39, 111], "hp": [135, 135], "cmd": "custom r item=7", "why": "read 2 Scrolls of Word of Recall {@R450}"}
+08:56:55.875 attention {"depth": 6, "pos": [26, 46], "hp": [135, 135], "what": "goal_done", "detail": "recall: arrived at 300 ft"}
+08:57:03.765 goal {"depth": 6, "pos": [26, 46], "hp": [135, 135], "goal": "dive 350ft"}
+08:57:03.819 act {"depth": 6, "pos": [25, 46], "hp": [135, 135], "cmd": "custom ,", "why": "pick up: a Potion of Cure Light Wounds."}
+08:57:17.806 attention {"depth": 6, "pos": [15, 35], "hp": [132, 135], "what": "stat_drained", "detail": "STR drained (blows 3); restore at the Alchemist/Temple"}
+08:58:30.192 attention {"depth": 6, "pos": [3, 47], "hp": [135, 135], "what": "tactic", "detail": "White jelly (lvl 2, never moves) blocks the way: killing it"}
+09:00:02.556 act {"depth": 6, "pos": [26, 90], "hp": [135, 135], "cmd": "custom >", "why": "stairs >"}
+09:00:03.221 attention {"depth": 7, "pos": [59, 185], "hp": [135, 135], "what": "goal_done", "detail": "dive 350ft: reached 350 ft"}
+09:00:08.219 goal {"depth": 7, "pos": [60, 183], "hp": [135, 135], "goal": "explore"}
+09:00:21.190 attention {"depth": 7, "pos": [53, 189], "hp": [135, 135], "what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave"}
+09:00:23.386 attention {"depth": 7, "pos": [53, 188], "hp": [131, 135], "what": "breeders", "detail": "3 breeding monsters in view (Red worm mass): leave this level (stairs, or recall)"}
+09:00:29.265 goal {"depth": 7, "pos": [53, 187], "hp": [135, 135], "goal": "dive 400ft"}
+09:00:48.474 act {"depth": 7, "pos": [59, 185], "hp": [135, 135], "cmd": "custom <", "why": "stairs <"}
+09:00:49.748 act {"depth": 6, "pos": [14, 84], "hp": [135, 135], "cmd": "custom >", "why": "stairs >"}
+09:00:50.412 act {"depth": 7, "pos": [52, 175], "hp": [135, 135], "cmd": "custom <", "why": "stairs <"}
+09:00:51.790 act {"depth": 6, "pos": [59, 174], "hp": [135, 135], "cmd": "custom >", "why": "stairs >"}
+09:00:53.064 act {"depth": 7, "pos": [56, 152], "hp": [135, 135], "cmd": "custom <", "why": "stairs <"}
+09:00:53.727 act {"depth": 6, "pos": [18, 144], "hp": [135, 135], "cmd": "custom >", "why": "stairs >"}
+09:00:54.391 act {"depth": 7, "pos": [14, 142], "hp": [135, 135], "cmd": "custom <", "why": "stairs <"}
+09:00:55.053 act {"depth": 6, "pos": [47, 175], "hp": [135, 135], "cmd": "custom >", "why": "stairs >"}
+09:00:55.771 act {"depth": 7, "pos": [57, 175], "hp": [135, 135], "cmd": "custom >", "why": "stairs >"}
+09:00:56.384 attention {"depth": 8, "pos": [20, 109], "hp": [135, 135], "what": "goal_done", "detail": "dive 400ft: reached 400 ft"}
+09:01:00.306 goal {"depth": 8, "pos": [20, 109], "hp": [135, 135], "goal": "explore"}
+09:01:03.073 act {"depth": 8, "pos": [17, 114], "hp": [135, 135], "cmd": "custom ,", "why": "pick up: a Sabre (1d7)."}
+09:01:51.143 attention {"depth": 8, "pos": [6, 70], "hp": [126, 135], "what": "tactic", "detail": "Green jelly (lvl 5, never moves) blocks the way: killing it"}
+09:03:41.776 attention {"depth": 8, "pos": [25, 82], "hp": [135, 135], "what": "tactic", "detail": "Grey mold (lvl 1, never moves) blocks the way: killing it"}
+09:05:04.738 act {"depth": 8, "pos": [46, 95], "hp": [135, 135], "cmd": "custom F item=1", "why": "refill lantern (2900 turns left)"}
+09:05:10.262 act {"depth": 8, "pos": [49, 76], "hp": [135, 135], "cmd": "custom ,", "why": "pick up: a Main Gauche (1d5)."}
+09:05:42.535 goal {"depth": 8, "pos": [32, 22], "hp": [135, 135], "goal": "dive 450ft"}
+09:06:58.104 act {"depth": 8, "pos": [20, 109], "hp": [135, 135], "cmd": "custom <", "why": "stairs <"}
+09:06:59.381 act {"depth": 7, "pos": [37, 163], "hp": [135, 135], "cmd": "custom >", "why": "stairs >"}
+09:07:00.044 act {"depth": 8, "pos": [7, 132], "hp": [135, 135], "cmd": "custom <", "why": "stairs <"}
+09:07:00.704 act {"depth": 7, "pos": [22, 115], "hp": [135, 135], "cmd": "custom >", "why": "stairs >"}
+09:07:01.370 act {"depth": 8, "pos": [40, 20], "hp": [135, 135], "cmd": "custom <", "why": "stairs <"}
+09:07:02.032 act {"depth": 7, "pos": [36, 74], "hp": [135, 135], "cmd": "custom >", "why": "stairs >"}
+09:07:02.697 act {"depth": 8, "pos": [6, 185], "hp": [135, 135], "cmd": "custom <", "why": "stairs <"}
+09:07:03.362 act {"depth": 7, "pos": [46, 130], "hp": [135, 135], "cmd": "custom >", "why": "stairs >"}
+09:07:04.024 act {"depth": 8, "pos": [14, 176], "hp": [135, 135], "cmd": "custom <", "why": "stairs <"}
+09:07:04.330 act {"depth": 7, "pos": [48, 21], "hp": [135, 135], "cmd": "custom >", "why": "stairs >"}
+09:07:04.330 attention {"depth": 7, "pos": [48, 21], "hp": [135, 135], "what": "danger_avoided", "detail": "arrived next to Cave spider x8 (worst-case melee 64 vs HP 135): took the stairs back"}
+09:07:05.304 act {"depth": 8, "pos": [32, 125], "hp": [135, 135], "cmd": "custom <", "why": "stairs <"}
+09:07:09.964 act {"depth": 7, "pos": [2, 16], "hp": [135, 135], "cmd": "custom ,", "why": "pick up: a Scroll of Identify."}
+09:07:14.773 act {"depth": 7, "pos": [6, 8], "hp": [135, 135], "cmd": "custom >", "why": "stairs >"}
+09:07:15.999 act {"depth": 8, "pos": [45, 172], "hp": [135, 135], "cmd": "custom <", "why": "stairs <"}
+09:07:16.664 act {"depth": 7, "pos": [7, 18], "hp": [135, 135], "cmd": "custom >", "why": "stairs >"}
+09:07:17.326 act {"depth": 8, "pos": [43, 42], "hp": [135, 135], "cmd": "custom <", "why": "stairs <"}
+09:07:17.990 act {"depth": 7, "pos": [18, 114], "hp": [135, 135], "cmd": "custom >", "why": "stairs >"}
+09:07:18.653 act {"depth": 8, "pos": [1, 9], "hp": [135, 135], "cmd": "custom <", "why": "stairs <"}
+09:07:19.317 act {"depth": 7, "pos": [4, 106], "hp": [135, 135], "cmd": "custom >", "why": "stairs >"}
+09:07:19.982 act {"depth": 8, "pos": [13, 77], "hp": [135, 135], "cmd": "custom <", "why": "stairs <"}
+09:07:20.644 act {"depth": 7, "pos": [60, 88], "hp": [135, 135], "cmd": "custom >", "why": "stairs >"}
+09:07:21.307 act {"depth": 8, "pos": [39, 33], "hp": [135, 135], "cmd": "custom <", "why": "stairs <"}
+09:07:21.973 act {"depth": 7, "pos": [39, 179], "hp": [135, 135], "cmd": "custom >", "why": "stairs >"}
+09:07:25.265 act {"depth": 8, "pos": [56, 142], "hp": [135, 135], "cmd": "custom >", "why": "stairs >"}
+09:07:25.927 attention {"depth": 9, "pos": [35, 18], "hp": [135, 135], "what": "goal_done", "detail": "dive 450ft: reached 450 ft"}
+09:07:31.022 goal {"depth": 9, "pos": [35, 18], "hp": [135, 135], "goal": "explore"}
+09:07:41.538 audit {"depth": 9, "pos": [38, 32], "hp": [131, 135], "diffs": {"hp": ["[131, 135]", "[127, 135]"]}}
+09:08:14.851 act {"depth": 9, "pos": [30, 58], "hp": [135, 135], "cmd": "custom ,", "why": "pick up: a Staff of Object Location."}
+09:08:18.318 attention {"depth": 9, "pos": [26, 59], "hp": [135, 135], "what": "unseen_attacker", "detail": "'It casts a magic missile.': minor attack from something unseen; carrying on (HP 100%)"}
+09:08:53.373 act {"depth": 9, "pos": [12, 80], "hp": [93, 135], "cmd": "rest", "why": "rest"}
+09:09:36.229 goal {"depth": 9, "pos": [22, 100], "hp": [131, 135], "goal": "flee (unseen attacker)"}
+09:09:36.229 attention {"depth": 9, "pos": [22, 100], "hp": [131, 135], "what": "unseen_attacker", "detail": "'It casts a fearful illusion.': something unseen is attacking while explore; heading for the stairs"}
+09:10:27.801 act {"depth": 9, "pos": [35, 18], "hp": [129, 135], "cmd": "custom <", "why": "stairs <"}
+09:10:28.464 attention {"depth": 8, "pos": [5, 125], "hp": [129, 135], "what": "goal_done", "detail": "flee (unseen attacker): left by the stairs; now at 400 ft"}
+09:10:34.989 goal {"depth": 8, "pos": [5, 125], "hp": [133, 135], "goal": "dive 450ft"}
+09:10:34.990 act {"depth": 8, "pos": [5, 125], "hp": [133, 135], "cmd": "custom >", "why": "stairs >"}
+09:10:35.298 attention {"depth": 9, "pos": [43, 26], "hp": [133, 135], "what": "goal_done", "detail": "dive 450ft: reached 450 ft"}
+09:10:39.223 goal {"depth": 9, "pos": [43, 26], "hp": [135, 135], "goal": "explore"}
+09:10:41.836 attention {"depth": 9, "pos": [38, 31], "hp": [135, 135], "what": "tactic", "detail": "Radiation eye (lvl 3, never moves) blocks the way: killing it"}
+09:11:06.996 act {"depth": 9, "pos": [9, 17], "hp": [135, 135], "cmd": "eat 0", "why": "hungry (2)"}
+09:11:08.014 act {"depth": 9, "pos": [9, 17], "hp": [135, 135], "cmd": "eat 0", "why": "hungry (2)"}
+09:14:04.429 act {"depth": 9, "pos": [7, 68], "hp": [146, 146], "cmd": "custom ,", "why": "pick up: a Puce Potion."}
+09:15:28.040 act {"depth": 9, "pos": [39, 90], "hp": [119, 146], "cmd": "custom ,", "why": "pick up: a Cloak [1]."}
+09:15:40.490 act {"depth": 9, "pos": [37, 56], "hp": [142, 146], "cmd": "custom ,", "why": "pick up: a Rapier (1d6)."}
+09:17:05.782 act {"depth": 9, "pos": [53, 75], "hp": [146, 146], "cmd": "custom q item=6", "why": "agent: quaff ['Puce_Potion']"}
+09:17:06.539 attention {"depth": 9, "pos": [54, 74], "hp": [146, 146], "what": "stat_drained", "detail": "STR drained (blows 2); restore at the Alchemist/Temple"}
+09:17:06.539 attention {"depth": 9, "pos": [54, 74], "hp": [146, 146], "what": "blows_changed", "detail": "blows per round 3 -> 2"}
+09:17:06.539 goal {"depth": 9, "pos": [54, 74], "hp": [146, 146], "goal": "goto <"}
+09:17:23.904 attention {"depth": 9, "pos": [43, 26], "hp": [146, 146], "what": "goal_done", "detail": "goto <"}
+09:17:30.593 goal {"depth": 9, "pos": [43, 26], "hp": [146, 146], "goal": "recall"}
+09:17:30.594 act {"depth": 9, "pos": [43, 26], "hp": [146, 146], "cmd": "custom r item=7", "why": "read a Scroll of Word of Recall {@R450}"}
+09:17:39.778 act {"depth": 9, "pos": [43, 26], "hp": [146, 146], "cmd": "custom <", "why": "stairs <"}
+09:17:40.085 attention {"depth": 8, "pos": [59, 103], "hp": [146, 146], "what": "goal_done", "detail": "recall: arrived at 400 ft"}
+09:18:03.498 act {"depth": 0, "pos": [16, 45], "hp": [146, 146], "cmd": "custom t item=29", "why": "in town and idle: light off (it burns while resting)"}
+09:18:38.655 act {"depth": 0, "pos": [16, 45], "hp": [146, 146], "cmd": "custom w item=18", "why": "agent: wear ['Rapier']"}
+09:18:46.907 act {"depth": 0, "pos": [16, 45], "hp": [146, 146], "cmd": "custom w item=19", "why": "agent: wear ['Sabre']"}
+09:18:57.034 goal {"depth": 0, "pos": [16, 45], "hp": [146, 146], "goal": "shop 3 sell Rapier:1 sell Main Gauche:1 sell Dagger:1"}
+09:19:29.433 attention {"depth": -4, "pos": [23, 196], "hp": [146, 146], "what": "goal_failed", "detail": "shop 3 sell Rapier:1 sell Main Gauche:1 sell Dagger:1: not in town"}
+09:19:29.639 act {"depth": -4, "pos": [23, 196], "hp": [146, 146], "cmd": "custom w item=15", "why": "wield a light"}
+09:19:51.585 goal {"depth": -4, "pos": [23, 196], "hp": [146, 146], "goal": "shop 3 sell Rapier:1 sell Main Gauche:1 sell Dagger:1"}
+09:19:51.586 attention {"depth": -4, "pos": [23, 196], "hp": [146, 146], "what": "goal_failed", "detail": "shop 3 sell Rapier:1 sell Main Gauche:1 sell Dagger:1: not in town"}
+09:20:04.120 goal {"depth": -4, "pos": [23, 196], "hp": [146, 146], "goal": "goto 23,197"}
+09:20:04.203 attention {"depth": -4, "pos": [23, 196], "hp": [146, 146], "what": "goal_failed", "detail": "goto 23,197: no known path"}
+09:20:20.443 goal {"depth": -4, "pos": [23, 196], "hp": [146, 146], "goal": "dive 0ft"}
+09:20:20.445 act {"depth": -4, "pos": [23, 196], "hp": [146, 146], "cmd": "custom >", "why": "stairs >"}
+09:20:23.480 note {"depth": -4, "pos": [23, 196], "hp": [146, 146], "text": "effect_failed (level unchanged after 3 s): stairs >"}
+09:20:23.643 attention {"depth": -4, "pos": [23, 196], "hp": [146, 146], "what": "goal_failed", "detail": "dive 0ft: no stairs found: explore is for dungeon levels, not the town or wilderness"}
+09:20:29.658 goal {"depth": -4, "pos": [23, 196], "hp": [146, 146], "goal": "goto 22,195"}
+09:20:29.715 attention {"depth": -4, "pos": [22, 195], "hp": [146, 146], "what": "goal_done", "detail": "goto 22,195"}
+09:20:45.292 goal {"depth": -4, "pos": [22, 195], "hp": [146, 146], "goal": "goto 22,196"}
+09:20:45.349 attention {"depth": -4, "pos": [22, 196], "hp": [146, 146], "what": "goal_done", "detail": "goto 22,196"}
+09:20:45.452 goal {"depth": -4, "pos": [22, 196], "hp": [146, 146], "goal": "goto 22,197"}
+09:20:45.533 attention {"depth": -4, "pos": [22, 196], "hp": [146, 146], "what": "goal_failed", "detail": "goto 22,197: no known path"}
+09:20:45.636 goal {"depth": -4, "pos": [22, 196], "hp": [146, 146], "goal": "goto 22,198"}
+09:20:45.715 attention {"depth": -4, "pos": [22, 196], "hp": [146, 146], "what": "goal_failed", "detail": "goto 22,198: no known path"}
+09:20:58.987 goal {"depth": -4, "pos": [22, 196], "hp": [146, 146], "goal": null}
+09:24:38.841 goal {"depth": -4, "pos": [22, 196], "hp": [146, 146], "goal": null}
+09:24:38.842 attention {"depth": -4, "pos": [22, 196], "hp": [146, 146], "what": "parked", "detail": "logging out for a Pilot update; back in a minute -- re-issue your goal when you see 'started'"}
+09:24:42.665 attention {"depth": null, "pos": null, "hp": [0, 1], "what": "started", "detail": "in the game at None (depth)"}
+09:24:58.833 goal {"depth": -4, "pos": [22, 196], "hp": [146, 146], "goal": "town"}
+09:24:58.833 act {"depth": -4, "pos": [22, 196], "hp": [146, 146], "cmd": "walk 6", "why": "town: step off the E edge"}
+09:24:59.348 attention {"depth": 0, "pos": [22, 1], "hp": [146, 146], "what": "goal_done", "detail": "town: in town"}

@@ -1,0 +1,209 @@
+
+
+                                            Macro Guide
+
+Version 1 created on 02/10/2011
+
+Contents
+
+- Inscribing items and general information about the macro menu.
+
+- General information about specific macro commands.
+
+- General macros used by all characters.
+
+- Macros used by priests/paladins.
+
+- macros used by mages/rangers/rogues.
+
+- Last words
+
+- Overview and examples
+
+1. Inscribing items and general information about the macro menu.
+
+To inscribe items, you press the { key and select the item you wish to inscribe. If you inscribe an item with @q1 for instance, this enables the game to recognize the item as quaffable and enables you to quaff them by pressing q1. This will also enabling macroing the item to be used REALLY quickly by pressing a single button. OBS! If the item isn't a quaffable (non-potion), you will get a warning sound and the command will fail.
+
+The macro menu is accessed by pressing % in the game. It looks like this:
+
+     -----------  
+     Interact with Macros  
+
+     (1) Load Macros  
+     (2) Save Macros  
+     (3) Enter a New Action  
+     (4) Create a command macro  
+     (5) Create a normal macro  
+     (6) Create an identity macro  
+     (7) Create an empty macro  
+     ------------  
+
+You then press the number key corresponding to what you want to do.
+
+If this is your first time playing, do the following before messing up the whole MAngband control system:
+
+     - Press 2  
+     - Type: Default.prf  
+     - Press enter  
+
+This means that if you screw up and overwrite the standard file, you can regain the original setup easily like this:
+
+     - Press 1  
+     - Type: Default.prf  
+     - Press enter  
+
+Do the following to create a quaff potion macro:
+
+     - Press 3  
+     - enter this: \eq1 and press enter  
+     - Press 5  
+
+Press the key you want to use to quaff potions. This should be a key that the game doesn't use, so for example using F1 would be a good idea.
+
+You first macro is done and your character should quaff your potions labelled @q1 in your inventory when you press F1 (or another key if you chose another).
+
+PS. If you messed up the macroes, load the default.prf and try again. Also if you later have made 10 great macroes and then mess up one by overwriting a useful key, try menu pick 6 "Create an identity Macro" then press the key that is messed up. This should revert the key to it's original state.
+
+PPS. You will want to keep the keys for your main ranged attack macro close to your main escape macro and main healing macro. For instance having main attack as F1 and main escapes as F11 or F12 wouldn’t be a good idea. (I learned to play before I figured this out, so I’ve gotten used to my macros being far apart though it’s a hassle at times)  
+
+2. General information about specific macro commands.
+
+This section is a few “advanced” commands used in macroing that aren’t obvious and explains their usage.
+
+f
+
+This is the general command to fire missiles. f1 means firing the missiles inscribed with @f1. f2 means firing the missiles inscribed with @f2 etc. (Make sure you fire the correct ammo and that your weapon isn’t too heavy for you to use. All missile weapons are wieldable, but some are too heavy for certain characters to fire with. They can equip, but cannot fire.) (gnome mage with a heavy crossbow is a no go until you get WAY more STR)
+
+q
+
+This is the general quaff command to quaff potions. q1 means quaffing potions inscribed with @q1. q2 means quaffing potions inscribed with @q2. q3… You got the point ;)
+
+r
+
+This is the general read command to read scrolls. r1 means reading scrolls inscribed with @r1. r2 means reading scrolls inscribed with @r2. etc.
+
+u
+
+This is the general read command to use a staff. u1 means using staves inscribed with @u1. etc.
+
+a
+
+This is the general read command to aim a wand. a1 means using wands inscribed with @a1. etc.
+
+z
+
+This is the general read command to zap a rod. z1 means using rods inscribed with @z1. etc.
+
+p
+
+This is the general read command to pray from priest books (paladin/priest). p1 means praying from the book inscribed with @p1. p2 means praying from the book inscribed with @p2 etc.
+
+m
+
+This is the general read command to use magic from magic books (mage/ranger/rogue). m1 means casting spell from the book inscribed with @m1. m2 means praying from the book inscribed with @m2
+
+w
+
+This is the general wear/wield weapon command. w1 means wielding the piece of gear inscribed with @w1 (this way you can swap gear by inscribing 2 weapons with @w1 for instance.) (There’s also a command to swap. If you inscribe 2 items with @w0, pressing X will swap them between equipped/inventory
+
+*t
+
+Having this in a macro will target what you’re doing at the closest enemy. This needs to be done at the correct time in the macro. Spells need pre-targeting, while missile weapons need post-targeting. Example: To fire a bow at the closest enemy use this: \ef1*t . To fire a magic missile at the closest enemy, use this: \e*tm1a . To fire orb of draining at the closest enemy, use this: \e*tp3b . The books and missiles need to be inscribed properly naturally.
+
+\e
+
+This command is the same as pressing ESC on your keyboard. Putting this first in most macros is useful for making sure your character does what you want when you’re under pressure. For instance if you’re looking at your character screen “C” and suddenly get attacked, you want your quaff potion macro or teleport macro to work. Without you hitting ESC-key first. Use \e for all macros that you want to fire when you press the key. (if you wish to perform several actions in a specific sequence without skipping any parts, don’t put \e in front of them.) Usage: Use for all critical staying alive macros.
+
+(
+
+This command is used for targeting friends in a party for healing spells (paladin/priest). Casting cure light wounds on someone would be: \e(p1B note that the casting letter needs to be a Capital letter or you cast the spell on yourself.
+
+I think this was all the useful commands I’ve used in macros. If someone else uses others, be sure to let me know and I’ll add them.  
+
+3. General macros used by all characters.
+
+This section helps you set up a standard for all your characters so you don’t have to do them all over and over. Most characters need a missile weapon macro, 2+ different potions macros and 2-4 different escape macros. I will suggest keys for some macros, but others should be set up to suit your needs/playstyle.
+
+Firing bows:
+
+\ef1*t this macro fires 1 shot at the closest enemy. Suggested key: TAB When I’ve got a really powerful bow, I usually want to keep firing through lag and other things even when things die. In this case I’d use the following macro:
+
+\ef1*tf1*tf1*tf1*tf1*t repeat as many times as you want to fire. This is known as “The lazy ranger macro” or “/autofire”. OBS! This macro isn’t cancelled by pressing a direction. You need to use a macro with \e in it or running “shift” + direction to cancel it.
+
+Quaff macros:
+
+\eq1 Suggested for Cure Serious Wounds or Cure Critical wounds to cure blindness/confusion or cure poison (only CCW) and also for main healing early in the game or for healing out of combat later in the game. Suggested key: F1 \eq2 Suggested for potions of Healing used for combat healing “late” in the game. Suggested key: F2 \eq3 Suggested for potions of Healing you know when to use these if you have gotten this far \eq7 or \eu7 Suggested for potions or staff of speed. Suggested key: F7 (the reason I use \eq7 is that you can then remember that the key is F7 by looking in inventory) \eq5 Suggested for potions of restore mana
+
+The list goes on and on. I’m sure you’ve got a good idea ;)
+
+Escape macros: These change as you gain more items/escapes
+
+\er4 Suggested for scroll of phase door the cheapest usable means of escape. Suggested key: F4 \er5 or \eu5 Suggested for scroll of teleportation or staff of teleportation. Suggested key F5 \er6 or \eu6 Suggested scroll or staff of destruction. Suggested key F6
+
+These may be replaced by spells if you’re a mage or priest with close to 0% fail chance on spells.
+
+When you’re done with all these macros, save your macros into a lot of files since these will be generic for all classes you play. Save them as warrior.prf and priest.prf and mage.prf and ranger.prf and paladin.prf and rogue.prf. When you load the client as any character, the appropriate macro-file will auto-load. So whenever you make changes you like, save into the appropriate file. (testing the macro first or backing up the file is useful before overwriting)  
+
+4. Macros used by priests/paladins.
+
+I usually don’t macro spells like “Detect Evil”. I just remember p1a instead because it isn’t a prayer I need to cast when in a pinch.
+
+Escape Portals
+
+\ep2b Macro for Portal as an escape. Book (Words of Wisdom) inscribed with @p2 This can be used instead of a scroll of teleportation but it kind of unreliable due to failure rate and high mana cost at low levels (you’ve been warned)
+
+Ranged attack with Orb of Draining
+
+\e*tp3b Macro for Orb of Draining (ranged attack). Book (Chants and Blessings) inscribed with @p3 Suggested key: F3 ( this is just in between your powerful healing potion and your escapes
+
+Healing yourself
+
+\ep2c or \ep3c or \ep3h or \ep4c healing spell. Whichever you prefer.
+
+Healing your friends
+
+\ep2C or \ep3C or \ep3H or \ep4C Heal other spell but you need to target them first with ( \ep(2C or \e(p3C or \e(p3H or \e(p4C Heal other spell with auto-target that cycles through your friends.
+
+Late on you can also macro dispel evil if you wish to clear out Troll pits easily.
+
+// Party healing will probably be changed in the future, but this is what we’ve got at the moment.  
+
+5. macros used by mages/”rogues”/rangers.
+
+I usually don’t macro spells like “Detect Monsters”. I just remember m1b instead because it isn’t a spell I need to cast when in a pinch. Rogues can’t use the offensive spells, but some stuff is the same.
+
+Blink away from your enemies
+
+\em1c Phase door macro as an escape. Book (Magic for Beginners) inscribed with @m1. Helps the stingy save a few $ and in case you run out of scrolls and it frees up inventory space for when that’s needed. You’ve been warned on the safety of “not” using scrolls, hehe.
+
+A better escape: Teleport
+
+\em2f Teleport self as an escape. Book (Conjurings and Tricks) inscribed with @m2. This can be used instead of a scroll of teleportation but it kind of unreliable due to failure rate and high mana cost at low levels (you’ve been warned)
+
+Ranged attack: Magic Missile
+
+\e*tm1a Magic missile that fires at closest target. Book (Magic for Beginners) inscribed with @m1. Nice main ranged attack till you can upgrade to the later spells and cast them A LOT.
+
+Ranged Attack: Lightning bolt
+
+\e*tm2b Lightning bolt that fires at the closest target. Book (Conjurings and Tricks) inscribed with @m2. It continues past enemies till it hits max range or a wall, so it’s good for enemies that are positioned in a straight line.
+
+Other offensive spells
+
+The rest of the offensive spells are extremely useful as well. Macro them and then swap out your main attack as needed. (Acid bolt will be main attack for quite a while in conjunction with “Rift” you have a great combo) Also there’s Mana storm naturally ;)
+
+When you are Running out of key
+
+If it seems like your mage is running out of keys to macro, you can use Shift+F1 or CTRL+F1 or Shift+CTRL+F1 etc. That’s 48 macros just using the F-keys. Alt works too, but we all know what alt+F4 does, so I’ve avoided using alt in fear of my windows system taking over. Hehe.  
+
+6. Last words
+
+Good luck.
+
+Comments please and corrections from veterans much appreciated.
+
+My spelling might be off somewhere, I haven’t bothered to check. It’s taken me 2 hours writing this. 
+
+ - ZAL
+
+                

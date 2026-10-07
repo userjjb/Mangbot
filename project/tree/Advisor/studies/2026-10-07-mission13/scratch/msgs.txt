@@ -1,0 +1,566 @@
+08:50:04.576 55.4 L40561 T0 Taken!
+08:50:04.576 55.4 L40562 T0 You bought 4 Potions of Cure Light Wounds for 92 gold.
+08:50:04.576 55.4 L40563 T0 You have 11 Potions of Cure Light Wounds (f).
+08:55:17.102 367.9 L43161 T0 Accepted!
+08:55:17.102 367.9 L43162 T0 You bought 4 Scrolls of Phase Door for 92 gold.
+08:55:17.102 367.9 L43163 T0 You have 11 Scrolls of Phase Door {25% off} (g).
+08:55:25.535 376.3 L43176 T0 Inscribing 2 Scrolls of Word of Recall.
+08:55:26.550 377.4 L43179 T0 You have no light to read by.
+08:56:38.455 449.3 L43259 T0 Examining 2 Scrolls of Word of Recall {@R450}...
+08:56:39.211 450.0 L43263 T0 You have no light to read by.
+08:56:44.861 455.7 L43271 T0 Your light source is a Brass Lantern (with 3891 turns of light) (f).
+08:56:45.617 456.4 L43274 T0 The air about you becomes charged...
+08:56:45.617 456.4 L43275 T0 You have a Scroll of Word of Recall {@R450}.
+08:56:55.793 466.6 L43286 T0 You feel yourself yanked downwards!
+08:56:55.807 466.6 L43288 T0 You feel your luck is turning...
+08:57:03.752 474.6 L43305 T0 You see a Potion of Cure Light Wounds.
+08:57:04.380 475.2 L43310 T0 You have 12 Potions of Cure Light Wounds (f).
+08:57:17.631 488.4 L43377 T0 You found a trap!
+08:57:17.631 488.4 L43378 T0 A small dart hits you!
+08:57:17.631 488.4 L43379 T0 You feel very weak.
+08:58:29.563 560.4 L43758 T0 The White jelly wakes up.
+08:58:30.204 561.0 L43760 T0 The White jelly misses you.
+08:58:30.778 561.6 L43762 T0 You miss the White jelly.
+08:58:30.778 561.6 L43763 T0 You hit the White jelly.
+08:58:30.778 561.6 L43764 T0 You miss the White jelly.
+08:58:30.843 561.6 L43765 T0 The White jelly misses you.
+08:58:30.990 561.8 L43766 T0 You hit the White jelly.
+08:58:31.204 562.0 L43767 T0 You hit the White jelly.
+08:58:31.418 562.2 L43769 T0 You hit the White jelly.
+08:58:31.483 562.3 L43770 T0 The White jelly misses you.
+08:58:31.630 562.4 L43771 T0 You hit the White jelly.
+08:58:31.843 562.6 L43772 T0 You hit the White jelly.
+08:58:32.043 562.8 L43773 T0 You miss the White jelly.
+08:58:32.123 562.9 L43774 T0 The White jelly misses you.
+08:58:32.257 563.1 L43775 T0 You hit the White jelly.
+08:58:32.257 563.1 L43776 T0 You have destroyed the White jelly.
+08:58:33.523 564.3 L43784 T0 You have found 27 gold pieces worth of copper.
+09:00:01.228 652.0 L44266 T0 You have found 20 gold pieces worth of silver.
+09:00:03.149 653.9 L44275 T0 You enter a maze of down staircases.
+09:00:03.163 654.0 L44276 T0 You feel there is something special about this level.
+09:00:21.134 671.9 L44366 T0 You hear a door burst open!
+09:00:21.149 671.9 L44369 T0 You hit the Red worm mass.
+09:00:21.241 672.0 L44370 T0 You hit the Red worm mass.
+09:00:21.455 672.3 L44373 T0 You hit the Red worm mass.
+09:00:22.307 673.1 L44375 T0 You hit the Red worm mass.
+09:00:22.414 673.2 L44376 T0 The Red worm mass crawls on you.
+09:00:22.414 673.2 L44377 T0 You are enveloped in flames!
+09:00:22.521 673.3 L44379 T0 You hit the Red worm mass.
+09:00:22.734 673.5 L44380 T0 You hit the Red worm mass.
+09:00:22.734 673.5 L44381 T0 You have destroyed the Red worm mass.
+09:00:24.000 674.8 L44392 T0 You see a Shovel (1d2).
+09:00:24.228 675.0 L44395 T0 You hit the Red worm mass.
+09:00:24.442 675.2 L44396 T0 You hit the Red worm mass.
+09:00:24.655 675.5 L44398 T0 You hit the Red worm mass.
+09:00:24.866 675.7 L44399 T0 You hit the Red worm mass.
+09:00:25.080 675.9 L44401 T0 You hit the Red worm mass.
+09:00:25.294 676.1 L44403 T0 You hit the Red worm mass.
+09:00:25.294 676.1 L44404 T0 You have destroyed the Red worm mass.
+09:00:25.508 676.3 L44406 T0 You hit the Red worm mass.
+09:00:25.720 676.5 L44408 T0 You hit the Red worm mass.
+09:00:25.934 676.7 L44409 T0 You hit the Red worm mass.
+09:00:26.148 676.9 L44410 T0 You hit the Red worm mass.
+09:00:26.361 677.2 L44411 T0 You miss the Red worm mass.
+09:00:26.573 677.4 L44415 T0 You miss the Red worm mass.
+09:00:26.788 677.6 L44416 T0 You hit the Red worm mass.
+09:00:27.002 677.8 L44417 T0 You hit the Red worm mass.
+09:00:27.214 678.0 L44418 T0 You hit the Red worm mass.
+09:00:27.427 678.2 L44419 T0 You miss the Red worm mass.
+09:00:27.641 678.4 L44421 T0 You hit the Red worm mass.
+09:00:27.853 678.7 L44424 T0 You hit the Red worm mass.
+09:00:27.853 678.7 L44425 T0 You have destroyed the Red worm mass.
+09:00:28.067 678.9 L44427 T0 You hit the Red worm mass.
+09:00:28.281 679.1 L44428 T0 You hit the Red worm mass.
+09:00:28.495 679.3 L44429 T0 You hit the Red worm mass.
+09:00:28.707 679.5 L44431 T0 You hit the Red worm mass.
+09:00:28.921 679.7 L44432 T0 You hit the Red worm mass.
+09:00:28.921 679.7 L44433 T0 You have destroyed the Red worm mass.
+09:00:29.135 679.9 L44436 T0 You hit the Giant white tick.
+09:00:29.347 680.1 L44437 T0 You hit the Giant white tick.
+09:00:29.561 680.4 L44438 T0 You hit the Giant white tick.
+09:00:29.775 680.6 L44440 T0 You hit the Giant white tick.
+09:00:29.775 680.6 L44441 T0 It was a great hit!
+09:00:29.775 680.6 L44442 T0 The Giant white tick flees in terror!
+09:00:29.986 680.8 L44443 T0 You hit the Giant white tick.
+09:00:30.200 681.0 L44444 T0 You hit the Giant white tick.
+09:00:30.414 681.2 L44445 T0 You hit the Red worm mass.
+09:00:30.628 681.4 L44448 T0 You hit the Red worm mass.
+09:00:30.840 681.6 L44449 T0 You hit the Red worm mass.
+09:00:31.054 681.9 L44450 T0 You hit the Red worm mass.
+09:00:31.267 682.1 L44451 T0 You hit the Red worm mass.
+09:00:31.480 682.3 L44452 T0 You hit the Red worm mass.
+09:00:31.694 682.5 L44454 T0 You hit the Red worm mass.
+09:00:31.694 682.5 L44455 T0 You have destroyed the Red worm mass.
+09:00:31.907 682.7 L44457 T0 You hit the Giant black ant.
+09:00:32.121 682.9 L44458 T0 You hit the Giant black ant.
+09:00:32.121 682.9 L44459 T0 The Giant black ant flees in terror!
+09:00:33.267 684.1 L44466 T0 The Red worm mass crawls on you.
+09:00:33.268 684.1 L44467 T0 You are enveloped in flames!
+09:00:49.067 699.9 L44547 T0 You enter a maze of up staircases.
+09:00:49.081 699.9 L44549 T0 You like the look of this place...
+09:00:49.735 700.5 L44558 T0 You enter a maze of down staircases.
+09:00:49.747 700.5 L44559 T0 Looks like any other level.
+09:00:50.399 701.2 L44565 T0 You enter a maze of up staircases.
+09:00:50.402 701.2 L44566 T0 Looks like any other level.
+09:00:52.387 703.2 L44584 T0 You enter a maze of down staircases.
+09:00:52.401 703.2 L44585 T0 Looks like any other level.
+09:00:53.051 703.9 L44591 T0 You enter a maze of up staircases.
+09:00:53.054 703.9 L44592 T0 Looks like any other level.
+09:00:53.714 704.5 L44603 T0 You enter a maze of down staircases.
+09:00:53.721 704.5 L44604 T0 Looks like any other level.
+09:00:54.377 705.2 L44611 T0 You enter a maze of up staircases.
+09:00:54.387 705.2 L44612 T0 Looks like any other level.
+09:00:55.040 705.8 L44617 T0 You enter a maze of down staircases.
+09:00:55.053 705.9 L44618 T0 Looks like any other level.
+09:00:56.334 707.1 L44631 T0 You enter a maze of down staircases.
+09:00:56.348 707.1 L44632 T0 Looks like any other level.
+09:01:03.026 713.8 L44660 T0 You see a Sabre (1d7).
+09:01:03.681 714.5 L44665 T0 You have a Sabre (1d7) (o).
+09:01:28.573 739.4 L44799 T0 The Novice warrior hits you.
+09:01:28.573 739.4 L44800 T0 The Novice warrior hits you.
+09:01:28.693 739.5 L44801 T0 You hit the Novice warrior.
+09:01:28.693 739.5 L44802 T0 You hit the Novice warrior.
+09:01:28.693 739.5 L44803 T0 You hit the Novice warrior.
+09:01:28.919 739.7 L44805 T0 You hit the Novice warrior.
+09:01:29.133 739.9 L44806 T0 You hit the Novice warrior.
+09:01:29.133 739.9 L44807 T0 The Novice warrior flees in terror!
+09:01:29.346 740.1 L44808 T0 You hit the Novice warrior.
+09:01:29.346 740.1 L44809 T0 You have slain the Novice warrior.
+09:01:29.974 740.8 L44816 T0 You have found 45 gold pieces worth of silver.
+09:01:30.212 741.0 L44818 T0 You hit the Novice warrior.
+09:01:30.426 741.2 L44819 T0 You hit the Novice warrior.
+09:01:30.600 741.4 L44820 T0 The Novice warrior hits you.
+09:01:30.600 741.4 L44821 T0 The Novice warrior hits you.
+09:01:30.639 741.4 L44822 T0 You hit the Novice warrior.
+09:01:30.639 741.4 L44823 T0 The Novice warrior flees in terror!
+09:01:30.854 741.7 L44824 T0 You hit the Novice warrior.
+09:01:30.854 741.7 L44825 T0 You have slain the Novice warrior.
+09:01:31.026 741.8 L44829 T0 The Novice warrior hits you.
+09:01:31.026 741.8 L44830 T0 The Novice warrior hits you.
+09:01:31.066 741.9 L44831 T0 You hit the Novice warrior.
+09:01:31.278 742.1 L44832 T0 You hit the Novice warrior.
+09:01:31.505 742.3 L44833 T0 You hit the Novice warrior.
+09:01:31.720 742.5 L44834 T0 You hit the Novice warrior.
+09:01:31.933 742.7 L44835 T0 You hit the Novice warrior.
+09:01:31.933 742.7 L44836 T0 The Novice warrior flees in terror!
+09:01:32.145 742.9 L44838 T0 You miss the Novice warrior.
+09:01:39.973 750.8 L44872 T0 There is a wall blocking your way.
+09:01:46.506 757.3 L44910 T0 You cannot run in that direction.
+09:01:46.506 757.3 L44911 T0 There is a wall blocking your way.
+09:01:47.812 758.6 L44918 T0 There is a wall blocking your way.
+09:01:49.118 759.9 L44924 T0 There is a wall blocking your way.
+09:01:50.426 761.2 L44930 T0 There is a wall blocking your way.
+09:01:50.959 761.8 L44932 T0 The Green jelly wakes up.
+09:01:51.279 762.1 L44936 T0 The Green jelly misses you.
+09:01:51.905 762.7 L44941 T0 The Green jelly misses you.
+09:01:52.532 763.3 L44946 T0 The Green jelly misses you.
+09:01:52.624 763.4 L44947 T0 You hit the Green jelly.
+09:01:52.838 763.6 L44948 T0 You hit the Green jelly.
+09:01:53.051 763.9 L44950 T0 You hit the Green jelly.
+09:01:53.158 764.0 L44951 T0 The Green jelly misses you.
+09:01:53.265 764.1 L44952 T0 You hit the Green jelly.
+09:01:53.479 764.3 L44954 T0 You miss the Green jelly.
+09:01:53.692 764.5 L44955 T0 You hit the Green jelly.
+09:01:53.784 764.6 L44956 T0 The Green jelly misses you.
+09:01:53.918 764.7 L44957 T0 You hit the Green jelly.
+09:01:54.132 764.9 L44958 T0 You hit the Green jelly.
+09:01:54.346 765.1 L44959 T0 You hit the Green jelly.
+09:01:54.413 765.2 L44960 T0 The Green jelly touches you.
+09:01:54.413 765.2 L44961 T0 You are covered in acid!
+09:01:54.413 765.2 L44962 T0 Your Hard Leather Cap is damaged!
+09:01:54.560 765.4 L44964 T0 You hit the Green jelly.
+09:01:54.772 765.6 L44965 T0 You hit the Green jelly.
+09:01:54.986 765.8 L44966 T0 You hit the Green jelly.
+09:01:54.998 765.8 L44967 T0 The Brown yeek hits you.
+09:01:55.038 765.8 L44968 T0 The Green jelly misses you.
+09:01:55.212 766.0 L44969 T0 You hit the Green jelly.
+09:01:55.424 766.2 L44970 T0 You hit the Green jelly.
+09:01:55.638 766.4 L44972 T0 You hit the Green jelly.
+09:01:55.666 766.5 L44973 T0 The Green jelly misses you.
+09:01:55.852 766.7 L44974 T0 You hit the Green jelly.
+09:01:56.066 766.9 L44975 T0 You hit the Green jelly.
+09:01:56.277 767.1 L44976 T0 You hit the Green jelly.
+09:01:56.292 767.1 L44977 T0 The Green jelly misses you.
+09:01:56.292 767.1 L44978 T0 The Brown yeek hits you.
+09:01:56.506 767.3 L44980 T0 You hit the Green jelly.
+09:01:56.719 767.5 L44981 T0 You hit the Green jelly.
+09:01:56.719 767.5 L44982 T0 You have destroyed the Green jelly.
+09:01:56.933 767.7 L44984 T0 You hit the Brown yeek.
+09:01:57.144 767.9 L44985 T0 You hit the Brown yeek.
+09:01:57.358 768.2 L44986 T0 You hit the Brown yeek.
+09:01:57.358 768.2 L44987 T0 The Brown yeek flees in terror!
+09:01:57.573 768.4 L44990 T0 You hit the Brown yeek.
+09:01:57.573 768.4 L44991 T0 You have slain the Brown yeek.
+09:01:58.211 769.0 L44996 T0 You have found 61 gold pieces worth of silver.
+09:02:39.091 809.9 L45216 T0 The White worm mass wakes up.
+09:02:42.517 813.3 L45233 T0 You hit the Giant white ant.
+09:02:42.677 813.5 L45235 T0 The Giant white ant bites you.
+09:02:42.730 813.5 L45236 T0 You hit the Giant white ant.
+09:02:42.730 813.5 L45237 T0 The Giant white ant flees in terror!
+09:02:42.944 813.7 L45238 T0 You hit the Giant white ant.
+09:02:42.944 813.7 L45239 T0 You have slain the Giant white ant.
+09:02:43.278 814.1 L45241 T0 You hit the Kobold shaman.
+09:02:43.370 814.2 L45242 T0 You hit the Kobold shaman.
+09:02:43.370 814.2 L45243 T0 You have slain the Kobold shaman.
+09:02:44.010 814.8 L45249 T0 You have found 23 gold pieces worth of silver.
+09:03:23.850 854.6 L45461 T0 There is a wall blocking your way.
+09:03:42.610 873.4 L45556 T0 You hit the Grey mold.
+09:03:42.610 873.4 L45557 T0 It was a good hit!
+09:03:42.610 873.4 L45558 T0 You have destroyed the Grey mold.
+09:05:05.008 955.8 L46002 T0 You fuel your lamp.
+09:05:05.008 955.8 L46003 T0 You have 3 Flasks of oil.
+09:05:06.353 957.2 L46014 T0 You feel the Sabre (o) in your pack is average...
+09:05:10.208 961.0 L46038 T0 You see a Main Gauche (1d5).
+09:05:11.500 962.3 L46046 T0 You have a Main Gauche (1d5) (o).
+09:06:03.713 1014.5 L46311 T0 You feel the Main Gauche (o) in your pack is average...
+09:06:40.179 1051.0 L46502 T0 The Novice warrior hits you.
+09:06:40.179 1051.0 L46503 T0 The Novice warrior hits you.
+09:06:40.312 1051.1 L46504 T0 You hit the Novice warrior.
+09:06:40.312 1051.1 L46505 T0 You hit the Novice warrior.
+09:06:40.312 1051.1 L46506 T0 You hit the Novice warrior.
+09:06:40.552 1051.4 L46508 T0 You hit the Novice warrior.
+09:06:40.552 1051.4 L46509 T0 The Novice warrior flees in terror!
+09:06:40.764 1051.6 L46510 T0 You hit the Novice warrior.
+09:06:40.978 1051.8 L46511 T0 You miss the Novice warrior.
+09:06:41.192 1052.0 L46512 T0 You hit the Novice warrior.
+09:06:41.192 1052.0 L46513 T0 You have slain the Novice warrior.
+09:06:47.284 1058.1 L46543 T0 You have found 16 gold pieces worth of copper.
+09:06:58.684 1069.5 L46602 T0 You enter a maze of up staircases.
+09:06:58.701 1069.5 L46603 T0 You like the look of this place...
+09:06:59.368 1070.2 L46613 T0 You enter a maze of down staircases.
+09:06:59.379 1070.2 L46614 T0 Looks like any other level.
+09:07:00.030 1070.8 L46621 T0 You enter a maze of up staircases.
+09:07:00.044 1070.8 L46622 T0 Looks like any other level.
+09:07:00.691 1071.5 L46628 T0 You enter a maze of down staircases.
+09:07:00.698 1071.5 L46629 T0 Looks like any other level.
+09:07:01.356 1072.2 L46640 T0 You enter a maze of up staircases.
+09:07:01.366 1072.2 L46641 T0 Looks like any other level.
+09:07:02.019 1072.8 L46646 T0 You enter a maze of down staircases.
+09:07:02.032 1072.8 L46647 T0 Looks like any other level.
+09:07:02.684 1073.5 L46653 T0 You enter a maze of up staircases.
+09:07:02.697 1073.5 L46654 T0 Looks like any other level.
+09:07:03.348 1074.1 L46664 T0 You enter a maze of down staircases.
+09:07:03.351 1074.2 L46665 T0 Looks like any other level.
+09:07:04.011 1074.8 L46670 T0 You enter a maze of up staircases.
+09:07:04.018 1074.8 L46671 T0 Looks like any other level.
+09:07:04.644 1075.4 L46678 T0 You enter a maze of down staircases.
+09:07:04.657 1075.5 L46679 T0 Looks like any other level.
+09:07:05.297 1076.1 L46690 T0 You enter a maze of up staircases.
+09:07:05.310 1076.1 L46691 T0 Looks like any other level.
+09:07:09.897 1080.7 L46719 T0 You see a Scroll of Identify.
+09:07:10.525 1081.3 L46724 T0 You have a Scroll of Identify (i).
+09:07:15.336 1086.1 L46747 T0 You enter a maze of down staircases.
+09:07:15.352 1086.2 L46748 T0 Looks like any other level.
+09:07:15.990 1086.8 L46758 T0 You enter a maze of up staircases.
+09:07:16.005 1086.8 L46759 T0 Looks like any other level.
+09:07:16.651 1087.5 L46765 T0 You enter a maze of down staircases.
+09:07:16.658 1087.5 L46766 T0 Looks like any other level.
+09:07:17.313 1088.1 L46771 T0 You enter a maze of up staircases.
+09:07:17.324 1088.1 L46772 T0 Looks like any other level.
+09:07:17.976 1088.8 L46783 T0 You enter a maze of down staircases.
+09:07:17.992 1088.8 L46784 T0 Looks like any other level.
+09:07:18.640 1089.4 L46791 T0 You enter a maze of up staircases.
+09:07:18.645 1089.4 L46792 T0 Looks like any other level.
+09:07:19.304 1090.1 L46797 T0 You enter a maze of down staircases.
+09:07:19.311 1090.1 L46798 T0 Looks like any other level.
+09:07:19.969 1090.8 L46808 T0 You enter a maze of up staircases.
+09:07:19.978 1090.8 L46809 T0 Looks like any other level.
+09:07:20.631 1091.4 L46816 T0 You enter a maze of down staircases.
+09:07:20.644 1091.4 L46817 T0 Looks like any other level.
+09:07:21.294 1092.1 L46823 T0 You enter a maze of up staircases.
+09:07:21.297 1092.1 L46824 T0 Looks like any other level.
+09:07:21.960 1092.8 L46834 T0 You enter a maze of down staircases.
+09:07:21.965 1092.8 L46835 T0 Looks like any other level.
+09:07:25.870 1096.7 L46868 T0 You enter a maze of down staircases.
+09:07:25.884 1096.7 L46869 T0 Looks like any other level.
+09:07:32.709 1103.5 L46892 T0 You have found 29 gold pieces worth of copper.
+09:07:39.310 1110.1 L46926 T0 You hit the Baby gold dragon.
+09:07:39.483 1110.3 L46927 T0 You hit the Baby gold dragon.
+09:07:39.696 1110.5 L46928 T0 You hit the Baby gold dragon.
+09:07:39.924 1110.7 L46930 T0 You hit the Baby gold dragon.
+09:07:40.029 1110.8 L46931 T0 The Baby gold dragon claws you.
+09:07:40.029 1110.8 L46932 T0 The Baby gold dragon claws you.
+09:07:40.029 1110.8 L46933 T0 The Baby gold dragon misses you.
+09:07:40.137 1110.9 L46934 T0 You hit the Baby gold dragon.
+09:07:40.349 1111.1 L46935 T0 You hit the Baby gold dragon.
+09:07:40.577 1111.4 L46936 T0 You miss the Baby gold dragon.
+09:07:40.789 1111.6 L46937 T0 You miss the Baby gold dragon.
+09:07:41.002 1111.8 L46939 T0 You hit the Baby gold dragon.
+09:07:41.229 1112.0 L46940 T0 You hit the Baby gold dragon.
+09:07:41.444 1112.2 L46941 T0 You hit the Baby gold dragon.
+09:07:41.484 1112.3 L46942 T0 The Baby gold dragon claws you.
+09:07:41.484 1112.3 L46943 T0 The Baby gold dragon claws you.
+09:07:41.484 1112.3 L46944 T0 The Baby gold dragon bites you.
+09:07:41.657 1112.5 L46949 T0 You miss the Baby gold dragon.
+09:07:41.883 1112.7 L46950 T0 You hit the Baby gold dragon.
+09:07:41.883 1112.7 L46951 T0 It was a good hit!
+09:07:42.097 1112.9 L46953 T0 You hit the Baby gold dragon.
+09:07:42.309 1113.1 L46954 T0 You hit the Baby gold dragon.
+09:07:42.309 1113.1 L46955 T0 It was a great hit!
+09:07:42.536 1113.3 L46956 T0 You hit the Baby gold dragon.
+09:07:42.750 1113.5 L46957 T0 You hit the Baby gold dragon.
+09:07:42.936 1113.7 L46958 T0 The Baby gold dragon misses you.
+09:07:42.936 1113.7 L46959 T0 The Baby gold dragon claws you.
+09:07:42.936 1113.7 L46960 T0 The Baby gold dragon misses you.
+09:07:42.963 1113.8 L46962 T0 You hit the Baby gold dragon.
+09:07:43.190 1114.0 L46963 T0 You hit the Baby gold dragon.
+09:07:43.403 1114.2 L46964 T0 You miss the Baby gold dragon.
+09:07:43.617 1114.4 L46965 T0 You hit the Baby gold dragon.
+09:07:43.617 1114.4 L46966 T0 The Baby gold dragon flees in terror!
+09:07:43.842 1114.6 L46967 T0 You hit the Baby gold dragon.
+09:07:44.057 1114.9 L46969 T0 You hit the Baby gold dragon.
+09:07:44.057 1114.9 L46970 T0 You have slain the Baby gold dragon.
+09:07:44.697 1115.5 L46975 T0 You have found 25 gold pieces worth of silver.
+09:08:10.750 1141.5 L47122 T0 The Zombified kobold hits you.
+09:08:10.750 1141.5 L47123 T0 The Zombified kobold misses you.
+09:08:11.068 1141.9 L47124 T0 There is a wall blocking your way.
+09:08:11.295 1142.1 L47125 T0 You hit the Zombified kobold.
+09:08:11.510 1142.3 L47126 T0 You hit the Zombified kobold.
+09:08:11.722 1142.5 L47129 T0 You hit the Zombified kobold.
+09:08:11.949 1142.7 L47130 T0 You hit the Zombified kobold.
+09:08:12.163 1143.0 L47131 T0 You hit the Zombified kobold.
+09:08:12.203 1143.0 L47132 T0 The Zombified kobold hits you.
+09:08:12.203 1143.0 L47133 T0 The Zombified kobold hits you.
+09:08:12.375 1143.2 L47134 T0 You hit the Zombified kobold.
+09:08:12.375 1143.2 L47135 T0 You have destroyed the Zombified kobold.
+09:08:14.815 1145.6 L47151 T0 You see a Staff of Object Location.
+09:08:15.470 1146.3 L47155 T0 You have a Staff of Object Location (m).
+09:08:18.256 1149.1 L47173 T0 It casts a magic missile.
+09:08:20.456 1151.3 L47184 T0 The Kobold shaman hits you.
+09:08:20.603 1151.4 L47185 T0 There is a wall blocking your way.
+09:08:20.828 1151.6 L47187 T0 You hit the Kobold shaman.
+09:08:20.828 1151.6 L47188 T0 The Kobold shaman flees in terror!
+09:08:21.043 1151.8 L47189 T0 You hit the Kobold shaman.
+09:08:21.043 1151.8 L47190 T0 You have slain the Kobold shaman.
+09:08:31.748 1162.5 L47246 T0 The Copperhead snake misses you.
+09:08:46.229 1177.0 L47318 T0 You miss the Baby black dragon.
+09:08:46.254 1177.1 L47319 T0 The Baby black dragon claws you.
+09:08:46.254 1177.1 L47320 T0 The Baby black dragon claws you.
+09:08:46.254 1177.1 L47321 T0 The Baby black dragon bites you.
+09:08:46.402 1177.2 L47323 T0 You hit the Baby black dragon.
+09:08:46.614 1177.4 L47324 T0 You hit the Baby black dragon.
+09:08:46.841 1177.6 L47325 T0 You miss the Baby black dragon.
+09:08:47.054 1177.9 L47326 T0 You miss the Baby black dragon.
+09:08:47.268 1178.1 L47327 T0 You hit the Baby black dragon.
+09:08:47.495 1178.3 L47329 T0 You hit the Baby black dragon.
+09:08:47.707 1178.5 L47330 T0 You hit the Baby black dragon.
+09:08:47.707 1178.5 L47331 T0 The Baby black dragon breathes acid.
+09:08:47.708 1178.5 L47332 T0 Your Pair of Soft Leather Boots is damaged!
+09:08:47.922 1178.7 L47333 T0 You miss the Baby black dragon.
+09:08:48.149 1178.9 L47334 T0 You hit the Baby black dragon.
+09:08:48.361 1179.2 L47335 T0 You hit the Baby black dragon.
+09:08:48.441 1179.2 L47337 T0 The Baby black dragon misses you.
+09:08:48.441 1179.2 L47338 T0 The Baby black dragon claws you.
+09:08:48.441 1179.2 L47339 T0 The Baby black dragon bites you.
+09:08:48.576 1179.4 L47340 T0 You miss the Baby black dragon.
+09:08:48.802 1179.6 L47341 T0 You miss the Baby black dragon.
+09:08:49.015 1179.8 L47342 T0 You hit the Baby black dragon.
+09:08:49.229 1180.0 L47343 T0 You miss the Baby black dragon.
+09:08:49.454 1180.3 L47345 T0 You hit the Baby black dragon.
+09:08:49.668 1180.5 L47346 T0 You hit the Baby black dragon.
+09:08:49.880 1180.7 L47347 T0 You miss the Baby black dragon.
+09:08:49.895 1180.7 L47348 T0 The Baby black dragon claws you.
+09:08:49.895 1180.7 L47349 T0 The Baby black dragon claws you.
+09:08:49.895 1180.7 L47350 T0 The Baby black dragon bites you.
+09:08:50.108 1180.9 L47351 T0 You hit the Baby black dragon.
+09:08:50.321 1181.1 L47352 T0 You hit the Baby black dragon.
+09:08:50.536 1181.3 L47354 T0 You hit the Baby black dragon.
+09:08:50.760 1181.6 L47355 T0 You hit the Baby black dragon.
+09:08:50.975 1181.8 L47356 T0 You hit the Baby black dragon.
+09:08:51.188 1182.0 L47357 T0 You hit the Baby black dragon.
+09:08:51.348 1182.1 L47358 T0 The Baby black dragon claws you.
+09:08:51.348 1182.1 L47359 T0 The Baby black dragon claws you.
+09:08:51.348 1182.1 L47360 T0 The Baby black dragon bites you.
+09:08:51.415 1182.2 L47361 T0 You hit the Baby black dragon.
+09:08:51.628 1182.4 L47363 T0 You hit the Baby black dragon.
+09:08:51.841 1182.6 L47365 T0 You hit the Baby black dragon.
+09:08:52.068 1182.9 L47366 T0 You hit the Baby black dragon.
+09:08:52.281 1183.1 L47367 T0 You hit the Baby black dragon.
+09:08:52.281 1183.1 L47368 T0 The Baby black dragon flees in terror!
+09:08:52.494 1183.3 L47370 T0 You hit the Baby black dragon.
+09:08:52.721 1183.5 L47371 T0 You hit the Baby black dragon.
+09:08:52.802 1183.6 L47372 T0 The Baby black dragon recovers its courage.
+09:08:52.802 1183.6 L47373 T0 The Baby black dragon breathes acid.
+09:08:52.802 1183.6 L47374 T0 Your Hard Leather Cap is damaged!
+09:08:52.934 1183.7 L47375 T0 You miss the Baby black dragon.
+09:08:53.149 1183.9 L47376 T0 You hit the Baby black dragon.
+09:08:53.149 1183.9 L47377 T0 You have slain the Baby black dragon.
+09:08:55.955 1186.8 L47388 T0 You have found 50 gold pieces worth of copper.
+09:09:36.173 1227.0 L47607 T0 It casts a fearful illusion.
+09:09:36.173 1227.0 L47608 T0 You are terrified!
+09:09:37.427 1228.2 L47615 T0 You feel bolder now.
+09:09:44.933 1235.7 L47650 T0 It points at you and curses.
+09:09:58.479 1249.3 L47718 T0 The Copperhead snake misses you.
+09:09:59.785 1250.6 L47724 T0 The Copperhead snake bites you.
+09:09:59.785 1250.6 L47725 T0 You are poisoned!
+09:10:01.373 1252.2 L47736 T0 You are no longer poisoned.
+09:10:02.959 1253.8 L47745 T0 The Novice paladin points at you and curses.
+09:10:04.427 1255.2 L47752 T0 The Novice paladin points at you and curses.
+09:10:28.412 1279.2 L47874 T0 You enter a maze of up staircases.
+09:10:28.429 1279.2 L47875 T0 You like the look of this place...
+09:10:34.976 1285.8 L47890 T0 You enter a maze of down staircases.
+09:10:34.986 1285.8 L47891 T0 Looks like any other level.
+09:10:42.038 1292.8 L47921 T0 You hit the Radiation eye.
+09:10:42.252 1293.1 L47923 T0 You hit the Radiation eye.
+09:10:42.252 1293.1 L47924 T0 You have slain the Radiation eye.
+09:11:06.705 1317.5 L48064 T0 You are getting hungry.
+09:11:07.932 1318.7 L48069 T0 That tastes good.
+09:11:07.932 1318.7 L48070 T0 You are no longer hungry.
+09:11:07.932 1318.7 L48071 T0 You have 2 Rations of Food.
+09:11:08.584 1319.4 L48073 T0 That tastes good.
+09:11:08.584 1319.4 L48074 T0 You are full!
+09:11:08.584 1319.4 L48075 T0 You have a Ration of Food.
+09:11:20.678 1331.5 L48140 T0 The Fruit bat bites you.
+09:11:21.239 1332.0 L48143 T0 You hit the Fruit bat.
+09:11:21.239 1332.0 L48144 T0 You have slain the Fruit bat.
+09:11:54.197 1365.0 L48315 T0 There is a wall blocking your way.
+09:11:54.210 1365.0 L48316 T0 The Black harpy claws you.
+09:11:54.210 1365.0 L48317 T0 The Black harpy claws you.
+09:11:54.210 1365.0 L48318 T0 The Black harpy bites you.
+09:11:54.423 1365.2 L48319 T0 You hit the Black harpy.
+09:11:54.636 1365.4 L48320 T0 You miss the Black harpy.
+09:11:54.850 1365.7 L48322 T0 You miss the Black harpy.
+09:11:55.077 1365.9 L48323 T0 You hit the Black harpy.
+09:11:55.198 1366.0 L48324 T0 The Black harpy claws you.
+09:11:55.198 1366.0 L48325 T0 The Black harpy claws you.
+09:11:55.198 1366.0 L48326 T0 The Black harpy bites you.
+09:11:55.291 1366.1 L48327 T0 You hit the Black harpy.
+09:11:55.291 1366.1 L48328 T0 The Black harpy flees in terror!
+09:11:55.504 1366.3 L48330 T0 You hit the Black harpy.
+09:11:55.504 1366.3 L48331 T0 You have slain the Black harpy.
+09:11:55.504 1366.3 L48332 T0 Welcome to level 11.
+09:12:19.103 1389.9 L48456 T0 The Brown mold wakes up.
+09:12:55.782 1426.6 L48636 T0 You hit the Large kobold.
+09:12:55.993 1426.8 L48637 T0 You hit the Large kobold.
+09:12:56.355 1427.2 L48640 T0 The Large kobold hits you.
+09:12:56.875 1427.7 L48641 T0 You hit the Large kobold.
+09:12:57.089 1427.9 L48642 T0 You hit the Large kobold.
+09:12:57.302 1428.1 L48644 T0 You hit the Large kobold.
+09:12:57.528 1428.3 L48645 T0 You hit the Large kobold.
+09:12:57.555 1428.4 L48646 T0 The Large kobold hits you.
+09:12:57.741 1428.5 L48647 T0 You hit the Large kobold.
+09:12:57.954 1428.8 L48648 T0 You miss the Large kobold.
+09:12:58.183 1429.0 L48649 T0 You hit the Large kobold.
+09:12:58.395 1429.2 L48651 T0 You miss the Large kobold.
+09:12:58.608 1429.4 L48652 T0 You hit the Large kobold.
+09:12:58.755 1429.6 L48653 T0 The Large kobold hits you.
+09:12:58.835 1429.6 L48654 T0 You hit the Large kobold.
+09:12:59.048 1429.8 L48655 T0 You hit the Large kobold.
+09:12:59.263 1430.1 L48656 T0 You hit the Large kobold.
+09:12:59.488 1430.3 L48658 T0 You hit the Large kobold.
+09:12:59.702 1430.5 L48659 T0 You hit the Large kobold.
+09:12:59.702 1430.5 L48660 T0 The Large kobold flees in terror!
+09:12:59.915 1430.7 L48661 T0 You hit the Large kobold.
+09:13:02.755 1433.6 L48676 T0 You miss the Large kobold.
+09:13:35.421 1466.2 L48841 T0 There is a wall blocking your way.
+09:14:04.407 1495.2 L48997 T0 You see a Puce Potion.
+09:14:05.060 1495.9 L49002 T0 You have a Puce Potion (g).
+09:14:05.075 1495.9 L49004 T0 There is a wall blocking your way.
+09:14:25.446 1516.2 L49102 T27 You failed to pick the lock.
+09:14:26.113 1516.9 L49104 T0 There is a wall blocking your way.
+09:14:26.753 1517.6 L49107 T27 You failed to pick the lock.
+09:14:27.728 1518.5 L49111 T27 You failed to pick the lock.
+09:14:29.258 1520.1 L49115 T27 You failed to pick the lock.
+09:14:30.788 1521.6 L49120 T27 You failed to pick the lock.
+09:14:32.316 1523.1 L49124 T27 You failed to pick the lock.
+09:14:33.846 1524.6 L49129 T27 You failed to pick the lock.
+09:14:35.377 1526.2 L49133 T27 You failed to pick the lock.
+09:14:36.909 1527.7 L49139 T27 You failed to pick the lock.
+09:14:38.391 1529.2 L49143 T27 You failed to pick the lock.
+09:14:39.032 1529.8 L49146 T27 You failed to pick the lock.
+09:14:40.483 1531.3 L49150 T27 You failed to pick the lock.
+09:14:42.015 1532.8 L49155 T27 You failed to pick the lock.
+09:14:43.544 1534.3 L49159 T27 You failed to pick the lock.
+09:14:45.075 1535.9 L49164 T85 You have picked the lock.
+09:14:46.659 1537.5 L49171 T0 The Nighthawk misses you.
+09:14:46.659 1537.5 L49172 T0 The Nighthawk claws you.
+09:14:46.659 1537.5 L49173 T0 The Nighthawk bites you.
+09:14:46.833 1537.6 L49175 T0 You hit the Nighthawk.
+09:14:47.046 1537.8 L49176 T0 You miss the Nighthawk.
+09:14:47.259 1538.1 L49177 T0 You miss the Nighthawk.
+09:14:47.392 1538.2 L49179 T0 The Nighthawk claws you.
+09:14:47.392 1538.2 L49180 T0 The Nighthawk claws you.
+09:14:47.392 1538.2 L49181 T0 The Nighthawk bites you.
+09:14:47.485 1538.3 L49182 T0 You hit the Nighthawk.
+09:14:47.699 1538.5 L49183 T0 You hit the Nighthawk.
+09:14:47.912 1538.7 L49185 T0 You miss the Nighthawk.
+09:14:48.125 1538.9 L49186 T0 The Nighthawk claws you.
+09:14:48.125 1538.9 L49187 T0 The Nighthawk claws you.
+09:14:48.125 1538.9 L49188 T0 The Nighthawk bites you.
+09:14:48.140 1538.9 L49189 T0 You hit the Nighthawk.
+09:14:48.353 1539.2 L49190 T0 You hit the Nighthawk.
+09:14:48.566 1539.4 L49191 T0 You hit the Nighthawk.
+09:14:48.793 1539.6 L49192 T0 You hit the Nighthawk.
+09:14:48.793 1539.6 L49193 T0 You have slain the Nighthawk.
+09:14:49.006 1539.8 L49196 T0 You hit the Orc shaman.
+09:14:49.086 1539.9 L49197 T0 The Orc shaman hits you.
+09:14:49.087 1539.9 L49198 T0 The Orc shaman misses you.
+09:14:49.220 1540.0 L49199 T0 You hit the Orc shaman.
+09:14:49.446 1540.2 L49200 T0 You miss the Orc shaman.
+09:14:49.659 1540.5 L49201 T0 You hit the Orc shaman.
+09:14:49.872 1540.7 L49202 T0 You hit the Orc shaman.
+09:14:50.099 1540.9 L49204 T0 You hit the Orc shaman.
+09:14:50.285 1541.1 L49205 T0 The Orc shaman hits you.
+09:14:50.285 1541.1 L49206 T0 The Orc shaman hits you.
+09:14:50.313 1541.1 L49207 T0 You hit the Orc shaman.
+09:14:50.526 1541.3 L49208 T0 You hit the Orc shaman.
+09:14:50.753 1541.6 L49209 T0 You hit the Orc shaman.
+09:14:50.966 1541.8 L49211 T0 You hit the Orc shaman.
+09:14:51.180 1542.0 L49212 T0 You hit the Orc shaman.
+09:14:51.180 1542.0 L49213 T0 It was a great hit!
+09:14:51.180 1542.0 L49214 T0 You have slain the Orc shaman.
+09:15:22.752 1573.6 L49386 T0 The Large kobold hits you.
+09:15:22.752 1573.6 L49387 T0 You have been given a graze.
+09:15:23.192 1574.0 L49389 T0 There is a wall blocking your way.
+09:15:23.418 1574.2 L49390 T0 You hit the Large kobold.
+09:15:23.631 1574.4 L49391 T0 You hit the Large kobold.
+09:15:23.844 1574.6 L49393 T0 You hit the Large kobold.
+09:15:23.952 1574.8 L49394 T0 The Large kobold hits you.
+09:15:24.072 1574.9 L49395 T0 You hit the Large kobold.
+09:15:24.112 1574.9 L49396 T0 You are no longer bleeding.
+09:15:24.285 1575.1 L49397 T0 You hit the Large kobold.
+09:15:24.498 1575.3 L49398 T0 You miss the Large kobold.
+09:15:24.724 1575.5 L49399 T0 You hit the Large kobold.
+09:15:24.939 1575.7 L49401 T0 You hit the Large kobold.
+09:15:25.151 1576.0 L49402 T0 You miss the Large kobold.
+09:15:25.151 1576.0 L49403 T0 The Large kobold misses you.
+09:15:25.379 1576.2 L49404 T0 You miss the Large kobold.
+09:15:25.592 1576.4 L49405 T0 You hit the Large kobold.
+09:15:25.805 1576.6 L49407 T0 You hit the Large kobold.
+09:15:26.031 1576.8 L49409 T0 You hit the Large kobold.
+09:15:26.244 1577.0 L49410 T0 You hit the Large kobold.
+09:15:26.351 1577.2 L49411 T0 The Large kobold hits you.
+09:15:26.459 1577.3 L49412 T0 You hit the Large kobold.
+09:15:26.685 1577.5 L49413 T0 You hit the Large kobold.
+09:15:26.898 1577.7 L49415 T0 You hit the Large kobold.
+09:15:27.111 1577.9 L49416 T0 You hit the Large kobold.
+09:15:27.111 1577.9 L49417 T0 The Large kobold flees in terror!
+09:15:27.339 1578.1 L49418 T0 You hit the Large kobold.
+09:15:27.339 1578.1 L49419 T0 You have slain the Large kobold.
+09:15:27.978 1578.8 L49425 T0 You see a Cloak [1].
+09:15:28.631 1579.4 L49429 T0 You have a Cloak [1] (r).
+09:15:40.422 1591.2 L49497 T0 You see a Rapier (1d6).
+09:15:41.071 1591.9 L49501 T0 You have a Rapier (1d6) (t).
+09:16:26.178 1637.0 L49740 T0 You feel the Cloak (r) in your pack is average...
+09:16:26.178 1637.0 L49741 T0 You feel the Rapier (t) in your pack is average...
+09:17:05.843 1676.6 L49959 T0 You feel very weak.
+09:17:05.843 1676.6 L49960 T0 You have no more Potions of Weakness.
+09:17:30.581 1701.4 L50071 T0 The air about you becomes charged...
+09:17:30.581 1701.4 L50072 T0 You have no more Scrolls of Word of Recall {@R450}.
+09:17:39.765 1710.6 L50084 T0 You enter a maze of up staircases.
+09:17:39.779 1710.6 L50085 T0 You feel there is something special about this level.
+09:17:42.295 1713.1 L50095 T0 You feel yourself yanked upwards!
+09:18:03.485 1734.3 L50127 T0 Light source was a Brass Lantern (with 8759 turns of light) (p).
+09:18:38.641 1769.4 L50166 T0 Was wielding a Dagger (1d4) (+0,+0) {25% off} (r).
+09:18:38.641 1769.4 L50167 T0 You are wielding a Rapier (1d6) {average} (a).
+09:18:46.895 1777.7 L50178 T0 Was wielding a Rapier (1d6) {average} (t).
+09:18:46.895 1777.7 L50179 T0 You are wielding a Sabre (1d7) {average} (a).
+09:19:11.667 1802.5 L50330 T0 You hit the Boil-covered wretch.
+09:19:11.667 1802.5 L50331 T0 You have slain the Boil-covered wretch.
+09:19:12.733 1803.5 L50343 T0 You hit the Singing, happy drunk.
+09:19:12.985 1803.8 L50344 T0 You hit the Singing, happy drunk.
+09:19:12.985 1803.8 L50345 T0 You have slain the Singing, happy drunk.
+09:19:19.348 1810.1 L50407 T0 The sun has risen.
+09:19:29.626 1820.4 L50538 T0 Your light source is a Brass Lantern (with 8759 turns of light) (f).
+09:20:20.432 1871.2 L50595 T0 I see no down staircase here.
+09:21:50.556 1961.4 L50696 T0 You are no longer full.

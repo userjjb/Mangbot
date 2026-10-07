@@ -1,0 +1,892 @@
+== HURT_OTHER all
+45 Your light is growing faint.
+22 You have been given a graze.
+22 You are no longer bleeding.
+19 You found a trap!
+10 You are poisoned!
+10 You are no longer poisoned.
+8 The Shrieker mushroom patch makes a high pitched shriek.
+5 You hit the Pitiful-looking beggar.
+5 You have slain the Pitiful-looking beggar.
+4 You are covered in acid!
+4 You see a Potion of Slow Poison.
+3 You see a Cutlass (#d#).
+3 You fell into a pit!
+2 The Giant black dragon fly breathes acid.
+2 You fall into a spiked pit!
+2 You are impaled!
+2 Boldor, King of the Yeeks casts a spell, burning your eyes!
+2 You hit a teleport trap!
+2 The Dark elven priest casts a spell, burning your eyes!
+1 You have a Cutlass (#d#) (g).
+1 You feel the Cutlass (g) in your pack is good...
+1 Selling a Cutlass (#d#) {good} (f).
+1 You sold a Cutlass (#d#) (+#,+#) for # gold.
+1 You have no more Cutlasses (#d#) (+#,+#).
+1 You are hit by something!
+1 It breathes acid.
+1 You fell through a trap door!
+1 The Novice mage casts a spell, burning your eyes!
+1 You have a Potion of Slow Poison (c).
+1 You have # Potions of Slow Poison (i).
+1 You have a Cutlass (#d#) (q).
+1 You feel the Cutlass (q) in your pack is excellent...
+1 The Pitiful-looking beggar begs you for money.
+1 You have a Cutlass (#d#) (k).
+1 You feel the Cutlass (l) in your pack is average...
+1 You destroy a Cutlass (#d#) {average}.
+1 You have no more Cutlasses (#d#) {average}.
+1 Selling # Potions of Slow Poison (d).
+1 You sold # Potions of Slow Poison for # gold.
+1 You have no more Potions of Slow Poison.
+1 A small dart barely misses you.
+1 You sold a Potion of Neutralize Poison for # gold.
+1 You have no more Potions of Neutralize Poison.
+1 You sold a Wand of Trap/Door Destruction (# charges) for # gold.
+1 You have no more Wands of Trap/Door Destruction (# charges).
+1 You are splashed with acid!
+1 You have disarmed the pit.
+1 A small dart hits you!
+1 You feel very sickly.
+1 In your pack: a Rod of Trap Location (q).
+1 Selling a Rod of Trap Location (p).
+1 You sold a Rod of Trap Location for # gold.
+1 You have no more Rods of Trap Location.
+1 You sold a Staff of Trap Location (# charges) for # gold.
+1 You have no more Staffs of Trap Location (# charges).
+1 You sold a Scroll of Trap Detection for # gold.
+1 You have no more Scrolls of Trap Detection.
+1 You see a Scroll of Trap Detection.
+1 You have a Scroll of Trap Detection (m).
+1 The Baby black dragon breathes acid.
+== UNSEEN all
+53 It fires an arrow!
+43 It hits you.
+17 It casts a magic missile.
+17 It fires an arrow.
+14 It mumbles.
+11 It breathes darkness.
+7 It casts a fearful illusion.
+6 It magically summons help!
+6 It points at you and curses.
+5 It touches you.
+5 It wails at you.
+4 It claws you.
+4 It bites you.
+3 It breathes fire.
+3 It casts a frost bolt.
+3 It mumbles, and you hear puzzling noises.
+3 It commands you to return.
+2 It breathes sound.
+2 It drains power from your muscles!
+2 It points at you and curses horribly.
+1 It breathes light.
+1 It breathes.
+1 It breathes acid.
+== Unseen-ish (It/Something) not matched
+48 It was a good hit!
+32 It was a great hit!
+17 It blinks away.
+6 It gestures in shadow.
+4 It teleports away.
+1 It creates a mesmerising illusion.
+1 It sounds REALLY healthy!
+1 It picks up a Bubbling Potion.
+1 It picks up a Scroll of Blessing.
+== attack-ish not RE_ATTACK: 'you.' ending
+16 The Village idiot drools on you.
+10 Darkness surrounds you.
+2 Wormtongue, Agent of Saruman insults you!
+2 The Squint-eyed rogue insults you!
+2 The shopkeeper curses at you.
+1 The Blubbering idiot drools on you.
+1 A gas of scintillating colors surrounds you!
+1 The Boil-covered wretch drools on you.
+1 The Squint-eyed rogue dances around you!
+1 Wormtongue, Agent of Saruman defiles you!
+1 Wormtongue, Agent of Saruman humiliates you!
+1 A pungent green gas surrounds you!
+1 A strange white mist surrounds you!
+1 A black gas surrounds you!
+== breath/casts/shoot/spell
+53 It fires an arrow!
+17 The Kobold archer fires an arrow!
+17 It casts a magic missile.
+17 It blinks away.
+17 It fires an arrow.
+15 The Dark hound breathes darkness.
+15 The Black orc fires an arrow!
+11 It breathes darkness.
+9 The Tengu blinks away.
+8 The Giant salamander breathes fire.
+7 It casts a fearful illusion.
+6 It magically summons help!
+6 The Novice priest casts a fearful illusion.
+6 The Novice paladin casts a fearful illusion.
+6 The Uruk fires an arrow!
+6 The Novice ranger fires an arrow.
+4 It teleports away.
+4 The Blink dog blinks away.
+3 It breathes fire.
+3 It casts a frost bolt.
+3 The Orc shaman casts a magic missile.
+3 The Tengu commands you to return.
+3 It commands you to return.
+2 It breathes sound.
+2 The Giant black dragon fly breathes acid.
+2 The Fire hound breathes fire.
+2 The Illusionist teleports away.
+2 It drains power from your muscles!
+2 Boldor, King of the Yeeks casts a spell, burning your eyes!
+2 You hit a teleport trap!
+2 The Dark elven priest casts a spell, burning your eyes!
+2 The Phase spider commands you to return.
+2 The Phase spider blinks away.
+2 The Priest casts a fearful illusion.
+2 The Priest magically summons help!
+2 The Novice ranger casts a magic missile.
+2 The Blink dog commands you to return.
+1 The Novice mage blinks away.
+1 The Giant gold dragon fly breathes sound.
+1 It breathes light.
+1 It breathes.
+1 It breathes acid.
+1 The Novice mage casts a spell, burning your eyes!
+1 Wormtongue, Agent of Saruman casts a frost bolt.
+1 Boldor, King of the Yeeks teleports away.
+1 Boldor, King of the Yeeks blinks away.
+1 The Kobold shaman casts a magic missile.
+1 The Pseudo-dragon casts a fearful illusion.
+1 The Orc shaman blinks away.
+1 The Baby black dragon breathes acid.
+1 The Gnome mage blinks away.
+== You... status
+102 You failed to pick the lock.
+22 You have been given a graze.
+22 You are no longer bleeding.
+14 You are confused!
+10 You are poisoned!
+10 You are no longer poisoned.
+9 You resist the effects!
+9 You are terrified!
+7 You have been stunned.
+7 You are no longer stunned.
+7 You are getting hungry.
+7 You are no longer hungry.
+7 You are too afraid to attack the Novice paladin!
+6 You are blind!
+6 You can see again.
+5 You are no longer full.
+4 You are covered in acid!
+4 You are enveloped in flames!
+3 You cannot run in that direction.
+3 You are paralyzed!
+3 You can move again.
+2 You are wielding a Main Gauche (#d#) (+#,+#) (a).
+2 You are wearing a Cloak [#,+#] (h).
+2 You are wearing a Small Leather Shield [#,+#] (i).
+2 You are wearing a Hard Leather Cap [#,+#] {#% off} (j).
+2 You are wearing a Set of Leather Gloves [#,+#] (k).
+2 You are impaled!
+2 You are full!
+2 You are too afraid to attack the Kobold shaman!
+2 You are too confused!
+1 You are wielding a Katana (#d#) {Brodda, the Easterling} (a).
+1 You are hit by something!
+1 You have been killed by a Black ogre.
+1 You are wearing Hard Leather Armour (-#) [#,+#] (g).
+1 You are wearing a Pair of Hard Leather Boots [#,+#] (l).
+1 You are wielding a Rapier (#d#) {excellent} (a).
+1 You are too afraid to attack the Priest!
+1 You are too afraid to attack the Clear hound!
+1 You are covered with frost!
+1 You are splashed with acid!
+1 You are wearing a Silver Amulet (e).
+1 You are enveloped in a cloud of smoke!
+1 You have been killed by an Uruk.
+1 You are wielding a Dagger (#d#) (+#,+#) (a).
+1 You are wearing Soft Leather Armour [#,+#] (g).
+1 You are wearing a Pair of Soft Leather Boots [#,+#] {#% off} (l).
+== You feel all
+58 You feel much better.
+22 You feel something roll beneath your feet.
+17 You feel yourself yanked upwards!
+15 You feel there is something special about this level.
+14 You feel less confused now.
+14 You feel yourself yanked downwards!
+10 You feel strangely lucky...
+10 You feel your luck is turning...
+9 You feel bolder now.
+5 You feel very clumsy.
+4 You feel very weak.
+2 You feel the Hard Leather Armour (q) in your pack is average...
+2 You feel the Dagger (k) in your pack is average...
+1 You feel the Robe (h) in your pack is cursed...
+1 You feel the Katana (g) in your pack is good...
+1 You feel the Dagger (f) in your pack is good...
+1 You feel the Cutlass (g) in your pack is good...
+1 You feel the Mace (g) in your pack is good...
+1 You feel the Light Crossbow (h) in your pack is average...
+1 You feel the Cloak (i) in your pack is average...
+1 You feel the Rapier (q) in your pack is excellent...
+1 You feel the Hard Studded Leather (n) in your pack is average...
+1 You feel the Pair of Hard Leather Boots (p) in your pack is good...
+1 You feel the Tulwar (q) in your pack is average...
+1 You feel the Dagger (h) in your pack is average...
+1 You feel the Soft Leather Armour (i) in your pack is average...
+1 You feel the Hard Leather Cap (p) in your pack is average...
+1 You feel the Pair of Hard Leather Boots (t) in your pack is average...
+1 You feel the Bolts (r) in your pack are average...
+1 You feel the Soft Studded Leather (n) in your pack is cursed...
+1 You feel the Cutlass (q) in your pack is excellent...
+1 You feel the Bolts (p) in your pack are average...
+1 You feel the Hard Leather Armour (o) in your pack is average...
+1 You feel the Long Sword (v) in your pack is average...
+1 You feel the Tulwar (t) in your pack is good...
+1 You feel the Whip (v) in your pack is average...
+1 You feel the Robe (q) in your pack is average...
+1 You feel the Cloak (t) in your pack is cursed...
+1 You feel the Rapier (u) in your pack is average...
+1 You feel the Dagger (q) in your pack is good...
+1 You feel the Light Crossbow (k) in your pack is good...
+1 You feel yourself moving slower!
+1 You feel yourself speed up.
+1 You feel better.
+1 You feel like a hero!
+1 You feel the Rounded Pebbles (l) in your pack are average...
+1 You feel the Cutlass (l) in your pack is average...
+1 You feel the Broad Sword (l) in your pack is good...
+1 You feel the Short Bow (i) in your pack is average...
+1 You feel the Robe (n) in your pack is good...
+1 You feel the Lance (o) in your pack is cursed...
+1 You feel the Set of Gauntlets (i) in your pack is average...
+1 You feel the Pair of Soft Leather Boots (i) in your pack is worthless...
+1 You feel the Set of Leather Gloves (k) in your pack is cursed...
+1 You feel the Shovel (k) in your pack is cursed...
+1 You feel the Bolts (k) in your pack are average...
+1 You feel the Spear (l) in your pack is average...
+1 You feel the Hard Leather Armour (q) in your pack is good...
+1 You feel very sickly.
+1 You feel the Small Metal Shield (t) in your pack is average...
+1 You feel the Set of Leather Gloves (r) in your pack is average...
+1 You feel the Whip (p) in your pack is average...
+1 You feel the Light Crossbow (r) in your pack is average...
+1 You feel a sudden stirring nearby!
+1 You feel the Rounded Pebbles (e) in your pack are cursed...
+1 You feel the Set of Leather Gloves (m) in your pack is average...
+1 You feel the Robe (l) in your pack is good...
+1 You feel like a killing machine!
+1 You feel less Berserk.
+== You have all non-found
+67 You have found # gold pieces worth of copper.
+51 You have destroyed the Blue worm mass.
+50 You have # Scrolls of Phase Door {@r#}.
+43 You have found # gold pieces worth of silver.
+40 You have destroyed the Manes.
+37 You have # Potions of Cure Light Wounds {@q#}.
+24 You have picked the lock.
+22 You have been given a graze.
+15 You have destroyed the Lemure.
+11 You have # Flasks of oil.
+10 You have a Scroll of Word of Recall {@R#}.
+10 You have # Potions of Cure Light Wounds.
+10 You have found # gold pieces worth of garnets.
+9 You have a good feeling...
+7 You have no more Scrolls of Word of Recall.
+7 You have been stunned.
+7 You have found # gold pieces worth of gold.
+7 You have destroyed the Red worm mass.
+7 You have # Rations of Food.
+6 You have # Rations of Food (a).
+6 You have destroyed the Zombified kobold.
+6 You have no more Scrolls of Word of Recall {@R#}.
+5 You have # Scrolls of Phase Door {@r#} (f).
+5 You have destroyed the Grey mushroom patch.
+5 You have found a secret door.
+5 You have # Potions of Cure Serious Wounds.
+4 You have a Scroll of Word of Recall.
+4 You have # Scrolls of Word of Recall (g).
+4 You have killed it.
+4 You have destroyed the White worm mass.
+4 You have destroyed the Green worm mass.
+3 You have no more Tulwars (#d#) (+#,+#).
+3 You have # Potions of Cure Light Wounds (c).
+3 You have # Potions of Cure Light Wounds {@q#} (c).
+3 You have a Scroll of Word of Recall (g).
+3 You have destroyed the Skeleton human.
+3 You have destroyed the Green jelly.
+3 You have # Potions of Cure Light Wounds {@q#} (e).
+3 You have destroyed the Yellow mold.
+3 You have no more Daggers (#d#) {average}.
+3 You have no more Slimy Mushrooms.
+3 You have destroyed the Shrieker mushroom patch.
+3 You have Hard Leather Armour [#] (q).
+3 You have no more Hard Leather Armours (-#) [#,+#].
+3 You have # Potions of Cure Light Wounds (e).
+3 You have # Scrolls of Word of Recall {#% off} (g).
+3 You have destroyed the Skeleton orc.
+3 You have destroyed the Tengu.
+2 You have # Flasks of oil (a).
+2 You have no more Scrolls of Magic Mapping.
+2 You have destroyed the Rot jelly.
+2 You have destroyed the Skeleton kobold.
+2 You have a Potion of Cure Light Wounds {@q#}.
+2 You have a Scroll of Word of Recall {#% off}.
+2 You have # Scrolls of Phase Door (d).
+2 You have # Flasks of oil (b).
+2 You have # Scrolls of Phase Door {@r#} (e).
+2 You have no more Potions of Heroism.
+2 You have no more Potions of Water.
+2 You have no more Scrolls of Summon Monster.
+2 You have # Flasks of oil (c).
+2 You have a Slimy Mushroom (d).
+2 You have no more Bolts (#d#) {average}.
+2 You have no more Whips (#d#) {average}.
+2 You have destroyed the Spotted mushroom patch.
+2 You have destroyed the White jelly.
+2 You have no more Scrolls of Identify.
+2 You have a Dagger (#d#) (k).
+2 You have a Ration of Food.
+2 You have # Potions of Cure Serious Wounds (f).
+2 You have destroyed the Zombified orc.
+2 You have a Potion of Cure Serious Wounds.
+2 You have no more Potions of Cure Serious Wounds.
+2 You have no more Broad Swords (#d#) (+#,+#).
+2 You have a Flask of oil.
+2 You have destroyed the Red jelly.
+2 You have no more Robes [#,+#].
+2 You have no more Staffs of Object Location (# charges).
+2 You have no more Potions of Confusion.
+2 You have a Scroll of Word of Recall {#% off} (g).
+2 You have a very good feeling...
+2 You have # Potions of Cure Light Wounds (d).
+2 You have # Iron Spikes (n).
+1 You have # Scrolls of Phase Door (c).
+1 You have no more Lead-Filled Maces (#d#) (+#,+#) {good - Bullroarer the Hobbit}.
+1 You have no more Morning Stars (#d#) (+#,+#).
+1 You have no more Short Swords (#d#) (+#,+#).
+1 You have no more Rings of Stupidity (-#) {cursed}.
+1 You have no more Staffs of Sleep Monsters (# charges).
+1 You have no more Staffs of Detect Invisible (# charges).
+1 You have no more Staffs of Cure Light Wounds (# charges).
+1 You have no more Wands of Heal Monster (# charges).
+1 You have no more Wands of Confuse Monster (# charges).
+1 You have no more Wands of Slow Monster (# charges).
+1 You have no more Soft Leather Armours [#,+#] {Bullroarer the Hobbit}.
+1 You have no more Rings of Stupidity.
+1 You have no more Wands of Heal Monster.
+1 You have no more Scrolls titled "it mungrea a" {tried}.
+1 You have no more Scrolls of Monster Confusion.
+1 You have no more Scrolls titled "kliwex potri" {tried}.
+1 You have a Robe [#] (h).
+1 You have a Scroll of Phase Door {@r#}.
+1 You have no more Scrolls of Phase Door {@r#}.
+1 You have # Scrolls of Phase Door (f).
+1 You have no more Robes [#] {cursed}.
+1 You have a Katana (#d#) {Brodda, the Easterling} (h).
+1 You have no more Katanas (#d#) (+#,+#) {good - Brodda, the Easterling}.
+1 You have # Scrolls of Phase Door {@r#} (d).
+1 You have # Scrolls of Word of Recall {#% off} (e).
+1 You have a Dagger (#d#) (f).
+1 You have a Cutlass (#d#) (g).
+1 You have destroyed the Spotted jelly.
+1 You have destroyed the Disenchanter mold.
+1 You have no more Scrolls of Word of Recall {#% off}.
+1 You have no more Cutlasses (#d#) (+#,+#).
+1 You have # Scrolls of Word of Recall (e).
+1 You have destroyed the Homunculus.
+1 You have a Mace (#d#) (g).
+1 You have a Light Crossbow (x#) (h).
+1 You have been killed by a Black ogre.
+1 You have a Main Gauche (#d#) (+#,+#) (a).
+1 You have Hard Leather Armour (-#) [#,+#] (a).
+1 You have a Small Leather Shield [#,+#] (b).
+1 You have a Hard Leather Cap [#,+#] {#% off} (c).
+1 You have a Set of Leather Gloves [#,+#] (d).
+1 You have a Pair of Hard Leather Boots [#,+#] (e).
+1 You have a Brass Lantern (with # turns of light) (a).
+1 You have a Cloak [#,+#] (e).
+1 You have a Scroll of Word of Recall (c).
+1 You have a Scroll of Summon Monster (d).
+1 You have a Cloak [#] (g).
+1 You have a Light Blue Potion (d).
+1 You have a Clotted Red Potion (e).
+1 You have a Yellow Speckled Potion (f).
+1 You have a Blue Speckled Potion (g).
+1 You have a Potion of Slow Poison (c).
+1 You have a Green Potion (i).
+1 You have a Black Mushroom (b).
+1 You have a Pair of Hard Leather Boots [#] (o).
+1 You have a Rapier (#d#) (p).
+1 You have Hard Studded Leather [#] (n).
+1 You have a Tulwar (#d#) (r).
+1 You have a Clear Potion (k).
+1 You have no more Potions of Clumsiness.
+1 You have no more Potions of Infravision.
+1 You have no more Potions of Sleep.
+1 You have no more Potions of Slowness.
+1 You have no more Hard Studded Leathers (-#) [#,+#].
+1 You have no more Cloaks [#,+#].
+1 You have no more Pairs of Hard Leather Boots [#,+#].
+1 You have no more Main Gauches (#d#) (+#,+#).
+1 You have a Potion of Blindness (d).
+1 You have a Dagger (#d#) (h).
+1 You have a Potion of Salt Water (d).
+1 You have Soft Leather Armour [#] (i).
+1 You have a Scroll of Treasure Detection (i).
+1 You have a Potion of Weakness (f).
+1 You have a Slime Mold (b).
+1 You have a Scroll of Light (k).
+1 You have a Birch Staff (m).
+1 You have a Hard Leather Cap [#] (p).
+1 You have a Scroll of Identify (l).
+1 You have a Pair of Hard Leather Boots [#] (r).
+1 You have a Scroll of Satisfy Hunger (o).
+1 You have # Potions of Slow Poison (i).
+1 You have a Red Speckled Potion (k).
+1 You have a Red Potion (l).
+1 You have no more Potions of Weakness.
+1 You have no more Potions of Blindness.
+1 You have no more Potions of Salt Water.
+1 You have no more Red Potions.
+1 You have no more Red Speckled Potions.
+1 You have # Bolts (#d#) (p).
+1 You have Soft Studded Leather [#] (n).
+1 You have a Cutlass (#d#) (q).
+1 You have no more Soft Studded Leathers [#] {cursed}.
+1 You have destroyed the Green mold.
+1 You have a Scroll titled "kliwex potri" {tried} (l).
+1 You have Hard Leather Armour [#] (o).
+1 You have a Book of Magic Spells [Magic for Beginners] (a).
+1 You have destroyed the Yellow mushroom patch.
+1 You have a Vermilion Potion (i).
+1 You have a Black Potion (j).
+1 You have a Long Sword (#d#) (v).
+1 You have no room for Soft Studded Leather [#].
+1 You have # Potions of Cure Light Wounds {@q#} (h).
+1 You have (nothing).
+1 You have no more Soft Leather Armours [#] {average}.
+1 You have no more Pairs of Hard Leather Boots [#] {average}.
+1 You have # Bolts (#d#) {average}.
+1 You have no more Books of Magic Spells [Magic for Beginners].
+1 You have a Whip (#d#) (s).
+1 You have a Holy Book of Prayers [Beginners Handbook] (a).
+1 You have a Tulwar (#d#) (s).
+1 You have a Slimy Mushroom (e).
+1 You have a Cloak [#] (s).
+1 You have no room for a Staff of Cure Light Wounds.
+1 You have no more Holy Books of Prayers [Beginners Handbook].
+1 You have no more Hard Leather Caps [#] {average}.
+1 You have a Rapier (#d#) (r).
+1 You have a Robe [#] (p).
+1 You have a White Mushroom (d).
+1 You have # Black Mushrooms (c).
+1 You have destroyed the Purple mushroom patch.
+1 You have no room for a Bubbling Potion.
+1 You have no room for an Iron Wand.
+1 You have no more Cloaks [#] {cursed}.
+1 You have no more Robes [#] {average}.
+1 You have no more White Mushrooms.
+1 You have # Scrolls of Satisfy Hunger (m).
+1 You have no more Black Mushrooms.
+1 You have # Scrolls titled "kliwex potri" {tried} (m).
+1 You have a Broken Dagger (#d#) (q).
+1 You have a Dagger (#d#) (r).
+1 You have a White Mushroom (c).
+1 You have a Runed Staff (p).
+1 You have no room for a Scroll of Blessing.
+1 You have no more Broken Daggers (#d#).
+1 You have no more Slime Molds.
+1 You have no more Scrolls of Treasure Detection.
+1 You have no more Potions of Detect Invisible.
+1 You have no more Potions of Resist Heat.
+1 You have no more Scrolls of Door/Stair Location.
+1 You have no more Staffs of Darkness (# charges).
+1 You have no more Staffs of Light (# charges).
+1 You have no more Daggers (#d#) (+#,+#).
+1 You have no more Rapiers (#d#) (+#,+#).
+1 You have no more Long Swords (#d#) (+#,+#).
+1 You have # Scrolls of Phase Door {on sale} (g).
+1 You have # Scrolls of Word of Recall (h).
+1 You have # Scrolls of Word of Recall {@R#}.
+1 You have a Ruby Ring (j).
+1 You have destroyed the Red mold.
+1 You have a Light Crossbow (x#) (k).
+1 You have no more Potions of Cure Light Wounds {@q#}.
+1 You have no more Light Crossbows (x#) (+#,+#).
+1 You have no more Rings of Searching (-#) {cursed}.
+1 You have # Scrolls of Word of Recall {@R#} (f).
+1 You have an Icky Green Potion (f).
+1 You have found # gold pieces worth of adamantite.
+1 You have a Potion of Heroism (e).
+1 You have # Scrolls of Word of Recall {@R#} (i).
+1 You have a Mulberry Staff (k).
+1 You have a Scroll of Summon Monster (g).
+1 You have Soft Studded Leather [#] {Wormtongue, Agent of Saruman} (m).
+1 You have no more Soft Studded Leathers of Resistance [#,+#] {Wormtongue, Agent of Saru}.
+1 You have no more Staffs of Slow Monsters (# charges).
+1 You have no more Potions of Slime Mold Juice.
+1 You have # Scrolls of Word of Recall {@R#} (g).
+1 You have # Rounded Pebbles (#d#) (k).
+1 You have a Cutlass (#d#) (k).
+1 You have a Copper-Plated Rod (k).
+1 You have no more Rounded Pebbles (#d#) {average}.
+1 You have no more Cutlasses (#d#) {average}.
+1 You have a Broad Sword (#d#) (l).
+1 You have no more Rods of Illumination.
+1 You have no more Flasks of oil.
+1 You have no more Potions of Slow Poison.
+1 You have no more Scrolls of Satisfy Hunger.
+1 You have no more Scrolls of Light.
+1 You have a Scroll of Identify {#% off} (g).
+1 You have no more Scrolls of Identify {#% off}.
+1 You have a Magenta Potion (e).
+1 You have a Scroll of Object Detection (h).
+1 You have a Short Bow (x#) (i).
+1 You have no more Short Bows (x#) {average}.
+1 You have # Iron Spikes (i).
+1 You have a Scroll titled "munger toxmung" (i).
+1 You have # White Mushrooms (b).
+1 You have a Rosewood Staff (j).
+1 You have a Potion of Berserk Strength (d).
+1 You have a Bubbling Potion (g).
+1 You have a Copper Wand (l).
+1 You have no more Iron Spikes.
+1 You have a Robe [#] (n).
+1 You have destroyed the Clear worm mass.
+1 You have destroyed the Blue jelly.
+1 You have destroyed the Zombified human.
+1 You have a Lance (#d#) (o).
+1 You have a Molybdenum Rod (l).
+1 You have no more Lances (#d#) {cursed}.
+1 You have no more Rods of Light.
+1 You have no more Wands of Haste Monster (# charges).
+1 You have no more Potions of Neutralize Poison.
+1 You have no more Scrolls of Summon Undead.
+1 You have no more Scrolls of Object Detection.
+1 You have a Corundum Ring (h).
+1 You have a Set of Gauntlets [#] (i).
+1 You have no more Sets of Gauntlets [#] {average}.
+1 You have no more Rings of Feather Falling.
+1 You have a Pair of Soft Leather Boots [#] (h).
+1 You have a Redwood Staff (h).
+1 You have no more Pairs of Soft Leather Boots [#] {worthless}.
+1 You have a Scroll of Magic Mapping (h).
+1 You have a Ring of Teleportation {cursed} (j).
+1 You have no more Rings of Teleportation {cursed}.
+1 You have a Nickel-Plated Wand (i).
+1 You have a Set of Leather Gloves [#] (k).
+1 You have no more Sets of Leather Gloves [#] {cursed}.
+1 You have no more Wands of Trap/Door Destruction (# charges).
+1 You have no more Staffs of Door/Stair Location (# charges).
+1 You have an Ivory Amulet (i).
+1 You have disarmed the discolored spot.
+1 You have a Scroll titled "skinej glenur" (i).
+1 You have a Shovel (#d#) (k).
+1 You have no more Shovels (#d#) {cursed}.
+1 You have no more Amulets of Resist Lightning.
+1 You have no more Scrolls of Remove Curse.
+1 You have # Potions of Boldness (d).
+1 You have # Potions of Cure Serious Wounds (g).
+1 You have a Potion of Resist Heat (e).
+1 You have # Bolts (#d#) (k).
+1 You have a Spear (#d#) (k).
+1 You have a Scroll titled "nelggar payjo" (k).
+1 You have no more Spears (#d#) {average}.
+1 You have a Scroll of Identify (k).
+1 You have a Scroll titled "monwhon" (m).
+1 You have an Empty Bottle (n).
+1 You have a Potion of Water (d).
+1 You have an Elm Staff (o).
+1 You have # Scrolls of Phase Door {@r#} (j).
+1 You have disarmed the pit.
+1 You have a Runed Rod (o).
+1 You have no more Empty Bottles.
+1 You have # Potions of Resist Heat (f).
+1 You have a Scroll of Satisfy Hunger (m).
+1 You have a Scroll of Light (m).
+1 You have # Scrolls of Identify (l).
+1 You have a Scroll of Identify.
+1 You have a Small Metal Shield [#] (t).
+1 You have no more Small Metal Shields [#] {average}.
+1 You have no more Rods of Trap Location.
+1 You have no more Staffs of Trap Location (# charges).
+1 You have no more Scrolls of Trap Detection.
+1 You have no more Scrolls of Detect Invisible.
+1 You have a Scroll of Word of Recall {#% off} (j).
+1 You have # Scrolls of Word of Recall {#% off} (j).
+1 You have a Silver Amulet (n).
+1 You have a Staff of Object Location (n).
+1 You have found # gold pieces worth of diamonds.
+1 You have a Scroll of Trap Detection (m).
+1 You have a Gnome Skeleton (q).
+1 You have a Set of Leather Gloves [#] (r).
+1 You have no more Hard Leather Armours [#] {average}.
+1 You have no more Sets of Leather Gloves [#] {average}.
+1 You have a Potion of Boldness.
+1 You have destroyed the Yellow worm mass.
+1 You have a Whip (#d#) (p).
+1 You have # Scrolls of Word of Recall (j).
+1 You have # Potions of Cure Critical Wounds (i).
+1 You have an excellent feeling...
+1 You have a Scroll of Remove Curse (m).
+1 You have an Amber Amulet (q).
+1 You have # Scrolls of Light (n).
+1 You have a Light Crossbow (x#) (r).
+1 You have no more Light Crossbows (x#) {average}.
+1 You have been killed by an Uruk.
+1 You have a Scroll titled "xtox ipta sour" (b).
+1 You have # Rounded Pebbles (#d#) (d).
+1 You have a Gold Wand (c).
+1 You have a Scroll titled "xtox ipta sour" (g).
+1 You have a Dagger (#d#) (+#,+#) (i).
+1 You have no more Chain Mails (-#) [#,+#].
+1 You have Soft Leather Armour [#,+#] (i).
+1 You have a Small Leather Shield [#,+#] (j).
+1 You have a Pair of Soft Leather Boots [#,+#] {#% off} (k).
+1 You have a Set of Leather Gloves [#,+#] (k).
+1 You have a Hard Leather Cap [#,+#] {#% off} (k).
+1 You have a Cloak [#,+#] (i).
+1 You have # Scrolls of Enchant Weapon To-Dam {#% off} (g).
+1 You have a Scroll of Enchant Weapon To-Hit {#% off} (g).
+1 You have a Scroll of Enchant Weapon To-Dam {#% off}.
+1 You have no more Scrolls of Enchant Weapon To-Dam {#% off}.
+1 You have no more Scrolls of Enchant Weapon To-Hit {#% off}.
+1 You have a Light Brown Potion (e).
+1 You have a Set of Leather Gloves [#] (j).
+1 You have a Robe [#] (j).
+1 You have a Scroll titled "mikoxy urmur i" (i).
+1 You have destroyed the Grey mold.
+1 You have a Magenta Potion (f).
+1 You have no more Potions of Berserk Strength.
+1 You have a Scroll titled "blaa marsef" (j).
+1 You have a Sling (x#) (o).
+1 You have no more Potions of Apple Juice.
+1 You have no more Scrolls of Blessing.
+1 You have no more Scrolls of Darkness.
+1 You have no more Sets of Leather Gloves [#,+#].
+1 You have no more Slings (x#) (+#,+#).
+1 You have # Scrolls of Phase Door {#% off} (d).
+== blind/paral/afraid/confus
+45 Your light is growing faint.
+14 You are confused!
+14 You feel less confused now.
+11 You refuse to be frightened.
+9 You are terrified!
+7 You have been stunned.
+7 You are no longer stunned.
+7 You are getting hungry.
+7 You are no longer hungry.
+7 You are too afraid to attack the Novice paladin!
+6 You are blind!
+4 You see a Potion of Slow Poison.
+4 You feel very weak.
+3 You are paralyzed!
+2 You are too afraid to attack the Kobold shaman!
+2 You are too confused!
+2 You sold a Potion of Confusion for # gold.
+2 You have no more Potions of Confusion.
+1 You sold a Wand of Confuse Monster (# charges) for # gold.
+1 You have no more Wands of Confuse Monster (# charges).
+1 You sold a Wand of Slow Monster (# charges) for # gold.
+1 You have no more Wands of Slow Monster (# charges).
+1 You have no more Scrolls of Monster Confusion.
+1 The Village idiot appears confused.
+1 The Battle-scarred veteran picks up a Potion of Blindness.
+1 You have a Potion of Slow Poison (c).
+1 You sold a Potion of Slowness for # gold.
+1 You have no more Potions of Slowness.
+1 You see a Potion of Blindness.
+1 You have a Potion of Blindness (d).
+1 You see a Potion of Weakness.
+1 You have a Potion of Weakness (f).
+1 You have # Potions of Slow Poison (i).
+1 You destroy a Potion of Weakness.
+1 You have no more Potions of Weakness.
+1 You destroy a Potion of Blindness.
+1 You have no more Potions of Blindness.
+1 You see a Scroll of Monster Confusion.
+1 You feel yourself moving slower!
+1 You sold a Staff of Slow Monsters (# charges) for # gold.
+1 You have no more Staffs of Slow Monsters (# charges).
+1 You are too afraid to attack the Priest!
+1 You are too afraid to attack the Clear hound!
+1 Selling # Potions of Slow Poison (d).
+1 You sold # Potions of Slow Poison for # gold.
+1 You have no more Potions of Slow Poison.
+1 You see a Ring of Slow Digestion.
+== miss/hit others
+48 It was a good hit!
+32 It was a great hit!
+9 You resist the effects!
+== dies/destroyed/flees
+51 You have destroyed the Blue worm mass.
+43 The Snaga flees in terror!
+43 The Hill orc flees in terror!
+42 The Cave orc flees in terror!
+40 You have destroyed the Manes.
+21 The Novice priest flees in terror!
+20 The Novice warrior flees in terror!
+20 The White wolf flees in terror!
+15 You have destroyed the Lemure.
+13 The Black orc flees in terror!
+12 The Novice ranger flees in terror!
+12 The Warg flees in terror!
+9 The Novice mage flees in terror!
+9 The Novice rogue flees in terror!
+9 The Fire hound flees in terror!
+8 The Orc shaman flees in terror!
+8 The Dark hound flees in terror!
+7 The Kobold archer flees in terror!
+7 You have destroyed the Red worm mass.
+6 You have destroyed the Zombified kobold.
+6 The Wolf flees in terror!
+6 The Gnome mage flees in terror!
+5 You have destroyed the Grey mushroom patch.
+5 The Large grey snake flees in terror!
+5 The Rattlesnake flees in terror!
+5 The Pseudo-dragon flees in terror!
+4 The Village idiot flees in terror!
+4 You have destroyed the White worm mass.
+4 The Large kobold flees in terror!
+4 The Black ogre flees in terror!
+4 You have destroyed the Green worm mass.
+4 The Cave bear flees in terror!
+4 The Swordsman flees in terror!
+4 The Killer brown beetle flees in terror!
+4 The Blink dog flees in terror!
+3 The Dark elven warrior flees in terror!
+3 You have destroyed the Skeleton human.
+3 You have destroyed the Green jelly.
+3 The Grey icky thing flees in terror!
+3 The Half-orc flees in terror!
+3 The Priest flees in terror!
+3 You have destroyed the Yellow mold.
+3 The Giant salamander flees in terror!
+3 The Green naga flees in terror!
+3 You have destroyed the Shrieker mushroom patch.
+3 You have destroyed the Skeleton orc.
+3 You have destroyed the Tengu.
+3 The Uruk flees in terror!
+3 The King cobra flees in terror!
+2 You have destroyed the Rot jelly.
+2 You have destroyed the Skeleton kobold.
+2 The Night lizard flees in terror!
+2 The Baby black dragon flees in terror!
+2 The Panther flees in terror!
+2 The Squint-eyed rogue flees in terror!
+2 Mughash the Kobold Lord flees in terror!
+2 The Large yellow snake flees in terror!
+2 The Blubbering icky thing flees in terror!
+2 The Novice paladin flees in terror!
+2 The Copperhead snake flees in terror!
+2 You have destroyed the Spotted mushroom patch.
+2 You have destroyed the White jelly.
+2 Grishnakh, the Hill Orc flees in terror!
+2 The Dark elven priest flees in terror!
+2 You have destroyed the Zombified orc.
+2 The Black harpy flees in terror!
+2 The Black naga flees in terror!
+2 You have destroyed the Red jelly.
+2 The Giant black ant flees in terror!
+2 The Cave lizard flees in terror!
+2 The Master yeek flees in terror!
+2 The Large brown snake flees in terror!
+1 The Rock lizard flees in terror!
+1 The Clear icky thing flees in terror!
+1 The Wood spider flees in terror!
+1 The Creeping copper coins flees in terror!
+1 The Hippogriff flees in terror!
+1 Brodda, the Easterling flees in terror!
+1 You have destroyed the Spotted jelly.
+1 You have destroyed the Disenchanter mold.
+1 You have destroyed the Homunculus.
+1 Some of your Scrolls of Phase Door {@r#} (d) were destroyed!
+1 The Stone troll flees in terror!
+1 The Brown yeek flees in terror!
+1 The Baby red dragon flees in terror!
+1 You have destroyed the Green mold.
+1 You have destroyed the Yellow mushroom patch.
+1 You have destroyed the Purple mushroom patch.
+1 The Illusionist flees in terror!
+1 You have destroyed the Red mold.
+1 Wormtongue, Agent of Saruman flees in terror!
+1 The Baby green dragon flees in terror!
+1 One of your Potions of Cure Light Wounds (e) was destroyed!
+1 You have destroyed the Clear worm mass.
+1 You have destroyed the Blue jelly.
+1 You have destroyed the Zombified human.
+1 You sold a Scroll of Summon Undead for # gold.
+1 You have no more Scrolls of Summon Undead.
+1 The Stegocentipede flees in terror!
+1 The Baby gold dragon flees in terror!
+1 The Red naga flees in terror!
+1 One of your Scrolls of Phase Door {@r#} (f) was destroyed!
+1 Lagduf, the Snaga flees in terror!
+1 The Kobold flees in terror!
+1 The Baby multi-hued dragon flees in terror!
+1 The Baby white dragon flees in terror!
+1 The Giant white tick flees in terror!
+1 You have destroyed the Yellow worm mass.
+1 The Giant white ant flees in terror!
+1 The Metallic red centipede flees in terror!
+1 The Small kobold flees in terror!
+1 The Giant white centipede flees in terror!
+1 Grip, Farmer Maggot's dog flees in terror!
+1 You have destroyed the Grey mold.
+1 The Metallic green centipede flees in terror!
+== stairs/level
+2240 Looks like any other level.
+1378 You enter a maze of down staircases.
+1323 You enter a maze of up staircases.
+38 I see no down staircase here.
+31 The air about you becomes charged...
+21 Welcome to level #.
+20 This level can't be all bad...
+15 You feel there is something special about this level.
+14 I see no up staircase here.
+10 You have a Scroll of Word of Recall {@R#}.
+9 The sun has fallen.
+8 You bought a Scroll of Word of Recall {#% off} for # gold.
+7 You bought a Scroll of Word of Recall for # gold.
+7 You have no more Scrolls of Word of Recall.
+6 You have no more Scrolls of Word of Recall {@R#}.
+5 You bought # Scrolls of Word of Recall for # gold.
+4 You have a Scroll of Word of Recall.
+4 You have # Scrolls of Word of Recall (g).
+4 It teleports away.
+4 Inscribing # Scrolls of Word of Recall {#% off}.
+3 You have a Scroll of Word of Recall (g).
+3 Inscribing # Scrolls of Word of Recall.
+3 You have # Scrolls of Word of Recall {#% off} (g).
+2 You have a Scroll of Word of Recall {#% off}.
+2 The Illusionist teleports away.
+2 You fall into a spiked pit!
+2 You hit a teleport trap!
+2 You have a Scroll of Word of Recall {#% off} (g).
+1 You have # Scrolls of Word of Recall {#% off} (e).
+1 You have no more Scrolls of Word of Recall {#% off}.
+1 You have # Scrolls of Word of Recall (e).
+1 You have a Scroll of Word of Recall (c).
+1 You sold # Scrolls of Door/Stair Location for # gold.
+1 You have no more Scrolls of Door/Stair Location.
+1 You have # Scrolls of Word of Recall (h).
+1 You have # Scrolls of Word of Recall {@R#}.
+1 Boldor, King of the Yeeks teleports away.
+1 You have # Scrolls of Word of Recall {@R#} (f).
+1 Inscribing # Scrolls of Word of Recall {@R#}.
+1 You see a Scroll of Word of Recall.
+1 You have # Scrolls of Word of Recall {@R#} (i).
+1 You have # Scrolls of Word of Recall {@R#} (g).
+1 You bought # Scrolls of Word of Recall {#% off} for # gold.
+1 You sold a Ring of Feather Falling for # gold.
+1 You have no more Rings of Feather Falling.
+1 You see a Ring of Teleportation {cursed}.
+1 You have a Ring of Teleportation {cursed} (j).
+1 You destroy a Ring of Teleportation {cursed}.
+1 You have no more Rings of Teleportation {cursed}.
+1 You sold a Staff of Door/Stair Location (# charges) for # gold.
+1 You have no more Staffs of Door/Stair Location (# charges).
+1 You have a Scroll of Word of Recall {#% off} (j).
+1 You have # Scrolls of Word of Recall {#% off} (j).
+1 You have # Scrolls of Word of Recall (j).

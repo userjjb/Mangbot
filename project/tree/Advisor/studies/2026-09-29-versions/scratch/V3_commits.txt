@@ -1,0 +1,723 @@
+0176f09 2019-01-28 flambard-took | Add UI "sleep" to meta connection loop. See #952.
+0c7b802 2019-01-28 flambard-took | Remove pointless line endings from some debug plog() messages.
+f284951 2019-01-28 flambard-took | Restore Term_redraw in X11 Expose even handler.
+18f2984 2019-01-28 flambard-took | Turn off static indicators, there should be no more overlapping.
+7b56117 2019-01-28 flambard-took | Simplify/fix depth indicator. See #962.
+4447353 2019-01-28 flambard-took | Fix X11 window resize. See #952, #750.
+5f1c71a 2019-01-28 flambard-took | Add a hack to avoid net_term_clamp while not connected. See #750, #964.
+c11a260 2019-01-28 flambard-took | Double the "PD_LARGE_BUFFER" size.
+a265254 2019-01-28 flambard-took | Improve SDL term resize. See #750, #964.
+18d119e 2019-01-28 flambard-took | Disable opposing elements debug indication. See #962.
+ed6b1b5 2019-01-28 flambard-took | Enable classic HP/SP indicators. See #962.
+9113b54 2019-01-28 flambard-took | Address #1190, do not "restore" max_hp for ghosts.
+4cf58e2 2019-01-28 flambard-took | Remove pointless printf. See #952, #963.
+04a527b 2019-01-28 flambard-took | Remove the META_ADDRESS redefine, see #1130.
+922d3fd 2019-01-29 flambard-took | Make indicators white (instead of debug-blue). See #962.
+02ee572 2019-01-29 flambard-took | Correct colors for gold and speed("Slow") indicators. See #962.
+cbf3f19 2019-01-29 flambard-took | Fix SDL "wipe" z-term hook. See #944, #747.
+9aa7377 2019-01-29 flambard-took | Adjust cursor handling for SDL. Note: should test other terminals. See #949, #747.
+ffe97dc 2019-01-29 flambard-took | Allow custom commands to be replaced, see #963. Fix priest 'G'ain.
+81ebfb9 2019-01-29 flambard-took | Remove debug printf in struct receiver, see #952.
+9ae504a 2019-01-29 flambard-took | Do not report scanq buffer underrun errors, see #952.
+1d71ffe 2019-01-29 flambard-took | Add forgotten variable type for ffe97dc , see #963.
+3fe3f5c 2019-01-29 flambard-took | Reimplement PARTY_INFO packet, see #952.
+36778b3 2019-01-29 flambard-took | Reimplement STORE_LEAVE packet, see #952.
+d217f03 2019-01-29 flambard-took | Add better way to not-clamp terminals, see #750.
+4d17bb4 2019-01-29 flambard-took | Port 45a0676d to master, see #1142.
+1240b31 2019-01-29 flambard-took | Port 1ca89ac to master, see #1152.
+4adab80 2019-01-29 flambard-took | Port 14a9a1d8 to master, see #1150.
+9940291 2019-01-29 flambard-took | Port c0c22e45 to master. See #1001.
+33abf2f 2019-01-29 flambard-took | Port 41d570cb and f3b0571b to master. See #1146.
+aa057eb 2019-01-29 flambard-took | Port e429ad59 to master, see #967.
+346664a 2019-01-29 flambard-took | Port bea6d979 to master, see #472, #1154.
+1d83340 2019-01-29 flambard-took | Port f56f5785 to master. See #1159.
+1913c55 2019-01-29 flambard-took | Port 1d833409 to master. See #1186.
+4bf67f3 2019-01-29 flambard-took | Port d5cb0cd to master. See #1010.
+71de2df 2019-01-29 flambard-took | Port da39b74e to master. See #472, #1154.
+7cbda5b 2019-01-30 flambard-took | Merge pull request #1191 from mangband/master-v14report
+10bc1e7 2019-01-30 flambard-took | Add SDL build configurations to vs2008 projects.
+454471d 2019-01-30 flambard-took | Use SDL-approved main signature.
+1345ac8 2019-01-30 flambard-took | Update VS2015 (it's VS2010 to be honest) project files.
+478445a 2019-01-30 flambard-took | Add 'pref' dir to windows installer.
+9ce0959 2019-01-30 flambard-took | Use temp. names and directories in master windows installer.
+0dcbba3 2019-01-30 flambard-took | Avoid snprintf calls in SDL code. See #747.
+a8bcc09 2019-01-30 flambard-took | Add pref dir to OSX bundler, "install" user dir on launch.
+bc8373f 2019-01-30 flambard-took | Add forgotten externs from 3fe3f5c and 36778b3, see #952.
+dde5d8e 2019-01-30 flambard-took | Minor cleanup, see #952.
+5c8738a 2019-01-30 flambard-took | Add a special hack for Quartz video driver on SDL. See #747.
+1ba4f40 2019-01-30 flambard-took | Fix some simple warnings, see #1055.
+ff95132 2019-01-31 flambard-took | Close #1145, add an option to auto-see item lists on prompts.
+c3522f5 2019-01-31 flambard-took | DO NOT spend energy for "tunneling air", see #952.
+2422f55 2019-01-31 flambard-took | Improve classic MAnghack #2, allow up to 2 walk requests to be queued, as per older codebase. See #963, #965.
+a5a81f0 2019-01-31 flambard-took | Add network-triggered command proccessing, see #963, #952.
+241198a 2019-01-31 flambard-took | Adjust how the running command is handled to closely match classic MAngband. See #963, #952.
+0feddca 2019-01-31 flambard-took | Bump version to 1.5.0. See #1130.
+f70e45e 2019-02-01 flambard-took | Add systemd unit by Jug, address #1054.
+a89f645 2019-02-01 flambard-took | Address #952, ensure light is updated and sent with player movement.
+f8c2485 2019-02-01 flambard-took | Address #952, add catch-all data flush to post_process_players().
+fe89a57 2019-02-01 flambard-took | Adjust stream bounds when previewing vaults. See #964, #952.
+56cfb35 2019-02-01 flambard-took | Disable the FILE_TEXT stream hack, add ability to allocate streams to max size. See #952, #964.
+28d9442 2019-02-01 flambard-took | Address #964, stick SPECIAL_TEXT stream to dungeon view, to allow combined resizing.
+547cf15 2019-02-01 flambard-took | Address #964 show SPECIAL_TEXT stream in UI.
+9e993cb 2019-02-01 flambard-took | Do not rely on "window_to_stream" when doing clamping! See #964.
+e69cba3 2019-02-01 flambard-took | Hide "display special info" string, so it's not confused with SPECIAL_MIXED stream. See #964.
+0775e98 2019-02-01 flambard-took | Replace "mangband.hlp" with "help.hlp" as index file, add link to "mangband.hlp", see #1040.
+b2c9758 2019-02-01 flambard-took | Add script to build .dmg with our app bundle.
+c445380 2019-02-07 flambard-took | Add OSX builds to travis-ci, use deployment.
+21dfb59 2019-02-07 flambard-took | Merge pull request #1192 from flambard-took/master-travisci
+a79a41a 2019-02-07 flambard-took | Add executable bit to .travis-gh.sh.
+cbfdc4a 2019-02-08 flambard-took | Close #452, debug/DM characters get max. possible recall depth.
+7330a06 2019-02-08 flambard-took | Address #962, correct vararg promotion in send_indication.
+0da2b21 2019-02-08 flambard-took | When sending sound, send it as u16b. See #858, #952.
+21b97db 2019-02-08 flambard-took | Play sounds from messages. See #858.
+1ba4e76 2019-02-08 flambard-took | Init sound in SDL and prevent crash if it fails. See #858.
+7a7a135 2019-02-08 flambard-took | Package dylibs on OSX.
+83f8142 2019-02-11 flambard-took | Close #1196. Stop using plural form for 1 gold piece.
+e863c41 2019-02-11 flambard-took | Commit 7a7a1352 breaks OSX build, this fixes it.
+fda5ed4 2019-02-13 flambard-took | Use /MT for windows release builds (not for SDL, tho).
+619d033 2019-02-13 flambard-took | Address #952, disable Nagel's algorithm (properly this time).
+ae2529b 2019-02-13 flambard-took | Address #952, fix connection switching.
+78856a5 2019-02-13 flambard-took | Address #952, revert a89f645020da51e049df88492811ea9d529edc16.
+6c32061 2019-02-13 flambard-took | Address #952, remove debug 250 microsecond delay from each dungeon tick.
+cfdf97b 2019-02-13 flambard-took | Close #1197, update WIN and OSX icon files.
+61d9fc6 2019-02-14 flambard-took | Address #952, #963, add packet-to-custom-command lookup table.
+0113f03 2019-02-14 flambard-took | Address #952, #963, use correct values when rewinding unfilled buffer.
+7f0e1e4 2019-02-14 flambard-took | Address #952, fix telnet/console connections.
+3634d41 2019-02-14 flambard-took | Address #864, add consumption commands to "!*" inscription wildcard.
+12a14ae 2019-02-14 flambard-took | Address #461, trigger audit when using from the floor.
+5fef8df 2019-02-14 flambard-took | Close #1198, don't auto-retaliate with commands (or run_request) queued.
+3100e31 2019-02-14 flambard-took | Remove protective auto-inscription on player death.
+33ef367 2019-02-14 flambard-took | Address #963, force 'hold' command to always pickup.
+99f1a4e 2019-02-14 flambard-took | Close #1199, add "!O" inscription check. Note: not wildcarded.
+5f3fd8b 2019-02-15 flambard-took | Address #689, set constant scale-down factor for time-bubbles.
+27797e2 2019-02-15 flambard-took | Address #896, revert f27a9e262408f85c249 and fix more stupidity.
+b9abd0a 2019-02-15 flambard-took | Address #952, #963, make custom commands that cost energy break rest.
+25ee5c5 2019-02-15 flambard-took | Address #858, regroup MAngband-specific MSG_XXX defines.
+2c973f0 2019-02-15 flambard-took | Address #773, add "&yell" virtual channel.
+ebdb807 2019-02-15 flambard-took | Address #862, make detection counter stackable.
+1dcb205 2019-02-20 Nathan | Examining an item will now give an approximate description of the player's chances of successfully activating it if it is a magic device or can otherwise be activated.
+1bed6bc 2019-02-21 Nathan | Cleaned up irrelevant comments, re-titled description tiers to be more accurate based on calculated percentages, removed formatting from text_out, branch text_out similarly to the rest of the functions in the class.
+8c3f5c4 2019-02-21 VectorShadow | Merge pull request #1 from VectorShadow/active-desc
+9bcc8e7 2019-02-21 Nathan | Corrected a typo in a description.
+c3f830d 2019-02-21 evileye-uk | Merge pull request #1201 from VectorShadow/master
+d63c170 2019-02-17 flambard-took | Address #793, ensure indicators are memorized when screen is icky.
+2fe6334 2019-02-17 flambard-took | Address #963, move pre/post-command hacks into separate functions.
+fbdb6f2 2019-02-17 flambard-took | Address #1194, change rules for stealth/noise checks.
+d000c59 2019-02-17 flambard-took | Address #963, fix magic commands energy_cost markers.
+a4488bb 2019-02-28 flambard-took | Address #964, erase last empty line when doing perusal.
+5aaee76 2019-02-28 flambard-took | Address #964, fix X-bounds checking in cavedraw().
+8684373 2019-03-01 flambard-took | Address #964, fix critical bug in RLE2 decoding.
+e6a6575 2019-03-01 flambard-took | Address #778, be less strict when loading 'W:' options.
+fee9ebf 2019-03-01 flambard-took | Address #750, try harder when switching panels.
+e6371cb 2019-03-01 flambard-took | Address #964, change stream grouping a bit.
+d6f92c4 2019-03-01 flambard-took | Address #964, pass stream index to "show_line()", so that we can pick which stream cave to use.
+19139c2 2019-03-01 flambard-took | Address #964, add human-readable names to streams.
+98aab10 2019-03-01 flambard-took | Address #964, safeguard bit-shifted "x" value when reading streams.
+b95046d 2019-03-01 flambard-took | Address #869, fix hturn math in Party slot finder.
+e56189b 2019-03-01 flambard-took | Address #964, #778, use correct stream sizes when drawing minimap.
+e4573b7 2019-03-01 flambard-took | Address #952, #826, double the socket buffer size once more.
+42be67a 2019-03-01 flambard-took | Close #1147, stop using PMSG_TERM 4 hack on non-windows clients.
+f5b4836 2019-03-01 flambard-took | Address #1152, add new Inno installer config for the server.
+e131711 2019-03-01 flambard-took | Close #1202, update Makefile.am files to pass `make distcheck`.
+17bec0c 2019-03-14 flambard-took | Address #1063, allow dangling --longopt, for things like "--fullscreen".
+bada97f 2019-03-14 flambard-took | Address #747, restore command-line argument parsing to SDL client.
+3c0d36f 2019-03-14 flambard-took | Address #689, do not speed up time with monsters in LoS.
+3f42082 2019-03-14 flambard-took | Address #963, adjust WIN pref files to user ALTER instead of TUNNEL.
+c7c875e 2019-03-14 flambard-took | Close #1203, re-enable client-defined quit hooks.
+04b664d 2019-03-14 flambard-took | Address #1152, add "config dir" shortcut windows installers.
+8a72631 2019-03-14 flambard-took | Address #952, add client-to-server cursor packet, fix char/byte ambiguity in send_cursor packet and remove transitional network hacks for "Send_cursor" and "Send_target_info".
+394846a 2019-03-14 flambard-took | Address #963, minor: handle topline ickyness when confirming suicide.
+0b6d651 2019-03-14 flambard-took | Fix cptr -> char* casts when (re)loading config, see #1055.
+f08cc45 2019-03-14 flambard-took | Address #963, add human-readable command names to custom commands.
+900dcf3 2019-03-14 flambard-took | Address #1130, bump version from alpha to beta.
+8aa843e 2019-03-14 flambard-took | Merge branch 'develop'.
+e38e931 2019-03-14 flambard-took | Merge 'master' into 'develop'.
+8b2e679 2019-03-15 flambard-took | Close #1204, increase `fake_name_size` for race and class structs.
+02c9b8d 2019-03-15 flambard-took | Address #869, fix hturn math in store_open check.
+4e5c9cf 2019-03-15 flambard-took | Address #857, improve comments for do_cmd_store.
+e98c45d 2019-03-15 flambard-took | Close #1205, collapse "mangclient-sdl.ini" into "mangclient.ini".
+6cf9c8c 2019-03-15 flambard-took | Switch travis-CI deployment to develop branch.
+6649e1c 2019-03-15 flambard-took | Address #963, add better comments and reformat whitespace a little.
+57a034a 2019-03-17 flambard-took | Address #689, fix critical stupidity from 3c0d36f8.
+6082ba9 2019-03-18 flambard-took | Address #952, report server shutdown to the meta-server.
+a76dd97 2019-03-18 flambard-took | Address #993, add msg_format_p() and msg_print_p() functions.
+58e863a 2019-03-18 flambard-took | Address #952, remove transitional hacks for confirm_request.
+ecf2563 2019-03-18 flambard-took | Address #952, remove few unused transitional defines.
+5a64fc6 2019-03-18 flambard-took | Address #952, finish transition for Destroy_connection.
+838385e 2019-03-18 flambard-took | Address #15, add some error-checking for the most obvious errors.
+f1d491a 2019-03-18 flambard-took | Address #596, don't display enter/leave messages for hidden DMs.
+972fb31 2019-03-19 flambard-took | Address #1075, cleanup whitespace in DM menu. See also #900.
+cd933fe 2019-03-19 flambard-took | Address #952, #964, restore local "file" perusal, fix symbol query.
+d801477 2019-03-19 flambard-took | Address #900, make DM menu behave a bit nicer.
+bda42d5 2019-03-19 flambard-took | Address #952, #1075, reformat whitespace a little.
+203991b 2019-03-19 flambard-took | Address #1054, add sample rc.d init script.
+665a323 2019-03-19 flambard-took | Address #952, #964, add forgotten extern from cd933fea92.
+ff3ca40 2019-03-20 flambard-took | Address #670, make sure monster recall is resent.
+f3b3922 2019-03-20 flambard-took | Address #900, allow Backspace in DM menu, enforce ickyness test.
+b1b0dc2 2019-03-20 flambard-took | Address #670, make DM-menu-or-other-term check less elegant.
+bafe2d6 2019-03-19 flambard-took | Address #778, #952, cherry-pick e0caf99 and 3abded7 from develop-sendfile.
+22ac539 2019-03-20 flambard-took | Address #952, add cross-platform function to check if address is local.
+8224e73 2019-03-20 flambard-took | Address #952, #964, add forgotten return statement to "cavecpy()".
+9c5d592 2019-03-20 flambard-took | Address #952, re-enable cfg_console_local_only option.
+b95c0a6 2019-03-20 flambard-took | Address #952, make sure console connections are fully initialized.
+b2588b1 2019-03-20 flambard-took | Close #1066, treat SIGTERM as SIGINT on Windows platform.
+f82f21a 2019-03-20 flambard-took | Address #1209, remove MAGE_HP_BONUS server option.
+42a7691 2019-03-20 flambard-took | Address #1209, #832, upgrade semantics for ENFORCE_OPTION_ and add DEFAULT_OPTION server configurables. Also, add some comments.
+37beca4 2019-03-20 flambard-took | Address #1209, tinker with mangband.cfg whitespace.
+c747ff2 2019-03-21 flambard-took | Address #1215, add TARGET_OS_OSX to our autoconf builds.
+dc540ae 2019-03-21 flambard-took | Address #1215, handle SIGHUP on OSX.
+9f7893c 2019-03-21 flambard-took | Address #1215, add copy-to-Applications pattern to client app.
+90d89af 2019-03-21 flambard-took | Address #1215, remove warning from OSX/README-client
+36166da 2019-03-21 flambard-took | Close #1215, create server packaging script for OSX.
+da41231 2019-03-21 flambard-took | Address #952, use socklen_t instead of int in new islocalfd func.
+ad61c55 2019-03-21 flambard-took | Close #1212, nuke wilderness-hold.c from the repository.
+902f135 2019-03-21 flambard-took | Close #1216, open correct directory when selecting fonts.
+e02bdf8 2019-03-22 flambard-took | Address #747, nuke sdl-xxx.c from the repository.
+288ceec 2019-03-22 flambard-took | Add various extra files to .gitignore
+51d6cd8 2019-03-22 flambard-took | Add OSX server deploys to travis-CI.
+5071ea4 2019-03-22 flambard-took | Close #1213, disenchant to-hit and to-dam on weapons, to-ac on armor.
+64f085f 2019-03-22 flambard-took | Address #876, applies all fixes from V309.
+6d673ec 2019-03-23 flambard-took | Address #876, remove item knowledge mangling on recharge backfire.
+4eda9c1 2019-03-23 flambard-took | Close #1219, quit cmd_inven() early if inventory is empty.
+298df8b 2019-03-23 flambard-took | Address #793, fix weights overwriting last character of inventory.
+3858d13 2019-03-24 flambard-took | Address #807, implement secondary item testers framework.
+bedf117 2019-03-24 flambard-took | Address #952, ensure floor item is sent to newly connected clients.
+b452473 2019-03-24 flambard-took | Address #876, floor_item_notify was missing.
+f0b1b0a 2019-03-25 flambard-took | Address #747, add arrow key combiner to SDL client.
+258c439 2019-03-25 flambard-took | Address #747, #1063, make clia_read_bool work on booleans.
+7a45bc1 2019-03-25 flambard-took | Close #1220, add "instance_closed" option to v1.5.X series.
+a0cd88c 2019-03-25 flambard-took | Address #1182, add "get_item_by_name" function.
+b1e2998 2019-03-25 flambard-took | Address #952, #881, un-hardcode objflags row and col numbers.
+18e1521 2019-03-25 flambard-took | Address #1220, add forgotten mangband.cfg entry.
+8b1066f 2019-03-25 flambard-took | Close #1147 again, now with proper WIN hackage.
+4b52619 2019-03-25 flambard-took | Address #952, #881, add forgotten break from b1e2998e41a.
+5ff68f1 2019-03-26 flambard-took | Address #964, refactor streams a bit, change max cols to u16b.
+bf22aed 2019-03-26 flambard-took | Address #964, fix some bugs in copy_file_info.
+86994f9 2019-03-26 flambard-took | Remove unused files for VS projects. Undefine "DEBUG" in Release.
+2b677b9 2019-03-26 flambard-took | Address #1055, fix some really obvious warnings.
+8cdf6df 2019-03-27 flambard-took | Address #670, fix crash introduced in ff3ca409ef6a.
+9fd6721 2019-03-27 flambard-took | Address #1055, fix some strcat usage and other simple defects.
+b47943d 2019-03-27 flambard-took | Address #1152, correct installed directories for client/server.
+0b468e9 2019-03-27 flambard-took | Address #1189, cherry-pick the network portion of #1206.
+b7af608 2019-03-27 flambard-took | Update our .deb packaging script.
+3aa104c 2019-03-28 flambard-took | Address #1225, restore debian-jessie support.
+61203b5 2019-03-28 flambard-took | Address #1225, #1197, add freedesktop bundling to our build.
+419720f 2019-03-28 flambard-took | Address #1225, update our rpm script.
+c437db1 2019-03-28 flambard-took | Address #1225, add icons to .deb packages.
+7ea3811 2019-03-28 flambard-took | Address #1225, add docker script to build many linux packages.
+bb544f2 2019-03-28 flambard-took | Address #1225, uncomment essential piece of code, stupid flambard!
+94bf5d5 2019-03-29 flambard-took | Address #1225, separate debian server/client packages.
+53bfde1 2019-03-29 flambard-took | Address #1225, add fedora builds to docker script.
+9821d7e 2019-03-29 flambard-took | Address #33, #747, add meta+arrows tunneling to SDL client.
+8678751 2019-04-01 flambard-took | Address #1226, bump version to 1.5.0 non-beta, remove DEBUG.
+3fbcc28 2019-03-29 flambard-took | Add osx-on-tag deploy to travis CI.
+556db43 2019-03-29 flambard-took | Address #1182, fix embarrasing unitialized buffer.
+b755118 2019-04-01 flambard-took | Pull last-minute changes from develop, see #1226.
+6b72c37 2019-04-01 flambard-took | Address #1226, remove Devel suffixes from Windows installers.
+4ac8053 2019-04-01 flambard-took | Address #1226, fix empty message box and dir validation on windows.
+5c3bab2 2019-04-01 flambard-took | Address #1226, #1152, fix bone dir copy-paste error.
+7553159 2019-04-01 flambard-took | Address #1226, #1066, revert b2588b157290cb6d8bfa.
+ece0ab8 2019-04-01 flambard-took | Address #1226, update AUTHORS fetcher to use new website.
+9084076 2019-04-01 flambard-took | Addresss #1226, #1225, build each rpm separately.
+e0842b5 2019-04-01 flambard-took | Address #1226, allow 24 lines in 'news.txt'.
+e675b7e 2019-04-01 flambard-took | Address #1226, hide debug output from curses client.
+0404084 2019-04-01 flambard-took | Address #596, disable DM_NEVER_DISTURB flag (for now).
+e297981 2019-04-01 flambard-took | Address #952, swap player_leave/player_disconnect around.
+9e44d5f 2019-04-02 flambard-took | Merge branch 'version-1_5_0' into develop
+e78a721 2019-04-02 flambard-took | Address #1225, few additional fixes to RPM script.
+df69533 2019-04-02 flambard-took | Close #1216 again, pass correct pointer this time.
+53fd9a5 2019-04-02 billsey | Addresses #1227, adds version number to error message when a client is aborted due to version conflict.
+8dc1b65 2019-04-02 billsey | Swaps calls to first_sender = add_sender() and network_reset() to allow meta connection to work.
+7e04259 2019-04-03 flambard-took | Address #1230, make version check more relaxed.
+736878e 2019-04-03 flambard-took | Address #1227, use server version when displaying the message.
+b1a57d9 2019-04-03 flambard-took | Address #900, allow backspace in DM looking.
+db2823c 2019-04-03 flambard-took | Address #869, restore turn check on savefile read.
+835e41c 2019-04-03 billsey | We now count servers while parsing the meta info, then use that count to verify we can use 'q' as well as 'Q'. If there are 17 or more servers we don't use 'q', if under 17 we allow it.
+ae0aab6 2019-04-03 flambard-took | Address #1231, remove _FFXX macros from SDL client.
+04a19a5 2019-04-03 flambard-took | Address #1231, make first column of macro browser wider.
+2b32064 2019-04-03 flambard-took | Address #1231, add macro trigger templates for some SDL keys.
+05acd30 2019-04-03 flambard-took | Address #1231, update base macros for GCU port.
+d95c1a3 2019-04-03 flambard-took | Close #1233, allow escape in macros for ncurses.
+2df98cc 2019-04-03 flambard-took | Address #1231, import macro trigger templates for X11 from V309.
+d966d56 2019-04-04 flambard-took | Address #1231, copy macro trigger templates for Windows from V.
+86b0e22 2019-04-04 flambard-took | Close #1234, stop allocating too much font resources.
+f43f2d8 2019-04-04 flambard-took | Address #33, #1231, switch Alt+Arrows to Meta+Arrows for OSX.
+7f919e7 2019-04-04 flambard-took | Close #1235, make GCU client respect "best cursor".
+6f901e4 2019-04-08 flambard-took | Address #1236, fix critically stupid bug in cavemem.
+0069b39 2019-04-08 flambard-took | Address #1236, add a horrible "restore" of trn_info in Term_load.
+b19b66c 2019-04-08 flambard-took | Address #1236, use 0x80 (pict blank) in caveclr.
+90315c2 2019-04-08 flambard-took | Address #944, stop cursor oversaturation on SDL client.
+43150ee 2019-04-08 flambard-took | Close #1237, simplify X11 term init.
+ee36659 2019-04-08 flambard-took | Close #1238, perfrom bounds checks before cutting indicators.
+664106b 2019-04-08 flambard-took | Add PNG loading. Replace .bmp tilesets with .png ones.
+f56fb0d 2019-04-10 flambard-took | Close #1239, be extra careful with attr/char changes in graphics mode.
+1550925 2019-04-15 flambard-took | Close #596, fix DM_NEVER_DISTURB as per PowerWyrm's suggestion.
+26c6d26 2019-04-15 flambard-took | Address #1240, bump version to 1.5.1 .
+203d94d 2019-04-16 flambard-took | Close #1243, fix "killed by" message for non-brave characters.
+5c9c077 2019-04-16 flambard-took | Address #1243, fix broken build :(
+3541296 2019-04-16 flambard-took | Remove debug/devel defines from develop branch.
+ce675c5 2019-04-16 flambard-took | Address #1246, straighten the running/run_request usage.
+7b86914 2019-04-16 flambard-took | Address #1222, dynamically adjust tileset names in WIN client menubar.
+ca6e319 2019-04-16 flambard-took | Merge branch 'develop' into master-dungeon
+ae3662e 2019-04-16 flambard-took | Address #1078, make minor whitespace adjustments.
+1d4f2a7 2019-04-16 flambard-took | Merge pull request #1078 from mangband/master-dungeon
+4f86b3b 2019-04-16 flambard-took | Address #915, change the way bottle refill works.
+59f5730 2019-04-17 flambard-took | Add "isuffix()" function, a case-insensitive version of "suffix()".
+ae20060 2019-04-17 flambard-took | Close #1244, invert level feeling recharge check.
+af16ecb 2019-04-17 flambard-took | Close #1251, inform client about gold pickups.
+0991016 2019-04-17 flambard-took | Address #1241, make sure player-player visibility is refreshed when someone is changing levels.
+3f0c66e 2019-04-17 flambard-took | Address #1241, make sure monster visibility is handled correctly when a monster dies.
+3ac1ad6 2019-04-17 flambard-took | Close #1249, extract secondary item flags from scroll of recharging.
+5338615 2019-04-17 flambard-took | Close #1254, make sure floor item is resent when its charges change.
+897b535 2019-04-18 flambard-took | Merge pull request #1247 from mangband/develop-lupng
+8e8ad73 2019-04-18 flambard-took | Close #1245, save birth options after character creation.
+5bd154b 2019-04-18 flambard-took | Address #534, update monster/player visibility logic.
+f959c38 2019-04-19 flambard-took | Close #1255, expand player_type.redraw to u64b.
+cb33298 2019-04-19 flambard-took | Close #1256, use __int64 on VS2005-2010.
+3788b43 2019-04-19 flambard-took | Close #1257, fix wrong indexes for CON/CHR indicators.
+66daef0 2019-04-19 flambard-took | Address #1253, port "disable banishment in dwarven halls" to develop.
+2c24c28 2019-04-22 flambard-took | Close #1258, enter and leave query-item-by-name mode via quote symbol.
+4181b63 2019-04-22 flambard-took | Close #1261, add "spell-by-name" and "spellbook-by-spellname" queries.
+7029bfc 2019-04-22 flambard-took | Close #1259, explicitly show/hide cursor for UI input.
+8f8e070 2019-04-22 flambard-took | Address #1260, port Enter-menu from V308.
+6047721 2019-04-22 flambard-took | Address #1260, allow menu command selection from macro editor.
+cfa3eac 2019-04-22 flambard-took | Address #1260, remove debug printf. Sorry about that :(
+71bde2a 2019-04-22 flambard-took | Close #1262, add monster list command.
+913f55a 2019-04-23 flambard-took | Close #1263, move x and y access back into calling functions.
+d01470a 2019-04-24 flambard-took | Address #1265, remove commented out/dead code from inkey().
+e2e0938 2019-04-24 flambard-took | Address #1260, add forgotten extern declaration for cmd_init().
+db6ab06 2019-04-24 flambard-took | Address #1265, merge all our old hacks into inkey_ex().
+6cbc743 2019-04-24 flambard-took | Address #1264, port pathfind.c from V309.
+645f547 2019-04-24 flambard-took | Address #1266, add '!' (port) command.
+52d3c97 2019-04-24 flambard-took | Address #1267, #1264, add cmd_mouseclick to execute the pathfinder.
+a418610 2019-04-24 flambard-took | Address #1267, allow mouse to assist in targeting/looking mode.
+46aed5c 2019-04-24 flambard-took | Address #1267, improve mouse usage in menus.
+b151edd 2019-04-24 flambard-took | Address #1267, add all missing hooks to "recv_mouse".
+a5372ad 2019-04-24 flambard-took | Address #1267, add mouse-to-angband handling to SDL client.
+a36753c 2019-04-26 flambard-took | Address #1268, fix Term_mem_ch to use correct pointer.
+a0b4341 2019-04-26 flambard-took | Address #1268, fix incorrect test in show_line.
+1d0085d 2019-05-06 flambard-took | Address #1268, do not icky'fy sections if whole screen is icky.
+7555f07 2019-05-06 flambard-took | Address #1260, force 'G' command into Magic command group.
+0e0c786 2019-05-06 flambard-took | Address #1268, spell selection menus were not using section ickyness, freezing whole screen instead, they now do.
+75535d6 2019-05-06 flambard-took | Address #1261, fix book index/spell index order bug and adjust spell_by_name function to allow selecting a book by spell name.
+219b526 2019-05-06 flambard-took | Address #1259, handle more cases of UI cursor (menus, y/n prompts, etc).
+e2e3d68 2019-05-06 flambard-took | Close #1269, add option to list spells during selection.
+432072a 2019-05-06 flambard-took | Address #1270, add several functions that can convert command/item/spell definitions into keystrokes and vice-versa. This is implemented in a very hacky way, yet the API itself should be very helpfull and allows all kinds of things.
+78bf3f4 2019-05-06 flambard-took | Address #1271, add 3 new options to macro screen, allowing actions to be generated by selecting a command, an item, or a spell.
+eb76980 2019-05-06 flambard-took | Address #1267, remove debug printf. Sorry about that.
+fd02dea 2019-05-06 flambard-took | Address #1268, depth indicator was not memorized correctly.
+6da4b53 2019-05-06 flambard-took | Address #1260, Gain prayer command was missing its name.
+9a1c017 2019-05-06 flambard-took | Address #1270, fix few small bugs from 432072a.
+b618faa 2019-05-06 flambard-took | Address #1265, restore "ascii 29" hack to signify "synthetic" macros.
+7216a4a 2019-05-13 flambard-took | Address #1270, fix VS builds, broken in 78bf3f41.
+46b078b 2019-05-13 flambard-took | Address #1259, fix cursor flickering on WIN clients.
+a78b5f9 2019-05-13 flambard-took | Close #1273, make server report its version to stdout again.
+a8b43b4 2019-05-13 flambard-took | Address #1267, add forgotten extern for "do_cmd_mouseclick".
+a17057c 2019-05-14 flambard-took | Address #1264, port pathfinder diagonal bugfix from V351.
+c223092 2019-05-14 flambard-took | Address #1264, remove debug printf. Sorry about that :(
+cf6b581 2019-05-14 flambard-took | Address #1264, remove a large chunk of unused code.
+af58c2b 2019-05-15 flambard-took | Close #1276, fix inventory listing crash on large terminals.
+ab5c38c 2019-05-15 flambard-took | Address #1274, add itemlist window and command.
+8416ef3 2019-05-15 flambard-took | Address #1267, add mouse support to X11 client.
+476e428 2019-05-15 flambard-took | Address #1267, #1277, use keypad mode in GCU port and enable mouse.
+813484f 2019-05-16 flambard-took | Address #1277, update gcu pref file, restore escaped sequences, restore insert/delete macros, fix some typos.
+f4df8d7 2019-05-16 flambard-took | Address #1267, add mouse handling to WIN client.
+10b5484 2019-05-16 flambard-took | Address #1277, add backspace macro to GCU pref file, also add additional arrow-key variants (some terminals sends this in non-getch mode).
+fb4da51 2019-05-16 flambard-took | Address #1278, remove FULL_GRAPHICS paranoia from WIN client.
+bede536 2019-05-16 flambard-took | Address #1278, enable graphics in SDL "sub-windows".
+29aa3d1 2019-05-16 flambard-took | Address #1267, show a message when mouse_mode changes in SDL client.
+d32381f 2019-05-16 flambard-took | Address #1278, show monster graphics in monster list sub-window.
+c5e8ff7 2019-05-16 flambard-took | Address #1274, #1260, add ']' command to Information group in Enter menu.
+2f23c4c 2019-05-18 flambard-took | Address #1274, make new NTERM_WIN_ITEMLIST define less than 8, as the maximum number for those is hardcoded on the client.
+a9d5d9c 2019-05-18 flambard-took | Address #1276, copy the inventory fix to show_equip.
+88166dc 2019-05-18 flambard-took | Close #1190, enforce ghost max hp in calc_hitpoints() and restore original behavior.
+2fbba6f 2019-05-18 flambard-took | Address #955, fix message truncation in windows client.
+e4d033b 2019-05-18 flambard-took | Address #1097, prepare all object_desc calls to pass buffer size.
+3c0a5f8 2019-05-18 flambard-took | Address #1279, change PKT_MESSAGE to use MSG_LEN %S format.
+6d0cde6 2019-05-18 flambard-took | Address #1279, change the way topline message is displayed.
+f747bd5 2019-05-18 flambard-took | Address #1279, add "wrap_messages" option to word-wrap long messages in Message and Chat sub-windows.
+660a65d 2019-05-18 flambard-took | Address #1280, fix vault generation crash in DM menu.
+9ef3c17 2019-05-18 flambard-took | Address #1279, handle "pgup"/"pgdn" keys in Ctrl+P message browser.
+11acbf3 2019-05-18 flambard-took | Address #1259, ensure "Best Cursor Hack" overrides "cursor useless".
+dbd5591 2019-05-18 flambard-took | Address #1279, make allowed object name larger in have/see prompt.
+48da940 2019-05-18 flambard-took | Address #1280, fix messed up object colors in DM menu forge.
+7416a24 2019-05-18 flambard-took | Address #1246, don't check player hostility if he's not in-game.
+80757bc 2019-05-18 flambard-took | Address #1280, ensure server level files are browsable in DM menu.
+4bda03e 2019-05-18 flambard-took | Address #877, add Acenoid's vaults!
+cc35289 2019-05-18 flambard-took | Close #1281, ensure p_ptr->pspeed never gets out of extract_energy[] bounds.
+2bde503 2019-05-20 flambard-took | Address #632, change House Foundation allocation/rarity, so it can actually be found in the dungeon. Set base price as 10000 gold.
+76d2a23 2019-05-20 flambard-took | Address #632, add tile mappings for house foundation stone.
+eaa5a22 2019-05-20 flambard-took | Address #632, forbid house creation in dungeon and on town levels.
+ed7a044 2019-05-20 flambard-took | Address #632, paranoia -- do not try to list house inventories in dumps, for houses that might be on unallocated level.
+ab84097 2019-05-20 flambard-took | Address #632, changes the way Black Market items are generated: there's now a 1/25 chance that an item from a hard-coded table (similar to other stores) will be picked, and not a completely random thing.
+a875753 2019-05-20 flambard-took | Address #1183, add pref file command '\', which injects keystrokes into the game.
+7f178e2 2019-05-20 flambard-took | Address #1183, fix virtual mode not exited correctly in some cases in client-side prf parser.
+29d5ed0 2019-05-20 flambard-took | Address #1183, add auto-inscription "script" .prf file to user dir.
+b860b4c 2019-05-20 flambard-took | Address #1282, item-by-name queries will now check for floor items.
+f7bee09 2019-05-20 flambard-took | Address #1267, and Ctrl+Click to alter, and Shift+Click on self to '_'.
+9125f99 2019-05-20 flambard-took | Address #1270, add floor item support to Macro Action Generator.
+2a59c6b 2019-05-22 flambard-took | Address #1284, dump information about related equip object when Examining.
+365000d 2019-05-22 flambard-took | Close #1283, add yucky code duplication called fix_player_2.
+456677f 2019-05-22 flambard-took | Address #1279, port "repeat last message" command (Ctrl+O) from V.
+5c24615 2019-05-22 flambard-took | Close #1285, add Ctrl+E toggle_inven_equip command from V.
+af350ff 2019-05-22 flambard-took | Address #1276, add macro'able sub-window mouse clicks, with some "nice" default actions.
+ea78dc8 2019-05-22 flambard-took | Address #1267, add ability to macro clicks on main window.
+134ae42 2019-05-22 flambard-took | Address #1270, add proper selector for equipment in Macro Generator.
+777f586 2019-05-22 flambard-took | Address #1267, add mouse suport to item, spell and store prompts.
+abb80fc 2019-05-22 flambard-took | Address #1265, make sure ascii28 hack ends when macro ends.
+dfca7f8 2019-05-22 flambard-took | Address #1267, add sample file with "mouse macros" to user dir.
+284f1a6 2019-05-22 flambard-took | Address #1267, fix VS build: don't use snprintf!
+6551be4 2019-05-22 flambard-took | Address #1267, fix VS build (for real), don't mix declarations and code.
+9421631 2019-05-23 flambard-took | Address #993, pass player pointer instead of Ind to saving routines.
+39d298f 2019-05-23 flambard-took | Address #1005, implement cave generation timestamp, and player check, as explained by PowerWyrm.
+3454f79 2019-05-23 flambard-took | Close #1286, ensure player's HP and Speed bonuses are recalculted after fruit bat state "wears off".
+a73bbd3 2019-05-23 flambard-took | Close #1287, move ang_sort to common/z-util.
+e70d6df 2019-05-23 flambard-took | Address #1264, the findpath was lacking proper extern keyword.
+d64b845 2019-05-30 flambard-took | Close #1288, make text_to_ascii accept buffer size argument.
+152a895 2019-05-30 flambard-took | Close #1289, make R:0 loader less invasive.
+ea9d026 2019-05-30 flambard-took | Address #1183, introduce new '{' pref file command, which calls new `do_cmd_inscribe_auto`, which takes an item name and desired macro as arguments.
+2256dc5 2019-05-30 flambard-took | Close #861, Close #1017, try to collide player names as early as possible. Note: we should never trim or case-rewrite "basename" without doing the same change to "nickname"! Every time this happens, the gap between the actual name and savefile names widens, and we're getting right back to the problems described in those tickets.
+c3073fd 2019-05-30 flambard-took | Address #1290, dump each item/monster/vault allocation to #cheat channel.
+2fc5240 2019-05-30 flambard-took | Close #1291, ensure old players are not placed into newly created parties with colliding party ids.
+5f38877 2019-05-30 flambard-took | Address #1292, removed a few unused variables.
+5fe9f7a 2019-05-30 flambard-took | Merge branch 'version-1_5_1' into develop
+6bbb7e0 2019-05-30 flambard-took | Address #1293, bump version to 1.5.2.
+cfb69b8 2019-05-30 flambard-took | Address #1293, add missing .h files to the distribution.
+0ffdbd0 2019-05-30 flambard-took | Update .gitignore file.
+9fa29f0 2019-05-30 flambard-took | Address #1075, fix some whitespace.
+07fa0db 2019-05-30 flambard-took | Port low-level file access from V (z-file) (#1093)
+c13af77 2019-06-03 flambard-took | Address #1296, add pref command 'G' to read command macros.
+f672d94 2019-06-03 flambard-took | Address #1297, add keymap browser and extra keymap actions to 'interact with macros' menu (Save keymap file, Query key for keymap, Create new keymap, Browse keymaps).
+40cb1d5 2019-06-03 flambard-took | Address #1298, make macro wizard aware of rogue_like_commands mode.
+706a8ee 2019-06-03 flambard-took | Address #860, map every available key to actual commands in roguelike keyset. Most importantly, the 'M' key is available again for 'Minimap', and '^S' can now be used to access the knowledge menu (as '#' is Rest in rl). Yet, stealing, socials, party menu and bottle refill also got their own keys.
+b4cf267 2019-06-03 flambard-took | Close #1298, update all default macro files to use '\\' bypass.
+beeeb64 2019-06-03 flambard-took | Close #1299, restore x1,y1,x2,y2 adjustments in room/pit builder.
+1ac6a3a 2019-06-03 flambard-took | Address #1224, port parser.c from V351.
+4497d85 2019-06-03 flambard-took | Close #1300, make hallucinated images linger for a bit.
+1400a7a 2019-06-03 flambard-took | Address #1075, apply dos2unix on readdib.c
+acb3694 2019-06-03 flambard-took | Address #1075, remove stray ^M from common/defines.h
+248d908 2019-06-03 flambard-took | Address #1294, fix items tunneled from rubble and items STMed from rubble.
+8fea96e 2019-06-03 flambard-took | Address #1294, fix items digged out from treasure veins and STMed from treasure veins.
+357a476 2019-06-03 flambard-took | Address #1294, fix items that appear out of a chest opening.
+8c8d0e0 2019-06-03 flambard-took | Close #1261, make sure spell-by-name also works with Ghost powers and Socials.
+722fbaf 2019-06-03 flambard-took | Address #1075, run dos2unix on socials.txt
+2c355f0 2019-06-03 flambard-took | Address #1224, port parser.c from V351. Ammend 1ac6a3aac6f98824891395.
+8665e95 2019-06-03 flambard-took | Address #1250, fix "dir_exists" by providing HAVE_STAT define.
+b2c1202 2019-06-03 flambard-took | Address #1250, client will now quit early if LibDir was not found.
+7319a5e 2019-06-03 flambard-took | Address #1014, give ironmen 2 turns of invulnerability on re-login to realloacted level.
+362c15a 2019-06-04 flambard-took | Address #993, change signature to player_type* in msg_print/msg_format family of functions.
+037d2c7 2019-06-04 flambard-took | Address #981, do not disturb after being healed by prayer.
+35556ba 2019-06-04 flambard-took | Close #1301, update floor items when players switch places.
+1d6256e 2019-06-04 flambard-took | Address #1246, reset running_withpathfind on disturb.
+9a8d695 2019-06-04 flambard-took | Address #993, make disturb() accept player_type pointer.
+2c14e21 2019-06-04 flambard-took | Address #993, make sound() accept player_type instead of Ind.
+fef2c20 2019-06-04 flambard-took | Address #993, make "panel_contains()" less of a hack.
+e64e943 2019-06-04 flambard-took | Address #993, make text_out functions work on player pointer instead of Ind.
+f5396ac 2019-06-04 flambard-took | Address #993, make chat channel functions accept player pointer.
+cf48ed2 2019-06-04 flambard-took | Address #993, make house-management functions accept player pointer.
+545901a 2019-06-04 flambard-took | Address #993, make player_talk accept player pointer.
+b0be140 2019-06-04 flambard-took | Address #993, pass player_pointer to DM menu functions.
+7fe04fc 2019-06-04 flambard-took | Address #993, fix VS builds, broken in b0be140f25fb779812af13036b.
+25df032 2019-06-04 flambard-took | Address #993, convert ang_sort functions.
+cb0f612 2019-06-04 flambard-took | Address #993, convert verify_panel/setup_panel/panel_bounds functions.
+e6fa86c 2019-06-04 flambard-took | Address #993, convert object_desc function.
+6e16bd7 2019-06-04 flambard-took | Address #993, convert party-related functions.
+dc13941 2019-06-04 flambard-took | Address #993, convert set_noise().
+491bf82 2019-06-04 flambard-took | Address #993, convert monster_race_track().
+5c532d4 2019-06-04 flambard-took | Address #993, convert player_flags().
+62927a9 2019-06-04 flambard-took | Address #993, convert "send_prepared_popup()".
+f90fa18 2019-06-04 flambard-took | Address #993, convert player_has_los_bold and player_can_see_bold.
+3504cec 2019-06-04 flambard-took | Address #993, convert tracking and targetting functions.
+04b5baf 2019-06-04 flambard-took | Address #993, remove some unused Ind'exes.
+7d3066d 2019-06-05 flambard-took | Address #993, change THE REST OF THE FUNCTIONS.
+a515e54 2019-06-05 flambard-took | Address #993, abstract away "same player" check for 2 player pointers.
+49bd1fb 2019-06-05 flambard-took | Address #993, store Player Ind'ex inside the player structure.
+59c19f1 2019-06-05 flambard-took | Address #993, fix msg_broadcast bug from 362c15ae66667e2e5463c679e .
+feed84f 2019-06-05 flambard-took | Close #1302, add "player_reindex" function similar to monster_compact.
+eaa6570 2019-06-06 flambard-took | Close #104 again, correctly count towns burned in town.
+b746f0e 2019-06-06 flambard-took | Address #1303, refactor spot updates.
+f721077 2019-06-06 flambard-took | Address #1303, update player-player visibility on player switching and after teleport spells. We were sadly missing those :(
+a534c12 2019-06-06 flambard-took | Close #1304, update observable monster lore for ALL nearby players.
+0939562 2019-06-06 flambard-took | Address #1305, add some shared monster messages.
+073a4de 2019-06-06 flambard-took | Address #1075, fix some minor whitespace issues.
+09e01b2 2019-06-06 flambard-took | We should not unset cave[Depth] after dealloc_dungeon, as it a) does it on it's own b) can be aborted early
+b068e96 2019-06-06 flambard-took | Address #1024, farmers can now choose their crops.
+66c9016 2019-06-06 flambard-took | Close #1306, add hardcoded articles for wilderness terrain in looking/targeting modes. This is filmsy.
+ef8201f 2019-06-06 flambard-took | Address #1305, fix bug introduced in 09395629810a4b5f010b8e.
+0c9c767 2019-06-06 flambard-took | Close #1307, artifacts will now try to be aware of their owners.
+7983c53 2019-06-06 flambard-took | Address #597, properly absorb floor item into each other.
+3bb9762 2019-06-06 flambard-took | Close #597, enrich object_similar_floor, to allow more cases of items piling up together.
+3ff2e7a 2019-06-07 flambard-took | Address #1303, fix bug in b746f0e. place_object() was returning too early. Sorry about that.
+221bc50 2019-06-07 flambard-took | Close #1249, fix scrolls of recharging. "break" was missing from a switch :(
+eef41b2 2019-06-08 flambard-took | Close #1308, update protocol to send option defaults.
+f65112d 2019-06-08 flambard-took | Address #1248, restore energy_buildup and monster_recoil classic hacks.
+1eeea6b 2019-06-08 flambard-took | Address #1309, port item origins from V320.
+bccedf9 2019-06-08 flambard-took | Address #1310, improve text messages a bit. Note the duplication for wands, will be fixed for #1311.
+e9998e5 2019-06-08 flambard-took | Close #1310, remove the wand/staff/rod pile-from-floor restriction.
+f6e9afc 2019-06-08 flambard-took | Close #1311, remove nasty code duplication from wand usage.
+d3ef71e 2019-06-08 flambard-took | Close #1254 again, rewrite the notification function to be more sane.
+1add5e3 2019-06-08 flambard-took | Address #15, make savefile loader return an error condition, instead of calling exit(1).
+e301ee4 2019-06-08 flambard-took | Address #1292, replace 'wizard' global var with Dungeon Master check.
+ce24ba0 2019-06-10 flambard-took | Address #1312, use `<= NumPlayers` everywhere.
+794a960 2019-06-10 flambard-took | Close #1001 again, don't give ironmen a WoR at birth.
+c6c645e 2019-06-10 flambard-took | Close #1313, remove all usage of x_char/x_attr from the server.
+6e3f142 2019-06-10 flambard-took | Address #1312, add bonus macros for opaque player iteration.
+3e03dab 2019-06-10 flambard-took | Close #1314, rename "obj_aware" into "kind_aware" and "obj_tried" into "kind_tried".
+7fb0597 2019-06-10 flambard-took | Address #1315, make mimic monsters a bit more dangerous.
+02bebfe 2019-06-10 flambard-took | Address #1303, improve twall function to correctly handle updates.
+b206d46 2019-06-10 flambard-took | Remove pointless, yet "expensive" operation in monster_place_one.
+8a86886 2019-06-10 flambard-took | Address #1292, stop using global "command_arg", use p_ptr->command_arg.
+bf4082d 2019-06-11 flambard-took | SDL2 client. (#1295)
+c2680cb 2019-06-11 flambard-took | Address #1295, fix working directory for SDL builds in VS2010 project.
+3e29697 2019-06-11 flambard-took | Address #1295, fix some post-merge bugs.
+2d98589 2019-06-11 flambard-took | Address #15, add some missing format specifiers.
+5616aa0 2019-06-11 flambard-took | Address #1250, make Windows version of dir_exists prefer WinApi over `stat()`, seems to be working much better.
+4b9a05b 2019-06-11 flambard-took | Close #1250 again, don't check libdir before quit hook is useful on Windows/OSX.
+5ce629c 2019-06-11 flambard-took | Address #1315, remove stupid debug code, which also broke VS builds.
+35e8ce5 2019-06-14 flambard-took | Address #1305, fix stupid bug from 09395629810a4b.
+b547e61 2019-06-14 flambard-took | Close #1316, make cure wounds potions more potent (as per V310b).
+5540377 2019-06-14 flambard-took | Close #1317, add nourishment descriptions to generated object info.
+241dba4 2019-06-14 flambard-took | Close #1318, fix hturn to date converter.
+b47c7a9 2019-06-14 flambard-took | Address #807, fix "item" index flipping in do_cmd_eat_food.
+ad80205 2019-08-14 flambard-took | Close #1320, add void to argumentless function prototypes.
+291b1f6 2019-08-14 flambard-took | Address #807, revert commit b47c7a926715b26eea7504870d944cda94f92603.
+4cd8a20 2019-08-14 flambard-took | Address #1055, fix some minor warnings.
+e9b7aae 2019-08-14 flambard-took | Address #349, add a routine to copy pref files from one directory to another.
+3a112ae 2019-08-14 flambard-took | Address #1321, add iOS build of the SDL2 client.
+d082271 2019-08-14 flambard-took | Address #1321, add many missing returns in SDL2 code.
+d953196 2019-08-14 flambard-took | Address #1321, convert SDL/LuPNG loader to use SDL_RWops, instead of stdio API. This will be helpfull on Android.
+c334483 2019-08-14 flambard-took | Address #1321, fix stupid bug, we use "TRUE", not "true".
+fa1959c 2019-08-14 flambard-took | Address #1321, fix TARGET_OS_IPHONE check.
+a59f11f 2019-08-14 flambard-took | Close #1322, fix spell/bolts visual mappings.
+cd2758d 2019-08-14 flambard-took | Close #1323, port partial blows per round from V320.
+8dc9c51 2019-08-14 flambard-took | Address #881, remove hard-coded number of stats (6), replace with server-transmitted A_MAX variable (and stat names).
+aa9e34e 2019-08-14 flambard-took | Address #1319, restore randarts.
+91c1766 2019-08-14 flambard-took | Close #1324, remove evil double-digestion.
+eb9217b 2019-08-15 flambard-took | Close #1156, fix starvation auto-kick.
+b735834 2019-08-15 flambard-took | Close #1326, add ability to set 100% slowdown threshold, and to toggle between 2 values, so that a single-key macro could be created.
+e076f2a 2019-08-15 flambard-took | Close #1329, make time-bubble indicator a bit more obvious.
+7576b6c 2019-08-15 flambard-took | Address #1326, fix rampant flambard stupidity.
+202428e 2019-08-15 flambard-took | Address #1264, fix potential (and very real) crash in the pathfinder.
+b965355 2019-08-15 flambard-took | Address #1267, add ability to disable mouse in windows client.
+a0a72ed 2019-08-15 flambard-took | Address #1267, pass additional mouse buttons from windows client.
+1fb3239 2019-08-15 flambard-took | Address #881, restore some hard-coded stat names to the client, to remain backward-compatible with old servers.
+66fd3ec 2019-08-15 flambard-took | Address #349, add PATH_MAX for old windows builds.
+c2c26cf 2019-08-15 flambard-took | Address #1267, add support for mouse maps. This allows users to swap mouse buttons around. This is different from "mouse macros", which are sending *keystrokes* on mouse presses.
+b0e8487 2019-08-15 flambard-took | Address #1319, add missing 'randart.c' to VS projects.
+c8c65d0 2019-08-15 flambard-took | Address #1264, fix potential (and very real) infinite loop in the pathfinder.
+94d3a1a 2019-08-15 flambard-took | Close #1332, call update_stuff() as soon as player enters the game, do not wait for end of turn.
+ddebdef 2019-08-15 flambard-took | Address #1333, fix horrible bug in `adjust_panel()`.
+88f2140 2019-08-15 flambard-took | Address #1319, do not generate randarts via Artifact Creation scroll, on servers that have randarts disabled.
+376f46e 2019-08-16 flambard-took | Address #1321, remove userspace files from xcode project.
+c538d7f 2019-08-16 flambard-took | Add some missing externs.
+736788f 2019-08-16 flambard-took | Address #1321, rename xcode project to "mangclient".
+116f84f 2019-08-16 flambard-took | Address #1321, update xcode project.
+414abbc 2019-08-16 flambard-took | Address #1321, improve SDL2/OSX situation, xcode-built projects will now be able to access the config dir without the launch_mangclient.sh hack.
+94743eb 2019-08-16 flambard-took | Address #1321, improve highdpi handling on SDL2 client.
+33718aa 2019-08-16 flambard-took | Address #1321, fix several crashes in SDL2 client.
+4ae3b5b 2019-08-16 flambard-took | Address #1321, make alt.dungeon calculations in SDL2 a tiny bit saner.
+71e6e40 2019-08-16 flambard-took | Address #1321, simplify xcode project.
+02acf40 2019-08-18 flambard-took | Close #1323, Address #1248, fix partial bpr / energy_buildup bug.
+d2a5833 2019-08-18 flambard-took | Address #1297, show hidden options in macro editor.
+f6ac7cb 2019-08-18 flambard-took | Address #1297, do not allow Escape key to be remapped in keymaps.
+846b77e 2019-08-18 flambard-took | Close #1328, add 'bump_open' option.
+12d251f 2019-08-18 flambard-took | Close #1335, add 'pickup_inven' option from V309.
+8758419 2019-08-18 flambard-took | Close #1335, properly this time. Note: in V320, those checks were moved into their own separate functions.
+f31fa7c 2019-08-19 flambard-took | Close #994, apply 99% discount after branding/enchanting items with store (or mixed) origins.
+a08ca78 2019-08-19 flambard-took | Close #1336, fix incorrect floor item index on failing recharge.
+d144a0b 2019-08-19 flambard-took | Address #1267, fix stupid typo from a0a72ed, this should enable additional mouse buttons in windows clients, for real.
+347aade 2019-08-19 flambard-took | Address #1267, fix example/hex values in mouse.prf
+b58fd98 2019-08-19 flambard-took | Close #1338, fix artifact activation.
+2e7b78f 2019-08-19 flambard-took | Address #1319, fix broken logic in Artifact Creation scroll.
+ba27edf 2019-08-19 flambard-took | Address #1331, adjust 'use_old_target' so it overrides less.
+5ebfeb7 2019-08-19 flambard-took | Close #1179, revert 14a9a1d, make cure light and serious wounds potions appear in the temple again. Healing potions were moved to the black market.
+a8a0c8e 2019-08-19 flambard-took | Update Travis-CI to handle outdated homebrew (#1339)
+33528b6 2019-08-19 flambard-took | Address #1321, remove WinSock initialization from SDL2 client, the netcode layer handles this on its own.
+fb53b98 2019-08-20 flambard-took | Address #1321, add android studio/gradle project.
+5cfacc2 2019-08-20 flambard-took | Address #1321, add RWops interface to z-file.
+4267a2e 2019-08-20 flambard-took | Address #1321, add more gradle files from SDL2 template.
+9809ee0 2019-08-20 flambard-took | Address #1321, add missing APK resources.
+4d84a13 2019-08-20 flambard-took | Address #1321, rename android project from 'app' to 'mangclient'.
+5d62243 2019-08-20 flambard-took | Address #1321, fix some incorrect z-file usage in sdl-font.c
+8c12c4c 2019-08-20 flambard-took | Close #872 again, ensure we skip player processing after level change.
+4a16c64 2019-08-21 flambard-took | Add travis-ci android builds and deployment.
+20562a3 2019-08-21 flambard-took | Address #1335, fix mismatching declaration/definition of object_similar.
+16b7612 2019-08-21 flambard-took | Set executable bit on asgradle/.travis-gh script.
+4558cbe 2019-08-21 flambard-took | Address #1321, add SDL_ttf framework to xcode-ios project.
+4468724 2019-08-21 flambard-took | Address #1321, remove 'ios-config.h', move defines into 'h-basic.h'.
+31a4f7a 2019-08-21 flambard-took | Address #1321, use "fake" paths to SDL2/SDL2_ttf source directories.
+f688c90 2019-08-21 flambard-took | Address #1321, add SDL2_ttf to android builds.
+d3098fd 2019-08-21 flambard-took | Add xcode-ios builds to travis-ci.
+40296e6 2019-08-21 flambard-took | Add SDL2_ttf to android travis-ci builds.
+caf9858 2019-08-21 flambard-took | Address #1321, #1075, re-indent main-sdl2 to follow our code style.
+ee26026 2019-08-21 flambard-took | Address #1075, use LF line endings in graf-dvg.prf
+a517812 2019-08-21 flambard-took | Close #1223, move windows-only files into 'win' dir.
+6f67b0d 2019-08-21 flambard-took | Address #1321, refactor SDL2 event handler a bit.
+c28cf83 2019-08-21 flambard-took | Make 'make dist' handle newest files.
+11f7daf 2019-08-21 flambard-took | Address #1321, replace 0 magic number with TERM_MAIN const in SDL2 client.
+16112a4 2019-08-21 flambard-took | Address #1321, add proper macro mappings to SDL2 client.
+b7cfbed 2019-08-21 flambard-took | Close #1342, add --help, --version and -m switches to mangclient.
+9cff442 2019-08-22 flambard-took | Address #1321, re-arrange osx/ios xcode projects.
+bf1fab3 2019-08-22 flambard-took | Address #1342, fix VS builds, broken in b7cfbed.
+8fa4232 2019-08-22 flambard-took | Address #1321, make sdl2 client respect USE_SOUND define.
+e10a72b 2019-08-22 flambard-took | Address #1321, fix some memleaks in SDL2 client.
+b6151c0 2019-08-22 flambard-took | Address #1343, add free_file_paths function to the client.
+350a54e 2019-08-22 flambard-took | Address #1343, add 'conf_done' destructor. Does nothing on Windows.
+05502a2 2019-08-22 flambard-took | Address #1343, add deallocation functions for most allocated things.
+276bf95 2019-08-22 flambard-took | Address #1321, make SDL1 client respect USE_SOUND define.
+0f799c9 2019-08-22 flambard-took | Use CoreFoundation on all OSX builds.
+38ef1df 2019-08-26 flambard-took | Address #1348, fix cygwin autoconf'iguration.
+f420091 2019-08-27 flambard-took | Address #1350, try to be much more careful with auto-guessed inttypes.
+8af373a 2019-08-27 flambard-took | Address #1349, add more horrible hacks to vstrnfmt, to handle %I64d and %hd -like formats.
+01c4fa3 2019-08-27 flambard-took | Address #1321, fix sound only playing once in SDL2/SDL1 clients.
+e3775f5 2019-08-27 flambard-took | Address #1350, #1349, add a sanity check for the various int types we have defined.
+a929fda 2019-08-27 flambard-took | Address #1349, #1350, fix broken build. Sorry about that.
+6d1c263 2019-08-28 flambard-took | Address #1321, make SDL2 messagebox closable by hitting Enter.
+35ded4a 2019-08-28 flambard-took | Address #1321, #1267, track modifier keys to use with mouse presses in SDL2.
+c5f3e67 2019-08-28 flambard-took | Address #1351, add new bitflag "array" redraw_inven, to track inventory changes per slot. Only send out new data for slots scheduled for redraw.
+0523b56 2019-08-28 flambard-took | Address #1348, define UCHAR_MAX for platforms that don't have it.
+56cd618 2019-08-29 flambard-took | Address #1352, add most of the missing bell() calls.
+31bd5ef 2019-08-29 flambard-took | Address #1353, fix ESC key (outside of macros) to send "clear queue" packet.
+cf6d7ea 2019-08-29 flambard-took | Address #1354, use proper $enableval in configure.ac.
+f0b3635 2019-08-29 flambard-took | Address #1349, add error condition check to file_putf.
+0005d84 2019-08-29 flambard-took | Address #924, add integer hypot and square root functions.
+ed9f704 2019-08-29 flambard-took | Address #1267, make server-side mouse handler less naive.
+e84fb07 2019-08-29 flambard-took | Close #1355, release console pointers properly.
+a085404 2019-08-29 flambard-took | Address #1264, make pathfinder avoid known traps.
+fdcf66c 2019-08-29 flambard-took | Address #1208, add new macro-only '\f' key, which disables queue clearing.
+e441bf1 2019-08-29 flambard-took | Close #978, update resistance panel after memory loss.
+2e99f3e 2019-08-29 flambard-took | Address #1350, make tiny improvement to the sanity test.
+195eccd 2019-08-29 flambard-took | Address #1348, make our custom "usleep()" less hacky and more cross-platform.
+30751d0 2019-08-29 flambard-took | Address #1348, include winsock earlier, so we can have select-as-usleep.
+47bc761 2019-09-17 flambard-took | Close #1156 again, ensure afk timer is reset on disconnect.
+7c3d2d6 2019-09-17 flambard-took | Close #1359, adhere to buffer limits when writing to p_ptr->info.
+1d32738 2019-09-17 flambard-took | Address #1274, #1357, stop dumping info if we're past MAX_ITEMLIST.
+7eb1380 2019-09-17 flambard-took | Close #1358, ignore fix_monlist/fix_itemlist when player doesn't have relevant stream subscriptions.
+99c7fee 2019-09-17 flambard-took | Address #1351, handle lamp/torch refuel correctly.
+bbb827f 2019-09-17 flambard-took | Close #1360, don't set `monster_race_idx` to -1, use proper 0.
+cc61be6 2019-09-18 flambard-took | Close #1361, fix Rod of Perception.
+4d92bd7 2019-10-26 flambard-took | Close #1362. See also #1274.
+68aa93d 2019-10-26 flambard-took | Address #1351, ensure fuel flags are resent for fuel items.
+9bb26e6 2019-10-26 flambard-took | Address #1351, ensure similar inventory items are updated when player becomes aware of some item kind.
+3fef7ef 2019-10-26 flambard-took | Address #1363, use "tried" instead of "aware" when generating item tester flags for rods/staves/scrolls.
+50be9e7 2019-10-26 flambard-took | Address #1217, step 1: swap the actual defines.
+0bcf19b 2019-10-26 flambard-took | Address #1217, step 2: replace all calls to "rand_int" with "randint0".
+9b03e27 2019-10-26 flambard-took | Address #1217, step 3: replace all calls to "randint" with "randint1".
+b71ec36 2019-12-16 flambard-took | Close #1364, fix logic for (not) loading special static towns.
+6cf540e 2020-01-14 flambard-took | Close #1365, allow going down on quest levels in ironman mode.
+11fd5fb 2020-01-19 flambard-took | Address #1224, fix a horrible bug in ZNEW/RNEW macro calls.
+6a098ba 2020-01-19 flambard-took | Address #990, fix horrible bug in Windows directory iterator.
+d4059c3 2020-01-19 flambard-took | Address #1222, port grafmode loader from V351.
+7daf353 2020-01-19 flambard-took | Address #1222 add new files to XCode projects.
+f0912e0 2020-01-21 flambard-took | Address #1222, fix VS builds. Sorry!
+0453467 2020-02-11 flambard-took | Address #1367, add partial support for -duser and -dbone cli options.
+7096ac6 2020-02-25 flambard-took | Address #1368, add websocket support to the server.
+91b434f 2020-02-25 flambard-took | Address #1368, add new files to XCode projects.
+7e5f365 2020-02-25 flambard-took | Address #1368, add new files to gradle project.
+6948871 2020-02-25 flambard-took | Address #1368, fix VS2008 builds.
+b99c9d6 2020-02-25 flambard-took | Address #1368, fix VS2010 projects.
+8198e76 2020-02-27 flambard-took | Merge pull request #1369 from mangband/develop-netlab
+ff25d24 2020-02-27 flambard-took | Address #1370, add "a" / "c" and "name_one" fields to all item-related packets.
+7008a50 2020-02-27 flambard-took | Address #1371, declare, transmit and store x/y positions for equip slots.
+e0671b3 2020-02-27 flambard-took | Address #1321, add TERM_XTRA_NOISE (system beep) event to SDL and SDL2 clients.
+68961d4 2020-02-27 flambard-took | Address #1264, #1353, cancel path-finding when ESC is pressed (and queue is cleared).
+7ceb668 2020-03-01 flambard-took | Close #1330, gorged status will now pass, normally, in towns.
+7bb4c75 2020-03-05 flambard-took | Address #1222, replace GFXNAME tables with graphics_mode struct, on all clients (X11, SDL, SDL2, WIN).
+73452a2 2020-03-07 flambard-took | Address #1222, unhardcode tilesets from server side. From now on, clients just report offsets for torch-lit/dim-lit tiles, and the server *may* use that info to provide some lighting effects.
+4bc5bd0 2020-03-07 flambard-took | Address #1370, fix stupid bugs from commit ff25d24c5e14.
+12bab0b 2020-03-08 flambard-took | Address #1222, remove few constants.
+a046721 2020-03-08 flambard-took | Address #1372, add 21x31 version of Tangar's 1-bit font.
+327801b 2020-03-08 flambard-took | Close #1373, change visual mapping for PvP arena wall.
+4aeb28e 2020-03-09 flambard-took | Address #1321, add several new interfaces to SDL2 client:
+a5017bc 2020-03-09 flambard-took | Address #1321, update build scripts to include SDL2 (mostly untested).
+370ffc8 2020-03-09 flambard-took | Address #1222, remove remnants of GRAPHICS_ADAM_BOLT and GRAPHICS_DAVID_GERVAIS defines from SDL client, use abstract GRAPHICS_TRANSPARENT instead.
+91a9bab 2020-03-09 flambard-took | Address #1321, fix "alt.dungeon" setting not being saved on main term.
+44ceaa9 2020-03-09 flambard-took | Address #1321, fix stupid bug from 91a9bab.
+4e8dec1 2020-03-13 flambard-took | Address #1040, update 'version.txt' with bits of MAngband history.
+de51174 2020-03-13 igroglaz | Merge pull request #1 from mangband/develop
+5ac86e3 2020-03-13 igroglaz | typos
+0fcac38 2020-03-13 flambard-took | Merge pull request #1374 from igroglaz/develop
+ee39d18 2020-03-14 flambard-took | Address #1321, make "Recall" window non-virtual by default, on Windows.
+af5a2cb 2020-03-14 flambard-took | Address #1321, disable "Enter menu" and "Interact with macros" menus on Mobile UI.
+93eb929 2020-03-14 flambard-took | Address #1321, fix multiple bugs in SDL2 mouse/keyboard handling.
+abfe361 2020-03-14 flambard-took | Address #1321, add item counters to quick slots.
+de799ca 2020-03-14 flambard-took | Address #1321, add store commands touch icons.
+b20565a 2020-03-14 flambard-took | Address #1222, finish 7bb4c75 by fixing the windows client.
+c226d6c 2020-03-15 flambard-took | Address #1321, fix 'recountSlotItems' call on desktop SDL2.
+b75a353 2020-03-17 flambard-took | Address #1321, ensure quickslot item counter does not interfere with spellcasting hack. :(
+9141abe 2020-03-17 flambard-took | Address #1321, make sure panel sizes for spell icons are identical.
+f10108d 2020-03-17 flambard-took | Address #1321, bump SDL2 version to 2.0.12 on iOS, to fix various bugs with rectangle rendering, this requires addition of CoreBluetooth framework to the xcode project.
+348f9c9 2020-03-17 flambard-took | Address #1321, make icon indexes for 'sell' and 'purchase' icons less magic.
+4c71fe0 2020-03-17 flambard-took | Address #1321, add 'L'ocate command to touch UI.
+682b808 2020-03-17 flambard-took | Address #1321, add confirmation dialog to touch UI.
+8ffa8c2 2020-03-17 flambard-took | Address #1321, force certain local options on mobile.
+956fbca 2020-03-17 flambard-took | Address #1267, #1264, make sure clicks outside the dungeon do not trigger pathfinder/cave actions.
+4679b00 2020-03-17 flambard-took | Address #1321, don't leak newly added resources!
+74a758d 2020-03-17 flambard-took | Address #1321, increase icon drag threshold (in pixels) for mobile UI, to be revised re: high/low DPI.
+76ab16f 2020-03-17 flambard-took | Address #1321, handle rare cases of clicks without priror hover on touch UI.
+bad5612 2020-03-17 flambard-took | Address #1321, try to move lisenglas away from the finger.
+6937733 2020-03-17 flambard-took | Address #1321, minor cleanup.
+1a80b25 2020-03-17 flambard-took | Address #1321, attempt to minimize required cutouts for alt.dungeon, to be revised/reverted.
+b5c0ca2 2020-03-17 flambard-took | Address #1321, simplify 'press space' UI icon in stores.
+b7150e5 2020-03-17 flambard-took | Address #1321, try to minimize number of XTRA_FRESH calls on SDL2.
+de23405 2020-03-17 flambard-took | Address #1055, add some missing 'void's to function prototypes.
+0997fb4 2020-03-17 flambard-took | Address #1321, pass "ui.h" menus to Term2 for custom display.
+d2c5d71 2020-03-18 flambard-took | Address #1296, add "new macro wizard" to both macro interfaces.
+dfdc7cb 2020-03-18 flambard-took | Address #1075, make some minor whitspace adjustments.
+4b94639 2020-03-18 flambard-took | Close #1375, use player mappings when deciding on minimap priority.
+642fa38 2020-03-18 flambard-took | Address #1296, restore COMMAND_SPELL_BOOK to overloaded priest Gain command.
+cd46504 2020-03-20 flambard-took | Address #1321, finish build script (deb/rpm) update for SDL2.
+395e752 2020-03-20 flambard-took | Address #1321, update default macros for SDL2. (Helps in roguelike mode).
+dd0f0e5 2020-03-20 flambard-took | Address #1321, cleanup z_ask_* definitions/declarations.
+859d9de 2020-03-20 flambard-took | Address #1321, fix bug in dungeon cutout and make alt.cursor less glitchy.
+590a57a 2020-03-20 flambard-took | Address #1321, fix modifier keys being passed down to Angband bug.
+71e8751 2020-03-20 flambard-took | Address #1368, expand value between left-shifting in 64bit.
+6ca2447 2020-03-18 flambard-took | Address #1321, make passed menus more usable on highDPI devices.
+67be1ed 2020-03-20 flambard-took | Update .gitignore with some OSX-related stuff.
+a4b5faa 2020-03-20 flambard-took | Address #1376, bump version to 1.5.3.
+884f170 2020-03-21 flambard-took | Address #1376, fix debian package names.
+3c05d4c 2020-03-21 flambard-took | Address #1376, restore DEBUG macro printing in SDL2.
+9682b1c 2020-03-21 flambard-took | Address #1376, #1222, put missing graphics.txt into the distribution!
+4f274e1 2020-03-21 flambard-took | Address #1376, add fedora29 to docker build script.
+f48fbbb 2020-03-21 flambard-took | Address #1376, simplify AppBundle file copy to include 'graphics.txt'.
+0ae8a57 2020-03-21 flambard-took | Address #1376, add ability to specify 1 extra file to dmgit script.
+7c9971c 2020-04-01 flambard-took | Close #1377, Address #1349, implement suggested patch to fix "%ull" format.:
+2093059 2020-04-09 flambard-took | Address #1378, add appimage build script.
+7de89a2 2020-04-09 flambard-took | Address #1378, add appimage builds to docker massive-build script.
+0df65d8 2020-04-22 flambard-took | Close #1379, add pref-sdl2.prf to Makefile.am
+dfc6434 2020-04-24 flambard-took | Close #1380, expand number of rows in inventory.
+3f04739 2020-04-24 flambard-took | Close #1384, improve command handling from quickbar.
+7365de9 2020-04-24 flambard-took | Close #1382, add inven/equip toggle icon.
+3c728bc 2020-04-24 flambard-took | Close #1381, add icon for selecting floor item. Makes "pick up" icon show floor item if added to quickbar (and the "floor" icon behaves the same as well).
+5175707 2020-04-29 flambard-took | Close #1387, add 1 more level of recursion to dylib relocation.
+45dd002 2020-04-29 flambard-took | Address #1055, fix some obvious warnings.
+3d9f876 2020-05-01 flambard-took | Close #1385, update SDLActivity to stock one from SDL2-0.12.
+7d48c7c 2020-05-01 flambard-took | Address #1386, fill audio buffer with zeroes for silence.
+700a72b 2020-05-01 flambard-took | Address #1390, adjust IsTablet Java method to deal with devices which report their xdpi and ydpi wrongly. This is extremely hacky, and might get accidently overwritten when we update SDLActivity again.
+461383f 2020-05-01 flambard-took | Address #1390, when dragging icons around, shift the icon a bit to the left and upwards, so that user's finger isn't covering it.
+450aebf 2020-05-01 flambard-took | Address #1390, set proper sign for fontsize param in iconText.
+3aeec56 2020-05-04 flambard-took | Close #1389, redraw main window after toggling sub-term "virtuality".
+93e1acd 2020-05-04 flambard-took | Address #1390, stop calling Term_clear() during term settings update, to allow Z-Term layer to redraw screen contents later.
+e372401 2020-05-04 flambard-took | Close #1388, rerender screen on Menu clicks.
+6502246 2020-11-01 flambard-took | Close #1391, use application support dir for configfile on osx.
+e08c2a6 2020-11-01 flambard-took | Address #1390, remove outdated SDL2 defaults from .mangrc
+5a00709 2020-11-01 flambard-took | Close #1392, SDL and SDL2 clients now get their font lists by reading the font dir. The old method (of providing a list via the .ini file) still works. See also #1390.
+1dc1ec5 2020-11-01 flambard-took | Address #1390, minimize number of errors shown when font loading fails.
+c330ed2 2020-11-01 flambard-took | Close #1393, add NSHighResolutionCapable flag to Info.plist for OSX.
+762a588 2021-01-11 flambard-took | Close #1394, add "combine arrow keys" option to SDL2 client.
+ea1d657 2021-02-06 flambard-took | Close #1024 again, fix potato bug, outlined by PowerWyrm.
+407f053 2021-04-06 flambard-took | Close #1395, apply patches provided by adriaandegroot.
+fb0d0d2 2021-10-10 flambard-took | Address #1399, update Travis-CI.
+226fbe5 2021-10-10 flambard-took | Close #1400, replace GWL_WNDPROC with GWLP_WNDPROC in win32 client.
+2763c39 2021-10-10 flambard-took | Address #1390, use AudioServicesPlayAlertSound to beep on macOS.
+34a75e9 2021-10-10 flambard-took | Address #1390, add -framework AudioToolbox to configure.ac
+01cf173 2021-10-10 flambard-took | Address #1390, add AudioToolbox.framework to macOS XCode project.
+5f7b0aa 2021-10-10 flambard-took | Close #1401, add vs2017 projects.
+aa9af80 2021-10-10 flambard-took | Close #1402, add new xcode-ios project.
+58ef26d 2021-10-10 flambard-took | Add GitHub Actions CI/CD workflow.
+d23d5ed 2021-10-10 flambard-took | Address #1403, use latest xcode-ios project for github-actions build.
+817456e 2021-10-10 flambard-took | Address #1402, use simpler hash for artifacts in ci-cd.
+42f0234 2021-10-10 flambard-took | Merge pull request #1403 from mangband/develop-github-actions
+4b45094 2022-03-12 flambard-took | Close #1405, apply shots per round modifier while waiting for do_cmd_fire.
+2b2fbac 2022-03-12 flambard-took | Address #1406, migrate to SDL2_ttf 2.0.18 in CI/CD.
+c97e873 2022-03-13 flambard-took | Merge pull request #1406 from mangband/cicd-sdl-ttf-url

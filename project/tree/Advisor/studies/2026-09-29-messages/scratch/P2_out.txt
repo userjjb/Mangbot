@@ -1,0 +1,323 @@
+total msgs distinct 1826 count 18489
+top300 count 15516 matched 7544 260
+share all count matched top300/ total 0.48620778551172983 0.408026394072151
+4732 ^You (hit|miss|have slain|have destroyed|smite|bite|claw)
+1468 RE_ATTACK
+1115 startswith 'You have '
+822 startswith 'You have slain'/'You have destroyed' (+target)
+269 ^(The|It) .* (dies|is destroyed|flees)
+200 'blocking your way' in
+169 startswith 'You feel'
+155 RE_UNSEEN
+136 RE_HURT_OTHER
+133 commands you to return|magic missile|fires an arrow|fires a bolt|mumbles
+92 'rubble' in
+39 startswith 'You hear a door burst open'
+38 startswith 'I see no down staircase'
+33 startswith You sold/bought/I don't want/You do not have enough/You cannot carry/You have no room/That item
+31 startswith 'The air about you becomes charged'
+31 'The air about you becomes charged' in
+31 'yanked upwards'/'yanked downwards' in
+14 startswith 'I see no up staircase'
+--- UNMATCHED
+2240 Looks like any other level.
+1378 You enter a maze of down staircases.
+1323 You enter a maze of up staircases.
+1152 Your light source is a Wooden Torch (with # turns of light) (f).
+1035 Light source was a Wooden Torch (with # turns of light) (f).
+113 Light source was a Wooden Torch (with # turns of light) (g).
+102 You failed to pick the lock.
+78 You eventually agree upon the price.
+48 It was a good hit!
+32 Okay.
+32 It was a great hit!
+30 Accepted!
+26 Agreed!
+24 Fine.
+22 Taken!
+21 Welcome to level #.
+20 Done!
+20 This level can't be all bad...
+20 The Cave orc wakes up.
+19 This house costs # gold.
+17 It blinks away.
+17 The Jackal wakes up.
+16 The Village idiot drools on you.
+15 The Dark hound breathes darkness.
+15 The Manes wakes up.
+14 You are confused!
+14 The Hill orc wakes up.
+13 The Cave spider wakes up.
+13 You fuel your lamp.
+11 You refuse to be frightened.
+10 The Novice priest wakes up.
+10 Darkness surrounds you.
+10 The Black orc wakes up.
+9 Yipee!
+9 You resist the effects!
+9 The sun has fallen.
+9 That tastes good.
+9 You are terrified!
+9 The Tengu blinks away.
+8 The Giant salamander breathes fire.
+--- MATCHED
+333 You hit the Cave orc. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+281 You hit the Hill orc. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+211 You hit the Snaga. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+154 You hit the Manes. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+134 You hit the Lemure. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+127 You hit the Blue worm mass. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+115 You hit the Giant black louse. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+115 You have slain the Giant black louse. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+108 There is a wall blocking your way. => ["'blocking your way' in"]
+97 You hit the Giant flea. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+97 You have slain the Giant flea. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+92 There is rubble blocking your way. => ["'blocking your way' in", "'rubble' in"]
+91 The Hill orc hits you. => ['RE_ATTACK']
+91 You hit the Black orc. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+89 You hit the White wolf. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+85 The White wolf bites you. => ['RE_ATTACK']
+79 You hit the Pseudo-dragon. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+72 You hit the Novice warrior. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+71 You miss the Cave orc. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+67 You have found # gold pieces worth of copper. => ["startswith 'You have '"]
+65 You hit the Novice priest. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+64 The Cave orc hits you. => ['RE_ATTACK']
+64 You hit the Warg. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+58 You hit the Jackal. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+58 You have slain the Jackal. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+58 You feel much better. => ["startswith 'You feel'"]
+57 You miss the Hill orc. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+56 You hit the Half-orc. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+54 You hit the Battle-scarred veteran. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+53 You have slain the Snaga. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+53 It fires an arrow! => ['RE_UNSEEN', 'commands you to return|magic missile|fires an arrow|fires a bolt|mumbles']
+51 The Manes hits you. => ['RE_ATTACK']
+51 You have destroyed the Blue worm mass. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+50 You have # Scrolls of Phase Door {@r#}. => ["startswith 'You have '"]
+49 You hit the Kobold archer. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+49 The Giant black louse bites you. => ['RE_ATTACK']
+47 You hit the Black ogre. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+46 You have slain the Hill orc. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+45 The Lemure hits you. => ['RE_ATTACK']
+45 Your light is growing faint. => ['RE_HURT_OTHER']
+45 The Yellow mold releases spores at you. => ['RE_ATTACK']
+44 You have slain the Cave orc. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+44 The Black orc hits you. => ['RE_ATTACK']
+43 The Snaga flees in terror! => ['^(The|It) .* (dies|is destroyed|flees)']
+43 The Hill orc flees in terror! => ['^(The|It) .* (dies|is destroyed|flees)']
+43 You have found # gold pieces worth of silver. => ["startswith 'You have '"]
+43 It hits you. => ['RE_UNSEEN', 'RE_ATTACK']
+42 The Snaga hits you. => ['RE_ATTACK']
+42 You miss the Snaga. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+42 The Cave orc flees in terror! => ['^(The|It) .* (dies|is destroyed|flees)']
+42 The Hill orc misses you. => ['RE_ATTACK']
+42 You hit the Large kobold. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+42 You hit the Dark hound. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+41 You hit the Mean-looking mercenary. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+40 The Cave orc misses you. => ['RE_ATTACK']
+40 You have destroyed the Manes. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+39 You hear a door burst open! => ["startswith 'You hear a door burst open'"]
+38 I see no down staircase here. => ["startswith 'I see no down staircase'"]
+38 You miss the Lemure. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+38 You hit the Orc shaman. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+37 You have # Potions of Cure Light Wounds {@q#}. => ["startswith 'You have '"]
+37 You hit the Novice ranger. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+37 The Half-orc hits you. => ['RE_ATTACK']
+37 You hit the Fire hound. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+37 You hit the Gnome mage. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+35 You hit Grishnakh, the Hill Orc. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+34 You hit Wormtongue, Agent of Saruman. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+34 You hit the Swordsman. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+33 You hit the Green jelly. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+31 The air about you becomes charged... => ["startswith 'The air about you becomes charged'", "'The air about you becomes charged' in"]
+31 You hit the Novice rogue. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+31 You miss the Manes. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+31 The White wolf misses you. => ['RE_ATTACK']
+29 You hit Mughash the Kobold Lord. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+29 The Uruk hits you. => ['RE_ATTACK']
+28 You hit the Cave spider. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+28 The Pseudo-dragon claws you. => ['RE_ATTACK']
+28 You have slain the White wolf. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+28 The Tiger claws you. => ['RE_ATTACK']
+27 You have slain the Novice priest. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+27 You have slain the Novice warrior. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+27 You hit the Dark elven warrior. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+26 You hit Brodda, the Easterling. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+26 You hit the Wolf. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+26 Grishnakh, the Hill Orc hits you. => ['RE_ATTACK']
+26 You hit the Killer brown beetle. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+25 You hit the Novice mage. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+25 You hit Lagduf, the Snaga. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+24 The Snaga misses you. => ['RE_ATTACK']
+24 You have picked the lock. => ["startswith 'You have '"]
+24 You miss the Black orc. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+23 The Warg bites you. => ['RE_ATTACK']
+23 The Manes misses you. => ['RE_ATTACK']
+23 You hit the Tengu. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+23 You hit the Uruk. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+22 You feel something roll beneath your feet. => ["startswith 'You feel'"]
+22 You have been given a graze. => ["startswith 'You have '", 'RE_HURT_OTHER']
+22 You are no longer bleeding. => ['RE_HURT_OTHER']
+22 You have slain the Cave spider. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+21 The Novice priest hits you. => ['RE_ATTACK']
+21 The Novice priest flees in terror! => ['^(The|It) .* (dies|is destroyed|flees)']
+21 You miss the Half-orc. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+21 You hit the Cave bear. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+20 You hit the Rot jelly. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+20 You hit the Large grey snake. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+20 The Novice warrior hits you. => ['RE_ATTACK']
+20 The Novice warrior flees in terror! => ['^(The|It) .* (dies|is destroyed|flees)']
+20 You hit the Stone troll. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+20 You hit the Priest. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+20 The Black ogre hits you. => ['RE_ATTACK']
+20 You hit the Blue yeek. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+20 The White wolf flees in terror! => ['^(The|It) .* (dies|is destroyed|flees)']
+19 You found a trap! => ['RE_HURT_OTHER']
+19 You have slain the Blue yeek. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+18 The Rot jelly misses you. => ['RE_ATTACK']
+18 You hit the Zombified kobold. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+18 You hit the Baby black dragon. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+18 You hit the King cobra. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+18 You hit the Red worm mass. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+18 The Blue yeek hits you. => ['RE_ATTACK']
+18 The Black orc misses you. => ['RE_ATTACK']
+18 The Tiger misses you. => ['RE_ATTACK']
+18 The Novice paladin hits you. => ['RE_ATTACK']
+17 You feel yourself yanked upwards! => ["startswith 'You feel'", "'yanked upwards'/'yanked downwards' in"]
+17 The Kobold archer fires an arrow! => ['commands you to return|magic missile|fires an arrow|fires a bolt|mumbles']
+17 It casts a magic missile. => ['RE_UNSEEN', 'commands you to return|magic missile|fires an arrow|fires a bolt|mumbles']
+17 You have slain the Novice ranger. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+17 You hit the Panther. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+17 You hit the Red jelly. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+17 It fires an arrow. => ['RE_UNSEEN', 'commands you to return|magic missile|fires an arrow|fires a bolt|mumbles']
+17 You hit the Baby white dragon. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+16 Lagduf, the Snaga hits you. => ['RE_ATTACK']
+16 You hit the Hippogriff. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+16 You hit the Giant white mouse. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+16 You have slain the Giant white mouse. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+16 You miss the White wolf. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+15 You hit the Village idiot. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+15 You have destroyed the Lemure. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+15 The Giant black louse misses you. => ['RE_ATTACK']
+15 You feel there is something special about this level. => ["startswith 'You feel'"]
+15 You have slain the Black orc. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+15 The Black orc fires an arrow! => ['commands you to return|magic missile|fires an arrow|fires a bolt|mumbles']
+15 The Giant flea bites you. => ['RE_ATTACK']
+14 I see no up staircase here. => ["startswith 'I see no up staircase'"]
+14 You feel less confused now. => ["startswith 'You feel'"]
+14 You hit the Rattlesnake. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+14 You feel yourself yanked downwards! => ["startswith 'You feel'", "'yanked upwards'/'yanked downwards' in"]
+14 The Green jelly misses you. => ['RE_ATTACK']
+14 The Wolf bites you. => ['RE_ATTACK']
+14 It mumbles. => ['RE_UNSEEN', 'commands you to return|magic missile|fires an arrow|fires a bolt|mumbles']
+14 You hit the Squint-eyed rogue. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+14 You miss the Pseudo-dragon. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+14 You have slain the Dark hound. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+14 The Dark elven priest hits you. => ['RE_ATTACK']
+14 The Tiger bites you. => ['RE_ATTACK']
+14 You miss the Giant flea. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+14 You have slain the Warg. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+13 You miss the Novice warrior. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+13 You have slain the Novice rogue. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+13 You hit the Skeleton human. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+13 The Panther claws you. => ['RE_ATTACK']
+13 You hit it. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+13 You miss the Large kobold. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+13 You hit the Baby red dragon. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+13 The Black orc flees in terror! => ['^(The|It) .* (dies|is destroyed|flees)']
+13 The Zombified orc hits you. => ['RE_ATTACK']
+13 You hit the Blink dog. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+12 You hit the Bloodshot eye. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+12 You hit the Brown yeek. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+12 You miss the Giant black louse. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+12 The Novice ranger flees in terror! => ['^(The|It) .* (dies|is destroyed|flees)']
+12 The Warg flees in terror! => ['^(The|It) .* (dies|is destroyed|flees)']
+12 The Stone troll hits you. => ['RE_ATTACK']
+12 The Black ogre misses you. => ['RE_ATTACK']
+12 The Novice paladin misses you. => ['RE_ATTACK']
+12 The Pseudo-dragon bites you. => ['RE_ATTACK']
+12 You miss the Dark hound. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+12 The Cave bear claws you. => ['RE_ATTACK']
+12 You miss the Blue worm mass. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+12 The Novice ranger misses you. => ['RE_ATTACK']
+12 The Disenchanter eye gazes at you. => ['RE_ATTACK']
+12 You hit the Master yeek. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+12 You miss the Warg. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+11 You bought # Potions of Cure Light Wounds for # gold. => ["startswith You sold/bought/I don't want/You do not have enough/You cannot carry/You have no room/That item"]
+11 You have slain the Kobold archer. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+11 You have slain the Novice mage. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+11 Wormtongue, Agent of Saruman misses you. => ['RE_ATTACK']
+11 The Dark elven warrior hits you. => ['RE_ATTACK']
+11 You miss the Mean-looking mercenary. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+11 You have slain the Mean-looking mercenary. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+11 You have slain the Wolf. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+11 The Half-orc misses you. => ['RE_ATTACK']
+11 You have slain the Fire hound. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+11 You have # Flasks of oil. => ["startswith 'You have '"]
+11 You miss the Black ogre. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+11 You hit the Yellow mold. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+11 The Orc shaman hits you. => ['RE_ATTACK']
+11 The Pseudo-dragon misses you. => ['RE_ATTACK']
+11 It breathes darkness. => ['RE_UNSEEN']
+11 You hit the Dark elven priest. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+11 You hit the Zombified orc. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+11 You hit the Skeleton orc. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+11 You hit the Baby multi-hued dragon. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+11 The Dark hound claws you. => ['RE_ATTACK']
+10 You feel strangely lucky... => ["startswith 'You feel'"]
+10 You feel your luck is turning... => ["startswith 'You feel'"]
+10 The Novice warrior misses you. => ['RE_ATTACK']
+10 You hit the Grey icky thing. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+10 You have slain the Battle-scarred veteran. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+10 You miss the Battle-scarred veteran. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+10 You hit the Kobold. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+10 You hit the Novice paladin. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+10 You hit the Green naga. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+10 You are poisoned! => ['RE_HURT_OTHER']
+10 You are no longer poisoned. => ['RE_HURT_OTHER']
+10 You hit the Stegocentipede. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+10 You have a Scroll of Word of Recall {@R#}. => ["startswith 'You have '"]
+10 Grishnakh, the Hill Orc misses you. => ['RE_ATTACK']
+10 You have # Potions of Cure Light Wounds. => ["startswith 'You have '"]
+10 You have found # gold pieces worth of garnets. => ["startswith 'You have '"]
+10 The Clear hound claws you. => ['RE_ATTACK']
+10 You have slain the Gnome mage. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+9 The Novice mage flees in terror! => ['^(The|It) .* (dies|is destroyed|flees)']
+9 The Novice mage hits you. => ['RE_ATTACK']
+9 Brodda, the Easterling hits you. => ['RE_ATTACK']
+9 The Novice rogue flees in terror! => ['^(The|It) .* (dies|is destroyed|flees)']
+9 You have a good feeling... => ["startswith 'You have '"]
+9 The Fire hound flees in terror! => ['^(The|It) .* (dies|is destroyed|flees)']
+9 The Zombified kobold hits you. => ['RE_ATTACK']
+9 You have slain the Orc shaman. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+9 You feel bolder now. => ["startswith 'You feel'"]
+9 The Stegocentipede misses you. => ['RE_ATTACK']
+9 The Stegocentipede bites you. => ['RE_ATTACK']
+9 The Swordsman hits you. => ['RE_ATTACK']
+9 You hit the Baby gold dragon. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+9 You miss the Killer brown beetle. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+9 The Warg misses you. => ['RE_ATTACK']
+8 You hit the Clear icky thing. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+8 The Novice priest misses you. => ['RE_ATTACK']
+8 Wormtongue, Agent of Saruman hits you. => ['RE_ATTACK']
+8 Lagduf, the Snaga misses you. => ['RE_ATTACK']
+8 You miss Lagduf, the Snaga. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+8 You hit the Black harpy. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+8 The Shrieker mushroom patch makes a high pitched shriek. => ['RE_HURT_OTHER']
+8 The Large kobold hits you. => ['RE_ATTACK']
+8 Mughash the Kobold Lord hits you. => ['RE_ATTACK']
+8 The Jackal bites you. => ['RE_ATTACK']
+8 You hit the Giant salamander. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+8 The Orc shaman flees in terror! => ['^(The|It) .* (dies|is destroyed|flees)']
+8 You hit the White jelly. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+8 You hit the Green worm mass. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+8 The Dark hound flees in terror! => ['^(The|It) .* (dies|is destroyed|flees)']
+8 You bought a Scroll of Word of Recall {#% off} for # gold. => ["startswith You sold/bought/I don't want/You do not have enough/You cannot carry/You have no room/That item"]
+8 You hit the Baby green dragon. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+8 The Black harpy claws you. => ['RE_ATTACK']
+8 You miss the Uruk. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']
+7 You bought # Scrolls of Phase Door for # gold. => ["startswith You sold/bought/I don't want/You do not have enough/You cannot carry/You have no room/That item"]
+7 I don't want that! => ["startswith You sold/bought/I don't want/You do not have enough/You cannot carry/You have no room/That item"]
+7 You have slain the Village idiot. => ["startswith 'You have '", '^You (hit|miss|have slain|have destroyed|smite|bite|claw)', "startswith 'You have slain'/'You have destroyed' (+target)"]
+7 You hit the Rock lizard. => ['^You (hit|miss|have slain|have destroyed|smite|bite|claw)']

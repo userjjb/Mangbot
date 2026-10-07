@@ -1,0 +1,106 @@
+- 15:15 town 100% | start: loot to sell, 426g | pick up town floor items then shop 5,2,3 | objective 1
+- 15:16 town 100% | sold loot, 724g; kept Rapier{excellent}, sold Main Gauche | buy 2 WoR at 5 first | recall is priority purchase
+- 15:17 town 100% | restocked: 2 WoR, 9 CLW (gold ran out, 1 short of 10), 10 Phase, 6 flasks, 4 rations; 17g | recall down | objective 2
+- 15:17 1000ft 92% | RECALL WENT TO 1000 ft (max depth), below max_depth 950; 4 Black ogres adjacent | fight them (lvl15, one already killed), then find < | my mistake: should have set recall depth (@R) before reading
+- 15:18 1000ft 62% | hunting ogres ('hunt Black_ogre' failed instantly: lost sight; 'hunt ogre' worked) | keep fighting, pilot phases at 50% | ogres lvl15, killable
+- 15:19 1000ft 46% | ogres chased me after 2 phases, Illusionist paralyzing me (no FA) | read last WoR, go home | 1000ft w/o FA is outside mission limits; too risky
+- 15:19 town 89% | back in town, 100g, 0 WoR, 4 CLW, 7 Phase | buy 4 CLW, then take town stairs and dive to 450 by stairs; climb back by stairs later (no WoR affordable) | recall from town goes to max depth 1000 = forbidden anyway unless inscribed @R
+- 15:21 town 100% | pilot restarted (connection refused ~1 min) right after I sent dive 450; goal lost | resend dive 450
+- 15:31 300ft 100% | dive 450 by stairs slow (~10 min for 300 ft), picking up junk loot on the way | let it run | objective 2
+- 15:36 400ft 100% | pack cleanup: batch of 5 destroys, status still showed old pack, so I re-sent 4 with stale letters -> lost 1 CLW, 1 flask, 2 unknown potions | MISTAKE (and pilot report lag after destroy); one action at a time and verify from now | continue dive 450
+- 15:37 450ft 100% | reached 450 at 22 min used; no WoR so must climb home (~10-15 min) | explore this level (good feeling) ~5 min, then dive 0 to climb | time budget
+- 15:38 450ft 100% | pilot restarted again (architect fix) | re-issue explore
+- 15:43 400ft 100% | connection refused ~1.5 min; character rolled back to 400ft/490g state (server crash? lost Cutlass{excellent}, 450ft progress) | climb home now: goal dive 0 | 28 min used, climbing ~10+ min
+- 15:46 300ft 100% | pack full while climbing; destroyed junk by name (destroy w/o count takes 1 of a stack) | continue dive 0
+- 15:50 250ft 100% | pack keeps filling with pickup=all (armour/weapons); destroyed low-value junk | keep climbing
+- 15:50 250ft 89% | Wormtongue touched to steal 89 gold and teleported away | resume dive 0 (not worth chasing, time short)
+- 15:51 300ft 100% | pack full x3 during climb | order pickup=none loot_radius=0 until town | finish climb fast, 36 min used
+- 15:59 100ft 100% | climb slow: 150->100 took 4 min; no < known, pilot exploring | keep going, must end in town (over budget)
+- 16:04 town 100% | back in town at 48 min; sold loot (+446g), bought 2 WoR + 4 CLW; restored pickup=all loot_radius=10 | mission end, idle in town | budget used
+- 16:14 town 100% | mission 2 start: 514g, 2 WoR, 12 CLW, 7 Phase, Identify scroll | read Identify (Rapier), sell armour at 2, buy Phase at 5 | objective 1
+- 16:15 town 100% | 'read Identify' identified the Rations (item a) instead of the Rapier: no way to choose target | PILOT PROBLEM, scroll wasted; move on | -
+- 16:18 town 100% | sold armour +74, bought 5 Phase (60) + 1 WoR (234): 12 Phase, 3 WoR, 12 CLW, 294g. Inscribing merged Phase stacks but pack line still says 7 (inspect says 12) | set max_depth=750 then recall | land mid-range, not at the 950 edge where FA-less lvl18 met paralysers last time
+- 16:16 1000ft 100% | recall landed 1000ft despite @R750 (Architect parked pilot mid-recall) | grab adjacent Ruby Ring + gold, then climb: goal dive 750 | saves a WoR; 5 levels of stair-scum is quick
+- 16:17 1000ft 99% | got Ruby Ring + 26g, killed Pseudo-dragon | goal dive 750 (climb) | out of 1000ft
+- 16:20 1000ft 50% | 8 Manes + Dark elven warrior at 1000ft, pilot phased and stair-hopped away | let it continue dive 750 | escape was handled
+- 16:20 1000ft 97% | emergency stair-hops (1000<->1050), killed 4 Dark hounds, healed; dive goal was dropped by the emergency | destroy avg Dagger, re-issue dive 750 | still at 1000 after ~8 min
+- 16:21 1000ft 39% | still at 1000ft after ~12 min; invisible summoner ('It magically summons help'), yeeks+Stegocentipede+Pseudo-dragon adjacent, CLW 9 | read WoR to town, buy WoR, recall to 750 | summoner level; dive-climb from 1000 isn't progressing
+- 16:21 town 69% | recall worked; burned all 12 CLW and 9 Phase at 1000ft in ~5 min (orc+yeek swarm, summoner) | sell crossbow (3) + ring (6), restock WoR/CLW/Phase at 5 | 539g, 1 WoR left
+- 16:22 town 100% | sold crossbow 60, Ruby Ring=cursed Searching 20; bought WoR (176), 7 Phase, 10 CLW: 10/10/2 WoR, 80g | max_depth=650, recall | shallower start: 10 CLW went in 5 min at 1000
+- 16:23 650ft 100% | landed 650 correctly (@R650 held); 1 WoR (home only) | goal explore | play the level for loot/xp
+- 16:23 650ft 62% | Grishnakh+7 Hill orcs+shaman, then White wolves; 4 CLW + 2 Phase in 2 min (CLW heals ~20 of 230: poor value) | order flee_hp=0.4 think_hp=0.55 | these monsters are lvl8-12, let it fight longer instead of burning supplies
+- 16:25 650ft 47% | Grishnakh (lvl10 unique, wounded) keeps returning; rest failed (monsters in view) | hunt Grishnakh | weak unique, good drop
+- 16:25 650ft 66% | killed Grishnakh; 3 CLW, 5 Phase left | add Summoning to junk, rest, then collect items | supplies low, loot then decide
+- 16:26 650ft 91% | 'goto item' kept ending without moving (stuck on junk/unreachable item?); used explicit goto coords to collect gold: 100 -> 940g | explore on | still 3 CLW 5 Phase
+- 16:30 650ft 55% | terrified by Novice priest (warrior can't melee), found 2nd WoR + Heroism | quaffed Heroism to cure fear | pilot did not react to 'afraid' itself
+- 16:38 650ft 100% | lvl19, 1297g, got Wormtongue's Soft Studded Leather; 3 CLW 5 Phase; explore walks past items (not picking them), goto item stops on gold without picking it up, manual pickup grabbed a junk Summon Monster scroll | recall to town to restock, then come back | supplies low (objective 3)
+- 16:40 town 100% | BIG MISTAKE: sold Wormtongue's armour unseen -> it was Soft Studded Leather of Resistance [5,+6] (sold 17g, buyback 19834g). Should have inspected/worn it (4 base resists!) | lesson: inspect every unique drop before selling | sold staff (Slow Monsters) 32, bought 8 Phase, 1 WoR, 3 rations
+- 16:40 town 100% | restocked: 15 CLW, 5 CSW, 13 Phase, 2 WoR, 4 rations, 446g; no Boldness/Heroism in stock | recall to 650 | objective 3 loop, ~30 min left
+- 16:41 650ft 100% | landed 650, 'something special' feeling | goal explore | loot-worthy level
+- 16:49 650ft 69% | Priest (summoner + scares) with Tiger, Clear hound, Dark elven warrior; fearer event | goal dive 700 via > 16 away | leave summoner level
+- 16:49 town 73% | pilot read last WoR at <30% (Priest summons, Tiger, Phase spider, 5 attackers), used all 5 CSW before CLW; my 'dive 700' was silently capped by my own max_depth=650 | sell rod+sword, buy 2 WoR if affordable, one more short trip | ~38 min used
+- 16:51 town 100% | sold Rod of Illumination 42, Broad Sword (+3,+2) 110; bought 2 WoR (50% off, 234) + 3 CSW; 15 CLW 3 CSW 9 Phase 2 WoR 369g | max_depth=700, recall, ~15 min then recall home | last trip
+- 16:51 700ft 54% | afraid, 6 Novice paladins + Kobold shaman + Panther; no Boldness/Heroism (store out) | let pilot kite/phase; recall if <35% | -
+- 16:52 town 100% | 2nd trip ended in ~2 min: afraid among 6 Novice paladins, pilot burned 3 CSW and read the WoR at <30% | bought 1 WoR (234, last in stock at that price), rested; 135g, 1 WoR: can't afford a return scroll, so end mission idle in town | ~38 min used, rule: never go down without a way back
+- 11:07 town 100% | mission 3 start: 135g, 1 WoR, 15 CLW, 8 Phase, lantern EMPTY (0 turns) | buy oil at 1, sell spares at 5, price WoR/Identify | objective 1
+- 11:12 town 100% | Rapier identified via 'read Identify Rapier' (target works): Slay Troll (+4,+6), already wielded. WoR 176, have 115g; CLW sell 7g each | walk down by stairs to 450 with the 1 WoR as the ticket home, max_depth=550 | walking down with 1 WoR = same safety as recalling with 2; selling 9 CLW would gut healing
+- 11:26 200ft 100% | dive 450 stalled ~9 min at 200ft standing 1 square from a known > (Small Leather Shield item 2 away), no events | goto > manually, then order loot_radius=0 and re-dive | PILOT PROBLEM: silent stall
+- 11:27 450ft 100% | reached 450 within a minute once loot_radius=0 | loot_radius=10, goal explore | hunt xp/gold
+- 11:37 450ft 100% | breeders (Blue worms, harmless) event; items (staff, gold, Berserk potion) ~100 squares west that explore passed | goto 41,79 to collect, away from worms | Berserk cures fear, staffs sell
+- 11:46 450ft 100% | 450 fully explored: 312g, Berserk, wand, staff, 2 unknown potions; 38 min used | destroy spikes, dive 500 and explore ~10 min, then recall | stay within 450-550
+- 11:52 500ft 100% | blue worms again (harmless), 45 min used | keep exploring ~4 min then recall | time budget
+- 11:56 town 100% | recalled from 500 at 49 min; clvl 20, 461g, loot: rod, wand, staff, Lance, Robe, 2 unknown potions, unknown scroll | sell loot at 3/2/6/5, buy 2 WoR | finish mission stocked for next time
+- 11:59 town 100% | sold rod/wand/staff (+99) and unknowns (+34); bought 2 WoR for 468 (234 each, although at 11:11 the store listed 4 WoR {25% off} at 176); no Boldness in stock | end mission idle in town: clvl 20, 128g, 2 WoR, 14 CLW, 8 Phase, 1 Berserk | 52 min used
+- 12:05 town 100% | mission 4 start: 128g, 2 WoR, 14 CLW, 8 Phase, 1 Berserk; gold on town floor nearby | goto gold, then max_depth=600 and recall | objective 1
+- 12:08 600ft 100% | picked up ~58g town gold (goto gold didn't always pick up; manual pickup did); recall landed 600 correctly | goal explore | hunt xp/loot
+- 12:10 600ft 46% | orc pack (2 Uruk, Black orcs, Orc captain, unseen archer); killed Uruk, phased away, 1 CLW used, resting | let pilot handle; recall if <30% | orcs are fair XP for a warrior
+- 12:13 600ft 44% | repeated fight_going_badly vs Snagas/Hill orcs (weak); unseen_attacker 'losing HP with nothing in view' fired while orcs were in view | think_hp=0.42 | stop waking on weak orcs
+- 12:15 600ft 95% | killed orc pack + Stegocentipede; 12 CLW 6 Phase; MISTAKE noticed: recall down used 1 of 2 WoR, only 1 left (should have walked down with 186g) | keep exploring, the 1 WoR is the ticket home; leave early rather than risk | too late to fix
+- 12:17 600ft 100% | explore 'frontier unreachable'; gold room behind rubble ':' - goto says 'no known path' (pilot can't tunnel) | goal dive 550 to find stairs/new level | nothing left reachable
+- 12:19 600ft 100% | level sealed by rubble (both exits ':'); pilot walks into it ('rubble blocking your way'), goto rubble -> stuck; no tunnel command | PILOT PROBLEM; read my only WoR to town, sell, rebuy WoR and walk down | no other way off the level
+- 12:24 town 100% | sold Ring of Feather Falling 21; WoR was 75% off (59): bought 2 (all discounted stock), 4 Phase; 2 WoR 10 Phase 12 CLW 40g | recall to 600 (leaves 1 WoR home ticket, same as mission-3 rule; my 12:15 'mistake' note was overcautious) | objective 1
+- 12:30 600ft 100% | invisible toucher drained DEX 18/10->15, afraid; pilot fleeing to > 45 away (unseen_attacker worked) | let it flee | leave level per handbook
+- 12:32 600ft 100% | flee took > to 650 ('something special' level) - report lagged showing 600; max_depth refused explore | stairs < back to 600, explore | stay in 500-600
+- 12:34 600ft 98% | unseen_attacker 'losing HP 2/s with nothing in view' after killing a Novice warrior + Crow (visible, now dead): false alarm, pilot started fleeing to > | re-issue explore | PILOT PROBLEM: HP-loss check counts damage from monsters just killed
+- 12:35 600ft 99% | again unseen_attacker false alarm: HP loss was Yellow mold spores (picked up ring next to it, auto-hit the mold) + King cobra | re-issue explore | PILOT PROBLEM: molds/visible monsters not counted as 'in view' for HP-loss check
+- 12:37 600ft 100% | 3rd 'unseen' flee was a Yellow mushroom patch (spores/fear) not listed in view; goto wand picked it up by itself; killed King cobra | explore ~7 more min then recall | 32 min used
+- 12:39 600ft 100% | 'It hits you' invisible attacker, pilot fleeing to > | read WoR now (keep fleeing meanwhile) | 34 min used, DEX drained, leave safely and sell
+- 12:43 town 100% | recalled home; sold Wand Trap/Door Dest 24 + Staff Door/Stair Location 33 (mistake: that staff is useful for stair-scumming); bought 2 WoR at 50% off (117); Restore DEX 351 unaffordable | end mission idle in town: clvl 20, 79g, 2 WoR, 12 CLW, 10 Phase, 1 Berserk, 1 Magic Mapping, DEX 15 (drained) | 38 min used, too little left for another trip
+- 12:21 town 100% | CORRECTION: my timestamps since 12:05 were estimates and ran ahead; real clock is 12:21 (16 min used), so 12:08-12:43 lines above are really ~12:06-12:21 | another trip: recall to 600, explore ~15 min | 2 WoR in pack
+- 12:24 600ft 100% | killed Pseudo-dragon, Baby white dragon; unseen_attacker 'losing HP' false alarms after each kill (no flee since no stairs known) | keep exploring | good XP
+- 12:27 600ft 99% | unseen_attacker loop: re-issued explore 2x, each time flee again within seconds while HP full/rising (wolves hit-and-run at edge of light?) | let it take > then climb < | can't explore with this trigger
+- 12:29 600ft 93% | flee triggered by a lvl-8 Giant salamander breathing fire from the dark (it was in view by the time I looked) | hunt it (slain), explore | trivial monster
+- 12:30 600ft 98% | same false unseen_attacker after killing a visible Orc shaman, even after resting to full | let flee take > then climb back | bug makes exploring a level impossible once stairs are known
+- 12:33 600ft 100% | 3 more false flees (Skeleton kobold, Brown yeek - one hit then kill -> 'losing HP with nothing in view'); each cycle = new level via >/< | continue cycling until ~12:42 then recall | XP still comes, no real danger
+- 12:37 600ft 100% | clvl 21; flee cycles moved 600->550->600; missed a gold pile at 550 because the flee had already taken the stairs when I sent hunt | one more explore, recall ~12:44 | budget
+- 12:40 town 100% | recalled home at 35 min, clvl 21; sold Amulet of Resist Lightning 21 (MISTAKE: neck slot was empty, should have worn it), Remove Curse 9, Magic Mapping 18; bought WoR 234, 2 Boldness, 4 CSW at temple (4) | end mission idle in town: 25g, 1 WoR (miscounted, thought 2), 12 CLW 4 CSW 9 Phase 2 Boldness 1 Berserk, DEX 15 drained | too little time/gold for another trip; next trip must walk down or buy 2nd WoR
+- 12:44 town 100% | mission 5 start: 25g, 1 WoR, 12 CLW 4 CSW 9 Phase 2 Boldness | goal dive 550 (walk down, keep WoR as ticket home) | mission plan
+- 12:52 550ft 100% | reached 550 by stairs in 8 min | goal explore | hunt loot/xp
+- 12:54 550ft 96% | unseen_attacker 'losing HP 5/s' FALSE: bleeding from Wood spider (visible, killed) + spiked pit; goal went idle | goto Runed Rod 60,148 then explore | PILOT PROBLEM: bleeding/trap damage counted as unseen attacker
+- 12:55 550ft 100% | picked up Runed Rod (goto didn't auto-pickup; manual pickup did), destroyed bottle | explore | loot
+- 13:02 550ft 96% | CON drained 18->17 with no stat_drained event (cause unseen in messages); ID'd rod = Trap Location | goto Small Metal Shield [3] | better than my Small Leather Shield [2,-1]
+- 13:04 550ft 100% | picked shield up but autodestroy=average destroyed it at once (MISTAKE: should have removed 'average' first or worn it); level fully explored, 20 min used | goal recall | time budget, 1 WoR ticket home
+- 13:05 town 100% | recalled fine; sold Rod Trap Location 47, Staff Trap Location 33 (the 'Elm Staff' - server item list had called a different staff 'Summoning'), Hard Leather Armour [6,+6] 72 (MISTAKE: better than my worn [6,+4], should have swapped), 2 unknown scrolls 18; bought WoR 59 (75% off) + 176 (asked for 2, got 1) | end mission idle in town: clvl 21, 106g, 2 WoR | 22 min used, not enough for another trip
+- 13:35 town 100% | mission 6 start: 106g, 2 WoR, 12 CLW 4 CSW 10 Phase | max_depth=700, flee_hp=0.5 think_hp=0.55, recall down | deeper = raise safety margins
+- 13:37 700ft 100% | recall landed 700, 1 WoR left | max_depth=800, explore | hunt xp/loot
+- 13:41 700ft 91% | stuck event while fighting a White wolf pack in a corridor (killed them) | keep exploring | stuck looked false: it was fighting
+- 13:42 700ft 97% | unseen_attacker 'It commands you to return' = Blink dogs (teleport-to, out of sight), gold 354 | re-issue explore | blink dogs lvl 18 harmless
+- 13:44 700ft 100% | wolves+orc shaman killed; door-burst events x4 (news), 'It fires an arrow' unseen archer; gold 522 | re-issue explore | HP full, archer in the dark is minor
+- 13:45 700ft 81% | 'It commands you to return' was a Tengu (teleport-to), pilot fleeing to > | let it take > to 750 | in range, fresh level
+- 13:45 700ft 74% | PILOT BUG: flee goal failed with TypeError('in <string>' requires string as left operand, not NoneType); Cave orcs adjacent | stay idle and let auto-fight kill the orcs | weak orcs
+- 13:46 700ft 100% | orcs dead, full HP | dive 750 | deeper xp, within plan
+- 13:47 750ft 84% | unseen 'magic missile' = Orc shaman in dark, with Snagas; pilot fleeing to < | let it (weak orcs, either way fine) | 
+- 13:48 700ft 88% | fled up to 700 on a > | dive 800 | plan range
+- 13:50 700ft 100% | PILOT PROBLEM: dive/goto stalled 1 square from > because a Disenchanter eye sat next to it; eye disenchanted rapier to (+3,+5) and armour | hunt eye (slain), wear Silver Amulet, dive 800 | should have killed it at once
+- 13:51 750ft 90% | 'It wails at you' invisible ghost; pilot fleeing to < 1 away | let it | correct per handbook (no SI)
+- 13:52 700ft 92% | DEX drained 15->14 by the ghost (no stat_drained event seen), afraid | dive 800 from > underfoot | ~7 min left before recall
+- 13:54 800ft 100% | reached 800 on < | explore ~3 min then recall | time budget
+- 13:57 800ft 100% | 23 min used, gold 717 | goal recall (1 WoR) | time limit
+- 13:58 town 100% | recalled home fine; bought 2 WoR (468), 249g left | end mission idle in town | 24 min used
+- 22:15 town 100% | mission 7 start: 249g, 2 WoR, 12 CLW 4 CSW 10 Phase | sell Staff at 6, buy CCW | objective 1
+- 22:18 town 100% | sold Staff Object Location 94; temple had CCW at 152: bought 2 (304), 39g left | max_depth=750, recall down (1 WoR left as ticket home) | objective 2
+- 22:17 750ft 96% | (earlier timestamps estimated; real start ~22:14) landed 750; Dark hound pack breathing darkness, unseen_attacker fired (hounds out of light) | let it fight, explore continues | weak hounds
+- 22:20 750ft 98% | clvl 22; confusion cured with CSW in fight (tactic news) | continue explore | -
+- 22:28 750ft 82% | STR drained by Giant red scorpion, blows 3->2 (stat_drained fired); 4 Uruks + scorpion adjacent, > 40 away | let it fight, watch think_hp | walking away from 4 Uruks is worse
+- 22:29 750ft 39% | emergency_loop vs 4 Uruks + STR-draining scorpion, STR 18/40->18/10, blows 2; tried read WoR + Phase: PILOT NOT ANSWERING (Connection refused) mid-fight | retry every 20 s | pilot down while character in danger
+- 22:41 750ft ?% | pilot still refusing connections after 12 min (~35 retries); character state unknown (last seen 99/253 HP, 4 Uruks + scorpion adjacent, 1 WoR unread) | stop: report as Pilot crash | stop condition

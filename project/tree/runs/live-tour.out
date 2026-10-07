@@ -1,0 +1,486 @@
+== Town
+Town (depth 0): 52 house doors on the map
+  door (8, 188): shop 'Store' by Anneliese, 0 items
+  door (15, 188): shop 'Store' by Bump, 0 items
+  door (26, 185): shop 'Store' by Moo, 0 items
+  door (36, 191): shop 'Store' by Moo, 0 items
+  door (50, 176): for_sale (178125 gold)
+  door (57, 175): for_sale (301875 gold)
+  door (52, 189): for_sale (472000 gold)
+  door (36, 173): shop 'Store' by Bump, 0 items
+  door (29, 173): shop 'Store' by Moo, 0 items
+  door (15, 176): shop 'Store' by Moo, 0 items
+  door (6, 173): shop 'Store' by Anneliese, 0 items
+  door (6, 156): shop 'Store' by Anneliese, 0 items
+  door (14, 155): shop 'Store' by Bump, 0 items
+  door (4, 145): shop 'Store' by Anneliese, 0 items
+  door (28, 141): shop 'Store' by Bonaventure, 0 items
+  door (36, 154): shop 'Store' by Bonaventure, 0 items
+  door (50, 143): shop 'Store' by Anneliese, 0 items
+  door (58, 143): shop 'Store' by Anneliese, 0 items
+  door (52, 151): shop 'Store' by Axia, 2 items
+  door (58, 152): shop 'Store' by Anneliese, 0 items
+  door (50, 113): shop 'Store' by Anneliese, 0 items
+  door (59, 113): shop 'Store' by Anneliese, 0 items
+  door (49, 88): shop 'Store' by Lame, 0 items
+  door (50, 81): shop 'Store' by Diver, 0 items
+  door (61, 81): shop 'Store' by Anneliese, 0 items
+  door (61, 87): shop 'Store' by Diver, 0 items
+  door (58, 61): shop 'Store' by Anneliese, 0 items
+  door (50, 57): for_sale (346500 gold)
+  door (51, 48): for_sale (291000 gold)
+  door (58, 42): for_sale (135000 gold)
+  door (52, 32): for_sale (192000 gold)
+  door (59, 27): for_sale (21000 gold)
+  door (46, 17): for_sale (290250 gold)
+  door (35, 27): shop 'Store' by Grimlight, 5 items
+  door (29, 32): shop 'Store' by Robocow, 0 items
+  door (16, 24): for_sale (190000 gold)
+  door (7, 33): for_sale (243000 gold)
+  door (14, 46): shop 'Store' by Grimdigger, 13 items
+  door (25, 49): shop 'Store' by Grimrock, 4 items
+  door (38, 55): shop 'Store' by Zal, 4 items
+  door (13, 64): shop 'Store' by Diver, 0 items
+  door (2, 55): for_sale (200625 gold)
+  door (7, 80): shop 'Store' by Liam, 0 items
+  door (4, 88): shop 'Store' by Grimseed, 1 items
+  door (17, 88): shop 'Store' by Bonaventure, 0 items
+  door (4, 111): shop 'Store' by Bonaventure, 0 items
+  door (14, 113): shop 'Store' by Bonaventure, 1 items
+  door (16, 119): shop 'Store' by Axia, 0 items
+  door (27, 17): for_sale (236000 gold)
+  door (15, 12): for_sale (22750 gold)
+  door (2, 14): for_sale (346875 gold)
+  door (61, 14): for_sale (54500 gold)
+  -> heading N to 1N
+== 1N
+  explored: 37 legs (4 not reached, 8 skipped), sweep complete
+1N (depth -1): 62 house doors on the map
+  door (5, 172): for_sale (52140 gold)
+  door (14, 164): for_sale (2762 gold)
+  door (21, 162): for_sale (14512 gold)
+  door (17, 154): for_sale (56875 gold)
+  door (6, 159): for_sale (40375 gold)
+  door (15, 140): for_sale (16475 gold)
+  door (7, 139): for_sale (86200 gold)
+  door (2, 129): for_sale (5740 gold)
+  door (21, 128): for_sale (9667 gold)
+  door (28, 137): for_sale (32140 gold)
+  door (31, 134): for_sale (36022 gold)
+  door (36, 132): for_sale (157800 gold)
+  door (38, 143): for_sale (3855 gold)
+  door (34, 148): for_sale (3836 gold)
+  door (30, 148): for_sale (2827 gold)
+  door (33, 159): for_sale (118150 gold)
+  door (33, 176): for_sale (13150 gold)
+  door (24, 181): for_sale (54420 gold)
+  door (16, 183): for_sale (22110 gold)
+  door (14, 179): for_sale (53490 gold)
+  door (7, 193): for_sale (34020 gold)
+  door (33, 187): for_sale (11790 gold)
+  door (39, 189): for_sale (1340 gold)
+  door (48, 184): for_sale (66745 gold)
+  door (56, 190): for_sale (111600 gold)
+  door (57, 143): for_sale (2717 gold)
+  door (51, 138): shop 'Store' by SnillOgGod, 0 items
+  door (40, 120): shop 'Store' by Flip, 0 items
+  door (30, 105): for_sale (1213 gold)
+  door (37, 103): shop 'Store' by Miguel, 0 items
+  door (32, 97): for_sale (42761 gold)
+  door (46, 84): for_sale (1320 gold)
+  door (49, 89): shop 'Store' by Crog, 0 items
+  door (55, 97): shop 'Store' by Hero, 0 items
+  door (59, 85): shop 'Store' by Crogue, 0 items
+  door (48, 74): shop 'Store' by Cccfire, 0 items
+  door (39, 63): shop 'Store' by Zal, 15 items
+  door (36, 56): shop 'Store' by War of 2022, 0 items
+  door (35, 46): shop 'Store' by SnillOgGod, 0 items
+  door (25, 34): for_sale (4308 gold)
+  door (23, 26): for_sale (53130 gold)
+  door (16, 19): for_sale (13803 gold)
+  door (11, 20): for_sale (11550 gold)
+  door (8, 25): for_sale (21645 gold)
+  door (4, 14): for_sale (41300 gold)
+  door (4, 11): for_sale (9517 gold)
+  door (11, 6): for_sale (5860 gold)
+  door (16, 5): for_sale (5995 gold)
+  door (23, 6): for_sale (44598 gold)
+  door (25, 17): for_sale (12780 gold)
+  door (7, 38): for_sale (21105 gold)
+  door (36, 79): for_sale (8902 gold)
+  door (48, 59): shop 'Store' by Crog, 0 items
+  door (58, 58): shop 'Store' by Kill The Orcs, 0 items
+  door (60, 66): shop 'Store' by Crog, 0 items
+  door (62, 34): shop 'Store' by Kill The Orcs, 0 items
+  door (58, 12): for_sale (5430 gold)
+  door (61, 4): for_sale (8992 gold)
+  door (14, 90): for_sale (5335 gold)
+  door (15, 103): shop 'Store' by Miguel, 0 items
+  door (2, 110): for_sale (16075 gold)
+  door (56, 112): shop 'Store' by Axia, 0 items
+  -> heading N to 2N
+== 2N
+  explored: 30 legs (1 not reached, 15 skipped), sweep complete
+2N (depth -5): 6 house doors on the map
+  door (26, 159): for_sale (8955 gold)
+  door (30, 171): for_sale (75037 gold)
+  door (34, 99): for_sale (1309968 gold)
+  door (15, 95): for_sale (5530 gold)
+  door (57, 84): for_sale (25970 gold)
+  door (9, 29): for_sale (1458427 gold)
+  -> heading S to 1N
+  -> heading E to 1N, 1E
+== 1N, 1E
+  explored: 45 legs (2 not reached, 0 skipped), sweep complete
+1N, 1E (depth -6): 22 house doors on the map
+  door (39, 180): for_sale (30100 gold)
+  door (42, 153): for_sale (3189562 gold)
+  eating 80 Rations of Food (hunger=2)
+  door (14, 141): for_sale (1386 gold)
+  door (16, 109): for_sale (25497 gold)
+  door (10, 104): for_sale (9060 gold)
+  door (11, 94): for_sale (12350 gold)
+  door (24, 102): for_sale (27993 gold)
+  door (25, 95): for_sale (8347 gold)
+  door (6, 79): for_sale (15030 gold)
+  door (32, 74): for_sale (59093 gold)
+  door (45, 64): for_sale (31500 gold)
+  door (56, 68): for_sale (17487 gold)
+  door (55, 95): for_sale (174687 gold)
+  door (45, 108): for_sale (4327 gold)
+  door (21, 52): for_sale (255525 gold)
+  door (4, 41): for_sale (35730 gold)
+  door (25, 21): for_sale (8310 gold)
+  door (33, 31): for_sale (95812 gold)
+  door (38, 10): for_sale (4316 gold)
+  door (38, 7): for_sale (5750 gold)
+  door (3, 15): for_sale (35617 gold)
+  door (10, 190): for_sale (201180 gold)
+  -> heading S to 1E
+  refilling lantern (2700 turns left, 38 flasks)
+== 1E
+  explored: 29 legs (4 not reached, 16 skipped), sweep complete
+1E (depth -2): 51 house doors on the map
+  door (59, 5): for_sale (2820 gold)
+  door (57, 17): shop 'Store' by Warrior, 0 items
+  door (62, 28): for_sale (13580 gold)
+  door (45, 21): shop 'Store' by Axia, 0 items
+  door (21, 37): for_sale (5875 gold)
+  door (14, 42): for_sale (10018 gold)
+  door (19, 50): for_sale (21450 gold)
+  door (12, 58): for_sale (31340 gold)
+  door (6, 52): for_sale (37845 gold)
+  door (3, 42): for_sale (12520 gold)
+  door (8, 29): for_sale (15812 gold)
+  door (16, 24): for_sale (14625 gold)
+  door (17, 18): for_sale (9015 gold)
+  door (14, 11): shop 'Store' by Grimreaper, 1 items
+  door (7, 4): shop 'Store' by Demeter, 0 items
+  door (7, 9): for_sale (77887 gold)
+  door (21, 9): for_sale (22065 gold)
+  door (58, 46): for_sale (41675 gold)
+  door (36, 64): for_sale (80920 gold)
+  door (30, 68): for_sale (2710 gold)
+  door (23, 66): for_sale (94412 gold)
+  door (27, 60): for_sale (26306 gold)
+  door (2, 70): for_sale (10246 gold)
+  door (4, 88): for_sale (2817 gold)
+  door (2, 111): for_sale (10333 gold)
+  door (4, 128): for_sale (15277 gold)
+  door (10, 129): for_sale (1228 gold)
+  door (13, 134): for_sale (41921 gold)
+  door (25, 144): for_sale (200572 gold)
+  door (17, 148): for_sale (11860 gold)
+  door (6, 156): for_sale (21165 gold)
+  door (2, 160): for_sale (65407 gold)
+  door (4, 178): for_sale (10543 gold)
+  door (8, 191): for_sale (17175 gold)
+  door (26, 172): for_sale (849110 gold)
+  door (29, 153): for_sale (11720 gold)
+  door (37, 133): for_sale (12320 gold)
+  door (37, 120): for_sale (5625 gold)
+  door (38, 109): for_sale (41650 gold)
+  door (37, 98): for_sale (11410 gold)
+  door (43, 87): for_sale (32120 gold)
+  door (57, 85): for_sale (6010 gold)
+  door (58, 75): for_sale (259200 gold)
+  door (62, 98): for_sale (27843 gold)
+  door (55, 103): for_sale (1282 gold)
+  door (59, 108): for_sale (32180 gold)
+  door (59, 117): for_sale (8640 gold)
+  door (62, 125): for_sale (13635 gold)
+  door (55, 132): for_sale (16262 gold)
+  door (51, 180): for_sale (114300 gold)
+  eating 79 Rations of Food (hunger=2)
+  door (45, 188): for_sale (173500 gold)
+  -> heading S to 1S, 1E
+== 1S, 1E
+  explored: 43 legs (0 not reached, 2 skipped), sweep complete
+1S, 1E (depth -8): 9 house doors on the map
+  door (51, 23): for_sale (145312 gold)
+  door (13, 4): for_sale (63945 gold)
+  door (3, 14): for_sale (95400 gold)
+  door (10, 108): for_sale (850540 gold)
+  door (38, 137): for_sale (4398 gold)
+  door (48, 125): for_sale (5315 gold)
+  door (50, 133): for_sale (16375 gold)
+  door (60, 114): for_sale (53310 gold)
+  door (24, 175): for_sale (2663700 gold)
+  -> heading W to 1S
+== 1S
+  eating 78 Rations of Food (hunger=2)
+  explored: 44 legs (3 not reached, 1 skipped), sweep complete
+1S (depth -3): 61 house doors on the map
+  door (56, 10): for_sale (15650 gold)
+  door (57, 7): for_sale (22080 gold)
+  door (46, 7): for_sale (43811 gold)
+  door (35, 18): for_sale (53460 gold)
+  door (26, 16): shop 'Store' by Grimlight, 3 items
+  door (20, 8): shop 'Store' by Grimlight, 11 items
+  door (9, 2): for_sale (7137 gold)
+  door (9, 8): for_sale (12830 gold)
+  door (9, 18): shop 'Store' by Diver, 0 items
+  door (19, 25): shop 'Store' by Arjuna, 0 items
+  door (11, 40): shop 'Store' by Matt, 0 items
+  door (2, 43): shop 'Store' by Diver, 0 items
+  door (12, 54): shop 'Store' by Diver, 0 items
+  door (25, 45): shop 'Store' by Diver, 1 items
+  door (52, 69): for_sale (30140 gold)
+  door (57, 73): for_sale (9337 gold)
+  door (62, 81): for_sale (11900 gold)
+  door (57, 92): shop 'Store' by Grimreaper, 47 items
+  door (49, 80): for_sale (4470 gold)
+  door (44, 84): for_sale (9150 gold)
+  door (38, 89): for_sale (5545 gold)
+  door (43, 93): shop 'Store' by Grimreaper, 19 items
+  door (48, 104): shop 'Store' by Grimreaper, 14 items
+  door (44, 120): shop 'Store' by Robocow, 0 items
+  door (50, 124): shop 'Store' by Robocow, 0 items
+  door (49, 134): for_sale (22260 gold)
+  door (55, 142): for_sale (56610 gold)
+  door (53, 157): for_sale (74775 gold)
+  door (47, 159): for_sale (5725 gold)
+  door (61, 178): for_sale (44021 gold)
+  door (59, 191): for_sale (13916 gold)
+  door (45, 185): for_sale (145481 gold)
+  door (41, 184): for_sale (36967 gold)
+  door (32, 189): for_sale (6050 gold)
+  door (31, 194): for_sale (4485 gold)
+  door (27, 192): for_sale (2892 gold)
+  door (21, 183): for_sale (5305 gold)
+  door (22, 176): for_sale (29381 gold)
+  door (11, 185): shop 'Store' by Doodle, 0 items
+  door (7, 190): for_sale (15612 gold)
+  door (11, 174): for_sale (4346 gold)
+  door (14, 165): for_sale (22170 gold)
+  door (19, 155): shop 'Store' by NAZ, 1 items
+  door (5, 151): shop 'Store' by Grimreaper, 9 items
+  door (20, 139): shop 'Store' by Doodle, 0 items
+  door (19, 134): shop 'Store' by Doodle, 0 items
+  door (12, 127): shop 'Store' by Level 1, 0 items
+  door (9, 136): shop 'Store' by Bahruk, 0 items
+  door (5, 116): shop 'Store' by Carcassonne, 0 items
+  door (8, 111): shop 'Store' by StickyFrog, 0 items
+  door (11, 103): shop 'Store' by Lame, 0 items
+  door (17, 115): shop 'Store' by Grimreaper, 32 items
+  door (30, 124): shop 'Store' by Grimreaper, 3 items
+  door (37, 125): shop 'Store' by Grimreaper, 3 items
+  door (3, 90): shop 'Store' by Deaf, 0 items
+  door (12, 84): shop 'Store' by Death2Every1, 0 items
+  door (8, 74): shop 'Store' by StickyFrog, 0 items
+  door (41, 72): for_sale (26306 gold)
+  door (53, 48): for_sale (531443 gold)
+  door (52, 22): for_sale (5800 gold)
+  door (33, 7): for_sale (28893 gold)
+  -> heading S to 2S
+== 2S
+  eating 77 Rations of Food (hunger=2)
+  refilling lantern (2800 turns left, 37 flasks)
+  explored: 43 legs (4 not reached, 2 skipped), sweep complete
+2S (depth -9): 17 house doors on the map
+  door (37, 168): for_sale (487500 gold)
+  door (60, 188): for_sale (96600 gold)
+  door (13, 174): for_sale (51780 gold)
+  door (11, 194): for_sale (21345 gold)
+  door (4, 143): for_sale (9720 gold)
+  door (25, 130): for_sale (3790455 gold)
+  door (5, 114): for_sale (41950 gold)
+  door (3, 84): for_sale (112500 gold)
+  door (17, 71): for_sale (26075 gold)
+  door (24, 70): for_sale (21675 gold)
+  door (33, 46): for_sale (70805 gold)
+  door (24, 31): for_sale (563692 gold)
+  door (44, 24): for_sale (2422188 gold)
+  door (61, 69): for_sale (14197 gold)
+  door (52, 79): for_sale (39000 gold)
+  door (52, 100): for_sale (218570 gold)
+  door (53, 120): for_sale (111400 gold)
+  -> heading N to 1S
+  -> heading W to 1S, 1W
+== 1S, 1W
+  eating 76 Rations of Food (hunger=2)
+  explored: 45 legs (2 not reached, 0 skipped), sweep complete
+1S, 1W (depth -10): 21 house doors on the map
+  door (30, 3): for_sale (22290 gold)
+  door (25, 40): for_sale (3193185 gold)
+  door (46, 61): for_sale (156960 gold)
+  door (59, 58): for_sale (8445 gold)
+  door (36, 77): for_sale (21630 gold)
+  door (40, 91): for_sale (135300 gold)
+  door (54, 89): for_sale (132240 gold)
+  door (38, 114): for_sale (43496 gold)
+  door (36, 126): for_sale (9367 gold)
+  door (25, 133): for_sale (39350 gold)
+  door (16, 137): for_sale (13380 gold)
+  door (12, 125): for_sale (13601 gold)
+  door (17, 107): for_sale (490312 gold)
+  door (4, 105): for_sale (33750 gold)
+  door (2, 81): for_sale (60783 gold)
+  door (15, 75): for_sale (20640 gold)
+  door (54, 131): for_sale (259650 gold)
+  door (46, 153): for_sale (251550 gold)
+  door (32, 179): for_sale (252600 gold)
+  door (57, 184): for_sale (41075 gold)
+  door (2, 151): for_sale (6070 gold)
+  -> heading N to 1W
+== 1W
+  explored: 42 legs (8 not reached, 3 skipped), sweep complete
+1W (depth -4): 57 house doors on the map
+  door (2, 6): for_sale (16437 gold)
+  door (0, 0): for_sale (0 gold)
+  door (9, 3): for_sale (51690 gold)
+  door (16, 13): for_sale (154620 gold)
+  door (19, 26): for_sale (4271 gold)
+  door (10, 31): for_sale (39650 gold)
+  door (10, 39): for_sale (2742 gold)
+  door (2, 32): for_sale (7418 gold)
+  door (6, 47): for_sale (16862 gold)
+  door (20, 46): for_sale (7818 gold)
+  door (20, 61): for_sale (42875 gold)
+  door (18, 68): for_sale (12880 gold)
+  door (15, 73): for_sale (21870 gold)
+  door (8, 69): for_sale (4113 gold)
+  door (10, 63): for_sale (7500 gold)
+  door (2, 62): for_sale (6075 gold)
+  door (11, 82): for_sale (9390 gold)
+  door (4, 85): for_sale (15412 gold)
+  door (3, 95): for_sale (34425 gold)
+  door (10, 106): shop 'Store' by Dajo, 0 items
+  door (15, 103): for_sale (4470 gold)
+  door (11, 112): for_sale (4338 gold)
+  door (17, 113): for_sale (2745 gold)
+  door (6, 120): shop 'Store' by Grimdigger, 44 items
+  door (9, 136): shop 'Store' by Grimdigger, 4 items
+  door (7, 141): shop 'Store' by Grimdigger, 3 items
+  door (14, 146): for_sale (4241 gold)
+  door (12, 155): shop 'Store' by Grimrunt, 9 items
+  door (20, 164): shop 'Store' by Slaadi, 8 items
+  door (29, 165): shop 'Store' by Grimrunt, 7 items
+  door (32, 157): shop 'Store' by Grimrunt, 4 items
+  door (46, 158): shop 'Store' by Lame, 0 items
+  door (55, 163): shop 'Store' by Grimrunt, 2 items
+  door (62, 161): shop 'Store' by Grimrunt, 2 items
+  door (58, 172): shop 'Store' by Grimrunt, 0 items
+  door (57, 187): shop 'Store' by War of 2022, 0 items
+  door (47, 193): shop 'Store' by Grimseed, 2 items
+  door (39, 192): shop 'Store' by MenPin, 0 items
+  door (33, 188): shop 'Store' by MenPin, 0 items
+  door (20, 182): shop 'Store' by Grimrunt, 9 items
+  door (3, 188): shop 'Store' by Slaadi, 13 items
+  door (2, 166): shop 'Store' by Slaadi, 8 items
+  door (45, 134): shop 'Store' by Grimbee, 1 items
+  eating 75 Rations of Food (hunger=2)
+  door (54, 127): shop 'Store' by Grimrock, 21 items
+  door (61, 127): shop 'Store' by Grimrock, 8 items
+  door (54, 148): shop 'Store' by Grimrunt, 1 items
+  door (32, 105): for_sale (1246 gold)
+  door (31, 99): for_sale (3750 gold)
+  door (35, 86): for_sale (3956 gold)
+  door (46, 101): for_sale (488156 gold)
+  door (60, 102): for_sale (15120 gold)
+  door (20, 85): for_sale (162360 gold)
+  door (37, 51): for_sale (3405760 gold)
+  door (61, 15): for_sale (25865 gold)
+  door (55, 5): for_sale (16450 gold)
+  door (46, 11): for_sale (1280 gold)
+  door (36, 14): for_sale (81280 gold)
+  -> heading N to 1N, 1W
+== 1N, 1W
+  explored: 29 legs (3 not reached, 16 skipped), sweep complete
+1N, 1W (depth -12): 18 house doors on the map
+  door (10, 99): for_sale (27693 gold)
+  door (16, 82): for_sale (283845 gold)
+  door (22, 62): for_sale (24552 gold)
+  door (23, 48): for_sale (19455 gold)
+  door (37, 54): for_sale (72450 gold)
+  door (47, 46): for_sale (31360 gold)
+  door (58, 66): for_sale (73312 gold)
+  door (37, 84): shop 'Store' by Grimdigger, 10 items
+  door (51, 88): for_sale (13490 gold)
+  door (30, 116): for_sale (24517 gold)
+  door (39, 120): for_sale (16350 gold)
+  door (57, 117): shop 'Store' by Grimdigger, 39 items
+  door (60, 145): for_sale (7443 gold)
+  door (25, 157): shop 'Store' by Zal, 11 items
+  door (59, 185): for_sale (143793 gold)
+  door (23, 21): for_sale (291483 gold)
+  door (38, 7): for_sale (17212 gold)
+  door (47, 7): for_sale (37980 gold)
+  -> heading S to 1W
+  -> heading W to 2W
+== 2W
+  eating 74 Rations of Food (hunger=2)
+  refilling lantern (2900 turns left, 36 flasks)
+  explored: 37 legs (2 not reached, 8 skipped), sweep complete
+2W (depth -11): 19 house doors on the map
+  door (55, 25): for_sale (2487 gold)
+  door (53, 7): for_sale (163250 gold)
+  door (30, 6): for_sale (34942 gold)
+  door (4, 55): for_sale (73125 gold)
+  door (7, 85): for_sale (490593 gold)
+  door (42, 103): for_sale (3836 gold)
+  door (53, 91): for_sale (60000 gold)
+  door (57, 103): for_sale (40450 gold)
+  door (61, 123): for_sale (100395 gold)
+  door (55, 159): for_sale (9195 gold)
+  door (46, 178): for_sale (27187 gold)
+  door (54, 188): for_sale (9472 gold)
+  door (21, 188): for_sale (7825 gold)
+  door (9, 172): for_sale (83400 gold)
+  door (19, 146): for_sale (93056 gold)
+  door (21, 128): for_sale (157380 gold)
+  door (51, 76): for_sale (4477 gold)
+  door (60, 72): for_sale (13500 gold)
+  door (55, 56): for_sale (29040 gold)
+  -> heading E to 1W
+  -> heading E to Town
+  -> heading E to 1E
+  -> heading E to 2E
+== 2E
+  eating 73 Rations of Food (hunger=2)
+  explored: 43 legs (1 not reached, 2 skipped), sweep complete
+2E (depth -7): 21 house doors on the map
+  door (40, 161): for_sale (2665200 gold)
+  door (16, 134): for_sale (7468 gold)
+  door (10, 162): for_sale (64995 gold)
+  door (4, 184): for_sale (9382 gold)
+  door (8, 192): for_sale (31380 gold)
+  door (36, 188): for_sale (7237 gold)
+  door (53, 101): for_sale (194430 gold)
+  door (37, 70): for_sale (13420 gold)
+  door (25, 61): for_sale (55843 gold)
+  door (16, 53): for_sale (8602 gold)
+  door (28, 45): for_sale (5950 gold)
+  door (41, 50): for_sale (219550 gold)
+  door (54, 68): for_sale (74475 gold)
+  door (16, 94): for_sale (5450 gold)
+  door (11, 83): for_sale (23870 gold)
+  door (11, 77): for_sale (2577 gold)
+  door (9, 67): for_sale (44756 gold)
+  door (11, 40): for_sale (2665 gold)
+  door (27, 28): for_sale (281246 gold)
+  door (43, 19): for_sale (74287 gold)
+  door (31, 4): for_sale (29718 gold)
+  -> heading W to 1E
+  -> heading W to Town
+{"summary": {"shop": 111, "for_sale": 305}}

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script type="text/javascript" src="https://web-static.archive.org/_static/js/bundle-playback.js?v=lGQTDXxZ" charset="utf-8"></script>
+<script type="text/javascript" src="https://web-static.archive.org/_static/js/wombat.js?v=o9P2E1FK" charset="utf-8"></script>
+<script>window.RufflePlayer=window.RufflePlayer||{};window.RufflePlayer.config={"autoplay":"on","unmuteOverlay":"hidden","showSwfDownload":true};</script>
+<script type="text/javascript" src="https://web-static.archive.org/_static/js/ruffle/ruffle.js"></script>
+<script type="text/javascript">
+    __wm.init("https://web.archive.org/web");
+  __wm.wombat("https://www.mangband.org/docs/command-reference","20260208194137","https://web.archive.org/","web","https://web-static.archive.org/_static/",
+	      "1770579697");
+</script>
+<link rel="stylesheet" type="text/css" href="https://web-static.archive.org/_static/css/banner-styles.css?v=1utQkbB3" />
+<link rel="stylesheet" type="text/css" href="https://web-static.archive.org/_static/css/iconochive.css?v=3PDvdIFv" />
+<!-- End Wayback Rewrite JS Include -->
+
+    <meta charset="utf-8"/>
+    <title>Command Reference | MAngband</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="generator" content="GravCMS"/>
+    <meta name="description" content="MAngband - Multi-player Angband!"/>
+
+    <link rel="icon" type="image/png" href="/web/20260208194137im_/https://www.mangband.org/user/themes/quark-m/images/favicon.png"/>
+    <link rel="canonical" href="https://web.archive.org/web/20260208194137/https://www.mangband.org/docs/command-reference"/>
+
+                                                            <link href="/web/20260208194137cs_/https://www.mangband.org/user/plugins/markdown-notices/assets/notices.css" type="text/css" rel="stylesheet"/>
+<link href="/web/20260208194137cs_/https://www.mangband.org/user/plugins/form/assets/form-styles.css" type="text/css" rel="stylesheet"/>
+<link href="/web/20260208194137cs_/https://www.mangband.org/user/plugins/featherlight/css/featherlight.min.css" type="text/css" rel="stylesheet"/>
+<link href="/web/20260208194137cs_/https://www.mangband.org/user/plugins/login/css/login.css" type="text/css" rel="stylesheet"/>
+<link href="/web/20260208194137cs_/https://www.mangband.org/user/themes/quark-m/css-compiled/spectre.min.css" type="text/css" rel="stylesheet"/>
+<link href="/web/20260208194137cs_/https://www.mangband.org/user/themes/quark-m/css-compiled/theme.min.css" type="text/css" rel="stylesheet"/>
+<link href="/web/20260208194137cs_/https://www.mangband.org/user/themes/quark-m/css/custom.css" type="text/css" rel="stylesheet"/>
+<link href="/web/20260208194137cs_/https://www.mangband.org/user/themes/quark-m/css/line-awesome.min.css" type="text/css" rel="stylesheet"/>
+
+
+                                    <script src="/web/20260208194137js_/https://www.mangband.org/system/assets/jquery/jquery-2.x.min.js"></script>
+<script src="/web/20260208194137js_/https://www.mangband.org/user/plugins/featherlight/js/featherlight.min.js"></script>
+
+<script>
+$(document).ready(function(){
+    $('a[rel="lightbox"]').featherlight({
+        openSpeed: 250,
+        closeSpeed: 250,
+        closeOnClick: 'background',
+        closeOnEsc: '1',
+        root: 'body'
+    });
+});
+
+</script>
+
+
+</head>
+<body id="top" class=" header-fixed header-animated sticky-footer">
+    <div id="page-wrapper">
+            <section id="header" class="section">
+            <section class="container grid-lg">
+                <nav class="navbar">
+                    <section class="navbar-section logo">
+                        <a href="/web/20260208194137/https://www.mangband.org/" class="navbar-brand mr-10">
+    <img src="/web/20260208194137im_/https://www.mangband.org/user/themes/quark-m/images/logo/mangband.png" alt=""/>
+</a>                    </section>
+                    <section class="navbar-section desktop-menu">
+
+                        <nav class="dropmenu animated">
+                                                    
+<ul>
+                      <li>
+        <a href="/web/20260208194137/https://www.mangband.org/">
+          Home
+        </a>
+      </li>
+                    <li>
+        <a href="/web/20260208194137/https://www.mangband.org/downloads">
+          Downloads
+        </a>
+      </li>
+                    <li>
+        <a href="/web/20260208194137/https://www.mangband.org/docs" class="active">
+          Documentation
+        </a>
+      </li>
+                    <li>
+        <a href="/web/20260208194137/https://www.mangband.org/servers">
+          Online Servers
+        </a>
+      </li>
+                    <li>
+        <a href="/web/20260208194137/https://www.mangband.org/scores">
+          Scores
+        </a>
+      </li>
+                    <li>
+        <a href="https://web.archive.org/web/20260208194137/https://mangband.org/forum">
+          Forum
+        </a>
+      </li>
+      
+</ul>
+
+                                                </nav>
+
+                        
+                    </section>
+                </nav>
+            </section>
+        </section>
+        <div class="mobile-menu">
+            <div class="button_container" id="toggle">
+                <span class="top"></span>
+                <span class="middle"></span>
+                <span class="bottom"></span>
+            </div>
+        </div>
+    
+    
+        <section id="start">
+                    <section id="body-wrapper" class="section">
+                <section class="container grid-lg">
+                                            
+                                            <h1>Command Reference</h1>
+<p><em>Last updated for MAngband 1.5.2</em></p>
+<h2>Movement Commands</h2>
+<p>Go up staircase (&lt;)</p>
+<blockquote>
+<p>Climbs up an up staircase you are standing on. There is always at least one staircase going up on every level except for the town level (this doesn't mean it's easy to find). Going up a staircase will take you to a new dungeon level unless you are at 50 feet (dungeon level 1), in which case you will return to the town level. Note that whenever you leave a level (not the town), you will never find it again. This means that for all intents and purposes, any objects on that level are destroyed. This command takes some energy.</p>
+</blockquote>
+<p>Go down staircase (&gt;)</p>
+<blockquote>
+<p>Descends a down staircase you are standing on. There are always at least two staircases going down on each level, except for the town which has only one. Going down a staircase will take you to a new dungeon level. See "Go Up Staircase" for more info. This command takes some energy.</p>
+</blockquote>
+<p>Walk (;)</p>
+<blockquote>
+<p>Moves one step in the given direction. Generally you will want to move by simply using the directions on the numpad. The square you are moving into must not be blocked by walls or doors. You will pick up any items in the destination grid if the "always_pickup" option is set, or if the "query_pickup" option is set and you respond correctly. This command requires a direction, and takes some energy.</p>
+</blockquote>
+<p>Run (.)</p>
+<blockquote>
+<p>This command will run in the given direction. Generally you will want to run by simply holding down the Shift key and using the directions on the numpad. If Shift+Direction doesn't run try toggling the status of the Numlock key. Running follows any bends in the corridor, until you either have to make a "choice" between two directions or you are disturbed. You can configure what will disturb you by setting the disturbance options. This command may requires a direction, and takes some energy.</p>
+</blockquote>
+<h2>Inventory Commands</h2>
+<p>Inventory list (i)</p>
+<blockquote>
+<p>Displays a list of objects being carried but not equipped. You can carry up to 23 different items, not counting those in your equipment. Often, many identical objects can be "stacked" into a "pile" which will count as a single item. This is always true of things like potions, scrolls, and food, but you may have to set options to allow wands, staves, and other such objects to stack. Each object has a weight, and if you carry more objects than your strength permits, you will begin to slow down.</p>
+</blockquote>
+<p>Equipment list (e)</p>
+<blockquote>
+<p>Use this command to display a list of the objects currently being used by your character. Your character has 12 slots for equipment, each corresponding to a different location on the body, and each of which may contain only a single object at a time, and each of which may only contain objects of the proper "type", and which include WIELD (weapon), BOW (missile launcher), LEFT (ring), RIGHT (ring), NECK (amulet), LITE (light source), BODY (armor), OUTER (cloak), ARM (shield), HEAD (helmet), HANDS (gloves), FEET (boots). You must be wielding/wearing certain objects to take advantage of their special powers.</p>
+</blockquote>
+<p>Drop an item (d)</p>
+<blockquote>
+<p>This drops an item from your inventory or equipment onto the dungeon floor. If the floor spot you are standing on already has an object in it, MAngband will attempt to drop the item onto an adjacent space. Be warned that if the floor is full and you attempt to drop something, it may disappear and be destroyed. Doors and traps are considered objects for the purpose of determining if the space is occupied. This command may take a quantity, and takes some energy.</p>
+</blockquote>
+<p>Destroy an item (k)</p>
+<blockquote>
+<p>This destroys an item in your inventory or on the dungeon floor. If the selected pile contains multiple objects, you may specify a quantity. You must always (currently) verify this command. This command may take a quantity, and takes some energy.</p>
+</blockquote>
+<p>Wear/Wield equipment (w)</p>
+<blockquote>
+<p>To wear or wield an object in your inventory, use this command. Since only one object can be in each slot at a time, if you wear or wield an item into a slot which is already occupied, the old item will be first be taken off, and may in fact be dropped if there is no room for it in your inventory. This command takes some energy.</p>
+</blockquote>
+<p>Take off equipment (t)</p>
+<blockquote>
+<p>Use this command to take off a piece of equipment and return it to your inventory. Occasionally, you will run into a cursed item which cannot be removed. These items normally penalize you in some way and cannot be taken off until the curse is removed. If there is no room in your inventory for the item, your pack will overflow and you will drop the item after taking it off. This command takes some energy.</p>
+</blockquote>
+<p>Drop gold ($)</p>
+<blockquote>
+<p>Use this command to drop some gold on the floor. Useful for storing gold in your house so you don't lose it. See "Drop an item (d)" for more detailed information.</p>
+</blockquote>
+<p>Pickup an item (,) or (g)</p>
+<blockquote>
+<p>Pickup an item off the floor and place it in your inventory. You can have items you walk over automatically picked up by changing the settings in the player options (=), "User Interface Options". Options to consider are "Pick things up by default" and "Prompt before picking things up".</p>
+</blockquote>
+<h2>Resting Commands</h2>
+<p>Rest (R)</p>
+<blockquote>
+<p>Resting is better for you than just staying still. You will recover hit points and mana more quickly. You can't rest if you are poisoned. You always wake up when anything disturbing happens, or when you press any key. This command takes some energy.</p>
+</blockquote>
+<h2>Searching Commands</h2>
+<p>Search (s)</p>
+<blockquote>
+<p>This command can be used to locate hidden traps and secret doors in the spaces adjacent to the player. More than a single turn of searching will be required in most cases. You should always search a chest before trying to open it, since they are generally trapped. This command takes some energy.</p>
+</blockquote>
+<p>Toggle search mode (S)</p>
+<blockquote>
+<p>This command will take you into and out of search mode. When first pressed, the message "Searching" will appear at the bottom of the screen. You are now taking two turns for each command, one for the command and one turn to search. This means that you are taking twice the time to move around the dungeon, and therefore twice the food and twice as slow! You may also turn off search mode by entering the Search Mode command again.</p>
+</blockquote>
+<h2>Alter Commands</h2>
+<p>Tunnel (T) or Tunnel</p>
+<blockquote>
+<p>Generally you will want to tunnel by simply holding down the Ctrl key and using the direction keys on the numpad. Tunneling or mining is a very useful art. There are many kinds of rock, with varying hardness, including permanent rock (permanent), granite (very hard), quartz veins (hard), magma veins (soft), and rubble (very soft). Quartz and Magma veins may be displayed in a special way, and may sometimes contain treasure, in which case they will be displayed in a different way. Rubble sometimes covers an object. It is hard to tunnel unless you are wielding a heavy weapon or a shovel or a pick. Tunneling ability increases with strength and weapon weight. This command requires a direction, and takes some energy.</p>
+</blockquote>
+<p>Open a door or chest (o)</p>
+<blockquote>
+<p>To open an object such as a door or chest, you must use this command. If the object is locked, you will attempt to pick the lock based on your disarming ability. If you open a trapped chest without disarming the traps first, the trap will be set off. Some doors will be jammed shut and may have to be forced open. You may need several tries to open a door or chest. This command requires a direction, and takes some energy.</p>
+</blockquote>
+<p>Close a door (c)</p>
+<blockquote>
+<p>Non-intelligent and some other creatures cannot open doors, so shutting doors can be quite valuable. Broken doors cannot be closed. Bashing a door open may break it. This command requires a direction, and takes some energy.</p>
+</blockquote>
+<p>Jam a door (j)</p>
+<blockquote>
+<p>Many monsters can simply open closed doors, and can eventually get through a locked door. You may therefore occasionally want to jam a door shut with iron spikes. Each spike used on the door will make it harder to bash down the door, up to a certain limit. Smaller monsters are less able to bash down doors. In order to use this command, you must be carrying iron spikes. This command requires a direction, and takes some energy.</p>
+</blockquote>
+<p>Bash a door (B)</p>
+<blockquote>
+<p>This command allows you to bash down jammed doors. Your bashing ability increases with strength. Bashing open a door can (briefly) throw you off balance. Doors that are stuck, or which have been jammed closed with spikes can only be opened by bashing, and all closed doors can be bashed open if desired. Bashing a door open may permanently break it so that it can never be closed. This command requires a direction, and takes some energy.</p>
+</blockquote>
+<p>Disarm a trap or chest (D)</p>
+<blockquote>
+<p>You can attempt to disarm traps on the floor or on chests. If you fail, there is a chance that you will blunder and set it off. You can only disarm a trap after you have found it (usually with the Search command). This command requires a direction, and takes some energy.</p>
+</blockquote>
+<p>Generic alter (+)</p>
+<blockquote>
+<p>There is also an ALTER command, that will pick tunnel/disarm/open for you, depending on the cave feature you're aiming it at.</p>
+</blockquote>
+<h2>Spell and Prayer Commands</h2>
+<p>Browse a book (b)</p>
+<blockquote>
+<p>Only mages, rogues, and rangers can read magic books, and only priests and paladins can read prayer books. Warriors cannot read any books. When this command is used, all of the spells or prayers contained in the selected book are displayed, along with information such as their level, the amount of mana required to cast them, and whether or not you know the spell or prayer.</p>
+</blockquote>
+<p>Gain new spells or prayers (G)</p>
+<blockquote>
+<p>Use this command to actually learn new spells or prayers. When you are able to learn new spells or prayers, the word "Study" will appear on the status line at the bottom of the screen. If you have a book in your possession, containing spells or prayers which you may learn, then you may choose to study that book. If you are a mage, rogue, or ranger, you may actually choose which spell to study. If you are a priest or paladin, your gods will choose a prayer for you. There are nine books of each type, five of which are normally found only in the dungeon. This command takes some energy.</p>
+</blockquote>
+<p>Cast a spell (m)</p>
+<blockquote>
+<p>To cast a spell, you must have previously learned the spell and must have in your inventory a book from which the spell can be read. Each spell has a chance of failure which starts out fairly large but decreases as you gain levels. If you don't have enough mana to cast a spell, you will be prompted for confirmation. If you decide to go ahead, the chance of failure is greatly increased, and you may lose a point of constitution. Since you must read the spell from a book, you cannot be blind or confused while casting, and there must be some light present. This command takes some energy.</p>
+</blockquote>
+<p>Pray a prayer (p)</p>
+<blockquote>
+<p>To pray effectively, you must have previously learned the prayer and must have in your inventory a book from which the prayer can be read. Each prayer has a chance of being ignored which starts out fairly large but decreases as you gain levels. If you don't have enough mana to pray a prayer, you will be prompted for confirmation. If you decide to go ahead, the chance of failure is greatly increased, and you may lose a point of constitution. Since you must read the prayer from a book, you cannot be blind or confused while praying, and there must be some light present. This command takes some energy.</p>
+</blockquote>
+<p>Use ghostly powers (U)</p>
+<blockquote>
+<p>When you die and turn into a ghost you may draw on the powers of the undead until you resurrect. The powers you can use depend upon your character level, they are mostly offensive spells. Hit (<code>*</code>) for a list of ghostly powers after this command. This command takes some energy.</p>
+</blockquote>
+<h2>Object Manipulation Commands</h2>
+<p>Eat some food (E)</p>
+<blockquote>
+<p>You must eat regularly to prevent starvation. As you grow hungry, a message will appear at the bottom of the screen saying "Hungry". If you go hungry long enough, you will become weak, then start fainting, and eventually, you may will die of starvation. You may use this command to eat food in your inventory. Note that you can sometimes find food in the dungeon, but it is not always wise to eat strange food. This command takes some energy.</p>
+</blockquote>
+<p>Fuel your lantern/torch (F)</p>
+<blockquote>
+<p>If you are using a torch and have more torches in your pack, or you are using a lantern and have flasks of oil in your pack, then your can "refuel" them with this command. Torches and Lanterns are limited in their maximal fuel. In general, two flasks will fully fuel a lantern and two torches will fully fuel a torch. This command takes some energy.</p>
+</blockquote>
+<p>Quaff a potion (q)</p>
+<blockquote>
+<p>Use this command to drink a potion. Potions affect the player in various ways, but the effects are not always immediately obvious. This command takes some energy.</p>
+</blockquote>
+<p>Read a scroll (r)</p>
+<blockquote>
+<p>Use this command to read a scroll. Scroll spells usually have an area effect, except for a few cases where they act on other objects. Reading a scroll causes the parchment to disintegrate as the scroll takes effect. Most scrolls which prompt for more information can be aborted (by pressing escape), which will stop reading the scroll before it disintegrates. This command takes some energy.</p>
+</blockquote>
+<p>Inscribe an object ({)</p>
+<blockquote>
+<p>This command inscribes a string on an object. The inscription is displayed inside curly braces after the object description. The inscription is limited to the particular object (or pile) and is not automatically transferred to all similar objects. Under certain circumstances, MAngband will display "fake" inscriptions on certain objects ("cursed", "broken", "tried", "empty", "NN% off") when appropriate. These "fake" inscriptions remain all the time, even if the player chooses to add a "real" inscription on top of it later.</p>
+<p>In addition, MAngband will occasionally place a "real" inscription on an object for you, normally as the result of your character getting a "feeling" about the item. All characters will get "feelings" about weapons and armor after carrying them for a while. Warriors (who understand weapons and armor best) get the most detailed feelings, and get them faster than other classes. Rogues (used to handling all sorts of stolen goods) are also very good, as are paladins (basically warriors who are religious.) Rangers are not so well-versed in melee weapons, being normally people of the outdoors and the wilderness who prefer archery and camouflage to heavy metal armor and weaponry, while priests and mages simply are not experienced enough in matters concerning melee to be able to tell much about an item - though a priest will realise the extent of his knowledge fairly quickly, as they are often called upon to fight for their faith and have learned a little from these experiences and divine insight. Mages, frankly, haven't a clue. But then, they don't need it when they can learn the spell of Identify very early on in the game.</p>
+<p>Items dropped by unique monsters will be inscribed with the name of the unique to whom the item belonged.</p>
+<p>An item labeled as "{empty}" was found to be out of charges, and an item labeled as "{tried}" is a "flavored" item which the character has used, but whose effects are unknown. Certain inscriptions have a meaning to the game, see <code>@#</code>, <code>@x#</code>, <code>!*</code>, and <code>!x</code>, in the section on inventory object selection.</p>
+</blockquote>
+<p>Uninscribe an object (})</p>
+<blockquote>
+<p>This command removes the inscription on an object. This command will have no effect on "fake" inscriptions added by the game itself.</p>
+</blockquote>
+<h2>Magical Object Commands</h2>
+<p>Activate an artifact (A)</p>
+<blockquote>
+<p>You have heard rumors of special weapons and armor deep in the Pits, items that can let you breathe fire like a dragon or light rooms with just a thought. Should you ever be lucky enough to find such an item, this command will let you activate its special ability. Special abilities can only be used if you are wearing or wielding the item. This command takes some energy.</p>
+</blockquote>
+<p>Aim a wand (a)</p>
+<blockquote>
+<p>Wands must be aimed in a direction to be used. Wands are magical devices, and therefore there is a chance you will not be able to figure out how to use them if you aren't good with magical devices. They will fire a shot that affects the first object or creature encountered or fire a beam that affects anything in a given direction, depending on the wand. An obstruction such as a door or wall will generally stop the effects from traveling any farther. This command requires a direction and can use a target. This command takes some energy.</p>
+</blockquote>
+<p>Use a staff (u)</p>
+<blockquote>
+<p>This command will use a staff. A staff is normally very similar to a scroll, in that they normally either have an area effect or affect a specific object. Staves are magical devices, and there is a chance you will not be able to figure out how to use them. You can use a staff whilst blinded and confused. This command takes some energy.</p>
+</blockquote>
+<p>Zap a rod (z)</p>
+<blockquote>
+<p>Rods are extremely powerful magical items, which cannot be burnt or shattered, and which can have either staff-like or wand-like effects, but unlike staves and wands, they don't have charges. Instead, they draw on the ambient magical energy to recharge themselves, and therefore can only be activated once every few turns. The recharging time varies depending on the type of rod. This command may require a direction (depending on the type of rod, and whether you are aware of its type) and can use a target. This command takes some energy.</p>
+</blockquote>
+<h2>Throwing and Missile Weapons</h2>
+<p>Fire an item (f)</p>
+<blockquote>
+<p>You may fire arrows or bolts as long as you are currently wielding a suitable weapon such as a bow. Firing in MAngband is best handled using a macro as pushing the many keys required in the heat of battle is difficult. Fire requires a direction. Targeting mode can be invoked with "*" at the "Direction?" prompt. This command takes some energy.</p>
+</blockquote>
+<p>Throw an item (v)</p>
+<blockquote>
+<p>You may throw any object carried by your character. The lighter the object, the farther you can throw it. Only one object from a stack may be thrown at a time. Throwing an object may break it. If you throw something at a monster, your chances of hitting it are determined by your pluses to hit, your ability at throwing, and the object's pluses to hit. If the object hits the monster, it may or may not do damage. Some objects, such as weapons, or flasks of oil, can do a substantial amount of damage. This command requires a direction, and can take a target. This command takes some energy.</p>
+</blockquote>
+<p>Targeting Mode (<code>*</code>)</p>
+<blockquote>
+<p>This will allow you to aim your spells and such at a specific monster or grid, so that you can point directly towards that monster or grid (even if this is not a "compass" direction) when you are asked for a direction. Generally in MAngband targeting mode is most used within macros. You can set a target using this command, or you can set a new target at the "Direction?" prompt when appropriate. At the targeting prompt, you have many options. First of all, targeting mode starts targeting nearby monsters which can be reached by "projectable" spells and thrown objects. In this mode, you can press "t" to select the current monster, space to advance to the next monster, "-" to back up to the previous monster, direction keys to advance to a monster more or less in that direction, "q" to exit targeting mode, and "p" to stop targeting monsters and enter the mode for targeting a location on the floor or in a wall. Note that if there are no nearby monsters, you will automatically enter this mode. In this mode, you use the "direction" keys to move around, and the "q" key to quit, and the "t" key to target the cursor location. Note that targeting a location is slightly "dangerous", as the target is maintained even if you are far away. To cancel an old target, simply hit <code>*</code> and then ESCAPE (or "q"). Note that when you cast a spell or throw an object at the target location, the path chosen is the "optimal" path towards that location, which may or may not be the path you want. Sometimes, by clever choice of a location on the floor for your target, you may be able to convince a thrown object or cast spell to squeeze through a hole or corridor that is blocking direct access to a different grid. Launching a ball spell or breath weapon at a location in the middle of a group of monsters can often improve the effects of that attack, since ball attacks are not stopped by interposed monsters if the ball is launched at a target.</p>
+</blockquote>
+<p>Target friendly target (()</p>
+<blockquote>
+<p>In MAngband it is possible to cast certain spells on friendly targets, such as casting a heal spell on a party member. To target a nearby friendly player use this command.</p>
+</blockquote>
+<h2>Looking Commands</h2>
+<p>Full screen map (M)</p>
+<blockquote>
+<p>This command will show a map of the entire dungeon, reduced by a factor of nine, on the screen. Only the major dungeon features will be visible because of the scale, so even some important objects may not show up on the map. This is particularly useful in locating where the stairs are relative to your current position, or for identifying unexplored areas of the dungeon.</p>
+</blockquote>
+<p>Browse location (L)</p>
+<blockquote>
+<p>This command lets you scroll your map around, looking at all sectors of the current dungeon level, until you press escape, at which point the map will be re-centered on the player if necessary. To scroll the map around, simply press any of the "direction" keys. The top line will display the sector location, and the offset from your current sector.</p>
+</blockquote>
+<p>Look around (l)</p>
+<blockquote>
+<p>This command is used to look around at nearby monsters (to determine their type and health) and objects (to determine their type). It is also used to find out what objects (if any) are under monsters, and if a monster is currently inside a wall, and what is under the player. When you are looking at something, you may use a direction key to advance to the nearest interesting monster in that general direction, use "p" to enter manual looking mode where you can control the exact location being looked at, or "q" or escape to stop looking around. You always start out looking at "yourself".</p>
+</blockquote>
+<p>Examine an item (I)</p>
+<blockquote>
+<p>Use this command to examine an item in your inventory or in a shops inventory. If you use this command on a previously *identified* item, it will tell you things about the special powers of the object.</p>
+</blockquote>
+<p>List visible monsters ([)</p>
+<blockquote>
+<p>This command will display a list of all the monsters on-screen.</p>
+</blockquote>
+<p>List visible objects (])</p>
+<blockquote>
+<p>This command will display a list of all seen objects. Note, that unidentified items will be shown in red, and artifacts in violet.</p>
+</blockquote>
+<h2>Message Commands</h2>
+<p>View previous messages (Ctrl P)</p>
+<blockquote>
+<p>This command shows you all the recent messages, both messages sent in public chat and messages from the game. You can scroll through them, or exit with ESCAPE.</p>
+</blockquote>
+<p>View previous message (Ctrl O)</p>
+<blockquote>
+<p>The command repeats the last message from your log.</p>
+</blockquote>
+<p>Send a chat message (:)</p>
+<blockquote>
+<p>This command allows you to send both public and private chat messages to other players. Messages are public unless you prefix them with a players name followed by a colon. For example to send a private message to a player named "Jug", you could use "Jug: Hello!". If a player has a long name, you may abbreviate it, for example to send a private message to a player named "Jug The Holy", you can still simply use, "Jug: Hello!".</p>
+</blockquote>
+<p>Control chat channel (Ctrl ')</p>
+<blockquote>
+<p>This command allows you to open/close and navigate between different chat channels in your chat window.</p>
+</blockquote>
+<h2>Player House Commands</h2>
+<p>Buy or sell a house (h)</p>
+<blockquote>
+<p>You may buy one or more houses in the town or the surrounding wilderness. To buy a house stand next to the door and use this command, when prompted for a direction select the direction of the door. If you already own the house on which you use this command, the house will be sold and all items from within it will be lost.</p>
+</blockquote>
+<p>Check player owned shop inventory (h)</p>
+<blockquote>
+<p>If you have items for sale in your house you may check the inventory which other players see by standing <em>inside</em> your house and using this command. Note this will not sell your house as long as you use it <strong>inside</strong> the house.</p>
+</blockquote>
+<h2>Game Status Commands</h2>
+<p>Character Description (C)</p>
+<blockquote>
+<p>Brings up a full description of your character, including your skill levels, your current and potential stats, and various other information. From this screen, you can change your password. Within this screen press "h" to see your characters background history, press "h" once again to see detailed information about character resistances and abilities.</p>
+</blockquote>
+<p>List found artifacts (~)</p>
+<blockquote>
+<p>This command lists artifacts which have been found by you or other players. Any artifact not on this list is available for you to find in the dungeon. As artifacts are lost (by players dying or being sold) they will be removed from this list.</p>
+</blockquote>
+<p>List uniques (|)</p>
+<blockquote>
+<p>This command displays a list of unique creatures which have been discovered. For a unique to appear on this list at least one player must have seen them. Players who have killed each unique will be listed if that particular player is currently online otherwise you may simply see "has been killed by somebody". If no one has ever killed the unique you will see "killed by nobody".</p>
+</blockquote>
+<p>High scores (#)</p>
+<blockquote>
+<p>This command displays a limited number of high scores. It doesn't include characters that are alive (except for you) and only the top few characters are displayed. Fully detailed score information can be seen in the <a href="/web/20260208194137/https://www.mangband.org/scores">online high chart</a>.</p>
+</blockquote>
+<p>Party menu (P)</p>
+<blockquote>
+<p>From the Party Menu you can create player parties, add and remove players from your current party and declare hostility towards other players (allowing for PvP).</p>
+</blockquote>
+<p>Who is online (@)</p>
+<blockquote>
+<p>This command displays a list of players currently in the game.</p>
+</blockquote>
+<h2>User preference commands</h2>
+<p>Game options (=)</p>
+<blockquote>
+<p>Allows you to interact with various options effecting the game. See the options help for more information.</p>
+</blockquote>
+<p>Edit macros (%)</p>
+<blockquote>
+<p>Allows you to interact with macros. You may load or save macros from files, create macros of various types, or define keymaps. You must define a "current action", shown at the bottom of the screen, before you attempt to use any of the "create macro" commands, which use that "current action" as their action. See help on macros elsewhere for more information.</p>
+</blockquote>
+<h2>Saving and Exiting Commands</h2>
+<p>Exit the game (Ctrl X)</p>
+<blockquote>
+<p>This command exits the game, you don't need to worry about saving. You can also simply close the game client to exit the game.</p>
+</blockquote>
+<p>Quit (commit suicide) (Q or Ctrl C)</p>
+<blockquote>
+<p>Kills your character and exits MAngband. You will be prompted to make sure you really want to do this, and then asked to verify that choice. Note that dead characters are dead forever.</p>
+</blockquote>
+<h2>Extra commands</h2>
+<p>Help (?)</p>
+<blockquote>
+<p>Brings up the brief in-game command reference and help.</p>
+</blockquote>
+<p>Command Menu (Enter/Return)</p>
+<blockquote>
+<p>Open a menu with all available game commands. You can then navigate to appropriate command using the arrow keys
+and select it by pressing Enter.</p>
+</blockquote>
+<p>Redraw Screen (Ctrl R)</p>
+<blockquote>
+<p>This command redraws your screen. This is not normally necessary but may help if for some reason your screen display has become corrupted.</p>
+</blockquote>
+<p>Steal (J)</p>
+<blockquote>
+<p>Steal (try to) from other players. This is generally frowned upon and will probably get you killed. This command requires a direction.</p>
+</blockquote>
+<p>Repeat Level Feeling (Ctrl F)</p>
+<blockquote>
+<p>Show the message about your level feeling.</p>
+</blockquote>
+<p>Socialize (Ctrl S)</p>
+<blockquote>
+<p>Send social command. This will send role-playing messages to other players around you. You will be presented an interface similar to spell selection, '/' key can be used to browse through pages, and 'a'-'z' keys select a particular "spell". Uppercase versions 'A'-'Z' are allowed to attempt "spell" projection. If projection is attempted, you will be asked for target or direction.</p>
+</blockquote>
+<p>Refill bottle (Ctrl G)</p>
+<blockquote>
+<p>Use this command to refill an empty bottle. You must have an empty bottle in your inventory and you must be standing on some mud or in water.</p>
+</blockquote>
+<p>Toggle inven/equip window (Ctrl E)</p>
+<blockquote>
+<p>Toggle what is shown in the "inventory" window of your client. If enabled, the inventory window will list your equipment, instead of backpack contents. Useful, if you have a window for inventory, yet don't have a window for equipment.</p>
+</blockquote>
+                </section>
+            </section>
+                </section>
+
+    </div>
+
+            <section id="footer" class="section bg-gray">
+    <section class="container grid-lg">
+        <p>Copyright (c) 2018-2019, MAngband Project Team.</p>
+    </section>
+</section>
+        
+    <div class="mobile-container">
+        <div class="overlay" id="overlay">
+            <div class="mobile-logo">
+                <a href="/web/20260208194137/https://www.mangband.org/" class="navbar-brand mr-10">
+    <img src="/web/20260208194137im_/https://www.mangband.org/user/themes/quark-m/images/logo/mangband.png" alt=""/>
+</a>            </div>
+            <nav class="overlay-menu">
+                
+<ul class="tree">
+                      <li>
+        <a href="/web/20260208194137/https://www.mangband.org/">
+          Home
+        </a>
+      </li>
+                    <li>
+        <a href="/web/20260208194137/https://www.mangband.org/downloads">
+          Downloads
+        </a>
+      </li>
+                    <li>
+        <a href="/web/20260208194137/https://www.mangband.org/docs" class="active">
+          Documentation
+        </a>
+      </li>
+                    <li>
+        <a href="/web/20260208194137/https://www.mangband.org/servers">
+          Online Servers
+        </a>
+      </li>
+                    <li>
+        <a href="/web/20260208194137/https://www.mangband.org/scores">
+          Scores
+        </a>
+      </li>
+                    <li>
+        <a href="https://web.archive.org/web/20260208194137/https://mangband.org/forum">
+          Forum
+        </a>
+      </li>
+      
+</ul>
+
+            </nav>
+        </div>
+    </div>
+
+    <script src="/web/20260208194137js_/https://www.mangband.org/user/themes/quark-m/js/jquery.treemenu.js"></script>
+<script src="/web/20260208194137js_/https://www.mangband.org/user/themes/quark-m/js/site.js"></script>
+
+
+</body>
+<!--
+     FILE ARCHIVED ON 19:41:37 Feb 08, 2026 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 22:04:19 Sep 25, 2026.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 0.402
+  exclusion.robots: 0.031
+  exclusion.robots.policy: 0.022
+  esindex: 0.006
+  cdx.remote: 12.401
+  LoadShardBlock: 99.555 (3)
+  PetaboxLoader3.datanode: 110.59 (4)
+  PetaboxLoader3.resolve: 553.172 (2)
+  load_resource: 597.31
+-->

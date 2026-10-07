@@ -1,0 +1,257 @@
+{
+ "Aluminum-Plated Wand": {
+  "junk": false,
+  "kind": "Wand of Stinking Cloud",
+  "source": "Advisor L_items (Dive04 10-03 12:41:49)"
+ },
+ "Balsa Staff": {
+  "junk": false,
+  "kind": "Staff of Detect Invisible",
+  "source": "Advisor L_items (Dive03 09-25 20:56:07)"
+ },
+ "Birch Staff": {
+  "junk": true,
+  "kind": "Staff of Darkness",
+  "source": "Advisor L_items (Dive03 09-26 15:29:53)"
+ },
+ "Black Potion": {
+  "junk": false,
+  "kind": "Potion of Resist Heat",
+  "source": "Advisor L_items (Dive03 09-26 15:45:42)"
+ },
+ "Blue Speckled Potion": {
+  "junk": true,
+  "kind": "Potion of Sleep",
+  "source": "Advisor L_items (Dive04 09-29 22:59:23)"
+ },
+ "Bronze Wand": {
+  "junk": false,
+  "kind": "Wand of Magic Missile",
+  "source": "Advisor L_items (Dive04 10-03 12:41:05)"
+ },
+ "Bubbling Potion": {
+  "junk": false,
+  "kind": "Potion of Neutralize Poison",
+  "source": "Advisor L_items (Dive03 09-27 11:40:09)"
+ },
+ "Clear Potion": {
+  "junk": true,
+  "kind": "Potion of Water",
+  "source": "Advisor L_items (Dive04 09-29 22:50:10)"
+ },
+ "Clotted Red Potion": {
+  "junk": true,
+  "kind": "Potion of Clumsiness",
+  "source": "Advisor L_items (Dive03 09-26 04:55:09)"
+ },
+ "Cloudy Potion": {
+  "junk": false,
+  "kind": "Potion of Slow Poison",
+  "source": "Advisor L_items (Dive04 09-29 23:02:06)"
+ },
+ "Copper Wand": {
+  "junk": true,
+  "kind": "Wand of Haste Monster",
+  "source": "Advisor L_items (Dive04 09-29 22:15:37)"
+ },
+ "Copper-Plated Rod": {
+  "junk": false,
+  "kind": "Rod of Illumination",
+  "source": "Advisor L_items (Dive03 09-26 16:42:26)"
+ },
+ "Copper-Plated Wand": {
+  "junk": false,
+  "kind": "Wand of Slow Monster",
+  "source": "Advisor L_items (Dive03 09-25 20:56:08)"
+ },
+ "Corundum Ring": {
+  "junk": false,
+  "kind": "Ring of Feather Falling",
+  "source": "Advisor L_items (Dive03 09-27 12:07:32)"
+ },
+ "Elm Staff": {
+  "junk": false,
+  "kind": "Staff of Trap Location",
+  "source": "Advisor L_items (Dive03 09-27 12:52:05)"
+ },
+ "Golden Staff": {
+  "junk": false,
+  "kind": "Staff of Sleep Monsters",
+  "source": "Advisor L_items (Dive03 09-25 20:56:07)"
+ },
+ "Green Potion": {
+  "junk": true,
+  "kind": "Potion of Slowness",
+  "source": "Advisor L_items (Dive04 09-29 22:46:20)"
+ },
+ "Icky Green Potion": {
+  "junk": false,
+  "kind": "Potion of Slime Mold Juice",
+  "source": "Advisor L_items (Dive04 09-29 21:37:38)"
+ },
+ "Ivory Amulet": {
+  "junk": false,
+  "kind": "Amulet of Resist Lightning",
+  "source": "Advisor L_items (Dive03 09-27 12:26:52)"
+ },
+ "Lead Wand": {
+  "junk": true,
+  "kind": "Wand of Heal Monster",
+  "source": "Advisor L_items (Dive04 09-29 21:44:33)"
+ },
+ "Light Blue Potion": {
+  "junk": false,
+  "kind": "Potion of Heroism",
+  "source": "Advisor L_items (Dive04 09-29 23:01:24)"
+ },
+ "Light Brown Potion": {
+  "junk": true,
+  "kind": "Potion of Apple Juice",
+  "source": "Advisor L_items (Dive04 09-28 01:43:49)"
+ },
+ "Magenta Potion": {
+  "junk": true,
+  "kind": "Potion of Confusion",
+  "source": "Advisor L_items (Dive04 09-28 02:02:32)"
+ },
+ "Maple Staff": {
+  "junk": false,
+  "kind": "Staff of Cure Light Wounds",
+  "source": "Advisor L_items (Dive04 10-03 12:33:51)"
+ },
+ "Metallic Blue Potion": {
+  "junk": false,
+  "kind": "Potion of Boldness",
+  "source": "Advisor L_items (Dive04 09-29 21:37:17)"
+ },
+ "Molybdenum Rod": {
+  "junk": false,
+  "kind": "Rod of Light",
+  "source": "Advisor L_items (Dive03 09-27 11:55:49)"
+ },
+ "Mulberry Staff": {
+  "junk": false,
+  "kind": "Staff of Slow Monsters",
+  "source": "Advisor L_items (Dive03 09-26 16:31:54)"
+ },
+ "Nickel-Plated Wand": {
+  "junk": false,
+  "kind": "Wand of Trap/Door Destruction",
+  "source": "Advisor L_items (Dive03 09-27 12:19:15)"
+ },
+ "Orange Speckled Potion": {
+  "junk": false,
+  "kind": "Potion of Speed",
+  "source": "Advisor L_items (Dive04 09-29 22:59:27)"
+ },
+ "Puce Potion": {
+  "junk": true,
+  "kind": "Potion of Weakness",
+  "source": "Advisor L_items (Dive04 10-07 09:14:06)"
+ },
+ "Red Potion": {
+  "junk": false,
+  "kind": "Potion of Resist Cold",
+  "source": "Advisor L_items (Dive04 09-29 22:48:13)"
+ },
+ "Redwood Staff": {
+  "junk": false,
+  "kind": "Staff of Door/Stair Location",
+  "source": "Advisor L_items (Dive03 09-27 12:15:06)"
+ },
+ "Rhodonite Ring": {
+  "junk": true,
+  "kind": "Ring of Stupidity",
+  "source": "Advisor L_items (Dive03 09-25 20:56:03)"
+ },
+ "Rosewood Staff": {
+  "junk": false,
+  "kind": "Staff of Object Location",
+  "source": "Advisor L_items (Dive04 09-29 22:37:59)"
+ },
+ "Ruby Ring": {
+  "junk": false,
+  "kind": "Ring of Searching",
+  "source": "Advisor L_items (Dive03 09-26 16:17:06)"
+ },
+ "Runed Rod": {
+  "junk": false,
+  "kind": "Rod of Trap Location",
+  "source": "Advisor L_items (Dive03 09-27 12:54:28)"
+ },
+ "Runed Staff": {
+  "junk": false,
+  "kind": "Staff of Light",
+  "source": "Advisor L_items (Dive04 09-29 22:25:32)"
+ },
+ "Scroll titled \"blaa marsef\"": {
+  "junk": true,
+  "kind": "Scroll of Darkness",
+  "source": "Advisor L_items (Dive04 09-28 02:05:53)"
+ },
+ "Scroll titled \"heaks khonis\"": {
+  "junk": false,
+  "kind": "Scroll of Light",
+  "source": "Advisor L_items (Dive04 09-29 22:46:19)"
+ },
+ "Scroll titled \"ishx therbin\"": {
+  "junk": false,
+  "kind": "Scroll of Satisfy Hunger",
+  "source": "Advisor L_items (Dive04 10-03 12:42:10)"
+ },
+ "Scroll titled \"it mungrea a\"": {
+  "junk": true,
+  "kind": "Scroll of Summon Monster",
+  "source": "Advisor L_items (Dive04 09-29 23:04:22)"
+ },
+ "Scroll titled \"kliwex potri\"": {
+  "junk": false,
+  "kind": "Scroll of Door/Stair Location",
+  "source": "Advisor L_items (Dive03 09-26 15:43:54)"
+ },
+ "Scroll titled \"mikoxy urmur i\"": {
+  "junk": false,
+  "kind": "Scroll of Identify",
+  "source": "Advisor L_items (Dive04 09-28 01:49:43)"
+ },
+ "Scroll titled \"monwhon\"": {
+  "junk": false,
+  "kind": "Scroll of Detect Invisible",
+  "source": "Advisor L_items (Dive04 09-29 22:38:27)"
+ },
+ "Scroll titled \"munger toxmung\"": {
+  "junk": true,
+  "kind": "Scroll of Summon Undead",
+  "source": "Advisor L_items (Dive03 09-27 11:35:15)"
+ },
+ "Scroll titled \"nelggar payjo\"": {
+  "junk": false,
+  "kind": "Scroll of Trap Detection",
+  "source": "Advisor L_items (Dive03 09-27 12:47:27)"
+ },
+ "Scroll titled \"skinej glenur\"": {
+  "junk": false,
+  "kind": "Scroll of Remove Curse",
+  "source": "Advisor L_items (Dive03 09-27 12:35:38)"
+ },
+ "Scroll titled \"xtox ipta sour\"": {
+  "junk": false,
+  "kind": "Scroll of Blessing",
+  "source": "Advisor L_items (Dive04 09-28 01:37:44)"
+ },
+ "Steel-Plated Wand": {
+  "junk": false,
+  "kind": "Wand of Confuse Monster",
+  "source": "Advisor L_items (Dive03 09-25 20:56:08)"
+ },
+ "Vermilion Potion": {
+  "junk": false,
+  "kind": "Potion of Detect Invisible",
+  "source": "Advisor L_items (Dive04 10-03 12:26:59)"
+ },
+ "Yellow Speckled Potion": {
+  "junk": false,
+  "kind": "Potion of Infravision",
+  "source": "Advisor L_items (Dive03 09-26 04:56:54)"
+ }
+}

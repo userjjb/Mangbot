@@ -1,0 +1,574 @@
+14:09-28 01:36:59 d0 ACT custom p store item=13 value=5 entry=120 | buy 99 Scrolls of Phase Door x5
+20:09-28 01:37:00 dNone MSG You have 5 Scrolls of Phase Door (d).
+24:09-28 01:37:09 d0 ACT custom p store item=6 value=2 entry=46 | buy 34 Potions of Cure Light Wounds x2
+30:09-28 01:37:11 dNone MSG You have 2 Potions of Cure Light Wounds (d).
+39:09-28 01:37:42 d1 ACT custom , | pick up: a Scroll titled "xtox ipta sour".
+45:09-28 01:37:44 d1 MSG You see a Scroll titled "xtox ipta sour".
+46:09-28 01:37:44 d1 MSG You have a Scroll titled "xtox ipta sour" (g).
+98:09-28 01:41:39 d0 ACT custom t item=24 | agent: takeoff ['Broad_Sword']
+105:09-28 01:41:53 d0 ATT goal_done shop 3 buy Main Gauche:1 sell Broad Sword:1: You sold a Broad Sword (2d5) (+0,+0) for 102 gold.; no Main Gauche in stock
+107:09-28 01:41:55 d0 MSG Selling a Broad Sword (2d5) (+0,+0) (i).
+109:09-28 01:41:55 d0 CONFIRM Accept 102 gold?
+111:09-28 01:41:55 d0 MSG You sold a Broad Sword (2d5) (+0,+0) for 102 gold.
+112:09-28 01:41:55 d0 MSG You have no more Broad Swords (2d5) (+0,+0).
+129:09-28 01:42:15 d0 ACT custom I item=8 | agent: inspect ['Dagger']
+130:09-28 01:42:16 d0 ACT custom w item=8 | agent: wear ['Dagger']
+134:09-28 01:42:28 d0 ACT custom t item=30 | agent: takeoff ['Chain_Mail']
+147:09-28 01:42:35 d0 MSG Selling Chain Mail (-2) [14,+0] (i).
+149:09-28 01:42:35 d0 CONFIRM Accept 358 gold?
+151:09-28 01:42:35 d0 MSG You sold Chain Mail (-2) [14,+0] for 358 gold.
+152:09-28 01:42:35 d0 MSG You have no more Chain Mails (-2) [14,+0].
+198:09-28 01:43:03 d0 ACT custom p store item=20 value=2 entry=302 | buy 7 Scrolls of Enchant Weapon To-Dam {25% off} x2
+199:09-28 01:43:03 d0 ACT custom p store item=18 value=1 entry=52 | buy a Scroll of Enchant Weapon To-Hit {75% off} x1
+205:09-28 01:43:05 d0 MSG You have 2 Scrolls of Enchant Weapon To-Dam {25% off} (g).
+209:09-28 01:43:05 d0 MSG You have a Scroll of Enchant Weapon To-Hit {75% off} (g).
+211:09-28 01:43:09 d0 ACT custom r item=7 dir=24 | agent: read ['Enchant_Weapon_To-Dam', 'Dagger']
+213:09-28 01:43:11 d0 MSG You have a Scroll of Enchant Weapon To-Dam {25% off}.
+214:09-28 01:43:11 d0 ACT custom r item=7 dir=24 | agent: read ['Enchant_Weapon_To-Dam', 'Dagger']
+216:09-28 01:43:12 d0 MSG You have no more Scrolls of Enchant Weapon To-Dam {25% off}.
+217:09-28 01:43:13 d0 ACT custom r item=6 dir=24 | agent: read ['Enchant_Weapon_To-Hit', 'Dagger']
+219:09-28 01:43:14 d0 MSG You have no more Scrolls of Enchant Weapon To-Hit {75% off}.
+227:09-28 01:43:47 d1 ACT custom , | pick up: a Light Brown Potion.
+228:09-28 01:43:48 d1 MSG You see a Light Brown Potion.
+229:09-28 01:43:49 d1 MSG You have a Light Brown Potion (e).
+234:09-28 01:44:12 d1 MSG You have destroyed the Grey mushroom patch.
+236:09-28 01:44:14 d1 MSG You feel less confused now.
+240:09-28 01:46:02 d1 MSG You have destroyed the White worm mass.
+244:09-28 01:46:14 d1 ACT custom , | pick up: a Set of Leather Gloves [1].
+246:09-28 01:46:16 d1 ACT custom , | pick up: a Robe [2].
+296:09-28 01:49:41 d1 ACT custom , | pick up: a Scroll titled "mikoxy urmur i".
+297:09-28 01:49:42 d1 MSG You see a Scroll titled "mikoxy urmur i".
+298:09-28 01:49:43 d1 MSG You have a Scroll titled "mikoxy urmur i" (i).
+299:09-28 01:50:00 d1 MSG You feel the Set of Leather Gloves (m) in your pack is average...
+300:09-28 01:50:41 d1 MSG You feel the Robe (l) in your pack is good...
+327:09-28 01:53:57 d2 ACT custom , | pick up: a Potion of Cure Light Wounds.
+335:09-28 01:53:59 d2 MSG You see a Potion of Cure Light Wounds.
+336:09-28 01:53:59 d2 MSG You have 3 Potions of Cure Light Wounds (d).
+345:09-28 01:54:18 d2 MSG You have destroyed the Shrieker mushroom patch.
+370:09-28 01:57:03 d2 MSG You have destroyed the Grey mold.
+372:09-28 01:57:18 d2 ACT custom , | pick up: 20 Iron Spikes.
+373:09-28 01:57:19 d2 ACT custom , | pick up: 26 Iron Spikes.
+418:09-28 01:59:14 d2 MSG You have destroyed the White jelly.
+431:09-28 02:02:30 d2 ACT custom , | pick up: a Magenta Potion.
+436:09-28 02:02:32 d2 MSG You see a Magenta Potion.
+437:09-28 02:02:32 d2 MSG You have a Magenta Potion (f).
+483:09-28 02:03:39 d2 MSG You have destroyed the Blue worm mass.
+487:09-28 02:03:40 d2 MSG You have destroyed the Blue worm mass.
+492:09-28 02:03:42 d2 MSG You have destroyed the Blue worm mass.
+498:09-28 02:03:43 d2 MSG You have destroyed the Blue worm mass.
+502:09-28 02:03:44 d2 MSG You have destroyed the Blue worm mass.
+507:09-28 02:03:46 d2 MSG You have destroyed the Blue worm mass.
+513:09-28 02:03:47 d2 MSG You have destroyed the Blue worm mass.
+516:09-28 02:03:48 d2 MSG You have destroyed the Blue worm mass.
+540:09-28 02:05:43 d2 ACT custom q item=2 | afraid and in danger: quaff a Potion of Berserk Strength
+541:09-28 02:05:43 d2 ATT tactic afraid and in danger: quaffed a Potion of Berserk Strength
+545:09-28 02:05:46 d2 MSG You feel much better.
+546:09-28 02:05:46 d2 MSG You feel bolder now.
+547:09-28 02:05:46 d2 MSG You feel like a killing machine!
+548:09-28 02:05:46 d2 MSG You have no more Potions of Berserk Strength.
+567:09-28 02:05:51 d2 ACT custom , | pick up: a Scroll titled "blaa marsef".
+568:09-28 02:05:53 d2 MSG You see a Scroll titled "blaa marsef".
+569:09-28 02:05:53 d2 MSG You have a Scroll titled "blaa marsef" (j).
+571:09-28 02:05:57 d2 MSG You feel less Berserk.
+572:09-28 02:05:58 d1 ACT custom , | pick up: a Sling (x2).
+598:09-28 02:06:16 d0 ACT custom I item=12 | agent: inspect ['Robe']
+599:09-28 02:06:17 d0 GOAL shop 5 sell Light Brown:1 sell Magenta:1 sell xtox:1 sell mikoxy:1 sell blaa:1
+609:09-28 02:06:34 d0 ATT goal_done shop 5 sell Light Brown:1 sell Magenta:1 sell xtox:1 sell mikoxy:1 sell blaa:1: You sold a Potion of Apple Juice for 9 gold.; You sold a Potion of Confusion for 9 gold.; You sold a Scroll of Ble
+610:09-28 02:06:34 d0 MSG Selling a Light Brown Potion (d).
+612:09-28 02:06:34 d0 CONFIRM Accept 9 gold?
+614:09-28 02:06:34 d0 MSG You sold a Potion of Apple Juice for 9 gold.
+616:09-28 02:06:34 d0 MSG You have no more Potions of Apple Juice.
+618:09-28 02:06:34 d0 MSG Selling a Magenta Potion (d).
+620:09-28 02:06:34 d0 CONFIRM Accept 9 gold?
+622:09-28 02:06:34 d0 MSG You sold a Potion of Confusion for 9 gold.
+624:09-28 02:06:34 d0 MSG You have no more Potions of Confusion.
+626:09-28 02:06:34 d0 MSG Selling a Scroll titled "xtox ipta sour" (f).
+628:09-28 02:06:34 d0 CONFIRM Accept 9 gold?
+630:09-28 02:06:34 d0 MSG You sold a Scroll of Blessing for 9 gold.
+631:09-28 02:06:34 d0 MSG You have no more Scrolls of Blessing.
+633:09-28 02:06:35 d0 MSG Selling a Scroll titled "mikoxy urmur i" (f).
+635:09-28 02:06:35 d0 CONFIRM Accept 9 gold?
+637:09-28 02:06:35 d0 MSG You sold a Scroll of Identify for 9 gold.
+639:09-28 02:06:35 d0 MSG You have no more Scrolls of Identify.
+641:09-28 02:06:35 d0 MSG Selling a Scroll titled "blaa marsef" (f).
+643:09-28 02:06:35 d0 CONFIRM Accept 9 gold?
+645:09-28 02:06:35 d0 MSG You sold a Scroll of Darkness for 9 gold.
+647:09-28 02:06:35 d0 MSG You have no more Scrolls of Darkness.
+654:09-28 02:06:49 d0 ATT goal_done shop 2 sell Robe:1 sell Leather Gloves:1: You sold a Robe [2,+1] for 3 gold.; You sold a Set of Leather Gloves [1,+0] for 2 gold.
+657:09-28 02:06:51 d0 MSG Selling a Robe [2] {good} (h).
+659:09-28 02:06:51 d0 CONFIRM Accept 3 gold?
+661:09-28 02:06:51 d0 MSG You sold a Robe [2,+1] for 3 gold.
+663:09-28 02:06:51 d0 MSG You have no more Robes [2,+1].
+665:09-28 02:06:51 d0 MSG Selling a Set of Leather Gloves [1] {average} (h).
+667:09-28 02:06:51 d0 CONFIRM Accept 2 gold?
+669:09-28 02:06:51 d0 MSG You sold a Set of Leather Gloves [1,+0] for 2 gold.
+670:09-28 02:06:51 d0 MSG You have no more Sets of Leather Gloves [1,+0].
+675:09-28 02:06:54 d0 ATT goal_done shop 3 sell Sling:1: You sold a Sling (x2) (+0,+0) for 2 gold.
+677:09-28 02:06:55 d0 MSG Selling a Sling (x2) (h).
+679:09-28 02:06:55 d0 CONFIRM Accept 2 gold?
+681:09-28 02:06:55 d0 MSG You sold a Sling (x2) (+0,+0) for 2 gold.
+682:09-28 02:06:55 d0 MSG You have no more Slings (x2) (+0,+0).
+691:09-28 02:07:18 d0 ACT custom p store item=10 value=3 entry=57 | buy 13 Scrolls of Phase Door {25% off} x3
+697:09-28 02:07:20 d0 MSG You have 8 Scrolls of Phase Door {25% off} (d).
+4216:09-29 21:35:55 d0 MSG Selling 2 Wooden Torches (with 0 turns of light) (f).
+4218:09-29 21:35:55 d0 CONFIRM Accept 2 gold?
+4220:09-29 21:35:55 d0 MSG You sold 2 Wooden Torches (with 0 turns of light) for 2 gold.
+4221:09-29 21:35:55 d0 MSG You have no more Wooden Torches (with 0 turns of light).
+4223:09-29 21:35:55 d0 MSG Selling 46 Iron Spikes (f).
+4225:09-29 21:35:55 d0 CONFIRM Accept 46 gold?
+4227:09-29 21:35:55 d0 MSG You sold 46 Iron Spikes for 46 gold.
+4228:09-29 21:35:55 d0 MSG You have no more Iron Spikes.
+4234:09-29 21:36:00 d0 ACT custom w item=5 | agent: wear ['Brass_Lantern']
+4235:09-29 21:36:00 d0 ACT custom d item=5 value=1 | agent: drop ['Wooden_Torch']
+4239:09-29 21:36:02 d0 MSG You have no more Wooden Torches (with 0 turns of light).
+4252:09-29 21:36:32 d0 ACT custom p store item=6 value=2 entry=124 | buy 57 Potions of Cure Serious Wounds x2
+4258:09-29 21:36:34 d0 MSG You have 2 Potions of Cure Serious Wounds (d).
+4329:09-29 21:37:14 d2 ACT custom , | pick up: a Metallic Blue Potion.
+4330:09-29 21:37:16 d2 MSG You see a Metallic Blue Potion.
+4331:09-29 21:37:17 d2 MSG You have a Metallic Blue Potion (e).
+4396:09-29 21:37:36 d2 ACT custom , | pick up: an Icky Green Potion.
+4400:09-29 21:37:38 d2 MSG You see an Icky Green Potion.
+4402:09-29 21:37:38 d2 MSG You have an Icky Green Potion (f).
+4494:09-29 21:39:21 d6 MSG You feel bolder now.
+4504:09-29 21:39:52 d6 MSG You feel your luck is turning...
+4517:09-29 21:40:09 d5 MSG You feel strangely lucky...
+4541:09-29 21:40:42 d6 ACT custom q item=2 | low HP: quaff 3 Potions of Cure Light Wounds
+4542:09-29 21:40:42 d6 ATT emergency low HP: quaffed a Potion of Cure Light Wounds (losing ~3 HP/s)
+4550:09-29 21:40:44 d6 ACT custom q item=2 | low HP: quaff 3 Potions of Cure Light Wounds
+4551:09-29 21:40:44 d6 ATT emergency low HP: quaffed a Potion of Cure Light Wounds (losing ~2 HP/s)
+4553:09-29 21:40:46 d6 MSG You feel much better.
+4554:09-29 21:40:46 d6 MSG You have 2 Potions of Cure Light Wounds.
+4556:09-29 21:40:46 d6 MSG You have 7 Scrolls of Phase Door {25% off}.
+4559:09-29 21:40:47 d6 MSG You feel much better.
+4560:09-29 21:40:47 d6 MSG You have a Potion of Cure Light Wounds.
+4572:09-29 21:40:50 d6 MSG You have 6 Scrolls of Phase Door {25% off}.
+4598:09-29 21:41:52 d5 MSG You have destroyed the Red worm mass.
+4604:09-29 21:41:53 d5 MSG You have destroyed the Red worm mass.
+4611:09-29 21:41:54 d5 MSG You have destroyed the Red worm mass.
+4640:09-29 21:44:15 d5 ACT custom , | pick up: a White Mushroom.
+4654:09-29 21:44:31 d5 ACT custom , | pick up: a Lead Wand.
+4655:09-29 21:44:33 d5 MSG You see a Lead Wand.
+4656:09-29 21:44:33 d5 MSG You have a Lead Wand (j).
+4700:09-29 21:45:48 d5 MSG You have destroyed the Green jelly.
+4706:09-29 21:46:41 d5 MSG You feel very weak.
+4707:09-29 21:46:41 d5 MSG You have 5 Scrolls of Phase Door {25% off}.
+4714:09-29 21:46:50 d5 MSG You have 4 Scrolls of Phase Door {25% off}.
+4718:09-29 21:46:54 d5 MSG You have 3 Scrolls of Phase Door {25% off}.
+4729:09-29 21:46:57 d5 MSG You feel very weak.
+4730:09-29 21:46:58 d5 MSG You have 2 Scrolls of Phase Door {25% off}.
+4778:09-29 21:54:04 d5 ACT custom q item=4 | low HP: quaff 2 Potions of Cure Serious Wounds
+4779:09-29 21:54:04 d5 ATT emergency low HP: quaffed a Potion of Cure Serious Wounds (losing ~9 HP/s)
+4785:09-29 21:54:06 d5 ACT custom q item=3 | low HP: quaff a Potion of Cure Light Wounds
+4786:09-29 21:54:06 d5 ATT emergency low HP: quaffed a Potion of Cure Light Wounds (losing ~4 HP/s)
+4787:09-29 21:54:06 d5 MSG You have a Scroll of Phase Door {25% off}.
+4791:09-29 21:54:08 d5 MSG You feel much better.
+4792:09-29 21:54:08 d5 MSG You have a Potion of Cure Serious Wounds.
+4798:09-29 21:54:08 d5 MSG You feel much better.
+4799:09-29 21:54:08 d5 MSG You have no more Potions of Cure Light Wounds.
+4804:09-29 21:54:09 d5 ACT custom q item=3 | low HP: quaff a Potion of Cure Serious Wounds
+4805:09-29 21:54:09 d5 ATT emergency low HP: quaffed a Potion of Cure Serious Wounds (losing ~8 HP/s)
+4811:09-29 21:54:11 d5 MSG You have no more Scrolls of Phase Door {25% off}.
+4812:09-29 21:54:11 d5 MSG You feel much better.
+4813:09-29 21:54:11 d5 MSG You have no more Potions of Cure Serious Wounds.
+4837:09-29 21:54:16 d5 MSG You have no more Scrolls of Word of Recall.
+4854:09-29 21:54:20 d5 MSG You feel yourself yanked upwards!
+4861:09-29 21:54:49 d0 ATT goal_done shop 5: stock: 11 Potions of Resist Heat 47; 3 Potions of Restore Strength 465; 23 Potions of Restore Intelligence 465; 9 Potions of Restore Wisdom 465; 3 Potions of Restore Constitution 465; 4
+4863:09-29 21:55:05 d0 GOAL shop 5 sell Lead Wand:1 sell Metallic Blue:1 sell Icky Green:1
+4869:09-29 21:55:06 d0 ATT goal_done shop 5 sell Lead Wand:1 sell Metallic Blue:1 sell Icky Green:1: I don't want that!; You sold a Potion of Boldness for 9 gold.; You sold a Potion of Slime Mold Juice for 9 gold.
+4872:09-29 21:55:07 d0 MSG Selling a Metallic Blue Potion (d).
+4874:09-29 21:55:07 d0 CONFIRM Accept 9 gold?
+4876:09-29 21:55:07 d0 MSG You sold a Potion of Boldness for 9 gold.
+4877:09-29 21:55:07 d0 MSG You have no more Potions of Boldness.
+4879:09-29 21:55:07 d0 MSG Selling an Icky Green Potion (d).
+4881:09-29 21:55:07 d0 CONFIRM Accept 9 gold?
+4883:09-29 21:55:07 d0 MSG You sold a Potion of Slime Mold Juice for 9 gold.
+4885:09-29 21:55:07 d0 MSG You have no more Potions of Slime Mold Juice.
+4887:09-29 21:55:11 d0 GOAL shop 6 sell Lead Wand:1
+4891:09-29 21:55:15 d0 ATT goal_done shop 6 sell Lead Wand:1: You sold a Wand of Heal Monster (10 charges) for 15 gold.
+4894:09-29 21:55:17 d0 MSG Selling a Lead Wand (d).
+4896:09-29 21:55:17 d0 CONFIRM Accept 15 gold?
+4898:09-29 21:55:17 d0 MSG You sold a Wand of Heal Monster (10 charges) for 15 gold.
+4900:09-29 21:55:17 d0 MSG You have no more Wands of Heal Monster (10 charges).
+4914:09-29 22:01:25 d0 ACT custom , | pick up: a Wooden Torch (with 0 turns of light).
+4918:09-29 22:01:26 d0 ATT goal_done shop 1 sell White Mushroom:1: You sold a Mushroom of Poison for 2 gold.
+4922:09-29 22:01:28 d0 MSG Selling a White Mushroom (b).
+4924:09-29 22:01:28 d0 CONFIRM Accept 2 gold?
+4926:09-29 22:01:28 d0 MSG You sold a Mushroom of Poison for 2 gold.
+4928:09-29 22:01:28 d0 MSG You have no more Mushrooms of Poison.
+4944:09-29 22:05:35 d0 ACT custom p store item=6 value=1 entry=23 | buy 33 Potions of Cure Light Wounds x1
+4950:09-29 22:05:37 d0 MSG You have a Potion of Cure Light Wounds (c).
+4952:09-29 22:06:44 d0 ACT custom k item=3 value=1 | agent: destroy ['Wooden_Torch']
+4954:09-29 22:06:45 d0 MSG You destroy a Wooden Torch (with 0 turns of light).
+4955:09-29 22:06:45 d0 MSG You have no more Wooden Torches (with 0 turns of light).
+4958:09-29 22:06:47 d0 ATT goal_done shop 5: stock: 99 Potions of Resist Heat 48; 99 Potions of Resist Cold 48; 25 Potions of Restore Strength 483; 2 Potions of Restore Intelligence 483; 2 Potions of Restore Wisdom 483; 19 Potions
+4962:09-29 22:07:01 d0 ACT custom p store item=13 value=1 entry=121 | buy 6 Scrolls of Word of Recall {on sale} x1
+4963:09-29 22:07:01 d0 ACT custom p store item=10 value=5 entry=120 | buy 99 Scrolls of Phase Door x5
+4969:09-29 22:07:02 d0 MSG You have a Scroll of Word of Recall {on sale} (d).
+4973:09-29 22:07:02 d0 MSG You have 5 Scrolls of Phase Door (d).
+5046:09-29 22:10:42 d3 ACT custom , | pick up: a Violet Potion.
+5047:09-29 22:10:44 d3 MSG You see a Violet Potion.
+5048:09-29 22:10:44 d3 MSG You have a Violet Potion (d).
+5098:09-29 22:13:07 d4 ACT custom , | pick up: a Short Bow (x2).
+5108:09-29 22:14:10 d4 MSG You have destroyed the Yellow worm mass.
+5115:09-29 22:14:11 d4 MSG You have destroyed the Yellow worm mass.
+5119:09-29 22:14:17 d4 MSG You have destroyed the Yellow worm mass.
+5133:09-29 22:14:32 d3 ACT custom , | pick up: a Short Bow (x2).
+5160:09-29 22:14:41 d3 ACT custom k item=7 value=1 | autodestroy a Short Bow (x2) {cursed}
+5161:09-29 22:14:43 d3 MSG You feel the Short Bow (h) in your pack is cursed...
+5162:09-29 22:14:43 d3 ACT custom , | pick up: a Set of Leather Gloves [1].
+5163:09-29 22:14:43 d3 MSG You destroy a Short Bow (x2) {cursed}.
+5164:09-29 22:14:43 d3 MSG You have no more Short Bows (x2) {cursed}.
+5171:09-29 22:14:50 d4 ACT custom , | pick up: a Filthy Rag [1].
+5180:09-29 22:14:55 d3 MSG You feel the Short Bow (i) in your pack is average...
+5276:09-29 22:15:35 d5 ACT custom , | pick up: a Copper Wand.
+5277:09-29 22:15:37 d5 MSG You see a Copper Wand.
+5278:09-29 22:15:37 d5 MSG You have a Copper Wand (g).
+5279:09-29 22:15:49 d5 ACT custom k item=8 value=1 | autodestroy a Set of Leather Gloves [1] {cursed}
+5280:09-29 22:15:51 d5 MSG You feel the Set of Leather Gloves (i) in your pack is cursed...
+5281:09-29 22:15:52 d5 MSG You destroy a Set of Leather Gloves [1] {cursed}.
+5282:09-29 22:15:52 d5 MSG You have no more Sets of Leather Gloves [1] {cursed}.
+5288:09-29 22:16:25 d5 ACT custom , | pick up: a Trident (1d8).
+5293:09-29 22:16:50 d5 ACT custom k item=7 value=1 | autodestroy a Filthy Rag [1] {cursed}
+5294:09-29 22:16:51 d5 MSG You feel the Filthy Rag (h) in your pack is cursed...
+5295:09-29 22:16:52 d5 MSG You destroy a Filthy Rag [1] {cursed}.
+5296:09-29 22:16:52 d5 MSG You have no more Filthy Rags [1] {cursed}.
+5308:09-29 22:16:58 d5 MSG You have destroyed the Zombified kobold.
+5310:09-29 22:17:00 d5 MSG You see a Scroll of Darkness.
+5313:09-29 22:17:14 d5 MSG You see a Scroll of Darkness.
+5337:09-29 22:19:09 d5 MSG You feel bolder now.
+5342:09-29 22:19:38 d5 MSG You feel bolder now.
+5360:09-29 22:19:49 d5 MSG You have destroyed the Green mold.
+5370:09-29 22:20:42 d5 MSG You have destroyed the Skeleton kobold.
+5377:09-29 22:20:53 d5 MSG You have destroyed the Blue worm mass.
+5383:09-29 22:20:57 d5 MSG You have destroyed the Blue worm mass.
+5384:09-29 22:21:16 d5 ACT custom , | pick up: a Clear Potion.
+5385:09-29 22:21:17 d5 MSG You see a Clear Potion.
+5386:09-29 22:21:18 d5 MSG You have a Clear Potion (e).
+5442:09-29 22:22:36 d5 MSG You have destroyed the Green jelly.
+5487:09-29 22:24:18 d5 ACT custom , | pick up: a Cloudy Potion.
+5488:09-29 22:24:20 d5 MSG You see a Cloudy Potion.
+5489:09-29 22:24:20 d5 MSG You have a Cloudy Potion (f).
+5495:09-29 22:25:30 d5 ACT custom , | pick up: a Runed Staff.
+5496:09-29 22:25:32 d5 MSG You see a Runed Staff.
+5497:09-29 22:25:32 d5 MSG You have a Runed Staff (j).
+5498:09-29 22:26:20 d5 ACT custom , | pick up: 22 Iron Shots (1d4).
+5519:09-29 22:27:26 d5 MSG You feel the Iron Shots (l) in your pack are average...
+5543:09-29 22:28:03 d5 MSG You see a Gold Wand.
+5544:09-29 22:28:03 d5 ACT custom , | pick up: a Gold Wand.
+5559:09-29 22:28:05 d5 MSG You have a Gold Wand (j).
+5562:09-29 22:28:05 d5 MSG You feel something roll beneath your feet.
+5593:09-29 22:28:09 d5 ACT custom , | pick up: a Small Leather Shield [2].
+5649:09-29 22:29:03 d5 MSG You have 4 Scrolls of Phase Door.
+5653:09-29 22:29:04 d5 NOTE held (a read/quaff is still unconfirmed): low HP: quaff a Potion of Cure Light Wounds
+5654:09-29 22:29:04 d5 ATT emergency low HP: quaffed a Potion of Cure Light Wounds (losing ~5 HP/s)
+5661:09-29 22:29:05 d5 NOTE held (a read/quaff is still unconfirmed): low HP: quaff a Potion of Cure Light Wounds
+5662:09-29 22:29:05 d5 ATT emergency low HP: quaffed a Potion of Cure Light Wounds (losing ~5 HP/s)
+5664:09-29 22:29:05 d5 NOTE held (a read/quaff is still unconfirmed): low HP: quaff a Potion of Cure Light Wounds
+5665:09-29 22:29:05 d5 ATT emergency low HP: quaffed a Potion of Cure Light Wounds (losing ~7 HP/s)
+5671:09-29 22:29:06 d5 NOTE held (a read/quaff is still unconfirmed): low HP: phase door
+5683:09-29 22:29:07 d5 MSG You have 3 Scrolls of Phase Door.
+5694:09-29 22:29:07 d5 MSG You have no more Scrolls of Word of Recall {on sale}.
+5699:09-29 22:29:08 d5 MSG You have 2 Scrolls of Phase Door.
+5756:09-29 22:29:40 d0 MSG You feel life return to your body.
+5768:09-29 22:30:03 d0 ACT custom w item=0 | agent: wear ['Dagger']
+5798:09-29 22:33:56 d0 ACT custom , | agent: pickup
+5801:09-29 22:34:17 d0 ACT custom p store item=9 value=3 entry=69 | buy 94 Potions of Cure Light Wounds x3
+5807:09-29 22:34:19 d0 MSG You have 3 Potions of Cure Light Wounds (b).
+5811:09-29 22:34:25 d0 ACT custom p store item=10 value=1 entry=19 | buy 2 Scrolls of Phase Door {25% off} x1
+5817:09-29 22:34:27 d0 MSG You have a Scroll of Phase Door {25% off} (c).
+5915:09-29 22:37:57 d2 ACT custom , | pick up: a Rosewood Staff.
+5920:09-29 22:37:58 d2 MSG You see a Rosewood Staff.
+5921:09-29 22:37:59 d2 MSG You have a Rosewood Staff (d).
+5931:09-29 22:38:25 d2 ACT custom , | pick up: a Scroll titled "monwhon".
+5932:09-29 22:38:26 d2 MSG You see a Scroll titled "monwhon".
+5933:09-29 22:38:27 d2 MSG You have a Scroll titled "monwhon" (d).
+5969:09-29 22:40:21 d2 MSG You have destroyed the Green worm mass.
+5981:09-29 22:41:05 d3 MSG You have destroyed the Yellow mushroom patch.
+6007:09-29 22:45:43 d2 MSG You have destroyed the Yellow mushroom patch.
+6016:09-29 22:46:17 d2 ACT custom , | pick up: a Scroll titled "heaks khonis".
+6017:09-29 22:46:18 d2 ACT custom , | pick up: a Green Potion.
+6018:09-29 22:46:18 d2 MSG You see a Scroll titled "heaks khonis".
+6019:09-29 22:46:19 d2 MSG You have a Scroll titled "heaks khonis" (e).
+6020:09-29 22:46:19 d2 MSG You see a Green Potion.
+6021:09-29 22:46:20 d2 MSG You have a Green Potion (c).
+6027:09-29 22:48:11 d2 ACT custom , | pick up: a Red Potion.
+6028:09-29 22:48:12 d2 MSG You see a Red Potion.
+6029:09-29 22:48:13 d2 MSG You have a Red Potion (d).
+6094:09-29 22:50:08 d2 ACT custom , | pick up: a Clear Potion.
+6096:09-29 22:50:10 d2 MSG You see a Clear Potion.
+6098:09-29 22:50:10 d2 MSG You have a Clear Potion (f).
+6162:09-29 22:53:18 d3 MSG You have destroyed the Yellow mushroom patch.
+6222:09-29 22:58:40 d3 ACT custom , | pick up: a Potion of Cure Light Wounds.
+6223:09-29 22:58:41 d3 MSG You see a Potion of Cure Light Wounds.
+6224:09-29 22:58:42 d3 MSG You have 4 Potions of Cure Light Wounds (c).
+6259:09-29 22:59:15 d3 ACT custom , | pick up: a Hard Leather Cap [2].
+6276:09-29 22:59:21 d2 ACT custom , | pick up: a Blue Speckled Potion.
+6282:09-29 22:59:23 d2 MSG You see a Blue Speckled Potion.
+6283:09-29 22:59:23 d2 MSG You have a Blue Speckled Potion (g).
+6288:09-29 22:59:25 d2 ACT custom , | pick up: an Orange Speckled Potion.
+6293:09-29 22:59:27 d2 MSG You see an Orange Speckled Potion.
+6294:09-29 22:59:27 d2 MSG You have an Orange Speckled Potion (h).
+6363:09-29 22:59:42 d2 ACT custom , | pick up: a Scroll titled "monwhon".
+6368:09-29 22:59:44 d2 MSG You see a Scroll titled "monwhon".
+6369:09-29 22:59:44 d2 MSG You have 2 Scrolls titled "monwhon" (j).
+6401:09-29 22:59:53 d2 ACT custom , | pick up: a Scroll of Phase Door.
+6402:09-29 22:59:54 d2 MSG You see a Scroll of Phase Door.
+6403:09-29 22:59:55 d2 MSG You have 2 Scrolls of Phase Door {25% off} (i).
+6444:09-29 23:00:04 d2 ACT custom , | pick up: an Orange Speckled Potion.
+6445:09-29 23:00:06 d2 MSG You see an Orange Speckled Potion.
+6446:09-29 23:00:06 d2 MSG You have 2 Orange Speckled Potions (h).
+6510:09-29 23:00:22 d2 MSG You feel the Hard Leather Cap (n) in your pack is average...
+6613:09-29 23:00:43 d2 ACT custom , | pick up: a Scroll titled "monwhon".
+6614:09-29 23:00:44 d2 MSG You see a Scroll titled "monwhon".
+6615:09-29 23:00:45 d2 MSG You have 3 Scrolls titled "monwhon" (j).
+6666:09-29 23:00:57 d2 MSG You have destroyed the Grey mushroom patch.
+6667:09-29 23:01:00 d2 ACT custom , | pick up: a Scroll of Identify.
+6668:09-29 23:01:02 d2 MSG You see a Scroll of Identify.
+6669:09-29 23:01:02 d2 MSG You have a Scroll of Identify (j).
+6743:09-29 23:01:22 d2 ACT custom , | pick up: a Light Blue Potion.
+6744:09-29 23:01:23 d2 MSG You see a Light Blue Potion.
+6745:09-29 23:01:24 d2 MSG You have a Light Blue Potion (i).
+6791:09-29 23:01:36 d2 ACT custom , | pick up: a Set of Leather Gloves [1].
+6801:09-29 23:01:44 d3 ACT custom , | pick up: a Clear Potion.
+6802:09-29 23:01:45 d3 MSG You see a Clear Potion.
+6803:09-29 23:01:46 d3 MSG You have 2 Clear Potions (f).
+6837:09-29 23:01:56 d3 MSG You see a Scroll of Darkness.
+6859:09-29 23:02:03 d3 ACT custom , | pick up: a Cloudy Potion.
+6863:09-29 23:02:05 d3 MSG You see a Cloudy Potion.
+6865:09-29 23:02:06 d3 MSG You have a Cloudy Potion (j).
+6944:09-29 23:02:49 d1 ACT custom , | pick up: a Light Blue Potion.
+6945:09-29 23:02:51 d1 MSG You see a Light Blue Potion.
+6946:09-29 23:02:52 d1 MSG You have 2 Light Blue Potions (i).
+7036:09-29 23:03:13 d2 ACT custom , | pick up: a Red Potion.
+7040:09-29 23:03:15 d2 MSG You see a Red Potion.
+7041:09-29 23:03:15 d2 MSG You have 2 Red Potions (e).
+7128:09-29 23:03:34 d2 ACT custom , | pick up: a Scroll of Phase Door.
+7129:09-29 23:03:36 d2 MSG You see a Scroll of Phase Door.
+7130:09-29 23:03:36 d2 MSG You have 3 Scrolls of Phase Door {25% off} (k).
+7151:09-29 23:03:45 d1 ACT custom , | pick up: a Potion of Cure Light Wounds.
+7152:09-29 23:03:46 d1 MSG You see a Potion of Cure Light Wounds.
+7154:09-29 23:03:47 d1 MSG You have 5 Potions of Cure Light Wounds (c).
+7266:09-29 23:04:20 d2 ACT custom , | pick up: a Scroll titled "it mungrea a".
+7267:09-29 23:04:21 d2 MSG You see a Scroll titled "it mungrea a".
+7268:09-29 23:04:22 d2 MSG You have a Scroll titled "it mungrea a" (o).
+7374:09-29 23:06:20 d0 GOAL shop 5 buy Phase:2@25 sell Green Potion:1 sell Red Potion:1 sell Clear Potion:1 sell monwhon:1 sell heaks:1
+7382:09-29 23:06:35 d0 ACT custom p store item=8 value=2 entry=48 | buy 99 Scrolls of Phase Door x2
+7384:09-29 23:06:36 d0 ATT goal_done shop 5 buy Phase:2@25 sell Green Potion:1 sell Red Potion:1 sell Clear Potion:1 sell monwhon:1 sell heaks:1: You sold a Potion of Slowness for 8 gold.; You sold a Potion of Resist Cold for 8 go
+7385:09-29 23:06:36 d0 MSG Selling a Green Potion (d).
+7387:09-29 23:06:36 d0 CONFIRM Accept 8 gold?
+7389:09-29 23:06:36 d0 MSG You sold a Potion of Slowness for 8 gold.
+7391:09-29 23:06:36 d0 MSG You have no more Potions of Slowness.
+7393:09-29 23:06:36 d0 MSG Selling a Red Potion (d).
+7395:09-29 23:06:36 d0 CONFIRM Accept 8 gold?
+7397:09-29 23:06:36 d0 MSG You sold a Potion of Resist Cold for 8 gold.
+7399:09-29 23:06:36 d0 MSG You have a Potion of Resist Cold.
+7402:09-29 23:06:36 d0 MSG Selling a Clear Potion (e).
+7404:09-29 23:06:36 d0 CONFIRM Accept 8 gold?
+7406:09-29 23:06:36 d0 MSG You sold a Potion of Water for 8 gold.
+7408:09-29 23:06:36 d0 MSG You have a Potion of Water.
+7411:09-29 23:06:36 d0 MSG Selling a Scroll titled "monwhon" (l).
+7413:09-29 23:06:36 d0 CONFIRM Accept 8 gold?
+7415:09-29 23:06:36 d0 MSG You sold a Scroll of Detect Invisible for 8 gold.
+7416:09-29 23:06:36 d0 MSG You have 2 Scrolls of Detect Invisible.
+7418:09-29 23:06:37 d0 MSG Selling a Scroll titled "heaks khonis" (m).
+7420:09-29 23:06:37 d0 CONFIRM Accept 8 gold?
+7422:09-29 23:06:37 d0 MSG You sold a Scroll of Light for 8 gold.
+7423:09-29 23:06:37 d0 MSG You have no more Scrolls of Light.
+7427:09-29 23:06:37 d0 MSG You have 5 Scrolls of Phase Door {25% off} (j).
+7431:09-29 23:06:47 d0 ACT custom p store item=2 value=2 entry=46 | buy 9 Potions of Cure Light Wounds x2
+7438:09-29 23:06:49 d0 MSG You have 7 Potions of Cure Light Wounds (e).
+7445:09-29 23:07:33 d0 ACT custom w item=16 | agent: wear ['Hard_Leather_Cap']
+7446:09-29 23:07:33 d0 ACT custom w item=16 | agent: wear ['Leather_Gloves']
+7447:09-29 23:07:34 d0 ACT custom r item=10 dir=13 | agent: read ['Identify', 'Rosewood_Staff']
+7450:09-29 23:07:36 d0 MSG In your pack: a Staff of Object Location (16 charges) (n).
+7451:09-29 23:07:36 d0 MSG You have no more Scrolls of Identify.
+7452:09-29 23:09:04 d0 MSG You feel the Set of Leather Gloves (k) you are wearing on your hands is average...
+7541:10-03 12:19:32 d0 ACT custom p store item=14 value=2 entry=48 | buy 99 Scrolls of Phase Door x2
+7542:10-03 12:19:32 d0 MSG Selling a Blue Speckled Potion (f).
+7544:10-03 12:19:32 d0 CONFIRM Accept 8 gold?
+7546:10-03 12:19:32 d0 MSG You sold a Potion of Sleep for 8 gold.
+7548:10-03 12:19:32 d0 MSG You have no more Potions of Sleep.
+7551:10-03 12:19:32 d0 ATT goal_done shop 5 buy Phase Door:2@25 sell Blue Speckled:1 sell Orange Speckled:2 sell Light Blue:2 sell Cloudy:1 sell mungrea:1 sell Water:1: You sold a Potion of Sleep for 8 gold.; You sold 2 Potions of
+7552:10-03 12:19:32 d0 MSG Selling 2 Orange Speckled Potions (f).
+7554:10-03 12:19:32 d0 CONFIRM Accept 16 gold?
+7556:10-03 12:19:32 d0 MSG You sold 2 Potions of Speed for 16 gold.
+7558:10-03 12:19:32 d0 MSG You have no more Potions of Speed.
+7560:10-03 12:19:32 d0 MSG Selling 2 Light Blue Potions (f).
+7562:10-03 12:19:32 d0 CONFIRM Accept 16 gold?
+7564:10-03 12:19:32 d0 MSG You sold 2 Potions of Heroism for 16 gold.
+7566:10-03 12:19:32 d0 MSG You have no more Potions of Heroism.
+7569:10-03 12:19:32 d0 MSG Selling a Cloudy Potion (f).
+7571:10-03 12:19:32 d0 CONFIRM Accept 8 gold?
+7573:10-03 12:19:32 d0 MSG You sold a Potion of Slow Poison for 8 gold.
+7575:10-03 12:19:32 d0 MSG You have no more Potions of Slow Poison.
+7577:10-03 12:19:33 d0 MSG Selling a Scroll titled "it mungrea a" (h).
+7579:10-03 12:19:33 d0 CONFIRM Accept 8 gold?
+7581:10-03 12:19:33 d0 MSG You sold a Scroll of Summon Monster for 8 gold.
+7583:10-03 12:19:33 d0 MSG You have no more Scrolls of Summon Monster.
+7585:10-03 12:19:33 d0 MSG Selling a Potion of Water (c).
+7587:10-03 12:19:33 d0 CONFIRM Accept 1 gold?
+7589:10-03 12:19:33 d0 MSG You sold a Potion of Water for 1 gold.
+7590:10-03 12:19:33 d0 MSG You have no more Potions of Water.
+7594:10-03 12:19:33 d0 MSG You have 7 Scrolls of Phase Door {25% off} (e).
+7602:10-03 12:19:38 d0 ATT goal_done shop 5: stock: a Potion of Water 2; a Potion of Slow Poison 40; 2 Potions of Speed 121; 99 Potions of Resist Heat 48; 99 Potions of Resist Cold 48; 2 Potions of Heroism 56; 31 Potions of Restor
+7612:10-03 12:19:44 d0 ACT custom p store item=5 value=1 entry=56 | buy 2 Potions of Heroism x1
+7616:10-03 12:19:46 d0 MSG Selling 2 Scrolls of Detect Invisible (f).
+7618:10-03 12:19:46 d0 CONFIRM Accept 12 gold?
+7620:10-03 12:19:46 d0 MSG You sold 2 Scrolls of Detect Invisible for 12 gold.
+7621:10-03 12:19:46 d0 MSG You have no more Scrolls of Detect Invisible.
+7625:10-03 12:19:46 d0 MSG You have a Potion of Heroism (d).
+7628:10-03 12:19:49 d0 ACT custom w item=8 | agent: wear ['Brass_Lantern']
+7661:10-03 12:21:09 d1 MSG You feel very weak.
+7738:10-03 12:22:07 d1 MSG You see a Potion of Sleep.
+7794:10-03 12:23:56 d1 ACT custom , | pick up: a Robe [2].
+7883:10-03 12:26:57 d4 ACT custom , | pick up: a Vermilion Potion.
+7888:10-03 12:26:59 d4 MSG You see a Vermilion Potion.
+7889:10-03 12:26:59 d4 MSG You have a Vermilion Potion (f).
+7890:10-03 12:27:21 d4 MSG You feel the Robe (k) in your pack is average...
+7893:10-03 12:29:49 d4 MSG You have destroyed the Spotted mushroom patch.
+7901:10-03 12:30:51 d4 ACT custom , | pick up: Soft Leather Armour [4].
+7904:10-03 12:31:25 d4 MSG You feel the Soft Leather Armour (l) in your pack is average...
+7905:10-03 12:31:30 d4 ACT custom , | pick up: a Potion of Boldness.
+7906:10-03 12:31:31 d4 MSG You see a Potion of Boldness.
+7907:10-03 12:31:33 d4 MSG You have a Potion of Boldness (c).
+7911:10-03 12:31:53 d4 MSG You have destroyed the Green ooze.
+7926:10-03 12:33:00 d4 ACT custom , | pick up: a Wand of Heal Monster.
+7931:10-03 12:33:01 d4 MSG You see a Wand of Heal Monster.
+7932:10-03 12:33:02 d4 MSG You have a Wand of Heal Monster (i).
+7936:10-03 12:33:16 d4 ACT custom , | pick up: a Scroll of Blessing.
+7938:10-03 12:33:18 d4 MSG You see a Scroll of Blessing.
+7939:10-03 12:33:18 d4 MSG You have a Scroll of Blessing (i).
+7952:10-03 12:33:49 d5 ACT custom , | pick up: a Maple Staff.
+7953:10-03 12:33:50 d5 MSG You see a Maple Staff.
+7954:10-03 12:33:51 d5 MSG You have a Maple Staff (l).
+7969:10-03 12:33:57 d5 MSG You see a Scroll of Detect Invisible.
+7978:10-03 12:34:14 d5 ACT custom , | pick up: a Glaive (2d6).
+7991:10-03 12:37:11 d5 ACT custom , | pick up: a Small wooden chest.
+8000:10-03 12:38:02 d5 MSG You feel the Glaive (q) in your pack is average...
+8063:10-03 12:40:21 d5 MSG You see a Potion of Slime Mold Juice.
+8112:10-03 12:41:02 d5 ACT custom , | pick up: a Bronze Wand.
+8113:10-03 12:41:04 d5 MSG You see a Bronze Wand.
+8115:10-03 12:41:05 d5 MSG You have a Bronze Wand (k).
+8331:10-03 12:41:47 d5 ACT custom , | pick up: an Aluminum-Plated Wand.
+8332:10-03 12:41:49 d5 MSG You see an Aluminum-Plated Wand.
+8333:10-03 12:41:49 d5 MSG You have an Aluminum-Plated Wand (l).
+8384:10-03 12:42:08 d5 ACT custom , | pick up: a Scroll titled "ishx therbin".
+8385:10-03 12:42:09 d5 MSG You see a Scroll titled "ishx therbin".
+8386:10-03 12:42:10 d5 MSG You have a Scroll titled "ishx therbin" (j).
+8450:10-03 12:45:03 d5 MSG You feel there is something special about this level.
+8542:10-03 12:45:23 d4 MSG You see a Potion of Slime Mold Juice.
+8550:10-03 12:45:26 d4 ACT custom , | pick up: 21 Bolts (1d5).
+8553:10-03 12:45:33 d4 ACT custom k item=20 value=21 | autodestroy 21 Bolts (1d5) {cursed}
+8554:10-03 12:45:34 d4 MSG You feel the Bolts (u) in your pack are cursed...
+8555:10-03 12:45:34 d4 MSG You destroy 21 Bolts (1d5) {cursed}.
+8556:10-03 12:45:34 d4 MSG You have no more Bolts (1d5) {cursed}.
+8591:10-03 12:45:45 d4 ACT custom , | pick up: Soft Studded Leather [5].
+8696:10-03 12:46:05 d4 ACT custom , | pick up: a Scroll of Light.
+8697:10-03 12:46:07 d4 MSG You see a Scroll of Light.
+8699:10-03 12:46:08 d4 MSG You have a Scroll of Light (i).
+8762:10-03 12:46:22 d3 MSG You feel the Soft Studded Leather (u) in your pack is average...
+8867:10-03 12:47:02 d2 MSG You see a Scroll of Detect Invisible.
+9015:10-03 12:47:50 d1 MSG You see a Potion of Slow Poison.
+9020:10-03 12:48:09 d0 ACT custom w item=20 | agent: wear ['Soft_Studded']
+9028:10-03 12:48:18 d0 ATT goal_done shop 2 sell Robe:1 sell Soft Leather Armour:2: You sold a Robe [2,+0] for 2 gold.; I don't want that!
+9031:10-03 12:48:20 d0 MSG Selling a Robe [2] {average} (s).
+9033:10-03 12:48:20 d0 CONFIRM Accept 2 gold?
+9035:10-03 12:48:20 d0 MSG You sold a Robe [2,+0] for 2 gold.
+9036:10-03 12:48:20 d0 MSG You have no more Robes [2,+0].
+9042:10-03 12:48:23 d0 ATT goal_done shop 3 sell Glaive:1: You sold a Glaive (2d6) (+0,+0) for 138 gold.
+9044:10-03 12:48:24 d0 MSG Selling a Glaive (2d6) {average} (u).
+9046:10-03 12:48:24 d0 CONFIRM Accept 138 gold?
+9048:10-03 12:48:24 d0 MSG You sold a Glaive (2d6) (+0,+0) for 138 gold.
+9049:10-03 12:48:24 d0 MSG You have no more Glaives (2d6) (+0,+0).
+9058:10-03 12:48:36 d0 MSG Selling a Vermilion Potion (g).
+9060:10-03 12:48:36 d0 CONFIRM Accept 8 gold?
+9062:10-03 12:48:36 d0 MSG You sold a Potion of Detect Invisible for 8 gold.
+9064:10-03 12:48:36 d0 MSG You have no more Potions of Detect Invisible.
+9066:10-03 12:48:36 d0 MSG Selling a Scroll titled "ishx therbin" (j).
+9068:10-03 12:48:36 d0 CONFIRM Accept 8 gold?
+9070:10-03 12:48:36 d0 MSG You sold a Scroll of Satisfy Hunger for 8 gold.
+9071:10-03 12:48:36 d0 MSG You have no more Scrolls of Satisfy Hunger.
+9075:10-03 12:48:42 d0 ACT custom p store item=9 value=1 entry=242 | buy 6 Scrolls of Word of Recall x1
+9076:10-03 12:48:43 d0 ACT custom p store item=10 value=3 entry=243 | buy 19 Scrolls of Identify x3
+9082:10-03 12:48:44 d0 MSG You have a Scroll of Word of Recall (h).
+9086:10-03 12:48:44 d0 MSG You have 3 Scrolls of Identify (i).
+9088:10-03 12:48:47 d0 ACT custom r item=8 dir=15 | agent: read ['Identify', 'Maple_Staff']
+9089:10-03 12:48:48 d0 MSG In your pack: a Staff of Cure Light Wounds (7 charges) (p).
+9090:10-03 12:48:48 d0 MSG You have 2 Scrolls of Identify.
+9091:10-03 12:48:50 d0 ACT custom r item=8 dir=12 | agent: read ['Identify', 'Bronze_Wand']
+9092:10-03 12:48:51 d0 MSG In your pack: a Wand of Magic Missile (15 charges) (m).
+9093:10-03 12:48:51 d0 MSG You have a Scroll of Identify.
+9094:10-03 12:48:52 d0 ACT custom r item=8 dir=13 | agent: read ['Identify', 'Aluminum']
+9095:10-03 12:48:54 d0 MSG In your pack: a Wand of Stinking Cloud (10 charges) (n).
+9096:10-03 12:48:54 d0 MSG You have no more Scrolls of Identify.
+9104:10-03 12:49:06 d0 ATT goal_done shop 6 sell Magic Missile:1 sell Stinking Cloud:1 sell Heal Monster:1: You sold a Wand of Magic Missile (15 charges) for 105 gold.; You sold a Wand of Stinking Cloud (10 charges) for 180 gold.;
+9106:10-03 12:49:07 d0 MSG Selling a Wand of Magic Missile (15 charges) (m).
+9108:10-03 12:49:07 d0 CONFIRM Accept 105 gold?
+9110:10-03 12:49:07 d0 MSG You sold a Wand of Magic Missile (15 charges) for 105 gold.
+9111:10-03 12:49:07 d0 MSG You have no more Wands of Magic Missile (15 charges).
+9113:10-03 12:49:07 d0 MSG Selling a Wand of Stinking Cloud (10 charges) (l).
+9115:10-03 12:49:07 d0 CONFIRM Accept 180 gold?
+9117:10-03 12:49:07 d0 MSG You sold a Wand of Stinking Cloud (10 charges) for 180 gold.
+9118:10-03 12:49:07 d0 MSG You have no more Wands of Stinking Cloud (10 charges).
+9123:10-03 12:49:17 d0 ACT custom p store item=6 value=1 entry=242 | buy 22 Scrolls of Word of Recall x1
+9125:10-03 12:49:17 d0 ATT goal_done shop 5 buy Word of Recall:1@245: stock: 33 Potions of Resist Heat 48; 6 Potions of Resist Cold 48; a Potion of Restore Strength 483; a Potion of Restore Intelligence 483; 2 Potions of Restore C
+9126:10-03 12:49:17 d0 ACT custom k item=10 value=1 | agent: destroy ['Heal_Monster']
+9130:10-03 12:49:19 d0 MSG You have 2 Scrolls of Word of Recall (h).
+9132:10-03 12:49:19 d0 MSG You destroy a Wand of Heal Monster.
+9133:10-03 12:49:19 d0 MSG You have no more Wands of Heal Monster.
+9134:10-03 12:49:23 d0 ACT custom k item=14 value=1 | agent: destroy ['Soft_Leather_Armour']
+9135:10-03 12:49:24 d0 ACT custom k item=14 value=1 | agent: destroy ['Soft_Leather_Armour']
+9137:10-03 12:49:25 d0 MSG You destroy Soft Leather Armour [4,-1] {25% off}.
+9138:10-03 12:49:25 d0 MSG You have no more Soft Leather Armours [4,-1] {25% off}.
+9139:10-03 12:49:26 d0 MSG You destroy Soft Leather Armour [4] {average}.
+9140:10-03 12:49:26 d0 MSG You have no more Soft Leather Armours [4] {average}.
+9167:10-07 08:48:47 d0 ACT custom t item=31 | agent: takeoff ['Cloak']
+9168:10-07 08:48:47 d0 ACT custom w item=15 | agent: wear ['Cloak']
+9169:10-07 08:48:48 d0 ACT custom I item=31 | agent: inspect ['Cloak']
+9183:10-07 08:50:04 d0 ACT custom p store item=6 value=4 entry=92 | buy 50 Potions of Cure Light Wounds x4
+9189:10-07 08:50:06 d0 MSG You have 11 Potions of Cure Light Wounds (f).
+9196:10-07 08:55:12 d0 ATT goal_done shop 5: stock: 21 Potions of Resist Heat 47; 22 Potions of Resist Cold 47; a Potion of Restore Strength 465; a Potion of Restore Wisdom 465; a Potion of Restore Dexterity 465; 19 Potions of Res
+9200:10-07 08:55:16 d0 ACT custom p store item=7 value=4 entry=92 | buy 95 Scrolls of Phase Door x4
+9206:10-07 08:55:18 d0 MSG You have 11 Scrolls of Phase Door {25% off} (g).
+9210:10-07 08:55:26 d0 ACT custom r item=7 | read 2 Scrolls of Word of Recall {@R450}
+9211:10-07 08:55:27 d0 MSG Inscribing 2 Scrolls of Word of Recall.
+9214:10-07 08:56:38 d0 ACT custom I item=7 | agent: inspect ['Word_of_Recall']
+9215:10-07 08:56:39 d0 ACT custom r item=7 | agent: read ['Word_of_Recall']
+9216:10-07 08:56:39 d0 MSG Examining 2 Scrolls of Word of Recall {@R450}...
+9218:10-07 08:56:44 d0 ACT custom w item=14 | agent: wear ['Brass_Lantern']
+9220:10-07 08:56:45 d0 ACT custom r item=7 | read 2 Scrolls of Word of Recall {@R450}
+9223:10-07 08:56:47 d0 MSG You have a Scroll of Word of Recall {@R450}.
+9225:10-07 08:56:57 d0 MSG You feel yourself yanked downwards!
+9226:10-07 08:56:57 d0 MSG You feel your luck is turning...
+9229:10-07 08:57:03 d6 ACT custom , | pick up: a Potion of Cure Light Wounds.
+9230:10-07 08:57:05 d6 MSG You see a Potion of Cure Light Wounds.
+9231:10-07 08:57:05 d6 MSG You have 12 Potions of Cure Light Wounds (f).
+9235:10-07 08:57:19 d6 MSG You feel very weak.
+9252:10-07 08:58:33 d6 MSG You have destroyed the White jelly.
+9258:10-07 09:00:04 d6 MSG You feel there is something special about this level.
+9272:10-07 09:00:24 d7 MSG You have destroyed the Red worm mass.
+9280:10-07 09:00:26 d7 MSG You have destroyed the Red worm mass.
+9294:10-07 09:00:29 d7 MSG You have destroyed the Red worm mass.
+9300:10-07 09:00:30 d7 MSG You have destroyed the Red worm mass.
+9316:10-07 09:00:33 d7 MSG You have destroyed the Red worm mass.
+9360:10-07 09:01:03 d8 ACT custom , | pick up: a Sabre (1d7).
+9432:10-07 09:01:58 d8 MSG You have destroyed the Green jelly.
+9455:10-07 09:03:44 d8 MSG You have destroyed the Grey mold.
+9459:10-07 09:05:07 d8 MSG You feel the Sabre (o) in your pack is average...
+9460:10-07 09:05:10 d8 ACT custom , | pick up: a Main Gauche (1d5).
+9464:10-07 09:06:05 d8 MSG You feel the Main Gauche (o) in your pack is average...
+9522:10-07 09:07:09 d7 ACT custom , | pick up: a Scroll of Identify.
+9523:10-07 09:07:11 d7 MSG You see a Scroll of Identify.
+9524:10-07 09:07:12 d7 MSG You have a Scroll of Identify (i).
+9624:10-07 09:08:13 d9 MSG You have destroyed the Zombified kobold.
+9625:10-07 09:08:14 d9 ACT custom , | pick up: a Staff of Object Location.
+9626:10-07 09:08:16 d9 MSG You see a Staff of Object Location.
+9627:10-07 09:08:17 d9 MSG You have a Staff of Object Location (m).
+9695:10-07 09:09:38 d9 MSG You feel bolder now.
+9771:10-07 09:14:04 d9 ACT custom , | pick up: a Puce Potion.
+9772:10-07 09:14:05 d9 MSG You see a Puce Potion.
+9773:10-07 09:14:06 d9 MSG You have a Puce Potion (g).
+9850:10-07 09:15:28 d9 ACT custom , | pick up: a Cloak [1].
+9859:10-07 09:15:40 d9 ACT custom , | pick up: a Rapier (1d6).
+9862:10-07 09:16:27 d9 MSG You feel the Cloak (r) in your pack is average...
+9863:10-07 09:16:27 d9 MSG You feel the Rapier (t) in your pack is average...

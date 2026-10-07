@@ -1,0 +1,1518 @@
+v1.5.0 1c56410 2010-01-25 billsey | Addresses #606 - fixes inconsistant casts of use_graphics. It was created in server as a bool, then was used as a byte (use_graphics == 3), etc. Change all refer
+v1.5.0 24930f0 2010-01-26 flambard | Addresses #913, adds 'bone' directory to autogen.sh (aftermath of #936).
+
+v1.5.0 c280805 2010-01-28 flambard | Addresses #908, fixes several bugs and problems from [1327] making things less broken. See also #778.
+
+v1.5.0 eac2429 2010-01-28 flambard | Closes #942, server now tests for 'news.txt' and creates 'scores.raw' if needed.
+
+v1.5.0 9b2d888 2010-02-05 flambard | Addresses #778, implements network-enabled resizing for extra windows. Streams are now mapped to unused window slots on clients. Mini-map is moved to the new sy
+v1.5.0 68a359e 2010-02-05 flambard | Addresses #750, implements suggested fix.
+
+v1.5.0 16e67e9 2010-02-05 flambard | Addresses #606, implements suggested _objflags fix.
+
+v1.5.0 b9ce611 2010-02-05 billsey | Addresses #944 - Ports z-term.c and z-term.h from Angband 3.0.9, implements two new macros, A_FREE and A_KILL in order to handle single argument versions. Still 
+v1.5.0 d0ee3c6 2010-02-05 flambard | Addresses #913, renames static server level files in makefile, complies with [1349].
+
+v1.5.0 02b3ac0 2010-02-06 billsey | Addresses #944 - Implements Angband style Term_inkey function which will help with implementing mouse controls.
+
+v1.5.0 4be71e6 2010-02-06 flambard | Addresses #750, #908, makes dungeon resize work with streams. This breaks all clients except SDL, sorry.
+
+v1.5.0 a25e23e 2010-02-07 flambard | Addresses #944, adds a quick fix for Term->mem usage.
+
+v1.5.0 0c46da3 2010-02-07 flambard | Addresses #946, adds a temporary fix that prevents crashing on *my machine*. This should be explored and tested ASAP.
+
+v1.5.0 e652781 2010-02-07 flambard | Addresses #946, reverts [1364], attempts better fix.
+
+v1.5.0 302a90d 2010-02-07 flambard | Addresses #750, #908, fixes WIN client compilation after [1362] broke it. This fix is very superficial and should be reworked.
+
+v1.5.0 2ba7c80 2010-02-07 flambard | Addresses #747, separates gui logic some, for better future compatibility with new z-term events (see #944).
+
+v1.5.0 96965f8 2010-02-07 flambard | Addresses #946, reverts [1365].
+
+v1.5.0 bfcd005 2010-02-07 flambard | Addresses #944, closes #946, updates Term_inkey usage is motd display.
+
+v1.5.0 9c638f9 2010-02-07 flambard | Addresses #944, $750, new z-term now informs server on terminal resize.
+
+v1.5.0 6cdac66 2010-02-07 flambard | Addresses #944, adjusts SDL client to support new z-term a bit.
+
+v1.5.0 71faac7 2010-02-12 flambard | Addresses #948, ports z-form and z-virt files from Angband 3.0.9.
+
+v1.5.0 889e3a8 2010-02-12 flambard | Addresses #948, adds z-type files.
+
+v1.5.0 4ea2da8 2010-02-12 flambard | Addresses #948, WIN client now uses new rnfree.
+
+v1.5.0 a984271 2010-02-12 billsey | Addresses #948 - Fixes a couple of little baubles that made it uncompilable in VS. We will want to revisit this, perhaps moving that new stuff to the client dire
+v1.5.0 ccf1a63 2010-03-14 flambard | Addresses #908, client now uses dynamicly allocated buffers for saving stream data. Watch out for memory leaks! Probably breaks win client again. Also renames s
+v1.5.0 cd09022 2010-03-15 flambard | Addresses #952, #953, replaces XPilot code with our own. This breaks everything big-time, stripping MAngband of most network functionality. You can't play using
+v1.5.0 11201c8 2010-03-15 flambard | Addresses #952, #953, adds forgotten headers.
+
+v1.5.0 ef6a6f5 2010-03-15 flambard | Addresses #952, #953, adds WinSock-related fixes, ensures trunk is compilable on mingw.
+
+v1.5.0 1555b5c 2010-05-05 flambard | Addresses #952, #953, fixes several bugs and makes some changes to buffer handling on client. Removes bits of functionality *again*.
+
+v1.5.0 f43fbf2 2010-06-01 flambard | Addresses #952, #953, fixes several other bugs and restores the correct handling of "localhost" hostname.
+
+v1.5.0 c5c5121 2010-06-02 flambard | Addresses #952, #953, replaces non-portable bzero with Angband WIPE.
+
+v1.5.0 44ef187 2010-06-03 billsey |  Addresses #952, #953, lots of changes to allow compiles again with VS 2008 after the recent network mods. Still needs addressing bzero() function in net-basics.
+v1.5.0 9b4c87c 2010-06-04 flambard | Addresses #952, #953, replaces more instances of bzero and malloc with WIPE and MAKE Angband macros.
+
+v1.5.0 dea8441 2010-06-04 flambard | Addresses #952, #953, updates VS project files, adds Windows  version of microsecond timer.
+
+v1.5.0 1e8ea6e 2010-06-12 billsey | Fixes #958 - cast x_offset as a char, which handles all cases with 66 character wide windows. If we ever allow the user to select a window size larger than 66x22
+v1.5.0 fa3f5ce 2010-06-12 flambard | Addresses #952, #953, removes non-portable use of pointers as callback arguments.
+
+v1.5.0 0f1111d 2010-06-12 billsey | Fixes #959 - renames instances of 'class' with 'pclass'. renames instaces of 'catch' with m_catch', renames instances of 'private' with m_private'.
+
+v1.5.0 cea439b 2010-06-14 flambard | Addresses #952, #953, ensures WinSock defines are used in place of POSIX ones on Windows.
+
+v1.5.0 b423f9e 2010-06-14 billsey | Fixes #960 - Implements use of "host = servername" in client initialization file, while hopefully not breaking command line argument passing.
+
+v1.5.0 aacb109 2010-06-15 flambard | Closes #960, rearranges code in [1390] so command line argument overwrites other options.
+
+v1.5.0 3488335 2010-06-15 flambard | Addresses #952, #953, fixes lots of portability issues, adds forgotten defines, return values and type conversions to the network code.
+
+v1.5.0 a7d6b2c 2010-06-15 billsey | Fixes #961 - replaces GF_INERTIA with GF_INERT to bypass the macro that MS is using.
+
+v1.5.0 6d6a690 2010-06-16 flambard | Addresses #952, #953, continuation of r1392, more portability fixes, type conversions and missing externs. Replaces inet_ntoa() with inet_ntop() - needs testing
+v1.5.0 ce332e9 2010-06-17 billsey | Addresses #952, #953 - Includes Ws2tcpip.h for Windows to allow for use of inet_ntop() function. This may only work on Vista and later operating systems. If so, 
+v1.5.0 e5ae50c 2010-06-17 flambard | Addresses #913, moves MAngband-specific options to 'options.h', moves 'config.h' to source directory and finally includes it into the code.
+
+v1.5.0 28a6e3e 2010-06-17 flambard | Addresses #913, removes config.h from VS project files for now.
+
+v1.5.0 9823c1a 2010-06-17 flambard | Addresses #952, #953, ensures inet_ntop() is only used when availible.
+
+v1.5.0 8dff2d2 2010-06-17 billsey | Addresses #952, #953 - Includes Ws2tcpip.h only when Windows version is Vista or later. We'll need to test this in an XP compile to verify it works correctly. In
+v1.5.0 c67800e 2010-06-18 flambard | Addresses #952, #953, attempts to workaround _WIN32_WINNT_VISTA not being defined yet on older Windows.
+
+v1.5.0 811968d 2010-06-18 flambard | Addresses #952, #953, returns compatibility with native BSD sockets.
+
+v1.5.0 a27fe84 2010-06-18 flambard | Addresses #673, adds a workaround to build mangclient before mangband in VS.
+
+v1.5.0 c430a96 2010-06-19 flambard | Addresses #952, #962, adds initial framework for declaring, transfering and displaying various gamestate indicators. This system is different from what we had b
+v1.5.0 5aefd38 2010-06-19 billsey | Addresses #952, #962 - Removes one silly extra zero from the fields[] array.
+
+v1.5.0 80f8ec1 2010-06-19 flambard | Addresses #952, #962, tweaks the way indicators are sent from the server, ensures client login packet is always sent first.
+
+v1.5.0 23b1b03 2010-06-19 billsey | Addresses #952, #962 - Fixes problem where wrong type was used to read an indicator.
+
+v1.5.0 9d57241 2010-06-21 flambard | Addresses #832, removes 'cheap dirty hack' that was keeping two versions of option_type structure.
+
+v1.5.0 be7b96d 2010-06-21 flambard | Addresses #965, untangles angband.h, removes all instances of SERVER and CLIENT defines.
+
+v1.5.0 0e74f97 2010-06-21 billsey | Addresses #952, #962 - Cleans up a bunch of externs and the occasional type mismatch.
+
+v1.5.0 1fabb50 2010-06-22 flambard | Addresses #952, #962, more minor bugfixes, externs send_indication() properly.
+
+v1.5.0 0a4eb42 2010-06-22 flambard | Addresses #952, #964, reimplements streams with newer code. Moves code around so all network packaging/unpackaging functions reside in net-pack.c file.
+
+v1.5.0 95ed299 2010-06-22 flambard | Addresses #952, #964, actually adds net-pack.c (and .h) this time. Typical.
+
+v1.5.0 f6d44c9 2010-06-22 flambard | Addresses #952, #964, removes stupid array tail, adds new files to VS projects.
+
+v1.5.0 1dd051c 2010-07-23 flambard | Addresses #952, #964, client now sends visual data ('net verify') before subsribing to streams. This changeset makes actual dungeon visible again.
+
+v1.5.0 114be5e 2010-07-25 flambard | Addresses #969, applies attached patch.
+
+v1.5.0 86a1c6c 2010-07-28 flambard | Addresses #952, #963, ports custom commands for new netcode. Most of them don't work correctly yet due to missing functionality in other places.
+
+v1.5.0 ed7a0da 2010-07-29 flambard | Addresses #933, removes player_presets array in favour of client-controlled 'pr_' tables. Those are now part of 'visual info' bundle and are loaded from pref fi
+v1.5.0 e1b5234 2010-08-09 flambard | Addresses #913, makes main-gcu rely on autoconf when picking include header and 'curent cursor position' feature.
+
+v1.5.0 cf61ab8 2010-08-09 flambard | Addresses #971, factors inttypes.h into basic type definitions. This needs some testing on WIN.
+
+v1.5.0 7853a5e 2010-08-20 billsey | Fixes #972 - Monsters now first do their normal drop, then drop items they have picked up. That allows potentially {good} or {great} items to find room on the fl
+v1.5.0 e948740 2010-08-24 flambard | Addresses #952, #807, merges item_tester arrays into struct, transfers them over network.
+
+v1.5.0 2925477 2010-09-06 flambard | Addresses #858, adjusts SDL sound to keep sound device open and pre-load sounds. This might eat up a lot of memory, but gives significant speed benefits.
+
+v1.5.0 69aff1a 2010-09-06 flambard | Closes #974, enforces minimal stack of one when buying something.
+
+v1.1.3 1b19bec 2010-09-06 flambard | Port r1423 from trunk to stable, see #856.
+
+v1.5.0 62efa01 2010-09-17 flambard | Addresses #971, fixes small yet critical typo from [1419].
+
+v1.5.0 dae6182 2010-09-18 flambard | Addresses #952, #807, removes two stupid bugs introduced in [1421].
+
+v1.5.0 4790fd4 2010-09-18 flambard | Addresses #952, #807, commit [1426] was wrong, here is the correct one. Sorry.
+
+v1.5.0 7d20ea6 2010-09-18 flambard | Addresses #952, #963, trims down usage of PKT_ defines in custom commands, removes them from pack.h.
+
+v1.5.0 8335362 2010-09-22 flambard | Addresses #952, #962, minor fixes for indicators.
+
+v1.5.0 37bb836 2010-09-22 flambard | Addresses #952, #832, reimplements options and settings for new networking code.
+
+v1.5.0 a92586c 2010-09-29 flambard | Addresses #952, #956, makes server load "news.txt" and "dead.txt" into memory during startup.
+
+v1.5.0 d1959b4 2010-09-29 flambard | Addresses #952, #964, changes stream functions to accept pointers to players instead of their index. That (along with future similar changes) would allow us to 
+v1.5.0 3757c59 2010-09-29 flambard | Addresses #673, deletes project files for Code::Blocks as they are no longer supported.
+
+v1.5.0 51b7324 2010-09-29 flambard | Addresses #913, minor fix to allow 'make dist' target.
+
+v1.5.0 c034e40 2010-09-29 flambard | Addresses #952, #964, fixes faulty changeset [1432], stream functions were using incorrect pointers.
+
+v1.5.0 2130a79 2010-10-17 billsey | Addresses #971, fixes another few small yet critical typos from [1419].
+
+v1.5.0 437c5a7 2010-10-18 billsey | Fixes #971 - Reverts VS .sln file to previous version (vs2008, not the vs2010 checked in with the last commit)
+
+v1.5.0 9149561 2010-10-19 flambard | Closes #971 again, fixes the fallback datatypes and reverts [1436].
+
+v1.5.0 7fd5d06 2010-11-24 flambard | Addresses #952, moves initial data sync into separate function.
+
+v1.5.0 d27a5c0 2010-11-24 flambard | Addresses #952, #962, adds 'cloning' functionality to indicators, adds character sheet indicators.
+
+v1.1.3 4692183 2011-02-04 billsey | Fixes #353 again - implementation requires object_copy() macro.
+
+v1.5.0 16a4237 2011-02-04 billsey | Addresses #952, #962, fixes some problems with calling a function before it's defined in the code. Didn't break all compilers, but did on some.
+
+v1.5.0 a4d61e8 2011-02-19 flambard | Addresses #952, moves screen updates into separate function, ensures it is called often enough.
+
+v1.5.0 b651bc6 2011-02-19 flambard | Addresses #952, #964, reintroduces NTerm packets and interactive terminals, this lets us browse help file and such again. Note: resizing the window currently br
+v1.5.0 6cbf629 2011-02-21 billsey | Addresses #952, #964, moves a couple of 'int n;' statements up to allow compile with VS.
+
+v1.5.0 b21c3ca 2011-02-21 flambard | Addresses #952, makes X11 client compilable again, renames "data" to "tdata" and comments out the resizing bits for the time being.
+
+v1.5.0 9839a17 2011-02-21 flambard | Addresses #952, stops indefinite hanging on failed name resolution.
+
+v1.5.0 7c20313 2011-02-21 flambard | Addresses #952, adds some debug messages to both client and server.
+
+v1.5.0 859bb70 2011-02-21 flambard | Addresses #952, #964, fixes various minor issues with [1444].
+
+v1.5.0 196af6c 2011-02-22 flambard | Addresses #952, re-arranges login procedure (again), allowing reconnections. Note: password is still not yet verified.
+
+v1.5.0 0056e77 2011-02-23 flambard | Addresses #977, stages silicontrip's port into trunk.
+
+v1.5.0 6b244bf 2011-02-26 flambard | Addresses #913, tweaks Makefile to only include relevant source files for SDL and X11 terminals.
+
+v1.5.0 8401f92 2011-02-26 silicontrip | Changes to main-crb to compile against trunk. addresses #977
+
+v1.5.0 18fa220 2011-02-26 silicontrip | Support files for OSX build. addresses #977
+
+v1.5.0 82b8ebf 2011-03-01 flambard | Closes #979, strdup now relies on autoconf and not legacy ultrix define.
+
+v1.5.0 c561c07 2011-03-01 flambard | Closes #980, adds strnlen function.
+
+v1.5.0 4a32f3f 2011-03-01 flambard | Addresses #952, fixes several bugs in %s/%S and %n/%N network datatypes, wraps them in macros.
+
+v1.5.0 2bf96ce 2011-03-01 flambard | Addresses #952, #832, fixes minor bug in [1430].
+
+v1.5.0 87c31f9 2011-03-01 flambard | Addresses #952, #832, fixes bug from [1430] *for real*, unlike [1458]. Sorry about that :(
+
+v1.5.0 adcf20d 2011-03-01 flambard | Addresses #952, fixes [1380] to use memcpy.
+
+v1.5.0 7e1888f 2011-03-01 flambard | Addresses #952, follows [1457], fixes a bug in it.
+
+v1.5.0 a58d465 2011-03-15 flambard | Addresses #952, #963, fixes bug from [1416], server now sends correct packet id for custom commands.
+
+v1.5.0 68a0822 2011-03-15 flambard | Addresses #952, ports inventory from our older codebase.
+
+v1.5.0 40f6322 2011-05-11 flambard | Addresses #952, #964, fixes streams to correctly handle incomplete packets. Note: due to direct copy, this can lead to visual artifacts, we probably need a buff
+v1.5.0 99eaa70 2011-05-11 flambard | Addresses #952, adds temporary debug messages client. Those should ease the pain of working with trunk.
+
+v1.5.0 7430be2 2011-05-11 flambard | Addresses #952, reimplements keep-alive timer. This should keep the client online. The "lag meter" portion of this change should be considered incomplete.
+
+v1.5.0 2e6d6b4 2011-05-11 flambard | Addresses #952, gives DM powers to all debug users again.
+
+v1.5.0 7497ae6 2011-05-13 flambard | Addresses #952, ports redraw command. Ctrl+R away!
+
+v1.5.0 fc8c870 2011-05-13 flambard | Addresses #952, ports clear command. ESC key and \e macros should work now.
+
+v1.5.0 f736763 2011-05-13 flambard | Addresses #952, ports objflags packet, rotates flags in memory to take advantage of rle -- the flags are now sent per-item and not per-attribute.
+
+v1.5.0 71c1590 2011-05-13 flambard | Addresses #952, buffers now slide via same utility function.
+
+v1.5.0 b86c6a9 2011-05-13 flambard | Addresses #913, converts all eols in configure.ac and Makefile.am to LF.
+
+v1.5.0 d0fa986 2011-05-13 flambard | Addresses #913, removes automake recursion. This makes Makefile.am files uglier, but gives nice speed improvement during 'make'. README file now contains instru
+v1.5.0 edf7559 2011-05-13 flambard | Addresses #913, follows [1473], adds missing directory.
+
+v1.5.0 dc65b9b 2011-05-13 flambard | Addresses #952, reimplements classic MAngband walking hacks.
+
+v1.5.0 8e15912 2011-05-14 flambard | Addresses #952, makes server turnaround faster, returns full turn mechanics.
+
+v1.5.0 42b0053 2011-05-14 flambard | Addresses #952, #963, reimplements running and staying as custom commands, adds V306 holding (staying without pickup) to the fold.
+
+v1.5.0 7c8ac1f 2011-05-18 flambard | Addresses #952, #962, fixes embarssing indicator bug from [1403].
+
+v1.5.0 49565dc 2011-05-18 flambard | Addresses #952, #963, fixes stupid bug from [1377].
+
+v1.5.0 bfc64d1 2011-05-18 flambard | Addresses #952, remove annoying setuid crash.
+
+v1.5.0 183dd82 2011-05-24 flambard | Closes #987, removes fd_chop function.
+
+v1.5.0 243f14c 2011-05-24 flambard | Closes #988, ports clean ups to Term_xtra_gcu_alive and Term_nuke_gcu from V306.
+
+v1.5.0 716af67 2011-05-25 flambard | Addresses #257, fixes annoying EOL issue from [921].
+
+v1.5.0 474fb85 2011-05-25 flambard | Addresses #977, implements silicontrip's patch to add carbon build.
+
+v1.5.0 5914d97 2011-05-25 flambard | Addresses #977, implements silicontrip's patch to make App Bundles. Note: this removes AC_PROG_OBJC macro, which is probably incorrect.
+
+v1.5.0 b3e89c0 2011-05-28 flambard | Closes #989, adds a workaround to argv1 handlimg, allowing bundled X11 client to start.
+
+v1.5.0 c699bf5 2011-05-31 flambard | Addresses #747, removes last traces of floating point math from SDL client.
+
+v1.5.0 ac8bb34 2011-05-31 flambard | Addresses #747, removes float.h check, follows [1487].
+
+v1.5.0 a407867 2011-05-31 flambard | Addresses #329, reverts [1275] because it's dirty and wrong.
+
+v1.5.0 53f6c24 2011-05-31 flambard | Addresses #735, reverts [1277] as it's dirty and wrong. See #329.
+
+v1.5.0 b31fac5 2011-10-02 flambard | Addresses #952, adds simple UDP code and ports 'report_to_meta' function from our older codebase.
+
+v1.1.3 026fab4 2011-10-02 flambard | Addresses #992, applies provided patch.
+
+v1.5.0 7cdf02b 2011-10-02 flambard | Ports r1492 from stable to trunk, see #856, #992.
+
+v1.5.0 1cbf005 2011-10-02 flambard | Addresses #952, applies the patch.
+
+v1.1.3 51903e0 2011-10-02 flambard | Ports r1494 from trunk to stable, see #856.
+
+v1.5.0 d76bedd 2011-10-03 flambard | Addresses #952, #963, #964, changes several server functions to accept player pointer instead of player index, adds a custom command scheme type for invoking su
+v1.5.0 98182fd 2011-10-03 flambard | Addresses #952, #74, adds ability to invoke help screen during birth.
+
+v1.5.0 f6f0e14 2011-10-03 flambard | Addresses #952, adds few minor general-purpose enchancements to netcode.
+
+v1.5.0 56b60e6 2011-10-03 flambard | Addresses #952, #963, extends fixes from r1498 to reach custom commands.
+
+v1.5.0 dbbfe16 2011-10-07 billsey | Addresses #952 - Fixes an issue which breaks compiles on VS again.
+
+v1.5.0 cc0e267 2011-10-08 billsey | Addresses #952 - Fixes the client to allow running without all those noxious warning message popups. :-)
+
+v1.5.0 a1375c4 2011-11-08 flambard | Addresses #952, fixes bug in 'n'/'N' data copy. Note: there's likely still a problem with the 's'/'S' types.
+
+v1.5.0 67f15a1 2011-11-08 flambard | Addresses #952, #963, makes 'n' a default string format for custom commands, as it is safer.
+
+v1.5.0 61103b1 2011-11-08 flambard | Addresses #952, adds a temporary debug command for making server-side character dump. Note: debug-mode servers now generate dumps for ALL the characters, not on
+v1.5.0 1a37049 2011-11-08 flambard | Addresses #952, #963, fixes a bug in command handler which was preventing empty schemas to be copied.
+
+v1.5.0 89563d0 2011-11-08 flambard | Addresses #952, ports Rest command from our older codebase. Note: similar to walking, this is NOT a custom command; at least for now.
+
+v1.5.0 7ecaf2a 2011-11-08 flambard | Addresses #952, adds an evil, dirty hack, that re-equips a player via 'Z' command. Don't forget to revert it at some point!
+
+v1.5.0 97fdfb7 2011-11-09 flambard | Addresses #952, ports simple Sound packet from our older codebase.
+
+v1.5.0 5fca72a 2011-11-09 flambard | Addresses #993, changes object_aware, object_aware_p, object_own and inven_carry to accept player_type pointer.
+
+v1.5.0 b00313b 2011-11-09 flambard | Addresses #952, reverts [1507], because it was bad and temporary.
+
+v1.5.0 aabe6e9 2011-11-09 flambard | Addresses #952, enables player_outfit in the proper way.
+
+v1.5.0 0d904c9 2011-11-09 flambard | Addresses #952, fixes bug that made race/class choice useless; it is not now.
+
+v1.5.0 ee22139 2011-11-10 flambard | Closes #973, ensures that results of every fget are checked.
+
+v1.5.0 a9a26f1 2011-11-10 flambard | Closes #973 again.
+
+v1.5.0 a8d62ec 2011-11-11 flambard | Addresses #952, ports server-to-client channel packet from our older codebase.
+
+v1.5.0 862890a 2011-11-12 flambard | Addresses #952, fixes bug in r1515, was using incorrect type in function declaration.
+
+v1.5.0 e9ea432 2011-11-12 flambard | Addresses #952, ports client-to-server channel packet from our older codebase.
+
+v1.5.0 f09b416 2011-11-12 flambard | Addresses #952, adds a "message repeat" packet.
+
+v1.5.0 60916f3 2011-11-12 flambard | Addresses #952, adds a secondary function to send character info.
+
+v1.5.0 1af1938 2011-11-12 flambard | Addresses #952, ports spell info packet from our older codebase.
+
+v1.5.0 5be8464 2011-11-12 flambard | Addresses #952, fixes the describe item command.
+
+v1.5.0 276ebea 2011-11-13 flambard | Addresses #952, ports store entry/leave from our older codebase, patch by mushy.
+
+v1.5.0 1bc7f84 2011-11-13 flambard | Addresses #952, changes the debug dump command to 'Z'.
+
+v1.5.0 6e19143 2011-11-14 flambard | Addresses #963, ensures prompt is advanced after custom command ammount request.
+
+v1.5.0 4591abb 2011-11-14 flambard | Addresses #952, #963, fixes bugs from r[1496].
+
+v1.5.0 df3c645 2011-11-14 flambard | Addresses #963, cleanups COMMAND_ defines a little.
+
+v1.5.0 499dc6d 2011-11-14 flambard | Addresses #963, continuation of r1524, cancels whole command when quantity prompt was canceled.
+
+v1.5.0 8381af8 2011-11-14 flambard | Addresses #952, adds a very specific item prompt to custom commands and a Destroy Item command, that uses it.
+
+v1.5.0 3aa7ae6 2011-11-14 billsey | Addresses #952 - Send_msg vs send_msg was broken in main-win.c. The case was changed in c-externs.h, c-smd.c and net-client.c, but not in main-win.c.
+
+v1.5.0 5d4aea7 2011-11-14 flambard | Addresses #882, clears the object awareness arrays, clears artifact list.
+
+v1.5.0 8a5e0c7 2011-11-14 flambard | Addresses #881, moves a *large* portion of server defines out of common.
+
+v1.5.0 bb0fb18 2011-11-14 flambard | Addresses #952, ports client-to-server party command from our older codebase, patch by mushy.
+
+v1.5.0 346ac5a 2012-02-15 flambard | Addresses #998, adds paranoia checks near every ddx/ddy access, applying a slightly modified patch by evileye.
+
+v1.1.3 70d32a6 2012-02-15 flambard | Ports r1533 from trunk to stable, see #856. Closes #998, by applying the original patch.
+
+v1.1.3 ffa4bc2 2012-02-18 Evileye | Prevent glyphs from being created in houses. Fixes #999
+
+v1.5.0 5f4e8e0 2012-02-18 Evileye | Prevent glyph creation inside houses. Fixes #999
+
+v1.1.3 9d17d5e 2012-02-18 Evileye | Fix broken pipe bad shutdown in curses client (and others where relevant). Addresses #1000.
+
+v1.1.3 658f354 2012-02-18 flambard | Addresses #1000, reverts changeset [1537].
+
+v1.1.3 58cf769 2012-02-18 Evileye | Re-apply fix with the relevant modifications for inferior diff tools ;p . Fixes #1000.
+
+v1.1.3 2e2e579 2012-03-10 Evileye | Fix password display bug. References #1003.
+
+v1.5.0 82ad767 2012-03-10 Evileye | Fix password display bug. Fixes #1003.
+
+v1.5.0 4219e13 2012-05-10 flambard | Closes #1004, makes tests for "town depth" a bit more uniform.
+
+v1.5.0 4a3153e 2012-06-22 flambard | Addresses #952, ports client-to-server suicide command from our older codebase.
+
+v1.5.0 46dd3a4 2012-06-28 flambard | Addresses #952, #962, renames two indicator variables to make more sense.
+
+v1.5.0 a8130e9 2012-06-28 flambard | Addresses #952, #962, fixes bug in [1544], it should've been a simple rename.
+
+v1.5.0 790dcd4 2012-06-28 flambard | Addresses #952, #962, ensures cloned indicators refer correct coffers.
+
+v1.5.0 955d341 2012-06-29 flambard | Addresses #952, #962, adds multiple new features to indicator parser/state machine.
+
+v1.5.0 94a1aff 2012-06-29 flambard | Addresses #952, #962, corrects stat indicators, adds verbose stat indicators.
+
+v1.1.3 8497d1a 2012-08-19 flambard | Ports r1122 from trunk to stable, see #856. This is a very dirty hack.
+
+v1.1.3 57ae2ae 2012-12-18 Thorbear | Changed the check for setting the no_ghost option from current level to max level, and made sure max level is set to 1 at birth, along with current level. Fixes
+v1.1.3 f562489 2012-12-30 flambard | Ports r1487,r1488 from trunk to stable, see #856.
+
+v1.1.3 38889ca 2012-12-31 billsey | Addresses #856, two small changes to allow VS builds.
+
+v1.5.0 21a398d 2013-01-01 flambard | Addresses #882, fixes a bug from [1530].
+
+v1.5.0 7cb17f0 2013-01-01 flambard | Addresses #952, removes sockaddr usage from tcp-based recvfrom and sendto calls.
+
+v1.5.0 b1d51fc 2013-01-01 flambard | Addresses #952, removes some strcpy abuse from client netcode.
+
+v1.5.0 0d57c45 2013-01-04 flambard | Addresses #952, #963, ensures correct command scheme is used when copying commands to player command buffer from read buffer.
+
+v1.5.0 99a2700 2013-01-04 flambard | Addresses #952, #963, removes redundant packet definitions.
+
+v1.5.0 372a4e4 2013-01-08 flambard | Addresses #963, #952, makes minor whitepsace changes and adds some comments.
+
+v1.5.0 4674214 2013-02-26 Thorbear | Changed the kingly function, Fixes #1009.
+
+v1.1.3 3017349 2013-02-26 Thorbear | Ports r1559 from trunk to stable, see #856
+
+v1.5.0 c0fabcf 2013-03-02 Thorbear | Made sure all premature returns from determine_wilderness_type happens before changes happen to global variables, Fixes #1011.
+
+v1.1.3 3c55672 2013-03-02 Thorbear | Ports r1561 from trunk to stable, see #856
+
+v1.5.0 6e55349 2013-05-07 flambard | Closes #1018, makes sure only the actual filename is used when calling windres.
+
+v1.5.0 7b1a998 2013-06-08 flambard | Closes #1019, simplifies array "tails" in tables.c
+
+v1.1.3 b862be0 2013-09-12 flambard | Addresses #1020, fixes the issue.
+
+v1.5.0 5531fdc 2013-11-12 flambard | Addresses #952, #962, #963, #964, fixes the extern declaration being the declaration itself for streams, custom commands and indicators.
+
+v1.5.0 40ee765 2013-11-19 Graham King | Adds git ignore, which is suitable for linux build at least, closes #1023
+
+v1.1.3 c68ebad 2014-03-28 Thorbear | Fixes #850
+
+v1.1.3 e1ac413 2014-03-29 Thorbear | Adds gitignore for files generated by compilation
+
+v1.1.3 437783b 2014-05-17 flambard | Update FreeBSD port with pawel's changes. See #1020.
+
+v1.1.3 8c00eb9 2014-05-17 flambard | Allow checksum generation for FreeBSD port for unprivileged users.
+
+v1.1.3 3fa3ce8 2014-05-17 flambard | Chmod +x the makeport script. See #1020.
+
+v1.1.3 12773a1 2014-05-17 flambard | Update OPTIONS in FreeBSD port to new format. See #1020.
+
+v1.1.3 e3d06a1 2014-05-18 flambard | Update do-install and pkg-plist in FreeBSD port. See #1020.
+
+v1.1.3 6777d53 2014-05-18 flambard | Use new OPTIONS:M? defines in FreeBSD port. See #1020.
+
+v1.1.3 08519e5 2014-05-18 flambard | Prepare for FreeBSD port staging. See #1020.
+
+v1.1.3 66cd8b6 2014-05-18 flambard | Make minor changes in FreeBSD port description and comments. See #1020.
+
+v1.1.3 c86e184 2014-05-18 flambard | Remove chown/chmod operations from do-install target in FreeBSD port.
+
+v1.1.3 66a3325 2014-05-18 flambard | Correct file permissions in FreeBSD port. See #1020.
+
+v1.1.3 976629a 2014-05-18 flambard | Include FreeBSD patches to our infrastructure. See #1020.
+
+v1.1.3 decdca3 2014-05-18 flambard | Add a post-install message to FreeBSD port, explaing our directories a little bit. See #1020.
+
+v1.1.3 ebb4c54 2014-05-18 flambard | Make minor whitespace changes to FreeBSD port. See #1020.
+
+v1.1.3 e0a25a0 2014-05-18 flambard | Add one more post-install message to FreeBSD port. See #1020.
+
+v1.5.0 1b44861 2014-05-17 flambard | Port freebsd updates 437893b..e0a25a0 from 1.1.2 to master.
+
+v1.5.0 87723f3 2014-05-18 flambard | Move pkg-message file from the last commit, see #1020.
+
+v1.5.0 cee482e 2014-07-05 flambard-took | Change the function that prints the "top-level" message. Refs #952.
+
+v1.5.0 4d9f960 2014-07-05 flambard-took | Fix severe bug in new network code #952.
+
+v1.5.0 cad841a 2014-07-05 flambard-took | Change object_similar function and object_known_p macro to accept player_type pointer. See #993.
+
+v1.5.0 e58f2fb 2014-07-06 flambard-took | Use array of buffers in format(), allow up to 5 consecutive calls. See
+
+v1.5.0 47a262a 2014-07-06 flambard-took | Use plog_fmt() instead of plog() in message_print_aux(), see #854.
+
+v1.5.0 8fe578d 2015-03-22 flambard-took | Fixe some bugs and improve style (in mangband fashion) in networking code. See #952.
+
+v1.5.0 4e43e8f 2015-03-22 flambard-took | Improve option framework, see #832. This should fix the use_color issue
+
+v1.5.0 27eb36d 2015-05-24 flambard-took | Fix #1036, graphics mode usage is now correctly stored on the server. This might cause other bugs, but at least we don't *immedeately* crash.
+
+v1.5.0 c387c8f 2015-05-24 flambard-took | Add server-generated files to .gitignore.
+
+v1.5.0 665295c 2015-06-04 flambard-took | Add server savefiles to .gitignore.
+
+v1.5.0 d6bae86 2015-06-04 flambard-took | Return one of the beatiful hacks for handling incoming messages. See issue #952, commit cee482e.
+
+v1.5.0 be2bfb2 2015-06-05 flambard-took | Addresses #952, adds paranoia checks to all send_ functions.
+
+v1.5.0 d64e099 2015-06-07 flambard-took | Address #793, make show_inven and show_equip both use partial screen ickyness.
+
+v1.5.0 acffcf8 2015-06-08 flambard-took | Stop being lazy with cq_printf return codes in server send_ routines. For commands that we don't intend to resend again, on failure, we must disconnect imm
+v1.5.0 cbf5db5 2015-06-10 flambard-took | Allow server to better distinguish between dead and alive savefiles, see issue #1033.
+
+v1.5.0 5f254bb 2015-06-10 flambard-took | Addresses #1033, makes server keep stat order in player savefiles.
+
+v1.5.0 2f24388 2015-06-10 flambard-took | Addresses #952, #1033, significantly improves Player Cycle.
+
+v1.5.0 496f211 2015-06-11 flambard-took | Addresses #952, #1033, closes #976. Verify we're not hitting max number of players when client connection is established.
+
+v1.5.0 6ed92d8 2015-06-11 flambard-took | Addresses #952, implements client-side metaserver networking.
+
+v1.5.0 4472bab 2015-06-11 flambard-took | Addresses #962, closes #1030. This should stop indicator bleed-over. The nasty part of the hack is the i_ptr->win = PW_ define hardcode.
+
+v1.5.0 c834df3 2015-06-11 flambard-took | Addresses #962, fixes annoying bug in indicator display code.
+
+v1.5.0 0694de9 2015-06-11 flambard-took | Addresses #952, ensures our socket connect doesn't incorrectly fail due to non-blocking mode.
+
+v1.5.0 3787961 2015-06-11 flambard-took | Address #952, craft disconnect message for old clients more carefully.
+
+v1.5.0 b477448 2015-06-11 flambard-took | Address #952, #1033, add password check.
+
+v1.5.0 b47133e 2015-06-11 flambard-took | Address #952, fix tiny strlen-related bug.
+
+v1.5.0 09bfab3 2015-06-11 flambard-took | Address #993, convert "prt" and "c_prt" functions.
+
+v1.5.0 b07c4c7 2015-06-11 flambard-took | Address #956, port "print_tomb" routine from V309.
+
+v1.5.0 d9513ad 2015-06-11 flambard-took | Simplify password-checking function. See #952, #1033.
+
+v1.5.0 553ee08 2015-06-12 flambard-took | Address #944, restore the bcv,bcx,bcy (best cursor position) hack to it's formal glory. Note: things might be a little off, all terminals must be tested se
+v1.5.0 cb56fe0 2015-06-12 flambard-took | Address #964, ensure we propagate all suitable streams to options_win UI.
+
+v1.5.0 d8eec61 2015-06-13 flambard-took | Address #962, add some nice indicators.
+
+v1.5.0 7d0d2d1 2015-06-13 flambard-took | Address #952, temporarily(?) map Flush_queue to flush_updates.
+
+v1.5.0 a852c91 2015-06-13 flambard-took | Address #952, #826, enlarge connection buffers.
+
+v1.5.0 3e1aa3e 2015-06-13 flambard-took | Address #747, fix critical bug in SDL1 client.
+
+v1.5.0 ee10c31 2015-06-13 flambard-took | Address #952, fix critical bug in RLE3 encoder.
+
+v1.5.0 951b441 2015-06-13 flambard-took | Close #1035, address #798, #952. Re-implement looking and targeting.
+
+v1.5.0 f913a45 2015-06-14 flambard-took | Address #952, #798, #670, fix monster recall. This might still be slightly broken due to streams being broken, but is otherwise rather solid.
+
+v1.5.0 d913dd2 2015-06-14 flambard-took | Address #747, adjust the way SDL terminal draws it's cursor, this seems to work better with new z-term.
+
+v1.5.0 1bb4786 2015-06-14 flambard-took | Address #952, #964, fix some stream issues.
+
+v1.5.0 eee7094 2015-06-14 flambard-took | Close #1027, reimplement mini-map command.
+
+v1.5.0 e52c9d7 2015-06-14 flambard-took | Address #952, be more correct when testing for connection existance (again).
+
+v1.5.0 72b55a1 2015-06-14 flambard-took | Address #963, fix critical bug in custom commands dealing with interactive input.
+
+v1.5.0 097a5d9 2015-06-14 flambard-took | Address #952, #962, split indicators between multiple windows.
+
+v1.5.0 a7b3abf 2015-06-14 flambard-took | Address #952, #962, improve situation with string coffers.
+
+v1.5.0 6e41e60 2015-06-14 flambard-took | Address #952, add better error reporting to cq packing functions.
+
+v1.5.0 2c4fcc5 2015-06-14 flambard-took | Fix strange bug in player list not setting color, and breaking our streams, see #964.
+
+v1.5.0 a2512d3 2015-06-14 flambard-took | Address #952, #814, revert all the horrible Book Overflow hacks.
+
+v1.5.0 6c43cee 2015-06-14 flambard-took | Ensure we can freely adjust SPELLS_PER_BOOK, see #814.
+
+v1.5.0 15592ce 2015-06-14 flambard-took | Finally enlarge SPELL_PER_BOOK define, see #814.
+
+v1.5.0 b6add0c 2015-06-14 flambard-took | Close #1028, reimplement locate command.
+
+v1.5.0 fc9c859 2015-06-14 flambard-took | Address #1033, ensure player abandons all subscriptions/connections, etc, when she disconnects/leaves game.
+
+v1.5.0 c537fdb 2015-06-14 flambard-took | Address #962, add more indicators. I think this is it, those are the last ones.
+
+v1.5.0 dd466a9 2015-06-14 flambard-took | Address #962, fix history indicator (to use new string format).
+
+v1.5.0 367eb0d 2015-06-16 flambard-took | Address #881, move dungeon offset defines from common to client.
+
+v1.5.0 dd81f97 2015-06-16 flambard-took | Address #962, fix AC indicator to work as advertised.
+
+v1.5.0 4d8d5c2 2015-06-16 flambard-took | Address #778,#670 reindent the textout function. This is useless.
+
+v1.5.0 ca3f7bb 2015-06-16 flambard-took | Address #1039, make stupid whitespace changes to do_cmd_observe.
+
+v1.5.0 297bca5 2015-06-17 flambard-took | Address #952, fix stupid regression in console code.
+
+v1.5.0 a01a396 2015-06-17 flambard-took | Address #964, change the nature of stream "auto-subscription".
+
+v1.5.0 b4ae5d7 2015-06-17 flambard-took | Address #962, update charsheet windowflags in a more safe manner.
+
+v1.5.0 2b869eb 2015-06-18 flambard-took | Address #952, fix critical bugs in "%s", "%S", "%n" and "%N" packing/unpacking.
+
+v1.5.0 6397dc8 2015-06-18 flambard-took | Address #952, ensure cave packing functions report errors correctly.
+
+v1.5.0 bbe478a 2015-06-18 flambard-took | Address #962, change the way indicator window update is triggered.
+
+v1.5.0 ff4b204 2015-06-18 flambard-took | Address #944, make inkey more dirty than ever before.
+
+v1.5.0 a2a053a 2015-06-18 flambard-took | Address #963, add new flag to allow interactive commands to end on any key press and not just escape.
+
+v1.5.0 f182fcb 2015-06-18 flambard-took | Address #951, delay server-issued interactivity until we left network_loop, WIP.
+
+v1.5.0 477afdb 2015-06-18 flambard-took | Address #962, compliment bbe478a133783a7cf8c8ae6c37db04753290a231, add forgotten piece of code.
+
+v1.5.0 dce4882 2015-06-18 flambard-took | Address #964, add some client-side error-checking regarding streams.
+
+v1.5.0 c57908f 2015-06-18 flambard-took | Address #951, actually call the request-handling function. Stupid flambard.
+
+v1.5.0 e4b5d13 2015-06-18 flambard-took | Address #951, #952, #1037. Add "confirm" packet, used for delayed requests, and implement much of store code as a subset of this functionality.
+
+v1.5.0 4e4fe52 2015-06-18 flambard-took | Address #1037, #963, adds store commands as custom commands.
+
+v1.5.0 3ba72fe 2015-06-18 flambard-took | Address #963, #1037, add forgotten extern.
+
+v1.5.0 2718c2d 2015-06-18 flambard-took | Address #962, add forgotten variable declaration. Yikes!
+
+v1.5.0 de501dd 2015-06-18 flambard-took | Address #962,#1037 add store indicators facility and a single store indicator for gold.
+
+v1.5.0 ffc6b11 2015-06-18 flambard-took | Address #952, replace all instances of char buf[80] with char buf[MAX_CHARS], replace related strcpy/strncpy calls with my_strcpy (proper). This will allow
+v1.5.0 9c65775 2015-06-18 flambard-took | Address #951, add missing variable declaratins. Stupid, stupid flambard.
+
+v1.5.0 11acfc8 2015-06-19 flambard-took | Address #964, add some popup-specific server-side functions.
+
+v1.5.0 6273566 2015-06-19 flambard-took | Address #952, fix some nterm weirdness, update client popup code.
+
+v1.5.0 3622a5d 2015-06-19 flambard-took | Address #952, add cq_printf "transactions" with rollback.
+
+v1.5.0 9321f82 2015-06-19 flambard-took | Address #952, #964, fortify last_info_line/last_remote_line semantics.
+
+v1.5.0 518a52f 2015-06-19 flambard-took | Address #750, #964, fix the client dungeon position, make x and y hacks symmetrical.
+
+v1.5.0 60ec436 2015-06-19 flambard-took | Address #891, clear last line of text_out info, in case the routine responsible for it fails (so it's hack instead of proper fix).
+
+v1.5.0 9507af2 2015-06-19 flambard-took | Address #891, adds a temporary secondary buffer to player structure (mem!) which can be used to stash and unstash primary 'info' buffer. This dancing aroun
+v1.5.0 fdf40c1 2015-06-19 flambard-took | Address #952, implement Send_pause in terms of NTerm packet.
+
+v1.5.0 ee0efde 2015-06-19 flambard-took | Address #952, fix send_target_info signature.
+
+v1.5.0 4d22b01 2015-06-19 flambard-took | Address #1037, revamp the shopping loop.
+
+v1.5.0 80db74e 2015-06-19 flambard-took | Address #952, make client say something on disconnect.
+
+v1.5.0 9193f20 2015-06-19 flambard-took | Address #891, always alloc/dealloc interactive_file string instead of only doing it sometimes. NOTE: why is this dynamic anyways? I feel like a static buff
+v1.5.0 6bc89c2 2015-06-19 flambard-took | Address #952, make minor debug-logging changes.
+
+v1.5.0 f415635 2015-06-19 flambard-took | Address #962, fix critical bug that made server not send all the indicators.
+
+v1.5.0 1ab78c6 2015-06-19 flambard-took | Address #952, fix critical bug that caused undefined behavior on interactive keys.
+
+v1.5.0 f30656c 2015-06-19 flambard-took | Address #778, #952, #964, add monster-list stream.
+
+v1.5.0 5930979 2015-06-19 flambard-took | Address #952, fix recv_basic_info definition, minor.
+
+v1.5.0 1a72577 2015-06-19 flambard-took | Address #952, #964, #1031, add stream for "long" files.
+
+v1.5.0 7b8f3cc 2015-06-19 flambard-took | Address #964, #1031, actually use the new file stream.
+
+v1.5.0 72e42c6 2015-06-19 flambard-took | Address #951, revert a "fix" that was causing more harm than good. TODO: fix this properly.
+
+v1.5.0 27ad881 2015-06-19 flambard-took | Address #952, #1033, improve player dismembering.
+
+v1.5.0 ffb2663 2015-06-19 flambard-took | Address #952, #962, add an error message for case we run out of free PKTs for indicators.
+
+v1.5.0 b3e5053 2015-06-19 flambard-took | Address #891, add a forceful Term_Clear to peruse_file. This might conflict with some stuff later, so might eventually get reverted, but I'm feeling this i
+v1.5.0 e6a6b50 2015-06-19 flambard-took | Address #964, #952, revamp most of NTerm command issuers to fit with the updated model.
+
+v1.5.0 2ff4c9b 2015-06-19 flambard-took | Address #1037, add new/old hack -- exit store on every non-store command.
+
+v1.5.0 c556fb4 2015-06-19 flambard-took | Address #814, restore "send_socials" call.
+
+v1.5.0 8af056d 2015-06-19 flambard-took | Address #964, #891, #670, make a small, but nice improvement to text_out routine to treat '\n' as space when searching for a wrap point.
+
+v1.5.0 1de49f4 2015-06-19 flambard-took | Address #891, make monlist and monster recall use the temp buffer when dumping data.
+
+v1.5.0 558deb7 2015-06-19 flambard-took | Address #670, remove older hacks regarding monster recall updates.
+
+v1.5.0 eac1b5d 2015-06-19 flambard-took | Address #962, enlarge the exp-to-advance indicator format.
+
+v1.5.0 a05693c 2015-06-19 flambard-took | Address #952, enlarge the MAX_CHARS buffer by 1. This will likely cause lots of strcpy errors somewhere down the line, but we'll get to them.
+
+v1.5.0 855ca3b 2015-06-19 flambard-took | Address #891, add commented out and useless piece of code. It might turn out useful later, and adds consistency, though.
+
+v1.5.0 9a13e56 2015-06-19 flambard-took | Address #964, removing debug printf. Should've never made it to the repo.
+
+v1.5.0 0f23b7e 2015-06-19 flambard-took | Close #1046, port relevant patch from master-sdl2 branch.
+
+v1.5.0 c2d3d79 2015-06-20 flambard-took | Close #1045, #1044, address #952, fix custom command prompt copying.
+
+v1.5.0 ae5465e 2015-06-20 flambard-took | Address #952, ensure metaserver buffer is 0-terminated after read.
+
+v1.5.0 f2585c6 2015-06-20 flambard-took | Close #1043, port changepass command from older codebase. See #952.
+
+v1.5.0 6935103 2015-06-20 flambard-took | Address #952, #826, add a hack to prevent needless read-buffer overflows.
+
+v1.5.0 82eaacc 2015-06-20 flambard-took | Close #1041, finaly reinstate MOTD in all it's glory. I hope. See #952.
+
+v1.5.0 b239d87 2015-06-20 flambard-took | Address #963, make insignificant adjustment to command order.
+
+v1.5.0 91bdc09 2015-06-23 flambard-took | Close #1049, rename init_stuff to init_stuff_win on windows client.
+
+v1.5.0 e375f85 2015-06-23 flambard-took | Address #952, add winsock define for EALREADY.
+
+v1.5.0 97a94d3 2015-06-23 flambard-took | Address #952, fix incorrect alloc macro usage.
+
+v1.5.0 d4fd6bd 2015-06-23 flambard-took | Address #952, fix the incorrect array creation.
+
+v1.5.0 360dcd2 2015-06-24 flambard-took | Address #952, revert cc0e267.
+
+v1.5.0 7563f81 2015-07-04 flambard-took | Address #257, ensure returned strings are static.
+
+v1.5.0 8a276e7 2015-07-04 flambard-took | Address #952, make all infodata counters "int".
+
+v1.5.0 29d5181 2015-07-04 flambard-took | Address #952, add some missing externs.
+
+v1.5.0 bb6ae3b 2015-07-04 flambard-took | Address #952, wipe infodata counters.
+
+v1.5.0 501c8b6 2015-07-04 flambard-took | Address #747, fix the color parsing routine.
+
+v1.5.0 980bb0e 2015-07-04 flambard-took | Address #952, fix bugs in connection code.
+
+v1.5.0 5331fc4 2015-07-04 flambard-took | Address #952, fix minor bug in "crfds" recalc.
+
+v1.5.0 9aea66b 2015-07-04 flambard-took | Address #952, add "cq_space" function to CQ "api".
+
+v1.5.0 7841bf6 2015-07-04 flambard-took | Address #948, make "string_make" for V-like.
+
+v1.5.0 009596d 2015-07-04 flambard-took | Address #952, remove some unused variables.
+
+v1.5.0 13f29cc 2015-07-04 flambard-took | Address #952, fix two critical bugs in recv_*.
+
+v1.5.0 e884fdd 2015-07-04 flambard-took | Address #952, fix critical bug in custom commands receiver.
+
+v1.5.0 bcbf926 2015-07-04 flambard-took | Close #1050, correct the comments inside comments.
+
+v1.5.0 a93ee35 2015-07-04 flambard-took | Address #952, fix type for pr_char to char :)
+
+v1.5.0 9aa1883 2015-07-04 flambard-took | Address #952, avoid possible crash in send_indication.
+
+v1.5.0 621dad3 2015-07-04 flambard-took | Address #952, ignore client-sent "id" during "basic_request".
+
+v1.5.0 a4c2f84 2015-07-04 flambard-took | Address #952, comment-out direct WinSock usage from windows client.
+
+v1.5.0 b5cb070 2015-07-04 flambard-took | Address #257, ensure path separator is correctly applied to LibDir.
+
+v1.5.0 e199428 2015-07-21 flambard-took | Address #944, fix Term_load() memleak.
+
+v1.5.0 f1545e4 2015-07-21 flambard-took | Address #952, fix critical bug in cq_nwrite.
+
+v1.5.0 6b29f06 2015-07-21 flambard-took | Address #952,#964, handle file stream correctly,
+
+v1.5.0 dc2ca84 2015-07-21 flambard-took | Address #952, handle read-buffer leftover bytes differentely.
+
+v1.5.0 5c18449 2015-07-22 flambard-took | Address #952, fix minor cq_ memleak.
+
+v1.5.0 fa7d384 2015-07-22 flambard-took | Address #952, use QueryPerformanceCounter on win32.
+
+v1.5.0 c068973 2015-07-22 flambard-took | Address #952, reimplement connect() for Windows.
+
+v1.1.3 4a625cb 2016-03-31 flambard-took | Version bump to 1.1.3. See #856.
+
+v1.5.0 91cabca 2016-04-01 flambard-took | Update README and autogen.sh.
+
+v1.5.0 9a53ccf 2016-04-01 flambard-took | Add Travis-Ci integration.
+
+v1.5.0 d16a1e0 2016-04-01 flambard-took | Integrate Coverity Scan and Travis-Ci (hopefully).
+
+v1.5.0 ada9e3e 2016-04-01 flambard-took | Update .travis.yml build script.
+
+v1.5.0 bbc1461 2016-04-01 flambard-took | Continue fiddling with .travis.yml
+
+v1.1.4 1c1eabc 2016-04-01 flambard-took | Add .travis.yml for stable version.
+
+v1.5.0 fb22573 2016-04-01 flambard-took | Adjust .travis.yml once again in hopes coverity_scan would pick it up.
+
+v1.5.0 253f5c8 2016-04-02 flambard-took | Attempt to build a larger Travis-CI matrix.
+
+v1.5.0 3588d23 2016-04-02 flambard-took | Fix (?) conditional brew invokation in .travis.yml
+
+v1.5.0 5444c39 2016-04-02 flambard-took | Remove OSX builds from .travis.yml, sadly they are out of capacity.
+
+v1.5.0 e8781a2 2016-04-02 flambard-took | Move env key around in .travis.yml
+
+v1.5.0 0c3f0a3 2016-04-02 flambard-took | Fix env matrix syntax in .travis.yml
+
+v1.5.0 871305e 2016-04-02 flambard-took | Correct CONFIGURE_FLAGS in .travis.yml
+
+v1.5.0 872089f 2016-04-02 flambard-took | Use correct package name for SDL in .travis.yml
+
+v1.5.0 6992751 2016-04-02 flambard-took | Add user dumps to .gitignore.
+
+v1.5.0 5362871 2016-04-02 flambard-took | Simplify CQ_ routines. See #952.
+
+v1.5.0 06f66f5 2016-04-02 flambard-took | Add PKT_GHOST network packet. Closes #1051. See #952.
+
+v1.5.0 b84aa5d 2016-04-02 flambard-took | Add missing va_end to indicator sending function. See #952, #962.
+
+v1.5.0 f3577df 2016-04-02 flambard-took | Add "fallthrough" comments to indicator printing function. See #1055.
+
+v1.5.0 a339c93 2016-04-02 flambard-took | Add fallthrough comment to interactive input function, see #1055.
+
+v1.5.0 0abe632 2016-04-02 flambard-took | Add missing return value to report_to_meta function, see #1055.
+
+v1.5.0 115a4d6 2016-04-02 flambard-took | Fix out of order deletion in network loop. See #952
+
+v1.5.0 a276fa4 2016-04-02 flambard-took | Ensure we don't read from garbage file pointer in client config loader, see #257.
+
+v1.5.0 0784495 2016-04-02 flambard-took | Make hostname resolution abort "add_sender" earlier on failure. See #952.
+
+v1.5.0 5752990 2016-04-02 flambard-took | Close listen socket on failure in add_listener(). See #952.
+
+v1.5.0 0224135 2016-04-02 flambard-took | Make hostname resolution abort "add_caller" earlier on failure. See #952.
+
+v1.5.0 35b93c4 2016-04-02 flambard-took | Fix redundant point dereference, see #1055. CID 80676.
+
+v1.5.0 12ce34d 2016-04-03 flambard-took | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 11c226b 2016-04-03 flambard-took | Close #1058, autogen.sh can now use curl instead of wget.
+
+v1.5.0 2b855db 2016-04-03 flambard-took | Remove sneaky ';' that made those 2 "if"s useless. See #747.
+
+v1.5.0 67f859d 2016-04-03 flambard-took | Remove "inline" qualifier from SDL_ScaleBlit. See #747.
+
+v1.5.0 5b85f60 2016-04-03 flambard-took | Make many useless whitespace changes in SDL client. See #747.
+
+v1.5.0 cda8c8a 2016-04-03 flambard-took | SDL UI was missing Right-Ctrl keypresses. See #747.
+
+v1.5.0 ef733e1 2016-04-03 flambard-took | Make SDL client respect TERM_XTRA_SHAPE invokations. See #747.
+
+v1.5.0 1c8d576 2016-04-03 flambard-took | Remove 2 unused variables from SDL client, see #747.
+
+v1.5.0 5035297 2016-04-03 flambard-took | Use nice colors for class/race/title indicator. See #962, #1056.
+
+v1.5.0 b285dff 2016-04-03 flambard-took | Make ghost indicator dump 13 white spaces, hack to clear old value. See
+
+v1.5.0 ca58ce5 2016-04-03 flambard-took | Close #1056, See #962.
+
+v1.5.0 8f2c2cf 2016-04-03 flambard-took | Make sure prt_depth "id" toggle allows "-1" correctly. See #962
+
+v1.5.0 65fd13f 2016-04-03 flambard-took | Fix bounds checking in client-side stream reading. See #952.
+
+v1.5.0 aedb4a4 2016-04-03 flambard-took | Add initv/sysv script. This is classic init.d material, see #1054.
+
+v1.5.0 74e99f2 2016-04-03 flambard-took | Merge branch 'master' of mang-git.org:mangband/mangband
+
+v1.5.0 a9707e4 2016-04-03 flambard-took | Add upstart script. It will not work correctly on upstart < 1.10. See #1054.
+
+v1.5.0 3f546ee 2016-04-03 flambard-took | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 04bdc3b 2016-04-03 flambard-took | Add openrc init script, see #1054.
+
+v1.5.0 78685f0 2016-04-03 flambard-took | Merge branch 'master' of mangband.org:mangband/mangband
+
+v1.5.0 a63c313 2016-04-03 flambard-took | Ensure msg_log[i] check is not pointless. See #1055.
+
+v1.5.0 819a7b3 2016-04-03 flambard-took | Add forgotten externs for send_term_info and send_term_header, see #964,#952.
+
+v1.5.0 fa946f5 2016-04-03 flambard-took | Add const qualifier to temporary "c" char* in do_cmd_observe. See #1055.
+
+v1.5.0 ef66b85 2016-04-03 flambard-took | Convert object_absorb and object_similar functions. See #993.
+
+v1.5.0 19e4f27 2016-04-03 flambard-took | Add "fallthrough" comment to virtual channel handler. See #1055.
+
+v1.5.0 5eb58fc 2016-04-03 flambard-took | Stop highscore dumping early on seek failure. See #1055. CID 80718.
+
+v1.5.0 0ef09a5 2016-04-03 flambard-took | Ensure virt_channels are initialized, see #1055.
+
+v1.5.0 91b6562 2016-04-03 flambard-took | Quit early when there's no space for special levels. See #1055. CID 80693.
+
+v1.5.0 4efcd1a 2016-04-03 flambard-took | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 bf323a7 2016-04-03 flambard-took | Add missing externs for various send_* functions, see #952.
+
+v1.5.0 9e5684d 2016-04-03 flambard-took | Add missing extern for "object_similar_floor", see #993.
+
+v1.5.0 f3c994f 2016-04-03 flambard-took | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 115f323 2016-04-03 flambard-took | Remove unused argument from "send_inventory_info" function. See #952.
+
+v1.5.0 8311044 2016-04-04 flambard-took | Close #1061, fix the only case of direct "uint8_t" usage.
+
+v1.5.0 41b667c 2016-04-05 flambard-took | Address #1062, add VS2015 projects. Those were generated by simply updating the vs2008 ones.
+
+v1.5.0 c181f4f 2016-04-05 flambard-took | Close #1060, allow VS2015 builds to use some stdlib functions.
+
+v1.1.3 103c4c8 2016-04-05 flambard-took | Version bump to 1.1.3 in NSIS scripts and Angband.rc. See #1052.
+
+v1.1.3 60758ee 2016-04-05 flambard-took | Change windows server installer filename. See #1052.
+
+v1.5.0 d2812ff 2016-04-07 flambard-took | Address #1068, guard "config.h" inclusion.
+
+v1.5.0 41e0bdb 2016-04-07 flambard-took | Close #1069, update files in VS2015 projects.
+
+v1.5.0 64ccd40 2016-04-07 flambard-took | Close #1071, separate build dirs for client and server in VS2015.
+
+v1.5.0 ef39833 2016-04-07 flambard-took | Close #1070, add user files with correct "Working Directory".
+
+v1.5.0 e9b314a 2016-04-07 flambard-took | Remove HAS_STRICMP define from VS projects, define explicitly in h-config.h.
+
+v1.5.0 e80eef0 2016-04-07 flambard-took | Address #1072, use correct HAVE_ defines and update configure.ac
+
+v1.5.0 830f1d9 2016-04-07 flambard-took | Remove unused overloads from client, see #1072.
+
+v1.5.0 7118390 2016-04-07 flambard-took | Add USE_WIN defines to mangclient VS project files. Close #1073.
+
+v1.5.0 7121ec6 2016-04-07 flambard-took | Close #1071 again, use correct directory settings in VS2015 projects.
+
+v1.5.0 20e3fda 2016-04-07 flambard-took | Address #1071, add VS files to .gitignore.
+
+v1.5.0 e0fca92 2016-04-07 flambard-took | Address #952, improve cq_ error reporting.
+
+v1.5.0 cb85cce 2016-04-07 flambard-took | Address #952, #964, fix critical bug in RLE1 decoding.
+
+v1.5.0 4328f6d 2016-04-07 flambard-took | Address #952, #964, ensure all streams start as unsubscribed (client-side).
+
+v1.5.0 43d490f 2016-04-07 billsey | Removes Pre-Build event "echo // > $(OutDir)src\config.h" from Debug builds.
+
+v1.5.0 c691765 2016-04-07 flambard-took | Remove pre-build event command from VS2015 projects. Close #1068.
+
+v1.5.0 90e19e8 2016-04-07 billsey | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 d07df64 2016-04-07 billsey | Small fix to initialize variable before it's first used. #1055
+
+v1.5.0 8672e15 2016-04-08 driedfruit | Revert "Small fix to initialize variable before it's first used. #1055"
+
+v1.5.0 08ad1a6 2016-04-09 flambard-took | Address #1063, add dumb command line parser to mangclient.
+
+v1.5.0 e783fb2 2016-04-09 flambard-took | Close #1066, make mangband not panic on SIGTERM.
+
+v1.5.0 600edde 2016-04-09 flambard-took | Address #952, add type declaration to 4 variables in recv_char_info.
+
+v1.5.0 33ffd9b 2016-04-09 flambard-took | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 d3ab42b 2016-04-09 flambard-took | Update OSX bundling script, see #1065.
+
+v1.5.0 f32d516 2016-04-09 flambard-took | Address #1063, restore the -psn_APPID hack.
+
+v1.5.0 bdded2b 2016-04-09 flambard-took | Address #1059, include <SDL.h> in client.c. This should be tested.
+
+v1.5.0 c9e6815 2016-04-08 Richard Smith | Fix some warnings
+
+v1.5.0 4d759eb 2016-04-08 Richard Smith | Merge remote-tracking branch 'upstream/master'
+
+v1.5.0 8c63379 2016-04-08 Richard Smith | Fix typo
+
+v1.5.0 2ec41d2 2016-04-09 Richard Smith | Merge remote-tracking branch 'upstream/master'
+
+v1.5.0 e63beb9 2016-04-09 Richard Smith | Remove duplication from generate code
+
+v1.5.0 ebc0696 2016-04-09 Richard Smith | Fix scoping bug with character login variables
+
+v1.5.0 288ba45 2016-04-09 flambard-took | Revert "Address #952, add type declaration to 4 variables in recv_char_info."
+
+v1.5.0 c808884 2016-04-09 flambard-took | Address #952, add a comment so no such stupidity happens again.
+
+v1.5.0 a23f300 2016-04-09 flambard-took | Address #1075, convert most line-endings to LF, strip out CRs.
+
+v1.5.0 7c69fef 2016-04-09 Richard Smith | Change line endings
+
+v1.5.0 247ba3b 2016-04-09 Richard Smith | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 0540813 2016-04-09 flambard-took | Merge pull request #1076 from evileye-uk/master
+
+v1.5.0 6882d92 2016-04-09 driedfruit | Revert "Remove duplication from generate code"
+
+v1.5.0 cea3bb3 2016-04-09 driedfruit | Undo portion of commit "ebc0696b845d53300575291eab323497c2f87263".
+
+v1.5.0 d6497e7 2016-04-09 flambard | Stupid whitespace bickering, see #1077. Sorry.
+
+v1.5.0 e833cf2 2016-04-09 flambard | Some more stupid whitespace bickering, re #1077.
+
+v1.5.0 eae542e 2016-04-09 flambard | One more whitespace fix, re #1077.
+
+v1.5.0 4b4fdd0 2016-04-09 flambard-took | Merge pull request #1077 from mangband/master-evileye
+
+v1.5.3 c6a811c 2016-04-09 flambard | Restore "Remove duplication from generate code"
+
+v1.5.0 26209e1 2016-04-09 Richard Smith | Declare functions as static inline so that non-optimised builds can be made.
+
+v1.5.0 e4d1f90 2016-04-09 flambard-took | Close #1064. Pass argc and argv to X11 client correctly.
+
+v1.5.0 b7a279b 2016-04-09 Richard Smith | Remove misleading assignment; pointer is always assigned before use.
+
+v1.5.0 cb29e44 2016-04-09 flambard-took | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 18d0877 2016-04-09 flambard-took | Close #1063, properly this time, correct the "-psn" hack.
+
+v1.5.0 1083fbc 2016-04-09 Richard Smith | Fix pointer size which affects SDL terminal size clamping
+
+v1.5.0 8f6e9cf 2016-04-09 Richard Smith | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 4ad31ad 2016-04-09 Richard Smith | Extract some common light-related code from cave.c
+
+v1.5.0 bfafd55 2016-04-10 flambard-took | Fix criticial bug in "player_net_wipe", see #952.
+
+v1.5.0 38ce5e8 2016-04-10 flambard-took | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 2881b83 2016-04-10 flambard-took | Fix #1064 again, correctly this time.
+
+v1.5.0 5423504 2016-04-10 Emil Laine | Fix typos and grammar
+
+v1.5.0 ab9d8ca 2016-04-10 flambard-took | Merge pull request #1080 from emlai/master
+
+v1.5.0 aeac8ce 2016-04-09 Richard Smith | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 5333ed4 2016-04-10 flambard-took | Revert "Extract some common light-related code from cave.c"
+
+v1.5.0 a952d1f 2016-04-10 flambard-took | Drops the inline keyword from SDL_GetPixel / SDL_SetPixel. See #1079, #747.
+
+v1.5.0 fd61a28 2016-04-10 flambard-took | Close #1063 one more time.
+
+v1.5.0 3d91921 2016-04-10 flambard-took | Address #1072, deal with the rest of HAS_ defines.
+
+v1.5.0 1608eb3 2016-04-10 flambard-took | Address #1072, remove usleep from server, add proper extern on client.
+
+v1.5.0 db08a98 2016-04-10 flambard-took | Address #1063, windows client should've been updated too.
+
+v1.5.0 69590b7 2016-04-10 flambard-took | Replace instance of "strncasecmp" call with "my_strnicmp". See #1072.
+
+v1.5.0 c6f7cb6 2016-04-10 flambard-took | Address #1075, kill remnant CRs.
+
+v1.5.0 26165ef 2016-04-10 flambard-took | Address #1072, remove all calls to "strcasecmp" and "stricmp" from the code.
+
+v1.5.0 2524817 2016-04-10 flambard-took | Address #1072, replace all calls to "strncasecmp" with "my_strnicmp".
+
+v1.5.0 ba11738 2016-04-10 flambard-took | Address #1072, remove all cases of "strdup", replace with "string_make".
+
+v1.5.0 93803de 2016-04-10 Richard Smith | Fix potential fall-through bug on summon_specific_race & cleanup.
+
+v1.5.0 7fea29c 2016-04-10 Richard Smith | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.1.4 2c28e07 2016-04-10 Richard Smith | Fix buffer overflow in Handle_listening
+
+v1.1.4 fd1da51 2016-04-10 flambard-took | Merge pull request #1081 from evileye-uk/buffer_fix
+
+v1.1.4 85061bc 2016-04-10 Richard Smith | Fix buffer overflow in console
+
+v1.1.4 d919f68 2016-04-11 flambard-took | Merge pull request #1082 from evileye-uk/buffer_fix
+
+v1.5.0 80de4cc 2016-04-11 flambard-took | Merge pull request #1084 from evileye-uk/master
+
+v1.5.0 36589c7 2016-04-11 flambard-took | Close #1086, address #962, move HP/SP indicators to their correct rows.
+
+v1.5.0 dfd2954 2016-04-12 flambard-took | Address #1075, deal with many whitespace issues.
+
+v1.5.0 2f40e9f 2016-04-12 flambard-took | Close #1048, ensure Term_load/Term_save are used as a stack that it is.
+
+v1.5.0 06652b1 2016-04-12 flambard-took | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 f7f182a 2016-04-13 flambard-took | Address #1075, perform more useless whitespace fiddling.
+
+v1.5.0 a5e42e4 2016-04-13 flambard-took | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 0700936 2016-04-13 flambard-took | Close #1087, ensure server can send infodata during reconnect.
+
+v1.5.0 b12a890 2016-04-13 flambard-took | Close #1088, stop updating client-side indicators using the p_ptr->redraw pattern. Introduce special function to do that correctly instead.
+
+v1.5.0 6df26cd 2016-04-13 flambard-took | Address #964, remove unused extern declaration.
+
+v1.5.0 affdcab 2016-04-13 flambard-took | Address #964, verify stream decoding is not going to get out of bounds in RLE2 and RLE3.
+
+v1.5.0 25dc9dd 2016-04-13 flambard-took | Address #952, add client-side protection when receiving objflags.
+
+v1.5.0 1eebf79 2016-04-14 flambard-took | Close #1012, add TV_WAND check to aiming command.
+
+v1.5.0 bee05f9 2016-04-14 flambard-took | Address #962, sprawl character sheet indicators across multiple "screens".
+
+v1.5.0 a4df2b1 2016-04-14 flambard-took | Close #1089, fix wilderness minimap row boundary.
+
+v1.5.0 f819fe6 2016-04-14 flambard-took | Address #1085, normalize name/pass buffer and string lengths.
+
+v1.5.0 6366900 2016-04-14 flambard-took | Merge branch 'master' of mangband/mangband
+
+v1.5.0 c6d45b9 2016-04-14 flambard-took | Add bone files to .gitignore.
+
+v1.5.0 40b9c1c 2016-04-14 flambard-took | Return semicolon deleted during whitespace migration. See #1075.
+
+v1.5.0 598d703 2016-04-14 flambard-took | Address #952, remove some of the "transitional hackage" defines.
+
+v1.5.0 971282e 2016-04-14 flambard-took | Address #952, remove externs for deleted functions.
+
+v1.5.0 0d74061 2016-04-14 flambard-took | Address #1072, make sure we're not over-riding HAVE_USLEEP from config.h
+
+v1.5.3 b44582c 2016-04-09 Richard Smith | Extract some common light-related code from cave.c
+
+v1.5.0 a7034e8 2016-04-15 flambard-took | Address #952, fix flambard stupidity from 598d703617.
+
+v1.5.0 c2b575c 2016-04-15 flambard-took | Address #900, update interactive input so it works again.
+
+v1.5.0 892217b 2016-04-15 flambard-took | Address #900, adjust some boundary values in the DM menu hacks.
+
+v1.5.0 3211eb7 2016-04-16 flambard-took | Address #952, fix console line-endings and string formats.
+
+v1.5.0 f1a96c8 2016-04-16 flambard-took | Close #1090, create the variable on outer scope.
+
+v1.5.0 7d3a63c 2016-04-16 flambard-took | Address #1091, remove "player_name" function from the server.
+
+v1.5.0 3c87550 2016-04-16 flambard-took | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 4b19e1d 2016-04-16 flambard-took | Address #1092, give SDL client (and the rest of them) a chance to breath.
+
+v1.5.0 9c9ece7 2016-04-17 flambard-took | Close #1088 again, for now. This is actualy a pretty messed up deal.
+
+v1.1.4 bbe6d67 2016-04-17 Richard Smith | Fix potential race condition in connection init.
+
+v1.1.4 3fb5cd1 2016-04-17 flambard-took | Merge pull request #1094 from evileye-uk/broken_client_fix
+
+v1.5.0 14d5fb5 2016-04-18 flambard-took | Address #962, fix bugs in speed, poison, speed and study indicators.
+
+v1.5.0 b41b2ba 2016-04-18 flambard-took | Address #962, remove debug adjustments from HP and Speed indicators.
+
+v1.5.0 23d26ec 2016-04-19 flambard-took | Address #1095, remove `global.h` file.
+
+v1.5.0 884da79 2016-04-19 flambard-took | Restore contents of global.h into md5.h. See #1095.
+
+v1.5.0 03592b0 2016-04-20 flambard-took | Close #1096, call acquirment correctly.
+
+v1.5.0 69de3a6 2016-04-20 flambard-took | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 18e13c9 2016-04-20 flambard-took | Address #963, bloat read_scroll with an extra byte, make it ask for target items.
+
+v1.5.0 4653b49 2016-04-20 flambard-took | Address #963, fix stupid typo from previous commit.
+
+v1.5.0 169484c 2016-04-20 flambard-took | Close #1022, add (FAKE!) nutrition values to vegetables.
+
+v1.5.0 29b01a3 2016-04-20 flambard-took | Address #952, defer the choice of floor item indexing to the future.
+
+v1.5.0 f1884fb 2016-04-20 flambard-took | Address #963, #807, add experimental way to grab objects from indexes.
+
+v1.5.0 a9b5d05 2016-04-20 billsey | Closes #1100, handles wilderness food with a message and a tiny bit of healing (since we assume that organic food from the farm is better than pre-packaged food 
+v1.5.0 3a535df 2016-04-20 flambard-took | Close #1099, reverts the pval reset during birth. Food is tasty again!
+
+v1.5.0 37f569f 2016-04-20 flambard-took | Close #1098, makes floor_item index "-11", to avoid conflicts with dir.
+
+v1.5.0 71dfba7 2016-04-20 billsey | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 86f93cc 2016-04-20 flambard-took | Close #1101, ensure there's no "double spending" when eating food.
+
+v1.5.0 f0b922e 2016-04-20 flambard-took | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 b53feca 2016-04-21 flambard-took | Address #1102, rename client-side variables file into "c-variable.c"
+
+v1.5.0 f9cd25f 2016-04-21 billsey | Fixed issues with passing player token to summon functions instead of player dungeon depth. Fixes #1105.
+
+v1.5.0 25c60b7 2016-04-21 billsey | Closes #1106, no more nasty chars. :)
+
+v1.1.4 c19f87f 2016-04-21 Richard Smith | Fix pointer to long type size issue with Receive_drop_gold. (Fix #417)
+
+v1.1.4 b0afa04 2016-04-21 evileye-uk | Merge pull request #1107 from evileye-uk/drop_gold_fix
+
+v1.1.4 c6a383f 2016-04-22 Richard Smith | Move player energy check and item check to functions
+
+v1.5.0 3e3fc1e 2016-04-22 flambard-took | Address #1108, reorder spell defines in p_class.txt
+
+v1.5.0 ba75948 2016-04-22 flambard-took | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.1.4 c2f6fcf 2016-04-22 flambard-took | Merge pull request #1110 from evileye-uk/item_check
+
+v1.5.0 bee3ded 2016-04-23 flambard-took | Close #1112, fix staffs.
+
+v1.5.0 58c425d 2016-04-23 flambard-took | Close #1111, artifact creation now works properly.
+
+v1.5.0 c17cf29 2016-04-23 flambard-took | Address #962, fix logic gap in indicator display, show maxed stats.
+
+v1.5.0 95cffb8 2016-04-23 flambard-took | Address #1113, #952, add "air-tiles" framework.
+
+v1.5.0 c4078e4 2016-04-23 flambard-took | Address #1113, implement air tiles for firing, throwing and magic.
+
+v1.5.0 8de6d7c 2016-04-23 flambard-took | Address #952, #962, improve lag meter redrawing logic.
+
+v1.1.4 1789855 2016-04-23 Richard Smith | Remove some dead flags and fix unused monster turn energy. (Fix #1016)
+
+v1.1.4 e99a409 2016-04-23 Richard Smith | Fix format string issue in do_cmd_check_other (Fix #996)
+
+v1.1.4 5d81c9d 2016-04-23 evileye-uk | Merge pull request #1115 from evileye-uk/file_check_fix
+
+v1.1.4 7f42040 2016-04-23 Richard Smith | Prevent integer overflow in infravision (Fix #1002). Also prevent ultimate infravision value from being negative, which has no meaning.
+
+v1.1.4 5b64968 2016-04-24 flambard-took | Merge pull request #1116 from evileye-uk/infravision_fix
+
+v1.1.4 d57da5e 2016-04-24 Richard Smith | Don't let the user pick up when paralysed. [Fix #945]
+
+v1.1.4 cd2c612 2016-04-24 flambard-took | Merge pull request #1117 from evileye-uk/paralysis_pickup_fix
+
+v1.5.0 9566535 2016-04-24 Richard Smith | Unset pointers after they have been freed; function could be called twice.
+
+v1.5.0 20fbaa6 2016-04-25 flambard-took | Merge pull request #1118 from evileye-uk/cleanup_net_fix
+
+v1.5.0 d35b49e 2016-04-24 billsey | Small changes to clear a couple of warnings. One unused local and one signed/unsigned mismatch.
+
+v1.5.0 97dcb7b 2016-04-24 billsey | More tiny changes, signed/unsigned and a couple of unused variables.
+
+v1.5.0 2124674 2016-04-24 billsey | Yet a few more tiny mods, unused variables and mismatched types.
+
+v1.5.0 19e1bc2 2016-04-24 billsey | More tiny changes. Unused variable and mismatched types.
+
+v1.5.0 21d4fbc 2016-04-25 flambard-took | Revert "Yet a few more tiny mods, unused variables and mismatched types."
+
+v1.5.0 e4526b2 2016-04-25 flambard-took | Address #1055, fix a possible overflow during chat channel cycling.
+
+v1.5.0 87b0229 2016-04-25 flambard-took | Address #945, port d57da5e918b0dd9c66ca8b83f031b06a6a8b5f48 to master.
+
+v1.5.0 8925876 2016-04-25 flambard-took | Address #1002, port 7f42040e6558e87ace98c6cca7a24ce6aa631481 to master.
+
+v1.5.0 1329e93 2016-04-25 flambard-took | Address #996, replace many instances of fwrite calls that had no format specifier.
+
+v1.5.0 a6d7b23 2016-04-25 billsey | Same changes as before, but an actual removal of update_air(), since the function resides in c-init.c
+
+v1.5.0 dd5813e 2016-04-26 flambard-took | This reverts commit a6d7b2394d676437e95c1df10bcc2c608d2b66ba.
+
+v1.5.0 3203ec7 2016-04-26 flambard-took | Address #1113, add forgotten extern.
+
+v1.5.0 9ea35bd 2016-04-25 billsey | Some unused variables and one signed/unsigned mismatch.
+
+v1.5.0 e727775 2016-04-25 billsey | Addresses #1055, removed the /SAFESEH option for debug builds.
+
+v1.5.0 7418f9d 2016-04-25 billsey | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 d747fcc 2016-04-25 billsey | Addresses #1055, Coverity #99014, uninitialized variable potentially used.
+
+v1.5.0 dd50498 2016-04-25 billsey | Addresses #1055, Coverity strikes again! Meaningless changes to handle cases that don't exist (as long as we don't screw up elsewhere that is). Plus one unrefere
+v1.5.0 3ac5af7 2016-04-26 flambard-took | Address #1055, add meaningless paranoid check. CID 80669.
+
+v1.5.0 091291c 2016-04-26 flambard-took | Address #1055, handle the *EXTREMELY* unlikely case of zero options.
+
+v1.5.0 23aae9e 2016-04-26 flambard-took | Address #1055, ignore set_cut return value during GF_HEAL_PLAYER.
+
+v1.5.0 9e1d556 2016-04-26 flambard-took | Address #1055, fix non-existing buffer overflow.
+
+v1.5.0 60b7231 2016-04-26 flambard-took | Address #1055, fix some potential (but not real) buffer overflows.
+
+v1.5.0 420e8fd 2016-04-26 flambard-took | Address #1055, fix non-existing buffer overflow.
+
+v1.5.0 af54083 2016-04-26 flambard-took | Address #1055, fix another impossible to trigger buffer overflow.
+
+v1.5.0 be76776 2016-04-26 flambard-took | Address #1055. Fix potential buffer overflow in config name.
+
+v1.5.0 fbc200a 2016-04-26 flambard-took | Address #1055, fix another non-existant buffer overflow.
+
+v1.5.0 588e9e4 2016-04-26 flambard-took | Address #996, undo stupidity from 1329e938d9c3aa11f4b1a1474254f92e8b31f85d.
+
+v1.5.0 ab28ffd 2016-04-25 billsey | Addresses 1055: Issues with level_speed() comparisons not matching signed/unsigned, so changed the basic return value to unisgned. Also some unused variables.
+
+v1.5.0 4091420 2016-04-25 billsey | Addresses #1055: More Coverity fixes with an uninitialized variable and a potential read of an out of bounds index.
+
+v1.5.0 8498edc 2016-04-26 flambard-took | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 d972dac 2016-04-26 flambard-took | Address #1055, #952, remove the check for player state in recv_play.
+
+v1.5.0 f804590 2016-04-26 flambard-took | Address #1055, #952, ensure we return -1 and check correct bounds.
+
+v1.5.0 7d40371 2016-04-26 flambard-took | Close #1119, do not overflow the buffer when inscribing.
+
+v1.5.0 ce97deb 2016-04-26 billsey | Addresses #1055: Couple of type changes to remove signed/unsigned warnings, several unused variables.
+
+v1.5.0 2e0d0e0 2016-04-27 flambard-took | Revert "Addresses #1055: Couple of type changes to remove signed/unsigned warnings, several unused"
+
+v1.5.0 d0ae860 2016-04-27 flambard-took | Address #1055, mark "milli" truncation as intended in update_air().
+
+v1.5.0 83969a5 2016-04-27 flambard-took | Address #1113, improve air tiles refresh logic a bit.
+
+v1.5.0 f35ddad 2016-04-27 flambard-took | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 58053e2 2016-04-27 flambard-took | Address #1123, handle all (most?) cases of askfor_aux overflows.
+
+v1.5.0 0e1c9d8 2016-04-27 flambard-took | Address #1075, make puny and meaningless whitespace adjustment.
+
+v1.5.0 0af2c3c 2016-04-27 billsey | Addresses #1055: Yet another attempt at removing those nasty unused variables.
+
+v1.5.0 5c8ed9d 2016-04-27 billsey | Addresses #1055: Yet another attempt at commiting the unused variables and type mismatches.
+
+v1.5.0 6b6dd1d 2016-04-27 billsey | Addresses #1055: Signed unsigned mismatch, OK to cast as int because if strlen() ever returned a high enough value to wrap we have other problems.
+
+v1.5.0 6adeba6 2016-04-27 billsey | Addresses 1055: change index_to_label return value from s16b to char fixes 'potential loss of data' warning.
+
+v1.5.0 ca8a487 2016-04-27 billsey | Addresses #1055: The easy stuff, removing unused variables.
+
+v1.5.0 d030a86 2016-04-28 flambard-took | Address #1125, send self-knowledge, enlight and *ID* info to the client.
+
+v1.5.0 2d178ae 2016-04-28 flambard-took | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 52c7039 2016-04-28 flambard-took | Address #915, add codepath to actually call "do_cmd_refill_potion".
+
+v1.5.0 22caf43 2016-04-29 flambard-took | Address #832, make sure birth options are ignored for formed characters.
+
+v1.5.0 4967885 2016-04-29 flambard-took | Address #832, #1121, load/save birth options.
+
+v1.5.0 f5ccc78 2016-04-29 flambard-took | Address #1121, replace p_ptr->no_ghost checks. Variable dropped.
+
+v1.5.0 913ac5b 2016-04-29 flambard-took | Address #1121, show message about bravery in self-knowledge.
+
+v1.5.0 b114890 2016-04-29 flambard-took | Fix build broken in f5ccc7848a278acc2b1a73476bb6763492fac377.
+
+v1.5.0 1f40db0 2016-04-30 flambard-took | Address #952, move client handshake reaction closer to Setup_loop.
+
+v1.5.0 a3c894b 2016-04-30 flambard-took | Address #832, ensure we're handling option indexes correctly.
+
+v1.5.0 db602f4 2016-04-30 flambard-took | Address #952, add "beginning a new game" flag to player struct.
+
+v1.5.0 6885326 2016-04-30 flambard-took | Address #832, handle client-side birth options better.
+
+v1.5.0 e5ce8b2 2016-04-30 flambard-took | Address #963, allow early cancelation when entering numeric value.
+
+v1.5.0 bca9ed5 2016-04-30 flambard-took | Address #1075, make some useles whitspace changes.
+
+v1.5.0 3781360 2016-04-30 flambard-took | Address #962, fix indicator boundry check client-side.
+
+v1.5.0 6936f85 2016-04-30 flambard-took | Address #832, make floor item respect use_color option.
+
+v1.5.0 532ff1b 2016-04-30 flambard-took | Address #962, make indicator printing a bit safer.
+
+v1.5.0 03436f8 2016-04-30 flambard-took | Address #1017, cleanup name checking a bit. Forbid "server" name.
+
+v1.5.0 b199ecd 2016-05-01 flambard-took | Address #541, implement fix outlined by powerwyrm.
+
+v1.5.0 88b8973 2016-05-01 flambard-took | Address #1013, remove artifact dropping restriction from ironman.
+
+v1.5.0 4488c09 2016-05-01 flambard-took | Address #541, fix variable shadowing in "Artifact Seen" display.
+
+v1.5.0 64836f5 2016-05-01 flambard-took | Address #952, forbid empty nicknames during name verification.
+
+v1.5.0 60e341d 2016-05-01 flambard-took | Address #1010, make sure both inven and equip counters are reset when stripping player of his possesions.
+
+v1.5.0 9ab7efa 2016-05-01 flambard-took | Address #541, improve logic of artifact knowledge a little bit.
+
+v1.1.4 268e8d3 2016-05-01 flambard-took | Address #721, port 5ae599c15be843528cd885cf7f8409f51d30329e to stable.
+
+v1.5.0 875b5f7 2016-05-01 flambard-took | Address #1013, fix stupidty from 88b8973bce2ea6e3283da83d32aeb1464ed1bce7.
+
+v1.5.0 3b56d85 2016-05-01 flambard-took | Address #993, convert object_value() to use player pointer.
+
+v1.5.0 ce5748f 2016-05-01 flambard-took | Address #993, convert log_history_event function.
+
+v1.5.0 d17eb4c 2016-05-02 flambard-took | Close #1120, "fix" SDL keymappings.
+
+v1.5.0 60a61e5 2016-05-03 flambard-took | Address #541, fix highlighting and add owner info for DMs.
+
+v1.5.0 4fde0b7 2016-05-03 flambard-took | Address #952, make disconnection from town faster.
+
+v1.1.4 e268d01 2016-05-03 flambard-took | Address #1013, same fix for 1.1.4. See #1053.
+
+v1.5.0 921f10b 2016-05-03 flambard-took | Close #1006, add Walls of the World messages.
+
+v1.5.0 83bf06d 2016-05-03 flambard-took | Address #952, fix delayed shutdown console command. Also CID 80641.
+
+v1.5.0 a4f0169 2016-05-05 flambard-took | Address #747, #944, #606, update pict_hook in SDL client.
+
+v1.5.0 7bae525 2016-05-05 flambard-took | Address #606, implement PW's suggestion 2 and 3.
+
+v1.5.0 9e9d97b 2016-05-05 flambard-took | Address #747, #944, #606, correct the Term_pict SDL hook.
+
+v1.5.0 cc07e9c 2016-05-05 flambard-took | Address #747, remove "inline" qualifier from Term_tile_sdl().
+
+v1.5.0 a6460ba 2016-05-05 flambard-took | Address #747, #606, add "graf-sdl.prf" pref file. Copied from "graf-win.prf"
+
+v1.5.0 08530ad 2016-05-05 flambard-took | Address #606, update pict_hook in X11 client.
+
+v1.5.0 b1d53e0 2016-05-05 flambard-took | Address #606, add "graf-x11.prf" file. Note: not in "make dist".
+
+v1.5.0 817a15c 2016-05-05 flambard-took | Address #606, #952, fix horrible bug in RLE_LARGE decoding.
+
+v1.5.0 ff8183f 2016-05-05 flambard-took | Address #606, add new graf-sdl and -x11 pref files to Makefile.am
+
+v1.5.0 3b8818b 2016-05-05 billsey | Initial graphics support respin from a mix of previous versions and the Angband 3.1.2 code.
+
+v1.5.0 330c819 2016-05-05 billsey | Initial graphics support respin from a mix of previous versions and the Angband 3.1.2 code.
+
+v1.5.0 867889e 2016-05-06 flambard-took | Revert "Initial graphics support respin from a mix of previous versions and the"
+
+v1.5.0 ba8de1b 2016-05-06 flambard-took | Address #952, improve console command handling. Close #937.
+
+v1.5.0 d7a7385 2016-05-05 Bill Seymour | Addresses #606: Enables graphics in Windows client, seems to function fully, but needs testing. TODO arbitrary font sizes so tiles can be utilized completel
+v1.5.0 17fbb7d 2016-05-05 Bill Seymour | Merge branch 'master-wingraph' of https://github.com/mangband/mangband into master-wingraph
+
+v1.5.0 c359cb2 2016-05-05 Bill Seymour | Addresses #606: change to correctly resize tiles.
+
+v1.5.0 cbc0d72 2016-05-22 flambard-took | Close #1126, restore default window sizes to mangclient.INI
+
+v1.5.0 439c4fb 2016-05-27 flambard-took | Address #606, #1127, no need to explicitly call save_prefs.
+
+v1.5.0 475f596 2016-05-27 flambard-took | Address #606, #1127, move save_prefs functions back to their places.
+
+v1.5.0 14eb50d 2016-05-27 flambard-took | Address #606, #1127, remove misleading ability to change BMP files on the fly.
+
+v1.5.0 1d3088b 2016-05-27 flambard-took | Address #606, #1127, rename main window back to "Angband".
+
+v1.5.0 fee9bd3 2016-05-27 flambard-took | Address #606, #1127, some whitespace fiddling.
+
+v1.5.0 478aa8f 2016-05-27 flambard-took | Address #606, #1127, ensure draw/nodraw and strech/nostrech logic works as expected.
+
+v1.5.0 e6ed1ad 2016-05-27 flambard-took | Address #606, #1127, use correct terrain layer coordinates.
+
+v1.5.0 d3a3588 2016-05-27 flambard-took | Address #606, #1127, remove newlines before set_graphics_next.
+
+v1.5.0 df7262e 2016-05-29 flambard-took | Close #1126, add client-side detection of old servers. See #952.
+
+v1.5.0 e7dcabb 2016-05-29 flambard-took | Address #747, remove inline qualifiers from "ifloor" and "iceil".
+
+v1.5.0 0e4032b 2016-05-29 flambard-took | Address #1075, restore some minor whitespace fiddling from 330c81935e9d5f7d72ea938fc81b55c8e563244c
+
+v1.5.0 3b62004 2016-05-29 flambard-took | Address #1075, fiddle with whitespace in maim-sdl.c
+
+v1.1.4 04da059 2016-05-29 flambard-took | Address #1053, remove inline qualifiers from maim-sdl.
+
+v1.1.4 03045dd 2016-05-29 flambard-took | Merge branch 'version-1_1_4' of mang-git.org:mangband/mangband into version-1_1_4
+
+v1.5.0 78d6fde 2016-06-01 driedfruit | Address #606, #1127, remove "tw2" hack.
+
+v1.5.0 c24279b 2016-06-01 flambard-took | Merge pull request #1127 from mangband/master-wingraph
+
+v1.5.0 7613914 2016-06-01 flambard-took | Address #1126, fix df7262e16655d77bc6136cfe7f4b9e8496e0665c.
+
+v1.5.0 0e7e052 2016-06-01 flambard-took | Close #1129, remove sys/time.b include.
+
+v1.1.4 e6b2e30 2016-06-01 flambard-took | Address #1053, port 0e7e052ef65d3d1e4b7ef26d18aedffb532117bf from master.
+
+v1.1.4 d28d45d 2016-06-01 flambard-took | Merge branch 'version-1_1_4' of https://github.com/mangband/mangband into version-1_1_4
+
+v1.5.0 9d80a80 2016-06-01 flambard-took | Address #1130, redefine META_ADDRESS.
+
+v1.5.0 7f38999 2016-06-01 flambard-took | Address #1020, remove freebsd_port scripts from the repository.
+
+v1.5.0 a5e2369 2016-06-02 flambard-took | Close #949, implement suggested fix for scene of death dump.
+
+v1.5.0 b1ec474 2016-06-02 flambard-took | Close #1131, make distinctions between window_flag sets.
+
+v1.5.0 3008351 2016-06-02 flambard-took | Merge branch 'master' of mang-git.org:mangband/mangband
+
+v1.5.0 620eb75 2016-06-03 flambard-took | Add script to fetch AUTHORS and ChangeLog files.
+
+v1.5.0 9e0a630 2016-06-03 flambard-took | Merge branch 'master' of https://github.com/mangband/mangband
+
+v1.5.0 24ba588 2016-06-03 flambard-took | Address #1133, make PREF configurable.
+
+v1.5.0 99e8bfb 2016-06-04 flambard-took | Address #1133, add support for LOCALSTATEDIR.
+
+v1.5.0 4f4ded7 2016-06-04 flambard-took | Close #1134, quit server on bind failure.
+
+v1.5.0 a2b17b7 2016-06-04 flambard-took | Address #1091, remove c_get_spike function.
+
+v1.5.0 042add9 2016-06-04 flambard-took | Address #881, remove TV_GOLD define from the client.
+
+v1.5.0 11609b0 2016-06-04 flambard-took | Address #1075, meaningless change to object1.c
+
+v1.5.0 4d6bbc2 2016-06-04 flambard-took | Replace package.pl with simplier .sh script.
+
+v1.5.0 0092ac2 2016-06-04 flambard-took | Address #1133, add "-v" version (and paths) output to server.
+
+v1.5.0 f13f44b 2016-06-04 flambard-took | Address #1133, allow all server directory paths to be overloaded from CLI.
+
+v1.5.0 8cccc59 2016-06-04 flambard-took | Address #1133, allow config file path to be specified on command-line.
+
+v1.5.0 fcc5d97 2016-06-04 flambard-took | Merge branch 'master' of mangband/mangband
+
+v1.5.0 d05add2 2016-06-04 flambard-took | Address #1133, attempt to fix windows build.
+
+v1.5.0 5c1ea77 2018-05-04 driedfruit | Fix #1140. Use /usr/share/games in deb-packaging script.
+
+v1.1.4 522da6d 2018-11-22 Graham King | Merge pull request #1114 from evileye-uk/monster_spell_fix
+
+v1.1.4 25bba8c 2018-11-22 Graham King | Version bump to 1.1.4, see #1053
+
+v1.1.4 cfb2d97 2018-11-22 Graham King | Make server save 10 minutes interval by default, see #1053
+
+v1.5.0 bddbe05 2018-11-22 Graham King | Save server every 10 minutes by default.
+
+v1.1.4 41d570c 2018-11-25 evileye | Make default password field private
+
+v1.1.4 f3b0571 2018-11-25 evileye | Reduce duplication in fix.
+
+v1.1.4 b480f6b 2018-11-28 Graham King | Merge pull request #1146 from evileye-uk/private_passwd-1_1_4
+
+v1.1.4 b1aaf9a 2018-11-28 Graham King | Merge branch 'version-1_1_3' into version-1_1_4
+
+v1.1.4 85d98e5 2018-11-28 Graham King | Merge branch 'version-1_1_4' into develop
+
+v1.1.4 14a9a1d 2018-11-29 Graham King | Adds healing potions to the temple, closes #1150
+
+v1.1.4 45a0676 2018-11-29 Graham King | Fix 32bit builds of the Windows client.
+
+v1.1.4 5c6cd6a 2018-11-29 Graham King | Merge pull request #1151 from grking/develop
+
+v1.1.4 1ca89ac 2018-11-29 Graham King | New Windows client installer, closes #1152
+
+v1.1.4 8ba2a13 2018-11-29 Graham King | Version bump about dialog, see #1153
+
+v1.1.4 cb7e052 2018-11-29 Graham King | Merge branch 'develop' into version-1_1_4, see #1153
+
+v1.4.0 8a15a45 2008-03-26 flambard | Closes #472, allows wands, staffs and rods to stack and share charges. Watch out for nasty exploits!!
+
+v1.4.0 c24a074 2008-08-25 flambard | Addresses #472, stores now price their wands correctly.
+
+v1.4.0 2eac0f2 2008-10-26 flambard | Addresses #472, implements suggested patch and other changes. Wands, staffs and rods could still be broken - please report any misbehavior.
+
+v1.4.0 da39b74 2018-11-29 Graham King | Allow zapping rods in a stack if any are not charging.
+
+v1.4.0 bea6d97 2018-11-29 Graham King | Stores display average number of charges if stacked.
+
+v1.4.0 f56f578 2018-11-30 Graham King | Adds player level, class and race to death message, closes #1159
+
+v1.4.0 e5a633f 2018-11-30 Graham King | Revert "Adds player level, class and race to death message, closes #1159"
+
+v1.4.0 4d6b2b3 2018-11-30 Graham King | Merge pull request #1161 from grking/develop
+
+v1.4.0 19dd75b 2018-11-30 Graham King | "Adds player level, class and race to death message, closes #1159""
+
+v1.4.0 44191e7 2018-11-30 Graham King | Merge pull request #1162 from grking/develop
+
+v1.4.0 438e1eb 2018-11-30 Graham King | Reduce the time hallucination and blindness lasts, closes #737
+
+v1.4.0 0179263 2018-11-30 Graham King | Merge pull request #1163 from grking/develop
+
+v1.4.0 9fdff42 2018-12-01 Graham King | Version bump v1.4.0, closes #1165
+
+v1.4.0 cd04351 2008-07-14 jug | Track which artifacts each character has sold to the shop.
+
+v1.4.0 29bdb92 2009-06-04 flambard | Addresses #541, makes artifact tracking a bit more complex.
+
+v1.4.0 323fa55 2018-12-01 Graham King | Don't mark art as abandoned on level delete, see #541
+
+v1.4.0 c62456b 2009-06-06 flambard | Addresses #541, adds config option for artifact preservation.
+
+v1.4.0 2ff3e54 2018-12-01 Graham King | Fix bug with checking artifact status, see #541
+
+v1.4.0 d9be0e0 2018-12-01 Graham King | Fix artifact preservation logic, see #541
+
+v1.4.0 1666096 2018-12-01 Graham King | Let's commit all the code for artifact fix, see #541
+
+v1.4.0 c0c22e4 2018-12-01 Graham King | All characters get a Word of Recall scroll on birth, closes #1001
+
+v1.4.0 1e9270c 2018-12-01 Graham King | Merge pull request #1167 from grking/develop
+
+v1.4.0 d5cb0cd 2018-12-01 Graham King | Don't drop artifacts on suicide, closes #1010
+
+v1.4.0 86d456d 2018-12-01 Graham King | Merge pull request #1168 from grking/develop
+
+v1.4.0 e429ad5 2018-12-01 Graham King | Don't try to auto retaliate when afraid, closes #967
+
+v1.4.0 fe81586 2018-12-01 Graham King | Merge pull request #1169 from grking/develop
+
+v1.5.0 2803da2 2018-12-01 Graham King | Fix price of stacked wands/staves when buying, closes #1171
+
+v1.5.0 14635f2 2018-12-02 Graham King | Brave characters drop nothing and correctly free arts, closes #1186
+

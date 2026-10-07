@@ -1,0 +1,49 @@
+state,field,source,refresh,derivation,file_line,risk
+position,World.pos,"tool 'pos' event (client cursor pkt, absolute y,x); also status y,x",event-driven; status poll overwrites every 0.3s,direct; pos_t=wall clock; walked set,"world.py:28,111-119,215-216",status can set pos before the queued pos event is drained -> standing_on not recomputed (rare)
+depth (levels),World.depth,tool 'level' event = 'depth' indicator (signed byte dun_depth) ; seeded from status ind.depth only if None,event on VALUE change only (c-tool.c:836-857),none; feet = depth*50 (FT_PER_LEVEL),"world.py:29,120-122,218-219; world.py:15,263-264",never reconciled with ind['depth']; wilderness negative; far wilderness wraps to positive (signed byte)
+depth (feet),World.depth_ft,derived from depth,property,depth*50,world.py:263-264,wilderness shows negative/bogus feet; report prints N ft for any non-zero depth (pilot.py:2447)
+surface vs dungeon,World.in_dungeon,heuristic from depth sign + how we arrived (stairs cmd/recall msg),set per level event; seeded depth>0 from status,_level_kind(),"world.py:57,136,186-201,220-221","inconsistent with plain `if w.depth` tests (pilot.py:704,743,1322,2002,2046); wrong for far wilderness"
+level arrival time,World.level_t,wall clock at level event,per level,time.time(),"world.py:30,123","time at event, not when new map is in; map may be old level for first reads"
+arrived_by,World.arrived_by,last_stairs_cmd within 5s,per level,'<'/'>'/'other' ('recall' in comment never assigned),"world.py:31,128-135",a recall/trapdoor within 5s of a stairs cmd is misread as connected stairs
+map rows/attrs,"World.rows,attrs","tool 'map' query (client stream cave, 66x198 absolute, attr=chr(48+a))",every 0.5s or when pos != map_pos,none,"world.py:32-34,205-208,227-231; c-tool.c:545-602","stream is line-updated, not wiped, on level change; first read after level event may be old level"
+terrain memory,World.memory,accumulated from map rows (non-monster cells); mover edits it,each map read,"add/overwrite only, never deleted until level change","world.py:35,236-241; mover.py:223,233,320",remembers stale squares; unknown-glyph monsters stored as 'objects'
+monsters in view,World.monsters,"decode of map (char,attr) via Glyphs.by_glyph (local monster.txt table uploaded with --visuals)",every map read (<=0.5s),glyphs.py:244-257,"world.py:36,232-234; glyphs.py:229-257",map snapshot older than pos; no sleep/health/visibility; mimics/hallucination lie; detected-not-seen counted
+monster list,World.monlist,tool 'monlist' event (server list lines),when server sends update,"parse (name,count,our char); players skipped","world.py:37,180-181; glyphs.py:259-268",only used by watch_perception (pilot.py:1508); not cleared at level change; check_monlist never called
+item list,World.itemlist,tool 'itemlist' event,when server sends,non-empty lines,"world.py:38,182-183",cleared at level change only
+indicators,World.ind,tool 'status' query -> client coffers (all server indicators by mark),every 0.3s (forced by status_t=0 in shop/rest),raw dict name -> list of ints,"world.py:39,209-219; c-tool.c:484-517",values multi-field: read the right index
+HP / max HP,"World.hp, hp_frac","ind['hp']=[chp,mhp]",0.3s,hp_frac = hp/mhp,world.py:245-252,"none big; default [0,1] before first status"
+HP history,World.hp_hist,one per status poll,0.3s,damage_rate(window) = drops only,"world.py:55,213-214,254-260",rate depends on poll cadence
+SP,ind['sp'],status,0.3s,used only by RestGoal,pilot.py:849,warriors 0/0
+char level (current),World.clvl,"ind['level']=[max(max_plv,lev), lev] -> [1]",0.3s,lv[1],world.py:274-281; xtra1.c:166,fixed in 72ec098; report still shows both
+exp,(none),"ind['exp']=[max_exp,exp,adv]",not read,-,xtra1.c:181,Pilot/Navigator never see exp
+stats,ind['stat0..5'],"[stat_use,stat_top,max-marker] (xtra1.c:122)",0.3s,[0]=current used in report; [:2] compared in watch_character,"pilot.py:2079-2111,2442-2444",'18/xx' encoding; drain detection only fires when top unchanged
+AC,ind['armor'][0],"[dis_ac+dis_to_a, base, to_a]",0.3s,[0],"pilot.py:1125,1595; xtra1.c:200",-
+speed,ind['speed'],pspeed-110 (+10 if searching),0.3s,raw,pilot.py:2448; xtra1.c:413,report only; not used in decisions (monster speed_x vs ours ignores player speed)
+blows,ind['skills2'][0],num_blow,0.3s,raw,"pilot.py:2091,2448",-
+gold,ind['gold'][0],status,0.3s; forced after shop trade,raw,"pilot.py:828,779",-
+hunger,World.hunger,ind['hunger']=0..5 bucket of food,0.3s,raw,world.py:266-268; xtra1.c:253-281,"bucket only, no numeric food"
+conditions,World.flag(name),ind blind/confused/afraid/poisoned/cut/stun,0.3s,bool(ind[name][0]),world.py:283-284,paralyzed (ind state[0]) not read; no hallucination/slow/hero/protection indicator exists
+resting,World.resting,ind['state'][2],0.3s (forced after rest cmd),bool,world.py:270-272,-
+ghost/dead,World.ghost; Pilot.dead,status 'ghost' (p_ptr->ghost); hp<=0,0.3s,-,"world.py:41,214; pilot.py:918,1171-1184",-
+light fuel,(parsed on use),equipment item name '(with N turns of light)',cached inven <=10s; server resends slot each 100 turns (<100: each turn),regex r'with (\d+) turns',pilot.py:2013-2057; dungeon.c:1493-1500,name truncated at 79 chars could cut it (INFERRED); torch vs lantern by name substring
+inventory,World.inven,tool 'inven' query (client inventory[] with names<=80 chars),dirty-on-message or every 10s; pack_now after agent actions,"list of {item,equip,name,tval,number,weight}","world.py:42-44,222-225; c-tool.c:519-543",cached; item index (not letter) is what commands carry
+pack letters,chr(97+item),index in inven query,as inven,letter = index (0..22); equipment index 24..35,"pilot.py:2230,2457",letters shift on removal (server compacts)
+equipment slots,it['equip'] (index>=24),same query,as inven,no slot names; kind inferred from tval via WEAR_TVALS; light by tval 39,"world.py:297-307; pilot.py:2113-2129,2005",rings/ammo/digger missing from WEAR_TVALS; takeoff letter maps to PACK index (pilot.py:2211-2212)
+counts,it['number'],query,as inven,also in name text,"pilot.py:2072,2289-2291",stack counts stale up to 10s unless dirty
+charges,(none),only inside name text '(13 charges)',-,never parsed,grep: no 'charges' in pilot,Pilot can't tell empty staffs/wands
+inscriptions,name text {..},same,as inven,tagged() regex; recall_level(),world.py:309-322; pilot.py:66-77,truncation; pseudo-ID feelings share the {} block
+standing on,World.standing_on,"derived: level event (opposite stair if stairs cmd <5s), memory.get(new pos) on step, messages ('You have..(x)', 'I see no up/down staircase')",per event,no direct query; map shows only '@',"world.py:46,115,129-135,148-166",None at login/after teleport/after phase; stale after a missed pos event
+last stairs cmd,World.last_stairs_cmd,set by take_stairs,-,"(key,t)","pilot.py:1030-1033; world.py:47,128-139",level event within 5s assumed to be the result
+recall pending,"World.recall_pending, recalled, Pilot.recall_t, Recall.read_t",messages 'air about you becomes charged' / 'tension leaves' / 'yanked',message-driven,level event CLEARS recall_pending,"world.py:59-61,138,167-175; pilot.py:1885-1890",stairs taken while a recall counts down clear the flag but the server's word_recall persists -> a second read cancels it
+messages,World.messages,tool 'message' events (type ignored),event,"deque(60) (wall time,text)","world.py:45,140-175",regex-matched; chat/other-player text not filtered by type
+hit/fight clocks,"hits_taken,last_hit_t,fight_t,unseen,heard,explained_t,monster_seen_t",message regexes / map,event,RE_ATTACK/RE_RANGED/RE_UNSEEN/RE_HURT_OTHER,"world.py:48-54,71-102,151-166",regex coverage
+store contents,World.store,tool 'store' event,on enter/refresh,raw event,"world.py:62-63,176-179; c-tool.c:290-318",store restock ~33s; slot index used to buy
+level feeling,(none),-,-,not kept,-,-
+time/turn,(none),-,-,wall clock only; time bubble disabled --hpwarn 0,pilot.py:2557-2563,game turns unknown
+other players,(none),monlist lines skipped,-,-,glyphs.py:261-268,-
+free action / resists / SI,"orders free_action,resist_blind,resist_conf",set by hand ('order k=v'),manual,never derived from equipment,"pilot.py:113-138,1127,1135,1608",can be wrong silently
+max_depth,orders max_depth (feet),manual,-,compared to depth_ft; recall uses md//50,"pilot.py:136,666",units mix feet/levels
+town stairs,Pilot.town_stairs,runs/pilot/town.json,persisted,find('>') once in town,"pilot.py:901-904,2131-2138",assumes town never changes
+goal/mover state,"Pilot.goal, Mover.goals/path/sent/done/running/free",internal,tick,-,pilot.py:876; mover.py:85-102,'sent' steps assumed to land; clear wipes queued reads
+pending use,Pilot.pending_use,set in cmd() for escapes/cures,verify_use per tick,matches 'You have ... core',"pilot.py:919,968-1028",only for USE_VERIFY items and in dungeon
+danger table,"Race.danger,speed_x,melee_*",danger_table.csv merged by idx+name,load,-,glyphs.py:135-150,monster.txt must match live server

@@ -1,0 +1,384 @@
+{"t": 1790383416.578, "kind": "attention", "depth": null, "pos": null, "hp": [0, 1], "what": "started", "detail": "in the game at None (depth)"}
+{"t": 1790383437.848, "kind": "attention", "depth": null, "pos": null, "hp": [0, 1], "what": "started", "detail": "in the game at None (depth)"}
+{"t": 1790383441.34, "kind": "goal", "depth": 0, "pos": [16, 45], "hp": [20, 20], "goal": "dive 150ft"}
+{"t": 1790383441.341, "kind": "act", "depth": 0, "pos": [16, 45], "hp": [20, 20], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790383618.186, "kind": "attention", "depth": null, "pos": null, "hp": [0, 1], "what": "started", "detail": "in the game at None (depth)"}
+{"t": 1790383621.725, "kind": "goal", "depth": 1, "pos": [49, 177], "hp": [20, 20], "goal": "dive 150ft"}
+{"t": 1790383621.725, "kind": "act", "depth": 1, "pos": [49, 177], "hp": [20, 20], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790383625.973, "kind": "act", "depth": 1, "pos": [48, 174], "hp": [20, 20], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790383629.004, "kind": "act", "depth": 2, "pos": [12, 76], "hp": [20, 20], "cmd": "custom <", "why": "stairs <"}
+{"t": 1790383632.034, "kind": "act", "depth": 1, "pos": [32, 95], "hp": [20, 20], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790383635.065, "kind": "act", "depth": 2, "pos": [23, 25], "hp": [20, 20], "cmd": "custom <", "why": "stairs <"}
+{"t": 1790383638.094, "kind": "act", "depth": 1, "pos": [14, 87], "hp": [20, 20], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790383641.125, "kind": "act", "depth": 2, "pos": [34, 179], "hp": [20, 20], "cmd": "custom <", "why": "stairs <"}
+{"t": 1790383644.157, "kind": "act", "depth": 1, "pos": [34, 165], "hp": [20, 20], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790383647.186, "kind": "act", "depth": 2, "pos": [59, 46], "hp": [36, 36], "cmd": "custom <", "why": "stairs <"}
+{"t": 1790383650.217, "kind": "act", "depth": 1, "pos": [28, 98], "hp": [36, 36], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790383653.248, "kind": "act", "depth": 2, "pos": [29, 154], "hp": [36, 36], "cmd": "custom <", "why": "stairs <"}
+{"t": 1790383656.28, "kind": "act", "depth": 1, "pos": [23, 69], "hp": [36, 36], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790383659.363, "kind": "act", "depth": 2, "pos": [5, 33], "hp": [36, 36], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790383660.476, "kind": "attention", "depth": 3, "pos": [46, 166], "hp": [36, 36], "what": "goal_done", "detail": "dive 150ft: reached 150 ft"}
+{"t": 1790384001.592, "kind": "attention", "depth": 3, "pos": [46, 166], "hp": [41, 41], "what": "idle_recall", "detail": "no word from the agent: recalling to town"}
+{"t": 1790384001.592, "kind": "goal", "depth": 3, "pos": [46, 166], "hp": [41, 41], "goal": "recall"}
+{"t": 1790384001.644, "kind": "act", "depth": 3, "pos": [46, 166], "hp": [41, 41], "cmd": "custom r item=1", "why": "read a Scroll of Word of Recall"}
+{"t": 1790384016.002, "kind": "attention", "depth": 0, "pos": [16, 45], "hp": [41, 41], "what": "goal_done", "detail": "recall: arrived at 0 ft"}
+{"t": 1790387664.476, "kind": "attention", "depth": null, "pos": null, "hp": [0, 1], "what": "started", "detail": "in the game at None (depth)"}
+{"t": 1790387669.991, "kind": "goal", "depth": 0, "pos": [16, 45], "hp": [41, 41], "goal": "goto 38,100"}
+{"t": 1790387670.041, "kind": "move", "depth": 0, "pos": [16, 45], "hp": [41, 41], "goals": 1, "nearest": [38, 100], "path": 56, "ok": true}
+{"t": 1790387695.117, "kind": "attention", "depth": 0, "pos": [38, 100], "hp": [41, 41], "what": "goal_done", "detail": "goto 38,100"}
+{"t": 1790387715.89, "kind": "attention", "depth": null, "pos": null, "hp": [0, 1], "what": "started", "detail": "in the game at None (depth)"}
+{"t": 1790387721.353, "kind": "goal", "depth": 0, "pos": [38, 100], "hp": [41, 41], "goal": "goto 16,45"}
+{"t": 1790387721.405, "kind": "move", "depth": 0, "pos": [38, 100], "hp": [41, 41], "goals": 1, "nearest": [16, 45], "path": 56, "ok": true}
+{"t": 1790387731.663, "kind": "attention", "depth": 0, "pos": [16, 45], "hp": [41, 41], "what": "goal_done", "detail": "goto 16,45"}
+{"t": 1790387743.981, "kind": "goal", "depth": 0, "pos": [16, 45], "hp": [41, 41], "goal": "dive 100ft"}
+{"t": 1790387743.982, "kind": "act", "depth": 0, "pos": [16, 45], "hp": [41, 41], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790387744.642, "kind": "attention", "depth": 1, "pos": [5, 8], "hp": [41, 41], "what": "interesting", "detail": "dive 100ft: pillared room (often holds stairs)"}
+{"t": 1790387744.793, "kind": "goal", "depth": 1, "pos": [5, 8], "hp": [41, 41], "goal": "explore"}
+{"t": 1790387744.793, "kind": "move", "depth": 1, "pos": [5, 8], "hp": [41, 41], "goals": 21, "nearest": [4, 9], "path": 1, "ok": true}
+{"t": 1790387745.456, "kind": "move", "depth": 1, "pos": [5, 10], "hp": [41, 41], "goals": 24, "nearest": [6, 11], "path": 1, "ok": true}
+{"t": 1790387745.559, "kind": "move", "depth": 1, "pos": [4, 11], "hp": [41, 41], "goals": 20, "nearest": [3, 12], "path": 1, "ok": true}
+{"t": 1790387746.118, "kind": "move", "depth": 1, "pos": [3, 12], "hp": [41, 41], "goals": 19, "nearest": [2, 13], "path": 1, "ok": true}
+{"t": 1790387746.727, "kind": "move", "depth": 1, "pos": [2, 13], "hp": [41, 41], "goals": 17, "nearest": [2, 15], "path": 2, "ok": true}
+{"t": 1790387747.234, "kind": "move", "depth": 1, "pos": [2, 13], "hp": [41, 41], "goals": 16, "nearest": [6, 15], "path": 4, "ok": true}
+{"t": 1790387747.842, "kind": "move", "depth": 1, "pos": [3, 14], "hp": [41, 41], "goals": 16, "nearest": [6, 15], "path": 3, "ok": true}
+{"t": 1790387749.112, "kind": "move", "depth": 1, "pos": [2, 17], "hp": [41, 41], "goals": 12, "nearest": [2, 19], "path": 2, "ok": true}
+{"t": 1790387749.617, "kind": "move", "depth": 1, "pos": [2, 17], "hp": [41, 41], "goals": 11, "nearest": [6, 21], "path": 4, "ok": true}
+{"t": 1790387750.225, "kind": "move", "depth": 1, "pos": [3, 18], "hp": [41, 41], "goals": 11, "nearest": [6, 21], "path": 3, "ok": true}
+{"t": 1790387751.494, "kind": "move", "depth": 1, "pos": [2, 21], "hp": [41, 41], "goals": 4, "nearest": [5, 23], "path": 4, "ok": true}
+{"t": 1790387752.0, "kind": "move", "depth": 1, "pos": [2, 21], "hp": [41, 41], "goals": 3, "nearest": [6, 23], "path": 4, "ok": true}
+{"t": 1790387752.71, "kind": "move", "depth": 1, "pos": [4, 21], "hp": [41, 41], "goals": 2, "nearest": [6, 23], "path": 2, "ok": true}
+{"t": 1790387753.371, "kind": "move", "depth": 1, "pos": [6, 23], "hp": [41, 41], "goals": 6, "nearest": [5, 24], "path": 1, "ok": true}
+{"t": 1790387753.979, "kind": "move", "depth": 1, "pos": [6, 24], "hp": [41, 41], "goals": 8, "nearest": [5, 24], "path": 1, "ok": true}
+{"t": 1790387754.586, "kind": "move", "depth": 1, "pos": [5, 24], "hp": [41, 41], "goals": 11, "nearest": [4, 25], "path": 1, "ok": true}
+{"t": 1790387755.194, "kind": "move", "depth": 1, "pos": [5, 25], "hp": [41, 41], "goals": 14, "nearest": [4, 26], "path": 1, "ok": true}
+{"t": 1790387755.803, "kind": "move", "depth": 1, "pos": [4, 25], "hp": [41, 41], "goals": 13, "nearest": [4, 26], "path": 1, "ok": true}
+{"t": 1790387756.362, "kind": "move", "depth": 1, "pos": [4, 26], "hp": [41, 41], "goals": 16, "nearest": [5, 27], "path": 1, "ok": true}
+{"t": 1790387756.971, "kind": "move", "depth": 1, "pos": [4, 27], "hp": [41, 41], "goals": 17, "nearest": [5, 27], "path": 1, "ok": true}
+{"t": 1790387757.579, "kind": "move", "depth": 1, "pos": [4, 28], "hp": [41, 41], "goals": 20, "nearest": [5, 28], "path": 1, "ok": true}
+{"t": 1790387758.187, "kind": "move", "depth": 1, "pos": [4, 29], "hp": [41, 41], "goals": 22, "nearest": [5, 28], "path": 1, "ok": true}
+{"t": 1790387758.797, "kind": "move", "depth": 1, "pos": [4, 30], "hp": [41, 41], "goals": 25, "nearest": [5, 31], "path": 1, "ok": true}
+{"t": 1790387759.405, "kind": "move", "depth": 1, "pos": [4, 31], "hp": [41, 41], "goals": 26, "nearest": [5, 31], "path": 1, "ok": true}
+{"t": 1790387759.963, "kind": "move", "depth": 1, "pos": [4, 32], "hp": [41, 41], "goals": 29, "nearest": [4, 33], "path": 1, "ok": true}
+{"t": 1790387760.572, "kind": "move", "depth": 1, "pos": [4, 33], "hp": [41, 41], "goals": 30, "nearest": [5, 34], "path": 1, "ok": true}
+{"t": 1790387761.18, "kind": "move", "depth": 1, "pos": [4, 34], "hp": [41, 41], "goals": 31, "nearest": [5, 34], "path": 1, "ok": true}
+{"t": 1790387761.789, "kind": "move", "depth": 1, "pos": [4, 35], "hp": [41, 41], "goals": 33, "nearest": [4, 36], "path": 1, "ok": true}
+{"t": 1790387762.397, "kind": "move", "depth": 1, "pos": [4, 36], "hp": [41, 41], "goals": 34, "nearest": [4, 37], "path": 1, "ok": true}
+{"t": 1790387763.005, "kind": "move", "depth": 1, "pos": [4, 37], "hp": [41, 41], "goals": 35, "nearest": [5, 37], "path": 1, "ok": true}
+{"t": 1790387763.565, "kind": "move", "depth": 1, "pos": [4, 38], "hp": [41, 41], "goals": 36, "nearest": [5, 37], "path": 1, "ok": true}
+{"t": 1790387764.173, "kind": "move", "depth": 1, "pos": [4, 39], "hp": [41, 41], "goals": 37, "nearest": [5, 40], "path": 1, "ok": true}
+{"t": 1790387764.781, "kind": "move", "depth": 1, "pos": [4, 40], "hp": [41, 41], "goals": 38, "nearest": [5, 40], "path": 1, "ok": true}
+{"t": 1790387765.39, "kind": "move", "depth": 1, "pos": [4, 41], "hp": [41, 41], "goals": 35, "nearest": [5, 40], "path": 1, "ok": true}
+{"t": 1790387765.998, "kind": "move", "depth": 1, "pos": [5, 41], "hp": [41, 41], "goals": 33, "nearest": [5, 40], "path": 1, "ok": true}
+{"t": 1790387766.607, "kind": "move", "depth": 1, "pos": [5, 40], "hp": [41, 41], "goals": 32, "nearest": [5, 39], "path": 1, "ok": true}
+{"t": 1790387767.166, "kind": "move", "depth": 1, "pos": [5, 39], "hp": [41, 41], "goals": 31, "nearest": [5, 38], "path": 1, "ok": true}
+{"t": 1790387767.775, "kind": "move", "depth": 1, "pos": [5, 38], "hp": [41, 41], "goals": 30, "nearest": [5, 37], "path": 1, "ok": true}
+{"t": 1790387768.383, "kind": "move", "depth": 1, "pos": [5, 37], "hp": [41, 41], "goals": 29, "nearest": [5, 36], "path": 1, "ok": true}
+{"t": 1790387768.992, "kind": "move", "depth": 1, "pos": [5, 36], "hp": [41, 41], "goals": 28, "nearest": [5, 35], "path": 1, "ok": true}
+{"t": 1790387769.6, "kind": "move", "depth": 1, "pos": [5, 35], "hp": [41, 41], "goals": 27, "nearest": [5, 34], "path": 1, "ok": true}
+{"t": 1790387770.209, "kind": "move", "depth": 1, "pos": [5, 34], "hp": [41, 41], "goals": 26, "nearest": [5, 33], "path": 1, "ok": true}
+{"t": 1790387770.767, "kind": "move", "depth": 1, "pos": [5, 33], "hp": [41, 41], "goals": 25, "nearest": [5, 32], "path": 1, "ok": true}
+{"t": 1790387771.375, "kind": "move", "depth": 1, "pos": [5, 32], "hp": [41, 41], "goals": 24, "nearest": [5, 31], "path": 1, "ok": true}
+{"t": 1790387771.984, "kind": "move", "depth": 1, "pos": [5, 31], "hp": [41, 41], "goals": 23, "nearest": [5, 30], "path": 1, "ok": true}
+{"t": 1790387772.591, "kind": "move", "depth": 1, "pos": [5, 30], "hp": [41, 41], "goals": 22, "nearest": [5, 29], "path": 1, "ok": true}
+{"t": 1790387773.199, "kind": "move", "depth": 1, "pos": [5, 29], "hp": [41, 41], "goals": 21, "nearest": [5, 28], "path": 1, "ok": true}
+{"t": 1790387773.808, "kind": "move", "depth": 1, "pos": [5, 28], "hp": [41, 41], "goals": 18, "nearest": [7, 25], "path": 3, "ok": true}
+{"t": 1790387775.584, "kind": "move", "depth": 1, "pos": [6, 25], "hp": [41, 41], "goals": 17, "nearest": [7, 25], "path": 1, "ok": true}
+{"t": 1790387776.193, "kind": "move", "depth": 1, "pos": [7, 25], "hp": [41, 41], "goals": 17, "nearest": [8, 24], "path": 1, "ok": true}
+{"t": 1790387776.804, "kind": "move", "depth": 1, "pos": [8, 25], "hp": [41, 41], "goals": 18, "nearest": [8, 24], "path": 1, "ok": true}
+{"t": 1790387777.362, "kind": "move", "depth": 1, "pos": [8, 24], "hp": [41, 41], "goals": 17, "nearest": [9, 25], "path": 1, "ok": true}
+{"t": 1790387777.972, "kind": "move", "depth": 1, "pos": [9, 25], "hp": [41, 41], "goals": 17, "nearest": [10, 26], "path": 1, "ok": true}
+{"t": 1790387778.581, "kind": "move", "depth": 1, "pos": [9, 26], "hp": [41, 41], "goals": 18, "nearest": [9, 27], "path": 1, "ok": true}
+{"t": 1790387779.19, "kind": "move", "depth": 1, "pos": [9, 27], "hp": [41, 41], "goals": 18, "nearest": [10, 27], "path": 1, "ok": true}
+{"t": 1790387779.799, "kind": "move", "depth": 1, "pos": [10, 27], "hp": [41, 41], "goals": 19, "nearest": [11, 28], "path": 1, "ok": true}
+{"t": 1790387780.408, "kind": "move", "depth": 1, "pos": [10, 26], "hp": [41, 41], "goals": 18, "nearest": [11, 27], "path": 1, "ok": true}
+{"t": 1790387780.967, "kind": "move", "depth": 1, "pos": [11, 27], "hp": [41, 41], "goals": 19, "nearest": [12, 28], "path": 1, "ok": true}
+{"t": 1790387781.577, "kind": "move", "depth": 1, "pos": [11, 28], "hp": [41, 41], "goals": 18, "nearest": [12, 27], "path": 1, "ok": true}
+{"t": 1790387782.186, "kind": "move", "depth": 1, "pos": [10, 28], "hp": [41, 41], "goals": 17, "nearest": [12, 27], "path": 2, "ok": true}
+{"t": 1790387783.402, "kind": "move", "depth": 1, "pos": [12, 28], "hp": [41, 41], "goals": 18, "nearest": [12, 27], "path": 1, "ok": true}
+{"t": 1790387783.961, "kind": "move", "depth": 1, "pos": [12, 27], "hp": [41, 41], "goals": 17, "nearest": [13, 27], "path": 1, "ok": true}
+{"t": 1790387784.569, "kind": "move", "depth": 1, "pos": [13, 27], "hp": [41, 41], "goals": 18, "nearest": [14, 28], "path": 1, "ok": true}
+{"t": 1790387785.178, "kind": "move", "depth": 1, "pos": [13, 28], "hp": [41, 41], "goals": 17, "nearest": [14, 28], "path": 1, "ok": true}
+{"t": 1790387785.787, "kind": "move", "depth": 1, "pos": [14, 28], "hp": [41, 41], "goals": 19, "nearest": [15, 27], "path": 1, "ok": true}
+{"t": 1790387786.396, "kind": "move", "depth": 1, "pos": [14, 27], "hp": [41, 41], "goals": 18, "nearest": [15, 27], "path": 1, "ok": true}
+{"t": 1790387787.004, "kind": "move", "depth": 1, "pos": [15, 27], "hp": [41, 41], "goals": 20, "nearest": [16, 26], "path": 1, "ok": true}
+{"t": 1790387787.563, "kind": "move", "depth": 1, "pos": [15, 28], "hp": [41, 41], "goals": 20, "nearest": [16, 29], "path": 1, "ok": true}
+{"t": 1790387788.171, "kind": "move", "depth": 1, "pos": [15, 29], "hp": [41, 41], "goals": 21, "nearest": [15, 30], "path": 1, "ok": true}
+{"t": 1790387788.779, "kind": "move", "depth": 1, "pos": [15, 30], "hp": [41, 41], "goals": 22, "nearest": [16, 29], "path": 1, "ok": true}
+{"t": 1790387789.388, "kind": "move", "depth": 1, "pos": [15, 31], "hp": [41, 41], "goals": 23, "nearest": [16, 32], "path": 1, "ok": true}
+{"t": 1790387789.996, "kind": "move", "depth": 1, "pos": [15, 32], "hp": [41, 41], "goals": 24, "nearest": [15, 33], "path": 1, "ok": true}
+{"t": 1790387790.605, "kind": "move", "depth": 1, "pos": [15, 33], "hp": [41, 41], "goals": 24, "nearest": [16, 32], "path": 1, "ok": true}
+{"t": 1790387791.212, "kind": "move", "depth": 1, "pos": [16, 33], "hp": [41, 41], "goals": 25, "nearest": [16, 32], "path": 1, "ok": true}
+{"t": 1790387791.77, "kind": "move", "depth": 1, "pos": [16, 32], "hp": [41, 41], "goals": 24, "nearest": [17, 33], "path": 1, "ok": true}
+{"t": 1790387792.377, "kind": "move", "depth": 1, "pos": [16, 31], "hp": [41, 41], "goals": 23, "nearest": [16, 30], "path": 1, "ok": true}
+{"t": 1790387792.986, "kind": "move", "depth": 1, "pos": [16, 30], "hp": [41, 41], "goals": 22, "nearest": [16, 29], "path": 1, "ok": true}
+{"t": 1790387793.594, "kind": "move", "depth": 1, "pos": [16, 29], "hp": [41, 41], "goals": 21, "nearest": [16, 28], "path": 1, "ok": true}
+{"t": 1790387794.204, "kind": "move", "depth": 1, "pos": [16, 28], "hp": [41, 41], "goals": 21, "nearest": [17, 27], "path": 1, "ok": true}
+{"t": 1790387794.763, "kind": "move", "depth": 1, "pos": [16, 27], "hp": [41, 41], "goals": 21, "nearest": [16, 26], "path": 1, "ok": true}
+{"t": 1790387795.372, "kind": "move", "depth": 1, "pos": [16, 26], "hp": [41, 41], "goals": 22, "nearest": [17, 27], "path": 1, "ok": true}
+{"t": 1790387795.98, "kind": "move", "depth": 1, "pos": [16, 25], "hp": [41, 41], "goals": 21, "nearest": [17, 26], "path": 1, "ok": true}
+{"t": 1790387796.487, "kind": "move", "depth": 1, "pos": [16, 25], "hp": [41, 41], "goals": 20, "nearest": [17, 26], "path": 1, "ok": true}
+{"t": 1790387797.096, "kind": "move", "depth": 1, "pos": [17, 26], "hp": [41, 41], "goals": 19, "nearest": [17, 27], "path": 1, "ok": true}
+{"t": 1790387797.2, "kind": "move", "depth": 1, "pos": [17, 27], "hp": [41, 41], "goals": 18, "nearest": [17, 33], "path": 6, "ok": true}
+{"t": 1790387799.79, "kind": "move", "depth": 1, "pos": [17, 33], "hp": [41, 41], "goals": 19, "nearest": [16, 34], "path": 1, "ok": true}
+{"t": 1790387800.399, "kind": "move", "depth": 1, "pos": [17, 34], "hp": [41, 41], "goals": 18, "nearest": [18, 33], "path": 1, "ok": true}
+{"t": 1790387801.008, "kind": "move", "depth": 1, "pos": [16, 34], "hp": [41, 41], "goals": 17, "nearest": [18, 33], "path": 2, "ok": true}
+{"t": 1790387802.225, "kind": "move", "depth": 1, "pos": [18, 34], "hp": [41, 41], "goals": 18, "nearest": [18, 33], "path": 1, "ok": true}
+{"t": 1790387802.783, "kind": "move", "depth": 1, "pos": [18, 33], "hp": [41, 41], "goals": 17, "nearest": [19, 33], "path": 1, "ok": true}
+{"t": 1790387803.392, "kind": "move", "depth": 1, "pos": [19, 33], "hp": [41, 41], "goals": 18, "nearest": [20, 34], "path": 1, "ok": true}
+{"t": 1790387804.001, "kind": "move", "depth": 1, "pos": [19, 34], "hp": [41, 41], "goals": 17, "nearest": [20, 34], "path": 1, "ok": true}
+{"t": 1790387804.61, "kind": "move", "depth": 1, "pos": [20, 34], "hp": [41, 41], "goals": 18, "nearest": [20, 33], "path": 1, "ok": true}
+{"t": 1790387805.219, "kind": "goal", "depth": 1, "pos": [20, 33], "hp": [41, 41], "goal": null}
+{"t": 1790387830.229, "kind": "attention", "depth": null, "pos": null, "hp": [0, 1], "what": "started", "detail": "in the game at None (depth)"}
+{"t": 1790387835.54, "kind": "goal", "depth": 1, "pos": [20, 33], "hp": [41, 41], "goal": "explore"}
+{"t": 1790387835.541, "kind": "move", "depth": 1, "pos": [20, 33], "hp": [41, 41], "goals": 21, "nearest": [21, 34], "path": 1, "ok": true}
+{"t": 1790387835.643, "kind": "move", "depth": 1, "pos": [19, 33], "hp": [41, 41], "goals": 18, "nearest": [21, 34], "path": 2, "ok": true}
+{"t": 1790387836.811, "kind": "move", "depth": 1, "pos": [21, 33], "hp": [41, 41], "goals": 19, "nearest": [21, 34], "path": 1, "ok": true}
+{"t": 1790387837.419, "kind": "move", "depth": 1, "pos": [21, 34], "hp": [41, 41], "goals": 19, "nearest": [22, 35], "path": 1, "ok": true}
+{"t": 1790387838.027, "kind": "move", "depth": 1, "pos": [22, 34], "hp": [41, 41], "goals": 22, "nearest": [22, 35], "path": 1, "ok": true}
+{"t": 1790387838.635, "kind": "move", "depth": 1, "pos": [22, 33], "hp": [41, 41], "goals": 21, "nearest": [23, 34], "path": 1, "ok": true}
+{"t": 1790387839.192, "kind": "move", "depth": 1, "pos": [23, 34], "hp": [41, 41], "goals": 20, "nearest": [22, 35], "path": 1, "ok": true}
+{"t": 1790387839.801, "kind": "move", "depth": 1, "pos": [23, 35], "hp": [41, 41], "goals": 21, "nearest": [22, 35], "path": 1, "ok": true}
+{"t": 1790387840.411, "kind": "move", "depth": 1, "pos": [22, 35], "hp": [41, 41], "goals": 20, "nearest": [23, 36], "path": 1, "ok": true}
+{"t": 1790387841.019, "kind": "move", "depth": 1, "pos": [22, 36], "hp": [41, 41], "goals": 21, "nearest": [23, 37], "path": 1, "ok": true}
+{"t": 1790387841.627, "kind": "move", "depth": 1, "pos": [22, 37], "hp": [41, 41], "goals": 22, "nearest": [23, 37], "path": 1, "ok": true}
+{"t": 1790387842.235, "kind": "move", "depth": 1, "pos": [22, 38], "hp": [41, 41], "goals": 22, "nearest": [23, 37], "path": 1, "ok": true}
+{"t": 1790387842.794, "kind": "move", "depth": 1, "pos": [22, 39], "hp": [41, 41], "goals": 22, "nearest": [22, 40], "path": 1, "ok": true}
+{"t": 1790387843.3, "kind": "move", "depth": 1, "pos": [22, 39], "hp": [41, 41], "goals": 21, "nearest": [23, 38], "path": 1, "ok": true}
+{"t": 1790387843.908, "kind": "move", "depth": 1, "pos": [23, 38], "hp": [41, 41], "goals": 18, "nearest": [23, 47], "path": 16, "ok": true}
+{"t": 1790387851.017, "kind": "move", "depth": 1, "pos": [17, 25], "hp": [41, 41], "goals": 17, "nearest": [7, 8], "path": 26, "ok": true}
+{"t": 1790387851.525, "kind": "move", "depth": 1, "pos": [17, 25], "hp": [41, 41], "goals": 16, "nearest": [6, 43], "path": 29, "ok": true}
+{"t": 1790387852.288, "kind": "move", "depth": 1, "pos": [15, 27], "hp": [41, 41], "goals": 16, "nearest": [6, 43], "path": 27, "ok": true}
+{"t": 1790387859.767, "kind": "move", "depth": 1, "pos": [6, 43], "hp": [41, 41], "goals": 13, "nearest": [3, 46], "path": 3, "ok": true}
+{"t": 1790387860.273, "kind": "move", "depth": 1, "pos": [6, 43], "hp": [41, 41], "goals": 12, "nearest": [3, 46], "path": 3, "ok": true}
+{"t": 1790387860.882, "kind": "move", "depth": 1, "pos": [5, 44], "hp": [41, 41], "goals": 13, "nearest": [3, 46], "path": 2, "ok": true}
+{"t": 1790387861.543, "kind": "move", "depth": 1, "pos": [3, 46], "hp": [41, 41], "goals": 10, "nearest": [2, 47], "path": 1, "ok": true}
+{"t": 1790387862.151, "kind": "move", "depth": 1, "pos": [2, 47], "hp": [41, 41], "goals": 6, "nearest": [5, 53], "path": 6, "ok": true}
+{"t": 1790387865.392, "kind": "move", "depth": 1, "pos": [2, 53], "hp": [41, 41], "goals": 6, "nearest": [2, 54], "path": 1, "ok": true}
+{"t": 1790387866.002, "kind": "move", "depth": 1, "pos": [2, 54], "hp": [41, 41], "goals": 5, "nearest": [3, 54], "path": 1, "ok": true}
+{"t": 1790387866.509, "kind": "move", "depth": 1, "pos": [2, 54], "hp": [41, 41], "goals": 4, "nearest": [5, 53], "path": 4, "ok": true}
+{"t": 1790387867.118, "kind": "move", "depth": 1, "pos": [2, 53], "hp": [41, 41], "goals": 4, "nearest": [5, 53], "path": 3, "ok": true}
+{"t": 1790387868.386, "kind": "move", "depth": 1, "pos": [5, 53], "hp": [41, 41], "goals": 6, "nearest": [4, 54], "path": 1, "ok": true}
+{"t": 1790387868.994, "kind": "move", "depth": 1, "pos": [5, 54], "hp": [41, 41], "goals": 6, "nearest": [6, 53], "path": 1, "ok": true}
+{"t": 1790387869.602, "kind": "move", "depth": 1, "pos": [5, 55], "hp": [41, 41], "goals": 7, "nearest": [5, 56], "path": 1, "ok": true}
+{"t": 1790387870.21, "kind": "move", "depth": 1, "pos": [5, 56], "hp": [41, 41], "goals": 8, "nearest": [6, 57], "path": 1, "ok": true}
+{"t": 1790387870.82, "kind": "move", "depth": 1, "pos": [5, 57], "hp": [41, 41], "goals": 10, "nearest": [6, 57], "path": 1, "ok": true}
+{"t": 1790387871.38, "kind": "move", "depth": 1, "pos": [5, 58], "hp": [41, 41], "goals": 12, "nearest": [6, 57], "path": 1, "ok": true}
+{"t": 1790387871.989, "kind": "move", "depth": 1, "pos": [4, 58], "hp": [41, 41], "goals": 13, "nearest": [3, 59], "path": 1, "ok": true}
+{"t": 1790387872.598, "kind": "move", "depth": 1, "pos": [3, 58], "hp": [41, 41], "goals": 14, "nearest": [2, 59], "path": 1, "ok": true}
+{"t": 1790387873.207, "kind": "move", "depth": 1, "pos": [2, 58], "hp": [41, 41], "goals": 14, "nearest": [2, 59], "path": 1, "ok": true}
+{"t": 1790387873.816, "kind": "move", "depth": 1, "pos": [2, 59], "hp": [41, 41], "goals": 14, "nearest": [3, 59], "path": 1, "ok": true}
+{"t": 1790387874.375, "kind": "move", "depth": 1, "pos": [2, 60], "hp": [41, 41], "goals": 14, "nearest": [1, 61], "path": 1, "ok": true}
+{"t": 1790387874.982, "kind": "move", "depth": 1, "pos": [2, 61], "hp": [41, 41], "goals": 14, "nearest": [2, 62], "path": 1, "ok": true}
+{"t": 1790387875.591, "kind": "move", "depth": 1, "pos": [2, 62], "hp": [41, 41], "goals": 14, "nearest": [1, 63], "path": 1, "ok": true}
+{"t": 1790387876.2, "kind": "move", "depth": 1, "pos": [2, 63], "hp": [41, 41], "goals": 14, "nearest": [2, 64], "path": 1, "ok": true}
+{"t": 1790387876.809, "kind": "move", "depth": 1, "pos": [2, 64], "hp": [41, 41], "goals": 14, "nearest": [2, 65], "path": 1, "ok": true}
+{"t": 1790387877.419, "kind": "move", "depth": 1, "pos": [2, 65], "hp": [41, 41], "goals": 14, "nearest": [1, 66], "path": 1, "ok": true}
+{"t": 1790387877.978, "kind": "move", "depth": 1, "pos": [2, 66], "hp": [41, 41], "goals": 14, "nearest": [2, 67], "path": 1, "ok": true}
+{"t": 1790387878.588, "kind": "move", "depth": 1, "pos": [2, 67], "hp": [41, 41], "goals": 14, "nearest": [2, 68], "path": 1, "ok": true}
+{"t": 1790387879.197, "kind": "move", "depth": 1, "pos": [2, 68], "hp": [41, 41], "goals": 14, "nearest": [1, 69], "path": 1, "ok": true}
+{"t": 1790387879.806, "kind": "move", "depth": 1, "pos": [2, 69], "hp": [41, 41], "goals": 14, "nearest": [2, 70], "path": 1, "ok": true}
+{"t": 1790387880.416, "kind": "move", "depth": 1, "pos": [2, 70], "hp": [41, 41], "goals": 14, "nearest": [2, 71], "path": 1, "ok": true}
+{"t": 1790387880.975, "kind": "move", "depth": 1, "pos": [2, 71], "hp": [41, 41], "goals": 14, "nearest": [2, 72], "path": 1, "ok": true}
+{"t": 1790387881.583, "kind": "move", "depth": 1, "pos": [2, 72], "hp": [41, 41], "goals": 14, "nearest": [1, 73], "path": 1, "ok": true}
+{"t": 1790387882.192, "kind": "move", "depth": 1, "pos": [2, 73], "hp": [41, 41], "goals": 14, "nearest": [2, 74], "path": 1, "ok": true}
+{"t": 1790387882.801, "kind": "move", "depth": 1, "pos": [2, 74], "hp": [41, 41], "goals": 15, "nearest": [3, 75], "path": 1, "ok": true}
+{"t": 1790387883.41, "kind": "move", "depth": 1, "pos": [2, 75], "hp": [41, 41], "goals": 16, "nearest": [3, 75], "path": 1, "ok": true}
+{"t": 1790387885.034, "kind": "move", "depth": 1, "pos": [2, 76], "hp": [40, 41], "goals": 25, "nearest": [3, 77], "path": 1, "ok": true}
+{"t": 1790387885.997, "kind": "move", "depth": 1, "pos": [2, 77], "hp": [38, 41], "goals": 32, "nearest": [3, 77], "path": 1, "ok": true}
+{"t": 1790387886.404, "kind": "move", "depth": 1, "pos": [2, 78], "hp": [38, 41], "goals": 32, "nearest": [3, 77], "path": 1, "ok": true}
+{"t": 1790387887.013, "kind": "move", "depth": 1, "pos": [2, 79], "hp": [38, 41], "goals": 33, "nearest": [3, 80], "path": 1, "ok": true}
+{"t": 1790387887.623, "kind": "move", "depth": 1, "pos": [2, 80], "hp": [39, 41], "goals": 34, "nearest": [3, 80], "path": 1, "ok": true}
+{"t": 1790387888.233, "kind": "move", "depth": 1, "pos": [2, 81], "hp": [39, 41], "goals": 35, "nearest": [3, 80], "path": 1, "ok": true}
+{"t": 1790387888.792, "kind": "move", "depth": 1, "pos": [2, 82], "hp": [39, 41], "goals": 36, "nearest": [3, 83], "path": 1, "ok": true}
+{"t": 1790387889.4, "kind": "move", "depth": 1, "pos": [2, 83], "hp": [39, 41], "goals": 38, "nearest": [3, 83], "path": 1, "ok": true}
+{"t": 1790387890.009, "kind": "move", "depth": 1, "pos": [2, 84], "hp": [39, 41], "goals": 39, "nearest": [3, 83], "path": 1, "ok": true}
+{"t": 1790387890.618, "kind": "move", "depth": 1, "pos": [2, 85], "hp": [39, 41], "goals": 39, "nearest": [3, 86], "path": 1, "ok": true}
+{"t": 1790387891.227, "kind": "move", "depth": 1, "pos": [2, 86], "hp": [39, 41], "goals": 39, "nearest": [3, 86], "path": 1, "ok": true}
+{"t": 1790387891.786, "kind": "move", "depth": 1, "pos": [3, 86], "hp": [40, 41], "goals": 39, "nearest": [4, 85], "path": 1, "ok": true}
+{"t": 1790387892.396, "kind": "move", "depth": 1, "pos": [3, 85], "hp": [40, 41], "goals": 39, "nearest": [4, 85], "path": 1, "ok": true}
+{"t": 1790387893.004, "kind": "move", "depth": 1, "pos": [3, 84], "hp": [40, 41], "goals": 38, "nearest": [3, 83], "path": 1, "ok": true}
+{"t": 1790387893.613, "kind": "move", "depth": 1, "pos": [3, 83], "hp": [40, 41], "goals": 38, "nearest": [4, 82], "path": 1, "ok": true}
+{"t": 1790387894.222, "kind": "move", "depth": 1, "pos": [3, 82], "hp": [40, 41], "goals": 38, "nearest": [4, 82], "path": 1, "ok": true}
+{"t": 1790387894.831, "kind": "move", "depth": 1, "pos": [3, 81], "hp": [40, 41], "goals": 37, "nearest": [3, 80], "path": 1, "ok": true}
+{"t": 1790387895.389, "kind": "move", "depth": 1, "pos": [3, 80], "hp": [41, 41], "goals": 37, "nearest": [4, 79], "path": 1, "ok": true}
+{"t": 1790387895.69, "kind": "goal", "depth": 1, "pos": [3, 80], "hp": [41, 41], "goal": null}
+{"t": 1790387925.765, "kind": "attention", "depth": null, "pos": null, "hp": [0, 1], "what": "started", "detail": "in the game at None (depth)"}
+{"t": 1790387931.175, "kind": "goal", "depth": 1, "pos": [3, 79], "hp": [41, 41], "goal": "explore"}
+{"t": 1790387931.176, "kind": "move", "depth": 1, "pos": [3, 79], "hp": [41, 41], "goals": 43, "nearest": [3, 80], "path": 1, "ok": true}
+{"t": 1790387931.735, "kind": "move", "depth": 1, "pos": [2, 79], "hp": [41, 41], "goals": 39, "nearest": [3, 78], "path": 1, "ok": true}
+{"t": 1790387932.5, "kind": "move", "depth": 1, "pos": [5, 76], "hp": [41, 41], "goals": 42, "nearest": [6, 76], "path": 1, "ok": true}
+{"t": 1790387933.059, "kind": "move", "depth": 1, "pos": [5, 75], "hp": [41, 41], "goals": 39, "nearest": [6, 76], "path": 1, "ok": true}
+{"t": 1790387933.72, "kind": "move", "depth": 1, "pos": [7, 77], "hp": [41, 41], "goals": 40, "nearest": [7, 78], "path": 1, "ok": true}
+{"t": 1790387934.484, "kind": "move", "depth": 1, "pos": [7, 80], "hp": [41, 41], "goals": 44, "nearest": [6, 79], "path": 1, "ok": true}
+{"t": 1790387935.147, "kind": "move", "depth": 1, "pos": [5, 80], "hp": [41, 41], "goals": 39, "nearest": [6, 81], "path": 1, "ok": true}
+{"t": 1790387935.81, "kind": "move", "depth": 1, "pos": [5, 82], "hp": [41, 41], "goals": 37, "nearest": [6, 82], "path": 1, "ok": true}
+{"t": 1790387936.369, "kind": "move", "depth": 1, "pos": [6, 82], "hp": [41, 41], "goals": 35, "nearest": [4, 84], "path": 3, "ok": true}
+{"t": 1790387936.929, "kind": "move", "depth": 1, "pos": [6, 81], "hp": [41, 41], "goals": 35, "nearest": [8, 79], "path": 2, "ok": true}
+{"t": 1790387937.488, "kind": "move", "depth": 1, "pos": [7, 80], "hp": [41, 41], "goals": 35, "nearest": [8, 79], "path": 1, "ok": true}
+{"t": 1790387938.047, "kind": "move", "depth": 1, "pos": [8, 80], "hp": [41, 41], "goals": 34, "nearest": [8, 79], "path": 1, "ok": true}
+{"t": 1790387938.607, "kind": "move", "depth": 1, "pos": [8, 79], "hp": [41, 41], "goals": 34, "nearest": [9, 78], "path": 1, "ok": true}
+{"t": 1790387939.27, "kind": "move", "depth": 1, "pos": [8, 77], "hp": [41, 41], "goals": 33, "nearest": [9, 78], "path": 1, "ok": true}
+{"t": 1790387939.933, "kind": "move", "depth": 1, "pos": [10, 77], "hp": [41, 41], "goals": 35, "nearest": [9, 78], "path": 1, "ok": true}
+{"t": 1790387940.037, "kind": "move", "depth": 1, "pos": [10, 78], "hp": [41, 41], "goals": 33, "nearest": [11, 78], "path": 1, "ok": true}
+{"t": 1790387940.596, "kind": "move", "depth": 1, "pos": [11, 78], "hp": [41, 41], "goals": 35, "nearest": [12, 77], "path": 1, "ok": true}
+{"t": 1790387941.205, "kind": "move", "depth": 1, "pos": [11, 77], "hp": [41, 41], "goals": 35, "nearest": [12, 77], "path": 1, "ok": true}
+{"t": 1790387942.218, "kind": "move", "depth": 1, "pos": [11, 77], "hp": [41, 41], "goals": 35, "nearest": [12, 77], "path": 1, "ok": true}
+{"t": 1790387942.421, "kind": "move", "depth": 1, "pos": [12, 77], "hp": [41, 41], "goals": 36, "nearest": [13, 78], "path": 1, "ok": true}
+{"t": 1790387943.536, "kind": "move", "depth": 1, "pos": [12, 78], "hp": [41, 41], "goals": 35, "nearest": [13, 78], "path": 1, "ok": true}
+{"t": 1790387944.449, "kind": "move", "depth": 1, "pos": [13, 78], "hp": [40, 41], "goals": 34, "nearest": [14, 77], "path": 1, "ok": true}
+{"t": 1790387945.311, "kind": "move", "depth": 1, "pos": [13, 77], "hp": [40, 41], "goals": 33, "nearest": [15, 79], "path": 2, "ok": true}
+{"t": 1790387947.238, "kind": "move", "depth": 1, "pos": [15, 79], "hp": [40, 41], "goals": 23, "nearest": [19, 78], "path": 4, "ok": true}
+{"t": 1790387949.623, "kind": "move", "depth": 1, "pos": [19, 78], "hp": [41, 41], "goals": 24, "nearest": [20, 78], "path": 1, "ok": true}
+{"t": 1790387950.128, "kind": "move", "depth": 1, "pos": [19, 78], "hp": [41, 41], "goals": 24, "nearest": [20, 78], "path": 1, "ok": true}
+{"t": 1790387950.232, "kind": "move", "depth": 1, "pos": [19, 77], "hp": [41, 41], "goals": 23, "nearest": [20, 78], "path": 1, "ok": true}
+{"t": 1790387950.739, "kind": "move", "depth": 1, "pos": [19, 77], "hp": [41, 41], "goals": 23, "nearest": [20, 78], "path": 1, "ok": true}
+{"t": 1790387950.842, "kind": "move", "depth": 1, "pos": [20, 77], "hp": [41, 41], "goals": 24, "nearest": [20, 78], "path": 1, "ok": true}
+{"t": 1790387951.348, "kind": "move", "depth": 1, "pos": [20, 77], "hp": [41, 41], "goals": 24, "nearest": [20, 78], "path": 1, "ok": true}
+{"t": 1790387951.452, "kind": "move", "depth": 1, "pos": [20, 78], "hp": [41, 41], "goals": 23, "nearest": [21, 77], "path": 1, "ok": true}
+{"t": 1790387951.959, "kind": "move", "depth": 1, "pos": [20, 78], "hp": [41, 41], "goals": 23, "nearest": [21, 77], "path": 1, "ok": true}
+{"t": 1790387952.062, "kind": "move", "depth": 1, "pos": [21, 78], "hp": [41, 41], "goals": 24, "nearest": [21, 77], "path": 1, "ok": true}
+{"t": 1790387952.569, "kind": "move", "depth": 1, "pos": [21, 78], "hp": [41, 41], "goals": 24, "nearest": [21, 77], "path": 1, "ok": true}
+{"t": 1790387952.672, "kind": "move", "depth": 1, "pos": [21, 77], "hp": [41, 41], "goals": 23, "nearest": [22, 78], "path": 1, "ok": true}
+{"t": 1790387953.178, "kind": "move", "depth": 1, "pos": [21, 77], "hp": [41, 41], "goals": 23, "nearest": [22, 78], "path": 1, "ok": true}
+{"t": 1790387953.231, "kind": "move", "depth": 1, "pos": [22, 77], "hp": [41, 41], "goals": 24, "nearest": [22, 78], "path": 1, "ok": true}
+{"t": 1790387953.891, "kind": "move", "depth": 1, "pos": [22, 78], "hp": [41, 41], "goals": 23, "nearest": [23, 77], "path": 1, "ok": true}
+{"t": 1790387954.451, "kind": "move", "depth": 1, "pos": [23, 78], "hp": [41, 41], "goals": 22, "nearest": [23, 77], "path": 1, "ok": true}
+{"t": 1790387955.011, "kind": "move", "depth": 1, "pos": [23, 77], "hp": [41, 41], "goals": 21, "nearest": [16, 72], "path": 9, "ok": true}
+{"t": 1790387955.929, "kind": "move", "depth": 1, "pos": [19, 77], "hp": [41, 41], "goals": 21, "nearest": [15, 72], "path": 5, "ok": true}
+{"t": 1790387958.417, "kind": "move", "depth": 1, "pos": [16, 72], "hp": [41, 41], "goals": 22, "nearest": [16, 71], "path": 1, "ok": true}
+{"t": 1790387958.922, "kind": "move", "depth": 1, "pos": [16, 72], "hp": [41, 41], "goals": 22, "nearest": [16, 71], "path": 1, "ok": true}
+{"t": 1790387959.026, "kind": "move", "depth": 1, "pos": [15, 72], "hp": [41, 41], "goals": 21, "nearest": [16, 71], "path": 1, "ok": true}
+{"t": 1790387959.531, "kind": "move", "depth": 1, "pos": [15, 72], "hp": [41, 41], "goals": 21, "nearest": [16, 71], "path": 1, "ok": true}
+{"t": 1790387959.635, "kind": "move", "depth": 1, "pos": [15, 71], "hp": [41, 41], "goals": 23, "nearest": [16, 71], "path": 1, "ok": true}
+{"t": 1790387960.141, "kind": "move", "depth": 1, "pos": [15, 71], "hp": [41, 41], "goals": 23, "nearest": [16, 71], "path": 1, "ok": true}
+{"t": 1790387960.246, "kind": "move", "depth": 1, "pos": [15, 70], "hp": [41, 41], "goals": 24, "nearest": [16, 71], "path": 1, "ok": true}
+{"t": 1790387962.13, "kind": "move", "depth": 1, "pos": [7, 70], "hp": [41, 41], "goals": 31, "nearest": [6, 69], "path": 1, "ok": true}
+{"t": 1790387963.765, "kind": "move", "depth": 1, "pos": [7, 60], "hp": [41, 41], "goals": 39, "nearest": [6, 60], "path": 1, "ok": true}
+{"t": 1790387964.323, "kind": "move", "depth": 1, "pos": [6, 60], "hp": [41, 41], "goals": 38, "nearest": [5, 59], "path": 1, "ok": true}
+{"t": 1790387965.345, "kind": "move", "depth": 1, "pos": [6, 55], "hp": [41, 41], "goals": 32, "nearest": [7, 54], "path": 1, "ok": true}
+{"t": 1790387965.906, "kind": "move", "depth": 1, "pos": [7, 54], "hp": [41, 41], "goals": 31, "nearest": [3, 59], "path": 5, "ok": true}
+{"t": 1790387966.466, "kind": "move", "depth": 1, "pos": [6, 55], "hp": [41, 41], "goals": 31, "nearest": [3, 59], "path": 4, "ok": true}
+{"t": 1790387968.346, "kind": "move", "depth": 1, "pos": [5, 59], "hp": [41, 41], "goals": 28, "nearest": [6, 61], "path": 2, "ok": true}
+{"t": 1790387968.854, "kind": "move", "depth": 1, "pos": [5, 59], "hp": [41, 41], "goals": 28, "nearest": [6, 61], "path": 2, "ok": true}
+{"t": 1790387969.566, "kind": "move", "depth": 1, "pos": [6, 61], "hp": [41, 41], "goals": 27, "nearest": [6, 62], "path": 1, "ok": true}
+{"t": 1790387970.074, "kind": "move", "depth": 1, "pos": [6, 61], "hp": [41, 41], "goals": 27, "nearest": [6, 62], "path": 1, "ok": true}
+{"t": 1790387970.177, "kind": "move", "depth": 1, "pos": [6, 62], "hp": [41, 41], "goals": 26, "nearest": [6, 63], "path": 1, "ok": true}
+{"t": 1790387970.685, "kind": "move", "depth": 1, "pos": [6, 62], "hp": [41, 41], "goals": 26, "nearest": [6, 63], "path": 1, "ok": true}
+{"t": 1790387970.738, "kind": "move", "depth": 1, "pos": [6, 63], "hp": [41, 41], "goals": 25, "nearest": [6, 64], "path": 1, "ok": true}
+{"t": 1790387971.964, "kind": "move", "depth": 1, "pos": [6, 69], "hp": [41, 41], "goals": 19, "nearest": [8, 69], "path": 2, "ok": true}
+{"t": 1790387973.449, "kind": "move", "depth": 1, "pos": [15, 69], "hp": [41, 41], "goals": 11, "nearest": [16, 70], "path": 1, "ok": true}
+{"t": 1790387974.009, "kind": "move", "depth": 1, "pos": [16, 70], "hp": [41, 41], "goals": 9, "nearest": [4, 84], "path": 15, "ok": true}
+{"t": 1790387977.98, "kind": "move", "depth": 1, "pos": [19, 85], "hp": [41, 41], "goals": 19, "nearest": [20, 86], "path": 1, "ok": true}
+{"t": 1790387978.487, "kind": "move", "depth": 1, "pos": [19, 85], "hp": [41, 41], "goals": 19, "nearest": [20, 86], "path": 1, "ok": true}
+{"t": 1790387978.591, "kind": "move", "depth": 1, "pos": [19, 86], "hp": [41, 41], "goals": 17, "nearest": [20, 85], "path": 1, "ok": true}
+{"t": 1790387979.098, "kind": "move", "depth": 1, "pos": [19, 86], "hp": [41, 41], "goals": 17, "nearest": [20, 85], "path": 1, "ok": true}
+{"t": 1790387979.152, "kind": "move", "depth": 1, "pos": [20, 86], "hp": [41, 41], "goals": 19, "nearest": [21, 86], "path": 1, "ok": true}
+{"t": 1790387979.811, "kind": "move", "depth": 1, "pos": [20, 85], "hp": [41, 41], "goals": 18, "nearest": [21, 86], "path": 1, "ok": true}
+{"t": 1790387980.73, "kind": "move", "depth": 1, "pos": [24, 85], "hp": [41, 41], "goals": 25, "nearest": [25, 84], "path": 1, "ok": true}
+{"t": 1790387981.289, "kind": "move", "depth": 1, "pos": [24, 86], "hp": [41, 41], "goals": 22, "nearest": [23, 86], "path": 1, "ok": true}
+{"t": 1790387982.771, "kind": "move", "depth": 1, "pos": [15, 86], "hp": [41, 41], "goals": 19, "nearest": [25, 84], "path": 10, "ok": true}
+{"t": 1790387984.257, "kind": "move", "depth": 1, "pos": [24, 86], "hp": [41, 41], "goals": 19, "nearest": [25, 84], "path": 2, "ok": true}
+{"t": 1790387984.817, "kind": "move", "depth": 1, "pos": [24, 85], "hp": [41, 41], "goals": 19, "nearest": [25, 84], "path": 1, "ok": true}
+{"t": 1790387985.376, "kind": "move", "depth": 1, "pos": [25, 84], "hp": [41, 41], "goals": 18, "nearest": [26, 83], "path": 1, "ok": true}
+{"t": 1790387985.936, "kind": "move", "depth": 1, "pos": [26, 83], "hp": [41, 41], "goals": 27, "nearest": [27, 82], "path": 1, "ok": true}
+{"t": 1790387986.496, "kind": "move", "depth": 1, "pos": [25, 82], "hp": [41, 41], "goals": 28, "nearest": [27, 80], "path": 2, "ok": true}
+{"t": 1790387987.055, "kind": "move", "depth": 1, "pos": [26, 81], "hp": [41, 41], "goals": 28, "nearest": [27, 80], "path": 1, "ok": true}
+{"t": 1790387987.615, "kind": "move", "depth": 1, "pos": [25, 80], "hp": [41, 41], "goals": 25, "nearest": [27, 78], "path": 2, "ok": true}
+{"t": 1790387988.174, "kind": "move", "depth": 1, "pos": [26, 79], "hp": [41, 41], "goals": 27, "nearest": [27, 78], "path": 1, "ok": true}
+{"t": 1790387988.735, "kind": "move", "depth": 1, "pos": [27, 78], "hp": [41, 41], "goals": 23, "nearest": [27, 76], "path": 2, "ok": true}
+{"t": 1790387989.397, "kind": "move", "depth": 1, "pos": [26, 76], "hp": [41, 41], "goals": 35, "nearest": [26, 75], "path": 1, "ok": true}
+{"t": 1790387991.296, "kind": "goal", "depth": 1, "pos": [26, 60], "hp": [41, 41], "goal": null}
+{"t": 1790388045.362, "kind": "attention", "depth": null, "pos": null, "hp": [0, 1], "what": "started", "detail": "in the game at None (depth)"}
+{"t": 1790388050.83, "kind": "goal", "depth": 1, "pos": [26, 60], "hp": [41, 41], "goal": "dive 200ft"}
+{"t": 1790388050.831, "kind": "move", "depth": 1, "pos": [26, 60], "hp": [41, 41], "goals": 1, "nearest": [27, 51], "path": 9, "ok": true}
+{"t": 1790388053.528, "kind": "act", "depth": 1, "pos": [27, 51], "hp": [41, 41], "cmd": "custom ,", "why": "pick up: a Scroll titled \"xtox ipta sour\"."}
+{"t": 1790388053.935, "kind": "move", "depth": 1, "pos": [27, 51], "hp": [41, 41], "goals": 2, "nearest": [4, 15], "path": 114, "ok": true}
+{"t": 1790388096.021, "kind": "act", "depth": 1, "pos": [4, 15], "hp": [41, 41], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790388097.235, "kind": "move", "depth": 2, "pos": [14, 55], "hp": [41, 41], "goals": 1, "nearest": [16, 53], "path": 2, "ok": true}
+{"t": 1790388097.846, "kind": "act", "depth": 2, "pos": [16, 53], "hp": [41, 41], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790388099.111, "kind": "act", "depth": 3, "pos": [24, 52], "hp": [41, 41], "cmd": "custom <", "why": "stairs <"}
+{"t": 1790388099.769, "kind": "act", "depth": 2, "pos": [25, 136], "hp": [41, 41], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790388100.428, "kind": "act", "depth": 3, "pos": [14, 15], "hp": [41, 41], "cmd": "custom <", "why": "stairs <"}
+{"t": 1790388101.086, "kind": "act", "depth": 2, "pos": [19, 44], "hp": [41, 41], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790388101.744, "kind": "act", "depth": 3, "pos": [63, 124], "hp": [41, 41], "cmd": "custom <", "why": "stairs <"}
+{"t": 1790388102.404, "kind": "move", "depth": 2, "pos": [34, 16], "hp": [41, 41], "goals": 1, "nearest": [35, 11], "path": 5, "ok": true}
+{"t": 1790388104.894, "kind": "act", "depth": 2, "pos": [35, 11], "hp": [41, 41], "cmd": "custom ,", "why": "pick up: 23 Rounded Pebbles (1d2)."}
+{"t": 1790388105.296, "kind": "move", "depth": 2, "pos": [35, 11], "hp": [41, 41], "goals": 1, "nearest": [34, 16], "path": 5, "ok": true}
+{"t": 1790388107.94, "kind": "act", "depth": 2, "pos": [34, 16], "hp": [41, 41], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790388109.204, "kind": "act", "depth": 3, "pos": [41, 46], "hp": [41, 41], "cmd": "custom <", "why": "stairs <"}
+{"t": 1790388109.862, "kind": "act", "depth": 2, "pos": [38, 99], "hp": [41, 41], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790388110.52, "kind": "move", "depth": 3, "pos": [45, 182], "hp": [41, 41], "goals": 1, "nearest": [49, 182], "path": 4, "ok": true}
+{"t": 1790388112.145, "kind": "act", "depth": 3, "pos": [49, 182], "hp": [41, 41], "cmd": "custom ,", "why": "pick up: a Gold Wand."}
+{"t": 1790388112.548, "kind": "move", "depth": 3, "pos": [49, 182], "hp": [41, 41], "goals": 13, "nearest": [50, 181], "path": 1, "ok": true}
+{"t": 1790388112.755, "kind": "move", "depth": 3, "pos": [50, 181], "hp": [41, 41], "goals": 6, "nearest": [47, 178], "path": 3, "ok": true}
+{"t": 1790388114.633, "kind": "move", "depth": 3, "pos": [48, 178], "hp": [41, 41], "goals": 6, "nearest": [47, 178], "path": 1, "ok": true}
+{"t": 1790388115.243, "kind": "move", "depth": 3, "pos": [47, 178], "hp": [41, 41], "goals": 5, "nearest": [47, 177], "path": 1, "ok": true}
+{"t": 1790388115.852, "kind": "move", "depth": 3, "pos": [47, 177], "hp": [41, 41], "goals": 6, "nearest": [48, 177], "path": 1, "ok": true}
+{"t": 1790388116.463, "kind": "move", "depth": 3, "pos": [47, 176], "hp": [41, 41], "goals": 7, "nearest": [47, 175], "path": 1, "ok": true}
+{"t": 1790388117.073, "kind": "move", "depth": 3, "pos": [47, 175], "hp": [41, 41], "goals": 8, "nearest": [48, 175], "path": 1, "ok": true}
+{"t": 1790388117.682, "kind": "move", "depth": 3, "pos": [47, 174], "hp": [41, 41], "goals": 9, "nearest": [48, 175], "path": 1, "ok": true}
+{"t": 1790388118.291, "kind": "move", "depth": 3, "pos": [47, 173], "hp": [41, 41], "goals": 10, "nearest": [48, 172], "path": 1, "ok": true}
+{"t": 1790388118.902, "kind": "move", "depth": 3, "pos": [47, 172], "hp": [41, 41], "goals": 11, "nearest": [48, 172], "path": 1, "ok": true}
+{"t": 1790388119.512, "kind": "move", "depth": 3, "pos": [47, 171], "hp": [41, 41], "goals": 12, "nearest": [48, 172], "path": 1, "ok": true}
+{"t": 1790388120.121, "kind": "move", "depth": 3, "pos": [47, 170], "hp": [41, 41], "goals": 13, "nearest": [47, 169], "path": 1, "ok": true}
+{"t": 1790388120.731, "kind": "move", "depth": 3, "pos": [47, 169], "hp": [41, 41], "goals": 14, "nearest": [47, 168], "path": 1, "ok": true}
+{"t": 1790388121.391, "kind": "move", "depth": 3, "pos": [47, 168], "hp": [41, 41], "goals": 15, "nearest": [48, 168], "path": 1, "ok": true}
+{"t": 1790388121.999, "kind": "move", "depth": 3, "pos": [47, 167], "hp": [41, 41], "goals": 14, "nearest": [48, 168], "path": 1, "ok": true}
+{"t": 1790388122.609, "kind": "move", "depth": 3, "pos": [48, 167], "hp": [41, 41], "goals": 13, "nearest": [48, 168], "path": 1, "ok": true}
+{"t": 1790388123.219, "kind": "move", "depth": 3, "pos": [48, 168], "hp": [41, 41], "goals": 12, "nearest": [48, 169], "path": 1, "ok": true}
+{"t": 1790388123.827, "kind": "move", "depth": 3, "pos": [48, 169], "hp": [41, 41], "goals": 11, "nearest": [48, 170], "path": 1, "ok": true}
+{"t": 1790388124.436, "kind": "move", "depth": 3, "pos": [48, 170], "hp": [41, 41], "goals": 10, "nearest": [48, 171], "path": 1, "ok": true}
+{"t": 1790388125.046, "kind": "move", "depth": 3, "pos": [48, 171], "hp": [41, 41], "goals": 9, "nearest": [48, 172], "path": 1, "ok": true}
+{"t": 1790388125.655, "kind": "move", "depth": 3, "pos": [48, 172], "hp": [41, 41], "goals": 9, "nearest": [49, 173], "path": 1, "ok": true}
+{"t": 1790388126.266, "kind": "move", "depth": 3, "pos": [48, 173], "hp": [41, 41], "goals": 9, "nearest": [49, 174], "path": 1, "ok": true}
+{"t": 1790388126.874, "kind": "move", "depth": 3, "pos": [48, 174], "hp": [41, 41], "goals": 8, "nearest": [48, 175], "path": 1, "ok": true}
+{"t": 1790388127.484, "kind": "move", "depth": 3, "pos": [48, 175], "hp": [41, 41], "goals": 5, "nearest": [49, 174], "path": 1, "ok": true}
+{"t": 1790388128.094, "kind": "move", "depth": 3, "pos": [49, 174], "hp": [41, 41], "goals": 6, "nearest": [50, 174], "path": 1, "ok": true}
+{"t": 1790388128.703, "kind": "move", "depth": 3, "pos": [49, 173], "hp": [41, 41], "goals": 5, "nearest": [50, 174], "path": 1, "ok": true}
+{"t": 1790388129.313, "kind": "move", "depth": 3, "pos": [50, 173], "hp": [41, 41], "goals": 6, "nearest": [51, 173], "path": 1, "ok": true}
+{"t": 1790388129.972, "kind": "move", "depth": 3, "pos": [50, 174], "hp": [41, 41], "goals": 5, "nearest": [51, 173], "path": 1, "ok": true}
+{"t": 1790388130.581, "kind": "move", "depth": 3, "pos": [51, 174], "hp": [41, 41], "goals": 6, "nearest": [51, 173], "path": 1, "ok": true}
+{"t": 1790388131.192, "kind": "move", "depth": 3, "pos": [51, 173], "hp": [41, 41], "goals": 5, "nearest": [52, 174], "path": 1, "ok": true}
+{"t": 1790388131.802, "kind": "move", "depth": 3, "pos": [52, 173], "hp": [41, 41], "goals": 6, "nearest": [52, 174], "path": 1, "ok": true}
+{"t": 1790388132.411, "kind": "move", "depth": 3, "pos": [52, 174], "hp": [41, 41], "goals": 6, "nearest": [53, 175], "path": 1, "ok": true}
+{"t": 1790388133.022, "kind": "move", "depth": 3, "pos": [53, 174], "hp": [41, 41], "goals": 7, "nearest": [53, 175], "path": 1, "ok": true}
+{"t": 1790388133.631, "kind": "move", "depth": 3, "pos": [53, 173], "hp": [41, 41], "goals": 6, "nearest": [54, 174], "path": 1, "ok": true}
+{"t": 1790388134.241, "kind": "move", "depth": 3, "pos": [54, 174], "hp": [41, 41], "goals": 5, "nearest": [53, 175], "path": 1, "ok": true}
+{"t": 1790388134.851, "kind": "move", "depth": 3, "pos": [54, 175], "hp": [41, 41], "goals": 6, "nearest": [53, 175], "path": 1, "ok": true}
+{"t": 1790388135.46, "kind": "move", "depth": 3, "pos": [53, 175], "hp": [41, 41], "goals": 5, "nearest": [54, 176], "path": 1, "ok": true}
+{"t": 1790388136.07, "kind": "move", "depth": 3, "pos": [53, 176], "hp": [41, 41], "goals": 6, "nearest": [54, 177], "path": 1, "ok": true}
+{"t": 1790388136.679, "kind": "move", "depth": 3, "pos": [53, 177], "hp": [41, 41], "goals": 14, "nearest": [54, 177], "path": 1, "ok": true}
+{"t": 1790388137.289, "kind": "move", "depth": 3, "pos": [53, 178], "hp": [41, 41], "goals": 22, "nearest": [54, 177], "path": 1, "ok": true}
+{"t": 1790388137.949, "kind": "move", "depth": 3, "pos": [54, 178], "hp": [41, 41], "goals": 21, "nearest": [55, 178], "path": 1, "ok": true}
+{"t": 1790388138.559, "kind": "move", "depth": 3, "pos": [54, 179], "hp": [41, 41], "goals": 21, "nearest": [55, 178], "path": 1, "ok": true}
+{"t": 1790388140.18, "kind": "move", "depth": 3, "pos": [55, 179], "hp": [41, 41], "goals": 1, "nearest": [54, 178], "path": 1, "ok": true}
+{"t": 1790388140.386, "kind": "move", "depth": 3, "pos": [54, 178], "hp": [41, 41], "goals": 22, "nearest": [55, 178], "path": 1, "ok": true}
+{"t": 1790388140.996, "kind": "move", "depth": 3, "pos": [55, 178], "hp": [41, 41], "goals": 21, "nearest": [56, 178], "path": 1, "ok": true}
+{"t": 1790388141.606, "kind": "move", "depth": 3, "pos": [56, 178], "hp": [41, 41], "goals": 23, "nearest": [57, 179], "path": 1, "ok": true}
+{"t": 1790388142.214, "kind": "move", "depth": 3, "pos": [56, 179], "hp": [41, 41], "goals": 23, "nearest": [57, 179], "path": 1, "ok": true}
+{"t": 1790388142.824, "kind": "move", "depth": 3, "pos": [57, 179], "hp": [41, 41], "goals": 22, "nearest": [58, 178], "path": 1, "ok": true}
+{"t": 1790388143.433, "kind": "move", "depth": 3, "pos": [57, 178], "hp": [41, 41], "goals": 21, "nearest": [59, 177], "path": 2, "ok": true}
+{"t": 1790388144.652, "kind": "act", "depth": 3, "pos": [59, 177], "hp": [41, 41], "cmd": "custom <", "why": "stairs <"}
+{"t": 1790388147.689, "kind": "move", "depth": 3, "pos": [59, 177], "hp": [41, 41], "goals": 1, "nearest": [45, 182], "path": 19, "ok": true}
+{"t": 1790388157.049, "kind": "move", "depth": 3, "pos": [45, 182], "hp": [41, 41], "goals": 3, "nearest": [45, 184], "path": 2, "ok": true}
+{"t": 1790388158.319, "kind": "move", "depth": 3, "pos": [45, 184], "hp": [41, 41], "goals": 2, "nearest": [44, 185], "path": 1, "ok": true}
+{"t": 1790388158.93, "kind": "move", "depth": 3, "pos": [44, 185], "hp": [41, 41], "goals": 3, "nearest": [44, 186], "path": 1, "ok": true}
+{"t": 1790388159.54, "kind": "move", "depth": 3, "pos": [43, 185], "hp": [41, 41], "goals": 4, "nearest": [44, 186], "path": 1, "ok": true}
+{"t": 1790388160.15, "kind": "move", "depth": 3, "pos": [43, 184], "hp": [41, 41], "goals": 4, "nearest": [43, 183], "path": 1, "ok": true}
+{"t": 1790388160.762, "kind": "move", "depth": 3, "pos": [43, 183], "hp": [41, 41], "goals": 29, "nearest": [42, 182], "path": 1, "ok": true}
+{"t": 1790388161.373, "kind": "move", "depth": 3, "pos": [43, 182], "hp": [41, 41], "goals": 28, "nearest": [42, 181], "path": 1, "ok": true}
+{"t": 1790388161.983, "kind": "move", "depth": 3, "pos": [43, 181], "hp": [41, 41], "goals": 26, "nearest": [43, 180], "path": 1, "ok": true}
+{"t": 1790388162.594, "kind": "move", "depth": 3, "pos": [43, 180], "hp": [41, 41], "goals": 23, "nearest": [41, 180], "path": 2, "ok": true}
+{"t": 1790388163.815, "kind": "move", "depth": 3, "pos": [41, 180], "hp": [41, 41], "goals": 1, "nearest": [44, 186], "path": 6, "ok": true}
+{"t": 1790388167.478, "kind": "move", "depth": 3, "pos": [44, 186], "hp": [41, 41], "goals": 1, "nearest": [45, 182], "path": 4, "ok": true}
+{"t": 1790388169.914, "kind": "act", "depth": 3, "pos": [45, 182], "hp": [41, 41], "cmd": "custom <", "why": "stairs <"}
+{"t": 1790388171.18, "kind": "act", "depth": 2, "pos": [12, 37], "hp": [41, 41], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790388171.839, "kind": "act", "depth": 3, "pos": [43, 179], "hp": [41, 41], "cmd": "custom <", "why": "stairs <"}
+{"t": 1790388172.496, "kind": "act", "depth": 2, "pos": [10, 48], "hp": [41, 41], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790388173.156, "kind": "act", "depth": 3, "pos": [59, 47], "hp": [41, 41], "cmd": "custom <", "why": "stairs <"}
+{"t": 1790388173.814, "kind": "act", "depth": 2, "pos": [51, 45], "hp": [41, 41], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790388174.474, "kind": "act", "depth": 3, "pos": [29, 84], "hp": [41, 41], "cmd": "custom <", "why": "stairs <"}
+{"t": 1790388175.132, "kind": "act", "depth": 2, "pos": [24, 102], "hp": [41, 41], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790388175.79, "kind": "move", "depth": 3, "pos": [4, 41], "hp": [41, 41], "goals": 1, "nearest": [5, 44], "path": 3, "ok": true}
+{"t": 1790388177.059, "kind": "act", "depth": 3, "pos": [5, 44], "hp": [41, 41], "cmd": "custom >", "why": "stairs >"}
+{"t": 1790388177.667, "kind": "attention", "depth": 4, "pos": [38, 176], "hp": [41, 41], "what": "goal_done", "detail": "dive 200ft: reached 200 ft"}

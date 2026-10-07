@@ -1,0 +1,73 @@
+
+
+                                            People who have worked on MAngband
+
+Recent MAngband Project Team Members
+
+- Graham King (aka Jug) hacks on the game and infrastructure; created the online ladder, discord bot, website, maintains physical server hosting, and various other hackery. He keeps a watchful eye on flambard.
+
+- Bill Seymour (aka Billsey) has been around for a very long time, both as a developer and as a player. He keeps a watchful eye on Jug and Flambard and keeps things working smoothly for Windows users.
+
+- Warrior has been an active member of the community for many years. He wrote the original MAngband FAQ, designed new items and provides insightful advice borne of long experience to other members of the team.
+
+- Flambard contributes to all areas of the project and keeps a watchful eye on Jug.
+
+- Thorbear has taken the step from freelance contributor to full fledged member of the team, providing a fresh look on things as well as actual development muscle.
+
+- evileye does not like to be mentioned, but her contributions kept the codebase patched and she is a major force to be reckoned with.
+
+- PowerWyrm is writing his own variant. Altho not strictly a team member, he provides valuable advice, code reviews, bug reports and patches to the project.
+
+Retired Project Team Members
+
+- Fink was around for many years and was a driving force in the MAngband forums. He provided valuable advice to other members of the team and help keep things on the right side of sanity.
+
+Retired Long Term Maintainers
+
+- Keldon Jones is the original MAngband author (January 1997 - October 1998) and was the guy who actually turned 'Angband' into 'MAngband'. We owe it all to him.
+
+- Alex Dingle (aka Turtle/wortle) was our second maintainer (October 1998 - September 2002) and did significant and long term work adding features and removing bugs.
+
+- Robert L. Seifer (aka Crimson) was our third maintainer (September 2002 - December 2007) providing a reliable game server and website as well as adding features and fixing bugs.
+
+Historical Acknowledgements
+
+There are many many people in the forums and on the old mailing list who have contributed ideas, bug reports, and support. Thanks, to everybody.
+
+This list may not be complete, some contributors may be missing. Your work is still greatly appreciated. If your name was left off the list, it was not intentional, please send an email to team@mangband.org and we'll correct the problem!
+
+- Adriaan de Groot updated the FreeBSD port for version 1.5.3.
+
+- tangar igroglaz created a 1-bit pseudographics font (originally for tomenet), which we now ship.
+
+- Ketchetwahmeegwun T. Southall (aka kettek) wrote a new SDL2 port for us.
+
+- Mark Heath (aka silicontrip) improved our build system to handle OSX seamlessly.
+
+- Torben Hohn updated our build system to automake.
+
+- Gregory Velichansky (aka hmaon) wrote the original SDL port.
+
+- Hao Chen (aka Hao) wrote the original metaserver, and for many years hosted the MAngband metaserver, anonymous ftp archive, and game server on his computer. He also knows where to find good Chinese food. And he provided some OSX binaries too! Thanks, Hao!
+
+- Dan Liberatore (aka Berendol) graciously maintained the the mangband forums up until 2007, as well as significant cleanup and bug patching work.
+
+- Chris Atenasio kept the now defunct automated archive of the mailing list. He has also added a few extra features such as dungeon master vault generation.
+
+- Andreas Karlsson did the original port of the Windows server.
+
+- Garrett Pease did the original port of the Windows client.
+
+- Marco G. Salvagno wrote a port of the client to OS/2.
+
+- Timo Hirvi has done some beta testing and has put up with lots of server crashes, etc. He also made the original web interface to the original metaserver.
+
+- Donald Sharp has written a patch to allow the server to log its output to a file. He's also sent a patch for multiple configuration blocks in the .mangrc file.
+
+- Dave Thaler has sent in a lot of patches fixing various network problems.
+
+- Adam Olsen created the original website.
+
+Many thanks also to Ben Harrison for making this project possible by cleaning up the Angband source code and doing many other nice things.
+
+                

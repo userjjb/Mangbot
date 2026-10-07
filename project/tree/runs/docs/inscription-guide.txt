@@ -1,0 +1,82 @@
+
+
+                                            Inscription Guide
+
+Inscriptions refer to the text on an item enclosed in curly braces.
+
+a Slimy Mold {this is an inscription}
+
+User made inscriptions
+
+Users can manually apply inscriptions to items by pressing the { key, which allows them to make notes specific for that item, for example noting down where in the dungeon the item what found. In addition, certain patterns of text can be added to tell the game something about the item, for example that it should not be possible to sell it (to avoid selling your favorite weapon by accident).
+
+Binding an item to a command
+
+When making macros that involve items, it is usually useful to have the ability to tell the game what item you want it to use for that macro, since the order of items in the inventory changes all the time. This is accomplished by binding the item to a specific command, and giving it a number, so it can be referred to as "quaff item 3" or "read item 2".
+
+To bind an item to a command, simply inscribe the item with the at sign ( @ ) followed by the command it should be bound to, and the number the item should be for that command. For example @q1 to make the item "quaff item 1", or @r2 to make the item "read item 2".
+
+The number must be between 0 and 9
+
+If an item is inscribed @5 it will be "item 5" for every command, but @q5 will have higher priority for quaffing.
+
+Recall depth
+
+A special inscription may be added to items that offer the functionality of "Word of Recall" to specify how deep into the dungeon the item should take the character. Inscribing the item @R450 will make it take the character to 450ft, if the character has previously been that deep, otherwise it will be taken to its maximum depth.
+
+Disabling functionality
+
+To avoid accidentally selling, dropping, throwing or destroying an item, the item can be inscribed with a pattern starting with an exclamation mark ( ! ) followed by the command that should be disabled. To disable selling, simply inscribe the item with !s , to disable accidentally destroying the item, inscribe it with !k . Several commands can be listed after the exclamation mark in order to disable multiple things for the same item. To disable selling, dropping and destroying inscribe the item with !sdk .
+
+Inscriptions such as those could not be overriden or dismissed when an item is laying on the floor and does not belong to you. For example if player Gollum drops a ring inscribed !g, player Bilbo will not be able to pick that item up, nor remove the inscription.
+
+Selling
+
+To sell an item, inscribe it with for sale followed by a price, for example, for sale 500. Then drop it in your house. You can also drop it on the floor, but you need additional protection, otherwise other players will simply pick it up. To protect your item from being picked up, also inscribe it with !g (!g for sale 500). Even better, inscribe it with !* to protect against everything, for example !* for sale 500.
+
+Guard against commands
+
+You can inscribe any item in your equipment with an ^, followed by any command. While you are wearing an item with such an inscription, that command will not execute. Items in your backpack (not worn/equipped), do not affect this.
+
+For example, if you inscribe your boots with ^k you will not be able to invoke the k command at all.
+
+Disable auto-retaliator
+
+If your melee weapon has an !O inscription, auto-retaliator will be disabled.
+If any item in your equipment has an ^O inscription, auto-retaliator will be disabled.
+
+Automatic pick-up
+
+For ammunition like Arrows, Bolts or Shots, there can be added an inscription to automatically pick them up when the player walks over them, to ease the task of picking up all the arrows after shooting at a moving monster. The inscription for this functionality is: =g.
+
+To prevent other players from picking up such ammo items, preventive inscription !g could be used. Both options can be combined as !g=g.
+
+Game made inscriptions
+
+Some items already have inscriptions when they are found, or automatically get inscriptions while you are carrying them. These inscriptions are there to inform the user of what the character knows about the item.
+
+Pseudo-identification
+
+Pseudo-identification is where the character has some feeling about an item's qualities, for example noticing that a Dagger it is slightly better or worse than the average Dagger, but no specific details about how much better or worse.
+
+Once the character has a feeling about an item, an inscription will be automatically added to reflect it.
+
+a Dagger (1d4) {good}
+
+a Broken Sword (1d2) {worthless}
+
+Unique monster loot
+
+When a unique monster is killed, and drops items, the dropped items will be automatically inscribed with the name of the unique, to easily identify what the unique monster really dropped.
+
+a Dagger (2d4) {Wormtongue, Agent of Saruman}
+
+Discounted items
+
+Sometimes the town shops will offer discounts on items they sell, and items bought with discounts will have that discount permanently, to avoid players just selling it back to the store for profit.
+
+a Scroll of Identify {50% off}
+
+These inscriptions cannot be removed, since the discount stays with the item permanently, but other inscriptions can be written over them, and they will only appear when all other inscriptions are removed.
+
+                

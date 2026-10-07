@@ -1,0 +1,54 @@
+Town (depth 0): 52 house doors on the map
+  door (14, 113): shop 'Store' by Bonaventure, 1 items
+  door (16, 119): shop 'Store' by Axia, 0 items
+  door (4, 111): shop 'Store' by Bonaventure, 0 items
+  door (4, 88): shop 'Store' by Grimseed, 1 items
+  door (7, 80): shop 'Store' by Liam, 0 items
+  door (17, 88): shop 'Store' by Bonaventure, 0 items
+  door (13, 64): shop 'Store' by Diver, 0 items
+  door (2, 55): for_sale (200625 gold)
+  door (14, 46): shop 'Store' by Grimdigger, 13 items
+  door (25, 49): shop 'Store' by Grimrock, 4 items
+  door (38, 55): shop 'Store' by Zal, 4 items
+  door (50, 57): for_sale (346500 gold)
+  door (58, 61): shop 'Store' by Anneliese, 0 items
+  door (51, 48): for_sale (291000 gold)
+  door (58, 42): for_sale (135000 gold)
+  door (52, 32): for_sale (192000 gold)
+  door (59, 27): for_sale (21000 gold)
+  door (46, 17): for_sale (290250 gold)
+  door (35, 27): shop 'Store' by Grimlight, 5 items
+  door (29, 32): shop 'Store' by Robocow, 0 items
+  door (16, 24): for_sale (190000 gold)
+  door (7, 33): for_sale (243000 gold)
+  door (2, 14): for_sale (346875 gold)
+  door (15, 12): for_sale (22750 gold)
+  door (27, 17): for_sale (236000 gold)
+  door (61, 14): for_sale (54500 gold)
+  door (50, 81): shop 'Store' by Diver, 0 items
+  door (49, 88): shop 'Store' by Lame, 0 items
+  door (61, 81): shop 'Store' by Anneliese, 0 items
+  door (61, 87): shop 'Store' by Diver, 0 items
+  door (50, 113): shop 'Store' by Anneliese, 0 items
+  door (59, 113): shop 'Store' by Anneliese, 0 items
+  door (50, 143): shop 'Store' by Anneliese, 0 items
+  door (58, 143): shop 'Store' by Anneliese, 0 items
+  door (52, 151): shop 'Store' by Axia, 2 items
+  door (58, 152): shop 'Store' by Anneliese, 0 items
+  door (36, 173): shop 'Store' by Bump, 0 items
+  door (29, 173): shop 'Store' by Moo, 0 items
+  door (26, 185): shop 'Store' by Moo, 0 items
+  door (36, 191): shop 'Store' by Moo, 0 items
+  door (50, 176): for_sale (178125 gold)
+  door (57, 175): for_sale (301875 gold)
+  door (52, 189): for_sale (472000 gold)
+  door (36, 154): shop 'Store' by Bonaventure, 0 items
+  door (28, 141): shop 'Store' by Bonaventure, 0 items
+  door (14, 155): shop 'Store' by Bump, 0 items
+  door (6, 156): shop 'Store' by Anneliese, 0 items
+  door (4, 145): shop 'Store' by Anneliese, 0 items
+  door (6, 173): shop 'Store' by Anneliese, 0 items
+  door (15, 176): shop 'Store' by Moo, 0 items
+  door (15, 188): shop 'Store' by Bump, 0 items
+  door (8, 188): shop 'Store' by Anneliese, 0 items
+{"summary": {"shop": 36, "for_sale": 16}}

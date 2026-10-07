@@ -1,0 +1,196 @@
+
+
+                                            Which client am I running?
+
+On Windows, the "normal" client is the Windows client, and the "Multi-window" one is the SDL client.
+
+On MacOS, if you're using the official builds, you're on SDL client.
+
+On UNIX, you're hopefully on SDL (depending on the binary packages used, or the ./configure flags provided), otherwise, if you have windows, you're using ancient X11 port, if you're on terminal, it's the GCU port (ncurses).
+
+Where is my config file?
+
+On Windows, it should be in the game directory, next to mangclient.exe and it's called mangclient.INI.
+
+On UNIX, it's ~/.mangrc.
+
+Windows client
+
+Currently, all supported configuration features are properly represented in the game interface. You can change fonts,
+select tilesets, and toggle sound from the main menu.
+
+SDL
+
+Configuring terminal positions / fonts
+
+Note: for those commands to work, you might need to toggle the mouse mode, by using the ! command. Login into the game, exit all prompts, and press '!'.
+
+- You should be able to drag your terminals around with the left mouse button.
+
+- Right mouse button closes a terminal.
+
+- Ctrl+Drag resizes the terminal, and Shfit+Drag rescales.
+
+- Hold a terminal down with left mouse button and press Tab, to cycle through fonts.
+
+- The fonts being cycled are being defined in [SDL-Fonts] INI section.
+
+Enable/disable fullscreen
+
+[SDL]
+Width=640
+Height=480
+Fullscreen=1
+
+Select appropriate screen resolution and set Fullscreen to 1.
+
+Enable/disable sound
+
+[SDL]
+Sound=1
+
+(1 to enable, 0 to disable)
+
+Enable graphics / toggle tileset
+
+The only way to enable graphics and to select a tileset in the SDL client, is to edit the  mangclient.INI (~/.mangrc on UNIX) and set:
+
+[SDL]
+Graphics=1
+
+(or Graphics=2, or Graphics=3).
+
+1=Standard
+2=Adam Bolt
+3=David Gervais
+
+Combine arrow keys into diagonals
+
+There's a useful feature in the SDL client, which allows you to combine two regular arrow key presses into one diagonal key press if you push them fast enough. For machines lacking a numpad or convient access to pageup/pagedown/home/end keys.
+
+To enable, edit your mangclient.INI (~/.mangrc on UNIX) and set:
+
+[SDL]
+CombineArrows=1
+CombineArrowsDelay=20
+
+The delay is in milliseconds.
+
+X11
+
+Enable graphics / toggle tileset
+
+The only way to enable graphics and to select a tileset in the X11 client, is to edit the  mangclient.INI (~/.mangrc on UNIX) and set:
+
+[X11]
+Graphics=1
+
+(or Graphics=2, or Graphics=3).
+
+1=Standard
+2=Adam Bolt
+3=David Gervais
+
+Advanced keymapping and macroing
+
+Difference between keymaps and macros
+
+There are 3 (yikes!) forms of key bindings in MAngband: keymaps, command macros and normal macros.
+
+Keymaps only fire off when the game is expecting a command to be entered. Keymaps don't work in text/quantity/item/spell/etc prompts or in looking/targeting mode. Keymaps don't (yet?) support complex triggers, like \[control-shift-F1], they are limited to simple triggers, like f, F and ^F (base key, shift + key, ctrl + key). Keymaps are mostly used to support original and roguelike keysets and as an easy way to switch between them.
+
+Command macros also only fire off when the game is expecting a command to be entered. Command macros don't work in text/quantity/item/spell/etc prompts or in looking/targeting mode. Macros do support complex triggers, like \[alt-F2].
+
+Normal macros fire off at all circumstances, both when the game is expecting a command and inside text/quantity/item/spell/looking/targeting/etc prompts. Macros do support complex triggers, like \[alt-F2].
+
+Writing macro files by hand
+
+Find and edit your user-xxx.prf file in the lib/user dir. You can use one of those 3 forms:
+
+# Execute command sequence 'm1b' when 'H' is pressed (normal keymap)
+# Keymaps only fire off when a game is expecting a command.
+A:m1b
+C:0:H
+
+# Execute command sequence 'm1b' when 'H' is pressed (roguelike keymap)
+# Keymaps only fire off when a game is expecting a command.
+A:m1b
+C:1:H
+
+# Execte keypresses 'm1b' when 'H' is pressed (normal macro)
+# Note: such macro will render the key 'H' unusable for, say, typing 'Hello'
+# Normal macros execute in all contexts, at prompts, menus, etc.
+A:m1b
+P:H
+
+As normal macros work in menus and text/item/etc prompts, it can be benefical to prepend them with \e (or a number of \es), so that all prompts or silly states are cleared out. Such macros will execute no matter what.
+
+# Execute keypresses 'ESC, ESC, ESC, ESC, r, 1' when F1 is pressed.
+# The four escapes should exit all and any pending prompts!
+A:\e\e\e\er1
+P:\[f1]
+
+Keymap to swap commands around
+
+Keymaps can be used to swap commands without one overwriting the other (that's impossible with macros). For example
+
+# 'e' is now 'i'
+A:e
+C:0:i
+
+# 'i' is now 'e'
+A:i
+C:0:e
+
+Keymap to clear queue on every command
+
+# walk south
+A:\e;2
+C:0:2
+
+# read scroll
+A:\er
+C:0:r
+
+Keymap to disable Enter Menu
+
+The patchnotes in Angband 3.0.8 suggest that people, who dislike the "new" enter menu, should define a keymap to make enter behave like a spacebar. But how?
+
+# Turn Enter into Spacebar
+A:\s
+C:0:\r
+C:1:\r
+
+Macro to toggle any option
+
+\e"Y:use_color\r
+
+\e"N:use_color\r
+
+Macro to load specific pref file
+
+Using the interact with macros (%), load user file (1) menu:
+
+\e%1filename.prf\r
+
+Using the run pref command ("), include file (%) hack:
+
+\e"%:filename.prf\r
+
+Squelch-like behaviors
+
+MAngclient doesn't support proper squelch right now, but you can approximate it with a few related functions.
+The idea of this recipe is that we first auto-inscribe some items with =k, then execute k command (destroy items)
+and feed it "{=k}", so it destroys items inscribed with =k.
+
+- Prepare your auto-inscription file (inscribe.prf) to inscribe "bad" items with =k, for example {:Onyx Ring:=k. 
+
+- Create a macro to execute your auto-inscription file, for example \e%1inscribe.prf\r\e, binded to F9.
+
+- Create a macro to execute your squelching, for example \ek"{=k}"y\ry\e, binded to F10.
+
+Now, each time you press F9, your bad items will get auto-inscribed. Each time you press F10, a stack of items will get destroyed.
+
+The weird y\ry\e ending suggested here is used to ensure we plow through all the confirmation and quantity prompts, but you might want a different ending, depeneding on your inventory/user-interface options.
+
+                

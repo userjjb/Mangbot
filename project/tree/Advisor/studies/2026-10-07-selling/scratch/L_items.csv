@@ -1,0 +1,88 @@
+mission,date_time,nick,depth_ft,item_as_seen,true_kind,fate,gold_received,source_cite,aware_at_find,tval,charges,est_known_gold,note
+pre,09-25 20:56:03,Dive03,,Rhodonite Ring,Ring of Stupidity (-4) {cursed},sold unknown (Magic shop),21,dive03/events.jsonl:164,no,ring,,0,pickup not logged; known = cursed -> shop pays 0
+pre,09-25 20:56:07,Dive03,,Golden Staff,Staff of Sleep Monsters,sold unknown (Magic shop),33,dive03/events.jsonl:177,no,staff,10,494,pickup not logged
+pre,09-25 20:56:07,Dive03,,Balsa Staff,Staff of Detect Invisible,sold unknown (Magic shop),33,dive03/events.jsonl:187,no,staff,11,146,pickup not logged
+pre,09-25 20:56:07,Dive03,,Maple Staff,Staff of Cure Light Wounds,sold unknown (Magic shop),33,dive03/events.jsonl:197,no,staff,11,255,pickup not logged
+pre,09-25 20:56:07,Dive03,,Lead Wand,Wand of Heal Monster,sold unknown (Magic shop),24,dive03/events.jsonl:207,no,wand,17,0,pickup not logged; cost 0 (monster-helping)
+pre,09-25 20:56:08,Dive03,,Steel-Plated Wand,Wand of Confuse Monster,sold unknown (Magic shop),24,dive03/events.jsonl:218,no,wand,17,435,pickup not logged
+pre,09-25 20:56:08,Dive03,,Copper-Plated Wand,Wand of Slow Monster,sold unknown (Magic shop),24,dive03/events.jsonl:228,no,wand,13,388,pickup not logged
+pre,09-25 20:58:19,Dive03,,(2nd) Ring of Stupidity (flavour now aware),Ring of Stupidity,"shop refused (""I don't want that!"") then destroyed",0,pre-log (first dive03 sale 09-25 20:56),yes,ring,,,pickup not logged; 2nd copy after first sale made flavour aware
+pre,09-25 20:58:22,Dive03,,(2nd) Wand of Heal Monster (aware),Wand of Heal Monster,shop refused then destroyed,0,pre-log (first dive03 sale 09-25 20:56),yes,wand,,,pickup not logged
+pre,09-25 20:58:31,Dive03,,"Scroll titled ""it mungrea a"" {tried}",Scroll of Summon Monster,"read-tested in town by agent (no visible effect, stayed unaware ""{tried}"")",0,pre-log (first dive03 sale 09-25 20:56),no,scroll,,,"pickup not logged; read 20:58:30 (events: You have no more Scrolls titled ""it mungrea a"" {tried})"
+pre,09-25 20:58:39,Dive03,,"Scroll titled ""kliwex potri"" {tried}",Scroll of Door/Stair Location,"read-tested in town (no visible effect, ""{tried}"")",0,pre-log (first dive03 sale 09-25 20:56),no,scroll,,,pickup not logged
+pre-test,09-26 04:54:41,Dive03,200,Light Blue Potion,Potion of Heroism,sold unknown (Alchemist),9,dive03/events.jsonl:17993; dive03/events.jsonl:20749,no,potion,,16,carried 11h to M1 start; sold M1
+pre-test,09-26 04:55:09,Dive03,250,Clotted Red Potion,Potion of Clumsiness,sold unknown (Alchemist),9,dive03/events.jsonl:18170; dive03/events.jsonl:20759,no,potion,,0,
+pre-test,09-26 04:56:54,Dive03,400,Yellow Speckled Potion,Potion of Infravision,sold unknown (Alchemist),9,dive03/events.jsonl:18607; dive03/events.jsonl:20769,no,potion,,9,
+pre-test,09-26 04:57:10,Dive03,400,Blue Speckled Potion,Potion of Sleep,sold unknown (Alchemist),9,dive03/events.jsonl:18731; dive03/events.jsonl:20778,no,potion,,0,
+pre-test,09-26 04:57:27,Dive03,400,Green Potion,Potion of Slowness,sold unknown (Alchemist),9,dive03/events.jsonl:18824; dive03/events.jsonl:20788,no,potion,,0,
+M1,09-26 15:15:27,Dive03,0,Clear Potion (town floor),Potion of Water,sold unknown (Alchemist),9,dive03/events.jsonl:20607; dive03/events.jsonl:20798,no,potion,,0,
+M1,09-26 15:29:53,Dive03,250,Birch Staff,Staff of Darkness,sold unknown (Magic shop),32,dive03/events.jsonl:23976; dive03/events.jsonl:35530,no,staff,15,0,known = cost 0 (bad staff)
+M1,09-26 15:31:45,Dive03,350,Copper Wand,Wand of Haste Monster (by flavour),"seen on floor, pickup command logged but no ""You have"" message; not carried (not in later sales)",0,dive03/events.jsonl:24732,no,wand,,,fate not confirmed
+M1,09-26 15:32:14,Dive03,350,Red Speckled Potion,unknown (never identified),destroyed by agent in a stale-letter batch (Navigator: pack cleanup mistake),0,dive03/events.jsonl:24873,no,potion,,,M1 15:36:02; true kind never learned
+M1,09-26 15:33:53,Dive03,400,Red Potion,Potion of Resist Cold (by Dive04 sale 09-29),destroyed by agent in a stale-letter batch (mistake),0,dive03/events.jsonl:25319,no,potion,,14,M1 15:36:00; value ~12-14 known
+M1,09-26 15:45:35,Dive03,300,Vermilion Potion,Potion of Detect Invisible,sold unknown (Alchemist),9,dive03/events.jsonl:28090; dive03/events.jsonl:35478,no,potion,,22,
+M1,09-26 15:45:42,Dive03,350,Black Potion,Potion of Resist Heat,sold unknown (Alchemist),9,dive03/events.jsonl:28140; dive03/events.jsonl:35488,no,potion,,14,
+M1,09-26 15:43:54,Dive03,350,"Scroll titled ""kliwex potri"" {tried} (+1 more at 15:50:19, d6)",Scroll of Door/Stair Location x2,sold unknown (Alchemist),18,dive03/events.jsonl:27382; dive03/events.jsonl:35498,no,scroll,,32,"2 scrolls, 18 total"
+M1,09-26 15:49:38,Dive03,250,Bubbling Potion,Potion of Neutralize Poison (by flavour),"left on floor: ""You have no room""",0,dive03/events.jsonl:29904,no,potion,,,
+M1,09-26 15:49:45,Dive03,300,Iron Wand,unknown,"left on floor: ""You have no room""",0,dive03/events.jsonl:29955,no,wand,,,
+M1,09-26 15:50:47,Dive03,250,Runed Staff,Staff of Light,sold unknown (Magic shop),32,dive03/events.jsonl:30305; dive03/events.jsonl:35540,no,staff,11,182,
+M2,09-26 16:17:06,Dive03,1000,Ruby Ring,Ring of Searching (-2) {cursed},sold unknown (Magic shop),20,dive03/events.jsonl:36034; dive03/events.jsonl:37670,no,ring,,0,known cursed -> 0
+M2,09-26 16:25:52,Dive03,650,Icky Green Potion,Potion of Slime Mold Juice,sold unknown (Alchemist),9,dive03/events.jsonl:38710; dive03/events.jsonl:42193,no,potion,,1,
+M2,09-26 16:31:54,Dive03,650,Mulberry Staff,Staff of Slow Monsters,sold unknown (Magic shop),32,dive03/events.jsonl:40244; dive03/events.jsonl:42162,no,staff,8,526,
+M2,09-26 16:42:26,Dive03,650,Copper-Plated Rod,Rod of Illumination,sold unknown (Magic shop),42,dive03/events.jsonl:42793; dive03/events.jsonl:44948,no,rod,,470,
+M3,09-27 11:08:59,Dive03,50,Magenta Potion,Potion of Confusion,sold unknown (Alchemist),9,dive03/events.jsonl:45768; dive03/events.jsonl:58370,no,potion,,0,
+M3,09-27 11:35:15,Dive03,450,"Scroll titled ""munger toxmung""",Scroll of Summon Undead,sold unknown (Alchemist),9,dive03/events.jsonl:52340; dive03/events.jsonl:58390,no,scroll,,0,
+M3,09-27 11:38:02,Dive03,450,Rosewood Staff,Staff of Object Location,sold unknown (Magic shop),33,dive03/events.jsonl:53056; dive03/events.jsonl:58339,no,staff,20,188,
+M3,09-27 11:40:09,Dive03,450,Bubbling Potion,Potion of Neutralize Poison,sold unknown (Alchemist),9,dive03/events.jsonl:53460; dive03/events.jsonl:58380,no,potion,,34,
+M3,09-27 11:40:36,Dive03,450,Copper Wand,Wand of Haste Monster,sold unknown (Magic shop),24,dive03/events.jsonl:53578; dive03/events.jsonl:58329,no,wand,9,0,known cost 0
+M3,09-27 11:55:49,Dive03,500,Molybdenum Rod,Rod of Light,sold unknown (Magic shop),42,dive03/events.jsonl:58042; dive03/events.jsonl:58319,no,rod,,235,
+M4,09-27 12:07:32,Dive03,600,Corundum Ring,Ring of Feather Falling,sold unknown (Magic shop),21,dive03/events.jsonl:58846; dive03/events.jsonl:59687,no,ring,,94,
+M4,09-27 12:15:06,Dive03,600,Redwood Staff,Staff of Door/Stair Location,sold unknown (Magic shop),33,dive03/events.jsonl:60254; dive03/events.jsonl:61759,no,staff,13,271,"Navigator later: ""mistake, that staff is useful for stair-scumming"""
+M4,09-27 12:19:15,Dive03,600,Nickel-Plated Wand,Wand of Trap/Door Destruction,sold unknown (Magic shop),24,dive03/events.jsonl:61314; dive03/events.jsonl:61749,no,wand,8,66,
+M4,09-27 12:26:52,Dive03,600,Ivory Amulet,Amulet of Resist Lightning,sold unknown (Magic shop),21,dive03/events.jsonl:63118; dive03/events.jsonl:66498,no,amulet,,141,"Navigator: mistake, neck slot was empty; inspect did not identify"
+M4,09-27 12:35:38,Dive03,600,"Scroll titled ""skinej glenur""",Scroll of Remove Curse,sold unknown (Alchemist),9,dive03/events.jsonl:65420; dive03/events.jsonl:66536,no,scroll,,45,
+M5,09-27 12:47:27,Dive03,350,"Scroll titled ""nelggar payjo""",Scroll of Trap Detection,sold unknown (Alchemist),9,dive03/events.jsonl:67538; dive03/events.jsonl:72041,no,scroll,,16,
+M5,09-27 12:49:56,Dive03,350,"Scroll titled ""monwhon""",Scroll of Detect Invisible,sold unknown (Alchemist),9,dive03/events.jsonl:68133; dive03/events.jsonl:72051,no,scroll,,7,
+M5,09-27 12:52:05,Dive03,500,Elm Staff,Staff of Trap Location,sold unknown (Magic shop),33,dive03/events.jsonl:68835; dive03/events.jsonl:71912,no,staff,9,239,
+M5,09-27 12:54:28,Dive03,550,Runed Rod,Rod of Trap Location,"identified by found Scroll of Identify (read 13:03:00), then sold known (Magic shop)",47,dive03/events.jsonl:69477; dive03/events.jsonl:71903,no,rod,,47,Identify was a free find; gain over unknown sale (42 for rods at base 90) was +5 only: cost 100 vs unaware base 90
+M6,09-27 13:36:40,Dive03,700,Silver Amulet,unknown (never identified),"WORN 13:50:46 (neck slot empty), never identified; lost at death M7 22:29",0,dive03/events.jsonl:72483,no,amulet,,,no ill effect seen; true kind unknown
+M7,09-27 22:17:48,Dive03,750,Amber Amulet,unknown (never identified),carried unworn; lost at death 22:29,0,dive03/events.jsonl:78258,no,amulet,,,
+Dive01 test,09-25 22:00:55,Dive01,50,"Scroll titled ""xtox ipta sour""",Scroll of Blessing (by Dive04 sale 09-28),carried at end of log (22:03),0,dive01/events.jsonl:1120,no,scroll,,,
+Dive01 test,09-25 22:01:54,Dive01,150,Gold Wand,unknown (never identified),carried at end of log (22:03),0,dive01/events.jsonl:1395,no,wand,,,
+M8,09-28 01:37:44,Dive04,50,"Scroll titled ""xtox ipta sour""",Scroll of Blessing,sold unknown (Alchemist),9,dive04/events.jsonl:234; dive04/events.jsonl:7992,no,scroll,,6,
+M8,09-28 01:43:49,Dive04,50,Light Brown Potion,Potion of Apple Juice,sold unknown (Alchemist),9,dive04/events.jsonl:1747; dive04/events.jsonl:7972,no,potion,,0,
+M8,09-28 01:49:43,Dive04,50,"Scroll titled ""mikoxy urmur i""",Scroll of Identify,sold unknown (Alchemist),9,dive04/events.jsonl:3337; dive04/events.jsonl:8001,no,scroll,,20,sold an Identify scroll (buy price 81 at CHR 4)
+M8,09-28 02:02:32,Dive04,100,Magenta Potion,Potion of Confusion,sold unknown (Alchemist),9,dive04/events.jsonl:6879; dive04/events.jsonl:7982,no,potion,,0,
+M8,09-28 02:05:53,Dive04,100,"Scroll titled ""blaa marsef""",Scroll of Darkness,sold unknown (Alchemist),9,dive04/events.jsonl:7797; dive04/events.jsonl:8011,no,scroll,,0,
+M9,09-29 21:37:17,Dive04,100,Metallic Blue Potion,Potion of Boldness,sold unknown (Alchemist),9,dive04/events.jsonl:12040; dive04/events.jsonl:15248,no,potion,,4,
+M9,09-29 21:37:38,Dive04,100,Icky Green Potion,Potion of Slime Mold Juice,sold unknown (Alchemist),9,dive04/events.jsonl:12203; dive04/events.jsonl:15257,no,potion,,1,
+M9,09-29 21:44:33,Dive04,250,Lead Wand,Wand of Heal Monster,sold unknown (Magic shop; Alchemist refused it),15,dive04/events.jsonl:14019; dive04/events.jsonl:15288,no,wand,10,0,known cost 0 (Alchemist does not buy wands)
+M10,09-29 22:10:44,Dive04,150,Violet Potion,unknown,lost at death 22:29 (pack emptied),0,dive04/events.jsonl:16393,no,potion,,,
+M10,09-29 22:15:37,Dive04,250,Copper Wand,Wand of Haste Monster (by flavour),lost at death 22:29,0,dive04/events.jsonl:17791,no,wand,,0,
+M10,09-29 22:21:18,Dive04,250,Clear Potion,Potion of Water (by flavour),lost at death 22:29,0,dive04/events.jsonl:19284,no,potion,,0,
+M10,09-29 22:24:20,Dive04,250,Cloudy Potion,Potion of Slow Poison (by flavour),lost at death 22:29,0,dive04/events.jsonl:20142,no,potion,,10,
+M10,09-29 22:25:32,Dive04,250,Runed Staff,Staff of Light (by flavour),lost at death 22:29,0,dive04/events.jsonl:20484,no,staff,,100,
+M10,09-29 22:28:05,Dive04,250,Gold Wand,unknown,lost at death 22:29,0,dive04/events.jsonl:21216,no,wand,,,
+M11,09-29 22:37:59,Dive04,100,Rosewood Staff,Staff of Object Location (16 ch),identified with a found Scroll of Identify (23:07:34); then not seen in any later sale or message (fate unknown),0,dive04/events.jsonl:23026,no,staff,16,144,
+M11,09-29 22:38:27,Dive04,100,"Scroll titled ""monwhon"" (3 found: 22:38, 22:59, 23:00)",Scroll of Detect Invisible x3,1 sold unknown 8 (23:06); other 2 sold as known 12 total (10-03 12:19:46),8,dive04/events.jsonl:23168; dive04/events.jsonl:31723,no,scroll,,6,3 found; gold = first only
+M11,09-29 22:46:19,Dive04,100,"Scroll titled ""heaks khonis""",Scroll of Light,sold unknown (Alchemist),8,dive04/events.jsonl:25272; dive04/events.jsonl:31732,no,scroll,,6,
+M11,09-29 22:46:20,Dive04,100,Green Potion,Potion of Slowness,sold unknown (Alchemist),8,dive04/events.jsonl:25281; dive04/events.jsonl:31691,no,potion,,0,
+M11,09-29 22:48:13,Dive04,100,"Red Potion (2 found: 22:48, 23:03)",Potion of Resist Cold x2,"1 sold unknown 8; 1 kept (now aware), no later record",8,dive04/events.jsonl:25808; dive04/events.jsonl:31701,no,potion,,12,gold = first only
+M11,09-29 22:50:10,Dive04,100,"Clear Potion (2 found: 22:50, 23:01)",Potion of Water x2,1 sold unknown 8; 2nd sold known 1 gold (10-03 12:19:33),8,dive04/events.jsonl:26379; dive04/events.jsonl:31712,no,potion,,0,gold = first only
+M11,09-29 22:59:23,Dive04,100,Blue Speckled Potion,Potion of Sleep,sold unknown (Alchemist),8,dive04/events.jsonl:29005; dive04/events.jsonl:31977,no,potion,,0,carried 4 days; sold M12 start
+M11,09-29 22:59:27,Dive04,100,"Orange Speckled Potion (2 found: 22:59, 23:00)",Potion of Speed x2,sold unknown (Alchemist),16,dive04/events.jsonl:29031; dive04/events.jsonl:31987,no,potion,,60,"2 potions, 16 total; store resells at 121 each; handbook cites as the mistake"
+M11,09-29 23:01:24,Dive04,100,"Light Blue Potion (2 found: 23:01, 23:02)",Potion of Heroism x2,sold unknown (Alchemist),16,dive04/events.jsonl:29917; dive04/events.jsonl:31997,no,potion,,28,"2 potions, 16 total"
+M11,09-29 23:02:06,Dive04,150,Cloudy Potion,Potion of Slow Poison,sold unknown (Alchemist),8,dive04/events.jsonl:30191; dive04/events.jsonl:32007,no,potion,,10,
+M11,09-29 23:04:22,Dive04,100,"Scroll titled ""it mungrea a""",Scroll of Summon Monster,sold unknown (Alchemist),8,dive04/events.jsonl:31086; dive04/events.jsonl:32017,no,scroll,,0,known cost 0 (bad scroll)
+M12,10-03 12:26:59,Dive04,200,Vermilion Potion,Potion of Detect Invisible,sold unknown (Alchemist),8,dive04/events.jsonl:33907; dive04/events.jsonl:40255,no,potion,,20,
+M12,10-03 12:33:51,Dive04,250,Maple Staff,Staff of Cure Light Wounds (7 ch),"identified with a bought Scroll of Identify (81 each, 12:48:47), KEPT",0,dive04/events.jsonl:35675,no,staff,7,189,Dive04 uses it as a heal
+M12,10-03 12:41:05,Dive04,250,Bronze Wand,Wand of Magic Missile (15 ch),"identified (bought Identify 81), then sold known (Magic shop)",105,dive04/events.jsonl:37670; dive04/events.jsonl:40318,no,wand,15,105,unknown sale would have paid ~15
+M12,10-03 12:41:49,Dive04,250,Aluminum-Plated Wand,Wand of Stinking Cloud (10 ch),"identified (bought Identify 81), then sold known (Magic shop)",180,dive04/events.jsonl:38050; dive04/events.jsonl:40327,no,wand,10,180,unknown sale would have paid ~15
+M12,10-03 12:42:10,Dive04,250,"Scroll titled ""ishx therbin""",Scroll of Satisfy Hunger,sold unknown (Alchemist),8,dive04/events.jsonl:38149; dive04/events.jsonl:40265,no,scroll,,4,
+M13 (running; data to 09:19),10-07 09:14:06,Dive04,450,Puce Potion,Potion of Weakness,QUAFF-TESTED by Navigator at 09:17:05 -> STR drained (blows 3->2),0,dive04/events.jsonl:49002; dive04/events.jsonl:49960,no,potion,,,HARM: stat_drained STR 18/10->18; Navigator calls it a mistake
+M3,09-27 11:09:04,Dive03,50,Scroll of Object Detection,Scroll of Object Detection,sold known (Alchemist),7,dive03/events.jsonl:45806; dive03/events.jsonl:58400,yes,scroll,,,
+M4,09-27 12:17:01,Dive03,600,Scroll of Magic Mapping,Scroll of Magic Mapping,sold known (Alchemist),18,dive03/events.jsonl:60723; dive03/events.jsonl:66546,yes,scroll,,,
+M4,09-27 12:18:15,Dive03,600,Ring of Teleportation {cursed},Ring of Teleportation,autodestroyed (cursed),0,dive03/events.jsonl:61060,yes,ring,,,
+M6,09-27 13:37:58,Dive03,700,Staff of Object Location,Staff of Object Location,"sold known at M7 start (22:16:10), 16 ch",94,dive03/events.jsonl:72816; dive03/events.jsonl:77904,yes,staff,16,,compare: unknown 20-ch staff of same kind sold 33 at 47%; here 94 (magic shop pct ~26% that evening?)
+M12,10-03 12:33:02,Dive04,200,Wand of Heal Monster,Wand of Heal Monster,destroyed by agent (shop pays 0),0,dive04/events.jsonl:35477,yes,wand,,,
+M13,10-07 09:08:17,Dive04,450,Staff of Object Location,Staff of Object Location,carried at end of data,0,dive04/events.jsonl:47155,yes,staff,,,

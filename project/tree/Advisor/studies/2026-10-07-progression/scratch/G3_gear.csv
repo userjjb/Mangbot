@@ -1,0 +1,126 @@
+store,kind,tval,sval,dice,weight,ac,cost,buy_min,buy_max,notes
+General Store,ammo,TV_ARROW,SV_AMMO_NORMAL,1d4,2,,1,2,2,Arrow lvl3
+General Store,ammo,TV_SHOT,SV_AMMO_NORMAL,1d4,5,,2,3,3,Iron Shot lvl3
+General Store,ammo,TV_BOLT,SV_AMMO_NORMAL,1d5,3,,2,3,3,Bolt lvl3
+General Store,armour,TV_CLOAK,SV_CLOAK,,10,1,3,5,5,Cloak lvl1
+Armoury,armour,TV_BOOTS,SV_PAIR_OF_SOFT_LEATHER_BOOTS,,20,2,7,9,11,Pair of Soft Leather Boots lvl3
+Armoury,armour,TV_BOOTS,SV_PAIR_OF_HARD_LEATHER_BOOTS,,40,3,12,16,19,Pair of Hard Leather Boots lvl5
+Armoury,armour,TV_HELM,SV_HARD_LEATHER_CAP,,15,2,12,16,19,Hard Leather Cap lvl3
+Armoury,armour,TV_HELM,SV_METAL_CAP,,20,3,30,41,49,Metal Cap lvl10
+Armoury,armour,TV_HELM,SV_IRON_HELM,,75,5,75,101,122,Iron Helm lvl20
+Armoury,armour,TV_SOFT_ARMOR,SV_ROBE,,20,2,4,5,6,Robe lvl1
+Armoury,armour,TV_SOFT_ARMOR,SV_SOFT_LEATHER_ARMOR,,80,4,18,24,29,Soft Leather Armour lvl3
+Armoury,armour,TV_SOFT_ARMOR,SV_HARD_LEATHER_ARMOR,,100,6 (to_h -1),150,203,243,Hard Leather Armour lvl5
+Armoury,armour,TV_SOFT_ARMOR,SV_HARD_STUDDED_LEATHER,,110,7 (to_h -1),200,270,324,Hard Studded Leather lvl10
+Armoury,armour,TV_SOFT_ARMOR,SV_LEATHER_SCALE_MAIL,,140,11 (to_h -1),450,608,729,Leather Scale Mail lvl15
+Armoury,armour,TV_HARD_ARMOR,SV_METAL_SCALE_MAIL,,250,13 (to_h -2),550,743,891,Metal Scale Mail lvl25
+Armoury,armour,TV_HARD_ARMOR,SV_CHAIN_MAIL,,220,14 (to_h -2),750,1013,1215,Chain Mail lvl25
+Armoury,armour,TV_HARD_ARMOR,SV_AUGMENTED_CHAIN_MAIL,,270,16 (to_h -2),900,1215,1458,Augmented Chain Mail lvl30
+Armoury,armour,TV_HARD_ARMOR,SV_BAR_CHAIN_MAIL,,280,18 (to_h -2),950,1283,1539,Bar Chain Mail lvl35
+Armoury,armour,TV_HARD_ARMOR,SV_DOUBLE_CHAIN_MAIL,,250,16 (to_h -2),850,1148,1377,Double Chain Mail lvl30
+Armoury,armour,TV_HARD_ARMOR,SV_METAL_BRIGANDINE_ARMOUR,,290,19 (to_h -3),1100,1485,1782,Metal Brigandine Armour lvl35
+Armoury,armour,TV_GLOVES,SV_SET_OF_LEATHER_GLOVES,,5,1,3,4,5,Set of Leather Gloves lvl1
+Armoury,armour,TV_GLOVES,SV_SET_OF_GAUNTLETS,,25,2,35,47,57,Set of Gauntlets lvl10
+Armoury,armour,TV_SHIELD,SV_SMALL_LEATHER_SHIELD,,50,2,30,41,49,Small Leather Shield lvl3
+Armoury,armour,TV_SHIELD,SV_LARGE_LEATHER_SHIELD,,100,4,120,162,194,Large Leather Shield lvl15
+Armoury,armour,TV_SHIELD,SV_SMALL_METAL_SHIELD,,65,3,50,68,81,Small Metal Shield lvl10
+Weaponsmith,weapon,TV_SWORD,SV_DAGGER,1d4,12,,10,15,16,Dagger lvl0
+Weaponsmith,weapon,TV_SWORD,SV_MAIN_GAUCHE,1d5,30,,25,36,41,Main Gauche lvl3
+Weaponsmith,weapon,TV_SWORD,SV_RAPIER,1d6,40,,42,61,68,Rapier lvl5
+Weaponsmith,weapon,TV_SWORD,SV_SMALL_SWORD,1d6,75,,48,70,78,Small Sword lvl5
+Weaponsmith,weapon,TV_SWORD,SV_SHORT_SWORD,1d7,80,,90,131,146,Short Sword lvl5
+Weaponsmith,weapon,TV_SWORD,SV_SABRE,1d7,50,,50,73,81,Sabre lvl5
+Weaponsmith,weapon,TV_SWORD,SV_CUTLASS,1d7,110,,85,123,138,Cutlass lvl5
+Weaponsmith,weapon,TV_SWORD,SV_TULWAR,2d4,100,,200,290,324,Tulwar lvl5
+Weaponsmith,weapon,TV_SWORD,SV_BROAD_SWORD,2d5,150,,255,370,413,Broad Sword lvl10
+Weaponsmith,weapon,TV_SWORD,SV_LONG_SWORD,2d5,130,,300,435,486,Long Sword lvl10
+Weaponsmith,weapon,TV_SWORD,SV_SCIMITAR,2d5,130,,250,363,405,Scimitar lvl10
+Weaponsmith,weapon,TV_SWORD,SV_KATANA,3d4,120,,400,580,648,Katana lvl20
+Weaponsmith,weapon,TV_SWORD,SV_BASTARD_SWORD,3d4,140,,350,508,567,Bastard Sword lvl15
+Weaponsmith,weapon,TV_POLEARM,SV_SPEAR,1d6,50,,36,52,58,Spear lvl5
+Weaponsmith,weapon,TV_POLEARM,SV_AWL_PIKE,1d8,160,,340,493,551,Awl-Pike lvl10
+Weaponsmith,weapon,TV_POLEARM,SV_TRIDENT,1d8,70,,120,174,194,Trident lvl5
+Weaponsmith,weapon,TV_POLEARM,SV_PIKE,2d5,160,,358,519,580,Pike lvl15
+Weaponsmith,weapon,TV_POLEARM,SV_BEAKED_AXE,2d6,180,,408,592,661,Beaked Axe lvl15
+Weaponsmith,weapon,TV_POLEARM,SV_BROAD_AXE,2d6,160,,304,441,492,Broad Axe lvl15
+Weaponsmith,weapon,TV_POLEARM,SV_LANCE,2d8,300,,230,334,373,Lance lvl10
+Weaponsmith,weapon,TV_POLEARM,SV_BATTLE_AXE,2d8,170,,334,484,541,Battle Axe lvl15
+Weaponsmith,weapon,TV_HAFTED,SV_WHIP,1d3,30,,30,44,49,Whip lvl3
+Weaponsmith,launcher,TV_BOW,SV_SLING,0d0,5,,5,7,8,Sling mult x2 lvl1
+Weaponsmith,launcher,TV_BOW,SV_SHORT_BOW,0d0,30,,50,73,81,Short Bow mult x2 lvl3
+Weaponsmith,launcher,TV_BOW,SV_LONG_BOW,0d0,40,,120,174,194,Long Bow mult x3 lvl10
+Weaponsmith,launcher,TV_BOW,SV_LIGHT_XBOW,0d0,110,,140,203,227,Light Crossbow mult x3 lvl15
+Weaponsmith,ammo,TV_SHOT,SV_AMMO_NORMAL,1d4,5,,2,3,3,Iron Shot lvl3
+Weaponsmith,ammo,TV_ARROW,SV_AMMO_NORMAL,1d4,2,,1,1,2,Arrow lvl3
+Weaponsmith,ammo,TV_BOLT,SV_AMMO_NORMAL,1d5,3,,2,3,3,Bolt lvl3
+Temple,weapon,TV_HAFTED,SV_WHIP,1d3,30,,30,46,48,Whip lvl3
+Temple,weapon,TV_HAFTED,SV_QUARTERSTAFF,1d9,150,,200,308,318,Quarterstaff lvl10
+Temple,weapon,TV_HAFTED,SV_MACE,2d4,120,,130,200,207,Mace lvl5
+Temple,weapon,TV_HAFTED,SV_BALL_AND_CHAIN,2d4,150,,200,308,318,Ball-and-Chain lvl20
+Temple,weapon,TV_HAFTED,SV_WAR_HAMMER,3d3,120,,225,347,358,War Hammer lvl5
+Temple,weapon,TV_HAFTED,SV_LUCERN_HAMMER,2d5,120,,376,579,598,Lucerne Hammer lvl10
+Temple,weapon,TV_HAFTED,SV_MORNING_STAR,2d6,150,,396,610,630,Morning Star lvl10
+Temple,weapon,TV_HAFTED,SV_FLAIL,2d6,150,,353,544,561,Flail lvl10
+Temple,weapon,TV_HAFTED,SV_LEAD_FILLED_MACE,3d4,180,,502,773,798,Lead-Filled Mace lvl15
+Temple,scroll,TV_SCROLL,SV_SCROLL_REMOVE_CURSE,,5,,100,154,159,Remove Curse lvl10
+Temple,scroll,TV_SCROLL,SV_SCROLL_BLESSING,,5,,15,23,24,Blessing lvl1
+Temple,scroll,TV_SCROLL,SV_SCROLL_HOLY_CHANT,,5,,40,62,64,Holy Chant lvl10
+Temple,scroll,TV_SCROLL,SV_SCROLL_LIFE,,5,,500,770,795,Life lvl20
+Temple,potion,TV_POTION,SV_POTION_BOLDNESS,,4,,10,15,16,Boldness lvl1
+Temple,potion,TV_POTION,SV_POTION_HEROISM,,4,,35,54,56,Heroism lvl1
+Temple,potion,TV_POTION,SV_POTION_CURE_LIGHT,,4,,15,23,24,Cure Light Wounds lvl0
+Temple,potion,TV_POTION,SV_POTION_CURE_SERIOUS,,4,,40,62,64,Cure Serious Wounds lvl3
+Temple,potion,TV_POTION,SV_POTION_CURE_CRITICAL,,4,,100,154,159,Cure Critical Wounds lvl5
+Temple,potion,TV_POTION,SV_POTION_RESTORE_EXP,,4,,400,616,636,Restore Life Levels lvl40
+Temple,other,TV_PRAYER_BOOK,0,,30,,25,39,40,[Beginners Handbook] lvl5
+Temple,other,TV_PRAYER_BOOK,1,,30,,100,154,159,[Words of Wisdom] lvl10
+Temple,other,TV_PRAYER_BOOK,2,,30,,300,462,477,[Chants and Blessings] lvl20
+Temple,other,TV_PRAYER_BOOK,3,,30,,900,1386,1431,[Exorcism and Dispelling] lvl30
+Alchemy shop,scroll,TV_SCROLL,SV_SCROLL_ENCHANT_WEAPON_TO_HIT,,5,,125,194,201,Enchant Weapon To-Hit lvl15
+Alchemy shop,scroll,TV_SCROLL,SV_SCROLL_ENCHANT_WEAPON_TO_DAM,,5,,125,194,201,Enchant Weapon To-Dam lvl15
+Alchemy shop,scroll,TV_SCROLL,SV_SCROLL_ENCHANT_ARMOR,,5,,125,194,201,Enchant Armor lvl15
+Alchemy shop,scroll,TV_SCROLL,SV_SCROLL_IDENTIFY,,5,,50,78,81,Identify lvl1
+Alchemy shop,scroll,TV_SCROLL,SV_SCROLL_LIGHT,,5,,15,23,24,Light lvl0
+Alchemy shop,scroll,TV_SCROLL,SV_SCROLL_PHASE_DOOR,,5,,15,23,24,Phase Door lvl1
+Alchemy shop,scroll,TV_SCROLL,SV_SCROLL_MONSTER_CONFUSION,,5,,30,47,48,Monster Confusion lvl5
+Alchemy shop,scroll,TV_SCROLL,SV_SCROLL_MAPPING,,5,,40,62,64,Magic Mapping lvl5
+Alchemy shop,scroll,TV_SCROLL,SV_SCROLL_DETECT_DOOR,,5,,35,54,56,Door/Stair Location lvl5
+Alchemy shop,scroll,TV_SCROLL,SV_SCROLL_DETECT_INVIS,,5,,15,23,24,Detect Invisible lvl1
+Alchemy shop,scroll,TV_SCROLL,SV_SCROLL_RECHARGING,,5,,200,310,322,Recharging lvl40
+Alchemy shop,scroll,TV_SCROLL,SV_SCROLL_SATISFY_HUNGER,,5,,10,16,16,Satisfy Hunger lvl5
+Alchemy shop,scroll,TV_SCROLL,SV_SCROLL_WORD_OF_RECALL,,5,,150,233,242,Word of Recall lvl5
+Alchemy shop,potion,TV_POTION,SV_POTION_RESIST_HEAT,,4,,30,47,48,Resist Heat lvl1
+Alchemy shop,potion,TV_POTION,SV_POTION_RESIST_COLD,,4,,30,47,48,Resist Cold lvl1
+Alchemy shop,potion,TV_POTION,SV_POTION_RES_STR,,4,,300,465,483,Restore Strength lvl25
+Alchemy shop,potion,TV_POTION,SV_POTION_RES_INT,,4,,300,465,483,Restore Intelligence lvl25
+Alchemy shop,potion,TV_POTION,SV_POTION_RES_WIS,,4,,300,465,483,Restore Wisdom lvl25
+Alchemy shop,potion,TV_POTION,SV_POTION_RES_DEX,,4,,300,465,483,Restore Dexterity lvl25
+Alchemy shop,potion,TV_POTION,SV_POTION_RES_CON,,4,,300,465,483,Restore Constitution lvl25
+Alchemy shop,potion,TV_POTION,SV_POTION_RES_CHR,,4,,300,465,483,Restore Charisma lvl20
+Magic-User store,ring,TV_RING,SV_RING_SEARCHING,,2,,250,388,425,Searching lvl5
+Magic-User store,ring,TV_RING,SV_RING_FEATHER_FALL,,2,,200,310,340,Feather Falling lvl5
+Magic-User store,ring,TV_RING,SV_RING_PROTECTION,,2,,500,775,850,Protection lvl10
+Magic-User store,amulet,TV_AMULET,SV_AMULET_CHARISMA,,3,,500,775,850,Charisma lvl30
+Magic-User store,amulet,TV_AMULET,SV_AMULET_SLOW_DIGEST,,3,,200,310,340,Slow Digestion lvl15
+Magic-User store,amulet,TV_AMULET,SV_AMULET_RESIST_ACID,,3,,300,465,510,Resist Acid lvl10
+Magic-User store,wand,TV_WAND,SV_WAND_SLOW_MONSTER,,10,,500,775,850,Slow Monster lvl5
+Magic-User store,wand,TV_WAND,SV_WAND_CONFUSE_MONSTER,,10,,500,775,850,Confuse Monster lvl5
+Magic-User store,wand,TV_WAND,SV_WAND_SLEEP_MONSTER,,10,,500,775,850,Sleep Monster lvl5
+Magic-User store,wand,TV_WAND,SV_WAND_MAGIC_MISSILE,,10,,200,310,340,Magic Missile lvl3
+Magic-User store,wand,TV_WAND,SV_WAND_STINKING_CLOUD,,10,,400,620,680,Stinking Cloud lvl5
+Magic-User store,staff,TV_STAFF,SV_STAFF_LITE,,50,,250,388,425,Light lvl5
+Magic-User store,staff,TV_STAFF,SV_STAFF_MAPPING,,50,,750,1163,1275,Enlightenment lvl20
+Magic-User store,staff,TV_STAFF,SV_STAFF_DETECT_TRAP,,50,,350,543,595,Trap Location lvl10
+Magic-User store,staff,TV_STAFF,SV_STAFF_DETECT_DOOR,,50,,350,543,595,Door/Stair Location lvl10
+Magic-User store,staff,TV_STAFF,SV_STAFF_DETECT_ITEM,,50,,200,310,340,Object Location lvl5
+Magic-User store,staff,TV_STAFF,SV_STAFF_DETECT_INVIS,,50,,200,310,340,Detect Invisible lvl5
+Magic-User store,staff,TV_STAFF,SV_STAFF_DETECT_EVIL,,50,,350,543,595,Detect Evil lvl20
+Magic-User store,staff,TV_STAFF,SV_STAFF_TELEPORTATION,,50,,2000,3100,3400,Teleportation lvl20
+Magic-User store,staff,TV_STAFF,SV_STAFF_IDENTIFY,,50,,400,620,680,Perception lvl10
+Magic-User store,other,TV_MAGIC_BOOK,0,,30,,25,39,43,[Magic for Beginners] lvl5
+Magic-User store,other,TV_MAGIC_BOOK,1,,30,,100,155,170,[Conjurings and Tricks] lvl10
+Magic-User store,other,TV_MAGIC_BOOK,2,,30,,400,620,680,[Incantations and Illusions] lvl20
+Magic-User store,other,TV_MAGIC_BOOK,3,,30,,800,1240,1360,[Sorcery and Evocations] lvl30
+Black market,other,TV_JUNK,SV_HOUSE_FOUNDATION,,200,,10000,51000,60000,House Foundation Stone lvl70
+Black market,scroll,TV_SCROLL,SV_SCROLL_CREATE_HOUSE,,5,,1000000,5100000,6000000,House Creation lvl99
+Black market,potion,TV_POTION,SV_POTION_HEALING,,4,,300,1530,1800,Healing lvl15

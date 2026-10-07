@@ -1,0 +1,44 @@
+pkt,id,send_function,file_line,fields,state_items,trigger
+PKT_PLAY,3,send_play,src/server/net-game.c:22,mode(byte),player state (EMPTY..PLAYING),login/state transitions (recv_play :1140ff)
+PKT_QUIT,4,send_quit,src/server/net-game.c:31,reason(S),disconnect reason,on abort/quit
+PKT_BASIC_INFO,7,send_server_info,src/server/net-game.c:44,"n_indicators,n_streams,n_commands,n_item_testers (4 bytes), k_max,r_max,f_max,0 (4x u32)",protocol table sizes,login only
+PKT_CHAR_INFO,26,send_char_info,src/server/net-game.c:64,"state,prace,pclass,male (4x d16)",race/class/sex ids,login; PR_MISC in redraw_stuff (xtra1.c:3279-3283)
+PKT_STRUCT_INFO/STATS,13,send_stats_info,src/server/net-game.c:73,"sub=10,A_MAX,0,0,stat names",stat names,login (net-server.c:995)
+PKT_STRUCT_INFO/RACE,13,send_race_info,src/server/net-game.c:102,"sub=2,p_max,name_size,fake_text_size,(name,offset)*",race names,login
+PKT_STRUCT_INFO/CLASS,13,send_class_info,src/server/net-game.c:133,"sub=3,c_max,...,(name,offset,spell_book)*",class names,login
+PKT_STRUCT_INFO/OPTGROUP,13,send_optgroups_info,src/server/net-game.c:165,"sub=7,groups",option groups,login
+PKT_STRUCT_INFO/INVEN,13,send_inventory_info,src/server/net-game.c:262,"sub=5,INVEN_TOTAL(36),eq_name_size,INVEN_WIELD(24),INVEN_PACK(23),(mention_use string,offset,xpos,ypos)*36",slot layout/names,login (net-server.c:999)
+PKT_STRUCT_INFO/OBJFLAGS,13,send_objflags_info,src/server/net-game.c:308,"sub=9,13 rows,39 cols",objflags grid size,login
+PKT_STRUCT_INFO/FLOOR,13,send_floor_info,src/server/net-game.c:330,"sub=8,FLOOR_TOTAL=1,negative=1,FLOOR_INDEX=11",floor slot layout,login
+PKT_OPTION,10,send_option_info,src/server/net-game.c:207,"page,default,text,desc",option table,on RQ_OPTS request
+PKT_INDICATOR,191,send_indicator_info,src/server/net-game.c:351,"pkt,type,amnt,win,row,col,flag(u32),prompt(S),mark(s)",indicator definition table (58 entries observed),on RQ_INDI request at login (recv_basic_request :1262)
+PKT_INDICATOR+1+IN_x (192..229),192,send_indication,src/server/net-game.c:369,amnt values of type TINY(s8)/NORMAL(s16)/LARGE(s32)/STRING,see indicators.csv rows in dispatch,PR_* flag set -> handle_stuff -> redraw_stuff -> prt_*() (xtra1.c:3249ff)
+PKT_STREAM,170,send_stream_info,src/server/net-game.c:433,"pkt,addr,rle,flag,mark,window_desc,min_row,min_col,max_row,max_col","stream definitions (13 table slots, 12 live)",on RQ_STRM request at login
+PKT_RESIZE,16,send_stream_size,src/server/net-game.c:451,"stream,rows(u16),cols(byte)",ack of client stream size,after client resize request
+STREAM pkts 171..182 (tile),171,stream_char / stream_char_raw,src/server/net-game.c:496/464,"u16 header(0x8000|y<<8|x), attr, char [+ trn attr,char for GRAF2]",single map grid / special-screen char,lite_spot (cave.c:1494) per changed grid
+STREAM pkts 171..182 (line),171,stream_line_as,src/server/net-game.c:529,"u16 row, RLE-coded cave_view_type row(s)",a full screen row of map/minimap/text,"prt_map (cave.c:1637), display_map, send_prepared_info"
+PKT_TERM,167,send_term_info,src/server/net-game.c:580,"flag(byte)[,line(u16) if flag&0xF0]",terminal control (activate/clear/flush/hold),around map/special/monlist/itemlist sends
+PKT_TERM_INIT,166,send_term_header,src/server/net-game.c:611,"hint,header string",popup header,special-screen displays
+PKT_TERM_WRITE,8,send_term_write,src/server/net-game.c:636,"fmode,filename",file write request,rare
+PKT_CURSOR,151,send_cursor,src/server/net-game.c:645,"vis,x,y (bytes)","PLAYER ABSOLUTE position when vis=MCURSOR_PLAYER(2): wire-field1=py, field2=px; target cursor (vis 0/1) in screen coords",lite_spot on player grid (cave.c:1543); PR_CURSOR (xtra1.c:1152)
+PKT_TARGET_INFO,53,send_target_info,src/server/net-game.c:658,"x,y (screen coords),win,text","look/target description (health word, asleep etc.)",only in answer to look/target command (xtra2.c:4255)
+PKT_COMMAND,17,send_custom_command_info,src/server/net-game.c:670,"cmd pkt,scheme,m_catch,flag,tval,prompt,display",command table,on RQ_CMDS request at login
+PKT_ITEM_TESTER,169,send_item_tester_info,src/server/net-game.c:704,"id,flag,tval[MAX_ITH_TVAL]",item tester table,on RQ_ITEM at login
+PKT_SLASH_FX,161,send_slash_fx,src/server/net-game.c:732,"y,x,dir,fx",melee visual effect,melee1.c:60
+PKT_AIR,164,send_air_char,src/server/net-game.c:746,"y,x,attr,char,delay,fade",projectile animation,"cmd2.c:3721,4162; spells1.c:4494.."
+PKT_FLOOR,49,send_floor,src/server/net-game.c:771,"0,ga,gc,attr,amt(d),tval,flag,s_tester,name,name_one",the (single) floor object under player,floor_item_notify (object2.c:4421) via PR_FLOOR / carry / drop
+PKT_INVEN,30,send_inven,src/server/net-game.c:802,"pos(letter),ga,gc,attr,wgt(u16, total stack),amt(s16),tval,flag,s_tester,name,name_one",one pack slot (0..23),"display_inven (object1.c:2894) for bits in redraw_inven, from handle_stuff (xtra1.c:3566)"
+PKT_EQUIP,31,send_equip,src/server/net-game.c:821,"pos(letter a..l),attr,wgt(u16),tval,flag,name",one equipment slot (24..35),display_equip (object1.c:2967)
+PKT_SPELL_INFO,48,send_spell_info,src/server/net-game.c:833,"flag,item_tester,book,i,text",one spell line,"fix_spell on PW_SPELL; browse/cast (cmd5.c:165,195)"
+PKT_GHOST,25,send_ghost,src/server/net-game.c:845,"mode(d16): 0 alive,1 ghost,2 fruitbat",ghost state,prt_title (xtra1.c:157) on PR_TITLE
+PKT_OBJFLAGS,163,send_objflags,src/server/net-game.c:876,"row(d16), RLE row of 39 attr/char cells",resist/ability grid (13 rows: 12 equip slots + player),PR_OFLAGS -> prt_flags (xtra1.c:1038)
+PKT_MESSAGE,46,send_message,src/server/net-game.c:923,"type(u16),text(S, <=256)",all message text,msg_print_aux (util.c:1918) immediately
+PKT_MESSAGE_REPEAT,45,send_message_repeat,src/server/net-game.c:950,type(u16),'previous message again',duplicate consecutive message of same type (util.c:1908-1911)
+PKT_SOUND,54,send_sound,src/server/net-game.c:964,sound id (u16),sound event,util.c:890
+PKT_CHANNEL,165,send_channel,src/server/net-game.c:976,"id(u16),mode,name",chat channels,"util.c:2420-2510, login"
+PKT_KEEPALIVE,12,recv_keepalive echo,src/server/net-game.c:1130,client time (s32),echo only,reply to client keepalive
+PKT_STORE,51,send_store,src/server/net-game.c:2266,"pos,ga,gc,attr,wgt(per item),number,price,name",store stock line,"display_entry store.c:1087,1135"
+PKT_STORE_INFO,52,send_store_info,src/server/net-game.c:2283,"flag,store name,owner,items,purse",store header,"display_store store.c:1307,1315"
+PKT_CONFIRM,62,send_confirm_request/send_pickup_check/send_store_sell,src/server/net-game.c:2295/2307/2312,"type,0,text","yes/no prompts (pickup, store sell)","cmd1.c:758,823; cmd2.c:4486; store.c:2062"
+PKT_STORE_LEAVE,108,send_store_leave,src/server/net-game.c:2319,(none),leave store,store.c:1736; spells1.c:238; cmd2.c:1233
+PKT_PARTY,63,send_party_info,src/server/net-game.c:2332,"party name,owner",party membership,party.c; net-server.c:201

@@ -1,0 +1,3878 @@
+66.321 C->S HANDSHAKE 0001
+66.321 C->S PKT_LOGIN 0115306a626576616e007363632d706931004469
+66.332 C->S PKT_BASIC_INFO 0701000007020000070400000703000007050000
+66.34 C->S PKT_SETTINGS 7300000000000000000000000000000000000000
+66.342 C->S PKT_PLAY 0305
+66.343 C->S PKT_RESIZE 1000001643100300164310070018500306
+66.347 INVEN 'a' wgt 20 amt 2 tval 80 flag 0 st 0 '2 Rations of Food'
+66.347 INVEN 'b' wgt 50 amt 5 tval 77 flag 4 st 0 '5 Flasks of oil'
+66.347 INVEN 'c' wgt 28 amt 7 tval 75 flag 0 st 0 '7 Potions of Cure Light Wounds {@q1}'
+66.347 INVEN 'd' wgt 4 amt 1 tval 75 flag 0 st 0 'a Light Brown Potion'
+66.347 INVEN 'e' wgt 4 amt 1 tval 75 flag 0 st 0 'a Cloudy Potion'
+66.347 INVEN 'f' wgt 35 amt 7 tval 70 flag 0 st 0 '7 Scrolls of Phase Door {@r1}'
+66.347 INVEN 'g' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall'
+66.347 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+66.347 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+66.347 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+66.347 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+66.347 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+66.347 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+66.347 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+66.347 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+66.347 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+66.347 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+66.347 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+66.347 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+66.347 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+66.347 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+66.347 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+66.347 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+66.347 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+66.347 EQUIP 'a' wgt 30 tval 23 'a Main Gauche (1d5) (+0,+2)'
+66.347 EQUIP 'b' wgt 40 tval 19 'a Long Bow (x3) {good - Bullroarer the Hobbit}'
+66.347 EQUIP 'c' wgt 0 tval 0 '(nothing)'
+66.347 EQUIP 'd' wgt 0 tval 0 '(nothing)'
+66.347 EQUIP 'e' wgt 0 tval 0 '(nothing)'
+66.347 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 9797 turns of light) {25% off}'
+66.347 EQUIP 'g' wgt 100 tval 36 'Hard Leather Armour (-1) [6,+0] {25% off}'
+66.347 EQUIP 'h' wgt 10 tval 35 'a Cloak [1,+0]'
+66.347 EQUIP 'i' wgt 65 tval 34 'a Small Metal Shield [3] {good - Farmer Maggot}'
+66.347 EQUIP 'j' wgt 20 tval 32 'a Metal Cap [3,+0]'
+66.347 EQUIP 'k' wgt 5 tval 31 'a Set of Leather Gloves [1,+0]'
+66.347 EQUIP 'l' wgt 0 tval 0 '(nothing)'
+66.347 FLOOR 0000000000000000000000 [b'', b'']
+73.552 C->S PKT_CLEAR 7b
+75.419 C->S PKT_WALK 4606
+76.309 C->S PKT_WALK 4608
+76.312 MSG 0 'You have found 29 gold pieces worth of copper.\x00'
+78.975 C->S CUSTOM:'.' 4702
+79.554 C->S CUSTOM:'.' 4701
+80.571 C->S PKT_WALK 4603
+80.573 MSG 0 'There is a tree blocking your way.\x00'
+81.657 C->S CUSTOM:'.' 4702
+90.955 C->S PKT_REDRAW 6f
+90.957 INVEN 'a' wgt 20 amt 2 tval 80 flag 0 st 0 '2 Rations of Food'
+90.957 INVEN 'b' wgt 50 amt 5 tval 77 flag 4 st 0 '5 Flasks of oil'
+90.957 INVEN 'c' wgt 28 amt 7 tval 75 flag 0 st 0 '7 Potions of Cure Light Wounds {@q1}'
+90.957 INVEN 'd' wgt 4 amt 1 tval 75 flag 0 st 0 'a Light Brown Potion'
+90.957 INVEN 'e' wgt 4 amt 1 tval 75 flag 0 st 0 'a Cloudy Potion'
+90.957 INVEN 'f' wgt 35 amt 7 tval 70 flag 0 st 0 '7 Scrolls of Phase Door {@r1}'
+90.957 INVEN 'g' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall'
+90.957 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+90.957 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+90.957 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+90.957 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+90.957 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+90.957 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+90.957 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+90.957 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+90.957 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+90.957 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+90.957 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+90.957 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+90.957 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+90.957 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+90.957 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+90.957 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+90.957 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+90.957 EQUIP 'a' wgt 30 tval 23 'a Main Gauche (1d5) (+0,+2)'
+90.957 EQUIP 'b' wgt 40 tval 19 'a Long Bow (x3) {good - Bullroarer the Hobbit}'
+90.957 EQUIP 'c' wgt 0 tval 0 '(nothing)'
+90.957 EQUIP 'd' wgt 0 tval 0 '(nothing)'
+90.957 EQUIP 'e' wgt 0 tval 0 '(nothing)'
+90.957 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 9736 turns of light) {25% off}'
+90.957 EQUIP 'g' wgt 100 tval 36 'Hard Leather Armour (-1) [6,+0] {25% off}'
+90.957 EQUIP 'h' wgt 10 tval 35 'a Cloak [1,+0]'
+90.957 EQUIP 'i' wgt 65 tval 34 'a Small Metal Shield [3] {good - Farmer Maggot}'
+90.957 EQUIP 'j' wgt 20 tval 32 'a Metal Cap [3,+0]'
+90.957 EQUIP 'k' wgt 5 tval 31 'a Set of Leather Gloves [1,+0]'
+90.957 EQUIP 'l' wgt 0 tval 0 '(nothing)'
+90.958 FLOOR 0000000000000000000000 [b'', b'']
+93.063 C->S CUSTOM:'E' 2400
+93.065 MSG 0 'That tastes good.\x00'
+93.065 MSG 0 'You are full!\x00'
+93.065 MSG 0 'You have a Ration of Food.\x00'
+93.065 INVEN 'a' wgt 10 amt 1 tval 80 flag 0 st 0 'a Ration of Food'
+108.429 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 9700 turns of light) {25% off}'
+110.479 C->S CUSTOM:'.' 4708
+111.071 C->S CUSTOM:'.' 4702
+111.907 C->S PKT_WALK 4601
+129.318 C->S CUSTOM:'p' 320f00000003023138
+129.321 MSG 0 'Taken!\x00'
+129.321 MSG 0 'You bought 3 Scrolls of Phase Door {75% off} for 18 gold.\x00'
+129.321 MSG 0 'You have 3 Scrolls of Phase Door {75% off} (g).\x00'
+129.321 INVEN 'f' wgt 35 amt 7 tval 70 flag 0 st 0 '7 Scrolls of Phase Door {@r1}'
+129.321 INVEN 'g' wgt 15 amt 3 tval 70 flag 0 st 0 '3 Scrolls of Phase Door {75% off}'
+129.321 INVEN 'h' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall'
+135.027 C->S PKT_WALK 4600
+136.399 C->S PKT_WALK 4601
+142.133 C->S PKT_WALK 4600
+143.372 C->S CUSTOM:'.' 4708
+144.09 C->S CUSTOM:'.' 4706
+145.047 C->S CUSTOM:'.' 4704
+145.189 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 9600 turns of light) {25% off}'
+146.597 C->S PKT_WALK 4606
+153.536 C->S CUSTOM:'.' 4704
+154.055 MSG 0 'You hit the Mean-looking mercenary.\x00'
+154.282 MSG 0 'You have slain the Mean-looking mercenary.\x00'
+155.193 C->S PKT_WALK 4604
+155.195 FLOOR 000f2c0f00015000006120526174696f6e206f6620466f6f640000 [b'a Ration of Food', b'']
+155.195 MSG 0 'You see a Ration of Food.\x00'
+157.893 C->S CUSTOM:',' 00
+157.896 MSG 0 'You have 2 Rations of Food (a).\x00'
+157.896 FLOOR 0000000000000000000000 [b'', b'']
+157.896 INVEN 'a' wgt 20 amt 2 tval 80 flag 0 st 0 '2 Rations of Food'
+159.615 C->S CUSTOM:'.' 4706
+161.126 C->S CUSTOM:'.' 4709
+162.459 C->S CUSTOM:'.' 4701
+162.708 C->S CUSTOM:'.' 4702
+162.945 C->S CUSTOM:'.' 4701
+163.712 C->S CUSTOM:'.' 4702
+164.207 C->S PKT_WALK 4601
+166.443 C->S CUSTOM:'s' 330300000001
+166.445 MSG 0 'Selling a Light Brown Potion (d).\x00'
+166.445 MSG 0 'You eventually agree upon the price.\x00'
+167.646 C->S PKT_CONFIRM 3e0100
+167.646 MSG 0 'Done!\x00'
+167.646 MSG 0 'You sold a Potion of Apple Juice for 9 gold.\x00'
+167.646 MSG 18 'The shopkeeper curses at you.\x00'
+167.646 MSG 0 'You have no more Potions of Apple Juice.\x00'
+167.646 INVEN 'd' wgt 4 amt 1 tval 75 flag 0 st 0 'a Cloudy Potion'
+167.646 INVEN 'e' wgt 35 amt 7 tval 70 flag 0 st 0 '7 Scrolls of Phase Door {@r1}'
+167.646 INVEN 'f' wgt 15 amt 3 tval 70 flag 0 st 0 '3 Scrolls of Phase Door {75% off}'
+167.646 INVEN 'g' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall'
+167.646 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+167.646 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+167.646 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+167.646 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+167.646 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+167.646 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+167.646 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+167.646 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+167.646 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+167.646 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+167.646 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+167.646 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+167.646 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+167.646 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+167.646 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+167.646 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+167.646 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+169.28 C->S CUSTOM:'s' 330300000001
+169.282 MSG 0 'Selling a Cloudy Potion (d).\x00'
+169.282 MSG 0 'You eventually agree upon the price.\x00'
+170.025 C->S PKT_CONFIRM 3e0100
+170.025 MSG 0 'Taken!\x00'
+170.025 MSG 0 'You sold a Potion of Slow Poison for 9 gold.\x00'
+170.025 MSG 19 'The shopkeeper laughs loudly.\x00'
+170.025 MSG 0 'You have no more Potions of Slow Poison.\x00'
+170.025 INVEN 'd' wgt 35 amt 7 tval 70 flag 0 st 0 '7 Scrolls of Phase Door {@r1}'
+170.025 INVEN 'e' wgt 15 amt 3 tval 70 flag 0 st 0 '3 Scrolls of Phase Door {75% off}'
+170.025 INVEN 'f' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall'
+170.025 INVEN 'g' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+170.025 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+170.025 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+170.025 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+170.025 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+170.025 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+170.025 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+170.025 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+170.025 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+170.025 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+170.025 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+170.025 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+170.025 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+170.025 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+170.025 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+170.025 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+170.025 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+170.025 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+174.293 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 9500 turns of light) {25% off}'
+174.293 C->S PKT_WALK 4600
+185.674 C->S PKT_MESSAGE 2e506f74696f6e73206561726c79206f6e206172
+185.674 MSG 257 '[Dive03] Potions early on are usually bad, we may as well sell them\x00'
+195.168 C->S PKT_MESSAGE 2e54686174207761792077652067657420612066
+195.168 MSG 257 '[Dive03] That way we get a free ID and a bit of money\x00'
+201.774 C->S PKT_WALK 4601
+223.373 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 9400 turns of light) {25% off}'
+223.612 C->S CUSTOM:'p' 321300000001023339
+223.614 MSG 0 'You do not have enough gold.\x00'
+233.274 C->S CUSTOM:'s' 330300000001
+233.276 MSG 0 'Selling a Scroll of Phase Door {@r1} (d).\x00'
+233.276 MSG 0 'You eventually agree upon the price.\x00'
+234.845 C->S PKT_CONFIRM 3e0100
+234.845 MSG 0 'Agreed!\x00'
+234.845 MSG 0 'You sold a Scroll of Phase Door {@r1} for 7 gold.\x00'
+234.845 MSG 0 'You have 6 Scrolls of Phase Door {@r1}.\x00'
+234.845 INVEN 'd' wgt 30 amt 6 tval 70 flag 0 st 0 '6 Scrolls of Phase Door {@r1}'
+234.845 INVEN 'e' wgt 15 amt 3 tval 70 flag 0 st 0 '3 Scrolls of Phase Door {75% off}'
+241.552 C->S CUSTOM:'s' 330300000001
+241.555 MSG 0 'Selling a Scroll of Phase Door {@r1} (d).\x00'
+241.555 MSG 0 'You eventually agree upon the price.\x00'
+242.663 C->S PKT_CONFIRM 3e0100
+242.663 MSG 0 'Accepted!\x00'
+242.663 MSG 0 'You sold a Scroll of Phase Door {@r1} for 7 gold.\x00'
+242.663 MSG 0 'You have 5 Scrolls of Phase Door {@r1}.\x00'
+242.663 INVEN 'd' wgt 25 amt 5 tval 70 flag 0 st 0 '5 Scrolls of Phase Door {@r1}'
+242.663 INVEN 'e' wgt 15 amt 3 tval 70 flag 0 st 0 '3 Scrolls of Phase Door {75% off}'
+246.616 C->S CUSTOM:'p' 321300000001023339
+246.618 MSG 0 'Accepted!\x00'
+246.618 MSG 0 'You bought a Scroll of Identify {on sale} for 39 gold.\x00'
+246.618 MSG 0 'You have a Scroll of Identify {on sale} (g).\x00'
+246.618 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll of Identify {on sale}'
+249.538 C->S PKT_WALK 4600
+256.686 C->S CUSTOM:'r' 1d0619
+256.688 MSG 0 'Shooting missiles with: a Long Bow (x3) (+2,+5) {good - Bullroarer the Hobbit} (b).\x00'
+256.688 MSG 0 'You have no more Scrolls of Identify {on sale}.\x00'
+256.688 INVEN 'g' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+256.688 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+256.688 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+256.688 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+256.688 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+256.688 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+256.688 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+256.688 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+256.688 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+256.688 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+256.688 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+256.688 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+256.688 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+256.688 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+256.688 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+256.688 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+256.688 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+256.688 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+256.688 EQUIP 'b' wgt 40 tval 19 'a Long Bow (x3) (+2,+5) {good - Bullroarer the Hobbit}'
+259.454 C->S CUSTOM:'t' 1619
+259.456 MSG 0 'Was shooting with a Long Bow (x3) (+2,+5) {good - Bullroarer the Hobbit} (g).\x00'
+259.456 INVEN 'g' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) (+2,+5) {good - Bullroarer the Hobbit}'
+259.456 EQUIP 'b' wgt 0 tval 0 '(nothing)'
+268.764 C->S PKT_MESSAGE 2e49446564206974656d732073656c6c20666f72
+268.764 MSG 257 '[Dive03] IDed items sell for more\x00'
+272.706 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 9300 turns of light) {25% off}'
+283.674 C->S PKT_MESSAGE 2e4920646f6e277420706c616e20746f20757365
+283.675 MSG 257 "[Dive03] I don't plan to use this bow and we need the money\x00"
+284.861 C->S CUSTOM:'.' 4709
+285.215 C->S CUSTOM:'.' 4706
+285.828 C->S CUSTOM:'.' 4704
+288.578 C->S CUSTOM:'.' 4701
+289.074 C->S PKT_WALK 4604
+289.376 C->S PKT_WALK 4601
+292.14 C->S CUSTOM:'s' 330600000001
+292.142 MSG 0 'Selling a Long Bow (x3) (+2,+5) {good - Bullroarer the Hobbit} (g).\x00'
+292.142 MSG 0 'You eventually agree upon the price.\x00'
+292.948 C->S PKT_CONFIRM 3e0100
+292.948 MSG 0 'Agreed!\x00'
+292.948 MSG 0 'You sold a Long Bow (x3) (+2,+5) {good - Bullroarer the Hobbit} for 353 gold.\x00'
+292.948 MSG 0 'You have no more Long Bows (x3) (+2,+5) {good - Bullroarer the Hobbit}.\x00'
+292.948 INVEN 'g' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+292.948 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+292.948 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+292.948 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+292.948 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+292.948 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+292.948 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+292.948 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+292.948 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+292.948 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+292.948 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+292.948 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+292.948 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+292.948 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+292.948 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+292.948 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+292.948 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+292.948 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+300.387 C->S PKT_WALK 4600
+306.252 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 9200 turns of light) {25% off}'
+315.603 C->S CUSTOM:'.' 4706
+317.304 C->S CUSTOM:'.' 4702
+317.306 MSG 0 'You cannot run in that direction.\x00'
+317.845 C->S CUSTOM:'.' 4703
+318.095 C->S CUSTOM:'.' 4702
+318.732 C->S CUSTOM:'.' 4708
+319.273 C->S CUSTOM:'.' 4704
+319.955 C->S PKT_WALK 4604
+324.192 C->S CUSTOM:'p' 321300000001023539
+324.195 MSG 0 'Accepted!\x00'
+324.195 MSG 0 'You bought a Scroll of Word of Recall {75% off} for 59 gold.\x00'
+324.195 MSG 0 'You have a Scroll of Word of Recall {75% off} (g).\x00'
+324.195 INVEN 'f' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall'
+324.195 INVEN 'g' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall {75% off}'
+332.17 C->S PKT_WALK 4600
+336.245 C->S CUSTOM:'.' 4706
+336.635 C->S CUSTOM:'.' 4709
+337.184 C->S CUSTOM:'.' 4706
+337.358 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 9100 turns of light) {25% off}'
+337.41 C->S CUSTOM:'.' 4702
+338.994 C->S PKT_WALK 4602
+344.228 C->S PKT_WALK 4600
+345.041 C->S CUSTOM:'.' 4707
+345.343 C->S CUSTOM:'.' 4708
+346.078 C->S PKT_WALK 4609
+382.716 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 9000 turns of light) {25% off}'
+386.041 C->S PKT_WALK 4600
+386.373 C->S CUSTOM:'.' 4704
+387.214 C->S PKT_WALK 4604
+394.002 C->S PKT_WALK 4600
+394.513 C->S CUSTOM:'.' 4702
+395.1 C->S CUSTOM:'.' 4701
+395.302 C->S CUSTOM:'.' 4702
+396.127 C->S PKT_WALK 4601
+396.537 C->S PKT_WALK 4601
+405.266 C->S CUSTOM:'p' 32150000000203313936
+405.269 MSG 0 'Agreed!\x00'
+405.269 MSG 0 'You bought 2 Scrolls of Enchant Weapon To-Hit {50% off} for 196 gold.\x00'
+405.269 MSG 0 'You have 2 Scrolls of Enchant Weapon To-Hit {50% off} (h).\x00'
+405.269 INVEN 'h' wgt 10 amt 2 tval 70 flag 32 st 102 '2 Scrolls of Enchant Weapon To-Hit {50% off}'
+408.008 C->S PKT_WALK 4600
+411.868 C->S CUSTOM:'r' 1d0718
+411.87 MSG 0 'Your Main Gauche glows brightly!\x00'
+411.87 MSG 0 'You have a Scroll of Enchant Weapon To-Hit {50% off}.\x00'
+411.87 INVEN 'h' wgt 5 amt 1 tval 70 flag 32 st 102 'a Scroll of Enchant Weapon To-Hit {50% off}'
+411.87 EQUIP 'a' wgt 30 tval 23 'a Main Gauche (1d5) (+1,+2)'
+414.417 C->S CUSTOM:'r' 1d0718
+414.419 MSG 0 'Your Main Gauche glows brightly!\x00'
+414.419 MSG 0 'You have no more Scrolls of Enchant Weapon To-Hit {50% off}.\x00'
+414.419 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+414.419 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+414.419 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+414.419 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+414.419 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+414.419 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+414.419 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+414.419 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+414.419 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+414.419 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+414.419 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+414.419 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+414.419 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+414.419 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+414.419 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+414.419 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+414.419 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+414.419 EQUIP 'a' wgt 30 tval 23 'a Main Gauche (1d5) (+2,+2)'
+419.419 C->S CUSTOM:'r' 1d0600
+419.421 MSG 0 'The air about you becomes charged...\x00'
+419.421 MSG 0 'You have no more Scrolls of Word of Recall {75% off}.\x00'
+419.421 INVEN 'g' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+419.421 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+419.421 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+419.421 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+419.422 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+419.422 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+419.422 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+419.422 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+419.422 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+419.422 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+419.422 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+419.422 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+419.422 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+419.422 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+419.422 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+419.422 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+419.422 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+419.422 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+425.142 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 8900 turns of light) {25% off}'
+428.102 MSG 0 'You feel yourself yanked downwards!\x00'
+428.116 MSG 0 'You feel there is something special about this level.\x00'
+428.116 FLOOR 0000000000000000000000 [b'', b'']
+430.177 C->S CUSTOM:'.' 4706
+431.17 C->S CUSTOM:'.' 4703
+431.181 MSG 0 'The White wolf wakes up.\x00'
+431.401 C->S CUSTOM:'.' 4702
+432.041 C->S CUSTOM:'.' 4707
+432.433 C->S CUSTOM:'.' 4707
+433.009 MSG 0 'You hit the White wolf.\x00'
+433.009 MSG 0 'It was a good hit!\x00'
+433.009 MSG 0 'You hit the White wolf.\x00'
+433.009 MSG 0 'You have slain the White wolf.\x00'
+433.249 C->S CUSTOM:'.' 4704
+433.769 MSG 0 'You hit the White wolf.\x00'
+433.822 MSG 0 'The White wolf flees in terror!\x00'
+433.995 MSG 0 'You miss the White wolf.\x00'
+435.962 C->S CUSTOM:'.' 4703
+436.547 C->S CUSTOM:'.' 4702
+436.968 MSG 0 'You hit the White wolf.\x00'
+437.009 MSG 0 'The White wolf bites you.\x00'
+437.129 MSG 0 'You hit the White wolf.\x00'
+437.129 MSG 0 'The White wolf flees in terror!\x00'
+437.302 MSG 0 'You hit the White wolf.\x00'
+437.302 MSG 0 'You have slain the White wolf.\x00'
+437.802 C->S CUSTOM:'.' 4701
+438.55 C->S CUSTOM:'.' 4701
+439.966 C->S CUSTOM:'.' 4707
+439.968 MSG 0 'You cannot run in that direction.\x00'
+441.433 C->S PKT_WALK 4607
+441.436 MSG 0 'There is a wall blocking your way.\x00'
+442.037 C->S CUSTOM:'.' 4706
+442.77 C->S CUSTOM:'.' 4706
+444.824 C->S CUSTOM:'.' 4706
+445.341 MSG 0 'You miss the White wolf.\x00'
+445.341 MSG 0 'You hit the White wolf.\x00'
+445.341 MSG 0 'You have slain the White wolf.\x00'
+445.885 C->S CUSTOM:'.' 4706
+447.249 MSG 0 'You hit the Novice ranger.\x00'
+447.249 MSG 0 'You have slain the Novice ranger.\x00'
+447.9 MSG 0 'You hit the Novice ranger.\x00'
+447.9 MSG 0 'You have slain the Novice ranger.\x00'
+448.696 C->S PKT_WALK 4606
+448.699 FLOOR 000d210e00014b000061204368617274726575736520506f74696f6e0000 [b'a Chartreuse Potion', b'']
+448.699 MSG 0 'You see a Chartreuse Potion.\x00'
+449.288 MSG 0 'You hit the Novice ranger.\x00'
+449.288 MSG 0 'You miss the Novice ranger.\x00'
+449.288 MSG 0 'The Novice ranger flees in terror!\x00'
+449.368 MSG 0 'You hit the Novice ranger.\x00'
+449.368 MSG 0 'You have slain the Novice ranger.\x00'
+450.248 C->S CUSTOM:',' 00
+450.25 MSG 0 'You have a Chartreuse Potion (d).\x00'
+450.25 FLOOR 0000000000000000000000 [b'', b'']
+450.25 INVEN 'd' wgt 4 amt 1 tval 75 flag 0 st 0 'a Chartreuse Potion'
+450.25 INVEN 'e' wgt 25 amt 5 tval 70 flag 0 st 0 '5 Scrolls of Phase Door {@r1}'
+450.25 INVEN 'f' wgt 15 amt 3 tval 70 flag 0 st 0 '3 Scrolls of Phase Door {75% off}'
+450.25 INVEN 'g' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall'
+450.782 MSG 0 'You hit the Novice ranger.\x00'
+450.782 MSG 0 'You have slain the Novice ranger.\x00'
+450.795 MSG 0 'You hit the Novice ranger.\x00'
+450.795 MSG 0 'You have slain the Novice ranger.\x00'
+451.835 MSG 0 'You hit the Novice ranger.\x00'
+451.835 MSG 0 'You have slain the Novice ranger.\x00'
+452.5 MSG 0 'You hit the Novice ranger.\x00'
+452.5 MSG 0 'You miss the Novice ranger.\x00'
+452.5 MSG 0 'You hit the Novice ranger.\x00'
+452.5 MSG 0 'You have slain the Novice ranger.\x00'
+453.588 C->S PKT_WALK 4608
+453.591 MSG 0 'You have found 52 gold pieces worth of silver.\x00'
+453.768 MSG 0 'You hit the Novice ranger.\x00'
+454.102 MSG 0 'The Novice ranger flees in terror!\x00'
+454.26 MSG 0 'You miss the Novice ranger.\x00'
+454.433 MSG 0 'You hit the Novice ranger.\x00'
+454.433 MSG 0 'You have slain the Novice ranger.\x00'
+454.609 MSG 0 'You miss the Novice ranger.\x00'
+454.767 MSG 0 'You hit the Novice ranger.\x00'
+455.102 MSG 0 'You have slain the Novice ranger.\x00'
+455.102 MSG 0 'You feel something roll beneath your feet.\x00'
+455.102 FLOOR 000724010001640000636f707065720000 [b'copper', b'']
+455.878 C->S PKT_WALK 4606
+455.881 MSG 0 'You have found 77 gold pieces worth of silver.\x00'
+455.881 FLOOR 0000000000000000000000 [b'', b'']
+456.475 MSG 0 'It casts a magic missile.\x00'
+456.602 C->S PKT_WALK 4602
+456.604 MSG 0 'You have found 55 gold pieces worth of silver.\x00'
+456.741 MSG 0 'The Novice ranger hits you.\x00'
+456.741 MSG 0 'The Novice ranger misses you.\x00'
+456.781 MSG 0 'You hit the Novice ranger.\x00'
+456.942 MSG 0 'The Novice ranger flees in terror!\x00'
+457.114 MSG 0 'You hit the Novice ranger.\x00'
+457.114 MSG 0 'You have slain the Novice ranger.\x00'
+457.715 MSG 0 'You hit the Novice ranger.\x00'
+457.715 MSG 0 'The Novice ranger flees in terror!\x00'
+457.781 MSG 0 'You hit the Novice ranger.\x00'
+457.781 MSG 0 'You have slain the Novice ranger.\x00'
+457.829 C->S PKT_WALK 4601
+458.433 MSG 0 'You have found 29 gold pieces worth of silver.\x00'
+459.185 C->S PKT_WALK 4606
+459.188 FLOOR 00013f01000146200061205363726f6c6c207469746c6564202269736878207468657262696e2200 [b'a Scroll titled "ishx therbin"', b'']
+459.188 MSG 0 'You see a Scroll titled "ishx therbin".\x00'
+460.651 C->S CUSTOM:',' 00
+460.653 MSG 0 'You have a Scroll titled "ishx therbin" (h).\x00'
+460.653 FLOOR 0000000000000000000000 [b'', b'']
+460.653 INVEN 'h' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+461.234 MSG 0 'You hit the Novice ranger.\x00'
+461.234 MSG 0 'The Novice ranger flees in terror!\x00'
+461.247 MSG 0 'You hit the Novice ranger.\x00'
+461.247 MSG 0 'You have slain the Novice ranger.\x00'
+461.919 C->S PKT_WALK 4607
+462.353 C->S PKT_WALK 4608
+462.582 MSG 0 'You have found 17 gold pieces worth of copper.\x00'
+463.327 C->S CUSTOM:'.' 4703
+463.873 C->S PKT_WALK 4603
+463.876 FLOOR 000f7d07000113010061204c6f6e6720426f7720287833290000 [b'a Long Bow (x3)', b'']
+463.876 MSG 0 'You see a Long Bow (x3).\x00'
+465.138 C->S CUSTOM:',' 00
+465.14 MSG 0 'You have a Long Bow (x3) (i).\x00'
+465.141 FLOOR 0000000000000000000000 [b'', b'']
+465.141 INVEN 'i' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3)'
+465.862 C->S CUSTOM:'.' 4703
+466.389 C->S CUSTOM:'.' 4703
+467.017 C->S CUSTOM:'.' 4702
+468.148 C->S CUSTOM:'.' 4704
+468.675 C->S CUSTOM:'.' 4704
+469.123 C->S CUSTOM:'.' 4702
+469.702 MSG 0 'You hit the Manes.\x00'
+469.795 MSG 0 'You miss the Manes.\x00'
+469.968 MSG 0 'You hit the Manes.\x00'
+470.128 MSG 0 'You have destroyed the Manes.\x00'
+470.647 MSG 0 'You hit the Manes.\x00'
+470.968 MSG 0 'You have destroyed the Manes.\x00'
+471.527 MSG 0 'You miss the Manes.\x00'
+471.527 MSG 0 'You hit the Manes.\x00'
+471.795 MSG 0 'You miss the Manes.\x00'
+471.968 MSG 0 'You hit the Manes.\x00'
+471.968 MSG 0 'You have destroyed the Manes.\x00'
+473.14 C->S CUSTOM:'.' 4702
+473.86 MSG 0 'The Manes misses you.\x00'
+473.94 MSG 0 'You hit the Manes.\x00'
+474.06 MSG 0 'The Manes hits you.\x00'
+474.1 MSG 0 'You hit the Manes.\x00'
+474.434 MSG 0 'You have destroyed the Manes.\x00'
+474.607 MSG 0 'You hit the Manes.\x00'
+474.873 MSG 0 'The Manes hits you.\x00'
+474.941 MSG 0 'You hit the Manes.\x00'
+475.015 C->S PKT_WALK 4608
+475.273 MSG 0 'The Manes hits you.\x00'
+476.221 MSG 0 'You hit the Manes.\x00'
+476.221 MSG 0 'You have destroyed the Manes.\x00'
+476.5 MSG 0 'You hit the Manes.\x00'
+476.608 MSG 0 'You miss the Manes.\x00'
+476.781 MSG 0 'You hit the Manes.\x00'
+476.941 MSG 0 'You have destroyed the Manes.\x00'
+478.913 MSG 0 'You hit the Manes.\x00'
+478.928 MSG 0 'You miss the Manes.\x00'
+478.928 MSG 0 'You hit the Manes.\x00'
+478.928 MSG 0 'You have destroyed the Manes.\x00'
+478.981 MSG 0 'You hit the Manes.\x00'
+478.993 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 8800 turns of light) {25% off}'
+479.58 MSG 0 'The Manes misses you.\x00'
+479.753 MSG 0 'You hit the Manes.\x00'
+479.753 MSG 0 'You have destroyed the Manes.\x00'
+480.354 MSG 0 'You hit the Manes.\x00'
+480.421 MSG 0 'You have destroyed the Manes.\x00'
+482.339 MSG 0 'You hit the Manes.\x00'
+482.339 MSG 0 'You miss the Manes.\x00'
+482.354 MSG 0 'You hit the Manes.\x00'
+482.354 MSG 0 'You have destroyed the Manes.\x00'
+485.661 MSG 0 'You hit the Manes.\x00'
+485.661 MSG 0 'It was a good hit!\x00'
+485.673 MSG 0 'You miss the Manes.\x00'
+485.673 MSG 0 'You hit the Manes.\x00'
+485.673 MSG 0 'You have destroyed the Manes.\x00'
+491.351 C->S CUSTOM:'.' 4702
+491.958 C->S CUSTOM:'.' 4702
+493.232 C->S CUSTOM:'.' 4701
+493.638 C->S CUSTOM:'.' 4701
+494.913 MSG 0 'You hit the Manes.\x00'
+494.928 MSG 0 'You have destroyed the Manes.\x00'
+495.714 MSG 0 'You hit the Manes.\x00'
+495.714 MSG 0 'You miss the Manes.\x00'
+495.726 MSG 0 'You hit the Manes.\x00'
+495.726 MSG 0 'You have destroyed the Manes.\x00'
+496.356 C->S CUSTOM:'.' 4704
+496.913 C->S CUSTOM:'.' 4702
+497.522 C->S CUSTOM:'.' 4701
+497.634 MSG 0 'It points at you and curses.\x00'
+497.634 MSG 0 'You resist the effects!\x00'
+498.952 C->S PKT_WALK 4609
+502.328 MSG 0 'You feel the Long Bow (i) in your pack is average...\x00'
+502.328 INVEN 'i' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+504.286 MSG 0 'You hit the Novice paladin.\x00'
+504.286 MSG 0 'You miss the Novice paladin.\x00'
+504.299 MSG 0 'You hit the Novice paladin.\x00'
+504.299 MSG 0 'The Novice paladin flees in terror!\x00'
+504.459 MSG 0 'You hit the Novice paladin.\x00'
+504.459 MSG 0 'You have slain the Novice paladin.\x00'
+505.646 MSG 0 'You hit the Novice paladin.\x00'
+505.646 MSG 0 'You miss the Novice paladin.\x00'
+505.646 MSG 0 'You hit the Novice paladin.\x00'
+505.646 MSG 0 'The Novice paladin flees in terror!\x00'
+505.659 MSG 0 'You hit the Novice paladin.\x00'
+505.659 MSG 0 'You have slain the Novice paladin.\x00'
+506.366 MSG 0 'You miss the Novice paladin.\x00'
+506.366 MSG 0 'You hit the Novice paladin.\x00'
+506.461 MSG 0 'You have slain the Novice paladin.\x00'
+506.461 MSG 0 'Welcome to level 15.\x00'
+522.65 C->S PKT_MESSAGE 2e416c77617973206265737420746f2072657472
+522.65 MSG 257 '[Dive03] Always best to retreat behind a turn, to let enemies\x00'
+529.491 C->S PKT_MESSAGE 2e547269636b6c6520696e746f206d656c656520
+529.491 MSG 257 '[Dive03] Trickle into melee range\x00'
+530.994 C->S CUSTOM:'.' 4701
+531.007 MSG 0 'You have found 17 gold pieces worth of copper.\x00'
+531.59 C->S CUSTOM:'.' 4704
+531.953 C->S CUSTOM:'.' 4707
+532.187 C->S CUSTOM:'.' 4708
+532.703 C->S PKT_WALK 4609
+532.706 FLOOR 0004210e00014b000061204461726b2052656420506f74696f6e0000 [b'a Dark Red Potion', b'']
+532.706 MSG 0 'You see a Dark Red Potion.\x00'
+533.821 C->S CUSTOM:',' 00
+533.824 MSG 0 'You have a Dark Red Potion (e).\x00'
+533.824 FLOOR 0000000000000000000000 [b'', b'']
+533.824 INVEN 'e' wgt 4 amt 1 tval 75 flag 0 st 0 'a Dark Red Potion'
+533.824 INVEN 'f' wgt 25 amt 5 tval 70 flag 0 st 0 '5 Scrolls of Phase Door {@r1}'
+533.824 INVEN 'g' wgt 15 amt 3 tval 70 flag 0 st 0 '3 Scrolls of Phase Door {75% off}'
+533.824 INVEN 'h' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall'
+533.824 INVEN 'i' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+533.824 INVEN 'j' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+534.413 C->S CUSTOM:'.' 4704
+534.834 C->S CUSTOM:'.' 4701
+534.993 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 8700 turns of light) {25% off}'
+535.11 C->S CUSTOM:'.' 4704
+535.744 C->S CUSTOM:'.' 4704
+536.051 C->S CUSTOM:'.' 4708
+536.243 C->S CUSTOM:'.' 4704
+536.658 C->S CUSTOM:'.' 4704
+537.66 MSG 0 'You are no longer full.\x00'
+538.014 C->S CUSTOM:'.' 4704
+539.599 C->S CUSTOM:'.' 4707
+540.09 C->S CUSTOM:'.' 4704
+540.603 C->S CUSTOM:'.' 4704
+540.636 C->S CUSTOM:'.' 4704
+540.664 C->S CUSTOM:'.' 4704
+540.697 C->S CUSTOM:'.' 4704
+540.727 C->S CUSTOM:'.' 4704
+540.757 C->S CUSTOM:'.' 4704
+540.791 C->S CUSTOM:'.' 4704
+540.836 C->S CUSTOM:'.' 4704
+540.867 C->S CUSTOM:'.' 4704
+540.897 C->S CUSTOM:'.' 4704
+540.93 C->S CUSTOM:'.' 4704
+540.958 C->S CUSTOM:'.' 4704
+540.989 C->S CUSTOM:'.' 4704
+541.022 C->S CUSTOM:'.' 4704
+541.051 C->S CUSTOM:'.' 4704
+541.097 C->S CUSTOM:'.' 4704
+541.13 C->S CUSTOM:'.' 4704
+541.159 C->S CUSTOM:'.' 4704
+541.192 C->S CUSTOM:'.' 4704
+541.221 C->S CUSTOM:'.' 4704
+541.253 C->S CUSTOM:'.' 4704
+541.298 C->S CUSTOM:'.' 4704
+541.332 C->S CUSTOM:'.' 4704
+541.359 C->S CUSTOM:'.' 4704
+541.389 C->S CUSTOM:'.' 4704
+541.422 C->S CUSTOM:'.' 4704
+541.452 C->S CUSTOM:'.' 4704
+541.484 C->S CUSTOM:'.' 4704
+541.514 C->S CUSTOM:'.' 4704
+541.559 C->S CUSTOM:'.' 4704
+541.621 C->S CUSTOM:'.' 4704
+541.651 C->S CUSTOM:'.' 4704
+541.686 C->S CUSTOM:'.' 4704
+541.716 C->S CUSTOM:'.' 4704
+541.758 C->S CUSTOM:'.' 4704
+541.789 C->S CUSTOM:'.' 4704
+541.822 C->S CUSTOM:'.' 4704
+541.853 C->S CUSTOM:'.' 4704
+541.882 C->S CUSTOM:'.' 4704
+541.914 C->S CUSTOM:'.' 4704
+541.946 C->S CUSTOM:'.' 4704
+541.987 C->S CUSTOM:'.' 4704
+542.024 C->S CUSTOM:'.' 4704
+542.057 C->S CUSTOM:'.' 4704
+542.085 C->S CUSTOM:'.' 4704
+542.111 C->S CUSTOM:'.' 4704
+542.145 C->S CUSTOM:'.' 4704
+542.174 C->S CUSTOM:'.' 4704
+542.218 C->S CUSTOM:'.' 4704
+542.252 C->S CUSTOM:'.' 4704
+542.281 C->S CUSTOM:'.' 4704
+542.313 C->S CUSTOM:'.' 4704
+542.343 C->S CUSTOM:'.' 4704
+542.372 C->S CUSTOM:'.' 4704
+542.406 C->S CUSTOM:'.' 4704
+542.453 C->S CUSTOM:'.' 4704
+542.482 C->S CUSTOM:'.' 4704
+542.511 C->S CUSTOM:'.' 4704
+542.544 C->S CUSTOM:'.' 4704
+542.574 C->S CUSTOM:'.' 4704
+542.604 C->S CUSTOM:'.' 4704
+542.637 C->S CUSTOM:'.' 4704
+542.639 MSG 0 'You cannot run in that direction.\x00'
+542.686 C->S CUSTOM:'.' 4704
+542.714 C->S CUSTOM:'.' 4704
+542.743 C->S CUSTOM:'.' 4704
+542.773 C->S CUSTOM:'.' 4704
+542.805 C->S CUSTOM:'.' 4704
+542.839 C->S CUSTOM:'.' 4704
+543.203 C->S CUSTOM:'.' 4701
+543.487 C->S CUSTOM:'.' 4702
+543.602 C->S CUSTOM:'.' 4703
+543.79 C->S CUSTOM:'.' 4701
+544.762 C->S CUSTOM:'.' 4703
+545.478 C->S CUSTOM:'.' 4709
+545.72 C->S CUSTOM:'.' 4709
+545.822 C->S CUSTOM:'.' 4708
+546.28 C->S CUSTOM:'.' 4708
+546.435 C->S CUSTOM:'.' 4709
+546.962 C->S CUSTOM:'.' 4704
+547.492 C->S CUSTOM:'.' 4704
+547.691 C->S CUSTOM:'.' 4708
+548.353 C->S CUSTOM:'.' 4704
+548.785 C->S CUSTOM:'.' 4708
+549.305 C->S CUSTOM:'.' 4704
+549.464 C->S CUSTOM:'.' 4708
+550.278 C->S CUSTOM:'.' 4703
+550.54 C->S CUSTOM:'.' 4703
+550.974 C->S CUSTOM:'.' 4706
+551.233 C->S CUSTOM:'.' 4703
+551.793 C->S CUSTOM:'.' 4702
+552.052 C->S CUSTOM:'.' 4703
+552.302 C->S CUSTOM:'.' 4706
+552.952 C->S CUSTOM:'.' 4706
+553.456 C->S CUSTOM:'.' 4706
+553.485 C->S CUSTOM:'.' 4706
+553.519 C->S CUSTOM:'.' 4706
+553.563 C->S CUSTOM:'.' 4706
+553.593 C->S CUSTOM:'.' 4706
+553.633 C->S CUSTOM:'.' 4706
+553.655 C->S CUSTOM:'.' 4706
+553.686 C->S CUSTOM:'.' 4706
+553.714 C->S CUSTOM:'.' 4706
+554.35 C->S CUSTOM:'.' 4706
+554.927 C->S CUSTOM:'.' 4709
+555.11 C->S CUSTOM:'.' 4708
+556.176 C->S CUSTOM:'.' 4708
+557.421 C->S CUSTOM:'.' 4708
+559.725 C->S CUSTOM:'.' 4704
+559.924 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 8600 turns of light) {25% off}'
+596.364 C->S CUSTOM:'.' 4708
+596.901 C->S CUSTOM:'.' 4707
+598.292 C->S CUSTOM:'.' 4708
+599.454 C->S CUSTOM:'.' 4704
+600.925 C->S CUSTOM:'.' 4704
+601.378 MSG 0 'It releases spores at you.\x00'
+601.907 C->S CUSTOM:'.' 4704
+602.886 C->S CUSTOM:'.' 4704
+603.377 C->S CUSTOM:'.' 4704
+603.581 C->S CUSTOM:'.' 4704
+603.8 C->S CUSTOM:'.' 4704
+604.176 C->S CUSTOM:'.' 4702
+604.526 C->S CUSTOM:'.' 4702
+604.8 C->S CUSTOM:'.' 4703
+605.074 C->S CUSTOM:'.' 4706
+605.593 C->S CUSTOM:'.' 4709
+605.962 C->S CUSTOM:'.' 4706
+606.733 C->S CUSTOM:'.' 4708
+606.991 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 8500 turns of light) {25% off}'
+607.243 C->S CUSTOM:'.' 4709
+607.53 C->S CUSTOM:'.' 4708
+608.096 C->S CUSTOM:'.' 4706
+608.34 C->S CUSTOM:'.' 4703
+608.721 C->S CUSTOM:'.' 4706
+609.212 C->S CUSTOM:'.' 4706
+609.215 MSG 0 'You cannot run in that direction.\x00'
+610.531 C->S CUSTOM:'T' 0a06
+610.533 MSG 0 'You dig in the rubble.\x00'
+611.542 C->S CUSTOM:'T' 0a06
+612.442 C->S CUSTOM:'T' 0a06
+613.312 C->S CUSTOM:'T' 0a06
+614.028 C->S CUSTOM:'.' 4706
+614.03 MSG 0 'You cannot run in that direction.\x00'
+614.648 C->S CUSTOM:'.' 4704
+615.12 C->S CUSTOM:'.' 4701
+615.272 C->S CUSTOM:'.' 4703
+615.559 C->S CUSTOM:'.' 4706
+616.384 C->S CUSTOM:'.' 4702
+616.677 C->S CUSTOM:'.' 4706
+617.176 C->S CUSTOM:'.' 4703
+617.479 C->S CUSTOM:'.' 4706
+618.119 C->S CUSTOM:'.' 4709
+618.737 C->S CUSTOM:'.' 4709
+618.905 C->S CUSTOM:'.' 4708
+619.547 C->S CUSTOM:'.' 4704
+619.765 C->S CUSTOM:'.' 4708
+620.315 C->S CUSTOM:'.' 4703
+620.414 C->S CUSTOM:'.' 4702
+620.83 C->S CUSTOM:'.' 4703
+621.144 C->S CUSTOM:'.' 4706
+621.647 C->S CUSTOM:'.' 4706
+621.992 C->S CUSTOM:'.' 4702
+622.399 C->S CUSTOM:'.' 4706
+622.741 C->S CUSTOM:'.' 4702
+623.011 C->S CUSTOM:'.' 4706
+624.409 C->S CUSTOM:'.' 4706
+624.79 C->S CUSTOM:'.' 4706
+625.056 C->S CUSTOM:'.' 4706
+625.399 C->S CUSTOM:'.' 4708
+625.928 C->S CUSTOM:'.' 4708
+626.04 C->S CUSTOM:'.' 4709
+626.264 C->S CUSTOM:'.' 4708
+627.445 C->S CUSTOM:'.' 4708
+627.711 C->S CUSTOM:'.' 4707
+627.963 C->S CUSTOM:'.' 4708
+628.414 C->S CUSTOM:'.' 4707
+628.844 C->S CUSTOM:'.' 4708
+629.41 C->S CUSTOM:'.' 4709
+630.199 C->S CUSTOM:'.' 4707
+630.368 C->S CUSTOM:'.' 4708
+630.906 C->S CUSTOM:'.' 4707
+631.317 C->S CUSTOM:'.' 4707
+631.728 C->S CUSTOM:'.' 4707
+632.023 C->S CUSTOM:'.' 4707
+632.427 C->S CUSTOM:'.' 4701
+633.033 C->S CUSTOM:'.' 4703
+633.249 C->S CUSTOM:'.' 4702
+633.524 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 8400 turns of light) {25% off}'
+633.749 C->S CUSTOM:'.' 4706
+634.021 C->S CUSTOM:'.' 4709
+634.306 C->S CUSTOM:'.' 4706
+634.822 C->S CUSTOM:'.' 4706
+634.849 C->S CUSTOM:'.' 4706
+634.885 C->S CUSTOM:'.' 4706
+634.914 C->S CUSTOM:'.' 4706
+634.946 C->S CUSTOM:'.' 4706
+634.976 C->S CUSTOM:'.' 4706
+635.009 C->S CUSTOM:'.' 4706
+635.05 C->S CUSTOM:'.' 4706
+635.081 C->S CUSTOM:'.' 4706
+635.11 C->S CUSTOM:'.' 4706
+635.142 C->S CUSTOM:'.' 4706
+635.176 C->S CUSTOM:'.' 4706
+635.205 C->S CUSTOM:'.' 4706
+635.249 C->S CUSTOM:'.' 4706
+635.282 C->S CUSTOM:'.' 4706
+635.311 C->S CUSTOM:'.' 4706
+635.353 C->S CUSTOM:'.' 4706
+635.374 C->S CUSTOM:'.' 4706
+635.405 C->S CUSTOM:'.' 4706
+635.434 C->S CUSTOM:'.' 4706
+635.483 C->S CUSTOM:'.' 4706
+635.511 C->S CUSTOM:'.' 4706
+635.545 C->S CUSTOM:'.' 4706
+635.575 C->S CUSTOM:'.' 4706
+635.605 C->S CUSTOM:'.' 4706
+635.634 C->S CUSTOM:'.' 4706
+635.838 C->S CUSTOM:'.' 4707
+636.273 C->S CUSTOM:'.' 4708
+636.82 C->S CUSTOM:'.' 4701
+636.973 C->S CUSTOM:'.' 4702
+637.192 C->S CUSTOM:'.' 4701
+637.327 C->S CUSTOM:'.' 4702
+637.967 C->S CUSTOM:'.' 4702
+639.453 C->S PKT_WALK 4609
+640.405 C->S CUSTOM:'<' 02
+640.407 MSG 0 'You enter a maze of up staircases.\x00'
+640.418 MSG 0 'You feel there is something special about this level.\x00'
+640.418 FLOOR 0000000000000000000000 [b'', b'']
+642.736 C->S CUSTOM:'.' 4701
+643.256 C->S CUSTOM:'.' 4702
+643.695 C->S CUSTOM:'.' 4702
+643.834 C->S CUSTOM:'.' 4703
+644.581 C->S CUSTOM:'.' 4706
+645.147 C->S CUSTOM:'.' 4702
+645.657 C->S CUSTOM:'.' 4706
+645.66 MSG 27 'You failed to pick the lock.\x00'
+646.059 C->S CUSTOM:'.' 4706
+646.627 C->S CUSTOM:'.' 4706
+646.99 MSG 85 'You have picked the lock.\x00'
+648.965 C->S CUSTOM:'.' 4706
+649.778 C->S CUSTOM:'.' 4706
+650.328 C->S CUSTOM:'.' 4706
+651.474 C->S CUSTOM:'.' 4708
+652.211 C->S CUSTOM:'.' 4708
+652.641 C->S CUSTOM:'.' 4708
+653.358 C->S CUSTOM:'.' 4708
+654.233 C->S CUSTOM:'.' 4706
+655.042 C->S CUSTOM:'.' 4706
+655.53 C->S CUSTOM:'.' 4708
+655.859 C->S CUSTOM:'.' 4706
+656.661 C->S CUSTOM:'.' 4706
+656.663 MSG 0 'You cannot run in that direction.\x00'
+657.154 C->S CUSTOM:'S' 06
+657.623 C->S CUSTOM:'.' 4702
+658.064 C->S CUSTOM:'.' 4708
+658.525 C->S CUSTOM:'.' 4702
+659.23 C->S CUSTOM:'.' 4708
+659.654 C->S CUSTOM:'.' 4702
+660.142 C->S CUSTOM:'.' 4708
+660.149 MSG 0 'You have found a secret door.\x00'
+660.783 C->S CUSTOM:'S' 06
+662.006 C->S CUSTOM:'.' 4703
+662.322 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 8300 turns of light) {25% off}'
+662.423 C->S CUSTOM:'.' 4703
+663.152 C->S CUSTOM:'.' 4706
+663.685 C->S CUSTOM:'.' 4706
+664.186 C->S CUSTOM:'.' 4708
+664.754 C->S CUSTOM:'.' 4706
+665.304 C->S CUSTOM:'.' 4706
+665.806 C->S CUSTOM:'.' 4706
+665.853 C->S CUSTOM:'.' 4706
+665.881 C->S CUSTOM:'.' 4706
+665.913 C->S CUSTOM:'.' 4706
+665.945 C->S CUSTOM:'.' 4706
+665.978 C->S CUSTOM:'.' 4706
+666.009 C->S CUSTOM:'.' 4706
+666.034 C->S CUSTOM:'.' 4706
+666.067 C->S CUSTOM:'.' 4706
+666.367 C->S CUSTOM:'.' 4701
+666.964 C->S PKT_WALK 4602
+666.966 FLOOR 000b210b00014d04006120466c61736b206f66206f696c0000 [b'a Flask of oil', b'']
+666.966 MSG 0 'You see a Flask of oil.\x00'
+669.356 C->S CUSTOM:',' 00
+669.358 MSG 0 'You have 6 Flasks of oil (b).\x00'
+669.358 FLOOR 0000000000000000000000 [b'', b'']
+669.358 INVEN 'b' wgt 60 amt 6 tval 77 flag 4 st 0 '6 Flasks of oil'
+670.367 C->S CUSTOM:'.' 4706
+670.871 C->S CUSTOM:'.' 4706
+670.901 C->S CUSTOM:'.' 4706
+670.935 C->S CUSTOM:'.' 4706
+670.964 C->S CUSTOM:'.' 4706
+671.009 C->S CUSTOM:'.' 4706
+671.038 C->S CUSTOM:'.' 4706
+671.069 C->S CUSTOM:'.' 4706
+671.101 C->S CUSTOM:'.' 4706
+671.131 C->S CUSTOM:'.' 4706
+671.164 C->S CUSTOM:'.' 4706
+671.193 C->S CUSTOM:'.' 4706
+671.237 C->S CUSTOM:'.' 4706
+671.27 C->S CUSTOM:'.' 4706
+671.299 C->S CUSTOM:'.' 4706
+671.329 C->S CUSTOM:'.' 4706
+671.361 C->S CUSTOM:'.' 4706
+671.407 C->S CUSTOM:'.' 4706
+671.935 C->S CUSTOM:'.' 4709
+672.173 C->S CUSTOM:'.' 4708
+672.202 MSG 0 'You cannot run in that direction.\x00'
+672.493 C->S CUSTOM:'.' 4706
+673.128 C->S CUSTOM:'.' 4701
+673.568 C->S CUSTOM:'.' 4703
+674.198 C->S CUSTOM:'.' 4704
+674.71 C->S CUSTOM:'.' 4704
+674.74 C->S CUSTOM:'.' 4704
+674.777 C->S CUSTOM:'.' 4704
+674.8 C->S CUSTOM:'.' 4704
+674.83 C->S CUSTOM:'.' 4704
+674.875 C->S CUSTOM:'.' 4704
+675.464 C->S CUSTOM:'.' 4704
+675.809 C->S CUSTOM:'.' 4701
+675.969 C->S CUSTOM:'.' 4702
+676.32 C->S CUSTOM:'.' 4702
+676.673 C->S CUSTOM:'.' 4702
+677.155 C->S CUSTOM:'.' 4706
+677.672 C->S CUSTOM:'.' 4703
+677.765 C->S CUSTOM:'.' 4702
+678.228 C->S CUSTOM:'.' 4701
+678.464 C->S CUSTOM:'.' 4702
+679.348 C->S CUSTOM:'.' 4702
+679.887 C->S CUSTOM:'.' 4702
+680.172 C->S CUSTOM:'.' 4702
+680.651 C->S CUSTOM:'.' 4708
+681.269 C->S CUSTOM:'.' 4708
+681.532 C->S CUSTOM:'.' 4708
+681.708 C->S CUSTOM:'.' 4709
+682.04 C->S CUSTOM:'.' 4706
+684.529 C->S CUSTOM:'.' 4708
+685.438 C->S CUSTOM:'.' 4708
+685.85 C->S CUSTOM:'.' 4706
+685.922 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 8200 turns of light) {25% off}'
+686.361 C->S CUSTOM:'.' 4703
+686.492 C->S CUSTOM:'.' 4702
+686.813 C->S CUSTOM:'.' 4706
+687.518 C->S CUSTOM:'.' 4709
+687.648 C->S CUSTOM:'.' 4708
+687.938 C->S CUSTOM:'.' 4709
+688.191 C->S CUSTOM:'.' 4706
+689.389 C->S CUSTOM:'.' 4706
+689.893 C->S CUSTOM:'.' 4706
+689.927 C->S CUSTOM:'.' 4706
+689.958 C->S CUSTOM:'.' 4706
+689.987 C->S CUSTOM:'.' 4706
+690.029 C->S CUSTOM:'.' 4706
+690.066 C->S CUSTOM:'.' 4706
+690.095 C->S CUSTOM:'.' 4706
+690.128 C->S CUSTOM:'.' 4706
+690.157 C->S CUSTOM:'.' 4706
+690.19 C->S CUSTOM:'.' 4706
+690.22 C->S CUSTOM:'.' 4706
+690.266 C->S CUSTOM:'.' 4706
+690.297 C->S CUSTOM:'.' 4706
+690.33 C->S CUSTOM:'.' 4706
+690.359 C->S CUSTOM:'.' 4706
+690.389 C->S CUSTOM:'.' 4706
+690.419 C->S CUSTOM:'.' 4706
+690.451 C->S CUSTOM:'.' 4706
+690.497 C->S CUSTOM:'.' 4706
+690.756 C->S CUSTOM:'.' 4706
+690.989 C->S CUSTOM:'.' 4706
+691.216 C->S CUSTOM:'.' 4706
+691.507 C->S CUSTOM:'.' 4706
+691.782 C->S CUSTOM:'.' 4706
+692.182 C->S CUSTOM:'.' 4706
+692.789 C->S CUSTOM:'.' 4707
+693.056 C->S CUSTOM:'.' 4707
+693.267 C->S CUSTOM:'.' 4707
+693.78 C->S CUSTOM:'.' 4708
+694.762 C->S CUSTOM:'.' 4702
+695.123 C->S CUSTOM:'.' 4703
+695.225 C->S CUSTOM:'.' 4702
+696.584 C->S CUSTOM:'.' 4703
+696.589 FLOOR 0006280200012401006120526f6265205b325d0000 [b'a Robe [2]', b'']
+696.589 MSG 0 'You see a Robe [2].\x00'
+698.453 C->S CUSTOM:',' 00
+698.455 MSG 0 'You have a Robe [2] (j).\x00'
+698.455 FLOOR 0000000000000000000000 [b'', b'']
+698.455 INVEN 'j' wgt 20 amt 1 tval 36 flag 1 st 0 'a Robe [2]'
+698.455 INVEN 'k' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+699.046 C->S CUSTOM:'.' 4702
+699.685 C->S CUSTOM:'.' 4706
+700.636 C->S CUSTOM:'.' 4708
+701.471 C->S CUSTOM:'.' 4708
+701.75 C->S CUSTOM:'.' 4706
+702.512 C->S CUSTOM:'.' 4706
+702.88 C->S CUSTOM:'.' 4706
+703.312 C->S CUSTOM:'.' 4706
+703.314 MSG 0 'You cannot run in that direction.\x00'
+703.644 C->S CUSTOM:'.' 4702
+704.566 C->S CUSTOM:'.' 4704
+704.967 C->S CUSTOM:'.' 4702
+705.526 C->S CUSTOM:'.' 4702
+705.881 C->S CUSTOM:'.' 4702
+706.168 C->S CUSTOM:'.' 4706
+707.063 C->S CUSTOM:'.' 4706
+707.383 C->S CUSTOM:'.' 4706
+707.388 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 8100 turns of light) {25% off}'
+707.89 C->S CUSTOM:'.' 4706
+707.924 C->S CUSTOM:'.' 4706
+707.95 C->S CUSTOM:'.' 4706
+707.983 C->S CUSTOM:'.' 4706
+708.139 C->S CUSTOM:'.' 4706
+708.384 C->S CUSTOM:'.' 4706
+708.652 C->S CUSTOM:'.' 4706
+708.964 C->S CUSTOM:'.' 4706
+710.112 C->S CUSTOM:'.' 4706
+711.494 C->S CUSTOM:'.' 4706
+712.457 C->S CUSTOM:'.' 4703
+712.808 C->S CUSTOM:'.' 4706
+713.594 C->S CUSTOM:'.' 4706
+714.392 C->S PKT_WALK 4606
+714.395 FLOOR 00075f0f0001372000616e204f616b2053746166660000 [b'an Oak Staff', b'']
+714.395 MSG 0 'You see an Oak Staff.\x00'
+715.439 C->S CUSTOM:',' 00
+715.442 MSG 0 'You have an Oak Staff (j).\x00'
+715.442 FLOOR 0000000000000000000000 [b'', b'']
+715.442 INVEN 'j' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+715.442 INVEN 'k' wgt 20 amt 1 tval 36 flag 1 st 0 'a Robe [2]'
+715.442 INVEN 'l' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+715.993 C->S CUSTOM:'.' 4702
+716.175 MSG 0 'You hit the Creeping copper coins.\x00'
+716.842 MSG 0 'The Creeping copper coins flees in terror!\x00'
+716.864 C->S PKT_WALK 4609
+717.68 MSG 0 'You hit the Creeping copper coins.\x00'
+717.818 C->S PKT_WALK 4609
+718.335 MSG 0 'There is a wall blocking your way.\x00'
+718.521 MSG 0 'You miss the Creeping copper coins.\x00'
+718.651 C->S CUSTOM:'.' 4706
+719.161 C->S CUSTOM:'.' 4706
+719.521 MSG 0 'You hit the Creeping copper coins.\x00'
+719.521 MSG 0 'You have slain the Creeping copper coins.\x00'
+720.154 C->S CUSTOM:'.' 4706
+720.188 MSG 0 'You have found 33 gold pieces worth of copper.\x00'
+720.624 C->S CUSTOM:'.' 4706
+720.854 MSG 0 'You have found 27 gold pieces worth of copper.\x00'
+721.391 C->S CUSTOM:'.' 4706
+722.341 C->S CUSTOM:'.' 4702
+722.77 C->S CUSTOM:'.' 4704
+723.521 MSG 0 'You feel the Robe (k) in your pack is average...\x00'
+723.521 INVEN 'k' wgt 20 amt 1 tval 36 flag 1 st 0 'a Robe [2] {average}'
+724.695 C->S CUSTOM:'.' 4708
+725.181 C->S CUSTOM:'.' 4709
+725.517 C->S CUSTOM:'.' 4706
+725.961 C->S CUSTOM:'.' 4709
+726.232 C->S CUSTOM:'.' 4708
+739.653 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 8000 turns of light) {25% off}'
+801.774 C->S CUSTOM:'.' 4708
+802.717 C->S CUSTOM:'.' 4706
+803.119 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 7900 turns of light) {25% off}'
+804.949 C->S CUSTOM:'.' 4703
+805.26 C->S CUSTOM:'.' 4706
+805.891 C->S CUSTOM:'.' 4706
+806.656 C->S CUSTOM:'.' 4708
+807.183 C->S CUSTOM:'.' 4704
+807.682 C->S CUSTOM:'.' 4701
+808.037 C->S CUSTOM:'.' 4706
+809.184 C->S CUSTOM:'.' 4708
+810.014 C->S PKT_WALK 4607
+810.016 FLOOR 00013f01000146200061205363726f6c6c206f66204964656e746966790000 [b'a Scroll of Identify', b'']
+810.017 MSG 0 'You see a Scroll of Identify.\x00'
+811.069 C->S CUSTOM:',' 00
+811.071 MSG 0 'You have a Scroll of Identify (i).\x00'
+811.071 FLOOR 0000000000000000000000 [b'', b'']
+811.071 INVEN 'i' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll of Identify'
+811.071 INVEN 'j' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+811.071 INVEN 'k' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+811.071 INVEN 'l' wgt 20 amt 1 tval 36 flag 1 st 0 'a Robe [2] {average}'
+811.071 INVEN 'm' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+812.009 C->S CUSTOM:'.' 4703
+812.112 C->S CUSTOM:'.' 4702
+812.556 C->S CUSTOM:'.' 4703
+812.919 C->S CUSTOM:'.' 4706
+813.313 C->S CUSTOM:'.' 4703
+813.723 C->S CUSTOM:'.' 4706
+813.799 MSG 0 'You hit the Kobold shaman.\x00'
+813.799 MSG 0 'The Kobold shaman flees in terror!\x00'
+813.958 MSG 0 'You miss the Kobold shaman.\x00'
+814.132 MSG 0 'You hit the Kobold shaman.\x00'
+814.132 MSG 0 'You have slain the Kobold shaman.\x00'
+814.685 C->S CUSTOM:'.' 4706
+814.972 MSG 0 'You hit the Snaga.\x00'
+815.132 MSG 0 'You miss the Snaga.\x00'
+815.252 C->S CUSTOM:'.' 4708
+815.586 MSG 0 'The Snaga misses you.\x00'
+815.799 MSG 0 'You hit the Snaga.\x00'
+815.799 MSG 0 'You miss the Snaga.\x00'
+815.799 MSG 0 'You hit the Snaga.\x00'
+815.799 MSG 0 'You have slain the Snaga.\x00'
+815.972 MSG 0 'You hit the Snaga.\x00'
+816.104 MSG 0 'The Snaga hits you.\x00'
+816.132 MSG 0 'You hit the Snaga.\x00'
+816.638 MSG 0 'The Snaga flees in terror!\x00'
+816.798 MSG 0 'You hit the Snaga.\x00'
+816.798 MSG 0 'It was a great hit!\x00'
+816.798 MSG 0 'You have slain the Snaga.\x00'
+816.931 MSG 0 'The Snaga hits you.\x00'
+816.971 MSG 0 'You hit the Snaga.\x00'
+817.132 MSG 0 'You miss the Snaga.\x00'
+817.305 MSG 0 'You hit the Snaga.\x00'
+817.693 C->S CUSTOM:'.' 4704
+817.866 MSG 0 'The Snaga hits you.\x00'
+818.145 MSG 0 'The Snaga misses you.\x00'
+818.478 MSG 0 'You miss the Snaga.\x00'
+818.639 MSG 0 'You hit the Snaga.\x00'
+818.639 MSG 0 'The Snaga flees in terror!\x00'
+818.812 MSG 0 'You hit the Snaga.\x00'
+818.812 MSG 0 'You have slain the Snaga.\x00'
+819.08 MSG 0 'You miss the Snaga.\x00'
+819.479 MSG 0 'You hit the Snaga.\x00'
+819.732 MSG 0 'The Snaga hits you.\x00'
+819.811 MSG 0 'You hit the Snaga.\x00'
+820.105 MSG 0 'The Snaga hits you.\x00'
+820.145 MSG 0 'You hit the Snaga.\x00'
+820.145 MSG 0 'You have slain the Snaga.\x00'
+820.305 MSG 0 'You hit the Snaga.\x00'
+820.811 MSG 0 'The Snaga flees in terror!\x00'
+820.971 MSG 0 'You hit the Snaga.\x00'
+820.971 MSG 0 'You have slain the Snaga.\x00'
+820.986 MSG 0 'The Snaga hits you.\x00'
+821.144 MSG 0 'You hit the Snaga.\x00'
+821.772 MSG 0 'The Snaga misses you.\x00'
+821.812 MSG 0 'You hit the Snaga.\x00'
+821.972 MSG 0 'You have slain the Snaga.\x00'
+822.145 MSG 0 'You hit the Snaga.\x00'
+822.479 MSG 0 'You miss the Snaga.\x00'
+822.639 MSG 0 'You hit the Snaga.\x00'
+822.639 MSG 0 'The Snaga flees in terror!\x00'
+822.812 MSG 0 'You miss the Snaga.\x00'
+822.972 MSG 0 'You hit the Snaga.\x00'
+822.972 MSG 0 'You have slain the Snaga.\x00'
+823.876 C->S PKT_WALK 4602
+823.879 FLOOR 00013d0400012d01006120506561726c2052696e670000 [b'a Pearl Ring', b'']
+823.879 MSG 0 'You see a Pearl Ring.\x00'
+825.274 C->S CUSTOM:',' 00
+825.276 MSG 0 'You have a Pearl Ring (l).\x00'
+825.276 FLOOR 0000000000000000000000 [b'', b'']
+825.276 INVEN 'l' wgt 2 amt 1 tval 45 flag 1 st 0 'a Pearl Ring'
+825.276 INVEN 'm' wgt 20 amt 1 tval 36 flag 1 st 0 'a Robe [2] {average}'
+825.276 INVEN 'n' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+826.096 C->S PKT_WALK 4609
+826.098 FLOOR 00062c0f00015000006120426c7565204d757368726f6f6d0000 [b'a Blue Mushroom', b'']
+826.098 MSG 0 'You see a Blue Mushroom.\x00'
+827.372 MSG 0 'You hit the Snaga.\x00'
+827.372 MSG 0 'The Snaga flees in terror!\x00'
+827.385 MSG 0 'You hit the Snaga.\x00'
+827.385 MSG 0 'You have slain the Snaga.\x00'
+828.194 C->S PKT_WALK 4604
+828.196 FLOOR 00013f01000146000061205363726f6c6c206f6620506861736520446f6f720000 [b'a Scroll of Phase Door', b'']
+828.196 MSG 0 'You see a Scroll of Phase Door.\x00'
+829.211 MSG 0 'You hit the Snaga.\x00'
+829.211 MSG 0 'You miss the Snaga.\x00'
+829.213 C->S CUSTOM:',' 00
+829.518 MSG 0 'You have 6 Scrolls of Phase Door {@r1} (f).\x00'
+829.518 FLOOR 0000000000000000000000 [b'', b'']
+829.518 INVEN 'f' wgt 30 amt 6 tval 70 flag 0 st 0 '6 Scrolls of Phase Door {@r1}'
+829.533 MSG 0 'You hit the Snaga.\x00'
+829.533 MSG 0 'You have slain the Snaga.\x00'
+829.533 MSG 0 'You feel something roll beneath your feet.\x00'
+829.533 FLOOR 000a210e00014b00006120506f74696f6e206f66204265727365726b20537472656e6774680000 [b'a Potion of Berserk Strength', b'']
+833.014 MSG 257 'Scribe begins a new game.\x00'
+836.441 C->S CUSTOM:'{' 190603407231
+836.443 MSG 0 'Inscribing 3 Scrolls of Phase Door {75% off}.\x00'
+836.443 INVEN 'g' wgt 15 amt 3 tval 70 flag 0 st 0 '3 Scrolls of Phase Door {@r1}'
+839.652 C->S CUSTOM:'d' 170500000006
+839.654 MSG 0 'Dropped 6 Scrolls of Phase Door {@r1} (f).\x00'
+839.654 MSG 0 'You have no more Scrolls of Phase Door {@r1}.\x00'
+839.654 INVEN 'f' wgt 15 amt 3 tval 70 flag 0 st 0 '3 Scrolls of Phase Door {@r1}'
+839.654 INVEN 'g' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall'
+839.654 INVEN 'h' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll of Identify'
+839.654 INVEN 'i' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+839.654 INVEN 'j' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+839.654 INVEN 'k' wgt 2 amt 1 tval 45 flag 1 st 0 'a Pearl Ring'
+839.654 INVEN 'l' wgt 20 amt 1 tval 36 flag 1 st 0 'a Robe [2] {average}'
+839.654 INVEN 'm' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+839.654 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+839.654 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+839.654 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+839.654 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+839.654 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+839.654 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+839.654 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+839.654 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+839.654 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+839.654 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+839.654 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+840.861 MSG 256 '[Dive03:Scribe] Hi! This is Claude, talking through the character\x00'
+841.261 MSG 256 '[Dive03:Scribe] Scribe. I can read your chat notes live and answer\x00'
+841.661 MSG 256 '[Dive03:Scribe] here.\x00'
+843.097 C->S CUSTOM:'d' 170500000003
+843.099 MSG 0 'Dropped 3 Scrolls of Phase Door {@r1} (f).\x00'
+843.099 MSG 0 'You have no more Scrolls of Phase Door {@r1}.\x00'
+843.099 INVEN 'f' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall'
+843.099 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll of Identify'
+843.099 INVEN 'h' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+843.099 INVEN 'i' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+843.099 INVEN 'j' wgt 2 amt 1 tval 45 flag 1 st 0 'a Pearl Ring'
+843.099 INVEN 'k' wgt 20 amt 1 tval 36 flag 1 st 0 'a Robe [2] {average}'
+843.099 INVEN 'l' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+843.099 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+843.099 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+843.099 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+843.099 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+843.099 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+843.099 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+843.099 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+843.099 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+843.099 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+843.099 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+843.099 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+843.099 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+844.194 C->S CUSTOM:',' 00
+844.196 MSG 0 'You have a Potion of Berserk Strength (c).\x00'
+844.196 FLOOR 0000000000000000000000 [b'', b'']
+844.196 INVEN 'c' wgt 4 amt 1 tval 75 flag 0 st 0 'a Potion of Berserk Strength'
+844.196 INVEN 'd' wgt 28 amt 7 tval 75 flag 0 st 0 '7 Potions of Cure Light Wounds {@q1}'
+844.196 INVEN 'e' wgt 4 amt 1 tval 75 flag 0 st 0 'a Chartreuse Potion'
+844.196 INVEN 'f' wgt 4 amt 1 tval 75 flag 0 st 0 'a Dark Red Potion'
+844.196 INVEN 'g' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall'
+844.196 INVEN 'h' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll of Identify'
+844.196 INVEN 'i' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+844.196 INVEN 'j' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+844.196 INVEN 'k' wgt 2 amt 1 tval 45 flag 1 st 0 'a Pearl Ring'
+844.196 INVEN 'l' wgt 20 amt 1 tval 36 flag 1 st 0 'a Robe [2] {average}'
+844.196 INVEN 'm' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+845.745 C->S CUSTOM:',' 00
+846.112 C->S PKT_WALK 4602
+846.114 FLOOR 00013f01000646000036205363726f6c6c73206f6620506861736520446f6f72207b4072317d0000 [b'6 Scrolls of Phase Door {@r1}', b'']
+846.114 MSG 0 'You see 6 Scrolls of Phase Door {@r1}.\x00'
+847.03 C->S PKT_WALK 4604
+847.033 FLOOR 00013f01000346000033205363726f6c6c73206f6620506861736520446f6f72207b4072317d0000 [b'3 Scrolls of Phase Door {@r1}', b'']
+847.033 MSG 0 'You see 3 Scrolls of Phase Door {@r1}.\x00'
+847.533 C->S CUSTOM:',' 00
+847.692 MSG 0 'You have 3 Scrolls of Phase Door {@r1} (g).\x00'
+847.692 FLOOR 0000000000000000000000 [b'', b'']
+847.692 INVEN 'g' wgt 15 amt 3 tval 70 flag 0 st 0 '3 Scrolls of Phase Door {@r1}'
+847.692 INVEN 'h' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall'
+847.692 INVEN 'i' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll of Identify'
+847.692 INVEN 'j' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+847.692 INVEN 'k' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+847.692 INVEN 'l' wgt 2 amt 1 tval 45 flag 1 st 0 'a Pearl Ring'
+847.692 INVEN 'm' wgt 20 amt 1 tval 36 flag 1 st 0 'a Robe [2] {average}'
+847.692 INVEN 'n' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+847.987 C->S PKT_WALK 4606
+847.989 FLOOR 00013f01000646000036205363726f6c6c73206f6620506861736520446f6f72207b4072317d0000 [b'6 Scrolls of Phase Door {@r1}', b'']
+847.989 MSG 0 'You see 6 Scrolls of Phase Door {@r1}.\x00'
+848.333 C->S CUSTOM:',' 00
+848.652 MSG 0 'You have 6 Scrolls of Phase Door {@r1} (g).\x00'
+848.652 FLOOR 0000000000000000000000 [b'', b'']
+848.652 INVEN 'g' wgt 30 amt 6 tval 70 flag 0 st 0 '6 Scrolls of Phase Door {@r1}'
+848.652 INVEN 'h' wgt 15 amt 3 tval 70 flag 0 st 0 '3 Scrolls of Phase Door {@r1}'
+848.652 INVEN 'i' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall'
+848.652 INVEN 'j' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll of Identify'
+848.652 INVEN 'k' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+848.652 INVEN 'l' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+848.652 INVEN 'm' wgt 2 amt 1 tval 45 flag 1 st 0 'a Pearl Ring'
+848.652 INVEN 'n' wgt 20 amt 1 tval 36 flag 1 st 0 'a Robe [2] {average}'
+848.652 INVEN 'o' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+852.474 C->S PKT_WALK 4609
+852.477 FLOOR 00062c0f00015000006120426c7565204d757368726f6f6d0000 [b'a Blue Mushroom', b'']
+852.477 MSG 0 'You see a Blue Mushroom.\x00'
+853.897 C->S PKT_WALK 4606
+853.9 MSG 0 'You have found 28 gold pieces worth of copper.\x00'
+853.9 FLOOR 0000000000000000000000 [b'', b'']
+854.238 C->S PKT_WALK 4608
+854.317 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 7800 turns of light) {25% off}'
+854.559 FLOOR 000f7d070001130100612053686f727420426f7720287832290000 [b'a Short Bow (x2)', b'']
+854.559 MSG 0 'You see a Short Bow (x2).\x00'
+855.236 C->S CUSTOM:',' 00
+855.239 MSG 0 'You have a Short Bow (x2) (o).\x00'
+855.239 FLOOR 0000000000000000000000 [b'', b'']
+855.239 INVEN 'o' wgt 30 amt 1 tval 19 flag 1 st 0 'a Short Bow (x2)'
+855.239 INVEN 'p' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+855.885 C->S PKT_WALK 4604
+855.887 MSG 0 'You have found 50 gold pieces worth of silver.\x00'
+856.779 C->S PKT_WALK 4609
+856.781 MSG 0 'You have found 35 gold pieces worth of copper.\x00'
+863.694 C->S CUSTOM:'d' 170600000006
+863.696 MSG 0 'Dropped 6 Scrolls of Phase Door {@r1} (g).\x00'
+863.696 FLOOR 00013f01000646000036205363726f6c6c73206f6620506861736520446f6f72207b4072317d0000 [b'6 Scrolls of Phase Door {@r1}', b'']
+863.696 MSG 0 'You have no more Scrolls of Phase Door {@r1}.\x00'
+863.696 INVEN 'g' wgt 15 amt 3 tval 70 flag 0 st 0 '3 Scrolls of Phase Door {@r1}'
+863.696 INVEN 'h' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall'
+863.696 INVEN 'i' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll of Identify'
+863.696 INVEN 'j' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+863.696 INVEN 'k' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+863.696 INVEN 'l' wgt 2 amt 1 tval 45 flag 1 st 0 'a Pearl Ring'
+863.696 INVEN 'm' wgt 20 amt 1 tval 36 flag 1 st 0 'a Robe [2] {average}'
+863.696 INVEN 'n' wgt 30 amt 1 tval 19 flag 1 st 0 'a Short Bow (x2)'
+863.696 INVEN 'o' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+863.696 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+863.697 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+863.697 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+863.697 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+863.697 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+863.697 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+863.697 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+863.697 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+863.697 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+866.996 C->S CUSTOM:'d' 170600000003
+866.998 MSG 0 'Dropped 3 Scrolls of Phase Door {@r1} (g).\x00'
+866.998 FLOOR 00013f01000946000039205363726f6c6c73206f6620506861736520446f6f72207b4072317d0000 [b'9 Scrolls of Phase Door {@r1}', b'']
+866.998 MSG 0 'You have no more Scrolls of Phase Door {@r1}.\x00'
+866.998 INVEN 'g' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall'
+866.998 INVEN 'h' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll of Identify'
+866.998 INVEN 'i' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+866.998 INVEN 'j' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+866.998 INVEN 'k' wgt 2 amt 1 tval 45 flag 1 st 0 'a Pearl Ring'
+866.998 INVEN 'l' wgt 20 amt 1 tval 36 flag 1 st 0 'a Robe [2] {average}'
+866.998 INVEN 'm' wgt 30 amt 1 tval 19 flag 1 st 0 'a Short Bow (x2)'
+866.998 INVEN 'n' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+866.998 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+866.998 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+866.998 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+866.998 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+866.998 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+866.998 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+866.998 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+866.998 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+866.998 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+866.998 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+869.523 C->S CUSTOM:',' 00
+869.525 MSG 0 'You have 9 Scrolls of Phase Door {@r1} (g).\x00'
+869.525 FLOOR 0000000000000000000000 [b'', b'']
+869.525 INVEN 'g' wgt 45 amt 9 tval 70 flag 0 st 0 '9 Scrolls of Phase Door {@r1}'
+869.525 INVEN 'h' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall'
+869.525 INVEN 'i' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll of Identify'
+869.525 INVEN 'j' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+869.525 INVEN 'k' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+869.525 INVEN 'l' wgt 2 amt 1 tval 45 flag 1 st 0 'a Pearl Ring'
+869.525 INVEN 'm' wgt 20 amt 1 tval 36 flag 1 st 0 'a Robe [2] {average}'
+869.525 INVEN 'n' wgt 30 amt 1 tval 19 flag 1 st 0 'a Short Bow (x2)'
+869.525 INVEN 'o' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+870.73 C->S CUSTOM:'.' 4708
+871.817 C->S CUSTOM:'.' 4708
+872.796 C->S CUSTOM:'.' 4706
+873.65 MSG 0 'You hit the Giant spider.\x00'
+873.784 MSG 0 'It was a great hit!\x00'
+873.784 MSG 0 'The Giant spider flees in terror!\x00'
+874.454 C->S CUSTOM:'.' 4706
+875.044 C->S CUSTOM:'.' 4706
+875.737 C->S CUSTOM:'.' 4709
+877.004 C->S CUSTOM:'.' 4706
+878.193 C->S CUSTOM:'.' 4706
+878.703 C->S CUSTOM:'.' 4706
+878.733 C->S CUSTOM:'.' 4706
+878.765 C->S CUSTOM:'.' 4706
+878.796 C->S CUSTOM:'.' 4706
+878.829 C->S CUSTOM:'.' 4706
+878.859 C->S CUSTOM:'.' 4706
+878.905 C->S CUSTOM:'.' 4706
+878.934 C->S CUSTOM:'.' 4706
+878.966 C->S CUSTOM:'.' 4706
+878.998 C->S CUSTOM:'.' 4706
+879.027 C->S CUSTOM:'.' 4706
+879.058 C->S CUSTOM:'.' 4706
+879.087 C->S CUSTOM:'.' 4706
+879.134 C->S CUSTOM:'.' 4706
+879.164 C->S CUSTOM:'.' 4706
+879.196 C->S CUSTOM:'.' 4706
+879.226 C->S CUSTOM:'.' 4706
+879.257 C->S CUSTOM:'.' 4706
+879.287 C->S CUSTOM:'.' 4706
+879.319 C->S CUSTOM:'.' 4706
+879.358 MSG 0 'You hit the Giant spider.\x00'
+879.358 MSG 0 'It was a good hit!\x00'
+879.358 MSG 0 'You hit the Giant spider.\x00'
+879.358 MSG 0 'You have slain the Giant spider.\x00'
+879.367 C->S CUSTOM:'.' 4706
+879.4 C->S CUSTOM:'.' 4706
+879.445 C->S CUSTOM:'.' 4706
+879.468 C->S CUSTOM:'.' 4706
+879.49 C->S CUSTOM:'.' 4706
+879.518 C->S CUSTOM:'.' 4706
+879.55 C->S CUSTOM:'.' 4706
+879.596 C->S CUSTOM:'.' 4706
+879.626 C->S CUSTOM:'.' 4706
+879.658 C->S CUSTOM:'.' 4706
+879.689 C->S CUSTOM:'.' 4706
+879.718 C->S CUSTOM:'.' 4706
+880.172 C->S CUSTOM:'.' 4706
+880.722 C->S CUSTOM:'.' 4706
+882.127 C->S CUSTOM:'.' 4706
+883.481 C->S CUSTOM:'.' 4709
+884.099 C->S CUSTOM:'.' 4708
+884.624 C->S PKT_WALK 4607
+884.626 FLOOR 00013f01000146200061205363726f6c6c207469746c656420226865616b73206b686f6e69732200 [b'a Scroll titled "heaks khonis"', b'']
+884.626 MSG 0 'You see a Scroll titled "heaks khonis".\x00'
+885.917 C->S CUSTOM:',' 00
+885.919 MSG 0 'You have a Scroll titled "heaks khonis" (k).\x00'
+885.919 FLOOR 0000000000000000000000 [b'', b'']
+885.919 INVEN 'k' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+885.919 INVEN 'l' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+885.919 INVEN 'm' wgt 2 amt 1 tval 45 flag 1 st 0 'a Pearl Ring'
+885.919 INVEN 'n' wgt 20 amt 1 tval 36 flag 1 st 0 'a Robe [2] {average}'
+885.919 INVEN 'o' wgt 30 amt 1 tval 19 flag 1 st 0 'a Short Bow (x2)'
+885.919 INVEN 'p' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+886.55 C->S CUSTOM:'.' 4708
+887.334 C->S CUSTOM:'.' 4708
+887.336 MSG 85 'You have picked the lock.\x00'
+887.62 C->S CUSTOM:'.' 4708
+888.042 C->S CUSTOM:'.' 4708
+888.746 C->S CUSTOM:'.' 4708
+896.319 C->S CUSTOM:'d' 170d00000001
+896.321 MSG 0 'Dropped a Robe [2] {average} (n).\x00'
+896.321 FLOOR 0006280200012401006120526f6265205b325d207b617665726167657d0000 [b'a Robe [2] {average}', b'']
+896.321 MSG 0 'You have no more Robes [2] {average}.\x00'
+896.321 INVEN 'n' wgt 30 amt 1 tval 19 flag 1 st 0 'a Short Bow (x2)'
+896.321 INVEN 'o' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+896.322 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+896.322 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+896.322 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+896.322 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+896.322 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+896.322 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+896.322 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+896.322 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+896.322 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+900.128 C->S CUSTOM:'r' 1d080c
+900.13 MSG 0 'In your pack: a Ring of Slow Digestion (m).\x00'
+900.13 MSG 0 'You have no more Scrolls of Identify.\x00'
+900.13 INVEN 'i' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+900.13 INVEN 'j' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+900.13 INVEN 'k' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+900.13 INVEN 'l' wgt 2 amt 1 tval 45 flag 1 st 0 'a Ring of Slow Digestion'
+900.13 INVEN 'm' wgt 30 amt 1 tval 19 flag 1 st 0 'a Short Bow (x2)'
+900.13 INVEN 'n' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+900.13 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+900.13 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+900.13 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+900.13 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+900.131 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+900.131 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+900.131 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+900.131 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+900.131 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+900.131 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+902.317 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 7700 turns of light) {25% off}'
+902.327 C->S CUSTOM:'w' 150b
+902.329 MSG 0 'You are wearing a Ring of Slow Digestion (d).\x00'
+902.329 INVEN 'l' wgt 30 amt 1 tval 19 flag 1 st 0 'a Short Bow (x2)'
+902.329 INVEN 'm' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+902.329 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+902.329 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+902.329 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+902.329 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+902.329 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+902.329 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+902.329 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+902.329 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+902.329 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+902.329 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+902.329 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+902.329 EQUIP 'd' wgt 2 tval 45 'a Ring of Slow Digestion'
+903.542 C->S CUSTOM:'.' 4708
+903.544 FLOOR 0000000000000000000000 [b'', b'']
+903.779 C->S CUSTOM:'.' 4707
+904.777 C->S CUSTOM:'.' 4707
+904.936 C->S CUSTOM:'.' 4708
+905.971 C->S CUSTOM:'.' 4708
+907.811 C->S CUSTOM:'>' 04
+907.814 MSG 0 'You enter a maze of down staircases.\x00'
+907.825 MSG 0 'You feel there is something special about this level.\x00'
+907.825 FLOOR 0000000000000000000000 [b'', b'']
+908.872 C->S CUSTOM:'.' 4704
+909.881 C->S CUSTOM:'.' 4704
+910.209 MSG 0 'The Black mamba misses you.\x00'
+910.503 MSG 0 'You hit the Black mamba.\x00'
+910.503 MSG 0 'You miss the Black mamba.\x00'
+910.503 MSG 0 'You hit the Black mamba.\x00'
+910.677 MSG 0 'You miss the Black mamba.\x00'
+911.144 MSG 0 'You hit the Black mamba.\x00'
+911.144 MSG 0 'The Black mamba flees in terror!\x00'
+911.169 MSG 0 'You hit the Black mamba.\x00'
+911.169 MSG 0 'You have slain the Black mamba.\x00'
+911.294 C->S CUSTOM:'.' 4704
+912.474 C->S CUSTOM:'.' 4704
+913.239 C->S CUSTOM:'.' 4702
+913.737 C->S CUSTOM:'.' 4706
+914.05 C->S CUSTOM:'.' 4702
+914.13 MSG 0 'You cannot run in that direction.\x00'
+914.484 C->S CUSTOM:'.' 4701
+914.685 C->S CUSTOM:'.' 4702
+915.65 C->S CUSTOM:'.' 4702
+916.041 C->S CUSTOM:'.' 4702
+916.375 C->S CUSTOM:'.' 4702
+916.806 C->S CUSTOM:'.' 4702
+917.178 C->S CUSTOM:'.' 4706
+918.484 C->S CUSTOM:'.' 4703
+918.784 C->S CUSTOM:'.' 4706
+919.816 C->S CUSTOM:'.' 4706
+920.199 C->S CUSTOM:'.' 4706
+920.796 C->S CUSTOM:'.' 4706
+921.935 C->S CUSTOM:'.' 4703
+923.03 C->S CUSTOM:'.' 4703
+923.406 C->S CUSTOM:'.' 4706
+924.474 C->S CUSTOM:'.' 4704
+924.747 C->S CUSTOM:'.' 4707
+925.112 C->S CUSTOM:'.' 4707
+925.406 C->S CUSTOM:'.' 4707
+925.717 C->S CUSTOM:'.' 4707
+926.916 MSG 0 'You hit the Scruffy looking hobbit.\x00'
+927.076 MSG 0 'You have slain the Scruffy looking hobbit.\x00'
+927.986 C->S CUSTOM:'.' 4704
+928.606 C->S CUSTOM:'.' 4707
+929.212 C->S CUSTOM:'.' 4704
+929.488 C->S CUSTOM:'.' 4707
+929.515 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 7600 turns of light) {25% off}'
+929.88 C->S CUSTOM:'.' 4708
+930.683 C->S CUSTOM:'.' 4708
+931.011 C->S CUSTOM:'.' 4706
+932.633 C->S CUSTOM:'S' 06
+933.263 C->S CUSTOM:'.' 4704
+933.45 C->S CUSTOM:'.' 4706
+934.0 C->S CUSTOM:'.' 4704
+934.009 MSG 0 'You have found a secret door.\x00'
+934.15 C->S CUSTOM:'.' 4706
+934.422 C->S CUSTOM:'.' 4704
+934.564 C->S CUSTOM:'.' 4706
+934.827 C->S CUSTOM:'S' 06
+936.115 C->S CUSTOM:'.' 4708
+936.117 MSG 27 'You failed to pick the lock.\x00'
+936.682 C->S CUSTOM:'.' 4708
+936.782 MSG 85 'You have picked the lock.\x00'
+937.065 C->S CUSTOM:'.' 4708
+937.665 C->S CUSTOM:'.' 4708
+938.328 C->S CUSTOM:'S' 06
+938.761 C->S CUSTOM:'.' 4706
+939.65 MSG 0 'You feel the Short Bow (l) in your pack is average...\x00'
+939.65 INVEN 'l' wgt 30 amt 1 tval 19 flag 1 st 0 'a Short Bow (x2) {average}'
+944.382 MSG 0 'The Rattlesnake misses you.\x00'
+944.503 MSG 0 'You hit the Rattlesnake.\x00'
+944.995 MSG 0 'The Rattlesnake flees in terror!\x00'
+945.168 MSG 0 'You hit the Rattlesnake.\x00'
+945.168 MSG 0 'You have slain the Rattlesnake.\x00'
+946.139 C->S CUSTOM:'.' 4707
+946.528 C->S CUSTOM:'S' 06
+950.583 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 7500 turns of light) {25% off}'
+953.478 C->S CUSTOM:'.' 4702
+954.675 C->S CUSTOM:'.' 4702
+955.511 C->S CUSTOM:'.' 4703
+958.465 C->S CUSTOM:'.' 4706
+961.589 C->S CUSTOM:'.' 4709
+961.721 C->S CUSTOM:'.' 4708
+963.443 C->S CUSTOM:'.' 4707
+963.826 C->S CUSTOM:'.' 4704
+966.315 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 7400 turns of light) {25% off}'
+970.661 C->S CUSTOM:'.' 4702
+971.899 C->S CUSTOM:'.' 4702
+972.087 C->S CUSTOM:'.' 4703
+974.301 MSG 0 'You have found a secret door.\x00'
+975.091 C->S CUSTOM:'.' 4706
+975.747 C->S CUSTOM:'.' 4706
+980.435 C->S CUSTOM:'S' 06
+981.514 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 7300 turns of light) {25% off}'
+981.815 C->S CUSTOM:'.' 4704
+983.668 C->S CUSTOM:'.' 4701
+983.755 MSG 0 'You cannot run in that direction.\x00'
+983.793 C->S CUSTOM:'.' 4702
+984.19 C->S CUSTOM:'.' 4701
+984.502 C->S CUSTOM:'.' 4704
+985.079 C->S CUSTOM:'.' 4708
+986.044 C->S CUSTOM:'.' 4702
+987.416 C->S CUSTOM:'.' 4702
+988.115 C->S CUSTOM:'.' 4706
+988.751 C->S CUSTOM:'.' 4703
+989.093 C->S CUSTOM:'.' 4703
+989.376 C->S CUSTOM:'.' 4703
+989.711 C->S CUSTOM:'.' 4703
+990.005 C->S CUSTOM:'.' 4706
+991.025 C->S CUSTOM:'.' 4703
+991.386 C->S CUSTOM:'.' 4706
+991.949 C->S CUSTOM:'.' 4706
+991.955 MSG 0 'You have found 39 gold pieces worth of silver.\x00'
+992.456 C->S CUSTOM:'.' 4702
+993.585 C->S CUSTOM:'.' 4704
+994.261 C->S CUSTOM:'.' 4707
+994.505 C->S CUSTOM:'.' 4704
+995.132 C->S CUSTOM:'.' 4704
+995.563 C->S CUSTOM:'.' 4702
+996.692 C->S CUSTOM:'.' 4701
+997.024 C->S CUSTOM:'.' 4702
+997.743 C->S CUSTOM:'.' 4702
+997.745 MSG 0 'You cannot run in that direction.\x00'
+997.967 MSG 0 'You hit the Baby blue dragon.\x00'
+997.967 MSG 0 'It was a good hit!\x00'
+997.967 MSG 0 'You hit the Baby blue dragon.\x00'
+997.997 C->S CUSTOM:'.' 4703
+998.593 MSG 0 'It was a good hit!\x00'
+998.593 MSG 0 'You hit the Baby blue dragon.\x00'
+998.594 MSG 0 'The Baby blue dragon flees in terror!\x00'
+999.288 MSG 0 'The Baby blue dragon breathes lightning.\x00'
+1000.069 C->S CUSTOM:'.' 4703
+1000.073 MSG 0 'You found a trap!\x00'
+1000.073 MSG 0 'A strange white mist surrounds you!\x00'
+1000.073 MSG 0 'You are paralyzed!\x00'
+1000.62 MSG 0 'The Baby blue dragon turns to fight!\x00'
+1001.955 MSG 0 'The Baby blue dragon misses you.\x00'
+1001.955 MSG 0 'The Baby blue dragon bites you.\x00'
+1003.288 MSG 0 'The Baby blue dragon claws you.\x00'
+1003.288 MSG 0 'The Baby blue dragon misses you.\x00'
+1003.647 MSG 0 'You can move again.\x00'
+1003.822 MSG 0 'You hit the Baby blue dragon.\x00'
+1003.822 MSG 0 'The Baby blue dragon flees in terror!\x00'
+1003.981 MSG 0 'You hit the Baby blue dragon.\x00'
+1003.981 MSG 0 'You have slain the Baby blue dragon.\x00'
+1005.145 C->S CUSTOM:'.' 4702
+1005.154 MSG 0 'You have found 43 gold pieces worth of silver.\x00'
+1005.793 C->S CUSTOM:'.' 4706
+1005.821 MSG 0 'You have found 40 gold pieces worth of silver.\x00'
+1006.429 C->S CUSTOM:'.' 4703
+1006.488 MSG 0 'You have found 35 gold pieces worth of silver.\x00'
+1007.311 C->S CUSTOM:'.' 4702
+1007.313 MSG 0 'You cannot run in that direction.\x00'
+1008.253 C->S CUSTOM:'.' 4708
+1008.262 MSG 0 'You found a trap!\x00'
+1008.262 MSG 0 'You fall into a spiked pit!\x00'
+1008.262 MSG 0 'You are impaled!\x00'
+1008.262 MSG 0 'You have been given a graze.\x00'
+1009.647 MSG 0 'You are no longer bleeding.\x00'
+1009.827 C->S CUSTOM:'.' 4708
+1010.744 C->S PKT_WALK 4609
+1010.98 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 7200 turns of light) {25% off}'
+1011.392 C->S PKT_WALK 4609
+1011.407 MSG 0 'You found a trap!\x00'
+1011.407 MSG 0 'A small dart hits you!\x00'
+1011.407 MSG 0 'You feel very sickly.\x00'
+1012.527 MSG 0 'You hit the Blue yeek.\x00'
+1012.527 MSG 0 'You have slain the Blue yeek.\x00'
+1013.707 C->S PKT_WALK 4601
+1013.709 MSG 0 'You have found 22 gold pieces worth of copper.\x00'
+1014.78 C->S CUSTOM:'.' 4706
+1016.426 C->S PKT_WALK 4606
+1016.813 C->S CUSTOM:'.' 4708
+1017.488 C->S CUSTOM:'.' 4704
+1018.167 MSG 0 'You found a trap!\x00'
+1018.167 MSG 0 'You are enveloped in a cloud of smoke!\x00'
+1018.341 MSG 0 'You miss the Novice paladin.\x00'
+1018.394 MSG 0 'The Black harpy claws you.\x00'
+1018.394 MSG 0 'The Black harpy bites you.\x00'
+1018.5 MSG 0 'You miss the Novice paladin.\x00'
+1018.673 MSG 0 'You hit the Novice paladin.\x00'
+1018.833 MSG 0 'The Novice paladin flees in terror!\x00'
+1019.007 MSG 0 'You miss the Black harpy.\x00'
+1019.099 MSG 0 'The Black harpy claws you.\x00'
+1019.099 MSG 0 'The Black harpy misses you.\x00'
+1019.168 MSG 0 'You miss the Black harpy.\x00'
+1019.341 MSG 0 'You hit the Black harpy.\x00'
+1019.341 MSG 0 'The Black harpy flees in terror!\x00'
+1019.5 MSG 0 'You hit the Black harpy.\x00'
+1019.501 MSG 0 'You have slain the Black harpy.\x00'
+1020.65 C->S CUSTOM:'.' 4703
+1020.834 MSG 0 'You miss the Blue ooze.\x00'
+1020.994 MSG 0 'You hit the Blue ooze.\x00'
+1020.994 MSG 0 'You have destroyed the Blue ooze.\x00'
+1021.679 C->S CUSTOM:'.' 4706
+1022.532 C->S CUSTOM:'.' 4706
+1023.229 C->S CUSTOM:'.' 4706
+1023.566 MSG 0 'The Novice paladin turns to fight!\x00'
+1023.873 MSG 0 'You hit the Novice paladin.\x00'
+1023.873 MSG 0 'You have slain the Novice paladin.\x00'
+1024.568 C->S CUSTOM:'.' 4709
+1024.581 MSG 0 'You have found 29 gold pieces worth of silver.\x00'
+1031.056 C->S CUSTOM:'.' 4702
+1032.147 C->S CUSTOM:'.' 4702
+1033.946 C->S CUSTOM:'.' 4704
+1035.339 C->S CUSTOM:'.' 4704
+1035.77 C->S CUSTOM:'.' 4701
+1036.21 C->S CUSTOM:'.' 4707
+1036.778 C->S CUSTOM:'.' 4708
+1036.78 FLOOR 000f2d050001410000612057616e64206f6620536c6f77204d6f6e737465720000 [b'a Wand of Slow Monster', b'']
+1036.78 MSG 0 'You see a Wand of Slow Monster.\x00'
+1038.325 C->S CUSTOM:',' 00
+1038.327 MSG 0 'You have a Wand of Slow Monster (k).\x00'
+1038.327 FLOOR 0000000000000000000000 [b'', b'']
+1038.327 INVEN 'k' wgt 10 amt 1 tval 65 flag 0 st 0 'a Wand of Slow Monster'
+1038.327 INVEN 'l' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+1038.327 INVEN 'm' wgt 30 amt 1 tval 19 flag 1 st 0 'a Short Bow (x2) {average}'
+1038.327 INVEN 'n' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+1040.086 C->S CUSTOM:'.' 4702
+1040.853 C->S CUSTOM:'.' 4703
+1041.286 C->S CUSTOM:'.' 4709
+1041.558 C->S CUSTOM:'.' 4706
+1042.802 C->S PKT_WALK 4606
+1043.83 C->S CUSTOM:'>' 04
+1043.833 MSG 0 'You enter a maze of down staircases.\x00'
+1043.848 MSG 0 'You feel there is something special about this level.\x00'
+1043.848 FLOOR 0000000000000000000000 [b'', b'']
+1045.139 C->S CUSTOM:'.' 4708
+1045.883 C->S CUSTOM:'.' 4701
+1046.119 C->S CUSTOM:'.' 4704
+1046.618 C->S CUSTOM:'.' 4704
+1047.615 C->S PKT_WALK 4601
+1047.617 FLOOR 00013d0400012d0100612043616c636974652052696e670000 [b'a Calcite Ring', b'']
+1047.617 MSG 0 'You see a Calcite Ring.\x00'
+1048.997 C->S CUSTOM:',' 00
+1048.999 MSG 0 'You have a Calcite Ring (m).\x00'
+1048.999 FLOOR 0000000000000000000000 [b'', b'']
+1048.999 INVEN 'm' wgt 2 amt 1 tval 45 flag 1 st 0 'a Calcite Ring'
+1048.999 INVEN 'n' wgt 30 amt 1 tval 19 flag 1 st 0 'a Short Bow (x2) {average}'
+1048.999 INVEN 'o' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+1049.656 C->S PKT_WALK 4608
+1049.972 C->S PKT_WALK 4608
+1051.16 C->S CUSTOM:'>' 04
+1051.162 MSG 0 'You enter a maze of down staircases.\x00'
+1051.166 MSG 0 'Looks like any other level.\x00'
+1051.167 FLOOR 0000000000000000000000 [b'', b'']
+1052.218 C->S CUSTOM:'.' 4701
+1052.779 C->S CUSTOM:'.' 4704
+1053.308 C->S CUSTOM:'.' 4704
+1053.38 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 7100 turns of light) {25% off}'
+1053.815 C->S CUSTOM:'.' 4704
+1053.844 C->S CUSTOM:'.' 4704
+1053.875 C->S CUSTOM:'.' 4704
+1053.924 C->S CUSTOM:'.' 4704
+1053.953 C->S CUSTOM:'.' 4704
+1053.984 C->S CUSTOM:'.' 4704
+1054.014 C->S CUSTOM:'.' 4704
+1054.047 C->S CUSTOM:'.' 4704
+1054.077 C->S CUSTOM:'.' 4704
+1054.106 C->S CUSTOM:'.' 4704
+1054.138 C->S CUSTOM:'.' 4704
+1054.611 C->S CUSTOM:'.' 4704
+1055.397 C->S CUSTOM:'.' 4702
+1056.201 C->S CUSTOM:'.' 4706
+1056.716 C->S CUSTOM:'.' 4706
+1056.746 C->S CUSTOM:'.' 4706
+1056.775 C->S CUSTOM:'.' 4706
+1056.805 C->S CUSTOM:'.' 4706
+1056.838 C->S CUSTOM:'.' 4706
+1056.867 C->S CUSTOM:'.' 4706
+1056.916 C->S CUSTOM:'.' 4706
+1056.945 C->S CUSTOM:'.' 4706
+1056.976 C->S CUSTOM:'.' 4706
+1057.006 C->S CUSTOM:'.' 4706
+1057.036 C->S CUSTOM:'.' 4706
+1057.068 C->S CUSTOM:'.' 4706
+1057.098 C->S CUSTOM:'.' 4706
+1057.141 C->S CUSTOM:'.' 4706
+1057.266 C->S CUSTOM:'.' 470647064706
+1057.269 C->S CUSTOM:'.' 4706
+1057.295 C->S CUSTOM:'.' 4706
+1057.33 C->S CUSTOM:'.' 4706
+1057.374 C->S CUSTOM:'.' 4706
+1057.506 C->S CUSTOM:'.' 4706470647064706
+1057.529 C->S CUSTOM:'.' 4706
+1057.562 C->S CUSTOM:'.' 4706
+1057.592 C->S CUSTOM:'.' 4706
+1057.637 C->S CUSTOM:'.' 4706
+1057.671 C->S CUSTOM:'.' 4706
+1057.701 C->S CUSTOM:'.' 4706
+1057.73 C->S CUSTOM:'.' 4706
+1057.763 C->S CUSTOM:'.' 4706
+1057.795 C->S CUSTOM:'.' 4706
+1057.824 C->S CUSTOM:'.' 4706
+1057.871 C->S CUSTOM:'.' 4706
+1057.902 C->S CUSTOM:'.' 4706
+1057.932 C->S CUSTOM:'.' 4706
+1057.966 C->S CUSTOM:'.' 4706
+1057.994 C->S CUSTOM:'.' 4706
+1058.025 C->S CUSTOM:'.' 4706
+1058.056 C->S CUSTOM:'.' 4706
+1058.086 C->S CUSTOM:'.' 4706
+1058.134 C->S CUSTOM:'.' 4706
+1058.163 C->S CUSTOM:'.' 4706
+1058.195 C->S CUSTOM:'.' 4706
+1058.226 C->S CUSTOM:'.' 4706
+1058.258 C->S CUSTOM:'.' 4706
+1058.287 C->S CUSTOM:'.' 4706
+1058.317 C->S CUSTOM:'.' 4706
+1058.363 C->S CUSTOM:'.' 4706
+1058.392 C->S CUSTOM:'.' 4706
+1058.425 C->S CUSTOM:'.' 4706
+1058.454 C->S CUSTOM:'.' 4706
+1058.488 C->S CUSTOM:'.' 4706
+1058.517 C->S CUSTOM:'.' 4706
+1058.551 C->S CUSTOM:'.' 4706
+1058.595 C->S CUSTOM:'.' 4706
+1058.597 MSG 0 'You cannot run in that direction.\x00'
+1058.624 C->S CUSTOM:'.' 4706
+1058.656 C->S CUSTOM:'.' 4706
+1058.685 C->S CUSTOM:'.' 4706
+1058.715 C->S CUSTOM:'.' 4706
+1059.098 C->S CUSTOM:'.' 4707
+1059.286 C->S CUSTOM:'.' 4708
+1059.828 C->S CUSTOM:'.' 4708
+1060.149 C->S CUSTOM:'.' 4709
+1060.581 C->S CUSTOM:'.' 4701
+1061.051 C->S CUSTOM:'.' 4704
+1061.501 C->S CUSTOM:'.' 4701
+1062.038 C->S CUSTOM:'.' 4704
+1062.332 C->S CUSTOM:'.' 4701
+1062.541 C->S CUSTOM:'.' 4702
+1063.283 C->S CUSTOM:'.' 4702
+1063.784 C->S CUSTOM:'.' 4706
+1064.707 C->S CUSTOM:'.' 4702
+1065.225 C->S CUSTOM:'.' 4706
+1065.507 C->S CUSTOM:'.' 4706
+1065.762 C->S CUSTOM:'.' 4706
+1066.019 C->S CUSTOM:'.' 4706
+1066.43 C->S CUSTOM:'.' 4706
+1068.111 MSG 0 'It wails at you.\x00'
+1068.111 MSG 0 'You are terrified!\x00'
+1068.247 C->S CUSTOM:'.' 4706
+1068.538 MSG 0 'It wails at you.\x00'
+1068.538 MSG 0 'It touches you.\x00'
+1068.538 MSG 0 'You feel very clumsy.\x00'
+1069.205 MSG 0 'It wails at you.\x00'
+1069.442 C->S CUSTOM:'.' 4706
+1069.659 MSG 0 'It touches you.\x00'
+1069.659 MSG 0 'You feel very clumsy.\x00'
+1070.385 C->S CUSTOM:'.' 4706
+1070.446 MSG 0 'It touches you.\x00'
+1070.446 MSG 0 'You feel very clumsy.\x00'
+1071.149 C->S CUSTOM:'.' 4709
+1071.902 C->S PKT_WALK 4608
+1072.939 MSG 0 'It wails at you.\x00'
+1072.939 MSG 0 'It touches you.\x00'
+1072.94 MSG 0 'You feel very clumsy.\x00'
+1074.438 C->S CUSTOM:'.' 4708
+1074.472 MSG 0 'It casts a fearful illusion.\x00'
+1075.028 C->S CUSTOM:'.' 4708
+1075.113 MSG 0 'You refuse to be frightened.\x00'
+1075.355 C->S CUSTOM:'.' 4708
+1075.619 MSG 0 'It wails at you.\x00'
+1075.619 MSG 0 'It touches you.\x00'
+1075.619 MSG 0 'You feel very clumsy.\x00'
+1075.901 C->S CUSTOM:'.' 4706
+1075.98 MSG 0 'It wails at you.\x00'
+1076.344 C->S CUSTOM:'.' 4706
+1076.472 MSG 0 'It touches you.\x00'
+1076.472 MSG 0 'You feel very clumsy.\x00'
+1076.941 C->S CUSTOM:'.' 4708
+1076.979 MSG 0 'It wails at you.\x00'
+1076.979 MSG 0 'It touches you.\x00'
+1076.979 MSG 0 'You feel very clumsy.\x00'
+1077.195 C->S CUSTOM:'.' 4709
+1077.552 MSG 0 'It touches you.\x00'
+1077.552 MSG 0 'You feel very clumsy.\x00'
+1078.451 C->S PKT_WALK 4609
+1078.98 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 7000 turns of light) {25% off}'
+1079.116 C->S PKT_WALK 4603
+1079.633 C->S PKT_WALK 4606
+1080.219 MSG 0 'It touches you.\x00'
+1080.219 MSG 0 'You feel very clumsy.\x00'
+1080.458 C->S PKT_WALK 4606
+1081.885 MSG 0 'It wails at you.\x00'
+1081.885 MSG 0 'You stand your ground!\x00'
+1081.885 MSG 0 'It touches you.\x00'
+1081.885 MSG 0 'You feel very clumsy.\x00'
+1082.326 C->S CUSTOM:'q' 2302
+1082.328 MSG 0 'You feel much better.\x00'
+1082.328 MSG 0 'You feel bolder now.\x00'
+1082.328 MSG 0 'You feel like a killing machine!\x00'
+1082.328 MSG 0 'You have no more Potions of Berserk Strength.\x00'
+1082.328 INVEN 'c' wgt 28 amt 7 tval 75 flag 0 st 0 '7 Potions of Cure Light Wounds {@q1}'
+1082.328 INVEN 'd' wgt 4 amt 1 tval 75 flag 0 st 0 'a Chartreuse Potion'
+1082.328 INVEN 'e' wgt 4 amt 1 tval 75 flag 0 st 0 'a Dark Red Potion'
+1082.328 INVEN 'f' wgt 45 amt 9 tval 70 flag 0 st 0 '9 Scrolls of Phase Door {@r1}'
+1082.328 INVEN 'g' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall'
+1082.328 INVEN 'h' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+1082.328 INVEN 'i' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+1082.328 INVEN 'j' wgt 10 amt 1 tval 65 flag 0 st 0 'a Wand of Slow Monster'
+1082.328 INVEN 'k' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+1082.328 INVEN 'l' wgt 2 amt 1 tval 45 flag 1 st 0 'a Calcite Ring'
+1082.328 INVEN 'm' wgt 30 amt 1 tval 19 flag 1 st 0 'a Short Bow (x2) {average}'
+1082.328 INVEN 'n' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+1082.328 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1082.328 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1082.328 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1082.328 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1082.328 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1082.328 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1082.328 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1082.328 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1082.328 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1082.328 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1082.552 MSG 0 'It wails at you.\x00'
+1082.552 MSG 0 'You stand your ground!\x00'
+1083.218 MSG 0 'It wails at you.\x00'
+1083.218 MSG 0 'You stand your ground!\x00'
+1083.528 C->S PKT_WALK 4604
+1083.53 MSG 0 'You hit it.\x00'
+1083.53 MSG 0 'You miss it.\x00'
+1083.91 C->S PKT_WALK 4604
+1084.242 C->S PKT_WALK 4604
+1084.556 C->S PKT_WALK 4604
+1084.859 C->S PKT_WALK 4604
+1085.191 C->S PKT_WALK 4604
+1085.615 C->S PKT_WALK 4608
+1086.715 C->S PKT_WALK 4609
+1087.382 C->S PKT_WALK 4606
+1087.526 MSG 0 'There is a wall blocking your way.\x00'
+1088.432 MSG 0 'You hit the Large white snake.\x00'
+1088.432 MSG 0 'The Large white snake flees in terror!\x00'
+1088.472 C->S PKT_WALK 4606
+1089.085 MSG 0 'You hit the Large white snake.\x00'
+1089.085 MSG 0 'You have slain the Large white snake.\x00'
+1089.982 C->S PKT_WALK 4602
+1090.785 C->S PKT_WALK 4601
+1091.673 C->S CUSTOM:'.' 4709
+1091.936 C->S CUSTOM:'.' 4706
+1092.761 C->S CUSTOM:'.' 4706
+1093.214 C->S CUSTOM:'.' 4708
+1093.622 C->S CUSTOM:'.' 4708
+1094.003 C->S CUSTOM:'.' 4708
+1094.76 C->S CUSTOM:'.' 4708
+1095.908 C->S CUSTOM:'.' 4708
+1095.913 MSG 0 'You have found 17 gold pieces worth of copper.\x00'
+1096.29 C->S CUSTOM:'.' 4708
+1097.113 C->S CUSTOM:'.' 4706
+1097.607 C->S CUSTOM:'S' 06
+1097.802 C->S CUSTOM:'.' 4704
+1098.346 C->S CUSTOM:'.' 4704
+1098.348 MSG 0 'You cannot run in that direction.\x00'
+1098.792 C->S CUSTOM:'.' 4702
+1099.112 MSG 0 'You feel less Berserk.\x00'
+1099.592 C->S CUSTOM:'.' 4703
+1099.637 C->S CUSTOM:'.' 4702
+1100.378 C->S CUSTOM:'S' 06
+1100.874 C->S CUSTOM:'.' 4702
+1101.306 C->S CUSTOM:'.' 4703
+1101.426 C->S CUSTOM:'.' 4702
+1101.736 C->S CUSTOM:'.' 4704
+1102.375 C->S CUSTOM:'.' 4701
+1102.377 MSG 0 'You cannot run in that direction.\x00'
+1102.587 C->S CUSTOM:'.' 4704
+1102.88 C->S CUSTOM:'.' 4701
+1103.084 C->S CUSTOM:'.' 4702
+1103.322 C->S CUSTOM:'.' 4701
+1103.822 C->S CUSTOM:'.' 4704
+1104.025 C->S CUSTOM:'.' 4701
+1104.137 C->S CUSTOM:'.' 4702
+1104.567 C->S CUSTOM:'.' 4703
+1104.879 C->S CUSTOM:'.' 4706
+1105.72 C->S CUSTOM:'.' 4706
+1107.461 C->S CUSTOM:'.' 4708
+1107.911 C->S CUSTOM:'.' 4701
+1108.933 C->S CUSTOM:'.' 4706
+1109.782 C->S CUSTOM:'.' 4704
+1110.178 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 6900 turns of light) {25% off}'
+1110.717 C->S CUSTOM:'.' 4707
+1110.973 C->S CUSTOM:'.' 4704
+1111.804 C->S CUSTOM:'.' 4701
+1112.006 C->S CUSTOM:'.' 4702
+1113.053 C->S CUSTOM:'.' 4704
+1113.057 MSG 0 'You hit it.\x00'
+1113.057 MSG 0 'You miss it.\x00'
+1113.057 MSG 0 'You hit it.\x00'
+1113.342 C->S CUSTOM:'.' 4701
+1113.725 MSG 0 'It wails at you.\x00'
+1113.725 MSG 0 'You are terrified!\x00'
+1113.726 MSG 0 'It touches you.\x00'
+1113.726 MSG 0 'You feel very clumsy.\x00'
+1113.727 C->S CUSTOM:'.' 4704
+1114.471 MSG 0 'It casts a fearful illusion.\x00'
+1114.522 C->S CUSTOM:'.' 4702
+1115.072 MSG 0 'You cannot run in that direction.\x00'
+1115.806 MSG 0 'It wails at you.\x00'
+1115.806 MSG 0 'It touches you.\x00'
+1115.806 MSG 0 'You feel very clumsy.\x00'
+1116.472 MSG 0 'It touches you.\x00'
+1116.472 MSG 0 'You feel very clumsy.\x00'
+1117.137 MSG 0 'It wails at you.\x00'
+1117.806 MSG 0 'It touches you.\x00'
+1117.806 MSG 0 'You feel very clumsy.\x00'
+1118.626 C->S CUSTOM:'r' 1d0600
+1118.628 MSG 0 'The air about you becomes charged...\x00'
+1118.628 MSG 0 'You have no more Scrolls of Word of Recall.\x00'
+1118.628 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+1118.628 INVEN 'h' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+1118.628 INVEN 'i' wgt 10 amt 1 tval 65 flag 0 st 0 'a Wand of Slow Monster'
+1118.628 INVEN 'j' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+1118.628 INVEN 'k' wgt 2 amt 1 tval 45 flag 1 st 0 'a Calcite Ring'
+1118.628 INVEN 'l' wgt 30 amt 1 tval 19 flag 1 st 0 'a Short Bow (x2) {average}'
+1118.628 INVEN 'm' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+1118.628 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1118.628 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1118.628 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1118.628 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1118.628 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1118.628 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1118.628 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1118.628 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1118.628 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1118.628 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1118.628 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1119.137 MSG 0 'It wails at you.\x00'
+1119.137 MSG 0 'It touches you.\x00'
+1119.781 C->S CUSTOM:'.' 4704
+1120.44 C->S CUSTOM:'.' 4707
+1120.524 MSG 0 'It wails at you.\x00'
+1120.524 MSG 0 'It touches you.\x00'
+1120.685 C->S CUSTOM:'.' 4704
+1121.097 C->S CUSTOM:'.' 4704
+1121.311 MSG 0 'It wails at you.\x00'
+1121.311 MSG 0 'You stand your ground!\x00'
+1121.311 MSG 0 'It touches you.\x00'
+1121.774 C->S CUSTOM:'.' 4704
+1122.275 C->S CUSTOM:'.' 4704
+1122.849 C->S CUSTOM:'.' 4704
+1123.032 MSG 0 'It wails at you.\x00'
+1123.032 MSG 0 'You stand your ground!\x00'
+1123.032 MSG 0 'It touches you.\x00'
+1123.615 C->S CUSTOM:'.' 4704
+1123.698 MSG 0 'It wails at you.\x00'
+1123.698 MSG 0 'It touches you.\x00'
+1124.365 MSG 0 'It wails at you.\x00'
+1124.365 MSG 0 'You stand your ground!\x00'
+1124.602 C->S PKT_WALK 4601
+1124.638 C->S PKT_WALK 4602
+1125.272 MSG 0 'There is a wall blocking your way.\x00'
+1125.363 MSG 0 'It wails at you.\x00'
+1126.486 C->S PKT_WALK 4603
+1127.284 C->S CUSTOM:'.' 4706
+1127.312 MSG 0 'It touches you.\x00'
+1127.921 C->S CUSTOM:'.' 4706
+1128.176 MSG 0 'You feel yourself yanked upwards!\x00'
+1128.193 FLOOR 0000000000000000000000 [b'', b'']
+1144.808 C->S PKT_MESSAGE 2e496e76697369626c65206d6f6e737465727320
+1144.809 MSG 257 '[Dive03] Invisible monsters are usually just annoyances, but that\x00'
+1150.093 C->S PKT_MESSAGE 2e6f6e65207761732061206c6567697420746872
+1150.093 MSG 257 '[Dive03] one was a legit threat\x00'
+1150.858 C->S CUSTOM:'.' 4702
+1151.52 C->S CUSTOM:'.' 4703
+1151.663 C->S CUSTOM:'.' 4702
+1152.603 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 6800 turns of light) {25% off}'
+1153.154 C->S CUSTOM:'.' 4706
+1153.258 MSG 0 'You feel bolder now.\x00'
+1153.715 C->S CUSTOM:'.' 4706
+1154.442 C->S CUSTOM:'.' 4706
+1154.457 MSG 0 'You have found 26 gold pieces worth of copper.\x00'
+1155.677 C->S CUSTOM:'.' 4706
+1157.464 C->S CUSTOM:'.' 4709
+1157.764 C->S CUSTOM:'.' 4706
+1158.679 C->S CUSTOM:'.' 4709
+1159.75 MSG 0 'You hit Farmer Maggot.\x00'
+1159.827 C->S CUSTOM:'.' 4702
+1160.244 MSG 0 'Farmer Maggot seems sad about something.\x00'
+1160.284 MSG 0 'You hit Farmer Maggot.\x00'
+1161.243 MSG 0 'Farmer Maggot mumbles something about mushrooms.\x00'
+1161.243 MSG 0 'Farmer Maggot tells you to get off his land.\x00'
+1161.283 MSG 0 'You hit Farmer Maggot.\x00'
+1162.243 MSG 0 'Farmer Maggot asks if you have seen his dogs.\x00'
+1162.243 MSG 0 'Farmer Maggot seems sad about something.\x00'
+1162.283 MSG 0 'You hit Farmer Maggot.\x00'
+1162.79 MSG 0 'You miss Farmer Maggot.\x00'
+1162.906 MSG 256 '[Dive03:Scribe] Noted. What was the invisible one, and how could\x00'
+1162.95 MSG 0 'You hit Farmer Maggot.\x00'
+1163.244 MSG 0 'Farmer Maggot tells you to get off his land.\x00'
+1163.244 MSG 0 'Farmer Maggot seems sad about something.\x00'
+1163.284 MSG 0 'You hit Farmer Maggot.\x00'
+1163.306 MSG 256 '[Dive03:Scribe] you tell it was a real threat? The pilot only sees\x00'
+1163.456 MSG 0 'You hit Farmer Maggot.\x00'
+1163.706 MSG 256 "[Dive03:Scribe] 'It hits you' messages for those.\x00"
+1163.79 MSG 0 'You hit Farmer Maggot.\x00'
+1164.244 MSG 0 'Farmer Maggot asks if you have seen his dogs.\x00'
+1164.244 MSG 0 'Farmer Maggot tells you to get off his land.\x00'
+1164.283 MSG 0 'You hit Farmer Maggot.\x00'
+1164.616 MSG 0 'You miss Farmer Maggot.\x00'
+1164.791 MSG 0 'You hit Farmer Maggot.\x00'
+1165.243 MSG 0 'Farmer Maggot seems sad about something.\x00'
+1165.243 MSG 0 'Farmer Maggot asks if you have seen his dogs.\x00'
+1165.283 MSG 0 'You hit Farmer Maggot.\x00'
+1165.457 MSG 0 'You miss Farmer Maggot.\x00'
+1165.616 MSG 0 'You hit Farmer Maggot.\x00'
+1165.616 MSG 0 'Farmer Maggot flees in terror!\x00'
+1165.791 MSG 0 'You hit Farmer Maggot.\x00'
+1166.683 C->S CUSTOM:'.' 4702
+1166.736 MSG 0 'You miss Farmer Maggot.\x00'
+1167.201 C->S CUSTOM:'.' 4702
+1167.243 MSG 0 'You hit Farmer Maggot.\x00'
+1167.256 MSG 0 'Farmer Maggot tells you to get off his land.\x00'
+1167.256 MSG 0 'Farmer Maggot mumbles something about mushrooms.\x00'
+1167.376 MSG 0 'You hit Farmer Maggot.\x00'
+1167.376 MSG 0 'You have slain Farmer Maggot.\x00'
+1168.088 C->S CUSTOM:'.' 4708
+1168.418 C->S CUSTOM:'.' 4709
+1169.114 C->S PKT_WALK 4606
+1169.611 C->S PKT_WALK 4606
+1169.618 MSG 0 'You bump into Scribe.\x00'
+1170.615 C->S CUSTOM:'.' 4704
+1171.301 C->S CUSTOM:'.' 4701
+1171.579 C->S CUSTOM:'.' 4702
+1171.97 C->S CUSTOM:'.' 4706
+1176.977 C->S CUSTOM:'.' 4709
+1177.21 C->S CUSTOM:'.' 4706
+1178.818 C->S CUSTOM:'.' 4702
+1179.202 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 6700 turns of light) {25% off}'
+1179.985 C->S PKT_WALK 4603
+1180.117 C->S PKT_WALK 4602
+1181.14 C->S CUSTOM:'.' 4703
+1181.142 MSG 0 'You cannot run in that direction.\x00'
+1181.224 C->S CUSTOM:'.' 4702
+1181.952 C->S CUSTOM:'.' 4702
+1182.839 C->S CUSTOM:'.' 4709
+1183.832 C->S CUSTOM:'.' 4708
+1184.137 MSG 0 'You hit the Mean-looking mercenary.\x00'
+1184.416 MSG 0 'The Mean-looking mercenary hits you.\x00'
+1184.444 MSG 0 'You miss the Mean-looking mercenary.\x00'
+1184.603 MSG 0 'You hit the Mean-looking mercenary.\x00'
+1184.775 MSG 0 'You miss the Mean-looking mercenary.\x00'
+1184.937 MSG 0 'You hit the Mean-looking mercenary.\x00'
+1185.109 MSG 0 'You have slain the Mean-looking mercenary.\x00'
+1185.751 C->S CUSTOM:'.' 4708
+1185.764 FLOOR 000828020001240100612046696c74687920526167205b315d0000 [b'a Filthy Rag [1]', b'']
+1185.764 MSG 0 'You see a Filthy Rag [1].\x00'
+1186.436 C->S CUSTOM:'.' 4701
+1186.441 FLOOR 0000000000000000000000 [b'', b'']
+1186.866 C->S CUSTOM:'.' 4704
+1187.601 C->S PKT_WALK 4601
+1187.905 C->S PKT_WALK 4604
+1188.57 C->S PKT_WALK 4604
+1194.582 C->S CUSTOM:'p' 320e0000000203323934
+1194.585 MSG 0 'Taken!\x00'
+1194.585 MSG 0 'You bought 2 Scrolls of Enchant Weapon To-Dam {25% off} for 294 gold.\x00'
+1194.585 MSG 0 'You have 2 Scrolls of Enchant Weapon To-Dam {25% off} (g).\x00'
+1194.585 INVEN 'g' wgt 10 amt 2 tval 70 flag 32 st 102 '2 Scrolls of Enchant Weapon To-Dam {25% off}'
+1194.585 INVEN 'h' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+1194.585 INVEN 'i' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+1194.585 INVEN 'j' wgt 10 amt 1 tval 65 flag 0 st 0 'a Wand of Slow Monster'
+1194.585 INVEN 'k' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+1194.585 INVEN 'l' wgt 2 amt 1 tval 45 flag 1 st 0 'a Calcite Ring'
+1194.585 INVEN 'm' wgt 30 amt 1 tval 19 flag 1 st 0 'a Short Bow (x2) {average}'
+1194.585 INVEN 'n' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+1196.868 C->S PKT_WALK 4600
+1198.587 C->S PKT_CLEAR 7b
+1202.796 C->S CUSTOM:'r' 1d0618
+1202.798 MSG 0 'Your Main Gauche glows brightly!\x00'
+1202.799 MSG 0 'You have a Scroll of Enchant Weapon To-Dam {25% off}.\x00'
+1202.799 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 102 'a Scroll of Enchant Weapon To-Dam {25% off}'
+1202.799 EQUIP 'a' wgt 30 tval 23 'a Main Gauche (1d5) (+2,+3)'
+1204.732 C->S CUSTOM:'r' 1d0618
+1204.734 MSG 0 'Your Main Gauche glows brightly!\x00'
+1204.734 MSG 0 'You have no more Scrolls of Enchant Weapon To-Dam {25% off}.\x00'
+1204.734 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+1204.734 INVEN 'h' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+1204.734 INVEN 'i' wgt 10 amt 1 tval 65 flag 0 st 0 'a Wand of Slow Monster'
+1204.734 INVEN 'j' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+1204.734 INVEN 'k' wgt 2 amt 1 tval 45 flag 1 st 0 'a Calcite Ring'
+1204.734 INVEN 'l' wgt 30 amt 1 tval 19 flag 1 st 0 'a Short Bow (x2) {average}'
+1204.734 INVEN 'm' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+1204.734 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1204.734 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1204.734 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1204.734 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1204.734 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1204.734 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1204.734 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1204.734 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1204.734 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1204.734 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1204.734 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1204.734 EQUIP 'a' wgt 30 tval 23 'a Main Gauche (1d5) (+2,+4)'
+1207.535 C->S CUSTOM:'.' 4706
+1209.499 C->S CUSTOM:'.' 4707
+1209.989 C->S CUSTOM:'.' 4704
+1211.402 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 6600 turns of light) {25% off}'
+1212.232 C->S CUSTOM:'.' 4701
+1212.942 C->S PKT_WALK 4602
+1215.86 C->S CUSTOM:'s' 330b00000001
+1215.863 MSG 0 'Selling a Short Bow (x2) {average} (l).\x00'
+1215.863 MSG 0 'You eventually agree upon the price.\x00'
+1216.272 C->S PKT_CONFIRM 3e0100
+1216.272 MSG 0 'Accepted!\x00'
+1216.272 MSG 0 'You sold a Short Bow (x2) (+0,+0) for 22 gold.\x00'
+1216.272 MSG 0 'You have no more Short Bows (x2) (+0,+0).\x00'
+1216.272 INVEN 'l' wgt 40 amt 1 tval 19 flag 1 st 0 'a Long Bow (x3) {average}'
+1216.272 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1216.272 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1216.272 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1216.272 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1216.272 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1216.272 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1216.272 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1216.272 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1216.272 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1216.272 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1216.272 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1216.272 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1217.697 C->S CUSTOM:'s' 330b00000001
+1217.699 MSG 0 'Selling a Long Bow (x3) {average} (l).\x00'
+1217.699 MSG 0 'You eventually agree upon the price.\x00'
+1218.348 C->S PKT_CONFIRM 3e0100
+1218.348 MSG 0 'Fine.\x00'
+1218.348 MSG 0 'You sold a Long Bow (x3) (+0,+0) for 52 gold.\x00'
+1218.348 MSG 0 'You have no more Long Bows (x3) (+0,+0).\x00'
+1218.348 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1218.348 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1218.348 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1218.348 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1218.348 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1218.348 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1218.348 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1218.348 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1218.348 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1218.348 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1218.348 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1218.348 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1218.348 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1220.392 C->S PKT_WALK 4600
+1231.691 C->S PKT_MESSAGE 2e446f6e277420626f74686572204944696e6720
+1231.691 MSG 257 "[Dive03] Don't bother IDing average gear, it doesn't sell for more\x00"
+1237.144 MSG 257 'Dive01 has entered the game.\x00'
+1241.707 C->S CUSTOM:'.' 4706
+1243.652 C->S CUSTOM:'.' 4709
+1244.441 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 6500 turns of light) {25% off}'
+1244.505 C->S CUSTOM:'.' 4708
+1245.1 C->S PKT_WALK 4609
+1260.023 C->S CUSTOM:'p' 320b0000000103393037
+1260.025 MSG 0 'You do not have enough gold.\x00'
+1267.933 C->S PKT_WALK 4600
+1271.783 C->S CUSTOM:'.' 4702
+1272.254 C->S CUSTOM:'.' 4703
+1272.941 C->S CUSTOM:'.' 4703
+1274.332 C->S PKT_WALK 4602
+1278.539 C->S PKT_WALK 4600
+1279.01 C->S CUSTOM:'.' 4704
+1279.525 C->S CUSTOM:'.' 4704
+1280.18 C->S CUSTOM:'.' 4701
+1280.947 C->S PKT_WALK 4601
+1286.168 MSG 256 '[Dive03:Scribe] Noted: skip IDing average gear, it sells the same.\x00'
+1286.596 MSG 257 'Dive01 has left the game.\x00'
+1286.973 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 6400 turns of light) {25% off}'
+1289.78 MSG 257 'Dive01 has entered the game.\x00'
+1289.78 C->S PKT_WALK 4600
+1295.16 C->S PKT_WALK 4601
+1296.724 C->S CUSTOM:'s' 330300000001
+1296.726 MSG 0 'Selling a Chartreuse Potion (d).\x00'
+1296.726 MSG 0 'You eventually agree upon the price.\x00'
+1297.892 C->S PKT_CONFIRM 3e0100
+1297.892 MSG 0 'Agreed!\x00'
+1297.892 MSG 0 'You sold a Potion of Poison for 9 gold.\x00'
+1297.892 MSG 17 'The shopkeeper howls in agony!\x00'
+1297.892 MSG 0 'You have no more Potions of Poison.\x00'
+1297.892 INVEN 'd' wgt 4 amt 1 tval 75 flag 0 st 0 'a Dark Red Potion'
+1297.892 INVEN 'e' wgt 45 amt 9 tval 70 flag 0 st 0 '9 Scrolls of Phase Door {@r1}'
+1297.892 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+1297.892 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+1297.892 INVEN 'h' wgt 10 amt 1 tval 65 flag 0 st 0 'a Wand of Slow Monster'
+1297.892 INVEN 'i' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+1297.892 INVEN 'j' wgt 2 amt 1 tval 45 flag 1 st 0 'a Calcite Ring'
+1297.892 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1297.892 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1297.892 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1297.892 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1297.892 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1297.892 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1297.892 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1297.892 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1297.892 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1297.892 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1297.892 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1297.892 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1297.892 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1297.892 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1299.451 C->S CUSTOM:'s' 330300000001
+1299.453 MSG 0 'Selling a Dark Red Potion (d).\x00'
+1299.453 MSG 0 'You eventually agree upon the price.\x00'
+1299.933 C->S PKT_CONFIRM 3e0100
+1299.933 MSG 0 'Agreed!\x00'
+1299.933 MSG 0 'You sold a Potion of Lose Memories for 9 gold.\x00'
+1299.933 MSG 17 'Arrgghh!\x00'
+1299.933 MSG 0 'You have no more Potions of Lose Memories.\x00'
+1299.933 INVEN 'd' wgt 45 amt 9 tval 70 flag 0 st 0 '9 Scrolls of Phase Door {@r1}'
+1299.933 INVEN 'e' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+1299.933 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+1299.933 INVEN 'g' wgt 10 amt 1 tval 65 flag 0 st 0 'a Wand of Slow Monster'
+1299.933 INVEN 'h' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+1299.933 INVEN 'i' wgt 2 amt 1 tval 45 flag 1 st 0 'a Calcite Ring'
+1299.933 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1299.933 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1299.933 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1299.933 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1299.933 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1299.933 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1299.933 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1299.933 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1299.933 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1299.933 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1299.933 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1299.933 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1299.934 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1299.934 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1299.934 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1311.191 C->S PKT_WALK 4600
+1311.881 C->S PKT_WALK 4601
+1315.664 C->S PKT_WALK 4600
+1316.176 C->S CUSTOM:'.' 4709
+1316.295 C->S CUSTOM:'.' 4708
+1317.606 C->S CUSTOM:'.' 4706
+1317.891 C->S CUSTOM:'.' 4709
+1318.629 C->S PKT_WALK 4608
+1319.006 C->S PKT_WALK 4609
+1330.25 C->S PKT_WALK 4600
+1330.86 C->S PKT_WALK 4609
+1330.879 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 6300 turns of light) {25% off}'
+1332.797 C->S CUSTOM:'s' 330600000001
+1332.799 MSG 0 'Selling a Wand of Slow Monster (g).\x00'
+1332.799 MSG 0 'You eventually agree upon the price.\x00'
+1334.071 C->S PKT_CONFIRM 3e0100
+1334.072 MSG 0 'Taken!\x00'
+1334.072 MSG 0 'You sold a Wand of Slow Monster (8 charges) for 225 gold.\x00'
+1334.072 MSG 19 'The shopkeeper giggles.\x00'
+1334.072 MSG 0 'You have no more Wands of Slow Monster (8 charges).\x00'
+1334.072 INVEN 'g' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+1334.072 INVEN 'h' wgt 2 amt 1 tval 45 flag 1 st 0 'a Calcite Ring'
+1334.072 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1334.072 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1334.072 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1334.072 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1334.072 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1334.072 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1334.072 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1334.072 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1334.072 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1334.072 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1334.072 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1334.072 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1334.072 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1334.072 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1334.072 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1334.072 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1338.52 C->S CUSTOM:'s' 330700000001
+1338.522 MSG 0 'Selling a Calcite Ring (h).\x00'
+1338.522 MSG 0 'You eventually agree upon the price.\x00'
+1340.063 C->S PKT_CONFIRM 3e0100
+1340.063 MSG 0 'Accepted!\x00'
+1340.063 MSG 0 'You sold a Ring of Teleportation {cursed} for 20 gold.\x00'
+1340.063 MSG 17 'Arrgghh!\x00'
+1340.063 MSG 0 'You have no more Rings of Teleportation {cursed}.\x00'
+1340.063 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1340.063 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1340.063 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1340.063 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1340.063 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1340.063 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1340.063 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1340.063 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1340.063 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1340.063 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1340.063 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1340.063 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1340.063 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1340.063 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1340.063 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1340.063 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1340.063 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1350.561 C->S CUSTOM:'s' 330600000001
+1350.563 MSG 0 'Selling an Oak Staff (g).\x00'
+1350.563 MSG 0 'You eventually agree upon the price.\x00'
+1353.236 C->S PKT_WALK 4600
+1355.125 C->S CUSTOM:'.' 4701
+1356.041 C->S CUSTOM:'.' 4702
+1356.602 C->S PKT_WALK 4601
+1360.209 C->S CUSTOM:'p' 320a00000001023738
+1360.212 MSG 0 'Taken!\x00'
+1360.212 MSG 0 'You bought a Scroll of Identify for 78 gold.\x00'
+1360.212 MSG 0 'You have a Scroll of Identify (e).\x00'
+1360.212 INVEN 'e' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll of Identify'
+1360.212 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+1360.212 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+1360.212 INVEN 'h' wgt 50 amt 1 tval 55 flag 32 st 0 'an Oak Staff'
+1362.649 C->S PKT_WALK 4600
+1365.605 C->S PKT_CLEAR 7b
+1368.294 C->S CUSTOM:'r' 1d0407
+1368.297 MSG 0 'In your pack: a Staff of Summoning (3 charges) (h).\x00'
+1368.297 MSG 0 'You have no more Scrolls of Identify.\x00'
+1368.297 INVEN 'e' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+1368.297 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+1368.297 INVEN 'g' wgt 50 amt 1 tval 55 flag 0 st 0 'a Staff of Summoning (3 charges)'
+1368.297 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1368.297 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1368.297 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1368.297 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1368.297 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1368.297 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1368.297 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1368.297 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1368.297 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1368.297 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1368.297 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1368.297 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1368.297 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1368.297 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1368.297 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1368.297 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1368.297 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1374.291 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 6200 turns of light) {25% off}'
+1374.774 C->S CUSTOM:'.' 4709
+1375.774 C->S CUSTOM:'.' 4708
+1376.321 C->S PKT_WALK 4609
+1377.741 C->S CUSTOM:'s' 330600000001
+1377.743 MSG 0 "I don't want that!\x00"
+1380.278 C->S PKT_WALK 4600
+1380.786 C->S CUSTOM:'.' 4701
+1381.382 C->S PKT_WALK 4606
+1383.967 C->S CUSTOM:'k' 180600000001
+1383.969 MSG 0 'You destroy a Staff of Summoning (3 charges).\x00'
+1383.969 MSG 0 'You have no more Staffs of Summoning (3 charges).\x00'
+1383.969 INVEN 'g' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1383.969 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1383.969 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1383.969 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1383.969 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1383.969 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1383.969 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1383.969 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1383.969 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1383.969 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1383.969 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1383.969 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1383.969 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1383.969 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1383.969 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1383.969 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1383.969 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1383.969 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1392.384 C->S PKT_CLEAR 7b
+1392.486 C->S CUSTOM:'.' 4701
+1392.967 C->S CUSTOM:'.' 4702
+1393.524 C->S PKT_WALK 4601
+1404.363 MSG 257 'Dive01 has entered the game.\x00'
+1404.363 C->S PKT_WALK 4600
+1404.652 C->S PKT_WALK 4601
+1410.865 C->S CUSTOM:'p' 32120000000203323934
+1410.867 MSG 0 'Okay.\x00'
+1410.867 MSG 0 'You bought 2 Scrolls of Enchant Weapon To-Dam {25% off} for 294 gold.\x00'
+1410.867 MSG 0 'You have 2 Scrolls of Enchant Weapon To-Dam {25% off} (e).\x00'
+1410.867 INVEN 'e' wgt 10 amt 2 tval 70 flag 32 st 102 '2 Scrolls of Enchant Weapon To-Dam {25% off}'
+1410.867 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+1410.867 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+1413.237 C->S PKT_WALK 4600
+1413.518 C->S PKT_WALK 4601
+1414.25 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 6100 turns of light) {25% off}'
+1417.734 C->S CUSTOM:'p' 32060000000103343638
+1417.736 MSG 0 'You do not have enough gold.\x00'
+1423.161 C->S PKT_WALK 4600
+1431.114 C->S CUSTOM:'r' 1d0418
+1431.116 MSG 0 'Your Main Gauche glows brightly!\x00'
+1431.116 MSG 0 'You have a Scroll of Enchant Weapon To-Dam {25% off}.\x00'
+1431.116 INVEN 'e' wgt 5 amt 1 tval 70 flag 32 st 102 'a Scroll of Enchant Weapon To-Dam {25% off}'
+1431.116 EQUIP 'a' wgt 30 tval 23 'a Main Gauche (1d5) (+2,+5)'
+1433.545 C->S CUSTOM:'r' 1d0418
+1433.548 MSG 0 'Your Main Gauche glows brightly!\x00'
+1433.548 MSG 0 'You have no more Scrolls of Enchant Weapon To-Dam {25% off}.\x00'
+1433.548 INVEN 'e' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+1433.548 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+1433.548 INVEN 'g' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1433.548 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1433.548 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1433.548 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1433.548 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1433.548 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1433.548 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1433.548 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1433.548 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1433.548 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1433.548 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1433.548 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1433.548 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1433.548 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1433.548 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1433.548 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1433.548 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1433.548 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1433.548 EQUIP 'a' wgt 30 tval 23 'a Main Gauche (1d5) (+2,+6)'
+1438.629 C->S PKT_WALK 4601
+1443.404 C->S PKT_WALK 4600
+1445.159 C->S PKT_WALK 4601
+1446.193 C->S CUSTOM:'s' 330400000001
+1446.195 MSG 0 'Selling a Scroll titled "ishx therbin" (e).\x00'
+1446.195 MSG 0 'You eventually agree upon the price.\x00'
+1450.435 C->S CUSTOM:'s' 330500000001
+1450.437 MSG 0 'Selling a Scroll titled "heaks khonis" (f).\x00'
+1450.437 MSG 0 'You eventually agree upon the price.\x00'
+1454.131 C->S PKT_WALK 4600
+1454.297 C->S CUSTOM:'.' 4709
+1454.903 C->S CUSTOM:'.' 4708
+1456.023 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 6000 turns of light) {25% off}'
+1456.124 C->S CUSTOM:'.' 4706
+1457.28 C->S CUSTOM:'.' 4709
+1457.42 C->S CUSTOM:'.' 4708
+1458.298 C->S CUSTOM:'.' 4706
+1458.716 MSG 0 'You hit the Blubbering idiot.\x00'
+1458.716 MSG 0 'You have slain the Blubbering idiot.\x00'
+1459.196 MSG 0 'You hit the Pitiful-looking beggar.\x00'
+1459.196 MSG 0 'You have slain the Pitiful-looking beggar.\x00'
+1459.399 C->S CUSTOM:'.' 4701
+1460.129 C->S CUSTOM:'.' 4703
+1460.695 C->S CUSTOM:'.' 4706
+1462.462 MSG 0 'You hit the Singing, happy drunk.\x00'
+1462.462 MSG 0 'You have slain the Singing, happy drunk.\x00'
+1463.113 C->S CUSTOM:'.' 4706
+1463.115 MSG 0 'You have found 31 gold pieces worth of copper.\x00'
+1463.884 C->S CUSTOM:'.' 4702
+1464.54 C->S CUSTOM:'.' 4706
+1464.797 C->S CUSTOM:'.' 4708
+1465.116 MSG 0 'You hit the Scruffy little dog.\x00'
+1465.116 MSG 0 'You have slain the Scruffy little dog.\x00'
+1466.183 C->S CUSTOM:'.' 4708
+1466.463 C->S CUSTOM:'.' 4701
+1467.239 C->S CUSTOM:'.' 4704
+1469.505 C->S CUSTOM:'.' 4701
+1470.271 C->S CUSTOM:'.' 4704
+1470.752 C->S CUSTOM:'.' 4701
+1470.942 C->S CUSTOM:'.' 4702
+1471.494 C->S CUSTOM:'.' 4704
+1471.702 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 5900 turns of light) {25% off}'
+1490.932 C->S PKT_MESSAGE 2e4f7572206465782077617320736f2064726169
+1490.932 MSG 257 '[Dive03] Our dex was so drained by that invis monster, we need to\x00'
+1494.742 C->S PKT_MESSAGE 2e726573746f726520697400
+1494.742 MSG 257 '[Dive03] restore it\x00'
+1495.564 C->S PKT_WALK 4607
+1498.433 MSG 257 'Dive01 has entered the game.\x00'
+1500.054 C->S CUSTOM:'p' 32060000000103343638
+1500.056 MSG 0 'Agreed!\x00'
+1500.057 MSG 0 'You bought a Potion of Restore Dexterity for 468 gold.\x00'
+1500.057 MSG 0 'You have a Potion of Restore Dexterity (d).\x00'
+1500.057 INVEN 'd' wgt 4 amt 1 tval 75 flag 0 st 0 'a Potion of Restore Dexterity'
+1500.057 INVEN 'e' wgt 45 amt 9 tval 70 flag 0 st 0 '9 Scrolls of Phase Door {@r1}'
+1500.057 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+1500.057 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+1502.363 C->S PKT_WALK 4600
+1503.828 C->S CUSTOM:'q' 2303
+1503.83 MSG 0 'You feel less clumsy.\x00'
+1503.83 MSG 0 'You have no more Potions of Restore Dexterity.\x00'
+1503.83 INVEN 'd' wgt 45 amt 9 tval 70 flag 0 st 0 '9 Scrolls of Phase Door {@r1}'
+1503.83 INVEN 'e' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+1503.83 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+1503.83 INVEN 'g' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1503.83 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1503.83 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1503.83 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1503.83 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1503.83 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1503.83 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1503.83 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1503.83 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1503.83 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1503.83 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1503.83 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1503.83 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1503.83 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1503.83 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1503.83 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1503.83 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1503.83 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1507.614 C->S PKT_CLEAR 7b
+1520.808 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 5800 turns of light) {25% off}'
+1521.842 C->S PKT_MESSAGE 2e416c6d6f737420616c6c206f7572206d6f6e65
+1521.843 MSG 257 '[Dive03] Almost all our money, but it dropped us from 4 to 3 blows\x00'
+1529.228 C->S PKT_WALK 4607
+1537.136 C->S PKT_WALK 4600
+1539.698 C->S CUSTOM:'.' 4706
+1544.898 C->S CUSTOM:'F' 2201
+1544.9 MSG 0 'You fuel your lamp.\x00'
+1544.9 MSG 0 'You have 5 Flasks of oil.\x00'
+1544.9 INVEN 'b' wgt 50 amt 5 tval 77 flag 4 st 0 '5 Flasks of oil'
+1544.9 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 13243 turns of light) {25% off}'
+1546.513 C->S PKT_REDRAW 6f
+1546.515 INVEN 'a' wgt 20 amt 2 tval 80 flag 0 st 0 '2 Rations of Food'
+1546.515 INVEN 'b' wgt 50 amt 5 tval 77 flag 4 st 0 '5 Flasks of oil'
+1546.515 INVEN 'c' wgt 28 amt 7 tval 75 flag 0 st 0 '7 Potions of Cure Light Wounds {@q1}'
+1546.515 INVEN 'd' wgt 45 amt 9 tval 70 flag 0 st 0 '9 Scrolls of Phase Door {@r1}'
+1546.515 INVEN 'e' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+1546.515 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+1546.515 INVEN 'g' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1546.515 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1546.515 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1546.515 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1546.515 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1546.515 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1546.515 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1546.515 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1546.515 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1546.515 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1546.515 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1546.515 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1546.515 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1546.515 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1546.515 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1546.515 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1546.515 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1546.515 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1546.515 EQUIP 'a' wgt 30 tval 23 'a Main Gauche (1d5) (+2,+6)'
+1546.515 EQUIP 'b' wgt 0 tval 0 '(nothing)'
+1546.515 EQUIP 'c' wgt 0 tval 0 '(nothing)'
+1546.515 EQUIP 'd' wgt 2 tval 45 'a Ring of Slow Digestion'
+1546.515 EQUIP 'e' wgt 0 tval 0 '(nothing)'
+1546.515 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 13239 turns of light) {25% off}'
+1546.515 EQUIP 'g' wgt 100 tval 36 'Hard Leather Armour (-1) [6,+0] {25% off}'
+1546.515 EQUIP 'h' wgt 10 tval 35 'a Cloak [1,+0]'
+1546.515 EQUIP 'i' wgt 65 tval 34 'a Small Metal Shield [3] {good - Farmer Maggot}'
+1546.515 EQUIP 'j' wgt 20 tval 32 'a Metal Cap [3,+0]'
+1546.515 EQUIP 'k' wgt 5 tval 31 'a Set of Leather Gloves [1,+0]'
+1546.515 EQUIP 'l' wgt 0 tval 0 '(nothing)'
+1546.515 FLOOR 0000000000000000000000 [b'', b'']
+1548.172 C->S CUSTOM:'E' 2400
+1548.175 MSG 0 'That tastes good.\x00'
+1548.175 MSG 0 'You are full!\x00'
+1548.175 MSG 0 'You have a Ration of Food.\x00'
+1548.175 INVEN 'a' wgt 10 amt 1 tval 80 flag 0 st 0 'a Ration of Food'
+1549.715 C->S CUSTOM:'.' 4708
+1550.836 C->S CUSTOM:'.' 4709
+1551.121 C->S CUSTOM:'.' 4706
+1551.738 C->S CUSTOM:'.' 4702
+1552.513 C->S CUSTOM:'.' 4706
+1552.58 MSG 0 'You hit the Scrawny cat.\x00'
+1552.58 MSG 0 'You have slain the Scrawny cat.\x00'
+1553.189 C->S CUSTOM:'.' 4706
+1553.509 C->S CUSTOM:'.' 4702
+1554.394 C->S CUSTOM:'.' 4706
+1554.798 C->S CUSTOM:'.' 4702
+1555.048 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 13200 turns of light) {25% off}'
+1555.436 C->S CUSTOM:'.' 4701
+1555.797 C->S CUSTOM:'.' 4706
+1560.833 C->S CUSTOM:'.' 4708
+1562.23 C->S CUSTOM:'.' 4706
+1562.817 C->S CUSTOM:'.' 4703
+1563.915 C->S CUSTOM:'.' 4702
+1564.113 MSG 0 'You hit the Village idiot.\x00'
+1564.113 MSG 0 'You have slain the Village idiot.\x00'
+1564.797 C->S CUSTOM:'.' 4701
+1565.046 MSG 0 'You hit the Blubbering idiot.\x00'
+1565.046 MSG 0 'You have slain the Blubbering idiot.\x00'
+1565.654 C->S CUSTOM:'.' 4702
+1566.328 C->S CUSTOM:'.' 4708
+1566.76 C->S CUSTOM:'.' 4702
+1567.399 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 13100 turns of light) {25% off}'
+1567.399 FLOOR 0000000000000000000000 [b'', b'']
+1567.791 C->S CUSTOM:'.' 4708
+1568.141 FLOOR 0000000000000000000000 [b'', b'']
+1572.407 C->S CUSTOM:'.' 4709
+1572.539 C->S CUSTOM:'.' 4708
+1573.131 C->S CUSTOM:'.' 4708
+1573.543 C->S CUSTOM:'.' 4708
+1573.787 C->S CUSTOM:'.' 4708
+1574.918 C->S CUSTOM:'.' 4707
+1574.96 MSG 256 "[Dive03:Scribe] Ouch. Good lesson: I'll make the pilot flag stat\x00"
+1575.36 MSG 256 '[Dive03:Scribe] drain and blow loss to the agent. Out of curiosity:\x00'
+1575.761 MSG 256 '[Dive03:Scribe] what was it, and where do you restore DEX\x00'
+1575.85 C->S CUSTOM:'.' 4704
+1576.161 MSG 256 '[Dive03:Scribe] (Alchemist potion or Temple)?\x00'
+1577.968 C->S CUSTOM:'.' 4704
+1579.278 C->S CUSTOM:'.' 4701
+1579.539 C->S CUSTOM:'.' 4704
+1579.78 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 13000 turns of light) {25% off}'
+1580.825 C->S CUSTOM:'.' 4708
+1581.129 C->S CUSTOM:'.' 4704
+1583.152 MSG 0 'You hit the Filthy street urchin.\x00'
+1583.152 MSG 0 'You have slain the Filthy street urchin.\x00'
+1583.273 MSG 0 'You hit the Filthy street urchin.\x00'
+1583.273 MSG 0 'You have slain the Filthy street urchin.\x00'
+1583.766 MSG 0 'You hit the Filthy street urchin.\x00'
+1583.766 MSG 0 'You have slain the Filthy street urchin.\x00'
+1584.259 MSG 0 'You hit the Filthy street urchin.\x00'
+1584.259 MSG 0 'You have slain the Filthy street urchin.\x00'
+1585.339 MSG 0 'You hit the Filthy street urchin.\x00'
+1585.339 MSG 0 'You have slain the Filthy street urchin.\x00'
+1605.015 C->S PKT_MESSAGE 2e46726f6d206120706f74696f6e00
+1605.016 MSG 257 '[Dive03] From a potion\x00'
+1605.826 C->S CUSTOM:'.' 4704
+1607.549 C->S CUSTOM:'.' 4701
+1608.234 C->S CUSTOM:'.' 4704
+1608.898 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 12900 turns of light) {25% off}'
+1609.113 C->S CUSTOM:'.' 4707
+1609.369 C->S CUSTOM:'.' 4704
+1612.388 C->S PKT_WALK 4606
+1612.817 C->S CUSTOM:'.' 4706
+1613.081 C->S CUSTOM:'.' 4703
+1613.192 C->S CUSTOM:'.' 4702
+1613.776 C->S CUSTOM:'.' 4703
+1614.041 C->S CUSTOM:'.' 4706
+1616.544 C->S CUSTOM:'.' 4703
+1617.101 C->S CUSTOM:'.' 4706
+1617.445 C->S CUSTOM:'.' 4702
+1618.031 MSG 257 'Dive01 has entered the game.\x00'
+1618.42 C->S CUSTOM:'.' 4706
+1618.758 C->S CUSTOM:'.' 4704
+1619.331 C->S CUSTOM:'.' 4701
+1619.979 C->S PKT_WALK 4602
+1620.324 C->S PKT_WALK 4601
+1624.114 C->S PKT_WALK 4600
+1626.871 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 12800 turns of light) {25% off}'
+1632.865 C->S PKT_MESSAGE 2e426f7567687420696e20746865202235222073
+1632.866 MSG 257 '[Dive03] Bought in the "5" store\x00'
+1633.727 C->S CUSTOM:'.' 4708
+1634.383 C->S CUSTOM:'.' 4706
+1634.578 C->S CUSTOM:'.' 4704
+1635.402 C->S CUSTOM:'.' 4701
+1635.617 C->S CUSTOM:'.' 4704
+1641.844 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 12700 turns of light) {25% off}'
+1643.889 C->S CUSTOM:'.' 4701
+1644.015 C->S CUSTOM:'.' 4702
+1644.741 C->S CUSTOM:'.' 4701
+1645.074 C->S CUSTOM:'.' 4702
+1646.202 C->S CUSTOM:'.' 4704
+1646.355 C->S CUSTOM:'.' 4708
+1646.484 MSG 0 'You hit the Squint-eyed rogue.\x00'
+1646.485 MSG 0 'You have slain the Squint-eyed rogue.\x00'
+1647.285 C->S CUSTOM:'.' 4709
+1647.297 MSG 0 'You have found 32 gold pieces worth of copper.\x00'
+1647.947 C->S CUSTOM:'.' 4702
+1648.961 C->S CUSTOM:'.' 4708
+1649.293 C->S CUSTOM:'.' 4706
+1651.828 C->S CUSTOM:'.' 4703
+1651.925 MSG 0 'You hit the Squint-eyed rogue.\x00'
+1651.925 MSG 0 'You have slain the Squint-eyed rogue.\x00'
+1652.514 C->S CUSTOM:'.' 4703
+1652.757 C->S CUSTOM:'.' 4706
+1653.603 C->S CUSTOM:'.' 4709
+1653.876 C->S CUSTOM:'.' 4706
+1655.512 MSG 0 'The Squint-eyed rogue recovers his courage.\x00'
+1655.884 MSG 0 'You hit the Squint-eyed rogue.\x00'
+1655.884 MSG 0 'You have slain the Squint-eyed rogue.\x00'
+1656.754 C->S CUSTOM:'.' 4706
+1656.764 MSG 0 'You have found 20 gold pieces worth of copper.\x00'
+1657.527 C->S CUSTOM:'.' 4704
+1657.817 MSG 0 'You hit the Boil-covered wretch.\x00'
+1657.817 MSG 0 'You have slain the Boil-covered wretch.\x00'
+1658.125 C->S CUSTOM:'.' 4701
+1658.537 C->S CUSTOM:'.' 4708
+1658.696 C->S CUSTOM:'.' 4709
+1659.658 MSG 0 'You hit the Filthy street urchin.\x00'
+1659.658 MSG 0 'You have slain the Filthy street urchin.\x00'
+1660.195 C->S CUSTOM:'.' 4708
+1660.978 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 12600 turns of light) {25% off}'
+1661.361 C->S CUSTOM:'.' 4707
+1661.636 C->S CUSTOM:'.' 4708
+1665.258 FLOOR 0000000000000000000000 [b'', b'']
+1666.764 C->S CUSTOM:'.' 4708
+1668.235 C->S CUSTOM:'.' 4706
+1668.785 C->S CUSTOM:'.' 4706
+1669.289 C->S CUSTOM:'.' 4706
+1669.318 C->S CUSTOM:'.' 4706
+1669.352 C->S CUSTOM:'.' 4706
+1669.395 C->S CUSTOM:'.' 4706
+1669.427 C->S CUSTOM:'.' 4706
+1669.456 C->S CUSTOM:'.' 4706
+1669.489 C->S CUSTOM:'.' 4706
+1669.518 C->S CUSTOM:'.' 4706
+1669.548 C->S CUSTOM:'.' 4706
+1669.594 C->S CUSTOM:'.' 4706
+1669.628 C->S CUSTOM:'.' 4706
+1669.657 C->S CUSTOM:'.' 4706
+1669.69 C->S CUSTOM:'.' 4706
+1669.719 C->S CUSTOM:'.' 4706
+1669.753 C->S CUSTOM:'.' 4706
+1669.778 C->S CUSTOM:'.' 4706
+1669.828 C->S CUSTOM:'.' 4706
+1669.856 C->S CUSTOM:'.' 4706
+1669.886 C->S CUSTOM:'.' 4706
+1669.918 C->S CUSTOM:'.' 4706
+1669.947 C->S CUSTOM:'.' 4706
+1669.981 C->S CUSTOM:'.' 4706
+1670.01 C->S CUSTOM:'.' 4706
+1670.059 C->S CUSTOM:'.' 4706
+1670.086 C->S CUSTOM:'.' 4706
+1670.119 C->S CUSTOM:'.' 4706
+1670.149 C->S CUSTOM:'.' 4706
+1670.179 C->S CUSTOM:'.' 4706
+1670.21 C->S CUSTOM:'.' 4706
+1670.242 C->S CUSTOM:'.' 4706
+1670.287 C->S CUSTOM:'.' 4706
+1670.344 C->S CUSTOM:'.' 4706
+1670.35 C->S CUSTOM:'.' 4706
+1670.379 C->S CUSTOM:'.' 4706
+1670.409 C->S CUSTOM:'.' 4706
+1670.439 C->S CUSTOM:'.' 4706
+1670.586 C->S CUSTOM:'.' 4706470647064706
+1670.609 C->S CUSTOM:'.' 4706
+1670.728 C->S CUSTOM:'.' 4706
+1671.925 MSG 0 'You miss the Soldier ant.\x00'
+1672.044 MSG 0 'You hit the Soldier ant.\x00'
+1672.097 MSG 0 'The Soldier ant misses you.\x00'
+1672.178 MSG 0 'You hit the Soldier ant.\x00'
+1672.178 MSG 0 'You have slain the Soldier ant.\x00'
+1673.316 C->S CUSTOM:'.' 4703
+1673.58 C->S CUSTOM:'.' 4701
+1673.921 C->S CUSTOM:'.' 4702
+1674.217 C->S CUSTOM:'.' 4703
+1674.337 C->S CUSTOM:'.' 4702
+1674.785 C->S CUSTOM:'.' 4703
+1674.953 C->S CUSTOM:'.' 4702
+1675.552 FLOOR 0000000000000000000000 [b'', b'']
+1675.631 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 12500 turns of light) {25% off}'
+1676.305 C->S CUSTOM:'.' 4703
+1676.548 C->S CUSTOM:'.' 4706
+1676.853 C->S CUSTOM:'.' 4702
+1677.098 C->S CUSTOM:'.' 4706
+1680.409 C->S CUSTOM:'.' 4702
+1683.029 C->S CUSTOM:'.' 4706
+1684.399 C->S PKT_WALK 4609
+1684.402 FLOOR 000828020001240100612046696c74687920526167205b315d0000 [b'a Filthy Rag [1]', b'']
+1684.402 MSG 0 'You see a Filthy Rag [1].\x00'
+1686.211 C->S CUSTOM:',' 00
+1686.213 MSG 0 'You have a Filthy Rag [1] (g).\x00'
+1686.213 FLOOR 0000000000000000000000 [b'', b'']
+1686.213 INVEN 'g' wgt 20 amt 1 tval 36 flag 1 st 0 'a Filthy Rag [1]'
+1687.019 C->S CUSTOM:'.' 4704
+1688.137 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 12400 turns of light) {25% off}'
+1689.998 C->S CUSTOM:'.' 4706
+1690.51 C->S CUSTOM:'.' 4704
+1691.433 C->S CUSTOM:'.' 4706
+1691.934 C->S CUSTOM:'.' 4703
+1692.069 C->S CUSTOM:'.' 4702
+1692.136 MSG 0 'You cannot run in that direction.\x00'
+1692.561 C->S PKT_WALK 4601
+1695.006 C->S PKT_WALK 4600
+1695.212 C->S CUSTOM:'.' 4704
+1696.508 C->S CUSTOM:'.' 4701
+1697.214 C->S PKT_WALK 4602
+1700.386 C->S CUSTOM:'s' 330600000001
+1700.388 MSG 0 'Selling a Filthy Rag [1] (g).\x00'
+1700.388 MSG 0 'You eventually agree upon the price.\x00'
+1701.094 C->S PKT_CONFIRM 3e0100
+1701.095 MSG 0 'Fine.\x00'
+1701.095 MSG 0 'You sold a Filthy Rag [1,-1] for 1 gold.\x00'
+1701.095 MSG 17 'Arrgghh!\x00'
+1701.095 MSG 0 'You have no more Filthy Rags [1,-1].\x00'
+1701.095 INVEN 'g' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1701.095 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1701.095 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1701.095 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1701.095 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1701.095 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1701.095 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1701.095 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1701.095 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1701.095 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1701.095 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1701.095 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1701.095 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1701.095 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1701.095 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1701.095 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1701.095 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1701.095 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1703.925 C->S PKT_WALK 4600
+1704.663 C->S CUSTOM:'.' 4709
+1704.938 C->S CUSTOM:'.' 4706
+1706.43 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 12300 turns of light) {25% off}'
+1707.954 C->S CUSTOM:'.' 4702
+1708.687 C->S PKT_WALK 4601
+1717.18 C->S PKT_WALK 4600
+1717.59 C->S CUSTOM:'.' 4707
+1717.593 MSG 0 'You cannot run in that direction.\x00'
+1717.727 C->S CUSTOM:'.' 4708
+1717.905 C->S CUSTOM:'.' 4707
+1718.646 C->S CUSTOM:'.' 4704
+1718.932 C->S CUSTOM:'.' 4707
+1719.197 C->S CUSTOM:'.' 4708
+1719.694 C->S CUSTOM:'.' 4704
+1720.39 MSG 0 'You hit the Scrawny cat.\x00'
+1720.39 MSG 0 'You have slain the Scrawny cat.\x00'
+1720.432 C->S CUSTOM:'.' 4701
+1721.019 C->S CUSTOM:'.' 4707
+1722.405 C->S CUSTOM:'.' 4708
+1722.95 C->S CUSTOM:'.' 4704
+1724.815 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 12200 turns of light) {25% off}'
+1725.052 C->S CUSTOM:'.' 4701
+1725.667 C->S CUSTOM:'.' 4704
+1726.409 C->S CUSTOM:'.' 4701
+1726.776 MSG 0 'You hit the Filthy street urchin.\x00'
+1726.777 MSG 0 'You have slain the Filthy street urchin.\x00'
+1727.421 C->S CUSTOM:'.' 4702
+1727.429 MSG 0 'The Filthy street urchin begs you for money.\x00'
+1727.429 MSG 0 'The Filthy street urchin misses you.\x00'
+1727.51 MSG 0 'You miss the Filthy street urchin.\x00'
+1727.628 MSG 0 'You hit the Filthy street urchin.\x00'
+1727.629 MSG 0 'You have slain the Filthy street urchin.\x00'
+1727.763 MSG 0 'You hit the Filthy street urchin.\x00'
+1727.763 MSG 0 'You have slain the Filthy street urchin.\x00'
+1727.883 MSG 0 'You hit the Filthy street urchin.\x00'
+1727.883 MSG 0 'You have slain the Filthy street urchin.\x00'
+1728.123 MSG 0 'You hit the Filthy street urchin.\x00'
+1728.123 MSG 0 'You have slain the Filthy street urchin.\x00'
+1728.462 C->S CUSTOM:'.' 4702
+1728.536 MSG 0 'You hit the Village idiot.\x00'
+1728.536 MSG 0 'You have slain the Village idiot.\x00'
+1729.578 C->S CUSTOM:'.' 4702
+1729.831 C->S CUSTOM:'.' 4704
+1730.197 C->S CUSTOM:'.' 4708
+1730.854 C->S CUSTOM:'.' 4709
+1731.41 C->S PKT_WALK 4606
+1732.332 C->S CUSTOM:'>' 04
+1732.335 MSG 0 'You enter a maze of down staircases.\x00'
+1732.337 MSG 0 "This level can't be all bad...\x00"
+1732.338 FLOOR 0000000000000000000000 [b'', b'']
+1733.529 C->S CUSTOM:'.' 4703
+1734.038 C->S CUSTOM:'.' 4707
+1734.958 C->S CUSTOM:'<' 02
+1734.96 MSG 0 'You enter a maze of up staircases.\x00'
+1734.965 FLOOR 0000000000000000000000 [b'', b'']
+1735.447 C->S CUSTOM:'>' 04
+1735.457 MSG 0 'You enter a maze of down staircases.\x00'
+1735.469 MSG 0 'Looks like any other level.\x00'
+1735.47 FLOOR 0000000000000000000000 [b'', b'']
+1736.843 C->S CUSTOM:'.' 4703
+1737.639 C->S CUSTOM:'.' 4706
+1738.62 C->S CUSTOM:'.' 4706
+1738.628 FLOOR 000a210e00014b00006120506f74696f6e206f662053616c742057617465720000 [b'a Potion of Salt Water', b'']
+1738.628 MSG 0 'You see a Potion of Salt Water.\x00'
+1739.802 C->S CUSTOM:',' 00
+1739.804 MSG 0 'You have a Potion of Salt Water (c).\x00'
+1739.804 FLOOR 0000000000000000000000 [b'', b'']
+1739.804 INVEN 'c' wgt 4 amt 1 tval 75 flag 0 st 0 'a Potion of Salt Water'
+1739.804 INVEN 'd' wgt 28 amt 7 tval 75 flag 0 st 0 '7 Potions of Cure Light Wounds {@q1}'
+1739.804 INVEN 'e' wgt 45 amt 9 tval 70 flag 0 st 0 '9 Scrolls of Phase Door {@r1}'
+1739.804 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+1739.804 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+1742.143 C->S CUSTOM:'k' 180200000001
+1742.145 MSG 0 'You destroy a Potion of Salt Water.\x00'
+1742.145 MSG 0 'You have no more Potions of Salt Water.\x00'
+1742.145 INVEN 'c' wgt 28 amt 7 tval 75 flag 0 st 0 '7 Potions of Cure Light Wounds {@q1}'
+1742.145 INVEN 'd' wgt 45 amt 9 tval 70 flag 0 st 0 '9 Scrolls of Phase Door {@r1}'
+1742.145 INVEN 'e' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+1742.145 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+1742.145 INVEN 'g' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1742.145 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1742.145 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1742.145 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1742.145 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1742.145 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1742.145 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1742.145 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1742.145 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1742.145 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1742.145 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1742.145 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1742.145 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1742.145 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1742.145 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1742.145 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1742.145 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1742.145 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1742.73 C->S CUSTOM:'.' 4704
+1743.861 C->S PKT_WALK 4607
+1744.65 C->S CUSTOM:'<' 02
+1744.652 MSG 0 'You enter a maze of up staircases.\x00'
+1744.658 FLOOR 0000000000000000000000 [b'', b'']
+1745.158 C->S CUSTOM:'>' 04
+1745.161 MSG 0 'You enter a maze of down staircases.\x00'
+1745.162 MSG 0 'Looks like any other level.\x00'
+1745.163 FLOOR 0000000000000000000000 [b'', b'']
+1746.277 C->S CUSTOM:'.' 4701
+1747.299 C->S CUSTOM:'.' 4706
+1747.629 MSG 0 'You hit the Small kobold.\x00'
+1747.629 MSG 0 'You have slain the Small kobold.\x00'
+1747.955 C->S CUSTOM:'.' 4706
+1748.6 C->S PKT_WALK 4608
+1748.603 FLOOR 00013f01000146200061205363726f6c6c207469746c656420226a6f20656c70726f6b220000 [b'a Scroll titled "jo elprok"', b'']
+1748.603 MSG 0 'You see a Scroll titled "jo elprok".\x00'
+1749.786 C->S CUSTOM:',' 00
+1749.789 MSG 0 'You have a Scroll titled "jo elprok" (g).\x00'
+1749.789 FLOOR 0000000000000000000000 [b'', b'']
+1749.789 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "jo elprok"'
+1750.323 C->S CUSTOM:'.' 4703
+1750.574 C->S CUSTOM:'.' 4706
+1751.832 C->S CUSTOM:'.' 4703
+1752.125 C->S CUSTOM:'.' 4706
+1752.616 MSG 0 'You hit the Fruit bat.\x00'
+1752.616 MSG 0 'You have slain the Fruit bat.\x00'
+1753.046 C->S CUSTOM:'.' 4706
+1754.098 C->S CUSTOM:'.' 4706
+1754.269 MSG 0 'You hit Smeagol.\x00'
+1754.416 MSG 0 'It was a great hit!\x00'
+1754.562 MSG 0 'You hit the Large white snake.\x00'
+1754.562 MSG 0 'The Large white snake flees in terror!\x00'
+1754.709 MSG 0 'You hit the Large white snake.\x00'
+1754.709 MSG 0 'You have slain the Large white snake.\x00'
+1755.029 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 12100 turns of light) {25% off}'
+1755.52 C->S CUSTOM:'.' 4708
+1756.135 MSG 0 'You hit Smeagol.\x00'
+1756.414 C->S CUSTOM:'.' 4708
+1757.706 C->S CUSTOM:'.' 4708
+1758.413 C->S CUSTOM:'.' 4706
+1758.695 MSG 0 'Smeagol misses you.\x00'
+1758.802 MSG 0 'You hit Smeagol.\x00'
+1759.863 C->S CUSTOM:'.' 4706
+1760.081 MSG 0 'The White worm mass wakes up.\x00'
+1761.881 MSG 0 'You hit Smeagol.\x00'
+1762.264 C->S CUSTOM:'.' 4703
+1762.909 MSG 257 'Dive01 has attained level 4.\x00'
+1763.081 MSG 0 'You hit Smeagol.\x00'
+1763.133 C->S CUSTOM:'.' 4703
+1763.269 MSG 0 'Smeagol misses you.\x00'
+1763.774 MSG 0 'You miss Smeagol.\x00'
+1764.508 C->S CUSTOM:'.' 4703
+1765.108 C->S CUSTOM:'.' 4706
+1765.822 C->S CUSTOM:'.' 4706
+1766.314 C->S CUSTOM:'.' 4706
+1766.786 C->S CUSTOM:'.' 4706
+1767.694 C->S CUSTOM:'.' 4706
+1768.283 MSG 0 'You hit the White worm mass.\x00'
+1768.428 MSG 0 'You have destroyed the White worm mass.\x00'
+1768.922 C->S CUSTOM:'.' 4706
+1769.639 C->S CUSTOM:'.' 4706
+1770.229 MSG 0 'You miss the White worm mass.\x00'
+1770.229 MSG 0 'You hit the White worm mass.\x00'
+1770.229 MSG 0 'You have destroyed the White worm mass.\x00'
+1770.895 MSG 0 'You hit the White worm mass.\x00'
+1770.895 MSG 0 'It was a good hit!\x00'
+1770.895 MSG 0 'You have destroyed the White worm mass.\x00'
+1771.964 C->S CUSTOM:'.' 4704
+1772.857 C->S CUSTOM:'.' 4708
+1773.722 MSG 0 'You hit Smeagol.\x00'
+1774.469 C->S CUSTOM:'.' 4708
+1775.448 C->S CUSTOM:'.' 4704
+1776.929 C->S CUSTOM:'.' 4704
+1777.071 MSG 257 'Dive01 has left the game.\x00'
+1777.615 MSG 0 'Smeagol misses you.\x00'
+1777.72 MSG 0 'You hit Smeagol.\x00'
+1778.015 MSG 0 'Smeagol misses you.\x00'
+1778.162 MSG 0 'You hit Smeagol.\x00'
+1778.815 MSG 0 'Smeagol misses you.\x00'
+1778.921 MSG 0 'You hit Smeagol.\x00'
+1779.668 MSG 0 'Smeagol flees in terror!\x00'
+1779.815 MSG 0 'You hit Smeagol.\x00'
+1780.623 C->S CUSTOM:'.' 4702
+1780.88 C->S CUSTOM:'.' 4703
+1780.975 MSG 0 'Smeagol recovers his courage.\x00'
+1781.854 MSG 0 'You hit Smeagol.\x00'
+1782.979 C->S CUSTOM:'.' 4707
+1783.256 MSG 0 'You have slain Smeagol.\x00'
+1783.256 MSG 0 'Smeagol was slain by Dive03.\x00'
+1783.931 C->S CUSTOM:'.' 4704
+1783.935 FLOOR 00097c010001170100612054756c776172202832643429207b536d6561676f6c7d0000 [b'a Tulwar (2d4) {Smeagol}', b'']
+1783.935 MSG 0 'You see a Tulwar (2d4) {Smeagol}.\x00'
+1785.444 C->S CUSTOM:',' 00
+1785.447 MSG 0 'You have a Tulwar (2d4) {Smeagol} (h).\x00'
+1785.447 FLOOR 0000000000000000000000 [b'', b'']
+1785.447 INVEN 'h' wgt 100 amt 1 tval 23 flag 1 st 0 'a Tulwar (2d4) {Smeagol}'
+1786.474 C->S CUSTOM:'.' 4709
+1787.051 C->S CUSTOM:'.' 4708
+1787.053 MSG 0 'You cannot run in that direction.\x00'
+1787.382 C->S CUSTOM:'.' 4704
+1787.677 C->S CUSTOM:'.' 4707
+1787.969 C->S CUSTOM:'.' 4708
+1788.979 C->S CUSTOM:'.' 4707
+1789.316 C->S CUSTOM:'.' 4708
+1789.969 C->S CUSTOM:'.' 4704
+1790.392 C->S CUSTOM:'.' 4708
+1790.633 C->S CUSTOM:'.' 4704
+1790.811 C->S CUSTOM:'.' 4708
+1791.51 C->S CUSTOM:'.' 4704
+1791.561 MSG 0 'You hit the Large white snake.\x00'
+1791.561 MSG 0 'You have slain the Large white snake.\x00'
+1792.027 C->S CUSTOM:'.' 4703
+1792.44 C->S CUSTOM:'.' 4703
+1792.732 C->S CUSTOM:'.' 4703
+1792.834 C->S CUSTOM:'.' 4702
+1792.853 MSG 0 'You cannot run in that direction.\x00'
+1793.232 C->S CUSTOM:'.' 4702
+1793.408 C->S CUSTOM:'.' 4703
+1793.59 C->S CUSTOM:'.' 4702
+1794.181 C->S CUSTOM:'.' 4703
+1794.416 C->S CUSTOM:'.' 4706
+1794.988 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 12000 turns of light) {25% off}'
+1795.045 C->S CUSTOM:'.' 4709
+1795.244 C->S CUSTOM:'.' 4708
+1795.769 C->S CUSTOM:'.' 4709
+1795.909 C->S CUSTOM:'.' 4708
+1796.546 C->S CUSTOM:'.' 4709
+1797.2 C->S CUSTOM:'.' 4706
+1797.704 C->S CUSTOM:'.' 4706
+1797.736 C->S CUSTOM:'.' 4706
+1797.782 C->S CUSTOM:'.' 4706
+1797.814 C->S CUSTOM:'.' 4706
+1797.843 C->S CUSTOM:'.' 4706
+1797.875 C->S CUSTOM:'.' 4706
+1797.905 C->S CUSTOM:'.' 4706
+1797.939 C->S CUSTOM:'.' 4706
+1797.967 C->S CUSTOM:'.' 4706
+1797.996 C->S CUSTOM:'.' 4706
+1798.044 C->S CUSTOM:'.' 4706
+1798.076 C->S CUSTOM:'.' 4706
+1798.106 C->S CUSTOM:'.' 4706
+1798.139 C->S CUSTOM:'.' 4706
+1798.168 C->S CUSTOM:'.' 4706
+1798.201 C->S CUSTOM:'.' 4706
+1798.23 C->S CUSTOM:'.' 4706
+1798.263 C->S CUSTOM:'.' 4706
+1798.308 C->S CUSTOM:'.' 4706
+1798.34 C->S CUSTOM:'.' 4706
+1798.37 C->S CUSTOM:'.' 4706
+1798.402 C->S CUSTOM:'.' 4706
+1798.431 C->S CUSTOM:'.' 4706
+1798.461 C->S CUSTOM:'.' 4706
+1798.494 C->S CUSTOM:'.' 4706
+1798.538 C->S CUSTOM:'.' 4706
+1798.571 C->S CUSTOM:'.' 4706
+1798.6 C->S CUSTOM:'.' 4706
+1798.634 C->S CUSTOM:'.' 4706
+1798.662 C->S CUSTOM:'.' 4706
+1798.695 C->S CUSTOM:'.' 4706
+1798.725 C->S CUSTOM:'.' 4706
+1799.041 MSG 0 'You hit the White icky thing.\x00'
+1799.041 MSG 0 'You have slain the White icky thing.\x00'
+1799.563 C->S CUSTOM:'.' 4704
+1799.849 C->S CUSTOM:'.' 4707
+1800.075 C->S CUSTOM:'.' 4708
+1800.162 MSG 0 'You cannot run in that direction.\x00'
+1800.529 C->S CUSTOM:'.' 4706
+1800.813 C->S CUSTOM:'.' 4706
+1801.536 C->S PKT_WALK 4606
+1801.538 FLOOR 000f5d0f00011f01006120536574206f66204c65617468657220476c6f766573205b315d0000 [b'a Set of Leather Gloves [1]', b'']
+1801.538 MSG 0 'You see a Set of Leather Gloves [1].\x00'
+1802.795 C->S CUSTOM:',' 00
+1802.798 MSG 0 'You have a Set of Leather Gloves [1] (h).\x00'
+1802.798 FLOOR 0000000000000000000000 [b'', b'']
+1802.798 INVEN 'h' wgt 5 amt 1 tval 31 flag 1 st 0 'a Set of Leather Gloves [1]'
+1802.798 INVEN 'i' wgt 100 amt 1 tval 23 flag 1 st 0 'a Tulwar (2d4) {Smeagol}'
+1803.506 C->S CUSTOM:'.' 4701
+1803.654 C->S CUSTOM:'.' 4702
+1804.292 C->S CUSTOM:'.' 4702
+1804.507 C->S CUSTOM:'.' 4701
+1804.752 C->S CUSTOM:'.' 4704
+1805.358 C->S CUSTOM:'.' 4701
+1805.79 C->S CUSTOM:'.' 4704
+1807.261 C->S PKT_WALK 4606
+1813.287 C->S PKT_PARTY 3f000244697665303100
+1813.287 MSG 0 'That player is not currently in the game.\x00'
+1816.162 C->S PKT_CLEAR 7ba603
+1819.275 C->S PKT_KEY a81b4704
+1820.037 C->S CUSTOM:'.' 4704
+1820.926 C->S PKT_WALK 4604
+1821.241 C->S PKT_WALK 4607
+1822.635 C->S CUSTOM:'<' 02
+1822.638 MSG 0 'You enter a maze of up staircases.\x00'
+1822.642 FLOOR 0000000000000000000000 [b'', b'']
+1824.532 C->S CUSTOM:'>' 04
+1824.534 MSG 0 'You enter a maze of down staircases.\x00'
+1824.548 MSG 0 "This level can't be all bad...\x00"
+1824.548 FLOOR 0000000000000000000000 [b'', b'']
+1825.852 C->S CUSTOM:'.' 4709
+1826.068 C->S CUSTOM:'.' 4709
+1826.238 C->S CUSTOM:'.' 4709
+1826.713 C->S CUSTOM:'.' 4701
+1826.95 C->S CUSTOM:'.' 4701
+1827.135 C->S CUSTOM:'.' 4701
+1828.202 C->S CUSTOM:'<' 02
+1828.205 MSG 0 'You enter a maze of up staircases.\x00'
+1828.215 FLOOR 0000000000000000000000 [b'', b'']
+1828.644 C->S CUSTOM:'>' 04
+1828.708 MSG 0 'You enter a maze of down staircases.\x00'
+1828.72 MSG 0 'Looks like any other level.\x00'
+1828.72 FLOOR 0000000000000000000000 [b'', b'']
+1829.882 C->S CUSTOM:'.' 4709
+1830.027 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 11900 turns of light) {25% off}'
+1830.075 C->S CUSTOM:'.' 4709
+1830.274 C->S CUSTOM:'.' 4709
+1830.783 C->S CUSTOM:'.' 4706
+1830.786 MSG 0 'You cannot run in that direction.\x00'
+1831.157 C->S CUSTOM:'.' 4703
+1831.391 C->S CUSTOM:'.' 4706
+1831.587 MSG 0 'You feel the Set of Leather Gloves (h) in your pack is cursed...\x00'
+1831.587 INVEN 'h' wgt 5 amt 1 tval 31 flag 1 st 0 'a Set of Leather Gloves [1] {cursed}'
+1832.047 C->S CUSTOM:'.' 4706
+1833.131 C->S PKT_WALK 4606
+1833.406 C->S PKT_WALK 4606
+1838.331 C->S CUSTOM:'k' 180700000001
+1838.333 MSG 0 'You destroy a Set of Leather Gloves [1] {cursed}.\x00'
+1838.333 MSG 0 'You have no more Sets of Leather Gloves [1] {cursed}.\x00'
+1838.333 INVEN 'h' wgt 100 amt 1 tval 23 flag 1 st 0 'a Tulwar (2d4) {Smeagol}'
+1838.333 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1838.333 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1838.333 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1838.333 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1838.333 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1838.333 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1838.333 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1838.333 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1838.333 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1838.333 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1838.333 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1838.333 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1838.333 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1838.333 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1838.333 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1838.333 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1839.024 C->S PKT_WALK 4603
+1839.026 FLOOR 00013f01000146200061205363726f6c6c207469746c65642022676172766976206d6963706f2200 [b'a Scroll titled "garviv micpo"', b'']
+1839.026 MSG 0 'You see a Scroll titled "garviv micpo".\x00'
+1840.267 C->S CUSTOM:',' 00
+1840.269 MSG 0 'You have a Scroll titled "garviv micpo" (h).\x00'
+1840.269 FLOOR 0000000000000000000000 [b'', b'']
+1840.269 INVEN 'h' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "garviv micpo"'
+1840.269 INVEN 'i' wgt 100 amt 1 tval 23 flag 1 st 0 'a Tulwar (2d4) {Smeagol}'
+1840.828 C->S CUSTOM:'.' 4701
+1841.075 C->S CUSTOM:'.' 4704
+1841.437 C->S CUSTOM:'.' 4704
+1841.669 C->S CUSTOM:'.' 4704
+1841.877 C->S CUSTOM:'.' 4704
+1842.11 C->S CUSTOM:'.' 4704
+1842.353 C->S CUSTOM:'.' 4704
+1842.932 C->S CUSTOM:'.' 4704
+1843.56 C->S CUSTOM:'.' 4704
+1844.669 C->S CUSTOM:'<' 02
+1844.671 MSG 0 'You enter a maze of up staircases.\x00'
+1844.682 FLOOR 0000000000000000000000 [b'', b'']
+1845.411 C->S CUSTOM:'>' 04
+1845.414 MSG 0 'You enter a maze of down staircases.\x00'
+1845.427 MSG 0 "This level can't be all bad...\x00"
+1845.427 FLOOR 0000000000000000000000 [b'', b'']
+1846.364 C->S CUSTOM:'<' 02
+1846.366 MSG 0 'You enter a maze of up staircases.\x00'
+1846.375 FLOOR 0000000000000000000000 [b'', b'']
+1846.814 C->S CUSTOM:'>' 04
+1846.868 MSG 0 'You enter a maze of down staircases.\x00'
+1846.88 MSG 0 'Looks like any other level.\x00'
+1846.88 FLOOR 0000000000000000000000 [b'', b'']
+1847.63 C->S CUSTOM:'<' 02
+1847.633 MSG 0 'You enter a maze of up staircases.\x00'
+1847.641 FLOOR 0000000000000000000000 [b'', b'']
+1848.048 C->S CUSTOM:'>' 04
+1848.133 MSG 0 'You enter a maze of down staircases.\x00'
+1848.147 MSG 0 'Looks like any other level.\x00'
+1848.148 FLOOR 0000000000000000000000 [b'', b'']
+1848.806 C->S CUSTOM:'<' 02
+1848.808 MSG 0 'You enter a maze of up staircases.\x00'
+1848.814 FLOOR 0000000000000000000000 [b'', b'']
+1849.209 C->S CUSTOM:'>' 04
+1849.307 MSG 0 'You enter a maze of down staircases.\x00'
+1849.319 MSG 0 'Looks like any other level.\x00'
+1849.319 FLOOR 0000000000000000000000 [b'', b'']
+1849.952 C->S CUSTOM:'<' 02
+1849.954 MSG 0 'You enter a maze of up staircases.\x00'
+1849.961 FLOOR 0000000000000000000000 [b'', b'']
+1850.384 C->S CUSTOM:'>' 04
+1850.454 MSG 0 'You enter a maze of down staircases.\x00'
+1850.466 MSG 0 'Looks like any other level.\x00'
+1850.467 FLOOR 0000000000000000000000 [b'', b'']
+1851.741 C->S CUSTOM:'.' 4703
+1852.024 C->S CUSTOM:'.' 4702
+1852.619 C->S CUSTOM:'.' 4707
+1853.121 C->S CUSTOM:'.' 4706
+1854.012 C->S CUSTOM:'.' 4707
+1854.315 C->S CUSTOM:'.' 4707
+1855.866 C->S CUSTOM:'.' 4707
+1856.81 C->S CUSTOM:'<' 02
+1856.813 MSG 0 'You enter a maze of up staircases.\x00'
+1856.828 FLOOR 0000000000000000000000 [b'', b'']
+1857.395 C->S CUSTOM:'>' 04
+1857.398 MSG 0 'You enter a maze of down staircases.\x00'
+1857.4 MSG 0 'Looks like any other level.\x00'
+1857.401 FLOOR 0000000000000000000000 [b'', b'']
+1858.881 C->S CUSTOM:'.' 4708
+1859.625 C->S CUSTOM:'.' 4708
+1859.969 C->S CUSTOM:'.' 4706
+1860.614 C->S CUSTOM:'.' 4706
+1861.192 C->S CUSTOM:'.' 4703
+1861.475 C->S CUSTOM:'.' 4706
+1862.123 C->S CUSTOM:'.' 4704
+1862.556 C->S CUSTOM:'.' 4707
+1862.808 C->S CUSTOM:'.' 4704
+1863.365 C->S CUSTOM:'.' 4704
+1863.874 C->S CUSTOM:'.' 4704
+1863.907 C->S CUSTOM:'.' 4704
+1864.225 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 11800 turns of light) {25% off}'
+1864.458 C->S CUSTOM:'.' 4702
+1864.742 C->S CUSTOM:'.' 4706
+1865.173 C->S CUSTOM:'.' 4703
+1865.265 C->S CUSTOM:'.' 4702
+1865.293 MSG 0 'You cannot run in that direction.\x00'
+1865.702 C->S CUSTOM:'.' 4706
+1865.949 C->S CUSTOM:'.' 4703
+1866.097 C->S CUSTOM:'.' 4702
+1866.582 C->S CUSTOM:'.' 4703
+1867.437 C->S CUSTOM:'<' 02
+1867.439 MSG 0 'You enter a maze of up staircases.\x00'
+1867.454 FLOOR 0000000000000000000000 [b'', b'']
+1867.906 C->S CUSTOM:'>' 04
+1867.947 MSG 0 'You enter a maze of down staircases.\x00'
+1867.959 MSG 0 'Looks like any other level.\x00'
+1867.96 FLOOR 0000000000000000000000 [b'', b'']
+1868.866 C->S CUSTOM:'<' 02
+1868.868 MSG 0 'You enter a maze of up staircases.\x00'
+1868.881 FLOOR 0000000000000000000000 [b'', b'']
+1869.368 C->S CUSTOM:'>' 04
+1869.373 MSG 0 'You enter a maze of down staircases.\x00'
+1869.385 MSG 0 'Looks like any other level.\x00'
+1869.385 FLOOR 0000000000000000000000 [b'', b'']
+1870.081 C->S CUSTOM:'<' 02
+1870.083 MSG 0 'You enter a maze of up staircases.\x00'
+1870.094 FLOOR 0000000000000000000000 [b'', b'']
+1870.613 C->S CUSTOM:'>' 04
+1870.615 MSG 0 'You enter a maze of down staircases.\x00'
+1870.626 MSG 0 'Looks like any other level.\x00'
+1870.626 FLOOR 0000000000000000000000 [b'', b'']
+1871.427 C->S CUSTOM:'<' 02
+1871.429 MSG 0 'You enter a maze of up staircases.\x00'
+1871.442 FLOOR 0000000000000000000000 [b'', b'']
+1871.848 C->S CUSTOM:'>' 04
+1871.933 MSG 0 'You enter a maze of down staircases.\x00'
+1871.945 MSG 0 'Looks like any other level.\x00'
+1871.946 FLOOR 0000000000000000000000 [b'', b'']
+1872.838 C->S CUSTOM:'<' 02
+1872.84 MSG 0 'You enter a maze of up staircases.\x00'
+1872.855 FLOOR 0000000000000000000000 [b'', b'']
+1873.211 C->S CUSTOM:'>' 04
+1873.346 MSG 0 'You enter a maze of down staircases.\x00'
+1873.36 MSG 0 'Looks like any other level.\x00'
+1873.361 FLOOR 0000000000000000000000 [b'', b'']
+1874.358 MSG 0 'The Fruit bat wakes up.\x00'
+1874.772 C->S CUSTOM:'.' 4708
+1874.919 MSG 0 'The Fruit bat misses you.\x00'
+1874.945 MSG 0 'You hit the Fruit bat.\x00'
+1874.945 MSG 0 'You have slain the Fruit bat.\x00'
+1875.407 C->S CUSTOM:'.' 4704
+1876.222 C->S PKT_WALK 4601
+1876.224 FLOOR 00013f01000146200061205363726f6c6c207469746c6564202278746f78206970746120736f7572 [b'a Scroll titled "xtox ipta sour"', b'']
+1876.224 MSG 0 'You see a Scroll titled "xtox ipta sour".\x00'
+1877.57 C->S CUSTOM:',' 00
+1877.573 MSG 0 'You have a Scroll titled "xtox ipta sour" (i).\x00'
+1877.573 FLOOR 0000000000000000000000 [b'', b'']
+1877.573 INVEN 'i' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "xtox ipta sour"'
+1877.573 INVEN 'j' wgt 100 amt 1 tval 23 flag 1 st 0 'a Tulwar (2d4) {Smeagol}'
+1878.335 C->S CUSTOM:'.' 4706
+1879.291 C->S PKT_WALK 4606
+1880.116 C->S CUSTOM:'<' 02
+1880.119 MSG 0 'You enter a maze of up staircases.\x00'
+1880.134 FLOOR 0000000000000000000000 [b'', b'']
+1880.652 C->S CUSTOM:'>' 04
+1880.655 MSG 0 'You enter a maze of down staircases.\x00'
+1880.665 MSG 0 'Looks like any other level.\x00'
+1880.666 FLOOR 0000000000000000000000 [b'', b'']
+1881.929 C->S PKT_WALK 4602
+1881.932 FLOOR 000f5d0f00011f01006120536574206f66204c65617468657220476c6f766573205b315d0000 [b'a Set of Leather Gloves [1]', b'']
+1881.932 MSG 0 'You see a Set of Leather Gloves [1].\x00'
+1883.005 C->S CUSTOM:',' 00
+1883.007 MSG 0 'You have a Set of Leather Gloves [1] (j).\x00'
+1883.007 FLOOR 0000000000000000000000 [b'', b'']
+1883.007 INVEN 'j' wgt 5 amt 1 tval 31 flag 1 st 0 'a Set of Leather Gloves [1]'
+1883.007 INVEN 'k' wgt 100 amt 1 tval 23 flag 1 st 0 'a Tulwar (2d4) {Smeagol}'
+1883.68 C->S CUSTOM:'.' 4703
+1883.683 MSG 0 'You cannot run in that direction.\x00'
+1883.905 C->S CUSTOM:'.' 4703
+1884.129 C->S CUSTOM:'.' 4703
+1884.472 C->S CUSTOM:'.' 4702
+1884.697 C->S CUSTOM:'.' 4703
+1885.04 C->S CUSTOM:'.' 4706
+1885.255 C->S CUSTOM:'.' 4703
+1885.425 C->S CUSTOM:'.' 4702
+1886.124 C->S CUSTOM:'.' 4708
+1886.557 C->S CUSTOM:'.' 4707
+1887.014 C->S CUSTOM:'.' 4707
+1887.25 C->S CUSTOM:'.' 4708
+1887.356 C->S CUSTOM:'.' 4707
+1887.676 C->S CUSTOM:'.' 4707
+1887.859 C->S CUSTOM:'.' 4708
+1888.002 C->S CUSTOM:'.' 4707
+1888.622 C->S CUSTOM:'.' 4707
+1889.489 C->S CUSTOM:'<' 02
+1889.492 MSG 0 'You enter a maze of up staircases.\x00'
+1889.508 FLOOR 0000000000000000000000 [b'', b'']
+1889.907 C->S CUSTOM:'>' 04
+1890.0 MSG 0 'You enter a maze of down staircases.\x00'
+1890.012 MSG 0 'Looks like any other level.\x00'
+1890.013 FLOOR 0000000000000000000000 [b'', b'']
+1891.355 C->S CUSTOM:'.' 4708
+1891.357 MSG 0 'You cannot run in that direction.\x00'
+1891.715 C->S CUSTOM:'.' 4706
+1891.812 MSG 0 'The Soldier ant wakes up.\x00'
+1892.498 C->S CUSTOM:'.' 4706
+1892.865 MSG 0 'The Rock lizard wakes up.\x00'
+1893.093 MSG 0 'You hit the Rock lizard.\x00'
+1893.093 MSG 0 'You have slain the Rock lizard.\x00'
+1893.736 C->S CUSTOM:'.' 4702
+1893.812 MSG 0 'The Soldier ant bites you.\x00'
+1893.904 MSG 0 'You hit the Soldier ant.\x00'
+1893.904 MSG 0 'You have slain the Soldier ant.\x00'
+1894.372 C->S CUSTOM:'.' 4702
+1894.904 MSG 0 'You miss the Large white snake.\x00'
+1895.012 MSG 0 'You hit the Large white snake.\x00'
+1895.024 MSG 0 'The Large white snake bites you.\x00'
+1895.024 MSG 0 'The Large white snake misses you.\x00'
+1895.159 MSG 0 'You miss the Large white snake.\x00'
+1895.465 MSG 0 'You hit the Large white snake.\x00'
+1895.465 MSG 0 'You have slain the Large white snake.\x00'
+1896.222 C->S CUSTOM:'.' 4707
+1896.474 C->S CUSTOM:'.' 4704
+1897.926 C->S CUSTOM:'.' 4704
+1898.185 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 11700 turns of light) {25% off}'
+1898.452 C->S CUSTOM:'.' 4704
+1898.963 C->S CUSTOM:'.' 4704
+1899.284 C->S CUSTOM:'.' 4701
+1899.823 C->S PKT_WALK 4604
+1899.825 FLOOR 00087c010001170100612042726f6b656e2053776f72642028316432290000 [b'a Broken Sword (1d2)', b'']
+1899.825 MSG 0 'You see a Broken Sword (1d2).\x00'
+1900.965 C->S CUSTOM:',' 00
+1900.968 MSG 0 'You have a Broken Sword (1d2) (k).\x00'
+1900.968 FLOOR 0000000000000000000000 [b'', b'']
+1900.968 INVEN 'k' wgt 30 amt 1 tval 23 flag 1 st 0 'a Broken Sword (1d2)'
+1900.968 INVEN 'l' wgt 100 amt 1 tval 23 flag 1 st 0 'a Tulwar (2d4) {Smeagol}'
+1901.563 C->S CUSTOM:'.' 4706
+1902.02 C->S CUSTOM:'.' 4709
+1902.366 C->S CUSTOM:'.' 4706
+1902.539 C->S CUSTOM:'.' 4704
+1903.177 C->S CUSTOM:'.' 4704
+1903.949 C->S CUSTOM:'.' 4704
+1904.366 C->S CUSTOM:'.' 4704
+1904.878 C->S CUSTOM:'.' 4704
+1904.907 C->S CUSTOM:'.' 4704
+1904.94 C->S CUSTOM:'.' 4704
+1904.97 C->S CUSTOM:'.' 4704
+1904.999 C->S CUSTOM:'.' 4704
+1905.031 C->S CUSTOM:'.' 4704
+1905.076 C->S CUSTOM:'.' 4704
+1905.109 C->S CUSTOM:'.' 4704
+1905.139 C->S CUSTOM:'.' 4704
+1905.167 C->S CUSTOM:'.' 4704
+1905.201 C->S CUSTOM:'.' 4704
+1905.233 C->S CUSTOM:'.' 4704
+1905.262 C->S CUSTOM:'.' 4704
+1905.306 C->S CUSTOM:'.' 4704
+1905.34 C->S CUSTOM:'.' 4704
+1905.985 MSG 0 'You hit the Small kobold.\x00'
+1905.985 MSG 0 'You have slain the Small kobold.\x00'
+1906.767 C->S CUSTOM:'.' 4704
+1906.771 MSG 0 'You have found 16 gold pieces worth of copper.\x00'
+1907.198 C->S CUSTOM:'.' 4707
+1907.316 C->S CUSTOM:'.' 4708
+1907.652 MSG 0 'You hit the Clear icky thing.\x00'
+1907.652 MSG 0 'You have slain the Clear icky thing.\x00'
+1908.206 C->S CUSTOM:'.' 4708
+1909.268 C->S CUSTOM:'.' 4708
+1909.465 MSG 0 'You hit the White icky thing.\x00'
+1909.465 MSG 0 'You have slain the White icky thing.\x00'
+1909.984 C->S CUSTOM:'.' 4708
+1910.642 C->S CUSTOM:'.' 4706
+1911.024 C->S CUSTOM:'.' 4702
+1911.656 C->S PKT_WALK 4601
+1911.659 FLOOR 00013f01000146000061205363726f6c6c207469746c656420226974206d756e6772656120612220 [b'a Scroll titled "it mungrea a" {tried}', b'']
+1911.659 MSG 0 'You see a Scroll titled "it mungrea a" {tried}.\x00'
+1912.224 MSG 0 'You feel the Set of Leather Gloves (j) in your pack is average...\x00'
+1912.224 INVEN 'j' wgt 5 amt 1 tval 31 flag 1 st 0 'a Set of Leather Gloves [1] {average}'
+1912.916 C->S CUSTOM:',' 00
+1912.919 MSG 0 'You have a Scroll titled "it mungrea a" {tried} (j).\x00'
+1912.919 FLOOR 0000000000000000000000 [b'', b'']
+1912.919 INVEN 'j' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll titled "it mungrea a" {tried}'
+1912.919 INVEN 'k' wgt 5 amt 1 tval 31 flag 1 st 0 'a Set of Leather Gloves [1] {average}'
+1912.919 INVEN 'l' wgt 30 amt 1 tval 23 flag 1 st 0 'a Broken Sword (1d2)'
+1912.919 INVEN 'm' wgt 100 amt 1 tval 23 flag 1 st 0 'a Tulwar (2d4) {Smeagol}'
+1913.532 C->S CUSTOM:'.' 4706
+1914.465 C->S CUSTOM:'.' 4706
+1915.555 C->S CUSTOM:'.' 4706
+1916.212 C->S CUSTOM:'.' 4706
+1917.239 MSG 0 'You hit the Soldier ant.\x00'
+1917.239 MSG 0 'You have slain the Soldier ant.\x00'
+1917.712 C->S CUSTOM:'.' 4706
+1918.587 C->S CUSTOM:'.' 4706
+1919.528 C->S CUSTOM:'.' 4703
+1919.678 C->S CUSTOM:'.' 4702
+1920.123 C->S CUSTOM:'.' 4703
+1920.449 C->S CUSTOM:'.' 4706
+1920.906 C->S CUSTOM:'.' 4702
+1920.909 MSG 0 'You cannot run in that direction.\x00'
+1921.269 C->S CUSTOM:'.' 4703
+1921.41 C->S CUSTOM:'.' 4702
+1921.945 C->S CUSTOM:'.' 4706
+1922.82 C->S CUSTOM:'.' 4702
+1922.975 C->S CUSTOM:'.' 4703
+1923.046 C->S CUSTOM:'.' 4702
+1923.708 C->S CUSTOM:'.' 4701
+1923.965 C->S CUSTOM:'.' 4704
+1923.984 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 11600 turns of light) {25% off}'
+1924.652 C->S CUSTOM:'.' 4704
+1924.705 MSG 0 'You feel the Broken Sword (l) in your pack is average...\x00'
+1924.705 INVEN 'l' wgt 30 amt 1 tval 23 flag 1 st 0 'a Broken Sword (1d2) {average}'
+1925.504 C->S CUSTOM:'.' 4707
+1926.042 C->S CUSTOM:'.' 4704
+1927.03 C->S CUSTOM:'<' 02
+1927.033 MSG 0 'You enter a maze of up staircases.\x00'
+1927.039 FLOOR 0000000000000000000000 [b'', b'']
+1927.82 C->S CUSTOM:'.' 4703
+1928.242 C->S CUSTOM:'.' 4702
+1928.41 C->S CUSTOM:'.' 4703
+1928.549 C->S CUSTOM:'.' 4702
+1929.229 C->S CUSTOM:'.' 4706
+1930.065 C->S CUSTOM:'.' 4703
+1930.416 C->S CUSTOM:'.' 4706
+1932.116 C->S CUSTOM:'.' 4703
+1932.888 C->S PKT_WALK 4603
+1935.447 C->S CUSTOM:'s' 330a00000001
+1935.45 MSG 0 'Selling a Set of Leather Gloves [1] {average} (k).\x00'
+1935.45 MSG 0 'You eventually agree upon the price.\x00'
+1936.158 C->S PKT_CONFIRM 3e0100
+1936.158 MSG 0 'Fine.\x00'
+1936.158 MSG 0 'You sold a Set of Leather Gloves [1,+0] for 1 gold.\x00'
+1936.158 MSG 0 'You have no more Sets of Leather Gloves [1,+0].\x00'
+1936.158 INVEN 'k' wgt 30 amt 1 tval 23 flag 1 st 0 'a Broken Sword (1d2) {average}'
+1936.158 INVEN 'l' wgt 100 amt 1 tval 23 flag 1 st 0 'a Tulwar (2d4) {Smeagol}'
+1936.158 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1936.158 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1936.158 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1936.158 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1936.158 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1936.158 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1936.158 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1936.158 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1936.158 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1936.158 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1936.158 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1936.158 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1936.158 EQUIP 'k' wgt 5 tval 31 'a Set of Leather Gloves [1,+0]'
+1940.672 C->S PKT_WALK 4600
+1940.91 C->S CUSTOM:'.' 4706
+1941.583 C->S CUSTOM:'.' 4709
+1941.869 C->S CUSTOM:'.' 4706
+1942.301 C->S CUSTOM:'.' 4702
+1942.371 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 11500 turns of light) {25% off}'
+1942.963 C->S PKT_WALK 4602
+1944.577 C->S CUSTOM:'s' 330a00000001
+1944.579 MSG 0 'Selling a Broken Sword (1d2) {average} (k).\x00'
+1944.579 MSG 0 'You eventually agree upon the price.\x00'
+1945.37 C->S PKT_CONFIRM 3e0100
+1945.37 MSG 0 'Agreed!\x00'
+1945.37 MSG 0 'You sold a Broken Sword (1d2) (-2,-4) for 1 gold.\x00'
+1945.37 MSG 17 'You hear someone sobbing...\x00'
+1945.37 MSG 0 'You have no more Broken Swords (1d2) (-2,-4).\x00'
+1945.37 INVEN 'k' wgt 100 amt 1 tval 23 flag 1 st 0 'a Tulwar (2d4) {Smeagol}'
+1945.37 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1945.37 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1945.37 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1945.37 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1945.37 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1945.37 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1945.37 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1945.37 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1945.37 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1945.37 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1945.37 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1945.37 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1945.37 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1948.192 C->S PKT_WALK 4600
+1948.723 C->S CUSTOM:'.' 4706
+1950.656 C->S CUSTOM:'.' 4703
+1950.737 C->S CUSTOM:'.' 4702
+1950.935 C->S CUSTOM:'.' 4701
+1951.612 C->S PKT_WALK 4601
+1955.828 C->S CUSTOM:'s' 330900000001
+1955.831 MSG 0 'Selling a Scroll titled "it mungrea a" {tried} (j).\x00'
+1955.831 MSG 0 'You eventually agree upon the price.\x00'
+1956.731 C->S PKT_CONFIRM 3e0100
+1956.732 MSG 0 'Okay.\x00'
+1956.732 MSG 0 'You sold a Scroll of Summon Monster for 9 gold.\x00'
+1956.732 MSG 17 'Arrgghh!\x00'
+1956.732 MSG 0 'You have no more Scrolls of Summon Monster.\x00'
+1956.732 INVEN 'j' wgt 100 amt 1 tval 23 flag 1 st 0 'a Tulwar (2d4) {Smeagol}'
+1956.732 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1956.732 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1956.732 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1956.732 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1956.732 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1956.732 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1956.732 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1956.732 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1956.732 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1956.732 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1956.732 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1956.732 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1956.732 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1956.732 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1968.572 C->S CUSTOM:'p' 321400000001023539
+1968.574 MSG 0 'Fine.\x00'
+1968.574 MSG 0 'You bought a Scroll of Identify {25% off} for 59 gold.\x00'
+1968.574 MSG 0 'You have a Scroll of Identify {25% off} (e).\x00'
+1968.574 INVEN 'e' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll of Identify {25% off}'
+1968.574 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+1968.574 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+1968.574 INVEN 'h' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "jo elprok"'
+1968.574 INVEN 'i' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "garviv micpo"'
+1968.574 INVEN 'j' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "xtox ipta sour"'
+1968.574 INVEN 'k' wgt 100 amt 1 tval 23 flag 1 st 0 'a Tulwar (2d4) {Smeagol}'
+1971.04 C->S PKT_WALK 4600
+1974.24 C->S CUSTOM:'r' 1d040a
+1974.242 MSG 0 'In your pack: a Tulwar of Slay Demon (2d4) (+7,+3) {Smeagol} (k).\x00'
+1974.242 MSG 0 'You have no more Scrolls of Identify {25% off}.\x00'
+1974.242 INVEN 'e' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+1974.242 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+1974.242 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "jo elprok"'
+1974.242 INVEN 'h' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "garviv micpo"'
+1974.242 INVEN 'i' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "xtox ipta sour"'
+1974.243 INVEN 'j' wgt 100 amt 1 tval 23 flag 1 st 0 'a Tulwar of Slay Demon (2d4) (+7,+3) {Smeagol}'
+1974.243 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1974.243 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1974.243 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1974.243 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1974.243 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1974.243 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1974.243 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1974.243 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1974.243 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1974.243 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1974.243 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1974.243 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1974.243 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1974.243 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1979.063 C->S CUSTOM:'.' 4708
+1979.517 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 11400 turns of light) {25% off}'
+1979.612 C->S CUSTOM:'.' 4704
+1980.544 C->S CUSTOM:'.' 4701
+1980.768 C->S CUSTOM:'.' 4704
+1982.48 C->S CUSTOM:'.' 4701
+1983.444 C->S PKT_WALK 4607
+1986.714 C->S CUSTOM:'s' 330900000001
+1986.716 MSG 0 "I don't want that!\x00"
+1989.494 C->S PKT_WALK 4600
+1989.729 C->S CUSTOM:'.' 4706
+1990.063 C->S CUSTOM:'.' 4709
+1990.838 C->S CUSTOM:'.' 4706
+1991.047 C->S CUSTOM:'.' 4702
+1991.795 C->S PKT_WALK 4601
+1992.75 C->S CUSTOM:'s' 330900000001
+1992.752 MSG 0 'Selling a Tulwar of Slay Demon (2d4) (+7,+3) {Smeagol} (j).\x00'
+1992.752 MSG 0 'You eventually agree upon the price.\x00'
+1993.517 C->S PKT_CONFIRM 3e0100
+1993.518 MSG 0 'Taken!\x00'
+1993.518 MSG 0 'You sold a Tulwar of Slay Demon (2d4) (+7,+3) {Smeagol} for 2021 gold.\x00'
+1993.518 MSG 0 'You have no more Tulwars of Slay Demon (2d4) (+7,+3) {Smeagol}.\x00'
+1993.518 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1993.518 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1993.518 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1993.518 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1993.518 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1993.518 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1993.518 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1993.518 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1993.518 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1993.518 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1993.518 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1993.518 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1993.518 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1993.518 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1993.518 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+1995.815 C->S PKT_WALK 4600
+1996.062 C->S CUSTOM:'.' 4706
+1997.233 C->S PKT_WALK 4604
+1998.229 C->S CUSTOM:'.' 4706
+1998.836 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 11300 turns of light) {25% off}'
+1998.946 C->S CUSTOM:'.' 4702
+1999.184 C->S CUSTOM:'.' 4701
+1999.815 C->S PKT_WALK 4601
+2004.312 C->S CUSTOM:'p' 320f0000000103313137
+2004.314 MSG 0 'Okay.\x00'
+2004.314 MSG 0 'You bought a Scroll of Word of Recall {50% off} for 117 gold.\x00'
+2004.314 MSG 0 'You have a Scroll of Word of Recall {50% off} (e).\x00'
+2004.314 INVEN 'e' wgt 5 amt 1 tval 70 flag 0 st 0 'a Scroll of Word of Recall {50% off}'
+2004.314 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+2004.314 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+2004.314 INVEN 'h' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "jo elprok"'
+2004.314 INVEN 'i' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "garviv micpo"'
+2004.314 INVEN 'j' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "xtox ipta sour"'
+2009.147 C->S CUSTOM:'p' 321500000001023938
+2009.15 MSG 0 'Okay.\x00'
+2009.15 MSG 0 'You bought a Scroll of Enchant Weapon To-Hit {50% off} for 98 gold.\x00'
+2009.15 MSG 0 'You have a Scroll of Enchant Weapon To-Hit {50% off} (f).\x00'
+2009.15 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 102 'a Scroll of Enchant Weapon To-Hit {50% off}'
+2009.15 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+2009.15 INVEN 'h' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+2009.15 INVEN 'i' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "jo elprok"'
+2009.15 INVEN 'j' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "garviv micpo"'
+2009.15 INVEN 'k' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "xtox ipta sour"'
+2011.602 C->S PKT_WALK 4600
+2042.514 C->S PKT_MESSAGE 2e556e74696c206f757220776561706f6e206973
+2042.514 MSG 257 '[Dive03] Until our weapon is ~+8 +8, buying +hit and +dmg scrolls on\x00'
+2045.701 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 11200 turns of light) {25% off}'
+2047.792 C->S PKT_MESSAGE 2e646973636f756e74206973206120676f6f6420
+2047.792 MSG 257 '[Dive03] discount is a good idea\x00'
+2054.926 MSG 256 '[Dive03:Scribe] Got it: until the weapon is about +8,+8, buy\x00'
+2055.327 MSG 256 '[Dive03:Scribe] discounted +hit/+dam scrolls. Adding that to the\x00'
+2055.727 MSG 256 '[Dive03:Scribe] town shopping rules.\x00'
+2056.327 C->S CUSTOM:'r' 1d0518
+2056.33 MSG 0 'Your Main Gauche glows brightly!\x00'
+2056.33 MSG 0 'You have no more Scrolls of Enchant Weapon To-Hit {50% off}.\x00'
+2056.33 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "ishx therbin"'
+2056.33 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+2056.33 INVEN 'h' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "jo elprok"'
+2056.33 INVEN 'i' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "garviv micpo"'
+2056.33 INVEN 'j' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "xtox ipta sour"'
+2056.33 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2056.33 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2056.33 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2056.33 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2056.33 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2056.33 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2056.33 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2056.33 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2056.33 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2056.33 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2056.33 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2056.33 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2056.33 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2056.33 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2056.33 EQUIP 'a' wgt 30 tval 23 'a Main Gauche (1d5) (+3,+6)'
+2062.632 C->S CUSTOM:'.' 4709
+2063.427 C->S CUSTOM:'.' 4708
+2064.386 C->S PKT_WALK 4609
+2071.779 C->S PKT_WALK 4600
+2073.763 C->S CUSTOM:'.' 4701
+2074.506 C->S CUSTOM:'.' 4702
+2075.195 C->S CUSTOM:'.' 4701
+2075.672 C->S PKT_WALK 4601
+2085.166 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 11100 turns of light) {25% off}'
+2087.439 C->S CUSTOM:'s' 330500000001
+2087.442 MSG 0 'Selling a Scroll titled "ishx therbin" (f).\x00'
+2087.442 MSG 0 'You eventually agree upon the price.\x00'
+2088.031 C->S PKT_CONFIRM 3e0100
+2088.031 MSG 0 'Accepted!\x00'
+2088.031 MSG 0 'You sold a Scroll of Satisfy Hunger for 9 gold.\x00'
+2088.031 MSG 0 'You have no more Scrolls of Satisfy Hunger.\x00'
+2088.031 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "heaks khonis"'
+2088.031 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "jo elprok"'
+2088.031 INVEN 'h' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "garviv micpo"'
+2088.031 INVEN 'i' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "xtox ipta sour"'
+2088.031 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2088.031 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2088.031 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2088.031 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2088.031 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2088.031 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2088.031 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2088.031 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2088.031 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2088.031 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2088.031 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2088.031 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2088.032 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2088.032 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2088.032 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2089.311 C->S CUSTOM:'s' 330500000001
+2089.314 MSG 0 'Selling a Scroll titled "heaks khonis" (f).\x00'
+2089.314 MSG 0 'You eventually agree upon the price.\x00'
+2090.068 C->S PKT_CONFIRM 3e0100
+2090.068 MSG 0 'Okay.\x00'
+2090.068 MSG 0 'You sold a Scroll of Light for 9 gold.\x00'
+2090.068 MSG 0 'You have no more Scrolls of Light.\x00'
+2090.068 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "jo elprok"'
+2090.068 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "garviv micpo"'
+2090.068 INVEN 'h' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "xtox ipta sour"'
+2090.068 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2090.068 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2090.068 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2090.068 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2090.068 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2090.068 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2090.068 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2090.068 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2090.068 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2090.068 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2090.068 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2090.068 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2090.068 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2090.068 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2090.068 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2090.068 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2091.118 C->S CUSTOM:'s' 330500000001
+2091.12 MSG 0 'Selling a Scroll titled "jo elprok" (f).\x00'
+2091.12 MSG 0 'You eventually agree upon the price.\x00'
+2091.814 C->S PKT_CONFIRM 3e0100
+2091.815 MSG 0 'Accepted!\x00'
+2091.815 MSG 0 'You sold a Scroll of Object Detection for 9 gold.\x00'
+2091.815 MSG 0 'You have no more Scrolls of Object Detection.\x00'
+2091.815 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "garviv micpo"'
+2091.815 INVEN 'g' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "xtox ipta sour"'
+2091.815 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2091.815 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2091.815 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2091.815 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2091.815 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2091.815 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2091.815 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2091.815 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2091.815 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2091.815 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2091.815 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2091.815 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2091.815 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2091.815 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2091.815 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2091.815 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2091.815 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2093.008 C->S CUSTOM:'s' 330500000001
+2093.01 MSG 0 'Selling a Scroll titled "garviv micpo" (f).\x00'
+2093.01 MSG 0 'You eventually agree upon the price.\x00'
+2093.668 C->S PKT_CONFIRM 3e0100
+2093.668 MSG 0 'Agreed!\x00'
+2093.668 MSG 0 'You sold a Scroll of Treasure Detection for 9 gold.\x00'
+2093.668 MSG 0 'You have no more Scrolls of Treasure Detection.\x00'
+2093.668 INVEN 'f' wgt 5 amt 1 tval 70 flag 32 st 0 'a Scroll titled "xtox ipta sour"'
+2093.668 INVEN 'g' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2093.668 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2093.668 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2093.669 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2093.669 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2093.669 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2093.669 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2093.669 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2093.669 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2093.669 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2093.669 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2093.669 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2093.669 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2093.669 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2093.669 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2093.669 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2093.669 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2093.669 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2094.863 C->S CUSTOM:'s' 330500000001
+2094.866 MSG 0 'Selling a Scroll titled "xtox ipta sour" (f).\x00'
+2094.866 MSG 0 'You eventually agree upon the price.\x00'
+2095.556 C->S PKT_CONFIRM 3e0100
+2095.556 MSG 0 'Fine.\x00'
+2095.556 MSG 0 'You sold a Scroll of Blessing for 9 gold.\x00'
+2095.556 MSG 0 'You have no more Scrolls of Blessing.\x00'
+2095.556 INVEN 'f' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2095.556 INVEN 'g' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2095.556 INVEN 'h' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2095.556 INVEN 'i' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2095.556 INVEN 'j' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2095.556 INVEN 'k' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2095.556 INVEN 'l' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2095.556 INVEN 'm' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2095.556 INVEN 'n' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2095.556 INVEN 'o' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2095.556 INVEN 'p' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2095.556 INVEN 'q' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2095.556 INVEN 'r' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2095.556 INVEN 's' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2095.556 INVEN 't' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2095.556 INVEN 'u' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2095.556 INVEN 'v' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2095.556 INVEN 'w' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2095.556 INVEN 'x' wgt 0 amt 0 tval 0 flag 0 st 0 '(nothing)'
+2103.399 C->S PKT_WALK 4600
+2103.433 C->S PKT_WALK 4601
+2111.622 C->S PKT_WALK 4600
+2114.597 C->S CUSTOM:'.' 4709
+2116.365 C->S CUSTOM:'.' 4708
+2116.901 C->S PKT_WALK 4609
+2127.133 C->S PKT_WALK 4600
+2129.566 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 11000 turns of light) {25% off}'
+2154.555 C->S PKT_MESSAGE 2e4f6b2c206261636b20696e2061206265747465
+2154.555 MSG 257 '[Dive03] Ok, back in a better place money wise, improved weapon, and\x00'
+2168.713 C->S PKT_MESSAGE 2e6120576f5220746f20676574206261636b206f
+2168.713 MSG 257 '[Dive03] a WoR to get back out of the dungeon on the next dive\x00'
+2174.241 MSG 256 "[Dive03:Scribe] Nice. When you're done, Ctrl-X ends the recording;\x00"
+2174.64 MSG 256 "[Dive03:Scribe] I'll study how you made the money, then the pilot\x00"
+2175.041 MSG 256 '[Dive03:Scribe] can take Dive03 again if you like.\x00'
+2178.897 EQUIP 'f' wgt 50 tval 39 'a Brass Lantern (with 10900 turns of light) {25% off}'
+2180.991 C->S PKT_MESSAGE 2e596f7572207475726e206e6f7700
+2180.991 MSG 257 '[Dive03] Your turn now\x00'

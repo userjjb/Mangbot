@@ -1,0 +1,41 @@
+
+
+                                            Documentation
+
+MAngband is a free online multiplayer real-time roguelike game, derived from the single player game Angband.
+
+To win the game you must build up a character, selected from any one of 10 races and 6 classes, to be powerful enough to defeat Morgoth, Lord of Darkness, who lives in the dungeon 5000 feet below the surface of the town. As you work towards this near-impossible goal, you will chart unexplored dungeon passageways, do battle with legendary creatures, and find lost artifacts. And of course throughout your journeys you will encounter many other adventurers -- whether they be friend or foe is up to you to decide!
+
+Getting Started
+
+- Seek help online in Discord!
+
+- First things first, go and download the game!
+
+- Checkout some screenshots and videos so you know what you're getting into.
+
+- The MAngband Newbie Guide A classic document from Angband revised for MAngband.
+
+- Creating a character Learn all the details about the different races, classes, abilities and stats.
+
+- Command Reference Every command available in the game and a short description.
+
+- Chat Reference Notes on the MAngband in-game chat system.
+
+Further Documentation
+
+- Macro Guide Zal's guide to using macros in the game.
+
+- Inscription Guide A guide to understanding and using inscriptions.
+
+- Client Configuration Tips Quick recipes for most common client configurations.
+
+- People The people who've worked on MAngband.
+
+Technical Documentation
+
+- Game Changelog What has changed across different MAngband versions.
+
+- Github Project The project's home on Github.
+
+                

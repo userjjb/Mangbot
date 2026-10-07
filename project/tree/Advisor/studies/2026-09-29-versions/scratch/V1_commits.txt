@@ -1,0 +1,1256 @@
+1400c6e 2005-11-15 gray | initial import of MAngband 0.7.2a sources.
+7db9646 2005-11-15 gray | Renamed remotely
+7bcea31 2005-11-15 gray | Renamed remotely
+10f83ee 2005-11-15 gray | Remove all the client MSVC specific resources.
+d6cc710 2005-11-15 gray | * make.bat: Removed. Superfluous and breaks the *real* make command.
+af3e3d5 2005-11-15 gray | Changes to allow compilation of a native Windows server.
+bbd45e9 2005-11-15 gray | Additional changes to allow compilation of a native Windows server.
+7be00a6 2005-11-15 gray | * server/cmd5.c (do_cmd_pray): Bug fix, praying the same prayer with lowercase and uppercase letter awarded exp twice.
+3676378 2005-11-15 gray | * server/netserver.c (Contact): Bug fix, client IPs were always resolved as 0.0.0.0
+d08ccf1 2005-11-15 gray | Upgrade to Vanilla Angband v3.0.6 monsters.
+ab1d82b 2005-11-15 gray | Allow compilation of an Ironman server.
+b074ba1 2005-11-24 gray | Fixed bug causing server data corruption
+c9a3535 2005-11-24 gray | Two Windows specific networking bug fixes.
+6b0ebd1 2005-11-24 gray | Bug fix, server crash.
+75ef574 2005-11-24 gray | Actually make use of the  "host" config item we have in mangband.ini.
+e30243f 2005-11-24 gray | Added support for server side character dumps.
+5c9f8c7 2005-11-24 gray | Bug fix, server infinite loop.
+93ceada 2005-11-29 gray | * server/xtra2.c (mon_take_hit): In IRONMAN mode breeders don't give any experience.
+f76ed44 2005-11-29 gray | New plain text save file format. New special pre-designed static levels.
+40ea5fc 2005-11-29 gray | * Makefile.win: build targets are now moved to the parent directory.
+c7ba85e 2005-12-01 gray | * server/birth.c (player_init, player_outfit):   In IRONMAN mode, starting equipment is different.
+6ac7dab 2005-12-01 gray | Bug fix for warriors being given a (nothing)
+404d607 2005-12-02 gray | Bug fix, Windows client crashes with strange graphics errors after a time.
+3b5722c 2005-12-09 gray | * server/dungeon.c (process_player_end):  Don't consume food on special static pre-designed levels.
+46737ea 2005-12-09 gray | Insta-death on recall and stairing fix.
+1e566fb 2005-12-11 gray | Update spells gained per level to Vanilla Angband 3.0.6 levels.
+fbb3951 2005-12-11 gray | * server/init2.c (store_table): In IRONMAN mode, the temple sells healing potions.
+f0f5793 2005-12-11 gray | Update mana gained per level to Vanilla Angband 3.0.6 levels.
+a11e2f4 2005-12-11 gray | Update failure rate adjustments to Vanilla Angband 3.0.6 levels.
+87f4eba 2005-12-11 gray | Update hitpoints per level to Vanilla Angband 3.0.6 levels.
+9186ecb 2005-12-13 gray | Minor game re balancing for Ironman.
+b53ee77 2005-12-15 gray | * server/dungeon.c (dungeon): Bug fix for hound insta-death patch.   The check for "nearby" hounds was broken, because the distance from the monsters to the player had not yet been calculated.
+1061e02 2005-12-16 gray | * server/cmd5.c (do_cmd_pray): Implemented priest spell "Alter Reality"
+77b6a79 2005-12-19 gray | Enable level feelings when a level is generated.
+d989cd1 2005-12-27 gray | Add character event history into character dumps.
+641d69f 2005-12-27 gray | Bug fix, prevent item cloning and infinite gold exploit.
+e03a73b 2007-10-29 gray | Bug fix, prevent item cloning and infinite gold exploit in the general store.
+7b06c5c 2007-11-14 jug | Merge version 1.0.0 branch into trunk.
+317898d 2007-11-14 jug | Removed unneeded variable declaration, fixes #10.
+5e86f89 2007-11-14 jug | Removed all traces of non-Angband races Thunderlords, Yeeks and Goblins, also removed non-Angband class Sorcerors and all the abilities/spells/books which went along with these.  This goes some way to completing the open ticket (see #14), but some checks of the data files are still required.
+cac6e37 2007-11-17 jug | Automatically detect the AMD64 platform so we can compensate for the fact that longs are 64bit rather than 32bit. References #17.
+b7f46f5 2007-11-17 jug | Add missing header without which we segfault on platforms which have a slightly different idea of structure sizes (64bit). References #17.
+74f852a 2007-11-17 jug | Don't contact the meta-server by default, closes #19.
+dd4e997 2007-11-17 jug | Using va twice in s_printf() caused a segfault on amd64/xen.  This is the last (known) remaining issue preventing a 64bit server and so therefore closes #17.
+480cde5 2007-11-17 jug | This is a temporary fix for the breaking of save file compatibility which resulted from the removal of some non-angband features.  The load/save routines still need fixing properly (see #15).
+c00d1d8 2007-11-17 jug | Remove initialisers for races which have been removed, closes #21.
+8ee7402 2007-11-17 jug | Server doesn't trust the client when shopping, fixes #20.
+afcc463 2007-11-17 jug | Fix for broken server/client communication when starting a connection.  The server side of the fix maintains backwards compatibility with older 0.7.2 clients.
+0668008 2007-11-18 jug | Correct ghost spells, fixes #23.
+dcfeb07 2007-11-19 jug | Removed stray debugging code, fixes #26.
+4276a50 2007-11-19 billsey | Partially addresses #27: /* Visual Studio predefines errno as *_errno() --  BS */
+7f2a904 2007-11-19 billsey | Partially addresses #27: I forgot the correct syntax for #if defined(). :-)
+4cb7de2 2007-11-19 billsey | Fixes #27, renamed UnhandledExceptionFilter() to myUnhandledExceptionFilter(), stops conflict with default UnhandledExceptionFilter() in kernel32.lib
+7447c7f 2007-11-19 billsey | Addresses #28, _export is not supported in VS2005 Express
+b5495a9 2007-11-19 billsey | Fixed #28 - Compiles but does not yet fully function. Tickets will be generated on each reason.
+7ae1bf4 2007-11-19 billsey | Addresses #29 - _export is not supported in VS2005 Express
+657db24 2007-11-20 billsey | Fixed #29 - Compiles with no guarantee of function.
+2a47ce4 2007-11-20 billsey | Addresses #4 - adds global.h, md5.h and md5.c to project in common directory.
+543ffb9 2007-11-21 jug | One aspect of this bug (see #35 for another) is that the command to start running requires more energy than other commands, and therefore more energy than the auto-retaliator.
+c2be93b 2007-11-21 jug | \e and escape clear command queues.
+b87995c 2007-11-21 jug | Give the "Floating eye" a 1 in 100 chance to blink, closes #30.
+13ca12d 2007-11-21 jug | Be more careful about which queues we are clearing, closes #35.
+af36547 2007-11-22 jug | Implement different behaviour for townies, closes #34.
+5432999 2007-11-22 jug | Completely remove the mangconsole.
+bbe4be0 2007-11-22 jug | Removes all code for the "irc_gate", references #38.
+5eb74f5 2007-11-22 jug | Removes final traces of old console and implements a new generic mechanism to interface things such as irc bots.  Closes #38 and fixes #18.
+51bf7a7 2007-11-22 jug | Revert to traditional townsfolk behaviour, closes #39.
+a6cb641 2007-11-22 jug | Implemented new towny behaviour.
+8595d37 2007-11-23 jug | Fixed the eye problem.  Reverted the r_info for the Floating eye back to it's original form and instead added code which makes all level 1 monsters who paralyze also blink after a successful paralyze attack.  I think the the Floating eye is the only level 1 monster who paralyzes. This closes #30.
+c1473f0 2007-11-23 jug | Final tweaks (hopefully) to towny behaviour.
+d0a8503 2007-11-24 jug | Address minor issues with console, fixes #41.
+d349961 2007-11-24 jug | Corrected (broken) support for the official 0.7.2 client.  Added support for the 0.7.3+ line of clients.  Unknown clients get a warning on disconnection where to download a compatible client.  Partially addresses #42.
+e0bd94f 2007-11-24 jug | Adds whois support, allbeit a bit over the top :) Addresses #43.
+f346e91 2007-11-24 jug | Bug fix, don't assume the client is broken, addresses #42.
+a0917bd 2007-11-24 jug | Raise the max number of quarks, closes #44.
+841565a 2007-11-24 billsey | Fixes #45, '#define strncasecmp strnicmp' moved to h-system.h
+aae895b 2007-11-25 billsey | Addresses #4 - Adds MD5Password() to save.c, in anticipation of encrypted password support.
+c1ee9aa 2007-11-25 billsey | Fixes #48 - Now 1.0.0 save file.
+80f1641 2007-11-26 billsey | Addresses #4 - Test of hashing getting closer, and it still compiles! load2.c is nearly ready to test MD5 algorithm in a debug environment.
+ff79b50 2007-11-26 billsey | Fixes #49 - Added SocketClose() #defined for Windows compiles.
+84d53df 2007-11-26 billsey | Addresses #4 - Generate an MD5 hash for the password for each user. We now need to figure out if the hash is correct for any password before we start placing logic for upgrading each user to the hashed values as they log in.
+861e6c7 2007-11-26 billsey | Addresses #4 - Cleaned up to remove UINT4, UINT2 and POINTER, giving them MAngbandized types instead.
+9c108bc 2007-11-26 billsey | Fixed #50
+2ad3f73 2007-11-26 billsey | Fixed #51
+9431edf 2007-11-26 billsey | Fixes #52
+d24e8f1 2007-11-26 billsey | Fixes #53
+ab51af6 2007-11-26 billsey | Fixes #54
+54dc490 2007-11-26 billsey | Fixes #55
+a63ff9b 2007-11-26 billsey | Fixes #56
+df70f82 2007-11-26 billsey | Fixes #57
+2fb4ce7 2007-11-26 billsey | Fixes #58
+d389be5 2007-11-26 billsey | Fixes #59
+7bd008b 2007-11-26 billsey | Fixes #60
+c91e2c0 2007-11-26 billsey | Fixes #61 - It's worth noting that we never check the return value, we just assume things went OK I guess.
+cde32f0 2007-11-26 billsey | Fixes #62
+e824782 2007-11-26 billsey | Fixes #63
+cfc9394 2007-11-26 jug | Add md5 sources to Makefile, closes #64.
+cf4778a 2007-11-26 billsey | Addresses #4 - Should be everything on the server side except the hashed save.
+00a0e80 2007-11-27 billsey | Addresses #4 - Server side should be done, but not fully tested. Old clients (sending unhashed passwords) have been tested. New clients (sending hashed passwords) have not. The instance where a user has chosen an unhashed password beginning with '$1$' will probably break and fail the password in every case.
+7c278e5 2007-11-29 jug | Rename the "status" command to "who", which better reflects it's purpose and more common irc usage.  Addresses #43.
+ebd706c 2007-11-29 jug | Adds a console command "rngtest" which tests the integrity of the RNG. Closes #69 and references #43.
+9df69ee 2007-11-30 billsey | Addresses #4 - Started coding for client side hashing. We need to decide on some data sizes before we finalize this, and perhaps even get the client working before we call it finished.
+58a908e 2007-11-30 billsey | Fixes #71 - Just moved them up a handful of lines.
+1632578 2007-11-30 billsey | Fixes #72 - Same fix as provided in the message forums: http://www.mangband.org/cgi-bin/yabb/YaBB.cgi?board=Version1;action=display;num=1189443936
+07aef60 2007-11-30 billsey | Addresses #73 - Fully implemented, but waiting for a decision on the correct maintainers default email address before closing.
+1e7d48f 2007-11-30 jug | Remove unused and unnecessary maintainer information, addresses #73.
+e1e0671 2007-11-30 jug | Increase MAX_NAME_LENGTH so we don't crash when receiving a hashed password, addresses #4.
+3d61406 2007-12-01 billsey | Fixes #78 - SIGALRM is #defined as SIGINT when compiled with the Visual Studio compiler.
+7852cb9 2007-12-01 billsey | Addresses #4 - I believe it's all working now... Yet I'm also thinking we might want to put something together that allows us to connect using clear text to older servers. Perhaps an init option, or the default for pre-1.0.0. servers?
+d9c29f3 2007-12-01 jug | Add support to the client to display "informational" lines from the metaserver and not assume they are server entries.  This allows the meta server (in the future) to render the server list however it likes. For example: {{{    Welcome to MAngband!
+58001f3 2007-12-01 jug | Don't try to ignore "nearby monsters" when compacting the monster list. This calculation makes no sense because compact_monsters() isn't called in the context of an individual player, this has never worked. Addresses #81.
+294aad1 2007-12-01 jug | Second thoughts, it's probably better to have this work occasionally for someone, rather than have it never work for anyone. Addresses #81.
+0e1d976 2007-12-01 jug | Fixes mass genocide and monster aggravation.  Closes #81.
+310ad6a 2007-12-01 jug | Fix the default meta server address, fixes #82.
+98bc4de 2007-12-01 jug | Townies don't go into 8, fix by PowerWyrm, closes #67.
+87dc516 2007-12-01 jug | Fixes #83, work done by PowerWyrm.
+d309e89 2007-12-01 jug | Increases maximum number of character history entries and stops logging if we *do* run out of space.
+4745784 2007-12-01 jug | Ensure negative bonuses on cursed kollas.  Fixes #85.  Fix by PowerWyrm.
+3102e7b 2007-12-01 jug | Don't crash with nonhashed passwords when they are less than three characters.  Addresses #4.
+693bbe6 2007-12-01 jug | Correctly reduce weight on death, fixes #86.  This fix by Jug, Billsey and PowerWyrm.
+02bcda2 2007-12-01 jug | Remove TOME "telekinesis".  Which allowed objects to be teleported between players.  Addresses #14.
+d3f1637 2007-12-01 jug | Remove TOME special mage weapons, addresses #14.
+ad06c22 2007-12-01 jug | Remove TOME auto identify item ability, addresses #14.
+5817681 2007-12-01 jug | Remove TOME Scroll of Artifact Creation.  Addresses #14.
+cfa891b 2007-12-01 jug | Istari's are always positive +tohit +todam, fixes #88.
+b6b2dd3 2007-12-01 billsey | Fixes #7 - Now prepends pseudo-ID text to existing inscription, also works when artifacts are pseudo-IDed by a destroy attempt.
+e855688 2007-12-01 billsey | Fixes #70 - Clear the super hero flag when you are turned into a ghost.
+10dbaae 2007-12-01 jug | The uniques the player has killed respawn on his death, closes #87.
+8710263 2007-12-02 jug | Only uniques who are within 35% of the players maximum depth are respawned on death.  Closes #91.
+7fc732e 2007-12-02 jug | Correctly check if we are already running, fixes #66.
+098c3ac 2007-12-02 jug | DM Summon Specific feature is now not so anal.
+3f9ed7f 2007-12-02 jug | Don't write to immutable string, fixes #93.
+8df4420 2007-12-02 jug | Correctly fixes #93.
+32be96d 2007-12-02 billsey | Addresses #76 - Removed client/angband.h and server/angband.h, modified common/angband.h to works as either. Still leaves extern.h in all directories.
+66295be 2007-12-02 jug | Fixed buffer overflow in MD5, fixes #94.
+e70be55 2007-12-02 billsey | Addresses #76 - There were still some mixups between the different externs.h files, as well as lots of files loading the wrong externs.h files.
+281b513 2007-12-02 billsey | Addresses #76 - Many entries in s-externs.h were not quite duplicated in externs.h. I've got most of them fixed now...
+ed20cd1 2007-12-02 billsey | Addresses #76 - Still more inconsistancies between externs
+94eba78 2007-12-03 billsey | Fixes #89 - Turns out atol wasn't actually used anywhere. :-)
+0fd776f 2007-12-03 billsey | Addresses #76 - Non-VS compilers don't know how to ignore an extern function when the function is actually static. I have no idea why it works with VS. It really shouldn't. :-)
+e3e8d02 2007-12-03 jug | Revert header changes, r165, r167, r168, r170, r172.  See #76.
+2b9a3cc 2007-12-03 jug | Acquirement and *Acquirement* scrolls work as expected, fixes #98.
+bdda0e0 2007-12-03 jug | Minor format correction, closes #76 (again).
+05e02d8 2007-12-04 jug | Reduce minimum object value in the bm to allow teleport scrolls, addresses #103.
+06c26f4 2007-12-06 jug | Correctly parse commands on the console, fixes #105.
+6085a0c 2007-12-06 jug | Revert r132 from trunk also, addresses #72 (see #107).
+72f46e6 2007-12-09 billsey | Fixes #72 - Chenged the method for deleting the original key after copying it, and took into account the instances when the keys are the most valuable items in inventory (in which case they don't need to be moved, they're already at the top of the stack).
+97ae7d0 2007-12-09 flambard | closes #113 - B now does a check for hostility before adding A to his party
+614738a 2007-12-09 flambard | Closes #47, by saving the entire macro set as a replacement to the existing.
+cbf3c9d 2007-12-10 flambard | Hopefully, closes #100. Utilises new network packet PKT_CHANGEPASS to change player's password from Character screen. Password is first confirmed on client then is sent to server hashed. change_password function was allready inplace.
+2b26b26 2007-12-10 flambard | Closes #111, client now discards special_lines if screen is not icky.
+0dcc284 2007-12-10 billsey | Fixes #119 - Changed version text from 0.7.0 to 1.0.0
+1cf6ff8 2007-12-10 jug | Replace the current non working console hack with a worse hack but hopefully, at least, working.  Closes #114.
+dd65b9e 2007-12-10 jug | Remove stray debugging code, closes #114 (again).
+94a91ce 2007-12-10 billsey | Fixes #100 - moved some variable declarations around to allow compiles with both Visual Studio and Borland under Windows.
+1edf0fa 2007-12-10 flambard | refs #116
+1f537b1 2007-12-10 flambard | Forgot to add header in previous changeset, refs #116
+29fdc7a 2007-12-10 jug | Define EWOULDBLOCK on Windows in h-config.h, the system specific header file.  Closes #120.
+c5bae2d 2007-12-10 flambard | added another lost file - pref-sdl.prf for SDL keymappings, refs #116
+dd32f06 2007-12-10 jug | Remove irc prefix from chat, closes #123.
+65030d3 2007-12-11 flambard | Addresses #115. Added hist_flags[][] to user structure, functions to fill/display it. New protocol command for transfering flags 'as is'.
+de0768f 2007-12-11 jug | Console sends version info in human readable format, closes #124.
+76826d5 2007-12-11 billsey | Addresses #115 - Small changes to xtra1.c. Two places where variables were defined after code was executed, breaking both Visual Studio and Borland Bcc compiles on Windows platform.
+51d001c 2007-12-11 jug | Minor wording change on detection and no longer ignore visible monsters. Closes #125.
+b26cda9 2007-12-11 billsey | Fixes #181 - Added a return 0; at the end.
+296aa6d 2007-12-11 jug | Never send errors or messages to an invalid player, fixes #182.
+5bce8a1 2007-12-11 billsey | Fixes #183, set target_who variable to s32b instead of s16b. Since target_who is part of the player data structure, this touches everything...
+4510911 2007-12-11 billsey | Fixes #184 by removing the offending code.
+24f0f74 2007-12-12 billsey | Fixes #184 - Includes needed mods for Borland compiles.
+1c1d0ab 2007-12-12 billsey | Fixes #184 - commit didn't take the last time... :-(
+0ad1827 2007-12-12 billsey | Fixes #185 - MinGW now successfully compiles both the server and client in a Windows environment.
+b59de54 2007-12-12 flambard | Addresses #115 - some cleanup, flag hacks removed, RLE for sending flags added
+7e8670f 2007-12-12 jug | Update Earthquake effect, closes #146. (Reopened previously because I forgot to commit source code :)
+5c4ace5 2007-12-12 jug | Updated. Reduced power, did heal 10d10 now only 8d10. Still cures all stunning and cuts. Closes #148.
+4f774b8 2007-12-12 jug | Updated. Dispel_undead damage reduced. Closes #151.
+96f1af8 2007-12-12 jug | Updated. Dispel evil damage reduced. Closes #153.
+88bd8dd 2007-12-13 jug | Updated, minor wording change. Now warns you when a Glyph can't be created. Closes #154.
+6549805 2007-12-13 jug | Updated.  Ironmen don't tele level. Closes #159.
+1eb063c 2007-12-13 jug | Add missing ; from [217], closes #159.
+21b2e1d 2007-12-13 jug | Updated.  Updates effect all forms of recall not just priest spell. Closes #160.
+78fc04c 2007-12-13 jug | No change from vanilla.  Although we do now prevent this spell in the wilderness, to prevent destruction of out of town houses. Closes #161.
+4e49f60 2007-12-13 jug | Updated. Spell changes name to "Detect Monsters" from "Detect Creatures" but has the same effect.  This also effects the mage spell. Closes #162.
+1a97515 2007-12-13 jug | Updated. Detection also detects invisible monsters, this effects all forms of "Detection" not just the priest spell. Closes #163.
+848fc05 2007-12-13 flambard | Closes #187, probably opens can of worms
+c942beb 2007-12-15 jug | Enable screen update in hallucination, fixes #190.
+8cb11dd 2007-12-16 billsey | Addresses #116 - initialization of WSADATA for Windows was too late in the routine to allow compiles under VS. Moved up a bit...
+21ddef3 2007-12-16 flambard | Addresses #116 - SDL should now compile on Windows. Moved WSADATA even further away (to main-sdl.c as suggested). Changes in Makefile also affect ticket #187, in a good way.
+7497fa6 2007-12-16 flambard | forgot to adjust Makefile for being linuxy by default in last changeset, which addresses #116
+fa5b1d4 2007-12-16 flambard | Addresses #115 - no longer exposes unidentified items
+ce2e39c 2007-12-16 jug | Implement non-drop artifacts.  Addresses #194.
+dc7c5d8 2007-12-16 jug | Correctly free artifacts on player death, closes #195.
+28dc5fe 2007-12-16 jug | Allow artifacts to be destroyed (k), closes #194.
+9caff9b 2007-12-16 jug | Support svn revision instead of version id, closes #196.
+ac2ba98 2007-12-17 billsey | Fixes #197 - Returns 0 at success, -1 if player structure was unable to be created (should never happen).
+6f9e198 2007-12-17 flambard | Closes #95. NB: setting ulimit in runserv is likely to be required on most distros
+d497a9f 2007-12-17 flambard | Closes #198.
+7eea51e 2007-12-17 jug | Update stores in Angband 3.0.6, closes #193.
+5a8e2c1 2007-12-17 jug | Give a little gold to players when they resurrect, closes #201.
+bc29a13 2007-12-17 jug | Count resurrections, fixes #203.
+1ff36f5 2007-12-17 jug | Add empty debug command to console, closes #204.
+3b53225 2007-12-17 jug | Rebalance exp loss on death, closes #200.
+23256a3 2007-12-18 jug | Update Purifications and Healing, closes #205. All healing spells in this book now reflect Angband 3.0.6.
+381ceeb 2007-12-18 jug | Changes P&H in client tables also, closes #205 (again).
+3f38dba 2007-12-18 jug | Update Recharging to Angband 3.0.6, closes #206.
+6e8f371 2007-12-18 jug | Minor name change, closes #176. "Banishment" becomes "Banish Evil".
+e151f64 2007-12-18 flambard | Closes #186, by realigning the flags. Removed TR_MANA and ESP_RACE from TOME (see #14). Since flags are now correct, this also closes #115. *Breaks Savefiles*
+0aabd53 2007-12-18 jug | Update priest and paladin magic system to Angband 3.0.6, closes #207.
+3908285 2007-12-19 flambard | Closes #116. Addressed chat bug and mouse hiding.
+63b4274 2007-12-19 flambard | Closes #208. {average} ammo will only stack with (+0,+0).
+93f6d13 2007-12-20 billsey | Fixes #7 again - This time it takes into account the state where you're getting pseudo ID on something that's already been pseudo IDed. This keeps you from seeing {average - average - average} when playing tag with a patch of memory moss.
+a81fd12 2007-12-20 jug | Remove keys from the game completely, closes #90.
+e602004 2007-12-20 jug | Reset houses on death, closes #90 (again).
+0957137 2007-12-21 jug | Implement shop 9 (player owned shops), addresses #209.
+4d8fddb 2007-12-21 jug | Remove items from players home when they are sold, addresses #209.
+402cc45 2007-12-21 flambard | Closes #211, added correct string termination
+7c14e3f 2007-12-21 flambard | Addresses #102, artifact creation not implemented yet.
+320e51e 2007-12-21 jug | Changeset [255] (see #102) added some key features back int the game, this removes them again.
+cf3554c 2007-12-21 billsey | Addresses #102 - an issue introduced in changeset 255 breaks VS compiles.
+d27e83b 2007-12-21 billsey | Fixes #122 - Monsters can now hit to hallucinate, opens a tunnel into the morass of Angband info files.
+8924441 2007-12-21 jug | Remove hard coded player gold k_idx references and add SV_PLAYER_GOLD for use elsewhere, closes #212.
+19600a4 2007-12-21 flambard | Closes #104, tree cap added to the config file.
+13aef64 2007-12-21 jug | Implement payment for player owned shops, addresses #209.
+1adfdd7 2007-12-21 flambard | Closes #104(again), fixes my own sloppines in changeset [260].
+32943ef 2007-12-21 billsey | Fixes #121 - The tunnel is now fully open to 3.0.6 monsters. [I hope!]
+654334c 2007-12-21 billsey | Fixes #213 - uses pre-defined macro __BORLANDC__
+b3e7a22 2007-12-21 billsey | Fixes #214 - msg_flag only needs to be instantiated in variable.c, since it's available everywhere.
+bf1ecbc 2007-12-21 billsey | Fixes #121 - re-does the one line change for keeping track of trees when burning the brush.
+f410618 2007-12-21 billsey | Fixes #7 - Yet again... Now uses (const char*)quark_str(o_ptr->note) instead of (const char*)o_ptr->note
+7755fde 2007-12-21 jug | Allow players to set their own prices, addresses #209.
+cb55402 2007-12-22 jug | Disable the central shop "9" and implement every home as a shop, addresses #209.
+0065628 2007-12-22 jug | Sanity check prices, addresses #209.
+97507c6 2007-12-22 jug | Don't "enter" the tavern, addresses #209.
+6eb2ce0 2007-12-22 billsey | Fixes #115 - hist_flags array was initialized too small, causing overwrites of other data.
+1f8c453 2007-12-22 billsey | Fixes #215 - Returns 0 when called for Windows.
+cb464ad 2007-12-23 jug | Restore original exp death penalty, closes #217.
+628d1b3 2007-12-23 jug | In debug mode, all players start with lots of good stuff, closes #216.
+8ba9c6b 2007-12-23 jug | Default to debug mode, closes #216 (again).
+59d7e68 2007-12-23 jug | All players in DEBUG mode can use DM menu system, closes #216.
+74854c2 2007-12-23 jug | Rebalance telepathy, closes #218.
+a8aa58a 2007-12-23 jug | Remove mind linking, addresses #14.
+2607080 2007-12-23 jug | Updated but with mangband specific behaviour, closes #165.
+4f132b0 2007-12-23 jug | Commemorate Seth, closes #220.
+66649ab 2007-12-26 billsey | Addresses #223 - Moved m_name array up to start of probing() function.
+b41a29c 2007-12-26 flambard | Closes #224, previous p_ptr->current_ states are now cleared upon arrival of a new one.
+3d33ad4 2007-12-26 flambard | Closes #210, allows intercation with items on floor.
+ac466c3 2007-12-26 flambard | Addresses #102, prevents stupid overflow
+478bcf7 2007-12-27 flambard | Closes #225, by placing the function earlier in the file
+f67c514 2007-12-27 flambard | Closes #228, pulling username from windows.
+b79bdb8 2007-12-28 billsey | Addresses #16 - Now parses terrain.txt instead of f_info.txt. Temporarily just copy the current f_info.txt files to terrain.txt. When the new terrain.txt file is ready, we'll replace them in the repository.
+81d1324 2007-12-28 billsey | Addresses #16 - Loads object.txt instead of k_info.txt. Copy your current k_info.txt to object.txt until such time as the new object.txt is added. Note that cursed items are LIGHT_CURSE, HEAVY_CURSE, PERMA_CURSE in that order, where with the current MAngband they are CURSED, PERMA_CURSE, HEAVY_CURSE in that order. We'll have to fix that in the code. This change also implements loading the descriptions, so will need to be tested.
+cc6fb7c 2007-12-28 billsey | Addresses #16 - Loads ego_item.txt instead of e_info.txt. Copy your current e_info.txt to ego_item.txt until such time as the new ego_item.txt is added. Note that cursed items are LIGHT_CURSE, HEAVY_CURSE, PERMA_CURSE in that order, where with the current MAngband they are CURSED, PERMA_CURSE, HEAVY_CURSE in that order. We'll have to fix that in the code. This change also implements loading the descriptions, so will need to be tested.
+d050087 2007-12-28 billsey | Fixes #232 - Flag is now renamed from RES_WATE to IM_WATER. No need to change info files, since RES_WATE is not used in the MAngband version.
+6000deb 2007-12-28 billsey | Addresses #16 - Loads monster.txt instead of r_info.txt. Copy your current r_info.txt to monster.txt until such time as the new monster.txt is added. Note that a RES_NEXU flag has been renamed to RES_NEXUS, but that doesn't affect the MAngband r_info.txt file, it's only in the Angband monster.txt file.
+cbfbe5f 2007-12-28 billsey | Addresses #16 - Loads vault.txt instead of v_info.txt. Copy your current v_info.txt to vault.txt until such time as the new monster.txt is added.
+4b4bc65 2007-12-28 billsey | Addresses #16 - Renames a_info.txt, e_info.txt, f_info.txt, k_info.txt, r_info.txt and v_info.txt to match the Angband 3.0.6 equivalents.
+0b9fb97 2007-12-28 flambard | Closes #227. Fixes looking and targeting to re-grab surroundings, unifies part of their code. Fixed manual targeting with arrow keys to work as designed. Removed "Target Selected" spam, as correct descriptions are now flashed to the client's top line. Keeped some hacks to preserve '*t' as a very fast mean to selected nearest enemy, bypassing the new code.
+0972fb5 2007-12-28 billsey | Fixes #192 - changes the lib/game directory to lib/edit as is used with Angband. This is possibly a step backwards, since Angband used 'edit' for the editable text files and 'game' for the compiled raw files. We no longer use raw files, so there's no need for the game directory.
+921f212 2007-12-28 flambard | Addresses #117. Added new cursor server-side support for TERMS systems. Fixed X11 cursor to match Angband 3.0.6. Cursor should now work in SDL, GCU and X11.
+6e520c4 2007-12-29 flambard | Closes #228 again, fix VS compile
+91864fd 2007-12-29 flambard | Closes #231, assumes we have correct files for curse order.
+d0b81fd 2008-01-01 flambard | Closes #240, client is now gracefully disconnected
+74cc400 2008-01-08 billsey | Addresses #235 and #238 - Implements for server, but currently breaks client. It would be worthwhile to test functionality for both of these file loads before implementing more.
+72422ec 2008-01-08 billsey | Addresses #235 and #238 - Adds the limits.txt and p_class.txt files to the project, with version numbers changed from the Angband version to 1.0.0.
+35e20f0 2008-01-08 billsey | Addresses #235 and #238 - Forgot to include the new include. :-)
+ecc17fe 2008-01-08 billsey | Addresses #235 and #238 - potential variable conflict with p_name is cleared up by doing some renames from p_name to pvp_name.
+5cd416d 2008-01-08 billsey | Addresses #235 and #238 - moved grab_one_flag up in the file to allow it to be correctly initialized before getting called.
+e25cbe8 2008-01-08 billsey | Addresses #235 and #238. added p_class.txt instead of p_race.txt. I'll just leave p_class.txt in, since we'll need it for #236.
+d26f5ef 2008-01-08 flambard | Closes #243, allows DMs to use Create Artifact scroll.
+7bbcfb5 2008-01-09 flambard | Addresses #235 and #238. Cheapest hack possible to make client compilable again.
+30887a2 2008-01-09 flambard | Closes #230 for a while. Note: _info files were updated to have D: and A: lines. Also note, that Activations for ego-items and other objects are still hard-coded (not good, but they have same situatuion in Angband too).
+a65049f 2008-01-09 flambard | Closes #245. Updates 'file perusal' to handle a more modern set of keypresses, emulate popup mode and display correct header. Minor protocol change to handle said headers (or 'titles' if you wish). Implements a new method to dump text into player info field, now with cocatenation and a config option to turn it back off. Adds obj-info.c from Angband to handle all the item descriptions, artifact activation descriptions, etc.
+413bb88 2008-01-09 flambard | Forgot to add obj-info.c in [310], closes #245 again.
+4eff5f8 2008-01-09 flambard | Minor ghosting makeup. Closes #118, Closes #246.
+6f9ef40 2008-01-10 flambard | Addresses #102, better support for object kind id
+d4f2eae 2008-01-10 flambard | Implemented delayed scroll reading (closes #244) and delayed staff using (closes #242). Note! Other objects are not affected by this.
+307c3a0 2008-01-10 billsey | Addresses #236 - Client changes to allow the hard coded race_info array to match the soft loaded version on the server. We will eventually port the soft loaded stuff to the client...
+2620e4c 2008-01-10 billsey | Addresses #102 - Fixes compatibility issue with C++ compilers introduced in changeset 313.
+90569b0 2008-01-10 billsey | Addresses #235 and #238 - removes 'cheap hack' from changeset 308, since now p_name and race_info are working correctly.
+05e281a 2008-01-10 billsey | Fixes #247 - Receive_cursor() now will return 0 when all else fails. :-)
+bca9929 2008-01-10 flambard | Receive_cursor() returns 1 now (fixes #247 again)
+005780a 2008-01-12 billsey | Addresses #233, #234, #235, #236, #237, #238, #239 - Cleanup to types.h. Groups MAngband specific structs and Angband structs separately. Implements monster_lore, player_other, start_item  structs. Moves hist_type struct definition to types.h. Renames setup_t to server_setup_t. Implements several entries in defines.h needed to support new Angband structs.
+4b0be23 2008-01-12 billsey | Fixes #237 - player history struct now populated from p_hist.txt. Since this is only used in the server, we don't need to revamp the client for it.
+9260b70 2008-01-12 billsey | Fixes #237 - Forgot to do the actual change from using the bg array to using the h_info array.
+8f4ed7a 2008-01-18 billsey | Fixes #234 - Flavors are now initialized from the flavor.txt file. There are two new functions used, one assigns flavors to those items which have fixed flavors (such as a plain gold ring), a second does random assign of flavors based on t_val (flavor_assign_random(TV_RING) as an example). Scroll titlea are still assigned random names by concatenating various syllables together as with the old version, there is no scroll_titles.txt file.
+e48194f 2008-01-21 billsey | Fixes #68 - Uses a temporary variable (scum) initially set to the same value as auto_scum, then reset to FALSE if fewer than 1000 game turns have elapsed since the last level change, to determine the auto_scum toggle.
+a805b17 2008-01-21 billsey | Fixes #236 - We'll still want to implement for client in 1.2.0, but server side should work. Extensive bug testing will be needed on all these updates!
+fba36f4 2008-01-21 billsey | Fixes #189 - Now does a reorder whenever a rod is done charging, so cahrged rods will always stay higher in the pack than charging rods.
+b06835b 2008-01-21 billsey | Fixes #99 - Client no longer allows user to enter 'passwd' as their password. If they do, it simply asks again. This will potentially cause problems only if we decided to do some sort of conversion routine for save files older than 1.0.0.
+00a2348 2008-01-22 flambard | Addresses #223 - Moved grab_one_flag upper in file to please GCC (introduced in [325])
+041f00a 2008-01-22 flambard | Addresses #253, no more crash, but classes still display garbage (it's a mini fix, since #250 is WOP)
+ee3708c 2008-01-22 flambard | Fixes #252. Still, keep you eyes open for other bugs :)
+d0acb6d 2008-02-07 billsey | Addresses #16 - Fix info files
+3728eeb 2008-02-12 flambard | Closes #254, now it asks user periodicly
+71917c2 2008-02-12 flambard | Addresses #16 - minor change in ego_items (removed XTRA_)
+f2071f7 2008-02-13 flambard | Addresses #253, store owner's race display
+1701124 2008-02-13 flambard | Addresses #16, terrain.txt is digestable by server again, FEATs adjusted to match. Please note, that the new way WILDERNESS objects are handled might not be optimal. Also, only TREE is now blocking player's path out of of WILD objects, and house walls are non-lit again (as in 0.7.2, but not in 1.0.0alpha). There might be other complications.
+b077b65 2008-02-14 flambard | Addresses #16, this scraps [335] in favor of more clean and bug-free implementation. They only *known* problem is with 'unlit' town houses, but there might be more.
+8ac4667 2008-02-14 flambard | Addresses #16, fixes 'opened home door' bug from [336]
+25bb175 2008-02-14 flambard | Fixes #241, houses no longer obstruct each other
+df5daa8 2008-02-14 flambard | Addresses #16, fixes 'ghost stuck in wall' bug from [335]
+8677994 2008-02-15 flambard | Fixes #251, monsters can no longer spawn in tavern (as in houses).
+a8682e3 2008-02-15 flambard | Addresses #188, hacks .FON fonts and adjusts windows font-file to utilize them. Works fine in WIN XP for me. *Should* work on Vista too.
+9f36cc8 2008-02-15 flambard | Fixes #256, scrolls are visible again. thanks to PW for heads up.
+636b19b 2008-02-16 flambard | Closes #188, adds 'solid blocks' to X11 and SDL terminals, by utilising angband pref file. Vista shows them fine too.
+6ea27b1 2008-02-16 billsey | Fixes #99 - Again! This time it only denies the default password, and allows all others.
+b07d968 2008-02-16 flambard | Ctrl+D now allows to brag about your inventory, closes #261.
+0c01f0e 2008-02-18 flambard | Addresses #11, implements autoconf script. This might be not a very good 'configure.ac', but it's a start. This commit is directed towards sdl,x11,ncurses and curses.
+34447dd 2008-02-19 flambard | includes windows libs into configure, see #11. This commit should make mingw32 (and possibly cygwin) out of the box compiles possible
+9a43965 2008-02-22 billsey | Addresses #16, Fixes #253 - Mucho changes in this one, gets us started toward moving over to using x-spell.c for all spell handling. Created and populated needed string arrays for client to match what server is loading from p_class.txt. Ready for testing, the client does seem to work with the current flagship server as well as with the new trunk.
+da2ef4b 2008-02-22 billsey | Addresses #223 - Two warnings: get_spell(0) must return a value and target_set() not all paths return a value.
+28237f4 2008-02-23 flambard | Closes #274,#284,#303 and #305. Adjusted damages of lightning bolt, fire bolt, cloud kill and ice storm.
+cb8c733 2008-02-23 flambard | Closes #283, #291, updates Recharge ItemI/II spells.
+5c8e512 2008-02-23 flambard | Addresses #11, returns config.h to make non autotools-ready systems happy.
+1b4ec1e 2008-02-23 flambard | Addresses #11, configure now suggests to install libncurses if the user tries GCU mode without it.
+ce73bf7 2008-02-23 flambard | Closes #323, adds server/x-spell.c to Makefile
+18a78e6 2008-02-25 flambard | Closes #325, flavor colors are now pulled from falvor_info, instead of obsolete _adj arrays (thanks PW).
+3c3848d 2008-02-25 flambard | Closes #325 again, restores use of random-generated scroll names
+c1703f6 2008-02-26 billsey | Addresses #327 - Classes weren't getting loaded.
+7e2bfbe 2008-02-26 flambard | Closes #324, by implementing easy_know emulation as suggested by PW
+469ecf3 2008-02-26 flambard | Closes #326, fixes history & class name display on Character screen. NOTE: This will not work properly untill #327 gets fixed (c_info/class_info).
+89137f0 2008-02-26 billsey | Fixes #327 - Magic working again!
+f8304e1 2008-02-26 billsey | Addresses #223 - Visual Studio had troubles with the new macro for easy_know_p
+6124f94 2008-02-26 flambard | \e now only clears queue on its first occurrence in a macro, fixes #202
+bdd75eb 2008-02-26 flambard | Addresses #16 - moves from hardcoded race_info into load p_info, same for classes, corrects display problems, flags, etc.
+869a8dc 2008-02-26 billsey | Addresses #331 - changed text strings to match new spell order.
+c22e515 2008-02-26 billsey | Addresses #331 - removes the rest of the requirements for x-spell.c in the server. This will be replaced when we start loading spell.txt since that will be crying out for spell syncing with Angband.
+2fd802c 2008-02-27 billsey | Addresses #327 - Changed constants used in Mage spells to match 3.0.6, so right spells will match right books. I'd like to test this more bfore committing it as done.
+e54a48d 2008-02-28 billsey | Addresses #327 - Changes spell order to match Angband 3.0.6-3.1.0 by replacing their enumerator with the actual order in which spells are in the books. This allows us to continue to use the spall_flags arrays to place spells in books.
+c1dd239 2008-02-28 billsey | Addresses #327 - reordered the spells in p_class.txt to match the new spec for all three magic user classes.
+06a94d7 2008-02-28 billsey | Addresses #327 - Found it, I needed to also reorder the spell_names array in tables.c. Spells were working right, they just weren't named right. :-)
+c295271 2008-03-01 billsey | Fixes #341, fixes #342, fixes #343 - Low hanging fruit, implements Mage enchanting and branding identical to Priest.
+cc20228 2008-03-01 billsey | Fixes #332 - Implements normal scroll/staff detect invisible as Mage spell.
+278cc33 2008-03-01 billsey | Fixes #333 - Implements wonder Mage spell using MAngized Angband routine from 3.0.6.
+7a06817 2008-03-01 billsey | Fixes #334 - Implements Shock Wave by sending a ball of sound.
+0493e40 2008-03-01 billsey | Fixes #335 - Implments explosion as a ball of shards.
+1575583 2008-03-01 billsey | Fixes #336 - calls sleep_monsters as a Mage spell.
+730bd24 2008-03-01 billsey | Fixes #337 - Implements as a ball of confusion.
+acc2461 2008-03-01 billsey | Fixes #338 - Implemented via a nether bolt or beam.
+30eb00d 2008-03-01 billsey | Fixes #339 - Ball of Chaos
+724e337 2008-03-01 billsey | Fixes #340 - Glyph of warding by any other name...
+a2e107b 2008-03-01 billsey | Fixes #344 - Gravity beam
+a347a57 2008-03-03 billsey | Addresses #223 - When Visual Studio is used to create a Windows Installer file, it will not create new directories. The work-around for this is to leave an empty file in each empty directory. A better solution would be for the game to create any needed directories 'on the fly', but that's bets done in a different ticket. :-)
+ed1df44 2008-03-03 flambard | Closes #245 again, restores player view width & height
+88d11a2 2008-03-03 flambard | Closes #305, Ice Storm now deals GF_ICE damage
+401d9bd 2008-03-03 flambard | Closes #351 and #343, updated Elemental Branding to vanilla
+e761fa5 2008-03-03 flambard | Updates Rift, Bedlam and Rend Soul to vanilla. Closes #344,#377 and #338.
+b1b2b12 2008-03-03 flambard | Closes #104 again, implements tree generation from PW
+04037f8 2008-03-03 flambard | Closes #274, Lighning Bolt is now a full beam spell
+8297561 2008-03-03 flambard | Closes #296, #311 - no change to mass genocide, and genocide is still hacked :)
+095d824 2008-03-03 flambard | Fixes #352, genocide is now called banishment throu the code
+1b46773 2008-03-03 flambard | Closes #294, Tidal Wave became Shock Wave
+2fc5dfe 2008-03-03 flambard | Closes #306, updates Meteor Swarm to vanilla
+a08c234 2008-03-03 flambard | Closes #309, Detect Magic we currently have is better suited for MAng, gameplay-wise there is no change.
+d36ac9e 2008-03-03 flambard | Closes #269, 'Object Detection' - our version is better, still, changes function names.
+84e359d 2008-03-03 flambard | Closes #353, adds monster inventories. Bugs are to be expected!
+4fbcbfe 2008-03-04 billsey | Fixes #343 - Moved the  'byte brand_type;' up a line or two.
+8490b60 2008-03-04 billsey | Fixes #191 - options.prf now is saved whenever a user goes out of the prefs menu. It would be nicer to track whether the user changes everything, but this doesn't take up too much overhead...
+061dab3 2008-03-05 billsey | Fixes #354 - Implements a TCP_PORT element in mangband.cfg that sets a different TCP port number for client connections to the server. Internally this is handled by cfg_tcp_port, which defaults to the normal 18346.
+acf921e 2008-03-05 flambard | Closes #353 again. Adds missing features (save/load, EAT_ITEM attack, etc) and fixes the (nothing)s bug.
+64fe0cc 2008-03-06 flambard | Closes #355, adds support for TCP_PORT on metaserver19.
+57c7ac4 2008-03-06 billsey | Addresses #356 - If you manually type a server name followed by a : and a port number (ie. test.mangband.org:18347) that port will be used by the client to connect.
+9944e18 2008-03-06 billsey | Fixes #354 - Console socket is now cfg_tcp_port + 1, cfg_tcp_port is forced even, not allowed to be greater than 64000 or less than 4000. If out of range, back to defaults.
+a1e3a0e 2008-03-07 billsey | Fixes #351 - p_ptr->current_spell needs to be checked against -1, not just true/false. Thanks to PW for the catch and the fix.
+6f122cb 2008-03-08 warrior | corrected pref-ibm.prf to make tunneling work with ctrl+direction. Fixes #346
+825fe23 2008-03-08 warrior | changed the text in the Generate Item menu, the old text was incorrect/incomplete. addresses #102. Changed the commands to browse (up/down) items/egos.
+11b324b 2008-03-10 flambard | Closes #194, reverting all previous changes. Do not 'feel' identified objects. Found strange crash when 'feeling' inscribed objects.
+2aaa5ed 2008-03-10 flambard | Closes #267, Detect Treasure no longer detects gold on the floor. Displays a message upon success.
+f4dcf9f 2008-03-10 flambard | Closes #360, removes redundant _aux call
+4d65f9d 2008-03-10 flambard | Fixes #361, server compilable again
+015d727 2008-03-10 flambard | Prompts user about 'passwd'. Closes #99
+eb8d55b 2008-03-10 flambard | Closes #364, correct empty strings in status
+4993fc6 2008-03-11 flambard | Closes #356 - adds look command to stores. Addresses #209 - removes Sell command from player shops, items are unscribed when bought, stock checks no longer happen.
+6594e7e 2008-03-11 flambard | Closes #366. Manual control for looking implemented. More code shared between targeting and looking. Correct reports for manual control, never exposing terrain, objects or monsters player can't see. Ability to target from manual control (*p<dir>t). Further resemblance of Angband's prompt and switching behavior.
+5bed200 2008-03-11 flambard | Addresses #367, replaces stealing with jamming. Initial tests look promising. (Code for stealing is intact, just disabled till 1.1.0)
+d449e1f 2008-03-11 flambard | Closes #359, rubble now trys to become wider in tight corridors.
+a8872be 2008-03-11 billsey | Addresses #223 - Several changes needed for VS compiles.
+5b4d8e7 2008-03-11 billsey | Fixes #345 - Converts us from alpha to beta for the 1.0.0 release (sync to Angband 3.0.6).
+4e231dd 2008-03-11 jug | Add new 1.1.0 release cycle branch, addresses #368
+c47e496 2008-03-11 jug | New branch for 1.1.0, addresses #368
+e6a76d8 2008-03-11 jug | Adds the original Dwarven Hall.  Unfortunately shortly after this fink designed a much improved level which then became the standard Dwarven Hall, the level is missing.  Addresses #371.
+11d2c01 2008-03-11 jug | Add support for online ladder.
+4a2bbda 2008-03-11 jug | Adds the 0.7.2 (0.7.3) Windows installer scripts. Closes #373.
+51be2d5 2008-03-11 flambard | Closes #375, fixes SDL keymappings (by a hack really) on non-US keyboards. Azerty keyboards are to be tested still.
+cf09fc2 2008-03-12 jug | Bump to version 1.1.0.  Closes #380.
+a9cbd78 2008-03-12 jug | Don't load Ironman special static pre-designed levels in vanilla Mangband. Closes #372.
+d230b46 2008-03-12 flambard | Closes #376, adds tgz/ to install/
+1a31732 2008-03-13 flambard | Addresses #374, #12 - adds a script to generate .deb source and binary packages. Notes: those scripts require maintaince to be up to date with directory structure. Also note: mangband will not run correctly when it is properly 'installed' (it can't find where to put log files, where are lib/ files, where is mangband.cfg).
+7a81095 2008-03-13 jug | Updates NSIS installers.  Simply compile Mangband then right click on the .nsi file and select "compile NSIS script", done.
+a2aa33d 2008-03-13 jug | Makes Fink's long lost Dwarven Hall the default again, closes #371.
+eafb29d 2008-03-14 jug | Minor changes to mangband.cfg
+db33881 2008-03-14 flambard | Closes #392, info files are now marked as 1.1.0
+86914eb 2008-03-14 flambard | fixes minor typo in mangband.cfg, closes #388
+a1ca6e2 2008-03-14 flambard | Addresses #374, adjustments to build system making running mangband from different directories easier. Now .deb package works for both client and server.
+6525abe 2008-03-14 flambard | Addresses #11, makes GCU mode more prominent when running ./configure
+0cf3612 2008-03-15 jug | Force dumped macros to lowercase, closes #383.
+e830613 2008-03-15 billsey | Fixes #393 - removes duplicate file
+716b0ef 2008-03-15 flambard | Closes #379, repairs special levels for Ironman
+840555b 2008-03-15 flambard | Closes #396, @R inscribes should work again
+c3b65c5 2008-03-15 flambard | Addresses #390, adjust tunneling possibilities. Testing required!
+bb3d261 2008-03-15 billsey | Fixes #398 - About menu now displays 1.1.0
+5775d61 2008-03-15 flambard | (All those changes had to do with awareness hack we implemented in #324,r358) In stores items are now identified before their info is shown. Item display using object_desc_store is back in action to prevent some incorrect names. Hack: When selling to an item shop keeper now checks if an item is not easy_know to determine it's basic awareness. Addresses #325 and #394. Also refs #329.
+5abaeb1 2008-03-15 flambard | Refs #369. Ports r429, r430, r436, r438, r440, r441, r442, r443, r444, r446, r447 from trunk to version-1_1_0 branch.
+35b46ef 2008-03-16 jug | Add a missing placeholder file and revert to using the previous naming convention, addresses #399.
+dc7f303 2008-03-16 jug | Version bump to beta 1, addresses #399.
+a6b030d 2008-03-16 jug | Update license with project team copyright.
+210122a 2008-03-16 jug | Branch for version 1.1.0 (again), addresses #399.
+b13e493 2008-03-16 jug | In mangband.cfg the comments say bind name doesn't work.  But it does, fixed up comments.  Addresses #399.
+768af32 2008-03-16 billsey | Addresses #223 - VS pukes on three line macros (maybe)
+f87bca2 2008-03-16 billsey | Addresses #223 - Cleaner method also works with VS
+0335913 2008-03-16 jug | Remove restrictions on number of shop items, giving us 4 pages in shops. Also fixes #109.
+78f5a81 2008-03-16 jug | Port r454, r455, r456 and r457 from trunk to stable, addresses #400.
+26f6f15 2008-03-16 billsey | Fixes #401 - Added Life Scrolls back in...
+f9eb4b9 2008-03-16 jug | Port r459 from trunk to stable, addresses #400.
+2d1f692 2008-03-17 jug | Reduce items in stores, closes #404.
+a4ede1a 2008-03-17 jug | Port r461 from trunk to stable, addresses #400.
+095c83c 2008-03-17 jug | Prevent acquirement in the wilderness, closes #328.
+a953375 2008-03-17 flambard | Addresses #325, #394 and #403 - moves back to Angband method of handling awareness and ID.
+6e1d04a 2008-03-17 jug | Reduce the frequency of discounts in shops.
+6bfd1c5 2008-03-17 jug | Implement non-drop artifacts (again), closes #408.  Also closes #348 and addresses #194.
+21bfdaf 2008-03-17 jug | Artifacts vanish from shops, closes #409.
+cfab50a 2008-03-17 jug | Rubble doesn't squash stairs or anything else, closes #410.
+0cf27b0 2008-03-17 jug | Server shutdown preserves items on the floor, closes #413.
+3820ba7 2008-03-17 jug | Correctly load negatively positioned windows.
+e63be0e 2008-03-17 flambard | Closes #357, STM no longer destroys cash, also walls in the wilderness now turn into... mud
+8dbbcf4 2008-03-17 jug | Port r463, r464, r465, r466, r467, r468, r469, r470, r471 from trunk to stable.  Addresses #400.
+6624713 2008-03-18 jug | Restore Angband 3.0.6 clone monster behaviour, closes #415.
+4df8829 2008-03-18 flambard | Closes #325, #394 and #403. Tests were alright. Removes leftovers.
+f8a371e 2008-03-18 flambard | Closes #417, no more gold-drop crash
+d11286a 2008-03-18 jug | Disable player interaction by default, closes #421.
+8b089c8 2008-03-18 jug | Fix whois resurection count, closes #420.
+5f82965 2008-03-18 jug | Port r473, r474, r475 and r477 from trunk to stable, addresses #400.
+41152d4 2008-03-19 jug | Create mini data dumps for all characters, full dumps for level 20 or over, closes #425.
+a410ff7 2008-03-19 jug | Rework signal handling and core dumps, closes #426.
+fdad153 2008-03-19 flambard | Closes #418 and #422 - imposes limit on monster inventories and disables them for townies and breeders.
+8c22276 2008-03-19 jug | Eliminate "converted save file" warning, which is always a lie.
+8764c76 2008-03-19 jug | Removes unneeded workaround for an old save file problem, closes #429.
+25447e8 2008-03-19 jug | Port r479, r480, r481, r482, r483 from trunk to stable, refs #400.
+49db40b 2008-03-20 flambard | Closes #424 - now asks confirmation before selling a house. Other players are now expelled from it and the door is closed. Closes #434 allows player to look inside their own stores (but no object interaction beside examining is availible). This is not cleaniest sollution, but it requires no protocol changes.
+43c1440 2008-03-20 flambard | Closes #437, ensures ALL free space is used for gold in player stores.
+03c660b 2008-03-20 flambard | Closes #438, correct distrubition of known flags, removed FLAG4 hacks.
+67fd27b 2008-03-20 flambard | Closes #438 again, removes all the unnessecary FLAG4 refrences.
+e8520c4 2008-03-20 jug | Make PvP "opt in", closes #432.
+3ba0643 2008-03-20 flambard | Closes #438 for the third time. This should get us rid of flag4 for good.
+7664143 2008-03-20 jug | Correctly reset houses on player suicide, closes #440.
+a1883da 2008-03-21 flambard | Addresses #441, first attempt at command overloads. As a proof of concept 2 commands are implemented: Eating food (overload) and Stealing (add-on). Note: this is probably not good material for 1.1.0, this stuff is not unstable, but changes things a bit. To disable new code undefine COMMAND_OVERLOAD in config.h(.in) Still providing client with this option defined could help us change few things later (i.e. overload commands :)
+f54443a 2008-03-21 flambard | Closes #367 and addresses #439 - stealing and jamming our now separate and both work. Also removed TOME autophase.
+4c9d939 2008-03-21 flambard | Closes #439, thieves can no longer steal (nothing)s.
+1b89346 2008-03-21 flambard | Addresses #223 - makes mingw happier, re-enables overloads (typo), fixes typos
+d31337e 2008-03-21 flambard | Addresses #223 - changes needed for VS
+ff81d2b 2008-03-21 jug | Correctly drop artifacts at the base depth, closes #446.
+1d957d0 2008-03-21 flambard | Closes #447, obvious artifact flags are now exposed. See also #438.
+1a233b5 2008-03-21 flambard | Closes #448, removes stupid extern
+0dd5617 2008-03-21 jug | Fix the broken detection code, closes #445.
+3648906 2008-03-21 jug | Port r485, r486, r487, r488, r489, r490, r491 from trunk to stable, addresses #400.
+b7030e8 2008-03-21 billsey | Fixes #451 - changes space character to period.
+aeab2ca 2008-03-21 jug | Port r494, r497, r498, r500 from trunk to stable, addresses #400.
+065f1ed 2008-03-22 jug | Only allow valid characters in player name, closes #453.
+61244ea 2008-03-22 jug | Allows numbers in a player name, closes #453 (again).
+2776e1c 2008-03-22 jug | Port r502, r504 and r505 from trunk to stable, addresses #400.
+54f0bdb 2008-03-22 jug | Put a cap on maximum weight, closes #454.
+bddad57 2008-03-22 jug | Ghosts teleport on login, closes #442.
+bd47f71 2008-03-22 jug | Turn off stacking discounts by default, closes #419.
+cc0280b 2008-03-22 jug | Remove number of bytes read debug code, closes #456.
+a63b5bd 2008-03-22 jug | Reverts "ghosts tele on login", closes #457.
+b40cb36 2008-03-22 jug | Adds a "no ghost" option for brave players, closes #199.
+7de875f 2008-03-22 jug | Characters stay in the game for a while after client quits, closes #458.
+b8a7517 2008-03-23 flambard | Closes #450, fixes and reintroduces numerous hacks for handling mangband-specific items. Also fixes #402 - orcish shield (-2) is now cursed.
+67ed601 2008-03-23 jug | Port r507, r508, r509, r510, r511, r513, r514 from trunk to stable, addresses #400,
+e0d6ef9 2008-03-24 flambard | Closes #449, examine command now shows "wisdom" instead of "WIS:" and doesn't break line in the middle of the word.
+93510a6 2008-03-24 flambard | Addresses #462, fixes the issue with ammo stacking. Other items should be dealt with separately. If there are no other problems, we can close this ticket.
+3fbde10 2008-03-24 flambard | Closes #381, for some extremly weird reason the code for establishing rod charge value was missing (kismet's assumption was correct) - it is back now.
+606d533 2008-03-24 flambard | Closes #466 and adds 2 new flavors to accomodate mangband amulets.
+30fb011 2008-03-24 flambard | Closes #464, Chaos resistance no longer grants Confusion resistance, BUT protects you from confusion during chaos attacks.
+0023cfa 2008-03-25 flambard | Closes #467, a lucky potion throw on a house door colorizes it.
+2db318b 2008-03-25 flambard | Closes #469, adds different player shop titles based on door colors. This changest requires client update and therefore might not be a good idea for 1.1 port. The titles themselves are debatable too.
+8b44d97 2008-03-25 flambard | Closes #470, resets character sheet on ressurection, ignores empty inventory objects
+e6556f7 2008-03-25 jug | Implement proper pricing for player owned shops.
+245c0b7 2008-03-25 jug | Fix bad bounds check in console, closes #473.
+ba65c51 2008-03-25 jug | Port r516, r517, r518, r519, r520, r521, r523, r524, r525 from trunk to stable, addresses #400.
+6034ead 2008-03-26 flambard | Closes #472, allows wands, staffs and rods to stack and share charges. Watch out for nasty exploits!!
+b67f0f9 2008-03-26 jug | Reduce player owned shops prices, addresses #209.
+a9442b9 2008-03-26 jug | Don't dealocate wilderness levels which are in use, closes #475 (also closes #440).
+4844b65 2008-03-26 jug | Port r528 and r529 from trunk to stable, addresses #400.
+da7518a 2008-03-26 flambard | Closes #477, doors are now closed and washed on house disown.
+a89f90c 2008-03-26 billsey | Fixes #431 - No longer calls hack_plog from main-win.c on warnings, so MessageBox events are only done when fatal errors happen.
+6ea3dc4 2008-03-26 billsey | Fixes #479 - Uses the code from 3.0.6 which correctly orders the logic.
+ff9ce12 2008-03-26 billsey | Fixes #480 - damage and accuracy now limited to +/- 17.
+1d37750 2008-03-26 billsey | Fixes #481 - Slay rings now limited to +/- 10.
+4bf0364 2008-03-26 billsey | Fixes #482 - Matches Angband in these three amulets now.
+f7cfedd 2008-03-27 warrior | Fixes #485
+ad2e37f 2008-03-27 jug | Console is now not so pedantic about commands, closes #478.
+e4b36fd 2008-03-27 flambard | Addresses #485, some adjustments to ingame help.
+aa0f988 2008-03-27 flambard | Closes #474, fixes 'aftermatch' code for scrolls are staves to use the correct floor item
+2075f78 2008-03-27 flambard | Closes #476, droping and destroying from equipment now affects charsheet.
+19eecdb 2008-03-27 billsey | Fixes #483 - Kobols and store owners now interact correctly, updated rgold_adj[][] to match Angband cost_adj.txt file.
+deed283 2008-03-27 billsey | Fixes #271 - Angband shows all doors with MSPELL_FIND_TRAPS_DOORS, not just hidden doors. detect_sdoor() now shows regular doors, including broken and open.
+466d1a1 2008-03-27 billsey | Fixes #308 - Changes commented out code to #if 0 bracked code. There, now there's a changeset. :-)
+45501d4 2008-03-27 billsey | Fixes #310 - Changed commented out code to bracked by #if 0, now there's a changeset. :-)
+7a8f9fb 2008-03-27 billsey | Fixes #314 - Changed commented out code to bracketed by #if 0.
+f93aea2 2008-03-27 billsey | Fixes #320 - changed commented out code to be bracketed by #if 0.
+97335dd 2008-03-27 billsey | Fixes #321 - Changed commented out code to bracketed by #if 0.
+c9e4c65 2008-03-27 billsey | Fixes #459 - all EGO_ defines are accounted for now, including the MAngband specific ones.
+92eaf80 2008-03-27 flambard | Closes #459 again, fixes small inconsistency with EGO_ defines
+bd168fa 2008-03-27 billsey | Fixes #459 - again... Missed a name change to one EGO.
+8c0217b 2008-03-27 billsey | Fixes #459 - For the last time I hope. :-) Added some Crowns and Helms back in.
+a2175b9 2008-03-28 warrior | fixes #488 - added rarities for our mangband specific ego items.
+101d7e8 2008-03-28 billsey | Fixes #496 - Uses rand_int() instead of randint() for generating random power.
+6b33eab 2008-03-28 billsey | Fixes #496 - This time removes the offending line entirely, random power is assigned in apply_magic() instead.
+1108aeb 2008-03-28 jug | Port r531, r532, r533, r534, r535, r536, r537, r538, r539, r540, r541, r542, r543, r544, r545, r546, r547, r548, r549, r550, r551, r552, r553, r554, r555 from trunk to stable, addresses #400.
+fe7754a 2008-03-28 billsey | Fixes #493 - Stairs not created in town or wilderness. Also a couple of cleaned warnings.
+36f80c7 2008-03-28 billsey | Fixes #494 - Runes and glyphs now prevented in Town.
+d154fa7 2008-03-29 billsey | Fixes #498 - Disallows summoning when in Town, it should fail silently. (Unknown if the God command for summoning can get around this, but I don't think so.)
+feda14a 2008-03-29 jug | Remove cheezy hacks from the BM, closes #499.
+22dc497 2008-03-29 billsey | Fixes #414 - Hacks to give Kobolds resist poison and Warrior (level 30 or greater) resist fear. This should have been taken care of when loading the race & class info, but the calc_bonuses() routine seems to override that.
+60e8882 2008-03-29 jug | Always calculate distances between monsters and players, closes #490 and #489.
+15a7ef7 2008-03-29 jug | Refer to "save macros" rather than the criptic (to non technical players) "Dump Macros", closes #484.
+a0ec8ae 2008-03-29 jug | Don't display fear messages for wandering townies, who never become afraid, closes #221.
+06d5050 2008-03-30 billsey | Fixes #434 - Deals with wilderness features as they were before, even though they're now defined differently. This allows features like mud and water to be treated as "boring".
+a32a92b 2008-03-30 billsey | Fixes #434 - "not boring", not "boring"!
+5f4589c 2008-03-30 billsey | Fixes #460 - Comments out old style Lothlorien bow, using the Angband version instead.
+ff0c4b2 2008-03-30 billsey | Addresses #492 - Handles case where 'turn' global variable (an s32b) has wrapped from positive to negative, but 'old_turn' global variable (also an s32b) has not wrapped. While this is the case the calculated value (turn - old_turn) is going to be a very negative number, and level feelings will be overridden by "Looks like any other level".
+8522f94 2008-03-30 flambard | Closes #485, as everybody seem to agree with contents.
+fcfbfde 2008-03-30 jug | Add our beloved junk back into the game! Closes #501.
+eeb9385 2008-03-30 jug | Tweaks the in game help, closes #485.
+846eae3 2008-03-30 jug | Port r557, r558, r559, r560, r561, r562, r563, r564, r565, r566, r567, r568, r569, r570, r571 from trunk to stable, addresses #400.
+3867ecd 2008-03-30 jug | Port r512 from trunk to stable, addresses #400.
+e60555e 2008-03-30 jug | Client installer preparation, addresses #500.
+8820d01 2008-03-30 jug | Correctly uninstall the beta version, addresses #500.
+f119671 2008-03-30 jug | Add version to the short data dump, closes #504.
+0241bec 2008-03-30 flambard | Closes #506, no more crash and trigger key is now Alt+F12.
+137ec4a 2008-03-30 jug | Don't include junk in the Windows clients installer and correctly wait for the beta installer to finish running, addresses #500.
+595d73f 2008-03-30 jug | Don't compile debug build by default, addresses #500.
+1f8be66 2008-03-30 jug | Port r574, r575, r576, r577, r578 from trunk to stable, addresses #400.
+05c0eb4 2008-03-31 jug | Reenable warning messages in the windows client, disable unknown packet warnings in all clients if not compiled in DEBUG mode, closes #431.
+b2001a0 2008-03-31 jug | Port r582 from trunk to stable, addresses #400.
+6df2142 2008-03-31 jug | Bump beta version, closes #508.
+4c6de8a 2008-03-31 jug | Port r562, r563, r564 from stable to trunk, closes #509.
+27d83a8 2008-03-31 billsey | Addresses #223 - Moved the d, dx and dy variables in update_mon() up before other code is executed at their level.
+3adf60f 2008-03-31 jug | Port r590 from trunk to stable, addresses #400.
+f6d2b16 2008-04-01 jug | Be more careful when taking equipment off, closes #513.
+dfc474e 2008-04-01 jug | Highlight no ghost characters as "Brave", closes #511.
+c7a43b0 2008-04-01 jug | Fix several player shop exploits, closes #510.
+dc6bd96 2008-04-01 jug | Port r592, r593, r594 from trunk to stable, addresses #400.
+d94d46c 2008-04-01 jug | Turn off "no ghost" by default in the client, closes #515.
+df22d37 2008-04-02 flambard | Closes #459 again, fixes lordly resistance define and neighboring items
+018fe8d 2008-04-02 flambard | Closes #516, examine now spells 'charisma' :)
+822dbc4 2008-04-02 jug | Allow players to view their own stores once again, closes #517.
+161d5b3 2008-04-02 jug | Port r597, r598, r599 from trunk to stable, addresses #400.
+a4320ce 2008-04-02 jug | Kick command no longer case sensitive, closes #519.
+6ee9f3c 2008-04-02 jug | Console reports no ghost status, closes #518.
+af65d8e 2008-04-02 jug | Port r601, r602 from trunk to stable, addresses #400.
+4a45dc6 2008-04-02 jug | Console who command also shows brave status, closes #518.
+52d6bca 2008-04-02 jug | Port r604 from trunk to stable, addresses #400.
+92c4de3 2008-04-02 jug | Tweak the formatting of the uniques list, closes #520.
+ecb984d 2008-04-02 jug | Port r606 from trunk to stable, addresses #400.
+091cdc9 2008-04-05 jug | Disable project effects and explosions, addresses #491.
+ab90fca 2008-04-05 jug | Give clone wands a 1d5 chance to backfire and prevent cloning in the town, closes #521.
+77ecb4a 2008-04-05 jug | Port r608 and r609 from trunk to stable, addresses #400.
+90b6219 2008-04-05 jug | Don't default to "no ghost" mode in the client, closes #515.
+f0bd4eb 2008-04-05 jug | Disable project effects in a better way, addresses #491.
+38e9ce3 2008-04-05 jug | Fix minor problem with disabling effects, addresses #491.
+da01f81 2008-04-05 jug | Port r612 and r613 from trunk to stable, addresses #400.
+a4878e0 2008-04-05 jug | Reduces effect density, addresses #491.
+60f4c37 2008-04-05 jug | Port r615 from trunk to stable, addresses #400.
+561c147 2008-04-05 jug | Report comings and goings to the console, closes #522.
+7048400 2008-04-05 jug | Remove some unless code, closes #523.
+5906477 2008-04-06 jug | Correctly reset houses for no ghost characters, closes #526.
+9bb2d25 2008-04-06 jug | Port r617, r618 and r619 from trunk to stable, addresses #400.
+2c10ef0 2008-04-07 jug | Make cloning slightly less predictable, closes #521.
+c5dcfe8 2008-04-07 jug | Port r621 from trunk to stable, addresses #400.
+2e5976f 2008-04-12 billsey | Fixes #492 - Creates new entry in player's struct to hold 'old_turn' variable that tracks when player entered level.
+53289d8 2008-04-14 jug | Don't assume we have a player context when generating levels, closes #492.
+9b8733e 2008-04-14 jug | Make junk rarer in the info files, closes #529.
+aa1d38a 2008-04-14 jug | Revert to original mang clone wand behaviour, closes #521.
+59c5a88 2008-04-14 jug | Revert [555] closes #496.
+3bb3067 2008-04-14 jug | Port r623, r624, r625, r626 and r627 from trunk to stable, addresses #400.
+d0903a2 2008-04-14 jug | Unify server output and logging, closes #532.
+cd44ae7 2008-04-15 billsey | Fixes #535 - Initializes f1_hack to 0 before use.
+05c1e2c 2008-04-15 jug | Port r629 and r630 from trunk to stable, addresses #400.
+d7d5b47 2008-04-15 jug | Implement Scene of Death screenshot in character dumps, addresses #530.
+780ac35 2008-04-15 jug | Finalise Scene of Death, closes #530.
+01d7ff8 2008-04-15 jug | Port r632 and r633 from trunk to stable, addresses #400.
+78a6a99 2008-04-16 jug | Revert r632 and r633 from stable, addresses #400 and closes #536.
+e1a80e5 2008-04-17 flambard | Closes #414, flags are now assigned directly (as per vanilla)
+e1bfffb 2008-04-17 flambard | Addresses #537, makes those checks less hacky: BPRs, extra shot for rangers+bows, priests+blessed weapons bonus. Removes stupid '#if 0's from #414 :) and some redundant code.
+5c756ff 2008-04-18 billsey | Fixes #539 - replaces 'T' with 't'.
+93770b2 2008-04-18 billsey | Fixes #302 - Acid Bolt now at (8 + ((plev - 5) / 4))) damage.
+82f7b01 2008-04-18 billsey | Fixes #512 - Handles the MAngband specific features when calling map_area().
+2363088 2008-04-18 flambard | Addresses #503, now displays a warning message in such situation.
+e55e1de 2008-04-19 flambard | Closes #542, fuel is now updated after refilling from floor.
+7d11f45 2008-04-19 flambard | Addresses #537, minor code re-arrangements to make the function look more similar to vanilla. This makes differences more obvious, as a result a missing fruit bat flag was added to the charsheet.
+3f38280 2008-04-20 jug | Allow players to choose their own store names, closes #469.
+ea87ee6 2008-04-20 jug | Remove dupe externs, closes #543.
+57daef5 2008-04-20 jug | Add generic splash screen, closes #544.
+ebf606a 2008-04-20 jug | Update to latest runserv, closes #545.
+94ecc12 2008-04-20 jug | Display options correctly to the player, closes #503.
+58d8ccf 2008-04-20 jug | Port r636, r637, r638, r639, r640, r641, r642, r643, r645, r646, r647 and r648 from trunk to stable, addresses #400.
+83c71da 2008-04-20 jug | Display messages when players lose levels, closes #502.
+347fa3e 2008-04-20 flambard | Addresses #503, moves the message from log to prompt.
+f5bc12f 2008-04-20 flambard | Closes #503 again, makes both 'correct' and 'mangband' behavior availible with a config option.
+6068c91 2008-04-20 flambard | Closes #486, clients now get charsheet update on gaining and losing level 30.
+6939dec 2008-04-21 flambard | Closes #547, players can now shop safely when drugged.
+7b63491 2008-04-22 billsey | Fixes #550 - Only resets display when a player is not in the store.
+3c387ec 2008-04-26 flambard | Addresses #363, adds an option to build a wall around the town.
+7aeb907 2008-04-26 flambard | Add generic splash screen, see #544
+3b83eac 2008-04-27 jug | Restore the signal handler for sigpipe, closes #552.
+a5f5e6a 2008-04-27 jug | Capture exitcode of the server in the log, closes #553.
+bd4ca05 2008-04-27 jug | Port r651, r652, r653, r654, r656, r657, r658, r659 from trunk to stable, addresses #400.
+43502e6 2008-04-28 billsey | Fixes #554 - returns cbuf.ptr[1] instead of rbuf.ptr[1].
+b9cf788 2008-04-29 billsey | Fixes #555 - cast as extern in server/externs.h
+bea7864 2008-04-29 billsey | Fixes #556 - casts the function as extern in client/externs.h (note that there's a seperate function with the same name in server, so we can't cast this in the common externs.h
+75a6730 2008-04-29 billsey | Fixes #557 - includes netclient.h in c-cmd.c
+78643b3 2008-04-29 billsey | Fixes #558 - casts c_get_spike() as extern in client/externs.h
+73ac7ca 2008-04-29 billsey | Fixes #559 - casts Send_spike(int dir) as extern in client/externs.h
+48c4163 2008-04-29 billsey | Fixes #560 - casts get_string_masked() as extern in client/externs.h
+3b4e460 2008-04-29 billsey | Fixes #561 - includes md.h in c-cmd.c
+6e39fab 2008-04-29 billsey | Fixes #562 - casts Send_pass() as extern in client/externs.h
+272c583 2008-04-29 billsey | Fixes #563 - casts distribute_charges() as extern in server/externs.h
+a8c393e 2008-04-29 billsey | Fixes #564 - casts reduce_charges() as extern in server/externs.h
+e498256 2008-04-29 billsey | Fixes #565 - casts cursor_track() as extern in server/externs.h
+7729c7d 2008-04-29 billsey | Fixes #566 - casts target_free_aux() as extern in server/externs.h
+37b8ef0 2008-04-29 billsey | Fixes #567 - removes the TRUE and just returns.
+c2719a0 2008-04-29 billsey | Fixes #568 - moves both create_artifact() and create_artifact_aux() to server/externs.h
+cc3518a 2008-04-29 billsey | Fixes #569 - now doesn't return a value in all cases.
+1513fbc 2008-04-29 billsey | Fixes #570 - casts Save_options() as extern in client/externs.h
+6f09369 2008-04-29 billsey | Fixes #571 - casts both monster_can_carry() and monster_carry() as extern in server/externs.h
+1a5a104 2008-04-29 billsey | Fixes #572 - casts text_out() as extern in server/externs.h
+8dadceb 2008-04-29 billsey | Fixes #573 - casts text_out_init() as extern in server/externs.h
+7e922ac 2008-04-29 billsey | Fixes #574 - casts object_info_screen() as extern in server/externs.h
+7fe8994 2008-04-29 billsey | Fixes #575 - casts Send_player_store_info() as extern in server/externs.h
+5358e92 2008-04-29 billsey | Fixes #577 - casts Send_cursor() as extern in server/externs.h
+923d0aa 2008-04-29 billsey | Fixes #576 - correctly sets errno with the '=' sign.
+bbcf5f9 2008-04-29 billsey | Fixes #578 - moves cast from common/externs.h to server/externs.h
+55d064b 2008-04-29 billsey | Fixes #579 - casts describe_floor_tile() as extern in server/externs.h
+83adbcb 2008-04-29 billsey | Fixes #580 - casts race_index_fuzzy() as extern in server/externs.h
+ceba084 2008-04-29 billsey | Fixes #581 - get_player_store_name() now returns the length of the store name as an int.
+fad6426 2008-04-29 billsey | Fixes #582 - removed redundant colon from fifth line.
+62c8478 2008-04-30 billsey | Fixes #584 - returns the  packet type to both the server and client side error message.
+c9284d8 2008-04-30 flambard | Closes #587, forbids running when confused.
+0df834d 2008-04-30 flambard | Closes #549, lowers chance to find hidden door while digging through it to vanilla level.
+741b202 2008-04-30 jug | Correctly calculate the size of verify data, closes #586.
+87b76f7 2008-05-16 flambard | Closes #592, gives element rings their ball spells.
+33663a6 2008-05-16 flambard | Closes #591, prevents artifact drops below base depth with wielding exploit.
+9f067c8 2008-05-19 flambard | Closes #593, players can only switch places intentionally now.
+73d60b4 2008-05-19 flambard | Closes #423, adds a bunch of configuration options dealing with PKing/PvP making it more flexible.
+4b73a03 2008-05-26 jug | Correctly reposition players on join, closes #594 and #527.
+843644d 2008-05-26 jug | Port r661, r662, r663, r664, r665, r666, r667,r668, r669, r670, r671, r672, r673, r674, r675, r676, r677, r678, r679, r680, r681, r682, r683, r684, r685, r686, r687, r688, r689, r690, r691, r692, r694, r695, r696 and r698 from trunk to stable, addresses #400.
+d46b2b7 2008-06-06 flambard | Closes #595, makes friendly targeting more usefull
+c78cc63 2008-06-07 flambard | Closes #597, allows some items to stack on the floor.
+d1e5bbf 2008-06-09 flambard | Closes #255, improves client notification of floor items. Clients should now know exactly what item are they standing on. This change breaks network compatibility. Browsing books from floor is disabled.
+0b292e0 2008-06-19 flambard | Closes #601, imports new pref files, adds keymaps handling, adjusts macro menu. Also fixes #258 - flavors are now loaded, transmitted and used as described.
+f762863 2008-06-21 flambard | Closes #602, directions in keymaps work again. Also fixes minor spell bug from [703]
+6594272 2008-06-21 flambard | Closes #603, implements nicer rle routines.
+c4e16f8 2008-06-21 flambard | Closes #603 again, minimap is now fine.
+de47c2f 2008-06-24 flambard | Addresses #229, implemets new handshake and removes lots of legacy udp logic. There are now only 2 states - SETUP and PLAYING, with obvious implications. There is also a new hacky function to read player savefiles (so they are read twice now!) early on connection stage. Watch out for sudden disconnects, data corruptions and endless loops of death related to networking!
+8907002 2008-06-24 flambard | Addresses #229, follows up [707] with windows fix.
+5622667 2008-06-24 flambard | Addresses #606, establishes basic framework for graphics, updates WIN client to support it, adds missing bitmaps and pref files from vanilla.
+2673c94 2008-06-25 billsey | Addresses #606 - Fixes code to allow compiles with modern compilers. Moved various variable instantiations up before executed code.
+26168ed 2008-06-25 flambard | Closes #605, buffered running should work as intented again. Plus, running into walls now takes energy too. See also #25, #66.
+ff0bfb3 2008-06-29 flambard | Closes #36, cleans out unrefrenced local variables. Those, that are used later in commented code or are likely to return, were commented out; others were deleted. This change also addresses some of the type conversion warnings, function declarations, and similar low-hanging fruits for this ticket.
+3620461 2008-06-30 jug | Remove tmp dir, handle temp files in OS specific manner. Closes #382.
+3521698 2008-07-01 flambard | Addresses #229, implement packet buffering for SETUP state.
+b8012db 2008-07-01 jug | Add initial support for multiple connection types, addresses #229.
+5a5cd8b 2008-07-01 jug | Client and server have separate version numbers, closes #613.
+9aa52f7 2008-07-02 jug | Testing svn pre-commit hooks, addresses #616.
+a553a83 2008-07-02 jug | Testing svn post-commit-hook, closes #616.
+2441945 2008-07-05 jug | Closes #619, Ironman server sends correctly formatted data to the metaserver.
+0c26658 2008-07-05 jug | Corrects spacing in version identifier, closes #619.
+d3c929a 2008-07-06 jug | Port r700, r701, r711, r713, r719, r720 from trunk to stable.
+45f1717 2008-07-06 jug | Don't restrict server to arbitrary port range, closes #585.
+e3fc2b2 2008-07-06 jug | Beam spell effects don't remain on screen, closes #604.
+6d2c549 2008-07-06 jug | Correct acid ball effect, closes #620.
+d116814 2008-07-07 jug | Allow people to isolate themselves from public chat noise.
+f1dbd10 2008-07-07 flambard | Closes #381 again, by making all new rods charged. Because our rod system is reversed, transfering the pval had the opposite effect.
+c666a8a 2008-07-08 flambard | Closes #528, makes .mangrc parser and format less fragile. Thanks to tingar for the patch and the report: we can finally use predefined nicknames and passwords on linux safely.
+f9ba608 2008-07-08 jug | Don't log player messages, closes #623.
+a61073c 2008-07-08 jug | Don't log messages, don't report messages in "last line", closes #623.
+426a3ec 2008-07-08 flambard | Closes #624, friendly targeting now checks for party status correctly.
+2c86745 2008-07-09 jug | Port r722, r723, r724, r726, r727, r728, r729 and r730 from trunk to stable
+666a89e 2008-07-11 flambard | Closes #626, dropping items is fine again. The bug was introduced in [701].
+7110de9 2008-07-12 billsey | Addresses #229 - Explicit cast needed with VS when using += to add a char* to an int.
+773a2cc 2008-07-14 jug | Revert r730 from stable, addresses #624.
+096696f 2008-07-14 jug | Allow limiting of houses, closes #609.
+b72aa62 2008-07-14 jug | Track which artifacts each character has sold to the shop.
+020c4b8 2008-07-15 jug | Collapse repeated server side messages, addresses #629.
+d406007 2008-07-15 jug | Increase number of last messages to 60, closes #629.
+579cd58 2008-07-16 jug | Implement basic player house construction, addresses #632.
+b242b34 2008-07-17 jug | Allow more complex house constructions, addresses #632.
+9b13301 2008-07-19 jug | Remove "beta-2" hacks, addresses #635
+eeb90c8 2008-07-19 jug | Update Windows Server installer, addresses #635.
+3f0615a 2008-07-19 jug | Fix typo on default news screen, addresses #635.
+5f6b60c 2008-07-19 jug | Add missing scores file, addresses #635
+5e55ce1 2008-07-19 jug | Add missing score file, closes #637.
+825b1f5 2008-07-19 jug | Installer includes scores.raw file, addresses #635.
+0715d25 2008-07-20 jug | Branch for 1.1.1, closes #638.
+0fe8555 2008-07-20 jug | Fix bad merge of [723] in 1.1.1, addresses #640.
+f865752 2008-07-26 jug | Correctly determine long stat names, closes #516. Applied patch by powerwyrm.
+4bed4eb 2008-07-26 jug | Player ghosts in walls no longer immune to spells, closes #643.
+ecb6452 2008-07-26 jug | Send maxstats to all clients, closes #644.
+a5dd148 2008-07-26 jug | Burned grass becomes dirt, closes #647.
+c0c4da0 2008-07-26 jug | Hitpoints can no longer exceed max, closes #652.
+8e58a78 2008-07-26 jug | Prevent empty store page, closes #654.
+24462e9 2008-07-31 billsey | Fixes #664 - allows gardens to regrow over time.
+5dcaced 2008-08-13 flambard | Closes #670, adds a separate monster lore array to each player, ports monster description routines from V3.0.6 and enables 'symbol query' as a side effect. This change does not break savefiles, but it requires a new client to work (old clients will just miss it entirely).
+a28fa70 2008-08-13 flambard | Closes #548, dropping 'A'll gold should work now, applied patch by Halogen.
+08965b2 2008-08-14 flambard | Closes #671, a) moves password, race, class, sex to the top of the savefile; b)scooping function treats savefiles as plaintext.
+03a0189 2008-08-14 flambard | Closes #548 again, switches to angband explicit type for maximum value in quanitity prompt.
+9a7d3c6 2008-08-14 flambard | Closes #661, makes monsters smarter in their targeting choice.
+e01cbc6 2008-08-14 flambard | Closes #672, adds config option for ghost diving.
+952d31b 2008-08-14 flambard | Closes #646, floating eyes now blink, applied patch by PW.
+3fce083 2008-08-14 flambard | Closes #668, removes artifact creation scroll allocation.
+2e21b94 2008-08-14 flambard | Closes #645, alignes Gil-Galad's STARLIGHT to Angband 3.0.6.
+f7f5969 2008-08-15 flambard | Addresses #670, adds missing declaration, corrects a lie about savefiles being compatible ([762] claims they still are).
+1181adc 2008-08-15 billsey | Addresses #223 - fixes problems with Visual Studio and changes to cmd3.c and monster1.c
+ed4acba 2008-08-15 flambard | Addresses #673, adds VS2008 projects.
+40b899c 2008-08-15 flambard | Addresses #673, adds C::B projects.
+5c36936 2008-08-15 flambard | Addresses #673, adds non-windows build targets to C::B projects.
+014d2ba 2008-08-15 flambard | Closes #599, Addresses #596 - is_dm(Ind) and is_dm_p(p_ptr) macros added to replace DM checks in code. DM powers are now separated by categories. DMs can now spike/open/close doors (and chests), tunnel, bash and disarm. Please report any permission errors to #596.
+900a488 2008-08-15 flambard | Addresses #596 - fix uncompilable code commited by stupid stupid flambard.
+0a1c333 2008-08-15 flambard | Addresses #596 - restricts every case of ghost/item usage. We can allow certain cases and add better messages for roleplay value later.
+a08b8ff 2008-08-15 flambard | Addresses #596 - DM can use objects again.
+e00786a 2008-08-15 flambard | Addresses #596 - adds more fine-grained control over DM object use.
+4407526 2008-08-16 jug | Version bump, closes #674.
+444987a 2008-08-16 jug | Port r755, r756, r757, r758, r759, r760, r761, r763, r765 and r770 from trunk to stable, addresses #639.
+f3e3762 2008-08-16 jug | Port r732 from trunk to stable, addresses #639.
+f106304 2008-08-16 jug | Port r738 from trunk to stable, addresses #639.
+e5b804a 2008-08-16 jug | As flambard said, "fix uncompilable code commited by stupid stupid flambard".
+414afaa 2008-08-16 jug | Fix more of flambard's uncompilable code (in VS), addresses #596
+e7b6092 2008-08-16 jug | Windows client releases all fonts on exit, closes #505
+dc386ff 2008-08-16 jug | Port r787 from trunk to stable, addresses #639
+a7c3845 2008-08-16 jug | Version bump info files, closes #676
+d2c0a73 2008-08-16 jug | Don't be so dramatic about nothing, closes #677.
+7b66d2a 2008-08-16 jug | Port r790 from trunk to stable, addresses #639.
+cf2f249 2008-08-16 jug | Beams no longer remain on screen (I hope), fixes #604 (again)
+5b895dc 2008-08-16 jug | Port r792 from trunk to stable, addresses #639.
+11a31a0 2008-08-16 jug | Main window not resizeable on Windows client. Closes #636.
+f24d063 2008-08-16 jug | Port r794 from trunk to stable, addresses #639.
+fdfa8db 2008-08-16 flambard | Closes #678, adds some minor polish to client.
+ad4ce60 2008-08-16 flambard | Addresses #606 - uses crude hack to bypass the minimap crash introduced in [709]. It's not a real fix, but atleast it stops the crashes and lets us debug in peace. Also makes player character white again, which was broken in the same changeset. *probably breaks 16x16 and 32x32 graphics*
+224d6fa 2008-08-16 jug | Fix "font lock" bug, closes #505.
+ffa3ca4 2008-08-17 jug | Port r796 and r798 from trunk to stable, addresses #639
+cc52990 2008-08-18 jug | Windows specific version bumps, addresses #679.
+7683184 2008-08-18 jug | Remove news.txt version reference, addresses #682
+f0b4174 2008-08-18 jug | Remove news.txt version identifier reference, addresses #682
+db67383 2008-08-19 flambard | Addresses #684 - implements fix suggested by halogen, spell info is now sent to players at all circumstances.
+b93868f 2008-08-19 flambard | Addresses #606 - replaces crude hack with a proper fix. This should resolve the minimap crash issue. *probably breaks 16x16 and 32x32 graphics* again.
+4e3e08e 2008-08-19 jug | Windows installers tweaks, addresses #680
+38a4a59 2008-08-20 flambard | Addresses #596 - Fix more of flambard's bogus "code", pointed out by powerwyrm
+509d4c7 2008-08-21 jug | A monster having a turn uses energy.
+8449675 2008-08-22 jug | Increase energy resolution 100 times, closes #690.
+c792e22 2008-08-22 jug | Revert r809 from trunk, addresses #689 and reopens #690.
+0140723 2008-08-23 flambard | Addresses #670, projectiles no longer crash server (like they did since [762]).
+038ce4a 2008-08-24 flambard | Addresses #596 - applies fixes outlined by powerwyrm above.
+6292bc2 2008-08-25 flambard | Closes #681 and #631. Hopefully resolves all the minimap issues. See also #611.
+e1cc0c4 2008-08-25 flambard | Addresses #681, makes VS happy.
+72d2b2d 2008-08-25 flambard | Addresses #606 - better transperancy handling during lite_spot(), as suggested by VS.
+ea1c454 2008-08-25 flambard | Addresses #472, stores now price their wands correctly.
+bc1c557 2008-08-25 billsey | Fixes #692 - Initializes mode variable to 0, allows player to choose character type.
+0c940bf 2008-08-26 billsey | Fixes #657 - Implement new routine to check spell or prayer to see if it needs and item instead of direction, then ignores direction '5' in those instances.
+80f7fcf 2008-08-26 billsey | Fixes #693 - Implements damage display for spell Light Area and prayer Call Light.
+f40bf05 2008-08-26 billsey | Fixes #694 - though the subtle use of some '#if 0' statements and a comment or two. :-)
+e9d2690 2008-08-26 jug | Remove the (stack corrupting) kludge, closes #695.
+a939dd8 2008-08-26 billsey | Fixes #694 - Reverts back to old code, returns Spear of Light to spells.
+c67b608 2008-08-26 billsey | Fixes #659 - implements damage display in spellbooks for MSPELL_EXPLOSION, MSPELL_REND_SOUL, MSPELL_CHAOS_STRIKE, MSPELL_RIFT, changes display in MSPELL_METEOR_SWARM.
+3ea73da 2008-08-27 jug | Fix minor console auth problem, closes #697.
+9023ead 2008-08-27 flambard | Closes #696 ? Fixes crash related to player/monster projectiles.
+a0f4cf0 2008-08-27 jug | Redrawn the screen after Earthquake, closes #260.
+b74a391 2008-08-27 jug | Revert r853, addresses #260.
+ee10cdc 2008-08-27 jug | Correctly redraw screen after earthquake spell, closes #260.
+4e101fa 2008-08-27 jug | Simplify the auto retaliator, closes #698.
+17ff502 2008-08-28 jug | Auto-retaliater doesn't attack things we can't see, closes #698.
+0a09887 2008-09-06 flambard | Addresses #226, adds a config option for binding console socket to localhost. Breaks WIN build?
+5d2678d 2008-09-06 flambard | Closes #702, allow telneting to console.
+37abca0 2008-09-17 billsey | Fixes #703 - new message is "You hear a loud crackling sound. Nothing else happens."
+92b29bf 2008-10-09 billsey | Fixes #717 - implements as suggested.
+80a1855 2008-10-23 flambard | Addresses #685, creates a branch for 1.1.2
+27dae70 2008-10-23 flambard | Port r769, r849 from trunk to stable, addresses #685.
+a11252f 2008-10-23 flambard | Closes #622, #624, shows depth in player list and makes friendly targeting more solid, both based on pvp situation. Depends on [697].
+90372b2 2008-10-23 flambard | Closes #658, fixes tohit/todam updates.
+421ec23 2008-10-23 flambard | Closes #705, brings some minor confusion randomness in line with vanilla 3.0.6.
+1553bd5 2008-10-23 flambard | Closes #704, fixes as suggested. See also #229.
+5ae599c 2008-10-23 flambard | Closes #721, shattering artifacts now preserves them.
+f3ec88e 2008-10-23 flambard | Addresses #722, DM item generator improvements. Stacks; unidenitified items; bonuses and modifiers actually work; an ability to find best match for base/ego kinds.
+0a9e809 2008-10-23 flambard | Port r828, r829 from trunk to stable, addresses #685.
+0a80558 2008-10-24 billsey | Addresses #685 - version change from 1.1.0 beta to 1.1.2 alpha in trunk, will need to be ported to the 1.1.2 branch.
+055d484 2008-10-24 flambard | Closes #658 again, VS fix.
+17719f9 2008-10-24 flambard | Addresses #722, fix VS (broken in [870])
+386b819 2008-10-24 flambard | Addresses #723, version bump in trunk.
+63dc56c 2008-10-24 flambard | Port r875 from trunk to stable, addresses #685.
+844a1ad 2008-10-24 flambard | Addresses #723, bump client version.
+15c4727 2008-10-24 flambard | Addresses #723, set client version extra to 'alpha'.
+e95f3c3 2008-10-24 flambard | Closes #32, client now collapses repeated messages. Updates few messaging functions to vanilla. Server can tell client to repeat last message. Depends on [737].
+a6b057d 2008-10-24 flambard | Addresses #722, fix VS (broken in [870]) -- r874 was empty :(
+af7b8d1 2008-10-24 flambard | Addresses #722, new menu to adjust DM flags of players. Depends on #596.
+43cfcb0 2008-10-25 flambard | Closes #716, fixes friendly targeting crash.
+20c7375 2008-10-25 flambard | Closes #715, postpones player death in dungeon loop if the level he is on is unallocated.
+515cea9 2008-10-25 flambard | Closes #718, backstab no longer works on monsters player can't see.
+7b3f1f1 2008-10-25 flambard | Closes #706, transiting wilderness levels disturbs players when they desire that.
+a3229e6 2008-10-25 flambard | Closes #711, this change does not address the original problem (which is probably coming from an OS), but it lets us find what the problem is, and prevents the crash.
+f185ed9 2008-10-26 flambard | Addresses #472, implements suggested patch and other changes. Wands, staffs and rods could still be broken - please report any misbehavior.
+9d81d8b 2008-10-26 flambard | Addresses #614, allow console connection on main tcp port.
+c4469dd 2008-10-26 flambard | Closes #700, fixes as suggested.
+5db4590 2008-10-26 flambard | Addresses #226, reverts [859] (apart from config option), as 'console port' is not going to be used for long.
+ac11e13 2008-10-26 flambard | Closes #106, #615, #226 and #614. Adds support for multiple console connections on the main tcp port with optional local-only access. Removes 'console port'. The 'console-player-interference' is gone now, altho new kind of it might've surfaced. For dealing with further problems, re-open appropriate ticket.
+03a83f0 2008-10-26 flambard | Closes #666, implements suggested patch.
+286334b 2008-10-26 flambard | Port r836, r845 from trunk to stable, addresses #685.
+79c690d 2008-10-26 flambard | Port r848 from trunk to stable, addresses #685.
+fff138e 2008-10-26 flambard | Port r885 from trunk to stable, addresses #685.
+2c8dbf9 2008-10-26 flambard | Port r882, r883, r886 from trunk to stable, addresses #685.
+92c9aea 2008-10-26 flambard | Port r803 from trunk to stable, addresses #685.
+05737ee 2008-10-27 flambard | Closes #724, adds proper updating for inventory/equipment letter prefixes.
+2ecb70c 2008-10-28 flambard | Closes #724 again, fixes bug in [898]. Good catch!
+621338b 2008-10-30 flambard | Addresses #249, #250 and partly #248, server now informs client about races and classes.
+94f7f84 2008-11-09 jug | Create a character dump for winners! Closes #730.
+2883236 2008-11-09 jug | Ensure we treat suicide for winners as a retirement and generate a dump.
+87cba36 2008-11-09 flambard | Closes #732, path_temp no longer locks files.
+06a8863 2008-11-09 jug | Correctly handle a saved player save in the panic handler.
+b1f4298 2008-11-17 jug | Log actual socket error code and quit, closes #734.
+38d110b 2008-11-17 jug | Port r905 from trunk to stable, addresses #685.
+3b49317 2008-11-20 jug | Disable reproduction in the wilderness, closes #738.
+e255608 2008-11-23 flambard | Closes #739, addresses problems outlined in the ticket.
+6a9a1f7 2008-11-24 flambard | Closes #739 again, disables party hostility.
+aecb8f0 2008-11-29 flambard | Closes #527 again, repositions from wilderness correctly.
+4932f08 2008-11-29 flambard | Closes #742, limits maintained stores to MAX_STORES.
+9e9ff20 2008-11-29 flambard | Port r903 from trunk to stable, addresses #685.
+198a36a 2008-11-29 flambard | Closes #711 again, does same thing [886] does, but expands it to all the special line routines. Those changes are most likely obsollete since #732.
+c07b739 2008-11-29 flambard | Port r916 from trunk to stable, addresses #685.
+61dd195 2008-11-29 flambard | Closes #32 again, implements suggested patch.
+6f25256 2008-11-29 flambard | Closes #744, makes grass lit. This change WILL MOSTLY NOT affect swamps!
+18cd64b 2008-11-29 flambard | Closes #743, adds a hack to display artifact and mangband-specific light on character sheet.
+68e615d 2008-11-30 flambard | Addresses #257, replaces .mangrc reader with simple framework for accessing client settings.
+21c39f1 2008-11-30 flambard | Addresses #257, adds forgotten extern to [921].
+535afe0 2008-11-30 flambard | Closes #745, Amulet of the Moon and Lordly Resistance items (MAngband-specific) now properly update equipment window on activation.
+8a21e22 2008-11-30 flambard | Addresses #257, abridges Windows and POSIX configuration file systems. Also closes #219.
+05b9586 2008-11-30 flambard | Port r920, r923 from trunk to stable, addresses #685.
+fec04cb 2008-11-30 flambard | Closes #687, console help maintance is now forced via code. Also closes #683 by adding command to reload news.txt
+815d890 2008-11-30 flambard | Addresses #257, fixes a mistake in [924], which lead to trunk being uncompilable on linux.
+9d4f53f 2008-12-01 flambard | Closes #742, reverts [912] as whole ticket is invalid.
+d209514 2008-12-07 flambard | Closes #746, normalizes disconnection during login.
+d6f382f 2008-12-07 flambard | Port r929 from trunk to stable, addresses #685.
+ca633bb 2008-12-07 flambard | Addresses #257, fixes a bug in linux portion of config system. Also makes it read ".mangrc" from mangband directory if one from home directory couldn't be read.
+a076b19 2008-12-07 flambard | Port r901 from trunk to stable, addresses #685.
+0331278 2008-12-07 flambard | Closes #179, allows minor window resizing on windows client.
+cb503c6 2008-12-07 flambard | Ports r902 from trunk to stable, addresses #685.
+0742e0e 2008-12-07 flambard | Addresses #257, fixes severe case of flambard stupidity from [931].
+e595196 2008-12-07 flambard | Addresses #747, brings new version of SDL terminal. It is now possible to configure it during gameplay or using a config file.
+ab444a9 2008-12-08 flambard | Addresses #747, additional tuning to SDL to make it more suitable for #750. Also fixes mangclient.ini from stupid commit in [936].
+d1872e3 2008-12-10 flambard | Addresses #250, spell_book value is now transfered and used.
+c1e00c6 2008-12-10 flambard | Addresses #750, updates window_flags to Angband 3.0.6 (altho not all displays were ported). This is required to correctly handle custom dungeon size. This update breaks several things and introduces temporary hack to be removed ASAP.
+1bf4958 2008-12-13 flambard | Addresses #685, ports r866, r873 from trunk to stable.
+3dcd4ca 2008-12-14 flambard | Addresses #750, introduces custom dungeon size. Welcome to the world where detect creatures is better then telepathy.
+5700b9c 2008-12-14 flambard | Addresses #750, fixes incorrect behavior in [941].
+97c256d 2008-12-15 flambard | Closes #754, forces spell update on inventory item combination.
+b58685b 2008-12-16 flambard | Addresses #750, allows WIN client to resize main window. Also fixes network bug from [941].
+e886e99 2008-12-16 jug | Port r632 and r633 from trunk to stable, addresses #685, closes #757, see #756.
+ea15f83 2008-12-16 jug | Port r725 from trunk to stable, addresses 685, closes #758, see #756.
+6bde3bf 2008-12-16 jug | Port r766 from trunk to stable, addresses #685, closes #760, see #756.
+505fffe 2008-12-16 jug | Port r735 from trunk to stable, addresses #685, closes #761, see #756.
+62bc071 2008-12-16 jug | Report error code on server save file error, addresses #762.
+49eef4b 2008-12-16 jug | Port r949 from trunk to stable, addresses #685, closes #762, see #756.
+d1fed91 2008-12-16 jug | Simplify the panic save handler, addresses #763.
+74f67ef 2008-12-16 jug | Port r951 from trunk to stable, addresses #685, closes #763, see #756.
+d40de63 2008-12-16 jug | Port r767 from trunk to stable, addresses #685, closes #764, see #756.
+4ee750d 2008-12-16 jug | Disable saving monster inventories, closes #759.
+917a1ad 2008-12-16 jug | Fixup poor conflict resolution in merge, addresses #757.
+dbd9cfc 2008-12-20 billsey | Fixes #768, polymorph blocked while in town.
+453e948 2008-12-20 billsey | Fixes #769 - elements of player's monster_lore array are updated as monster_lore, not monster_race in detect_invisible()
+ba5da5a 2008-12-22 flambard | Port r958 from trunk to stable, addresses #685.
+08a074c 2008-12-27 flambard | Closes #330, removes twin messages.
+a3a248f 2008-12-30 flambard | Closes #722, removes odd 'x' from password prompt.
+af7b1a8 2008-12-30 flambard | Addresses #356, allows port number in command line argument (./mangclient mangband.org:18346), similar to [400].
+41d9a74 2008-12-30 flambard | Addresses #747, removes ugly hack which was preventing client from reading command line arguments in SDL mode.
+c2eb14d 2009-01-01 flambard | Addresses #773, adds support for several chat channels.
+b8a2117 2009-01-01 flambard | Addresses #775, makes sending long values over network 64-bit safe (%ld and %lu for signed and unsigned).
+c31080b 2009-01-01 flambard | Addresses #775, ensures values sent in PKT_STRUCT ([900]) are of correct type
+53ced01 2009-01-01 flambard | Addresses #775, makes sure pointer size for console buffer ([891]) is native.
+b19a519 2009-01-01 flambard | Addresses #773, fix [965] with forgotten extern.
+5e83cd7 2009-01-02 flambard | Closes #748, timer for keep_alive packet should be platform-safe now. This change also makes lag meter less spikey due to increased resolution. For other 64bit changes see #775.
+d9cdb9a 2009-01-02 flambard | Closes #356, as the last requisite - connection port in config file - is met.
+1ee2b23 2009-01-02 flambard | Closes #356, connection port is now fully customizable.
+df81a6a 2009-01-02 flambard | Closes #777, players will now always attempt to pickup items with =g in their inscriptions.
+65bc007 2009-01-02 flambard | Port r973 from trunk to stable, addresses #685.
+0fe85bf 2009-01-05 flambard | Addresses #778, WIP. Adds support for different terminal channels to allow deffered output later. Adds mini-map window. Adds fat 250kb to player structure.
+92aff6f 2009-01-05 flambard | Closes #780, free player info before populating it.
+4ba1a59 2009-01-05 flambard | Addresses #778, WIP. Adds local buffering of Player.info and an ability to display it in separate window.
+1233495 2009-01-08 flambard | Addresses #780, reverts [976] as incorrect.
+b39f288 2009-01-08 flambard | Addresses #779, #780, #778, WIP. Changes the method for preparing and storing special text. Tmp-file is no longer used. Note: Maximum allowed number of lines is too small again.
+958d6f1 2009-01-09 flambard | Addresses #778, adjusts the way special info is holded on client and server.
+fd99774 2009-01-09 flambard | Addresses #779, enable actual colorization in special text.
+d40ce82 2009-01-09 flambard | Addresses #670, #778. Adds special monster recall window. With color!
+ef7450e 2009-01-09 flambard | Addresses #670, #778, fixes flambard stupidity - uncompilable trunk from [982]
+8ce1b25 2009-01-09 flambard | Addresses #670, ports monster race tracker from Angband 3.0.6.
+b756a17 2009-01-13 flambard | Addresses #750, ports new detection spell limits from V310b. However, this change DOES NOT makes thing like they were pre-[941], because of the new method for picking small areas. This changes gameplay in a rather significant way (*easier*).
+ad71bfe 2009-01-13 flambard | Addresses #670, fix flambard stupidity from [984] :(
+ef4756a 2009-01-13 flambard | Closes #783, keldonizes x-spell. Changes how spells are used a bit, probably breaks rods, staves, scrolls, etc: see ugly hack in cmd6. Party healing is probably broken too. MAngband ghost spells were ported however.
+c36dfc5 2009-01-14 flambard | Closes #784, patches new spell system, adds and keldonizes use-obj.c from V306, unifies delayed actions between the two, removes hacks from cmd6.c, removes get_aim_dir_old hack, probably breaks items on floor, probably breaks branding for 5th item, renames "beserk" to "beRserk" and "genocide" to "banishment" in some defines, re-adds mangband friendly healing prayers, adds message defines from V. Please report ensuing problems as new tickets.
+b64fa38 2009-01-14 flambard | Closes #786, changes to Player.spell_flags, savefile compatible.
+ab81dbf 2009-01-15 flambard | Closes #787 by tightening logic around x-spell/cmd5/object spells.
+8d83a07 2009-01-15 flambard | Closes #788, removes hard-coded player titles from server.
+4e2ee54 2009-01-16 flambard | Closes #789, addresses #778, adds spell list window.
+0efa90e 2009-01-17 flambard | Closes #790, removes unnecessary shopping and party_mode checks.
+2afdff0 2009-01-17 flambard | Closes #791, normalizes client buffer length type.
+25556fc 2009-01-17 flambard | Addresses #778, makes line decoding and drawing less hacky.
+8762015 2009-01-18 flambard | Closes #790, adjusts screen_icky handling.
+efe71e2 2009-01-18 flambard | Addresses #794, fixes the crash. However I feel this line was commented for a reason, so I expect to see broken cursor behavior on one of the clients.
+9140472 2009-01-18 flambard | Addresses #793, adds possibility to icky a section of the screen. Does not address compact player display, only cave is affected.
+0b3238d 2009-01-18 flambard | Closes #789 again, mixed declaration fix.
+85428aa 2009-01-18 flambard | Addresses #673, updates VS2008 and C::B project files for recent changes.
+e4b33f5 2009-01-18 flambard | Closes #795, fixes status updates.
+2ea7012 2009-01-18 flambard | Closes #796, collapses PR_HEALTH and PR_HEALTH_TRACK.
+37b159a 2009-01-19 flambard | Addresses #798, ports interactive targeting from V. Expect horrible bugs and targeting chaos. Adjusts monster recall (see #670).
+a0aee2f 2009-01-19 flambard | Addresses #798, changes "Home" to "Tavern" in terrain file.
+f9c7b35 2009-01-19 billsey | Fixes #799 - returns TRUE for success, FALSE for error.
+da05b8e 2009-01-19 billsey | Fixes #246 - As PW said, notice needed to be set in order to refresh to "Full" state.
+3c35929 2009-01-19 flambard | Addresses #747, warnings clean up for SDL terminal.
+865d52e 2009-01-19 flambard | Closes #800, removes c++ style comments from types.h.
+22fe381 2009-01-19 flambard | Closes #801, removes useless char test.
+3cb4673 2009-01-19 flambard | Closes #802, removes unused variable and most c++ style comments from cave.c.
+e8b3e59 2009-01-19 flambard | Closes #803, removes warnings from save2/load.c.
+1aed7d8 2009-01-19 flambard | Closes #804, removes double ';;' from server externs.h.
+95e8988 2009-01-19 flambard | Addresses #747, fixes crash introduced in [1007].
+bca5103 2009-01-19 flambard | Closes #805, fixes process_pending_commands.
+5491729 2009-01-19 flambard | Addresses #606, makes hard-coded graphical player tiles type-safe, as suggested by gcc.
+5ca8370 2009-01-20 flambard | Addresses #775, continues [967], but probably re-introduces all problems.
+2b7801d 2009-01-20 flambard | Addresses #775, ports [1014] to 64bits, using maximum possible size for pointer conversion.
+23d8b3c 2009-01-20 flambard | Addresses #441, second attempt at command overloads. Impoves the whole concept alot and makes it more accessible. In addition to eating and stealing, more overloaded commands were added, such as inscrbing and altering house. The framework is now enabled by default, the commands are not. It is now possible to add new commands with zero overhead.
+a24075e 2009-01-20 flambard | Closes #806, adds some conditions to monster and player look_descriptions.
+e960e0f 2009-01-20 flambard | Closes #809, normalizes tabulation in c-cmd switch.
+bcb83d2 2009-01-21 flambard | Closes #809 again, fixes flambard stupidity.
+d66c4db 2009-01-21 flambard | Addresses #670, fixes crash in monster tracker introduced in [984].
+92cdd8d 2009-01-25 flambard | Addresses #441, fine-tunes custom commands, implements most of the basic commands as overloads. Some commands are probably broken now.
+fe0c1f0 2009-01-25 flambard | Addresses #589, ports grid altering commands from V306. NOTE: Taking half a turn for opening doors is no longer valid, to match V more closely, perhaps in expense of some MAngband-specific energy hacks. Some other MAngband-specific functionality might been lost, please report any incosistency.
+1c571e6 2009-01-26 flambard | Closes #699, enforces terrain mimicry server-side. This is similar to what V does in it's visual options menu.
+5f1df1c 2009-01-26 flambard | Closes #540, by slightly keldonizing quest system.
+bb5c5d0 2009-01-27 flambard | Addresses #441, more custom commands tuning. Adds new schemes and fixes quaffing.
+42111ef 2009-01-27 flambard | Addresses #589, adds Alter as overloaded command.
+52f3722 2009-01-30 flambard | Closes #813, addresses #766. Updates spell-realms handling. Spell flags now contain targeting information, which is used client-side. Minor: Restoration and Remembrance re-hacked with MAngband addons. "Restoration" prayer renamed to "Life Restoration".
+338ef87 2009-01-30 flambard | Closes #789 again, removes forgotten spells (also note: it's possible to resize the window to accquire more space).
+b7dc2d2 2009-02-02 flambard | Closes #813 again, fixes various incosistencies from [1029].
+3a8d8a7 2009-02-04 flambard | Addresses #814, adds 'socials'.
+026987e 2009-02-04 flambard | Addresses #785, reimplements missing spell messages and adds several new.
+4a9d9e7 2009-02-04 flambard | Closes #774, #816, adds party whispering shortcut and &say support. Probably introduces new crashes.
+0d40743 2009-02-04 flambard | Closes #815, forbids macroing ESC.
+60942c1 2009-02-05 flambard | Closes #749, implements suggested fix from V306.
+d593c53 2009-02-05 flambard | Closes #686, implements suggested patch, altho we should be safe from such occurencies.
+9fba93e 2009-02-05 flambard | Closes #725, implements suggested fix.
+d4c5347 2009-02-10 flambard | Addresses #818, adds freebsd support to ./configure
+c0c0d0f 2009-02-10 flambard | Addresses #818, adds osx support, based on patch by Qinghao Chen.
+af8a5ca 2009-02-11 flambard | Addresses #818, improves mingw support, adds short summary to ./configure.
+ffdcbbf 2009-02-11 flambard | Addresses #818, fixes typo in summary.
+e0557ca 2009-02-14 flambard | Port r970 from trunk to stable, addresses #685.
+0efe75c 2009-02-28 billsey | Fixes #824 - Converts number of turns to a huge, and hopefully deals with all other instances of turn type variables as well (games turn, players turns, turns at birth, turns at last load, etc...)
+1a429a8 2009-03-03 flambard | Port r1044 from trunk to stable, addresses #685.
+423d936 2009-03-06 billsey | Fixes #824 - Implements suggested changes for rd_party, wr_party and connp_>start, as well as printf formatting issues. I'm unable to find a problem with the way turn and old_turn are used in generate_cave(), so didn't make any changes there (I can find no code for the special case of old_turn > turn due to a wrap after 2^^64 turns)... And we probably don't need that, since it would take in the neighborhood of 8 million years of continuous play. Even Warrior needs to take a potty break before that amount of time has passed.
+d70f5a6 2009-03-06 billsey | Fixes #825 - checks for RF1_UNIQUE and depth < 0 when choosing which monster(s) to create.
+9b1b261 2009-03-06 billsey | Fixes #715 - Checks to make sure there's at least one player on the level (the dying player) before allowing the player to die. Potentially gives the player another 1/75th of a second of life, but doesn't change the outcome.
+73e7aad 2009-03-06 billsey | Fixes #650 - Implements the patch as suggested.
+a6cdc2d 2009-03-06 billsey | Fixes #755 - Adds another check into dropping items on death. If the player is in town, and the item is an artifact, deallocate the artifact and make it disappear. This is the same behavior as total winners suiciding.
+4643d66 2009-03-07 billsey | Fixes #824 - changed %lld to %llu to handle the second 4000 years. :-)
+d814698 2009-03-07 flambard | Port r1045, r1046, r1047, r1047, r1048, r1049, r1050, r1051 from trunk to stable, addresses #685.
+8d4cfa8 2009-03-08 jug | Save dump filenames with unsigned turn counter, closes #824.
+27f6516 2009-03-08 flambard | Port r1053 from trunk to stable, addresses #685.
+661065a 2009-03-30 billsey | Fixes #828 - Uninscribed when an empty inscribe is called on an inscribed item, gives error message when called on an item without inscription.
+55bc8bd 2009-03-30 billsey | Fixes #829 - Adds call to everyone_lite_spot() as suggested.
+8c78f18 2009-03-30 billsey | Fixes #821 - Replaces "You die." message with "Your incorporeal body fades away - FOREVER." We can always change it to some other message if no one likes this one. :-)
+2de11ef 2009-04-03 billsey | Fixes #538 - exits with 'no more monster' if called with m_idx == 0. We also need to generate a ticket to handle the separate issue of creating a monster on non-dirt floor.
+a865f58 2009-04-08 flambard | Addresses #832, separates client and server options, makes all groups configurable, removes global options. Please report all incorrect behavior here.
+96ebbe1 2009-04-09 flambard | Closes #540, implements fixes outlined by powerwyrm.
+9f7f0d9 2009-04-09 flambard | Closes #471, replaces cfg_door_bump_open with easy_alter.
+f8f21a5 2009-04-09 flambard | Addresses #589, reintroduces mangband-specific grid altering: house doors and house creation wall opening (see #632).
+c6a1ecd 2009-04-09 flambard | Closes #589, #727 - both alter and tunnel are handled with command overloads. A packet was defined incase we need to fall back.
+36dafdf 2009-04-09 flambard | Closes #833, adds "feeling" command.
+7dca4bc 2009-04-09 flambard | Addresses #832, I forgot to add a file! :(
+986d85a 2009-04-10 flambard | Addresses #807, implements customized item tester. A special flag is precalculated server-side and is trapped by client. Alternativly, a chain of tvals might be specified.
+99d83f4 2009-04-10 flambard | Addresses #670, implements outlined fix, static variables are no longer used in player_track_monster().
+3fd6e6c 2009-04-10 flambard | Port r1058, r835 from trunk to stable, addresses #685.
+03474ca 2009-04-10 flambard | Port r943 from trunk to stable, addresses #685.
+b077613 2009-04-10 flambard | Port r907 from trunk to stable, addresses #685.
+a45b90e 2009-04-10 flambard | Port r892 from trunk to stable, addresses #685.
+a1dbbbd 2009-04-10 flambard | Port r1037 from trunk to stable, addresses #685.
+d574c61 2009-04-10 flambard | Port r1036 from trunk to stable, addresses #685.
+46f6229 2009-04-10 flambard | Addresses #441, re-arranges macros to avoid VS bug.
+9004645 2009-04-10 flambard | Addresses #832, VS fixes for [1059] and [1065].
+ab8d2d1 2009-04-10 warrior | Added the describe command to the in game help, mangband.hlp, fixes #485
+0178d51 2009-04-11 flambard | Closes #781, Morgoth no longer respawns.
+65af3b8 2009-04-11 flambard | Port r1076 from stable to trunk, addresses #685.
+60e1432 2009-04-11 flambard | Port r1077 from trunk to stable, addresses #685.
+fd6f1b6 2009-04-11 flambard | Addresses #374, #834 - follows up [439] with more flexibility in running from different directories.
+1476e48 2009-04-11 flambard | Addresses #834, adds a script to generate freebsd port PRs.
+ab98cad 2009-04-11 flambard | Addresses #670, enables more learning opportunities for player.
+7648094 2009-04-11 flambard | Addresses #670, removes ugly redraw hack. It doesn't work anyway.
+9af78e5 2009-04-11 flambard | Closes #427, implements suggested fix.
+52aa522 2009-04-12 flambard | Closes #771, forbids piles of 0 pieces of gold during player store transactions.
+09f5383 2009-04-12 flambard | Port r1080,r1081 from trunk to stable, addresses #685.
+60946e3 2009-04-12 flambard | Port r1084,r1085 from trunk to stable, addresses #685.
+f9eeeea 2009-04-12 flambard | Port r1039,r1040,r1041,r1042 from trunk to stable, addresses #685.
+e928e10 2009-04-12 flambard | Corrects port of r1080, see #685.
+d1a969e 2009-04-12 billsey | Fixes #835 - implements as suggested.
+14b1194 2009-04-12 flambard | Port r1090 from trunk to stable, addresses #685.
+a479f39 2009-04-12 billsey | Fixes #835 - Implements changes for main-win.c also.
+2a364c6 2009-04-12 flambard | Port r1092 from trunk to stable, addresses #685.
+50c497f 2009-04-12 billsey | Fixes #836 - sets huge to unsigned long long or unsigned __int64 for VS.
+b43015f 2009-04-12 flambard | Port r1094 from trunk to stable, addresses #685.
+f17aa44 2009-04-12 billsey | Fixes #824 - Cleans up a couple more issues where huge variables were being handled as longs instead.
+312188e 2009-04-12 flambard | Port r1096 from trunk to stable, addresses #685.
+65f35d4 2009-04-12 flambard | Closes #837, converts pointer before passing it.
+70c1278 2009-04-12 flambard | Addresses #773, minor code cleanup after [965].
+327550f 2009-04-12 flambard | Addresses #722, minor cleanup after [881].
+50c9ff9 2009-04-12 flambard | Addresses #832, further fixes for initial commit.
+397049c 2009-04-12 flambard | Addresses #778, minor fix, shouldn't use char as an array index.
+22a2765 2009-04-12 flambard | Closes #838, removes useless x_offsets.
+cd07937 2009-04-12 flambard | Closes #839, makes is_upper test safer.
+e263436 2009-04-12 flambard | Closes #828, corrects string comparison.
+7316768 2009-04-12 flambard | Addresses #670, adds missing extern.
+74f0520 2009-04-12 flambard | Closes #840, fixes several minor issues.
+b785897 2009-04-13 flambard | Addresses #709, Closes #767 - introduces suggested 'monster hurt' array, adds several configuration options for sharing kills between party members.
+00fb460 2009-04-13 flambard | Addresses #709, adds new config options into mangband.cfg (follows [1108]).
+4d449d8 2009-04-19 billsey | Fixes #841 - with a sprintf to fill in the actual version number.
+6bdbd0e 2009-04-19 flambard | Addresses #766, client-side item flag now contains aiming information, which is used to improve auto-targeting for rods and activations.
+71b4723 2009-04-19 flambard | Closes #842, non-letters can't be used to cast spells.
+0689abc 2009-04-19 flambard | Addresses #814, check social index to be in bounds.
+41c6c78 2009-04-20 flambard | Closes #841 again, changes sprintf to format.
+c6e72d3 2009-04-20 flambard | Addresses #441, fixes nasty typo in drop command.
+8657a88 2009-04-20 flambard | Addresses #765, adds non-vanilla "use_old_target" behavior, which kinda satisfies the text in the ticket.
+abbb41a 2009-04-20 flambard | Closes #770, sleep monsters gives minor paralyze to players.
+24c3348 2009-04-20 flambard | Closes #728, allows targeting arbitary grids.
+352e51b 2009-04-20 flambard | Closes #714, implements suggested fix.
+d6e549a 2009-04-20 flambard | Closes #843, throwing is now affected by confusion.
+785efa8 2009-04-23 flambard | Addresses #832, ports 'hitpoint warning' setting from V. It is intended for use as timebubbles delay setting, and is going to display useless message for now.
+0e5653d 2009-04-23 flambard | Addresses #844, adds leader hiliting in a hacky way.
+647b222 2009-04-24 flambard | Closes #847, implements suggested fixes. PROJECT_JUMP bit is true for V306 too.
+26a56c9 2009-04-24 flambard | Port r1123 from trunk to stable, addresses #685.
+fff5860 2009-04-24 flambard | Closes #846, implements suggested fix.
+4231f31 2009-04-24 flambard | Port r1125 from trunk to stable, addresses #685.
+a433f68 2009-04-24 flambard | Closes #468, #811, merges store handling on client, allows server to eject player from store, removes client-side owner knowledge.
+f9ca9b1 2009-04-24 flambard | Closes #714 again, fixes array size to PARSE_ERROR_MAX.
+c74ec29 2009-04-24 flambard | Addresses #606, ports grahpics support for X11 terminal from V.
+84d74bb 2009-04-24 flambard | Addresses #773, fixes small problem outlined by powerwyrm, corrects party hinter hack.
+e89782d 2009-04-25 flambard | Addresses #606, fixes flambard stupidity from [1129], uncompilable trunk in X11 mode.
+8579779 2009-04-25 flambard | Closes #817, implements suggested fix.
+e642906 2009-04-25 billsey | Fixes #849 - Moves point of maximum damage check to before reduction for distance from center of damage, decreases slightly the reduction from 'dam / div' to '(dam + r) / div' to match Angband 3.0.6.
+2241e4a 2009-04-25 flambard | Port r1133 from trunk to stable, addresses #685.
+0083e2f 2009-04-26 flambard | Addresses #852, adds a script to generate .rpm source and binary packages.
+a58c093 2009-04-27 flambard | Port r1135 from trunk to stable, addresses #685.
+85d72c2 2009-04-27 flambard | Addresses #851, version bump from "alpha" to release for 1.1.2 branch.
+b84e608 2009-04-27 flambard | Addresses #257, makes linux portion of config 64bit safe.
+a9dcd3f 2009-04-27 flambard | Addresses #851, removes "alpha" tag from windows installer.
+3266168 2009-05-07 flambard | Addresses #856, branches 113 from 112.
+f01053d 2009-05-07 flambard | Merges timebubbles branch back into trunk, addresses #689.
+0e696ba 2009-05-07 flambard | Addresses #689, Implements fixes outlined by powerwyrm. I'm not sure monster regeneration is handled correctly tho, please advice.
+ca9593b 2009-05-08 billsey | Addresses #689 - Someone (I'm not pointing fingers!) left a simple syntax error in their commit... Missing semi-colon at the end of a line.
+14f4269 2009-05-08 billsey | Fixes #550 - As usual, PW is right, I made a mistake in the logic, and only 'fixed' the problem at exactly the wrong time.
+cf2dcfd 2009-05-08 billsey | Fixes #648 - implements fix as suggested.
+83126b7 2009-05-08 billsey | Fixes #651 - Implements changes as suggested in patch.
+9f32b64 2009-05-08 billsey | Fixes #665 - Vault generation starts by verifying that the upper left and lower right points of the vault are not on the edge of the dungeon. Note that the macro for in_bounds(DEPTH,X,Y) doesn't care what DEPTH is... But that's another issue.
+489a1e4 2009-05-08 flambard | Closes #857, allows players to shop simultaneously, protects purchases by price (still exploitable, but much safer), correctly ejects visitors from playershops, when owner enters.
+55d6a05 2009-05-08 billsey | Fixed #550 - What? Not again! It actually turns out there were *two* places where we set store_num instead of checked it.
+6c9cdc1 2009-05-08 flambard | Closes #855. The confusion arrised from the fact the code is no longer present in trunk and the bug is not relevant there, here's the suggested fix however.
+20a1c18 2009-05-08 flambard | Closes #751, #853, implements suggested fixes.
+5e002f4 2009-05-08 flambard | Closes #701, implements attached patch.
+7aec7a8 2009-05-08 flambard | Merges tbarena branch into trunk, see #741.
+d682765 2009-05-08 flambard | Addresses #826, fixes problem mentioned in the example.
+ab10801 2009-05-09 flambard | Implements fixes outlined by powerwyrm, see #741.
+9e39a6a 2009-05-09 flambard | Addresses #527, hopefully fixes the issue (cannibalized patch).
+45df9d7 2009-05-09 flambard | Closes #746 again, implements suggested fix.
+1b844bf 2009-05-09 billsey | Addresses #741 - Silly little change to allow compile with VS.
+75e208d 2009-05-10 flambard | Addresses #750, allows X11 client to resize main window.
+c6739ea 2009-05-10 flambard | Addresses #257, changes load order, makes X11 read from global config.
+37b2064 2009-05-10 flambard | Better default values for X11 config, see #257.
+7802f57 2009-05-10 flambard | Port r1159 from trunk to stable, see #856.
+ceb903f 2009-05-10 flambard | Port r1160 from trunk to stable, see #856.
+b82b5ce 2009-05-16 flambard | Addresses #773, introduces several irc-like modes to chat channels, adds service channels, allows console to listen to several channels at once. Also closes #819.
+a14002f 2009-05-16 flambard | Addresses #660,#441, adds framework for custom interactive terminals. Partially ports 'knowledge' menu behavior. Note that currently the output is a dirty mixture of special_line and new nterm_activate methods, which should be unified.
+244d9b6 2009-05-17 flambard | Addresses #670, adds monster list window (note: more stress on network).
+cdceefd 2009-05-17 flambard | Addresses #778, allows client to unsubscribe from some of the extra windows.
+20bd607 2009-05-17 flambard | Closes #627 and #633, adds status line to dumps.
+744a239 2009-05-17 flambard | Addresses #778, adds extern missing from [1169].
+96c1a26 2009-05-17 flambard | Closes #719, DM simply sees himself now.
+72f4f94 2009-05-18 flambard | Closes #862, implements realtime detect. NOTE: It's kinda useless in this state, as it only lasts 1 turn.
+8206c23 2009-05-18 flambard | Closes #863, temple now only gives gold to characters of level 5 or above.
+3c48a50 2009-05-18 flambard | Addresses #618, closes #524, refs #461. Implements item ownership via quarks. Each item is marked during pickup, and each ownership change is auditioned. This encompasses playershop purchases too.
+05ce0ed 2009-05-18 flambard | Addresses #441, if command asks for an item quantity, 1 is assumed by default now (was 0, causing problems with drop command).
+c79f70f 2009-05-18 flambard | Closes #618, allows players to protect owned items from others.
+d66929d 2009-05-18 flambard | Closes #864, refs #461, implements purchase-by-pickup. Watchout for nasty exploits!
+63a74f0 2009-05-18 flambard | Addresses #773, excludes all channels but #public from the log file.
+4a36330 2009-05-19 flambard | Addresses #525, implements "unlimited" character history using quarks.
+fb755c5 2009-05-19 flambard | Addresses #525, fixes flambard stupidity from [1181].
+f1933d9 2009-05-19 flambard | Addresses #670, removes memory leak related to monster lore.
+8bce7d9 2009-05-19 flambard | Closes #865, flavors never exceed maximum during client setup copy.
+b42aa41 2009-05-19 flambard | Closes #866, ports cleanup_angband from V, addresses lots of memory-related problems on server.
+e9e8a4e 2009-05-19 flambard | Addresses #778, adds another(!) missing extern from [1169].
+ece18ed 2009-05-19 flambard | Closes #741, resolves last (hopefully) issue with pvp arenas - ghosts are no longer able to enter them.
+4bd9b42 2009-05-19 flambard | Closes #830, level 1 players will now be warned upon entering wilderness.
+f334bc4 2009-05-19 flambard | Closes #867, strips CR symbol, all source files now use LF for linebreak.
+aca69b2 2009-05-19 flambard | Closes #76, uses a much less confusing header file naming. If this doesn't break VS compiles, we're good.
+e96f82d 2009-05-19 flambard | Closes #76 again, adds files stupidly forgotten from [1190].
+e95026f 2009-05-19 flambard | Addresses #525, minor optimizations for character history routines.
+f8ce05b 2009-05-19 flambard | Closes #525, logs each death and ressurection to character history. NOTE: We *still* can run out of space, as we rely on quarks and now allow non-unique entries.
+0e94010 2009-05-19 flambard | Closes #868, correctly disposes inet_ntoa results. Refs #866.
+1aaec76 2009-05-19 flambard | Closes #712. Honestly, I was unable to reproduce it, but it seemed like the only possible explanation. Let's hope we never hear from it again.
+8ecd74f 2009-05-19 flambard | Closes #848, server no longer loads "all" pref files, but one specified with config option (and reports it).
+1a6dc65 2009-05-21 flambard | Closes #848 again, adds appropriate entry to mangband.cfg
+fb6e2d2 2009-05-21 flambard | Closes #868, gets rid of inet_ntoa altogether.
+97bcac0 2009-05-21 flambard | Addresses #461, fixes incorrect (and stupid) use of object_own. Refs #618.
+421ebb3 2009-05-22 flambard | Addresses #866, correctly handles town pre-allocation.
+ab1eb26 2009-05-22 flambard | Addresses #814, allows non-target directions for social actions and fixes a messaging crash.
+069600a 2009-05-22 flambard | Addresses #869, introduces new virtual datatype to handle very large numbers. It could only by accessed by accompanying functions. Changes all turn variables to use it. Introduces proper 64bit data-types, separates 'huge' and turn counters.
+30a9d55 2009-05-22 flambard | Addresses #461, makes audit-related sprintf type safer.
+11d2513 2009-05-22 flambard | Closes #753, console 'who' command now counts the players beforehand, minimizing the total number outputted. Hiding actual DM entries is up to console interfaces (aka mangbot).
+280eb33 2009-05-22 flambard | Closes #362, implements suggested workaround.
+47d40a1 2009-05-22 flambard | Closes #663, adds houses contents to character dumps.
+ccc6ae7 2009-05-22 flambard | Addresses #257, makes conf_get_int a bit type-safer.
+a3a1040 2009-05-25 flambard | Closes #612, refs #660, gives player a list of his houses in '#' command.
+57d7c99 2009-05-25 flambard | Addresses #689, fixes incorrect savefile check from [1202].
+818a2e3 2009-05-25 flambard | Closes #870, update player view after switching places with other player.
+9953ae4 2009-05-26 flambard | Addresses #866, fixes flambard stupidity in macro definition.
+4cc7dd2 2009-05-26 flambard | Addresses #866, #76, #673. Makes sure VS is fine.
+8532a37 2009-05-26 flambard | Closes #859, ports macro triggers support from V.
+3a928c1 2009-05-26 flambard | Addresses #862, removes logic breaking semicolons from "give_detect()" from [1174].
+27893e8 2009-05-26 flambard | Closes #871, implements suggested fix. Good catch.
+b683143 2009-05-26 flambard | Addresses #869, fixes some errors in hturn math.
+62360b5 2009-05-29 flambard | Addresses #869, fixes critical stupidity in hturn math.
+67fb8cd 2009-06-04 flambard | Addresses #873, adds simple macro browser.
+f27a9e2 2009-06-04 flambard | Addresses #869, continuing undoing flambard stupidity.
+dbf393f 2009-06-04 flambard | Addresses #541, makes artifact tracking a bit more complex, introduces an ugly game-breaker hack which prevents artifact generation if a player with same artifact history was found. WiP.
+5adc0b2 2009-06-04 flambard | Closes #546, allows desired behavior by combining 'for sale' and '!p' inscriptions.
+ea4a966 2009-06-05 flambard | Closes #875, adds preventive inscriptions support. Note: in MAngband, we don't ask for confirmation, but simply cancel the action.
+23f3d2a 2009-06-06 flambard | Addresses #722, allows DM to generate vaults by number greater then 127, minor.
+2bdb341 2009-06-06 flambard | Addresses #866, removes default values for console password and DM name, ensuring all cfg_ strings are either strdup'ed either not.
+431a3a1 2009-06-06 flambard | Addresses #541, adds config option for artifact preservation.
+47840e7 2009-06-06 flambard | Addresses #541, found artifact list now highlites artifacts found by you (similar to known uniques list).
+9fd22e2 2009-06-06 flambard | Closes #876, wands/staves are destroyed on failure again (configurable).
+7698497 2009-06-06 flambard | Closes #876 again, updates mangband.cfg.
+44b2e6f 2009-06-06 flambard | Addresses #472, ensures purchase protection doesn't interfere with wand/staff/rod stacking. See also #857.
+708f5cb 2009-06-06 flambard | Closes #353 again, implements suggested fixes.
+e1b3e37 2009-06-06 flambard | Port r1230 from trunk to stable, see #856.
+55c8481 2009-06-08 flambard | Closes #239, ports shop owners initializer from V.
+b948cdd 2009-06-08 flambard | Closes #233, ports "cost_adjust" from V.
+37c36ab 2009-06-08 flambard | Addresses #660, ports flavor knowledge and kill count from V.
+724d13c 2009-06-08 flambard | Addresses #660, adds self knowledge and character history to '#' command.
+a0d660b 2009-06-08 flambard | Addresses #722, closes #710, displays selected monster name when summoning, allows '^' symbol to enforce start of the string when searching for specific monster.
+a5f33c7 2009-06-08 flambard | Addresses #866, fixes pref file string to use strdup, minor correction for console config value.
+b7c4167 2009-06-08 flambard | Closes #720, monsters and players now have a chance to resist gravity teleport.
+67ef02e 2009-06-08 flambard | Closes #551, makes 'for sale' inscription case-insensitive.
+fd7464e 2009-06-08 flambard | Closes #883, addresses #882, updates "artifact.txt" loader to match V more closely, removes MAX_A_IDX.
+70dfb98 2009-06-08 flambard | Closes #884, addresses #882, updates "ego_item" loader to match V more closely, removes MAX_E_IDX.
+b8412a4 2009-06-08 flambard | Addresses #882, updates limits.txt.
+555e979 2009-06-08 flambard | Addresses #882, closes #885, updates "vault" loader to match V more closely, removes MAX_V_IDX.
+29baeed 2009-06-08 flambard | Addresses #820, replaces all invalid monsters in the ZAngband vaults with valid ones and adds some treasure (patch by acenoid). Fixes lesser/greater vault size according to vanilla.
+c3e8103 2009-06-08 flambard | Closes #878, aligns miniature cell vault with V.
+e18a987 2009-06-09 flambard | Closes #885 again, updates vault type structure.
+0f2dad4 2009-06-09 flambard | Closes #886, ports "terrain" loader from V.
+8540dad 2009-06-09 flambard | Closes #887, ports "object" loader from V.
+12852b2 2009-06-09 flambard | Closes #888, ports "monster" loader from V.
+0c612d8 2009-06-09 flambard | Addresses #889, minor cleanup of init code.
+97cce8a 2009-06-09 flambard | Addresses #882, removes MAX_K_IDX where possible.
+1493588 2009-06-09 flambard | Addresses #882, changes some arrays in player structure to be initialized dynamicly, allowing removal of MAX_K_IDX, MAX_R_IDX and MAX_F_IDX. Those limits are now transfered to client. Note, that while this change allows greater flexibility, connectin routines now put more strain on CPU.
+ae9ba60 2009-06-09 flambard | Addresses #882, updates limits.txt.
+5170dc7 2009-06-09 flambard | Addresses #872, closes #715 and #712. Reverts ugly hacks and implements suggested processing freeze while player is changing levels. There might be some logic errors here.
+b943bc1 2009-06-09 flambard | Addresses #709, fixes problem outlined by powerwyrm - a kill is now either shared completly or not at all.
+ebee5ee 2009-06-09 flambard | Closes #406, adds 'Y' line to p_class to denote ironman starting equipment, switches to vanilla player_outfit function.
+55d7831 2009-06-11 flambard | Addresses #834, implements fixes to freebsd port by Steven Kreuzer.
+675b2cc 2009-06-12 flambard | Closes #880, removes feather falling induced gravity resistance.
+64ef5b4 2009-06-14 flambard | Closes #891, introduces new method for displaying text files using interactive terminals. Sub-menu hooks are reactived.
+1c282f7 2009-06-16 flambard | Addresses #257, adds an ability to merge additional config files into config tree. Note: WIN portion of this code in untested.
+49d152f 2009-06-16 flambard | Addresses #858, implements powerwyrm's sound patch, adds standart angband sounds. This change enables sound in WIN and SDL terminals.
+fb18f20 2009-06-16 flambard | Closes #406 again, fixes typo in template.
+43722ff 2009-06-16 flambard | Addresses #773, ensures all variables in "fix_special_message" are initialized.
+c73f68d 2009-06-16 flambard | Addresses #257, fixes WIN portion of [1260], frees "my_fexists" from USE_SOUND. Also closes #812.
+a1d413e 2009-06-16 flambard | Addresses #858, makes small adjustments to [1261] for WIN client.
+9b895e8 2009-06-19 flambard | Closes #892, introduces custom inven/equip slots, moves INVEN_ defines to server, refs #888.
+f95c021 2009-06-19 flambard | Addresses #893, allows any spell to be projected. Enables projection for magely "Satisfy Hunger" and "Detect Creatures" as proof of concept.
+21e2e7d 2009-06-19 flambard | Closes #810, gives each non-friendly player on same depth a chance to resist alter reality.
+2239cb6 2009-06-19 flambard | Closes #894, failed spells spend mana again.
+a002a95 2009-06-19 flambard | Addresses #893, reverts additional mana costs for projected spells and adds higher failer rate instead.
+7e8f726 2009-06-19 flambard | Addresses #778, fixes bug introduces in [1170], allows monster recall information during targeting.
+7c29b9f 2009-06-19 flambard | Addresses #895, changes the way "p_hist" info file is loaded to generate character history in third-person, adds simple player recall function.
+1bed60a 2009-06-19 flambard | Closes #412, allows players to stop looking process when being disturbed.
+ed8a855 2009-06-19 flambard | Closes #896, ports "sense_inventory" bits from V306.
+d154a89 2009-06-19 flambard | Addresses #329, implements a dirty hack which allows players to gain awareness of items identified by other players during inventory feeling phase.
+4e62721 2009-06-19 flambard | Closes #406 again, returns 1kk AU debug bonus.
+e08722b 2009-06-19 flambard | Closes #735, identified items which players are not aware of are now accepted by shops. See also #329.
+9359eb2 2009-06-20 flambard | Addresses #897, removes all refrences to CLASS_ from server. Adds several mangband-specific class flags to p_hist info file.
+22e14c3 2009-06-20 flambard | Addresses #895, adds more color to 'player recall', fixes a minor bug.
+61ff533 2009-06-20 flambard | Addresses #596, makes DM_NEVER_DISTURB flag usefull again.
+85294c0 2009-06-23 flambard | Addresses #527, implements count_players function.
+41d5e08 2009-06-24 flambard | Closes #902, returns from inkey on ESC immediately, possible stops ESC key from being a valid macro trigger.
+2686d08 2009-06-26 flambard | Addresses #872, fixes incorrect store check from [1254].
+6ea6ced 2009-06-26 flambard | Addresses #900, implements new DM menu and new DM hook system. Also adds rudimentary support for nested ickyness and custom prompts for interactive terminals.
+5e0e669 2009-06-26 flambard | Closes #901, implements as suggested.
+0f1707a 2009-06-28 flambard | Closes #904, breaks player_death into smaller functions.
+b0414b7 2009-06-28 flambard | Addresses #900, removes old DM menu and hook system.
+3838983 2009-06-28 flambard | Closes #731, adds winner dumps. Killer is set as "winner".
+4cb6d28 2009-06-28 flambard | Closes #905, removes old dump code.
+42f78a6 2009-06-28 flambard | Closes #897, removes all refrences to CLASS_ from client. Adds a hack to transfer 'stealh mode'.
+708a44c 2009-07-07 flambard | Addresses #793, changes the way redraw_stuff works, enabling support of partial screen ickyness for compact player display. Discared cave characters no longer queue for later flush, but apply to 'memorized' terminal directly. Fixes several related bugs and hacks, introducing new ones instead. NOTE: Inventory command no longer pauses screen. See also #778, #670.
+be416e0 2009-07-09 flambard | Addresses #908, replaces special file perusal with interactive terminals, partialy breaks every display, self-knowledge, observe, etc. WIP.
+60e1e01 2009-08-29 flambard | Addresses #913, implements patch by Torben Hohn, which moves us to automake. Note: This changeset breaks all the port/package scripts and windows compile.
+02c5b62 2009-08-29 flambard | Addresses #913, renames 'install' dir into 'dist' to avoid svn conflicts on Windows.
+2a44eaf 2009-08-29 flambard | Addresses #913, adapts autotools for Windows, mingw compile should work again.
+3602a7c 2009-08-30 flambard | Addresses #913, removes redundant definitions to allow -O2 compile (patch by Torben Hohn).
+76b0cea 2009-08-31 flambard | Addresses #913, adds mangband.cfg into automake. As suggested, DEFAULT_PATH define is now called PKGDATADIR to reflect it's meaning better.
+1520cf4 2009-08-31 flambard | Addresses #913, adds autogen.sh script which is also capable of performing several administrative tasks.
+e5f999c 2009-08-31 flambard | Addresses #913, updates VS project files, removes redundant config.h file.
+4aeaa91 2009-08-31 flambard | Addresses #913, makes autogen use more supported way to fetch it's command-line parameters.
+a4d4203 2009-09-03 billsey | Addresses #914 - Removes crops from the wilderness before removing gold when compacting objects.
+e428b5c 2009-09-03 billsey | Fixes #914 - Treats wilderness houses the same as town houses. Items are only compacted there in case of dire necessity.
+6c02fb4 2009-09-03 flambard | Port r1301, r1302 from trunk to stable, see #856.
+d024c88 2009-09-03 billsey | Addresses #915 - Creates do_cmd_refill_potion() routine that allows refilling empty bottles. Depending on what you're standing on the resulting potion might be good or bad, anything from just a potion of water to death.
+c4c4102 2009-09-04 billsey | Addresses #915 - We need do_cmd_refill_potion() to be an extern, like similar functions.
+92f8bba 2009-09-04 flambard | Closes #412, implements suggested fix.
+aecb8be 2009-09-04 flambard | Closes #810, implements suggested fix.
+0475d14 2009-09-04 flambard | Closes #906, implements suggested fix.
+f4434c2 2009-09-04 flambard | Closes #890, makes o_list/m_list access consistent (all loops start with index 1).
+3d13d23 2009-09-04 flambard | Closes #910, implements suggested fix.
+8340056 2009-09-04 flambard | Closes #731 again, implements suggested fix.
+db9986f 2009-09-04 flambard | Closes #911, separates pref and user .prf files into two directories.
+6240afa 2009-09-06 billsey | Fixes #914 - Removes junk items and skeletons when compacting objects before moving to other objects types. Does NOT remove gold piles specially before other objects.
+8292954 2009-09-06 flambard | Port r1313 from trunk to stable, see #856.
+ad3c1a0 2009-09-06 flambard | Closes #917, changes identation format in several functions related to item compacter. This changeset changes no meaningfull code, only whitespace.
+b7f6929 2009-09-06 flambard | Addresses #916, moves init_stuff calls around. Note - this changeset removes a bit of Amiga support. See also #747.
+15612f6 2009-09-06 flambard | Addresses #918, removes UNIX_SOCKETS tests from both client and server, most likely breaking WIN builds.
+6c7c80d 2009-09-06 flambard | Closes #918, fixes WIN portion of [1317].
+3e5bdf3 2009-09-06 billsey | Fixes #919 - Fixes warning message by always returning TRUE. Eventually we'll want to revisit the ctrl_handler() function and actually used both the passed parameter but generate an appropriate return value when failing.
+6e771d7 2009-09-06 billsey | Fixes #920 - Initializes variable to 0 before first use.
+a73e96c 2009-09-11 billsey | Fixes #709 - As suggested.
+38182a8 2009-09-13 billsey | Fixes #921 - Add the letter 'M' to create 'MAngband'.
+d04b387 2009-09-13 billsey | Fixes #922 - Removes lots and lots of unused consts.
+bb570e1 2009-11-01 billsey | Fixes #608 - Implements a single point of EXP granted for discovering a hidden door while searching, no matter which search you're doing, but not when doors are discovered via spell or monster action.
+27308dd 2009-11-06 billsey | Fixes #752 - Implements changes as suggested.
+1c0e3ff 2009-11-06 flambard | Closes #752 again, removes unrelated changes.
+abb43ac 2009-11-08 flambard | Addresses #908, introduces concept of 'streams' - common handlers for all possible visual data transfers. Replaces most instances of data transfer with streams. Unifies interactive terminals even more. Everything is broken, WIP.
+6112b18 2009-11-08 flambard | Closes #912, svn:ignore property to the repositry. This ignores selected file patterns during svn status command.
+b495e7d 2009-11-15 billsey | Fixes #929 - Implements ignore to the base elemental attacks for Dwarven Lanterns and Feanorian Lamps.
+f34656a 2009-11-15 billsey | Fixes #931 - Implements suggested patch for Windows client.
+d57f38b 2009-11-16 billsey | Fixes #928 - Implements changes as suggested. When a character higher than or equal to level 10 attempts to use the clone wand, they get the crackling sound, the monster is hasted and healed, but no clone is created. The same effect happens in town, except for everyone, not just higher level characters.
+ab83a45 2009-11-17 billsey | Fixes #932 - Implements a check for NULL in Term_xtra_win_react() before writing to the r_attr or r_char array elements of Client_setup. Uses C_MAKE() to create the arrays if needed.
+b3b5a59 2009-11-17 flambard | Reverts [1332], closes #932 again.
+3a22e2a 2009-11-17 flambard | Addresses #606, removes tiny (but nasty) bit of obsolete code from WIN client. Re #932.
+80b9f80 2009-11-18 flambard | Addresses #832, fixes several bugs from initial commit.
+aa75601 2009-11-18 flambard | Addresses #773, fixes console "msg" command as described above.
+642d443 2009-11-18 flambard | Closes #625, adds special case of 'colon as last symbol' described in the ticket. As noted in the comment, the behavior is correct otherwise and produces viable error messages.
+14a73bc 2009-11-18 flambard | Closes #934, fixes as suggested.
+b0ee891 2009-11-18 flambard | Addresses #893, fixes outlined flaw from [1267].
+7939a0f 2009-11-18 flambard | Addresses #893, restores damage capping order broken in [1339].
+ea8747a 2009-11-19 flambard | Addresses #913, adds missing directories to server config.
+998973f 2009-11-19 flambard | Addresses #935, merges "text" and "help" directories under name of "help". Probably breaks our build system.
+5e0b04b 2009-11-19 flambard | Closes #935, updates build system with correct paths.
+a97f270 2009-11-19 flambard | Closes #938, removes "scores.raw" from svn.
+836e24b 2009-11-19 flambard | Closes #936, adds "bone" directory to our structure, death dumps are now stored there.
+3b4940d 2009-11-24 billsey | Addresses #939 - Implements patch as suggested. Still need to stop timer in Linux implementations.
+7ad5d81 2009-12-22 billsey | Fixes #778 - implements as suggested.
+382161f 2009-12-22 billsey | Fixes #860 - Implements roguelike commands for describing an item (^I), buying or selling houses (M), Ghost powers (^G), and top scores list (^S).
+fa24b24 2009-12-23 billsey | Fixes #940 - Implements a MORE_TOWNS option in config file and renames town level files.
+092db74 2009-12-23 billsey | Fixes #940 - Implements a MORE_TOWNS option in config file and renames town level files. Plus fixes a couple of gotchas I left out from previous commit. [Always compile before commit!]
+77d14cc 2009-12-24 billsey | Fixes #940 - Implements test in get_mon_num() so monsters aren't created on special static levels. Fixes boo-boo in sprintf statement. Leaves rd_dungeon_special call alone, test is performed within rd_dungeon_special() and not needed outside. Also tabifies a couple of line of code...

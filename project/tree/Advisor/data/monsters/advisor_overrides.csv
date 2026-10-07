@@ -1,0 +1,6 @@
+idx,danger,response,threats,neutraliser,safe_when,notes,advisor_note
+144,3,CAREFUL,"BR_LITE 33 (FORCE_MAXHP 200hp /6) + blind; BR_DARK resisted by Half-Orc; CONF/SCARE 1_IN_11",resist blind; kill fast (200 HP),clvl 15+,,"Clerk rated 4 treating BR_DARK as unresisted; Half-Orc has resist_dark (reduces, blocks blind)"
+169,3,CAREFUL,"speed +10 (2 turns per player turn); 3 blows avg 15 → ~30/turn; 13d8 HP",corridor; kill fast; leave if HP < 50%,clvl 20+,,"Clerk rated 2 on dice alone; speed doubles its output against a dl12 character with ~120-170 HP"
+242,3,CAREFUL,"BR_FIRE avg 53 (20d15 HP /3), 100 at max HP; 1_IN_10; 3 blows avg 27",rFire (cuts breath to ~18); kill fast,with rFire,,"Clerk rated 4 using the max-HP breath (100); average is 53"
+593,3,CAREFUL,"MULTIPLY breeder, speed +10; BITE:BLIND has no save (only resist blind) — blind means no scrolls",resist blindness; kill early or leave the level,with rBlind,,"Clerk rated 2; a breeding swarm of no-save blinders blocks scroll escapes"
+606,3,CAREFUL,"speed +10; 3 FIRE bites 5d4 → ~75/turn unresisted (AC does not reduce elemental blows)",rFire (→ ~25/turn),with rFire,"OOD at dl25-30 only via boost/summon","Clerk rated 2; unresisted fire output ~75/turn vs 180-300 HP"

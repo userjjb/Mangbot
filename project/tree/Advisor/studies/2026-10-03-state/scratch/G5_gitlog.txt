@@ -1,0 +1,790 @@
+72ec098 2026-09-29 Pilot: current clvl, not max (the level indicator is (max, current)); climbs scum only by a close '>' within max_depth
+Mission 11: status said level 10 after resurrection dropped it to 8, and
+every danger rule used 10; 'goal dive 0' walked 15 squares to a '>' at
+50 ft and went to 100 ft.
+df69d21 2026-09-29 Pilot: mission 10 death + the Advisor's mission 9 replay
+- Held reads/quaffs are no longer reported as done (3 CLW 'quaffed',
+  1 in the pack, none drunk).
+- choke never runs while fleeing (it backed into a corridor twice
+  instead of walking to the stairs away from Mughash).
+- No resends after death.
+- Group danger: no drain term (it alone made a lone frog 0.6x); floor
+  from HP lost in 3 s (an unseen Cave spider swarm stayed at 0.23x).
+- Fast unique within 8 levels with melee >= HP/8 = danger at first
+  sight; never back away on foot from something faster.
+- explore until=stairs/upstairs needs stairs we can reach.
+67bfe1a 2026-09-29 Pilot: 'goal shop N list buy ...' parsed the buys off by one
+22a436d 2026-09-29 Pilot: fix every shop buy (Shop name unpacked 2-tuples); one read/quaff at a time until confirmed; no eating with a monster just out of view
+Mission 9: buys failed with 'too many values to unpack' after 8082af5;
+a Word of Recall was read by a stale pack letter 5 s after a potion
+stack ran out, then read again as the right item; a ration was eaten
+with Bullroarer a step out of view.
+e2e741f 2026-09-29 Pilot: group danger phases only when hurting (mission 9: a lone Giant red frog cost 4 Phase Doors at full HP); early WoR only above 1.0x
+7160211 2026-09-29 Pilot: message regexes from the Advisor's catalogue; light off when idle in town; HANDBOOK store facts
+- RE_UNSEEN: + Brain Smash/Hold/Mind Blast, boulders, storms, drools,
+  spores, teleport-away, sleep...; - 'concentrates' (self-heal/haste).
+- RE_HURT_OTHER anchored (matched 'light is growing faint', 'Cutlass',
+  'pitched shriek'; missed earthquakes and hunger).
+- town_light: idle in town -> take the light off (resting burns fuel
+  ~10x); keep_light re-wields the light with the most turns in the
+  dungeon only.
+- HANDBOOK: which store sells what, restock every ~33 s, prices,
+  shopping lists pointer, selling tips (memos/2026-09-29-shops.md).
+0090192 2026-09-29 Pilot: count visible ranged attacks as hits (RE_RANGED; the Advisor's message study: RE_ATTACK needed a trailing 'you')
+8082af5 2026-09-29 Pilot: goal shop N list, buy NAME:N@MAX price cap, monster NAME query (post-mortem memo §5)
+505ded5 2026-09-29 Pilot: swap torches only for one with more light (burnt-out spares were swapped ~2100 times)
+baeb276 2026-09-28 Pilot: verify escapes and resend; group tiers per the run post-mortem
+Advisor memo 2026-09-28-run-postmortem §4:
+- 4.2: each of the pilot's own reads/quaffs of escape/cure items is
+  verified by the server's "You have N ... left" (or recall charging)
+  and resent up to twice after 2.5 s; Mover clears are held for 3 s
+  meanwhile (all Mover clears now go through _clear()).
+- 4.1: drain weight 50; > 0.3x: not yet in melee -> back away.
+- 4.3: > 0.6x with no stairs known -> read Word of Recall at once.
+- 4.6: decisions.jsonl logs the decoded monsters once a second in the
+  dungeon ("mons").
+0f7a01e 2026-09-28 HANDBOOK: mission 8 notes (prices, buy order, inspect shows no blows, levels differ from Vanilla)
+9b1c9ce 2026-09-28 replay_group.py: replay the group-danger tiers over a Pilot log (upper bound: everything in view)
+7b592c5 2026-09-28 Pilot: group danger (the Borg's rule, Advisor memo 2026-09-28 §3.1-3.2)
+Sum of worst-case melee of the monsters that can reach us this turn
+(melee_max x speed_x, +150 per drain blow within 10 levels of ours,
++200 for a paralysing blow our AC can't stop without FA; NEVER_MOVE
+excluded) against current HP: > 0.3x on arrival -> stairs back; > 0.6x
+-> stairs underfoot or Phase Door; > 1.0x -> also Flee the level.
+A second stat drain on a level with monsters in view -> Flee.
+Replayed over Dive03's logs (monlist + decisions): after excluding
+stationary monsters (Red/Rot jellies, eyes: flat drain/paralysis
+weights) it fires at the mission-7 death (1.13x, 14 s before it) and in
+the other low-HP fights, not on ordinary orc or wolf packs.
+danger_table.csv re-copied (adds melee_max, drain_blows).
+f477dda 2026-09-28 HANDBOOK: the user's outfitting advice (sell the kit, Main Gauche, enchant scrolls, cheap armour)
+63ef06b 2026-09-27 Pilot: the Advisor's danger table and rules (memo 2026-09-27-danger-table §3)
+- glyphs.load_races merges danger_table.csv (copied from
+  Advisor/data/monsters/, keyed by monster.txt N:, rows skipped when the
+  name differs): Race.danger, speed_x, melee_avg; per_turn,
+  no_save_blows, paralyse_blow_power.
+- danger_why: rated 5 = leave on sight; rated 4 until clvl >= level+8;
+  capital D; melee per turn >= HP/3 (mobile monsters; Azog, Beorn and
+  the chieftains passed every rule); Brain Smash without FA + rBlind +
+  rConf; blinding/confusing blows (no save) within 10 levels without the
+  resist; paralysing blows too weak for our AC (floating eye) no longer
+  count.
+- New orders resist_blind, resist_conf; stationary monsters with such
+  blows are never fought by still_fight_tick.
+- BR_MANA removed (a no-op in 1.5).
+- HANDBOOK: the memo's rules of thumb, and its corrections (teleport-to
+  isn't always harmless, paladins don't summon, some jellies move).
+1011e37 2026-09-27 Pilot: goal resurrect for a ghost (untested)
+A ghost takes '<' anywhere (cmd2.c:37) and is resurrected by walking
+onto the Temple entrance (cmd1.c:2047). The pilot now allows only this
+goal while dead. Dive03 couldn't use it: its ghost lingered in the level
+after the disconnect, was poisoned, and faded away on the next login.
+785f608 2026-09-27 Pilot: the emergency never falls through to the goal; stay up after death
+Mission 7 death (Dive03, 750 ft, summon trap: 4 Uruks + Giant red
+scorpion adjacent): when escape() had nothing usable that instant it
+returned False and the explore goal ran. Its mover re-planned every ~2 s,
+sending 'clear' (wiping the queued Phase Doors, CLW, CCW and Word of
+Recall) and walks that took the turns. None of 8 reads and 2 quaffs ran.
+- Emergency: always return True; stop a non-escape move.
+- escape(): no new stairs move (which sends 'clear') within 2 s of a
+  read or quaff that may still be queued.
+- --hpwarn 0 for now: the pilot's timers are wall-clock, and the time
+  bubble ran our turns at ~1 per 1.5-2 s below 60% HP.
+- Death: keep running and answering status/attention (the Navigator
+  only got "Connection refused"), also if the client exits.
+04ac768 2026-09-27 Pilot: check the @R the server will read; choke for two-wide corridors
+- recall_level() mirrors spells2.c: last @R wins, multiples of 50 are
+  feet, others levels. The Recall goal verifies the inscription (a
+  substring test passed @R7500 and overridden @Rs), retries up to 3
+  times, and won't read an unverified scroll. The agent's 'read' of a
+  Word of Recall in town without a valid @R needs 'force'.
+- choke_tier(): corridors are two wide (WIDE_CORRIDORS, paired doors;
+  Advisor memo A5), so choke ranks dead ends/one-wide squares, then
+  corners/corridor ends, then straight two-wide corridors, instead of
+  only accepting <= 2 open neighbours (almost never found).
+6274e8b 2026-09-27 Tool mode: neutral login names, time bubble; Pilot: status cures, stationary blockers, mission-6 fixes
+- Tool-mode client logs in as player@localhost (the live server's player
+  list showed the Unix login and host; Advisor memo Addendum 3) and sets
+  hitpoint_warn 6 (--hpwarn N) so time slows below 60% HP (xtra2.c).
+- status_tick: in a fight, stun -> CCW or better, confused -> CSW+,
+  blind -> CLW+, poisoned (below think_hp) -> Cure/Neutralize Poison or
+  CCW (memo Erratum: only CCW+ cures stun and poison).
+- still_fight_tick: kill a weak stationary monster that disenchants or
+  sits by the mover's target (mission 6: Disenchanter eye by the only >);
+  leave for a disenchanter above our level; never melee paralysers
+  without free_action.
+- stat_drained also fires on a second drain of an already drained stat.
+- stuck ignores 2-minute windows with fighting in them.
+- Minor unseen attacks (teleport-to, magic missile, arrows) at good HP
+  are news, not a flee.
+- "quaffed a Potion of X", not the stack count.
+32cf9f2 2026-09-27 HANDBOOK: disenchanters on the path; teleport-to messages (mission 6)
+b034b0e 2026-09-27 pilot: Flee crashed when standing_on was None (mission 6)
+f1c0579 2026-09-27 pilot: fixes from Navigator mission 5's report
+- unseen HP-loss trigger ignores 10 s after a trap/cut/poison/elemental
+  message (a graze and a spiked pit read as an unseen attacker)
+- goto onto an item reports done after the pickup lands (~0.6 s), so the
+  report no longer shows the item still on the floor
+- 'Standing on' clears after a pickup or destroy
+- perception_gap: only gaps lasting > 1.5 s (monlist and map arrive apart)
+- HANDBOOK: compare gear before selling; autodestroy=average vs upgrades
+5847bbf 2026-09-27 pilot: fixes from Navigator mission 4's report
+- unseen_attacker by HP loss: only after 4 s with no monster on the map and
+  no named hit (the fight's damage stayed in the window after each kill and
+  fired it constantly); >= 2 HP/s (or 1% of max), HP below max; new order
+  unseen_hp=off; mold spores count as a visible attack
+- Flee prefers an up staircase at or below max_depth, reports after the
+  level change (the report showed the old level), retries an ignored stairs
+- mover: digs through rubble ('T') when the path needs it (a sealed level
+  cost a Word of Recall); rubble is passable at cost 15 in the planner
+- perception_gap log: monster-list names the map decode misses (a Yellow
+  mold hit us unseen), with a map crop, once per level and name
+415e0d2 2026-09-27 pilot: fixes from Navigator mission 3's report
+- mover: send PKT_CLEAR when replanning off-path or after a step timeout.
+  A step queued ahead stayed on the server, so every later step ran one
+  behind, and the character circled a '>' one square away for 10 minutes
+- auto-pickup: clear the queued steps first (they ran before the pickup,
+  which then landed a square later; the Rosewood Staff)
+- new 'stuck' event: at most 10 squares in 2 minutes while not fighting
+  -> clear the queue, restart the move, tell the Navigator
+- wait: a quiet timeout now prints the short report (the stall was silent)
+- breeders: news only when weak (<= clvl-10) and fewer than 8
+- shop: results give unit prices
+- HANDBOOK: goto pickup timing, explore doesn't fetch far items, the pilot
+  refuels the lantern itself
+fea3910 2026-09-27 pilotctl: wait --brief (character, monsters, stairs, news only)
+Mission 2's Navigator used 134k tokens, mostly full reports.
+8e92a81 2026-09-27 pilot: unseen-attacker rule off while blind
+1223f29 2026-09-27 pilot: danger model from monster.txt (breathers, hound packs, paralysers, summoners); leave on unseen attackers
+- glyphs.Race: summoner (S_*), paralyser (HOLD, or a PARALYZE blow on a
+  monster that moves), max_breath (HP/3 or /6 capped by element, server
+  melee2.c)
+- dangers(): also a breather whose 2 breaths >= current HP, breathers whose
+  breaths together >= HP, paralysers without Free Action (new order
+  free_action), summoners within 5 levels; the events say why
+- unseen_attacker: 'It/Something <acts>' messages or HP falling with nothing
+  in view (not poison/cut/hunger) -> flee to stairs; a door bursting open is
+  reported (Advisor memo, Addendum 2 items 3 and 8)
+490eca4 2026-09-27 pilot: out of combat, rest instead of drinking potions (the user)
+escape() now rests (or backs off over walked ground, then rests) when
+nothing is adjacent, no hit in 3 s and HP isn't falling with a monster in
+view; the last-resort Word of Recall and the potions are for combat only.
+767d15d 2026-09-27 pilot: heal or escape by numbers (potion heal table + damage rate)
+World keeps an HP history from the status polls; damage_rate() is HP lost
+per second. In an emergency the pilot drinks the weakest potion that
+out-heals ~2 s of that damage; if none can and death is <8 s away, it
+phases (ignoring the phase rate limit) or reads Word of Recall instead.
+Heal amounts from server use-obj.c (Advisor memo P3).
+f0a23a1 2026-09-27 pilot: track a pending recall from server messages; never read a second WoR by accident; avoid stationary monsters
+- world: recall_pending from 'The air about you becomes charged' until the
+  level changes or 'A tension leaves the air' (a second read cancels the
+  first, spells2.c:1191-1199); the Recall goal and 'read' now refuse a
+  second scroll while one is pending ('read ... force' to cancel on purpose);
+  new attention event recall_cancelled
+- mover: squares next to NEVER_MOVE monsters cost extra; pilot steps away
+  from any adjacent one (auto-retaliate attacks any visible adjacent
+  monster, dungeon.c:777) unless hunting it (Advisor memo, Addendum 2 item 2)
+699ca87 2026-09-27 Tool mode: clear command (PKT_CLEAR); the Pilot clears its queue before parking
+From the Advisor's memo: ESC sends PKT_CLEAR, which empties the player's
+server-side command queue. The test server crashed twice processing the
+queued commands of a player who had just disconnected; parking now sends
+'clear' before logging out.
+f480b31 2026-09-26 pilot: fixes from Navigator mission 2's report
+- Potions weakest first; the strongest only below 30% HP (all Cure
+  Serious went first and were gone when it mattered).
+- Three emergency actions within 90 s = a loop (HP stuck near 50%,
+  monsters always in view): flee to stairs within 30 squares and resume
+  the goal afterwards, else wake the Navigator (emergency_loop).
+- Afraid right after arriving among monsters (no walked ground to kite
+  over): take the stairs underfoot back.
+- Report lists nearby item squares with positions (the item list has no
+  positions).
+- pilotctl: a restart during 'wait' prints a clear "Pilot not answering"
+  line instead of a JSONDecodeError traceback.
+- Handbook lessons: two Word of Recall per trip, CLW is weak at 200+ HP,
+  buy Boldness/Heroism, suitable depth for this gear, max_depth caps.
+8957953 2026-09-26 pilot: say when a dive is capped by max_depth
+f33cece 2026-09-26 pilot: stationary fearers (mushroom patches, molds) only matter when adjacent
+The first 'fearer' event was a level-2 Yellow mushroom patch: stationary
+monsters only frighten you next to them, so the Pilot now just steps away
+from an adjacent one, without an event; only fearers that move trigger
+the retreat and wake the Navigator.
+153cc37 2026-09-26 HANDBOOK: restore missing attention events (earlier edits silently failed)
+pack_full, stat_drained/blows_changed, breeders, afraid, fearer, and the
+tactic/resumed news were described in commits but their table rows never
+landed (unchecked string replacements).
+f06c069 2026-09-26 pilot: kite when afraid; avoid repeat fearers (the user's advice)
+The user: if not in danger, don't spend consumables on fear -- kite out
+of reach until it wears off; monsters that fear you over and over are
+more trouble than they're worth (walk away, or phase if dangerous); and
+retreat into already-cleared ground, never into the unknown.
+- World records the squares walked on this level; retreat_step moves
+  away from threats over that ground only.
+- Afraid: not in danger -> kite; in danger (HP < think_hp or an
+  out-of-depth monster) -> Boldness/Heroism/Berserk, else phase away.
+- glyphs.Race.repeat_fearer: a TERRIFY blow, or SCARE cast at least 1 in
+  5 (88 races: Poltergeist, Ghost, Banshee, Priest, molds...). With one
+  near: 'fearer' attention once per level, walk away (phase if it's
+  dangerous and adjacent).
+84d85b0 2026-09-26 shop: refuse to sell probable specials unless forced
+The Navigator sold Wormtongue's drop unseen for 17 gold: Soft Studded
+Leather of Resistance [5,+6] (buyback 19834). Items inscribed with a
+unique's name or feeling {excellent}/{special} are not sold unless the
+sell spec starts with '!'. Handbook lesson added.
+28a665b 2026-09-26 pilot: explore fetches nearby items too (loot_radius)
+The Navigator noticed exploring walked past items: fetching items within
+loot_radius only happened during dives. The loot step is now a shared
+helper that explore uses as well.
+e152633 2026-09-26 pilot: react to fear (can't melee): Boldness/Heroism/Berserk, else phase away
+Navigator mission 2: a Novice priest terrified Dive03 and the Pilot just
+stood there (a frightened warrior can't fight and auto-retaliate stops);
+the Navigator had to quaff Heroism itself.
+5e746c4 2026-09-26 pilot: goto item skips our own square and junk we left
+'goto item' kept ending at once without moving: the nearest 'item' was
+the junk item under the character, which the junk filter won't pick up.
+c4b343c 2026-09-26 pilot: resume the interrupted goal after an emergency
+An emergency stair hop replaced the Navigator's goal with Recover, and
+the Navigator had to re-send its climb every time. Recover now hands the
+previous goal back when healed; the report's news says so.
+1738cd9 2026-09-26 pilot: never park during a recall
+Parking 6 s after a Word of Recall was read logged the character out
+mid-recall; after logging back in the recall took it to its deepest
+level (1000 ft) instead of the @R750 on the scroll. Park now waits for a
+pending recall (goal or 'air about you becomes charged' within 40 s) to
+finish before logging out.
+2992c70 2026-09-26 pilot: read SCROLL TARGET (Identify/Enchant work on a chosen item)
+Navigator mission 2: 'read Identify' identified the rations. The server's
+item request is unimplemented (Send_item_request only logs); scrolls that
+work on another item take it in the direction byte (COMMAND_SECOND_DIR),
+and the Pilot sent none, so the first pack item was used. read L TARGET
+now passes the target (pack or equipment).
+c8c78c4 2026-09-26 pilot + handbook: fixes from Navigator mission 1's report
+- destroy/drop/quaff/read/eat/fuel by name look only in the pack (a name
+  with no pack match fell through to the equipment: "You destroy
+  (nothing)"); item replies drop unrelated messages ("You enter a maze").
+- Warriors don't pick up spell books; broken weapons aren't picked up.
+- Handbook: "Lessons from earlier missions" (always carry Word of
+  Recall down, where recall lands, item actions by name one at a time,
+  paralysers without Free Action mean leave, let junk/autodestroy manage
+  the pack).
+5f61f1b 2026-09-26 pilot: destroy/drop N|all; autodestroy by pseudo-ID feeling
+The Navigator had to clean the pack by hand every few minutes while
+climbing (pickup=all fills it with armour and weapons), and a destroy
+without a count took one item of a stack. destroy/drop take a count or
+'all'; the autodestroy order (default worthless,cursed; 'average' can be
+added) destroys pack items once their pseudo-ID feeling matches, never
+items inscribed with @ or !.
+9c5c671 2026-09-26 pilot: park (log out at a safe moment) and restart.sh for updates
+Restarting the Pilot mid-game drops the character wherever it is. The
+user suggested logging out when it's safe-ish instead: 'park' drops the
+goal and logs out once nothing is within 15 squares, HP >= 70% and we're
+not in a store or on the way down some stairs (or after 5 min), telling
+the Navigator first ('parked'). restart.sh NICK parks the old Pilot,
+waits for it to exit and starts the new one.
+5519370 2026-09-26 pilot: item actions by name and with the fresh pack; skip known junk
+From the Navigator's mission: after a batch of destroys the report still
+showed the old pack, the Navigator re-sent destroys with stale letters and
+lost a Cure Light Wounds, a flask and two unknown potions. Item actions
+now accept part of the item's name (resolved when acting), and answer
+with what the game said plus the pack as it is afterwards. The dive was
+also slowed by picking up known junk (Salt Water, Blindness...): a 'junk'
+order lists item kinds that are never picked up.
+14de204 2026-09-26 pilot: recall respects max_depth; dive can climb; Navigator fixes
+From the Navigator's first mission (Dive03):
+- Recall from town went to the deepest level ever reached (1000 ft,
+  where Dive03 had died), below max_depth 950: four Black ogres and a
+  paralysing Illusionist. The recall goal now inscribes the scroll
+  @R<max_depth> first (the recall-depth inscription).
+- 'hunt Black_ogre' failed: '_' is now a space, as in shop names.
+- 'goal dive FEET' shallower than the current depth climbs (mirror of the
+  stair-scum: take '<', scum with '>' then '<', explore for up stairs);
+  the Navigator needed it to walk home without Word of Recall.
+- The emergency message no longer says "nothing left to escape with"
+  while Phase Door/potions are merely on cooldown.
+3e9c407 2026-09-26 dive: unreachable stairs get retried; goalstate debug request
+Right after a restart the dive planned a path to a nearby '<' before the
+map had loaded, marked it unreachable for good, and then looped between
+'nothing left to explore' and 'no reachable stairs' without moving.
+Unreachable stairs are retried after 15 s, and the skip list is cleared
+(up to 3 times) when exploring runs out while stairs are known.
+'goalstate' shows the current goal's internals for debugging.
+00cd85c 2026-09-26 dive: stop spinning on unreachable stairs
+At 100 ft the dive re-planned a path to a remembered '<' about 20 times
+a second for 10 minutes: the plan failed, the mover stayed idle, and the
+goal took 'idle' as still working. Stairs we can't reach are skipped for
+the rest of that level (both '<' and '>'), and the dive moves on to
+exploring.
+4292aee 2026-09-26 pilot: keep the light burning; options request
+Dive03 explored for minutes after 'Your light has gone out!' (a store
+lantern holds 7500 turns): with no light nothing around it was ever
+mapped, so every explore ended 'frontier unreachable'. The pilot now
+refills the lantern from flasks below 3000 turns, swaps torches below
+500, wields a spare light if none is worn, and tells the agent when out
+of fuel. An 'options' request shows the client's game options (checked:
+view_torch_grids etc. are on).
+0614c70 2026-09-26 explore: visited squares aren't path obstacles; dive retries failed exploring
+The explorer added squares it had stood on to the same set it passed
+the path planner as squares to avoid, so corridors it had walked became
+impassable ('frontier unreachable' at 50 ft). Visited squares are now
+only dropped from the frontier. A dive retries a failed explore up to 3
+times (monsters in the way are often the cause) before giving up.
+1c013b0 2026-09-26 pilot: town stairs remembered; dive walks on after fights; quieter breeders
+- The town's '>' (unlit at night, not in a fresh session's memory) is
+  remembered in runs/pilot/town.json once seen; a dive from town uses it.
+- A fight stopping the mover no longer makes the dive fall through to its
+  fallbacks (which ended in 'explore refuses the town'): it walks on next
+  tick; only repeated real failures give up.
+- No breeders wake-up during a dive (it's leaving the level anyway).
+3b7729f 2026-09-26 pilot: emergency fixes after Dive03's death at 1000 ft
+Dive03 fled a fight at 900 ft down the stairs (fine: the user says stairs
+down beat Phase Door), then kept exploring at 1000 ft, met Stone trolls
+(lvl 25 vs 18), a Gnome mage and a Black ogre, read one Phase Door, was
+held back by the 2.5 s phase limit, and died ~5 s later.
+- After an emergency escape by the stairs: a Recover goal rests on the
+  staircase (the arrival rule still leaves if threatened) and, if that's
+  below max_depth, goes back up once healed. The previous goal is dropped.
+- A monster far above our level (danger_level) within 12 squares during
+  any goal: drop the goal, Flee to the stairs, tell the agent
+  (danger_seen). Before, danger was only checked on arrival.
+- Phase Door again after 0.7 s (not 2.5) when HP < 35% with something
+  adjacent; below 30%, start Word of Recall as the last resort.
+- max_depth order (feet): dives stop there, explore refuses below it.
+3cbfbd5 2026-09-26 pilot: wearall action; shop buys the cheapest match
+Re-outfitting Dive03 after its death (equipment is dropped where you
+die): the shop goal bought the first name match, which was an enchanted
+Cloak [1,+4] for 592 gold, boots for 622, armour for 680. It now buys the
+cheapest matching item. wearall puts on everything that fills an empty
+slot, one item per tick (letters shift after each).
+1ee16c4 2026-09-26 Tool mode: minimap query (the (M)ap screen; its frame shows the true wilderness position)
+The depth indicator is one signed byte and wraps far from town (Gandalf's
+'depth 66' is [32N, 11W]); the (M)ap screen's frame label is the reliable
+position, as the user pointed out.
+2a3d488 2026-09-25 HANDBOOK: breeders, stat drainers, corridors, the user's money rules
+27b2e60 2026-09-25 pilot: know dungeon from surface without trusting the depth sign
+The depth indicator is one signed byte (tables.c DEPTH, TINY), so far
+wilderness squares (index < -127) arrive as positive depths -- Dive03's
+wander showed 93, 33 and 37 on wolf and panther levels. World.in_dungeon
+is judged from how the level changed (stairs, recall message, walking off
+an edge), and the explorer, the mover's surface rules and the idle recall
+use it.
+66971c5 2026-09-25 pilot: no exploring on the surface; idle recall after 10 min
+While the agent was writing a long reply, the 180 s idle recall used the
+character's only Word of Recall; the agent then sent 'explore' in town and
+the frontier led off the level edge, across several wilderness squares,
+into a night forest at 2S 2E it couldn't find its way out of (the user
+walked it out). Explore now refuses depth <= 0, and idle_recall_s
+defaults to 600 s. Mover's default log accepts keyword args.
+319c4ff 2026-09-25 pilot: breeder warning at 3 (user: cull 1-2, otherwise leave; no XP)
+2182e0a 2026-09-25 pilot: secret-door search, breeder warning, explorer fixes
+At 750 ft (after recall) the dive failed twice:
+- "frontier unreachable": the only frontier left was the square the
+  character stood on (unknown rock its light never reached). Visited
+  squares no longer count as frontier.
+- "explored the level, no stairs": the area was walled in. Search goal:
+  visit dead ends, two-wide corridor ends and room corners nearest first,
+  search 8 times each, until a new way on appears; the dive falls back to
+  it when exploring runs out. Found 3 secret doors there.
+- A swarm of Giant black lice then blocked every path: 4+ breeders
+  (MULTIPLY) in view -> attention 'breeders' (leave the level).
+a30c279 2026-09-25 pilot: meet packs in a corridor (experimental)
+The user's advice from session 2: 'Always best to retreat behind a turn,
+to let enemies trickle into melee range.' With 3+ monsters within 5
+levels of ours closing in and nothing adjacent yet, and not on stairs,
+the pilot moves to a corridor square within 10 steps that leads away from
+the pack and holds there (auto-retaliate fights them one at a time).
+Order choke=on|off. Not yet exercised against a real pack.
+b5c8d9f 2026-09-25 pilot: dive handles pillared rooms and nearby loot by itself
+Standing orders pillared=explore and loot_radius=10 (defaults) replace
+stopping to ask the agent, whose round trip costs tens of seconds: a dive
+explores a pillared room for a '>' (the user's advice) and fetches items
+seen within 10 squares, then carries on. stop_on defaults to
+unique,danger. Tested: Dive01 50 -> 200 ft with three pickups, no stops.
+c4f4ed2 2026-09-25 pilot: tell the agent about drained stats and blow changes
+From the user's session: an invisible monster drained DEX and cost a
+blow (4 -> 3), and restoring it took almost all their gold.
+835181c 2026-09-25 explore: run across dark rooms too (2.0 -> 2.9 tiles/s)
+60 of 71 exploration plans were single steps (in a dark room the unknown
+is always adjacent). When the next hop is that short, or we're in a
+corridor, free-run that way (falling back to walking if a run can't
+start there). 60 s at 50 ft: 59 runs/39 walks, 174 tiles (before: 14/84,
+117).
+6c3cea5 2026-09-25 mover: run wherever possible (2.2 -> 5.5 tiles/s across town)
+The user runs 61% of their steps at ~0.11 s/tile (session 1); the pilot
+walked (~0.5 s). Runs now start on straight stretches of 3+ (was 5),
+walks stop being queued ahead of a runnable stretch (the two queued walks
+meant a run could never start after the first step), corridor runs carry
+on to the goal from wherever the server's run stops, and a monster in
+view only stops runs when it's within 5 squares (the options have
+disturb_move/disturb_near off, as the user plays).
+2828f45 2026-09-25 Tool mode: chat command; tools/observe/scribe.py messenger
+The user asked for answers in game while they play and comment in chat.
+Tool mode gets 'chat TEXT' (send_msg, as typed after ':'), and scribe.py
+logs in a messenger character (Scribe) that whispers each line written to
+a FIFO to the user's character, split into chat-sized pieces. Local
+server, at the user's request only; the tool's characters otherwise don't
+chat.
+7687f52 2026-09-25 pilot: retry ignored stairs; fresh gold between purchases; stale attention
+- A stairs command right after arriving can be ignored by the server (no
+  level change, no message): '<' 0.7 s after arriving next to seven
+  Lemures did nothing and the pilot ended up fighting them. Stairs are
+  now retried after 1.2 s while still on them, within 6 s of arriving.
+- Shop: re-read gold (and the pack) after each sale/purchase; the next
+  purchase used stale gold ("You do not have enough gold").
+- A new goal moves unread attention events to the report's news, so the
+  agent's next wait answers about the new goal (a stale event made the
+  agent replace a pending recall with a shop trip).
+ecb1a5f 2026-09-25 pilot: runs, rubble, and exploration that doesn't get stuck
+- Mover runs long straight stretches of a planned path (stopped one tile
+  early with a walk request, which the server swallows mid-run), and has a
+  free run for exploring: in a corridor with nothing in view, run the way
+  the path starts and let the server's run follow the corridor, as the
+  user explores. (Planned paths to the nearest frontier are rarely 5
+  straight tiles, so the first version never ran.)
+- ':' is rubble and blocks ("There is rubble blocking your way"): the
+  explorer bumped one 41 times. It's now impassable and not a frontier; a
+  "blocking your way" bump marks the tile and replans at once; the
+  explorer remembers tiles it failed to reach on this level.
+Measured at 600 ft with Dive03: 89 tiles explored in 60 s with 90 walks
+(before: 1 tile, 41 walks).
+62e1791 2026-09-25 HANDBOOK: hunt and shop goals, pickup, emergency behaviour, news vs wake events
+68d581c 2026-09-25 pilot: fixes from the first agent-driven dive (Dive03, town -> 600 ft)
+Playing Dive03 as the agent (sell junk, restock, dive, a unique, a bad
+fight, recall, restock, recall down, dive) turned up:
+- Escape burned all 10 Phase Doors in 10 s: the orcs followed each short
+  teleport and the rule re-fired every tick. Now: stairs underfoot; Phase
+  Door only with a monster adjacent, at most every 2.5 s; out of melee,
+  walk to stairs within 20 squares, else a cure potion (every 1.5 s).
+- Arrival rule pressed the stairs twice (before the level change came),
+  which could take us straight back: no stairs while a stairs command is
+  pending. A pack only counts if within 5 levels of ours (5 jackals are
+  XP for a level-11 warrior).
+- Pickup: 'custom g' did nothing; ',' (Stay) picks up, as the user does.
+  Auto-pickup after "You see ..." with pickup=all; pack_full event.
+- Shop: sells by name (identifying one ring re-sorted the pack and index
+  sells missed), and reports the server's actual answer ("I don't want
+  that!", "You bought ...") instead of assuming success.
+- goal hunt NAME: walk next to a monster and let auto-retaliate fight.
+- danger_avoided/started are news in the next report, not wake-ups.
+- Standing orders persist in orders.json across pilot restarts.
+68bf4a2 2026-09-25 pilot: shop goal, surface pathing, move logs, plan/dump debug requests
+- goal shop STORE [buy NAME:N]... [sell LETTER:N]...: walk into the store,
+  sell (confirm yes; from the end of the pack so letters don't shift),
+  buy by name within the gold we have, wait for each refreshed listing,
+  leave. Reflexes stay quiet inside a store (any command leaves it).
+- Surface levels: unseen ground is walkable (at night the town floor isn't
+  drawn -- the first shop trip found no path), trees/fences aren't, and
+  the Tavern entrance '8' is allowed at a high cost (new characters start
+  inside the Tavern).
+- decisions.jsonl logs each movement plan; 'plan Y,X' and 'dump' requests
+  for debugging paths offline.
+Tested: Dive02 walked out of the Tavern at night and bought 2 Phase Door
+at the Alchemist (no CLW in stock -- reported). Dive01, left idle at
+150 ft, recalled itself to town after idle_recall_s (the user's rule).
+6ff9f92 2026-09-25 pilot: HANDBOOK.md for the playing agent; faster stair-scum
+The handbook is all a playing agent needs: the CLI, goals, orders,
+attention events, how to read the report, and the user's play advice.
+Dive no longer waits a fixed 3 s after taking stairs, only until the
+level changes (the human scums at ~1 s per staircase).
+e726f47 2026-09-25 tools/pilot: first pilot (world, mover, reflexes, goals, control CLI)
+The Python layer that plays second to second while an agent (Claude, for
+now) sets strategy through pilotctl.py -- the architecture agreed with the
+user (design_pilot.md).
+- world.py: perception from client events: position, depth (level
+  events), map + colours, monsters named via glyphs.py, monster/item lists,
+  indicators, inventory, messages, and what we're standing on (connected
+  stairs: '>' leaves you on '<' and vice versa; stepping onto a tile uses
+  the remembered map, since the map only shows '@').
+- mover.py: tick-based pathing on remembered tiles (unknown = rock in the
+  dungeon), two walks queued, verified by pos events; replans around
+  blocked tiles. Diagonals cost a hair more so equal paths go straight
+  (the first version zig-zagged 7,1,7,1 through a pillared room).
+- pilot.py: the tick loop and rules: death; emergency (stairs underfoot >
+  Phase Door > cure potion); arrival into a pack or out-of-depth monster
+  -> straight back up the stairs; eat; adjacent monster -> stand still
+  (server auto-retaliate, as the user plays: 78% of their blows); rest when
+  hurt and alone; goals (dive = the user's stair-scum, explore frontier,
+  goto, recall, rest, wait); idle -> recall after idle_recall_s without the
+  agent (the user's rule for unattended characters). Attention events +
+  a text situation report for the agent; decisions.jsonl logs every act.
+- pilotctl.py: status, goal, order, stop, item actions, wait (blocks until
+  the pilot needs a decision).
+First runs (Dive01, local server): dive from town to 150 ft in under a
+minute by stair-scumming, two fights won by auto-retaliate. A bug found on
+the way: a fight stopped the mover and the dive then waited forever for a
+walk that wasn't happening.
+e01a367 2026-09-25 Tool mode: rest command; fix shopcat's rest
+Resting isn't a server custom command (the table has no 'R'); the
+interactive client sends the fixed PKT_REST, which the server treats as
+a toggle (recv_toggle_rest). Tool mode gets 'rest' for it. shopcat's
+rest() sent 'custom R', which only ever produced "No command 'R'"
+errors, so it never actually rested. Found while checking the command
+table for the pilot.
+a976427 2026-09-25 Tool mode: map attrs, --visuals glyph table, option command; pilot/glyphs.py
+To know *which* monster is on each tile (the pilot's perception):
+- map replies now carry attrs[] (chr(48+attr) per cell) next to rows[].
+- --visuals FILE uploads extra glyphs ("r|k|v INDEX CHARCODE ATTR") with
+  the visual tables; the server draws our map with them. ready reports
+  how many were set.
+- option NAME yes|no sets a game option (pref-file path + send_options);
+  'options' lists them. Needed for avoid_other, which makes the server
+  draw every monster exactly as uploaded (no random multi-hued colours,
+  no clear monsters), and for the user's stack_force_costs.
+tools/pilot/glyphs.py builds the table from lib/edit/monster.txt: each
+race keeps its letter and gets a colour unique within it. Terrain only
+uses colours 1..15 (checked on town and dungeon maps), so races sharing a
+character with terrain/objects get 16..63; bit 0x40 is off limits (the
+map stream's RLE uses it). 616 races, 616 distinct glyphs.
+Tested at 50 ft: every monster decoded from the map matched the
+server's own monster list (worm mass, icky thing, a pack of 12 Jackals,
+an out-of-depth Radiation eye), zero mismatches.
+4185cbf 2026-09-25 Tool mode: monlist/itemlist events
+The server's own lists of visible monsters and seen objects: tool mode
+subscribes the MONLIST_TEXT and ITEMLIST_TEXT streams (forced onto window
+0 like the dungeon and special views) and reports each refresh
+(NTERM_FRESH) as monlist/itemlist {lines}. Monster lines carry the race
+name, count and the glyph the server draws for *us* ("Soldier ant
+('a')/('a'):[1]"), which will tie names to map glyphs.
+Server behaviour (checked in server/monster2.c, cave.c): the monster list
+is sent only when a monster's visibility changes, not at login or on a
+level change, and an empty list comes as [""] when the last one leaves
+view. The item list comes on every level change.
+0d081fc 2026-09-25 Tool mode: level event and 'confirm yes'
+- level {depth}: emitted when the depth indicator changes (and once at
+  start), so the tool no longer polls status to notice stairs, recall
+  or trapdoors.
+- confirm yes|no: answer the next confirm prompt with yes. Needed to sell
+  to stores (the plan's town routine: sell the starting kit, as the user
+  does). The yes expires after 5 s so it can't answer some later,
+  unexpected prompt; without it confirms are still declined.
+Tested on the local server with Dive01: sold a potion at the Alchemist
+("Accept 50 gold?" answered yes, gold 100 -> 150); took the town stairs
+down and up: level 0, 1, 0.
+4a24a66 2026-09-25 tools/observe/screen.py: show the screen at a session time
+For studying a recorded session next to timeline.py: prints the last
+captured screen at or before MM:SS on the pktlog clock.
+d109439 2026-09-25 tools/observe/timeline.py: merge a recorded session into one log (untested draft)
+38d17bb 2026-09-25 tools/observe/record.py: record a human playing, for study
+Runs the normal GCU client in a private tmux server (tmux -L mang, so
+the player's own tmux is untouched; escape-time 10 so ESC is snappy) and
+records screen snapshots on change (capture-pane with colours, epoch
+timestamps) alongside the client's --pktlog (packets + keys). The player
+attaches with 'tmux -L mang attach -t play'; recording ends when the
+client exits. Output directory is mode 700.
+Dry-run on the local server with Dive01: login, walk, run, rest, monster
+list, quit; keys, packets and screens line up.
+5cfc1dc 2026-09-25 pktlog: log consumed keys; keep passwords out of the log
+To learn from human play, --pktlog now also records every key the
+client's commands and prompts consume (dir "K": key, code, whether it
+came from a keymap expansion, whether a menu screen was up), next to the
+packets those keys produce, and notes the wall-clock time of t=0 so the
+log lines up with screen recordings. Hooked by wrapping inkey_ex(), which
+has several return paths.
+A dry run showed the password typed at the login prompt in the key log,
+so private input (askfor_aux with m_private: login and password change)
+is logged only as {"muted": true}. Password hashes in sent packets
+("$1$" + 32 hex in PKT_LOGIN/PKT_CHANGEPASS) are blanked to X: on the
+wire the hash works like the password.
+3c7729a 2026-09-25 newchar.py: create a throwaway character and put on its kit
+Writes the character's private files (random password, client config;
+mode 600), logs in with --birth (default: the Half-Orc Warrior build the
+user recommends, DEX > STR > CON > WIS > CHR > INT), wields the starting
+weapon and light, wears the armour, and prints race, class, stats, HP and
+blows (skills2[0]). New characters start with the kit in the pack, not
+worn. MangClient gains a birth= argument.
+Tested on the local server: Dive01 and Dive02 created; Dive02 killed with
+'suicide Dive02', refused without --birth ("is dead"), then recreated
+with fresh stats by newchar.py.
+a11d99e 2026-09-25 Tool mode: suicide NICK command
+Kills the logged-in character for good (send_suicide), so a throwaway can
+be rerolled and the --birth replace-a-dead-character path tested. It's
+irreversible, so like the interactive get_check() it insists on
+confirmation: NICK must match the logged-in character's name.
+04b8e89 2026-09-25 Tool mode: --birth creates the character without the birth menus
+Dungeon work will kill characters, and recreating them meant driving the
+interactive birth screens through tmux. With --noprompt, --birth
+RACE:CLASS:SEX:STATS (e.g. Half-Orc:Warrior:m:DEX,STR,CON,WIS,CHR,INT)
+answers them: race/class/stat names are matched case-insensitively
+against the lists the server sends with its login reply (the client waits
+for them rather than assuming their order), and the stats give the
+priority order, unlisted ones following. A dead character (PLAYER_BONE)
+is replaced with PLAY_RESTART. Without --birth, tool mode still refuses
+to create or replace a character.
+Two gotchas found on the way: the server sends stat names as "STR: ", so
+only the letters are compared; and quit() treats a message starting with
+'-' as an exit code (a "--birth: ..." error exited 0 silently), so
+errors start with "Birth spec:".
+d682520 2026-09-25 nav: run along long straight stretches
+Straight stretches of 5+ tiles are run ('.' + dir, what shift+direction
+sends) and the run is stopped with a walk request one tile before the
+stretch ends (the server swallows a walk that arrives mid-run and stops
+the run). A run that turns or overshoots is stopped and the path
+replanned; one that can't start falls back to walking. Not used near the
+level edge or no-go zones. Equal-cost paths now prefer going straight.
+Measured on the test server: ~0.22-0.29 s/tile vs ~0.5 walking.
+052cd9a 2026-09-25 shopcat: restock buys a Brass Lantern when the character has none
+77d2221 2026-09-25 shopcat: --list-servers (metaserver list with host/port)
+Queries mangband.org:8802 like the normal client does when started
+without a host, and prints --host/--port for each server, marking the
+1.5.3 ones this client can talk to.
+dd9f1d1 2026-09-25 shopcat: fixes from code review and read-through
+- Restock: no endless town<->level trips when gold can't buy food
+  (remember the gold level that bought nothing); don't re-walk to the
+  store for nothing; wait for the refreshed listing after each purchase
+  and only count purchases the server confirmed.
+- rest(): 'R' toggles, so send it only when the state indicator says
+  we're not resting (was switching resting off on slow regeneration).
+- Keep doing upkeep (fight/rest/eat) while waiting to retry doors.
+- Single-step next to no-go zones as well as the level edge.
+- explore(): legs cut short by attacks, and waypoints with nowhere to
+  stand, no longer count toward 'boxed in'.
+- Dungeon depth (trapdoor) stops cleanly instead of KeyError; a ghost is
+  a safety stop (exit 2).
+- mang.py: drain client stderr (a full pipe would block the client);
+  only an error about the same command fails a query.
+- report.py uses shopcat.INCOMPLETE; wild.py uses nav's map size.
+- README: build limitation (autotools/POSIX only).
+6ec6f8b 2026-09-25 shopcat README: bring up to date
+Surveyor-style (non-REGEN) character, option table, exit codes, current
+upkeep (fight back, restock, lantern), step-by-step walking and why,
+arena handling, level_done records.
+468b717 2026-09-24 README: document the >10 arenas server crash and walking speed
+e87cf76 2026-09-24 nav: logs/fences ('=') block movement; explore budget 480 s
+'=' in the wilderness is logs/fences ("There is a wall blocking your
+way"); treating it as walkable sent the walker into a fenced paddock
+over and over. Default --explore-secs is 480 now that travel is
+step-by-step walking (~0.5 s/tile).
+8fd1c94 2026-09-24 shopcat: notice attacks, fight back
+mang.py counts '... bites/hits/claws ... you' messages. The walker stops
+after 3 new hits and goto() returns, so upkeep can run: it attacks
+adjacent monsters (letters on the map) before resting. A door visit
+interrupted by an attack is retried after dealing with it instead of
+being recorded as unreachable. (Seen: a Crow bit the character 40 times
+during one long leg, taking it to 9/86 HP.)
+512f394 2026-09-24 nav: walk our own path (pipelined) instead of server pathfind
+Server pathfind searches 25 tiles around the player and treats unseen
+grids as open, including the row/column past the level edge, so near
+an edge it could route off the level (2S -> 3S). goto() now walks the
+client-side shortest path itself, keeping two steps queued (the server
+drops a walk when more than two are queued), one at a time next to the
+edge; stops and replans on a 'blocking your way' bump, a stall or a
+deviation.
+649b3d4 2026-09-24 nav: walk tile by tile near the level border; never target no-go tiles
+The server's pathfinding treats the unseen row/column just past the
+level edge as walkable, so a pathfind along the edge could step off the
+level (seen: 2S -> 3S twice at the same spot). Within 2 tiles of the
+border goto() now walks its own path one tile at a time. Goal tiles in
+the no-go set are dropped (a sweep fallback goal inside an arena box
+sent the character back into the arena).
+c736d53 2026-09-24 shopcat: restock food and oil at the General Store
+In town the tour buys rations (up to 10) and flasks of oil (up to 6)
+with the gold it has; elsewhere, when down to one ration and it has
+gold, it walks back to town to restock.
+73069ba 2026-09-24 shopcat: tighter arena no-go zone, safer fallbacks
+- No-go zone is the arena itself (interior + wall ring), no margin: a
+  margin could shut the character in right after leaving, which then
+  looked like being boxed in and sent it back into the arena.
+- escape_arena() does nothing unless actually enclosed; more than 3
+  'boxed in' reports on one level stop the tour.
+- goto(): don't resend a hop next to the level edge (an overshoot would
+  walk off the level).
+0c9572c 2026-09-24 shopcat: get out of (and keep away from) wilderness arenas; --resume
+Bumping an unseen arena wall ("You enter an ancient fighting pit.")
+teleports you inside; the sweep then finds nothing reachable. Now:
+- mang.py flags arena entry/exit from messages; explore() raises Boxed
+  after 6 unreachable waypoints in a row (covers a fresh login inside).
+- escape_arena() walks into the arena wall until "You leave the arena.",
+  then marks the arena box (+2 margin) as no-go for that level
+  (nav.extra_blocked), saved to <out>.nogo.json across runs.
+- Near a no-go zone goto() walks its own path tile by tile instead of
+  using server pathfinding, which would bump the wall again.
+- level_done records mark finished levels; --resume skips them.
+  report.py ignores records without a door.
+b4ad83f 2026-09-24 shopcat: food safeguards, walk out of the Tavern
+- Stop (Danger) when weak from hunger with no food outside town; warn
+  about hunger without food only once.
+- nav: allow the Tavern entrance '8' at a high cost (new characters start
+  inside the Tavern).
+- go_to() syncs position first.
+- README: avoid REGEN races (a Half-Troll eats a ration every ~100 s in
+  the wilderness; others use almost no food at normal speed).
+0e4ce73 2026-09-24 shopcat: wilderness tour of the 12 levels around town
+wild.py: world_index()/world_coords() (mirrors server/wilderness.c),
+plan_tour() through target levels, cross() steps off a level edge,
+explore() sweeps a coarse waypoint grid so every part of the level has
+been in sight (works at night: lit houses show at a distance).
+shopcat.py --wilderness: town, then 1N 2N 1E 2E 1S 2S 1W 2W and the four
+diagonals, then back to town; records carry depth/world/level. Keeps a
+light burning (prefers a Brass Lantern, refills it from Flasks of oil
+below 3000 turns, swaps torches), rests when HP < 50%, stops if HP keeps
+falling. Re-plans after unexpected level changes/teleports.
+nav.py: unseen ground is walkable (like server pathfinding), trees are
+not, level border excluded; goto() gets a deadline and raises Jumped if
+the position jumps. mang.py: keeps a trail of positions.
+report.py: level column.
+e2e51fe 2026-09-24 Add shopcat: Python tool that catalogs player shops via -mtool
+tools/shopcat/:
+- mang.py: subprocess wrapper for mangclient -mtool (events, commands).
+- nav.py: Dijkstra over the absolute 198x66 map, split into pathfind
+  waypoints within the server's reach; retries a hop the server ignored
+  before treating the tile as blocked.
+- shopcat.py: finds closed house doors ('0'), visits them nearest-first,
+  opens each and classifies the answer (shop / for_sale / locked /
+  ejected / no_door / none / unreachable). Shops are recorded with every
+  item examined (full name, description, owner's asking price). Locked,
+  ejected and open-door visits are retried after --retry-delay. Eats when
+  hungry, stops if dead. Writes one JSON line per visit.
+- report.py: latest complete visit per door -> CSV of shop stock.
+Tested on the local server: full town (52 doors) in ~2 minutes; locked
+and owner-ejects-mid-visit cases retried successfully.
+74903ae 2026-09-24 Tool mode: full-level map and distinctive house-door glyph
+The headless term is now (MAX_WID+14) x (MAX_HGT+4), so the dungeon
+stream subscribes at 198x66. With the screen as large as the level the
+server pins the panel at (0,0), so 'map' rows and 'pos' share absolute
+coordinates.
+Before the visual tables are uploaded, tool mode sets the glyph of
+closed house doors (features 0x71-0x78) to '0', which no game data
+uses. The server draws our map with it, so house doors are unambiguous.
+(Open house doors mimic plain open doors server-side and can't be
+distinguished this way.) The 'ready' event reports the glyph.
+4b00658 2026-09-24 Tool mode: add command channel and position tracking
+Commands on stdin: walk DIR, pathfind Y X, open/alter DIR,
+examine SLOT, leave, eat ITEM, and a generic
+'custom KEY [store] [item=N] [dir=N] [value=N] [entry=TEXT]'.
+Custom commands are looked up by key (and COMMAND_STORE flag) in the
+server-sent table, never by fixed index. Each command answers with an
+ack or error event.
+Queries: commands (custom command table), status (all indicators by
+name, position, ghost), inven, map (subscribed dungeon stream rows).
+recv_cursor() now feeds MCURSOR_PLAYER packets to tool mode, which
+emits 'pos' events with absolute y/x (the server sends them as
+vis, y, x).
+9943fa8 2026-09-24 Add headless tool mode (-mtool) with its own main loop
+main-tool.c: display module with one in-memory 80x24 term, no-op output
+hooks and no keyboard. Selecting it sets tool_mode and implies
+--noprompt. Only used when -mtool is given explicitly.
+c-tool.c: tool_loop() replaces Game_loop() in tool mode. It pumps the
+network (keepalives), services server requests without UI and reports
+them as JSON lines on stdout: ready, message, popup, pause,
+interactive (answered with ESC), confirm (always declined), store,
+store_leave, blocked_input, error. Reads commands from stdin (only
+'quit' so far); stdin EOF also quits.
+Hooks: do_handle_message() emits instead of displaying (avoids -more-
+prompts); show_popup() emits the popup text; inkey_ex() returns ESC and
+reports blocked_input so no prompt can hang the client.
+ad3427d 2026-09-24 Add non-interactive login (--noprompt)
+--noprompt skips the name/password prompts; nick comes from --nick or
+config, password from --passfile PATH, MANG_PASS, or config 'pass'
+(no --pass option, since argv is visible to other users). The password
+is still MD5Password-hashed and capped at 15 chars, so the PKT_LOGIN
+bytes are identical to an interactive login. In this mode the client
+quits instead of entering birth screens (missing or dead character)
+and instead of prompting to retry a failed connection.
+Packet logger: name the initial handshake and PKT_LOGIN.
+234b8b1 2026-09-24 Add optional packet logger (--pktlog PATH)
+Writes one JSON object per line: every parsed server->client packet
+(named, including dynamic STREAM:/IND: packets), client->server chunks
+via the connection send_cb hook (keepalives split out, custom commands
+labelled by key), plus connect/close notes. Disabled unless --pktlog or
+MANG_PKTLOG is given.
+2533552 2026-09-24 Ignore autotools .dirstamp files
+6963c00 2026-09-24 Pristine MAngband 1.5.3 sources

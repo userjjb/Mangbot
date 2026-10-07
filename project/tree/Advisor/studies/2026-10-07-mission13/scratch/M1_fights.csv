@@ -1,0 +1,19 @@
+start,end,depth_ft,monsters,hp_before,hp_low,hp_after,seconds,outcome,consumables,blows,cite
+08:58:29,08:58:32,300,White jelly,135,135,135,2.8,killed (tactic: blocks the way),none,3,dec 08:58:30.19 tactic; ev L43758-43776; swings=10; monster_attacks_logged=4
+09:00:21,09:00:33,350,"Red worm mass x5 (breeders; killed), Giant white tick (fled), Giant black ant (fled)",135,130,130,12.2,"5 killed, 2 fled; then left level via stairs-scum",none,3,"dec 09:00:21 unseen_attacker, 09:00:23 breeders; ev L44369-44450; swings=44; monster_attacks_logged=2"
+09:01:28,09:01:32,400,Novice warrior x3 (group),135,113,116,3.7,"2 killed, 1 fled (killed later 09:06:41?)",none,3,ev msgs 09:01:28-32; swings=16; monster_attacks_logged=6
+09:01:50,09:01:57,400,Green jelly + Brown yeek,126,126,130,6.8,both killed (tactic: jelly blocks the way),none,3,dec 09:01:51 tactic; swings=24; monster_attacks_logged=11
+09:02:39,09:02:43,400,"Giant white ant, Kobold shaman (White worm mass woke)",135,133,135,4.4,both killed,none,3,swings=5; monster_attacks_logged=1
+09:03:42,09:03:42,400,Grey mold,135,135,135,0.2,killed (tactic),none,3,dec 09:03:41 tactic; swings=1; monster_attacks_logged=0
+09:06:40,09:06:41,400,Novice warrior,135,130,130,1.2,killed,none,3,swings=7; monster_attacks_logged=2
+09:07:39,09:07:44,450,Baby gold dragon,135,127,130,4.8,killed; no breath fired,none,3,ev 09:07:39-44; swings=23; monster_attacks_logged=9
+09:08:10,09:08:12,450,Zombified kobold,135,133,135,1.7,killed,none,3,swings=6; monster_attacks_logged=4
+09:08:20,09:08:21,450,Kobold shaman,124,123,128,0.7,killed,none,3,swings=2; monster_attacks_logged=1
+09:08:46,09:08:53,450,Baby black dragon,135,93,105,7.0,killed; 2 acid breaths + 4 melee rounds; rest 1 s after,none,3,ev 09:08:46-53; see dispatch Q2; swings=33; monster_attacks_logged=12
+09:10:42,09:10:42,450,Radiation eye,135,135,135,0.3,killed (tactic),none,3,dec 09:10:41 tactic; swings=2; monster_attacks_logged=0
+09:11:20,09:11:21,450,Fruit bat,135,134,135,0.7,killed,none,3,swings=1; monster_attacks_logged=1
+09:11:54,09:11:55,450,Black harpy,135,127,140,1.4,killed -> clvl 11,none,3,"ev 09:11:55.5 ""come to level 11""; swings=6; monster_attacks_logged=6"
+09:12:55,09:13:02,450,Large kobold,146,131,136,7.1,"fled at 09:12:59.7, not killed",none,3,ev 09:12:55-13:02; swings=18; monster_attacks_logged=3
+09:14:46,09:14:51,450,"Nighthawk, Orc shaman",146,119,121,4.7,both killed (door just unlocked),none,3,ev 09:14:46-51; swings=21; monster_attacks_logged=13
+09:15:22,09:15:27,450,Large kobold,141,118,119,4.7,"killed (fled flag at 15:27.1, killed 0.2 s later)",none,3,ev 09:15:22-27; swings=19; monster_attacks_logged=4
+09:19:11,09:19:13,0,"Boil-covered wretch, Singing happy drunk (town)",146,146,146,1.4,both killed,none,2 blows (Sabre),town; ev 09:19:11-13; swings=3; monster_attacks_logged=0

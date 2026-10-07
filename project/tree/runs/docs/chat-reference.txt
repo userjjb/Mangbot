@@ -1,0 +1,60 @@
+
+
+                                            Chat Guide
+
+Basics
+
+To chat, hit ':', type your message, and hit Return. By default, that will send a message to the #public channel.
+
+Private messages
+
+You can send private messages to other players or to parties. Begin your message with the target name and a colon,
+
+Bilbo: what's in your pocket?
+
+You can use short names, up to the point when there is no ambiguity. For example,
+
+bil: well, what is it?
+
+will resolve to Bilbo, unless there's another online player or a party starting with bil. Even one letter should suffice.
+
+The game will never send your private message to the wrong recipient in case of ambiguity, it will return an error instead.
+
+Chat channels
+
+When you enter the game, your default chat channel is #public. To change channels, type #channel_name into chat prompt, without any messages.
+
+For example,
+
+#hobbits
+
+To send message to another channel without changing it, prepend channel name to your message, like so:
+
+#public Cheers, lads
+
+Virtual Channels
+
+There are several "virtual" channels, that you don't need to join, yet can send messages to.
+
+They are &say and &yell. The first one can be used to talk to people in immediate vicinity (in your line of sight). The '&yell' channel is heard by all people on the same dungeon level as you. In addition, it will disturb players in your immediate vicinity.
+
+You address those the same way you would address private messages, by prepending channel name and a colon to the beginning of the message.
+For example:
+
+&say: Hello
+
+or
+
+&yell: WAIT!!!
+
+Chat Tab Interface
+
+If you have a window dedicated to chat messages, you will see it has a "Chat Tab" bar on the top. By default, you shall only see '#public' channel. But you can easily add more chat tabs and switch between them.
+
+To control the chat tab interface, press the ' key. It will then present you several sub-commands, for switching between tabs (p, n), closing tabs (c), and creating new ones (o).
+
+When creating new tabs, you can type anything you would normally use in your chat prompt, for example chat tab #hobbits will display the chat channel with that name, and the Bilbo tab will display private messages from/to that player.
+
+Note: don't forget that you can macro those functions. If you have some keys to spare, \e'p and \e'n can make convinient shortcuts for 'previous tab' and 'next tab'.
+
+                

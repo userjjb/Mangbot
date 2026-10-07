@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script type="text/javascript" src="https://web-static.archive.org/_static/js/bundle-playback.js?v=lGQTDXxZ" charset="utf-8"></script>
+<script type="text/javascript" src="https://web-static.archive.org/_static/js/wombat.js?v=o9P2E1FK" charset="utf-8"></script>
+<script>window.RufflePlayer=window.RufflePlayer||{};window.RufflePlayer.config={"autoplay":"on","unmuteOverlay":"hidden","showSwfDownload":true};</script>
+<script type="text/javascript" src="https://web-static.archive.org/_static/js/ruffle/ruffle.js"></script>
+<script type="text/javascript">
+    __wm.init("https://web.archive.org/web");
+  __wm.wombat("https://www.mangband.org/docs/client-cookbook","20260208194504","https://web.archive.org/","web","https://web-static.archive.org/_static/",
+	      "1770579904");
+</script>
+<link rel="stylesheet" type="text/css" href="https://web-static.archive.org/_static/css/banner-styles.css?v=1utQkbB3" />
+<link rel="stylesheet" type="text/css" href="https://web-static.archive.org/_static/css/iconochive.css?v=3PDvdIFv" />
+<!-- End Wayback Rewrite JS Include -->
+
+    <meta charset="utf-8"/>
+    <title>Client Configuration Tips | MAngband</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="generator" content="GravCMS"/>
+    <meta name="description" content="MAngband - Multi-player Angband!"/>
+
+    <link rel="icon" type="image/png" href="/web/20260208194504im_/https://www.mangband.org/user/themes/quark-m/images/favicon.png"/>
+    <link rel="canonical" href="https://web.archive.org/web/20260208194504/https://www.mangband.org/docs/client-cookbook"/>
+
+                                                            <link href="/web/20260208194504cs_/https://www.mangband.org/user/plugins/markdown-notices/assets/notices.css" type="text/css" rel="stylesheet"/>
+<link href="/web/20260208194504cs_/https://www.mangband.org/user/plugins/form/assets/form-styles.css" type="text/css" rel="stylesheet"/>
+<link href="/web/20260208194504cs_/https://www.mangband.org/user/plugins/featherlight/css/featherlight.min.css" type="text/css" rel="stylesheet"/>
+<link href="/web/20260208194504cs_/https://www.mangband.org/user/plugins/login/css/login.css" type="text/css" rel="stylesheet"/>
+<link href="/web/20260208194504cs_/https://www.mangband.org/user/themes/quark-m/css-compiled/spectre.min.css" type="text/css" rel="stylesheet"/>
+<link href="/web/20260208194504cs_/https://www.mangband.org/user/themes/quark-m/css-compiled/theme.min.css" type="text/css" rel="stylesheet"/>
+<link href="/web/20260208194504cs_/https://www.mangband.org/user/themes/quark-m/css/custom.css" type="text/css" rel="stylesheet"/>
+<link href="/web/20260208194504cs_/https://www.mangband.org/user/themes/quark-m/css/line-awesome.min.css" type="text/css" rel="stylesheet"/>
+
+
+                                    <script src="/web/20260208194504js_/https://www.mangband.org/system/assets/jquery/jquery-2.x.min.js"></script>
+<script src="/web/20260208194504js_/https://www.mangband.org/user/plugins/featherlight/js/featherlight.min.js"></script>
+
+<script>
+$(document).ready(function(){
+    $('a[rel="lightbox"]').featherlight({
+        openSpeed: 250,
+        closeSpeed: 250,
+        closeOnClick: 'background',
+        closeOnEsc: '1',
+        root: 'body'
+    });
+});
+
+</script>
+
+
+</head>
+<body id="top" class=" header-fixed header-animated sticky-footer">
+    <div id="page-wrapper">
+            <section id="header" class="section">
+            <section class="container grid-lg">
+                <nav class="navbar">
+                    <section class="navbar-section logo">
+                        <a href="/web/20260208194504/https://www.mangband.org/" class="navbar-brand mr-10">
+    <img src="/web/20260208194504im_/https://www.mangband.org/user/themes/quark-m/images/logo/mangband.png" alt=""/>
+</a>                    </section>
+                    <section class="navbar-section desktop-menu">
+
+                        <nav class="dropmenu animated">
+                                                    
+<ul>
+                      <li>
+        <a href="/web/20260208194504/https://www.mangband.org/">
+          Home
+        </a>
+      </li>
+                    <li>
+        <a href="/web/20260208194504/https://www.mangband.org/downloads">
+          Downloads
+        </a>
+      </li>
+                    <li>
+        <a href="/web/20260208194504/https://www.mangband.org/docs" class="active">
+          Documentation
+        </a>
+      </li>
+                    <li>
+        <a href="/web/20260208194504/https://www.mangband.org/servers">
+          Online Servers
+        </a>
+      </li>
+                    <li>
+        <a href="/web/20260208194504/https://www.mangband.org/scores">
+          Scores
+        </a>
+      </li>
+                    <li>
+        <a href="https://web.archive.org/web/20260208194504/https://mangband.org/forum">
+          Forum
+        </a>
+      </li>
+      
+</ul>
+
+                                                </nav>
+
+                        
+                    </section>
+                </nav>
+            </section>
+        </section>
+        <div class="mobile-menu">
+            <div class="button_container" id="toggle">
+                <span class="top"></span>
+                <span class="middle"></span>
+                <span class="bottom"></span>
+            </div>
+        </div>
+    
+    
+        <section id="start">
+                    <section id="body-wrapper" class="section">
+                <section class="container grid-lg">
+                                            
+                                            <h2>Which client am I running?</h2>
+<p>On Windows, the "normal" client is the <strong>Windows client</strong>, and the "Multi-window" one is the <strong>SDL client</strong>.</p>
+<p>On MacOS, if you're using the official builds, you're on <strong>SDL client</strong>.</p>
+<p>On UNIX, you're hopefully on SDL (depending on the binary packages used, or the ./configure flags provided), otherwise, if you have windows, you're using ancient X11 port, if you're on terminal, it's the GCU port (ncurses).</p>
+<h2>Where is my config file?</h2>
+<p>On Windows, it should be in the game directory, next to <code>mangclient.exe</code> and it's called <code>mangclient.INI</code>.</p>
+<p>On UNIX, it's <code>~/.mangrc</code>.</p>
+<h2>Windows client</h2>
+<p>Currently, all supported configuration features are properly represented in the game interface. You can change fonts,
+select tilesets, and toggle sound from the main menu.</p>
+<h2>SDL</h2>
+<h3>Configuring terminal positions / fonts</h3>
+<p><em>Note: for those commands to work, you might need to toggle the mouse mode, by using the <code>!</code> command. Login into the game, exit all prompts, and press '!'.</em></p>
+<ul>
+<li>You should be able to drag your terminals around with the left mouse button.</li>
+<li>Right mouse button closes a terminal.</li>
+<li>Ctrl+Drag resizes the terminal, and Shfit+Drag rescales.</li>
+<li>Hold a terminal down with left mouse button and press Tab, to cycle through fonts.</li>
+<li>The fonts being cycled are being defined in <code>[SDL-Fonts]</code> INI section.</li>
+</ul>
+<h3>Enable/disable fullscreen</h3>
+<pre><code>[SDL]
+Width=640
+Height=480
+Fullscreen=1</code></pre>
+<p>Select appropriate screen resolution and set Fullscreen to 1.</p>
+<h3>Enable/disable sound</h3>
+<pre><code>[SDL]
+Sound=1</code></pre>
+<p>(1 to enable, 0 to disable)</p>
+<h3>Enable graphics / toggle tileset</h3>
+<p>The only way to enable graphics and to select a tileset in the SDL client, is to edit the  <code>mangclient.INI</code> (<code>~/.mangrc</code> on UNIX) and set:</p>
+<pre><code>[SDL]
+Graphics=1</code></pre>
+<p>(or <code>Graphics=2</code>, or <code>Graphics=3</code>).</p>
+<p>1=Standard
+2=Adam Bolt
+3=David Gervais</p>
+<h3>Combine arrow keys into diagonals</h3>
+<p>There's a useful feature in the SDL client, which allows you to combine two regular arrow key presses into one diagonal key press if you push them fast enough. For machines lacking a numpad or convient access to pageup/pagedown/home/end keys.</p>
+<p>To enable, edit your <code>mangclient.INI</code> (<code>~/.mangrc</code> on UNIX) and set:</p>
+<pre><code>[SDL]
+CombineArrows=1
+CombineArrowsDelay=20</code></pre>
+<p>The delay is in milliseconds.</p>
+<h2>X11</h2>
+<h3>Enable graphics / toggle tileset</h3>
+<p>The only way to enable graphics and to select a tileset in the X11 client, is to edit the  <code>mangclient.INI</code> (<code>~/.mangrc</code> on UNIX) and set:</p>
+<pre><code>[X11]
+Graphics=1</code></pre>
+<p>(or <code>Graphics=2</code>, or <code>Graphics=3</code>).</p>
+<p>1=Standard
+2=Adam Bolt
+3=David Gervais</p>
+<h2>Advanced keymapping and macroing</h2>
+<h3>Difference between keymaps and macros</h3>
+<p>There are 3 (yikes!) forms of key bindings in MAngband: keymaps, command macros and normal macros.</p>
+<p><strong>Keymaps</strong> only fire off when the game is expecting a command to be entered. Keymaps don't work in text/quantity/item/spell/etc prompts or in looking/targeting mode. Keymaps don't (yet?) support complex triggers, like <code>\[control-shift-F1]</code>, they are limited to <em>simple</em> triggers, like <code>f</code>, <code>F</code> and <code>^F</code> (base key, shift + key, ctrl + key). Keymaps are <em>mostly</em> used to support original and roguelike keysets and as an easy way to switch between them.</p>
+<p><strong>Command macros</strong> also only fire off when the game is expecting a command to be entered. Command macros don't work in text/quantity/item/spell/etc prompts or in looking/targeting mode. Macros <em>do</em> support complex triggers, like <code>\[alt-F2]</code>.</p>
+<p><strong>Normal macros</strong> fire off at all circumstances, both when the game is expecting a command and inside text/quantity/item/spell/looking/targeting/etc prompts. Macros <em>do</em> support complex triggers, like <code>\[alt-F2]</code>.</p>
+<h2>Writing macro files by hand</h2>
+<p>Find and edit your <code>user-xxx.prf</code> file in the lib/user dir. You can use one of those 3 forms:</p>
+<pre><code># Execute command sequence 'm1b' when 'H' is pressed (normal keymap)
+# Keymaps only fire off when a game is expecting a command.
+A:m1b
+C:0:H
+
+# Execute command sequence 'm1b' when 'H' is pressed (roguelike keymap)
+# Keymaps only fire off when a game is expecting a command.
+A:m1b
+C:1:H
+
+# Execte keypresses 'm1b' when 'H' is pressed (normal macro)
+# Note: such macro will render the key 'H' unusable for, say, typing 'Hello'
+# Normal macros execute in all contexts, at prompts, menus, etc.
+A:m1b
+P:H</code></pre>
+<p>As normal macros work in menus and text/item/etc prompts, it can be benefical to prepend them with <code>\e</code> (or a number of <code>\e</code>s), so that all prompts or silly states are cleared out. Such macros will execute no matter what.</p>
+<pre><code># Execute keypresses 'ESC, ESC, ESC, ESC, r, 1' when F1 is pressed.
+# The four escapes should exit all and any pending prompts!
+A:\e\e\e\er1
+P:\[f1]</code></pre>
+<h3>Keymap to swap commands around</h3>
+<p>Keymaps can be used to <em>swap</em> commands without one overwriting the other (that's impossible with macros). For example</p>
+<pre><code># 'e' is now 'i'
+A:e
+C:0:i
+
+# 'i' is now 'e'
+A:i
+C:0:e</code></pre>
+<h3>Keymap to clear queue on every command</h3>
+<pre><code># walk south
+A:\e;2
+C:0:2
+
+# read scroll
+A:\er
+C:0:r</code></pre>
+<h3>Keymap to disable Enter Menu</h3>
+<p>The patchnotes in Angband 3.0.8 suggest that people, who dislike the "new" enter menu, should define a keymap to make enter behave like a spacebar. But how?</p>
+<pre><code># Turn Enter into Spacebar
+A:\s
+C:0:\r
+C:1:\r</code></pre>
+<h3>Macro to toggle any option</h3>
+<p><code>\e"Y:use_color\r</code></p>
+<p><code>\e"N:use_color\r</code></p>
+<h3>Macro to load specific pref file</h3>
+<p>Using the interact with macros (%), load user file (1) menu:</p>
+<pre><code>\e%1filename.prf\r</code></pre>
+<p>Using the run pref command ("), include file (%) hack:</p>
+<pre><code>\e"%:filename.prf\r</code></pre>
+<h3>Squelch-like behaviors</h3>
+<p>MAngclient doesn't support proper squelch right now, but you can approximate it with a few related functions.
+The idea of this recipe is that we first auto-inscribe some items with <code>=k</code>, then execute <code>k</code> command (destroy items)
+and feed it <code>"{=k}"</code>, so it destroys items inscribed with <code>=k</code>.</p>
+<ol>
+<li>Prepare your auto-inscription file (<code>inscribe.prf</code>) to inscribe "bad" items with <code>=k</code>, for example <code>{:Onyx Ring:=k</code>. </li>
+<li>Create a macro to execute your auto-inscription file, for example <code>\e%1inscribe.prf\r\e</code>, binded to F9.</li>
+<li>Create a macro to execute your squelching, for example <code>\ek"{=k}"y\ry\e</code>, binded to F10.</li>
+</ol>
+<p>Now, each time you press F9, your bad items will get auto-inscribed. Each time you press F10, a stack of items will get destroyed.</p>
+<p>The weird <code>y\ry\e</code> ending suggested here is used to ensure we plow through all the confirmation and quantity prompts, but you might want a different ending, depeneding on your inventory/user-interface options.</p>
+                </section>
+            </section>
+                </section>
+
+    </div>
+
+            <section id="footer" class="section bg-gray">
+    <section class="container grid-lg">
+        <p>Copyright (c) 2018-2019, MAngband Project Team.</p>
+    </section>
+</section>
+        
+    <div class="mobile-container">
+        <div class="overlay" id="overlay">
+            <div class="mobile-logo">
+                <a href="/web/20260208194504/https://www.mangband.org/" class="navbar-brand mr-10">
+    <img src="/web/20260208194504im_/https://www.mangband.org/user/themes/quark-m/images/logo/mangband.png" alt=""/>
+</a>            </div>
+            <nav class="overlay-menu">
+                
+<ul class="tree">
+                      <li>
+        <a href="/web/20260208194504/https://www.mangband.org/">
+          Home
+        </a>
+      </li>
+                    <li>
+        <a href="/web/20260208194504/https://www.mangband.org/downloads">
+          Downloads
+        </a>
+      </li>
+                    <li>
+        <a href="/web/20260208194504/https://www.mangband.org/docs" class="active">
+          Documentation
+        </a>
+      </li>
+                    <li>
+        <a href="/web/20260208194504/https://www.mangband.org/servers">
+          Online Servers
+        </a>
+      </li>
+                    <li>
+        <a href="/web/20260208194504/https://www.mangband.org/scores">
+          Scores
+        </a>
+      </li>
+                    <li>
+        <a href="https://web.archive.org/web/20260208194504/https://mangband.org/forum">
+          Forum
+        </a>
+      </li>
+      
+</ul>
+
+            </nav>
+        </div>
+    </div>
+
+    <script src="/web/20260208194504js_/https://www.mangband.org/user/themes/quark-m/js/jquery.treemenu.js"></script>
+<script src="/web/20260208194504js_/https://www.mangband.org/user/themes/quark-m/js/site.js"></script>
+
+
+</body>
+<!--
+     FILE ARCHIVED ON 19:45:04 Feb 08, 2026 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 22:04:16 Sep 25, 2026.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  captures_list: 0.654
+  exclusion.robots: 0.067
+  exclusion.robots.policy: 0.057
+  esindex: 0.007
+  cdx.remote: 40.703
+  LoadShardBlock: 70.396 (3)
+  PetaboxLoader3.datanode: 90.755 (4)
+  PetaboxLoader3.resolve: 81.603 (2)
+  load_resource: 158.825
+-->

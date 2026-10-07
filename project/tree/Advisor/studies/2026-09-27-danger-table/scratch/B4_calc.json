@@ -1,0 +1,2730 @@
+[
+ {
+  "idx": 230,
+  "name": "Stone giant",
+  "symbol": "P",
+  "color": "W",
+  "level": 33,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 63.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "DROP_60|TAKE_ITEM|OPEN_DOOR|BASH_DOOR|EVIL|GIANT",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 247,
+  "name": "Cloud giant",
+  "symbol": "P",
+  "color": "b",
+  "level": 36,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 72.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "DROP_90|TAKE_ITEM|OPEN_DOOR|BASH_DOOR|EVIL|GIANT|IM_ELEC",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 297,
+  "name": "Lokkak, the Ogre Chieftain",
+  "symbol": "O",
+  "color": "v",
+  "level": 32,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 63.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "UNIQUE|MALE|FORCE_MAXHP|ESCORT|ONLY_ITEM|DROP_2D2|DROP_GOOD|OPEN_DOOR|BASH_DOOR|EVIL|GIANT|IM_POIS",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 311,
+  "name": "Archangel",
+  "symbol": "A",
+  "color": "B",
+  "level": 34,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 36.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_MAXHP|FORCE_SLEEP|ONLY_ITEM|DROP_2D2|SMART|TAKE_ITEM|OPEN_DOOR|BASH_DOOR|POWERFUL|IM_FIRE|IM_COLD|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 319,
+  "name": "Shadow drake",
+  "symbol": "d",
+  "color": "G",
+  "level": 33,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 20.5,
+  "breath": [
+   [
+    "BR_NETH",
+    50
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_3D2|PASS_WALL|INVISIBLE|OPEN_DOOR|BASH_DOOR|EVIL|DRAGON|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 326,
+  "name": "Ghost",
+  "symbol": "G",
+  "color": "w",
+  "level": 31,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 7.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|RAND_25|DROP_60|DROP_1D2|INVISIBLE|COLD_BLOOD|TAKE_ITEM|PASS_WALL|EVIL|UNDEAD|IM_COLD|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 327,
+  "name": "Death watch beetle",
+  "symbol": "K",
+  "color": "D",
+  "level": 31,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 30.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "WEIRD_MIND|BASH_DOOR|ANIMAL",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 329,
+  "name": "Nexus quylthulg",
+  "symbol": "Q",
+  "color": "v",
+  "level": 32,
+  "tier": 0,
+  "response": "FIGHT",
+  "melee": 0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|NEVER_MOVE|NEVER_BLOW|INVISIBLE|EMPTY_MIND|ANIMAL|NO_CONF|NO_SLEEP|NO_FEAR|RES_NEXUS",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 331,
+  "name": "Ninja",
+  "symbol": "p",
+  "color": "y",
+  "level": 32,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 22.5,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "MALE|DROP_1D2|OPEN_DOOR|BASH_DOOR|EVIL|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 332,
+  "name": "Memory moss",
+  "symbol": ",",
+  "color": "r",
+  "level": 32,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 5.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|NEVER_MOVE|STUPID|EMPTY_MIND|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 333,
+  "name": "Storm giant",
+  "symbol": "P",
+  "color": "B",
+  "level": 40,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 90.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [
+   [
+    "BO_ELEC",
+    31.3
+   ],
+   [
+    "BA_ELEC",
+    38.0
+   ]
+  ],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|DROP_1D2|TAKE_ITEM|OPEN_DOOR|BASH_DOOR|EVIL|GIANT|IM_COLD|IM_ELEC",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 334,
+  "name": "Cave troll",
+  "symbol": "T",
+  "color": "u",
+  "level": 33,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 27.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "MALE|FRIENDS|DROP_60|OPEN_DOOR|BASH_DOOR|REGENERATE|EVIL|TROLL|IM_POIS|HURT_LITE",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 335,
+  "name": "Half-troll",
+  "symbol": "T",
+  "color": "U",
+  "level": 34,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 20.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "MALE|FRIENDS|ONLY_ITEM|DROP_90|OPEN_DOOR|BASH_DOOR|EVIL|TROLL|IM_POIS|REGENERATE",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 336,
+  "name": "Mystic",
+  "symbol": "p",
+  "color": "o",
+  "level": 33,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 60.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [
+   "S_SPIDER",
+   "S_ANIMAL"
+  ],
+  "speed": 120,
+  "flags": "MALE|FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_1D2|INVISIBLE|OPEN_DOOR|BASH_DOOR|IM_ACID|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 337,
+  "name": "Barrow wight",
+  "symbol": "W",
+  "color": "v",
+  "level": 33,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 9.0,
+  "breath": [],
+  "cause": [
+   [
+    "CAUSE_2",
+    36
+   ]
+  ],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FRIENDS|DROP_60|COLD_BLOOD|OPEN_DOOR|BASH_DOOR|EVIL|UNDEAD|IM_COLD|IM_POIS|HURT_LITE|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 338,
+  "name": "Skeleton ettin",
+  "symbol": "s",
+  "color": "w",
+  "level": 33,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 16.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_MAXHP|EMPTY_MIND|COLD_BLOOD|OPEN_DOOR|BASH_DOOR|EVIL|TROLL|UNDEAD|IM_COLD|IM_POIS|REGENERATE|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "CONFUSABLE with shallow: Skeleton kobold(L5); Skeleton orc(L8); Skeleton human(L12); Skeleton troll(L30)"
+ },
+ {
+  "idx": 339,
+  "name": "Chaos drake",
+  "symbol": "d",
+  "color": "v",
+  "level": 33,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 20.5,
+  "breath": [
+   [
+    "BR_CHAO",
+    83
+   ],
+   [
+    "BR_DISE",
+    83
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "ATTR_MULTI|FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_3D2|OPEN_DOOR|BASH_DOOR|EVIL|DRAGON|IM_FIRE|NO_CONF|NO_SLEEP|RES_DISE",
+  "confuse": "CONFUSABLE with shallow: Baby multi-hued dragon(L11)"
+ },
+ {
+  "idx": 340,
+  "name": "Law drake",
+  "symbol": "d",
+  "color": "B",
+  "level": 33,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 20.5,
+  "breath": [
+   [
+    "BR_SOUN",
+    83
+   ],
+   [
+    "BR_SHAR",
+    83
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_3D2|OPEN_DOOR|BASH_DOOR|EVIL|DRAGON|IM_COLD|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 341,
+  "name": "Balance drake",
+  "symbol": "d",
+  "color": "v",
+  "level": 33,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 20.5,
+  "breath": [
+   [
+    "BR_SOUN",
+    100
+   ],
+   [
+    "BR_CHAO",
+    100
+   ],
+   [
+    "BR_DISE",
+    100
+   ],
+   [
+    "BR_SHAR",
+    100
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_3D2|OPEN_DOOR|BASH_DOOR|EVIL|DRAGON|IM_FIRE|IM_COLD|NO_CONF|NO_SLEEP|RES_DISE",
+  "confuse": "CONFUSABLE with shallow: Baby multi-hued dragon(L11)"
+ },
+ {
+  "idx": 342,
+  "name": "Ethereal drake",
+  "symbol": "d",
+  "color": "o",
+  "level": 33,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 20.5,
+  "breath": [
+   [
+    "BR_LITE",
+    67
+   ],
+   [
+    "BR_DARK",
+    67
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_3D2|INVISIBLE|PASS_WALL|EVIL|DRAGON|NO_CONF|NO_SLEEP",
+  "confuse": "CONFUSABLE with shallow: Pseudo-dragon(L10)"
+ },
+ {
+  "idx": 343,
+  "name": "Bert the Stone Troll",
+  "symbol": "T",
+  "color": "s",
+  "level": 34,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 58.5,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "UNIQUE|MALE|FORCE_MAXHP|ESCORT|ONLY_ITEM|DROP_1D2|DROP_GOOD|MOVE_BODY|TAKE_ITEM|OPEN_DOOR|BASH_DOOR|REGENERATE|EVIL|TROLL|IM_COLD|IM_POIS|HURT_LITE|HURT_ROCK",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 344,
+  "name": "Bill the Stone Troll",
+  "symbol": "T",
+  "color": "s",
+  "level": 34,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 58.5,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "UNIQUE|MALE|FORCE_MAXHP|ESCORT|ONLY_ITEM|DROP_1D2|DROP_GOOD|MOVE_BODY|TAKE_ITEM|OPEN_DOOR|BASH_DOOR|REGENERATE|EVIL|TROLL|IM_COLD|IM_POIS|HURT_LITE|HURT_ROCK",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 345,
+  "name": "Tom the Stone Troll",
+  "symbol": "T",
+  "color": "s",
+  "level": 34,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 58.5,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "UNIQUE|MALE|FORCE_MAXHP|ESCORT|ONLY_ITEM|DROP_1D2|DROP_GOOD|MOVE_BODY|TAKE_ITEM|OPEN_DOOR|BASH_DOOR|REGENERATE|EVIL|TROLL|IM_COLD|IM_POIS|HURT_LITE|HURT_ROCK",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 346,
+  "name": "Shade",
+  "symbol": "G",
+  "color": "D",
+  "level": 33,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 5.5,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|RAND_25|ONLY_ITEM|DROP_90|DROP_2D2|INVISIBLE|COLD_BLOOD|TAKE_ITEM|PASS_WALL|EVIL|UNDEAD|IM_COLD|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 347,
+  "name": "Spectre",
+  "symbol": "G",
+  "color": "U",
+  "level": 34,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 15.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|RAND_25|ONLY_ITEM|DROP_90|DROP_2D2|INVISIBLE|COLD_BLOOD|TAKE_ITEM|PASS_WALL|EVIL|UNDEAD|IM_COLD|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 348,
+  "name": "Water troll",
+  "symbol": "T",
+  "color": "B",
+  "level": 35,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 16.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "MALE|FORCE_MAXHP|FRIENDS|DROP_60|OPEN_DOOR|BASH_DOOR|REGENERATE|EVIL|TROLL|IM_COLD|IM_POIS|HURT_LITE",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 349,
+  "name": "Fire elemental",
+  "symbol": "E",
+  "color": "r",
+  "level": 33,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 28.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [
+   [
+    "BO_FIRE",
+    51.5
+   ]
+  ],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|RAND_25|EMPTY_MIND|KILL_ITEM|KILL_BODY|BASH_DOOR|POWERFUL|IM_ELEC|IM_FIRE|IM_POIS|IM_ACID|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "CONFUSABLE with shallow: Fire spirit(L18)"
+ },
+ {
+  "idx": 350,
+  "name": "Cherub",
+  "symbol": "A",
+  "color": "G",
+  "level": 39,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 43.0,
+  "breath": [],
+  "cause": [
+   [
+    "MIND_BLAST",
+    36
+   ]
+  ],
+  "boltball": [
+   [
+    "BO_FIRE",
+    53.5
+   ]
+  ],
+  "summon": [
+   "S_MONSTERS"
+  ],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_1D2|DROP_2D2|SMART|TAKE_ITEM|OPEN_DOOR|BASH_DOOR|POWERFUL|MOVE_BODY|IM_ACID|IM_FIRE|IM_COLD|IM_ELEC|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 351,
+  "name": "Water elemental",
+  "symbol": "E",
+  "color": "b",
+  "level": 33,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 16.5,
+  "breath": [],
+  "cause": [],
+  "boltball": [
+   [
+    "BO_COLD",
+    38.0
+   ]
+  ],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|RAND_25|EMPTY_MIND|COLD_BLOOD|KILL_BODY|KILL_ITEM|BASH_DOOR|POWERFUL|IM_ACID|IM_POIS|IM_FIRE|IM_COLD|IM_WATER|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "CONFUSABLE with shallow: Water spirit(L17)"
+ },
+ {
+  "idx": 352,
+  "name": "Invisible stalker",
+  "symbol": "E",
+  "color": "y",
+  "level": 35,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 10.5,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 130,
+  "flags": "RAND_50|EMPTY_MIND|INVISIBLE|COLD_BLOOD|OPEN_DOOR|BASH_DOOR|POWERFUL|EVIL|IM_ELEC|IM_POIS|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 353,
+  "name": "Carrion crawler",
+  "symbol": "c",
+  "color": "o",
+  "level": 34,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 14.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "RAND_25|FRIENDS|WEIRD_MIND|BASH_DOOR|ANIMAL|IM_POIS",
+  "confuse": "CONFUSABLE with shallow: Carrion crawler(L25)"
+ },
+ {
+  "idx": 354,
+  "name": "Master thief",
+  "symbol": "p",
+  "color": "b",
+  "level": 34,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 38.5,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 130,
+  "flags": "MALE|DROP_90|DROP_2D2|TAKE_ITEM|OPEN_DOOR|BASH_DOOR|EVIL",
+  "confuse": "CONFUSABLE with shallow: Novice rogue(L2); Novice rogue(L6); Bandit(L8); Brigand(L10); Master rogue(L23)"
+ },
+ {
+  "idx": 355,
+  "name": "Ulfang the Black",
+  "symbol": "p",
+  "color": "U",
+  "level": 34,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 60.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [
+   "S_KIN"
+  ],
+  "speed": 120,
+  "flags": "UNIQUE|MALE|FORCE_MAXHP|ONLY_ITEM|DROP_2D2|DROP_GOOD|TAKE_ITEM|OPEN_DOOR|BASH_DOOR|EVIL",
+  "confuse": "CONFUSABLE with shallow: Brodda, the Easterling(L9); Ulfast, Son of Ulfang(L16); Sangahyando of Umbar(L24); Angamaite of Umbar(L24); Ulwarth, Son of Ulfang(L26)"
+ },
+ {
+  "idx": 356,
+  "name": "Lich",
+  "symbol": "L",
+  "color": "o",
+  "level": 34,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 18.0,
+  "breath": [],
+  "cause": [
+   [
+    "CAUSE_3",
+    80
+   ],
+   [
+    "BRAIN_SMASH",
+    96
+   ]
+  ],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|DROP_1D2|SMART|COLD_BLOOD|OPEN_DOOR|BASH_DOOR|EVIL|UNDEAD|IM_COLD|IM_POIS|HURT_LITE|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 357,
+  "name": "Master vampire",
+  "symbol": "V",
+  "color": "g",
+  "level": 36,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 35.0,
+  "breath": [],
+  "cause": [
+   [
+    "CAUSE_3",
+    80
+   ],
+   [
+    "MIND_BLAST",
+    36
+   ]
+  ],
+  "boltball": [
+   [
+    "BO_NETH",
+    99.0
+   ]
+  ],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|DROP_4D2|COLD_BLOOD|OPEN_DOOR|BASH_DOOR|REGENERATE|EVIL|UNDEAD|IM_COLD|IM_POIS|HURT_LITE|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 358,
+  "name": "Giant grey scorpion",
+  "symbol": "S",
+  "color": "s",
+  "level": 34,
+  "tier": 1,
+  "response": "FIGHT",
+  "melee": 6.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "WEIRD_MIND|BASH_DOOR|ANIMAL",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 359,
+  "name": "Earth elemental",
+  "symbol": "E",
+  "color": "u",
+  "level": 34,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 42.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [
+   [
+    "BO_ACID",
+    42.8
+   ]
+  ],
+  "summon": [],
+  "speed": 100,
+  "flags": "FORCE_SLEEP|EMPTY_MIND|COLD_BLOOD|KILL_ITEM|KILL_BODY|PASS_WALL|POWERFUL|IM_FIRE|IM_COLD|IM_ELEC|IM_POIS|HURT_ROCK|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "CONFUSABLE with shallow: Earth spirit(L17)"
+ },
+ {
+  "idx": 360,
+  "name": "Air elemental",
+  "symbol": "E",
+  "color": "B",
+  "level": 34,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 13.5,
+  "breath": [],
+  "cause": [],
+  "boltball": [
+   [
+    "BO_ELEC",
+    29.3
+   ]
+  ],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|RAND_25|EMPTY_MIND|COLD_BLOOD|KILL_BODY|KILL_ITEM|BASH_DOOR|POWERFUL|IM_ACID|IM_COLD|IM_ELEC|IM_POIS|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "CONFUSABLE with shallow: Air spirit(L12)"
+ },
+ {
+  "idx": 361,
+  "name": "Hellhound",
+  "symbol": "C",
+  "color": "r",
+  "level": 35,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 58.5,
+  "breath": [
+   [
+    "BR_FIRE",
+    133
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|RAND_25|BASH_DOOR|MOVE_BODY|ANIMAL|EVIL|IM_FIRE",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 362,
+  "name": "Eog golem",
+  "symbol": "g",
+  "color": "u",
+  "level": 34,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 98.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 100,
+  "flags": "ONLY_GOLD|DROP_2D2|EMPTY_MIND|COLD_BLOOD|BASH_DOOR|IM_FIRE|IM_COLD|IM_ELEC|IM_POIS|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 363,
+  "name": "Olog",
+  "symbol": "T",
+  "color": "y",
+  "level": 36,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 21.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_MAXHP|OPEN_DOOR|FRIENDS|DROP_60|SMART|BASH_DOOR|EVIL|TROLL|IM_POIS|REGENERATE",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 364,
+  "name": "Dagashi",
+  "symbol": "p",
+  "color": "y",
+  "level": 35,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 30.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "MALE|DROP_1D2|OPEN_DOOR|BASH_DOOR|EVIL|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 365,
+  "name": "Gravity hound",
+  "symbol": "Z",
+  "color": "W",
+  "level": 35,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 36.0,
+  "breath": [
+   [
+    "BR_GRAV",
+    64
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FRIENDS|BASH_DOOR|ANIMAL|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 366,
+  "name": "Acidic cytoplasm",
+  "symbol": "j",
+  "color": "s",
+  "level": 35,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 22.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_MAXHP|TAKE_ITEM|COLD_BLOOD|DROP_1D2|DROP_4D2|STUPID|EMPTY_MIND|OPEN_DOOR|BASH_DOOR|IM_ACID|IM_FIRE|IM_COLD|IM_ELEC|IM_POIS|NO_FEAR|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 367,
+  "name": "Inertia hound",
+  "symbol": "Z",
+  "color": "W",
+  "level": 35,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 36.0,
+  "breath": [
+   [
+    "BR_INER",
+    32
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FRIENDS|BASH_DOOR|ANIMAL|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 368,
+  "name": "Impact hound",
+  "symbol": "Z",
+  "color": "u",
+  "level": 35,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 36.0,
+  "breath": [
+   [
+    "BR_WALL",
+    32
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FRIENDS|BASH_DOOR|ANIMAL|NO_CONF|NO_SLEEP",
+  "confuse": "CONFUSABLE with shallow: Earth hound(L20)"
+ },
+ {
+  "idx": 369,
+  "name": "Dread",
+  "symbol": "G",
+  "color": "o",
+  "level": 35,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 49.5,
+  "breath": [],
+  "cause": [],
+  "boltball": [
+   [
+    "BO_NETH",
+    97.5
+   ]
+  ],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|RAND_25|ONLY_ITEM|DROP_60|DROP_2D2|TAKE_ITEM|INVISIBLE|COLD_BLOOD|PASS_WALL|EVIL|UNDEAD|IM_COLD|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 370,
+  "name": "Ooze elemental",
+  "symbol": "E",
+  "color": "g",
+  "level": 36,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 16.5,
+  "breath": [],
+  "cause": [],
+  "boltball": [
+   [
+    "BO_ACID",
+    43.5
+   ],
+   [
+    "BA_ACID",
+    69.0
+   ]
+  ],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|EMPTY_MIND|COLD_BLOOD|KILL_ITEM|KILL_BODY|BASH_DOOR|POWERFUL|IM_ACID|IM_FIRE|IM_COLD|IM_POIS|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 371,
+  "name": "Smoke elemental",
+  "symbol": "E",
+  "color": "R",
+  "level": 36,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 14.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [
+   [
+    "BO_FIRE",
+    52.5
+   ]
+  ],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|EMPTY_MIND|KILL_ITEM|KILL_BODY|BASH_DOOR|POWERFUL|IM_FIRE|IM_COLD|IM_ELEC|IM_POIS|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 372,
+  "name": "Young black dragon",
+  "symbol": "d",
+  "color": "s",
+  "level": 31,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 23.0,
+  "breath": [
+   [
+    "BR_ACID",
+    100
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|DROP_3D2|OPEN_DOOR|BASH_DOOR|EVIL|DRAGON|IM_ACID",
+  "confuse": "CONFUSABLE with shallow: Baby black dragon(L9)"
+ },
+ {
+  "idx": 373,
+  "name": "Mumak",
+  "symbol": "q",
+  "color": "s",
+  "level": 35,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 38.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "BASH_DOOR|ANIMAL",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 374,
+  "name": "Giant fire ant",
+  "symbol": "a",
+  "color": "R",
+  "level": 35,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 39.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_MAXHP|KILL_BODY|FRIENDS|WEIRD_MIND|BASH_DOOR|ANIMAL|IM_FIRE",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 375,
+  "name": "Mature white dragon",
+  "symbol": "d",
+  "color": "w",
+  "level": 34,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 36.0,
+  "breath": [
+   [
+    "BR_COLD",
+    133
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|DROP_4D2|OPEN_DOOR|BASH_DOOR|EVIL|DRAGON|IM_COLD|NO_CONF|NO_SLEEP",
+  "confuse": "CONFUSABLE with shallow: Baby white dragon(L9); Young white dragon(L29)"
+ },
+ {
+  "idx": 376,
+  "name": "Xorn",
+  "symbol": "X",
+  "color": "u",
+  "level": 36,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 14.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_MAXHP|EMPTY_MIND|COLD_BLOOD|KILL_ITEM|PASS_WALL|IM_FIRE|IM_COLD|IM_ELEC|IM_POIS|HURT_ROCK|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 377,
+  "name": "Shadow",
+  "symbol": "G",
+  "color": "D",
+  "level": 36,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 11.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [
+   [
+    "BO_NETH",
+    99.0
+   ]
+  ],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|ONLY_ITEM|DROP_1D2|INVISIBLE|COLD_BLOOD|PASS_WALL|EVIL|UNDEAD|IM_COLD|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 378,
+  "name": "Phantom",
+  "symbol": "G",
+  "color": "v",
+  "level": 36,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 11.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|ONLY_ITEM|DROP_1D2|INVISIBLE|COLD_BLOOD|PASS_WALL|EVIL|UNDEAD|IM_COLD|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 379,
+  "name": "Grey wraith",
+  "symbol": "W",
+  "color": "s",
+  "level": 36,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 11.0,
+  "breath": [],
+  "cause": [
+   [
+    "CAUSE_3",
+    80
+   ]
+  ],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|DROP_60|DROP_90|COLD_BLOOD|OPEN_DOOR|BASH_DOOR|EVIL|UNDEAD|HURT_LITE|IM_COLD|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 380,
+  "name": "Young multi-hued dragon",
+  "symbol": "d",
+  "color": "v",
+  "level": 32,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 27.5,
+  "breath": [
+   [
+    "BR_ACID",
+    107
+   ],
+   [
+    "BR_ELEC",
+    107
+   ],
+   [
+    "BR_FIRE",
+    107
+   ],
+   [
+    "BR_COLD",
+    107
+   ],
+   [
+    "BR_POIS",
+    107
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "ATTR_MULTI|FORCE_SLEEP|FORCE_MAXHP|DROP_1D2|DROP_3D2|OPEN_DOOR|BASH_DOOR|EVIL|DRAGON|IM_ACID|IM_FIRE|IM_COLD|IM_ELEC|IM_POIS",
+  "confuse": "CONFUSABLE with shallow: Baby multi-hued dragon(L11)"
+ },
+ {
+  "idx": 381,
+  "name": "Colossus",
+  "symbol": "g",
+  "color": "G",
+  "level": 36,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 152.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 100,
+  "flags": "FORCE_MAXHP|EMPTY_MIND|COLD_BLOOD|BASH_DOOR|IM_FIRE|IM_COLD|IM_ELEC|IM_POIS|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 382,
+  "name": "Young gold dragon",
+  "symbol": "d",
+  "color": "y",
+  "level": 31,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 23.0,
+  "breath": [
+   [
+    "BR_SOUN",
+    50
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|DROP_3D2|OPEN_DOOR|BASH_DOOR|EVIL|DRAGON",
+  "confuse": "CONFUSABLE with shallow: Baby gold dragon(L9)"
+ },
+ {
+  "idx": 384,
+  "name": "Mature blue dragon",
+  "symbol": "d",
+  "color": "b",
+  "level": 34,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 36.0,
+  "breath": [
+   [
+    "BR_ELEC",
+    133
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|DROP_4D2|BASH_DOOR|EVIL|DRAGON|IM_ELEC|NO_CONF|NO_SLEEP",
+  "confuse": "CONFUSABLE with shallow: Baby blue dragon(L9); Young blue dragon(L29)"
+ },
+ {
+  "idx": 385,
+  "name": "Mature green dragon",
+  "symbol": "d",
+  "color": "g",
+  "level": 34,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 36.0,
+  "breath": [
+   [
+    "BR_POIS",
+    133
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|DROP_4D2|BASH_DOOR|EVIL|DRAGON|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "CONFUSABLE with shallow: Baby green dragon(L9); Young green dragon(L29); Wyvern(L22)"
+ },
+ {
+  "idx": 386,
+  "name": "Mature bronze dragon",
+  "symbol": "d",
+  "color": "U",
+  "level": 34,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 36.0,
+  "breath": [
+   [
+    "BR_CONF",
+    67
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|DROP_4D2|BASH_DOOR|EVIL|DRAGON|NO_CONF|NO_SLEEP",
+  "confuse": "CONFUSABLE with shallow: Young bronze dragon(L29); Baby bronze dragon(L9)"
+ },
+ {
+  "idx": 387,
+  "name": "Young red dragon",
+  "symbol": "d",
+  "color": "r",
+  "level": 31,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 23.0,
+  "breath": [
+   [
+    "BR_FIRE",
+    100
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|DROP_3D2|OPEN_DOOR|BASH_DOOR|EVIL|DRAGON|IM_FIRE",
+  "confuse": "CONFUSABLE with shallow: Baby red dragon(L9)"
+ },
+ {
+  "idx": 388,
+  "name": "Trapper",
+  "symbol": ".",
+  "color": "w",
+  "level": 36,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 57.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "CHAR_CLEAR|ATTR_CLEAR|NEVER_MOVE|FORCE_MAXHP|INVISIBLE|EMPTY_MIND|COLD_BLOOD|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "CONFUSABLE with shallow: Lurker(L14)"
+ },
+ {
+  "idx": 389,
+  "name": "Bodak",
+  "symbol": "u",
+  "color": "r",
+  "level": 36,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 28.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [
+   [
+    "BO_FIRE",
+    52.5
+   ],
+   [
+    "BA_FIRE",
+    73.0
+   ]
+  ],
+  "summon": [
+   "S_DEMON"
+  ],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|TAKE_ITEM|OPEN_DOOR|BASH_DOOR|EVIL|DEMON|IM_FIRE|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 390,
+  "name": "Ice elemental",
+  "symbol": "E",
+  "color": "w",
+  "level": 37,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 30.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [
+   [
+    "BO_ICEE",
+    58
+   ],
+   [
+    "BA_COLD",
+    37.8
+   ]
+  ],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|EMPTY_MIND|COLD_BLOOD|KILL_ITEM|KILL_BODY|BASH_DOOR|POWERFUL|IM_COLD|IM_ELEC|IM_POIS|IM_ACID|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 391,
+  "name": "Necromancer",
+  "symbol": "p",
+  "color": "R",
+  "level": 36,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 14.0,
+  "breath": [],
+  "cause": [
+   [
+    "CAUSE_3",
+    80
+   ]
+  ],
+  "boltball": [
+   [
+    "BO_NETH",
+    99.0
+   ]
+  ],
+  "summon": [
+   "S_UNDEAD"
+  ],
+  "speed": 110,
+  "flags": "MALE|FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_1D2|SMART|OPEN_DOOR|BASH_DOOR|EVIL",
+  "confuse": "CONFUSABLE with shallow: Illusionist(L13)"
+ },
+ {
+  "idx": 392,
+  "name": "Lorgan, Chief of the Easterlings",
+  "symbol": "p",
+  "color": "v",
+  "level": 36,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 69.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [
+   "S_MONSTERS"
+  ],
+  "speed": 120,
+  "flags": "UNIQUE|MALE|FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_2D2|DROP_GOOD|OPEN_DOOR|BASH_DOOR|EVIL|IM_ACID|IM_FIRE|IM_COLD|IM_ELEC|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 393,
+  "name": "Demonologist",
+  "symbol": "p",
+  "color": "R",
+  "level": 36,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 21.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [
+   [
+    "BO_FIRE",
+    52.5
+   ]
+  ],
+  "summon": [
+   "S_DEMON"
+  ],
+  "speed": 120,
+  "flags": "MALE|FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_1D2|SMART|OPEN_DOOR|BASH_DOOR|EVIL",
+  "confuse": "CONFUSABLE with shallow: Illusionist(L13)"
+ },
+ {
+  "idx": 394,
+  "name": "Mummified troll",
+  "symbol": "z",
+  "color": "w",
+  "level": 37,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 14.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_MAXHP|DROP_60|EMPTY_MIND|COLD_BLOOD|OPEN_DOOR|BASH_DOOR|EVIL|TROLL|UNDEAD|IM_COLD|IM_POIS|NO_CONF|NO_SLEEP|NO_FEAR|REGENERATE",
+  "confuse": "CONFUSABLE with shallow: Mummified orc(L21); Mummified human(L24)"
+ },
+ {
+  "idx": 395,
+  "name": "The Queen Ant",
+  "symbol": "a",
+  "color": "v",
+  "level": 37,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 44.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [
+   "S_KIN"
+  ],
+  "speed": 120,
+  "flags": "UNIQUE|FEMALE|FORCE_SLEEP|FORCE_MAXHP|ESCORT|ESCORTS|ONLY_ITEM|DROP_2D2|DROP_GOOD|WEIRD_MIND|OPEN_DOOR|BASH_DOOR|ANIMAL|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 396,
+  "name": "Will o' the wisp",
+  "symbol": "E",
+  "color": "W",
+  "level": 38,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 15.0,
+  "breath": [],
+  "cause": [
+   [
+    "CAUSE_2",
+    36
+   ]
+  ],
+  "boltball": [],
+  "summon": [],
+  "speed": 130,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|RAND_50|SMART|EMPTY_MIND|INVISIBLE|PASS_WALL|POWERFUL|IM_ACID|IM_FIRE|IM_COLD|IM_ELEC|IM_POIS|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 397,
+  "name": "Magma elemental",
+  "symbol": "E",
+  "color": "o",
+  "level": 37,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 38.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [
+   [
+    "BO_PLAS",
+    79
+   ],
+   [
+    "BA_FIRE",
+    74.8
+   ]
+  ],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|EMPTY_MIND|KILL_ITEM|KILL_BODY|PASS_WALL|POWERFUL|IM_FIRE|IM_ELEC|IM_POIS|IM_ACID|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 398,
+  "name": "Black pudding",
+  "symbol": "j",
+  "color": "D",
+  "level": 37,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 22.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_MAXHP|FRIENDS|DROP_60|DROP_90|DROP_1D2|STUPID|EMPTY_MIND|COLD_BLOOD|TAKE_ITEM|OPEN_DOOR|BASH_DOOR|IM_ACID|IM_FIRE|IM_COLD|IM_ELEC|IM_POIS|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "CONFUSABLE with shallow: Black ooze(L23)"
+ },
+ {
+  "idx": 399,
+  "name": "Killer iridescent beetle",
+  "symbol": "K",
+  "color": "v",
+  "level": 37,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 13.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_MAXHP|ATTR_MULTI|WEIRD_MIND|BASH_DOOR|ANIMAL|IM_ELEC",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 400,
+  "name": "Nexus vortex",
+  "symbol": "v",
+  "color": "v",
+  "level": 37,
+  "tier": 1,
+  "response": "FIGHT",
+  "melee": 15.0,
+  "breath": [
+   [
+    "BR_NEXU",
+    29
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|RAND_50|RAND_25|EMPTY_MIND|BASH_DOOR|POWERFUL|NO_CONF|NO_SLEEP|NO_FEAR|RES_NEXUS",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 401,
+  "name": "Plasma vortex",
+  "symbol": "v",
+  "color": "R",
+  "level": 37,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 36.0,
+  "breath": [
+   [
+    "BR_PLAS",
+    29
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|RAND_50|RAND_25|EMPTY_MIND|BASH_DOOR|POWERFUL|IM_FIRE|IM_ELEC|RES_PLAS|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 402,
+  "name": "Mature red dragon",
+  "symbol": "d",
+  "color": "r",
+  "level": 36,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 44.0,
+  "breath": [
+   [
+    "BR_FIRE",
+    167
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|DROP_1D2|DROP_4D2|BASH_DOOR|EVIL|DRAGON|IM_FIRE|NO_CONF|NO_SLEEP",
+  "confuse": "CONFUSABLE with shallow: Baby red dragon(L9)"
+ },
+ {
+  "idx": 403,
+  "name": "Mature gold dragon",
+  "symbol": "d",
+  "color": "y",
+  "level": 36,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 44.0,
+  "breath": [
+   [
+    "BR_SOUN",
+    83
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|DROP_1D2|DROP_4D2|BASH_DOOR|EVIL|DRAGON|NO_CONF|NO_SLEEP",
+  "confuse": "CONFUSABLE with shallow: Baby gold dragon(L9)"
+ },
+ {
+  "idx": 404,
+  "name": "Crystal drake",
+  "symbol": "d",
+  "color": "u",
+  "level": 33,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 20.5,
+  "breath": [
+   [
+    "BR_SHAR",
+    75
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_3D2|OPEN_DOOR|BASH_DOOR|EVIL|DRAGON|IM_COLD|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 405,
+  "name": "Mature black dragon",
+  "symbol": "d",
+  "color": "s",
+  "level": 36,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 44.0,
+  "breath": [
+   [
+    "BR_ACID",
+    167
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|DROP_1D2|DROP_4D2|BASH_DOOR|EVIL|DRAGON|IM_ACID|NO_CONF|NO_SLEEP",
+  "confuse": "CONFUSABLE with shallow: Baby black dragon(L9)"
+ },
+ {
+  "idx": 406,
+  "name": "Mature multi-hued dragon",
+  "symbol": "d",
+  "color": "v",
+  "level": 38,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 52.0,
+  "breath": [
+   [
+    "BR_ACID",
+    200
+   ],
+   [
+    "BR_ELEC",
+    200
+   ],
+   [
+    "BR_FIRE",
+    200
+   ],
+   [
+    "BR_COLD",
+    200
+   ],
+   [
+    "BR_POIS",
+    200
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "ATTR_MULTI|FORCE_SLEEP|FORCE_MAXHP|DROP_2D2|DROP_4D2|OPEN_DOOR|BASH_DOOR|EVIL|DRAGON|IM_ACID|IM_FIRE|IM_COLD|IM_ELEC|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "CONFUSABLE with shallow: Baby multi-hued dragon(L11)"
+ },
+ {
+  "idx": 407,
+  "name": "Death knight",
+  "symbol": "p",
+  "color": "D",
+  "level": 38,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 51.0,
+  "breath": [],
+  "cause": [
+   [
+    "CAUSE_3",
+    80
+   ]
+  ],
+  "boltball": [
+   [
+    "BO_NETH",
+    102.0
+   ]
+  ],
+  "summon": [
+   "S_MONSTERS"
+  ],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|SMART|ONLY_ITEM|DROP_1D2|DROP_2D2|COLD_BLOOD|OPEN_DOOR|BASH_DOOR|EVIL|IM_COLD",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 408,
+  "name": "Castamir the Usurper",
+  "symbol": "p",
+  "color": "R",
+  "level": 38,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 60.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [
+   [
+    "BO_ELEC",
+    30.7
+   ],
+   [
+    "BO_FIRE",
+    53.2
+   ],
+   [
+    "BO_COLD",
+    39.7
+   ],
+   [
+    "BO_ICEE",
+    59
+   ]
+  ],
+  "summon": [],
+  "speed": 120,
+  "flags": "UNIQUE|MALE|FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_2D2|DROP_GOOD|SMART|OPEN_DOOR|TAKE_ITEM|BASH_DOOR|EVIL",
+  "confuse": "CONFUSABLE with shallow: Illusionist(L13)"
+ },
+ {
+  "idx": 409,
+  "name": "Time vortex",
+  "symbol": "v",
+  "color": "B",
+  "level": 38,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 15.0,
+  "breath": [
+   [
+    "BR_TIME",
+    59
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 130,
+  "flags": "FORCE_SLEEP|RAND_50|RAND_25|EMPTY_MIND|BASH_DOOR|POWERFUL|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 410,
+  "name": "Shimmering vortex",
+  "symbol": "v",
+  "color": "o",
+  "level": 38,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 20.0,
+  "breath": [
+   [
+    "BR_LITE",
+    29
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 140,
+  "flags": "FORCE_SLEEP|RAND_50|RAND_25|EMPTY_MIND|BASH_DOOR|POWERFUL|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 411,
+  "name": "Ancient blue dragon",
+  "symbol": "D",
+  "color": "b",
+  "level": 40,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 67.5,
+  "breath": [
+   [
+    "BR_ELEC",
+    240
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|DROP_3D2|DROP_4D2|SMART|BASH_DOOR|POWERFUL|MOVE_BODY|EVIL|DRAGON|IM_ELEC|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 412,
+  "name": "Ancient bronze dragon",
+  "symbol": "D",
+  "color": "U",
+  "level": 40,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 67.5,
+  "breath": [
+   [
+    "BR_CONF",
+    120
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|DROP_3D2|DROP_4D2|SMART|BASH_DOOR|POWERFUL|MOVE_BODY|EVIL|DRAGON|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 413,
+  "name": "Beholder",
+  "symbol": "e",
+  "color": "U",
+  "level": 40,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 42.0,
+  "breath": [],
+  "cause": [
+   [
+    "MIND_BLAST",
+    36
+   ]
+  ],
+  "boltball": [
+   [
+    "BO_ACID",
+    44.8
+   ],
+   [
+    "BO_ELEC",
+    31.3
+   ],
+   [
+    "BO_FIRE",
+    53.8
+   ],
+   [
+    "BO_COLD",
+    40.3
+   ]
+  ],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|BASH_DOOR|EVIL|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 414,
+  "name": "Emperor wight",
+  "symbol": "W",
+  "color": "r",
+  "level": 38,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 13.0,
+  "breath": [],
+  "cause": [
+   [
+    "CAUSE_3",
+    80
+   ]
+  ],
+  "boltball": [
+   [
+    "BO_NETH",
+    102.0
+   ]
+  ],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_90|DROP_4D2|COLD_BLOOD|OPEN_DOOR|BASH_DOOR|EVIL|UNDEAD|IM_COLD|IM_POIS|HURT_LITE|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 417,
+  "name": "Black wraith",
+  "symbol": "W",
+  "color": "D",
+  "level": 38,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 13.0,
+  "breath": [],
+  "cause": [
+   [
+    "CAUSE_3",
+    80
+   ]
+  ],
+  "boltball": [
+   [
+    "BO_NETH",
+    102.0
+   ]
+  ],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_1D2|DROP_2D2|COLD_BLOOD|OPEN_DOOR|BASH_DOOR|EVIL|UNDEAD|IM_COLD|IM_POIS|HURT_LITE|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 418,
+  "name": "Erinyes",
+  "symbol": "U",
+  "color": "u",
+  "level": 38,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 10.5,
+  "breath": [],
+  "cause": [],
+  "boltball": [
+   [
+    "BO_FIRE",
+    53.2
+   ]
+  ],
+  "summon": [],
+  "speed": 110,
+  "flags": "FEMALE|FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_60|OPEN_DOOR|BASH_DOOR|POWERFUL|EVIL|DEMON|IM_FIRE|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 419,
+  "name": "Nether wraith",
+  "symbol": "W",
+  "color": "G",
+  "level": 39,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 13.0,
+  "breath": [],
+  "cause": [
+   [
+    "CAUSE_3",
+    80
+   ],
+   [
+    "MIND_BLAST",
+    36
+   ]
+  ],
+  "boltball": [
+   [
+    "BO_NETH",
+    103.5
+   ]
+  ],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_90|DROP_4D2|INVISIBLE|COLD_BLOOD|PASS_WALL|EVIL|UNDEAD|IM_COLD|IM_POIS|HURT_LITE|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 420,
+  "name": "Eldrak",
+  "symbol": "T",
+  "color": "r",
+  "level": 37,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 22.5,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_MAXHP|DROP_60|TAKE_ITEM|OPEN_DOOR|BASH_DOOR|EVIL|TROLL|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 421,
+  "name": "Ettin",
+  "symbol": "T",
+  "color": "b",
+  "level": 38,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 31.5,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_MAXHP|ONLY_ITEM|DROP_1D2|OPEN_DOOR|BASH_DOOR|EVIL|TROLL|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 423,
+  "name": "Kavlax the Many-Headed",
+  "symbol": "d",
+  "color": "v",
+  "level": 39,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 52.0,
+  "breath": [
+   [
+    "BR_ACID",
+    433
+   ],
+   [
+    "BR_ELEC",
+    433
+   ],
+   [
+    "BR_FIRE",
+    433
+   ],
+   [
+    "BR_COLD",
+    433
+   ],
+   [
+    "BR_CONF",
+    217
+   ],
+   [
+    "BR_SOUN",
+    217
+   ],
+   [
+    "BR_NEXU",
+    217
+   ],
+   [
+    "BR_GRAV",
+    200
+   ],
+   [
+    "BR_SHAR",
+    217
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "UNIQUE|MALE|ATTR_MULTI|FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_4D2|DROP_GOOD|OPEN_DOOR|BASH_DOOR|POWERFUL|EVIL|DRAGON|IM_ACID|IM_FIRE|IM_COLD|IM_ELEC|NO_CONF|NO_SLEEP|RES_NEXUS",
+  "confuse": "CONFUSABLE with shallow: Baby multi-hued dragon(L11)"
+ },
+ {
+  "idx": 424,
+  "name": "Ancient white dragon",
+  "symbol": "D",
+  "color": "w",
+  "level": 40,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 67.5,
+  "breath": [
+   [
+    "BR_COLD",
+    240
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|DROP_3D2|DROP_4D2|SMART|BASH_DOOR|POWERFUL|MOVE_BODY|EVIL|DRAGON|IM_COLD|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 425,
+  "name": "Ancient green dragon",
+  "symbol": "D",
+  "color": "g",
+  "level": 40,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 67.5,
+  "breath": [
+   [
+    "BR_POIS",
+    240
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|DROP_3D2|DROP_4D2|SMART|BASH_DOOR|POWERFUL|MOVE_BODY|EVIL|DRAGON|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 426,
+  "name": "7-headed hydra",
+  "symbol": "M",
+  "color": "G",
+  "level": 39,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 46.5,
+  "breath": [
+   [
+    "BR_POIS",
+    183
+   ]
+  ],
+  "cause": [],
+  "boltball": [
+   [
+    "BA_POIS",
+    13
+   ]
+  ],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|ONLY_GOLD|DROP_2D2|DROP_4D2|BASH_DOOR|MOVE_BODY|ANIMAL|IM_POIS",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 427,
+  "name": "Night mare",
+  "symbol": "q",
+  "color": "G",
+  "level": 39,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 55.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_MAXHP|ONLY_GOLD|DROP_2D2|COLD_BLOOD|OPEN_DOOR|BASH_DOOR|EVIL|UNDEAD|IM_COLD|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 430,
+  "name": "Disenchanter worm mass",
+  "symbol": "w",
+  "color": "v",
+  "level": 40,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 2.5,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 100,
+  "flags": "RAND_50|ATTR_MULTI|STUPID|WEIRD_MIND|MULTIPLY|BASH_DOOR|ANIMAL|HURT_LITE|NO_FEAR|RES_DISE",
+  "confuse": "CONFUSABLE with shallow: Purple worm(L29)"
+ },
+ {
+  "idx": 432,
+  "name": "Spirit troll",
+  "symbol": "G",
+  "color": "G",
+  "level": 40,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 31.5,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_MAXHP|DROP_90|INVISIBLE|PASS_WALL|EVIL|UNDEAD|TROLL|IM_COLD|IM_ELEC|IM_POIS|NO_CONF|NO_SLEEP|REGENERATE",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 434,
+  "name": "9-headed hydra",
+  "symbol": "M",
+  "color": "r",
+  "level": 40,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 66.0,
+  "breath": [
+   [
+    "BR_FIRE",
+    217
+   ]
+  ],
+  "cause": [],
+  "boltball": [
+   [
+    "BO_FIRE",
+    53.8
+   ]
+  ],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|ONLY_GOLD|DROP_2D2|DROP_4D2|OPEN_DOOR|BASH_DOOR|MOVE_BODY|ANIMAL|IM_FIRE",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 435,
+  "name": "Enchantress",
+  "symbol": "p",
+  "color": "R",
+  "level": 40,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 23.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [
+   "S_DRAGON"
+  ],
+  "speed": 130,
+  "flags": "FEMALE|FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_2D2|DROP_GOOD|OPEN_DOOR|BASH_DOOR|EVIL|NO_CONF|NO_SLEEP",
+  "confuse": "CONFUSABLE with shallow: Illusionist(L13)"
+ },
+ {
+  "idx": 437,
+  "name": "Sorcerer",
+  "symbol": "p",
+  "color": "R",
+  "level": 40,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 27.0,
+  "breath": [],
+  "cause": [
+   [
+    "CAUSE_3",
+    80
+   ]
+  ],
+  "boltball": [
+   [
+    "BO_ACID",
+    44.8
+   ],
+   [
+    "BA_FIRE",
+    80.0
+   ],
+   [
+    "BA_COLD",
+    40.0
+   ]
+  ],
+  "summon": [
+   "S_MONSTER",
+   "S_UNDEAD",
+   "S_DRAGON"
+  ],
+  "speed": 130,
+  "flags": "MALE|FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_90|DROP_4D2|OPEN_DOOR|BASH_DOOR|EVIL|NO_CONF|NO_SLEEP",
+  "confuse": "CONFUSABLE with shallow: Illusionist(L13)"
+ },
+ {
+  "idx": 438,
+  "name": "Xaren",
+  "symbol": "X",
+  "color": "s",
+  "level": 40,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 30.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_MAXHP|EMPTY_MIND|COLD_BLOOD|KILL_ITEM|PASS_WALL|ONLY_GOLD|DROP_2D2|IM_FIRE|IM_COLD|IM_ELEC|IM_POIS|HURT_ROCK|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 439,
+  "name": "Giant roc",
+  "symbol": "B",
+  "color": "u",
+  "level": 40,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 182.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "BASH_DOOR|ANIMAL|IM_ELEC",
+  "confuse": "CONFUSABLE with shallow: Nighthawk(L8)"
+ },
+ {
+  "idx": 440,
+  "name": "Uvatha the Horseman",
+  "symbol": "W",
+  "color": "D",
+  "level": 40,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 70.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "UNIQUE|MALE|FORCE_MAXHP|ONLY_ITEM|DROP_2D2|DROP_GOOD|COLD_BLOOD|OPEN_DOOR|BASH_DOOR|MOVE_BODY|EVIL|UNDEAD|IM_COLD|IM_POIS|HURT_LITE|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 441,
+  "name": "Minotaur",
+  "symbol": "H",
+  "color": "s",
+  "level": 40,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 42.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 130,
+  "flags": "BASH_DOOR|EVIL",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 442,
+  "name": "Medusa, the Gorgon",
+  "symbol": "n",
+  "color": "v",
+  "level": 40,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 56.0,
+  "breath": [],
+  "cause": [
+   [
+    "CAUSE_3",
+    80
+   ]
+  ],
+  "boltball": [
+   [
+    "BO_FIRE",
+    53.8
+   ],
+   [
+    "BO_PLAS",
+    82
+   ],
+   [
+    "BA_ACID",
+    75.0
+   ]
+  ],
+  "summon": [
+   "S_HYDRA",
+   "S_KIN"
+  ],
+  "speed": 120,
+  "flags": "UNIQUE|FEMALE|FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_1D2|DROP_2D2|DROP_GOOD|SMART|OPEN_DOOR|BASH_DOOR|EVIL|IM_ACID|IM_FIRE|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 447,
+  "name": "Vrock",
+  "symbol": "U",
+  "color": "s",
+  "level": 40,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 111.5,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|FRIENDS|ONLY_ITEM|DROP_60|OPEN_DOOR|BASH_DOOR|POWERFUL|EVIL|DEMON|IM_FIRE|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 448,
+  "name": "Death quasit",
+  "symbol": "u",
+  "color": "D",
+  "level": 40,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 22.5,
+  "breath": [],
+  "cause": [
+   [
+    "CAUSE_3",
+    80
+   ]
+  ],
+  "boltball": [],
+  "summon": [
+   "S_DEMON"
+  ],
+  "speed": 130,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_90|DROP_2D2|DROP_4D2|SMART|INVISIBLE|PASS_WALL|EVIL|DEMON|IM_FIRE|IM_POIS|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 470,
+  "name": "Patriarch",
+  "symbol": "p",
+  "color": "G",
+  "level": 40,
+  "tier": 5,
+  "response": "LEAVE",
+  "melee": 24.0,
+  "breath": [],
+  "cause": [
+   [
+    "CAUSE_3",
+    80
+   ],
+   [
+    "CAUSE_4",
+    120
+   ]
+  ],
+  "boltball": [],
+  "summon": [
+   "S_MONSTER",
+   "S_UNDEAD"
+  ],
+  "speed": 120,
+  "flags": "MALE|FORCE_SLEEP|FORCE_MAXHP|ONLY_ITEM|DROP_90|DROP_2D2|SMART|OPEN_DOOR|BASH_DOOR|EVIL|NO_CONF|NO_SLEEP",
+  "confuse": "CONFUSABLE with shallow: Druid(L13)"
+ },
+ {
+  "idx": 556,
+  "name": "Chest mimic",
+  "symbol": "~",
+  "color": "s",
+  "level": 35,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 40.0,
+  "breath": [],
+  "cause": [
+   [
+    "CAUSE_2",
+    36
+   ]
+  ],
+  "boltball": [
+   [
+    "BA_POIS",
+    13
+   ]
+  ],
+  "summon": [
+   "S_MONSTER"
+  ],
+  "speed": 110,
+  "flags": "CHAR_MULTI|FORCE_SLEEP|NEVER_MOVE|DROP_2D2|EMPTY_MIND|COLD_BLOOD|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 590,
+  "name": "Gauth",
+  "symbol": "e",
+  "color": "D",
+  "level": 36,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 30.0,
+  "breath": [],
+  "cause": [
+   [
+    "CAUSE_2",
+    36
+   ]
+  ],
+  "boltball": [
+   [
+    "BO_ELEC",
+    30.0
+   ],
+   [
+    "BA_COLD",
+    37.0
+   ]
+  ],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|BASH_DOOR|EVIL",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 597,
+  "name": "Silent watcher",
+  "symbol": "g",
+  "color": "r",
+  "level": 35,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 0,
+  "breath": [],
+  "cause": [
+   [
+    "MIND_BLAST",
+    36
+   ]
+  ],
+  "boltball": [],
+  "summon": [
+   "S_MONSTER",
+   "S_MONSTERS"
+  ],
+  "speed": 110,
+  "flags": "EMPTY_MIND|NEVER_MOVE|EVIL|IM_FIRE|IM_COLD|IM_ELEC|IM_POIS|HURT_ROCK|COLD_BLOOD|HURT_LITE|NO_CONF|NO_SLEEP|NO_FEAR",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 602,
+  "name": "Aranea",
+  "symbol": "S",
+  "color": "R",
+  "level": 38,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 32.0,
+  "breath": [],
+  "cause": [
+   [
+    "CAUSE_3",
+    80
+   ]
+  ],
+  "boltball": [
+   [
+    "BO_FIRE",
+    53.2
+   ],
+   [
+    "MISSILE",
+    19.7
+   ]
+  ],
+  "summon": [],
+  "speed": 110,
+  "flags": "FORCE_MAXHP|FRIENDS|FORCE_SLEEP|OPEN_DOOR|BASH_DOOR|HURT_LITE|ANIMAL|EVIL|IM_POIS|SMART",
+  "confuse": "CONFUSABLE with shallow: Giant fire tick(L26)"
+ },
+ {
+  "idx": 606,
+  "name": "Doombat",
+  "symbol": "b",
+  "color": "R",
+  "level": 32,
+  "tier": 2,
+  "response": "CAREFUL",
+  "melee": 37.5,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "WEIRD_MIND|BASH_DOOR|IM_FIRE|ANIMAL",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 612,
+  "name": "Troll chieftain",
+  "symbol": "T",
+  "color": "v",
+  "level": 40,
+  "tier": 3,
+  "response": "AVOID",
+  "melee": 47.0,
+  "breath": [],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_MAXHP|ESCORT|OPEN_DOOR|DROP_1D2|SMART|BASH_DOOR|TAKE_ITEM|REGENERATE|MOVE_BODY|EVIL|TROLL|IM_POIS|NO_FEAR",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 613,
+  "name": "Shardstorm",
+  "symbol": "v",
+  "color": "u",
+  "level": 37,
+  "tier": 1,
+  "response": "FIGHT",
+  "melee": 21.0,
+  "breath": [
+   [
+    "BR_SHAR",
+    29
+   ]
+  ],
+  "cause": [],
+  "boltball": [],
+  "summon": [],
+  "speed": 120,
+  "flags": "FORCE_SLEEP|RAND_50|EMPTY_MIND|BASH_DOOR|POWERFUL|NO_FEAR|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ },
+ {
+  "idx": 615,
+  "name": "Greater mummy",
+  "symbol": "z",
+  "color": "y",
+  "level": 36,
+  "tier": 4,
+  "response": "LEAVE",
+  "melee": 36.0,
+  "breath": [],
+  "cause": [
+   [
+    "CAUSE_3",
+    80
+   ],
+   [
+    "MIND_BLAST",
+    36
+   ]
+  ],
+  "boltball": [
+   [
+    "BO_NETH",
+    99.0
+   ],
+   [
+    "BA_COLD",
+    37.0
+   ],
+   [
+    "BA_POIS",
+    13
+   ]
+  ],
+  "summon": [
+   "S_UNDEAD"
+  ],
+  "speed": 110,
+  "flags": "FORCE_SLEEP|FORCE_MAXHP|NO_FEAR|EVIL|UNDEAD|COLD_BLOOD|ONLY_ITEM|DROP_1D2|DROP_2D2|SMART|TAKE_ITEM|OPEN_DOOR|BASH_DOOR|ESCORT|MOVE_BODY|IM_ACID|IM_COLD|IM_ELEC|IM_POIS|NO_CONF|NO_SLEEP",
+  "confuse": "no shallow (dl0-30) monster shares glyph+colour"
+ }
+]
