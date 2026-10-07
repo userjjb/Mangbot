@@ -58,6 +58,51 @@ USE_VERIFY = ("Phase Door", "Word of Recall", "Teleport", "Cure Light Wounds", "
               "Neutralize Poison")
 
 
+# Blows per round, as the server computes them (xtra1.c ~2950, tables.c;
+# warrior p_class A:6:30:5). Stat values as the indicators send them: 3..18,
+# then 18 + xx for 18/xx.
+ADJ_STR_BLOW = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 20, 30, 40, 50, 60, 70, 80, 90, 100,
+                110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240]
+ADJ_DEX_BLOW = [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 4, 4, 5, 6, 7, 8, 9, 10,
+                11, 12, 14, 16, 18, 20, 20, 20]
+ADJ_STR_HOLD = [4, 5, 6, 7, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 30, 35, 40, 45, 50, 55, 60, 65,
+                70, 80, 80, 80, 80, 80, 90, 90, 90, 90, 90, 100, 100, 100]
+BLOWS_TABLE = [
+    [1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3], [1, 1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4],
+    [1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5], [1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5, 5],
+    [1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5, 5], [2, 2, 3, 3, 4, 4, 5, 5, 5, 5, 5, 6],
+    [2, 2, 3, 3, 4, 4, 5, 5, 5, 5, 5, 6], [2, 3, 3, 4, 4, 4, 5, 5, 5, 5, 5, 6],
+    [3, 3, 3, 4, 4, 4, 5, 5, 5, 5, 6, 6], [3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6],
+    [3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 6], [3, 3, 4, 4, 4, 4, 5, 5, 6, 6, 6, 6]]
+WARRIOR = (6, 30, 5)          # max_attacks, min_weight (tenth lb), att_multiply
+TV_WEAPONS = (20, 21, 22, 23)
+
+
+def stat_index(v):
+    return max(0, min(37, v - 3 if v <= 18 else 15 + (v - 18) // 10))
+
+
+def weapon_blows(weight, str_v, dex_v, cls=WARRIOR):
+    """Blows per round with a weapon of `weight` tenth-pounds."""
+    si, di = stat_index(str_v), stat_index(dex_v)
+    if weight // 10 > ADJ_STR_HOLD[si]:
+        return 1                                   # too heavy to wield properly
+    div = max(weight, cls[1])
+    s_i = min(11, ADJ_STR_BLOW[si] * cls[2] // div)
+    d_i = min(11, ADJ_DEX_BLOW[di])
+    return max(1, min(cls[0], BLOWS_TABLE[s_i][d_i]))
+
+
+def weapon_damage(name, blows):
+    """Average damage per round: (dice average + to-dam) x blows."""
+    m = re.search(r"\((\d+)d(\d+)\)", name)
+    if not m:
+        return 0.0
+    dice = int(m.group(1)) * (int(m.group(2)) + 1) / 2
+    b = re.search(r"\([+-]\d+,([+-]\d+)\)", name)
+    return (dice + (int(b.group(1)) if b else 0)) * blows
+
+
 def flavour_key(name):
     """'2 Puce Potions {tried}' -> 'Puce Potion' (the flavour table's key)."""
     n = re.sub(r"\{.*?\}", "", name).strip()
@@ -1033,6 +1078,7 @@ class Pilot:
         self.wild_trail, self.trail_level = [], None
         self.eat_t = 0.0
         self.flavour_watch = None
+        self.weapons_t, self.weapon_tips = 0.0, set()
         self.effect_failures = 0
         self.redraw_t, self.redraw_level = 0.0, None
         self.group_warned = None
@@ -1822,6 +1868,33 @@ class Pilot:
             return known
         return self.orders.get(order) == "yes"
 
+    def weapon_table(self):
+        """[(name, blows, damage per round, wielded?)] for the wielded weapon and
+        every weapon in the pack, at the current STR/DEX (the Advisor's
+        progression memo: mission 13 fought 17 min with a Dagger while
+        carrying a Sabre)."""
+        ind = self.w.ind
+        st, dx = ind.get("stat0", [0])[0], ind.get("stat3", [0])[0]
+        if not st or not dx:
+            return []
+        out = []
+        for eq in (True, False):
+            for i in self.w.items(equip=eq):
+                if i["tval"] in TV_WEAPONS:
+                    wt = i["weight"] // max(1, i.get("number", 1))
+                    b = weapon_blows(wt, st, dx)
+                    out.append((i["name"], b, weapon_damage(i["name"], b), eq))
+        return out
+
+    def watch_weapons(self):
+        """News when a carried weapon beats the wielded one by > 20% per round."""
+        wt = self.weapon_table()
+        cur = next((d for n, b, d, eq in wt if eq), 0)
+        for n, b, d, eq in wt:
+            if not eq and d > cur * 1.2 and d > 0 and n not in self.weapon_tips:
+                self.weapon_tips.add(n)
+                self.notify("tactic", f"{n} would do ~{d:.0f} per round ({b} blows) vs ~{cur:.0f} now: wield it")
+
     def user_note(self, text):
         """The user's commentary while watching (tools/observe/watch.py or
         pilotctl note): logged with a snapshot of the moment, in the
@@ -2454,7 +2527,11 @@ class Pilot:
             new = [n for n, (cur, top) in drained.items() if n in self.seen_drained
                    and cur < self.seen_drained[n][0] and top == self.seen_drained[n][1]]
             if new:
-                self.notify("stat_drained", f"{', '.join(new)} drained (blows {blows}); restore at the Alchemist/Temple")
+                full = {"STR": "Strength", "INT": "Intelligence", "WIS": "Wisdom", "DEX": "Dexterity",
+                        "CON": "Constitution", "CHR": "Charisma"}
+                self.notify("stat_drained", f"{', '.join(new)} drained (blows {blows}); levels don't restore it: "
+                            + ", ".join(f"Potion of Restore {full[n]}" for n in new)
+                            + " at the Alchemist (5), ~470 each (the Temple doesn't sell them)")
                 # Second drain on this level from something in view: leave
                 # (Borg memo §3.2; mission 7's scorpion drained STR three times)
                 w = self.w
@@ -2573,6 +2650,9 @@ class Pilot:
             self.mons_log_t = now
             self.log("mons", monsters=[(y, x, r.name) for y, x, r in w.monsters])
         self.watch_character()
+        if now - self.weapons_t > 10:
+            self.weapons_t = now
+            self.watch_weapons()
         self.watch_breeders()
         self.watch_progress()
         self.watch_perception()
@@ -2677,7 +2757,21 @@ class Pilot:
                 self.orders[k] = type(cur)(v) if not isinstance(cur, str) else v
             with open(self.orders_file, "w") as f:
                 json.dump(self.orders, f)
-            return {"ok": True, "orders": self.orders}
+            out = {"ok": True, "orders": self.orders}
+            md = int(self.orders.get("max_depth", 0) or 0)
+            if md:
+                # the Borg's warrior gate (the Advisor's progression memo):
+                # clvl x 50 ft to 1000 ft, then (clvl - 5) x 50; never past 1000 ft without FA
+                lev = self.w.clvl
+                gate = lev * 50 if lev <= 20 else max(1000, (lev - 5) * 50)
+                warn = []
+                if md > gate:
+                    warn.append(f"max_depth {md} ft is deeper than the gate for clvl {lev} ({gate} ft)")
+                if md > 1000 and not self.has_ability("free_action"):
+                    warn.append("below 1000 ft without Free Action")
+                if warn:
+                    out["note"] = "careful: " + "; ".join(warn) + " (HANDBOOK stage table)"
+            return out
         if c in self.ACTIONS:
             key = self.ACTIONS[c]
             if not args:
@@ -2924,6 +3018,10 @@ class Pilot:
                         "15-34 turns)" if w.recall_pending else "")
                      + f" | max_depth {self.orders.get('max_depth')}"
                      + (f" | drained: {', '.join(drained)}" if drained else ""))
+        wt = self.weapon_table()
+        if wt:
+            lines.append("Weapons (blows, avg damage per round at your STR/DEX): " + "; ".join(
+                f"{'WIELDED ' if eq else ''}{n} {b} blows ~{d:.0f}" for n, b, d, eq in wt))
         if w.flags:
             # from the character sheet's grid (tool query 'flags'): facts, not guesses
             ab = [k for k, v in w.flags.items() if v and k not in ("stealth", "search", "infra", "tunnel")]

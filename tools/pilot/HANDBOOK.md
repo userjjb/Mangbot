@@ -220,6 +220,26 @@ Orders are remembered across pilot restarts.
   one, because the server's auto-retaliate would otherwise fight it. To fight
   one on purpose, use `goal hunt NAME`. Uniques drop good
   items worth identifying (their drops are inscribed with the unique's name).
+- **Progression plan for the throwaway warrior** (the Advisor's `memos/2026-10-07-warrior-progression.md`;
+  `order max_depth=` warns when you set it deeper than the gate: clvl × 50 ft up to 1000 ft, then
+  (clvl − 5) × 50, and never below 1000 ft without Free Action):
+
+  | stage | clvl | depth | before going | buy |
+  |---|---|---|---|---|
+  | A | 11–12 | 250–450 ft | STR restored, a 4-blow weapon, 1 WoR | Restore Strength ~470, Main Gauche 40, WoR 240, CLW to 5+ |
+  | B | 12–15 | 500–750 ft | 2 WoR, 5 Phase, 3 CCW (or 5 CSW), To-Dam +2, AC ~25 | To-Dam ×2–4, CCW 155, Metal Cap, Hard Leather Boots, Large Leather Shield |
+  | C | 15–20 | 750–1000 ft | 4 CCW, 8 Phase, 2 WoR, See Invisible or avoid invisible threats | start saving ~1,000/trip for a Staff of Teleportation (4,000–4,900) |
+  | D | 20–25 | 1000 ft (hold) | Free Action (found), the staff (22% fail at clvl 20), 4+ CCW | the staff; CCW, Phase, WoR |
+
+  The bottleneck after clvl 20 is found gear (Free Action, resists), not XP. Uniques you've
+  already killed give no XP and no drop.
+- **Blows** come from STR and DEX against weapon weight (below 3 lb a weapon counts as 3 lb). At
+  STR 18/50 and DEX 18/10 a Main Gauche or Dagger gives 4 blows, a Sabre 3, anything over 10 lb 2
+  or fewer; a drained STR costs blows until a Potion of Restore Strength (Alchemist only; levels
+  don't restore stats). The report's `Weapons:` line computes blows and damage per round for
+  every weapon you carry at your current STR/DEX, and the pilot tells you (`tactic`) when a
+  carried one beats the wielded one by 20%: wield it. On this character, 4 light blows plus
+  To-Dam beat heavy dice; don't switch for a bigger die without checking blows.
 - **Monsters that kill a diving warrior (0–1500 ft)** (Advisor danger-table memo, checked in the
   server code; the pilot's `danger_table.csv` rates every monster to level 40):
   - Paralysis stacks until you die: without Free Action, leave any level with a paralyser that can
