@@ -176,8 +176,9 @@ Orders are remembered across pilot restarts.
 - **Compare found armour and weapons with what you wear before selling them** (`inspect`): found
   `{good}` gear is often an upgrade. And take `average` out of `autodestroy` before fetching a
   plain base-item upgrade (a Small Metal Shield [3] was destroyed on pickup).
-- **Put on an unknown ring or amulet when that slot is empty** before deciding to sell it (a
-  Resist Lightning amulet went for 21 gold with the neck slot empty).
+- **Never put on an unknown ring or amulet**: 19-58% of unknown rings and ~20% of amulets are
+  cursed, a cursed one can't be taken off (Remove Curse ~155 at the Temple), and wearing one
+  doesn't identify it. Identify it first (the Advisor's identify-and-sell memo; `wearall` skips them).
 - **Budget two Word of Recall per trip**: the pilot reads one by itself below 30% HP, and each of
   two trips in mission 2 cost a whole scroll that way.
 - Potions heal a fixed amount: Cure Light 15 HP, Cure Serious 20-24, Cure Critical 25-29,
@@ -240,8 +241,10 @@ Orders are remembered across pilot restarts.
     there; until then carry CCW).
 - **Pack space runs out before food.** Keep ~1 spare ration. Destroy
   `{average}` weapons and armour you won't use. Rings and amulets found very
-  shallow are usually bad. Don't quaff unknown potions without food in the
-  pack (Salt Water empties your stomach).
+  shallow are usually bad. Quaff-test an unknown potion only when all hold: a stack of 2+, HP at
+  80% or less (a cure at full HP doesn't identify), nothing in view, food in the pack (Salt Water
+  empties your stomach), no STR/DEX blow breakpoint at risk, and the flavour table doesn't call it
+  junk. 12-16% of unknown potions at 250-750 ft drain STR, DEX or CON (Restore ~470).
 - Depth checkpoints: see-invisible and free action by 1000 ft; the four basic
   resistances by 1250 ft.
 - **Breeders** (lice, worms; the `breeders` event): no XP and they multiply fast. Kill one or two
@@ -251,8 +254,15 @@ Orders are remembered across pilot restarts.
 - **Meet packs in a corridor** so fewer reach you at once (the `choke` order does this). Corridors
   are two wide here, so a dead end, a corner or a one-wide tunnel is better than a straight stretch.
 - **Money** (how the user turns loot into gold):
-  - sell unknown potions and scrolls found early: they're usually bad, and selling identifies them
-    and pays a little;
+  - **unknown items** (the Advisor's identify-and-sell memo, `memos/2026-10-07-identify-and-sell.md`):
+    selling one unknown item **identifies its flavour** for good (for this and every later
+    character: flavours are fixed per server; the pilot keeps a table, `runs/flavours.json`, and
+    the report shows "(= Potion of X; not aware)"). So: junk per the table → sell unknown (the
+    shop refuses it once known); a stack of 2+ → sell **one**, then use or sell the rest at the
+    real price; single potions/scrolls while you've never been below 1000 ft → sell; anything
+    from deeper, and every wand, staff, rod, ring and amulet → Identify (81) first, then keep
+    the useful ones (Free Action, See Invisible, resists, Teleport Other, Slow/Sleep/Confuse
+    Monster, light/door rods) and sell the rest. Buy Identify when discounted (57-60), keep 2-3;
   - sell whatever you won't use (spare bows, weapons);
   - identify items worth identifying before selling (wands, rings, good weapons: an identified Wand
     of Slow Monster fetched 225), but not `{average}` gear, which sells the same;
@@ -282,15 +292,15 @@ Orders are remembered across pilot restarts.
   view). The pilot takes the light off when idle in town and puts the best one back on in the
   dungeon. Store torches and lanterns come half full: buy a lantern early, refill with flasks.
 - Shopping lists per depth band and budget: `memos/2026-09-29-shops.md` §3. From 500 ft carry
-  3 CCW, 5+ Phase Door and 1-2 WoR; the first big purchase after the basics is a Staff of
-  Teleportation (3,100+, the only buyable long escape; works blind and confused).
+  3 CCW, 5+ Phase Door and 1-2 WoR. A Staff of Teleportation (3,100+, the only buyable long
+  escape) **fails 67-83% at clvl 10, 33-40% at 15, ~20% at 20** for a Half-Orc warrior: not an
+  escape before clvl ~20. A Staff of Perception isn't worth buying yet (only from ~1000 ft).
 - Selling: potions and scrolls fetch 7-9 each (not worth the walk); unknown items sell at their
   plain base value, so Identify (Alchemist, 20-80) anything that might be magical first. Never
   sell Staffs of Door/Stair Location or Teleportation.
-- **Don't sell unknown potions, wands or staffs blind once found at 200 ft or deeper** (mission
-  12 sold 2 Potions of Speed and 2 of Heroism for 8 each; two unknown wands identified later
-  sold for 285). Quaff-test potions when safe (food in the pack), and Identify wands/staffs first.
-  Discounts vanish when the stock rolls over (~33 s): `list` again after any wait.
+- Mission 12 sold 2 Potions of Speed and 2 of Heroism unknown for 8 each (selling one would have
+  identified the stack); Dive03 sold 14 unknown devices and jewellery for ~3,600 less than they
+  were worth. Discounts vanish when the stock rolls over (~33 s): `list` again after any wait.
 - **New report lines:** `Abilities:` is the character sheet's resist/ability grid (free_act,
   see_invis, res_conf, ...), read from the game, so trust it over item names. `Standing on:`
   shows the item under you. `State audit:` counts how often the pilot's picture of the
@@ -299,8 +309,9 @@ Orders are remembered across pilot restarts.
 - **An item command whose reply says "no change in the pack or equipment yet: it may not have
   happened" didn't do anything you can see**: check before assuming it worked. The pilot reports
   its own actions that showed no effect as `tactic` "no effect seen".
-- **The shop goal refuses to sell unknown flavours** (unidentified potions, scrolls, wands,
-  staffs, rods, rings, amulets): identify or try them first, or `sell !NAME` to force.
+- **The shop goal applies the unknown-item rules above**: it sells junk-per-table, one of a stack,
+  and potions/scrolls while your deepest level is above 1000 ft; it refuses unknown wands, staffs,
+  rods, rings and amulets and table-known good items, saying why (`sell !NAME` to force).
 - The report's `Supplies:` line (also in `--brief`) lists your potions, scrolls, food, flasks,
   staffs and wands with counts, a pending recall, max_depth and drained stats. `lost` news means
   something was destroyed, stolen or overflowed (e.g. "Your purse feels lighter": a thief).
@@ -308,8 +319,7 @@ Orders are remembered across pilot restarts.
 - `goal recall` puts a light on first (reading needs light: at night in town the pilot keeps it
   off while idle), and if a recall fails it quotes the game's reason. It now finishes only when
   the recall happens, not when you take stairs while it's pending.
-- **Don't quaff-test unknown potions when STR is drained to a blow breakpoint** (mission 13: a
-  Potion of Weakness cost a blow). Test them with food in the pack and nothing to lose.
+- Mission 13's quaff-test was a Potion of Weakness and cost a blow (STR at a breakpoint).
 - The report's map lines start with their row number (`43|...`), and the header gives the
   column range, so `goto Y,X` coordinates can be read straight off it. A climb (`goal dive` to a
   shallower depth) uses a `>` to get a fresh level only if it's within 8 squares and the level

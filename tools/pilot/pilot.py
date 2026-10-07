@@ -23,6 +23,7 @@ See HANDBOOK.md for the player's view; design_pilot.md for the why.
 """
 import argparse
 import collections
+import csv
 import math
 import json
 import os
@@ -55,6 +56,22 @@ HEALS = (("*Healing*", 1200), ("Cure Critical Wounds", 25), ("Cure Serious Wound
 USE_VERIFY = ("Phase Door", "Word of Recall", "Teleport", "Cure Light Wounds", "Cure Serious Wounds",
               "Cure Critical Wounds", "Healing", "Boldness", "Heroism", "Berserk", "Cure Poison",
               "Neutralize Poison")
+
+
+def flavour_key(name):
+    """'2 Puce Potions {tried}' -> 'Puce Potion' (the flavour table's key)."""
+    n = re.sub(r"\{.*?\}", "", name).strip()
+    n = re.sub(r"^(a|an|the|\d+) ", "", n)
+    n = re.sub(r"(Potion|Scroll|Wand|Staff|Rod|Ring|Amulet)s\b", r"\1", n)
+    return re.sub(r"\s*\(.*?\)", "", n).strip()
+
+
+def kind_key(name):
+    """'a Potion of Weakness' / '3 Wands of Magic Missile (10 charges)' -> 'Potion of Weakness'."""
+    n = re.sub(r"\{.*?\}|\(.*?\)|\[.*?\]", "", name).strip()
+    n = re.sub(r"^(a|an|\d+) ", "", n)
+    n = re.sub(r"(Potion|Scroll|Wand|Staff|Rod|Ring|Amulet)s\b", r"\1", n)
+    return re.sub(r"\s+[-+]\d+.*$", "", n).strip()
 
 
 def one_of(name):
@@ -846,6 +863,10 @@ class Shop(Goal):
                 if verdict is None and w.store_t < self.pending and time.time() - self.pending < 4:
                     return None   # still waiting
                 self.done_log.append(verdict or f"{self.last} (no answer)")
+                m = re.match(r"You sold (.+?) for \d+ gold", verdict or "")
+                if m and getattr(self, "selling_flavour", None):
+                    p.learn_flavour(self.selling_flavour, kind_key(m.group(1)), "sold in a shop")
+                    self.selling_flavour = None
                 self.pending = None
                 w.status_t = 0            # re-read gold before the next purchase
                 w.inven_dirty = True
@@ -872,11 +893,13 @@ class Shop(Goal):
                     w.inven_dirty = True
                 else:
                     it = next((i for i in w.items() if i["item"] == idx), None)
-                if it and not force and p.unknown_flavour(it):
+                why_not = p.unknown_sell_refusal(it, n) if it and not force else None
+                if why_not:
                     # (mission 12 sold 2 Potions of Speed and 2 of Heroism for 8 each)
-                    self.done_log.append(f"NOT sold (unknown: identify or try it first; sell !NAME to force): "
-                                         f"{it['name']}")
+                    self.done_log.append(f"NOT sold ({why_not}; sell !NAME to force): {it['name']}")
                     return None
+                # selling an unknown flavour identifies it (store.c): learn the kind
+                self.selling_flavour = flavour_key(it["name"]) if it and p.unknown_flavour(it) else None
                 if it and not force and p.probably_special(it["name"]):
                     # Wormtongue's armour was sold unseen for 17 gold: it was Soft
                     # Studded Leather of Resistance (buyback 19834)
@@ -974,6 +997,15 @@ class Pilot:
         self.light_t = self.light_warned = 0.0
         # Where the town's '>' is (remembered across runs: the town never changes)
         self.town_file = os.path.join(os.path.dirname(rundir.rstrip("/")), "town.json")
+        # Server-wide flavour table and this character's deepest level
+        self.flavour_file = os.path.join(os.path.dirname(rundir.rstrip("/")), "..", "flavours.json")
+        self.load_flavours()
+        self.deepest_file = os.path.join(rundir, "deepest.json")
+        try:
+            with open(self.deepest_file) as f:
+                self.deepest_ft = json.load(f)["ft"]
+        except (OSError, ValueError, KeyError):
+            self.deepest_ft = 0
         self.town_stairs = None
         if os.path.exists(self.town_file):
             with open(self.town_file) as f:
@@ -2030,6 +2062,70 @@ class Pilot:
 
     FLAVOURED = {75, 70, 65, 55, 66, 45, 40}     # potion, scroll, wand, staff, rod, ring, amulet
 
+    # --- the flavour table (the Advisor's identify-and-sell memo, 2026-10-07):
+    # flavours are fixed per server, so what any character learns holds for all
+
+    def load_flavours(self):
+        try:
+            with open(self.flavour_file) as f:
+                self.flavours = json.load(f)
+        except (OSError, ValueError):
+            self.flavours = {}
+        self.junk_kinds = {}
+        try:
+            tv = {"potion": "Potion", "scroll": "Scroll", "wand": "Wand", "staff": "Staff", "rod": "Rod",
+                  "ring": "Ring", "amulet": "Amulet"}
+            for k in csv.DictReader(open(os.path.join(HERE, "kinds.csv"))):
+                self.junk_kinds[f"{tv.get(k['kind'], k['kind'])} of {k['name']}"] = \
+                    k["sell_known"] in ("0-0", "0") or "CURSE" in k["flags"]
+        except OSError:
+            pass
+
+    def learn_flavour(self, flavour, kind, how):
+        if not flavour or not kind or " of " not in kind or self.flavours.get(flavour, {}).get("kind") == kind:
+            return
+        self.flavours[flavour] = {"kind": kind, "junk": self.junk_kinds.get(kind, False), "source": how}
+        try:
+            cur = {}
+            if os.path.exists(self.flavour_file):
+                with open(self.flavour_file) as f:
+                    cur = json.load(f)
+            cur[flavour] = self.flavours[flavour]
+            with open(self.flavour_file, "w") as f:
+                json.dump(cur, f, indent=1, sort_keys=True)
+        except OSError:
+            pass
+        self.notify("tactic", f"learned: {flavour} = {kind}" + (" (junk)" if self.flavours[flavour]["junk"] else ""))
+
+    def flavour_of(self, it):
+        return self.flavours.get(flavour_key(it["name"])) if self.unknown_flavour(it) else None
+
+    def show(self, it):
+        """An item's name, with the flavour table's kind for an unknown flavour."""
+        f = self.flavour_of(it)
+        return it["name"] + (f" (= {f['kind']}{', junk' if f['junk'] else ''}; not aware)" if f else "")
+
+    def unknown_sell_refusal(self, it, n):
+        """Why not to sell this unknown item now, or None (the memo's §4.4):
+        junk per the table -> sell (the shop refuses it once known); one of a
+        stack -> sell (a free identification of the flavour); a potion or
+        scroll while we've never been below 1000 ft -> sell (Identify costs
+        more than it earns); devices and jewellery -> Identify first."""
+        if not self.unknown_flavour(it):
+            return None
+        f = self.flavour_of(it)
+        if f and f["junk"]:
+            return None
+        if f:
+            return f"it's {f['kind']}: worth more known, use or Identify it"
+        if it.get("number", 1) >= 2 and n == 1:
+            return None
+        if it["tval"] in (75, 70) and self.deepest_ft < 1000:
+            return None
+        if it["tval"] in (75, 70):
+            return "an unknown potion/scroll found below 1000 ft: Identify it (expected value 87-750)"
+        return "an unknown wand/staff/rod/ring/amulet: Identify it first (worth 50-700 known)"
+
     def unknown_flavour(self, it):
         """An unidentified flavoured item ('a Blue Speckled Potion', 'a Copper
         Wand'): it sells at its plain base value, whatever it is."""
@@ -2319,6 +2415,8 @@ class Pilot:
         for it in sorted(w.items(), key=lambda i: -light_left(i) if i["tval"] == TV_LITE else 0):
             if it["tval"] == TV_LITE and light_left(it) == 0:
                 continue
+            if it["tval"] in (40, 45) and self.unknown_flavour(it):
+                continue            # unknown jewellery: 19-58% cursed, sticks, never identifies (Advisor)
             kind = self.WEAR_TVALS.get(it["tval"])
             if kind and kind not in worn:
                 self.cmd(f"custom w item={it['item']}", f"wear {it['name']}", hold=0.8)
@@ -2377,6 +2475,13 @@ class Pilot:
         # The wilderness trail: the edge we came in by, per sector (Town goal)
         if self.trail_level != w.level_t and w.arrive_pos is not None:
             self.trail_level = w.level_t
+            if w.in_dungeon and (w.depth_ft or 0) > self.deepest_ft:
+                self.deepest_ft = w.depth_ft
+                try:
+                    with open(self.deepest_file, "w") as f:
+                        json.dump({"ft": self.deepest_ft}, f)
+                except OSError:
+                    pass
             if w.depth == 0 or w.in_dungeon:
                 self.wild_trail = []
             elif isinstance(self.goal, Town) and self.wild_trail:
@@ -2689,7 +2794,7 @@ class Pilot:
                      f"{' (arrived by ' + w.arrived_by + ')' if w.arrived_by else ''}"
                      f" | goal: {self.goal.describe() if self.goal else 'none (idle)'}")
         lines.append("Equipment: " + "; ".join(i["name"] for i in w.items(equip=True)))
-        lines.append("Pack: " + "; ".join(f"{chr(97 + i['item'])}) {i['name']}" for i in w.items()))
+        lines.append("Pack: " + "; ".join(f"{chr(97 + i['item'])}) {self.show(i)}" for i in w.items()))
         if w.rows and w.pos:
             y0, x0 = w.pos
             # Every row, numbered, and the column range: blank rows used to be
@@ -2721,7 +2826,7 @@ class Pilot:
                                                      for p in near))
         # Consumables at a glance (also in --brief: the Navigator decided
         # without the pack, the game-state survey)
-        cons = [i["name"] for i in w.items(tval=(TV_POTION, TV_SCROLL, TV_FOOD, TV_FLASK, 55, 65, 66))]
+        cons = [self.show(i) for i in w.items(tval=(TV_POTION, TV_SCROLL, TV_FOOD, TV_FLASK, 55, 65, 66, 40, 45))]
         drained = [n for n, (cur, top) in (self.seen_drained or {}).items() if cur < top]
         lines.append("Supplies: " + ("; ".join(cons) or "none")
                      + (f" | RECALL PENDING (read {time.time() - w.recall_pending_t:.0f} s ago; it takes "
