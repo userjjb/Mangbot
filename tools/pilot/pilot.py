@@ -1135,7 +1135,7 @@ class Pilot:
         model = {"pack": [(i["name"], i["number"]) for i in w.inven if not i["equip"]],
                  "equip": [i["name"] for i in w.inven if i["equip"]],
                  "hp": list(w.hp), "gold": w.ind.get("gold", [None])[0],
-                 "depth": w.depth, "pos": w.pos}
+                 "depth": w.depth, "pos": w.pos, "hunger": w.hunger}
         try:
             st = self.c.status()
             inv = self.c.inven()
@@ -1145,10 +1145,14 @@ class Pilot:
                  "equip": [i["name"] for i in inv if i["equip"]],
                  "hp": st["ind"].get("hp", [0, 1])[:2], "gold": st["ind"].get("gold", [None])[0],
                  "depth": st["ind"].get("depth", [None])[0],
-                 "pos": (st["y"], st["x"]) if st["y"] >= 0 else w.pos}
+                 "pos": (st["y"], st["x"]) if st["y"] >= 0 else w.pos,
+                 "hunger": st["ind"].get("hunger", [w.hunger])[0]}
+        # (hp only out of melee: in a fight it's a timing race -- the Advisor's
+        # mission 13 audit memo)
         diffs = {k: (model[k], fresh[k]) for k in model if model[k] != fresh[k] and
-                 not (k == "hp" and abs(model[k][0] - fresh[k][0]) <= 3)}
+                 not (k == "hp" and (abs(model[k][0] - fresh[k][0]) <= 3 or w.adjacent_monsters()))}
         self.audit_runs += 1
+        self.log("audit_check", n=self.audit_runs, differences=len(diffs))
         for k in diffs:
             self.audit_counts[k] = self.audit_counts.get(k, 0) + 1
         if diffs:
