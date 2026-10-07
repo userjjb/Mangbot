@@ -1031,6 +1031,7 @@ class Pilot:
         self.audit_t, self.audit_runs, self.audit_counts = 0.0, 0, {}
         self.wild_trail, self.trail_level = [], None
         self.eat_t = 0.0
+        self.flavour_watch = None
         self.effect_failures = 0
         self.redraw_t, self.redraw_level = 0.0, None
         self.group_warned = None
@@ -1103,6 +1104,8 @@ class Pilot:
         self.busy_until = time.time() + hold
         self.log("act", cmd=line, why=why)
         self.expect_effect(line, why)
+        if re.match(r"custom [qruazE] item=", line):
+            self.watch_flavours()
         # Verify the pilot's own escapes and cures by their effect (post-mortem
         # memo §4.2: both Dive03 deaths were escapes that never ran)
         m = re.match(r"custom [rq] item=(\d+)$", line)
@@ -1135,6 +1138,42 @@ class Pilot:
                 self.expects.append({"kind": kind, "t": time.time(), "why": why,
                                      "sig": self.effect_sig(kind)})
                 return
+
+    def pack_kinds(self):
+        """{(tval, name)} of the pack, names without counts/inscriptions."""
+        return {(i["tval"], kind_key(i["name"]) if " of " in i["name"] else flavour_key(i["name"]))
+                for i in self.w.items() if i["tval"] in self.FLAVOURED}
+
+    def watch_flavours(self):
+        self.flavour_watch = {"t": time.time(), "before": self.pack_kinds(),
+                              "unknown": {(i["tval"], flavour_key(i["name"])) for i in self.w.items()
+                                          if self.unknown_flavour(i)}}
+
+    def learn_flavours_tick(self, now):
+        """After a read/quaff/use/aim/zap (incl. Identify): an unknown flavour
+        that disappeared while a known kind of the same type appeared is that
+        kind (the Advisor's flavour-messages memo: names drop the flavour once
+        it's aware, so diff the pack)."""
+        fw = self.flavour_watch
+        if not fw or now - fw["t"] < 1.0:
+            return
+        self.flavour_watch = None
+        after = self.pack_kinds()
+        gone = {k for k in fw["unknown"] if k not in after}
+        new = {k for k in after - fw["before"]}
+        said = [t for ts, t in self.w.messages if ts >= fw["t"] - 0.05]
+        for t in said:                          # a stack used up: "You have no more Potions of X."
+            m = re.match(r"You have no more (.+?)\.?$", t)
+            if m and " of " in m.group(1):
+                k = kind_key(m.group(1))
+                tv = next((tv for tv, _ in gone), None)
+                if tv is not None:
+                    new.add((tv, k))
+        for tv in {t for t, _ in gone}:
+            g = [n for t, n in gone if t == tv]
+            n = [k for t, k in new if t == tv and " of " in k]
+            if len(g) == 1 and len(n) == 1:
+                self.learn_flavour(g[0], n[0], "identified or used")
 
     def verify_effects(self):
         """Report actions whose effect never showed (3 s), instead of
@@ -2459,6 +2498,7 @@ class Pilot:
             self.wear_step()
         self.verify_use()
         self.verify_effects()
+        self.learn_flavours_tick(time.time())
         w, now = self.w, time.time()
         # Full resync from the server after a level change or a loss (the
         # game-state survey, 2026-10-03: the client's copy is right, ours drifts)
