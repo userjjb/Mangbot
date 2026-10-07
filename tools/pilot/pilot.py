@@ -3215,7 +3215,10 @@ def main():
         orig = pilot.w._on_event
         bulky = {"map", "status", "inven", "options", "commands"}   # query replies
         pilot.w.c.log = lambda ev: (orig(ev), ev.get("ev") in bulky or evlog.write(json.dumps(ev) + "\n"))
-        for opt in ("avoid_other", "stack_force_costs"):
+        # disturb_near/disturb_panel: the server stops a run the moment a monster
+        # in view moves, or at a sector edge (faster than our polling at run
+        # speed; the Advisor's running memo). disturb_move stays as the user plays.
+        for opt in ("avoid_other", "stack_force_costs", "disturb_near", "disturb_panel"):
             client.send(f"option {opt} yes")
         sock = os.path.join(rundir, "ctl.sock")
         if os.path.exists(sock):

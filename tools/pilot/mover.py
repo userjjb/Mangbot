@@ -100,6 +100,8 @@ class Mover:
         self.dig_t0 = self.dig_last = 0.0
         self.dig_n = 0
         self.hold_clear_until = 0.0   # the pilot: a read/quaff is waiting in the server queue
+        self.run_start_pos = None
+        self.free_dist, self.free_away = None, 0
 
     RUN_MIN = 3
 
@@ -127,20 +129,49 @@ class Mover:
             self.c.send("walk 5")            # a walk request ends a run (and is swallowed)
             self.stop_sent = True
             self.last_progress = time.time()
-        if time.time() - self.last_progress > (0.5 if self.stop_sent else 0.8):
+        started = w.pos != self.run_start_pos
+        limit = 0.5 if self.stop_sent else (0.8 if started else self.first_step_window())
+        if time.time() - self.last_progress > limit:
             # The run is over (we stopped it, or the server's run logic did)
             self.running = None
             self.sent = self.done
         return "moving"
 
-    def runs_ok(self):
-        """No runs on the surface: at night a run in town crossed the open
-        ground and went off the map edge into the wilderness (mission 13)."""
-        return self.use_runs and getattr(self.w, "in_dungeon", True) is not False
+    def surface(self):
+        return getattr(self.w, "in_dungeon", True) is False
+
+    def runs_ok(self, free=False):
+        """Runs are ~5x faster than walking (the server speeds time up while
+        running; the Advisor's running memo). Free runs (the server follows
+        the corridor) only in the dungeon: on the surface, at night, one
+        crossed town and left the map (mission 13). Stretch runs on the
+        surface pass stretch_ok() instead."""
+        return self.use_runs and not (free and self.surface())
+
+    def stretch_ok(self, i, n):
+        """A straight stretch path[i:i+n] we may run along: on the surface,
+        only over known ground at least 3 tiles from the map edge, never onto
+        a shop door (a run's first step enters it)."""
+        if not self.surface():
+            return True
+        for (y, x) in self.path[i:i + n]:
+            if not (3 <= y <= MAX_HGT - 4 and 3 <= x <= MAX_WID - 4):
+                return False
+            ch = self.w.memory.get((y, x), " ")
+            if ch == " " or ch in "12345678":
+                return False
+        return True
+
+    def first_step_window(self):
+        """A run waits for a full turn of energy before its first step: give it
+        that long before calling it failed, and send no walk meanwhile (a walk
+        cancels a run that hasn't started: 82% of dungeon runs died that way)."""
+        return 0.7 if self.surface() else 1.0
 
     def _runnable(self, i):
         """Could a run start at path index i (straight stretch, nothing close)?"""
-        return self.runs_ok() and self._straight(i) >= self.RUN_MIN and not self._monster_near(5)
+        n = self._straight(i)
+        return self.runs_ok() and n >= self.RUN_MIN and not self._monster_near(5) and self.stretch_ok(i, n)
 
     def _monster_near(self, r):
         w = self.w
@@ -157,6 +188,7 @@ class Mover:
         self.goals = {"free-run"}
         self.path = []
         self.free = (time.time(), self.w.pos)
+        self.free_dist, self.free_away = None, 0
         self.last_progress = time.time()
         self.free_pos = self.w.pos
         self.c.send(f"custom . dir={d}")
@@ -166,13 +198,22 @@ class Mover:
         if w.pos != self.free_pos:
             self.free_pos = w.pos
             self.last_progress = time.time()
+            # bound it: stop when it moves away from the goals two steps running
+            if self.resume_goals and not self.stop_sent:
+                d = min(max(abs(g[0] - w.pos[0]), abs(g[1] - w.pos[1])) for g in self.resume_goals)
+                self.free_away = self.free_away + 1 if self.free_dist is not None and d > self.free_dist else 0
+                self.free_dist = d
+                if self.free_away >= 2:
+                    self.c.send("walk 5")
+                    self.stop_sent = True
         if self._monster_near(5) and not self.stop_sent:
             self.c.send("walk 5")
             self.stop_sent = True
         if self.resume_goals and w.pos in self.resume_goals and not self.stop_sent:
             self.c.send("walk 5")          # ran onto the goal: stop there
             self.stop_sent = True
-        if time.time() - self.last_progress > 0.5:
+        limit = 0.5 if w.pos != self.free[1] else self.first_step_window()
+        if time.time() - self.last_progress > limit:
             moved = w.pos != self.free[1]
             self.free = None
             self.stop_sent = False
@@ -356,13 +397,16 @@ class Mover:
             frm = self.path[self.done - 1] if self.done else self.here
             d = direction(frm, self.path[self.done])
             n = self._straight(self.done)
-            if n >= self.RUN_MIN:
+            if n >= self.RUN_MIN and self.stretch_ok(self.done, n):
                 self.c.send(f"custom . dir={d}")
                 self.running = (self.done, self.done + n, time.time())
+                self.run_start_pos = self.w.pos
                 self.stop_sent = False
                 self.last_progress = time.time()
                 return "moving"
-            if self.in_corridor() and len(self.path) - self.done >= 3:
+            if self.in_corridor() and len(self.path) - self.done >= 3 and self.runs_ok(free=True) \
+                    and self.replans <= self.max_replans:
+                self.replans += 1          # (free runs count against the replan budget)
                 self.free_run(d, keep_goals=True)
                 return "moving"
         while self.sent < len(self.path) and self.sent - self.done < self.AHEAD:
