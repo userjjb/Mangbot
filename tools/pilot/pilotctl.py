@@ -14,6 +14,7 @@
     pilotctl.py attention                  # pending attention events, without waiting
     pilotctl.py monster NAME               # this server's data for a monster + the pilot's verdict
     pilotctl.py say TEXT...                # answer the user (shown in their viewer, logged)
+    pilotctl.py journal "situation | decision | why"   # your journal line, stamped with time/depth/HP
 """
 import json
 import os

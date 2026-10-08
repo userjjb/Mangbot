@@ -2875,6 +2875,17 @@ class Pilot:
                     "mons": [[y, x, r.color] for y, x, r in w.monsters]}
         if c == "note":
             return {"ok": True, "text": self.user_note(" ".join(args))}
+        if c == "journal":
+            # the Navigator's journal line, stamped with the real time, depth
+            # and HP (its own times were guesses), appended to navigator.md and
+            # logged here, so the viewer and notes.py show it in sequence
+            w = self.w
+            where = "town" if not w.depth else f"{w.depth_ft}ft"
+            line = f"- {time.strftime('%H:%M:%S')} {where} {round(100 * w.hp_frac)}% | " + " ".join(args)
+            with open(os.path.join(self.rundir, "navigator.md"), "a") as f:
+                f.write(line + "\n")
+            self.log("nav_journal", text=line[2:])
+            return {"ok": True, "text": "journaled: " + line[2:]}
         if c == "say":
             # the Navigator answering the user (shown in the observer's viewer)
             text = " ".join(args)
@@ -2885,7 +2896,7 @@ class Pilot:
         if c == "monster":
             return {"ok": True, "text": self.monster_info(" ".join(args).replace("_", " "))}
         if self.dead and c not in ("attention", "quit", "orders", "events", "news", "map", "inventory",
-                                   "note", "view", "say", "viewmap") and \
+                                   "note", "view", "say", "viewmap", "journal") and \
                 not (c == "goal" and args[:1] == ["resurrect"]):
             return {"ok": False, "error": "the character is dead (a ghost): only 'goal resurrect' works"}
         if c == "goal":
@@ -3119,7 +3130,8 @@ class Pilot:
         lines.append(f"{ind.get('hist_name_', '?')} the {ind.get('race_', '?')} {ind.get('class_', '?')}, "
                      f"level {w.clvl}" + (f" (max {ind['level'][0]})" if len(ind.get('level', [])) > 1 and ind['level'][0] != w.clvl else "") + f", HP {w.hp[0]}/{w.hp[1]}, "
                      f"{'Town' if not w.depth else str(w.depth_ft) + ' ft'}, gold {ind.get('gold', [0])[0]}, "
-                     f"blows {ind.get('skills2', ['?'])[0]}, speed {ind.get('speed', [0])[0]}")
+                     f"blows {ind.get('skills2', ['?'])[0]}, speed {ind.get('speed', [0])[0]}"
+                     f" | now {time.strftime('%H:%M:%S')}")   # (the Navigator has no clock of its own)
         cond = [k for k in ("blind", "confused", "afraid", "poisoned", "cut", "stun") if w.flag(k)]
         hunger = {0: "Weak", 1: "Weak", 2: "Hungry", 3: "Fed", 4: "Full", 5: "Gorged"}.get(w.hunger, w.hunger)
         lines.append(f"{stats}  | {hunger}" + (f" | {', '.join(cond)}" if cond else "")
