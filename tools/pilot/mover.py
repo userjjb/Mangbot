@@ -30,7 +30,12 @@ def plan(world, goals, avoid=(), monster_cost=40, max_cost=4000):
     # server's auto-retaliate would fight it (and a floating eye's gaze paralyses)
     still = {(y + dy, x + dx) for y, x, r in world.monsters if "NEVER_MOVE" in getattr(r, "flags", ())
              for dy in (-1, 0, 1) for dx in (-1, 0, 1)}
-    avoid = set(avoid)
+    # Never next to a stationary drainer (mission 16: explore walked back beside
+    # a Purple mushroom patch, CON 18 -> 14), nor into the Navigator's avoid
+    # zones: impassable, unless it's the goal itself
+    drain_zone = {(y + dy, x + dx) for y, x, r in world.monsters if "NEVER_MOVE" in getattr(r, "flags", ())
+                  and getattr(r, "drains", False) for dy in (-1, 0, 1) for dx in (-1, 0, 1)}
+    avoid = set(avoid) | drain_zone | set(getattr(world, "avoid_zone", ()))
     mem = world.memory
     # On the surface (town, wilderness) unseen ground is mostly open -- at
     # night the floor isn't even drawn -- while trees and fences block

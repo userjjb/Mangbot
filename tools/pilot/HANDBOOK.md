@@ -41,7 +41,7 @@ Attention events:
 | `idle_recall` | nobody answered for a while: it's recalling to town |
 | (group danger) | the pilot adds up the worst-case melee of every monster that can reach you this turn (max damage × speed, +200 for a paralysing blow without Free Action; monsters that never move don't count; drains don't count here, they have the second-drain rule), or the HP actually lost in the last 3 s if that's more (an unseen swarm). Above 30% of your current HP: back up the stairs if just arrived, else back away instead of walking into them (never from something faster than you: it can't be outrun) (`danger_avoided` / `tactic`). Above 60%: the stairs underfoot; Phase Door only once HP is below `think_hp` (`tactic`). Above 100%: it leaves the level (`danger_seen` "group danger"), phases when adjacent (at most every 10 s), and with no stairs known reads Word of Recall at once (`emergency`), since recall takes 15-34 turns. The worst case is pessimistic (every blow at maximum): at low clvl a single monster can reach 60%, so this rule no longer phases at good HP. The pilot also checks that each of its own emergency reads and quaffs took effect ("You have N ... left") and resends it (twice at most, `tactic` news) if not. A second stat drain on one level with monsters in view also makes it leave (`danger_seen`). This is the rule that would have saved Dive03 (4 Uruks + a Giant red scorpion: ~255 vs 207 HP) |
 | `unseen_attacker` | something you can't see is attacking ("It hits you", "It breathes...", or HP falling steadily while nothing has been in view for several seconds): the pilot heads for the stairs (at or below `max_depth` it prefers an up staircase). Also raised (without fleeing) on "You hear a door burst open!". Minor ones at HP above `think_hp` are news only and the pilot carries on: "It commands you to return" (a Tengu or Blink dog teleporting you to it), a magic missile, an arrow or bolt from the dark. Without See Invisible, leaving the level is the answer |
-| `interesting_item` | a wand, staff, rod, ring, amulet or {excellent}/{special} item is in view on this level (often beyond `loot_radius`, so the pilot won't fetch it): worth a detour (mission 15: a Wand of Slow Monster 33 squares away sold for 210) |
+| `interesting_item` | a wand, staff, rod, ring, amulet or {excellent}/{special} item is in view on this level (often beyond `loot_radius`, so the pilot won't fetch it): worth a detour (mission 15: a Wand of Slow Monster 33 squares away sold for 210). Known junk (cursed, on the junk list, junk per the flavour table) doesn't raise it. **A dive pauses 20 s after it**, so `goal goto Y,X` (the square is under "Item squares") before it takes the stairs |
 | `user_message` | the user, watching live, sent you a message: treat it as a change to your mission (their requests outrank your plan, within safety); answer with `say "<text>"` (shown in their viewer), then act |
 | `stuck` | the goal has gone nowhere for 2 minutes (at most 10 squares visited, no fighting in those 2 minutes): the pilot cleared its command queue and restarted the move. If it repeats, give a different goal (`goto` the stairs, or another level) |
 | `recall_cancelled` | a second Word of Recall was read, which cancels the first: no recall is pending now. Read one again if you still want to go |
@@ -85,6 +85,7 @@ Attention events:
 | `journal "situation \| decision \| why"` | (not a goal) your journal line, stamped by the pilot with the real time, depth and HP and appended to your journal (the report's first line also shows `now HH:MM:SS`) |
 | `search [N]` | (not a goal) search the 8 squares around you N times (default 15; each is a turn). **Standing still never searches**: only this, or walking (rarely). Each search finds a given secret door or trap about 14% of the time for a Half-Orc warrior (only the 8 adjacent squares), so 15 give ~90% and 20 ~95%. Use it next to the wall where you suspect a secret door (vaults and pits often have one) |
 | `disarm [DIR]`, `open [DIR]` | (not goals) a chest, trap or door in direction DIR (1-9 as on the keypad; 5 = the square you stand on). **Chests (`~`): opening sets the trap off unless it was disarmed** (small wooden chests at 250-600 ft: poison, STR or CON needles; a blind open costs a Restore ~470 80% of the time). So: `search` next to it until "You have discovered a trap on the chest!", then `disarm` until it's done (each try ~35-40% for Dive04; a failure sets it off 1 time in 8; walk away if it goes off), then `open` (~75 gold + half an item). No trap after `search 20`: just open it. Skip iron chests showing a Gas or Multiple trap without Free Action (paralysis) |
+| `avoid Y,X [R]` / `avoid NAME` / `avoid clear` | (not a goal) no-go zones the pilot's paths route around: a square and radius R (default 3) on this level, or 3 squares around every monster named NAME (all levels). `avoid` alone lists them. Use it for a vault or pit you're not opening, a breeder nest, a monster you won't fight |
 | `say TEXT` | (not a goal) a short answer to the user, shown in their live viewer and logged |
 | `monster NAME` | (a query, not a goal) this server's data for a monster (level, speed, blows, spells, flags, breath, melee per turn, the Advisor's 0-5 rating) and whether a danger rule fires for you now. Monster data here differs from Vanilla Angband: ask this instead of relying on memory |
 | `goal town` | (wilderness only) walk back to town: it leaves each wilderness sector by the edge you came in through. The town has edges into the wilderness (`left_town` news if you walk off it); mission 13 ran off the west edge at night |
@@ -356,6 +357,21 @@ Orders are remembered across pilot restarts.
   391). `found` news now flags picked-up items that look special: identify, then `sell !NAME`.
 - **After an Enchant scroll**, the weapon's name (and the `Weapons:` line) shows the new plus only
   once the weapon is identified; the enchantment is there anyway.
+- **Item names in commands**: a name that matches several items is refused with the list (use the
+  letter, or a longer name); a whole-word match wins ("Light" = the Scroll of Light, not Cure
+  Light Wounds: mission 16 destroyed 14 CLW).
+- **Identify {good} or better weapons and armour before selling** (the shop goal now refuses them
+  unidentified): a Trident {good} sold for 42 was (+3,+7), resold at 1848. The `Weapons:` line marks
+  a weapon whose pluses are unknown.
+- **A full pack before recalling** (the user): first use up cheap essentials (fuel the lantern, eat,
+  read Blessing), destroy the cheapest junk, and keep devices/jewellery/{good} items. **Trick:**
+  with your last Word of Recall read, its slot frees up: stand next to an item you want and pick it
+  up while the recall charges (15-34 turns).
+- **Stationary drainers** (Red/Rot jellies, Purple mushroom patches...): the pilot keeps one square
+  away from them in its paths, never melees them, and won't kill a blocker beside one. After a drain,
+  leave the level rather than re-issue `explore`.
+- A corridor that seems to dead-end means a secret door or rubble: `search 20` there (`search`
+  replies with what it found).
 - **The user's coordinates are the report map's row,col** (`47,151` = row 47, column 151): read
   them off the numbered map lines. Until you answer with `say`, the report's second line shows
   `USER MESSAGE(S) NOT YET ANSWERED`.

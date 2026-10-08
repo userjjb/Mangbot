@@ -15,7 +15,8 @@ answers show in the feed as NAVIGATOR: ... The Navigator's journal lines
 
     python3 watch.py [--nick dive04]
 
-Keys: type + Enter = note; Esc = clear the line; PgUp/PgDn = scroll the feed;
+Keys: type + Enter = note; Tab = the Navigator's view (exactly what it last
+read from the Pilot, and how long ago) / back; Esc = clear the line; PgUp/PgDn = scroll the feed;
 Ctrl-C = quit (the character keeps playing). Watching never sends a game
 command.
 """
@@ -182,6 +183,9 @@ class Journal:
                                         "NAV: " + (l[2:] if l.startswith("- ") else l)))
 
 
+MODE = {"nav": False}            # Tab: the live game view / what the Navigator last read
+
+
 def draw(scr, sock, feed, buf, msg, scroll):
     scr.erase()
     H, W = scr.getmaxyx()
@@ -192,9 +196,16 @@ def draw(scr, sock, feed, buf, msg, scroll):
     vm = {}
     try:
         # (the report shows rows y0-N..y0+N and columns x0-M..x0+M)
-        out = call(sock, {"cmd": "view", "args": margs}, 3)
-        report = out.get("report", "(no report)")
-        vm = call(sock, {"cmd": "viewmap", "args": margs}, 3) if COL else {}
+        if MODE["nav"]:
+            nv = call(sock, {"cmd": "navview"}, 3)
+            age = time.time() - nv.get("t", 0) if nv.get("t") else None
+            report = (f"NAVIGATOR'S VIEW: what it last read, {age:.0f} s ago (Tab: back to the game)\n"
+                      if age is not None else "NAVIGATOR'S VIEW: nothing read yet (Tab: back)\n") + \
+                "\n".join(nv.get("events", [])) + ("\n" if nv.get("events") else "") + (nv.get("report") or "")
+        else:
+            out = call(sock, {"cmd": "view", "args": margs}, 3)
+            report = out.get("report", "(no report)")
+            vm = call(sock, {"cmd": "viewmap", "args": margs}, 3) if COL else {}
     except Exception as e:                      # Pilot restarting, or dead and gone
         report = f"(Pilot not answering: {e.__class__.__name__}; retrying)"
     lines = report.split("\n")
@@ -209,8 +220,8 @@ def draw(scr, sock, feed, buf, msg, scroll):
             keep.append(l)
             continue
         in_map = False
-        if l.startswith(("Equipment:", "Pack:", "Recent messages:", "Orders:", "Items seen:",
-                         "Item squares", "Known stairs:")):
+        if not MODE["nav"] and l.startswith(("Equipment:", "Pack:", "Recent messages:", "Orders:", "Items seen:",
+                                             "Item squares", "Known stairs:")):
             continue
         keep.append(l)
     y = 0
@@ -303,6 +314,9 @@ def main(scr, args):
                                             "pilot_down": e.__class__.__name__}) + "\n")
                     msg = "noted (Pilot not answering: saved without a snapshot)"
                 buf = ""
+        elif ch == "\t":
+            MODE["nav"] = not MODE["nav"]
+            msg = "Navigator's view (what it last read)" if MODE["nav"] else "game view"
         elif ch == "\x1b":
             buf = ""
         elif ch in (curses.KEY_BACKSPACE, "\x7f", "\b"):

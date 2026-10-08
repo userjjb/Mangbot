@@ -91,6 +91,12 @@ class Race:
         return sx * avg
 
     @property
+    def drains(self):
+        """Blows that drain a stat or experience (LOSE_*, EXP_*): read from the
+        blows themselves (the table's count missed CHR: a Rot jelly, mission 16)."""
+        return any(b.split(":")[1:2] and b.split(":")[1].startswith(("LOSE_", "EXP_")) for b in self.blows)
+
+    @property
     def worst_melee(self):
         """(max melee per monster turn, drain blows), from the table or the blows."""
         if self.melee_max is not None:

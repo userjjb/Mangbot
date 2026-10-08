@@ -53,6 +53,7 @@ class World:
         self.need_redraw = False               # ask the server for a full resync (tool verb 'redraw')
         self.arrive_pos = None                 # first position on the current level
         self.daytime = None                    # from "The sun has risen/fallen" (None: not seen yet)
+        self.avoid_zone = set()                # squares the planner won't enter (the Navigator's avoid zones)
         self.flags, self.flags_t = None, 0.0    # {flag: slots granting it} from the resist grid
         self.floor, self.floor_t = None, 0.0    # the item under us (tool query 'floor')
         self.losses = []                       # (t, message): items/gold lost or destroyed
