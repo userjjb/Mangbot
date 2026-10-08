@@ -83,8 +83,8 @@ Attention events:
 | `goal shop N [list] [buy NAME:COUNT[@MAX]]... [sell NAME_OR_LETTER:COUNT]...` | `list`: the result starts with the store's whole stock and prices (use it alone to look before buying). `@MAX`: don't pay more than MAX each (e.g. `buy To-Dam:2@120`). Town only: walk into store N (1 General, 2 Armoury, 3 Weaponsmith, 4 Temple, 5 Alchemist, 6 Magic shop, 7 Black market), sell, buy (by part of the name; spaces as `_`, e.g. `buy Cure_Light:5`; the cheapest matching item is bought), leave. The result lists what the shopkeeper actually said ("I don't want that!" for worthless or cursed items) |
 | `goal resurrect` | (only as a ghost, after `dead`) float up one level per `<` to town, then walk onto the Temple entrance (`4`), which resurrects. **It halves the experience for good.** Do it at once: a ghost left in the dungeon keeps getting hit (Dive03's ghost was poisoned while logged out and faded away forever on the next login). Untested so far |
 | `journal "situation \| decision \| why"` | (not a goal) your journal line, stamped by the pilot with the real time, depth and HP and appended to your journal (the report's first line also shows `now HH:MM:SS`) |
-| `search [N]` | (not a goal) search the 8 squares around you N times (default 15; each is a turn). **Standing still never searches**: only this, or walking (rarely). Each search finds a given secret door or trap about 14% of the time for a Half-Orc warrior, so 15 give ~90%. Use it next to the wall where you suspect a secret door (vaults and pits often have one) |
-| `disarm [DIR]`, `open [DIR]` | (not goals) a chest, trap or door in direction DIR (1-9 as on the keypad; 5 = the square you stand on). Chests (`~`): `search` next to it first (finds its trap), then `disarm`, then `open` for the loot |
+| `search [N]` | (not a goal) search the 8 squares around you N times (default 15; each is a turn). **Standing still never searches**: only this, or walking (rarely). Each search finds a given secret door or trap about 14% of the time for a Half-Orc warrior (only the 8 adjacent squares), so 15 give ~90% and 20 ~95%. Use it next to the wall where you suspect a secret door (vaults and pits often have one) |
+| `disarm [DIR]`, `open [DIR]` | (not goals) a chest, trap or door in direction DIR (1-9 as on the keypad; 5 = the square you stand on). **Chests (`~`): opening sets the trap off unless it was disarmed** (small wooden chests at 250-600 ft: poison, STR or CON needles; a blind open costs a Restore ~470 80% of the time). So: `search` next to it until "You have discovered a trap on the chest!", then `disarm` until it's done (each try ~35-40% for Dive04; a failure sets it off 1 time in 8; walk away if it goes off), then `open` (~75 gold + half an item). No trap after `search 20`: just open it. Skip iron chests showing a Gas or Multiple trap without Free Action (paralysis) |
 | `say TEXT` | (not a goal) a short answer to the user, shown in their live viewer and logged |
 | `monster NAME` | (a query, not a goal) this server's data for a monster (level, speed, blows, spells, flags, breath, melee per turn, the Advisor's 0-5 rating) and whether a danger rule fires for you now. Monster data here differs from Vanilla Angband: ask this instead of relying on memory |
 | `goal town` | (wilderness only) walk back to town: it leaves each wilderness sector by the edge you came in through. The town has edges into the wilderness (`left_town` news if you walk off it); mission 13 ran off the west edge at night |
@@ -262,7 +262,13 @@ Orders are remembered across pilot restarts.
   - A capital `D` is an ancient dragon, always out of depth above 2000 ft: leave.
   - Floating eyes are harmless unless something else attacks you while you're paralysed.
   - A room packed with `T` at 1050–1500 ft is a troll pit drawn 10 levels deeper: leave. Don't
-    open vaults (permanent walls) or pits: most forum deaths at these depths came from them.
+    open vaults or pits: most forum deaths at these depths came from them. **Vault outlines are
+    ordinary granite, not permanent walls: shape is the only clue** (odd closed structures).
+  - **Inner rooms** (the Advisor, `memos/2026-10-07-mission15-answers.md`): an 11×25 room with a
+    one-wide corridor around a solid 7×21 block. **Lit: an ordinary large room**; its one secret
+    door is at the middle of a side of the inner block: `search 20` from the corridor square in front
+    of each midpoint (about a minute); the loot is ordinary. **Dark with orcs pouring out: an orc pit
+    (~95 orcs): leave the level.** A dark block full of jellies is a nest: ignore it.
   - Gear to aim for: Free Action by 1000 ft (the most valuable item), resist poison by ~1000 ft
     (air hounds, Basilisk), resist confusion and blindness from ~800 ft (no-save blows start
     there; until then carry CCW).

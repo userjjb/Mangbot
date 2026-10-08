@@ -279,6 +279,7 @@ class Explore(Goal):
         self.target = None
         self.no_run_at = None
         self.run_from = None
+        self.last_diag = None
         self.loot = {}
 
     def tick(self, p):
@@ -340,6 +341,17 @@ class Explore(Goal):
         if m.path and not m._monster_near(5) and not self.radius and \
                 (m.in_corridor() or len(m.path) <= 2) and self.no_run_at != w.pos:
             d = direction(w.pos, m.path[0])
+            # Two-wide corridors: the nearest frontier is always in the other lane,
+            # so plans alternate diagonals (9, 7, 9...) and each diagonal run is a
+            # single step at walking speed (the Advisor's mission 15 answers: ~6%
+            # of the mission). After two alternating diagonals, run along the axis.
+            vert, hor = {7: 8, 9: 8, 1: 2, 3: 2}, {7: 4, 1: 4, 9: 6, 3: 6}
+            if d in vert and self.last_diag in vert and self.last_diag != d:
+                if vert[d] == vert[self.last_diag]:
+                    d = vert[d]
+                elif hor[d] == hor[self.last_diag]:
+                    d = hor[d]
+            self.last_diag = d if d in vert else None
             if d:
                 self.run_from = w.pos
                 m.free_run(d)
@@ -1194,9 +1206,20 @@ class Pilot:
 
     # --- logging / attention -------------------------------------------------
 
+    def crop(self, rows=5, cols=15):
+        """A small map snapshot around us, for the log (the Advisor: so
+        situations can be checked afterwards)."""
+        w = self.w
+        if not w.rows or not w.pos:
+            return None
+        y, x = w.pos
+        return [r[max(0, x - cols):x + cols + 1] for r in w.rows[max(0, y - rows):y + rows + 1]]
+
     def log(self, kind, **kw):
         rec = {"t": round(time.time(), 3), "kind": kind, "depth": self.w.depth, "pos": self.w.pos,
                "hp": self.w.hp, **kw}
+        if kind in ("attention", "nav_journal", "user_note") and "crop" not in rec:
+            rec["crop"] = self.crop()
         if kind in ("act", "attention", "goal", "goal_done", "goal_failed", "note"):
             self.recent_acts.append({"t": rec["t"], "kind": kind,
                                      "what": kw.get("cmd") or kw.get("what") or kw.get("goal") or kw.get("text"),
