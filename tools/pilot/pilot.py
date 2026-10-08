@@ -2859,6 +2859,20 @@ class Pilot:
             rows = int(args[0]) if args else 11
             cols = int(args[1]) if len(args) > 1 else 33
             return {"ok": True, "report": self.report(rows=rows, cols=cols, news_since=time.time() - 600)}
+        if c == "viewmap":
+            # (the observer's colour map: chars + attrs around @; monsters with
+            # their monster.txt colour, since our glyph table recodes them)
+            w = self.w
+            rows_n = int(args[0]) if args else 11
+            cols_n = int(args[1]) if len(args) > 1 else 33
+            if not w.rows or not w.pos:
+                return {"ok": True, "rows": [], "attrs": []}
+            y0, x0 = max(0, w.pos[0] - rows_n), max(0, w.pos[1] - cols_n)
+            y1, x1 = min(len(w.rows), w.pos[0] + rows_n + 1), w.pos[1] + cols_n + 1
+            return {"ok": True, "y0": y0, "x0": x0, "pos": w.pos,
+                    "rows": [r[x0:x1] for r in w.rows[y0:y1]],
+                    "attrs": [a[x0:x1] for a in w.attrs[y0:y1]] if w.attrs else [],
+                    "mons": [[y, x, r.color] for y, x, r in w.monsters]}
         if c == "note":
             return {"ok": True, "text": self.user_note(" ".join(args))}
         if c == "say":
@@ -2871,7 +2885,7 @@ class Pilot:
         if c == "monster":
             return {"ok": True, "text": self.monster_info(" ".join(args).replace("_", " "))}
         if self.dead and c not in ("attention", "quit", "orders", "events", "news", "map", "inventory",
-                                   "note", "view", "say") and \
+                                   "note", "view", "say", "viewmap") and \
                 not (c == "goal" and args[:1] == ["resurrect"]):
             return {"ok": False, "error": "the character is dead (a ghost): only 'goal resurrect' works"}
         if c == "goal":
