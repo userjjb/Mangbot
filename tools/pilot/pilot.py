@@ -878,6 +878,7 @@ class TownFarm(Goal):
         self.light_t = self.wander_t = 0.0
         self.chasing = None
         self.sweep = []
+        self.check = None
 
     def tick(self, p):
         w = p.w
@@ -886,6 +887,14 @@ class TownFarm(Goal):
         gold = w.ind.get("gold", [0])[0]
         if gold >= self.target_gold:
             return ("done", f"{gold} gold")
+        # say so when it isn't working (the demo: 2.5 min at 0 gold, at night)
+        if self.check is None:
+            self.check = (time.time(), gold)
+        elif time.time() - self.check[0] > 120:
+            if gold <= self.check[1]:
+                p.notify("tactic", f"townfarm: no gold in 2 minutes ({'night: few townspeople' if w.is_day() is False else 'no targets found'}); "
+                                   "selling spare items may be faster")
+            self.check = (time.time(), gold)
         if time.time() > self.end:
             return ("done", f"time's up at {gold} gold")
         # light, to see them at night (a dead or dying torch counts as none:
@@ -1976,6 +1985,8 @@ class Pilot:
         while self.pos_hist and now - self.pos_hist[0][0] > 120:
             self.pos_hist.popleft()
         idle_goal = isinstance(self.goal, (Wait, RestGoal, Search, Recall, Recover, Shop)) or self.goal is None
+        if now - getattr(self, "goal_t", 0) < 110:
+            return      # (the demo mission: 'stuck' 3 s into a goal, counting the idle time before it)
         # (a fight in the window doesn't count: mission 6 fired this in a
         # corridor fight with a wolf pack)
         fighting = now - max(w.last_hit_t, w.fight_t) < 120
@@ -2470,6 +2481,7 @@ class Pilot:
     def set_goal(self, goal):
         self.mover.stop()
         self.goal = goal
+        self.goal_t = time.time()             # (watch_progress counts from here)
         self.idle_recalled = False
         self.log("goal", goal=goal.describe() if goal else None)
 
@@ -3202,7 +3214,7 @@ class Pilot:
                                          (ind.get(f"stat{i}", [0]) for i in range(6))))
         lines.append(f"{ind.get('hist_name_', '?')} the {ind.get('race_', '?')} {ind.get('class_', '?')}, "
                      f"level {w.clvl}" + (f" (max {ind['level'][0]})" if len(ind.get('level', [])) > 1 and ind['level'][0] != w.clvl else "") + f", HP {w.hp[0]}/{w.hp[1]}, "
-                     f"{'Town' if not w.depth else str(w.depth_ft) + ' ft'}, gold {ind.get('gold', [0])[0]}, "
+                     f"{('Town (' + {True: 'day', False: 'night', None: 'day/night?'}[w.is_day()] + ')') if not w.depth else str(w.depth_ft) + ' ft'}, gold {ind.get('gold', [0])[0]}, "
                      f"blows {ind.get('skills2', ['?'])[0]}, speed {ind.get('speed', [0])[0]}"
                      f" | now {time.strftime('%H:%M:%S')}")   # (the Navigator has no clock of its own)
         cond = [k for k in ("blind", "confused", "afraid", "poisoned", "cut", "stun") if w.flag(k)]

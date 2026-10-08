@@ -348,6 +348,8 @@ Orders are remembered across pilot restarts.
 - The report's `Supplies:` line (also in `--brief`) lists your potions, scrolls, food, flasks,
   staffs and wands with counts, a pending recall, max_depth and drained stats. `lost` news means
   something was destroyed, stolen or overflowed (e.g. "Your purse feels lighter": a thief).
+- **The report's first line shows `Town (day)` or `Town (night)`**; townfarm says so when 2 minutes
+  bring no gold.
 - **At night `townfarm` earns little** (mission 14: ~7 gold/min; few townspeople about): selling
   identified spare staffs and wands is faster (Object Location 151/84, Magic Missile 84).
 - **Unique drops turn up in town too** (Farmer Maggot's Lance {good}: identified (+4,+4), sold for

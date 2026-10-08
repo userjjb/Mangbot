@@ -52,6 +52,7 @@ class World:
         self.fight_t = 0.0                     # last time we hit, missed or killed something
         self.need_redraw = False               # ask the server for a full resync (tool verb 'redraw')
         self.arrive_pos = None                 # first position on the current level
+        self.daytime = None                    # from "The sun has risen/fallen" (None: not seen yet)
         self.flags, self.flags_t = None, 0.0    # {flag: slots granting it} from the resist grid
         self.floor, self.floor_t = None, 0.0    # the item under us (tool query 'floor')
         self.losses = []                       # (t, message): items/gold lost or destroyed
@@ -179,6 +180,10 @@ class World:
                     self.status_t = 0
                     self.need_redraw = True
                     self.losses.append((time.time(), t))
+                if t.startswith("The sun has risen"):
+                    self.daytime = True
+                elif t.startswith("The sun has fallen"):
+                    self.daytime = False
                 if t.startswith("I see no up staircase"):
                     self.standing_on = None if self.standing_on == "<" else self.standing_on
                 if t.startswith("I see no down staircase"):
@@ -327,6 +332,18 @@ class World:
             if r is not None and name not in seen:
                 out.append(r)
         return out
+
+    def is_day(self):
+        """Day or night in town: the sun messages, else how much of the town
+        floor is drawn (the whole town is lit by day). None in the dungeon."""
+        if self.depth != 0:
+            return None
+        if self.daytime is not None:
+            return self.daytime
+        if not self.rows:
+            return None
+        lit = sum(r.count(".") for r in self.rows)
+        return lit > 1500
 
     @property
     def clvl(self):
