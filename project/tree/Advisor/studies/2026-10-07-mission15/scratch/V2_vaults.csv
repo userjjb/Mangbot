@@ -1,0 +1,150 @@
+name,type,rows,cols,rating,perm_outer,n_secret_doors,n_traps,n_monsters,n_treasure,signature
+round,lesser,12,20,5,0/44,4,10,14,24,X=0;%=44;mon[&=0 @=0 9=2 8=0 comma=12];border:%44
+octagon,lesser,14,20,5,0/52,4,10,38,44,X=0;%=64;mon[&=4 @=0 9=2 8=0 comma=32];border:%52
+octagon,lesser,12,20,5,0/52,12,2,30,24,X=0;%=60;mon[&=8 @=0 9=2 8=0 comma=20];border:%52
+square,lesser,12,20,5,0/60,4,8,34,32,X=0;%=60;mon[&=10 @=0 9=2 8=0 comma=22];border:%60
+diagonal,lesser,12,20,5,0/54,2,0,83,83,X=0;%=60;mon[&=0 @=0 9=2 8=0 comma=81];border:%54
+diagonal,lesser,12,20,5,0/54,2,0,83,83,X=0;%=60;mon[&=0 @=0 9=2 8=0 comma=81];border:%54
+square,lesser,12,20,5,0/60,12,21,20,21,X=0;%=60;mon[&=4 @=0 9=2 8=0 comma=14];border:%60
+huge,greater,17,39,45,0/108,2,0,131,70,X=302;%=108;mon[&=61 @=0 9=0 8=70 comma=0];border:%108
+large,greater,18,40,35,0/112,12,96,108,136,X=254;%=112;mon[&=16 @=20 9=8 8=4 comma=60];border:%112
+butterfly,greater,18,40,25,0/112,24,117,92,82,X=236;%=112;mon[&=45 @=0 9=6 8=4 comma=37];border:%112
+chambers,greater,15,40,25,0/106,22,94,81,78,X=166;%=106;mon[&=28 @=5 9=6 8=3 comma=39];border:%106
+Planet X,lesser,13,15,10,0/52,0,0,36,36,LR-sym;UD-sym;X=56;%=52;mon[&=0 @=0 9=4 8=0 comma=32];border:%52
+Turnabout,lesser,12,15,10,0/50,0,10,22,18,X=0;%=0;mon[&=2 @=2 9=2 8=0 comma=16];border:#50
+Rooms,lesser,13,19,10,0/60,8,21,40,40,UD-sym;X=0;%=60;mon[&=12 @=2 9=2 8=0 comma=24];border:%60
+Cross,lesser,13,20,10,0/62,8,20,14,26,LR-sym;UD-sym;X=0;%=62;mon[&=0 @=0 9=4 8=0 comma=10];border:%62
+Central,lesser,10,12,12,0/40,4,32,16,10,X=0;%=0;mon[&=4 @=2 9=2 8=0 comma=8];border:#40
+Camouflaged,lesser,9,12,10,0/38,0,0,24,24,UD-sym;X=43;%=38;mon[&=0 @=0 9=3 8=0 comma=21];border:%38
+The I in the Storm,greater,25,41,40,0/128,0,54,93,61,LR-sym;X=242;%=128;mon[&=24 @=8 9=14 8=5 comma=42];border:%128
+The Bank From Hell,greater,20,31,30,0/98,12,78,46,51,X=149;%=98;mon[&=17 @=13 9=13 8=3 comma=0];border:%98
+Snake Maze,greater,21,23,15,0/84,0,14,49,52,X=182;%=84;mon[&=4 @=0 9=5 8=3 comma=37];border:%84
+Roundabouts One,greater,21,43,15,0/124,6,228,80,46,X=337;%=124;mon[&=38 @=6 9=4 8=2 comma=30];border:%124
+Roundabout Two,greater,25,40,25,0/126,14,154,62,47,X=421;%=126;mon[&=23 @=12 9=7 8=6 comma=14];border:%126
+Huge - Modified,greater,17,39,45,0/108,0,0,126,126,X=302;%=108;mon[&=0 @=0 9=0 8=126 comma=0];border:%108
+Mirrored Quartet,greater,21,49,20,0/136,0,70,221,163,LR-sym;X=398;%=136;mon[&=68 @=42 9=16 8=17 comma=78];border:%136
+False Wall,greater,15,64,20,0/154,24,130,166,110,X=412;%=154;mon[&=54 @=54 9=2 8=2 comma=54];border:%154
+Divisi,greater,31,55,35,0/168,0,182,387,267,LR-sym;UD-sym;X=694;%=168;mon[&=74 @=46 9=8 8=35 comma=224];border:%168
+Curlicues One,greater,23,44,15,0/130,2,233,68,55,UD-sym;X=364;%=130;mon[&=26 @=13 9=4 8=3 comma=22];border:%130
+Bubbles,greater,25,41,35,0/128,0,0,105,105,X=504;%=128;mon[&=0 @=0 9=45 8=60 comma=0];border:%128
+Symmet,greater,23,29,20,0/100,12,37,112,92,LR-sym;UD-sym;X=196;%=100;mon[&=16 @=4 9=16 8=4 comma=72];border:%100
+Crown,greater,19,28,12,0/90,16,32,60,44,LR-sym;UD-sym;X=188;%=90;mon[&=0 @=16 9=8 8=8 comma=28];border:%90
+X^2,lesser,13,15,8,0/52,4,9,20,21,LR-sym;UD-sym;X=0;%=52;mon[&=0 @=0 9=4 8=0 comma=16];border:%52
+V-vault,greater,23,48,25,0/138,0,35,52,31,X=345;%=138;mon[&=15 @=14 9=4 8=2 comma=17];border:%138
+"Lesser vault (""Rock-Hard"")",lesser,11,20,10,0/58,0,20,26,24,LR-sym;X=0;%=58;mon[&=4 @=0 9=4 8=0 comma=18];border:%58
+"Lesser vault (""Miniature Cell"")",lesser,5,5,5,0/16,0,0,5,5,LR-sym;UD-sym;X=0;%=16;mon[&=0 @=0 9=5 8=0 comma=0];border:%16
+"Lesser vault (""Interlock"")",lesser,12,17,10,0/54,3,19,38,29,LR-sym;X=0;%=54;mon[&=7 @=2 9=3 8=0 comma=26];border:%54
+"Lesser vault (""Workaround"")",lesser,19,21,14,0/76,2,20,38,40,LR-sym;UD-sym;X=117;%=76;mon[&=8 @=4 9=4 8=0 comma=22];border:%76
+"Greater vault (""Twisted Cube"")",greater,24,41,20,0/126,6,64,128,134,X=324;%=126;mon[&=26 @=0 9=6 8=4 comma=92];border:%126
+"Greater vault (""Jigsaw"")",greater,16,49,25,0/126,0,38,271,192,X=108;%=126;mon[&=86 @=31 9=49 8=8 comma=97];border:%126
+"Greater vault (""Hourglass"")",greater,37,27,24,0/124,12,88,78,108,LR-sym;X=348;%=124;mon[&=6 @=12 9=36 8=8 comma=16];border:%124
+"Greater vault (""Funnel"")",greater,21,23,15,0/84,0,23,95,80,X=193;%=84;mon[&=20 @=18 9=3 8=6 comma=48];border:%84
+"Greater vault (""Mazer"")",greater,35,31,26,0/128,6,22,100,58,LR-sym;UD-sym;X=451;%=128;mon[&=28 @=14 9=14 8=14 comma=30];border:%128
+"Greater vault (""Orb"")",greater,27,27,16,0/104,20,42,69,47,LR-sym;UD-sym;X=258;%=104;mon[&=16 @=6 9=14 8=5 comma=28];border:%104
+"Greater vault (""Interstices"")",greater,19,45,22,0/124,12,76,75,74,X=332;%=124;mon[&=17 @=16 9=12 8=10 comma=20];border:%124
+"Greater vault (""Sphere"")",greater,25,47,25,0/140,14,74,228,190,LR-sym;UD-sym;X=385;%=140;mon[&=40 @=10 9=46 8=24 comma=108];border:%140
+"Greater vault (""Hellpit"")",greater,19,60,20,0/154,26,65,263,141,UD-sym;X=137;%=154;mon[&=70 @=65 9=29 8=8 comma=91];border:%154
+"Greater vault (""Target Practice"")",greater,20,61,20,0/158,6,32,191,137,X=432;%=158;mon[&=40 @=46 9=24 8=4 comma=77];border:%158
+"Greater vault (""Castle Death"")",greater,20,60,35,0/156,32,50,256,168,X=444;%=156;mon[&=52 @=76 9=26 8=7 comma=95];border:%156
+"Greater vault (""The Reward is Worth It"")",greater,16,63,20,0/154,2,65,259,118,LR-sym;X=381;%=154;mon[&=59 @=82 9=22 8=30 comma=66];border:%154
+Lesser vault (spiral),lesser,19,21,5,0/76,2,14,18,28,X=0;%=76;mon[&=2 @=0 9=0 8=0 comma=16];border:%76
+Lesser vault (layers),lesser,21,21,5,0/80,7,12,9,15,X=0;%=80;mon[&=1 @=0 9=0 8=0 comma=8];border:%80
+Lesser vault (bank),lesser,9,21,7,0/56,6,2,9,4,X=64;%=56;mon[&=7 @=0 9=0 8=0 comma=2];border:%56
+Lesser vault (mine),lesser,9,21,7,0/56,0,10,8,18,X=64;%=56;mon[&=0 @=0 9=0 8=0 comma=8];border:%56
+Lesser vault (maze),lesser,22,22,5,0/84,0,15,21,28,X=198;%=84;mon[&=6 @=0 9=0 8=0 comma=15];border:%84
+Lesser vault (prison),greater,16,35,10,0/96,62,0,61,50,X=0;%=96;mon[&=11 @=0 9=0 8=0 comma=50];DIMS-MISMATCH;border:%96
+Lesser vault (camp),greater,15,37,10,0/100,28,60,25,14,X=0;%=100;mon[&=11 @=0 9=0 8=0 comma=14];border:%100
+Lesser vault (serpent),lesser,17,32,10,0/94,3,14,40,42,X=0;%=94;mon[&=2 @=0 9=0 8=0 comma=38];border:%94
+Lesser vault (zelazny),lesser,18,19,5,0/70,4,2,70,70,X=0;%=70;mon[&=2 @=0 9=0 8=0 comma=68];border:%70
+Lesser vault (overlap),lesser,12,18,5,0/56,4,18,26,32,X=0;%=56;mon[&=2 @=0 9=0 8=0 comma=24];border:%56
+Lesser vault (celtic),lesser,17,21,5,0/72,12,13,16,13,LR-sym;UD-sym;X=0;%=72;mon[&=12 @=0 9=0 8=0 comma=4];border:%72
+Lesser vault (mirror),lesser,17,19,5,0/68,5,4,92,84,LR-sym;UD-sym;X=0;%=68;mon[&=8 @=0 9=0 8=0 comma=84];border:%68
+Lesser vault (tower),lesser,18,15,5,0/62,6,21,15,15,LR-sym;X=43;%=62;mon[&=9 @=0 9=0 8=0 comma=6];border:%62
+Greater vault (castle),greater,27,27,35,0/104,9,27,97,78,X=176;%=104;mon[&=17 @=16 9=8 8=1 comma=55];border:%104
+Greater vault (Sierpinski),greater,28,39,35,0/130,12,56,177,211,X=216;%=130;mon[&=8 @=14 9=4 8=1 comma=150];border:%130
+Greater vault (swastika),greater,23,29,25,0/100,8,104,56,44,X=109;%=100;mon[&=8 @=8 9=4 8=0 comma=36];border:%100
+Greater vault (great spiral),greater,39,39,40,0/152,8,104,87,90,X=644;%=152;mon[&=19 @=6 9=8 8=4 comma=50];border:%152
+Greater vault (greater castle),greater,25,51,40,0/148,27,211,107,143,LR-sym;X=334;%=148;mon[&=20 @=8 9=28 8=3 comma=48];border:%148
+Lesser vault (x-factor),greater,25,26,25,0/98,14,90,306,306,LR-sym;UD-sym;X=70;%=98;mon[&=0 @=0 9=6 8=0 comma=300];border:%98
+Greater vault (university),greater,29,38,30,0/130,53,31,203,191,X=0;%=130;mon[&=30 @=1 9=7 8=0 comma=165];border:%130
+Greater vault (nethack castle (almost)),greater,19,62,35,2/162,19,48,186,187,X=320;%=158;mon[&=6 @=5 9=16 8=1 comma=158];border:%158.1X2^1
+Greater vault (another nethack-style castle),greater,18,52,30,0/136,16,92,144,136,X=226;%=136;mon[&=0 @=8 9=8 8=2 comma=126];border:%136
+Lesser vault (nethack-style tower),lesser,15,19,5,0/64,14,3,21,16,UD-sym;X=0;%=64;mon[&=8 @=0 9=0 8=0 comma=13];border:%64
+"Lesser vault (nethack, rooms)",lesser,14,27,5,0/78,10,18,56,52,X=0;%=78;mon[&=4 @=0 9=0 8=0 comma=52];border:%78
+Lesser vault (nethack city),lesser,17,33,9,0/96,12,27,91,103,X=0;%=96;mon[&=6 @=1 9=0 8=0 comma=84];border:%96
+"Greater vault (nethack, large city)",greater,21,54,25,0/146,12,145,91,107,X=0;%=146;mon[&=0 @=2 9=6 8=0 comma=83];border:%146
+"Lesser vault (nethack, tiny castle)",greater,14,34,5,0/92,10,4,100,100,UD-sym;X=0;%=92;mon[&=4 @=0 9=0 8=0 comma=96];border:%92
+Greater vault (nethack mirror),greater,22,41,25,0/122,26,106,168,248,X=206;%=122;mon[&=0 @=4 9=40 8=2 comma=122];border:%122
+Greater vault (nethack tomb),greater,13,57,25,0/136,4,28,96,83,X=157;%=136;mon[&=12 @=1 9=3 8=1 comma=79];border:%136
+Greater vault (nethack hell level #1),greater,17,55,30,0/140,16,190,127,199,UD-sym;X=296;%=140;mon[&=2 @=4 9=3 8=3 comma=115];border:%140
+Greater vault (nethack hell level #2),greater,15,54,30,0/134,8,126,100,112,X=300;%=134;mon[&=1 @=5 9=6 8=3 comma=85];border:%134
+Greater vault (nethack hell level #3),greater,17,55,30,0/140,10,138,151,210,X=267;%=140;mon[&=4 @=3 9=4 8=3 comma=137];border:%140
+Lesser vault (easter egg),lesser,14,19,5,0/62,4,22,40,40,X=0;%=62;mon[&=0 @=0 9=0 8=0 comma=40];border:%62
+Greater vault (nethack samurai castle),greater,20,59,35,0/154,24,132,176,204,X=280;%=154;mon[&=4 @=8 9=4 8=4 comma=156];border:%154
+Greater vault (nethack samurai castle #2),greater,20,61,35,0/158,16,228,224,260,X=308;%=158;mon[&=0 @=0 9=12 8=0 comma=212];border:%158
+Greater vault (nethack spiral),greater,19,38,30,0/110,7,137,150,158,X=237;%=110;mon[&=0 @=2 9=2 8=3 comma=143];DIMS-MISMATCH;border:%110
+Greater vault (nethack building),greater,16,41,30,0/110,18,148,132,148,X=214;%=110;mon[&=2 @=6 9=4 8=2 comma=118];border:%110
+"Lesser vault (nethack, spiral rooms)",lesser,13,32,5,0/86,12,38,73,75,X=0;%=86;mon[&=0 @=0 9=0 8=0 comma=73];border:%86
+Greater vault (nethack building),greater,17,54,30,0/138,18,196,147,251,X=193;%=138;mon[&=0 @=12 9=2 8=2 comma=131];border:%138
+"Lesser vault (nethack, head)",lesser,17,29,7,0/88,9,73,61,65,X=0;%=88;mon[&=0 @=3 9=0 8=0 comma=58];border:%88
+Lesser vault (maze of rooms),lesser,16,32,10,0/92,30,56,75,86,X=0;%=92;mon[&=0 @=2 9=0 8=0 comma=73];border:%92
+Lesser vault (tetris tiles),lesser,20,13,5,0/62,11,16,28,32,LR-sym;X=0;%=62;mon[&=2 @=0 9=0 8=0 comma=26];border:%62
+Lesser vault (hospital ward),lesser,14,20,5,0/64,14,0,40,40,X=0;%=64;mon[&=0 @=0 9=0 8=0 comma=40];border:%64
+Lesser vault (lesser crypt),lesser,13,26,5,0/74,12,27,12,10,UD-sym;X=0;%=74;mon[&=2 @=0 9=1 8=0 comma=9];border:%74
+Lesser vault (arena),lesser,15,17,5,0/60,4,4,35,35,LR-sym;UD-sym;X=0;%=60;mon[&=0 @=0 9=0 8=0 comma=35];border:%60
+Lesser vault (monster wc),lesser,12,12,5,0/44,4,4,7,6,X=0;%=44;mon[&=4 @=0 9=0 8=0 comma=3];border:%44
+Lesser vault ('not' 'and'),lesser,11,15,5,0/48,8,1,24,25,LR-sym;UD-sym;X=0;%=48;mon[&=0 @=0 9=0 8=0 comma=24];border:%48
+Lesser vault (brain's lair),lesser,18,17,5,0/69,4,5,19,17,X=0;%=66;mon[&=2 @=0 9=0 8=0 comma=17];border:#1%66.2
+Lesser vault (yin-yang),lesser,17,16,5,0/62,4,34,23,24,X=0;%=62;mon[&=11 @=0 9=0 8=0 comma=12];border:%62
+Greater vault (der el bahri),greater,28,45,35,0/142,14,172,137,167,X=265;%=142;mon[&=0 @=3 9=11 8=3 comma=120];border:%142
+Lesser vault (der el bahri sanctuary),lesser,12,22,5,0/64,7,20,13,13,X=0;%=64;mon[&=0 @=0 9=0 8=0 comma=13];border:%64
+Greater vault (hypostyle of ramses III),greater,38,34,40,0/140,63,280,119,168,X=426;%=140;mon[&=5 @=2 9=5 8=11 comma=96];border:%140
+Lesser vault (amada temple),lesser,15,30,10,0/86,8,56,41,45,X=0;%=86;mon[&=4 @=0 9=0 8=0 comma=37];border:%86
+Lesser vault (amenhotep I),greater,18,34,10,0/100,12,83,35,42,X=0;%=100;mon[&=6 @=0 9=0 8=0 comma=29];border:%100
+Lesser vault (hathor chapel),lesser,21,19,10,0/76,7,28,37,41,X=0;%=76;mon[&=2 @=0 9=0 8=0 comma=35];border:%76
+Lesser vault (osiris halls),greater,17,34,10,0/98,26,80,61,63,X=0;%=98;mon[&=4 @=0 9=0 8=0 comma=57];border:%98
+Lesser vault (temple of sety),lesser,22,25,10,0/90,17,77,77,76,X=0;%=90;mon[&=5 @=0 9=0 8=0 comma=72];border:%90
+Lesser vault (temple at abydos),lesser,21,23,10,0/84,19,138,58,67,LR-sym;X=0;%=84;mon[&=2 @=0 9=0 8=0 comma=56];border:%84
+Greater vault (Spiral castle),greater,31,25,35,0/108,10,110,41,36,X=232;%=108;mon[&=9 @=0 9=4 8=1 comma=27];border:%108
+Lesser vault (temple of dendereh),lesser,20,22,10,0/80,21,78,53,74,X=0;%=80;mon[&=4 @=0 9=0 8=0 comma=49];border:%80
+"Greater vault (Karnak, part I)",greater,24,44,35,0/132,34,218,101,140,X=365;%=132;mon[&=5 @=3 9=0 8=0 comma=93];border:%132
+"Lesser vault (Karnak, part II)",lesser,20,29,10,0/94,38,87,78,84,X=0;%=94;mon[&=0 @=0 9=0 8=0 comma=78];border:%94
+Greater vault (mortuary temple of sety),greater,25,34,35,0/114,43,164,113,141,X=296;%=114;mon[&=1 @=2 9=4 8=0 comma=106];border:%114
+Lesser vault (edfu),lesser,15,15,5,0/56,14,9,14,15,X=0;%=56;mon[&=0 @=0 9=0 8=0 comma=14];border:%56
+Greater vault (kom ombo),greater,36,30,40,0/128,44,290,144,196,X=380;%=128;mon[&=0 @=3 9=14 8=2 comma=125];border:%128
+Lesser vault (belvoir keep),lesser,19,21,5,0/76,14,47,22,24,X=0;%=76;mon[&=3 @=0 9=0 8=0 comma=19];border:%76
+Lesser vault (Pattern),greater,31,47,30,0/152,21,118,351,413,X=218;%=152;mon[&=20 @=13 9=1 8=0 comma=317];border:%152
+Greater vault (Pattern 2),greater,29,45,30,0/144,10,154,220,243,X=250;%=144;mon[&=13 @=63 9=28 8=7 comma=109];border:%144
+Greater vault (Pattern 2),greater,30,42,30,0/140,16,110,299,203,X=242;%=140;mon[&=74 @=78 9=20 8=8 comma=119];border:%140
+Roundabout Three,greater,20,97,30,0/230,6,240,366,304,UD-sym;X=764;%=230;mon[&=84 @=58 9=24 8=12 comma=188];border:%230
+Darwinism,greater,16,33,25,0/94,0,0,58,46,X=0;%=94;mon[&=8 @=4 9=4 8=6 comma=36];border:%94
+Cyclone,greater,23,91,40,0/224,6,360,190,191,UD-sym;X=834;%=224;mon[&=54 @=63 9=5 8=20 comma=48];border:%224
+Concentricity,greater,19,76,20,0/186,0,120,326,226,LR-sym;UD-sym;X=744;%=186;mon[&=38 @=94 9=62 8=32 comma=100];border:%186
+a version with the Pattern,greater,41,82,50,0/242,0,380,460,392,X=1374;%=242;mon[&=102 @=82 9=47 8=22 comma=207];border:%242
+Greater Vault (Titanic),greater,43,99,50,0/280,0,493,663,603,X=1455;%=280;mon[&=192 @=67 9=37 8=30 comma=337];border:%280
+Greater Vault (Un Named I),greater,45,81,50,0/248,0,128,792,674,X=1544;%=248;mon[&=142 @=104 9=314 8=40 comma=192];border:%248
+*Greater Vault* (Divided),greater,45,81,50,0/248,32,513,503,459,X=1482;%=248;mon[&=99 @=52 9=52 8=34 comma=266];border:%248
+The Shaft (Just try and lure em out),lesser,11,15,15,0/48,2,31,8,8,UD-sym;X=43;%=48;mon[&=0 @=0 9=0 8=8 comma=0];border:%48
+Backdoor Surprise (That's what you get for not casting detect),lesser,15,18,20,0/62,18,10,12,22,LR-sym;X=0;%=62;mon[&=0 @=0 9=0 8=12 comma=0];border:%62
+"Zoo of Concentrated Death (Death by spam, lucky 13x13...)",lesser,15,15,50,0/56,56,0,25,25,LR-sym;UD-sym;X=4;%=56;mon[&=0 @=0 9=0 8=25 comma=0];border:%56
+Face of Death,greater,23,41,30,0/110,6,16,41,37,X=293;%=124;mon[&=4 @=0 9=1 8=0 comma=36];border:%110
+Tomb of the Dead,greater,21,36,30,0/110,14,44,44,57,X=237;%=110;mon[&=4 @=2 9=4 8=1 comma=33];border:%110
+Ancient Cave,lesser,16,21,25,0/70,0,8,14,1,X=86;%=70;mon[&=11 @=2 9=0 8=1 comma=0];border:%70
+Dead End,lesser,13,20,20,0/61,6,57,6,9,X=0;%=62;mon[&=4 @=2 9=0 8=0 comma=0];border:%61
+Dead End 2,lesser,13,20,20,0/61,6,57,6,9,X=0;%=62;mon[&=4 @=2 9=0 8=0 comma=0];border:%61
+Ancient Chapel,greater,21,37,45,0/112,8,14,36,36,LR-sym;X=335;%=112;mon[&=0 @=0 9=10 8=8 comma=18];border:%112
+Lair of the twins,greater,21,37,45,0/112,6,3,85,59,X=229;%=112;mon[&=16 @=10 9=0 8=4 comma=55];border:%112
+Another broken Vault,lesser,13,20,15,0/61,1,23,15,38,X=0;%=62;mon[&=0 @=0 9=2 8=0 comma=13];border:%61
+Guardhouse,lesser,12,20,10,0/60,4,28,24,30,X=0;%=60;mon[&=10 @=0 9=2 8=0 comma=12];border:%60
+Trap Vault,lesser,12,20,30,0/60,0,82,10,17,X=46;%=60;mon[&=1 @=0 9=1 8=0 comma=8];border:%60
+Trap Vault 2,lesser,12,20,30,0/60,0,83,10,17,X=47;%=60;mon[&=1 @=0 9=1 8=0 comma=8];border:%60
+Hallway Vault,lesser,12,22,20,0/60,6,10,12,18,X=0;%=64;mon[&=1 @=0 9=2 8=0 comma=9];border:%60
+Hallway Vault 2,lesser,12,20,21,0/56,6,9,18,23,X=0;%=60;mon[&=2 @=0 9=2 8=0 comma=14];border:%56
+Stone Prison,lesser,12,22,12,0/64,8,18,16,30,X=0;%=64;mon[&=4 @=0 9=2 8=0 comma=10];border:%64
+Unsafe Stone Prison,lesser,12,22,16,0/64,12,18,16,30,X=0;%=64;mon[&=4 @=0 9=2 8=0 comma=10];border:%64
+Sleeping Kings,greater,18,40,36,0/112,17,42,78,84,X=174;%=112;mon[&=4 @=7 9=0 8=5 comma=62];border:%112
+Underground Fortress,greater,18,40,36,0/112,18,48,82,94,X=183;%=112;mon[&=12 @=4 9=6 8=2 comma=58];border:%112
+Halls of Pain,greater,18,40,42,0/112,25,117,105,142,X=238;%=112;mon[&=11 @=5 9=1 8=2 comma=86];border:%112
+LOSt,greater,18,40,42,0/112,3,46,44,74,X=253;%=112;mon[&=12 @=4 9=2 8=2 comma=24];border:%112
+A matter of time,greater,17,40,36,0/110,0,47,71,96,X=131;%=110;mon[&=7 @=0 9=4 8=0 comma=60];border:%110
+Large Chapel,greater,44,66,36,0/216,26,41,90,77,X=867;%=216;mon[&=52 @=2 9=0 8=2 comma=34];border:%216

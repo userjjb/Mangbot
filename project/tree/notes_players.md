@@ -111,6 +111,10 @@ target, otherwise it picks one at random). Consequences for the tool:
   blows, read +dam scrolls on it.** Half-Orc: +2 STR, +1 CON, resists darkness, 30 ft infravision,
   bad stealth and searching (so secret doors are hard to find, which argues for stair-scumming over
   exhaustive searching).
+- **Short of gold for an urgent purchase (the user, 2026-10-07): kill townspeople.** Drunks,
+  merchants, rogues, mercenaries and veterans drop gold; it's faster than a short money dive and
+  doesn't burn a Word of Recall. Few are visible from the shop-front streets: sweep the town in a
+  zig-zag grid (the Pilot's `goal townfarm`).
 - **Outfitting a new warrior (the user, 2026-09-28):** sell the starting Broad Sword and Chain Mail
   at once: they fetch a lot compared with their use. Buy a **Main Gauche** instead, plus Enchant
   To-Hit and To-Dam scrolls (especially discounted ones) for it, and cheap unenchanted armour for

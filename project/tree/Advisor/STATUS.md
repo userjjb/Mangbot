@@ -23,6 +23,8 @@ an audit trail in `studies/<date>-<slug>/` (plan.md, briefs, dispatches, synthes
 | 10-07 | identify and sell strategy (user request) | `2026-10-07-identify-and-sell.md` | `data/identify/` (kinds, dist, value, hazards) |
 | 10-07 | mission 13 replay (user's choice) | `to_architect/2026-10-07-mission13-replay.md` | study scratch `M1_fights.csv` |
 | 10-07 | warrior progression plan (user's choice) | `2026-10-07-warrior-progression.md` | `data/progression/progression.py` |
+| 10-07 | running vs walking (user request) | `2026-10-07-running.md` | study scratch `R4_runs.csv` (14,100 runs) |
+| 10-07 | mission 15 requests: vaults/pits, zig-zag, chests, search (Architect) | `2026-10-07-mission15-answers.md` | study scratch `V2_vaults.csv` |
 
 The original six-topic backlog (`../memos/2026-09-27-advisor-study-topics.md`) is complete.
 
@@ -77,6 +79,12 @@ The original six-topic backlog (`../memos/2026-09-27-advisor-study-topics.md`) i
   flavours are fixed per server savefile; warrior device skill ~22 at clvl 10 (Staff of Teleportation fails 67–83%).
 - Dive04 (10-07): STR 18 with max 18/50, DEX 18/10, CON 18, INT 5; blows = blows_table[adj_str_blow*5/max(30,wt)][adj_dex_blow];
   decisions.jsonl now has `audit_check` records with exp/stats/blows every 30 s.
+- Running = ×5 game time (no awake monster in LOS) / ×5 energy in town; 82% of Pilot dungeon runs starved (0.5 s timeout
+  < 0.6–0.67 s energy period); surface runs off since a516853 (free runs crossed the town edge at night).
+- Room centres lie on an 11-square grid; type-4 inner rooms' secret door at a side midpoint; pits/nests always unlit;
+  vault outlines are granite; search = 14%/adjacent square per `s`, standing still never searches; chest traps fire on open unless disarmed.
+- Floor drops (10-08, `data/drops/drop_sim.py`): one object per square; a monster's drop needs an empty floor square within 2
+  (20 tries, xtra2.c:2041-2088) or it is never created; held/dropped items: 50 tries out to 4 squares, then vanish (object2.c:3963ff).
 - Resting in town burns light ~10× faster (time bubble); store torches/lanterns come half full.
 
 ## Tooling notes

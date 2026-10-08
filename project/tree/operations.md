@@ -10,6 +10,10 @@ can read them. Memory now only points here.) Credentials are **not** in this fil
 - Shared SCC cluster, Alma 8, SGE batch jobs (sessions end at their walltime; the node changes
   between jobs). No sudo.
 - Python: `module load python3/3.12.4` (the OS python3 is 3.6).
+- **Public repo: https://github.com/userjjb/Mangbot** (remote `origin` of `github/`, the user's,
+  2026-10-07). Before a push run `tools/snapshot.sh` (copies the project state, both memories and
+  the global CLAUDE.md into `github/project/`, minus secrets and bulk; see `project/README.md`),
+  commit, then `git push origin master`. Auth: the user's token in git's credential store.
 - Source tree: `github/`, a git repo (commit 1 = pristine MAngband 1.5.3; per the Advisor's
   versions memo, `memos/2026-09-29-versions-and-forum-rules.md`, it is upstream develop at
   2022-03-13, c97e873, not the v1.5.3 tag: 6 files differ, mostly archery energy; plays as 1.5.3). Build: `cd github &&
@@ -155,7 +159,8 @@ into the Temple (4), but everything it carried is dropped where it died.
   the one the Architect starts: `tmux -L mang attach -t watch`; detach with Ctrl-b d). Type a note
   + Enter; start it with `?` to ask why the Pilot did something (for the Architect), or with `!`
   to message the Navigator live (a `user_message` attention event wakes it; it answers with
-  `pilotctl say`, shown in the feed as NAVIGATOR: ...). Notes land in
+  `pilotctl say`, shown in the feed as NAVIGATOR: ...). The feed also shows the Navigator's journal
+  lines (NAV: ..., magenta) as they're written, between the Pilot's alerts (red) and actions (green). Notes land in
   `runs/pilot/<nick>/commentary.jsonl` (with a snapshot) and as `user_note` in `decisions.jsonl`;
   `python3 github/tools/observe/notes.py --nick dive04 --today` shows each with the decisions
   around it. From any shell on the node: `pilotctl.py --nick dive04 note "text"`. The control

@@ -64,8 +64,22 @@ resurrected in town, but everything carried is lost). When in doubt, retreat or 
 
 ## Journal (required)
 
-Append one line per decision to `/projectnb/jbrcs/mangband/runs/pilot/NICK_LOWERCASE/navigator.md`
-(create it if missing), in this form:
+Write one line per decision with
+`pilotctl.py --nick NICK journal "situation in a few words | decision | why"`.
+
+**Order of the two, by urgency** (every second between an alert and your order is a second the
+Pilot plays on alone):
+- **Urgent alerts** (`danger_seen`, `emergency`, `emergency_loop`, `unseen_attacker`,
+  `fight_going_badly`, and a `user_message` asking for something now): **send the order first,
+  in its own short Bash call** (stairs, recall, flee, goto, stop...), then journal in the next call.
+  Don't put the journal text in the same command: writing it delays the order.
+- **Everything else** (shopping, depth, where to explore next, after a level is cleared): journal
+  first, then send the order. Writing the reasons first helps you catch mistakes, and here a few
+  seconds don't matter. The Pilot stamps it with the real time, depth and
+HP (you have no clock of your own: earlier journals had guessed times that ran minutes ahead) and
+appends it to `/projectnb/jbrcs/mangband/runs/pilot/NICK_LOWERCASE/navigator.md`. The user may be
+watching these lines live. Use the file directly only for the end-of-mission notes. The resulting
+line looks like this:
 
 ```
 - HH:MM depth HP% | situation in a few words | decision | why

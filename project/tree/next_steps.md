@@ -137,7 +137,56 @@ validation.
   the Phase 1 confirm answer), inscribing key items, and the live character "Sneezy".
 - The user's player lore and plan changes are in `notes_players.md` (read it).
 
-### ARCHITECT HANDOFF 2026-09-29 (read this first, then the sections below)
+### ARCHITECT HANDOFF 2026-10-08 (READ THIS FIRST; the sections below are history)
+
+**Start of every session:** start the inbox watcher first (memory `mangband-inbox-watcher`), read
+unread `memos/to_architect/`, check what's running (`ps -u $USER`, `tmux -L mang ls`). After every
+mission, relay agent friction to the user (memory `mangband-relay-agent-friction`).
+
+**State (2026-10-08 16:15, job 7918400 on scc-wg3, walltime to Mon 10-12 08:03):**
+- Running on scc-wg3: the test server under gdb (`testserver/`, port 28346, rebuilt 10-07 with the
+  16-bit depth indicator), Dive04's Pilot (`tools/pilot/restart.sh Dive04`), the user's viewer
+  (`tmux -L mang attach -t watch`; `tools/observe/watch.py`), the inbox watcher. A new job/node
+  means restarting the server (`cd testserver && nohup gdb -batch -ex run -ex bt --args
+  ../github/mangband >> gdb_run.log 2>&1 &`), the Pilot, and the viewer (`export
+  TERM=xterm-256color` in its tmux).
+- **Dive04** (Half-Orc Warrior): clvl 15, 170 HP, CON drained 18 → 14 (also WIS, CHR), STR 18/50,
+  Main Gauche (+0,+2) 4 blows, Ring of Resist Fire + Slow Digestion, lantern; 72 gold, 2 WoR,
+  3 CCW, 5 CSW, 5 CLW, 10 Phase; deepest 550 ft (`max_depth` 550); in town.
+- **The user watches missions live** in the viewer: `!` notes = messages to the Navigator
+  (`user_message`, it answers with `pilotctl say`), `?` notes = questions for the Architect
+  (answer them after the mission: `tools/observe/notes.py --nick dive04 --questions --today`),
+  plain notes = comments. Tab = the Navigator's view. Navigator journals via `pilotctl journal`
+  (Pilot-stamped). Urgent alerts: order first, then journal (`.claude/agents/navigator.md`).
+- Missions 7-16 + demo are summarised in the 2026-09-27/29 and 10-07 entries below; Advisor memos
+  acted on: forum, danger table, Borg, post-mortem, shops, messages, game-state, identify-and-sell,
+  flavour messages, mission 9/13 replays, warrior progression, running, mission 15 answers.
+- **Public repo** https://github.com/userjjb/Mangbot (remote `origin` of `github/`): nothing pushed
+  yet; the user will put a token in git's credential store. Then: `github/tools/snapshot.sh`,
+  commit, `git push origin master` (`project/README.md` explains the snapshot and exclusions).
+
+**TODO (priority order):**
+1. **Push to GitHub** once the user's token is in place.
+2. **Dive04 next:** Restore CON (~470), 3 CCW kept, then stage B (500-750 ft at clvl 15; gate
+   clvl × 50 = 750). Stage table in the HANDBOOK and `memos/2026-10-07-warrior-progression.md`.
+3. **Pilot bugs open:** `explore` declared a level done with open ground on the map (mission 16,
+   500 ft); explore "frontier unreachable" with an exit 6 squares away (mission 15, a Bloodshot eye
+   nearby); flavour learning missed Beryl/Calcite rings identified by scroll (check the pack diff
+   with the ring worn/destroyed); a Navigator busy in item/chest commands isn't woken by user
+   messages (40 s "Pause").
+4. **Navigator wishes:** movement trace in `status`; explicit run control (town runs need known
+   ground ≥ 3 from the edge, so at night it walks); steal protection in townfarm (rogues);
+   sell-price quote for pack items; an inner-room/pit recogniser from the Advisor's spec
+   (`memos/2026-10-07-mission15-answers.md` §2) feeding `interesting`/`avoid`.
+5. **Measure** alert → order → journal latency per mission (mission 14/15 median ~5 s, urgent
+   tail to 112 s; the method: decisions.jsonl `attention` → next `goal`/`agent:` act/`nav_journal`).
+6. **FUTURE IMPROVEMENTS (the user):** Navigator effort (now Opus high, inherited; user wants to
+   watch before changing); model × effort trials; "Pinky and The Brain" two-tier Navigator; a
+   complaints channel for agents. Details in the 10-07 entries below.
+7. Smaller: server `pathfind` experiment (running memo change 6); doc fix (RUN_MIN is 3); a
+   live-server run only after asking the admins (`operations.md`).
+
+### ARCHITECT HANDOFF 2026-09-29 (history; read the 2026-10-08 section first)
 
 New session (job 448491 on scc-wi2). Test server restarted under gdb 21:34 (gdb costs nothing: the
 server's timers are a select loop, no signals; one crash ever, 09-26 15:41, none since; the user
@@ -203,6 +252,75 @@ asked, 2026-09-29, and agreed to keep it if harmless).
   1000 ft needs FA); HANDBOOK stage table. **Next for Dive04 (stage A): Restore Strength (~470),
   then a Main Gauche (4 blows once STR is 18/50), then a WoR; 250-450 ft until then.** Dive04 has
   345 gold. Not done: Staff of Teleportation as an escape at clvl ≥ 18 (the Pilot uses no staffs).
+- **`goal townfarm GOLD [MIN]`** (the user's advice, 2026-10-07; zig-zag sweep also the user's): kills
+  gold-dropping townspeople; tested 372 → 495 gold in ~40 s. **Dive04 now has 495 gold: enough for
+  Restore Strength (~470).** Public repo: https://github.com/userjjb/Mangbot (remote added; the user
+  will add a token tonight; nothing pushed yet; run `tools/snapshot.sh`, commit, push).
+- **Mission 14** (17:47-18:25): **STR restored (18/50), Main Gauche 4 blows (+0,+1)**, clvl 12, 2 WoR,
+  15 CLW, 3 CSW, 10 Phase, 83 gold; escapes all took effect (news = pack counts). Close call: Lagduf
+  + 12 orcs at 450 ft, flee "stuck" (stairs 66 away) left the Pilot idle at 49% (the Navigator
+  recalled). Fixed in 54c4368 (deployed 18:26): failed flee with monsters close → WoR + phase;
+  early WoR when stairs are > 25 away; lantern counts for townfarm/torch upkeep; mushrooms in the
+  flavour table; `found` news for special pickups (Farmer Maggot's Lance sold for 391).
+- **Running memo** (`memos/2026-10-07-running.md`, the user's request): changes 1-5 in e912370,
+  deployed 18:26 with 54c4368 (disturb_near/panel confirmed on); measure travel speed in the next
+  mission (the memo expects ~2× in the dungeon, ~5× for town
+  errands). Not done: server `pathfind` for long known routes (change 6, an experiment); doc fix
+  (RUN_MIN is 3).
+- **Mission 15** (22:42-23:36, the user watched live and sent 19 `!` messages; replies took 5-15 s):
+  clvl 12 → 14, 450 ft, STR restored again (a Red jelly drained it), 2 WoR, 15 CLW, 9 Phase, 39
+  gold. Fixed in 2765956 (deployed): `search [N]`, `disarm`/`open [DIR]`, no melee vs stationary
+  drainers, confusion cure only with mobile monsters near, no long flee from slow weak-melee
+  casters (Wormtongue), `interesting_item`, unanswered user messages on the report's 2nd line.
+  Asked the Advisor (`memos/to_advisor/2026-10-07-mission15-requests.md`): vault/pit recognition
+  from a partial map (the user's question), the corridor zig-zag, chests. Navigator wishes not done
+  yet: a movement trace in `status`; explicit run control (town runs need known ground ≥ 3 from the
+  edge, so at night townfarm still walks); steal protection in townfarm; "explore gave up with an
+  exit 6 squares away" (23:19, a Bloodshot eye nearby: check stationary-avoidance costs).
+- **Mission 16** (2026-10-08 15:31-16:08, watched; 19 user messages, replies 4-30 s, one 40 s while
+  running chest commands): clvl 15, 550 ft, lowest HP 64%; first secret door (the user spotted it)
+  and first chest by the safe procedure (+90 gold); Ring of Resist Fire found. Losses: CON 18 → 14
+  (Purple mushroom patch, twice), CHR (Rot jelly), 14 CLW destroyed by `destroy Light all`, a
+  Trident {good} (+3,+7) sold unidentified for 42. Fixed in 7d608cb (deployed): search reports
+  finds; rings/chests in Item squares; interesting_item skips junk + dive pauses 20 s; drainers
+  (CHR too) never meleed or stood beside; cures gated by threat; ambiguous item names refused;
+  {good} unknown-pluses flagged and not sold; `avoid` zones (the user); viewer Tab = Navigator's
+  view (the user). Open: explore ending early with open ground on the map (500 ft); flavour
+  learning missed Beryl/Calcite via Identify; Restore CON (~470) needed. **Dive04: clvl 15,
+  170 HP (CON 14), 72 gold, 2 WoR, 3 CCW, 5 CSW, 5 CLW, 10 Phase, rFire ring, max_depth 550.**
+- **Demo mission** (23:49-23:56, 50 ft and back by stairs, the user messaged twice): fine. Fixed and
+  deployed with the mission 15 answers (b26c14a: corridor zig-zag → run along the axis, map crops
+  in attention/journal/note records, HANDBOOK inner rooms/vault walls/chests) and 7c16bc5 (stuck
+  watchdog counts from the goal's start; `Town (day|night)` in the header; townfarm says when 2 min
+  bring no gold). Dive04: clvl 14, 51 gold, max_depth left at 50 (raise it before a real dive).
+  Open wish: a sell-price quote for pack items.
+- **Navigator urgency rule (2026-10-07, the user):** on urgent alerts the Navigator sends the order
+  first in its own call, then journals; otherwise journal first (`.claude/agents/navigator.md`).
+  Effort deliberately unchanged for now: the user wants to watch the current Navigator (Opus 5.5,
+  effort high, inherited from `~/.claude/settings.json`) to put the earlier missions in context.
+- **FUTURE IMPROVEMENTS (the user, 2026-10-07):**
+  1. **Navigator effort:** lower it (`effort: medium` in the agent's frontmatter) to cut the
+     alert → order latency (typically 10-30 s at high effort); the urgent/non-urgent journal
+     rule above keeps a written reasoning step for strategic decisions.
+  2. **Model × effort trials:** run comparable missions with a Haiku, Sonnet and Opus Navigator at
+     different effort levels; measure competency (XP/gold per minute, deaths, close calls,
+     consumables used, mistakes in the journal) against latency (alert → order → journal, from
+     `decisions.jsonl`: `attention`, `goal`/order acts, `nav_journal`).
+  3. **"Pinky and The Brain":** a two-tier Navigator. Pinky (Haiku: fast, cheap, still far smarter
+     than the Pilot's rules) handles the short-term loop (alerts, goals, routine shopping) and
+     confers with The Brain (Opus) for harder calls and long-term planning (depth, stage
+     progression, purchases, unfamiliar dangers). Design questions: how Pinky decides to escalate
+     (a list of triggers plus "when unsure"), how The Brain is reached (a subagent Pinky launches
+     or messages; it must answer in seconds), and a shared plan file The Brain keeps current so
+     Pinky acts on it without asking.
+  4. **A complaints channel for agents (the user):** the Navigator worked for 14 missions without a
+     reliable clock and it never reached the user: it noted "my times were estimates" twice (missions
+     8, 14) as its own mistake, and the Architect filed that as a Navigator slip instead of a
+     missing capability. Ideas: a "What I lacked / what got in my way" section in every Navigator
+     report (separate from its mistakes) and a `pilotctl complain "..."` that appends to
+     `runs/complaints.md` at any time; the same for the Advisor and its Clerks (a section in each
+     memo); the Architect reviews complaints after every mission, fixes what it can, and **relays
+     anything recurring or unfixable to the user** in its summary instead of absorbing it.
 - **Inbox lesson (2026-10-07):** that memo sat unread ~1 h because the Architect didn't start the
   inbox watcher at session start (the hook asks for it), and the post-Bash hook only fires on the
   Architect's own commands. Start the watcher first thing every session; it lasts ≤ 10 min, so

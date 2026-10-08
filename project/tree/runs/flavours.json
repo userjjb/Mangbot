@@ -19,6 +19,11 @@
   "kind": "Potion of Resist Heat",
   "source": "Advisor L_items (Dive03 09-26 15:45:42)"
  },
+ "Blue Mushroom": {
+  "junk": true,
+  "kind": "Mushroom of Confusion",
+  "source": "Dive04 mission 14 (sold unknown)"
+ },
  "Blue Speckled Potion": {
   "junk": true,
   "kind": "Potion of Sleep",
@@ -144,6 +149,11 @@
   "kind": "Potion of Speed",
   "source": "Advisor L_items (Dive04 09-29 22:59:27)"
  },
+ "Pearl Ring": {
+  "junk": false,
+  "kind": "Ring of Slow Digestion",
+  "source": "identified or used"
+ },
  "Puce Potion": {
   "junk": true,
   "kind": "Potion of Weakness",
@@ -204,6 +214,11 @@
   "kind": "Scroll of Summon Monster",
   "source": "Advisor L_items (Dive04 09-29 23:04:22)"
  },
+ "Scroll titled \"jo elprok\"": {
+  "junk": false,
+  "kind": "Scroll of Object Detection",
+  "source": "sold in a shop"
+ },
  "Scroll titled \"kliwex potri\"": {
   "junk": false,
   "kind": "Scroll of Door/Stair Location",
@@ -228,6 +243,16 @@
   "junk": false,
   "kind": "Scroll of Trap Detection",
   "source": "Advisor L_items (Dive03 09-27 12:47:27)"
+ },
+ "Scroll titled \"ornta prok\"": {
+  "junk": false,
+  "kind": "Scroll of Magic Mapping",
+  "source": "sold in a shop"
+ },
+ "Scroll titled \"shu foreng\"": {
+  "junk": false,
+  "kind": "Scroll of Monster Confusion",
+  "source": "sold in a shop"
  },
  "Scroll titled \"skinej glenur\"": {
   "junk": false,

@@ -4,6 +4,6 @@ description: READ FIRST - the plan and state live in next_steps.md ("ARCHITECT H
 metadata:
   type: project
 ---
-Open `/projectnb/jbrcs/mangband/next_steps.md` and read the "ARCHITECT HANDOFF" sections first, newest first: "2026-09-29", then "2026-09-27, late evening" (missions 7-8, the Advisor memos acted on), the "2026-09-27, evening addendum" (Advisor split, inbox protocol, open items from the completed forum memo), then "2026-09-27, afternoon" (Navigator missions 3-6): current state of the Pilot/Navigator/Dive03, operating rules, and the prioritized next steps. Also check the end of `runs/pilot/dive03/navigator.md` for the latest mission report. Keep it up to date at the end of each session.
+Open `/projectnb/jbrcs/mangband/next_steps.md` and read **"ARCHITECT HANDOFF 2026-10-08"** first: the current state (Dive04, what's running on which node), how the user watches missions (viewer, `!`/`?` notes), and the prioritized TODO (push to GitHub when the user's token is in, Dive04 stage B, open Pilot bugs, Navigator wishes, future improvements). The older handoff sections below it are history. The end of `runs/pilot/dive04/navigator.md` has the latest mission journal.
 
-**Why:** continuity across chats and jobs. **How to apply:** update the handoff (not memory) with new state. Related: [[mangband-project-map]], [[mangband-roles]]
+**Why:** continuity across chats and jobs. **How to apply:** update that section (not memory) with new state at the end of each session. Related: [[mangband-project-map]], [[mangband-roles]], [[mangband-inbox-watcher]], [[mangband-relay-agent-friction]]
