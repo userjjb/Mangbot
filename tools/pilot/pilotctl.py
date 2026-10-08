@@ -14,6 +14,8 @@
     pilotctl.py attention                  # pending attention events, without waiting
     pilotctl.py monster NAME               # this server's data for a monster + the pilot's verdict
     pilotctl.py say TEXT...                # answer the user (shown in their viewer, logged)
+    pilotctl.py search [N]                 # search the squares around you N times (default 15)
+    pilotctl.py disarm|open [DIR]          # a chest/trap/door in DIR (5 = underfoot)
     pilotctl.py journal "situation | decision | why"   # your journal line, stamped with time/depth/HP
 """
 import json
@@ -39,7 +41,7 @@ def call(sock, req, timeout):
     return json.loads(buf)
 
 
-BRIEF_KEEP = ("Standing on:", "Supplies:", "Monsters in view:", "Known stairs:", "Since last report:")
+BRIEF_KEEP = ("USER MESSAGE", "Standing on:", "Supplies:", "Monsters in view:", "Known stairs:", "Since last report:")
 
 
 def brief_report(report):

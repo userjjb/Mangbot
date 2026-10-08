@@ -1174,6 +1174,8 @@ class Pilot:
         self.flavour_watch = None
         self.weapons_t, self.weapon_tips = 0.0, set()
         self.found_t = time.time()
+        self.unanswered = []                  # user messages the Navigator hasn't answered (say)
+        self.far_seen = set()                 # (level, item) valuables seen beyond loot_radius
         self.effect_failures = 0
         self.redraw_t, self.redraw_level = 0.0, None
         self.group_warned = None
@@ -1612,6 +1614,18 @@ class Pilot:
         # (and one the server's monster list names but the map decode misses:
         # present, position unknown -- the game-state survey, rule 4)
         near_danger += [r for r in w.listed_only() if self.danger_why(r)]
+        # A slow caster with weak melee and the stairs far away: fleeing just
+        # gives it free casts on the way (mission 15: Wormtongue, ~6 melee per
+        # turn, the stairs 70-80 away, twice; the user: stand and fight)
+        stairs_d = min((w.dist(q) for q in w.find("<>")), default=999)
+        if near_danger and stairs_d > 25 and all(
+                (r.speed_x or 1) <= 1 and r.per_turn < w.hp[0] / 8 and r.spells for r in near_danger):
+            if now - self.flee_t > 30:
+                self.flee_t = now
+                self.notify("danger_seen", f"{self.danger_text(near_danger[0])} in view, stairs {stairs_d} away: "
+                                           "NOT fleeing (it's slow and hits weakly; its danger is spells, and a "
+                                           "long walk gives it free casts). Fight it (goal hunt) or recall")
+            near_danger = []
         if near_danger and not isinstance(self.goal, (Flee, Recover)) and now - self.flee_t > 10 \
                 and "danger" in o["stop_on"]:
             self.flee_t = now
@@ -2009,6 +2023,7 @@ class Pilot:
         if text.startswith("!"):
             # a message for the Navigator: an attention event wakes its wait
             self.notify("user_message", text[1:].strip())
+            self.unanswered.append((time.time(), text[1:].strip()))
         with open(os.path.join(self.rundir, "commentary.jsonl"), "a") as f:
             f.write(json.dumps(rec) + "\n")
         return f"noted at {time.strftime('%H:%M:%S')} ({w.depth_ft} ft, HP {w.hp[0]}/{w.hp[1]}, " \
@@ -2164,8 +2179,9 @@ class Pilot:
             paralyses = any(b.split(":")[1:2] == ["PARALYZE"] for b in r.blows)
             nosave = {e for e in r.no_save_blows
                       if not self.has_ability("resist_blind" if e == "BLIND" else "resist_conf")}
+            drains = r.worst_melee[1] > 0          # (mission 15: a Red jelly drained STR, -1 blow)
             return r.level <= lev and not (paralyses and not self.has_ability("free_action")) \
-                and not nosave
+                and not nosave and not drains
 
         targets = [m for m in still if disenchants(m[2]) or any(w.dist(g, m[:2]) <= 1 for g in goals)]
         fight = [m for m in targets if killable(m[2])]
@@ -2199,7 +2215,9 @@ class Pilot:
         want = []
         if w.flag("stun"):
             want.append("stun")
-        if mons_near and w.flag("confused"):
+        mobile_near = [m for m in mons_near if "NEVER_MOVE" not in m[2].flags]
+        # (a mold can't follow: step away and let it wear off -- mission 15, the user)
+        if mobile_near and w.flag("confused"):
             want.append("confused")
         if mons_near and w.flag("blind"):
             want.append("blind")
@@ -2753,6 +2771,16 @@ class Pilot:
                     self.notify("found", f"picked up {m.group(1)}: identify it before selling (`sell !NAME`)",
                                 news=True)
         self.found_t = now
+        if w.in_dungeon and w.itemlist:
+            for line in w.itemlist[1:]:
+                name = line.strip()[2:].strip()
+                if re.search(r"\b(Wand|Staff|Rod|Ring|Amulet)\b|\{(excellent|special)", name) and \
+                        (w.level_t, name) not in self.far_seen:
+                    self.far_seen.add((w.level_t, name))
+                    # (mission 15: the user spotted a Wand of Slow Monster 33 squares
+                    # away, outside loot_radius; it sold for 210)
+                    self.notify("interesting_item", f"{name} seen on this level (devices and jewellery "
+                                                     "sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`")
         while w.losses:
             t, text = w.losses.pop(0)
             self.notify("lost", text, news=True)
@@ -2890,6 +2918,7 @@ class Pilot:
             # the Navigator answering the user (shown in the observer's viewer)
             text = " ".join(args)
             self.log("nav_say", text=text)
+            self.unanswered = []                  # (answered)
             with open(os.path.join(self.rundir, "commentary.jsonl"), "a") as f:
                 f.write(json.dumps({"t": round(time.time(), 3), "who": "navigator", "note": text}) + "\n")
             return {"ok": True, "text": "said"}
@@ -2999,6 +3028,27 @@ class Pilot:
                 return {"ok": False, "error": str(e)}
             self.cmd(f"custom {{ item={item} entry={' '.join(args[1:])}", f"agent: inscribe {args}")
             return {"ok": True, "pack": self.pack_now()}
+        if c == "search":
+            # search the 8 squares around us N times (each search is a turn and
+            # finds a given secret door/trap ~14% of the time for Dive04: 15 ~ 90%).
+            # Standing still doesn't search (mission 15, the user; cmd1.c search())
+            n = max(1, min(40, int(args[0]) if args else 15))
+            t0 = time.time()
+            for _ in range(n):
+                self.c.send("custom s")
+            self.busy_until = time.time() + 0.15 * n
+            self.c.collect(min(20.0, 0.25 * n + 1.0))
+            found = [t for ts, t in self.w.messages if ts >= t0 and "found" in t]
+            return {"ok": True, "text": f"searched {n} times here: " + ("; ".join(found) if found else "nothing found")}
+        if c in ("disarm", "open"):
+            # a chest (or door/trap) in direction DIR (5 = the square you stand on):
+            # search first to find a chest's trap, disarm it, then open
+            d = args[0] if args else "5"
+            t0 = time.time()
+            self.cmd(f"custom {'D' if c == 'disarm' else 'o'} dir={d}", f"agent: {c} {d}")
+            self.c.collect(1.0)
+            said = [t for ts, t in self.w.messages if ts >= t0]
+            return {"ok": True, "said": said[-4:], "pack": self.pack_now(0.3)}
         if c == "pickup":
             self.cmd("custom ,", "agent: pickup")
             return {"ok": True}
@@ -3180,6 +3230,11 @@ class Pilot:
                         "15-34 turns)" if w.recall_pending else "")
                      + f" | max_depth {self.orders.get('max_depth')}"
                      + (f" | drained: {', '.join(drained)}" if drained else ""))
+        if self.unanswered:
+            # (mission 15: a message sent before the Navigator's first wait was
+            # only seen 4 minutes later in the news)
+            lines.insert(1, "USER MESSAGE(S) NOT YET ANSWERED (reply with say): " + " | ".join(
+                f"{time.strftime('%H:%M:%S', time.localtime(t))} {m}" for t, m in self.unanswered))
         wt = self.weapon_table()
         if wt:
             lines.append("Weapons (blows, avg damage per round at your STR/DEX): " + "; ".join(
