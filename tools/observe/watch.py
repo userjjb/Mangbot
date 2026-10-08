@@ -10,7 +10,8 @@ runs/pilot/<nick>/commentary.jsonl and in the Pilot's decision log, for
 later cross-reference (tools/observe/notes.py). Start a note with '?' to ask
 why the Pilot did something; the Architect answers those. Start it with '!'
 to message the Navigator playing the character: it's woken at once, and its
-answers show in the feed as NAVIGATOR: ...
+answers show in the feed as NAVIGATOR: ... The Navigator's journal lines
+(its reasoning, one per decision) show as NAV: ... (magenta) when written.
 
     python3 watch.py [--nick dive04]
 
@@ -59,7 +60,8 @@ def init_colours():
         curses.init_pair(i + 1, fg, bg)
         COL[i] = curses.color_pair(i + 1) | (curses.A_BOLD if bold else 0)
     for n, (k, c) in enumerate((("alert", curses.COLOR_RED), ("you", curses.COLOR_YELLOW),
-                                 ("nav", curses.COLOR_CYAN), ("act", curses.COLOR_GREEN)), start=20):
+                                 ("nav", curses.COLOR_CYAN), ("act", curses.COLOR_GREEN),
+                                 ("journal", curses.COLOR_MAGENTA)), start=20):
         curses.init_pair(n, c, bg)
         FEED_COL[k] = curses.color_pair(n)
 
@@ -147,6 +149,39 @@ class Feed:
         self.lines = self.lines[-500:]
 
 
+class Journal:
+    """New lines of the Navigator's journal (navigator.md), shown in the feed
+    as NAV: ... at the moment they're written (its own clock times have
+    sometimes been guesses)."""
+
+    def __init__(self, path, feed, backlog=4):
+        self.path, self.feed = path, feed
+        self.pos = os.path.getsize(path) if os.path.exists(path) else 0
+        if backlog and os.path.exists(path):
+            with open(path) as f:
+                old = [l.rstrip("\n") for l in f if l.startswith("- ")][-backlog:]
+            for l in old:
+                feed.lines.append(("(earlier)", "nav_journal", "NAV: " + l[2:]))
+
+    def poll(self):
+        if not os.path.exists(self.path):
+            return
+        size = os.path.getsize(self.path)
+        if size < self.pos:
+            self.pos = 0                       # rewritten
+        with open(self.path) as f:
+            f.seek(self.pos)
+            chunk = f.read()
+        if not chunk.endswith("\n"):
+            chunk = chunk[:chunk.rfind("\n") + 1]
+        self.pos += len(chunk.encode())
+        for l in chunk.splitlines():
+            l = l.strip()
+            if l:
+                self.feed.lines.append((time.strftime("%H:%M:%S"), "nav_journal",
+                                        "NAV: " + (l[2:] if l.startswith("- ") else l)))
+
+
 def draw(scr, sock, feed, buf, msg, scroll):
     scr.erase()
     H, W = scr.getmaxyx()
@@ -221,7 +256,9 @@ def draw(scr, sock, feed, buf, msg, scroll):
             attr = FEED_COL.get("you", 0) | curses.A_REVERSE
         if k == "nav_say":
             attr = FEED_COL.get("nav", 0) | curses.A_REVERSE
-        scr.addnstr(fy + 1 + i, fx, f"{t:8} {piece}", fw, attr)
+        if k == "nav_journal":
+            attr = FEED_COL.get("journal", 0)
+        scr.addnstr(fy + 1 + i, fx, f"{t:9} {piece}", fw, attr)
     # the note line
     scr.hline(H - 2, 0, curses.ACS_HLINE, W - 1)
     if msg:
@@ -235,6 +272,7 @@ def draw(scr, sock, feed, buf, msg, scroll):
 def main(scr, args):
     sock = os.path.join(RUNS, "pilot", args.nick.lower(), "ctl.sock")
     feed = Feed(os.path.join(RUNS, "pilot", args.nick.lower(), "decisions.jsonl"))
+    journal = Journal(os.path.join(RUNS, "pilot", args.nick.lower(), "navigator.md"), feed)
     curses.curs_set(1)
     init_colours()
     scr.nodelay(True)
@@ -245,6 +283,7 @@ def main(scr, args):
         now = time.time()
         if now - last >= 0.5:
             feed.poll()
+            journal.poll()
             draw(scr, sock, feed, buf, msg, scroll)
             last = now
         try:
