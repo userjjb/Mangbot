@@ -143,7 +143,7 @@ validation.
 unread `memos/to_architect/`, check what's running (`ps -u $USER`, `tmux -L mang ls`). After every
 mission, relay agent friction to the user (memory `mangband-relay-agent-friction`).
 
-**State (2026-10-08 16:15, job 7918400 on scc-wg3, walltime to Mon 10-12 08:03):**
+**State (2026-10-08 23:25, job 7918400 on scc-wg3, walltime to Mon 10-12 08:03):**
 - Running on scc-wg3: the test server under gdb (`testserver/`, port 28346, rebuilt 10-07 with the
   16-bit depth indicator), Dive04's Pilot (`tools/pilot/restart.sh Dive04`), the user's viewer
   (`tmux -L mang attach -t watch`; `tools/observe/watch.py`), the inbox watcher. A new job/node
@@ -171,8 +171,7 @@ mission, relay agent friction to the user (memory `mangband-relay-agent-friction
 1. **Push to GitHub** after each session's work (snapshot, commit, push).
 2. **Dive04 next:** Restore CON (~470), 3 CCW kept, then stage B (500-750 ft at clvl 15; gate
    clvl × 50 = 750). Stage table in the HANDBOOK and `memos/2026-10-07-warrior-progression.md`.
-3. **Pilot bugs open:** `explore` declared a level done with open ground on the map (mission 16,
-   500 ft); explore "frontier unreachable" with an exit 6 squares away (mission 15, a Bloodshot eye
+3. **Pilot bugs open:** explore "frontier unreachable" with an exit 6 squares away (mission 15, a Bloodshot eye
    nearby); flavour learning missed Beryl/Calcite rings identified by scroll (check the pack diff
    with the ring worn/destroyed); a Navigator busy in item/chest commands isn't woken by user
    messages (40 s "Pause").
@@ -290,6 +289,12 @@ asked, 2026-09-29, and agreed to keep it if harmless).
   view (the user). Open: explore ending early with open ground on the map (500 ft); flavour
   learning missed Beryl/Calcite via Identify; Restore CON (~470) needed. **Dive04: clvl 15,
   170 HP (CON 14), 72 gold, 2 WoR, 3 CCW, 5 CSW, 5 CLW, 10 Phase, rFire ring, max_depth 550.**
+- **After mission 16 (2026-10-08 evening, deployed):** `explore` no longer calls a level done
+  while corridor dead ends are unsearched (the 500 ft "nothing left" and the 550 ft secret door the
+  user spotted): with no frontier it digs rubble bordering unknown ground, then searches each
+  strict corridor dead end 15 times, nearest first, once per level (`p.searched`; `goal search`
+  shares it and now goes nearest-first). Reply: "nothing left to explore (searched N dead ends)".
+  Tested offline on stub maps only; watch the first mission for time spent searching.
 - **Demo mission** (23:49-23:56, 50 ft and back by stairs, the user messaged twice): fine. Fixed and
   deployed with the mission 15 answers (b26c14a: corridor zig-zag → run along the axis, map crops
   in attention/journal/note records, HANDBOOK inner rooms/vault walls/chests) and 7c16bc5 (stuck

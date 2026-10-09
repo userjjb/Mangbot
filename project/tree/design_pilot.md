@@ -71,7 +71,9 @@ Perception the pilot keeps (all from events):
   vault; a lit room with items; a pillared room (a possible stairs room, per the user); a unique;
   the target is reached.
 - `explore [room|level]`: frontier exploration (running corridors), until the room or level has no
-  frontier, or a `>` is seen (configurable).
+  frontier, or a `>` is seen (configurable). With no frontier left it then digs rubble bordering
+  unknown ground, and searches each corridor dead end 15 times (`Search(strict=True)`: one way out,
+  a nub past a turn, or a two-wide end; per-level `searched` set) before reporting done.
 - `goto Y X` / `goto stairs|item|unknown`: move there.
 - `pickup`, `drop ITEM`, `destroy ITEM`, `wear ITEM`, `takeoff ITEM`, `inscribe ITEM TEXT`,
   `use ITEM [target]` (quaff/read/eat/aim...), `fire` / `throw` at the nearest.

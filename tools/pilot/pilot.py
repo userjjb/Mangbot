@@ -209,6 +209,10 @@ class Attention(Exception):
 # Goals: tick(pilot) -> None (still working) or (status, detail)
 # --------------------------------------------------------------------------
 
+def plural(n, word):
+    return f"{n} {word}" + ("" if n == 1 else "s")
+
+
 class Goal:
     name = "goal"
 
@@ -281,6 +285,8 @@ class Explore(Goal):
         self.run_from = None
         self.last_diag = None
         self.loot = {}
+        self.search = None
+        self.searched_n = 0
 
     def tick(self, p):
         w = p.w
@@ -304,6 +310,15 @@ class Explore(Goal):
             p.level_seen = w.level_t
             p.unreachable = set()
             p.visited = set()
+        if self.search:
+            r = self.search.tick(p)
+            if r is None:
+                return None
+            self.searched_n += self.search.done_n
+            self.search = None
+            if r[0] == "failed":
+                return ("done", f"nothing left to explore (searched {plural(self.searched_n, 'dead end')})")
+            # a secret door showed up: explore on through it
         if not p.mover.active or self.loot.get("looting"):
             if p.loot_step(self.loot):
                 return None
@@ -326,7 +341,20 @@ class Explore(Goal):
         frontier = [f for f in p.frontier(center=self.center if self.radius else None, radius=self.radius)
                     if f != w.pos and f not in p.visited]
         if not frontier:
-            return ("done", "nothing left to explore")
+            # Rubble next to unknown ground is a way on (the user: corridors never
+            # dead-end, at worst there's a 1-thick wall of rubble): dig through
+            frontier = [f for f in p.frontier(center=self.center if self.radius else None,
+                                              radius=self.radius, rubble=True)
+                        if f != w.pos and f not in p.visited]
+        if not frontier:
+            # Corridor dead ends hide secret doors (the user, mission 16: a 500 ft
+            # level "explored" in 40 s, and a 550 ft dead end with a door): search
+            # those we haven't yet before calling the level done
+            if not self.radius and Search.dead_ends(w, strict=True, skip=p.searched):
+                self.search = Search(tries=15, strict=True)
+                return None
+            return ("done", "nothing left to explore" +
+                    (f" (searched {plural(self.searched_n, 'dead end')})" if self.searched_n else ""))
         # (targets we failed to reach are dropped from the frontier, not avoided
         # as path squares: that once made walked corridors impassable)
         if self.fails > 10 or not p.mover.go(frontier):
@@ -517,7 +545,7 @@ class Dive(Goal):
                 self.explore = None
                 return None
             return ("failed", "no stairs found: " + r[1])
-        if r and r[1] == "nothing left to explore" and w.find("<>") and self.bad_stairs:
+        if r and str(r[1]).startswith("nothing left to explore") and w.find("<>") and self.bad_stairs:
             # Stairs are known but were marked unreachable (e.g. planned before
             # the map had loaded): try them again, a few times
             self.bad_cleared += 1
@@ -526,7 +554,7 @@ class Dive(Goal):
             self.bad_stairs = set()
             self.explore = None
             return None
-        if r and r[1] == "nothing left to explore" and not w.find("<>"):
+        if r and str(r[1]).startswith("nothing left to explore") and not w.find("<>"):
             # Walled in: look for secret doors, then explore again
             self.need_search = True
         if r:
@@ -555,34 +583,59 @@ class Dive(Goal):
 class Search(Goal):
     """Look for secret doors: stand at each dead end (and corridor ends) and
     search a few times -- the user's doc lore: dead ends, lone doors,
-    corridor ends. Done when a new door/opening shows up (explore again)."""
+    corridor ends. Done when a new door/opening shows up (explore again).
+    strict=True: true corridor dead ends only (explore's own pass)."""
 
-    def __init__(self, tries=8):
+    def __init__(self, tries=8, strict=False):
         self.name = "search dead ends"
         self.tries = tries
-        self.spots = None
+        self.strict = strict
+        self.spot = None
         self.searching = 0
         self.known = None
+        self.done_n = 0
 
-    def dead_ends(self, w):
+    @staticmethod
+    def dead_ends(w, strict=False, skip=()):
         mem = w.memory
+
+        def is_open(y, x):
+            return mem.get((y, x), " ") not in "#%*: 12345678"
+
         out = []
         for (y, x), ch in mem.items():
-            if ch in "#%*: +12345678":
+            if ch in "#%*: +12345678" or (w.level_t, (y, x)) in skip:
                 continue
-            # Few open squares around: a dead end, the end of a (two-wide)
-            # corridor, or a room corner -- where secret doors tend to be
-            n = sum(1 for dy in (-1, 0, 1) for dx in (-1, 0, 1)
-                    if (dy or dx) and mem.get((y + dy, x + dx), " ") not in "#%*: ")
-            if n <= 3:
+            nbs = [(dy, dx) for dy in (-1, 0, 1) for dx in (-1, 0, 1)
+                   if (dy or dx) and is_open(y + dy, x + dx)]
+            if not strict:
+                # Few open squares around: a dead end, the end of a (two-wide)
+                # corridor, or a room corner -- where secret doors tend to be
+                if len(nbs) <= 3:
+                    out.append((y, x))
+                continue
+            # A corridor's end: one way out (one wide, or two side by side), or the end of a two-wide
+            # one -- an L of three with the diagonal, and no room around (a room
+            # corner has the same L but 9 open squares within 2)
+            if len(nbs) <= 1:
                 out.append((y, x))
+            elif len(nbs) == 2:
+                # a nub past a corridor's turn: both ways out on one side, side by
+                # side (a plain bend's two touch only diagonally)
+                (ay, ax), (by, bx) = nbs
+                if abs(ay - by) + abs(ax - bx) == 1:
+                    out.append((y, x))
+            elif len(nbs) == 3:
+                diag = [d for d in nbs if d[0] and d[1]]
+                if len(diag) == 1 and {(diag[0][0], 0), (0, diag[0][1])} <= set(nbs) and \
+                        sum(is_open(y + dy, x + dx) for dy in range(-2, 3) for dx in range(-2, 3)) <= 6:
+                    out.append((y, x))
         return out
 
     def tick(self, p):
         w = p.w
         if self.known is None:
             self.known = len(p.frontier())
-            self.spots = sorted(self.dead_ends(w), key=w.dist)
         if len(p.frontier()) > self.known:
             return ("done", "found a way on")
         if self.searching:
@@ -590,21 +643,32 @@ class Search(Goal):
                 return None
             self.searching -= 1
             p.cmd("custom s", "search for secret doors", hold=0.45)
+            if not self.searching:
+                p.searched.add((w.level_t, self.spot))
+                self.done_n += 1
+                self.spot = None
             return None
         if p.mover.active:
             st = p.mover.tick()
             if st == "moving":
                 return None
-            if st == "arrived":
+            if st == "arrived" and w.pos == self.spot:
                 self.searching = self.tries
                 return None
-        if not self.spots:
+        if self.spot:
+            # couldn't get there: don't try it again on this level
+            p.searched.add((w.level_t, self.spot))
+        # the nearest dead end not searched yet (it zig-zagged by distance from
+        # where the search began)
+        spots = sorted(self.dead_ends(w, self.strict, p.searched), key=w.dist)
+        if not spots:
             return ("failed", "searched every dead end, nothing found")
-        spot = self.spots.pop(0)
-        if w.pos == spot:
+        self.spot = spots[0]
+        if w.pos == self.spot:
             self.searching = self.tries
-        elif not p.mover.go([spot]):
-            return None
+        elif not p.mover.go([self.spot]):
+            p.searched.add((w.level_t, self.spot))
+            self.spot = None
         return None
 
 
@@ -1214,6 +1278,7 @@ class Pilot:
         self.seen_blows = None
         self.unreachable = set()       # frontier tiles we failed to reach (this level)
         self.visited = set()           # squares we've stood on while exploring (not frontier)
+        self.searched = set()          # (level, square) dead ends searched for secret doors
         self.level_seen = None
         self.phase_t = self.cure_t = self.noescape_t = 0.0
         self.escaping_to_stairs = False
@@ -1470,11 +1535,15 @@ class Pilot:
 
     # --- perception helpers --------------------------------------------------
 
-    def frontier(self, center=None, radius=None):
+    def frontier(self, center=None, radius=None, rubble=False):
+        """Known open squares next to unknown ones (rubble=True: rubble squares
+        next to unknown ones instead, a way on by digging)."""
         mem = self.w.memory
         out = []
         for (y, x), ch in mem.items():
-            if ch in "#%*: " or ch in "12345678" or (y, x) in self.unreachable:
+            if rubble != (ch == ":"):
+                continue
+            if ch in "#%* " or ch in "12345678" or (y, x) in self.unreachable:
                 continue
             if center and radius and max(abs(y - center[0]), abs(x - center[1])) > radius:
                 continue

@@ -76,8 +76,8 @@ Attention events:
 | command | what the pilot does |
 |---|---|
 | `goal dive FEET` (shallower than now = climb) | stair-scum down to FEET: take a `>` when one is known, otherwise go up and down the staircase underfoot for a fresh level; explore if no stairs are known. Stops early for `stop_on` things |
-| `goal search` | search for secret doors at dead ends, corridor ends and room corners (a dive does this by itself when a level seems to have no stairs) |
-| `goal explore [until=stairs] [radius=N]` | (dungeon only) walk to unexplored edges until nothing is left (or a `>` it can reach is seen, or within N squares). It fetches items within `loot_radius` on the way, but not distant ones it saw earlier: when it's done, collect those from the report's item squares with `goto` |
+| `goal search` | search for secret doors at dead ends, corridor ends and room corners, nearest first, skipping those already searched on this level (a dive does this by itself when a level seems to have no stairs) |
+| `goal explore [until=stairs] [radius=N]` | (dungeon only) walk to unexplored edges until nothing is left (or a `>` it can reach is seen, or within N squares). Before calling a level done it digs rubble that borders unexplored ground and searches each corridor dead end 15 times for a secret door (its reply says how many it searched; each dead end only once per level). It fetches items within `loot_radius` on the way, but not distant ones it saw earlier: when it's done, collect those from the report's item squares with `goto` |
 | `goal goto Y,X` / `goto >` / `goto <` / `goto item` | walk there. With `pickup=all`, an item on the target square is picked up by itself, about half a second after arriving (it waits for the character's turn): check the pack before a manual `pickup` |
 | `goal hunt NAME` (spaces as `_`) | walk up to the monster called NAME and fight it (standing still; the server swings for you). Ends when it's slain or out of sight 15 s |
 | `goal shop N [list] [buy NAME:COUNT[@MAX]]... [sell NAME_OR_LETTER:COUNT]...` | `list`: the result starts with the store's whole stock and prices (use it alone to look before buying). `@MAX`: don't pay more than MAX each (e.g. `buy To-Dam:2@120`). Town only: walk into store N (1 General, 2 Armoury, 3 Weaponsmith, 4 Temple, 5 Alchemist, 6 Magic shop, 7 Black market), sell, buy (by part of the name; spaces as `_`, e.g. `buy Cure_Light:5`; the cheapest matching item is bought), leave. The result lists what the shopkeeper actually said ("I don't want that!" for worthless or cursed items) |
@@ -370,8 +370,9 @@ Orders are remembered across pilot restarts.
 - **Stationary drainers** (Red/Rot jellies, Purple mushroom patches...): the pilot keeps one square
   away from them in its paths, never melees them, and won't kill a blocker beside one. After a drain,
   leave the level rather than re-issue `explore`.
-- A corridor that seems to dead-end means a secret door or rubble: `search 20` there (`search`
-  replies with what it found).
+- A corridor that seems to dead-end means a secret door or rubble. `explore` searches corridor
+  dead ends by itself before it says it's done; for one you still doubt, or a suspect room wall,
+  `search 20` there (`search` replies with what it found).
 - **The user's coordinates are the report map's row,col** (`47,151` = row 47, column 151): read
   them off the numbered map lines. Until you answer with `say`, the report's second line shows
   `USER MESSAGE(S) NOT YET ANSWERED`.
