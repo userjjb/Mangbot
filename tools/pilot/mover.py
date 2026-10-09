@@ -40,12 +40,18 @@ def plan(world, goals, avoid=(), monster_cost=40, max_cost=4000):
     # a Purple mushroom patch, CON 18 -> 14), nor into the Navigator's avoid
     # zones: impassable, unless it's the goal itself
     drain_zone = drain_zone_of(world)
-    avoid = set(avoid) | drain_zone | set(getattr(world, "avoid_zone", ()))
-    # A goal inside the zone would still pull the path beside the drainer (the
-    # Advisor's mission 16 replay): drop such goals unless they're all there
-    # (a goto the Navigator asked for)
-    if goals - drain_zone:
-        goals -= drain_zone
+    nav_zone = set(getattr(world, "avoid_zone", ()))
+    # Inside a zone (it was set around us, or the monster came to us): its
+    # squares only cost more, or no path could lead out of it
+    inside = bool(nav_zone) and any((start[0] + dy, start[1] + dx) in nav_zone
+                                    for dy in (-1, 0, 1) for dx in (-1, 0, 1) if dy or dx) and \
+        getattr(world, "avoid_inside", False)
+    avoid = set(avoid) | drain_zone | (set() if inside else nav_zone)
+    # A goal inside a zone would still pull the path into it (the Advisor's
+    # mission 16 replay): drop such goals unless they're all there (a goto
+    # the Navigator asked for)
+    if goals - drain_zone - nav_zone:
+        goals -= drain_zone | nav_zone
     mem = world.memory
     # On the surface (town, wilderness) unseen ground is mostly open -- at
     # night the floor isn't even drawn -- while trees and fences block
@@ -79,7 +85,8 @@ def plan(world, goals, avoid=(), monster_cost=40, max_cost=4000):
             # (a hair more for diagonals: of equally short paths, prefer straight ones)
             nd = d + COST.get(ch, 1) + (1 if ch == " " else 0) + (0.001 if dy and dx else 0) \
                 + (monster_cost if nb in mon and nb not in goals else 0) \
-                + (monster_cost if nb in still and nb not in goals else 0)
+                + (monster_cost if nb in still and nb not in goals else 0) \
+                + (30 if inside and nb in nav_zone else 0)
             if nd < dist.get(nb, 1 << 30):
                 dist[nb] = nd
                 prev[nb] = cur

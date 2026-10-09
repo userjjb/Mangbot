@@ -18,6 +18,7 @@
     pilotctl.py search [N]                 # search the squares around you N times (default 15)
     pilotctl.py disarm|open [DIR]          # a chest/trap/door in DIR (5 = underfoot)
     pilotctl.py journal "situation | decision | why"   # your journal line, stamped with time/depth/HP
+    pilotctl.py avoid Y,X [R] | avoid NAME | avoid clear | avoid   # no-go zones the paths route around
     pilotctl.py gate FEET [recall]         # the supply gate: what's missing for going down to FEET
     pilotctl.py complain TEXT...           # what you lacked / what got in your way (not your mistakes)
 """

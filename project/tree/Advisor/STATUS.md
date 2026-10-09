@@ -88,6 +88,10 @@ The original six-topic backlog (`../memos/2026-09-27-advisor-study-topics.md`) i
   vault outlines are granite; search = 14%/adjacent square per `s`, standing still never searches; chest traps fire on open unless disarmed.
 - Floor drops (10-08, `data/drops/drop_sim.py`): one object per square; a monster's drop needs an empty floor square within 2
   (20 tries, xtra2.c:2041-2088) or it is never created; held/dropped items: 50 tries out to 4 squares, then vanish (object2.c:3963ff).
+- Logging since 10-09 00:07 (Architect, after our "What I lacked" memo): every events.jsonl event has `epoch`; each Pilot
+  process starts with a `pilot_start` record; decisions.jsonl has `nav_cmd` (Navigator commands as received), `move` records
+  carry `run` (stretch/free), an `options` record at each login; Navigator final reports in runs/pilot/NICK/reports/.
+  Still missing: monster HP (health track). Advisor memos and Clerk dispatches now end with "What I lacked".
 - Resting in town burns light ~10× faster (time bubble); store torches/lanterns come half full.
 
 ## Tooling notes

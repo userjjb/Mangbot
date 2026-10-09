@@ -355,7 +355,7 @@ class Explore(Goal):
         # rock our light didn't reach, not a way on (the explorer once "failed"
         # because the only frontier left was the square it stood on)
         p.visited.add(w.pos)
-        zone = drain_zone_of(w)           # (never explore beside a drainer)
+        zone = drain_zone_of(w) | w.avoid_zone   # (never explore beside a drainer, nor into an avoid zone)
         frontier = [f for f in p.frontier(center=self.center if self.radius else None, radius=self.radius)
                     if f != w.pos and f not in p.visited and f not in zone]
         if not frontier:
@@ -3043,6 +3043,7 @@ class Pilot:
         for y0, x0, rc in w.monsters:
             if any(n in rc.name.lower() for n in self.avoid_names):
                 zone |= {(y0 + dy, x0 + dx) for dy in range(-3, 4) for dx in range(-3, 4)}
+        w.avoid_inside = w.pos in zone
         w.avoid_zone = zone - {w.pos}
         # The wilderness trail: the edge we came in by, per sector (Town goal)
         if self.trail_level != w.level_t and w.arrive_pos is not None:
