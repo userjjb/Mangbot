@@ -316,8 +316,10 @@ asked, 2026-09-29, and agreed to keep it if harmless).
   `goal goto` held beside a dangerous monster (`force` overrides); blind/confused + still hit →
   cure with nothing in view, explore/search/dive pause; the `destroy Light all` bug was still live
   (by-name branch) → `item_index(pack_only=True)`; goals inside a drainer zone dropped; `monster`
-  prints unique HP as the max (Wormtongue 250); slow-caster no-flee distance 25 → 8. Open: should
-  {magical} items be identified before selling, like {good}? Watch mission 17 for the 2.5× phase count.
+  prints unique HP as the max (Wormtongue 250); slow-caster no-flee distance 25 → 8. {magical}:
+  doesn't exist here (`memos/to_architect/2026-10-08-magical.md`: warriors' heavy sensing gives
+  terrible/special/worthless/excellent/cursed/broken/good/average). Watch mission 17 for the 2.5×
+  phase count.
 - **Demo mission** (23:49-23:56, 50 ft and back by stairs, the user messaged twice): fine. Fixed and
   deployed with the mission 15 answers (b26c14a: corridor zig-zag → run along the axis, map crops
   in attention/journal/note records, HANDBOOK inner rooms/vault walls/chests) and 7c16bc5 (stuck

@@ -1,0 +1,120 @@
+time,mission,type,decision,outcome,cost,doctrine,accuracy,evidence
+10-07 17:47,14,goal sequencing,start: townfarm 850 8 at night,COSTLY,~4-6 min for +29 g (night townfarm),NO RULE (night rule added 18:26),UNCHECKED,navigator.md:72; journal 74
+10-07 17:51,14,equipment,wore Brass Lantern by hand to unstick townfarm,GOOD,,NO RULE,TRUE,navigator.md:73; commit 54c4368 fixes lights
+10-07 17:56,14,selling/identify,"sold Rapier 16, Dagger 3, 2 Staffs Object Location 151+84",GOOD,,FOLLOWED (sell spares),FALSE: stamp is guessed (real ~17:50; Restore STR bought 17:52:01 per decisions.jsonl; Navigator admits at line 77),navigator.md:74
+10-07 18:00,14,shopping,"Restore STR 468 (quaffed, 4 blows w/ Main Gauche), Identify x2; dive by stairs",GOOD,,FOLLOWED (stage table A),FALSE stamp (real ~17:52),navigator.md:75
+10-07 17:55,14,depth,dive 250 then 350 by stairs,GOOD,,FOLLOWED,TRUE,navigator.md:76
+10-07 17:55,14,depth,explore 350,GOOD,,FOLLOWED,TRUE,navigator.md:77
+10-07 17:59,14,flee/recall/escape,accepted Pilot flee down > to 400 from unseen curser,NEUTRAL,,NO RULE,UNCHECKED,navigator.md:78
+10-07 18:00,14,depth,explore at 450 max_depth after blind-flee down,NEUTRAL,,NO RULE,UNCHECKED,navigator.md:79
+10-07 18:08,14,goal sequencing,keep exploring 450 to clvl 12,GOOD,,NO RULE,UNCHECKED,navigator.md:80
+10-07 18:10,14,flee/recall/escape,read WoR myself 5 s after flee failed (Lagduf+11 Cave orcs),GOOD,min HP 58/151 (38%),FOLLOWED (recall when flee fails; rule added 54c4368 after),"FALSE: ""lowest seen 74/151 (49%)"" - decisions.jsonl min is 58 at 18:10:47; recall took 23 s not ~30",navigator.md:81
+10-07 18:12,14,equipment,"wear Hard Leather Boots, plan sell junk",GOOD,,NO RULE,UNCHECKED,navigator.md:82
+10-07 18:17,14,selling/identify,"Identify Lance {good}->(+4,+4), sold 391; destroyed chest/soft boots",GOOD,,FOLLOWED (identify good weapons),FALSE stamp (real 18:12-18:14),navigator.md:83
+10-07 18:14,14,shopping,"bought 2 WoR @176, 3 Phase, To-Dam 195 (full price cap @200), CLW/CSW/Boldness",NEUTRAL,To-Dam 195 vs 147 25%-off a few hours later: ~48 g,NO RULE (discount rule: buy discounted),"TRUE; ""mush Confusion"" fine",navigator.md:84
+10-07 18:17,14,flee/recall/escape,"Bullroarer adjacent at 150: accepted Pilot flee, re-dived",GOOD,,FOLLOWED,"TRUE: monster.txt 76 (W:5, I:120, 2x1d8)",navigator.md:85
+10-07 18:23,14,flee/recall/escape,dive bounced by unseen toucher -> goal recall (recall 15.8 s),GOOD,,FOLLOWED,TRUE,navigator.md:86
+10-07 18:25,14,shopping,"sold spare armour, bought 2 CSW; end idle, ~7 min of 45 unused",NEUTRAL,,NO RULE,UNCHECKED,navigator.md:87
+10-07 22:42,15,goal sequencing,townfarm 600 while waiting for Green,GOOD,,NO RULE,TRUE (89->448 g in 4 min),navigator.md:88
+10-07 22:42,15,answer to user,"user flasks request: bought 2 flasks, refuelled",GOOD,"user msg 22:38, answered 22:42 (282 s: Navigator not yet started)",NO RULE,UNCHECKED,navigator.md:89
+10-07 22:43,15,answer to user,said done,GOOD,,NO RULE,UNCHECKED,navigator.md:90
+10-07 22:48,15,goal sequencing,keep townfarm after theft,NEUTRAL,"57 g stolen 22:47-48, ~63 g more 22:51 (audit gold 448->391->328)",NO RULE,TRUE (448->391),navigator.md:91
+10-07 22:49,15,answer to user,"""townfarm sweeps town ... it walks between kills""",NEUTRAL,,NO RULE,PARTLY FALSE: moves log shows runs in town in that window (18 tiles in 2.8 s),navigator.md:92
+10-07 22:50,15,answer to user,"""no run/walk switch, I only set goals""; flagged WISH run",NEUTRAL,,NO RULE,"MISLEADING: Mover runs straight stretches since e912370 (10-07 18:03); in town only >=3 from edge, no monster within 5",navigator.md:93
+10-07 22:51,15,answer to user,"""built into the Pilot, can't see code""",NEUTRAL,,NO RULE,TRUE (hedged),navigator.md:94
+10-07 22:53,15,answer to user,"not frustrating, lag cost",GOOD,,NO RULE,UNCHECKED,navigator.md:95
+10-07 22:57,15,other,agreed to log WISH lines,GOOD,,NO RULE,"TRUE (rogues: 57+63 ~120 g, not ~90)",navigator.md:96
+10-07 22:58,15,answer to user,"discounted weapon scrolls: To-Dam 147, WoR 176",GOOD,,FOLLOWED (buy discounted),TRUE (To-Dam 147 in buy log 22:58:56),navigator.md:97
+10-07 22:58,15,shopping,CCW+2 CSW+4 Heroism at Temple,GOOD,,FOLLOWED (stage B cures),UNCHECKED,navigator.md:98
+10-07 22:58,15,equipment,To-Dam 147 on Main Gauche,GOOD,,FOLLOWED (enchant buy),UNCHECKED,navigator.md:99
+10-07 22:59,15,depth,"recall to 450, max_depth 550, keep 2nd WoR as ticket",NEUTRAL,,"FOLLOWED (2 WoR rule, stage B)",UNCHECKED,navigator.md:100
+10-07 22:59,15,depth,goal dive 500 at once on arrival,COSTLY,see 102,NO RULE for the Navigator (HANDBOOK: pilot paths around stationary monsters),UNCHECKED,navigator.md:101
+10-07 23:00,15,flee/recall/escape,"Red jelly meleed by dive tactic: STR 18/50->18/30, 4->3 blows",COSTLY,"Restore STR 468 g, 1 blow (-25% dmg) for ~17 min","NO RULE (danger_table: Red jelly AVOID; HANDBOOK ""avoid jellies"")",TRUE,navigator.md:102
+10-07 23:01,15,item test/use,picked Wand of Slow Monster (id by table),GOOD,,NO RULE,UNCHECKED,navigator.md:103
+10-07 23:02,15,goal sequencing,"goto 50,175 for a Ration while Brodda (rated 4) already in melee, HP 88/151",NEAR-DEATH,HP 151->26 (decisions.jsonl 23:02:41); WoR + CCW+CSW+CLW ~ 350 g,NO RULE,"FALSE: ""Brodda appeared on the goto"" - flee began 23:02:35.7, goto issued 23:02:39.96 at HP 88 (stale report)",navigator.md:104
+10-07 23:02,15,flee/recall/escape,let Pilot recall run (Pilot read WoR at 27 HP),NEAR-DEATH,min HP 26-27/151 (17%),FOLLOWED,FALSE (see 106),navigator.md:105
+10-07 23:03,15,selling/identify,Identify+sold Wand Slow Monster 305,GOOD,,FOLLOWED,"FALSE: ""recall ~6 s"" (read 23:02:41.9 -> town 23:02:52.6 = ~10 s); ""lowest seen 58"" (really 26)",navigator.md:106
+10-07 23:03,15,goal sequencing,"plan: 1 WoR, dive by stairs, recall home",GOOD,,FOLLOWED (budget WoR),TRUE,navigator.md:107
+10-07 23:04,15,answer to user,"potions by shop 5: Water, Bottle, Sleep, Shard",GOOD,,NO RULE,TRUE,navigator.md:108
+10-07 23:04,15,depth,"after STR drain: max_depth 450, dive 400 by stairs, buy 1 WoR+rations+CCW",GOOD,,FOLLOWED (blow breakpoint),TRUE,navigator.md:109
+10-07 23:06,15,answer to user,Detect Invisible on junk list,GOOD,,NO RULE,TRUE (orders.json junk),navigator.md:110
+10-07 23:08,15,flee/recall/escape,"fled up from unseen toucher, re-dive",NEUTRAL,1 ration vanished (no eat act logged),FOLLOWED,"TRUE (hypothesis ""eaten or stolen""; no eat act at 23:02-23:25)",navigator.md:111
+10-07 23:09,15,depth,town->400 by stairs in ~5 min,GOOD,,NO RULE,UNCHECKED,navigator.md:112
+10-07 23:10,15,answer to user,goto Wand Slow Monster 33 away; WISH report items beyond loot radius,GOOD,,NO RULE,TRUE (user was right: beyond loot_radius 10),navigator.md:113
+10-07 23:10,15,flee/recall/escape,leave after invisible WIS drain,GOOD,,FOLLOWED (HANDBOOK invisible drainers),UNCHECKED,navigator.md:114
+10-07 23:11,15,item test/use,destroyed junk when pack full; wore Soft Leather Boots {excellent} to learn,NEUTRAL,,NO RULE,UNCHECKED,navigator.md:115
+10-07 23:12,15,goal sequencing,kept exploring after orc group,GOOD,,NO RULE,UNCHECKED,navigator.md:116
+10-07 23:14,15,answer to user,"zigzag: honest ""don't know""",GOOD,,NO RULE,TRUE (user right; fixed b26c14a),navigator.md:117
+10-07 23:15,15,flee/recall/escape,let flee run from Wormtongue+Snagas; WoR if HP<100,NEUTRAL,HP 132->91,FOLLOWED (rated-4 LEAVE),UNCHECKED,navigator.md:118
+10-07 23:15,15,flee/recall/escape,"read last WoR at HP ~91, stairs 73 away",COSTLY,~117 g WoR; dive ended ~25 min early (but 2nd trip made),FOLLOWED,"TRUE (read 23:15:46, town +16.9 s)",navigator.md:119
+10-07 23:16,15,selling/identify,"sold wand 210, armour 13, unknown scroll 9",GOOD,,NO RULE,UNCHECKED,navigator.md:120
+10-07 23:17,15,shopping,Restore STR 468 + 2 WoR @117; recall to 450,GOOD,,FOLLOWED (4 blows),UNCHECKED,navigator.md:121
+10-07 23:18,15,answer to user,"""only pilotctl snapshots""; WISH movement trace",GOOD,,FOLLOWED,TRUE,navigator.md:122
+10-07 23:18,15,goal sequencing,goto staff/gold room near Bloodshot eye,GOOD,+245 g,NO RULE,TRUE,navigator.md:123
+10-07 23:20,15,goal sequencing,"goto 44,177 after explore gave up",GOOD,,NO RULE,TRUE,navigator.md:124
+10-07 23:20,15,answer to user,wait cadence 60-90 s,NEUTRAL,,NO RULE,UNCHECKED (5-20 s thinking),navigator.md:125
+10-07 23:22,15,answer to user,goal search for user's secret door,NEUTRAL,~5.5 min (23:22:17-23:27:44) no door found,NO RULE,UNCHECKED,navigator.md:126
+10-07 23:22,15,answer to user,told user search found doors,NEUTRAL,,NO RULE,UNCHECKED,navigator.md:127
+10-07 23:23,15,answer to user,"goto 38,183 per user coords",NEUTRAL,,NO RULE,UNCHECKED,navigator.md:128
+10-07 23:24,15,answer to user,"goto 47,159 and search",NEUTRAL,,NO RULE,UNCHECKED,navigator.md:129
+10-07 23:26,15,answer to user,stood 12-15 s at 3 squares; no search cmd,COSTLY,~3 min wasted: standing never searches (user right),NO RULE,TRUE,navigator.md:130
+10-07 23:27,15,pace/time budget,"gave up, back to explore",GOOD,,NO RULE,UNCHECKED,navigator.md:131
+10-07 23:27,15,answer to user,thanked user,GOOD,,NO RULE,UNCHECKED,navigator.md:132
+10-07 23:29,15,goal sequencing,"explore, clvl 14",GOOD,,NO RULE,UNCHECKED,navigator.md:133
+10-07 23:31,15,answer to user,agreed CSW on mold confusion was waste,GOOD,,NO RULE,TRUE (user right; fixed 2765956),navigator.md:134
+10-07 23:31,15,answer to user,ack,GOOD,,NO RULE,UNCHECKED,navigator.md:135
+10-07 23:32,15,flee/recall/escape,read last WoR 5 s after Wormtongue seen (180->129 already); > 12 away,NEUTRAL,WoR 176 g; ~5 min early; recall 18.5 s cost 25 HP more,FOLLOWED (rated-4 LEAVE),TRUE,navigator.md:136
+10-07 23:33,15,flee/recall/escape,home note,NEUTRAL,180->102,FOLLOWED,"FALSE: ""180->103 during the ~15 s recall"": 180->129 in 3 s BEFORE the read; recall took 18.5 s and 123->98",navigator.md:137
+10-07 23:33,15,answer to user,agreed with user: fight Wormtongue; claims 25d10 / ~137 HP,NEUTRAL,,NO RULE (HANDBOOK then said rated-4 flee),"FALSE: 250 HP (FORCE_MAXHP, monster.txt 111; pilot.py:2225); user advice only partly right: ~10 rounds needed (replay memo)",navigator.md:138
+10-07 23:34,15,selling/identify,sold wand/staff/MG/Spear; ring = Weakness cursed autodestroyed,GOOD,,FOLLOWED (Identify rings),UNCHECKED,navigator.md:139
+10-07 23:35,15,shopping,1 CCW 154 after stock roll; stop with ~8 min left,NEUTRAL,,FOLLOWED,UNCHECKED,navigator.md:140
+10-07 23:49,15,depth,demo: dive 50 by stairs,GOOD,,NO RULE,UNCHECKED,navigator.md:141
+10-07 23:49,15,depth,explore 1 min,GOOD,,NO RULE,TRUE (false stuck alert fixed 7c16bc5),navigator.md:142
+10-07 23:50,15,depth,dive 0,GOOD,,NO RULE,UNCHECKED,navigator.md:143
+10-07 23:51,15,other,stop; demo done,GOOD,,NO RULE,UNCHECKED,navigator.md:144
+10-07 23:52,15,answer to user,weapon scrolls on discount (To-Dam 147),GOOD,,FOLLOWED,TRUE,navigator.md:145
+10-07 23:53,15,goal sequencing,"townfarm 150 at night per user: ""quick""",COSTLY,"~3 min, 0 gold",VIOLATED (HANDBOOK 10-07 18:26: night townfarm ~7 g/min),"FALSE: ""townfarm is quick"" at night (but 22:43 got +359 g in 4 min)",navigator.md:146
+10-07 23:55,15,pace/time budget,stop at 8-min budget,GOOD,,NO RULE,UNCHECKED,navigator.md:147
+10-08 15:31,16,shopping,"lantern 0 turns: goto gold, buy 3 flasks, fuel",GOOD,,NO RULE,UNCHECKED,navigator.md:148
+10-08 15:32,16,depth,recall to 450 with 1 CCW 3 CSW 15 CLW (stage B kit: 3 CCW or 5 CSW),GOOD,"+668 XP, 24.9 XP/min (replay memo)","VIOLATED (soft: cures below stage B, money 80 g)",TRUE,navigator.md:149
+10-08 15:32,16,depth,dive 500 on arrival,GOOD,,NO RULE,UNCHECKED,navigator.md:150
+10-08 15:33,16,goal sequencing,"""keep fighting vs one Hill orc""",NEUTRAL,180->116,NO RULE,"FALSE: ~12 Cave orcs + Hill orc pack (mons records 15:33:20-49), not one orc",navigator.md:151
+10-08 15:34,16,goal sequencing,goto staff + ring,GOOD,,NO RULE,UNCHECKED,navigator.md:152
+10-08 15:34,16,goal sequencing,continue dive,GOOD,,NO RULE,UNCHECKED,navigator.md:153
+10-08 15:35,16,depth,500 ft explore,GOOD,,NO RULE,UNCHECKED,navigator.md:154
+10-08 15:36,16,depth,explore ended early -> fresh 550,NEUTRAL,a secret door level (user later: dead ends),NO RULE,UNCHECKED,navigator.md:155
+10-08 15:36,16,goal sequencing,missed Turquoise Ring next to > (dive took stairs first),COSTLY,unknown ring (50-700 g),NO RULE,TRUE (own admission),navigator.md:156
+10-08 15:37,16,answer to user,asked which dead end,GOOD,,NO RULE,UNCHECKED,navigator.md:157
+10-08 15:38,16,answer to user,"goto 43,109 search 20 -> secret door 42,110",GOOD,,NO RULE,TRUE (user right),navigator.md:158
+10-08 15:39,16,answer to user,ack; WISH explore searches dead ends,GOOD,,NO RULE,TRUE (fb1c382),navigator.md:159
+10-08 15:40,16,answer to user,"rubble digs ""STR 18/50 and a dagger""",NEUTRAL,,NO RULE,"FALSE detail: wielding Main Gauche (+0,+2), no dagger kept (minor)",navigator.md:160
+10-08 15:43,16,item test/use,chest procedure search/disarm/open,GOOD,+90 g,FOLLOWED (user tip 10-07 23:30),TRUE,navigator.md:161
+10-08 15:43,16,answer to user,"late ""Pause"" (41 s)",NEUTRAL,41 s lag,NO RULE,UNCHECKED,navigator.md:162
+10-08 15:44,16,answer to user,CSW at full HP wasteful: honest,GOOD,,NO RULE,TRUE (fixed 7d608cb),navigator.md:163
+10-08 15:44,16,answer to user,Ring of Weakness: leave,GOOD,,FOLLOWED (junk),TRUE,navigator.md:164
+10-08 15:45,16,answer to user,interesting_item ignores junk list,GOOD,,NO RULE,TRUE (inferred; fixed 7d608cb),navigator.md:165
+10-08 15:46,16,goal sequencing,continue explore,GOOD,,NO RULE,UNCHECKED,navigator.md:166
+10-08 15:47,16,flee/recall/escape,explore kept running past drainer; CHR 4->3,COSTLY,CHR 1 point (price only),NO RULE (repeat of 23:00 STR drain),"FALSE: ""rule missed CHR drainer"": danger_table.csv row 549 already drain_blows=1; mover walked into jelly 3x (replay memo)",navigator.md:167
+10-08 15:47,16,answer to user,agreed with user,GOOD,,NO RULE,UNCHECKED,navigator.md:168
+10-08 15:49,16,goal sequencing,no avoid control; leave level by <,GOOD,,NO RULE,TRUE (avoid added 7d608cb),navigator.md:169
+10-08 15:49,16,goal sequencing,explore fresh 550,GOOD,,NO RULE,UNCHECKED,navigator.md:170
+10-08 15:50,16,flee/recall/escape,explore beside Purple mushroom patch: CON 18->16,COSTLY,HP 189->178,NO RULE (HANDBOOK avoid stationary; patches: danger_table FIGHT),UNCHECKED,navigator.md:171
+10-08 15:50,16,goal sequencing,re-issued explore next to same patch: CON 16->14,COSTLY,max HP 189->170 (-19); Restore CON 374-470 g not bought,"VIOLATED (repeat of 23:00 STR-drain mistake; HANDBOOK ""after a drain leave level"" added 16:13 after)",TRUE (own admission),navigator.md:172
+10-08 15:52,16,answer to user,goto Calcite ring after user nudge,GOOD,,NO RULE,TRUE,navigator.md:173
+10-08 15:53,16,answer to user,explained two lists,GOOD,,NO RULE,TRUE,navigator.md:174
+10-08 15:54,16,goal sequencing,Beryl Ring fetched,GOOD,,NO RULE,UNCHECKED,navigator.md:175
+10-08 15:59,16,item test/use,"destroy ""Light all"": destroyed 14 Potions CLW",COSTLY,"~300-340 g (5 CLW rebought = 120 g), plus thin cures","NO RULE then (ambiguous-name guard added 7d608cb, by-name branch 4d20a7c)",TRUE (act k item=7 value=14 15:58:44),navigator.md:176
+10-08 15:59,16,pace/time budget,"recall ~6 min early, pack full",NEUTRAL,~6 min,"VIOLATED (HANDBOOK ""Pack space ... destroy cheapest junk""; user later: use up essentials first)",UNCHECKED,navigator.md:177
+10-08 15:59,16,selling/identify,plan: identify rings before selling,GOOD,,FOLLOWED,UNCHECKED,navigator.md:178
+10-08 16:00,16,shopping,WoR 188 + 3 Identify,GOOD,,FOLLOWED (identify rings),TRUE,navigator.md:179
+10-08 16:01,16,selling/identify,"Pearl=Slow Digestion, Calcite=Teleportation cursed autodestroyed, Beryl=Resist Fire worn",GOOD,,FOLLOWED (identify before wearing),UNCHECKED,navigator.md:180
+10-08 16:01,16,selling/identify,"sold unidentified Trident {good} (+3,+7) for 42",COSTLY,buy-back 1848; 3 blows ~34/rd vs MG ~20,VIOLATED (HANDBOOK 09-25: identify good weapons before selling; 09-27: compare found weapons),"TRUE (own admission); Navigator note ""Weapons line ~14"" accurate",navigator.md:181
+10-08 16:02,16,shopping,4 CSW/2 CCW/5 CLW at Temple,GOOD,,NO RULE,UNCHECKED,navigator.md:182
+10-08 16:02,16,shopping,bought; townfarm 240,GOOD,,NO RULE,UNCHECKED,navigator.md:183
+10-08 16:03,16,answer to user,accepted rule: identify {good} items,GOOD,,NO RULE,UNCHECKED,navigator.md:184
+10-08 16:05,16,answer to user,"flask kept all trip, lantern ~12600",GOOD,,NO RULE,UNCHECKED,navigator.md:185
+10-08 16:06,16,answer to user,lesson: fuel/eat before destroying,GOOD,,NO RULE,UNCHECKED,navigator.md:186
+10-08 16:07,16,shopping,"stop townfarm, buy WoR @190 -> 63 (75% off)",GOOD,saved ~125 g,NO RULE,UNCHECKED,navigator.md:187
+10-08 16:07,16,shopping,Identify @42,GOOD,,FOLLOWED (keep 2-3 Identify),UNCHECKED,navigator.md:188
+10-08 16:07,16,pace/time budget,stop idle; ~8 min left,NEUTRAL,,NO RULE,UNCHECKED,navigator.md:189
+10-08 16:08,16,answer to user,goodbye,GOOD,,NO RULE,UNCHECKED,navigator.md:190

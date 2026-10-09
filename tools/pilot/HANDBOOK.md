@@ -363,7 +363,9 @@ Orders are remembered across pilot restarts.
   Light Wounds: mission 16 destroyed 14 CLW).
 - **Identify {good} or better weapons and armour before selling** (the shop goal now refuses them
   unidentified): a Trident {good} sold for 42 was (+3,+7), resold at 1848. The `Weapons:` line marks
-  a weapon whose pluses are unknown.
+  a weapon whose pluses are unknown. A warrior's feelings here are only terrible, special,
+  worthless, excellent, cursed, broken, good and average (no {magical}): {average} is safe to sell
+  as it is; {special}/{excellent} are artifacts/egos.
 - **A full pack before recalling** (the user): first use up cheap essentials (fuel the lantern, eat,
   read Blessing), destroy the cheapest junk, and keep devices/jewellery/{good} items. **Trick:**
   with your last Word of Recall read, its slot frees up: stand next to an item you want and pick it
