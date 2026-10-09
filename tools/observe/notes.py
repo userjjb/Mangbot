@@ -20,7 +20,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "pilot"))
 from pilotctl import RUNS      # noqa: E402
 
-SHOW = ("act", "attention", "goal", "goal_done", "goal_failed", "audit", "note", "nav_journal", "nav_say")
+SHOW = ("act", "attention", "goal", "goal_done", "goal_failed", "audit", "note", "nav_journal", "nav_say",
+        "nav_complaint")
 
 
 def hms(t):
@@ -78,8 +79,9 @@ def main():
             why = e.get("why") or e.get("detail") or ""
             if e["kind"] == "audit":
                 what, why = "audit", ", ".join(e.get("diffs", {}))
-            if e["kind"] in ("nav_journal", "nav_say"):
-                print(f"  {mark} {hms(e['t'])} {'NAV' if e['kind'] == 'nav_journal' else 'NAV says':11} {e.get('text')}")
+            if e["kind"] in ("nav_journal", "nav_say", "nav_complaint"):
+                label = {"nav_journal": "NAV", "nav_say": "NAV says", "nav_complaint": "NAV lacks"}[e["kind"]]
+                print(f"  {mark} {hms(e['t'])} {label:11} {e.get('text')}")
                 continue
             print(f"  {mark} {hms(e['t'])} {e['kind']:11} {str(what)[:40]:40} {str(why)[:110]}")
         print()

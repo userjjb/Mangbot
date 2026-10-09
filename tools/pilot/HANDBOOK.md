@@ -75,22 +75,24 @@ Attention events:
 
 | command | what the pilot does |
 |---|---|
-| `goal dive FEET` (shallower than now = climb) | stair-scum down to FEET: take a `>` when one is known, otherwise go up and down the staircase underfoot for a fresh level; explore if no stairs are known. Stops early for `stop_on` things |
+| `goal dive FEET` (shallower than now = climb) | stair-scum down to FEET: take a `>` when one is known, otherwise go up and down the staircase underfoot for a fresh level; explore if no stairs are known. Stops early for `stop_on` things **Supply gate:** going deeper than now to 250 ft or more is refused when supplies are below the stage table (cures, Phase Door, Word of Recall, a light with fuel); the reply lists what's missing. `goal dive FEET force` goes anyway |
 | `goal search` | search for secret doors at dead ends, corridor ends and room corners, nearest first, skipping those already searched on this level (a dive does this by itself when a level seems to have no stairs) |
 | `goal explore [until=stairs] [radius=N]` | (dungeon only) walk to unexplored edges until nothing is left (or a `>` it can reach is seen, or within N squares). Before calling a level done it digs rubble that borders unexplored ground and searches each corridor dead end 15 times for a secret door (its reply says how many it searched; each dead end only once per level). It fetches items within `loot_radius` on the way, but not distant ones it saw earlier: when it's done, collect those from the report's item squares with `goto` |
 | `goal goto Y,X` / `goto >` / `goto <` / `goto item` | walk there. With `pickup=all`, an item on the target square is picked up by itself, about half a second after arriving (it waits for the character's turn): check the pack before a manual `pickup`. **Held while a dangerous monster is adjacent** (walking away gives it free hits; it fights on): add `force` (`goal goto 50,175 force`) to walk anyway |
 | `goal hunt NAME` (spaces as `_`) | walk up to the monster called NAME and fight it (standing still; the server swings for you). Ends when it's slain or out of sight 15 s |
-| `goal shop N [list] [buy NAME:COUNT[@MAX]]... [sell NAME_OR_LETTER:COUNT]...` | `list`: the result starts with the store's whole stock and prices (use it alone to look before buying). `@MAX`: don't pay more than MAX each (e.g. `buy To-Dam:2@120`). Town only: walk into store N (1 General, 2 Armoury, 3 Weaponsmith, 4 Temple, 5 Alchemist, 6 Magic shop, 7 Black market), sell, buy (by part of the name; spaces as `_`, e.g. `buy Cure_Light:5`; the cheapest matching item is bought), leave. The result lists what the shopkeeper actually said ("I don't want that!" for worthless or cursed items) |
+| `goal shop N [list] [buy NAME:COUNT[@MAX]]... [sell NAME_OR_LETTER:COUNT]...` | `list`: the result starts with the store's whole stock and prices (use it alone to look before buying). `@MAX`: don't pay more than MAX each (e.g. `buy To-Dam:2@120`). Town only: walk into store N (1 General, 2 Armoury, 3 Weaponsmith, 4 Temple, 5 Alchemist, 6 Magic shop, 7 Black market), sell, buy (by part of the name; spaces as `_`, e.g. `buy Cure_Light:5`; the cheapest matching item is bought), leave. The result lists what the shopkeeper actually said ("I don't want that!" for worthless or cursed items) `quote NAME_OR_LETTER` offers an item and declines: the reply says what this shop would pay (`goal shop 6 quote Trident quote b`), nothing is sold. Names are matched whole-word, and an ambiguous name is refused |
 | `goal resurrect` | (only as a ghost, after `dead`) float up one level per `<` to town, then walk onto the Temple entrance (`4`), which resurrects. **It halves the experience for good.** Do it at once: a ghost left in the dungeon keeps getting hit (Dive03's ghost was poisoned while logged out and faded away forever on the next login). Untested so far |
 | `journal "situation \| decision \| why"` | (not a goal) your journal line, stamped by the pilot with the real time, depth and HP and appended to your journal (the report's first line also shows `now HH:MM:SS`) |
+| `complain TEXT` | (not a goal) what you lacked or what got in your way (missing information, controls, slow or unreliable tools) and what it cost: logged to `runs/complaints.md` for the Architect. Not for your own mistakes |
 | `search [N]` | (not a goal) search the 8 squares around you N times (default 15; each is a turn). **Standing still never searches**: only this, or walking (rarely). Each search finds a given secret door or trap about 14% of the time for a Half-Orc warrior (only the 8 adjacent squares), so 15 give ~90% and 20 ~95%. Use it next to the wall where you suspect a secret door (vaults and pits often have one) |
 | `disarm [DIR]`, `open [DIR]` | (not goals) a chest, trap or door in direction DIR (1-9 as on the keypad; 5 = the square you stand on). **Chests (`~`): opening sets the trap off unless it was disarmed** (small wooden chests at 250-600 ft: poison, STR or CON needles; a blind open costs a Restore ~470 80% of the time). So: `search` next to it until "You have discovered a trap on the chest!", then `disarm` until it's done (each try ~35-40% for Dive04; a failure sets it off 1 time in 8; walk away if it goes off), then `open` (~75 gold + half an item). No trap after `search 20`: just open it. Skip iron chests showing a Gas or Multiple trap without Free Action (paralysis) |
 | `avoid Y,X [R]` / `avoid NAME` / `avoid clear` | (not a goal) no-go zones the pilot's paths route around: a square and radius R (default 3) on this level, or 3 squares around every monster named NAME (all levels). `avoid` alone lists them. Use it for a vault or pit you're not opening, a breeder nest, a monster you won't fight |
 | `say TEXT` | (not a goal) a short answer to the user, shown in their live viewer and logged |
 | `monster NAME` | (a query, not a goal) this server's data for a monster (level, speed, blows, spells, flags, breath, melee per turn, the Advisor's 0-5 rating) and whether a danger rule fires for you now. Monster data here differs from Vanilla Angband: ask this instead of relying on memory |
+| `gate FEET [recall]` | (a query, not a goal) the supply gate for going down to FEET (`recall`: by Word of Recall from town): `OK` or what's missing |
 | `goal town` | (wilderness only) walk back to town: it leaves each wilderness sector by the edge you came in through. The town has edges into the wilderness (`left_town` news if you walk off it); mission 13 ran off the west edge at night |
-| `goal townfarm GOLD [MINUTES]` | (town only, default 10 min) kill gold-dropping townspeople (singing drunk, aimless merchant, squint-eyed rogue, mercenary, veteran) and pick up their gold until you have GOLD; it sweeps the town in a zig-zag to find them and lights up at night. **When a purchase is a little short, this is faster than a short dive and saves the Word of Recall a dive would burn** (the user). Mission 14's test: 372 → 495 gold in under a minute |
-| `goal recall` | read Word of Recall (takes ~15-35 s to work; the pilot stays safe meanwhile). From town it takes you to your deepest level so far, or to `max_depth` if that order is set (the pilot inscribes the scroll `@R<feet>` first). A second Word of Recall **cancels** the first, so while one is pending the pilot won't read another (neither this goal nor `read`, unless you add `force` to cancel it on purpose) |
+| `goal townfarm GOLD [MINUTES]` | (town only, default 10 min) kill gold-dropping townspeople (singing drunk, aimless merchant, squint-eyed rogue, mercenary, veteran) and pick up their gold until you have GOLD; it sweeps the town in a zig-zag to find them and lights up at night. **When a purchase is a little short, this is faster than a short dive and saves the Word of Recall a dive would burn** (the user). Mission 14's test: 372 → 495 gold in under a minute Thieves (urchins, rogues: a stealing touch) within 8 squares are attacked first |
+| `goal recall` | read Word of Recall (takes 15-34 turns, 8-23 s here, to work; the pilot stays safe meanwhile). From town it takes you to your deepest level so far, or to `max_depth` if that order is set (the pilot inscribes the scroll `@R<feet>` first). A second Word of Recall **cancels** the first, so while one is pending the pilot won't read another (neither this goal nor `read`, unless you add `force` to cancel it on purpose) From town the same supply gate applies (2 Word of Recall: one to go, one to come home); `goal recall force` overrides |
 | `goal rest` | rest until healed |
 | `goal wait SECS` | stand still |
 | `stop` | cancel the goal (safe idle) |
@@ -117,7 +119,7 @@ that's below `max_depth`; the goal is dropped and you're told); with a monster n
 every 2.5 s: repeated phasing doesn't shake a pack); otherwise walk to stairs
 within 20 squares, or quaff Cure Light/Serious/Critical Wounds. Below 35% HP
 with something adjacent it phases again at once; below 30% it also reads Word
-of Recall (it takes 15-35 s to work, so it starts early). Keep plenty
+of Recall (it takes 15-34 turns, 8-23 s here, so it starts early). Keep plenty
 of Phase Door and cure potions: it will use them.
 
 ## Standing orders (`order key=value ...`)
@@ -163,6 +165,8 @@ Orders are remembered across pilot restarts.
   Several destroys sent with letters from an old report hit the wrong items.
 - Without Free Action, a monster that paralyses (Illusionists, Carrion Crawlers, Ghouls...) is a
   reason to leave the level, not to fight.
+- **Town at night:** the floor isn't drawn, but the pilot now runs over it anyway (10 squares at a
+  time, never near the map edge), so errands no longer walk.
 - **Rubble** (`:`) doesn't seal a level: the pilot digs through it when its path needs to (a few
   turns each). Only a hard wall stops it.
 - **Count your Word of Recall in the pack after every recall** and before going down.
@@ -341,6 +345,12 @@ Orders are remembered across pilot restarts.
   shows the item under you. `State audit:` counts how often the pilot's picture of the
   character differed from a fresh check (and it resynced). Wait reports show the news since your
   previous wait; `status` shows the last 10 minutes.
+  `Since the last report`: the lowest HP (with its time), every monster seen (the most at once)
+  and any uniques since your previous wait: quote these, not what one snapshot showed.
+  `Progress:` time since the last XP gain, on this level, and in the current goal. `Movement:`
+  where you've been in the last minute. `Gear:` empty equipment slots and pack armour with
+  more AC than what's worn. `Orders changed from the defaults:` check it at the start of a
+  mission (Dive03 kept a changed think_hp for five missions).
 - **An item command whose reply says "no change in the pack or equipment yet: it may not have
   happened" didn't do anything you can see**: check before assuming it worked. The pilot reports
   its own actions that showed no effect as `tactic` "no effect seen".
@@ -369,7 +379,7 @@ Orders are remembered across pilot restarts.
 - **A full pack before recalling** (the user): first use up cheap essentials (fuel the lantern, eat,
   read Blessing), destroy the cheapest junk, and keep devices/jewellery/{good} items. **Trick:**
   with your last Word of Recall read, its slot frees up: stand next to an item you want and pick it
-  up while the recall charges (15-34 turns).
+  up while the recall charges (15-34 turns, 8-23 s).
 - **Stationary drainers** (Red/Rot jellies, Purple mushroom patches...): the pilot keeps one square
   away from them in its paths, never melees them, and won't kill a blocker beside one. After a drain,
   leave the level rather than re-issue `explore`.

@@ -141,7 +141,10 @@ validation.
 
 **Start of every session:** start the inbox watcher first (memory `mangband-inbox-watcher`), read
 unread `memos/to_architect/`, check what's running (`ps -u $USER`, `tmux -L mang ls`). After every
-mission, relay agent friction to the user (memory `mangband-relay-agent-friction`).
+mission, save the Navigator's final report to `runs/pilot/NICK/reports/YYYY-MM-DD-missionN.md` (the
+Advisor can't see it otherwise), read `runs/complaints.md` (agents' `complain` lines) and the report's
+"What I lacked" section, fix what you can, and relay recurring or unfixable friction to the user
+(memory `mangband-relay-agent-friction`).
 
 **State (2026-10-08 23:25, job 7918400 on scc-wg3, walltime to Mon 10-12 08:03):**
 - Running on scc-wg3: the test server under gdb (`testserver/`, port 28346, rebuilt 10-07 with the
@@ -173,15 +176,15 @@ mission, relay agent friction to the user (memory `mangband-relay-agent-friction
    clvl × 50 = 750). Stage table in the HANDBOOK and `memos/2026-10-07-warrior-progression.md`.
 3. **Pilot bugs open:** none catalogued (all fixed 2026-10-08 evening, see the entry below; tested
    offline only, so watch mission 17 for them).
-4. **Navigator wishes:** movement trace in `status`; explicit run control (town runs need known
-   ground ≥ 3 from the edge, so at night it walks); steal protection in townfarm (rogues);
-   sell-price quote for pack items; an inner-room/pit recogniser from the Advisor's spec
-   (`memos/2026-10-07-mission15-answers.md` §2) feeding `interesting`/`avoid`.
+4. **Navigator wishes:** all built 2026-10-09 (entry below), untested in play: watch mission 17. Left:
+   an inner-room/pit recogniser from the Advisor's spec (`memos/2026-10-07-mission15-answers.md` §2)
+   feeding `interesting`/`avoid`; monster HP logging (Advisor complaint 3); see "older Advisor
+   items" in the 10-09 entry.
 5. **Measure** alert → order → journal latency per mission (mission 14/15 median ~5 s, urgent
    tail to 112 s; the method: decisions.jsonl `attention` → next `goal`/`agent:` act/`nav_journal`).
 6. **FUTURE IMPROVEMENTS (the user):** Navigator effort (now Opus high, inherited; user wants to
-   watch before changing); model × effort trials; "Pinky and The Brain" two-tier Navigator; a
-   complaints channel for agents. Details in the 10-07 entries below.
+   watch before changing); model × effort trials; "Pinky and The Brain" two-tier Navigator. (The
+   complaints channel is built.) Details in the 10-07 entries below.
 7. Smaller: server `pathfind` experiment (running memo change 6); a
    live-server run only after asking the admins (`operations.md`).
 
@@ -320,6 +323,21 @@ asked, 2026-09-29, and agreed to keep it if harmless).
   doesn't exist here (`memos/to_architect/2026-10-08-magical.md`: warriors' heavy sensing gives
   terrible/special/worthless/excellent/cursed/broken/good/average). Watch mission 17 for the 2.5×
   phase count.
+- **Features, 2026-10-09 (the user: "go ahead, in your suggested order"), deployed 00:07:**
+  complaints channel (`pilotctl complain` → `runs/complaints.md`, "NAVIGATOR LACKS" in the viewer
+  and notes.py, a "What I lacked" report section; the Advisor adopted it for memos and Clerk
+  dispatches; review after every mission); **supply gate** (`goal dive` deeper / `goal recall`
+  from town refused below the stage minimums: cures, Phase, WoR 1/2, a fuelled light; `force`
+  overrides; `pilotctl gate FEET [recall]`); report lines `Since the last report` (lowest HP,
+  monsters at most-at-once, uniques), `Progress:`, `Movement:`, `Gear:` (empty slots, better AC),
+  `Orders changed from the defaults:`; townfarm attacks thieves (EAT_ touch) within 8 first;
+  recall time 8-23 s in the docs; night town runs over unknown ground (≤ 10 squares, edge guard);
+  `goal shop N quote NAME` (offer + decline: the price, nothing sold); `shop sell NAME` now uses
+  `item_index` too (it took the first substring). Logs (the Advisor's complaints 1, 2, 4, 5):
+  events.jsonl has `epoch` on every event and a `pilot_start` record; `nav_cmd` records every
+  Navigator command; runs logged as `move` records with `run`; an `options` record per login.
+  **Dive04's lantern is at 0 turns with no flask: the gate will refuse the next dive until it's
+  fuelled.** The user's viewer needs a restart to show complaints (`tmux -L mang`).
 - **Demo mission** (23:49-23:56, 50 ft and back by stairs, the user messaged twice): fine. Fixed and
   deployed with the mission 15 answers (b26c14a: corridor zig-zag → run along the axis, map crops
   in attention/journal/note records, HANDBOOK inner rooms/vault walls/chests) and 7c16bc5 (stuck

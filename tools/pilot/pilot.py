@@ -1009,6 +1009,12 @@ class TownFarm(Goal):
                 p.light_t = time.time() + 30
                 p.cmd(f"custom w item={lite['item']}", "townfarm: light on", hold=0.8)
                 return None
+        # Thieves first, on sight (the Advisor's Navigator-decisions memo: ~120
+        # gold stolen by urchins and rogues in mission 15's townfarm): anything
+        # with a stealing touch within 8 squares
+        thieves = [(y, x, r) for y, x, r in w.monsters if any("EAT_" in b for b in r.blows) and w.dist((y, x)) <= 8]
+        if thieves:
+            return self.chase(p, min(thieves, key=lambda m: w.dist(m[:2])))
         # gold lying around (a kill's drop): walk over it (pickup takes it)
         coins = [q for q, ch in w.memory.items() if ch == "$" and w.dist(q) <= 15]
         if coins:
@@ -1021,16 +1027,7 @@ class TownFarm(Goal):
             return None
         prey = [(y, x, r) for y, x, r in w.monsters if r.name in self.TARGETS]
         if prey:
-            y, x, r = min(prey, key=lambda m: w.dist(m[:2]))
-            if w.dist((y, x)) <= 1:
-                p.mover.stop()
-                return None                      # adjacent: auto-retaliate fights
-            near = [(y + dy, x + dx) for dy in (-1, 0, 1) for dx in (-1, 0, 1) if dy or dx]
-            if not p.mover.active or self.chasing != (y, x):
-                self.chasing = (y, x)
-                p.mover.go(near)
-            p.mover.tick()
-            return None
+            return self.chase(p, min(prey, key=lambda m: w.dist(m[:2])))
         # nobody worth it in view: sweep the town in a zig-zag (the user: few
         # townspeople are visible from the streets by the shops), rows ~7 apart
         st = p.mover.tick() if p.mover.active else "idle"
@@ -1044,6 +1041,19 @@ class TownFarm(Goal):
                         and abs(q[1] - wx) <= 6 and w.dist(q) > 4]
                 if cand and p.mover.go([min(cand, key=lambda q: abs(q[0] - wy) + abs(q[1] - wx))]):
                     break
+        return None
+
+    def chase(self, p, mon):
+        w = p.w
+        y, x, r = mon
+        if w.dist((y, x)) <= 1:
+            p.mover.stop()
+            return None                      # adjacent: auto-retaliate fights
+        near = [(y + dy, x + dx) for dy in (-1, 0, 1) for dx in (-1, 0, 1) if dy or dx]
+        if not p.mover.active or self.chasing != (y, x):
+            self.chasing = (y, x)
+            p.mover.go(near)
+        p.mover.tick()
         return None
 
     @staticmethod
@@ -1078,7 +1088,8 @@ class Shop(Goal):
         self.sells = sorted([s for s in sells if isinstance(s[0], int)], reverse=True) + \
             [s for s in sells if isinstance(s[0], str)]
         self.name = f"shop {store}" + "".join(f" buy {b[0]}:{b[1]}" + (f"@{b[2]}" if len(b) > 2 and b[2] else "") for b in buys) + \
-            "".join(f" sell {chr(97 + i) if isinstance(i, int) else i}:{c}" for i, c in sells)
+            "".join(f" {'quote' if s[2:] else 'sell'} {chr(97 + s[0]) if isinstance(s[0], int) else s[0]}:{s[1]}"
+                    for s in sells)
         self.state = "walk"
         self.t = 0.0
         self.done_log = []
@@ -1112,6 +1123,15 @@ class Shop(Goal):
                 self.state = "walk"
             return None
         if self.state == "trade":
+            if self.pending and getattr(self, "quoting", None):
+                ts, prompt, _ = w.last_confirm
+                m = re.search(r"Accept (\d+) gold", prompt) if ts >= self.pending else None
+                if m is None and time.time() - self.pending < 4:
+                    return None
+                self.done_log.append(f"quote: {self.quoting}: {m.group(1)} gold (not sold)" if m else
+                                     f"quote: {self.quoting}: no offer (the shop doesn't buy it?)")
+                self.pending, self.quoting = None, None
+                return None
             if self.pending:
                 # The server's answer: a refreshed listing and/or a message
                 said = [t for ts, t in w.messages if ts >= self.pending]
@@ -1137,20 +1157,26 @@ class Shop(Goal):
                 self.done_log.append("stock: " + "; ".join(
                     f"{i['name']} {i['price']}" for i in w.store["items"]))
             if self.sells:
-                idx, n = self.sells.pop(0)
+                idx, n, *quote = self.sells.pop(0)
                 force = isinstance(idx, str) and idx.startswith("!")
                 if force:
                     idx = idx[1:]
                 if isinstance(idx, str):
-                    # By name, resolved now (identifying items re-sorts the pack)
-                    it = next((i for i in w.items() if idx.lower() in i["name"].lower()), None)
-                    if not it:
-                        self.done_log.append(f"no {idx} to sell")
+                    # By name, resolved now (identifying items re-sorts the pack),
+                    # with the whole-word/ambiguity check (not the first substring)
+                    try:
+                        idx = p.item_index(idx.replace(" ", "_"), pack_only=True)
+                    except ValueError as e:
+                        self.done_log.append(f"not sold: {e}")
                         return None
-                    idx = it["item"]
                     w.inven_dirty = True
-                else:
-                    it = next((i for i in w.items() if i["item"] == idx), None)
+                it = next((i for i in w.items() if i["item"] == idx), None)
+                if quote:
+                    p.c.send("confirm no")       # (disarm a 'yes' left over: the prompt gets 'no')
+                    p.cmd(f"custom s store item={idx} value=1", f"quote {idx}", hold=0.2)
+                    self.quoting = it["name"] if it else chr(97 + idx)
+                    self.pending = time.time()
+                    return None
                 why_not = p.unknown_sell_refusal(it, n) if it and not force else None
                 if why_not:
                     # (mission 12 sold 2 Potions of Speed and 2 of Heroism for 8 each)
@@ -2014,7 +2040,7 @@ class Pilot:
             # something in view but not fighting (asleep, slow): back off over
             # walked ground, out of its sight, and rest there
             return self.retreat_step([m for m in w.monsters if w.dist(m[:2]) <= 7] or w.monsters)
-        # Last resort, started early because it takes 15-35 s: Word of Recall
+        # Last resort, started early because it takes 15-34 turns (8-23 s): Word of Recall
         if w.hp_frac < 0.3 and can_read and not self.recall_started(now):
             wor = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
             if wor and w.in_dungeon:
@@ -2329,7 +2355,7 @@ class Pilot:
                 self.cmd(f"custom r item={wor['item']}", f"group danger {g:.0f} vs HP {hp}: word of recall",
                          hold=0.5)
                 self.notify("emergency", f"{names} can deal {g:.0f} (HP {hp}) and no stairs are known: "
-                                         "read Word of Recall now (it takes 15-35 s)")
+                                         "read Word of Recall now (it takes 8-23 s)")
                 return True
         # Phase only when it's really going badly: at 0.6-1.0x only once HP is
         # already below think_hp, and at most every 10 s (mission 9: a lone
@@ -2704,7 +2730,7 @@ class Pilot:
                 self.recall_t = now
                 self.cmd(f"custom r item={wor['item']}", "flee failed with monsters close: word of recall", hold=0.5)
                 self.notify("emergency", f"couldn't reach the stairs with {len(near)} monsters close: read Word of "
-                                         "Recall (15-34 turns); phasing while it charges")
+                                         "Recall (8-23 s); phasing while it charges")
                 return
         pd = w.tagged("r", 1) or next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
         if pd and w.adjacent_monsters() and now - self.phase_t > 2.5:
@@ -2972,6 +2998,7 @@ class Pilot:
         self.verify_use()
         self.verify_effects()
         self.learn_flavours_tick(time.time())
+        self.track_since()
         w, now = self.w, time.time()
         # Full resync from the server after a level change or a loss (the
         # game-state survey, 2026-10-03: the client's copy is right, ours drifts)
@@ -3072,6 +3099,11 @@ class Pilot:
             except queue.Empty:
                 return
             self.last_agent = time.time()
+            if req.get("cmd") not in ("viewmap", "view", "navview", "note", "goalstate"):
+                # the Navigator's commands as received (latency studies could only
+                # see the next recorded order: the Advisor)
+                self.log("nav_cmd", cmd=req.get("cmd"), args=req.get("args", [])[:12],
+                         wait_report=bool(req.get("since_wait")))
             try:
                 out = self.do_request(req)
             except Exception as e:
@@ -3204,6 +3236,37 @@ class Pilot:
                 f.write(line + "\n")
             self.log("nav_journal", text=line[2:])
             return {"ok": True, "text": "journaled: " + line[2:]}
+        if c == "gate":
+            # the supply gate as a check: 'gate FEET [recall]'
+            try:
+                ft = int(args[0])
+            except (IndexError, ValueError):
+                return {"ok": False, "error": "usage: gate FEET [recall]"}
+            gap = self.supply_gate(ft, "recall" in args[1:])
+            return {"ok": True, "text": f"supplies for {ft} ft: " + ("OK" if not gap else "missing " + "; ".join(gap))}
+        if c == "complain":
+            # what the Navigator lacks or what gets in its way (not its own
+            # mistakes): the user's complaints channel. 14 missions without a
+            # clock never reached the user because they were filed as slips.
+            w = self.w
+            text = " ".join(args).strip()
+            if not text:
+                return {"ok": False, "error": "usage: complain TEXT (what you lacked / what got in your way)"}
+            where = "town" if not w.depth else f"{w.depth_ft}ft"
+            nick = os.path.basename(self.rundir.rstrip("/"))
+            line = f"- {time.strftime('%Y-%m-%d %H:%M:%S')} {nick} {where} (Navigator): {text}"
+            # runs/complaints.md (rundir is runs/pilot/<nick>)
+            path = os.path.join(os.path.dirname(os.path.dirname(self.rundir.rstrip("/"))), "complaints.md")
+            new = not os.path.exists(path)
+            with open(path, "a") as f:
+                if new:
+                    f.write("# Complaints: what the agents lacked or what got in their way\n\n"
+                            "Appended by `pilotctl complain` (Navigators) and by hand (Advisor, Clerks). The\n"
+                            "Architect reviews this after every mission and relays recurring or unfixable ones\n"
+                            "to the user.\n\n")
+                f.write(line + "\n")
+            self.log("nav_complaint", text=text)
+            return {"ok": True, "text": "complaint logged (runs/complaints.md); the Architect reviews it after the mission"}
         if c == "say":
             # the Navigator answering the user (shown in the observer's viewer)
             text = " ".join(args)
@@ -3417,6 +3480,41 @@ class Pilot:
             return {"ok": True, "note": "will log out when safe"}
         return {"ok": False, "error": f"unknown command {c}"}
 
+    # The stage table's minimums (HANDBOOK; the Advisor's warrior-progression
+    # memo): (from ft, CLW+CSW+CCW, CSW+CCW, CCW, Phase Door)
+    SUPPLY_STAGES = ((250, 5, 0, 0, 4), (500, 5, 5, 0, 5), (750, 4, 4, 4, 8))
+
+    def supply_gate(self, target_ft, recall_down):
+        """What's missing for going down to target_ft (the Advisor's Navigator-
+        decisions memo §3.1: most deaths and near-deaths went down with thin
+        cures or no Word of Recall, the risk written in the journal). [] = OK."""
+        w = self.w
+        if target_ft < 250:
+            return []
+        def n(word):
+            return sum(i["number"] for i in w.items() if word in i["name"])
+        clw, csw, ccw = n("Cure Light Wounds"), n("Cure Serious Wounds"), n("Cure Critical Wounds")
+        phase, wor = n("Phase Door"), n("Word of Recall")
+        stage = max((st for st in self.SUPPLY_STAGES if target_ft >= st[0]), key=lambda st: st[0])
+        _, cures, serious, critical, ph = stage
+        missing = []
+        if clw + csw + ccw < cures:
+            missing.append(f"cure potions {clw + csw + ccw}/{cures}")
+        if serious and csw + ccw < serious and ccw < 3:
+            missing.append(f"CSW+CCW {csw + ccw}/{serious} (or 3 CCW)")
+        if critical and ccw < critical:
+            missing.append(f"CCW {ccw}/{critical}")
+        if phase < ph:
+            missing.append(f"Phase Door {phase}/{ph}")
+        need_wor = 2 if recall_down else 1
+        if wor < need_wor:
+            missing.append(f"Word of Recall {wor}/{need_wor}" + (" (one to go, one to come home)" if recall_down else ""))
+        worn = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
+        m = re.search(r"with (\d+) turns", worn["name"]) if worn else None
+        if not worn or (m and int(m.group(1)) < 1000 and not any(i["tval"] == TV_FLASK for i in w.items())):
+            missing.append("light: " + ("none worn" if not worn else f"{m.group(1)} turns left and no flask"))
+        return missing
+
     def request_goal(self, args):
         if not args:
             return {"ok": False, "error": "usage: goal NAME [ARGS]"}
@@ -3426,9 +3524,16 @@ class Pilot:
             self.news += self.attention
             self.attention = []
         name, rest = args[0], args[1:]
+        force = "force" in rest
+        rest = [a for a in rest if a != "force"] if name in ("dive", "recall") else rest
         if name == "dive":
             g = Dive(rest[0] if rest else (self.w.depth_ft + 50))
             md = int(self.orders.get("max_depth", 0))
+            want = min(g.target_ft, md) if md else g.target_ft
+            gap = self.supply_gate(want, False) if want > self.w.depth_ft and not force else []
+            if gap:
+                return {"ok": False, "error": f"supply gate for {want} ft: missing {'; '.join(gap)} "
+                                              "(the stage table). Restock, or add 'force' to go anyway"}
             if md and g.target_ft > md:
                 # say so (a 'dive 700' was silently capped by max_depth 650)
                 self.set_goal(g)
@@ -3453,9 +3558,11 @@ class Pilot:
                 n = int(n)
                 if kind == "buy":
                     buys.append((what.replace("_", " "), n, int(cap) if cap else None))
-                elif kind == "sell":
+                elif kind in ("sell", "quote"):
                     key = what.replace("_", " ")
-                    sells.append((self.item_index(key) if len(key) == 1 else key, n))   # '!NAME' forces
+                    # quote: offer it and decline, to see the price (the Navigator's wish)
+                    sells.append((self.item_index(key) if len(key) == 1 else key, n) +
+                                 (("quote",) if kind == "quote" else ()))   # '!NAME' forces a sale
                 i += 2
             g = Shop(rest[0], buys, sells, list_stock=list_stock)
         elif name == "search":
@@ -3464,6 +3571,15 @@ class Pilot:
             g = Hunt(" ".join(rest).replace("_", " "))   # 'hunt Black_ogre', like shop names
         elif name == "recall":
             g = Recall()
+            if self.w.depth == 0 and not force:
+                md = int(self.orders.get("max_depth", 0))
+                deepest = getattr(self, "deepest_ft", 0) or 0
+                want = min(md, deepest) if md and deepest else (md or deepest)
+                gap = self.supply_gate(want, True) if want else []
+                if gap:
+                    return {"ok": False, "error": f"supply gate for recalling down to ~{want} ft: missing "
+                                                  f"{'; '.join(gap)} (the stage table). Restock, or "
+                                                  "'goal recall force' to go anyway"}
         elif name == "town":
             g = Town()
         elif name == "townfarm":
@@ -3482,6 +3598,103 @@ class Pilot:
         return {"ok": True, "goal": g.describe()}
 
     # --- the situation report ------------------------------------------------
+
+    # --- since the last report (the Advisor's Navigator-decisions memo §3.3:
+    # it reported "lowest seen 58" when the low was 26, "single orc" for 12)
+
+    def track_since(self):
+        w, now = self.w, time.time()
+        sn = getattr(self, "since", None)
+        if sn is None:
+            sn = self.since = {"t": now, "min_hp": None, "mons": {}, "uniques": set()}
+        if w.hp[1] > 1 and (sn["min_hp"] is None or w.hp[0] < sn["min_hp"][0]):
+            sn["min_hp"] = (w.hp[0], w.hp[1], now)
+        counts = {}
+        for *_, r in w.monsters:
+            counts[r.name] = counts.get(r.name, 0) + 1
+        for n, k in counts.items():
+            sn["mons"][n] = max(sn["mons"].get(n, 0), k)
+        sn["uniques"] |= {r.name for *_, r in w.monsters if "UNIQUE" in r.flags}
+        exp = (w.ind.get("exp") or [0])[0]
+        if exp != getattr(self, "exp_seen", None):
+            if getattr(self, "exp_seen", None) is not None and exp > self.exp_seen:
+                self.exp_t = now
+            self.exp_seen = exp
+
+    def since_lines(self, reset):
+        sn = getattr(self, "since", None)
+        if not sn:
+            return []
+        now = time.time()
+        out = []
+        lo = sn["min_hp"]
+        mons = sorted(sn["mons"].items(), key=lambda kv: -kv[1])
+        out.append(f"Since the last report ({now - sn['t']:.0f} s): lowest HP "
+                   + (f"{lo[0]}/{lo[1]} at {time.strftime('%H:%M:%S', time.localtime(lo[2]))}" if lo else "?")
+                   + "; monsters seen (most at once): " + (", ".join(f"{n} x{k}" for n, k in mons[:12]) or "none")
+                   + (f"; UNIQUES: {', '.join(sorted(sn['uniques']))}" if sn["uniques"] else ""))
+        xt = getattr(self, "exp_t", None)
+        w = self.w
+        out.append("Progress: " + (f"last XP gain {self.ago(now - xt)} ago" if xt else "no XP gain seen yet")
+                   + (f"; on this level {self.ago(now - w.level_t)}" if w.level_t else "")
+                   + (f"; goal '{self.goal.describe()}' for {self.ago(now - getattr(self, 'goal_t', now))}"
+                      if self.goal else ""))
+        if reset:
+            self.since = {"t": now, "min_hp": (w.hp[0], w.hp[1], now) if w.hp[1] > 1 else None,
+                          "mons": {}, "uniques": set()}
+        return out
+
+    def movement_line(self, window=60, step=8):
+        """Where we've been in the last minute, a point every ~8 s (the
+        Navigator's wish: it couldn't see what the Pilot's moves had been)."""
+        now = time.time()
+        pts = [(t, p, d) for t, p, d in self.pos_hist if now - t <= window]
+        if not pts:
+            return None
+        out, last_t, last_p = [], None, None
+        for t, p, d in pts:
+            if (last_t is None or t - last_t >= step) and p != last_p:
+                out.append(f"{time.strftime('%H:%M:%S', time.localtime(t))} {p[0]},{p[1]}")
+                last_t, last_p = t, p
+        if pts[-1][1] != last_p:
+            out.append(f"now {pts[-1][1][0]},{pts[-1][1][1]}")
+        n = len({p for _, p, _ in pts})
+        return f"Movement (last {window} s, {n} different squares): " + " -> ".join(out)
+
+    @staticmethod
+    def ago(secs):
+        secs = int(max(0, secs))
+        return f"{secs // 60}m{secs % 60:02d}s" if secs >= 60 else f"{secs}s"
+
+    SLOTS = (("weapon", (20, 21, 22, 23), 1), ("bow", (19,), 1), ("ring", (45,), 2), ("amulet", (40,), 1),
+             ("light", (39,), 1), ("body armour", (36, 37, 38), 1), ("cloak", (35,), 1), ("shield", (34,), 1),
+             ("helm", (32, 33), 1), ("gloves", (31,), 1), ("boots", (30,), 1))
+
+    @staticmethod
+    def armour_ac(name):
+        m = re.search(r"\[(\d+)(?:,([+-]\d+))?\]", name)
+        return int(m.group(1)) + int(m.group(2) or 0) if m else None
+
+    def gear_line(self):
+        """Empty slots, and pack items better than what's worn (the Advisor's
+        memo §3.2: armour and jewellery against worn or empty slots)."""
+        w = self.w
+        worn, pack = w.items(equip=True), w.items()
+        empty, better = [], []
+        for slot, tvals, k in self.SLOTS:
+            on = [i for i in worn if i["tval"] in tvals]
+            cand = [i for i in pack if i["tval"] in tvals and not re.search(r"\{(cursed|worthless|broken|terrible)", i["name"])
+                    and not (self.flavour_of(i) or {}).get("junk")]
+            if len(on) < k:
+                empty.append(slot + (f" (you carry {cand[0]['name']})" if cand else ""))
+            elif slot not in ("weapon", "bow", "ring", "amulet", "light"):
+                ac_on = min((self.armour_ac(i["name"]) or 0) for i in on)
+                for i in cand:
+                    ac = self.armour_ac(i["name"])
+                    if ac is not None and ac > ac_on:
+                        better.append(f"{chr(97 + i['item'])}) {i['name']} (AC {ac} vs {ac_on} worn)")
+        return ("Gear: empty slots: " + (", ".join(empty) or "none")
+                + ("; better than worn: " + "; ".join(better) if better else ""))
 
     def report(self, rows=11, cols=33, news_since=None):
         w = self.w
@@ -3540,7 +3753,7 @@ class Pilot:
         drained = [n for n, (cur, top) in (self.seen_drained or {}).items() if cur < top]
         lines.append("Supplies: " + ("; ".join(cons) or "none")
                      + (f" | RECALL PENDING (read {time.time() - w.recall_pending_t:.0f} s ago; it takes "
-                        "15-34 turns)" if w.recall_pending else "")
+                        "15-34 turns, 8-23 s)" if w.recall_pending else "")
                      + f" | max_depth {self.orders.get('max_depth')}"
                      + (f" | drained: {', '.join(drained)}" if drained else ""))
         if self.unanswered:
@@ -3570,6 +3783,15 @@ class Pilot:
             lines.append("Since last report: " + " | ".join(
                 f"{time.strftime('%H:%M:%S', time.localtime(e['t']))} {e['what']}: {e['detail']}" for e in recent))
         lines.append("Recent messages: " + " | ".join(w.recent(30)[-12:]))
+        lines += self.since_lines(reset=news_since is not None)
+        mv = self.movement_line()
+        if mv:
+            lines.append(mv)
+        lines.append(self.gear_line())
+        changed = [f"{k}={v} (default {DEFAULT_ORDERS[k]})" for k, v in self.orders.items()
+                   if k in DEFAULT_ORDERS and str(v) != str(DEFAULT_ORDERS[k])]
+        # (Dive03 kept think_hp 0.55 for five missions without noticing)
+        lines.append("Orders changed from the defaults: " + ("; ".join(changed) if changed else "none"))
         lines.append("Orders: " + ", ".join(f"{k}={v}" for k, v in self.orders.items()))
         return "\n".join(lines)
 
@@ -3653,12 +3875,21 @@ def main():
         pilot = Pilot(client, rundir, say=say)
         orig = pilot.w._on_event
         bulky = {"map", "status", "inven", "options", "commands"}   # query replies
-        pilot.w.c.log = lambda ev: (orig(ev), ev.get("ev") in bulky or evlog.write(json.dumps(ev) + "\n"))
+        # every event carries the wall clock too ('t' restarts at 0 with each
+        # Pilot process: ~12 log Clerks had to align segments by hand)
+        evlog.write(json.dumps({"ev": "pilot_start", "t": 0.0, "epoch": round(time.time(), 3), "nick": nick}) + "\n")
+        pilot.w.c.log = lambda ev: (orig(ev), ev.get("ev") in bulky or
+                                    evlog.write(json.dumps({**ev, "epoch": round(time.time(), 3)}) + "\n"))
         # disturb_near/disturb_panel: the server stops a run the moment a monster
         # in view moves, or at a sector edge (faster than our polling at run
         # speed; the Advisor's running memo). disturb_move stays as the user plays.
         for opt in ("avoid_other", "stack_force_costs", "disturb_near", "disturb_panel"):
             client.send(f"option {opt} yes")
+        try:
+            # the character's options, once per login (the Advisor couldn't read them from the logs)
+            pilot.log("options", options=client.query("options", "options"))
+        except Exception as e:
+            pilot.log("note", text=f"options query failed: {e!r}")
         sock = os.path.join(rundir, "ctl.sock")
         if os.path.exists(sock):
             os.unlink(sock)

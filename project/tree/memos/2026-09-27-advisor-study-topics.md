@@ -83,3 +83,4 @@ decision quality across missions 3–12, and a live fetch of Bug Reports / Techn
 - **2026-10-07 (later):** mission 13 replay (`to_architect/2026-10-07-mission13-replay.md`); warrior progression plan (`2026-10-07-warrior-progression.md`).
 - **2026-10-07 (evening):** running vs walking (user request), `2026-10-07-running.md`.
 - **2026-10-07 (late):** mission 15 requests (vaults/pits, zig-zag, chests, search), `2026-10-07-mission15-answers.md`.
+- **2026-10-08:** missions 15–16 replay (`to_architect/2026-10-08-missions15-16-replay.md`); Navigator decision quality (`2026-10-08-navigator-decisions.md`).

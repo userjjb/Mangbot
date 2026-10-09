@@ -2,8 +2,9 @@
 """pilotctl -- talk to a running pilot (see HANDBOOK.md).
 
     pilotctl.py [--nick NAME] status
-    pilotctl.py goal dive 500 | goal explore [until=stairs] [radius=N] | goal goto Y,X|>|<|item
-                | goal recall | goal rest | goal wait SECS
+    pilotctl.py goal dive 500 [force] | goal explore [until=stairs] [radius=N] | goal goto Y,X|>|<|item [force]
+                | goal recall [force] | goal rest | goal wait SECS
+                | goal shop N [list] [buy NAME:N[@MAX]] [sell NAME:N] [quote NAME]
     pilotctl.py stop
     pilotctl.py order flee_hp=0.4 stop_on=unique,danger ...
     pilotctl.py wear|takeoff|quaff|read|eat|fuel|inspect LETTER
@@ -17,6 +18,8 @@
     pilotctl.py search [N]                 # search the squares around you N times (default 15)
     pilotctl.py disarm|open [DIR]          # a chest/trap/door in DIR (5 = underfoot)
     pilotctl.py journal "situation | decision | why"   # your journal line, stamped with time/depth/HP
+    pilotctl.py gate FEET [recall]         # the supply gate: what's missing for going down to FEET
+    pilotctl.py complain TEXT...           # what you lacked / what got in your way (not your mistakes)
 """
 import json
 import os
@@ -41,7 +44,8 @@ def call(sock, req, timeout):
     return json.loads(buf)
 
 
-BRIEF_KEEP = ("USER MESSAGE", "Standing on:", "Supplies:", "Monsters in view:", "Known stairs:", "Since last report:")
+BRIEF_KEEP = ("USER MESSAGE", "Standing on:", "Supplies:", "Monsters in view:", "Known stairs:", "Since last report:",
+              "Since the last report", "Progress:")
 
 
 def brief_report(report):

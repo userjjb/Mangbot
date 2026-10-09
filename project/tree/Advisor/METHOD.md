@@ -111,7 +111,10 @@ Write the memo the same way as before (see `../memos/2026-09-26-forum-distillati
 - the most important findings first, each with its evidence;
 - recommendations split into Pilot rules, Navigator doctrine and HANDBOOK text;
 - the contradictions with current docs, in a table;
-- coverage and gaps.
+- coverage and gaps;
+- **What I lacked** (since 2026-10-08, the Architect's complaints channel): missing data, logs that didn't record
+  what the study needed, slow or wrong tools, access, time — separate from findings; "None" is fine. Collect the
+  Clerks' "What I lacked" sections into it. The Architect copies it into `runs/complaints.md`.
 
 Mark code-verified claims **[code ✓]**. Addressing it to the Architect.
 

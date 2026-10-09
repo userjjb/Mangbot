@@ -1,0 +1,72 @@
+time,mission,type,decision,outcome,cost,doctrine,accuracy,evidence
+09-28 01:36,8,shopping,"plan: flasks at 1, CLW+Phase at 5",NEUTRAL,,NO RULE,TRUE,navigator.md:1
+09-28 01:39,8,shopping,"bought 8 flasks, 5 Phase (24 each), 2 CLW; 2g left",NEUTRAL,,NO RULE,TRUE (40+120+46=206 of 208),msgs 01:36:52-01:37:11
+09-28 01:42,8,goal sequencing,dive 0 (1 level) to follow user outfitting advice,GOOD,~1.5 min,"FOLLOWED (user advice, HANDBOOK f477dda)",TRUE,goals 01:40:37-01:41:32
+09-28 01:44,8,selling/identify,"sold Broad Sword 102 + Chain Mail 358, bought Dagger 16 (4 blows)",GOOD,"+460g, blows 1->4",FOLLOWED (user advice),TRUE,"msgs 01:41:55,01:42:12,01:42:35; blows_changed 01:42:17"
+09-28 01:47,8,shopping,bought 2 To-Dam at 151 each + To-Hit 52 without price check,COSTLY,354g of 366 (302 on To-Dam); no CLW money,FOLLOWED user advice (enchants); no price tool existed (list/@MAX came 09-29 8082af5),TRUE (self-flagged MISTAKE),msgs 01:43:05
+09-28 01:48,8,other,killed Radiation eye in the way; claims level looks wrong,NEUTRAL,,NO RULE (HANDBOOK 'levels differ from Vanilla' added 02:08),FALSE: Radiation eye is level 3 here (monster.txt:827-830 W:3),lib/edit/monster.txt:827
+09-28 01:51,8,depth,dive 100 then explore,NEUTRAL,,NO RULE,TRUE,goals 01:51:32
+09-28 01:58,8,depth,"max_depth=150, keep exploring",NEUTRAL,,NO RULE,UNCHECKED (orders not logged),navigator.md:8
+09-28 02:04,8,pace/time budget,"climb 2 levels by stairs, keep the only WoR",GOOD,saved a WoR (~233g); 71 s,FOLLOWED,TRUE (28 min used; dive 0 02:04:53-02:06:04),goals 02:04:53
+09-28 02:05,8,other,let climb continue through Novice priest fight (56% HP),NEUTRAL,,NO RULE,TRUE,ATT 02:05:40-43
+09-28 02:06,8,selling/identify,"sold 2 unknown potions + 3 unknown scrolls at 9 each, incl. a Scroll of Identify",COSTLY,Identify worth ~80 (store price); ~72g,FOLLOWED (money rule: sell unknown potions/scrolls found early),TRUE (items); Identify loss not noticed,msgs 02:06:34-35
+09-29 21:35,9,shopping,"sold dead torches+46 spikes (48g), Brass Lantern 41, dropped dead torch",GOOD,"dropped torch came back (pickup=all), destroyed 22:06",NO RULE,TRUE,"msgs 21:35:55; acts 21:36:00,22:06:44"
+09-29 21:38,9,shopping,"2 CSW at 62 (no CLW stock); no 2nd WoR, walk down",NEUTRAL,,FOLLOWED (keeps 1 WoR); two-WoR budget not met (money),TRUE (159+2+46-41-124=42),msgs 21:36:34
+09-29 21:38,9,depth,"dive 300 at clvl 6, 77 HP, max_depth 500 (mission rule)",NEUTRAL,,NO RULE,TRUE (71 s to 300),goals 21:36:42-21:37:53
+09-29 21:40,9,depth,"re-dived to 300 at once after fleeing 300 (unseen caster, fear)",COSTLY,"2 CLW + 2 Phase (~94g), HP 35/77",NO RULE,TRUE,ATT 21:40:07-21:40:50
+09-29 21:42,9,depth,explore 250 with 1 CLW 2 CSW 6 Phase,NEUTRAL,,NO RULE,TRUE (stock),ATT 21:40:57
+09-29 21:46,9,other,continue explore; frog drain noted,NEUTRAL,,NO RULE,TRUE (62 vs 97 = 58+4; danger_table.csv frog melee_max 8 + 50),ATT 21:46:39-40
+09-29 21:47,9,goal sequencing,"dive 0 to restock Phase (2 left), keep WoR",NEUTRAL,Pilot failed: no known path,NO RULE,"TRUE (4 Phase reads, 6->2, STR x2, blows 4->3)",ATT 21:46:39-56
+09-29 21:52,9,goal sequencing,"re-issue dive 0 after Pilot update (4 min idle, restart)",NEUTRAL,4 min idle (Pilot restart),NO RULE,TRUE,goals 21:48:26-21:52:38
+09-29 21:54,9,goal sequencing,explore (after goto < no path) on a 250 ft level with 2 Phase 1 CLW 2 CSW; Bullroarer,NEAR-DEATH,HP 22/115; all potions/Phase + WoR used (~450g); drop left,NO RULE (Restock<4 Phase rule added 22:04),~TRUE (journal 24/115; min logged 22/115),ATT 21:54:03-22; msgs 21:54:16
+09-29 21:58,9,shopping,"restock plan, sold 2 unknowns (Boldness, Slime Mold) + Heal Monster wand",NEUTRAL,Boldness ~16 value,FOLLOWED (money rule),"TRUE (WoR 233/175, Phase 23/19, wand 15)",msgs 21:55:06-17
+09-29 22:00,9,other,STOP: every goal shop buy failed (Pilot ValueError); stayed idle,GOOD,10 min in town lost to Pilot bug (21:54-22:06),FOLLOWED,"TRUE (8082af5 unpack bug, fixed 22a436d)",next_steps.md Mission 9 result
+09-29 22:06,10,shopping,"bought WoR on sale 121 + 5 Phase 120; cure money gone, 1 CLW",COSTLY,part of death chain (1 CLW),NO RULE then; later rule df69d21: never below 150 ft with <3 cures,TRUE (248-241=7g),msgs 22:07:02
+09-29 22:08,10,depth,"max_depth=350, dive 150",NEUTRAL,,NO RULE,TRUE,
+09-29 22:11,10,depth,dive 200 (breeders),NEUTRAL,,NO RULE,TRUE,ATT 22:11:53
+09-29 22:14,10,depth,dive 250 (breeders),NEUTRAL,,VIOLATED (22a436d 22:04: no exploring 250+ with 1-2 potions),TRUE,ATT 22:14:08
+09-29 22:16,10,depth,"ignored Smeagol (spd+20, invisible, eats gold), kept diving",COSTLY,"3 thefts by Smeagol (22:10,22:15,22:18) ~30-50g",NO RULE (lost-news absent),TRUE (monster.txt:654-663 I:130),"msgs 22:10:40,22:15:08,22:18:21"
+09-29 22:27,10,other,keep exploring till 22:33; noted gold 62->32->67->52,NEUTRAL,,VIOLATED (see 26),TRUE speculation: 4 purse-lighter messages (Smeagol x3 + Novice rogue 22:25:28),msgs 22:25:28
+09-29 22:28,10,flee/recall/escape,let the flee run vs Mughash+kobolds with 1 CLW,DEATH,see 30,VIOLATED (self-flagged),TRUE (choke twice; phase at 76 HP),ATT 22:28:08-22:29:01
+09-29 22:29,10,flee/recall/escape,sent goto < during fatal fight,DEATH,"gear lost, exp halved (clvl 10->8), mission lost",n/a,FALSE: no CLW was drunk (held behind pending Phase; zero feel-better msgs); Phase confirmed 3 not 4; no goto goal record before death; <9 away UNCHECKED,msgs 22:29:03-09; NOTE 22:29:04-06
+09-29 22:30,10,other,"resurrect, Dagger 13 (@20)",GOOD,,FOLLOWED,TRUE (Dropped back to level 8),msgs 22:29:40-22:30:04
+09-29 22:33,11,other,status says clvl10 115HP: infers 8,GOOD,,NO RULE,TRUE (115 HP = clvl 8),msgs 22:29:40
+09-29 22:37,11,shopping,"torches, rations, 3 CLW, 1 Phase, Cloak, 5g left",GOOD,,FOLLOWED,TRUE (arith 87-6-10+27-69-19-5=5),msgs 22:33-22:34
+09-29 22:38,11,depth,dive to 100 explore,NEUTRAL,,FOLLOWED,TRUE,
+09-29 22:40,11,depth,dive 150 (breeders),NEUTRAL,,FOLLOWED,TRUE,
+09-29 22:42,11,depth,climb to 100 for a fresh level,NEUTRAL,,NO RULE,TRUE,
+09-29 22:49,11,depth,dive 150,NEUTRAL,,FOLLOWED,TRUE,
+09-29 22:54,11,other,keep exploring,NEUTRAL,,FOLLOWED,TRUE,
+09-29 22:58,11,pace/time budget,leave at 25 min used for 8-min climb,GOOD,,FOLLOWED,TRUE (dive 0 22:58:32-23:06:11),goals
+09-29 23:04,11,pace/time budget,let climb continue after Pilot took a > back down,NEUTRAL,~2.5 min detour (Pilot),NO RULE,TRUE (next_steps 72ec098: 15-square > walk),LEVEL 23:02-23:04
+09-29 23:06,11,selling/identify,"sold 3 unknown potions + 2 scrolls at 8 (Slowness, Resist Cold, Water, Det Inv, Light)",NEUTRAL,,FOLLOWED (money rule),TRUE (293+40-48-46=239),msgs 23:06:36-37
+09-29 23:07,11,selling/identify,read found Identify on Rosewood Staff = Object Location; no WoR left,GOOD,staff later sold 151+84 (10-07 17:51:47),FOLLOWED (identify before sell); VIOLATED never-down-without-WoR for next trip,TRUE,act 23:07:34
+10-03 12:18,12,shopping,lantern first; no WoR (239g+35 found),NEUTRAL,,"VIOLATED (never go down without WoR, c8c78c4 09-26) - chose kit over WoR 242",TRUE,msgs 12:18:55
+10-03 12:22,12,selling/identify,"sold unknown potions: 2 Speed + 2 Heroism for 8 each, bought 1 Heroism back 56",COSTLY,~354g store value for 32g; net ~-322g,FOLLOWED then-rule (money rule); HANDBOOK 7160211 also said Identify magical items first; ban added 12:52 (771d141),TRUE (Speed resold at 121: store listing 12:19:38),msgs 12:19:32; store 12:19:38
+10-03 12:23,12,depth,"max_depth=300, dive 200",NEUTRAL,,FOLLOWED,TRUE,
+10-03 12:25,12,other,continue after dart trap STR drain,NEUTRAL,"Restore ~465 needed later (bought 10-07 17:52:03, 468g)",NO RULE,TRUE (event 12:21:08; journal stamp 12:25),ATT 12:21:08
+10-03 12:24,12,depth,explore at 200,NEUTRAL,,FOLLOWED,TRUE,
+10-03 12:33,12,depth,"dive 250 done, explore",NEUTRAL,,FOLLOWED,TRUE,
+10-03 12:40,12,pace/time budget,"climb by stairs, 18 min left",GOOD,,FOLLOWED,TRUE (flee down to 300 12:40:51),
+10-03 12:41,12,flee/recall/escape,also sent stairs while Pilot fled Bullroarer,NEUTRAL,2nd arrival next to Bullroarer 12:42:02,FOLLOWED (stairs-at-once rule df69d21) but duplicated Pilot flee,"PARTLY FALSE: second level also had Bullroarer adjacent (danger_avoided 12:42:02), not simply a fresh 250","ATT 12:41:52,12:42:02"
+10-03 12:45,12,other,let climb run after arrow at 100% HP,GOOD,,FOLLOWED,TRUE,ATT 12:45:36
+10-03 12:47,12,pace/time budget,climb home in ~5 min,GOOD,,FOLLOWED,TRUE (12:42:03-12:47:51),
+10-03 12:49,12,selling/identify,Identify x3 on staff+2 wands; sold MM 105 + SC 180; refused WoR cap; 2 WoR,GOOD,+~250g over unknown sale; Maple Staff=CLW kept,FOLLOWED,"TRUE (242,243,105,180)",msgs 12:48:44-12:49:19
+10-07 08:49,13,shopping,start: buy CLW,NEUTRAL,,FOLLOWED,TRUE (233g),
+10-07 08:51,13,pace/time budget,shop 5 goal looped 5 min in town before stop,COSTLY,~5 of 35 min,NO RULE,"TRUE (bought 4 CLW 92, 4 Phase 92)",goals 08:50:08-08:55:09
+10-07 08:55,13,goal sequencing,recall to 450 (max reached only 300),NEUTRAL,,FOLLOWED,TRUE,
+10-07 08:56,13,flee/recall/escape,"diagnosed recall failure (no light), wore lantern, re-issued",GOOD,~1 min,FOLLOWED,"TRUE (08:55:28,08:56:40 no light; WoR->yank 10 s)",msgs 08:56:47-57
+10-07 08:57,13,depth,dive 350,NEUTRAL,,FOLLOWED,TRUE,
+10-07 09:00,13,depth,explore 350 after STR drain,NEUTRAL,Restore later,NO RULE,TRUE (drain 08:57:17),ATT 08:57:17
+10-07 09:00,13,depth,dive 400 (breeders),NEUTRAL,,FOLLOWED,TRUE,
+10-07 09:01,13,depth,explore 400,NEUTRAL,,FOLLOWED,TRUE,
+10-07 09:05,13,depth,dive 450,NEUTRAL,,FOLLOWED,TRUE,
+10-07 09:07,13,depth,explore 450 after cave spiders avoided,GOOD,,FOLLOWED,TRUE (09:07:04); Identify scroll found at <=400 ft,ATT 09:07:04
+10-07 09:10,13,flee/recall/escape,dive 450 again after unseen caster flee,NEUTRAL,,FOLLOWED,TRUE (flee 52 s),
+10-07 09:13,13,other,keep exploring; noted rations 3->1,NEUTRAL,,NO RULE,"TRUE (two ""That tastes good"" 09:11:09-10; Pilot double-eat bug)",msgs 09:11:09
+10-07 09:17,13,item test/use,quaff-tested single Puce Potion at STR 18/10 while holding unread Identify,COSTLY,1 blow (3->2) for rest of mission,NO RULE then (771d141 endorsed quaff-test with food; ban a516853 afterwards); self-flagged,TRUE (Weakness 09:17:07; blows 09:17:06),act 09:17:05
+10-07 09:17,13,flee/recall/escape,recall then stairs < while pending (experiment),GOOD,WoR was the only way home with 12 min left,FOLLOWED,TRUE,
+10-07 09:18,13,flee/recall/escape,report of recall timing,NEUTRAL,,n/a,"FALSE: ""town ~45 s later"": read 09:17:32, yank 09:17:43 (11 s; 3 s after the stairs)",msgs 09:17:32-43
+10-07 09:19,13,equipment,wielded Rapier then Sabre in town (both 2 blows); Sabre carried unused since 09:01,COSTLY,17 min with 1d4 Dagger vs 1d7 Sabre (small),FOLLOWED (compare before selling); no wield-at-once rule,TRUE (no blows_changed 09:18:40-48),"msgs 09:01:05,09:18:40"
+10-07 09:19,13,other,goal shop 3 -> Pilot walked off town edge to -200 ft; STOP,NEUTRAL,strand ~5 min (Pilot bug),FOLLOWED,"TRUE (goal 09:18:57, failed 09:19:29)",ATT 09:19:29
+10-07 09:22,13,pace/time budget,"idle in wilderness, end mission, report",NEUTRAL,,FOLLOWED,"TRUE (66 checks, 1 diff)",next_steps.md Mission 13

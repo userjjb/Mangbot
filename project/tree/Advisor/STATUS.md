@@ -26,6 +26,7 @@ an audit trail in `studies/<date>-<slug>/` (plan.md, briefs, dispatches, synthes
 | 10-07 | running vs walking (user request) | `2026-10-07-running.md` | study scratch `R4_runs.csv` (14,100 runs) |
 | 10-07 | mission 15 requests: vaults/pits, zig-zag, chests, search (Architect) | `2026-10-07-mission15-answers.md` | study scratch `V2_vaults.csv` |
 | 10-08 | missions 15–16 replay (user's choice) | `to_architect/2026-10-08-missions15-16-replay.md` | study scratch `E1_brodda.csv`, `E3_kills.csv` |
+| 10-08 | Navigator decision quality, missions 1–16 (user's choice) | `2026-10-08-navigator-decisions.md` | `data/navigator/latency.py`, study CSVs |
 
 The original six-topic backlog (`../memos/2026-09-27-advisor-study-topics.md`) is complete.
 
@@ -58,8 +59,9 @@ The original six-topic backlog (`../memos/2026-09-27-advisor-study-topics.md`) i
 2. **State audit: DONE for mission 13** (66 checks, 0 real errors; `data/runs/audit_stats.py`). Re-run it
    after later missions. Still open: a `--pktlog` tool-mode mission would settle the survey's inferred items (wilderness depth
    wrap, old-level map leaking, "You have …" vs slot-packet race).
-3. (The warrior progression plan is done: `2026-10-07-warrior-progression.md`.) **Navigator decision quality:** how its strategy choices (depth, shopping, selling unidentified
-   items — repeated 4× after the HANDBOOK warning) played out across missions 3–12.
+3. (Done 10-08: Navigator decision quality, `2026-10-08-navigator-decisions.md`. Note: the unknown-potion sales FOLLOWED the doctrine
+   of their day — not lapses.) Next candidates: replay mission 17 (first test of the 2.5× emergency trigger and the 10-08 fixes;
+   the Architect asked for the phase count).
 4. (Struck by the user 2026-10-07: the live fetch of Bug Reports / Technical Support. Don't propose it again.)
 5. Small leads: check that Dive04 bought Restore Strength / Main Gauche and re-measure damage per round; Gorlim's shallow forum sightings; the sound/shards/light resist formula (only
    nether/dark checked); monster levels 41+ unrated; whether per-character artifact preservation is

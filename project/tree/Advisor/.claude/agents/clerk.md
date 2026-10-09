@@ -85,6 +85,10 @@ structure:
 ## Coverage
 <what you read in full, what partly (and exactly which part), what you skipped and why,
 anything you couldn't access>
+
+## What I lacked
+<missing data, a log that didn't record something you needed, tools that were slow or wrong,
+access you didn't have, time; separate from findings; "None" is a fine answer>
 ```
 
 When the brief asks for a table or list (for example a monster table), put it under Findings or in

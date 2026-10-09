@@ -64,6 +64,7 @@ class World:
         self.in_dungeon = None                 # see _level_kind(): the depth byte alone can't tell
         self.walked = set()                    # squares walked on this level
         self.bump_walls = {}                   # walls learned by bumping: (y, x) -> what memory had
+        self.last_confirm = (0.0, "", None)    # the last yes/no prompt (a shop's "Accept N gold?")
         self.recalled = None                   # 'down'/'up' from the recall message, until the level changes
         self.recall_cancelled = False          # set on "A tension leaves"; the pilot reports and clears it
         self.recall_pending_t = 0.0
@@ -128,6 +129,8 @@ class World:
                 if self.arrive_pos is None:
                     self.arrive_pos = new          # where we came onto this level
                 self.walked.add(new)           # squares we've been on (safe retreat ground)
+            elif k == "confirm":
+                self.last_confirm = (time.time(), ev.get("prompt", ""), ev.get("answer"))
             elif k == "level":
                 old = self.depth
                 self.depth = ev["depth"]

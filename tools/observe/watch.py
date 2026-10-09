@@ -97,7 +97,8 @@ def draw_map(scr, y, width, top_h, vm):
     return used
 
 
-FEED_KINDS = ("act", "attention", "goal", "goal_done", "goal_failed", "user_note", "audit", "nav_say")
+FEED_KINDS = ("act", "attention", "goal", "goal_done", "goal_failed", "user_note", "audit", "nav_say",
+              "nav_complaint")
 
 
 def feed_line(e):
@@ -111,6 +112,8 @@ def feed_line(e):
         txt = f"YOU: {e.get('note')}"
     elif k == "nav_say":
         txt = f"NAVIGATOR: {e.get('text')}"
+    elif k == "nav_complaint":
+        txt = f"NAVIGATOR LACKS: {e.get('text')}"
     elif k == "attention" and e.get("what") == "user_message":
         txt = "(sent to the Navigator)"
     elif k == "audit":
@@ -267,6 +270,8 @@ def draw(scr, sock, feed, buf, msg, scroll):
             attr = FEED_COL.get("you", 0) | curses.A_REVERSE
         if k == "nav_say":
             attr = FEED_COL.get("nav", 0) | curses.A_REVERSE
+        if k == "nav_complaint":
+            attr = FEED_COL.get("alert", 0) | curses.A_REVERSE
         if k == "nav_journal":
             attr = FEED_COL.get("journal", 0)
         scr.addnstr(fy + 1 + i, fx, f"{t:9} {piece}", fw, attr)

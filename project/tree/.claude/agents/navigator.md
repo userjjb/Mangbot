@@ -89,6 +89,15 @@ line looks like this:
 
 The Architect reviews this to improve both you and the Pilot, so be honest about mistakes.
 
+## Complaints: what you lacked (separate from mistakes)
+
+When something you need is missing or gets in your way (information the reports don't give, a
+control you don't have, a tool that's slow or unreliable, no way to know something), say so at
+once: `pilotctl.py --nick NICK complain "what I lacked / what got in my way, and what it cost"`.
+It goes to the Architect (and, if it recurs, to the user). Don't file these as your own mistakes:
+"my journal times were estimates" was really "I have no clock", and nobody fixed it for 14
+missions. A mistake is a wrong choice with what you had; a complaint is what you didn't have.
+
 ## Your report (your final message)
 
 - What you did and where the character is now (depth, level, HP, gold, key gear, supplies).
@@ -96,4 +105,6 @@ The Architect reviews this to improve both you and the Pilot, so be honest about
 - **Pilot problems**: anything the Pilot did wrong, badly or slowly; goals or information you
   missed; confusing reports. Be specific (time, what you asked, what it did). This is the most
   useful part for the Architect.
+- **What I lacked / what got in my way** (separate from your mistakes): missing information,
+  controls or tools, and what each cost. Include everything you sent with `complain`.
 - Suggestions for your own handbook.

@@ -3,4 +3,4 @@
 - [MAngband project map](mangband-project-map.md) — where everything lives (operations.md, notes_players.md, HANDBOOK, memos); critical gotchas; SYNC RULE: update memory pointers whenever project notes change
 - [MAngband advisor memos](mangband-advisor-memos.md) — forum distillation memo (complete), danger table, Borg, run post-mortem, shops, message-catalogue, game-state, identify-and-sell and warrior-progression memos, study backlog (memos/2026-09-27-advisor-study-topics.md), scraping gotchas
 - [Inbox watcher](mangband-inbox-watcher.md) — start the Architect inbox watcher first thing every session; restart it whenever it ends
-- [Relay agent friction](mangband-relay-agent-friction.md) — a subagent's repeated "my mistake" may be a missing capability; relay recurring difficulties to the user
+- [Relay agent friction](mangband-relay-agent-friction.md) — a subagent's "my mistake" may be a missing capability; read runs/complaints.md after every mission; relay recurring friction to the user

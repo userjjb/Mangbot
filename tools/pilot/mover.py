@@ -166,17 +166,26 @@ class Mover:
 
     def stretch_ok(self, i, n):
         """A straight stretch path[i:i+n] we may run along: on the surface,
-        only over known ground at least 3 tiles from the map edge, never onto
-        a shop door (a run's first step enters it)."""
+        only at least 3 tiles from the map edge, never onto a shop door (a
+        run's first step enters it). Unknown ground is allowed (at night the
+        town floor isn't drawn, so every town errand walked: the Navigator's
+        wish); such runs are capped by run_cap()."""
         if not self.surface():
             return True
         for (y, x) in self.path[i:i + n]:
             if not (3 <= y <= MAX_HGT - 4 and 3 <= x <= MAX_WID - 4):
                 return False
             ch = self.w.memory.get((y, x), " ")
-            if ch == " " or ch in "12345678":
+            if ch in "12345678":
                 return False
         return True
+
+    def run_cap(self, i, n):
+        """Over unknown surface ground, run at most 10 tiles at a time: the
+        server's run treats unknown as open, so a stop sent late overshoots less."""
+        if self.surface() and any(self.w.memory.get(q, " ") == " " for q in self.path[i:i + n]):
+            return min(n, 10)
+        return n
 
     def first_step_window(self):
         """A run waits for a full turn of energy before its first step: give it
@@ -208,6 +217,7 @@ class Mover:
         self.last_progress = time.time()
         self.free_pos = self.w.pos
         self.c.send(f"custom . dir={d}")
+        self.log(run="free", dir=d, frm=self.w.pos)        # (runs were only event acks: the Advisor)
 
     def _free_tick(self):
         w = self.w
@@ -458,7 +468,9 @@ class Mover:
             d = direction(frm, self.path[self.done])
             n = self._straight(self.done)
             if n >= self.RUN_MIN and self.stretch_ok(self.done, n):
+                n = self.run_cap(self.done, n)
                 self.c.send(f"custom . dir={d}")
+                self.log(run="stretch", dir=d, frm=self.w.pos, length=n)
                 self.running = (self.done, self.done + n, time.time())
                 self.run_start_pos = self.w.pos
                 self.stop_sent = False
