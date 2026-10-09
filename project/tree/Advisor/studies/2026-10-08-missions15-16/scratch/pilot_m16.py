@@ -209,10 +209,6 @@ class Attention(Exception):
 # Goals: tick(pilot) -> None (still working) or (status, detail)
 # --------------------------------------------------------------------------
 
-def plural(n, word):
-    return f"{n} {word}" + ("" if n == 1 else "s")
-
-
 class Goal:
     name = "goal"
 
@@ -285,9 +281,6 @@ class Explore(Goal):
         self.run_from = None
         self.last_diag = None
         self.loot = {}
-        self.search = None
-        self.searched_n = 0
-        self.retried = False
 
     def tick(self, p):
         w = p.w
@@ -311,15 +304,6 @@ class Explore(Goal):
             p.level_seen = w.level_t
             p.unreachable = set()
             p.visited = set()
-        if self.search:
-            r = self.search.tick(p)
-            if r is None:
-                return None
-            self.searched_n += self.search.done_n
-            self.search = None
-            if r[0] == "failed":
-                return ("done", f"nothing left to explore (searched {plural(self.searched_n, 'dead end')})")
-            # a secret door showed up: explore on through it
         if not p.mover.active or self.loot.get("looting"):
             if p.loot_step(self.loot):
                 return None
@@ -342,30 +326,10 @@ class Explore(Goal):
         frontier = [f for f in p.frontier(center=self.center if self.radius else None, radius=self.radius)
                     if f != w.pos and f not in p.visited]
         if not frontier:
-            # Rubble next to unknown ground is a way on (the user: corridors never
-            # dead-end, at worst there's a 1-thick wall of rubble): dig through
-            frontier = [f for f in p.frontier(center=self.center if self.radius else None,
-                                              radius=self.radius, rubble=True)
-                        if f != w.pos and f not in p.visited]
-        if not frontier:
-            # Corridor dead ends hide secret doors (the user, mission 16: a 500 ft
-            # level "explored" in 40 s, and a 550 ft dead end with a door): search
-            # those we haven't yet before calling the level done
-            if not self.radius and Search.dead_ends(w, strict=True, skip=p.searched):
-                self.search = Search(tries=15, strict=True)
-                return None
-            return ("done", "nothing left to explore" +
-                    (f" (searched {plural(self.searched_n, 'dead end')})" if self.searched_n else ""))
+            return ("done", "nothing left to explore")
         # (targets we failed to reach are dropped from the frontier, not avoided
         # as path squares: that once made walked corridors impassable)
         if self.fails > 10 or not p.mover.go(frontier):
-            if p.mover.forget_bump_walls() or (self.fails > 10 and p.unreachable and not self.retried):
-                # (go() already retried without bump walls; after many fails,
-                # forget what failed once: monsters in the way move on)
-                p.unreachable = set()
-                self.fails = 0
-                self.retried = True
-                return None
             return ("failed", "frontier unreachable")
         self.target = p.mover.path[-1] if p.mover.path else None
         # In a corridor with nothing about: run along it the way the path
@@ -421,10 +385,6 @@ class Dive(Goal):
 
     def tick(self, p):
         w = p.w
-        # an interesting item was just reported: pause so the Navigator can fetch
-        # it (mission 16: the dive took the stairs before its goto arrived)
-        if time.time() < p.item_hold_until and not p.dangers():
-            return None
         md = int(p.orders.get("max_depth", 0))
         if md and self.target_ft > md:
             self.target_ft = md
@@ -553,7 +513,7 @@ class Dive(Goal):
                 self.explore = None
                 return None
             return ("failed", "no stairs found: " + r[1])
-        if r and str(r[1]).startswith("nothing left to explore") and w.find("<>") and self.bad_stairs:
+        if r and r[1] == "nothing left to explore" and w.find("<>") and self.bad_stairs:
             # Stairs are known but were marked unreachable (e.g. planned before
             # the map had loaded): try them again, a few times
             self.bad_cleared += 1
@@ -562,7 +522,7 @@ class Dive(Goal):
             self.bad_stairs = set()
             self.explore = None
             return None
-        if r and str(r[1]).startswith("nothing left to explore") and not w.find("<>"):
+        if r and r[1] == "nothing left to explore" and not w.find("<>"):
             # Walled in: look for secret doors, then explore again
             self.need_search = True
         if r:
@@ -591,59 +551,34 @@ class Dive(Goal):
 class Search(Goal):
     """Look for secret doors: stand at each dead end (and corridor ends) and
     search a few times -- the user's doc lore: dead ends, lone doors,
-    corridor ends. Done when a new door/opening shows up (explore again).
-    strict=True: true corridor dead ends only (explore's own pass)."""
+    corridor ends. Done when a new door/opening shows up (explore again)."""
 
-    def __init__(self, tries=8, strict=False):
+    def __init__(self, tries=8):
         self.name = "search dead ends"
         self.tries = tries
-        self.strict = strict
-        self.spot = None
+        self.spots = None
         self.searching = 0
         self.known = None
-        self.done_n = 0
 
-    @staticmethod
-    def dead_ends(w, strict=False, skip=()):
+    def dead_ends(self, w):
         mem = w.memory
-
-        def is_open(y, x):
-            return mem.get((y, x), " ") not in "#%*: 12345678"
-
         out = []
         for (y, x), ch in mem.items():
-            if ch in "#%*: +12345678" or (w.level_t, (y, x)) in skip:
+            if ch in "#%*: +12345678":
                 continue
-            nbs = [(dy, dx) for dy in (-1, 0, 1) for dx in (-1, 0, 1)
-                   if (dy or dx) and is_open(y + dy, x + dx)]
-            if not strict:
-                # Few open squares around: a dead end, the end of a (two-wide)
-                # corridor, or a room corner -- where secret doors tend to be
-                if len(nbs) <= 3:
-                    out.append((y, x))
-                continue
-            # A corridor's end: one way out (one wide, or two side by side), or the end of a two-wide
-            # one -- an L of three with the diagonal, and no room around (a room
-            # corner has the same L but 9 open squares within 2)
-            if len(nbs) <= 1:
+            # Few open squares around: a dead end, the end of a (two-wide)
+            # corridor, or a room corner -- where secret doors tend to be
+            n = sum(1 for dy in (-1, 0, 1) for dx in (-1, 0, 1)
+                    if (dy or dx) and mem.get((y + dy, x + dx), " ") not in "#%*: ")
+            if n <= 3:
                 out.append((y, x))
-            elif len(nbs) == 2:
-                # a nub past a corridor's turn: both ways out on one side, side by
-                # side (a plain bend's two touch only diagonally)
-                (ay, ax), (by, bx) = nbs
-                if abs(ay - by) + abs(ax - bx) == 1:
-                    out.append((y, x))
-            elif len(nbs) == 3:
-                diag = [d for d in nbs if d[0] and d[1]]
-                if len(diag) == 1 and {(diag[0][0], 0), (0, diag[0][1])} <= set(nbs) and \
-                        sum(is_open(y + dy, x + dx) for dy in range(-2, 3) for dx in range(-2, 3)) <= 6:
-                    out.append((y, x))
         return out
 
     def tick(self, p):
         w = p.w
         if self.known is None:
             self.known = len(p.frontier())
+            self.spots = sorted(self.dead_ends(w), key=w.dist)
         if len(p.frontier()) > self.known:
             return ("done", "found a way on")
         if self.searching:
@@ -651,32 +586,21 @@ class Search(Goal):
                 return None
             self.searching -= 1
             p.cmd("custom s", "search for secret doors", hold=0.45)
-            if not self.searching:
-                p.searched.add((w.level_t, self.spot))
-                self.done_n += 1
-                self.spot = None
             return None
         if p.mover.active:
             st = p.mover.tick()
             if st == "moving":
                 return None
-            if st == "arrived" and w.pos == self.spot:
+            if st == "arrived":
                 self.searching = self.tries
                 return None
-        if self.spot:
-            # couldn't get there: don't try it again on this level
-            p.searched.add((w.level_t, self.spot))
-        # the nearest dead end not searched yet (it zig-zagged by distance from
-        # where the search began)
-        spots = sorted(self.dead_ends(w, self.strict, p.searched), key=w.dist)
-        if not spots:
+        if not self.spots:
             return ("failed", "searched every dead end, nothing found")
-        self.spot = spots[0]
-        if w.pos == self.spot:
+        spot = self.spots.pop(0)
+        if w.pos == spot:
             self.searching = self.tries
-        elif not p.mover.go([self.spot]):
-            p.searched.add((w.level_t, self.spot))
-            self.spot = None
+        elif not p.mover.go([spot]):
+            return None
         return None
 
 
@@ -698,11 +622,6 @@ class Hunt(Goal):
                t.startswith("You have destroyed") and self.target in t.lower() for t in w.recent(3)):
             return ("done", "slain")
         mons = [(y, x, r) for y, x, r in w.monsters if self.target in r.name.lower()]
-        # Killed while we couldn't see it (blind, or it was invisible): the game
-        # says "You have killed it." (the message catalogue)
-        if not mons and time.time() - self.last_seen < 3 and \
-                any(t.startswith("You have killed it") for t in w.recent(3)):
-            return ("done", "killed (unseen at the end)")
         if not mons:
             if time.time() - self.last_seen > self.lost_s:
                 return ("failed", "lost sight of it")
@@ -1237,7 +1156,6 @@ class Pilot:
         self.autodestroy_t = 0.0
         self.parking = None
         self.light_t = self.light_warned = 0.0
-        self.light_warned_key = None
         # Where the town's '>' is (remembered across runs: the town never changes)
         self.town_file = os.path.join(os.path.dirname(rundir.rstrip("/")), "town.json")
         # Server-wide flavour table and this character's deepest level
@@ -1275,13 +1193,9 @@ class Pilot:
         self.wild_trail, self.trail_level = [], None
         self.eat_t = 0.0
         self.flavour_watch = None
-        self.id_target = None
         self.weapons_t, self.weapon_tips = 0.0, set()
         self.found_t = time.time()
         self.unanswered = []                  # user messages the Navigator hasn't answered (say)
-        self.nav_view, self.nav_view_events = (0.0, [], ""), []   # what the Navigator last read
-        self.avoid_zones, self.avoid_names = {}, set()           # the Navigator's no-go zones
-        self.item_hold_until = 0.0            # a dive pauses after interesting_item
         self.far_seen = set()                 # (level, item) valuables seen beyond loot_radius
         self.effect_failures = 0
         self.redraw_t, self.redraw_level = 0.0, None
@@ -1293,7 +1207,6 @@ class Pilot:
         self.seen_blows = None
         self.unreachable = set()       # frontier tiles we failed to reach (this level)
         self.visited = set()           # squares we've stood on while exploring (not frontier)
-        self.searched = set()          # (level, square) dead ends searched for secret doors
         self.level_seen = None
         self.phase_t = self.cure_t = self.noescape_t = 0.0
         self.escaping_to_stairs = False
@@ -1422,17 +1335,6 @@ class Pilot:
         that disappeared while a known kind of the same type appeared is that
         kind (the Advisor's flavour-messages memo: names drop the flavour once
         it's aware, so diff the pack)."""
-        it = self.id_target
-        if it:
-            for ts, t in self.w.messages:
-                m = re.match(r"^(?:In your pack|You are wearing|You are wielding|On your [^:]+|In your quiver): "
-                             r"(.+?) \(([a-z])\)\.?$", t)
-                if ts >= it["t"] and m and " of " in m.group(1) and it["letter"] in (None, m.group(2)):
-                    self.learn_flavour(it["flavour"], kind_key(m.group(1)), "identified")
-                    self.id_target = None
-                    break
-            if self.id_target and now - it["t"] > 5:
-                self.id_target = None
         fw = self.flavour_watch
         if not fw or now - fw["t"] < 1.0:
             return
@@ -1441,16 +1343,12 @@ class Pilot:
         gone = {k for k in fw["unknown"] if k not in after}
         new = {k for k in after - fw["before"]}
         said = [t for ts, t in self.w.messages if ts >= fw["t"] - 0.05]
-        for j, t in enumerate(said):            # a stack used up: "You have no more Potions of X."
+        for t in said:                          # a stack used up: "You have no more Potions of X."
             m = re.match(r"You have no more (.+?)\.?$", t)
-            # (not one destroyed, dropped or sold: mission 16's autodestroyed
-            # Ring of Teleportation spoiled the Beryl Ring read next to it)
-            if j and said[j - 1].startswith(("You destroy", "You drop", "You sold", "You have no room")):
-                continue
             if m and " of " in m.group(1):
                 k = kind_key(m.group(1))
                 tv = next((tv for tv, _ in gone), None)
-                if tv is not None and (tv, k) not in fw["before"]:
+                if tv is not None:
                     new.add((tv, k))
         for tv in {t for t, _ in gone}:
             g = [n for t, n in gone if t == tv]
@@ -1565,15 +1463,11 @@ class Pilot:
 
     # --- perception helpers --------------------------------------------------
 
-    def frontier(self, center=None, radius=None, rubble=False):
-        """Known open squares next to unknown ones (rubble=True: rubble squares
-        next to unknown ones instead, a way on by digging)."""
+    def frontier(self, center=None, radius=None):
         mem = self.w.memory
         out = []
         for (y, x), ch in mem.items():
-            if rubble != (ch == ":"):
-                continue
-            if ch in "#%* " or ch in "12345678" or (y, x) in self.unreachable:
+            if ch in "#%*: " or ch in "12345678" or (y, x) in self.unreachable:
                 continue
             if center and radius and max(abs(y - center[0]), abs(x - center[1])) > radius:
                 continue
@@ -1594,10 +1488,7 @@ class Pilot:
         if t == "item":
             # not the square we're on, nor items the junk filter left lying (a
             # 'goto item' ended at once, standing on a junk item it wouldn't take)
-            # ('=' and '~' are terrain only on the surface: in the dungeon they're
-            # rings, amulets, chests and lights -- mission 16's rings were missing)
-            skip = "#%.'+<>^;:* 12345678" + ("" if w.in_dungeon else "=~")
-            return [p for p, ch in w.memory.items() if ch not in skip
+            return [p for p, ch in w.memory.items() if ch not in "#%.'+<>^;:*=~ 12345678"
                     and p != w.pos and (w.level_t, p) not in self.skipped_items]
         m = re.match(r"^(\d+)[ ,](\d+)$", str(t))
         if m:
@@ -1896,8 +1787,6 @@ class Pilot:
                          or " Broken " in seen[-1][1]):
                 seen = []         # known junk: leave it (it filled the pack on the way down)
                 self.skipped_items.add((w.level_t, w.pos))
-            if seen and (w.level_t, w.pos) in self.skipped_items:
-                seen = []         # junk we left, or what the Navigator dropped here
             if seen and seen[-1][0] > self.picked_t and w.pos == self.seen_pos(seen[-1][0]):
                 self.picked_t = now
                 if self.mover.active:
@@ -2324,14 +2213,12 @@ class Pilot:
             paralyses = any(b.split(":")[1:2] == ["PARALYZE"] for b in r.blows)
             nosave = {e for e in r.no_save_blows
                       if not self.has_ability("resist_blind" if e == "BLIND" else "resist_conf")}
-            drains = r.drains or r.worst_melee[1] > 0   # (Red jelly STR, mission 15; Rot jelly CHR, 16)
+            drains = r.worst_melee[1] > 0          # (mission 15: a Red jelly drained STR, -1 blow)
             return r.level <= lev and not (paralyses and not self.has_ability("free_action")) \
                 and not nosave and not drains
 
         targets = [m for m in still if disenchants(m[2]) or any(w.dist(g, m[:2]) <= 1 for g in goals)]
         fight = [m for m in targets if killable(m[2])]
-        if any(m[2].drains for m in still):
-            fight = []      # (mission 16: killing a Green mold put it next to a Purple mushroom patch)
         if fight and (w.hp_frac >= self.orders["think_hp"] or self.still_fighting == (w.level_t, fight[0][:2])):
             m = fight[0]
             self.mover.stop()
@@ -2360,17 +2247,13 @@ class Pilot:
         if not in_combat:
             return False
         want = []
+        if w.flag("stun"):
+            want.append("stun")
         mobile_near = [m for m in mons_near if "NEVER_MOVE" not in m[2].flags]
         # (a mold can't follow: step away and let it wear off -- mission 15, the user)
-        # Only when it matters (mission 16 spent a CCW on a stun at 167/180 and
-        # CLW/CSW on blindness/confusion at 99% against level-6 Novice mages):
-        # low HP, a heavy stun, or a monster near our level
-        threat = w.hp_frac < self.orders["think_hp"] or any(m[2].level >= w.clvl - 5 for m in mobile_near)
-        if w.flag("stun") and (threat or w.ind.get("stun", [0])[0] >= 2):
-            want.append("stun")
-        if mobile_near and w.flag("confused") and threat:
+        if mobile_near and w.flag("confused"):
             want.append("confused")
-        if mobile_near and w.flag("blind") and threat:
+        if mons_near and w.flag("blind"):
             want.append("blind")
         if w.flag("poisoned") and w.hp_frac < self.orders["think_hp"]:
             want.append("poisoned")
@@ -2553,10 +2436,6 @@ class Pilot:
         m = re.search(r"\{([^}]*)\}", name)
         tags = m.group(1).lower() if m else ""
         if any(f in tags for f in ("excellent", "special", "artifact")):
-            return True
-        # {good} weapons/armour whose pluses aren't known yet (mission 16: a Trident
-        # {good} sold for 42 was (+3,+7), resold at 1848; Identify costs ~83)
-        if "good" in tags and not re.search(r"\([+-]\d+,[+-]\d+\)|\[\d+,[+-]\d+\]", name):
             return True
         if not self.unique_names:
             self.unique_names = {r.name.lower() for r in self.w.g.races.values() if "UNIQUE" in r.flags}
@@ -2757,8 +2636,9 @@ class Pilot:
             if flask:
                 self.cmd(f"custom F item={flask['item']}", f"refill lantern ({turns} turns left)", hold=0.6)
                 return True
-            self.warn_light("lantern out" if turns == 0 else "lantern low",
-                            f"lantern at {turns} turns and no flasks of oil")
+            if now - self.light_warned > 120:
+                self.light_warned = now
+                self.notify("low_supply", f"lantern at {turns} turns and no flasks of oil")
         elif worn and "Torch" in worn["name"] and turns is not None and turns < 500:
             # only a light with more left (burnt-out spares were swapped ~2100
             # times while Dive04 idled in town); a lantern in the pack counts
@@ -2770,8 +2650,9 @@ class Pilot:
             if torch:
                 self.cmd(f"custom w item={torch['item']}", f"fresh torch ({turns} turns left)", hold=0.6)
                 return True
-            self.warn_light("torch out" if turns == 0 else "torch low",
-                            f"torch at {turns} turns and no fresher torch: buy torches or a lantern")
+            if now - self.light_warned > 120:
+                self.light_warned = now
+                self.notify("low_supply", f"torch at {turns} turns and no fresher torch: buy torches or a lantern")
         elif not worn and w.depth != 0:
             def light_left(i):
                 t = re.search(r"with (\d+) turns", i["name"])
@@ -2780,18 +2661,10 @@ class Pilot:
             if spare:
                 self.cmd(f"custom w item={spare['item']}", "wield a light", hold=0.6)
                 return True
-            self.warn_light("no light", "no light source")
+            if now - self.light_warned > 120:
+                self.light_warned = now
+                self.notify("low_supply", "no light source")
         return False
-
-    def warn_light(self, key, text):
-        """A light warning once per state (low -> out), again after 10 min; in
-        town it's news, not an alert (Dive04 raised 573 'lantern at 0 turns'
-        alerts, one every 2 min while it idled in town: the post-mortem's §4.7)."""
-        now = time.time()
-        if key == self.light_warned_key and now - self.light_warned < 600:
-            return
-        self.light_warned, self.light_warned_key = now, key
-        self.notify("low_supply", text, news=not self.w.in_dungeon)
 
     def auto_destroy(self, now):
         """Destroy pack items whose pseudo-ID feeling is on the autodestroy list
@@ -2936,30 +2809,17 @@ class Pilot:
         if w.in_dungeon and w.itemlist:
             for line in w.itemlist[1:]:
                 name = line.strip()[2:].strip()
-                junk = [j.strip().lower() for j in self.orders.get("junk", "").split(",") if j.strip()]
-                known_junk = "{cursed" in name or any(j in name.lower() for j in junk) or \
-                    self.junk_kinds.get(kind_key(name)) or (self.flavours.get(flavour_key(name)) or {}).get("junk")
                 if re.search(r"\b(Wand|Staff|Rod|Ring|Amulet)\b|\{(excellent|special)", name) and \
-                        not known_junk and (w.level_t, name) not in self.far_seen:
+                        (w.level_t, name) not in self.far_seen:
                     self.far_seen.add((w.level_t, name))
                     # (mission 15: the user spotted a Wand of Slow Monster 33 squares
                     # away, outside loot_radius; it sold for 210)
-                    self.item_hold_until = now + 20       # (a dive pauses so you can fetch it)
                     self.notify("interesting_item", f"{name} seen on this level (devices and jewellery "
-                                                     "sell for 50-700 once known): its square is under 'Item squares' in "
-                                                     "`status`; `goal goto Y,X`. A dive pauses 20 s for it")
+                                                     "sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`")
         while w.losses:
             t, text = w.losses.pop(0)
             self.notify("lost", text, news=True)
         self.audit_tick(now)
-        # the Navigator's avoid zones, as squares the planner won't enter
-        zone = set()
-        for y0, x0, r in self.avoid_zones.get(w.level_t, []):
-            zone |= {(y0 + dy, x0 + dx) for dy in range(-r, r + 1) for dx in range(-r, r + 1)}
-        for y0, x0, rc in w.monsters:
-            if any(n in rc.name.lower() for n in self.avoid_names):
-                zone |= {(y0 + dy, x0 + dx) for dy in range(-3, 4) for dx in range(-3, 4)}
-        w.avoid_zone = zone - {w.pos}
         # The wilderness trail: the edge we came in by, per sector (Town goal)
         if self.trail_level != w.level_t and w.arrive_pos is not None:
             self.trail_level = w.level_t
@@ -3019,28 +2879,7 @@ class Pilot:
                 out = self.do_request(req)
             except Exception as e:
                 out = {"ok": False, "error": repr(e)}
-            if self.unanswered and isinstance(out, dict) and req.get("cmd") not in ("note", "say", "status"):
-                # on every answer, not only wait/status (mission 16: 'Pause 1 sec'
-                # was seen 35 s late, during chest commands)
-                out["user_messages"] = [f"{time.strftime('%H:%M:%S', time.localtime(t))} {m}"
-                                        for t, m in self.unanswered]
             reply.put(out)
-
-    def service_notes(self):
-        """Take the user's notes out of the request queue now, from inside a
-        long agent command (search 20, chest work, pack re-reads): they queued
-        behind it. True if one came in."""
-        with self.requests.mutex:
-            notes = [r for r in self.requests.queue if r[0].get("cmd") == "note"]
-            for r in notes:
-                self.requests.queue.remove(r)
-        for req, reply in notes:
-            try:
-                out = self.do_request(req)
-            except Exception as e:
-                out = {"ok": False, "error": repr(e)}
-            reply.put(out)
-        return bool(notes)
 
     ACTIONS = {"wear": "w", "takeoff": "t", "quaff": "q", "read": "r", "eat": "E", "fuel": "F",
                "destroy": "k", "drop": "d", "inspect": "I", "aim": "a", "use": "u", "zap": "z"}
@@ -3054,25 +2893,15 @@ class Pilot:
             return int(letter)
         name = letter.replace("_", " ").lower()
         pool = self.w.items(equip=True) + self.w.items() if equip else self.w.items() + self.w.items(equip=True)
-        hits = [i for i in pool if name in i["name"].lower()]
-        if not hits:
+        it = next((i for i in pool if name in i["name"].lower()), None)
+        if it is None:
             raise ValueError(f"no item matching '{letter}'")
-        if len(hits) > 1:
-            # whole-word matches first ("Light" = the Scroll of Light, not Cure
-            # Light Wounds: mission 16 destroyed 14 CLW that way)
-            words = [i for i in hits if re.search(r"\b" + re.escape(name) + r"\b", i["name"].lower())
-                     and not re.search(r"\w " + re.escape(name) + r" \w", i["name"].lower())]
-            if len(words) == 1:
-                return words[0]["item"]
-            raise ValueError(f"'{letter}' matches {len(hits)} items: " + "; ".join(
-                f"{chr(97 + i['item'])}) {i['name']}" for i in hits) + ": use the letter or a longer name")
-        return hits[0]["item"]
+        return it["item"]
 
     def pack_now(self, wait=0.7):
         """Re-read the pack right after an action (the report lagged behind a
         batch of destroys, and the Navigator then acted on stale letters)."""
         self.c.collect(wait)
-        self.service_notes()
         self.w.drain()
         self.w.inven = self.c.inven()
         self.w.inven_t = time.time()
@@ -3086,39 +2915,13 @@ class Pilot:
             if req.get("since_wait"):
                 # a wait report: the news since the previous wait (the survey)
                 since, self.news_wait_t = self.news_wait_t, time.time()
-                rep = self.report(news_since=since)
-                self.nav_view = (time.time(), self.nav_view_events, rep)
-                return {"ok": True, "report": rep}
-            rep = self.report()
-            self.nav_view = (time.time(), [], rep)
-            return {"ok": True, "report": rep}
+                return {"ok": True, "report": self.report(news_since=since)}
+            return {"ok": True, "report": self.report()}
         if c == "view":
             # (the observer's viewer: a bigger map, no side effects)
             rows = int(args[0]) if args else 11
             cols = int(args[1]) if len(args) > 1 else 33
             return {"ok": True, "report": self.report(rows=rows, cols=cols, news_since=time.time() - 600)}
-        if c == "navview":
-            # what the Navigator last saw (the user's "Navigator's view" panel)
-            return {"ok": True, "t": self.nav_view[0], "events": self.nav_view[1], "report": self.nav_view[2]}
-        if c == "avoid":
-            # the Navigator's no-go zones (the user, mission 16): 'avoid Y,X [R]'
-            # (this level), 'avoid NAME' (keep 3 squares from that monster, all
-            # levels), 'avoid clear', 'avoid' to list
-            w = self.w
-            if args[:1] == ["clear"]:
-                self.avoid_zones, self.avoid_names = {}, set()
-                return {"ok": True, "text": "avoid zones cleared"}
-            if args:
-                m = re.match(r"^(\d+)[ ,](\d+)$", args[0])
-                if m:
-                    r = int(args[1]) if len(args) > 1 else 3
-                    self.avoid_zones.setdefault(w.level_t, []).append((int(m.group(1)), int(m.group(2)), r))
-                else:
-                    self.avoid_names.add(" ".join(args).replace("_", " ").lower())
-            here = self.avoid_zones.get(w.level_t, [])
-            return {"ok": True, "text": "avoiding: " + "; ".join([f"{y},{x} r{r}" for y, x, r in here]
-                                                                 + sorted(self.avoid_names)) if here or self.avoid_names
-                    else "no avoid zones"}
         if c == "viewmap":
             # (the observer's colour map: chars + attrs around @; monsters with
             # their monster.txt colour, since our glyph table recodes them)
@@ -3227,10 +3030,6 @@ class Pilot:
                 extra = f" value={n}"
                 if c == "destroy":
                     self.c.send("confirm yes")
-                else:
-                    # what we drop stays dropped: auto-pickup and looting skip
-                    # this square (pickup=all re-picked dropped items, mission 9)
-                    self.skipped_items.add((self.w.level_t, self.w.pos))
             if c in ("aim",):
                 extra = f" dir={args[1] if len(args) > 1 else 5}"
             if c == "read" and len(args) > 1 and args[1] != "force":
@@ -3242,13 +3041,6 @@ class Pilot:
                 except ValueError as e:
                     return {"ok": False, "error": str(e)}
                 extra = f" dir={target}"
-                tit = next((i for i in self.w.items() + self.w.items(equip=True) if i["item"] == target), None)
-                if tit and self.unknown_flavour(tit):
-                    # learn from the server's answer, "In your pack: a Ring of X (q)."
-                    # (the pack diff missed a cursed ring autodestroyed at once and
-                    # a second Identify read straight after, mission 16)
-                    self.id_target = {"t": time.time(), "flavour": flavour_key(tit["name"]),
-                                      "letter": None if tit["equip"] else chr(97 + target)}
             t0 = time.time()
             before = (self.effect_sig("pack"), self.effect_sig("equip"))
             self.cmd(f"custom {key} item={item}{extra}", f"agent: {c} {args}")
@@ -3280,21 +3072,9 @@ class Pilot:
             for _ in range(n):
                 self.c.send("custom s")
             self.busy_until = time.time() + 0.15 * n
-            # wait for the searches to run (one a turn), stop early on a find
-            # (mission 16: the reply said "nothing found" while the game had said
-            # "You have found a secret door" a few seconds later)
-            end = time.time() + min(25.0, 0.7 * n + 1.0)
-            found = []
-            heard = False
-            while time.time() < end and not found:
-                self.c.collect(0.5)
-                self.w.drain()
-                found = [t for ts, t in self.w.messages if ts >= t0 and ("found" in t or "discovered" in t)]
-                if self.service_notes() and self.unanswered:
-                    heard = True             # the user spoke: answer now (the searches still run)
-                    break
-            return {"ok": True, "text": f"searched {n} times here: " + ("; ".join(found) if found else
-                    "stopped waiting for the result: a user message came in" if heard else "nothing found")}
+            self.c.collect(min(20.0, 0.25 * n + 1.0))
+            found = [t for ts, t in self.w.messages if ts >= t0 and "found" in t]
+            return {"ok": True, "text": f"searched {n} times here: " + ("; ".join(found) if found else "nothing found")}
         if c in ("disarm", "open"):
             # a chest (or door/trap) in direction DIR (5 = the square you stand on):
             # search first to find a chest's trap, disarm it, then open
@@ -3302,7 +3082,6 @@ class Pilot:
             t0 = time.time()
             self.cmd(f"custom {'D' if c == 'disarm' else 'o'} dir={d}", f"agent: {c} {d}")
             self.c.collect(1.0)
-            self.service_notes()
             said = [t for ts, t in self.w.messages if ts >= t0]
             return {"ok": True, "said": said[-4:], "pack": self.pack_now(0.3)}
         if c == "pickup":
@@ -3494,10 +3273,7 @@ class Pilot:
         wt = self.weapon_table()
         if wt:
             lines.append("Weapons (blows, avg damage per round at your STR/DEX): " + "; ".join(
-                f"{'WIELDED ' if eq else ''}{n} {b} blows ~{d:.0f}"
-                + (" (pluses unknown: identify it, it may be much better)"
-                   if re.search(r"\{(good|excellent|special|magical)", n) and not re.search(r"\([+-]\d+,", n) else "")
-                for n, b, d, eq in wt))
+                f"{'WIELDED ' if eq else ''}{n} {b} blows ~{d:.0f}" for n, b, d, eq in wt))
         if w.flags:
             # from the character sheet's grid (tool query 'flags'): facts, not guesses
             ab = [k for k, v in w.flags.items() if v and k not in ("stealth", "search", "infra", "tunnel")]
@@ -3537,7 +3313,6 @@ class Handler(socketserver.StreamRequestHandler):
                 evs, pilot.attention = pilot.attention, []
             pilot.last_agent = time.time()
             out = {"ok": True, "events": evs}
-            pilot.nav_view_events = [f"ATTENTION {e['what']}: {e.get('detail') or ''}" for e in evs]
             if pilot.running:        # (a quiet timeout gets one too: mission 3 missed a stall)
                 reply = queue.Queue()
                 pilot.requests.put(({"cmd": "status", "since_wait": True}, reply))

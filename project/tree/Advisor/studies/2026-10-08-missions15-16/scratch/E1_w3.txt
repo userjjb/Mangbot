@@ -1,0 +1,59 @@
+23:17:43 nav_journal [37, 111] 160  : 23:17:43 town 100% | sold wand 210 (8 charges), armour 13, unknown scroll 9 (= Magic Mapping); bought Restore STR 468 (quaffed: 18/50, 4 blows back) + 2 WoR at 117 (50% off) -> 18g | goal recall to 450 (max_depth 450), explore, recall home by ~23:39 | 2 WoR = way down + ticket home; 26 min left
+23:17:43 nav_say [37, 111] 160  : STR restored (4 blows again) and 2 Recalls bought at half price. Recalling down to 450 ft for ~20 more minutes.
+23:17:43 goal [37, 111] 160  recall: 
+23:17:43 act [37, 111] 160 custom { item=9 entry=@R450 : recall depth 450 ft
+23:17:44 act [37, 111] 160 custom r item=9 : read 2 Scrolls of Word of Recall {@R450}
+23:17:55 MONS [48, 178] 160 Bloodshot eye@47,175
+23:17:55 attention [48, 178] 160  goal_done: recall: arrived at 450 ft
+23:18:03 goal [48, 178] 160  explore: 
+23:18:03 nav_say [48, 178] 160  : I see only what pilotctl reports: on each wait a snapshot (HP, stats, depth, monsters in view, items, known stairs, news events) and on status also a ~25-row map, gear, pack and the last ~12 game messages. Snapshots, not movement: I never see the path it walks.
+23:18:04 nav_journal [47, 178] 160  : 23:18:04 450ft 100% | user: 'You said you can't see its pathing. What can you see?' | answered: only pilotctl snapshots (stats, monsters, items, stairs, news; status adds map, gear, pack, last messages), never the path | WISH: a short movement trace/'last N steps' in status to judge pathing; recall landed 450, Bloodshot eye near
+23:18:05 act [47, 176] 160 walk 6 : step away from Bloodshot eye
+23:18:12 attention [46, 172] 156  unseen_attacker: 'It hits you.': something unseen is attacking and no stairs are known: consider Word of Recall or Phase Door
+23:18:12 MONS [46, 172] 156 Novice mage@45,174;Novice mage@45,175;Bloodshot eye@47,175
+23:18:13 MONS [47, 172] 157 Novice mage@45,174;Novice mage@45,175;Novice mage@46,173;Bloodshot eye@47,175
+23:18:14 MONS [49, 172] 158 Novice mage@45,175;Novice mage@46,172;Novice mage@46,173;Novice mage@46,174;Novice mage@47,173;Bloodshot eye@47,175
+23:18:15 MONS [50, 172] 159 Novice mage@45,176;Novice mage@45,177;Novice mage@46,174;Bloodshot eye@47,175;Novice mage@48,171;Novice mage@48,172;Novice mage@48,173;Novice mage@49,172
+23:18:16 MONS [52, 171] 160 Novice mage@44,172;Novice mage@44,176;Novice mage@44,177;Novice mage@46,175;Novice mage@46,176;Novice mage@47,174;Bloodshot eye@47,175;Novice mage@49,171;Novice mage@49,172;Novice mage@49,173;Novice mage@50,172
+23:18:26 MONS [51, 174] 86 Bloodshot eye@47,175;Novice mage@50,175;Novice mage@51,173
+23:18:26 act [51, 174] 86 custom q item=7 : confused in combat: quaff 4 Potions of Cure Serious Wounds {25% off}
+23:18:26 attention [51, 174] 86  tactic: confused in combat: quaffed a Potion of Cure Serious Wounds {25% off}
+23:18:27 MONS [51, 174] 105 Bloodshot eye@47,175;Novice mage@50,175
+23:18:28 act [51, 175] 106 custom , : pick up: a Quartzite Ring.
+23:18:28 MONS [51, 175] 107 Bloodshot eye@47,175
+23:18:29 MONS [51, 177] 108 Skeleton orc@44,172;Bloodshot eye@47,175
+23:18:30 MONS [51, 178] 108 Skeleton orc@45,173;Bloodshot eye@47,175
+23:18:31 note [51, 179] 109  : effect_failed (pack unchanged after 3 s): pick up: a Quartzite Ring.
+23:18:31 attention [51, 179] 109  tactic: no effect seen: pick up: a Quartzite Ring.
+23:18:31 MONS [51, 180] 109 Skeleton orc@46,174;Bloodshot eye@47,175;Giant brown bat@59,180
+23:18:32 MONS [52, 181] 110 Skeleton orc@46,175;Bloodshot eye@47,175;Giant brown bat@59,180
+23:18:33 MONS [53, 180] 111 Giant brown bat@59,180
+23:18:34 MONS [54, 181] 111 Skeleton orc@50,179;Giant brown bat@57,179
+23:18:35 MONS [55, 180] 109 Skeleton orc@51,180;Giant brown bat@55,181
+23:18:36 MONS [56, 180] 110 Skeleton orc@52,180
+23:18:37 attention [57, 179] 110  goal_failed: explore: frontier unreachable
+23:18:37 act [57, 179] 110 rest : rest
+23:18:38 MONS [57, 179] 114 Skeleton orc@56,180
+23:18:39 act [57, 179] 106 rest : rest
+23:18:42 act [57, 179] 154 rest : stop resting
+23:18:48 nav_journal [57, 179] 159  : 23:18:48 450ft 99% | Novice mage pack + Skeleton orc + bats killed, blinded/confused once (CSW used), HP 110->137 resting; explore 'frontier unreachable'; room N has gold x4, Runed Staff, unknown scroll, Quartzite Ring (pickup 'no effect') near the Bloodshot eye | goto 50,173 for the staff, then the gold | staff + ring worth ide
+23:18:48 goal [57, 179] 159  goto 50,173: 
+23:18:50 MONS [52, 180] 160 Bloodshot eye@47,175
+23:18:53 act [51, 175] 160 custom , : pick up: a Quartzite Ring.
+23:18:55 act [50, 173] 160 custom , : pick up: a Runed Staff.
+23:18:57 attention [50, 173] 160  goal_done: goto 50,173
+23:19:02 goal [50, 173] 160  goto 51,172: 
+23:19:02 attention [51, 172] 160  goal_done: goto 51,172
+23:19:09 goal [51, 172] 160  goto 50,172: 
+23:19:09 attention [50, 172] 160  goal_done: goto 50,172
+23:19:09 goal [50, 172] 160  goto 51,173: 
+23:19:09 attention [51, 173] 160  goal_done: goto 51,173
+23:19:09 goal [51, 173] 160  goto 50,174: 
+23:19:10 attention [50, 174] 160  goal_done: goto 50,174
+23:19:10 goal [50, 174] 160  goto 50,175: 
+23:19:11 act [50, 175] 160 custom , : pick up: a Scroll titled "jo elprok".
+23:19:13 attention [50, 175] 160  goal_done: goto 50,175
+23:19:18 goal [50, 175] 160  explore: 
+23:19:18 attention [50, 175] 160  goal_failed: explore: frontier unreachable
+23:19:25 goal [50, 175] 160  goto 40,177: 
+23:19:25 attention [50, 175] 160  goal_failed: goto 40,177: no known path

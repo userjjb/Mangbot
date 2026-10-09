@@ -1,0 +1,51 @@
+23:31:33 user_note [52, 109] 180  explore: ! That potion should have been needed, there were no dangers nearby other than the mold.
+23:31:33 attention [52, 109] 180  user_message: That potion should have been needed, there were no dangers nearby other than the mold.
+23:31:44 user_note [40, 111] 180  explore: ! Shouldn't (correction)
+23:31:44 attention [40, 111] 180  user_message: Shouldn't (correction)
+23:31:44 nav_say [40, 109] 180  : Agreed (I read it as 'shouldn't have been needed'): the Pilot treats confused-next-to-a-monster as a fight and drinks CSW; next to a mold it should just step away and let it wear off. Flagging it for the Architect.
+23:31:45 nav_journal [40, 108] 180  : 23:31:45 450ft 100% | user: the CSW quaffed at 23:31:06 for confusion wasn't needed, only a mold nearby | agreed: PILOT spends a CSW on confusion caused by a stationary mold; it should step away instead (confusion wears off); now 2 CSW | flagged
+23:31:49 nav_say [37, 103] 180  : Understood, that's how I read it.
+23:31:49 nav_journal [37, 103] 180  : 23:31:49 450ft 100% | user: 'Shouldn't (correction)' | acknowledged | -
+23:31:52 MONS [36, 96] 180 White jelly@34,95
+23:31:53 attention [35, 96] 180  tactic: White jelly (lvl 2, never moves) blocks the way: killing it
+23:32:13 act [23, 84] 180 custom , : pick up: a Wand of Stinking Cloud.
+23:32:16 MONS [20, 83] 180 Cave spider@16,84;Cave spider@17,84;Cave spider@18,83
+23:32:18 MONS [18, 82] 180 Cave spider@16,87
+23:32:19 MONS [17, 81] 180 Cave spider@17,85
+23:32:20 MONS [17, 82] 177 Cave spider@15,87;Cave spider@16,87;Cave spider@16,88;Cave spider@17,83
+23:32:21 MONS [17, 83] 178 Cave spider@15,86;Cave spider@16,84;Cave spider@16,85;Cave spider@16,86;Cave spider@16,88;Cave spider@17,84;Cave spider@17,85
+23:32:23 MONS [17, 83] 176 Cave spider@16,84;Cave spider@16,85;Cave spider@17,84
+23:32:32 MONS [15, 99] 180 Wormtongue, Agent of Saruman@16,102
+23:32:32 goal [15, 99] 180  flee (Wormtongue, Agent of Saruman): 
+23:32:32 attention [15, 99] 180  danger_seen: Wormtongue, Agent of Saruman (rated 4: lethal until clvl 16) in view while explore: heading for the stairs
+23:32:33 MONS [15, 98] 180 Wormtongue, Agent of Saruman@16,101
+23:32:36 attention [15, 92] 129  lost: One of your Potions of Cure Light Wounds (g) was destroyed!
+23:32:37 act [15, 91] 127 custom r item=9 : agent: read ['Word_of_Recall']
+23:32:40 MONS [15, 88] 122 Wormtongue, Agent of Saruman@16,91
+23:32:41 MONS [15, 87] 123 Wormtongue, Agent of Saruman@16,90
+23:32:42 nav_journal [15, 86] 123  : 23:32:42 450ft 68% | Wormtongue again, 3 away at 450 (rated 4 until clvl 16); > 12 away; 23:32, budget nearly done | read my last WoR now, flee goal heads for the > meanwhile | going home ~5 min early beats a fight with a caster unique
+23:32:42 MONS [16, 85] 123 Wormtongue, Agent of Saruman@16,88
+23:32:43 MONS [17, 84] 124 Wormtongue, Agent of Saruman@16,87
+23:32:45 MONS [20, 83] 103 Wormtongue, Agent of Saruman@17,84
+23:32:46 MONS [21, 83] 102 Wormtongue, Agent of Saruman@18,83
+23:32:47 MONS [23, 84] 100 Wormtongue, Agent of Saruman@20,83
+23:32:49 MONS [24, 86] 97 Wormtongue, Agent of Saruman@23,84
+23:32:50 MONS [24, 88] 98 Wormtongue, Agent of Saruman@24,85
+23:32:51 MONS [24, 89] 99 Wormtongue, Agent of Saruman@24,87
+23:32:52 MONS [26, 91] 100 Wormtongue, Agent of Saruman@24,88
+23:32:54 MONS [27, 93] 101 Wormtongue, Agent of Saruman@26,90
+23:32:55 attention [16, 45] 102  goal_failed: flee (Wormtongue, Agent of Saruman): no stairs known
+23:32:55 act [16, 45] 103 rest : rest
+23:32:59 act [16, 45] 172 rest : stop resting
+23:33:04 nav_journal [24, 45] 180  : 23:33:04 town 100% | home 23:33: Wormtongue's bolts took 180->103 during the ~15 s recall; clvl 14, 441g, 0 WoR, 15 CLW 2 CSW 9 Phase | sell loot (Stinking Cloud wand, Staff of Light, spare MG, Spear, boots, unknown scroll), identify the ring, buy WoR + CCW | end idle in town with a WoR
+23:33:05 nav_say [24, 45] 180  : Home safe (Wormtongue showed up again, recalled out at 103/180). clvl 14 now. Selling loot and restocking for the last minutes.
+23:33:05 goal [24, 45] 180  shop 6 sell Stinking Cloud:1 sell !Runed Staff:1: 
+23:33:42 act [24, 119] 180 walk 3 : enter store 6
+23:33:42 user_note [24, 119] 180  shop 6 sell Stinking Cloud:1 sell !Runed Staff:1: ! Trying to kite Wormtongue might be counterproductive, since he is ranged (I think). Best to stand and fight unless his melee attacks are somehow worse.
+23:33:42 attention [24, 119] 180  user_message: Trying to kite Wormtongue might be counterproductive, since he is ranged (I think). Best to stand and fight unless his melee attacks are somehow worse.
+23:33:42 act [24, 119] 180 custom s store item=12 value=1 : sell 12x1
+23:33:43 act [24, 119] 180 custom s store item=13 value=1 : sell 13x1
+23:33:43 act [24, 119] 180 leave : leave store
+23:33:43 attention [24, 119] 180  goal_done: shop 6 sell Stinking Cloud:1 sell !Runed Staff:1: You sold a Wand of Stinking Cloud (14 charges) for 168 gold.; You sold a Staff of Light (27 charges) for 29 gold.
+23:33:55 nav_say [24, 119] 180  : You're right. Server data: melee only ~6/turn (2x 1d5 + gold-steal), casts 1 in 5 (frost bolt, stinking cloud, slow, heal), ~137 HP, normal speed. Fleeing a long way gave him free casts. Next time with him close I'd 'goal hunt Wormtongue' (with cures ready) instead; the Pilot's rated-4 flee rule decided it.
+23:33:56 nav_journal [24, 119] 180  : 23:33:56 town 100% | user: kiting Wormtongue is counterproductive (ranged), stand and fight | agreed after 'monster Wormtongue': melee ~6/turn, spells 1 in 5 (BO_COLD, BA_POIS, SLOW, HEAL), 25d10 HP, speed +0 | MISTAKE (mine): I let the rated-4 flee rule run twice (and burned a WoR at 400) instead of goal hunt at 180 HP; PILOT: 

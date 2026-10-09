@@ -69,7 +69,7 @@ Server behaviour that matters for movement and play:
   stops it* and is itself swallowed (`recv_walk`). This is the only way to cancel a run or a rest.
 - **Running** (`custom . dir=D`, i.e. shift+direction): about 0.1 s per tile, but the server's
   run logic stops whenever the surroundings change (openings, monsters, objects), so
-  in practice runs are short. The tool averages ~0.25 s per tile by running straight stretches ≥5.
+  in practice runs are short. The tool averages ~0.25 s per tile by running straight stretches ≥3 (RUN_MIN 3 since 6c3cea5; corridors are free runs).
 - **Server pathfind** (`pathfind Y X`): fast (run speed), but searches only 25 tiles around
   the player and **treats never-seen grids as open, including the row/column just past the
   level edge**, so it can walk you off the level. It also bumps unseen walls. That's why the tool
@@ -171,10 +171,8 @@ mission, relay agent friction to the user (memory `mangband-relay-agent-friction
 1. **Push to GitHub** after each session's work (snapshot, commit, push).
 2. **Dive04 next:** Restore CON (~470), 3 CCW kept, then stage B (500-750 ft at clvl 15; gate
    clvl × 50 = 750). Stage table in the HANDBOOK and `memos/2026-10-07-warrior-progression.md`.
-3. **Pilot bugs open:** explore "frontier unreachable" with an exit 6 squares away (mission 15, a Bloodshot eye
-   nearby); flavour learning missed Beryl/Calcite rings identified by scroll (check the pack diff
-   with the ring worn/destroyed); a Navigator busy in item/chest commands isn't woken by user
-   messages (40 s "Pause").
+3. **Pilot bugs open:** none catalogued (all fixed 2026-10-08 evening, see the entry below; tested
+   offline only, so watch mission 17 for them).
 4. **Navigator wishes:** movement trace in `status`; explicit run control (town runs need known
    ground ≥ 3 from the edge, so at night it walks); steal protection in townfarm (rogues);
    sell-price quote for pack items; an inner-room/pit recogniser from the Advisor's spec
@@ -184,7 +182,7 @@ mission, relay agent friction to the user (memory `mangband-relay-agent-friction
 6. **FUTURE IMPROVEMENTS (the user):** Navigator effort (now Opus high, inherited; user wants to
    watch before changing); model × effort trials; "Pinky and The Brain" two-tier Navigator; a
    complaints channel for agents. Details in the 10-07 entries below.
-7. Smaller: server `pathfind` experiment (running memo change 6); doc fix (RUN_MIN is 3); a
+7. Smaller: server `pathfind` experiment (running memo change 6); a
    live-server run only after asking the admins (`operations.md`).
 
 ### ARCHITECT HANDOFF 2026-09-29 (history; read the 2026-10-08 section first)
@@ -295,6 +293,22 @@ asked, 2026-09-29, and agreed to keep it if harmless).
   strict corridor dead end 15 times, nearest first, once per level (`p.searched`; `goal search`
   shares it and now goes nearest-first). Reply: "nothing left to explore (searched N dead ends)".
   Tested offline on stub maps only; watch the first mission for time spent searching.
+- **"Fix all catalogued bugs" (the user, 2026-10-08 evening, deployed 23:38):** (1) "frontier
+  unreachable" (mission 15): four "There is a wall blocking your way" bumps while blind+confused
+  were written as walls on real floor; now no bump-walls while confused/blind (`Mover._astray`), a
+  closed-door bump is a door, and `Mover.go` forgets bump-learned walls (`w.bump_walls`) and
+  replans when no path is found (also mission 9's "no known path" to a `<`). (2) Flavours: learned
+  from the Identify reply "In your pack: a Ring of X (q)." matched to the target's letter (the
+  pack diff missed Calcite, autodestroyed at once, and Beryl, spoiled by that destroy's "no more"
+  message); Beryl/Calcite added to `runs/flavours.json` by hand. (3) User messages during long
+  agent commands: notes are taken out of the request queue inside `search`/`open`/`disarm`/
+  pack re-reads, and every pilotctl reply starts with `USER MESSAGE(S) NOT YET ANSWERED` until
+  `say` (navigator.md, HANDBOOK). Older ones: light `low_supply` once per state per 10 min, news
+  in town (573 "lantern at 0 turns" alerts; post-mortem §4.7); "You have killed it." counts as a
+  fight and ends a `hunt`; dropped items aren't auto-picked up again (mission 9); RUN_MIN doc fix.
+  Checked and already fixed: unseen-attacker alarms after kills (§4.5), clvl after resurrection,
+  Bullroarer seen late. Still open as features, not bugs: post-mortem §4.4/§5, Borg §3.3-3.8,
+  catalogue regex→CSV, shop routing.
 - **Demo mission** (23:49-23:56, 50 ft and back by stairs, the user messaged twice): fine. Fixed and
   deployed with the mission 15 answers (b26c14a: corridor zig-zag → run along the axis, map crops
   in attention/journal/note records, HANDBOOK inner rooms/vault walls/chests) and 7c16bc5 (stuck

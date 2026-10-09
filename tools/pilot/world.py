@@ -63,6 +63,7 @@ class World:
         self.pos_t = 0.0
         self.in_dungeon = None                 # see _level_kind(): the depth byte alone can't tell
         self.walked = set()                    # squares walked on this level
+        self.bump_walls = {}                   # walls learned by bumping: (y, x) -> what memory had
         self.recalled = None                   # 'down'/'up' from the recall message, until the level changes
         self.recall_cancelled = False          # set on "A tension leaves"; the pilot reports and clears it
         self.recall_pending_t = 0.0
@@ -133,6 +134,7 @@ class World:
                 self.level_t = time.time()
                 self.memory = {}
                 self.walked = set()
+                self.bump_walls = {}
                 self.arrive_pos = None
                 self.rows = None
                 self.monsters, self.itemlist = [], []
@@ -170,7 +172,7 @@ class World:
                 if self.RE_ATTACK.search(t) or self.RE_RANGED.match(t):
                     self.hits_taken += 1
                     self.last_hit_t = time.time()
-                if re.match(r"You (hit|miss|have slain|have destroyed|smite|bite|claw)", t) or \
+                if re.match(r"You (hit|miss|have slain|have destroyed|have killed|smite|bite|claw)", t) or \
                         re.match(r"(The|It) .* (dies|is destroyed|flees)", t):
                     self.fight_t = time.time()
                 # Things that change the pack or purse behind our back (the survey:

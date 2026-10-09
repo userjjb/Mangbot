@@ -375,7 +375,10 @@ Orders are remembered across pilot restarts.
   `search 20` there (`search` replies with what it found).
 - **The user's coordinates are the report map's row,col** (`47,151` = row 47, column 151): read
   them off the numbered map lines. Until you answer with `say`, the report's second line shows
-  `USER MESSAGE(S) NOT YET ANSWERED`.
+  `USER MESSAGE(S) NOT YET ANSWERED`, and so does the first line of every other pilotctl reply
+  (a `search` stops waiting for its result when a message comes in): answer before going on.
+- **Bumps while confused or blind no longer make walls** on the Pilot's map (mission 15's
+  "frontier unreachable"); when no path is found it forgets bump-learned walls and replans.
 - **Red jellies drain STR by touch**: the pilot no longer melees stationary drainers. **Wormtongue's
   danger is his spells, not his melee (~6 a turn)**: with the stairs far, the pilot doesn't flee
   him any more (a long walk gives him free casts); fight him (`goal hunt Wormtongue`) at good HP,

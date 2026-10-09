@@ -1,0 +1,179 @@
+23:11:20 MONS [25, 118] 148 Snaga@25,119
+23:11:21 act [23, 116] 145 custom k item=20 value=1 : agent: destroy ['Empty_Bottle']
+23:11:22 MONS [23, 116] 146 Snaga@24,117
+23:11:22 act [23, 116] 146 custom k item=19 value=20 : agent: destroy ['Iron_Shots', 'all']
+23:11:23 act [23, 116] 147 custom k item=18 value=1 : agent: destroy ['Whip']
+23:11:23 MONS [23, 116] 147 Snaga@24,116;Snaga@24,117;Snaga@25,117
+23:11:23 act [23, 116] 147 custom I item=16 : agent: inspect ['Soft_Leather_Boots']
+23:11:24 MONS [22, 115] 147 Snaga@24,115;Snaga@24,116;Snaga@24,117
+23:11:26 MONS [21, 116] 148 Snaga@22,115;Snaga@22,116;Snaga@24,116
+23:11:27 MONS [19, 114] 149 Snaga@21,116
+23:11:28 MONS [18, 113] 149 Snaga@19,114;Snaga@20,115
+23:11:29 MONS [16, 111] 150 Snaga@18,113
+23:11:29 act [15, 110] 151 custom w item=16 : agent: wear ['Soft_Leather_Boots']
+23:11:30 MONS [14, 111] 151 Snaga@15,111;Snaga@16,111
+23:11:31 MONS [14, 111] 145 Snaga@15,110;Snaga@15,111;Snaga@17,112
+23:11:32 MONS [14, 111] 146 Snaga@15,111;Snaga@16,111;Snaga@17,110
+23:11:33 MONS [14, 111] 143 Snaga@15,110;Snaga@15,111;Snaga@16,111
+23:11:34 MONS [14, 111] 138 Snaga@15,110;Snaga@15,111
+23:11:35 MONS [14, 111] 136 Snaga@15,111
+23:11:40 nav_journal [4, 110] 145  : 23:11:40 400ft 91% | pack full (Trident on the >): destroyed Dagger, Arrows, Iron Shots, Whip, Empty Bottle; wore found Soft Leather Boots {excellent} to learn them: Abilities still only res_dark, speed 0 (not FA/speed; maybe stealth/slow descent); clvl 13 (160 HP) killing Snagas | let the fight run, then explore | XP
+23:12:05 MONS [11, 95] 160 Hill orc@14,96
+23:12:06 MONS [11, 95] 160 Hill orc@13,96
+23:12:07 MONS [12, 96] 152 Hill orc@13,96
+23:12:11 MONS [15, 97] 155 Hill orc@18,97
+23:12:12 MONS [16, 96] 152 Hill orc@17,97;Hill orc@19,97
+23:12:13 MONS [16, 96] 143 Hill orc@17,96;Hill orc@17,97
+23:12:14 MONS [16, 96] 134 Hill orc@17,96;Hill orc@17,97;Snaga@18,97
+23:12:16 MONS [16, 96] 133 Hill orc@17,96;Snaga@17,97;Snaga@19,97
+23:12:17 MONS [16, 96] 132 Hill orc@17,96;Snaga@17,97;Hill orc@18,96;Snaga@18,97
+23:12:18 MONS [16, 96] 131 Hill orc@17,96;Snaga@17,97;Snaga@18,96;Hill orc@18,97;Hill orc@19,96
+23:12:19 MONS [16, 96] 122 Hill orc@17,96;Hill orc@17,97;Snaga@18,97;Hill orc@19,96;Hill orc@19,97
+23:12:20 MONS [16, 96] 123 Hill orc@17,96;Hill orc@17,97;Hill orc@18,96;Snaga@19,96;Hill orc@19,97
+23:12:21 MONS [16, 96] 115 Hill orc@17,96;Hill orc@18,97;Snaga@19,97
+23:12:22 attention [16, 96] 102  fight_going_badly: HP 102/160 fighting Hill orc
+23:12:22 MONS [16, 96] 102 Hill orc@17,96;Hill orc@17,97;Snaga@18,96
+23:12:23 MONS [16, 96] 86 Snaga@17,96;Hill orc@17,97
+23:12:25 MONS [16, 96] 82 Hill orc@17,97
+23:12:27 user_note [16, 96] 82  explore: ? The one wide corridor surrounding the outline of a rectangle at the stairs was a pit/vault. Very recognizable
+23:12:27 MONS [17, 97] 82 Hill orc@18,97
+23:12:28 MONS [18, 96] 83 White harpy@19,96;Hill orc@20,96
+23:12:29 MONS [19, 97] 84 Hill orc@22,96
+23:12:47 MONS [27, 69] 113 Hill orc@28,66
+23:12:48 MONS [28, 68] 113 Hill orc@28,67
+23:12:59 nav_journal [15, 54] 131  : 23:12:59 400ft 82% | orc group (Snagas + 2 Hill orcs) killed, low 102/160 (64%), 306g | keep exploring | going well
+23:13:02 user_note [10, 51] 135  explore: ? Is that currently known/identified to the Navigator/Pilot? They are more dangerous, but often have better loot.
+23:13:19 MONS [25, 55] 156 Skeleton kobold@24,52
+23:13:20 MONS [25, 54] 152 Skeleton kobold@25,53
+23:13:22 MONS [23, 51] 155 Snaga@39,47;Snaga@40,46;Snaga@40,47;Snaga@41,46;Snaga@41,47
+23:13:24 MONS [21, 51] 158 Radiation eye@15,43
+23:13:25 MONS [22, 52] 158 Radiation eye@15,43;Snaga@28,49;Snaga@39,46;Snaga@39,47
+23:13:26 MONS [22, 51] 159 Snaga@26,50
+23:13:27 MONS [21, 50] 160 Snaga@24,51
+23:13:28 MONS [19, 48] 160 Radiation eye@15,43
+23:13:30 MONS [19, 45] 160 Radiation eye@15,43;Snaga@20,49
+23:13:32 MONS [19, 43] 160 Radiation eye@15,43;Snaga@19,47
+23:13:33 MONS [19, 42] 160 Radiation eye@15,43;Snaga@19,46
+23:13:34 MONS [21, 40] 160 Radiation eye@15,43
+23:13:35 MONS [22, 41] 160 Snaga@19,42
+23:13:36 MONS [23, 40] 160 Radiation eye@15,43;Snaga@20,41;Snaga@24,42
+23:13:37 MONS [25, 40] 160 Snaga@22,41;Snaga@23,41;Snaga@25,42
+23:13:38 MONS [26, 40] 160 Snaga@23,40;Snaga@23,41;Snaga@25,41
+23:13:39 MONS [28, 39] 153 Snaga@25,40
+23:13:40 MONS [27, 38] 154 Snaga@26,40
+23:13:41 MONS [29, 38] 155 Snaga@27,39;Snaga@27,40;Snaga@28,38
+23:13:42 MONS [29, 38] 145 Snaga@27,38;Snaga@28,38;Snaga@28,39
+23:13:43 MONS [29, 38] 140 Snaga@28,37;Snaga@28,38;Snaga@28,39
+23:13:44 MONS [29, 38] 136 Snaga@28,37;Snaga@28,38
+23:13:45 MONS [29, 38] 137 Snaga@28,37
+23:14:04 MONS [42, 19] 160 Snaga@45,18
+23:14:05 MONS [42, 19] 160 Snaga@44,18;Snaga@45,18
+23:14:06 MONS [42, 18] 160 Snaga@43,18;Snaga@44,19;Snaga@45,18
+23:14:07 MONS [42, 18] 151 Snaga@43,18;Snaga@43,19;Snaga@44,18;Snaga@44,19
+23:14:08 MONS [42, 18] 150 Snaga@43,18;Snaga@43,19;Snaga@44,18
+23:14:09 MONS [42, 18] 143 Snaga@43,19;Snaga@44,18;Snaga@44,19;Snaga@45,18;Snaga@45,19
+23:14:10 MONS [42, 18] 137 Snaga@43,18;Snaga@43,19;Snaga@44,18
+23:14:11 MONS [42, 18] 138 Snaga@43,18;Snaga@44,18
+23:14:12 MONS [42, 18] 134 Snaga@43,19
+23:14:13 MONS [42, 18] 134 Snaga@44,19
+23:14:14 MONS [44, 18] 135 Snaga@46,19
+23:14:15 MONS [45, 18] 136 Snaga@47,19
+23:14:16 MONS [47, 18] 137 Snaga@49,19;Snaga@56,18
+23:14:17 MONS [48, 18] 138 Snaga@51,19;Snaga@58,18
+23:14:18 MONS [50, 18] 138 Snaga@52,19;Snaga@59,18
+23:14:19 MONS [51, 18] 139 Snaga@54,19;Snaga@61,18
+23:14:20 MONS [53, 18] 141 Snaga@55,19;Snaga@62,17
+23:14:21 MONS [55, 19] 141 Snaga@62,15
+23:14:22 MONS [56, 19] 142 Snaga@59,22;Snaga@62,14
+23:14:23 MONS [57, 20] 143 Snaga@61,24;Snaga@62,12
+23:14:24 MONS [57, 21] 144 Snaga@61,13;Snaga@62,26
+23:14:25 MONS [58, 23] 145 Snaga@61,14;Snaga@62,27
+23:14:26 MONS [58, 24] 145 Snaga@61,16
+23:14:27 MONS [58, 26] 146 Snaga@61,18
+23:14:28 MONS [60, 28] 147 Snaga@61,20
+23:14:29 MONS [61, 29] 148 Snaga@61,21
+23:14:31 MONS [60, 32] 149 Snaga@61,24
+23:14:31 user_note [60, 32] 149  explore: ! Going down the corridors Dive04 zigzags back and forth. Why do that vs run straight down it?
+23:14:31 attention [60, 32] 149  user_message: Going down the corridors Dive04 zigzags back and forth. Why do that vs run straight down it?
+23:14:32 MONS [59, 33] 150 Snaga@60,36;Snaga@61,25
+23:14:33 MONS [60, 34] 151 Snaga@59,34;Snaga@61,27
+23:14:34 act [59, 34] 148 custom , : pick up: a Scroll of Blessing.
+23:14:35 MONS [59, 35] 150 Snaga@60,32
+23:14:36 MONS [60, 36] 150 Snaga@60,33
+23:14:37 MONS [59, 37] 151 Snaga@60,35
+23:14:39 MONS [59, 39] 152 Snaga@60,36
+23:14:40 MONS [59, 41] 153 Snaga@60,39
+23:14:40 nav_say [60, 42] 153  : I don't know: I can't see its pathing and the reports don't say. Corridors here are two wide, so a diagonal-step path may look like zigzag but cost no extra turns. If it's real back-and-forth it's wasted time; I'll flag it for the Architect.
+23:14:41 MONS [60, 42] 154 Snaga@59,40
+23:14:41 nav_journal [60, 42] 154  : 23:14:41 400ft 96% | user: 'Dive04 zigzags back and forth in corridors, why not run straight?' | answered honestly: don't know, can't see pathing; 2-wide corridors may make diagonal steps look like zigzag at no cost, else wasted time; flagged | PILOT? zigzag in corridors (user observation); 415g, Snagas
+23:14:42 MONS [60, 44] 154 Snaga@59,42
+23:14:43 MONS [59, 45] 155 Snaga@59,44
+23:14:44 MONS [59, 46] 148 Snaga@59,45
+23:14:46 act [60, 45] 149 custom , : pick up: a Scroll titled "ornta prok".
+23:14:47 MONS [60, 45] 150 Snaga@58,46
+23:14:48 MONS [61, 49] 152 Snaga@52,48
+23:14:50 MONS [57, 49] 153 White jelly@45,46;Snaga@48,48
+23:14:51 MONS [56, 48] 154 Snaga@47,48
+23:14:52 MONS [54, 48] 155 Snaga@45,48
+23:14:53 MONS [53, 49] 156 White jelly@45,46
+23:14:54 goal [51, 50] 156  flee (Wormtongue, Agent of Saruman): 
+23:14:54 attention [51, 50] 156  danger_seen: Wormtongue, Agent of Saruman (rated 4: lethal until clvl 16) in view while explore: heading for the stairs
+23:14:54 MONS [51, 50] 157 White jelly@45,46;Wormtongue, Agent of Saruman@46,59
+23:14:55 MONS [52, 49] 157 White jelly@45,46
+23:14:56 MONS [53, 49] 158 White jelly@45,46;Fruit bat@46,49
+23:14:57 MONS [55, 49] 159 White jelly@45,46;Fruit bat@49,49
+23:14:58 MONS [56, 48] 160 Fruit bat@51,49
+23:15:00 MONS [58, 46] 160 Fruit bat@57,47
+23:15:01 MONS [59, 44] 159 Fruit bat@58,46
+23:15:02 MONS [59, 43] 159 Fruit bat@59,44
+23:15:03 MONS [59, 41] 159 Fruit bat@59,43
+23:15:04 MONS [59, 39] 159 Fruit bat@59,41
+23:15:05 MONS [60, 38] 159 Fruit bat@59,40
+23:15:06 MONS [60, 36] 159 Fruit bat@60,38
+23:15:07 MONS [60, 35] 160 Fruit bat@60,36
+23:15:08 MONS [60, 33] 160 Fruit bat@60,35
+23:15:09 MONS [60, 31] 160 Fruit bat@60,33
+23:15:10 MONS [60, 30] 160 Fruit bat@60,32
+23:15:11 MONS [60, 28] 159 Fruit bat@60,30
+23:15:12 MONS [60, 27] 160 Fruit bat@60,28
+23:15:32 MONS [29, 43] 131 Snaga@31,48
+23:15:33 MONS [29, 44] 132 Snaga@30,47;Snaga@31,48
+23:15:34 MONS [29, 44] 127 Snaga@29,45;Snaga@30,46;Snaga@30,48;Snaga@31,48
+23:15:35 MONS [28, 45] 127 Snaga@29,45;Snaga@29,47;Snaga@30,45;Snaga@30,46;Snaga@31,48
+23:15:36 MONS [28, 46] 118 Snaga@28,47;Snaga@29,44;Snaga@29,45;Snaga@29,46;Snaga@30,46;Snaga@31,48
+23:15:37 MONS [28, 47] 115 Snaga@28,48;Snaga@29,44;Snaga@29,45;Snaga@29,46;Snaga@29,47;Snaga@30,47;Snaga@31,48
+23:15:38 MONS [28, 49] 116 Snaga@27,46;Snaga@28,47;Snaga@28,50;Snaga@29,46;Snaga@29,47;Snaga@29,48;Snaga@29,49;Snaga@30,48;Snaga@35,47;Green jelly@35,50
+23:15:39 MONS [28, 50] 111 Snaga@27,47;Snaga@27,48;Snaga@28,48;Snaga@28,51;Snaga@29,48;Snaga@29,49;Snaga@30,47;Snaga@30,49;Snaga@31,48;Snaga@34,48
+23:15:40 MONS [28, 52] 111 Snaga@27,50;Snaga@28,49;Snaga@28,50;Snaga@28,53;Snaga@29,48;Snaga@29,49;Snaga@29,50;Snaga@30,48;Snaga@30,50
+23:15:41 MONS [28, 53] 112 Snaga@26,52;Snaga@27,52;Snaga@28,50;Snaga@28,51;Snaga@28,52;Snaga@28,55;Wormtongue, Agent of Saruman@29,43;Snaga@29,48;Snaga@29,50;Snaga@29,51;Snaga@30,48
+23:15:41 nav_journal [28, 54] 112  : 23:15:41 400ft 70% | Wormtongue (rated 4) casting frost bolts + stinking cloud from out of sight; flee goal walking to > 84 away; Snagas around; HP 132/160, 474g | let the flee run; read WoR if HP < 100 | stairs give a fresh level and keep the WoR
+23:15:42 act [28, 54] 92 custom q item=8 : poisoned in combat: quaff a Potion of Cure Critical Wounds
+23:15:42 attention [28, 54] 92  tactic: poisoned in combat: quaffed a Potion of Cure Critical Wounds
+23:15:42 MONS [28, 55] 91 Snaga@26,53;Snaga@27,53;Snaga@28,51;Snaga@28,52;Snaga@28,53;Wormtongue, Agent of Saruman@29,43;Snaga@29,49;Snaga@29,52;Snaga@30,49;Snaga@30,52
+23:15:42 attention [28, 55] 91  fight_going_badly: HP 91/160 fighting Snaga
+23:15:43 MONS [28, 56] 118 Snaga@27,54;Snaga@27,55;Snaga@28,53;Snaga@28,54;Wormtongue, Agent of Saruman@29,43;Snaga@29,51;Snaga@29,53;Snaga@29,54;Snaga@30,51;Snaga@30,54
+23:15:44 MONS [28, 57] 112 Snaga@27,54;Snaga@27,55;Snaga@28,54;Snaga@28,55;Wormtongue, Agent of Saruman@29,44;Snaga@29,52;Snaga@29,54;Snaga@29,55;Snaga@30,52;Snaga@30,54
+23:15:45 MONS [28, 59] 113 Snaga@26,56;Snaga@27,55;Snaga@27,57;Snaga@28,56;Snaga@28,57;Wormtongue, Agent of Saruman@29,45;Snaga@29,54;Snaga@29,56;Snaga@29,57;Snaga@30,54
+23:15:46 act [28, 60] 113 custom r item=9 : agent: read ['Word_of_Recall']
+23:15:47 MONS [28, 61] 114 Snaga@26,59;Snaga@27,58;Snaga@27,60;Snaga@28,57;Snaga@28,58;Snaga@28,60;Wormtongue, Agent of Saruman@29,48;Snaga@29,56;Snaga@29,59
+23:15:48 MONS [28, 62] 109 Snaga@27,58;Snaga@27,59;Snaga@27,60;Snaga@28,58;Snaga@28,59;Snaga@28,60;Wormtongue, Agent of Saruman@29,49;Snaga@29,57;Snaga@29,58;Snaga@29,59
+23:15:49 MONS [28, 63] 109 Snaga@26,59;Snaga@27,58;Snaga@27,60;Snaga@27,61;Snaga@28,58;Snaga@28,59;Snaga@28,60;Snaga@28,61;Wormtongue, Agent of Saruman@29,51
+23:15:50 MONS [28, 65] 110 Snaga@27,58;Snaga@27,60;Snaga@27,62;Snaga@28,59;Snaga@28,62;Wormtongue, Agent of Saruman@29,52;Snaga@29,59
+23:15:51 MONS [28, 67] 111 Snaga@27,60;Snaga@27,64;Snaga@28,59;Snaga@28,60;Snaga@28,64;Wormtongue, Agent of Saruman@29,54
+23:15:52 MONS [28, 68] 112 Snaga@27,66;Snaga@28,60;Snaga@28,65;Wormtongue, Agent of Saruman@29,55
+23:15:53 MONS [29, 70] 113 Snaga@28,68
+23:15:54 MONS [29, 71] 114 Snaga@28,68;Snaga@28,69;Snaga@29,70
+23:15:55 MONS [29, 73] 114 Snaga@28,70;Snaga@29,70;Snaga@29,71
+23:15:56 MONS [29, 75] 115 Snaga@29,72;Snaga@29,73
+23:15:57 MONS [29, 76] 116 Snaga@29,73;Snaga@29,74
+23:15:58 MONS [29, 78] 117 Snaga@29,75;Snaga@29,76
+23:15:59 MONS [29, 79] 118 Snaga@29,77;Snaga@29,78
+23:15:59 nav_journal [29, 79] 118  : 23:15:59 400ft 74% | HP 91/160 with 9 Snagas + Wormtongue, stairs 73 away, poisoned (Pilot used the CCW) | read my last WoR at 23:15:47 (pending, worked) | too many and a ranged unique; walking 70+ squares under bolts is worse; ends the dive ~25 min early
+23:16:00 MONS [29, 81] 111 Snaga@29,78;Snaga@30,78
+23:16:01 MONS [29, 82] 112 Snaga@29,80;Snaga@30,80
+23:16:02 MONS [29, 84] 113 Snaga@29,81;Snaga@29,82
+23:16:03 attention [16, 45] 113  goal_failed: flee (Wormtongue, Agent of Saruman): no stairs known
+23:16:12 nav_journal [16, 47] 123  : 23:16:12 town 77% | town 23:16, clvl13 114/160, 474g, 0 WoR, STR 18/30 (3 blows) | sell wand (shop 6), spare armour (shop 2), unknown scroll (shop 5); buy Restore STR + WoR; then a 2nd short stairs dive if time | 4 blows back is the best upgrade available
+23:16:12 nav_say [16, 47] 123  : Recalled out: 9 Snagas plus Wormtongue bolting me, stairs 73 squares away. Now selling loot to buy back STR (4th blow) and a new Recall.
+23:16:12 goal [16, 47] 124  shop 6 sell Slow Monster:1: 
+23:16:29 user_note [23, 79] 140  shop 6 sell Slow Monster:1: Dangerous situation right there being chased by the snagas and a unique

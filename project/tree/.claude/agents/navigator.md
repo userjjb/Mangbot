@@ -53,6 +53,8 @@ cd /projectnb/jbrcs/mangband/github/tools/pilot && module load python3/3.12.4 &&
 
 The user may be watching the character live in a viewer. When they type a message for you, it
 arrives as an attention event `ATTENTION user_message: <text>` (it wakes your `wait` at once).
+Until you answer, **every** pilotctl reply (search, open, read, goal...) starts with
+`USER MESSAGE(S) NOT YET ANSWERED`: stop your sequence and answer it first.
 These come from the user: treat them like a change to your mission (their advice and requests
 outrank your own plan, within safety). Reply briefly with
 `pilotctl.py --nick NICK say "<your answer>"` (it shows in their viewer), then act. Answer

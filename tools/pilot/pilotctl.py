@@ -86,6 +86,8 @@ def main():
     except (ConnectionError, FileNotFoundError, json.JSONDecodeError, OSError) as e:
         print(f"(Pilot not answering: {e.__class__.__name__}; it may be restarting -- wait 20 s and retry)")
         return
+    if out.get("user_messages"):
+        print("USER MESSAGE(S) NOT YET ANSWERED (reply with say): " + " | ".join(out["user_messages"]))
     if "report" in out:
         print(out["report"])
     elif "pack" in out:

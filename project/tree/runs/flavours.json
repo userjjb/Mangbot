@@ -9,6 +9,11 @@
   "kind": "Staff of Detect Invisible",
   "source": "Advisor L_items (Dive03 09-25 20:56:07)"
  },
+ "Beryl Ring": {
+  "junk": false,
+  "kind": "Ring of Resist Fire",
+  "source": "Identify, Dive04 10-08 16:00:57 (added by the Architect from the log)"
+ },
  "Birch Staff": {
   "junk": true,
   "kind": "Staff of Darkness",
@@ -38,6 +43,11 @@
   "junk": false,
   "kind": "Potion of Neutralize Poison",
   "source": "Advisor L_items (Dive03 09-27 11:40:09)"
+ },
+ "Calcite Ring": {
+  "junk": true,
+  "kind": "Ring of Teleportation",
+  "source": "Identify, Dive04 10-08 16:00:57 (added by the Architect from the log)"
  },
  "Clear Potion": {
   "junk": true,

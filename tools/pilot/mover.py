@@ -105,6 +105,7 @@ class Mover:
         self.dig_t0 = self.dig_last = 0.0
         self.dig_n = 0
         self.hold_clear_until = 0.0   # the pilot: a read/quaff is waiting in the server queue
+        self.bump_t = 0.0             # the last "blocking your way" handled
         self.run_start_pos = None
         self.free_dist, self.free_away = None, 0
 
@@ -242,6 +243,8 @@ class Mover:
         self.avoid = set(avoid)
         self.replans = 0
         ok = self._plan()
+        if not ok and self.forget_bump_walls():
+            ok = self._plan()
         near = min(self.goals, key=lambda g: max(abs(g[0] - self.w.pos[0]), abs(g[1] - self.w.pos[1]))) \
             if self.w.pos and self.goals else None
         self.log(goals=len(self.goals), nearest=near, path=len(self.path), ok=ok)
@@ -294,6 +297,33 @@ class Mover:
             self.dig_last, self.dig_n = now, self.dig_n + 1
         self.last_progress = now          # digging is progress (no step timeout)
         return "moving"
+
+    def forget_bump_walls(self):
+        """Walls learned by bumping can be wrong (a bump while confused walled
+        off mission 15's way on: "frontier unreachable", "no known path").
+        Forget them; the server's map redraws the real ones. True if any."""
+        w = self.w
+        if not w.bump_walls:
+            return False
+        for q, ch in w.bump_walls.items():
+            if w.memory.get(q) in ("#", ":", "+"):
+                if ch == " ":
+                    w.memory.pop(q, None)
+                else:
+                    w.memory[q] = ch
+        w.bump_walls = {}
+        return True
+
+    def _astray(self):
+        """Our steps may not go where we send them: confused, or blind (we
+        can't see what we bump), now or in the last 2 s."""
+        w = self.w
+        if w.flag("confused") or w.flag("blind"):
+            return True
+        now = time.time()
+        return any(now - ts < 2 and t.startswith(("You are confused", "You are blind", "You feel less confused",
+                                                  "You can see again"))
+                   for ts, t in w.messages)
 
     def stop(self):
         if self.running is not None or self.free is not None:
@@ -364,11 +394,26 @@ class Mover:
         if self.done >= len(self.path):
             self.stop()
             return "arrived" if w.pos in (self.goals or {w.pos}) else "stuck"
-        bumped = [ts for ts, t in w.messages if ts > self.last_progress and "blocking your way" in t]
+        bumped = [ts for ts, t in w.messages if ts > max(self.last_progress, self.bump_t)
+                  and "blocking your way" in t]
         if bumped and self.done < len(self.path):
+            self.bump_t = max(bumped)
+            if self._astray():
+                # Confused (or blind) steps go astray: the wall we hit isn't the
+                # square on our path (mission 15: four such bumps walled off the
+                # way north, and explore said "frontier unreachable"). Resend.
+                self._clear()
+                self.sent = self.done
+                self.last_progress = time.time()
+                return "moving"
             # Walked into rubble/a wall/a door we didn't know about: remember it
-            rubble = any("rubble" in t for ts, t in w.messages if ts > self.last_progress)
-            w.memory[self.path[self.done]] = ":" if rubble else "#"
+            said = [t for ts, t in w.messages if ts > self.last_progress and "blocking your way" in t]
+            rubble = any("rubble" in t for t in said)
+            door = any("door" in t for t in said)
+            q = self.path[self.done]
+            w.bump_walls.setdefault(q, w.memory.get(q, " "))
+            # (a closed door is a door, not a wall: the message catalogue)
+            w.memory[q] = ":" if rubble else "+" if door else "#"
             if rubble:
                 self._clear()      # drop the steps queued behind the bump
                 self.sent = self.done

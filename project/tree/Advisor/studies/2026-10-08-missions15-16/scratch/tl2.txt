@@ -1,0 +1,275 @@
+15:31:10 attention [35, 47] 180 {"what": "low_supply", "detail": "lantern at 0 turns and no flasks of oil"}
+15:31:29 nav_journal [35, 47] 180 {"text": "15:31:29 town 100% | mission 16 start: town (day), clvl14 180HP 51g, lantern at 0 turns!, 2 gold piles next to me | goto the gold, then shop 1 buy 3 flasks and fuel | no light = can't read WoR or see in the dungeon"}
+15:31:29 goal [35, 47] 180 {"goal": "goto 34,47"}
+15:31:29 attention [34, 47] 180 {"what": "goal_done", "detail": "goto 34,47"}
+15:31:35 goal [34, 47] 180 {"goal": "goto 35,46"}
+15:31:35 attention [35, 46] 180 {"what": "goal_done", "detail": "goto 35,46"}
+15:31:40 goal [35, 46] 180 {"goal": "shop 1 buy Flask:4@8"}
+15:32:21 attention [34, 121] 180 {"what": "goal_done", "detail": "shop 1 buy Flask:4@8: You bought 4 Flasks of oil for 20 gold."}
+15:32:34 nav_journal [34, 121] 180 {"text": "15:32:34 town 100% | lantern full (4 flasks bought 20g, 1 left), 80g, 2 WoR, 15 CLW 3 CSW 1 CCW 9 Phase | order max_depth=550, goal recall (lands 450) | stage B gold+XP; home by ~16:06"}
+15:32:35 goal [34, 121] 180 {"goal": "recall"}
+15:32:45 attention [15, 23] 180 {"what": "goal_done", "detail": "recall: arrived at 450 ft"}
+15:32:50 nav_journal [15, 23] 180 {"text": "15:32:50 450ft 100% | landed 450 ft 15:32, 1 WoR left (ticket home), no stairs known | goal dive 500 | stage B depth; explore there for XP/gold"}
+15:32:50 goal [15, 23] 180 {"goal": "dive 500ft"}
+15:32:53 note [15, 23] 180 {"text": "effect_failed (level unchanged after 3 s): stairs >"}
+15:33:05 attention [5, 25] 153 {"what": "tactic", "detail": "stun in combat: quaffed a Potion of Cure Critical Wounds"}
+15:33:30 attention [5, 64] 180 {"what": "tactic", "detail": "Hairy mold (lvl 10, never moves) blocks the way: killing it"}
+15:33:34 attention [6, 67] 167 {"what": "interesting_item", "detail": "Staff of Object Location seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`"}
+15:33:49 attention [5, 72] 116 {"what": "fight_going_badly", "detail": "HP 116/180 fighting Hill orc"}
+15:33:53 nav_journal [5, 72] 160 {"text": "15:33:53 450ft 89% | fight_going_badly 116/180 vs one Hill orc (lvl 8); CCW used on stun earlier, Hairy mold killed | keep fighting | single weak orc, 64% HP, plenty of cures"}
+15:34:04 attention [10, 74] 180 {"what": "interesting_item", "detail": "Pearl Ring seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`"}
+15:34:05 attention [12, 74] 180 {"what": "tactic", "detail": "Grey mold (lvl 1, never moves) blocks the way: killing it"}
+15:34:11 nav_journal [7, 65] 180 {"text": "15:34:11 450ft 100% | orcs+molds killed, 224g, full HP; Staff of Object Location at 3,79 and Pearl Ring at 17,77 | goto both, then resume dive 500 | staff sells ~150, ring needs Identify"}
+15:34:11 goal [7, 65] 180 {"goal": "goto 3,79"}
+15:34:22 attention [3, 79] 180 {"what": "goal_done", "detail": "goto 3,79"}
+15:34:26 goal [3, 79] 180 {"goal": "goto 17,77"}
+15:34:42 attention [17, 77] 180 {"what": "goal_done", "detail": "goto 17,77"}
+15:34:47 nav_journal [17, 77] 180 {"text": "15:34:47 450ft 100% | got staff + Pearl Ring; 0 CCW now (used on stun) | goal dive 500 | still 3 CSW 15 CLW 10 Phase, fine for 500"}
+15:34:47 goal [17, 77] 180 {"goal": "dive 500ft"}
+15:35:01 note [20, 86] 180 {"text": "effect_failed (level unchanged after 3 s): stairs >"}
+15:35:02 attention [12, 28] 180 {"what": "goal_done", "detail": "dive 500ft: reached 500 ft"}
+15:35:07 nav_journal [12, 28] 180 {"text": "15:35:07 500ft 100% | 500 ft 15:35, on <, full HP | goal explore | gold+XP at stage B depth"}
+15:35:07 goal [12, 28] 180 {"goal": "explore"}
+15:35:49 attention [15, 25] 180 {"what": "goal_done", "detail": "explore: nothing left to explore"}
+15:36:05 nav_journal [15, 25] 180 {"text": "15:36:05 500ft 100% | 500 ft: explore said 'nothing left' after 40 s though the map shows open area N/E (rows 4-8); picked up a Dwarf Skeleton (destroyed), Potion of Speed found | goal dive 550 | PILOT? explore ended early or the level is a small enclosed piece; fresh level instead"}
+15:36:05 goal [15, 25] 180 {"goal": "dive 550ft"}
+15:36:10 attention [15, 93] 180 {"what": "interesting_item", "detail": "Turquoise Ring seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`"}
+15:36:18 attention [51, 75] 180 {"what": "goal_done", "detail": "dive 550ft: reached 550 ft"}
+15:36:18 attention [51, 75] 180 {"what": "interesting_item", "detail": "Ruby Ring seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`"}
+15:36:21 goal [51, 75] 180 {"goal": "goto 17,81"}
+15:36:21 attention [51, 75] 180 {"what": "goal_failed", "detail": "goto 17,81: no known path"}
+15:36:29 goal [51, 75] 180 {"goal": "goto 49,76"}
+15:36:32 attention [49, 76] 180 {"what": "goal_done", "detail": "goto 49,76"}
+15:36:36 nav_journal [49, 76] 180 {"text": "15:36:36 550ft 100% | 550 ft 15:36; missed a Turquoise Ring next to the > at 500 (the dive took the stairs before my goto; my slowness) ; got Ruby Ring (= Searching) | goal explore | XP/gold at 550"}
+15:36:36 goal [49, 76] 180 {"goal": "explore"}
+15:36:42 attention [39, 83] 180 {"what": "tactic", "detail": "Green mold (lvl 8, never moves) blocks the way: killing it"}
+15:36:44 attention [39, 83] 177 {"what": "tactic", "detail": "afraid: kiting over cleared ground until it wears off"}
+15:37:07 attention [55, 92] 180 {"what": "tactic", "detail": "Yellow mold (lvl 3, never moves) blocks the way: killing it"}
+15:37:30 user_note [62, 94] 180 {"note": "! That dead end had secret doors"}
+15:37:30 attention [62, 94] 180 {"what": "user_message", "detail": "That dead end had secret doors"}
+15:37:31 attention [62, 95] 180 {"what": "unseen_attacker", "detail": "'It casts a magic missile.': minor attack from something unseen; carrying on (HP 100%)"}
+15:37:35 nav_say [60, 97] 174 {"text": "Thanks - going back to search it. Which dead end (row,col)? I'll try the nearest one meanwhile."}
+15:37:41 nav_journal [60, 102] 160 {"text": "15:37:41 550ft 89% | user 15:37:30: 'That dead end had secret doors' | said thanks, asked which (row,col); finishing the Novice ranger fight first | can't tell which dead end from my snapshot (maybe the 500 ft level explore called finished)"}
+15:38:02 user_note [60, 98] 168 {"note": "! North ~10 blocks"}
+15:38:02 attention [60, 98] 168 {"what": "user_message", "detail": "North ~10 blocks"}
+15:38:06 nav_say [55, 96] 171 {"text": "OK, heading ~10 north to that dead end to search."}
+15:38:06 goal [55, 96] 171 {"goal": null}
+15:38:12 goal [53, 98] 176 {"goal": "goto 45,98"}
+15:38:12 attention [53, 98] 176 {"what": "goal_failed", "detail": "goto 45,98: no known path"}
+15:38:22 goal [53, 98] 180 {"goal": "goto 43,109"}
+15:38:30 attention [43, 109] 180 {"what": "goal_done", "detail": "goto 43,109"}
+15:38:40 user_note [43, 109] 180 {"note": "! Yes here"}
+15:38:40 attention [43, 109] 180 {"what": "user_message", "detail": "Yes here"}
+15:38:57 nav_say [43, 109] 180 {"text": "Found it: secret door at 42,110, opened, a passage runs NE. Exploring it now."}
+15:38:57 nav_journal [43, 109] 180 {"text": "15:38:57 550ft 100% | user 15:38: 'North ~10 blocks' | goto 43,109 (dead-end pocket), search 20, open 9: secret door at 42,110, passage NE | PILOT: search replied 'nothing found' but the game said 'You have found a secret door.' (door showed on the map)"}
+15:38:57 goal [43, 109] 180 {"goal": "explore"}
+15:39:22 user_note [23, 86] 180 {"note": "! Corridors never dead end, at worst they have a 1 thick wall of rubble"}
+15:39:22 attention [23, 86] 180 {"what": "user_message", "detail": "Corridors never dead end, at worst they have a 1 thick wall of rubble"}
+15:39:27 nav_say [28, 84] 180 {"text": "Noted: a corridor that seems to dead-end means a secret door or rubble - I'll search those spots."}
+15:39:27 nav_journal [28, 84] 180 {"text": "15:39:27 550ft 100% | user 15:39: 'Corridors never dead end, at worst a 1-thick wall of rubble' (and 15:38:40 'Yes here') | acknowledged; will search apparent corridor dead ends | user game knowledge; WISH: explore could search corridor dead ends by itself"}
+15:39:59 user_note [4, 50] 189 {"note": "! Rubble can be (T)unneled, but the chance of success depends on digging implement and Strength"}
+15:39:59 attention [4, 50] 189 {"what": "user_message", "detail": "Rubble can be (T)unneled, but the chance of success depends on digging implement and Strength"}
+15:40:04 nav_say [4, 46] 189 {"text": "Thanks. The Pilot digs rubble on its path by itself; with no digger it's STR 18/50 and a dagger, so slow but fine. Now clvl 15."}
+15:40:04 nav_journal [4, 46] 189 {"text": "15:40:04 550ft 100% | user 15:39:59: rubble can be tunneled, depends on digger/STR | acknowledged | clvl 15 (189 HP), exploring 550"}
+15:40:16 attention [5, 44] 189 {"what": "tactic", "detail": "hungry: ate a Ration of Food"}
+15:42:42 attention [55, 17] 189 {"what": "tactic", "detail": "blind in combat: quaffed a Potion of Cure Light Wounds"}
+15:42:45 attention [54, 16] 187 {"what": "interesting_item", "detail": "Wand of Slow Monster seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`"}
+15:42:46 attention [54, 16] 187 {"what": "interesting_item", "detail": "Ring of Weakness seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`"}
+15:42:46 attention [54, 16] 187 {"what": "tactic", "detail": "confused in combat: quaffed a Potion of Cure Serious Wounds {25% off}"}
+15:42:58 goal [42, 16] 189 {"goal": "goto 53,16"}
+15:43:07 attention [53, 16] 189 {"what": "goal_done", "detail": "goto 53,16"}
+15:43:15 user_note [53, 16] 189 {"note": "! Pause 1 sec"}
+15:43:15 attention [53, 16] 189 {"what": "user_message", "detail": "Pause 1 sec"}
+15:43:18 nav_journal [53, 16] 189 {"text": "15:43:18 550ft 100% | Wand of Slow Monster picked up; Small wooden chest at 54,17 next to me | chest procedure: search 20, disarm if trapped, open | ~75 gold + item"}
+15:43:44 goal [53, 16] 189 {"goal": "goto 53,17"}
+15:43:45 attention [53, 17] 189 {"what": "goal_done", "detail": "goto 53,17"}
+15:43:45 goal [53, 17] 189 {"goal": "goto 54,16"}
+15:43:45 attention [54, 16] 189 {"what": "goal_done", "detail": "goto 54,16"}
+15:43:46 goal [54, 16] 189 {"goal": "goto 52,16"}
+15:43:49 attention [52, 16] 189 {"what": "goal_done", "detail": "goto 52,16"}
+15:43:56 nav_say [52, 16] 189 {"text": "Sorry, saw 'Pause 1 sec' late (I was opening the chest). Paused now, idle at 53,16. Chest done: disarmed + opened, gold 409->499. Tell me when to go on."}
+15:43:56 nav_journal [52, 16] 189 {"text": "15:43:56 550ft 100% | user 15:43:15 'Pause 1 sec' seen at 15:43:50 (I was doing chest actions, not waiting) | replied, stay idle | chest: search found trap (search said 'nothing found' again), disarm 1st try, open: +90 gold, 499g"}
+15:44:10 user_note [52, 16] 189 {"note": "! You drank a CSW potion, was the temporary confusion that dangerous enough in that scenario to use a potion?"}
+15:44:10 attention [52, 16] 189 {"what": "user_message", "detail": "You drank a CSW potion, was the temporary confusion that dangerous enough in that scenario to use a potion?"}
+15:44:18 nav_say [52, 16] 189 {"text": "Honestly no: HP was ~187/189 vs Novice mages (lvl 6). The Pilot cures confusion/blindness in any fight automatically; I didn't order it. Confusion only matters if I need to read Phase/Recall. I'll flag it as wasteful."}
+15:44:18 nav_journal [52, 16] 189 {"text": "15:44:18 550ft 100% | user 15:44:10: was the confusion dangerous enough for a CSW? | answered: no, HP ~99% vs lvl-6 Novice mages; Pilot's automatic in-fight status cure (also CLW for blind 15:42:42) | PILOT: status cures at full HP vs weak monsters waste potions; should cure only when HP < think_hp or something dangerous is near (same as mission 15's mold confusion)"}
+15:44:52 user_note [52, 16] 189 {"note": "! There is a ring, should you pick it up or not?"}
+15:44:52 attention [52, 16] 189 {"what": "user_message", "detail": "There is a ring, should you pick it up or not?"}
+15:44:57 nav_say [52, 16] 189 {"text": "No: that one (52,16) is a Ring of Weakness - flavour already known, cursed, shops won't buy it. It's on the junk list, so the Pilot skips it."}
+15:44:57 nav_journal [52, 16] 189 {"text": "15:44:57 550ft 100% | user 15:44:52: pick up that ring? | no, Ring of Weakness (known, cursed, unsellable; junk list) | -"}
+15:45:30 user_note [52, 16] 189 {"note": "! Why is it listed as an \"interesting item\" then?"}
+15:45:30 attention [52, 16] 189 {"what": "user_message", "detail": "Why is it listed as an \"interesting item\" then?"}
+15:45:35 nav_say [52, 16] 189 {"text": "Good catch - it shouldn't be. The alert fires on any ring/amulet/wand/staff by type, without checking the junk list. I'll flag it for the Architect."}
+15:45:35 nav_journal [52, 16] 189 {"text": "15:45:35 550ft 100% | user 15:45:30: why is a Ring of Weakness an interesting_item? | answered: the alert seems to go by item type only, ignoring the junk list / known-bad flavours | PILOT: interesting_item should skip junk-listed and known-cursed items (Ring of Weakness)"}
+15:46:08 user_note [52, 16] 189 {"note": "? No need to alert an interesting_item if that item is actually on the junk list."}
+15:46:14 user_note [52, 16] 189 {"note": "! Ok, continue"}
+15:46:14 attention [52, 16] 189 {"what": "user_message", "detail": "Ok, continue"}
+15:46:20 nav_say [52, 16] 189 {"text": "Continuing: exploring the rest of 550 ft."}
+15:46:20 nav_journal [52, 16] 189 {"text": "15:46:20 550ft 100% | user 15:46:14 'Ok, continue' | goal explore | 499g, clvl 15, recall ~16:06"}
+15:46:20 goal [52, 16] 189 {"goal": "explore"}
+15:46:32 attention [61, 28] 189 {"what": "tactic", "detail": "Yellow mushroom patch (lvl 2, never moves) blocks the way: killing it"}
+15:46:46 attention [60, 37] 184 {"what": "stat_drained", "detail": "CHR drained (blows 4); levels don't restore it: Potion of Restore Charisma at the Alchemist (5), ~470 each (the Temple doesn't sell them)"}
+15:47:17 nav_journal [50, 39] 189 {"text": "15:47:17 550ft 100% | CHR drained 4->3 by a Rot jelly the Pilot meleed during explore (after killing a Yellow mushroom patch 'blocking the way') | carry on exploring | CHR only nudges prices; PILOT: the 'no melee of stationary drainers' rule missed a CHR drainer (Rot jelly)"}
+15:47:17 user_note [50, 39] 189 {"note": "! I would not kill the rot jelly, not worth it with the stat drain"}
+15:47:17 attention [50, 39] 189 {"what": "user_message", "detail": "I would not kill the rot jelly, not worth it with the stat drain"}
+15:47:22 nav_say [52, 50] 189 {"text": "Agreed. I didn't order it: the Pilot's no-drainer rule apparently doesn't cover CHR drainers. It's walked away now (CHR 4->3). Flagged."}
+15:47:22 nav_journal [52, 50] 189 {"text": "15:47:22 550ft 100% | user 15:47:17: wouldn't kill the rot jelly (stat drain) | agreed, Pilot already left it; flagged | -"}
+15:48:49 user_note [60, 40] 183 {"note": "! Are you able to set \"avoid\" areas?"}
+15:48:49 attention [60, 40] 183 {"what": "user_message", "detail": "Are you able to set \"avoid\" areas?"}
+15:49:00 nav_say [57, 51] 189 {"text": "No avoid-areas control, sorry - only goals like goto/explore. Since explore keeps bringing me back past the jelly, I'll leave this level by the < and take a fresh 550."}
+15:49:00 goal [58, 52] 189 {"goal": "dive 500ft"}
+15:49:04 nav_journal [52, 51] 189 {"text": "15:49:04 550ft 100% | user 15:48:49: can you set avoid areas? | no such control; explore drifted back to the Rot jelly + Brown mold, so goal dive 500 (up the <) then a fresh 550 | WISH: an 'avoid Y,X radius' or 'never melee NAME' order"}
+15:49:30 attention [64, 18] 189 {"what": "goal_done", "detail": "dive 500ft: reached 500 ft"}
+15:49:34 goal [64, 18] 189 {"goal": "dive 550ft"}
+15:49:34 attention [39, 142] 189 {"what": "goal_done", "detail": "dive 550ft: reached 550 ft"}
+15:49:38 nav_journal [39, 142] 189 {"text": "15:49:38 550ft 100% | fresh 550 at 15:49, 512g | goal explore | XP/gold until ~16:05"}
+15:49:39 goal [39, 142] 189 {"goal": "explore"}
+15:49:53 attention [49, 125] 189 {"what": "tactic", "detail": "Green mold (lvl 8, never moves) blocks the way: killing it"}
+15:50:01 user_note [49, 140] 189 {"note": "? We should allow the Navigator to flag areas to avoid, which the Pilot navigation automatically routes around. This might include out of depth vaults, dangerous monsters, etc."}
+15:50:11 attention [39, 147] 176 {"what": "stat_drained", "detail": "CON drained (blows 4); levels don't restore it: Potion of Restore Constitution at the Alchemist (5), ~470 each (the Temple doesn't sell them)"}
+15:50:18 goal [33, 149] 177 {"goal": "goto <"}
+15:50:24 attention [39, 142] 174 {"what": "goal_done", "detail": "goto <"}
+15:50:25 goal [39, 142] 174 {"goal": "hunt Dark elven warrior"}
+15:50:25 nav_journal [39, 143] 174 {"text": "15:50:25 550ft 98% | CON drained 18->16 (HP 189->178): explore stood next to a Purple mushroom patch while killing a Green mold and a Dark elven warrior woke | sent goto < (moved off the patch), now hunt the Dark elven warrior (lvl 10) | MISTAKE (Pilot): 'kill stationary blocker' put me beside a CON-drainer patch; Restore CON ~470 now on the shopping list"}
+15:50:27 attention [39, 143] 168 {"what": "goal_done", "detail": "hunt Dark elven warrior: slain"}
+15:50:34 goal [39, 143] 173 {"goal": "explore"}
+15:50:44 attention [39, 147] 167 {"what": "stat_drained", "detail": "CON drained (blows 4); levels don't restore it: Potion of Restore Constitution at the Alchemist (5), ~470 each (the Temple doesn't sell them)"}
+15:50:44 goal [39, 147] 167 {"goal": "flee (stat drain)"}
+15:50:44 attention [39, 147] 167 {"what": "danger_seen", "detail": "drained twice on this level (CON) with Purple mushroom patch in view while explore: leaving the level"}
+15:50:48 attention [48, 74] 170 {"what": "goal_done", "detail": "flee (stat drain): left by the stairs; now at 500 ft"}
+15:50:56 nav_journal [48, 74] 170 {"text": "15:50:56 500ft 100% | after hunting the elf I re-issued explore; it walked straight back beside the same Purple mushroom patch: CON 16->14 (max HP 170); Pilot fled up to 500 (2nd drain rule) | goal dive 550 (fresh level) | MISTAKE (mine): should have sent explore away from the patch or left at once; PILOT: explore/pathing doesn't keep a gap from known stationary drainers"}
+15:50:56 goal [48, 74] 170 {"goal": "dive 550ft"}
+15:50:56 attention [32, 18] 170 {"what": "goal_done", "detail": "dive 550ft: reached 550 ft"}
+15:51:00 goal [32, 18] 170 {"goal": "explore"}
+15:51:04 attention [26, 16] 170 {"what": "tactic", "detail": "Green mold (lvl 8, never moves) blocks the way: killing it"}
+15:51:28 attention [18, 22] 170 {"what": "interesting_item", "detail": "Calcite Ring seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`"}
+15:51:58 user_note [30, 54] 170 {"note": "! Not going to get the calcite ring?"}
+15:51:58 attention [30, 54] 170 {"what": "user_message", "detail": "Not going to get the calcite ring?"}
+15:52:05 nav_say [41, 48] 170 {"text": "Yes, going for it now (19,14) - it wasn't in the Pilot's item list, I had to find it on the map."}
+15:52:05 goal [41, 48] 170 {"goal": "goto 19,14"}
+15:52:06 nav_journal [41, 48] 170 {"text": "15:52:06 550ft 100% | user 15:51:58: not getting the calcite ring? | yes, goto 19,14 (found '=' on the map; the item-squares list didn't include it, and a Hippogriff fight came first) | PILOT: interesting_item pointed at 'Item squares' but the ring wasn't listed there"}
+15:52:40 attention [19, 14] 170 {"what": "goal_done", "detail": "goto 19,14"}
+15:52:40 user_note [19, 14] 170 {"note": "! THe item list is the list of items the Pilot can see at this moment?"}
+15:52:40 attention [19, 14] 170 {"what": "user_message", "detail": "THe item list is the list of items the Pilot can see at this moment?"}
+15:52:51 goal [19, 14] 170 {"goal": "goto 19,24"}
+15:52:58 attention [19, 24] 170 {"what": "goal_done", "detail": "goto 19,24"}
+15:53:04 nav_say [19, 24] 170 {"text": "Got the Calcite Ring. Two lists: 'Items seen' is the server's list of objects seen on this level; 'Item squares nearby' gives positions, and it left the ring out. I also misread its column once (map window shifted)."}
+15:53:04 nav_journal [19, 24] 170 {"text": "15:53:04 550ft 100% | user 15:52:40: is the item list what the Pilot sees now? | answered: Items seen = server's list for the level; Item squares = positions, missed the ring; got the Calcite Ring at 19,24 (first goto 19,14 was my misread after the map window shifted) | -"}
+15:53:09 goal [19, 24] 170 {"goal": "goto 8,16"}
+15:53:18 attention [8, 16] 170 {"what": "goal_done", "detail": "goto 8,16"}
+15:53:22 goal [8, 16] 170 {"goal": "explore"}
+15:54:24 attention [42, 50] 170 {"what": "interesting_item", "detail": "Beryl Ring seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`"}
+15:54:33 goal [51, 50] 170 {"goal": "goto 49,47"}
+15:54:37 attention [49, 47] 170 {"what": "goal_done", "detail": "goto 49,47"}
+15:54:43 nav_journal [49, 47] 170 {"text": "15:54:43 550ft 100% | Beryl Ring at 49,47 fetched (again missing from Item squares; found '=' on map); 4 rings + wand + staff to identify | goal explore until ~16:05 | then recall"}
+15:54:43 goal [49, 47] 170 {"goal": "explore"}
+15:55:08 attention [6, 49] 170 {"what": "tactic", "detail": "Blue jelly (lvl 4, never moves) blocks the way: killing it"}
+15:56:41 user_note [48, 97] 170 {"note": "? We should implement a \"Navigator's view\" panel that shows me what info the Navigator currently has. This will help me understand the Navigator's current difficulties"}
+15:58:09 attention [58, 81] 162 {"what": "interesting_item", "detail": "Pearl Ring seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`"}
+15:58:10 attention [57, 81] 163 {"what": "lost", "detail": "You have no room for a Potion of Cure Critical Wounds."}
+15:58:11 attention [57, 81] 164 {"what": "pack_full", "detail": "You have no room for a Potion of Cure Critical Wounds."}
+15:58:13 note [58, 81] 157 {"text": "effect_failed (pack unchanged after 3 s): pick up: a Potion of Cure Critical Wounds."}
+15:58:13 attention [58, 81] 157 {"what": "tactic", "detail": "no effect seen: pick up: a Potion of Cure Critical Wounds."}
+15:58:16 attention [57, 82] 156 {"what": "lost", "detail": "You have no room for a Cutlass (1d7)."}
+15:58:18 goal [59, 80] 157 {"goal": "goto 57,81"}
+15:58:18 attention [58, 81] 157 {"what": "lost", "detail": "You have no room for a Pearl Ring."}
+15:58:18 note [58, 81] 157 {"text": "effect_failed (pack unchanged after 3 s): pick up: a Cutlass (1d7)."}
+15:58:18 attention [58, 81] 157 {"what": "tactic", "detail": "no effect seen: pick up: a Cutlass (1d7)."}
+15:58:19 attention [57, 81] 158 {"what": "lost", "detail": "You have no room for a Potion of Cure Critical Wounds."}
+15:58:19 attention [57, 81] 158 {"what": "goal_done", "detail": "goto 57,81"}
+15:58:20 goal [57, 81] 159 {"goal": "goto 59,80"}
+15:58:20 note [57, 81] 159 {"text": "effect_failed (pack unchanged after 3 s): pick up: a Pearl Ring."}
+15:58:20 attention [57, 81] 159 {"what": "tactic", "detail": "no effect seen: pick up: a Pearl Ring."}
+15:58:21 attention [59, 80] 160 {"what": "lost", "detail": "You have no room for a Pearl Ring."}
+15:58:22 note [59, 80] 160 {"text": "effect_failed (pack unchanged after 3 s): pick up: a Potion of Cure Critical Wounds."}
+15:58:22 attention [59, 80] 160 {"what": "tactic", "detail": "no effect seen: pick up: a Potion of Cure Critical Wounds."}
+15:58:23 attention [59, 80] 161 {"what": "goal_done", "detail": "goto 59,80"}
+15:58:23 goal [59, 80] 161 {"goal": "goto 60,80"}
+15:58:23 attention [60, 80] 161 {"what": "goal_done", "detail": "goto 60,80"}
+15:58:23 goal [60, 80] 161 {"goal": "goto 50,78"}
+15:58:24 note [60, 80] 162 {"text": "effect_failed (pack unchanged after 3 s): pick up: a Pearl Ring."}
+15:58:24 attention [60, 80] 162 {"what": "tactic", "detail": "no effect seen: pick up: a Pearl Ring."}
+15:58:25 attention [59, 80] 162 {"what": "lost", "detail": "You have no room for a Pearl Ring."}
+15:58:27 note [58, 81] 159 {"text": "effect_failed (pack unchanged after 3 s): pick up: a Pearl Ring."}
+15:58:27 attention [58, 81] 159 {"what": "tactic", "detail": "no effect seen: pick up: a Pearl Ring."}
+15:58:28 attention [57, 81] 159 {"what": "lost", "detail": "You have no room for a Potion of Cure Critical Wounds."}
+15:58:30 note [54, 81] 155 {"text": "effect_failed (pack unchanged after 3 s): pick up: a Potion of Cure Critical Wounds."}
+15:58:30 attention [54, 81] 155 {"what": "tactic", "detail": "no effect seen: pick up: a Potion of Cure Critical Wounds."}
+15:58:34 attention [50, 78] 158 {"what": "goal_done", "detail": "goto 50,78"}
+15:58:39 attention [50, 78] 162 {"what": "interesting_item", "detail": "Balsa Staff seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`"}
+15:58:51 goal [50, 78] 170 {"goal": "goto 57,81"}
+15:58:57 attention [57, 81] 170 {"what": "goal_done", "detail": "goto 57,81"}
+15:58:57 goal [57, 81] 170 {"goal": "goto 59,80"}
+15:58:59 attention [59, 80] 170 {"what": "lost", "detail": "You have no room for a Pearl Ring."}
+15:58:59 attention [59, 80] 170 {"what": "pack_full", "detail": "You have no room for a Pearl Ring."}
+15:59:00 attention [59, 80] 170 {"what": "goal_done", "detail": "goto 59,80"}
+15:59:01 note [59, 80] 170 {"text": "effect_failed (pack unchanged after 3 s): pick up: a Pearl Ring."}
+15:59:01 attention [59, 80] 170 {"what": "tactic", "detail": "no effect seen: pick up: a Pearl Ring."}
+15:59:18 nav_journal [59, 80] 170 {"text": "15:59:18 550ft 100% | pack full: destroyed spare boots; then 'destroy Light all' matched Potions of Cure LIGHT Wounds and destroyed all 14 CLW (meant Scrolls of Light) | MISTAKE (mine, bad): partial-name destroy; should have used the exact letter. Picked up the CCW + 2nd Pearl Ring, now 2 CSW 1 CCW + staff of CLW | PILOT/HANDBOOK: 'destroy NAME all' should refuse an ambiguous/one-word match or confirm which item"}
+15:59:18 nav_journal [59, 80] 170 {"text": "15:59:18 550ft 100% | 15:59, 644g, 5 rings + wand + staff + unknown scroll + Trident {good}, cures thin (3 potions) | goal recall now (~6 min early) | low cures and plenty to identify/sell; town needs time for Identify x5"}
+15:59:18 goal [59, 80] 170 {"goal": "recall"}
+15:59:32 attention [16, 45] 170 {"what": "goal_done", "detail": "recall: arrived at 0 ft"}
+15:59:42 nav_journal [16, 45] 170 {"text": "15:59:42 town 100% | town 15:59 (day), 644g, 0 WoR, 3 cure potions, CON 14 | sell wand+staff at 6, Trident at 3, scroll at 5; Identify the 4 unknown rings; buy WoR, CCW, CLW | ticket for next trip + stage B cures first; Restore CON only if money is left"}
+15:59:42 goal [16, 45] 170 {"goal": "shop 6 sell Slow Monster:1 sell Object Location:1"}
+16:00:07 attention [20, 93] 170 {"what": "lost", "detail": "Your purse feels lighter."}
+16:00:20 perception_gap [24, 119] 170 {"name": "Blubbering idiot", "count": 1, "our_char": "t", "map_age": 0.41, "monsters": [[24, 117, "Filthy street urchin"]]}
+16:00:21 attention [24, 119] 170 {"what": "goal_done", "detail": "shop 6 sell Slow Monster:1 sell Object Location:1: You sold a Wand of Slow Monster (16 charges) for 200 gold.; You sold a Staff of Object Location (16 charges) for 80 gold."}
+16:00:30 perception_gap [24, 119] 170 {"name": "Boil-covered wretch", "count": 1, "our_char": "t", "map_age": 0.41, "monsters": []}
+16:00:31 goal [24, 119] 170 {"goal": "shop 5 sell shu foreng:1"}
+16:00:38 attention [37, 111] 170 {"what": "tactic", "detail": "learned: Scroll titled \"shu foreng\" = Scroll of Monster Confusion"}
+16:00:38 attention [37, 111] 170 {"what": "goal_done", "detail": "shop 5 sell shu foreng:1: stock: 3 Potions of Resist Heat 50; 12 Potions of Resist Cold 50; 2 Potions of Restore Wisdom 498; 37 Scrolls of Phase Door 25; 18 Scrolls of Word of Recall 249; 3 Scrolls of Word of Recall {25% off} 188; 99 Scrolls of Identify 83; a Scroll of Enchant Weapon To-Hit 208; 15 Scrolls of Enchant Weapon To-Dam 208; 4 Scrolls of Recharging 332; 30 Scrolls of Light 25; 6 Scrolls of Magic Mapping 66; 48 Scrolls of Satisfy Hunger 17; You sold a S
+16:00:48 nav_journal [37, 111] 170 {"text": "16:00:48 town 100% | shop 5: WoR 188 (25% off), Identify 83, no Restore CON; sold unknown scroll (= Monster Confusion) 7; 858g | buy 1 WoR @188 + 3 Identify (Pearl x2 share a flavour, Calcite, Beryl) | ticket first; rings must be identified before selling"}
+16:00:48 goal [37, 111] 170 {"goal": "shop 5 buy Word of Recall:1@190 buy Identify:3@85"}
+16:00:49 attention [37, 111] 170 {"what": "goal_done", "detail": "shop 5 buy Word of Recall:1@190 buy Identify:3@85: You bought a Scroll of Word of Recall {25% off} for 188 gold.; You bought 3 Scrolls of Identify for 249 gold."}
+16:00:53 attention [37, 111] 170 {"what": "tactic", "detail": "learned: Pearl Ring = Ring of Slow Digestion"}
+16:01:13 nav_journal [37, 111] 170 {"text": "16:01:13 town 100% | identified: Pearl = Slow Digestion x2, Calcite = Teleportation {cursed} (autodestroyed), Beryl = Resist Fire | wore Resist Fire + 1 Slow Digestion; sell spare Slow Digestion + Ruby (Searching) at 6, Trident {good} at 3 | resist fire is real protection; rings slots were empty"}
+16:01:13 goal [37, 111] 170 {"goal": "shop 6 sell Slow Digestion:1 sell !Ruby Ring:1"}
+16:01:17 attention [26, 119] 170 {"what": "goal_done", "detail": "shop 6 sell Slow Digestion:1 sell !Ruby Ring:1: You sold a Ring of Slow Digestion for 100 gold.; You sold a Ring of Searching (-3) {cursed} for 18 gold."}
+16:01:25 goal [26, 119] 170 {"goal": "shop 3 sell Trident:1"}
+16:01:33 user_note [28, 100] 170 {"note": "! DOn't sell the trident"}
+16:01:33 attention [28, 100] 170 {"what": "user_message", "detail": "DOn't sell the trident"}
+16:01:36 attention [34, 94] 170 {"what": "goal_done", "detail": "shop 3 sell Trident:1: You sold a Trident (1d8) (+3,+7) for 42 gold."}
+16:01:38 goal [34, 94] 170 {"goal": null}
+16:01:40 user_note [34, 94] 170 {"note": "! Identify it first"}
+16:01:40 attention [34, 94] 170 {"what": "user_message", "detail": "Identify it first"}
+16:01:45 nav_say [34, 94] 170 {"text": "Too late, sorry - it sold the moment your message came in: it was (+3,+7), 42 gold. You're right, 3 blows x (1d8+7) beats the Main Gauche. Checking the buy-back price now."}
+16:01:45 goal [34, 94] 170 {"goal": "shop 3"}
+16:01:46 attention [34, 94] 170 {"what": "goal_done", "detail": "shop 3: stock: 42 Small Swords (1d6) (+0,+0) 79; 17 Sabres (1d7) (+0,+0) 83; 31 Cutlasses (1d7) (+0,+0) 140; a Tulwar (2d4) (+0,+0) 330; 4 Broad Swords (2d5) (+0,+0) 421; 3 Scimitars (2d5) (+0,+0) 413; 5 Spears (1d6) (+0,+0) 59; an Awl-Pike (1d8) (+0,+0) 561; a Trident (1d8) (+3,+7) 1848; 4 Tridents (1d8) (+0,+0) 198; a Pike (2d5) (+0,+0) 591; a Beaked Axe (2d6) (+4,+1) 1498; 2 Beaked Axes (2d6) (+0,+0) 673; a Broad Axe (2d6) (+0,+0) 502; 2 Lances (2d8) (+0,+0) 3
+16:01:54 nav_journal [34, 94] 170 {"text": "16:01:54 town 100% | user 16:01:33 'Don't sell the trident' arrived as the sale went through: Trident was (+3,+7) (3 blows ~34/round vs MG ~20), sold for 42; buy-back 1848, unaffordable | told user honestly | MISTAKE (mine): the Weapons line said ~14 because the pluses were unknown; I should have identified/wielded a {good} weapon before selling (handbook: compare found weapons first). PILOT: Weapons line could warn that {good} = unknown pluses"}
+16:01:54 nav_say [34, 94] 170 {"text": "Buy-back is 1848, I have 581 - can't. My mistake: I trusted the ~14 dmg estimate, which ignored the unknown pluses. Now buying CCW and CLW at the Temple."}
+16:01:57 goal [34, 94] 170 {"goal": "shop 4"}
+16:02:02 attention [25, 114] 170 {"what": "goal_done", "detail": "shop 4: stock: 29 Holy Books of Prayers [Beginners Handbook] 40; 6 Holy Books of Prayers [Words of Wisdom] 160; a Holy Book of Prayers [Chants and Blessings] 480; 6 Holy Books of Prayers [Exorcism and Dispelling] 1440; 13 Potions of Boldness 16; 25 Potions of Heroism 56; 13 Potions of Cure Light Wounds 24; 6 Potions of Cure Serious Wounds 64; 4 Potions of Cure Serious Wounds {50% off} 32; 6 Potions of Cure Critical Wounds 160; a Potion of Restore Life Levels 640;
+16:02:08 nav_journal [25, 114] 170 {"text": "16:02:08 town 100% | Temple: CSW 32 (50% off) x4, CCW 160, CLW 24; 581g | buy 4 CSW@32, 2 CCW@160, 5 CLW@24 | stage B cure line: 3 CCW + 6 CSW + 5 CLW, replaces the CLW I destroyed"}
+16:02:08 goal [25, 114] 170 {"goal": "shop 4 buy Cure Serious:4@32 buy Cure Critical:2@160 buy Cure Light:5@24"}
+16:02:09 attention [25, 114] 170 {"what": "goal_done", "detail": "shop 4 buy Cure Serious:4@32 buy Cure Critical:2@160 buy Cure Light:5@24: You bought 3 Potions of Cure Serious Wounds {50% off} for 96 gold.; You bought 2 Potions of Cure Critical Wounds for 320 gold.; You bought 5 Potions of Cure Light Wounds for 120 gold."}
+16:02:17 nav_journal [25, 114] 170 {"text": "16:02:17 town 100% | bought 3 CSW (all stock), 2 CCW, 5 CLW -> 45g; 1 WoR; 16:02, ~14 min budget left | goal townfarm 240 6 (day) then buy a 2nd WoR | mission: 2nd WoR when down to one; townfarm is fast by day"}
+16:02:17 goal [25, 114] 170 {"goal": "townfarm to 240 gold"}
+16:02:54 user_note [29, 88] 170 {"note": "! I didn't mean to keep it, but any weapons or armor that pseudo-ID as something better than \"average\" are always worth IDing. They sell for MUCH more"}
+16:02:54 attention [29, 88] 170 {"what": "user_message", "detail": "I didn't mean to keep it, but any weapons or armor that pseudo-ID as something better than \"average\" are always worth IDing. They sell for MUCH more"}
+16:03:02 nav_say [31, 104] 170 {"text": "Understood: anything {good} or better gets identified before selling - unidentified it sold at base price (42 vs a 1848 shop price). Noted for the report. Townfarming now: 45->198g in 30 s."}
+16:03:02 nav_journal [31, 104] 170 {"text": "16:03:02 town 100% | user 16:02:54: weapons/armour pseudo-ID'd better than average are always worth identifying, they sell for much more | acknowledged, rule for me + handbook: Identify every {good}/{excellent} item before selling (Trident sold unknown for 42) | townfarm 45->198g in 30 s"}
+16:04:11 user_note [23, 75] 170 {"note": "? The Navigator did a poor job of managing a full inventory with lots of items to pick up before recalling."}
+16:05:08 user_note [34, 94] 170 {"note": "! Did you have the flask of oil in the dungeon before recalling?"}
+16:05:08 attention [34, 94] 170 {"what": "user_message", "detail": "Did you have the flask of oil in the dungeon before recalling?"}
+16:05:15 nav_say [24, 80] 170 {"text": "Yes, 1 flask the whole trip (bought 4 at 15:32, filling the empty lantern used 3). The lantern still had ~12000 turns, so the flask was a spare - it could have been dropped when the pack filled instead of losing the CLW."}
+16:05:15 nav_journal [24, 80] 170 {"text": "16:05:15 town 100% | user 16:05:08: did you have the flask of oil in the dungeon? | yes, 1 spare flask all trip (lantern ~12600 turns); it was a candidate to drop when the pack filled | honest"}
+16:06:13 user_note [32, 102] 170 {"note": "! Some items are important but not valuable, if we are going to recall shortly, are safe, and have no bag space, we can drop them or use them to free space. May as well have filled the lantern with the oil."}
+16:06:13 attention [32, 102] 170 {"what": "user_message", "detail": "Some items are important but not valuable, if we are going to recall shortly, are safe, and have no bag space, we can drop them or use them to free space. May as well have filled the lantern with the oil."}
+16:06:17 attention [34, 113] 170 {"what": "tactic", "detail": "townfarm: no gold in 2 minutes (no targets found); selling spare items may be faster"}
+16:06:19 nav_say [36, 117] 170 {"text": "Agreed - fuel the lantern / eat / read Blessing to free slots before destroying anything valuable when recall is near. Noted for the report."}
+16:06:19 nav_journal [36, 117] 170 {"text": "16:06:19 town 100% | user 16:06:13: when the pack is full near recall time, use up or drop low-value essentials (fuel the lantern with the flask, eat, read Blessing) to free slots | agreed, lesson noted | the CLW loss came from not doing that first"}
+16:07:24 nav_journal [23, 74] 170 {"text": "16:07:24 town 100% | townfarm stalled at 219g for 3 min; WoR was 188 at 25% off | stop farming, shop 5 buy WoR@190 | 219 already covers the discounted WoR"}
+16:07:24 goal [23, 74] 170 {"goal": "shop 5 buy Word of Recall:1@190"}
+16:07:33 user_note [37, 111] 170 {"note": "? If there is only 1 WoR in the inventory, then after recalling we have a slot free. If we put ourselves near an item we want but don't have space for, we can pick it up in the gap between reading the WoR and actually recalling back."}
+16:07:34 attention [37, 111] 170 {"what": "goal_done", "detail": "shop 5 buy Word of Recall:1@190: You bought a Scroll of Word of Recall {75% off} for 63 gold."}
+16:07:39 goal [37, 111] 170 {"goal": "shop 5 buy Word of Recall:1@63"}
+16:07:39 attention [37, 111] 170 {"what": "goal_done", "detail": "shop 5 buy Word of Recall:1@63: stock: 99 Potions of Resist Heat 50; 99 Potions of Resist Cold 50; 25 Potions of Restore Strength 498; 21 Potions of Restore Intelligence 498; 29 Potions of Restore Wisdom 498; 8 Potions of Restore Dexterity 498; a Potion of Restore Dexterity {25% off} 374; 22 Potions of Restore Constitution 498; a Potion of Restore Constitution {25% off} 374; 37 Potions of Restore Charisma 498; 99 Scrolls of Phase Door 25; 3 Scrolls of Phase Door 
+16:07:46 nav_journal [37, 111] 170 {"text": "16:07:46 town 100% | WoR bought at 63 (75% off) -> 2 WoR, 156g; stock rolled: Identify 42 (50% off), Restore CON 374 (25% off, can't afford) | buy 2 Identify@42 | handbook: keep 2-3 discounted Identify; next trip's {good} items get identified before selling"}
+16:07:46 goal [37, 111] 170 {"goal": "shop 5 buy Identify:2@42"}
+16:07:47 attention [37, 111] 170 {"what": "goal_done", "detail": "shop 5 buy Identify:2@42: You bought 2 Scrolls of Identify {50% off} for 84 gold."}
+16:07:52 nav_journal [37, 111] 170 {"text": "16:07:52 town 100% | 16:08, 72g, 2 WoR, 3 CCW 5 CSW 5 CLW 10 Phase 2 Identify, rings Resist Fire + Slow Digestion | stop, idle in town; answer the user until the budget ends ~16:16 | not enough time for another dive"}
+16:07:52 goal [37, 111] 170 {"goal": null}
+16:08:39 user_note [37, 111] 170 {"note": "! Good game, see you next time"}
+16:08:39 attention [37, 111] 170 {"what": "user_message", "detail": "Good game, see you next time"}
+16:08:43 nav_say [37, 111] 170 {"text": "Good game, thanks for all the tips - see you next time!"}
+16:08:43 nav_journal [37, 111] 170 {"text": "16:08:43 town 100% | user 16:08:39: 'Good game, see you next time' | replied thanks; mission ends idle in town | end: clvl 15, 170/170 HP (CON 14), 72g, 2 WoR, 3 CCW 5 CSW 5 CLW 10 Phase"}
