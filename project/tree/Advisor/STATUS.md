@@ -61,7 +61,8 @@ The original six-topic backlog (`../memos/2026-09-27-advisor-study-topics.md`) i
    wrap, old-level map leaking, "You have …" vs slot-packet race).
 3. (Done 10-08: Navigator decision quality, `2026-10-08-navigator-decisions.md`. Note: the unknown-potion sales FOLLOWED the doctrine
    of their day — not lapses.) Next candidates: replay mission 17 (first test of the 2.5× emergency trigger and the 10-08 fixes;
-   the Architect asked for the phase count).
+   the Architect asked for the phase count; also check `structures.py` inner-room/pit hits vs the map crops — thresholds
+   in to_advisor/2026-10-09-recogniser-built.md; and the supply gate / new report lines).
 4. (Struck by the user 2026-10-07: the live fetch of Bug Reports / Technical Support. Don't propose it again.)
 5. Small leads: check that Dive04 bought Restore Strength / Main Gauche and re-measure damage per round; Gorlim's shallow forum sightings; the sound/shards/light resist formula (only
    nether/dark checked); monster levels 41+ unrated; whether per-character artifact preservation is

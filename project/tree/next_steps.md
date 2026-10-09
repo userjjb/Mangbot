@@ -347,7 +347,9 @@ asked, 2026-09-29, and agreed to keep it if harmless).
   monsters: dark + ≥ 4 of one kind = pit (orc pit for `o`), dark + ≥ 3 stationary inside = nest.
   `structure` event (news for rooms; wakes for pits/nests, which also get avoid zones), report
   line `Structures:`, `goal searchroom Y,X` (20 searches at each of the 4 door spots), explore's
-  "done" names unopened inner rooms. Tested on synthetic maps only (no full-level map is logged).
+  "done" names unopened inner rooms. Tested on synthetic maps only. From now on each dungeon level's
+  remembered map is saved on leaving to `runs/pilot/NICK/levels/` (header: depth, times, structures
+  found), so missed or false rooms can be checked.
 - **Demo mission** (23:49-23:56, 50 ft and back by stairs, the user messaged twice): fine. Fixed and
   deployed with the mission 15 answers (b26c14a: corridor zig-zag → run along the axis, map crops
   in attention/journal/note records, HANDBOOK inner rooms/vault walls/chests) and 7c16bc5 (stuck

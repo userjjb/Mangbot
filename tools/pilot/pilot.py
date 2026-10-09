@@ -3639,9 +3639,12 @@ class Pilot:
 
     def structures_tick(self, now):
         w = self.w
-        if not w.in_dungeon or now - self.struct_t < 2.0 or not w.memory:
+        if now - self.struct_t < 2.0:
             return
         self.struct_t = now
+        self.save_level_map(now)
+        if not w.in_dungeon or not w.memory:
+            return
         for Y, X, ev in structures.scan(w.memory):
             key = (w.level_t, (Y, X))
             st = self.structs.get(key)
@@ -3662,6 +3665,33 @@ class Pilot:
                 self.notify("structure", f"{where}: {advice}")
             else:
                 self.notify("structure", f"{where}: {advice}", news=True)
+
+    def save_level_map(self, now):
+        """Each dungeon level's remembered map, written when we leave it, to
+        runs/pilot/<nick>/levels/ (only 11x31 crops were logged, so the
+        recogniser couldn't be checked against real levels afterwards)."""
+        w = self.w
+        snap = getattr(self, "map_snap", None)
+        if snap and snap["level"] != w.level_t:
+            try:
+                d = os.path.join(self.rundir, "levels")
+                os.makedirs(d, exist_ok=True)
+                mem = snap["mem"]
+                rows = ["".join(mem.get((y, x), " ") for x in range(MAX_WID)).rstrip() for y in range(MAX_HGT)]
+                found = [f"{st['kind']} {Y},{X}" for (lv, (Y, X)), st in self.structs.items() if lv == snap["level"]]
+                with open(os.path.join(d, time.strftime("%Y%m%d-%H%M%S", time.localtime(snap["t0"]))
+                                       + f"-{snap['ft']}ft.txt"), "w") as f:
+                    f.write(f"# {snap['ft']} ft, {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(snap['t0']))} - "
+                            f"{time.strftime('%H:%M:%S', time.localtime(snap['t']))}; structures: "
+                            f"{', '.join(found) or 'none'}\n" + "\n".join(rows) + "\n")
+            except OSError:
+                pass
+            snap = None
+        if w.in_dungeon and w.memory:
+            self.map_snap = {"level": w.level_t, "mem": dict(w.memory), "ft": w.depth_ft,
+                             "t0": snap["t0"] if snap else now, "t": now}
+        else:
+            self.map_snap = None
 
     def structures_here(self):
         w = self.w
