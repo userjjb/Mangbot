@@ -42,6 +42,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "shopcat"))
 from mang import MangClient, ClientExited      # noqa: E402
 import glyphs                                   # noqa: E402
 from world import World                          # noqa: E402
+import structures                                # noqa: E402
 from mover import Mover, direction, passable, plan, drain_zone_of, MAX_HGT, MAX_WID   # noqa: E402
 
 TV_SCROLL, TV_POTION, TV_FOOD, TV_FLASK, TV_LITE = 70, 75, 80, 77, 39
@@ -371,8 +372,12 @@ class Explore(Goal):
             if not self.radius and Search.dead_ends(w, strict=True, skip=p.searched):
                 self.search = Search(tries=15, strict=True)
                 return None
+            rooms = [f"{st['kind']} at {Y},{X}" for Y, X, st in p.structures_here()
+                     if st["kind"] in ("large room", "inner room")
+                     and not all((w.level_t, r) in p.searched for _, r in structures.door_spots(Y, X))]
             return ("done", "nothing left to explore" +
-                    (f" (searched {plural(self.searched_n, 'dead end')})" if self.searched_n else ""))
+                    (f" (searched {plural(self.searched_n, 'dead end')})" if self.searched_n else "") +
+                    (f"; not opened: {', '.join(rooms)} ('goal searchroom Y,X')" if rooms else ""))
         # (targets we failed to reach are dropped from the frontier, not avoided
         # as path squares: that once made walked corridors impassable)
         if self.fails > 10 or not p.mover.go(frontier):
@@ -611,10 +616,11 @@ class Search(Goal):
     corridor ends. Done when a new door/opening shows up (explore again).
     strict=True: true corridor dead ends only (explore's own pass)."""
 
-    def __init__(self, tries=8, strict=False):
+    def __init__(self, tries=8, strict=False, spots=None):
         self.name = "search dead ends"
         self.tries = tries
         self.strict = strict
+        self.fixed = spots            # given squares (an inner room's 4 door spots) instead of dead ends
         self.spot = None
         self.searching = 0
         self.known = None
@@ -685,9 +691,13 @@ class Search(Goal):
             p.searched.add((w.level_t, self.spot))
         # the nearest dead end not searched yet (it zig-zagged by distance from
         # where the search began)
-        spots = sorted(self.dead_ends(w, self.strict, p.searched), key=w.dist)
+        if self.fixed is not None:
+            spots = sorted((q for q in self.fixed if (w.level_t, q) not in p.searched), key=w.dist)
+        else:
+            spots = sorted(self.dead_ends(w, self.strict, p.searched), key=w.dist)
         if not spots:
-            return ("failed", "searched every dead end, nothing found")
+            return ("failed", "searched every spot, nothing found" if self.fixed is not None else
+                    "searched every dead end, nothing found")
         self.spot = spots[0]
         if w.pos == self.spot:
             self.searching = self.tries
@@ -1325,6 +1335,7 @@ class Pilot:
         self.unanswered = []                  # user messages the Navigator hasn't answered (say)
         self.nav_view, self.nav_view_events = (0.0, [], ""), []   # what the Navigator last read
         self.avoid_zones, self.avoid_names = {}, set()           # the Navigator's no-go zones
+        self.structs, self.struct_t = {}, 0.0      # (level, (Y, X)) -> inner room / pit / nest found
         self.item_hold_until = 0.0            # a dive pauses after interesting_item
         self.far_seen = set()                 # (level, item) valuables seen beyond loot_radius
         self.effect_failures = 0
@@ -3036,6 +3047,7 @@ class Pilot:
             t, text = w.losses.pop(0)
             self.notify("lost", text, news=True)
         self.audit_tick(now)
+        self.structures_tick(now)
         # the Navigator's avoid zones, as squares the planner won't enter
         zone = set()
         for y0, x0, r in self.avoid_zones.get(w.level_t, []):
@@ -3568,6 +3580,13 @@ class Pilot:
             g = Shop(rest[0], buys, sells, list_stock=list_stock)
         elif name == "search":
             g = Search()
+        elif name == "searchroom":
+            m = re.match(r"^(\d+)[ ,](\d+)$", " ".join(rest[:2]) if len(rest) > 1 else (rest[0] if rest else ""))
+            if not m:
+                return {"ok": False, "error": "usage: goal searchroom Y,X (an inner room's centre, from the report)"}
+            Y, X = int(m.group(1)), int(m.group(2))
+            g = Search(tries=20, spots=[r for _, r in structures.door_spots(Y, X)])
+            g.name = f"searchroom {Y},{X}"
         elif name == "hunt":
             g = Hunt(" ".join(rest).replace("_", " "))   # 'hunt Black_ogre', like shop names
         elif name == "recall":
@@ -3602,6 +3621,51 @@ class Pilot:
 
     # --- since the last report (the Advisor's Navigator-decisions memo §3.3:
     # it reported "lowest seen 58" when the low was 26, "single orc" for 12)
+
+    # --- inner rooms, pits and nests (structures.py; the Advisor's spec,
+    # memos/2026-10-07-mission15-answers.md §2: the user asked whether the
+    # Pilot could recognise vaults and pits from a partial map)
+
+    ADVICE = {
+        "large room": "a lit large room: its one secret door is at the middle of a side of the inner block; "
+                      "'goal searchroom {Y},{X}' searches the 4 spots (20 each, about a minute). Loot is ordinary "
+                      "(0-3 objects, a few sleeping monsters)",
+        "inner room": "a dark inner room: most likely a large room (dark ones are common), but pits and nests "
+                      "(95 awake monsters) look the same and are never lit. Open it only ready to leave: "
+                      "'goal searchroom {Y},{X}'",
+        "orc pit": "an ORC PIT (95 awake orcs, archers inside, no loot): leave the level. Avoid zone set",
+        "nest": "a NEST (jellies, molds, icky things; some breed; no loot): don't open it. Avoid zone set",
+    }
+
+    def structures_tick(self, now):
+        w = self.w
+        if not w.in_dungeon or now - self.struct_t < 2.0 or not w.memory:
+            return
+        self.struct_t = now
+        for Y, X, ev in structures.scan(w.memory):
+            key = (w.level_t, (Y, X))
+            st = self.structs.get(key)
+            if st is None:
+                # lit rooms come into view all at once (pits and nests never are)
+                st = self.structs[key] = {"t": now, "lit": ev["ring_known"] >= 0.75 * ev["ring_total"],
+                                          "kind": None, "sure": False}
+            st["sure"] = st["sure"] or ev["sure"]
+            kind = structures.classify(Y, X, ev, w.monsters, st["lit"])
+            if kind == st["kind"] or (st["kind"] in ("orc pit", "nest") or "pit" in str(st["kind"])):
+                continue                          # (a pit stays a pit when its orcs have left)
+            st["kind"] = kind
+            advice = self.ADVICE.get(kind, self.ADVICE["orc pit"]).format(Y=Y, X=X)
+            where = f"{kind} centred {Y},{X} ({Y - 5}-{Y + 5}, {X - 12}-{X + 12})" + ("" if st["sure"] else ", likely")
+            if "pit" in kind or kind == "nest":
+                for dx in (-7, 0, 7):
+                    self.avoid_zones.setdefault(w.level_t, []).append((Y, X + dx, 6))
+                self.notify("structure", f"{where}: {advice}")
+            else:
+                self.notify("structure", f"{where}: {advice}", news=True)
+
+    def structures_here(self):
+        w = self.w
+        return [(Y, X, st) for (lv, (Y, X)), st in self.structs.items() if lv == w.level_t and st["kind"]]
 
     def track_since(self):
         w, now = self.w, time.time()
@@ -3784,6 +3848,12 @@ class Pilot:
             lines.append("Since last report: " + " | ".join(
                 f"{time.strftime('%H:%M:%S', time.localtime(e['t']))} {e['what']}: {e['detail']}" for e in recent))
         lines.append("Recent messages: " + " | ".join(w.recent(30)[-12:]))
+        here = self.structures_here() if w.in_dungeon else []
+        if here:
+            lines.append("Structures: " + "; ".join(
+                f"{st['kind']} centred {Y},{X}" + ("" if st["sure"] else " (likely)") +
+                (" - searched" if all((w.level_t, r) in self.searched for _, r in structures.door_spots(Y, X)) else "")
+                for Y, X, st in here))
         lines += self.since_lines(reset=news_since is not None)
         mv = self.movement_line()
         if mv:

@@ -176,10 +176,10 @@ Advisor can't see it otherwise), read `runs/complaints.md` (agents' `complain` l
    clvl × 50 = 750). Stage table in the HANDBOOK and `memos/2026-10-07-warrior-progression.md`.
 3. **Pilot bugs open:** none catalogued (all fixed 2026-10-08 evening, see the entry below; tested
    offline only, so watch mission 17 for them).
-4. **Navigator wishes:** all built 2026-10-09 (entry below), untested in play: watch mission 17. Left:
-   an inner-room/pit recogniser from the Advisor's spec (`memos/2026-10-07-mission15-answers.md` §2)
-   feeding `interesting`/`avoid`; monster HP logging (Advisor complaint 3); see "older Advisor
-   items" in the 10-09 entry.
+4. **Navigator wishes:** all built 2026-10-09 (entries below), untested in play: watch mission 17.
+   Left: vault recognition (irregular shapes; only inner rooms/pits/nests are recognised), monster
+   HP logging (Advisor complaint 3), the older Advisor items (post-mortem §4.4, Borg §3.3-3.8,
+   catalogue regex→CSV, shop routing).
 5. **Measure** alert → order → journal latency per mission (mission 14/15 median ~5 s, urgent
    tail to 112 s; the method: decisions.jsonl `attention` → next `goal`/`agent:` act/`nav_journal`).
 6. **FUTURE IMPROVEMENTS (the user):** Navigator effort (now Opus high, inherited; user wants to
@@ -338,6 +338,16 @@ asked, 2026-09-29, and agreed to keep it if harmless).
   Navigator command; runs logged as `move` records with `run`; an `options` record per login.
   **Dive04's lantern is at 0 turns with no flask: the gate will refuse the next dive until it's
   fuelled.** The user's viewer needs a restart to show complaints (`tmux -L mang`).
+- **Inner-room / pit / nest recogniser (the user, 2026-10-09, deployed 00:18):**
+  `tools/pilot/structures.py` per the Advisor's spec (geometry re-checked in generate.c: centres
+  at 11·k+5, 11×25 box, 7×21 inner block, one secret door at a side's middle; pits/nests are the
+  same room, never lit). Every 2 s it tests the grid centres against map memory (1.6 ms): ≥ 2 ring
+  sides seen, each ≥ 60% of its length beside the inner wall, no contradicting square ("likely";
+  3 sides or 2 opposite = sure). Lit = ≥ 75% of the ring known at first sight. Classified by
+  monsters: dark + ≥ 4 of one kind = pit (orc pit for `o`), dark + ≥ 3 stationary inside = nest.
+  `structure` event (news for rooms; wakes for pits/nests, which also get avoid zones), report
+  line `Structures:`, `goal searchroom Y,X` (20 searches at each of the 4 door spots), explore's
+  "done" names unopened inner rooms. Tested on synthetic maps only (no full-level map is logged).
 - **Demo mission** (23:49-23:56, 50 ft and back by stairs, the user messaged twice): fine. Fixed and
   deployed with the mission 15 answers (b26c14a: corridor zig-zag → run along the axis, map crops
   in attention/journal/note records, HANDBOOK inner rooms/vault walls/chests) and 7c16bc5 (stuck
