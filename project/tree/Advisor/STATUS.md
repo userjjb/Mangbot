@@ -25,6 +25,7 @@ an audit trail in `studies/<date>-<slug>/` (plan.md, briefs, dispatches, synthes
 | 10-07 | warrior progression plan (user's choice) | `2026-10-07-warrior-progression.md` | `data/progression/progression.py` |
 | 10-07 | running vs walking (user request) | `2026-10-07-running.md` | study scratch `R4_runs.csv` (14,100 runs) |
 | 10-07 | mission 15 requests: vaults/pits, zig-zag, chests, search (Architect) | `2026-10-07-mission15-answers.md` | study scratch `V2_vaults.csv` |
+| 10-08 | missions 15–16 replay (user's choice) | `to_architect/2026-10-08-missions15-16-replay.md` | study scratch `E1_brodda.csv`, `E3_kills.csv` |
 
 The original six-topic backlog (`../memos/2026-09-27-advisor-study-topics.md`) is complete.
 

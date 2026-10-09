@@ -309,6 +309,15 @@ asked, 2026-09-29, and agreed to keep it if harmless).
   Checked and already fixed: unseen-attacker alarms after kills (§4.5), clvl after resurrection,
   Bullroarer seen late. Still open as features, not bugs: post-mortem §4.4/§5, Borg §3.3-3.8,
   catalogue regex→CSV, shop routing.
+- **Advisor's missions 15-16 replay** (`memos/to_architect/2026-10-08-missions15-16-replay.md`, read;
+  reply `memos/to_advisor/2026-10-08-missions15-16-adopted.md`), deployed 23:44: Brodda (HP 151 → 27,
+  the closest call yet) → `flee_failed` sees listed-only dangers and isn't blocked by `flee_t`;
+  emergency also at HP ≤ 2.5 × the hardest adjacent monster's worst round (×speed, HP < 90%);
+  `goal goto` held beside a dangerous monster (`force` overrides); blind/confused + still hit →
+  cure with nothing in view, explore/search/dive pause; the `destroy Light all` bug was still live
+  (by-name branch) → `item_index(pack_only=True)`; goals inside a drainer zone dropped; `monster`
+  prints unique HP as the max (Wormtongue 250); slow-caster no-flee distance 25 → 8. Open: should
+  {magical} items be identified before selling, like {good}? Watch mission 17 for the 2.5× phase count.
 - **Demo mission** (23:49-23:56, 50 ft and back by stairs, the user messaged twice): fine. Fixed and
   deployed with the mission 15 answers (b26c14a: corridor zig-zag → run along the axis, map crops
   in attention/journal/note records, HANDBOOK inner rooms/vault walls/chests) and 7c16bc5 (stuck

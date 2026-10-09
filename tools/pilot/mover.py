@@ -19,6 +19,12 @@ def passable(ch):
     return ch not in WALLS
 
 
+def drain_zone_of(world):
+    """Squares next to a stationary drainer (and its own square)."""
+    return {(y + dy, x + dx) for y, x, r in world.monsters if "NEVER_MOVE" in getattr(r, "flags", ())
+            and getattr(r, "drains", False) for dy in (-1, 0, 1) for dx in (-1, 0, 1)}
+
+
 def plan(world, goals, avoid=(), monster_cost=40, max_cost=4000):
     """Dijkstra over remembered tiles from world.pos to the nearest goal."""
     start = world.pos
@@ -33,9 +39,13 @@ def plan(world, goals, avoid=(), monster_cost=40, max_cost=4000):
     # Never next to a stationary drainer (mission 16: explore walked back beside
     # a Purple mushroom patch, CON 18 -> 14), nor into the Navigator's avoid
     # zones: impassable, unless it's the goal itself
-    drain_zone = {(y + dy, x + dx) for y, x, r in world.monsters if "NEVER_MOVE" in getattr(r, "flags", ())
-                  and getattr(r, "drains", False) for dy in (-1, 0, 1) for dx in (-1, 0, 1)}
+    drain_zone = drain_zone_of(world)
     avoid = set(avoid) | drain_zone | set(getattr(world, "avoid_zone", ()))
+    # A goal inside the zone would still pull the path beside the drainer (the
+    # Advisor's mission 16 replay): drop such goals unless they're all there
+    # (a goto the Navigator asked for)
+    if goals - drain_zone:
+        goals -= drain_zone
     mem = world.memory
     # On the surface (town, wilderness) unseen ground is mostly open -- at
     # night the floor isn't even drawn -- while trees and fences block

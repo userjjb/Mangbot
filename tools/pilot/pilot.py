@@ -42,7 +42,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "shopcat"))
 from mang import MangClient, ClientExited      # noqa: E402
 import glyphs                                   # noqa: E402
 from world import World                          # noqa: E402
-from mover import Mover, direction, passable, plan, MAX_HGT, MAX_WID   # noqa: E402
+from mover import Mover, direction, passable, plan, drain_zone_of, MAX_HGT, MAX_WID   # noqa: E402
 
 TV_SCROLL, TV_POTION, TV_FOOD, TV_FLASK, TV_LITE = 70, 75, 80, 77, 39
 CURE_POTIONS = ("Cure Critical Wounds", "Cure Serious Wounds", "Cure Light Wounds", "Healing")
@@ -233,14 +233,30 @@ class Wait(Goal):
 
 
 class Goto(Goal):
-    def __init__(self, target):
+    def __init__(self, target, force=False):
         self.target = target
-        self.name = f"goto {target}"
+        self.force = force
+        self.name = f"goto {target}" + (" force" if force else "")
         self.started = False
         self.arrived_t = None
+        self.held_warned = False
 
     def tick(self, p):
         w = p.w
+        # Walking away from a dangerous monster next to us hands it free hits
+        # (mission 15: a goto written for an older report walked two steps
+        # beside Brodda): hold and let auto-retaliate fight, unless forced
+        bad = [r for *_, r in w.adjacent_monsters() if p.danger_why(r)] if w.in_dungeon and not self.force else []
+        if bad:
+            if p.mover.active:
+                p.mover.stop()
+                self.started = False
+            if not self.held_warned:
+                self.held_warned = True
+                p.notify("tactic", f"goto held: {bad[0].name} is adjacent (walking away gives it free hits); "
+                                   "it fights on. 'goal goto Y,X force' to walk anyway, or phase/recall")
+            return None
+        self.held_warned = False
         if self.arrived_t:
             # An item underfoot is picked up ~0.6 s after arriving: report after
             # that, or the Navigator sees it still on the floor (mission 5)
@@ -339,8 +355,9 @@ class Explore(Goal):
         # rock our light didn't reach, not a way on (the explorer once "failed"
         # because the only frontier left was the square it stood on)
         p.visited.add(w.pos)
+        zone = drain_zone_of(w)           # (never explore beside a drainer)
         frontier = [f for f in p.frontier(center=self.center if self.radius else None, radius=self.radius)
-                    if f != w.pos and f not in p.visited]
+                    if f != w.pos and f not in p.visited and f not in zone]
         if not frontier:
             # Rubble next to unknown ground is a way on (the user: corridors never
             # dead-end, at worst there's a 1-thick wall of rubble): dig through
@@ -1261,6 +1278,7 @@ class Pilot:
         self.gap_since = {}
         self.stuck_t = 0.0
         self.flee_t = 0.0
+        self.flee_fail_t = 0.0
         self.wear_queue = False
         self.breeder_level = None
         self.choke_state = None
@@ -1721,8 +1739,14 @@ class Pilot:
         # (the mover sends 'clear' and queues walks), which wiped every queued
         # Phase Door, potion and Word of Recall, and the walks took the turns.
         # Dive03 died at 750 ft without one of them being read.
-        if w.hp_frac < o["flee_hp"] and (mons_near or now - w.last_hit_t < 5):
-            if not self.escape("low HP") and self.mover.active and not self.escaping_to_stairs:
+        # (and HP within 2.5 worst-case rounds of one adjacent monster: Brodda
+        # took 151 -> 27 in five rounds of 48 before flee_hp fired at 58 --
+        # the Advisor's missions 15-16 replay, change 3)
+        worst = max(((r.worst_melee[0] or 0) * (r.speed_x or 1) for *_, r in w.adjacent_monsters()), default=0)
+        hard = worst > 0 and w.hp[0] <= 2.5 * worst and w.hp_frac < 0.9
+        if (w.hp_frac < o["flee_hp"] or hard) and (mons_near or now - w.last_hit_t < 5):
+            why = "low HP" if w.hp_frac < o["flee_hp"] else f"HP {w.hp[0]} within 2.5 worst rounds ({worst:.0f})"
+            if not self.escape(why) and self.mover.active and not self.escaping_to_stairs:
                 self.mover.stop()
             return True
         # 2'. Group danger (the Borg's rule, Advisor memo 2026-09-28 §3.1)
@@ -1757,9 +1781,10 @@ class Pilot:
         near_danger += [r for r in w.listed_only() if self.danger_why(r)]
         # A slow caster with weak melee and the stairs far away: fleeing just
         # gives it free casts on the way (mission 15: Wormtongue, ~6 melee per
-        # turn, the stairs 70-80 away, twice; the user: stand and fight)
+        # turn, the stairs 70-80 away, twice; the user: stand and fight; the
+        # Advisor's replay: even a '>' 12 away gave ~18 s of free casts)
         stairs_d = min((w.dist(q) for q in w.find("<>")), default=999)
-        if near_danger and stairs_d > 25 and all(
+        if near_danger and stairs_d > 8 and all(
                 (r.speed_x or 1) <= 1 and r.per_turn < w.hp[0] / 8 and r.spells for r in near_danger):
             if now - self.flee_t > 30:
                 self.flee_t = now
@@ -1767,6 +1792,13 @@ class Pilot:
                                            "NOT fleeing (it's slow and hits weakly; its danger is spells, and a "
                                            "long walk gives it free casts). Fight it (goal hunt) or recall")
             near_danger = []
+        if near_danger and now - self.flee_t <= 10 and self.flee_fail_t >= self.flee_t and \
+                not isinstance(self.goal, Recall) and not self.recall_started(now):
+            # the flee failed (no stairs): flee_t mustn't block the Word of
+            # Recall / Phase Door fallback for 10 s (the Advisor's replay)
+            self.flee_failed()
+            if self.recall_started(now):
+                return True
         if near_danger and not isinstance(self.goal, (Flee, Recover)) and now - self.flee_t > 10 \
                 and "danger" in o["stop_on"]:
             self.flee_t = now
@@ -2189,11 +2221,20 @@ class Pilot:
             why = self.danger_why(r)
             flags = sorted(f for f in r.flags if f in ("UNIQUE", "NEVER_MOVE", "MULTIPLY", "INVISIBLE",
                                                        "PASS_WALL", "KILL_WALL", "FRIENDS", "EMPTY_MIND"))
+            # HP as a number: FORCE_MAXHP (all uniques) always has the maximum
+            # (the Navigator told the user Wormtongue had ~137, the dice average;
+            # he has 250 -- the Advisor's missions 15-16 replay)
+            hn, _, hm = str(r.hp).partition("d")
+            try:
+                hp_txt = (f"{r.hp} = {int(hn) * int(hm)} (always the maximum)" if "FORCE_MAXHP" in r.flags
+                          else f"{r.hp} (~{int(hn) * (int(hm) + 1) // 2} on average)") if hm else str(r.hp)
+            except ValueError:
+                hp_txt = str(r.hp)
             out.append(f"{r.name} ({r.char}): lvl {r.level} ({r.level * 50} ft), speed {r.speed - 110:+d}, "
-                       f"HP {r.hp}; blows {', '.join(r.blows) or 'none'}; "
+                       f"HP {hp_txt}; blows {', '.join(r.blows) or 'none'}; "
                        f"spells 1 in {r.spell_freq}: {', '.join(sorted(r.spells))}" if r.spells else
                        f"{r.name} ({r.char}): lvl {r.level} ({r.level * 50} ft), speed {r.speed - 110:+d}, "
-                       f"HP {r.hp}; blows {', '.join(r.blows) or 'none'}; no spells")
+                       f"HP {hp_txt}; blows {', '.join(r.blows) or 'none'}; no spells")
             out[-1] += (f"; flags {', '.join(flags) or '-'}; max breath {r.max_breath}; "
                         f"melee per turn ~{r.per_turn:.0f} (worst {mx * (r.speed_x or 1):.0f}, drain blows {drains})"
                         f"; Advisor rating {r.danger if r.danger is not None else '?'}/5"
@@ -2368,9 +2409,13 @@ class Pilot:
         threat = w.hp_frac < self.orders["think_hp"] or any(m[2].level >= w.clvl - 5 for m in mobile_near)
         if w.flag("stun") and (threat or w.ind.get("stun", [0])[0] >= 2):
             want.append("stun")
-        if mobile_near and w.flag("confused") and threat:
+        # Blind or confused and still being hit: cure whatever we can see (mission
+        # 15: blind + confused 9 s with nothing in view, HP 160 -> 86, no cure)
+        hit_unseen = now - w.last_hit_t <= 3 and (w.damage_rate(3.0) > 0.01 * w.hp[1] or
+                                                   w.hp_frac < self.orders["think_hp"])
+        if (mobile_near and threat or hit_unseen) and w.flag("confused"):
             want.append("confused")
-        if mobile_near and w.flag("blind") and threat:
+        if (mobile_near and threat or hit_unseen) and w.flag("blind"):
             want.append("blind")
         if w.flag("poisoned") and w.hp_frac < self.orders["think_hp"]:
             want.append("poisoned")
@@ -2609,6 +2654,13 @@ class Pilot:
     def step_goal(self):
         if not self.goal:
             return False
+        if self.w.in_dungeon and (self.w.flag("blind") or self.w.flag("confused")) and \
+                isinstance(self.goal, (Explore, Search, Dive)):
+            # steps go astray and we can't see (mission 15 kept sending explore
+            # moves into walls): wait it out (fights and cures still run)
+            if self.mover.active:
+                self.mover.stop()
+            return True
         try:
             r = self.goal.tick(self)
         except Exception as e:           # a goal bug must not kill the pilot
@@ -2638,7 +2690,12 @@ class Pilot:
         Navigator had to read Word of Recall itself) -- start a recall and
         phase out of reach while it charges."""
         w, now = self.w, time.time()
-        near = [m for m in w.monsters if w.dist(m[:2]) <= 5]
+        self.flee_fail_t = now
+        # (decoded or only listed by the server, as danger_seen counts them:
+        # mission 15's Brodda was listed 0.1 s before the map decode, so this
+        # saw nothing and no Word of Recall was read at full HP)
+        near = [m for m in w.monsters if w.dist(m[:2]) <= 5] + \
+            [(None, None, r) for r in w.listed_only() if self.danger_why(r)]
         if not w.in_dungeon or not near or w.flag("blind") or w.flag("confused"):
             return
         if not self.recall_started(now):
@@ -3045,7 +3102,7 @@ class Pilot:
     ACTIONS = {"wear": "w", "takeoff": "t", "quaff": "q", "read": "r", "eat": "E", "fuel": "F",
                "destroy": "k", "drop": "d", "inspect": "I", "aim": "a", "use": "u", "zap": "z"}
 
-    def item_index(self, letter, equip=False):
+    def item_index(self, letter, equip=False, pack_only=False):
         """Inventory letter (a, b, ...) as in the report, or part of an item's
         name (spaces as '_'; resolved now, so it can't go stale) -> item index."""
         if len(letter) == 1 and letter.isalpha():
@@ -3053,10 +3110,11 @@ class Pilot:
         if letter.isdigit():
             return int(letter)
         name = letter.replace("_", " ").lower()
-        pool = self.w.items(equip=True) + self.w.items() if equip else self.w.items() + self.w.items(equip=True)
+        pool = self.w.items() if pack_only else \
+            self.w.items(equip=True) + self.w.items() if equip else self.w.items() + self.w.items(equip=True)
         hits = [i for i in pool if name in i["name"].lower()]
         if not hits:
-            raise ValueError(f"no item matching '{letter}'")
+            raise ValueError(f"nothing in the pack matches '{letter}'" if pack_only else f"no item matching '{letter}'")
         if len(hits) > 1:
             # whole-word matches first ("Light" = the Scroll of Light, not Cure
             # Light Wounds: mission 16 destroyed 14 CLW that way)
@@ -3198,12 +3256,10 @@ class Pilot:
                 if c in ("destroy", "drop", "quaff", "read", "eat", "fuel") and not \
                         (len(args[0]) == 1 or args[0].isdigit()):
                     # by name: only the pack (a name that matched nothing there once
-                    # fell through to the equipment -- "You destroy (nothing)")
-                    name = args[0].replace("_", " ").lower()
-                    it = next((i for i in self.w.items() if name in i["name"].lower()), None)
-                    if it is None:
-                        return {"ok": False, "error": f"nothing in the pack matches '{args[0]}'"}
-                    item = it["item"]
+                    # fell through to the equipment -- "You destroy (nothing)"), and
+                    # through item_index's ambiguity check (the Advisor's mission 16
+                    # replay: this branch still took the first substring match)
+                    item = self.item_index(args[0], pack_only=True)
                 else:
                     item = self.item_index(args[0], equip=(c == "takeoff"))
             except ValueError as e:
@@ -3382,7 +3438,8 @@ class Pilot:
             kw = dict(a.split("=", 1) for a in rest if "=" in a)
             g = Explore(until=kw.get("until"), radius=int(kw["radius"]) if "radius" in kw else None)
         elif name == "goto":
-            g = Goto(" ".join(rest))
+            force = "force" in rest
+            g = Goto(" ".join(x for x in rest if x != "force"), force=force)
         elif name == "shop":
             # goal shop STORE [buy NAME:N]... [sell LETTER:N]...
             list_stock = "list" in rest[1:]

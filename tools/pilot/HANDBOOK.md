@@ -35,7 +35,7 @@ Attention events:
 | `interesting` | a dive stopped for something in `stop_on`: a unique, items, a pillared room (these often hold stairs; explore them), danger |
 | `danger_avoided` | (news, doesn't wake you) arrived next to a pack or an out-of-depth monster and went straight back up the stairs. Shown under "Since last report" |
 | `danger_seen` | a dangerous monster came into view: the pilot dropped the goal and is heading for the stairs. The detail says why. Danger means: `danger_level` above yours, a unique above your level, a breather whose two strongest breaths would kill you at your current HP, breathers whose breaths together would (hound packs), a paralyser while you lack Free Action (`free_action` order; a paralysing blow too weak to get through your armour doesn't count), or a summoner within 5 levels of yours (summons appear next to *you* and stay after it dies). Also, from the Advisor's danger table: a monster rated 5 ("leave on sight"), one rated 4 until you're 8 levels above it, any capital `D`, one whose melee per turn (speed × blows, all hitting) is a third of your current HP or more, Brain Smash without Free Action + both resists below, and a monster within 10 levels that blinds or confuses with its *blows* (no saving throw) while you lack the resist |
-| `emergency` | HP fell below `flee_hp`: the pilot took the stairs underfoot, read Phase Door, or quaffed a cure |
+| `emergency` | HP fell below `flee_hp`, or to 2.5 worst-case rounds of one adjacent monster (Brodda's 48 a round: at 120 HP): the pilot took the stairs underfoot, read Phase Door, or quaffed a cure |
 | `fight_going_badly` | HP below `think_hp` while fighting: decide whether to flee (e.g. `stairs`, or `read` Phase Door) |
 | `low_supply` | out of food (it recalls), no flasks for the lantern, no light at all |
 | `idle_recall` | nobody answered for a while: it's recalling to town |
@@ -78,7 +78,7 @@ Attention events:
 | `goal dive FEET` (shallower than now = climb) | stair-scum down to FEET: take a `>` when one is known, otherwise go up and down the staircase underfoot for a fresh level; explore if no stairs are known. Stops early for `stop_on` things |
 | `goal search` | search for secret doors at dead ends, corridor ends and room corners, nearest first, skipping those already searched on this level (a dive does this by itself when a level seems to have no stairs) |
 | `goal explore [until=stairs] [radius=N]` | (dungeon only) walk to unexplored edges until nothing is left (or a `>` it can reach is seen, or within N squares). Before calling a level done it digs rubble that borders unexplored ground and searches each corridor dead end 15 times for a secret door (its reply says how many it searched; each dead end only once per level). It fetches items within `loot_radius` on the way, but not distant ones it saw earlier: when it's done, collect those from the report's item squares with `goto` |
-| `goal goto Y,X` / `goto >` / `goto <` / `goto item` | walk there. With `pickup=all`, an item on the target square is picked up by itself, about half a second after arriving (it waits for the character's turn): check the pack before a manual `pickup` |
+| `goal goto Y,X` / `goto >` / `goto <` / `goto item` | walk there. With `pickup=all`, an item on the target square is picked up by itself, about half a second after arriving (it waits for the character's turn): check the pack before a manual `pickup`. **Held while a dangerous monster is adjacent** (walking away gives it free hits; it fights on): add `force` (`goal goto 50,175 force`) to walk anyway |
 | `goal hunt NAME` (spaces as `_`) | walk up to the monster called NAME and fight it (standing still; the server swings for you). Ends when it's slain or out of sight 15 s |
 | `goal shop N [list] [buy NAME:COUNT[@MAX]]... [sell NAME_OR_LETTER:COUNT]...` | `list`: the result starts with the store's whole stock and prices (use it alone to look before buying). `@MAX`: don't pay more than MAX each (e.g. `buy To-Dam:2@120`). Town only: walk into store N (1 General, 2 Armoury, 3 Weaponsmith, 4 Temple, 5 Alchemist, 6 Magic shop, 7 Black market), sell, buy (by part of the name; spaces as `_`, e.g. `buy Cure_Light:5`; the cheapest matching item is bought), leave. The result lists what the shopkeeper actually said ("I don't want that!" for worthless or cursed items) |
 | `goal resurrect` | (only as a ghost, after `dead`) float up one level per `<` to town, then walk onto the Temple entrance (`4`), which resurrects. **It halves the experience for good.** Do it at once: a ghost left in the dungeon keeps getting hit (Dive03's ghost was poisoned while logged out and faded away forever on the next login). Untested so far |
@@ -110,7 +110,8 @@ onto when nothing is next to it. Letters shift when items come and go (and
 when identifying re-sorts the pack): check `status` before a series of
 actions, and act from the last letter backwards.
 
-What the pilot does by itself in an emergency (HP below `flee_hp`): take
+What the pilot does by itself in an emergency (HP below `flee_hp`, or within 2.5 worst rounds of one
+adjacent hard hitter): take
 the staircase underfoot (then it rests on the other side, and comes back up if
 that's below `max_depth`; the goal is dropped and you're told); with a monster next to you, read Phase Door (at most
 every 2.5 s: repeated phasing doesn't shake a pack); otherwise walk to stairs
@@ -379,6 +380,12 @@ Orders are remembered across pilot restarts.
   (a `search` stops waiting for its result when a message comes in): answer before going on.
 - **Bumps while confused or blind no longer make walls** on the Pilot's map (mission 15's
   "frontier unreachable"); when no path is found it forgets bump-learned walls and replans.
+- **A dangerous monster with no stairs known** (a recall arrival, a failed flee): the pilot reads Word
+  of Recall at once and phases while it charges. A recall arrival has no escape underfoot and can
+  start next to a unique: go down with 2+ Phase Door and 2 Word of Recall. Uniques always have their
+  maximum HP (`monster NAME` shows the number: Wormtongue 250, not the dice average).
+- While blind or confused the pilot doesn't explore or dive (steps go astray); it cures if it's
+  still being hit, even when nothing is in view.
 - **Red jellies drain STR by touch**: the pilot no longer melees stationary drainers. **Wormtongue's
   danger is his spells, not his melee (~6 a turn)**: with the stairs far, the pilot doesn't flee
   him any more (a long walk gives him free casts); fight him (`goal hunt Wormtongue`) at good HP,

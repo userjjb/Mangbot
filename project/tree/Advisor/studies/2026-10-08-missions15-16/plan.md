@@ -10,6 +10,15 @@ Purple mushroom patch at distance 1-2 at 15:50:10-45 (CON drained). Audit: 108 +
 
 | id | task | status |
 |---|---|---|
-| E1 | Clerk: mission 15 emergencies (Brodda 23:01-23:04; Snagas+Wormtongue 23:12-23:16; 23:18; 23:32) | launched |
-| E2 | Clerk: mission 16 (CON drains 15:50, low 15:33, CLW destroyed, Trident sold, explore ends) | launched |
-| E3 | Clerk: damage per round with 4 blows, missions 14-16, vs prediction | launched |
+| E1 | Clerk: mission 15 emergencies (Brodda 23:01-23:04; Snagas+Wormtongue 23:12-23:16; 23:18; 23:32) | done |
+| E2 | Clerk: mission 16 (CON drains 15:50, low 15:33, CLW destroyed, Trident sold, explore ends) | done |
+| E3 | Clerk: damage per round with 4 blows, missions 14-16, vs prediction | done |
+
+## Result (2026-10-08)
+
+Memo `../memos/to_architect/2026-10-08-missions15-16-replay.md`. Verified: flee_failed uses w.monsters (pilot.py:2635-2655),
+near_danger includes listed_only (pilot.py:1757), flee_t gate (1764-1772), destroy-by-name first match (pilot.py:3198-3204)
+vs item_index's ambiguity check (3048-3069). Retrospective: running the cheap HP-minimum script first found the Brodda near-death
+that the Architect's notes missed; three Clerks (two incident replays + one measurement) was the right size.
+Navigator journal inaccuracies found (feed study 4): Brodda recall "~6 s" (9.7), Wormtongue "~137 HP" (250), CON drain blamed
+on a Green mold fight (pathing), "rule missed CHR" (it didn't), "single Hill orc" (a pack).
