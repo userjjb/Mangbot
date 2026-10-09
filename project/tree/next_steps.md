@@ -161,12 +161,14 @@ mission, relay agent friction to the user (memory `mangband-relay-agent-friction
 - Missions 7-16 + demo are summarised in the 2026-09-27/29 and 10-07 entries below; Advisor memos
   acted on: forum, danger table, Borg, post-mortem, shops, messages, game-state, identify-and-sell,
   flavour messages, mission 9/13 replays, warrior progression, running, mission 15 answers.
-- **Public repo** https://github.com/userjjb/Mangbot (remote `origin` of `github/`): nothing pushed
-  yet; the user will put a token in git's credential store. Then: `github/tools/snapshot.sh`,
-  commit, `git push origin master` (`project/README.md` explains the snapshot and exclusions).
+- **Public repo** https://github.com/userjjb/Mangbot (remote `origin` of `github/`, branch `master`):
+  **first pushed 2026-10-08** (the user's fine-grained token is in git's credential store, repo-local
+  helper). To publish: `github/tools/snapshot.sh`, commit, `git push` (`project/README.md` explains
+  the snapshot and its exclusions). The GitHub front page is `github/.github/README.md` (the root
+  `README` is MAngband's and the autotools build needs it): keep its capabilities/TODO current.
 
 **TODO (priority order):**
-1. **Push to GitHub** once the user's token is in place.
+1. **Push to GitHub** after each session's work (snapshot, commit, push).
 2. **Dive04 next:** Restore CON (~470), 3 CCW kept, then stage B (500-750 ft at clvl 15; gate
    clvl × 50 = 750). Stage table in the HANDBOOK and `memos/2026-10-07-warrior-progression.md`.
 3. **Pilot bugs open:** `explore` declared a level done with open ground on the map (mission 16,
