@@ -13,7 +13,10 @@ to message the Navigator playing the character: it's woken at once, and its
 answers show in the feed as NAVIGATOR: ... The Navigator's journal lines
 (its reasoning, one per decision) show as NAV: ... (magenta) when written.
 
-    python3 watch.py [--nick dive04]
+    python3 watch.py [--nick dive04] [--hash]
+
+Walls draw as solid blocks (granite and secret doors full, mineral veins
+shaded); --hash keeps the game's '#' and '%'.
 
 Keys: type + Enter = note; Tab = the Navigator's view (exactly what it last
 read from the Pilot, and how long ago) / back; Esc = clear the line; PgUp/PgDn = scroll the feed;
@@ -43,6 +46,7 @@ BASIC = [(curses.COLOR_BLACK, True), (curses.COLOR_WHITE, True), (curses.COLOR_W
          (curses.COLOR_RED, True), (curses.COLOR_GREEN, True), (curses.COLOR_BLUE, True),
          (curses.COLOR_YELLOW, True)]
 COL = {}                                # attr index -> curses attribute
+WALLS = {"#": "\u2588", "%": "\u2593"}  # granite/secret door: full block; vein: shaded
 FEED_COL = {}
 
 
@@ -89,6 +93,7 @@ def draw_map(scr, y, width, top_h, vm):
             else:
                 ai = (ord(attrs[i][j]) - 48) if i < len(attrs) and j < len(attrs[i]) else 1
                 a = COL.get(ai, 0) if 0 <= ai < 16 else 0
+                ch = WALLS.get(ch, ch)
             try:
                 scr.addstr(y + used, 6 + j, ch, a)
             except curses.error:
@@ -340,7 +345,10 @@ def main(scr, args):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[1])
     ap.add_argument("--nick", default="dive04")
+    ap.add_argument("--hash", action="store_true", help="draw walls as the game's '#' and '%%'")
     a = ap.parse_args()
+    if a.hash or "UTF-8" not in (sys.stdout.encoding or "").upper().replace("UTF8", "UTF-8"):
+        WALLS.clear()
     try:
         curses.wrapper(main, a)
     except KeyboardInterrupt:

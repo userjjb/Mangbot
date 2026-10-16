@@ -146,8 +146,9 @@ Advisor can't see it otherwise), read `runs/complaints.md` (agents' `complain` l
 "What I lacked" section, fix what you can, and relay recurring or unfixable friction to the user
 (memory `mangband-relay-agent-friction`).
 
-**State (2026-10-08 23:25, job 7918400 on scc-wg3, walltime to Mon 10-12 08:03):**
-- Running on scc-wg3: the test server under gdb (`testserver/`, port 28346, rebuilt 10-07 with the
+**State (2026-10-08 23:25, job 7918400 on scc-wg3, walltime to Mon 10-12 08:03; moved 2026-10-16 13:30 to
+job 8105290 on scc-wh2, walltime to Mon 10-19 20:47, Dive04 restored from its 10-12 07:59 save):**
+- Running on scc-wh2 (was scc-wg3): the test server under gdb (`testserver/`, port 28346, rebuilt 10-07 with the
   16-bit depth indicator), Dive04's Pilot (`tools/pilot/restart.sh Dive04`), the user's viewer
   (`tmux -L mang attach -t watch`; `tools/observe/watch.py`), the inbox watcher. A new job/node
   means restarting the server (`cd testserver && nohup gdb -batch -ex run -ex bt --args
