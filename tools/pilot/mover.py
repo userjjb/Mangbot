@@ -25,8 +25,10 @@ def drain_zone_of(world):
             and getattr(r, "drains", False) for dy in (-1, 0, 1) for dx in (-1, 0, 1)}
 
 
-def plan(world, goals, avoid=(), monster_cost=40, max_cost=4000):
-    """Dijkstra over remembered tiles from world.pos to the nearest goal."""
+def plan(world, goals, avoid=(), monster_cost=40, max_cost=4000, unknown_cost=None):
+    """Dijkstra over remembered tiles from world.pos to the nearest goal.
+    unknown_cost: in the dungeon, also cross unseen squares at this extra cost
+    (a last resort: the dungeon is mostly rock)."""
     start = world.pos
     goals = set(goals)
     if not start or not goals:
@@ -79,11 +81,12 @@ def plan(world, goals, avoid=(), monster_cost=40, max_cost=4000):
                 # the Tavern and must walk out through it (COST keeps it a last resort)
                 ok = ch not in "#*=%0:" and ch not in "1234567" if ch != " " else True
             else:
-                ok = passable(ch) or ch == ":"     # rubble: dig through (costly)
+                ok = passable(ch) or ch == ":" or (unknown_cost is not None and ch == " ")
             if nb not in goals and (not ok or nb in avoid):
                 continue
             # (a hair more for diagonals: of equally short paths, prefer straight ones)
             nd = d + COST.get(ch, 1) + (1 if ch == " " else 0) + (0.001 if dy and dx else 0) \
+                + (unknown_cost if unknown_cost is not None and ch == " " and not surface else 0) \
                 + (monster_cost if nb in mon and nb not in goals else 0) \
                 + (monster_cost if nb in still and nb not in goals else 0) \
                 + (30 if inside and nb in nav_zone else 0)
@@ -108,6 +111,7 @@ class Mover:
         self.c, self.w, self.log = client, world, log or (lambda *a, **k: None)
         self.goals = None
         self.path = []
+        self.unknown = False    # this job may cross unseen squares (go(unknown=True) fallback)
         self.sent = 0           # steps of path sent
         self.done = 0           # steps of path reached
         self.last_progress = 0.0
@@ -265,13 +269,21 @@ class Mover:
             return "arrived" if moved else "stuck"
         return "moving"
 
-    def go(self, goals, avoid=()):
+    def go(self, goals, avoid=(), unknown=False):
+        """unknown: when no known path exists, try one through unseen squares
+        (escapes and the Navigator's goto: mission 17's flee found "no path"
+        to stairs past a corridor seen only with orcs in it)."""
         self.goals = set(goals)
         self.avoid = set(avoid)
         self.replans = 0
+        self.unknown = False
         ok = self._plan()
         if not ok and self.forget_bump_walls():
             ok = self._plan()
+        if not ok and unknown:
+            self.unknown = True
+            ok = self._plan()
+            self.log(through_unknown=ok)
         near = min(self.goals, key=lambda g: max(abs(g[0] - self.w.pos[0]), abs(g[1] - self.w.pos[1]))) \
             if self.w.pos and self.goals else None
         self.log(goals=len(self.goals), nearest=near, path=len(self.path), ok=ok)
@@ -375,7 +387,8 @@ class Mover:
         return open_ <= 3
 
     def _plan(self):
-        self.path = plan(self.w, self.goals, self.avoid) or []
+        self.path = plan(self.w, self.goals, self.avoid,
+                         unknown_cost=6 if getattr(self, "unknown", False) else None) or []
         self.sent = self.done = 0
         self.running = None
         self.here = self.w.pos

@@ -272,8 +272,10 @@ class Goto(Goal):
                 return ("failed", f"no such place: {self.target}")
             if w.pos in goals:
                 return ("done", None)
-            if not p.mover.go(goals):
-                return ("failed", "no known path")
+            if not p.mover.go(goals, unknown=True):
+                return ("failed", "no known path, nor one through unexplored squares")
+            if p.mover.unknown:
+                p.notify("tactic", "goto: no known path; trying one through unexplored squares", news=True)
             self.started = True
         st = p.mover.tick()
         if st == "arrived":
@@ -421,8 +423,9 @@ class Dive(Goal):
     '>' is known and reachable, take it; else go back up and down for a fresh
     level. Not on stairs and none known: explore until some are seen."""
 
-    def __init__(self, target_ft):
+    def __init__(self, target_ft, scum=False):
         self.target_ft = int(target_ft)
+        self.scum = scum         # a climb may go down a '>' for a fresh level
         self.name = f"dive {self.target_ft}ft"
         self.start_ft = None
         self.level_seen = None
@@ -532,11 +535,13 @@ class Dive(Goal):
             else:
                 return None
         # On a climb, scumming by a '>' costs two level changes and goes one
-        # deeper: only a close one, never below max_depth (mission 11: at 50 ft
-        # on the way to town it walked 15 squares to a '>' and went to 100 ft)
+        # deeper: never, unless asked ('goal dive FEET scum'), then only a close
+        # one and never below max_depth (mission 11: at 50 ft on the way to town
+        # it walked 15 squares to a '>' and went to 100 ft; mission 17: a climb
+        # to town went down from 100 to 150 ft with the budget nearly spent)
         md = int(p.orders.get("max_depth", 0))
         climbing = want == "<"
-        scum_ok = not climbing or not md or w.depth_ft + 50 <= md
+        scum_ok = not climbing or (self.scum and (not md or w.depth_ft + 50 <= md))
         # Scum: back the way we came on the staircase we're on, then again
         if w.standing_on == other and scum_ok:
             return self._stairs(p, other)
@@ -813,8 +818,11 @@ class Flee(Goal):
         if not stairs:
             return ("failed", "no stairs known")
         if not self.started or not p.mover.active:
-            if not p.mover.go(stairs):
-                return ("failed", "no path to stairs")
+            if not p.mover.go(stairs, unknown=True):
+                return ("failed", "no path to stairs, nor one through unexplored squares")
+            if p.mover.unknown:
+                p.notify("tactic", "flee: no known path to the stairs; trying one through unexplored squares",
+                         news=True)
             self.started = True
         st = p.mover.tick()
         if st == "stuck":
@@ -1058,6 +1066,12 @@ class TownFarm(Goal):
         y, x, r = mon
         if w.dist((y, x)) <= 1:
             p.mover.stop()
+            if any("EAT_" in b for b in r.blows) and time.time() - getattr(self, "hit_t", 0) > 0.25:
+                # a thief: hit it ourselves -- auto-retaliate picks its own target,
+                # and in a crowd it killed idiots and beggars while an urchin
+                # beside us stole twice (mission 17)
+                self.hit_t = time.time()
+                p.cmd(f"walk {direction(w.pos, (y, x))}", f"townfarm: hit the {r.name} first (a thief)", hold=0.2)
             return None                      # adjacent: auto-retaliate fights
         near = [(y + dy, x + dx) for dy in (-1, 0, 1) for dx in (-1, 0, 1) if dy or dx]
         if not p.mover.active or self.chasing != (y, x):
@@ -1558,8 +1572,13 @@ class Pilot:
                  "hunger": st["ind"].get("hunger", [w.hunger])[0]}
         # (hp only out of melee: in a fight it's a timing race -- the Advisor's
         # mission 13 audit memo)
+        # (a burning light's turns tick down between the two reads: "14402" vs
+        # "14400 turns" was mission 17's only difference)
+        def unlit(v):
+            return re.sub(r"with \d+ turns", "with N turns", repr(v))
         diffs = {k: (model[k], fresh[k]) for k in model if model[k] != fresh[k] and
-                 not (k == "hp" and (abs(model[k][0] - fresh[k][0]) <= 3 or w.adjacent_monsters()))}
+                 not (k == "hp" and (abs(model[k][0] - fresh[k][0]) <= 3 or w.adjacent_monsters())) and
+                 not (k in ("pack", "equip") and unlit(model[k]) == unlit(fresh[k]))}
         self.audit_runs += 1
         self.log("audit_check", n=self.audit_runs, differences=len(diffs),
                  exp=st["ind"].get("exp"), clvl=w.clvl, depth_ft=w.depth_ft,   # (exp: for XP-rate studies)
@@ -2497,6 +2516,12 @@ class Pilot:
         # Minor, at good HP: teleport-to ("It commands you to return": Tengu,
         # blink dogs), a magic missile or an arrow from the dark. Mission 6 fled
         # levels over these; tell the Navigator and carry on.
+        # A shriek (a Shrieker mushroom patch) does no damage: it wakes and
+        # hastens monsters nearby (mission 17 left a 100 ft level over one)
+        if "shriek" in cause:
+            self.notify("unseen_attacker", f"'{cause}': a shrieker (no damage; it wakes monsters nearby); "
+                                           "carrying on", news=True)
+            return False
         if re.search(r"commands you to return|magic missile|fires an arrow|fires a bolt|mumbles", cause) \
                 and w.hp_frac >= self.orders["think_hp"]:
             self.notify("unseen_attacker", f"'{cause}': minor attack from something unseen; carrying on "
@@ -3159,6 +3184,12 @@ class Pilot:
             self.w.items(equip=True) + self.w.items() if equip else self.w.items() + self.w.items(equip=True)
         hits = [i for i in pool if name in i["name"].lower()]
         if not hits:
+            # "Flask of oil" for "4 Flasks of oil" (mission 17): compare with the
+            # plural endings dropped on both sides
+            def sing(t):
+                return re.sub(r"\b(\w+?)(?:es|s)\b", r"\1", t)
+            hits = [i for i in pool if sing(name) in sing(i["name"].lower())]
+        if not hits:
             raise ValueError(f"nothing in the pack matches '{letter}'" if pack_only else f"no item matching '{letter}'")
         if len(hits) > 1:
             # whole-word matches first ("Light" = the Scroll of Light, not Cure
@@ -3328,6 +3359,23 @@ class Pilot:
             key = self.ACTIONS[c]
             if not args:
                 return {"ok": False, "error": f"usage: {c} ITEMLETTER"}
+            if c == "fuel" and not any(i["tval"] == TV_LITE for i in self.w.items(equip=True)):
+                # The Pilot takes the lantern off when idle in town ("You are not
+                # wielding a light", mission 17): put it on first, then find the
+                # flask again (the letters shift when the lantern leaves the pack)
+                lan = next((i for i in self.w.items(tval=TV_LITE) if "Lantern" in i["name"]), None)
+                if not lan:
+                    return {"ok": False, "error": "no lantern worn or in the pack to fuel"}
+                try:
+                    was = next(i["name"] for i in self.w.items() if i["item"] == self.item_index(args[0], pack_only=True))
+                except (ValueError, StopIteration) as e:
+                    return {"ok": False, "error": str(e) or f"no item '{args[0]}'"}
+                self.cmd(f"custom w item={lan['item']}", "agent: fuel: wear the lantern first", hold=0.6)
+                self.pack_now(1.0)
+                again = next((i for i in self.w.items() if i["name"] == was), None)
+                if not again:
+                    return {"ok": False, "error": f"wore the lantern, but can't find '{was}' in the pack now"}
+                args = [chr(97 + again["item"])] + list(args[1:])
             try:
                 if c in ("destroy", "drop", "quaff", "read", "eat", "fuel") and not \
                         (len(args[0]) == 1 or args[0].isdigit()):
@@ -3546,9 +3594,10 @@ class Pilot:
             self.attention = []
         name, rest = args[0], args[1:]
         force = "force" in rest
-        rest = [a for a in rest if a != "force"] if name in ("dive", "recall") else rest
+        scum = name == "dive" and "scum" in rest
+        rest = [a for a in rest if a not in ("force", "scum")] if name in ("dive", "recall") else rest
         if name == "dive":
-            g = Dive(rest[0] if rest else (self.w.depth_ft + 50))
+            g = Dive(rest[0] if rest else (self.w.depth_ft + 50), scum=scum)
             md = int(self.orders.get("max_depth", 0))
             want = min(g.target_ft, md) if md else g.target_ft
             gap = self.supply_gate(want, False) if want > self.w.depth_ft and not force else []

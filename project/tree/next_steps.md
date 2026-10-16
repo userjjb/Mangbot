@@ -189,6 +189,18 @@ job 8105290 on scc-wh2, walltime to Mon 10-19 20:47, Dive04 restored from its 10
 7. Smaller: server `pathfind` experiment (running memo change 6); a
    live-server run only after asking the admins (`operations.md`).
 
+- **Mission 17 (2026-10-16 13:57-14:40, Navigator report `runs/pilot/dive04/reports/2026-10-16-mission17.md`):**
+  clvl 15 → 16, Restore CON bought (CON 18, 197 HP), Amulet of Resist Acid; deepest 650 ft. The dive ended 4 min after
+  arrival at 650: Black orcs + breeders, Phase Door landed past a corridor seen only with orcs in it, so goto/flee
+  found "no known path"; the Pilot read the last WoR and spent 3 CCW in 15 s. Supply gate fixed first (278df42: it
+  only counted a worn light, the lantern is off in town). **Fixed after (deployed 17:40):** monster squares recorded
+  as floor (world.py; not PASS_WALL/KILL_WALL); `Mover.go(unknown=True)` fallback through unseen squares (cost +6)
+  for Goto and Flee, replayed on the saved 650 ft map (30-step path); shrieks news only; a climb never goes down
+  (`goal dive FEET scum` to allow); names match singular/plural; `fuel` wears the lantern first; townfarm hits an
+  adjacent thief directly (auto-retaliate killed idiots while urchins stole); the audit ignores light-turn ticks.
+  Not yet seen in play: everything from 10-09 except the gate, `complain`, name refusal, report lines.
+  **Dive04 now: max_depth 100 (raise before a recall), 46 gold, 1 WoR, 1 CCW 4 CSW 3 CLW, 8 Phase, unknown Robe {good}.**
+
 ### ARCHITECT HANDOFF 2026-09-29 (history; read the 2026-10-08 section first)
 
 New session (job 448491 on scc-wi2). Test server restarted under gdb 21:34 (gdb costs nothing: the

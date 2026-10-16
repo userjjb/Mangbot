@@ -290,6 +290,12 @@ class World:
                     self.memory[(y, x)] = ch
                 elif ch not in TERRAIN and ch != "@" and (y, x) not in mon_at:
                     self.memory[(y, x)] = ch       # an object lying on the floor
+        # A monster stands on open ground unless it walks through walls: a
+        # corridor seen only with monsters in it stayed blank, and a flee found
+        # "no known path" past it (mission 17, 650 ft)
+        for y, x, r in self.monsters:
+            if (y, x) not in self.memory and not ({"PASS_WALL", "KILL_WALL"} & r.flags):
+                self.memory[(y, x)] = "."
 
     # --- derived ----------------------------------------------------------
 
