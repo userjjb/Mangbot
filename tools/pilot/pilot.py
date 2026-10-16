@@ -3136,8 +3136,11 @@ class Pilot:
                 req, reply = self.requests.get_nowait()
             except queue.Empty:
                 return
-            self.last_agent = time.time()
             if req.get("cmd") not in ("viewmap", "view", "navview", "note", "goalstate"):
+                # (only the Navigator's own commands count as activity: the viewer's
+                # twice-a-second polls kept town_light from ever taking the lantern
+                # off, and idling in town burned 7300 turns + 3 flasks, 2026-10-16)
+                self.last_agent = time.time()
                 # the Navigator's commands as received (latency studies could only
                 # see the next recorded order: the Advisor)
                 self.log("nav_cmd", cmd=req.get("cmd"), args=req.get("args", [])[:12],
