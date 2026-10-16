@@ -3522,10 +3522,18 @@ class Pilot:
         need_wor = 2 if recall_down else 1
         if wor < need_wor:
             missing.append(f"Word of Recall {wor}/{need_wor}" + (" (one to go, one to come home)" if recall_down else ""))
-        worn = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
-        m = re.search(r"with (\d+) turns", worn["name"]) if worn else None
-        if not worn or (m and int(m.group(1)) < 1000 and not any(i["tval"] == TV_FLASK for i in w.items())):
-            missing.append("light: " + ("none worn" if not worn else f"{m.group(1)} turns left and no flask"))
+        # the worn light, or one in the pack (the Pilot takes the lantern off in town)
+        def turns(i):
+            m = re.search(r"with (\d+) turns", i["name"])
+            return int(m.group(1)) if m else 10 ** 6          # no count shown: permanent
+        lights = [i for i in w.items(equip=True) if i["tval"] == TV_LITE] + list(w.items(tval=TV_LITE))
+        best = max(lights, key=turns, default=None)
+        flask = any(i["tval"] == TV_FLASK for i in w.items())
+        if not best:
+            missing.append("light: none")
+        elif turns(best) < 1000 and not (flask and "Lantern" in best["name"]):
+            missing.append(f"light: {turns(best)} turns left and no flask" if "Lantern" in best["name"]
+                           else f"light: {turns(best)} turns left")
         return missing
 
     def request_goal(self, args):
