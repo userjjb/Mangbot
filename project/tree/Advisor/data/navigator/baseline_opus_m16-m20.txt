@@ -1,0 +1,43 @@
+seconds: n, median, interquartile range, 90th percentile
+
+== m16 10-08 15:31-16:09: 0 reports, 0 commands (0 actions), 0 reports with no command before the next one  [no nav_cmd logging]
+   think  (report -> any command)       0       -
+   act    (report -> first action)      0       -
+   burst  (first -> last command)       0       -
+   alert  (urgent news -> action)      16    11.6    4.7-19.0    41.1
+   reply  (user message -> say)        24     7.4    5.3-12.5    64.6
+   report-to-report cycle               0       -
+== m17 10-16 13:57-14:41: 55 reports, 88 commands (55 actions), 15 reports with no command before the next one
+   think  (report -> any command)      40     6.2    4.8-7.0      8.9
+   act    (report -> first action)     39     6.3    5.4-8.4     12.7
+   burst  (first -> last command)      40     0.1    0.0-0.1      8.9
+   alert  (urgent news -> action)      28    13.6    5.8-41.1    45.4
+   reply  (user message -> say)         0       -
+   report-to-report cycle              54    28.6   10.6-87.0   126.2
+== m18 10-16 18:46-19:27: 63 reports, 115 commands (67 actions), 12 reports with no command before the next one
+   think  (report -> any command)      51     5.2    0.1-6.7     10.5
+   act    (report -> first action)     49     6.5    0.1-9.6     12.1
+   burst  (first -> last command)      51     0.1    0.0-5.8      7.5
+   alert  (urgent news -> action)      27     8.1    6.4-21.7    38.6
+   reply  (user message -> say)         0       -
+   report-to-report cycle              62    20.0    6.8-54.7   101.2
+== m19 10-16 22:14-22:56: 61 reports, 117 commands (69 actions), 11 reports with no command before the next one
+   think  (report -> any command)      50     5.9    4.8-7.8      9.2
+   act    (report -> first action)     49     6.7    5.5-9.2     15.3
+   burst  (first -> last command)      50     0.1    0.0-5.0     11.6
+   alert  (urgent news -> action)      24    23.8    6.2-29.4    30.7
+   reply  (user message -> say)         0       -
+   report-to-report cycle              60    19.8    9.5-40.8   125.1
+== m20 10-16 23:41-00:19: 66 reports, 141 commands (75 actions), 11 reports with no command before the next one
+   think  (report -> any command)      55     4.4    4.0-6.1      8.1
+   act    (report -> first action)     53     5.9    4.4-8.7     10.5
+   burst  (first -> last command)      55     0.1    0.0-6.3     10.0
+   alert  (urgent news -> action)      10    43.2   10.3-92.6   121.0
+   reply  (user message -> say)         0       -
+   report-to-report cycle              65    20.0    9.6-43.3    96.2
+
+== pooled
+   think   196     5.4    4.3-6.8      9.0
+   act     190     6.3    4.7-8.9     11.9
+   alert   105    12.0    5.9-29.4    74.7
+   reply    24     7.4    5.3-12.5    64.6

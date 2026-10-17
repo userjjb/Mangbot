@@ -223,6 +223,16 @@ job 8105290 on scc-wh2, walltime to Mon 10-19 20:47, Dive04 restored from its 10
   hit (a stale walk moved us), item thieves first, and ends itself after 2 min without gold (57 thief hits seen in
   mission 19: the step-5 fix works); `use/aim/zap` with a game reply skip the "no change" note.
 
+- **Mission 20 (2026-10-16 23:41-00:18, report `runs/pilot/dive04/reports/2026-10-16-mission20.md`):** 52 → 793 gold,
+  Spear (+5,+5) wielded (3 blows ~26), Ring of Acid sold 900; lowest HP 91%. First recogniser hit in play: inner room
+  27,49 at 450 ft (dump `levels/20261016-235015-450ft.txt`): a true positive, its west door at 27,39 already open, so
+  searchroom searched 26 s for nothing. **Fixed after (10-17, deployed):** unseen curses/fear minor, and any unseen
+  cause with a weak caster (clvl-5) in view within 10 is news (Novice priests in the dark → 2 flees below max_depth;
+  the Navigator's `hunt` never reached the Pilot); door-burst news only; 20 s `stuck` skips lock-picking/digging;
+  searchroom refuses when the door shows (`room_door`; Structures says "door at"), replies with per-spot counts;
+  interesting_item waits up to 10 s while a matching glyph is within loot_radius; item replies wait up to ~2 s for
+  the pack to change; shop buys the remainder at the next price within the cap and says when gold stops it.
+
 ### ARCHITECT HANDOFF 2026-09-29 (history; read the 2026-10-08 section first)
 
 New session (job 448491 on scc-wi2). Test server restarted under gdb 21:34 (gdb costs nothing: the

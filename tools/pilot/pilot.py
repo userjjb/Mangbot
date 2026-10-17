@@ -382,7 +382,8 @@ class Explore(Goal):
                 return None
             rooms = [f"{st['kind']} at {Y},{X}" for Y, X, st in p.structures_here()
                      if st["kind"] in ("large room", "inner room")
-                     and not all((w.level_t, r) in p.searched for _, r in structures.door_spots(Y, X))]
+                     and not all((w.level_t, r) in p.searched for _, r in structures.door_spots(Y, X))
+                     and not p.room_door(Y, X)]
             return ("done", "nothing left to explore" +
                     (f" (searched {plural(self.searched_n, 'dead end')})" if self.searched_n else "") +
                     (f"; not opened: {', '.join(rooms)} ('goal searchroom Y,X')" if rooms else ""))
@@ -657,6 +658,7 @@ class Search(Goal):
         self.searching = 0
         self.known = None
         self.done_n = 0
+        self.spots_log = []           # (spot, searches; 0 = couldn't reach it)
 
     @staticmethod
     def dead_ends(w, strict=False, skip=()):
@@ -700,7 +702,7 @@ class Search(Goal):
         if self.known is None:
             self.known = len(p.frontier())
         if len(p.frontier()) > self.known:
-            return ("done", "found a way on")
+            return ("done", "found a way on" + self.summary())
         if self.searching:
             if time.time() < p.busy_until:
                 return None
@@ -709,6 +711,7 @@ class Search(Goal):
             if not self.searching:
                 p.searched.add((w.level_t, self.spot))
                 self.done_n += 1
+                self.spots_log.append((self.spot, self.tries))
                 self.spot = None
             return None
         if p.mover.active:
@@ -721,6 +724,7 @@ class Search(Goal):
         if self.spot:
             # couldn't get there: don't try it again on this level
             p.searched.add((w.level_t, self.spot))
+            self.spots_log.append((self.spot, 0))
         # the nearest dead end not searched yet (it zig-zagged by distance from
         # where the search began)
         if self.fixed is not None:
@@ -728,15 +732,26 @@ class Search(Goal):
         else:
             spots = sorted(self.dead_ends(w, self.strict, p.searched), key=w.dist)
         if not spots:
-            return ("failed", "searched every spot, nothing found" if self.fixed is not None else
-                    "searched every dead end, nothing found")
+            return ("failed", ("searched every spot, nothing found" if self.fixed is not None else
+                               "searched every dead end, nothing found") + self.summary())
         self.spot = spots[0]
         if w.pos == self.spot:
             self.searching = self.tries
         elif not p.mover.go([self.spot]):
             p.searched.add((w.level_t, self.spot))
+            self.spots_log.append((self.spot, 0))
             self.spot = None
         return None
+
+    def summary(self):
+        """Where it searched, how often (the Navigator couldn't tell whether a
+        26 s searchroom had really searched 4 x 20, mission 20)."""
+        done = [f"{q[0]},{q[1]} x{n}" for q, n in self.spots_log if n]
+        unreached = [f"{q[0]},{q[1]}" for q, n in self.spots_log if not n]
+        if not done and not unreached:
+            return ""
+        return f" (searched: {', '.join(done) or 'none'}" + \
+            (f"; couldn't reach: {', '.join(unreached)}" if unreached else "") + ")"
 
 
 class Hunt(Goal):
@@ -1254,6 +1269,9 @@ class Shop(Goal):
                 self.last = f"sell {chr(97 + idx)} x{n}"
                 self.pending = time.time()
                 return None
+            if self.buys and time.time() - getattr(self, "need_fresh", 0) < 3 and \
+                    w.store_t < getattr(self, "need_fresh", 0):
+                return None       # (a remainder: wait for the listing after the last purchase)
             if self.buys:
                 name, n, cap = (self.buys.pop(0) + (None,))[:3]
                 # The cheapest match: the first one can be an expensive enchanted
@@ -1269,10 +1287,19 @@ class Shop(Goal):
                     self.done_log.append(f"NOT bought: {it['name']} costs {it['price']}, over your cap {cap}")
                     return None
                 gold = w.ind.get("gold", [0])[0]
-                n = min(n, it["number"], gold // max(1, it["price"]))
+                wanted, afford = n, gold // max(1, it["price"])
+                n = min(n, it["number"], afford)
                 if n <= 0:
                     self.done_log.append(f"can't afford {it['name']} ({it['price']} each, the cheapest in stock)")
                     return None
+                if n < wanted:
+                    if it["number"] < wanted and afford > it["number"]:
+                        # the cheap stack ran out: the rest at the next price, within
+                        # the cap (mission 20 asked for 2 Identify and got 1, silently)
+                        self.buys.insert(0, (name, wanted - n, cap))
+                        self.need_fresh = time.time()
+                    else:
+                        self.done_log.append(f"only {n} of {wanted} {name}: that's all the gold allows")
                 p.cmd(f"custom p store item={it['slot']} value={n} entry={it['price'] * n}",
                       f"buy {it['name']} x{n}", hold=0.2)
                 self.last = f"buy {it['name']} x{n} at {it['price']} each"
@@ -2226,6 +2253,10 @@ class Pilot:
                      map_age=round(time.time() - w.map_t, 2), crop=crop,
                      monsters=[(my, mx, r.name) for my, mx, r in w.monsters])
 
+    def room_door(self, Y, X):
+        """An inner room's door, if the map shows one at any of its 4 places."""
+        return next((d for d, _ in structures.door_spots(Y, X) if self.w.memory.get(d) in ("+", "'")), None)
+
     def drainers_info(self, args):
         """`drainers [STAT] [MAXLEVEL]`: monsters whose blows drain a stat, by
         native level (the Navigator's mission 19 wish: the ant and the frog
@@ -2275,7 +2306,12 @@ class Pilot:
         idle_goal = isinstance(self.goal, (Wait, RestGoal, Search, Recall, Recover, Shop)) or self.goal is None
         # Quick check: the mover is "moving" but we've stood on one square for
         # 20 s (mission 19: a flee resent a refused run for a minute, no alert)
-        if not idle_goal and self.mover.active and not w.adjacent_monsters() and not w.resting and \
+        # (picking a lock or digging is progress: mission 20 fired this at a door)
+        working = any(now - ts < 3 and t.startswith(("You failed to pick", "You have picked", "You tunnel",
+                                                      "You dig", "You have removed", "You failed to make",
+                                                      "This seems to be permanent", "The door "))
+                      for ts, t in w.messages)
+        if not idle_goal and self.mover.active and not w.adjacent_monsters() and not w.resting and not working and \
                 now - self.stuck_t > 60 and now - getattr(self, "goal_t", 0) > 20:
             recent = [q for t, q, d in self.pos_hist if now - t <= 20]
             if len(recent) >= 15 and len(set(recent)) == 1 and now - self.pos_hist[0][0] >= 20:
@@ -2598,7 +2634,10 @@ class Pilot:
             return False          # (blind, everything is "it": fight on)
         if now - w.heard[0] < 2 and w.heard[0] > self.heard_warned:
             self.heard_warned = w.heard[0]
-            self.notify("unseen_attacker", "heard a door burst open: something is coming; be ready to leave")
+            # news, not an alert: it woke the Navigator five times in mission 20
+            # with nothing to do
+            self.notify("unseen_attacker", "heard a door burst open: something is coming; be ready to leave",
+                        news=True)
         cause = None
         if now - w.unseen[0] < 3:
             cause = w.unseen[1]
@@ -2623,7 +2662,16 @@ class Pilot:
             self.notify("unseen_attacker", f"'{cause}': a shrieker (no damage; it wakes monsters nearby); "
                                            "carrying on", news=True)
             return False
-        if re.search(r"commands you to return|magic missile|fires an arrow|fires a bolt|mumbles", cause) \
+        # A weak caster we can see (in the dark the game still says "It ..."):
+        # mission 20 fled down a '>' twice from Novice priests 3 squares away
+        casters = [r for y, x, r in w.monsters if r.spells and w.dist((y, x)) <= 10 and r.level <= w.clvl - 5
+                   and "UNIQUE" not in r.flags]
+        if casters and not cause.startswith("losing HP") and w.hp_frac >= self.orders["think_hp"]:
+            self.notify("unseen_attacker", f"'{cause}': probably the {casters[0].name} (lvl {casters[0].level}) in "
+                                           f"view; carrying on (HP {w.hp_frac:.0%})", news=True)
+            return False
+        if re.search(r"commands you to return|magic missile|fires an arrow|fires a bolt|mumbles|"
+                     r"points at you and curses|casts a fearful illusion", cause) \
                 and w.hp_frac >= self.orders["think_hp"]:
             self.notify("unseen_attacker", f"'{cause}': minor attack from something unseen; carrying on "
                                            f"(HP {w.hp_frac:.0%})", news=True)
@@ -3183,13 +3231,21 @@ class Pilot:
                     # away, outside loot_radius; it sold for 210). Held 2.5 s: often
                     # the pilot is already stepping onto it (mission 18's amulet was in
                     # the pack before the Navigator could look)
-                    self.item_pending.append((now + 2.5, w.level_t, name))
-        for due, lt, name in list(self.item_pending):
+                    self.item_pending.append((now + 2.5, w.level_t, name, line.strip()[:1], now))
+        for pend in list(self.item_pending):
+            due, lt, name, glyph, first = pend
             if now < due:
                 continue
-            self.item_pending.remove((due, lt, name))
+            self.item_pending.remove(pend)
             bare = re.sub(r"^(an?|the|\d+) ", "", name.lower())
             if lt != w.level_t or any(bare in i["name"].lower() for i in w.items() + w.items(equip=True)):
+                continue
+            # one like it within loot_radius: the pilot fetches it itself; wait
+            # up to 10 s (mission 20's Quartz Ring came in 4 s after the alert)
+            lr = int(self.orders.get("loot_radius", 0))
+            if lr and now - first < 10 and self.orders.get("pickup") == "all" and \
+                    any(ch == glyph and w.dist(q) <= lr for q, ch in w.memory.items()):
+                self.item_pending.append((now + 1.5, lt, name, glyph, first))
                 continue
             self.item_hold_until = now + 20       # (a dive pauses so you can fetch it)
             self.notify("interesting_item", f"{name} seen on this level (devices and jewellery "
@@ -3563,6 +3619,12 @@ class Pilot:
             before = (self.effect_sig("pack"), self.effect_sig("equip"))
             self.cmd(f"custom {key} item={item}{extra}", f"agent: {c} {args}")
             pack = self.pack_now()
+            # (mission 20: a destroy's reply showed the pack before it landed, and
+            # the retry found "nothing matches"): give it up to ~2 s more
+            for _ in range(3):
+                if c == "inspect" or (self.effect_sig("pack"), self.effect_sig("equip")) != before:
+                    break
+                pack = self.pack_now(0.6)
             noise = ("You enter a maze", "Looks like", "You feel", "You hear", "You have found")
             said = [t for ts, t in self.w.messages if ts >= t0 and not t.startswith(noise)]
             out = {"ok": True, "said": said[-4:], "pack": pack}
@@ -3774,6 +3836,13 @@ class Pilot:
             if not m:
                 return {"ok": False, "error": "usage: goal searchroom Y,X (an inner room's centre, from the report)"}
             Y, X = int(m.group(1)), int(m.group(2))
+            # its door already in view: nothing to search for (mission 20 searched
+            # 26 s beside an open door at 27,39)
+            open_d = [self.room_door(Y, X)] if self.room_door(Y, X) else []
+            if open_d:
+                return {"ok": False, "error": f"the inner room at {Y},{X} already shows its door at "
+                                              f"{open_d[0][0]},{open_d[0][1]}: `goal goto {open_d[0][0]},{open_d[0][1]}` "
+                                              "to go in (a closed door opens on a bump)"}
             g = Search(tries=20, spots=[r for _, r in structures.door_spots(Y, X)])
             g.name = f"searchroom {Y},{X}"
         elif name == "hunt":
@@ -4071,7 +4140,8 @@ class Pilot:
         if here:
             lines.append("Structures: " + "; ".join(
                 f"{st['kind']} centred {Y},{X}" + ("" if st["sure"] else " (likely)") +
-                (" - searched" if all((w.level_t, r) in self.searched for _, r in structures.door_spots(Y, X)) else "")
+                (f" - door at {self.room_door(Y, X)[0]},{self.room_door(Y, X)[1]}" if self.room_door(Y, X) else
+                 " - searched" if all((w.level_t, r) in self.searched for _, r in structures.door_spots(Y, X)) else "")
                 for Y, X, st in here))
         lines += self.since_lines(reset=news_since is not None)
         mv = self.movement_line()
