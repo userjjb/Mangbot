@@ -201,6 +201,17 @@ job 8105290 on scc-wh2, walltime to Mon 10-19 20:47, Dive04 restored from its 10
   Not yet seen in play: everything from 10-09 except the gate, `complain`, name refusal, report lines.
   **Dive04 now: max_depth 100 (raise before a recall), 46 gold, 1 WoR, 1 CCW 4 CSW 3 CLW, 8 Phase, unknown Robe {good}.**
 
+- **Mission 18 (2026-10-16 18:46-19:26, report `runs/pilot/dive04/reports/2026-10-16-mission18.md`):** clvl 16 → 17,
+  215 HP, 46 → 315 gold, 2 WoR + 4 CCW bought, Hard Studded Leather [7]; STR drained 18/50 → 18/40 (Giant red
+  scorpion; Restore STR ~480 next). Recall at the first `fight_going_badly` (Ufthak + orc bands, 600 ft) worked.
+  Before it: viewer polls counted as Navigator activity, so town_light never took the lantern off (f519491).
+  **Fixed after (deployed 19:5x):** shop buy names singular/plural (`singular()`); Goto held while a faster
+  monster is hitting (Nighthawk 215 → 102 over a 25 s goto); "Standing on: $" cleared on "You have found N gold";
+  interesting_item held 2.5 s and dropped if the item reached the pack; the shop refuses a lone unknown scroll
+  (read it; curse scrolls are native to 2500 ft); Dive uses a Staff/Rod of Door/Stair Location once per level with
+  no stairs known (flavour table counts); townfarm's adjacent-thief hit now actually runs (step 5 returned before
+  the goal ticked: 0 hits in mission 18). `use`/`aim`/`zap` existed; now in the HANDBOOK.
+
 ### ARCHITECT HANDOFF 2026-09-29 (history; read the 2026-10-08 section first)
 
 New session (job 448491 on scc-wi2). Test server restarted under gdb 21:34 (gdb costs nothing: the

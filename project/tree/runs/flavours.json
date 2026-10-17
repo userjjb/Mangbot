@@ -89,6 +89,11 @@
   "kind": "Staff of Trap Location",
   "source": "Advisor L_items (Dive03 09-27 12:52:05)"
  },
+ "Gnarled Staff": {
+  "junk": false,
+  "kind": "Staff of Earthquakes",
+  "source": "identified"
+ },
  "Gold Wand": {
   "junk": false,
   "kind": "Wand of Light",
@@ -219,6 +224,16 @@
   "kind": "Scroll of Darkness",
   "source": "Advisor L_items (Dive04 09-28 02:05:53)"
  },
+ "Scroll titled \"garviv micpo\"": {
+  "junk": false,
+  "kind": "Scroll of Treasure Detection",
+  "source": "sold in a shop"
+ },
+ "Scroll titled \"hamon ganrhov\"": {
+  "junk": false,
+  "kind": "Scroll of Teleportation",
+  "source": "sold in a shop"
+ },
  "Scroll titled \"heaks khonis\"": {
   "junk": false,
   "kind": "Scroll of Light",
@@ -284,6 +299,11 @@
   "kind": "Scroll of Blessing",
   "source": "Advisor L_items (Dive04 09-28 01:37:44)"
  },
+ "Sea Shell Amulet": {
+  "junk": false,
+  "kind": "Amulet of Infravision",
+  "source": "identified"
+ },
  "Silver Amulet": {
   "junk": false,
   "kind": "Amulet of Resist Acid",
@@ -298,6 +318,11 @@
   "junk": false,
   "kind": "Potion of Detect Invisible",
   "source": "Advisor L_items (Dive04 10-03 12:26:59)"
+ },
+ "Violet Potion": {
+  "junk": true,
+  "kind": "Potion of Salt Water",
+  "source": "sold in a shop"
  },
  "Yellow Speckled Potion": {
   "junk": false,

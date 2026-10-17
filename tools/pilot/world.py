@@ -167,6 +167,12 @@ class World:
                 if (re.match(r"You have .*\([a-w]\)\.$", t) or t.startswith("You destroy")) and \
                         self.standing_on and self.standing_on not in TERRAIN and self.depth:
                     self.standing_on = "."    # the item underfoot is gone (report showed it after pickup)
+                if t.startswith("You have found ") and " gold" in t and self.pos:
+                    # gold is taken on stepping in; the report kept "Standing on: $"
+                    # and the Navigator picked up again (mission 18)
+                    self.standing_on = "."
+                    if self.memory.get(self.pos) == "$":
+                        self.memory[self.pos] = "."
                 if self.RE_HURT_OTHER.search(t):
                     self.explained_t = time.time()
                 if self.RE_UNSEEN.match(t):

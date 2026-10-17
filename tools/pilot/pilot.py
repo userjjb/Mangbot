@@ -248,6 +248,12 @@ class Goto(Goal):
         # (mission 15: a goto written for an older report walked two steps
         # beside Brodda): hold and let auto-retaliate fight, unless forced
         bad = [r for *_, r in w.adjacent_monsters() if p.danger_why(r)] if w.in_dungeon and not self.force else []
+        # ... and anything faster than us that is hitting us: it keeps up and
+        # hits every step (mission 18: a Nighthawk took 215 -> 102 HP over 25 s
+        # of a goto; a 'hunt' killed it in seconds)
+        if not bad and w.in_dungeon and not self.force and time.time() - w.last_hit_t < 2:
+            mine = 110 + int(w.ind.get("speed", [0])[0] or 0)
+            bad = [r for *_, r in w.adjacent_monsters() if r.speed > mine and "NEVER_MOVE" not in r.flags]
         if bad:
             if p.mover.active:
                 p.mover.stop()
@@ -443,6 +449,24 @@ class Dive(Goal):
         self.bad_stairs = set()     # (level, tile) of stairs we couldn't reach
         self.bad_t = {}
         self.bad_cleared = 0
+        self.located = None         # level we used Door/Stair Location on
+
+    def locate_stairs(self, p):
+        """No stairs known on a fresh level: use a Staff (or zap a Rod) of
+        Door/Stair Location once (mission 18 explored 9 min at 550 ft for a '>'
+        with one in the pack, unknown to the character). True if used."""
+        w = p.w
+        if self.located == w.level_t:
+            return False
+        for it in w.items():
+            kind = it["name"] if " of " in it["name"] else (p.flavour_of(it) or {}).get("kind", "")
+            if it["tval"] in (55, 66) and "Door/Stair Location" in kind and "(0 charges)" not in it["name"] \
+                    and "charging" not in it["name"]:
+                self.located = w.level_t
+                p.cmd(f"custom {'u' if it['tval'] == 55 else 'z'} item={it['item']}",
+                      "dive: no stairs known, Door/Stair Location", hold=0.8)
+                return True
+        return False
 
     def tick(self, p):
         w = p.w
@@ -545,6 +569,9 @@ class Dive(Goal):
         # Scum: back the way we came on the staircase we're on, then again
         if w.standing_on == other and scum_ok:
             return self._stairs(p, other)
+        # No stairs known at all: a Door/Stair Location device maps them
+        if not w.find("<>") and time.time() - w.level_t > 1.0 and not w.monsters and self.locate_stairs(p):
+            return None
         # No stairs under us: explore until we see some (either kind)
         self.expire_bad(w)
         ups = [u for u in w.find(other) if (w.level_t, u) not in self.bad_stairs
@@ -1223,7 +1250,8 @@ class Shop(Goal):
                 name, n, cap = (self.buys.pop(0) + (None,))[:3]
                 # The cheapest match: the first one can be an expensive enchanted
                 # piece (bought a Cloak [1,+4] for 592 instead of a plain one)
-                matches = [i for i in w.store["items"] if name.lower() in i["name"].lower()]
+                matches = [i for i in w.store["items"] if name.lower() in i["name"].lower()] or \
+                    [i for i in w.store["items"] if singular(name) in singular(i["name"])]
                 it = min(matches, key=lambda i: i["price"]) if matches else None
                 if not it:
                     self.done_log.append(f"no {name} in stock")
@@ -1246,6 +1274,12 @@ class Shop(Goal):
             w.store = None
             return ("done", "; ".join(self.done_log) or "nothing to do")
         return None
+
+
+def singular(t):
+    """Plural endings dropped, for name matching ("Flask of oil" finds
+    "99 Flasks of oil": missions 17-18)."""
+    return re.sub(r"\b(\w+?)(?:es|s)\b", r"\1", t.lower())
 
 
 class RestGoal(Goal):
@@ -1297,6 +1331,7 @@ class Pilot:
         self.loop_warned = 0.0
         self.retreating = False
         self.fearers_seen = set()
+        self.item_pending = []         # (due, level_t, name): interesting_item alerts held 2.5 s
         self.unique_names = None
         self.fear_t = 0.0
         self.skipped_items = set()     # (level, square) of junk we chose to leave
@@ -1970,6 +2005,10 @@ class Pilot:
                 self.think_warned = now
                 self.notify("fight_going_badly",
                             f"HP {w.hp[0]}/{w.hp[1]} fighting {', '.join(sorted({r.name for *_, r in adj}))}")
+            # townfarm hits an adjacent thief itself (auto-retaliate picks its own
+            # target: mission 18 killed 7 urchins and a dog while one stole 67)
+            if isinstance(self.goal, TownFarm) and any(any("EAT_" in b for b in r.blows) for *_, r in adj):
+                return False
             return not isinstance(self.goal, (Goto, Flee))
         # Pick up what we're standing on ("You see a ..." right after a step)
         if o["pickup"] == "all" and not adj and not w.store:
@@ -2641,6 +2680,12 @@ class Pilot:
             return f"it's {f['kind']}: worth more known, use or Identify it"
         if it.get("number", 1) >= 2 and n == 1:
             return None
+        if it["tval"] == TV_SCROLL:
+            # Reading one costs nothing and teaches the flavour; selling a lone
+            # one for ~8 threw away a Teleportation (mission 18). The curse
+            # scrolls are native to 2500 ft, so at our depths a read is safe
+            return ("a lone unknown scroll: read it to learn it (`read L`, in town or somewhere quiet; "
+                    "Teleportation, Teleport Level and Magic Mapping are worth keeping)")
         if it["tval"] in (75, 70, TV_FOOD) and self.deepest_ft < 1000:
             return None
         if it["tval"] in (75, 70, TV_FOOD):
@@ -3063,11 +3108,21 @@ class Pilot:
                         not known_junk and (w.level_t, name) not in self.far_seen:
                     self.far_seen.add((w.level_t, name))
                     # (mission 15: the user spotted a Wand of Slow Monster 33 squares
-                    # away, outside loot_radius; it sold for 210)
-                    self.item_hold_until = now + 20       # (a dive pauses so you can fetch it)
-                    self.notify("interesting_item", f"{name} seen on this level (devices and jewellery "
-                                                     "sell for 50-700 once known): its square is under 'Item squares' in "
-                                                     "`status`; `goal goto Y,X`. A dive pauses 20 s for it")
+                    # away, outside loot_radius; it sold for 210). Held 2.5 s: often
+                    # the pilot is already stepping onto it (mission 18's amulet was in
+                    # the pack before the Navigator could look)
+                    self.item_pending.append((now + 2.5, w.level_t, name))
+        for due, lt, name in list(self.item_pending):
+            if now < due:
+                continue
+            self.item_pending.remove((due, lt, name))
+            bare = re.sub(r"^(an?|the|\d+) ", "", name.lower())
+            if lt != w.level_t or any(bare in i["name"].lower() for i in w.items() + w.items(equip=True)):
+                continue
+            self.item_hold_until = now + 20       # (a dive pauses so you can fetch it)
+            self.notify("interesting_item", f"{name} seen on this level (devices and jewellery "
+                                             "sell for 50-700 once known): its square is under 'Item squares' in "
+                                             "`status`; `goal goto Y,X`. A dive pauses 20 s for it")
         while w.losses:
             t, text = w.losses.pop(0)
             self.notify("lost", text, news=True)
@@ -3187,11 +3242,8 @@ class Pilot:
             self.w.items(equip=True) + self.w.items() if equip else self.w.items() + self.w.items(equip=True)
         hits = [i for i in pool if name in i["name"].lower()]
         if not hits:
-            # "Flask of oil" for "4 Flasks of oil" (mission 17): compare with the
-            # plural endings dropped on both sides
-            def sing(t):
-                return re.sub(r"\b(\w+?)(?:es|s)\b", r"\1", t)
-            hits = [i for i in pool if sing(name) in sing(i["name"].lower())]
+            # "Flask of oil" for "4 Flasks of oil" (mission 17)
+            hits = [i for i in pool if singular(name) in singular(i["name"])]
         if not hits:
             raise ValueError(f"nothing in the pack matches '{letter}'" if pack_only else f"no item matching '{letter}'")
         if len(hits) > 1:
