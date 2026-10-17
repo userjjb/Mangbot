@@ -91,6 +91,15 @@ def main():
     try:
         out = call(sock, {"cmd": cmd, "args": args}, 40)
     except (ConnectionError, FileNotFoundError, json.JSONDecodeError, OSError) as e:
+        if cmd == "complain" and args:
+            # the Pilot is down, which is often what there is to complain about
+            # (mission 21: a 10-minute server crash, nothing could be filed)
+            import time
+            with open(os.path.join(RUNS, "complaints.md"), "a") as f:
+                f.write(f"- {time.strftime('%Y-%m-%d %H:%M:%S')} {nick.lower()} (Navigator, Pilot down): "
+                        f"{' '.join(args)}\n")
+            print("(Pilot not answering; the complaint was written to runs/complaints.md directly)")
+            return
         print(f"(Pilot not answering: {e.__class__.__name__}; it may be restarting -- wait 20 s and retry)")
         return
     if out.get("user_messages"):

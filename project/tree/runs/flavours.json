@@ -94,6 +94,11 @@
   "kind": "Ring of Feather Falling",
   "source": "Advisor L_items (Dive03 09-27 12:07:32)"
  },
+ "Dogwood Staff": {
+  "junk": false,
+  "kind": "Staff of Perception",
+  "source": "identified or used"
+ },
  "Elm Staff": {
   "junk": false,
   "kind": "Staff of Trap Location",
@@ -342,6 +347,11 @@
  "Violet Potion": {
   "junk": true,
   "kind": "Potion of Salt Water",
+  "source": "sold in a shop"
+ },
+ "White Potion": {
+  "junk": true,
+  "kind": "Potion of Sickliness",
   "source": "sold in a shop"
  },
  "Yellow Speckled Potion": {

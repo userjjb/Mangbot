@@ -49,6 +49,8 @@ Attention events:
 | `parked` | the pilot is logging out for an update (at a safe moment). It comes back within a minute or two with `started`; then re-issue your goal |
 | `pack_full` | "You have no room for ...": make room (destroy/drop junk, or recall and sell) |
 | `stat_drained`, `blows_changed` | a stat was drained (also a second drain of a stat already drained) or the blows per round changed (a drained DEX can cost a blow: restore it in town, store 5). A second drain on a level leaves it, except when the drainer beside you is weak (5+ levels below you, not a unique) and no faster than you: then the pilot kills it (`tactic` news), since walking away hands it more bites |
+| `thief` | (news only for gold thieves) a monster that steals from the pack with a touch, then teleports away, came into view (once per level): kill it before it reaches you, or keep away. With others adjacent, the pilot hits the thief first |
+| `unique_slain` | you killed a unique: its drop is good (look at `Item squares` around the square) |
 | `drainer` | (news only for INT/WIS/CHR) a mobile monster whose blows drain a stat came into view (once per level), with advice: kill a weak, slow one fast; `avoid NAME` or leave for the rest. Here the red ones drain STR: Giant red frog (350 ft), Giant red ant (450 ft), Giant red scorpion (850 ft), Red naga; also Yellow worm mass, Moaning spirit and Quasit (DEX). `drainers` lists them |
 | `breeders` | (news only when they're weak and fewer than 8) 3+ breeding monsters (lice, worms) in view: they multiply fast and give no XP. Kill one or two quickly; more than that, leave the area (stairs, or recall) |
 | `afraid` | afraid (a warrior can't melee then) and cornered with nothing to cure it: the pilot phased away. Normally, when afraid, the pilot kites over ground already walked until the fear wears off, and only in danger quaffs Boldness/Heroism/Berserk |
@@ -91,6 +93,7 @@ Attention events:
 | `disarm [DIR]`, `open [DIR]` | (not goals) a chest, trap or door in direction DIR (1-9 as on the keypad; 5 = the square you stand on). **Chests (`~`): opening sets the trap off unless it was disarmed** (small wooden chests at 250-600 ft: poison, STR or CON needles; a blind open costs a Restore ~470 80% of the time). So: `search` next to it until "You have discovered a trap on the chest!", then `disarm` until it's done (each try ~35-40% for Dive04; a failure sets it off 1 time in 8; walk away if it goes off), then `open` (~75 gold + half an item). No trap after `search 20`: just open it. Skip iron chests showing a Gas or Multiple trap without Free Action (paralysis) |
 | `avoid Y,X [R]` / `avoid NAME` / `avoid clear` | (not a goal) no-go zones the pilot's paths route around: a square and radius R (default 3) on this level, or 3 squares around every monster named NAME (all levels). `avoid` alone lists them. Use it for a vault or pit you're not opening, a breeder nest, a monster you won't fight. `explore` skips unexplored edges inside a zone; if you're inside one, paths may leave through it; a `goto` into a zone fails with "no known path" (`avoid clear` first). Zones on a level are forgotten when you leave it |
 | `say TEXT` | (not a goal) a short answer to the user, shown in their live viewer and logged |
+| `complain TEXT` while the Pilot is down | still works: pilotctl writes it to runs/complaints.md directly |
 | `drainers [STAT] [MAXLEVEL]` | (a query) the monsters whose blows drain a stat, by native level (default STR/DEX/CON up to clvl + 10): read it before a dive |
 | `monster NAME` | (a query, not a goal) this server's data for a monster (level, speed, blows, spells, flags, breath, melee per turn, the Advisor's 0-5 rating) and whether a danger rule fires for you now. Monster data here differs from Vanilla Angband: ask this instead of relying on memory |
 | `gate FEET [recall]` | (a query, not a goal) the supply gate for going down to FEET (`recall`: by Word of Recall from town): `OK` or what's missing |
@@ -108,7 +111,7 @@ Attention events:
 without it the game picks the first item in the pack), `eat L`, `fuel L` (refill a lantern
 from a flask; rarely needed: the pilot refills the lantern by itself when it runs low; in town, where the pilot keeps
 the lantern off, `fuel` puts it on first), `inspect L`, `destroy L [N|all]`, `drop L [N|all]`, `inscribe L TEXT`,
-`use L` (a staff), `aim L [DIR]` (a wand; DIR 1-9, 5 = at the nearest target), `zap L` (a rod),
+`use L [TARGET]` (a staff; TARGET = the item a Staff of Perception identifies, like `read`), `aim L [DIR]` (a wand; DIR 1-9, 5 = at the nearest target), `zap L` (a rod),
 `pickup` (what's underfoot), `stairs [<|>]`. L is the pack letter from the
 report, **or part of the item's name** with spaces as `_` (e.g. `destroy Salt_Water`,
 `quaff Cure_Light`), which is safer: a name is looked up at the moment the pilot acts (singular or plural both match: `Flask_of_oil`). Each item
@@ -256,7 +259,10 @@ Orders are remembered across pilot restarts.
   don't restore stats). The report's `Weapons:` line computes blows and damage per round for
   every weapon you carry at your current STR/DEX, and the pilot tells you (`tactic`) when a
   carried one beats the wielded one by 20%: wield it. On this character, 4 light blows plus
-  To-Dam beat heavy dice; don't switch for a bigger die without checking blows.
+  To-Dam beat heavy dice; don't switch for a bigger die without checking blows. **Brands** (of
+  Venom, Burning, Freezing, Melting, Lightning) triple the dice against monsters that don't resist:
+  the line shows that figure too (mission 21 sold a Lucerne Hammer of Venom, ~63 a round against
+  non-poison-resistant monsters, for 1707, against a Spear's ~32). Slays add x2-3 against one race.
 - **Monsters that kill a diving warrior (0–1500 ft)** (Advisor danger-table memo, checked in the
   server code; the pilot's `danger_table.csv` rates every monster to level 40):
   - Paralysis stacks until you die: without Free Action, leave any level with a paralyser that can

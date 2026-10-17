@@ -71,8 +71,8 @@ The original six-topic backlog (`../memos/2026-09-27-advisor-study-topics.md`) i
 6. **Identify and sell follow-ups:** check whether the Architect builds the flavour table, and replay how a
    mission's unknown items were handled under the new rules (`data/identify/value.py` for the prices).
 
-7. **Opus vs Sonnet Navigator (the user, 10-17):** baseline for Opus = missions 16-20 in
-   `data/navigator/baseline_opus_m16-m20.txt` (report -> first action median 6.3 s, pooled). After the Sonnet missions,
+7. **Opus vs Sonnet Navigator (the user, 10-17):** baseline for Opus = missions 16-21 in
+   `data/navigator/baseline_opus_m16-m21.txt` (report -> first action median 6.2 s pooled; m21 Opus too). Sonnet from m22. After the Sonnet missions,
    add them to `MISSIONS` in `data/navigator/response.py` and compare (also decision quality, not just speed).
 
 ## Facts a new chat tends to re-derive (verified; cite the memos)

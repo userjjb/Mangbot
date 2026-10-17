@@ -95,12 +95,24 @@ def weapon_blows(weight, str_v, dex_v, cls=WARRIOR):
     return max(1, min(cls[0], BLOWS_TABLE[s_i][d_i]))
 
 
-def weapon_damage(name, blows):
+# Brand egos: x3 on the dice against monsters that don't resist the element
+# (mission 21 compared a Lucerne Hammer of Venom at ~18 a round, brand ignored)
+BRANDS = {"Venom": "poison", "Burning": "fire", "Flame": "fire", "Freezing": "cold", "Frost": "cold",
+          "Melting": "acid", "Lightning": "lightning"}
+
+
+def weapon_brand(name):
+    """(element, multiplier) for a brand ego, else None."""
+    m = re.search(r"\bof (\*?)(" + "|".join(BRANDS) + r")\b", name)
+    return (BRANDS[m.group(2)], 3) if m else None
+
+
+def weapon_damage(name, blows, mult=1):
     """Average damage per round: (dice average + to-dam) x blows."""
     m = re.search(r"\((\d+)d(\d+)\)", name)
     if not m:
         return 0.0
-    dice = int(m.group(1)) * (int(m.group(2)) + 1) / 2
+    dice = int(m.group(1)) * (int(m.group(2)) + 1) / 2 * mult
     b = re.search(r"\([+-]\d+,([+-]\d+)\)", name)
     return (dice + (int(b.group(1)) if b else 0)) * blows
 
@@ -745,12 +757,18 @@ class Search(Goal):
 
     def summary(self):
         """Where it searched, how often (the Navigator couldn't tell whether a
-        26 s searchroom had really searched 4 x 20, mission 20)."""
-        done = [f"{q[0]},{q[1]} x{n}" for q, n in self.spots_log if n]
-        unreached = [f"{q[0]},{q[1]}" for q, n in self.spots_log if not n]
-        if not done and not unreached:
+        26 s searchroom had really searched 4 x 20, mission 20), including the
+        spot it was at when the way on appeared (mission 21 listed only one)."""
+        log = list(self.spots_log)
+        if self.spot and (self.spot, 0) not in log:
+            log.append((self.spot, self.tries - self.searching if self.searching else 0))
+        done = [f"{q[0]},{q[1]} x{n}" for q, n in log if n]
+        here = [f"{q[0]},{q[1]} (on the way)" for q, n in log if not n and q == self.spot]
+        log = [(q, n) for q, n in log if not (not n and q == self.spot)]
+        unreached = [f"{q[0]},{q[1]}" for q, n in log if not n]
+        if not done and not unreached and not here:
             return ""
-        return f" (searched: {', '.join(done) or 'none'}" + \
+        return f" (searched: {', '.join(done + here) or 'none'}" + \
             (f"; couldn't reach: {', '.join(unreached)}" if unreached else "") + ")"
 
 
@@ -765,11 +783,15 @@ class Hunt(Goal):
         self.lost_s = lost_s
         self.last_seen = time.time()
         self.goal_tile = None
+        self.t0 = time.time()
 
     def tick(self, p):
         w = p.w
-        if any(t.startswith("You have slain") and self.target in t.lower() or
-               t.startswith("You have destroyed") and self.target in t.lower() for t in w.recent(3)):
+        # every message since the hunt began: while others are adjacent this
+        # goal isn't ticked, and a 3-s window missed the kill (mission 21:
+        # "lost sight of it" for a slain Brigand)
+        if any(ts >= self.t0 and (t.startswith("You have slain") or t.startswith("You have destroyed"))
+               and self.target in t.lower() for ts, t in w.messages):
             return ("done", "slain")
         mons = [(y, x, r) for y, x, r in w.monsters if self.target in r.name.lower()]
         # Killed while we couldn't see it (blind, or it was invisible): the game
@@ -1375,6 +1397,9 @@ class Pilot:
         self.retreating = False
         self.fearers_seen = set()
         self.drainers_seen = set()     # (level_t, race name) drainer warnings given
+        self.thieves_seen = set()      # (level_t, race name) thief warnings given
+        self.thief_hit_t = 0.0
+        self.kills_t = time.time()     # messages scanned for unique kills
         self.item_pending = []         # (due, level_t, name): interesting_item alerts held 2.5 s
         self.unique_names = None
         self.fear_t = 0.0
@@ -2058,6 +2083,16 @@ class Pilot:
             # target: mission 18 killed 7 urchins and a dog while one stole 67)
             if isinstance(self.goal, TownFarm) and any(any("EAT_" in b for b in r.blows) for *_, r in adj):
                 return False
+            # In the dungeon too: with others adjacent, hit the thief first
+            # (mission 21: a Brigand took an {excellent} armour from the pack)
+            thieves = [m for m in adj if any(b.split(":")[1:2] in (["EAT_ITEM"], ["EAT_GOLD"]) for b in m[2].blows)]
+            if thieves and len(adj) > 1 and w.depth and now - self.thief_hit_t > 0.35 and \
+                    not isinstance(self.goal, (Flee, Recall)):
+                t = min(thieves, key=lambda m: not any("EAT_ITEM" in b for b in m[2].blows))
+                self.thief_hit_t = now
+                self.c.send("clear")
+                self.cmd(f"walk {direction(w.pos, t[:2])}", f"hit the {t[2].name} first (a thief)", hold=0.2)
+                return True
             return not isinstance(self.goal, (Goto, Flee))
         # Pick up what we're standing on ("You see a ..." right after a step)
         if o["pickup"] == "all" and not adj and not w.store:
@@ -2069,7 +2104,11 @@ class Pilot:
             if seen and (any(f"of {j}" in seen[-1][1].lower() or seen[-1][1].lower().rstrip(".").endswith(j)
                              or j.startswith("book") and j in seen[-1][1].lower() or
                              j.startswith("holy book") and j in seen[-1][1].lower() for j in junk)
-                         or " Broken " in seen[-1][1]):
+                         or " Broken " in seen[-1][1]
+                         # junk per the flavour table though the character doesn't
+                         # know it (mission 21: an unknown Summon Undead took the slot
+                         # freed for an {excellent} armour)
+                         or (self.flavours.get(flavour_key(seen[-1][1][8:].rstrip("."))) or {}).get("junk")):
                 seen = []         # known junk: leave it (it filled the pack on the way down)
                 self.skipped_items.add((w.level_t, w.pos))
             if seen and (w.level_t, w.pos) in self.skipped_items:
@@ -2264,6 +2303,38 @@ class Pilot:
     def room_door(self, Y, X):
         """An inner room's door, if the map shows one at any of its 4 places."""
         return next((d for d, _ in structures.door_spots(Y, X) if self.w.memory.get(d) in ("+", "'")), None)
+
+    def watch_thieves(self):
+        """A thief in view in the dungeon: say so once per level, before it
+        touches (mission 21: a Brigand stole an {excellent} armour and the
+        Navigator only heard of it from the loss)."""
+        w = self.w
+        if not w.in_dungeon:
+            return
+        for y, x, r in w.monsters:
+            kinds = {b.split(":")[1] for b in r.blows if b.split(":")[1:2] in (["EAT_ITEM"], ["EAT_GOLD"])}
+            if not kinds or (w.level_t, r.name) in self.thieves_seen:
+                continue
+            self.thieves_seen.add((w.level_t, r.name))
+            what = "items from your pack" if "EAT_ITEM" in kinds else "gold"
+            self.notify("thief", f"{r.name} (lvl {r.level}, {w.dist((y, x))} away) steals {what} with a touch, then "
+                                 f"teleports: kill it before it reaches you (`goal hunt {r.name.replace(' ', '_')}`), "
+                                 "or keep away", news="EAT_ITEM" not in kinds)
+
+    def watch_kills(self):
+        """A unique slain: say so (its drop is worth picking up). Mission 21:
+        Wormtongue died during explore and nobody noticed until his hammer."""
+        w = self.w
+        if not self.unique_names:
+            self.unique_names = {r.name.lower() for r in w.g.races.values() if "UNIQUE" in r.flags}
+        for ts, t in w.messages:
+            if ts <= self.kills_t:
+                continue
+            m = re.match(r"You have (?:slain|destroyed) (.+?)\.$", t)
+            if m and m.group(1).lower() in self.unique_names:
+                self.notify("unique_slain", f"{m.group(1)} slain at {w.pos[0]},{w.pos[1]}: uniques drop good items "
+                                            "(look at 'Item squares' around there)")
+        self.kills_t = max([self.kills_t] + [ts for ts, _ in w.messages])
 
     def drainers_info(self, args):
         """`drainers [STAT] [MAXLEVEL]`: monsters whose blows drain a stat, by
@@ -2685,10 +2756,16 @@ class Pilot:
                                            f"(HP {w.hp_frac:.0%})", news=True)
             return False
         prev = self.goal.describe() if self.goal else None
+        # a gaze may be a paralysing spell: deadly without Free Action, where a
+        # walk to far stairs is worse than a recall (mission 21's "stares deep")
+        para = re.search(r"stares deep|gazes deep|looks deep|gazes at", cause) and \
+            not self.has_ability("free_action")
+        hint = " (it may be paralysis and you have no Free Action: if the stairs are far, read Word of Recall)" \
+            if para else ""
         if w.find("<>"):
             self.set_goal(Flee("unseen attacker"))
             self.notify("unseen_attacker", f"'{cause}': something unseen is attacking"
-                                           f"{' while ' + prev if prev else ''}; heading for the stairs")
+                                           f"{' while ' + prev if prev else ''}; heading for the stairs{hint}")
         else:
             self.notify("unseen_attacker", f"'{cause}': something unseen is attacking and no stairs are known: "
                                            "consider Word of Recall or Phase Door")
@@ -3308,6 +3385,8 @@ class Pilot:
             self.watch_weapons()
         self.watch_breeders()
         self.watch_drainers()
+        self.watch_thieves()
+        self.watch_kills()
         self.watch_progress()
         self.watch_perception()
         if self.w.recall_cancelled:
@@ -3612,7 +3691,10 @@ class Pilot:
                     self.skipped_items.add((self.w.level_t, self.w.pos))
             if c in ("aim",):
                 extra = f" dir={args[1] if len(args) > 1 else 5}"
-            if c == "read" and len(args) > 1 and args[1] != "force":
+            # (a staff that works on an item -- Perception -- takes it the same way:
+            # tables.c gives 'u' the same scheme as 'r'; mission 21 identified the
+            # flask in slot a twice)
+            if c in ("read", "use") and len(args) > 1 and args[1] != "force":
                 # A scroll that works on another item (Identify, Enchant...): the
                 # client sends that item in the direction byte (COMMAND_SECOND_DIR);
                 # without it the server picked the first pack item
@@ -4078,7 +4160,9 @@ class Pilot:
         hunger = {0: "Weak", 1: "Weak", 2: "Hungry", 3: "Fed", 4: "Full", 5: "Gorged"}.get(w.hunger, w.hunger)
         lines.append(f"{stats}  | {hunger}" + (f" | {', '.join(cond)}" if cond else "")
                      + (" | resting" if w.resting else ""))
-        lines.append(f"Standing on: {w.standing_on or 'floor/unknown'}"
+        # (after a login the map shows @ over whatever is there: mission 21 stood
+        # on a '<' reported as floor/unknown)
+        lines.append(f"Standing on: {w.standing_on or 'unknown (the map shows @ over it until you step off; on stairs? `stairs <` or `stairs >` tries)'}"
                      f"{' (item: ' + w.floor + ')' if w.floor else ''}"
                      f"{' (arrived by ' + w.arrived_by + ')' if w.arrived_by else ''}"
                      f" | goal: {self.goal.describe() if self.goal else 'none (idle)'}")
@@ -4131,6 +4215,9 @@ class Pilot:
         if wt:
             lines.append("Weapons (blows, avg damage per round at your STR/DEX): " + "; ".join(
                 f"{'WIELDED ' if eq else ''}{n} {b} blows ~{d:.0f}"
+                + (f" (~{weapon_damage(n, b, weapon_brand(n)[1]):.0f} vs monsters not resisting "
+                   f"{weapon_brand(n)[0]})" if weapon_brand(n) else "")
+                + (" (+ x2-3 vs its slain race)" if re.search(r"\bof \*?Slay ", n) else "")
                 + (" (pluses unknown: identify it, it may be much better)"
                    if re.search(r"\{(good|excellent|special|magical)", n) and not re.search(r"\([+-]\d+,", n) else "")
                 for n, b, d, eq in wt))

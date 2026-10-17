@@ -150,7 +150,7 @@ class Mover:
         w = self.w
         start, end, t0 = self.running
         # progress already accounted for by tick(); here: stop or give up
-        if self._monster_near(5) and not self.stop_sent:
+        if self._monster_near(self.near_r()) and not self.stop_sent:
             self.c.send("walk 5")            # something close: stop running
             self.stop_sent = True
         if not self.stop_sent and self.done >= end - 1:
@@ -213,8 +213,14 @@ class Mover:
         """Could a run start at path index i (straight stretch, nothing close)?"""
         n = self._straight(i)
         frm = self.path[i - 1] if i else self.here
-        return self.runs_ok() and n >= self.RUN_MIN and not self._monster_near(5) and self.stretch_ok(i, n) \
+        return self.runs_ok() and n >= self.RUN_MIN and not self._monster_near(self.near_r()) and self.stretch_ok(i, n) \
             and frm not in self.no_run_at
+
+    def near_r(self):
+        """No run with a monster this close: 5 in the dungeon; 2 on the surface,
+        where townspeople are always about and harmless (townfarm walked every
+        step: the user, mission 21)."""
+        return 2 if self.surface() else 5
 
     def _monster_near(self, r):
         w = self.w
@@ -250,7 +256,7 @@ class Mover:
                 if self.free_away >= 2:
                     self.c.send("walk 5")
                     self.stop_sent = True
-        if self._monster_near(5) and not self.stop_sent:
+        if self._monster_near(self.near_r()) and not self.stop_sent:
             self.c.send("walk 5")
             self.stop_sent = True
         if self.resume_goals and w.pos in self.resume_goals and not self.stop_sent:
@@ -491,7 +497,7 @@ class Mover:
         # tile, walking takes ~0.5 s. Straight stretches are run and stopped a
         # tile early; in a corridor we run and let the server follow the bends
         # (replanning when the run ends), as a human holding the key does.
-        if self.sent == self.done and self.runs_ok() and not self._monster_near(5) and \
+        if self.sent == self.done and self.runs_ok() and not self._monster_near(self.near_r()) and \
                 self.w.pos not in self.no_run_at:
             frm = self.path[self.done - 1] if self.done else self.here
             d = direction(frm, self.path[self.done])

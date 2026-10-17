@@ -233,6 +233,16 @@ job 8105290 on scc-wh2, walltime to Mon 10-19 20:47, Dive04 restored from its 10
   interesting_item waits up to 10 s while a matching glyph is within loot_radius; item replies wait up to ~2 s for
   the pack to change; shop buys the remainder at the next price within the cap and says when gold stops it.
 
+- **Mission 21 (2026-10-17 00:47-01:35, user watching; report `runs/pilot/dive04/reports/2026-10-17-mission21.md`):**
+  clvl 19, 793 → 2621 gold, deepest 700, Hard Studded Leather of Resistance, Spear (+5,+7), Wormtongue killed, a jelly
+  nest found behind a searchroom door. Server crash at 00:48:48 (store[-1]: the Pilot's town redraw closed the store
+  silently on the server): patched server (bb56313) + Pilot/client guards (f4082b0). **Fixed after (deployed):**
+  dungeon `thief` event + hit the thief first when several are adjacent; `unique_slain` event; Hunt sees a kill in any
+  message since it began (messages deque 60 → 300); pickup skips flavour-table junk; `use L TARGET`; Weapons line shows
+  brand damage (Hammer of Venom ~63 vs non-resistant, sold for 1707!); surface runs start with townspeople within 2;
+  paralysis hint on unseen gazes without FA; "Standing on" explains unknown after login; searchroom summary includes the
+  spot it was at; `complain` writes directly when the Pilot is down.
+
 ### ARCHITECT HANDOFF 2026-09-29 (history; read the 2026-10-08 section first)
 
 New session (job 448491 on scc-wi2). Test server restarted under gdb 21:34 (gdb costs nothing: the

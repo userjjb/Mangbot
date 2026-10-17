@@ -22,12 +22,13 @@ import bisect, json, statistics, sys
 from datetime import datetime
 
 NICK = sys.argv[1] if len(sys.argv) > 1 else "dive04"
-MISSIONS = [  # name, start, end (local time; from the Navigator reports / next_steps.md)
+MISSIONS = [  # name, start, end (local time; from the Navigator reports / next_steps.md). m16-m21 Opus; m22+ Sonnet (the user, 10-17)
     ("m16", "2026-10-08 15:31", "2026-10-08 16:09"),
     ("m17", "2026-10-16 13:57", "2026-10-16 14:41"),
     ("m18", "2026-10-16 18:46", "2026-10-16 19:27"),
     ("m19", "2026-10-16 22:14", "2026-10-16 22:56"),
     ("m20", "2026-10-16 23:41", "2026-10-17 00:19"),
+    ("m21", "2026-10-17 00:47", "2026-10-17 01:36"),
 ]
 QUERY = {"status", "journal", "gate", "monster", "inventory", "complain", "drainers", "say", "note", "options",
          "flags", "floor", "help", "plan", "dump", "quote", "view"}

@@ -42,7 +42,7 @@ class World:
         self.inven = []
         self.inven_t = 0.0
         self.inven_dirty = True
-        self.messages = collections.deque(maxlen=60)   # (t, text)
+        self.messages = collections.deque(maxlen=300)  # (t, text) (60 lost a hunt's kill in fight spam)
         self.standing_on = None                # '<' '>' or a terrain char, if known
         self.last_stairs_cmd = None            # ('<'|'>', t) sent, awaiting the level change
         self.hits_taken = 0                    # "... hits you" style messages
