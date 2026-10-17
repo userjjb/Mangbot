@@ -217,6 +217,8 @@ class World:
                 self.store, self.store_t = ev, time.time()
             elif k == "store_leave":
                 self.store = None
+                # (set when the client saw our own non-store command close it)
+                self.store_left_why = ev.get("why")
             elif k == "monlist":
                 self.monlist = self.g.parse_monlist(ev["lines"])
             elif k == "itemlist":

@@ -40,6 +40,11 @@ can read them. Memory now only points here.) Credentials are **not** in this fil
   - A store purchase arriving when the player is no longer in a store (`store_num` -1): `get_store_item`
     read `store[-1]` and segfaulted (store.c:1625, 2026-10-17, mission 21's Gauntlets buy). Patched in the
     test server: get_store_item, store_purchase and store_sell refuse when not in a store or past the stock.
+    **Cause, and the client-side fix that also protects live servers:** the server leaves the store on any
+    non-store command (walk, rest, pathfind, a non-store custom command) and on a redraw, without sending
+    store_leave. The Pilot's 2-minute town redraw fired mid-shop. Now the Pilot never redraws in a store or
+    during a shop goal, and the client tool (c-tool.c `tool_in_store`) refuses redraws and store commands
+    when not in a store and reports a store_leave {why} after any non-store command.
   - `MAX_ARENAS=10` with no bounds check (wilderness.c:1171): an 11th wilderness arena corrupts
     `k_name` and the server segfaults in `object_desc`. Entering 2E did this on the test server.
     Keep tool characters out of the wilderness there. Live servers are patched (user).

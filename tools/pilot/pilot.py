@@ -1224,6 +1224,14 @@ class Shop(Goal):
                 w.inven_dirty = True
                 return None
             if not w.store:
+                # Our own non-store command closed it on the server (the client
+                # reports that as store_leave with a 'why'): walk back in, twice
+                # at most; anything else is the shopkeeper's doing
+                if getattr(w, "store_left_why", None) and getattr(self, "reentered", 0) < 2:
+                    self.reentered = getattr(self, "reentered", 0) + 1
+                    w.store_left_why = None
+                    self.state = "walk"
+                    return None
                 return ("failed", "thrown out of the store")
             if self.list_stock:
                 # (mission 8 guessed names one shop trip at a time)
@@ -3203,7 +3211,12 @@ class Pilot:
         w, now = self.w, time.time()
         # Full resync from the server after a level change or a loss (the
         # game-state survey, 2026-10-03: the client's copy is right, ours drifts)
-        if (w.need_redraw or self.redraw_level != w.level_t) and now - self.redraw_t > 2:
+        # Never inside a store, nor during a shop goal: the server's redraw
+        # silently closes the store (net-game.c recv_redraw sets store_num = -1,
+        # no store_leave), and a purchase after that reads store[-1] -- it
+        # crashed the test server in mission 21 and would crash a live one
+        shopping = w.store is not None or isinstance(self.goal, Shop) or now - getattr(w, "store_t", 0) < 3
+        if (w.need_redraw or self.redraw_level != w.level_t) and now - self.redraw_t > 2 and not shopping:
             self.redraw_t, self.redraw_level = now, w.level_t
             w.need_redraw = False
             self.c.send("redraw")

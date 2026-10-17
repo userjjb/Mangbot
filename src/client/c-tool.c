@@ -21,7 +21,7 @@
  *   itemlist     {lines[]}                  -- ... and of seen objects
  *   level        {depth}                    -- depth changed (also once at start)
  *   store        {flag, name, owner, num, items[]}
- *   store_leave  {}                         -- server closed the store
+ *   store_leave  {why?}                     -- server closed the store (why: we sent a non-store command, which closes it on the server)
  *   blocked_input {where}                   -- a prompt wanted a key; got ESC
  *   pos          {y, x}                     -- own position (absolute), on change
  *   ack          {cmd}                      -- command accepted and sent
@@ -290,6 +290,11 @@ void tool_blocked_input(cptr where)
 
 /*** Requests from the server ***/
 
+/* Inside a store, as far as the tool knows (a redraw there makes the server
+ * drop the store silently -- recv_redraw sets store_num = -1 -- and the next
+ * purchase crashed the test server, 2026-10-17) */
+static bool tool_in_store = FALSE;
+
 static void tool_emit_store(void)
 {
 	int i;
@@ -370,11 +375,13 @@ static void tool_process_requests(void)
 	if (enter_store)
 	{
 		enter_store = FALSE;
+		tool_in_store = TRUE;
 		tool_emit_store();
 	}
 	if (leave_store)
 	{
 		leave_store = FALSE;
+		tool_in_store = FALSE;
 		tool_ev_begin("store_leave");
 		tool_ev_end();
 	}
@@ -433,11 +440,30 @@ static int tool_find_custom(char key, bool store_cmd)
 	return -1;
 }
 
+/* The server leaves the store on every non-store command, without a
+ * store_leave packet ("Exit store on every non-store command", net-game.c).
+ * Mirror that, and tell the agent, so it never sends a purchase the server
+ * would resolve against store[-1] (that crashed the test server, 2026-10-17;
+ * a live server has no patch). */
+static void tool_left_store(cptr why)
+{
+	if (!tool_in_store) return;
+	tool_in_store = FALSE;
+	tool_ev_begin("store_leave");
+	tool_kv_str("why", why);
+	tool_ev_end();
+}
+
 static void tool_send_custom(cptr cmd, char key, bool store_cmd, int item, int dir, s32b value, cptr entry)
 {
 	char buf[60];
 	int i = tool_find_custom(key, store_cmd);
 
+	if (store_cmd && !tool_in_store)
+	{
+		tool_error(cmd, "not in a store (the server would act on no store)");
+		return;
+	}
 	if (i < 0)
 	{
 		tool_error(cmd, format("No %scommand '%c' on this server", store_cmd ? "store " : "", key));
@@ -449,6 +475,7 @@ static void tool_send_custom(cptr cmd, char key, bool store_cmd, int item, int d
 		tool_error(cmd, "send failed");
 		return;
 	}
+	if (!store_cmd) tool_left_store("a non-store command closes the store on the server");
 	tool_ack(cmd);
 }
 
@@ -675,6 +702,7 @@ static void tool_do_command(char *line)
 	{
 		if (n < 2 || !tool_valid_dir(a)) { tool_error(line, "usage: walk DIR"); return; }
 		send_walk((char)a);
+		tool_left_store("a walk closes the store on the server");
 		tool_ack(line);
 	}
 	else if (streq(verb, "pathfind"))
@@ -685,6 +713,7 @@ static void tool_do_command(char *line)
 			return;
 		}
 		cq_printf(&serv->wbuf, "%c%c%c", PKT_PATHFIND, (byte)a, (byte)b);
+		tool_left_store("a pathfind closes the store on the server");
 		tool_ack(line);
 	}
 	else if (streq(verb, "open") || streq(verb, "alter"))
@@ -699,6 +728,7 @@ static void tool_do_command(char *line)
 	}
 	else if (streq(verb, "leave"))
 	{
+		tool_in_store = FALSE;
 		send_store_leave();
 		tool_ack(line);
 	}
@@ -713,7 +743,11 @@ static void tool_do_command(char *line)
 	else if (streq(verb, "redraw"))
 	{
 		/* A full resync (net-game.c recv_redraw): inventory, equipment,
-		 * indicators, map. The Advisor's game-state survey (2026-10-03). */
+		 * indicators, map. The Advisor's game-state survey (2026-10-03).
+		 * Never inside a store: the server would close it without telling
+		 * us, and a purchase after that reads store[-1] (a crash on any
+		 * server without our patch). */
+		if (tool_in_store) { tool_error(line, "in a store: leave first (a redraw closes the store on the server)"); return; }
 		send_redraw();
 		tool_ack(line);
 	}
@@ -721,6 +755,7 @@ static void tool_do_command(char *line)
 	{
 		/* Not a custom command: a fixed packet the server treats as a toggle */
 		send_rest();
+		tool_left_store("resting closes the store on the server");
 		tool_ack(line);
 	}
 	else if (streq(verb, "eat"))
