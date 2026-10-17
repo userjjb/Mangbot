@@ -15,6 +15,7 @@
                                            # (--brief: status lines, monsters, stairs, news only)
     pilotctl.py attention                  # pending attention events, without waiting
     pilotctl.py monster NAME               # this server's data for a monster + the pilot's verdict
+    pilotctl.py drainers [STAT] [MAXLEVEL]  # monsters whose blows drain a stat (default STR/DEX/CON, to clvl+10)
     pilotctl.py say TEXT...                # answer the user (shown in their viewer, logged)
     pilotctl.py search [N]                 # search the squares around you N times (default 15)
     pilotctl.py disarm|open [DIR]          # a chest/trap/door in DIR (5 = underfoot)

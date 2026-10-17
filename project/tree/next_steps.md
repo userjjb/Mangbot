@@ -212,6 +212,17 @@ job 8105290 on scc-wh2, walltime to Mon 10-19 20:47, Dive04 restored from its 10
   no stairs known (flavour table counts); townfarm's adjacent-thief hit now actually runs (step 5 returned before
   the goal ticked: 0 hits in mission 18). `use`/`aim`/`zap` existed; now in the HANDBOOK.
 
+- **Mission 19 (2026-10-16 22:14-22:55, report `runs/pilot/dive04/reports/2026-10-16-mission19.md`):** clvl 17 → 18,
+  220 HP, STR drained to 18/10 by a Giant red ant + frog (unflagged), restored (498); Shadow Cloak, Ring of Resist Cold;
+  a hunted Ranger took 220 → 67. Door/Stair Location dive step, `use`, shop plurals, item-alert hold, gold-underfoot
+  all worked. **Fixed after (deployed 23:40):** a refused run ("You cannot run in that direction", resent 61 times)
+  falls back to walking from that square (`Mover.no_run_at`); `stuck` after 20 s on one square; `drainer` event on
+  sight + `drainers [STAT] [MAXLEVEL]` query (`Race.drained_stats`); second drain by a weak (clvl-5), no-faster,
+  non-unique adjacent drainer → Hunt it, not Flee; "weak melee" caster exemption needs worst case < HP/8 too
+  (Ranger 40 no longer passes; Wormtongue 10 does); "was eaten!" is `lost` news; townfarm clears before each thief
+  hit (a stale walk moved us), item thieves first, and ends itself after 2 min without gold (57 thief hits seen in
+  mission 19: the step-5 fix works); `use/aim/zap` with a game reply skip the "no change" note.
+
 ### ARCHITECT HANDOFF 2026-09-29 (history; read the 2026-10-08 section first)
 
 New session (job 448491 on scc-wi2). Test server restarted under gdb 21:34 (gdb costs nothing: the

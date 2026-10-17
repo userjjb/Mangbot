@@ -49,6 +49,11 @@
   "kind": "Ring of Teleportation",
   "source": "Identify, Dive04 10-08 16:00:57 (added by the Architect from the log)"
  },
+ "Carnelian Ring": {
+  "junk": false,
+  "kind": "Ring of Resist Cold",
+  "source": "identified"
+ },
  "Clear Potion": {
   "junk": true,
   "kind": "Potion of Water",
@@ -78,6 +83,11 @@
   "junk": false,
   "kind": "Wand of Slow Monster",
   "source": "Advisor L_items (Dive03 09-25 20:56:08)"
+ },
+ "Coral Amulet": {
+  "junk": false,
+  "kind": "Amulet of Adornment",
+  "source": "identified"
  },
  "Corundum Ring": {
   "junk": false,

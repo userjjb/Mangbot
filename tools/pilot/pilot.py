@@ -1035,8 +1035,11 @@ class TownFarm(Goal):
             self.check = (time.time(), gold)
         elif time.time() - self.check[0] > 120:
             if gold <= self.check[1]:
-                p.notify("tactic", f"townfarm: no gold in 2 minutes ({'night: few townspeople' if w.is_day() is False else 'no targets found'}); "
-                                   "selling spare items may be faster")
+                # done, not just a warning: townspeople thin out after ~3 min and
+                # come back slowly (missions 18-19 farmed 4 more minutes for nothing)
+                return ("done", f"stopped at {gold} gold: no gold in 2 minutes "
+                                f"({'night: few townspeople' if w.is_day() is False else 'the townspeople have thinned out'}); "
+                                "selling spare items may be faster, or try again later")
             self.check = (time.time(), gold)
         if time.time() > self.end:
             return ("done", f"time's up at {gold} gold")
@@ -1059,7 +1062,10 @@ class TownFarm(Goal):
         # with a stealing touch within 8 squares
         thieves = [(y, x, r) for y, x, r in w.monsters if any("EAT_" in b for b in r.blows) and w.dist((y, x)) <= 8]
         if thieves:
-            return self.chase(p, min(thieves, key=lambda m: w.dist(m[:2])))
+            # item thieves (rogues: a Phase Door, mission 19) before gold ones (urchins)
+            return self.chase(p, min(thieves, key=lambda m: (w.dist(m[:2]) > 1,
+                                                            not any("EAT_ITEM" in b for b in m[2].blows),
+                                                            w.dist(m[:2]))))
         # gold lying around (a kill's drop): walk over it (pickup takes it)
         coins = [q for q, ch in w.memory.items() if ch == "$" and w.dist(q) <= 15]
         if coins:
@@ -1093,11 +1099,13 @@ class TownFarm(Goal):
         y, x, r = mon
         if w.dist((y, x)) <= 1:
             p.mover.stop()
-            if any("EAT_" in b for b in r.blows) and time.time() - getattr(self, "hit_t", 0) > 0.25:
+            if any("EAT_" in b for b in r.blows) and time.time() - getattr(self, "hit_t", 0) > 0.35:
                 # a thief: hit it ourselves -- auto-retaliate picks its own target,
                 # and in a crowd it killed idiots and beggars while an urchin
-                # beside us stole twice (mission 17)
+                # beside us stole twice (mission 17). Clear first: a walk queued
+                # for a thief already dead moved us instead (mission 19)
                 self.hit_t = time.time()
+                p.c.send("clear")
                 p.cmd(f"walk {direction(w.pos, (y, x))}", f"townfarm: hit the {r.name} first (a thief)", hold=0.2)
             return None                      # adjacent: auto-retaliate fights
         near = [(y + dy, x + dx) for dy in (-1, 0, 1) for dx in (-1, 0, 1) if dy or dx]
@@ -1331,6 +1339,7 @@ class Pilot:
         self.loop_warned = 0.0
         self.retreating = False
         self.fearers_seen = set()
+        self.drainers_seen = set()     # (level_t, race name) drainer warnings given
         self.item_pending = []         # (due, level_t, name): interesting_item alerts held 2.5 s
         self.unique_names = None
         self.fear_t = 0.0
@@ -1875,13 +1884,18 @@ class Pilot:
         # turn, the stairs 70-80 away, twice; the user: stand and fight; the
         # Advisor's replay: even a '>' 12 away gave ~18 s of free casts)
         stairs_d = min((w.dist(q) for q in w.find("<>")), default=999)
+        # (weak by the worst case too: mission 19's Ranger, ~25 a turn and 40 at
+        # worst, passed the average test and the Navigator hunted it: 220 -> 67)
         if near_danger and stairs_d > 8 and all(
-                (r.speed_x or 1) <= 1 and r.per_turn < w.hp[0] / 8 and r.spells for r in near_danger):
+                (r.speed_x or 1) <= 1 and r.per_turn < w.hp[0] / 8 and (r.worst_melee[0] or 0) < w.hp[0] / 8
+                and r.spells for r in near_danger):
             if now - self.flee_t > 30:
                 self.flee_t = now
-                self.notify("danger_seen", f"{self.danger_text(near_danger[0])} in view, stairs {stairs_d} away: "
-                                           "NOT fleeing (it's slow and hits weakly; its danger is spells, and a "
-                                           "long walk gives it free casts). Fight it (goal hunt) or recall")
+                r0 = near_danger[0]
+                self.notify("danger_seen", f"{self.danger_text(r0)} in view, stairs {stairs_d} away: NOT fleeing "
+                                           f"(no faster than you, melee ~{r0.per_turn:.0f} a turn, "
+                                           f"{r0.worst_melee[0]:.0f} at worst; its danger is spells, and a long walk "
+                                           "gives it free casts). Fight it (goal hunt) or recall")
             near_danger = []
         if near_danger and now - self.flee_t <= 10 and self.flee_fail_t >= self.flee_t and \
                 not isinstance(self.goal, Recall) and not self.recall_started(now):
@@ -2212,6 +2226,42 @@ class Pilot:
                      map_age=round(time.time() - w.map_t, 2), crop=crop,
                      monsters=[(my, mx, r.name) for my, mx, r in w.monsters])
 
+    def drainers_info(self, args):
+        """`drainers [STAT] [MAXLEVEL]`: monsters whose blows drain a stat, by
+        native level (the Navigator's mission 19 wish: the ant and the frog
+        drained STR unflagged). Default: STR/DEX/CON, up to clvl + 10."""
+        stats = {a.upper() for a in args if a.upper() in self.STAT_NAMES}
+        lv = next((int(a) for a in args if a.isdigit()), self.w.clvl + 10)
+        want = stats or {"STR", "DEX", "CON"}
+        rows = sorted((r.level, r.name, sorted(r.drained_stats & want), "NEVER_MOVE" in r.flags, r.speed)
+                      for r in self.w.g.races.values() if r.drained_stats & want and r.level <= lv)
+        if not rows:
+            return f"no monster up to level {lv} drains {', '.join(sorted(want))}"
+        return f"monsters up to level {lv} ({lv * 50} ft) that drain {', '.join(sorted(want))}:\n" + "\n".join(
+            f"  lvl {l:2d} ({l * 50} ft) {n}: {', '.join(st)}" + (" (stationary)" if still else "") +
+            (f" (speed +{sp - 110})" if sp > 110 else "") for l, n, st, still, sp in rows)
+
+    def watch_drainers(self):
+        """A mobile monster in view whose blows drain a stat: say so once per
+        level (mission 19: a Giant red ant and frog, rated 1/5, took STR 18/40
+        -> 18/10 and a blow; nothing had flagged them)."""
+        w = self.w
+        if not w.in_dungeon:
+            return
+        mine = 110 + int(w.ind.get("speed", [0])[0] or 0)
+        for _, _, r in w.monsters:
+            stats = r.drained_stats
+            if not stats or "NEVER_MOVE" in r.flags or (w.level_t, r.name) in self.drainers_seen:
+                continue
+            self.drainers_seen.add((w.level_t, r.name))
+            key = stats & {"STR", "DEX", "CON"}          # blows and HP: what a warrior can't spare
+            if r.level <= w.clvl - 5 and r.speed <= mine and "UNIQUE" not in r.flags:
+                advice = "weak and no faster than you: kill it fast, don't walk away from it"
+            else:
+                advice = f"`avoid {r.name.replace(' ', '_')}`, or leave the level"
+            self.notify("drainer", f"{r.name} (lvl {r.level}) drains {', '.join(sorted(stats))} with its blows: "
+                                   f"{advice}", news=not key)
+
     def watch_progress(self):
         """A goal that goes nowhere: at most 10 different squares in 2 minutes
         while not fighting (mission 3 circled a '>' for 10 minutes, and no
@@ -2223,6 +2273,18 @@ class Pilot:
         while self.pos_hist and now - self.pos_hist[0][0] > 120:
             self.pos_hist.popleft()
         idle_goal = isinstance(self.goal, (Wait, RestGoal, Search, Recall, Recover, Shop)) or self.goal is None
+        # Quick check: the mover is "moving" but we've stood on one square for
+        # 20 s (mission 19: a flee resent a refused run for a minute, no alert)
+        if not idle_goal and self.mover.active and not w.adjacent_monsters() and not w.resting and \
+                now - self.stuck_t > 60 and now - getattr(self, "goal_t", 0) > 20:
+            recent = [q for t, q, d in self.pos_hist if now - t <= 20]
+            if len(recent) >= 15 and len(set(recent)) == 1 and now - self.pos_hist[0][0] >= 20:
+                self.stuck_t = now
+                self.c.send("clear")
+                self.mover.stop()
+                self.notify("stuck", f"'{self.goal.describe()}' hasn't moved from {w.pos} for 20 s: cleared the "
+                                     "command queue and restarted the move. If it happens again, give another goal")
+                return
         if now - getattr(self, "goal_t", 0) < 110:
             return      # (the demo mission: 'stuck' 3 s into a goal, counting the idle time before it)
         # (a fight in the window doesn't count: mission 6 fired this in a
@@ -3005,7 +3067,17 @@ class Pilot:
                 if w.monsters and w.in_dungeon:
                     n = self.drains_here[1] + 1 if self.drains_here[0] == w.level_t else 1
                     self.drains_here = (w.level_t, n)
-                    if n >= 2 and w.find("<>") and not isinstance(self.goal, (Flee, Recall, Recover)):
+                    mine = 110 + int(w.ind.get("speed", [0])[0] or 0)
+                    weak = [r for *_, r in w.adjacent_monsters() if r.drains and "NEVER_MOVE" not in r.flags
+                            and "UNIQUE" not in r.flags and r.level <= w.clvl - 5 and r.speed <= mine]
+                    if n >= 2 and weak and not isinstance(self.goal, (Flee, Recall, Recover, Hunt)):
+                        # A weak drainer beside us: walking away hands it more bites
+                        # (mission 19: the flee bumped walls while a Giant red frog
+                        # drained STR again; one round of 'hunt' killed it)
+                        self.set_goal(Hunt(weak[0].name))
+                        self.notify("tactic", f"drained twice on this level by {weak[0].name} (lvl {weak[0].level}, "
+                                              "no faster than you) adjacent: killing it rather than walking away")
+                    elif n >= 2 and w.find("<>") and not isinstance(self.goal, (Flee, Recall, Recover, Hunt)):
                         prev = self.goal.describe() if self.goal else None
                         self.set_goal(Flee("stat drain"))
                         self.notify("danger_seen", f"drained twice on this level ({', '.join(new)}) with "
@@ -3166,6 +3238,7 @@ class Pilot:
             self.weapons_t = now
             self.watch_weapons()
         self.watch_breeders()
+        self.watch_drainers()
         self.watch_progress()
         self.watch_perception()
         if self.w.recall_cancelled:
@@ -3376,6 +3449,8 @@ class Pilot:
             return {"ok": True, "text": "said"}
         if c == "monster":
             return {"ok": True, "text": self.monster_info(" ".join(args).replace("_", " "))}
+        if c == "drainers":
+            return {"ok": True, "text": self.drainers_info(args)}
         if self.dead and c not in ("attention", "quit", "orders", "events", "news", "map", "inventory",
                                    "note", "view", "say", "viewmap", "journal") and \
                 not (c == "goal" and args[:1] == ["resurrect"]):
@@ -3491,7 +3566,9 @@ class Pilot:
             noise = ("You enter a maze", "Looks like", "You feel", "You hear", "You have found")
             said = [t for ts, t in self.w.messages if ts >= t0 and not t.startswith(noise)]
             out = {"ok": True, "said": said[-4:], "pack": pack}
-            if c != "inspect" and (self.effect_sig("pack"), self.effect_sig("equip")) == before:
+            if c in ("use", "aim", "zap") and said:
+                pass          # a device's effect is what the game said (an unknown staff shows no charges)
+            elif c != "inspect" and (self.effect_sig("pack"), self.effect_sig("equip")) == before:
                 # (the game-state survey: never report as done what didn't happen)
                 out["note"] = "no change in the pack or equipment yet: it may not have happened"
             return out

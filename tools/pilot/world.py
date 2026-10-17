@@ -187,7 +187,8 @@ class World:
                     self.fight_t = time.time()
                 # Things that change the pack or purse behind our back (the survey:
                 # mission 10's lost gold was Smeagol): resync and tell the agent
-                if re.search(r"was destroyed!|was stolen|stole |Your pack overflows|Your purse feels lighter|"
+                # (+ "was eaten!": an invisible food-eater took 3 food in mission 19, unreported)
+                if re.search(r"was destroyed!|was stolen|was eaten!|stole |Your pack overflows|Your purse feels lighter|"
                              r"You have no room for|destroyed!$", t):
                     self.inven_dirty = True
                     self.status_t = 0

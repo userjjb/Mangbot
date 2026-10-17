@@ -112,6 +112,7 @@ class Mover:
         self.goals = None
         self.path = []
         self.unknown = False    # this job may cross unseen squares (go(unknown=True) fallback)
+        self.no_run_at = set()  # squares where a run was refused: walk from them
         self.sent = 0           # steps of path sent
         self.done = 0           # steps of path reached
         self.last_progress = 0.0
@@ -162,6 +163,10 @@ class Mover:
             # The run is over (we stopped it, or the server's run logic did)
             self.running = None
             self.sent = self.done
+            if not started:
+                # refused ("You cannot run in that direction"): walk from here
+                # (mission 19 resent the same run 61 times in a minute at 37,105)
+                self.no_run_at.add(w.pos)
         return "moving"
 
     def surface(self):
@@ -207,7 +212,9 @@ class Mover:
     def _runnable(self, i):
         """Could a run start at path index i (straight stretch, nothing close)?"""
         n = self._straight(i)
-        return self.runs_ok() and n >= self.RUN_MIN and not self._monster_near(5) and self.stretch_ok(i, n)
+        frm = self.path[i - 1] if i else self.here
+        return self.runs_ok() and n >= self.RUN_MIN and not self._monster_near(5) and self.stretch_ok(i, n) \
+            and frm not in self.no_run_at
 
     def _monster_near(self, r):
         w = self.w
@@ -277,6 +284,7 @@ class Mover:
         self.avoid = set(avoid)
         self.replans = 0
         self.unknown = False
+        self.no_run_at = set()
         ok = self._plan()
         if not ok and self.forget_bump_walls():
             ok = self._plan()
@@ -483,7 +491,8 @@ class Mover:
         # tile, walking takes ~0.5 s. Straight stretches are run and stopped a
         # tile early; in a corridor we run and let the server follow the bends
         # (replanning when the run ends), as a human holding the key does.
-        if self.sent == self.done and self.runs_ok() and not self._monster_near(5):
+        if self.sent == self.done and self.runs_ok() and not self._monster_near(5) and \
+                self.w.pos not in self.no_run_at:
             frm = self.path[self.done - 1] if self.done else self.here
             d = direction(frm, self.path[self.done])
             n = self._straight(self.done)

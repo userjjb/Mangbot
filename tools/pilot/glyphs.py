@@ -97,6 +97,18 @@ class Race:
         return any(b.split(":")[1:2] and b.split(":")[1].startswith(("LOSE_", "EXP_")) for b in self.blows)
 
     @property
+    def drained_stats(self):
+        """Stats its blows drain ({'STR', 'CON', ...}; LOSE_ALL is every one)."""
+        out = set()
+        for b in self.blows:
+            eff = (b.split(":")[1:2] or [""])[0]
+            if eff == "LOSE_ALL":
+                out |= {"STR", "INT", "WIS", "DEX", "CON", "CHR"}
+            elif eff.startswith("LOSE_"):
+                out.add(eff[5:])
+        return out
+
+    @property
     def worst_melee(self):
         """(max melee per monster turn, drain blows), from the table or the blows."""
         if self.melee_max is not None:
