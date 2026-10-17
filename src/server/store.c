@@ -1569,6 +1569,12 @@ bool get_store_item(player_type *p_ptr, int item, object_type *i_ptr)
 	int stocked,x,y;
 	object_type		*o_ptr;
 	
+	/* Not in a store, or a slot past the stock: refuse (a purchase sent as the
+	 * player left the store read store[-1] and crashed the test server,
+	 * 2026-10-17; Mangbot patch) */
+	if (st < 0 || st > 8) return FALSE;
+	if (st != 8 && (item < 0 || item >= st_ptr->stock_num)) return FALSE;
+
 	/* Player owned stores */
 	if (p_ptr->store_num == 8)
 	{
@@ -1702,6 +1708,9 @@ void store_purchase(player_type *p_ptr, int item, int amt, cptr checksum)
 
 	/* Before doing anything else, extract "offer" from checksum */
 	offer = atoi(checksum);
+
+	/* Not in a store (Mangbot patch: see get_store_item) */
+	if (st < 0 || st > 8) return;
 
 	/* Empty && Not player-owned? */
 	if (st != 8 && st_ptr->stock_num <= 0)
@@ -1973,6 +1982,9 @@ void store_sell(player_type *p_ptr, int item, int amt)
 
 	/* You can't sell 0 of something. */
 	if (amt <= 0) return;
+
+	/* Not in a store (Mangbot patch: see get_store_item) */
+	if (p_ptr->store_num < 0 || p_ptr->store_num > 8) return;
 
 	/* Get the item (in the pack) */
 	if (item >= 0)
