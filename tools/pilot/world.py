@@ -12,6 +12,40 @@ import time
 
 from glyphs import Glyphs
 
+
+# --- the game clock (the time bubble: the user, 2026-10-23, after restructure step 2) -------------
+# Below hitpoint_warn x 10% HP the server runs our time bubble at a constant 1/5 (xtra2.c
+# base_time_factor, CONSTANT_TIME_FACTOR). Every Pilot timer (holds, cooldowns, waits for effects,
+# damage per second, stuck detection) measures game time on this clock, so it stays right inside
+# the bubble; logs and displayed clock times stay on the wall clock (wall_of). With --hpwarn 0
+# (no bubble) it equals the wall clock.
+_CLOCK = {"wall": time.time(), "game": time.time(), "factor": 1.0}
+
+
+def gnow():
+    now = time.time()
+    _CLOCK["game"] += (now - _CLOCK["wall"]) * _CLOCK["factor"]
+    _CLOCK["wall"] = now
+    return _CLOCK["game"]
+
+
+def set_time_factor(f):
+    gnow()
+    _CLOCK["factor"] = f
+
+
+def time_factor():
+    return _CLOCK["factor"]
+
+
+def wall_of(g):
+    """A game-clock time as wall time (for display), at the current offset."""
+    return g + (time.time() - gnow())
+
+
+def _lt(g):
+    return time.localtime(wall_of(g))
+
 FT_PER_LEVEL = 50
 
 # Terrain the map can show under nothing else (for remembering what's under '@')
@@ -126,16 +160,16 @@ class World:
                     self.standing_on = self.memory.get(new)
                     self.store = None
                 self.pos = new
-                self.pos_t = time.time()
+                self.pos_t = gnow()
                 if self.arrive_pos is None:
                     self.arrive_pos = new          # where we came onto this level
                 self.walked.add(new)           # squares we've been on (safe retreat ground)
             elif k == "confirm":
-                self.last_confirm = (time.time(), ev.get("prompt", ""), ev.get("answer"))
+                self.last_confirm = (gnow(), ev.get("prompt", ""), ev.get("answer"))
             elif k == "level":
                 old = self.depth
                 self.depth = ev["depth"]
-                self.level_t = time.time()
+                self.level_t = gnow()
                 self.memory = {}
                 self.walked = set()
                 self.bump_walls = {}
@@ -143,7 +177,7 @@ class World:
                 self.rows = None
                 self.monsters, self.itemlist = [], []
                 sc = self.last_stairs_cmd
-                if sc and time.time() - sc[1] < 5 and old is not None:
+                if sc and gnow() - sc[1] < 5 and old is not None:
                     # Connected stairs: '>' leaves you on an up staircase and vice versa
                     self.arrived_by = sc[0]
                     self.standing_on = "<" if sc[0] == ">" else ">"
@@ -158,7 +192,7 @@ class World:
                 self.last_stairs_cmd = None
             elif k == "message":
                 t = ev["text"]
-                self.messages.append((time.time(), t))
+                self.messages.append((gnow(), t))
                 if t.startswith("You have ") or t.startswith("You see ") or "no more" in t \
                         or t.startswith("You are wearing") or t.startswith("You are wielding") \
                         or t.startswith("Was wearing") or t.startswith("You destroy") \
@@ -174,17 +208,17 @@ class World:
                     if self.memory.get(self.pos) == "$":
                         self.memory[self.pos] = "."
                 if self.RE_HURT_OTHER.search(t):
-                    self.explained_t = time.time()
+                    self.explained_t = gnow()
                 if self.RE_UNSEEN.match(t):
-                    self.unseen = (time.time(), t)
+                    self.unseen = (gnow(), t)
                 elif t.startswith("You hear a door burst open"):
-                    self.heard = (time.time(), t)
+                    self.heard = (gnow(), t)
                 if self.RE_ATTACK.search(t) or self.RE_RANGED.match(t):
                     self.hits_taken += 1
-                    self.last_hit_t = time.time()
+                    self.last_hit_t = gnow()
                 if re.match(r"You (hit|miss|have slain|have destroyed|have killed|smite|bite|claw)", t) or \
                         re.match(r"(The|It) .* (dies|is destroyed|flees)", t):
-                    self.fight_t = time.time()
+                    self.fight_t = gnow()
                 # Things that change the pack or purse behind our back (the survey:
                 # mission 10's lost gold was Smeagol): resync and tell the agent
                 # (+ "was eaten!": an invisible food-eater took 3 food in mission 19, unreported)
@@ -193,7 +227,7 @@ class World:
                     self.inven_dirty = True
                     self.status_t = 0
                     self.need_redraw = True
-                    self.losses.append((time.time(), t))
+                    self.losses.append((gnow(), t))
                 if t.startswith("The sun has risen"):
                     self.daytime = True
                 elif t.startswith("The sun has fallen"):
@@ -205,7 +239,7 @@ class World:
                 # A second read cancels the first (server spells2.c:1191-1199)
                 if t.startswith("The air about you becomes charged"):
                     self.recall_pending = True
-                    self.recall_pending_t = time.time()
+                    self.recall_pending_t = gnow()
                 if t.startswith("A tension leaves the air around you"):
                     self.recall_pending = False
                     self.recall_cancelled = True
@@ -214,7 +248,7 @@ class World:
                     self.last_stairs_cmd = None
                     self.recalled = "down" if "downwards" in t else "up"
             elif k == "store":
-                self.store, self.store_t = ev, time.time()
+                self.store, self.store_t = ev, gnow()
             elif k == "store_leave":
                 self.store = None
                 # (set when the client saw our own non-store command close it)
@@ -245,7 +279,7 @@ class World:
     # --- queries ----------------------------------------------------------
 
     def refresh(self, map_every=0.5, status_every=0.3, inven_every=10.0):
-        now = time.time()
+        now = gnow()
         if self.rows is None or self.pos != self.map_pos or now - self.map_t > map_every:
             self.refresh_map()
         if now - self.status_t > status_every:
@@ -287,7 +321,7 @@ class World:
     def refresh_map(self):
         m = self.c.query("map", "map")
         self.rows, self.attrs = m["rows"], m["attrs"]
-        self.map_t = time.time()
+        self.map_t = gnow()
         self.map_pos = self.pos
         self.monsters = self.g.monsters(self.rows, self.attrs, skip=self.pos)
         if self.monsters:
@@ -320,7 +354,7 @@ class World:
     def damage_rate(self, window=3.0):
         """HP lost per second over the last `window` seconds (drops only:
         heals in between don't hide the damage coming in)."""
-        now = time.time()
+        now = gnow()
         pts = [(t, h) for t, h in self.hp_hist if now - t <= window]
         lost = sum(max(0, a[1] - b[1]) for a, b in zip(pts, pts[1:]))
         return lost / window
@@ -393,10 +427,10 @@ class World:
     def items(self, *, tval=None, name=None, equip=False):
         # A fresh copy for every decision (a local query to our own client,
         # cheap): a cached pack let a stale letter read the wrong item
-        if time.time() - self.inven_t > 0.25 and getattr(self, "c", None) is not None:
+        if gnow() - self.inven_t > 0.25 and getattr(self, "c", None) is not None:
             try:
                 self.inven = self.c.inven()
-                self.inven_t = time.time()
+                self.inven_t = gnow()
                 self.inven_dirty = False
             except Exception:
                 pass
@@ -427,5 +461,5 @@ class World:
         return None
 
     def recent(self, secs):
-        now = time.time()
+        now = gnow()
         return [t for (ts, t) in self.messages if now - ts <= secs]

@@ -1,0 +1,64 @@
+{
+ "id": "A1-hw5",
+ "tag": "A1-hw5-20261023-182825",
+ "depth_ft": 400,
+ "start": "2026-10-23 18:28:25",
+ "checks": {
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [174, 265]"
+  },
+  "at most 3 Phase Door": {
+   "pass": true,
+   "detail": "0 reads"
+  }
+ },
+ "notes": [
+  "left the level: False; band events: 0"
+ ],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   174,
+   265
+  ],
+  "attention": [
+   [
+    8.3,
+    "unseen_attacker",
+    "'It fires an arrow!': minor attack from something unseen; carrying on (HP 100%)"
+   ],
+   [
+    53.2,
+    "tactic",
+    "hungry and no food: read a Scroll of Satisfy Hunger"
+   ],
+   [
+    55.6,
+    "interesting_item",
+    "Ring of Searching seen on this level (devices and jewellery sell for 50-700 once known): its square "
+   ]
+  ],
+  "acts": [
+   [
+    41.5,
+    "custom ,",
+    "pick up: a Spear (1d6)."
+   ],
+   [
+    53.2,
+    "custom r item=10",
+    "hungry (2), no food: read Satisfy Hunger"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 18:31:48",
+ "pass": true
+}

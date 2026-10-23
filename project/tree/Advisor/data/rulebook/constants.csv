@@ -102,4 +102,4 @@ teleport_scroll,teleport_player(100) => 50..100 grids,grids,,use-obj.c:802-806
 teleport_level,town->1; else 50% down (not quest/not 127) else up; ironman nothing,level,,spells1.c:365-395
 deep_descent,not present in this server,,,grep object.txt/src: no match
 searching_slowdown,searching mode -10 speed,,,xtra1.c:2782-2790 (display undo at 411)
-boulder_damage_to_player,0 (project_p has no GF_BOULDER/GF_BOLT case: default dam=0),hp,giants' BOULDER spell,spells1.c:3540-4092
+boulder_damage_to_player,0 (project_p has no GF_BOULDER/GF_BOLT case: default dam=0; LIVE-CONFIRMED set-piece L1 2026-10-23: 5 boulders 0 HP),hp,giants' BOULDER spell,spells1.c:3540-4092

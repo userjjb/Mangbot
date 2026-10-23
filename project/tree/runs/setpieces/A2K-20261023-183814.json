@@ -1,0 +1,127 @@
+{
+ "id": "A2K",
+ "tag": "A2K-20261023-183814",
+ "depth_ft": 300,
+ "start": "2026-10-23 18:38:14",
+ "checks": {
+  "Word of Recall within 2 s of first sight": {
+   "pass": true,
+   "detail": "seen at 23.52604079246521, recall read at 23.3"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [119, 265]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   119,
+   265
+  ],
+  "attention": [
+   [
+    8.1,
+    "interesting_item",
+    "Iron Wand seen on this level (devices and jewellery sell for 50-700 once known): its square is under"
+   ],
+   [
+    23.3,
+    "danger_seen",
+    "Khim, Son of Mim (unique, lvl 24) in view: heading for the stairs"
+   ],
+   [
+    23.3,
+    "goal_failed",
+    "flee (Khim, Son of Mim): no stairs known"
+   ],
+   [
+    23.3,
+    "emergency",
+    "couldn't reach the stairs with 1 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    30.2,
+    "lost",
+    "Some of your Scrolls of Phase Door {50% off} (h) were destroyed!"
+   ],
+   [
+    30.9,
+    "fight_going_badly",
+    "HP 172/265 fighting Khim, Son of Mim"
+   ],
+   [
+    33.3,
+    "danger_seen",
+    "Khim, Son of Mim (unique, lvl 24) in view: heading for the stairs"
+   ],
+   [
+    33.4,
+    "goal_failed",
+    "flee (Khim, Son of Mim): no stairs known"
+   ],
+   [
+    37.4,
+    "emergency",
+    "low HP: read Phase Door (Khim, Son of Mim adjacent)"
+   ],
+   [
+    38.0,
+    "emergency",
+    "low HP: losing ~16 HP/s, more than the best potion heals (25): escaping instead"
+   ],
+   [
+    38.0,
+    "emergency",
+    "low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~16 HP/s)"
+   ]
+  ],
+  "acts": [
+   [
+    23.3,
+    "custom r item=8",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    33.4,
+    "custom r item=7",
+    "flee failed, monsters adjacent: phase door"
+   ],
+   [
+    37.4,
+    "custom r item=7",
+    "low HP: phase door"
+   ],
+   [
+    38.0,
+    "custom q item=6",
+    "low HP: quaff 6 Potions of Cure Critical Wounds {25% off}"
+   ],
+   [
+    38.6,
+    "rest",
+    "rest"
+   ],
+   [
+    39.7,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ],
+   [
+    40.3,
+    "rest",
+    "rest"
+   ]
+  ],
+  "emergencies": 4,
+  "phase_reads": 2,
+  "wor_reads": 1,
+  "cures": 1
+ },
+ "end": "2026-10-23 18:41:24",
+ "pass": true
+}

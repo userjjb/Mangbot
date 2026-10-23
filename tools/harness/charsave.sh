@@ -26,7 +26,7 @@ fi
 sleep 20
 if [ "$(stat -c %Y "$SAVE")" -lt "$T0" ]; then
     echo "the server hasn't saved $NICK since the logout (still in the world?): not touching the savefile"
-    nohup python3 pilot.py --nick "$NICK" --port "$PORT" >> "$ROOT/runs/pilot/$LOW/pilot.log" 2>&1 &
+    nohup python3 pilot.py --nick "$NICK" --port "$PORT" ${PILOT_ARGS:-} >> "$ROOT/runs/pilot/$LOW/pilot.log" 2>&1 &
     exit 1
 fi
 sleep 1
@@ -45,6 +45,6 @@ restore)
     echo "restored $NICK from $DEST" ;;
 *) echo "save or restore"; exit 1 ;;
 esac
-nohup python3 pilot.py --nick "$NICK" --port "$PORT" >> "$ROOT/runs/pilot/$LOW/pilot.log" 2>&1 &
+nohup python3 pilot.py --nick "$NICK" --port "$PORT" ${PILOT_ARGS:-} >> "$ROOT/runs/pilot/$LOW/pilot.log" 2>&1 &
 sleep 9
 python3 pilotctl.py --nick "$LOW" status | head -2

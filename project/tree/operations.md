@@ -85,7 +85,10 @@ into the Temple (4), but everything it carried is dropped where it died.
 - Tool mode logs in as `player@localhost` (not the Unix login and host: the live player list shows
   them) and sends `hitpoint_warn` 6 (`--hpwarn N`, 0-9): below N×10% HP the server slows our time
   bubble to a **constant 1/5** (`CONSTANT_TIME_FACTOR`, xtra2.c 5180-5207; the Advisor's rulebook memo
-  2026-10-24 §3; not in proportion to HP). The Pilot passes `--hpwarn 0` (off): its timers are wall-clock. Both in `c-init.c` (commit 6274e8b).
+  2026-10-24 §3; not in proportion to HP). **Since 2026-10-23 the Pilot's timers run on a game clock**
+  (`world.gnow`: wall time at factor 1, 1/5 inside the bubble; logs and displayed times stay wall-clock), and
+  `pilot.py --hpwarn N` (default 0) turns the bubble on: `PILOT_ARGS="--hpwarn 5" tools/pilot/restart.sh Dive04`.
+  The decision log records each `time_factor` change. Both in `c-init.c` (commit 6274e8b).
 - The map is 198x66 in absolute coordinates; closed house doors are drawn as `0`. `--visuals`
   gives every monster race a unique glyph (needs option `avoid_other`).
 - The depth indicator is **one signed byte**: wilderness squares beyond index -127 wrap to

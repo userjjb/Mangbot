@@ -9,6 +9,8 @@ bump); traps and monsters are avoided.
 import heapq
 import time
 
+from world import gnow
+
 DIRS = {(-1, -1): 7, (-1, 0): 8, (-1, 1): 9, (0, -1): 4, (0, 1): 6, (1, -1): 1, (1, 0): 2, (1, 1): 3}
 WALLS = set("#%*:") | set("12345678") | {"0", " "}   # ':' rubble ("blocking your way")
 COST = {"+": 3, "^": 25, "'": 1, "8": 50, ":": 15}
@@ -156,10 +158,10 @@ class Mover:
         if not self.stop_sent and self.done >= end - 1:
             self.c.send("walk 5")            # a walk request ends a run (and is swallowed)
             self.stop_sent = True
-            self.last_progress = time.time()
+            self.last_progress = gnow()
         started = w.pos != self.run_start_pos
         limit = 0.5 if self.stop_sent else (0.8 if started else self.first_step_window())
-        if time.time() - self.last_progress > limit:
+        if gnow() - self.last_progress > limit:
             # The run is over (we stopped it, or the server's run logic did)
             self.running = None
             self.sent = self.done
@@ -236,9 +238,9 @@ class Mover:
         self.resume_goals = goals
         self.goals = {"free-run"}
         self.path = []
-        self.free = (time.time(), self.w.pos)
+        self.free = (gnow(), self.w.pos)
         self.free_dist, self.free_away = None, 0
-        self.last_progress = time.time()
+        self.last_progress = gnow()
         self.free_pos = self.w.pos
         self.c.send(f"custom . dir={d}")
         self.log(run="free", dir=d, frm=self.w.pos)        # (runs were only event acks: the Advisor)
@@ -247,7 +249,7 @@ class Mover:
         w = self.w
         if w.pos != self.free_pos:
             self.free_pos = w.pos
-            self.last_progress = time.time()
+            self.last_progress = gnow()
             # bound it: stop when it moves away from the goals two steps running
             if self.resume_goals and not self.stop_sent:
                 d = min(max(abs(g[0] - w.pos[0]), abs(g[1] - w.pos[1])) for g in self.resume_goals)
@@ -263,7 +265,7 @@ class Mover:
             self.c.send("walk 5")          # ran onto the goal: stop there
             self.stop_sent = True
         limit = 0.5 if w.pos != self.free[1] else self.first_step_window()
-        if time.time() - self.last_progress > limit:
+        if gnow() - self.last_progress > limit:
             moved = w.pos != self.free[1]
             self.free = None
             self.stop_sent = False
@@ -306,7 +308,7 @@ class Mover:
     def _clear(self):
         """Empty our server-side command queue -- unless the pilot has a read
         or quaff waiting there (mission 7: these clears wiped every escape)."""
-        if time.time() >= self.hold_clear_until:
+        if gnow() >= self.hold_clear_until:
             self.c.send("clear")
 
     def requeue(self):
@@ -318,7 +320,7 @@ class Mover:
             self.running = None
             self.free = None
         self.sent = self.done
-        self.last_progress = time.time()
+        self.last_progress = gnow()
 
     def _dig_tick(self):
         """The next square is rubble: tunnel ('T') until "You have removed the
@@ -329,9 +331,9 @@ class Mover:
         if any(ts > self.dig_t0 and t.startswith("You have removed the rubble") for ts, t in w.messages):
             w.memory[tile] = "."
             self.dig_t0 = 0.0
-            self.last_progress = time.time()
+            self.last_progress = gnow()
             return "moving"
-        now = time.time()
+        now = gnow()
         if not self.dig_t0:
             self.dig_t0, self.dig_n = now, 0
         if self.dig_n >= 40 or any(ts > self.dig_t0 and ("impossible" in t or "cannot" in t)
@@ -373,7 +375,7 @@ class Mover:
         w = self.w
         if w.flag("confused") or w.flag("blind"):
             return True
-        now = time.time()
+        now = gnow()
         return any(now - ts < 2 and t.startswith(("You are confused", "You are blind", "You feel less confused",
                                                   "You can see again"))
                    for ts, t in w.messages)
@@ -410,7 +412,7 @@ class Mover:
         self.sent = self.done = 0
         self.running = None
         self.here = self.w.pos
-        self.last_progress = time.time()
+        self.last_progress = gnow()
         return bool(self.path)
 
     def tick(self):
@@ -432,7 +434,7 @@ class Mover:
         while self.done < len(self.path) and w.pos in self.path[self.done:ahead]:
             i = self.path.index(w.pos, self.done)
             self.done = i + 1
-            self.last_progress = time.time()
+            self.last_progress = gnow()
         if w.pos != (self.path[self.done - 1] if self.done else self.here):
             # Off the path (pushed, a step dropped, a teleport, a run that
             # followed a corridor bend or overshot): stop any run and replan.
@@ -462,7 +464,7 @@ class Mover:
                 # way north, and explore said "frontier unreachable"). Resend.
                 self._clear()
                 self.sent = self.done
-                self.last_progress = time.time()
+                self.last_progress = gnow()
                 return "moving"
             # Walked into rubble/a wall/a door we didn't know about: remember it
             said = [t for ts, t in w.messages if ts > self.last_progress and "blocking your way" in t]
@@ -475,7 +477,7 @@ class Mover:
             if rubble:
                 self._clear()      # drop the steps queued behind the bump
                 self.sent = self.done
-                self.last_progress = time.time()
+                self.last_progress = gnow()
                 return "moving"           # next tick digs it
             self.avoid.add(self.path[self.done])
             self.replans += 1
@@ -483,7 +485,7 @@ class Mover:
                 self.stop()
                 return "stuck"
             return "moving"
-        if time.time() - self.last_progress > self.STEP_TIMEOUT:
+        if gnow() - self.last_progress > self.STEP_TIMEOUT:
             # Something blocks the next step (a monster, a door that didn't
             # open, an unseen wall): avoid that tile and replan
             self._clear()
@@ -510,10 +512,10 @@ class Mover:
                 n = self.run_cap(self.done, n)
                 self.c.send(f"custom . dir={d}")
                 self.log(run="stretch", dir=d, frm=self.w.pos, length=n)
-                self.running = (self.done, self.done + n, time.time())
+                self.running = (self.done, self.done + n, gnow())
                 self.run_start_pos = self.w.pos
                 self.stop_sent = False
-                self.last_progress = time.time()
+                self.last_progress = gnow()
                 return "moving"
             if self.in_corridor() and len(self.path) - self.done >= 3 and self.runs_ok(free=True) \
                     and self.replans <= self.max_replans:

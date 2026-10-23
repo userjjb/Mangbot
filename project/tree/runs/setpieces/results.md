@@ -44,3 +44,11 @@
 - 2026-10-23 18:02:24 **L2** FAIL (recalled, rested while it charged, about 10x sooner than standing (< 5 s) FAIL) `L2-20261023-180224.json`
 - 2026-10-23 18:05:39 **L1** PASS (a boulder was thrown, no HP lost to boulders) `L1-20261023-180539.json`
 - 2026-10-23 18:08:43 **L2** FAIL (recalled, rested while it charged FAIL, about 10x sooner than standing (< 5 s) FAIL) `L2-20261023-180843.json`
+- 2026-10-23 18:16:13 **A7** PASS (hunt allowed at full HP, giant slain, HP lost within the simulated bad case) `A7-20261023-181613.json`
+- 2026-10-23 18:23:45 **A1** FAIL () `A1-20261023-182345.json`
+- 2026-10-23 18:25:39 **A2** PASS (Word of Recall within 2 s of first sight, lowest HP >= 40%) `A2-20261023-182539.json`
+- 2026-10-23 18:28:25 **A1-hw5** PASS (lowest HP >= 40%, at most 3 Phase Door) `A1-hw5-20261023-182825.json`
+- 2026-10-23 18:31:48 **A2-hw5** FAIL (Word of Recall within 2 s of first sight FAIL, lowest HP >= 40%) `A2-hw5-20261023-183148.json`
+- 2026-10-23 18:35:19 **A2I-hw5** PASS (Word of Recall within 2 s of first sight, lowest HP >= 40%) `A2I-hw5-20261023-183519.json`
+- 2026-10-23 18:38:14 **A2K** PASS (Word of Recall within 2 s of first sight, lowest HP >= 40%) `A2K-20261023-183814.json`
+- 2026-10-23 18:41:24 **A1** FAIL () `A1-20261023-184124.json`

@@ -41,7 +41,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "shopcat"))
 
 from mang import MangClient, ClientExited      # noqa: E402
 import glyphs                                   # noqa: E402
-from world import World                          # noqa: E402
+from world import World, gnow, set_time_factor, time_factor, wall_of, _lt   # noqa: E402
 import structures                                # noqa: E402
 import itemvalue                                 # noqa: E402
 sys.path.insert(0, os.path.join(HERE, "..", "observe"))
@@ -242,11 +242,11 @@ class Goal:
 
 class Wait(Goal):
     def __init__(self, secs):
-        self.until = time.time() + float(secs)
+        self.until = gnow() + float(secs)
         self.name = f"wait {secs}"
 
     def tick(self, p):
-        return None if time.time() < self.until else ("done", None)
+        return None if gnow() < self.until else ("done", None)
 
 
 class Goto(Goal):
@@ -267,7 +267,7 @@ class Goto(Goal):
         # ... and anything faster than us that is hitting us: it keeps up and
         # hits every step (mission 18: a Nighthawk took 215 -> 102 HP over 25 s
         # of a goto; a 'hunt' killed it in seconds)
-        if not bad and w.in_dungeon and not self.force and time.time() - w.last_hit_t < 2:
+        if not bad and w.in_dungeon and not self.force and gnow() - w.last_hit_t < 2:
             mine = 110 + int(w.ind.get("speed", [0])[0] or 0)
             bad = [r for *_, r in w.adjacent_monsters() if r.speed > mine and "NEVER_MOVE" not in r.flags]
         if bad:
@@ -284,7 +284,7 @@ class Goto(Goal):
             # An item underfoot is picked up ~0.6 s after arriving: report after
             # that, or the Navigator sees it still on the floor (mission 5)
             if any(ts > self.arrived_t and t.startswith(("You have ", "You have no room")) for ts, t in w.messages) \
-                    or time.time() - self.arrived_t > 1.5:
+                    or gnow() - self.arrived_t > 1.5:
                 w.inven_dirty = True
                 return ("done", None)
             return None
@@ -301,9 +301,9 @@ class Goto(Goal):
             self.started = True
         st = p.mover.tick()
         if st == "arrived":
-            if any(time.time() - ts < 1.0 and t.startswith("You see ") and "no items" not in t
+            if any(gnow() - ts < 1.0 and t.startswith("You see ") and "no items" not in t
                    for ts, t in w.messages):
-                self.arrived_t = time.time()
+                self.arrived_t = gnow()
                 return None
             return ("done", None)
         if st == "stuck":
@@ -484,7 +484,7 @@ class Dive(Goal):
         w = p.w
         # an interesting item was just reported: pause so the Navigator can fetch
         # it (mission 16: the dive took the stairs before its goto arrived)
-        if time.time() < p.item_hold_until and not p.dangers():
+        if gnow() < p.item_hold_until and not p.dangers():
             return None
         md = int(p.orders.get("max_depth", 0))
         if md and self.target_ft > md:
@@ -497,17 +497,17 @@ class Dive(Goal):
         want, other = ("<", ">") if up else (">", "<")
         if (not up and w.depth_ft >= self.target_ft) or (up and w.depth_ft <= self.target_ft):
             return ("done", f"reached {w.depth_ft} ft")
-        if self.pending and w.level_t < self.pending and time.time() - self.pending < 3:
+        if self.pending and w.level_t < self.pending and gnow() - self.pending < 3:
             return None           # waiting for the level change
         self.pending = None
         # leaving town: the light on before the stairs, as Recall does before reading (the user:
         # a couple of turns of light, and nobody has to check it)
         if w.depth == 0 and not up and not any(i["tval"] == TV_LITE for i in w.items(equip=True)) and \
-                time.time() - getattr(self, "light_t", 0) > 2:
-            self.light_t = time.time()
+                gnow() - getattr(self, "light_t", 0) > 2:
+            self.light_t = gnow()
             if p.wear_light("going down"):
                 return None
-        if time.time() - w.level_t < 0.6:
+        if gnow() - w.level_t < 0.6:
             return None           # let the new level's map arrive
         if w.level_t != self.level_seen:
             self.level_seen = w.level_t
@@ -589,7 +589,7 @@ class Dive(Goal):
         if w.standing_on == other and scum_ok:
             return self._stairs(p, other)
         # No stairs known at all: a Door/Stair Location device maps them
-        if not w.find("<>") and time.time() - w.level_t > 1.0 and not w.monsters and self.locate_stairs(p):
+        if not w.find("<>") and gnow() - w.level_t > 1.0 and not w.monsters and self.locate_stairs(p):
             return None
         # No stairs under us: explore until we see some (either kind)
         self.expire_bad(w)
@@ -643,21 +643,21 @@ class Dive(Goal):
         return None
 
     def mark_bad(self, w, tiles):
-        now = time.time()
+        now = gnow()
         for t in tiles:
             self.bad_stairs.add((w.level_t, t))
             self.bad_t[(w.level_t, t)] = now
 
     def expire_bad(self, w):
         """Unreachable stairs get another try after 15 s (the map fills in)."""
-        now = time.time()
+        now = gnow()
         for k in [k for k, t in self.bad_t.items() if now - t > 15]:
             self.bad_stairs.discard(k)
             del self.bad_t[k]
 
     def _stairs(self, p, which):
         p.take_stairs(which)
-        self.pending = time.time()
+        self.pending = gnow()
         return None
 
 
@@ -722,7 +722,7 @@ class Search(Goal):
         if len(p.frontier()) > self.known:
             return ("done", "found a way on" + self.summary())
         if self.searching:
-            if time.time() < p.busy_until:
+            if gnow() < p.busy_until:
                 return None
             self.searching -= 1
             p.cmd("custom s", "search for secret doors", hold=0.45)
@@ -787,9 +787,9 @@ class Hunt(Goal):
         self.target = name.lower()
         self.name = f"hunt {name}"
         self.lost_s = lost_s
-        self.last_seen = time.time()
+        self.last_seen = gnow()
         self.goal_tile = None
-        self.t0 = time.time()
+        self.t0 = gnow()
 
     def tick(self, p):
         w = p.w
@@ -802,14 +802,14 @@ class Hunt(Goal):
         mons = [(y, x, r) for y, x, r in w.monsters if self.target in r.name.lower()]
         # Killed while we couldn't see it (blind, or it was invisible): the game
         # says "You have killed it." (the message catalogue)
-        if not mons and time.time() - self.last_seen < 3 and \
+        if not mons and gnow() - self.last_seen < 3 and \
                 any(t.startswith("You have killed it") for t in w.recent(3)):
             return ("done", "killed (unseen at the end)")
         if not mons:
-            if time.time() - self.last_seen > self.lost_s:
+            if gnow() - self.last_seen > self.lost_s:
                 return ("failed", "lost sight of it")
             return None
-        self.last_seen = time.time()
+        self.last_seen = gnow()
         y, x, r = min(mons, key=lambda m: w.dist(m[:2]))
         # a blinker with bolts (the Advisor's hunt-strictness memo §4.3): after "X blinks away",
         # close in at once; if that takes more than ~2 turns, give up and let the escape rules
@@ -817,7 +817,7 @@ class Hunt(Goal):
         blink = next((ts for ts, t in w.messages if ts >= self.t0 and "blinks" in t and self.target in t.lower()), None)
         if blink and blink > getattr(self, "blink_seen", 0):
             self.blink_seen = blink
-        if getattr(self, "blink_seen", 0) and w.dist((y, x)) > 1 and time.time() - self.blink_seen > 2.5:
+        if getattr(self, "blink_seen", 0) and w.dist((y, x)) > 1 and gnow() - self.blink_seen > 2.5:
             return ("failed", f"{r.name} blinked away and couldn't be reached in 2 turns: hunt given up "
                               "(a blinker with bolts wins at range)")
         if w.dist((y, x)) <= 1:
@@ -873,7 +873,7 @@ class Reprieve(Goal):
     def __init__(self, who):
         self.who = who
         self.name = f"reprieve (rest while {who} is away)"
-        self.t0 = time.time()
+        self.t0 = gnow()
 
     def tick(self, p):
         w = p.w
@@ -887,7 +887,7 @@ class Reprieve(Goal):
         if w.hp_frac >= p.orders["rest_to"]:
             p.stop_resting()
             return ("done", f"healed ({w.hp[0]}/{w.hp[1]}) while {self.who} stayed away")
-        if time.time() - self.t0 > 120:
+        if gnow() - self.t0 > 120:
             p.stop_resting()
             return ("done", "2 minutes: carrying on")
         if w.monsters:
@@ -911,12 +911,12 @@ class WalkAway(Goal):
     def __init__(self, names):
         self.names = set(names)
         self.name = f"walk away from {', '.join(sorted(self.names))}"
-        self.t0 = time.time()
+        self.t0 = gnow()
         self.last = {}
         self.stuck_t = None
 
     def tick(self, p):
-        w, now = p.w, time.time()
+        w, now = p.w, gnow()
         seen = [(y, x, r) for y, x, r in w.monsters if r.name in self.names]
         for y, x, r in seen:
             self.last[r.name] = (y, x)
@@ -957,9 +957,9 @@ class Flee(Goal):
             # and stairs right after "left by the stairs", mission 4)
             if w.level_t != self.took[0]:
                 return ("done", f"left by the stairs; now at {w.depth_ft} ft")
-            if time.time() - self.took[1] > 5:
+            if gnow() - self.took[1] > 5:
                 return ("done", "took the stairs, but no level change seen")
-            if time.time() - self.took[1] > 1.5 and len(self.took) == 2 and w.standing_on in ("<", ">"):
+            if gnow() - self.took[1] > 1.5 and len(self.took) == 2 and w.standing_on in ("<", ">"):
                 p.take_stairs(w.standing_on)      # a stairs command right after arriving can be ignored
                 self.took = self.took + (True,)
             return None
@@ -969,7 +969,7 @@ class Flee(Goal):
         ok = "<" if md and w.depth_ft >= md and w.find("<") else "<>"
         if w.standing_on and w.standing_on in ok:     # (None in "<>" crashed a flee, mission 6)
             p.take_stairs(w.standing_on)
-            self.took = (w.level_t, time.time())
+            self.took = (w.level_t, gnow())
             return None
         stairs = w.find(ok)
         if not stairs:
@@ -1019,13 +1019,13 @@ class Recall(Goal):
             # ("@R7500" contains "@R750"; a later @R overrides an earlier one).
             md = int(self.depth_ft or p.orders.get("max_depth", 0)) // 50 * 50
             if w.depth == 0 and md and recall_level(it["name"]) != md // 50:
-                if time.time() - self.inscribe_t < 2.5:
+                if gnow() - self.inscribe_t < 2.5:
                     return None           # (wait for the pack to show the new inscription)
                 if self.inscribed >= 3:
                     return ("failed", f"couldn't inscribe @R{md} on the Word of Recall "
                                       f"(it reads '{it['name']}'): not reading it")
                 self.inscribed += 1
-                self.inscribe_t = time.time()
+                self.inscribe_t = gnow()
                 p.cmd(f"custom {{ item={it['item']} entry=@R{md}", f"recall depth {md} ft", hold=1.0)
                 w.inven_dirty = True
                 return None
@@ -1033,27 +1033,27 @@ class Recall(Goal):
             # for idling, and the read failed with "You have no light to read by")
             if not any(i["tval"] == TV_LITE for i in w.items(equip=True)):
                 lite = next((i for i in w.items(tval=TV_LITE) if "0 turns" not in i["name"]), None)
-                if lite and time.time() - self.light_t > 2:
-                    self.light_t = time.time()
-                    p.light_t = time.time() + 30      # (town_light: don't take it off again)
+                if lite and gnow() - self.light_t > 2:
+                    self.light_t = gnow()
+                    p.light_t = gnow() + 30      # (town_light: don't take it off again)
                     p.cmd(f"custom w item={lite['item']}", "light on to read Word of Recall", hold=0.8)
                     return None
-            if p.recall_started(time.time()):
+            if p.recall_started(gnow()):
                 # Already under way (e.g. the last-resort recall): a second read would cancel it
                 p.log("note", text="recall already under way: not reading another")
-                self.read_t = time.time()
+                self.read_t = gnow()
                 return None
             p.cmd(f"custom r item={it['item']}", f"read {it['name']}")
-            self.read_t = p.recall_t = time.time()
+            self.read_t = p.recall_t = gnow()
             return None
         # while it charges, rest when hurt and nothing is in view: free healing, and time runs 10x
         # while resting, so the recall comes ~10x sooner in real time (the rulebook's constants:
         # recall_seconds; the server ends a rest at full HP)
         if w.recall_pending and not w.monsters and w.hp[0] < w.hp[1] and not w.resting and \
-                time.time() - self.read_t > 1 and time.time() - getattr(self, "rest_t", 0) > 3:
-            self.rest_t = time.time()
+                gnow() - self.read_t > 1 and gnow() - getattr(self, "rest_t", 0) > 3:
+            self.rest_t = gnow()
             p.start_resting()
-        if time.time() - self.read_t > (120 if w.recall_pending else 60):
+        if gnow() - self.read_t > (120 if w.recall_pending else 60):
             # say why, if the game did (e.g. "You have no light to read by.")
             why = next((t for ts, t in reversed(w.messages) if ts >= self.read_t and t.startswith(
                 ("You have no light", "You can't see", "You are too confused", "You cannot read",
@@ -1077,8 +1077,8 @@ class Resurrect(Goal):
             return ("done", "resurrected")
         if w.depth:
             # (a stairs command too soon after arriving is ignored: retry)
-            if time.time() - w.level_t > 1.2 and time.time() - self.up_t > 1.5:
-                self.up_t = time.time()
+            if gnow() - w.level_t > 1.2 and gnow() - self.up_t > 1.5:
+                self.up_t = gnow()
                 p.take_stairs("<")
             return None
         door = w.find("4")
@@ -1133,8 +1133,8 @@ class Town(Goal):
             return ("failed", "don't know which edge leads back: read Word of Recall")
         d = EDGE_DIR[edge]
         if edge_of(w.pos) == edge:
-            if time.time() - self.step_t > 0.8:
-                self.step_t = time.time()
+            if gnow() - self.step_t > 0.8:
+                self.step_t = gnow()
                 p.mover.stop()
                 p.cmd(f"walk {d}", f"town: step off the {edge} edge", hold=0.5)
             return None
@@ -1156,7 +1156,7 @@ class TownFarm(Goal):
                "Mean-looking mercenary", "Battle-scarred veteran")
 
     def __init__(self, gold, minutes=10):
-        self.target_gold, self.end = int(gold), time.time() + 60 * float(minutes)
+        self.target_gold, self.end = int(gold), gnow() + 60 * float(minutes)
         self.name = f"townfarm to {self.target_gold} gold"
         self.light_t = self.wander_t = 0.0
         self.chasing = None
@@ -1172,29 +1172,29 @@ class TownFarm(Goal):
             return ("done", f"{gold} gold")
         # say so when it isn't working (the demo: 2.5 min at 0 gold, at night)
         if self.check is None:
-            self.check = (time.time(), gold)
-        elif time.time() - self.check[0] > 120:
+            self.check = (gnow(), gold)
+        elif gnow() - self.check[0] > 120:
             if gold <= self.check[1]:
                 # done, not just a warning: townspeople thin out after ~3 min and
                 # come back slowly (missions 18-19 farmed 4 more minutes for nothing)
                 return ("done", f"stopped at {gold} gold: no gold in 2 minutes "
                                 f"({'night: few townspeople' if w.is_day() is False else 'the townspeople have thinned out'}); "
                                 "selling spare items may be faster, or try again later")
-            self.check = (time.time(), gold)
-        if time.time() > self.end:
+            self.check = (gnow(), gold)
+        if gnow() > self.end:
             return ("done", f"time's up at {gold} gold")
         # light, to see them at night (a dead or dying torch counts as none:
         # mission 14 stood 2 min in the dark with a lantern in the pack)
         worn = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
         wt = re.search(r"with (\d+) turns", worn["name"]) if worn else None
-        if (not worn or (wt and int(wt.group(1)) < 100)) and time.time() - self.light_t > 5:
+        if (not worn or (wt and int(wt.group(1)) < 100)) and gnow() - self.light_t > 5:
             def left(i):
                 t = re.search(r"with (\d+) turns", i["name"])
                 return int(t.group(1)) if t else (1 if "Lantern" in i["name"] else 0)
             lite = max((i for i in w.items(tval=TV_LITE) if left(i) > 0), key=left, default=None)
             if lite:
-                self.light_t = time.time()
-                p.light_t = time.time() + 30
+                self.light_t = gnow()
+                p.light_t = gnow() + 30
                 p.cmd(f"custom w item={lite['item']}", "townfarm: light on", hold=0.8)
                 return None
         # Thieves first, on sight (the Advisor's Navigator-decisions memo: ~120
@@ -1222,8 +1222,8 @@ class TownFarm(Goal):
         # nobody worth it in view: sweep the town in a zig-zag (the user: few
         # townspeople are visible from the streets by the shops), rows ~7 apart
         st = p.mover.tick() if p.mover.active else "idle"
-        if st in ("arrived", "idle", "stuck") or time.time() - self.wander_t > 40:
-            self.wander_t = time.time()
+        if st in ("arrived", "idle", "stuck") or gnow() - self.wander_t > 40:
+            self.wander_t = gnow()
             if not self.sweep:
                 self.sweep = self.sweep_points(w)
             while self.sweep:
@@ -1239,12 +1239,12 @@ class TownFarm(Goal):
         y, x, r = mon
         if w.dist((y, x)) <= 1:
             p.mover.stop()
-            if any("EAT_" in b for b in r.blows) and time.time() - getattr(self, "hit_t", 0) > 0.35:
+            if any("EAT_" in b for b in r.blows) and gnow() - getattr(self, "hit_t", 0) > 0.35:
                 # a thief: hit it ourselves -- auto-retaliate picks its own target,
                 # and in a crowd it killed idiots and beggars while an urchin
                 # beside us stole twice (mission 17). Clear first: a walk queued
                 # for a thief already dead moved us instead (mission 19)
-                self.hit_t = time.time()
+                self.hit_t = gnow()
                 p.c.send("clear")
                 p.cmd(f"walk {direction(w.pos, (y, x))}", f"townfarm: hit the {r.name} first (a thief)", hold=0.2)
             return None                      # adjacent: auto-retaliate fights
@@ -1307,7 +1307,7 @@ class Shop(Goal):
                      if (dy or dx) and w.memory.get((door[0][0] + dy, door[0][1] + dx), " ") not in "#%*=012345678"]
             if w.pos in spots:
                 p.cmd(f"walk {direction(w.pos, door[0])}", f"enter store {self.store}", hold=0.3)
-                self.state, self.t = "enter", time.time()
+                self.state, self.t = "enter", gnow()
                 return None
             if not p.mover.active and not p.mover.go(spots):
                 return ("failed", "can't reach the store")
@@ -1318,13 +1318,13 @@ class Shop(Goal):
             if w.store and w.store_t >= self.t:
                 self.state = "trade"
                 return None
-            if time.time() - self.t > 4:
+            if gnow() - self.t > 4:
                 self.state = "walk"
             return None
         if self.state == "trade":
             p.note_store()
             sp = getattr(self, "sale_pending", None)
-            if sp and (w.store_t > sp["t"] or time.time() - sp["t"] > 3):
+            if sp and (w.store_t > sp["t"] or gnow() - sp["t"] > 3):
                 key = re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", sp["sold_as"])).lower()
                 relist = next((i["price"] for i in (w.store or {}).get("items", [])
                                if re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", i["name"])).lower() == key),
@@ -1340,7 +1340,7 @@ class Shop(Goal):
             if self.pending and getattr(self, "quoting", None):
                 ts, prompt, _ = w.last_confirm
                 m = re.search(r"Accept (\d+) gold", prompt) if ts >= self.pending else None
-                if m is None and time.time() - self.pending < 4:
+                if m is None and gnow() - self.pending < 4:
                     return None
                 self.done_log.append(f"quote: {self.quoting}: {m.group(1)} gold (not sold)" if m else
                                      f"quote: {self.quoting}: no offer (the shop doesn't buy it?)")
@@ -1352,14 +1352,14 @@ class Shop(Goal):
                 verdict = next((t for t in said if t.startswith(("You sold", "You bought", "I don't want",
                                                                  "You do not have enough", "You cannot carry",
                                                                  "You have no room", "That item"))), None)
-                if verdict is None and w.store_t < self.pending and time.time() - self.pending < 4:
+                if verdict is None and w.store_t < self.pending and gnow() - self.pending < 4:
                     return None   # still waiting
                 self.done_log.append(verdict or f"{self.last} (no answer)")
                 ms = re.match(r"You sold (.+?) for (\d+) gold", verdict or "")
                 if ms and getattr(self, "sale_ctx", None):
                     # the scorecard's sale record: the re-listing comes with the next
                     # store listing (the Advisor's scorecard memo §5.1)
-                    self.sale_ctx.update(sold_as=ms.group(1), received=int(ms.group(2)), t=time.time())
+                    self.sale_ctx.update(sold_as=ms.group(1), received=int(ms.group(2)), t=gnow())
                     self.sale_pending = self.sale_ctx
                 self.sale_ctx = None
                 m = re.match(r"You sold (.+?) for \d+ gold", verdict or "")
@@ -1404,7 +1404,7 @@ class Shop(Goal):
                     p.c.send("confirm no")       # (disarm a 'yes' left over: the prompt gets 'no')
                     p.cmd(f"custom s store item={idx} value=1", f"quote {idx}", hold=0.2)
                     self.quoting = it["name"] if it else chr(97 + idx)
-                    self.pending = time.time()
+                    self.pending = gnow()
                     return None
                 why_not = p.unknown_sell_refusal(it, n) if it and not force else None
                 if not why_not and it and not force:
@@ -1435,9 +1435,9 @@ class Shop(Goal):
                 p.c.send("confirm yes")
                 p.cmd(f"custom s store item={idx} value={n}", f"sell {idx}x{n}", hold=0.2)
                 self.last = f"sell {chr(97 + idx)} x{n}"
-                self.pending = time.time()
+                self.pending = gnow()
                 return None
-            if self.buys and time.time() - getattr(self, "need_fresh", 0) < 3 and \
+            if self.buys and gnow() - getattr(self, "need_fresh", 0) < 3 and \
                     w.store_t < getattr(self, "need_fresh", 0):
                 return None       # (a remainder: wait for the listing after the last purchase)
             if self.buys:
@@ -1465,13 +1465,13 @@ class Shop(Goal):
                         # the cheap stack ran out: the rest at the next price, within
                         # the cap (mission 20 asked for 2 Identify and got 1, silently)
                         self.buys.insert(0, (name, wanted - n, cap))
-                        self.need_fresh = time.time()
+                        self.need_fresh = gnow()
                     else:
                         self.done_log.append(f"only {n} of {wanted} {name}: that's all the gold allows")
                 p.cmd(f"custom p store item={it['slot']} value={n} entry={it['price'] * n}",
                       f"buy {it['name']} x{n}", hold=0.2)
                 self.last = f"buy {it['name']} x{n} at {it['price']} each"
-                self.pending = time.time()
+                self.pending = gnow()
                 return None
             if getattr(self, "sale_pending", None):
                 return None       # (the last sale's re-listing first: the sale record)
@@ -1506,7 +1506,7 @@ class TownKit(Goal):
         self.again = set()
 
     def tick(self, p):
-        w, now = p.w, time.time()
+        w, now = p.w, gnow()
         if w.depth:
             return ("failed", "plan town is for the town")
         if self.sub:
@@ -1641,7 +1641,7 @@ class TripPlan:
         self.conds = until
         self.until_text = " or ".join(c[0] for c in until)
         self.text = f"trip {lo}-{hi} until \"{' or '.join(c[0] for c in until)}\" then {then}"
-        self.t0 = time.time()
+        self.t0 = gnow()
         self.phase = "down"
         self.level = None           # level_t of the level being worked
         self.level_t0 = 0.0
@@ -1686,7 +1686,7 @@ class TripPlan:
         return {"ccw": lambda: n("Cure Critical Wounds"), "csw": lambda: n("Cure Serious Wounds"),
                 "clw": lambda: n("Cure Light Wounds"), "phase": lambda: n("Phase Door", TV_SCROLL),
                 "wor": lambda: n("Word of Recall", TV_SCROLL), "food": lambda: p.kit_count("Ration of Food"),
-                "hp": lambda: round(100 * w.hp_frac), "minutes": lambda: (time.time() - self.t0) / 60,
+                "hp": lambda: round(100 * w.hp_frac), "minutes": lambda: (gnow() - self.t0) / 60,
                 "clvl": lambda: w.clvl, "gold": lambda: w.ind.get("gold", [0])[0],
                 "free": lambda: 23 - len(w.items()), "levels": lambda: self.levels,
                 "time": lambda: time.strftime("%H:%M")}[var]()
@@ -1710,7 +1710,7 @@ class TripPlan:
         return None
 
     def describe(self):
-        return f"{self.text} ({(time.time() - self.t0) / 60:.0f} min, {plural(self.levels, 'level')}: " \
+        return f"{self.text} ({(gnow() - self.t0) / 60:.0f} min, {plural(self.levels, 'level')}: " \
                f"{'paused for your goal' if self.paused else self.step})"
 
     def on_event(self, p, what, detail, news):
@@ -1751,7 +1751,7 @@ class TripPlan:
             st = json.load(open(os.path.join(p.rundir, "plan.json")))
         except (OSError, ValueError):
             return None
-        if not st or time.time() - st["t0"] > 90 * 60:
+        if not st or gnow() - st["t0"] > 90 * 60:
             return None
         pl = cls(st["lo"], st["hi"], cls.parse_until(st["until_text"]), st["then"], st["level_min"], st.get("via"))
         for k in ("t0", "phase", "levels", "went_down", "home_why"):
@@ -1783,7 +1783,7 @@ class TripPlan:
     def tick(self, p):
         """Called when no goal is running (and every 2 s under a plan goal, for the
         conditions). Returns (status, detail) when the plan ends."""
-        w, now = p.w, time.time()
+        w, now = p.w, gnow()
         if self.paused:
             return None
         if w.in_dungeon and w.recall_pending and self.phase in ("down", "level", "home") and self.went_down:
@@ -1975,7 +1975,7 @@ class Pilot:
         self.attention = []            # pending attention events (for wait-attention)
         self.news = []                 # informational events since the last report
         self.att_cond = threading.Condition()
-        self.last_agent = time.time()
+        self.last_agent = gnow()
         self.busy_until = 0.0
         self.idle_recalled = False
         self.last_action = None
@@ -2000,7 +2000,7 @@ class Pilot:
         except (OSError, ValueError):
             self.stores_seen = {}
         self.stores_noted_t = 0.0
-        self.ability_seen_t = time.time()
+        self.ability_seen_t = gnow()
         self.debt_path = os.path.join(rundir, "navigator_debt.json")
         try:
             self.debt = json.load(open(self.debt_path))
@@ -2016,12 +2016,12 @@ class Pilot:
         self.items_level, self.items_last, self.items_depth = None, [], 0   # this level's floor items (itemlist)
         self.equip_letters_lower = False  # item_index: a lowercase letter is an equipment letter (takeoff)
         self.phase_hist = collections.deque()   # emergency Phase Door times (futility check)
-        self.traps_here, self.trap_seen_t = (None, 0), time.time()
+        self.traps_here, self.trap_seen_t = (None, 0), gnow()
         self.band_warned = (None, 0)   # (level_t, size) of the last band warning
         self.band_warned_t = 0.0
         self.thieves_seen = set()      # (level_t, race name) thief warnings given
         self.thief_hit_t = 0.0
-        self.kills_t = time.time()     # messages scanned for unique kills
+        self.kills_t = gnow()     # messages scanned for unique kills
         self.item_pending = []         # (due, level_t, name): interesting_item alerts held 2.5 s
         self.unique_names = None
         self.fear_t = 0.0
@@ -2085,7 +2085,7 @@ class Pilot:
         self.flavour_watch = None
         self.id_target = None
         self.weapons_t, self.weapon_tips = 0.0, set()
-        self.found_t = time.time()
+        self.found_t = gnow()
         self.unanswered = []                  # user messages the Navigator hasn't answered (say)
         self.nav_view, self.nav_view_events = (0.0, [], ""), []   # what the Navigator last read
         self.avoid_zones, self.avoid_names = {}, set()           # the Navigator's no-go zones
@@ -2142,17 +2142,17 @@ class Pilot:
     def notify(self, what, detail=None, news=False):
         if what in ("emergency", "emergency_loop", "danger_seen", "danger_avoided", "fight_going_badly",
                     "unseen_attacker", "band", "stat_drained"):
-            self.escalation_t = time.time()      # (escape records: stairs taken in an emergency)
-        if what in ("emergency", "tactic") and time.time() - self.held_t < 0.05 and detail and \
+            self.escalation_t = gnow()      # (escape records: stairs taken in an emergency)
+        if what in ("emergency", "tactic") and gnow() - self.held_t < 0.05 and detail and \
                 any(k in detail for k in ("quaffed", "read ", "phase")):
             # the action this reports was held, not sent (mission 10 reported 3
             # CLW quaffs with 1 CLW in the pack)
             self.log("note", text=f"not reported (held): {detail}")
             return
-        ev = {"t": round(time.time(), 3), "what": what, "detail": detail,
+        ev = {"t": round(gnow(), 3), "what": what, "detail": detail,
               "goal": self.goal.describe() if self.goal else None}
         if what == "emergency":
-            self.emerg_times.append(time.time())
+            self.emerg_times.append(gnow())
         source = None
         if self.plan and what not in ("plan", "plan_done", "plan_failed"):
             self.plan.on_event(self, what, detail, news or what in self.NEWS)
@@ -2178,8 +2178,8 @@ class Pilot:
         # read the real one as "item=5")
         if self.pending_use and re.match(r"custom [rq] item=", line) and not why.startswith("agent:"):
             self.log("note", text=f"held (a read/quaff is still unconfirmed): {why}")
-            self.busy_until = time.time() + 0.3
-            self.held_t = time.time()     # notify() drops the caller's "quaffed ..." report
+            self.busy_until = gnow() + 0.3
+            self.held_t = gnow()     # notify() drops the caller's "quaffed ..." report
             # (callers set their rate-limit clock before calling: undo it, so
             # this is retried as soon as the last use is confirmed)
             if "recall" in why.lower():
@@ -2190,8 +2190,8 @@ class Pilot:
                 self.cure_t = 0.0
             return
         self.c.send(line)
-        self.last_action = (time.time(), line, why)
-        self.busy_until = time.time() + hold
+        self.last_action = (gnow(), line, why)
+        self.busy_until = gnow() + hold
         self.log("act", cmd=line, why=why)
         self.log_escape(line, why)
         self.expect_effect(line, why)
@@ -2204,8 +2204,8 @@ class Pilot:
             it = next((i for i in self.w.items() if i["item"] == int(m.group(1))), None)
             core = next((c for c in USE_VERIFY if it and c in it["name"]), None)
             if core:
-                self.pending_use = {"line": line, "t": time.time(), "core": core, "tries": 0, "why": why}
-                self.mover.hold_clear_until = time.time() + 3.0
+                self.pending_use = {"line": line, "t": gnow(), "core": core, "tries": 0, "why": why}
+                self.mover.hold_clear_until = gnow() + 3.0
 
     # Commands whose effect shows in the pack, the equipment or the level
     # (the game-state survey, rule 3: an action is done when its signal comes)
@@ -2226,7 +2226,7 @@ class Pilot:
             return                          # the agent gets its own answer (do_request)
         for rx, kind in self.EFFECTS:
             if rx.match(line):
-                self.expects.append({"kind": kind, "t": time.time(), "why": why,
+                self.expects.append({"kind": kind, "t": gnow(), "why": why,
                                      "sig": self.effect_sig(kind)})
                 return
 
@@ -2237,7 +2237,7 @@ class Pilot:
                 (i["tval"] == TV_FOOD and "Mushroom" in i["name"])}
 
     def watch_flavours(self):
-        self.flavour_watch = {"t": time.time(), "before": self.pack_kinds(),
+        self.flavour_watch = {"t": gnow(), "before": self.pack_kinds(),
                               "unknown": {(i["tval"], flavour_key(i["name"])) for i in self.w.items()
                                           if self.unknown_flavour(i)}}
 
@@ -2285,7 +2285,7 @@ class Pilot:
     def verify_effects(self):
         """Report actions whose effect never showed (3 s), instead of
         letting them pass as done."""
-        now = time.time()
+        now = gnow()
         keep = []
         for e in self.expects:
             if self.effect_sig(e["kind"]) != e["sig"]:
@@ -2341,7 +2341,7 @@ class Pilot:
                  blows=st["ind"].get("skills2", [None])[0], ac=st["ind"].get("armor"),
                  gold=st["ind"].get("gold", [None])[0],
                  # per-check state (the Advisor's scorecard memo §5.4)
-                 resting=bool(w.resting), in_combat=bool(w.adjacent_monsters() or time.time() - w.last_hit_t < 5),
+                 resting=bool(w.resting), in_combat=bool(w.adjacent_monsters() or gnow() - w.last_hit_t < 5),
                  recall_pending=bool(w.recall_pending), goal=self.goal.describe() if self.goal else None,
                  hp_min=self.hp_min_since)
         self.hp_min_since = None
@@ -2356,7 +2356,7 @@ class Pilot:
         """A pending read/quaff: done when the server says what's left ("You
         have 9 Scrolls of Phase Door (j)." / "You have no more ...") or a
         recall starts; resent (twice at most) if nothing within 2.5 s."""
-        p, now = self.pending_use, time.time()
+        p, now = self.pending_use, gnow()
         if not p:
             return
         if self.dead or self.w.ghost:
@@ -2402,7 +2402,7 @@ class Pilot:
             elif "Teleport" in name:
                 kind = "teleport"
         elif re.match(r"custom [<>]$", line) and (isinstance(self.goal, (Flee, Recover)) or self.ESCAPE_WHY.search(why)
-                                                    or time.time() - self.escalation_t < 10):
+                                                    or gnow() - self.escalation_t < 10):
             kind = "stairs"
         if kind:
             self.log("escape", escape=kind, trigger=why[:120], hp=w.hp[:2],
@@ -2411,11 +2411,11 @@ class Pilot:
 
     def take_stairs(self, which):
         self.mover.stop()
-        self.w.last_stairs_cmd = (which, time.time())
+        self.w.last_stairs_cmd = (which, gnow())
         self.cmd(f"custom {which}", f"stairs {which}", hold=0.3)
 
     def start_resting(self):
-        if not self.w.resting and time.time() > self.busy_until:
+        if not self.w.resting and gnow() > self.busy_until:
             self.cmd("rest", "rest", hold=1.0)
             self.w.status_t = 0
 
@@ -2596,7 +2596,7 @@ class Pilot:
 
     def reflexes(self):
         w, o = self.w, self.orders
-        now = time.time()
+        now = gnow()
         if self.dead and not w.ghost and w.hp[0] > 0:
             self.dead = False                 # resurrected
         if w.ghost or w.hp[0] <= 0 and w.hp[1] > 0 and w.ind:
@@ -2951,7 +2951,7 @@ class Pilot:
         w = self.w
         if w.hp_frac < 0.5 or self.__dict__.setdefault("walkaway_failed", set()) & {w.level_t}:
             return False
-        if any(t for ts, t in w.messages if time.time() - ts < 10 and "summons" in t):
+        if any(t for ts, t in w.messages if gnow() - ts < 10 and "summons" in t):
             return False
         mine = 110 + int(w.ind.get("speed", [0])[0] or 0)
         pos = {r.name: (y, x) for y, x, r in w.monsters}
@@ -2970,7 +2970,7 @@ class Pilot:
         a cure potion. Rate-limited: Phase Door
         again and again doesn't shake a pack (it burned 10 scrolls in 10 s)."""
         w = self.w
-        now = time.time()
+        now = gnow()
         if w.last_stairs_cmd and now - w.last_stairs_cmd[1] < 1.2:
             return True           # already on our way (retried after 1.2 s)
         if self.emergency_loop(now):
@@ -3103,7 +3103,7 @@ class Pilot:
         if not w.monlist or not w.rows or not w.pos:
             return
         seen = {r.name for *_, r in w.monsters}
-        now = time.time()
+        now = gnow()
         for name, n, ch in w.monlist:
             if name in seen:
                 self.gap_since.pop(name, None)
@@ -3117,7 +3117,7 @@ class Pilot:
             crop = [(r[max(0, x - 12):x + 13], a[max(0, x - 12):x + 13])
                     for r, a in zip(w.rows[max(0, y - 6):y + 7], w.attrs[max(0, y - 6):y + 7])]
             self.log("perception_gap", name=name, count=n, our_char=ch, pos=w.pos,
-                     map_age=round(time.time() - w.map_t, 2), crop=crop,
+                     map_age=round(gnow() - w.map_t, 2), crop=crop,
                      monsters=[(my, mx, r.name) for my, mx, r in w.monsters])
 
     def room_door(self, Y, X):
@@ -3154,7 +3154,7 @@ class Pilot:
         if lt == w.level_t and len(near) < size * 1.5:
             return
         self.band_warned = (w.level_t, len(near))
-        self.band_warned_t = time.time()
+        self.band_warned_t = gnow()
         names = ", ".join(f"{n} ×{c}" if c > 1 else n
                           for n, c in collections.Counter(r.name for *_, r in near).most_common(6))
         stairs = min((w.dist(q) for q in w.find("<>")), default=None)
@@ -3254,7 +3254,7 @@ class Pilot:
     def belief_lines(self):
         """The report's belief-state lines: threats out of view, the fight so far, rates,
         counts on this level, standing instructions."""
-        w, now = self.w, time.time()
+        w, now = self.w, gnow()
         out = []
         if w.in_dungeon:
             in_view = {r.name for *_, r in w.monsters}
@@ -3325,7 +3325,7 @@ class Pilot:
         every later command can say which report it answered and how old that
         was (the Advisor's starting-over memo: orders went stale on the way)."""
         self.report_seq += 1
-        self.last_report = (self.report_seq, time.time())
+        self.last_report = (self.report_seq, gnow())
         # what the report showed, for the stale-order check (step 2.4)
         self.report_state = {"level_t": self.w.level_t, "hp": self.w.hp_frac}
         self.log("report", id=self.report_seq, report_kind=kind, chars=len(rep))
@@ -3373,7 +3373,7 @@ class Pilot:
         while not fighting (mission 3 circled a '>' for 10 minutes, and no
         event woke the Navigator). Clear the server queue, restart the move,
         and say so."""
-        w, now = self.w, time.time()
+        w, now = self.w, gnow()
         if w.pos:
             self.pos_hist.append((now, w.pos, w.depth))
         while self.pos_hist and now - self.pos_hist[0][0] > 120:
@@ -3566,7 +3566,7 @@ class Pilot:
     def pickup_room(self, name):
         """True if the item underfoot should be picked up now (destroying something
         cheaper first when the pack is full); False to leave it (with news)."""
-        w, now = self.w, time.time()
+        w, now = self.w, gnow()
         iv = self.iv(name)
         worth = iv.value * self.pay_cut(iv.tval) * max(1, iv.count)
         ud = self.unique_drop
@@ -3834,7 +3834,7 @@ class Pilot:
         if text.startswith("!"):
             # a message for the Navigator: an attention event wakes its wait
             self.notify("user_message", text[1:].strip())
-            self.unanswered.append((time.time(), text[1:].strip()))
+            self.unanswered.append((gnow(), text[1:].strip()))
         with open(os.path.join(self.rundir, "commentary.jsonl"), "a") as f:
             f.write(json.dumps(rec) + "\n")
         return f"noted at {time.strftime('%H:%M:%S')} ({w.depth_ft} ft, HP {w.hp[0]}/{w.hp[1]}, " \
@@ -4154,7 +4154,7 @@ class Pilot:
             not self.has_ability("free_action")
         hint = " (it may be paralysis and you have no Free Action: if the stairs are far, read Word of Recall)" \
             if para else ""
-        if self.hunt_ordered(time.time(), "an unseen attacker"):
+        if self.hunt_ordered(gnow(), "an unseen attacker"):
             return False
         if w.find("<>"):
             self.set_goal(Flee("unseen attacker"))
@@ -4169,7 +4169,7 @@ class Pilot:
         """One step to a free square next to none of threats (stationary
         monsters: one square away is enough). Returns True if a step was sent."""
         w = self.w
-        now = time.time()
+        now = gnow()
         if now - self.sidestep_t < 0.8:
             return True               # the last step is still on its way
         occupied = {m[:2] for m in w.monsters}
@@ -4322,7 +4322,7 @@ class Pilot:
             state.update(level=w.level_t, looted=set(), looting=False)
         # (no detours while a band is about: the Advisor's set-piece C5, mission 22's
         # loot room. A band out of view now may be round the corner)
-        band = self.band_warned[0] == w.level_t and time.time() - self.band_warned_t < 90
+        band = self.band_warned[0] == w.level_t and gnow() - self.band_warned_t < 90
         if not lr or w.monsters or band:
             state["looting"] = False
             return False
@@ -4358,7 +4358,7 @@ class Pilot:
             self.settle_hunt(old, "replaced", goal.describe() if goal else "stopped")
         self.mover.stop()
         self.goal = goal
-        self.goal_t = time.time()             # (watch_progress counts from here)
+        self.goal_t = gnow()             # (watch_progress counts from here)
         self.idle_recalled = False
         self.log("goal", goal=goal.describe() if goal else None)
 
@@ -4388,7 +4388,7 @@ class Pilot:
                 # Navigator had to re-send its climb after every stair hop)
                 self.goal, self.resume_after = self.resume_after, None
                 self.log("goal", goal=self.goal.describe(), why="resumed after recovering")
-                self.news.append({"t": round(time.time(), 3), "what": "resumed",
+                self.news.append({"t": round(gnow(), 3), "what": "resumed",
                                   "detail": f"{g}: {detail}; resumed '{self.goal.describe()}'", "goal": None})
                 return True
             ended = self.goal_ending
@@ -4400,7 +4400,7 @@ class Pilot:
             if isinstance(ended, Hunt) and status == "failed" and "blinked away" in str(detail) and self.w.in_dungeon:
                 self.notify({"done": "goal_done", "failed": "goal_failed"}[status], f"{g}: {detail}", news=quiet)
                 self.goal = Reprieve(ended.target)
-                self.goal_t = time.time()
+                self.goal_t = gnow()
                 if self.plan and self.plan.paused and ended is self.plan.pause_goal:
                     self.plan.pause_goal = self.goal      # (the plan waits for the reprieve too)
                 self.log("goal", goal=self.goal.describe(), why="a blinker got away: rest is free (the user)")
@@ -4423,7 +4423,7 @@ class Pilot:
         idle among them (mission 14: Lagduf's pack, stairs 66 away, the
         Navigator had to read Word of Recall itself) -- start a recall and
         phase out of reach while it charges."""
-        w, now = self.w, time.time()
+        w, now = self.w, gnow()
         self.flee_fail_t = now
         # (decoded or only listed by the server, as danger_seen counts them:
         # mission 15's Brodda was listed 0.1 s before the map decode, so this
@@ -4451,7 +4451,7 @@ class Pilot:
         if self.plan and not self.plan.paused:
             return                 # (the plan is the standing instruction; it has its own 90-minute cap)
         if w.in_dungeon and not self.idle_recalled and \
-                time.time() - self.last_agent > self.orders["idle_recall_s"]:
+                gnow() - self.last_agent > self.orders["idle_recall_s"]:
             self.idle_recalled = True
             self.notify("idle_recall", "no word from the agent: recalling to town")
             self.set_goal(Recall())
@@ -4584,7 +4584,7 @@ class Pilot:
         """Use a Staff or zap a Rod of Door/Stair Location (an unknown flavour too, when the
         flavour table knows it). True if it acted."""
         w = self.w
-        if time.time() < self.busy_until or w.flag("blind") or w.flag("confused"):
+        if gnow() < self.busy_until or w.flag("blind") or w.flag("confused"):
             return False
         for it in w.items():
             kind = it["name"] if " of " in it["name"] else (self.flavour_of(it) or {}).get("kind", "")
@@ -4604,7 +4604,7 @@ class Pilot:
         lite = max((i for i in self.w.items(tval=TV_LITE) if left(i) > 0), key=left, default=None)
         if not lite:
             return False
-        self.light_t = time.time() + 60         # (town_light leaves it on meanwhile)
+        self.light_t = gnow() + 60         # (town_light leaves it on meanwhile)
         self.cmd(f"custom w item={lite['item']}", f"light on: {why}", hold=0.8)
         return True
 
@@ -4612,7 +4612,7 @@ class Pilot:
         """A light warning once per state (low -> out), again after 10 min; in
         town it's news, not an alert (Dive04 raised 573 'lantern at 0 turns'
         alerts, one every 2 min while it idled in town: the post-mortem's §4.7)."""
-        now = time.time()
+        now = gnow()
         if key == self.light_warned_key and now - self.light_warned < 600:
             return
         self.light_warned, self.light_warned_key = now, key
@@ -4693,7 +4693,7 @@ class Pilot:
     def wear_step(self):
         """One item per call (letters shift after each): wear what fills an empty slot."""
         w = self.w
-        if time.time() < self.busy_until or w.inven_dirty:
+        if gnow() < self.busy_until or w.inven_dirty:
             return
         worn = {self.WEAR_TVALS.get(i["tval"]) for i in w.items(equip=True)}
 
@@ -4730,9 +4730,9 @@ class Pilot:
         # (never during a pending recall: a logout reset its depth once, and
         # Dive03 landed at 1000 ft instead of the @R750 it had asked for)
         safe = not near and w.hp_frac >= 0.7 and not w.store and \
-            not (w.last_stairs_cmd and time.time() - w.last_stairs_cmd[1] < 3) and \
-            not self.recall_started(time.time()) and not isinstance(self.goal, Recall)
-        if safe or time.time() - self.parking > 300:
+            not (w.last_stairs_cmd and gnow() - w.last_stairs_cmd[1] < 3) and \
+            not self.recall_started(gnow()) and not isinstance(self.goal, Recall)
+        if safe or gnow() - self.parking > 300:
             self.notify("parked", "logging out for a Pilot update; back in a minute -- "
                                   "re-issue your goal when you see 'started'"
                         + ("" if safe else " (parked after 5 min without a safe moment)"))
@@ -4744,14 +4744,22 @@ class Pilot:
     def tick(self):
         self.w.drain()
         self.w.refresh()
+        # the game clock's factor: the server's 1/5 below hitpoint_warn x 10% HP (xtra2.c base_time_factor;
+        # resting and running out of sight speed it up, which the timers already tolerate)
+        hw = getattr(self, "hpwarn", 0)
+        hp = self.w.hp
+        slow = hw and hp[1] > 1 and hp[0] * 100 // max(1, hp[1]) <= hw * 10
+        if (time_factor() < 1) != bool(slow):
+            set_time_factor(0.2 if slow else 1.0)
+            self.log("time_factor", factor=time_factor(), hp=hp[:2])
         self.note_town_stairs()
         if self.wear_queue:
             self.wear_step()
         self.verify_use()
         self.verify_effects()
-        self.learn_flavours_tick(time.time())
+        self.learn_flavours_tick(gnow())
         self.track_since()
-        w, now = self.w, time.time()
+        w, now = self.w, gnow()
         if w.hp[1] > 1 and (self.hp_min_since is None or w.hp[0] < self.hp_min_since[0]):
             self.hp_min_since = [w.hp[0], w.hp[1]]
         ov = getattr(self.goal, "overridden", None) or getattr(self.resume_after, "overridden", None)
@@ -4893,7 +4901,7 @@ class Pilot:
         if self.parking and not isinstance(self.goal, Recall):
             self.park_tick()
             return
-        if self.policy_tick(time.time()):      # the Pilot's own item work, at safe moments
+        if self.policy_tick(gnow()):      # the Pilot's own item work, at safe moments
             return
         if self.step_goal():
             self.plan_tick(now, False)
@@ -4914,13 +4922,13 @@ class Pilot:
                 # (only the Navigator's own commands count as activity: the viewer's
                 # twice-a-second polls kept town_light from ever taking the lantern
                 # off, and idling in town burned 7300 turns + 3 flasks, 2026-10-16)
-                self.last_agent = time.time()
+                self.last_agent = gnow()
                 # the Navigator's commands as received (latency studies could only
                 # see the next recorded order: the Advisor)
                 rid, rt = self.last_report
                 self.log("nav_cmd", cmd=req.get("cmd"), args=req.get("args", [])[:12],
                          wait_report=bool(req.get("since_wait")), after_report=rid,
-                         report_age=round(time.time() - rt, 1) if rt else None)
+                         report_age=round(gnow() - rt, 1) if rt else None)
             try:
                 out = self.do_request(req)
             except Exception as e:
@@ -4928,7 +4936,7 @@ class Pilot:
             if self.unanswered and isinstance(out, dict) and req.get("cmd") not in ("note", "say", "status"):
                 # on every answer, not only wait/status (mission 16: 'Pause 1 sec'
                 # was seen 35 s late, during chest commands)
-                out["user_messages"] = [f"{time.strftime('%H:%M:%S', time.localtime(t))} {m}"
+                out["user_messages"] = [f"{time.strftime('%H:%M:%S', _lt(t))} {m}"
                                         for t, m in self.unanswered]
             reply.put(out)
 
@@ -4999,7 +5007,7 @@ class Pilot:
         self.service_notes()
         self.w.drain()
         self.w.inven = self.c.inven()
-        self.w.inven_t = time.time()
+        self.w.inven_t = gnow()
         self.w.inven_dirty = False
         return [f"{chr(97 + i['item'])}) {i['name']}" for i in self.w.items()]
 
@@ -5032,7 +5040,7 @@ class Pilot:
             full = "full" in args
             if req.get("since_wait"):
                 # a wait report: the news since the previous wait (the survey)
-                since, self.news_wait_t = self.news_wait_t, time.time()
+                since, self.news_wait_t = self.news_wait_t, gnow()
                 rep = self.numbered(self.compact(news_since=since), "wait")
                 self.nav_view = (time.time(), self.nav_view_events, rep)
                 return {"ok": True, "report": rep}
@@ -5066,7 +5074,7 @@ class Pilot:
                 self.log("mission_end", label=label, **kv)
                 for m in ms:
                     if m.get("label") == label:
-                        m["end"] = time.strftime("%Y-%m-%d %H:%M", time.localtime(time.time() + 59))
+                        m["end"] = time.strftime("%Y-%m-%d %H:%M", _lt(gnow() + 59))
                 self.mission_label = None
             with open(path, "w") as f:
                 json.dump(ms, f, indent=1)
@@ -5129,7 +5137,7 @@ class Pilot:
             # (the observer's viewer: a bigger map, no side effects)
             rows = int(args[0]) if args else 11
             cols = int(args[1]) if len(args) > 1 else 33
-            return {"ok": True, "report": self.report(rows=rows, cols=cols, news_since=time.time() - 600)}
+            return {"ok": True, "report": self.report(rows=rows, cols=cols, news_since=gnow() - 600)}
         if c == "navview":
             # what the Navigator last saw (the user's "Navigator's view" panel)
             return {"ok": True, "t": self.nav_view[0], "events": self.nav_view[1], "report": self.nav_view[2]}
@@ -5306,7 +5314,7 @@ class Pilot:
                 return {"ok": False, "error": str(e)}
             extra = ""
             if c == "read" and "Word of Recall" in next((i["name"] for i in self.w.inven if i["item"] == item), "") \
-                    and self.recall_started(time.time()) and "force" not in args[1:]:
+                    and self.recall_started(gnow()) and "force" not in args[1:]:
                 return {"ok": False, "error": "a recall is already under way: reading another cancels it "
                                               "(add 'force' to cancel it on purpose)"}
             iname = next((i["name"] for i in self.w.inven if i["item"] == item), "")
@@ -5366,9 +5374,9 @@ class Pilot:
                     # learn from the server's answer, "In your pack: a Ring of X (q)."
                     # (the pack diff missed a cursed ring autodestroyed at once and
                     # a second Identify read straight after, mission 16)
-                    self.id_target = {"t": time.time(), "flavour": flavour_key(tit["name"]),
+                    self.id_target = {"t": gnow(), "flavour": flavour_key(tit["name"]),
                                       "letter": None if tit["equip"] else chr(97 + target)}
-            t0 = time.time()
+            t0 = gnow()
             before = (self.effect_sig("pack"), self.effect_sig("equip"))
             self.cmd(f"custom {key} item={item}{extra}", f"agent: {c} {args}")
             pack = self.pack_now()
@@ -5403,17 +5411,17 @@ class Pilot:
             # finds a given secret door/trap ~14% of the time for Dive04: 15 ~ 90%).
             # Standing still doesn't search (mission 15, the user; cmd1.c search())
             n = max(1, min(40, int(args[0]) if args else 15))
-            t0 = time.time()
+            t0 = gnow()
             for _ in range(n):
                 self.c.send("custom s")
-            self.busy_until = time.time() + 0.15 * n
+            self.busy_until = gnow() + 0.15 * n
             # wait for the searches to run (one a turn), stop early on a find
             # (mission 16: the reply said "nothing found" while the game had said
             # "You have found a secret door" a few seconds later)
-            end = time.time() + min(25.0, 0.7 * n + 1.0)
+            end = gnow() + min(25.0, 0.7 * n + 1.0)
             found = []
             heard = False
-            while time.time() < end and not found:
+            while gnow() < end and not found:
                 self.c.collect(0.5)
                 self.w.drain()
                 found = [t for ts, t in self.w.messages if ts >= t0 and ("found" in t or "discovered" in t)]
@@ -5426,7 +5434,7 @@ class Pilot:
             # a chest (or door/trap) in direction DIR (5 = the square you stand on):
             # search first to find a chest's trap, disarm it, then open
             d = args[0] if args else "5"
-            t0 = time.time()
+            t0 = gnow()
             self.cmd(f"custom {'D' if c == 'disarm' else 'o'} dir={d}", f"agent: {c} {d}")
             self.c.collect(1.0)
             self.service_notes()
@@ -5449,7 +5457,7 @@ class Pilot:
             return {"ok": True, "goal": g.describe() if g else None, "state": st,
                     "mover": {"active": self.mover.active, "path": len(self.mover.path),
                               "free": self.mover.free is not None, "running": self.mover.running is not None},
-                    "standing_on": self.w.standing_on, "busy": self.busy_until - time.time()}
+                    "standing_on": self.w.standing_on, "busy": self.busy_until - gnow()}
         if c == "options":
             opts = self.c.query("options", "options")["list"]
             return {"ok": True, "options": {k: v for k, v in opts.items() if not args or any(a in k for a in args)}}
@@ -5484,7 +5492,7 @@ class Pilot:
             # dropped now, the logout waits until nothing is close and HP is OK
             if not isinstance(self.goal, Recall):
                 self.set_goal(None)       # a pending recall is allowed to finish first
-            self.parking = time.time()
+            self.parking = gnow()
             return {"ok": True, "note": "will log out when safe"}
         return {"ok": False, "error": f"unknown command {c}"}
 
@@ -5575,7 +5583,7 @@ class Pilot:
         for i in st.get("items", []):
             k = self.kind_key_of(i["name"])
             prices[k] = min(prices.get(k, i["price"]), i["price"])
-        self.stores_seen[num] = {"owner": st.get("owner"), "t": round(time.time()), "prices": prices}
+        self.stores_seen[num] = {"owner": st.get("owner"), "t": round(gnow()), "prices": prices}
         try:
             json.dump(self.stores_seen, open(self.stores_file, "w"), indent=1)
         except OSError:
@@ -6037,9 +6045,9 @@ class Pilot:
             return (f"{race.name} breathes up to {breath:.0f} (you have {w.hp[0]}): one breath could take "
                     f"60% of your HP", info)
         band_lt = (getattr(self, "band_warned", (None, 0)) or (None, 0))[0]
-        if band_lt == w.level_t and time.time() - getattr(self, "band_warned_t", 0) < 120 and \
+        if band_lt == w.level_t and gnow() - getattr(self, "band_warned_t", 0) < 120 and \
                 sum(1 for *_, r in w.monsters if "NEVER_MOVE" not in r.flags) >= 5:
-            return (f"a band is about (flagged {time.time() - self.band_warned_t:.0f} s ago): leave first", info)
+            return (f"a band is about (flagged {gnow() - self.band_warned_t:.0f} s ago): leave first", info)
         return None, info
 
     def stale_order(self, c, args):
@@ -6050,7 +6058,7 @@ class Pilot:
         rid, rt = self.last_report
         if not st or not rid:
             return None
-        w, age = self.w, time.time() - rt
+        w, age = self.w, gnow() - rt
         positional = (c == "goal" and args[:1] and args[0] in ("goto", "fetch", "searchroom", "hunt") and
                       not (args[0] == "goto" and len(args) > 1 and args[1] in ("<", ">"))) or \
                      (c == "avoid" and args and re.match(r"\d+,\d+$", args[0]))
@@ -6153,7 +6161,7 @@ class Pilot:
             if why and force and self.req_role != "architect":
                 # an override: judged when the hunt ends (the user, 2026-10-23: a separate debt)
                 w = self.w
-                g.overridden = {"why": why, "hp0": w.hp[0], "hp_min": w.hp[0], "t0": time.time(),
+                g.overridden = {"why": why, "hp0": w.hp[0], "hp_min": w.hp[0], "t0": gnow(),
                                 "emerg0": len(self.emerg_times)}
                 self.log("hunt_override", target=target, why=why, hp=w.hp[0])
         elif name == "fetch":
@@ -6163,7 +6171,7 @@ class Pilot:
                 return {"ok": False, "error": "usage: goal fetch Y,X (an item's square, from the report)"}
             if self.req_role != "architect" and self.w.in_dungeon:
                 band_lt = (getattr(self, "band_warned", (None, 0)) or (None, 0))[0]
-                if band_lt == self.w.level_t and time.time() - getattr(self, "band_warned_t", 0) < 120:
+                if band_lt == self.w.level_t and gnow() - getattr(self, "band_warned_t", 0) < 120:
                     return {"ok": False, "error": "fetch refused: a band was flagged on this level in the last 2 "
                                                   "minutes; loot isn't worth it now (mission 22). Leave or fight first"}
                 if self.dangers():
@@ -6282,10 +6290,10 @@ class Pilot:
                 mem = snap["mem"]
                 rows = ["".join(mem.get((y, x), " ") for x in range(MAX_WID)).rstrip() for y in range(MAX_HGT)]
                 found = [f"{st['kind']} {Y},{X}" for (lv, (Y, X)), st in self.structs.items() if lv == snap["level"]]
-                with open(os.path.join(d, time.strftime("%Y%m%d-%H%M%S", time.localtime(snap["t0"]))
+                with open(os.path.join(d, time.strftime("%Y%m%d-%H%M%S", _lt(snap["t0"]))
                                        + f"-{snap['ft']}ft.txt"), "w") as f:
-                    f.write(f"# {snap['ft']} ft, {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(snap['t0']))} - "
-                            f"{time.strftime('%H:%M:%S', time.localtime(snap['t']))}; structures: "
+                    f.write(f"# {snap['ft']} ft, {time.strftime('%Y-%m-%d %H:%M:%S', _lt(snap['t0']))} - "
+                            f"{time.strftime('%H:%M:%S', _lt(snap['t']))}; structures: "
                             f"{', '.join(found) or 'none'}\n" + "\n".join(rows) + "\n")
             except OSError:
                 pass
@@ -6301,7 +6309,7 @@ class Pilot:
         return [(Y, X, st) for (lv, (Y, X)), st in self.structs.items() if lv == w.level_t and st["kind"]]
 
     def track_since(self):
-        w, now = self.w, time.time()
+        w, now = self.w, gnow()
         sn = getattr(self, "since", None)
         if sn is None:
             sn = self.since = {"t": now, "min_hp": None, "mons": {}, "uniques": set()}
@@ -6323,12 +6331,12 @@ class Pilot:
         sn = getattr(self, "since", None)
         if not sn:
             return []
-        now = time.time()
+        now = gnow()
         out = []
         lo = sn["min_hp"]
         mons = sorted(sn["mons"].items(), key=lambda kv: -kv[1])
         out.append(f"Since the last report ({now - sn['t']:.0f} s): lowest HP "
-                   + (f"{lo[0]}/{lo[1]} at {time.strftime('%H:%M:%S', time.localtime(lo[2]))}" if lo else "?")
+                   + (f"{lo[0]}/{lo[1]} at {time.strftime('%H:%M:%S', _lt(lo[2]))}" if lo else "?")
                    + "; monsters seen (most at once): " + (", ".join(f"{n} x{k}" for n, k in mons[:12]) or "none")
                    + (f"; UNIQUES: {', '.join(sorted(sn['uniques']))}" if sn["uniques"] else ""))
         xt = getattr(self, "exp_t", None)
@@ -6345,14 +6353,14 @@ class Pilot:
     def movement_line(self, window=60, step=8):
         """Where we've been in the last minute, a point every ~8 s (the
         Navigator's wish: it couldn't see what the Pilot's moves had been)."""
-        now = time.time()
+        now = gnow()
         pts = [(t, p, d) for t, p, d in self.pos_hist if now - t <= window]
         if not pts:
             return None
         out, last_t, last_p = [], None, None
         for t, p, d in pts:
             if (last_t is None or t - last_t >= step) and p != last_p:
-                out.append(f"{time.strftime('%H:%M:%S', time.localtime(t))} {p[0]},{p[1]}")
+                out.append(f"{time.strftime('%H:%M:%S', _lt(t))} {p[0]},{p[1]}")
                 last_t, last_p = t, p
         if pts[-1][1] != last_p:
             out.append(f"now {pts[-1][1][0]},{pts[-1][1][1]}")
@@ -6452,14 +6460,14 @@ class Pilot:
                + " | Escapes " + " · ".join(f"{k} {esc.get(k, 0)}" for k in ("Phase", "WoR"))
                + "".join(f" · {k} {v}" for k, v in esc.items() if k not in ("Phase", "WoR"))
                + f" | Food {food} | Light {light}"
-               + (f" | RECALL PENDING ({time.time() - w.recall_pending_t:.0f} s; 8-23 s)" if w.recall_pending else "")]
+               + (f" | RECALL PENDING ({gnow() - w.recall_pending_t:.0f} s; 8-23 s)" if w.recall_pending else "")]
         extra = [f"{k} {v}" for k, v in other.items()] + [d for d in devices if "Cure Light Wounds" not in d]
         if extra:
             out.append("Also: " + " · ".join(extra))
         return out
 
     def compact(self, news_since=None, map_r=9, snapshot=False):
-        w, ind, now = self.w, self.w.ind, time.time()
+        w, ind, now = self.w, self.w.ind, gnow()
         lines = []
         where = ("Town (" + {True: "day", False: "night", None: "day/night?"}[w.is_day()] + ")") if not w.depth \
             else f"{w.depth_ft} ft"
@@ -6470,7 +6478,7 @@ class Pilot:
             lines.append("Plan: " + self.plan.describe())
         if self.unanswered:
             lines.append("USER MESSAGE(S) NOT YET ANSWERED (reply with say): " + " | ".join(
-                f"{time.strftime('%H:%M:%S', time.localtime(t))} {m}" for t, m in self.unanswered))
+                f"{time.strftime('%H:%M:%S', _lt(t))} {m}" for t, m in self.unanswered))
         drained = {n for n, (cur, top) in (self.seen_drained or {}).items() if cur < top}
         stats = " ".join(f"{s} {v[0] if v[0] <= 18 else '18/%02d' % (v[0] - 18)}{'↓' if s in drained else ''}"
                          for s, v in zip(self.STAT_NAMES, (ind.get(f"stat{i}", [0]) for i in range(6))))
@@ -6536,7 +6544,7 @@ class Pilot:
                                            else now - e["t"] < 600)][-8:]
         if recent:
             lines.append("News: " + " | ".join(
-                f"{time.strftime('%H:%M:%S', time.localtime(e['t']))} {e['what']}: {e['detail']}" for e in recent))
+                f"{time.strftime('%H:%M:%S', _lt(e['t']))} {e['what']}: {e['detail']}" for e in recent))
         if w.depth and (w.monsters or w.hp[0] < w.hp[1]):
             msgs = w.recent(10)[-6:]
             if msgs:
@@ -6547,7 +6555,7 @@ class Pilot:
             mons = sorted(sn["mons"].items(), key=lambda kv: -kv[1])
             bits = []
             if lo and lo[0] < lo[1]:
-                bits.append(f"low HP {lo[0]}/{lo[1]} at {time.strftime('%H:%M:%S', time.localtime(lo[2]))}")
+                bits.append(f"low HP {lo[0]}/{lo[1]} at {time.strftime('%H:%M:%S', _lt(lo[2]))}")
             if mons:
                 bits.append("seen " + ", ".join(f"{n} ×{k}" if k > 1 else n for n, k in mons[:8]))
             if sn["uniques"]:
@@ -6677,7 +6685,7 @@ class Pilot:
         cons = [self.show(i) for i in w.items(tval=(TV_POTION, TV_SCROLL, TV_FOOD, TV_FLASK, 55, 65, 66, 40, 45))]
         drained = [n for n, (cur, top) in (self.seen_drained or {}).items() if cur < top]
         lines.append("Supplies: " + ("; ".join(cons) or "none")
-                     + (f" | RECALL PENDING (read {time.time() - w.recall_pending_t:.0f} s ago; it takes "
+                     + (f" | RECALL PENDING (read {gnow() - w.recall_pending_t:.0f} s ago; it takes "
                         "15-34 turns, 8-23 s)" if w.recall_pending else "")
                      + f" | max_depth {self.orders.get('max_depth')}"
                      + (f" | drained: {', '.join(drained)}" if drained else ""))
@@ -6685,7 +6693,7 @@ class Pilot:
             # (mission 15: a message sent before the Navigator's first wait was
             # only seen 4 minutes later in the news)
             lines.insert(1, "USER MESSAGE(S) NOT YET ANSWERED (reply with say): " + " | ".join(
-                f"{time.strftime('%H:%M:%S', time.localtime(t))} {m}" for t, m in self.unanswered))
+                f"{time.strftime('%H:%M:%S', _lt(t))} {m}" for t, m in self.unanswered))
         wt = self.weapon_table()
         if wt:
             lines.append("Weapons (blows, avg damage per round at your STR/DEX): " + "; ".join(
@@ -6706,10 +6714,10 @@ class Pilot:
                             if self.audit_counts else ", no differences"))
         # News of the last 10 minutes, every time (status calls used to clear it)
         recent = [e for e in self.news if (e["t"] > news_since if news_since is not None
-                                           else time.time() - e["t"] < 600)][-12:]
+                                           else gnow() - e["t"] < 600)][-12:]
         if recent:
             lines.append("Since last report: " + " | ".join(
-                f"{time.strftime('%H:%M:%S', time.localtime(e['t']))} {e['what']}: {e['detail']}" for e in recent))
+                f"{time.strftime('%H:%M:%S', _lt(e['t']))} {e['what']}: {e['detail']}" for e in recent))
         lines.append("Recent messages: " + " | ".join(w.recent(30)[-12:]))
         here = self.structures_here() if w.in_dungeon else []
         if here:
@@ -6744,12 +6752,12 @@ class Handler(socketserver.StreamRequestHandler):
         req = json.loads(line)
         if req.get("cmd") == "wait-attention":
             timeout = float(req.get("timeout", 600))
-            end = time.time() + timeout
+            end = gnow() + timeout
             with pilot.att_cond:
-                while not pilot.attention and time.time() < end and pilot.running:
-                    pilot.att_cond.wait(min(1.0, max(0.01, end - time.time())))
+                while not pilot.attention and gnow() < end and pilot.running:
+                    pilot.att_cond.wait(min(1.0, max(0.01, end - gnow())))
                 evs, pilot.attention = pilot.attention, []
-            pilot.last_agent = time.time()
+            pilot.last_agent = gnow()
             out = {"ok": True, "events": evs}
             pilot.nav_view_events = [f"ATTENTION {e['what']}: {e.get('detail') or ''}" for e in evs]
             if pilot.running:        # (a quiet timeout gets one too: mission 3 missed a stall)
@@ -6786,6 +6794,9 @@ def main():
     ap.add_argument("--client", default=os.path.join(repo, "mangclient"))
     ap.add_argument("--libdir", default=os.path.join(repo, "lib"))
     ap.add_argument("--pktlog")
+    ap.add_argument("--hpwarn", type=int, default=0,
+                    help="hitpoint_warn 0-9: below N x 10%% HP the server slows our time bubble to 1/5; the "
+                         "Pilot's timers follow on its game clock (0 = off, the default)")
     args = ap.parse_args()
 
     nick = args.nick
@@ -6795,19 +6806,21 @@ def main():
     visuals = os.path.join(rundir, "visuals.txt")
     glyphs.write_visuals(visuals, glyphs.assign(glyphs.load_races()))
     evlog = open(os.path.join(rundir, "events.jsonl"), "a", buffering=1)
-    # --hpwarn 0: no time bubble slowdown at low HP for now. The pilot's timers
-    # (holds, step timeouts, potion/phase spacing) are wall-clock, and at 30%
-    # HP time runs at 30%: in mission 7 re-plans fired between our turns.
+    # --hpwarn N: below N x 10% HP the server runs our time bubble at 1/5. Since 2026-10-23 the
+    # Pilot's timers are on a game clock that follows it (world.gnow); before, they were
+    # wall-clock, and at low HP re-plans fired between our turns (mission 7), so it ran with 0.
     client = MangClient(args.client, args.libdir, nick,
                         args.passfile or os.path.join(priv, nick.lower() + ".pass"),
                         args.host, args.port, config=args.config or os.path.join(priv, nick.lower() + ".mangrc"),
-                        cwd=repo, pktlog=args.pktlog, extra_args=["--visuals", visuals, "--hpwarn", "0"])
+                        cwd=repo, pktlog=args.pktlog, extra_args=["--visuals", visuals, "--hpwarn", str(args.hpwarn)])
     say = lambda *a: print(time.strftime("%H:%M:%S"), *a, file=sys.stderr, flush=True)
     pilot = None
     try:
         ready = client.wait_ready()
         say(f"in the game as {nick}: {ready}")
         pilot = Pilot(client, rundir, say=say)
+        pilot.hpwarn = args.hpwarn
+        pilot.log("options", hpwarn=args.hpwarn)
         orig = pilot.w._on_event
         bulky = {"map", "status", "inven", "options", "commands"}   # query replies
         # every event carries the wall clock too ('t' restarts at 0 with each
@@ -6820,7 +6833,7 @@ def main():
         last = {"status": [0.0, None], "inven": [0.0, None], "map": [0.0, None]}
 
         def log_state(ev):
-            k, now = ev.get("ev"), time.time()
+            k, now = ev.get("ev"), gnow()
             if k not in last or now - last[k][0] < {"status": 2.0, "inven": 0.0, "map": 10.0}[k]:
                 return
             if k == "status":

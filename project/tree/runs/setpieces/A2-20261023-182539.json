@@ -1,0 +1,127 @@
+{
+ "id": "A2",
+ "tag": "A2-20261023-182539",
+ "depth_ft": 350,
+ "start": "2026-10-23 18:25:39",
+ "checks": {
+  "Word of Recall within 2 s of first sight": {
+   "pass": true,
+   "detail": "seen at 4.001943111419678, recall read at 3.3"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [128, 265]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   128,
+   265
+  ],
+  "attention": [
+   [
+    2.3,
+    "unseen_attacker",
+    "'It fires an arrow!': probably the Black orc (lvl 13) in view; carrying on (HP 97%)"
+   ],
+   [
+    3.3,
+    "danger_seen",
+    "Ulwarth, Son of Ulfang (unique, lvl 26) in view: heading for the stairs"
+   ],
+   [
+    3.3,
+    "goal_failed",
+    "flee (Ulwarth, Son of Ulfang): no stairs known"
+   ],
+   [
+    3.3,
+    "emergency",
+    "couldn't reach the stairs with 2 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    6.9,
+    "fight_going_badly",
+    "HP 172/265 fighting Black orc, Ulwarth, Son of Ulfang"
+   ],
+   [
+    7.5,
+    "emergency",
+    "HP 150 within 3 turns of the worst (154): read Phase Door (Black orc, Ulwarth, Son of Ulfang adjacen"
+   ],
+   [
+    12.6,
+    "band",
+    "a band within 10 squares: Black orc \u00d72, Ulwarth, Son of Ulfang (3 monsters, ~120 worst-case melee a "
+   ],
+   [
+    13.3,
+    "danger_seen",
+    "Ulwarth, Son of Ulfang (unique, lvl 26) in view: heading for the stairs"
+   ],
+   [
+    13.4,
+    "goal_failed",
+    "flee (Ulwarth, Son of Ulfang): no stairs known"
+   ],
+   [
+    15.8,
+    "emergency",
+    "low HP: read Phase Door (Ulwarth, Son of Ulfang adjacent)"
+   ],
+   [
+    16.5,
+    "emergency_loop",
+    "third emergency in 90 s and no stairs known nearby: consider Word of Recall or leaving this area"
+   ],
+   [
+    16.5,
+    "emergency",
+    "low HP: quaffed a Potion of Cure Serious Wounds {25% off} (losing ~7 HP/s)"
+   ]
+  ],
+  "acts": [
+   [
+    3.3,
+    "custom r item=8",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    7.5,
+    "custom r item=7",
+    "HP 150 within 3 turns of the worst (154): phase door"
+   ],
+   [
+    15.8,
+    "custom r item=7",
+    "low HP: phase door"
+   ],
+   [
+    16.5,
+    "custom q item=5",
+    "low HP: quaff 4 Potions of Cure Serious Wounds {25% off}"
+   ],
+   [
+    19.2,
+    "rest",
+    "rest"
+   ],
+   [
+    23.2,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 5,
+  "phase_reads": 2,
+  "wor_reads": 1,
+  "cures": 1
+ },
+ "end": "2026-10-23 18:28:24",
+ "pass": true
+}

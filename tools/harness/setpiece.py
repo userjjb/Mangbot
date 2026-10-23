@@ -175,8 +175,9 @@ class Run:
         finally:
             ctl("mission", "end", f"sp-{self.tag}", role="architect")
             if not self.keep:
+                env = {k: v for k, v in os.environ.items() if k != "PILOT_ARGS"}
                 out = subprocess.run([os.path.join(HERE, "charsave.sh"), "restore", "Dive04", self.tag],
-                                     capture_output=True, text=True).stdout.strip().splitlines()
+                                     capture_output=True, text=True, env=env).stdout.strip().splitlines()
                 self.say(f"[{self.tag}] " + (out[0] if out else "restore: no output"))
 
     # --- scoring ----------------------------------------------------------------------
@@ -378,6 +379,17 @@ def a2(run, who="Ulwarth, Son of Ulfang"):
               f"seen at {seen}, recall read at {wor}")
     if st["hp_min"]:
         run.check("lowest HP >= 40%", st["hp_min"][0] >= 0.4 * st["hp_min"][1], f"lowest {st['hp_min']}")
+
+
+def a2i(run):
+    """A2I: as A2 with Ibun, Son of Mim (a unique can exist once: a second Ulwarth summon fails silently while
+    the first lives on an old level)."""
+    a2(run, who="Ibun, Son of Mim")
+
+
+def a2k(run):
+    """A2K: as A2 with Khim, Son of Mim."""
+    a2(run, who="Khim, Son of Mim")
 
 
 def a2l(run):
@@ -627,7 +639,7 @@ def l2(run):
     run.check("about 10x sooner than standing (< 5 s)", secs is not None and secs < 5, f"{secs and round(secs, 1)} s")
 
 
-SETPIECES = {"B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
+SETPIECES = {"A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
              "C3": c3}
 
 
@@ -651,13 +663,16 @@ def main():
     ap.add_argument("sid", help="A7 | A8 | A8o (A8 overridden) | A9 | list")
     ap.add_argument("--depth", type=int, default=0, help="default: the least recently used of 300-500 ft")
     ap.add_argument("--keep", action="store_true")
+    ap.add_argument("--hpwarn", type=int, default=0, help="run the Pilot with --hpwarn N (the time bubble A/B)")
     a = ap.parse_args()
     if a.sid == "list":
         for k, f in SETPIECES.items():
             print(k, "-", (f.__doc__ or "").strip().splitlines()[0])
         return
     depth = a.depth or fresh_depth()
-    run = Run(a.sid, depth, a.keep)
+    if a.hpwarn:
+        os.environ["PILOT_ARGS"] = f"--hpwarn {a.hpwarn}"    # (charsave's save starts the Pilot with it)
+    run = Run(a.sid + (f"-hw{a.hpwarn}" if a.hpwarn else ""), depth, a.keep)
     try:
         run.setup()
         SETPIECES[a.sid](run)
