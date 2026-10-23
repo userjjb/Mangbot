@@ -145,3 +145,5 @@ After the memo:
   only the "already known" claims for its slice; deliberate small overlaps act as cross-checks.
 - **Memos for the Architect:** lead with what to change, quick wins as a numbered list, `[code ✓]`
   marks, a contradictions table, coverage/gaps. Send a short note to `to_architect/` with each memo.
+- **Script first, then a code-audit Clerk and an own-logs Clerk** (rulebook r3, 2026-10-24). The audit found what the script's author missed
+  (shops price unidentified items on base cost). For any "value" table ask *worth to whom, and when*: true value vs what can be realised.

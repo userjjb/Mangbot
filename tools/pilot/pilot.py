@@ -4668,7 +4668,7 @@ class Pilot:
                  "Cure Serious Wounds": (75, 4, 65), "Cure Light Wounds": (75, 4, 25), "Phase Door": (70, 5, 25),
                  "Identify": (70, 5, 80), "Flask of oil": (77, 1, 5), "Ration of Food": (80, 1, 5),
                  "Restore Strength": (75, 5, 490), "Restore Dexterity": (75, 5, 490),
-                 "Restore Constitution": (75, 5, 490)}
+                 "Restore Constitution": (75, 5, 490), "Restore Charisma": (75, 5, 490)}
     # stock levels per stage (the Advisor's shops memo §3 and the Borg minimums):
     # A to 500 ft, B to 1000 ft, C deeper. Food counts rations and Satisfy Hunger
     KITS = {"A": {"Word of Recall": 2, "Cure Light Wounds": 5, "Phase Door": 5, "Flask of oil": 3,
@@ -4678,8 +4678,10 @@ class Pilot:
             "C": {"Word of Recall": 2, "Cure Critical Wounds": 6, "Cure Serious Wounds": 4, "Phase Door": 12,
                   "Flask of oil": 5, "Ration of Food": 4},
             "none": {}}
-    # devices the Pilot uses (stairs, identify, escapes): never sold by the kit
-    USEFUL_DEVICES = ("Door/Stair Location", "Teleportation", "Perception")
+    # devices never sold by the kit (the Advisor's rulebook-r3 memo: escapes, travel, detection and
+    # mapping, Perception, Stone to Mud, healing)
+    USEFUL_DEVICES = ("Teleport", "Recall", "Deep Descent", "Detect", "Location", "Mapping", "Enlightenment",
+                      "Perception", "Stone to Mud", "Cure", "Curing", "Healing")
     STAT_FULL = {"STR": "Strength", "DEX": "Dexterity", "CON": "Constitution"}
 
     def note_store(self):
@@ -4747,7 +4749,7 @@ class Pilot:
         """How many of this pack item the town kit sells (0: keep it)."""
         name = it["name"]
         if it.get("equip") or it["tval"] in (TV_FOOD, TV_FLASK, TV_LITE) or any(k in name for k in self.KIT_KINDS) \
-                or any(d in name for d in self.USEFUL_DEVICES) or self.is_kept(name) or \
+                or (it["tval"] in (55, 65, 66) and any(d in name for d in self.USEFUL_DEVICES)) or self.is_kept(name) or \
                 re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower() in self.ability_sources:
             return 0
         if not self.town_buyers(it) or re.search(r"\{(cursed|worthless|broken|terrible)", name):
@@ -4833,13 +4835,19 @@ class Pilot:
             add(4, kind, n)
         for name, n, cap, store in buylist:
             plan.append([5, name, store, n, cap])
+        # 6. Restore Charisma last: Dive04's natural CHR is 4, so it gives 3 -> 4, ~125 gold a
+        # mission in prices (the Advisor's rulebook-r3 memo: pays back in ~4 missions)
+        cur, top = (self.seen_drained or {}).get("CHR", (0, 0))
+        if cur < top and not any(r[1] == "Restore Charisma" for r in plan):
+            add(6, "Restore Charisma", 1)
         return plan
 
     def restore_potion(self, skip=()):
         """A Potion of Restore <stat> in the pack for a drained STR/DEX/CON, or None."""
+        full = dict(self.STAT_FULL, CHR="Charisma")
         for stat, (cur, top) in (self.seen_drained or {}).items():
-            if stat in self.STAT_FULL and cur < top:
-                pot = next((i for i in self.w.items(tval=TV_POTION) if f"Restore {self.STAT_FULL[stat]}" in i["name"]
+            if stat in full and cur < top:
+                pot = next((i for i in self.w.items(tval=TV_POTION) if f"Restore {full[stat]}" in i["name"]
                             and i["name"] not in skip), None)
                 if pot:
                     return pot

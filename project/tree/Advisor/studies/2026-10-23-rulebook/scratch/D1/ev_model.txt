@@ -1,0 +1,15 @@
+False 5 normal 164 151
+False 5 good 1304 1156
+False 5 great 6486 5197
+False 10 normal 241 221
+False 10 good 1612 1316
+False 10 great 7008 5023
+False 20 normal 527 422
+False 20 good 1996 1592
+False 20 great 6050 4257
+False 30 normal 916 799
+False 30 good 2645 2174
+False 30 great 5791 4376
+False 40 normal 1195 1053
+False 40 good 3526 2891
+False 40 great 6486 5106

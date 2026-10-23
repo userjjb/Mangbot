@@ -12,12 +12,19 @@ docstring and in the study dispatches `Advisor/studies/2026-10-23-rulebook/dispa
 | `jewellery.csv` | rings and amulets by kind and level: P(cursed copy), E/percentiles of value incl. plusses and pval (they are never pseudo-ID'd); feeds kinds_by_level | build_jewellery.py |
 | `feelings.csv` | per weapon/armour kind and level: E[value], percentiles, plusses, P(irreplaceable ego), top egos for "good" and "excellent"; artifact value for "special" | build_feelings.py (Monte Carlo of apply_magic) |
 | `monsters.csv` | all 616 races: hp, speed_x, melee by AC (round and per player turn with recoil), spell %, mean/max cast, breath at full HP, tags, solo danger index, the hand ratings | build_monsters.py |
+| `abilities.csv`, `ego_flags.csv` | messages that prove/disprove each ability or resist (has/lacks, trigger, ambiguity, code line); all 118 egos with flags | A1 dispatch |
 | `constants.csv` | timing (ticks, energy, time bubbles, recall, regen, burn), odds (traps, search, disarm, chests, devices, recharge, enchant), ranges | K3 dispatch (code-checked) |
 | `shop_owners.csv`, `shop_stock.csv` | every owner's buy%/pay% for a Half-Orc at CHR 3..18/50; the stock tables | build_shops.py (uses the Architect's shopmath.py) |
 | `char_*.csv` | exp table, stat adjustment tables, blows table, energy and level speeds, expected HP, skills by clvl | progression study (G1) |
 | `structures.csv`, `vaults.csv` | room geometry (inner rooms, nests, pits), vault list | mission 15 study (V1, V2) |
 | `store_gear.csv` | weapons/armour sold in town with dice, weight, AC, prices | progression study (G3) |
+| `drop_object_by_level.csv` | one generated object at object level 0-127, mode normal/good/great: E[value] (artifacts apart), capped at 25k/item, P(worthless), P(ego), P(irreplaceable ego), P(artifact) and its expected cost, E[gold pile], value share by class | build_drops.py (exact kind odds x Monte Carlo per kind; objgen.py) |
+| `drops.csv`, `drops_by_depth.csv` | per monster: drop flags, expected drops, gold, items, item value, P(any ego), P(any artifact) at its native depth / at dungeon levels 1,5..100 (`rule.py drop NAME [DEPTH]`) | build_drops.py |
 | `danger_table_v1.csv` | the 2026-09-27 hand-rated danger table (kept for its ratings; merged into monsters.csv) | |
+
+Shared model: `objgen.py` (kinds, egos, artifacts, get_obj_num odds, power roll, one weapon/armour item's value, artifact odds) is
+used by build_feelings.py and build_drops.py. Release 3 (2026-10-24) fixed values to count the kind's own plusses and extra dice
+(as object_value_real does) and added bows to feelings.csv.
 
 Conventions: object level for floor items = dungeon level (ft/50); monster drops = (dungeon level + monster level)/2.
 Store index = code index (0 General .. 6 Black market); the Pilot's `shop N` is index+1. Values are object_value_real

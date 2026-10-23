@@ -1,4 +1,4 @@
-# Advisor status and handoff (updated 2026-10-24, end of session 3)
+# Advisor status and handoff (updated 2026-10-24, session 4; the clock said 2026-10-23 — file dates follow the 10-24 series)
 
 Read this first in a new Advisor chat, then `METHOD.md` before starting any study. Check
 `../memos/to_advisor/` for unread memos (`.claude/hooks/inbox.sh unread ../memos/to_advisor`).
@@ -17,14 +17,14 @@ Architect builds everything else.
 |---|---|---|---|
 | 1 | instruments | scorecard definitions + baseline m17–23 | **done** (`../memos/2026-10-23-scorecard.md`, `data/scorecard/`); the Architect built the production one (`github/tools/observe/scorecard.py --check`, `runs/missions.json`) and the new log records |
 | 2 | who decides what | (inputs only) | Architect: 2.1 item policy done (itemvalue.py from our tables, value refusals with a Navigator **debt**, Free-Action inference, pickup by value); 2.2 town kit next; 2.3/2.4 danger rules (will use `monsters.csv`) |
-| 3 | the rulebook | **ours** | **release 1 + 2 done and synced** (`../memos/2026-10-24-rulebook.md`, `-rulebook-r2.md`; `data/rulebook/`, query `rule.py`; r2 synced 10-24, C8 rule fixed by the Architect); the Architect syncs it into the repo with `github/tools/rulebook/sync.sh` — **tell them whenever we rebuild** |
+| 3 | the rulebook | **ours** | **release 1 + 2 done and synced; release 3 (drops + feelings value fix) sent 10-24, awaiting re-sync** (`../memos/2026-10-24-rulebook-r3.md`); (`../memos/2026-10-24-rulebook.md`, `-rulebook-r2.md`; `data/rulebook/`, query `rule.py`; r2 synced 10-24, C8 rule fixed by the Architect); the Architect syncs it into the repo with `github/tools/rulebook/sync.sh` — **tell them whenever we rebuild** |
 | 4 | harness / set-pieces | **ours: the list** | **list done** (`../memos/2026-10-24-setpieces.md`: 41 cases, 12 P1); waiting on the Architect's two enablers (a key-sending verb so Gandalf the DM can be scripted; logging map/inventory replies or `--pktlog`) |
 | 5 | missions again with scorecards | scorecard per mission; Opus vs Sonnet | after steps 2–4 |
 
 ## Pending Advisor work (in order)
 
-1. **Rulebook: drop expectations** (DROP_GOOD/GREAT, ONLY_ITEM/GOLD, DROP_x counts, object level (depth+rlevel)/2 → expected value of a
-   kill's drop per monster). The Architect's 4th request. Formulas: K1 dispatch §12, `xtra2.c:2000-2090`. Add to `build_monsters.py` or a new script.
+1. ~~Rulebook: drop expectations~~ **done** (r3: `drops.csv`, `drops_by_depth.csv`, `drop_object_by_level.csv`, `objgen.py`). Possible follow-ups:
+   subtract already-found artifacts if the server log is kept; empirical drop counts need monster coordinates in the logs.
 2. **Live checks of code-only rulebook claims** once Gandalf is scriptable (or from a mission log): boulders do 0 damage; the low-HP time
    bubble is a constant 1/5; WoR counts down ~10× faster while resting out of sight; "You are unaffected!" pairing.
 3. **Set-pieces:** when the enablers land, write a staging recipe + automatic pass/fail check for each P1 case (A1, A2, A3, A6, B1, C1, C3,
@@ -36,9 +36,8 @@ Architect builds everything else.
 
 ## Waiting on the user
 
-- **The low-HP time bubble** (`../memos/2026-10-24-rulebook.md` §3): below `hitpoint_warn`×10% HP the server runs time at a constant 1/5
-  for the player and nearby monsters (5× more real time to react). The Pilot launches with `--hpwarn 0` (off) because its timers are
-  wall-clock. Turning it on needs turn-based Pilot timers. The Architect passed the decision to the user; no answer yet.
+- Nothing. (The low-HP time bubble: the user decided "after step 2" — then turn-based Pilot timers and an A/B of `--hpwarn 5` on set-pieces
+  A1/A2; `to_advisor/2026-10-23-step22-town-kit.md`.)
 
 ## The rulebook (`data/rulebook/`, README there)
 
@@ -65,6 +64,7 @@ spells, breaths, tags, solo index), `abilities.csv` (messages proving abilities)
 | 10-17 | Navigator response time, Opus baseline m16–21 | (answer to the user) | `data/navigator/response.py`, `baseline_opus_m16-m21.txt` |
 | 10-19 | starting over (sent 10-22) | `2026-10-19-starting-over.md` | |
 | 10-23 | scorecard | `2026-10-23-scorecard.md` | `data/scorecard/` |
+| 10-24 | rulebook r3: drops, value fix, town-kit answers | `2026-10-24-rulebook-r3.md` | `data/rulebook/` (D1, D2) |
 | 10-24 | set-pieces; rulebook r1 + r2 | `2026-10-24-setpieces.md`, `2026-10-24-rulebook.md`, `2026-10-24-rulebook-r2.md` | `data/rulebook/` |
 
 The user struck one lead (2026-10-07): the live fetch of Bug Reports / Technical Support. Don't propose it again.
@@ -72,9 +72,10 @@ The user struck one lead (2026-10-07): the live fetch of Bug Reports / Technical
 ## Facts a new chat tends to re-derive (verified; cite the memos)
 
 - Server = upstream develop c97e873 (plays as 1.5.3). `monster.txt` unchanged since 2008.
-- **Dive04** (10-22): Half-Orc Warrior clvl 22, 254 HP, **CHR 3** (shop % from `shop_owners.csv`), **no Free Action** (it had it m18–m23 from
+- **Dive04** (10-22): Half-Orc Warrior clvl 22, 254 HP (265 after Restore CON 10-23), **CHR 3 (natural 4, Rot-jelly drain)** (shop % from `shop_owners.csv`), **no Free Action** (it had it m18–m23 from
   unidentified Boots of Free Action, force-sold for 3 gold in m23). Navigator: Opus to m21, Sonnet m22–23.
-- Selling identifies (price set before the item is known); wearing never identifies; flavours are per server savefile.
+- Selling identifies (price set before the item is known): an UNIDENTIFIED item sells at its kind's base cost (`store.c:192`, object_value_base;
+  unaware flavours 20-90; felt-cursed 0) — 55-72% of a normal drop's true value, 17-29% of a DROP_GOOD one; wearing never identifies; flavours are per server savefile.
 - Blows = blows_table[adj_str_blow·5/max(30,wt)][adj_dex_blow] (matched 3,957 audit records). MONSTER_RECOIL is on: a monster melees once
   per two of its turns.
 - Running = ×5 game time with no awake monster in LOS; resting ×10 (so WoR charges ~10× faster resting out of sight). Low-HP bubble:

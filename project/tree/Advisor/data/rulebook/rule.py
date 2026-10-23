@@ -55,7 +55,7 @@ elif c == "fight":
               f"it deals ~{taken:.0f} meanwhile at AC {acol} (worst round {r['melee_max']}, breath {r['breath_max']})")
 elif c == "drop":
     want = int(args[1]) if len(args) > 1 else None
-    keys = ["depth", "object_level", "mode", "drop_flags", "e_drops", "e_gold", "e_items", "e_item_value", "e_item_value_cap",
+    keys = ["depth", "object_level", "mode", "drop_flags", "e_drops", "e_gold", "e_items", "e_item_value", "e_item_value_cap", "e_item_value_unid",
             "p_excellent_any", "p_artifact_any", "e_total_cap"]
     for r in R("drops.csv"):
         if args[0].lower() not in r["name"].lower(): continue

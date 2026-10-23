@@ -39,3 +39,10 @@ Bugs found in r1/r2 while doing it: feelings.csv left out the kind's own plusses
 dragon armour +800-1000, Kolla, Shield of Deflection; body armour with a to-hit penalty -100..-300), extra damage dice, pval
 credit for diggers; bows were missing from feelings.csv. jewellery.csv rebuilt under Python 3.12 (3.6 drew differently, <=6%).
 Pass 1 Clerks: D1 code audit of objgen/build_drops vs C; D2 the model vs Dive04's logs (gold amounts and types, unique drops).
+Result: memo `../memos/2026-10-24-rulebook-r3.md` + note `to_architect/2026-10-24-rulebook-r3.md` (also answers the 2.2 town-kit questions).
+D1: no wrong rule; m_bonus Gaussian 0-4% high; **shops price unidentified items on object_value_base** (verified store.c:192,
+object2.c:1362-1395) -> added e_value_unid / e_item_value_unid. D2: gold amounts verified (444/445 in range, means match); unique
+drops and ordinary kills untestable from logs (no inscriptions in itemlist, no monster coordinates).
+Retrospective: script-first then two Clerks (code audit + own logs) was the right split; D1's audit (164k tokens, 13 min) found the
+one thing that changes the Pilot's policy (unidentified pricing), which the script author missed. Sonnet clerks again did no
+arithmetic in the tables. Lesson: when a value table is "what it's worth", always ask "worth to whom, when": true vs realisable.

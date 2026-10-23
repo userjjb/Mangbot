@@ -181,7 +181,10 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    Gauche 79 + Staff of Treasure Location 111; bought WoR, CSW, Phase, flasks, Restore CON; identified cloak and
    boots). Fixed on the way: reading Identify without a light at night (it now lights up, 3 tries per item);
    itemvalue missed the feeling in `{good - Brodda, the Easterling}`. HANDBOOK section "Town: plan town".
-   **Next: 2.3 trip plan** (`plan trip LO-HI until COND then recall`), 2.4 order
+   After the Advisor's rulebook-r3 memo: never-sell devices widened (escape, travel, detection, mapping, Perception,
+   Stone to Mud, healing), Restore Charisma as tier 6 (3 -> 4 only, ~125 gold a mission). **Rulebook release 3
+   synced** (drops.csv, drops_by_depth.csv: drop expectations per monster; feelings.csv fixed); drops not used yet
+   (candidates: hunt vetting in 2.4, loot value). **Next: 2.3 trip plan** (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
    toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23. Then the time bubble (timers to game turns; decided below).
 3. **Rulebook:** the Advisor's **release 2** is in `Advisor/data/rulebook/`, synced into `github/tools/rulebook/`
@@ -218,7 +221,7 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
 - The Advisor asked what rulebook tables come next; I suggested an ability-inference table, jewellery plusses, kill
   time per monster, then drop expectations.
 
-**Advisor exchange (latest):** to_architect 10-23 scorecard, 10-24 setpieces, 10-24 rulebook, 10-24 rulebook-r2 (all
+**Advisor exchange (latest):** to_architect 10-23 scorecard, 10-24 setpieces, 10-24 rulebook, 10-24 rulebook-r2, 10-24 rulebook-r3 (all
 read); to_advisor 10-22 restructure-plan, 10-23 scorecard-built, 10-23 step2-items, 10-24 rulebook-in, 10-24 r2-in, 10-23 step22-town-kit.
 
 ### ARCHITECT HANDOFF 2026-10-08 (history; read the 2026-10-24 section first)

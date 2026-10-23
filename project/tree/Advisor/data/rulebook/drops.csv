@@ -1,617 +1,617 @@
-idx,name,level,depth,unique,drop_flags,object_level,mode,e_drops,e_gold,e_items,e_item_value,e_item_value_cap,p_excellent_any,p_artifact_any,e_total_cap
-1,Filthy street urchin,0,0,0,,0,normal,0.0,0,0.0,0,0,0.0,0.0,0
-2,Scrawny cat,0,0,0,,0,normal,0.0,0,0.0,0,0,0.0,0.0,0
-3,Scruffy little dog,0,0,0,,0,normal,0.0,0,0.0,0,0,0.0,0.0,0
-4,Farmer Maggot,0,0,1,DROP_90|DROP_GOOD|ONLY_ITEM,0,good,0.9,0,0.9,1005,907,0.0449,0.0,907
-5,Blubbering idiot,0,0,0,,0,normal,0.0,0,0.0,0,0,0.0,0.0,0
-6,Boil-covered wretch,0,0,0,,0,normal,0.0,0,0.0,0,0,0.0,0.0,0
-7,Village idiot,0,0,0,,0,normal,0.0,0,0.0,0,0,0.0,0.0,0
-8,Pitiful-looking beggar,0,0,0,,0,normal,0.0,0,0.0,0,0,0.0,0.0,0
-9,Mangy-looking leper,0,0,0,,0,normal,0.0,0,0.0,0,0,0.0,0.0,0
-10,Squint-eyed rogue,0,0,0,DROP_60,0,normal,0.6,8,0.3,6,6,0.0003,0.0,14
-11,"Singing, happy drunk",0,0,0,DROP_60|ONLY_GOLD,0,normal,0.6,16,0.0,0,0,0.0,0.0,16
-12,Aimless-looking merchant,0,0,0,DROP_60|ONLY_GOLD,0,normal,0.6,16,0.0,0,0,0.0,0.0,16
-13,Mean-looking mercenary,0,0,0,DROP_90,0,normal,0.9,12,0.45,10,10,0.0005,0.0,21
-14,Battle-scarred veteran,0,0,0,DROP_90,0,normal,0.9,12,0.45,10,10,0.0005,0.0,21
-15,Grey mold,1,1,0,,1,normal,0.0,0,0.0,0,0,0.0,0.0,0
-16,Grey mushroom patch,1,1,0,,1,normal,0.0,0,0.0,0,0,0.0,0.0,0
-17,Giant yellow centipede,1,1,0,,1,normal,0.0,0,0.0,0,0,0.0,0.0,0
-18,Giant white centipede,1,1,0,,1,normal,0.0,0,0.0,0,0,0.0,0.0,0
-19,White icky thing,1,1,0,,1,normal,0.0,0,0.0,0,0,0.0,0.0,0
-20,Clear icky thing,1,1,0,,1,normal,0.0,0,0.0,0,0,0.0,0.0,0
-21,Giant white mouse,1,1,0,,1,normal,0.0,0,0.0,0,0,0.0,0.0,0
-22,Large brown snake,1,1,0,,1,normal,0.0,0,0.0,0,0,0.0,0.0,0
-23,Large white snake,1,1,0,,1,normal,0.0,0,0.0,0,0,0.0,0.0,0
-24,Small kobold,1,1,0,DROP_60,1,normal,0.6,8,0.3,11,9,0.0003,1e-05,18
-25,Kobold,2,2,0,DROP_60,2,normal,0.6,9,0.3,13,11,0.0004,1e-05,20
-26,White worm mass,1,1,0,,1,normal,0.0,0,0.0,0,0,0.0,0.0,0
-27,Floating eye,1,1,0,,1,normal,0.0,0,0.0,0,0,0.0,0.0,0
-28,Rock lizard,1,1,0,,1,normal,0.0,0,0.0,0,0,0.0,0.0,0
-29,Jackal,1,1,0,,1,normal,0.0,0,0.0,0,0,0.0,0.0,0
-30,Soldier ant,1,1,0,,1,normal,0.0,0,0.0,0,0,0.0,0.0,0
-31,Fruit bat,1,1,0,,1,normal,0.0,0,0.0,0,0,0.0,0.0,0
-32,Shrieker mushroom patch,2,2,0,,2,normal,0.0,0,0.0,0,0,0.0,0.0,0
-33,Blubbering icky thing,2,2,0,DROP_90,2,normal,0.9,13,0.45,20,17,0.0006,2e-05,30
-34,Metallic green centipede,2,2,0,,2,normal,0.0,0,0.0,0,0,0.0,0.0,0
-35,Novice warrior,2,2,0,DROP_60,2,normal,0.6,9,0.3,13,11,0.0004,1e-05,20
-36,Novice rogue,2,2,0,DROP_60,2,normal,0.6,9,0.3,13,11,0.0004,1e-05,20
-37,Novice priest,2,2,0,DROP_60,2,normal,0.6,9,0.3,13,11,0.0004,1e-05,20
-38,Novice mage,2,2,0,DROP_60,2,normal,0.6,9,0.3,13,11,0.0004,1e-05,20
-39,Yellow mushroom patch,2,2,0,,2,normal,0.0,0,0.0,0,0,0.0,0.0,0
-40,White jelly,2,2,0,,2,normal,0.0,0,0.0,0,0,0.0,0.0,0
-41,Giant green frog,2,2,0,,2,normal,0.0,0,0.0,0,0,0.0,0.0,0
-42,Giant black ant,2,2,0,,2,normal,0.0,0,0.0,0,0,0.0,0.0,0
-43,Salamander,2,2,0,,2,normal,0.0,0,0.0,0,0,0.0,0.0,0
-44,White harpy,2,2,0,,2,normal,0.0,0,0.0,0,0,0.0,0.0,0
-45,Blue yeek,2,2,0,DROP_60,2,normal,0.6,9,0.3,13,11,0.0004,1e-05,20
-46,"Grip, Farmer Maggot's dog",2,2,1,,2,normal,0.0,0,0.0,0,0,0.0,0.0,0
-47,"Fang, Farmer Maggot's dog",2,2,1,,2,normal,0.0,0,0.0,0,0,0.0,0.0,0
-48,Green worm mass,2,2,0,,2,normal,0.0,0,0.0,0,0,0.0,0.0,0
-49,Large yellow snake,2,2,0,,2,normal,0.0,0,0.0,0,0,0.0,0.0,0
-50,Cave spider,2,2,0,,2,normal,0.0,0,0.0,0,0,0.0,0.0,0
-51,Wild cat,2,2,0,,2,normal,0.0,0,0.0,0,0,0.0,0.0,0
-52,Smeagol,3,3,1,DROP_90|DROP_GOOD|DROP_GREAT,3,great,0.9,14,0.45,3038,2308,0.4131,0.03617,2321
-53,Green ooze,3,3,0,DROP_90,3,normal,0.9,14,0.45,42,38,0.0011,2e-05,51
-54,Poltergeist,3,3,0,DROP_60|DROP_90,3,normal,1.5,23,0.75,70,63,0.0019,4e-05,85
-55,Metallic blue centipede,3,3,0,,3,normal,0.0,0,0.0,0,0,0.0,0.0,0
-56,Giant white louse,3,3,0,,3,normal,0.0,0,0.0,0,0,0.0,0.0,0
-57,Black naga,3,3,0,DROP_60,3,normal,0.6,9,0.3,28,25,0.0007,2e-05,34
-58,Spotted mushroom patch,3,3,0,,3,normal,0.0,0,0.0,0,0,0.0,0.0,0
-59,Silver jelly,3,3,0,,3,normal,0.0,0,0.0,0,0,0.0,0.0,0
-60,Yellow jelly,3,3,0,,3,normal,0.0,0,0.0,0,0,0.0,0.0,0
-61,Scruffy looking hobbit,3,3,0,DROP_60,3,normal,0.6,9,0.3,28,25,0.0007,2e-05,34
-62,Giant white ant,3,3,0,,3,normal,0.0,0,0.0,0,0,0.0,0.0,0
-63,Yellow mold,3,3,0,,3,normal,0.0,0,0.0,0,0,0.0,0.0,0
-64,Metallic red centipede,3,3,0,,3,normal,0.0,0,0.0,0,0,0.0,0.0,0
-65,Yellow worm mass,3,3,0,,3,normal,0.0,0,0.0,0,0,0.0,0.0,0
-66,Clear worm mass,3,3,0,,3,normal,0.0,0,0.0,0,0,0.0,0.0,0
-67,Radiation eye,3,3,0,,3,normal,0.0,0,0.0,0,0,0.0,0.0,0
-68,Cave lizard,4,4,0,,4,normal,0.0,0,0.0,0,0,0.0,0.0,0
-69,Novice ranger,4,4,0,DROP_60,4,normal,0.6,10,0.3,31,27,0.0009,3e-05,37
-70,Novice paladin,4,4,0,DROP_60,4,normal,0.6,10,0.3,31,27,0.0009,3e-05,37
-71,Blue jelly,4,4,0,,4,normal,0.0,0,0.0,0,0,0.0,0.0,0
-72,Creeping copper coins,4,4,0,DROP_1D2|ONLY_GOLD,4,normal,1.5,50,0.0,0,0,0.0,0.0,50
-73,Giant white rat,4,4,0,,4,normal,0.0,0,0.0,0,0,0.0,0.0,0
-74,Blue worm mass,4,4,0,,4,normal,0.0,0,0.0,0,0,0.0,0.0,0
-75,Large grey snake,4,4,0,,4,normal,0.0,0,0.0,0,0,0.0,0.0,0
-76,Bullroarer the Hobbit,5,5,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,5,good,3.0,0,3.0,3915,3454,0.1837,0.06648,3454
-77,Novice mage,6,6,0,DROP_60,6,normal,0.6,10,0.3,52,47,0.001,0.00011,58
-78,Green naga,5,5,0,DROP_60,5,normal,0.6,10,0.3,49,45,0.0009,0.0001,55
-79,Blue ooze,5,5,0,DROP_60,5,normal,0.6,10,0.3,49,45,0.0009,0.0001,55
-80,Green glutton ghost,5,5,0,DROP_60|DROP_90,5,normal,1.5,25,0.75,123,113,0.0021,0.00025,138
-81,Green jelly,5,5,0,,5,normal,0.0,0,0.0,0,0,0.0,0.0,0
-82,Large kobold,5,5,0,DROP_90,5,normal,0.9,15,0.45,74,68,0.0013,0.00015,83
-83,Skeleton kobold,5,5,0,,5,normal,0.0,0,0.0,0,0,0.0,0.0,0
-84,Grey icky thing,5,5,0,,5,normal,0.0,0,0.0,0,0,0.0,0.0,0
-85,Disenchanter eye,5,5,0,,5,normal,0.0,0,0.0,0,0,0.0,0.0,0
-86,Red worm mass,5,5,0,,5,normal,0.0,0,0.0,0,0,0.0,0.0,0
-87,Copperhead snake,5,5,0,,5,normal,0.0,0,0.0,0,0,0.0,0.0,0
-88,Purple mushroom patch,6,6,0,,6,normal,0.0,0,0.0,0,0,0.0,0.0,0
-89,Novice priest,6,6,0,DROP_60,6,normal,0.6,10,0.3,52,47,0.001,0.00011,58
-90,Novice warrior,6,6,0,DROP_60,6,normal,0.6,10,0.3,52,47,0.001,0.00011,58
-91,Novice rogue,6,6,0,DROP_60,6,normal,0.6,10,0.3,52,47,0.001,0.00011,58
-92,Brown mold,6,6,0,,6,normal,0.0,0,0.0,0,0,0.0,0.0,0
-93,Giant brown bat,6,6,0,,6,normal,0.0,0,0.0,0,0,0.0,0.0,0
-94,Kobold archer,4,4,0,DROP_60,4,normal,0.6,10,0.3,31,27,0.0009,3e-05,37
-95,Creeping silver coins,6,6,0,DROP_1D2|DROP_60|ONLY_GOLD,6,normal,2.1,102,0.0,0,0,0.0,0.0,102
-96,Snaga,6,6,0,DROP_60,6,normal,0.6,10,0.3,52,47,0.001,0.00011,58
-97,Rattlesnake,6,6,0,,6,normal,0.0,0,0.0,0,0,0.0,0.0,0
-98,Cave orc,7,7,0,DROP_60,7,normal,0.6,11,0.3,54,49,0.0011,0.00012,60
-99,Wood spider,7,7,0,,7,normal,0.0,0,0.0,0,0,0.0,0.0,0
-100,Manes,7,7,0,,7,normal,0.0,0,0.0,0,0,0.0,0.0,0
-101,Bloodshot eye,7,7,0,,7,normal,0.0,0,0.0,0,0,0.0,0.0,0
-102,Red naga,7,7,0,DROP_60,7,normal,0.6,11,0.3,54,49,0.0011,0.00012,60
-103,Red jelly,7,7,0,,7,normal,0.0,0,0.0,0,0,0.0,0.0,0
-104,Giant red frog,7,7,0,,7,normal,0.0,0,0.0,0,0,0.0,0.0,0
-105,Green icky thing,7,7,0,,7,normal,0.0,0,0.0,0,0,0.0,0.0,0
-106,Zombified kobold,7,7,0,,7,normal,0.0,0,0.0,0,0,0.0,0.0,0
-107,Lost soul,7,7,0,DROP_60|DROP_90,7,normal,1.5,27,0.75,136,122,0.0028,0.00029,149
-108,Dark elf,7,7,0,DROP_90,7,normal,0.9,16,0.45,82,73,0.0017,0.00017,90
-109,Night lizard,7,7,0,,7,normal,0.0,0,0.0,0,0,0.0,0.0,0
-110,Mughash the Kobold Lord,7,7,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,7,good,1.5,0,1.5,2080,1819,0.1095,0.03474,1819
-111,"Wormtongue, Agent of Saruman",8,8,1,DROP_1D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,8,great,1.5,0,1.5,9713,7745,0.9388,0.15635,7745
-112,"Lagduf, the Snaga",8,8,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,8,good,1.5,0,1.5,2185,1899,0.1224,0.0358,1899
-113,Brown yeek,8,8,0,DROP_60,8,normal,0.6,11,0.3,58,51,0.0013,0.00013,63
-114,Novice ranger,8,8,0,DROP_60,8,normal,0.6,11,0.3,58,51,0.0013,0.00013,63
-115,Giant salamander,8,8,0,,8,normal,0.0,0,0.0,0,0,0.0,0.0,0
-116,Green mold,8,8,0,,8,normal,0.0,0,0.0,0,0,0.0,0.0,0
-117,Skeleton orc,8,8,0,,8,normal,0.0,0,0.0,0,0,0.0,0.0,0
-118,Novice paladin,8,8,0,DROP_60,8,normal,0.6,11,0.3,58,51,0.0013,0.00013,63
-119,Lemure,8,8,0,,8,normal,0.0,0,0.0,0,0,0.0,0.0,0
-120,Hill orc,8,8,0,DROP_60,8,normal,0.6,11,0.3,58,51,0.0013,0.00013,63
-121,Bandit,8,8,0,DROP_1D2,8,normal,1.5,28,0.75,144,128,0.0033,0.00032,156
-122,Yeti,9,9,0,,9,normal,0.0,0,0.0,0,0,0.0,0.0,0
-123,Bloodshot icky thing,9,9,0,,9,normal,0.0,0,0.0,0,0,0.0,0.0,0
-124,Giant grey rat,9,9,0,,9,normal,0.0,0,0.0,0,0,0.0,0.0,0
-125,Black harpy,9,9,0,,9,normal,0.0,0,0.0,0,0,0.0,0.0,0
-126,Orc shaman,9,9,0,DROP_90,9,normal,0.9,18,0.45,90,79,0.0021,0.00021,97
-127,Baby blue dragon,9,9,0,DROP_1D2|DROP_60|ONLY_GOLD,9,normal,2.1,82,0.0,0,0,0.0,0.0,82
-128,Baby white dragon,9,9,0,DROP_1D2|DROP_60|ONLY_GOLD,9,normal,2.1,82,0.0,0,0,0.0,0.0,82
-129,Baby green dragon,9,9,0,DROP_1D2|DROP_60|ONLY_GOLD,9,normal,2.1,82,0.0,0,0,0.0,0.0,82
-130,Baby black dragon,9,9,0,DROP_1D2|DROP_60|ONLY_GOLD,9,normal,2.1,82,0.0,0,0,0.0,0.0,82
-131,Baby red dragon,9,9,0,DROP_1D2|DROP_60|ONLY_GOLD,9,normal,2.1,82,0.0,0,0,0.0,0.0,82
-132,Giant red ant,9,9,0,,9,normal,0.0,0,0.0,0,0,0.0,0.0,0
-133,"Brodda, the Easterling",9,9,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,9,good,1.5,0,1.5,2192,1907,0.1213,0.03695,1907
-134,King cobra,9,9,0,,9,normal,0.0,0,0.0,0,0,0.0,0.0,0
-135,Giant spider,10,10,0,,10,normal,0.0,0,0.0,0,0,0.0,0.0,0
-136,Dark elven mage,10,10,0,DROP_1D2|ONLY_ITEM,10,normal,1.5,0,1.5,361,331,0.0077,0.00111,331
-137,"Orfax, Son of Boldor",10,10,1,DROP_90|DROP_GOOD|ONLY_ITEM,10,good,0.9,0,0.9,1419,1181,0.0811,0.02486,1181
-138,Dark elven warrior,10,10,0,DROP_1D2,10,normal,1.5,31,0.75,180,166,0.0039,0.00056,196
-139,Clear mushroom patch,10,10,0,,10,normal,0.0,0,0.0,0,0,0.0,0.0,0
-140,"Grishnakh, the Hill Orc",10,10,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,10,good,1.5,0,1.5,2366,1968,0.1312,0.04105,1968
-141,Giant white tick,10,10,0,,10,normal,0.0,0,0.0,0,0,0.0,0.0,0
-142,Hairy mold,10,10,0,,10,normal,0.0,0,0.0,0,0,0.0,0.0,0
-143,Disenchanter mold,10,10,0,,10,normal,0.0,0,0.0,0,0,0.0,0.0,0
-144,Pseudo-dragon,10,10,0,DROP_60,10,normal,0.6,12,0.3,72,66,0.0015,0.00022,79
-145,Tengu,10,10,0,,10,normal,0.0,0,0.0,0,0,0.0,0.0,0
-146,Creeping gold coins,10,10,0,DROP_1D2|DROP_90|ONLY_GOLD,10,normal,2.4,212,0.0,0,0,0.0,0.0,212
-147,Wolf,10,10,0,,10,normal,0.0,0,0.0,0,0,0.0,0.0,0
-148,Giant fruit fly,10,10,0,,10,normal,0.0,0,0.0,0,0,0.0,0.0,0
-149,Panther,10,10,0,,10,normal,0.0,0,0.0,0,0,0.0,0.0,0
-150,Brigand,10,10,0,DROP_1D2,10,normal,1.5,31,0.75,180,166,0.0039,0.00056,196
-151,Baby multi-hued dragon,11,11,0,DROP_1D2|DROP_60|ONLY_GOLD,11,normal,2.1,90,0.0,0,0,0.0,0.0,90
-152,Hippogriff,11,11,0,,11,normal,0.0,0,0.0,0,0,0.0,0.0,0
-153,Zombified orc,11,11,0,,11,normal,0.0,0,0.0,0,0,0.0,0.0,0
-154,Gnome mage,11,11,0,DROP_1D2,11,normal,1.5,32,0.75,185,170,0.0041,0.00058,202
-155,Black mamba,12,12,0,,12,normal,0.0,0,0.0,0,0,0.0,0.0,0
-156,White wolf,12,12,0,,12,normal,0.0,0,0.0,0,0,0.0,0.0,0
-157,Grape jelly,12,12,0,,12,normal,0.0,0,0.0,0,0,0.0,0.0,0
-158,Nether worm mass,12,12,0,,12,normal,0.0,0,0.0,0,0,0.0,0.0,0
-159,"Golfimbul, the Hill Orc Chief",12,12,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,12,good,3.0,0,3.0,5012,4113,0.2667,0.08287,4113
-160,Master yeek,12,12,0,DROP_60,12,normal,0.6,14,0.3,77,70,0.0019,0.00026,84
-161,Priest,12,12,0,DROP_1D2,12,normal,1.5,34,0.75,193,176,0.0047,0.00065,210
-162,Dark elven priest,12,12,0,DROP_1D2|ONLY_ITEM,12,normal,1.5,0,1.5,387,352,0.0093,0.00129,352
-163,Air spirit,12,12,0,,12,normal,0.0,0,0.0,0,0,0.0,0.0,0
-164,Skeleton human,12,12,0,,12,normal,0.0,0,0.0,0,0,0.0,0.0,0
-165,Zombified human,12,12,0,,12,normal,0.0,0,0.0,0,0,0.0,0.0,0
-166,Tiger,12,12,0,,12,normal,0.0,0,0.0,0,0,0.0,0.0,0
-167,Moaning spirit,12,12,0,DROP_60|DROP_90,12,normal,1.5,34,0.75,193,176,0.0047,0.00065,210
-168,Swordsman,12,12,0,DROP_1D2,12,normal,1.5,34,0.75,193,176,0.0047,0.00065,210
-169,Stegocentipede,12,12,0,,12,normal,0.0,0,0.0,0,0,0.0,0.0,0
-170,Spotted jelly,12,12,0,,12,normal,0.0,0,0.0,0,0,0.0,0.0,0
-171,Drider,13,13,0,,13,normal,0.0,0,0.0,0,0,0.0,0.0,0
-172,Killer brown beetle,13,13,0,,13,normal,0.0,0,0.0,0,0,0.0,0.0,0
-173,"Boldor, King of the Yeeks",13,13,1,DROP_1D2|DROP_90|DROP_GOOD|ONLY_ITEM,13,good,2.4,0,2.4,4041,3307,0.2197,0.06711,3307
-174,Ogre,13,13,0,DROP_60,13,normal,0.6,14,0.3,80,72,0.002,0.00027,86
-175,Creeping mithril coins,13,13,0,DROP_2D2|DROP_90|ONLY_GOLD,13,normal,3.9,813,0.0,0,0,0.0,0.0,813
-176,Illusionist,13,13,0,DROP_1D2,13,normal,1.5,35,0.75,199,180,0.0049,0.00068,215
-177,Druid,13,13,0,DROP_1D2,13,normal,1.5,35,0.75,199,180,0.0049,0.00068,215
-178,Black orc,13,13,0,DROP_60,13,normal,0.6,14,0.3,80,72,0.002,0.00027,86
-179,Ochre jelly,13,13,0,,13,normal,0.0,0,0.0,0,0,0.0,0.0,0
-180,Giant flea,14,14,0,,14,normal,0.0,0,0.0,0,0,0.0,0.0,0
-181,Ufthak of Cirith Ungol,14,14,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,14,good,1.5,0,1.5,2643,2144,0.1557,0.04396,2144
-182,Giant white dragon fly,14,14,0,,14,normal,0.0,0,0.0,0,0,0.0,0.0,0
-183,Blue icky thing,14,14,0,,14,normal,0.0,0,0.0,0,0,0.0,0.0,0
-184,Hill giant,25,25,0,DROP_60,25,normal,0.6,23,0.3,178,144,0.0043,0.00072,167
-185,Flesh golem,14,14,0,,14,normal,0.0,0,0.0,0,0,0.0,0.0,0
-186,Warg,14,14,0,,14,normal,0.0,0,0.0,0,0,0.0,0.0,0
-187,Giant black louse,14,14,0,,14,normal,0.0,0,0.0,0,0,0.0,0.0,0
-188,Lurker,14,14,0,,14,normal,0.0,0,0.0,0,0,0.0,0.0,0
-189,Wererat,15,15,0,DROP_60|ONLY_GOLD,15,normal,0.6,31,0.0,0,0,0.0,0.0,31
-190,Black ogre,15,15,0,DROP_60,15,normal,0.6,16,0.3,93,84,0.0026,0.00028,100
-191,Magic mushroom patch,15,15,0,,15,normal,0.0,0,0.0,0,0,0.0,0.0,0
-192,Guardian naga,15,15,0,DROP_1D2|DROP_60,15,normal,2.1,55,1.05,324,295,0.009,0.00098,350
-193,Light hound,15,15,0,,15,normal,0.0,0,0.0,0,0,0.0,0.0,0
-194,Dark hound,15,15,0,,15,normal,0.0,0,0.0,0,0,0.0,0.0,0
-195,Half-orc,15,15,0,DROP_60,15,normal,0.6,16,0.3,93,84,0.0026,0.00028,100
-196,Giant tarantula,15,15,0,,15,normal,0.0,0,0.0,0,0,0.0,0.0,0
-197,Giant clear centipede,15,15,0,,15,normal,0.0,0,0.0,0,0,0.0,0.0,0
-198,Mirkwood spider,15,15,0,,15,normal,0.0,0,0.0,0,0,0.0,0.0,0
-199,Frost giant,28,28,0,DROP_60,28,normal,0.6,26,0.3,188,153,0.0052,0.00088,179
-200,Griffon,15,15,0,,15,normal,0.0,0,0.0,0,0,0.0,0.0,0
-201,Homunculus,15,15,0,,15,normal,0.0,0,0.0,0,0,0.0,0.0,0
-202,Gnome mage,15,15,0,DROP_60,15,normal,0.6,16,0.3,93,84,0.0026,0.00028,100
-203,Clear hound,15,15,0,,15,normal,0.0,0,0.0,0,0,0.0,0.0,0
-204,Clay golem,15,15,0,,15,normal,0.0,0,0.0,0,0,0.0,0.0,0
-205,Umber hulk,16,16,0,,16,normal,0.0,0,0.0,0,0,0.0,0.0,0
-206,Orc captain,18,18,0,DROP_90,18,normal,0.9,27,0.45,155,138,0.005,0.00056,165
-207,Gelatinous cube,16,16,0,DROP_1D2|DROP_4D2,16,normal,7.5,206,3.75,1205,1089,0.0356,0.00388,1295
-208,Giant green dragon fly,16,16,0,,16,normal,0.0,0,0.0,0,0,0.0,0.0,0
-209,Fire giant,30,30,0,DROP_60,30,normal,0.6,28,0.3,273,240,0.0055,0.00092,268
-210,Hummerhorn,16,16,0,,16,normal,0.0,0,0.0,0,0,0.0,0.0,0
-211,"Ulfast, Son of Ulfang",16,16,1,DROP_90|DROP_GOOD|ONLY_ITEM,16,good,0.9,0,0.9,1643,1336,0.1051,0.02717,1336
-212,Quasit,16,16,0,DROP_1D2|ONLY_ITEM,16,normal,1.5,0,1.5,482,436,0.0144,0.00156,436
-213,Imp,17,17,0,DROP_1D2|ONLY_ITEM,17,normal,1.5,0,1.5,495,445,0.0149,0.00164,445
-214,Forest troll,17,17,0,DROP_60,17,normal,0.6,17,0.3,99,89,0.003,0.00033,106
-215,"Nar, the Dwarf",17,17,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,17,good,1.5,0,1.5,2759,2238,0.1679,0.04532,2238
-216,2-headed hydra,17,17,0,DROP_1D2|ONLY_GOLD,17,normal,1.5,86,0.0,0,0,0.0,0.0,86
-217,Water spirit,17,17,0,,17,normal,0.0,0,0.0,0,0,0.0,0.0,0
-218,Giant red scorpion,17,17,0,,17,normal,0.0,0,0.0,0,0,0.0,0.0,0
-219,Earth spirit,17,17,0,,17,normal,0.0,0,0.0,0,0,0.0,0.0,0
-220,Fire spirit,18,18,0,,18,normal,0.0,0,0.0,0,0,0.0,0.0,0
-221,Fire hound,18,18,0,,18,normal,0.0,0,0.0,0,0,0.0,0.0,0
-222,Cold hound,18,18,0,,18,normal,0.0,0,0.0,0,0,0.0,0.0,0
-223,Energy hound,18,18,0,,18,normal,0.0,0,0.0,0,0,0.0,0.0,0
-224,Potion mimic,18,18,0,,18,normal,0.0,0,0.0,0,0,0.0,0.0,0
-225,Blink dog,18,18,0,,18,normal,0.0,0,0.0,0,0,0.0,0.0,0
-226,Uruk,16,16,0,DROP_60,16,normal,0.6,16,0.3,96,87,0.0029,0.00031,104
-227,"Shagrat, the Orc Captain",19,19,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,19,good,1.5,0,1.5,2875,2310,0.1764,0.05062,2310
-228,"Gorbag, the Orc Captain",19,19,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,19,good,1.5,0,1.5,2875,2310,0.1764,0.05062,2310
-229,Shambling mound,18,18,0,DROP_90|ONLY_GOLD,18,normal,0.9,54,0.0,0,0,0.0,0.0,54
-230,Stone giant,33,33,0,DROP_60,33,normal,0.6,35,0.3,282,246,0.0059,0.00099,281
-231,Giant black dragon fly,18,18,0,,18,normal,0.0,0,0.0,0,0,0.0,0.0,0
-232,Stone golem,19,19,0,,19,normal,0.0,0,0.0,0,0,0.0,0.0,0
-233,Red mold,19,19,0,,19,normal,0.0,0,0.0,0,0,0.0,0.0,0
-234,Giant gold dragon fly,19,19,0,,19,normal,0.0,0,0.0,0,0,0.0,0.0,0
-235,"Bolg, Son of Azog",20,20,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,20,good,3.0,0,3.0,5912,4772,0.3363,0.10768,4772
-236,Phase spider,20,20,0,,20,normal,0.0,0,0.0,0,0,0.0,0.0,0
-237,3-headed hydra,20,20,0,DROP_1D2|DROP_2D2|ONLY_GOLD,20,normal,4.5,292,0.0,0,0,0.0,0.0,292
-238,Earth hound,20,20,0,,20,normal,0.0,0,0.0,0,0,0.0,0.0,0
-239,Air hound,20,20,0,,20,normal,0.0,0,0.0,0,0,0.0,0.0,0
-240,Sabre-tooth tiger,20,20,0,,20,normal,0.0,0,0.0,0,0,0.0,0.0,0
-241,Water hound,20,20,0,,20,normal,0.0,0,0.0,0,0,0.0,0.0,0
-242,Chimaera,20,20,0,,20,normal,0.0,0,0.0,0,0,0.0,0.0,0
-243,Quylthulg,20,20,0,,20,normal,0.0,0,0.0,0,0,0.0,0.0,0
-244,Sasquatch,20,20,0,,20,normal,0.0,0,0.0,0,0,0.0,0.0,0
-245,Werewolf,20,20,0,,20,normal,0.0,0,0.0,0,0,0.0,0.0,0
-246,Dark elven lord,20,20,0,DROP_2D2|ONLY_ITEM,20,normal,3.0,0,3.0,1572,1265,0.0324,0.00571,1265
-247,Cloud giant,36,36,0,DROP_90,36,normal,0.9,63,0.45,440,384,0.0096,0.00161,446
-248,"Lugdush, the Uruk",21,21,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,21,good,1.5,0,1.5,2994,2397,0.1853,0.0554,2397
-249,"Ugluk, the Uruk",22,22,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,22,good,1.5,0,1.5,3124,2471,0.197,0.05715,2471
-250,Blue dragon bat,21,21,0,,21,normal,0.0,0,0.0,0,0,0.0,0.0,0
-251,Scroll mimic,21,21,0,,21,normal,0.0,0,0.0,0,0,0.0,0.0,0
-252,Fire vortex,21,21,0,,21,normal,0.0,0,0.0,0,0,0.0,0.0,0
-253,Water vortex,21,21,0,,21,normal,0.0,0,0.0,0,0,0.0,0.0,0
-254,Cold vortex,21,21,0,,21,normal,0.0,0,0.0,0,0,0.0,0.0,0
-255,Energy vortex,21,21,0,,21,normal,0.0,0,0.0,0,0,0.0,0.0,0
-256,Mummified orc,21,21,0,DROP_90,21,normal,0.9,30,0.45,240,192,0.0051,0.00088,223
-257,Killer stag beetle,22,22,0,,22,normal,0.0,0,0.0,0,0,0.0,0.0,0
-258,Iron golem,22,22,0,,22,normal,0.0,0,0.0,0,0,0.0,0.0,0
-259,Giant yellow scorpion,22,22,0,,22,normal,0.0,0,0.0,0,0,0.0,0.0,0
-260,Black ooze,23,23,0,DROP_60,23,normal,0.6,22,0.3,168,133,0.0038,0.00066,155
-261,Hardened warrior,23,23,0,DROP_1D2,23,normal,1.5,54,0.75,419,333,0.0096,0.00165,387
-262,"Azog, King of the Uruk-Hai",23,23,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,23,good,3.0,0,3.0,6328,4966,0.3549,0.11121,4966
-263,Master rogue,23,23,0,DROP_2D2,23,normal,3.0,108,1.5,838,666,0.0191,0.00331,774
-264,Red dragon bat,23,23,0,,23,normal,0.0,0,0.0,0,0,0.0,0.0,0
-265,Killer white beetle,23,23,0,,23,normal,0.0,0,0.0,0,0,0.0,0.0,0
-266,Giant bronze dragon fly,23,23,0,,23,normal,0.0,0,0.0,0,0,0.0,0.0,0
-267,Forest wight,24,24,0,DROP_60|DROP_90,24,normal,1.5,56,0.75,432,341,0.0105,0.0018,397
-268,"Ibun, Son of Mim",24,24,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,24,good,1.5,0,1.5,3293,2555,0.2082,0.05921,2555
-269,"Khim, Son of Mim",24,24,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,24,good,1.5,0,1.5,3293,2555,0.2082,0.05921,2555
-270,4-headed hydra,24,24,0,DROP_4D2|ONLY_GOLD,24,normal,6.0,450,0.0,0,0,0.0,0.0,450
-271,Mummified human,24,24,0,DROP_90|ONLY_ITEM,24,normal,0.9,0,0.9,518,409,0.0126,0.00217,409
-272,Vampire bat,24,24,0,,24,normal,0.0,0,0.0,0,0,0.0,0.0,0
-273,Sangahyando of Umbar,24,24,1,DROP_1D2|DROP_90|DROP_GOOD|ONLY_ITEM,24,good,2.4,0,2.4,5269,4089,0.3122,0.09309,4089
-274,Angamaite of Umbar,24,24,1,DROP_1D2|DROP_90|DROP_GOOD|ONLY_ITEM,24,good,2.4,0,2.4,5269,4089,0.3122,0.09309,4089
-275,Banshee,24,24,0,DROP_1D2,24,normal,1.5,56,0.75,432,341,0.0105,0.0018,397
-276,Pukelman,25,25,0,,25,normal,0.0,0,0.0,0,0,0.0,0.0,0
-277,Dark elven druid,25,25,0,DROP_1D2|ONLY_ITEM,25,normal,1.5,0,1.5,890,718,0.0215,0.00362,718
-278,Stone troll,25,25,0,DROP_60,25,normal,0.6,23,0.3,178,144,0.0043,0.00072,167
-279,Troll priest,26,26,0,DROP_90,26,normal,0.9,36,0.45,273,220,0.007,0.00118,257
-280,Wereworm,25,25,0,,25,normal,0.0,0,0.0,0,0,0.0,0.0,0
-281,Carrion crawler,25,25,0,,25,normal,0.0,0,0.0,0,0,0.0,0.0,0
-282,Killer red beetle,25,25,0,,25,normal,0.0,0,0.0,0,0,0.0,0.0,0
-283,Giant grey ant,26,26,0,,26,normal,0.0,0,0.0,0,0,0.0,0.0,0
-284,"Ulwarth, Son of Ulfang",26,26,1,DROP_90|DROP_GOOD|ONLY_ITEM,26,good,0.9,0,0.9,2041,1592,0.1393,0.0368,1592
-285,Displacer beast,26,26,0,,26,normal,0.0,0,0.0,0,0,0.0,0.0,0
-286,Giant fire tick,26,26,0,,26,normal,0.0,0,0.0,0,0,0.0,0.0,0
-287,Cave ogre,26,26,0,DROP_60,26,normal,0.6,24,0.3,182,147,0.0047,0.00079,171
-288,White wraith,26,26,0,DROP_1D2,26,normal,1.5,61,0.75,455,367,0.0117,0.00196,428
-289,Angel,26,26,0,DROP_2D2|ONLY_ITEM,26,normal,3.0,0,3.0,1818,1470,0.0462,0.00783,1470
-290,"Mim, Betrayer of Turin",27,27,1,DROP_2D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,27,great,3.0,0,3.0,17990,12817,0.9641,0.62978,12817
-291,Killer fire beetle,27,27,0,,27,normal,0.0,0,0.0,0,0,0.0,0.0,0
-292,Creeping adamantite coins,27,27,0,DROP_2D2|DROP_90|ONLY_GOLD,27,normal,3.9,1593,0.0,0,0,0.0,0.0,1593
-293,Algroth,27,27,0,DROP_60,27,normal,0.6,25,0.3,184,149,0.0048,0.00081,174
-294,Vibration hound,27,27,0,,27,normal,0.0,0,0.0,0,0,0.0,0.0,0
-295,Nexus hound,27,27,0,,27,normal,0.0,0,0.0,0,0,0.0,0.0,0
-296,Ogre mage,27,27,0,DROP_1D2,27,normal,1.5,63,0.75,460,373,0.012,0.00202,436
-297,"Lokkak, the Ogre Chieftain",32,32,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,32,good,3.0,0,3.0,7923,6591,0.4102,0.1338,6591
-298,Vampire,27,27,0,DROP_1D2|DROP_60,27,normal,2.1,88,1.05,643,522,0.0168,0.00283,610
-299,Gorgimaera,27,27,0,,27,normal,0.0,0,0.0,0,0,0.0,0.0,0
-300,Colbran,27,27,0,,27,normal,0.0,0,0.0,0,0,0.0,0.0,0
-301,Spirit naga,28,28,0,DROP_2D2|DROP_90|ONLY_ITEM,28,normal,3.9,0,3.9,2441,1984,0.0662,0.01136,1984
-302,5-headed hydra,28,28,0,DROP_1D2|DROP_4D2|ONLY_GOLD,28,normal,7.5,653,0.0,0,0,0.0,0.0,653
-303,Black knight,28,28,0,DROP_1D2,28,normal,1.5,65,0.75,469,381,0.013,0.00219,447
-304,Uldor the Accursed,28,28,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,28,good,1.5,0,1.5,3469,2751,0.231,0.06296,2751
-305,Mage,28,28,0,DROP_1D2|ONLY_ITEM,28,normal,1.5,0,1.5,939,763,0.026,0.00439,763
-306,Mind flayer,28,28,0,DROP_1D2|DROP_60|ONLY_ITEM,28,normal,2.1,0,2.1,1314,1068,0.0362,0.00613,1068
-307,"Draebor, the Imp",28,28,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,28,good,6.0,0,6.0,13875,11005,0.6503,0.22903,11005
-308,Basilisk,28,28,0,DROP_1D2|ONLY_ITEM,28,normal,1.5,0,1.5,939,763,0.026,0.00439,763
-309,Ice troll,28,28,0,DROP_60,28,normal,0.6,26,0.3,188,153,0.0052,0.00088,179
-310,Purple worm,29,29,0,,29,normal,0.0,0,0.0,0,0,0.0,0.0,0
-311,Archangel,34,34,0,DROP_2D2|ONLY_ITEM,34,normal,3.0,0,3.0,2847,2480,0.0595,0.01005,2480
-312,Catoblepas,29,29,0,DROP_2D2|ONLY_GOLD,29,normal,3.0,271,0.0,0,0,0.0,0.0,271
-313,Ring mimic,29,29,0,,29,normal,0.0,0,0.0,0,0,0.0,0.0,0
-314,Young blue dragon,29,29,0,DROP_2D2,29,normal,3.0,135,1.5,948,773,0.0265,0.00459,909
-315,Young white dragon,29,29,0,DROP_2D2,29,normal,3.0,135,1.5,948,773,0.0265,0.00459,909
-316,Young green dragon,29,29,0,DROP_2D2,29,normal,3.0,135,1.5,948,773,0.0265,0.00459,909
-317,Young bronze dragon,29,29,0,DROP_2D2,29,normal,3.0,135,1.5,948,773,0.0265,0.00459,909
-318,Mithril golem,30,30,0,DROP_2D2|ONLY_GOLD,30,normal,3.0,283,0.0,0,0,0.0,0.0,283
-319,Shadow drake,33,33,0,DROP_3D2|ONLY_ITEM,33,normal,4.5,0,4.5,4227,3689,0.0859,0.0147,3689
-320,Skeleton troll,30,30,0,,30,normal,0.0,0,0.0,0,0,0.0,0.0,0
-321,Manticore,30,30,0,,30,normal,0.0,0,0.0,0,0,0.0,0.0,0
-322,Giant blue ant,30,30,0,,30,normal,0.0,0,0.0,0,0,0.0,0.0,0
-323,Giant army ant,30,30,0,,30,normal,0.0,0,0.0,0,0,0.0,0.0,0
-324,Grave wight,30,30,0,DROP_1D2|ONLY_ITEM,30,normal,1.5,0,1.5,1364,1199,0.0274,0.0046,1199
-325,Killer slicer beetle,30,30,0,,30,normal,0.0,0,0.0,0,0,0.0,0.0,0
-326,Ghost,31,31,0,DROP_1D2|DROP_60,31,normal,2.1,103,1.05,965,846,0.0197,0.00329,949
-327,Death watch beetle,31,31,0,,31,normal,0.0,0,0.0,0,0,0.0,0.0,0
-328,Ogre shaman,27,27,0,DROP_90|ONLY_ITEM,27,normal,0.9,0,0.9,551,447,0.0145,0.00243,447
-329,Nexus quylthulg,32,32,0,,32,normal,0.0,0,0.0,0,0,0.0,0.0,0
-330,"Shelob, Spider of Darkness",55,55,1,DROP_1D2|DROP_2D2|DROP_GOOD|ONLY_ITEM,55,good,4.5,0,4.5,22046,17121,0.5269,0.22747,17121
-331,Ninja,32,32,0,DROP_1D2,32,normal,1.5,81,0.75,697,610,0.0145,0.00241,690
-332,Memory moss,32,32,0,,32,normal,0.0,0,0.0,0,0,0.0,0.0,0
-333,Storm giant,40,40,0,DROP_1D2,40,normal,1.5,124,0.75,896,789,0.0172,0.00279,913
-334,Cave troll,33,33,0,DROP_60,33,normal,0.6,35,0.3,282,246,0.0059,0.00099,281
-335,Half-troll,34,34,0,DROP_90|ONLY_ITEM,34,normal,0.9,0,0.9,854,744,0.0182,0.00303,744
-336,Mystic,33,33,0,DROP_1D2|ONLY_ITEM,33,normal,1.5,0,1.5,1409,1230,0.0295,0.00492,1230
-337,Barrow wight,33,33,0,DROP_60,33,normal,0.6,35,0.3,282,246,0.0059,0.00099,281
-338,Skeleton ettin,33,33,0,,33,normal,0.0,0,0.0,0,0,0.0,0.0,0
-339,Chaos drake,33,33,0,DROP_3D2|ONLY_ITEM,33,normal,4.5,0,4.5,4227,3689,0.0859,0.0147,3689
-340,Law drake,33,33,0,DROP_3D2|ONLY_ITEM,33,normal,4.5,0,4.5,4227,3689,0.0859,0.0147,3689
-341,Balance drake,33,33,0,DROP_3D2|ONLY_ITEM,33,normal,4.5,0,4.5,4227,3689,0.0859,0.0147,3689
-342,Ethereal drake,33,33,0,DROP_3D2|ONLY_ITEM,33,normal,4.5,0,4.5,4227,3689,0.0859,0.0147,3689
-343,Bert the Stone Troll,34,34,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,34,good,1.5,0,1.5,4024,3324,0.2319,0.06939,3324
-344,Bill the Stone Troll,34,34,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,34,good,1.5,0,1.5,4024,3324,0.2319,0.06939,3324
-345,Tom the Stone Troll,34,34,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,34,good,1.5,0,1.5,4024,3324,0.2319,0.06939,3324
-346,Shade,33,33,0,DROP_2D2|DROP_90|ONLY_ITEM,33,normal,3.9,0,3.9,3663,3197,0.0749,0.01275,3197
-347,Spectre,34,34,0,DROP_2D2|DROP_90|ONLY_ITEM,34,normal,3.9,0,3.9,3701,3224,0.0766,0.01305,3224
-348,Water troll,35,35,0,DROP_60,35,normal,0.6,40,0.3,290,254,0.0063,0.00105,293
-349,Fire elemental,33,33,0,,33,normal,0.0,0,0.0,0,0,0.0,0.0,0
-350,Cherub,39,39,0,DROP_1D2|DROP_2D2|ONLY_ITEM,39,normal,4.5,0,4.5,4527,3930,0.098,0.01723,3930
-351,Water elemental,33,33,0,,33,normal,0.0,0,0.0,0,0,0.0,0.0,0
-352,Invisible stalker,35,35,0,,35,normal,0.0,0,0.0,0,0,0.0,0.0,0
-353,Carrion crawler,34,34,0,,34,normal,0.0,0,0.0,0,0,0.0,0.0,0
-354,Master thief,34,34,0,DROP_2D2|DROP_90,34,normal,3.9,242,1.95,1850,1612,0.0389,0.00654,1854
-355,Ulfang the Black,34,34,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,34,good,3.0,0,3.0,8049,6647,0.41,0.13396,6647
-356,Lich,34,34,0,DROP_1D2,34,normal,1.5,93,0.75,712,620,0.0151,0.00252,713
-357,Master vampire,36,36,0,DROP_4D2,36,normal,6.0,418,3.0,2933,2557,0.0623,0.01069,2975
-358,Giant grey scorpion,34,34,0,,34,normal,0.0,0,0.0,0,0,0.0,0.0,0
-359,Earth elemental,34,34,0,,34,normal,0.0,0,0.0,0,0,0.0,0.0,0
-360,Air elemental,34,34,0,,34,normal,0.0,0,0.0,0,0,0.0,0.0,0
-361,Hellhound,35,35,0,,35,normal,0.0,0,0.0,0,0,0.0,0.0,0
-362,Eog golem,34,34,0,DROP_2D2|ONLY_GOLD,34,normal,3.0,373,0.0,0,0,0.0,0.0,373
-363,Olog,36,36,0,DROP_60,36,normal,0.6,42,0.3,293,256,0.0064,0.00107,298
-364,Dagashi,35,35,0,DROP_1D2,35,normal,1.5,99,0.75,726,634,0.0156,0.00263,733
-365,Gravity hound,35,35,0,,35,normal,0.0,0,0.0,0,0,0.0,0.0,0
-366,Acidic cytoplasm,35,35,0,DROP_1D2|DROP_4D2,35,normal,7.5,495,3.75,3629,3169,0.0756,0.01307,3665
-367,Inertia hound,35,35,0,,35,normal,0.0,0,0.0,0,0,0.0,0.0,0
-368,Impact hound,35,35,0,,35,normal,0.0,0,0.0,0,0,0.0,0.0,0
-369,Dread,35,35,0,DROP_2D2|DROP_60|ONLY_ITEM,35,normal,3.6,0,3.6,3483,3042,0.0729,0.01255,3042
-370,Ooze elemental,36,36,0,,36,normal,0.0,0,0.0,0,0,0.0,0.0,0
-371,Smoke elemental,36,36,0,,36,normal,0.0,0,0.0,0,0,0.0,0.0,0
-372,Young black dragon,31,31,0,DROP_3D2,31,normal,4.5,221,2.25,2069,1813,0.0417,0.00705,2034
-373,Mumak,35,35,0,,35,normal,0.0,0,0.0,0,0,0.0,0.0,0
-374,Giant fire ant,35,35,0,,35,normal,0.0,0,0.0,0,0,0.0,0.0,0
-375,Mature white dragon,34,34,0,DROP_4D2,34,normal,6.0,373,3.0,2847,2480,0.0592,0.01004,2853
-376,Xorn,36,36,0,,36,normal,0.0,0,0.0,0,0,0.0,0.0,0
-377,Shadow,36,36,0,DROP_1D2|ONLY_ITEM,36,normal,1.5,0,1.5,1466,1278,0.0318,0.00536,1278
-378,Phantom,36,36,0,DROP_1D2|ONLY_ITEM,36,normal,1.5,0,1.5,1466,1278,0.0318,0.00536,1278
-379,Grey wraith,36,36,0,DROP_60|DROP_90,36,normal,1.5,105,0.75,733,639,0.0159,0.00268,744
-380,Young multi-hued dragon,32,32,0,DROP_1D2|DROP_3D2,32,normal,6.0,322,3.0,2788,2438,0.0566,0.0096,2761
-381,Colossus,36,36,0,,36,normal,0.0,0,0.0,0,0,0.0,0.0,0
-382,Young gold dragon,31,31,0,DROP_3D2,31,normal,4.5,221,2.25,2069,1813,0.0417,0.00705,2034
-383,Rogrog the Black Troll,42,42,1,DROP_3D2|DROP_GOOD|ONLY_ITEM,42,good,4.5,0,4.5,15963,13054,0.5381,0.19089,13054
-384,Mature blue dragon,34,34,0,DROP_4D2,34,normal,6.0,373,3.0,2847,2480,0.0592,0.01004,2853
-385,Mature green dragon,34,34,0,DROP_4D2,34,normal,6.0,373,3.0,2847,2480,0.0592,0.01004,2853
-386,Mature bronze dragon,34,34,0,DROP_4D2,34,normal,6.0,373,3.0,2847,2480,0.0592,0.01004,2853
-387,Young red dragon,31,31,0,DROP_3D2,31,normal,4.5,221,2.25,2069,1813,0.0417,0.00705,2034
-388,Trapper,36,36,0,,36,normal,0.0,0,0.0,0,0,0.0,0.0,0
-389,Bodak,36,36,0,,36,normal,0.0,0,0.0,0,0,0.0,0.0,0
-390,Ice elemental,37,37,0,,37,normal,0.0,0,0.0,0,0,0.0,0.0,0
-391,Necromancer,36,36,0,DROP_1D2|ONLY_ITEM,36,normal,1.5,0,1.5,1466,1278,0.0318,0.00536,1278
-392,"Lorgan, Chief of the Easterlings",36,36,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,36,good,3.0,0,3.0,8175,6790,0.4152,0.13003,6790
-393,Demonologist,36,36,0,DROP_1D2|ONLY_ITEM,36,normal,1.5,0,1.5,1466,1278,0.0318,0.00536,1278
-394,Mummified troll,37,37,0,DROP_60,37,normal,0.6,44,0.3,296,258,0.0065,0.0011,302
-395,The Queen Ant,37,37,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,37,good,3.0,0,3.0,8226,6821,0.415,0.13025,6821
-396,Will o' the wisp,38,38,0,,38,normal,0.0,0,0.0,0,0,0.0,0.0,0
-397,Magma elemental,37,37,0,,37,normal,0.0,0,0.0,0,0,0.0,0.0,0
-398,Black pudding,37,37,0,DROP_1D2|DROP_60|DROP_90,37,normal,3.0,220,1.5,1480,1289,0.0323,0.00548,1508
-399,Killer iridescent beetle,37,37,0,,37,normal,0.0,0,0.0,0,0,0.0,0.0,0
-400,Nexus vortex,37,37,0,,37,normal,0.0,0,0.0,0,0,0.0,0.0,0
-401,Plasma vortex,37,37,0,,37,normal,0.0,0,0.0,0,0,0.0,0.0,0
-402,Mature red dragon,36,36,0,DROP_1D2|DROP_4D2,36,normal,7.5,523,3.75,3666,3196,0.0772,0.01334,3719
-403,Mature gold dragon,36,36,0,DROP_1D2|DROP_4D2,36,normal,7.5,523,3.75,3666,3196,0.0772,0.01334,3719
-404,Crystal drake,33,33,0,DROP_3D2|ONLY_ITEM,33,normal,4.5,0,4.5,4227,3689,0.0859,0.0147,3689
-405,Mature black dragon,36,36,0,DROP_1D2|DROP_4D2,36,normal,7.5,523,3.75,3666,3196,0.0772,0.01334,3719
-406,Mature multi-hued dragon,38,38,0,DROP_2D2|DROP_4D2,38,normal,9.0,689,4.5,4484,3898,0.0957,0.01672,4587
-407,Death knight,38,38,0,DROP_1D2|DROP_2D2|ONLY_ITEM,38,normal,4.5,0,4.5,4484,3898,0.0962,0.01673,3898
-408,Castamir the Usurper,38,38,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,38,good,3.0,0,3.0,8278,6852,0.4147,0.13071,6852
-409,Time vortex,38,38,0,,38,normal,0.0,0,0.0,0,0,0.0,0.0,0
-410,Shimmering vortex,38,38,0,,38,normal,0.0,0,0.0,0,0,0.0,0.0,0
-411,Ancient blue dragon,40,40,0,DROP_3D2|DROP_4D2,40,normal,10.5,868,5.25,6273,5525,0.1144,0.01934,6393
-412,Ancient bronze dragon,40,40,0,DROP_3D2|DROP_4D2,40,normal,10.5,868,5.25,6273,5525,0.1144,0.01934,6393
-413,Beholder,40,40,0,,40,normal,0.0,0,0.0,0,0,0.0,0.0,0
-414,Emperor wight,38,38,0,DROP_4D2|DROP_90|ONLY_ITEM,38,normal,6.9,0,6.9,6875,5977,0.1436,0.02554,5977
-415,Seraph,45,45,0,DROP_1D2|DROP_2D2|ONLY_ITEM,45,normal,4.5,0,4.5,5641,4956,0.1201,0.01908,4956
-416,"Vargo, Tyrant of Fire",43,43,1,,43,normal,0.0,0,0.0,0,0,0.0,0.0,0
-417,Black wraith,38,38,0,DROP_1D2|DROP_2D2|ONLY_ITEM,38,normal,4.5,0,4.5,4484,3898,0.0962,0.01673,3898
-418,Erinyes,38,38,0,DROP_60|ONLY_ITEM,38,normal,0.6,0,0.6,598,520,0.0134,0.00225,520
-419,Nether wraith,39,39,0,DROP_4D2|DROP_90|ONLY_ITEM,39,normal,6.9,0,6.9,6941,6025,0.1463,0.0263,6025
-420,Eldrak,37,37,0,DROP_60,37,normal,0.6,44,0.3,296,258,0.0065,0.0011,302
-421,Ettin,38,38,0,DROP_1D2|ONLY_ITEM,38,normal,1.5,0,1.5,1495,1299,0.0331,0.00561,1299
-422,"Waldern, King of Water",43,43,1,,43,normal,0.0,0,0.0,0,0,0.0,0.0,0
-423,Kavlax the Many-Headed,39,39,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,39,good,6.0,0,6.0,16627,13750,0.6563,0.24705,13750
-424,Ancient white dragon,40,40,0,DROP_3D2|DROP_4D2,40,normal,10.5,868,5.25,6273,5525,0.1144,0.01934,6393
-425,Ancient green dragon,40,40,0,DROP_3D2|DROP_4D2,40,normal,10.5,868,5.25,6273,5525,0.1144,0.01934,6393
-426,7-headed hydra,39,39,0,DROP_2D2|DROP_4D2|ONLY_GOLD,39,normal,9.0,1434,0.0,0,0,0.0,0.0,1434
-427,Night mare,39,39,0,DROP_2D2|ONLY_GOLD,39,normal,3.0,478,0.0,0,0,0.0,0.0,478
-428,Vampire lord,42,42,0,DROP_4D2|DROP_60,42,normal,6.6,582,3.3,4006,3520,0.0764,0.01265,4103
-429,Ancient black dragon,41,41,0,DROP_3D2|DROP_4D2,41,normal,10.5,898,5.25,6322,5563,0.1166,0.01969,6460
-430,Disenchanter worm mass,40,40,0,,40,normal,0.0,0,0.0,0,0,0.0,0.0,0
-431,Rotting quylthulg,45,45,0,,45,normal,0.0,0,0.0,0,0,0.0,0.0,0
-432,Spirit troll,40,40,0,DROP_90,40,normal,0.9,74,0.45,538,474,0.0104,0.00167,548
-433,Lesser titan,56,56,0,DROP_4D2|DROP_GOOD|ONLY_ITEM,56,good,6.0,0,6.0,29472,22875,0.6313,0.2912,22875
-434,9-headed hydra,40,40,0,DROP_2D2|DROP_4D2|ONLY_GOLD,40,normal,9.0,1488,0.0,0,0,0.0,0.0,1488
-435,Enchantress,40,40,0,DROP_2D2|DROP_GOOD|ONLY_ITEM,40,good,3.0,0,3.0,10548,8645,0.4025,0.13167,8645
-436,Knight Templar,44,44,0,DROP_2D2|DROP_90|ONLY_ITEM,44,normal,3.9,0,3.9,4812,4217,0.0935,0.01548,4217
-437,Sorcerer,40,40,0,DROP_4D2|DROP_90|ONLY_ITEM,40,normal,6.9,0,6.9,8244,7262,0.1482,0.02535,7262
-438,Xaren,40,40,0,DROP_2D2|ONLY_GOLD,40,normal,3.0,496,0.0,0,0,0.0,0.0,496
-439,Giant roc,40,40,0,,40,normal,0.0,0,0.0,0,0,0.0,0.0,0
-440,Uvatha the Horseman,40,40,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,40,good,3.0,0,3.0,10548,8645,0.4025,0.13167,8645
-441,Minotaur,40,40,0,,40,normal,0.0,0,0.0,0,0,0.0,0.0,0
-442,"Medusa, the Gorgon",40,40,1,DROP_1D2|DROP_2D2|DROP_GOOD|ONLY_ITEM,40,good,4.5,0,4.5,15822,12968,0.5381,0.19085,12968
-443,Death drake,45,45,0,DROP_2D2|DROP_4D2|ONLY_ITEM,45,normal,9.0,0,9.0,11282,9911,0.2257,0.0378,9911
-444,Ancient red dragon,41,41,0,DROP_3D2|DROP_4D2,41,normal,10.5,898,5.25,6322,5563,0.1166,0.01969,6460
-445,Ancient gold dragon,41,41,0,DROP_3D2|DROP_4D2,41,normal,10.5,898,5.25,6322,5563,0.1166,0.01969,6460
-446,Great crystal drake,45,45,0,DROP_2D2|DROP_4D2|ONLY_ITEM,45,normal,9.0,0,9.0,11282,9911,0.2257,0.0378,9911
-447,Vrock,40,40,0,DROP_60|ONLY_ITEM,40,normal,0.6,0,0.6,717,631,0.0138,0.00223,631
-448,Death quasit,40,40,0,DROP_2D2|DROP_4D2|DROP_90|ONLY_ITEM,40,normal,9.9,0,9.9,11829,10419,0.2056,0.03618,10419
-449,Adunaphel the Quiet,43,43,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,43,good,6.0,0,6.0,21384,17462,0.6429,0.24611,17462
-450,Dark elven sorcerer,41,41,0,DROP_4D2|DROP_90|ONLY_ITEM,41,normal,6.9,0,6.9,8309,7311,0.151,0.02582,7311
-451,Master lich,41,41,0,DROP_2D2|DROP_4D2|ONLY_ITEM,41,normal,9.0,0,9.0,10838,9536,0.1923,0.03355,9536
-452,Hezrou,41,41,0,DROP_1D2|ONLY_ITEM,41,normal,1.5,0,1.5,1806,1589,0.035,0.00567,1589
-453,Akhorahil the Blind,45,45,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,45,good,6.0,0,6.0,21635,17658,0.643,0.24683,17658
-454,"Gorlim, Betrayer of Barahir",41,41,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,41,good,3.0,0,3.0,10598,8674,0.4025,0.13168,8674
-455,Archon,55,55,0,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,55,good,10.5,0,10.5,51440,39948,0.8256,0.45239,39948
-456,Glabrezu,43,43,0,DROP_90|ONLY_ITEM,43,normal,0.9,0,0.9,1101,967,0.022,0.00353,967
-457,Ren the Unclean,48,48,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,48,good,6.0,0,6.0,21919,17824,0.6428,0.24809,17824
-458,Nalfeshnee,45,45,0,DROP_1D2|ONLY_ITEM,45,normal,1.5,0,1.5,1880,1652,0.0417,0.0064,1652
-459,Undead beholder,45,45,0,,45,normal,0.0,0,0.0,0,0,0.0,0.0,0
-460,Dread,42,42,0,DROP_60|ONLY_ITEM,42,normal,0.6,0,0.6,728,640,0.0144,0.00231,640
-461,Mumak,43,43,0,,43,normal,0.0,0,0.0,0,0,0.0,0.0,0
-462,Ancient multi-hued dragon,43,43,0,DROP_2D2|DROP_3D2|DROP_4D2|ONLY_ITEM,43,normal,13.5,0,13.5,16522,14499,0.2834,0.05167,14499
-463,Ethereal dragon,45,45,0,DROP_2D2|DROP_4D2|ONLY_ITEM,45,normal,9.0,0,9.0,11282,9911,0.2257,0.0378,9911
-464,Ji Indur Dawndeath,52,52,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,52,good,6.0,0,6.0,28296,22287,0.6296,0.29255,22287
-465,Marilith,47,47,0,DROP_1D2|ONLY_ITEM,47,normal,1.5,0,1.5,1913,1676,0.0433,0.00662,1676
-466,"Quaker, Master of Earth",43,43,1,,43,normal,0.0,0,0.0,0,0,0.0,0.0,0
-467,Lesser Balrog,49,49,0,DROP_1D2|DROP_2D2|DROP_GOOD|ONLY_ITEM,49,good,4.5,0,4.5,16503,13399,0.5375,0.19597,13399
-468,"Ariel, Queen of Air",43,43,1,,43,normal,0.0,0,0.0,0,0,0.0,0.0,0
-469,11-headed hydra,44,44,0,DROP_2D2|DROP_4D2|ONLY_GOLD,44,normal,9.0,1680,0.0,0,0,0.0,0.0,1680
-470,Patriarch,40,40,0,DROP_2D2|DROP_90|ONLY_ITEM,40,normal,3.9,0,3.9,4660,4104,0.0867,0.01441,4104
-471,Dreadmaster,44,44,0,DROP_1D2|DROP_4D2|ONLY_ITEM,44,normal,7.5,0,7.5,9253,8109,0.172,0.02955,8109
-472,Drolem,44,44,0,,44,normal,0.0,0,0.0,0,0,0.0,0.0,0
-473,Scatha the Worm,46,46,1,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,46,good,10.5,0,10.5,38011,30998,0.8351,0.39127,30998
-474,"Dwar, Dog Lord of Waw",56,56,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,56,good,6.0,0,6.0,29472,22875,0.6313,0.2912,22875
-475,Smaug the Golden,48,48,1,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,48,good,10.5,0,10.5,38359,31191,0.835,0.39286,31191
-476,Dracolich,55,55,0,DROP_4D2|DROP_GOOD|ONLY_ITEM,55,good,6.0,0,6.0,29394,22828,0.6313,0.29115,22828
-477,Greater titan,66,66,0,DROP_1D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,66,good,7.5,0,7.5,83379,32796,0.7035,0.36434,32796
-478,Dracolisk,55,55,0,DROP_4D2|DROP_GOOD|ONLY_ITEM,55,good,6.0,0,6.0,29394,22828,0.6313,0.29115,22828
-479,Death mold,47,47,0,,47,normal,0.0,0,0.0,0,0,0.0,0.0,0
-480,Itangast the Fire Drake,47,47,1,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,47,good,10.5,0,10.5,38188,31097,0.8351,0.39169,31097
-481,"Glaurung, Father of the Dragons",70,70,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,70,great,13.5,0,13.5,201835,89458,1.0,0.98656,89458
-482,Master mystic,50,50,0,DROP_1D2|DROP_2D2|ONLY_ITEM,50,normal,4.5,0,4.5,7104,6180,0.1287,0.01937,6180
-483,The Balrog of Moria,50,50,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,50,good,13.5,0,13.5,63316,49931,0.893,0.54089,49931
-484,Nightwing,61,61,0,DROP_2D2|DROP_GOOD|ONLY_ITEM,61,good,3.0,0,3.0,15879,12036,0.3902,0.16111,12036
-485,Nether hound,51,51,0,,51,normal,0.0,0,0.0,0,0,0.0,0.0,0
-486,Time hound,51,51,0,,51,normal,0.0,0,0.0,0,0,0.0,0.0,0
-487,Plasma hound,51,51,0,,51,normal,0.0,0,0.0,0,0,0.0,0.0,0
-488,Demonic quylthulg,45,45,0,,45,normal,0.0,0,0.0,0,0,0.0,0.0,0
-489,Great Storm Wyrm,63,63,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,63,good,13.5,0,13.5,71833,54353,0.892,0.54671,54353
-490,Baphomet the Minotaur Lord,58,58,1,DROP_1D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,58,good,7.5,0,7.5,37020,28710,0.7125,0.35,28710
-491,Harowen the Black Hand,51,51,1,DROP_1D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,51,good,7.5,0,7.5,35271,27799,0.7111,0.35113,27799
-492,Hoarmurath of Dir,64,64,1,DROP_2D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,64,good,9.0,0,9.0,48006,36293,0.7731,0.41084,36293
-493,Grand master mystic,57,57,0,DROP_4D2|ONLY_ITEM,57,normal,6.0,0,6.0,10008,8643,0.1855,0.02878,8643
-494,"Khamul, the Black Easterling",72,72,1,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,72,good,10.5,0,10.5,122718,48317,0.8135,0.48699,48317
-495,Ethereal hound,59,59,0,,59,normal,0.0,0,0.0,0,0,0.0,0.0,0
-496,Great Ice Wyrm,63,63,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,63,good,13.5,0,13.5,71833,54353,0.892,0.54671,54353
-497,The Phoenix,54,54,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,54,good,3.0,0,3.0,14217,11190,0.3913,0.1591,11190
-498,Nightcrawler,69,69,0,DROP_1D2|DROP_2D2|DROP_GOOD|ONLY_ITEM,69,good,4.5,0,4.5,50325,19758,0.5175,0.23944,19758
-499,Hand druj,57,57,0,,57,normal,0.0,0,0.0,0,0,0.0,0.0,0
-500,Eye druj,58,58,0,,58,normal,0.0,0,0.0,0,0,0.0,0.0,0
-501,Skull druj,59,59,0,,59,normal,0.0,0,0.0,0,0,0.0,0.0,0
-502,Chaos vortex,53,53,0,,53,normal,0.0,0,0.0,0,0,0.0,0.0,0
-503,Aether vortex,60,60,0,,60,normal,0.0,0,0.0,0,0,0.0,0.0,0
-504,The Lernaean Hydra,57,57,1,DROP_3D2|DROP_4D2|ONLY_GOLD,57,normal,10.5,2476,0.0,0,0,0.0,0.0,2476
-505,"Thuringwethil, the Vampire Messenger",67,67,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,67,good,13.5,0,13.5,150397,59121,0.8878,0.55777,59121
-506,Great Hell Wyrm,67,67,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,67,good,13.5,0,13.5,150397,59121,0.8878,0.55777,59121
-507,Draconic quylthulg,45,45,0,,45,normal,0.0,0,0.0,0,0,0.0,0.0,0
-508,Fundin Bluecloak,59,59,1,DROP_1D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,59,good,7.5,0,7.5,37111,28763,0.7123,0.3509,28763
-509,"Uriel, Angel of Fire",61,61,1,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,61,good,10.5,0,10.5,55576,42125,0.8229,0.45929,42125
-510,"Azriel, Angel of Death",62,62,1,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,62,good,10.5,0,10.5,55723,42200,0.8229,0.45937,42200
-511,Ancalagon the Black,85,85,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,85,great,13.5,0,13.5,205572,90469,1.0,0.98629,90469
-512,Nightwalker,73,73,0,DROP_4D2|DROP_GOOD|ONLY_ITEM,73,good,6.0,0,6.0,70290,27646,0.6169,0.31718,27646
-513,"Gabriel, the Messenger",64,64,1,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,64,good,10.5,0,10.5,56006,42342,0.8228,0.46057,42342
-514,Saruman of Many Colours,60,60,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,60,great,13.5,0,13.5,116199,82204,1.0,0.98709,82204
-515,Dreadlord,62,62,0,DROP_2D2|DROP_3D2|DROP_4D2|ONLY_ITEM,62,normal,13.5,0,13.5,30038,24925,0.3972,0.06757,24925
-516,The Cat Lord,66,66,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,66,good,6.0,0,6.0,66703,26236,0.6219,0.30404,26236
-517,Jabberwock,68,68,0,DROP_60|DROP_90|ONLY_ITEM,68,normal,1.5,0,1.5,3659,3033,0.0578,0.00798,3033
-518,Chaos hound,64,64,0,,64,normal,0.0,0,0.0,0,0,0.0,0.0,0
-519,Great Wyrm of Chaos,75,75,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,75,good,13.5,0,13.5,158733,62298,0.8842,0.58197,62298
-520,Great Wyrm of Law,75,75,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,75,good,13.5,0,13.5,158733,62298,0.8842,0.58197,62298
-521,Great Wyrm of Balance,79,79,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,79,good,13.5,0,13.5,160228,62634,0.8841,0.58245,62634
-522,"Tselakus, the Dreadlord",68,68,1,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,68,good,10.5,0,10.5,117216,46050,0.8176,0.47023,46050
-523,Great Wyrm of Many Colours,79,79,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,79,good,13.5,0,13.5,160228,62634,0.8841,0.58245,62634
-524,Black reaver,74,74,0,DROP_1D2|DROP_2D2|DROP_GOOD|ONLY_ITEM,74,good,4.5,0,4.5,52837,20760,0.513,0.24917,20760
-525,Greater demonic quylthulg,71,71,0,,71,normal,0.0,0,0.0,0,0,0.0,0.0,0
-526,Greater draconic quylthulg,71,71,0,,71,normal,0.0,0,0.0,0,0,0.0,0.0,0
-527,Greater rotting quylthulg,71,71,0,,71,normal,0.0,0,0.0,0,0,0.0,0.0,0
-528,"Feagwath, the Undead Sorcerer",77,77,1,DROP_2D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,77,great,9.0,0,9.0,135492,59902,0.9996,0.94471,59902
-529,"Omarax, the Eye Tyrant",73,73,1,,73,normal,0.0,0,0.0,0,0,0.0,0.0,0
-530,"Ungoliant, the Unlight",75,75,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,75,good,6.0,0,6.0,70548,27688,0.6164,0.32134,27688
-531,Aether hound,74,74,0,,74,normal,0.0,0,0.0,0,0,0.0,0.0,0
-532,The Mouth of Sauron,65,65,1,DROP_1D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,65,good,7.5,0,7.5,83201,32745,0.7035,0.36427,32745
-533,Master quylthulg,76,76,0,,76,normal,0.0,0,0.0,0,0,0.0,0.0,0
-534,"Qlzqqlzuup, the Emperor Quylthulg",79,79,1,DROP_4D2|ONLY_ITEM,79,normal,6.0,0,6.0,25387,13763,0.2057,0.03096,13763
-535,The Witch-King of Angmar,80,80,1,DROP_3D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,80,great,10.5,0,10.5,157674,69825,0.9999,0.96498,69825
-536,"Pazuzu, Lord of Air",82,82,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,82,good,6.0,0,6.0,71356,27808,0.6171,0.32384,27808
-537,Hellhound,78,78,0,,78,normal,0.0,0,0.0,0,0,0.0,0.0,0
-538,"Cantoras, the Skeletal Lord",84,84,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,84,great,13.5,0,13.5,205237,90380,1.0,0.98656,90380
-539,The Tarrasque,86,86,1,DROP_2D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,86,good,9.0,0,9.0,108222,41924,0.7634,0.44356,41924
-540,"Lungorthin, the Balrog of White Fire",88,88,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,88,good,13.5,0,13.5,163308,63064,0.8849,0.58501,63064
-541,"Draugluin, Sire of All Werewolves",83,83,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,83,good,1.5,0,1.5,17894,6962,0.2134,0.0932,6962
-542,"Vecna, the Emperor Lich",92,92,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,92,great,13.5,0,13.5,213678,92230,1.0,0.98626,92230
-543,"Huan, Wolfhound of the Valar",90,90,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,90,good,6.0,0,6.0,74882,28493,0.6158,0.32613,28493
-544,"Carcharoth, the Jaws of Thirst",90,90,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,90,good,6.0,0,6.0,74882,28493,0.6158,0.32613,28493
-545,"Gothmog, the High Captain of Balrogs",95,95,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,95,great,13.5,0,13.5,215409,92650,1.0,0.98629,92650
-546,"Sauron, the Sorcerer",99,99,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,99,great,13.5,0,13.5,217842,93245,1.0,0.9863,93245
-547,"Morgoth, Lord of Darkness",100,100,1,DROP_1D2|DROP_2D2|DROP_3D2|DROP_4D2|DROP_CHOSEN|DROP_GOOD|DROP_GREAT|ONLY_ITEM,100,great,15.0,0,15.0,242548,103714,1.0,0.99156,103714
-548,Silver mouse,4,4,0,,4,normal,0.0,0,0.0,0,0,0.0,0.0,0
-549,Rot jelly,5,5,0,,5,normal,0.0,0,0.0,0,0,0.0,0.0,0
-550,Giant tan bat,15,15,0,,15,normal,0.0,0,0.0,0,0,0.0,0.0,0
-551,Giant silver ant,23,23,0,,23,normal,0.0,0,0.0,0,0,0.0,0.0,0
-552,Giant brown tick,25,25,0,,25,normal,0.0,0,0.0,0,0,0.0,0.0,0
-553,Disenchanter bat,26,26,0,,26,normal,0.0,0,0.0,0,0,0.0,0.0,0
-554,Shimmering mold,27,27,0,,27,normal,0.0,0,0.0,0,0,0.0,0.0,0
-555,Wyvern,22,22,0,DROP_2D2|ONLY_GOLD,22,normal,3.0,209,0.0,0,0,0.0,0.0,209
-556,Chest mimic,35,35,0,DROP_2D2,35,normal,3.0,198,1.5,1451,1268,0.0309,0.00525,1466
-557,Demilich,54,54,0,DROP_2D2|DROP_3D2|DROP_GOOD|ONLY_ITEM,54,good,7.5,0,7.5,35543,27975,0.7109,0.35157,27975
-558,Archlich,64,64,0,DROP_2D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,64,good,9.0,0,9.0,48006,36293,0.7731,0.41084,36293
-559,Crow,2,2,0,,2,normal,0.0,0,0.0,0,0,0.0,0.0,0
-560,Raven,4,4,0,,4,normal,0.0,0,0.0,0,0,0.0,0.0,0
-561,Crebain,16,16,0,,16,normal,0.0,0,0.0,0,0,0.0,0.0,0
-562,Winged Horror,48,48,0,,48,normal,0.0,0,0.0,0,0,0.0,0.0,0
-563,Cave bear,9,9,0,,9,normal,0.0,0,0.0,0,0,0.0,0.0,0
-564,Grizzly bear,16,16,0,,16,normal,0.0,0,0.0,0,0,0.0,0.0,0
-565,Werebear,24,24,0,DROP_1D2,24,normal,1.5,56,0.75,432,341,0.0105,0.0018,397
-566,"Beorn, the Shape-Changer",28,28,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,28,good,3.0,0,3.0,6937,5502,0.4087,0.12195,5502
-567,Barbazu,55,55,0,DROP_1D2|ONLY_ITEM,55,normal,1.5,0,1.5,2467,2136,0.0485,0.00707,2136
-568,Bile Demon,61,61,0,DROP_3D2|DROP_GOOD|ONLY_ITEM,61,good,4.5,0,4.5,23818,18054,0.5238,0.23166,18054
-569,Osyluth,65,65,0,DROP_3D2|DROP_GOOD|ONLY_ITEM,65,good,4.5,0,4.5,49921,19647,0.5178,0.23799,19647
-570,Gelugon,69,69,0,DROP_4D2|DROP_GOOD|ONLY_ITEM,69,good,6.0,0,6.0,67101,26344,0.6215,0.30576,26344
-571,Horned Reaper,72,72,0,DROP_2D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,72,good,9.0,0,9.0,105186,41415,0.7629,0.43567,41415
-572,Pit Fiend,77,77,0,DROP_2D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,77,good,9.0,0,9.0,106324,41646,0.7624,0.44095,41646
-573,Greater Balrog,79,79,0,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,79,good,10.5,0,10.5,124621,48716,0.813,0.49301,48716
-574,Baby bronze dragon,9,9,0,DROP_1D2|DROP_60|ONLY_GOLD,9,normal,2.1,82,0.0,0,0,0.0,0.0,82
-575,Baby gold dragon,9,9,0,DROP_1D2|DROP_60|ONLY_GOLD,9,normal,2.1,82,0.0,0,0,0.0,0.0,82
-576,Great Swamp Wyrm,63,63,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,63,good,13.5,0,13.5,71833,54353,0.892,0.54671,54353
-577,Great Wyrm of Perplexity,63,63,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,63,good,13.5,0,13.5,71833,54353,0.892,0.54671,54353
-578,Great Bile Wyrm,67,67,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,67,good,13.5,0,13.5,150397,59121,0.8878,0.55777,59121
-579,Great Wyrm of Thunder,67,67,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,67,good,13.5,0,13.5,150397,59121,0.8878,0.55777,59121
-580,Ranger,20,20,0,DROP_1D2,20,normal,1.5,49,0.75,393,316,0.0082,0.00143,365
-581,Paladin,20,20,0,DROP_1D2,20,normal,1.5,49,0.75,393,316,0.0082,0.00143,365
-582,Ranger Chieftain,41,41,0,DROP_2D2|ONLY_ITEM,41,normal,3.0,0,3.0,3613,3179,0.0687,0.01131,3179
-583,Berserker,45,45,0,DROP_2D2|DROP_90|ONLY_ITEM,45,normal,3.9,0,3.9,4889,4295,0.105,0.01656,4295
-584,Cyclops,45,45,0,DROP_1D2,45,normal,1.5,144,0.75,940,826,0.021,0.0032,969
-585,"Polyphemus, the Blind Cyclops",69,69,1,DROP_2D2|DROP_3D2|DROP_GOOD|ONLY_ITEM,69,good,7.5,0,7.5,83876,32930,0.7031,0.36629,32930
-586,"Atlas, the Titan",76,76,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,76,good,6.0,0,6.0,70716,27726,0.6164,0.32135,27726
-587,"Kronos, Lord of the Titans",87,87,1,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,87,good,10.5,0,10.5,126639,48981,0.8139,0.49538,48981
-588,Evil eye,18,18,0,,18,normal,0.0,0,0.0,0,0,0.0,0.0,0
-589,Spectator,28,28,0,,28,normal,0.0,0,0.0,0,0,0.0,0.0,0
-590,Gauth,36,36,0,,36,normal,0.0,0,0.0,0,0,0.0,0.0,0
-591,Beholder hive-mother,67,67,0,,67,normal,0.0,0,0.0,0,0,0.0,0.0,0
-592,Neekerbreeker,19,19,0,,19,normal,0.0,0,0.0,0,0,0.0,0.0,0
-593,Giant firefly,24,24,0,,24,normal,0.0,0,0.0,0,0,0.0,0.0,0
-594,"Eol, the Dark Elf",49,49,1,DROP_2D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,49,good,9.0,0,9.0,33006,26799,0.7861,0.35353,26799
-595,"Maeglin, the Traitor of Gondolin",81,81,1,DROP_3D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,81,great,10.5,0,10.5,158163,69943,0.9999,0.96498,69943
-596,Elder vampire,54,54,0,DROP_4D2|DROP_60|DROP_GOOD,54,good,6.6,748,3.3,15639,12309,0.4093,0.17159,13056
-597,Silent watcher,35,35,0,,35,normal,0.0,0,0.0,0,0,0.0,0.0,0
-598,Nighthawk,8,8,0,,8,normal,0.0,0,0.0,0,0,0.0,0.0,0
-599,Ghoul,26,26,0,DROP_60,26,normal,0.6,24,0.3,182,147,0.0047,0.00079,171
-600,Ghast,30,30,0,DROP_60,30,normal,0.6,28,0.3,273,240,0.0055,0.00092,268
-601,Greater basilisk,45,45,0,DROP_1D2|DROP_GOOD|ONLY_ITEM,45,good,1.5,0,1.5,5409,4414,0.227,0.06841,4414
-602,Aranea,38,38,0,,38,normal,0.0,0,0.0,0,0,0.0,0.0,0
-603,Elder aranea,48,48,0,,48,normal,0.0,0,0.0,0,0,0.0,0.0,0
-604,Kobold shaman,3,3,0,DROP_60,3,normal,0.6,9,0.3,28,25,0.0007,2e-05,34
-605,Bat of Gorgoroth,28,28,0,DROP_60,28,normal,0.6,26,0.3,188,153,0.0052,0.00088,179
-606,Doombat,32,32,0,,32,normal,0.0,0,0.0,0,0,0.0,0.0,0
-607,Wolf chieftain,26,26,0,,26,normal,0.0,0,0.0,0,0,0.0,0.0,0
-608,Bone golem,68,68,0,,68,normal,0.0,0,0.0,0,0,0.0,0.0,0
-609,Bronze golem,75,75,0,,75,normal,0.0,0,0.0,0,0,0.0,0.0,0
-610,Ogre chieftain,30,30,0,DROP_90|ONLY_ITEM,30,normal,0.9,0,0.9,819,719,0.0166,0.00276,719
-611,Ar-Pharazon the Golden,55,55,1,DROP_1D2|DROP_3D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,55,great,6.0,0,6.0,49525,35391,0.996,0.85005,35391
-612,Troll chieftain,40,40,0,DROP_1D2,40,normal,1.5,124,0.75,896,789,0.0172,0.00279,913
-613,Shardstorm,37,37,0,,37,normal,0.0,0,0.0,0,0,0.0,0.0,0
-614,Storm of Unmagic,53,53,0,,53,normal,0.0,0,0.0,0,0,0.0,0.0,0
-615,Greater mummy,36,36,0,DROP_1D2|DROP_2D2|ONLY_ITEM,36,normal,4.5,0,4.5,4399,3835,0.0923,0.016,3835
-616,Multi-hued hound,43,43,0,,43,normal,0.0,0,0.0,0,0,0.0,0.0,0
+idx,name,level,depth,unique,drop_flags,object_level,mode,e_drops,e_gold,e_items,e_item_value,e_item_value_cap,e_item_value_unid,p_excellent_any,p_artifact_any,e_total_cap
+1,Filthy street urchin,0,0,0,,0,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+2,Scrawny cat,0,0,0,,0,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+3,Scruffy little dog,0,0,0,,0,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+4,Farmer Maggot,0,0,1,DROP_90|DROP_GOOD|ONLY_ITEM,0,good,0.9,0,0.9,1005,907,158,0.0449,0.0,907
+5,Blubbering idiot,0,0,0,,0,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+6,Boil-covered wretch,0,0,0,,0,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+7,Village idiot,0,0,0,,0,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+8,Pitiful-looking beggar,0,0,0,,0,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+9,Mangy-looking leper,0,0,0,,0,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+10,Squint-eyed rogue,0,0,0,DROP_60,0,normal,0.6,8,0.3,6,6,2,0.0003,0.0,14
+11,"Singing, happy drunk",0,0,0,DROP_60|ONLY_GOLD,0,normal,0.6,16,0.0,0,0,0,0.0,0.0,16
+12,Aimless-looking merchant,0,0,0,DROP_60|ONLY_GOLD,0,normal,0.6,16,0.0,0,0,0,0.0,0.0,16
+13,Mean-looking mercenary,0,0,0,DROP_90,0,normal,0.9,12,0.45,10,10,3,0.0005,0.0,21
+14,Battle-scarred veteran,0,0,0,DROP_90,0,normal,0.9,12,0.45,10,10,3,0.0005,0.0,21
+15,Grey mold,1,1,0,,1,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+16,Grey mushroom patch,1,1,0,,1,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+17,Giant yellow centipede,1,1,0,,1,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+18,Giant white centipede,1,1,0,,1,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+19,White icky thing,1,1,0,,1,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+20,Clear icky thing,1,1,0,,1,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+21,Giant white mouse,1,1,0,,1,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+22,Large brown snake,1,1,0,,1,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+23,Large white snake,1,1,0,,1,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+24,Small kobold,1,1,0,DROP_60,1,normal,0.6,8,0.3,11,9,5,0.0003,1e-05,18
+25,Kobold,2,2,0,DROP_60,2,normal,0.6,9,0.3,13,11,6,0.0004,1e-05,20
+26,White worm mass,1,1,0,,1,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+27,Floating eye,1,1,0,,1,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+28,Rock lizard,1,1,0,,1,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+29,Jackal,1,1,0,,1,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+30,Soldier ant,1,1,0,,1,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+31,Fruit bat,1,1,0,,1,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+32,Shrieker mushroom patch,2,2,0,,2,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+33,Blubbering icky thing,2,2,0,DROP_90,2,normal,0.9,13,0.45,20,17,9,0.0006,2e-05,30
+34,Metallic green centipede,2,2,0,,2,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+35,Novice warrior,2,2,0,DROP_60,2,normal,0.6,9,0.3,13,11,6,0.0004,1e-05,20
+36,Novice rogue,2,2,0,DROP_60,2,normal,0.6,9,0.3,13,11,6,0.0004,1e-05,20
+37,Novice priest,2,2,0,DROP_60,2,normal,0.6,9,0.3,13,11,6,0.0004,1e-05,20
+38,Novice mage,2,2,0,DROP_60,2,normal,0.6,9,0.3,13,11,6,0.0004,1e-05,20
+39,Yellow mushroom patch,2,2,0,,2,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+40,White jelly,2,2,0,,2,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+41,Giant green frog,2,2,0,,2,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+42,Giant black ant,2,2,0,,2,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+43,Salamander,2,2,0,,2,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+44,White harpy,2,2,0,,2,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+45,Blue yeek,2,2,0,DROP_60,2,normal,0.6,9,0.3,13,11,6,0.0004,1e-05,20
+46,"Grip, Farmer Maggot's dog",2,2,1,,2,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+47,"Fang, Farmer Maggot's dog",2,2,1,,2,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+48,Green worm mass,2,2,0,,2,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+49,Large yellow snake,2,2,0,,2,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+50,Cave spider,2,2,0,,2,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+51,Wild cat,2,2,0,,2,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+52,Smeagol,3,3,1,DROP_90|DROP_GOOD|DROP_GREAT,3,great,0.9,14,0.45,3038,2308,85,0.4131,0.03617,2321
+53,Green ooze,3,3,0,DROP_90,3,normal,0.9,14,0.45,42,38,19,0.0011,2e-05,51
+54,Poltergeist,3,3,0,DROP_60|DROP_90,3,normal,1.5,23,0.75,70,63,32,0.0019,4e-05,85
+55,Metallic blue centipede,3,3,0,,3,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+56,Giant white louse,3,3,0,,3,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+57,Black naga,3,3,0,DROP_60,3,normal,0.6,9,0.3,28,25,13,0.0007,2e-05,34
+58,Spotted mushroom patch,3,3,0,,3,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+59,Silver jelly,3,3,0,,3,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+60,Yellow jelly,3,3,0,,3,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+61,Scruffy looking hobbit,3,3,0,DROP_60,3,normal,0.6,9,0.3,28,25,13,0.0007,2e-05,34
+62,Giant white ant,3,3,0,,3,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+63,Yellow mold,3,3,0,,3,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+64,Metallic red centipede,3,3,0,,3,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+65,Yellow worm mass,3,3,0,,3,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+66,Clear worm mass,3,3,0,,3,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+67,Radiation eye,3,3,0,,3,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+68,Cave lizard,4,4,0,,4,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+69,Novice ranger,4,4,0,DROP_60,4,normal,0.6,10,0.3,31,27,14,0.0009,3e-05,37
+70,Novice paladin,4,4,0,DROP_60,4,normal,0.6,10,0.3,31,27,14,0.0009,3e-05,37
+71,Blue jelly,4,4,0,,4,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+72,Creeping copper coins,4,4,0,DROP_1D2|ONLY_GOLD,4,normal,1.5,50,0.0,0,0,0,0.0,0.0,50
+73,Giant white rat,4,4,0,,4,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+74,Blue worm mass,4,4,0,,4,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+75,Large grey snake,4,4,0,,4,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+76,Bullroarer the Hobbit,5,5,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,5,good,3.0,0,3.0,3915,3454,714,0.1837,0.06648,3454
+77,Novice mage,6,6,0,DROP_60,6,normal,0.6,10,0.3,52,47,28,0.001,0.00011,58
+78,Green naga,5,5,0,DROP_60,5,normal,0.6,10,0.3,49,45,27,0.0009,0.0001,55
+79,Blue ooze,5,5,0,DROP_60,5,normal,0.6,10,0.3,49,45,27,0.0009,0.0001,55
+80,Green glutton ghost,5,5,0,DROP_60|DROP_90,5,normal,1.5,25,0.75,123,113,67,0.0021,0.00025,138
+81,Green jelly,5,5,0,,5,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+82,Large kobold,5,5,0,DROP_90,5,normal,0.9,15,0.45,74,68,40,0.0013,0.00015,83
+83,Skeleton kobold,5,5,0,,5,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+84,Grey icky thing,5,5,0,,5,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+85,Disenchanter eye,5,5,0,,5,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+86,Red worm mass,5,5,0,,5,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+87,Copperhead snake,5,5,0,,5,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+88,Purple mushroom patch,6,6,0,,6,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+89,Novice priest,6,6,0,DROP_60,6,normal,0.6,10,0.3,52,47,28,0.001,0.00011,58
+90,Novice warrior,6,6,0,DROP_60,6,normal,0.6,10,0.3,52,47,28,0.001,0.00011,58
+91,Novice rogue,6,6,0,DROP_60,6,normal,0.6,10,0.3,52,47,28,0.001,0.00011,58
+92,Brown mold,6,6,0,,6,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+93,Giant brown bat,6,6,0,,6,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+94,Kobold archer,4,4,0,DROP_60,4,normal,0.6,10,0.3,31,27,14,0.0009,3e-05,37
+95,Creeping silver coins,6,6,0,DROP_1D2|DROP_60|ONLY_GOLD,6,normal,2.1,102,0.0,0,0,0,0.0,0.0,102
+96,Snaga,6,6,0,DROP_60,6,normal,0.6,10,0.3,52,47,28,0.001,0.00011,58
+97,Rattlesnake,6,6,0,,6,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+98,Cave orc,7,7,0,DROP_60,7,normal,0.6,11,0.3,54,49,29,0.0011,0.00012,60
+99,Wood spider,7,7,0,,7,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+100,Manes,7,7,0,,7,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+101,Bloodshot eye,7,7,0,,7,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+102,Red naga,7,7,0,DROP_60,7,normal,0.6,11,0.3,54,49,29,0.0011,0.00012,60
+103,Red jelly,7,7,0,,7,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+104,Giant red frog,7,7,0,,7,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+105,Green icky thing,7,7,0,,7,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+106,Zombified kobold,7,7,0,,7,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+107,Lost soul,7,7,0,DROP_60|DROP_90,7,normal,1.5,27,0.75,136,122,72,0.0028,0.00029,149
+108,Dark elf,7,7,0,DROP_90,7,normal,0.9,16,0.45,82,73,43,0.0017,0.00017,90
+109,Night lizard,7,7,0,,7,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+110,Mughash the Kobold Lord,7,7,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,7,good,1.5,0,1.5,2080,1819,370,0.1095,0.03474,1819
+111,"Wormtongue, Agent of Saruman",8,8,1,DROP_1D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,8,great,1.5,0,1.5,9713,7745,378,0.9388,0.15635,7745
+112,"Lagduf, the Snaga",8,8,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,8,good,1.5,0,1.5,2185,1899,378,0.1224,0.0358,1899
+113,Brown yeek,8,8,0,DROP_60,8,normal,0.6,11,0.3,58,51,30,0.0013,0.00013,63
+114,Novice ranger,8,8,0,DROP_60,8,normal,0.6,11,0.3,58,51,30,0.0013,0.00013,63
+115,Giant salamander,8,8,0,,8,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+116,Green mold,8,8,0,,8,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+117,Skeleton orc,8,8,0,,8,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+118,Novice paladin,8,8,0,DROP_60,8,normal,0.6,11,0.3,58,51,30,0.0013,0.00013,63
+119,Lemure,8,8,0,,8,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+120,Hill orc,8,8,0,DROP_60,8,normal,0.6,11,0.3,58,51,30,0.0013,0.00013,63
+121,Bandit,8,8,0,DROP_1D2,8,normal,1.5,28,0.75,144,128,74,0.0033,0.00032,156
+122,Yeti,9,9,0,,9,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+123,Bloodshot icky thing,9,9,0,,9,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+124,Giant grey rat,9,9,0,,9,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+125,Black harpy,9,9,0,,9,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+126,Orc shaman,9,9,0,DROP_90,9,normal,0.9,18,0.45,90,79,46,0.0021,0.00021,97
+127,Baby blue dragon,9,9,0,DROP_1D2|DROP_60|ONLY_GOLD,9,normal,2.1,82,0.0,0,0,0,0.0,0.0,82
+128,Baby white dragon,9,9,0,DROP_1D2|DROP_60|ONLY_GOLD,9,normal,2.1,82,0.0,0,0,0,0.0,0.0,82
+129,Baby green dragon,9,9,0,DROP_1D2|DROP_60|ONLY_GOLD,9,normal,2.1,82,0.0,0,0,0,0.0,0.0,82
+130,Baby black dragon,9,9,0,DROP_1D2|DROP_60|ONLY_GOLD,9,normal,2.1,82,0.0,0,0,0,0.0,0.0,82
+131,Baby red dragon,9,9,0,DROP_1D2|DROP_60|ONLY_GOLD,9,normal,2.1,82,0.0,0,0,0,0.0,0.0,82
+132,Giant red ant,9,9,0,,9,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+133,"Brodda, the Easterling",9,9,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,9,good,1.5,0,1.5,2192,1907,383,0.1213,0.03695,1907
+134,King cobra,9,9,0,,9,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+135,Giant spider,10,10,0,,10,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+136,Dark elven mage,10,10,0,DROP_1D2|ONLY_ITEM,10,normal,1.5,0,1.5,361,331,210,0.0077,0.00111,331
+137,"Orfax, Son of Boldor",10,10,1,DROP_90|DROP_GOOD|ONLY_ITEM,10,good,0.9,0,0.9,1419,1181,236,0.0811,0.02486,1181
+138,Dark elven warrior,10,10,0,DROP_1D2,10,normal,1.5,31,0.75,180,166,105,0.0039,0.00056,196
+139,Clear mushroom patch,10,10,0,,10,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+140,"Grishnakh, the Hill Orc",10,10,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,10,good,1.5,0,1.5,2366,1968,394,0.1312,0.04105,1968
+141,Giant white tick,10,10,0,,10,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+142,Hairy mold,10,10,0,,10,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+143,Disenchanter mold,10,10,0,,10,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+144,Pseudo-dragon,10,10,0,DROP_60,10,normal,0.6,12,0.3,72,66,42,0.0015,0.00022,79
+145,Tengu,10,10,0,,10,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+146,Creeping gold coins,10,10,0,DROP_1D2|DROP_90|ONLY_GOLD,10,normal,2.4,212,0.0,0,0,0,0.0,0.0,212
+147,Wolf,10,10,0,,10,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+148,Giant fruit fly,10,10,0,,10,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+149,Panther,10,10,0,,10,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+150,Brigand,10,10,0,DROP_1D2,10,normal,1.5,31,0.75,180,166,105,0.0039,0.00056,196
+151,Baby multi-hued dragon,11,11,0,DROP_1D2|DROP_60|ONLY_GOLD,11,normal,2.1,90,0.0,0,0,0,0.0,0.0,90
+152,Hippogriff,11,11,0,,11,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+153,Zombified orc,11,11,0,,11,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+154,Gnome mage,11,11,0,DROP_1D2,11,normal,1.5,32,0.75,185,170,107,0.0041,0.00058,202
+155,Black mamba,12,12,0,,12,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+156,White wolf,12,12,0,,12,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+157,Grape jelly,12,12,0,,12,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+158,Nether worm mass,12,12,0,,12,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+159,"Golfimbul, the Hill Orc Chief",12,12,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,12,good,3.0,0,3.0,5012,4113,815,0.2667,0.08287,4113
+160,Master yeek,12,12,0,DROP_60,12,normal,0.6,14,0.3,77,70,44,0.0019,0.00026,84
+161,Priest,12,12,0,DROP_1D2,12,normal,1.5,34,0.75,193,176,109,0.0047,0.00065,210
+162,Dark elven priest,12,12,0,DROP_1D2|ONLY_ITEM,12,normal,1.5,0,1.5,387,352,218,0.0093,0.00129,352
+163,Air spirit,12,12,0,,12,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+164,Skeleton human,12,12,0,,12,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+165,Zombified human,12,12,0,,12,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+166,Tiger,12,12,0,,12,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+167,Moaning spirit,12,12,0,DROP_60|DROP_90,12,normal,1.5,34,0.75,193,176,109,0.0047,0.00065,210
+168,Swordsman,12,12,0,DROP_1D2,12,normal,1.5,34,0.75,193,176,109,0.0047,0.00065,210
+169,Stegocentipede,12,12,0,,12,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+170,Spotted jelly,12,12,0,,12,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+171,Drider,13,13,0,,13,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+172,Killer brown beetle,13,13,0,,13,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+173,"Boldor, King of the Yeeks",13,13,1,DROP_1D2|DROP_90|DROP_GOOD|ONLY_ITEM,13,good,2.4,0,2.4,4041,3307,662,0.2197,0.06711,3307
+174,Ogre,13,13,0,DROP_60,13,normal,0.6,14,0.3,80,72,44,0.002,0.00027,86
+175,Creeping mithril coins,13,13,0,DROP_2D2|DROP_90|ONLY_GOLD,13,normal,3.9,813,0.0,0,0,0,0.0,0.0,813
+176,Illusionist,13,13,0,DROP_1D2,13,normal,1.5,35,0.75,199,180,111,0.0049,0.00068,215
+177,Druid,13,13,0,DROP_1D2,13,normal,1.5,35,0.75,199,180,111,0.0049,0.00068,215
+178,Black orc,13,13,0,DROP_60,13,normal,0.6,14,0.3,80,72,44,0.002,0.00027,86
+179,Ochre jelly,13,13,0,,13,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+180,Giant flea,14,14,0,,14,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+181,Ufthak of Cirith Ungol,14,14,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,14,good,1.5,0,1.5,2643,2144,420,0.1557,0.04396,2144
+182,Giant white dragon fly,14,14,0,,14,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+183,Blue icky thing,14,14,0,,14,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+184,Hill giant,25,25,0,DROP_60,25,normal,0.6,23,0.3,178,144,112,0.0043,0.00072,167
+185,Flesh golem,14,14,0,,14,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+186,Warg,14,14,0,,14,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+187,Giant black louse,14,14,0,,14,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+188,Lurker,14,14,0,,14,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+189,Wererat,15,15,0,DROP_60|ONLY_GOLD,15,normal,0.6,31,0.0,0,0,0,0.0,0.0,31
+190,Black ogre,15,15,0,DROP_60,15,normal,0.6,16,0.3,93,84,52,0.0026,0.00028,100
+191,Magic mushroom patch,15,15,0,,15,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+192,Guardian naga,15,15,0,DROP_1D2|DROP_60,15,normal,2.1,55,1.05,324,295,183,0.009,0.00098,350
+193,Light hound,15,15,0,,15,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+194,Dark hound,15,15,0,,15,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+195,Half-orc,15,15,0,DROP_60,15,normal,0.6,16,0.3,93,84,52,0.0026,0.00028,100
+196,Giant tarantula,15,15,0,,15,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+197,Giant clear centipede,15,15,0,,15,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+198,Mirkwood spider,15,15,0,,15,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+199,Frost giant,28,28,0,DROP_60,28,normal,0.6,26,0.3,188,153,114,0.0052,0.00088,179
+200,Griffon,15,15,0,,15,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+201,Homunculus,15,15,0,,15,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+202,Gnome mage,15,15,0,DROP_60,15,normal,0.6,16,0.3,93,84,52,0.0026,0.00028,100
+203,Clear hound,15,15,0,,15,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+204,Clay golem,15,15,0,,15,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+205,Umber hulk,16,16,0,,16,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+206,Orc captain,18,18,0,DROP_90,18,normal,0.9,27,0.45,155,138,82,0.005,0.00056,165
+207,Gelatinous cube,16,16,0,DROP_1D2|DROP_4D2,16,normal,7.5,206,3.75,1205,1089,662,0.0356,0.00388,1295
+208,Giant green dragon fly,16,16,0,,16,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+209,Fire giant,30,30,0,DROP_60,30,normal,0.6,28,0.3,273,240,197,0.0055,0.00092,268
+210,Hummerhorn,16,16,0,,16,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+211,"Ulfast, Son of Ulfang",16,16,1,DROP_90|DROP_GOOD|ONLY_ITEM,16,good,0.9,0,0.9,1643,1336,280,0.1051,0.02717,1336
+212,Quasit,16,16,0,DROP_1D2|ONLY_ITEM,16,normal,1.5,0,1.5,482,436,265,0.0144,0.00156,436
+213,Imp,17,17,0,DROP_1D2|ONLY_ITEM,17,normal,1.5,0,1.5,495,445,269,0.0149,0.00164,445
+214,Forest troll,17,17,0,DROP_60,17,normal,0.6,17,0.3,99,89,54,0.003,0.00033,106
+215,"Nar, the Dwarf",17,17,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,17,good,1.5,0,1.5,2759,2238,474,0.1679,0.04532,2238
+216,2-headed hydra,17,17,0,DROP_1D2|ONLY_GOLD,17,normal,1.5,86,0.0,0,0,0,0.0,0.0,86
+217,Water spirit,17,17,0,,17,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+218,Giant red scorpion,17,17,0,,17,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+219,Earth spirit,17,17,0,,17,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+220,Fire spirit,18,18,0,,18,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+221,Fire hound,18,18,0,,18,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+222,Cold hound,18,18,0,,18,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+223,Energy hound,18,18,0,,18,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+224,Potion mimic,18,18,0,,18,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+225,Blink dog,18,18,0,,18,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+226,Uruk,16,16,0,DROP_60,16,normal,0.6,16,0.3,96,87,53,0.0029,0.00031,104
+227,"Shagrat, the Orc Captain",19,19,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,19,good,1.5,0,1.5,2875,2310,487,0.1764,0.05062,2310
+228,"Gorbag, the Orc Captain",19,19,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,19,good,1.5,0,1.5,2875,2310,487,0.1764,0.05062,2310
+229,Shambling mound,18,18,0,DROP_90|ONLY_GOLD,18,normal,0.9,54,0.0,0,0,0,0.0,0.0,54
+230,Stone giant,33,33,0,DROP_60,33,normal,0.6,35,0.3,282,246,199,0.0059,0.00099,281
+231,Giant black dragon fly,18,18,0,,18,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+232,Stone golem,19,19,0,,19,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+233,Red mold,19,19,0,,19,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+234,Giant gold dragon fly,19,19,0,,19,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+235,"Bolg, Son of Azog",20,20,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,20,good,3.0,0,3.0,5912,4772,1108,0.3363,0.10768,4772
+236,Phase spider,20,20,0,,20,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+237,3-headed hydra,20,20,0,DROP_1D2|DROP_2D2|ONLY_GOLD,20,normal,4.5,292,0.0,0,0,0,0.0,0.0,292
+238,Earth hound,20,20,0,,20,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+239,Air hound,20,20,0,,20,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+240,Sabre-tooth tiger,20,20,0,,20,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+241,Water hound,20,20,0,,20,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+242,Chimaera,20,20,0,,20,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+243,Quylthulg,20,20,0,,20,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+244,Sasquatch,20,20,0,,20,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+245,Werewolf,20,20,0,,20,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+246,Dark elven lord,20,20,0,DROP_2D2|ONLY_ITEM,20,normal,3.0,0,3.0,1572,1265,1021,0.0324,0.00571,1265
+247,Cloud giant,36,36,0,DROP_90,36,normal,0.9,63,0.45,440,384,306,0.0096,0.00161,446
+248,"Lugdush, the Uruk",21,21,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,21,good,1.5,0,1.5,2994,2397,560,0.1853,0.0554,2397
+249,"Ugluk, the Uruk",22,22,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,22,good,1.5,0,1.5,3124,2471,567,0.197,0.05715,2471
+250,Blue dragon bat,21,21,0,,21,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+251,Scroll mimic,21,21,0,,21,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+252,Fire vortex,21,21,0,,21,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+253,Water vortex,21,21,0,,21,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+254,Cold vortex,21,21,0,,21,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+255,Energy vortex,21,21,0,,21,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+256,Mummified orc,21,21,0,DROP_90,21,normal,0.9,30,0.45,240,192,154,0.0051,0.00088,223
+257,Killer stag beetle,22,22,0,,22,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+258,Iron golem,22,22,0,,22,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+259,Giant yellow scorpion,22,22,0,,22,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+260,Black ooze,23,23,0,DROP_60,23,normal,0.6,22,0.3,168,133,104,0.0038,0.00066,155
+261,Hardened warrior,23,23,0,DROP_1D2,23,normal,1.5,54,0.75,419,333,260,0.0096,0.00165,387
+262,"Azog, King of the Uruk-Hai",23,23,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,23,good,3.0,0,3.0,6328,4966,1148,0.3549,0.11121,4966
+263,Master rogue,23,23,0,DROP_2D2,23,normal,3.0,108,1.5,838,666,520,0.0191,0.00331,774
+264,Red dragon bat,23,23,0,,23,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+265,Killer white beetle,23,23,0,,23,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+266,Giant bronze dragon fly,23,23,0,,23,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+267,Forest wight,24,24,0,DROP_60|DROP_90,24,normal,1.5,56,0.75,432,341,262,0.0105,0.0018,397
+268,"Ibun, Son of Mim",24,24,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,24,good,1.5,0,1.5,3293,2555,579,0.2082,0.05921,2555
+269,"Khim, Son of Mim",24,24,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,24,good,1.5,0,1.5,3293,2555,579,0.2082,0.05921,2555
+270,4-headed hydra,24,24,0,DROP_4D2|ONLY_GOLD,24,normal,6.0,450,0.0,0,0,0,0.0,0.0,450
+271,Mummified human,24,24,0,DROP_90|ONLY_ITEM,24,normal,0.9,0,0.9,518,409,314,0.0126,0.00217,409
+272,Vampire bat,24,24,0,,24,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+273,Sangahyando of Umbar,24,24,1,DROP_1D2|DROP_90|DROP_GOOD|ONLY_ITEM,24,good,2.4,0,2.4,5269,4089,927,0.3122,0.09309,4089
+274,Angamaite of Umbar,24,24,1,DROP_1D2|DROP_90|DROP_GOOD|ONLY_ITEM,24,good,2.4,0,2.4,5269,4089,927,0.3122,0.09309,4089
+275,Banshee,24,24,0,DROP_1D2,24,normal,1.5,56,0.75,432,341,262,0.0105,0.0018,397
+276,Pukelman,25,25,0,,25,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+277,Dark elven druid,25,25,0,DROP_1D2|ONLY_ITEM,25,normal,1.5,0,1.5,890,718,561,0.0215,0.00362,718
+278,Stone troll,25,25,0,DROP_60,25,normal,0.6,23,0.3,178,144,112,0.0043,0.00072,167
+279,Troll priest,26,26,0,DROP_90,26,normal,0.9,36,0.45,273,220,169,0.007,0.00118,257
+280,Wereworm,25,25,0,,25,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+281,Carrion crawler,25,25,0,,25,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+282,Killer red beetle,25,25,0,,25,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+283,Giant grey ant,26,26,0,,26,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+284,"Ulwarth, Son of Ulfang",26,26,1,DROP_90|DROP_GOOD|ONLY_ITEM,26,good,0.9,0,0.9,2041,1592,384,0.1393,0.0368,1592
+285,Displacer beast,26,26,0,,26,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+286,Giant fire tick,26,26,0,,26,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+287,Cave ogre,26,26,0,DROP_60,26,normal,0.6,24,0.3,182,147,113,0.0047,0.00079,171
+288,White wraith,26,26,0,DROP_1D2,26,normal,1.5,61,0.75,455,367,282,0.0117,0.00196,428
+289,Angel,26,26,0,DROP_2D2|ONLY_ITEM,26,normal,3.0,0,3.0,1818,1470,1127,0.0462,0.00783,1470
+290,"Mim, Betrayer of Turin",27,27,1,DROP_2D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,27,great,3.0,0,3.0,17990,12817,1291,0.9641,0.62978,12817
+291,Killer fire beetle,27,27,0,,27,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+292,Creeping adamantite coins,27,27,0,DROP_2D2|DROP_90|ONLY_GOLD,27,normal,3.9,1593,0.0,0,0,0,0.0,0.0,1593
+293,Algroth,27,27,0,DROP_60,27,normal,0.6,25,0.3,184,149,113,0.0048,0.00081,174
+294,Vibration hound,27,27,0,,27,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+295,Nexus hound,27,27,0,,27,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+296,Ogre mage,27,27,0,DROP_1D2,27,normal,1.5,63,0.75,460,373,283,0.012,0.00202,436
+297,"Lokkak, the Ogre Chieftain",32,32,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,32,good,3.0,0,3.0,7923,6591,2324,0.4102,0.1338,6591
+298,Vampire,27,27,0,DROP_1D2|DROP_60,27,normal,2.1,88,1.05,643,522,397,0.0168,0.00283,610
+299,Gorgimaera,27,27,0,,27,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+300,Colbran,27,27,0,,27,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+301,Spirit naga,28,28,0,DROP_2D2|DROP_90|ONLY_ITEM,28,normal,3.9,0,3.9,2441,1984,1482,0.0662,0.01136,1984
+302,5-headed hydra,28,28,0,DROP_1D2|DROP_4D2|ONLY_GOLD,28,normal,7.5,653,0.0,0,0,0,0.0,0.0,653
+303,Black knight,28,28,0,DROP_1D2,28,normal,1.5,65,0.75,469,381,285,0.013,0.00219,447
+304,Uldor the Accursed,28,28,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,28,good,1.5,0,1.5,3469,2751,651,0.231,0.06296,2751
+305,Mage,28,28,0,DROP_1D2|ONLY_ITEM,28,normal,1.5,0,1.5,939,763,570,0.026,0.00439,763
+306,Mind flayer,28,28,0,DROP_1D2|DROP_60|ONLY_ITEM,28,normal,2.1,0,2.1,1314,1068,798,0.0362,0.00613,1068
+307,"Draebor, the Imp",28,28,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,28,good,6.0,0,6.0,13875,11005,2606,0.6503,0.22903,11005
+308,Basilisk,28,28,0,DROP_1D2|ONLY_ITEM,28,normal,1.5,0,1.5,939,763,570,0.026,0.00439,763
+309,Ice troll,28,28,0,DROP_60,28,normal,0.6,26,0.3,188,153,114,0.0052,0.00088,179
+310,Purple worm,29,29,0,,29,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+311,Archangel,34,34,0,DROP_2D2|ONLY_ITEM,34,normal,3.0,0,3.0,2847,2480,1990,0.0595,0.01005,2480
+312,Catoblepas,29,29,0,DROP_2D2|ONLY_GOLD,29,normal,3.0,271,0.0,0,0,0,0.0,0.0,271
+313,Ring mimic,29,29,0,,29,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+314,Young blue dragon,29,29,0,DROP_2D2,29,normal,3.0,135,1.5,948,773,573,0.0265,0.00459,909
+315,Young white dragon,29,29,0,DROP_2D2,29,normal,3.0,135,1.5,948,773,573,0.0265,0.00459,909
+316,Young green dragon,29,29,0,DROP_2D2,29,normal,3.0,135,1.5,948,773,573,0.0265,0.00459,909
+317,Young bronze dragon,29,29,0,DROP_2D2,29,normal,3.0,135,1.5,948,773,573,0.0265,0.00459,909
+318,Mithril golem,30,30,0,DROP_2D2|ONLY_GOLD,30,normal,3.0,283,0.0,0,0,0,0.0,0.0,283
+319,Shadow drake,33,33,0,DROP_3D2|ONLY_ITEM,33,normal,4.5,0,4.5,4227,3689,2978,0.0859,0.0147,3689
+320,Skeleton troll,30,30,0,,30,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+321,Manticore,30,30,0,,30,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+322,Giant blue ant,30,30,0,,30,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+323,Giant army ant,30,30,0,,30,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+324,Grave wight,30,30,0,DROP_1D2|ONLY_ITEM,30,normal,1.5,0,1.5,1364,1199,985,0.0274,0.0046,1199
+325,Killer slicer beetle,30,30,0,,30,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+326,Ghost,31,31,0,DROP_1D2|DROP_60,31,normal,2.1,103,1.05,965,846,691,0.0197,0.00329,949
+327,Death watch beetle,31,31,0,,31,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+328,Ogre shaman,27,27,0,DROP_90|ONLY_ITEM,27,normal,0.9,0,0.9,551,447,340,0.0145,0.00243,447
+329,Nexus quylthulg,32,32,0,,32,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+330,"Shelob, Spider of Darkness",55,55,1,DROP_1D2|DROP_2D2|DROP_GOOD|ONLY_ITEM,55,good,4.5,0,4.5,22046,17121,12547,0.5269,0.22747,17121
+331,Ninja,32,32,0,DROP_1D2,32,normal,1.5,81,0.75,697,610,495,0.0145,0.00241,690
+332,Memory moss,32,32,0,,32,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+333,Storm giant,40,40,0,DROP_1D2,40,normal,1.5,124,0.75,896,789,649,0.0172,0.00279,913
+334,Cave troll,33,33,0,DROP_60,33,normal,0.6,35,0.3,282,246,199,0.0059,0.00099,281
+335,Half-troll,34,34,0,DROP_90|ONLY_ITEM,34,normal,0.9,0,0.9,854,744,597,0.0182,0.00303,744
+336,Mystic,33,33,0,DROP_1D2|ONLY_ITEM,33,normal,1.5,0,1.5,1409,1230,993,0.0295,0.00492,1230
+337,Barrow wight,33,33,0,DROP_60,33,normal,0.6,35,0.3,282,246,199,0.0059,0.00099,281
+338,Skeleton ettin,33,33,0,,33,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+339,Chaos drake,33,33,0,DROP_3D2|ONLY_ITEM,33,normal,4.5,0,4.5,4227,3689,2978,0.0859,0.0147,3689
+340,Law drake,33,33,0,DROP_3D2|ONLY_ITEM,33,normal,4.5,0,4.5,4227,3689,2978,0.0859,0.0147,3689
+341,Balance drake,33,33,0,DROP_3D2|ONLY_ITEM,33,normal,4.5,0,4.5,4227,3689,2978,0.0859,0.0147,3689
+342,Ethereal drake,33,33,0,DROP_3D2|ONLY_ITEM,33,normal,4.5,0,4.5,4227,3689,2978,0.0859,0.0147,3689
+343,Bert the Stone Troll,34,34,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,34,good,1.5,0,1.5,4024,3324,1173,0.2319,0.06939,3324
+344,Bill the Stone Troll,34,34,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,34,good,1.5,0,1.5,4024,3324,1173,0.2319,0.06939,3324
+345,Tom the Stone Troll,34,34,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,34,good,1.5,0,1.5,4024,3324,1173,0.2319,0.06939,3324
+346,Shade,33,33,0,DROP_2D2|DROP_90|ONLY_ITEM,33,normal,3.9,0,3.9,3663,3197,2581,0.0749,0.01275,3197
+347,Spectre,34,34,0,DROP_2D2|DROP_90|ONLY_ITEM,34,normal,3.9,0,3.9,3701,3224,2587,0.0766,0.01305,3224
+348,Water troll,35,35,0,DROP_60,35,normal,0.6,40,0.3,290,254,203,0.0063,0.00105,293
+349,Fire elemental,33,33,0,,33,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+350,Cherub,39,39,0,DROP_1D2|DROP_2D2|ONLY_ITEM,39,normal,4.5,0,4.5,4527,3930,3079,0.098,0.01723,3930
+351,Water elemental,33,33,0,,33,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+352,Invisible stalker,35,35,0,,35,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+353,Carrion crawler,34,34,0,,34,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+354,Master thief,34,34,0,DROP_2D2|DROP_90,34,normal,3.9,242,1.95,1850,1612,1293,0.0389,0.00654,1854
+355,Ulfang the Black,34,34,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,34,good,3.0,0,3.0,8049,6647,2347,0.41,0.13396,6647
+356,Lich,34,34,0,DROP_1D2,34,normal,1.5,93,0.75,712,620,497,0.0151,0.00252,713
+357,Master vampire,36,36,0,DROP_4D2,36,normal,6.0,418,3.0,2933,2557,2037,0.0623,0.01069,2975
+358,Giant grey scorpion,34,34,0,,34,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+359,Earth elemental,34,34,0,,34,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+360,Air elemental,34,34,0,,34,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+361,Hellhound,35,35,0,,35,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+362,Eog golem,34,34,0,DROP_2D2|ONLY_GOLD,34,normal,3.0,373,0.0,0,0,0,0.0,0.0,373
+363,Olog,36,36,0,DROP_60,36,normal,0.6,42,0.3,293,256,204,0.0064,0.00107,298
+364,Dagashi,35,35,0,DROP_1D2,35,normal,1.5,99,0.75,726,634,508,0.0156,0.00263,733
+365,Gravity hound,35,35,0,,35,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+366,Acidic cytoplasm,35,35,0,DROP_1D2|DROP_4D2,35,normal,7.5,495,3.75,3629,3169,2539,0.0756,0.01307,3665
+367,Inertia hound,35,35,0,,35,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+368,Impact hound,35,35,0,,35,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+369,Dread,35,35,0,DROP_2D2|DROP_60|ONLY_ITEM,35,normal,3.6,0,3.6,3483,3042,2437,0.0729,0.01255,3042
+370,Ooze elemental,36,36,0,,36,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+371,Smoke elemental,36,36,0,,36,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+372,Young black dragon,31,31,0,DROP_3D2,31,normal,4.5,221,2.25,2069,1813,1481,0.0417,0.00705,2034
+373,Mumak,35,35,0,,35,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+374,Giant fire ant,35,35,0,,35,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+375,Mature white dragon,34,34,0,DROP_4D2,34,normal,6.0,373,3.0,2847,2480,1990,0.0592,0.01004,2853
+376,Xorn,36,36,0,,36,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+377,Shadow,36,36,0,DROP_1D2|ONLY_ITEM,36,normal,1.5,0,1.5,1466,1278,1019,0.0318,0.00536,1278
+378,Phantom,36,36,0,DROP_1D2|ONLY_ITEM,36,normal,1.5,0,1.5,1466,1278,1019,0.0318,0.00536,1278
+379,Grey wraith,36,36,0,DROP_60|DROP_90,36,normal,1.5,105,0.75,733,639,509,0.0159,0.00268,744
+380,Young multi-hued dragon,32,32,0,DROP_1D2|DROP_3D2,32,normal,6.0,322,3.0,2788,2438,1980,0.0566,0.0096,2761
+381,Colossus,36,36,0,,36,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+382,Young gold dragon,31,31,0,DROP_3D2,31,normal,4.5,221,2.25,2069,1813,1481,0.0417,0.00705,2034
+383,Rogrog the Black Troll,42,42,1,DROP_3D2|DROP_GOOD|ONLY_ITEM,42,good,4.5,0,4.5,15963,13054,7526,0.5381,0.19089,13054
+384,Mature blue dragon,34,34,0,DROP_4D2,34,normal,6.0,373,3.0,2847,2480,1990,0.0592,0.01004,2853
+385,Mature green dragon,34,34,0,DROP_4D2,34,normal,6.0,373,3.0,2847,2480,1990,0.0592,0.01004,2853
+386,Mature bronze dragon,34,34,0,DROP_4D2,34,normal,6.0,373,3.0,2847,2480,1990,0.0592,0.01004,2853
+387,Young red dragon,31,31,0,DROP_3D2,31,normal,4.5,221,2.25,2069,1813,1481,0.0417,0.00705,2034
+388,Trapper,36,36,0,,36,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+389,Bodak,36,36,0,,36,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+390,Ice elemental,37,37,0,,37,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+391,Necromancer,36,36,0,DROP_1D2|ONLY_ITEM,36,normal,1.5,0,1.5,1466,1278,1019,0.0318,0.00536,1278
+392,"Lorgan, Chief of the Easterlings",36,36,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,36,good,3.0,0,3.0,8175,6790,2463,0.4152,0.13003,6790
+393,Demonologist,36,36,0,DROP_1D2|ONLY_ITEM,36,normal,1.5,0,1.5,1466,1278,1019,0.0318,0.00536,1278
+394,Mummified troll,37,37,0,DROP_60,37,normal,0.6,44,0.3,296,258,204,0.0065,0.0011,302
+395,The Queen Ant,37,37,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,37,good,3.0,0,3.0,8226,6821,2474,0.415,0.13025,6821
+396,Will o' the wisp,38,38,0,,38,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+397,Magma elemental,37,37,0,,37,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+398,Black pudding,37,37,0,DROP_1D2|DROP_60|DROP_90,37,normal,3.0,220,1.5,1480,1289,1021,0.0323,0.00548,1508
+399,Killer iridescent beetle,37,37,0,,37,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+400,Nexus vortex,37,37,0,,37,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+401,Plasma vortex,37,37,0,,37,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+402,Mature red dragon,36,36,0,DROP_1D2|DROP_4D2,36,normal,7.5,523,3.75,3666,3196,2547,0.0772,0.01334,3719
+403,Mature gold dragon,36,36,0,DROP_1D2|DROP_4D2,36,normal,7.5,523,3.75,3666,3196,2547,0.0772,0.01334,3719
+404,Crystal drake,33,33,0,DROP_3D2|ONLY_ITEM,33,normal,4.5,0,4.5,4227,3689,2978,0.0859,0.0147,3689
+405,Mature black dragon,36,36,0,DROP_1D2|DROP_4D2,36,normal,7.5,523,3.75,3666,3196,2547,0.0772,0.01334,3719
+406,Mature multi-hued dragon,38,38,0,DROP_2D2|DROP_4D2,38,normal,9.0,689,4.5,4484,3898,3071,0.0957,0.01672,4587
+407,Death knight,38,38,0,DROP_1D2|DROP_2D2|ONLY_ITEM,38,normal,4.5,0,4.5,4484,3898,3071,0.0962,0.01673,3898
+408,Castamir the Usurper,38,38,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,38,good,3.0,0,3.0,8278,6852,2487,0.4147,0.13071,6852
+409,Time vortex,38,38,0,,38,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+410,Shimmering vortex,38,38,0,,38,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+411,Ancient blue dragon,40,40,0,DROP_3D2|DROP_4D2,40,normal,10.5,868,5.25,6273,5525,4541,0.1144,0.01934,6393
+412,Ancient bronze dragon,40,40,0,DROP_3D2|DROP_4D2,40,normal,10.5,868,5.25,6273,5525,4541,0.1144,0.01934,6393
+413,Beholder,40,40,0,,40,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+414,Emperor wight,38,38,0,DROP_4D2|DROP_90|ONLY_ITEM,38,normal,6.9,0,6.9,6875,5977,4709,0.1436,0.02554,5977
+415,Seraph,45,45,0,DROP_1D2|DROP_2D2|ONLY_ITEM,45,normal,4.5,0,4.5,5641,4956,3888,0.1201,0.01908,4956
+416,"Vargo, Tyrant of Fire",43,43,1,,43,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+417,Black wraith,38,38,0,DROP_1D2|DROP_2D2|ONLY_ITEM,38,normal,4.5,0,4.5,4484,3898,3071,0.0962,0.01673,3898
+418,Erinyes,38,38,0,DROP_60|ONLY_ITEM,38,normal,0.6,0,0.6,598,520,409,0.0134,0.00225,520
+419,Nether wraith,39,39,0,DROP_4D2|DROP_90|ONLY_ITEM,39,normal,6.9,0,6.9,6941,6025,4721,0.1463,0.0263,6025
+420,Eldrak,37,37,0,DROP_60,37,normal,0.6,44,0.3,296,258,204,0.0065,0.0011,302
+421,Ettin,38,38,0,DROP_1D2|ONLY_ITEM,38,normal,1.5,0,1.5,1495,1299,1024,0.0331,0.00561,1299
+422,"Waldern, King of Water",43,43,1,,43,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+423,Kavlax the Many-Headed,39,39,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,39,good,6.0,0,6.0,16627,13750,4993,0.6563,0.24705,13750
+424,Ancient white dragon,40,40,0,DROP_3D2|DROP_4D2,40,normal,10.5,868,5.25,6273,5525,4541,0.1144,0.01934,6393
+425,Ancient green dragon,40,40,0,DROP_3D2|DROP_4D2,40,normal,10.5,868,5.25,6273,5525,4541,0.1144,0.01934,6393
+426,7-headed hydra,39,39,0,DROP_2D2|DROP_4D2|ONLY_GOLD,39,normal,9.0,1434,0.0,0,0,0,0.0,0.0,1434
+427,Night mare,39,39,0,DROP_2D2|ONLY_GOLD,39,normal,3.0,478,0.0,0,0,0,0.0,0.0,478
+428,Vampire lord,42,42,0,DROP_4D2|DROP_60,42,normal,6.6,582,3.3,4006,3520,2865,0.0764,0.01265,4103
+429,Ancient black dragon,41,41,0,DROP_3D2|DROP_4D2,41,normal,10.5,898,5.25,6322,5563,4549,0.1166,0.01969,6460
+430,Disenchanter worm mass,40,40,0,,40,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+431,Rotting quylthulg,45,45,0,,45,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+432,Spirit troll,40,40,0,DROP_90,40,normal,0.9,74,0.45,538,474,389,0.0104,0.00167,548
+433,Lesser titan,56,56,0,DROP_4D2|DROP_GOOD|ONLY_ITEM,56,good,6.0,0,6.0,29472,22875,16740,0.6313,0.2912,22875
+434,9-headed hydra,40,40,0,DROP_2D2|DROP_4D2|ONLY_GOLD,40,normal,9.0,1488,0.0,0,0,0,0.0,0.0,1488
+435,Enchantress,40,40,0,DROP_2D2|DROP_GOOD|ONLY_ITEM,40,good,3.0,0,3.0,10548,8645,5002,0.4025,0.13167,8645
+436,Knight Templar,44,44,0,DROP_2D2|DROP_90|ONLY_ITEM,44,normal,3.9,0,3.9,4812,4217,3398,0.0935,0.01548,4217
+437,Sorcerer,40,40,0,DROP_4D2|DROP_90|ONLY_ITEM,40,normal,6.9,0,6.9,8244,7262,5968,0.1482,0.02535,7262
+438,Xaren,40,40,0,DROP_2D2|ONLY_GOLD,40,normal,3.0,496,0.0,0,0,0,0.0,0.0,496
+439,Giant roc,40,40,0,,40,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+440,Uvatha the Horseman,40,40,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,40,good,3.0,0,3.0,10548,8645,5002,0.4025,0.13167,8645
+441,Minotaur,40,40,0,,40,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+442,"Medusa, the Gorgon",40,40,1,DROP_1D2|DROP_2D2|DROP_GOOD|ONLY_ITEM,40,good,4.5,0,4.5,15822,12968,7502,0.5381,0.19085,12968
+443,Death drake,45,45,0,DROP_2D2|DROP_4D2|ONLY_ITEM,45,normal,9.0,0,9.0,11282,9911,7776,0.2257,0.0378,9911
+444,Ancient red dragon,41,41,0,DROP_3D2|DROP_4D2,41,normal,10.5,898,5.25,6322,5563,4549,0.1166,0.01969,6460
+445,Ancient gold dragon,41,41,0,DROP_3D2|DROP_4D2,41,normal,10.5,898,5.25,6322,5563,4549,0.1166,0.01969,6460
+446,Great crystal drake,45,45,0,DROP_2D2|DROP_4D2|ONLY_ITEM,45,normal,9.0,0,9.0,11282,9911,7776,0.2257,0.0378,9911
+447,Vrock,40,40,0,DROP_60|ONLY_ITEM,40,normal,0.6,0,0.6,717,631,519,0.0138,0.00223,631
+448,Death quasit,40,40,0,DROP_2D2|DROP_4D2|DROP_90|ONLY_ITEM,40,normal,9.9,0,9.9,11829,10419,8563,0.2056,0.03618,10419
+449,Adunaphel the Quiet,43,43,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,43,good,6.0,0,6.0,21384,17462,10051,0.6429,0.24611,17462
+450,Dark elven sorcerer,41,41,0,DROP_4D2|DROP_90|ONLY_ITEM,41,normal,6.9,0,6.9,8309,7311,5979,0.151,0.02582,7311
+451,Master lich,41,41,0,DROP_2D2|DROP_4D2|ONLY_ITEM,41,normal,9.0,0,9.0,10838,9536,7798,0.1923,0.03355,9536
+452,Hezrou,41,41,0,DROP_1D2|ONLY_ITEM,41,normal,1.5,0,1.5,1806,1589,1300,0.035,0.00567,1589
+453,Akhorahil the Blind,45,45,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,45,good,6.0,0,6.0,21635,17658,10192,0.643,0.24683,17658
+454,"Gorlim, Betrayer of Barahir",41,41,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,41,good,3.0,0,3.0,10598,8674,5010,0.4025,0.13168,8674
+455,Archon,55,55,0,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,55,good,10.5,0,10.5,51440,39948,29276,0.8256,0.45239,39948
+456,Glabrezu,43,43,0,DROP_90|ONLY_ITEM,43,normal,0.9,0,0.9,1101,967,783,0.022,0.00353,967
+457,Ren the Unclean,48,48,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,48,good,6.0,0,6.0,21919,17824,10236,0.6428,0.24809,17824
+458,Nalfeshnee,45,45,0,DROP_1D2|ONLY_ITEM,45,normal,1.5,0,1.5,1880,1652,1296,0.0417,0.0064,1652
+459,Undead beholder,45,45,0,,45,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+460,Dread,42,42,0,DROP_60|ONLY_ITEM,42,normal,0.6,0,0.6,728,640,521,0.0144,0.00231,640
+461,Mumak,43,43,0,,43,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+462,Ancient multi-hued dragon,43,43,0,DROP_2D2|DROP_3D2|DROP_4D2|ONLY_ITEM,43,normal,13.5,0,13.5,16522,14499,11742,0.2834,0.05167,14499
+463,Ethereal dragon,45,45,0,DROP_2D2|DROP_4D2|ONLY_ITEM,45,normal,9.0,0,9.0,11282,9911,7776,0.2257,0.0378,9911
+464,Ji Indur Dawndeath,52,52,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,52,good,6.0,0,6.0,28296,22287,15936,0.6296,0.29255,22287
+465,Marilith,47,47,0,DROP_1D2|ONLY_ITEM,47,normal,1.5,0,1.5,1913,1676,1301,0.0433,0.00662,1676
+466,"Quaker, Master of Earth",43,43,1,,43,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+467,Lesser Balrog,49,49,0,DROP_1D2|DROP_2D2|DROP_GOOD|ONLY_ITEM,49,good,4.5,0,4.5,16503,13399,7686,0.5375,0.19597,13399
+468,"Ariel, Queen of Air",43,43,1,,43,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+469,11-headed hydra,44,44,0,DROP_2D2|DROP_4D2|ONLY_GOLD,44,normal,9.0,1680,0.0,0,0,0,0.0,0.0,1680
+470,Patriarch,40,40,0,DROP_2D2|DROP_90|ONLY_ITEM,40,normal,3.9,0,3.9,4660,4104,3373,0.0867,0.01441,4104
+471,Dreadmaster,44,44,0,DROP_1D2|DROP_4D2|ONLY_ITEM,44,normal,7.5,0,7.5,9253,8109,6535,0.172,0.02955,8109
+472,Drolem,44,44,0,,44,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+473,Scatha the Worm,46,46,1,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,46,good,10.5,0,10.5,38011,30998,17857,0.8351,0.39127,30998
+474,"Dwar, Dog Lord of Waw",56,56,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,56,good,6.0,0,6.0,29472,22875,16740,0.6313,0.2912,22875
+475,Smaug the Golden,48,48,1,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,48,good,10.5,0,10.5,38359,31191,17913,0.835,0.39286,31191
+476,Dracolich,55,55,0,DROP_4D2|DROP_GOOD|ONLY_ITEM,55,good,6.0,0,6.0,29394,22828,16729,0.6313,0.29115,22828
+477,Greater titan,66,66,0,DROP_1D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,66,good,7.5,0,7.5,83379,32796,33685,0.7035,0.36434,32796
+478,Dracolisk,55,55,0,DROP_4D2|DROP_GOOD|ONLY_ITEM,55,good,6.0,0,6.0,29394,22828,16729,0.6313,0.29115,22828
+479,Death mold,47,47,0,,47,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+480,Itangast the Fire Drake,47,47,1,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,47,good,10.5,0,10.5,38188,31097,17888,0.8351,0.39169,31097
+481,"Glaurung, Father of the Dragons",70,70,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,70,great,13.5,0,13.5,201835,89458,68973,1.0,0.98656,89458
+482,Master mystic,50,50,0,DROP_1D2|DROP_2D2|ONLY_ITEM,50,normal,4.5,0,4.5,7104,6180,5012,0.1287,0.01937,6180
+483,The Balrog of Moria,50,50,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,50,good,13.5,0,13.5,63316,49931,35799,0.893,0.54089,49931
+484,Nightwing,61,61,0,DROP_2D2|DROP_GOOD|ONLY_ITEM,61,good,3.0,0,3.0,15879,12036,9373,0.3902,0.16111,12036
+485,Nether hound,51,51,0,,51,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+486,Time hound,51,51,0,,51,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+487,Plasma hound,51,51,0,,51,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+488,Demonic quylthulg,45,45,0,,45,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+489,Great Storm Wyrm,63,63,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,63,good,13.5,0,13.5,71833,54353,42222,0.892,0.54671,54353
+490,Baphomet the Minotaur Lord,58,58,1,DROP_1D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,58,good,7.5,0,7.5,37020,28710,20951,0.7125,0.35,28710
+491,Harowen the Black Hand,51,51,1,DROP_1D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,51,good,7.5,0,7.5,35271,27799,19903,0.7111,0.35113,27799
+492,Hoarmurath of Dir,64,64,1,DROP_2D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,64,good,9.0,0,9.0,48006,36293,28157,0.7731,0.41084,36293
+493,Grand master mystic,57,57,0,DROP_4D2|ONLY_ITEM,57,normal,6.0,0,6.0,10008,8643,6841,0.1855,0.02878,8643
+494,"Khamul, the Black Easterling",72,72,1,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,72,good,10.5,0,10.5,122718,48317,53650,0.8135,0.48699,48317
+495,Ethereal hound,59,59,0,,59,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+496,Great Ice Wyrm,63,63,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,63,good,13.5,0,13.5,71833,54353,42222,0.892,0.54671,54353
+497,The Phoenix,54,54,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,54,good,3.0,0,3.0,14217,11190,7978,0.3913,0.1591,11190
+498,Nightcrawler,69,69,0,DROP_1D2|DROP_2D2|DROP_GOOD|ONLY_ITEM,69,good,4.5,0,4.5,50325,19758,20213,0.5175,0.23944,19758
+499,Hand druj,57,57,0,,57,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+500,Eye druj,58,58,0,,58,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+501,Skull druj,59,59,0,,59,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+502,Chaos vortex,53,53,0,,53,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+503,Aether vortex,60,60,0,,60,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+504,The Lernaean Hydra,57,57,1,DROP_3D2|DROP_4D2|ONLY_GOLD,57,normal,10.5,2476,0.0,0,0,0,0.0,0.0,2476
+505,"Thuringwethil, the Vampire Messenger",67,67,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,67,good,13.5,0,13.5,150397,59121,60638,0.8878,0.55777,59121
+506,Great Hell Wyrm,67,67,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,67,good,13.5,0,13.5,150397,59121,60638,0.8878,0.55777,59121
+507,Draconic quylthulg,45,45,0,,45,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+508,Fundin Bluecloak,59,59,1,DROP_1D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,59,good,7.5,0,7.5,37111,28763,20964,0.7123,0.3509,28763
+509,"Uriel, Angel of Fire",61,61,1,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,61,good,10.5,0,10.5,55576,42125,32805,0.8229,0.45929,42125
+510,"Azriel, Angel of Death",62,62,1,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,62,good,10.5,0,10.5,55723,42200,32822,0.8229,0.45937,42200
+511,Ancalagon the Black,85,85,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,85,great,13.5,0,13.5,205572,90469,69059,1.0,0.98629,90469
+512,Nightwalker,73,73,0,DROP_4D2|DROP_GOOD|ONLY_ITEM,73,good,6.0,0,6.0,70290,27646,30658,0.6169,0.31718,27646
+513,"Gabriel, the Messenger",64,64,1,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,64,good,10.5,0,10.5,56006,42342,32850,0.8228,0.46057,42342
+514,Saruman of Many Colours,60,60,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,60,great,13.5,0,13.5,116199,82204,42161,1.0,0.98709,82204
+515,Dreadlord,62,62,0,DROP_2D2|DROP_3D2|DROP_4D2|ONLY_ITEM,62,normal,13.5,0,13.5,30038,24925,21834,0.3972,0.06757,24925
+516,The Cat Lord,66,66,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,66,good,6.0,0,6.0,66703,26236,26948,0.6219,0.30404,26236
+517,Jabberwock,68,68,0,DROP_60|DROP_90|ONLY_ITEM,68,normal,1.5,0,1.5,3659,3033,2670,0.0578,0.00798,3033
+518,Chaos hound,64,64,0,,64,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+519,Great Wyrm of Chaos,75,75,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,75,good,13.5,0,13.5,158733,62298,68917,0.8842,0.58197,62298
+520,Great Wyrm of Law,75,75,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,75,good,13.5,0,13.5,158733,62298,68917,0.8842,0.58197,62298
+521,Great Wyrm of Balance,79,79,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,79,good,13.5,0,13.5,160228,62634,68924,0.8841,0.58245,62634
+522,"Tselakus, the Dreadlord",68,68,1,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,68,good,10.5,0,10.5,117216,46050,47168,0.8176,0.47023,46050
+523,Great Wyrm of Many Colours,79,79,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,79,good,13.5,0,13.5,160228,62634,68924,0.8841,0.58245,62634
+524,Black reaver,74,74,0,DROP_1D2|DROP_2D2|DROP_GOOD|ONLY_ITEM,74,good,4.5,0,4.5,52837,20760,22992,0.513,0.24917,20760
+525,Greater demonic quylthulg,71,71,0,,71,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+526,Greater draconic quylthulg,71,71,0,,71,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+527,Greater rotting quylthulg,71,71,0,,71,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+528,"Feagwath, the Undead Sorcerer",77,77,1,DROP_2D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,77,great,9.0,0,9.0,135492,59902,45949,0.9996,0.94471,59902
+529,"Omarax, the Eye Tyrant",73,73,1,,73,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+530,"Ungoliant, the Unlight",75,75,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,75,good,6.0,0,6.0,70548,27688,30630,0.6164,0.32134,27688
+531,Aether hound,74,74,0,,74,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+532,The Mouth of Sauron,65,65,1,DROP_1D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,65,good,7.5,0,7.5,83201,32745,33680,0.7035,0.36427,32745
+533,Master quylthulg,76,76,0,,76,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+534,"Qlzqqlzuup, the Emperor Quylthulg",79,79,1,DROP_4D2|ONLY_ITEM,79,normal,6.0,0,6.0,25387,13763,14920,0.2057,0.03096,13763
+535,The Witch-King of Angmar,80,80,1,DROP_3D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,80,great,10.5,0,10.5,157674,69825,53551,0.9999,0.96498,69825
+536,"Pazuzu, Lord of Air",82,82,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,82,good,6.0,0,6.0,71356,27808,30603,0.6171,0.32384,27808
+537,Hellhound,78,78,0,,78,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+538,"Cantoras, the Skeletal Lord",84,84,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,84,great,13.5,0,13.5,205237,90380,68862,1.0,0.98656,90380
+539,The Tarrasque,86,86,1,DROP_2D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,86,good,9.0,0,9.0,108222,41924,46042,0.7634,0.44356,41924
+540,"Lungorthin, the Balrog of White Fire",88,88,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,88,good,13.5,0,13.5,163308,63064,69065,0.8849,0.58501,63064
+541,"Draugluin, Sire of All Werewolves",83,83,1,DROP_1D2|DROP_GOOD|ONLY_ITEM,83,good,1.5,0,1.5,17894,6962,7651,0.2134,0.0932,6962
+542,"Vecna, the Emperor Lich",92,92,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,92,great,13.5,0,13.5,213678,92230,73716,1.0,0.98626,92230
+543,"Huan, Wolfhound of the Valar",90,90,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,90,good,6.0,0,6.0,74882,28493,32763,0.6158,0.32613,28493
+544,"Carcharoth, the Jaws of Thirst",90,90,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,90,good,6.0,0,6.0,74882,28493,32763,0.6158,0.32613,28493
+545,"Gothmog, the High Captain of Balrogs",95,95,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,95,great,13.5,0,13.5,215409,92650,73716,1.0,0.98629,92650
+546,"Sauron, the Sorcerer",99,99,1,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,99,great,13.5,0,13.5,217842,93245,73711,1.0,0.9863,93245
+547,"Morgoth, Lord of Darkness",100,100,1,DROP_1D2|DROP_2D2|DROP_3D2|DROP_4D2|DROP_CHOSEN|DROP_GOOD|DROP_GREAT|ONLY_ITEM,100,great,15.0,0,15.0,242548,103714,81860,1.0,0.99156,103714
+548,Silver mouse,4,4,0,,4,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+549,Rot jelly,5,5,0,,5,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+550,Giant tan bat,15,15,0,,15,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+551,Giant silver ant,23,23,0,,23,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+552,Giant brown tick,25,25,0,,25,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+553,Disenchanter bat,26,26,0,,26,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+554,Shimmering mold,27,27,0,,27,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+555,Wyvern,22,22,0,DROP_2D2|ONLY_GOLD,22,normal,3.0,209,0.0,0,0,0,0.0,0.0,209
+556,Chest mimic,35,35,0,DROP_2D2,35,normal,3.0,198,1.5,1451,1268,1016,0.0309,0.00525,1466
+557,Demilich,54,54,0,DROP_2D2|DROP_3D2|DROP_GOOD|ONLY_ITEM,54,good,7.5,0,7.5,35543,27975,19946,0.7109,0.35157,27975
+558,Archlich,64,64,0,DROP_2D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,64,good,9.0,0,9.0,48006,36293,28157,0.7731,0.41084,36293
+559,Crow,2,2,0,,2,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+560,Raven,4,4,0,,4,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+561,Crebain,16,16,0,,16,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+562,Winged Horror,48,48,0,,48,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+563,Cave bear,9,9,0,,9,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+564,Grizzly bear,16,16,0,,16,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+565,Werebear,24,24,0,DROP_1D2,24,normal,1.5,56,0.75,432,341,262,0.0105,0.0018,397
+566,"Beorn, the Shape-Changer",28,28,1,DROP_2D2|DROP_GOOD|ONLY_ITEM,28,good,3.0,0,3.0,6937,5502,1303,0.4087,0.12195,5502
+567,Barbazu,55,55,0,DROP_1D2|ONLY_ITEM,55,normal,1.5,0,1.5,2467,2136,1704,0.0485,0.00707,2136
+568,Bile Demon,61,61,0,DROP_3D2|DROP_GOOD|ONLY_ITEM,61,good,4.5,0,4.5,23818,18054,14059,0.5238,0.23166,18054
+569,Osyluth,65,65,0,DROP_3D2|DROP_GOOD|ONLY_ITEM,65,good,4.5,0,4.5,49921,19647,20208,0.5178,0.23799,19647
+570,Gelugon,69,69,0,DROP_4D2|DROP_GOOD|ONLY_ITEM,69,good,6.0,0,6.0,67101,26344,26951,0.6215,0.30576,26344
+571,Horned Reaper,72,72,0,DROP_2D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,72,good,9.0,0,9.0,105186,41415,45986,0.7629,0.43567,41415
+572,Pit Fiend,77,77,0,DROP_2D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,77,good,9.0,0,9.0,106324,41646,45949,0.7624,0.44095,41646
+573,Greater Balrog,79,79,0,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,79,good,10.5,0,10.5,124621,48716,53607,0.813,0.49301,48716
+574,Baby bronze dragon,9,9,0,DROP_1D2|DROP_60|ONLY_GOLD,9,normal,2.1,82,0.0,0,0,0,0.0,0.0,82
+575,Baby gold dragon,9,9,0,DROP_1D2|DROP_60|ONLY_GOLD,9,normal,2.1,82,0.0,0,0,0,0.0,0.0,82
+576,Great Swamp Wyrm,63,63,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,63,good,13.5,0,13.5,71833,54353,42222,0.892,0.54671,54353
+577,Great Wyrm of Perplexity,63,63,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,63,good,13.5,0,13.5,71833,54353,42222,0.892,0.54671,54353
+578,Great Bile Wyrm,67,67,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,67,good,13.5,0,13.5,150397,59121,60638,0.8878,0.55777,59121
+579,Great Wyrm of Thunder,67,67,0,DROP_2D2|DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,67,good,13.5,0,13.5,150397,59121,60638,0.8878,0.55777,59121
+580,Ranger,20,20,0,DROP_1D2,20,normal,1.5,49,0.75,393,316,255,0.0082,0.00143,365
+581,Paladin,20,20,0,DROP_1D2,20,normal,1.5,49,0.75,393,316,255,0.0082,0.00143,365
+582,Ranger Chieftain,41,41,0,DROP_2D2|ONLY_ITEM,41,normal,3.0,0,3.0,3613,3179,2599,0.0687,0.01131,3179
+583,Berserker,45,45,0,DROP_2D2|DROP_90|ONLY_ITEM,45,normal,3.9,0,3.9,4889,4295,3370,0.105,0.01656,4295
+584,Cyclops,45,45,0,DROP_1D2,45,normal,1.5,144,0.75,940,826,648,0.021,0.0032,969
+585,"Polyphemus, the Blind Cyclops",69,69,1,DROP_2D2|DROP_3D2|DROP_GOOD|ONLY_ITEM,69,good,7.5,0,7.5,83876,32930,33688,0.7031,0.36629,32930
+586,"Atlas, the Titan",76,76,1,DROP_4D2|DROP_GOOD|ONLY_ITEM,76,good,6.0,0,6.0,70716,27726,30632,0.6164,0.32135,27726
+587,"Kronos, Lord of the Titans",87,87,1,DROP_3D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,87,good,10.5,0,10.5,126639,48981,53717,0.8139,0.49538,48981
+588,Evil eye,18,18,0,,18,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+589,Spectator,28,28,0,,28,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+590,Gauth,36,36,0,,36,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+591,Beholder hive-mother,67,67,0,,67,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+592,Neekerbreeker,19,19,0,,19,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+593,Giant firefly,24,24,0,,24,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+594,"Eol, the Dark Elf",49,49,1,DROP_2D2|DROP_4D2|DROP_GOOD|ONLY_ITEM,49,good,9.0,0,9.0,33006,26799,15372,0.7861,0.35353,26799
+595,"Maeglin, the Traitor of Gondolin",81,81,1,DROP_3D2|DROP_4D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,81,great,10.5,0,10.5,158163,69943,53553,0.9999,0.96498,69943
+596,Elder vampire,54,54,0,DROP_4D2|DROP_60|DROP_GOOD,54,good,6.6,748,3.3,15639,12309,8776,0.4093,0.17159,13056
+597,Silent watcher,35,35,0,,35,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+598,Nighthawk,8,8,0,,8,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+599,Ghoul,26,26,0,DROP_60,26,normal,0.6,24,0.3,182,147,113,0.0047,0.00079,171
+600,Ghast,30,30,0,DROP_60,30,normal,0.6,28,0.3,273,240,197,0.0055,0.00092,268
+601,Greater basilisk,45,45,0,DROP_1D2|DROP_GOOD|ONLY_ITEM,45,good,1.5,0,1.5,5409,4414,2548,0.227,0.06841,4414
+602,Aranea,38,38,0,,38,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+603,Elder aranea,48,48,0,,48,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+604,Kobold shaman,3,3,0,DROP_60,3,normal,0.6,9,0.3,28,25,13,0.0007,2e-05,34
+605,Bat of Gorgoroth,28,28,0,DROP_60,28,normal,0.6,26,0.3,188,153,114,0.0052,0.00088,179
+606,Doombat,32,32,0,,32,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+607,Wolf chieftain,26,26,0,,26,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+608,Bone golem,68,68,0,,68,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+609,Bronze golem,75,75,0,,75,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+610,Ogre chieftain,30,30,0,DROP_90|ONLY_ITEM,30,normal,0.9,0,0.9,819,719,591,0.0166,0.00276,719
+611,Ar-Pharazon the Golden,55,55,1,DROP_1D2|DROP_3D2|DROP_GOOD|DROP_GREAT|ONLY_ITEM,55,great,6.0,0,6.0,49525,35391,16729,0.996,0.85005,35391
+612,Troll chieftain,40,40,0,DROP_1D2,40,normal,1.5,124,0.75,896,789,649,0.0172,0.00279,913
+613,Shardstorm,37,37,0,,37,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+614,Storm of Unmagic,53,53,0,,53,normal,0.0,0,0.0,0,0,0,0.0,0.0,0
+615,Greater mummy,36,36,0,DROP_1D2|DROP_2D2|ONLY_ITEM,36,normal,4.5,0,4.5,4399,3835,3056,0.0923,0.016,3835
+616,Multi-hued hound,43,43,0,,43,normal,0.0,0,0.0,0,0,0,0.0,0.0,0

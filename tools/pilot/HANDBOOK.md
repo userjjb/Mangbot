@@ -34,11 +34,11 @@ Run commands from `github/tools/pilot/` with `python3 pilotctl.py --nick NAME
 
 `pilotctl.py --nick NAME plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@MAX],...]` hands the whole town visit to
 the Pilot. It wears upgrades, then **sells by policy** at the shop that buys each item (never the Black Market; kit
-consumables, Boldness, food, flasks, lights, `keep` items and the devices it uses are kept). Next it **buys Identify**
+consumables, Boldness, food, flasks, lights, `keep` items and devices for escape, travel, detection, mapping, Perception, Stone to Mud and healing are kept). Next it **buys Identify**
 for each unknown item worth more than a scroll, reads them and sells what they turn out to be. Then it **buys by
 priority**, each shop once: (1) Word of Recall up to 2, (2) the supply gate's minimums for the planned depth (the lower
 of `max_depth` and your deepest), (3) a Potion of Restore for a drained STR, DEX or CON (it drinks it), (4) the kit
-levels, (5) your buy list. An essential missing from stock gets one more look 40 s later. The reply lists everything
+levels, (5) your buy list, (6) Restore Charisma if CHR is drained (worth only ~125 gold a mission). An essential missing from stock gets one more look 40 s later. The reply lists everything
 sold and bought, what it couldn't afford, and whether the supplies cover a recall dive.
 - **Kits** (default by the planned depth): A (to 500 ft) WoR 2, CLW 5, Phase 5, flasks 3, food 3; B (to 1000 ft)
   WoR 2, CCW 4, CSW 4, Phase 10, flasks 5, food 4; C (deeper) like B with CCW 6 and Phase 12. `kit=none` buys only

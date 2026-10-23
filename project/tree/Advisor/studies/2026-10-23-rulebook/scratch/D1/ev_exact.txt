@@ -1,0 +1,15 @@
+True 5 normal 162 149
+True 5 good 1265 1125
+True 5 great 6373 5173
+True 10 normal 239 219
+True 10 good 1583 1285
+True 10 great 6976 4953
+True 20 normal 521 419
+True 20 good 1944 1568
+True 20 great 5816 4204
+True 30 normal 911 798
+True 30 good 2607 2164
+True 30 great 5654 4362
+True 40 normal 1195 1052
+True 40 good 3523 2884
+True 40 great 6508 5097

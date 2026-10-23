@@ -12,17 +12,20 @@ Mechanics (xtra2.c:1980-2090 monster_death, object2.c place_object/place_gold/ap
                    Ammo and spikes come in stacks of 6d7 (mean 24).
   gold pile        type i = (randint1(L+2)+2)//2 - 1, + randint1(L+1) with 1/20, max 17 (creeping coins: their metal);
                    amount = base + 8*randint1(base) + randint1(8), base = the gold kind's cost (object.txt 480-497)
-Values are object_value_real (what a shop's price is based on; a shop pays value x pay% and at most the owner's purse,
-25,000-150,000). Artifact values are their artifact.txt cost and are kept OUT of e_value (rare and huge); see p_artifact.
+Values are object_value_real = what a shop's price is based on ONCE THE ITEM IS IDENTIFIED (a shop pays value x pay% and at
+most the owner's purse, 25,000-150,000). An unidentified item is priced on object_value_base (store.c:192, object2.c:1362):
+its kind's cost, 0 if it felt cursed/broken; unaware flavours a fixed 20-90 -> e_value_unid assumes aware kinds.
+m_bonus here uses a rounded Gaussian, not the server's table randnor: values run 0-4% high (dispatch D1). Artifact values are their artifact.txt cost and are kept OUT of e_value (rare and huge); see p_artifact.
 Assumes no artifact has been found yet on the server (found ones are never made again).
 
 Writes
   drop_object_by_level.csv  one generated object at object level L (0-127), for mode normal / good / great, with
                             dungeon depth = L for the artifact rolls: e_value, e_value_cap (each item capped at 25,000),
+                            e_value_unid (what it sells for unidentified),
                             p_worthless, p_excellent (a non-cursed ego), p_irreplaceable (ego with a resist/FA/SI/...),
                             p_artifact (incl. specials), e_artifact_cost, e_gold_pile, and the share of e_value by class
   drops.csv                 per monster race at its native depth (dungeon level = monster level): drop flags, e_drops,
-                            e_gold, e_items, e_item_value, e_item_value_cap, p_excellent_any, p_artifact_any, e_total_cap
+                            e_gold, e_items, e_item_value, e_item_value_cap, e_item_value_unid, p_excellent_any, p_artifact_any, e_total_cap
   drops_by_depth.csv        the same per monster (with any drop) at dungeon levels 1,5,10,...,100
 
 usage: build_drops.py [N]   (Monte Carlo samples per gear/jewellery cell, default 400)"""
@@ -114,7 +117,7 @@ def cell_at(k, L, power):
 
 # --- one object at object level L, dungeon depth D, mode
 OBJ = {}
-FIELDS = ["e_value", "e_value_cap", "p_worthless", "p_excellent", "p_irreplaceable", "p_artifact", "e_artifact_cost"]
+FIELDS = ["e_value", "e_value_cap", "e_value_unid", "p_worthless", "p_excellent", "p_irreplaceable", "p_artifact", "e_artifact_cost"]
 
 
 def object_expect(L, D, mode):
@@ -142,6 +145,9 @@ def object_expect(L, D, mode):
             acc["p_worthless"] += wn * pz; acc["p_excellent"] += wn * pe; acc["p_irreplaceable"] += wn * pi
             acc["p_artifact"] += w * pa; acc["e_artifact_cost"] += w * pa * ea
             acc["v_" + CLASS(tv)] += wn * v * stack
+            # sold unidentified: object_value -> object_value_base = kind cost (aware kinds; store.c:192, object2.c:1362-1395);
+            # gear that feels cursed/broken (heavy pseudo-ID) is 0; jewellery is never felt, so it keeps the kind cost
+            acc["e_value_unid"] += w * (0 if (tv in GEAR and power < 0) else k["cost"]) * (stack if pa == 0 else 1)
     out = {f: (1 - ps) * acc[f] for f in acc}
     out["p_artifact"] = out.get("p_artifact", 0) + ps
     out["e_artifact_cost"] = out.get("e_artifact_cost", 0) + ps * es
@@ -222,6 +228,7 @@ def monster_row(m, D):
     return dict(idx=m["idx"], name=m["name"], level=m["level"], depth=D, unique=int("UNIQUE" in F), drop_flags=flags,
                 object_level=L, mode=mode, e_drops=round(n, 2), e_gold=round(eg), e_items=round(ni, 2),
                 e_item_value=round(ni * o.get("e_value", 0)), e_item_value_cap=round(ni * o.get("e_value_cap", 0)),
+                e_item_value_unid=round(ni * o.get("e_value_unid", 0)),
                 p_excellent_any=round(1 - p_no(o.get("p_excellent", 0)), 4),
                 p_artifact_any=round(1 - p_no(o.get("p_artifact", 0)), 5),
                 e_total_cap=round(eg + ni * o.get("e_value_cap", 0)))
