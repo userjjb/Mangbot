@@ -611,5 +611,65 @@
   "effort": null,
   "report": "compact",
   "notes": "set-piece A1"
+ },
+ {
+  "label": "sp-D6-20261023-184507",
+  "nick": "dive04",
+  "start": "2026-10-23 18:45",
+  "end": "2026-10-23 18:48",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece D6"
+ },
+ {
+  "label": "sp-A9-20261023-184753",
+  "nick": "dive04",
+  "start": "2026-10-23 18:48",
+  "end": "2026-10-23 18:51",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A9"
+ },
+ {
+  "label": "sp-A3-20261023-185055",
+  "nick": "dive04",
+  "start": "2026-10-23 18:51",
+  "end": "2026-10-23 18:54",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A3"
+ },
+ {
+  "label": "sp-A3-20261023-185408",
+  "nick": "dive04",
+  "start": "2026-10-23 18:54",
+  "end": "2026-10-23 18:57",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A3"
+ },
+ {
+  "label": "sp-A3-20261023-185926",
+  "nick": "dive04",
+  "start": "2026-10-23 18:59",
+  "end": "2026-10-23 19:02",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A3"
+ },
+ {
+  "label": "sp-A3-20261023-190244",
+  "nick": "dive04",
+  "start": "2026-10-23 19:03",
+  "end": "2026-10-23 19:05",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A3"
  }
 ]

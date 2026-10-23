@@ -1,0 +1,182 @@
+{
+ "id": "A3",
+ "tag": "A3-20261023-185926",
+ "depth_ft": 600,
+ "start": "2026-10-23 18:59:26",
+ "checks": {
+  "the goto held": {
+   "pass": false,
+   "detail": "[] (order: {\"ok\": true, \"goal\": \"goto 24,153\"})"
+  },
+  "no walking with it adjacent": {
+   "pass": true,
+   "detail": "0 moves while adjacent"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [158, 265]"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"goto 24,153\"}",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   158,
+   265
+  ],
+  "attention": [
+   [
+    4.3,
+    "danger_seen",
+    "Wolf chieftain (rated 4: lethal until clvl 34) in view: heading for the stairs"
+   ],
+   [
+    4.3,
+    "goal_failed",
+    "flee (Wolf chieftain): no stairs known"
+   ],
+   [
+    4.3,
+    "emergency",
+    "couldn't reach the stairs with 1 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    4.6,
+    "band",
+    "a band within 10 squares: Werewolf \u00d718, Wolf \u00d711, White wolf \u00d75, Warg \u00d73, Wolf chieftain (38 monster"
+   ],
+   [
+    4.9,
+    "emergency",
+    "HP 218 within 3 turns of the worst (396): read Phase Door (Werewolf, White wolf, Wolf, Wolf chieftai"
+   ],
+   [
+    5.5,
+    "emergency",
+    "HP 174 within 3 turns of the worst (396): losing ~30 HP/s, more than the best potion heals (25): esc"
+   ],
+   [
+    5.5,
+    "unseen_attacker",
+    "heard a door burst open: something is coming; be ready to leave"
+   ],
+   [
+    9.1,
+    "tactic",
+    "goto: no known path; trying one through unexplored squares"
+   ],
+   [
+    10.7,
+    "tactic",
+    "7 monsters coming (Wolf chieftain): backing into a corridor"
+   ],
+   [
+    11.2,
+    "tactic",
+    "Werewolf, Novice warrior can deal 58 at worst (HP 184): backing away, not walking into them"
+   ],
+   [
+    11.3,
+    "goal_failed",
+    "goto 24,153: stuck"
+   ],
+   [
+    12.9,
+    "fearer",
+    "Wolf chieftain (lvl 26) keeps frightening: moving away from it; consider leaving the level"
+   ],
+   [
+    14.9,
+    "danger_seen",
+    "Wolf chieftain (rated 4: lethal until clvl 34) in view: heading for the stairs"
+   ],
+   [
+    14.9,
+    "goal_failed",
+    "flee (Wolf chieftain): no stairs known"
+   ],
+   [
+    17.9,
+    "fight_going_badly",
+    "HP 162/265 fighting Novice warrior, Werewolf"
+   ]
+  ],
+  "acts": [
+   [
+    4.3,
+    "custom r item=8",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    4.9,
+    "custom r item=7",
+    "HP 218 within 3 turns of the worst (396): phase door"
+   ],
+   [
+    5.5,
+    "rest",
+    "rest"
+   ],
+   [
+    7.4,
+    "rest",
+    "rest"
+   ],
+   [
+    8.6,
+    "rest",
+    "stop resting"
+   ],
+   [
+    11.2,
+    "-",
+    "holding the corridor at (36, 147)"
+   ],
+   [
+    12.9,
+    "custom r item=7",
+    "phase away from Wolf chieftain"
+   ],
+   [
+    17.2,
+    "custom r item=7",
+    "phase away from Wolf chieftain"
+   ],
+   [
+    18.9,
+    "rest",
+    "rest"
+   ],
+   [
+    21.5,
+    "rest",
+    "rest"
+   ],
+   [
+    22.5,
+    "rest",
+    "stop resting"
+   ],
+   [
+    23.1,
+    "rest",
+    "stop resting"
+   ],
+   [
+    26.7,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 3,
+  "phase_reads": 3,
+  "wor_reads": 1,
+  "cures": 0
+ },
+ "end": "2026-10-23 19:02:02",
+ "pass": false
+}

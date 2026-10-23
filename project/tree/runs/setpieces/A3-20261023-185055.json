@@ -1,0 +1,117 @@
+{
+ "id": "A3",
+ "tag": "A3-20261023-185055",
+ "depth_ft": 500,
+ "start": "2026-10-23 18:50:55",
+ "checks": {
+  "the goto held": {
+   "pass": false,
+   "detail": "[] (order: {\"ok\": true, \"goal\": \"goto 25,166\"})"
+  },
+  "no walking with it adjacent": {
+   "pass": true,
+   "detail": "0 moves while adjacent"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [128, 265]"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"goto 25,166\"}",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   128,
+   265
+  ],
+  "attention": [
+   [
+    5.7,
+    "danger_seen",
+    "Ibun, Son of Mim (unique, lvl 24) in view: heading for the stairs"
+   ],
+   [
+    5.8,
+    "goal_failed",
+    "flee (Ibun, Son of Mim): no stairs known"
+   ],
+   [
+    5.8,
+    "emergency",
+    "couldn't reach the stairs with 1 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    13.7,
+    "fight_going_badly",
+    "HP 156/265 fighting Ibun, Son of Mim"
+   ],
+   [
+    15.2,
+    "emergency",
+    "low HP: read Phase Door (Ibun, Son of Mim adjacent)"
+   ],
+   [
+    15.8,
+    "emergency",
+    "low HP: losing ~18 HP/s, more than the best potion heals (25): escaping instead"
+   ],
+   [
+    15.8,
+    "emergency",
+    "low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~18 HP/s)"
+   ],
+   [
+    16.4,
+    "unseen_attacker",
+    "'It drains power from your muscles!': something unseen is attacking and no stairs are known: conside"
+   ]
+  ],
+  "acts": [
+   [
+    5.8,
+    "custom r item=8",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    15.2,
+    "custom r item=7",
+    "low HP: phase door"
+   ],
+   [
+    15.8,
+    "custom q item=6",
+    "low HP: quaff 6 Potions of Cure Critical Wounds {25% off}"
+   ],
+   [
+    16.5,
+    "rest",
+    "rest"
+   ],
+   [
+    17.8,
+    "rest",
+    "rest"
+   ],
+   [
+    21.1,
+    "rest",
+    "rest"
+   ],
+   [
+    22.1,
+    "rest",
+    "rest"
+   ]
+  ],
+  "emergencies": 4,
+  "phase_reads": 1,
+  "wor_reads": 1,
+  "cures": 1
+ },
+ "end": "2026-10-23 18:53:46",
+ "pass": false
+}

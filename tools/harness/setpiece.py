@@ -461,15 +461,16 @@ def c8(run):
 
 
 def a3(run):
-    """A3: a fast hitter (a Wolf chieftain, +10) adjacent, then a goto 12+ squares off: the goto is held (walking away
-    hands it free hits) and Dive04 doesn't walk while it's adjacent."""
+    """A3: a fast hitter (a Sabre-tooth tiger, +10, alone) adjacent, then a goto 12+ squares off: the goto is held
+    (walking away hands it free hits) and Dive04 doesn't walk while it's adjacent. (A Nighthawk died to auto-retaliate
+    before an order could follow; a Wolf chieftain brings a pack of up to 38, and the run becomes a band fight.)"""
     v = run.bring_dive04()
     run.t_act = time.time()
     me = tuple(v["pos"])
     far = floor_near(v, me, 12) or floor_near(v, me, 10) or (me[0], me[1] + 15)   # (a goto may path through unknown)
     out = {}
-    # (a Wolf chieftain, +10: a Nighthawk died to auto-retaliate before an order could follow)
-    run.place("Wolf chieftain", 1, after=lambda: (time.sleep(1.0),
+    race = "Sabre-tooth tiger"
+    run.place(race, 1, after=lambda: (time.sleep(1.0),
                                                   out.update(reply=ctl("goal", "goto", f"{far[0]},{far[1]}", role="architect"))))
     reply = out.get("reply", "")
     run.res["order_reply"] = reply
@@ -478,11 +479,11 @@ def a3(run):
     st = run.stats(recs)
     run.res["stats"] = st
     held = [a for a in st["attention"] if "goto held" in a[2]]
-    # positions while the Nighthawk was adjacent
+    # positions while it was adjacent
     moved = 0
     last = None
     for d in recs:
-        if d.get("kind") == "mons" and any(m[2] == "Nighthawk" and max(abs(m[0] - d["pos"][0]), abs(m[1] - d["pos"][1])) <= 1
+        if d.get("kind") == "mons" and any(m[2] == race and max(abs(m[0] - d["pos"][0]), abs(m[1] - d["pos"][1])) <= 1
                                            for m in d.get("monsters", [])):
             if last and tuple(d["pos"]) != last:
                 moved += 1
@@ -643,7 +644,7 @@ SETPIECES = {"A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2
              "C3": c3}
 
 
-def fresh_depth(choices=(300, 350, 400, 450, 500)):
+def fresh_depth(choices=(300, 350, 400, 450, 500, 550, 600, 650)):
     """The depth used longest ago (going up to town and back doesn't free a level: the server keeps
     empty levels a while, and a C3 run met the last run's Lagduf and his orcs)."""
     path = os.path.join(OUT, "depths.json")

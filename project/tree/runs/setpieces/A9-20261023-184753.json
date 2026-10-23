@@ -1,0 +1,60 @@
+{
+ "id": "A9",
+ "tag": "A9-20261023-184753",
+ "depth_ft": 450,
+ "start": "2026-10-23 18:47:53",
+ "checks": {
+  "Door/Stair Location within 5 s of arriving": {
+   "pass": true,
+   "detail": "[(2.3, 'custom z item=12', 'trip: recall arrival: Door/Stair Location')]"
+  },
+  "no second Word of Recall while one is pending": {
+   "pass": true,
+   "detail": "0 reads"
+  }
+ },
+ "notes": [
+  "no floor square 8 from Dive04 at (3, 78)",
+  "no floor square 9 from Dive04 at (3, 77)"
+ ],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   262,
+   265
+  ],
+  "attention": [
+   [
+    2.2,
+    "goal_done",
+    "recall to 450 ft: arrived at 450 ft"
+   ],
+   [
+    43.3,
+    "tactic",
+    "hungry and no food: read a Scroll of Satisfy Hunger"
+   ]
+  ],
+  "acts": [
+   [
+    2.3,
+    "custom z item=12",
+    "trip: recall arrival: Door/Stair Location"
+   ],
+   [
+    43.3,
+    "custom r item=10",
+    "hungry (2), no food: read Satisfy Hunger"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 18:50:55",
+ "pass": true
+}

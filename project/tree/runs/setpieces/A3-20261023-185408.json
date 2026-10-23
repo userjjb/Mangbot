@@ -1,0 +1,61 @@
+{
+ "id": "A3",
+ "tag": "A3-20261023-185408",
+ "depth_ft": 550,
+ "start": "2026-10-23 18:54:08",
+ "checks": {
+  "the goto held": {
+   "pass": false,
+   "detail": "[] (order: {\"ok\": true, \"goal\": \"goto 25,158\"})"
+  },
+  "no walking with it adjacent": {
+   "pass": true,
+   "detail": "0 moves while adjacent"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [253, 265]"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"goto 25,158\"}",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   253,
+   265
+  ],
+  "attention": [
+   [
+    25.6,
+    "tactic",
+    "goto: no known path; trying one through unexplored squares"
+   ],
+   [
+    42.8,
+    "goal_failed",
+    "goto 25,158: stuck"
+   ],
+   [
+    45.1,
+    "unseen_attacker",
+    "'It casts a magic missile.': probably the Novice ranger (lvl 8) in view; carrying on (HP 97%)"
+   ],
+   [
+    45.3,
+    "thief",
+    "Novice rogue (lvl 2, 3 away) steals gold with a touch, then teleports: kill it before it reaches you"
+   ]
+  ],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 18:57:10",
+ "pass": false
+}

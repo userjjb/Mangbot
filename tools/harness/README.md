@@ -36,11 +36,11 @@ Each run:
 | A2L | the same with Lugdush (no rule fired before the simulator danger rule) | the same |
 | A6 | a Gnome mage (blinks, summons) adjacent | ≤ 3 Phase Door; Phase never runs out; lowest HP ≥ 40% |
 | C3 | Ulfast adjacent, the Architect orders the hunt | slain; his drop picked up |
-| A3 | a Wolf chieftain (+10) adjacent, then an Architect goto 12 off | the goto is held; no walking with it adjacent |
+| A3 | a Sabre-tooth tiger (+10, alone) adjacent, then an Architect goto 12 off | the goto is held; no walking with it adjacent |
 | B1 | a Purple mushroom patch 2 off, a goto past it | never adjacent; no stat drained |
 | B2 | three Giant red ants (STR drainers) | at most 2 drains; the second acted on (leave, or kill the weak one) |
 | B3 | a Brigand (steals, teleports) adjacent | slain; nothing stolen |
-| D6 | `goal explore` 40 s | best 5-s window ≥ 3 tiles/s: **FAILS** (1.6) -- see below |
+| D6 | `goal explore` 40 s | best 5-s window ≥ 3 tiles/s: passes since the mover uses server pathfind (4.2 best, 3.2 overall; was 1.4-1.6) |
 | L1 | a Hill giant 5-8 off, in sight | boulders thrown, no HP lost (a rulebook claim from the code: confirmed live) |
 | L2 | hurt, then `goal recall` resting out of sight | ~10x sooner than standing: **open** (the read came at full HP twice; standing took 17.9 and 20.4 s) |
 | A9 | `plan trip 300-300 via=recall` from town, then Snaga and Black orcs summoned 8-9 squares off | Door/Stair Location within 5 s of arriving; no second Word of Recall while one is pending |
@@ -87,10 +87,10 @@ Recall and a ration. It was then restored properly from the first snapshot.
 - **A repeat kill of a unique drops nothing and gives no XP** (`xtra2.c` 'cheeze'): use uniques the character
   hasn't killed. Dive04 has killed Brodda, Bullroarer, Orfax, Wormtongue and Farmer Maggot. A restore resets
   `r_killed`, since it lives in the savefile.
-- **The DM's summons come with their escorts.** Lagduf brought 27 orcs and Mughash 24 Kobold shamans, so the run
-  turns into a band fight.
-- **Going up to town and back doesn't free a level:** the server keeps empty levels a while. Runs rotate over
-  300-500 ft (`runs/setpieces/depths.json`), the least recently used first.
+- **The DM's summons come with their escorts.** Lagduf brought 27 orcs, Mughash 24 Kobold shamans and a Wolf chieftain
+  38 wolves, so the run turns into a band fight. A3 now uses a Sabre-tooth tiger (+10, no escort).
+- **Going up to town and back doesn't free a level:** the server keeps empty levels a while, with any monster left on
+  them (a leftover Ibun spoiled an A3 run). Runs rotate over 300-650 ft (`runs/setpieces/depths.json`), the least recently used first.
 - **The Forge's items come out identified:** C8 (detecting Free Action from unidentified boots) can't be staged with
   it. The unit test `ability_proofs` covers the inference.
 - **The Forge writes into Gandalf's pack slot a,** destroying whatever was there.
@@ -121,14 +121,14 @@ Recall and a ration. It was then restored properly from the first snapshot.
 - **Unit tests for C4 and C5**, which live staging would need many forged items for (each forge destroys a stack in
   Gandalf's pack): `pack_full_makes_room`, `loot_band_stops_looting`.
 
-## D6: walking is capped at ~1.5 tiles/s; server runs aren't
+## D6: walking was capped at ~1.5 tiles/s; server runs aren't (fixed 2026-10-23)
 
-Each step costs a player turn (~0.65 s at normal speed), so the mover's step-by-step walking can't beat ~1.5 tiles/s.
-The server's time factor runs **5x** while the player is running with nothing in line of sight (xtra2.c
-`base_time_factor`, RUNNING_FACTOR), and **its pathfind counts as running** (cmd1.c sets `running` for
-`running_withpathfind`). The tool client has `pathfind Y X` (a server path, up to ~25 tiles), but the mover never uses
-it. Explore starts free runs only in corridors. Using pathfind for moves with nothing in view should make exploring
-3-5x faster in wall time. Queued after the time bubble.
+Each step costs a player turn (~0.65 s at normal speed), so step-by-step walking can't beat ~1.5 tiles/s. The server's
+time factor runs **5x** while the player is running with nothing in line of sight (xtra2.c `base_time_factor`,
+RUNNING_FACTOR), and **its pathfind counts as running** (cmd1.c sets `running` for `running_withpathfind`). The mover
+now sends `pathfind Y X` (mover.py `path_run`) for a leg of 4+ steps with no monster in view, aiming up to 20 steps
+along its own path, and stops it like a free run. A square where a pathfind didn't move us isn't tried again. D6: best
+5-s window 4.2 tiles/s, 3.2 overall (1.4 before). Regressions A3, A9 and the unit tests still pass.
 
 ## Observed, then changed (the user)
 

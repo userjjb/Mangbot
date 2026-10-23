@@ -52,3 +52,9 @@
 - 2026-10-23 18:35:19 **A2I-hw5** PASS (Word of Recall within 2 s of first sight, lowest HP >= 40%) `A2I-hw5-20261023-183519.json`
 - 2026-10-23 18:38:14 **A2K** PASS (Word of Recall within 2 s of first sight, lowest HP >= 40%) `A2K-20261023-183814.json`
 - 2026-10-23 18:41:24 **A1** FAIL () `A1-20261023-184124.json`
+- 2026-10-23 18:45:07 **D6** PASS (runs >= 3 tiles/s (best 5-s window)) `D6-20261023-184507.json`
+- 2026-10-23 18:47:53 **A9** PASS (Door/Stair Location within 5 s of arriving, no second Word of Recall while one is pending) `A9-20261023-184753.json`
+- 2026-10-23 18:50:55 **A3** FAIL (the goto held FAIL, no walking with it adjacent, lowest HP >= 40%) `A3-20261023-185055.json`
+- 2026-10-23 18:54:08 **A3** FAIL (the goto held FAIL, no walking with it adjacent, lowest HP >= 40%) `A3-20261023-185408.json`
+- 2026-10-23 18:59:26 **A3** FAIL (the goto held FAIL, no walking with it adjacent, lowest HP >= 40%) `A3-20261023-185926.json`
+- 2026-10-23 19:02:44 **A3** PASS (the goto held, no walking with it adjacent, lowest HP >= 40%) `A3-20261023-190244.json`

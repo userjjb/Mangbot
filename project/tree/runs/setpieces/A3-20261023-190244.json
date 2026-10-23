@@ -1,0 +1,92 @@
+{
+ "id": "A3",
+ "tag": "A3-20261023-190244",
+ "depth_ft": 650,
+ "start": "2026-10-23 19:02:44",
+ "checks": {
+  "the goto held": {
+   "pass": true,
+   "detail": "[(4.4, 'tactic', 'goto held: Sabre-tooth tiger is adjacent (walking away gives it free hits); it fights on. `goal leav')] (order: {\"ok\": true, \"goal\": \"goto 16,140\"})"
+  },
+  "no walking with it adjacent": {
+   "pass": true,
+   "detail": "0 moves while adjacent"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [222, 265]"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"goto 16,140\"}",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   222,
+   265
+  ],
+  "attention": [
+   [
+    4.4,
+    "tactic",
+    "goto held: Sabre-tooth tiger is adjacent (walking away gives it free hits); it fights on. `goal leav"
+   ],
+   [
+    13.2,
+    "tactic",
+    "goto: no known path; trying one through unexplored squares"
+   ],
+   [
+    14.1,
+    "tactic",
+    "goto held: Dark elven priest is adjacent (walking away gives it free hits); it fights on. `goal leav"
+   ],
+   [
+    14.3,
+    "unseen_attacker",
+    "'It releases spores at you.': probably the Dark elven priest (lvl 12) in view; carrying on (HP 90%)"
+   ],
+   [
+    22.6,
+    "tactic",
+    "goto: no known path; trying one through unexplored squares"
+   ],
+   [
+    25.8,
+    "interesting_item",
+    "Turquoise Ring seen on this level (devices and jewellery sell for 50-700 once known): its square is "
+   ]
+  ],
+  "acts": [
+   [
+    5.1,
+    "rest",
+    "rest"
+   ],
+   [
+    11.6,
+    "rest",
+    "rest"
+   ],
+   [
+    12.6,
+    "rest",
+    "stop resting"
+   ],
+   [
+    16.1,
+    "rest",
+    "rest"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 19:05:22",
+ "pass": true
+}

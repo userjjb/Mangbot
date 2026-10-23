@@ -132,8 +132,11 @@ class Mover:
         self.bump_t = 0.0             # the last "blocking your way" handled
         self.run_start_pos = None
         self.free_dist, self.free_away = None, 0
+        self.no_pf_at = set()         # squares where a server pathfind made no progress
+        self.pf_target = None
 
     RUN_MIN = 3
+    PF_MIN, PF_MAX = 4, 20      # server pathfind for 4-20 steps of our path (its limit is ~25)
 
     def _straight(self, i):
         """Length of the straight stretch of path starting at index i."""
@@ -245,6 +248,26 @@ class Mover:
         self.c.send(f"custom . dir={d}")
         self.log(run="free", dir=d, frm=self.w.pos)        # (runs were only event acks: the Advisor)
 
+    def path_run(self, target):
+        """Server pathfind to target (a square on our path): the server counts it as running, and with
+        nothing in line of sight time then runs 5x (xtra2.c base_time_factor, RUNNING_FACTOR;
+        cmd1.c running_withpathfind), so it covers ground ~5x faster in wall time than our step-by-step
+        walking (the set-piece D6: 1.6 tiles/s). Handled like a free run: when it stops, we go on
+        from wherever it ended. (Its path treats unseen squares as open: one that makes no progress
+        isn't tried again from that square -- the Advisor's running memo.)"""
+        goals = self.goals
+        self.stop()
+        self.resume_goals = goals
+        self.goals = {"free-run"}
+        self.path = []
+        self.free = (gnow(), self.w.pos)
+        self.free_dist, self.free_away = None, 0
+        self.last_progress = gnow()
+        self.free_pos = self.w.pos
+        self.pf_target = target
+        self.c.send(f"pathfind {target[0]} {target[1]}")
+        self.log(run="pathfind", to=target, frm=self.w.pos)
+
     def _free_tick(self):
         w = self.w
         if w.pos != self.free_pos:
@@ -267,6 +290,9 @@ class Mover:
         limit = 0.5 if w.pos != self.free[1] else self.first_step_window()
         if gnow() - self.last_progress > limit:
             moved = w.pos != self.free[1]
+            if self.pf_target is not None and not moved:
+                self.no_pf_at.add(self.free[1])
+            self.pf_target = None
             self.free = None
             self.stop_sent = False
             goals, self.resume_goals = self.resume_goals, None
@@ -516,6 +542,11 @@ class Mover:
                 self.run_start_pos = self.w.pos
                 self.stop_sent = False
                 self.last_progress = gnow()
+                return "moving"
+            if len(self.path) - self.done >= self.PF_MIN and self.runs_ok(free=True) and not w.monsters \
+                    and self.w.pos not in self.no_pf_at and self.replans <= self.max_replans:
+                self.replans += 1          # (like free runs: against the replan budget)
+                self.path_run(self.path[min(self.done + self.PF_MAX, len(self.path)) - 1])
                 return "moving"
             if self.in_corridor() and len(self.path) - self.done >= 3 and self.runs_ok(free=True) \
                     and self.replans <= self.max_replans:
