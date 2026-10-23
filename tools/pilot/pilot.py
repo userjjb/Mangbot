@@ -1500,7 +1500,7 @@ class TownKit(Goal):
         if self.stage == "identify":
             # an Identify scroll for each unknown worth more than one, within the gold
             # that the essentials leave
-            r = p.identify_step(now, minimum=p.price_of("Identify", 5))
+            r = p.identify_step(now, minimum=2 * p.price_of("Identify", 5))   # (m24: 3 scrolls when poor)
             if r:
                 self.identified += r is True        # ("light": it put the lantern on first)
                 self.t = now + 1.0
@@ -1586,8 +1586,8 @@ class TripPlan:
     LEAVE_ON = {"band": "a band", "breeders": "breeders", "drainer": "a stat drainer", "fearer": "a fearer",
                 "structure": "a pit or nest"}
 
-    def __init__(self, lo, hi, until, then="recall", level_min=10):
-        self.lo, self.hi, self.then, self.level_min = lo, hi, then, level_min
+    def __init__(self, lo, hi, until, then="recall", level_min=10, via=None):
+        self.lo, self.hi, self.then, self.level_min, self.via = lo, hi, then, level_min, via
         self.conds = until
         self.until_text = " or ".join(c[0] for c in until)
         self.text = f"trip {lo}-{hi} until \"{' or '.join(c[0] for c in until)}\" then {then}"
@@ -1685,7 +1685,7 @@ class TripPlan:
                     p.set_goal(self.mark(self.next_dive(p)))
                 p.notify("plan", f"trip: leaving {w.depth_ft} ft ({why})", news=True)
 
-    STATE = ("lo", "hi", "then", "level_min", "t0", "phase", "levels", "went_down", "home_why", "until_text")
+    STATE = ("lo", "hi", "then", "level_min", "t0", "phase", "levels", "went_down", "home_why", "until_text", "via")
 
     def save(self, p):
         try:
@@ -1702,10 +1702,18 @@ class TripPlan:
             return None
         if not st or time.time() - st["t0"] > 90 * 60:
             return None
-        pl = cls(st["lo"], st["hi"], cls.parse_until(st["until_text"]), st["then"], st["level_min"])
+        pl = cls(st["lo"], st["hi"], cls.parse_until(st["until_text"]), st["then"], st["level_min"], st.get("via"))
         for k in ("t0", "phase", "levels", "went_down", "home_why"):
             setattr(pl, k, st[k])
         return pl
+
+    def stairs_down(self, p):
+        """Down by the stairs (not Word of Recall): when asked (via=stairs), or when the trip is
+        near town (to 150 ft) or the character has never been to 250 ft."""
+        if self.via:
+            return self.via == "stairs"
+        want = min(self.hi, max(self.lo, p.deepest_ft or 0))
+        return want <= 150 or (p.deepest_ft or 0) < 250
 
     def mark(self, g):
         g.by_plan = True
@@ -1726,6 +1734,18 @@ class TripPlan:
         conditions). Returns (status, detail) when the plan ends."""
         w, now = p.w, time.time()
         if self.paused:
+            return None
+        if w.in_dungeon and w.recall_pending and self.phase in ("down", "level", "home") and self.went_down:
+            # a recall is under way (the Pilot's escape, or the plan's own): wait for it, don't
+            # start a new dive meanwhile (m24: a dive walked the pit's ring while it charged)
+            if self.phase != "home":
+                self.phase, self.home_why = "home", "the Pilot's escape recall"
+                p.notify("plan", "trip: a recall is under way (the Pilot's escape): coming home", news=True)
+            if p.goal is not None and getattr(p.goal, "by_plan", False) and isinstance(p.goal, (Dive, Explore)):
+                p.set_goal(None)
+            if p.goal is None:
+                self.step = "waiting for the recall"
+                p.set_goal(self.mark(Wait(3)))
             return None
         if self.phase in ("down", "level") and w.in_dungeon:
             why = self.holds(p)
@@ -1751,7 +1771,7 @@ class TripPlan:
                 if self.went_down:
                     return ("done", "back in town before the trip began (a recall by the Pilot's own rules?)")
                 want = min(self.hi, max(self.lo, p.deepest_ft or 0))
-                if want <= 150 or (p.deepest_ft or 0) < 250:
+                if self.stairs_down(p):
                     self.step = f"down by the stairs to {self.lo} ft"
                     g = Dive(self.lo)
                     g.stop = False
@@ -2951,6 +2971,16 @@ class Pilot:
                 and (r.worst_melee[0] or 0) * (r.speed_x or 1) >= 6]
         worst = sum((r.worst_melee[0] or 0) * (r.speed_x or 1) for *_, r in near)
         if len(near) < 5 and worst < 0.4 * max(w.hp[1], 1):
+            return
+        # serious only when together they could take 30% of current HP in a turn, or one of them
+        # is dangerous (the user, m24: 5-8 Novice rogues or Snaga at clvl 22 / 265 HP made the trip
+        # leave four levels and a Word of Recall on the floor); weaker ones are fought, and looted
+        serious = worst >= 0.3 * max(w.hp[0], 1) or any(self.danger_why(r) for *_, r in near)
+        if not serious:
+            if getattr(self, "weak_band_said", None) != w.level_t:
+                self.weak_band_said = w.level_t
+                self.notify("tactic", f"{len(near)} monsters together but weak (~{worst:.0f} worst-case melee a turn "
+                                      f"vs HP {w.hp[0]}): fighting on", news=True)
             return
         lt, size = self.band_warned
         if lt == w.level_t and len(near) < size * 1.5:
@@ -5333,7 +5363,10 @@ class Pilot:
         return out
 
     def town_identify_wanted(self):
-        return len(self.identify_candidates(self.price_of("Identify", 5) or 80))
+        # worth a scroll when its expected value sold is at least twice the scroll's price (likely
+        # egos and ability sources always count; m24 bought 3 for 189 of 718 gold, partly for a
+        # Staff of Detect Invisible)
+        return len(self.identify_candidates(2 * (self.price_of("Identify", 5) or 80)))
 
     def town_needs(self, kit, buylist):
         """The shopping list by priority tier, before gold: [[tier, kind, store, n, cap]].
@@ -5463,7 +5496,8 @@ class Pilot:
         except OSError:
             pass
 
-    PLAN_USAGE = ("usage: plan trip LO-HI [until \"COND or COND...\"] [then recall|town] [level_min=N] [force] | "
+    PLAN_USAGE = ("usage: plan trip LO-HI [until \"COND or COND...\"] [then recall|town] [level_min=N] [via=stairs|recall] "
+                  "[force] | "
                   "plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@MAX],...] | plan stop | plan")
 
     def request_trip(self, args):
@@ -5478,12 +5512,13 @@ class Pilot:
         if md and hi > md:
             return {"ok": False, "error": f"{hi} ft is below max_depth {md}: `order max_depth={hi}` first "
                                           "(going deeper is your standing order to give)"}
-        until, then, level_min, force, i = None, "recall", 10, False, 1
+        until, then, level_min, force, via, i = None, "recall", 10, False, None, 1
         while i < len(args):
             a = args[i]
             if a == "until":
                 j = i + 1
-                while j < len(args) and args[j] not in ("then", "force") and not args[j].startswith("level_min="):
+                while j < len(args) and args[j] not in ("then", "force") and \
+                        not args[j].startswith(("level_min=", "via=")):
                     j += 1
                 until, i = " ".join(args[i + 1:j]), j
                 continue
@@ -5494,6 +5529,11 @@ class Pilot:
                 continue
             if a.startswith("level_min="):
                 level_min = float(a.split("=", 1)[1])
+            elif a.startswith("via="):
+                via = a.split("=", 1)[1]
+                if via not in ("stairs", "recall"):
+                    return {"ok": False, "error": "via=stairs (walk down: one Word of Recall is enough, for coming "
+                                                  "home) or via=recall (two: one to go, one to come home)"}
             elif a == "force":
                 force = True
             else:
@@ -5508,16 +5548,21 @@ class Pilot:
             return {"ok": False, "error": f"until {bad[0]}: that holds as soon as the trip has recalled down (one "
                                           "Word of Recall goes on the way down); coming home with none left is "
                                           "built in"}
+        plan = TripPlan(lo, hi, conds, then, level_min, via)
         if w.depth == 0 and not force:
             want = min(hi, max(lo, self.deepest_ft or 0))
-            gap = self.supply_gate(want, want > 150 and (self.deepest_ft or 0) >= 250)
+            down_by_recall = not plan.stairs_down(self)
+            gap = self.supply_gate(want, down_by_recall)
             if gap:
-                return {"ok": False, "error": f"supply gate for {want} ft: missing {'; '.join(gap)}. "
-                                              "`plan town` first, or add 'force'"}
-        self.plan = TripPlan(lo, hi, conds, then, level_min)
+                return {"ok": False, "error": f"supply gate for {want} ft "
+                                              f"({'down by Word of Recall: 2 needed' if down_by_recall else 'down by the stairs: 1 Word of Recall for coming home'}): "
+                                              f"missing {'; '.join(gap)}. `plan town` first"
+                                              + ("" if via else ", or `via=stairs`") + ", or add 'force'"}
+        self.plan = plan
         self.set_goal(None)
         self.log("plan_start", plan=self.plan.text, role=self.req_role)
-        return {"ok": True, "plan": self.plan.text,
+        return {"ok": True, "plan": self.plan.text + (" (down by the stairs)" if self.plan.stairs_down(self) and w.depth == 0
+                                                     else " (down by Word of Recall)" if w.depth == 0 else ""),
                 "note": "the Pilot runs it; `wait` wakes you when it ends (plan_done) and for what it can't "
                         "handle (user messages, stat drains, emergency loops). Bands, pits, breeders and the "
                         "like are news: it leaves the level itself. A goal you give pauses the plan until it "
@@ -5891,10 +5936,18 @@ class Pilot:
             st["kind"] = kind
             advice = self.ADVICE.get(kind, self.ADVICE["orc pit"]).format(Y=Y, X=X)
             where = f"{kind} centred {Y},{X} ({Y - 5}-{Y + 5}, {X - 12}-{X + 12})" + ("" if st["sure"] else ", likely")
-            if "pit" in kind or kind == "nest":
-                for dx in (-7, 0, 7):
-                    self.avoid_zones.setdefault(w.level_t, []).append((Y, X + dx, 6))
-                self.notify("structure", f"{where}: {advice}")
+            if "pit" in kind or kind == "nest" or kind == "inner room":
+                # (a dark inner room too: pits look the same until they open, and its ring
+                # is a one-wide corridor where they surround you: m24 at 600 ft, an orc pit)
+                if not any(abs(y0 - Y) <= 1 and abs(x0 - X) <= 1
+                           for y0, x0, _ in self.avoid_zones.get(w.level_t, [])):
+                    for dx in (-7, 0, 7):
+                        self.avoid_zones.setdefault(w.level_t, []).append((Y, X + dx, 6))
+                if kind == "inner room":
+                    self.notify("structure", f"{where}: {advice}. Avoid zone set on it and its ring (a pit looks "
+                                             "the same from outside); `avoid clear` to go in", news=True)
+                else:
+                    self.notify("structure", f"{where}: {advice}")
             else:
                 self.notify("structure", f"{where}: {advice}", news=True)
 
@@ -6013,7 +6066,9 @@ class Pilot:
             cand = [i for i in pack if i["tval"] in tvals and not re.search(r"\{(cursed|worthless|broken|terrible)", i["name"])
                     and not (self.flavour_of(i) or {}).get("junk")]
             if len(on) < k:
-                empty.append(slot + (f" (you carry {cand[0]['name']})" if cand else ""))
+                empty.append(slot + (f" (you carry {cand[0]['name']}" + (": off in town to save fuel; the Pilot "
+                                     "puts it on in the dungeon and to read)" if slot == "light" and not w.depth
+                                     else ")") if cand else ""))
             elif slot not in ("weapon", "bow", "ring", "amulet", "light"):
                 ac_on = min((self.armour_ac(i["name"]) or 0) for i in on)
                 for i in cand:

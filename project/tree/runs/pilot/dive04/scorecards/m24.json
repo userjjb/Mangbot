@@ -1,0 +1,143 @@
+{
+ "label": "m24",
+ "nav_model": "opus",
+ "effort": null,
+ "report": "compact",
+ "start": "2026-10-23 12:23",
+ "end": "2026-10-23 12:59",
+ "minutes": 36.0,
+ "notes": "restructure step 2.7: first supervised mission with plan town / plan trip, the new toolset and short HANDBOOK; 40 min; max 650 ft",
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   22,
+   22
+  ],
+  "exp_gain": 476,
+  "gold": [
+   190,
+   172
+  ],
+  "gold_change": -18,
+  "max_depth_ft": 600
+ },
+ "B": {
+  "dungeon_min": 28.8,
+  "town_min": 6.7,
+  "exp_per_dmin": 16.5,
+  "levels_per_dhour": 0.56,
+  "gold_found": 552,
+  "gold_found_per_dmin": 19.2,
+  "time_budget_min": {
+   "exploring": 18.5,
+   "fighting": 6.0,
+   "escaping": 2.9,
+   "town_no_goal": 2.8,
+   "town_other": 2.6,
+   "town_idle_end": 1.5,
+   "travel_dive": 1.0,
+   "recall_wait": 0.4,
+   "dungeon_other": 0.2,
+   "no_goal_dungeon": 0.1,
+   "resting": 0.0
+  },
+  "navigator_wait_pct": 8
+ },
+ "C": {
+  "lowest_hp": [
+   153,
+   265,
+   58,
+   "12:27:20"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 1,
+  "emergency_alerts": 1,
+  "phase": 0,
+  "wor_escape": 1,
+  "wor_travel": 2,
+  "stairs_flee": 3,
+  "teleport": 0,
+  "cures_quaffed": 1,
+  "escape_records": 6,
+  "recalls_landed": 3
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 4,
+  "loot_abandoned_est": 581,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 0,
+  "total": 585,
+  "sales": 9,
+  "sales_valued": 2,
+  "worst_sales": [],
+  "left_behind": [
+   "Copper Wand",
+   "Scroll of Remove Curse",
+   "Slime Mold",
+   "Soft Leather Armour [4]",
+   "Broken Sword (1d2)",
+   "Dagger (1d4)",
+   "Hard Leather Cap [2]",
+   "Brass Lantern (with 1667 turns of light)",
+   "Ring of Slow Digestion",
+   "Scroll of Identify"
+  ],
+  "irreplaceable": [
+   "a Potion of Resist Cold"
+  ]
+ },
+ "E": {
+  "reports": 12,
+  "commands": 41,
+  "commands_per_min": 1.5,
+  "report_to_action_med_s": 11.8,
+  "report_to_action_p90_s": 14.9,
+  "reports_without_command_pct": 33,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 2,
+  "report_chars": 38245,
+  "order_report_age_med_s": 11.6,
+  "order_report_age_p90_s": 201.8
+ },
+ "F": {
+  "audit_diffs": 1,
+  "audit_checks": 72,
+  "perception_gaps": 1,
+  "goal_failed": 1,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 1021,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Snaga": 170,
+  "Black orc": 63,
+  "Uruk": 25,
+  "Novice priest": 23,
+  "Novice warrior": 22,
+  "Orc shaman": 21,
+  "Novice mage": 13,
+  "Novice rogue": 10
+ },
+ "alerts": {
+  "tactic": 17,
+  "goal_done": 15,
+  "plan": 8,
+  "band": 6,
+  "interesting_item": 5,
+  "unseen_attacker": 3,
+  "thief": 3,
+  "structure": 2,
+  "fight_going_badly": 2,
+  "plan_done": 2,
+  "goal_failed": 1,
+  "emergency": 1
+ }
+}

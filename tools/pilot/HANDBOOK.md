@@ -29,9 +29,10 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
    by policy, identifies what pays, and buys in priority order: Word of Recall to 2, the supply gate's minimums,
    Restore for a drained STR/DEX/CON, the kit, then your list. The reply says what it bought, what it couldn't
    afford, and whether you're ready to recall down.
-2. **Plan a trip:** `plan trip LO-HI until "COND or ..." then town`, then `wait`. The Pilot goes down (stairs near
-   town, else Word of Recall), explores level after level within LO-HI, leaves bad levels by itself (a band, a pit or
-   nest, breeders, drainers, fearers, traps), and comes home when a condition holds. Conditions: `cures<N`, `ccw`,
+2. **Plan a trip:** `plan trip LO-HI until "COND or ..." then town [via=stairs|recall]`, then `wait`. The Pilot goes
+   down by the stairs when the trip reaches no deeper than 150 ft or you've never been to 250 ft, else by Word of Recall
+   (`via=` chooses; the reply says which). It explores level after level within LO-HI, leaves bad levels by itself (a
+   serious band, a pit or nest, breeders, drainers, fearers, traps), and comes home when a condition holds. Conditions: `cures<N`, `ccw`,
    `csw`, `phase`, `wor`, `food`, `hp`, `minutes>N`, `levels>N`, `clvl>=N`, `gold>N`, `free<N`, `time>HH:MM`, or
    events since the start (`band`, `drained`, `emergency`, `danger`, `unique_slain`, `pack_full`). No Word of Recall
    left and 90 minutes are built in.
@@ -75,6 +76,8 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 
 ## The judgement calls (yours)
 
+- **Going down.** With only 2 Words of Recall and little gold, prefer `via=stairs`: one bad recall landing (m24: an
+  orc pit, no stairs known) uses both scrolls in minutes. Walking down to 300-450 ft takes a few minutes.
 - **Depth.** Choose LO-HI from the character, not from courage. Up to 1000 ft the gate is clvl × 50 ft (then
   (clvl - 5) × 50), and **never below 1000 ft without Free Action**. From 500 ft carry 3+ CCW, 5+ Phase and 2 WoR. A
   1d6 weapon with 3 blows and AC ~30 struggled at 650-700 ft; go shallower until the gear improves. Set `max_depth`
@@ -105,6 +108,12 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 - **Never go down without 2 Words of Recall**: one to go, one to come home. A recall arrival has no stairs underfoot.
 
 ## Housekeeping
+
+- **The light is off in town on purpose** (resting there burns fuel 10x): the Pilot puts it on in the dungeon and to
+  read. `Gear: empty slots: light` in town is that, not a fault.
+- **Bands** count only when together they could take 30% of your HP in a turn, or include a dangerous monster; weaker
+  groups are fought (and looted) where they stand. **Dark inner rooms** get an avoid zone over their ring corridor (a
+  pit looks the same until it opens): `avoid clear` if you mean to open one.
 
 - `parked` means the Pilot is updating. "Connection refused" for a minute or two is normal: wait 20 s and retry, then
   `status` (a plan survives the restart). After a fight, first check whether the character died.

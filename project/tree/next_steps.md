@@ -158,7 +158,7 @@ the tag. Push after each piece of work (`tools/snapshot.sh`, commit, `git push o
 28346, with the 10-17 store patch), Dive04's Pilot, the user's viewer (`tmux -L mang attach -t watch`), the inbox
 watcher. A new node means restarting all four (commands in the 2026-10-08 section and `restructure.md`).
 
-**Dive04 now (after the 2.3 test trips, session 4):** clvl 22, 265 HP, in town, 190 gold, **STR 18/40 drained** (a dart trap), max_depth 650;
+**Dive04 now (after m24, session 4):** clvl 22, 265 HP, in town, 172 gold, 2 WoR, **STR 18/40 drained** (a dart trap), max_depth 650;
 Spear (+5,+7) 3 blows ~32; Hard Studded Leather of Resistance (4 resists), Ring of Protection [+8], Shadow Cloak
 [6,+7], Brodda's Metal Shod Boots [6,+3] (both identified by the town kit); 6 CCW, 4 CSW, 10 Phase, **2 WoR**, 5
 flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt 0.
@@ -217,8 +217,17 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    one is `HANDBOOK-reference.md` (search it, not required reading). `goal goto`, `stairs`, `raw` are refused to the
    Navigator (the Architect keeps them); the Pilot's hints point at `goal leave` / `goal fetch`. navigator.md updated
    (sources, loop, urgent alerts, debts in the report; backup of the old one in the session scratchpad and in git's
-   project/ snapshot). **Next: 2.7 a short supervised mission** scored against m17-23 (needs the user: model choice,
-   budget; state both debts in the prompt) (`plan trip LO-HI until COND then recall`), 2.4 order
+   project/ snapshot). **2.7 done: mission 24** (Opus, 40 min, 12:24-12:58; report
+   `runs/pilot/dive04/reports/2026-10-23-mission24.md`): no close calls, lowest HP 58%, 1 cure, debts 0, but XP low
+   (0.56 lv/dh; trip 1 recalled onto an orc-pit level and spent both WoR in 3 min, so trip 2 was a 300-400 ft stairs
+   trip). Navigator commands 1.5/min (m23: 6/min). Fixed after it: bands serious only at >= 30% of current HP worst-
+   case or with a dangerous member (weaker are fought and looted; the user's `?`); dark inner rooms get an avoid zone
+   on their ring (the user's `?`: surrounded in the pit's ring corridor); the plan waits for a pending recall instead
+   of a new dive; `plan trip ... via=stairs|recall` and a gate that matches it; town Identify only at >= 2x the
+   scroll's price; the report says why the light is off in town. Open from m24: `Rates:` gold counts shop spending;
+   latency.py counts plan news as alerts; a recall-arrival fallback when the first landing is bad (the Navigator's
+   problem 3). **Next:** restructure steps 3-5 (rulebook use, the Advisor's harness/set-pieces A7/A8, missions with
+   scorecards), then the time bubble. (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
    toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23. Then the time bubble (timers to game turns; decided below).
 3. **Rulebook:** the Advisor's **release 2** is in `Advisor/data/rulebook/`, synced into `github/tools/rulebook/`

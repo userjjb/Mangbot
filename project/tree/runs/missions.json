@@ -61,5 +61,15 @@
   "navigator": "sonnet",
   "report": "compact",
   "notes": "user ended it; Free Action boots sold for 3; Brodda's Scimitar lost"
+ },
+ {
+  "label": "m24",
+  "nick": "dive04",
+  "start": "2026-10-23 12:23",
+  "end": "2026-10-23 12:59",
+  "navigator": "opus",
+  "effort": null,
+  "report": "compact",
+  "notes": "restructure step 2.7: first supervised mission with plan town / plan trip, the new toolset and short HANDBOOK; 40 min; max 650 ft"
  }
 ]

@@ -394,3 +394,20 @@
 - 22:15-22:30: farmed 475->933, bought WoR (242) + 3 CCW (477), recall 650. White wolves x5 killed, Brodda slain (Metal Shod Boots [6] worn; Scimitar left for pack space, lost when Pilot fled an unseen light breather up the stairs), clvl 22, then an orc mob at 650 arrival (HP 123/254), Pilot recalled, town 22:27.
 - MISTAKES: force-sold unidentified {excellent} Soft Leather Boots at the armoury: of Free Action [2,+4], sold for 3 gold (shop resells 2265). Pilot had warned "probably special". Did not stop the unseen flee to fetch the Scimitar.
 - User ended the mission at 22:30:06.
+- 12:24:24 town 100% | town 12:24, 190g, supplies ~kit B, lantern in pack not worn | plan town kit=B (no buy list, too poor) | top up flasks; check it wields the lantern
+- 12:25:09 town 100% | lantern sits in pack, light slot empty; plan town didn't wield it | wear the lantern myself | no light in the dungeon would be crippling
+- 12:25:19 town 100% | kit B ok, 205g, lantern now worn; clvl22 but weak 1d6 spear, handbook says 650-700 struggled | plan trip 500-600 until cures<5 or phase<6 or minutes>30 or time>12:56 then town | XP+gold at a safe margin, home by budget
+- 12:28:35 town 100% | trip1: recalled to 600ft onto an orc-pit level, band of 6 + Uruk, Pilot read WoR to escape (HP low 167); home with 0 WoR, plan town bought 1 WoR, 17g left | can't recall down (need 2 WoR); take stairs from town, plan trip 300-450 until cures<5 or phase<6 or time>12:55 then town, home by the 1 WoR | earn gold for WoR/Restore STR without risking a one-way recall
+- 12:28:50 town 100% | gate refuses 450 with 1 WoR; unsure whether plan trip from town would recall (burning my only WoR) | goal dive 300 by stairs first, then plan trip 300-400 from inside | keep the WoR for the trip home
+- 12:30:03 300ft 100% | at 300ft 12:30, full HP, 1 WoR | plan trip 300-400 until cures<5 or phase<6 or time>12:55 then town | gold for next WoR; home by WoR at 12:55 leaves ~8 min
+- 12:38:22 300ft 100% | 300ft, 279g, Wand of Stinking Cloud 25,147 and Ring of Slow Digestion 4,46 seen | goal fetch 25,147 then the ring | both sell (gold for WoR); ring fills an empty slot
+- 12:38:47 300ft 100% | band alert: 4 Snaga + Kobold, ~40 dmg/turn vs 265 HP | ignore, keep fetching | trivial for clvl 22; wand 2 squares away
+- 12:40:55 350ft 100% | fetched the wand; plan then left 300ft for the snaga band, ring left behind; now 350ft | let the plan run | a ring of slow digestion is not worth fighting the plan over
+- 12:49:10 400ft 100% | 400ft 12:49, 469g, plan left 2 more levels for weak bands (cave spiders, novice rogues) | let it run to 12:55 | note for report: band rule too eager at clvl22 vs L6 monsters, costs loot (staffs, ring left)
+- 12:57:45 town 100% | town 12:57, full HP, 172g, WoR 2, CCW 6 CSW 4, Phase 11, lantern worn | stop, mission over | budget ends 13:04, too little time for another trip
+
+## End of mission 24 notes (Navigator)
+- Ended 12:57 in town, idle: clvl 22, 265/265, 172g, WoR 2, CCW 6, CSW 4, staff CLW 6, Phase 11, lantern worn (4600 + 5 flasks). Debts 0/0.
+- Trip 1 (recall to 600 ft) cost both WoR in 3 min: orc-pit level + band + no stairs known; 310 XP. Net gold for the mission about -18 (190 -> 172) but WoR back to 2.
+- Trip 2 (stairs, 300-400 ft, 27 min, 6 levels): ~700 gold gross, little XP (clvl 22 vs L6 monsters). Left 4 levels for weak "bands" (Snaga, Cave spider, Novice rogue).
+- Lantern was found unwielded twice in town (start, after trip 1); I wore it by hand.
