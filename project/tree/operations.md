@@ -70,6 +70,15 @@ into the Temple (4), but everything it carried is dropped where it died.
 
 ## Tool-mode client facts (`mangclient -mtool`, `src/client/c-tool.c`)
 
+- **Orphans (2026-10-23, the set-piece harness):** a dropped connection (every Pilot restart or park) leaves the
+  character in the world, orphaned and vulnerable, until it has been idle 15 s, or at once in town (net-server.c
+  `player_drop`, the idle timer in dungeon.c). A login before that **resumes it in memory and ignores the savefile**.
+  So never copy a savefile in less than 20 s after a logout (`tools/harness/charsave.sh` waits). The server also
+  saves every player, orphans too, every few minutes, so the savefile's time proves nothing.
+- **Server screens:** `interactive TYPE` (13 = the DM menu) opens one and keeps it open while `keys TEXT` has keys
+  queued (escapes `\e` `\r` `^X` `\xNN`); its redraws arrive as `special` events (`special` asks for one).
+  `tools/harness/dm.py` drives Gandalf with them (see `tools/harness/README.md`).
+
 - JSON events on stdout, commands on stdin (see the header of c-tool.c). `-mtool` implies
   `--noprompt` (which must come before another `--option`, not before SERVER). Password from
   `--passfile`, `MANG_PASS` or the config. A bad password or missing character exits 255.

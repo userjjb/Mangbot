@@ -241,10 +241,16 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    instead of SHOP_CUT 38%. `monster NAME` shows the hunt verdict and the expected drop (`drops.csv`); `pilotctl rule
    ...` queries the rulebook (rule.py synced). The Recall goal rests while it charges when hurt and alone (time 10x
    while resting). Fixed on the way: the Shop goal called `self.iv` (a crash when a forced sale had no re-listing).
-   **Next:** step 4, the harness (the Advisor's set-pieces; its enablers: a DM key-sending verb, replays). Order
-   agreed with the Advisor (to_architect 10-24 step3-reply): **A7, A8, A9** (A9 = a recall arrival on a "special"
-   level, the m24 replay; summoned orcs won't set the feeling), then A1, A6, A2, C8, C3, the rest. Release memos now
-   carry a "Schema changes" section. Then step 5 missions, then the time bubble. (`plan trip LO-HI until COND then recall`), 2.4 order
+   **Step 4, the harness: built (session 4)**, `github/tools/harness/` (README.md):
+   the tool client's `interactive`/`keys`/`special` verbs drive the DM menu; `dm.py` scripts Gandalf (summon a race
+   at a square, invoke a player, descend/ascend, hooks always cleared); `charsave.sh` snapshots/restores a character
+   around a run (**waits out the 15-s orphan timeout: see operations.md**); `setpiece.py` runs **A7, A8, A8o, A9:
+   all PASS** (`runs/setpieces/results.md`); `unit.py`: 10 unit set-pieces, all pass; the Pilot logs status/pack/map
+   replies thinned to `state.jsonl` (replays). Found and fixed: no light after an unexpected recall (A7 fought in the
+   dark), Satisfy Hunger never eaten (went Weak, recalled with 4 scrolls). Observed, not changed: on sight of a
+   summoner with no stairs known, the danger rule reads WoR at full HP (A8o). **Next:** more set-pieces in the
+   agreed order (A1, A6, A2, C8, C3...; A9's 'special' variant needs a real pit: import a level), then step 5
+   missions, then the time bubble. (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
    toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23. Then the time bubble (timers to game turns; decided below).
 3. **Rulebook:** the Advisor's **release 2** is in `Advisor/data/rulebook/`, synced into `github/tools/rulebook/`

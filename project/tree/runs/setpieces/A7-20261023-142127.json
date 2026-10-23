@@ -1,0 +1,72 @@
+{
+ "id": "A7",
+ "tag": "A7-20261023-142127",
+ "depth_ft": 300,
+ "start": "2026-10-23 14:21:27",
+ "checks": {
+  "hunt allowed at full HP": {
+   "pass": true,
+   "detail": "{\"ok\": true, \"goal\": \"hunt Hill giant\", \"note\": \"Hill giant: ~10 turns to kill, ~85 HP lost on average, ~119 in a bad fight (1 in 10; you have 230)\"}\nNOTE: Hill"
+  },
+  "giant slain": {
+   "pass": true,
+   "detail": "outcome [(11.6, 'goal_done', 'hunt Hill giant: slain')]"
+  },
+  "HP lost within the simulated bad case": {
+   "pass": true,
+   "detail": "lost 19, p90 119"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"hunt Hill giant\", \"note\": \"Hill giant: ~10 turns to kill, ~85 HP lost on average, ~119 in a bad fight (1 in 10; you have 230)\"}\nNOTE: Hill giant: ~10 turns to kill, ~85 HP lost on average, ~119 in a bad fight (1 in 10; you have 230)",
+ "stats": {
+  "hp_start": [
+   209,
+   265
+  ],
+  "hp_min": [
+   190,
+   265
+  ],
+  "attention": [
+   [
+    7.9,
+    "interesting_item",
+    "Copper Amulet seen on this level (devices and jewellery sell for 50-700 once known): its square is u"
+   ],
+   [
+    11.6,
+    "goal_done",
+    "hunt Hill giant: slain"
+   ]
+  ],
+  "acts": [
+   [
+    1.9,
+    "rest",
+    "rest"
+   ],
+   [
+    3.1,
+    "rest",
+    "rest"
+   ],
+   [
+    4.1,
+    "rest",
+    "stop resting"
+   ],
+   [
+    9.1,
+    "rest",
+    "rest"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 14:22:46",
+ "pass": true
+}

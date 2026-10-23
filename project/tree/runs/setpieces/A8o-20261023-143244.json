@@ -1,0 +1,88 @@
+{
+ "id": "A8o",
+ "tag": "A8o-20261023-143244",
+ "depth_ft": 300,
+ "start": "2026-10-23 14:32:44",
+ "checks": {
+  "override accepted": {
+   "pass": true,
+   "detail": "{\"ok\": true, \"goal\": \"hunt Ranger\", \"note\": \"Ranger: ~4 turns to kill, ~26 HP lost on average, ~45 in a bad fight (1 in 10; you have 265)\"}\nNOTE: Ranger: ~4 tur"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [241, 265]"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"hunt Ranger\", \"note\": \"Ranger: ~4 turns to kill, ~26 HP lost on average, ~45 in a bad fight (1 in 10; you have 265)\"}\nNOTE: Ranger: ~4 turns to kill, ~26 HP lost on average, ~45 in a bad fight (1 in 10; you have 265)",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   241,
+   265
+  ],
+  "attention": [
+   [
+    12.5,
+    "danger_seen",
+    "Ranger (summons) in view: heading for the stairs"
+   ],
+   [
+    12.6,
+    "goal_failed",
+    "flee (Ranger): no stairs known"
+   ],
+   [
+    12.6,
+    "emergency",
+    "couldn't reach the stairs with 1 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    15.3,
+    "goal_done",
+    "hunt Ranger: slain"
+   ],
+   [
+    22.9,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    23.0,
+    "goal_done",
+    "goto 15,17"
+   ],
+   [
+    26.0,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    26.1,
+    "goal_done",
+    "goto 16,16"
+   ]
+  ],
+  "acts": [
+   [
+    12.6,
+    "custom r item=8",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    36.7,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 1,
+  "phase_reads": 0,
+  "wor_reads": 1,
+  "cures": 0
+ },
+ "end": "2026-10-23 14:35:44",
+ "pass": true
+}

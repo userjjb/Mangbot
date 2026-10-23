@@ -1,0 +1,53 @@
+{
+ "id": "A8",
+ "tag": "A8-20261023-142452",
+ "depth_ft": 300,
+ "start": "2026-10-23 14:24:52",
+ "checks": {
+  "hunt refused (a summoner)": {
+   "pass": false,
+   "detail": "{\"ok\": true, \"goal\": \"hunt Ranger\", \"note\": \"Ranger: ~4 turns to kill, ~27 HP lost on average, ~46 in a bad fight (1 in 10; you have 265)\"}\nNOTE: Ranger: ~4 turns to kill, ~27 HP lost on average, ~46 "
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [229, 265]"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"hunt Ranger\", \"note\": \"Ranger: ~4 turns to kill, ~27 HP lost on average, ~46 in a bad fight (1 in 10; you have 265)\"}\nNOTE: Ranger: ~4 turns to kill, ~27 HP lost on average, ~46 in a bad fight (1 in 10; you have 265)",
+ "stats": {
+  "hp_start": [
+   231,
+   265
+  ],
+  "hp_min": [
+   229,
+   265
+  ],
+  "attention": [
+   [
+    51.7,
+    "goal_failed",
+    "hunt Ranger: lost sight of it"
+   ]
+  ],
+  "acts": [
+   [
+    3.8,
+    "rest",
+    "rest"
+   ],
+   [
+    21.3,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 14:26:55",
+ "pass": false
+}

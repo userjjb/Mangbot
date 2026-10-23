@@ -1,0 +1,133 @@
+{
+ "id": "A8",
+ "tag": "A8-20261023-142253",
+ "depth_ft": 300,
+ "start": "2026-10-23 14:22:53",
+ "checks": {
+  "hunt refused (a summoner)": {
+   "pass": false,
+   "detail": "{\"ok\": false, \"error\": \"order held: ranger isn't in view now (your order answers report r4, 14 s ago). Re-issue when it is\"}"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [151, 265]"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": false, \"error\": \"order held: ranger isn't in view now (your order answers report r4, 14 s ago). Re-issue when it is\"}",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   151,
+   265
+  ],
+  "attention": [
+   [
+    8.1,
+    "interesting_item",
+    "Copper Amulet seen on this level (devices and jewellery sell for 50-700 once known): its square is u"
+   ],
+   [
+    13.3,
+    "danger_seen",
+    "Ranger (summons) in view: heading for the stairs"
+   ],
+   [
+    13.4,
+    "goal_failed",
+    "flee (Ranger): no stairs known"
+   ],
+   [
+    13.4,
+    "emergency",
+    "couldn't reach the stairs with 1 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    16.3,
+    "band",
+    "a band within 10 squares: Fire hound \u00d77, Brown yeek, Ranger (9 monsters, ~256 worst-case melee a tur"
+   ],
+   [
+    16.8,
+    "lost",
+    "One of your Scrolls of Satisfy Hunger {50% off} (k) was destroyed!"
+   ],
+   [
+    18.8,
+    "lost",
+    "Your Balsa Staff (p) was destroyed!"
+   ],
+   [
+    18.8,
+    "tactic",
+    "3 traps sprung on this level: it's trap-laden; leave it (stairs or a fresh level) rather than explor"
+   ],
+   [
+    20.3,
+    "lost",
+    "One of your Scrolls of Satisfy Hunger {50% off} (k) was destroyed!"
+   ],
+   [
+    21.4,
+    "lost",
+    "One of your Scrolls of Phase Door {50% off} (h) was destroyed!"
+   ],
+   [
+    23.3,
+    "tactic",
+    "3 monsters coming (Fire hound): backing into a corridor"
+   ],
+   [
+    23.3,
+    "danger_seen",
+    "Ranger (summons) in view: heading for the stairs"
+   ],
+   [
+    23.4,
+    "goal_failed",
+    "flee (Ranger): no stairs known"
+   ],
+   [
+    28.0,
+    "unseen_attacker",
+    "'It breathes fire.': something unseen is attacking and no stairs are known: consider Word of Recall "
+   ],
+   [
+    28.5,
+    "breeders",
+    "3 breeding monsters in view (Silver mouse): leave this level (stairs, or recall) if they get in the "
+   ]
+  ],
+  "acts": [
+   [
+    13.4,
+    "custom r item=8",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    23.4,
+    "-",
+    "holding the corridor at (23, 114)"
+   ],
+   [
+    30.3,
+    "rest",
+    "rest"
+   ],
+   [
+    35.4,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 1,
+  "phase_reads": 0,
+  "wor_reads": 1,
+  "cures": 0
+ },
+ "end": "2026-10-23 14:24:35",
+ "pass": false
+}

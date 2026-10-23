@@ -2692,7 +2692,10 @@ class Pilot:
         # 3c. Light
         if self.town_light(now):
             return True
-        if not w.adjacent_monsters() and self.keep_light(now):
+        # (no light at all in the dungeon: wield one even with a monster adjacent -- the set-piece
+        # harness's A7 fought a Hill giant in the dark after an unexpected recall)
+        unlit = w.depth != 0 and not any(i["tval"] == TV_LITE for i in w.items(equip=True))
+        if (not w.adjacent_monsters() or unlit) and self.keep_light(now):
             return True
         # 4. Hunger
         # (not just "nothing on the map this instant": mission 9 ate a ration
@@ -2707,6 +2710,18 @@ class Pilot:
                 self.notify("tactic", f"hungry: ate {one_of(food[0]['name'])}")
                 return True
             if food:
+                return False
+            # no food: a Scroll of Satisfy Hunger (the town kit counts them as food; the reflex
+            # didn't read them, and Dive04 went Weak with four in the pack: the set-piece harness)
+            sat = next((i for i in w.items(tval=TV_SCROLL) if "Satisfy Hunger" in i["name"]), None)
+            if sat and now - self.eat_t > 10 and not w.flag("blind") and not w.flag("confused"):
+                if not any(i["tval"] == TV_LITE for i in w.items(equip=True)):
+                    return self.wear_light("a light to read Satisfy Hunger by")
+                self.eat_t = now
+                self.cmd(f"custom r item={sat['item']}", f"hungry ({w.hunger}), no food: read Satisfy Hunger", hold=1.0)
+                self.notify("tactic", "hungry and no food: read a Scroll of Satisfy Hunger")
+                return True
+            if sat:
                 return False
             if w.hunger <= 1 and not isinstance(self.goal, Recall) and w.depth:
                 self.notify("low_supply", "weak from hunger and no food: recalling")
@@ -4368,10 +4383,13 @@ class Pilot:
         Dive03 explored in the dark for minutes after "Your light has gone
         out!", which is why nothing around it ever showed up on the map."""
         w = self.w
-        if now < self.light_t or now < self.busy_until or w.store:
-            return False
-        self.light_t = now + 5
         worn = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
+        unlit = not worn and w.depth != 0 and now - getattr(self, "unlit_try_t", 0) > 1.5
+        if (now < self.light_t and not unlit) or now < self.busy_until or w.store:
+            return False
+        if unlit:
+            self.unlit_try_t = now           # (in the dungeon without a light: at once, not after the 5-60 s wait)
+        self.light_t = now + 5
         m = re.search(r"with (\d+) turns", worn["name"]) if worn else None
         turns = int(m.group(1)) if m else None
         if worn and "Lantern" in worn["name"] and turns is not None and turns < 3000:
@@ -6620,7 +6638,37 @@ def main():
         # every event carries the wall clock too ('t' restarts at 0 with each
         # Pilot process: ~12 log Clerks had to align segments by hand)
         evlog.write(json.dumps({"ev": "pilot_start", "t": 0.0, "epoch": round(time.time(), 3), "nick": nick}) + "\n")
-        pilot.w.c.log = lambda ev: (orig(ev), ev.get("ev") in bulky or
+        # the query replies go to state.jsonl, thinned (the Advisor's set-piece memo, blocker 2: a
+        # replay couldn't rebuild the map or the pack at second T): status every 2 s when it changes,
+        # the pack whenever it changes, the map's changed rows every 10 s
+        statelog = open(os.path.join(rundir, "state.jsonl"), "a", buffering=1)
+        last = {"status": [0.0, None], "inven": [0.0, None], "map": [0.0, None]}
+
+        def log_state(ev):
+            k, now = ev.get("ev"), time.time()
+            if k not in last or now - last[k][0] < {"status": 2.0, "inven": 0.0, "map": 10.0}[k]:
+                return
+            if k == "status":
+                body = {"y": ev.get("y"), "x": ev.get("x"), "ind": ev.get("ind")}
+            elif k == "inven":
+                body = {"items": ev.get("items")}
+            else:
+                rows = ev.get("rows") or []
+                prev = last[k][1] or []
+                body = {"rows": {i: r for i, r in enumerate(rows) if i >= len(prev) or prev[i] != r},
+                        "n": len(rows)}
+                if not body["rows"]:
+                    last[k][0] = now
+                    return
+                last[k] = [now, rows]
+                statelog.write(json.dumps({"ev": k, "epoch": round(now, 3), **body}) + "\n")
+                return
+            if body == last[k][1]:
+                return
+            last[k] = [now, body]
+            statelog.write(json.dumps({"ev": k, "epoch": round(now, 3), **body}) + "\n")
+
+        pilot.w.c.log = lambda ev: (orig(ev), log_state(ev) if ev.get("ev") in bulky else
                                     evlog.write(json.dumps({**ev, "epoch": round(time.time(), 3)}) + "\n"))
         # disturb_near/disturb_panel: the server stops a run the moment a monster
         # in view moves, or at a sector edge (faster than our polling at run

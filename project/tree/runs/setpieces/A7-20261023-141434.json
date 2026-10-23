@@ -1,0 +1,57 @@
+{
+ "id": "A7",
+ "tag": "A7-20261023-141434",
+ "depth_ft": 300,
+ "start": "2026-10-23 14:14:34",
+ "checks": {
+  "hunt allowed at full HP": {
+   "pass": false,
+   "detail": "{\"ok\": false, \"error\": \"order held: your order answers report r4 (16 s ago), from a level you've since left (now 0 ft): positions and monsters there are gone. L"
+  },
+  "giant slain": {
+   "pass": false,
+   "detail": "outcome []"
+  },
+  "HP lost within the simulated bad case": {
+   "pass": false,
+   "detail": "lost 0, p90 None"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": false, \"error\": \"order held: your order answers report r4 (16 s ago), from a level you've since left (now 0 ft): positions and monsters there are gone. Look again (`status`) and re-issue\"}",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   265,
+   265
+  ],
+  "attention": [
+   [
+    8.0,
+    "interesting_item",
+    "Copper Amulet seen on this level (devices and jewellery sell for 50-700 once known): its square is u"
+   ],
+   [
+    12.4,
+    "goal_done",
+    "recall: arrived at 0 ft"
+   ]
+  ],
+  "acts": [
+   [
+    36.7,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 14:17:21",
+ "pass": false
+}

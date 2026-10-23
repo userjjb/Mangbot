@@ -1631,6 +1631,9 @@ int recv_term_info(connection_type *ct) {
 		{
 			caveprt(stream_cave(st, n), wid, xoff, n + yoff);
 		}
+
+		/* Tool mode: report a server screen we keep open (the DM menu) */
+		if (tool_mode && win == NTERM_WIN_SPECIAL) tool_note_term_fresh(win);
 	}
 
 	/* Browse NTerm contents locally */

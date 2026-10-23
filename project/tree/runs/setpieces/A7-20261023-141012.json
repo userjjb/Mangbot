@@ -1,0 +1,52 @@
+{
+ "id": "A7",
+ "tag": "A7-20261023-141012",
+ "depth_ft": 300,
+ "start": "2026-10-23 14:10:12",
+ "checks": {
+  "hunt allowed at full HP": {
+   "pass": true,
+   "detail": "{\"ok\": true, \"goal\": \"hunt Hill giant\", \"note\": \"Hill giant: ~10 turns to kill, ~88 HP lost on average, ~123 in a bad fight (1 in 10; you have 265)\"}\nNOTE: Hill"
+  },
+  "giant slain": {
+   "pass": false,
+   "detail": "outcome [(15.3, 'goal_failed', 'hunt Hill giant: lost sight of it')]"
+  },
+  "HP lost within the simulated bad case": {
+   "pass": true,
+   "detail": "lost 40, p90 123"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"hunt Hill giant\", \"note\": \"Hill giant: ~10 turns to kill, ~88 HP lost on average, ~123 in a bad fight (1 in 10; you have 265)\"}\nNOTE: Hill giant: ~10 turns to kill, ~88 HP lost on average, ~123 in a bad fight (1 in 10; you have 265)",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   225,
+   265
+  ],
+  "attention": [
+   [
+    15.3,
+    "goal_failed",
+    "hunt Hill giant: lost sight of it"
+   ]
+  ],
+  "acts": [
+   [
+    26.6,
+    "rest",
+    "rest"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 14:11:30",
+ "pass": false
+}

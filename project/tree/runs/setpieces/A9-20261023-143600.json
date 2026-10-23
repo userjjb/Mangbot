@@ -1,0 +1,77 @@
+{
+ "id": "A9",
+ "tag": "A9-20261023-143600",
+ "depth_ft": 300,
+ "start": "2026-10-23 14:36:00",
+ "checks": {
+  "Door/Stair Location within 5 s of arriving": {
+   "pass": true,
+   "detail": "[(2.4, 'custom z item=12', 'trip: recall arrival: Door/Stair Location')]"
+  },
+  "no second Word of Recall while one is pending": {
+   "pass": true,
+   "detail": "0 reads"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   254,
+   265
+  ],
+  "attention": [
+   [
+    2.3,
+    "goal_done",
+    "recall to 300 ft: arrived at 300 ft"
+   ],
+   [
+    36.5,
+    "tactic",
+    "hungry and no food: read a Scroll of Satisfy Hunger"
+   ],
+   [
+    57.3,
+    "tactic",
+    "Disenchanter eye (lvl 5, never moves) disenchants: killing it"
+   ],
+   [
+    64.3,
+    "interesting_item",
+    "Copper Amulet seen on this level (devices and jewellery sell for 50-700 once known): its square is u"
+   ],
+   [
+    79.4,
+    "breeders",
+    "3 breeding monsters in view (Clear worm mass): leave this level (stairs, or recall) if they get in t"
+   ]
+  ],
+  "acts": [
+   [
+    2.4,
+    "custom z item=12",
+    "trip: recall arrival: Door/Stair Location"
+   ],
+   [
+    5.3,
+    "custom ,",
+    "pick up: a Main Gauche (1d5)."
+   ],
+   [
+    36.5,
+    "custom r item=10",
+    "hungry (2), no food: read Satisfy Hunger"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 14:43:57",
+ "pass": true
+}

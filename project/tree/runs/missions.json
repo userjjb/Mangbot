@@ -71,5 +71,105 @@
   "effort": null,
   "report": "compact",
   "notes": "restructure step 2.7: first supervised mission with plan town / plan trip, the new toolset and short HANDBOOK; 40 min; max 650 ft"
+ },
+ {
+  "label": "sp-A7-20261023-140757",
+  "nick": "dive04",
+  "start": "2026-10-23 14:08",
+  "end": "2026-10-23 14:10",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A7"
+ },
+ {
+  "label": "sp-A7-20261023-141012",
+  "nick": "dive04",
+  "start": "2026-10-23 14:10",
+  "end": "2026-10-23 14:12",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A7"
+ },
+ {
+  "label": "sp-A7-20261023-141248",
+  "nick": "dive04",
+  "start": "2026-10-23 14:13",
+  "end": "2026-10-23 14:14",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A7"
+ },
+ {
+  "label": "sp-A7-20261023-141434",
+  "nick": "dive04",
+  "start": "2026-10-23 14:14",
+  "end": "2026-10-23 14:18",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A7"
+ },
+ {
+  "label": "sp-A7-20261023-142127",
+  "nick": "dive04",
+  "start": "2026-10-23 14:21",
+  "end": "2026-10-23 14:23",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A7"
+ },
+ {
+  "label": "sp-A8-20261023-142253",
+  "nick": "dive04",
+  "start": "2026-10-23 14:23",
+  "end": "2026-10-23 14:25",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A8"
+ },
+ {
+  "label": "sp-A8-20261023-142452",
+  "nick": "dive04",
+  "start": "2026-10-23 14:25",
+  "end": "2026-10-23 14:27",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A8"
+ },
+ {
+  "label": "sp-A8-20261023-142733",
+  "nick": "dive04",
+  "start": "2026-10-23 14:27",
+  "end": "2026-10-23 14:30",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A8"
+ },
+ {
+  "label": "sp-A8o-20261023-143244",
+  "nick": "dive04",
+  "start": "2026-10-23 14:32",
+  "end": "2026-10-23 14:36",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A8o"
+ },
+ {
+  "label": "sp-A9-20261023-143600",
+  "nick": "dive04",
+  "start": "2026-10-23 14:36",
+  "end": "2026-10-23 14:39",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A9"
  }
 ]

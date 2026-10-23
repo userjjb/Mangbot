@@ -14,7 +14,9 @@
  *   message      {type, text}
  *   popup        {header, lines[]}          -- e.g. MOTD, examine text
  *   pause        {}                         -- server asked for "any key"
- *   interactive  {header}                   -- remote browser; ESC sent back
+ *   interactive  {header, kept}             -- remote browser; ESC sent back unless
+ *                                             keys are queued ('interactive' verb)
+ *   special      {lines[]}                  -- the special screen (DM menu), on refresh
  *   confirm      {type, id, prompt, answer} -- declined unless "confirm yes"
  *                                             was sent within the last 5 s
  *   monlist      {lines[]}                  -- the server's list of visible monsters
@@ -57,6 +59,13 @@
  *   minimap                                 -- query: the (M)ap screen's rows, after
  *                                             'custom M'; its frame shows the
  *                                             wilderness position, e.g. [14N, 2W]
+ *   interactive TYPE                        -- open a server screen (e.g. 21 = the DM
+ *                                             menu, '&'); it stays open while keys
+ *                                             are queued, and its text arrives as
+ *                                             'special' events
+ *   keys TEXT                               -- queue keys for it (\e ESC, \r Enter,
+ *                                             ^X Ctrl-X, \xNN, \\); ESC closes it
+ *   special                                 -- query: the special screen's rows
  *   quit                                    -- leave the game and exit
  */
 
@@ -73,6 +82,12 @@ static struct timeval tool_t0;
 
 /* Prompts that asked for a key since the last loop iteration */
 static int tool_blocked = 0;
+
+/* Keys queued by the 'keys' verb for a server screen (the DM menu: restructure step 4,
+ * the set-piece harness), sent one per loop; the screen stays open while any are left */
+static char tool_keyq[2048];
+static int tool_keyq_head = 0, tool_keyq_tail = 0;
+static bool tool_interactive = FALSE;
 
 /* Own position, from the server's MCURSOR_PLAYER cursor packets */
 static int tool_py = -1, tool_px = -1;
@@ -262,12 +277,12 @@ void tool_note_term_fresh(byte win)
 	int n;
 	char buf[1024];
 
-	if (win != NTERM_WIN_MONLIST && win != NTERM_WIN_ITEMLIST) return;
+	if (win != NTERM_WIN_MONLIST && win != NTERM_WIN_ITEMLIST && win != NTERM_WIN_SPECIAL) return;
 	if (!p_ptr->stream_hgt[st]) return;
 
-	tool_ev_begin(win == NTERM_WIN_MONLIST ? "monlist" : "itemlist");
+	tool_ev_begin(win == NTERM_WIN_MONLIST ? "monlist" : win == NTERM_WIN_ITEMLIST ? "itemlist" : "special");
 	printf(",\"lines\":[");
-	for (n = 0; n <= last_remote_line[win] && n < p_ptr->stream_hgt[st]; n++)
+	for (n = 0; (win == NTERM_WIN_SPECIAL || n <= last_remote_line[win]) && n < p_ptr->stream_hgt[st]; n++)
 	{
 		tool_row_text(stream_cave(st, n), wid, buf, sizeof(buf));
 		if (n) putchar(',');
@@ -349,12 +364,16 @@ static void tool_process_requests(void)
 	}
 	if (special_line_requested)
 	{
-		/* Remote browser / interactive mode: decline by sending ESC */
+		/* Remote browser / interactive mode: decline by sending ESC, unless the
+		 * tool opened it ('interactive') or has keys queued for it */
+		bool keep = tool_interactive || tool_keyq_head != tool_keyq_tail;
 		special_line_requested = FALSE;
 		tool_ev_begin("interactive");
 		tool_kv_str("header", special_line_header);
+		tool_kv_int("kept", keep);
 		tool_ev_end();
-		send_term_key(ESCAPE);
+		if (keep) tool_interactive = interactive_mode = TRUE;
+		else send_term_key(ESCAPE);
 	}
 	if (confirm_requested)
 	{
@@ -895,6 +914,42 @@ static void tool_do_command(char *line)
 		printf("]");
 		tool_ev_end();
 	}
+	else if (streq(verb, "interactive"))
+	{
+		if (n < 2) { tool_error(line, "usage: interactive TYPE"); return; }
+		tool_interactive = interactive_mode = TRUE;     /* (else the screen's ICKY refreshes are dropped) */
+		send_interactive((byte)a);
+		tool_ack(line);
+	}
+	else if (streq(verb, "keys"))
+	{
+		/* keys TEXT: \e ESC, \r Enter, \t Tab, \\ backslash, ^X Ctrl-X, \xNN a byte */
+		char *s = line + strlen("keys");
+		if (*s == ' ') s++;
+		while (*s)
+		{
+			int k = (unsigned char)*s++;
+			if (k == '\\' && *s)
+			{
+				int c = *s++;
+				if (c == 'e') k = ESCAPE;
+				else if (c == 'r' || c == 'n') k = '\r';
+				else if (c == 't') k = '\t';
+				else if (c == 'b') k = '\b';
+				else if (c == 'x' && s[0] && s[1]) { char hx[3] = { s[0], s[1], 0 }; k = (int)strtol(hx, NULL, 16); s += 2; }
+				else k = c;
+			}
+			else if (k == '^' && *s) k = KTRL(*s++);
+			if ((tool_keyq_tail + 1) % (int)sizeof(tool_keyq) == tool_keyq_head) { tool_error(line, "key queue full"); return; }
+			tool_keyq[tool_keyq_tail] = (char)k;
+			tool_keyq_tail = (tool_keyq_tail + 1) % (int)sizeof(tool_keyq);
+		}
+		tool_ack(line);
+	}
+	else if (streq(verb, "special"))
+	{
+		tool_note_term_fresh(NTERM_WIN_SPECIAL);
+	}
 	else if (streq(verb, "commands")) tool_query_commands();
 	else if (streq(verb, "status")) tool_query_status();
 	else if (streq(verb, "inven")) tool_query_inven();
@@ -991,6 +1046,15 @@ void tool_loop(void)
 
 		/* Read commands */
 		tool_poll_stdin();
+
+		/* A server screen we keep open: one queued key per pass */
+		if (tool_interactive && tool_keyq_head != tool_keyq_tail)
+		{
+			char k = tool_keyq[tool_keyq_head];
+			tool_keyq_head = (tool_keyq_head + 1) % (int)sizeof(tool_keyq);
+			send_term_key(k);
+			if (k == ESCAPE && tool_keyq_head == tool_keyq_tail) tool_interactive = interactive_mode = FALSE;
+		}
 
 		/* Keep client-side state (and the virtual screen) current */
 		flush_updates();

@@ -1,0 +1,36 @@
+{
+ "id": "A8",
+ "tag": "A8-20261023-142733",
+ "depth_ft": 300,
+ "start": "2026-10-23 14:27:33",
+ "checks": {
+  "hunt refused (a summoner)": {
+   "pass": true,
+   "detail": "{\"ok\": false, \"error\": \"hunt refused: Ranger summons help: hunt it only when a bad fight costs under 30% of your HP, you're at 80%+ HP, nothing else is in view and you carry 5+ Phase Door (Ranger: ~4 "
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [265, 265]"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": false, \"error\": \"hunt refused: Ranger summons help: hunt it only when a bad fight costs under 30% of your HP, you're at 80%+ HP, nothing else is in view and you carry 5+ Phase Door (Ranger: ~4 turns to kill, ~26 HP lost on average, ~46 in a bad fight (1 in 10; you have 265)). `goal hunt !NAME` overrides; if the fight goes wrong, the HP it costs goes into your fight debt\"}",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   265,
+   265
+  ],
+  "attention": [],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 14:32:35",
+ "pass": true
+}
