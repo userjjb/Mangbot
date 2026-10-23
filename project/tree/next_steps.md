@@ -287,6 +287,17 @@ job 8105290 on scc-wh2, walltime to Mon 10-19 20:47, Dive04 restored from its 10
   recall_pending, goal, hp_min), and **mission markers: run `pilotctl --nick dive04 mission start mNN navigator=MODEL
   [effort=..] [notes=..]` at launch and `mission end` at the end** (they keep runs/missions.json).
 
+- **Step 2.1, the Pilot's item policy (2026-10-23, branch `restructure`; design `restructure-step2.md`):** itemvalue.py
+  (object_value_real from the edit files; 37/38 sales matched), Navigator item commands refused in the dungeon
+  (`req_role`; `PILOT_ROLE=architect` marks my own pilotctl calls), value refusals with `!` override → **the
+  Navigator's debt** (`navigator_debt.json`, `debt` query), `keep`, Free Action inferred from "You are unaffected!",
+  pickup by value (unique drops always; use a flask/ration, then destroy the cheapest non-kit item), no loot detours
+  after a band, policy step at safe moments (identify, wield/wear upgrades, jewellery), gold within 10 when idle.
+  **The debt limit is never a number** (the user): we revoke overrides by creating
+  `runs/private/dive04.overrides_revoked` (text = why). **Every mission prompt must give the Navigator its current
+  debt (`PILOT_ROLE=architect pilotctl --nick dive04 debt`) and the notice that past a limit it isn't told, its
+  freedom to sell/destroy is taken away.**
+
 ### ARCHITECT HANDOFF 2026-09-29 (history; read the 2026-10-08 section first)
 
 New session (job 448491 on scc-wi2). Test server restarted under gdb 21:34 (gdb costs nothing: the

@@ -2672,15 +2672,13 @@ class Pilot:
         self.log("navigator_debt", gold=int(gold), what=what, why=why, total=self.debt_total())
 
     def override_allowed(self):
-        """Overrides stay allowed while the debt is under a limit the Navigator
-        isn't told (runs/private/NICK.override_limit; no file = no limit)."""
+        """Overrides stay allowed until the user or the Architect revokes them. The
+        limit is a judgement, not a number (the user: hidden, so we keep leeway
+        and the Navigator can't tell how close it is): revoked = the file
+        runs/private/NICK.overrides_revoked exists (its text says why)."""
         path = os.path.join(os.path.dirname(os.path.dirname(self.rundir.rstrip("/"))), "private",
-                            os.path.basename(self.rundir.rstrip("/")) + ".override_limit")
-        try:
-            limit = int(open(path).read().strip())
-        except (OSError, ValueError):
-            return True
-        return self.debt_total() <= limit
+                            os.path.basename(self.rundir.rstrip("/")) + ".overrides_revoked")
+        return not os.path.exists(path)
 
     KIT_KINDS = ("Cure Light Wounds", "Cure Serious Wounds", "Cure Critical Wounds", "Healing", "Phase Door",
                  "Word of Recall", "Teleport", "Identify", "Magic Mapping", "Speed", "Heroism", "Berserk",

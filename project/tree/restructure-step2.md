@@ -60,7 +60,9 @@ selling or destroying) is checked by the Pilot against the policy; a refusal say
 town), but every gold piece of value it wastes is added to its **debt**: the fair value lost on sales and destroys it
 made against a refusal, and the shortfall on its own item decisions. It is told its debt at the start of every mission,
 with a notice that past a limit it isn't told, its freedom to sell and destroy is taken away (then the Pilot's policy
-is final). The limit lives with the Architect, not in anything the Navigator is pointed at.
+is final). **The limit is a judgement, not a number** (the user, 2026-10-23: hidden so we keep leeway to act, and the
+threat is real to the Navigator without it knowing how close it is). Revoking = the Architect creates
+`runs/private/dive04.overrides_revoked` (its text says why); deleting it restores the freedom.
 
 ## 3. The interface: intents with conditions
 
@@ -112,6 +114,7 @@ restructure).
 ## 6. Decisions (the user, 2026-10-23)
 
 - **Overrides:** the Navigator keeps them (in town), with a tracked **debt** of the value it wastes, told at the start
-  of each mission; past a hidden limit its sell/destroy freedom is removed. (Instead of "only the user" or "nothing".)
+  of each mission; past a hidden limit its sell/destroy freedom is removed. The limit is the user's and the Architect's
+  judgement, never written down as a number (the user, 2026-10-23).
 - **Item commands:** refused in the dungeon, allowed between trips in town. (Instead of removed entirely.)
 - **Build order:** as in §5.

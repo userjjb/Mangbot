@@ -56,7 +56,9 @@ The original six-topic backlog (`../memos/2026-09-27-advisor-study-topics.md`) i
 Advisor owns: (1) **scorecard definitions — DONE** 10-23 (`../memos/2026-10-23-scorecard.md`, `data/scorecard/scorecard.py`,
 baseline m17–23); the Architect built the production one (`github/tools/observe/scorecard.py --check`, missions in
 `runs/missions.json`) + new records: sale, itemlist/left_behind, escape, audit_check state, mission_start/end (model!),
-report_age, monster health `track`; (2) **set-piece list — DONE** 10-24 (`../memos/2026-10-24-setpieces.md`, 41 set-pieces, 12 P1); (3) **rulebook tables**
+report_age, monster health `track`; (2) **set-piece list — DONE** 10-24 (`../memos/2026-10-24-setpieces.md`, 41 set-pieces, 12 P1); Architect step 2 under way (`../restructure-step2.md`): itemvalue.py (object_value_real; 37/38 sales within 8%),
+value refusals with a Navigator **debt**, C8 Free-Action inference, pickup by value, band → no loot detours.
+(3) **rulebook tables** (itemvalue.py uses placeholders for unknown-flavour expectations: supply them from data/identify)
 generated from the source (start from data/monsters, data/identify, data/shops (fix CHR 3!), data/progression, data/drops).
 Mission-by-mission patching is frozen. m22–23 were Sonnet Navigator missions.
 

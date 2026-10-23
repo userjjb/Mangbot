@@ -24,7 +24,8 @@ Run commands from `github/tools/pilot/` with `python3 pilotctl.py --nick NAME
 - **In town, a sale or destroy you order is checked:** unidentified valuables ("identify it first"), items a shop
   would pay for (for destroy/drop), resist/ability gear, kept items, and anything that may be the source of an
   ability seen in play are refused with the reason. **`!NAME` overrides** (`sell !X`, `destroy !X`), and the value
-  lost is added to **your debt** (`debt` shows it). Keep your debt low.
+  lost is added to **your debt** (`debt` shows it). **Past a limit you aren't told, the user and the Architect take
+  your freedom to override away**, and the Pilot's policy becomes final. Override only when you're sure.
 - **`keep NAME`** protects an item from the policy and from your own sells/destroys; `keep -NAME` releases it.
 - **Abilities seen in play:** "You are unaffected!" after a paralysing attack means Free Action from something you
   wear; the Pilot counts it, and protects the unidentified worn items until they're identified (`ability` news).
