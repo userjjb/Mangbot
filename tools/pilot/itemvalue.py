@@ -54,6 +54,22 @@ _FEEL = {}
 for _r in _csv("feelings.csv"):
     _FEEL[(_r["kind"].lower(), int(_r["level"]), _r["feeling"])] = _r
 _FEEL_LEVELS = sorted({k[1] for k in _FEEL}) or [15]
+# rings and amulets of a known kind whose plusses aren't known yet (jewellery is never
+# pseudo-ID'd): the rulebook's jewellery.csv, E[value] and P(a cursed copy) by kind and level
+_JEW = {}
+for _r in _csv("jewellery.csv"):
+    _JEW[(_r["kind"].lower(), int(_r["tval"]), int(_r["level"]))] = _r
+_JEW_LEVELS = sorted({k[2] for k in _JEW}) or [15]
+
+
+def jewellery_unknown(kind, tval, level):
+    """(E[value], P(cursed copy)) for a ring/amulet kind whose plusses can vary, or None when
+    every copy is the same (Free Action, the resists)."""
+    lv = min(_JEW_LEVELS, key=lambda x: abs(x - level))
+    r = _JEW.get((kind.lower(), tval, lv))
+    if not r or not any(float(r[c] or 0) for c in ("exp_pval", "exp_to_a", "exp_to_h", "exp_to_d")):
+        return None
+    return round(float(r["exp_value"])), float(r["p_cursed"] or 0)
 
 
 def unknown_flavour_value(tval, level, aware=()):
@@ -121,7 +137,7 @@ _GEAR = sorted(((k["N"].lower(), k) for k in KINDS if k["I"][0] in PVAL_GEAR | {
 
 class Item:
     __slots__ = ("name", "kind", "tval", "count", "value", "known", "ego", "artifact", "flags", "irreplaceable",
-                 "pseudo", "estimate", "p_irreplaceable")
+                 "pseudo", "estimate", "p_irreplaceable", "p_cursed")
 
     def __repr__(self):
         return (f"Item({self.name!r}: value {self.value}{' (estimate)' if self.estimate else ''}, "
@@ -139,6 +155,7 @@ def value(name, level=15, aware=()):
     it = Item()
     it.name, it.kind, it.tval, it.ego, it.artifact, it.flags = name, None, None, None, None, set()
     it.known, it.estimate, it.irreplaceable, it.value, it.p_irreplaceable = True, False, False, 0, 0.0
+    it.p_cursed = 0.0
     raw = name.strip()
     m = re.match(r"(\d+) ", raw)
     it.count = int(m.group(1)) if m else 1
@@ -168,6 +185,14 @@ def value(name, level=15, aware=()):
         it.kind = k["N"]
         it.flags = set(k["F"])
         val = k["W"][3]
+        if it.tval in (40, 45) and not re.search(r"[\[(<][+-]?\d", n):
+            ju = jewellery_unknown(it.kind, it.tval, level)
+            if ju:
+                # a known kind, its plusses unknown (identify it): many copies are cursed, minus-plussed
+                it.value, it.p_cursed = ju
+                it.known, it.estimate = False, True
+                it.irreplaceable = bool(it.flags & IRREPLACEABLE_FLAGS)
+                return it
     elif re.match(r".+ (Potion|Ring|Amulet|Wand|Staff|Rod)$", core) or core.startswith("Scroll titled"):
         tv = FLAVOURED.get(core.split()[-1], 70)
         it.tval, it.known, it.estimate = tv, False, True

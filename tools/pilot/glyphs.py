@@ -150,6 +150,29 @@ BREATHS = {"BR_ACID": (3, 1600), "BR_ELEC": (3, 1600), "BR_FIRE": (3, 1600), "BR
 DANGER_TABLE = os.path.join(HERE, "danger_table.csv")
 
 
+RULEBOOK_MONSTERS = os.path.join(HERE, "..", "rulebook", "monsters.csv")
+
+
+def load_rulebook(races, path=RULEBOOK_MONSTERS):
+    """Merge the rulebook's monster table (restructure step 3; the Advisor's monsters.csv, built
+    from the server source, with the hand ratings of the 09-27 danger table merged in and kept
+    up to date): rating, speed per player turn, worst melee per monster turn. Every race, not
+    only levels 0-40. Falls back to the old danger table if the rulebook copy is missing."""
+    if not os.path.exists(path):
+        return load_danger(races)
+    for row in csv.DictReader(open(path, encoding="utf-8")):
+        r = races.get(int(row["idx"]))
+        if r is None or r.name != row["name"]:
+            continue              # a different monster.txt: don't trust the row
+        if row.get("rating", "") != "":
+            r.danger = int(row["rating"])
+        r.speed_x = float(row["speed_x"])
+        if row.get("melee_max"):
+            r.melee_max = float(row["melee_max"])
+            r.drain_blows = sum(1 for b in r.blows if (b.split(":")[1:2] or [""])[0].startswith(("LOSE_", "EXP_")))
+    return races
+
+
 def load_danger(races, path=DANGER_TABLE):
     """Merge the Advisor's danger table (Advisor/data/monsters/danger_table.csv,
     copied here; levels 0-40, keyed by monster.txt N: = Race.idx)."""
@@ -197,7 +220,7 @@ def load_races(path=None):
                     cur.spells.add(f)
         elif line.startswith("B:"):
             cur.blows.append(line[2:])
-    return load_danger(races)
+    return load_rulebook(races)
 
 
 def _glyph_chars(fname):

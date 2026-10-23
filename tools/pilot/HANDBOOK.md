@@ -70,7 +70,9 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 | `avoid Y,X [R]` / `avoid NAME` / `avoid clear` | no-go zones and monsters for the Pilot's paths |
 | `order max_depth=FEET` (and the other orders in the reference) | standing orders; `max_depth` caps every plan |
 | `standing TEXT` / `standing -N` | standing instructions shown in every report (the user's "don't kill the Rot jelly") |
-| `monster NAME`, `drainers`, `gate FEET [recall]`, `debt`, `pack`, `equip`, `map [R]`, `status full` | queries |
+| `monster NAME` | this server's data for a monster, whether a danger rule fires, **the hunt check's verdict** (turns, HP on average and in a bad fight) and **what a kill drops** |
+| `rule drop NAME [DEPTH]`, `rule fight NAME ...`, `rule feeling KIND FEELING [LEVEL]`, `rule unknown TVAL LEVEL`, `rule owner NAME`, `rule const WORD` | the Advisor's rulebook, built from the server's source (no Pilot needed) |
+| `drainers`, `gate FEET [recall]`, `debt`, `pack`, `equip`, `map [R]`, `status full` | queries |
 | `say TEXT`, `journal "situation \| decision \| why"`, `complain TEXT` | the user, your journal, what you lacked |
 | `stop` | stop the goal and the plan (safe idle) |
 

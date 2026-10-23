@@ -30,6 +30,7 @@
     pilotctl.py plan trip LO-HI [until "COND or ..."] [then recall|town] [level_min=N] [force]   # a whole trip
     pilotctl.py plan | plan stop           # the plan now / end it
     pilotctl.py standing [TEXT | -N]       # standing instructions shown in every report (add / remove / list)
+    pilotctl.py rule [monster|drop|fight|feeling|unknown|owner|const|object|room] ...   # query the rulebook
     pilotctl.py complain TEXT...           # what you lacked / what got in your way (not your mistakes)
 """
 import json
@@ -79,6 +80,12 @@ def main():
         return
     sock = os.path.join(RUNS, "pilot", nick.lower(), "ctl.sock")
     cmd, args = argv[0], argv[1:]
+    if cmd == "rule":
+        # the rulebook (the Advisor's tables, synced into tools/rulebook): no Pilot needed
+        import subprocess
+        rule = os.path.join(HERE, "..", "rulebook", "rule.py")
+        subprocess.run([sys.executable, rule] + args)
+        return
     if cmd == "wait":
         brief = "--brief" in args
         args = [a for a in args if a != "--brief"]

@@ -231,8 +231,18 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    **depth band** advice in the HANDBOOK (work 500-650 ft: 58 XP/min vs 8.5 at 300-450), plan news tagged
    `source: plan` (latency.py skips it), the hunt veto skipped where the Advisor's `veto_reason` column says "strength"
    (synced 10-23: Brodda and Ulfast now go to the simulator; Wormtongue/Boldor stay vetoed); the scorecard counts
-   plan news apart (`plan_news`). **Next:** restructure steps 3-5 (rulebook use, the Advisor's harness/set-pieces A7/A8, missions with
-   scorecards), then the time bubble. (`plan trip LO-HI until COND then recall`), 2.4 order
+   plan news apart (`plan_news`). **Step 3, the rulebook, done (session 4):** the Pilot now runs on the
+   Advisor's tables instead of its interim ones. Monster ratings, speed and melee come from `rulebook/monsters.csv`
+   (`glyphs.load_rulebook`: all 616 races; only 5 differ at level 40 or below, 3 re-rated 2 -> 3). Junk kinds come
+   from `kinds_by_level.csv` (the same 38 as kinds.csv). Jewellery of a known kind with unknown plusses is valued from
+   `jewellery.csv` (E[value], P(cursed copy) ~45% for plussed rings; known=False, so never worn unidentified). The
+   ability proofs come from `abilities.csv` (`ABILITY_PROOFS`: rBlind, rNexus, hold life, sustains, feather fall as
+   well as Free Action). Shop pay is per shop and owner (`Pilot.pay_cut`, from shopmath: six recent sales exact)
+   instead of SHOP_CUT 38%. `monster NAME` shows the hunt verdict and the expected drop (`drops.csv`); `pilotctl rule
+   ...` queries the rulebook (rule.py synced). The Recall goal rests while it charges when hurt and alone (time 10x
+   while resting). Fixed on the way: the Shop goal called `self.iv` (a crash when a forced sale had no re-listing).
+   **Next:** step 4, the harness (the Advisor's set-pieces; its enablers: a DM key-sending verb, replays), then
+   step 5 missions, then the time bubble. (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
    toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23. Then the time bubble (timers to game turns; decided below).
 3. **Rulebook:** the Advisor's **release 2** is in `Advisor/data/rulebook/`, synced into `github/tools/rulebook/`

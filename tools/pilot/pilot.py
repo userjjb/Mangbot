@@ -1005,6 +1005,13 @@ class Recall(Goal):
             p.cmd(f"custom r item={it['item']}", f"read {it['name']}")
             self.read_t = p.recall_t = time.time()
             return None
+        # while it charges, rest when hurt and nothing is in view: free healing, and time runs 10x
+        # while resting, so the recall comes ~10x sooner in real time (the rulebook's constants:
+        # recall_seconds; the server ends a rest at full HP)
+        if w.recall_pending and not w.monsters and w.hp[0] < w.hp[1] and not w.resting and \
+                time.time() - self.read_t > 1 and time.time() - getattr(self, "rest_t", 0) > 3:
+            self.rest_t = time.time()
+            p.start_resting()
         if time.time() - self.read_t > (120 if w.recall_pending else 60):
             # say why, if the game did (e.g. "You have no light to read by.")
             why = next((t for ts, t in reversed(w.messages) if ts >= self.read_t and t.startswith(
@@ -1286,7 +1293,7 @@ class Shop(Goal):
                     chr_v = (p.w.ind.get("stat5") or [3])[0]
                     fair = shopmath.fair_pay(relist, sp.get("owner"), chr_v)
                     if fair is None:
-                        fair = round(self.iv(sp["sold_as"]).value * SHOP_CUT)
+                        fair = round(p.iv(sp["sold_as"]).value * p.pay_cut(p.iv(sp["sold_as"]).tval))   # (p: self is the Shop goal)
                     p.add_debt(fair - sp.get("received", 0), sp["sold_as"], "sold with ! over the value policy")
                 self.sale_pending = None
             if self.pending and getattr(self, "quoting", None):
@@ -3264,7 +3271,8 @@ class Pilot:
                              "If it happens again, give another goal")
 
     ABILITY_FLAGS = {"free_action": "free_act", "resist_blind": "res_blind", "resist_conf": "res_conf",
-                     "see_invisible": "see_invis"}
+                     "see_invisible": "see_invis", "resist_nexus": "res_nexus", "hold_life": "hold_life",
+                     "feather_fall": "feather"}
 
     def has_ability(self, order):
         """Free Action, a resist...: from the character sheet's grid (tool
@@ -3294,7 +3302,7 @@ class Pilot:
         if junk:
             return None
         iv = self.iv(name)
-        fair = round(iv.value * SHOP_CUT)
+        fair = round(iv.value * self.pay_cut(iv.tval))
         if not iv.known and iv.p_irreplaceable >= 0.2:
             return (f"unidentified, and {iv.p_irreplaceable:.0%} of these carry an ego you can't buy back (Free "
                     "Action, resists...): identify it first")
@@ -3306,6 +3314,32 @@ class Pilot:
         if action in ("destroy", "drop") and fair >= 20:
             return f"a shop pays ~{fair} for it: sell it instead"
         return None
+
+    def pay_cut(self, tval=None):
+        """What a shop pays of an item's value (restructure step 3: shopmath and the owners, not one
+        38% for everything): the best of the shops that buy this kind of item, by the owner we
+        last saw there, else the average owner of that shop, at the current CHR. SHOP_CUT when
+        nothing is known."""
+        chr_v = (self.w.ind.get("stat5") or [3])[0] if self.w.ind else 3
+        stores = self.BUYERS.get(tval, ()) if tval is not None else (1, 2, 3, 4, 5, 6)
+        key = (tval, chr_v, tuple(sorted((k, (v or {}).get("owner")) for k, v in getattr(self, "stores_seen", {}).items())))
+        cache = self.__dict__.setdefault("_pay_cache", {})
+        if key in cache:
+            return cache[key]
+        best = None
+        for st in stores:
+            owner = (getattr(self, "stores_seen", {}).get(st) or {}).get("owner")
+            f = shopmath.factors(re.sub(r"\s*\(.*\)$", "", owner), chr_v) if owner else None
+            if f:
+                cut = f[0] / 100         # (the shop's buying adjust: its pay, % of value)
+            else:
+                fs = [shopmath.factors(o, chr_v) for o, (idx, _r, _g) in shopmath.OWNERS.items() if idx == st - 1]
+                fs = [x for x in fs if x]
+                cut = sum(x[0] for x in fs) / len(fs) / 100 if fs else None
+            if cut is not None and (best is None or cut > best):
+                best = cut
+        cache[key] = best if best is not None else SHOP_CUT
+        return cache[key]
 
     def iv(self, name):
         """itemvalue.value with the depth items now come from (for expectations) and
@@ -3385,14 +3419,14 @@ class Pilot:
         if (self.flavour_of(it) or {}).get("junk") or re.search(r"\{(cursed|worthless|broken|terrible)", n):
             return 0
         iv = self.iv(n)
-        return iv.value * SHOP_CUT * max(1, iv.count)
+        return iv.value * self.pay_cut(iv.tval) * max(1, iv.count)
 
     def pickup_room(self, name):
         """True if the item underfoot should be picked up now (destroying something
         cheaper first when the pack is full); False to leave it (with news)."""
         w, now = self.w, time.time()
         iv = self.iv(name)
-        worth = iv.value * SHOP_CUT * max(1, iv.count)
+        worth = iv.value * self.pay_cut(iv.tval) * max(1, iv.count)
         ud = self.unique_drop
         unique = bool(ud and ud[0] == w.level_t and w.dist(ud[1]) <= 3)
         if not unique and iv.known and worth < 1 and not iv.irreplaceable:
@@ -3546,32 +3580,54 @@ class Pilot:
                 return True
         return False
 
+    # what proves an ability in play (the rulebook's abilities.csv, restructure step 3): (ability,
+    # the message, the line just before it that must match, a line before that rules it out)
+    ABILITY_PROOFS = (
+        ("free_action", r"You are unaffected", r"stares deep into your eyes|drains power from your muscles|mumbles\.$|"
+                                               r"touches you|gazes (at )?you", r"burning your eyes|gestures at your feet|"
+                                                                              r"mumbles strangely"),
+        ("resist_blind", r"You are unaffected", r"burning your eyes", None),
+        ("resist_nexus", r"You are unaffected", r"gestures at your feet|mumbles strangely", None),
+        ("hold_life", r"You keep hold of your life force", None, None),
+        ("sustain_str", r"You feel weak for a moment, but the feeling passes", None, None),
+        ("sustain_int", r"You feel stupid for a moment, but the feeling passes", None, None),
+        ("sustain_wis", r"You feel naive for a moment, but the feeling passes", None, None),
+        ("sustain_dex", r"You feel clumsy for a moment, but the feeling passes", None, None),
+        ("sustain_con", r"You feel sickly for a moment, but the feeling passes", None, None),
+        ("sustain_chr", r"You feel ugly for a moment, but the feeling passes", None, None),
+        ("feather_fall", r"You float gently", None, None),
+    )
+    ABILITY_LABEL = {"free_action": "Free Action", "resist_blind": "resist blindness", "resist_nexus": "resist nexus",
+                     "hold_life": "hold life", "feather_fall": "feather fall"}
+
     def watch_abilities(self):
         """Abilities shown by the game's answers rather than the sheet: "You are
         unaffected!" just after a paralysing attack is Free Action (the Advisor's
         set-piece C8: Dive04 had it from m18 to m23 from unidentified boots, sold
-        for 3 gold in m23). The unidentified worn items become its likely source."""
+        for 3 gold in m23), and the other proofs in the rulebook's abilities.csv
+        (ABILITY_PROOFS). The unidentified worn items become its likely source."""
         w = self.w
         msgs = list(w.messages)
         for i, (ts, t) in enumerate(msgs):
-            if ts <= self.ability_seen_t or not t.startswith("You are unaffected"):
+            if ts <= self.ability_seen_t:
                 continue
             before = [m for tt, m in msgs[max(0, i - 4):i] if ts - tt < 3]
-            # Only the line just before counts, and only a HOLD/SLOW spell or a paralysis
-            # blow proves Free Action: the same "unaffected" follows BLIND (rBlind) and
-            # TELE_LEVEL (rNexus) (the Advisor's rulebook r2, abilities.csv)
             last = before[-1] if before else ""
-            proves = re.search(r"stares deep into your eyes|drains power from your muscles|mumbles\.$|"
-                               r"touches you|gazes (at )?you", last) and \
-                not re.search(r"burning your eyes|gestures at your feet|mumbles strangely", last)
-            if proves and "free_action" not in self.inferred and not self.has_ability("free_action"):
-                self.inferred.add("free_action")
+            for ab, msg, need, veto in self.ABILITY_PROOFS:
+                if not re.match(msg, t) or ab in self.inferred or self.has_ability(ab):
+                    continue
+                # (only the line just before counts: the same "unaffected" follows BLIND, HOLD and
+                # TELE_LEVEL, and proves a different ability for each)
+                if (need and not re.search(need, last)) or (veto and re.search(veto, last)):
+                    continue
+                self.inferred.add(ab)
                 src = [re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", i2["name"])).lower()
                        for i2 in w.items(equip=True) if self.iv(i2["name"]).known is False
                        or re.search(r"\{(good|excellent|special|magical)", i2["name"])]
                 self.ability_sources |= set(src)
-                self.notify("ability", f"you have Free Action (\"{t}\" after \"{before[-1]}\"), though no known item "
-                                       "gives it: it's one of your unidentified worn items ("
+                label = self.ABILITY_LABEL.get(ab) or f"sustain {ab[8:].upper()}"
+                self.notify("ability", f"you have {label} (\"{t}\"" + (f" after \"{last}\"" if need else "") +
+                                       "), though no known item gives it: it's one of your unidentified worn items ("
                                        + (", ".join(src) or "none found") + "). The Pilot won't sell or drop those; "
                                        "identify them")
         self.ability_seen_t = max([self.ability_seen_t] + [ts for ts, _ in msgs])
@@ -3660,8 +3716,25 @@ class Pilot:
                         f"melee per turn ~{r.per_turn:.0f} (worst {mx * (r.speed_x or 1):.0f}, drain blows {drains})"
                         f"; Advisor rating {r.danger if r.danger is not None else '?'}/5"
                         f"; for you now: {'DANGER: ' + why if why else 'no danger rule fires'}")
+            # the rulebook (restructure step 3): the hunt check's verdict and what a kill drops
+            refusal, est = self.hunt_refusal(r.name)
+            out[-1] += f"; hunt check: {'REFUSED: ' + refusal if refusal else 'allowed (' + (est or '?') + ')'}"
+            d = self.drop_row(r)
+            if d:
+                out[-1] += (f"; a kill drops ~{float(d['e_gold']):.0f} gold and ~{float(d['e_items']):.1f} items worth "
+                            f"~{float(d['e_item_value_cap']):.0f} (P(ego) {float(d['p_excellent_any']):.0%}, "
+                            f"P(artifact) {float(d['p_artifact_any']):.0%})")
         more = len(exact or found) - 6
         return "\n".join(out) + (f"\n(+{more} more)" if more > 0 else "")
+
+    def drop_row(self, race):
+        """The rulebook's drops.csv row for a monster (at its native depth), or None."""
+        if not hasattr(self, "_drops"):
+            try:
+                self._drops = {r["idx"]: r for r in csv.DictReader(open(os.path.join(HERE, "..", "rulebook", "drops.csv")))}
+            except OSError:
+                self._drops = {}
+        return self._drops.get(str(getattr(race, "idx", "")))
 
     def group_danger(self):
         """Worst-case melee of everything that can reach us this turn, the
@@ -3979,14 +4052,23 @@ class Pilot:
         except (OSError, ValueError):
             self.flavours = {}
         self.junk_kinds = {}
+        tv = {"potion": "Potion", "scroll": "Scroll", "wand": "Wand", "staff": "Staff", "rod": "Rod",
+              "ring": "Ring", "amulet": "Amulet"}
         try:
-            tv = {"potion": "Potion", "scroll": "Scroll", "wand": "Wand", "staff": "Staff", "rod": "Rod",
-                  "ring": "Ring", "amulet": "Amulet"}
-            for k in csv.DictReader(open(os.path.join(HERE, "kinds.csv"))):
-                self.junk_kinds[f"{tv.get(k['kind'], k['kind'])} of {k['name']}"] = \
-                    k["sell_known"] in ("0-0", "0") or "CURSE" in k["flags"]
-        except OSError:
-            pass
+            # the rulebook (restructure step 3): a kind is junk when it's worthless at every level, or
+            # worth at most a gold piece (Water, Apple Juice); the same 38 kinds as the old kinds.csv
+            rows = {}
+            for r in csv.DictReader(open(os.path.join(HERE, "..", "rulebook", "kinds_by_level.csv"))):
+                rows.setdefault(f"{tv.get(r['tval'], r['tval'])} of {r['kind']}", []).append(r)
+            for name, rs in rows.items():
+                self.junk_kinds[name] = all(float(r["worthless"] or 0) >= 1 or float(r["value"] or 0) <= 1 for r in rs)
+        except (OSError, ValueError, KeyError):
+            try:
+                for k in csv.DictReader(open(os.path.join(HERE, "kinds.csv"))):
+                    self.junk_kinds[f"{tv.get(k['kind'], k['kind'])} of {k['name']}"] = \
+                        k["sell_known"] in ("0-0", "0") or "CURSE" in k["flags"]
+            except OSError:
+                pass
 
     def learn_flavour(self, flavour, kind, how):
         if not flavour or not kind or " of " not in kind or self.flavours.get(flavour, {}).get("kind") == kind:
@@ -5069,7 +5151,7 @@ class Pilot:
                         return {"ok": False, "error": f"not {c}ed: your freedom to override the Pilot's value policy "
                                                       f"is suspended (debt {self.debt_total()} gold)"}
                     if self.value_refusal(it0, c):
-                        self.add_debt(round(self.iv(it0["name"]).value * SHOP_CUT), it0["name"],
+                        self.add_debt(round(self.iv(it0["name"]).value * self.pay_cut(self.iv(it0["name"]).tval)), it0["name"],
                                       f"{c}ed with ! over the value policy")
                 n = args[1] if len(args) > 1 else "1"
                 if n == "all":
@@ -5376,7 +5458,7 @@ class Pilot:
         if self.probably_special(name) or self.value_refusal(it, "sell", "navigator"):
             return 0                    # (identify first)
         iv = self.iv(name)
-        if iv.kind is None or iv.value <= 0 or iv.value * SHOP_CUT < 1:
+        if iv.kind is None or iv.value <= 0 or iv.value * self.pay_cut(iv.tval) < 1:
             return 0
         return it["number"]
 
@@ -5398,7 +5480,7 @@ class Pilot:
             if iv.known is not False:
                 continue
             bare = re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower()
-            prio = float("inf") if bare in self.ability_sources or iv.p_irreplaceable >= 0.2 else iv.value * SHOP_CUT
+            prio = float("inf") if bare in self.ability_sources or iv.p_irreplaceable >= 0.2 else iv.value * self.pay_cut(iv.tval)
             if prio >= minimum:
                 out.append((prio, it))
         return out
