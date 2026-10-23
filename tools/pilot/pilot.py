@@ -500,6 +500,13 @@ class Dive(Goal):
         if self.pending and w.level_t < self.pending and time.time() - self.pending < 3:
             return None           # waiting for the level change
         self.pending = None
+        # leaving town: the light on before the stairs, as Recall does before reading (the user:
+        # a couple of turns of light, and nobody has to check it)
+        if w.depth == 0 and not up and not any(i["tval"] == TV_LITE for i in w.items(equip=True)) and \
+                time.time() - getattr(self, "light_t", 0) > 2:
+            self.light_t = time.time()
+            if p.wear_light("going down"):
+                return None
         if time.time() - w.level_t < 0.6:
             return None           # let the new level's map arrive
         if w.level_t != self.level_seen:
@@ -6102,9 +6109,9 @@ class Pilot:
             cand = [i for i in pack if i["tval"] in tvals and not re.search(r"\{(cursed|worthless|broken|terrible)", i["name"])
                     and not (self.flavour_of(i) or {}).get("junk")]
             if len(on) < k:
-                empty.append(slot + (f" (you carry {cand[0]['name']}" + (": off in town to save fuel; the Pilot "
-                                     "puts it on in the dungeon and to read)" if slot == "light" and not w.depth
-                                     else ")") if cand else ""))
+                if slot == "light" and cand and not w.depth:
+                    continue          # (off in town to save fuel; worn again before leaving it)
+                empty.append(slot + (f" (you carry {cand[0]['name']})" if cand else ""))
             elif slot not in ("weapon", "bow", "ring", "amulet", "light"):
                 ac_on = min((self.armour_ac(i["name"]) or 0) for i in on)
                 for i in cand:

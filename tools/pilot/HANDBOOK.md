@@ -116,8 +116,6 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 
 ## Housekeeping
 
-- **The light is off in town on purpose** (resting there burns fuel 10x): the Pilot puts it on in the dungeon and to
-  read. `Gear: empty slots: light` in town is that, not a fault.
 - **Bands** count only when together they could take 30% of your HP in a turn, or include a dangerous monster; weaker
   groups are fought (and looted) where they stand. **Dark inner rooms** get an avoid zone over their ring corridor (a
   pit looks the same until it opens): `avoid clear` if you mean to open one.
