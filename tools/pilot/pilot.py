@@ -2537,6 +2537,25 @@ class Pilot:
             return "summons"
         return None
 
+    def worst_3turns(self, races):
+        """The rulebook's worst melee in the next 3 player turns at our AC (worst_3turns_acNN: the AC
+        reduction of HURT blows, recoil, speed), summed over the monsters, with a caster's spell_max if
+        higher; the old 2.5 raw worst rounds when a race has no row."""
+        rows = self.fight_rows()
+        ac = (self.w.ind.get("armor") or [0])[0] or 0
+        col = min((20, 40, 60), key=lambda a: abs(a - ac))
+        total = 0.0
+        for r in races:
+            row = rows.get(getattr(r, "idx", None)) or {}
+            if row.get(f"worst_3turns_ac{col}"):
+                v = float(row[f"worst_3turns_ac{col}"])
+                if r.spells:
+                    v = max(v, float(row.get("spell_max") or 0))
+            else:
+                v = 2.5 * (r.worst_melee[0] or 0) * (r.speed_x or 1)
+            total += v
+        return total
+
     def sim_loss(self, r):
         """fight_sim's mean HP lost dueling r at our current profile, cached by race, level,
         weapon, AC and HP to the nearest 10% (300 duels, ~0.05 s for a new key)."""
@@ -2606,10 +2625,13 @@ class Pilot:
         # (and HP within 2.5 worst-case rounds of one adjacent monster: Brodda
         # took 151 -> 27 in five rounds of 48 before flee_hp fired at 58 --
         # the Advisor's missions 15-16 replay, change 3)
-        worst = max(((r.worst_melee[0] or 0) * (r.speed_x or 1) for *_, r in w.adjacent_monsters()), default=0)
-        hard = worst > 0 and w.hp[0] <= 2.5 * worst and w.hp_frac < 0.9
+        # (the Advisor's emergency-threshold memo, rulebook r4: the worst melee of the adjacent monsters in
+        # the next 3 player turns, against our AC and at their attack rate -- not 2.5 raw worst rounds,
+        # which broke off a vetted Ulfast hunt at 145 HP and under-counted fast monsters)
+        worst = self.worst_3turns([r for *_, r in w.adjacent_monsters()])
+        hard = worst > 0 and w.hp[0] <= worst and w.hp_frac < 0.9
         if (w.hp_frac < o["flee_hp"] or hard) and (mons_near or now - w.last_hit_t < 5):
-            why = "low HP" if w.hp_frac < o["flee_hp"] else f"HP {w.hp[0]} within 2.5 worst rounds ({worst:.0f})"
+            why = "low HP" if w.hp_frac < o["flee_hp"] else f"HP {w.hp[0]} within 3 turns of the worst ({worst:.0f})"
             if not self.escape(why) and self.mover.active and not self.escaping_to_stairs:
                 self.mover.stop()
             return True
@@ -3186,6 +3208,13 @@ class Pilot:
             m = re.match(r"You have (?:slain|destroyed) (.+?)\.$", t)
             if m and m.group(1).lower() in self.unique_names:
                 self.unique_drop = (w.level_t, w.pos, ts)     # its drop is always picked up
+                uk = self.uniques_killed()
+                if m.group(1).lower() not in uk:
+                    uk.add(m.group(1).lower())
+                    try:
+                        json.dump(sorted(uk), open(os.path.join(self.rundir, "uniques_killed.json"), "w"), indent=1)
+                    except OSError:
+                        pass
                 self.notify("unique_slain", f"{m.group(1)} slain at {w.pos[0]},{w.pos[1]}: uniques drop good items "
                                             "(look at 'Item squares' around there)")
         self.kills_t = max([self.kills_t] + [ts for ts, _ in w.messages])
@@ -3854,6 +3883,16 @@ class Pilot:
                             f"P(artifact) {float(d['p_artifact_any']):.0%})")
         more = len(exact or found) - 6
         return "\n".join(out) + (f"\n(+{more} more)" if more > 0 else "")
+
+    def uniques_killed(self):
+        """Uniques this character has killed (runs/pilot/NICK/uniques_killed.json, kept by watch_kills;
+        seeded from the logs): a repeat kill drops nothing and gives no XP."""
+        if not hasattr(self, "_uk"):
+            try:
+                self._uk = set(json.load(open(os.path.join(self.rundir, "uniques_killed.json"))))
+            except (OSError, ValueError, AttributeError):
+                self._uk = set()
+        return self._uk
 
     def drop_row(self, race):
         """The rulebook's drops.csv row for a monster (at its native depth), or None."""
@@ -5946,6 +5985,9 @@ class Pilot:
             next((r for r in w.g.races.values() if key in r.name.lower()), None)
         if not race:
             return None, "no monster by that name in this game's data"
+        if "UNIQUE" in race.flags and race.name.lower() in self.uniques_killed():
+            return (f"you've killed {race.name} before: a repeat kill gives no XP and no drop (the server's "
+                    "'cheeze' rule), so there's nothing to hunt it for"), None
         if race.paralyser and not self.has_ability("free_action"):
             return (f"{race.name} paralyses (a blow or Hold Person) and you have no Free Action: a paralysed "
                     "warrior is hit until dead. Only with Free Action"), None
@@ -5964,11 +6006,10 @@ class Pilot:
         # a fight the Pilot's own emergency rule would break off on average: it phases away once HP is
         # within 2.5 worst rounds of the monster (or below flee_hp), so a hunt whose average loss ends
         # there is lost (the set-piece harness's C3: Ulfast, ~118 on average, broken off at 145 HP)
-        abort = max((race.worst_melee[0] or 0) * (race.speed_x or 1) * 2.5,
-                    float(self.orders.get("flee_hp", 0.5)) * w.hp[1])
+        abort = max(self.worst_3turns([race]), float(self.orders.get("flee_hp", 0.5)) * w.hp[1])
         if hp - taken < abort:
             return (f"{info}: on average it ends below {abort:.0f} HP, where the Pilot's emergency rule breaks a "
-                    "fight off (2.5 of its worst rounds, or flee_hp); rest to full or come back stronger", info)
+                    "fight off (its worst 3 turns, or flee_hp); rest to full or come back stronger", info)
         if row.get("response") in ("AVOID", "LEAVE") and row.get("veto_reason", "qualitative") != "strength":
             # (the Advisor's m24 memo: ratings given for strength alone are the simulator's to judge;
             # its veto_reason column says which, from its next rulebook build)

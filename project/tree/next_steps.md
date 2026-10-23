@@ -257,8 +257,12 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    emergency rule's 2.5 worst rounds (Ulfast; the Hill giant from 80% -- a change to the Advisor's A7 criterion,
    asked), confusion not cured against visible weak monsters (C3 spent 6 potions), a unique's drop fetched after a
    hunt. Staging facts in the harness README (repeat unique kills drop nothing; escorts; levels persist; depths
-   rotate). **Next:** the rest of the set-piece list by priority (B1, C4, C5, A3...), then step 5 missions, then the
-   time bubble. (`plan trip LO-HI until COND then recall`), 2.4 order
+   rotate). The Advisor's answer (to_architect 10-24
+   emergency-threshold, rulebook r4 synced): the emergency rule and the hunt check now use the worst melee in 3 turns
+   at our AC (`Pilot.worst_3turns`), not 2.5 raw worst rounds; uniques already killed are refused as hunts
+   (`uniques_killed.json`). **Batch 3: A3, B1, A7 rerun: PASS; C4, C5 as unit tests (14 unit tests pass).**
+   **Next:** the rest of the list (B2-B6, C1-C2, C6-C7, C9, D, E, F) mostly as unit tests, then step 5 missions,
+   then the time bubble. (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
    toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23. Then the time bubble (timers to game turns; decided below).
 3. **Rulebook:** the Advisor's **release 2** is in `Advisor/data/rulebook/`, synced into `github/tools/rulebook/`

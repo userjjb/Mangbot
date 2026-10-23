@@ -36,6 +36,8 @@ Each run:
 | A2L | the same with Lugdush (no rule fired before the simulator danger rule) | the same |
 | A6 | a Gnome mage (blinks, summons) adjacent | ≤ 3 Phase Door; Phase never runs out; lowest HP ≥ 40% |
 | C3 | Ulfast adjacent, the Architect orders the hunt | slain; his drop picked up |
+| A3 | a Wolf chieftain (+10) adjacent, then an Architect goto 12 off | the goto is held; no walking with it adjacent |
+| B1 | a Purple mushroom patch 2 off, a goto past it | never adjacent; no stat drained |
 | A9 | `plan trip 300-300 via=recall` from town, then Snaga and Black orcs summoned 8-9 squares off | Door/Stair Location within 5 s of arriving; no second Word of Recall while one is pending |
 
 The memo's A7 is at 1250 ft and its A8 Ranger at 6 squares; here they're at 300 ft and 3 squares. The DM summons any race
@@ -101,6 +103,18 @@ Recall and a ration. It was then restored properly from the first snapshot.
 - **A unique's drop wasn't fetched** after a hunt (looting runs only in explore and dive). The policy step now
   fetches the items within 3 squares of the kill. Its first version marked the squares in the pickup's junk set
   and so never picked them up (C3's last FAIL).
+
+## From the Advisor's emergency-threshold memo (rulebook r4)
+
+- **The emergency rule's worst-case** is now the adjacent monsters' worst melee in the next 3 player turns at our AC
+  (`worst_3turns_acNN`, a caster's `spell_max` if higher), summed. It was 2.5 raw worst rounds. The hunt check uses
+  the same abort point. Ulfast's is 96, the Hill giant's 100 (was 150 and 160), a Nighthawk's 30 (was 25).
+- **`flee_hp`** (0.5 by default) is the other abort point: from 80% HP a Hill giant fight ends on average below it,
+  so that hunt is refused unless `flee_hp` is 0.4 (unit `hunt_hill_giant_by_hp`).
+- **A unique this character has killed is refused as a hunt** (no XP, no drop):
+  `runs/pilot/NICK/uniques_killed.json`, kept from the slain messages and seeded with Dive04's five.
+- **Unit tests for C4 and C5**, which live staging would need many forged items for (each forge destroys a stack in
+  Gandalf's pack): `pack_full_makes_room`, `loot_band_stops_looting`.
 
 ## Observed, then changed (the user)
 

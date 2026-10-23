@@ -1,0 +1,51 @@
+{
+ "id": "A3",
+ "tag": "A3-20261023-172517",
+ "depth_ft": 500,
+ "start": "2026-10-23 17:25:17",
+ "checks": {
+  "the goto held": {
+   "pass": false,
+   "detail": "[] (order: {\"ok\": true, \"goal\": \"goto 27,159\"})"
+  },
+  "no walking with it adjacent": {
+   "pass": true,
+   "detail": "0 moves while adjacent"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [264, 265]"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"goto 27,159\"}",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   264,
+   265
+  ],
+  "attention": [
+   [
+    30.6,
+    "tactic",
+    "goto: no known path; trying one through unexplored squares"
+   ],
+   [
+    40.0,
+    "goal_done",
+    "goto 27,159"
+   ]
+  ],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 17:28:07",
+ "pass": false
+}

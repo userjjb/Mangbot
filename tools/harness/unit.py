@@ -102,14 +102,15 @@ PHASE = ("11 Scrolls of Phase Door", 70)
 # --- hunts (A7's HP halves; A8's rule) ---------------------------------------------------------
 @case
 def hunt_hill_giant_by_hp():
-    """A7: a Hill giant hunt is allowed at 100% HP and refused at 80% and 60%. (The Advisor's A7 says allowed at
-    80%; but from 212 HP the average loss of ~87 ends at ~125, below the 160 where the Pilot's emergency rule
-    breaks the fight off -- 2.5 of its worst rounds of 64 -- so the check refuses it: raised with the Advisor.)"""
+    """A7: a Hill giant hunt: allowed at 100%; at 80% only with flee_hp 0.4 (with the default 0.5 the emergency
+    rule escapes below 132 HP, and the average fight ends at ~125); refused at 60% either way. (The abort point
+    is otherwise its worst 3 turns at our AC, ~100: the Advisor's emergency-threshold memo.)"""
     out = []
-    for hp in (265, 212, 159):
-        why, info = pilot(hp=hp, pack=[PHASE]).hunt_refusal("Hill giant")
-        out.append(why is None)
-    return out == [True, False, False], f"allowed at 265/212/159 HP: {out}"
+    for hp, flee in ((265, 0.5), (212, 0.5), (212, 0.4), (159, 0.4)):
+        p = pilot(hp=hp, pack=[PHASE])
+        p.orders["flee_hp"] = flee
+        out.append(p.hunt_refusal("Hill giant")[0] is None)
+    return out == [True, False, True, False], f"allowed at 265/0.5, 212/0.5, 212/0.4, 159/0.4: {out}"
 
 
 @case
@@ -135,6 +136,17 @@ def hunt_qualitative_vetoes():
 
 
 # --- items ------------------------------------------------------------------------------------
+@case
+def hunt_repeat_unique():
+    """A unique this character has killed before is refused (a repeat kill gives no XP and no drop)."""
+    p = pilot(pack=[PHASE])
+    p._uk = {"brodda, the easterling"}
+    a = p.hunt_refusal("Brodda, the Easterling")[0]
+    p._uk = set()
+    b = p.hunt_refusal("Brodda, the Easterling")[0]
+    return bool(a) and "repeat kill" in a and b is None, f"killed before: {bool(a)}; never killed: {b is None}"
+
+
 @case
 def jewellery_unknown_plusses():
     """A known ring kind without its plusses is an estimate with P(cursed copy); with them it's known."""
@@ -246,6 +258,60 @@ def unique_drop_fetched():
     again = p.policy_tick(time.time() + 4)
     names = [g.describe() for g in got]
     return acted and names[:1] == ["goto 21,22"] and len(names) == 1, f"goals {names}, second tick acted={again}"
+
+
+class _Mover:
+    active = False
+
+    def __init__(self):
+        self.went = []
+
+    def go(self, goals, **k):
+        self.went.append(list(goals))
+        return True
+
+    def tick(self):
+        return "moving"
+
+    def stop(self):
+        pass
+
+
+@case
+def loot_band_stops_looting():
+    """C5: with a serious band flagged on this level in the last 90 s, no loot detour; without it, the item 5
+    squares off is fetched."""
+    def run(band):
+        p = pilot()
+        p.w.memory = {(20, 20): ".", (20, 25): "-"}
+        p.orders["loot_radius"] = 10
+        p.skipped_items = set()
+        p.mover = _Mover()
+        p.band_warned, p.band_warned_t = ((p.w.level_t, 6), time.time()) if band else ((None, 0), 0.0)
+        state = {}
+        return p.loot_step(state), p.mover.went
+    with_band, without = run(True), run(False)
+    return (with_band == (False, []) and without[0] and without[1] == [[(20, 25)]]), \
+        f"band: {with_band}; no band: {without}"
+
+
+@case
+def pack_full_makes_room():
+    """C4: pack 23/23 with a worthless Potion of Water among kit items; a Wand of Stinking Cloud underfoot: the
+    Pilot destroys the water to take the wand (and never destroys kit consumables)."""
+    pack = [("a Potion of Water", 75)] + [(f"{n} Potions of Cure Critical Wounds", 75) for n in range(2, 24)]
+    p = pilot(pack=pack)
+    p.junk_kinds = {"Potion of Water": True}
+    p.skipped_items, p.room_t, p.unique_drop = set(), 0.0, None
+    p.w.items = lambda tval=None, name=None, equip=False: [i for i in p.w.inven if i["equip"] == equip
+                                                           and (tval is None or i["tval"] == tval)]
+    p.w.hunger = 3
+    sent = []
+    p.cmd = lambda line, why, hold=0.4: sent.append((line, why))
+    p.c = type("C", (), {"send": lambda self, x: None})()
+    took = p.pickup_room("a Wand of Stinking Cloud (12 charges)")
+    destroyed = [x for x in sent if x[0].startswith("custom k")]
+    return (not took and len(destroyed) == 1 and "Water" in destroyed[0][1]), f"sent {sent}"
 
 
 def main():

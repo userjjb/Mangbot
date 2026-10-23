@@ -9,7 +9,7 @@ OP=${1:?usage: charsave.sh save|restore NICK TAG [PORT]}; NICK=${2:?}; TAG=${3:?
 HERE=$(cd "$(dirname "$0")" && pwd); ROOT=$(cd "$HERE/../../.." && pwd)
 LOW=$(echo "$NICK" | tr A-Z a-z)
 SAVE=$ROOT/testserver/save/$NICK; RUN=$ROOT/runs/pilot/$LOW; DEST=$ROOT/runs/setpieces/saves/$TAG
-STATE="orders.json deepest.json plan.json standing.json navigator_debt.json keep.json stores.json"
+STATE="orders.json deepest.json plan.json standing.json navigator_debt.json keep.json stores.json uniques_killed.json"
 module load python3/3.12.4 2>/dev/null
 cd "$HERE/../pilot"
 T0=$(date +%s)

@@ -1,0 +1,127 @@
+{
+ "id": "A3",
+ "tag": "A3-20261023-173119",
+ "depth_ft": 350,
+ "start": "2026-10-23 17:31:19",
+ "checks": {
+  "the goto held": {
+   "pass": true,
+   "detail": "[(7.2, 'tactic', 'goto held: White wolf is adjacent (walking away gives it free hits); it fights on. `goal leave` or `')] (order: {\"ok\": true, \"goal\": \"goto 13,156\"})"
+  },
+  "no walking with it adjacent": {
+   "pass": true,
+   "detail": "0 moves while adjacent"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [180, 265]"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"goto 13,156\"}",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   180,
+   265
+  ],
+  "attention": [
+   [
+    4.3,
+    "danger_seen",
+    "Wolf chieftain (rated 4: lethal until clvl 34) in view: heading for the stairs"
+   ],
+   [
+    4.4,
+    "band",
+    "a band within 10 squares: White wolf \u00d713, Blink dog \u00d710, Werewolf \u00d77, Warg \u00d72, Wolf chieftain (33 mo"
+   ],
+   [
+    4.5,
+    "goal_failed",
+    "flee (Wolf chieftain): no stairs known"
+   ],
+   [
+    4.5,
+    "emergency",
+    "couldn't reach the stairs with 34 monsters close: read Word of Recall (8-23 s); phasing while it cha"
+   ],
+   [
+    5.1,
+    "fearer",
+    "Wolf chieftain (lvl 26) keeps frightening: moving away from it; consider leaving the level"
+   ],
+   [
+    6.1,
+    "tactic",
+    "7 monsters coming (Werewolf): backing into a corridor"
+   ],
+   [
+    6.2,
+    "unseen_attacker",
+    "heard a door burst open: something is coming; be ready to leave"
+   ],
+   [
+    7.0,
+    "unseen_attacker",
+    "'It commands you to return.': minor attack from something unseen; carrying on (HP 83%)"
+   ],
+   [
+    7.2,
+    "tactic",
+    "goto held: White wolf is adjacent (walking away gives it free hits); it fights on. `goal leave` or `"
+   ],
+   [
+    18.6,
+    "tactic",
+    "goto: no known path; trying one through unexplored squares"
+   ]
+  ],
+  "acts": [
+   [
+    4.5,
+    "custom r item=8",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    5.4,
+    "custom r item=7",
+    "phase away from Wolf chieftain"
+   ],
+   [
+    8.2,
+    "custom r item=7",
+    "phase away from Wolf chieftain"
+   ],
+   [
+    8.8,
+    "-",
+    "holding the corridor at (6, 148)"
+   ],
+   [
+    8.9,
+    "rest",
+    "rest"
+   ],
+   [
+    13.9,
+    "rest",
+    "rest"
+   ],
+   [
+    17.6,
+    "rest",
+    "rest"
+   ]
+  ],
+  "emergencies": 1,
+  "phase_reads": 2,
+  "wor_reads": 1,
+  "cures": 0
+ },
+ "end": "2026-10-23 17:33:43",
+ "pass": true
+}

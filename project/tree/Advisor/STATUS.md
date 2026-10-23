@@ -18,7 +18,7 @@ Architect builds everything else.
 | 1 | instruments | scorecard definitions + baseline m17–23 | **done** (`../memos/2026-10-23-scorecard.md`, `data/scorecard/`); the Architect built the production one (`github/tools/observe/scorecard.py --check`, `runs/missions.json`) and the new log records |
 | 2 | who decides what | (inputs only) | Architect: 2.4 hunt checks built 10-24 (fight_sim p90 ≤ 60% HP, summoner and blinker rules; "don't quaff before closing in" put to the user); 2.1 item policy done (itemvalue.py from our tables, value refusals with a Navigator **debt**, Free-Action inference, pickup by value); 2.2 town kit next; 2.3/2.4 danger rules (will use `monsters.csv`) |
 | 3 | the rulebook | **ours** | **release 1 + 2 done and synced; release 3 (drops + feelings value fix) + fight_sim.py synced 10-24** (sync.sh also copies fight_sim.py, build_monsters.py, data/monsters/monsters.csv → keep their paths stable; tell the Architect when they change) (`../memos/2026-10-24-rulebook-r3.md`); (`../memos/2026-10-24-rulebook.md`, `-rulebook-r2.md`; `data/rulebook/`, query `rule.py`; r2 synced 10-24, C8 rule fixed by the Architect); the Architect syncs it into the repo with `github/tools/rulebook/sync.sh` — **tell them whenever we rebuild** |
-| 4 | harness / set-pieces | **ours: the list** | **list done** (`../memos/2026-10-24-setpieces.md`: 41 cases, 12 P1); waiting on the Architect's two enablers (a key-sending verb so Gandalf the DM can be scripted; logging map/inventory replies or `--pktlog`) |
+| 4 | harness / set-pieces | **ours: the list** | **harness built 10-23** (`github/tools/harness/`, results `runs/setpieces/results.md`): A1, A2, A2L, A6, A7, A8(o,w), A9 (summoned), C3 pass live; C8 unit-only. Proposed speed/AC-aware emergency threshold (`worst_3turns_acNN`, `to_architect/2026-10-24-emergency-threshold.md`); next A3, B1, C4, C5 List: `../memos/2026-10-24-setpieces.md` (41 cases + A7-A9 addenda) |
 | 5 | missions again with scorecards | scorecard per mission; Opus vs Sonnet | **started**: step 2 finished, m24 done (Opus) and reviewed (`../memos/2026-10-24-m24.md`); target for next missions: > 58 XP/min at 500-650 ft, lowest HP >= 50% |
 
 ## Pending Advisor work (in order)
@@ -27,7 +27,7 @@ Architect builds everything else.
    subtract already-found artifacts if the server log is kept; empirical drop counts need monster coordinates in the logs.
 2. **Live checks of code-only rulebook claims** once Gandalf is scriptable (or from a mission log): boulders do 0 damage; the low-HP time
    bubble is a constant 1/5; WoR counts down ~10× faster while resting out of sight; "You are unaffected!" pairing.
-3. **Set-pieces:** when the enablers land, write a staging recipe + automatic pass/fail check for each P1 case, in the agreed order A7, A8, A9 (m24 arrival replay), A1, A6, A2, C8, C3, then (A3, B1, C1,
+3. **Set-pieces:** the Architect stages and runs them (harness); my part: criteria, order, and reviewing `runs/setpieces/results.md` for each P1 case, in the agreed order A7, A8, A9 (m24 arrival replay), A1, A6, A2, C8, C3, then (A3, B1, C1,
    C4, C5, D3, F1). A7 also validates `fight_sim.py` (Hill giant p90 123 at Dive04's profile).
 4. ~~veto_reason~~ **done** 10-24 (monsters.csv `veto_reason`/`veto_detail`; note `to_architect/2026-10-24-veto-reason.md`; awaiting re-sync). The Architect built the m24 arrival protocol, depth band in HANDBOOK, plan-news tagging.
 4b. **Belief-state spec** (if the Architect wants it for step 2): fields, computation, expiry (see starting-over memo §3.4).
@@ -85,6 +85,7 @@ The user struck one lead (2026-10-07): the live fetch of Bug Reports / Technical
   constant 1/5 below hitpoint_warn×10% (Pilot has it off).
 - Recall arrival: random floor square, pit/nest monsters awake; "something special about this level" = pit/nest/vault (or artifact) at <= 850 ft;
   stairs arrivals land on the staircase back; a 2nd WoR read cancels a pending one; no Deep Descent in 1.5. XP/min: 300-450 ft 8.5, 500-650 ft 58.
+- A repeat kill of a unique gives no XP and no drop (xtra2.c 'cheeze'); Dive04 has killed Brodda, Bullroarer, Orfax, Wormtongue, Farmer Maggot.
 - Hunt checks: `fight_sim.py` p90 (FIGHT-rated: none > 60% HP at Dive04's profile); summoners and blinkers are outside the duel model
   (m19 Ranger: duel p90 44, real 153 from summons + ranged phase). The `threats` column of monsters.csv is stale 09-27 text (boulder ~30).
 - Boulders do 0 damage to players; BO_POIS and BR_MANA are empty; breaths use current HP.

@@ -27,3 +27,9 @@
 - 2026-10-23 17:00:03 **C3** FAIL (Farmer Maggot slain, his drop picked up FAIL) `C3-20261023-170003.json`
 - 2026-10-23 17:09:12 **C3** FAIL (Ulfast slain, his drop picked up FAIL) `C3-20261023-170912.json`
 - 2026-10-23 17:12:29 **C3** PASS (Ulfast slain, his drop picked up) `C3-20261023-171229.json`
+- 2026-10-23 17:19:45 **A3** FAIL (the goto held FAIL, no walking with it adjacent, lowest HP >= 40%) `A3-20261023-171945.json`
+- 2026-10-23 17:22:09 **B1** FAIL (no stat drained, never meleed it FAIL) `B1-20261023-172209.json`
+- 2026-10-23 17:25:17 **A3** FAIL (the goto held FAIL, no walking with it adjacent, lowest HP >= 40%) `A3-20261023-172517.json`
+- 2026-10-23 17:28:07 **B1** PASS (no stat drained, never next to it) `B1-20261023-172807.json`
+- 2026-10-23 17:31:19 **A3** PASS (the goto held, no walking with it adjacent, lowest HP >= 40%) `A3-20261023-173119.json`
+- 2026-10-23 17:34:15 **A7** PASS (hunt allowed at full HP, giant slain, HP lost within the simulated bad case) `A7-20261023-173415.json`

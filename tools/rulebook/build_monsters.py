@@ -21,11 +21,14 @@ Writes monsters.csv. Columns (all damage before the player's resists unless note
                 each action casts with spell_pct, else melees), a crude solo-danger index
   rating, response, threats, neutraliser   the Advisor's hand ratings (danger table, levels <= 40), where present; the
                 `threats` text is the 2026-09-27 hand text (it predates the K2 corrections: e.g. BOULDER does 0, not ~30)
+  melee_max_acNN  worst melee round vs player AC NN (HURT/SHATTER blows reduced by AC, others not)
+  worst_3turns_acNN  worst melee damage within the next 3 player turns adjacent: melee_max_acNN x ceil(3 x speed_x / 2)
+                (a melee round costs the monster 2 actions, MONSTER_RECOIL); for an emergency threshold (spells/breaths apart)
   veto_reason   for AVOID/LEAVE: "qualitative" (veto_detail lists the tags a duel can't price) or "strength" (let fight_sim decide)
 Corrections vs the 2026-09-27 danger table (K2): BOULDER does no damage to players (project_p has no GF_BOULDER case,
 spells1.c:3540-4092: default dam=0); BO_POIS and BR_MANA are empty cases; DARKNESS does no damage or blindness.
 """
-import csv, os, re
+import csv, math, os, re
 HERE = os.path.dirname(os.path.abspath(__file__))
 MON = "/projectnb/jbrcs/mangband/Advisor/data/monsters/monsters.csv"
 ENERGY = {int(r["speed_index"]): int(r["energy_per_game_turn"]) for r in csv.DictReader(open(os.path.join(HERE, "char_extract_energy.csv")))}
@@ -85,11 +88,13 @@ if __name__ == "__main__":
         spells = [s for s in m["spells"].split("|") if s] if m["spells"] else []
         hp = int(float(m["hp_max"] if "FORCE_MAXHP" in flags else m["hp_avg"]))
         sx = ENERGY.get(int(m["speed"]), 1000) / 1000
-        ac_m = {ac: 0.0 for ac in ACS}; mmax = 0; tags = set()
+        ac_m = {ac: 0.0 for ac in ACS}; mmax = 0; tags = set(); mmax_ac = {ac: 0 for ac in ACS}
         for b in (m["blow1"], m["blow2"], m["blow3"], m["blow4"]):
             if not b: continue
             p = b.split(":"); eff = p[1] if len(p) > 1 else ""; n, s = dice(p[2] if len(p) > 2 else "")
             mmax += n * s
+            for ac in ACS:
+                mmax_ac[ac] += n * s - (n * s * min(ac, 150) // 250 if eff in ("HURT", "SHATTER") else 0)
             if eff == "PARALYZE": tags.add("PARALYZE")
             if eff.startswith("LOSE_"): tags.add("DRAIN_" + eff[5:])
             if eff.startswith("EXP_"): tags.add("EXP_DRAIN")
@@ -129,7 +134,10 @@ if __name__ == "__main__":
                          turns_to_kill_250=round(250 / turn40, 1) if turn40 > 0 else "",
                          rating=h.get("danger", ""), response=h.get("response", ""), threats=h.get("threats", ""),
                          neutraliser=h.get("neutraliser", ""), spells=m["spells"],
-                         veto_reason=veto, veto_detail="|".join(qual) if veto else ""))
+                         veto_reason=veto, veto_detail="|".join(qual) if veto else "",
+                         **{f"melee_max_ac{ac}": mmax_ac[ac] for ac in ACS},
+                         **{f"worst_3turns_ac{ac}": (mmax_ac[ac] * math.ceil(3 * sx / 2) if "NEVER_BLOW" not in flags else 0)
+                            for ac in ACS}))
     with open(os.path.join(HERE, "monsters.csv"), "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
     print(len(rows), "monsters")

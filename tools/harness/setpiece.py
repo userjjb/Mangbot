@@ -443,7 +443,64 @@ def c8(run):
     run.check("the boots protected", any("soft leather boots" in a[2].lower() for a in ab), f"{ab[:1]}")
 
 
-SETPIECES = {"C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
+def a3(run):
+    """A3: a fast hitter (a Wolf chieftain, +10) adjacent, then a goto 12+ squares off: the goto is held (walking away
+    hands it free hits) and Dive04 doesn't walk while it's adjacent."""
+    v = run.bring_dive04()
+    run.t_act = time.time()
+    me = tuple(v["pos"])
+    far = floor_near(v, me, 12) or floor_near(v, me, 10) or (me[0], me[1] + 15)   # (a goto may path through unknown)
+    out = {}
+    # (a Wolf chieftain, +10: a Nighthawk died to auto-retaliate before an order could follow)
+    run.place("Wolf chieftain", 1, after=lambda: (time.sleep(1.0),
+                                                  out.update(reply=ctl("goal", "goto", f"{far[0]},{far[1]}", role="architect"))))
+    reply = out.get("reply", "")
+    run.res["order_reply"] = reply
+    run.watch(20)
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    held = [a for a in st["attention"] if "goto held" in a[2]]
+    # positions while the Nighthawk was adjacent
+    moved = 0
+    last = None
+    for d in recs:
+        if d.get("kind") == "mons" and any(m[2] == "Nighthawk" and max(abs(m[0] - d["pos"][0]), abs(m[1] - d["pos"][1])) <= 1
+                                           for m in d.get("monsters", [])):
+            if last and tuple(d["pos"]) != last:
+                moved += 1
+            last = tuple(d["pos"])
+    run.check("the goto held", bool(held), f"{held[:1]} (order: {reply[:80]})")
+    run.check("no walking with it adjacent", moved == 0, f"{moved} moves while adjacent")
+    if st["hp_min"]:
+        run.check("lowest HP >= 40%", st["hp_min"][0] >= 0.4 * st["hp_min"][1], f"lowest {st['hp_min']}")
+
+
+def b1(run):
+    """B1: a stationary drainer (a Purple mushroom patch: CON) 2 squares off and a goto past it: Dive04 never
+    stands next to it and loses no stat. (Summoned adjacent, the server's auto-retaliate kills it in one blow
+    before the Pilot can act: that tests the server, not the path.)"""
+    run.bring_dive04()
+    before = re.search(r"CON (\S+)", ctl("status", role="architect"))
+    run.t_act = time.time()
+    spot = run.place("Purple mushroom patch", 2)
+    me = tuple(pilot_view()["pos"])
+    beyond = (spot[0] + 2 * (spot[0] - me[0]) // 2, spot[1] + 2 * (spot[1] - me[1]) // 2)
+    run.res["order_reply"] = ctl("goal", "goto", f"{beyond[0]},{beyond[1]}", role="architect")
+    run.watch(25)
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    after = re.search(r"CON (\S+)", ctl("status", role="architect"))
+    hits = [d for d in recs if d.get("kind") == "mons"]
+    drained = [a for a in st["attention"] if a[1] == "stat_drained"]
+    run.check("no stat drained", not drained, f"CON {before.group(1) if before else '?'} -> {after.group(1) if after else '?'}; {drained[:1]}")
+    adjacent = sum(1 for d in recs if d.get("kind") == "mons" for m in d.get("monsters", [])
+                   if m[2] == "Purple mushroom patch" and max(abs(m[0] - d["pos"][0]), abs(m[1] - d["pos"][1])) <= 1)
+    run.check("never next to it", adjacent == 0, f"{adjacent} records adjacent; goto: {run.res['order_reply'][:80]}")
+
+
+SETPIECES = {"A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
              "C3": c3}
 
 
