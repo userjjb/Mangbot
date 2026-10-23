@@ -261,8 +261,13 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    emergency-threshold, rulebook r4 synced): the emergency rule and the hunt check now use the worst melee in 3 turns
    at our AC (`Pilot.worst_3turns`), not 2.5 raw worst rounds; uniques already killed are refused as hunts
    (`uniques_killed.json`). **Batch 3: A3, B1, A7 rerun: PASS; C4, C5 as unit tests (14 unit tests pass).**
-   **Next:** the rest of the list (B2-B6, C1-C2, C6-C7, C9, D, E, F) mostly as unit tests, then step 5 missions,
-   then the time bubble. (`plan trip LO-HI until COND then recall`), 2.4 order
+   Batch 4 (the Advisor's fleehp-live memo): B2, B3, L1 (boulders do
+   0 damage: confirmed live) PASS; D6 FAILS: walking is ~1.5 tiles/s, and **server pathfind counts as running (time
+   x5 with nothing in sight) but the mover never uses it**: a 3-5x explore speed-up queued; L2 (recall 10x sooner
+   while resting) still open. Unit: C1, C2, C6, C7 (new guard: the Navigator can't wear unidentified jewellery), C9,
+   E1, F1 (21 unit tests). **Open question for the user:** flee_hp 0.4 only in vetted solo hunts (the Advisor; 0.5
+   elsewhere). **Next: the time bubble** (the user: after step 2, which is done): a game clock for the Pilot's timers,
+   then the --hpwarn 5 A/B on A1/A2; then the pathfind speed-up; then step 5 missions. (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
    toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23. Then the time bubble (timers to game turns; decided below).
 3. **Rulebook:** the Advisor's **release 2** is in `Advisor/data/rulebook/`, synced into `github/tools/rulebook/`

@@ -1,0 +1,21 @@
+{
+ "id": "L1",
+ "tag": "L1-20261023-180539",
+ "depth_ft": 400,
+ "start": "2026-10-23 18:05:39",
+ "checks": {
+  "a boulder was thrown": {
+   "pass": true,
+   "detail": "5 boulder messages"
+  },
+  "no HP lost to boulders": {
+   "pass": true,
+   "detail": "[('The Hill giant hurls a boulder at you!', 265, None), ('The Hill giant hurls a boulder at you!', 265, None), ('The Hill giant hurls a boulder at you!', 244, 245), ('The Hill giant hurls a boulder at you!', 248, 249)]"
+  }
+ },
+ "notes": [
+  "boulders: [('The Hill giant hurls a boulder at you!', 265, None), ('The Hill giant hurls a boulder at you!', 265, None), ('The Hill giant hurls a boulder at you!', 244, 245), ('The Hill giant hurls a boulder at you!', 248, 249), ('The Hill giant hurls a boulder at you!', 255, None)]"
+ ],
+ "end": "2026-10-23 18:08:43",
+ "pass": true
+}

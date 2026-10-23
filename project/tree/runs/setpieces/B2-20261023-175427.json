@@ -1,0 +1,52 @@
+{
+ "id": "B2",
+ "tag": "B2-20261023-175427",
+ "depth_ft": 450,
+ "start": "2026-10-23 17:54:27",
+ "checks": {
+  "drained at most twice": {
+   "pass": true,
+   "detail": "0 drains"
+  },
+  "acted on the second drain": {
+   "pass": true,
+   "detail": "[]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   265,
+   265
+  ],
+  "attention": [
+   [
+    3.5,
+    "drainer",
+    "Giant red ant (lvl 9) drains STR with its blows: weak and no faster than you: kill it fast, don't wa"
+   ],
+   [
+    59.7,
+    "tactic",
+    "hungry and no food: read a Scroll of Satisfy Hunger"
+   ]
+  ],
+  "acts": [
+   [
+    59.7,
+    "custom r item=10",
+    "hungry (2), no food: read Satisfy Hunger"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 17:57:50",
+ "pass": true
+}

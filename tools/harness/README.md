@@ -38,6 +38,11 @@ Each run:
 | C3 | Ulfast adjacent, the Architect orders the hunt | slain; his drop picked up |
 | A3 | a Wolf chieftain (+10) adjacent, then an Architect goto 12 off | the goto is held; no walking with it adjacent |
 | B1 | a Purple mushroom patch 2 off, a goto past it | never adjacent; no stat drained |
+| B2 | three Giant red ants (STR drainers) | at most 2 drains; the second acted on (leave, or kill the weak one) |
+| B3 | a Brigand (steals, teleports) adjacent | slain; nothing stolen |
+| D6 | `goal explore` 40 s | best 5-s window ≥ 3 tiles/s: **FAILS** (1.6) -- see below |
+| L1 | a Hill giant 5-8 off, in sight | boulders thrown, no HP lost (a rulebook claim from the code: confirmed live) |
+| L2 | hurt, then `goal recall` resting out of sight | ~10x sooner than standing: **open** (the read came at full HP twice; standing took 17.9 and 20.4 s) |
 | A9 | `plan trip 300-300 via=recall` from town, then Snaga and Black orcs summoned 8-9 squares off | Door/Stair Location within 5 s of arriving; no second Word of Recall while one is pending |
 
 The memo's A7 is at 1250 ft and its A8 Ranger at 6 squares; here they're at 300 ft and 3 squares. The DM summons any race
@@ -115,6 +120,15 @@ Recall and a ration. It was then restored properly from the first snapshot.
   `runs/pilot/NICK/uniques_killed.json`, kept from the slain messages and seeded with Dive04's five.
 - **Unit tests for C4 and C5**, which live staging would need many forged items for (each forge destroys a stack in
   Gandalf's pack): `pack_full_makes_room`, `loot_band_stops_looting`.
+
+## D6: walking is capped at ~1.5 tiles/s; server runs aren't
+
+Each step costs a player turn (~0.65 s at normal speed), so the mover's step-by-step walking can't beat ~1.5 tiles/s.
+The server's time factor runs **5x** while the player is running with nothing in line of sight (xtra2.c
+`base_time_factor`, RUNNING_FACTOR), and **its pathfind counts as running** (cmd1.c sets `running` for
+`running_withpathfind`). The tool client has `pathfind Y X` (a server path, up to ~25 tiles), but the mover never uses
+it. Explore starts free runs only in corridors. Using pathfind for moves with nothing in view should make exploring
+3-5x faster in wall time. Queued after the time bubble.
 
 ## Observed, then changed (the user)
 

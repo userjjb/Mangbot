@@ -38,3 +38,9 @@
 - 2026-10-23 17:45:02 **D6** FAIL (exploring moves >= 3 tiles/s FAIL) `D6-20261023-174502.json`
 - 2026-10-23 17:47:37 **L1** FAIL (a boulder was thrown FAIL, no HP lost to boulders) `L1-20261023-174737.json`
 - 2026-10-23 17:50:18 **L2** FAIL (recalled, rested while it charged FAIL, about 10x sooner than standing (< 5 s) FAIL) `L2-20261023-175018.json`
+- 2026-10-23 17:54:27 **B2** PASS (drained at most twice, acted on the second drain) `B2-20261023-175427.json`
+- 2026-10-23 17:57:50 **D6** FAIL (runs >= 3 tiles/s (best 5-s window) FAIL) `D6-20261023-175750.json`
+- 2026-10-23 18:00:29 **L1** FAIL () `L1-20261023-180029.json`
+- 2026-10-23 18:02:24 **L2** FAIL (recalled, rested while it charged, about 10x sooner than standing (< 5 s) FAIL) `L2-20261023-180224.json`
+- 2026-10-23 18:05:39 **L1** PASS (a boulder was thrown, no HP lost to boulders) `L1-20261023-180539.json`
+- 2026-10-23 18:08:43 **L2** FAIL (recalled, rested while it charged FAIL, about 10x sooner than standing (< 5 s) FAIL) `L2-20261023-180843.json`

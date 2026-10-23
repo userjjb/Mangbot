@@ -571,7 +571,12 @@ def l1(run):
     run.bring_dive04()
     run.t_act = time.time()
     ctl("order", "flee_hp=0.3", role="architect")
-    run.place("Hill giant", 8)
+    for d in (8, 7, 6, 5):
+        try:
+            run.place("Hill giant", d)
+            break
+        except RuntimeError:
+            continue
     run.watch(60)
     ctl("order", "flee_hp=0.5", role="architect")
     msgs = [json.loads(l) for l in open(os.path.join(RUN, "events.jsonl")) if '"message"' in l and "boulder" in l.lower()]
@@ -594,11 +599,13 @@ def l2(run):
     run.bring_dive04()
     run.t_act = time.time()
     run.place("Black orc", 2)              # (Cave orcs barely scratched AC 56: the read came at full HP)
-    for _ in range(60):
+    quiet = 0                               # (5 s in a row with nothing in view: the first run read mid-fight)
+    for _ in range(90):
         time.sleep(1)
         st0 = ctl("status", role="architect")
         hp = re.search(r"HP (\d+)/(\d+)", st0)
-        if hp and int(hp.group(1)) < int(hp.group(2)) and "Monsters: none" in st0:
+        quiet = quiet + 1 if "Monsters: none" in st0 else 0
+        if hp and int(hp.group(1)) < int(hp.group(2)) and quiet >= 5:
             break
     v = pilot_view()
     st_now = ctl("status", role="architect")
