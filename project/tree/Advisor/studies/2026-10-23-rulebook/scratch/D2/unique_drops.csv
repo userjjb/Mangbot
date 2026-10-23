@@ -1,0 +1,37 @@
+unique,depth,item_text,event,file,session,t
+"Wormtongue, Agent of Saruman",0,"Selling Soft Studded Leather [5] {Wormtongue, Agent of Saruman} (l).",message,dive03,0,10.031
+"Wormtongue, Agent of Saruman",0,"You sold Soft Studded Leather of Resistance [5,+6] {Wormtongue, Agent of Saruman} for 17 gold.",message,dive03,0,10.032
+Bullroarer the Hobbit,,"Selling Soft Leather Armour [4,+1] {Bullroarer the Hobbit} (l).",message,dive03,0,35.478
+Bullroarer the Hobbit,,"You sold Soft Leather Armour [4,+1] {Bullroarer the Hobbit} for 58 gold.",message,dive03,0,35.48
+Bullroarer the Hobbit,,"You have no more Soft Leather Armours [4,+1] {Bullroarer the Hobbit}.",message,dive03,0,35.48
+"Brodda, the Easterling",12,"You see a Katana (3d4) {Brodda, the Easterling}.",message,dive03,0,107.867
+"Brodda, the Easterling",12,"You have a Katana (3d4) {Brodda, the Easterling} (h).",message,dive03,0,108.534
+"Brodda, the Easterling",12,"You are wielding a Katana (3d4) {Brodda, the Easterling} (a).",message,dive03,0,115.735
+"Brodda, the Easterling",12,"Was wielding a Katana (3d4) {Brodda, the Easterling} (h).",message,dive03,0,124.835
+"Wormtongue, Agent of Saruman",13,"You see Soft Studded Leather [5] {Wormtongue, Agent of Saruman}.",message,dive03,0,980.565
+"Wormtongue, Agent of Saruman",13,"You have Soft Studded Leather [5] {Wormtongue, Agent of Saruman} (m).",message,dive03,0,981.233
+Farmer Maggot,0,You see a Lance (2d8) {Farmer Maggot}.,message,dive04,0,1831.368
+Farmer Maggot,0,a Lance (2d8) {Farmer Maggot},floor,dive04,0,1831.677
+Farmer Maggot,0,You have a Lance (2d8) {Farmer Maggot} (q).,message,dive04,0,1831.874
+"Wormtongue, Agent of Saruman",14,"You see a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman}.",message,dive04,13,288.45
+"Wormtongue, Agent of Saruman",14,"a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman}",floor,dive04,13,288.688
+"Wormtongue, Agent of Saruman",14,"a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman}",floor,dive04,13,289.725
+"Wormtongue, Agent of Saruman",14,"a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman}",floor,dive04,13,290.771
+"Wormtongue, Agent of Saruman",14,"You have no room for a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman}.",message,dive04,13,290.902
+"Wormtongue, Agent of Saruman",14,"You see a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman}.",message,dive04,13,320.221
+"Wormtongue, Agent of Saruman",14,"You have a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman} (w).",message,dive04,13,320.887
+"Wormtongue, Agent of Saruman",14,"Examining a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman}...",message,dive04,13,334.005
+"Brodda, the Easterling",13,"The Blubbering icky thing picks up a Scimitar (2d5) {Brodda, the Easterling}.",message,dive04,18,757.411
+"Brodda, the Easterling",13,"You see a Scimitar (2d5) {Brodda, the Easterling}.",message,dive04,18,761.504
+"Brodda, the Easterling",13,"a Scimitar (2d5) {Brodda, the Easterling}",floor,dive04,18,761.907
+"Brodda, the Easterling",13,"You see a Scimitar (2d5) {Brodda, the Easterling}.",message,dive04,18,765.838
+"Brodda, the Easterling",13,"a Scimitar (2d5) {Brodda, the Easterling}",floor,dive04,18,765.926
+"Brodda, the Easterling",13,"a Scimitar (2d5) {Brodda, the Easterling}",floor,dive04,18,766.969
+"Brodda, the Easterling",13,"a Scimitar (2d5) {Brodda, the Easterling}",floor,dive04,18,768.015
+"Brodda, the Easterling",13,"a Scimitar (2d5) {Brodda, the Easterling}",floor,dive04,18,769.056
+"Brodda, the Easterling",13,"a Scimitar (2d5) {Brodda, the Easterling}",floor,dive04,18,770.098
+"Brodda, the Easterling",13,"You see a Pair of Metal Shod Boots [6] {Brodda, the Easterling}.",message,dive04,18,771.041
+"Brodda, the Easterling",13,"a Pair of Metal Shod Boots [6] {Brodda, the Easterling}",floor,dive04,18,771.145
+"Brodda, the Easterling",13,"You have a Pair of Metal Shod Boots [6] {Brodda, the Easterling} (u).",message,dive04,18,771.704
+"Brodda, the Easterling",13,"Examining a Pair of Metal Shod Boots [6] {Brodda, the Easterling}...",message,dive04,18,779.331
+"Brodda, the Easterling",13,"You are wearing a Pair of Metal Shod Boots [6] {Brodda, the Easterling} (l).",message,dive04,18,785.874

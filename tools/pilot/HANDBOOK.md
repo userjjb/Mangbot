@@ -30,6 +30,25 @@ Run commands from `github/tools/pilot/` with `python3 pilotctl.py --nick NAME
 - **Abilities seen in play:** "You are unaffected!" after a paralysing attack means Free Action from something you
   wear; the Pilot counts it, and protects the unidentified worn items until they're identified (`ability` news).
 
+## Town: `plan town` does the visit (restructure step 2.2)
+
+`pilotctl.py --nick NAME plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@MAX],...]` hands the whole town visit to
+the Pilot. It wears upgrades, then **sells by policy** at the shop that buys each item (never the Black Market; kit
+consumables, Boldness, food, flasks, lights, `keep` items and the devices it uses are kept). Next it **buys Identify**
+for each unknown item worth more than a scroll, reads them and sells what they turn out to be. Then it **buys by
+priority**, each shop once: (1) Word of Recall up to 2, (2) the supply gate's minimums for the planned depth (the lower
+of `max_depth` and your deepest), (3) a Potion of Restore for a drained STR, DEX or CON (it drinks it), (4) the kit
+levels, (5) your buy list. An essential missing from stock gets one more look 40 s later. The reply lists everything
+sold and bought, what it couldn't afford, and whether the supplies cover a recall dive.
+- **Kits** (default by the planned depth): A (to 500 ft) WoR 2, CLW 5, Phase 5, flasks 3, food 3; B (to 1000 ft)
+  WoR 2, CCW 4, CSW 4, Phase 10, flasks 5, food 4; C (deeper) like B with CCW 6 and Phase 12. `kit=none` buys only
+  the essentials and your list.
+- **Your buy list** is for things beyond the kit: upgrades, Restore Charisma, a Staff of Teleportation, the Free
+  Action fund. Spaces as `_`, the shop is found from its stock table (name it as `7/` for the Black Market, which charges 3x):
+  `plan town buy Restore_Charisma@500,Enchant_Weapon_To-Dam:2@120`. What the gold doesn't cover after the kit is
+  left out and named in the reply.
+- `goal shop` and your own sells/destroys still work in town, for anything the plan doesn't cover.
+
 ## Your turn: `wait`
 
 (Your Bash tool times out after 120 s by default: for `wait` longer than ~110 s pass a Bash

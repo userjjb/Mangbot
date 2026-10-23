@@ -9,7 +9,10 @@
   rule.py room                     room/vault geometry facts
   rule.py fight MONSTER [--clvl 22 --blows 4 --dpb 9 --tohit 3 --ac 40]
                                    expected player turns to kill it, and the HP it takes from you meanwhile
-                                   (dpb = mean damage per hit incl. weapon and STR to-dam; tohit = all to-hit bonuses)"""
+                                   (dpb = mean damage per hit incl. weapon and STR to-dam; tohit = all to-hit bonuses)
+  rule.py drop MONSTER [DEPTH]     what a kill drops: expected gold, items, item value (capped 25k/item), P(ego), P(artifact)
+                                   at the monster's native depth, or at the nearest tabulated dungeon level (1,5,10..100)
+  rule.py object LEVEL [MODE]      one floor object at object level LEVEL (MODE normal|good|great): E[value], P(ego)..."""
 import csv, os, sys
 H = os.path.dirname(os.path.abspath(__file__))
 R = lambda f: list(csv.DictReader(open(os.path.join(H, f))))
@@ -50,5 +53,19 @@ elif c == "fight":
         taken = turns * (float(r[f"melee_turn_ac{acol}"]) * (1 - float(r["spell_pct"])) + float(r["range_turn"]))
         print(f"{r['name']}: hp {r['hp']}, ac {r['ac']}; your hit {ph:.0%}, {per_turn:.1f}/turn -> {turns:.1f} turns; "
               f"it deals ~{taken:.0f} meanwhile at AC {acol} (worst round {r['melee_max']}, breath {r['breath_max']})")
+elif c == "drop":
+    want = int(args[1]) if len(args) > 1 else None
+    keys = ["depth", "object_level", "mode", "drop_flags", "e_drops", "e_gold", "e_items", "e_item_value", "e_item_value_cap",
+            "p_excellent_any", "p_artifact_any", "e_total_cap"]
+    for r in R("drops.csv"):
+        if args[0].lower() not in r["name"].lower(): continue
+        if want is not None:
+            rs = [x for x in R("drops_by_depth.csv") if x["idx"] == r["idx"]]
+            if rs: r = min(rs, key=lambda x: abs(int(x["depth"]) - want))
+        print(r["name"], {k: r[k] for k in keys})
+elif c == "object":
+    mode = args[1] if len(args) > 1 else "normal"
+    for r in R("drop_object_by_level.csv"):
+        if r["level"] == args[0] and r["mode"] == mode: print(r)
 elif c == "room":
     for r in R("structures.csv"): print(r["structure"], r["parameter"], ":", r["value"])

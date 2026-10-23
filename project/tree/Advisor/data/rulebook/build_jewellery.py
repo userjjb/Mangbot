@@ -80,42 +80,43 @@ for line in open(f"{EDIT}/object.txt", encoding="latin-1"):
         cur["F"] |= {f.strip() for f in line[2:].split("|") if f.strip()}
 kinds = [k for k in kinds if k.get("tval") in (40, 45) and "INSTA_ART" not in k["F"]]
 
-random.seed(20261024)
-rows = []
-for k in kinds:
-    key = (k["tval"], k["name"])
-    if key not in RULES:
-        v = 0 if (k["cost"] == 0 or "LIGHT_CURSE" in k["F"]) else k["cost"]
+if __name__ == "__main__":
+    random.seed(20261024)
+    rows = []
+    for k in kinds:
+        key = (k["tval"], k["name"])
+        if key not in RULES:
+            v = 0 if (k["cost"] == 0 or "LIGHT_CURSE" in k["F"]) else k["cost"]
+            for L in LEVELS:
+                rows.append(dict(kind=k["name"], tval=k["tval"], sval=k["sval"], level=L, p_cursed=int(v == 0),
+                                 exp_value=v, p10=v, p50=v, p90=v, exp_pval=0, exp_to_a=0, exp_to_h=0, exp_to_d=0))
+            continue
+        cursable, gen = RULES[key]
+        if key == (45, "Speed"): gen = ring_speed
         for L in LEVELS:
-            rows.append(dict(kind=k["name"], tval=k["tval"], sval=k["sval"], level=L, p_cursed=int(v == 0),
-                             exp_value=v, p10=v, p50=v, p90=v, exp_pval=0, exp_to_a=0, exp_to_h=0, exp_to_d=0))
-        continue
-    cursable, gen = RULES[key]
-    if key == (45, "Speed"): gen = ring_speed
-    for L in LEVELS:
-        f1 = min(L + 10, 75); f2 = min(f1 // 2, 20)
-        vals, pv, ta, th, td, cursed = [], 0, 0, 0, 0, 0
-        for _ in range(N):
-            if random.randrange(100) < f1:
-                power = 2 if random.randrange(100) < f2 else 1
-            elif random.randrange(100) < f1:
-                power = -2 if random.randrange(100) < f2 else -1
-            else:
-                power = 0
-            if power == 0 and random.randrange(100) < 50:
-                power = -1
-            p, a, h, d = gen(L)
-            if cursable and power < 0:
-                cursed += 1; vals.append(0); continue
-            v = k["cost"] + 100 * (a + h + d)
-            spd = 50000 if k["tval"] == 45 else 25000
-            v += p * (sum(c for f, c in FLAGCOST.items() if f in k["F"]) + (spd if "SPEED" in k["F"] else 0))
-            vals.append(v); pv += p; ta += a; th += h; td += d
-        vals.sort(); n = len(vals); ok = max(1, n - cursed)
-        rows.append(dict(kind=k["name"], tval=k["tval"], sval=k["sval"], level=L, p_cursed=round(cursed / n, 3),
-                         exp_value=round(sum(vals) / n), p10=vals[n // 10], p50=vals[n // 2], p90=vals[9 * n // 10],
-                         exp_pval=round(pv / ok, 1), exp_to_a=round(ta / ok, 1), exp_to_h=round(th / ok, 1),
-                         exp_to_d=round(td / ok, 1)))
-with open(os.path.join(HERE, "jewellery.csv"), "w", newline="") as f:
-    w = csv.DictWriter(f, fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
-print(len(rows), "rows")
+            f1 = min(L + 10, 75); f2 = min(f1 // 2, 20)
+            vals, pv, ta, th, td, cursed = [], 0, 0, 0, 0, 0
+            for _ in range(N):
+                if random.randrange(100) < f1:
+                    power = 2 if random.randrange(100) < f2 else 1
+                elif random.randrange(100) < f1:
+                    power = -2 if random.randrange(100) < f2 else -1
+                else:
+                    power = 0
+                if power == 0 and random.randrange(100) < 50:
+                    power = -1
+                p, a, h, d = gen(L)
+                if cursable and power < 0:
+                    cursed += 1; vals.append(0); continue
+                v = k["cost"] + 100 * (a + h + d)
+                spd = 50000 if k["tval"] == 45 else 25000
+                v += p * (sum(c for f, c in FLAGCOST.items() if f in k["F"]) + (spd if "SPEED" in k["F"] else 0))
+                vals.append(v); pv += p; ta += a; th += h; td += d
+            vals.sort(); n = len(vals); ok = max(1, n - cursed)
+            rows.append(dict(kind=k["name"], tval=k["tval"], sval=k["sval"], level=L, p_cursed=round(cursed / n, 3),
+                             exp_value=round(sum(vals) / n), p10=vals[n // 10], p50=vals[n // 2], p90=vals[9 * n // 10],
+                             exp_pval=round(pv / ok, 1), exp_to_a=round(ta / ok, 1), exp_to_h=round(th / ok, 1),
+                             exp_to_d=round(td / ok, 1)))
+    with open(os.path.join(HERE, "jewellery.csv"), "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
+    print(len(rows), "rows")

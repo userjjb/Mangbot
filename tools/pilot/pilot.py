@@ -1223,6 +1223,7 @@ class Shop(Goal):
                 self.state = "walk"
             return None
         if self.state == "trade":
+            p.note_store()
             sp = getattr(self, "sale_pending", None)
             if sp and (w.store_t > sp["t"] or time.time() - sp["t"] > 3):
                 key = re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", sp["sold_as"])).lower()
@@ -1381,6 +1382,144 @@ class Shop(Goal):
         return None
 
 
+class TownKit(Goal):
+    """plan town (restructure step 2.2): the Pilot's whole town visit, by policy.
+    Sell what the policy sells, at the shop that pays (store.c store_will_buy);
+    buy Identify for the unknowns worth it, read them, sell what they turn out to
+    be; then buy by priority: two Words of Recall, the supply gate's minimums for
+    the planned depth, Restore for a drained STR/DEX/CON, the kit's stock levels,
+    and last the Navigator's buy list. Each shop is visited once per stage; an
+    essential item out of stock gets one more look after 40 s (stock turns over
+    every ~33 s)."""
+
+    def __init__(self, kit=None, buylist=()):
+        self.kit, self.buylist = kit, list(buylist)
+        self.name = "plan town" + (f" kit={kit}" if kit else "") + \
+            "".join(f" buy {s_}/{n}:{c}" + (f"@{cap}" if cap else "") for n, c, cap, s_ in self.buylist)
+        self.stage = "upgrade"
+        self.queue = []          # store numbers still to visit in this stage
+        self.sub = None
+        self.t = 0.0
+        self.retried = False
+        self.done_log = []
+        self.sold = self.bought = 0
+        self.identified = 0
+        self.again = set()
+
+    def tick(self, p):
+        w, now = p.w, time.time()
+        if w.depth:
+            return ("failed", "plan town is for the town")
+        if self.sub:
+            r = self.sub.tick(p)
+            if r is None:
+                return None
+            what = getattr(self.sub, "store", "wait")
+            if r[1] and r[1] != "nothing to do":
+                self.done_log.append(f"{what}: {r[1]}" if what != "wait" else r[1])
+            self.sold += sum(int(m) for m in re.findall(r"You sold .+? for (\d+) gold", r[1] or ""))
+            self.bought += sum(int(m) for m in re.findall(r"You bought .+? for (\d+) gold", r[1] or ""))
+            self.sub, self.t = None, now
+            return None
+        if now - self.t < 1.0 or now < p.busy_until or w.inven_dirty or p.pending_use:
+            return None             # (the pack and gold settle after each step)
+        if self.stage == "upgrade":
+            # wear/wield what the policy prefers before anything is sold
+            if p.upgrade_step():
+                self.t = now
+                return None
+            self.stage, self.queue = "sell", p.town_sell_stores()
+        if self.stage in ("sell", "sell again"):
+            last = getattr(self, "last_sell", None)
+            if last and last not in self.again and p.town_sells(last):
+                # one of an unknown stack sold taught the flavour: the rest, same shop
+                self.again.add(last)
+                self.queue.insert(0, last)
+            self.last_sell = None
+            while self.queue:
+                store = self.queue.pop(0)
+                sells = p.town_sells(store)
+                if sells:
+                    self.sub = Shop(store, sells=sells)
+                    self.sub.role = "pilot"
+                    self.last_sell = store
+                    return None
+            if self.stage == "sell again":
+                self.stage = "buy"
+            else:
+                self.stage = "identify"
+        if self.stage == "identify":
+            # an Identify scroll for each unknown worth more than one, within the gold
+            # that the essentials leave
+            r = p.identify_step(now, minimum=p.price_of("Identify", 5))
+            if r:
+                self.identified += r is True        # ("light": it put the lantern on first)
+                self.t = now + 1.0
+                return None
+            want = p.town_identify_wanted()
+            have = p.kit_count("Identify")
+            spare = w.ind.get("gold", [0])[0] - p.town_reserve()
+            n = min(want - have, spare // max(1, p.price_of("Identify", 5)))
+            if n > 0 and not getattr(self, "id_bought", False):
+                self.id_bought = True
+                self.sub = Shop(5, buys=[("Identify", n, round(p.price_of("Identify", 5) * 1.5))])
+                self.sub.role = "pilot"
+                return None
+            self.stage = "sell again" if self.identified else "buy"
+            self.queue = p.town_sell_stores() if self.identified else []
+            return None
+        if self.stage == "buy":
+            if not self.queue:
+                buys, short = p.town_shopping(self.kit, self.buylist)
+                self.short = short
+                order = []
+                for tier, kind, store, n, cap in sorted(buys, key=lambda b: b[0]):
+                    if store not in order:
+                        order.append(store)
+                self.plan = {st: [(k, n, cap) for _, k, s_, n, cap in buys if s_ == st] for st in order}
+                self.queue = order
+                self.stage = "buying"
+            return None
+        if self.stage == "buying":
+            if self.queue:
+                st = self.queue.pop(0)
+                self.sub = Shop(st, buys=self.plan[st])
+                self.sub.role = "pilot"
+                return None
+            # drink the Restore bought for a drained stat (once each)
+            pot = p.restore_potion(self.__dict__.setdefault("quaffed", set()))
+            if pot:
+                self.quaffed.add(pot["name"])
+                p.cmd(f"custom q item={pot['item']}", f"town kit: quaff {pot['name']}", hold=0.8)
+                self.done_log.append(f"quaffed {pot['name']}")
+                self.t = now + 1.0
+                return None
+            # an essential still missing because the shop had none: one more look
+            gap = p.supply_gate(p.planned_depth(), True)
+            if gap and not self.retried and any("in stock" in l for l in self.done_log):
+                self.retried = True
+                self.stage = "buy"
+                self.sub = Wait(40)
+                self.done_log.append(f"still missing {'; '.join(gap)}: waiting 40 s for new stock")
+                return None
+            return self.finish(p)
+        return None
+
+    def finish(self, p):
+        w = p.w
+        want = p.planned_depth()
+        gap = p.supply_gate(want, True) if want else []
+        short = [f"{n} {k}" for k, n in getattr(self, "short", []) if n > 0]
+        head = (f"sold for {self.sold}, bought for {self.bought}, identified {self.identified}; "
+                f"gold now {w.ind.get('gold', [0])[0]}")
+        tail = (f"; supplies for recalling to {want} ft: " + ("OK" if not gap else "MISSING " + "; ".join(gap))) \
+            if want else ""
+        p.log("town_kit", sold=self.sold, bought=self.bought, identified=self.identified,
+              gold=w.ind.get("gold", [0])[0], short=short, gap=gap)
+        return ("done", head + tail + ("; not afforded: " + ", ".join(short) if short else "") +
+                (" | " + " | ".join(self.done_log) if self.done_log else ""))
+
+
 def singular(t):
     """Plural endings dropped, for name matching ("Flask of oil" finds
     "99 Flasks of oil": missions 17-18)."""
@@ -1443,6 +1582,13 @@ class Pilot:
         self.policy_t = 0.0
         self.room_t = 0.0
         self.ability_sources = set()   # unidentified worn items that may give them
+        # what each shop's owner is and what it charged (the town kit's prices and routing)
+        self.stores_file = os.path.join(rundir, "stores.json")
+        try:
+            self.stores_seen = {int(k): v for k, v in json.load(open(self.stores_file)).items()}
+        except (OSError, ValueError):
+            self.stores_seen = {}
+        self.stores_noted_t = 0.0
         self.ability_seen_t = time.time()
         self.debt_path = os.path.join(rundir, "navigator_debt.json")
         try:
@@ -2634,7 +2780,7 @@ class Pilot:
         """Why the Navigator shouldn't sell/destroy/drop this item, or None. The
         Pilot's own policy never does these; the Navigator may override with `!`,
         and the value lost is added to its debt (the user's decision)."""
-        if (role or getattr(self, "req_role", "navigator")) == "architect" or not it:
+        if (role or getattr(self, "req_role", "navigator")) in ("architect", "pilot") or not it:
             return None
         name = it["name"]
         if self.is_kept(name):
@@ -2695,7 +2841,7 @@ class Pilot:
 
     KIT_KINDS = ("Cure Light Wounds", "Cure Serious Wounds", "Cure Critical Wounds", "Healing", "Phase Door",
                  "Word of Recall", "Teleport", "Identify", "Magic Mapping", "Speed", "Heroism", "Berserk",
-                 "Restore", "Satisfy Hunger", "Deep Descent")
+                 "Restore", "Satisfy Hunger", "Deep Descent", "Boldness", "Resist Poison")
 
     def pack_value(self, it):
         """An item's worth to the pack, for making room: kit consumables, kept items,
@@ -2769,11 +2915,10 @@ class Pilot:
         jewellery in empty slots. True if it acted."""
         w = self.w
         if now - self.policy_t < 3 or now < self.busy_until or w.store or self.pending_use or w.monsters or \
-                now - w.last_hit_t < 8 or w.hp_frac < 0.5 or isinstance(self.goal, (Flee, Recall, Recover, Shop)) or \
+                now - w.last_hit_t < 8 or w.hp_frac < 0.5 or isinstance(self.goal, (Flee, Recall, Recover, Shop, TownKit)) or \
                 w.flag("blind") or w.flag("confused"):
             return False
         self.policy_t = now
-        pack, worn = w.items(), w.items(equip=True)
         # 0. gold lying within 10 squares while idle (the user, mission 23: the Pilot
         # left the gold beside it in town; the Navigator needed seven gotos)
         if self.goal is None and not self.mover.active and w.pos:
@@ -2786,29 +2931,27 @@ class Pilot:
                 self.notify("tactic", f"picking up the gold {min(w.dist(q) for q in gold)} squares away", news=True)
                 return True
 
-        def bare(n):
-            return re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", n)).lower()
+        return self.identify_step(now) or self.upgrade_step()
 
-        def cursedish(n):
-            return re.search(r"\{(cursed|worthless|broken|terrible)", n)
-        # 1. identify the most valuable unknown (ability sources first)
+    def identify_step(self, now, minimum=20):
+        """Read Identify (or use Perception) on the most valuable unknown worth at
+        least `minimum` gold sold (ability sources first). True if it acted."""
+        pack = self.w.items()
+        # 1. identify the most valuable unknown (ability sources and likely egos first)
         scroll = next((i for i in pack if i["tval"] == TV_SCROLL and "Identify" in i["name"]), None)
         staff = next((i for i in pack if i["tval"] == 55 and "Perception" in i["name"]
                       and not re.search(r"\(0 charges\)", i["name"])), None)
         if scroll or staff:
-            cands = []
-            for it in pack + worn:
-                if (self.flavour_of(it) or {}).get("junk") or cursedish(it["name"]):
-                    continue
-                iv = self.iv(it["name"])
-                if iv.known is not False:
-                    continue
-                prio = float("inf") if bare(it["name"]) in self.ability_sources else iv.value * SHOP_CUT
-                if prio >= 20:
-                    cands.append((prio, it))
+            # (three tries per item: at night in town a read without a light failed
+            # twenty times in a row, "You have no light to read by")
+            tries = self.__dict__.setdefault("id_tries", {})
+            cands = [(pr, it) for pr, it in self.identify_candidates(minimum) if tries.get(it["name"], 0) < 3]
             if cands:
                 _, it = max(cands, key=lambda pc: pc[0])
                 tool = scroll or staff
+                if tool is scroll and not any(i["tval"] == TV_LITE for i in self.w.items(equip=True)):
+                    return self.wear_light("a light to read Identify by") and "light"
+                tries[it["name"]] = tries.get(it["name"], 0) + 1
                 if self.unknown_flavour(it):
                     self.id_target = {"t": now, "flavour": flavour_key(it["name"]),
                                       "letter": None if it["equip"] else chr(97 + it["item"])}
@@ -2816,6 +2959,19 @@ class Pilot:
                          f"identify {it['name']} (policy)", hold=1.0)
                 self.notify("tactic", f"identifying {it['name']} (the most valuable unknown)", news=True)
                 return True
+        return False
+
+    def upgrade_step(self):
+        """Wield a better weapon, wear better armour, put good jewellery into
+        empty slots: one change per call. True if it acted."""
+        w = self.w
+        pack, worn = w.items(), w.items(equip=True)
+
+        def bare(n):
+            return re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", n)).lower()
+
+        def cursedish(n):
+            return re.search(r"\{(cursed|worthless|broken|terrible)", n)
         # 2. a better weapon (plain damage; a brand counts half, as not every monster is affected)
         wt = self.weapon_table()
         if wt:
@@ -3611,6 +3767,19 @@ class Pilot:
             self.warn_light("no light", "no light source")
         return False
 
+    def wear_light(self, why):
+        """Put the best light in the pack on (reading needs one: the Pilot takes it
+        off in town). True if it acted."""
+        def left(i):
+            t = re.search(r"with (\d+) turns", i["name"])
+            return int(t.group(1)) if t else (1 if "Lantern" in i["name"] else 0)
+        lite = max((i for i in self.w.items(tval=TV_LITE) if left(i) > 0), key=left, default=None)
+        if not lite:
+            return False
+        self.light_t = time.time() + 60         # (town_light leaves it on meanwhile)
+        self.cmd(f"custom w item={lite['item']}", f"light on: {why}", hold=0.8)
+        return True
+
     def warn_light(self, key, text):
         """A light warning once per state (low -> out), again after 10 min; in
         town it's news, not an alert (Dive04 raised 573 'lantern at 0 turns'
@@ -4194,6 +4363,8 @@ class Pilot:
             return {"ok": False, "error": "the character is dead (a ghost): only 'goal resurrect' works"}
         if c == "goal":
             return self.request_goal(args)
+        if c == "plan":
+            return self.request_plan(args)
         if c == "stop":
             self.set_goal(None)
             self.stop_resting()
@@ -4481,6 +4652,281 @@ class Pilot:
             missing.append(f"light: {turns(best)} turns left and no flask" if "Lantern" in best["name"]
                            else f"light: {turns(best)} turns left")
         return missing
+
+    # --- the town kit (restructure step 2.2) ----------------------------------
+    STORE_NUM = {"General store": 1, "Armoury": 2, "Weapon Smith": 3, "Temple": 4, "Alchemist": 5,
+                 "Magic Shop": 6, "Black Market": 7,
+                 # (the rulebook's shop_stock.csv names)
+                 "General Store": 1, "Weaponsmith": 3, "Alchemy shop": 5, "Magic-User store": 6, "Black market": 7}
+    # who buys what (store.c store_will_buy), best first; never the Black Market (it pays a third)
+    BUYERS = {80: (1,), 39: (1,), 77: (1,), 16: (1, 3), 17: (1, 3), 18: (1, 3), 20: (3, 1), 35: (2, 1),
+              30: (2,), 31: (2,), 32: (2,), 33: (2,), 34: (2,), 36: (2,), 37: (2,), 38: (2,),
+              19: (3,), 21: (3, 4), 22: (3,), 23: (3,), 75: (5, 4, 6), 70: (5, 4, 6),
+              40: (6,), 45: (6,), 55: (6,), 65: (6,), 66: (6,)}
+    # kit kinds: (tval, the store that sells them, a price guess before we've seen one)
+    KIT_ITEMS = {"Word of Recall": (70, 5, 250), "Cure Critical Wounds": (75, 4, 160),
+                 "Cure Serious Wounds": (75, 4, 65), "Cure Light Wounds": (75, 4, 25), "Phase Door": (70, 5, 25),
+                 "Identify": (70, 5, 80), "Flask of oil": (77, 1, 5), "Ration of Food": (80, 1, 5),
+                 "Restore Strength": (75, 5, 490), "Restore Dexterity": (75, 5, 490),
+                 "Restore Constitution": (75, 5, 490)}
+    # stock levels per stage (the Advisor's shops memo §3 and the Borg minimums):
+    # A to 500 ft, B to 1000 ft, C deeper. Food counts rations and Satisfy Hunger
+    KITS = {"A": {"Word of Recall": 2, "Cure Light Wounds": 5, "Phase Door": 5, "Flask of oil": 3,
+                  "Ration of Food": 3},
+            "B": {"Word of Recall": 2, "Cure Critical Wounds": 4, "Cure Serious Wounds": 4, "Phase Door": 10,
+                  "Flask of oil": 5, "Ration of Food": 4},
+            "C": {"Word of Recall": 2, "Cure Critical Wounds": 6, "Cure Serious Wounds": 4, "Phase Door": 12,
+                  "Flask of oil": 5, "Ration of Food": 4},
+            "none": {}}
+    # devices the Pilot uses (stairs, identify, escapes): never sold by the kit
+    USEFUL_DEVICES = ("Door/Stair Location", "Teleportation", "Perception")
+    STAT_FULL = {"STR": "Strength", "DEX": "Dexterity", "CON": "Constitution"}
+
+    def note_store(self):
+        """Remember the shop we're in: its owner and the cheapest price per kind."""
+        st = self.w.store
+        if not st or self.w.store_t <= self.stores_noted_t:
+            return
+        self.stores_noted_t = self.w.store_t
+        num = self.STORE_NUM.get(st.get("name"))
+        if not num:
+            return
+        prices = {}
+        for i in st.get("items", []):
+            k = self.kind_key_of(i["name"])
+            prices[k] = min(prices.get(k, i["price"]), i["price"])
+        self.stores_seen[num] = {"owner": st.get("owner"), "t": round(time.time()), "prices": prices}
+        try:
+            json.dump(self.stores_seen, open(self.stores_file, "w"), indent=1)
+        except OSError:
+            pass
+
+    @staticmethod
+    def kind_key_of(name):
+        return singular(re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).strip())
+
+    def price_of(self, kind, store):
+        """What `kind` cost at `store` last time we looked (the cheapest line), else a guess."""
+        key = singular(kind)
+        seen = [v for k, v in (self.stores_seen.get(store) or {}).get("prices", {}).items() if key in k]
+        if seen:
+            return min(seen)
+        return self.KIT_ITEMS.get(kind, (0, 0, None))[2]
+
+    def kit_count(self, kind):
+        pack = self.w.items()
+        if kind == "Ration of Food":
+            return sum(i["number"] for i in pack if (i["tval"] == TV_FOOD and "Mushroom" not in i["name"])
+                       or "Satisfy Hunger" in i["name"])
+        tv = self.KIT_ITEMS.get(kind, (None,))[0]
+        key = singular(kind)
+        n = sum(i["number"] for i in pack if (tv is None or i["tval"] == tv) and key in singular(i["name"]))
+        if kind == "Identify":
+            # a Staff of Perception's charges count as Identify scrolls
+            n += sum(int(m.group(1)) for i in pack if i["tval"] == 55 and "Perception" in i["name"]
+                     for m in [re.search(r"\((\d+) charges?\)", i["name"])] if m)
+        return n
+
+    def planned_depth(self):
+        md = int(self.orders.get("max_depth", 0) or 0)
+        deepest = getattr(self, "deepest_ft", 0) or 0
+        return min(md, deepest) if md and deepest else (md or deepest)
+
+    def town_buyers(self, it):
+        """The shops that buy this item, the best payer first (by owners seen)."""
+        stores = self.BUYERS.get(it["tval"], ())
+        chr_v = (self.w.ind.get("stat5") or [3])[0]
+
+        def pay(st):
+            owner = (self.stores_seen.get(st) or {}).get("owner")
+            f = shopmath.factors(re.sub(r"\s*\(.*\)$", "", owner or ""), chr_v) if owner else None
+            return -(f[0] if f else 0)
+        return sorted(stores, key=lambda st: (pay(st), stores.index(st)))
+
+    def town_sell_count(self, it):
+        """How many of this pack item the town kit sells (0: keep it)."""
+        name = it["name"]
+        if it.get("equip") or it["tval"] in (TV_FOOD, TV_FLASK, TV_LITE) or any(k in name for k in self.KIT_KINDS) \
+                or any(d in name for d in self.USEFUL_DEVICES) or self.is_kept(name) or \
+                re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower() in self.ability_sources:
+            return 0
+        if not self.town_buyers(it) or re.search(r"\{(cursed|worthless|broken|terrible)", name):
+            return 0
+        if self.unknown_flavour(it):
+            if self.unknown_sell_refusal(it, 1):
+                return 0
+            f = self.flavour_of(it)
+            # one of an unknown stack: the sale teaches the flavour (the rest next pass)
+            return it["number"] if (f and f["junk"]) or it["number"] == 1 else 1
+        if self.probably_special(name) or self.value_refusal(it, "sell", "navigator"):
+            return 0                    # (identify first)
+        iv = self.iv(name)
+        if iv.kind is None or iv.value <= 0 or iv.value * SHOP_CUT < 1:
+            return 0
+        return it["number"]
+
+    def town_sell_stores(self):
+        return sorted({self.town_buyers(i)[0] for i in self.w.items() if self.town_sell_count(i)})
+
+    def town_sells(self, store):
+        """[(pack index, count)] to sell at `store` now."""
+        return [(i["item"], n) for i in self.w.items() for n in [self.town_sell_count(i)]
+                if n and self.town_buyers(i)[0] == store]
+
+    def identify_candidates(self, minimum):
+        out = []
+        for it in self.w.items() + self.w.items(equip=True):
+            name = it["name"]
+            if (self.flavour_of(it) or {}).get("junk") or re.search(r"\{(cursed|worthless|broken|terrible)", name):
+                continue
+            iv = self.iv(name)
+            if iv.known is not False:
+                continue
+            bare = re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower()
+            prio = float("inf") if bare in self.ability_sources or iv.p_irreplaceable >= 0.2 else iv.value * SHOP_CUT
+            if prio >= minimum:
+                out.append((prio, it))
+        return out
+
+    def town_identify_wanted(self):
+        return len(self.identify_candidates(self.price_of("Identify", 5) or 80))
+
+    def town_needs(self, kit, buylist):
+        """The shopping list by priority tier, before gold: [[tier, kind, store, n, cap]].
+        1: Words of Recall to 2; 2: the supply gate's minimums for the planned depth;
+        3: Restore for a drained STR/DEX/CON; 4: the kit; 5: the Navigator's buy list."""
+        want = self.planned_depth()
+        kit = kit or ("A" if want < 500 else "B" if want < 1000 else "C")
+        plan = []
+
+        def planned(kind):
+            return self.kit_count(kind) + sum(r[3] for r in plan if r[1] == kind)
+
+        def add(tier, kind, target):
+            n = target - planned(kind)
+            if n > 0:
+                plan.append([tier, kind, self.KIT_ITEMS[kind][1], n, None])
+        add(1, "Word of Recall", 2)
+        if want >= 250:
+            _, cures, serious, critical, ph = max((st for st in self.SUPPLY_STAGES if want >= st[0]),
+                                                  key=lambda st: st[0])
+            add(2, "Cure Critical Wounds", critical)
+            ccw = planned("Cure Critical Wounds")
+            if serious and ccw < 3:
+                add(2, "Cure Serious Wounds", serious - ccw)
+            total = sum(planned(k) for k in ("Cure Light Wounds", "Cure Serious Wounds", "Cure Critical Wounds"))
+            if total < cures:
+                k = "Cure Serious Wounds" if want >= 500 else "Cure Light Wounds"
+                add(2, k, planned(k) + cures - total)
+            add(2, "Phase Door", ph)
+        lamp = next((i for i in self.w.items(equip=True) + self.w.items() if "Lantern" in i["name"]), None)
+        if lamp:
+            lt = re.search(r"with (\d+) turns", lamp["name"])
+            if lt and int(lt.group(1)) < 1000:
+                add(2, "Flask of oil", 1)
+        for stat, (cur, top) in (self.seen_drained or {}).items():
+            if stat in self.STAT_FULL and cur < top:
+                add(3, f"Restore {self.STAT_FULL[stat]}", 1)
+        for kind, n in self.KITS.get(kit, {}).items():
+            if kind == "Flask of oil" and not lamp:
+                continue
+            add(4, kind, n)
+        for name, n, cap, store in buylist:
+            plan.append([5, name, store, n, cap])
+        return plan
+
+    def restore_potion(self, skip=()):
+        """A Potion of Restore <stat> in the pack for a drained STR/DEX/CON, or None."""
+        for stat, (cur, top) in (self.seen_drained or {}).items():
+            if stat in self.STAT_FULL and cur < top:
+                pot = next((i for i in self.w.items(tval=TV_POTION) if f"Restore {self.STAT_FULL[stat]}" in i["name"]
+                            and i["name"] not in skip), None)
+                if pot:
+                    return pot
+        return None
+
+    def town_reserve(self):
+        """The gold tiers 1-2 (recall and the gate's minimums) need."""
+        return sum(n * (self.price_of(k, st) or 0) for t, k, st, n, _ in self.town_needs(None, ()) if t <= 2)
+
+    def town_shopping(self, kit, buylist):
+        """(buys, short): what the gold buys, in priority order, as [(tier, kind, store, n,
+        cap)], and [(kind, n)] it can't. Essentials (tiers 1-3) have no price cap;
+        the kit's own lines are capped at 1.5x the price last seen."""
+        left = self.w.ind.get("gold", [0])[0]
+        buys, short = [], []
+        for tier, kind, store, n, cap in self.town_needs(kit, buylist):
+            price = self.price_of(kind, store) or cap
+            if not price:
+                buys.append((tier, kind, store, n, cap))      # (unknown price: the cap decides)
+                continue
+            k = min(n, left // price)
+            if k:
+                buys.append((tier, kind, store, k, cap if cap else (round(price * 1.5) if tier == 4 else None)))
+                left -= k * price
+            if k < n:
+                short.append((kind, n - k))
+        return buys, short
+
+    def buy_store(self, name):
+        """The store that stocks `name` (the rulebook's stock table, or a listing we saw)."""
+        key = singular(re.sub(r"^(Potions?|Scrolls?|Rings?|Amulets?|Wands?|Staffs?|Staves|Rods?) of ", "", name.strip()))
+        for r in self.stock_table():
+            if key in singular(re.sub(r"[&~]", "", r["item_name"]).strip()) or \
+                    singular(re.sub(r"[&~]", "", r["item_name"]).strip()) in key:
+                return self.STORE_NUM.get(r["store"])
+        for st, v in self.stores_seen.items():
+            if st != 7 and any(key in k for k in v.get("prices", {})):
+                return st
+        return None
+
+    def stock_table(self):
+        if not hasattr(self, "_stock"):
+            try:
+                self._stock = list(csv.DictReader(open(os.path.join(HERE, "..", "rulebook", "shop_stock.csv"))))
+            except OSError:
+                self._stock = []
+        return self._stock
+
+    def request_plan(self, args):
+        """plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@CAP][,...]]..."""
+        if not args or args[0] != "town":
+            return {"ok": False, "error": "usage: plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@CAP],...] "
+                                          "(plan trip comes with step 2.3)"}
+        if self.w.depth:
+            return {"ok": False, "error": "plan town is for the town (recall home first)"}
+        kit, buylist, specs, i = None, [], [], 1
+        while i < len(args):
+            a = args[i]
+            if a.startswith("kit="):
+                kit = a[4:]
+                if kit not in self.KITS:
+                    return {"ok": False, "error": f"kit={kit}: A (to 500 ft), B (to 1000 ft), C (deeper) or none"}
+            elif a == "buy":
+                pass
+            else:
+                specs += [x.strip() for x in a.split(",") if x.strip()]
+            i += 1
+        for sp in specs:
+            m = re.fullmatch(r"(?:([1-7])/)?([^:@]+)(?::(\d+))?(?:@(\d+))?", sp)
+            if not m:
+                return {"ok": False, "error": f"can't read the buy item {sp!r}: [STORE/]NAME[:COUNT][@MAXPRICE]"}
+            name = m.group(2).replace("_", " ").strip()
+            store = int(m.group(1)) if m.group(1) else self.buy_store(name)
+            if not store:
+                return {"ok": False, "error": f"no shop's stock table has {name!r}: name the shop (e.g. 7/{m.group(2)}"
+                                              " for the Black Market, which charges 3x)"}
+            buylist.append((name, int(m.group(3) or 1), int(m.group(4)) if m.group(4) else None, store))
+        g = TownKit(kit, buylist)
+        g.by_navigator = self.req_role != "architect"
+        g.role = self.req_role
+        self.set_goal(g)
+        buys, short = self.town_shopping(kit, buylist)
+        return {"ok": True, "goal": g.describe(),
+                "note": "will buy (by the prices last seen): " + (", ".join(f"{n} {k} at {st}" for _, k, st, n, _ in buys)
+                                                                 or "nothing") +
+                        (("; can't afford yet: " + ", ".join(f"{n} {k}" for k, n in short)) if short else "") +
+                        " (selling first may change this)"}
 
     def request_goal(self, args):
         if not args:

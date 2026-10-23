@@ -17,7 +17,7 @@ Architect builds everything else.
 |---|---|---|---|
 | 1 | instruments | scorecard definitions + baseline m17–23 | **done** (`../memos/2026-10-23-scorecard.md`, `data/scorecard/`); the Architect built the production one (`github/tools/observe/scorecard.py --check`, `runs/missions.json`) and the new log records |
 | 2 | who decides what | (inputs only) | Architect: 2.1 item policy done (itemvalue.py from our tables, value refusals with a Navigator **debt**, Free-Action inference, pickup by value); 2.2 town kit next; 2.3/2.4 danger rules (will use `monsters.csv`) |
-| 3 | the rulebook | **ours** | **release 1 + 2 done** (`../memos/2026-10-24-rulebook.md`, `-rulebook-r2.md`; `data/rulebook/`, query `rule.py`); the Architect syncs it into the repo with `github/tools/rulebook/sync.sh` — **tell them whenever we rebuild** |
+| 3 | the rulebook | **ours** | **release 1 + 2 done and synced** (`../memos/2026-10-24-rulebook.md`, `-rulebook-r2.md`; `data/rulebook/`, query `rule.py`; r2 synced 10-24, C8 rule fixed by the Architect); the Architect syncs it into the repo with `github/tools/rulebook/sync.sh` — **tell them whenever we rebuild** |
 | 4 | harness / set-pieces | **ours: the list** | **list done** (`../memos/2026-10-24-setpieces.md`: 41 cases, 12 P1); waiting on the Architect's two enablers (a key-sending verb so Gandalf the DM can be scripted; logging map/inventory replies or `--pktlog`) |
 | 5 | missions again with scorecards | scorecard per mission; Opus vs Sonnet | after steps 2–4 |
 

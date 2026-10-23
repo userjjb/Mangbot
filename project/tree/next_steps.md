@@ -158,10 +158,10 @@ the tag. Push after each piece of work (`tools/snapshot.sh`, commit, `git push o
 28346, with the 10-17 store patch), Dive04's Pilot, the user's viewer (`tmux -L mang attach -t watch`), the inbox
 watcher. A new node means restarting all four (commands in the 2026-10-08 section and `restructure.md`).
 
-**Dive04 now:** clvl 22, 254 HP, in town, 637 gold, max_depth 650; Spear (+5,+7) 3 blows ~32; Hard Studded Leather of
-Resistance (4 resists), Ring of Protection [+8], Brodda's Metal Shod Boots [6] {good} (unidentified); 6 CCW, 2 CSW,
-9 Phase, **1 WoR** (a recall dive needs 2); CON/WIS/CHR drained. **No Free Action** (the boots that gave it were sold
-in m23). Navigator debt 0.
+**Dive04 now (after the first live `plan town`, session 4):** clvl 22, 265 HP, in town, 127 gold, max_depth 650;
+Spear (+5,+7) 3 blows ~32; Hard Studded Leather of Resistance (4 resists), Ring of Protection [+8], Shadow Cloak
+[6,+7], Brodda's Metal Shod Boots [6,+3] (both identified by the town kit); 6 CCW, 4 CSW, 10 Phase, **2 WoR**, 5
+flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt 0.
 
 **Restructure steps:**
 1. **Instruments: done** (to the Advisor's `memos/2026-10-23-scorecard.md`). `tools/observe/scorecard.py` (`--table`,
@@ -173,10 +173,17 @@ in m23). Navigator debt 0.
    value refusals with `!` override → **the Navigator's debt**, `keep`, Free Action inferred from "You are
    unaffected!", pickup by value (unique drops always; use a flask/ration, then destroy the cheapest non-kit item),
    no loot after a `band`, a policy step at safe moments (identify, wield/wear upgrades, jewellery), gold within 10
-   when idle. **Next: 2.2 the town kit** (sell by policy at the right shop, identify, restock to the kit levels,
-   the Navigator's buy list, Restore stats), then 2.3 trip plan (`plan trip LO-HI until COND then recall`), 2.4 order
+   when idle. **2.2 the town kit: done (session 4):** `plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@MAX],...]`,
+   the `TownKit` goal in pilot.py: upgrades, sells by policy at the shop that buys (store.c store_will_buy; best
+   payer by owner), buys + reads Identify for unknowns worth more than a scroll, sells again, then buys by tier (WoR 2,
+   gate minimums, Restore STR/DEX/CON and quaffs it, the kit, the Navigator's list), one more look after 40 s for a
+   missing essential. Prices and owners remembered in `runs/pilot/NICK/stores.json`. Tested live on Dive04 (sold Main
+   Gauche 79 + Staff of Treasure Location 111; bought WoR, CSW, Phase, flasks, Restore CON; identified cloak and
+   boots). Fixed on the way: reading Identify without a light at night (it now lights up, 3 tries per item);
+   itemvalue missed the feeling in `{good - Brodda, the Easterling}`. HANDBOOK section "Town: plan town".
+   **Next: 2.3 trip plan** (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
-   toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23.
+   toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23. Then the time bubble (timers to game turns; decided below).
 3. **Rulebook:** the Advisor's **release 2** is in `Advisor/data/rulebook/`, synced into `github/tools/rulebook/`
    (`sync.sh` after each release; the Advisor owns it). Used so far: kinds_by_level, unknown_expect, feelings, and
    abilities.csv's rule for Free Action (only after a HOLD/SLOW spell or a paralysis blow line). Not yet:
@@ -203,10 +210,11 @@ in m23). Navigator debt 0.
   viewer notes (`tools/observe/notes.py --nick dive04 --questions`): **I missed some in m21-23; check them after
   every mission.**
 
-**Open questions for the user:**
-- **Time bubble** (the Advisor, rulebook memo): the Pilot runs `--hpwarn 0`, giving up the server's constant 1/5 time
-  factor at low HP. Turn-based Pilot timers would let both agents use it (5x more real time in close calls).
-  Proposed: queue it after step 2, tested with the harness. Not answered yet.
+**Open questions / decisions:**
+- **Time bubble: decided (the user, 2026-10-23, session 4): after step 2.** Finish 2.2-2.7 first (2.7 stays a
+  clean comparison with m17-23), then move the Pilot's wall-clock timers to game turns and A/B `--hpwarn 5` on the
+  Advisor's set-pieces A1/A2 before using it in missions. It's a **constant 1/5** time factor below hpwarn×10% HP
+  (xtra2.c 5180-5207), not proportional (operations.md corrected).
 - The Advisor asked what rulebook tables come next; I suggested an ability-inference table, jewellery plusses, kill
   time per monster, then drop expectations.
 

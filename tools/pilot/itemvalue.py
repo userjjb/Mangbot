@@ -143,7 +143,8 @@ def value(name, level=15, aware=()):
     m = re.match(r"(\d+) ", raw)
     it.count = int(m.group(1)) if m else 1
     tags = re.findall(r"\{([^}]*)\}", raw)
-    pseudo = next((t.split(",")[0].strip() for t in tags if t.split(",")[0].strip() in PSEUDO_BONUS), None)
+    # "{good}", "{good, @R650}", "{good - Brodda, the Easterling}" (a unique's drop)
+    pseudo = next((f for t in tags for f in [t.split(",")[0].split(" - ")[0].strip()] if f in PSEUDO_BONUS), None)
     it.pseudo = pseudo
     n = re.sub(r"\s*\{[^}]*\}", "", raw)
     n = re.sub(r"^(an?|the|\d+) ", "", n)

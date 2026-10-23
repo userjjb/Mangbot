@@ -30,3 +30,12 @@ Architect's order: abilities (A1 Clerk -> abilities.csv, ego_flags.csv), jewelle
 kinds_by_level), kill time (rule.py fight). Memo `../memos/2026-10-24-rulebook-r2.md`. Verified "You are unaffected!" for
 BLIND (melee2.c:1380) and TELE_LEVEL (:1637) and SLOW (:1422-1425); all 8 Dive04 cases followed SLOW/HOLD.
 Pending: drop expectations.
+
+## Release 3: drop expectations (session 4, clock date 2026-10-23; files dated 10-24 to keep the series in order)
+The Architect's 4th request. Advisor script work: `objgen.py` (shared generation model: all kinds, get_obj_num odds with the
+kind_is_good hook, power roll, gear value at any power incl. cursed egos, normal + special artifact odds), `build_drops.py`
+(drop_object_by_level.csv, drops.csv, drops_by_depth.csv), `rule.py drop|object`. build_feelings.py now uses objgen.
+Bugs found in r1/r2 while doing it: feelings.csv left out the kind's own plusses (object_value_real counts the total:
+dragon armour +800-1000, Kolla, Shield of Deflection; body armour with a to-hit penalty -100..-300), extra damage dice, pval
+credit for diggers; bows were missing from feelings.csv. jewellery.csv rebuilt under Python 3.12 (3.6 drew differently, <=6%).
+Pass 1 Clerks: D1 code audit of objgen/build_drops vs C; D2 the model vs Dive04's logs (gold amounts and types, unique drops).

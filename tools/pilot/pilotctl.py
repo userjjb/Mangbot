@@ -26,6 +26,7 @@
     pilotctl.py journal "situation | decision | why"   # your journal line, stamped with time/depth/HP
     pilotctl.py avoid Y,X [R] | avoid NAME | avoid clear | avoid   # no-go zones the paths route around
     pilotctl.py gate FEET [recall]         # the supply gate: what's missing for going down to FEET
+    pilotctl.py plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@MAX],...]   # the whole town visit, by policy
     pilotctl.py complain TEXT...           # what you lacked / what got in your way (not your mistakes)
 """
 import json
