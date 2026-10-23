@@ -27,6 +27,7 @@ import argparse
 import curses
 import json
 import os
+import re
 import sys
 import textwrap
 import time
@@ -194,6 +195,82 @@ class Journal:
 MODE = {"nav": False}            # Tab: the live game view / what the Navigator last read
 
 
+# --- the user's view (2026-10-23): fewer lines, supplies abbreviated as in the Navigator's
+# report, and the items in view listed like the monsters
+CURE_ABBR = {"Cure Critical Wounds": "CCW", "Cure Serious Wounds": "CSW", "Cure Light Wounds": "CLW"}
+ESCAPE_ABBR = {"Phase Door": "Phase", "Word of Recall": "WoR", "Teleportation": "Tele",
+               "Teleport Level": "TeleLevel", "Deep Descent": "DeepDescent"}
+HIDE = ("STR:", "Standing on:", "Weapons", "Abilities:", "State audit:", "Since last report:")
+
+
+def count_of(name):
+    m = re.match(r"(\d+) ", name)
+    return int(m.group(1)) if m else 1
+
+
+def supplies_short(line, equipment):
+    """'Supplies: 5 Flasks of oil; 4 Potions of Cure Serious Wounds; ... | max_depth 650 | drained: STR'
+    -> ['Cures CSW 4 · CCW 6 · staff CLW 6 | Escapes Phase 11 · WoR 1 | Food 5 | Light 7600 +5 flasks',
+        'Also: Speed 4 · ...', 'max_depth 650 | drained: STR']"""
+    body, _, tail = line[len("Supplies:"):].partition(" | ")
+    cures, esc, other, devices = {}, {}, [], []
+    food = flasks = 0
+    for it in [x.strip() for x in body.split(";") if x.strip()]:
+        n = re.sub(r"\s*\{[^}]*\}", "", it)
+        k = re.search(r"(?:Potions?|Scrolls?) of ([^{(]+)", n)
+        k = k.group(1).strip() if k else None
+        c = count_of(n)
+        if k in CURE_ABBR:
+            cures[CURE_ABBR[k]] = cures.get(CURE_ABBR[k], 0) + c
+        elif k in ESCAPE_ABBR:
+            esc[ESCAPE_ABBR[k]] = esc.get(ESCAPE_ABBR[k], 0) + c
+        elif k == "Satisfy Hunger" or re.search(r"Rations? of Food|Biscuit|Jerky|Slime Mold|Waybread", n):
+            food += c
+        elif re.search(r"Flasks? of oil", n):
+            flasks += c
+        elif k:
+            other.append(f"{k} {c}")
+        else:
+            m = re.match(r"(?:an? )?(Staff|Rod|Wand) of Cure Light Wounds \((\d+) charges\)", n)
+            if m:
+                cures["staff CLW"] = int(m.group(2))
+            else:
+                devices.append(re.sub(r"^(an?|\d+) ", "", n))
+    lite = re.search(r"(Brass Lantern|Wooden Torch|Lantern)[^;]*?with (\d+) turns", equipment or "")
+    light = (lite.group(2) if lite else "?") + (f" +{flasks} flask{'s' if flasks != 1 else ''}" if flasks else "")
+    out = ["Cures " + (" · ".join(f"{k} {v}" for k, v in cures.items()) or "NONE")
+           + " | Escapes " + " · ".join(f"{k} {esc.get(k, 0)}" for k in ("Phase", "WoR"))
+           + "".join(f" · {k} {v}" for k, v in esc.items() if k not in ("Phase", "WoR"))
+           + f" | Food {food} | Light {light}"]
+    if other or devices:
+        out.append("Also: " + " · ".join(other + devices))
+    if tail:
+        out.append(tail)
+    return out
+
+
+def items_in_view(seen, squares):
+    """The server's item list ('Items seen: You can see 7 items:; | Dagger (1d4); ] Cap [2]; ...') paired
+    with the item squares ('? at 18,140 (19), ...') by glyph, nearest first, like the monsters line."""
+    names = [x.strip() for x in seen[len("Items seen:"):].split(";") if x.strip() and not x.strip().startswith("You ")]
+    sq = [(g, int(d)) for g, d in re.findall(r"(\S) at \d+,\d+ \((\d+)\)", squares or "")]
+    gold = sorted(d for g, d in sq if g == "$")
+    used, parts = set(), []
+    for nm in names:
+        g, _, name = nm.partition(" ")
+        ds = [i for i, (gg, d) in enumerate(sq) if gg == g and i not in used]
+        if ds:
+            i = min(ds, key=lambda i: sq[i][1])
+            used.add(i)
+            parts.append((sq[i][1], f"{name} ({sq[i][1]} away)"))
+        else:
+            parts.append((999, name))
+    out = [p for _, p in sorted(parts, key=lambda dp: dp[0])]
+    if gold:
+        out.append(f"gold ×{len(gold)} ({gold[0]}" + (f"-{gold[-1]})" if gold[-1] != gold[0] else ")"))
+    return "Items in view: " + ("; ".join(out) if out else "none")
+
+
 def draw(scr, sock, feed, buf, msg, scroll):
     scr.erase()
     H, W = scr.getmaxyx()
@@ -217,6 +294,25 @@ def draw(scr, sock, feed, buf, msg, scroll):
     except Exception as e:                      # Pilot restarting, or dead and gone
         report = f"(Pilot not answering: {e.__class__.__name__}; retrying)"
     lines = report.split("\n")
+    if not MODE["nav"]:
+        equipment = next((l for l in lines if l.startswith("Equipment:")), "")
+        seen = next((l for l in lines if l.startswith("Items seen:")), None)
+        squares = next((l for l in lines if l.startswith("Item squares")), None)
+        view = []
+        for l in lines:
+            if l.startswith(HIDE):
+                if l.startswith("Standing on:") and "goal:" in l:
+                    view.append("Goal: " + l.split("goal:", 1)[1].strip())
+                continue
+            if l.startswith("Dive") or re.match(r"\w+ the [\w-]+ \w+, level", l):
+                l = re.sub(r"^\w+ the [\w-]+ [\w-]+, ", "", l)            # (no name/class)
+            if l.startswith("Supplies:"):
+                view += supplies_short(l, equipment)
+                continue
+            view.append(l)
+            if l.startswith("Monsters in view:"):
+                view.append(items_in_view(seen, squares) if seen else "Items in view: none")
+        lines = view
     keep = []
     in_map = False
     for l in lines:
@@ -238,16 +334,19 @@ def draw(scr, sock, feed, buf, msg, scroll):
     for l in keep:
         if vm.get("rows") and (l.startswith("Map (") or (l.startswith("  ") and drawn_map)):
             if l.startswith("Map ("):
-                scr.addnstr(y, 0, l, left_w - 1)
-                y += 1
+                if MODE["nav"]:
+                    scr.addnstr(y, 0, l, left_w - 1)
+                    y += 1
                 y += draw_map(scr, y, left_w - 1, top_h, vm)
                 drawn_map = True
             continue
+        if l.startswith("Map (") and not MODE["nav"]:
+            continue                    # (the user: no coordinates line)
         for piece in (textwrap.wrap(l, left_w - 1, subsequent_indent="   ") if not l.startswith("  ")
                       else [l[:left_w - 1]]):
             if y >= top_h:
                 break
-            attr = curses.A_BOLD if l.startswith(("Dive", "Monsters", "Since last")) else 0
+            attr = curses.A_BOLD if l.startswith(("Dive", "level ", "Monsters", "Items in view", "Since last")) else 0
             if "@" in piece and l.startswith("  "):
                 attr = 0
             scr.addnstr(y, 0, piece, left_w - 1, attr)
