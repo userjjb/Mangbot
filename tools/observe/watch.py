@@ -19,7 +19,8 @@ Walls draw as solid blocks (granite and secret doors full, mineral veins
 shaded); --hash keeps the game's '#' and '%'.
 
 Keys: type + Enter = note; Tab = the Navigator's view (exactly what it last
-read from the Pilot, and how long ago) / back; Esc = clear the line; PgUp/PgDn = scroll the feed;
+read from the Pilot, and how long ago) / back; F2 (or Ctrl-E) = the equipment, F3 (or Ctrl-P) = the
+whole pack, again or Esc = back; Esc = clear the line; PgUp/PgDn = scroll the feed;
 Ctrl-C = quit (the character keeps playing). Watching never sends a game
 command.
 """
@@ -192,7 +193,8 @@ class Journal:
                                         "NAV: " + (l[2:] if l.startswith("- ") else l)))
 
 
-MODE = {"nav": False}            # Tab: the live game view / what the Navigator last read
+MODE = {"nav": False, "panel": None}   # Tab: the live game view / what the Navigator last read;
+                                       # F2 / F3: the equipment / the pack in full
 
 
 # --- the user's view (2026-10-23): fewer lines, supplies abbreviated as in the Navigator's
@@ -200,7 +202,22 @@ MODE = {"nav": False}            # Tab: the live game view / what the Navigator 
 CURE_ABBR = {"Cure Critical Wounds": "CCW", "Cure Serious Wounds": "CSW", "Cure Light Wounds": "CLW"}
 ESCAPE_ABBR = {"Phase Door": "Phase", "Word of Recall": "WoR", "Teleportation": "Tele",
                "Teleport Level": "TeleLevel", "Deep Descent": "DeepDescent"}
-HIDE = ("STR:", "Standing on:", "Weapons", "Abilities:", "State audit:", "Since last report:")
+HIDE = ("STR:", "Standing on:", "Weapons", "Abilities:", "State audit:", "Since last report:", "Movement", "Gear:")
+
+
+def split_items(text):
+    """Split an item list on ';' outside brackets ('a Balsa Staff (= Staff of X; not aware)' stays whole)."""
+    out, depth, cur = [], 0, ""
+    for ch in text:
+        depth += ch in "([{"
+        depth = max(0, depth - (ch in ")]}"))         # (the pack letters' 'a)' open nothing)
+        if ch == ";" and depth <= 0:
+            out.append(cur.strip())
+            cur = ""
+        else:
+            cur += ch
+    out.append(cur.strip())
+    return [x for x in out if x]
 
 
 def count_of(name):
@@ -215,7 +232,7 @@ def supplies_short(line, equipment):
     body, _, tail = line[len("Supplies:"):].partition(" | ")
     cures, esc, other, devices = {}, {}, [], []
     food = flasks = 0
-    for it in [x.strip() for x in body.split(";") if x.strip()]:
+    for it in split_items(body):
         n = re.sub(r"\s*\{[^}]*\}", "", it)
         k = re.search(r"(?:Potions?|Scrolls?) of ([^{(]+)", n)
         k = k.group(1).strip() if k else None
@@ -313,6 +330,15 @@ def draw(scr, sock, feed, buf, msg, scroll):
             if l.startswith("Monsters in view:"):
                 view.append(items_in_view(seen, squares) if seen else "Items in view: none")
         lines = view
+        if MODE["panel"]:
+            src = next((l for l in report.split("\n") if l.startswith("Equipment:" if MODE["panel"] == "equip"
+                                                                       else "Pack:")), "")
+            items = split_items(src.partition(":")[2])
+            if MODE["panel"] == "equip":
+                items = [f"{chr(65 + i)}) {x}" for i, x in enumerate(items)]
+            lines = [lines[0], ("EQUIPMENT" if MODE["panel"] == "equip" else "PACK") +
+                     f" ({len(items)}; {'F2' if MODE['panel'] == 'equip' else 'F3'} or Esc: back)"] + \
+                (items or ["(empty)"])
     keep = []
     in_map = False
     for l in lines:
@@ -426,8 +452,16 @@ def main(scr, args):
         elif ch == "\t":
             MODE["nav"] = not MODE["nav"]
             msg = "Navigator's view (what it last read)" if MODE["nav"] else "game view"
+        elif ch in (curses.KEY_F2, "\x05", curses.KEY_F3, "\x10"):
+            want = "equip" if ch in (curses.KEY_F2, "\x05") else "pack"
+            MODE["panel"] = None if MODE["panel"] == want else want
+            msg = {"equip": "equipment (F2/Esc: back)", "pack": "the pack (F3/Esc: back)", None: "game view"}[MODE["panel"]]
         elif ch == "\x1b":
-            buf = ""
+            if MODE["panel"]:
+                MODE["panel"] = None
+                msg = "game view"
+            else:
+                buf = ""
         elif ch in (curses.KEY_BACKSPACE, "\x7f", "\b"):
             buf = buf[:-1]
         elif ch == curses.KEY_PPAGE:
