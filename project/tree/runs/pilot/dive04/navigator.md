@@ -379,3 +379,18 @@
 - My mistakes: Identify by letter twice (same item); wore an unidentified ring; destroyed the Brass Lantern spare while wearing another (ok); lost the Orfax-room loot by fighting on instead of leaving at the first orc band.
 - Pilot issues: unseen_attacker flee/hunt interplay; goal goto > force didn't progress while fighting; pickup of junk weapons/caps fills the pack; 8-10 Phase Doors per mob fight.
 - 02:15:03 town 100% | mission 22 end: town night, clvl 21 236/236 (CON 17), ~475g, 1 WoR, 10 Phase, 3 CCW 3 CSW 1 CLW, 1 Ring of Protection [+8] worn | stop, idle in town | ~13 min left too short for a dive
+- 22:15:22 town 100% | mission 23 start, town day, 475g, 1 WoR, 3 CCW | pick loot, sell Golden Staff, townfarm to 900, buy WoR + CCW | plan
+- 22:16:49 town 100% | user asked why Golden Staff sold unIDed | answered at once: flavour known, only charges unknown, 26g | honest
+- 22:17:47 town 100% | shopped: 2 WoR, 6 CCW, 214g, gate OK | order max_depth=650, goal recall, then explore | dive start ~22:18, 45 min budget to ~23:02
+- 22:21:05 650ft 91% | band: 5 White wolves adjacent at 650, no stairs known, HP 233/236 | fight in place (killed a pack last mission at 160 low), recall if HP <60% | WoR short in town (214g) so avoid burning one unless needed
+- 22:24:48 650ft 100% | Brodda slain (unique_slain fired) HP 209/236 | check drop squares then continue explore | drops good
+- 22:26:09 650ft 100% | unseen light breather made the Pilot take < to 600 before I fetched Brodda's Scimitar (user said likely good) | scimitar lost; explore 600 | not worth going back
+- 22:27:03 town 61% | orc mob (Orc captain, Half-orc, shamans, paladin) at 650 arrival: HP 123/254 min, Pilot read WoR + phase, town 22:27, 1 WoR 378g | rest, buy WoR, check amulet, redive | 2 WoR needed
+- 22:27:08 town 64% | user: scimitar loss was stupid | agreed; I should have fetched unique drop before letting flee, will prefer fetching unique drops first | accountability
+- 22:28:10 town 100% | MISTAKE: force-sold unidentified {excellent} Soft Leather Boots at armoury (Pilot warned 'probably special'); they were of Free Action [2,+4], sold for 3g, shop resells 2265 | townfarm toward ~2300 and buy back; skip dive until then | FA is the key item; I wore Brodda's boots and skipped identifying the old ones
+- 22:30:12 town 100% | user 22:30:06: terminate early | stop, idle in town (clvl 22, 542g, 1 WoR, 6 CCW 2 CSW, 9 Phase) | user's call; Boots of Free Action still in shop 2 at 2265
+
+### Mission 23 end notes (Navigator)
+- 22:15-22:30: farmed 475->933, bought WoR (242) + 3 CCW (477), recall 650. White wolves x5 killed, Brodda slain (Metal Shod Boots [6] worn; Scimitar left for pack space, lost when Pilot fled an unseen light breather up the stairs), clvl 22, then an orc mob at 650 arrival (HP 123/254), Pilot recalled, town 22:27.
+- MISTAKES: force-sold unidentified {excellent} Soft Leather Boots at the armoury: of Free Action [2,+4], sold for 3 gold (shop resells 2265). Pilot had warned "probably special". Did not stop the unseen flee to fetch the Scimitar.
+- User ended the mission at 22:30:06.

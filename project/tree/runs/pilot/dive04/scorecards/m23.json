@@ -1,0 +1,110 @@
+{
+ "label": "m23",
+ "nav_model": "sonnet",
+ "report": "compact",
+ "start": "2026-10-22 22:15",
+ "end": "2026-10-22 22:31",
+ "minutes": 16.0,
+ "notes": "user ended it; Free Action boots sold for 3; Brodda's Scimitar lost",
+ "dungeon_minutes": 9.0,
+ "clvl": [
+  21,
+  22
+ ],
+ "exp": [
+  6891,
+  7734
+ ],
+ "gold": [
+  475,
+  542
+ ],
+ "deepest_ft": 650,
+ "audit_checks": 32,
+ "audit_differences": 1,
+ "xp_gained": 843,
+ "xp_per_dungeon_min": 93.6,
+ "gold_flows": {
+  "found": 613,
+  "sold": 173,
+  "bought": 719
+ },
+ "found_per_dungeon_min": 68.1,
+ "value_lost": {
+  "resold_10x": [
+   {
+    "item": "Staff of Sleep Monsters (8 charges)",
+    "sold_for": 26,
+    "store_asks": 1597
+   },
+   {
+    "item": "Rod of Light",
+    "sold_for": 33,
+    "store_asks": 815
+   },
+   {
+    "item": "Pair of Soft Leather Boots of Free Action [2,+4]",
+    "sold_for": 3,
+    "store_asks": 2265
+   }
+  ],
+  "forced_sales": 3,
+  "items_lost": [],
+  "left_on_floor": [
+   "left a Metal Cap [3] (pack nearly full: bulky gear only with 6+ free slots; `pickup` takes it)",
+   "left a Scimitar (2d5) {Brodda, the Easterling} (pack nearly full: bulky gear only with 6+ free slots; `pickup` takes it)"
+  ]
+ },
+ "lowest_hp": [
+  120,
+  254,
+  "22:26:55"
+ ],
+ "close_calls_below_40pct": 0,
+ "alerts": {
+  "goal_done": 22,
+  "unseen_attacker": 12,
+  "user_message": 6,
+  "tactic": 4,
+  "goal_failed": 3,
+  "emergency": 3,
+  "band": 2,
+  "fight_going_badly": 2,
+  "drainer": 1,
+  "unique_slain": 1,
+  "found": 1,
+  "interesting_item": 1,
+  "danger_seen": 1
+ },
+ "deaths": 0,
+ "recalls": 2,
+ "level_changes": null,
+ "consumables_used": {
+  "Word of Recall": 2,
+  "Cure Serious Wounds": 1,
+  "Phase Door": 1,
+  "Cure Light Wounds": 1
+ },
+ "navigator": {
+  "commands": 98,
+  "per_min": 6.1,
+  "alert_to_order_median": 6.2,
+  "alert_to_order_p90": 27.0,
+  "user_to_reply_median": 5.8,
+  "user_messages": 6,
+  "user_notes": 9,
+  "full_reports": 1,
+  "complaints": 2
+ },
+ "pilot": {
+  "stuck": 0,
+  "goal_failed": {
+   "flee (Orc captain): stuck on the way to the stairs": 1,
+   "goto < force: stuck": 1,
+   "flee (unseen attacker): no stairs known": 1
+  },
+  "runs": 488,
+  "move_records": 984,
+  "server_crashes": 0
+ }
+}

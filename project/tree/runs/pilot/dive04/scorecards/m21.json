@@ -1,0 +1,100 @@
+{
+ "label": "m21",
+ "nav_model": "opus",
+ "report": "full",
+ "start": "2026-10-17 00:47",
+ "end": "2026-10-17 01:35",
+ "minutes": 48.0,
+ "notes": "server crash 00:48:48-00:58 (store[-1]); Wormtongue killed; user watching",
+ "dungeon_minutes": 27.4,
+ "clvl": [
+  18,
+  19
+ ],
+ "exp": [
+  3926,
+  4626
+ ],
+ "gold": [
+  793,
+  2539
+ ],
+ "deepest_ft": 700,
+ "audit_checks": 77,
+ "audit_differences": 0,
+ "xp_gained": 700,
+ "xp_per_dungeon_min": 25.5,
+ "gold_flows": {
+  "found": 877,
+  "bought": 1507,
+  "sold": 2205
+ },
+ "found_per_dungeon_min": 32.0,
+ "value_lost": {
+  "resold_10x": [],
+  "forced_sales": 2,
+  "items_lost": [
+   "You have no room for a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman}.",
+   "You have no room for a Scroll of Holy Chant.",
+   "You have no room for a Scroll of Light.",
+   "Your Hard Studded Leather [7] {excellent} (u) was stolen!",
+   "You have no room for a Scroll titled \"munger toxmung\".",
+   "You have no room for a Dogwood Staff.",
+   "You have no room for Hard Studded Leather [7] {excellent}."
+  ],
+  "left_on_floor": []
+ },
+ "lowest_hp": [
+  159,
+  233,
+  "01:09:50"
+ ],
+ "close_calls_below_40pct": 0,
+ "alerts": {
+  "goal_done": 32,
+  "tactic": 9,
+  "lost": 7,
+  "pack_full": 5,
+  "user_message": 3,
+  "started": 2,
+  "found": 2,
+  "structure": 2,
+  "parked": 1,
+  "breeders": 1,
+  "interesting_item": 1,
+  "goal_failed": 1,
+  "unseen_attacker": 1
+ },
+ "deaths": 0,
+ "recalls": 2,
+ "level_changes": null,
+ "consumables_used": {
+  "Word of Recall": 2,
+  "Scroll of Light (by name/letter)": 2,
+  "Identify (by name/letter)": 2,
+  "Enchant Weapon To-Dam (by name/letter)": 2,
+  "Object Detection (by name/letter)": 1,
+  "Magic Mapping (by name/letter)": 1,
+  "ip anrog eresh (by name/letter)": 1
+ },
+ "navigator": {
+  "commands": 193,
+  "per_min": 4.0,
+  "alert_to_order_median": 9.9,
+  "alert_to_order_p90": 80.9,
+  "user_to_reply_median": 6.3,
+  "user_messages": 3,
+  "user_notes": 4,
+  "full_reports": 0,
+  "complaints": 2
+ },
+ "pilot": {
+  "stuck": 0,
+  "goal_failed": {
+   "hunt Brigand: lost sight of it": 1
+  },
+  "runs": 965,
+  "move_records": 2008,
+  "server_crashes": 1
+ }
+}

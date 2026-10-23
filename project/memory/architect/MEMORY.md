@@ -4,3 +4,4 @@
 - [MAngband advisor memos](mangband-advisor-memos.md) — forum distillation memo (complete), danger table, Borg, run post-mortem, shops, message-catalogue, game-state, identify-and-sell and warrior-progression memos, study backlog (memos/2026-09-27-advisor-study-topics.md), scraping gotchas
 - [Inbox watcher](mangband-inbox-watcher.md) — start the Architect inbox watcher first thing every session; restart it whenever it ends
 - [Relay agent friction](mangband-relay-agent-friction.md) — a subagent's "my mistake" may be a missing capability; read runs/complaints.md after every mission; relay recurring friction to the user
+- [Restructure (2026-10-22)](mangband-restructure.md) — work on branch `restructure`, instruments first; revert steps in restructure.md (only on the user's request)

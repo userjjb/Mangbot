@@ -264,6 +264,21 @@ job 8105290 on scc-wh2, walltime to Mon 10-19 20:47, Dive04 restored from its 10
   a Navigator-ordered hunt isn't replaced by the danger/unseen flees for 120 s (`by_navigator`, `hunt_ordered`);
   Mover plans round known traps first; 3 traps sprung on a level → news. Tested offline + `inspect B` live.
 
+- **RESTRUCTURE (2026-10-22, the user):** after mission 23 (user-ended; report `reports/2026-10-22-mission23.md`) the
+  user decided: restructure (not rewrite), keep Dive04, instruments first; mission-by-mission patching frozen. Plan:
+  `memos/to_advisor/2026-10-22-restructure-plan.md` (from the Advisor's `memos/2026-10-19-starting-over.md`). Work is on
+  git branch `restructure`. **To revert (only if the user asks): `restructure.md`** (tag `pre-restructure` = 767bf60,
+  backups in `runs/backup-pre-restructure-20261022/`).
+
+- **Restructure step 1, instruments (2026-10-22, branch `restructure`):** `tools/observe/scorecard.py` (one card per
+  mission from runs/missions.json: dungeon minutes, XP and gold found per dungeon minute, gold flows, lowest HP and
+  close calls < 40%, recalls, consumables used, value lost = items sold then offered by a store at 10x+, forced sales,
+  losses, Navigator latency/commands/reports, Pilot stuck/goal_failed/audit/server crashes; `--table` compares; JSON in
+  runs/pilot/NICK/scorecards/). Missions 17-23 registered. Pilot: every Navigator report is numbered (`· rN` on its
+  first line, a `report` record with kind and size) and every nav_cmd carries `after_report` and `report_age`; `mons`
+  records carry the server's health bar of the tracked monster (`track`: [colour, tenths]) and `fighting` (the monster
+  last hit). Waiting on the Advisor for the scorecard definitions (esp. value lost).
+
 ### ARCHITECT HANDOFF 2026-09-29 (history; read the 2026-10-08 section first)
 
 New session (job 448491 on scc-wi2). Test server restarted under gdb 21:34 (gdb costs nothing: the

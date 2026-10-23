@@ -1,0 +1,103 @@
+{
+ "label": "m18",
+ "nav_model": "opus",
+ "report": "full",
+ "start": "2026-10-16 18:46",
+ "end": "2026-10-16 19:26",
+ "minutes": 40.0,
+ "notes": "Nighthawk; Ufthak band",
+ "dungeon_minutes": 20.0,
+ "clvl": [
+  16,
+  17
+ ],
+ "exp": [
+  2519,
+  2993
+ ],
+ "gold": [
+  46,
+  330
+ ],
+ "deepest_ft": 600,
+ "audit_checks": 80,
+ "audit_differences": 0,
+ "xp_gained": 474,
+ "xp_per_dungeon_min": 23.7,
+ "gold_flows": {
+  "found": 1153,
+  "sold": 432,
+  "bought": 1165,
+  "stolen": 136
+ },
+ "found_per_dungeon_min": 57.6,
+ "value_lost": {
+  "resold_10x": [
+   {
+    "item": "Wand of Stinking Cloud (12 charges)",
+    "sold_for": 100,
+    "store_asks": 1120
+   }
+  ],
+  "forced_sales": 0,
+  "items_lost": [
+   "One of your Potion of Speed (e) was stolen!",
+   "One of your Scrolls of Phase Door {75% off} (l) was destroyed!",
+   "Your purse feels lighter.",
+   "Your purse feels lighter.",
+   "Your purse feels lighter."
+  ],
+  "left_on_floor": []
+ },
+ "lowest_hp": [
+  84,
+  215,
+  "19:08:53"
+ ],
+ "close_calls_below_40pct": 1,
+ "alerts": {
+  "goal_done": 35,
+  "tactic": 11,
+  "emergency": 9,
+  "lost": 5,
+  "fight_going_badly": 5,
+  "interesting_item": 5,
+  "unseen_attacker": 3,
+  "goal_failed": 3,
+  "emergency_loop": 2,
+  "danger_seen": 2,
+  "stat_drained": 1
+ },
+ "deaths": 0,
+ "recalls": 2,
+ "level_changes": null,
+ "consumables_used": {
+  "Phase Door": 5,
+  "Identify (by name/letter)": 3,
+  "Cure Light Wounds": 3,
+  "Word of Recall": 2,
+  "Cure Serious Wounds": 2
+ },
+ "navigator": {
+  "commands": 171,
+  "per_min": 4.3,
+  "alert_to_order_median": 8.4,
+  "alert_to_order_p90": 32.8,
+  "user_to_reply_median": null,
+  "user_messages": 0,
+  "user_notes": 0,
+  "full_reports": 0,
+  "complaints": 1
+ },
+ "pilot": {
+  "stuck": 0,
+  "goal_failed": {
+   "hunt Wormtongue: lost sight of it": 1,
+   "hunt Giant red scorpion: lost sight of it": 1,
+   "flee (Ufthak of Cirith Ungol): no stairs known": 1
+  },
+  "runs": 919,
+  "move_records": 2113,
+  "server_crashes": 0
+ }
+}

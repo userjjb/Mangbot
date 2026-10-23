@@ -1,0 +1,102 @@
+{
+ "label": "m20",
+ "nav_model": "opus",
+ "report": "full",
+ "start": "2026-10-16 23:41",
+ "end": "2026-10-17 00:18",
+ "minutes": 37.0,
+ "notes": "52 -> 793 gold; first recogniser hit",
+ "dungeon_minutes": 31.4,
+ "clvl": [
+  18,
+  18
+ ],
+ "exp": [
+  3587,
+  3926
+ ],
+ "gold": [
+  52,
+  793
+ ],
+ "deepest_ft": 550,
+ "audit_checks": 74,
+ "audit_differences": 0,
+ "xp_gained": 339,
+ "xp_per_dungeon_min": 10.8,
+ "gold_flows": {
+  "sold": 1178,
+  "bought": 1219,
+  "found": 782
+ },
+ "found_per_dungeon_min": 24.9,
+ "value_lost": {
+  "resold_10x": [
+   {
+    "item": "Ring of Feather Falling",
+    "sold_for": 11,
+    "store_asks": 350
+   },
+   {
+    "item": "Wand of Stinking Cloud (9 charges)",
+    "sold_for": 100,
+    "store_asks": 1015
+   }
+  ],
+  "forced_sales": 3,
+  "items_lost": [
+   "You have no room for a Clotted Red Potion.",
+   "You have no room for a Set of Leather Gloves [1].",
+   "You have no room for a Set of Leather Gloves [1]."
+  ],
+  "left_on_floor": []
+ },
+ "lowest_hp": [
+  183,
+  220,
+  "23:49:48"
+ ],
+ "close_calls_below_40pct": 0,
+ "alerts": {
+  "goal_done": 40,
+  "tactic": 12,
+  "unseen_attacker": 7,
+  "interesting_item": 5,
+  "lost": 3,
+  "pack_full": 3,
+  "goal_failed": 2,
+  "stuck": 1,
+  "structure": 1,
+  "blows_changed": 1,
+  "drainer": 1
+ },
+ "deaths": 0,
+ "recalls": 4,
+ "level_changes": null,
+ "consumables_used": {
+  "Word of Recall": 4,
+  "Identify (by name/letter)": 3,
+  "Blessing (by name/letter)": 2
+ },
+ "navigator": {
+  "commands": 206,
+  "per_min": 5.6,
+  "alert_to_order_median": 11.0,
+  "alert_to_order_p90": 74.7,
+  "user_to_reply_median": null,
+  "user_messages": 0,
+  "user_notes": 0,
+  "full_reports": 0,
+  "complaints": 1
+ },
+ "pilot": {
+  "stuck": 1,
+  "goal_failed": {
+   "hunt Novice priest: lost sight of it": 1,
+   "searchroom 27,49: searched every spot, nothing found": 1
+  },
+  "runs": 1039,
+  "move_records": 2081,
+  "server_crashes": 0
+ }
+}

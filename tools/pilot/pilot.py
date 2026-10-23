@@ -1397,6 +1397,7 @@ class Pilot:
         self.retreating = False
         self.fearers_seen = set()
         self.drainers_seen = set()     # (level_t, race name) drainer warnings given
+        self.report_seq, self.last_report = 0, (0, 0.0)   # Navigator reports: number, time of the last
         self.equip_letters_lower = False  # item_index: a lowercase letter is an equipment letter (takeoff)
         self.phase_hist = collections.deque()   # emergency Phase Door times (futility check)
         self.traps_here, self.trap_seen_t = (None, 0), time.time()
@@ -2432,6 +2433,16 @@ class Pilot:
                 self.notify("unique_slain", f"{m.group(1)} slain at {w.pos[0]},{w.pos[1]}: uniques drop good items "
                                             "(look at 'Item squares' around there)")
         self.kills_t = max([self.kills_t] + [ts for ts, _ in w.messages])
+
+    def numbered(self, rep, kind):
+        """Number each report the Navigator gets and log it (id, kind, size), so
+        every later command can say which report it answered and how old that
+        was (the Advisor's starting-over memo: orders went stale on the way)."""
+        self.report_seq += 1
+        self.last_report = (self.report_seq, time.time())
+        self.log("report", id=self.report_seq, report_kind=kind, chars=len(rep))
+        first, _, rest = rep.partition("\n")
+        return f"{first} · r{self.report_seq}" + ("\n" + rest if rest else "")
 
     def drainers_info(self, args):
         """`drainers [STAT] [MAXLEVEL]`: monsters whose blows drain a stat, by
@@ -3479,7 +3490,14 @@ class Pilot:
             # a steady record for replays (post-mortem memo §4.6: an 86 s gap
             # before the mission-7 death)
             self.mons_log_t = now
-            self.log("mons", monsters=[(y, x, r.name) for y, x, r in w.monsters])
+            # + the server's health bar of the tracked monster (indicator "track":
+            # colour, length in tenths; xtra1.c health_redraw) and the monster we
+            # last hit, which is usually the tracked one (the Advisor, 10-09: no
+            # monster HP in the logs, so nobody could tell how close Brodda was)
+            hit = next((m.group(1) for ts, t in reversed(w.messages) if now - ts < 5
+                        for m in [re.match(r"You (?:hit|smite|bite|claw|miss) (?:the )?(.+?)[.!]$", t)] if m), None)
+            self.log("mons", monsters=[(y, x, r.name) for y, x, r in w.monsters],
+                     track=w.ind.get("track"), fighting=hit)
         self.watch_character()
         if now - self.weapons_t > 10:
             self.weapons_t = now
@@ -3522,8 +3540,10 @@ class Pilot:
                 self.last_agent = time.time()
                 # the Navigator's commands as received (latency studies could only
                 # see the next recorded order: the Advisor)
+                rid, rt = self.last_report
                 self.log("nav_cmd", cmd=req.get("cmd"), args=req.get("args", [])[:12],
-                         wait_report=bool(req.get("since_wait")))
+                         wait_report=bool(req.get("since_wait")), after_report=rid,
+                         report_age=round(time.time() - rt, 1) if rt else None)
             try:
                 out = self.do_request(req)
             except Exception as e:
@@ -3614,10 +3634,10 @@ class Pilot:
             if req.get("since_wait"):
                 # a wait report: the news since the previous wait (the survey)
                 since, self.news_wait_t = self.news_wait_t, time.time()
-                rep = self.compact(news_since=since)
+                rep = self.numbered(self.compact(news_since=since), "wait")
                 self.nav_view = (time.time(), self.nav_view_events, rep)
                 return {"ok": True, "report": rep}
-            rep = self.report() if full else self.compact(snapshot=True)
+            rep = self.numbered(self.report() if full else self.compact(snapshot=True), "full" if full else "status")
             self.nav_view = (time.time(), [], rep)
             return {"ok": True, "report": rep}
         if c == "pack":

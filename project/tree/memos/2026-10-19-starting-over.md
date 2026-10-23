@@ -1,7 +1,5 @@
 # Memo: if we started over, how would we build the autonomous player? (Advisor → Architect, 2026-10-19)
 
-**DRAFT, held by the user's instruction. Don't send until the user says so.**
-
 **The user's question:** "If we were to take the lessons we've learned so far and start over entirely, how might we
 structure the approach to an autonomous player differently?" This memo draws on the Advisor's studies from 09-26 to 10-17
 (memos listed in §5). It's a reflection, not a plan of work. Nothing here asks for a rewrite.

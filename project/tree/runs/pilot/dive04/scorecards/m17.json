@@ -1,0 +1,103 @@
+{
+ "label": "m17",
+ "nav_model": "opus",
+ "report": "full",
+ "start": "2026-10-16 13:57",
+ "end": "2026-10-16 14:40",
+ "minutes": 43.0,
+ "notes": "650 ft no-path emergency; Restore CON",
+ "dungeon_minutes": 23.0,
+ "clvl": [
+  15,
+  16
+ ],
+ "exp": [
+  1954,
+  2519
+ ],
+ "gold": [
+  72,
+  46
+ ],
+ "deepest_ft": 650,
+ "audit_checks": 86,
+ "audit_differences": 1,
+ "xp_gained": 565,
+ "xp_per_dungeon_min": 24.6,
+ "gold_flows": {
+  "found": 640,
+  "bought": 839,
+  "stolen": 166,
+  "sold": 339
+ },
+ "found_per_dungeon_min": 27.9,
+ "value_lost": {
+  "resold_10x": [],
+  "forced_sales": 0,
+  "items_lost": [
+   "Your purse feels lighter.",
+   "Your purse feels lighter.",
+   "Your purse feels lighter.",
+   "Your purse feels lighter.",
+   "You have no room for a Set of Leather Gloves [1].",
+   "You have no room for a Scroll of Light.",
+   "You have no room for a Pair of Soft Leather Boots [2].",
+   "You have no room for a Pair of Soft Leather Boots [2]."
+  ],
+  "left_on_floor": []
+ },
+ "lowest_hp": [
+  64,
+  177,
+  "14:13:08"
+ ],
+ "close_calls_below_40pct": 1,
+ "alerts": {
+  "goal_done": 26,
+  "tactic": 14,
+  "emergency": 13,
+  "lost": 8,
+  "interesting_item": 7,
+  "unseen_attacker": 4,
+  "fight_going_badly": 2,
+  "goal_failed": 2,
+  "pack_full": 2,
+  "danger_seen": 1,
+  "breeders": 1,
+  "emergency_loop": 1
+ },
+ "deaths": 0,
+ "recalls": 2,
+ "level_changes": null,
+ "consumables_used": {
+  "Phase Door": 4,
+  "Identify (by name/letter)": 3,
+  "Cure Light Wounds": 3,
+  "Cure Critical Wounds": 3,
+  "Word of Recall": 2,
+  "Door/Stair Location (by name/letter)": 2,
+  "Cure Serious Wounds": 1,
+  "Restore Constitution (by name/letter)": 1
+ },
+ "navigator": {
+  "commands": 142,
+  "per_min": 3.3,
+  "alert_to_order_median": 13.5,
+  "alert_to_order_p90": 76.4,
+  "user_to_reply_median": null,
+  "user_messages": 0,
+  "user_notes": 0,
+  "full_reports": 0,
+  "complaints": 4
+ },
+ "pilot": {
+  "stuck": 0,
+  "goal_failed": {
+   "flee (unseen attacker): no path to stairs": 1,
+   "goto <: no known path": 1
+  },
+  "runs": 878,
+  "move_records": 2052,
+  "server_crashes": 0
+ }
+}

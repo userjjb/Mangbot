@@ -1,0 +1,106 @@
+{
+ "label": "m19",
+ "nav_model": "opus",
+ "report": "full",
+ "start": "2026-10-16 22:14",
+ "end": "2026-10-16 22:55",
+ "minutes": 41.0,
+ "notes": "STR drains (ant, frog); Ranger hunt",
+ "dungeon_minutes": 22.7,
+ "clvl": [
+  17,
+  18
+ ],
+ "exp": [
+  2993,
+  3587
+ ],
+ "gold": [
+  331,
+  52
+ ],
+ "deepest_ft": 650,
+ "audit_checks": 82,
+ "audit_differences": 0,
+ "xp_gained": 594,
+ "xp_per_dungeon_min": 26.2,
+ "gold_flows": {
+  "found": 661,
+  "bought": 1796,
+  "sold": 872
+ },
+ "found_per_dungeon_min": 29.2,
+ "value_lost": {
+  "resold_10x": [
+   {
+    "item": "Wand of Wonder (11 charges)",
+    "sold_for": 63,
+    "store_asks": 669
+   }
+  ],
+  "forced_sales": 0,
+  "items_lost": [
+   "One of your Potions of Heroism {75% off} (f) was destroyed!",
+   "You have no room for a Scroll titled \"nelggar payjo\".",
+   "One of your Scroll of Phase Door {75% off} (l) was stolen!"
+  ],
+  "left_on_floor": []
+ },
+ "lowest_hp": [
+  66,
+  220,
+  "22:24:51"
+ ],
+ "close_calls_below_40pct": 1,
+ "alerts": {
+  "goal_done": 32,
+  "tactic": 9,
+  "emergency": 8,
+  "unseen_attacker": 4,
+  "goal_failed": 4,
+  "stat_drained": 3,
+  "interesting_item": 3,
+  "danger_seen": 3,
+  "lost": 3,
+  "fight_going_badly": 2,
+  "blows_changed": 2,
+  "emergency_loop": 1,
+  "pack_full": 1
+ },
+ "deaths": 0,
+ "recalls": 5,
+ "level_changes": null,
+ "consumables_used": {
+  "Word of Recall": 5,
+  "Identify (by name/letter)": 3,
+  "Cure Critical Wounds": 2,
+  "Cure Serious Wounds": 2,
+  "Restore Strength (by name/letter)": 1,
+  "Phase Door": 1,
+  "Satisfy Hunger (by name/letter)": 1,
+  "nelggar (by name/letter)": 1
+ },
+ "navigator": {
+  "commands": 175,
+  "per_min": 4.3,
+  "alert_to_order_median": 17.5,
+  "alert_to_order_p90": 30.1,
+  "user_to_reply_median": null,
+  "user_messages": 0,
+  "user_notes": 0,
+  "full_reports": 0,
+  "complaints": 2
+ },
+ "pilot": {
+  "stuck": 0,
+  "goal_failed": {
+   "flee (stat drain): stuck on the way to the stairs": 1,
+   "hunt Giant red frog: lost sight of it": 1,
+   "flee (Ranger): no stairs known": 1,
+   "goto 22,136: stuck": 1
+  },
+  "runs": 881,
+  "move_records": 1790,
+  "server_crashes": 0
+ }
+}

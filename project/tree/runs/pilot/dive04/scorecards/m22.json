@@ -1,0 +1,110 @@
+{
+ "label": "m22",
+ "nav_model": "sonnet",
+ "report": "full",
+ "start": "2026-10-17 01:45",
+ "end": "2026-10-17 02:16",
+ "minutes": 31.0,
+ "notes": "first Sonnet trial; mob levels; 2621 -> 475 gold",
+ "dungeon_minutes": 22.7,
+ "clvl": [
+  19,
+  21
+ ],
+ "exp": [
+  4626,
+  6891
+ ],
+ "gold": [
+  2621,
+  475
+ ],
+ "deepest_ft": 700,
+ "audit_checks": 62,
+ "audit_differences": 0,
+ "xp_gained": 2265,
+ "xp_per_dungeon_min": 99.7,
+ "gold_flows": {
+  "bought": 3417,
+  "found": 1131,
+  "sold": 140
+ },
+ "found_per_dungeon_min": 49.8,
+ "value_lost": {
+  "resold_10x": [],
+  "forced_sales": 1,
+  "items_lost": [
+   "You have no room for a Wand of Slow Monster.",
+   "You have no room for a Hard Leather Cap [2].",
+   "You have no room for a Dagger (1d4).",
+   "One of your Potions of Cure Critical Wounds {25% off} (k) was destroyed!"
+  ],
+  "left_on_floor": []
+ },
+ "lowest_hp": [
+  61,
+  241,
+  "01:54:44"
+ ],
+ "close_calls_below_40pct": 3,
+ "alerts": {
+  "emergency": 49,
+  "tactic": 33,
+  "goal_done": 26,
+  "unseen_attacker": 17,
+  "fight_going_badly": 16,
+  "interesting_item": 12,
+  "goal_failed": 7,
+  "lost": 4,
+  "pack_full": 3,
+  "danger_seen": 3,
+  "thief": 2,
+  "emergency_loop": 2,
+  "stat_drained": 2,
+  "user_message": 2,
+  "unique_slain": 1,
+  "structure": 1
+ },
+ "deaths": 0,
+ "recalls": 8,
+ "level_changes": null,
+ "consumables_used": {
+  "Phase Door": 25,
+  "Cure Critical Wounds": 9,
+  "Cure Light Wounds": 8,
+  "Word of Recall": 7,
+  "Cure Serious Wounds": 5,
+  "Identify (by name/letter)": 4,
+  "Teleportation (by name/letter)": 1,
+  "Heroism (by name/letter)": 1,
+  "Boldness": 1,
+  "Restore Strength (by name/letter)": 1,
+  "Word of Recall (by name/letter)": 1,
+  "Cure Critical (by name/letter)": 1,
+  "Remove Curse (by name/letter)": 1
+ },
+ "navigator": {
+  "commands": 233,
+  "per_min": 7.5,
+  "alert_to_order_median": 8.9,
+  "alert_to_order_p90": 30.5,
+  "user_to_reply_median": 7.8,
+  "user_messages": 2,
+  "user_notes": 3,
+  "full_reports": 0,
+  "complaints": 3
+ },
+ "pilot": {
+  "stuck": 0,
+  "goal_failed": {
+   "hunt Kobold archer: lost sight of it": 1,
+   "explore: frontier unreachable": 1,
+   "goto <: no known path, nor one through unexplored squares": 1,
+   "flee (Boldor, King of the Yeeks): stuck on the way to the st": 1,
+   "hunt Boldor, King of the Yeeks: lost sight of it": 1
+  },
+  "runs": 758,
+  "move_records": 1644,
+  "server_crashes": 0
+ }
+}

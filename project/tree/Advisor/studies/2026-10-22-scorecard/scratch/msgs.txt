@@ -1,0 +1,369 @@
+17 10-16 13:57:33 1792173453.185 You have found 34 gold pieces worth of copper.
+17 10-16 13:57:37 1792173457.986 You have found 14 gold pieces worth of copper.
+17 10-16 13:57:38 1792173458.992 You have found 39 gold pieces worth of copper.
+17 10-16 13:57:39 1792173459.505 You have found 34 gold pieces worth of copper.
+17 10-16 13:57:58 1792173478.178 You bought 4 Flasks of oil for 20 gold.
+17 10-16 13:58:40 1792173520.271 You bought a Scroll of Identify {75% off} for 21 gold.
+17 10-16 13:58:40 1792173520.395 You bought a Scroll of Phase Door {75% off} for 6 gold.
+17 10-16 13:59:22 1792173562.937 You have found 19 gold pieces worth of copper.
+17 10-16 13:59:23 1792173563.695 You have found 16 gold pieces worth of copper.
+17 10-16 13:59:59 1792173599.762 You have found 23 gold pieces worth of copper.
+17 10-16 14:00:05 1792173605.841 You have found 15 gold pieces worth of copper.
+17 10-16 14:00:19 1792173619.241 Your purse feels lighter.
+17 10-16 14:00:19 1792173619.241 35 coins were stolen!
+17 10-16 14:00:23 1792173623.575 Your purse feels lighter.
+17 10-16 14:00:23 1792173623.575 22 coins were stolen!
+17 10-16 14:00:29 1792173629.109 You have found 32 gold pieces worth of copper.
+17 10-16 14:01:52 1792173712.892 You have found 21 gold pieces worth of copper.
+17 10-16 14:02:14 1792173734.745 You have found 22 gold pieces worth of copper.
+17 10-16 14:02:19 1792173739.557 You have found 21 gold pieces worth of copper.
+17 10-16 14:02:50 1792173770.17 You have found 44 gold pieces worth of copper.
+17 10-16 14:03:21 1792173801.823 You have found 25 gold pieces worth of copper.
+17 10-16 14:04:58 1792173898.887 You have found 32 gold pieces worth of copper.
+17 10-16 14:05:09 1792173909.433 You have found 26 gold pieces worth of copper.
+17 10-16 14:05:29 1792173929.714 You have found 19 gold pieces worth of copper.
+17 10-16 14:09:42 1792174182.373 You have found 30 gold pieces worth of copper.
+17 10-16 14:10:39 1792174239.869 You destroy a Pair of Hard Leather Boots [3] {worthless}.
+17 10-16 14:11:02 1792174262.731 Your purse feels lighter.
+17 10-16 14:11:02 1792174262.731 63 coins were stolen!
+17 10-16 14:11:18 1792174278.159 You have found 34 gold pieces worth of silver.
+17 10-16 14:11:41 1792174301.198 Your purse feels lighter.
+17 10-16 14:11:41 1792174301.198 46 coins were stolen!
+17 10-16 14:12:48 1792174368.183 You have found 35 gold pieces worth of silver.
+17 10-16 14:14:20 1792174460.834 You sold a Scroll of Holy Chant for 8 gold.
+17 10-16 14:14:20 1792174460.936 You sold a Scroll of Object Detection for 6 gold.
+17 10-16 14:14:21 1792174461.191 You sold a Scroll of Light for 6 gold.
+17 10-16 14:14:34 1792174474.7 You bought a Potion of Restore Constitution {25% off} for 362 gold.
+17 10-16 14:14:34 1792174474.814 You bought 2 Scrolls of Door/Stair Location {75% off} for 28 gold.
+17 10-16 14:21:36 1792174896.929 You have found 27 gold pieces worth of copper.
+17 10-16 14:23:36 1792175016.966 You destroy a Cloak [1] {cursed}.
+17 10-16 14:24:29 1792175069.485 You have found 19 gold pieces worth of copper.
+17 10-16 14:29:14 1792175354.705 You have a Gold Wand (p).
+17 10-16 14:32:52 1792175572.539 You have a Gold Wand (p).
+17 10-16 14:35:39 1792175739.228 You have no room for a Set of Leather Gloves [1].
+17 10-16 14:35:45 1792175745.856 You destroy a Rodent Skeleton.
+17 10-16 14:36:33 1792175793.96 You have no room for a Scroll of Light.
+17 10-16 14:36:42 1792175802.586 You have found 23 gold pieces worth of copper.
+17 10-16 14:36:46 1792175806.187 You have no room for a Pair of Soft Leather Boots [2].
+17 10-16 14:36:50 1792175810.705 You have no room for a Pair of Soft Leather Boots [2].
+17 10-16 14:37:11 1792175831.866 You have found 36 gold pieces worth of copper.
+17 10-16 14:38:41 1792175921.145 You sold a Wand of Wonder (12 charges) for 138 gold.
+17 10-16 14:38:48 1792175928.292 You sold a Wand of Light (7 charges) for 95 gold.
+17 10-16 14:38:52 1792175932.917 You sold a Wand of Light (16 charges) for 70 gold.
+17 10-16 14:39:14 1792175954.462 You bought a Scroll of Word of Recall for 242 gold.
+17 10-16 14:39:24 1792175964.383 You bought a Potion of Cure Critical Wounds for 160 gold.
+17 10-16 14:39:32 1792175972.797 You sold a Brass Lantern (with 4831 turns of light) for 15 gold.
+17 10-16 14:39:32 1792175972.864 You sold a Wooden Torch (with 1506 turns of light) for 1 gold.
+18 10-16 18:46:35 1792190795.331 You have found 14 gold pieces worth of copper.
+18 10-16 18:46:42 1792190802.917 You have found 29 gold pieces worth of copper.
+18 10-16 18:46:43 1792190803.411 You have found 29 gold pieces worth of copper.
+18 10-16 18:46:47 1792190807.465 You have found 15 gold pieces worth of copper.
+18 10-16 18:46:47 1792190807.972 You have found 29 gold pieces worth of copper.
+18 10-16 18:46:48 1792190808.478 You have found 39 gold pieces worth of copper.
+18 10-16 18:46:48 1792190808.986 You have found 25 gold pieces worth of copper.
+18 10-16 18:46:58 1792190818.27 You have found 16 gold pieces worth of copper.
+18 10-16 18:47:00 1792190820.291 You have found 43 gold pieces worth of copper.
+18 10-16 18:47:08 1792190828.425 You sold 38 Rounded Pebbles (1d2) (+0,+0) for 38 gold.
+18 10-16 18:47:15 1792190835.104 You bought 5 Flasks of oil for 25 gold.
+18 10-16 18:47:39 1792190859.464 You sold a Scroll of Treasure Detection for 8 gold.
+18 10-16 18:47:39 1792190859.541 You sold a Potion of Salt Water for 8 gold.
+18 10-16 18:47:39 1792190859.805 You bought a Scroll of Identify {25% off} for 61 gold.
+18 10-16 18:47:52 1792190872.195 You bought a Scroll of Word of Recall {25% off} for 181 gold.
+18 10-16 18:48:18 1792190898.756 You sold a Robe [2,+1] for 40 gold.
+18 10-16 18:48:18 1792190898.828 You sold a Set of Leather Gloves [1,+0] for 1 gold.
+18 10-16 18:48:24 1792190904.13 You sold a Dagger (1d4) (+0,+0) for 5 gold.
+18 10-16 18:48:42 1792190922.85 You sold a Scroll of Blessing for 6 gold.
+18 10-16 18:48:42 1792190922.967 You bought a Potion of Cure Critical Wounds {25% off} for 120 gold.
+18 10-16 18:48:52 1792190932.265 You destroy a Wand of Heal Monster.
+18 10-16 18:51:57 1792191117.896 You have found 49 gold pieces worth of silver.
+18 10-16 18:52:23 1792191143.096 One of your Potion of Speed (e) was stolen!
+18 10-16 18:54:13 1792191253.159 You destroy Soft Studded Leather [5] {average}.
+18 10-16 18:55:54 1792191354.239 You have found 28 gold pieces worth of copper.
+18 10-16 18:55:54 1792191354.906 You have found 86 gold pieces worth of garnets.
+18 10-16 18:56:55 1792191415.917 You have found 33 gold pieces worth of copper.
+18 10-16 19:01:00 1792191660.47 You have found 28 gold pieces worth of copper.
+18 10-16 19:01:43 1792191703.762 You have found 33 gold pieces worth of copper.
+18 10-16 19:02:03 1792191723.135 Your purse feels lighter.
+18 10-16 19:02:03 1792191723.135 28 coins were stolen!
+18 10-16 19:04:56 1792191896.898 You have found 28 gold pieces worth of silver.
+18 10-16 19:05:32 1792191932.85 You have found 61 gold pieces worth of silver.
+18 10-16 19:07:01 1792192021.087 You have found 73 gold pieces worth of garnets.
+18 10-16 19:08:23 1792192103.06 Your purse feels lighter.
+18 10-16 19:08:23 1792192103.06 41 coins were stolen!
+18 10-16 19:10:11 1792192211.524 You sold a Scroll of Teleportation for 8 gold.
+18 10-16 19:10:11 1792192211.642 You bought 2 Scrolls of Identify {25% off} for 122 gold.
+18 10-16 19:10:19 1792192219.256 You bought a Scroll of Word of Recall {25% off} for 181 gold.
+18 10-16 19:10:33 1792192233.95 You sold a Wand of Stinking Cloud (12 charges) for 100 gold.
+18 10-16 19:10:34 1792192234.042 You sold a Staff of Earthquakes (4 charges) for 105 gold.
+18 10-16 19:10:34 1792192234.352 You sold an Amulet of Infravision (+5) for 113 gold.
+18 10-16 19:11:04 1792192264.069 You bought 4 Scrolls of Phase Door {25% off} for 76 gold.
+18 10-16 19:11:10 1792192270.867 You bought a Scroll of Word of Recall for 240 gold.
+18 10-16 19:11:18 1792192278.295 You have found 44 gold pieces worth of copper.
+18 10-16 19:11:18 1792192278.801 You have found 37 gold pieces worth of copper.
+18 10-16 19:11:21 1792192281.295 You have found 32 gold pieces worth of copper.
+18 10-16 19:11:32 1792192292.962 You have found 22 gold pieces worth of copper.
+18 10-16 19:11:40 1792192300.055 You have found 14 gold pieces worth of copper.
+18 10-16 19:11:43 1792192303.974 You have found 18 gold pieces worth of copper.
+18 10-16 19:11:54 1792192314.895 You have found 29 gold pieces worth of copper.
+18 10-16 19:11:59 1792192319.534 You have found 34 gold pieces worth of copper.
+18 10-16 19:12:05 1792192325.707 You have found 43 gold pieces worth of copper.
+18 10-16 19:12:23 1792192343.072 You have found 26 gold pieces worth of copper.
+18 10-16 19:13:09 1792192389.893 You have found 31 gold pieces worth of copper.
+18 10-16 19:13:10 1792192390.905 You have found 14 gold pieces worth of copper.
+18 10-16 19:15:18 1792192518.342 You have found 23 gold pieces worth of copper.
+18 10-16 19:15:43 1792192543.328 You have found 17 gold pieces worth of copper.
+18 10-16 19:15:58 1792192558.021 You have found 15 gold pieces worth of copper.
+18 10-16 19:16:14 1792192574.26 You have found 31 gold pieces worth of copper.
+18 10-16 19:16:31 1792192591.153 You have found 25 gold pieces worth of copper.
+18 10-16 19:18:37 1792192717.084 Your purse feels lighter.
+18 10-16 19:18:37 1792192717.084 67 coins were stolen!
+18 10-16 19:19:47 1792192787.883 You bought a Potion of Cure Critical Wounds for 159 gold.
+18 10-16 19:25:18 1792193118.621 You have found 40 gold pieces worth of copper.
+18 10-16 19:26:22 1792193182.339 You bought 3 Rations of Food for 15 gold.
+19 10-16 22:14:07 1792203247.786 You have found 16 gold pieces worth of copper.
+19 10-16 22:14:12 1792203252.044 You have found 19 gold pieces worth of copper.
+19 10-16 22:14:17 1792203257.574 You have found 39 gold pieces worth of copper.
+19 10-16 22:14:29 1792203269.917 You have found 19 gold pieces worth of copper.
+19 10-16 22:14:45 1792203285.298 You bought 2 Scrolls of Word of Recall {75% off} for 126 gold.
+19 10-16 22:14:45 1792203285.41 You bought 2 Scrolls of Phase Door {25% off} for 40 gold.
+19 10-16 22:15:53 1792203353.339 You have found 25 gold pieces worth of silver.
+19 10-16 22:16:08 1792203368.045 You have found 61 gold pieces worth of silver.
+19 10-16 22:18:58 1792203538.559 You have found 20 gold pieces worth of silver.
+19 10-16 22:20:33 1792203633.558 You sold a Staff of Slow Monsters (6 charges) for 200 gold.
+19 10-16 22:20:41 1792203641.865 You bought a Potion of Restore Strength for 498 gold.
+19 10-16 22:20:53 1792203653.848 You destroy a Filthy Rag [1] {average}.
+19 10-16 22:21:43 1792203703.888 You have found 16 gold pieces worth of copper.
+19 10-16 22:24:13 1792203853.324 You have found 35 gold pieces worth of silver.
+19 10-16 22:25:51 1792203951.377 You sold a Morning Star (2d6) (+0,+0) for 131 gold.
+19 10-16 22:26:10 1792203970.668 You bought a Potion of Restore Strength {90% off} for 50 gold.
+19 10-16 22:26:10 1792203970.78 You bought 2 Scrolls of Identify {25% off} for 126 gold.
+19 10-16 22:26:51 1792204011.723 You sold a Ring of Slow Digestion for 63 gold.
+19 10-16 22:26:51 1792204011.836 You sold an Amulet of Adornment for 5 gold.
+19 10-16 22:27:04 1792204024.507 You bought a Scroll of Identify {25% off} for 63 gold.
+19 10-16 22:27:21 1792204041.816 You sold an Awl-Pike (1d8) (+2,+4) for 310 gold.
+19 10-16 22:28:07 1792204087.44 You bought 4 Potions of Cure Light Wounds for 96 gold.
+19 10-16 22:28:11 1792204091.225 You bought a Scroll of Word of Recall for 249 gold.
+19 10-16 22:30:51 1792204251.852 You have found 32 gold pieces worth of copper.
+19 10-16 22:31:24 1792204284.675 You have found 43 gold pieces worth of silver.
+19 10-16 22:32:13 1792204333.047 You have no room for a Scroll titled "nelggar payjo".
+19 10-16 22:32:20 1792204340.313 You destroy 2 Potions of Slowness.
+19 10-16 22:32:43 1792204363.934 You destroy a Cutlass (1d7) {average}.
+19 10-16 22:32:49 1792204369.185 You destroy a Cloak [1,+0].
+19 10-16 22:32:53 1792204373.199 You destroy a Ring of Teleportation {cursed}.
+19 10-16 22:32:54 1792204374.499 You have found 33 gold pieces worth of copper.
+19 10-16 22:33:57 1792204437.5 You have found 50 gold pieces worth of copper.
+19 10-16 22:37:01 1792204621.079 You have found 29 gold pieces worth of silver.
+19 10-16 22:44:05 1792205045.324 You sold a Wand of Stinking Cloud (7 charges) for 100 gold.
+19 10-16 22:44:05 1792205045.424 You sold a Wand of Wonder (11 charges) for 63 gold.
+19 10-16 22:44:19 1792205059.974 You have found 30 gold pieces worth of copper.
+19 10-16 22:44:23 1792205063.818 You have found 18 gold pieces worth of copper.
+19 10-16 22:44:31 1792205071.521 You have found 36 gold pieces worth of copper.
+19 10-16 22:44:36 1792205076.672 You have found 25 gold pieces worth of copper.
+19 10-16 22:44:41 1792205081.441 You have found 35 gold pieces worth of copper.
+19 10-16 22:45:38 1792205138.827 You have found 21 gold pieces worth of copper.
+19 10-16 22:47:13 1792205233.638 You have found 28 gold pieces worth of copper.
+19 10-16 22:47:15 1792205235.932 You have found 31 gold pieces worth of copper.
+19 10-16 22:47:38 1792205258.836 One of your Scroll of Phase Door {75% off} (l) was stolen!
+19 10-16 22:51:19 1792205479.057 You bought 2 Scrolls of Word of Recall for 498 gold.
+19 10-16 22:51:19 1792205479.159 You bought 2 Scrolls of Phase Door for 50 gold.
+20 10-16 23:42:06 1792208526.41 You sold 3 Potions of Resist Cold for 36 gold.
+20 10-16 23:42:12 1792208532.902 You sold a Potion of Infravision for 8 gold.
+20 10-16 23:42:21 1792208541.916 You sold a Ring of Feather Falling for 11 gold.
+20 10-16 23:42:28 1792208548.755 You bought a Potion of Cure Serious Wounds for 64 gold.
+20 10-16 23:45:41 1792208741.74 You destroy a Ring of Teleportation {cursed}.
+20 10-16 23:46:06 1792208766.918 You destroy 20 Rounded Pebbles (1d2) {average}.
+20 10-16 23:52:54 1792209174.551 You have found 25 gold pieces worth of copper.
+20 10-16 23:52:59 1792209179.045 You have found 30 gold pieces worth of copper.
+20 10-16 23:53:02 1792209182.192 You have found 53 gold pieces worth of copper.
+20 10-16 23:54:59 1792209299.417 You have found 44 gold pieces worth of copper.
+20 10-16 23:57:30 1792209450.519 You have found 26 gold pieces worth of silver.
+20 10-16 23:57:31 1792209451.185 You have found 78 gold pieces worth of silver.
+20 10-16 23:57:45 1792209465.639 You have found 25 gold pieces worth of copper.
+20 10-16 23:59:40 1792209580.262 You have found 43 gold pieces worth of copper.
+20 10-16 23:59:49 1792209589.509 You have found 19 gold pieces worth of silver.
+20 10-16 23:59:50 1792209590.156 You have found 33 gold pieces worth of copper.
+20 10-16 23:59:50 1792209590.809 You have found 41 gold pieces worth of copper.
+20 10-16 23:59:51 1792209591.463 You have found 55 gold pieces worth of silver.
+20 10-17 00:00:38 1792209638.876 You sold a Ring of Feather Falling for 50 gold.
+20 10-17 00:00:38 1792209638.97 You sold a Rod of Trap Location for 23 gold.
+20 10-17 00:00:56 1792209656.726 You bought 2 Scrolls of Word of Recall for 484 gold.
+20 10-17 00:00:56 1792209656.84 You bought a Scroll of Identify for 81 gold.
+20 10-17 00:04:59 1792209899.321 You have no room for a Clotted Red Potion.
+20 10-17 00:05:20 1792209920.426 You have found 45 gold pieces worth of garnets.
+20 10-17 00:05:27 1792209927.401 You destroy a Cutlass (1d7) {average}.
+20 10-17 00:05:28 1792209928.162 You destroy a Black Mushroom.
+20 10-17 00:07:27 1792210047.464 You have found 39 gold pieces worth of copper.
+20 10-17 00:07:38 1792210058.142 You have found 68 gold pieces worth of silver.
+20 10-17 00:07:41 1792210061.487 You destroy a Wrinkled Mushroom.
+20 10-17 00:08:00 1792210080.836 You have found 24 gold pieces worth of copper.
+20 10-17 00:08:24 1792210104.143 You destroy Soft Leather Armour [4] {cursed}.
+20 10-17 00:09:48 1792210188.146 You have found 42 gold pieces worth of copper.
+20 10-17 00:12:00 1792210320.977 You have no room for a Set of Leather Gloves [1].
+20 10-17 00:12:12 1792210332.563 You destroy a Clotted Red Potion.
+20 10-17 00:14:18 1792210458.2 You have no room for a Set of Leather Gloves [1].
+20 10-17 00:14:26 1792210466.2 You destroy a Potion of Water.
+20 10-17 00:14:41 1792210481.879 You have found 29 gold pieces worth of silver.
+20 10-17 00:15:23 1792210523.32 You have found 45 gold pieces worth of copper.
+20 10-17 00:15:51 1792210551.145 You have found 18 gold pieces worth of copper.
+20 10-17 00:16:25 1792210585.145 You sold a Wand of Stinking Cloud (9 charges) for 100 gold.
+20 10-17 00:16:25 1792210585.227 You sold a Staff of Object Location (17 charges) for 50 gold.
+20 10-17 00:16:45 1792210605.944 You bought a Scroll of Identify {75% off} for 21 gold.
+20 10-17 00:16:46 1792210606.041 You bought a Scroll of Word of Recall {25% off} for 182 gold.
+20 10-17 00:17:12 1792210632.837 You sold a Ring of Acid [+6] for 900 gold.
+20 10-17 00:17:31 1792210651.022 You bought 2 Scrolls of Word of Recall {50% off} for 242 gold.
+20 10-17 00:17:31 1792210651.139 You bought a Scroll of Identify for 81 gold.
+20 10-17 00:17:31 1792210651.394 You bought 2 Scrolls of Phase Door {25% off} for 38 gold.
+20 10-17 00:17:31 1792210651.651 You bought 2 Scrolls of Satisfy Hunger {25% off} for 26 gold.
+21 10-17 00:47:39 1792212459.052 You have found 31 gold pieces worth of copper.
+21 10-17 00:47:46 1792212466.279 You have found 28 gold pieces worth of copper.
+21 10-17 00:47:54 1792212474.985 You have found 36 gold pieces worth of copper.
+21 10-17 00:48:26 1792212506.362 You bought an Iron Helm [5,+0] for 121 gold.
+21 10-17 00:48:38 1792212518.523 You sold a Hard Leather Cap [2,-2] for 5 gold.
+21 10-17 00:48:38 1792212518.662 You bought a Large Leather Shield [4,+0] for 193 gold.
+21 10-17 00:58:47 1792213127.56 You have found 31 gold pieces worth of copper.
+21 10-17 00:58:51 1792213131.9 You have found 28 gold pieces worth of copper.
+21 10-17 00:59:24 1792213164.128 You bought an Iron Helm [5,+0] for 121 gold.
+21 10-17 00:59:30 1792213170.263 You sold a Hard Leather Cap [2,-2] for 5 gold.
+21 10-17 00:59:30 1792213170.383 You bought a Large Leather Shield [4,+0] for 193 gold.
+21 10-17 00:59:42 1792213182.457 You destroy a Small Metal Shield [3,-1].
+21 10-17 00:59:55 1792213195.328 You bought 4 Potions of Cure Serious Wounds for 256 gold.
+21 10-17 01:04:32 1792213472.387 You destroy a Human Skeleton.
+21 10-17 01:06:46 1792213606.972 You have found 84 gold pieces worth of garnets.
+21 10-17 01:06:53 1792213613.384 You have found 39 gold pieces worth of silver.
+21 10-17 01:07:20 1792213640.251 You have found 33 gold pieces worth of silver.
+21 10-17 01:07:56 1792213676.199 You have found 50 gold pieces worth of copper.
+21 10-17 01:08:28 1792213708.916 You have a Golden Staff (v).
+21 10-17 01:09:00 1792213740.86 You have found 27 gold pieces worth of copper.
+21 10-17 01:09:51 1792213791.06 You have no room for a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman}.
+21 10-17 01:09:58 1792213798.205 You destroy a Potion of Water.
+21 10-17 01:11:52 1792213912.779 You destroy a Wand of Heal Monster.
+21 10-17 01:12:21 1792213941.055 You have no room for a Scroll of Holy Chant.
+21 10-17 01:12:49 1792213969.215 You have found 36 gold pieces worth of copper.
+21 10-17 01:14:56 1792214096.652 You have found 66 gold pieces worth of silver.
+21 10-17 01:14:59 1792214099.545 You have found 35 gold pieces worth of copper.
+21 10-17 01:16:38 1792214198.33 You have found 23 gold pieces worth of copper.
+21 10-17 01:18:31 1792214311.86 You have no room for a Scroll of Light.
+21 10-17 01:18:42 1792214322.98 Your Hard Studded Leather [7] {excellent} (u) was stolen!
+21 10-17 01:18:54 1792214334.193 You have found 17 gold pieces worth of silver.
+21 10-17 01:19:45 1792214385.539 You have no room for a Scroll titled "munger toxmung".
+21 10-17 01:20:37 1792214437.044 You have no room for a Dogwood Staff.
+21 10-17 01:20:37 1792214437.923 You have no room for Hard Studded Leather [7] {excellent}.
+21 10-17 01:20:52 1792214452.684 You destroy a Scroll titled "munger toxmung".
+21 10-17 01:20:53 1792214453.568 You destroy a Robe [2].
+21 10-17 01:21:15 1792214475.306 You destroy Hard Studded Leather [7] {average}.
+21 10-17 01:25:31 1792214731.037 You have found 15 gold pieces worth of copper.
+21 10-17 01:29:23 1792214963.473 You sold a Lucerne Hammer of Venom (2d5) (+2,+3) {excellent - Wormtongue, Agent of Sar} for 1707 gold.
+21 10-17 01:29:52 1792214992.348 You sold a Staff of Perception (17 charges) for 160 gold.
+21 10-17 01:30:04 1792215004.163 You sold a Potion of Sickliness for 8 gold.
+21 10-17 01:30:15 1792215015.562 You bought a Scroll of Word of Recall {50% off} for 121 gold.
+21 10-17 01:30:15 1792215015.685 You bought 2 Scrolls of Identify {50% off} for 80 gold.
+21 10-17 01:30:15 1792215015.943 You bought 3 Scrolls of Magic Mapping {75% off} for 48 gold.
+21 10-17 01:30:16 1792215016.209 You bought 2 Scrolls of Enchant Weapon To-Dam {25% off} for 302 gold.
+21 10-17 01:30:16 1792215016.465 You bought 2 Scrolls of Satisfy Hunger {50% off} for 16 gold.
+21 10-17 01:31:00 1792215060.83 You sold a Ring of Resist Fire for 100 gold.
+21 10-17 01:31:00 1792215060.982 You sold a Ring of Resist Cold for 100 gold.
+21 10-17 01:31:01 1792215061.237 You sold an Amulet of Resist Acid for 120 gold.
+21 10-17 01:31:21 1792215081.32 You bought a Set of Gauntlets [2,+0] for 56 gold.
+21 10-17 01:31:27 1792215087.456 You destroy a Set of Leather Gloves [1] {average}.
+21 10-17 01:31:37 1792215097.45 You have found 21 gold pieces worth of copper.
+21 10-17 01:32:02 1792215122.706 You have found 35 gold pieces worth of copper.
+21 10-17 01:32:10 1792215130.08 You have found 27 gold pieces worth of copper.
+21 10-17 01:33:12 1792215192.413 You have found 17 gold pieces worth of copper.
+21 10-17 01:33:15 1792215195.839 You have found 33 gold pieces worth of copper.
+21 10-17 01:33:21 1792215201.412 You have found 19 gold pieces worth of copper.
+21 10-17 01:33:57 1792215237.943 You have found 21 gold pieces worth of copper.
+21 10-17 01:33:59 1792215239.971 You have found 36 gold pieces worth of copper.
+21 10-17 01:34:01 1792215241.824 You have found 16 gold pieces worth of copper.
+21 10-17 01:34:14 1792215254.61 You have found 30 gold pieces worth of copper.
+21 10-17 01:34:35 1792215275.445 You have found 17 gold pieces worth of copper.
+21 10-17 01:34:39 1792215279.144 You have found 26 gold pieces worth of copper.
+21 10-17 01:35:03 1792215303.517 You have found 39 gold pieces worth of copper.
+22 10-17 01:46:06 1792215966.631 You bought 3 Rations of Food for 15 gold.
+22 10-17 01:46:06 1792215966.706 You bought 3 Flasks of oil for 15 gold.
+22 10-17 01:47:16 1792216036.218 You have found 56 gold pieces worth of silver.
+22 10-17 01:48:02 1792216082.777 You have found 75 gold pieces worth of silver.
+22 10-17 01:48:39 1792216119.948 You have found 21 gold pieces worth of garnets.
+22 10-17 01:49:13 1792216153.895 You have found 20 gold pieces worth of copper.
+22 10-17 01:49:45 1792216185.493 You have found 58 gold pieces worth of silver.
+22 10-17 01:50:02 1792216202.174 You have found 59 gold pieces worth of silver.
+22 10-17 01:50:31 1792216231.842 You destroy a Ring of Teleportation {cursed}.
+22 10-17 01:50:41 1792216241.026 You have no room for a Wand of Slow Monster.
+22 10-17 01:50:41 1792216241.58 You have found 42 gold pieces worth of copper.
+22 10-17 01:50:46 1792216246.693 You destroy a Rod of Trap Location.
+22 10-17 01:51:28 1792216288.704 You destroy a Short Bow (x2).
+22 10-17 01:51:29 1792216289.513 You have found 16 gold pieces worth of silver.
+22 10-17 01:52:37 1792216357.815 You destroy an Awl-Pike (1d8) {cursed}.
+22 10-17 01:52:42 1792216362.756 You destroy a Metal Cap [3] {average}.
+22 10-17 01:54:03 1792216443.407 You destroy a Flail (2d6).
+22 10-17 01:54:04 1792216444.246 You have found 47 gold pieces worth of silver.
+22 10-17 01:54:10 1792216450.353 You have found 24 gold pieces worth of silver.
+22 10-17 01:54:25 1792216465.021 You have found 68 gold pieces worth of silver.
+22 10-17 01:54:30 1792216470.356 You have found 65 gold pieces worth of gold.
+22 10-17 01:54:49 1792216489.765 You destroy a Pair of Hard Leather Boots [3] {cursed}.
+22 10-17 01:55:18 1792216518.473 You bought 3 Scrolls of Word of Recall {25% off} for 546 gold.
+22 10-17 01:55:18 1792216518.592 You bought 10 Scrolls of Phase Door for 240 gold.
+22 10-17 01:55:22 1792216522.059 You have found 12 gold pieces worth of copper.
+22 10-17 01:55:32 1792216532.124 You bought 5 Potions of Cure Critical Wounds for 795 gold.
+22 10-17 01:55:32 1792216532.238 You bought 3 Potions of Cure Light Wounds for 72 gold.
+22 10-17 01:55:40 1792216540.088 You sold a Staff of Door/Stair Location (11 charges) for 140 gold.
+22 10-17 02:01:15 1792216875.491 You bought 2 Scrolls of Word of Recall {50% off} for 242 gold.
+22 10-17 02:01:15 1792216875.556 You bought 5 Scrolls of Phase Door for 120 gold.
+22 10-17 02:01:15 1792216875.815 You bought a Scroll of Identify {25% off} for 61 gold.
+22 10-17 02:01:20 1792216880.412 You destroy an Amulet of Teleportation {cursed}.
+22 10-17 02:01:20 1792216880.916 You destroy a Long Bow (x3) {average}.
+22 10-17 02:01:29 1792216889.718 You bought 3 Potions of Cure Critical Wounds for 477 gold.
+22 10-17 02:01:29 1792216889.833 You bought 3 Potions of Cure Serious Wounds for 192 gold.
+22 10-17 02:03:11 1792216991.46 You have no room for a Hard Leather Cap [2].
+22 10-17 02:03:11 1792216991.474 You have found 47 gold pieces worth of silver.
+22 10-17 02:03:12 1792216992.14 You have found 45 gold pieces worth of copper.
+22 10-17 02:03:21 1792217001.205 You destroy an Elm Staff.
+22 10-17 02:03:22 1792217002.329 You destroy a Furry Mushroom.
+22 10-17 02:03:23 1792217003.219 You destroy a Grey Mushroom.
+22 10-17 02:04:53 1792217093.924 You have found 41 gold pieces worth of copper.
+22 10-17 02:06:35 1792217195.828 You bought a Scroll of Word of Recall {75% off} for 61 gold.
+22 10-17 02:07:24 1792217244.321 You have found 36 gold pieces worth of copper.
+22 10-17 02:07:26 1792217246.986 You have no room for a Dagger (1d4).
+22 10-17 02:07:34 1792217254.294 You have found 131 gold pieces worth of gold.
+22 10-17 02:07:35 1792217255.521 You have found 27 gold pieces worth of silver.
+22 10-17 02:07:38 1792217258.88 You destroy a Brass Lantern (with 4012 turns of light).
+22 10-17 02:07:42 1792217262.107 You have found 19 gold pieces worth of copper.
+22 10-17 02:09:10 1792217350.532 You have found 35 gold pieces worth of garnets.
+22 10-17 02:09:18 1792217358.691 You have found 16 gold pieces worth of copper.
+22 10-17 02:09:43 1792217383.276 You have found 76 gold pieces worth of silver.
+22 10-17 02:10:01 1792217401.69 You have found 23 gold pieces worth of copper.
+22 10-17 02:12:11 1792217531.874 You have found 72 gold pieces worth of garnets.
+22 10-17 02:14:01 1792217641.429 You bought a Scroll of Remove Curse {25% off} for 119 gold.
+22 10-17 02:14:30 1792217670.226 You destroy a Ring of Protection {uncursed}.
+22 10-17 02:14:36 1792217676.656 You bought 6 Scrolls of Phase Door {25% off} for 114 gold.
+22 10-17 02:14:36 1792217676.763 You bought 4 Scrolls of Phase Door for 96 gold.
+22 10-17 02:14:41 1792217681.562 You bought a Scroll of Word of Recall for 242 gold.
+22 10-17 02:14:53 1792217693.896 You bought 2 Rations of Food for 10 gold.
+23 10-22 22:15:22 1792721722.868 You have found 19 gold pieces worth of copper.
+23 10-22 22:15:37 1792721737.674 You have found 20 gold pieces worth of copper.
+23 10-22 22:15:39 1792721739.764 You have found 22 gold pieces worth of copper.
+23 10-22 22:15:41 1792721741.848 You have found 30 gold pieces worth of copper.
+23 10-22 22:15:44 1792721744.441 You have found 36 gold pieces worth of copper.
+23 10-22 22:15:47 1792721747.041 You have found 31 gold pieces worth of copper.
+23 10-22 22:15:48 1792721748.129 You have found 19 gold pieces worth of copper.
+23 10-22 22:16:00 1792721760.641 You sold a Staff of Sleep Monsters (8 charges) for 26 gold.
+23 10-22 22:16:07 1792721767.306 You have found 19 gold pieces worth of copper.
+23 10-22 22:16:13 1792721773.252 You have found 21 gold pieces worth of copper.
+23 10-22 22:16:17 1792721777.306 You have found 24 gold pieces worth of copper.
+23 10-22 22:16:24 1792721784.814 You have found 33 gold pieces worth of copper.
+23 10-22 22:16:31 1792721791.919 You have found 41 gold pieces worth of copper.
+23 10-22 22:16:44 1792721804.919 You have found 40 gold pieces worth of copper.
+23 10-22 22:17:05 1792721825.186 You have found 41 gold pieces worth of copper.
+23 10-22 22:17:23 1792721843.665 You have found 36 gold pieces worth of copper.
+23 10-22 22:17:35 1792721855.716 You bought a Scroll of Word of Recall for 242 gold.
+23 10-22 22:17:43 1792721863.69 You bought 3 Potions of Cure Critical Wounds for 477 gold.
+23 10-22 22:20:02 1792722002.593 You have found 62 gold pieces worth of silver.
+23 10-22 22:24:49 1792722289.746 You have found 29 gold pieces worth of copper.
+23 10-22 22:25:50 1792722350.385 You destroy a Pair of Soft Leather Boots [2] {good}.
+23 10-22 22:26:31 1792722391.331 You have found 73 gold pieces worth of silver.
+23 10-22 22:27:36 1792722456.25 You sold an Amulet of Resist Acid for 111 gold.
+23 10-22 22:27:42 1792722462.981 You destroy a Potion of Water.
+23 10-22 22:27:43 1792722463.489 You destroy a Furry Mushroom.
+23 10-22 22:27:44 1792722464.163 You destroy a Black Mushroom.
+23 10-22 22:27:47 1792722467.077 You sold a Rod of Light for 33 gold.
+23 10-22 22:27:58 1792722478.517 You sold a Pair of Soft Leather Boots of Free Action [2,+4] for 3 gold.
+23 10-22 22:29:05 1792722545.607 You have found 17 gold pieces worth of copper.
