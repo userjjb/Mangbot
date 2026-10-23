@@ -1,57 +1,131 @@
 {
  "label": "m17",
  "nav_model": "opus",
+ "effort": null,
  "report": "full",
  "start": "2026-10-16 13:57",
  "end": "2026-10-16 14:40",
  "minutes": 43.0,
  "notes": "650 ft no-path emergency; Restore CON",
- "dungeon_minutes": 23.0,
- "clvl": [
-  15,
-  16
- ],
- "exp": [
-  1954,
-  2519
- ],
- "gold": [
-  72,
-  46
- ],
- "deepest_ft": 650,
- "audit_checks": 86,
- "audit_differences": 1,
- "xp_gained": 565,
- "xp_per_dungeon_min": 24.6,
- "gold_flows": {
-  "found": 640,
-  "bought": 839,
-  "stolen": 166,
-  "sold": 339
- },
- "found_per_dungeon_min": 27.9,
- "value_lost": {
-  "resold_10x": [],
-  "forced_sales": 0,
-  "items_lost": [
-   "Your purse feels lighter.",
-   "Your purse feels lighter.",
-   "Your purse feels lighter.",
-   "Your purse feels lighter.",
-   "You have no room for a Set of Leather Gloves [1].",
-   "You have no room for a Scroll of Light.",
-   "You have no room for a Pair of Soft Leather Boots [2].",
-   "You have no room for a Pair of Soft Leather Boots [2]."
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   15,
+   16
   ],
-  "left_on_floor": []
+  "exp_gain": 565,
+  "gold": [
+   72,
+   46
+  ],
+  "gold_change": -26,
+  "max_depth_ft": 650
  },
- "lowest_hp": [
-  64,
-  177,
-  "14:13:08"
- ],
- "close_calls_below_40pct": 1,
+ "B": {
+  "dungeon_min": 23.0,
+  "town_min": 19.7,
+  "exp_per_dmin": 24.6,
+  "levels_per_dhour": 2.78,
+  "gold_found": 170,
+  "gold_found_per_dmin": 7.4,
+  "time_budget_min": {
+   "town_farming": 13.8,
+   "travel_dive": 13.0,
+   "exploring": 4.6,
+   "fighting": 3.3,
+   "town_no_goal": 3.1,
+   "town_shopping": 1.2,
+   "no_goal_dungeon": 0.9,
+   "travel_goto": 0.6,
+   "town_other": 0.5,
+   "escaping": 0.5,
+   "town_idle_end": 0.4,
+   "resting": 0.4,
+   "recall_wait": 0.2
+  },
+  "navigator_wait_pct": 9
+ },
+ "C": {
+  "lowest_hp": [
+   64,
+   177,
+   36,
+   "14:13:08"
+  ],
+  "close_calls_lt40": 1,
+  "near_calls_40_50": 1,
+  "emergency_episodes": 1,
+  "emergency_alerts": 14,
+  "phase": 4,
+  "wor_escape": 1,
+  "wor_travel": 1,
+  "stairs_flee": 2,
+  "teleport": 0,
+  "cures_quaffed": 7,
+  "escape_records": null,
+  "recalls_landed": 2
+ },
+ "D": {
+  "sale_shortfall": 8,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 0,
+  "loot_abandoned_est": 95,
+  "stolen": 166,
+  "destroyed_by_monsters_est": 0,
+  "total": 269,
+  "sales": 8,
+  "sales_valued": 7,
+  "worst_sales": [
+   {
+    "item": "a Scroll of Holy Chant",
+    "got": 8,
+    "fair": 16,
+    "forced": false
+   }
+  ],
+  "left_behind": [
+   "Zinc Wand",
+   "Carnelian Ring",
+   "Ring of Slow Digestion"
+  ],
+  "irreplaceable": []
+ },
+ "E": {
+  "reports": 55,
+  "commands": 87,
+  "commands_per_min": 3.3,
+  "report_to_action_med_s": 6.3,
+  "report_to_action_p90_s": 12.9,
+  "reports_without_command_pct": 27,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 4,
+  "report_chars": null,
+  "order_report_age_med_s": null,
+  "order_report_age_p90_s": null
+ },
+ "F": {
+  "audit_diffs": 1,
+  "audit_checks": 86,
+  "perception_gaps": 1,
+  "goal_failed": 2,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 878,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Black orc": 184,
+  "Wolf": 30,
+  "Dark elven priest": 19,
+  "Dark elven warrior": 19,
+  "Squint-eyed rogue": 12,
+  "Silver mouse": 6,
+  "Tengu": 4,
+  "Scruffy looking hobbit": 4
+ },
  "alerts": {
   "goal_done": 26,
   "tactic": 14,
@@ -65,39 +139,5 @@
   "danger_seen": 1,
   "breeders": 1,
   "emergency_loop": 1
- },
- "deaths": 0,
- "recalls": 2,
- "level_changes": null,
- "consumables_used": {
-  "Phase Door": 4,
-  "Identify (by name/letter)": 3,
-  "Cure Light Wounds": 3,
-  "Cure Critical Wounds": 3,
-  "Word of Recall": 2,
-  "Door/Stair Location (by name/letter)": 2,
-  "Cure Serious Wounds": 1,
-  "Restore Constitution (by name/letter)": 1
- },
- "navigator": {
-  "commands": 142,
-  "per_min": 3.3,
-  "alert_to_order_median": 13.5,
-  "alert_to_order_p90": 76.4,
-  "user_to_reply_median": null,
-  "user_messages": 0,
-  "user_notes": 0,
-  "full_reports": 0,
-  "complaints": 4
- },
- "pilot": {
-  "stuck": 0,
-  "goal_failed": {
-   "flee (unseen attacker): no path to stairs": 1,
-   "goto <: no known path": 1
-  },
-  "runs": 878,
-  "move_records": 2052,
-  "server_crashes": 0
  }
 }

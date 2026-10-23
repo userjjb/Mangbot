@@ -15,6 +15,7 @@
                                            # (--brief: status lines, monsters, stairs, news only)
     pilotctl.py attention                  # pending attention events, without waiting
     pilotctl.py monster NAME               # this server's data for a monster + the pilot's verdict
+    pilotctl.py mission start LABEL navigator=MODEL [effort=L] [notes=..] | mission end   # (the Architect) mission markers
     pilotctl.py status [full]              # the compact report (full: everything, the long form)
     pilotctl.py pack | equip | orders      # one part of the full report (pack with letters, ...)
     pilotctl.py map [R]                    # the map within R squares of @ (default 15)

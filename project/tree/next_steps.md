@@ -277,7 +277,15 @@ job 8105290 on scc-wh2, walltime to Mon 10-19 20:47, Dive04 restored from its 10
   runs/pilot/NICK/scorecards/). Missions 17-23 registered. Pilot: every Navigator report is numbered (`· rN` on its
   first line, a `report` record with kind and size) and every nav_cmd carries `after_report` and `report_age`; `mons`
   records carry the server's health bar of the tracked monster (`track`: [colour, tenths]) and `fighting` (the monster
-  last hit). Waiting on the Advisor for the scorecard definitions (esp. value lost).
+  last hit). **Then (10-23) rebuilt to the Advisor's definitions** (`memos/2026-10-23-scorecard.md`): groups A-F, levels
+  per dungeon hour (player_exp x 110%), the 16-category time budget, close/near calls, escapes split, value lost with
+  exact fair pay from the source (`tools/observe/shopmath.py`: relist x (400-G)/(G-200), /9 at the Black Market;
+  other losses = object.txt kind cost x 0.38), damage by monster; `--check` matches the Advisor's baseline CSV (all
+  core measures equal; WoR-escape +0-1 by the memo's fuller rule). Logging added (§5): `sale` records (name before,
+  aware/pluses known, received, owner, relist), `itemlist` on change + `left_behind` on leaving a level, `escape`
+  records (phase / wor_escape / wor_travel / stairs / teleport), per-check state in audit_check (resting, in_combat,
+  recall_pending, goal, hp_min), and **mission markers: run `pilotctl --nick dive04 mission start mNN navigator=MODEL
+  [effort=..] [notes=..]` at launch and `mission end` at the end** (they keep runs/missions.json).
 
 ### ARCHITECT HANDOFF 2026-09-29 (history; read the 2026-10-08 section first)
 

@@ -1,16 +1,65 @@
 [
- {"label": "m17", "nick": "dive04", "start": "2026-10-16 13:57", "end": "2026-10-16 14:40", "navigator": "opus", "report": "full",
-  "notes": "650 ft no-path emergency; Restore CON"},
- {"label": "m18", "nick": "dive04", "start": "2026-10-16 18:46", "end": "2026-10-16 19:26", "navigator": "opus", "report": "full",
-  "notes": "Nighthawk; Ufthak band"},
- {"label": "m19", "nick": "dive04", "start": "2026-10-16 22:14", "end": "2026-10-16 22:55", "navigator": "opus", "report": "full",
-  "notes": "STR drains (ant, frog); Ranger hunt"},
- {"label": "m20", "nick": "dive04", "start": "2026-10-16 23:41", "end": "2026-10-17 00:18", "navigator": "opus", "report": "full",
-  "notes": "52 -> 793 gold; first recogniser hit"},
- {"label": "m21", "nick": "dive04", "start": "2026-10-17 00:47", "end": "2026-10-17 01:35", "navigator": "opus", "report": "full",
-  "notes": "server crash 00:48:48-00:58 (store[-1]); Wormtongue killed; user watching"},
- {"label": "m22", "nick": "dive04", "start": "2026-10-17 01:45", "end": "2026-10-17 02:16", "navigator": "sonnet", "report": "full",
-  "notes": "first Sonnet trial; mob levels; 2621 -> 475 gold"},
- {"label": "m23", "nick": "dive04", "start": "2026-10-22 22:15", "end": "2026-10-22 22:31", "navigator": "sonnet", "report": "compact",
-  "notes": "user ended it; Free Action boots sold for 3; Brodda's Scimitar lost"}
+ {
+  "label": "m17",
+  "nick": "dive04",
+  "start": "2026-10-16 13:57",
+  "end": "2026-10-16 14:40",
+  "navigator": "opus",
+  "report": "full",
+  "notes": "650 ft no-path emergency; Restore CON"
+ },
+ {
+  "label": "m18",
+  "nick": "dive04",
+  "start": "2026-10-16 18:46",
+  "end": "2026-10-16 19:26",
+  "navigator": "opus",
+  "report": "full",
+  "notes": "Nighthawk; Ufthak band"
+ },
+ {
+  "label": "m19",
+  "nick": "dive04",
+  "start": "2026-10-16 22:14",
+  "end": "2026-10-16 22:55",
+  "navigator": "opus",
+  "report": "full",
+  "notes": "STR drains (ant, frog); Ranger hunt"
+ },
+ {
+  "label": "m20",
+  "nick": "dive04",
+  "start": "2026-10-16 23:41",
+  "end": "2026-10-17 00:18",
+  "navigator": "opus",
+  "report": "full",
+  "notes": "52 -> 793 gold; first recogniser hit"
+ },
+ {
+  "label": "m21",
+  "nick": "dive04",
+  "start": "2026-10-17 00:47",
+  "end": "2026-10-17 01:35",
+  "navigator": "opus",
+  "report": "full",
+  "notes": "server crash 00:48:48-00:58 (store[-1]); Wormtongue killed; user watching"
+ },
+ {
+  "label": "m22",
+  "nick": "dive04",
+  "start": "2026-10-17 01:45",
+  "end": "2026-10-17 02:16",
+  "navigator": "sonnet",
+  "report": "full",
+  "notes": "first Sonnet trial; mob levels; 2621 -> 475 gold"
+ },
+ {
+  "label": "m23",
+  "nick": "dive04",
+  "start": "2026-10-22 22:15",
+  "end": "2026-10-22 22:31",
+  "navigator": "sonnet",
+  "report": "compact",
+  "notes": "user ended it; Free Action boots sold for 3; Brodda's Scimitar lost"
+ }
 ]

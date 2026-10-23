@@ -15,6 +15,13 @@ perception gaps).
 
 | id | task | status |
 |---|---|---|
-| (Advisor) | core metrics script `data/scorecard/scorecard.py` | in progress |
-| V1 | Clerk: value-lost events m17-23 + valuation method from object_value | launched |
-| T1 | Clerk: time budget categories + close-call/escape definitions, validated against the reports | launched |
+| (Advisor) | core metrics script `data/scorecard/scorecard.py` | done |
+| V1 | Clerk: value-lost events m17-23 + valuation method from object_value | done |
+| T1 | Clerk: time budget categories + close-call/escape definitions, validated against the reports | done |
+
+## Result (2026-10-23)
+
+Memo `../memos/2026-10-23-scorecard.md` + note. Baseline `data/scorecard/baseline_m17-m23.csv` (+ Clerk CSVs copied there).
+Verified: adj_chr_gold[3]=130 (tables.c:1230), stolen-gold totals (script = V1: 166, 136), close-call counts (script = T1).
+Retrospective: V1 and T1 shared scratch/ and overwrote each other's common.py — give each Clerk its own scratch subfolder
+(METHOD.md updated). Running my core script first, then letting Clerks do the two judgement-heavy definitions, worked well.

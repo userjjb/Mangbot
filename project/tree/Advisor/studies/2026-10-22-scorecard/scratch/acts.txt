@@ -1,0 +1,441 @@
+17 10-16 13:57:57 ACT custom p store item=4 value=4 entry=20 | buy 11 Flasks of oil x4
+17 10-16 13:58:40 ACT custom p store item=19 value=1 entry=21 | buy a Scroll of Identify {75% off} x1
+17 10-16 13:58:40 ACT custom p store item=14 value=1 entry=6 | buy a Scroll of Phase Door {75% off} x1
+17 10-16 14:04:08 NAV journal ['townfarm 146->327g in 5 min (2 urchin thefts 14:00) | keep farming to 14:08 at most, then buy Restore CON if >=483 | mission allows ~10 min; restored CON helps the whole dive'] False
+17 10-16 14:09:11 ATT interesting_item | Silver Amulet seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+17 10-16 14:10:34 ATT interesting_item | Zinc Wand seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+17 10-16 14:10:39 ACT custom k item=17 value=1 | autodestroy a Pair of Hard Leather Boots [3] {worthless}
+17 10-16 14:12:53 ATT interesting_item | Carnelian Ring seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+17 10-16 14:13:09 ATT interesting_item | Ring of Slow Digestion seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+17 10-16 14:13:52 NAV journal ["town 14:13:39: Pilot read my last WoR at 14:13:02 (emergency_loop, 'no path to stairs' with < 14 away, unseen archer); used all 3 CCW + 3 CLW + 1 CSW + 4 Phase in 15 s vs 3 Black orcs (lvl 13) + kobold shaman + mice; lowest 81/177 (46%) | sell spare scrolls at 5, price WoR/CCW, decide a 2nd dive | 28 min of budget left; 394g, 0 WoR, 0 CCW"] False
+17 10-16 14:13:52 NAV goal ['shop', '5', 'sell', 'arzener:1', 'sell', 'Object_Detection:1', 'sell', 'Scroll_of_Light:1', 'list'] False
+17 10-16 14:14:20 ACT custom s store item=14 value=1 | sell 14x1
+17 10-16 14:14:20 ACT custom s store item=12 value=1 | sell 12x1
+17 10-16 14:14:21 ACT custom s store item=11 value=1 | sell 11x1
+17 10-16 14:14:34 ACT custom p store item=11 value=1 entry=362 | buy a Potion of Restore Constitution {25% off} x1
+17 10-16 14:14:34 ACT custom p store item=31 value=2 entry=28 | buy 4 Scrolls of Door/Stair Location {75% off} x2
+17 10-16 14:16:55 ATT tactic | townfarm: no gold in 2 minutes (no targets found); selling spare items may be faster
+17 10-16 14:18:55 ATT tactic | townfarm: no gold in 2 minutes (night: few townspeople); selling spare items may be faster
+17 10-16 14:23:36 ACT custom k item=14 value=1 | autodestroy a Cloak [1] {cursed}
+17 10-16 14:23:48 ATT interesting_item | Zirconium Wand seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+17 10-16 14:28:06 NAV journal ['150 ft explore 4 min: only 70g + Wand of Heal Monster | goal dive 0 (climb by stairs, < 71 away) | 14 min left; climbing 3 levels may take ~5 min, then sell the wand and shop'] False
+17 10-16 14:29:00 ATT interesting_item | Gold Wand seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+17 10-16 14:29:23 NAV journal ['got Zirconium + Gold Wands (unknown) at 150 | goal dive 0, climb | identify both in town (2 Identify), sell'] False
+17 10-16 14:32:33 ATT interesting_item | Gold Wand seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+17 10-16 14:35:39 ATT lost | You have no room for a Set of Leather Gloves [1].
+17 10-16 14:35:39 ATT pack_full | You have no room for a Set of Leather Gloves [1].
+17 10-16 14:35:45 NAV destroy ['Rodent_Skeleton'] False
+17 10-16 14:35:45 ACT custom k item=22 value=1 | agent: destroy ['Rodent_Skeleton']
+17 10-16 14:36:33 ATT lost | You have no room for a Scroll of Light.
+17 10-16 14:36:34 ATT pack_full | You have no room for a Scroll of Light.
+17 10-16 14:36:46 ATT lost | You have no room for a Pair of Soft Leather Boots [2].
+17 10-16 14:36:50 ATT lost | You have no room for a Pair of Soft Leather Boots [2].
+17 10-16 14:38:22 NAV journal ['town 14:38 (night), 129g; identified Zirconium = Wonder (12), Gold = Light (7) | shop 6 sell Wonder, 2 Light, Heal Monster | then WoR at shop 5 if affordable; budget ends ~14:42'] False
+17 10-16 14:38:22 NAV goal ['shop', '6', 'sell', 'Wonder:1', 'sell', 'Wand_of_Light:2', 'sell', 'Heal_Monster:1'] False
+17 10-16 14:38:40 ACT custom s store item=15 value=1 | sell 15x1
+17 10-16 14:38:41 ACT custom s store item=12 value=1 | sell 12x1
+17 10-16 14:38:41 ATT goal_done | shop 6 sell Wonder:1 sell Wand of Light:2 sell Heal Monster:1: You sold a Wand of Wonder (12 charges) for 138 gold.; not sold: 'Wand_of_Light' matches 2 items: n) a Wand of Light (7 charges); o) a Wan
+17 10-16 14:38:47 NAV goal ['shop', '6', 'sell', 'n:1'] False
+17 10-16 14:38:48 ACT custom s store item=13 value=1 | sell 13x1
+17 10-16 14:38:52 NAV goal ['shop', '6', 'sell', 'Wand_of_Light:1'] False
+17 10-16 14:38:52 ACT custom s store item=13 value=1 | sell 13x1
+17 10-16 14:39:14 ACT custom p store item=14 value=1 entry=242 | buy 99 Scrolls of Word of Recall x1
+17 10-16 14:39:23 ACT custom p store item=6 value=1 entry=160 | buy 23 Potions of Cure Critical Wounds x1
+17 10-16 14:39:30 NAV goal ['shop', '1', 'sell', 'Brass_Lantern:1', 'sell', 'Wooden_Torch:1'] False
+17 10-16 14:39:32 ACT custom s store item=17 value=1 | sell 17x1
+17 10-16 14:39:32 ACT custom s store item=16 value=1 | sell 16x1
+18 10-16 18:46:35 NAV journal ['mission 18 start 18:46: town (night), clvl16 197HP 46g, lantern 0 turns, 1 WoR, loot around me; budget to ~19:31, recall home ~19:21 | pickup, then goto each loot square | free gold before shopping'] False
+18 10-16 18:46:35 NAV pickup [] False
+18 10-16 18:47:06 NAV journal ['loot picked up: gold 46->~250, Violet Potion, Dagger (1d4) | shop 1: buy 5 Flasks of oil @<=10, sell pebbles, then fuel | lantern empty'] False
+18 10-16 18:47:06 NAV goal ['shop', '1', 'list', 'buy', 'Flask_of_oil:5@10', 'sell', 'Rounded_Pebble:38'] False
+18 10-16 18:47:07 ACT custom s store item=20 value=38 | sell 20x38
+18 10-16 18:47:14 ACT custom p store item=5 value=5 entry=25 | buy 99 Flasks of oil x5
+18 10-16 18:47:35 NAV journal ['lantern 14989 turns, 3 flasks spare, 298g | shop 5: list, sell unknown scroll + Violet Potion, buy 1 Identify @<=90 for the Robe | identify {good} armour before selling'] False
+18 10-16 18:47:36 NAV goal ['shop', '5', 'list', 'sell', 'garviv_micpo:1', 'sell', 'Violet_Potion:1', 'buy', 'Identify:1@90'] False
+18 10-16 18:47:39 ACT custom s store item=14 value=1 | sell 14x1
+18 10-16 18:47:39 ACT custom s store item=10 value=1 | sell 10x1
+18 10-16 18:47:39 ACT custom p store item=10 value=1 entry=61 | buy 2 Scrolls of Identify {25% off} x1
+18 10-16 18:47:52 ACT custom p store item=7 value=1 entry=181 | buy a Scroll of Word of Recall {25% off} x1
+18 10-16 18:47:57 NAV journal ['shop 5: sold scroll (= Treasure Detection) 8, Violet (= Salt Water) 8; Identify@61; WoR 25% off at 181 -> bought (2 WoR, 72g) | read Identify on the Robe next | a 2nd WoR lets me recall to 550 instead of a ~10 min stair walk from town and keeps a spare ticket'] False
+18 10-16 18:48:04 NAV goal ['shop', '2', 'sell', 'Robe:1', 'sell', 'Leather_Gloves:1'] False
+18 10-16 18:48:18 ACT custom s store item=15 value=1 | sell 15x1
+18 10-16 18:48:18 ACT custom s store item=15 value=1 | sell 15x1
+18 10-16 18:48:19 NAV goal ['shop', '3', 'sell', 'Dagger:1'] False
+18 10-16 18:48:23 ACT custom s store item=15 value=1 | sell 15x1
+18 10-16 18:48:42 NAV goal ['shop', '4', 'sell', 'Blessing:1', 'buy', 'Cure_Critical:1@120'] False
+18 10-16 18:48:42 ACT custom s store item=12 value=1 | sell 12x1
+18 10-16 18:48:42 ACT custom p store item=12 value=1 entry=120 | buy 2 Potions of Cure Critical Wounds {25% off} x1
+18 10-16 18:48:52 NAV journal ['sold Robe [2,+1] 40 (worse than my [5]), gloves 1, Dagger 5; Temple CCW 25% off 120 -> bought (sold a Blessing for the last 2g); 4g, 2 WoR, 2 CCW 4 CSW 3 CLW 8 Phase | destroy Heal Monster wand, order max_depth=550, goal recall, then raise to 600 and dive | with 2 WoR a recall saves ~10 min of stairs; land 550 not 600 since no stairs underfoot on arrival'] False
+18 10-16 18:48:52 NAV destroy ['Heal_Monster'] False
+18 10-16 18:48:52 ACT custom k item=13 value=1 | agent: destroy ['Heal_Monster']
+18 10-16 18:52:23 ATT lost | One of your Potion of Speed (e) was stolen!
+18 10-16 18:54:12 NAV destroy ['Soft_Studded_Leather'] False
+18 10-16 18:54:12 ACT custom k item=15 value=1 | agent: destroy ['Soft_Studded_Leather']
+18 10-16 18:54:13 NAV journal ['550: 5 min, no stairs found yet, clvl 17 (215 HP), a thief took a Speed potion; found Hard Studded Leather [7] | wore it (AC +2), destroyed the old [5] (sells ~10, pack space), goto 39,148 for a CCW potion, then dive 600 again | CCW is my scarcest cure'] False
+18 10-16 18:58:21 ATT interesting_item | Gnarled Staff seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+18 10-16 18:58:50 NAV journal ['interesting_item Gnarled Staff + unknown scroll fetched at 600 | avoid Rot_jelly (drained CHR last time), goal explore | test avoid zones; keep away from drainers'] False
+18 10-16 18:58:56 ATT interesting_item | Sea Shell Amulet seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+18 10-16 18:59:52 ATT interesting_item | Wand of Stinking Cloud seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+18 10-16 19:01:25 ATT interesting_item | Redwood Staff seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+18 10-16 19:04:32 ATT interesting_item | Mulberry Staff seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+18 10-16 19:05:02 NAV pickup [] False
+18 10-16 19:05:10 NAV journal ['600: fetched Mulberry Staff (= Slow Monsters) + gold; pack holds 3 staffs, wand, amulet, scroll to sell/identify; 261g | goal explore | good loot level, ~16 min before recall'] False
+18 10-16 19:06:22 NAV journal ['Giant red scorpion (lvl 17) sting drained STR 18/50->18/40 (still 4 blows; one more drain = 3 blows); hunt failed: a Tengu teleported me away | avoid Giant_red_scorpion, goal explore | Restore STR 480 goes on the town list; keep clear of the drainer'] False
+18 10-16 19:09:30 NAV journal ['town 19:09:18 (day), 127/215, 354g, 0 WoR, 3 CCW 2 CSW 2 Phase; Ufthak + 10 Hill orcs + 3 Black orcs at 600 cost 2 CSW + 4 Phase while recall charged | shop 5: list, sell unknown scroll, buy 2 Identify for the amulet + Gnarled Staff | identify devices/jewellery before selling; then sell at 6, buy WoR'] False
+18 10-16 19:09:30 NAV goal ['shop', '5', 'list', 'sell', 'hamon_ganrhov:1', 'buy', 'Identify:2@81'] False
+18 10-16 19:10:11 ACT custom s store item=13 value=1 | sell 13x1
+18 10-16 19:10:11 ACT custom p store item=14 value=2 entry=122 | buy 12 Scrolls of Identify {25% off} x2
+18 10-16 19:10:19 ACT custom p store item=12 value=1 entry=181 | buy 2 Scrolls of Word of Recall {25% off} x1
+18 10-16 19:10:28 NAV journal ['bought WoR 25% off 181 (1 WoR, ~59g); identified Amulet = Infravision +5, Gnarled = Earthquakes (4) | shop 6 sell Stinking Cloud wand, Earthquakes, Slow Monsters staff, Infravision amulet; keep Door/Stair staff | none useful to a warrior; handbook: keep Door/Stair'] False
+18 10-16 19:10:28 NAV goal ['shop', '6', 'sell', 'Stinking_Cloud:1', 'sell', 'Earthquakes:1', 'sell', 'Mulberry_Staff:1', 'sell', 'Infravision:1'] False
+18 10-16 19:10:33 ACT custom s store item=14 value=1 | sell 14x1
+18 10-16 19:10:34 ACT custom s store item=15 value=1 | sell 15x1
+18 10-16 19:10:34 ACT custom s store item=17 value=1 | sell 17x1
+18 10-16 19:10:40 ACT custom s store item=16 value=1 | quote 16
+18 10-16 19:10:41 ACT custom s store item=15 value=1 | quote 15
+18 10-16 19:11:03 ACT custom p store item=10 value=4 entry=76 | buy 11 Scrolls of Phase Door {25% off} x4
+18 10-16 19:11:10 ACT custom p store item=11 value=1 entry=240 | buy 31 Scrolls of Word of Recall x1
+18 10-16 19:12:12 NAV pickup [] False
+18 10-16 19:19:42 NAV journal ['townfarm 334->516 by 19:16:48, then a thief at 19:18:37 took ~67 (449g); stopped at 19:19 | Temple: buy 1 CCW @<=160, keep the rest toward Restore STR next time | CCW is the life-saver; STR 18/40 still gives 4 blows'] False
+18 10-16 19:19:47 ACT custom p store item=6 value=1 entry=159 | buy 4 Potions of Cure Critical Wounds x1
+18 10-16 19:21:54 ATT tactic | townfarm: no gold in 2 minutes (no targets found); selling spare items may be faster
+18 10-16 19:23:54 ATT tactic | townfarm: no gold in 2 minutes (no targets found); selling spare items may be faster
+18 10-16 19:26:12 NAV journal ['19:26, 330g, only 1 Waybread for food | shop 1 buy 3 Rations @5, then stop and end idle in town | food for the next trip; keep ~315g toward Restore STR (480)'] False
+18 10-16 19:26:21 ACT custom p store item=2 value=3 entry=15 | buy 99 Rations of Food x3
+18 10-16 19:26:42 NAV complain ["No 'use' (staff) action in the handbook: I carry a Staff of Door/Stair Location the handbook says never to sell, but I can't use it, so it's dead weight; also the shop goal's 'sell unknown scrolls while above 1000 ft' rule sold a single unknown scroll that turned out to be Teleportation (8 gold) - the only long escape a warrior can carry; I had no way to know before selling. Maybe read-test single unknown scrolls in town instead?"] False
+19 10-16 22:14:07 NAV journal ['mission 19 start 22:14: town (night), clvl17 215HP 315g, STR 18/40; gold at 33,122/34,122 + copper underfoot; other items junk (pebbles, Apple Juice, Sleep); budget to ~22:59, recall home ~22:49 | pickup, then goto the 2 gold squares | free gold before shopping'] False
+19 10-16 22:14:07 NAV pickup [] False
+19 10-16 22:14:23 NAV journal ["gold picked up 315->350 ('Standing on' cleared to '.'); rest of the floor items are junk | use Mulberry_Staff, then shop 5 list | learn Slow Monsters so it sells known; check Restore STR price"] False
+19 10-16 22:14:45 ACT custom p store item=11 value=2 entry=126 | buy 2 Scrolls of Word of Recall {75% off} x2
+19 10-16 22:14:45 ACT custom p store item=8 value=2 entry=40 | buy 16 Scrolls of Phase Door {25% off} x2
+19 10-16 22:15:03 NAV journal ["242g, 4 WoR, 8 Phase, 4 CCW 2 CSW; gate 650 recall OK; avoid Giant_red_scorpion set (it wasn't kept from last mission) | keep max_depth=600, goal recall (lands 600), then raise to 650 | land at the shallower end of the band; Mulberry use gave only {tried} (no monsters in view): will use it on monsters below"] False
+19 10-16 22:17:59 ATT interesting_item | Staff of Light seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+19 10-16 22:20:06 ACT custom s store item=18 value=1 | quote 18
+19 10-16 22:20:23 ACT custom s store item=16 value=1 | quote 16
+19 10-16 22:20:33 NAV journal ['quotes: Awl-Pike {good} 112 unidentified, Staff of Slow Monsters 200 (known now, the 22:16 use on wolves identified it) | sell the staff (348->548), buy Restore STR 498, quaff; keep the Awl-Pike to identify later | Restore STR brings STR back to 18/50 and the 4th blow; a {good} weapon is worth identifying before selling'] False
+19 10-16 22:20:33 NAV goal ['shop', '6', 'sell', 'Slow_Monsters:1'] False
+19 10-16 22:20:33 ACT custom s store item=16 value=1 | sell 16x1
+19 10-16 22:20:41 ACT custom p store item=2 value=1 entry=498 | buy 9 Potions of Restore Strength x1
+19 10-16 22:20:53 NAV destroy ['Filthy_Rag'] False
+19 10-16 22:20:53 ACT custom k item=16 value=1 | agent: destroy ['Filthy_Rag']
+19 10-16 22:25:42 ACT custom s store item=17 value=1 | quote 17
+19 10-16 22:25:42 ACT custom s store item=16 value=1 | quote 16
+19 10-16 22:25:50 NAV journal ['town 22:25 (night), 101g, 0 WoR, 2 CCW; quotes Morning Star 131 (no feeling yet), Awl-Pike {good} 112 | sell the Morning Star, then shop 5 list: Identify the Awl-Pike, then ring/amulet | need gold for WoR x2 + cures before any second trip (~33 min left)'] False
+19 10-16 22:25:50 NAV goal ['shop', '3', 'sell', 'Morning_Star:1'] False
+19 10-16 22:25:51 ACT custom s store item=17 value=1 | sell 17x1
+19 10-16 22:26:10 NAV journal ['shop 5: Restore STR 90% off at 50, Identify 25% off 63, WoR 25% off 188 (232g) | buy Restore STR@50 (spare) + 2 Identify@63 for the Carnelian Ring + Coral Amulet | a spare Restore at a tenth of the price undoes the next drain at once; jewellery must be identified before selling, then it pays for WoR'] False
+19 10-16 22:26:10 ACT custom p store item=3 value=1 entry=50 | buy a Potion of Restore Strength {90% off} x1
+19 10-16 22:26:10 ACT custom p store item=13 value=2 entry=126 | buy 21 Scrolls of Identify {25% off} x2
+19 10-16 22:26:47 NAV journal ['identified: Carnelian = Ring of Resist Cold (worn, replacing Slow Digestion), Coral = Amulet of Adornment (junk); 56g, 22:27 | shop 6 sell Ring of Slow Digestion + Adornment, then decide on the pike | resist cold beats slow digestion; gold toward a WoR'] False
+19 10-16 22:26:47 NAV goal ['shop', '6', 'sell', 'Slow_Digestion:1', 'sell', 'Adornment:1'] False
+19 10-16 22:26:51 ACT custom s store item=15 value=1 | sell 15x1
+19 10-16 22:26:51 ACT custom s store item=15 value=1 | sell 15x1
+19 10-16 22:27:04 ACT custom p store item=13 value=1 entry=63 | buy 6 Scrolls of Identify {25% off} x1
+19 10-16 22:27:13 ACT custom s store item=15 value=1 | quote 15
+19 10-16 22:27:21 NAV goal ['shop', '3', 'sell', 'Awl-Pike:1'] False
+19 10-16 22:27:21 ACT custom s store item=15 value=1 | sell 15x1
+19 10-16 22:28:07 ACT custom p store item=6 value=4 entry=96 | buy 34 Potions of Cure Light Wounds x4
+19 10-16 22:28:10 ACT custom p store item=10 value=1 entry=249 | buy 20 Scrolls of Word of Recall x1
+19 10-16 22:32:13 ATT lost | You have no room for a Scroll titled "nelggar payjo".
+19 10-16 22:32:13 ATT pack_full | You have no room for a Scroll titled "nelggar payjo".
+19 10-16 22:32:19 NAV destroy ['Potion_of_Slowness', 'all'] False
+19 10-16 22:32:19 ACT custom k item=2 value=2 | agent: destroy ['Potion_of_Slowness', 'all']
+19 10-16 22:32:32 ATT interesting_item | Wand of Stinking Cloud seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+19 10-16 22:32:43 NAV destroy ['Cutlass'] False
+19 10-16 22:32:43 ACT custom k item=22 value=1 | agent: destroy ['Cutlass']
+19 10-16 22:32:49 NAV destroy ['Cloak_[1'] False
+19 10-16 22:32:49 ACT custom k item=21 value=1 | agent: destroy ['Cloak_[1']
+19 10-16 22:32:53 ACT custom k item=20 value=1 | autodestroy a Ring of Teleportation {cursed}
+19 10-16 22:32:56 NAV journal ['350 ft 22:32, pack full: wore Shadow Cloak [6] {good} (old Cloak [1] + Cutlass {average} destroyed), read Satisfy Hunger, Slowness destroyed; Wand of Stinking Cloud at 37,131 + gold at 37,130; Ring of Teleportation (cursed) skipped | goto 37,130 then 37,131 | wand sells ~100; then dive 400'] False
+19 10-16 22:37:35 ATT interesting_item | Corundum Ring seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+19 10-16 22:43:19 NAV journal ['350 ft 22:43: explore 5 min with no gold (213g), ~6 min to the planned recall | goal recall now | this level is dry; town time is better spent selling 2 wands + ring and restocking WoR'] False
+19 10-16 22:43:38 NAV journal ['town 22:43:31 (day), 213g, 0 WoR | shop 6 sell Wand of Stinking Cloud, Wand of Wonder, Ring of Feather Falling (identified flavours, unknown to me: shop rules decide) | then townfarm by day for WoR money'] False
+19 10-16 22:43:38 NAV goal ['shop', '6', 'sell', 'Stinking_Cloud:1', 'sell', 'Wonder:1', 'sell', 'Corundum_Ring:1'] False
+19 10-16 22:44:04 ACT custom s store item=16 value=1 | sell 16x1
+19 10-16 22:44:05 ACT custom s store item=16 value=1 | sell 16x1
+19 10-16 22:44:11 ACT custom s store item=18 value=1 | quote 18
+19 10-16 22:47:38 ATT lost | One of your Scroll of Phase Door {75% off} (l) was stolen!
+19 10-16 22:50:19 ATT tactic | townfarm: no gold in 2 minutes (no targets found); selling spare items may be faster
+19 10-16 22:51:18 ACT custom p store item=7 value=2 entry=498 | buy 34 Scrolls of Word of Recall x2
+19 10-16 22:51:19 ACT custom p store item=6 value=2 entry=50 | buy 99 Scrolls of Phase Door x2
+19 10-16 22:53:28 ATT tactic | townfarm: no gold in 2 minutes (no targets found); selling spare items may be faster
+19 10-16 22:55:28 ATT tactic | townfarm: no gold in 2 minutes (no targets found); selling spare items may be faster
+20 10-16 23:41:09 NAV journal ['mission 20 start 23:41: town (night), clvl18 220HP 52g, 2 WoR 2 CCW 4 CLW 0 CSW 8 Phase; budget to ~00:26 | run drainers, then sell ring/potion/pebbles, Temple list for CSW | mission step 1: brief town'] False
+20 10-16 23:42:01 NAV journal ['Temple: CSW 64, CCW 159; 52g | sell 3 Resist Cold potions + Infravision potion at 5, Feather Falling ring at 6, then buy 1 CSW | Resist Cold ring already worn; ~45g of sales gets one CSW (cures 2->3)'] False
+20 10-16 23:42:01 NAV goal ['shop', '5', 'sell', 'Resist_Cold:3', 'sell', 'k:1'] False
+20 10-16 23:42:06 ACT custom s store item=4 value=3 | sell 4x3
+20 10-16 23:42:12 NAV goal ['shop', '5', 'sell', '!Yellow_Speckled:1'] False
+20 10-16 23:42:12 ACT custom s store item=9 value=1 | sell 9x1
+20 10-16 23:42:16 NAV goal ['shop', '6', 'sell', '!Corundum:1'] False
+20 10-16 23:42:21 ACT custom s store item=17 value=1 | sell 17x1
+20 10-16 23:42:28 ACT custom p store item=8 value=1 entry=64 | buy 99 Potions of Cure Serious Wounds x1
+20 10-16 23:45:39 ATT interesting_item | Runed Rod seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+20 10-16 23:45:41 ACT custom k item=18 value=1 | autodestroy a Ring of Teleportation {cursed}
+20 10-16 23:45:48 NAV journal ['450: Runed Rod 9 away at 49,55; picked up a Ring of Feather Falling | goto 49,55, then explore | rods sell 50-700 once known'] False
+20 10-16 23:46:06 NAV journal ['got Runed Rod (= Trap Location) + Spear {good}; pack 22 items | destroy the 20 pebbles, goal explore | pebbles are worthless, pack space for loot'] False
+20 10-16 23:46:06 NAV destroy ['Rounded_Pebble', 'all'] False
+20 10-16 23:46:06 ACT custom k item=21 value=20 | agent: destroy ['Rounded_Pebble', 'all']
+20 10-16 23:57:59 ATT goal_failed | searchroom 27,49: searched every spot, nothing found
+20 10-16 23:59:59 NAV journal ['23:59:51 450: gold piles 324->460, 3 CCW 1 CSW now (CCW found), Spear {good} + Trap Location rod to sell | goal recall home | mission: recall at ~300g; 26 min left leaves room for a 2nd dive to 550-600 after buying 2 WoR'] False
+20 10-17 00:00:19 NAV journal ['town 00:00:11 (night), 515g, 0 WoR, 3 CCW 1 CSW 4 CLW 8 Phase | shop 6 sell Feather Falling ring + Trap Location rod, then shop 5 list for 2 WoR | 2nd dive needs 2 WoR; 26 min left'] False
+20 10-17 00:00:19 NAV goal ['shop', '6', 'sell', 'Feather_Falling:1', 'sell', '!Runed_Rod:1'] False
+20 10-17 00:00:38 ACT custom s store item=18 value=1 | sell 18x1
+20 10-17 00:00:38 ACT custom s store item=15 value=1 | sell 15x1
+20 10-17 00:00:56 NAV journal ['shop 5: WoR 242 (no discount), Identify 81; 588g | buy 2 WoR@242, then Identify@81 for the Spear {good} | 2 WoR = 2nd dive + ticket home; a {good} weapon sells far better identified (Awl-Pike 112->310)'] False
+20 10-17 00:00:56 ACT custom p store item=7 value=2 entry=484 | buy 16 Scrolls of Word of Recall x2
+20 10-17 00:00:56 ACT custom p store item=8 value=1 entry=81 | buy 44 Scrolls of Identify x1
+20 10-17 00:01:16 NAV journal ["Spear identified (+5,+5): 3 blows ~26/round vs Main Gauche ~20 (Pilot's tactic agrees); 23g, 2 WoR, 3 CCW 1 CSW 4 CLW 8 Phase; gate 600 recall OK; 00:01 | wield the Spear (keep the Main Gauche), order max_depth=550, goal recall; home by ~00:21 | mission step 4: 2nd dive 550-600; +5 to-hit and 30% more damage"] False
+20 10-17 00:04:14 ATT interesting_item | Quartz Ring seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+20 10-17 00:04:36 ATT interesting_item | Wand of Stinking Cloud seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+20 10-17 00:04:59 ATT lost | You have no room for a Clotted Red Potion.
+20 10-17 00:04:59 ATT pack_full | You have no room for a Clotted Red Potion.
+20 10-17 00:05:27 NAV journal ['550: Wand of Stinking Cloud fetched, 68g; pack full (Clotted Red Potion left at 61,51) | destroy Cutlass {average} and Black Mushroom, explore on | make room for devices/jewellery; the Cutlass sells for little'] False
+20 10-17 00:05:27 NAV destroy ['Cutlass'] False
+20 10-17 00:05:27 ACT custom k item=22 value=1 | agent: destroy ['Cutlass']
+20 10-17 00:05:28 NAV destroy ['Black_Mushroom'] False
+20 10-17 00:05:28 ACT custom k item=1 value=1 | agent: destroy ['Black_Mushroom']
+20 10-17 00:07:30 ATT interesting_item | Staff of Object Location seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+20 10-17 00:07:41 NAV journal ['550: Staff of Object Location at 5,48, potion at 6,47 (Speed or CCW), gold 6,45; Snaga (lvl 6) 2 away | destroy Wrinkled Mushroom, goto the three squares in turn | ~150 for the staff, a CCW/Speed potion, gold'] False
+20 10-17 00:07:41 NAV destroy ['Wrinkled_Mushroom'] False
+20 10-17 00:07:41 ACT custom k item=1 value=1 | agent: destroy ['Wrinkled_Mushroom']
+20 10-17 00:08:23 ACT custom k item=21 value=1 | autodestroy Soft Leather Armour [4] {cursed}
+20 10-17 00:08:57 NAV journal ['4 CCW now, 199g, 00:09 | goal explore the rest of 550, recall ~00:19 | this level keeps paying; 600 not needed'] False
+20 10-17 00:12:00 ATT lost | You have no room for a Set of Leather Gloves [1].
+20 10-17 00:12:01 ATT pack_full | You have no room for a Set of Leather Gloves [1].
+20 10-17 00:12:11 NAV destroy ['Clotted_Red'] False
+20 10-17 00:12:11 ACT custom k item=10 value=1 | agent: destroy ['Clotted_Red']
+20 10-17 00:12:12 NAV pickup [] False
+20 10-17 00:12:12 NAV destroy ['Leather_Gloves'] False
+20 10-17 00:12:16 NAV destroy ['Clotted_Red_Potion'] False
+20 10-17 00:12:27 NAV journal ['00:12 pack full (gloves [1] left), destroyed the Clotted Red Potion (= Clumsiness); 241g, 5 CCW | explore until ~00:19 | PILOT: destroy reply printed the pack before the destroy happened (no NOTE), so I thought it failed'] False
+20 10-17 00:13:02 ATT interesting_item | Hickory Staff seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+20 10-17 00:13:14 NAV journal ['Hickory Staff 14 away at 16,174; Scroll of Teleportation and gold ~45-49 away; 00:13 | goto 16,174, then read Blessing (frees a slot) and fetch the Teleportation scroll + gold 51,155, recall ~00:18 | staff sells; Teleportation is an escape I lacked'] False
+20 10-17 00:14:18 ATT lost | You have no room for a Set of Leather Gloves [1].
+20 10-17 00:14:18 ATT pack_full | You have no room for a Set of Leather Gloves [1].
+20 10-17 00:14:24 NAV destroy ['Water'] False
+20 10-17 00:14:24 ACT custom k item=2 value=1 | agent: destroy ['Water']
+20 10-17 00:14:52 NAV journal ['Teleportation scroll + 29 gold picked up, 270g, 00:15 | goto gold 29,116 (39 away), then recall | last pickup before going home; town needs ~8 min to identify/sell'] False
+20 10-17 00:15:46 NAV journal ['town 00:15:39 (night), 315g, 0 WoR, 5 CCW 1 CSW 4 CLW 8 Phase + Teleportation; loot: Wand Stinking Cloud, Staff Object Location, Hickory Staff + Quartz Ring (unknown) | shop 6 sell the wand + Object Location staff, then Identify the staff and ring at 5 | ~10 min left: sell, then a WoR for next time'] False
+20 10-17 00:15:46 NAV goal ['shop', '6', 'sell', 'Stinking_Cloud:1', 'sell', 'Object_Location:1'] False
+20 10-17 00:16:24 ACT custom s store item=15 value=1 | sell 15x1
+20 10-17 00:16:25 ACT custom s store item=15 value=1 | sell 15x1
+20 10-17 00:16:39 NAV journal ['sold Stinking Cloud 100 + Object Location 50 -> 483g; Hickory Staff use gave only {tried} | shop 5 buy 2 Identify@81 + 1 WoR@242, identify staff + ring, sell them at 6 | jewellery/devices pay far more known; 1 WoR for the next mission'] False
+20 10-17 00:16:45 ACT custom p store item=17 value=1 entry=21 | buy a Scroll of Identify {75% off} x1
+20 10-17 00:16:46 ACT custom p store item=15 value=1 entry=182 | buy 3 Scrolls of Word of Recall {25% off} x1
+20 10-17 00:17:02 ACT custom s store item=19 value=1 | quote 19
+20 10-17 00:17:03 ACT custom s store item=18 value=1 | quote 18
+20 10-17 00:17:12 NAV journal ['Quartz = Ring of Acid [+6], quotes 900; Hickory {tried} quotes 18 | sell the ring (the Amulet already gives res_acid; Fire+Cold rings stay), then shop 5: 2nd WoR + Identify for the staff | 900g is most of a Staff of Teleportation fund; 2 WoR for next mission'] False
+20 10-17 00:17:12 NAV goal ['shop', '6', 'sell', 'Ring_of_Acid:1'] False
+20 10-17 00:17:12 ACT custom s store item=19 value=1 | sell 19x1
+20 10-17 00:17:30 ACT custom p store item=16 value=2 entry=242 | buy 2 Scrolls of Word of Recall {50% off} x2
+20 10-17 00:17:31 ACT custom p store item=16 value=1 entry=81 | buy 99 Scrolls of Identify x1
+20 10-17 00:17:31 ACT custom p store item=13 value=2 entry=38 | buy 13 Scrolls of Phase Door {25% off} x2
+20 10-17 00:17:31 ACT custom p store item=31 value=2 entry=26 | buy 20 Scrolls of Satisfy Hunger {25% off} x2
+20 10-17 00:17:44 NAV journal ['Hickory = Staff of Treasure Location (12) | keep it | finds gold on gold dives; sells for little'] False
+21 10-17 00:48:00 NAV journal ['852g after 2 gold piles (24,118 was empty) | shop 2 list | armour for weak slots: cap [2], gloves [1], shield [3,-1]; boots are {excellent}, keep'] False
+21 10-17 00:48:25 NAV journal ['armoury: Iron Helm [5] 121, Large Leather Shield [4] 193, Gauntlets [2] 56; my cap [2], shield [3,-1], gloves [1]; boots {excellent} kept | buy Iron_Helm@125, Large_Leather_Shield@195, Gauntlets@60, then wear and sell the old ones | +6 AC for ~370, leaves ~518 for 4 CSW and the 250 reserve'] False
+21 10-17 00:48:26 ACT custom p store item=15 value=1 entry=121 | buy 3 Iron Helms [5,+0] x1
+21 10-17 00:48:26 ACT custom p store item=12 value=1 entry=193 | buy 5 Large Leather Shields [4,+0] x1
+21 10-17 00:48:26 ACT custom p store item=17 value=1 entry=56 | buy 7 Sets of Gauntlets [2,+0] x1
+21 10-17 00:48:26 ATT goal_done | shop 2 buy Iron Helm:1@125 buy Large Leather Shield:1@195 buy Gauntlets:1@60: You bought an Iron Helm [5,+0] for 121 gold.; You cannot carry that many items.; You cannot carry that many items.
+21 10-17 00:48:38 NAV goal ['shop', '2', 'sell', 'Hard_Leather_Cap:1', 'buy', 'Large_Leather_Shield:1@195'] False
+21 10-17 00:48:38 ACT custom s store item=21 value=1 | sell 21x1
+21 10-17 00:48:38 ACT custom p store item=12 value=1 entry=193 | buy 5 Large Leather Shields [4,+0] x1
+21 10-17 00:48:47 NAV goal ['shop', '2', 'sell', 'Small_Metal_Shield:1', 'buy', 'Gauntlets:1@60'] False
+21 10-17 00:48:48 ACT custom s store item=21 value=1 | sell 21x1
+21 10-17 00:48:48 ACT custom p store item=17 value=1 entry=56 | buy 7 Sets of Gauntlets [2,+0] x1
+21 10-17 00:59:23 ACT custom p store item=13 value=1 entry=121 | buy 3 Iron Helms [5,+0] x1
+21 10-17 00:59:29 NAV goal ['shop', '2', 'sell', 'Hard_Leather_Cap:1', 'buy', 'Large_Leather_Shield:1@195'] False
+21 10-17 00:59:30 ACT custom s store item=21 value=1 | sell 21x1
+21 10-17 00:59:30 ACT custom p store item=10 value=1 entry=193 | buy 2 Large Leather Shields [4,+0] x1
+21 10-17 00:59:36 NAV goal ['shop', '2', 'sell', 'Small_Metal_Shield:1'] False
+21 10-17 00:59:36 ACT custom s store item=21 value=1 | sell 21x1
+21 10-17 00:59:42 NAV destroy ['Small_Metal_Shield'] False
+21 10-17 00:59:42 ACT custom k item=21 value=1 | agent: destroy ['Small_Metal_Shield']
+21 10-17 00:59:43 NAV journal ['Iron Helm [5] + Large Leather Shield [4] worn (+4 AC), no Gauntlets in stock after the restart, old shield refused (destroyed); 543g | Temple: list, buy CSW:4@70 | CSW to ~5 per mission, keep >=250'] False
+21 10-17 00:59:54 ACT custom p store item=8 value=4 entry=256 | buy 59 Potions of Cure Serious Wounds x4
+21 10-17 01:04:31 NAV destroy ['Human_Skeleton'] False
+21 10-17 01:04:31 ACT custom k item=21 value=1 | agent: destroy ['Human_Skeleton']
+21 10-17 01:05:20 ACT custom p store item=0 value=1 entry=1 | agent: raw
+21 10-17 01:09:51 ATT lost | You have no room for a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman}.
+21 10-17 01:09:51 ATT pack_full | You have no room for a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman}.
+21 10-17 01:09:56 NAV destroy ['Potion_of_Water'] False
+21 10-17 01:09:56 ACT custom k item=2 value=1 | agent: destroy ['Potion_of_Water']
+21 10-17 01:09:58 NAV pickup [] False
+21 10-17 01:10:21 ATT found | picked up a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman}: identify it before selling (`sell !NAME`)
+21 10-17 01:10:41 NAV journal ["700: White wolf pack fought (233->160 lowest), Wormtongue's Lucerne Hammer drop picked up after destroying a Water potion and reading 2 Light scrolls; Golden Staff (= Sleep Monsters); 520g | goto the wand at 14,54, then the / at 19,75 and the potion/scrolls/gold | unique drop to identify in town; wands sell well"] False
+21 10-17 01:11:52 NAV destroy ['Heal_Monster'] False
+21 10-17 01:11:52 ACT custom k item=16 value=1 | agent: destroy ['Heal_Monster']
+21 10-17 01:12:21 ATT lost | You have no room for a Scroll of Holy Chant.
+21 10-17 01:12:21 ATT pack_full | You have no room for a Scroll of Holy Chant.
+21 10-17 01:13:12 NAV journal ["found Scroll of Identify, read it on Wormtongue's hammer: Lucerne Hammer of Venom (2d5) (+2,+3), 2 blows (Weapons line ~18, probably without the poison brand); 556g | keep the Spear wielded, quote the hammer in town; goal explore | brand x3 might make it ~40/round vs non-resistant, but the Spear is the known quantity; selling may fund the Teleport staff"] False
+21 10-17 01:13:27 ATT user_message | If you aren't Full, you could eat the food in your pack for space
+21 10-17 01:18:31 ATT lost | You have no room for a Scroll of Light.
+21 10-17 01:18:32 ATT pack_full | You have no room for a Scroll of Light.
+21 10-17 01:18:40 NAV journal ['pack full (23) on a Scroll of Light, 680g, 01:18 | ignore it, explore on | Light scroll is worth ~8; slots kept for devices/jewellery'] False
+21 10-17 01:18:42 ATT lost | Your Hard Studded Leather [7] {excellent} (u) was stolen!
+21 10-17 01:19:45 ATT lost | You have no room for a Scroll titled "munger toxmung".
+21 10-17 01:19:45 ATT pack_full | You have no room for a Scroll titled "munger toxmung".
+21 10-17 01:19:49 ATT interesting_item | Dogwood Staff seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+21 10-17 01:20:34 NAV journal ['01:18:42 a Brigand stole a Hard Studded Leather [7] {excellent} from the pack (Pilot had picked it up); Pilot/hunt killed it 01:20; a ( Hard Studded Leather [7] is listed at 25,192 with a Dogwood Staff 26,192 | read Magic Mapping for a slot, goto 25,192, then the staff | an {excellent} body armour is the best find possible; staff sells'] False
+21 10-17 01:20:37 ATT lost | You have no room for a Dogwood Staff.
+21 10-17 01:20:37 ATT pack_full | You have no room for a Dogwood Staff.
+21 10-17 01:20:37 ATT lost | You have no room for Hard Studded Leather [7] {excellent}.
+21 10-17 01:20:52 NAV destroy ['munger_toxmung'] False
+21 10-17 01:20:52 ACT custom k item=15 value=1 | agent: destroy ['munger_toxmung']
+21 10-17 01:20:53 NAV destroy ['Robe'] False
+21 10-17 01:20:53 ACT custom k item=19 value=1 | agent: destroy ['Robe']
+21 10-17 01:20:54 NAV pickup [] False
+21 10-17 01:20:54 ATT found | picked up Hard Studded Leather [7] {excellent}: identify it before selling (`sell !NAME`)
+21 10-17 01:21:15 NAV destroy ['t'] False
+21 10-17 01:21:15 ACT custom k item=19 value=1 | agent: destroy ['t']
+21 10-17 01:21:32 NAV journal ['excellent HSL [7] picked up + worn (old destroyed), Dogwood Staff fetched; standing in the ring of the dark inner room 27,181 (no door shown), 01:21, stairs 70+ away | goal searchroom 27,181; if a pit/nest opens: Teleport scroll or recall | handbook: most dark ones are plain rooms; ~13 min before recall'] False
+21 10-17 01:23:13 ATT goal_done | searchroom 27,181: found a way on (searched: 27,192 x20)
+21 10-17 01:23:26 ATT structure | nest centred 27,181 (22-32, 169-193): a NEST (jellies, molds, icky things; some breed; no loot): don't open it. Avoid zone set
+21 10-17 01:23:36 NAV journal ['door opened onto a jelly nest (Red jelly STR-drain, Disenchanter mold, Grape jelly, Shambling mound...): stationary, nothing to loot visible | avoid 27,181 r10, goal explore elsewhere until ~01:33 then recall | handbook: nests are ignored; disenchanters ruin gear'] False
+21 10-17 01:27:07 ATT user_message | What was the item destroyed at 1:21:15
+21 10-17 01:27:13 NAV say ["At ~01:21 I destroyed my old Hard Studded Leather [7] {average} after putting on the {excellent} one I'd just picked up (same base armour, sells for ~10, pack was full). Just before that I destroyed a Robe [2] and an unknown scroll the flavour table calls Summon Undead."] False
+21 10-17 01:27:20 NAV journal ['user 01:27:07 asked what was destroyed at 01:21:15 | replied ~30 s later: old Hard Studded Leather [7] {average} after wearing the {excellent} one (also a Robe and a Summon Undead scroll just before) | honest account from my journal'] False
+21 10-17 01:27:44 NAV journal ["01:27:30 unseen_attacker 'It stares deep into your eyes!' at full HP (a gaze; maybe a paralysing eye nearby, no Free Action); Pilot fled toward a > 17 away (past max_depth) | goal recall at ~01:27:40 (~10 s after), 6 min early | budget recall was due ~01:33; a gazer I can't see plus no FA isn't worth 5 more minutes"] False
+21 10-17 01:28:07 NAV journal ['town 01:27:55 (day), 712g, 1 WoR, 6 CCW 5 CSW 5 CLW 10 Phase; loot: Hammer of Venom (+2,+3), Dogwood Staff (unknown), Golden = Sleep Monsters, White Potion, unknown scroll | use the Dogwood staff + read the scroll here (learn them), then quote the hammer at 3 | budget to 01:44: identify/sell/restock'] False
+21 10-17 01:28:31 NAV complain ["'use' has no TARGET like 'read' does: a Staff of Perception (identify) used twice in town identified the Flask of oil in slot a both times (use Perception Hard_Studded ignored the target). Cost 2 charges; I can't identify the {excellent} armour or the unknown potion/scroll with it."] False
+21 10-17 01:29:11 ACT custom s store item=20 value=1 | quote 20
+21 10-17 01:29:22 NAV journal ["Hammer of Venom quotes 1707 at shop 3 | sell it (sell !Lucerne_Hammer:1) | 2 blows vs the Spear's 3; brand maybe ~40/round vs non-resistant but 1707 takes the Teleport-staff fund from 712 to ~2400 (stage C goal); the escape matters more than damage"] False
+21 10-17 01:29:22 NAV goal ['shop', '3', 'sell', '!Lucerne_Hammer:1'] False
+21 10-17 01:29:23 ACT custom s store item=20 value=1 | sell 20x1
+21 10-17 01:29:28 NAV goal ['shop', '6', 'list', 'sell', 'Golden_Staff:1', 'quote', 'Perception'] False
+21 10-17 01:29:42 ACT custom s store item=14 value=1 | quote 14
+21 10-17 01:29:51 NAV goal ['shop', '6', 'quote', 'Golden_Staff', 'sell', '!Perception:1'] False
+21 10-17 01:29:52 ACT custom s store item=18 value=1 | quote 18
+21 10-17 01:29:52 ACT custom s store item=14 value=1 | sell 14x1
+21 10-17 01:29:59 NAV goal ['shop', '5', 'list', 'sell', 'White_Potion:1'] False
+21 10-17 01:30:03 ACT custom s store item=9 value=1 | sell 9x1
+21 10-17 01:30:15 ACT custom p store item=14 value=1 entry=121 | buy a Scroll of Word of Recall {50% off} x1
+21 10-17 01:30:15 ACT custom p store item=16 value=2 entry=80 | buy 7 Scrolls of Identify {50% off} x2
+21 10-17 01:30:15 ACT custom p store item=25 value=3 entry=48 | buy 3 Scrolls of Magic Mapping {75% off} x3
+21 10-17 01:30:16 ACT custom p store item=20 value=2 entry=302 | buy 3 Scrolls of Enchant Weapon To-Dam {25% off} x2
+21 10-17 01:30:16 ACT custom p store item=28 value=2 entry=16 | buy 2 Scrolls of Satisfy Hunger {50% off} x2
+21 10-17 01:30:40 NAV journal ['Identify: armour = Hard Studded Leather of Resistance (-1) [7,+9] (all 4 base resists); 2 To-Dam: Spear (+5,+7) ~32/round; 2020g | take off Rings of Resist Fire/Cold + Amulet of Resist Acid and quote/sell them at 6 | now redundant with the armour; gold to the Teleport staff (4320)'] False
+21 10-17 01:30:52 ACT custom s store item=19 value=1 | quote 19
+21 10-17 01:30:52 ACT custom s store item=20 value=1 | quote 20
+21 10-17 01:30:53 ACT custom s store item=21 value=1 | quote 21
+21 10-17 01:31:00 NAV goal ['shop', '6', 'sell', 'Resist_Fire:1', 'sell', 'Resist_Cold:1', 'sell', 'Resist_Acid:1'] False
+21 10-17 01:31:00 ACT custom s store item=19 value=1 | sell 19x1
+21 10-17 01:31:00 ACT custom s store item=19 value=1 | sell 19x1
+21 10-17 01:31:01 ACT custom s store item=19 value=1 | sell 19x1
+21 10-17 01:31:20 ACT custom p store item=19 value=1 entry=56 | buy 23 Sets of Gauntlets [2,+0] x1
+21 10-17 01:31:27 NAV destroy ['Leather_Gloves'] False
+21 10-17 01:31:27 ACT custom k item=19 value=1 | agent: destroy ['Leather_Gloves']
+21 10-17 01:31:37 NAV journal ["sold rings 100+100, amulet 120; Gauntlets [2] bought (56) + worn, gloves destroyed; 2284g, 2 WoR, 6 CCW 5 CSW 5 CLW 10 Phase, 01:31 | goal townfarm 3000 10 until the budget ends ~01:44 | a 6-min dive isn't worth a WoR; day farming earns ~100/min toward the 4320 Teleport staff"] False
+22 10-17 01:45:44 ATT goal_done | shop 7: stock: a Mushroom of Disease 285; a Potion of Restore Constitution 1710; a Potion of Enlightenment 4560; a Scroll of *Identify* 5700; 6 Scrolls of Trap/Door Destruction 285; a Scroll of *Destr
+22 10-17 01:46:06 ACT custom p store item=2 value=3 entry=15 | buy 99 Rations of Food x3
+22 10-17 01:46:06 ACT custom p store item=5 value=3 entry=15 | buy 99 Flasks of oil x3
+22 10-17 01:48:14 ATT unique_slain | Orfax, Son of Boldor slain at 3,85: uniques drop good items (look at 'Item squares' around there)
+22 10-17 01:48:22 ATT interesting_item | Ring of Resist Fire seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+22 10-17 01:48:31 ATT interesting_item | Rod of Trap Location seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+22 10-17 01:48:34 ATT interesting_item | Ring of Slow Digestion seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+22 10-17 01:48:35 ATT interesting_item | Wand of Light seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+22 10-17 01:48:50 ATT interesting_item | Staff of Perception seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+22 10-17 01:50:31 ACT custom k item=21 value=1 | autodestroy a Ring of Teleportation {cursed}
+22 10-17 01:50:41 ATT lost | You have no room for a Wand of Slow Monster.
+22 10-17 01:50:41 ATT pack_full | You have no room for a Wand of Slow Monster.
+22 10-17 01:50:46 NAV destroy ['Rod_of_Trap_Location'] False
+22 10-17 01:50:46 ACT custom k item=16 value=1 | agent: destroy ['Rod_of_Trap_Location']
+22 10-17 01:50:46 NAV pickup [] False
+22 10-17 01:50:49 ATT interesting_item | Wand of Slow Monster seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+22 10-17 01:51:20 ATT interesting_item | Aluminum Rod seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+22 10-17 01:51:28 NAV destroy ['Short_Bow'] False
+22 10-17 01:51:28 ACT custom k item=21 value=1 | agent: destroy ['Short_Bow']
+22 10-17 01:51:29 NAV pickup [] False
+22 10-17 01:52:37 ACT custom k item=22 value=1 | autodestroy an Awl-Pike (1d8) {cursed}
+22 10-17 01:52:42 NAV destroy ['Metal_Cap'] False
+22 10-17 01:52:42 ACT custom k item=20 value=1 | agent: destroy ['Metal_Cap']
+22 10-17 01:52:43 NAV destroy ['Awl-Pike'] False
+22 10-17 01:52:43 NAV journal ['pack full of junk from the loot room (Metal Cap, Awl-Pike, bow destroyed); Wand of Slow Monster, Perception staff, rods/rings remain at ~37,124 and ~30,145 | goto 37,124 then 30,145 | devices/jewellery are the valuable ones'] False
+22 10-17 01:54:03 NAV destroy ['Flail'] False
+22 10-17 01:54:03 ACT custom k item=22 value=1 | agent: destroy ['Flail']
+22 10-17 01:54:49 ACT custom k item=18 value=1 | autodestroy a Pair of Hard Leather Boots [3] {cursed}
+22 10-17 01:55:18 ACT custom p store item=10 value=3 entry=546 | buy 3 Scrolls of Word of Recall {25% off} x3
+22 10-17 01:55:18 ACT custom p store item=8 value=10 entry=240 | buy 54 Scrolls of Phase Door x10
+22 10-17 01:55:31 ACT custom p store item=9 value=5 entry=795 | buy 21 Potions of Cure Critical Wounds x5
+22 10-17 01:55:32 ACT custom p store item=7 value=3 entry=72 | buy 99 Potions of Cure Light Wounds x3
+22 10-17 01:55:34 ACT custom s store item=18 value=1 | quote 18
+22 10-17 01:55:35 ACT custom s store item=16 value=1 | quote 16
+22 10-17 01:55:39 NAV goal ['shop', '6', 'sell', '!Staff_of_Door/Stair_Location:1', 'sell', 'Golden_Staff:1'] False
+22 10-17 01:55:39 ACT custom s store item=16 value=1 | sell 16x1
+22 10-17 02:01:15 ACT custom p store item=14 value=2 entry=242 | buy 2 Scrolls of Word of Recall {50% off} x2
+22 10-17 02:01:15 ACT custom p store item=11 value=5 entry=120 | buy 99 Scrolls of Phase Door x5
+22 10-17 02:01:15 ACT custom p store item=15 value=1 entry=61 | buy 4 Scrolls of Identify {25% off} x1
+22 10-17 02:01:20 ACT custom k item=19 value=1 | autodestroy an Amulet of Teleportation {cursed}
+22 10-17 02:01:20 NAV destroy ['Long_Bow'] False
+22 10-17 02:01:20 ACT custom k item=20 value=1 | agent: destroy ['Long_Bow']
+22 10-17 02:01:25 NAV destroy ['Amulet_of_Teleportation'] False
+22 10-17 02:01:29 ACT custom p store item=9 value=3 entry=477 | buy 22 Potions of Cure Critical Wounds x3
+22 10-17 02:01:29 ACT custom p store item=8 value=3 entry=192 | buy 72 Potions of Cure Serious Wounds x3
+22 10-17 02:02:45 ATT interesting_item | Oak Staff seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+22 10-17 02:03:02 ATT interesting_item | Ring of Slow Digestion seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+22 10-17 02:03:11 ATT lost | You have no room for a Hard Leather Cap [2].
+22 10-17 02:03:11 ATT pack_full | You have no room for a Hard Leather Cap [2].
+22 10-17 02:03:20 NAV destroy ['Elm_Staff'] False
+22 10-17 02:03:20 ACT custom k item=21 value=1 | agent: destroy ['Elm_Staff']
+22 10-17 02:03:21 NAV destroy ['Furry_Mushroom'] False
+22 10-17 02:03:21 ACT custom k item=1 value=1 | agent: destroy ['Furry_Mushroom']
+22 10-17 02:03:22 NAV destroy ['Grey_Mushroom'] False
+22 10-17 02:03:22 ACT custom k item=1 value=1 | agent: destroy ['Grey_Mushroom']
+22 10-17 02:05:33 ATT interesting_item | Bloodstone Ring seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+22 10-17 02:05:40 ATT interesting_item | Ring of Resist Cold seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+22 10-17 02:06:35 ACT custom p store item=16 value=1 entry=61 | buy a Scroll of Word of Recall {75% off} x1
+22 10-17 02:07:27 ATT lost | You have no room for a Dagger (1d4).
+22 10-17 02:07:27 ATT pack_full | You have no room for a Dagger (1d4).
+22 10-17 02:07:38 NAV destroy ['Brass_Lantern'] False
+22 10-17 02:07:38 ACT custom k item=21 value=1 | agent: destroy ['Brass_Lantern']
+22 10-17 02:08:36 ATT thief | Brigand (lvl 10, 2 away) steals items from your pack with a touch, then teleports: kill it before it reaches you (`goal hunt Brigand`), or keep away
+22 10-17 02:09:38 ATT user_message | You weren't in battle, but still hurt. You should Rest to full
+22 10-17 02:10:30 ATT user_message | The Pilot should always Rest to full when alone unless it is in the process of fleeing etc.
+22 10-17 02:11:49 ATT interesting_item | Balsa Staff seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+22 10-17 02:12:33 NAV journal ['02:12 town after hill orc/gnome mage summon mob at 650 (HP low 88/236, 0 Phase left, stair-hopped, WoR landed) | identify 2 Bloodstone rings, sell, restock; no more dives (0 WoR, ~17 min) | safe end'] False
+22 10-17 02:14:01 ACT custom p store item=13 value=1 entry=119 | buy 2 Scrolls of Remove Curse {25% off} x1
+22 10-17 02:14:20 ACT custom s store item=17 value=1 | quote 17
+22 10-17 02:14:30 NAV destroy ['Protection_{uncursed}'] False
+22 10-17 02:14:30 ACT custom k item=17 value=1 | agent: destroy ['Protection_{uncursed}']
+22 10-17 02:14:36 ACT custom p store item=10 value=6 entry=114 | buy 6 Scrolls of Phase Door {25% off} x6
+22 10-17 02:14:36 ACT custom p store item=9 value=4 entry=96 | buy 32 Scrolls of Phase Door x4
+22 10-17 02:14:41 ACT custom p store item=10 value=1 entry=242 | buy 15 Scrolls of Word of Recall x1
+22 10-17 02:14:53 ACT custom p store item=2 value=2 entry=10 | buy 99 Rations of Food x2
+23 10-22 22:15:22 NAV journal ['mission 23 start, town day, 475g, 1 WoR, 3 CCW | pick loot, sell Golden Staff, townfarm to 900, buy WoR + CCW | plan'] False
+23 10-22 22:15:22 ATT goal_done | goto item
+23 10-22 22:15:26 NAV pickup [] False
+23 10-22 22:15:55 NAV goal ['shop', '6', 'sell', 'Golden_Staff:1'] False
+23 10-22 22:16:00 NAV goal ['shop', '6', 'sell', '!Golden_Staff:1'] False
+23 10-22 22:16:00 ACT custom s store item=19 value=1 | sell 19x1
+23 10-22 22:17:35 ACT custom p store item=9 value=1 entry=242 | buy 5 Scrolls of Word of Recall x1
+23 10-22 22:17:43 ACT custom p store item=9 value=3 entry=477 | buy 15 Potions of Cure Critical Wounds x3
+23 10-22 22:20:27 ATT tactic | left a Metal Cap [3] (pack nearly full: bulky gear only with 6+ free slots; `pickup` takes it)
+23 10-22 22:20:57 ATT band | a band within 10 squares: White wolf ×5 (5 monsters, ~70 worst-case melee a turn together, HP 233): leave now while it's cheap -- no stairs known: read Word of Recall; don't stop for loot
+23 10-22 22:24:44 ATT unique_slain | Brodda, the Easterling slain at 49,163: uniques drop good items (look at 'Item squares' around there)
+23 10-22 22:24:48 NAV journal ['Brodda slain (unique_slain fired) HP 209/236 | check drop squares then continue explore | drops good'] False
+23 10-22 22:24:49 ATT tactic | left a Scimitar (2d5) {Brodda, the Easterling} (pack nearly full: bulky gear only with 6+ free slots; `pickup` takes it)
+23 10-22 22:24:59 ATT found | picked up a Pair of Metal Shod Boots [6] {Brodda, the Easterling}: identify it before selling (`sell !NAME`)
+23 10-22 22:25:49 NAV destroy ['t'] False
+23 10-22 22:25:49 ACT custom k item=19 value=1 | agent: destroy ['t']
+23 10-22 22:26:18 ATT band | a band within 10 squares: Cave orc ×2, Black orc, Half-orc, Uruk (5 monsters, ~94 worst-case melee a turn together, HP 230): leave now while it's cheap -- stairs 15 away; don't stop for loot
+23 10-22 22:26:33 ATT interesting_item | Amulet of Resist Acid seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it
+23 10-22 22:27:08 NAV journal ['user: scimitar loss was stupid | agreed; I should have fetched unique drop before letting flee, will prefer fetching unique drops first | accountability'] False
+23 10-22 22:27:08 NAV goal ['shop', '6', 'sell', 'Amulet_of_Resist_Acid:1', 'sell', 'Molybdenum_Rod:1', 'sell', 'Soft_Leather_Boots:1'] False
+23 10-22 22:27:24 ATT user_message | Serious work needs to be applied to managing a nearly full inventory
+23 10-22 22:27:28 NAV say ["Agreed. Pack is 22 slots with junk like mushrooms, water, staffs; I'll sell/destroy extras now and complain about the pickup behaviour."] False
+23 10-22 22:27:28 NAV complain ["Pack nearly full at 650 ft (22 slots: mushrooms, water, spare boots, extra staffs, rods); the bulky-pickup rule made the Pilot skip Brodda's Scimitar. A way to see free slots and choose what to junk, or a pack-slot figure in the report, would help."] False
+23 10-22 22:27:35 ACT custom s store item=19 value=1 | sell 19x1
+23 10-22 22:27:42 NAV goal ['shop', '6', 'sell', '!Molybdenum_Rod:1', 'sell', '!Soft_Leather_Boots:1'] False
+23 10-22 22:27:42 NAV destroy ['Potion_of_Water'] False
+23 10-22 22:27:42 ACT custom k item=4 value=1 | agent: destroy ['Potion_of_Water']
+23 10-22 22:27:43 NAV destroy ['Furry_Mushroom'] False
+23 10-22 22:27:43 ACT custom k item=1 value=1 | agent: destroy ['Furry_Mushroom']
+23 10-22 22:27:44 NAV destroy ['Black_Mushroom'] False
+23 10-22 22:27:44 ACT custom k item=1 value=1 | agent: destroy ['Black_Mushroom']
+23 10-22 22:27:46 ACT custom s store item=13 value=1 | sell 13x1
+23 10-22 22:27:47 ACT custom s store item=15 value=1 | sell 15x1
+23 10-22 22:27:51 NAV goal ['shop', '2', 'sell', '!Soft_Leather_Boots:1'] False
+23 10-22 22:27:58 ACT custom s store item=15 value=1 | sell 15x1
+23 10-22 22:28:11 NAV journal ["MISTAKE: force-sold unidentified {excellent} Soft Leather Boots at armoury (Pilot warned 'probably special'); they were of Free Action [2,+4], sold for 3g, shop resells 2265 | townfarm toward ~2300 and buy back; skip dive until then | FA is the key item; I wore Brodda's boots and skipped identifying the old ones"] False
+23 10-22 22:28:11 NAV complain ["Unknown {excellent} boots: no cheap way to see the ego without paying Identify; I sold them (my mistake) but the shop goal's sell accepted !NAME for a worn-then-removed {excellent} item. Wish: wearing an {excellent} item should reveal the ego in the report or the shop quote should show it."] False

@@ -1,0 +1,132 @@
+mission,epoch,time,category,item,received,est_value,shortfall,how_valued,evidence
+17,1792173619.0,10-16 14:00:19,e_stolen_gold,35 gold stolen by urchin,0,35,35,face value,"events.jsonl ""N coins were stolen!"""
+17,1792173623.0,10-16 14:00:23,e_stolen_gold,22 gold stolen by urchin,0,22,22,face value,"events.jsonl ""N coins were stolen!"""
+17,1792174234.0,10-16 14:10:34,c_abandoned,"Seen, not picked up: Zinc Wand (flavour unknown)",0,17,17,MINIMUM unaware wand 50 x 0.35,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+17,1792174239.0,10-16 14:10:39,b_destroy,You destroy a Pair of Hard Leather Boots [3] {worthless},0,0,0,worthless,events.jsonl message; decisions act custom k
+17,1792174262.0,10-16 14:11:02,e_stolen_gold,63 gold stolen by hobbit,0,63,63,face value,"events.jsonl ""N coins were stolen!"""
+17,1792174301.0,10-16 14:11:41,e_stolen_gold,46 gold stolen by hobbit,0,46,46,face value,"events.jsonl ""N coins were stolen!"""
+17,1792174460.8,10-16 14:14:20,a_sale,a Scroll of Holy Chant,8,16,8,"true value V=39 (listing ask 64 / A161%) x S=39% (owner Vella, CHR3)","events.jsonl ""You sold ..."" 1792174461 (store Alchemist Vella)"
+17,1792174460.9,10-16 14:14:20,a_sale,a Scroll of Object Detection,6,6,0,"true value V=14 (listing ask 24 / A161%) x S=39% (owner Vella, CHR3)","events.jsonl ""You sold ..."" 1792174461 (store Alchemist Vella)"
+17,1792174461.2,10-16 14:14:21,a_sale,a Scroll of Light,6,6,0,"true value V=15 (cost model) x S=39% (owner Vella, CHR3)","events.jsonl ""You sold ..."" 1792174461 (store Alchemist Vella)"
+17,1792175016.0,10-16 14:23:36,b_destroy,You destroy a Cloak [1] {cursed},0,0,0,cursed=0,events.jsonl message; decisions act custom k
+17,1792175739.0,10-16 14:35:39,c_abandoned,No room: Set of Leather Gloves [1],0,3,3,cost 3,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+17,1792175745.0,10-16 14:35:45,b_destroy,You destroy a Rodent Skeleton,0,0,0,junk,events.jsonl message; decisions act custom k
+17,1792175793.0,10-16 14:36:33,c_abandoned,No room: Scroll of Light,0,6,6,cost 15 x 0.39,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+17,1792175806.0,10-16 14:36:46,c_abandoned,No room: Pair of Soft Leather Boots [2] (x2 events),0,3,3,cost 7 x 0.4,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+17,1792175921.1,10-16 14:38:41,a_sale,a Wand of Wonder (12 charges),138,138,0,"true value V=393 (listing ask 650 / A165%) x S=35% (owner Ariel, CHR3)","events.jsonl ""You sold ..."" 1792175921 (store Magic Shop Ariel)"
+17,1792175928.3,10-16 14:38:48,a_sale,a Wand of Light (7 charges),95,95,0,"true value V=270 (listing ask 446 / A165%) x S=35% (owner Ariel, CHR3)","events.jsonl ""You sold ..."" 1792175928 (store Magic Shop Ariel)"
+17,1792175932.9,10-16 14:38:52,a_sale_SHORT,a Wand of Light (16 charges),70,126,56,"true value V=360 (cost model) x S=35% (owner Ariel, CHR3)","events.jsonl ""You sold ..."" 1792175933 (store Magic Shop Ariel)"
+17,1792175972.8,10-16 14:39:32,a_sale,a Brass Lantern (with 4831 turns of light),15,15,0,"true value V=34 (listing ask 55 / A158%) x S=42% (owner Rincewind, CHR3)","events.jsonl ""You sold ..."" 1792175973 (store General store Rincewind)"
+17,1792175972.9,10-16 14:39:32,a_sale,a Wooden Torch (with 1506 turns of light),1,1,0,"true value V=1 (listing ask 3 / A158%) x S=42% (owner Rincewind, CHR3)","events.jsonl ""You sold ..."" 1792175973 (store General store Rincewind)"
+18,1792190828.4,10-16 18:47:08,a_sale,"38 Rounded Pebbles (1d2) (+0,+0)",38,0,0,"true value V=1 (listing ask 2 / A162%) x S=38% (owner Lyar-el, CHR3)","events.jsonl ""You sold ..."" 1792190828 (store General store Lyar-el)"
+18,1792190859.5,10-16 18:47:39,a_sale,a Scroll of Treasure Detection,8,6,0,"true value V=15 (listing ask 24 / A160%) x S=40% (owner Wizzle, CHR3)","events.jsonl ""You sold ..."" 1792190859 (store Alchemist Wizzle)"
+18,1792190859.5,10-16 18:47:39,a_sale,a Potion of Salt Water,8,0,0,"true value V=0 (cost model) x S=40% (owner Wizzle, CHR3)","events.jsonl ""You sold ..."" 1792190860 (store Alchemist Wizzle)"
+18,1792190898.8,10-16 18:48:18,a_sale,"a Robe [2,+1]",40,39,0,"true value V=103 (listing ask 168 / A162%) x S=38% (owner Decado, CHR3)","events.jsonl ""You sold ..."" 1792190899 (store Armoury Decado)"
+18,1792190898.8,10-16 18:48:18,a_sale,"a Set of Leather Gloves [1,+0]",1,1,0,known cheap item; paid cost x S (no loss),"events.jsonl ""You sold ..."" 1792190899 (store Armoury Decado)"
+18,1792190904.1,10-16 18:48:24,a_sale,"a Dagger (1d4) (+0,+0)",5,5,0,known cheap item; paid cost x S (no loss),"events.jsonl ""You sold ..."" 1792190904 (store Weapon Smith Ithyl-Mak)"
+18,1792190922.8,10-16 18:48:42,a_sale,a Scroll of Blessing,6,6,0,"true value V=15 (cost model) x S=40% (owner Gunnar, CHR3)","events.jsonl ""You sold ..."" 1792190923 (store Temple Gunnar)"
+18,1792190932.0,10-16 18:48:52,b_destroy,You destroy a Wand of Heal Monster,0,0,0,cost 0,events.jsonl message; decisions act custom k
+18,1792191143.0,10-16 18:52:23,e_stolen_item,One of your Potion of Speed stolen by Brigand,0,75,75,cost 75 (shop value); USE value much higher (+10 speed),events.jsonl message
+18,1792191253.0,10-16 18:54:13,b_destroy,You destroy Soft Studded Leather [5] {average},0,14,14,cost 35 x 0.4,events.jsonl message; decisions act custom k
+18,1792191351.0,10-16 18:55:51,e_destroyed_by_monster,One Scroll of Phase Door {75% off} destroyed by attack,0,6,6,paid ~6,events.jsonl message
+18,1792191723.0,10-16 19:02:03,e_stolen_gold,28 gold stolen by Wormtongue touch,0,28,28,face value,"events.jsonl ""N coins were stolen!"""
+18,1792192103.0,10-16 19:08:23,e_stolen_gold,41 gold stolen by Wormtongue touch,0,41,41,face value,"events.jsonl ""N coins were stolen!"""
+18,1792192211.5,10-16 19:10:11,a_sale_SHORT_irreplaceable,a Scroll of Teleportation,8,16,8,"true value V=40 (listing ask 64 / A160%) x S=40% (owner Wizzle, CHR3); ESCAPE ITEM not sold in stores","events.jsonl ""You sold ..."" 1792192212 (store Alchemist Wizzle)"
+18,1792192234.0,10-16 19:10:33,a_sale_SHORT,a Wand of Stinking Cloud (12 charges),100,160,60,"true value V=640 (listing ask 1120 / A175%) x S=25% (owner Luthien, CHR3)","events.jsonl ""You sold ..."" 1792192234 (store Magic Shop Luthien)"
+18,1792192234.0,10-16 19:10:34,a_sale,a Staff of Earthquakes (4 charges),105,105,0,"true value V=418 (listing ask 732 / A175%) x S=25% (owner Luthien, CHR3)","events.jsonl ""You sold ..."" 1792192234 (store Magic Shop Luthien)"
+18,1792192234.4,10-16 19:10:34,a_sale,an Amulet of Infravision (+5),113,113,0,"true value V=450 (listing ask 788 / A175%) x S=25% (owner Luthien, CHR3)","events.jsonl ""You sold ..."" 1792192234 (store Magic Shop Luthien)"
+18,1792192717.0,10-16 19:18:37,e_stolen_gold,67 gold stolen by urchin,0,67,67,face value,"events.jsonl ""N coins were stolen!"""
+19,1792203364.0,10-16 22:16:04,e_destroyed_by_monster,"Food eaten by unseen monster: Elvish Waybread, Ration, Wrinkled Mushroom",0,10,10,~10,events.jsonl message
+19,1792203476.0,10-16 22:17:56,c_abandoned,"Seen, never picked up: Staff of Light",0,90,90,cost 250 + 12/charge x 0.35 (rough),decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+19,1792203633.6,10-16 22:20:33,a_sale_SHORT,a Staff of Slow Monsters (6 charges),200,260,60,"true value V=1040 (listing ask 1820 / A175%) x S=25% (owner Luthien, CHR3)","events.jsonl ""You sold ..."" 1792203634 (store Magic Shop Luthien)"
+19,1792203653.0,10-16 22:20:53,b_destroy,You destroy a Filthy Rag [1] {average},0,0,0,cost 0,events.jsonl message; decisions act custom k
+19,1792203889.0,10-16 22:24:49,e_destroyed_by_monster,One Potion of Heroism {75% off} destroyed by attack,0,9,9,paid ~9,events.jsonl message
+19,1792203951.4,10-16 22:25:51,a_sale,"a Morning Star (2d6) (+0,+0)",131,131,0,"true value V=395 (listing ask 661 / A167%) x S=33% (owner Oglign, CHR3)","events.jsonl ""You sold ..."" 1792203951 (store Weapon Smith Oglign)"
+19,1792204011.7,10-16 22:26:51,a_sale,a Ring of Slow Digestion,63,63,0,"true value V=250 (listing ask 438 / A175%) x S=25% (owner Luthien, CHR3)","events.jsonl ""You sold ..."" 1792204012 (store Magic Shop Luthien)"
+19,1792204011.8,10-16 22:26:51,a_sale,an Amulet of Adornment,5,5,0,"true value V=20 (listing ask 35 / A175%) x S=25% (owner Luthien, CHR3)","events.jsonl ""You sold ..."" 1792204012 (store Magic Shop Luthien)"
+19,1792204041.8,10-16 22:27:21,a_sale,"an Awl-Pike (1d8) (+2,+4)",310,310,0,"true value V=940 (listing ask 1570 / A167%) x S=33% (owner Oglign, CHR3)","events.jsonl ""You sold ..."" 1792204042 (store Weapon Smith Oglign)"
+19,1792204204.0,10-16 22:30:04,c_abandoned,"Seen, never picked up: Wand of Light (x2 frames)",0,70,70,cost 200 x 0.35 base,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+19,1792204333.0,10-16 22:32:13,c_abandoned,"No room: Scroll ""nelggar payjo"" (unknown)",0,8,8,unaware scroll base 20 x 0.4; true value unknown,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+19,1792204340.0,10-16 22:32:20,b_destroy,You destroy 2 Potions of Slowness,0,0,0,cost 0,events.jsonl message; decisions act custom k
+19,1792204363.0,10-16 22:32:43,b_destroy,You destroy a Cutlass (1d7) {average},0,34,34,cost 85 x 0.4,events.jsonl message; decisions act custom k
+19,1792204369.0,10-16 22:32:49,b_destroy,"You destroy a Cloak [1,+0]",0,1,1,cost 3,events.jsonl message; decisions act custom k
+19,1792204373.0,10-16 22:32:53,b_destroy,You destroy a Ring of Teleportation {cursed},0,0,0,cursed=0 (autodestroy),events.jsonl message; decisions act custom k
+19,1792205045.3,10-16 22:44:05,a_sale_SHORT,a Wand of Stinking Cloud (7 charges),100,135,35,"true value V=540 (cost model) x S=25% (owner Luthien, CHR3)","events.jsonl ""You sold ..."" 1792205045 (store Magic Shop Luthien)"
+19,1792205045.4,10-16 22:44:05,a_sale_SHORT,a Wand of Wonder (11 charges),63,96,33,"true value V=382 (listing ask 669 / A175%) x S=25% (owner Luthien, CHR3)","events.jsonl ""You sold ..."" 1792205045 (store Magic Shop Luthien)"
+19,1792205258.0,10-16 22:47:38,e_stolen_item,One Scroll of Phase Door {75% off} stolen (Squint-eyed rogue),0,6,6,paid ~6,events.jsonl message
+20,1792208526.4,10-16 23:42:06,a_sale,3 Potions of Resist Cold,36,12,0,"true value V=29 (listing ask 48 / A161%) x S=39% (owner Vella, CHR3)","events.jsonl ""You sold ..."" 1792208526 (store Alchemist Vella)"
+20,1792208532.9,10-16 23:42:12,a_sale,a Potion of Infravision,8,8,0,"true value V=19 (listing ask 32 / A161%) x S=39% (owner Vella, CHR3); FORCED with !","events.jsonl ""You sold ..."" 1792208533 (store Alchemist Vella)"
+20,1792208541.9,10-16 23:42:21,a_sale_SHORT,a Ring of Feather Falling,11,50,39,"true value V=200 (cost model) x S=25% (owner Luthien, CHR3); FORCED with !","events.jsonl ""You sold ..."" 1792208542 (store Magic Shop Luthien)"
+20,1792208741.0,10-16 23:45:41,b_destroy,You destroy a Ring of Teleportation {cursed},0,0,0,cursed=0 (autodestroy),events.jsonl message; decisions act custom k
+20,1792208766.0,10-16 23:46:06,b_destroy,You destroy 20 Rounded Pebbles (1d2) {average},0,20,20,38 pebbles sold for 38 earlier (1 each),events.jsonl message; decisions act custom k
+20,1792209638.9,10-17 00:00:38,a_sale,a Ring of Feather Falling,50,50,0,"true value V=200 (listing ask 350 / A175%) x S=25% (owner Luthien, CHR3)","events.jsonl ""You sold ..."" 1792209639 (store Magic Shop Luthien)"
+20,1792209639.0,10-17 00:00:38,a_sale,a Rod of Trap Location,23,25,2,"true value V=100 (listing ask 175 / A175%) x S=25% (owner Luthien, CHR3); FORCED with !","events.jsonl ""You sold ..."" 1792209639 (store Magic Shop Luthien)"
+20,1792209899.0,10-17 00:04:59,c_abandoned,No room: Clotted Red Potion (=Clumsiness),0,0,0,worthless,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+20,1792209927.0,10-17 00:05:27,b_destroy,You destroy a Cutlass (1d7) {average},0,34,34,cost 85 x 0.4,events.jsonl message; decisions act custom k
+20,1792209928.0,10-17 00:05:28,b_destroy,You destroy a Black Mushroom,0,0,0,~0,events.jsonl message; decisions act custom k
+20,1792210061.0,10-17 00:07:41,b_destroy,You destroy a Wrinkled Mushroom,0,0,0,~0,events.jsonl message; decisions act custom k
+20,1792210103.0,10-17 00:08:23,b_destroy,You destroy Soft Leather Armour [4] {cursed},0,0,0,cursed=0 (autodestroy),events.jsonl message; decisions act custom k
+20,1792210320.0,10-17 00:12:00,c_abandoned,No room: Set of Leather Gloves [1] (x2),0,3,3,cost 3,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+20,1792210332.0,10-17 00:12:12,b_destroy,You destroy a Clotted Red Potion (=Clumsiness),0,0,0,worthless,events.jsonl message; decisions act custom k
+20,1792210466.0,10-17 00:14:26,b_destroy,You destroy a Potion of Water,0,0,0,0,events.jsonl message; decisions act custom k
+20,1792210585.1,10-17 00:16:25,a_sale_SHORT,a Wand of Stinking Cloud (9 charges),100,145,45,"true value V=580 (listing ask 1015 / A175%) x S=25% (owner Luthien, CHR3)","events.jsonl ""You sold ..."" 1792210585 (store Magic Shop Luthien)"
+20,1792210585.2,10-17 00:16:25,a_sale_SHORT,a Staff of Object Location (17 charges),50,92,42,"true value V=370 (cost model) x S=25% (owner Luthien, CHR3)","events.jsonl ""You sold ..."" 1792210585 (store Magic Shop Luthien)"
+20,1792210632.8,10-17 00:17:12,a_sale,a Ring of Acid [+6],900,900,0,"true value V=3600 (listing ask 6300 / A175%) x S=25% (owner Luthien, CHR3)","events.jsonl ""You sold ..."" 1792210633 (store Magic Shop Luthien)"
+21,1792212518.5,10-17 00:48:38,a_sale,"a Hard Leather Cap [2,-2]",5,,,known cheap item; paid cost x S (no loss),"events.jsonl ""You sold ..."" 1792212519 (store Armoury Darg-Low)"
+21,1792213170.3,10-17 00:59:30,a_sale,"a Hard Leather Cap [2,-2]",5,,,known cheap item; paid cost x S (no loss),"events.jsonl ""You sold ..."" 1792213170 (store Armoury Darg-Low)"
+21,1792213182.0,10-17 00:59:42,b_destroy,"You destroy a Small Metal Shield [3,-1]",0,0,0,"negative to_a = worthless; shop said ""I don't want that!""",events.jsonl message; decisions act custom k
+21,1792213472.0,10-17 01:04:32,b_destroy,You destroy a Human Skeleton,0,0,0,junk,events.jsonl message; decisions act custom k
+21,1792213798.0,10-17 01:09:58,b_destroy,You destroy a Potion of Water,0,0,0,0,events.jsonl message; decisions act custom k
+21,1792213912.0,10-17 01:11:52,b_destroy,You destroy a Wand of Heal Monster,0,0,0,cost 0,events.jsonl message; decisions act custom k
+21,1792213941.0,10-17 01:12:21,c_abandoned,No room: Scroll of Holy Chant,0,16,16,cost 40 x 0.39,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+21,1792214311.0,10-17 01:18:31,c_abandoned,No room: Scroll of Light,0,6,6,cost 15 x 0.39,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+21,1792214322.0,10-17 01:18:42,e_stolen_item,Hard Studded Leather [7] {excellent} stolen by Brigand (RECOVERED after killing thief),0,0,0,"recovered 01:20:54; true item = Hard Studded Leather of Resistance (-1) [7,+9]; no loss",events.jsonl message
+21,1792214452.0,10-17 01:20:52,b_destroy,"You destroy a Scroll titled ""munger toxmung"" (=Summon Undead)",0,0,0,worthless,events.jsonl message; decisions act custom k
+21,1792214453.0,10-17 01:20:53,b_destroy,You destroy a Robe [2],0,2,2,cost 4,events.jsonl message; decisions act custom k
+21,1792214475.0,10-17 01:21:15,b_destroy,You destroy Hard Studded Leather [7] {average},0,78,78,"cost 200 x S 0.39 (Navigator said ""sells ~10"": wrong)",events.jsonl message; decisions act custom k
+21,1792214963.5,10-17 01:29:23,a_sale,"a Lucerne Hammer of Venom (2d5) (+2,+3) {excellent - Wormtongue, Agent of Sar}",1707,1707,0,"true value V=4875 (listing ask 8045 / A165%) x S=35% (owner Arndal, CHR3); FORCED with !","events.jsonl ""You sold ..."" 1792214963 (store Weapon Smith Arndal)"
+21,1792214992.3,10-17 01:29:52,a_sale_SHORT,a Staff of Perception (17 charges),160,296,136,"true value V=740 (cost model) x S=40% (owner Inglorian, CHR3); FORCED with !","events.jsonl ""You sold ..."" 1792214992 (store Magic Shop Inglorian)"
+21,1792215004.2,10-17 01:30:04,a_sale,a Potion of Sickliness,8,0,0,"true value V=0 (cost model) x S=39% (owner Vella, CHR3)","events.jsonl ""You sold ..."" 1792215004 (store Alchemist Vella)"
+21,1792215060.8,10-17 01:31:00,a_sale,a Ring of Resist Fire,100,100,0,"true value V=250 (listing ask 400 / A160%) x S=40% (owner Inglorian, CHR3)","events.jsonl ""You sold ..."" 1792215061 (store Magic Shop Inglorian)"
+21,1792215061.0,10-17 01:31:00,a_sale,a Ring of Resist Cold,100,100,0,"true value V=250 (listing ask 400 / A160%) x S=40% (owner Inglorian, CHR3)","events.jsonl ""You sold ..."" 1792215061 (store Magic Shop Inglorian)"
+21,1792215061.2,10-17 01:31:01,a_sale,an Amulet of Resist Acid,120,120,0,"true value V=300 (listing ask 480 / A160%) x S=40% (owner Inglorian, CHR3)","events.jsonl ""You sold ..."" 1792215061 (store Magic Shop Inglorian)"
+21,1792215087.0,10-17 01:31:27,b_destroy,You destroy a Set of Leather Gloves [1] {average},0,1,1,cost 3,events.jsonl message; decisions act custom k
+22,1792216091.0,10-17 01:48:11,c_abandoned,"Seen, never picked up (pack full of junk): Ring of Resist Fire",0,88,88,cost 250 x 0.35 (Inglorian paid 100 for a known one),decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+22,1792216104.0,10-17 01:48:24,c_abandoned,"Seen, never picked up: Ring of Slow Digestion (x1-2)",0,88,88,cost 250 x 0.35 each; (shop paid 63 at Luthien),decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+22,1792216105.0,10-17 01:48:25,c_abandoned,"Seen, never picked up: Wand of Light",0,108,108,cost 200 + 10/charge (~11) x 0.35,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+22,1792216113.0,10-17 01:48:33,c_abandoned,"Seen, never picked up: Birch Staff (flavour unknown)",0,25,25,MINIMUM: unaware staff 70 x 0.35; true unknown,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+22,1792216120.0,10-17 01:48:40,c_abandoned,"Seen, never picked up: Staff of Perception",0,224,224,cost 400 + 20/charge (~12) x 0.35 (160 if sold unidentified),decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+22,1792216231.0,10-17 01:50:31,b_destroy,You destroy a Ring of Teleportation {cursed},0,0,0,cursed=0,events.jsonl message; decisions act custom k
+22,1792216241.0,10-17 01:50:41,c_abandoned,No room: Wand of Slow Monster (never picked up later),0,175,175,cost 500 x 0.35 unknown charges; ~250 if charges known (500+25*~10),decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+22,1792216246.0,10-17 01:50:46,b_destroy,You destroy a Rod of Trap Location,0,33,33,known cost 100 x S 0.25-0.40 (shop paid 23 unknown / 25 known at Luthien),events.jsonl message; decisions act custom k
+22,1792216288.0,10-17 01:51:28,b_destroy,You destroy a Short Bow (x2),0,17,17,cost 50 x 0.35 (unknown plusses),events.jsonl message; decisions act custom k
+22,1792216357.0,10-17 01:52:37,b_destroy,You destroy an Awl-Pike (1d8) {cursed},0,0,0,cursed=0,events.jsonl message; decisions act custom k
+22,1792216362.0,10-17 01:52:42,b_destroy,You destroy a Metal Cap [3] {average},0,12,12,cost 30 x 0.4,events.jsonl message; decisions act custom k
+22,1792216443.0,10-17 01:54:03,b_destroy,"You destroy a Flail (2d6) [runes unknown, no feeling]",0,124,124,"cost 353 x 0.35 base; a similar unmarked Awl-Pike turned out (+2,+4) and sold 310",events.jsonl message; decisions act custom k
+22,1792216489.0,10-17 01:54:49,b_destroy,You destroy a Pair of Hard Leather Boots [3] {cursed},0,0,0,cursed=0,events.jsonl message; decisions act custom k
+22,1792216540.1,10-17 01:55:40,a_sale_SHORT,a Staff of Door/Stair Location (11 charges),140,215,75,"true value V=536 (listing ask 859 / A160%) x S=40% (owner Inglorian, CHR3); FORCED with !","events.jsonl ""You sold ..."" 1792216540 (store Magic Shop Inglorian)"
+22,1792216880.0,10-17 02:01:20,b_destroy,You destroy an Amulet of Teleportation {cursed},0,0,0,cursed=0,events.jsonl message; decisions act custom k
+22,1792216880.0,10-17 02:01:20,b_destroy,You destroy a Long Bow (x3) {average},0,42,42,cost 120 x 0.35,events.jsonl message; decisions act custom k
+22,1792216955.0,10-17 02:02:35,c_abandoned,"Seen, never picked up: Oak Staff (flavour unknown)",0,25,25,MINIMUM unaware staff,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+22,1792216991.0,10-17 02:03:11,c_abandoned,No room: Hard Leather Cap [2],0,5,5,cost 12 x 0.4,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+22,1792217000.0,10-17 02:03:20,b_destroy,You destroy an Elm Staff [flavour unknown],0,28,28,MINIMUM: unaware staff sells 70 x 0.4; true value unknown (staffs 200-2000 cost),events.jsonl message; decisions act custom k
+22,1792217001.0,10-17 02:03:21,b_destroy,You destroy a Furry Mushroom,0,0,0,~0,events.jsonl message; decisions act custom k
+22,1792217002.0,10-17 02:03:22,b_destroy,You destroy a Grey Mushroom,0,0,0,~0,events.jsonl message; decisions act custom k
+22,1792217130.0,10-17 02:05:30,c_abandoned,"Seen, never picked up: Ring of Resist Cold",0,88,88,cost 250 x 0.35,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+22,1792217156.0,10-17 02:05:56,c_abandoned,"Seen, never picked up: Wand of Wonder",0,133,133,cost 250 + 12.5/charge (~11) x 0.35,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+22,1792217247.0,10-17 02:07:27,c_abandoned,No room: Dagger (1d4),0,4,4,cost ~10 x 0.4,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+22,1792217258.0,10-17 02:07:38,b_destroy,You destroy a Brass Lantern (with 4012 turns of light),0,14,14,cost 35 x 0.4 (General store paid 15 for 4831 turns),events.jsonl message; decisions act custom k
+22,1792217499.0,10-17 02:11:39,c_abandoned,"Seen, never picked up: Balsa Staff (flavour unknown)",0,25,25,MINIMUM unaware staff,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+22,1792217522.0,10-17 02:12:02,e_destroyed_by_monster,One Potion of Cure Critical Wounds {25% off} destroyed by attack,0,120,120,paid ~120 (shop 159-160 full),events.jsonl message
+22,1792217624.0,10-17 02:13:44,d_forced_other,Wore unidentified Bloodstone Ring (cursed Ring of Protection) after Identify letter mixup,0,180,180,"Remove Curse 119 + a wasted Identify (~61): cost of Navigator mistake, not a sale",nav_journal 02:13:44; events bought Remove Curse for 119
+22,1792217670.0,10-17 02:14:30,b_destroy,"You destroy a Ring of Protection {uncursed} (cursed copy, negative; shop would not buy)",0,0,0,"shop ""no offer""; real cost was the Remove Curse scroll 119 + wasted Identify (mistake, see nav_journal 02:13:44)",events.jsonl message; decisions act custom k
+23,1792721760.6,10-22 22:16:00,a_sale_SHORT,a Staff of Sleep Monsters (8 charges),26,363,337,"true value V=979 (listing ask 1597 / A163%) x S=37% (owner Buggerby, CHR3); FORCED with !","events.jsonl ""You sold ..."" 1792721761 (store Magic Shop Buggerby)"
+23,1792722027.0,10-22 22:20:27,c_abandoned,Left on floor (bulky rule): Metal Cap [3],0,12,12,cost 30 x 0.4,decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+23,1792722289.0,10-22 22:24:49,c_abandoned,"LOST in flee: Scimitar (2d5) {Brodda, the Easterling} unique drop (user: ""likely good or excellent"")",0,262,262,"LOW CONFIDENCE: if like the (+2,+3) Lucerne Hammer: (250+500) x 0.35; floor 250 x 0.35 = 88",decisions attention (lost/pack_full/interesting_item/tactic) + events itemlist/messages
+23,1792722350.0,10-22 22:25:50,b_destroy,You destroy a Pair of Soft Leather Boots [2] {good},0,70,70,LOW CONFIDENCE: cost 7 + 100/AC plus (unknown +1..+3) x S 0.39 = 42-120; plusses unknown,events.jsonl message; decisions act custom k
+23,1792722456.2,10-22 22:27:36,a_sale,an Amulet of Resist Acid,111,111,0,"true value V=300 (listing ask 489 / A163%) x S=37% (owner Buggerby, CHR3)","events.jsonl ""You sold ..."" 1792722456 (store Magic Shop Buggerby)"
+23,1792722462.0,10-22 22:27:42,b_destroy,You destroy a Potion of Water,0,0,0,0,events.jsonl message; decisions act custom k
+23,1792722463.0,10-22 22:27:43,b_destroy,You destroy a Furry Mushroom,0,0,0,~0,events.jsonl message; decisions act custom k
+23,1792722464.0,10-22 22:27:44,b_destroy,You destroy a Black Mushroom,0,0,0,~0,events.jsonl message; decisions act custom k
+23,1792722467.1,10-22 22:27:47,a_sale_SHORT,a Rod of Light,33,185,152,"true value V=500 (listing ask 815 / A163%) x S=37% (owner Buggerby, CHR3); FORCED with !","events.jsonl ""You sold ..."" 1792722467 (store Magic Shop Buggerby)"
+23,1792722478.5,10-22 22:27:58,a_sale_SHORT_irreplaceable,"a Pair of Soft Leather Boots of Free Action [2,+4]",3,549,546,"true value V=1406 (listing ask 2265 / A161%) x S=39% (owner Darg-Low, CHR3); FORCED with !","events.jsonl ""You sold ..."" 1792722479 (store Armoury Darg-Low)"

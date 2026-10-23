@@ -77,7 +77,8 @@ Scope: <include / skip>
 Already known (check against it, report contradictions): <bullets or a pointer to a memo section>
 Output: write the dispatch to /projectnb/jbrcs/mangband/Advisor/studies/<study>/dispatches/<id>.md,
   ≤ <N> words, in the dispatch format of your instructions. <any extra table required>
-Scratch (if needed): /projectnb/jbrcs/mangband/Advisor/studies/<study>/scratch/
+Scratch (if needed): /projectnb/jbrcs/mangband/Advisor/studies/<study>/scratch/<id>/   (one subfolder per Clerk:
+  two Clerks sharing scratch/ overwrote each other's helper file, 2026-10-22)
 ```
 
 Launch Clerks in parallel, in a single message, with `run_in_background`.

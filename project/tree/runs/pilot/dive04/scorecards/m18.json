@@ -1,60 +1,134 @@
 {
  "label": "m18",
  "nav_model": "opus",
+ "effort": null,
  "report": "full",
  "start": "2026-10-16 18:46",
  "end": "2026-10-16 19:26",
  "minutes": 40.0,
  "notes": "Nighthawk; Ufthak band",
- "dungeon_minutes": 20.0,
- "clvl": [
-  16,
-  17
- ],
- "exp": [
-  2519,
-  2993
- ],
- "gold": [
-  46,
-  330
- ],
- "deepest_ft": 600,
- "audit_checks": 80,
- "audit_differences": 0,
- "xp_gained": 474,
- "xp_per_dungeon_min": 23.7,
- "gold_flows": {
-  "found": 1153,
-  "sold": 432,
-  "bought": 1165,
-  "stolen": 136
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   16,
+   17
+  ],
+  "exp_gain": 474,
+  "gold": [
+   46,
+   330
+  ],
+  "gold_change": 284,
+  "max_depth_ft": 600
  },
- "found_per_dungeon_min": 57.6,
- "value_lost": {
-  "resold_10x": [
+ "B": {
+  "dungeon_min": 20.0,
+  "town_min": 19.9,
+  "exp_per_dmin": 23.7,
+  "levels_per_dhour": 2.19,
+  "gold_found": 419,
+  "gold_found_per_dmin": 20.9,
+  "time_budget_min": {
+   "town_farming": 14.2,
+   "exploring": 6.9,
+   "travel_dive": 6.2,
+   "fighting": 4.1,
+   "town_no_goal": 3.7,
+   "town_shopping": 1.6,
+   "no_goal_dungeon": 1.1,
+   "travel_goto": 1.0,
+   "escaping": 0.8,
+   "recall_wait": 0.2,
+   "town_other": 0.1,
+   "town_idle_end": 0.1
+  },
+  "navigator_wait_pct": 12
+ },
+ "C": {
+  "lowest_hp": [
+   84,
+   215,
+   39,
+   "19:08:53"
+  ],
+  "close_calls_lt40": 1,
+  "near_calls_40_50": 2,
+  "emergency_episodes": 2,
+  "emergency_alerts": 11,
+  "phase": 5,
+  "wor_escape": 1,
+  "wor_travel": 1,
+  "stairs_flee": 0,
+  "teleport": 0,
+  "cures_quaffed": 5,
+  "escape_records": null,
+  "recalls_landed": 2
+ },
+ "D": {
+  "sale_shortfall": 68,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 13,
+  "loot_abandoned_est": 0,
+  "stolen": 164,
+  "destroyed_by_monsters_est": 6,
+  "total": 251,
+  "sales": 11,
+  "sales_valued": 10,
+  "worst_sales": [
    {
-    "item": "Wand of Stinking Cloud (12 charges)",
-    "sold_for": 100,
-    "store_asks": 1120
+    "item": "a Wand of Stinking Cloud (12 charges)",
+    "got": 100,
+    "fair": 160,
+    "forced": false
+   },
+   {
+    "item": "a Scroll of Teleportation",
+    "got": 8,
+    "fair": 16,
+    "forced": false
    }
   ],
-  "forced_sales": 0,
-  "items_lost": [
-   "One of your Potion of Speed (e) was stolen!",
-   "One of your Scrolls of Phase Door {75% off} (l) was destroyed!",
-   "Your purse feels lighter.",
-   "Your purse feels lighter.",
-   "Your purse feels lighter."
-  ],
-  "left_on_floor": []
+  "left_behind": [],
+  "irreplaceable": [
+   "Potion of Speed"
+  ]
  },
- "lowest_hp": [
-  84,
-  215,
-  "19:08:53"
- ],
- "close_calls_below_40pct": 1,
+ "E": {
+  "reports": 62,
+  "commands": 109,
+  "commands_per_min": 4.3,
+  "report_to_action_med_s": 6.2,
+  "report_to_action_p90_s": 12.0,
+  "reports_without_command_pct": 21,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 1,
+  "report_chars": null,
+  "order_report_age_med_s": null,
+  "order_report_age_p90_s": null
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 80,
+  "perception_gaps": 5,
+  "goal_failed": 3,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 919,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Nighthawk": 135,
+  "Black orc": 78,
+  "Hill orc": 68,
+  "Pseudo-dragon": 22,
+  "Swordsman": 18,
+  "Dark elven warrior": 16,
+  "Baby black dragon": 13,
+  "Tengu": 11
+ },
  "alerts": {
   "goal_done": 35,
   "tactic": 11,
@@ -67,37 +141,5 @@
   "emergency_loop": 2,
   "danger_seen": 2,
   "stat_drained": 1
- },
- "deaths": 0,
- "recalls": 2,
- "level_changes": null,
- "consumables_used": {
-  "Phase Door": 5,
-  "Identify (by name/letter)": 3,
-  "Cure Light Wounds": 3,
-  "Word of Recall": 2,
-  "Cure Serious Wounds": 2
- },
- "navigator": {
-  "commands": 171,
-  "per_min": 4.3,
-  "alert_to_order_median": 8.4,
-  "alert_to_order_p90": 32.8,
-  "user_to_reply_median": null,
-  "user_messages": 0,
-  "user_notes": 0,
-  "full_reports": 0,
-  "complaints": 1
- },
- "pilot": {
-  "stuck": 0,
-  "goal_failed": {
-   "hunt Wormtongue: lost sight of it": 1,
-   "hunt Giant red scorpion: lost sight of it": 1,
-   "flee (Ufthak of Cirith Ungol): no stairs known": 1
-  },
-  "runs": 919,
-  "move_records": 2113,
-  "server_crashes": 0
  }
 }

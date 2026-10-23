@@ -1,57 +1,135 @@
 {
  "label": "m19",
  "nav_model": "opus",
+ "effort": null,
  "report": "full",
  "start": "2026-10-16 22:14",
  "end": "2026-10-16 22:55",
  "minutes": 41.0,
  "notes": "STR drains (ant, frog); Ranger hunt",
- "dungeon_minutes": 22.7,
- "clvl": [
-  17,
-  18
- ],
- "exp": [
-  2993,
-  3587
- ],
- "gold": [
-  331,
-  52
- ],
- "deepest_ft": 650,
- "audit_checks": 82,
- "audit_differences": 0,
- "xp_gained": 594,
- "xp_per_dungeon_min": 26.2,
- "gold_flows": {
-  "found": 661,
-  "bought": 1796,
-  "sold": 872
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   17,
+   18
+  ],
+  "exp_gain": 594,
+  "gold": [
+   331,
+   52
+  ],
+  "gold_change": -279,
+  "max_depth_ft": 650
  },
- "found_per_dungeon_min": 29.2,
- "value_lost": {
-  "resold_10x": [
+ "B": {
+  "dungeon_min": 22.7,
+  "town_min": 18.1,
+  "exp_per_dmin": 26.2,
+  "levels_per_dhour": 2.18,
+  "gold_found": 344,
+  "gold_found_per_dmin": 15.2,
+  "time_budget_min": {
+   "town_farming": 9.9,
+   "exploring": 9.4,
+   "travel_dive": 4.9,
+   "town_no_goal": 4.2,
+   "fighting": 4.0,
+   "town_shopping": 2.8,
+   "escaping": 2.7,
+   "no_goal_dungeon": 1.0,
+   "recall_wait": 0.7,
+   "town_other": 0.6,
+   "travel_goto": 0.5,
+   "resting": 0.3,
+   "stuck_looping": 0.1
+  },
+  "navigator_wait_pct": 13
+ },
+ "C": {
+  "lowest_hp": [
+   66,
+   220,
+   30,
+   "22:24:51"
+  ],
+  "close_calls_lt40": 1,
+  "near_calls_40_50": 1,
+  "emergency_episodes": 2,
+  "emergency_alerts": 9,
+  "phase": 1,
+  "wor_escape": 2,
+  "wor_travel": 3,
+  "stairs_flee": 1,
+  "teleport": 0,
+  "cures_quaffed": 4,
+  "escape_records": null,
+  "recalls_landed": 5
+ },
+ "D": {
+  "sale_shortfall": 93,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 33,
+  "loot_abandoned_est": 95,
+  "stolen": 6,
+  "destroyed_by_monsters_est": 13,
+  "total": 240,
+  "sales": 7,
+  "sales_valued": 6,
+  "worst_sales": [
    {
-    "item": "Wand of Wonder (11 charges)",
-    "sold_for": 63,
-    "store_asks": 669
+    "item": "a Staff of Slow Monsters (6 charges)",
+    "got": 200,
+    "fair": 260,
+    "forced": false
+   },
+   {
+    "item": "a Wand of Wonder (11 charges)",
+    "got": 63,
+    "fair": 96,
+    "forced": false
    }
   ],
-  "forced_sales": 0,
-  "items_lost": [
-   "One of your Potions of Heroism {75% off} (f) was destroyed!",
-   "You have no room for a Scroll titled \"nelggar payjo\".",
-   "One of your Scroll of Phase Door {75% off} (l) was stolen!"
+  "left_behind": [
+   "Staff of Light"
   ],
-  "left_on_floor": []
+  "irreplaceable": []
  },
- "lowest_hp": [
-  66,
-  220,
-  "22:24:51"
- ],
- "close_calls_below_40pct": 1,
+ "E": {
+  "reports": 60,
+  "commands": 115,
+  "commands_per_min": 4.3,
+  "report_to_action_med_s": 6.6,
+  "report_to_action_p90_s": 15.5,
+  "reports_without_command_pct": 18,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 2,
+  "report_chars": null,
+  "order_report_age_med_s": null,
+  "order_report_age_p90_s": null
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 82,
+  "perception_gaps": 3,
+  "goal_failed": 4,
+  "stuck": 0,
+  "stuck_looping_min": 0.1,
+  "runs_sent": 881,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Ranger": 151,
+  "White wolf": 92,
+  "Tengu": 33,
+  "Manes": 29,
+  "Hill orc": 24,
+  "Kobold archer": 14,
+  "Snaga": 14,
+  "Black harpy": 12
+ },
  "alerts": {
   "goal_done": 32,
   "tactic": 9,
@@ -64,43 +142,6 @@
   "lost": 3,
   "fight_going_badly": 2,
   "blows_changed": 2,
-  "emergency_loop": 1,
-  "pack_full": 1
- },
- "deaths": 0,
- "recalls": 5,
- "level_changes": null,
- "consumables_used": {
-  "Word of Recall": 5,
-  "Identify (by name/letter)": 3,
-  "Cure Critical Wounds": 2,
-  "Cure Serious Wounds": 2,
-  "Restore Strength (by name/letter)": 1,
-  "Phase Door": 1,
-  "Satisfy Hunger (by name/letter)": 1,
-  "nelggar (by name/letter)": 1
- },
- "navigator": {
-  "commands": 175,
-  "per_min": 4.3,
-  "alert_to_order_median": 17.5,
-  "alert_to_order_p90": 30.1,
-  "user_to_reply_median": null,
-  "user_messages": 0,
-  "user_notes": 0,
-  "full_reports": 0,
-  "complaints": 2
- },
- "pilot": {
-  "stuck": 0,
-  "goal_failed": {
-   "flee (stat drain): stuck on the way to the stairs": 1,
-   "hunt Giant red frog: lost sight of it": 1,
-   "flee (Ranger): no stairs known": 1,
-   "goto 22,136: stuck": 1
-  },
-  "runs": 881,
-  "move_records": 1790,
-  "server_crashes": 0
+  "emergency_loop": 1
  }
 }

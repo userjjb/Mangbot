@@ -1,0 +1,624 @@
+===== m17 14:12:58 14:13:12
+ monsters(25s before): {'Black orc': 53, 'Silver mouse': 29, 'Kobold shaman': 2}
+   14:12:53 ATT [107, 177] fight_going_badly HP 107/177 fighting Black orc
+   14:12:53 ATT [107, 177] breeders 3 breeding monsters in view (Silver mouse): leave this level (stairs, or recall) if they get in the 
+   14:12:53 ATT [108, 177] interesting_item Carnelian Ring seen on this level (devices and jewellery sell for 50-700 once known): its square is 
+   14:12:55 ATT [93, 177] tactic Black orc, Silver mouse x2 can deal 28 at worst (HP 93): backing away, not walking into them
+   14:12:58 ACT [84, 177] custom r item=10 low HP: phase door
+   14:12:58 ATT [84, 177] emergency low HP: read Phase Door (Black orc, Silver mouse adjacent)
+   14:12:59 ACT [83, 177] custom q item=7 low HP: quaff 5 Potions of Cure Light Wounds
+   14:12:59 ATT [83, 177] emergency low HP: quaffed a Potion of Cure Light Wounds (losing ~4 HP/s)
+   14:13:00 GOAL flee (unseen attacker)
+   14:13:00 ATT [99, 177] unseen_attacker 'It fires an arrow!': something unseen is attacking while explore; heading for the stairs
+   14:13:01 ACT [78, 177] custom q item=7 low HP: quaff 4 Potions of Cure Light Wounds
+   14:13:01 ATT [78, 177] emergency low HP: quaffed a Potion of Cure Light Wounds (losing ~7 HP/s)
+   14:13:02 ATT [78, 177] emergency_loop third emergency in 90 s and no stairs known nearby: consider Word of Recall or leaving this area
+   14:13:02 ATT [93, 177] goal_failed flee (unseen attacker): no path to stairs
+   14:13:02 ACT [93, 177] custom r item=11 flee failed with monsters close: word of recall
+   14:13:02 ATT [93, 177] emergency couldn't reach the stairs with 1 monsters close: read Word of Recall (8-23 s); phasing while it char
+   14:13:03 ACT [79, 177] custom r item=10 low HP: phase door
+   14:13:03 ATT [79, 177] emergency low HP: read Phase Door (Black orc adjacent)
+   14:13:03 ACT [76, 177] custom q item=7 low HP: quaff 3 Potions of Cure Light Wounds
+   14:13:03 ATT [76, 177] emergency low HP: quaffed a Potion of Cure Light Wounds (losing ~6 HP/s)
+   14:13:04 ATT [76, 177] emergency low HP: waiting to use Phase Door, cure potions again, fighting on
+   14:13:05 ACT [65, 177] custom q item=9 low HP: quaff 3 Potions of Cure Critical Wounds
+   14:13:05 ATT [65, 177] emergency low HP: quaffed a Potion of Cure Critical Wounds (losing ~15 HP/s)
+   14:13:06 NAV goal ['goto', '<']
+   14:13:06 GOAL goto <
+   14:13:06 ATT [94, 177] tactic Black orc x2 can deal 48 at worst (HP 94): backing away, not walking into them
+   14:13:06 ATT [94, 177] goal_failed goto <: no known path
+   14:13:07 ATT [94, 177] fight_going_badly HP 94/177 fighting Black orc
+   14:13:07 ACT [76, 177] custom r item=10 low HP: phase door
+   14:13:07 ATT [76, 177] emergency low HP: read Phase Door (Black orc adjacent)
+   14:13:08 ACT [64, 177] custom q item=9 low HP: quaff 2 Potions of Cure Critical Wounds
+   14:13:08 ATT [64, 177] emergency low HP: quaffed a Potion of Cure Critical Wounds (losing ~10 HP/s)
+   14:13:09 ATT [76, 177] interesting_item Ring of Slow Digestion seen on this level (devices and jewellery sell for 50-700 once known): its sq
+   14:13:09 ACT [76, 177] custom q item=9 low HP: quaff a Potion of Cure Critical Wounds
+   14:13:09 ATT [76, 177] emergency low HP: quaffed a Potion of Cure Critical Wounds (losing ~16 HP/s)
+   14:13:11 ACT [80, 177] custom r item=9 low HP: phase door
+   14:13:11 ATT [80, 177] emergency low HP: read Phase Door (Black orc, Kobold shaman adjacent)
+   14:13:12 ACT [81, 177] custom q item=8 low HP: quaff 5 Potions of Cure Serious Wounds {50% off}
+   14:13:12 ATT [81, 177] emergency low HP: quaffed a Potion of Cure Serious Wounds {50% off} (losing ~12 HP/s)
+   14:13:12 NAV journal ['650: 3 Black orcs (lvl 13) + breeding Silver mice took me 
+   14:12:47 MSG The Black orc flees in terror!
+   14:12:47 MSG You have slain the Black orc.
+   14:12:47 MSG You have slain the Silver mouse.
+   14:12:51 MSG The Black orc flees in terror!
+   14:12:51 MSG You have slain the Black orc.
+   14:12:53 MSG The Black orc flees in terror!
+   14:12:53 MSG You have slain the Black orc.
+   14:12:53 MSG You have slain the Silver mouse.
+   14:12:55 MSG The Black orc flees in terror!
+   14:12:55 MSG You have slain the Black orc.
+   14:12:55 MSG You have slain the Silver mouse.
+   14:12:56 MSG You have slain the Silver mouse.
+   14:12:57 MSG You have slain the Silver mouse.
+   14:13:03 MSG The air about you becomes charged...
+   14:13:09 MSG The Black orc flees in terror!
+   14:13:09 MSG You have slain the Black orc.
+   14:13:13 MSG The Black orc flees in terror!
+   14:13:13 MSG You have slain the Black orc.
+   14:13:14 MSG The Black orc flees in terror!
+   14:13:14 MSG You have slain the Black orc.
+   14:13:15 MSG You have slain the Kobold shaman.
+   14:13:17 MSG You have slain the Silver mouse.
+   14:13:18 MSG You feel yourself yanked upwards!
+   14:13:20 MSG You have slain the Pitiful-looking beggar.
+   14:13:25 MSG You have slain the Scruffy little dog.
+===== m18 18:54:56 18:55:00
+ monsters(25s before): {'Nighthawk': 30}
+   18:54:47 ATT [138, 215] fight_going_badly HP 138/215 fighting Nighthawk
+   18:54:52 NAV monster ['Nighthawk']
+   18:54:56 ACT [102, 215] custom q item=8 low HP: quaff 3 Potions of Cure Light Wounds
+   18:54:56 ATT [102, 215] emergency low HP: quaffed a Potion of Cure Light Wounds (losing ~7 HP/s)
+   18:54:57 ATT [103, 215] emergency low HP: waiting to use Phase Door, cure potions again, fighting on
+   18:54:58 ATT [116, 215] fight_going_badly HP 116/215 fighting Nighthawk
+   18:54:59 ACT [104, 215] custom r item=11 low HP: phase door
+   18:54:59 ATT [104, 215] emergency low HP: read Phase Door (Nighthawk adjacent)
+   18:55:00 ATT [101, 215] emergency_loop third emergency in 90 s and no stairs known nearby: consider Word of Recall or leaving this area
+   18:55:00 ACT [101, 215] custom q item=8 low HP: quaff 2 Potions of Cure Light Wounds
+   18:55:00 ATT [101, 215] emergency low HP: quaffed a Potion of Cure Light Wounds (losing ~6 HP/s)
+   18:55:05 NAV goal ['hunt', 'Nighthawk']
+   18:55:05 GOAL hunt Nighthawk
+   18:55:12 NAV journal ['Nighthawk (lvl 8, +10 speed) took 215->102 during the goto
+   18:55:12 NAV goal ['goto', '39,148']
+   18:55:12 GOAL goto 39,148
+   18:55:19 ACT [215, 215] custom , pick up: a Potion of Cure Critical Wounds.
+   18:55:21 ATT [215, 215] goal_done goto 39,148
+   18:55:02 MSG You have slain the Nighthawk.
+===== m18 19:08:53 19:08:57
+ monsters(25s before): {'Spotted mushroom patch': 31, 'Hill orc': 26, 'Black orc': 24, 'Snaga': 9, 'Ufthak of Cirith Ungol': 1}
+   19:08:47 ATT [139, 215] fight_going_badly HP 139/215 fighting Black orc, Hill orc
+   19:08:48 ACT [121, 215] custom r item=10 group danger 82 vs HP 121: phase door
+   19:08:48 ATT [121, 215] tactic Hill orc, Black orc x3 can deal 82 (HP 121): phased away
+   19:08:53 ACT [84, 215] custom r item=10 low HP: phase door
+   19:08:53 ATT [84, 215] emergency low HP: read Phase Door (Black orc, Hill orc adjacent)
+   19:08:53 ACT [85, 215] custom q item=8 low HP: quaff 4 Potions of Cure Serious Wounds {50% off}
+   19:08:53 ATT [85, 215] emergency low HP: quaffed a Potion of Cure Serious Wounds {50% off} (losing ~9 HP/s)
+   19:08:54 ATT [86, 215] emergency low HP: waiting to use Phase Door, cure potions again, fighting on
+   19:08:54 ATT [86, 215] emergency_loop third emergency in 90 s and no stairs known nearby: consider Word of Recall or leaving this area
+   19:08:57 ATT [112, 215] fight_going_badly HP 112/215 fighting Black orc
+   19:08:57 ACT [103, 215] custom r item=10 low HP: phase door
+   19:08:57 ATT [103, 215] emergency low HP: read Phase Door (Black orc adjacent)
+   19:08:57 ACT [104, 215] custom q item=8 low HP: quaff 3 Potions of Cure Serious Wounds {50% off}
+   19:08:57 ATT [104, 215] emergency low HP: quaffed a Potion of Cure Serious Wounds {50% off} (losing ~3 HP/s)
+   19:08:58 GOAL flee (Ufthak of Cirith Ungol)
+   19:08:58 ATT [129, 215] danger_seen Ufthak of Cirith Ungol (rated 4: lethal until clvl 22) in view while explore: heading for the stairs
+   19:09:01 NAV goal ['recall']
+   19:09:01 GOAL recall
+   19:09:01 ACT [132, 215] custom r item=11 read a Scroll of Word of Recall {@R550}
+   19:09:02 NAV journal ["19:08:47 fight_going_badly 139/215 vs 3 Black orcs (lvl 13
+   19:09:07 ATT [131, 215] fight_going_badly HP 131/215 fighting Hill orc
+   19:09:07 ACT [131, 215] custom r item=10 group danger 92 vs HP 131: phase door
+   19:09:07 ATT [131, 215] tactic Hill orc x2, Black orc, Ufthak of Cirith Ungol can deal 92 (HP 131): phased away
+   19:09:09 GOAL flee (Ufthak of Cirith Ungol)
+   19:09:09 ATT [113, 215] danger_seen Ufthak of Cirith Ungol (rated 4: lethal until clvl 22) in view while recall: heading for the stairs
+   19:09:12 ATT [119, 215] goal_failed flee (Ufthak of Cirith Ungol): no stairs known
+   19:08:43 MSG The Hill orc flees in terror!
+   19:08:44 MSG You have slain the Hill orc.
+   19:08:45 MSG The Hill orc flees in terror!
+   19:08:45 MSG You have slain the Hill orc.
+   19:08:47 MSG You have slain the Hill orc.
+   19:08:52 MSG You have slain the Black orc.
+   19:09:03 MSG The air about you becomes charged...
+   19:09:05 MSG The Hill orc flees in terror!
+   19:09:05 MSG You have slain the Hill orc.
+   19:09:06 MSG The Snaga flees in terror!
+   19:09:06 MSG You have slain the Snaga.
+   19:09:12 MSG You feel yourself yanked upwards!
+   19:09:12 MSG You have slain the Mangy-looking leper.
+   19:09:15 MSG You have slain the Boil-covered wretch.
+   19:09:15 MSG You have slain the Village idiot.
+   19:09:18 MSG You have slain the Scrawny cat.
+   19:09:21 MSG You have slain the Blubbering idiot.
+   19:09:21 MSG You have slain the Boil-covered wretch.
+===== m19 22:24:49 22:24:56
+ monsters(25s before): {'Skeleton human': 3, 'Ranger': 16, 'Copperhead snake': 1, 'Black harpy': 2}
+   22:24:38 ATT [220, 220] danger_seen Ranger (summons) in view, stairs 29 away: NOT fleeing (it's slow and hits weakly; its danger is spel
+   22:24:47 NAV goal ['hunt', 'Ranger']
+   22:24:47 GOAL hunt Ranger
+   22:24:48 NAV monster ['Ranger']
+   22:24:48 NAV journal ["22:24:38 danger_seen Ranger (lvl 20, summons) 3 away + Ske
+   22:24:48 GOAL flee (Ranger)
+   22:24:48 ATT [160, 220] danger_seen Ranger (summons) in view while hunt Ranger: heading for the stairs
+   22:24:49 ATT [125, 220] lost One of your Potions of Heroism {75% off} (f) was destroyed!
+   22:24:49 ATT [125, 220] fight_going_badly HP 125/220 fighting Ranger
+   22:24:49 ATT [96, 220] emergency low HP: losing ~21 HP/s, more than the best potion heals (25): escaping instead
+   22:24:49 ACT [96, 220] custom r item=10 low HP: word of recall (potions too weak)
+   22:24:49 ATT [96, 220] emergency low HP: read Word of Recall (potions too weak for the damage)
+   22:24:51 ACT [66, 220] custom q item=8 low HP: quaff 4 Potions of Cure Critical Wounds {25% off}
+   22:24:51 ATT [66, 220] emergency low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~31 HP/s)
+   22:24:52 ATT [67, 220] emergency_loop third emergency in 90 s and no stairs known nearby: consider Word of Recall or leaving this area
+   22:24:52 ACT [67, 220] custom r item=9 low HP: phase door
+   22:24:52 ATT [67, 220] emergency low HP: read Phase Door (Ranger adjacent)
+   22:24:53 ACT [67, 220] custom q item=8 low HP: quaff 3 Potions of Cure Critical Wounds {25% off}
+   22:24:53 ATT [67, 220] emergency low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~10 HP/s)
+   22:24:54 ACT [97, 220] custom q item=7 low HP: quaff 2 Potions of Cure Serious Wounds {50% off}
+   22:24:54 ATT [97, 220] emergency low HP: quaffed a Potion of Cure Serious Wounds {50% off}
+   22:24:56 ACT [99, 220] custom q item=7 low HP: quaff a Potion of Cure Serious Wounds {50% off}
+   22:24:56 ATT [99, 220] emergency low HP: quaffed a Potion of Cure Serious Wounds {50% off} (losing ~8 HP/s)
+   22:25:01 ATT [214, 220] goal_failed flee (Ranger): no stairs known
+   22:25:11 NAV journal ["22:24:40-22:25:01 MISTAKE (mine): hunted the Ranger (lvl 2
+   22:25:19 NAV goal ['shop', '3', 'quote', 'Morning_Star', 'quote', 'Awl-Pike']
+   22:25:19 GOAL shop 3 quote Morning Star:1 quote Awl-Pike:1
+   22:24:39 MSG You have destroyed the Skeleton human.
+   22:24:40 MSG You have slain the Silver mouse.
+   22:24:40 MSG You have slain the Brown yeek.
+   22:24:40 MSG You have slain the Neekerbreeker.
+   22:24:41 MSG The Cave bear flees in terror!
+   22:24:41 MSG You have slain the Cave bear.
+   22:24:41 MSG The Copperhead snake flees in terror!
+   22:24:42 MSG You have slain the Copperhead snake.
+   22:24:42 MSG The Black harpy flees in terror!
+   22:24:42 MSG You have slain the Black harpy.
+   22:24:44 MSG The Ranger blinks away.
+   22:24:51 MSG The air about you becomes charged...
+   22:24:54 MSG The Ranger flees in terror!
+   22:24:56 MSG You have slain the Ranger.
+   22:24:58 MSG You feel yourself yanked upwards!
+   22:25:09 MSG You have slain the Scrawny cat.
+===== m22 01:48:27 01:48:34
+ monsters(25s before): {'Creeping silver coins': 1, 'Scruffy looking hobbit': 2, 'Brown yeek': 330, 'Orfax, Son of Boldor': 7, 'Blue yeek': 38, 'Black naga': 7}
+   01:48:21 ACT [150, 233] custom r item=10 group danger 93 vs HP 150: phase door
+   01:48:21 ATT [150, 233] tactic Brown yeek x13, Blue yeek x3 can deal 93 (HP 150): phased away
+   01:48:21 ATT [149, 233] fight_going_badly HP 149/233 fighting Brown yeek
+   01:48:22 ATT [149, 233] interesting_item Ring of Resist Fire seen on this level (devices and jewellery sell for 50-700 once known): its squar
+   01:48:25 NAV monster ['Brown_yeek']
+   01:48:27 ACT [109, 233] custom r item=10 low HP: phase door
+   01:48:27 ATT [109, 233] emergency low HP: read Phase Door (Brown yeek adjacent)
+   01:48:28 ACT [107, 233] custom q item=7 low HP: quaff 4 Potions of Cure Serious Wounds
+   01:48:28 ATT [107, 233] emergency low HP: quaffed a Potion of Cure Serious Wounds (losing ~9 HP/s)
+   01:48:31 ATT [125, 233] interesting_item Rod of Trap Location seen on this level (devices and jewellery sell for 50-700 once known): its squa
+   01:48:31 ATT [125, 233] fight_going_badly HP 125/233 fighting Brown yeek
+   01:48:34 ACT [112, 233] custom r item=10 low HP: phase door
+   01:48:34 ATT [112, 233] emergency low HP: read Phase Door (Blue yeek, Brown yeek adjacent)
+   01:48:34 ATT [112, 233] interesting_item Ring of Slow Digestion seen on this level (devices and jewellery sell for 50-700 once known): its sq
+   01:48:34 ATT [103, 233] emergency_loop third emergency in 90 s and no stairs known nearby: consider Word of Recall or leaving this area
+   01:48:34 ACT [103, 233] custom q item=6 low HP: quaff 5 Potions of Cure Light Wounds
+   01:48:34 ATT [103, 233] emergency low HP: quaffed a Potion of Cure Light Wounds (losing ~7 HP/s)
+   01:48:35 ATT [120, 233] interesting_item Wand of Light seen on this level (devices and jewellery sell for 50-700 once known): its square is u
+   01:48:41 ATT [126, 241] fight_going_badly HP 126/241 fighting Brown yeek
+   01:48:45 NAV journal ['Orfax slain at 01:48 (unique_slain fired), clvl 20, yeek s
+   01:48:50 ATT [132, 241] interesting_item Staff of Perception seen on this level (devices and jewellery sell for 50-700 once known): its squar
+   01:48:58 ATT [143, 241] fight_going_badly HP 143/241 fighting Brown yeek
+   01:48:15 MSG The Black naga flees in terror!
+   01:48:15 MSG You have slain the Black naga.
+   01:48:15 MSG You have slain the Brown yeek.
+   01:48:15 MSG The Brown yeek flees in terror!
+   01:48:15 MSG You have slain the Brown yeek.
+   01:48:16 MSG The Brown yeek flees in terror!
+   01:48:16 MSG You have slain the Brown yeek.
+   01:48:16 MSG The Brown yeek flees in terror!
+   01:48:16 MSG You have slain the Brown yeek.
+   01:48:17 MSG The Brown yeek flees in terror!
+   01:48:17 MSG You have slain the Brown yeek.
+   01:48:17 MSG The Brown yeek flees in terror!
+   01:48:17 MSG You have slain the Brown yeek.
+   01:48:18 MSG The Brown yeek flees in terror!
+   01:48:18 MSG You have slain the Brown yeek.
+   01:48:18 MSG The Brown yeek flees in terror!
+   01:48:18 MSG You have slain the Brown yeek.
+   01:48:19 MSG The Brown yeek flees in terror!
+   01:48:19 MSG You have slain the Blue yeek.
+   01:48:19 MSG The Brown yeek flees in terror!
+   01:48:20 MSG You have slain the Brown yeek.
+   01:48:20 MSG You have slain the Brown yeek.
+   01:48:20 MSG The Brown yeek flees in terror!
+   01:48:21 MSG You have slain the Brown yeek.
+   01:48:21 MSG You have slain the Blue yeek.
+   01:48:23 MSG You have slain the Brown yeek.
+   01:48:24 MSG You have slain the Brown yeek.
+   01:48:24 MSG The Brown yeek flees in terror!
+   01:48:24 MSG You have slain the Brown yeek.
+   01:48:25 MSG The Brown yeek flees in terror!
+   01:48:25 MSG You have slain the Brown yeek.
+   01:48:25 MSG You have slain the Brown yeek.
+   01:48:25 MSG You have slain the Brown yeek.
+   01:48:26 MSG You have slain the Brown yeek.
+   01:48:26 MSG You have slain the Blue yeek.
+   01:48:27 MSG The Brown yeek flees in terror!
+   01:48:27 MSG You have slain the Brown yeek.
+   01:48:31 MSG You have slain the Brown yeek.
+   01:48:31 MSG The Brown yeek flees in terror!
+   01:48:32 MSG You have slain the Brown yeek.
+   01:48:32 MSG You have slain the Blue yeek.
+   01:48:32 MSG The Brown yeek flees in terror!
+   01:48:33 MSG You have slain the Brown yeek.
+   01:48:33 MSG The Brown yeek flees in terror!
+   01:48:33 MSG You have slain the Brown yeek.
+   01:48:33 MSG The Brown yeek flees in terror!
+   01:48:34 MSG You have slain the Brown yeek.
+   01:48:37 MSG The Brown yeek flees in terror!
+   01:48:37 MSG You have slain the Brown yeek.
+   01:48:37 MSG You have slain the Brown yeek.
+   01:48:37 MSG You have slain the Blue yeek.
+   01:48:38 MSG You have slain the Brown yeek.
+   01:48:38 MSG You have slain the Blue yeek.
+   01:48:38 MSG The Brown yeek flees in terror!
+   01:48:39 MSG You have slain the Brown yeek.
+   01:48:39 MSG The Brown yeek flees in terror!
+   01:48:40 MSG The Brown yeek flees in terror!
+   01:48:40 MSG You have slain the Brown yeek.
+   01:48:41 MSG You have slain the Brown yeek.
+   01:48:48 MSG You have slain the Brown yeek.
+   01:48:51 MSG The Brown yeek flees in terror!
+   01:48:58 MSG The Brown yeek flees in terror!
+===== m22 01:50:48 01:50:49
+ monsters(25s before): {'Red worm mass': 1, 'Kobold archer': 25, 'Snaga': 12, 'Uruk': 7, 'Black orc': 3}
+   01:50:37 ACT [215, 241] custom , pick up: a Short Bow (x2).
+   01:50:40 ACT [201, 241] custom , pick up: a Wand of Slow Monster.
+   01:50:41 ATT [192, 241] lost You have no room for a Wand of Slow Monster.
+   01:50:41 ATT [193, 241] pack_full You have no room for a Wand of Slow Monster.
+   01:50:43 ATT [190, 241] tactic no effect seen: pick up: a Wand of Slow Monster.
+   01:50:46 NAV destroy ['Rod_of_Trap_Location']
+   01:50:46 ACT [160, 241] custom k item=16 val agent: destroy ['Rod_of_Trap_Location']
+   01:50:46 ACT [140, 241] custom r item=10 group danger 108 vs HP 140: phase door
+   01:50:46 ATT [140, 241] tactic Snaga x3, Uruk x2, Black orc can deal 108 (HP 140): phased away
+   01:50:46 NAV pickup []
+   01:50:46 ACT [140, 241] custom , agent: pickup
+   01:50:47 ATT [140, 241] fight_going_badly HP 140/241 fighting Snaga, Uruk
+   01:50:48 ACT [120, 241] custom q item=8 low HP: quaff 6 Potions of Cure Critical Wounds {25% off}
+   01:50:48 ATT [120, 241] emergency low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~13 HP/s)
+   01:50:49 ATT [111, 241] interesting_item Wand of Slow Monster seen on this level (devices and jewellery sell for 50-700 once known): its squa
+   01:50:49 GOAL flee (unseen attacker)
+   01:50:49 ATT [139, 241] unseen_attacker 'It fires an arrow!': something unseen is attacking while explore; heading for the stairs
+   01:50:57 ATT [148, 241] fight_going_badly HP 148/241 fighting Snaga
+   01:51:01 NAV goal ['hunt', 'Kobold_archer']
+   01:51:01 GOAL hunt Kobold archer
+   01:51:10 ATT [154, 241] fight_going_badly HP 154/241 fighting Uruk
+   01:51:13 NAV monster ['Uruk']
+   01:50:36 MSG You have slain the Kobold archer.
+   01:50:36 MSG The Kobold archer flees in terror!
+   01:50:37 MSG You have slain the Kobold archer.
+   01:50:39 MSG You have slain the Kobold archer.
+   01:50:39 MSG You have slain the Kobold archer.
+   01:50:40 MSG You have slain the Kobold archer.
+   01:50:41 MSG You have slain the Kobold archer.
+   01:50:43 MSG The Snaga flees in terror!
+   01:50:43 MSG You have slain the Snaga.
+   01:50:44 MSG The Kobold archer flees in terror!
+   01:50:44 MSG You have slain the Kobold archer.
+   01:50:46 MSG The Uruk flees in terror!
+   01:51:03 MSG You have slain the Snaga.
+   01:51:04 MSG You have slain the Snaga.
+   01:51:06 MSG The Black orc flees in terror!
+   01:51:06 MSG You have slain the Black orc.
+   01:51:07 MSG The Black orc flees in terror!
+   01:51:07 MSG You have slain the Black orc.
+   01:51:08 MSG The Snaga flees in terror!
+   01:51:10 MSG The Uruk flees in terror!
+   01:51:10 MSG You have slain the Uruk.
+   01:51:12 MSG The Uruk flees in terror!
+===== m22 01:54:30 01:54:48
+ monsters(25s before): {'Uruk': 29, 'Black orc': 53, 'Snaga': 24, 'Kobold archer': 16, 'Tengu': 6, 'Hill orc': 15, 'Large kobold': 8, 'Kobold shaman': 7}
+   01:54:22 ATT [147, 241] fight_going_badly HP 147/241 fighting Uruk
+   01:54:25 ATT [142, 241] goal_done goto 30,145
+   01:54:25 ACT [136, 241] custom , pick up: a Pair of Hard Leather Boots [3].
+   01:54:26 NAV goal ['hunt', 'Uruk']
+   01:54:26 GOAL hunt Uruk
+   01:54:29 GOAL flee (unseen attacker)
+   01:54:29 ATT [127, 241] unseen_attacker 'It fires an arrow!': something unseen is attacking while hunt Uruk; heading for the stairs
+   01:54:30 ACT [118, 241] custom r item=10 low HP: phase door
+   01:54:30 ATT [118, 241] emergency low HP: read Phase Door (Black orc adjacent)
+   01:54:32 ACT [96, 241] custom q item=8 low HP: quaff 5 Potions of Cure Critical Wounds {25% off}
+   01:54:32 ATT [96, 241] emergency low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~10 HP/s)
+   01:54:33 NAV goal ['goto', '30,145']
+   01:54:33 GOAL goto 30,145
+   01:54:34 ATT [120, 241] emergency low HP: heading for the stairs 12 away
+   01:54:34 GOAL flee (emergency loop)
+   01:54:34 ATT [120, 241] tactic third emergency in 90 s: leaving by the stairs
+   01:54:34 ATT [120, 241] emergency low HP: heading for the stairs 12 away
+   01:54:35 ACT [117, 241] custom r item=10 low HP: phase door
+   01:54:35 ATT [117, 241] emergency low HP: read Phase Door (Snaga adjacent)
+   01:54:37 ACT [93, 241] custom q item=8 low HP: quaff 4 Potions of Cure Critical Wounds {25% off}
+   01:54:37 ATT [93, 241] emergency low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~11 HP/s)
+   01:54:38 ATT [101, 241] emergency low HP: waiting to use Phase Door, cure potions again, fighting on
+   01:54:38 ACT [101, 241] custom r item=10 low HP: phase door
+   01:54:38 ATT [101, 241] emergency low HP: read Phase Door (Black orc, Hill orc, Kobold archer, Large kobold, Tengu adjacent)
+   01:54:38 ACT [97, 241] custom q item=6 low HP: quaff 4 Potions of Cure Light Wounds
+   01:54:38 ATT [97, 241] emergency low HP: quaffed a Potion of Cure Light Wounds (losing ~1 HP/s)
+   01:54:40 ACT [114, 241] custom q item=6 low HP: quaff 3 Potions of Cure Light Wounds
+   01:54:40 ATT [114, 241] emergency low HP: quaffed a Potion of Cure Light Wounds (losing ~1 HP/s)
+   01:54:41 ACT [95, 241] custom r item=10 low HP: phase door
+   01:54:41 ATT [95, 241] emergency low HP: read Phase Door (Black orc, Uruk adjacent)
+   01:54:41 ACT [98, 241] custom q item=8 low HP: quaff 3 Potions of Cure Critical Wounds {25% off}
+   01:54:41 ATT [98, 241] emergency low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~10 HP/s)
+   01:54:43 ACT [78, 241] custom r item=10 low HP: phase door
+   01:54:43 ATT [78, 241] emergency low HP: read Phase Door (Black orc, Large kobold, Snaga, Tengu adjacent)
+   01:54:44 ACT [64, 241] custom r item=12 low HP: word of recall (last resort)
+   01:54:44 ATT [64, 241] emergency low HP: read Word of Recall as a last resort
+   01:54:44 ACT [64, 241] custom r item=10 low HP: phase door
+   01:54:44 ATT [64, 241] emergency low HP: read Phase Door (Snaga adjacent)
+   01:54:45 ACT [61, 241] custom q item=8 low HP: quaff 2 Potions of Cure Critical Wounds {25% off}
+   01:54:45 ATT [61, 241] emergency low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~15 HP/s)
+   01:54:46 NAV read ['Teleportation']
+   01:54:46 ACT [89, 241] custom r item=10 agent: read ['Teleportation']
+   01:54:47 ACT [89, 241] custom q item=6 low HP: quaff 2 Potions of Cure Light Wounds
+   01:54:47 ATT [89, 241] emergency low HP: quaffed a Potion of Cure Light Wounds
+   01:54:49 ACT [124, 241] custom k item=18 val autodestroy a Pair of Hard Leather Boots [3] {cursed}
+   01:54:53 GOAL goto 30,145
+   01:54:57 NAV journal ["URGENT 01:54:43 HP 78/241 mob (Black orc, Uruk, Hill orc, 
+   01:55:02 NAV read ['Identify', 'Aluminum_Rod']
+   01:55:02 ACT [241, 241] custom r item=10 dir agent: read ['Identify', 'Aluminum_Rod']
+   01:55:02 ATT [241, 241] tactic learned: Aluminum Rod = Rod of Door/Stair Location
+   01:55:02 NAV goal ['shop', '5', 'list']
+   01:55:02 GOAL shop 5
+   01:55:11 ACT [241, 241] walk 1 enter store 5
+   01:55:11 ACT [241, 241] leave leave store
+   01:55:11 ATT [241, 241] goal_done shop 5: stock: 44 Potions of Resist Heat 48; 2 Potions of Restore Strength 483; 5 Potions of Restore
+   01:54:26 MSG The Black orc flees in terror!
+   01:54:27 MSG You have slain the Black orc.
+   01:54:27 MSG The Black orc flees in terror!
+   01:54:27 MSG You have slain the Black orc.
+   01:54:29 MSG You have slain the Uruk.
+   01:54:29 MSG You have slain the Snaga.
+   01:54:42 MSG The Snaga flees in terror!
+   01:54:43 MSG You have slain the Snaga.
+   01:54:44 MSG The air about you becomes charged...
+   01:54:44 MSG The Tengu blinks away.
+   01:54:46 MSG The Large kobold flees in terror!
+   01:54:49 MSG You feel yourself yanked upwards!
+===== m22 02:00:16 02:00:47
+ monsters(25s before): {'Yellow mold': 4, 'White wolf': 33, 'Novice paladin': 174}
+   02:00:08 ATT [226, 241] unseen_attacker heard a door burst open: something is coming; be ready to leave
+   02:00:10 ATT [213, 241] tactic afraid: kiting over cleared ground until it wears off
+   02:00:12 ATT [158, 241] unseen_attacker 'It casts a fearful illusion.': probably the Novice paladin (lvl 8) in view; carrying on (HP 66%)
+   02:00:12 ATT [155, 241] fight_going_badly HP 155/241 fighting Novice paladin, White wolf
+   02:00:12 ACT [155, 241] custom r item=11 group danger 98 vs HP 155: phase door
+   02:00:12 ATT [155, 241] tactic White wolf x2, Novice paladin x5 can deal 98 (HP 155): phased away
+   02:00:13 ATT [144, 241] tactic (HP falling ~19/s) can deal 57 at worst (HP 144): backing away, not walking into them
+   02:00:16 ACT [120, 241] custom r item=11 low HP: phase door
+   02:00:16 ATT [120, 241] emergency low HP: read Phase Door (Novice paladin, White wolf adjacent)
+   02:00:17 ACT [110, 241] custom q item=9 low HP: quaff 6 Potions of Cure Critical Wounds {25% off}
+   02:00:17 ATT [110, 241] emergency low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~12 HP/s)
+   02:00:17 NAV quaff ['Heroism']
+   02:00:17 ACT [110, 241] custom q item=5 agent: quaff ['Heroism']
+   02:00:17 ATT [110, 241] emergency low HP: waiting to use Phase Door, cure potions again, fighting on
+   02:00:19 GOAL flee (a dangerous group)
+   02:00:19 ATT [134, 251] danger_seen group danger: Novice paladin x8, White wolf x2 can deal 140 per turn at worst, HP 134 while explore:
+   02:00:19 ACT [134, 251] custom r item=12 group danger 140 vs HP 134: word of recall
+   02:00:19 ATT [134, 251] emergency Novice paladin x8, White wolf x2 can deal 140 (HP 134) and no stairs are known: read Word of Recall 
+   02:00:20 ATT [102, 251] emergency_loop third emergency in 90 s and no stairs known nearby: consider Word of Recall or leaving this area
+   02:00:20 ACT [102, 251] custom r item=11 low HP: phase door
+   02:00:20 ATT [102, 251] emergency low HP: read Phase Door (Novice paladin, White wolf adjacent)
+   02:00:21 ACT [79, 251] custom q item=9 low HP: quaff 5 Potions of Cure Critical Wounds {25% off}
+   02:00:21 ATT [79, 251] emergency low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~18 HP/s)
+   02:00:23 ACT [107, 251] custom q item=8 low HP: quaff 3 Potions of Cure Serious Wounds
+   02:00:23 ATT [107, 251] emergency low HP: quaffed a Potion of Cure Serious Wounds (losing ~8 HP/s)
+   02:00:24 ATT [138, 251] tactic flee: no known path to the stairs; trying one through unexplored squares
+   02:00:25 ATT [139, 251] fight_going_badly HP 139/251 fighting Novice paladin
+   02:00:39 ACT [99, 251] custom r item=11 low HP: phase door
+   02:00:39 ATT [99, 251] emergency low HP: read Phase Door (Singing, happy drunk adjacent)
+   02:00:40 ACT [100, 251] custom q item=7 low HP: quaff 4 Potions of Cure Light Wounds
+   02:00:40 ATT [100, 251] emergency low HP: quaffed a Potion of Cure Light Wounds
+   02:00:42 ACT [100, 241] custom r item=11 low HP: phase door
+   02:00:42 ATT [100, 241] emergency low HP: read Phase Door (Singing, happy drunk adjacent)
+   02:00:46 NAV journal ['02:00 recall home after 7 Novice paladins + 2 White wolves
+   02:00:47 NAV goal ['rest']
+   02:00:47 GOAL rest
+   02:00:50 ATT [241, 241] goal_done rest
+   02:00:51 NAV goal ['shop', '5', 'buy', 'Word_of_Recall:2@245', 'buy', 'Phase_D
+   02:00:51 GOAL shop 5 buy Word of Recall:2@245 buy Phase Door:5@24 buy Identify:1@85
+   02:00:09 MSG The White wolf flees in terror!
+   02:00:09 MSG You have slain the White wolf.
+   02:00:10 MSG The Novice paladin flees in terror!
+   02:00:10 MSG You have slain the Novice paladin.
+   02:00:18 MSG You have slain the Novice paladin.
+   02:00:18 MSG The Novice paladin flees in terror!
+   02:00:18 MSG You have slain the Novice paladin.
+   02:00:18 MSG The Novice paladin flees in terror!
+   02:00:19 MSG The air about you becomes charged...
+   02:00:20 MSG You have slain the Novice paladin.
+   02:00:38 MSG You feel yourself yanked upwards!
+   02:00:53 MSG You have slain the Singing, happy drunk.
+   02:01:04 MSG You have slain the Pitiful-looking beggar.
+===== m22 02:06:03 02:06:04
+ monsters(25s before): {'Brown yeek': 94, 'Boldor, King of the Yeeks': 7, 'Master yeek': 38, 'Pseudo-dragon': 11, 'Blue yeek': 7, 'Druid': 3, 'Giant brown bat': 3, 'Giant clear centipede': 1}
+   02:05:52 ATT [188, 241] goal_failed flee (Boldor, King of the Yeeks): stuck on the way to the stairs
+   02:05:52 ACT [188, 241] custom r item=11 flee failed with monsters close: word of recall
+   02:05:52 ATT [188, 241] emergency couldn't reach the stairs with 12 monsters close: read Word of Recall (8-23 s); phasing while it cha
+   02:05:52 ACT [149, 241] custom r item=10 group danger 120 vs HP 149: phase door
+   02:05:52 ATT [149, 241] tactic Blue yeek, Brown yeek x2, Master yeek x3, Boldor, King of the Yeeks, Pseudo-dragon, Druid can deal 1
+   02:05:53 ACT [132, 241] custom q item=8 poisoned in combat: quaff 7 Potions of Cure Critical Wounds {25% off}
+   02:05:53 ATT [132, 241] tactic poisoned in combat: quaffed a Potion of Cure Critical Wounds {25% off}
+   02:05:54 GOAL flee (unseen attacker)
+   02:05:54 ATT [131, 241] unseen_attacker 'It magically summons help!': something unseen is attacking; heading for the stairs
+   02:05:54 ACT [131, 241] custom F item=1 refill lantern (2900 turns left)
+   02:05:54 ATT [161, 241] tactic flee: no known path to the stairs; trying one through unexplored squares
+   02:05:55 NAV goal ['hunt', 'Boldor,_King_of_the_Yeeks']
+   02:05:55 GOAL hunt Boldor, King of the Yeeks
+   02:05:57 ATT [155, 241] fight_going_badly HP 155/241 fighting Brown yeek, Master yeek
+   02:05:59 ACT [125, 241] custom q item=6 blind in combat: quaff 4 Potions of Cure Light Wounds
+   02:05:59 ATT [125, 241] tactic blind in combat: quaffed a Potion of Cure Light Wounds
+   02:06:00 ACT [129, 241] custom q item=2 afraid and in danger: quaff 3 Potions of Boldness
+   02:06:00 ATT [129, 241] tactic afraid and in danger: quaffed a Potion of Boldness
+   02:06:02 ACT [126, 241] custom q item=6 blind in combat: quaff 3 Potions of Cure Light Wounds
+   02:06:02 ATT [126, 241] tactic blind in combat: quaffed a Potion of Cure Light Wounds
+   02:06:03 ACT [137, 241] custom r item=10 group danger 98 vs HP 137: phase door
+   02:06:03 ATT [137, 241] tactic Brown yeek x11, Master yeek x2, Giant clear centipede can deal 98 (HP 137): phased away
+   02:06:03 ATT [120, 241] emergency low HP: waiting to use Phase Door, cure potions again, fighting on
+   02:06:04 ACT [120, 241] custom q item=7 low HP: quaff 5 Potions of Cure Serious Wounds
+   02:06:04 ATT [120, 241] emergency low HP: quaffed a Potion of Cure Serious Wounds (losing ~8 HP/s)
+   02:06:09 NAV goal ['recall']
+   02:06:10 ATT [236, 241] goal_failed hunt Boldor, King of the Yeeks: lost sight of it
+   02:06:17 NAV journal ['02:06 Boldor (fast, S_KIN, blinds) + Master yeeks + pseudo
+   02:06:17 NAV goal ['shop', '5', 'buy', 'Word_of_Recall:1@245']
+   02:06:17 GOAL shop 5 buy Word of Recall:1@245
+   02:05:52 MSG The air about you becomes charged...
+   02:05:52 MSG It teleports away.
+   02:05:52 MSG The Master yeek teleports away.
+   02:05:52 MSG The Druid flees in terror!
+   02:05:54 MSG It teleports away.
+   02:05:54 MSG It blinks away.
+   02:05:55 MSG You have slain the Brown yeek.
+   02:05:55 MSG It teleports away.
+   02:05:55 MSG It blinks away.
+   02:05:56 MSG The Master yeek flees in terror!
+   02:05:56 MSG You have slain the Brown yeek.
+   02:05:56 MSG The Brown yeek flees in terror!
+   02:05:56 MSG You have slain the Brown yeek.
+   02:05:57 MSG The Brown yeek flees in terror!
+   02:05:57 MSG You have slain the Brown yeek.
+   02:05:57 MSG The Brown yeek flees in terror!
+   02:05:57 MSG The Brown yeek flees in terror!
+   02:05:57 MSG You have slain the Brown yeek.
+   02:05:58 MSG You have slain the Giant brown bat.
+   02:05:58 MSG You have slain the Brown yeek.
+   02:05:58 MSG You have slain the Brown yeek.
+   02:05:58 MSG It blinks away.
+   02:06:04 MSG You feel yourself yanked upwards!
+===== m22 02:11:53 02:12:23
+ monsters(25s before): {'Ochre jelly': 3, 'White wolf': 7, 'Hill orc': 202, 'Zombified human': 12, 'Gnome mage': 13, 'Swordsman': 2, 'Zombified orc': 2, 'Raven': 1}
+   02:11:44 ATT [153, 236] fight_going_badly HP 153/236 fighting Zombified orc
+   02:11:49 NAV order ['max_depth=700']
+   02:11:49 NAV goal ['goto', '>']
+   02:11:49 GOAL goto >
+   02:11:49 ATT [138, 236] tactic goto: no known path; trying one through unexplored squares
+   02:11:49 ATT [135, 236] interesting_item Balsa Staff seen on this level (devices and jewellery sell for 50-700 once known): its square is und
+   02:11:50 ACT [136, 236] custom r item=11 group danger 89 vs HP 136: phase door
+   02:11:50 ATT [136, 236] tactic Hill orc x7, Gnome mage, White wolf can deal 89 (HP 136): phased away
+   02:11:53 ACT [114, 236] custom r item=11 low HP: phase door
+   02:11:53 ATT [114, 236] emergency low HP: read Phase Door (Hill orc adjacent)
+   02:11:54 NAV goal ['goto', '>', 'force']
+   02:11:54 GOAL goto > force
+   02:11:55 ACT [97, 236] custom q item=10 low HP: quaff 6 Potions of Cure Critical Wounds {25% off}
+   02:11:55 ATT [97, 236] emergency low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~10 HP/s)
+   02:11:56 ATT [123, 236] fight_going_badly HP 123/236 fighting Hill orc
+   02:11:56 ATT [123, 236] tactic goto: no known path; trying one through unexplored squares
+   02:11:58 ACT [115, 236] custom r item=11 low HP: phase door
+   02:11:58 ATT [115, 236] emergency low HP: read Phase Door (Hill orc, White wolf adjacent)
+   02:11:59 GOAL flee (emergency loop)
+   02:11:59 ATT [107, 236] tactic third emergency in 90 s: leaving by the stairs
+   02:12:00 ACT [109, 236] custom q item=8 low HP: quaff 2 Potions of Cure Light Wounds
+   02:12:00 ATT [109, 236] emergency low HP: quaffed a Potion of Cure Light Wounds (losing ~5 HP/s)
+   02:12:02 ATT [129, 236] tactic flee: no known path to the stairs; trying one through unexplored squares
+   02:12:02 ATT [119, 236] lost One of your Potions of Cure Critical Wounds {25% off} (k) was destroyed!
+   02:12:03 ACT [106, 236] custom r item=11 low HP: phase door
+   02:12:03 ATT [106, 236] emergency low HP: read Phase Door (Hill orc adjacent)
+   02:12:05 ACT [107, 236] custom q item=9 low HP: quaff 4 Potions of Cure Serious Wounds
+   02:12:05 ATT [107, 236] emergency low HP: quaffed a Potion of Cure Serious Wounds (losing ~8 HP/s)
+   02:12:05 ATT [108, 236] emergency low HP: waiting to use Phase Door, cure potions again, fighting on
+   02:12:06 ATT [132, 236] fight_going_badly HP 132/236 fighting Hill orc
+   02:12:11 NAV read ['Word_of_Recall']
+   02:12:11 ACT [128, 236] custom r item=12 agent: read ['Word_of_Recall']
+   02:12:13 ACT [113, 236] custom r item=11 low HP: phase door
+   02:12:13 ATT [113, 236] emergency low HP: read Phase Door (Hill orc, Zombified human adjacent)
+   02:12:16 ACT [95, 236] custom r item=11 low HP: phase door
+   02:12:16 ATT [95, 236] emergency low HP: read Phase Door (Hill orc, Zombified human adjacent)
+   02:12:18 ACT [90, 236] custom > stairs >
+   02:12:18 ATT [90, 236] emergency low HP: took the stairs underfoot (>)
+   02:12:18 GOAL recover (fled by >)
+   02:12:19 ACT [91, 236] custom < stairs <
+   02:12:19 ATT [91, 236] emergency low HP: took the stairs underfoot (<)
+   02:12:20 ACT [92, 236] custom > stairs >
+   02:12:20 ATT [92, 236] emergency low HP: took the stairs underfoot (>)
+   02:12:20 ACT [92, 236] custom < stairs <
+   02:12:20 ATT [92, 236] emergency low HP: took the stairs underfoot (<)
+   02:12:21 NAV quaff ['Cure_Critical']
+   02:12:21 ACT [92, 236] custom q item=10 agent: quaff ['Cure_Critical']
+   02:12:21 ACT [92, 236] custom > stairs >
+   02:12:21 ATT [92, 236] emergency low HP: took the stairs underfoot (>)
+   02:12:28 GOAL flee (emergency loop)
+   02:12:28 ATT [236, 236] goal_failed flee (emergency loop): no stairs known
+   02:12:33 NAV journal ['02:12 town after hill orc/gnome mage summon mob at 650 (HP
+   02:12:33 NAV read ['Identify', 'Bloodstone_Ring']
+   02:12:33 NAV read ['Identify', 'Bloodstone_Ring']
+   02:12:41 NAV read ['Identify', 't']
+   02:12:41 ACT [236, 236] custom r item=11 dir agent: read ['Identify', 't']
+   02:12:41 ATT [236, 236] tactic learned: Bloodstone Ring = Ring of Protection
+   02:12:41 NAV read ['Identify', 's']
+   02:12:41 ACT [236, 236] custom r item=11 dir agent: read ['Identify', 's']
+   02:11:43 MSG The Swordsman flees in terror!
+   02:11:43 MSG You have slain the Swordsman.
+   02:11:45 MSG You have destroyed the Zombified orc.
+   02:11:46 MSG The Hill orc flees in terror!
+   02:11:46 MSG You have slain the Hill orc.
+   02:11:47 MSG The Hill orc flees in terror!
+   02:11:48 MSG The Hill orc flees in terror!
+   02:11:49 MSG You have slain the Hill orc.
+   02:11:56 MSG The Hill orc flees in terror!
+   02:11:57 MSG You have slain the Hill orc.
+   02:11:57 MSG The Hill orc flees in terror!
+   02:11:59 MSG You have slain the White wolf.
+   02:12:03 MSG The Gnome mage blinks away.
+   02:12:04 MSG You have slain the Hill orc.
+   02:12:05 MSG The Gnome mage flees in terror!
+   02:12:10 MSG You have slain the Hill orc.
+   02:12:12 MSG You have slain the Hill orc.
+   02:12:13 MSG The air about you becomes charged...
+   02:12:16 MSG You have slain the Hill orc.
+   02:12:25 MSG You feel yourself yanked upwards!
+===== m23 22:26:55 22:26:55
+ monsters(25s before): {'Black orc': 7, 'Uruk': 2, 'Half-orc': 11, 'Orc captain': 5, 'Cave orc': 4, 'Orc shaman': 24, 'Novice paladin': 3}
+   22:26:43 GOAL flee (Orc captain)
+   22:26:43 ATT [237, 254] danger_seen Orc captain (rated 4: lethal until clvl 26) in view while explore: heading for the stairs
+   22:26:46 ATT [189, 254] goal_failed flee (Orc captain): stuck on the way to the stairs
+   22:26:46 ACT [189, 254] custom r item=13 flee failed with monsters close: word of recall
+   22:26:46 ATT [189, 254] emergency couldn't reach the stairs with 3 monsters close: read Word of Recall (8-23 s); phasing while it char
+   22:26:48 ATT [165, 254] fight_going_badly HP 165/254 fighting Half-orc
+   22:26:49 NAV goal ['goto', '<', 'force']
+   22:26:49 GOAL goto < force
+   22:26:52 ATT [130, 254] goal_failed goto < force: stuck
+   22:26:55 ACT [123, 254] custom r item=12 low HP: phase door
+   22:26:55 ATT [123, 254] emergency low HP: read Phase Door (Novice paladin, Orc shaman adjacent)
+   22:26:55 ACT [120, 254] custom q item=9 low HP: quaff a Potion of Cure Light Wounds
+   22:26:55 ATT [120, 254] emergency low HP: quaffed a Potion of Cure Light Wounds (losing ~4 HP/s)
+   22:26:57 GOAL flee (unseen attacker)
+   22:26:57 ATT [142, 254] unseen_attacker 'It points at you and curses.': something unseen is attacking; heading for the stairs
+   22:26:58 ATT [147, 254] goal_failed flee (unseen attacker): no stairs known
+   22:27:00 ATT [149, 254] user_message That was a very stupid decision. Gear dropped by uniques is often very useful and/or sells for a lot
+   22:27:03 NAV journal ['orc mob (Orc captain, Half-orc, shamans, paladin) at 650 a
+   22:27:03 NAV pack []
+   22:27:04 ATT [157, 254] fight_going_badly HP 157/254 fighting Filthy street urchin
+   22:27:08 NAV say ["Fair criticism: I should have ordered the flee to be overr
+   22:27:08 NAV journal ['user: scimitar loss was stupid | agreed; I should have fet
+   22:27:08 NAV goal ['shop', '6', 'sell', 'Amulet_of_Resist_Acid:1', 'sell', 'Mo
+   22:27:08 GOAL shop 6 sell Amulet of Resist Acid:1 sell Molybdenum Rod:1 sell Soft Leather Boots:1
+   22:26:44 MSG You have slain the Black orc.
+   22:26:44 MSG The Half-orc flees in terror!
+   22:26:45 MSG You have slain the Half-orc.
+   22:26:46 MSG The air about you becomes charged...
+   22:26:47 MSG The Orc captain flees in terror!
+   22:26:47 MSG The Orc shaman blinks away.
+   22:26:47 MSG You have slain the Orc captain.
+   22:26:49 MSG The Half-orc flees in terror!
+   22:26:50 MSG You have slain the Cave orc.
+   22:26:51 MSG You have slain the Half-orc.
+   22:26:51 MSG The Orc shaman flees in terror!
+   22:26:52 MSG You have slain the Orc shaman.
+   22:26:52 MSG The Orc shaman flees in terror!
+   22:26:52 MSG You have slain the Orc shaman.
+   22:26:53 MSG The Orc shaman flees in terror!
+   22:26:53 MSG You have slain the Orc shaman.
+   22:26:54 MSG The Orc shaman flees in terror!
+   22:26:54 MSG You have slain the Orc shaman.
+   22:26:54 MSG You have slain the Orc shaman.
+   22:26:57 MSG It blinks away.
+   22:26:58 MSG You feel yourself yanked upwards!
+   22:27:03 MSG You have slain the Filthy street urchin.
+   22:27:03 MSG You have slain the Filthy street urchin.
+   22:27:04 MSG You have slain the Filthy street urchin.
+   22:27:05 MSG You have slain the Filthy street urchin.
+   22:27:06 MSG You have slain the Singing, happy drunk.
+   22:27:07 MSG You have slain the Filthy street urchin.
+   22:27:08 MSG You have slain the Filthy street urchin.

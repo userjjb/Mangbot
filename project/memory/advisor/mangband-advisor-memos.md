@@ -27,3 +27,4 @@ metadata:
 - 2026-10-07 (session 3, late): **mission-15 requests DONE** (Architect: vaults/pits recogniser, zig-zag, chests, search) → `memos/2026-10-07-mission15-answers.md` (study `Advisor/studies/2026-10-07-mission15/`).
 - 2026-10-08: **missions 15–16 replay** → `memos/to_architect/2026-10-08-missions15-16-replay.md` (Brodda near-death 26/151; all fixes adopted by the Architect); **Navigator decision quality DONE** → `memos/2026-10-08-navigator-decisions.md` (unknown-potion sales followed doctrine of the day — not lapses). Next: replay mission 17 when it happens (2.5× emergency trigger).
 - 2026-10-17/22: Navigator response-time baseline (Opus, m16–21) `Advisor/data/navigator/`; "starting over" memo `memos/2026-10-19-starting-over.md` (sent 10-22).
+- 2026-10-23: **scorecard definitions + baseline m17–23** → `memos/2026-10-23-scorecard.md`, `Advisor/data/scorecard/` (restructure step 1).

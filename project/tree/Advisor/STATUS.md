@@ -51,6 +51,13 @@ The original six-topic backlog (`../memos/2026-09-27-advisor-study-topics.md`) i
 - Earlier memos (danger table, Borg tiers, post-mortem, messages, shops) were acted on; see
   `../next_steps.md` "ARCHITECT HANDOFF" (read only) for the Architect's own record.
 
+## Restructure (from 2026-10-22; the user's decision; Architect plan `../memos/to_advisor/2026-10-22-restructure-plan.md`)
+
+Advisor owns: (1) **scorecard definitions — DONE** 10-23 (`../memos/2026-10-23-scorecard.md`, `data/scorecard/scorecard.py`,
+baseline m17–23); (2) **set-piece list** from the failures of missions 15–23 — next, when the user says; (3) **rulebook tables**
+generated from the source (start from data/monsters, data/identify, data/shops (fix CHR 3!), data/progression, data/drops).
+Mission-by-mission patching is frozen. m22–23 were Sonnet Navigator missions.
+
 ## Open leads (candidates for the next study; ask the user)
 
 1. **Replay each new mission** (mission 13 done 10-07) with `data/runs/` scripts (`replay_group_danger.py`, `replay_stats.py`,

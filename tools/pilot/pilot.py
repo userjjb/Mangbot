@@ -1219,6 +1219,14 @@ class Shop(Goal):
                 self.state = "walk"
             return None
         if self.state == "trade":
+            sp = getattr(self, "sale_pending", None)
+            if sp and (w.store_t > sp["t"] or time.time() - sp["t"] > 3):
+                key = re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", sp["sold_as"])).lower()
+                relist = next((i["price"] for i in (w.store or {}).get("items", [])
+                               if re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", i["name"])).lower() == key),
+                              None) if w.store_t > sp["t"] else None
+                p.log("sale", **{k: v for k, v in sp.items() if k != "t"}, relist=relist)
+                self.sale_pending = None
             if self.pending and getattr(self, "quoting", None):
                 ts, prompt, _ = w.last_confirm
                 m = re.search(r"Accept (\d+) gold", prompt) if ts >= self.pending else None
@@ -1237,6 +1245,13 @@ class Shop(Goal):
                 if verdict is None and w.store_t < self.pending and time.time() - self.pending < 4:
                     return None   # still waiting
                 self.done_log.append(verdict or f"{self.last} (no answer)")
+                ms = re.match(r"You sold (.+?) for (\d+) gold", verdict or "")
+                if ms and getattr(self, "sale_ctx", None):
+                    # the scorecard's sale record: the re-listing comes with the next
+                    # store listing (the Advisor's scorecard memo §5.1)
+                    self.sale_ctx.update(sold_as=ms.group(1), received=int(ms.group(2)), t=time.time())
+                    self.sale_pending = self.sale_ctx
+                self.sale_ctx = None
                 m = re.match(r"You sold (.+?) for \d+ gold", verdict or "")
                 if m and getattr(self, "selling_flavour", None):
                     p.learn_flavour(self.selling_flavour, kind_key(m.group(1)), "sold in a shop")
@@ -1288,6 +1303,11 @@ class Shop(Goal):
                     return None
                 # selling an unknown flavour identifies it (store.c): learn the kind
                 self.selling_flavour = flavour_key(it["name"]) if it and p.unknown_flavour(it) else None
+                self.sale_ctx = {"name_before": it["name"] if it else None, "count": n, "forced": force,
+                                 "flavour_aware": not p.unknown_flavour(it) if it else None,
+                                 "pluses_known": bool(re.search(r"\([+-]\d+,[+-]\d+\)|\[\d+,[+-]\d+\]|<[+-]\d+>|"
+                                                                r"\(\d+ charges?\)|\bof\b", it["name"])) if it else None,
+                                 "store": self.store, "owner": (w.store or {}).get("owner")}
                 if it and not force and p.probably_special(it["name"]):
                     # Wormtongue's armour was sold unseen for 17 gold: it was Soft
                     # Studded Leather of Resistance (buyback 19834)
@@ -1335,6 +1355,8 @@ class Shop(Goal):
                 self.last = f"buy {it['name']} x{n} at {it['price']} each"
                 self.pending = time.time()
                 return None
+            if getattr(self, "sale_pending", None):
+                return None       # (the last sale's re-listing first: the sale record)
             p.cmd("leave", "leave store", hold=0.3)
             w.store = None
             return ("done", "; ".join(self.done_log) or "nothing to do")
@@ -1398,6 +1420,9 @@ class Pilot:
         self.fearers_seen = set()
         self.drainers_seen = set()     # (level_t, race name) drainer warnings given
         self.report_seq, self.last_report = 0, (0, 0.0)   # Navigator reports: number, time of the last
+        self.hp_min_since = None       # lowest HP since the last audit_check
+        self.escalation_t = 0.0        # last emergency-type alert (escape records)
+        self.items_level, self.items_last, self.items_depth = None, [], 0   # this level's floor items (itemlist)
         self.equip_letters_lower = False  # item_index: a lowercase letter is an equipment letter (takeoff)
         self.phase_hist = collections.deque()   # emergency Phase Door times (futility check)
         self.traps_here, self.trap_seen_t = (None, 0), time.time()
@@ -1505,6 +1530,9 @@ class Pilot:
     NEWS = {"danger_avoided", "started", "tactic", "resumed"}
 
     def notify(self, what, detail=None, news=False):
+        if what in ("emergency", "emergency_loop", "danger_seen", "danger_avoided", "fight_going_badly",
+                    "unseen_attacker", "band", "stat_drained"):
+            self.escalation_t = time.time()      # (escape records: stairs taken in an emergency)
         if what in ("emergency", "tactic") and time.time() - self.held_t < 0.05 and detail and \
                 any(k in detail for k in ("quaffed", "read ", "phase")):
             # the action this reports was held, not sent (mission 10 reported 3
@@ -1548,6 +1576,7 @@ class Pilot:
         self.last_action = (time.time(), line, why)
         self.busy_until = time.time() + hold
         self.log("act", cmd=line, why=why)
+        self.log_escape(line, why)
         self.expect_effect(line, why)
         if re.match(r"custom [qruazE] item=", line):
             self.watch_flavours()
@@ -1693,7 +1722,12 @@ class Pilot:
                  exp=st["ind"].get("exp"), clvl=w.clvl, depth_ft=w.depth_ft,   # (exp: for XP-rate studies)
                  stats={n: st["ind"].get(f"stat{i}") for i, n in enumerate(self.STAT_NAMES)},
                  blows=st["ind"].get("skills2", [None])[0], ac=st["ind"].get("armor"),
-                 gold=st["ind"].get("gold", [None])[0])
+                 gold=st["ind"].get("gold", [None])[0],
+                 # per-check state (the Advisor's scorecard memo §5.4)
+                 resting=bool(w.resting), in_combat=bool(w.adjacent_monsters() or time.time() - w.last_hit_t < 5),
+                 recall_pending=bool(w.recall_pending), goal=self.goal.describe() if self.goal else None,
+                 hp_min=self.hp_min_since)
+        self.hp_min_since = None
         for k in diffs:
             self.audit_counts[k] = self.audit_counts.get(k, 0) + 1
         if diffs:
@@ -1730,6 +1764,33 @@ class Pilot:
         self.c.send(p["line"])
         self.log("act", cmd=p["line"], why=f"resend (no effect seen): {p['why']}")
         self.notify("tactic", f"'{p['why']}' showed no effect: resent it")
+
+    ESCAPE_WHY = re.compile(r"low HP|flee|danger|emergency|monsters close|phasing|group|potions too weak|"
+                            r"last resort|unseen|afraid|cornered", re.I)
+
+    def log_escape(self, line, why):
+        """An `escape` record for every escape sent (the Advisor's scorecard memo
+        §5.3): kind, trigger, HP. Its result shows in the records after it."""
+        w = self.w
+        kind = None
+        m = re.match(r"custom r item=(\d+)", line)
+        if m:
+            it = next((i for i in w.items() if i["item"] == int(m.group(1))), None)
+            name = it["name"] if it else why
+            if "Phase Door" in name or "phase door" in why.lower():
+                kind = "phase"
+            elif "Word of Recall" in name or "word of recall" in why.lower():
+                kind = "wor_escape" if (w.in_dungeon and (self.ESCAPE_WHY.search(why) or w.hp_frac < 0.5)) \
+                    else "wor_travel"
+            elif "Teleport" in name:
+                kind = "teleport"
+        elif re.match(r"custom [<>]$", line) and (isinstance(self.goal, (Flee, Recover)) or self.ESCAPE_WHY.search(why)
+                                                    or time.time() - self.escalation_t < 10):
+            kind = "stairs"
+        if kind:
+            self.log("escape", escape=kind, trigger=why[:120], hp=w.hp[:2],
+                     adjacent=[r.name for *_, r in w.adjacent_monsters()][:6],
+                     goal=self.goal.describe() if self.goal else None)
 
     def take_stairs(self, which):
         self.mover.stop()
@@ -3398,6 +3459,18 @@ class Pilot:
         self.learn_flavours_tick(time.time())
         self.track_since()
         w, now = self.w, time.time()
+        if w.hp[1] > 1 and (self.hp_min_since is None or w.hp[0] < self.hp_min_since[0]):
+            self.hp_min_since = [w.hp[0], w.hp[1]]
+        # 2. floor items with full names, and what a level was left with (the
+        # Advisor's scorecard memo §5.2: abandoned loot had to be reconstructed)
+        names = [l.strip()[2:].strip() for l in (w.itemlist or [])[1:]]
+        if w.level_t != self.items_level:
+            if self.items_level is not None and self.items_last and self.items_depth:
+                self.log("left_behind", items=self.items_last, left_depth_ft=self.items_depth)
+            self.items_level, self.items_last, self.items_depth = w.level_t, [], w.depth_ft
+        if names != self.items_last and w.in_dungeon:
+            self.items_last = names
+            self.log("itemlist", items=names, depth_ft=w.depth_ft)
         # Full resync from the server after a level change or a loss (the
         # game-state survey, 2026-10-03: the client's copy is right, ours drifts)
         # Never inside a store, nor during a shop goal: the server's redraw
@@ -3533,7 +3606,7 @@ class Pilot:
                 req, reply = self.requests.get_nowait()
             except queue.Empty:
                 return
-            if req.get("cmd") not in ("viewmap", "view", "navview", "note", "goalstate"):
+            if req.get("cmd") not in ("viewmap", "view", "navview", "note", "goalstate", "mission"):
                 # (only the Navigator's own commands count as activity: the viewer's
                 # twice-a-second polls kept town_light from ever taking the lantern
                 # off, and idling in town burned 7300 turns + 3 flasks, 2026-10-16)
@@ -3640,6 +3713,38 @@ class Pilot:
             rep = self.numbered(self.report() if full else self.compact(snapshot=True), "full" if full else "status")
             self.nav_view = (time.time(), [], rep)
             return {"ok": True, "report": rep}
+        if c == "mission":
+            # mission_start / mission_end markers with the Navigator's model (the
+            # Advisor's scorecard memo §5.5); also kept in runs/missions.json
+            if not args or args[0] not in ("start", "end"):
+                return {"ok": False, "error": "usage: mission start LABEL [navigator=MODEL] [effort=LEVEL] [notes=TEXT] | "
+                                              "mission end [LABEL]"}
+            kv = dict(a.split("=", 1) for a in args[1:] if "=" in a)
+            label = next((a for a in args[1:] if "=" not in a), None) or getattr(self, "mission_label", None)
+            if not label:
+                return {"ok": False, "error": "which mission? (mission start LABEL ...)"}
+            path = os.path.join(os.path.dirname(os.path.dirname(self.rundir.rstrip("/"))), "missions.json")
+            try:
+                ms = json.load(open(path))
+            except (OSError, ValueError):
+                ms = []
+            nick = os.path.basename(self.rundir.rstrip("/"))
+            stamp = time.strftime("%Y-%m-%d %H:%M")
+            if args[0] == "start":
+                self.mission_label = label
+                self.log("mission_start", label=label, **kv)
+                ms = [m for m in ms if m.get("label") != label] + [
+                    {"label": label, "nick": nick, "start": stamp, "end": None, "navigator": kv.get("navigator"),
+                     "effort": kv.get("effort"), "report": "compact", "notes": kv.get("notes", "")}]
+            else:
+                self.log("mission_end", label=label, **kv)
+                for m in ms:
+                    if m.get("label") == label:
+                        m["end"] = time.strftime("%Y-%m-%d %H:%M", time.localtime(time.time() + 59))
+                self.mission_label = None
+            with open(path, "w") as f:
+                json.dump(ms, f, indent=1)
+            return {"ok": True, "text": f"mission {args[0]}: {label} at {stamp}"}
         if c == "pack":
             return {"ok": True, "text": "Pack: " + "; ".join(f"{chr(97 + i['item'])}) {self.short(self.show(i))}"
                                                            for i in self.w.items())}

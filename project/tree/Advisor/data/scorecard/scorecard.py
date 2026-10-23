@@ -26,6 +26,11 @@ CLOSE_CALL = 0.40          # HP fraction
 CURE_RE = re.compile(r"Cure (Light|Serious|Critical) Wounds|Healing")
 
 
+EXP = {int(r["reach_clvl"]): int(r["halforc_warrior_needed(base*110/100)"]) for r in csv.DictReader(open(
+    "/projectnb/jbrcs/mangband/Advisor/studies/2026-10-07-progression/scratch/G1_player_exp.csv"))}  # exp to reach clvl
+EXP[1] = 0
+
+
 def ts(s): return datetime.strptime(s, "%Y-%m-%d %H:%M").timestamp()
 def med(v): return round(statistics.median(v), 1) if v else None
 
@@ -73,6 +78,12 @@ def score(name, dec, ev):
         for p, q in zip(ac, ac[1:]):
             if (q.get("depth_ft") or 0) > 0 and q["gold"] > p["gold"]:
                 g += q["gold"] - p["gold"]
+        lv = 0.0                         # fraction of a level gained, at the clvl of the moment (level-normalised)
+        for p, q in zip(ac, ac[1:]):
+            de = q["exp"][0] - p["exp"][0]
+            if de > 0:
+                c = p["clvl"]; lv += de / max(1, EXP.get(c + 1, 10**9) - EXP.get(c, 0))
+        out["levels_per_dhour"] = round(lv / (dung / 3600), 2)
         out["gold_found"] = g; out["gold_found_per_dmin"] = round(g / (dung / 60), 1)
 
     # --- safety
@@ -109,7 +120,8 @@ def score(name, dec, ev):
     spent = sum(int(m.group(1)) for _, t in msgs for m in [re.search(r"You bought .* for (\d+) gold", t)] if m)
     sold = sum(int(m.group(1)) for _, t in msgs for m in [re.search(r"You sold .* for (\d+) gold", t)] if m)
     out["gold_spent"] = spent; out["gold_sold"] = sold
-    out["stolen_events"] = sum(1 for _, t in msgs if "purse feels lighter" in t or "backpack" in t and "lighter" in t)
+    out["gold_stolen"] = sum(int(m.group(1)) for _, t in msgs for m in [re.search(r"(\d+) coins were stolen", t)] if m)
+    out["items_stolen"] = sum(1 for _, t in msgs if re.search(r"^One of your .* was stolen|^Your .* was stolen", t))
 
     # --- Navigator
     nc = [x for x in d if x["kind"] == "nav_cmd"]

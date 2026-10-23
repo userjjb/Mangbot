@@ -1,55 +1,125 @@
 {
  "label": "m21",
  "nav_model": "opus",
+ "effort": null,
  "report": "full",
  "start": "2026-10-17 00:47",
  "end": "2026-10-17 01:35",
  "minutes": 48.0,
  "notes": "server crash 00:48:48-00:58 (store[-1]); Wormtongue killed; user watching",
- "dungeon_minutes": 27.4,
- "clvl": [
-  18,
-  19
- ],
- "exp": [
-  3926,
-  4626
- ],
- "gold": [
-  793,
-  2539
- ],
- "deepest_ft": 700,
- "audit_checks": 77,
- "audit_differences": 0,
- "xp_gained": 700,
- "xp_per_dungeon_min": 25.5,
- "gold_flows": {
-  "found": 877,
-  "bought": 1507,
-  "sold": 2205
- },
- "found_per_dungeon_min": 32.0,
- "value_lost": {
-  "resold_10x": [],
-  "forced_sales": 2,
-  "items_lost": [
-   "You have no room for a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman}.",
-   "You have no room for a Scroll of Holy Chant.",
-   "You have no room for a Scroll of Light.",
-   "Your Hard Studded Leather [7] {excellent} (u) was stolen!",
-   "You have no room for a Scroll titled \"munger toxmung\".",
-   "You have no room for a Dogwood Staff.",
-   "You have no room for Hard Studded Leather [7] {excellent}."
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   18,
+   19
   ],
-  "left_on_floor": []
+  "exp_gain": 700,
+  "gold": [
+   793,
+   2539
+  ],
+  "gold_change": 1746,
+  "max_depth_ft": 700
  },
- "lowest_hp": [
-  159,
-  233,
-  "01:09:50"
- ],
- "close_calls_below_40pct": 0,
+ "B": {
+  "dungeon_min": 27.4,
+  "town_min": 10.8,
+  "exp_per_dmin": 25.5,
+  "levels_per_dhour": 1.76,
+  "gold_found": 425,
+  "gold_found_per_dmin": 15.5,
+  "time_budget_min": {
+   "exploring": 14.7,
+   "pilot_down": 9.5,
+   "town_no_goal": 4.6,
+   "fighting": 4.5,
+   "no_goal_dungeon": 3.5,
+   "town_farming": 3.4,
+   "town_shopping": 2.5,
+   "travel_goto": 2.2,
+   "searching_doors": 1.7,
+   "recall_wait": 0.6,
+   "travel_dive": 0.3,
+   "stuck_looping": 0.1,
+   "escaping": 0.1,
+   "town_other": 0.1
+  },
+  "navigator_wait_pct": 17
+ },
+ "C": {
+  "lowest_hp": [
+   159,
+   233,
+   68,
+   "01:09:50"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 0,
+  "emergency_alerts": 0,
+  "phase": 0,
+  "wor_escape": 1,
+  "wor_travel": 1,
+  "stairs_flee": 0,
+  "teleport": 0,
+  "cures_quaffed": 0,
+  "escape_records": null,
+  "recalls_landed": 2
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 97,
+  "loot_abandoned_est": 0,
+  "stolen": 76,
+  "destroyed_by_monsters_est": 0,
+  "total": 173,
+  "sales": 8,
+  "sales_valued": 4,
+  "worst_sales": [],
+  "left_behind": [],
+  "irreplaceable": [
+   "a Ring of Resist Cold",
+   "a Ring of Resist Fire",
+   "an Amulet of Resist Acid"
+  ]
+ },
+ "E": {
+  "reports": 50,
+  "commands": 143,
+  "commands_per_min": 4.0,
+  "report_to_action_med_s": 5.3,
+  "report_to_action_p90_s": 13.6,
+  "reports_without_command_pct": 16,
+  "user_messages": 3,
+  "user_reply_med_s": 6.3,
+  "forced_overrides": 2,
+  "complaints": 2,
+  "report_chars": null,
+  "order_report_age_med_s": null,
+  "order_report_age_p90_s": null
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 77,
+  "perception_gaps": 2,
+  "goal_failed": 1,
+  "stuck": 0,
+  "stuck_looping_min": 0.1,
+  "runs_sent": 965,
+  "pilot_down_min": 9.5,
+  "server_crashes": 1
+ },
+ "damage_by_monster": {
+  "White wolf": 84,
+  "Swordsman": 38,
+  "Nighthawk": 31,
+  "Giant spider": 28,
+  "Drider": 17,
+  "Hippogriff": 17,
+  "Zombified human": 13,
+  "Brigand": 12
+ },
  "alerts": {
   "goal_done": 32,
   "tactic": 9,
@@ -62,39 +132,6 @@
   "parked": 1,
   "breeders": 1,
   "interesting_item": 1,
-  "goal_failed": 1,
-  "unseen_attacker": 1
- },
- "deaths": 0,
- "recalls": 2,
- "level_changes": null,
- "consumables_used": {
-  "Word of Recall": 2,
-  "Scroll of Light (by name/letter)": 2,
-  "Identify (by name/letter)": 2,
-  "Enchant Weapon To-Dam (by name/letter)": 2,
-  "Object Detection (by name/letter)": 1,
-  "Magic Mapping (by name/letter)": 1,
-  "ip anrog eresh (by name/letter)": 1
- },
- "navigator": {
-  "commands": 193,
-  "per_min": 4.0,
-  "alert_to_order_median": 9.9,
-  "alert_to_order_p90": 80.9,
-  "user_to_reply_median": 6.3,
-  "user_messages": 3,
-  "user_notes": 4,
-  "full_reports": 0,
-  "complaints": 2
- },
- "pilot": {
-  "stuck": 0,
-  "goal_failed": {
-   "hunt Brigand: lost sight of it": 1
-  },
-  "runs": 965,
-  "move_records": 2008,
-  "server_crashes": 1
+  "goal_failed": 1
  }
 }
