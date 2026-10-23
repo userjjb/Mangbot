@@ -36,6 +36,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "pilot"))
 from pilotctl import call, RUNS      # noqa: E402
+import itemvalue                       # noqa: E402  (item types for the equipment slots)
 
 # Angband's 16 colours (attr index = position; monster.txt letters in LETTERS),
 # as xterm-256 shades and as the nearest of the 8 basic colours (+ bold)
@@ -220,6 +221,29 @@ def split_items(text):
     return [x for x in out if x]
 
 
+# the game's equipment slots and letters (mdefines.h INVEN_WIELD..INVEN_FEET; c-inven.c index_to_label)
+SLOTS = (("Wielding", {20, 21, 22, 23}), ("Shooting", {19}), ("On left hand", {45}), ("On right hand", {45}),
+         ("Around neck", {40}), ("Light source", {39}), ("On body", {36, 37, 38}), ("About body", {35}),
+         ("On arm", {34}), ("On head", {32, 33}), ("On hands", {31}), ("On feet", {30}))
+
+
+def equipment_slots(items):
+    """Worn items (in slot order, as the report lists them) -> the game's 12 lines, a) to l),
+    '(nothing)' in empty slots."""
+    slots = [None] * len(SLOTS)
+    if sum(1 for it in items if itemvalue.value(it).tval == 45) == 1:
+        slots[2] = ""            # (one ring: the game puts it on the right hand first, object1.c:2668)
+    for it in items:
+        tv = itemvalue.value(it).tval
+        for i, (_, tvs) in enumerate(SLOTS):
+            if slots[i] is None and tv in tvs:
+                slots[i] = it
+                break
+        else:
+            slots[slots.index(None) if None in slots else 0] = it   # (an unknown kind: first free slot)
+    return [f"{chr(97 + i)}) {it or '(nothing)'}   [{SLOTS[i][0]}]" for i, it in enumerate(slots)]
+
+
 def count_of(name):
     m = re.match(r"(\d+) ", name)
     return int(m.group(1)) if m else 1
@@ -288,6 +312,11 @@ def items_in_view(seen, squares):
     return "Items in view: " + ("; ".join(out) if out else "none")
 
 
+HELP = ("Enter: note · '!' to the Navigator · '?' for the Architect · Tab: Navigator's view · F2: equipment · "
+        "F3: pack · Esc: back/clear · PgUp/PgDn: feed")
+MSG_T = [0.0]                          # when the last message was set (it shows 6 s, then the keys again)
+
+
 def draw(scr, sock, feed, buf, msg, scroll):
     scr.erase()
     H, W = scr.getmaxyx()
@@ -335,7 +364,7 @@ def draw(scr, sock, feed, buf, msg, scroll):
                                                                        else "Pack:")), "")
             items = split_items(src.partition(":")[2])
             if MODE["panel"] == "equip":
-                items = [f"{chr(65 + i)}) {x}" for i, x in enumerate(items)]
+                items = equipment_slots(items)
             lines = [lines[0], ("EQUIPMENT" if MODE["panel"] == "equip" else "PACK") +
                      f" ({len(items)}; {'F2' if MODE['panel'] == 'equip' else 'F3'} or Esc: back)"] + \
                 (items or ["(empty)"])
@@ -407,8 +436,8 @@ def draw(scr, sock, feed, buf, msg, scroll):
         scr.addnstr(fy + 1 + i, fx, f"{t:9} {piece}", fw, attr)
     # the note line
     scr.hline(H - 2, 0, curses.ACS_HLINE, W - 1)
-    if msg:
-        scr.addnstr(H - 2, 2, f" {msg} ", W - 4)
+    text = msg if msg and time.time() - MSG_T[0] < 6 else HELP
+    scr.addnstr(H - 2, 2, f" {text} ", W - 4)
     prompt = "note> "
     scr.addnstr(H - 1, 0, prompt + buf[-(W - len(prompt) - 1):], W - 1)
     scr.move(H - 1, min(W - 1, len(prompt) + len(buf)))
@@ -423,8 +452,7 @@ def main(scr, args):
     init_colours()
     scr.nodelay(True)
     scr.keypad(True)
-    buf, msg, scroll, last = "", ("type a note + Enter;  '!' = message the Navigator now;  "
-                                  "'?' = a question for the Architect"), 0, 0.0
+    buf, msg, scroll, last = "", None, 0, 0.0
     while True:
         now = time.time()
         if now - last >= 0.5:
@@ -437,6 +465,7 @@ def main(scr, args):
         except curses.error:
             time.sleep(0.03)
             continue
+        before = msg
         if ch in ("\n", "\r", curses.KEY_ENTER):
             if buf.strip():
                 try:
@@ -472,6 +501,8 @@ def main(scr, args):
             pass
         elif isinstance(ch, str) and ch.isprintable():
             buf += ch
+        if msg != before:
+            MSG_T[0] = time.time()
         last = 0.0                      # redraw now (typing feels live)
 
 
