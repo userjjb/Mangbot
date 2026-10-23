@@ -146,3 +146,7 @@ P3 = a regression guard for something fixed and exercised.
 |---|---|---|---|---|---|---|
 | A7 | **Hunt a FIGHT monster at 60/80/100% HP** | Architect's strictness question | L | Hill giant adjacent at 1250 ft; 3 runs each at 100/80/60% HP | the hunt check allows it at 100% and 80% and refuses it at 60%; HP lost ≤ `fight_sim` p90 (123) in ≥ 8/9 runs | P1 |
 | A8 | **Summoner hunt (m19 Ranger replay)** | m19 22:24:39-58 (153 HP) | L | Ranger 6 squares away + Skeleton human | the hunt is refused; if overridden, summons are killed first, no chasing a blinker past 2 turns, lowest HP ≥ 40% | P1 |
+| A9 | **Recall arrival on a "special" level (m24 replay)** | m24 12:25:37-12:27:28 (orc pit, both WoR) | L | static 600 ft level with an orc pit (awake), stairs 40+ squares from the arrival point on the far side; recall Dive04 in with 2 WoR | Door/Stair Location used within 5 s; stairs reached (or explore-until-stairs) before the pit's ring corridor; the return WoR not read while stairs are reachable; never a 2nd WoR read while one is pending | P1 |
+
+**Order after m24 (2026-10-24):** A7, A8, A9 first (they test what step 2 just built: hunt check, summoner/blinker rules, arrival
+protocol), then A1, A6, A2 (escapes), C8 (Free Action detection: Dive04 has none), C3 (unique drop pickup), then the rest by priority.

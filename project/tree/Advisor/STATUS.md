@@ -27,8 +27,8 @@ Architect builds everything else.
    subtract already-found artifacts if the server log is kept; empirical drop counts need monster coordinates in the logs.
 2. **Live checks of code-only rulebook claims** once Gandalf is scriptable (or from a mission log): boulders do 0 damage; the low-HP time
    bubble is a constant 1/5; WoR counts down ~10× faster while resting out of sight; "You are unaffected!" pairing.
-3. **Set-pieces:** when the enablers land, write a staging recipe + automatic pass/fail check for each P1 case (A1, A2, A3, A6, A7, A8, B1, C1, C3,
-   C4, C5, C8, D3, F1). A7 also validates `fight_sim.py` (Hill giant p90 123 at Dive04's profile).
+3. **Set-pieces:** when the enablers land, write a staging recipe + automatic pass/fail check for each P1 case, in the agreed order A7, A8, A9 (m24 arrival replay), A1, A6, A2, C8, C3, then (A3, B1, C1,
+   C4, C5, D3, F1). A7 also validates `fight_sim.py` (Hill giant p90 123 at Dive04's profile).
 4. ~~veto_reason~~ **done** 10-24 (monsters.csv `veto_reason`/`veto_detail`; note `to_architect/2026-10-24-veto-reason.md`; awaiting re-sync). The Architect built the m24 arrival protocol, depth band in HANDBOOK, plan-news tagging.
 4b. **Belief-state spec** (if the Architect wants it for step 2): fields, computation, expiry (see starting-over memo §3.4).
 5. **Step 5:** run the scorecard on each new mission vs the m17–23 baseline; Opus vs Sonnet by depth band (m22–23 were Sonnet;
@@ -99,6 +99,10 @@ The user struck one lead (2026-10-07): the live fetch of Bug Reports / Technical
   Pilot's map memory and pack at second T.
 
 ## Tooling notes
+
+- **Every rulebook release memo needs a "Schema changes" section** (renamed/added/redefined columns, or "None"): the Pilot's
+  loaders fall back silently to old files/defaults. Tables the Pilot reads: monsters.csv (+veto_reason), monsters_raw.csv + fight_sim.py,
+  kinds_by_level, jewellery, feelings, abilities, shop_owners, drops, constants, rule.py (`to_advisor/2026-10-23-step3.md`).
 
 - **Inbox watcher:** `.claude/hooks/inbox.sh watch ../memos/to_advisor` (background) exits when a memo arrives; read, `mark-read`, restart.
   It can hit the background time limit: if so, check `inbox.sh unread` by hand. Send memos by writing `../memos/to_architect/.tmp-SLUG.md`

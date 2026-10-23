@@ -241,8 +241,10 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    instead of SHOP_CUT 38%. `monster NAME` shows the hunt verdict and the expected drop (`drops.csv`); `pilotctl rule
    ...` queries the rulebook (rule.py synced). The Recall goal rests while it charges when hurt and alone (time 10x
    while resting). Fixed on the way: the Shop goal called `self.iv` (a crash when a forced sale had no re-listing).
-   **Next:** step 4, the harness (the Advisor's set-pieces; its enablers: a DM key-sending verb, replays), then
-   step 5 missions, then the time bubble. (`plan trip LO-HI until COND then recall`), 2.4 order
+   **Next:** step 4, the harness (the Advisor's set-pieces; its enablers: a DM key-sending verb, replays). Order
+   agreed with the Advisor (to_architect 10-24 step3-reply): **A7, A8, A9** (A9 = a recall arrival on a "special"
+   level, the m24 replay; summoned orcs won't set the feeling), then A1, A6, A2, C8, C3, the rest. Release memos now
+   carry a "Schema changes" section. Then step 5 missions, then the time bubble. (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
    toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23. Then the time bubble (timers to game turns; decided below).
 3. **Rulebook:** the Advisor's **release 2** is in `Advisor/data/rulebook/`, synced into `github/tools/rulebook/`
