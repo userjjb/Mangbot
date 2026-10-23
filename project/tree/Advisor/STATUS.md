@@ -58,7 +58,8 @@ baseline m17–23); the Architect built the production one (`github/tools/observ
 `runs/missions.json`) + new records: sale, itemlist/left_behind, escape, audit_check state, mission_start/end (model!),
 report_age, monster health `track`; (2) **set-piece list — DONE** 10-24 (`../memos/2026-10-24-setpieces.md`, 41 set-pieces, 12 P1); Architect step 2 under way (`../restructure-step2.md`): itemvalue.py (object_value_real; 37/38 sales within 8%),
 value refusals with a Navigator **debt**, C8 Free-Action inference, pickup by value, band → no loot detours.
-(3) **rulebook tables** (itemvalue.py uses placeholders for unknown-flavour expectations: supply them from data/identify)
+(3) **rulebook — first release DONE** 10-24 (`../memos/2026-10-24-rulebook.md`, `data/rulebook/`, `rule.py`); open: ring/amulet
+plusses, ability-inference table, drop expectations, kill time per monster (ask the Architect which first)
 generated from the source (start from data/monsters, data/identify, data/shops (fix CHR 3!), data/progression, data/drops).
 Mission-by-mission patching is frozen. m22–23 were Sonnet Navigator missions.
 
@@ -111,6 +112,7 @@ Mission-by-mission patching is frozen. m22–23 were Sonnet Navigator missions.
   carry `run` (stretch/free), an `options` record at each login; Navigator final reports in runs/pilot/NICK/reports/.
   Still missing: monster HP (health track). Advisor memos and Clerk dispatches now end with "What I lacked".
 - **Dive04 had Free Action m18–m23 without knowing** (unidentified Boots of FA, sold m23 22:27 for 3 gold); none now.
+- Low-HP time bubble: constant 1/5 time below hitpoint_warn*10% (xtra2.c:5190); the Pilot runs --hpwarn 0 (off). Boulders do 0 damage to players.
 - Resting in town burns light ~10× faster (time bubble); store torches/lanterns come half full.
 
 ## Tooling notes

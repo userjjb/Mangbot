@@ -1,0 +1,85 @@
+flag,kind,damage_formula,cap,element,side_effects,resisted_by,saved_by,cite,n_monsters_lv0_70,min_level,max_level
+SHRIEK,innate,none (aggravate),,,wake all monsters within 40 of player; monsters in LOS set to base speed+10 permanently,,,melee2.c:566-574; spells2.c:3313-3360,6,2,38
+ARROW_1,bolt (GF_ARROW),1d6,,arrow,none,"nothing (no AC, no resist)",none (no save),melee2.c:600; spells1.c:3665,2,4,8
+ARROW_2,bolt (GF_ARROW),3d6,,arrow,none,"nothing (no AC, no resist)",none (no save),melee2.c:610; spells1.c:3665,7,4,41
+ARROW_3,bolt (GF_ARROW),5d6,,arrow,none,"nothing (no AC, no resist)",none (no save),melee2.c:620; spells1.c:3665,2,41,44
+ARROW_4,bolt (GF_ARROW),7d6,,arrow,none,"nothing (no AC, no resist)",none (no save),melee2.c:630; spells1.c:3665,4,30,61
+BR_ACID,breath,m_hp/3,1600,acid,inventory damage (inv=1/2/3 items for dam<30/<60/else); armour piece -1 AC may halve dmg,resist_acid:(d+2)/3; oppose_acid: again (d+2)/3 (stack 1/9); immune: 0,none,melee2.c:634-645; spells1.c:990; spells1.c project_p 3498+,16,9,85
+BR_ELEC,breath,m_hp/3,1600,elec,inventory damage (set_elec_destroy),resist/oppose elec each (d+2)/3; immune 0,none,melee2.c:647-658; spells1.c:1015; spells1.c project_p 3498+,15,9,85
+BR_FIRE,breath,m_hp/3,1600,fire,inventory damage (set_fire_destroy),resist/oppose fire each (d+2)/3; immune 0,none,melee2.c:660-671; spells1.c:1039; spells1.c project_p 3498+,31,8,95
+BR_COLD,breath,m_hp/3,1600,cold,inventory damage (set_cold_destroy),resist/oppose cold each (d+2)/3; immune 0,none,melee2.c:673-684; spells1.c:1061; spells1.c project_p 3498+,18,9,90
+BR_POIS,breath,m_hp/3,800,pois,poisoned += randint0(dam)+10 unless resist_pois or oppose_pois,resist_pois/oppose_pois each (d+2)/3,none,melee2.c:686-697; spells1.c:3640; spells1.c project_p 3498+,23,9,90
+BR_NETH,breath,m_hp/6,550,nether,exp drain: not hold_life: 200+(exp/100)*2; hold_life: 75% block else 200+(exp/1000)*2,resist_neth: d*6/(1d6+6) and no exp drain,none,melee2.c:699-710; spells1.c:3682; spells1.c project_p 3498+,9,33,90
+BR_LITE,breath,m_hp/6,400,light,blind += randint1(5)+2 if not already blind and not resist_blind,"resist_lite: d*4/(1d6+6), no blind",none,melee2.c:712-723; spells1.c:3846; spells1.c project_p 3498+,7,10,90
+BR_DARK,breath,m_hp/6,400,dark,blind += randint1(5)+2 if not already blind and not resist_blind,"resist_dark: d*4/(1d6+6), no blind",none,melee2.c:725-736; spells1.c:3860; spells1.c project_p 3498+,9,10,90
+BR_CONF,breath,m_hp/6,400,confusion,confused += randint1(20)+10,"resist_conf: d*5/(1d6+6), no confusion",none,melee2.c:738-749; spells1.c:3787; spells1.c project_p 3498+,9,9,74
+BR_SOUN,breath,m_hp/6,500,sound,stun += randint1(dam>90?35:dam/3+5),"resist_sound: d*5/(1d6+6), no stun",none,melee2.c:751-762; spells1.c:3772; spells1.c project_p 3498+,11,9,90
+BR_CHAO,breath,m_hp/6,500,chaos,confused += randint0(20)+10 (unless rConf/rChaos); hallucinate += randint1(10) unless rChaos; exp drain unless rNether/rChaos: 5000+(exp/100)*2 (hold_life 75% block else 500+(exp/1000)*2),resist_chaos: d*6/(1d6+6) and blocks all three effects; rConf blocks confusion; rNether blocks exp drain,none,melee2.c:764-775; spells1.c:3723; spells1.c project_p 3498+,6,33,79
+BR_DISE,breath,m_hp/6,500,disenchant,apply_disenchant: random one of 8 equip slots loses a plus,"resist_disen: d*6/(1d6+6), no disenchant",none,"melee2.c:777-788; spells1.c:3801,1303; spells1.c project_p 3498+",3,33,86
+BR_NEXU,breath,m_hp/6,400,nexus,apply_nexus 1d7: 1-3 teleport(200); 4-5 teleport player TO breather; 6 teleport-level (save); 7 swap two stats (save),"resist_nexus: d*6/(1d6+6), no effect",skill_sav only vs outcomes 6 and 7,"melee2.c:790-801; spells1.c:3815,1400; spells1.c project_p 3498+",6,27,74
+BR_TIME,breath,m_hp/3,150,time,1d10: 1-5 lose_exp(100+(exp/100)*2); 6-9 one random stat_cur*3/4 (min 3); 10 all six stats*3/4,"none (no resist, no hold_life check)",none,melee2.c:803-813; spells1.c:3874; spells1.c project_p 3498+,3,38,74
+BR_INER,breath,m_hp/6,200,inertia,slow += randint0(4)+4,none (free action does NOT help),none,melee2.c:815-825; spells1.c:3839; spells1.c project_p 3498+,2,35,74
+BR_GRAV,breath,m_hp/3,200,gravity,slow += randint0(4)+4; teleport(5) if randint1(127)>plev; stun += randint1(dam>90?35:dam/3+5) unless rSound,rSound blocks stun only; nothing reduces dmg,none,melee2.c:827-837; spells1.c:3918; spells1.c project_p 3498+,3,35,74
+BR_SHAR,breath,m_hp/6,500,shards,cut += dam (unless resist_shard),"resist_shard: d*6/(1d6+6), no cut",none,melee2.c:839-850; spells1.c:3758; spells1.c project_p 3498+,9,20,90
+BR_PLAS,breath,m_hp/6,150,plasma,stun += randint1(dam>40?35:dam*3/4+5) unless rSound,nothing reduces dmg; rSound blocks stun,none,melee2.c:852-862; spells1.c:3671; spells1.c project_p 3498+,5,37,95
+BR_WALL,breath,m_hp/6,200,force,stun += randint1(20) unless rSound,nothing reduces dmg; rSound blocks stun,none,melee2.c:864-874; spells1.c:3829; spells1.c project_p 3498+,3,35,74
+BR_MANA,breath,NO-OP (case empty),,mana,none,,,"melee2.c:876-881 (""XXX XXX XXX""); no monster.txt entry uses it",0,,
+BOULDER,bolt (GF_BOULDER),"damroll(1+level/7,12)",,boulder,NONE: project_p has no GF_BOULDER case -> default dam=0 (no take_hit),n/a,n/a,"melee2.c:901-908; spells1.c:3613-4093 (no case), 4086-4092 default; mdefines.h:1891",14,25,87
+BA_ACID,ball r2 (r3 if POWERFUL),randint1(rlev*3)+15,,acid,as BR_ACID,as BR_ACID,none,melee2.c:913-923,9,27,73
+BA_ELEC,ball r2 (r3 if POWERFUL),randint1(rlev*3/2)+8,,elec,as BR_ELEC,as BR_ELEC,none,melee2.c:925-935,6,40,82
+BA_FIRE,ball r2 (r3 if POWERFUL),randint1(rlev*7/2)+10,,fire,as BR_FIRE,as BR_FIRE,none,melee2.c:937-947,18,36,99
+BA_COLD,ball r2 (r3 if POWERFUL),randint1(rlev*3/2)+10,,cold,as BR_COLD,as BR_COLD,none,melee2.c:949-959,17,27,73
+BA_POIS,ball r2 (r3 if POWERFUL),"damroll(12,2)",,pois,as BR_POIS,as BR_POIS,none,melee2.c:961-971,9,8,57
+BA_NETH,ball r2 (r3 if POWERFUL),"50+damroll(10,10)+rlev",,nether,as BR_NETH,as BR_NETH,none,melee2.c:973-983,14,49,100
+BA_WATE,ball r2 (r3 if POWERFUL),randint1(rlev*5/2)+50,,water,stun += randint1(40) unless rSound; confused += randint1(5)+5 unless rConf,rSound/rConf block effects only; dmg unreduced,none,melee2.c:985-1000,5,43,99
+BA_MANA,ball r2 (r3 if POWERFUL),"rlev*5+damroll(10,10)",,mana,none,none (pure dmg),none,melee2.c:1002-1011,1,65,100
+BA_DARK,ball r2 (r3 if POWERFUL),"rlev*5+damroll(10,10)",,dark,blind += randint1(5)+2 unless rBlind,resist_dark d*4/(1d6+6),none,melee2.c:1013-1023,3,65,99
+DRAIN_MANA,spell,"no damage; r1=randint1(rlev)/2+1 mana drained, monster heals 6*r1 if hurt",,mana,csp-=r1 (nothing if csp==0),none,none,melee2.c:1025-1081,34,3,74
+MIND_BLAST,spell,"damroll(8,8)",,psionic,confused += randint0(4)+4 unless rConf,none,skill_sav% -> no effect,melee2.c:1083-1111,16,17,82
+BRAIN_SMASH,spell,"damroll(12,15)",,psionic,blind 8+randint0(8) unless rBlind; confuse randint0(4)+4 unless rConf; paralyse randint0(4)+4 unless free_act; slow randint0(4)+4 ALWAYS (no FA check),none (each effect has its own resist),skill_sav% -> whole spell fails,melee2.c:1113-1149,17,28,100
+CAUSE_1,spell,"damroll(3,8)",,wound,,none,skill_sav% -> no effect,melee2.c:1151,8,2,26
+CAUSE_2,spell,"damroll(8,8)",,wound,,none,skill_sav% -> no effect,melee2.c:1169,18,12,55
+CAUSE_3,spell,"damroll(10,15)",,wound,,none,skill_sav% -> no effect,melee2.c:1187,38,28,80
+CAUSE_4,spell,"damroll(15,15)",,wound,"cut += damroll(10,10)",none,skill_sav% -> no effect,melee2.c:1205,20,40,99
+BO_ACID,bolt (stops at first monster/player),"damroll(7,8)+rlev/3",,acid,as BR_ACID,as BR_ACID,none,melee2.c:1224-1234,12,25,57
+BO_ELEC,bolt (stops at first monster/player),"damroll(4,8)+rlev/3",,elec,as BR_ELEC,as BR_ELEC,none,melee2.c:1236-1246,13,13,82
+BO_FIRE,bolt (stops at first monster/player),"damroll(9,8)+rlev/3",,fire,as BR_FIRE,as BR_FIRE,none,melee2.c:1248-1258,31,13,61
+BO_COLD,bolt (stops at first monster/player),"damroll(6,8)+rlev/3",,cold,as BR_COLD,as BR_COLD,none,melee2.c:1260-1270,16,8,64
+BO_POIS,bolt,NO-OP (case empty),,pois,none,,,melee2.c:1272-1277; no monster.txt entry uses it,0,,
+BO_NETH,bolt (stops at first monster/player),"30+damroll(5,5)+rlev*3/2",,nether,as BR_NETH,as BR_NETH,none,melee2.c:1279-1289,23,35,73
+BO_WATE,bolt (stops at first monster/player),"damroll(10,10)+rlev",,water,as BA_WATE,rSound/rConf block effects only,none,melee2.c:1291-1300,3,41,69
+BO_MANA,bolt (stops at first monster/player),randint1(rlev*7/2)+50,,mana,none,none,none,melee2.c:1302-1311,13,41,100
+BO_PLAS,bolt (stops at first monster/player),"10+damroll(8,7)+rlev",,plasma,stun as BR_PLAS,rSound blocks stun only,none,melee2.c:1313-1322,11,37,99
+BO_ICEE,bolt (stops at first monster/player),"damroll(6,6)+rlev",,ice,"cold_dam (inventory dmg) + cut damroll(5,8) unless rShard + stun randint1(15) unless rSound",resist/oppose cold on dmg; rShard/rSound on effects,none,melee2.c:1324-1334,7,37,99
+MISSILE,bolt (stops at first monster/player),"damroll(2,6)+rlev/3",,missile,none,none,none,melee2.c:1336-1345,11,2,41
+SCARE,spell,none,,,afraid += randint0(4)+4,resist_fear,skill_sav%,melee2.c:1347-1369,122,2,99
+BLIND,spell,none,,,"set_blind(12+randint0(4)) (SET, not add)",resist_blind,skill_sav%,melee2.c:1371-1392,94,2,99
+CONF,spell,none,,,confused += randint0(4)+4,resist_conf,skill_sav%,melee2.c:1394-1415,87,2,95
+SLOW,spell,none,,,slow += randint0(4)+4,free_act,skill_sav%,melee2.c:1417-1437,34,8,84
+HOLD,spell,none,,,paralysed += randint0(4)+4,free_act,skill_sav%,melee2.c:1439-1460,47,13,80
+HASTE,self,none,,,"mspeed+=10 if <base+10; else +2 if <base+20 (cumulative, never decays)",,,melee2.c:1464-1492,13,13,72
+HEAL,self,hp += rlev*6 (to maxhp); clears fear; no-op at full HP,,,,,,melee2.c:1500-1566,37,2,87
+BLINK,self,none,,,"teleport_away(m,10): lands 5-10 grids away",,,melee2.c:1574-1581; spells1.c:75,38,2,77
+TPORT,self,none,,,"teleport_away(m,45): lands 22-45 grids away",,,melee2.c:1583-1590,21,7,99
+TELE_TO,spell,none,,,teleport_player_to(monster pos): player lands adjacent to caster,NONE,"NONE (no save, no FA)",melee2.c:1604-1612; spells1.c:286,32,10,87
+TELE_AWAY,spell,none,,,teleport_player(100): player lands 50-100 grids away,NONE,NONE,melee2.c:1614-1626; spells1.c:167,8,28,80
+TELE_LEVEL,spell,none,,,teleport_player_level: 50% down/up (always down in town; ironman/arena: nothing); up if at MAX_DEPTH-1 or quest level,resist_nexus,skill_sav%,melee2.c:1628-1649; spells1.c:365,4,16,99
+DARKNESS,spell,none,,,"unlite_area(0,3): darkens room/grids radius 3; self-projected so NO damage and NO blind to player",none needed,,melee2.c:1657-1666; spells2.c:4562; spells1.c:3540,32,7,75
+TRAPS,spell,none,,,trap_creation: place_trap on naked floor grids in radius 1 (player grid itself excluded: occupied),none,none (no save),melee2.c:1668-1678; spells2.c:4919; spells1.c:1894,11,8,77
+FORGET,spell,none,,,"lose_all_info: unsets known/felt flags on inventory items w/o ID_MENTAL, forgets map (wiz_dark)",none,skill_sav%,melee2.c:1680-1696; spells2.c:1064,23,24,99
+S_KIN,summon,"6 attempts of summon_specific(Depth,player_y,player_x,rlev,SUMMON_KIN): kinds=same display char as caster, non-unique",,summons,monsters placed AWAKE within 1-2 grids of the PLAYER; level target (Depth+rlev)/2+5; FRIENDS/ESCORT species arrive as groups,none,none,melee2.c:1716; monster2.c:2552-2594,16,13,92
+S_HI_DEMON,summon,"8 attempts of summon_specific(Depth,player_y,player_x,rlev,SUMMON_HI_DEMON): kinds='U' (uniques allowed)",,summons,monsters placed AWAKE within 1-2 grids of the PLAYER; level target (Depth+rlev)/2+5; FRIENDS/ESCORT species arrive as groups,none,none,melee2.c:1734; monster2.c:2552-2594,2,65,100
+S_MONSTER,summon,"1 attempts of summon_specific(Depth,player_y,player_x,rlev,0): kinds=any monster (uniques allowed)",,summons,monsters placed AWAKE within 1-2 grids of the PLAYER; level target (Depth+rlev)/2+5; FRIENDS/ESCORT species arrive as groups,none,none,melee2.c:1752; monster2.c:2552-2594,20,10,48
+S_MONSTERS,summon,"8 attempts of summon_specific(Depth,player_y,player_x,rlev,0): kinds=any monster (uniques allowed)",,summons,monsters placed AWAKE within 1-2 grids of the PLAYER; level target (Depth+rlev)/2+5; FRIENDS/ESCORT species arrive as groups,none,none,melee2.c:1767; monster2.c:2552-2594,13,35,100
+S_ANIMAL,summon,"6 attempts of summon_specific(Depth,player_y,player_x,rlev,SUMMON_ANIMAL): kinds=RF3_ANIMAL non-unique",,summons,monsters placed AWAKE within 1-2 grids of the PLAYER; level target (Depth+rlev)/2+5; FRIENDS/ESCORT species arrive as groups,none,none,melee2.c:1782; monster2.c:2552-2594,9,13,81
+S_SPIDER,summon,"6 attempts of summon_specific(Depth,player_y,player_x,rlev,SUMMON_SPIDER): kinds='S' non-unique",,summons,monsters placed AWAKE within 1-2 grids of the PLAYER; level target (Depth+rlev)/2+5; FRIENDS/ESCORT species arrive as groups,none,none,melee2.c:1797; monster2.c:2552-2594,4,25,79
+S_HOUND,summon,"6 attempts of summon_specific(Depth,player_y,player_x,rlev,SUMMON_HOUND): kinds='C' or 'Z' non-unique",,summons,monsters placed AWAKE within 1-2 grids of the PLAYER; level target (Depth+rlev)/2+5; FRIENDS/ESCORT species arrive as groups,none,none,melee2.c:1812; monster2.c:2552-2594,2,56,90
+S_HYDRA,summon,"6 attempts of summon_specific(Depth,player_y,player_x,rlev,SUMMON_HYDRA): kinds='M' non-unique",,summons,monsters placed AWAKE within 1-2 grids of the PLAYER; level target (Depth+rlev)/2+5; FRIENDS/ESCORT species arrive as groups,none,none,melee2.c:1827; monster2.c:2552-2594,2,40,79
+S_ANGEL,summon,"1 attempts of summon_specific(Depth,player_y,player_x,rlev,SUMMON_ANGEL): kinds='A' non-unique",,summons,monsters placed AWAKE within 1-2 grids of the PLAYER; level target (Depth+rlev)/2+5; FRIENDS/ESCORT species arrive as groups,none,none,melee2.c:1842; monster2.c:2552-2594,5,44,79
+S_DEMON,summon,"1 attempts of summon_specific(Depth,player_y,player_x,rlev,SUMMON_DEMON): kinds=RF3_DEMON non-unique",,summons,monsters placed AWAKE within 1-2 grids of the PLAYER; level target (Depth+rlev)/2+5; FRIENDS/ESCORT species arrive as groups,none,none,melee2.c:1857; monster2.c:2552-2594,18,36,79
+S_UNDEAD,summon,"1 attempts of summon_specific(Depth,player_y,player_x,rlev,SUMMON_UNDEAD): kinds=RF3_UNDEAD non-unique",,summons,monsters placed AWAKE within 1-2 grids of the PLAYER; level target (Depth+rlev)/2+5; FRIENDS/ESCORT species arrive as groups,none,none,melee2.c:1872; monster2.c:2552-2594,23,36,88
+S_DRAGON,summon,"1 attempts of summon_specific(Depth,player_y,player_x,rlev,SUMMON_DRAGON): kinds=RF3_DRAGON non-unique",,summons,monsters placed AWAKE within 1-2 grids of the PLAYER; level target (Depth+rlev)/2+5; FRIENDS/ESCORT species arrive as groups,none,none,melee2.c:1887; monster2.c:2552-2594,4,40,79
+S_HI_UNDEAD,summon,"8 attempts of summon_specific(Depth,player_y,player_x,rlev,SUMMON_HI_UNDEAD): kinds='L','V','W' (uniques allowed)",,summons,monsters placed AWAKE within 1-2 grids of the PLAYER; level target (Depth+rlev)/2+5; FRIENDS/ESCORT species arrive as groups,none,none,melee2.c:1902; monster2.c:2552-2594,4,64,100
+S_HI_DRAGON,summon,"8 attempts of summon_specific(Depth,player_y,player_x,rlev,SUMMON_HI_DRAGON): kinds='D' (uniques allowed)",,summons,monsters placed AWAKE within 1-2 grids of the PLAYER; level target (Depth+rlev)/2+5; FRIENDS/ESCORT species arrive as groups,none,none,melee2.c:1920; monster2.c:2552-2594,2,60,100
+S_WRAITH,summon,"16 attempts of summon_specific(Depth,player_y,player_x,rlev,SUMMON_WRAITH+HI_UNDEAD): kinds=8x 'W' UNIQUE + 8x 'L/V/W'",,summons,monsters placed AWAKE within 1-2 grids of the PLAYER; level target (Depth+rlev)/2+5; FRIENDS/ESCORT species arrive as groups,none,none,melee2.c:1938; monster2.c:2552-2594,1,68,100
+S_UNIQUE,summon,"16 attempts of summon_specific(Depth,player_y,player_x,rlev,SUMMON_UNIQUE+HI_UNDEAD): kinds=8x any UNIQUE + 8x 'L/V/W'",,summons,monsters placed AWAKE within 1-2 grids of the PLAYER; level target (Depth+rlev)/2+5; FRIENDS/ESCORT species arrive as groups,none,none,melee2.c:1960; monster2.c:2552-2594,0,79,100

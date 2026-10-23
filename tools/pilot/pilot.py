@@ -1234,7 +1234,7 @@ class Shop(Goal):
                     chr_v = (p.w.ind.get("stat5") or [3])[0]
                     fair = shopmath.fair_pay(relist, sp.get("owner"), chr_v)
                     if fair is None:
-                        fair = round(itemvalue.value(sp["sold_as"]).value * SHOP_CUT)
+                        fair = round(self.iv(sp["sold_as"]).value * SHOP_CUT)
                     p.add_debt(fair - sp.get("received", 0), sp["sold_as"], "sold with ! over the value policy")
                 self.sale_pending = None
             if self.pending and getattr(self, "quoting", None):
@@ -1439,6 +1439,7 @@ class Pilot:
         self.drainers_seen = set()     # (level_t, race name) drainer warnings given
         self.inferred = set()          # abilities seen in play (watch_abilities)
         self.unique_drop = None        # (level_t, pos, t) of the last unique killed
+        self.aware_cache = (-1, set())
         self.policy_t = 0.0
         self.room_t = 0.0
         self.ability_sources = set()   # unidentified worn items that may give them
@@ -2638,15 +2639,18 @@ class Pilot:
         name = it["name"]
         if self.is_kept(name):
             return "you said keep it (`keep -NAME` releases it)"
-        if self.ability_sources and itemvalue.value(name).known is False and \
+        if self.ability_sources and self.iv(name).known is False and \
                 any(s == re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower() for s in self.ability_sources):
             return (f"it may be what gives you {', '.join(sorted(self.inferred))} (seen in play, not identified): "
                     "identify it first")
         junk = (self.flavour_of(it) or {}).get("junk") or re.search(r"\{(cursed|worthless|broken|terrible)", name)
         if junk:
             return None
-        iv = itemvalue.value(name)
+        iv = self.iv(name)
         fair = round(iv.value * SHOP_CUT)
+        if not iv.known and iv.p_irreplaceable >= 0.2:
+            return (f"unidentified, and {iv.p_irreplaceable:.0%} of these carry an ego you can't buy back (Free "
+                    "Action, resists...): identify it first")
         if not iv.known and fair >= 30:
             return (f"unidentified: identified it would sell for ~{fair} (an estimate; this sale would pay its bare "
                     "kind price); identify it first (a Scroll of Identify costs ~40-80)")
@@ -2655,6 +2659,15 @@ class Pilot:
         if action in ("destroy", "drop") and fair >= 20:
             return f"a shop pays ~{fair} for it: sell it instead"
         return None
+
+    def iv(self, name):
+        """itemvalue.value with the depth items now come from (for expectations) and
+        the kinds already known (the flavour table)."""
+        level = max(1, (self.w.depth_ft or getattr(self, "deepest_ft", 0) or 750) // 50)
+        if self.aware_cache[0] != len(self.flavours):
+            self.aware_cache = (len(self.flavours), {re.sub(r"^(Potion|Scroll|Ring|Amulet|Wand|Staff|Rod) of ", "",
+                                                            f.get("kind", "")).lower() for f in self.flavours.values()})
+        return itemvalue.value(name, level, self.aware_cache[1])
 
     def is_kept(self, name):
         b = re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower()
@@ -2693,14 +2706,14 @@ class Pilot:
             return float("inf")
         if (self.flavour_of(it) or {}).get("junk") or re.search(r"\{(cursed|worthless|broken|terrible)", n):
             return 0
-        iv = itemvalue.value(n)
+        iv = self.iv(n)
         return iv.value * SHOP_CUT * max(1, iv.count)
 
     def pickup_room(self, name):
         """True if the item underfoot should be picked up now (destroying something
         cheaper first when the pack is full); False to leave it (with news)."""
         w, now = self.w, time.time()
-        iv = itemvalue.value(name)
+        iv = self.iv(name)
         worth = iv.value * SHOP_CUT * max(1, iv.count)
         ud = self.unique_drop
         unique = bool(ud and ud[0] == w.level_t and w.dist(ud[1]) <= 3)
@@ -2787,7 +2800,7 @@ class Pilot:
             for it in pack + worn:
                 if (self.flavour_of(it) or {}).get("junk") or cursedish(it["name"]):
                     continue
-                iv = itemvalue.value(it["name"])
+                iv = self.iv(it["name"])
                 if iv.known is not False:
                     continue
                 prio = float("inf") if bare(it["name"]) in self.ability_sources else iv.value * SHOP_CUT
@@ -2836,10 +2849,10 @@ class Pilot:
         for tv, k in ((45, 2), (40, 1)):
             if sum(1 for i in worn if i["tval"] == tv) >= k:
                 continue
-            cand = [i for i in pack if i["tval"] == tv and itemvalue.value(i["name"]).known and
-                    itemvalue.value(i["name"]).value > 0 and not (self.flavour_of(i) or {}).get("junk")]
+            cand = [i for i in pack if i["tval"] == tv and self.iv(i["name"]).known and
+                    self.iv(i["name"]).value > 0 and not (self.flavour_of(i) or {}).get("junk")]
             if cand:
-                it = max(cand, key=lambda i: itemvalue.value(i["name"]).value)
+                it = max(cand, key=lambda i: self.iv(i["name"]).value)
                 self.cmd(f"custom w item={it['item']}", f"put on {it['name']} (an empty slot)", hold=0.8)
                 self.notify("tactic", f"put on {it['name']} (the slot was empty)", news=True)
                 return True
@@ -2860,7 +2873,7 @@ class Pilot:
                     "free_action" not in self.inferred and not self.has_ability("free_action"):
                 self.inferred.add("free_action")
                 src = [re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", i2["name"])).lower()
-                       for i2 in w.items(equip=True) if itemvalue.value(i2["name"]).known is False
+                       for i2 in w.items(equip=True) if self.iv(i2["name"]).known is False
                        or re.search(r"\{(good|excellent|special|magical)", i2["name"])]
                 self.ability_sources |= set(src)
                 self.notify("ability", f"you have Free Action (\"{t}\" after \"{before[-1]}\"), though no known item "
@@ -4266,7 +4279,7 @@ class Pilot:
                         return {"ok": False, "error": f"not {c}ed: your freedom to override the Pilot's value policy "
                                                       f"is suspended (debt {self.debt_total()} gold)"}
                     if self.value_refusal(it0, c):
-                        self.add_debt(round(itemvalue.value(it0["name"]).value * SHOP_CUT), it0["name"],
+                        self.add_debt(round(self.iv(it0["name"]).value * SHOP_CUT), it0["name"],
                                       f"{c}ed with ! over the value policy")
                 n = args[1] if len(args) > 1 else "1"
                 if n == "all":

@@ -1,0 +1,1769 @@
+kind,tval,sval,kind_cost,level,feeling,exp_value,p10,p50,p90,exp_to_h,exp_to_d,exp_to_a,p_irreplaceable,top_egos,special_artifact_value
+Broken Dagger,23,1,1,5,good,720,401,701,1001,1.6,-0.4,0.0,0.0,,
+Broken Dagger,23,1,1,5,excellent,6606,3501,4601,15101,3.1,1.1,0.2,0.31,of Slay Dragon 0.07; of Slay Animal 0.07; of Slay Demon 0.07; of Slay Evil 0.06,
+Broken Dagger,23,1,1,10,good,751,401,701,1101,1.7,-0.2,0.0,0.0,,
+Broken Dagger,23,1,1,10,excellent,6549,3501,4601,14601,3.3,1.5,0.2,0.294,of Slay Orc 0.07; of Slay Giant 0.07; of Slay Evil 0.07; of Slay Animal 0.06,
+Broken Dagger,23,1,1,15,good,771,501,801,1101,1.9,-0.2,0.0,0.0,,
+Broken Dagger,23,1,1,15,excellent,6781,3601,4701,15501,3.8,1.8,0.2,0.304,of Slay Undead 0.07; of Slay Orc 0.06; of Slay Animal 0.06; of Slay Troll 0.06,
+Broken Dagger,23,1,1,20,good,800,501,801,1101,2.0,-0.0,0.0,0.0,,
+Broken Dagger,23,1,1,20,excellent,7026,3801,4901,15801,4.3,2.2,0.2,0.356,of Slay Undead 0.07; of Flame 0.06; of Slay Animal 0.06; of Slay Demon 0.06,
+Broken Dagger,23,1,1,25,good,820,501,801,1101,2.0,0.2,0.0,0.0,,
+Broken Dagger,23,1,1,25,excellent,6907,3801,4901,15201,4.7,2.7,0.2,0.309,of Slay Demon 0.07; of Slay Dragon 0.07; of Slay Animal 0.06; of Slay Undead 0.06,
+Broken Dagger,23,1,1,30,good,859,501,801,1201,2.3,0.3,0.0,0.0,,
+Broken Dagger,23,1,1,30,excellent,7479,3801,5101,17601,5.2,3.4,0.2,0.313,of Slay Giant 0.07; of Slay Troll 0.07; of Slay Animal 0.06; of Slay Demon 0.06,
+Broken Dagger,23,1,1,40,good,922,601,901,1301,2.6,0.6,0.0,0.0,,
+Broken Dagger,23,1,1,40,excellent,7612,4001,5301,17401,6.2,4.2,0.2,0.325,of Slay Evil 0.07; of Slay Demon 0.06; of Slay Animal 0.06; of Slay Orc 0.06,
+Broken Dagger,23,1,1,50,good,989,601,1001,1301,3.0,0.9,0.0,0.0,,
+Broken Dagger,23,1,1,50,excellent,8024,4301,5501,18101,7.3,5.4,0.2,0.331,of Slay Dragon 0.07; of Slay Animal 0.06; of Slay Evil 0.06; of Slay Demon 0.06,
+Bastard Sword,23,21,350,5,good,1077,750,1050,1350,3.6,3.7,0.0,0.0,,102609
+Bastard Sword,23,21,350,5,excellent,6835,3750,4950,14850,5.2,5.2,0.2,0.304,of Slay Giant 0.07; of Slay Orc 0.07; of Slay Animal 0.06; of Slay Troll 0.06,102609
+Bastard Sword,23,21,350,10,good,1087,750,1050,1450,3.7,3.7,0.0,0.0,,102609
+Bastard Sword,23,21,350,10,excellent,6867,3850,4950,15250,5.4,5.5,0.2,0.308,of Slay Dragon 0.07; of Slay Giant 0.07; of Slay Animal 0.07; of Slay Orc 0.06,102609
+Bastard Sword,23,21,350,15,good,1115,750,1150,1450,3.8,3.8,0.0,0.0,,102609
+Bastard Sword,23,21,350,15,excellent,7278,3950,5050,15750,5.9,5.9,0.2,0.32,of Slay Troll 0.07; of Slay Giant 0.06; of Slay Orc 0.06; of Slay Demon 0.06,102609
+Bastard Sword,23,21,350,20,good,1147,850,1150,1450,3.9,4.1,0.0,0.0,,102609
+Bastard Sword,23,21,350,20,excellent,7510,4050,5250,17350,6.4,6.3,0.2,0.335,of Slay Troll 0.07; of Slay Dragon 0.06; of Slay Animal 0.06; of Slay Demon 0.06,102609
+Bastard Sword,23,21,350,25,good,1186,850,1150,1550,4.1,4.2,0.0,0.0,,102609
+Bastard Sword,23,21,350,25,excellent,7378,4150,5350,15850,6.8,6.7,0.2,0.298,of Slay Demon 0.07; of Slay Giant 0.06; of Slay Troll 0.06; of Slay Evil 0.06,102609
+Bastard Sword,23,21,350,30,good,1208,850,1150,1550,4.3,4.3,0.0,0.0,,102609
+Bastard Sword,23,21,350,30,excellent,7563,4150,5350,16650,7.3,7.1,0.2,0.299,of Slay Troll 0.07; of Slay Giant 0.07; of Slay Orc 0.06; of Slay Animal 0.06,102609
+Bastard Sword,23,21,350,40,good,1266,950,1250,1650,4.6,4.6,0.0,0.0,,102609
+Bastard Sword,23,21,350,40,excellent,8261,4450,5750,18750,8.5,8.3,0.2,0.318,of Slay Evil 0.06; of Slay Undead 0.06; of Slay Giant 0.06; of Slay Dragon 0.06,102609
+Bastard Sword,23,21,350,50,good,1338,1050,1350,1650,4.9,5.0,0.0,0.0,,102609
+Bastard Sword,23,21,350,50,excellent,8486,4550,5850,22550,9.3,9.4,0.2,0.316,of Slay Undead 0.07; of Slay Demon 0.07; of Slay Troll 0.07; of Slay Giant 0.06,102609
+Scimitar,23,18,250,5,good,976,650,950,1250,3.6,3.6,0.0,0.0,,30000
+Scimitar,23,18,250,5,excellent,7102,3650,4850,17050,5.0,5.1,0.2,0.318,of Slay Troll 0.07; of Slay Orc 0.07; of Slay Undead 0.06; of Slay Animal 0.06,30000
+Scimitar,23,18,250,10,good,1002,650,950,1350,3.8,3.7,0.0,0.0,,30000
+Scimitar,23,18,250,10,excellent,6838,3750,4850,15150,5.4,5.4,0.2,0.311,of Slay Animal 0.07; of Slay Undead 0.07; of Slay Demon 0.06; of Slay Orc 0.06,30000
+Scimitar,23,18,250,15,good,1019,650,1050,1350,3.8,3.9,0.0,0.0,,30000
+Scimitar,23,18,250,15,excellent,6893,3850,4950,14950,5.8,5.9,0.2,0.309,of Slay Dragon 0.07; of Slay Orc 0.07; of Slay Troll 0.07; of Slay Undead 0.06,30000
+Scimitar,23,18,250,20,good,1044,750,1050,1350,4.0,4.0,0.0,0.0,,30000
+Scimitar,23,18,250,20,excellent,7189,3950,5050,17150,6.4,6.3,0.2,0.296,of Slay Orc 0.07; of Slay Animal 0.07; of Slay Undead 0.06; of Slay Giant 0.06,30000
+Scimitar,23,18,250,25,good,1069,750,1050,1350,4.1,4.1,0.0,0.0,,30000
+Scimitar,23,18,250,25,excellent,7362,3950,5150,17150,6.8,6.7,0.2,0.309,of Slay Orc 0.06; of Slay Undead 0.06; of Slay Troll 0.06; of Slay Evil 0.06,30000
+Scimitar,23,18,250,30,good,1121,750,1150,1450,4.4,4.3,0.0,0.0,,30000
+Scimitar,23,18,250,30,excellent,8030,4150,5350,22050,7.3,7.3,0.2,0.331,of Slay Animal 0.07; of Slay Undead 0.06; of Slay Troll 0.06; of Slay Evil 0.06,30000
+Scimitar,23,18,250,40,good,1182,850,1150,1550,4.6,4.7,0.0,0.0,,30000
+Scimitar,23,18,250,40,excellent,8249,4250,5550,22550,8.4,8.4,0.2,0.323,of Slay Undead 0.07; of Slay Giant 0.06; of Slay Orc 0.06; of Slay Evil 0.06,30000
+Scimitar,23,18,250,50,good,1246,950,1250,1550,5.0,5.0,0.0,0.0,,30000
+Scimitar,23,18,250,50,excellent,8161,4450,5650,18550,9.3,9.3,0.2,0.33,of Slay Animal 0.07; of Slay Troll 0.07; of Slay Evil 0.07; of Slay Dragon 0.06,30000
+Tulwar,23,15,200,5,good,919,600,900,1200,3.6,3.6,0.0,0.0,,
+Tulwar,23,15,200,5,excellent,7079,3700,4800,17000,5.2,5.1,0.2,0.316,of Slay Animal 0.06; of Slay Undead 0.06; of Slay Orc 0.06; of Slay Evil 0.06,
+Tulwar,23,15,200,10,good,950,600,900,1300,3.8,3.7,0.0,0.0,,
+Tulwar,23,15,200,10,excellent,7197,3700,4900,17100,5.4,5.5,0.3,0.328,of Slay Dragon 0.06; of Slay Demon 0.06; of Slay Troll 0.06; of Slay Orc 0.06,
+Tulwar,23,15,200,15,good,982,600,1000,1300,3.9,3.9,0.0,0.0,,
+Tulwar,23,15,200,15,excellent,7231,3800,5100,16900,5.8,5.9,0.2,0.316,of Slay Troll 0.07; of Slay Animal 0.06; of Slay Dragon 0.06; of Slay Giant 0.06,
+Tulwar,23,15,200,20,good,993,700,1000,1300,3.9,4.0,0.0,0.0,,
+Tulwar,23,15,200,20,excellent,7018,3900,5000,15400,6.1,6.4,0.3,0.327,of Slay Troll 0.08; of Slay Orc 0.07; of Slay Undead 0.06; of Slay Evil 0.06,
+Tulwar,23,15,200,25,good,1021,700,1000,1300,4.2,4.1,0.0,0.0,,
+Tulwar,23,15,200,25,excellent,7235,4000,5200,16700,6.7,6.7,0.2,0.311,of Slay Dragon 0.07; of Slay Undead 0.07; of Slay Evil 0.06; of Slay Demon 0.06,
+Tulwar,23,15,200,30,good,1065,700,1100,1400,4.3,4.3,0.0,0.0,,
+Tulwar,23,15,200,30,excellent,7837,4000,5300,18500,7.3,7.2,0.2,0.321,of Slay Evil 0.07; of Slay Demon 0.06; of Slay Troll 0.06; of Slay Animal 0.06,
+Tulwar,23,15,200,40,good,1123,800,1100,1500,4.6,4.6,0.0,0.0,,
+Tulwar,23,15,200,40,excellent,7923,4300,5600,18000,8.4,8.3,0.2,0.336,of Slay Troll 0.07; of Slay Dragon 0.06; of Slay Undead 0.06; of Slay Orc 0.06,
+Tulwar,23,15,200,50,good,1204,900,1200,1600,5.0,5.0,0.0,0.0,,
+Tulwar,23,15,200,50,excellent,8011,4500,5700,18100,9.4,9.2,0.2,0.307,of Slay Demon 0.07; of Slay Orc 0.06; of Slay Evil 0.06; of Slay Animal 0.06,
+Broad Sword,23,16,255,5,good,984,655,955,1255,3.6,3.7,0.0,0.0,,42500
+Broad Sword,23,16,255,5,excellent,6834,3655,4855,15355,5.2,5.1,0.2,0.307,of Slay Animal 0.07; of Slay Undead 0.07; of Slay Evil 0.07; of Slay Orc 0.06,42500
+Broad Sword,23,16,255,10,good,1011,755,955,1355,3.7,3.8,0.0,0.0,,42500
+Broad Sword,23,16,255,10,excellent,6956,3755,4955,15455,5.3,5.5,0.2,0.305,of Slay Orc 0.07; of Slay Giant 0.07; of Slay Animal 0.06; of Slay Evil 0.06,42500
+Broad Sword,23,16,255,15,good,1025,655,1055,1355,3.9,3.8,0.0,0.0,,42500
+Broad Sword,23,16,255,15,excellent,7074,3855,5055,15455,5.9,5.9,0.2,0.311,of Slay Dragon 0.07; of Slay Orc 0.06; of Slay Animal 0.06; of Slay Troll 0.06,42500
+Broad Sword,23,16,255,20,good,1067,755,1055,1355,4.0,4.1,0.0,0.0,,42500
+Broad Sword,23,16,255,20,excellent,6929,3955,5055,13755,6.3,6.1,0.2,0.297,of Slay Undead 0.07; of Slay Evil 0.07; of Slay Dragon 0.07; of Slay Animal 0.06,42500
+Broad Sword,23,16,255,25,good,1069,755,1055,1455,4.1,4.1,0.0,0.0,,42500
+Broad Sword,23,16,255,25,excellent,7192,3955,5155,15655,6.8,6.7,0.2,0.326,of Slay Demon 0.07; of Slay Dragon 0.06; of Slay Orc 0.06; of Slay Troll 0.06,42500
+Broad Sword,23,16,255,30,good,1112,755,1055,1455,4.3,4.3,0.0,0.0,,42500
+Broad Sword,23,16,255,30,excellent,7850,4055,5455,17755,7.2,7.3,0.2,0.328,of Slay Animal 0.06; of Slay Giant 0.06; of Slay Orc 0.06; of Slay Dragon 0.06,42500
+Broad Sword,23,16,255,40,good,1170,855,1155,1455,4.6,4.5,0.0,0.0,,42500
+Broad Sword,23,16,255,40,excellent,8324,4355,5555,22555,8.4,8.4,0.2,0.321,of Slay Undead 0.07; of Slay Troll 0.06; of Slay Animal 0.06; of Slay Giant 0.06,42500
+Broad Sword,23,16,255,50,good,1245,955,1255,1555,4.9,5.0,0.0,0.0,,42500
+Broad Sword,23,16,255,50,excellent,8391,4455,5755,18755,9.5,9.2,0.2,0.303,of Slay Undead 0.06; of Slay Troll 0.06; of Slay Orc 0.06; of Slay Giant 0.06,42500
+Short Sword,23,10,90,5,good,812,490,790,1090,3.6,3.6,0.0,0.0,,15000
+Short Sword,23,10,90,5,excellent,6759,3490,4690,15290,5.1,5.1,0.2,0.289,of Slay Orc 0.07; of Slay Undead 0.07; of Slay Dragon 0.06; of Slay Evil 0.06,15000
+Short Sword,23,10,90,10,good,836,490,790,1190,3.7,3.7,0.0,0.0,,15000
+Short Sword,23,10,90,10,excellent,6839,3590,4790,15090,5.5,5.4,0.2,0.314,of Slay Demon 0.06; of Slay Troll 0.06; of Slay Evil 0.06; of Slay Giant 0.06,15000
+Short Sword,23,10,90,15,good,861,590,890,1190,3.9,3.9,0.0,0.0,,15000
+Short Sword,23,10,90,15,excellent,6706,3690,4790,13590,5.9,5.8,0.2,0.304,of Slay Giant 0.07; of Slay Animal 0.07; of Slay Evil 0.06; of Slay Dragon 0.06,15000
+Short Sword,23,10,90,20,good,891,590,890,1190,4.0,4.0,0.0,0.0,,15000
+Short Sword,23,10,90,20,excellent,7160,3790,4990,17090,6.4,6.3,0.2,0.307,of Slay Undead 0.08; of Slay Troll 0.06; of Slay Evil 0.06; of Slay Demon 0.06,15000
+Short Sword,23,10,90,25,good,930,590,890,1290,4.2,4.2,0.0,0.0,,15000
+Short Sword,23,10,90,25,excellent,6979,3790,4990,14990,6.8,6.5,0.1,0.291,of Slay Evil 0.07; of Slay Dragon 0.07; of Slay Demon 0.07; of Slay Orc 0.06,15000
+Short Sword,23,10,90,30,good,945,590,890,1290,4.3,4.3,0.0,0.0,,15000
+Short Sword,23,10,90,30,excellent,7491,3990,5090,17090,7.1,7.1,0.2,0.32,of Slay Undead 0.07; of Slay Giant 0.06; of Slay Evil 0.06; of Slay Demon 0.06,15000
+Short Sword,23,10,90,40,good,1010,690,990,1390,4.6,4.6,0.0,0.0,,15000
+Short Sword,23,10,90,40,excellent,7776,4190,5390,17890,8.1,8.3,0.2,0.317,of Slay Animal 0.07; of Slay Dragon 0.06; of Slay Giant 0.06; of Slay Demon 0.06,15000
+Short Sword,23,10,90,50,good,1088,790,1090,1390,5.0,5.0,0.0,0.0,,15000
+Short Sword,23,10,90,50,excellent,7966,4290,5590,18190,9.3,9.4,0.2,0.316,of Slay Troll 0.07; of Slay Orc 0.07; of Slay Undead 0.06; of Slay Giant 0.06,15000
+Blade of Chaos,23,30,4000,5,good,4723,4400,4700,5000,3.6,3.6,0.0,0.0,,200000
+Blade of Chaos,23,30,4000,5,excellent,10734,7400,8700,19300,5.1,5.1,0.2,0.32,of Slay Animal 0.07; of Slay Undead 0.06; of Slay Dragon 0.06; of Slay Orc 0.06,200000
+Blade of Chaos,23,30,4000,10,good,4753,4400,4700,5100,3.7,3.8,0.0,0.0,,200000
+Blade of Chaos,23,30,4000,10,excellent,10721,7500,8600,19200,5.4,5.5,0.2,0.303,of Slay Dragon 0.07; of Slay Orc 0.07; of Slay Giant 0.06; of Slay Demon 0.06,200000
+Blade of Chaos,23,30,4000,15,good,4780,4500,4800,5100,3.9,3.9,0.0,0.0,,200000
+Blade of Chaos,23,30,4000,15,excellent,10985,7600,8800,20600,5.9,5.8,0.2,0.32,of Slay Dragon 0.07; of Slay Troll 0.07; of Slay Orc 0.06; of Slay Giant 0.06,200000
+Blade of Chaos,23,30,4000,20,good,4789,4500,4800,5100,4.0,3.9,0.0,0.0,,200000
+Blade of Chaos,23,30,4000,20,excellent,10951,7600,8900,19700,6.2,6.2,0.2,0.307,of Slay Demon 0.07; of Slay Animal 0.06; of Slay Giant 0.06; of Slay Orc 0.06,200000
+Blade of Chaos,23,30,4000,25,good,4822,4500,4800,5100,4.0,4.2,0.0,0.0,,200000
+Blade of Chaos,23,30,4000,25,excellent,11091,7800,9000,19800,6.7,6.7,0.2,0.319,of Slay Evil 0.07; of Slay Dragon 0.06; of Slay Undead 0.06; of Slay Orc 0.06,200000
+Blade of Chaos,23,30,4000,30,good,4859,4500,4900,5200,4.3,4.3,0.0,0.0,,200000
+Blade of Chaos,23,30,4000,30,excellent,11244,7900,9000,21100,7.2,7.2,0.2,0.329,of Slay Dragon 0.06; of Slay Troll 0.06; of Slay Demon 0.06; of Slay Animal 0.06,200000
+Blade of Chaos,23,30,4000,40,good,4919,4600,4900,5300,4.6,4.6,0.0,0.0,,200000
+Blade of Chaos,23,30,4000,40,excellent,11998,8000,9300,25800,8.4,8.3,0.2,0.32,of Slay Orc 0.07; of Slay Giant 0.07; of Slay Animal 0.06; of Slay Undead 0.06,200000
+Blade of Chaos,23,30,4000,50,good,4999,4700,5000,5300,5.0,5.0,0.0,0.0,,200000
+Blade of Chaos,23,30,4000,50,excellent,12252,8200,9700,23000,9.5,9.3,0.2,0.319,of Slay Troll 0.06; of Slay Animal 0.06; of Slay Dragon 0.06; of Slay Orc 0.06,200000
+Two-Handed Sword,23,25,775,5,good,1487,1175,1475,1775,3.6,3.5,0.0,0.0,,48421
+Two-Handed Sword,23,25,775,5,excellent,7574,4275,5375,17575,5.3,5.2,0.2,0.329,of Slay Giant 0.07; of Slay Troll 0.06; of Slay Orc 0.06; of Slay Dragon 0.06,48421
+Two-Handed Sword,23,25,775,10,good,1535,1275,1475,1875,3.9,3.8,0.0,0.0,,48421
+Two-Handed Sword,23,25,775,10,excellent,7537,4275,5475,16075,5.5,5.3,0.2,0.3,of Slay Troll 0.07; of Slay Demon 0.06; of Slay Evil 0.06; of Slay Dragon 0.06,48421
+Two-Handed Sword,23,25,775,15,good,1550,1275,1575,1875,3.8,3.9,0.0,0.0,,48421
+Two-Handed Sword,23,25,775,15,excellent,7368,4375,5475,14075,5.9,5.8,0.2,0.318,of Slay Evil 0.07; of Slay Dragon 0.07; of Slay Troll 0.06; of Slay Orc 0.06,48421
+Two-Handed Sword,23,25,775,20,good,1573,1275,1575,1875,4.0,4.0,0.0,0.0,,48421
+Two-Handed Sword,23,25,775,20,excellent,7632,4475,5675,16075,6.4,6.4,0.2,0.297,of Slay Troll 0.07; of Slay Orc 0.07; of Slay Evil 0.06; of Slay Animal 0.06,48421
+Two-Handed Sword,23,25,775,25,good,1605,1275,1575,1975,4.2,4.1,0.0,0.0,,48421
+Two-Handed Sword,23,25,775,25,excellent,7888,4575,5675,17775,6.7,6.7,0.2,0.332,of Slay Animal 0.07; of Slay Demon 0.06; of Slay Dragon 0.06; of Slay Undead 0.06,48421
+Two-Handed Sword,23,25,775,30,good,1638,1275,1675,1975,4.3,4.3,0.0,0.0,,48421
+Two-Handed Sword,23,25,775,30,excellent,8125,4675,5875,17475,7.3,7.3,0.2,0.326,of Slay Dragon 0.07; of Slay Evil 0.06; of Slay Giant 0.06; of Slay Orc 0.06,48421
+Two-Handed Sword,23,25,775,40,good,1707,1375,1675,2075,4.7,4.6,0.0,0.0,,48421
+Two-Handed Sword,23,25,775,40,excellent,8987,4775,6075,23575,8.4,8.4,0.2,0.325,of Slay Giant 0.07; of Slay Animal 0.06; of Slay Undead 0.06; of Slay Demon 0.06,48421
+Two-Handed Sword,23,25,775,50,good,1782,1475,1775,2075,5.0,5.1,0.0,0.0,,48421
+Two-Handed Sword,23,25,775,50,excellent,9038,5075,6275,22675,9.4,9.4,0.2,0.31,of Slay Animal 0.07; of Slay Evil 0.06; of Slay Giant 0.06; of Slay Dragon 0.06,48421
+Main Gauche,23,5,25,5,good,751,425,725,1025,3.6,3.7,0.0,0.0,,35000
+Main Gauche,23,5,25,5,excellent,6445,3525,4625,13625,5.2,5.2,0.2,0.305,of Slay Dragon 0.08; of Slay Giant 0.07; of Slay Demon 0.07; of Slay Troll 0.06,35000
+Main Gauche,23,5,25,10,good,785,425,825,1125,3.8,3.8,0.0,0.0,,35000
+Main Gauche,23,5,25,10,excellent,6769,3525,4625,15225,5.4,5.4,0.2,0.299,of Slay Animal 0.07; of Slay Giant 0.07; of Slay Evil 0.06; of Slay Orc 0.06,35000
+Main Gauche,23,5,25,15,good,799,525,825,1125,3.9,3.8,0.0,0.0,,35000
+Main Gauche,23,5,25,15,excellent,6928,3625,4825,15625,5.9,5.7,0.2,0.296,of Slay Dragon 0.07; of Slay Orc 0.07; of Slay Animal 0.06; of Slay Troll 0.06,35000
+Main Gauche,23,5,25,20,good,836,525,825,1125,4.0,4.1,0.0,0.0,,35000
+Main Gauche,23,5,25,20,excellent,6910,3725,4925,15725,6.4,6.4,0.2,0.32,of Slay Orc 0.06; of Slay Demon 0.06; of Slay Undead 0.06; of Slay Dragon 0.06,35000
+Main Gauche,23,5,25,25,good,841,525,825,1125,4.0,4.1,0.0,0.0,,35000
+Main Gauche,23,5,25,25,excellent,7045,3725,4925,16725,6.7,6.8,0.2,0.287,of Slay Animal 0.08; of Slay Troll 0.07; of Slay Orc 0.06; of Slay Giant 0.06,35000
+Main Gauche,23,5,25,30,good,884,525,825,1225,4.3,4.3,0.0,0.0,,35000
+Main Gauche,23,5,25,30,excellent,7383,3925,5125,17325,7.3,7.2,0.2,0.316,of Slay Animal 0.06; of Slay Giant 0.06; of Slay Orc 0.06; of Slay Evil 0.06,35000
+Main Gauche,23,5,25,40,good,961,625,925,1325,4.7,4.7,0.0,0.0,,35000
+Main Gauche,23,5,25,40,excellent,7661,4025,5325,17825,8.4,8.2,0.2,0.348,of Slay Undead 0.06; of Slay Troll 0.06; of Slay Giant 0.06; of Slay Animal 0.06,35000
+Main Gauche,23,5,25,50,good,1029,725,1025,1325,5.0,5.0,0.0,0.0,,35000
+Main Gauche,23,5,25,50,excellent,7683,4325,5425,16325,9.2,9.3,0.2,0.315,of Slay Dragon 0.07; of Slay Animal 0.07; of Slay Undead 0.07; of Slay Demon 0.06,35000
+Cutlass,23,12,85,5,good,812,485,785,1085,3.7,3.6,0.0,0.0,,28000
+Cutlass,23,12,85,5,excellent,6566,3585,4685,14485,5.0,5.2,0.2,0.299,of Slay Undead 0.07; of Slay Orc 0.06; of Slay Giant 0.06; of Slay Troll 0.06,28000
+Cutlass,23,12,85,10,good,835,485,785,1185,3.8,3.7,0.0,0.0,,28000
+Cutlass,23,12,85,10,excellent,7007,3585,4785,16685,5.6,5.5,0.2,0.329,of Slay Giant 0.07; of Slay Animal 0.06; of Slay Troll 0.06; of Slay Demon 0.06,28000
+Cutlass,23,12,85,15,good,857,585,885,1185,3.9,3.8,0.0,0.0,,28000
+Cutlass,23,12,85,15,excellent,6767,3685,4885,14685,5.8,5.7,0.2,0.29,of Slay Undead 0.07; of Slay Animal 0.06; of Slay Troll 0.06; of Slay Dragon 0.06,28000
+Cutlass,23,12,85,20,good,894,585,885,1185,4.0,4.1,0.0,0.0,,28000
+Cutlass,23,12,85,20,excellent,6781,3785,4885,14885,6.2,6.3,0.2,0.308,of Slay Demon 0.07; of Slay Troll 0.07; of Slay Evil 0.06; of Slay Dragon 0.06,28000
+Cutlass,23,12,85,25,good,901,585,885,1185,4.1,4.1,0.0,0.0,,28000
+Cutlass,23,12,85,25,excellent,7295,3885,5085,16985,6.7,6.8,0.2,0.328,of Slay Demon 0.07; of Slay Orc 0.06; of Slay Dragon 0.06; of Slay Giant 0.06,28000
+Cutlass,23,12,85,30,good,955,585,985,1285,4.4,4.3,0.0,0.0,,28000
+Cutlass,23,12,85,30,excellent,7552,3885,5085,17485,7.4,7.0,0.2,0.324,of Slay Animal 0.07; of Slay Dragon 0.06; of Slay Evil 0.06; of Slay Giant 0.06,28000
+Cutlass,23,12,85,40,good,1009,685,985,1385,4.7,4.6,0.0,0.0,,28000
+Cutlass,23,12,85,40,excellent,7873,4185,5385,17785,8.3,8.4,0.2,0.313,of Slay Evil 0.07; of Slay Demon 0.07; of Slay Orc 0.07; of Slay Dragon 0.07,28000
+Cutlass,23,12,85,50,good,1087,785,1085,1385,5.0,5.0,0.0,0.0,,28000
+Cutlass,23,12,85,50,excellent,7886,4385,5585,17885,9.4,9.2,0.2,0.329,of Slay Dragon 0.07; of Slay Demon 0.06; of Slay Animal 0.06; of Slay Troll 0.06,28000
+Executioner's Sword,23,28,850,5,good,1575,1250,1550,1850,3.6,3.6,0.0,0.0,,100000
+Executioner's Sword,23,28,850,5,excellent,7635,4250,5450,17450,5.3,5.2,0.2,0.317,of Slay Giant 0.07; of Slay Animal 0.07; of Slay Orc 0.06; of Slay Evil 0.06,100000
+Executioner's Sword,23,28,850,10,good,1611,1250,1650,1950,3.8,3.8,0.0,0.0,,100000
+Executioner's Sword,23,28,850,10,excellent,7867,4350,5550,17750,5.4,5.6,0.2,0.319,of Slay Giant 0.07; of Slay Dragon 0.06; of Slay Orc 0.06; of Slay Evil 0.06,100000
+Executioner's Sword,23,28,850,15,good,1617,1350,1650,1950,3.9,3.8,0.0,0.0,,100000
+Executioner's Sword,23,28,850,15,excellent,7781,4450,5650,17450,5.9,5.7,0.2,0.317,of Slay Giant 0.06; of Slay Troll 0.06; of Slay Undead 0.06; of Slay Animal 0.06,100000
+Executioner's Sword,23,28,850,20,good,1640,1350,1650,1950,3.9,4.0,0.0,0.0,,100000
+Executioner's Sword,23,28,850,20,excellent,7646,4550,5650,15950,6.2,6.4,0.2,0.321,of Slay Orc 0.07; of Slay Animal 0.06; of Slay Evil 0.06; of Slay Demon 0.06,100000
+Executioner's Sword,23,28,850,25,good,1670,1350,1650,1950,4.1,4.1,0.0,0.0,,100000
+Executioner's Sword,23,28,850,25,excellent,7855,4550,5750,17450,6.7,6.7,0.2,0.316,of Slay Evil 0.07; of Slay Dragon 0.07; of Slay Troll 0.06; of Slay Undead 0.06,100000
+Executioner's Sword,23,28,850,30,good,1718,1350,1750,2050,4.3,4.4,0.0,0.0,,100000
+Executioner's Sword,23,28,850,30,excellent,8201,4750,5850,18050,7.3,7.4,0.2,0.332,of Slay Giant 0.07; of Slay Orc 0.07; of Slay Undead 0.06; of Slay Dragon 0.06,100000
+Executioner's Sword,23,28,850,40,good,1783,1450,1750,2150,4.7,4.7,0.0,0.0,,100000
+Executioner's Sword,23,28,850,40,excellent,8669,4950,6250,18650,8.4,8.3,0.2,0.321,of Slay Giant 0.07; of Slay Animal 0.06; of Slay Undead 0.06; of Slay Demon 0.06,100000
+Executioner's Sword,23,28,850,50,good,1834,1450,1850,2150,4.9,5.0,0.0,0.0,,100000
+Executioner's Sword,23,28,850,50,excellent,8800,5150,6350,18950,9.4,9.3,0.2,0.309,of Slay Dragon 0.06; of Slay Demon 0.06; of Slay Troll 0.06; of Slay Giant 0.06,100000
+Katana,23,20,400,5,good,1122,800,1100,1500,3.6,3.6,0.0,0.0,,40000
+Katana,23,20,400,5,excellent,7109,3900,5000,15500,5.0,5.1,0.2,0.301,of Slay Dragon 0.06; of Slay Giant 0.06; of Slay Animal 0.06; of Slay Troll 0.06,40000
+Katana,23,20,400,10,good,1151,900,1100,1500,3.8,3.8,0.0,0.0,,40000
+Katana,23,20,400,10,excellent,7219,3900,5100,17100,5.5,5.5,0.2,0.323,of Slay Orc 0.07; of Slay Troll 0.07; of Slay Dragon 0.06; of Slay Animal 0.06,40000
+Katana,23,20,400,15,good,1175,800,1200,1500,3.9,3.9,0.0,0.0,,40000
+Katana,23,20,400,15,excellent,7323,4000,5100,16900,5.9,5.8,0.2,0.317,of Slay Animal 0.07; of Slay Dragon 0.07; of Slay Troll 0.07; of Slay Evil 0.06,40000
+Katana,23,20,400,20,good,1210,900,1200,1500,4.1,4.0,0.0,0.0,,40000
+Katana,23,20,400,20,excellent,7403,4000,5300,17400,6.3,6.3,0.2,0.321,of Slay Giant 0.07; of Slay Undead 0.06; of Slay Dragon 0.06; of Slay Evil 0.06,40000
+Katana,23,20,400,25,good,1220,900,1200,1500,4.2,4.0,0.0,0.0,,40000
+Katana,23,20,400,25,excellent,7336,4100,5300,15900,6.7,6.6,0.2,0.321,of Slay Troll 0.07; of Slay Evil 0.06; of Slay Undead 0.06; of Slay Giant 0.06,40000
+Katana,23,20,400,30,good,1256,900,1200,1600,4.3,4.3,0.0,0.0,,40000
+Katana,23,20,400,30,excellent,8010,4200,5500,18200,7.3,7.4,0.2,0.337,of Slay Evil 0.08; of Slay Undead 0.07; of Slay Dragon 0.06; of Slay Giant 0.06,40000
+Katana,23,20,400,40,good,1328,1000,1300,1700,4.6,4.7,0.0,0.0,,40000
+Katana,23,20,400,40,excellent,8314,4400,5700,22400,8.4,8.3,0.2,0.327,of Slay Dragon 0.06; of Slay Evil 0.06; of Slay Demon 0.06; of Slay Orc 0.06,40000
+Katana,23,20,400,50,good,1398,1100,1400,1700,5.0,5.0,0.0,0.0,,40000
+Katana,23,20,400,50,excellent,8428,4700,5900,18700,9.2,9.4,0.2,0.315,of Slay Orc 0.07; of Slay Dragon 0.07; of Slay Undead 0.06; of Slay Evil 0.06,40000
+Long Sword,23,17,300,5,good,1017,700,1000,1300,3.6,3.5,0.0,0.0,,50000
+Long Sword,23,17,300,5,excellent,7037,3800,5000,15700,5.2,5.1,0.2,0.31,of Slay Dragon 0.06; of Slay Giant 0.06; of Slay Undead 0.06; of Slay Orc 0.06,50000
+Long Sword,23,17,300,10,good,1052,700,1000,1400,3.8,3.7,0.0,0.0,,50000
+Long Sword,23,17,300,10,excellent,7093,3800,4900,15600,5.5,5.4,0.2,0.297,of Slay Undead 0.08; of Slay Troll 0.07; of Slay Animal 0.07; of Slay Evil 0.06,50000
+Long Sword,23,17,300,15,good,1082,800,1100,1400,3.9,3.9,0.0,0.0,,50000
+Long Sword,23,17,300,15,excellent,7301,3900,5100,17200,5.9,5.9,0.2,0.319,of Slay Troll 0.07; of Slay Orc 0.07; of Slay Animal 0.06; of Slay Demon 0.06,50000
+Long Sword,23,17,300,20,good,1103,800,1100,1400,4.0,4.1,0.0,0.0,,50000
+Long Sword,23,17,300,20,excellent,7163,4000,5200,15700,6.1,6.3,0.2,0.335,of Slay Undead 0.07; of Slay Demon 0.06; of Slay Evil 0.06; of Slay Orc 0.06,50000
+Long Sword,23,17,300,25,good,1120,800,1100,1500,4.1,4.1,0.0,0.0,,50000
+Long Sword,23,17,300,25,excellent,7390,4000,5200,16300,6.7,6.6,0.2,0.328,of Slay Undead 0.07; of Slay Giant 0.07; of Slay Evil 0.06; of Slay Animal 0.06,50000
+Long Sword,23,17,300,30,good,1149,800,1100,1500,4.2,4.3,0.0,0.0,,50000
+Long Sword,23,17,300,30,excellent,7628,4100,5300,17600,7.3,7.3,0.2,0.309,of Slay Orc 0.07; of Slay Demon 0.07; of Slay Giant 0.06; of Slay Dragon 0.06,50000
+Long Sword,23,17,300,40,good,1228,900,1200,1600,4.6,4.7,0.0,0.0,,50000
+Long Sword,23,17,300,40,excellent,8192,4300,5600,19100,8.3,8.3,0.2,0.325,of Slay Orc 0.07; of Slay Animal 0.06; of Slay Evil 0.06; of Slay Troll 0.06,50000
+Long Sword,23,17,300,50,good,1302,1000,1300,1600,5.0,5.0,0.0,0.0,,50000
+Long Sword,23,17,300,50,excellent,8479,4600,5800,18700,9.4,9.4,0.2,0.327,of Slay Demon 0.07; of Slay Evil 0.06; of Frost 0.05; of Slay Giant 0.05,50000
+Dagger,23,4,10,5,good,731,410,710,1010,3.6,3.6,0.0,0.0,,13765
+Dagger,23,4,10,5,excellent,6619,3410,4510,15110,5.0,5.1,0.2,0.297,of Slay Demon 0.07; of Slay Giant 0.07; of Slay Animal 0.06; of Slay Undead 0.06,13765
+Dagger,23,4,10,10,good,764,410,710,1110,3.8,3.8,0.0,0.0,,13765
+Dagger,23,4,10,10,excellent,6791,3510,4710,15710,5.5,5.5,0.2,0.319,of Slay Demon 0.07; of Slay Giant 0.07; of Slay Troll 0.06; of Slay Undead 0.06,13765
+Dagger,23,4,10,15,good,781,510,810,1110,3.8,3.9,0.0,0.0,,13765
+Dagger,23,4,10,15,excellent,6749,3510,4710,15010,5.8,5.7,0.2,0.296,of Slay Giant 0.07; of Slay Demon 0.06; of Slay Troll 0.06; of Slay Evil 0.06,13765
+Dagger,23,4,10,20,good,804,510,810,1110,3.9,4.0,0.0,0.0,,13765
+Dagger,23,4,10,20,excellent,7043,3610,4910,15510,6.3,6.3,0.2,0.317,of Slay Evil 0.07; of Slay Orc 0.07; of Slay Troll 0.06; of Slay Animal 0.06,13765
+Dagger,23,4,10,25,good,837,510,810,1210,4.1,4.1,0.0,0.0,,13765
+Dagger,23,4,10,25,excellent,6937,3810,5010,15210,6.7,6.8,0.2,0.287,of Slay Orc 0.07; of Slay Undead 0.07; of Slay Evil 0.07; of Slay Demon 0.06,13765
+Dagger,23,4,10,30,good,882,510,910,1210,4.4,4.3,0.0,0.0,,13765
+Dagger,23,4,10,30,excellent,7638,3910,5110,17910,7.2,7.3,0.2,0.329,of Slay Demon 0.07; of Slay Animal 0.06; of Slay Dragon 0.06; of Slay Giant 0.06,13765
+Dagger,23,4,10,40,good,944,610,910,1310,4.6,4.7,0.0,0.0,,13765
+Dagger,23,4,10,40,excellent,7367,4010,5110,16010,8.1,8.2,0.2,0.291,of Slay Troll 0.07; of Slay Undead 0.07; of Slay Orc 0.07; of Slay Animal 0.07,13765
+Dagger,23,4,10,50,good,1009,710,1010,1310,5.0,5.0,0.0,0.0,,13765
+Dagger,23,4,10,50,excellent,7910,4210,5610,17810,9.3,9.4,0.2,0.311,of Slay Orc 0.06; of Slay Undead 0.06; of Slay Demon 0.06; of Slay Giant 0.06,13765
+Rapier,23,7,42,5,good,757,442,742,1042,3.6,3.6,0.0,0.0,,15000
+Rapier,23,7,42,5,excellent,6828,3542,4642,16442,5.0,5.1,0.2,0.322,of Slay Evil 0.07; of Slay Troll 0.07; of Slay Animal 0.06; of Slay Giant 0.06,15000
+Rapier,23,7,42,10,good,775,442,742,1042,3.8,3.6,0.0,0.0,,15000
+Rapier,23,7,42,10,excellent,6987,3542,4642,17142,5.5,5.5,0.2,0.328,of Slay Demon 0.07; of Slay Orc 0.07; of Slay Evil 0.06; of Slay Troll 0.06,15000
+Rapier,23,7,42,15,good,820,442,842,1142,3.9,3.9,0.0,0.0,,15000
+Rapier,23,7,42,15,excellent,6869,3642,4842,15342,5.9,6.0,0.2,0.322,of Slay Orc 0.08; of Slay Giant 0.06; of Slay Troll 0.06; of Slay Demon 0.06,15000
+Rapier,23,7,42,20,good,840,542,842,1142,4.0,4.0,0.0,0.0,,15000
+Rapier,23,7,42,20,excellent,6896,3742,4942,15642,6.3,6.4,0.2,0.317,of Slay Dragon 0.07; of Slay Giant 0.07; of Slay Demon 0.06; of Slay Undead 0.06,15000
+Rapier,23,7,42,25,good,873,542,842,1242,4.2,4.1,0.0,0.0,,15000
+Rapier,23,7,42,25,excellent,7115,3842,5042,16842,6.8,6.7,0.2,0.326,of Slay Dragon 0.07; of Slay Undead 0.07; of Slay Orc 0.06; of Slay Demon 0.06,15000
+Rapier,23,7,42,30,good,898,542,942,1242,4.2,4.3,0.0,0.0,,15000
+Rapier,23,7,42,30,excellent,7423,3942,5142,17242,7.3,7.2,0.2,0.337,of Slay Evil 0.07; of Slay Troll 0.07; of Slay Demon 0.06; of Slay Undead 0.06,15000
+Rapier,23,7,42,40,good,963,642,942,1342,4.6,4.6,0.0,0.0,,15000
+Rapier,23,7,42,40,excellent,7572,4042,5242,17542,8.2,8.2,0.2,0.323,of Slay Undead 0.07; of Slay Giant 0.06; of Slay Demon 0.06; of Slay Animal 0.06,15000
+Rapier,23,7,42,50,good,1043,742,1042,1342,5.1,5.0,0.0,0.0,,15000
+Rapier,23,7,42,50,excellent,7997,4242,5542,18042,9.3,9.3,0.2,0.343,of Slay Dragon 0.07; of Slay Giant 0.06; of Slay Orc 0.06; of Slay Troll 0.05,15000
+Sabre,23,11,50,5,good,774,450,750,1050,3.6,3.6,0.0,0.0,,25000
+Sabre,23,11,50,5,excellent,6673,3450,4650,15050,5.2,5.1,0.2,0.304,of Slay Orc 0.08; of Slay Dragon 0.07; of Slay Undead 0.06; of Slay Evil 0.06,25000
+Sabre,23,11,50,10,good,804,450,750,1150,3.8,3.8,0.0,0.0,,25000
+Sabre,23,11,50,10,excellent,6651,3550,4650,14950,5.4,5.4,0.2,0.295,of Slay Troll 0.08; of Slay Undead 0.07; of Slay Evil 0.06; of Slay Orc 0.06,25000
+Sabre,23,11,50,15,good,823,450,850,1150,3.8,3.9,0.0,0.0,,25000
+Sabre,23,11,50,15,excellent,6902,3650,4750,15350,5.7,6.0,0.2,0.305,of Slay Evil 0.07; of Slay Giant 0.07; of Slay Animal 0.06; of Slay Dragon 0.06,25000
+Sabre,23,11,50,20,good,843,550,850,1150,4.0,3.9,0.0,0.0,,25000
+Sabre,23,11,50,20,excellent,6809,3650,4850,15350,6.2,6.3,0.2,0.317,of Slay Troll 0.07; of Slay Orc 0.07; of Slay Demon 0.07; of Slay Giant 0.06,25000
+Sabre,23,11,50,25,good,878,550,850,1250,4.2,4.1,0.0,0.0,,25000
+Sabre,23,11,50,25,excellent,6954,3750,4950,15450,6.6,6.6,0.2,0.293,of Slay Undead 0.07; of Slay Demon 0.07; of Slay Giant 0.06; of Slay Orc 0.06,25000
+Sabre,23,11,50,30,good,907,550,850,1250,4.3,4.2,0.0,0.0,,25000
+Sabre,23,11,50,30,excellent,7565,3850,5250,17450,7.4,7.2,0.2,0.322,of Slay Undead 0.07; of Slay Orc 0.06; of Slay Giant 0.06; of Slay Evil 0.06,25000
+Sabre,23,11,50,40,good,984,650,950,1350,4.7,4.6,0.0,0.0,,25000
+Sabre,23,11,50,40,excellent,7624,4050,5350,17450,8.3,8.2,0.2,0.333,of Slay Animal 0.07; of Slay Giant 0.07; of Slay Demon 0.06; of Slay Orc 0.06,25000
+Sabre,23,11,50,50,good,1047,750,1050,1350,4.9,5.0,0.0,0.0,,25000
+Sabre,23,11,50,50,excellent,8046,4350,5650,18250,9.4,9.3,0.2,0.349,of Slay Dragon 0.06; of Slay Animal 0.06; of Slay Demon 0.06; of Slay Giant 0.06,25000
+Small Sword,23,8,48,5,good,777,448,748,1048,3.7,3.6,0.0,0.0,,100000
+Small Sword,23,8,48,5,excellent,6604,3548,4648,14848,5.1,5.1,0.2,0.303,of Slay Undead 0.07; of Slay Orc 0.06; of Venom 0.06; of Slay Evil 0.06,100000
+Small Sword,23,8,48,10,good,794,448,748,1148,3.7,3.8,0.0,0.0,,100000
+Small Sword,23,8,48,10,excellent,6668,3548,4748,14948,5.5,5.4,0.2,0.305,of Slay Giant 0.07; of Slay Undead 0.07; of Slay Animal 0.06; of Slay Troll 0.06,100000
+Small Sword,23,8,48,15,good,834,548,848,1148,3.9,3.9,0.0,0.0,,100000
+Small Sword,23,8,48,15,excellent,7086,3648,4848,17248,6.0,5.9,0.3,0.317,of Slay Giant 0.07; of Slay Troll 0.06; of Slay Evil 0.06; of Slay Demon 0.06,100000
+Small Sword,23,8,48,20,good,849,548,848,1248,4.0,4.0,0.0,0.0,,100000
+Small Sword,23,8,48,20,excellent,6876,3648,4748,15748,6.3,6.4,0.2,0.284,of Slay Orc 0.08; of Slay Troll 0.07; of Slay Demon 0.06; of Slay Giant 0.06,100000
+Small Sword,23,8,48,25,good,875,548,848,1148,4.1,4.2,0.0,0.0,,100000
+Small Sword,23,8,48,25,excellent,6765,3748,4948,13348,6.6,6.5,0.1,0.298,of Slay Evil 0.07; of Slay Giant 0.06; of Slay Troll 0.06; of Slay Dragon 0.06,100000
+Small Sword,23,8,48,30,good,909,548,848,1248,4.3,4.3,0.0,0.0,,100000
+Small Sword,23,8,48,30,excellent,7358,3848,5148,16748,7.1,7.3,0.2,0.299,of Slay Evil 0.07; of Slay Undead 0.07; of Slay Troll 0.06; of Slay Animal 0.06,100000
+Small Sword,23,8,48,40,good,974,648,948,1348,4.6,4.7,0.0,0.0,,100000
+Small Sword,23,8,48,40,excellent,7590,4048,5248,17848,8.1,8.2,0.2,0.336,of Slay Troll 0.07; of Slay Evil 0.06; of Slay Demon 0.06; of Slay Animal 0.06,100000
+Small Sword,23,8,48,50,good,1053,748,1048,1448,5.0,5.1,0.0,0.0,,100000
+Small Sword,23,8,48,50,excellent,8115,4248,5748,18248,9.4,9.2,0.2,0.339,of Slay Dragon 0.06; of Slay Animal 0.06; of Slay Demon 0.06; of Slay Troll 0.05,100000
+Broken Sword,23,2,2,5,good,730,402,702,1002,1.6,-0.3,0.0,0.0,,2000
+Broken Sword,23,2,2,5,excellent,6793,3502,4702,15402,3.2,1.2,0.2,0.305,of Slay Troll 0.07; of Slay Demon 0.07; of Slay Animal 0.06; of Slay Giant 0.06,2000
+Broken Sword,23,2,2,10,good,754,402,702,1102,1.7,-0.2,0.0,0.0,,2000
+Broken Sword,23,2,2,10,excellent,6908,3502,4702,17002,3.6,1.4,0.2,0.328,of Slay Demon 0.07; of Slay Giant 0.07; of Slay Orc 0.06; of Slay Troll 0.06,2000
+Broken Sword,23,2,2,15,good,773,502,802,1102,1.9,-0.1,0.0,0.0,,2000
+Broken Sword,23,2,2,15,excellent,6890,3602,4802,15602,3.9,2.0,0.2,0.324,of Slay Troll 0.07; of Slay Giant 0.06; of Slay Evil 0.06; of Slay Dragon 0.06,2000
+Broken Sword,23,2,2,20,good,798,502,802,1102,2.0,-0.0,0.0,0.0,,2000
+Broken Sword,23,2,2,20,excellent,7014,3602,4802,16502,4.3,2.2,0.2,0.313,of Slay Evil 0.07; of Slay Undead 0.07; of Slay Demon 0.06; of Slay Troll 0.06,2000
+Broken Sword,23,2,2,25,good,830,502,802,1202,2.1,0.2,0.0,0.0,,2000
+Broken Sword,23,2,2,25,excellent,6686,3802,4902,13402,4.6,2.7,0.2,0.3,of Slay Dragon 0.08; of Slay Evil 0.07; of Slay Animal 0.06; of Slay Orc 0.06,2000
+Broken Sword,23,2,2,30,good,845,502,802,1202,2.2,0.2,0.0,0.0,,2000
+Broken Sword,23,2,2,30,excellent,7621,3802,5102,18002,5.2,3.3,0.2,0.323,of Slay Dragon 0.07; of Slay Undead 0.06; of Slay Troll 0.06; of Slay Giant 0.06,2000
+Broken Sword,23,2,2,40,good,932,602,902,1302,2.6,0.7,0.0,0.0,,2000
+Broken Sword,23,2,2,40,excellent,7531,4002,5202,17002,6.2,4.3,0.2,0.305,of Slay Animal 0.07; of Slay Evil 0.06; of Slay Troll 0.06; of Slay Dragon 0.06,2000
+Broken Sword,23,2,2,50,good,992,702,1002,1302,3.0,0.9,0.0,0.0,,2000
+Broken Sword,23,2,2,50,excellent,7712,4202,5502,17702,7.3,5.2,0.2,0.337,of Slay Orc 0.07; of Slay Giant 0.07; of Slay Troll 0.06; of Slay Demon 0.06,2000
+Ball-and-Chain,21,6,200,5,good,920,600,900,1200,3.6,3.6,0.0,0.0,,60000
+Ball-and-Chain,21,6,200,5,excellent,6785,3600,4700,15300,5.0,5.1,0.2,0.303,of Slay Demon 0.07; of Slay Evil 0.07; of Slay Animal 0.06; of Slay Giant 0.06,60000
+Ball-and-Chain,21,6,200,10,good,953,600,900,1300,3.8,3.7,0.0,0.0,,60000
+Ball-and-Chain,21,6,200,10,excellent,7094,3700,4900,17000,5.4,5.5,0.2,0.309,of Slay Animal 0.07; of Slay Giant 0.06; of Slay Orc 0.06; of Slay Undead 0.06,60000
+Ball-and-Chain,21,6,200,15,good,971,600,1000,1300,3.9,3.8,0.0,0.0,,60000
+Ball-and-Chain,21,6,200,15,excellent,7079,3800,5000,16900,5.9,5.9,0.2,0.311,of Slay Animal 0.07; of Slay Troll 0.07; of Slay Orc 0.06; of Slay Undead 0.06,60000
+Ball-and-Chain,21,6,200,20,good,998,700,1000,1300,3.9,4.0,0.0,0.0,,60000
+Ball-and-Chain,21,6,200,20,excellent,7088,3900,5000,15800,6.4,6.3,0.2,0.329,of Slay Undead 0.07; of Slay Orc 0.07; of Slay Giant 0.06; of Slay Animal 0.06,60000
+Ball-and-Chain,21,6,200,25,good,1030,700,1000,1400,4.1,4.2,0.0,0.0,,60000
+Ball-and-Chain,21,6,200,25,excellent,7284,4000,5200,16400,6.7,6.7,0.2,0.317,of Slay Undead 0.07; of Slay Dragon 0.07; of Slay Orc 0.07; of Venom 0.06,60000
+Ball-and-Chain,21,6,200,30,good,1057,700,1100,1400,4.3,4.2,0.0,0.0,,60000
+Ball-and-Chain,21,6,200,30,excellent,7911,4000,5400,18200,7.2,7.3,0.2,0.33,of Slay Demon 0.07; of Slay Evil 0.06; of Slay Dragon 0.06; of Slay Animal 0.06,60000
+Ball-and-Chain,21,6,200,40,good,1130,800,1100,1500,4.6,4.7,0.0,0.0,,60000
+Ball-and-Chain,21,6,200,40,excellent,8020,4200,5500,18100,8.2,8.4,0.2,0.325,of Slay Orc 0.07; of Slay Giant 0.07; of Slay Evil 0.06; of Slay Demon 0.06,60000
+Ball-and-Chain,21,6,200,50,good,1196,800,1200,1500,5.0,4.9,0.0,0.0,,60000
+Ball-and-Chain,21,6,200,50,excellent,8031,4400,5700,18000,9.3,9.2,0.2,0.319,of Slay Evil 0.07; of Slay Troll 0.07; of Slay Dragon 0.06; of Slay Undead 0.06,60000
+Whip,21,2,30,5,good,751,430,730,1030,3.6,3.6,0.0,0.0,,25000
+Whip,21,2,30,5,excellent,6717,3430,4630,15430,5.2,5.1,0.2,0.317,of Slay Orc 0.07; of Slay Animal 0.07; of Slay Troll 0.07; of Slay Undead 0.06,25000
+Whip,21,2,30,10,good,781,430,730,1130,3.8,3.7,0.0,0.0,,25000
+Whip,21,2,30,10,excellent,6671,3530,4730,15030,5.4,5.4,0.2,0.311,of Slay Evil 0.07; of Slay Dragon 0.06; of Slay Orc 0.06; of Slay Undead 0.06,25000
+Whip,21,2,30,15,good,807,530,830,1130,3.9,3.9,0.0,0.0,,25000
+Whip,21,2,30,15,excellent,6985,3630,4830,16830,6.0,5.9,0.2,0.318,of Slay Troll 0.07; of Slay Animal 0.06; of Slay Undead 0.06; of Slay Giant 0.06,25000
+Whip,21,2,30,20,good,840,530,830,1130,4.1,4.0,0.0,0.0,,25000
+Whip,21,2,30,20,excellent,7045,3630,4930,17230,6.3,6.2,0.3,0.336,of Slay Giant 0.07; of Slay Troll 0.06; of Slay Undead 0.06; of Slay Animal 0.06,25000
+Whip,21,2,30,25,good,863,530,830,1230,4.2,4.1,0.0,0.0,,25000
+Whip,21,2,30,25,excellent,7001,3730,4930,15530,6.7,6.6,0.2,0.296,of Slay Evil 0.07; of Slay Troll 0.07; of Slay Demon 0.06; of Slay Dragon 0.06,25000
+Whip,21,2,30,30,good,889,530,930,1230,4.3,4.2,0.0,0.0,,25000
+Whip,21,2,30,30,excellent,7290,3830,4930,17430,7.1,7.2,0.2,0.313,of Slay Giant 0.07; of Slay Troll 0.07; of Slay Evil 0.06; of Slay Demon 0.06,25000
+Whip,21,2,30,40,good,964,630,930,1330,4.7,4.7,0.0,0.0,,25000
+Whip,21,2,30,40,excellent,7929,4130,5330,18530,8.3,8.4,0.2,0.308,of Slay Dragon 0.07; of Slay Orc 0.06; of Slay Troll 0.06; of Slay Undead 0.06,25000
+Whip,21,2,30,50,good,1025,730,1030,1330,5.0,5.0,0.0,0.0,,25000
+Whip,21,2,30,50,excellent,8018,4330,5630,18130,9.4,9.3,0.2,0.34,of Slay Undead 0.06; of Slay Animal 0.06; of Slay Evil 0.06; of Slay Dragon 0.06,25000
+Flail,21,13,353,5,good,1068,753,1053,1353,3.6,3.6,0.0,0.0,,55000
+Flail,21,13,353,5,excellent,7343,3853,5053,17353,5.2,5.2,0.2,0.315,of Slay Undead 0.07; of Slay Troll 0.07; of Slay Animal 0.07; of Slay Dragon 0.06,55000
+Flail,21,13,353,10,good,1110,753,1153,1453,3.7,3.8,0.0,0.0,,55000
+Flail,21,13,353,10,excellent,6969,3853,4953,15253,5.5,5.5,0.2,0.292,of Slay Giant 0.07; of Slay Demon 0.07; of Slay Undead 0.06; of Slay Troll 0.06,55000
+Flail,21,13,353,15,good,1148,853,1153,1453,3.9,4.0,0.0,0.0,,55000
+Flail,21,13,353,15,excellent,7143,3953,5153,15753,5.9,5.8,0.2,0.319,of Slay Troll 0.06; of Slay Giant 0.06; of Slay Undead 0.06; of Slay Dragon 0.06,55000
+Flail,21,13,353,20,good,1163,853,1153,1553,4.1,4.0,0.0,0.0,,55000
+Flail,21,13,353,20,excellent,7345,4053,5153,15753,6.3,6.3,0.2,0.308,of Slay Undead 0.07; of Slay Animal 0.06; of Slay Orc 0.06; of Slay Giant 0.06,55000
+Flail,21,13,353,25,good,1176,853,1153,1453,4.1,4.1,0.0,0.0,,55000
+Flail,21,13,353,25,excellent,7302,4153,5353,15653,6.8,6.6,0.2,0.305,of Slay Undead 0.07; of Slay Dragon 0.06; of Slay Troll 0.06; of Slay Giant 0.06,55000
+Flail,21,13,353,30,good,1212,853,1253,1553,4.3,4.3,0.0,0.0,,55000
+Flail,21,13,353,30,excellent,7869,4153,5453,17953,7.2,7.2,0.2,0.326,of Slay Undead 0.07; of Slay Evil 0.06; of Slay Demon 0.06; of Slay Troll 0.06,55000
+Flail,21,13,353,40,good,1289,953,1253,1653,4.6,4.7,0.0,0.0,,55000
+Flail,21,13,353,40,excellent,8361,4453,5653,21953,8.4,8.5,0.2,0.331,of Slay Evil 0.06; of Slay Demon 0.06; of Slay Animal 0.06; of Slay Dragon 0.06,55000
+Flail,21,13,353,50,good,1345,1053,1353,1653,4.9,5.0,0.0,0.0,,55000
+Flail,21,13,353,50,excellent,8461,4553,5853,18653,9.3,9.4,0.2,0.308,of Slay Animal 0.06; of Slay Orc 0.06; of Slay Troll 0.06; of Slay Undead 0.06,55000
+Two-Handed Flail,21,18,590,5,good,1319,990,1290,1590,3.6,3.7,0.0,0.0,,160000
+Two-Handed Flail,21,18,590,5,excellent,7287,4090,5190,16590,5.2,5.1,0.2,0.312,of Slay Evil 0.07; of Slay Demon 0.07; of Slay Animal 0.06; of Slay Dragon 0.06,160000
+Two-Handed Flail,21,18,590,10,good,1343,990,1290,1690,3.7,3.8,0.0,0.0,,160000
+Two-Handed Flail,21,18,590,10,excellent,7379,4190,5290,16090,5.5,5.5,0.2,0.304,of Slay Undead 0.07; of Slay Animal 0.07; of Slay Giant 0.06; of Slay Demon 0.06,160000
+Two-Handed Flail,21,18,590,15,good,1369,1090,1390,1690,3.8,4.0,0.0,0.0,,160000
+Two-Handed Flail,21,18,590,15,excellent,7588,4090,5390,17190,5.7,5.9,0.2,0.315,of Slay Giant 0.07; of Slay Troll 0.06; of Slay Undead 0.06; of Slay Dragon 0.06,160000
+Two-Handed Flail,21,18,590,20,good,1395,1090,1390,1690,4.0,4.0,0.0,0.0,,160000
+Two-Handed Flail,21,18,590,20,excellent,7532,4190,5490,15790,6.3,6.3,0.2,0.317,of Slay Demon 0.07; of Slay Orc 0.07; of Slay Dragon 0.07; of Slay Evil 0.06,160000
+Two-Handed Flail,21,18,590,25,good,1414,1090,1390,1690,4.1,4.1,0.0,0.0,,160000
+Two-Handed Flail,21,18,590,25,excellent,7560,4390,5490,16090,6.7,6.6,0.2,0.337,of Slay Troll 0.07; of Slay Dragon 0.06; of Slay Evil 0.06; of Slay Giant 0.06,160000
+Two-Handed Flail,21,18,590,30,good,1452,1090,1490,1790,4.3,4.3,0.0,0.0,,160000
+Two-Handed Flail,21,18,590,30,excellent,8169,4390,5690,18390,7.2,7.3,0.2,0.331,of Slay Giant 0.07; of Slay Troll 0.07; of Slay Undead 0.07; of Slay Animal 0.06,160000
+Two-Handed Flail,21,18,590,40,good,1515,1190,1490,1890,4.6,4.6,0.0,0.0,,160000
+Two-Handed Flail,21,18,590,40,excellent,8534,4690,5990,18690,8.4,8.4,0.2,0.319,of Slay Dragon 0.07; of Slay Giant 0.06; of Slay Undead 0.06; of Slay Demon 0.06,160000
+Two-Handed Flail,21,18,590,50,good,1593,1290,1590,1990,5.0,5.0,0.0,0.0,,160000
+Two-Handed Flail,21,18,590,50,excellent,8806,4790,6190,22990,9.3,9.3,0.2,0.321,of Slay Troll 0.07; of Slay Evil 0.06; of Slay Orc 0.06; of Slay Dragon 0.06,160000
+Morning Star,21,12,396,5,good,1109,796,1096,1396,3.6,3.5,0.0,0.0,,33333
+Morning Star,21,12,396,5,excellent,7120,3796,4996,15896,5.2,5.0,0.2,0.31,of Slay Orc 0.07; of Slay Dragon 0.07; of Slay Troll 0.06; of Slay Giant 0.06,33333
+Morning Star,21,12,396,10,good,1153,896,1096,1496,3.8,3.8,0.0,0.0,,33333
+Morning Star,21,12,396,10,excellent,7164,3896,4996,16996,5.4,5.5,0.2,0.322,of Slay Evil 0.07; of Slay Orc 0.06; of Slay Animal 0.06; of Slay Dragon 0.06,33333
+Morning Star,21,12,396,15,good,1165,796,1196,1496,3.9,3.8,0.0,0.0,,33333
+Morning Star,21,12,396,15,excellent,7248,3996,5196,15596,5.8,5.8,0.2,0.308,of Slay Orc 0.07; of Slay Giant 0.07; of Slay Dragon 0.06; of Slay Undead 0.06,33333
+Morning Star,21,12,396,20,good,1193,896,1196,1496,3.9,4.1,0.0,0.0,,33333
+Morning Star,21,12,396,20,excellent,7300,4096,5296,15696,6.2,6.3,0.2,0.307,of Slay Troll 0.07; of Slay Demon 0.07; of Slay Undead 0.06; of Slay Orc 0.06,33333
+Morning Star,21,12,396,25,good,1218,896,1196,1596,4.1,4.1,0.0,0.0,,33333
+Morning Star,21,12,396,25,excellent,7100,4096,5296,15096,6.6,6.6,0.2,0.305,of Slay Troll 0.07; of Slay Dragon 0.07; of Slay Evil 0.07; of Slay Animal 0.07,33333
+Morning Star,21,12,396,30,good,1269,896,1296,1596,4.3,4.4,0.0,0.0,,33333
+Morning Star,21,12,396,30,excellent,7867,4196,5496,17796,7.2,7.2,0.2,0.321,of Slay Animal 0.06; of Slay Evil 0.06; of Slay Demon 0.06; of Slay Orc 0.06,33333
+Morning Star,21,12,396,40,good,1330,996,1296,1696,4.7,4.7,0.0,0.0,,33333
+Morning Star,21,12,396,40,excellent,8541,4396,5696,22996,8.4,8.3,0.2,0.297,of Slay Undead 0.07; of Slay Orc 0.07; of Slay Giant 0.07; of Slay Evil 0.06,33333
+Morning Star,21,12,396,50,good,1394,1096,1396,1696,5.0,5.0,0.0,0.0,,33333
+Morning Star,21,12,396,50,excellent,8468,4696,5896,18696,9.4,9.4,0.2,0.314,of Slay Giant 0.07; of Slay Undead 0.06; of Slay Demon 0.06; of Slay Dragon 0.06,33333
+Mace,21,5,130,5,good,849,530,830,1130,3.6,3.6,0.0,0.0,,50000
+Mace,21,5,130,5,excellent,6830,3530,4830,15230,5.2,5.2,0.2,0.311,of Slay Demon 0.07; of Slay Giant 0.06; of Slay Troll 0.06; of Slay Orc 0.06,50000
+Mace,21,5,130,10,good,890,630,930,1230,3.8,3.8,0.0,0.0,,50000
+Mace,21,5,130,10,excellent,6888,3630,4830,15530,5.4,5.6,0.2,0.313,of Slay Animal 0.07; of Slay Giant 0.07; of Slay Demon 0.07; of Slay Dragon 0.07,50000
+Mace,21,5,130,15,good,915,630,930,1230,3.9,4.0,0.0,0.0,,50000
+Mace,21,5,130,15,excellent,6947,3730,4930,15330,5.7,5.9,0.2,0.319,of Slay Orc 0.07; of Slay Demon 0.06; of Slay Troll 0.06; of Slay Undead 0.06,50000
+Mace,21,5,130,20,good,929,630,930,1230,4.0,4.0,0.0,0.0,,50000
+Mace,21,5,130,20,excellent,6941,3730,4930,15630,6.3,6.3,0.2,0.316,of Slay Troll 0.07; of Slay Evil 0.07; of Slay Dragon 0.07; of Slay Giant 0.07,50000
+Mace,21,5,130,25,good,958,630,930,1330,4.1,4.1,0.0,0.0,,50000
+Mace,21,5,130,25,excellent,7069,3930,5130,15330,6.7,6.7,0.2,0.319,of Slay Orc 0.07; of Slay Giant 0.07; of Slay Undead 0.06; of Slay Dragon 0.06,50000
+Mace,21,5,130,30,good,981,630,930,1330,4.3,4.2,0.0,0.0,,50000
+Mace,21,5,130,30,excellent,7418,3930,5230,16930,7.2,7.3,0.2,0.326,of Slay Evil 0.07; of Slay Demon 0.07; of Slay Giant 0.06; of Slay Orc 0.06,50000
+Mace,21,5,130,40,good,1051,730,1030,1430,4.6,4.6,0.0,0.0,,50000
+Mace,21,5,130,40,excellent,7656,4130,5430,17430,8.1,8.2,0.2,0.327,of Slay Orc 0.07; of Slay Troll 0.06; of Slay Dragon 0.06; of Slay Evil 0.06,50000
+Mace,21,5,130,50,good,1130,830,1130,1430,5.1,4.9,0.0,0.0,,50000
+Mace,21,5,130,50,excellent,7664,4430,5630,16030,9.3,9.3,0.2,0.313,of Slay Demon 0.07; of Slay Evil 0.06; of Slay Dragon 0.06; of Slay Giant 0.06,50000
+Quarterstaff,21,3,200,5,good,925,600,900,1200,3.6,3.6,0.0,0.0,,51711
+Quarterstaff,21,3,200,5,excellent,6889,3700,4900,15200,5.1,5.2,0.2,0.307,of Slay Dragon 0.08; of Slay Undead 0.07; of Slay Troll 0.06; of Slay Giant 0.06,51711
+Quarterstaff,21,3,200,10,good,942,600,900,1300,3.7,3.8,0.0,0.0,,51711
+Quarterstaff,21,3,200,10,excellent,7114,3700,4900,17000,5.5,5.4,0.2,0.317,of Slay Evil 0.07; of Slay Giant 0.07; of Slay Animal 0.06; of Slay Dragon 0.06,51711
+Quarterstaff,21,3,200,15,good,989,700,1000,1300,4.0,3.9,0.0,0.0,,51711
+Quarterstaff,21,3,200,15,excellent,7171,3800,5000,16900,6.0,6.0,0.2,0.303,of Slay Animal 0.07; of Slay Troll 0.06; of Slay Giant 0.06; of Slay Dragon 0.06,51711
+Quarterstaff,21,3,200,20,good,1000,700,1000,1300,4.0,4.0,0.0,0.0,,51711
+Quarterstaff,21,3,200,20,excellent,6995,3800,5000,15400,6.2,6.2,0.2,0.292,of Slay Giant 0.07; of Slay Troll 0.07; of Slay Orc 0.07; of Slay Evil 0.06,51711
+Quarterstaff,21,3,200,25,good,1022,700,1000,1400,4.1,4.1,0.0,0.0,,51711
+Quarterstaff,21,3,200,25,excellent,7087,3900,5100,15200,6.6,6.6,0.2,0.295,of Slay Giant 0.08; of Slay Orc 0.07; of Slay Demon 0.06; of Slay Animal 0.06,51711
+Quarterstaff,21,3,200,30,good,1056,700,1000,1400,4.3,4.3,0.0,0.0,,51711
+Quarterstaff,21,3,200,30,excellent,7642,4100,5300,17700,7.3,7.4,0.2,0.313,of Slay Demon 0.07; of Slay Animal 0.06; of Slay Orc 0.06; of Slay Evil 0.06,51711
+Quarterstaff,21,3,200,40,good,1125,800,1100,1500,4.6,4.6,0.0,0.0,,51711
+Quarterstaff,21,3,200,40,excellent,7676,4200,5400,17700,8.2,8.2,0.2,0.319,of Slay Troll 0.07; of Slay Evil 0.07; of Slay Orc 0.06; of Slay Undead 0.06,51711
+Quarterstaff,21,3,200,50,good,1192,900,1200,1500,5.0,4.9,0.0,0.0,,51711
+Quarterstaff,21,3,200,50,excellent,7876,4500,5600,17400,9.3,9.2,0.2,0.315,of Slay Dragon 0.07; of Slay Evil 0.06; of Slay Undead 0.06; of Slay Orc 0.06,51711
+War Hammer,21,8,225,5,good,946,625,925,1225,3.6,3.6,0.0,0.0,,250000
+War Hammer,21,8,225,5,excellent,7246,3725,4925,17125,5.0,5.1,0.2,0.317,of Slay Animal 0.06; of Slay Evil 0.06; of Slay Dragon 0.06; of Slay Undead 0.06,250000
+War Hammer,21,8,225,10,good,975,625,925,1325,3.8,3.7,0.0,0.0,,250000
+War Hammer,21,8,225,10,excellent,6851,3725,4925,15325,5.4,5.4,0.2,0.309,of Slay Giant 0.07; of Slay Demon 0.06; of Slay Undead 0.06; of Slay Animal 0.06,250000
+War Hammer,21,8,225,15,good,996,725,1025,1325,3.9,3.9,0.0,0.0,,250000
+War Hammer,21,8,225,15,excellent,7138,3825,4925,16925,5.8,5.8,0.2,0.315,of Slay Orc 0.06; of Slay Troll 0.06; of Slay Dragon 0.06; of Slay Animal 0.06,250000
+War Hammer,21,8,225,20,good,1018,725,1025,1325,4.0,3.9,0.0,0.0,,250000
+War Hammer,21,8,225,20,excellent,7355,3925,5125,17025,6.2,6.2,0.2,0.316,of Slay Undead 0.07; of Slay Dragon 0.07; of Slay Giant 0.06; of Slay Troll 0.06,250000
+War Hammer,21,8,225,25,good,1053,725,1025,1325,4.1,4.1,0.0,0.0,,250000
+War Hammer,21,8,225,25,excellent,7016,3925,5125,15225,6.6,6.7,0.2,0.311,of Slay Evil 0.07; of Slay Orc 0.07; of Slay Giant 0.07; of Slay Troll 0.06,250000
+War Hammer,21,8,225,30,good,1082,725,1125,1425,4.3,4.3,0.0,0.0,,250000
+War Hammer,21,8,225,30,excellent,7665,4125,5225,17625,7.4,7.3,0.2,0.317,of Slay Evil 0.08; of Slay Orc 0.06; of Slay Dragon 0.06; of Slay Giant 0.06,250000
+War Hammer,21,8,225,40,good,1153,825,1125,1525,4.7,4.6,0.0,0.0,,250000
+War Hammer,21,8,225,40,excellent,7771,4225,5625,17325,8.2,8.3,0.2,0.325,of Slay Demon 0.06; of Slay Dragon 0.06; of Slay Giant 0.06; of Slay Animal 0.06,250000
+War Hammer,21,8,225,50,good,1221,925,1225,1525,5.0,5.0,0.0,0.0,,250000
+War Hammer,21,8,225,50,excellent,7831,4525,5725,16625,9.2,9.3,0.2,0.341,of Slay Giant 0.06; of Slay Orc 0.06; of Slay Animal 0.06; of Slay Demon 0.06,250000
+Lead-Filled Mace,21,15,502,5,good,1223,902,1202,1502,3.6,3.6,0.0,0.0,,
+Lead-Filled Mace,21,15,502,5,excellent,7116,3902,5102,15702,5.1,5.1,0.2,0.307,of Slay Giant 0.07; of Slay Orc 0.06; of Slay Animal 0.06; of Slay Dragon 0.06,
+Lead-Filled Mace,21,15,502,10,good,1256,902,1202,1602,3.7,3.8,0.0,0.0,,
+Lead-Filled Mace,21,15,502,10,excellent,7254,4002,5202,15602,5.5,5.4,0.2,0.319,of Slay Demon 0.06; of Slay Animal 0.06; of Slay Orc 0.06; of Slay Dragon 0.06,
+Lead-Filled Mace,21,15,502,15,good,1271,1002,1302,1602,3.9,3.8,0.0,0.0,,
+Lead-Filled Mace,21,15,502,15,excellent,7383,4102,5302,17202,5.9,5.9,0.2,0.327,of Slay Evil 0.07; of Slay Orc 0.07; of Slay Animal 0.06; of Slay Giant 0.06,
+Lead-Filled Mace,21,15,502,20,good,1302,1002,1302,1602,4.0,4.0,0.0,0.0,,
+Lead-Filled Mace,21,15,502,20,excellent,7740,4202,5402,17802,6.3,6.3,0.2,0.319,of Slay Evil 0.07; of Slay Troll 0.07; of Slay Dragon 0.07; of Slay Demon 0.06,
+Lead-Filled Mace,21,15,502,25,good,1327,1002,1302,1702,4.1,4.1,0.0,0.0,,
+Lead-Filled Mace,21,15,502,25,excellent,7589,4302,5502,16102,6.8,6.7,0.2,0.305,of Slay Dragon 0.07; of Slay Undead 0.06; of Slay Animal 0.06; of Slay Demon 0.06,
+Lead-Filled Mace,21,15,502,30,good,1358,1002,1302,1702,4.3,4.3,0.0,0.0,,
+Lead-Filled Mace,21,15,502,30,excellent,7982,4402,5602,18002,7.2,7.2,0.2,0.329,of Slay Orc 0.07; of Slay Demon 0.07; of Slay Giant 0.06; of Slay Troll 0.05,
+Lead-Filled Mace,21,15,502,40,good,1430,1102,1402,1802,4.7,4.6,0.0,0.0,,
+Lead-Filled Mace,21,15,502,40,excellent,8483,4602,5902,18702,8.5,8.4,0.2,0.325,of Slay Giant 0.06; of Slay Dragon 0.06; of Slay Demon 0.06; of Slay Troll 0.06,
+Lead-Filled Mace,21,15,502,50,good,1507,1202,1502,1802,5.1,5.0,0.0,0.0,,
+Lead-Filled Mace,21,15,502,50,excellent,8767,4802,6102,22802,9.5,9.5,0.2,0.321,of Slay Dragon 0.07; of Slay Undead 0.06; of Slay Orc 0.06; of Slay Giant 0.06,
+Mace of Disruption,21,20,4300,5,good,5027,4700,5000,5300,3.7,3.6,0.0,0.0,,400000
+Mace of Disruption,21,20,4300,5,excellent,11144,7800,9000,20700,5.3,5.2,0.2,0.327,of Slay Giant 0.07; of Slay Orc 0.07; of Slay Animal 0.06; of Slay Dragon 0.06,400000
+Mace of Disruption,21,20,4300,10,good,5054,4700,5100,5400,3.7,3.8,0.0,0.0,,400000
+Mace of Disruption,21,20,4300,10,excellent,11190,7800,9000,21100,5.6,5.5,0.2,0.329,of Slay Animal 0.07; of Slay Dragon 0.07; of Slay Orc 0.06; of Slay Demon 0.06,400000
+Mace of Disruption,21,20,4300,15,good,5089,4800,5100,5400,4.0,3.9,0.0,0.0,,400000
+Mace of Disruption,21,20,4300,15,excellent,10934,7800,9000,19300,5.9,5.7,0.2,0.319,of Slay Animal 0.08; of Slay Evil 0.07; of Slay Orc 0.07; of Slay Giant 0.06,400000
+Mace of Disruption,21,20,4300,20,good,5110,4800,5100,5400,4.1,4.0,0.0,0.0,,400000
+Mace of Disruption,21,20,4300,20,excellent,10832,7900,9100,19100,6.2,6.2,0.2,0.287,of Slay Orc 0.08; of Slay Troll 0.07; of Slay Demon 0.07; of Slay Dragon 0.07,400000
+Mace of Disruption,21,20,4300,25,good,5130,4800,5100,5400,4.1,4.2,0.0,0.0,,400000
+Mace of Disruption,21,20,4300,25,excellent,11558,8100,9300,21700,6.8,6.9,0.2,0.325,of Slay Demon 0.08; of Slay Animal 0.07; of Slay Giant 0.06; of Slay Dragon 0.06,400000
+Mace of Disruption,21,20,4300,30,good,5155,4800,5200,5500,4.3,4.3,0.0,0.0,,400000
+Mace of Disruption,21,20,4300,30,excellent,12168,8100,9400,26300,7.2,7.4,0.3,0.357,of Slay Evil 0.08; of Slay Orc 0.07; of Slay Demon 0.07; of Slay Dragon 0.06,400000
+Mace of Disruption,21,20,4300,40,good,5219,4900,5200,5600,4.6,4.6,0.0,0.0,,400000
+Mace of Disruption,21,20,4300,40,excellent,12345,8300,9600,26500,8.2,8.4,0.2,0.343,of Slay Evil 0.07; of Slay Animal 0.07; of Slay Troll 0.06; of Slay Demon 0.06,400000
+Mace of Disruption,21,20,4300,50,good,5288,5000,5300,5600,4.9,5.0,0.0,0.0,,400000
+Mace of Disruption,21,20,4300,50,excellent,12564,8500,9900,26800,9.3,9.3,0.2,0.315,of Slay Dragon 0.07; of Slay Troll 0.07; of Slay Giant 0.07; of Slay Evil 0.06,400000
+Lucerne Hammer,21,10,376,5,good,1092,776,1076,1376,3.6,3.6,0.0,0.0,,30000
+Lucerne Hammer,21,10,376,5,excellent,7142,3876,4976,15676,5.0,5.1,0.2,0.329,of Slay Evil 0.07; of Slay Giant 0.06; of Slay Animal 0.06; of Slay Undead 0.06,30000
+Lucerne Hammer,21,10,376,10,good,1121,776,1076,1476,3.7,3.8,0.0,0.0,,30000
+Lucerne Hammer,21,10,376,10,excellent,7374,3976,5176,17076,5.6,5.4,0.2,0.321,of Slay Undead 0.06; of Slay Evil 0.06; of Slay Animal 0.06; of Slay Dragon 0.06,30000
+Lucerne Hammer,21,10,376,15,good,1135,876,1176,1476,3.8,3.8,0.0,0.0,,30000
+Lucerne Hammer,21,10,376,15,excellent,7231,3976,5176,17176,5.8,6.1,0.2,0.309,of Slay Evil 0.07; of Slay Troll 0.07; of Slay Animal 0.07; of Slay Dragon 0.06,30000
+Lucerne Hammer,21,10,376,20,good,1169,876,1176,1476,3.9,4.0,0.0,0.0,,30000
+Lucerne Hammer,21,10,376,20,excellent,7525,4076,5276,17676,6.4,6.3,0.3,0.321,of Slay Giant 0.07; of Venom 0.06; of Slay Orc 0.06; of Slay Evil 0.06,30000
+Lucerne Hammer,21,10,376,25,good,1205,876,1176,1576,4.1,4.2,0.0,0.0,,30000
+Lucerne Hammer,21,10,376,25,excellent,7230,4176,5276,15576,6.7,6.6,0.2,0.291,of Slay Demon 0.07; of Slay Giant 0.07; of Slay Evil 0.07; of Slay Undead 0.06,30000
+Lucerne Hammer,21,10,376,30,good,1231,876,1276,1576,4.3,4.3,0.0,0.0,,30000
+Lucerne Hammer,21,10,376,30,excellent,7788,4176,5476,17976,7.2,7.3,0.2,0.325,of Slay Demon 0.07; of Slay Undead 0.07; of Slay Animal 0.06; of Slay Orc 0.06,30000
+Lucerne Hammer,21,10,376,40,good,1305,976,1276,1676,4.7,4.6,0.0,0.0,,30000
+Lucerne Hammer,21,10,376,40,excellent,7899,4376,5676,17976,8.2,8.2,0.2,0.314,of Slay Orc 0.07; of Slay Dragon 0.07; of Slay Giant 0.06; of Slay Evil 0.06,30000
+Lucerne Hammer,21,10,376,50,good,1385,1076,1376,1676,5.0,5.1,0.0,0.0,,30000
+Lucerne Hammer,21,10,376,50,excellent,8263,4576,5876,18176,9.3,9.2,0.2,0.313,of Slay Undead 0.07; of Slay Orc 0.06; of Slay Troll 0.06; of Slay Evil 0.06,30000
+Beaked Axe,22,10,408,5,good,1124,808,1108,1408,3.6,3.5,0.0,0.0,,65000
+Beaked Axe,22,10,408,5,excellent,7201,3908,5008,17308,5.1,5.2,0.2,0.315,of Slay Animal 0.07; of Slay Undead 0.07; of Slay Troll 0.06; of Slay Dragon 0.06,65000
+Beaked Axe,22,10,408,10,good,1161,808,1208,1508,3.8,3.7,0.0,0.0,,65000
+Beaked Axe,22,10,408,10,excellent,7073,3908,5108,16008,5.3,5.4,0.2,0.285,of Slay Evil 0.07; of Slay Animal 0.07; of Slay Dragon 0.07; of Slay Demon 0.06,65000
+Beaked Axe,22,10,408,15,good,1179,808,1208,1508,3.9,3.9,0.0,0.0,,65000
+Beaked Axe,22,10,408,15,excellent,7138,4008,5208,15108,5.9,5.9,0.2,0.305,of Slay Dragon 0.07; of Slay Animal 0.07; of Slay Undead 0.07; of Slay Giant 0.06,65000
+Beaked Axe,22,10,408,20,good,1221,908,1208,1508,4.1,4.0,0.0,0.0,,65000
+Beaked Axe,22,10,408,20,excellent,7276,4108,5308,15508,6.4,6.3,0.2,0.31,of Slay Animal 0.07; of Slay Dragon 0.06; of Slay Orc 0.06; of Slay Troll 0.06,65000
+Beaked Axe,22,10,408,25,good,1237,908,1208,1608,4.2,4.1,0.0,0.0,,65000
+Beaked Axe,22,10,408,25,excellent,7306,4108,5308,15608,6.6,6.7,0.2,0.314,of Slay Undead 0.07; of Slay Demon 0.07; of Slay Evil 0.07; of Slay Troll 0.06,65000
+Beaked Axe,22,10,408,30,good,1260,908,1208,1608,4.3,4.2,0.0,0.0,,65000
+Beaked Axe,22,10,408,30,excellent,8183,4208,5608,18208,7.2,7.2,0.2,0.343,of Slay Troll 0.06; of Slay Demon 0.06; of Slay Dragon 0.06; of Slay Giant 0.06,65000
+Beaked Axe,22,10,408,40,good,1343,1008,1308,1708,4.7,4.7,0.0,0.0,,65000
+Beaked Axe,22,10,408,40,excellent,8389,4508,5808,19108,8.4,8.4,0.2,0.321,of Slay Undead 0.07; of Slay Dragon 0.06; of Slay Orc 0.06; of Slay Evil 0.06,65000
+Beaked Axe,22,10,408,50,good,1409,1108,1408,1708,5.0,5.1,0.0,0.0,,65000
+Beaked Axe,22,10,408,50,excellent,8311,4608,5908,18608,9.5,9.3,0.2,0.313,of Slay Troll 0.07; of Slay Giant 0.06; of Slay Demon 0.06; of Slay Evil 0.06,65000
+Glaive,22,13,363,5,good,1092,763,1063,1363,3.7,3.6,0.0,0.0,,50000
+Glaive,22,13,363,5,excellent,7025,3763,4963,15463,5.0,5.1,0.2,0.315,of Slay Animal 0.07; of Slay Troll 0.07; of Slay Evil 0.06; of Slay Dragon 0.06,50000
+Glaive,22,13,363,10,good,1111,763,1063,1463,3.8,3.7,0.0,0.0,,50000
+Glaive,22,13,363,10,excellent,7161,3863,5063,17063,5.6,5.4,0.2,0.304,of Slay Demon 0.07; of Slay Troll 0.07; of Slay Evil 0.07; of Slay Undead 0.07,50000
+Glaive,22,13,363,15,good,1149,863,1163,1463,3.9,4.0,0.0,0.0,,50000
+Glaive,22,13,363,15,excellent,7206,3963,5163,16863,5.8,5.8,0.2,0.32,of Slay Orc 0.07; of Slay Evil 0.06; of Slay Demon 0.06; of Slay Troll 0.06,50000
+Glaive,22,13,363,20,good,1162,863,1163,1463,4.0,3.9,0.0,0.0,,50000
+Glaive,22,13,363,20,excellent,7084,3963,5163,15363,6.2,6.2,0.2,0.325,of Slay Demon 0.07; of Slay Orc 0.07; of Slay Troll 0.06; of Slay Animal 0.06,50000
+Glaive,22,13,363,25,good,1178,863,1163,1563,4.1,4.1,0.0,0.0,,50000
+Glaive,22,13,363,25,excellent,7395,4063,5263,15963,6.7,6.7,0.2,0.308,of Slay Troll 0.07; of Slay Evil 0.07; of Slay Giant 0.06; of Slay Animal 0.06,50000
+Glaive,22,13,363,30,good,1218,863,1163,1563,4.3,4.2,0.0,0.0,,50000
+Glaive,22,13,363,30,excellent,7744,4163,5463,17563,7.3,7.2,0.2,0.332,of Slay Demon 0.06; of Slay Dragon 0.06; of Slay Animal 0.06; of Slay Giant 0.06,50000
+Glaive,22,13,363,40,good,1295,963,1263,1663,4.7,4.6,0.0,0.0,,50000
+Glaive,22,13,363,40,excellent,8059,4363,5563,18463,8.3,8.3,0.2,0.298,of Slay Troll 0.07; of Slay Undead 0.07; of Slay Evil 0.06; of Slay Dragon 0.06,50000
+Glaive,22,13,363,50,good,1361,1063,1363,1663,5.0,5.0,0.0,0.0,,50000
+Glaive,22,13,363,50,excellent,8704,4663,5963,19063,9.5,9.4,0.3,0.335,of Slay Dragon 0.07; of Slay Animal 0.06; of Slay Orc 0.06; of Slay Demon 0.06,50000
+Halberd,22,15,430,5,good,1146,830,1130,1430,3.6,3.6,0.0,0.0,,22000
+Halberd,22,15,430,5,excellent,7105,3930,5130,15430,5.2,5.1,0.2,0.321,of Slay Dragon 0.07; of Slay Orc 0.07; of Slay Undead 0.06; of Slay Giant 0.06,22000
+Halberd,22,15,430,10,good,1177,830,1130,1530,3.7,3.8,0.0,0.0,,22000
+Halberd,22,15,430,10,excellent,6995,3930,5030,15330,5.5,5.5,0.2,0.299,of Slay Giant 0.07; of Slay Dragon 0.07; of Slay Demon 0.07; of Slay Troll 0.07,22000
+Halberd,22,15,430,15,good,1209,930,1230,1530,3.9,3.9,0.0,0.0,,22000
+Halberd,22,15,430,15,excellent,7079,4030,5130,15530,5.6,5.9,0.2,0.306,of Slay Undead 0.07; of Slay Orc 0.07; of Slay Dragon 0.07; of Slay Troll 0.06,22000
+Halberd,22,15,430,20,good,1225,930,1230,1530,4.0,4.0,0.0,0.0,,22000
+Halberd,22,15,430,20,excellent,7432,4030,5330,17530,6.3,6.3,0.2,0.315,of Slay Giant 0.07; of Slay Orc 0.07; of Slay Dragon 0.06; of Slay Troll 0.06,22000
+Halberd,22,15,430,25,good,1253,930,1230,1630,4.1,4.1,0.0,0.0,,22000
+Halberd,22,15,430,25,excellent,7290,4130,5330,16030,6.7,6.7,0.2,0.297,of Slay Giant 0.07; of Slay Troll 0.07; of Slay Demon 0.07; of Slay Evil 0.06,22000
+Halberd,22,15,430,30,good,1295,930,1330,1630,4.3,4.3,0.0,0.0,,22000
+Halberd,22,15,430,30,excellent,7814,4330,5530,17630,7.2,7.4,0.2,0.321,of Slay Animal 0.07; of Slay Orc 0.06; of Slay Demon 0.06; of Slay Evil 0.06,22000
+Halberd,22,15,430,40,good,1361,1030,1330,1730,4.7,4.6,0.0,0.0,,22000
+Halberd,22,15,430,40,excellent,8463,4530,5730,19330,8.5,8.5,0.2,0.332,of Slay Animal 0.07; of Slay Orc 0.06; of Slay Troll 0.06; of Slay Giant 0.06,22000
+Halberd,22,15,430,50,good,1422,1030,1430,1730,5.0,4.9,0.0,0.0,,22000
+Halberd,22,15,430,50,excellent,8619,4730,5930,22530,9.5,9.6,0.2,0.313,of Slay Undead 0.07; of Slay Evil 0.06; of Slay Animal 0.06; of Slay Demon 0.06,22000
+Awl-Pike,22,4,340,5,good,1068,740,1040,1340,3.7,3.6,0.0,0.0,,
+Awl-Pike,22,4,340,5,excellent,7121,3840,5040,15740,5.2,5.1,0.2,0.31,of Slay Troll 0.06; of Slay Giant 0.06; of Slay Animal 0.06; of Slay Dragon 0.06,
+Awl-Pike,22,4,340,10,good,1083,740,1040,1340,3.7,3.7,0.0,0.0,,
+Awl-Pike,22,4,340,10,excellent,6915,3840,4940,15140,5.5,5.5,0.2,0.319,of Slay Evil 0.07; of Slay Animal 0.07; of Slay Dragon 0.06; of Slay Demon 0.06,
+Awl-Pike,22,4,340,15,good,1117,840,1140,1440,3.9,3.9,0.0,0.0,,
+Awl-Pike,22,4,340,15,excellent,6862,3940,5040,13840,5.8,5.8,0.2,0.301,of Slay Troll 0.08; of Slay Giant 0.07; of Slay Animal 0.06; of Slay Undead 0.06,
+Awl-Pike,22,4,340,20,good,1142,840,1140,1440,4.0,4.1,0.0,0.0,,
+Awl-Pike,22,4,340,20,excellent,7195,4040,5240,15640,6.3,6.3,0.2,0.303,of Slay Evil 0.07; of Slay Demon 0.06; of Slay Giant 0.06; of Slay Animal 0.06,
+Awl-Pike,22,4,340,25,good,1163,840,1140,1440,4.2,4.1,0.0,0.0,,
+Awl-Pike,22,4,340,25,excellent,7475,4140,5340,17040,6.8,6.7,0.2,0.299,of Slay Orc 0.07; of Slay Dragon 0.07; of Slay Undead 0.06; of Slay Evil 0.06,
+Awl-Pike,22,4,340,30,good,1198,840,1240,1540,4.3,4.3,0.0,0.0,,
+Awl-Pike,22,4,340,30,excellent,7885,4240,5540,18040,7.3,7.4,0.2,0.323,of Slay Undead 0.06; of Slay Giant 0.06; of Slay Dragon 0.06; of Slay Troll 0.06,
+Awl-Pike,22,4,340,40,good,1264,940,1240,1640,4.7,4.6,0.0,0.0,,
+Awl-Pike,22,4,340,40,excellent,8314,4340,5640,18340,8.3,8.2,0.2,0.322,of Slay Animal 0.07; of Slay Troll 0.06; of Slay Dragon 0.06; of Slay Demon 0.06,
+Awl-Pike,22,4,340,50,good,1343,1040,1340,1640,5.0,5.0,0.0,0.0,,
+Awl-Pike,22,4,340,50,excellent,8033,4640,5740,17940,9.3,9.2,0.2,0.321,of Slay Demon 0.07; of Slay Giant 0.06; of Slay Animal 0.06; of Slay Undead 0.06,
+Pike,22,8,358,5,good,1080,758,1058,1358,3.7,3.5,0.0,0.0,,32000
+Pike,22,8,358,5,excellent,6868,3858,4958,14058,5.0,5.1,0.2,0.31,of Slay Animal 0.07; of Slay Giant 0.06; of Slay Undead 0.06; of Slay Orc 0.06,32000
+Pike,22,8,358,10,good,1107,758,1058,1458,3.7,3.7,0.0,0.0,,32000
+Pike,22,8,358,10,excellent,7203,3858,5058,16958,5.5,5.5,0.2,0.321,of Slay Demon 0.07; of Slay Troll 0.07; of Slay Animal 0.06; of Slay Evil 0.06,32000
+Pike,22,8,358,15,good,1136,858,1158,1458,3.8,3.9,0.0,0.0,,32000
+Pike,22,8,358,15,excellent,7218,3958,5058,15858,5.8,5.9,0.2,0.321,of Slay Troll 0.07; of Slay Animal 0.07; of Slay Dragon 0.07; of Slay Evil 0.06,32000
+Pike,22,8,358,20,good,1169,858,1158,1458,4.1,4.0,0.0,0.0,,32000
+Pike,22,8,358,20,excellent,7329,4058,5258,16758,6.4,6.3,0.2,0.31,of Slay Dragon 0.06; of Slay Orc 0.06; of Slay Animal 0.06; of Slay Troll 0.06,32000
+Pike,22,8,358,25,good,1184,858,1158,1558,4.2,4.1,0.0,0.0,,32000
+Pike,22,8,358,25,excellent,7382,4058,5258,15858,6.8,6.7,0.2,0.303,of Slay Troll 0.07; of Slay Giant 0.07; of Slay Demon 0.06; of Slay Dragon 0.06,32000
+Pike,22,8,358,30,good,1223,858,1258,1558,4.3,4.3,0.0,0.0,,32000
+Pike,22,8,358,30,excellent,7720,4258,5458,17458,7.3,7.2,0.2,0.315,of Slay Demon 0.07; of Slay Evil 0.07; of Slay Undead 0.06; of Slay Dragon 0.06,32000
+Pike,22,8,358,40,good,1280,958,1258,1658,4.7,4.5,0.0,0.0,,32000
+Pike,22,8,358,40,excellent,7964,4458,5658,17658,8.2,8.2,0.2,0.329,of Slay Orc 0.06; of Slay Undead 0.06; of Slay Animal 0.06; of Slay Dragon 0.06,32000
+Pike,22,8,358,50,good,1354,1058,1358,1658,5.0,5.0,0.0,0.0,,32000
+Pike,22,8,358,50,excellent,8106,4658,5858,17858,9.4,9.4,0.2,0.313,of Slay Orc 0.07; of Slay Dragon 0.07; of Slay Animal 0.07; of Slay Troll 0.06,32000
+Spear,22,2,36,5,good,756,436,736,1036,3.6,3.6,0.0,0.0,,61111
+Spear,22,2,36,5,excellent,6723,3536,4636,15236,5.1,5.2,0.2,0.325,of Slay Undead 0.07; of Slay Evil 0.07; of Slay Orc 0.06; of Slay Demon 0.06,61111
+Spear,22,2,36,10,good,793,536,736,1136,3.8,3.8,0.0,0.0,,61111
+Spear,22,2,36,10,excellent,6913,3636,4736,16336,5.5,5.5,0.2,0.318,of Slay Dragon 0.07; of Slay Animal 0.07; of Slay Demon 0.06; of Slay Evil 0.06,61111
+Spear,22,2,36,15,good,814,436,836,1136,3.9,3.9,0.0,0.0,,61111
+Spear,22,2,36,15,excellent,6701,3636,4836,13636,5.9,5.8,0.2,0.297,of Slay Giant 0.07; of Slay Evil 0.07; of Slay Animal 0.06; of Slay Undead 0.06,61111
+Spear,22,2,36,20,good,832,536,836,1136,4.0,4.0,0.0,0.0,,61111
+Spear,22,2,36,20,excellent,6845,3736,4936,14936,6.3,6.2,0.2,0.335,of Slay Dragon 0.07; of Slay Animal 0.06; of Slay Giant 0.06; of Slay Undead 0.06,61111
+Spear,22,2,36,25,good,859,536,836,1136,4.1,4.1,0.0,0.0,,61111
+Spear,22,2,36,25,excellent,6957,3736,4936,15236,6.6,6.6,0.2,0.298,of Slay Animal 0.07; of Slay Evil 0.07; of Slay Troll 0.06; of Slay Dragon 0.06,61111
+Spear,22,2,36,30,good,889,536,936,1236,4.3,4.2,0.0,0.0,,61111
+Spear,22,2,36,30,excellent,7366,3836,5036,17436,7.2,7.3,0.2,0.32,of Slay Orc 0.07; of Slay Demon 0.06; of Slay Troll 0.06; of Slay Evil 0.06,61111
+Spear,22,2,36,40,good,971,636,936,1336,4.7,4.7,0.0,0.0,,61111
+Spear,22,2,36,40,excellent,7649,4036,5336,17436,8.3,8.3,0.2,0.323,of Slay Animal 0.06; of Slay Dragon 0.06; of Slay Demon 0.06; of Slay Undead 0.06,61111
+Spear,22,2,36,50,good,1029,636,1036,1336,5.0,5.0,0.0,0.0,,61111
+Spear,22,2,36,50,excellent,8144,4336,5636,18436,9.4,9.4,0.2,0.322,of Slay Dragon 0.07; of Slay Orc 0.07; of Venom 0.06; of Slay Undead 0.06,61111
+Trident,22,5,120,5,good,839,520,820,1120,3.6,3.5,0.0,0.0,,98400
+Trident,22,5,120,5,excellent,6709,3620,4720,14920,5.1,5.1,0.2,0.306,of Slay Demon 0.07; of Slay Dragon 0.06; of Slay Orc 0.06; of Slay Troll 0.06,98400
+Trident,22,5,120,10,good,874,520,820,1220,3.8,3.8,0.0,0.0,,98400
+Trident,22,5,120,10,excellent,6773,3620,4820,15120,5.5,5.5,0.2,0.33,of Slay Giant 0.07; of Slay Evil 0.06; of Slay Undead 0.06; of Slay Demon 0.06,98400
+Trident,22,5,120,15,good,907,620,920,1220,3.9,3.9,0.0,0.0,,98400
+Trident,22,5,120,15,excellent,7079,3720,4920,16920,5.8,5.8,0.2,0.325,of Slay Giant 0.06; of Slay Dragon 0.06; of Slay Undead 0.06; of Slay Evil 0.06,98400
+Trident,22,5,120,20,good,924,620,920,1220,3.9,4.1,0.0,0.0,,98400
+Trident,22,5,120,20,excellent,6995,3820,5020,15120,6.3,6.3,0.2,0.293,of Slay Dragon 0.07; of Slay Undead 0.07; of Slay Giant 0.06; of Slay Demon 0.06,98400
+Trident,22,5,120,25,good,947,620,920,1220,4.2,4.1,0.0,0.0,,98400
+Trident,22,5,120,25,excellent,6966,3820,5020,15320,6.7,6.7,0.2,0.315,of Slay Undead 0.07; of Slay Giant 0.07; of Slay Demon 0.07; of Slay Troll 0.06,98400
+Trident,22,5,120,30,good,985,620,1020,1320,4.3,4.3,0.0,0.0,,98400
+Trident,22,5,120,30,excellent,7846,3920,5320,18120,7.2,7.3,0.2,0.328,of Slay Giant 0.07; of Slay Orc 0.07; of Slay Demon 0.07; of Slay Dragon 0.06,98400
+Trident,22,5,120,40,good,1049,720,1020,1420,4.6,4.6,0.0,0.0,,98400
+Trident,22,5,120,40,excellent,7658,4120,5420,17120,8.3,8.2,0.2,0.302,of Slay Animal 0.07; of Slay Dragon 0.07; of Slay Giant 0.06; of Slay Troll 0.06,98400
+Trident,22,5,120,50,good,1119,820,1120,1420,5.0,5.0,0.0,0.0,,98400
+Trident,22,5,120,50,excellent,8171,4420,5620,18620,9.5,9.2,0.2,0.324,of Slay Undead 0.06; of Slay Evil 0.06; of Slay Animal 0.06; of Slay Orc 0.06,98400
+Lance,22,20,230,5,good,948,630,930,1230,3.6,3.6,0.0,0.0,,55000
+Lance,22,20,230,5,excellent,6859,3630,4830,15430,5.2,5.1,0.2,0.313,of Slay Orc 0.07; of Slay Dragon 0.07; of Slay Undead 0.06; of Slay Evil 0.06,55000
+Lance,22,20,230,10,good,997,630,1030,1330,3.8,3.9,0.0,0.0,,55000
+Lance,22,20,230,10,excellent,6853,3730,4930,15330,5.4,5.5,0.2,0.289,of Slay Undead 0.07; of Slay Dragon 0.07; of Slay Evil 0.07; of Slay Troll 0.06,55000
+Lance,22,20,230,15,good,1011,730,1030,1330,3.9,3.9,0.0,0.0,,55000
+Lance,22,20,230,15,excellent,6937,3830,5030,15230,5.8,5.8,0.2,0.287,of Slay Dragon 0.07; of Slay Demon 0.07; of Slay Animal 0.06; of Slay Evil 0.06,55000
+Lance,22,20,230,20,good,1026,730,1030,1330,4.0,4.0,0.0,0.0,,55000
+Lance,22,20,230,20,excellent,6991,3830,5030,15330,6.2,6.3,0.2,0.3,of Slay Orc 0.08; of Slay Animal 0.07; of Slay Giant 0.06; of Slay Undead 0.06,55000
+Lance,22,20,230,25,good,1053,730,1030,1430,4.2,4.1,0.0,0.0,,55000
+Lance,22,20,230,25,excellent,7328,3930,5130,17430,6.8,6.7,0.2,0.327,of Slay Troll 0.07; of Slay Dragon 0.07; of Slay Demon 0.06; of Slay Evil 0.06,55000
+Lance,22,20,230,30,good,1080,730,1030,1430,4.3,4.2,0.0,0.0,,55000
+Lance,22,20,230,30,excellent,7501,4130,5330,16230,7.1,7.3,0.2,0.325,of Slay Demon 0.07; of Slay Dragon 0.07; of Slay Orc 0.06; of Slay Animal 0.06,55000
+Lance,22,20,230,40,good,1159,830,1130,1530,4.6,4.6,0.0,0.0,,55000
+Lance,22,20,230,40,excellent,8349,4230,5630,22530,8.3,8.3,0.2,0.297,of Slay Demon 0.06; of Slay Giant 0.06; of Slay Undead 0.06; of Slay Dragon 0.06,55000
+Lance,22,20,230,50,good,1229,930,1230,1630,5.0,5.0,0.0,0.0,,55000
+Lance,22,20,230,50,excellent,8567,4530,5930,22430,9.5,9.5,0.2,0.347,of Slay Demon 0.06; of Slay Troll 0.06; of Slay Orc 0.06; of Slay Dragon 0.06,55000
+Great Axe,22,25,500,5,good,1224,900,1200,1500,3.6,3.6,0.0,0.0,,171429
+Great Axe,22,25,500,5,excellent,7142,3900,5100,17200,5.1,5.2,0.3,0.299,of Slay Troll 0.08; of Slay Dragon 0.07; of Slay Evil 0.07; of Slay Orc 0.06,171429
+Great Axe,22,25,500,10,good,1248,900,1200,1600,3.7,3.8,0.0,0.0,,171429
+Great Axe,22,25,500,10,excellent,7051,3900,5100,15300,5.5,5.4,0.2,0.3,of Slay Giant 0.07; of Slay Orc 0.07; of Slay Undead 0.06; of Slay Dragon 0.06,171429
+Great Axe,22,25,500,15,good,1268,1000,1300,1600,3.9,3.8,0.0,0.0,,171429
+Great Axe,22,25,500,15,excellent,7276,4100,5300,16000,5.9,5.9,0.2,0.317,of Slay Troll 0.07; of Slay Dragon 0.06; of Slay Giant 0.06; of Slay Animal 0.06,171429
+Great Axe,22,25,500,20,good,1302,1000,1300,1600,4.0,4.0,0.0,0.0,,171429
+Great Axe,22,25,500,20,excellent,7415,4200,5400,15900,6.2,6.3,0.2,0.302,of Slay Undead 0.07; of Slay Dragon 0.07; of Slay Orc 0.07; of Slay Demon 0.06,171429
+Great Axe,22,25,500,25,good,1323,1000,1300,1600,4.2,4.1,0.0,0.0,,171429
+Great Axe,22,25,500,25,excellent,7573,4200,5400,17300,6.7,6.6,0.2,0.302,of Slay Dragon 0.08; of Slay Undead 0.07; of Slay Giant 0.06; of Slay Troll 0.06,171429
+Great Axe,22,25,500,30,good,1357,1000,1400,1700,4.3,4.3,0.0,0.0,,171429
+Great Axe,22,25,500,30,excellent,8152,4400,5600,18300,7.3,7.5,0.2,0.329,of Slay Evil 0.06; of Slay Giant 0.06; of Slay Orc 0.06; of Slay Undead 0.06,171429
+Great Axe,22,25,500,40,good,1430,1100,1400,1800,4.6,4.7,0.0,0.0,,171429
+Great Axe,22,25,500,40,excellent,8583,4500,5700,22800,8.3,8.3,0.2,0.323,of Slay Demon 0.07; of Slay Dragon 0.07; of Slay Troll 0.06; of Slay Animal 0.06,171429
+Great Axe,22,25,500,50,good,1503,1200,1500,1900,5.0,5.1,0.0,0.0,,171429
+Great Axe,22,25,500,50,excellent,8578,4700,6000,18800,9.4,9.2,0.2,0.321,of Slay Orc 0.07; of Slay Giant 0.07; of Slay Troll 0.06; of Slay Demon 0.06,171429
+Battle Axe,22,22,334,5,good,1056,734,1034,1334,3.6,3.6,0.0,0.0,,55500
+Battle Axe,22,22,334,5,excellent,6874,3734,4934,15234,5.1,5.0,0.2,0.297,of Slay Demon 0.07; of Slay Animal 0.07; of Slay Orc 0.07; of Slay Dragon 0.06,55500
+Battle Axe,22,22,334,10,good,1073,734,1034,1434,3.7,3.7,0.0,0.0,,55500
+Battle Axe,22,22,334,10,excellent,7069,3834,5034,15834,5.5,5.4,0.2,0.314,of Slay Giant 0.07; of Slay Undead 0.07; of Slay Demon 0.07; of Slay Dragon 0.06,55500
+Battle Axe,22,22,334,15,good,1096,734,1134,1434,3.7,3.9,0.0,0.0,,55500
+Battle Axe,22,22,334,15,excellent,7067,3934,5134,15134,6.0,5.8,0.2,0.316,of Slay Giant 0.07; of Slay Orc 0.06; of Slay Dragon 0.06; of Slay Demon 0.06,55500
+Battle Axe,22,22,334,20,good,1153,834,1134,1534,4.1,4.1,0.0,0.0,,55500
+Battle Axe,22,22,334,20,excellent,7481,4034,5234,17334,6.4,6.3,0.3,0.311,of Slay Evil 0.07; of Slay Orc 0.06; of Slay Giant 0.06; of Slay Troll 0.06,55500
+Battle Axe,22,22,334,25,good,1157,834,1134,1534,4.2,4.1,0.0,0.0,,55500
+Battle Axe,22,22,334,25,excellent,7366,4034,5334,16034,6.6,6.8,0.3,0.336,of Slay Giant 0.07; of Slay Dragon 0.06; of Slay Troll 0.06; of Frost 0.06,55500
+Battle Axe,22,22,334,30,good,1195,834,1134,1534,4.3,4.3,0.0,0.0,,55500
+Battle Axe,22,22,334,30,excellent,7694,4234,5334,17734,7.2,7.4,0.2,0.325,of Slay Giant 0.07; of Slay Evil 0.07; of Slay Animal 0.06; of Slay Dragon 0.06,55500
+Battle Axe,22,22,334,40,good,1268,934,1234,1634,4.7,4.7,0.0,0.0,,55500
+Battle Axe,22,22,334,40,excellent,8086,4334,5634,18234,8.3,8.3,0.2,0.313,of Slay Demon 0.07; of Slay Giant 0.06; of Slay Undead 0.06; of Slay Orc 0.06,55500
+Battle Axe,22,22,334,50,good,1345,1034,1334,1634,5.1,5.0,0.0,0.0,,55500
+Battle Axe,22,22,334,50,excellent,8696,4634,5934,22834,9.3,9.4,0.2,0.316,of Slay Undead 0.06; of Slay Demon 0.06; of Slay Troll 0.06; of Slay Animal 0.06,55500
+Lochaber Axe,22,28,750,5,good,1475,1150,1450,1750,3.6,3.6,0.0,0.0,,30000
+Lochaber Axe,22,28,750,5,excellent,7306,4150,5350,15350,5.1,5.0,0.2,0.291,of Slay Undead 0.07; of Slay Troll 0.07; of Slay Animal 0.06; of Slay Dragon 0.06,30000
+Lochaber Axe,22,28,750,10,good,1501,1150,1450,1850,3.8,3.7,0.0,0.0,,30000
+Lochaber Axe,22,28,750,10,excellent,7582,4250,5450,16350,5.5,5.6,0.2,0.316,of Slay Giant 0.07; of Slay Dragon 0.06; of Slay Orc 0.06; of Slay Troll 0.06,30000
+Lochaber Axe,22,28,750,15,good,1528,1250,1550,1850,3.9,3.9,0.0,0.0,,30000
+Lochaber Axe,22,28,750,15,excellent,7361,4350,5450,15950,5.8,5.7,0.2,0.303,of Slay Evil 0.07; of Slay Animal 0.07; of Slay Dragon 0.07; of Slay Giant 0.06,30000
+Lochaber Axe,22,28,750,20,good,1547,1250,1550,1850,4.0,4.0,0.0,0.0,,30000
+Lochaber Axe,22,28,750,20,excellent,7734,4450,5650,16150,6.4,6.3,0.2,0.325,of Slay Demon 0.06; of Slay Orc 0.06; of Slay Giant 0.06; of Slay Dragon 0.06,30000
+Lochaber Axe,22,28,750,25,good,1588,1250,1550,1950,4.2,4.1,0.0,0.0,,30000
+Lochaber Axe,22,28,750,25,excellent,7529,4450,5650,15450,6.6,6.6,0.2,0.297,of Slay Animal 0.07; of Slay Dragon 0.07; of Slay Orc 0.07; of Slay Giant 0.07,30000
+Lochaber Axe,22,28,750,30,good,1605,1250,1550,1950,4.3,4.2,0.0,0.0,,30000
+Lochaber Axe,22,28,750,30,excellent,8151,4650,5750,18250,7.2,7.2,0.2,0.325,of Slay Dragon 0.07; of Slay Orc 0.07; of Slay Undead 0.06; of Slay Evil 0.06,30000
+Lochaber Axe,22,28,750,40,good,1678,1350,1650,2050,4.7,4.6,0.0,0.0,,30000
+Lochaber Axe,22,28,750,40,excellent,8450,4850,6050,18550,8.3,8.4,0.2,0.301,of Slay Dragon 0.06; of Slay Undead 0.06; of Slay Troll 0.06; of Slay Animal 0.06,30000
+Lochaber Axe,22,28,750,50,good,1747,1450,1750,2050,5.0,5.0,0.0,0.0,,30000
+Lochaber Axe,22,28,750,50,excellent,8749,5050,6250,19250,9.3,9.4,0.2,0.341,of Slay Evil 0.07; of Slay Dragon 0.06; of Slay Undead 0.06; of Slay Animal 0.06,30000
+Broad Axe,22,11,304,5,good,1034,704,1004,1304,3.7,3.6,0.0,0.0,,50000
+Broad Axe,22,11,304,5,excellent,7021,3704,4904,15504,5.1,5.1,0.2,0.302,of Slay Dragon 0.07; of Slay Troll 0.07; of Slay Giant 0.06; of Slay Animal 0.06,50000
+Broad Axe,22,11,304,10,good,1049,704,1004,1404,3.7,3.8,0.0,0.0,,50000
+Broad Axe,22,11,304,10,excellent,7167,3804,5004,16004,5.5,5.6,0.2,0.323,of Slay Giant 0.07; of Slay Animal 0.06; of Slay Demon 0.06; of Slay Evil 0.06,50000
+Broad Axe,22,11,304,15,good,1083,804,1104,1404,3.9,3.9,0.0,0.0,,50000
+Broad Axe,22,11,304,15,excellent,7084,3904,5104,15404,5.8,5.9,0.2,0.299,of Slay Troll 0.07; of Slay Dragon 0.07; of Slay Evil 0.07; of Slay Demon 0.06,50000
+Broad Axe,22,11,304,20,good,1097,804,1104,1404,3.9,4.0,0.0,0.0,,50000
+Broad Axe,22,11,304,20,excellent,7323,3904,5204,16704,6.2,6.4,0.2,0.343,of Slay Orc 0.07; of Slay Evil 0.06; of Slay Animal 0.06; of Slay Dragon 0.06,50000
+Broad Axe,22,11,304,25,good,1127,804,1104,1504,4.1,4.1,0.0,0.0,,50000
+Broad Axe,22,11,304,25,excellent,7505,4004,5304,17604,6.7,6.8,0.2,0.326,of Slay Troll 0.07; of Slay Demon 0.06; of Slay Orc 0.06; of Slay Giant 0.06,50000
+Broad Axe,22,11,304,30,good,1163,804,1104,1504,4.3,4.3,0.0,0.0,,50000
+Broad Axe,22,11,304,30,excellent,7624,4204,5304,17204,7.2,7.1,0.2,0.323,of Slay Dragon 0.07; of Slay Giant 0.06; of Slay Demon 0.06; of Slay Evil 0.06,50000
+Broad Axe,22,11,304,40,good,1233,904,1204,1604,4.6,4.7,0.0,0.0,,50000
+Broad Axe,22,11,304,40,excellent,8524,4304,5604,22904,8.3,8.3,0.2,0.356,of Slay Demon 0.06; of Slay Animal 0.06; of Slay Orc 0.06; of Slay Giant 0.06,50000
+Broad Axe,22,11,304,50,good,1298,1004,1304,1604,5.0,4.9,0.0,0.0,,50000
+Broad Axe,22,11,304,50,excellent,8774,4604,5904,22704,9.4,9.5,0.2,0.353,of Slay Dragon 0.06; of Slay Animal 0.06; of Slay Evil 0.06; of Frost 0.06,50000
+Scythe,22,17,800,5,good,1530,1200,1500,1800,3.7,3.6,0.0,0.0,,18000
+Scythe,22,17,800,5,excellent,7384,4200,5400,15800,5.1,5.0,0.2,0.302,of Slay Dragon 0.07; of Slay Demon 0.07; of Slay Giant 0.06; of Slay Undead 0.06,18000
+Scythe,22,17,800,10,good,1546,1200,1500,1900,3.7,3.7,0.0,0.0,,18000
+Scythe,22,17,800,10,excellent,7602,4300,5500,17200,5.6,5.5,0.2,0.313,of Slay Orc 0.07; of Slay Demon 0.07; of Slay Undead 0.07; of Slay Dragon 0.06,18000
+Scythe,22,17,800,15,good,1575,1300,1600,1900,3.8,3.9,0.0,0.0,,18000
+Scythe,22,17,800,15,excellent,7307,4400,5500,14300,5.8,5.9,0.2,0.301,of Slay Dragon 0.07; of Slay Giant 0.07; of Slay Animal 0.06; of Slay Undead 0.06,18000
+Scythe,22,17,800,20,good,1600,1300,1600,1900,4.0,4.0,0.0,0.0,,18000
+Scythe,22,17,800,20,excellent,7740,4400,5600,17000,6.3,6.3,0.2,0.31,of Slay Animal 0.07; of Slay Troll 0.07; of Slay Evil 0.06; of Slay Orc 0.06,18000
+Scythe,22,17,800,25,good,1631,1300,1600,2000,4.1,4.2,0.0,0.0,,18000
+Scythe,22,17,800,25,excellent,7966,4500,5800,17700,6.8,6.7,0.3,0.307,of Slay Dragon 0.07; of Slay Troll 0.07; of Slay Orc 0.06; of Slay Demon 0.06,18000
+Scythe,22,17,800,30,good,1655,1300,1600,2000,4.3,4.2,0.0,0.0,,18000
+Scythe,22,17,800,30,excellent,8175,4600,5800,18300,7.2,7.3,0.2,0.317,of Slay Giant 0.07; of Slay Troll 0.07; of Slay Undead 0.06; of Slay Animal 0.06,18000
+Scythe,22,17,800,40,good,1726,1400,1700,2100,4.7,4.6,0.0,0.0,,18000
+Scythe,22,17,800,40,excellent,8934,4900,6200,22900,8.3,8.4,0.2,0.325,of Slay Undead 0.07; of Slay Demon 0.06; of Slay Orc 0.06; of Slay Dragon 0.06,18000
+Scythe,22,17,800,50,good,1798,1400,1800,2100,5.0,5.0,0.0,0.0,,18000
+Scythe,22,17,800,50,excellent,9061,5000,6400,19800,9.5,9.5,0.2,0.335,of Slay Troll 0.06; of Slay Dragon 0.06; of Slay Giant 0.06; of Slay Orc 0.06,18000
+Scythe of Slicing,22,30,3500,5,good,4221,3900,4200,4500,3.6,3.6,0.0,0.0,,
+Scythe of Slicing,22,30,3500,5,excellent,10047,7000,8100,18200,5.0,5.2,0.2,0.29,of Slay Dragon 0.07; of Slay Undead 0.06; of Slay Animal 0.06; of Slay Giant 0.06,
+Scythe of Slicing,22,30,3500,10,good,4250,3900,4200,4600,3.7,3.8,0.0,0.0,,
+Scythe of Slicing,22,30,3500,10,excellent,10267,7000,8200,18600,5.4,5.5,0.2,0.323,of Slay Orc 0.07; of Slay Evil 0.07; of Slay Animal 0.06; of Slay Giant 0.06,
+Scythe of Slicing,22,30,3500,15,good,4277,4000,4300,4600,3.9,3.9,0.0,0.0,,
+Scythe of Slicing,22,30,3500,15,excellent,10370,7000,8200,20100,5.8,5.9,0.2,0.29,of Slay Giant 0.07; of Slay Demon 0.07; of Slay Evil 0.06; of Slay Animal 0.06,
+Scythe of Slicing,22,30,3500,20,good,4303,4000,4300,4600,4.0,4.0,0.0,0.0,,
+Scythe of Slicing,22,30,3500,20,excellent,10632,7200,8400,20500,6.2,6.1,0.2,0.329,of Slay Dragon 0.07; of Slay Undead 0.06; of Slay Evil 0.06; of Slay Animal 0.06,
+Scythe of Slicing,22,30,3500,25,good,4325,4000,4300,4700,4.2,4.0,0.0,0.0,,
+Scythe of Slicing,22,30,3500,25,excellent,10403,7300,8400,18500,6.6,6.7,0.2,0.303,of Slay Evil 0.07; of Slay Orc 0.07; of Slay Troll 0.06; of Slay Demon 0.06,
+Scythe of Slicing,22,30,3500,30,good,4362,4000,4300,4700,4.3,4.3,0.0,0.0,,
+Scythe of Slicing,22,30,3500,30,excellent,11044,7400,8700,21000,7.3,7.3,0.3,0.333,of Slay Troll 0.07; of Slay Animal 0.06; of Slay Demon 0.06; of Slay Giant 0.06,
+Scythe of Slicing,22,30,3500,40,good,4438,4100,4400,4800,4.7,4.6,0.0,0.0,,
+Scythe of Slicing,22,30,3500,40,excellent,11587,7500,8800,25700,8.4,8.3,0.2,0.32,of Slay Troll 0.07; of Slay Animal 0.06; of Slay Evil 0.06; of Slay Demon 0.06,
+Scythe of Slicing,22,30,3500,50,good,4494,4200,4500,4800,5.0,5.0,0.0,0.0,,
+Scythe of Slicing,22,30,3500,50,excellent,11686,7800,9000,25600,9.5,9.5,0.2,0.352,of Slay Orc 0.07; of Slay Evil 0.06; of Slay Animal 0.06; of Slay Dragon 0.06,
+Arrow,17,1,1,5,good,37,21,36,51,3.7,3.6,0.0,0.0,,
+Arrow,17,1,1,5,excellent,83,56,81,111,5.2,5.3,0.0,0.0,of Wounding 0.14; of Flame 0.10; of Frost 0.10; of Venom 0.09,
+Arrow,17,1,1,10,good,38,21,36,56,3.7,3.7,0.0,0.0,,
+Arrow,17,1,1,10,excellent,86,61,86,116,5.5,5.5,0.0,0.0,of Wounding 0.13; of Slay Animal 0.11; of Slay Evil 0.10; of Flame 0.10,
+Arrow,17,1,1,15,good,39,21,41,56,3.8,3.8,0.0,0.0,,
+Arrow,17,1,1,15,excellent,90,66,91,121,5.9,5.9,0.0,0.0,of Wounding 0.13; of Frost 0.11; of Slay Animal 0.10; of Flame 0.10,
+Arrow,17,1,1,20,good,41,26,41,56,4.0,4.1,0.0,0.0,,
+Arrow,17,1,1,20,excellent,94,66,91,121,6.4,6.3,0.0,0.0,of Wounding 0.14; of Slay Evil 0.10; of Frost 0.10; of Slay Animal 0.10,
+Arrow,17,1,1,25,good,42,26,41,61,4.2,4.1,0.0,0.0,,
+Arrow,17,1,1,25,excellent,99,71,96,126,6.8,6.8,0.0,0.0,of Wounding 0.13; of Slay Evil 0.11; of Flame 0.09; of Slay Animal 0.09,
+Arrow,17,1,1,30,good,44,26,46,61,4.3,4.3,0.0,0.0,,
+Arrow,17,1,1,30,excellent,105,76,106,136,7.4,7.4,0.0,0.0,of Wounding 0.14; of Venom 0.10; of Flame 0.10; of Frost 0.09,
+Arrow,17,1,1,40,good,46,31,46,66,4.6,4.5,0.0,0.0,,
+Arrow,17,1,1,40,excellent,114,81,111,146,8.3,8.3,0.0,0.0,of Wounding 0.15; of Flame 0.09; of Slay Animal 0.09; of Venom 0.09,
+Arrow,17,1,1,50,good,51,36,51,66,5.0,4.9,0.0,0.0,,
+Arrow,17,1,1,50,excellent,125,96,126,156,9.3,9.5,0.0,0.0,of Wounding 0.15; of Flame 0.10; of Slay Evil 0.09; of Venom 0.09,
+Seeker Arrow,17,2,20,5,good,56,40,55,70,3.6,3.5,0.0,0.0,,
+Seeker Arrow,17,2,20,5,excellent,103,75,100,130,5.3,5.3,0.0,0.0,of Wounding 0.15; of Flame 0.10; of Slay Animal 0.10; of Venom 0.09,
+Seeker Arrow,17,2,20,10,good,58,40,55,75,3.8,3.7,0.0,0.0,,
+Seeker Arrow,17,2,20,10,excellent,107,80,105,135,5.6,5.6,0.0,0.0,of Wounding 0.13; of Frost 0.10; of Venom 0.10; of Flame 0.09,
+Seeker Arrow,17,2,20,15,good,59,45,60,75,3.9,3.9,0.0,0.0,,
+Seeker Arrow,17,2,20,15,excellent,110,85,110,140,6.0,5.9,0.0,0.0,of Wounding 0.12; of Slay Evil 0.10; of Venom 0.10; of Flame 0.10,
+Seeker Arrow,17,2,20,20,good,60,45,60,75,3.9,4.0,0.0,0.0,,
+Seeker Arrow,17,2,20,20,excellent,113,85,110,140,6.3,6.4,0.0,0.0,of Wounding 0.14; of Frost 0.10; of Flame 0.10; of Slay Evil 0.10,
+Seeker Arrow,17,2,20,25,good,62,45,60,80,4.1,4.2,0.0,0.0,,
+Seeker Arrow,17,2,20,25,excellent,118,90,115,150,6.9,6.7,0.0,0.0,of Wounding 0.14; of Frost 0.10; of Venom 0.10; of Flame 0.09,
+Seeker Arrow,17,2,20,30,good,63,45,60,80,4.3,4.3,0.0,0.0,,
+Seeker Arrow,17,2,20,30,excellent,124,95,125,155,7.3,7.3,0.0,0.0,of Wounding 0.14; of Venom 0.11; of Slay Evil 0.10; of Frost 0.10,
+Seeker Arrow,17,2,20,40,good,66,50,65,85,4.7,4.6,0.0,0.0,,
+Seeker Arrow,17,2,20,40,excellent,136,105,135,170,8.5,8.5,0.0,0.0,of Wounding 0.14; of Slay Animal 0.11; of Frost 0.09; of Flame 0.09,
+Seeker Arrow,17,2,20,50,good,70,55,70,85,5.0,5.0,0.0,0.0,,
+Seeker Arrow,17,2,20,50,excellent,146,115,145,180,9.5,9.6,0.0,0.0,of Wounding 0.14; of Slay Animal 0.10; of Frost 0.09; of Venom 0.09,
+Bolt,18,1,2,5,good,39,22,37,52,3.6,3.7,0.0,0.0,,
+Bolt,18,1,2,5,excellent,84,57,82,112,5.2,5.2,0.0,0.0,of Wounding 0.14; of Slay Evil 0.10; of Flame 0.10; of Venom 0.09,
+Bolt,18,1,2,10,good,39,22,37,57,3.7,3.7,0.0,0.0,,
+Bolt,18,1,2,10,excellent,88,62,87,112,5.6,5.6,0.0,0.0,of Wounding 0.14; of Slay Evil 0.09; of Slay Animal 0.09; of Frost 0.09,
+Bolt,18,1,2,15,good,41,27,42,57,3.9,3.9,0.0,0.0,,
+Bolt,18,1,2,15,excellent,92,67,92,122,6.0,6.1,0.0,0.0,of Wounding 0.14; of Slay Animal 0.09; of Flame 0.09; of Frost 0.09,
+Bolt,18,1,2,20,good,42,27,42,57,3.9,4.0,0.0,0.0,,
+Bolt,18,1,2,20,excellent,96,67,92,127,6.5,6.3,0.0,0.0,of Wounding 0.13; of Slay Animal 0.10; of Slay Evil 0.10; of Frost 0.09,
+Bolt,18,1,2,25,good,43,27,42,57,4.1,4.2,0.0,0.0,,
+Bolt,18,1,2,25,excellent,100,72,97,132,6.8,6.8,0.0,0.0,of Wounding 0.14; of Venom 0.10; of Slay Animal 0.10; of Frost 0.09,
+Bolt,18,1,2,30,good,45,27,42,62,4.3,4.3,0.0,0.0,,
+Bolt,18,1,2,30,excellent,105,77,107,137,7.3,7.3,0.0,0.0,of Wounding 0.15; of Slay Evil 0.10; of Frost 0.10; of Venom 0.10,
+Bolt,18,1,2,40,good,49,32,47,67,4.6,4.7,0.0,0.0,,
+Bolt,18,1,2,40,excellent,114,82,112,147,8.2,8.3,0.0,0.0,of Wounding 0.13; of Slay Animal 0.11; of Slay Evil 0.09; of Slay Dragon 0.09,
+Bolt,18,1,2,50,good,52,37,52,67,5.0,5.0,0.0,0.0,,
+Bolt,18,1,2,50,excellent,125,97,127,157,9.4,9.4,0.0,0.0,of Wounding 0.13; of Flame 0.10; of Slay Evil 0.10; of Slay Animal 0.09,
+Seeker Bolt,18,2,25,5,good,61,45,60,75,3.6,3.5,0.0,0.0,,
+Seeker Bolt,18,2,25,5,excellent,108,80,105,135,5.3,5.3,0.0,0.0,of Wounding 0.14; of Frost 0.10; of Flame 0.09; of Venom 0.09,
+Seeker Bolt,18,2,25,10,good,63,50,65,80,3.8,3.8,0.0,0.0,,
+Seeker Bolt,18,2,25,10,excellent,111,85,110,140,5.6,5.6,0.0,0.0,of Wounding 0.14; of Venom 0.10; of Slay Animal 0.10; of Frost 0.09,
+Seeker Bolt,18,2,25,15,good,64,45,65,80,3.9,3.8,0.0,0.0,,
+Seeker Bolt,18,2,25,15,excellent,115,90,115,145,5.9,6.0,0.0,0.0,of Wounding 0.14; of Slay Animal 0.10; of Frost 0.09; of Flame 0.09,
+Seeker Bolt,18,2,25,20,good,66,50,65,80,4.1,4.1,0.0,0.0,,
+Seeker Bolt,18,2,25,20,excellent,119,95,120,145,6.5,6.3,0.0,0.0,of Wounding 0.13; of Slay Evil 0.11; of Flame 0.10; of Frost 0.10,
+Seeker Bolt,18,2,25,25,good,67,50,65,85,4.2,4.1,0.0,0.0,,
+Seeker Bolt,18,2,25,25,excellent,123,95,120,155,6.8,6.8,0.0,0.0,of Wounding 0.14; of Slay Animal 0.11; of Flame 0.09; of Slay Evil 0.09,
+Seeker Bolt,18,2,25,30,good,68,50,65,85,4.2,4.3,0.0,0.0,,
+Seeker Bolt,18,2,25,30,excellent,128,100,125,155,7.3,7.3,0.0,0.0,of Wounding 0.16; of Slay Evil 0.11; of Venom 0.10; of Slay Animal 0.08,
+Seeker Bolt,18,2,25,40,good,71,55,70,90,4.6,4.7,0.0,0.0,,
+Seeker Bolt,18,2,25,40,excellent,142,110,140,175,8.7,8.5,0.0,0.0,of Wounding 0.15; of Slay Evil 0.09; of Frost 0.09; of Venom 0.09,
+Seeker Bolt,18,2,25,50,good,74,55,75,90,4.9,4.9,0.0,0.0,,
+Seeker Bolt,18,2,25,50,excellent,152,120,150,185,9.4,9.7,0.0,0.0,of Wounding 0.14; of Flame 0.10; of Slay Evil 0.10; of Frost 0.09,
+Rounded Pebble,16,0,1,5,good,37,21,36,51,3.6,3.7,0.0,0.0,,
+Rounded Pebble,16,0,1,5,excellent,84,56,81,111,5.3,5.4,0.0,0.0,of Wounding 0.14; of Flame 0.11; of Slay Animal 0.10; of Slay Evil 0.09,
+Rounded Pebble,16,0,1,10,good,39,21,41,56,3.8,3.8,0.0,0.0,,
+Rounded Pebble,16,0,1,10,excellent,87,61,86,116,5.7,5.6,0.0,0.0,of Wounding 0.15; of Flame 0.10; of Slay Animal 0.10; of Venom 0.09,
+Rounded Pebble,16,0,1,15,good,40,26,41,56,3.8,4.0,0.0,0.0,,
+Rounded Pebble,16,0,1,15,excellent,91,66,91,121,6.0,6.1,0.0,0.0,of Wounding 0.14; of Frost 0.11; of Venom 0.10; of Slay Animal 0.09,
+Rounded Pebble,16,0,1,20,good,41,26,41,56,4.0,4.0,0.0,0.0,,
+Rounded Pebble,16,0,1,20,excellent,95,66,96,121,6.4,6.4,0.0,0.0,of Wounding 0.15; of Frost 0.11; of Flame 0.09; of Slay Animal 0.08,
+Rounded Pebble,16,0,1,25,good,42,26,41,61,4.1,4.2,0.0,0.0,,
+Rounded Pebble,16,0,1,25,excellent,99,71,96,131,6.9,6.7,0.0,0.0,of Wounding 0.15; of Venom 0.10; of Flame 0.10; of Frost 0.09,
+Rounded Pebble,16,0,1,30,good,44,26,46,61,4.3,4.3,0.0,0.0,,
+Rounded Pebble,16,0,1,30,excellent,104,76,101,136,7.3,7.3,0.0,0.0,of Wounding 0.12; of Slay Evil 0.11; of Frost 0.10; of Venom 0.09,
+Rounded Pebble,16,0,1,40,good,47,31,46,66,4.6,4.6,0.0,0.0,,
+Rounded Pebble,16,0,1,40,excellent,115,86,116,146,8.3,8.5,0.0,0.0,of Wounding 0.14; of Flame 0.09; of Frost 0.09; of Venom 0.09,
+Rounded Pebble,16,0,1,50,good,51,36,51,66,5.0,5.0,0.0,0.0,,
+Rounded Pebble,16,0,1,50,excellent,124,91,121,156,9.3,9.2,0.0,0.0,of Wounding 0.14; of Frost 0.11; of Slay Evil 0.10; of Venom 0.09,
+Iron Shot,16,1,2,5,good,38,22,37,52,3.6,3.7,0.0,0.0,,
+Iron Shot,16,1,2,5,excellent,84,62,82,112,5.2,5.2,0.0,0.0,of Wounding 0.14; of Slay Evil 0.11; of Frost 0.10; of Slay Animal 0.09,
+Iron Shot,16,1,2,10,good,40,22,37,57,3.8,3.8,0.0,0.0,,
+Iron Shot,16,1,2,10,excellent,87,62,87,117,5.5,5.5,0.0,0.0,of Wounding 0.14; of Slay Evil 0.11; of Venom 0.09; of Flame 0.09,
+Iron Shot,16,1,2,15,good,41,27,42,57,3.8,3.9,0.0,0.0,,
+Iron Shot,16,1,2,15,excellent,92,62,92,122,5.9,6.0,0.0,0.0,of Wounding 0.14; of Slay Animal 0.11; of Frost 0.10; of Flame 0.09,
+Iron Shot,16,1,2,20,good,42,27,42,57,4.0,4.0,0.0,0.0,,
+Iron Shot,16,1,2,20,excellent,95,67,92,127,6.3,6.5,0.0,0.0,of Wounding 0.14; of Frost 0.11; of Slay Evil 0.10; of Flame 0.09,
+Iron Shot,16,1,2,25,good,44,27,42,62,4.2,4.1,0.0,0.0,,
+Iron Shot,16,1,2,25,excellent,101,72,102,132,6.8,6.9,0.0,0.0,of Wounding 0.12; of Slay Evil 0.11; of Flame 0.11; of Slay Animal 0.09,
+Iron Shot,16,1,2,30,good,45,27,47,62,4.3,4.3,0.0,0.0,,
+Iron Shot,16,1,2,30,excellent,106,77,107,137,7.5,7.3,0.0,0.0,of Wounding 0.14; of Venom 0.10; of Slay Evil 0.10; of Frost 0.10,
+Iron Shot,16,1,2,40,good,48,32,47,67,4.7,4.5,0.0,0.0,,
+Iron Shot,16,1,2,40,excellent,115,87,117,147,8.3,8.3,0.0,0.0,of Wounding 0.15; of Flame 0.11; of Frost 0.10; of Slay Animal 0.09,
+Iron Shot,16,1,2,50,good,51,32,52,67,5.0,4.9,0.0,0.0,,
+Iron Shot,16,1,2,50,excellent,126,92,127,157,9.4,9.3,0.0,0.0,of Wounding 0.13; of Venom 0.10; of Slay Evil 0.10; of Flame 0.10,
+Shovel,20,1,10,5,good,729,410,710,1010,3.6,3.6,0.0,0.0,,
+Shovel,20,1,10,5,excellent,1604,1160,1560,2060,4.9,4.8,0.0,0.0,of Digging 1.00,
+Shovel,20,1,10,10,good,760,410,710,1110,3.8,3.7,0.0,0.0,,
+Shovel,20,1,10,10,excellent,1674,1210,1660,2160,5.2,5.2,0.0,0.0,of Digging 1.00,
+Shovel,20,1,10,15,good,789,510,810,1110,3.9,3.9,0.0,0.0,,
+Shovel,20,1,10,15,excellent,1754,1260,1710,2260,5.6,5.6,0.0,0.0,of Digging 1.00,
+Shovel,20,1,10,20,good,815,510,810,1110,4.0,4.0,0.0,0.0,,
+Shovel,20,1,10,20,excellent,2729,1410,1910,6310,7.1,7.0,0.0,0.0,of Digging 0.79; of Earthquakes 0.21,
+Shovel,20,1,10,25,good,821,510,810,1110,4.1,4.0,0.0,0.0,,
+Shovel,20,1,10,25,excellent,2735,1460,2010,6210,7.4,7.4,0.0,0.0,of Digging 0.81; of Earthquakes 0.19,
+Shovel,20,1,10,30,good,867,510,910,1210,4.3,4.3,0.0,0.0,,
+Shovel,20,1,10,30,excellent,2903,1560,2110,6410,8.0,8.0,0.0,0.0,of Digging 0.79; of Earthquakes 0.21,
+Shovel,20,1,10,40,good,938,610,910,1310,4.6,4.7,0.0,0.0,,
+Shovel,20,1,10,40,excellent,3167,1760,2410,6560,9.2,9.1,0.0,0.0,of Digging 0.78; of Earthquakes 0.22,
+Shovel,20,1,10,50,good,996,610,1010,1310,4.9,4.9,0.0,0.0,,
+Shovel,20,1,10,50,excellent,3326,2010,2560,6760,10.2,10.2,0.0,0.0,of Digging 0.80; of Earthquakes 0.20,
+Gnomish Shovel,20,2,100,5,good,823,500,800,1100,3.7,3.5,0.0,0.0,,
+Gnomish Shovel,20,2,100,5,excellent,1677,1250,1650,2150,4.7,4.8,0.0,0.0,of Digging 1.00,
+Gnomish Shovel,20,2,100,10,good,854,500,900,1200,3.8,3.8,0.0,0.0,,
+Gnomish Shovel,20,2,100,10,excellent,1765,1300,1750,2250,5.2,5.2,0.0,0.0,of Digging 1.00,
+Gnomish Shovel,20,2,100,15,good,889,600,900,1200,3.9,4.0,0.0,0.0,,
+Gnomish Shovel,20,2,100,15,excellent,1834,1400,1800,2300,5.6,5.5,0.0,0.0,of Digging 1.00,
+Gnomish Shovel,20,2,100,20,good,906,600,900,1200,4.1,4.0,0.0,0.0,,
+Gnomish Shovel,20,2,100,20,excellent,2705,1450,2000,6250,7.0,7.0,0.0,0.0,of Digging 0.82; of Earthquakes 0.18,
+Gnomish Shovel,20,2,100,25,good,924,600,900,1200,4.1,4.1,0.0,0.0,,
+Gnomish Shovel,20,2,100,25,excellent,2921,1550,2150,6350,7.6,7.6,0.0,0.0,of Digging 0.79; of Earthquakes 0.21,
+Gnomish Shovel,20,2,100,30,good,967,600,1000,1300,4.4,4.3,0.0,0.0,,
+Gnomish Shovel,20,2,100,30,excellent,2930,1600,2200,6350,7.8,7.9,0.0,0.0,of Digging 0.80; of Earthquakes 0.20,
+Gnomish Shovel,20,2,100,40,good,1019,700,1000,1400,4.6,4.6,0.0,0.0,,
+Gnomish Shovel,20,2,100,40,excellent,3201,1850,2450,6650,9.1,9.2,0.0,0.0,of Digging 0.80; of Earthquakes 0.20,
+Gnomish Shovel,20,2,100,50,good,1107,800,1100,1500,5.1,5.0,0.0,0.0,,
+Gnomish Shovel,20,2,100,50,excellent,3345,2000,2650,6800,9.9,10.0,0.0,0.0,of Digging 0.81; of Earthquakes 0.19,
+Dwarven Shovel,20,3,200,5,good,923,600,900,1200,3.6,3.6,0.0,0.0,,
+Dwarven Shovel,20,3,200,5,excellent,1796,1400,1750,2250,4.7,5.0,0.0,0.0,of Digging 1.00,
+Dwarven Shovel,20,3,200,10,good,949,600,900,1300,3.8,3.7,0.0,0.0,,
+Dwarven Shovel,20,3,200,10,excellent,1861,1400,1850,2300,5.2,5.1,0.0,0.0,of Digging 1.00,
+Dwarven Shovel,20,3,200,15,good,976,700,1000,1300,3.9,3.9,0.0,0.0,,
+Dwarven Shovel,20,3,200,15,excellent,1954,1500,1950,2400,5.6,5.7,0.0,0.0,of Digging 1.00,
+Dwarven Shovel,20,3,200,20,good,1006,700,1000,1300,4.1,4.0,0.0,0.0,,
+Dwarven Shovel,20,3,200,20,excellent,2886,1600,2100,6400,7.2,6.9,0.0,0.0,of Digging 0.80; of Earthquakes 0.20,
+Dwarven Shovel,20,3,200,25,good,1023,700,1000,1300,4.1,4.1,0.0,0.0,,
+Dwarven Shovel,20,3,200,25,excellent,2877,1600,2200,6350,7.3,7.3,0.0,0.0,of Digging 0.82; of Earthquakes 0.18,
+Dwarven Shovel,20,3,200,30,good,1057,700,1100,1400,4.3,4.2,0.0,0.0,,
+Dwarven Shovel,20,3,200,30,excellent,3082,1750,2300,6600,8.1,8.0,0.0,0.0,of Digging 0.80; of Earthquakes 0.20,
+Dwarven Shovel,20,3,200,40,good,1141,800,1100,1500,4.7,4.7,0.0,0.0,,
+Dwarven Shovel,20,3,200,40,excellent,3207,1900,2500,6650,8.8,9.0,0.0,0.0,of Digging 0.81; of Earthquakes 0.19,
+Dwarven Shovel,20,3,200,50,good,1200,900,1200,1500,5.0,5.0,0.0,0.0,,
+Dwarven Shovel,20,3,200,50,excellent,3493,2100,2750,7000,10.1,10.1,0.0,0.0,of Digging 0.80; of Earthquakes 0.20,
+Pick,20,4,50,5,good,764,450,750,1050,3.6,3.6,0.0,0.0,,
+Pick,20,4,50,5,excellent,1659,1250,1650,2150,4.9,5.0,0.0,0.0,of Digging 1.00,
+Pick,20,4,50,10,good,805,450,750,1150,3.8,3.8,0.0,0.0,,
+Pick,20,4,50,10,excellent,1717,1300,1700,2200,5.2,5.2,0.0,0.0,of Digging 1.00,
+Pick,20,4,50,15,good,824,550,850,1150,3.9,3.8,0.0,0.0,,
+Pick,20,4,50,15,excellent,1780,1350,1750,2250,5.6,5.5,0.0,0.0,of Digging 1.00,
+Pick,20,4,50,20,good,846,550,850,1150,4.0,4.0,0.0,0.0,,
+Pick,20,4,50,20,excellent,2792,1450,1950,6300,7.0,7.2,0.0,0.0,of Digging 0.79; of Earthquakes 0.21,
+Pick,20,4,50,25,good,882,550,850,1250,4.1,4.2,0.0,0.0,,
+Pick,20,4,50,25,excellent,2877,1500,2050,6350,7.6,7.6,0.0,0.0,of Digging 0.79; of Earthquakes 0.21,
+Pick,20,4,50,30,good,920,550,950,1250,4.3,4.4,0.0,0.0,,
+Pick,20,4,50,30,excellent,2924,1600,2200,6400,8.0,8.1,0.0,0.0,of Digging 0.80; of Earthquakes 0.20,
+Pick,20,4,50,40,good,991,650,950,1350,4.7,4.7,0.0,0.0,,
+Pick,20,4,50,40,excellent,3176,1750,2400,6700,9.2,9.1,0.0,0.0,of Digging 0.79; of Earthquakes 0.21,
+Pick,20,4,50,50,good,1048,650,1050,1350,5.0,5.0,0.0,0.0,,
+Pick,20,4,50,50,excellent,3360,2000,2600,6750,10.1,9.9,0.0,0.0,of Digging 0.79; of Earthquakes 0.21,
+Orcish Pick,20,5,300,5,good,1025,700,1000,1300,3.6,3.6,0.0,0.0,,
+Orcish Pick,20,5,300,5,excellent,1894,1450,1850,2350,4.9,4.8,0.0,0.0,of Digging 1.00,
+Orcish Pick,20,5,300,10,good,1052,700,1000,1400,3.8,3.8,0.0,0.0,,
+Orcish Pick,20,5,300,10,excellent,1953,1500,1900,2450,5.1,5.2,0.0,0.0,of Digging 1.00,
+Orcish Pick,20,5,300,15,good,1069,700,1100,1400,3.9,3.8,0.0,0.0,,
+Orcish Pick,20,5,300,15,excellent,2044,1550,2000,2550,5.6,5.6,0.0,0.0,of Digging 1.00,
+Orcish Pick,20,5,300,20,good,1094,800,1100,1400,3.9,4.0,0.0,0.0,,
+Orcish Pick,20,5,300,20,excellent,2975,1700,2200,6500,7.1,7.0,0.0,0.0,of Digging 0.81; of Earthquakes 0.19,
+Orcish Pick,20,5,300,25,good,1133,800,1100,1400,4.1,4.2,0.0,0.0,,
+Orcish Pick,20,5,300,25,excellent,3058,1750,2300,6600,7.5,7.5,0.0,0.0,of Digging 0.80; of Earthquakes 0.20,
+Orcish Pick,20,5,300,30,good,1150,800,1100,1500,4.2,4.3,0.0,0.0,,
+Orcish Pick,20,5,300,30,excellent,3138,1850,2400,6600,7.9,7.7,0.0,0.0,of Digging 0.80; of Earthquakes 0.20,
+Orcish Pick,20,5,300,40,good,1231,900,1200,1600,4.7,4.6,0.0,0.0,,
+Orcish Pick,20,5,300,40,excellent,3370,2000,2600,6850,9.0,8.9,0.0,0.0,of Digging 0.80; of Earthquakes 0.20,
+Orcish Pick,20,5,300,50,good,1293,1000,1300,1600,4.9,5.0,0.0,0.0,,
+Orcish Pick,20,5,300,50,excellent,3642,2250,2850,7200,10.2,10.1,0.0,0.0,of Digging 0.79; of Earthquakes 0.21,
+Dwarven Pick,20,6,600,5,good,1315,1000,1300,1600,3.6,3.6,0.0,0.0,,30000
+Dwarven Pick,20,6,600,5,excellent,2198,1750,2150,2650,4.9,4.8,0.0,0.0,of Digging 1.00,30000
+Dwarven Pick,20,6,600,10,good,1340,1000,1300,1700,3.7,3.7,0.0,0.0,,30000
+Dwarven Pick,20,6,600,10,excellent,2272,1850,2250,2750,5.3,5.2,0.0,0.0,of Digging 1.00,30000
+Dwarven Pick,20,6,600,15,good,1378,1100,1400,1700,3.9,3.9,0.0,0.0,,30000
+Dwarven Pick,20,6,600,15,excellent,2327,1850,2300,2850,5.6,5.5,0.0,0.0,of Digging 1.00,30000
+Dwarven Pick,20,6,600,20,good,1402,1100,1400,1700,4.0,4.0,0.0,0.0,,30000
+Dwarven Pick,20,6,600,20,excellent,3227,1950,2500,6750,7.0,6.9,0.0,0.0,of Digging 0.81; of Earthquakes 0.19,30000
+Dwarven Pick,20,6,600,25,good,1424,1100,1400,1700,4.2,4.1,0.0,0.0,,30000
+Dwarven Pick,20,6,600,25,excellent,3377,2050,2600,6950,7.5,7.5,0.0,0.0,of Digging 0.80; of Earthquakes 0.20,30000
+Dwarven Pick,20,6,600,30,good,1469,1100,1500,1800,4.4,4.3,0.0,0.0,,30000
+Dwarven Pick,20,6,600,30,excellent,3501,2150,2750,7100,8.1,8.1,0.0,0.0,of Digging 0.80; of Earthquakes 0.20,30000
+Dwarven Pick,20,6,600,40,good,1533,1200,1500,1900,4.7,4.7,0.0,0.0,,30000
+Dwarven Pick,20,6,600,40,excellent,3626,2300,2950,7050,8.8,9.1,0.0,0.0,of Digging 0.81; of Earthquakes 0.19,30000
+Dwarven Pick,20,6,600,50,good,1598,1300,1600,2000,5.0,5.0,0.0,0.0,,30000
+Dwarven Pick,20,6,600,50,excellent,3838,2550,3150,7250,9.9,10.1,0.0,0.0,of Digging 0.81; of Earthquakes 0.19,30000
+Mattock,20,7,700,5,good,1425,1100,1400,1700,3.7,3.6,0.0,0.0,,30000
+Mattock,20,7,700,5,excellent,2294,1900,2250,2750,4.8,4.9,0.0,0.0,of Digging 1.00,30000
+Mattock,20,7,700,10,good,1449,1200,1400,1800,3.8,3.7,0.0,0.0,,30000
+Mattock,20,7,700,10,excellent,2351,1950,2300,2800,5.1,5.1,0.0,0.0,of Digging 1.00,30000
+Mattock,20,7,700,15,good,1479,1200,1500,1800,4.0,3.8,0.0,0.0,,30000
+Mattock,20,7,700,15,excellent,2447,2000,2450,2900,5.6,5.6,0.0,0.0,of Digging 1.00,30000
+Mattock,20,7,700,20,good,1513,1200,1500,1800,4.1,4.1,0.0,0.0,,30000
+Mattock,20,7,700,20,excellent,3319,2100,2650,6800,7.1,7.0,0.0,0.0,of Digging 0.82; of Earthquakes 0.18,30000
+Mattock,20,7,700,25,good,1531,1200,1500,1900,4.2,4.1,0.0,0.0,,30000
+Mattock,20,7,700,25,excellent,3507,2100,2700,7000,7.5,7.4,0.0,0.0,of Digging 0.78; of Earthquakes 0.22,30000
+Mattock,20,7,700,30,good,1559,1200,1600,1900,4.3,4.3,0.0,0.0,,30000
+Mattock,20,7,700,30,excellent,3606,2250,2850,7100,8.0,8.1,0.0,0.0,of Digging 0.79; of Earthquakes 0.21,30000
+Mattock,20,7,700,40,good,1627,1300,1600,2000,4.6,4.7,0.0,0.0,,30000
+Mattock,20,7,700,40,excellent,3806,2400,3050,7250,9.1,9.1,0.0,0.0,of Digging 0.80; of Earthquakes 0.20,30000
+Mattock,20,7,700,50,good,1686,1300,1700,2000,4.9,4.9,0.0,0.0,,30000
+Mattock,20,7,700,50,excellent,3954,2650,3200,7350,10.1,9.9,0.0,0.0,of Digging 0.80; of Earthquakes 0.20,30000
+Pair of Soft Leather Boots,30,2,7,5,good,369,107,407,607,0.0,0.0,3.6,0.0,,25625
+Pair of Soft Leather Boots,30,2,7,5,excellent,41615,657,1307,15507,0.0,0.0,4.8,0.501,of Slow Descent 0.27; of Stealth 0.23; of Free Action 0.19; of Stability 0.14,25625
+Pair of Soft Leather Boots,30,2,7,10,good,379,107,407,607,0.0,0.0,3.7,0.0,,25625
+Pair of Soft Leather Boots,30,2,7,10,excellent,36227,657,1407,15507,0.0,0.0,5.2,0.477,of Slow Descent 0.29; of Stealth 0.23; of Free Action 0.17; of Stability 0.14,25625
+Pair of Soft Leather Boots,30,2,7,15,good,394,107,407,607,0.0,0.0,3.9,0.0,,25625
+Pair of Soft Leather Boots,30,2,7,15,excellent,43449,657,1457,15707,0.0,0.0,5.5,0.503,of Slow Descent 0.27; of Stealth 0.22; of Free Action 0.17; of Stability 0.16,25625
+Pair of Soft Leather Boots,30,2,7,20,good,412,207,407,607,0.0,0.0,4.1,0.0,,25625
+Pair of Soft Leather Boots,30,2,7,20,excellent,44228,757,1407,15707,0.0,0.0,6.0,0.473,of Slow Descent 0.29; of Stealth 0.24; of Free Action 0.16; of Stability 0.13,25625
+Pair of Soft Leather Boots,30,2,7,25,good,415,207,407,607,0.0,0.0,4.1,0.0,,25625
+Pair of Soft Leather Boots,30,2,7,25,excellent,39514,757,1507,15707,0.0,0.0,6.3,0.489,of Slow Descent 0.28; of Stealth 0.23; of Free Action 0.19; of Stability 0.13,25625
+Pair of Soft Leather Boots,30,2,7,30,good,437,207,407,707,0.0,0.0,4.3,0.0,,25625
+Pair of Soft Leather Boots,30,2,7,30,excellent,41434,807,1607,15807,0.0,0.0,6.9,0.492,of Slow Descent 0.28; of Stealth 0.23; of Free Action 0.17; of Stability 0.15,25625
+Pair of Soft Leather Boots,30,2,7,40,good,463,207,507,707,0.0,0.0,4.6,0.0,,25625
+Pair of Soft Leather Boots,30,2,7,40,excellent,37107,957,1657,15807,0.0,0.0,7.8,0.489,of Slow Descent 0.28; of Stealth 0.23; of Free Action 0.18; of Stability 0.13,25625
+Pair of Soft Leather Boots,30,2,7,50,good,512,307,507,807,0.0,0.0,5.1,0.0,,25625
+Pair of Soft Leather Boots,30,2,7,50,excellent,44415,1057,1757,16107,0.0,0.0,9.0,0.481,of Slow Descent 0.27; of Stealth 0.25; of Free Action 0.18; of Stability 0.13,25625
+Pair of Hard Leather Boots,30,3,12,5,good,372,112,412,612,0.0,0.0,3.6,0.0,,300000
+Pair of Hard Leather Boots,30,3,12,5,excellent,42950,662,1412,15612,0.0,0.0,4.8,0.499,of Slow Descent 0.27; of Stealth 0.24; of Free Action 0.17; of Stability 0.14,300000
+Pair of Hard Leather Boots,30,3,12,10,good,390,112,412,612,0.0,0.0,3.8,0.0,,300000
+Pair of Hard Leather Boots,30,3,12,10,excellent,38513,662,1412,15512,0.0,0.0,5.2,0.491,of Slow Descent 0.28; of Stealth 0.22; of Free Action 0.17; of Stability 0.15,300000
+Pair of Hard Leather Boots,30,3,12,15,good,402,212,412,612,0.0,0.0,3.9,0.0,,300000
+Pair of Hard Leather Boots,30,3,12,15,excellent,41090,662,1412,15612,0.0,0.0,5.5,0.501,of Slow Descent 0.28; of Stealth 0.21; of Free Action 0.19; of Stability 0.14,300000
+Pair of Hard Leather Boots,30,3,12,20,good,417,212,412,612,0.0,0.0,4.1,0.0,,300000
+Pair of Hard Leather Boots,30,3,12,20,excellent,32474,762,1462,15612,0.0,0.0,6.0,0.485,of Slow Descent 0.28; of Stealth 0.24; of Free Action 0.17; of Stability 0.15,300000
+Pair of Hard Leather Boots,30,3,12,25,good,425,212,412,712,0.0,0.0,4.1,0.0,,300000
+Pair of Hard Leather Boots,30,3,12,25,excellent,45990,762,1512,15712,0.0,0.0,6.4,0.499,of Slow Descent 0.27; of Stealth 0.23; of Free Action 0.18; of Stability 0.13,300000
+Pair of Hard Leather Boots,30,3,12,30,good,451,212,412,712,0.0,0.0,4.4,0.0,,300000
+Pair of Hard Leather Boots,30,3,12,30,excellent,34867,862,1512,15812,0.0,0.0,7.0,0.487,of Slow Descent 0.29; of Stealth 0.23; of Free Action 0.18; of Stability 0.13,300000
+Pair of Hard Leather Boots,30,3,12,40,good,471,212,512,712,0.0,0.0,4.6,0.0,,300000
+Pair of Hard Leather Boots,30,3,12,40,excellent,39087,962,1712,15912,0.0,0.0,7.9,0.494,of Slow Descent 0.29; of Stealth 0.22; of Free Action 0.18; of Stability 0.14,300000
+Pair of Hard Leather Boots,30,3,12,50,good,512,312,512,712,0.0,0.0,5.0,0.0,,300000
+Pair of Hard Leather Boots,30,3,12,50,excellent,39971,1062,1812,16012,0.0,0.0,9.1,0.497,of Slow Descent 0.28; of Stealth 0.23; of Free Action 0.20; of Stability 0.12,300000
+Pair of Metal Shod Boots,30,6,50,5,good,413,150,450,650,0.0,0.0,3.6,0.0,,12000
+Pair of Metal Shod Boots,30,6,50,5,excellent,44765,700,1450,15650,0.0,0.0,4.9,0.486,of Slow Descent 0.28; of Stealth 0.23; of Free Action 0.17; of Stability 0.14,12000
+Pair of Metal Shod Boots,30,6,50,10,good,426,150,450,650,0.0,0.0,3.8,0.0,,12000
+Pair of Metal Shod Boots,30,6,50,10,excellent,48229,700,1450,15750,0.0,0.0,5.3,0.533,of Slow Descent 0.26; of Stealth 0.21; of Free Action 0.20; of Stability 0.14,12000
+Pair of Metal Shod Boots,30,6,50,15,good,442,250,450,650,0.0,0.0,3.9,0.0,,12000
+Pair of Metal Shod Boots,30,6,50,15,excellent,38885,700,1450,15650,0.0,0.0,5.6,0.483,of Slow Descent 0.29; of Stealth 0.23; of Free Action 0.18; of Stability 0.14,12000
+Pair of Metal Shod Boots,30,6,50,20,good,456,250,450,650,0.0,0.0,4.1,0.0,,12000
+Pair of Metal Shod Boots,30,6,50,20,excellent,38441,800,1550,15750,0.0,0.0,6.0,0.475,of Slow Descent 0.28; of Stealth 0.25; of Free Action 0.16; of Stability 0.14,12000
+Pair of Metal Shod Boots,30,6,50,25,good,463,250,450,650,0.0,0.0,4.1,0.0,,12000
+Pair of Metal Shod Boots,30,6,50,25,excellent,42737,800,1550,15750,0.0,0.0,6.5,0.485,of Slow Descent 0.26; of Stealth 0.25; of Free Action 0.18; of Stability 0.13,12000
+Pair of Metal Shod Boots,30,6,50,30,good,485,250,450,750,0.0,0.0,4.3,0.0,,12000
+Pair of Metal Shod Boots,30,6,50,30,excellent,42470,800,1550,15950,0.0,0.0,6.8,0.496,of Slow Descent 0.27; of Stealth 0.24; of Free Action 0.19; of Mirkwood 0.13,12000
+Pair of Metal Shod Boots,30,6,50,40,good,514,250,550,750,0.0,0.0,4.6,0.0,,12000
+Pair of Metal Shod Boots,30,6,50,40,excellent,39396,1000,1750,15850,0.0,0.0,8.0,0.483,of Slow Descent 0.28; of Stealth 0.23; of Free Action 0.18; of Stability 0.14,12000
+Pair of Metal Shod Boots,30,6,50,50,good,554,350,550,850,0.0,0.0,5.0,0.0,,12000
+Pair of Metal Shod Boots,30,6,50,50,excellent,36284,1000,1800,16050,0.0,0.0,9.0,0.485,of Slow Descent 0.29; of Stealth 0.22; of Free Action 0.18; of Mirkwood 0.13,12000
+Hard Leather Cap,32,2,12,5,good,373,112,412,612,0.0,0.0,3.6,0.0,,50000
+Hard Leather Cap,32,2,12,5,excellent,4027,1012,1512,2912,0.0,0.0,4.8,0.417,of Intelligence 0.16; of Light 0.16; of Wisdom 0.15; of Seeing 0.14,50000
+Hard Leather Cap,32,2,12,10,good,385,112,412,612,0.0,0.0,3.7,0.0,,50000
+Hard Leather Cap,32,2,12,10,excellent,4092,1062,1612,2912,0.0,0.0,5.1,0.428,of Light 0.16; of Intelligence 0.15; of Infravision 0.15; of Seeing 0.14,50000
+Hard Leather Cap,32,2,12,15,good,399,112,412,612,0.0,0.0,3.9,0.0,,50000
+Hard Leather Cap,32,2,12,15,excellent,4487,1062,1612,3012,0.0,0.0,5.5,0.407,of Intelligence 0.15; of Beauty 0.15; of Wisdom 0.15; of Light 0.14,50000
+Hard Leather Cap,32,2,12,20,good,414,212,412,612,0.0,0.0,4.0,0.0,,50000
+Hard Leather Cap,32,2,12,20,excellent,4214,1112,1712,3012,0.0,0.0,6.0,0.419,of Infravision 0.15; of Wisdom 0.15; of Light 0.15; of Seeing 0.14,50000
+Hard Leather Cap,32,2,12,25,good,427,212,412,712,0.0,0.0,4.2,0.0,,50000
+Hard Leather Cap,32,2,12,25,excellent,4162,1212,1712,3112,0.0,0.0,6.4,0.414,of Seeing 0.16; of Beauty 0.16; of Intelligence 0.16; of Infravision 0.14,50000
+Hard Leather Cap,32,2,12,30,good,436,212,412,712,0.0,0.0,4.2,0.0,,50000
+Hard Leather Cap,32,2,12,30,excellent,4684,1212,1812,3212,0.0,0.0,6.8,0.395,of Beauty 0.16; of Wisdom 0.16; of Infravision 0.15; of Seeing 0.14,50000
+Hard Leather Cap,32,2,12,40,good,474,212,512,712,0.0,0.0,4.6,0.0,,50000
+Hard Leather Cap,32,2,12,40,excellent,4107,1312,1912,3212,0.0,0.0,8.0,0.416,of Infravision 0.16; of Seeing 0.16; of Beauty 0.15; of Light 0.14,50000
+Hard Leather Cap,32,2,12,50,good,508,312,512,712,0.0,0.0,5.0,0.0,,50000
+Hard Leather Cap,32,2,12,50,excellent,4796,1412,2012,3412,0.0,0.0,9.0,0.425,of Seeing 0.15; of Beauty 0.15; of Infravision 0.15; of Light 0.14,50000
+Metal Cap,32,3,30,5,good,392,130,430,630,0.0,0.0,3.6,0.0,,25286
+Metal Cap,32,3,30,5,excellent,3583,1080,1630,2830,0.0,0.0,4.8,0.415,of Seeing 0.16; of Intelligence 0.15; of Beauty 0.15; of Light 0.15,25286
+Metal Cap,32,3,30,10,good,412,130,430,630,0.0,0.0,3.8,0.0,,25286
+Metal Cap,32,3,30,10,excellent,4235,1130,1630,2930,0.0,0.0,5.2,0.424,of Beauty 0.15; of Intelligence 0.15; of Seeing 0.15; of Light 0.14,25286
+Metal Cap,32,3,30,15,good,418,230,430,630,0.0,0.0,3.9,0.0,,25286
+Metal Cap,32,3,30,15,excellent,4214,1130,1680,3030,0.0,0.0,5.6,0.417,of Beauty 0.16; of Seeing 0.15; of Infravision 0.15; of Intelligence 0.14,25286
+Metal Cap,32,3,30,20,good,437,230,430,630,0.0,0.0,4.1,0.0,,25286
+Metal Cap,32,3,30,20,excellent,4426,1130,1730,3030,0.0,0.0,5.9,0.43,of Light 0.16; of Wisdom 0.15; of Seeing 0.15; of Infravision 0.14,25286
+Metal Cap,32,3,30,25,good,445,230,430,630,0.0,0.0,4.1,0.0,,25286
+Metal Cap,32,3,30,25,excellent,4167,1180,1730,3130,0.0,0.0,6.4,0.419,of Wisdom 0.15; of Intelligence 0.15; of Infravision 0.15; of Seeing 0.15,25286
+Metal Cap,32,3,30,30,good,462,230,430,730,0.0,0.0,4.3,0.0,,25286
+Metal Cap,32,3,30,30,excellent,4435,1230,1830,3130,0.0,0.0,6.8,0.433,of Seeing 0.16; of Beauty 0.15; of Light 0.15; of Infravision 0.15,25286
+Metal Cap,32,3,30,40,good,497,230,530,730,0.0,0.0,4.7,0.0,,25286
+Metal Cap,32,3,30,40,excellent,4819,1330,1930,3330,0.0,0.0,8.0,0.428,of Intelligence 0.16; of Light 0.16; of Seeing 0.14; of Infravision 0.14,25286
+Metal Cap,32,3,30,50,good,529,330,530,730,0.0,0.0,5.0,0.0,,25286
+Metal Cap,32,3,30,50,excellent,4630,1430,2030,3330,0.0,0.0,9.0,0.411,of Light 0.16; of Beauty 0.15; of Wisdom 0.15; of Intelligence 0.14,25286
+Iron Helm,32,5,75,5,good,438,175,475,675,0.0,0.0,3.6,0.0,,77778
+Iron Helm,32,5,75,5,excellent,5007,1125,1675,3075,0.0,0.0,4.9,0.437,of Beauty 0.16; of Seeing 0.15; of Light 0.15; of Wisdom 0.14,77778
+Iron Helm,32,5,75,10,good,448,175,475,675,0.0,0.0,3.7,0.0,,77778
+Iron Helm,32,5,75,10,excellent,4877,1125,1675,3075,0.0,0.0,5.2,0.421,of Infravision 0.16; of Light 0.15; of Intelligence 0.15; of Seeing 0.14,77778
+Iron Helm,32,5,75,15,good,471,275,475,675,0.0,0.0,4.0,0.0,,77778
+Iron Helm,32,5,75,15,excellent,4265,1175,1675,3075,0.0,0.0,5.7,0.402,of Intelligence 0.16; of Light 0.16; of Beauty 0.15; of Wisdom 0.14,77778
+Iron Helm,32,5,75,20,good,474,275,475,675,0.0,0.0,4.0,0.0,,77778
+Iron Helm,32,5,75,20,excellent,3950,1175,1775,3075,0.0,0.0,5.9,0.407,of Intelligence 0.16; of Seeing 0.15; of Infravision 0.15; of Wisdom 0.15,77778
+Iron Helm,32,5,75,25,good,490,275,475,675,0.0,0.0,4.1,0.0,,77778
+Iron Helm,32,5,75,25,excellent,4835,1225,1875,3275,0.0,0.0,6.5,0.423,of Beauty 0.17; of Infravision 0.15; of Light 0.15; of Seeing 0.15,77778
+Iron Helm,32,5,75,30,good,502,275,475,775,0.0,0.0,4.3,0.0,,77778
+Iron Helm,32,5,75,30,excellent,4164,1275,1875,3175,0.0,0.0,6.9,0.419,of Light 0.16; of Intelligence 0.15; of Infravision 0.15; of Seeing 0.14,77778
+Iron Helm,32,5,75,40,good,548,275,575,775,0.0,0.0,4.7,0.0,,77778
+Iron Helm,32,5,75,40,excellent,4456,1325,1975,3275,0.0,0.0,7.9,0.41,of Intelligence 0.15; of Infravision 0.15; of Light 0.15; of Wisdom 0.14,77778
+Iron Helm,32,5,75,50,good,574,375,575,775,0.0,0.0,5.0,0.0,,77778
+Iron Helm,32,5,75,50,excellent,4227,1475,2075,3375,0.0,0.0,9.0,0.411,of Beauty 0.16; of Wisdom 0.15; of Light 0.15; of Infravision 0.15,77778
+Steel Helm,32,6,200,5,good,562,300,600,800,0.0,0.0,3.6,0.0,,45000
+Steel Helm,32,6,200,5,excellent,4255,1200,1800,3100,0.0,0.0,4.9,0.401,of Intelligence 0.16; of Wisdom 0.15; of Infravision 0.15; of Beauty 0.14,45000
+Steel Helm,32,6,200,10,good,576,300,600,800,0.0,0.0,3.8,0.0,,45000
+Steel Helm,32,6,200,10,excellent,4260,1200,1800,3100,0.0,0.0,5.2,0.397,of Wisdom 0.16; of Infravision 0.15; of Beauty 0.15; of Intelligence 0.15,45000
+Steel Helm,32,6,200,15,good,585,400,600,800,0.0,0.0,3.9,0.0,,45000
+Steel Helm,32,6,200,15,excellent,4165,1300,1800,3100,0.0,0.0,5.5,0.387,of Intelligence 0.16; of Wisdom 0.16; of Infravision 0.15; of Light 0.14,45000
+Steel Helm,32,6,200,20,good,595,400,600,800,0.0,0.0,3.9,0.0,,45000
+Steel Helm,32,6,200,20,excellent,5089,1300,1900,3300,0.0,0.0,6.0,0.436,of Light 0.16; of Intelligence 0.14; of Seeing 0.14; of Infravision 0.14,45000
+Steel Helm,32,6,200,25,good,615,400,600,800,0.0,0.0,4.2,0.0,,45000
+Steel Helm,32,6,200,25,excellent,4379,1350,1900,3200,0.0,0.0,6.5,0.417,of Wisdom 0.16; of Light 0.15; of Infravision 0.15; of Seeing 0.15,45000
+Steel Helm,32,6,200,30,good,633,400,600,900,0.0,0.0,4.3,0.0,,45000
+Steel Helm,32,6,200,30,excellent,3984,1400,2000,3300,0.0,0.0,6.9,0.415,of Light 0.15; of Beauty 0.15; of Seeing 0.15; of Intelligence 0.15,45000
+Steel Helm,32,6,200,40,good,668,400,700,900,0.0,0.0,4.7,0.0,,45000
+Steel Helm,32,6,200,40,excellent,4667,1500,2100,3500,0.0,0.0,8.0,0.41,of Infravision 0.15; of Light 0.15; of Beauty 0.15; of Intelligence 0.15,45000
+Steel Helm,32,6,200,50,good,708,500,700,1000,0.0,0.0,5.1,0.0,,45000
+Steel Helm,32,6,200,50,excellent,4223,1600,2200,3400,0.0,0.0,8.9,0.411,of Beauty 0.16; of Wisdom 0.16; of Seeing 0.15; of Infravision 0.14,45000
+Iron Crown,33,10,500,5,good,862,600,900,1100,0.0,0.0,3.6,0.0,,1
+Iron Crown,33,10,500,5,excellent,9608,2700,8800,10100,0.0,0.0,4.9,0.745,of Lordliness 0.25; of Seeing 0.23; of Might 0.13; of the Magi 0.12,1
+Iron Crown,33,10,500,10,good,874,600,900,1100,0.0,0.0,3.7,0.0,,1
+Iron Crown,33,10,500,10,excellent,10413,2800,8800,10400,0.0,0.0,5.2,0.759,of Seeing 0.25; of Lordliness 0.24; of Might 0.12; of the Magi 0.11,1
+Iron Crown,33,10,500,15,good,880,700,900,1100,0.0,0.0,3.8,0.0,,1
+Iron Crown,33,10,500,15,excellent,10079,2800,8800,10300,0.0,0.0,5.6,0.762,of Lordliness 0.24; of Seeing 0.23; of Might 0.14; of the Magi 0.12,1
+Iron Crown,33,10,500,20,good,900,700,900,1100,0.0,0.0,4.0,0.0,,1
+Iron Crown,33,10,500,20,excellent,10232,2800,8800,10500,0.0,0.0,5.9,0.764,of Seeing 0.24; of Lordliness 0.24; of Regeneration 0.12; of Might 0.11,1
+Iron Crown,33,10,500,25,good,916,700,900,1100,0.0,0.0,4.2,0.0,,1
+Iron Crown,33,10,500,25,excellent,10577,2900,9000,10600,0.0,0.0,6.5,0.763,of Lordliness 0.24; of Seeing 0.23; of Might 0.14; of the Magi 0.12,1
+Iron Crown,33,10,500,30,good,934,700,900,1200,0.0,0.0,4.3,0.0,,1
+Iron Crown,33,10,500,30,excellent,9898,3000,8900,10400,0.0,0.0,6.9,0.75,of Lordliness 0.25; of Seeing 0.24; of Regeneration 0.12; of the Magi 0.12,1
+Iron Crown,33,10,500,40,good,970,700,1000,1200,0.0,0.0,4.7,0.0,,1
+Iron Crown,33,10,500,40,excellent,9542,3000,8800,10500,0.0,0.0,8.0,0.769,of Lordliness 0.23; of Seeing 0.22; of Might 0.11; of Regeneration 0.11,1
+Iron Crown,33,10,500,50,good,1006,800,1000,1200,0.0,0.0,5.1,0.0,,1
+Iron Crown,33,10,500,50,excellent,9856,3200,8900,10500,0.0,0.0,9.0,0.769,of Lordliness 0.23; of Seeing 0.21; of the Magi 0.12; of Might 0.11,1
+Golden Crown,33,11,1000,5,good,1359,1100,1400,1600,0.0,0.0,3.6,0.0,,100000
+Golden Crown,33,11,1000,5,excellent,10278,3100,9200,10700,0.0,0.0,4.9,0.775,of Seeing 0.24; of Lordliness 0.23; of Might 0.13; of Regeneration 0.13,100000
+Golden Crown,33,11,1000,10,good,1377,1100,1400,1600,0.0,0.0,3.8,0.0,,100000
+Golden Crown,33,11,1000,10,excellent,10819,3200,9300,10800,0.0,0.0,5.1,0.755,of Lordliness 0.24; of Seeing 0.23; of Regeneration 0.12; of the Magi 0.12,100000
+Golden Crown,33,11,1000,15,good,1403,1200,1400,1600,0.0,0.0,4.0,0.0,,100000
+Golden Crown,33,11,1000,15,excellent,10639,3300,9300,10900,0.0,0.0,5.5,0.771,of Seeing 0.24; of Lordliness 0.23; of the Magi 0.13; of Might 0.12,100000
+Golden Crown,33,11,1000,20,good,1397,1200,1400,1600,0.0,0.0,4.0,0.0,,100000
+Golden Crown,33,11,1000,20,excellent,10959,3400,9400,11000,0.0,0.0,5.9,0.761,of Lordliness 0.24; of Seeing 0.23; of the Magi 0.12; of Might 0.12,100000
+Golden Crown,33,11,1000,25,good,1421,1200,1400,1700,0.0,0.0,4.2,0.0,,100000
+Golden Crown,33,11,1000,25,excellent,10664,3500,9400,10900,0.0,0.0,6.5,0.756,of Seeing 0.24; of Lordliness 0.24; of the Magi 0.13; of Might 0.13,100000
+Golden Crown,33,11,1000,30,good,1430,1200,1400,1700,0.0,0.0,4.3,0.0,,100000
+Golden Crown,33,11,1000,30,excellent,10601,3400,9400,11000,0.0,0.0,6.9,0.769,of Seeing 0.25; of Lordliness 0.23; of the Magi 0.13; of Might 0.12,100000
+Golden Crown,33,11,1000,40,good,1458,1200,1500,1700,0.0,0.0,4.6,0.0,,100000
+Golden Crown,33,11,1000,40,excellent,10575,3600,9300,11000,0.0,0.0,8.0,0.786,of Lordliness 0.21; of Seeing 0.21; of the Magi 0.12; of Regeneration 0.11,100000
+Golden Crown,33,11,1000,50,good,1497,1300,1500,1700,0.0,0.0,5.0,0.0,,100000
+Golden Crown,33,11,1000,50,excellent,10581,3600,9400,11200,0.0,0.0,8.9,0.771,of Lordliness 0.23; of Seeing 0.21; of Regeneration 0.12; of the Magi 0.11,100000
+Jewel Encrusted Crown,33,12,2000,5,good,2362,2100,2400,2600,0.0,0.0,3.6,0.0,,50000
+Jewel Encrusted Crown,33,12,2000,5,excellent,12024,4300,10300,12000,0.0,0.0,5.0,0.769,of Seeing 0.24; of Lordliness 0.23; of Might 0.13; of the Magi 0.12,50000
+Jewel Encrusted Crown,33,12,2000,10,good,2370,2100,2400,2600,0.0,0.0,3.7,0.0,,50000
+Jewel Encrusted Crown,33,12,2000,10,excellent,11512,4300,10200,11800,0.0,0.0,5.2,0.753,of Lordliness 0.25; of Seeing 0.23; of Regeneration 0.13; of Might 0.13,50000
+Jewel Encrusted Crown,33,12,2000,15,good,2379,2200,2400,2600,0.0,0.0,3.8,0.0,,50000
+Jewel Encrusted Crown,33,12,2000,15,excellent,11822,4300,10300,11900,0.0,0.0,5.6,0.758,of Seeing 0.24; of Lordliness 0.24; of Regeneration 0.12; of Might 0.12,50000
+Jewel Encrusted Crown,33,12,2000,20,good,2398,2200,2400,2600,0.0,0.0,4.0,0.0,,50000
+Jewel Encrusted Crown,33,12,2000,20,excellent,11928,4300,10300,12100,0.0,0.0,5.9,0.749,of Lordliness 0.25; of Seeing 0.23; of Might 0.13; of Regeneration 0.12,50000
+Jewel Encrusted Crown,33,12,2000,25,good,2405,2200,2400,2600,0.0,0.0,4.1,0.0,,50000
+Jewel Encrusted Crown,33,12,2000,25,excellent,11362,4300,10400,12000,0.0,0.0,6.4,0.762,of Seeing 0.24; of Lordliness 0.24; of Might 0.13; of Regeneration 0.13,50000
+Jewel Encrusted Crown,33,12,2000,30,good,2424,2200,2400,2700,0.0,0.0,4.2,0.0,,50000
+Jewel Encrusted Crown,33,12,2000,30,excellent,12085,4400,10400,12200,0.0,0.0,6.9,0.77,of Seeing 0.24; of Lordliness 0.23; of Regeneration 0.13; of Might 0.12,50000
+Jewel Encrusted Crown,33,12,2000,40,good,2464,2200,2500,2700,0.0,0.0,4.6,0.0,,50000
+Jewel Encrusted Crown,33,12,2000,40,excellent,11770,4500,7400,12100,0.0,0.0,7.9,0.789,of Seeing 0.24; of Lordliness 0.21; of Regeneration 0.11; of Might 0.11,50000
+Jewel Encrusted Crown,33,12,2000,50,good,2499,2300,2500,2700,0.0,0.0,5.0,0.0,,50000
+Jewel Encrusted Crown,33,12,2000,50,excellent,11347,4700,10300,12000,0.0,0.0,9.1,0.78,of Seeing 0.23; of Lordliness 0.22; of Regeneration 0.12; of Might 0.12,50000
+Robe,36,2,4,5,good,364,104,404,604,0.0,0.0,3.6,0.0,,
+Robe,36,2,4,5,excellent,4478,804,1304,14104,0.0,0.0,6.2,1.0,of Resist Lightning 0.21; of Resist Acid 0.21; of Resist Fire 0.20; of Resist Cold 0.19,
+Robe,36,2,4,10,good,380,104,404,604,0.0,0.0,3.8,0.0,,
+Robe,36,2,4,10,excellent,4744,804,1304,14604,0.0,0.0,6.6,1.0,of Resist Lightning 0.22; of Resist Fire 0.20; of Resist Cold 0.20; of Resist Acid 0.18,
+Robe,36,2,4,15,good,390,204,404,604,0.0,0.0,3.9,0.0,,
+Robe,36,2,4,15,excellent,4705,904,1404,14004,0.0,0.0,6.9,1.0,of Resist Lightning 0.20; of Resist Fire 0.20; of Resist Cold 0.20; of Resist Acid 0.20,
+Robe,36,2,4,20,good,408,204,404,604,0.0,0.0,4.0,0.0,,
+Robe,36,2,4,20,excellent,4966,904,1404,15704,0.0,0.0,7.4,1.0,of Resist Fire 0.21; of Resist Cold 0.20; of Resist Acid 0.19; of Resist Lightning 0.19,
+Robe,36,2,4,25,good,421,204,404,704,0.0,0.0,4.2,0.0,,
+Robe,36,2,4,25,excellent,4648,904,1504,14304,0.0,0.0,7.6,1.0,of Resist Acid 0.21; of Resist Fire 0.20; of Resist Lightning 0.20; of Resist Cold 0.19,
+Robe,36,2,4,30,good,437,204,404,704,0.0,0.0,4.3,0.0,,
+Robe,36,2,4,30,excellent,4986,1004,1504,16004,0.0,0.0,8.3,1.0,of Resist Cold 0.21; of Resist Acid 0.20; of Resist Fire 0.20; of Resist Lightning 0.19,
+Robe,36,2,4,40,good,465,204,504,704,0.0,0.0,4.6,0.0,,
+Robe,36,2,4,40,excellent,5170,1104,1604,16104,0.0,0.0,9.4,1.0,of Resist Fire 0.21; of Resist Cold 0.20; of Resist Acid 0.19; of Resist Lightning 0.18,
+Robe,36,2,4,50,good,498,304,504,704,0.0,0.0,4.9,0.0,,
+Robe,36,2,4,50,excellent,5364,1204,1704,16504,0.0,0.0,10.4,1.0,of Resist Cold 0.20; of Resist Fire 0.20; of Resist Lightning 0.20; of Resist Acid 0.19,
+Filthy Rag,36,1,1,5,good,362,101,401,601,0.0,0.0,2.6,0.0,,
+Filthy Rag,36,1,1,5,excellent,3396,801,1301,13701,0.0,0.0,4.8,1.0,of Resist Lightning 0.22; of Resist Fire 0.20; of Resist Cold 0.20; of Resist Acid 0.20,
+Filthy Rag,36,1,1,10,good,371,101,401,601,0.0,0.0,2.7,0.0,,
+Filthy Rag,36,1,1,10,excellent,3523,801,1301,13701,0.0,0.0,5.1,1.0,of Resist Acid 0.21; of Resist Lightning 0.21; of Resist Fire 0.20; of Resist Cold 0.20,
+Filthy Rag,36,1,1,15,good,392,101,401,601,0.0,0.0,2.9,0.0,,
+Filthy Rag,36,1,1,15,excellent,3508,801,1301,13801,0.0,0.0,5.4,1.0,of Resist Fire 0.22; of Resist Acid 0.21; of Resist Cold 0.20; of Resist Lightning 0.20,
+Filthy Rag,36,1,1,20,good,410,201,401,601,0.0,0.0,3.1,0.0,,
+Filthy Rag,36,1,1,20,excellent,3143,901,1401,13501,0.0,0.0,5.7,1.0,of Resist Fire 0.23; of Resist Cold 0.22; of Resist Acid 0.21; of Resist Lightning 0.21,
+Filthy Rag,36,1,1,25,good,414,201,401,601,0.0,0.0,3.1,0.0,,
+Filthy Rag,36,1,1,25,excellent,3635,901,1401,13901,0.0,0.0,6.3,1.0,of Resist Acid 0.22; of Resist Lightning 0.21; of Resist Cold 0.21; of Resist Fire 0.19,
+Filthy Rag,36,1,1,30,good,433,201,401,701,0.0,0.0,3.3,0.0,,
+Filthy Rag,36,1,1,30,excellent,3555,1001,1501,13901,0.0,0.0,6.7,1.0,of Resist Acid 0.23; of Resist Cold 0.22; of Resist Fire 0.20; of Resist Lightning 0.18,
+Filthy Rag,36,1,1,40,good,464,201,501,701,0.0,0.0,3.6,0.0,,
+Filthy Rag,36,1,1,40,excellent,3529,1101,1601,13801,0.0,0.0,7.8,1.0,of Resist Cold 0.22; of Resist Acid 0.22; of Resist Fire 0.21; of Resist Lightning 0.20,
+Filthy Rag,36,1,1,50,good,495,201,501,701,0.0,0.0,3.9,0.0,,
+Filthy Rag,36,1,1,50,excellent,3556,1101,1701,13901,0.0,0.0,8.7,1.0,of Resist Lightning 0.23; of Resist Fire 0.23; of Resist Cold 0.21; of Resist Acid 0.19,
+Soft Leather Armour,36,4,18,5,good,389,118,418,618,0.0,0.0,3.7,0.0,,45000
+Soft Leather Armour,36,4,18,5,excellent,3409,818,1318,13618,0.0,0.0,5.6,1.0,of Resist Fire 0.21; of Resist Cold 0.21; of Resist Lightning 0.21; of Resist Acid 0.20,45000
+Soft Leather Armour,36,4,18,10,good,384,118,418,618,0.0,0.0,3.7,0.0,,45000
+Soft Leather Armour,36,4,18,10,excellent,3270,818,1318,13618,0.0,0.0,6.0,1.0,of Resist Fire 0.23; of Resist Acid 0.21; of Resist Cold 0.21; of Resist Lightning 0.20,45000
+Soft Leather Armour,36,4,18,15,good,411,218,418,618,0.0,0.0,3.9,0.0,,45000
+Soft Leather Armour,36,4,18,15,excellent,3609,918,1418,13918,0.0,0.0,6.6,1.0,of Resist Acid 0.22; of Resist Cold 0.21; of Resist Fire 0.20; of Resist Lightning 0.20,45000
+Soft Leather Armour,36,4,18,20,good,427,218,418,618,0.0,0.0,4.1,0.0,,45000
+Soft Leather Armour,36,4,18,20,excellent,3459,918,1318,13718,0.0,0.0,6.6,1.0,of Resist Lightning 0.22; of Resist Cold 0.21; of Resist Acid 0.20; of Resist Fire 0.20,45000
+Soft Leather Armour,36,4,18,25,good,435,218,418,618,0.0,0.0,4.2,0.0,,45000
+Soft Leather Armour,36,4,18,25,excellent,3515,918,1418,13818,0.0,0.0,7.2,1.0,of Resist Fire 0.22; of Resist Acid 0.21; of Resist Cold 0.20; of Resist Lightning 0.20,45000
+Soft Leather Armour,36,4,18,30,good,442,218,418,718,0.0,0.0,4.2,0.0,,45000
+Soft Leather Armour,36,4,18,30,excellent,3736,1018,1518,13918,0.0,0.0,8.0,1.0,of Resist Lightning 0.22; of Resist Fire 0.22; of Resist Cold 0.19; of Resist Acid 0.19,45000
+Soft Leather Armour,36,4,18,40,good,489,218,518,718,0.0,0.0,4.7,0.0,,45000
+Soft Leather Armour,36,4,18,40,excellent,3474,1018,1618,13818,0.0,0.0,8.6,1.0,of Resist Acid 0.22; of Resist Fire 0.21; of Resist Lightning 0.21; of Resist Cold 0.21,45000
+Soft Leather Armour,36,4,18,50,good,513,318,518,718,0.0,0.0,5.0,0.0,,45000
+Soft Leather Armour,36,4,18,50,excellent,3735,1218,1718,14118,0.0,0.0,10.1,1.0,of Resist Lightning 0.23; of Resist Cold 0.21; of Resist Acid 0.20; of Resist Fire 0.20,45000
+Soft Studded Leather,36,5,35,5,good,402,135,435,635,0.0,0.0,3.7,0.0,,
+Soft Studded Leather,36,5,35,5,excellent,3213,835,1235,13535,0.0,0.0,5.5,1.0,of Resist Fire 0.22; of Resist Lightning 0.22; of Resist Cold 0.22; of Resist Acid 0.19,
+Soft Studded Leather,36,5,35,10,good,415,235,435,635,0.0,0.0,3.8,0.0,,
+Soft Studded Leather,36,5,35,10,excellent,3513,835,1335,13735,0.0,0.0,6.0,1.0,of Resist Fire 0.22; of Resist Lightning 0.22; of Resist Acid 0.20; of Resist Cold 0.19,
+Soft Studded Leather,36,5,35,15,good,416,135,435,635,0.0,0.0,3.8,0.0,,
+Soft Studded Leather,36,5,35,15,excellent,3218,835,1335,13635,0.0,0.0,6.3,1.0,of Resist Acid 0.22; of Resist Lightning 0.21; of Resist Cold 0.21; of Resist Fire 0.21,
+Soft Studded Leather,36,5,35,20,good,431,235,435,635,0.0,0.0,4.0,0.0,,
+Soft Studded Leather,36,5,35,20,excellent,3196,935,1435,13635,0.0,0.0,6.8,1.0,of Resist Fire 0.23; of Resist Acid 0.22; of Resist Lightning 0.21; of Resist Cold 0.20,
+Soft Studded Leather,36,5,35,25,good,459,235,435,735,0.0,0.0,4.2,0.0,,
+Soft Studded Leather,36,5,35,25,excellent,3526,935,1435,13835,0.0,0.0,7.3,1.0,of Resist Cold 0.23; of Resist Acid 0.21; of Resist Lightning 0.20; of Resist Fire 0.20,
+Soft Studded Leather,36,5,35,30,good,466,235,435,735,0.0,0.0,4.3,0.0,,
+Soft Studded Leather,36,5,35,30,excellent,3564,1035,1535,13935,0.0,0.0,7.9,1.0,of Resist Fire 0.23; of Resist Lightning 0.21; of Resist Cold 0.21; of Resist Acid 0.20,
+Soft Studded Leather,36,5,35,40,good,495,235,535,735,0.0,0.0,4.6,0.0,,
+Soft Studded Leather,36,5,35,40,excellent,3677,1035,1635,14035,0.0,0.0,8.7,1.0,of Resist Acid 0.22; of Resist Cold 0.22; of Resist Lightning 0.20; of Resist Fire 0.20,
+Soft Studded Leather,36,5,35,50,good,544,335,535,735,0.0,0.0,5.1,0.0,,
+Soft Studded Leather,36,5,35,50,excellent,3905,1135,1735,14035,0.0,0.0,9.8,1.0,of Resist Fire 0.22; of Resist Lightning 0.21; of Resist Acid 0.20; of Resist Cold 0.20,
+Hard Leather Armour,36,6,150,5,good,512,250,550,750,-1.0,0.0,3.6,0.0,,35000
+Hard Leather Armour,36,6,150,5,excellent,3440,950,1450,13750,-1.0,0.0,5.8,1.0,of Resist Acid 0.21; of Resist Lightning 0.21; of Resist Cold 0.21; of Resist Fire 0.21,35000
+Hard Leather Armour,36,6,150,10,good,515,250,550,750,-1.0,0.0,3.6,0.0,,35000
+Hard Leather Armour,36,6,150,10,excellent,3581,950,1450,13850,-1.0,0.0,6.0,1.0,of Resist Cold 0.22; of Resist Fire 0.21; of Resist Acid 0.20; of Resist Lightning 0.20,35000
+Hard Leather Armour,36,6,150,15,good,535,350,550,750,-1.0,0.0,3.9,0.0,,35000
+Hard Leather Armour,36,6,150,15,excellent,3647,950,1550,13850,-1.0,0.0,6.5,1.0,of Resist Acid 0.22; of Resist Lightning 0.22; of Resist Fire 0.21; of Resist Cold 0.18,35000
+Hard Leather Armour,36,6,150,20,good,547,350,550,750,-1.0,0.0,4.0,0.0,,35000
+Hard Leather Armour,36,6,150,20,excellent,3421,1050,1550,13850,-1.0,0.0,6.8,1.0,of Resist Fire 0.23; of Resist Lightning 0.22; of Resist Acid 0.21; of Resist Cold 0.20,35000
+Hard Leather Armour,36,6,150,25,good,559,350,550,750,-1.0,0.0,4.1,0.0,,35000
+Hard Leather Armour,36,6,150,25,excellent,3646,1050,1550,13950,-1.0,0.0,7.3,1.0,of Resist Fire 0.22; of Resist Lightning 0.22; of Resist Cold 0.20; of Resist Acid 0.19,35000
+Hard Leather Armour,36,6,150,30,good,576,350,550,850,-1.0,0.0,4.3,0.0,,35000
+Hard Leather Armour,36,6,150,30,excellent,3513,1150,1650,13850,-1.0,0.0,7.7,1.0,of Resist Fire 0.22; of Resist Cold 0.22; of Resist Lightning 0.21; of Resist Acid 0.20,35000
+Hard Leather Armour,36,6,150,40,good,616,350,650,850,-1.0,0.0,4.7,0.0,,35000
+Hard Leather Armour,36,6,150,40,excellent,3899,1150,1750,14150,-1.0,0.0,8.7,1.0,of Resist Acid 0.22; of Resist Cold 0.21; of Resist Fire 0.21; of Resist Lightning 0.19,35000
+Hard Leather Armour,36,6,150,50,good,652,450,650,850,-1.0,0.0,5.0,0.0,,35000
+Hard Leather Armour,36,6,150,50,excellent,3924,1250,1850,14150,-1.0,0.0,9.9,1.0,of Resist Lightning 0.23; of Resist Acid 0.21; of Resist Cold 0.20; of Resist Fire 0.19,35000
+Hard Studded Leather,36,7,200,5,good,561,300,600,800,-1.0,0.0,3.6,0.0,,
+Hard Studded Leather,36,7,200,5,excellent,3599,1000,1500,13800,-1.0,0.0,5.7,1.0,of Resist Fire 0.22; of Resist Lightning 0.21; of Resist Acid 0.21; of Resist Cold 0.19,
+Hard Studded Leather,36,7,200,10,good,577,400,600,800,-1.0,0.0,3.8,0.0,,
+Hard Studded Leather,36,7,200,10,excellent,3439,1000,1500,13800,-1.0,0.0,5.9,1.0,of Resist Cold 0.22; of Resist Fire 0.21; of Resist Acid 0.21; of Resist Lightning 0.20,
+Hard Studded Leather,36,7,200,15,good,594,400,600,800,-1.0,0.0,3.9,0.0,,
+Hard Studded Leather,36,7,200,15,excellent,3441,1000,1500,13900,-1.0,0.0,6.3,1.0,of Resist Lightning 0.22; of Resist Fire 0.21; of Resist Cold 0.21; of Resist Acid 0.20,
+Hard Studded Leather,36,7,200,20,good,607,400,600,800,-1.0,0.0,4.1,0.0,,
+Hard Studded Leather,36,7,200,20,excellent,3695,1100,1600,14000,-1.0,0.0,6.9,1.0,of Resist Fire 0.21; of Resist Lightning 0.21; of Resist Cold 0.21; of Resist Acid 0.20,
+Hard Studded Leather,36,7,200,25,good,613,400,600,800,-1.0,0.0,4.1,0.0,,
+Hard Studded Leather,36,7,200,25,excellent,3655,1100,1600,14000,-1.0,0.0,7.4,1.0,of Resist Lightning 0.22; of Resist Acid 0.21; of Resist Fire 0.21; of Resist Cold 0.20,
+Hard Studded Leather,36,7,200,30,good,635,400,600,900,-1.0,0.0,4.3,0.0,,
+Hard Studded Leather,36,7,200,30,excellent,3651,1200,1700,13900,-1.0,0.0,7.8,1.0,of Resist Acid 0.22; of Resist Lightning 0.22; of Resist Cold 0.21; of Resist Fire 0.20,
+Hard Studded Leather,36,7,200,40,good,669,400,700,900,-1.0,0.0,4.7,0.0,,
+Hard Studded Leather,36,7,200,40,excellent,3625,1200,1800,14000,-1.0,0.0,8.7,1.0,of Resist Fire 0.22; of Resist Acid 0.21; of Resist Lightning 0.21; of Resist Cold 0.21,
+Hard Studded Leather,36,7,200,50,good,698,500,700,900,-1.0,0.0,5.0,0.0,,
+Hard Studded Leather,36,7,200,50,excellent,3804,1400,1900,14100,-1.0,0.0,9.8,1.0,of Resist Lightning 0.22; of Resist Fire 0.21; of Resist Acid 0.21; of Resist Cold 0.21,
+Leather Scale Mail,36,11,450,5,good,811,550,850,1050,-1.0,0.0,3.6,0.0,,25000
+Leather Scale Mail,36,11,450,5,excellent,3695,1250,1750,13950,-1.0,0.0,5.7,1.0,of Resist Fire 0.22; of Resist Cold 0.22; of Resist Acid 0.21; of Resist Lightning 0.19,25000
+Leather Scale Mail,36,11,450,10,good,816,550,850,1050,-1.0,0.0,3.7,0.0,,25000
+Leather Scale Mail,36,11,450,10,excellent,3844,1250,1750,14050,-1.0,0.0,6.1,1.0,of Resist Lightning 0.21; of Resist Cold 0.21; of Resist Fire 0.21; of Resist Acid 0.21,25000
+Leather Scale Mail,36,11,450,15,good,835,550,850,1050,-1.0,0.0,3.8,0.0,,25000
+Leather Scale Mail,36,11,450,15,excellent,3628,1350,1750,14050,-1.0,0.0,6.3,1.0,of Resist Fire 0.22; of Resist Lightning 0.22; of Resist Acid 0.21; of Resist Cold 0.21,25000
+Leather Scale Mail,36,11,450,20,good,848,650,850,1050,-1.0,0.0,4.0,0.0,,25000
+Leather Scale Mail,36,11,450,20,excellent,3795,1350,1850,14150,-1.0,0.0,6.8,1.0,of Resist Lightning 0.23; of Resist Cold 0.22; of Resist Acid 0.21; of Resist Fire 0.19,25000
+Leather Scale Mail,36,11,450,25,good,859,650,850,1050,-1.0,0.0,4.1,0.0,,25000
+Leather Scale Mail,36,11,450,25,excellent,3997,1350,1850,14250,-1.0,0.0,7.3,1.0,of Resist Fire 0.22; of Resist Lightning 0.22; of Resist Acid 0.20; of Resist Cold 0.20,25000
+Leather Scale Mail,36,11,450,30,good,884,650,850,1150,-1.0,0.0,4.3,0.0,,25000
+Leather Scale Mail,36,11,450,30,excellent,3861,1450,1950,14150,-1.0,0.0,7.6,1.0,of Resist Acid 0.22; of Resist Fire 0.22; of Resist Cold 0.21; of Resist Lightning 0.20,25000
+Leather Scale Mail,36,11,450,40,good,914,650,950,1150,-1.0,0.0,4.6,0.0,,25000
+Leather Scale Mail,36,11,450,40,excellent,3967,1450,1950,14250,-1.0,0.0,8.6,1.0,of Resist Fire 0.23; of Resist Lightning 0.23; of Resist Cold 0.20; of Resist Acid 0.19,25000
+Leather Scale Mail,36,11,450,50,good,943,750,950,1150,-1.0,0.0,4.9,0.0,,25000
+Leather Scale Mail,36,11,450,50,excellent,4182,1550,2150,14550,-1.0,0.0,9.9,1.0,of Resist Cold 0.22; of Resist Acid 0.21; of Resist Lightning 0.21; of Resist Fire 0.20,25000
+Metal Scale Mail,37,3,550,5,good,915,650,950,1150,-2.0,0.0,3.7,0.0,,
+Metal Scale Mail,37,3,550,5,excellent,3998,1350,1850,13950,-2.0,0.0,6.3,1.0,of Resist Fire 0.22; of Resist Cold 0.19; of Resist Lightning 0.19; of Resist Acid 0.17,
+Metal Scale Mail,37,3,550,10,good,924,650,950,1150,-2.0,0.0,3.7,0.0,,
+Metal Scale Mail,37,3,550,10,excellent,4403,1450,1950,14150,-2.0,0.0,6.9,1.0,of Resist Acid 0.20; of Resist Fire 0.20; of Resist Cold 0.18; of Resist Lightning 0.17,
+Metal Scale Mail,37,3,550,15,good,944,750,950,1150,-2.0,0.0,3.9,0.0,,
+Metal Scale Mail,37,3,550,15,excellent,4433,1450,1950,14250,-2.0,0.0,7.2,1.0,of Resist Acid 0.19; of Resist Lightning 0.19; of Resist Fire 0.19; of Resist Cold 0.18,
+Metal Scale Mail,37,3,550,20,good,952,750,950,1150,-2.0,0.0,4.0,0.0,,
+Metal Scale Mail,37,3,550,20,excellent,4274,1450,1950,14050,-2.0,0.0,7.6,1.0,of Resist Fire 0.20; of Resist Cold 0.20; of Resist Acid 0.19; of Resist Lightning 0.17,
+Metal Scale Mail,37,3,550,25,good,961,750,950,1150,-2.0,0.0,4.1,0.0,,
+Metal Scale Mail,37,3,550,25,excellent,4124,1450,1950,14050,-2.0,0.0,7.8,1.0,of Resist Fire 0.20; of Resist Lightning 0.20; of Resist Cold 0.19; of Resist Acid 0.18,
+Metal Scale Mail,37,3,550,30,good,981,750,950,1250,-2.0,0.0,4.3,0.0,,
+Metal Scale Mail,37,3,550,30,excellent,4319,1450,2050,14250,-2.0,0.0,8.3,1.0,of Resist Cold 0.22; of Resist Acid 0.19; of Resist Lightning 0.18; of Resist Fire 0.17,
+Metal Scale Mail,37,3,550,40,good,1026,750,1050,1250,-2.0,0.0,4.8,0.0,,
+Metal Scale Mail,37,3,550,40,excellent,4696,1650,2250,14550,-2.0,0.0,9.6,1.0,of Resist Fire 0.19; of Resist Lightning 0.19; of Resist Acid 0.18; of Resist Cold 0.18,
+Metal Scale Mail,37,3,550,50,good,1042,850,1050,1250,-2.0,0.0,4.9,0.0,,
+Metal Scale Mail,37,3,550,50,excellent,4723,1750,2350,14450,-2.0,0.0,10.6,1.0,of Resist Acid 0.20; of Resist Fire 0.18; of Resist Lightning 0.18; of Resist Cold 0.18,
+Chain Mail,37,4,750,5,good,1109,850,1150,1350,-2.0,0.0,3.6,0.0,,32000
+Chain Mail,37,4,750,5,excellent,4211,1550,2050,14250,-2.0,0.0,6.2,1.0,of Resist Cold 0.21; of Resist Acid 0.20; of Resist Lightning 0.19; of Resist Fire 0.18,32000
+Chain Mail,37,4,750,10,good,1117,850,1150,1350,-2.0,0.0,3.7,0.0,,32000
+Chain Mail,37,4,750,10,excellent,4597,1550,2050,14350,-2.0,0.0,6.7,1.0,of Resist Lightning 0.20; of Resist Cold 0.20; of Resist Fire 0.18; of Resist Acid 0.17,32000
+Chain Mail,37,4,750,15,good,1143,950,1150,1350,-2.0,0.0,3.9,0.0,,32000
+Chain Mail,37,4,750,15,excellent,4556,1650,2150,14350,-2.0,0.0,7.3,1.0,of Resist Cold 0.20; of Resist Acid 0.19; of Resist Lightning 0.18; of Resist Fire 0.18,32000
+Chain Mail,37,4,750,20,good,1157,950,1150,1350,-2.0,0.0,4.1,0.0,,32000
+Chain Mail,37,4,750,20,excellent,4542,1650,2150,14350,-2.0,0.0,7.6,1.0,of Resist Lightning 0.20; of Resist Fire 0.19; of Resist Cold 0.19; of Resist Acid 0.18,32000
+Chain Mail,37,4,750,25,good,1164,950,1150,1350,-2.0,0.0,4.1,0.0,,32000
+Chain Mail,37,4,750,25,excellent,4765,1650,2250,14550,-2.0,0.0,8.1,1.0,of Resist Acid 0.19; of Resist Fire 0.19; of Resist Lightning 0.19; of Resist Cold 0.18,32000
+Chain Mail,37,4,750,30,good,1178,950,1150,1450,-2.0,0.0,4.3,0.0,,32000
+Chain Mail,37,4,750,30,excellent,4485,1750,2250,14250,-2.0,0.0,8.4,1.0,of Resist Lightning 0.20; of Resist Acid 0.19; of Resist Cold 0.19; of Resist Fire 0.18,32000
+Chain Mail,37,4,750,40,good,1215,950,1250,1450,-2.0,0.0,4.7,0.0,,32000
+Chain Mail,37,4,750,40,excellent,4654,1850,2350,14550,-2.0,0.0,9.3,1.0,of Resist Lightning 0.21; of Resist Fire 0.20; of Resist Acid 0.18; of Resist Cold 0.18,32000
+Chain Mail,37,4,750,50,good,1253,1050,1250,1550,-2.0,0.0,5.0,0.0,,32000
+Chain Mail,37,4,750,50,excellent,4720,1950,2450,14650,-2.0,0.0,10.3,1.0,of Resist Acid 0.21; of Resist Fire 0.19; of Resist Lightning 0.19; of Resist Cold 0.19,32000
+Rusty Chain Mail,37,1,550,5,good,912,650,950,1150,-5.0,0.0,-4.4,0.0,,
+Rusty Chain Mail,37,1,550,5,excellent,3984,1350,1850,14250,-5.0,0.0,-2.1,1.0,of Resist Fire 0.22; of Resist Acid 0.21; of Resist Lightning 0.20; of Resist Cold 0.20,
+Rusty Chain Mail,37,1,550,10,good,930,750,950,1150,-5.0,0.0,-4.2,0.0,,
+Rusty Chain Mail,37,1,550,10,excellent,3654,1350,1850,14050,-5.0,0.0,-1.9,1.0,of Resist Cold 0.22; of Resist Fire 0.22; of Resist Lightning 0.21; of Resist Acid 0.21,
+Rusty Chain Mail,37,1,550,15,good,945,750,950,1150,-5.0,0.0,-4.1,0.0,,
+Rusty Chain Mail,37,1,550,15,excellent,4036,1350,1850,14250,-5.0,0.0,-1.5,1.0,of Resist Lightning 0.23; of Resist Fire 0.21; of Resist Acid 0.20; of Resist Cold 0.19,
+Rusty Chain Mail,37,1,550,20,good,954,750,950,1150,-5.0,0.0,-4.0,0.0,,
+Rusty Chain Mail,37,1,550,20,excellent,3883,1450,1950,14350,-5.0,0.0,-1.0,1.0,of Resist Cold 0.22; of Resist Lightning 0.22; of Resist Fire 0.20; of Resist Acid 0.20,
+Rusty Chain Mail,37,1,550,25,good,966,750,950,1150,-5.0,0.0,-3.8,0.0,,
+Rusty Chain Mail,37,1,550,25,excellent,3852,1450,1950,14250,-5.0,0.0,-0.8,1.0,of Resist Fire 0.25; of Resist Lightning 0.21; of Resist Cold 0.21; of Resist Acid 0.19,
+Rusty Chain Mail,37,1,550,30,good,984,750,950,1250,-5.0,0.0,-3.7,0.0,,
+Rusty Chain Mail,37,1,550,30,excellent,3987,1450,2050,14450,-5.0,0.0,-0.2,1.0,of Resist Fire 0.22; of Resist Lightning 0.21; of Resist Acid 0.21; of Resist Cold 0.21,
+Rusty Chain Mail,37,1,550,40,good,1009,750,1050,1250,-5.0,0.0,-3.4,0.0,,
+Rusty Chain Mail,37,1,550,40,excellent,3982,1550,2150,14350,-5.0,0.0,0.6,1.0,of Resist Acid 0.23; of Resist Lightning 0.21; of Resist Fire 0.21; of Resist Cold 0.20,
+Rusty Chain Mail,37,1,550,50,good,1056,850,1050,1350,-5.0,0.0,-2.9,0.0,,
+Rusty Chain Mail,37,1,550,50,excellent,4133,1650,2250,14450,-5.0,0.0,1.8,1.0,of Resist Cold 0.22; of Resist Acid 0.21; of Resist Lightning 0.21; of Resist Fire 0.21,
+Augmented Chain Mail,37,6,900,5,good,1262,1000,1300,1500,-2.0,0.0,3.6,0.0,,40000
+Augmented Chain Mail,37,6,900,5,excellent,4595,1700,2200,14500,-2.0,0.0,6.3,1.0,of Resist Acid 0.20; of Resist Lightning 0.20; of Resist Fire 0.18; of Resist Cold 0.18,40000
+Augmented Chain Mail,37,6,900,10,good,1270,1000,1300,1500,-2.0,0.0,3.7,0.0,,40000
+Augmented Chain Mail,37,6,900,10,excellent,4634,1700,2300,14500,-2.0,0.0,6.9,1.0,of Resist Lightning 0.21; of Resist Acid 0.19; of Resist Cold 0.18; of Resist Fire 0.18,40000
+Augmented Chain Mail,37,6,900,15,good,1283,1000,1300,1500,-2.0,0.0,3.8,0.0,,40000
+Augmented Chain Mail,37,6,900,15,excellent,4596,1800,2300,14400,-2.0,0.0,7.1,1.0,of Resist Cold 0.20; of Resist Lightning 0.19; of Resist Acid 0.19; of Resist Fire 0.19,40000
+Augmented Chain Mail,37,6,900,20,good,1312,1100,1300,1500,-2.0,0.0,4.1,0.0,,40000
+Augmented Chain Mail,37,6,900,20,excellent,4729,1800,2400,14400,-2.0,0.0,7.7,1.0,of Resist Acid 0.20; of Resist Fire 0.19; of Resist Cold 0.18; of Resist Lightning 0.18,40000
+Augmented Chain Mail,37,6,900,25,good,1325,1100,1300,1600,-2.0,0.0,4.2,0.0,,40000
+Augmented Chain Mail,37,6,900,25,excellent,4758,1800,2400,14500,-2.0,0.0,7.9,1.0,of Resist Lightning 0.20; of Resist Fire 0.19; of Resist Cold 0.19; of Resist Acid 0.17,40000
+Augmented Chain Mail,37,6,900,30,good,1322,1100,1300,1600,-2.0,0.0,4.2,0.0,,40000
+Augmented Chain Mail,37,6,900,30,excellent,4637,1900,2400,14500,-2.0,0.0,8.4,1.0,of Resist Cold 0.20; of Resist Lightning 0.20; of Resist Fire 0.19; of Resist Acid 0.18,40000
+Augmented Chain Mail,37,6,900,40,good,1366,1100,1400,1600,-2.0,0.0,4.7,0.0,,40000
+Augmented Chain Mail,37,6,900,40,excellent,4663,2000,2500,14600,-2.0,0.0,9.3,1.0,of Resist Lightning 0.20; of Resist Cold 0.20; of Resist Fire 0.19; of Resist Acid 0.18,40000
+Augmented Chain Mail,37,6,900,50,good,1400,1200,1400,1600,-2.0,0.0,5.0,0.0,,40000
+Augmented Chain Mail,37,6,900,50,excellent,4948,2000,2600,14800,-2.0,0.0,10.5,1.0,of Resist Lightning 0.21; of Resist Cold 0.19; of Resist Acid 0.19; of Resist Fire 0.18,40000
+Bar Chain Mail,37,8,950,5,good,1315,1050,1350,1550,-2.0,0.0,3.7,0.0,,
+Bar Chain Mail,37,8,950,5,excellent,4654,1750,2250,14450,-2.0,0.0,6.5,1.0,of Resist Cold 0.20; of Resist Acid 0.20; of Resist Lightning 0.18; of Resist Fire 0.17,
+Bar Chain Mail,37,8,950,10,good,1323,1050,1350,1550,-2.0,0.0,3.7,0.0,,
+Bar Chain Mail,37,8,950,10,excellent,4554,1850,2350,14450,-2.0,0.0,6.8,1.0,of Resist Acid 0.20; of Resist Fire 0.20; of Resist Cold 0.19; of Resist Lightning 0.19,
+Bar Chain Mail,37,8,950,15,good,1341,1150,1350,1550,-2.0,0.0,3.9,0.0,,
+Bar Chain Mail,37,8,950,15,excellent,4585,1850,2350,14550,-2.0,0.0,7.0,1.0,of Resist Fire 0.21; of Resist Lightning 0.19; of Resist Acid 0.19; of Resist Cold 0.18,
+Bar Chain Mail,37,8,950,20,good,1356,1150,1350,1550,-2.0,0.0,4.1,0.0,,
+Bar Chain Mail,37,8,950,20,excellent,4691,1850,2450,14450,-2.0,0.0,7.5,1.0,of Resist Fire 0.20; of Resist Acid 0.20; of Resist Cold 0.18; of Resist Lightning 0.18,
+Bar Chain Mail,37,8,950,25,good,1369,1150,1350,1550,-2.0,0.0,4.2,0.0,,
+Bar Chain Mail,37,8,950,25,excellent,4735,1950,2450,14650,-2.0,0.0,7.9,1.0,of Resist Fire 0.21; of Resist Acid 0.19; of Resist Cold 0.18; of Resist Lightning 0.18,
+Bar Chain Mail,37,8,950,30,good,1380,1150,1350,1650,-2.0,0.0,4.3,0.0,,
+Bar Chain Mail,37,8,950,30,excellent,4588,1950,2450,14550,-2.0,0.0,8.4,1.0,of Resist Lightning 0.21; of Resist Acid 0.19; of Resist Cold 0.19; of Resist Fire 0.19,
+Bar Chain Mail,37,8,950,40,good,1407,1150,1450,1650,-2.0,0.0,4.6,0.0,,
+Bar Chain Mail,37,8,950,40,excellent,5062,2050,2650,14750,-2.0,0.0,9.7,1.0,of Resist Fire 0.19; of Resist Lightning 0.19; of Resist Cold 0.18; of Resist Acid 0.18,
+Bar Chain Mail,37,8,950,50,good,1449,1250,1450,1650,-2.0,0.0,5.0,0.0,,
+Bar Chain Mail,37,8,950,50,excellent,5039,2150,2650,14950,-2.0,0.0,10.6,1.0,of Resist Fire 0.20; of Resist Cold 0.19; of Resist Lightning 0.19; of Resist Acid 0.18,
+Metal Brigandine Armour,37,9,1100,5,good,1460,1200,1500,1700,-3.0,0.0,3.6,0.0,,30000
+Metal Brigandine Armour,37,9,1100,5,excellent,4687,1900,2400,14600,-3.0,0.0,6.3,1.0,of Resist Cold 0.20; of Resist Fire 0.20; of Resist Acid 0.19; of Resist Lightning 0.18,30000
+Metal Brigandine Armour,37,9,1100,10,good,1469,1200,1500,1700,-3.0,0.0,3.7,0.0,,30000
+Metal Brigandine Armour,37,9,1100,10,excellent,4745,1900,2500,14600,-3.0,0.0,6.6,1.0,of Resist Acid 0.21; of Resist Lightning 0.19; of Resist Fire 0.19; of Resist Cold 0.18,30000
+Metal Brigandine Armour,37,9,1100,15,good,1491,1300,1500,1700,-3.0,0.0,3.9,0.0,,30000
+Metal Brigandine Armour,37,9,1100,15,excellent,4543,1900,2500,14500,-3.0,0.0,7.0,1.0,of Resist Lightning 0.21; of Resist Fire 0.20; of Resist Acid 0.19; of Resist Cold 0.18,30000
+Metal Brigandine Armour,37,9,1100,20,good,1505,1300,1500,1700,-3.0,0.0,4.1,0.0,,30000
+Metal Brigandine Armour,37,9,1100,20,excellent,4921,2000,2500,14700,-3.0,0.0,7.6,1.0,of Resist Acid 0.20; of Resist Fire 0.19; of Resist Cold 0.18; of Resist Lightning 0.18,30000
+Metal Brigandine Armour,37,9,1100,25,good,1511,1300,1500,1700,-3.0,0.0,4.1,0.0,,30000
+Metal Brigandine Armour,37,9,1100,25,excellent,4901,2000,2600,14800,-3.0,0.0,7.9,1.0,of Resist Fire 0.20; of Resist Acid 0.19; of Resist Cold 0.19; of Resist Lightning 0.18,30000
+Metal Brigandine Armour,37,9,1100,30,good,1535,1300,1500,1800,-3.0,0.0,4.3,0.0,,30000
+Metal Brigandine Armour,37,9,1100,30,excellent,4859,2100,2600,14800,-3.0,0.0,8.3,1.0,of Resist Fire 0.21; of Resist Acid 0.20; of Resist Lightning 0.19; of Resist Cold 0.17,30000
+Metal Brigandine Armour,37,9,1100,40,good,1566,1300,1600,1800,-3.0,0.0,4.7,0.0,,30000
+Metal Brigandine Armour,37,9,1100,40,excellent,5221,2200,2700,15100,-3.0,0.0,9.5,1.0,of Resist Acid 0.19; of Resist Cold 0.19; of Resist Fire 0.18; of Resist Lightning 0.18,30000
+Metal Brigandine Armour,37,9,1100,50,good,1594,1300,1600,1800,-3.0,0.0,4.9,0.0,,30000
+Metal Brigandine Armour,37,9,1100,50,excellent,5097,2300,2900,14900,-3.0,0.0,10.5,1.0,of Resist Fire 0.20; of Resist Lightning 0.19; of Resist Acid 0.19; of Resist Cold 0.19,30000
+Partial Plate Armour,37,12,1200,5,good,1563,1300,1600,1800,-3.0,0.0,3.6,0.0,,
+Partial Plate Armour,37,12,1200,5,excellent,4710,2000,2500,14600,-3.0,0.0,6.2,1.0,of Resist Lightning 0.20; of Resist Acid 0.19; of Resist Fire 0.19; of Resist Cold 0.19,
+Partial Plate Armour,37,12,1200,10,good,1575,1300,1600,1800,-3.0,0.0,3.8,0.0,,
+Partial Plate Armour,37,12,1200,10,excellent,4886,2000,2500,14700,-3.0,0.0,6.8,1.0,of Resist Fire 0.20; of Resist Lightning 0.19; of Resist Cold 0.19; of Resist Acid 0.17,
+Partial Plate Armour,37,12,1200,15,good,1577,1300,1600,1800,-3.0,0.0,3.8,0.0,,
+Partial Plate Armour,37,12,1200,15,excellent,4846,2100,2600,14700,-3.0,0.0,7.2,1.0,of Resist Lightning 0.20; of Resist Fire 0.19; of Resist Acid 0.19; of Resist Cold 0.19,
+Partial Plate Armour,37,12,1200,20,good,1603,1400,1600,1800,-3.0,0.0,4.0,0.0,,
+Partial Plate Armour,37,12,1200,20,excellent,4968,2100,2700,14600,-3.0,0.0,7.7,1.0,of Resist Fire 0.21; of Resist Lightning 0.19; of Resist Acid 0.18; of Resist Cold 0.17,
+Partial Plate Armour,37,12,1200,25,good,1614,1400,1600,1800,-3.0,0.0,4.1,0.0,,
+Partial Plate Armour,37,12,1200,25,excellent,4860,2100,2700,14800,-3.0,0.0,8.1,1.0,of Resist Lightning 0.20; of Resist Cold 0.20; of Resist Acid 0.20; of Resist Fire 0.17,
+Partial Plate Armour,37,12,1200,30,good,1633,1400,1600,1900,-3.0,0.0,4.3,0.0,,
+Partial Plate Armour,37,12,1200,30,excellent,5153,2200,2700,14900,-3.0,0.0,8.5,1.0,of Resist Cold 0.21; of Resist Fire 0.19; of Resist Acid 0.18; of Resist Lightning 0.17,
+Partial Plate Armour,37,12,1200,40,good,1683,1400,1700,1900,-3.0,0.0,4.8,0.0,,
+Partial Plate Armour,37,12,1200,40,excellent,5220,2300,2800,15100,-3.0,0.0,9.5,1.0,of Resist Fire 0.20; of Resist Lightning 0.19; of Resist Cold 0.19; of Resist Acid 0.18,
+Partial Plate Armour,37,12,1200,50,good,1698,1500,1700,1900,-3.0,0.0,5.0,0.0,,
+Partial Plate Armour,37,12,1200,50,excellent,5304,2400,3000,15000,-3.0,0.0,10.5,1.0,of Resist Acid 0.22; of Resist Cold 0.18; of Resist Fire 0.18; of Resist Lightning 0.18,
+Metal Lamellar Armour,37,13,1250,5,good,1612,1350,1650,1850,-3.0,0.0,3.6,0.0,,
+Metal Lamellar Armour,37,13,1250,5,excellent,4810,2050,2550,14550,-3.0,0.0,6.4,1.0,of Resist Fire 0.21; of Resist Lightning 0.20; of Resist Acid 0.18; of Resist Cold 0.18,
+Metal Lamellar Armour,37,13,1250,10,good,1620,1350,1650,1850,-3.0,0.0,3.7,0.0,,
+Metal Lamellar Armour,37,13,1250,10,excellent,4940,2050,2650,14750,-3.0,0.0,6.8,1.0,of Resist Acid 0.21; of Resist Cold 0.20; of Resist Lightning 0.19; of Resist Fire 0.16,
+Metal Lamellar Armour,37,13,1250,15,good,1638,1450,1650,1850,-3.0,0.0,3.9,0.0,,
+Metal Lamellar Armour,37,13,1250,15,excellent,4996,2150,2650,14850,-3.0,0.0,7.1,1.0,of Resist Cold 0.20; of Resist Fire 0.20; of Resist Acid 0.18; of Resist Lightning 0.18,
+Metal Lamellar Armour,37,13,1250,20,good,1648,1450,1650,1850,-3.0,0.0,4.0,0.0,,
+Metal Lamellar Armour,37,13,1250,20,excellent,5110,2150,2650,14950,-3.0,0.0,7.7,1.0,of Resist Acid 0.19; of Resist Cold 0.19; of Resist Fire 0.19; of Resist Lightning 0.18,
+Metal Lamellar Armour,37,13,1250,25,good,1671,1450,1650,1950,-3.0,0.0,4.2,0.0,,
+Metal Lamellar Armour,37,13,1250,25,excellent,5186,2150,2750,14950,-3.0,0.0,8.0,1.0,of Resist Fire 0.20; of Resist Acid 0.19; of Resist Cold 0.18; of Resist Lightning 0.18,
+Metal Lamellar Armour,37,13,1250,30,good,1679,1450,1650,1950,-3.0,0.0,4.3,0.0,,
+Metal Lamellar Armour,37,13,1250,30,excellent,5053,2250,2750,14950,-3.0,0.0,8.3,1.0,of Resist Acid 0.20; of Resist Cold 0.20; of Resist Fire 0.19; of Resist Lightning 0.18,
+Metal Lamellar Armour,37,13,1250,40,good,1718,1450,1750,1950,-3.0,0.0,4.7,0.0,,
+Metal Lamellar Armour,37,13,1250,40,excellent,5048,2250,2850,14950,-3.0,0.0,9.4,1.0,of Resist Lightning 0.22; of Resist Fire 0.21; of Resist Acid 0.18; of Resist Cold 0.17,
+Metal Lamellar Armour,37,13,1250,50,good,1753,1550,1750,1950,-3.0,0.0,5.0,0.0,,
+Metal Lamellar Armour,37,13,1250,50,excellent,5295,2450,2950,15050,-3.0,0.0,10.4,1.0,of Resist Acid 0.20; of Resist Fire 0.19; of Resist Cold 0.19; of Resist Lightning 0.19,
+Full Plate Armour,37,15,1350,5,good,1712,1450,1750,1950,-3.0,0.0,3.6,0.0,,50000
+Full Plate Armour,37,15,1350,5,excellent,5028,2150,2650,14850,-3.0,0.0,6.3,1.0,of Resist Lightning 0.20; of Resist Cold 0.20; of Resist Acid 0.18; of Resist Fire 0.18,50000
+Full Plate Armour,37,15,1350,10,good,1731,1450,1750,1950,-3.0,0.0,3.8,0.0,,50000
+Full Plate Armour,37,15,1350,10,excellent,5129,2150,2750,15050,-3.0,0.0,6.7,1.0,of Resist Cold 0.20; of Resist Acid 0.20; of Resist Fire 0.19; of Resist Lightning 0.18,50000
+Full Plate Armour,37,15,1350,15,good,1735,1550,1750,1950,-3.0,0.0,3.9,0.0,,50000
+Full Plate Armour,37,15,1350,15,excellent,5014,2250,2750,14950,-3.0,0.0,7.1,1.0,of Resist Lightning 0.21; of Resist Cold 0.20; of Resist Acid 0.18; of Resist Fire 0.17,50000
+Full Plate Armour,37,15,1350,20,good,1742,1550,1750,1950,-3.0,0.0,3.9,0.0,,50000
+Full Plate Armour,37,15,1350,20,excellent,5273,2250,2750,14950,-3.0,0.0,7.4,1.0,of Resist Cold 0.20; of Resist Lightning 0.19; of Resist Acid 0.18; of Resist Fire 0.18,50000
+Full Plate Armour,37,15,1350,25,good,1762,1550,1750,1950,-3.0,0.0,4.1,0.0,,50000
+Full Plate Armour,37,15,1350,25,excellent,5022,2250,2850,14750,-3.0,0.0,7.9,1.0,of Resist Fire 0.21; of Resist Lightning 0.20; of Resist Cold 0.19; of Resist Acid 0.18,50000
+Full Plate Armour,37,15,1350,30,good,1786,1550,1750,2050,-3.0,0.0,4.4,0.0,,50000
+Full Plate Armour,37,15,1350,30,excellent,5090,2350,2850,15050,-3.0,0.0,8.3,1.0,of Resist Lightning 0.20; of Resist Cold 0.20; of Resist Acid 0.20; of Resist Fire 0.18,50000
+Full Plate Armour,37,15,1350,40,good,1807,1550,1850,2050,-3.0,0.0,4.6,0.0,,50000
+Full Plate Armour,37,15,1350,40,excellent,5404,2450,3050,15150,-3.0,0.0,9.7,1.0,of Resist Cold 0.20; of Resist Fire 0.19; of Resist Lightning 0.18; of Resist Acid 0.17,50000
+Full Plate Armour,37,15,1350,50,good,1854,1650,1850,2150,-3.0,0.0,5.0,0.0,,50000
+Full Plate Armour,37,15,1350,50,excellent,5316,2550,3150,15250,-3.0,0.0,10.5,1.0,of Resist Cold 0.20; of Resist Fire 0.20; of Resist Lightning 0.20; of Resist Acid 0.18,50000
+Ribbed Plate Armour,37,18,1500,5,good,1864,1600,1900,2100,-3.0,0.0,3.6,0.0,,
+Ribbed Plate Armour,37,18,1500,5,excellent,4985,2300,2800,14900,-3.0,0.0,6.2,1.0,of Resist Fire 0.21; of Resist Lightning 0.19; of Resist Cold 0.19; of Resist Acid 0.18,
+Ribbed Plate Armour,37,18,1500,10,good,1868,1600,1900,2100,-3.0,0.0,3.7,0.0,,
+Ribbed Plate Armour,37,18,1500,10,excellent,5097,2400,2800,14900,-3.0,0.0,6.8,1.0,of Resist Fire 0.20; of Resist Lightning 0.19; of Resist Cold 0.18; of Resist Acid 0.18,
+Ribbed Plate Armour,37,18,1500,15,good,1892,1700,1900,2100,-3.0,0.0,3.9,0.0,,
+Ribbed Plate Armour,37,18,1500,15,excellent,5147,2300,2900,15000,-3.0,0.0,7.0,1.0,of Resist Lightning 0.21; of Resist Fire 0.19; of Resist Acid 0.19; of Resist Cold 0.17,
+Ribbed Plate Armour,37,18,1500,20,good,1899,1700,1900,2100,-3.0,0.0,4.0,0.0,,
+Ribbed Plate Armour,37,18,1500,20,excellent,5146,2400,2900,15100,-3.0,0.0,7.6,1.0,of Resist Fire 0.20; of Resist Cold 0.20; of Resist Lightning 0.19; of Resist Acid 0.18,
+Ribbed Plate Armour,37,18,1500,25,good,1909,1700,1900,2100,-3.0,0.0,4.1,0.0,,
+Ribbed Plate Armour,37,18,1500,25,excellent,5360,2400,3000,15100,-3.0,0.0,8.0,1.0,of Resist Fire 0.19; of Resist Cold 0.19; of Resist Acid 0.19; of Resist Lightning 0.18,
+Ribbed Plate Armour,37,18,1500,30,good,1931,1700,1900,2200,-3.0,0.0,4.3,0.0,,
+Ribbed Plate Armour,37,18,1500,30,excellent,5557,2500,3100,15300,-3.0,0.0,8.7,1.0,of Resist Lightning 0.20; of Resist Cold 0.19; of Resist Acid 0.18; of Resist Fire 0.17,
+Ribbed Plate Armour,37,18,1500,40,good,1960,1700,2000,2200,-3.0,0.0,4.6,0.0,,
+Ribbed Plate Armour,37,18,1500,40,excellent,5466,2600,3200,15300,-3.0,0.0,9.8,1.0,of Resist Acid 0.20; of Resist Cold 0.20; of Resist Fire 0.19; of Resist Lightning 0.18,
+Ribbed Plate Armour,37,18,1500,50,good,2000,1800,2000,2200,-3.0,0.0,5.0,0.0,,
+Ribbed Plate Armour,37,18,1500,50,excellent,5543,2600,3300,15400,-3.0,0.0,10.6,1.0,of Resist Fire 0.20; of Resist Cold 0.19; of Resist Lightning 0.19; of Resist Acid 0.18,
+Adamantite Plate Mail,37,30,20000,5,good,20360,20100,20400,20600,-4.0,0.0,3.6,0.0,,300000
+Adamantite Plate Mail,37,30,20000,5,excellent,23763,20800,21300,33500,-4.0,0.0,6.3,1.0,of Resist Lightning 0.20; of Resist Fire 0.19; of Resist Acid 0.18; of Resist Cold 0.17,300000
+Adamantite Plate Mail,37,30,20000,10,good,20374,20100,20400,20600,-4.0,0.0,3.7,0.0,,300000
+Adamantite Plate Mail,37,30,20000,10,excellent,23660,20900,21400,33600,-4.0,0.0,6.9,1.0,of Resist Fire 0.20; of Resist Acid 0.19; of Resist Cold 0.19; of Resist Lightning 0.18,300000
+Adamantite Plate Mail,37,30,20000,15,good,20385,20200,20400,20600,-4.0,0.0,3.9,0.0,,300000
+Adamantite Plate Mail,37,30,20000,15,excellent,23629,20900,21400,33500,-4.0,0.0,7.1,1.0,of Resist Acid 0.20; of Resist Fire 0.20; of Resist Lightning 0.19; of Resist Cold 0.18,300000
+Adamantite Plate Mail,37,30,20000,20,good,20403,20200,20400,20600,-4.0,0.0,4.0,0.0,,300000
+Adamantite Plate Mail,37,30,20000,20,excellent,23908,20900,21500,33700,-4.0,0.0,7.7,1.0,of Resist Fire 0.19; of Resist Acid 0.19; of Resist Lightning 0.18; of Resist Cold 0.17,300000
+Adamantite Plate Mail,37,30,20000,25,good,20409,20200,20400,20600,-4.0,0.0,4.1,0.0,,300000
+Adamantite Plate Mail,37,30,20000,25,excellent,23879,20900,21500,33700,-4.0,0.0,8.0,1.0,of Resist Cold 0.19; of Resist Acid 0.19; of Resist Fire 0.19; of Resist Lightning 0.19,300000
+Adamantite Plate Mail,37,30,20000,30,good,20430,20200,20400,20700,-4.0,0.0,4.3,0.0,,300000
+Adamantite Plate Mail,37,30,20000,30,excellent,23721,21000,21500,33700,-4.0,0.0,8.4,1.0,of Resist Fire 0.20; of Resist Cold 0.20; of Resist Lightning 0.19; of Resist Acid 0.18,300000
+Adamantite Plate Mail,37,30,20000,40,good,20471,20200,20500,20700,-4.0,0.0,4.7,0.0,,300000
+Adamantite Plate Mail,37,30,20000,40,excellent,23944,21100,21700,33700,-4.0,0.0,9.6,1.0,of Resist Cold 0.21; of Resist Acid 0.19; of Resist Fire 0.19; of Resist Lightning 0.16,300000
+Adamantite Plate Mail,37,30,20000,50,good,20490,20200,20500,20700,-4.0,0.0,4.9,0.0,,300000
+Adamantite Plate Mail,37,30,20000,50,excellent,24186,21200,21800,33900,-4.0,0.0,10.6,1.0,of Resist Fire 0.20; of Resist Lightning 0.19; of Resist Acid 0.18; of Resist Cold 0.17,300000
+Mithril Plate Mail,37,25,15000,5,good,15363,15100,15400,15600,-3.0,0.0,3.6,0.0,,150000
+Mithril Plate Mail,37,25,15000,5,excellent,18666,15800,16300,28600,-3.0,0.0,6.4,1.0,of Resist Acid 0.21; of Resist Cold 0.19; of Resist Lightning 0.18; of Resist Fire 0.18,150000
+Mithril Plate Mail,37,25,15000,10,good,15370,15100,15400,15600,-3.0,0.0,3.7,0.0,,150000
+Mithril Plate Mail,37,25,15000,10,excellent,18660,15800,16300,28600,-3.0,0.0,6.6,1.0,of Resist Fire 0.22; of Resist Lightning 0.20; of Resist Cold 0.18; of Resist Acid 0.17,150000
+Mithril Plate Mail,37,25,15000,15,good,15381,15200,15400,15600,-3.0,0.0,3.8,0.0,,150000
+Mithril Plate Mail,37,25,15000,15,excellent,18760,15900,16400,28600,-3.0,0.0,7.0,1.0,of Resist Lightning 0.20; of Resist Fire 0.19; of Resist Acid 0.19; of Resist Cold 0.18,150000
+Mithril Plate Mail,37,25,15000,20,good,15403,15200,15400,15600,-3.0,0.0,4.0,0.0,,150000
+Mithril Plate Mail,37,25,15000,20,excellent,18753,15900,16400,28600,-3.0,0.0,7.6,1.0,of Resist Cold 0.20; of Resist Lightning 0.19; of Resist Fire 0.19; of Resist Acid 0.18,150000
+Mithril Plate Mail,37,25,15000,25,good,15409,15200,15400,15600,-3.0,0.0,4.1,0.0,,150000
+Mithril Plate Mail,37,25,15000,25,excellent,18637,15900,16500,28500,-3.0,0.0,8.0,1.0,of Resist Lightning 0.19; of Resist Cold 0.19; of Resist Fire 0.19; of Resist Acid 0.19,150000
+Mithril Plate Mail,37,25,15000,30,good,15439,15200,15400,15700,-3.0,0.0,4.4,0.0,,150000
+Mithril Plate Mail,37,25,15000,30,excellent,18809,16000,16600,28700,-3.0,0.0,8.4,1.0,of Resist Fire 0.20; of Resist Cold 0.19; of Resist Acid 0.19; of Resist Lightning 0.19,150000
+Mithril Plate Mail,37,25,15000,40,good,15463,15200,15500,15700,-3.0,0.0,4.6,0.0,,150000
+Mithril Plate Mail,37,25,15000,40,excellent,18844,16100,16600,28800,-3.0,0.0,9.3,1.0,of Resist Acid 0.21; of Resist Cold 0.19; of Resist Lightning 0.19; of Resist Fire 0.18,150000
+Mithril Plate Mail,37,25,15000,50,good,15500,15300,15500,15700,-3.0,0.0,5.0,0.0,,150000
+Mithril Plate Mail,37,25,15000,50,excellent,19040,16100,16700,28900,-3.0,0.0,10.4,1.0,of Resist Lightning 0.20; of Resist Fire 0.19; of Resist Acid 0.19; of Resist Cold 0.18,150000
+Mithril Chain Mail,37,20,7000,5,good,7352,7100,7400,7600,-1.0,0.0,3.5,0.0,,105000
+Mithril Chain Mail,37,20,7000,5,excellent,10634,7800,8300,20500,-1.0,0.0,6.5,1.0,of Resist Lightning 0.20; of Resist Fire 0.19; of Resist Acid 0.19; of Resist Cold 0.18,105000
+Mithril Chain Mail,37,20,7000,10,good,7382,7200,7400,7600,-1.0,0.0,3.8,0.0,,105000
+Mithril Chain Mail,37,20,7000,10,excellent,10731,7800,8400,20500,-1.0,0.0,6.7,1.0,of Resist Fire 0.21; of Resist Cold 0.19; of Resist Acid 0.18; of Resist Lightning 0.17,105000
+Mithril Chain Mail,37,20,7000,15,good,7384,7200,7400,7600,-1.0,0.0,3.8,0.0,,105000
+Mithril Chain Mail,37,20,7000,15,excellent,10750,7900,8400,20600,-1.0,0.0,7.2,1.0,of Resist Acid 0.19; of Resist Lightning 0.19; of Resist Fire 0.19; of Resist Cold 0.19,105000
+Mithril Chain Mail,37,20,7000,20,good,7406,7200,7400,7600,-1.0,0.0,4.1,0.0,,105000
+Mithril Chain Mail,37,20,7000,20,excellent,10684,7900,8400,20600,-1.0,0.0,7.4,1.0,of Resist Acid 0.20; of Resist Lightning 0.20; of Resist Cold 0.19; of Resist Fire 0.18,105000
+Mithril Chain Mail,37,20,7000,25,good,7409,7200,7400,7600,-1.0,0.0,4.1,0.0,,105000
+Mithril Chain Mail,37,20,7000,25,excellent,10762,7900,8500,20500,-1.0,0.0,7.8,1.0,of Resist Acid 0.20; of Resist Cold 0.19; of Resist Lightning 0.19; of Resist Fire 0.18,105000
+Mithril Chain Mail,37,20,7000,30,good,7439,7200,7400,7700,-1.0,0.0,4.4,0.0,,105000
+Mithril Chain Mail,37,20,7000,30,excellent,10955,8000,8500,20900,-1.0,0.0,8.3,1.0,of Resist Acid 0.21; of Resist Fire 0.19; of Resist Lightning 0.19; of Resist Cold 0.17,105000
+Mithril Chain Mail,37,20,7000,40,good,7463,7200,7500,7700,-1.0,0.0,4.6,0.0,,105000
+Mithril Chain Mail,37,20,7000,40,excellent,10859,8000,8600,20800,-1.0,0.0,9.4,1.0,of Resist Cold 0.20; of Resist Acid 0.20; of Resist Lightning 0.19; of Resist Fire 0.19,105000
+Mithril Chain Mail,37,20,7000,50,good,7501,7300,7500,7700,-1.0,0.0,5.0,0.0,,105000
+Mithril Chain Mail,37,20,7000,50,excellent,11164,8200,8800,20900,-1.0,0.0,10.6,1.0,of Resist Cold 0.20; of Resist Lightning 0.19; of Resist Fire 0.18; of Resist Acid 0.18,105000
+Double Chain Mail,37,7,850,5,good,1211,950,1250,1450,-2.0,0.0,3.6,0.0,,
+Double Chain Mail,37,7,850,5,excellent,4571,1650,2150,14350,-2.0,0.0,6.5,1.0,of Resist Lightning 0.20; of Resist Cold 0.19; of Resist Acid 0.18; of Resist Fire 0.18,
+Double Chain Mail,37,7,850,10,good,1221,950,1250,1450,-2.0,0.0,3.7,0.0,,
+Double Chain Mail,37,7,850,10,excellent,4599,1650,2250,14450,-2.0,0.0,6.8,1.0,of Resist Fire 0.22; of Resist Cold 0.20; of Resist Lightning 0.18; of Resist Acid 0.16,
+Double Chain Mail,37,7,850,15,good,1229,1050,1250,1450,-2.0,0.0,3.8,0.0,,
+Double Chain Mail,37,7,850,15,excellent,4628,1750,2250,14450,-2.0,0.0,7.2,1.0,of Resist Cold 0.20; of Resist Fire 0.19; of Resist Acid 0.18; of Resist Lightning 0.18,
+Double Chain Mail,37,7,850,20,good,1253,1050,1250,1550,-2.0,0.0,4.0,0.0,,
+Double Chain Mail,37,7,850,20,excellent,4676,1750,2250,14550,-2.0,0.0,7.6,1.0,of Resist Fire 0.20; of Resist Acid 0.20; of Resist Cold 0.18; of Resist Lightning 0.18,
+Double Chain Mail,37,7,850,25,good,1271,1050,1250,1550,-2.0,0.0,4.2,0.0,,
+Double Chain Mail,37,7,850,25,excellent,4780,1750,2350,14550,-2.0,0.0,8.1,1.0,of Resist Fire 0.19; of Resist Cold 0.19; of Resist Lightning 0.18; of Resist Acid 0.18,
+Double Chain Mail,37,7,850,30,good,1280,1050,1250,1550,-2.0,0.0,4.3,0.0,,
+Double Chain Mail,37,7,850,30,excellent,4603,1850,2350,14450,-2.0,0.0,8.4,1.0,of Resist Cold 0.19; of Resist Acid 0.19; of Resist Lightning 0.19; of Resist Fire 0.18,
+Double Chain Mail,37,7,850,40,good,1306,1050,1350,1550,-2.0,0.0,4.6,0.0,,
+Double Chain Mail,37,7,850,40,excellent,4805,1950,2450,14750,-2.0,0.0,9.3,1.0,of Resist Cold 0.21; of Resist Acid 0.20; of Resist Fire 0.18; of Resist Lightning 0.18,
+Double Chain Mail,37,7,850,50,good,1353,1150,1350,1550,-2.0,0.0,5.0,0.0,,
+Double Chain Mail,37,7,850,50,excellent,4930,2050,2650,14650,-2.0,0.0,10.5,1.0,of Resist Cold 0.19; of Resist Fire 0.19; of Resist Lightning 0.19; of Resist Acid 0.18,
+Shield of Deflection,34,10,10000,5,good,10359,10100,10400,10600,0.0,0.0,13.6,0.0,,65000
+Shield of Deflection,34,10,10000,5,excellent,16263,10800,11300,23900,0.0,0.0,15.8,1.0,of Resist Cold 0.22; of Resist Fire 0.21; of Resist Acid 0.20; of Resist Lightning 0.19,65000
+Shield of Deflection,34,10,10000,10,good,10373,10200,10400,10600,0.0,0.0,13.7,0.0,,65000
+Shield of Deflection,34,10,10000,10,excellent,16605,10800,11300,24100,0.0,0.0,16.3,1.0,of Resist Cold 0.21; of Resist Lightning 0.20; of Resist Fire 0.20; of Resist Acid 0.20,65000
+Shield of Deflection,34,10,10000,15,good,10393,10200,10400,10600,0.0,0.0,13.9,0.0,,65000
+Shield of Deflection,34,10,10000,15,excellent,15969,10800,11300,24100,0.0,0.0,16.7,1.0,of Resist Lightning 0.21; of Resist Acid 0.21; of Resist Cold 0.20; of Resist Fire 0.19,65000
+Shield of Deflection,34,10,10000,20,good,10401,10200,10400,10600,0.0,0.0,14.0,0.0,,65000
+Shield of Deflection,34,10,10000,20,excellent,16027,10900,11400,24000,0.0,0.0,17.1,1.0,of Resist Acid 0.22; of Resist Fire 0.20; of Resist Cold 0.20; of Resist Lightning 0.19,65000
+Shield of Deflection,34,10,10000,25,good,10405,10200,10400,10600,0.0,0.0,14.0,0.0,,65000
+Shield of Deflection,34,10,10000,25,excellent,16503,10900,11400,24200,0.0,0.0,17.6,1.0,of Resist Lightning 0.22; of Resist Cold 0.20; of Resist Acid 0.19; of Resist Fire 0.18,65000
+Shield of Deflection,34,10,10000,30,good,10439,10200,10400,10700,0.0,0.0,14.4,0.0,,65000
+Shield of Deflection,34,10,10000,30,excellent,16864,11000,11500,24300,0.0,0.0,18.0,1.0,of Resist Fire 0.23; of Resist Lightning 0.20; of Resist Cold 0.20; of Resist Acid 0.19,65000
+Shield of Deflection,34,10,10000,40,good,10464,10200,10500,10700,0.0,0.0,14.6,0.0,,65000
+Shield of Deflection,34,10,10000,40,excellent,16547,11100,11600,24700,0.0,0.0,19.2,1.0,of Resist Fire 0.21; of Resist Acid 0.21; of Resist Lightning 0.20; of Resist Cold 0.20,65000
+Shield of Deflection,34,10,10000,50,good,10505,10300,10500,10700,0.0,0.0,15.0,0.0,,65000
+Shield of Deflection,34,10,10000,50,excellent,16330,11200,11700,24400,0.0,0.0,20.0,1.0,of Resist Lightning 0.23; of Resist Acid 0.21; of Resist Fire 0.20; of Resist Cold 0.19,65000
+Cloak,35,1,3,5,good,365,103,403,603,0.0,0.0,3.6,0.0,,18651
+Cloak,35,1,3,5,excellent,22478,1003,2503,36103,0.0,0.0,8.6,0.311,of Stealth 0.41; of Protection 0.21; of the Teleri 0.15; of Resistance 0.11,18651
+Cloak,35,1,3,10,good,380,103,403,603,0.0,0.0,3.8,0.0,,18651
+Cloak,35,1,3,10,excellent,21308,1003,2403,36103,0.0,0.0,9.1,0.287,of Stealth 0.43; of Protection 0.21; of the Teleri 0.13; of Resistance 0.11,18651
+Cloak,35,1,3,15,good,393,203,403,603,0.0,0.0,3.9,0.0,,18651
+Cloak,35,1,3,15,excellent,23491,1003,2403,36203,0.0,0.0,9.3,0.305,of Stealth 0.45; of Protection 0.18; of the Teleri 0.13; of Resistance 0.11,18651
+Cloak,35,1,3,20,good,395,203,403,603,0.0,0.0,3.9,0.0,,18651
+Cloak,35,1,3,20,excellent,19047,1103,2403,36203,0.0,0.0,9.8,0.283,of Stealth 0.43; of Protection 0.22; of the Teleri 0.14; of Resistance 0.10,18651
+Cloak,35,1,3,25,good,406,203,403,603,0.0,0.0,4.0,0.0,,18651
+Cloak,35,1,3,25,excellent,22580,1103,2603,36303,0.0,0.0,10.2,0.307,of Stealth 0.42; of Protection 0.21; of the Teleri 0.13; of Resistance 0.12,18651
+Cloak,35,1,3,30,good,445,203,403,703,0.0,0.0,4.4,0.0,,18651
+Cloak,35,1,3,30,excellent,20633,1203,2903,36303,0.0,0.0,10.6,0.273,of Stealth 0.35; of Protection 0.21; of the Magi 0.12; of Resistance 0.11,18651
+Cloak,35,1,3,40,good,469,203,503,703,0.0,0.0,4.7,0.0,,18651
+Cloak,35,1,3,40,excellent,19224,1303,3103,36203,0.0,0.0,11.5,0.273,of Stealth 0.36; of Protection 0.18; of the Magi 0.13; of the Teleri 0.13,18651
+Cloak,35,1,3,50,good,502,303,503,703,0.0,0.0,5.0,0.0,,18651
+Cloak,35,1,3,50,excellent,19890,1403,3103,36403,0.0,0.0,12.6,0.253,of Stealth 0.37; of Protection 0.18; of the Magi 0.12; of the Teleri 0.11,18651
+Shadow Cloak,35,6,4000,5,good,4361,4100,4400,4600,0.0,0.0,7.6,0.0,,40000
+Shadow Cloak,35,6,4000,5,excellent,26118,5000,6400,40000,0.0,0.0,12.6,0.299,of Stealth 0.43; of Protection 0.20; of the Teleri 0.14; of Resistance 0.10,40000
+Shadow Cloak,35,6,4000,10,good,4382,4200,4400,4600,0.0,0.0,7.8,0.0,,40000
+Shadow Cloak,35,6,4000,10,excellent,27307,5000,6400,40100,0.0,0.0,12.9,0.303,of Stealth 0.42; of Protection 0.20; of the Teleri 0.14; of Resistance 0.10,40000
+Shadow Cloak,35,6,4000,15,good,4394,4200,4400,4600,0.0,0.0,7.9,0.0,,40000
+Shadow Cloak,35,6,4000,15,excellent,22349,5000,6400,40100,0.0,0.0,13.3,0.283,of Stealth 0.44; of Protection 0.20; of the Teleri 0.13; of Resistance 0.11,40000
+Shadow Cloak,35,6,4000,20,good,4399,4200,4400,4600,0.0,0.0,8.0,0.0,,40000
+Shadow Cloak,35,6,4000,20,excellent,26078,5100,6500,40300,0.0,0.0,13.9,0.299,of Stealth 0.42; of Protection 0.21; of the Teleri 0.14; of Resistance 0.10,40000
+Shadow Cloak,35,6,4000,25,good,4412,4200,4400,4600,0.0,0.0,8.1,0.0,,40000
+Shadow Cloak,35,6,4000,25,excellent,26656,5100,6500,40300,0.0,0.0,14.2,0.287,of Stealth 0.43; of Protection 0.22; of the Teleri 0.13; of Resistance 0.10,40000
+Shadow Cloak,35,6,4000,30,good,4433,4200,4400,4700,0.0,0.0,8.3,0.0,,40000
+Shadow Cloak,35,6,4000,30,excellent,23010,5200,6900,40200,0.0,0.0,14.3,0.262,of Stealth 0.39; of Protection 0.17; of the Magi 0.12; of the Teleri 0.12,40000
+Shadow Cloak,35,6,4000,40,good,4462,4200,4500,4700,0.0,0.0,8.6,0.0,,40000
+Shadow Cloak,35,6,4000,40,excellent,25031,5300,7100,40300,0.0,0.0,15.9,0.285,of Stealth 0.36; of Protection 0.17; of the Teleri 0.13; of the Magi 0.12,40000
+Shadow Cloak,35,6,4000,50,good,4496,4300,4500,4700,0.0,0.0,9.0,0.0,,40000
+Shadow Cloak,35,6,4000,50,excellent,22637,5400,7100,40300,0.0,0.0,16.7,0.259,of Stealth 0.37; of Protection 0.18; of the Teleri 0.13; of the Magi 0.13,40000
+Set of Leather Gloves,31,1,3,5,good,359,103,403,603,0.0,0.0,3.6,0.0,,32000
+Set of Leather Gloves,31,1,3,5,excellent,6102,1403,2403,4703,1.6,1.7,5.3,0.36,of Free Action 0.29; of Slaying 0.27; of Power 0.20; of Agility 0.17,32000
+Set of Leather Gloves,31,1,3,10,good,379,103,403,603,0.0,0.0,3.8,0.0,,32000
+Set of Leather Gloves,31,1,3,10,excellent,6107,1403,2403,4603,1.6,1.6,5.7,0.355,of Free Action 0.28; of Slaying 0.28; of Power 0.18; of Agility 0.18,32000
+Set of Leather Gloves,31,1,3,15,good,390,203,403,603,0.0,0.0,3.9,0.0,,32000
+Set of Leather Gloves,31,1,3,15,excellent,6587,1403,2403,4803,1.5,1.5,6.0,0.392,of Free Action 0.31; of Slaying 0.26; of Power 0.18; of Agility 0.17,32000
+Set of Leather Gloves,31,1,3,20,good,406,203,403,603,0.0,0.0,4.0,0.0,,32000
+Set of Leather Gloves,31,1,3,20,excellent,6077,1503,2503,4803,1.6,1.6,6.5,0.336,of Slaying 0.28; of Free Action 0.27; of Agility 0.21; of Power 0.18,32000
+Set of Leather Gloves,31,1,3,25,good,409,203,403,603,0.0,0.0,4.1,0.0,,32000
+Set of Leather Gloves,31,1,3,25,excellent,6287,1603,2503,4803,1.6,1.6,6.9,0.343,of Slaying 0.28; of Free Action 0.27; of Agility 0.20; of Power 0.18,32000
+Set of Leather Gloves,31,1,3,30,good,435,203,403,703,0.0,0.0,4.3,0.0,,32000
+Set of Leather Gloves,31,1,3,30,excellent,6382,1603,2603,4903,1.6,1.6,7.4,0.35,of Slaying 0.30; of Free Action 0.28; of Power 0.18; of Agility 0.17,32000
+Set of Leather Gloves,31,1,3,40,good,468,203,503,703,0.0,0.0,4.6,0.0,,32000
+Set of Leather Gloves,31,1,3,40,excellent,6323,1703,2803,7403,1.8,1.7,8.2,0.401,of Slaying 0.27; of Free Action 0.26; of Agility 0.17; of Power 0.16,32000
+Set of Leather Gloves,31,1,3,50,good,496,303,503,703,0.0,0.0,4.9,0.0,,32000
+Set of Leather Gloves,31,1,3,50,excellent,6789,1803,2903,7603,1.8,1.6,9.4,0.391,of Free Action 0.25; of Slaying 0.25; of Agility 0.19; of Power 0.17,32000
+Set of Gauntlets,31,2,35,5,good,393,135,435,635,0.0,0.0,3.6,0.0,,13322
+Set of Gauntlets,31,2,35,5,excellent,6249,1435,2435,4735,1.6,1.6,5.4,0.351,of Free Action 0.28; of Slaying 0.26; of Agility 0.20; of Power 0.19,13322
+Set of Gauntlets,31,2,35,10,good,410,135,435,635,0.0,0.0,3.8,0.0,,13322
+Set of Gauntlets,31,2,35,10,excellent,6530,1435,2435,4835,1.6,1.6,5.6,0.373,of Free Action 0.29; of Slaying 0.26; of Power 0.19; of Agility 0.17,13322
+Set of Gauntlets,31,2,35,15,good,429,235,435,635,0.0,0.0,3.9,0.0,,13322
+Set of Gauntlets,31,2,35,15,excellent,5767,1435,2435,4635,1.5,1.6,5.9,0.354,of Free Action 0.29; of Slaying 0.26; of Agility 0.20; of Power 0.19,13322
+Set of Gauntlets,31,2,35,20,good,435,235,435,635,0.0,0.0,4.0,0.0,,13322
+Set of Gauntlets,31,2,35,20,excellent,6366,1435,2535,4835,1.6,1.6,6.5,0.36,of Free Action 0.29; of Slaying 0.28; of Power 0.18; of Agility 0.18,13322
+Set of Gauntlets,31,2,35,25,good,456,235,435,635,0.0,0.0,4.2,0.0,,13322
+Set of Gauntlets,31,2,35,25,excellent,6414,1535,2635,4935,1.6,1.7,6.7,0.343,of Slaying 0.28; of Free Action 0.27; of Power 0.19; of Agility 0.18,13322
+Set of Gauntlets,31,2,35,30,good,463,235,435,735,0.0,0.0,4.3,0.0,,13322
+Set of Gauntlets,31,2,35,30,excellent,6179,1535,2635,4835,1.6,1.6,7.3,0.353,of Free Action 0.28; of Slaying 0.27; of Agility 0.19; of Power 0.19,13322
+Set of Gauntlets,31,2,35,40,good,505,235,535,735,0.0,0.0,4.7,0.0,,13322
+Set of Gauntlets,31,2,35,40,excellent,6339,1735,2735,5035,1.6,1.6,8.3,0.345,of Slaying 0.29; of Free Action 0.27; of Agility 0.19; of Power 0.18,13322
+Set of Gauntlets,31,2,35,50,good,526,235,535,735,0.0,0.0,4.9,0.0,,13322
+Set of Gauntlets,31,2,35,50,excellent,7792,1835,3135,9635,1.7,2.1,9.5,0.299,of Slaying 0.26; of Free Action 0.22; of Power 0.18; of Agility 0.16,13322
+Set of Cesti,31,5,100,5,good,456,200,500,700,0.0,0.0,3.6,0.0,,110000
+Set of Cesti,31,5,100,5,excellent,6606,1500,2500,4900,1.6,1.7,5.3,0.363,of Free Action 0.28; of Slaying 0.27; of Power 0.18; of Agility 0.18,110000
+Set of Cesti,31,5,100,10,good,477,200,500,700,0.0,0.0,3.8,0.0,,110000
+Set of Cesti,31,5,100,10,excellent,6227,1500,2600,4800,1.6,1.6,5.6,0.349,of Free Action 0.28; of Slaying 0.27; of Power 0.19; of Agility 0.18,110000
+Set of Cesti,31,5,100,15,good,488,200,500,700,0.0,0.0,3.9,0.0,,110000
+Set of Cesti,31,5,100,15,excellent,5879,1500,2600,4800,1.7,1.6,5.9,0.338,of Slaying 0.29; of Free Action 0.27; of Power 0.19; of Agility 0.19,110000
+Set of Cesti,31,5,100,20,good,498,300,500,700,0.0,0.0,4.0,0.0,,110000
+Set of Cesti,31,5,100,20,excellent,6112,1600,2600,4800,1.6,1.6,6.3,0.349,of Free Action 0.28; of Slaying 0.25; of Power 0.21; of Agility 0.19,110000
+Set of Cesti,31,5,100,25,good,513,300,500,800,0.0,0.0,4.1,0.0,,110000
+Set of Cesti,31,5,100,25,excellent,6200,1600,2600,4800,1.6,1.5,6.8,0.375,of Free Action 0.30; of Slaying 0.27; of Agility 0.18; of Power 0.17,110000
+Set of Cesti,31,5,100,30,good,532,300,500,800,0.0,0.0,4.3,0.0,,110000
+Set of Cesti,31,5,100,30,excellent,6405,1700,2700,5000,1.6,1.6,7.3,0.353,of Slaying 0.29; of Free Action 0.28; of Power 0.18; of Agility 0.18,110000
+Set of Cesti,31,5,100,40,good,574,300,600,800,0.0,0.0,4.7,0.0,,110000
+Set of Cesti,31,5,100,40,excellent,6438,1800,2800,5000,1.6,1.6,8.3,0.342,of Slaying 0.27; of Free Action 0.27; of Agility 0.20; of Power 0.19,110000
+Set of Cesti,31,5,100,50,good,597,300,600,800,0.0,0.0,5.0,0.0,,110000
+Set of Cesti,31,5,100,50,excellent,6593,1900,3000,9300,1.6,1.9,9.3,0.327,of Free Action 0.27; of Slaying 0.24; of Agility 0.18; of Power 0.17,110000
+Small Leather Shield,34,2,30,5,good,392,130,430,630,0.0,0.0,3.6,0.0,,
+Small Leather Shield,34,2,30,5,excellent,5475,830,1330,13830,0.0,0.0,5.8,1.0,of Resist Cold 0.21; of Resist Lightning 0.21; of Resist Fire 0.21; of Resist Acid 0.20,
+Small Leather Shield,34,2,30,10,good,405,130,430,630,0.0,0.0,3.8,0.0,,
+Small Leather Shield,34,2,30,10,excellent,6274,830,1330,13930,0.0,0.0,6.4,1.0,of Resist Fire 0.21; of Resist Lightning 0.21; of Resist Cold 0.20; of Resist Acid 0.19,
+Small Leather Shield,34,2,30,15,good,419,230,430,630,0.0,0.0,3.9,0.0,,
+Small Leather Shield,34,2,30,15,excellent,5712,830,1330,13830,0.0,0.0,6.6,1.0,of Resist Lightning 0.21; of Resist Fire 0.21; of Resist Acid 0.21; of Resist Cold 0.20,
+Small Leather Shield,34,2,30,20,good,429,230,430,630,0.0,0.0,4.0,0.0,,
+Small Leather Shield,34,2,30,20,excellent,6117,930,1430,14130,0.0,0.0,7.1,1.0,of Resist Cold 0.22; of Resist Fire 0.21; of Resist Acid 0.20; of Resist Lightning 0.20,
+Small Leather Shield,34,2,30,25,good,443,230,430,630,0.0,0.0,4.1,0.0,,
+Small Leather Shield,34,2,30,25,excellent,5401,930,1430,13930,0.0,0.0,7.4,1.0,of Resist Cold 0.22; of Resist Fire 0.22; of Resist Acid 0.20; of Resist Lightning 0.19,
+Small Leather Shield,34,2,30,30,good,467,230,430,730,0.0,0.0,4.4,0.0,,
+Small Leather Shield,34,2,30,30,excellent,6000,930,1530,14230,0.0,0.0,8.0,1.0,of Resist Cold 0.22; of Resist Lightning 0.21; of Resist Acid 0.20; of Resist Fire 0.19,
+Small Leather Shield,34,2,30,40,good,494,230,530,730,0.0,0.0,4.6,0.0,,
+Small Leather Shield,34,2,30,40,excellent,6394,1130,1630,14330,0.0,0.0,8.9,1.0,of Resist Fire 0.22; of Resist Acid 0.20; of Resist Lightning 0.20; of Resist Cold 0.20,
+Small Leather Shield,34,2,30,50,good,531,330,530,830,0.0,0.0,5.0,0.0,,
+Small Leather Shield,34,2,30,50,excellent,7186,1230,1730,14530,0.0,0.0,10.1,1.0,of Resist Lightning 0.21; of Resist Cold 0.21; of Resist Fire 0.20; of Resist Acid 0.20,
+Large Leather Shield,34,4,120,5,good,484,220,520,720,0.0,0.0,3.6,0.0,,14600
+Large Leather Shield,34,4,120,5,excellent,5955,920,1420,14020,0.0,0.0,5.9,1.0,of Resist Cold 0.22; of Resist Fire 0.21; of Resist Acid 0.19; of Resist Lightning 0.19,14600
+Large Leather Shield,34,4,120,10,good,492,220,520,720,0.0,0.0,3.7,0.0,,14600
+Large Leather Shield,34,4,120,10,excellent,5869,920,1420,13920,0.0,0.0,6.2,1.0,of Resist Acid 0.22; of Resist Fire 0.21; of Resist Cold 0.20; of Resist Lightning 0.18,14600
+Large Leather Shield,34,4,120,15,good,509,320,520,720,0.0,0.0,3.9,0.0,,14600
+Large Leather Shield,34,4,120,15,excellent,6160,920,1520,14220,0.0,0.0,6.6,1.0,of Resist Acid 0.21; of Resist Cold 0.20; of Resist Fire 0.20; of Resist Lightning 0.19,14600
+Large Leather Shield,34,4,120,20,good,523,320,520,720,0.0,0.0,4.0,0.0,,14600
+Large Leather Shield,34,4,120,20,excellent,6855,1020,1520,14220,0.0,0.0,7.1,1.0,of Resist Lightning 0.22; of Resist Cold 0.21; of Resist Fire 0.20; of Resist Acid 0.19,14600
+Large Leather Shield,34,4,120,25,good,526,320,520,720,0.0,0.0,4.1,0.0,,14600
+Large Leather Shield,34,4,120,25,excellent,6621,1020,1520,14220,0.0,0.0,7.4,1.0,of Resist Acid 0.22; of Resist Lightning 0.20; of Resist Fire 0.20; of Resist Cold 0.20,14600
+Large Leather Shield,34,4,120,30,good,540,320,520,820,0.0,0.0,4.2,0.0,,14600
+Large Leather Shield,34,4,120,30,excellent,6318,1120,1620,14220,0.0,0.0,7.8,1.0,of Resist Lightning 0.22; of Resist Fire 0.21; of Resist Acid 0.21; of Resist Cold 0.20,14600
+Large Leather Shield,34,4,120,40,good,583,320,620,820,0.0,0.0,4.6,0.0,,14600
+Large Leather Shield,34,4,120,40,excellent,6503,1220,1720,14520,0.0,0.0,9.1,1.0,of Resist Acid 0.21; of Resist Fire 0.20; of Resist Lightning 0.20; of Resist Cold 0.19,14600
+Large Leather Shield,34,4,120,50,good,620,420,620,920,0.0,0.0,5.0,0.0,,14600
+Large Leather Shield,34,4,120,50,excellent,6381,1220,1820,14420,0.0,0.0,9.8,1.0,of Resist Acid 0.22; of Resist Cold 0.21; of Resist Lightning 0.21; of Resist Fire 0.18,14600
+Small Metal Shield,34,3,50,5,good,409,150,450,650,0.0,0.0,3.6,0.0,,60000
+Small Metal Shield,34,3,50,5,excellent,5876,850,1350,13950,0.0,0.0,5.9,1.0,of Resist Fire 0.21; of Resist Acid 0.21; of Resist Lightning 0.21; of Resist Cold 0.19,60000
+Small Metal Shield,34,3,50,10,good,430,150,450,650,0.0,0.0,3.8,0.0,,60000
+Small Metal Shield,34,3,50,10,excellent,6198,850,1350,14050,0.0,0.0,6.3,1.0,of Resist Lightning 0.22; of Resist Cold 0.21; of Resist Acid 0.20; of Resist Fire 0.19,60000
+Small Metal Shield,34,3,50,15,good,448,250,450,650,0.0,0.0,4.0,0.0,,60000
+Small Metal Shield,34,3,50,15,excellent,5601,950,1350,13850,0.0,0.0,6.5,1.0,of Resist Acid 0.22; of Resist Fire 0.21; of Resist Cold 0.21; of Resist Lightning 0.20,60000
+Small Metal Shield,34,3,50,20,good,452,250,450,650,0.0,0.0,4.0,0.0,,60000
+Small Metal Shield,34,3,50,20,excellent,6274,950,1450,14150,0.0,0.0,7.1,1.0,of Resist Cold 0.22; of Resist Acid 0.21; of Resist Fire 0.19; of Resist Lightning 0.19,60000
+Small Metal Shield,34,3,50,25,good,465,250,450,650,0.0,0.0,4.1,0.0,,60000
+Small Metal Shield,34,3,50,25,excellent,6778,950,1450,14550,0.0,0.0,7.6,1.0,of Resist Fire 0.21; of Resist Cold 0.21; of Resist Lightning 0.20; of Resist Acid 0.19,60000
+Small Metal Shield,34,3,50,30,good,482,250,450,750,0.0,0.0,4.3,0.0,,60000
+Small Metal Shield,34,3,50,30,excellent,6491,1050,1550,14350,0.0,0.0,8.1,1.0,of Resist Fire 0.22; of Resist Cold 0.20; of Resist Acid 0.20; of Resist Lightning 0.18,60000
+Small Metal Shield,34,3,50,40,good,514,250,550,750,0.0,0.0,4.6,0.0,,60000
+Small Metal Shield,34,3,50,40,excellent,6583,1150,1650,14450,0.0,0.0,9.0,1.0,of Resist Acid 0.22; of Resist Fire 0.21; of Resist Cold 0.20; of Resist Lightning 0.18,60000
+Small Metal Shield,34,3,50,50,good,549,250,550,750,0.0,0.0,5.0,0.0,,60000
+Small Metal Shield,34,3,50,50,excellent,6921,1150,1750,14550,0.0,0.0,10.0,1.0,of Resist Acid 0.21; of Resist Lightning 0.21; of Resist Fire 0.20; of Resist Cold 0.19,60000
+Large Metal Shield,34,5,200,5,good,560,300,600,800,0.0,0.0,3.6,0.0,,160000
+Large Metal Shield,34,5,200,5,excellent,6440,1000,1500,14200,0.0,0.0,5.8,1.0,of Resist Lightning 0.21; of Resist Cold 0.21; of Resist Acid 0.20; of Resist Fire 0.19,160000
+Large Metal Shield,34,5,200,10,good,573,300,600,800,0.0,0.0,3.7,0.0,,160000
+Large Metal Shield,34,5,200,10,excellent,6089,1000,1500,14100,0.0,0.0,6.2,1.0,of Resist Acid 0.21; of Resist Cold 0.21; of Resist Fire 0.20; of Resist Lightning 0.20,160000
+Large Metal Shield,34,5,200,15,good,587,400,600,800,0.0,0.0,3.9,0.0,,160000
+Large Metal Shield,34,5,200,15,excellent,6886,1000,1500,14400,0.0,0.0,6.7,1.0,of Resist Fire 0.22; of Resist Cold 0.21; of Resist Lightning 0.20; of Resist Acid 0.19,160000
+Large Metal Shield,34,5,200,20,good,594,400,600,800,0.0,0.0,3.9,0.0,,160000
+Large Metal Shield,34,5,200,20,excellent,6098,1100,1600,14300,0.0,0.0,7.2,1.0,of Resist Lightning 0.22; of Resist Acid 0.21; of Resist Cold 0.19; of Resist Fire 0.19,160000
+Large Metal Shield,34,5,200,25,good,617,400,600,800,0.0,0.0,4.2,0.0,,160000
+Large Metal Shield,34,5,200,25,excellent,6094,1100,1600,14200,0.0,0.0,7.5,1.0,of Resist Acid 0.22; of Resist Lightning 0.21; of Resist Cold 0.20; of Resist Fire 0.19,160000
+Large Metal Shield,34,5,200,30,good,635,400,600,900,0.0,0.0,4.3,0.0,,160000
+Large Metal Shield,34,5,200,30,excellent,5803,1200,1700,14300,0.0,0.0,7.9,1.0,of Resist Lightning 0.22; of Resist Acid 0.21; of Resist Fire 0.21; of Resist Cold 0.18,160000
+Large Metal Shield,34,5,200,40,good,664,400,700,900,0.0,0.0,4.6,0.0,,160000
+Large Metal Shield,34,5,200,40,excellent,5733,1300,1800,14300,0.0,0.0,8.9,1.0,of Resist Fire 0.22; of Resist Acid 0.22; of Resist Cold 0.21; of Resist Lightning 0.20,160000
+Large Metal Shield,34,5,200,50,good,697,500,700,900,0.0,0.0,5.0,0.0,,160000
+Large Metal Shield,34,5,200,50,excellent,7020,1300,1900,14600,0.0,0.0,10.1,1.0,of Resist Fire 0.21; of Resist Lightning 0.21; of Resist Cold 0.20; of Resist Acid 0.18,160000
+Black Dragon Scale Mail,38,1,40000,5,good,40362,40100,40400,40600,-2.0,0.0,13.6,0.0,,
+Black Dragon Scale Mail,38,1,40000,10,good,40375,40100,40400,40600,-2.0,0.0,13.8,0.0,,
+Black Dragon Scale Mail,38,1,40000,15,good,40392,40200,40400,40600,-2.0,0.0,13.9,0.0,,
+Black Dragon Scale Mail,38,1,40000,20,good,40401,40200,40400,40600,-2.0,0.0,14.0,0.0,,
+Black Dragon Scale Mail,38,1,40000,25,good,40403,40200,40400,40600,-2.0,0.0,14.0,0.0,,
+Black Dragon Scale Mail,38,1,40000,30,good,40427,40200,40400,40700,-2.0,0.0,14.3,0.0,,
+Black Dragon Scale Mail,38,1,40000,40,good,40465,40200,40500,40700,-2.0,0.0,14.7,0.0,,
+Black Dragon Scale Mail,38,1,40000,50,good,40499,40300,40500,40700,-2.0,0.0,15.0,0.0,,
+Blue Dragon Scale Mail,38,2,40000,5,good,40369,40100,40400,40600,-2.0,0.0,13.7,0.0,,
+Blue Dragon Scale Mail,38,2,40000,10,good,40362,40100,40400,40600,-2.0,0.0,13.6,0.0,,
+Blue Dragon Scale Mail,38,2,40000,15,good,40388,40200,40400,40600,-2.0,0.0,13.9,0.0,,
+Blue Dragon Scale Mail,38,2,40000,20,good,40408,40200,40400,40600,-2.0,0.0,14.1,0.0,,
+Blue Dragon Scale Mail,38,2,40000,25,good,40411,40200,40400,40700,-2.0,0.0,14.1,0.0,,
+Blue Dragon Scale Mail,38,2,40000,30,good,40431,40200,40400,40700,-2.0,0.0,14.3,0.0,,
+Blue Dragon Scale Mail,38,2,40000,40,good,40463,40200,40500,40700,-2.0,0.0,14.6,0.0,,
+Blue Dragon Scale Mail,38,2,40000,50,good,40500,40300,40500,40700,-2.0,0.0,15.0,0.0,,
+White Dragon Scale Mail,38,3,40000,5,good,40359,40100,40400,40600,-2.0,0.0,13.6,0.0,,
+White Dragon Scale Mail,38,3,40000,10,good,40375,40100,40400,40600,-2.0,0.0,13.7,0.0,,
+White Dragon Scale Mail,38,3,40000,15,good,40385,40100,40400,40600,-2.0,0.0,13.8,0.0,,
+White Dragon Scale Mail,38,3,40000,20,good,40395,40200,40400,40600,-2.0,0.0,14.0,0.0,,
+White Dragon Scale Mail,38,3,40000,25,good,40414,40200,40400,40600,-2.0,0.0,14.1,0.0,,
+White Dragon Scale Mail,38,3,40000,30,good,40437,40200,40400,40700,-2.0,0.0,14.4,0.0,,
+White Dragon Scale Mail,38,3,40000,40,good,40464,40200,40500,40700,-2.0,0.0,14.6,0.0,,
+White Dragon Scale Mail,38,3,40000,50,good,40493,40200,40500,40700,-2.0,0.0,14.9,0.0,,
+Red Dragon Scale Mail,38,4,40000,5,good,40362,40100,40400,40600,-2.0,0.0,13.6,0.0,,
+Red Dragon Scale Mail,38,4,40000,10,good,40375,40100,40400,40600,-2.0,0.0,13.7,0.0,,
+Red Dragon Scale Mail,38,4,40000,15,good,40391,40200,40400,40600,-2.0,0.0,13.9,0.0,,
+Red Dragon Scale Mail,38,4,40000,20,good,40391,40200,40400,40600,-2.0,0.0,13.9,0.0,,
+Red Dragon Scale Mail,38,4,40000,25,good,40415,40200,40400,40600,-2.0,0.0,14.2,0.0,,
+Red Dragon Scale Mail,38,4,40000,30,good,40429,40200,40400,40700,-2.0,0.0,14.3,0.0,,
+Red Dragon Scale Mail,38,4,40000,40,good,40466,40200,40500,40700,-2.0,0.0,14.7,0.0,,
+Red Dragon Scale Mail,38,4,40000,50,good,40503,40300,40500,40700,-2.0,0.0,15.0,0.0,,
+Green Dragon Scale Mail,38,5,60000,5,good,60361,60100,60400,60600,-2.0,0.0,13.6,0.0,,
+Green Dragon Scale Mail,38,5,60000,10,good,60366,60100,60400,60600,-2.0,0.0,13.7,0.0,,
+Green Dragon Scale Mail,38,5,60000,15,good,60387,60200,60400,60600,-2.0,0.0,13.9,0.0,,
+Green Dragon Scale Mail,38,5,60000,20,good,60402,60200,60400,60600,-2.0,0.0,14.0,0.0,,
+Green Dragon Scale Mail,38,5,60000,25,good,60409,60200,60400,60600,-2.0,0.0,14.1,0.0,,
+Green Dragon Scale Mail,38,5,60000,30,good,60437,60200,60400,60700,-2.0,0.0,14.4,0.0,,
+Green Dragon Scale Mail,38,5,60000,40,good,60468,60200,60500,60700,-2.0,0.0,14.7,0.0,,
+Green Dragon Scale Mail,38,5,60000,50,good,60502,60300,60500,60700,-2.0,0.0,15.0,0.0,,
+Multi-Hued Dragon Scale Mail,38,6,150000,5,good,150358,150100,150400,150600,-2.0,0.0,13.6,0.0,,400000
+Multi-Hued Dragon Scale Mail,38,6,150000,10,good,150373,150100,150400,150600,-2.0,0.0,13.7,0.0,,400000
+Multi-Hued Dragon Scale Mail,38,6,150000,15,good,150392,150200,150400,150600,-2.0,0.0,13.9,0.0,,400000
+Multi-Hued Dragon Scale Mail,38,6,150000,20,good,150401,150200,150400,150600,-2.0,0.0,14.0,0.0,,400000
+Multi-Hued Dragon Scale Mail,38,6,150000,25,good,150416,150200,150400,150700,-2.0,0.0,14.2,0.0,,400000
+Multi-Hued Dragon Scale Mail,38,6,150000,30,good,150432,150200,150400,150700,-2.0,0.0,14.3,0.0,,400000
+Multi-Hued Dragon Scale Mail,38,6,150000,40,good,150468,150200,150500,150700,-2.0,0.0,14.7,0.0,,400000
+Multi-Hued Dragon Scale Mail,38,6,150000,50,good,150501,150300,150500,150700,-2.0,0.0,15.0,0.0,,400000
+Pseudo-Dragon Scale Mail,38,10,60000,5,good,60357,60100,60400,60600,-2.0,0.0,13.6,0.0,,
+Pseudo-Dragon Scale Mail,38,10,60000,10,good,60381,60100,60400,60600,-2.0,0.0,13.8,0.0,,
+Pseudo-Dragon Scale Mail,38,10,60000,15,good,60393,60200,60400,60600,-2.0,0.0,13.9,0.0,,
+Pseudo-Dragon Scale Mail,38,10,60000,20,good,60400,60200,60400,60600,-2.0,0.0,14.0,0.0,,
+Pseudo-Dragon Scale Mail,38,10,60000,25,good,60417,60200,60400,60700,-2.0,0.0,14.2,0.0,,
+Pseudo-Dragon Scale Mail,38,10,60000,30,good,60431,60200,60400,60700,-2.0,0.0,14.3,0.0,,
+Pseudo-Dragon Scale Mail,38,10,60000,40,good,60454,60200,60500,60700,-2.0,0.0,14.5,0.0,,
+Pseudo-Dragon Scale Mail,38,10,60000,50,good,60494,60300,60500,60700,-2.0,0.0,14.9,0.0,,
+Law Dragon Scale Mail,38,12,80000,5,good,80354,80100,80400,80600,-2.0,0.0,13.5,0.0,,
+Law Dragon Scale Mail,38,12,80000,10,good,80376,80100,80400,80600,-2.0,0.0,13.8,0.0,,
+Law Dragon Scale Mail,38,12,80000,15,good,80392,80200,80400,80600,-2.0,0.0,13.9,0.0,,
+Law Dragon Scale Mail,38,12,80000,20,good,80410,80200,80400,80600,-2.0,0.0,14.1,0.0,,
+Law Dragon Scale Mail,38,12,80000,25,good,80420,80200,80400,80600,-2.0,0.0,14.2,0.0,,
+Law Dragon Scale Mail,38,12,80000,30,good,80429,80200,80400,80700,-2.0,0.0,14.3,0.0,,
+Law Dragon Scale Mail,38,12,80000,40,good,80460,80200,80500,80700,-2.0,0.0,14.6,0.0,,
+Law Dragon Scale Mail,38,12,80000,50,good,80510,80300,80500,80800,-2.0,0.0,15.1,0.0,,
+Bronze Dragon Scale Mail,38,14,40000,5,good,40363,40100,40400,40600,-2.0,0.0,13.6,0.0,,
+Bronze Dragon Scale Mail,38,14,40000,10,good,40376,40100,40400,40600,-2.0,0.0,13.8,0.0,,
+Bronze Dragon Scale Mail,38,14,40000,15,good,40381,40100,40400,40600,-2.0,0.0,13.8,0.0,,
+Bronze Dragon Scale Mail,38,14,40000,20,good,40399,40200,40400,40600,-2.0,0.0,14.0,0.0,,
+Bronze Dragon Scale Mail,38,14,40000,25,good,40413,40200,40400,40600,-2.0,0.0,14.1,0.0,,
+Bronze Dragon Scale Mail,38,14,40000,30,good,40426,40200,40400,40700,-2.0,0.0,14.3,0.0,,
+Bronze Dragon Scale Mail,38,14,40000,40,good,40465,40200,40500,40700,-2.0,0.0,14.7,0.0,,
+Bronze Dragon Scale Mail,38,14,40000,50,good,40501,40200,40500,40800,-2.0,0.0,15.0,0.0,,
+Gold Dragon Scale Mail,38,16,40000,5,good,40360,40100,40400,40600,-2.0,0.0,13.6,0.0,,
+Gold Dragon Scale Mail,38,16,40000,10,good,40377,40200,40400,40600,-2.0,0.0,13.8,0.0,,
+Gold Dragon Scale Mail,38,16,40000,15,good,40382,40100,40400,40600,-2.0,0.0,13.8,0.0,,
+Gold Dragon Scale Mail,38,16,40000,20,good,40401,40200,40400,40600,-2.0,0.0,14.0,0.0,,
+Gold Dragon Scale Mail,38,16,40000,25,good,40420,40200,40400,40700,-2.0,0.0,14.2,0.0,,
+Gold Dragon Scale Mail,38,16,40000,30,good,40428,40200,40400,40700,-2.0,0.0,14.3,0.0,,
+Gold Dragon Scale Mail,38,16,40000,40,good,40463,40200,40500,40700,-2.0,0.0,14.6,0.0,,
+Gold Dragon Scale Mail,38,16,40000,50,good,40510,40300,40500,40700,-2.0,0.0,15.1,0.0,,
+Chaos Dragon Scale Mail,38,18,80000,5,good,80361,80100,80400,80600,-2.0,0.0,13.6,0.0,,
+Chaos Dragon Scale Mail,38,18,80000,10,good,80377,80100,80400,80600,-2.0,0.0,13.8,0.0,,
+Chaos Dragon Scale Mail,38,18,80000,15,good,80383,80100,80400,80600,-2.0,0.0,13.8,0.0,,
+Chaos Dragon Scale Mail,38,18,80000,20,good,80392,80200,80400,80600,-2.0,0.0,13.9,0.0,,
+Chaos Dragon Scale Mail,38,18,80000,25,good,80409,80200,80400,80600,-2.0,0.0,14.1,0.0,,
+Chaos Dragon Scale Mail,38,18,80000,30,good,80433,80200,80400,80700,-2.0,0.0,14.3,0.0,,
+Chaos Dragon Scale Mail,38,18,80000,40,good,80451,80200,80400,80700,-2.0,0.0,14.5,0.0,,
+Chaos Dragon Scale Mail,38,18,80000,50,good,80490,80300,80500,80700,-2.0,0.0,14.9,0.0,,
+Balance Dragon Scale Mail,38,20,100000,5,good,100365,100100,100400,100600,-2.0,0.0,13.7,0.0,,400000
+Balance Dragon Scale Mail,38,20,100000,10,good,100365,100100,100400,100600,-2.0,0.0,13.7,0.0,,400000
+Balance Dragon Scale Mail,38,20,100000,15,good,100386,100200,100400,100600,-2.0,0.0,13.9,0.0,,400000
+Balance Dragon Scale Mail,38,20,100000,20,good,100408,100200,100400,100600,-2.0,0.0,14.1,0.0,,400000
+Balance Dragon Scale Mail,38,20,100000,25,good,100411,100200,100400,100600,-2.0,0.0,14.1,0.0,,400000
+Balance Dragon Scale Mail,38,20,100000,30,good,100426,100200,100400,100700,-2.0,0.0,14.3,0.0,,400000
+Balance Dragon Scale Mail,38,20,100000,40,good,100465,100200,100500,100700,-2.0,0.0,14.6,0.0,,400000
+Balance Dragon Scale Mail,38,20,100000,50,good,100499,100300,100500,100700,-2.0,0.0,15.0,0.0,,400000
+Power Dragon Scale Mail,38,30,300000,5,good,300359,300100,300400,300600,-3.0,0.0,18.6,0.0,,500000
+Power Dragon Scale Mail,38,30,300000,10,good,300369,300100,300400,300600,-3.0,0.0,18.7,0.0,,500000
+Power Dragon Scale Mail,38,30,300000,15,good,300380,300100,300400,300600,-3.0,0.0,18.8,0.0,,500000
+Power Dragon Scale Mail,38,30,300000,20,good,300402,300200,300400,300600,-3.0,0.0,19.0,0.0,,500000
+Power Dragon Scale Mail,38,30,300000,25,good,300417,300200,300400,300700,-3.0,0.0,19.2,0.0,,500000
+Power Dragon Scale Mail,38,30,300000,30,good,300429,300200,300400,300700,-3.0,0.0,19.3,0.0,,500000
+Power Dragon Scale Mail,38,30,300000,40,good,300459,300200,300500,300700,-3.0,0.0,19.6,0.0,,500000
+Power Dragon Scale Mail,38,30,300000,50,good,300491,300300,300500,300700,-3.0,0.0,19.9,0.0,,500000
+Mithril Shot,16,2,20,5,good,56,40,55,75,8.7,8.6,0.0,0.0,,
+Mithril Shot,16,2,20,5,excellent,103,80,105,130,10.3,10.3,0.0,0.0,of Wounding 0.14; of Slay Evil 0.09; of Slay Animal 0.09; of Frost 0.09,
+Mithril Shot,16,2,20,10,good,57,40,55,75,8.7,8.8,0.0,0.0,,
+Mithril Shot,16,2,20,10,excellent,106,80,105,135,10.7,10.5,0.0,0.0,of Wounding 0.13; of Flame 0.10; of Slay Evil 0.09; of Venom 0.09,
+Mithril Shot,16,2,20,15,good,59,45,60,75,8.8,8.9,0.0,0.0,,
+Mithril Shot,16,2,20,15,excellent,111,85,110,140,10.9,11.1,0.0,0.0,of Wounding 0.13; of Venom 0.11; of Flame 0.10; of Frost 0.10,
+Mithril Shot,16,2,20,20,good,60,45,60,75,9.0,9.0,0.0,0.0,,
+Mithril Shot,16,2,20,20,excellent,114,85,110,145,11.4,11.4,0.0,0.0,of Wounding 0.14; of Flame 0.10; of Slay Animal 0.10; of Venom 0.10,
+Mithril Shot,16,2,20,25,good,61,45,60,75,9.1,9.0,0.0,0.0,,
+Mithril Shot,16,2,20,25,excellent,119,90,120,150,11.8,11.9,0.0,0.0,of Wounding 0.13; of Venom 0.11; of Slay Animal 0.11; of Flame 0.10,
+Mithril Shot,16,2,20,30,good,63,45,65,80,9.3,9.3,0.0,0.0,,
+Mithril Shot,16,2,20,30,excellent,123,95,125,155,12.2,12.4,0.0,0.0,of Wounding 0.14; of Venom 0.10; of Frost 0.09; of Flame 0.09,
+Mithril Shot,16,2,20,40,good,66,50,65,85,9.6,9.6,0.0,0.0,,
+Mithril Shot,16,2,20,40,excellent,136,105,135,170,13.5,13.5,0.0,0.0,of Wounding 0.13; of Venom 0.10; of Slay Evil 0.09; of Flame 0.09,
+Mithril Shot,16,2,20,50,good,69,55,70,85,9.9,10.0,0.0,0.0,,
+Mithril Shot,16,2,20,50,excellent,145,110,145,180,14.6,14.3,0.0,0.0,of Wounding 0.13; of Venom 0.10; of Slay Animal 0.10; of Slay Evil 0.10,
+Mithril Arrow,17,3,25,5,good,61,45,60,75,3.6,3.5,0.0,0.0,,
+Mithril Arrow,17,3,25,5,excellent,109,85,105,135,5.4,5.3,0.0,0.0,of Wounding 0.16; of Frost 0.13; of Flame 0.12; of Slay Animal 0.11,
+Mithril Arrow,17,3,25,10,good,63,45,60,80,3.8,3.7,0.0,0.0,,
+Mithril Arrow,17,3,25,10,excellent,112,85,110,140,5.8,5.6,0.0,0.0,of Wounding 0.18; of Frost 0.12; of Flame 0.11; of Slay Undead 0.09,
+Mithril Arrow,17,3,25,15,good,64,50,65,80,3.9,3.9,0.0,0.0,,
+Mithril Arrow,17,3,25,15,excellent,116,90,115,145,6.0,6.2,0.0,0.0,of Wounding 0.17; of Slay Animal 0.11; of Flame 0.11; of Frost 0.10,
+Mithril Arrow,17,3,25,20,good,65,50,65,80,4.0,4.0,0.0,0.0,,
+Mithril Arrow,17,3,25,20,excellent,120,90,120,150,6.4,6.5,0.0,0.0,of Wounding 0.17; of Flame 0.11; of Slay Animal 0.11; of Frost 0.11,
+Mithril Arrow,17,3,25,25,good,66,50,65,85,4.1,4.1,0.0,0.0,,
+Mithril Arrow,17,3,25,25,excellent,124,95,120,155,7.0,6.8,0.0,0.0,of Wounding 0.16; of Frost 0.12; of Flame 0.12; of Slay Animal 0.12,
+Mithril Arrow,17,3,25,30,good,68,50,70,85,4.3,4.3,0.0,0.0,,
+Mithril Arrow,17,3,25,30,excellent,129,100,130,160,7.4,7.3,0.0,0.0,of Wounding 0.17; of Flame 0.12; of Slay Animal 0.12; of Frost 0.11,
+Mithril Arrow,17,3,25,40,good,71,55,70,90,4.6,4.6,0.0,0.0,,
+Mithril Arrow,17,3,25,40,excellent,144,110,140,175,8.8,8.7,0.0,0.0,of Wounding 0.17; of Slay Animal 0.12; of Frost 0.11; of Flame 0.10,
+Mithril Arrow,17,3,25,50,good,75,60,75,90,5.0,5.0,0.0,0.0,,
+Mithril Arrow,17,3,25,50,excellent,154,120,150,190,9.7,9.8,0.0,0.0,of Wounding 0.17; of Frost 0.11; of Slay Animal 0.11; of Flame 0.10,
+Mithril Bolt,18,3,30,5,good,66,50,65,80,3.5,3.6,0.0,0.0,,
+Mithril Bolt,18,3,30,5,excellent,113,85,110,140,5.3,5.3,0.0,0.0,of Wounding 0.16; of Slay Animal 0.12; of Flame 0.11; of Frost 0.11,
+Mithril Bolt,18,3,30,10,good,67,50,65,85,3.7,3.7,0.0,0.0,,
+Mithril Bolt,18,3,30,10,excellent,115,90,115,145,5.6,5.5,0.0,0.0,of Wounding 0.15; of Slay Animal 0.12; of Flame 0.12; of Slay Demon 0.11,
+Mithril Bolt,18,3,30,15,good,69,55,70,85,3.9,3.8,0.0,0.0,,
+Mithril Bolt,18,3,30,15,excellent,121,95,120,150,6.1,6.1,0.0,0.0,of Wounding 0.17; of Slay Animal 0.13; of Frost 0.12; of Flame 0.11,
+Mithril Bolt,18,3,30,20,good,70,55,70,85,4.0,4.1,0.0,0.0,,
+Mithril Bolt,18,3,30,20,excellent,126,100,125,155,6.6,6.4,0.0,0.0,of Wounding 0.16; of Flame 0.12; of Frost 0.11; of Slay Animal 0.10,
+Mithril Bolt,18,3,30,25,good,72,55,70,90,4.1,4.2,0.0,0.0,,
+Mithril Bolt,18,3,30,25,excellent,130,100,130,160,7.0,7.1,0.0,0.0,of Wounding 0.17; of Slay Animal 0.12; of Flame 0.11; of Frost 0.10,
+Mithril Bolt,18,3,30,30,good,73,55,75,90,4.3,4.3,0.0,0.0,,
+Mithril Bolt,18,3,30,30,excellent,134,105,135,165,7.3,7.5,0.0,0.0,of Wounding 0.17; of Slay Animal 0.12; of Flame 0.11; of Frost 0.10,
+Mithril Bolt,18,3,30,40,good,76,60,75,95,4.6,4.6,0.0,0.0,,
+Mithril Bolt,18,3,30,40,excellent,147,115,145,180,8.7,8.5,0.0,0.0,of Wounding 0.18; of Frost 0.12; of Slay Animal 0.10; of Flame 0.09,
+Mithril Bolt,18,3,30,50,good,80,65,80,95,5.0,5.1,0.0,0.0,,
+Mithril Bolt,18,3,30,50,excellent,159,125,155,195,9.7,9.7,0.0,0.0,of Wounding 0.17; of Flame 0.11; of Frost 0.11; of Slay Undead 0.09,
+Orcish Shield,34,7,12500,5,good,12859,12600,12900,13100,0.0,0.0,8.6,0.0,,
+Orcish Shield,34,7,12500,5,excellent,18787,13300,13800,26800,0.0,0.0,11.0,1.0,of Resist Acid 0.22; of Resist Fire 0.21; of Resist Cold 0.20; of Resist Lightning 0.18,
+Orcish Shield,34,7,12500,10,good,12883,12600,12900,13100,0.0,0.0,8.8,0.0,,
+Orcish Shield,34,7,12500,10,excellent,18323,13300,13800,26300,0.0,0.0,11.2,1.0,of Resist Fire 0.21; of Resist Acid 0.21; of Resist Cold 0.20; of Resist Lightning 0.20,
+Orcish Shield,34,7,12500,15,good,12896,12700,12900,13100,0.0,0.0,9.0,0.0,,
+Orcish Shield,34,7,12500,15,excellent,18650,13400,13800,26400,0.0,0.0,11.6,1.0,of Resist Cold 0.23; of Resist Acid 0.21; of Resist Lightning 0.20; of Resist Fire 0.18,
+Orcish Shield,34,7,12500,20,good,12903,12700,12900,13100,0.0,0.0,9.0,0.0,,
+Orcish Shield,34,7,12500,20,excellent,18464,13400,13900,26400,0.0,0.0,12.0,1.0,of Resist Lightning 0.22; of Resist Acid 0.21; of Resist Cold 0.20; of Resist Fire 0.19,
+Orcish Shield,34,7,12500,25,good,12910,12700,12900,13100,0.0,0.0,9.1,0.0,,
+Orcish Shield,34,7,12500,25,excellent,18154,13400,13900,26600,0.0,0.0,12.5,1.0,of Resist Lightning 0.22; of Resist Fire 0.20; of Resist Acid 0.20; of Resist Cold 0.19,
+Orcish Shield,34,7,12500,30,good,12933,12700,12900,13200,0.0,0.0,9.3,0.0,,
+Orcish Shield,34,7,12500,30,excellent,18204,13500,14000,26600,0.0,0.0,12.8,1.0,of Resist Acid 0.21; of Resist Cold 0.20; of Resist Fire 0.20; of Resist Lightning 0.20,
+Orcish Shield,34,7,12500,40,good,12967,12700,13000,13200,0.0,0.0,9.7,0.0,,
+Orcish Shield,34,7,12500,40,excellent,19252,13500,14100,26900,0.0,0.0,14.0,1.0,of Resist Acid 0.21; of Resist Fire 0.20; of Resist Cold 0.20; of Resist Lightning 0.20,
+Orcish Shield,34,7,12500,50,good,12996,12800,13000,13200,0.0,0.0,10.0,0.0,,
+Orcish Shield,34,7,12500,50,excellent,18933,13700,14200,26900,0.0,0.0,15.2,1.0,of Resist Acid 0.22; of Resist Fire 0.21; of Resist Lightning 0.20; of Resist Cold 0.19,
+Kolla,35,3,40000,5,good,40362,40100,40400,40600,0.0,0.0,7.6,0.0,,
+Kolla,35,3,40000,5,excellent,59791,41000,42300,76000,0.0,0.0,12.4,0.297,of Stealth 0.43; of Protection 0.21; of the Teleri 0.15; of Resistance 0.10,
+Kolla,35,3,40000,10,good,40372,40100,40400,40600,0.0,0.0,7.7,0.0,,
+Kolla,35,3,40000,10,excellent,62594,41000,42500,76100,0.0,0.0,13.1,0.298,of Stealth 0.40; of Protection 0.23; of the Teleri 0.13; of Resistance 0.11,
+Kolla,35,3,40000,15,good,40386,40200,40400,40600,0.0,0.0,7.9,0.0,,
+Kolla,35,3,40000,15,excellent,60304,41000,42400,76000,0.0,0.0,13.1,0.304,of Stealth 0.43; of Protection 0.20; of the Teleri 0.15; of Resistance 0.10,
+Kolla,35,3,40000,20,good,40396,40200,40400,40600,0.0,0.0,8.0,0.0,,
+Kolla,35,3,40000,20,excellent,61928,41100,42500,76300,0.0,0.0,13.8,0.299,of Stealth 0.42; of Protection 0.22; of the Teleri 0.13; of Resistance 0.11,
+Kolla,35,3,40000,25,good,40419,40200,40400,40600,0.0,0.0,8.2,0.0,,
+Kolla,35,3,40000,25,excellent,60115,41100,42600,76300,0.0,0.0,14.1,0.304,of Stealth 0.41; of Protection 0.22; of the Teleri 0.14; of Resistance 0.11,
+Kolla,35,3,40000,30,good,40437,40200,40400,40700,0.0,0.0,8.4,0.0,,
+Kolla,35,3,40000,30,excellent,57077,41200,42800,76100,0.0,0.0,14.3,0.251,of Stealth 0.39; of Protection 0.18; of the Magi 0.13; of the Teleri 0.12,
+Kolla,35,3,40000,40,good,40462,40200,40500,40700,0.0,0.0,8.6,0.0,,
+Kolla,35,3,40000,40,excellent,58642,41300,43100,76200,0.0,0.0,15.7,0.272,of Stealth 0.37; of Protection 0.16; of the Teleri 0.13; of the Magi 0.13,
+Kolla,35,3,40000,50,good,40495,40300,40500,40700,0.0,0.0,8.9,0.0,,
+Kolla,35,3,40000,50,excellent,60416,41400,43100,76400,0.0,0.0,16.5,0.273,of Stealth 0.37; of Protection 0.17; of the Teleri 0.13; of the Magi 0.12,
+Pair of Witan Boots,30,8,4000,5,good,4358,4100,4400,4600,0.0,0.0,8.6,0.0,,
+Pair of Witan Boots,30,8,4000,5,excellent,41739,4650,5300,19500,0.0,0.0,9.8,0.487,of Slow Descent 0.26; of Stealth 0.25; of Free Action 0.18; of Stability 0.13,
+Pair of Witan Boots,30,8,4000,10,good,4370,4100,4400,4600,0.0,0.0,8.7,0.0,,
+Pair of Witan Boots,30,8,4000,10,excellent,42364,4650,5400,19600,0.0,0.0,10.3,0.476,of Stealth 0.26; of Slow Descent 0.26; of Free Action 0.17; of Stability 0.13,
+Pair of Witan Boots,30,8,4000,15,good,4398,4200,4400,4600,0.0,0.0,9.0,0.0,,
+Pair of Witan Boots,30,8,4000,15,excellent,44320,4650,5400,19700,0.0,0.0,10.5,0.49,of Slow Descent 0.28; of Stealth 0.23; of Free Action 0.17; of Mirkwood 0.14,
+Pair of Witan Boots,30,8,4000,20,good,4396,4200,4400,4600,0.0,0.0,9.0,0.0,,
+Pair of Witan Boots,30,8,4000,20,excellent,39822,4750,5450,19600,0.0,0.0,11.0,0.467,of Slow Descent 0.28; of Stealth 0.25; of Free Action 0.17; of Stability 0.13,
+Pair of Witan Boots,30,8,4000,25,good,4411,4200,4400,4600,0.0,0.0,9.1,0.0,,
+Pair of Witan Boots,30,8,4000,25,excellent,35740,4750,5500,19700,0.0,0.0,11.3,0.483,of Slow Descent 0.28; of Stealth 0.23; of Free Action 0.18; of Stability 0.14,
+Pair of Witan Boots,30,8,4000,30,good,4435,4200,4400,4700,0.0,0.0,9.3,0.0,,
+Pair of Witan Boots,30,8,4000,30,excellent,46800,4750,5600,19800,0.0,0.0,11.8,0.483,of Slow Descent 0.28; of Stealth 0.24; of Free Action 0.16; of Stability 0.14,
+Pair of Witan Boots,30,8,4000,40,good,4465,4200,4500,4700,0.0,0.0,9.6,0.0,,
+Pair of Witan Boots,30,8,4000,40,excellent,42929,4850,5700,19800,0.0,0.0,12.9,0.498,of Slow Descent 0.28; of Stealth 0.22; of Free Action 0.17; of Stability 0.16,
+Pair of Witan Boots,30,8,4000,50,good,4491,4200,4500,4700,0.0,0.0,9.9,0.0,,
+Pair of Witan Boots,30,8,4000,50,excellent,42945,4950,5800,20000,0.0,0.0,14.0,0.485,of Slow Descent 0.30; of Stealth 0.22; of Free Action 0.17; of Stability 0.14,
+Set of Elven Gloves,31,4,4000,5,good,4358,4100,4400,4600,0.0,0.0,3.6,0.0,,
+Set of Elven Gloves,31,4,4000,5,excellent,10414,5400,6400,8700,1.7,1.6,5.3,0.354,of Slaying 0.28; of Free Action 0.28; of Power 0.19; of Agility 0.18,
+Set of Elven Gloves,31,4,4000,10,good,4377,4100,4400,4600,0.0,0.0,3.8,0.0,,
+Set of Elven Gloves,31,4,4000,10,excellent,9450,5400,6400,8500,1.6,1.6,5.5,0.352,of Free Action 0.29; of Slaying 0.27; of Power 0.19; of Agility 0.18,
+Set of Elven Gloves,31,4,4000,15,good,4381,4200,4400,4600,0.0,0.0,3.8,0.0,,
+Set of Elven Gloves,31,4,4000,15,excellent,10396,5400,6400,8800,1.6,1.6,6.1,0.361,of Slaying 0.29; of Free Action 0.28; of Agility 0.19; of Power 0.16,
+Set of Elven Gloves,31,4,4000,20,good,4404,4200,4400,4600,0.0,0.0,4.0,0.0,,
+Set of Elven Gloves,31,4,4000,20,excellent,10153,5500,6500,8700,1.5,1.5,6.4,0.36,of Free Action 0.29; of Slaying 0.26; of Agility 0.20; of Power 0.18,
+Set of Elven Gloves,31,4,4000,25,good,4407,4200,4400,4600,0.0,0.0,4.1,0.0,,
+Set of Elven Gloves,31,4,4000,25,excellent,10442,5500,6500,8900,1.6,1.6,6.7,0.364,of Free Action 0.29; of Slaying 0.27; of Power 0.18; of Agility 0.18,
+Set of Elven Gloves,31,4,4000,30,good,4434,4200,4400,4700,0.0,0.0,4.3,0.0,,
+Set of Elven Gloves,31,4,4000,30,excellent,9772,5500,6600,8800,1.6,1.6,7.2,0.35,of Free Action 0.29; of Slaying 0.26; of Agility 0.19; of Power 0.19,
+Set of Elven Gloves,31,4,4000,40,good,4470,4200,4500,4700,0.0,0.0,4.7,0.0,,
+Set of Elven Gloves,31,4,4000,40,excellent,10639,5700,6700,9100,1.6,1.6,8.3,0.358,of Slaying 0.29; of Free Action 0.28; of Power 0.18; of Agility 0.18,
+Set of Elven Gloves,31,4,4000,50,good,4501,4300,4500,4700,0.0,0.0,5.0,0.0,,
+Set of Elven Gloves,31,4,4000,50,excellent,11030,5800,6900,13300,1.7,1.9,9.3,0.317,of Slaying 0.27; of Free Action 0.25; of Power 0.17; of Agility 0.16,

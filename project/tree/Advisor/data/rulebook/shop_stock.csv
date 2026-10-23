@@ -1,0 +1,137 @@
+store,tval,sval,item_name,entries,tval_num,sval_num,k_idx,W_line
+General Store,TV_FOOD,SV_FOOD_RATION,& Ration~ of Food,5,80,35,21,W:0:0:10:3
+General Store,TV_FOOD,SV_FOOD_BISCUIT,& Hard Biscuit~,1,80,32,22,W:0:0:2:1
+General Store,TV_FOOD,SV_FOOD_JERKY,& Strip~ of Beef Jerky,2,80,33,23,W:0:0:2:2
+General Store,TV_FOOD,SV_FOOD_PINT_OF_WINE,& Pint~ of Fine Wine,1,80,39,27,W:0:0:10:2
+General Store,TV_FOOD,SV_FOOD_PINT_OF_ALE,& Pint~ of Fine Ale,1,80,38,26,W:0:0:5:1
+General Store,TV_LITE,SV_LITE_TORCH,& Wooden Torch~,4,39,0,346,W:1:0:30:2
+General Store,TV_LITE,SV_LITE_LANTERN,& Brass Lantern~,2,39,1,347,W:3:0:50:35
+General Store,TV_FLASK,0,& Flask~ of oil,6,77,0,348,W:1:0:10:3
+General Store,TV_ARROW,SV_AMMO_NORMAL,& Arrow~,2,17,1,78,W:3:0:2:1
+General Store,TV_SHOT,SV_AMMO_NORMAL,& Iron Shot~,1,16,1,83,W:3:0:5:2
+General Store,TV_BOLT,SV_AMMO_NORMAL,& Bolt~,2,18,1,80,W:3:0:3:2
+General Store,TV_DIGGING,SV_SHOVEL,& Shovel~,1,20,1,84,W:1:0:60:10
+General Store,TV_DIGGING,SV_PICK,& Pick~,1,20,4,87,W:5:0:150:50
+General Store,TV_CLOAK,SV_CLOAK,& Cloak~,3,35,1,123,W:1:0:10:3
+Armoury,TV_BOOTS,SV_PAIR_OF_SOFT_LEATHER_BOOTS,& Pair~ of Soft Leather Boots,2,30,2,91,W:3:0:20:7
+Armoury,TV_BOOTS,SV_PAIR_OF_HARD_LEATHER_BOOTS,& Pair~ of Hard Leather Boots,2,30,3,92,W:5:0:40:12
+Armoury,TV_HELM,SV_HARD_LEATHER_CAP,& Hard Leather Cap~,2,32,2,94,W:3:0:15:12
+Armoury,TV_HELM,SV_METAL_CAP,& Metal Cap~,1,32,3,95,W:10:0:20:30
+Armoury,TV_HELM,SV_IRON_HELM,& Iron Helm~,1,32,5,96,W:20:0:75:75
+Armoury,TV_SOFT_ARMOR,SV_ROBE,& Robe~,2,36,2,101,W:1:0:20:4
+Armoury,TV_SOFT_ARMOR,SV_SOFT_LEATHER_ARMOR,Soft Leather Armour~,2,36,4,103,W:3:0:80:18
+Armoury,TV_SOFT_ARMOR,SV_HARD_LEATHER_ARMOR,Hard Leather Armour~,2,36,6,105,W:5:0:100:150
+Armoury,TV_SOFT_ARMOR,SV_HARD_STUDDED_LEATHER,Hard Studded Leather~,2,36,7,106,W:10:0:110:200
+Armoury,TV_SOFT_ARMOR,SV_LEATHER_SCALE_MAIL,Leather Scale Mail~,2,36,11,107,W:15:0:140:450
+Armoury,TV_HARD_ARMOR,SV_METAL_SCALE_MAIL,Metal Scale Mail~,1,37,3,108,W:25:0:250:550
+Armoury,TV_HARD_ARMOR,SV_CHAIN_MAIL,Chain Mail~,2,37,4,109,W:25:0:220:750
+Armoury,TV_HARD_ARMOR,SV_AUGMENTED_CHAIN_MAIL,Augmented Chain Mail~,1,37,6,111,W:30:0:270:900
+Armoury,TV_HARD_ARMOR,SV_BAR_CHAIN_MAIL,Bar Chain Mail~,1,37,8,112,W:35:0:280:950
+Armoury,TV_HARD_ARMOR,SV_DOUBLE_CHAIN_MAIL,Double Chain Mail~,1,37,7,121,W:30:0:250:850
+Armoury,TV_HARD_ARMOR,SV_METAL_BRIGANDINE_ARMOUR,Metal Brigandine Armour~,1,37,9,113,W:35:0:290:1100
+Armoury,TV_GLOVES,SV_SET_OF_LEATHER_GLOVES,& Set~ of Leather Gloves,2,31,1,125,W:1:0:5:3
+Armoury,TV_GLOVES,SV_SET_OF_GAUNTLETS,& Set~ of Gauntlets,1,31,2,126,W:10:0:25:35
+Armoury,TV_SHIELD,SV_SMALL_LEATHER_SHIELD,& Small Leather Shield~,2,34,2,128,W:3:0:50:30
+Armoury,TV_SHIELD,SV_LARGE_LEATHER_SHIELD,& Large Leather Shield~,1,34,4,129,W:15:0:100:120
+Armoury,TV_SHIELD,SV_SMALL_METAL_SHIELD,& Small Metal Shield~,1,34,3,130,W:10:0:65:50
+Weaponsmith,TV_SWORD,SV_DAGGER,& Dagger~,1,23,4,43,W:0:0:12:10
+Weaponsmith,TV_SWORD,SV_MAIN_GAUCHE,& Main Gauche~,1,23,5,38,W:3:0:30:25
+Weaponsmith,TV_SWORD,SV_RAPIER,& Rapier~,1,23,7,44,W:5:0:40:42
+Weaponsmith,TV_SWORD,SV_SMALL_SWORD,& Small Sword~,1,23,8,46,W:5:0:75:48
+Weaponsmith,TV_SWORD,SV_SHORT_SWORD,& Short Sword~,1,23,10,35,W:5:0:80:90
+Weaponsmith,TV_SWORD,SV_SABRE,& Sabre~,1,23,11,45,W:5:0:50:50
+Weaponsmith,TV_SWORD,SV_CUTLASS,& Cutlass~,1,23,12,39,W:5:0:110:85
+Weaponsmith,TV_SWORD,SV_TULWAR,& Tulwar~,1,23,15,33,W:5:0:100:200
+Weaponsmith,TV_SWORD,SV_BROAD_SWORD,& Broad Sword~,1,23,16,34,W:10:0:150:255
+Weaponsmith,TV_SWORD,SV_LONG_SWORD,& Long Sword~,1,23,17,42,W:10:0:130:300
+Weaponsmith,TV_SWORD,SV_SCIMITAR,& Scimitar~,1,23,18,32,W:10:0:130:250
+Weaponsmith,TV_SWORD,SV_KATANA,& Katana~,1,23,20,41,W:20:0:120:400
+Weaponsmith,TV_SWORD,SV_BASTARD_SWORD,& Bastard Sword~,1,23,21,31,W:15:0:140:350
+Weaponsmith,TV_POLEARM,SV_SPEAR,& Spear~,1,22,2,64,W:5:0:50:36
+Weaponsmith,TV_POLEARM,SV_AWL_PIKE,& Awl-Pike~,1,22,4,62,W:10:0:160:340
+Weaponsmith,TV_POLEARM,SV_TRIDENT,& Trident~,1,22,5,65,W:5:0:70:120
+Weaponsmith,TV_POLEARM,SV_PIKE,& Pike~,1,22,8,63,W:15:0:160:358
+Weaponsmith,TV_POLEARM,SV_BEAKED_AXE,& Beaked Axe~,1,22,10,59,W:15:0:180:408
+Weaponsmith,TV_POLEARM,SV_BROAD_AXE,& Broad Axe~,1,22,11,70,W:15:0:160:304
+Weaponsmith,TV_POLEARM,SV_LANCE,& Lance~,1,22,20,66,W:10:0:300:230
+Weaponsmith,TV_POLEARM,SV_BATTLE_AXE,& Battle Axe~,1,22,22,68,W:15:0:170:334
+Weaponsmith,TV_HAFTED,SV_WHIP,& Whip~,1,21,2,49,W:3:0:30:30
+Weaponsmith,TV_BOW,SV_SLING,& Sling~,1,19,2,77,W:1:0:5:5
+Weaponsmith,TV_BOW,SV_SHORT_BOW,& Short Bow~,1,19,12,73,W:3:0:30:50
+Weaponsmith,TV_BOW,SV_LONG_BOW,& Long Bow~,1,19,13,74,W:10:0:40:120
+Weaponsmith,TV_BOW,SV_LIGHT_XBOW,& Light Crossbow~,1,19,23,75,W:15:0:110:140
+Weaponsmith,TV_SHOT,SV_AMMO_NORMAL,& Iron Shot~,2,16,1,83,W:3:0:5:2
+Weaponsmith,TV_ARROW,SV_AMMO_NORMAL,& Arrow~,2,17,1,78,W:3:0:2:1
+Weaponsmith,TV_BOLT,SV_AMMO_NORMAL,& Bolt~,2,18,1,80,W:3:0:3:2
+Temple,TV_HAFTED,SV_WHIP,& Whip~,1,21,2,49,W:3:0:30:30
+Temple,TV_HAFTED,SV_QUARTERSTAFF,& Quarterstaff~,1,21,3,54,W:10:0:150:200
+Temple,TV_HAFTED,SV_MACE,& Mace~,2,21,5,53,W:5:0:120:130
+Temple,TV_HAFTED,SV_BALL_AND_CHAIN,& Ball-and-Chain~,1,21,6,48,W:20:0:150:200
+Temple,TV_HAFTED,SV_WAR_HAMMER,& War Hammer~,1,21,8,55,W:5:0:120:225
+Temple,TV_HAFTED,SV_LUCERN_HAMMER,& Lucerne Hammer~,1,21,10,58,W:10:0:120:376
+Temple,TV_HAFTED,SV_MORNING_STAR,& Morning Star~,1,21,12,52,W:10:0:150:396
+Temple,TV_HAFTED,SV_FLAIL,& Flail~,1,21,13,50,W:10:0:150:353
+Temple,TV_HAFTED,SV_LEAD_FILLED_MACE,& Lead-Filled Mace~,1,21,15,56,W:15:0:180:502
+Temple,TV_SCROLL,SV_SCROLL_REMOVE_CURSE,Remove Curse,1,70,14,180,W:10:0:5:100
+Temple,TV_SCROLL,SV_SCROLL_BLESSING,Blessing,1,70,33,217,W:1:0:5:15
+Temple,TV_SCROLL,SV_SCROLL_HOLY_CHANT,Holy Chant,1,70,34,218,W:10:0:5:40
+Temple,TV_SCROLL,SV_SCROLL_LIFE,Life,2,70,48,178,W:20:0:5:500
+Temple,TV_POTION,SV_POTION_BOLDNESS,Boldness,1,75,28,259,W:1:0:4:10
+Temple,TV_POTION,SV_POTION_HEROISM,Heroism,1,75,32,257,W:1:0:4:35
+Temple,TV_POTION,SV_POTION_CURE_LIGHT,Cure Light Wounds,1,75,34,237,W:0:0:4:15
+Temple,TV_POTION,SV_POTION_CURE_SERIOUS,Cure Serious Wounds,2,75,35,240,W:3:0:4:40
+Temple,TV_POTION,SV_POTION_CURE_CRITICAL,Cure Critical Wounds,2,75,36,241,W:5:0:4:100
+Temple,TV_POTION,SV_POTION_RESTORE_EXP,Restore Life Levels,2,75,41,260,W:40:0:4:400
+Temple,TV_PRAYER_BOOK,0,[Beginners Handbook],3,91,0,334,W:5:0:30:25
+Temple,TV_PRAYER_BOOK,1,[Words of Wisdom],2,91,1,335,W:10:0:30:100
+Temple,TV_PRAYER_BOOK,2,[Chants and Blessings],2,91,2,336,W:20:0:30:300
+Temple,TV_PRAYER_BOOK,3,[Exorcism and Dispelling],1,91,3,337,W:30:0:30:900
+Alchemy shop,TV_SCROLL,SV_SCROLL_ENCHANT_WEAPON_TO_HIT,Enchant Weapon To-Hit,2,70,17,173,W:15:0:5:125
+Alchemy shop,TV_SCROLL,SV_SCROLL_ENCHANT_WEAPON_TO_DAM,Enchant Weapon To-Dam,2,70,18,174,W:15:0:5:125
+Alchemy shop,TV_SCROLL,SV_SCROLL_ENCHANT_ARMOR,Enchant Armor,2,70,16,175,W:15:0:5:125
+Alchemy shop,TV_SCROLL,SV_SCROLL_IDENTIFY,Identify,4,70,12,176,W:1:0:5:50
+Alchemy shop,TV_SCROLL,SV_SCROLL_LIGHT,Light,1,70,24,181,W:0:0:5:15
+Alchemy shop,TV_SCROLL,SV_SCROLL_PHASE_DOOR,Phase Door,3,70,8,185,W:1:0:5:15
+Alchemy shop,TV_SCROLL,SV_SCROLL_MONSTER_CONFUSION,Monster Confusion,1,70,36,188,W:5:0:5:30
+Alchemy shop,TV_SCROLL,SV_SCROLL_MAPPING,Magic Mapping,1,70,25,189,W:5:0:5:40
+Alchemy shop,TV_SCROLL,SV_SCROLL_DETECT_DOOR,Door/Stair Location,1,70,29,197,W:5:0:5:35
+Alchemy shop,TV_SCROLL,SV_SCROLL_DETECT_INVIS,Detect Invisible,1,70,30,201,W:1:0:5:15
+Alchemy shop,TV_SCROLL,SV_SCROLL_RECHARGING,Recharging,1,70,22,206,W:40:0:5:200
+Alchemy shop,TV_SCROLL,SV_SCROLL_SATISFY_HUNGER,Satisfy Hunger,1,70,32,210,W:5:0:5:10
+Alchemy shop,TV_SCROLL,SV_SCROLL_WORD_OF_RECALL,Word of Recall,4,70,11,220,W:5:0:5:150
+Alchemy shop,TV_POTION,SV_POTION_RESIST_HEAT,Resist Heat,1,75,30,261,W:1:0:4:30
+Alchemy shop,TV_POTION,SV_POTION_RESIST_COLD,Resist Cold,1,75,31,262,W:1:0:4:30
+Alchemy shop,TV_POTION,SV_POTION_RES_STR,Restore Strength,1,75,42,227,W:25:0:4:300
+Alchemy shop,TV_POTION,SV_POTION_RES_INT,Restore Intelligence,1,75,43,230,W:25:0:4:300
+Alchemy shop,TV_POTION,SV_POTION_RES_WIS,Restore Wisdom,1,75,44,233,W:25:0:4:300
+Alchemy shop,TV_POTION,SV_POTION_RES_DEX,Restore Dexterity,1,75,45,252,W:25:0:4:300
+Alchemy shop,TV_POTION,SV_POTION_RES_CON,Restore Constitution,1,75,46,253,W:25:0:4:300
+Alchemy shop,TV_POTION,SV_POTION_RES_CHR,Restore Charisma,1,75,47,236,W:20:0:4:300
+Magic-User store,TV_RING,SV_RING_SEARCHING,Searching,1,45,23,137,W:5:0:2:250
+Magic-User store,TV_RING,SV_RING_FEATHER_FALL,Feather Falling,1,45,7,142,W:5:0:2:200
+Magic-User store,TV_RING,SV_RING_PROTECTION,Protection,1,45,16,153,W:10:0:2:500
+Magic-User store,TV_AMULET,SV_AMULET_CHARISMA,Charisma,1,40,7,164,W:30:0:3:500
+Magic-User store,TV_AMULET,SV_AMULET_SLOW_DIGEST,Slow Digestion,1,40,3,167,W:15:0:3:200
+Magic-User store,TV_AMULET,SV_AMULET_RESIST_ACID,Resist Acid,1,40,4,168,W:10:0:3:300
+Magic-User store,TV_WAND,SV_WAND_SLOW_MONSTER,Slow Monster,1,65,9,277,W:5:0:10:500
+Magic-User store,TV_WAND,SV_WAND_CONFUSE_MONSTER,Confuse Monster,1,65,10,278,W:5:0:10:500
+Magic-User store,TV_WAND,SV_WAND_SLEEP_MONSTER,Sleep Monster,1,65,8,279,W:5:0:10:500
+Magic-User store,TV_WAND,SV_WAND_MAGIC_MISSILE,Magic Missile,1,65,15,282,W:3:0:10:200
+Magic-User store,TV_WAND,SV_WAND_STINKING_CLOUD,Stinking Cloud,1,65,14,290,W:5:0:10:400
+Magic-User store,TV_STAFF,SV_STAFF_LITE,Light,1,55,8,306,W:5:0:50:250
+Magic-User store,TV_STAFF,SV_STAFF_MAPPING,Enlightenment,1,55,9,328,W:20:0:50:750
+Magic-User store,TV_STAFF,SV_STAFF_DETECT_TRAP,Trap Location,1,55,12,300,W:10:0:50:350
+Magic-User store,TV_STAFF,SV_STAFF_DETECT_DOOR,Door/Stair Location,1,55,13,316,W:10:0:50:350
+Magic-User store,TV_STAFF,SV_STAFF_DETECT_ITEM,Object Location,1,55,11,302,W:5:0:50:200
+Magic-User store,TV_STAFF,SV_STAFF_DETECT_INVIS,Detect Invisible,1,55,14,313,W:5:0:50:200
+Magic-User store,TV_STAFF,SV_STAFF_DETECT_EVIL,Detect Evil,1,55,15,318,W:20:0:50:350
+Magic-User store,TV_STAFF,SV_STAFF_TELEPORTATION,Teleportation,2,55,4,303,W:20:0:50:2000
+Magic-User store,TV_STAFF,SV_STAFF_IDENTIFY,Perception,2,55,5,326,W:10:0:50:400
+Magic-User store,TV_MAGIC_BOOK,0,[Magic for Beginners],2,90,0,330,W:5:0:30:25
+Magic-User store,TV_MAGIC_BOOK,1,[Conjurings and Tricks],1,90,1,331,W:10:0:30:100
+Magic-User store,TV_MAGIC_BOOK,2,[Incantations and Illusions],1,90,2,332,W:20:0:30:400
+Magic-User store,TV_MAGIC_BOOK,3,[Sorcery and Evocations],1,90,3,333,W:30:0:30:800
+Black market,TV_JUNK,SV_HOUSE_FOUNDATION,& House Foundation Stone~,3,3,9,399,W:70:0:200:10000
+Black market,TV_SCROLL,SV_SCROLL_CREATE_HOUSE,House Creation,1,70,49,182,W:99:0:5:1000000
+Black market,TV_POTION,SV_POTION_HEALING,Healing,3,75,37,242,W:15:0:4:300
+Black market,0,0,NOT FOUND,1,0,0,,

@@ -29,3 +29,4 @@ metadata:
 - 2026-10-17/22: Navigator response-time baseline (Opus, m16–21) `Advisor/data/navigator/`; "starting over" memo `memos/2026-10-19-starting-over.md` (sent 10-22).
 - 2026-10-23: **scorecard definitions + baseline m17–23** → `memos/2026-10-23-scorecard.md`, `Advisor/data/scorecard/` (restructure step 1).
 - 2026-10-24: **set-piece list** → `memos/2026-10-24-setpieces.md` (41 cases, 12 P1; Dive04 had FA m18–23 unknowingly).
+- 2026-10-24: **rulebook v1** → `memos/2026-10-24-rulebook.md`, `Advisor/data/rulebook/` (kinds/unknown values, feelings, monsters, constants, shops, char, structures; rule.py).

@@ -1,0 +1,105 @@
+name,value_or_formula,units,applies_when,cite
+FPS,"75 (cfg); code default 12 (variable.c:182, mdefines.h:46); timer interval = 1000000/cfg_fps us, catch-up loop",ticks/s,testserver mangband.cfg:67; github/mangband.cfg:67,mangband.cfg:67; net-server.c:428; net-imps.c:528-543
+tick,one dungeon() call = 1 turn.turn increment,tick,always,"dungeon.c:2308 (ht_add(&turn,1) in dungeon()); net-server.c:699"
+level_speed(d),"5*level_speeds[max(d,0)]; d=0/wilderness uses level_speeds[0]=7500",energy,always,xtra2.c:5109-5113; tables.c:2202-2216
+level_speeds[],see char_level_speeds.csv (tables.c:2202-2216); level_speed(d)=level_speeds[d]*5,x5 -> energy,table index = dungeon level (50ft units),tables.c:2202-2216
+extract_energy[110],1000 (index = pspeed; 110=normal; +10 speed=2000; <=69 =100; table 200 entries),energy/tick at tf=100,player and monster,tables.c:2171-2192
+ticks_per_player_turn,level_speed(d)/extract_energy[pspeed] at tf=100 (normal speed: level_speed/1000),ticks,,dungeon.c:943-976
+energy_gain_per_tick,int(extract_energy[pspeed]*bubble_speed/100); town running: extra *5; cap energy<=level_speed,energy,player,dungeon.c:943-976
+energy_cost_move_walk_run_step,level_speed(d),energy,"do_cmd_walk, run_step",cmd2.c:3039; cmd1.c:2947
+energy_cost_blow,level_speed(d)/num_blow per blow; attacks repeat while energy>=blow_energy,energy,melee,cmd1.c:1429-1435; dungeon.c:1033
+energy_cost_fire,level_speed(d)/num_fire,energy,do_cmd_fire,"cmd2.c:3582,3647"
+energy_cost_throw_use_read_quaff_eat_cast_stairs_open_disarm_search,level_speed(d),energy,,"cmd2.c:77,181,232,1429,2335,4048; cmd6.c:101,205,322,468,683,825,978; cmd5.c:664"
+energy_cost_half_turn,level_speed(d)/2,energy,"takeoff, drop, refuel lamp/torch","cmd3.c:587,676,1359,1454"
+energy_cost_wield_destroy_dropgold_steal,level_speed(d),energy,,"cmd3.c:434,743,824,1293"
+energy_cost_start_rest,level_speed(d); energy then forced to 0 each tick while resting,energy,rest,cmd2.c:3273; dungeon.c:985-990
+rest_refused_if,poisoned OR (chp==mhp AND csp==msp),,recv_toggle_rest,net-game.c:1996-2003
+time_factor_base,100,percent,,mdefines.h:265
+CONSTANT_TIME_FACTOR,5 defined -> if chp*100/mhp <= hitpoint_warn*10 then tf=100/5=20 (not proportional),,low HP,mdefines.h:271; xtra2.c:5190-5194
+hitpoint_warn_default_tool_mode,"6 (client --hpwarn 0..9) => slow below 60% HP; NOTE the Pilot launches with --hpwarn 0 (pilot.py:5135-5141), so the low-HP bubble is OFF",tenths,tool_mode client,client/c-init.c:718-727
+tf_reset_rule,if hitpoint_warn>9 and no awake monster/hostile player in LOS: tf=100,,,xtra2.c:5201
+tf_rest,1000 if resting and no LOS (overrides low-HP slow),percent,,xtra2.c:5204; mdefines.h:262
+tf_run,500 if running and no LOS,percent,,xtra2.c:5207; mdefines.h:264
+tf_town,time_factor() returns 100 in town (depth 0); BUT process_player_end uses base_time_factor (no town exemption) for regen/timeouts,,,xtra2.c:5254-5270; dungeon.c:1053
+tf_multi_player,slowest bubble within MAX_SIGHT=20 of any player at same depth (recursive); other players with tf==100 and no LOS count as 1000,,,xtra2.c:5210-5251; mdefines.h:193
+monster_energy_gain,int(extract_energy[mspeed]*time_factor(closest player)/100); cap level_speed; acts when >= level_speed,energy,,melee2.c:3460-3479
+monster_speed_variance,"non-unique mspeed += rand_spread(0,(extract_energy[speed]/100)/10); start energy randint0(level_speed(0))",,,monster2.c:1933-1945
+MONSTER_RECOIL,default TRUE: after a monster melee-attacks a player it loses another level_speed energy (skips ~1 extra turn),,birth option,melee2.c:3035-3044; tables.c:2540
+ENERGY_BUILDUP,"default TRUE: unused energy above level_speed carries (max another level_speed); reset to 0 on walk, run, rest-toggle",,birth option,"dungeon.c:960-973; net-game.c:1979,2017,2404; cmd1.c:2952"
+game_tick_block_interval,time = int(int(level_speed(d)/1000) / (tf/100.0)) ticks; block runs when turn%time==0,ticks,process_player_end,dungeon.c:1112-1116
+regen_hp_per_event,new=mhp*pct+1442; heal new>>16 plus carry of low 16 bits (chp_frac),hp,per block,dungeon.c:293-318
+regen_pct,197 normal; 98 if food<1000; 33 if food<500; 0 if food<100; x2 regenerate; x2 resting or searching; 0 if poisoned or cut,per 65536,per block,dungeon.c:1245-1305; mdefines.h:242-256
+regen_mana_per_event,msp*pct+524 same scheme (pct not zeroed by poison/cut),sp,per block,"dungeon.c:327-345,1291"
+food_burn_per_event,"i=(extract_energy[pspeed]/100)*2 (+30 regenerate, -10 slow_digest); event every 10*time ticks; gorged(>=15000): 100",food,dungeon depth>0 and not special level,dungeon.c:1118-1146
+food_thresholds,"MAX 15000, FULL 10000, ALERT 2000, WEAK 1000, FAINT 500, STARVE 100; start 9999; set_food cap 20000",food,,mdefines.h:242-247; birth.c:630; xtra2.c:1597
+faint,below 500: 10%/event paralyzed 1+randint0(5); starve<100: dmg (100-food)/10 per event,,,"dungeon.c:1267-1275,1167-1170"
+food_values,"Ration 5000, Slime Mold 3000, Waybread 7500, Hard Biscuit 500, Ale 500",food,object.txt I: pval,object.txt:261-297; use-obj.c:235
+light_burn,pval-- once per block (= per time ticks) for torch/lantern; not artifact/Dwarven/Feanor,fuel,,dungeon.c:1479-1520
+torch_max_lantern_max,"FUEL_TORCH 5000, FUEL_LAMP 15000; store torch 2500, store lantern 7500; floor torch randint1(4000), lantern randint1(7500); flask +7500; torch merge +pval+5",fuel,,"mdefines.h:186-187; store.c:992-996; object2.c:3104-3113; cmd3.c:1363,1460"
+light_radius,"torch 1 (while pval>0), lantern 2, dwarven 2, feanor 3",,,xtra1.c:2061-2082
+timed_decrement,every timed effect -1 per block (same clock as light/recall/regen),blocks,,dungeon.c:1300-1478
+dur_heroism_potion,hero += randint1(25)+25 ; heal 10; cures fear,blocks,,use-obj.c:468-472
+dur_berserk_potion,shero += randint1(25)+25 ; heal 30,blocks,,use-obj.c:476-480
+dur_speed_potion,fast = randint1(25)+15 if not fast else fast+5,blocks,,use-obj.c:436-445
+dur_bless_scroll,Blessing randint1(12)+6; Holy Chant randint1(24)+12; Holy Prayer randint1(48)+24,blocks,,use-obj.c:947-962
+dur_prot_evil_scroll,protevil += randint1(25)+3*plev,blocks,,use-obj.c:976-981
+dur_resist_heat_cold_potion,randint1(10)+10,blocks,,use-obj.c:449-461
+dur_infravision_detect_invis_potion,infra 100+randint1(100); invis 12+randint1(12),blocks,,"use-obj.c:402,411"
+recall_delay,word_recall = randint0(20)+15 = 15..34 blocks; counts down once per block; activation postponed 1 block if in a store,blocks,,spells2.c:1191; dungeon.c:1625-1636
+recall_seconds,word_recall*time/FPS where time=int(int(level_speed/1000)/(tf/100)); tf=1000 resting -> ~10x faster,s,,dungeon.c:1112-1116
+recall_depth,default max_dlv; @R<n> inscription: n (if n%50==0 then n/50); if n>max_dlv or n==0 -> max_dlv; unvisited wilderness -> 1; read in dungeon -> town,level,,spells2.c:1135-1190; dungeon.c:1645-1680
+max_dlv_update,"max_dlv = max(max_dlv, Depth) on arrival",level,,dungeon.c:2062-2063
+MAX_DEPTH,128 (stairs stop at 127),,,defines.h:162; cmd2.c:158
+store_maint_interval,"every 10*STORE_TURNS=2500 ticks (33.3 s at 75 FPS), all stores except 7,8, skipping a store with a player in it; shuffle 1 in 35",ticks,,dungeon.c:1908; defines.h:301-304; store.c:2375-2382
+store_turnover,sells randint1(9) stock slots (keeps 12..36) then buys randint1(9),,,store.c:2418-2440; defines.h:300-302
+day_night,full day = 10*TOWN_DAWN = 500000 ticks (6667 s=111 min at 75 FPS); IS_DAY first half (250000 ticks = 55.6 min),ticks,,"mdefines.h:153,224-225; dungeon.c:1928-1935"
+server_save,every cfg_fps*60*10 ticks (10 min),,,dungeon.c:1756
+unique_respawn,disabled (#if 0),,,dungeon.c:1824-1840
+pick_trap,uniform over 16 types FEAT_TRAP_HEAD+randint0(16); no depth dependence; trap door rerolled on quest levels and depth>=127,,,object2.c:4170-4200
+traps_per_level,"randint1(k), k=clamp(Depth/3,2,10) (classic generator)",,,generate.c:3362-3375
+trap0_trapdoor,2d8 dmg unless feather fall; +1 level; no connected stair; no effect in wilderness/quest level,,,cmd1.c:916-958
+trap1_pit,2d6 (feather: none),,,cmd1.c:960
+trap2_spiked_pit,2d6; 50%: dmg*2 and cut += randint1(dam),,,cmd1.c:975
+trap3_poison_pit,"2d6; 50%: dmg*2, cut += randint1(dam), poison += randint1(dam*2) unless resist",,,cmd1.c:1005
+trap4_summon_rune,summons 2+randint1(3) monsters at depth level; trap vanishes,,,cmd1.c:1047
+trap5_teleport_rune,teleport_player(100),,,cmd1.c:1063
+trap6_fire,4d6 via fire_dam (resist (d+2)/3 each of resist/oppose; inventory damage),,,cmd1.c:1070; spells1.c:1039
+trap7_acid,4d6 via acid_dam (same; also minus_ac halves),,,cmd1.c:1078; spells1.c:990
+trap8_slow_dart,check_hit(125): 1d4 + slow += randint0(20)+20,,,cmd1.c:1086
+trap9_10_11_dart_STR_DEX_CON,check_hit(125): 1d4 + do_dec_stat,,,cmd1.c:1102-1148
+trap12_blind_gas,blind += randint0(50)+25 (unless pBlind),,,cmd1.c:1150
+trap13_confusion_gas,confused += randint0(20)+10 (unless pConf),,,cmd1.c:1160
+trap14_poison_gas,poisoned += randint0(20)+10 (unless resist/oppose),,,cmd1.c:1170
+trap15_paralysis_gas,paralyzed += randint0(10)+5 unless free action,,,cmd1.c:1180
+check_hit_trap,"k=randint0(100); k<5 hit, 5..9 miss; else hit if randint1(125) > (ac+to_a)*3/4",,dart traps,cmd1.c:863-878
+search_chance,"per adjacent grid (9 grids) independent: randint0(100) < skill_srh; skill_srh/10 if blind or no light; again /10 if confused or hallucinating; finds invisible trap, secret door (+1 exp), chest trap",percent,search(),cmd1.c:507-585
+skill_srh,r_srh + c_srh + x_srh*lev/10 + 5*search pval,,,"xtra1.c:2289,2838,2436-2476"
+search_triggers,'s' cmd (1 pass); each step while in search mode (-10 speed); spontaneous on each step: always if skill_fos>=50 else 1 in (50-skill_fos); 25% per tunnel turn; NOT when holding,,,cmd1.c:2012-2023; cmd2.c:2002; xtra1.c:2782-2790 (display undo at 411)
+skill_fos,r_fos + c_fos + x_fos*lev/10 + 5*search pval,,,"xtra1.c:2292,2841,2439"
+walk_onto_hidden_trap,FEAT_INVIS under you: pick_trap then hit_trap immediately,,,cmd1.c:2056-2068
+disarm_trap,"j=max(2, skill_dis' - 5) percent success (skill_dis'=skill_dis/10 per blind/no light, /10 confused); fail: if skill_dis'>5 and randint1(skill_dis')>5 retry (prob (i-5)/i) else set off trap (move onto it); exp +5",percent,,cmd2.c:2174-2262
+skill_dis,r_dis + c_dis + adj_dex_dis[DEX] + adj_int_dis[INT] + x_dis*lev/10,,,"xtra1.c:2273,2813-2814,2826"
+skill_dev,r_dev + c_dev + adj_int_dev[INT] + x_dev*lev/10,,,"xtra1.c:2276,2817,2829"
+lockpick_door,"j=max(2, skill_dis' - 4*lock_power) where lock_power=feat-FEAT_DOOR_HEAD (1..7); exp +1; retries indefinitely; jammed (>=8) cannot be picked",percent,,cmd2.c:1292-1330
+lockpick_chest,"j=max(2, skill_dis' - chest_pval) if pval>0; success exp +1 then trap fires (if any) then contents drop",percent,,cmd2.c:951-1000
+disarm_chest,"needs trap known (found by search); j=max(2, skill_dis'-pval); success exp +pval, pval=-pval (also unlocks); fail: retry if skill>5 and randint1(skill)>5 else chest_trap fires",percent,,cmd2.c:1022-1085
+chest_pval,"randint1(chest kind level): small wooden 5, large wooden 15, small iron 25, large iron 35, small steel 45, large steel 55 (cap 55+randint0(5))",,,object2.c:3141-3148; object.txt:2941-2985
+chest_traps[pval],"byte table 64 entries; pval1 poison,2/4 STR,3/5 CON,6 none,7-8 poison,9 STR,10 CON,11 poison,12-14 STR+CON,15 summon,16 none,19 paralysis, 25 explode, ...",,,tables.c:2313-2371
+chest_trap_effects,STR/CON needle: 1d4 + do_dec_stat; poison 10+randint1(20); paralyze 10+randint1(20) unless FA; summon 2+randint1(3); explode 5d8 and contents destroyed,,,cmd2.c:369-439
+chest_contents,"number=(sval%4)*2 slots (small wooden 2, large wooden 2, small iron 4, large iron 4, small steel 6, large steel 6); small chests (sval<4): 75% gold per slot else object; object level |pval|+10; 20 placement tries per slot",,,cmd2.c:284-366; mdefines.h:1785
+device_chance,"c=skill_dev (/2 if confused) - min(50, item level); if c<3 then 1/(3-c+1) chance c=3; fail if c<3 or randint1(c)<3 => P(use)=1-2/c (c>=3: (c-2)/c)",,staff/wand/rod/activate,"cmd6.c:477-495; use-obj.c:1356-1372,1681-1697; mdefines.h:161"
+recharge_fail,i=(strength+100-itemlevel-10*(pval/number))/15; backfire if i<=1 or one_in_(i); backfire destroys item unless SAFE_RECHARGE (cfg false),,,spells2.c:3093-3170
+recharge_success,"pval += 2+randint1(t), t=strength/(itemlevel+2)+1; scroll strength 60",,,spells2.c:3172-3180; use-obj.c:891
+enchant_chance,"per try: roll if randint0(number*100)<100 (missiles /20); fail if randint1(1000)<=table[plus]; table 0,10,50,100,200,300,400,500,700,950,990,992,995,997,999,1000; plus<0 -> chance 0; >15 -> 1000; artifacts also 50% fail",,,"spells2.c:398-404,2505-2580"
+enchant_scrolls,Armor +1 AC try; To-Hit 1; To-Dam 1; *Armor* randint1(3)+2; *Weapon* randint1(3) hit and randint1(3) dam,tries,,use-obj.c:854-884
+identify,scroll/staff/rune: always fully identifies chosen item (object_aware+object_known); no failure,,,spells2.c:2860-2895; use-obj.c:823-826
+pseudo_id_sense,each block: sense iff randint0(sense_base/(plev+sense_div))==0 (IMPROV classes: plev^2+sense_div); pack items only 1 in 5; HEAVY classes judge more,,,dungeon.c:148-190; p_class.txt I: lines
+stairs,up/down 1 level; connected stair created; costs one move; quest level blocks down; cfg ironman blocks up,level,,cmd2.c:20-205
+level_gen_stairs,3-4 down + 1-2 up (classic generator),,,generate.c:3351-3354
+teleport_range,"teleport_player(dis): distance in [dis/2, dis] first; widens (dis*2, min/2) if no spot in 500 tries; no vault (ICKY) grids",grids,,spells1.c:167-215
+phase_door,teleport_player(10) => 5..10 grids,grids,,use-obj.c:795-799
+teleport_scroll,teleport_player(100) => 50..100 grids,grids,,use-obj.c:802-806
+teleport_level,town->1; else 50% down (not quest/not 127) else up; ironman nothing,level,,spells1.c:365-395
+deep_descent,not present in this server,,,grep object.txt/src: no match
+searching_slowdown,searching mode -10 speed,,,xtra1.c:2782-2790 (display undo at 411)
+boulder_damage_to_player,0 (project_p has no GF_BOULDER/GF_BOLT case: default dam=0),hp,giants' BOULDER spell,spells1.c:3540-4092

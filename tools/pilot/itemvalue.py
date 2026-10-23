@@ -30,11 +30,54 @@ PVAL_COST = {"STR": 200, "INT": 200, "WIS": 200, "DEX": 200, "CON": 200, "CHR": 
 SPEED_COST = {40: 25000, 45: 50000}       # amulets, rings; everything else 100000 per +1
 IRREPLACEABLE_FLAGS = {"FREE_ACT", "SEE_INVIS", "RES_POIS", "RES_BLIND", "RES_CONF", "HOLD_LIFE", "SPEED",
                        "TELEPATHY", "REGEN", "RES_ACID", "RES_ELEC", "RES_FIRE", "RES_COLD"}
-# Expected values for what isn't known yet (estimates until the Advisor's rulebook tables, step 3):
-# an unknown flavour by type (the identify memo: 87-750), and pseudo-ID'd gear over its kind's cost
-UNKNOWN_FLAVOUR = {75: 100, 70: 100, 45: 500, 40: 500, 65: 300, 55: 300, 66: 800}
+# Expected values for what isn't known yet come from the Advisor's rulebook tables (synced
+# into tools/rulebook/; kinds_by_level.csv, feelings.csv): an unknown flavour by type and
+# level, renormalised over the kinds not yet known; pseudo-ID'd gear by kind, level and
+# feeling (the median, as the mean is skewed by rare speed egos), with P(irreplaceable ego)
 PSEUDO_BONUS = {"average": 0, "good": 500, "excellent": 2500, "special": 10000, "magical": 500,
-                "worthless": None, "cursed": None, "broken": None, "terrible": None}
+                "worthless": None, "cursed": None, "broken": None, "terrible": None}   # fallback only
+UNKNOWN_FLAVOUR = {75: 100, 70: 100, 45: 500, 40: 500, 65: 300, 55: 300, 66: 800}  # fallback only
+RULEBOOK = os.path.join(HERE, "..", "rulebook")
+TVAL_NAME = {75: "potion", 70: "scroll", 45: "ring", 40: "amulet", 65: "wand", 55: "staff", 66: "rod"}
+
+
+def _csv(name):
+    import csv
+    path = os.path.join(RULEBOOK, name)
+    return list(csv.DictReader(open(path))) if os.path.exists(path) else []
+
+
+_KBL = {}
+for _r in _csv("kinds_by_level.csv"):
+    _KBL.setdefault((int(_r["level"]), _r["tval"]), []).append(_r)
+_FEEL = {}
+for _r in _csv("feelings.csv"):
+    _FEEL[(_r["kind"].lower(), int(_r["level"]), _r["feeling"])] = _r
+_FEEL_LEVELS = sorted({k[1] for k in _FEEL}) or [15]
+
+
+def unknown_flavour_value(tval, level, aware=()):
+    """E[value] of an unknown flavour of this type found at this level, over the kinds
+    not yet known (aware: kind names, lower case)."""
+    rows = _KBL.get((max(0, min(60, int(level))), TVAL_NAME.get(tval, "")), [])
+    rows = [r for r in rows if r["kind"].lower() not in aware]
+    tot = sum(float(r["p_in_tval"]) for r in rows)
+    if not tot:
+        return UNKNOWN_FLAVOUR.get(tval, 100)
+    return round(sum(float(r["p_in_tval"]) * float(r["value"] or 0) for r in rows) / tot)
+
+
+def feeling_value(kind, level, feeling):
+    """(median value, P(irreplaceable ego)) of a pseudo-ID'd kind at a level, or None."""
+    lv = min(_FEEL_LEVELS, key=lambda x: abs(x - level))
+    r = _FEEL.get((kind.lower(), lv, feeling))
+    return (int(float(r["p50"])), float(r["p_irreplaceable"] or 0)) if r else None
+
+
+def mean_charges(kind, tval, level):
+    rows = _KBL.get((max(0, min(60, int(level))), TVAL_NAME.get(tval, "")), [])
+    r = next((r for r in rows if r["kind"].lower() == kind.lower()), None)
+    return float(r["mean_charges"]) if r and r.get("mean_charges") else 5.0
 
 
 def _norm(n):
@@ -78,7 +121,7 @@ _GEAR = sorted(((k["N"].lower(), k) for k in KINDS if k["I"][0] in PVAL_GEAR | {
 
 class Item:
     __slots__ = ("name", "kind", "tval", "count", "value", "known", "ego", "artifact", "flags", "irreplaceable",
-                 "pseudo", "estimate")
+                 "pseudo", "estimate", "p_irreplaceable")
 
     def __repr__(self):
         return (f"Item({self.name!r}: value {self.value}{' (estimate)' if self.estimate else ''}, "
@@ -90,11 +133,12 @@ def _plural_free(s):
     return re.sub(r"\bStaves\b", "Staff", s)
 
 
-def value(name):
-    """An Item for a display name (one of a stack; .count has the stack size)."""
+def value(name, level=15, aware=()):
+    """An Item for a display name (one of a stack; .count has the stack size). level: the
+    dungeon level it came from (ft/50; for expectations); aware: kind names already known."""
     it = Item()
     it.name, it.kind, it.tval, it.ego, it.artifact, it.flags = name, None, None, None, None, set()
-    it.known, it.estimate, it.irreplaceable, it.value = True, False, False, 0
+    it.known, it.estimate, it.irreplaceable, it.value, it.p_irreplaceable = True, False, False, 0, 0.0
     raw = name.strip()
     m = re.match(r"(\d+) ", raw)
     it.count = int(m.group(1)) if m else 1
@@ -126,7 +170,7 @@ def value(name):
     elif re.match(r".+ (Potion|Ring|Amulet|Wand|Staff|Rod)$", core) or core.startswith("Scroll titled"):
         tv = FLAVOURED.get(core.split()[-1], 70)
         it.tval, it.known, it.estimate = tv, False, True
-        it.value = UNKNOWN_FLAVOUR.get(tv, 100)
+        it.value = unknown_flavour_value(tv, level, aware)
         return it
     else:
         low = core.lower()
@@ -200,11 +244,15 @@ def value(name):
             it.value = 0
             return it
         if bonus:
-            val += bonus
+            fv = feeling_value(it.kind or "", level, "excellent" if pseudo == "special" else pseudo)
+            if fv:
+                val, it.p_irreplaceable = fv
+            else:
+                val += bonus
             it.known, it.estimate = False, True
     if it.tval in (65, 55) and not charges:
         it.known, it.estimate = False, True
-        val += (val // 20) * 5               # charges unknown: ~5 expected
+        val += int((val // 20) * mean_charges(it.kind or "", it.tval, level))
     it.value = val
     it.irreplaceable = bool(it.flags & IRREPLACEABLE_FLAGS) and it.tval in PVAL_GEAR
     return it

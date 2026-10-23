@@ -1,0 +1,23 @@
+structure,parameter,value,cite
+room_grid,centre_y,"((2*by+1)*11)/2 for block row by (y in 5,16,27,38,49,60)",generate.c room_build / build_type4 (mission15 memo)
+room_grid,centre_x,"((2*bx+1)*11)/2 for block col bx (every 11 cols from 5)",generate.c room_build
+type4_large,outer_wall,"rows Y-5..Y+5, cols X-12..X+12 (11x25)",generate.c:1406-1419
+type4_large,ring_corridor,"rows Y-4 and Y+4 (cols X-11..X+11), cols X-11 and X+11 (rows Y-4..Y+4); 1 wide",generate.c:1406-1419
+type4_large,inner_wall,"rows Y-3,Y+3 cols X-10..X+10; cols X-10,X+10",generate.c:1406-1419
+type4_large,inner_room,"rows Y-2..Y+2, cols X-9..X+9 (5x19)",generate.c:1406-1419
+type4_large,secret_door,"exactly one of (Y-3,X),(Y+3,X),(Y,X-10),(Y,X+10), 25% each",generate.c:1429-1435
+type4_large,lit,"P(lit) = P(depth <= randint1(25)) = (26-D)/25 for D<=25",generate.c:1412
+type4_large,sub_cases,"1/5 each: 1 monsters at centre; 2 3x3 treasure ring with LOCKED visible door (80% object / 20% stairs, 3-5 traps); 3 pillar (+1/3 inner rooms: closets, doors (Y-1|Y+1, X-3) and (Y-1|Y+1, X+3)); 4 checkerboard (monsters at X-5,X+5; traps; vault_objects x3); 5 cross into 4 chambers (4 secret doors)",generate.c:1426-1652
+type4_large,odds,"per room attempt: unusual if randint0(200)<D, then k<25 -> type 4; ~0.5 per level at D=9",generate.c:3205-3243
+type3_cross,centre_vault,"sub-case 2 (1/4): 3x3 inner ring at the crossing, one secret door at (Y-1,X),(Y+1,X),(Y,X-1),(Y,X+1)",generate.c:1226-1383
+type5_nest,shell,"same 11x25 shell as type 4, secret door as type 4; ALWAYS UNLIT",generate.c:1852-1977
+type5_nest,contents,"kind = randint1(D): <30 jelly (i j m ,), <50 animal, else undead; 95 cells filled with AWAKE monsters from get_mon_num(D+10), no groups, no objects; rating +10; breeders not excluded",generate.c:1852-1977
+type5_nest,odds,"needs D>=5 and a second D/200 roll; k in 40..49; at most one pit/nest per level (~1%/level at D=9)",generate.c:3205-3243
+type6_pit,shell,"same 11x25 shell; ALWAYS UNLIT",generate.c:2024-2325
+type6_pit,contents,"kind = randint1(D): <20 orc, <40 troll, <60 giant, <80 dragon, else demon; 8 kinds in concentric bands, strongest at centre; 95 AWAKE monsters; orcs open secret doors",generate.c:2024-2325; melee2.c:2875-2893
+type6_pit,odds,"needs D>=5 and a second D/200 roll; k in 25..39 (~1.5%/level at D=9, ~2.7% at D=12)",generate.c:3205-3243
+lesser_vault,odds,"D>=5, second D/200 roll, k<25 (after greater); 0.8% (D5) .. 7.2% (D20) per level",generate.c:3205-3243
+lesser_vault,walls,"outline % = granite (FEAT_WALL_OUTER); X permanent only inside; all walls look like white #",generate.c:2332-2486; terrain.txt
+lesser_vault,monsters,"& D+5, @ D+11, 9 D+9 + good object, 8 D+40 + great object (4 of 67 vaults), , 50% monster D+3 / 50% object D+7; ALL ASLEEP",generate.c:2411-2481
+greater_vault,odds,"D>=10, second D/200 roll, k<10; 1.2% (D10) .. 4.9% (D20) per level",generate.c:3205-3243
+stairs,placement,"naked floor with >=3 orthogonal wall neighbours (closets, corridor ends)",generate.c:589-640
