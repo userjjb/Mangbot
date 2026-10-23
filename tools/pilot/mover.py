@@ -401,8 +401,12 @@ class Mover:
         return open_ <= 3
 
     def _plan(self):
-        self.path = plan(self.w, self.goals, self.avoid,
-                         unknown_cost=6 if getattr(self, "unknown", False) else None) or []
+        uc = 6 if getattr(self, "unknown", False) else None
+        # Known traps: round them when there's another way (cost 25 still sent
+        # explore over them; two stat drains from dart traps in mission 22)
+        traps = {q for q, ch in self.w.memory.items() if ch == "^"} - set(self.goals)
+        self.path = (plan(self.w, self.goals, self.avoid | traps, unknown_cost=uc) if traps else None) or \
+            plan(self.w, self.goals, self.avoid, unknown_cost=uc) or []
         self.sent = self.done = 0
         self.running = None
         self.here = self.w.pos

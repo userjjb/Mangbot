@@ -1397,6 +1397,10 @@ class Pilot:
         self.retreating = False
         self.fearers_seen = set()
         self.drainers_seen = set()     # (level_t, race name) drainer warnings given
+        self.equip_letters_lower = False  # item_index: a lowercase letter is an equipment letter (takeoff)
+        self.phase_hist = collections.deque()   # emergency Phase Door times (futility check)
+        self.traps_here, self.trap_seen_t = (None, 0), time.time()
+        self.band_warned = (None, 0)   # (level_t, size) of the last band warning
         self.thieves_seen = set()      # (level_t, race name) thief warnings given
         self.thief_hit_t = 0.0
         self.kills_t = time.time()     # messages scanned for unique kills
@@ -1965,7 +1969,7 @@ class Pilot:
             if self.recall_started(now):
                 return True
         if near_danger and not isinstance(self.goal, (Flee, Recover)) and now - self.flee_t > 10 \
-                and "danger" in o["stop_on"]:
+                and "danger" in o["stop_on"] and not self.hunt_ordered(now, near_danger[0].name):
             self.flee_t = now
             prev = self.goal.describe() if self.goal else None
             self.set_goal(Flee(near_danger[0].name))
@@ -2042,6 +2046,7 @@ class Pilot:
                 pd = next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
                 if pd and not w.flag("blind") and not w.flag("confused"):
                     self.phase_t = now
+                    self.phase_hist.append(now)
                     self.cmd(f"custom r item={pd['item']}", f"phase away from {f.name}", hold=0.6)
                     return True
             if self.retreat_step(fearers):
@@ -2113,6 +2118,18 @@ class Pilot:
                 self.skipped_items.add((w.level_t, w.pos))
             if seen and (w.level_t, w.pos) in self.skipped_items:
                 seen = []         # junk we left, or what the Navigator dropped here
+            # Bulky gear (weapons, armour, bows, ammo; not '~': chests) only while the pack
+            # has room: mission 22 filled all 23 slots with a Short Bow, Metal Cap,
+            # Awl-Pike, Flail... and had none left for the good finds. Known good
+            # ones ({good}, an ego name) always
+            if seen and (w.standing_on or "") in "|/\\([])}{" and w.standing_on and \
+                    23 - len(w.items()) <= 5 and \
+                    not re.search(r"\{(good|excellent|special)|\bof [A-Z*]|\([+-]?\d+,[+-]?\d+\) \(", seen[-1][1]):
+                if (w.level_t, w.pos) not in self.skipped_items:
+                    self.notify("tactic", f"left {seen[-1][1][8:].rstrip('.')} (pack nearly full: bulky gear only "
+                                          "with 6+ free slots; `pickup` takes it)", news=True)
+                self.skipped_items.add((w.level_t, w.pos))
+                seen = []
             if seen and seen[-1][0] > self.picked_t and w.pos == self.seen_pos(seen[-1][0]):
                 self.picked_t = now
                 if self.mover.active:
@@ -2159,6 +2176,26 @@ class Pilot:
         self.notify("emergency_loop", "third emergency in 90 s and no stairs known nearby: "
                                       "consider Word of Recall or leaving this area")
         return False
+
+    def hunt_ordered(self, now, what):
+        """The Navigator ordered this hunt in the last 2 minutes: the automatic
+        'dangerous monster' and 'unseen attacker' flees don't replace it (mission
+        22: hunts ordered on a danger alert were overridden by the flee).
+        Emergencies and the 1x group-danger exit still apply."""
+        g = self.goal
+        if not (isinstance(g, Hunt) and getattr(g, "by_navigator", False) and now - self.goal_t < 120):
+            return False
+        if getattr(g, "kept_warned", None) != what:
+            g.kept_warned = what
+            self.notify("tactic", f"hunting {g.target} as ordered: not fleeing from {what} (emergency escapes "
+                                  "still apply)", news=True)
+        return True
+
+    def phase_futile(self, now):
+        """3 Phase Doors in the last 20 s: the monsters keep reaching us."""
+        while self.phase_hist and now - self.phase_hist[0] > 20:
+            self.phase_hist.popleft()
+        return len(self.phase_hist) >= 3
 
     def escape(self, why):
         """Emergency: stairs underfoot > out of combat, rest (never potions)
@@ -2208,8 +2245,23 @@ class Pilot:
         # Rate-limited (repeated phasing doesn't shake a pack), except when HP
         # is collapsing with something next to us
         collapsing = w.hp_frac < 0.35
+        # Phasing that isn't working: 3 in 20 s and they're still on us (mission
+        # 22 read 10 in ~20 s, twice). Start the recall, keep one or two Phase
+        # Doors for when HP is really low
+        if adj and pd and can_read and self.phase_futile(now) and w.hp_frac >= 0.2:
+            if not self.recall_started(now) and w.in_dungeon:
+                wor = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
+                if wor:
+                    self.recall_t = now
+                    self.cmd(f"custom r item={wor['item']}", f"{why}: phasing isn't shaking them: word of recall",
+                             hold=0.5)
+                    self.notify("emergency", f"{why}: 3 Phase Doors in 20 s and they're still adjacent: read Word "
+                                             "of Recall; Phase Door now only below 20% HP")
+                    return True
+            pd = None
         if adj and pd and can_read and (now - self.phase_t > 2.5 or (collapsing and now - self.phase_t > 0.7)):
             self.phase_t = now
+            self.phase_hist.append(now)
             self.cmd(f"custom r item={pd['item']}", f"{why}: phase door", hold=0.6)
             self.notify("emergency", f"{why}: read Phase Door ({', '.join(sorted({r.name for *_, r in adj}))} adjacent)")
             return True
@@ -2251,6 +2303,7 @@ class Pilot:
                                              f"({pots[-1][0]}): escaping instead")
                 if adj and pd and can_read and now - self.phase_t > 0.7:
                     self.phase_t = now
+                    self.phase_hist.append(now)
                     self.cmd(f"custom r item={pd['item']}", f"{why}: phase door (potions too weak)", hold=0.6)
                     return True
                 wor = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
@@ -2303,6 +2356,50 @@ class Pilot:
     def room_door(self, Y, X):
         """An inner room's door, if the map shows one at any of its 4 places."""
         return next((d for d, _ in structures.door_spots(Y, X) if self.w.memory.get(d) in ("+", "'")), None)
+
+    def watch_band(self):
+        """A band gathering: 5+ mobile monsters within 10 squares that aren't
+        trivial, or their worst-case melee together over half our HP. Warn once
+        per level (again if it grows by half): leave while it's cheap (mission 22
+        fetched loot in Orfax's room while an orc band assembled; HP 78/241, all
+        10 Phase Door and 5 CCW later)."""
+        w = self.w
+        if not w.in_dungeon:
+            return
+        # (not trivial: 6+ worst-case melee a turn; by level it missed an orc band
+        # of Hill, Cave and Snaga orcs, all well below clvl 21)
+        near = [(y, x, r) for y, x, r in w.monsters if "NEVER_MOVE" not in r.flags and w.dist((y, x)) <= 10
+                and (r.worst_melee[0] or 0) * (r.speed_x or 1) >= 6]
+        worst = sum((r.worst_melee[0] or 0) * (r.speed_x or 1) for *_, r in near)
+        if len(near) < 5 and worst < 0.4 * max(w.hp[1], 1):
+            return
+        lt, size = self.band_warned
+        if lt == w.level_t and len(near) < size * 1.5:
+            return
+        self.band_warned = (w.level_t, len(near))
+        names = ", ".join(f"{n} ×{c}" if c > 1 else n
+                          for n, c in collections.Counter(r.name for *_, r in near).most_common(6))
+        stairs = min((w.dist(q) for q in w.find("<>")), default=None)
+        self.notify("band", f"a band within 10 squares: {names} ({len(near)} monsters, ~{worst:.0f} worst-case melee "
+                            f"a turn together, HP {w.hp[0]}): leave now while it's cheap -- "
+                            + (f"stairs {stairs} away" if stairs is not None else "no stairs known: read Word of Recall")
+                            + "; don't stop for loot")
+
+    def watch_traps(self):
+        """Three traps sprung on one level: say so (mission 22: dart traps
+        drained STR and CON on one level while explore walked on)."""
+        w = self.w
+        if not w.in_dungeon:
+            return
+        for ts, t in w.messages:
+            if ts > self.trap_seen_t and re.match(r"(You found a trap|You fall into|A small dart|You are enveloped|"
+                                                  r"You are impaled|A pit|You fall through)", t):
+                n = self.traps_here[1] + 1 if self.traps_here[0] == w.level_t else 1
+                self.traps_here = (w.level_t, n)
+                if n == 3:
+                    self.notify("tactic", "3 traps sprung on this level: it's trap-laden; leave it (stairs or a "
+                                          "fresh level) rather than explore on", news=True)
+        self.trap_seen_t = max([self.trap_seen_t] + [ts for ts, _ in w.messages])
 
     def watch_thieves(self):
         """A thief in view in the dungeon: say so once per level, before it
@@ -2610,6 +2707,7 @@ class Pilot:
         hurting = g > hp or w.hp_frac < self.orders["think_hp"]
         if w.adjacent_monsters() and pd and can_read and hurting and now - self.phase_t > 10:
             self.phase_t = now
+            self.phase_hist.append(now)
             self.cmd(f"custom r item={pd['item']}", f"group danger {g:.0f} vs HP {hp}: phase door", hold=0.6)
             self.notify("tactic", f"{names} can deal {g:.0f} (HP {hp}): phased away")
             return True
@@ -2762,6 +2860,8 @@ class Pilot:
             not self.has_ability("free_action")
         hint = " (it may be paralysis and you have no Free Action: if the stairs are far, read Word of Recall)" \
             if para else ""
+        if self.hunt_ordered(time.time(), "an unseen attacker"):
+            return False
         if w.find("<>"):
             self.set_goal(Flee("unseen attacker"))
             self.notify("unseen_attacker", f"'{cause}': something unseen is attacking"
@@ -3011,6 +3111,7 @@ class Pilot:
         pd = w.tagged("r", 1) or next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
         if pd and w.adjacent_monsters() and now - self.phase_t > 2.5:
             self.phase_t = now
+            self.phase_hist.append(now)
             self.cmd(f"custom r item={pd['item']}", "flee failed, monsters adjacent: phase door", hold=0.6)
 
     def idle(self):
@@ -3387,6 +3488,8 @@ class Pilot:
         self.watch_drainers()
         self.watch_thieves()
         self.watch_kills()
+        self.watch_band()
+        self.watch_traps()
         self.watch_progress()
         self.watch_perception()
         if self.w.recall_cancelled:
@@ -3455,6 +3558,15 @@ class Pilot:
         """Inventory letter (a, b, ...) as in the report, or part of an item's
         name (spaces as '_'; resolved now, so it can't go stale) -> item index."""
         if len(letter) == 1 and letter.isalpha():
+            # Equipment letters: A, B, ... in the order `equip` lists it (and
+            # lowercase for takeoff, which only works on equipment); mission 22
+            # couldn't take off or inspect a worn ring by letter
+            if letter.isupper() or (equip and pack_only is False and self.equip_letters_lower):
+                eq = self.w.items(equip=True)
+                k = ord(letter.lower()) - ord("a")
+                if not 0 <= k < len(eq):
+                    raise ValueError(f"no equipment item {letter} (`equip` lists them)")
+                return eq[k]["item"]
             return ord(letter) - ord("a")
         if letter.isdigit():
             return int(letter)
@@ -3474,6 +3586,11 @@ class Pilot:
                      and not re.search(r"\w " + re.escape(name) + r" \w", i["name"].lower())]
             if len(words) == 1:
                 return words[0]["item"]
+            # two stacks of the same unknown kind (they don't merge while their
+            # hidden pluses differ: mission 22's two Bloodstone Rings): the first
+            same = {re.sub(r"^(an?|\d+) ", "", i["name"]) for i in hits}
+            if len(same) == 1:
+                return hits[0]["item"]
             raise ValueError(f"'{letter}' matches {len(hits)} items: " + "; ".join(
                 f"{chr(97 + i['item'])}) {i['name']}" for i in hits) + ": use the letter or a longer name")
         return hits[0]["item"]
@@ -3507,7 +3624,8 @@ class Pilot:
             return {"ok": True, "text": "Pack: " + "; ".join(f"{chr(97 + i['item'])}) {self.short(self.show(i))}"
                                                            for i in self.w.items())}
         if c == "equip":
-            return {"ok": True, "text": "Equipment: " + "; ".join(self.short(i["name"]) for i in self.w.items(equip=True))
+            return {"ok": True, "text": "Equipment (use these letters, capitals, in item commands): " + "; ".join(
+                f"{chr(65 + k)}) {self.short(i['name'])}" for k, i in enumerate(self.w.items(equip=True)))
                     + "\n" + self.gear_line()}
         if c == "orders":
             return {"ok": True, "text": "Orders: " + ", ".join(f"{k}={v}" for k, v in self.orders.items())}
@@ -3682,7 +3800,11 @@ class Pilot:
                     # replay: this branch still took the first substring match)
                     item = self.item_index(args[0], pack_only=True)
                 else:
-                    item = self.item_index(args[0], equip=(c == "takeoff"))
+                    self.equip_letters_lower = c == "takeoff"
+                    try:
+                        item = self.item_index(args[0], equip=(c == "takeoff"))
+                    finally:
+                        self.equip_letters_lower = False
             except ValueError as e:
                 return {"ok": False, "error": str(e)}
             extra = ""
@@ -3986,6 +4108,7 @@ class Pilot:
             g = Wait(rest[0] if rest else 5)
         else:
             return {"ok": False, "error": f"unknown goal {name}"}
+        g.by_navigator = True
         self.set_goal(g)
         return {"ok": True, "goal": g.describe()}
 
@@ -4338,7 +4461,7 @@ class Pilot:
         w = self.w
         cons = (TV_POTION, TV_SCROLL, TV_FOOD, TV_FLASK)
         now = {
-            "Equip": [self.short(i["name"]) for i in w.items(equip=True)],
+            "Equip": [f"{chr(65 + k)}) {self.short(i['name'])}" for k, i in enumerate(w.items(equip=True))],
             "Pack (not consumables)": [f"{chr(97 + i['item'])}) {self.short(self.show(i))}" for i in w.items()
                                        if i["tval"] not in cons and i["tval"] not in (55, 65, 66)],
             "Weapons": [f"{'WIELDED ' if eq else ''}{self.short(n)} {b} blows ~{d:.0f}"
@@ -4368,8 +4491,8 @@ class Pilot:
             if norm(v) == norm(prev.get(k, [])):
                 continue
             if k in ("Equip", "Pack (not consumables)"):
-                strip = (lambda t: norm([t.split(") ", 1)[-1]])[0]) if k.startswith("Pack") else \
-                    (lambda t: norm([t])[0])
+                # (both carry letters now, which shift: compare the names)
+                strip = lambda t: norm([t.split(") ", 1)[-1]])[0]
                 old = {strip(t) for t in prev.get(k, [])}
                 new = {strip(t) for t in v}
                 ch = [f"+{t}" for t in v if strip(t) not in old] + [f"-{t}" for t in sorted(old - new)]

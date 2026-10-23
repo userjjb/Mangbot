@@ -248,13 +248,21 @@ job 8105290 on scc-wh2, walltime to Mon 10-19 20:47, Dive04 restored from its 10
   (`tools/observe/latency.py`): alert → order median 8.9 s for both, p90 30 s (Sonnet) vs 81 s (Opus m21); cadence
   3.9 vs 5.1 s; but 111 alerts vs 17 (mob levels), so not comparable yet. Gold 2621 → 475, clvl 19 → 21. Its 7
   Pilot problems (loot rooms while a band gathers, Phase Door burn, junk weapon pickups, identify-by-name with twin
-  stacks, equipment letters, hunt overridden by flee, traps) are NOT fixed yet; the user hasn't said.
+  stacks, equipment letters, hunt overridden by flee, traps): **fixed 10-22** (see the compact-report entry).
 - **Compact report (2026-10-22, the user):** `wait` and `status` now return `Pilot.compact()` (~0.4-1.4 KB vs
   ~5 KB): character, stats, Cures|Escapes|Food|Light, Also, Here+stairs, Monsters (DANGER why), Items, a 19 x 19
   dungeon map (none in town), Structures, News, Msgs, Since last, Progress, then changes only (Equip, Pack
   non-consumables, Weapons, Abilities, Gear, Orders changed, Audit), all of them on an explicit `status`.
   `status full` = the old report; new queries `pack`, `equip`, `orders`, `map [R]`. The viewer still uses
   report() (the user will handle the viewer separately). Runs on scc-pe7 now (job 8181626, to Sat 10-24 09:50).
+
+- **Mission 22 fixes (2026-10-22, deployed):** `band` event (5+ mobile monsters with 6+ worst-case melee within 10,
+  or together over 40% max HP; once per level, again at +50%); after 3 Phase Doors in 20 s with monsters still adjacent
+  the emergency reads WoR and phases only below 20% HP (`phase_hist`, all 5 phase sites); bulky gear (|/\([])}{,
+  not ~ chests) skipped with ≤5 free slots unless {good}/ego (news, `pickup` overrides); equipment letters A, B...
+  (`equip`, compact Equip, takeoff/inspect/read TARGET; `takeoff b` too); twin same-name unknown stacks → the first;
+  a Navigator-ordered hunt isn't replaced by the danger/unseen flees for 120 s (`by_navigator`, `hunt_ordered`);
+  Mover plans round known traps first; 3 traps sprung on a level → news. Tested offline + `inspect B` live.
 
 ### ARCHITECT HANDOFF 2026-09-29 (history; read the 2026-10-08 section first)
 

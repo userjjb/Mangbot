@@ -35,7 +35,7 @@ Attention events:
 | `interesting` | a dive stopped for something in `stop_on`: a unique, items, a pillared room (these often hold stairs; explore them), danger |
 | `danger_avoided` | (news, doesn't wake you) arrived next to a pack or an out-of-depth monster and went straight back up the stairs. Shown under "News:" |
 | `danger_seen` | a dangerous monster came into view: the pilot dropped the goal and is heading for the stairs. The detail says why. Danger means: `danger_level` above yours, a unique above your level, a breather whose two strongest breaths would kill you at your current HP, breathers whose breaths together would (hound packs), a paralyser while you lack Free Action (`free_action` order; a paralysing blow too weak to get through your armour doesn't count), or a summoner within 5 levels of yours (summons appear next to *you* and stay after it dies). Also, from the Advisor's danger table: a monster rated 5 ("leave on sight"), one rated 4 until you're 8 levels above it, any capital `D`, one whose melee per turn (speed × blows, all hitting) is a third of your current HP or more, Brain Smash without Free Action + both resists below, and a monster within 10 levels that blinds or confuses with its *blows* (no saving throw) while you lack the resist |
-| `emergency` | HP fell below `flee_hp`, or to 2.5 worst-case rounds of one adjacent monster (Brodda's 48 a round: at 120 HP): the pilot took the stairs underfoot, read Phase Door, or quaffed a cure |
+| `emergency` | HP fell below `flee_hp`, or to 2.5 worst-case rounds of one adjacent monster (Brodda's 48 a round: at 120 HP): the pilot took the stairs underfoot, read Phase Door, or quaffed a cure. **After 3 Phase Doors in 20 s with monsters still adjacent it reads Word of Recall** and phases again only below 20% HP (mission 22 burned 10 in 20 s, twice) |
 | `fight_going_badly` | HP below `think_hp` while fighting: decide whether to flee (e.g. `stairs`, or `read` Phase Door) |
 | `low_supply` | out of food (it recalls), no flasks for the lantern, no light at all |
 | `idle_recall` | nobody answered for a while: it's recalling to town |
@@ -49,6 +49,7 @@ Attention events:
 | `parked` | the pilot is logging out for an update (at a safe moment). It comes back within a minute or two with `started`; then re-issue your goal |
 | `pack_full` | "You have no room for ...": make room (destroy/drop junk, or recall and sell) |
 | `stat_drained`, `blows_changed` | a stat was drained (also a second drain of a stat already drained) or the blows per round changed (a drained DEX can cost a blow: restore it in town, store 5). A second drain on a level leaves it, except when the drainer beside you is weak (5+ levels below you, not a unique) and no faster than you: then the pilot kills it (`tactic` news), since walking away hands it more bites |
+| `band` | 5+ monsters that hit for real (6+ worst-case a turn each) within 10 squares, or their melee together over 40% of your max HP: **leave now** (stairs, or Word of Recall), and don't stop for loot. Once per level, again if it grows by half (mission 22 looted Orfax's room while an orc band gathered: HP 78/241, all Phase Door and 5 CCW) |
 | `thief` | (news only for gold thieves) a monster that steals from the pack with a touch, then teleports away, came into view (once per level): kill it before it reaches you, or keep away. With others adjacent, the pilot hits the thief first |
 | `unique_slain` | you killed a unique: its drop is good (look at `Items: ... near:` around the square) |
 | `drainer` | (news only for INT/WIS/CHR) a mobile monster whose blows drain a stat came into view (once per level), with advice: kill a weak, slow one fast; `avoid NAME` or leave for the rest. Here the red ones drain STR: Giant red frog (350 ft), Giant red ant (450 ft), Giant red scorpion (850 ft), Red naga; also Yellow worm mass, Moaning spirit and Quasit (DEX). `drainers` lists them |
@@ -98,7 +99,7 @@ The report is **compact** (since 2026-10-22: the old one ran to ~5 KB). Line by 
 | `goal search` | search for secret doors at dead ends, corridor ends and room corners, nearest first, skipping those already searched on this level (a dive does this by itself when a level seems to have no stairs) |
 | `goal explore [until=stairs] [radius=N]` | (dungeon only) walk to unexplored edges until nothing is left (or a `>` it can reach is seen, or within N squares). Before calling a level done it digs rubble that borders unexplored ground and searches each corridor dead end 15 times for a secret door (its reply says how many it searched; each dead end only once per level). It fetches items within `loot_radius` on the way, but not distant ones it saw earlier: when it's done, collect those from the report's item squares with `goto` |
 | `goal goto Y,X` / `goto >` / `goto <` / `goto item` | walk there. With `pickup=all`, an item on the target square is picked up by itself, about half a second after arriving (it waits for the character's turn): check the pack before a manual `pickup`. **Held while a dangerous monster is adjacent, or a faster one is hitting you** (walking away gives it free hits; it fights on; mission 18: a Nighthawk took 110 HP over a 25 s goto): add `force` (`goal goto 50,175 force`) to walk anyway. **No known path:** it tries one through unexplored squares (news says so), and so does a flee to the stairs (walls it bumps into are marked and it replans). A path is missing when the squares between are unseen (e.g. a corridor seen only with monsters in it, or a Phase Door landing past them) |
-| `goal hunt NAME` (spaces as `_`) | walk up to the monster called NAME and fight it (standing still; the server swings for you). Ends when it's slain or out of sight 15 s |
+| `goal hunt NAME` (spaces as `_`) | walk up to the monster called NAME and fight it (standing still; the server swings for you). Ends when it's slain or out of sight 15 s. **A hunt you order isn't replaced by the pilot's automatic "dangerous monster" or "unseen attacker" flee for 2 minutes** (news says so); its emergency escapes and the leave-the-level group-danger rule still apply, so check `monster NAME` first |
 | `goal shop N [list] [buy NAME:COUNT[@MAX]]... [sell NAME_OR_LETTER:COUNT]...` | names match singular or plural (`buy Flask_of_oil:5`); when the cheapest stack runs out, the rest are bought at the next price within the cap, and the reply says when gold or the cap stopped it. `list`: the result starts with the store's whole stock and prices (use it alone to look before buying). `@MAX`: don't pay more than MAX each (e.g. `buy To-Dam:2@120`). Town only: walk into store N (1 General, 2 Armoury, 3 Weaponsmith, 4 Temple, 5 Alchemist, 6 Magic shop, 7 Black market), sell, buy (by part of the name; spaces as `_`, e.g. `buy Cure_Light:5`; the cheapest matching item is bought), leave. The result lists what the shopkeeper actually said ("I don't want that!" for worthless or cursed items) `quote NAME_OR_LETTER` offers an item and declines: the reply says what this shop would pay (`goal shop 6 quote Trident quote b`), nothing is sold. Names are matched whole-word, and an ambiguous name is refused |
 | `goal resurrect` | (only as a ghost, after `dead`) float up one level per `<` to town, then walk onto the Temple entrance (`4`), which resurrects. **It halves the experience for good.** Do it at once: a ghost left in the dungeon keeps getting hit (Dive03's ghost was poisoned while logged out and faded away forever on the next login). Untested so far |
 | `journal "situation \| decision \| why"` | (not a goal) your journal line, stamped by the pilot with the real time, depth and HP and appended to your journal (the report's first line also shows `now HH:MM:SS`) |
@@ -131,7 +132,12 @@ report, **or part of the item's name** with spaces as `_` (e.g. `destroy Salt_Wa
 `quaff Cure_Light`), which is safer: a name is looked up at the moment the pilot acts (singular or plural both match: `Flask_of_oil`). Each item
 action answers with what the game said and the pack as it is *now*: use those letters for the
 next action. With `pickup=all` (the default) the pilot picks up whatever it walks
-onto when nothing is next to it. Letters shift when items come and go (and
+onto when nothing is next to it, except junk (the junk order, the flavour table) and, **with 5 or fewer
+free pack slots, bulky gear** (weapons, armour, bows, ammo) unless it shows as good (`{good}`, an ego
+name): news says what it left; `pickup` takes it anyway. **Equipment has its own letters, capitals:**
+`equip` lists `A) Spear...`, and `takeoff B`, `inspect B`, `read Identify B` use them (`takeoff b`
+works too). Two stacks of the same unknown kind (they don't merge while their pluses differ) take a
+name: `read Identify Bloodstone_Ring` identifies the first. Letters shift when items come and go (and
 when identifying re-sorts the pack): check `status` before a series of
 actions, and act from the last letter backwards.
 
@@ -445,6 +451,9 @@ Orders are remembered across pilot restarts.
   column range, so `goto Y,X` coordinates can be read straight off it. A climb (`goal dive` to a
   shallower depth) explores for a `<` and never goes down (mission 17: a climb to town went from
   100 to 150 ft); with `scum` it may use a `>` within 8 squares if the level below is within `max_depth`.
+- **Traps:** paths go round known traps (`^`) when there's another way. Three traps sprung on one level
+  raises news that it's trap-laden: leave it rather than explore on (mission 22: dart traps drained STR
+  and CON on one level).
 - **Check `monster NAME` before any `hunt`**: its melee per turn and worst case, and its spells.
   "Don't flee a slow caster" is for weak meleers like Wormtongue (mission 19 hunted a level-20
   Ranger, 40 worst-case melee and summons: 220 → 67 HP in 10 s).
