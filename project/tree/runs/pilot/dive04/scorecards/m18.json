@@ -141,5 +141,6 @@
   "emergency_loop": 2,
   "danger_seen": 2,
   "stat_drained": 1
- }
+ },
+ "plan_news": {}
 }

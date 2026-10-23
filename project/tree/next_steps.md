@@ -229,8 +229,9 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    problem 3). The Advisor's m24 answers (to_architect 10-24 m24) built: the **arrival protocol** in the trip plan
    (Door/Stair Location after a recall or on a "special" feeling, then explore until stairs on a special level), its
    **depth band** advice in the HANDBOOK (work 500-650 ft: 58 XP/min vs 8.5 at 300-450), plan news tagged
-   `source: plan` (latency.py skips it), the hunt veto skipped where the Advisor's coming `veto_reason` column says
-   "strength". **Next:** restructure steps 3-5 (rulebook use, the Advisor's harness/set-pieces A7/A8, missions with
+   `source: plan` (latency.py skips it), the hunt veto skipped where the Advisor's `veto_reason` column says "strength"
+   (synced 10-23: Brodda and Ulfast now go to the simulator; Wormtongue/Boldor stay vetoed); the scorecard counts
+   plan news apart (`plan_news`). **Next:** restructure steps 3-5 (rulebook use, the Advisor's harness/set-pieces A7/A8, missions with
    scorecards), then the time bubble. (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
    toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23. Then the time bubble (timers to game turns; decided below).

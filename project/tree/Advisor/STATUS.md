@@ -29,7 +29,7 @@ Architect builds everything else.
    bubble is a constant 1/5; WoR counts down ~10× faster while resting out of sight; "You are unaffected!" pairing.
 3. **Set-pieces:** when the enablers land, write a staging recipe + automatic pass/fail check for each P1 case (A1, A2, A3, A6, A7, A8, B1, C1, C3,
    C4, C5, C8, D3, F1). A7 also validates `fight_sim.py` (Hill giant p90 123 at Dive04's profile).
-4. **Offered:** a `veto_reason` (qualitative/strength) column in monsters.csv if the Architect agrees (m24 memo §2).
+4. ~~veto_reason~~ **done** 10-24 (monsters.csv `veto_reason`/`veto_detail`; note `to_architect/2026-10-24-veto-reason.md`; awaiting re-sync). The Architect built the m24 arrival protocol, depth band in HANDBOOK, plan-news tagging.
 4b. **Belief-state spec** (if the Architect wants it for step 2): fields, computation, expiry (see starting-over memo §3.4).
 5. **Step 5:** run the scorecard on each new mission vs the m17–23 baseline; Opus vs Sonnet by depth band (m22–23 were Sonnet;
    `data/navigator/response.py` has the missions list; production `scorecard.py` reads `runs/missions.json` which records the model).

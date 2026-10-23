@@ -183,7 +183,10 @@ def card(m):
     t1 = epoch(m["end"]) if m.get("end") else time.time()
     recs, msgs, stores = load(nick, t0, t1)
     att = [d for d in recs if d.get("kind") == "attention"]
-    acount = collections.Counter(d.get("what") for d in att)
+    # (the trip plan's news, tagged source=plan since 2026-10-23, didn't wake the Navigator: counted
+    # apart, the Advisor's veto-reason memo; deaths, emergencies and escalations still use every record)
+    acount = collections.Counter(d.get("what") for d in att if d.get("source") != "plan")
+    plan_news = collections.Counter(d.get("what") for d in att if d.get("source") == "plan")
     aud = [d for d in recs if d.get("kind") == "audit_check"]
     c = {"label": m["label"], "nav_model": m.get("navigator"), "effort": m.get("effort"), "report": m.get("report"),
          "start": m["start"], "end": m.get("end") or "(running)", "minutes": round((t1 - t0) / 60, 1),
@@ -325,6 +328,7 @@ def card(m):
                 dmg[n] += (ha - hb) / len(who)
     c["damage_by_monster"] = {k: round(v) for k, v in dmg.most_common(8)}
     c["alerts"] = dict(acount.most_common(12))
+    c["plan_news"] = dict(plan_news.most_common(12))
     return c
 
 

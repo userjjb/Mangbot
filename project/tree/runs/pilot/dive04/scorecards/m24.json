@@ -139,5 +139,6 @@
   "plan_done": 2,
   "goal_failed": 1,
   "emergency": 1
- }
+ },
+ "plan_news": {}
 }

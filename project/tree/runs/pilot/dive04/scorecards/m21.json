@@ -133,5 +133,6 @@
   "breeders": 1,
   "interesting_item": 1,
   "goal_failed": 1
- }
+ },
+ "plan_news": {}
 }
