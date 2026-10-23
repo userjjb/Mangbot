@@ -2713,6 +2713,24 @@ class Pilot:
         free = 23 - len(w.items())
         if free >= 1:
             return True
+        # Use something up before destroying anything (the user, mission 21: a robe and
+        # a scroll were destroyed with a flask of oil in the pack that could have
+        # filled the lantern): a lone flask into the lantern, a lone ration eaten
+        if now - self.room_t > 1.5:
+            lamp = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE and "Lantern" in i["name"]), None)
+            lt = re.search(r"with (\d+) turns", lamp["name"]) if lamp else None
+            flask = next((i for i in w.items() if i["tval"] == TV_FLASK and i["number"] == 1), None)
+            food = next((i for i in w.items() if i["tval"] == TV_FOOD and i["number"] == 1
+                         and "Mushroom" not in i["name"]), None)
+            if flask and lt and int(lt.group(1)) < 14000:
+                self.room_t = now
+                self.cmd(f"custom F item={flask['item']}", f"make room: fuel the lantern with the last flask for {name}",
+                         hold=0.6)
+                return False
+            if food and w.hunger <= 3:
+                self.room_t = now
+                self.cmd(f"custom E item={food['item']}", f"make room: eat {food['name']} for {name}", hold=0.6)
+                return False
         cand = sorted(((self.pack_value(i), i) for i in w.items()), key=lambda vi: vi[0])
         cheapest = cand[0] if cand else None
         if cheapest and cheapest[0] < float("inf") and (unique or worth > 1.5 * cheapest[0] + 5):
@@ -2745,6 +2763,17 @@ class Pilot:
             return False
         self.policy_t = now
         pack, worn = w.items(), w.items(equip=True)
+        # 0. gold lying within 10 squares while idle (the user, mission 23: the Pilot
+        # left the gold beside it in town; the Navigator needed seven gotos)
+        if self.goal is None and not self.mover.active and w.pos:
+            gold = [q for q, ch in w.memory.items() if ch == "$" and 0 < w.dist(q) <= 10
+                    and (w.level_t, q) not in self.skipped_items]
+            if gold and self.mover.go([min(gold, key=w.dist)]):
+                g = Goto(f"{min(gold, key=w.dist)[0]},{min(gold, key=w.dist)[1]}")
+                g.quiet = True
+                self.set_goal(g)
+                self.notify("tactic", f"picking up the gold {min(w.dist(q) for q in gold)} squares away", news=True)
+                return True
 
         def bare(n):
             return re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", n)).lower()
@@ -3391,6 +3420,7 @@ class Pilot:
         if r:
             status, detail = r
             g = self.goal.describe()
+            quiet = getattr(self.goal, "quiet", False)     # the Pilot's own small goals: news only
             self.goal = None
             self.mover.stop()
             if self.resume_after is not None:
@@ -3402,7 +3432,7 @@ class Pilot:
                                   "detail": f"{g}: {detail}; resumed '{self.goal.describe()}'", "goal": None})
                 return True
             self.notify({"done": "goal_done", "failed": "goal_failed"}.get(status, status),
-                        f"{g}: {detail}" if detail else g)
+                        f"{g}: {detail}" if detail else g, news=quiet)
             if status == "failed" and g.startswith("flee"):
                 self.flee_failed()
         return True
