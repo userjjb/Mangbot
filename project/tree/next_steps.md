@@ -212,7 +212,13 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    far` (hits x damage per hit vs the rulebook's HP, the health bar), `Rates` (HP lost in 10 s, XP/gold per 10 min),
    `Counts` (drains, traps, searches here; emergencies, phases in 90 s), `Standing` (keep, avoid, and the new
    `standing TEXT` instructions in runs/pilot/NICK/standing.json). Tested offline (stub world) and in town; the
-   dungeon lines not yet live. **Next: 2.6 the new toolset**: the short HANDBOOK (~100 lines) and navigator.md (`plan trip LO-HI until COND then recall`), 2.4 order
+   dungeon lines not yet live. **2.6 the new toolset: done (session 4):** `HANDBOOK.md` is now the
+   ~110-line Navigator handbook (who decides what, the plan loop, commands, judgement calls, the deadly few); the old
+   one is `HANDBOOK-reference.md` (search it, not required reading). `goal goto`, `stairs`, `raw` are refused to the
+   Navigator (the Architect keeps them); the Pilot's hints point at `goal leave` / `goal fetch`. navigator.md updated
+   (sources, loop, urgent alerts, debts in the report; backup of the old one in the session scratchpad and in git's
+   project/ snapshot). **Next: 2.7 a short supervised mission** scored against m17-23 (needs the user: model choice,
+   budget; state both debts in the prompt) (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
    toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23. Then the time bubble (timers to game turns; decided below).
 3. **Rulebook:** the Advisor's **release 2** is in `Advisor/data/rulebook/`, synced into `github/tools/rulebook/`

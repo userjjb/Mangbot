@@ -277,7 +277,7 @@ class Goto(Goal):
             if not self.held_warned:
                 self.held_warned = True
                 p.notify("tactic", f"goto held: {bad[0].name} is adjacent (walking away gives it free hits); "
-                                   "it fights on. 'goal goto Y,X force' to walk anyway, or phase/recall")
+                                   "it fights on. `goal leave` or `goal recall` to get away")
             return None
         self.held_warned = False
         if self.arrived_t:
@@ -4494,7 +4494,7 @@ class Pilot:
                 self.item_hold_until = now + 20   # (a dive pauses so you can fetch it)
             self.notify("interesting_item", f"{name} seen on this level (devices and jewellery "
                                              "sell for 50-700 once known): its square is under 'Item squares' in "
-                                             "`status`; `goal goto Y,X`. A dive pauses 20 s for it")
+                                             "`status`; `goal fetch Y,X`. A dive pauses 20 s for it")
         while w.losses:
             t, text = w.losses.pop(0)
             self.notify("lost", text, news=True)
@@ -4689,6 +4689,12 @@ class Pilot:
             return {"ok": False, "error": f"in the dungeon the Pilot handles items itself (pickup, identify, "
                                           f"wear upgrades, destroy junk, fuel, eat): `{c}` is for town, between "
                                           "trips. To protect an item from its policy use `keep NAME`"}
+        if self.req_role != "architect" and (c in ("raw", "stairs") or (c == "goal" and args[:1] == ["goto"])):
+            # the new toolset (restructure step 2.6): movement is the Pilot's; the Navigator
+            # gives intents (`goal leave` for the stairs, `goal fetch Y,X` for an item)
+            return {"ok": False, "error": f"`{c}{' goto' if c == 'goal' else ''}` is the Pilot's now: use `goal leave` "
+                                          "(this level, by the nearest stairs), `goal fetch Y,X` (one item), "
+                                          "`plan trip ...` or `goal dive FEET`"}
         if self.req_role != "architect":
             held = self.stale_order(c, args)
             if held:
@@ -5763,8 +5769,8 @@ class Pilot:
             open_d = [self.room_door(Y, X)] if self.room_door(Y, X) else []
             if open_d:
                 return {"ok": False, "error": f"the inner room at {Y},{X} already shows its door at "
-                                              f"{open_d[0][0]},{open_d[0][1]}: `goal goto {open_d[0][0]},{open_d[0][1]}` "
-                                              "to go in (a closed door opens on a bump)"}
+                                              f"{open_d[0][0]},{open_d[0][1]}: `goal explore` goes in "
+                                              "(a closed door opens on a bump)"}
             g = Search(tries=20, spots=[r for _, r in structures.door_spots(Y, X)])
             g.name = f"searchroom {Y},{X}"
         elif name == "hunt":
@@ -6105,7 +6111,7 @@ class Pilot:
                      + (f" · {re.sub(r' [(].*', '', self.short(wield[0]))} {wield[1]} blows ~{wield[2]:.0f}"
                         if wield else ""))
         lines += self.supply_lines()
-        here = (w.standing_on or "unknown (under @; `stairs <`/`stairs >` tries)") + \
+        here = (w.standing_on or "unknown (under @)") + \
             (f" (item: {w.floor})" if w.floor else "") + (f" (arrived by {w.arrived_by})" if w.arrived_by else "")
         stairs = sorted(w.find("<>"), key=w.dist)[:3]
         lines.append(f"Here: {here}" + (" | Stairs " + ", ".join(f"{w.memory[q]} {q[0]},{q[1]} ({w.dist(q)})"
@@ -6258,7 +6264,7 @@ class Pilot:
                      + (" | resting" if w.resting else ""))
         # (after a login the map shows @ over whatever is there: mission 21 stood
         # on a '<' reported as floor/unknown)
-        lines.append(f"Standing on: {w.standing_on or 'unknown (the map shows @ over it until you step off; on stairs? `stairs <` or `stairs >` tries)'}"
+        lines.append(f"Standing on: {w.standing_on or 'unknown (the map shows @ over it until you step off)'}"
                      f"{' (item: ' + w.floor + ')' if w.floor else ''}"
                      f"{' (arrived by ' + w.arrived_by + ')' if w.arrived_by else ''}"
                      f" | goal: {self.goal.describe() if self.goal else 'none (idle)'}")
@@ -6287,7 +6293,7 @@ class Pilot:
         if near_items:
             lines.append("Item squares nearby (glyph at y,x, distance): " + ", ".join(
                 f"{w.memory.get(p, '?')} at {p[0]},{p[1]} ({w.dist(p)})" for p in near_items)
-                + "  -- 'goal goto Y,X' then 'pickup'")
+                + "  -- `goal fetch Y,X`")
         stairs = w.find("<>")
         if stairs:
             near = sorted(stairs, key=w.dist)[:4]

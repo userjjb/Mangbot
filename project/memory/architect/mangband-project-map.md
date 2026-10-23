@@ -8,7 +8,7 @@ All substance is in `/projectnb/jbrcs/mangband/` (moved out of memory 2026-09-27
 - `next_steps.md`: **start with the "ARCHITECT HANDOFF" section** (state, operating rules, next steps).
 - `operations.md`: environment, test server, characters (credentials in `runs/private/`), tool-mode client facts, verified server behaviour, live server, user decisions, tooling gotchas.
 - `notes_players.md`: game knowledge (docs digest, observed human play, the user's advice).
-- `design_pilot.md` + `github/tools/pilot/HANDBOOK.md`: Pilot architecture and features; `roles.md`; `memos/` (Advisor memos); `notes_merge.md` (protocol survey).
+- `design_pilot.md` + `github/tools/pilot/HANDBOOK.md` (the short Navigator handbook since 2026-10-23) + `HANDBOOK-reference.md` (the full old one): Pilot architecture and features; `roles.md`; `memos/` (Advisor memos); `notes_merge.md` (protocol survey).
 
 - `github/tools/observe/watch.py` (the user's live viewer + `!`/`?` notes), `notes.py` (notes with the play); `github/tools/snapshot.sh` + `github/project/` (whole-state snapshot for the public repo https://github.com/userjjb/Mangbot); how-tos in `operations.md`.
 
