@@ -43,9 +43,13 @@ from mang import MangClient, ClientExited      # noqa: E402
 import glyphs                                   # noqa: E402
 from world import World                          # noqa: E402
 import structures                                # noqa: E402
+import itemvalue                                 # noqa: E402
+sys.path.insert(0, os.path.join(HERE, "..", "observe"))
+import shopmath                                  # noqa: E402
 from mover import Mover, direction, passable, plan, drain_zone_of, MAX_HGT, MAX_WID   # noqa: E402
 
 TV_SCROLL, TV_POTION, TV_FOOD, TV_FLASK, TV_LITE = 70, 75, 80, 77, 39
+SHOP_CUT = 0.38   # what a shop pays Dive04 of an item's value at CHR 3 (shopmath: 34-43%; Black Market 10%)
 CURE_POTIONS = ("Cure Critical Wounds", "Cure Serious Wounds", "Cure Light Wounds", "Healing")
 # HP each potion heals (server use-obj.c:483-540; CSW 20-24, CCW 25-29). Longest
 # names first, so "*Healing*" isn't read as "Healing".
@@ -1226,6 +1230,12 @@ class Shop(Goal):
                                if re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", i["name"])).lower() == key),
                               None) if w.store_t > sp["t"] else None
                 p.log("sale", **{k: v for k, v in sp.items() if k != "t"}, relist=relist)
+                if sp.get("forced") and getattr(self, "role", "navigator") != "architect":
+                    chr_v = (p.w.ind.get("stat5") or [3])[0]
+                    fair = shopmath.fair_pay(relist, sp.get("owner"), chr_v)
+                    if fair is None:
+                        fair = round(itemvalue.value(sp["sold_as"]).value * SHOP_CUT)
+                    p.add_debt(fair - sp.get("received", 0), sp["sold_as"], "sold with ! over the value policy")
                 self.sale_pending = None
             if self.pending and getattr(self, "quoting", None):
                 ts, prompt, _ = w.last_confirm
@@ -1297,6 +1307,14 @@ class Shop(Goal):
                     self.pending = time.time()
                     return None
                 why_not = p.unknown_sell_refusal(it, n) if it and not force else None
+                if not why_not and it and not force:
+                    why_not = p.value_refusal(it, "sell", getattr(self, "role", None))
+                    if why_not:
+                        why_not += "; `sell !NAME` overrides, and adds the value lost to your debt"
+                if force and getattr(self, "role", "navigator") != "architect" and not p.override_allowed():
+                    self.done_log.append(f"NOT sold: your freedom to override the Pilot's value policy is "
+                                         f"suspended (debt {p.debt_total()} gold): {it['name'] if it else idx}")
+                    return None
                 if why_not:
                     # (mission 12 sold 2 Potions of Speed and 2 of Heroism for 8 each)
                     self.done_log.append(f"NOT sold ({why_not}; sell !NAME to force): {it['name']}")
@@ -1419,6 +1437,18 @@ class Pilot:
         self.retreating = False
         self.fearers_seen = set()
         self.drainers_seen = set()     # (level_t, race name) drainer warnings given
+        self.inferred = set()          # abilities seen in play (watch_abilities)
+        self.ability_sources = set()   # unidentified worn items that may give them
+        self.ability_seen_t = time.time()
+        self.debt_path = os.path.join(rundir, "navigator_debt.json")
+        try:
+            self.debt = json.load(open(self.debt_path))
+        except (OSError, ValueError):
+            self.debt = {"entries": []}
+        try:
+            self.keep = set(json.load(open(os.path.join(rundir, "keep.json"))))
+        except (OSError, ValueError):
+            self.keep = set()
         self.report_seq, self.last_report = 0, (0, 0.0)   # Navigator reports: number, time of the last
         self.hp_min_since = None       # lowest HP since the last audit_check
         self.escalation_t = 0.0        # last emergency-type alert (escape records)
@@ -2591,10 +2621,90 @@ class Pilot:
     def has_ability(self, order):
         """Free Action, a resist...: from the character sheet's grid (tool
         query 'flags') once read, else from the order of the same name."""
+        if order in self.inferred:
+            return True           # seen in play ("You are unaffected!"), not on the sheet
         known = self.w.has(self.ABILITY_FLAGS.get(order, order)) if hasattr(self.w, "has") else None
         if known is not None:
             return known
         return self.orders.get(order) == "yes"
+
+    # --- the value policy and the Navigator's debt (restructure step 2.1) -------
+    def value_refusal(self, it, action, role=None):
+        """Why the Navigator shouldn't sell/destroy/drop this item, or None. The
+        Pilot's own policy never does these; the Navigator may override with `!`,
+        and the value lost is added to its debt (the user's decision)."""
+        if (role or getattr(self, "req_role", "navigator")) == "architect" or not it:
+            return None
+        name = it["name"]
+        if self.is_kept(name):
+            return "you said keep it (`keep -NAME` releases it)"
+        if self.ability_sources and itemvalue.value(name).known is False and \
+                any(s == re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower() for s in self.ability_sources):
+            return (f"it may be what gives you {', '.join(sorted(self.inferred))} (seen in play, not identified): "
+                    "identify it first")
+        junk = (self.flavour_of(it) or {}).get("junk") or re.search(r"\{(cursed|worthless|broken|terrible)", name)
+        if junk:
+            return None
+        iv = itemvalue.value(name)
+        fair = round(iv.value * SHOP_CUT)
+        if not iv.known and fair >= 30:
+            return (f"unidentified: identified it would sell for ~{fair} (an estimate; this sale would pay its bare "
+                    "kind price); identify it first (a Scroll of Identify costs ~40-80)")
+        if action in ("destroy", "drop") and iv.irreplaceable:
+            return "it gives an ability or resist you can't easily buy back"
+        if action in ("destroy", "drop") and fair >= 20:
+            return f"a shop pays ~{fair} for it: sell it instead"
+        return None
+
+    def is_kept(self, name):
+        b = re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower()
+        return any(k in b for k in self.keep)
+
+    def debt_total(self):
+        return sum(e.get("gold", 0) for e in self.debt.get("entries", []))
+
+    def add_debt(self, gold, what, why):
+        if gold <= 0:
+            return
+        self.debt.setdefault("entries", []).append({"t": time.strftime("%Y-%m-%d %H:%M:%S"), "gold": int(gold),
+                                                    "what": what, "why": why})
+        json.dump(self.debt, open(self.debt_path, "w"), indent=1)
+        self.log("navigator_debt", gold=int(gold), what=what, why=why, total=self.debt_total())
+
+    def override_allowed(self):
+        """Overrides stay allowed while the debt is under a limit the Navigator
+        isn't told (runs/private/NICK.override_limit; no file = no limit)."""
+        path = os.path.join(os.path.dirname(os.path.dirname(self.rundir.rstrip("/"))), "private",
+                            os.path.basename(self.rundir.rstrip("/")) + ".override_limit")
+        try:
+            limit = int(open(path).read().strip())
+        except (OSError, ValueError):
+            return True
+        return self.debt_total() <= limit
+
+    def watch_abilities(self):
+        """Abilities shown by the game's answers rather than the sheet: "You are
+        unaffected!" just after a paralysing attack is Free Action (the Advisor's
+        set-piece C8: Dive04 had it from m18 to m23 from unidentified boots, sold
+        for 3 gold in m23). The unidentified worn items become its likely source."""
+        w = self.w
+        msgs = list(w.messages)
+        for i, (ts, t) in enumerate(msgs):
+            if ts <= self.ability_seen_t or not t.startswith("You are unaffected"):
+                continue
+            before = [m for tt, m in msgs[max(0, i - 4):i] if ts - tt < 3]
+            if any(re.search(r"gazes|touches|stares|looks deep|paralyz|hold|mesmeri", m, re.I) for m in before) and \
+                    "free_action" not in self.inferred and not self.has_ability("free_action"):
+                self.inferred.add("free_action")
+                src = [re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", i2["name"])).lower()
+                       for i2 in w.items(equip=True) if itemvalue.value(i2["name"]).known is False
+                       or re.search(r"\{(good|excellent|special|magical)", i2["name"])]
+                self.ability_sources |= set(src)
+                self.notify("ability", f"you have Free Action (\"{t}\" after \"{before[-1]}\"), though no known item "
+                                       "gives it: it's one of your unidentified worn items ("
+                                       + (", ".join(src) or "none found") + "). The Pilot won't sell or drop those; "
+                                       "identify them")
+        self.ability_seen_t = max([self.ability_seen_t] + [ts for ts, _ in msgs])
 
     def weapon_table(self):
         """[(name, blows, damage per round, wielded?)] for the wielded weapon and
@@ -3581,6 +3691,7 @@ class Pilot:
         self.watch_kills()
         self.watch_band()
         self.watch_traps()
+        self.watch_abilities()
         self.watch_progress()
         self.watch_perception()
         if self.w.recall_cancelled:
@@ -3699,9 +3810,20 @@ class Pilot:
         self.w.inven_dirty = False
         return [f"{chr(97 + i['item'])}) {i['name']}" for i in self.w.items()]
 
+    # In the dungeon the Pilot handles items itself (restructure step 2, the user's
+    # hybrid: item commands for the Navigator in town only, between trips)
+    DUNGEON_ITEM_CMDS = {"destroy", "drop", "wear", "takeoff", "pickup", "fuel", "eat", "inscribe", "wearall"}
+
     def do_request(self, req):
         c = req.get("cmd")
         args = req.get("args", [])
+        self.req_role = req.get("role", "navigator")
+        if self.req_role != "architect" and self.w.in_dungeon and (
+                c in self.DUNGEON_ITEM_CMDS or
+                (c in ("read", "use") and len(args) > 1 and args[1] != "force")):      # identify-type reads
+            return {"ok": False, "error": f"in the dungeon the Pilot handles items itself (pickup, identify, "
+                                          f"wear upgrades, destroy junk, fuel, eat): `{c}` is for town, between "
+                                          "trips. To protect an item from its policy use `keep NAME`"}
         if c == "status":
             full = "full" in args
             if req.get("since_wait"):
@@ -3745,6 +3867,23 @@ class Pilot:
             with open(path, "w") as f:
                 json.dump(ms, f, indent=1)
             return {"ok": True, "text": f"mission {args[0]}: {label} at {stamp}"}
+        if c == "keep":
+            # protect an item from the value policy and from the Navigator's own
+            # sells/destroys (`keep -NAME` releases; `keep` lists)
+            if not args:
+                return {"ok": True, "text": "kept: " + (", ".join(sorted(self.keep)) or "nothing")}
+            name = " ".join(args).replace("_", " ").lower()
+            if name.startswith("-"):
+                self.keep.discard(name[1:].strip())
+            else:
+                self.keep.add(name.strip())
+            json.dump(sorted(self.keep), open(os.path.join(self.rundir, "keep.json"), "w"))
+            return {"ok": True, "text": "kept: " + (", ".join(sorted(self.keep)) or "nothing")}
+        if c == "debt":
+            e = self.debt.get("entries", [])
+            return {"ok": True, "text": f"Navigator debt: {self.debt_total()} gold of value lost over the Pilot's value "
+                                        f"policy ({len(e)} entries)" + "".join(f"\n  {x['t']} {x['gold']}: {x['what']} "
+                                                                                f"({x['why']})" for x in e[-8:])}
         if c == "pack":
             return {"ok": True, "text": "Pack: " + "; ".join(f"{chr(97 + i['item'])}) {self.short(self.show(i))}"
                                                            for i in self.w.items())}
@@ -3899,6 +4038,10 @@ class Pilot:
             key = self.ACTIONS[c]
             if not args:
                 return {"ok": False, "error": f"usage: {c} ITEMLETTER"}
+            # `destroy !NAME`: over the value policy (counted in the Navigator's debt)
+            forced_cmd = args[0].startswith("!") and len(args[0]) > 1
+            if forced_cmd:
+                args = [args[0][1:]] + list(args[1:])
             if c == "fuel" and not any(i["tval"] == TV_LITE for i in self.w.items(equip=True)):
                 # The Pilot takes the lantern off when idle in town ("You are not
                 # wielding a light", mission 17): put it on first, then find the
@@ -3944,6 +4087,18 @@ class Pilot:
                                               "deepest level ever reached. Inscribe it (inscribe ITEM @R<feet>), "
                                               "use goal recall (it inscribes max_depth), or add 'force'"}
             if c in ("destroy", "drop"):
+                it0 = next((i for i in self.w.inven if i["item"] == item), None)
+                why = self.value_refusal(it0, c) if not forced_cmd else None
+                if why:
+                    return {"ok": False, "error": f"not {c}ed: {why}. `{c} !NAME` overrides, and adds the value "
+                                                  "lost to your debt"}
+                if forced_cmd and self.req_role != "architect":
+                    if not self.override_allowed():
+                        return {"ok": False, "error": f"not {c}ed: your freedom to override the Pilot's value policy "
+                                                      f"is suspended (debt {self.debt_total()} gold)"}
+                    if self.value_refusal(it0, c):
+                        self.add_debt(round(itemvalue.value(it0["name"]).value * SHOP_CUT), it0["name"],
+                                      f"{c}ed with ! over the value policy")
                 n = args[1] if len(args) > 1 else "1"
                 if n == "all":
                     it = next((i for i in self.w.inven if i["item"] == item), None)
@@ -4233,7 +4388,8 @@ class Pilot:
             g = Wait(rest[0] if rest else 5)
         else:
             return {"ok": False, "error": f"unknown goal {name}"}
-        g.by_navigator = True
+        g.by_navigator = self.req_role != "architect"
+        g.role = self.req_role
         self.set_goal(g)
         return {"ok": True, "goal": g.describe()}
 

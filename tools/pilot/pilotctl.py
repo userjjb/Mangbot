@@ -95,7 +95,9 @@ def main():
             print(brief_report(out["report"]) if brief or not out.get("events") else out["report"])
         return
     try:
-        out = call(sock, {"cmd": cmd, "args": args}, 40)
+        # (PILOT_ROLE=architect marks the Architect's and the harness's own calls;
+        # the Navigator's are refused some things in the dungeon: restructure step 2)
+        out = call(sock, {"cmd": cmd, "args": args, "role": os.environ.get("PILOT_ROLE", "navigator")}, 40)
     except (ConnectionError, FileNotFoundError, json.JSONDecodeError, OSError) as e:
         if cmd == "complain" and args:
             # the Pilot is down, which is often what there is to complain about
