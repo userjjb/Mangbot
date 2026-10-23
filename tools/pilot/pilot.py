@@ -2964,6 +2964,8 @@ class Pilot:
         was (the Advisor's starting-over memo: orders went stale on the way)."""
         self.report_seq += 1
         self.last_report = (self.report_seq, time.time())
+        # what the report showed, for the stale-order check (step 2.4)
+        self.report_state = {"level_t": self.w.level_t, "hp": self.w.hp_frac}
         self.log("report", id=self.report_seq, report_kind=kind, chars=len(rep))
         first, _, rest = rep.partition("\n")
         return f"{first} · r{self.report_seq}" + ("\n" + rest if rest else "")
@@ -4482,6 +4484,11 @@ class Pilot:
             return {"ok": False, "error": f"in the dungeon the Pilot handles items itself (pickup, identify, "
                                           f"wear upgrades, destroy junk, fuel, eat): `{c}` is for town, between "
                                           "trips. To protect an item from its policy use `keep NAME`"}
+        if self.req_role != "architect":
+            held = self.stale_order(c, args)
+            if held:
+                self.log("order_held", cmd=c, args=args[:6], why=held)
+                return {"ok": False, "error": f"order held: {held}"}
         if c == "status":
             full = "full" in args
             if req.get("since_wait"):
@@ -5337,6 +5344,100 @@ class Pilot:
                         (("; can't afford yet: " + ", ".join(f"{n} {k}" for k, n in short)) if short else "") +
                         " (selling first may change this)"}
 
+    # --- order checks (restructure step 2.4) ------------------------------------
+    def fight_rows(self):
+        if not hasattr(self, "_fight_rows"):
+            try:
+                self._fight_rows = {int(r["idx"]): r for r in csv.DictReader(
+                    open(os.path.join(HERE, "..", "rulebook", "monsters.csv")))}
+            except OSError:
+                self._fight_rows = {}
+        return self._fight_rows
+
+    def fight_estimate(self, race):
+        """(turns to kill it, HP it takes meanwhile, the pessimistic HP, its worst breath, its
+        row) by the rulebook's fight rule (rule.py fight: hit chance from skill and to-hit
+        against 3/4 of its AC, its expected melee per player turn at our AC, spells and
+        ranged attacks), or None. Pessimistic: twice the turns (blinks, heals, misses) with
+        its spells at their maximum: the m19 Ranger rates ~27 expected, ~196 pessimistic,
+        and took 153."""
+        row = self.fight_rows().get(getattr(race, "idx", None))
+        wt = [x for x in self.weapon_table() if x[3]]
+        if not row or not wt:
+            return None
+        name, blows, dpr, _ = wt[0]
+        th = re.search(r"\(([+-]\d+),[+-]\d+\)", name)
+        chance = 82 + 45 * self.w.clvl // 10 + 3 * (int(th.group(1)) if th else 0)
+        ph = 0.05 + 0.90 * max(0.0, 1 - (int(row["ac"]) * 3 // 4) / chance)
+        per_turn = max(0.1, ph * dpr)
+        turns = int(row["hp"]) / per_turn
+        ac = self.w.ind.get("armor", [0])[0] or 0
+        col = min((20, 40, 60), key=lambda a: abs(a - ac))
+        melee, sp = float(row[f"melee_turn_ac{col}"]), float(row["spell_pct"] or 0)
+        taken = turns * (melee * (1 - sp) + float(row["range_turn"] or 0))
+        worst = 2 * turns * (melee + sp * float(row["spell_max"] or 0) + float(row["range_turn"] or 0))
+        return turns, taken, worst, float(row["breath_max"] or 0), row
+
+    def hunt_refusal(self, name):
+        """Why the Pilot won't take this hunt now, or None (and the estimate it used)."""
+        w = self.w
+        key = name.lower()
+        seen = [r for *_, r in w.monsters if key in r.name.lower()]
+        race = seen[0] if seen else next((r for r in w.g.races.values() if r.name.lower() == key), None) or \
+            next((r for r in w.g.races.values() if key in r.name.lower()), None)
+        if not race:
+            return None, "no monster by that name in this game's data"
+        if race.paralyser and not self.has_ability("free_action"):
+            return (f"{race.name} paralyses (a blow or Hold Person) and you have no Free Action: a paralysed "
+                    "warrior is hit until dead. Only with Free Action"), None
+        est = self.fight_estimate(race)
+        if not est:
+            return None, f"no fight estimate for {race.name}"
+        turns, taken, worst, breath, row = est
+        hp = max(1, w.hp[0])
+        info = (f"{race.name}: ~{turns:.0f} turns to kill, ~{taken:.0f} HP lost meanwhile, ~{worst:.0f} if it goes "
+                f"badly (you have {w.hp[0]})")
+        if row.get("response") in ("AVOID", "LEAVE"):
+            return (f"the Advisor's rating for {race.name} is {row['response']} ({row.get('threats', '')})", info)
+        if worst > 0.6 * hp:
+            return (f"{info}: if it goes badly, more than 60% of your HP. Rest to full first, or come back "
+                    "stronger", info)
+        if breath > 0.6 * hp:
+            return (f"{race.name} breathes up to {breath:.0f} (you have {w.hp[0]}): one breath could take "
+                    f"60% of your HP", info)
+        band_lt = (getattr(self, "band_warned", (None, 0)) or (None, 0))[0]
+        if band_lt == w.level_t and time.time() - getattr(self, "band_warned_t", 0) < 120 and \
+                sum(1 for *_, r in w.monsters if "NEVER_MOVE" not in r.flags) >= 5:
+            return (f"a band is about (flagged {time.time() - self.band_warned_t:.0f} s ago): leave first", info)
+        return None, info
+
+    def stale_order(self, c, args):
+        """An order whose premise is gone since the report it answers (the Advisor's
+        starting-over memo: a goto written for a 17-s-old report walked beside Brodda).
+        Returns the reason to hold it, or None."""
+        st = getattr(self, "report_state", None)
+        rid, rt = self.last_report
+        if not st or not rid:
+            return None
+        w, age = self.w, time.time() - rt
+        positional = (c == "goal" and args[:1] and args[0] in ("goto", "fetch", "searchroom", "hunt") and
+                      not (args[0] == "goto" and len(args) > 1 and args[1] in ("<", ">"))) or \
+                     (c == "avoid" and args and re.match(r"\d+,\d+$", args[0]))
+        if not positional:
+            return None
+        if st["level_t"] != w.level_t:
+            return (f"your order answers report r{rid} ({age:.0f} s ago), from a level you've since left (now "
+                    f"{w.depth_ft} ft): positions and monsters there are gone. Look again (`status`) and re-issue")
+        if c == "goal" and args[0] == "hunt" and age > 5:
+            key = " ".join(args[1:]).replace("_", " ").lower()
+            if key and not any(key in r.name.lower() for *_, r in w.monsters):
+                return (f"{key} isn't in view now (your order answers report r{rid}, {age:.0f} s ago). "
+                        "Re-issue when it is")
+        if c == "goal" and args[0] in ("goto", "fetch") and age > 5 and st["hp"] - w.hp_frac > 0.25:
+            return (f"HP fell from {st['hp']:.0%} to {w.hp_frac:.0%} since report r{rid} ({age:.0f} s ago): a "
+                    "detour then may not be one now. Look again and re-issue")
+        return None
+
     def request_goal(self, args):
         if not args:
             return {"ok": False, "error": "usage: goal NAME [ARGS]"}
@@ -5405,7 +5506,33 @@ class Pilot:
             g = Search(tries=20, spots=[r for _, r in structures.door_spots(Y, X)])
             g.name = f"searchroom {Y},{X}"
         elif name == "hunt":
-            g = Hunt(" ".join(rest).replace("_", " "))   # 'hunt Black_ogre', like shop names
+            target = " ".join(rest).replace("_", " ")    # 'hunt Black_ogre', like shop names
+            why, info = self.hunt_refusal(target)
+            if why and self.req_role != "architect":
+                self.log("order_refused", order=f"hunt {target}", why=why)
+                return {"ok": False, "error": f"hunt refused: {why}"}
+            g = Hunt(target)
+            g.estimate = info
+        elif name == "fetch":
+            # one item detour (the design's `fetch Y,X`): not with a band or danger about
+            m = re.match(r"^(\d+)[ ,](\d+)$", " ".join(rest[:2]) if len(rest) > 1 else (rest[0] if rest else ""))
+            if not m:
+                return {"ok": False, "error": "usage: goal fetch Y,X (an item's square, from the report)"}
+            if self.req_role != "architect" and self.w.in_dungeon:
+                band_lt = (getattr(self, "band_warned", (None, 0)) or (None, 0))[0]
+                if band_lt == self.w.level_t and time.time() - getattr(self, "band_warned_t", 0) < 120:
+                    return {"ok": False, "error": "fetch refused: a band was flagged on this level in the last 2 "
+                                                  "minutes; loot isn't worth it now (mission 22). Leave or fight first"}
+                if self.dangers():
+                    return {"ok": False, "error": "fetch refused: a dangerous monster is in view ("
+                                                  + ", ".join(sorted({r.name for r in self.dangers()})[:3]) + ")"}
+            g = Goto(f"{m.group(1)},{m.group(2)}")
+            g.name = f"fetch {m.group(1)},{m.group(2)}"
+        elif name == "leave":
+            if not self.w.in_dungeon:
+                return {"ok": False, "error": "leave is for dungeon levels"}
+            g = Flee("you said: leave this level")
+            g.name = "leave (this level)"
         elif name == "recall":
             g = Recall()
             if self.w.depth == 0 and not force:
@@ -5434,6 +5561,8 @@ class Pilot:
         g.by_navigator = self.req_role != "architect"
         g.role = self.req_role
         self.set_goal(g)
+        if getattr(g, "estimate", None) and not self.plan:
+            return {"ok": True, "goal": g.describe(), "note": g.estimate}
         if self.plan:
             # your goal first; the plan carries on when it ends (`plan stop` ends the plan)
             self.plan.paused, self.plan.pause_goal = True, g

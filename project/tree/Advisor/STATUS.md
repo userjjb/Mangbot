@@ -32,7 +32,7 @@ Architect builds everything else.
 4. **Belief-state spec** (if the Architect wants it for step 2): fields, computation, expiry (see starting-over memo §3.4).
 5. **Step 5:** run the scorecard on each new mission vs the m17–23 baseline; Opus vs Sonnet by depth band (m22–23 were Sonnet;
    `data/navigator/response.py` has the missions list; production `scorecard.py` reads `runs/missions.json` which records the model).
-6. Housekeeping: the 09-29 shops memo assumed CHR 4; Dive04 is CHR 3 (use `data/rulebook/shop_owners.csv`).
+6. Housekeeping: the 09-29 shops memo assumed CHR 4 = Dive04's natural CHR; it is drained to 3 now (use `data/rulebook/shop_owners.csv`, CHR 3 columns, until restored).
 
 ## Waiting on the user
 

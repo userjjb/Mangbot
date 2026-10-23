@@ -193,8 +193,14 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    <=150 ft, WoR after 3 min without a way up; else WoR), `then town` runs plan town. While a plan runs, the events it
    handles are news (PLAN_QUIET); idle recall is off (90-min cap built in). Tested live at 50-150 ft (two trips: 1
    and 4 levels, home by the stairs, a restart mid-climb resumed). **Cost of the test: a dart trap at 50 ft drained
-   Dive04's STR 18/50 -> 18/40 (still 3 blows); Restore Strength ~480, Dive04 has 190 gold.** **Next: 2.4 order
-   checks** (`plan trip LO-HI until COND then recall`), 2.4 order
+   Dive04's STR 18/50 -> 18/40 (still 3 blows); Restore Strength ~480, Dive04 has 190 gold.** **2.4 order checks: done
+   (session 4):** hunts vetted (`hunt_refusal`: the Advisor's rating AVOID/LEAVE, paralysis without Free Action,
+   pessimistic loss = 2x turns to kill with spells at max > 60% HP, breath > 60% HP, a band about; the m19 Ranger and
+   m22 Boldor are refused, frogs/orcs/wolves allowed; the Hill giant (rated FIGHT) is refused at 265 HP: maybe too
+   strict). New goals `fetch Y,X` (refused with a band or danger) and `leave`. Stale orders held (`stale_order`:
+   position orders after a level change, hunts of monsters out of view with a report >5 s old, goto/fetch after HP
+   fell >25 points). No Navigator override of a refused hunt yet (a question for the user). **Next: 2.5 belief
+   state** in the report (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
    toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23. Then the time bubble (timers to game turns; decided below).
 3. **Rulebook:** the Advisor's **release 2** is in `Advisor/data/rulebook/`, synced into `github/tools/rulebook/`
