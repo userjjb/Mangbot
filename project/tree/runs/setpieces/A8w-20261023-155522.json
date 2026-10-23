@@ -1,0 +1,60 @@
+{
+ "id": "A8w",
+ "tag": "A8w-20261023-155522",
+ "depth_ft": 300,
+ "start": "2026-10-23 15:55:22",
+ "checks": {
+  "walked away": {
+   "pass": true,
+   "detail": "goals ['walk away from Ranger']"
+  },
+  "no Word of Recall read": {
+   "pass": true,
+   "detail": "0 reads"
+  },
+  "HP >= 80%": {
+   "pass": true,
+   "detail": "lowest [265, 265]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   265,
+   265
+  ],
+  "attention": [
+   [
+    4.3,
+    "band",
+    "a band within 10 squares: Snaga \u00d78, Ranger (9 monsters, ~104 worst-case melee a turn together, HP 26"
+   ],
+   [
+    4.3,
+    "tactic",
+    "Ranger (summons) in view, not adjacent: walking away out of its sight instead of fleeing the level"
+   ],
+   [
+    7.4,
+    "goal_failed",
+    "walk away from Ranger: nowhere to walk away to"
+   ],
+   [
+    8.1,
+    "interesting_item",
+    "Ring of Searching seen on this level (devices and jewellery sell for 50-700 once known): its square "
+   ]
+  ],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 16:03:02",
+ "pass": true
+}

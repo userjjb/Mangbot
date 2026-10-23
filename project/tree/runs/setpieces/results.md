@@ -8,3 +8,6 @@
 - 2026-10-23 14:27:33 **A8** PASS (hunt refused (a summoner), lowest HP >= 40%) `A8-20261023-142733.json`
 - 2026-10-23 14:32:44 **A8o** PASS (override accepted, lowest HP >= 40%) `A8o-20261023-143244.json`
 - 2026-10-23 14:36:00 **A9** PASS (Door/Stair Location within 5 s of arriving, no second Word of Recall while one is pending) `A9-20261023-143600.json`
+- 2026-10-23 15:52:06 **A8w** FAIL (walked away FAIL, no Word of Recall read FAIL, HP >= 80%) `A8w-20261023-155206.json`
+- 2026-10-23 15:55:22 **A8w** PASS (walked away, no Word of Recall read, HP >= 80%) `A8w-20261023-155522.json`
+- 2026-10-23 16:03:11 **A8o** PASS (override accepted) `A8o-20261023-160311.json`

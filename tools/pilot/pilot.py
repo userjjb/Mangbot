@@ -900,6 +900,47 @@ class Reprieve(Goal):
         return None
 
 
+class WalkAway(Goal):
+    """A summoner just came into view, not adjacent and no faster than us: walk out of its sight
+    over ground already walked, then keep away (an avoid zone where it was). The user (2026-10-23,
+    the set-piece A8o, where the danger rule read Word of Recall at full HP): if we first saw it
+    by walking into line of sight, just walk away; other action only if something prevents walking
+    away safely. Fails (the flee and its escapes take over) when it comes adjacent, its summons
+    arrive, HP falls below half, or there's nowhere to walk."""
+
+    def __init__(self, names):
+        self.names = set(names)
+        self.name = f"walk away from {', '.join(sorted(self.names))}"
+        self.t0 = time.time()
+        self.last = {}
+        self.stuck_t = None
+
+    def tick(self, p):
+        w, now = p.w, time.time()
+        seen = [(y, x, r) for y, x, r in w.monsters if r.name in self.names]
+        for y, x, r in seen:
+            self.last[r.name] = (y, x)
+        if w.hp_frac < 0.5:
+            return ("failed", "HP below half")
+        if any(w.dist((y, x)) <= 1 for y, x, _ in seen):
+            return ("failed", "it reached us")
+        if any(ts >= self.t0 and "summons" in t for ts, t in w.messages):
+            return ("failed", "it summoned")
+        if not seen and all(w.dist(q) >= 6 for q in self.last.values()):
+            for name, (y, x) in self.last.items():
+                p.avoid_zones.setdefault(w.level_t, []).append((y, x, 7))
+            return ("done", "out of its sight; avoid zone set where it was")
+        if now - self.t0 > 30:
+            return ("failed", "30 s and still in its sight")
+        if p.retreat_step([m for m in seen] or [(q[0], q[1], None) for q in self.last.values()], reach=20):
+            self.stuck_t = None
+            return None
+        self.stuck_t = self.stuck_t or now
+        if now - self.stuck_t > 3:
+            return ("failed", "nowhere to walk away to")
+        return None
+
+
 class Flee(Goal):
     """Get away from something too dangerous: to the nearest known stairs and
     take them."""
@@ -2606,7 +2647,29 @@ class Pilot:
             self.flee_failed()
             if self.recall_started(now):
                 return True
-        if near_danger and not isinstance(self.goal, (Flee, Recover)) and now - self.flee_t > 10 \
+        # a summoner just seen, not adjacent and no faster than us: walk away out of its sight (the
+        # user, 2026-10-23); the flee below only when walking away isn't safe or has failed here
+        # (a summoner the server's list names before the map shows it -- A8w fled 1 s before the
+        # decode: wait up to 1.5 s for its position, then decide)
+        if near_danger and w.hp_frac >= 0.5 and all(self.danger_why(r) == "summons" for r in near_danger) and \
+                any(r.name not in {q.name for *_, q in w.monsters} for r in near_danger) and \
+                not isinstance(self.goal, (Flee, Recover, Recall, WalkAway)):
+            self.summoner_hold_t = getattr(self, "summoner_hold_t", 0) if now - getattr(self, "summoner_hold_t", 0) < 5 \
+                else now
+            if now - self.summoner_hold_t < 1.5:
+                return False
+        if near_danger and not isinstance(self.goal, (Flee, Recover, Recall, WalkAway)) and now - self.flee_t > 10 \
+                and "danger" in o["stop_on"] and not self.hunt_ordered(now, near_danger[0].name) \
+                and self.walk_away_ok(near_danger):
+            self.flee_t = now
+            names = sorted({r.name for r in near_danger})
+            if self.goal is not None and not isinstance(self.goal, WalkAway):
+                self.resume_after = self.goal
+            self.set_goal(WalkAway(names))
+            self.notify("tactic", f"{', '.join(names)} (summons) in view, not adjacent: walking away out of its "
+                                  "sight instead of fleeing the level", news=True)
+            return True
+        if near_danger and not isinstance(self.goal, (Flee, Recover, WalkAway)) and now - self.flee_t > 10 \
                 and "danger" in o["stop_on"] and not self.hunt_ordered(now, near_danger[0].name):
             self.flee_t = now
             prev = self.goal.describe() if self.goal else None
@@ -2837,6 +2900,20 @@ class Pilot:
             self.notify("tactic", f"hunting {g.target} as ordered: not fleeing from {what} (emergency escapes "
                                   "still apply)", news=True)
         return True
+
+    def walk_away_ok(self, rs):
+        """True if every danger in view is only a summoner, seen on the map, 3+ squares off, no
+        faster than us, nothing has been summoned yet, HP is at half or more, and walking away
+        hasn't already failed on this level."""
+        w = self.w
+        if w.hp_frac < 0.5 or self.__dict__.setdefault("walkaway_failed", set()) & {w.level_t}:
+            return False
+        if any(t for ts, t in w.messages if time.time() - ts < 10 and "summons" in t):
+            return False
+        mine = 110 + int(w.ind.get("speed", [0])[0] or 0)
+        pos = {r.name: (y, x) for y, x, r in w.monsters}
+        return all(self.danger_why(r) == "summons" and r.name in pos and w.dist(pos[r.name]) >= 3 and r.speed <= mine
+                   for r in rs)
 
     def phase_futile(self, now):
         """3 Phase Doors in the last 20 s: the monsters keep reaching us."""
@@ -4240,6 +4317,9 @@ class Pilot:
             ended = self.goal_ending
             if getattr(ended, "overridden", None):
                 self.settle_hunt(ended, status, detail)
+            if isinstance(ended, WalkAway) and status == "failed":
+                self.__dict__.setdefault("walkaway_failed", set()).add(self.w.level_t)
+                self.flee_t = 0.0             # (the danger flee may act at once)
             if isinstance(ended, Hunt) and status == "failed" and "blinked away" in str(detail) and self.w.in_dungeon:
                 self.notify({"done": "goal_done", "failed": "goal_failed"}[status], f"{g}: {detail}", news=quiet)
                 self.goal = Reprieve(ended.target)

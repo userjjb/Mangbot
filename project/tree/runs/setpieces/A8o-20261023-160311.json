@@ -1,0 +1,17 @@
+{
+ "id": "A8o",
+ "tag": "A8o-20261023-160311",
+ "depth_ft": 300,
+ "start": "2026-10-23 16:03:11",
+ "checks": {
+  "override accepted": {
+   "pass": true,
+   "detail": "{\"ok\": true, \"goal\": \"hunt Ranger\", \"note\": \"Ranger: ~4 turns to kill, ~26 HP lost on average, ~47 in a bad fight (1 in 10; you have 265)\"}\nNOTE: Ranger: ~4 tur"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"hunt Ranger\", \"note\": \"Ranger: ~4 turns to kill, ~26 HP lost on average, ~47 in a bad fight (1 in 10; you have 265)\"}\nNOTE: Ranger: ~4 turns to kill, ~26 HP lost on average, ~47 in a bad fight (1 in 10; you have 265)",
+ "error": "TypeError(\"'int' object is not subscriptable\")",
+ "end": "2026-10-23 16:06:51",
+ "pass": true
+}

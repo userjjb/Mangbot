@@ -1,0 +1,76 @@
+{
+ "id": "A8w",
+ "tag": "A8w-20261023-155206",
+ "depth_ft": 300,
+ "start": "2026-10-23 15:52:06",
+ "checks": {
+  "walked away": {
+   "pass": false,
+   "detail": "goals ['flee (Ranger)', 'goto 37,139']"
+  },
+  "no Word of Recall read": {
+   "pass": false,
+   "detail": "1 reads"
+  },
+  "HP >= 80%": {
+   "pass": true,
+   "detail": "lowest [256, 265]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   256,
+   265
+  ],
+  "attention": [
+   [
+    4.6,
+    "danger_seen",
+    "Ranger (summons) in view: heading for the stairs"
+   ],
+   [
+    4.7,
+    "goal_failed",
+    "flee (Ranger): no stairs known"
+   ],
+   [
+    4.7,
+    "emergency",
+    "couldn't reach the stairs with 1 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    13.6,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    13.7,
+    "goal_done",
+    "goto 37,139"
+   ]
+  ],
+  "acts": [
+   [
+    4.7,
+    "custom r item=8",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    26.8,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 1,
+  "phase_reads": 0,
+  "wor_reads": 1,
+  "cures": 0
+ },
+ "end": "2026-10-23 15:54:46",
+ "pass": false
+}

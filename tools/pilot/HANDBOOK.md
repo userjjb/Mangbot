@@ -110,7 +110,10 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 ## The deadly few (why the rules exist)
 
 - **Paralysis without Free Action** kills by stacking: Carrion crawlers, Ghouls, Homunculi, Evil eyes, Ogre mages,
-  Basilisks. Leave such levels. **Summoners** turn one fight into a band; the m19 Ranger cost 153 HP.
+  Basilisks. Leave such levels. **Summoners** turn one fight into a band; the m19 Ranger cost 153 HP. A summoner seen at
+  a distance (3+ squares, no faster than you, nothing summoned yet) makes the Pilot **walk away out of its sight**
+  over ground it has walked, and set an avoid zone where it was (news). It flees the level or recalls only when
+  walking away isn't safe (the user: spend resources only when you must).
 - **Stat drains** cost blows (STR, DEX) or HP (CON). Restore is ~480 at the Alchemist and levels never restore them.
   Dart traps drain too, at any depth.
 - **Packs that breathe or cast**, a capital `D`, pits and vaults: leave. Inner rooms are ordinary only when lit.

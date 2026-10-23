@@ -30,6 +30,7 @@ Each run:
 | A7 | Hill giant adjacent, full HP, `goal hunt Hill_giant` | the hunt is allowed, the giant is slain, HP lost ≤ fight_sim's p90 |
 | A8 | Skeleton human at 2, Ranger at 3, `goal hunt Ranger` | refused (a summoner, not alone); lowest HP ≥ 40% |
 | A8o | the same, `goal hunt !Ranger` | the override is accepted; lowest HP ≥ 40% |
+| A8w | a Ranger 3 squares off, no orders | the Pilot walks away (no Word of Recall), HP ≥ 80% |
 | A9 | `plan trip 300-300 via=recall` from town, then Snaga and Black orcs summoned 8-9 squares off | Door/Stair Location within 5 s of arriving; no second Word of Recall while one is pending |
 
 The memo's A7 is at 1250 ft and its A8 Ranger at 6 squares; here they're at 300 ft and 3 squares. The DM summons any race
@@ -69,7 +70,10 @@ Recall and a ration. It was then restored properly from the first snapshot.
   summon (menu and hook cleanup) takes longer than a hunt waits for its target. Orders now go in the instant the
   monster lands.
 
-## Observed, not changed
+## Observed, then changed (the user)
 
-- A8o: the danger rule fled the Ranger on sight ("a summoner in view"). With no stairs known it read Word of Recall at
-  full HP, before the Navigator's hunt order arrived.
+- A8o showed the danger rule fleeing a summoner on sight, and with no stairs known reading Word of Recall at full HP. The
+  user: walk away if we just walked into its sight; other action only if walking away isn't safe. Now the `WalkAway`
+  goal (A8w). A summoner the server's list names before the map shows it gets 1.5 s for its position (A8w's first run
+  fled from the list alone). Walking away needs walked ground: after a recall or teleport arrival there is none, so the
+  existing escapes apply.

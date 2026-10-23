@@ -171,5 +171,35 @@
   "effort": null,
   "report": "compact",
   "notes": "set-piece A9"
+ },
+ {
+  "label": "sp-A8w-20261023-155206",
+  "nick": "dive04",
+  "start": "2026-10-23 15:52",
+  "end": "2026-10-23 15:55",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A8w"
+ },
+ {
+  "label": "sp-A8w-20261023-155522",
+  "nick": "dive04",
+  "start": "2026-10-23 15:55",
+  "end": "2026-10-23 15:58",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A8w"
+ },
+ {
+  "label": "sp-A8o-20261023-160311",
+  "nick": "dive04",
+  "start": "2026-10-23 16:03",
+  "end": "2026-10-23 16:07",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A8o"
  }
 ]

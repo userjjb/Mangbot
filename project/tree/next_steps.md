@@ -247,8 +247,10 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    around a run (**waits out the 15-s orphan timeout: see operations.md**); `setpiece.py` runs **A7, A8, A8o, A9:
    all PASS** (`runs/setpieces/results.md`); `unit.py`: 10 unit set-pieces, all pass; the Pilot logs status/pack/map
    replies thinned to `state.jsonl` (replays). Found and fixed: no light after an unexpected recall (A7 fought in the
-   dark), Satisfy Hunger never eaten (went Weak, recalled with 4 scrolls). Observed, not changed: on sight of a
-   summoner with no stairs known, the danger rule reads WoR at full HP (A8o). **Next:** more set-pieces in the
+   dark), Satisfy Hunger never eaten (went Weak, recalled with 4 scrolls). A8o showed the danger rule reading WoR at full
+   HP on sight of a summoner with no stairs known; **the user: walk away if we just walked into its sight, other
+   action only if that isn't safe**: the `WalkAway` goal (A8w passes; it needs walked ground, so after a recall or
+   teleport arrival the escapes still apply). **Next:** more set-pieces in the
    agreed order (A1, A6, A2, C8, C3...; A9's 'special' variant needs a real pit: import a level), then step 5
    missions, then the time bubble. (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
@@ -269,9 +271,8 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
 but not its copy in `runs/backup-pre-restructure-20261022/private/` (plaintext `*.pass` of every character,
 **including the live server's Happy** and the test DM Gandalf) nor `runs/setpieces/saves/` (savefiles). They were on
 origin/restructure from commit afbbdc7 (2026-10-22) to 8f640ab; removed from the tip in 5a92257, and snapshot.sh now
-excludes `private/`, `*.pass`, `*.mangrc`, `runs/backup-*/`, `runs/setpieces/saves/`. **Still open, the user's call:**
-rotate the passwords (Happy on the live server first), and whether to purge the history (a force-push rewrite of
-restructure; GitHub keeps orphaned commits reachable by SHA until support purges them).
+excludes `private/`, `*.pass`, `*.mangrc`, `runs/backup-*/`, `runs/setpieces/saves/`. **The user (2026-10-23): the passwords aren't for
+anything important: no rotation, no history purge; follow best practice from now on** (nothing secret in the repo).
 
 **Rules from the user (keep them):**
 - **The Navigator's debt limit is never a number.** Overrides are revoked by creating

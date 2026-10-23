@@ -295,7 +295,23 @@ def a9(run):
     ctl("plan", "stop", role="architect")
 
 
-SETPIECES = {"A7": a7, "A8": a8, "A8o": a8o, "A9": a9}
+def a8w(run):
+    """A8w: a Ranger (a summoner) comes into view 3 squares off, no orders: the Pilot walks away out of
+    its sight instead of fleeing the level (the user, 2026-10-23); no Word of Recall; HP stays >= 80%."""
+    run.bring_dive04()
+    run.t_act = time.time()
+    run.place("Ranger", 3)
+    run.watch(40)
+    st = run.stats(log_since(run.t_act))
+    run.res["stats"] = st
+    goals = [d.get("goal") for d in log_since(run.t_act) if d.get("kind") == "goal"]
+    run.check("walked away", any(str(g).startswith("walk away") for g in goals), f"goals {goals[:6]}")
+    run.check("no Word of Recall read", st["wor_reads"] == 0, f"{st['wor_reads']} reads")
+    if st["hp_min"]:
+        run.check("HP >= 80%", st["hp_min"][0] >= 0.8 * st["hp_min"][1], f"lowest {st['hp_min']}")
+
+
+SETPIECES = {"A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9}
 
 
 def main():
