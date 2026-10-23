@@ -265,6 +265,14 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    map/status/inventory replies (or `--pktlog`) for replays.
 5. Missions again, with scorecards; then a fair Sonnet/Opus comparison (levels per dungeon hour, like depth bands).
 
+**SECURITY (2026-10-23, session 4): credentials leaked to the public repo.** `snapshot.sh` excluded `/runs/private/`
+but not its copy in `runs/backup-pre-restructure-20261022/private/` (plaintext `*.pass` of every character,
+**including the live server's Happy** and the test DM Gandalf) nor `runs/setpieces/saves/` (savefiles). They were on
+origin/restructure from commit afbbdc7 (2026-10-22) to 8f640ab; removed from the tip in 5a92257, and snapshot.sh now
+excludes `private/`, `*.pass`, `*.mangrc`, `runs/backup-*/`, `runs/setpieces/saves/`. **Still open, the user's call:**
+rotate the passwords (Happy on the live server first), and whether to purge the history (a force-push rewrite of
+restructure; GitHub keeps orphaned commits reachable by SHA until support purges them).
+
 **Rules from the user (keep them):**
 - **The Navigator's debt limit is never a number.** Overrides are revoked by creating
   `runs/private/dive04.overrides_revoked` (text = why). Every mission prompt states the current debt
