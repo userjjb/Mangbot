@@ -219,7 +219,7 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
   time per monster, then drop expectations.
 
 **Advisor exchange (latest):** to_architect 10-23 scorecard, 10-24 setpieces, 10-24 rulebook, 10-24 rulebook-r2 (all
-read); to_advisor 10-22 restructure-plan, 10-23 scorecard-built, 10-23 step2-items, 10-24 rulebook-in, 10-24 r2-in.
+read); to_advisor 10-22 restructure-plan, 10-23 scorecard-built, 10-23 step2-items, 10-24 rulebook-in, 10-24 r2-in, 10-23 step22-town-kit.
 
 ### ARCHITECT HANDOFF 2026-10-08 (history; read the 2026-10-24 section first)
 
