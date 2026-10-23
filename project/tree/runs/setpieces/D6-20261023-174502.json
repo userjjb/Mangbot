@@ -1,0 +1,17 @@
+{
+ "id": "D6",
+ "tag": "D6-20261023-174502",
+ "depth_ft": 300,
+ "start": "2026-10-23 17:45:02",
+ "checks": {
+  "exploring moves >= 3 tiles/s": {
+   "pass": false,
+   "detail": "2.4 tiles/s (97 in 40 s)"
+  }
+ },
+ "notes": [
+  "97 tiles in 40 s"
+ ],
+ "end": "2026-10-23 17:47:36",
+ "pass": false
+}

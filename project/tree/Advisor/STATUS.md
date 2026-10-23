@@ -25,7 +25,7 @@ Architect builds everything else.
 
 1. ~~Rulebook: drop expectations~~ **done** (r3: `drops.csv`, `drops_by_depth.csv`, `drop_object_by_level.csv`, `objgen.py`). Possible follow-ups:
    subtract already-found artifacts if the server log is kept; empirical drop counts need monster coordinates in the logs.
-2. **Live checks of code-only rulebook claims** once Gandalf is scriptable (or from a mission log): boulders do 0 damage; the low-HP time
+2. **Live checks of code-only rulebook claims**: proposed to the Architect as harness cases L1 (boulders), L2 (WoR resting), L3 (unaffected pairing) — `to_architect/2026-10-24-fleehp-live.md`; review the results. Originally: boulders do 0 damage; the low-HP time
    bubble is a constant 1/5; WoR counts down ~10× faster while resting out of sight; "You are unaffected!" pairing.
 3. **Set-pieces:** the Architect stages and runs them (harness); my part: criteria, order, and reviewing `runs/setpieces/results.md` for each P1 case, in the agreed order A7, A8, A9 (m24 arrival replay), A1, A6, A2, C8, C3, then (A3, B1, C1,
    C4, C5, D3, F1). A7 also validates `fight_sim.py` (Hill giant p90 123 at Dive04's profile).
@@ -85,6 +85,7 @@ The user struck one lead (2026-10-07): the live fetch of Bug Reports / Technical
   constant 1/5 below hitpoint_warn×10% (Pilot has it off).
 - Recall arrival: random floor square, pit/nest monsters awake; "something special about this level" = pit/nest/vault (or artifact) at <= 850 ft;
   stairs arrivals land on the staircase back; a 2nd WoR read cancels a pending one; no Deep Descent in 1.5. XP/min: 300-450 ft 8.5, 500-650 ft 58.
+- flee_hp: keep 0.5 (11 drops below 50% in m17-m24 fell on to a median 44%, 5 below 40%); 0.4 only inside a vetted solo hunt (proposed 10-24).
 - A repeat kill of a unique gives no XP and no drop (xtra2.c 'cheeze'); Dive04 has killed Brodda, Bullroarer, Orfax, Wormtongue, Farmer Maggot.
 - Hunt checks: `fight_sim.py` p90 (FIGHT-rated: none > 60% HP at Dive04's profile); summoners and blinkers are outside the duel model
   (m19 Ranger: duel p90 44, real 153 from summons + ranged phase). The `threats` column of monsters.csv is stale 09-27 text (boulder ~30).

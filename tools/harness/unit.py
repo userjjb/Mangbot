@@ -314,6 +314,94 @@ def pack_full_makes_room():
     return (not took and len(destroyed) == 1 and "Water" in destroyed[0][1]), f"sent {sent}"
 
 
+@case
+def c1_valuable_sale_refused():
+    """C1: selling an {excellent} item, an ability source, or a known valuable is refused with the reason; the
+    override (`!`) is the accepted-loss step, priced into the debt."""
+    p = pilot()
+    boots = {"name": "a Pair of Soft Leather Boots [2] {excellent}", "tval": 30, "number": 1, "item": 0}
+    fa = {"name": "a Pair of Soft Leather Boots of Free Action [2,+4]", "tval": 30, "number": 1, "item": 1}
+    a = p.value_refusal(boots, "sell")
+    b = p.value_refusal(fa, "destroy")
+    return bool(a) and bool(b) and "identify" in a.lower(), f"{a!r} | {b!r}"
+
+
+@case
+def c2_unknown_charges():
+    """C2: a wand of a known kind without its charges shown is an estimate, and selling it is refused (identify)."""
+    p = pilot()
+    wand = {"name": "a Wand of Stinking Cloud", "tval": 65, "number": 1, "item": 0}
+    v = p.iv(wand["name"])
+    why = p.value_refusal(wand, "sell")
+    return v.known is False and bool(why), f"known={v.known} value={v.value}; {why!r}"
+
+
+@case
+def c6_ambiguous_names():
+    """C6: 'Light' is the Scroll of Light, not Cure Light Wounds; two different rings by a shared word refuse."""
+    pack = [("14 Potions of Cure Light Wounds", 75), ("a Scroll of Light", 70), ("a Ring of Protection [+8]", 45),
+            ("a Ring of Protection [+4]", 45), ("a Ring of Strength <+2>", 45)]
+    p = pilot(pack=pack)
+    light = p.item_index("Light", pack_only=True)
+    try:
+        p.item_index("Ring", pack_only=True)
+        rings = "not refused"
+    except ValueError as e:
+        rings = "refused"
+    return light == 1 and rings == "refused", f"'Light' -> {light}; 'Ring' {rings}"
+
+
+@case
+def c7_unknown_ring_not_worn():
+    """C7: the Navigator's `wear` of an unknown ring (or a known kind without its plusses) is refused."""
+    w = W(pack=[("a Bloodstone Ring", 45), ("a Ring of Protection", 45), ("a Ring of Protection [+8]", 45)])
+    w.depth, w.depth_ft, w.in_dungeon = 0, 0, False
+    p = pilot(w)
+    p.dead, p.last_report, p.report_state = False, (0, 0.0), None
+    out = []
+    for name in ("Bloodstone_Ring", "a", "Ring_of_Protection_[+8]"):
+        try:
+            r = p.do_request({"cmd": "wear", "args": [name], "role": "navigator"})
+        except Exception as e:
+            r = {"ok": None, "error": repr(e)}
+        out.append("isn't identified" in str(r.get("error", "")))
+    return out[:2] == [True, True] and not out[2], f"refused: {out}"
+
+
+@case
+def c9_identify_good_first():
+    """C9: a {good} weapon with unknown plusses is an identify candidate (worth more than twice a scroll)."""
+    p = pilot(pack=[("a Trident (2d10) {good}", 22), ("a Dagger (1d4) {average}", 23)])
+    cands = [it["name"] for _, it in p.identify_candidates(2 * 80)]
+    return cands == ["a Trident (2d10) {good}"], f"{cands}"
+
+
+@case
+def e1_supply_gate():
+    """E1: going down to 650 ft with 1 CLW, 2 Phase and 1 WoR is refused with what's missing."""
+    p = pilot(pack=[("a Potion of Cure Light Wounds", 75), ("2 Scrolls of Phase Door", 70),
+                    ("a Scroll of Word of Recall", 70)], worn=[("a Spear (1d6) (+5,+7)", 22, 50),
+                                                              ("a Brass Lantern (with 9000 turns of light)", 39, 50)])
+    gap = p.supply_gate(650, True)
+    want = ("cure potions", "CSW+CCW", "Phase Door", "Word of Recall")
+    return all(any(w_ in g for g in gap) for w_ in want), f"{gap}"
+
+
+@case
+def f1_stale_order():
+    """F1: a position order answering a report from a level since left is held; a hunt of a monster out of view
+    with a report over 5 s old is held; a fresh one passes."""
+    p = pilot()
+    p.last_report = (7, time.time() - 17)
+    p.report_state = {"level_t": 0.5, "hp": 1.0}
+    a = p.stale_order("goal", ["goto", "30,40"])
+    p.report_state = {"level_t": p.w.level_t, "hp": 1.0}
+    b = p.stale_order("goal", ["hunt", "Brodda"])
+    p.last_report = (8, time.time())
+    c = p.stale_order("goal", ["hunt", "Brodda"])
+    return bool(a) and "left" in a and bool(b) and c is None, f"{a!r} | {b!r} | {c!r}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

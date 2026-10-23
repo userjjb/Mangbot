@@ -33,3 +33,8 @@
 - 2026-10-23 17:28:07 **B1** PASS (no stat drained, never next to it) `B1-20261023-172807.json`
 - 2026-10-23 17:31:19 **A3** PASS (the goto held, no walking with it adjacent, lowest HP >= 40%) `A3-20261023-173119.json`
 - 2026-10-23 17:34:15 **A7** PASS (hunt allowed at full HP, giant slain, HP lost within the simulated bad case) `A7-20261023-173415.json`
+- 2026-10-23 17:39:29 **B2** FAIL () `B2-20261023-173929.json`
+- 2026-10-23 17:42:03 **B3** PASS (Brigand slain, nothing stolen) `B3-20261023-174203.json`
+- 2026-10-23 17:45:02 **D6** FAIL (exploring moves >= 3 tiles/s FAIL) `D6-20261023-174502.json`
+- 2026-10-23 17:47:37 **L1** FAIL (a boulder was thrown FAIL, no HP lost to boulders) `L1-20261023-174737.json`
+- 2026-10-23 17:50:18 **L2** FAIL (recalled, rested while it charged FAIL, about 10x sooner than standing (< 5 s) FAIL) `L2-20261023-175018.json`

@@ -1,0 +1,21 @@
+{
+ "id": "L1",
+ "tag": "L1-20261023-174737",
+ "depth_ft": 350,
+ "start": "2026-10-23 17:47:37",
+ "checks": {
+  "a boulder was thrown": {
+   "pass": false,
+   "detail": "0 boulder messages"
+  },
+  "no HP lost to boulders": {
+   "pass": true,
+   "detail": "[]"
+  }
+ },
+ "notes": [
+  "boulders: []"
+ ],
+ "end": "2026-10-23 17:50:18",
+ "pass": false
+}

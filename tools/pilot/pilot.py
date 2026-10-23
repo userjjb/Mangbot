@@ -5315,6 +5315,14 @@ class Pilot:
                 return {"ok": False, "error": f"'{iname}' has no valid @R inscription: it would recall to the "
                                               "deepest level ever reached. Inscribe it (inscribe ITEM @R<feet>), "
                                               "use goal recall (it inscribes max_depth), or add 'force'"}
+            if c == "wear" and self.req_role != "architect" and "force" not in args[1:]:
+                # unknown jewellery: 19-58% of unknown rings are cursed, a cursed one can't come off, and
+                # wearing it doesn't identify it (m22 wore a cursed ring; the Advisor's set-piece C7)
+                itw = next((i for i in self.w.inven if i["item"] == item), None)
+                if itw and itw["tval"] in (40, 45) and (self.unknown_flavour(itw) or self.iv(itw["name"]).known is False):
+                    return {"ok": False, "error": f"'{itw['name']}' isn't identified: unknown jewellery is often cursed "
+                                                  "(and a cursed ring or amulet can't be taken off). Identify it first "
+                                                  "(`plan town` does), or add 'force'"}
             if c in ("destroy", "drop"):
                 it0 = next((i for i in self.w.inven if i["item"] == item), None)
                 why = self.value_refusal(it0, c) if not forced_cmd else None

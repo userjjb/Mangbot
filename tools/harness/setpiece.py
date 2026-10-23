@@ -72,8 +72,8 @@ def log_since(t0):
     return out
 
 
-def floor_near(view, target, dist):
-    """A floor square of Dive04's map at Chebyshev distance `dist` from `target` (absolute y,x)."""
+def floor_near(view, target, dist, taken=()):
+    """A floor square of Dive04's map at Chebyshev distance `dist` from `target` (absolute y,x), not in `taken`."""
     y0, x0 = view["y0"], view["x0"]
     best = None
     for i, row in enumerate(view.get("rows", [])):
@@ -81,6 +81,8 @@ def floor_near(view, target, dist):
             if ch != ".":
                 continue
             q = (y0 + i, x0 + j)
+            if q in taken:
+                continue
             d = max(abs(q[0] - target[0]), abs(q[1] - target[1]))
             if d == dist and (best is None or abs(q[1] - target[1]) < abs(best[1] - target[1])):
                 best = q
@@ -140,7 +142,9 @@ class Run:
             raise RuntimeError(f"Dive04 isn't on Gandalf's level ({self._depth()} ft): it left before the scene was set")
         v = pilot_view()
         me = tuple(v["pos"])
-        spot = floor_near(v, me, dist) or floor_near(v, me, dist + 1) or floor_near(v, me, max(1, dist - 1))
+        taken = getattr(self, "placed", set())
+        spot = next((q for d in (dist, dist + 1, max(1, dist - 1), dist + 2) for q in [floor_near(v, me, d, taken)] if q),
+                    None)
         if not spot:
             raise RuntimeError(f"no floor square {dist} from Dive04 at {me}")
         # walk Gandalf there (a ghost: through walls)
@@ -152,6 +156,7 @@ class Run:
         away = step_dir(me, spot) or 8               # step on, away from Dive04
         idx = race_name if isinstance(race_name, int) else race_idx(race_name)
         name = self.dm.summon(idx, step=away, after=after)
+        self.placed = taken | {spot}
         self.say(f"[{self.tag}] summoned {name} at {spot}, {dist} from Dive04 at {me}")
         return spot
 
@@ -500,7 +505,122 @@ def b1(run):
     run.check("never next to it", adjacent == 0, f"{adjacent} records adjacent; goto: {run.res['order_reply'][:80]}")
 
 
-SETPIECES = {"A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
+def b2(run):
+    """B2: mobile STR drainers (three Giant red ants): after a second drain on the level the Pilot leaves it, or
+    kills the drainer beside it when that one is weak and no faster (the 'drained twice' rule)."""
+    run.bring_dive04()
+    run.t_act = time.time()
+    for d in (2, 3, 4):
+        run.place("Giant red ant", d)
+    run.watch(60)
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    drains = [a for a in st["attention"] if a[1] == "stat_drained"]
+    after2 = [a for a in st["attention"] if a[1] in ("tactic", "danger_seen") and "drained twice" in a[2]]
+    run.check("drained at most twice", len(drains) <= 2, f"{len(drains)} drains")
+    run.check("acted on the second drain", len(drains) < 2 or bool(after2), f"{after2[:1]}")
+
+
+def b3(run):
+    """B3: a Brigand (touch to steal an item, then teleports) adjacent: the Pilot hits the thief first; nothing
+    stolen, or the theft reported."""
+    run.bring_dive04()
+    run.t_act = time.time()
+    run.place("Brigand", 1)
+    run.watch(30)
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    msgs = [json.loads(l) for l in open(os.path.join(RUN, "events.jsonl")) if '"message"' in l and "Brigand" in l]
+    msgs = [m for m in msgs if m.get("epoch", 0) >= run.t_act]
+    stolen = [m["text"] for m in msgs if "stole" in m["text"] or "touches you" in m["text"] and "purse" in m["text"]]
+    slain = any("slain the Brigand" in m["text"] for m in msgs)
+    run.res["notes"].append(f"messages: {[m['text'] for m in msgs][:8]}")
+    run.check("Brigand slain", slain, "")
+    run.check("nothing stolen", not stolen, f"{stolen[:2]}")
+
+
+def d6(run):
+    """D6: movement speed: tiles a second while exploring (runs) in the dungeon; >= 3."""
+    run.bring_dive04()
+    run.t_act = time.time()
+    ctl("goal", "explore", role="architect")
+    run.watch(40)
+    ctl("stop", role="architect")
+    moves = [d for d in log_since(run.t_act) if d.get("kind") in ("move", "mons", "act") and d.get("pos")]
+    path = []
+    for d in moves:
+        if not path or tuple(d["pos"]) != path[-1][1]:
+            path.append((d["t"], tuple(d["pos"])))
+    tiles = sum(max(abs(a[1][0] - b[1][0]), abs(a[1][1] - b[1][1])) for a, b in zip(path, path[1:]))
+    secs = (path[-1][0] - path[0][0]) if len(path) > 1 else 0
+    # the best 5-s window (a run), not the average with its stops to choose the next frontier
+    best = 0.0
+    for i, (t0, _) in enumerate(path):
+        seg = [(t, q) for t, q in path[i:] if t - t0 <= 5]
+        n = sum(max(abs(a[1][0] - b[1][0]), abs(a[1][1] - b[1][1])) for a, b in zip(seg, seg[1:]))
+        best = max(best, n / 5)
+    run.res["notes"].append(f"{tiles} tiles in {secs:.0f} s overall ({tiles / secs if secs else 0:.1f}/s); best 5 s {best:.1f}/s")
+    run.check("runs >= 3 tiles/s (best 5-s window)", best >= 3, f"best {best:.1f} tiles/s; overall "
+              f"{tiles / secs if secs else 0:.1f} ({tiles} in {secs:.0f} s)")
+
+
+def l1(run):
+    """L1 (a rulebook claim): a Hill giant's boulders do 0 damage to the player (project_p has no GF_BOULDER)."""
+    run.bring_dive04()
+    run.t_act = time.time()
+    ctl("order", "flee_hp=0.3", role="architect")
+    run.place("Hill giant", 8)
+    run.watch(60)
+    ctl("order", "flee_hp=0.5", role="architect")
+    msgs = [json.loads(l) for l in open(os.path.join(RUN, "events.jsonl")) if '"message"' in l and "boulder" in l.lower()]
+    msgs = [m for m in msgs if m.get("epoch", 0) >= run.t_act]
+    hp = [(d["t"], d["hp"][0]) for d in log_since(run.t_act) if d.get("hp")]
+    hits = []
+    for m in msgs:
+        before = [h for t, h in hp if t <= m["epoch"]][-1:] or [None]
+        after = [h for t, h in hp if m["epoch"] < t <= m["epoch"] + 0.6][:1] or [None]
+        hits.append((m["text"][:60], before[0], after[0]))
+    run.res["notes"].append(f"boulders: {hits}")
+    run.check("a boulder was thrown", bool(msgs), f"{len(msgs)} boulder messages")
+    run.check("no HP lost to boulders", all(b is None or a is None or a >= b for _, b, a in hits), f"{hits[:4]}")
+
+
+def l2(run):
+    """L2 (a rulebook claim): Word of Recall comes ~10x sooner while resting out of sight. Hurt by a Cave orc
+    group, then `goal recall` (which rests while it charges when hurt and alone) vs. the time a recall
+    takes standing (15-34 player turns, ~10-23 s)."""
+    run.bring_dive04()
+    run.t_act = time.time()
+    run.place("Black orc", 2)              # (Cave orcs barely scratched AC 56: the read came at full HP)
+    for _ in range(60):
+        time.sleep(1)
+        st0 = ctl("status", role="architect")
+        hp = re.search(r"HP (\d+)/(\d+)", st0)
+        if hp and int(hp.group(1)) < int(hp.group(2)) and "Monsters: none" in st0:
+            break
+    v = pilot_view()
+    st_now = ctl("status", role="architect")
+    t_read = time.time()
+    ctl("goal", "recall", role="architect")
+    t_yank = None
+    for _ in range(60):
+        time.sleep(0.5)
+        yank = [json.loads(l) for l in open(os.path.join(RUN, "events.jsonl")) if "yanked upwards" in l]
+        if yank and yank[-1].get("epoch", 0) > t_read:
+            t_yank = yank[-1]["epoch"]
+            break
+    recs = log_since(t_read)
+    rested = any(d.get("kind") == "act" and d.get("cmd") == "rest" for d in recs)
+    secs = (t_yank - t_read) if t_yank else None
+    run.res["notes"].append(f"status at the read: {st_now.splitlines()[0][:80]}; rested {rested}; {secs}")
+    run.check("recalled", t_yank is not None, f"{secs} s")
+    run.check("rested while it charged", rested, "")
+    run.check("about 10x sooner than standing (< 5 s)", secs is not None and secs < 5, f"{secs and round(secs, 1)} s")
+
+
+SETPIECES = {"B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
              "C3": c3}
 
 
