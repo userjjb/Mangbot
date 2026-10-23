@@ -199,8 +199,13 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    m22 Boldor are refused, frogs/orcs/wolves allowed; the Hill giant (rated FIGHT) is refused at 265 HP: maybe too
    strict). New goals `fetch Y,X` (refused with a band or danger) and `leave`. Stale orders held (`stale_order`:
    position orders after a level change, hunts of monsters out of view with a report >5 s old, goto/fetch after HP
-   fell >25 points). No Navigator override of a refused hunt yet (a question for the user). **Next: 2.5 belief
-   state** in the report (`plan trip LO-HI until COND then recall`), 2.4 order
+   fell >25 points). Override with fight debt (the user's answer, below). FIGHT-rated strictness: asked the Advisor (memo 10-23 hunt-strictness). Hunt override built (`goal hunt !NAME`, `settle_hunt`: wrong = not slain / HP < 50% / an emergency; fight debt in
+   HP, `debt` shows both). **2.5 belief state: done (session 4):** `belief_tick`/`belief_lines` add to the report
+   `Out of view` (monsters seen in the last 2 min on this level, last position; uniques and dangers first), `Fight so
+   far` (hits x damage per hit vs the rulebook's HP, the health bar), `Rates` (HP lost in 10 s, XP/gold per 10 min),
+   `Counts` (drains, traps, searches here; emergencies, phases in 90 s), `Standing` (keep, avoid, and the new
+   `standing TEXT` instructions in runs/pilot/NICK/standing.json). Tested offline (stub world) and in town; the
+   dungeon lines not yet live. **Next: 2.6 the new toolset**: the short HANDBOOK (~100 lines) and navigator.md (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
    toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23. Then the time bubble (timers to game turns; decided below).
 3. **Rulebook:** the Advisor's **release 2** is in `Advisor/data/rulebook/`, synced into `github/tools/rulebook/`
@@ -220,6 +225,10 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
   `runs/private/dive04.overrides_revoked` (text = why). Every mission prompt states the current debt
   (`PILOT_ROLE=architect pilotctl --nick dive04 debt`) and that past a limit it isn't told, its freedom to
   sell/destroy is taken away. Never tell it a figure or how close it is.
+- **Hunt overrides (the user, 2026-10-23, session 4):** the Navigator may override a refused hunt (`goal hunt !NAME`);
+  if it goes wrong (not slain, HP < 50%, or an emergency) the HP lost goes into a **fight debt**, separate from the
+  item debt (`debt` shows both). Revoke with `runs/private/dive04.hunt_overrides_revoked`. Same rule as items: state
+  both debts in every mission prompt, never a limit.
 - **Item commands:** refused to the Navigator in the dungeon, allowed in town between trips.
 - **`PILOT_ROLE=architect`** in front of my own pilotctl calls (otherwise they're treated as the Navigator's).
 - **Mission markers:** `pilotctl --nick dive04 mission start mNN navigator=MODEL [effort=..] [notes=..]` at launch,

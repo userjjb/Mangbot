@@ -69,54 +69,55 @@ def spell_dmg(flag, rl, hp):
     return k.get(flag, (0, 0))     # everything else (BOULDER, BO_POIS, status, summons, movement) deals no damage
 
 
-rows = []
-for m in csv.DictReader(open(MON)):
-    lev = int(m["level"]); rl = max(1, lev)
-    flags = set(m["flags"].split("|")) if m["flags"] else set()
-    spells = [s for s in m["spells"].split("|") if s] if m["spells"] else []
-    hp = int(float(m["hp_max"] if "FORCE_MAXHP" in flags else m["hp_avg"]))
-    sx = ENERGY.get(int(m["speed"]), 1000) / 1000
-    ac_m = {ac: 0.0 for ac in ACS}; mmax = 0; tags = set()
-    for b in (m["blow1"], m["blow2"], m["blow3"], m["blow4"]):
-        if not b: continue
-        p = b.split(":"); eff = p[1] if len(p) > 1 else ""; n, s = dice(p[2] if len(p) > 2 else "")
-        mmax += n * s
-        if eff == "PARALYZE": tags.add("PARALYZE")
-        if eff.startswith("LOSE_"): tags.add("DRAIN_" + eff[5:])
-        if eff.startswith("EXP_"): tags.add("EXP_DRAIN")
-        if eff == "EAT_GOLD": tags.add("STEAL_GOLD")
-        if eff == "EAT_ITEM": tags.add("STEAL_ITEM")
-        if not eff: continue
-        i = POWER.get(eff, 0) + 3 * rl
-        for ac in ACS:
-            ph = 0.05 + 0.90 * max(0, i - (3 * ac) // 4) / i
-            avg = n * (s + 1) / 2
-            if eff in ("HURT", "SHATTER"): avg -= avg * min(ac, 150) / 250
-            ac_m[ac] += ph * avg
-    freq = int(m["spell_freq"]) if m["spell_freq"] else 0
-    pct = (100 // freq) / 100 if freq else 0.0
-    dmgs = [spell_dmg(s, rl, hp) for s in spells]
-    smean = sum(d[0] for d in dmgs) / len(dmgs) if dmgs else 0.0
-    smax = max((d[1] for d in dmgs), default=0)
-    bmax = max((spell_dmg(s, rl, hp)[1] for s in spells if s.startswith("BR_")), default=0)
-    for s in spells:
-        if s in ("HOLD", "SLOW", "BLIND", "CONF", "SCARE", "TELE_TO", "TELE_LEVEL", "TELE_AWAY", "FORGET", "TRAPS"): tags.add(s)
-        if s.startswith("S_"): tags.add("SUMMON(" + s[2:] + ")")
-        if s == "BRAIN_SMASH": tags.add("BRAIN_SMASH")
-    for f in ("INVISIBLE", "NEVER_MOVE", "NEVER_BLOW", "MULTIPLY", "PASS_WALL", "KILL_WALL", "FRIENDS", "ESCORT", "ESCORTS",
-              "UNIQUE", "SMART", "POWERFUL", "OPEN_DOOR"):
-        if f in flags: tags.add(f)
-    turn40 = (sx * (1 - pct) * ac_m[40] / 2 if "NEVER_BLOW" not in flags else 0) + sx * pct * smean
-    h = HAND.get(m["name"], {})
-    rows.append(dict(idx=m["idx"], name=m["name"], symbol=m["symbol"], color=m["color"], level=lev, depth_ft=lev * 50,
-                     speed=int(m["speed"]) - 110, speed_x=round(sx, 2), hp=hp, ac=m["ac"], exp=m["exp"],
-                     melee_max=mmax, **{f"melee_exp_ac{ac}": round(ac_m[ac], 1) for ac in ACS},
-                     **{f"melee_turn_ac{ac}": round(ac_m[ac] * sx / 2, 1) for ac in ACS},
-                     spell_pct=round(pct, 2), spell_mean=round(smean, 1), spell_max=smax, breath_max=bmax,
-                     range_turn=round(sx * pct * smean, 1), tags="|".join(sorted(tags)),
-                     turns_to_kill_250=round(250 / turn40, 1) if turn40 > 0 else "",
-                     rating=h.get("danger", ""), response=h.get("response", ""), threats=h.get("threats", ""),
-                     neutraliser=h.get("neutraliser", ""), spells=m["spells"]))
-with open(os.path.join(HERE, "monsters.csv"), "w", newline="") as f:
-    w = csv.DictWriter(f, fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
-print(len(rows), "monsters")
+if __name__ == "__main__":
+    rows = []
+    for m in csv.DictReader(open(MON)):
+        lev = int(m["level"]); rl = max(1, lev)
+        flags = set(m["flags"].split("|")) if m["flags"] else set()
+        spells = [s for s in m["spells"].split("|") if s] if m["spells"] else []
+        hp = int(float(m["hp_max"] if "FORCE_MAXHP" in flags else m["hp_avg"]))
+        sx = ENERGY.get(int(m["speed"]), 1000) / 1000
+        ac_m = {ac: 0.0 for ac in ACS}; mmax = 0; tags = set()
+        for b in (m["blow1"], m["blow2"], m["blow3"], m["blow4"]):
+            if not b: continue
+            p = b.split(":"); eff = p[1] if len(p) > 1 else ""; n, s = dice(p[2] if len(p) > 2 else "")
+            mmax += n * s
+            if eff == "PARALYZE": tags.add("PARALYZE")
+            if eff.startswith("LOSE_"): tags.add("DRAIN_" + eff[5:])
+            if eff.startswith("EXP_"): tags.add("EXP_DRAIN")
+            if eff == "EAT_GOLD": tags.add("STEAL_GOLD")
+            if eff == "EAT_ITEM": tags.add("STEAL_ITEM")
+            if not eff: continue
+            i = POWER.get(eff, 0) + 3 * rl
+            for ac in ACS:
+                ph = 0.05 + 0.90 * max(0, i - (3 * ac) // 4) / i
+                avg = n * (s + 1) / 2
+                if eff in ("HURT", "SHATTER"): avg -= avg * min(ac, 150) / 250
+                ac_m[ac] += ph * avg
+        freq = int(m["spell_freq"]) if m["spell_freq"] else 0
+        pct = (100 // freq) / 100 if freq else 0.0
+        dmgs = [spell_dmg(s, rl, hp) for s in spells]
+        smean = sum(d[0] for d in dmgs) / len(dmgs) if dmgs else 0.0
+        smax = max((d[1] for d in dmgs), default=0)
+        bmax = max((spell_dmg(s, rl, hp)[1] for s in spells if s.startswith("BR_")), default=0)
+        for s in spells:
+            if s in ("HOLD", "SLOW", "BLIND", "CONF", "SCARE", "TELE_TO", "TELE_LEVEL", "TELE_AWAY", "FORGET", "TRAPS"): tags.add(s)
+            if s.startswith("S_"): tags.add("SUMMON(" + s[2:] + ")")
+            if s == "BRAIN_SMASH": tags.add("BRAIN_SMASH")
+        for f in ("INVISIBLE", "NEVER_MOVE", "NEVER_BLOW", "MULTIPLY", "PASS_WALL", "KILL_WALL", "FRIENDS", "ESCORT", "ESCORTS",
+                  "UNIQUE", "SMART", "POWERFUL", "OPEN_DOOR"):
+            if f in flags: tags.add(f)
+        turn40 = (sx * (1 - pct) * ac_m[40] / 2 if "NEVER_BLOW" not in flags else 0) + sx * pct * smean
+        h = HAND.get(m["name"], {})
+        rows.append(dict(idx=m["idx"], name=m["name"], symbol=m["symbol"], color=m["color"], level=lev, depth_ft=lev * 50,
+                         speed=int(m["speed"]) - 110, speed_x=round(sx, 2), hp=hp, ac=m["ac"], exp=m["exp"],
+                         melee_max=mmax, **{f"melee_exp_ac{ac}": round(ac_m[ac], 1) for ac in ACS},
+                         **{f"melee_turn_ac{ac}": round(ac_m[ac] * sx / 2, 1) for ac in ACS},
+                         spell_pct=round(pct, 2), spell_mean=round(smean, 1), spell_max=smax, breath_max=bmax,
+                         range_turn=round(sx * pct * smean, 1), tags="|".join(sorted(tags)),
+                         turns_to_kill_250=round(250 / turn40, 1) if turn40 > 0 else "",
+                         rating=h.get("danger", ""), response=h.get("response", ""), threats=h.get("threats", ""),
+                         neutraliser=h.get("neutraliser", ""), spells=m["spells"]))
+    with open(os.path.join(HERE, "monsters.csv"), "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
+    print(len(rows), "monsters")

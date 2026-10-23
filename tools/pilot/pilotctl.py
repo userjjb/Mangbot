@@ -29,6 +29,7 @@
     pilotctl.py plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@MAX],...]   # the whole town visit, by policy
     pilotctl.py plan trip LO-HI [until "COND or ..."] [then recall|town] [level_min=N] [force]   # a whole trip
     pilotctl.py plan | plan stop           # the plan now / end it
+    pilotctl.py standing [TEXT | -N]       # standing instructions shown in every report (add / remove / list)
     pilotctl.py complain TEXT...           # what you lacked / what got in your way (not your mistakes)
 """
 import json

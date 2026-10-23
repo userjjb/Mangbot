@@ -1891,6 +1891,16 @@ class Pilot:
         self.skipped_items = set()     # (level, square) of junk we chose to leave
         self.resume_after = None
         self.plan, self.plan_t = None, 0.0      # the Navigator's intent (plan trip), run by the Pilot
+        # the belief state (step 2.5; the Advisor's starting-over memo §3.4): what the report
+        # can't show from one snapshot
+        self.mons_mem = {}           # name -> {"level": level_t, "pos", "n", "t", "danger", "unique"}
+        self.hits = collections.Counter()      # (level_t, name) -> hits landed since it was last slain
+        self.belief_msg_t = 0.0
+        self.gain_hist = collections.deque(maxlen=80)    # (t, exp, gold) every 15 s
+        try:
+            self.standing = json.load(open(os.path.join(rundir, "standing.json")))
+        except (OSError, ValueError):
+            self.standing = []
         self.plan = TripPlan.load(self)           # (a restart mid-trip carries on with it)
         if self.plan:
             self.log("plan_resumed", plan=self.plan.text, phase=self.plan.phase)
@@ -2958,6 +2968,107 @@ class Pilot:
                                             "(look at 'Item squares' around there)")
         self.kills_t = max([self.kills_t] + [ts for ts, _ in w.messages])
 
+    # --- the belief state (restructure step 2.5) ---------------------------------
+    def belief_tick(self, now):
+        w = self.w
+        for y, x, r in w.monsters:
+            m = self.mons_mem.get(r.name)
+            if not m or m["level"] != w.level_t or now - m["t"] > 1:
+                n = sum(1 for *_, q in w.monsters if q.name == r.name)
+                self.mons_mem[r.name] = {"level": w.level_t, "pos": (y, x), "n": n, "t": now,
+                                         "danger": bool(self.danger_why(r)), "unique": "UNIQUE" in r.flags}
+            else:
+                m["t"] = now
+                if w.dist((y, x)) < w.dist(m["pos"]):
+                    m["pos"] = (y, x)
+        for ts, t in w.messages:
+            if ts <= self.belief_msg_t:
+                continue
+            m = re.match(r"You (?:hit|smite|bite|claw|bash) (?:the )?(.+?)[.!]$", t)
+            if m:
+                self.hits[(w.level_t, m.group(1).lower())] += 1
+            m = re.match(r"You have (?:slain|destroyed|killed) (?:the )?(.+?)[.!]$", t)
+            if m:
+                k = m.group(1).lower()
+                self.hits.pop((w.level_t, k), None)
+                mm = next((v for n, v in self.mons_mem.items() if n.lower() == k), None)
+                if mm:
+                    mm["n"] -= 1
+                    if mm["n"] <= 0:
+                        self.mons_mem = {n: v for n, v in self.mons_mem.items() if v is not mm}
+        self.belief_msg_t = max([self.belief_msg_t] + [ts for ts, _ in w.messages])
+        if not self.gain_hist or now - self.gain_hist[-1][0] >= 15:
+            self.gain_hist.append((now, (w.ind.get("exp") or [0])[0], w.ind.get("gold", [0])[0]))
+
+    def belief_lines(self):
+        """The report's belief-state lines: threats out of view, the fight so far, rates,
+        counts on this level, standing instructions."""
+        w, now = self.w, time.time()
+        out = []
+        if w.in_dungeon:
+            in_view = {r.name for *_, r in w.monsters}
+            gone = sorted(((n, m) for n, m in self.mons_mem.items() if m["level"] == w.level_t and n not in in_view
+                           and now - m["t"] < 120), key=lambda nm: (not nm[1]["unique"], not nm[1]["danger"],
+                                                                   now - nm[1]["t"]))
+            if gone:
+                out.append("Out of view (this level, last 2 min): " + "; ".join(
+                    f"{n}{' ×%d' % m['n'] if m['n'] > 1 else ''}"
+                    + (" (UNIQUE)" if m["unique"] else "") + (" (DANGER)" if m["danger"] else "")
+                    + f" {now - m['t']:.0f} s ago at {m['pos'][0]},{m['pos'][1]} ({w.dist(m['pos'])} away)"
+                    for n, m in gone[:5]))
+            wt = [x for x in self.weapon_table() if x[3]]
+            per_hit = wt[0][2] / max(1, wt[0][1]) if wt else 0
+            rows = self.fight_rows()
+            fights = []
+            for name in sorted(in_view):
+                k = self.hits.get((w.level_t, name.lower()), 0)
+                if not k:
+                    continue
+                race = next((r for *_, r in w.monsters if r.name == name), None)
+                row = rows.get(getattr(race, "idx", None)) or {}
+                hp = row.get("hp")
+                fights.append(f"{name}: {plural(k, 'hit')}, ~{k * per_hit:.0f} dealt" + (f" of ~{hp} HP" if hp else ""))
+            tr = w.ind.get("track") or [0, 0]
+            if fights:
+                out.append("Fight so far: " + "; ".join(fights) +
+                           (f" (the tracked monster's health bar: {10 * tr[1]}%)" if len(tr) > 1 and tr[1] else ""))
+        # rates: HP lost recently, XP and gold per 10 minutes
+        hh = [(t, hp) for t, hp in getattr(w, "hp_hist", []) if now - t <= 10]
+        bits = []
+        if hh and hh[0][1] - w.hp[0] > 0.05 * max(1, w.hp[1]):
+            bits.append(f"HP -{hh[0][1] - w.hp[0]} in the last {now - hh[0][0]:.0f} s")
+        old = next(((t, e, g) for t, e, g in self.gain_hist if now - t <= 600), None)
+        if old and now - old[0] > 60:
+            de = (w.ind.get("exp") or [0])[0] - old[1]
+            dg = w.ind.get("gold", [0])[0] - old[2]
+            bits.append(f"XP {de:+d}, gold {dg:+d} in the last {(now - old[0]) / 60:.0f} min")
+        if bits:
+            out.append("Rates: " + "; ".join(bits))
+        if w.in_dungeon:
+            cnt = []
+            if self.drains_here[0] == w.level_t and self.drains_here[1]:
+                cnt.append(plural(self.drains_here[1], "drain"))
+            if self.traps_here[0] == w.level_t and self.traps_here[1]:
+                cnt.append(plural(self.traps_here[1], "trap") + " sprung")
+            ns = sum(1 for lt, _ in self.searched if lt == w.level_t)
+            if ns:
+                cnt.append(f"{plural(ns, 'spot')} searched")
+            ph = sum(1 for t in self.phase_hist if now - t < 90)
+            em = sum(1 for t in self.emerg_times if now - t < 90)
+            recent = ([plural(em, "emergency")] if em else []) + ([plural(ph, "Phase Door")] if ph else [])
+            if cnt or recent:
+                out.append("Counts: " + (f"this level {', '.join(cnt)}" if cnt else "") +
+                           ("; " if cnt and recent else "") + (f"last 90 s {', '.join(recent)}" if recent else ""))
+        st = [f"keep {', '.join(sorted(self.keep))}"] if self.keep else []
+        if self.avoid_names:
+            st.append(f"avoid {', '.join(sorted(self.avoid_names))}")
+        if self.avoid_zones.get(w.level_t):
+            st.append(f"{plural(len(self.avoid_zones[w.level_t]), 'avoid zone')} here")
+        st += [f"\"{x['text']}\" ({x['by']})" for x in self.standing]
+        if st:
+            out.append("Standing: " + "; ".join(st))
+        return out
+
     def numbered(self, rep, kind):
         """Number each report the Navigator gets and log it (id, kind, size), so
         every later command can say which report it answered and how old that
@@ -3118,14 +3229,45 @@ class Pilot:
         json.dump(self.debt, open(self.debt_path, "w"), indent=1)
         self.log("navigator_debt", gold=int(gold), what=what, why=why, total=self.debt_total())
 
-    def override_allowed(self):
+    def override_allowed(self, kind="item"):
         """Overrides stay allowed until the user or the Architect revokes them. The
         limit is a judgement, not a number (the user: hidden, so we keep leeway
         and the Navigator can't tell how close it is): revoked = the file
-        runs/private/NICK.overrides_revoked exists (its text says why)."""
+        runs/private/NICK.overrides_revoked exists (its text says why); for hunts,
+        NICK.hunt_overrides_revoked."""
         path = os.path.join(os.path.dirname(os.path.dirname(self.rundir.rstrip("/"))), "private",
-                            os.path.basename(self.rundir.rstrip("/")) + ".overrides_revoked")
+                            os.path.basename(self.rundir.rstrip("/")) +
+                            (".hunt_overrides_revoked" if kind == "hunt" else ".overrides_revoked"))
         return not os.path.exists(path)
+
+    def fight_debt_total(self):
+        return sum(e.get("hp", 0) for e in self.debt.get("fight_entries", []))
+
+    def settle_hunt(self, g, status, detail):
+        """Judge a hunt the Navigator ordered over the Pilot's refusal (the user, 2026-10-23:
+        it may override, and if it was wrong the cost goes into a fight debt kept apart
+        from the item debt). Wrong = not slain, or HP fell below half, or an emergency
+        escape fired during it. The debt is the HP it cost (start to lowest)."""
+        ov, w = g.overridden, self.w
+        g.overridden = None
+        lost = max(0, ov["hp0"] - ov["hp_min"])
+        emerg = len(self.emerg_times) - ov["emerg0"]
+        slain = status == "done" and "slain" in str(detail) or "killed" in str(detail)
+        wrong = not slain or ov["hp_min"] < 0.5 * max(1, w.hp[1]) or emerg > 0
+        self.log("hunt_override_end", target=g.target, status=status, detail=detail, hp_lost=lost,
+                 hp_min=ov["hp_min"], emergencies=emerg, wrong=wrong)
+        if not wrong or not lost:
+            self.notify("tactic", f"your override hunt of {g.target}: {detail or status}, {lost} HP lost; the "
+                                  "Pilot's refusal was too cautious this time (no debt)", news=True)
+            return
+        self.debt.setdefault("fight_entries", []).append(
+            {"t": time.strftime("%Y-%m-%d %H:%M:%S"), "hp": int(lost), "what": f"hunt {g.target}",
+             "why": f"{detail or status}; lowest HP {ov['hp_min']}" + (f", {emerg} emergencies" if emerg else "") +
+                    f" (refused because: {ov['why'][:120]})"})
+        json.dump(self.debt, open(self.debt_path, "w"), indent=1)
+        self.log("navigator_fight_debt", hp=int(lost), what=g.target, total=self.fight_debt_total())
+        self.notify("tactic", f"your override hunt of {g.target} went wrong ({detail or status}, {lost} HP lost"
+                              f"{', an emergency escape' if emerg else ''}): {lost} added to your fight debt", news=True)
 
     KIT_KINDS = ("Cure Light Wounds", "Cure Serious Wounds", "Cure Critical Wounds", "Healing", "Phase Door",
                  "Word of Recall", "Teleport", "Identify", "Magic Mapping", "Speed", "Heroism", "Berserk",
@@ -3858,6 +4000,9 @@ class Pilot:
         return self.w.pos if self.w.pos_t <= t + 0.5 else None
 
     def set_goal(self, goal):
+        old = self.goal
+        if old is not None and getattr(old, "overridden", None) and old is not goal:
+            self.settle_hunt(old, "replaced", goal.describe() if goal else "stopped")
         self.mover.stop()
         self.goal = goal
         self.goal_t = time.time()             # (watch_progress counts from here)
@@ -3894,6 +4039,8 @@ class Pilot:
                                   "detail": f"{g}: {detail}; resumed '{self.goal.describe()}'", "goal": None})
                 return True
             ended = self.goal_ending
+            if getattr(ended, "overridden", None):
+                self.settle_hunt(ended, status, detail)
             if self.plan:
                 if getattr(ended, "by_plan", False):
                     self.plan.goal_ended(self, ended, status, detail)
@@ -4225,6 +4372,9 @@ class Pilot:
         w, now = self.w, time.time()
         if w.hp[1] > 1 and (self.hp_min_since is None or w.hp[0] < self.hp_min_since[0]):
             self.hp_min_since = [w.hp[0], w.hp[1]]
+        ov = getattr(self.goal, "overridden", None) or getattr(self.resume_after, "overridden", None)
+        if ov and w.hp[0] < ov["hp_min"]:
+            ov["hp_min"] = w.hp[0]
         # 2. floor items with full names, and what a level was left with (the
         # Advisor's scorecard memo §5.2: abandoned loot had to be reconstructed)
         names = [l.strip()[2:].strip() for l in (w.itemlist or [])[1:]]
@@ -4336,6 +4486,7 @@ class Pilot:
                         for m in [re.match(r"You (?:hit|smite|bite|claw|miss) (?:the )?(.+?)[.!]$", t)] if m), None)
             self.log("mons", monsters=[(y, x, r.name) for y, x, r in w.monsters],
                      track=w.ind.get("track"), fighting=hit)
+        self.belief_tick(now)
         self.watch_character()
         if now - self.weapons_t > 10:
             self.weapons_t = now
@@ -4544,11 +4695,29 @@ class Pilot:
                 self.keep.add(name.strip())
             json.dump(sorted(self.keep), open(os.path.join(self.rundir, "keep.json"), "w"))
             return {"ok": True, "text": "kept: " + (", ".join(sorted(self.keep)) or "nothing")}
+        if c == "standing":
+            # standing instructions shown in every report (the Advisor's belief-state table:
+            # "don't kill the Rot jelly"); `standing -N` removes one, `standing` lists them
+            if args and re.fullmatch(r"-\d+", args[0]):
+                i = int(args[0][1:]) - 1
+                if not 0 <= i < len(self.standing):
+                    return {"ok": False, "error": f"no standing instruction {i + 1}"}
+                gone = self.standing.pop(i)
+            elif args:
+                self.standing.append({"text": " ".join(args), "by": self.req_role,
+                                      "t": time.strftime("%Y-%m-%d %H:%M")})
+            json.dump(self.standing, open(os.path.join(self.rundir, "standing.json"), "w"), indent=1)
+            return {"ok": True, "text": "standing: " + ("; ".join(f"{i + 1}. {x['text']} ({x['by']})"
+                                                                for i, x in enumerate(self.standing)) or "none")}
         if c == "debt":
             e = self.debt.get("entries", [])
+            fe = self.debt.get("fight_entries", [])
             return {"ok": True, "text": f"Navigator debt: {self.debt_total()} gold of value lost over the Pilot's value "
                                         f"policy ({len(e)} entries)" + "".join(f"\n  {x['t']} {x['gold']}: {x['what']} "
-                                                                                f"({x['why']})" for x in e[-8:])}
+                                                                                f"({x['why']})" for x in e[-8:]) +
+                                        f"\nFight debt: {self.fight_debt_total()} HP lost in hunts ordered over the "
+                                        f"Pilot's refusal that went wrong ({len(fe)} entries)" +
+                                        "".join(f"\n  {x['t']} {x['hp']} HP: {x['what']} ({x['why']})" for x in fe[-8:])}
         if c == "pack":
             return {"ok": True, "text": "Pack: " + "; ".join(f"{chr(97 + i['item'])}) {self.short(self.show(i))}"
                                                            for i in self.w.items())}
@@ -5507,12 +5676,24 @@ class Pilot:
             g.name = f"searchroom {Y},{X}"
         elif name == "hunt":
             target = " ".join(rest).replace("_", " ")    # 'hunt Black_ogre', like shop names
+            force = target.startswith("!")
+            target = target.lstrip("!").strip()
             why, info = self.hunt_refusal(target)
-            if why and self.req_role != "architect":
+            if why and self.req_role != "architect" and not force:
                 self.log("order_refused", order=f"hunt {target}", why=why)
-                return {"ok": False, "error": f"hunt refused: {why}"}
+                return {"ok": False, "error": f"hunt refused: {why}. `goal hunt !NAME` overrides; if the fight goes "
+                                              "wrong, the HP it costs goes into your fight debt"}
+            if why and force and self.req_role != "architect" and not self.override_allowed("hunt"):
+                return {"ok": False, "error": f"hunt refused: {why}. Your freedom to override the Pilot's fight "
+                                              f"checks is suspended (fight debt {self.fight_debt_total()} HP)"}
             g = Hunt(target)
             g.estimate = info
+            if why and force and self.req_role != "architect":
+                # an override: judged when the hunt ends (the user, 2026-10-23: a separate debt)
+                w = self.w
+                g.overridden = {"why": why, "hp0": w.hp[0], "hp_min": w.hp[0], "t0": time.time(),
+                                "emerg0": len(self.emerg_times)}
+                self.log("hunt_override", target=target, why=why, hp=w.hp[0])
         elif name == "fetch":
             # one item detour (the design's `fetch Y,X`): not with a band or danger about
             m = re.match(r"^(\d+)[ ,](\d+)$", " ".join(rest[:2]) if len(rest) > 1 else (rest[0] if rest else ""))
@@ -5878,6 +6059,7 @@ class Pilot:
                 (f", door {self.room_door(Y, X)[0]},{self.room_door(Y, X)[1]}" if self.room_door(Y, X) else
                  ", searched" if all((w.level_t, r) in self.searched for _, r in structures.door_spots(Y, X)) else "")
                 for Y, X, st in sts))
+        lines += self.belief_lines()
         recent = [e for e in self.news if (e["t"] > news_since if news_since is not None
                                            else now - e["t"] < 600)][-8:]
         if recent:
