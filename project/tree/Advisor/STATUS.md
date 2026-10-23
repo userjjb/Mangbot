@@ -54,7 +54,9 @@ The original six-topic backlog (`../memos/2026-09-27-advisor-study-topics.md`) i
 ## Restructure (from 2026-10-22; the user's decision; Architect plan `../memos/to_advisor/2026-10-22-restructure-plan.md`)
 
 Advisor owns: (1) **scorecard definitions — DONE** 10-23 (`../memos/2026-10-23-scorecard.md`, `data/scorecard/scorecard.py`,
-baseline m17–23); (2) **set-piece list** from the failures of missions 15–23 — next, when the user says; (3) **rulebook tables**
+baseline m17–23); the Architect built the production one (`github/tools/observe/scorecard.py --check`, missions in
+`runs/missions.json`) + new records: sale, itemlist/left_behind, escape, audit_check state, mission_start/end (model!),
+report_age, monster health `track`; (2) **set-piece list — DONE** 10-24 (`../memos/2026-10-24-setpieces.md`, 41 set-pieces, 12 P1); (3) **rulebook tables**
 generated from the source (start from data/monsters, data/identify, data/shops (fix CHR 3!), data/progression, data/drops).
 Mission-by-mission patching is frozen. m22–23 were Sonnet Navigator missions.
 
@@ -106,6 +108,7 @@ Mission-by-mission patching is frozen. m22–23 were Sonnet Navigator missions.
   process starts with a `pilot_start` record; decisions.jsonl has `nav_cmd` (Navigator commands as received), `move` records
   carry `run` (stretch/free), an `options` record at each login; Navigator final reports in runs/pilot/NICK/reports/.
   Still missing: monster HP (health track). Advisor memos and Clerk dispatches now end with "What I lacked".
+- **Dive04 had Free Action m18–m23 without knowing** (unidentified Boots of FA, sold m23 22:27 for 3 gold); none now.
 - Resting in town burns light ~10× faster (time bubble); store torches/lanterns come half full.
 
 ## Tooling notes

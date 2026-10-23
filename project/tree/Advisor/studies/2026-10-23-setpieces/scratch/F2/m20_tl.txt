@@ -1,0 +1,214 @@
+23:41:09 nav_cmd 0 [220, 220] [64, 15] {"cmd": "drainers", "args": [], "wait_report": false}
+23:41:16 nav_cmd 0 [220, 220] [64, 15] {"cmd": "avoid", "args": [], "wait_report": false}
+23:41:25 nav_cmd 0 [220, 220] [64, 15] {"cmd": "goal", "args": ["shop", "4", "list"], "wait_report": false}
+23:41:25 goal 0 [220, 220] [64, 15] {"goal": "shop 4"}
+23:41:52 attention 0 [220, 220] [25, 114] {"what": "goal_done", "detail": "shop 4: stock: 5 Holy Books of Prayers [Beginners Handbook] 40; 5 Holy Books of Prayers [Words of Wisdom] 159; 23 Holy Books of Prayers [Chants and Blessings] 477; 10 Potions of Boldnes
+23:42:01 nav_cmd 0 [220, 220] [25, 114] {"cmd": "goal", "args": ["shop", "5", "sell", "Resist_Cold:3", "sell", "k:1"], "wait_report": false}
+23:42:01 goal 0 [220, 220] [25, 114] {"goal": "shop 5 sell Resist Cold:3 sell k:1"}
+23:42:06 attention 0 [220, 220] [37, 111] {"what": "goal_done", "detail": "shop 5 sell Resist Cold:3 sell k:1: NOT sold (it's Potion of Infravision: worth more known, use or Identify it; sell !NAME to force): a Yellow Speckled Potion; You sold 3 Potions of Res
+23:42:12 nav_cmd 0 [220, 220] [37, 111] {"cmd": "goal", "args": ["shop", "5", "sell", "!Yellow_Speckled:1"], "wait_report": false}
+23:42:12 goal 0 [220, 220] [37, 111] {"goal": "shop 5 sell !Yellow Speckled:1"}
+23:42:13 attention 0 [220, 220] [37, 111] {"what": "goal_done", "detail": "shop 5 sell !Yellow Speckled:1: You sold a Potion of Infravision for 8 gold.", "crop": ["                               ", "                               ", "                          
+23:42:16 nav_cmd 0 [220, 220] [37, 111] {"cmd": "goal", "args": ["shop", "6", "sell", "!Corundum:1"], "wait_report": false}
+23:42:16 goal 0 [220, 220] [37, 111] {"goal": "shop 6 sell !Corundum:1"}
+23:42:21 attention 0 [220, 220] [26, 119] {"what": "goal_done", "detail": "shop 6 sell !Corundum:1: You sold a Ring of Feather Falling for 11 gold.", "crop": ["                               ", "                               ", "                              
+23:42:26 nav_cmd 0 [220, 220] [26, 119] {"cmd": "goal", "args": ["shop", "4", "buy", "Cure_Serious:1@64"], "wait_report": false}
+23:42:26 goal 0 [220, 220] [26, 119] {"goal": "shop 4 buy Cure Serious:1@64"}
+23:42:28 attention 0 [220, 220] [27, 114] {"what": "goal_done", "detail": "shop 4 buy Cure Serious:1@64: You bought a Potion of Cure Serious Wounds for 64 gold.", "crop": ["                               ", "                               ", "                 
+23:42:32 nav_cmd 0 [220, 220] [27, 114] {"cmd": "gate", "args": ["450", "recall"], "wait_report": false}
+23:42:32 nav_cmd 0 [220, 220] [27, 114] {"cmd": "gate", "args": ["500", "recall"], "wait_report": false}
+23:42:37 nav_cmd 0 [220, 220] [27, 114] {"cmd": "order", "args": ["max_depth=450"], "wait_report": false}
+23:42:37 nav_cmd 0 [220, 220] [27, 114] {"cmd": "goal", "args": ["recall"], "wait_report": false}
+23:42:37 goal 0 [220, 220] [27, 114] {"goal": "recall"}
+23:42:49 attention 9 [220, 220] [48, 9] {"what": "goal_done", "detail": "recall: arrived at 450 ft", "crop": ["                         ", "                         ", "       ###########..#####", "       #.................", "       #.................", "    
+23:42:54 nav_cmd 9 [220, 220] [48, 9] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+23:42:54 goal 9 [220, 220] [48, 9] {"goal": "explore"}
+23:45:39 attention 9 [220, 220] [48, 41] {"what": "interesting_item", "detail": "Runed Rod seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it", "crop
+23:45:48 nav_cmd 9 [220, 220] [54, 40] {"cmd": "goal", "args": ["goto", "49,55"], "wait_report": false}
+23:45:48 goal 9 [220, 220] [54, 40] {"goal": "goto 49,55"}
+23:45:58 attention 9 [220, 220] [49, 55] {"what": "goal_done", "detail": "goto 49,55", "crop": ["########++########             ", "#................#             ", "#................#             ", "#................#             ", "#................#     
+23:46:06 nav_cmd 9 [220, 220] [49, 55] {"cmd": "destroy", "args": ["Rounded_Pebble", "all"], "wait_report": false}
+23:46:07 nav_cmd 9 [220, 220] [49, 55] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+23:46:07 goal 9 [220, 220] [49, 55] {"goal": "explore"}
+23:46:11 nav_cmd 9 [220, 220] [51, 49] {"cmd": "zap", "args": ["Runed_Rod"], "wait_report": false}
+23:49:07 goal 9 [220, 220] [45, 104] {"goal": "flee (unseen attacker)"}
+23:49:07 attention 9 [220, 220] [45, 104] {"what": "unseen_attacker", "detail": "'It points at you and curses.': something unseen is attacking while explore; heading for the stairs", "crop": ["                               ", "#####                          "
+23:49:18 attention 10 [220, 220] [54, 112] {"what": "goal_done", "detail": "flee (unseen attacker): left by the stairs; now at 500 ft", "crop": ["                               ", "                               ", "                               ", "         
+23:49:23 nav_cmd 10 [220, 220] [54, 112] {"cmd": "stairs", "args": ["<"], "wait_report": false}
+23:49:36 nav_cmd 9 [220, 220] [36, 30] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+23:49:36 goal 9 [220, 220] [36, 30] {"goal": "explore"}
+23:49:42 goal 9 [220, 220] [23, 22] {"goal": "flee (unseen attacker)"}
+23:49:42 attention 9 [220, 220] [23, 22] {"what": "unseen_attacker", "detail": "'It points at you and curses.': something unseen is attacking while explore; heading for the stairs", "crop": ["              ...#             ", "               ..              ",
+23:49:42 attention 9 [204, 220] [23, 22] {"what": "tactic", "detail": "afraid: kiting over cleared ground until it wears off", "crop": ["              ...#             ", "               ..              ", "                               ", "             p... 
+23:49:52 attention 10 [184, 220] [61, 35] {"what": "goal_done", "detail": "flee (unseen attacker): left by the stairs; now at 500 ft", "crop": ["                               ", "                               ", "##                             ", "...       
+23:49:54 nav_cmd 10 [185, 220] [61, 35] {"cmd": "goal", "args": ["hunt", "Novice_priest"], "wait_report": false}
+23:49:54 goal 10 [185, 220] [61, 35] {"goal": "hunt Novice priest"}
+23:50:09 attention 10 [201, 220] [61, 35] {"what": "goal_failed", "detail": "hunt Novice priest: lost sight of it", "crop": ["                               ", "                               ", "##                             ", "...           ###            
+23:50:14 nav_cmd 10 [206, 220] [61, 35] {"cmd": "stairs", "args": ["<"], "wait_report": false}
+23:50:25 nav_cmd 9 [218, 220] [48, 107] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+23:50:25 goal 9 [218, 220] [48, 107] {"goal": "explore"}
+23:50:25 nav_cmd 9 [218, 220] [47, 107] {"cmd": "complain", "args": ["23:49 twice in a row at 450 ft and full HP, 'It points at you and curses' (a Novice priest in the dark, drawn as p on the map 3 squares away) raised unseen_attacker and the Pilot fled down a
+23:50:25 nav_complaint 9 [218, 220] [47, 107] {"text": "23:49 twice in a row at 450 ft and full HP, 'It points at you and curses' (a Novice priest in the dark, drawn as p on the map 3 squares away) raised unseen_attacker and the Pilot fled down a > to 500 ft (
+23:50:35 attention 9 [220, 220] [46, 81] {"what": "tactic", "detail": "Green mold (lvl 8, never moves) blocks the way: killing it", "crop": ["                               ", "                               ", "                               ", "             
+23:51:55 attention 9 [220, 220] [57, 113] {"what": "stuck", "detail": "'explore' hasn't moved from (57, 113) for 20 s: cleared the command queue and restarted the move. If it happens again, give another goal", "crop": ["                               ", "     
+23:52:05 attention 9 [220, 220] [47, 143] {"what": "tactic", "detail": "Green mold (lvl 8, never moves) blocks the way: killing it", "crop": ["                               ", "                               ", "                               ", "            
+23:55:20 attention 9 [220, 220] [34, 30] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", "crop": ["                               ", "                               ", "                               ", 
+23:57:12 attention 9 [220, 220] [19, 50] {"what": "structure", "detail": "inner room centred 27,49 (22-32, 37-61), likely: a dark inner room: most likely a large room (dark ones are common), but pits and nests (95 awake monsters) look the same and are never li
+23:57:33 nav_cmd 9 [220, 220] [17, 17] {"cmd": "goal", "args": ["searchroom", "27,49"], "wait_report": false}
+23:57:33 goal 9 [220, 220] [17, 17] {"goal": "searchroom 27,49"}
+23:57:59 attention 9 [220, 220] [23, 49] {"what": "goal_failed", "detail": "searchroom 27,49: searched every spot, nothing found", "crop": ["###############+'# ###         ", "              #..#             ", "              #..#             ", "              
+23:58:16 nav_cmd 9 [220, 220] [23, 49] {"cmd": "goal", "args": ["goto", "38,55"], "wait_report": false}
+23:58:16 goal 9 [220, 220] [23, 49] {"goal": "goto 38,55"}
+23:58:30 attention 9 [220, 220] [38, 55] {"what": "goal_done", "detail": "goto 38,55", "crop": ["#####################          ", "....................#          ", "....................#          ", "....................#          ", "....................###
+23:58:34 nav_cmd 9 [220, 220] [38, 55] {"cmd": "goal", "args": ["goto", "4,147"], "wait_report": false}
+23:58:34 goal 9 [220, 220] [38, 55] {"goal": "goto 4,147"}
+23:59:34 attention 9 [216, 220] [12, 142] {"what": "tactic", "detail": "afraid: kiting over cleared ground until it wears off", "crop": ["               #..###########  ", "               #..#            ", "               #..##           ", " ################
+23:59:40 attention 9 [220, 220] [4, 147] {"what": "goal_done", "detail": "goto 4,147", "crop": ["                               ", "                               ", "                               ", "          ##############       ", "          #....@$......
+23:59:49 nav_cmd 9 [220, 220] [4, 147] {"cmd": "goal", "args": ["goto", "4,146"], "wait_report": false}
+23:59:49 goal 9 [220, 220] [4, 147] {"goal": "goto 4,146"}
+23:59:49 attention 9 [220, 220] [4, 146] {"what": "goal_done", "detail": "goto 4,146", "crop": ["                               ", "                               ", "                               ", "           ##############      ", "           #...@.$.....
+23:59:49 nav_cmd 9 [220, 220] [4, 146] {"cmd": "goal", "args": ["goto", "5,147"], "wait_report": false}
+23:59:49 goal 9 [220, 220] [4, 146] {"goal": "goto 5,147"}
+23:59:50 attention 9 [220, 220] [5, 147] {"what": "goal_done", "detail": "goto 5,147", "crop": ["                               ", "                               ", "                               ", "          ##############       ", "          #.....$......
+23:59:50 nav_cmd 9 [220, 220] [5, 147] {"cmd": "goal", "args": ["goto", "5,148"], "wait_report": false}
+23:59:50 goal 9 [220, 220] [5, 147] {"goal": "goto 5,148"}
+23:59:50 attention 9 [220, 220] [5, 148] {"what": "goal_done", "detail": "goto 5,148", "crop": ["                               ", "                               ", "                               ", "         ##############        ", "         #.....$......#
+23:59:50 nav_cmd 9 [220, 220] [5, 148] {"cmd": "goal", "args": ["goto", "4,148"], "wait_report": false}
+23:59:50 goal 9 [220, 220] [5, 148] {"goal": "goto 4,148"}
+23:59:51 attention 9 [220, 220] [4, 148] {"what": "goal_done", "detail": "goto 4,148", "crop": ["                               ", "                               ", "                               ", "         ##############        ", "         #.....@......#
+23:59:59 nav_cmd 9 [220, 220] [4, 148] {"cmd": "goal", "args": ["recall"], "wait_report": false}
+23:59:59 goal 9 [220, 220] [4, 148] {"goal": "recall"}
+00:00:11 attention 0 [220, 220] [16, 45] {"what": "goal_done", "detail": "recall: arrived at 0 ft", "crop": ["                               ", "                               ", "##                             ", " #            ...              ", " #        
+00:00:19 nav_cmd 0 [220, 220] [16, 45] {"cmd": "goal", "args": ["shop", "6", "sell", "Feather_Falling:1", "sell", "!Runed_Rod:1"], "wait_report": false}
+00:00:19 goal 0 [220, 220] [16, 45] {"goal": "shop 6 sell Feather Falling:1 sell !Runed Rod:1"}
+00:00:39 attention 0 [220, 220] [24, 119] {"what": "goal_done", "detail": "shop 6 sell Feather Falling:1 sell !Runed Rod:1: You sold a Ring of Feather Falling for 50 gold.; You sold a Rod of Trap Location for 23 gold.", "crop": ["                              
+00:00:43 nav_cmd 0 [220, 220] [24, 119] {"cmd": "goal", "args": ["shop", "5", "list"], "wait_report": false}
+00:00:43 goal 0 [220, 220] [24, 119] {"goal": "shop 5"}
+00:00:48 attention 0 [220, 220] [37, 111] {"what": "goal_done", "detail": "shop 5: stock: 12 Potions of Resist Heat 48; 14 Potions of Resist Cold 48; a Potion of Restore Wisdom 483; a Potion of Restore Dexterity 483; 2 Potions of Restore Constitution 483; a Po
+00:00:56 nav_cmd 0 [220, 220] [37, 111] {"cmd": "goal", "args": ["shop", "5", "buy", "Word_of_Recall:2@242", "buy", "Identify:1@81"], "wait_report": false}
+00:00:56 goal 0 [220, 220] [37, 111] {"goal": "shop 5 buy Word of Recall:2@242 buy Identify:1@81"}
+00:00:57 attention 0 [220, 220] [37, 111] {"what": "goal_done", "detail": "shop 5 buy Word of Recall:2@242 buy Identify:1@81: You bought 2 Scrolls of Word of Recall for 484 gold.; You bought a Scroll of Identify for 81 gold.", "crop": ["                ...... 
+00:01:01 nav_cmd 0 [220, 220] [37, 111] {"cmd": "read", "args": ["Identify", "Spear"], "wait_report": false}
+00:01:03 attention 0 [220, 220] [37, 111] {"what": "tactic", "detail": "a Spear (1d6) (+5,+5) would do ~26 per round (3 blows) vs ~20 now: wield it", "crop": ["                ......         ", "                .....          ", "               ......         
+00:01:09 nav_cmd 0 [220, 220] [37, 111] {"cmd": "gate", "args": ["600", "recall"], "wait_report": false}
+00:01:09 nav_cmd 0 [220, 220] [37, 111] {"cmd": "gate", "args": ["550", "recall"], "wait_report": false}
+00:01:16 nav_cmd 0 [220, 220] [37, 111] {"cmd": "wear", "args": ["Spear"], "wait_report": false}
+00:01:17 attention 0 [220, 220] [37, 111] {"what": "blows_changed", "detail": "blows per round 4 -> 3", "crop": ["                ......         ", "                .....          ", "               ......          ", "##     ########......    #1####", "##    
+00:01:22 nav_cmd 0 [220, 220] [37, 111] {"cmd": "order", "args": ["max_depth=550"], "wait_report": false}
+00:01:22 nav_cmd 0 [220, 220] [37, 111] {"cmd": "goal", "args": ["recall"], "wait_report": false}
+00:01:22 goal 0 [220, 220] [37, 111] {"goal": "recall"}
+00:01:40 attention 11 [220, 220] [5, 19] {"what": "goal_done", "detail": "recall: arrived at 550 ft", "crop": ["                               ", "                               ", "    .########..##########      ", "    ..s..................      ", "    #...
+00:01:46 nav_cmd 11 [220, 220] [5, 19] {"cmd": "order", "args": ["max_depth=600"], "wait_report": false}
+00:01:46 nav_cmd 11 [220, 220] [5, 19] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+00:01:46 goal 11 [220, 220] [5, 19] {"goal": "explore"}
+00:03:12 attention 11 [220, 220] [54, 71] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", "crop": ["     #..#     %..#             ", "     #..#     %..#             ", "     #...#    %..#             ",
+00:03:30 attention 11 [220, 220] [44, 49] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", "crop": ["         ....................##", "         .....................#", "         #.........#########..#",
+00:03:34 attention 11 [220, 220] [41, 44] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", "crop": ["              #.........#      ", "              #.........#      ", "              #.........#######",
+00:04:14 attention 11 [220, 220] [56, 27] {"what": "interesting_item", "detail": "Quartz Ring seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it", "c
+00:04:36 attention 11 [220, 220] [59, 44] {"what": "interesting_item", "detail": "Wand of Stinking Cloud seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s 
+00:04:44 nav_cmd 11 [220, 220] [46, 50] {"cmd": "goal", "args": ["goto", "62,43"], "wait_report": false}
+00:04:44 goal 11 [220, 220] [46, 50] {"goal": "goto 62,43"}
+00:04:52 attention 11 [220, 220] [62, 43] {"what": "goal_done", "detail": "goto 62,43", "crop": [".###  #..#   #..............#  ", ".#    #..#####..............#  ", ".#    #......+..............#  ", ".#    ##.....'..............#  ", "##     #######........
+00:04:56 nav_cmd 11 [220, 220] [62, 43] {"cmd": "goal", "args": ["goto", "61,51"], "wait_report": false}
+00:04:56 goal 11 [220, 220] [62, 43] {"goal": "goto 61,51"}
+00:04:59 attention 11 [220, 220] [61, 51] {"what": "lost", "detail": "You have no room for a Clotted Red Potion.", "crop": [".#   ########..######        #.", ".#   #..............#        %.", ".#####..............#        #.", ".....+..............#        #
+00:04:59 attention 11 [220, 220] [61, 51] {"what": "pack_full", "detail": "You have no room for a Clotted Red Potion.", "crop": [".#   ########..######        #.", ".#   #..............#        %.", ".#####..............#        #.", ".....+..............#    
+00:04:59 nav_cmd 11 [220, 220] [61, 51] {"cmd": "goal", "args": ["goto", "55,72"], "wait_report": false}
+00:04:59 goal 11 [220, 220] [61, 51] {"goal": "goto 55,72"}
+00:05:01 attention 11 [220, 220] [57, 50] {"what": "tactic", "detail": "no effect seen: pick up: a Clotted Red Potion.", "crop": ["..#     ######..############...", "..#          #..#          ##..", "..#          #..#           #%.", "..#          #..#       
+00:05:20 attention 11 [220, 220] [55, 72] {"what": "goal_done", "detail": "goto 55,72", "crop": ["....#..##    %..#              ", ".!..#...##   %..#              ", "######...#%  %..#              ", "     ##...%# %..#              ", "      #%...% %..#     
+00:05:27 nav_cmd 11 [220, 220] [55, 72] {"cmd": "destroy", "args": ["Cutlass"], "wait_report": false}
+00:05:28 nav_cmd 11 [220, 220] [55, 72] {"cmd": "destroy", "args": ["Black_Mushroom"], "wait_report": false}
+00:05:28 nav_cmd 11 [220, 220] [55, 72] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+00:05:28 goal 11 [220, 220] [55, 72] {"goal": "explore"}
+00:05:40 attention 11 [220, 220] [51, 81] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", "crop": ["                               ", "                               ", "    %##%                       ",
+00:07:30 attention 11 [204, 220] [5, 49] {"what": "interesting_item", "detail": "Staff of Object Location seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s
+00:07:41 nav_cmd 11 [218, 220] [3, 65] {"cmd": "destroy", "args": ["Wrinkled_Mushroom"], "wait_report": false}
+00:07:42 nav_cmd 11 [220, 220] [8, 65] {"cmd": "goal", "args": ["goto", "5,48"], "wait_report": false}
+00:07:42 goal 11 [220, 220] [8, 65] {"goal": "goto 5,48"}
+00:07:53 attention 11 [220, 220] [5, 48] {"what": "goal_done", "detail": "goto 5,48", "crop": ["                            ###", "                           #...", "                           #..#", "          ##################..#", "          #.............
+00:07:57 nav_cmd 11 [220, 220] [5, 48] {"cmd": "goal", "args": ["goto", "6,47"], "wait_report": false}
+00:07:57 goal 11 [220, 220] [5, 48] {"goal": "goto 6,47"}
+00:08:00 attention 11 [220, 220] [6, 47] {"what": "goal_done", "detail": "goto 6,47", "crop": ["                            #..", "                            #..", "           ##################..", "           #...................", "####..######............
+00:08:00 nav_cmd 11 [220, 220] [6, 47] {"cmd": "goal", "args": ["goto", "6,45"], "wait_report": false}
+00:08:00 goal 11 [220, 220] [6, 47] {"goal": "goto 6,45"}
+00:08:00 attention 11 [220, 220] [6, 45] {"what": "goal_done", "detail": "goto 6,45", "crop": ["                              #", "                              #", "#            ##################", "#            #.................", "######..######..........
+00:08:07 nav_cmd 11 [220, 220] [6, 45] {"cmd": "goal", "args": ["goto", "51,58"], "wait_report": false}
+00:08:07 goal 11 [220, 220] [6, 45] {"goal": "goto 51,58"}
+00:08:46 attention 11 [220, 220] [51, 58] {"what": "goal_done", "detail": "goto 51,58", "crop": ["#.................#..#         ", "#.................#..#         ", "#.................#..#     %##%", "#.................#..#     %..#", "#.................#..#
+00:08:57 nav_cmd 11 [220, 220] [51, 58] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+00:08:57 goal 11 [220, 220] [51, 58] {"goal": "explore"}
+00:09:27 attention 11 [220, 220] [23, 82] {"what": "drainer", "detail": "Giant red frog (lvl 7) drains STR with its blows: weak and no faster than you: kill it fast, don't walk away from it", "crop": ["                ..             ", "                       
+00:09:31 nav_cmd 11 [220, 220] [18, 83] {"cmd": "goal", "args": ["hunt", "Giant_red_frog"], "wait_report": false}
+00:09:31 goal 11 [220, 220] [18, 83] {"goal": "hunt Giant red frog"}
+00:09:31 attention 11 [220, 220] [18, 83] {"what": "goal_done", "detail": "hunt Giant red frog: slain", "crop": ["            #.....$.....#      ", "            #...........#      ", "            #...........#      ", "             .........         ", "      
+00:09:41 nav_cmd 11 [220, 220] [16, 83] {"cmd": "goal", "args": ["hunt", "Giant_red_frog"], "wait_report": false}
+00:09:41 goal 11 [220, 220] [16, 83] {"goal": "hunt Giant red frog"}
+00:09:41 attention 11 [220, 220] [16, 83] {"what": "goal_done", "detail": "hunt Giant red frog: slain", "crop": ["            #############      ", "            #...........#      ", "            #.....$.....#      ", "            #...........#      ", "      
+00:09:47 nav_cmd 11 [220, 220] [16, 83] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+00:09:47 goal 11 [220, 220] [16, 83] {"goal": "explore"}
+00:10:58 attention 11 [220, 220] [24, 117] {"what": "tactic", "detail": "Blue jelly (lvl 4, never moves) blocks the way: killing it", "crop": ["                               ", "                               ", "                               ", "           
+00:12:00 attention 11 [213, 220] [49, 155] {"what": "lost", "detail": "You have no room for a Set of Leather Gloves [1].", "crop": ["           #..#                ", "           #..#                ", "   ..#######''##+              ", "###..#..........+     
+00:12:01 attention 11 [213, 220] [49, 155] {"what": "pack_full", "detail": "You have no room for a Set of Leather Gloves [1].", "crop": ["           #..#                ", "           #..#                ", "   ..#######''##+              ", "###..#..........+
+00:12:03 attention 11 [217, 220] [51, 155] {"what": "tactic", "detail": "no effect seen: pick up: a Set of Leather Gloves [1].", "crop": ["   ..#######''##+              ", "###..#..........+              ", "..?.............#.            .", "...............]
+00:12:11 nav_cmd 11 [220, 220] [49, 174] {"cmd": "destroy", "args": ["Clotted_Red"], "wait_report": false}
+00:12:12 nav_cmd 11 [220, 220] [49, 175] {"cmd": "pickup", "args": [], "wait_report": false}
+00:12:12 nav_cmd 11 [220, 220] [49, 175] {"cmd": "destroy", "args": ["Leather_Gloves"], "wait_report": false}
+00:12:16 nav_cmd 11 [220, 220] [44, 178] {"cmd": "destroy", "args": ["Clotted_Red_Potion"], "wait_report": false}
+00:13:02 attention 11 [220, 220] [12, 182] {"what": "interesting_item", "detail": "Hickory Staff seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it",
+00:13:14 nav_cmd 11 [212, 220] [8, 173] {"cmd": "goal", "args": ["goto", "16,174"], "wait_report": false}
+00:13:14 goal 11 [212, 220] [8, 173] {"goal": "goto 16,174"}
+00:13:18 attention 11 [218, 220] [8, 181] {"what": "tactic", "detail": "hungry: ate a Ration of Food", "crop": ["   #...........                ", "   #............               ", "   #.............              ", "   +..............             ", "   +...
+00:13:28 attention 11 [220, 220] [16, 174] {"what": "goal_done", "detail": "goto 16,174", "crop": ["                     #..#      ", "                     #..#      ", "            ##########..#      ", "      #######............      ", "      #.....'.......
+00:13:32 nav_cmd 11 [220, 220] [16, 174] {"cmd": "read", "args": ["Blessing"], "wait_report": false}
+00:13:39 nav_cmd 11 [220, 220] [16, 174] {"cmd": "read", "args": ["Blessing"], "wait_report": false}
+00:13:40 nav_cmd 11 [220, 220] [16, 174] {"cmd": "goal", "args": ["goto", "47,176"], "wait_report": false}
+00:13:40 goal 11 [220, 220] [16, 174] {"goal": "goto 47,176"}
+00:14:02 attention 11 [220, 220] [47, 176] {"what": "goal_done", "detail": "goto 47,176", "crop": ["                ####..#        ", "                #.....#        ", "                #.....#        ", "                #..####        ", "         ########..#
+00:14:07 nav_cmd 11 [220, 220] [47, 176] {"cmd": "goal", "args": ["goto", "48,142"], "wait_report": false}
+00:14:07 goal 11 [220, 220] [47, 176] {"goal": "goto 48,142"}
+00:14:18 attention 11 [220, 220] [49, 154] {"what": "lost", "detail": "You have no room for a Set of Leather Gloves [1].", "crop": ["            #..# #..#          ", "            #..# #..#          ", "    ..#######''##+..#          ", "####..#..........+..##
+00:14:18 attention 11 [220, 220] [49, 154] {"what": "pack_full", "detail": "You have no room for a Set of Leather Gloves [1].", "crop": ["            #..# #..#          ", "            #..# #..#          ", "    ..#######''##+..#          ", "####..#..........
+00:14:19 attention 11 [220, 220] [49, 152] {"what": "tactic", "detail": "no effect seen: pick up: a Set of Leather Gloves [1].", "crop": ["              #..# #..#        ", "              #..# #..#        ", "      ..#######''##+..#        ", "######..#.......
+00:14:24 nav_cmd 11 [220, 220] [49, 145] {"cmd": "destroy", "args": ["Water"], "wait_report": false}
+00:14:25 nav_cmd 11 [220, 220] [49, 144] {"cmd": "goal", "args": ["goto", "48,142"], "wait_report": false}
+00:14:25 goal 11 [220, 220] [49, 144] {"goal": "goto 48,142"}
+00:14:30 attention 11 [220, 220] [48, 142] {"what": "goal_done", "detail": "goto 48,142", "crop": ["                        #..# #.", "                        #..# #.", "                        #..# #.", "                ..#######''##+.", "################..#.
+00:14:35 nav_cmd 11 [220, 220] [48, 142] {"cmd": "goal", "args": ["goto", "51,155"], "wait_report": false}
+00:14:35 goal 11 [220, 220] [48, 142] {"goal": "goto 51,155"}
+00:14:41 attention 11 [220, 220] [51, 155] {"what": "goal_done", "detail": "goto 51,155", "crop": ["  ...#######''##+..#          #", "###..#..........+..############", "................#..............", "...............]'..............", "######..........'...
+00:14:52 nav_cmd 11 [220, 220] [51, 155] {"cmd": "goal", "args": ["goto", "29,116"], "wait_report": false}
+00:14:52 goal 11 [220, 220] [51, 155] {"goal": "goto 29,116"}
+00:15:23 attention 11 [220, 220] [29, 116] {"what": "goal_done", "detail": "goto 29,116", "crop": ["###  #..............           ", "..####...............          ", "......................         ", "#......................        ", "#..###..............
+00:15:28 nav_cmd 11 [220, 220] [29, 116] {"cmd": "goal", "args": ["recall"], "wait_report": false}
+00:15:28 goal 11 [220, 220] [29, 116] {"goal": "recall"}
+00:15:39 attention 0 [220, 220] [16, 45] {"what": "goal_done", "detail": "recall: arrived at 0 ft", "crop": ["                               ", "                               ", "##                             ", " #            ...              ", " #        
+00:15:42 perception_gap 0 [220, 220] [16, 45] {"name": "Aimless-looking merchant", "count": 1, "our_char": "t", "map_age": 0.21, "crop": [["                         ", "1111111111111111111111111"], ["                         ", "1111111111111111111111111"], ["
+00:15:46 nav_cmd 0 [220, 220] [16, 45] {"cmd": "goal", "args": ["shop", "6", "sell", "Stinking_Cloud:1", "sell", "Object_Location:1"], "wait_report": false}
+00:15:46 goal 0 [220, 220] [16, 45] {"goal": "shop 6 sell Stinking Cloud:1 sell Object Location:1"}
+00:16:25 attention 0 [220, 220] [24, 119] {"what": "goal_done", "detail": "shop 6 sell Stinking Cloud:1 sell Object Location:1: You sold a Wand of Stinking Cloud (9 charges) for 100 gold.; You sold a Staff of Object Location (17 charges) for 50 gold.", "crop":
+00:16:31 nav_cmd 0 [220, 220] [24, 119] {"cmd": "fuel", "args": ["Brass_Lantern"], "wait_report": false}
+00:16:31 nav_cmd 0 [220, 220] [24, 119] {"cmd": "use", "args": ["Hickory_Staff"], "wait_report": false}
+00:16:39 nav_cmd 0 [220, 220] [24, 119] {"cmd": "goal", "args": ["shop", "5", "buy", "Identify:2@81", "buy", "Word_of_Recall:1@242"], "wait_report": false}
+00:16:39 goal 0 [220, 220] [24, 119] {"goal": "shop 5 buy Identify:2@81 buy Word of Recall:1@242"}
+00:16:46 attention 0 [220, 220] [37, 111] {"what": "goal_done", "detail": "shop 5 buy Identify:2@81 buy Word of Recall:1@242: You bought a Scroll of Identify {75% off} for 21 gold.; You bought a Scroll of Word of Recall {25% off} for 182 gold.", "crop": ["    
+00:16:51 nav_cmd 0 [220, 220] [37, 111] {"cmd": "read", "args": ["Identify", "Quartz_Ring"], "wait_report": false}
+00:16:52 attention 0 [220, 220] [37, 111] {"what": "tactic", "detail": "learned: Quartz Ring = Ring of Acid", "crop": ["                ......         ", "                .....          ", "               ......          ", "##     ########......    #1####", "
+00:16:58 nav_cmd 0 [220, 220] [37, 111] {"cmd": "goal", "args": ["shop", "6", "quote", "Ring_of_Acid", "quote", "Hickory_Staff"], "wait_report": false}
+00:16:58 goal 0 [220, 220] [37, 111] {"goal": "shop 6 quote Ring of Acid:1 quote Hickory Staff:1"}
+00:17:03 attention 0 [220, 220] [26, 119] {"what": "goal_done", "detail": "shop 6 quote Ring of Acid:1 quote Hickory Staff:1: quote: a Ring of Acid [+6]: 900 gold (not sold); quote: a Hickory Staff {tried}: 18 gold (not sold)", "crop": ["................      
+00:17:12 nav_cmd 0 [220, 220] [26, 119] {"cmd": "goal", "args": ["shop", "6", "sell", "Ring_of_Acid:1"], "wait_report": false}
+00:17:12 goal 0 [220, 220] [26, 119] {"goal": "shop 6 sell Ring of Acid:1"}
+00:17:12 attention 0 [220, 220] [26, 119] {"what": "goal_done", "detail": "shop 6 sell Ring of Acid:1: You sold a Ring of Acid [+6] for 900 gold.", "crop": ["................               ", ".................              ", ".................              "
+00:17:17 nav_cmd 0 [220, 220] [26, 119] {"cmd": "goal", "args": ["shop", "5", "list"], "wait_report": false}
+00:17:17 goal 0 [220, 220] [26, 119] {"goal": "shop 5"}
+00:17:21 attention 0 [220, 220] [37, 111] {"what": "goal_done", "detail": "shop 5: stock: 99 Potions of Resist Heat 48; 13 Potions of Resist Heat {25% off} 37; a Potion of Resist Heat {50% off} 24; 99 Potions of Resist Cold 48; 41 Potions of Restore Strength 4
+00:17:30 nav_cmd 0 [220, 220] [37, 111] {"cmd": "goal", "args": ["shop", "5", "buy", "Word_of_Recall:2@121", "buy", "Identify:1@81", "buy", "Phase_Door:2@19", "buy", "Satisfy_Hunger:2@13"], "wait_report": false}
+00:17:30 goal 0 [220, 220] [37, 111] {"goal": "shop 5 buy Word of Recall:2@121 buy Identify:1@81 buy Phase Door:2@19 buy Satisfy Hunger:2@13"}
+00:17:31 attention 0 [220, 220] [37, 111] {"what": "goal_done", "detail": "shop 5 buy Word of Recall:2@121 buy Identify:1@81 buy Phase Door:2@19 buy Satisfy Hunger:2@13: You bought 2 Scrolls of Word of Recall {50% off} for 242 gold.; You bought a Scroll of Ide
+00:17:36 nav_cmd 0 [220, 220] [37, 111] {"cmd": "read", "args": ["Identify", "Hickory_Staff"], "wait_report": false}
+00:17:37 attention 0 [220, 220] [37, 111] {"what": "tactic", "detail": "learned: Hickory Staff = Staff of Treasure Location", "crop": ["              ..........       ", "              .........        ", "              ........         ", "##     ########....
+00:17:44 nav_cmd 0 [220, 220] [37, 111] {"cmd": "gate", "args": ["600", "recall"], "wait_report": false}
+00:17:44 nav_cmd 0 [220, 220] [37, 111] {"cmd": "gate", "args": ["750", "recall"], "wait_report": false}
+00:17:52 nav_cmd 0 [220, 220] [37, 111] {"cmd": "stop", "args": [], "wait_report": false}
+00:17:52 goal 0 [220, 220] [37, 111] {"goal": null}

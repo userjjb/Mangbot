@@ -1,0 +1,189 @@
+00:47:39 nav_cmd 0 [220, 220] [37, 111] {"cmd": "goal", "args": ["goto", "37,112"], "wait_report": false}
+00:47:39 goal 0 [220, 220] [37, 111] {"goal": "goto 37,112"}
+00:47:46 nav_cmd 0 [220, 220] [37, 112] {"cmd": "goal", "args": ["goto", "36,111"], "wait_report": false}
+00:47:46 goal 0 [220, 220] [37, 112] {"goal": "goto 36,111"}
+00:47:50 nav_cmd 0 [220, 220] [36, 111] {"cmd": "goal", "args": ["goto", "24,118"], "wait_report": false}
+00:47:50 goal 0 [220, 220] [36, 111] {"goal": "goto 24,118"}
+00:48:00 nav_cmd 0 [220, 220] [24, 118] {"cmd": "goal", "args": ["shop", "2", "list"], "wait_report": false}
+00:48:00 goal 0 [220, 220] [24, 118] {"goal": "shop 2"}
+00:48:25 nav_cmd 0 [220, 220] [35, 81] {"cmd": "goal", "args": ["shop", "2", "buy", "Iron_Helm:1@125", "buy", "Large_Leather_Shield:1@195", "buy", "Gauntlets:1@60"], "wait_report": false}
+00:48:25 goal 0 [220, 220] [35, 81] {"goal": "shop 2 buy Iron Helm:1@125 buy Large Leather Shield:1@195 buy Gauntlets:1@60"}
+00:48:31 nav_cmd 0 [220, 220] [35, 81] {"cmd": "wear", "args": ["Iron_Helm"], "wait_report": false}
+00:48:38 nav_cmd 0 [220, 220] [35, 81] {"cmd": "goal", "args": ["shop", "2", "sell", "Hard_Leather_Cap:1", "buy", "Large_Leather_Shield:1@195"], "wait_report": false}
+00:48:38 goal 0 [220, 220] [35, 81] {"goal": "shop 2 buy Large Leather Shield:1@195 sell Hard Leather Cap:1"}
+00:48:42 nav_cmd 0 [220, 220] [35, 81] {"cmd": "wear", "args": ["Large_Leather_Shield"], "wait_report": false}
+00:48:47 nav_cmd 0 [220, 220] [35, 81] {"cmd": "goal", "args": ["shop", "2", "sell", "Small_Metal_Shield:1", "buy", "Gauntlets:1@60"], "wait_report": false}
+00:48:47 goal 0 [220, 220] [35, 81] {"goal": "shop 2 buy Gauntlets:1@60 sell Small Metal Shield:1"}
+00:58:18 attention None [0, 1] None {"what": "started", "detail": "in the game at None (depth)", "crop": null}
+00:58:47 nav_cmd 0 [220, 220] [37, 111] {"cmd": "goal", "args": ["goto", "37,112"], "wait_report": false}
+00:58:47 goal 0 [220, 220] [37, 111] {"goal": "goto 37,112"}
+00:58:51 nav_cmd 0 [220, 220] [37, 112] {"cmd": "goal", "args": ["goto", "36,111"], "wait_report": false}
+00:58:51 goal 0 [220, 220] [37, 112] {"goal": "goto 36,111"}
+00:59:04 nav_cmd 0 [220, 220] [36, 111] {"cmd": "goal", "args": ["shop", "2", "list", "buy", "Iron_Helm:1@125"], "wait_report": false}
+00:59:04 goal 0 [220, 220] [36, 111] {"goal": "shop 2 buy Iron Helm:1@125"}
+00:59:28 nav_cmd 0 [220, 220] [35, 81] {"cmd": "wear", "args": ["Iron_Helm"], "wait_report": false}
+00:59:29 nav_cmd 0 [220, 220] [35, 81] {"cmd": "goal", "args": ["shop", "2", "sell", "Hard_Leather_Cap:1", "buy", "Large_Leather_Shield:1@195"], "wait_report": false}
+00:59:29 goal 0 [220, 220] [35, 81] {"goal": "shop 2 buy Large Leather Shield:1@195 sell Hard Leather Cap:1"}
+00:59:35 nav_cmd 0 [220, 220] [35, 81] {"cmd": "wear", "args": ["Large_Leather_Shield"], "wait_report": false}
+00:59:36 nav_cmd 0 [220, 220] [35, 81] {"cmd": "goal", "args": ["shop", "2", "sell", "Small_Metal_Shield:1"], "wait_report": false}
+00:59:36 goal 0 [220, 220] [35, 81] {"goal": "shop 2 sell Small Metal Shield:1"}
+00:59:42 nav_cmd 0 [220, 220] [35, 81] {"cmd": "destroy", "args": ["Small_Metal_Shield"], "wait_report": false}
+00:59:43 nav_cmd 0 [220, 220] [35, 81] {"cmd": "goal", "args": ["shop", "4", "list", "buy", "Cure_Serious:4@70"], "wait_report": false}
+00:59:43 goal 0 [220, 220] [35, 81] {"goal": "shop 4 buy Cure Serious:4@70"}
+01:00:00 nav_cmd 0 [220, 220] [25, 114] {"cmd": "drainers", "args": ["15"], "wait_report": false}
+01:00:09 nav_cmd 0 [220, 220] [25, 114] {"cmd": "gate", "args": ["700", "recall"], "wait_report": false}
+01:00:09 nav_cmd 0 [220, 220] [25, 114] {"cmd": "avoid", "args": ["Moaning_spirit"], "wait_report": false}
+01:00:14 nav_cmd 0 [220, 220] [25, 114] {"cmd": "order", "args": ["max_depth=700"], "wait_report": false}
+01:00:14 nav_cmd 0 [220, 220] [25, 114] {"cmd": "goal", "args": ["recall"], "wait_report": false}
+01:00:14 goal 0 [220, 220] [25, 114] {"goal": "recall"}
+01:00:35 nav_cmd 13 [220, 220] [36, 163] {"cmd": "use", "args": ["Treasure_Location"], "wait_report": false}
+01:00:46 nav_cmd 13 [220, 220] [36, 163] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+01:00:46 goal 13 [220, 220] [36, 163] {"goal": "explore"}
+01:04:25 nav_cmd 13 [233, 233] [28, 26] {"cmd": "read", "args": ["Object_Detection"], "wait_report": false}
+01:04:31 nav_cmd 13 [233, 233] [33, 18] {"cmd": "destroy", "args": ["Human_Skeleton"], "wait_report": false}
+01:04:38 nav_cmd 13 [225, 233] [44, 17] {"cmd": "goal", "args": ["dive", "700"], "wait_report": false}
+01:04:38 goal 13 [225, 233] [44, 17] {"goal": "dive 700ft"}
+01:04:57 nav_cmd 14 [233, 233] [39, 122] {"cmd": "park", "args": [], "wait_report": false}
+01:04:57 goal 14 [233, 233] [39, 122] {"goal": null}
+01:04:57 attention 14 [233, 233] [39, 122] {"what": "parked", "detail": "logging out for a Pilot update; back in a minute -- re-issue your goal when you see 'started'", "crop": ["                               ", "                          
+01:05:01 attention None [0, 1] None {"what": "started", "detail": "in the game at None (depth)", "crop": null}
+01:05:20 nav_cmd 14 [233, 233] [39, 122] {"cmd": "raw", "args": ["custom", "p", "store", "item=0", "value=1", "entry=1"], "wait_report": false}
+01:05:33 nav_cmd 14 [233, 233] [39, 122] {"cmd": "use", "args": ["Treasure_Location"], "wait_report": false}
+01:05:39 nav_cmd 14 [233, 233] [39, 122] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+01:05:39 goal 14 [233, 233] [39, 122] {"goal": "explore"}
+01:06:57 attention 14 [231, 233] [25, 30] {"what": "breeders", "detail": "4 breeding monsters in view (Green worm mass): leave this level (stairs, or recall) if they get in the way", "crop": ["      #............#    #######", "      ##....
+01:07:15 perception_gap 14 [233, 233] [24, 14] {"name": "Novice rogue", "count": 1, "our_char": "p", "map_age": 0.15, "crop": [["           #.............", "1111111111111112222222222"], ["           #..######..###", "1111111111121122222222
+01:09:51 attention 14 [160, 233] [60, 66] {"what": "lost", "detail": "You have no room for a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman}.", "crop": ["      #......##                ", "      ##......#                ", "       #####
+01:09:51 attention 14 [161, 233] [60, 66] {"what": "pack_full", "detail": "You have no room for a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman}.", "crop": ["      #......##                ", "      ##......#                ", "       
+01:09:53 note 14 [163, 233] [56, 62] {"text": "effect_failed (pack unchanged after 3 s): pick up: a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman}."}
+01:09:53 attention 14 [163, 233] [56, 62] {"what": "tactic", "detail": "no effect seen: pick up: a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman}.", "crop": ["####    ###..#                 ", "          #..#                 ", "      
+01:09:56 nav_cmd 14 [170, 233] [56, 61] {"cmd": "destroy", "args": ["Potion_of_Water"], "wait_report": false}
+01:09:58 nav_cmd 14 [172, 233] [54, 59] {"cmd": "pickup", "args": [], "wait_report": false}
+01:10:07 nav_cmd 14 [187, 233] [44, 49] {"cmd": "goal", "args": ["goto", "60,66"], "wait_report": false}
+01:10:07 goal 14 [187, 233] [44, 49] {"goal": "goto 60,66"}
+01:10:21 attention 14 [207, 233] [60, 66] {"what": "found", "detail": "picked up a Lucerne Hammer (2d5) {Wormtongue, Agent of Saruman}: identify it before selling (`sell !NAME`)", "crop": ["      #......##                ", "      ##......#
+01:10:31 nav_cmd 14 [218, 233] [60, 66] {"cmd": "read", "args": ["Scroll_of_Light"], "wait_report": false}
+01:10:33 nav_cmd 14 [220, 233] [60, 66] {"cmd": "read", "args": ["Scroll_of_Light"], "wait_report": false}
+01:10:34 nav_cmd 14 [221, 233] [60, 66] {"cmd": "inspect", "args": ["Lucerne_Hammer"], "wait_report": false}
+01:10:41 nav_cmd 14 [229, 233] [60, 66] {"cmd": "goal", "args": ["goto", "14,54"], "wait_report": false}
+01:10:41 goal 14 [229, 233] [60, 66] {"goal": "goto 14,54"}
+01:11:52 nav_cmd 14 [233, 233] [14, 54] {"cmd": "destroy", "args": ["Heal_Monster"], "wait_report": false}
+01:11:53 nav_cmd 14 [233, 233] [14, 54] {"cmd": "goal", "args": ["goto", "16,21"], "wait_report": false}
+01:11:53 goal 14 [233, 233] [14, 54] {"goal": "goto 16,21"}
+01:12:07 nav_cmd 14 [233, 233] [16, 21] {"cmd": "goal", "args": ["goto", "40,17"], "wait_report": false}
+01:12:07 goal 14 [233, 233] [16, 21] {"goal": "goto 40,17"}
+01:12:21 attention 14 [233, 233] [40, 17] {"what": "lost", "detail": "You have no room for a Scroll of Holy Chant.", "crop": ["  #..............#       #..#  ", "  ##.............#     ###..#  ", "   #.............#     #....#  ", "   #....
+01:12:21 attention 14 [233, 233] [40, 17] {"what": "pack_full", "detail": "You have no room for a Scroll of Holy Chant.", "crop": ["  #..............#       #..#  ", "  ##.............#     ###..#  ", "   #.............#     #....#  ", "   
+01:12:23 note 14 [233, 233] [40, 17] {"text": "effect_failed (pack unchanged after 3 s): pick up: a Scroll of Holy Chant."}
+01:12:23 attention 14 [233, 233] [40, 17] {"what": "tactic", "detail": "no effect seen: pick up: a Scroll of Holy Chant.", "crop": ["  #..............#       #..#  ", "  ##.............#     ###..#  ", "   #.............#     #....#  ", "  
+01:12:26 nav_cmd 14 [233, 233] [40, 17] {"cmd": "goal", "args": ["goto", "55,16"], "wait_report": false}
+01:12:26 goal 14 [233, 233] [40, 17] {"goal": "goto 55,16"}
+01:12:54 nav_cmd 14 [233, 233] [55, 16] {"cmd": "read", "args": ["Identify", "Lucerne_Hammer"], "wait_report": false}
+01:12:55 nav_cmd 14 [233, 233] [55, 16] {"cmd": "inspect", "args": ["Lucerne_Hammer"], "wait_report": false}
+01:13:12 nav_cmd 14 [233, 233] [55, 16] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+01:13:12 goal 14 [233, 233] [55, 16] {"goal": "explore"}
+01:13:27 user_note 14 [233, 233] [44, 25] {"note": "! If you aren't Full, you could eat the food in your pack for space", "question": false, "depth_ft": 700, "clvl": 19, "goal": "explore", "last_action": [1792213975.045972, "custom I item=2
+01:13:27 attention 14 [233, 233] [44, 25] {"what": "user_message", "detail": "If you aren't Full, you could eat the food in your pack for space", "crop": [".........#    ##..###          ", ".......?.#    #...#            ", ".........#    
+01:13:32 nav_cmd 14 [233, 233] [53, 16] {"cmd": "say", "args": ["Good idea: I'm only Fed, so I'll eat the Ration now (frees a slot; 2 Satisfy Hunger scrolls stay as food)."], "wait_report": false}
+01:13:32 nav_say 14 [233, 233] [53, 16] {"text": "Good idea: I'm only Fed, so I'll eat the Ration now (frees a slot; 2 Satisfy Hunger scrolls stay as food)."}
+01:13:33 nav_cmd 14 [233, 233] [53, 16] {"cmd": "eat", "args": ["Ration"], "wait_report": false}
+01:18:23 attention 14 [233, 233] [21, 169] {"what": "tactic", "detail": "Hairy mold (lvl 10, never moves) blocks the way: killing it", "crop": ["...............................", "..................###....?.....", "################..# #....
+01:18:31 attention 14 [233, 233] [17, 179] {"what": "lost", "detail": "You have no room for a Scroll of Light.", "crop": ["  #..........#                 ", "  #..#######################   ", "  #..######................#   ", "###..#......
+01:18:32 attention 14 [233, 233] [17, 179] {"what": "pack_full", "detail": "You have no room for a Scroll of Light.", "crop": ["  #..........#                 ", "  #..#######################   ", "  #..######................#   ", "###..#.
+01:18:34 note 14 [233, 233] [16, 174] {"text": "effect_failed (pack unchanged after 3 s): pick up: a Scroll of Light."}
+01:18:34 attention 14 [233, 233] [16, 174] {"what": "tactic", "detail": "no effect seen: pick up: a Scroll of Light.", "crop": ["       #..........#            ", "       #..........#            ", "       #..#####################", "      
+01:18:42 attention 14 [230, 233] [30, 168] {"what": "lost", "detail": "Your Hard Studded Leather [7] {excellent} (u) was stolen!", "crop": ["             #..#              ", "             #..#              ", "             #..#            
+01:19:36 attention 14 [233, 233] [23, 183] {"what": "structure", "detail": "inner room centred 27,181 (22-32, 169-193), likely: a dark inner room: most likely a large room (dark ones are common), but pits and nests (95 awake monsters) look 
+01:19:45 attention 14 [233, 233] [27, 192] {"what": "lost", "detail": "You have no room for a Scroll titled \"munger toxmung\".", "crop": ["#################    ", "................#    ", "###############.#    ", "              #p#    ", "
+01:19:45 attention 14 [233, 233] [27, 192] {"what": "pack_full", "detail": "You have no room for a Scroll titled \"munger toxmung\".", "crop": ["#################    ", "................#    ", "###############.#    ", "              #p#   
+01:19:47 note 14 [233, 233] [31, 191] {"text": "effect_failed (pack unchanged after 3 s): pick up: a Scroll titled \"munger toxmung\"."}
+01:19:47 attention 14 [233, 233] [31, 191] {"what": "tactic", "detail": "no effect seen: pick up: a Scroll titled \"munger toxmung\".", "crop": ["               #_#    ", "               #?#    ", "               #.#    ", "               #
+01:19:49 attention 14 [233, 233] [31, 179] {"what": "interesting_item", "detail": "Dogwood Staff seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive 
+01:19:52 nav_cmd 14 [233, 233] [41, 178] {"cmd": "goal", "args": ["hunt", "Brigand"], "wait_report": false}
+01:19:52 goal 14 [233, 233] [41, 178] {"goal": "hunt Brigand"}
+01:20:07 attention 14 [233, 233] [41, 178] {"what": "goal_failed", "detail": "hunt Brigand: lost sight of it", "crop": ["#.....#      #..............#  ", "#..####    ###..............#  ", "...#########.'..............#  ", ".............'
+01:20:28 nav_cmd 14 [233, 233] [41, 178] {"cmd": "read", "args": ["Magic_Mapping"], "wait_report": false}
+01:20:29 nav_cmd 14 [233, 233] [41, 178] {"cmd": "goal", "args": ["goto", "25,192"], "wait_report": false}
+01:20:29 goal 14 [233, 233] [41, 178] {"goal": "goto 25,192"}
+01:20:37 attention 14 [233, 233] [26, 192] {"what": "lost", "detail": "You have no room for a Dogwood Staff.", "crop": ["                     ", "#################    ", "................#    ", "###############.#    ", "              #(#  
+01:20:37 attention 14 [233, 233] [26, 192] {"what": "pack_full", "detail": "You have no room for a Dogwood Staff.", "crop": ["                     ", "#################    ", "................#    ", "###############.#    ", "              
+01:20:37 attention 14 [233, 233] [25, 192] {"what": "lost", "detail": "You have no room for Hard Studded Leather [7] {excellent}.", "crop": ["                     ", "                     ", "#################    ", "................#    ",
+01:20:39 note 14 [233, 233] [25, 192] {"text": "effect_failed (pack unchanged after 3 s): pick up: a Dogwood Staff."}
+01:20:39 attention 14 [233, 233] [25, 192] {"what": "tactic", "detail": "no effect seen: pick up: a Dogwood Staff.", "crop": ["                     ", "                     ", "#################    ", "................#    ", "#############
+01:20:40 note 14 [233, 233] [25, 192] {"text": "effect_failed (pack unchanged after 3 s): pick up: Hard Studded Leather [7] {excellent}."}
+01:20:40 attention 14 [233, 233] [25, 192] {"what": "tactic", "detail": "no effect seen: pick up: Hard Studded Leather [7] {excellent}.", "crop": ["                     ", "                     ", "#################    ", "................#
+01:20:52 nav_cmd 14 [233, 233] [25, 192] {"cmd": "destroy", "args": ["munger_toxmung"], "wait_report": false}
+01:20:53 nav_cmd 14 [233, 233] [25, 192] {"cmd": "destroy", "args": ["Robe"], "wait_report": false}
+01:20:54 nav_cmd 14 [233, 233] [25, 192] {"cmd": "pickup", "args": [], "wait_report": false}
+01:20:54 attention 14 [233, 233] [25, 192] {"what": "found", "detail": "picked up Hard Studded Leather [7] {excellent}: identify it before selling (`sell !NAME`)", "crop": ["                     ", "                     ", "################
+01:20:56 nav_cmd 14 [233, 233] [25, 192] {"cmd": "inspect", "args": ["Hard_Studded_Leather"], "wait_report": false}
+01:21:01 nav_cmd 14 [233, 233] [25, 192] {"cmd": "inspect", "args": ["t"], "wait_report": false}
+01:21:07 nav_cmd 14 [233, 233] [25, 192] {"cmd": "wear", "args": ["t"], "wait_report": false}
+01:21:15 nav_cmd 14 [233, 233] [25, 192] {"cmd": "destroy", "args": ["t"], "wait_report": false}
+01:21:16 nav_cmd 14 [233, 233] [25, 192] {"cmd": "goal", "args": ["goto", "26,192"], "wait_report": false}
+01:21:16 goal 14 [233, 233] [25, 192] {"goal": "goto 26,192"}
+01:21:32 nav_cmd 14 [233, 233] [26, 192] {"cmd": "goal", "args": ["searchroom", "27,181"], "wait_report": false}
+01:21:32 goal 14 [233, 233] [26, 192] {"goal": "searchroom 27,181"}
+01:23:25 nav_cmd 14 [233, 233] [23, 181] {"cmd": "open", "args": ["2"], "wait_report": false}
+01:23:26 attention 14 [233, 233] [23, 181] {"what": "structure", "detail": "nest centred 27,181 (22-32, 169-193): a NEST (jellies, molds, icky things; some breed; no loot): don't open it. Avoid zone set", "crop": ["####..# #................
+01:23:36 nav_cmd 14 [233, 233] [23, 181] {"cmd": "avoid", "args": ["27,181", "10"], "wait_report": false}
+01:23:36 nav_cmd 14 [233, 233] [23, 181] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+01:23:36 goal 14 [233, 233] [23, 181] {"goal": "explore"}
+01:25:32 user_note 14 [233, 233] [55, 135] {"note": "? The Navigator destroyed a scroll and robe to make room for the hard studded leather. However it also had a flask of oil it could have used to fill it's lantern; a far cheaper item to on
+01:26:31 perception_gap 14 [233, 233] [61, 151] {"name": "Metallic blue centipede", "count": 1, "our_char": "c", "map_age": 0.33, "crop": [[".........##              ", "8888888882211111111111111"], ["#####.....#              ", "2222288888
+01:27:07 user_note 14 [233, 233] [38, 108] {"note": "! What was the item destroyed at 1:21:15", "question": false, "depth_ft": 700, "clvl": 19, "goal": "explore", "last_action": [1792214605.2285745, "custom o dir=2", "agent: open 2"], "mons
+01:27:07 attention 14 [233, 233] [38, 108] {"what": "user_message", "detail": "What was the item destroyed at 1:21:15", "crop": ["............######%#%+'########", ".............#..#.#.%.%.#.#.#.#", "###########..#.................", "#####
+01:27:13 nav_cmd 14 [233, 233] [34, 92] {"cmd": "say", "args": ["At ~01:21 I destroyed my old Hard Studded Leather [7] {average} after putting on the {excellent} one I'd just picked up (same base armour, sells for ~10, pack was full). Just 
+01:27:13 nav_say 14 [233, 233] [34, 92] {"text": "At ~01:21 I destroyed my old Hard Studded Leather [7] {average} after putting on the {excellent} one I'd just picked up (same base armour, sells for ~10, pack was full). Just before that I d
+01:27:30 goal 14 [233, 233] [22, 51] {"goal": "flee (unseen attacker)"}
+01:27:30 attention 14 [233, 233] [22, 51] {"what": "unseen_attacker", "detail": "'It stares deep into your eyes!': something unseen is attacking while explore; heading for the stairs", "crop": ["####..................#########", "   #......
+01:27:38 nav_cmd 14 [233, 233] [27, 73] {"cmd": "goal", "args": ["recall"], "wait_report": false}
+01:27:38 goal 14 [233, 233] [27, 73] {"goal": "recall"}
+01:28:07 nav_cmd 0 [233, 233] [16, 45] {"cmd": "use", "args": ["Dogwood_Staff"], "wait_report": false}
+01:28:08 attention 0 [233, 233] [16, 45] {"what": "tactic", "detail": "learned: Dogwood Staff = Staff of Perception", "crop": ["...............................", "...............................", "##.............................", ".#.....
+01:28:22 nav_cmd 0 [233, 233] [16, 45] {"cmd": "use", "args": ["Perception", "Hard_Studded"], "wait_report": false}
+01:28:31 nav_cmd 0 [233, 233] [16, 45] {"cmd": "complain", "args": ["'use' has no TARGET like 'read' does: a Staff of Perception (identify) used twice in town identified the Flask of oil in slot a both times (use Perception Hard_Studded ign
+01:28:31 nav_complaint 0 [233, 233] [16, 45] {"text": "'use' has no TARGET like 'read' does: a Staff of Perception (identify) used twice in town identified the Flask of oil in slot a both times (use Perception Hard_Studded ignored the targe
+01:28:36 nav_cmd 0 [233, 233] [16, 45] {"cmd": "read", "args": ["ip_anrog_eresh", "force"], "wait_report": false}
+01:28:43 nav_cmd 0 [233, 233] [16, 45] {"cmd": "goal", "args": ["shop", "3", "quote", "Lucerne_Hammer"], "wait_report": false}
+01:28:43 goal 0 [233, 233] [16, 45] {"goal": "shop 3 quote Lucerne Hammer:1"}
+01:29:22 nav_cmd 0 [233, 233] [34, 92] {"cmd": "goal", "args": ["shop", "3", "sell", "!Lucerne_Hammer:1"], "wait_report": false}
+01:29:22 goal 0 [233, 233] [34, 92] {"goal": "shop 3 sell !Lucerne Hammer:1"}
+01:29:28 nav_cmd 0 [233, 233] [34, 92] {"cmd": "goal", "args": ["shop", "6", "list", "sell", "Golden_Staff:1", "quote", "Perception"], "wait_report": false}
+01:29:28 goal 0 [233, 233] [34, 92] {"goal": "shop 6 sell Golden Staff:1 quote Perception:1"}
+01:29:51 nav_cmd 0 [233, 233] [26, 119] {"cmd": "goal", "args": ["shop", "6", "quote", "Golden_Staff", "sell", "!Perception:1"], "wait_report": false}
+01:29:51 goal 0 [233, 233] [26, 119] {"goal": "shop 6 quote Golden Staff:1 sell !Perception:1"}
+01:29:59 nav_cmd 0 [233, 233] [26, 119] {"cmd": "goal", "args": ["shop", "5", "list", "sell", "White_Potion:1"], "wait_report": false}
+01:29:59 goal 0 [233, 233] [26, 119] {"goal": "shop 5 sell White Potion:1"}
+01:30:04 attention 0 [233, 233] [37, 111] {"what": "tactic", "detail": "learned: White Potion = Potion of Sickliness (junk)", "crop": ["...............................", "...............................", "...............................", 
+01:30:15 nav_cmd 0 [233, 233] [37, 111] {"cmd": "goal", "args": ["shop", "5", "buy", "Word_of_Recall:1@121", "buy", "Identify:2@40", "buy", "Magic_Mapping:3@16", "buy", "To-Dam:2@151", "buy", "Satisfy_Hunger:2@8"], "wait_report": false}
+01:30:15 goal 0 [233, 233] [37, 111] {"goal": "shop 5 buy Word of Recall:1@121 buy Identify:2@40 buy Magic Mapping:3@16 buy To-Dam:2@151 buy Satisfy Hunger:2@8"}
+01:30:21 nav_cmd 0 [233, 233] [37, 111] {"cmd": "read", "args": ["Identify", "Hard_Studded_Leather"], "wait_report": false}
+01:30:23 nav_cmd 0 [233, 233] [37, 111] {"cmd": "read", "args": ["Enchant_Weapon_To-Dam", "Spear"], "wait_report": false}
+01:30:25 nav_cmd 0 [233, 233] [37, 111] {"cmd": "read", "args": ["Enchant_Weapon_To-Dam", "Spear"], "wait_report": false}
+01:30:40 nav_cmd 0 [233, 233] [37, 111] {"cmd": "takeoff", "args": ["Ring_of_Resist_Fire"], "wait_report": false}
+01:30:41 nav_cmd 0 [233, 233] [37, 111] {"cmd": "takeoff", "args": ["Ring_of_Resist_Cold"], "wait_report": false}
+01:30:42 nav_cmd 0 [233, 233] [37, 111] {"cmd": "takeoff", "args": ["Amulet_of_Resist_Acid"], "wait_report": false}
+01:30:48 nav_cmd 0 [233, 233] [37, 111] {"cmd": "goal", "args": ["shop", "6", "quote", "Resist_Fire", "quote", "Resist_Cold", "quote", "Resist_Acid"], "wait_report": false}
+01:30:48 goal 0 [233, 233] [37, 111] {"goal": "shop 6 quote Resist Fire:1 quote Resist Cold:1 quote Resist Acid:1"}
+01:31:00 nav_cmd 0 [233, 233] [26, 119] {"cmd": "goal", "args": ["shop", "6", "sell", "Resist_Fire:1", "sell", "Resist_Cold:1", "sell", "Resist_Acid:1"], "wait_report": false}
+01:31:00 goal 0 [233, 233] [26, 119] {"goal": "shop 6 sell Resist Fire:1 sell Resist Cold:1 sell Resist Acid:1"}
+01:31:08 nav_cmd 0 [233, 233] [26, 119] {"cmd": "goal", "args": ["shop", "2", "buy", "Gauntlets:1@60"], "wait_report": false}
+01:31:08 goal 0 [233, 233] [26, 119] {"goal": "shop 2 buy Gauntlets:1@60"}
+01:31:26 nav_cmd 0 [233, 233] [35, 81] {"cmd": "wear", "args": ["Gauntlets"], "wait_report": false}
+01:31:27 nav_cmd 0 [233, 233] [35, 81] {"cmd": "destroy", "args": ["Leather_Gloves"], "wait_report": false}
+01:31:37 nav_cmd 0 [233, 233] [35, 81] {"cmd": "goal", "args": ["townfarm", "3000", "10"], "wait_report": false}
+01:31:37 goal 0 [233, 233] [35, 81] {"goal": "townfarm to 3000 gold"}
+01:33:10 user_note 0 [233, 233] [21, 54] {"note": "! Still minimal running during townfarm, much less time efficient", "question": false, "depth_ft": 0, "clvl": 19, "goal": "townfarm to 3000 gold", "last_action": [1792215129.811091, "walk 7
+01:33:10 attention 0 [233, 233] [21, 54] {"what": "user_message", "detail": "Still minimal running during townfarm, much less time efficient", "crop": ["......>.............#..#.......", "....................#..#.......", "............t....
+01:33:18 nav_cmd 0 [233, 233] [14, 41] {"cmd": "say", "args": ["Thanks, noted: I can't make townfarm run (no control for it), so I'm filing it for the Architect. It's still +83 gold in 1.5 min, so I'll let it farm until the budget ends ~01:
+01:33:18 nav_say 0 [233, 233] [14, 41] {"text": "Thanks, noted: I can't make townfarm run (no control for it), so I'm filing it for the Architect. It's still +83 gold in 1.5 min, so I'll let it farm until the budget ends ~01:44 unless you'd
+01:33:18 nav_cmd 0 [233, 233] [14, 41] {"cmd": "complain", "args": ["User 01:33: townfarm still walks (minimal running) instead of running, much less time-efficient. I have no order to make it run; it earned 83 gold in its first 1.5 min."],
+01:33:18 nav_complaint 0 [233, 233] [14, 41] {"text": "User 01:33: townfarm still walks (minimal running) instead of running, much less time-efficient. I have no order to make it run; it earned 83 gold in its first 1.5 min."}
+01:35:12 user_note 0 [233, 233] [42, 89] {"note": "You can call the mission", "question": false, "depth_ft": 0, "clvl": 19, "goal": "townfarm to 3000 gold", "last_action": [1792215267.297229, "walk 1", "townfarm: hit the Filthy street urchi
+01:35:30 user_note 0 [233, 233] [41, 8] {"note": "! You can call the mission", "question": false, "depth_ft": 0, "clvl": 19, "goal": "townfarm to 3000 gold", "last_action": [1792215267.297229, "walk 1", "townfarm: hit the Filthy street urch
+01:35:30 attention 0 [233, 233] [41, 8] {"what": "user_message", "detail": "You can call the mission", "crop": ["           #####0       ", "           #    #       ", "           #    #       ", "       ... #    #.......", "      .....#   
+01:35:36 nav_cmd 0 [233, 233] [46, 23] {"cmd": "say", "args": ["OK, calling the mission now: stopping townfarm at 2621 gold, idle in town."], "wait_report": false}
+01:35:36 nav_say 0 [233, 233] [46, 23] {"text": "OK, calling the mission now: stopping townfarm at 2621 gold, idle in town."}
+01:35:36 nav_cmd 0 [233, 233] [46, 23] {"cmd": "stop", "args": [], "wait_report": false}
+01:35:36 goal 0 [233, 233] [46, 23] {"goal": null}

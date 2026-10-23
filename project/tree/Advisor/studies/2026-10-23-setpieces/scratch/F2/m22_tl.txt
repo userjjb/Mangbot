@@ -1,0 +1,298 @@
+01:45:03 nav_cmd 0 [233, 233] [45, 24] {"cmd": "goal", "args": ["shop", "6", "list"], "wait_report": false}
+01:45:03 goal 0 [233, 233] [45, 24] {"goal": "shop 6"}
+01:45:31 nav_cmd 0 [233, 233] [26, 119] {"cmd": "goal", "args": ["shop", "7", "list"], "wait_report": false}
+01:45:31 goal 0 [233, 233] [26, 119] {"goal": "shop 7"}
+01:45:49 nav_cmd 0 [233, 233] [31, 76] {"cmd": "goal", "args": ["shop", "1", "buy", "Ration:3", "buy", "Flask_of_oil:3"], "wait_report": false}
+01:45:49 goal 0 [233, 233] [31, 76] {"goal": "shop 1 buy Ration:3 buy Flask of oil:3"}
+01:46:07 nav_cmd 0 [233, 233] [34, 121] {"cmd": "drainers", "args": ["17"], "wait_report": false}
+01:46:10 nav_cmd 0 [233, 233] [34, 121] {"cmd": "order", "args": ["max_depth=750"], "wait_report": false}
+01:46:10 nav_cmd 0 [233, 233] [34, 121] {"cmd": "goal", "args": ["recall"], "wait_report": false}
+01:46:10 goal 0 [233, 233] [34, 121] {"goal": "recall"}
+01:46:32 nav_cmd 14 [233, 233] [27, 31] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+01:46:32 goal 14 [233, 233] [27, 31] {"goal": "explore"}
+01:47:27 attention 14 [233, 233] [7, 29] {"what": "tactic", "detail": "Blue jelly (lvl 4, never moves) blocks the way: killing it", 
+01:47:32 attention 14 [233, 233] [6, 21] {"what": "tactic", "detail": "hungry: ate a Ration of Food", 
+01:48:05 attention 14 [233, 233] [6, 81] {"what": "thief", "detail": "Scruffy looking hobbit (lvl 3, 2 away) steals gold with a touch, then teleports: kill it before it reaches you (`goal hunt Scruffy_looking_h
+01:48:08 attention 14 [233, 233] [2, 80] {"what": "unseen_attacker", "detail": "'It creates a mesmerising illusion.': something unseen is attacking and no stairs are known: consider Word of Recall or Phase Door
+01:48:09 attention 14 [226, 233] [3, 81] {"what": "tactic", "detail": "confused in combat: quaffed a Potion of Cure Serious Wounds", 
+01:48:14 attention 14 [216, 233] [3, 85] {"what": "unique_slain", "detail": "Orfax, Son of Boldor slain at 3,85: uniques drop good items (look at 'Item squares' around there)", 
+01:48:21 attention 14 [150, 233] [3, 85] {"what": "tactic", "detail": "Brown yeek x13, Blue yeek x3 can deal 93 (HP 150): phased away", 
+01:48:21 attention 14 [149, 233] [3, 85] {"what": "fight_going_badly", "detail": "HP 149/233 fighting Brown yeek", 
+01:48:22 attention 14 [149, 233] [5, 89] {"what": "interesting_item", "detail": "Ring of Resist Fire seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in 
+01:48:27 attention 14 [109, 233] [3, 89] {"what": "emergency", "detail": "low HP: read Phase Door (Brown yeek adjacent)", 
+01:48:28 attention 14 [107, 233] [4, 82] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Serious Wounds (losing ~9 HP/s)", 
+01:48:31 attention 14 [125, 233] [7, 84] {"what": "interesting_item", "detail": "Rod of Trap Location seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in
+01:48:31 attention 14 [125, 233] [7, 84] {"what": "fight_going_badly", "detail": "HP 125/233 fighting Brown yeek", 
+01:48:34 attention 14 [112, 233] [7, 84] {"what": "emergency", "detail": "low HP: read Phase Door (Blue yeek, Brown yeek adjacent)", 
+01:48:34 attention 14 [112, 233] [7, 84] {"what": "interesting_item", "detail": "Ring of Slow Digestion seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' 
+01:48:34 attention 14 [103, 233] [13, 87] {"what": "emergency_loop", "detail": "third emergency in 90 s and no stairs known nearby: consider Word of Recall or leaving this area", 
+01:48:34 attention 14 [103, 233] [13, 87] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Light Wounds (losing ~7 HP/s)", 
+01:48:35 attention 14 [120, 233] [13, 87] {"what": "interesting_item", "detail": "Wand of Light seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `stat
+01:48:41 attention 14 [126, 241] [8, 86] {"what": "fight_going_badly", "detail": "HP 126/241 fighting Brown yeek", 
+01:48:50 attention 14 [132, 241] [10, 89] {"what": "interesting_item", "detail": "Staff of Perception seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in
+01:48:58 attention 14 [143, 241] [6, 93] {"what": "fight_going_badly", "detail": "HP 143/241 fighting Brown yeek", 
+01:49:47 attention 14 [241, 241] [41, 82] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", 
+01:50:27 attention 14 [241, 241] [26, 154] {"what": "unseen_attacker", "detail": "'It fires an arrow!': minor attack from something unseen; carrying on (HP 100%)", 
+01:50:41 attention 14 [192, 241] [29, 146] {"what": "lost", "detail": "You have no room for a Wand of Slow Monster.", 
+01:50:41 attention 14 [193, 241] [29, 146] {"what": "pack_full", "detail": "You have no room for a Wand of Slow Monster.", 
+01:50:43 attention 14 [190, 241] [29, 146] {"what": "tactic", "detail": "no effect seen: pick up: a Wand of Slow Monster.", 
+01:50:46 nav_cmd 14 [160, 241] [29, 146] {"cmd": "destroy", "args": ["Rod_of_Trap_Location"], "wait_report": false}
+01:50:46 attention 14 [140, 241] [29, 146] {"what": "tactic", "detail": "Snaga x3, Uruk x2, Black orc can deal 108 (HP 140): phased away", 
+01:50:46 nav_cmd 14 [140, 241] [29, 146] {"cmd": "pickup", "args": [], "wait_report": false}
+01:50:47 attention 14 [140, 241] [29, 146] {"what": "fight_going_badly", "detail": "HP 140/241 fighting Snaga, Uruk", 
+01:50:48 attention 14 [120, 241] [29, 139] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~13 HP/s)", 
+01:50:49 attention 14 [111, 241] [29, 139] {"what": "interesting_item", "detail": "Wand of Slow Monster seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' 
+01:50:49 goal 14 [139, 241] [29, 139] {"goal": "flee (unseen attacker)"}
+01:50:49 attention 14 [139, 241] [29, 139] {"what": "unseen_attacker", "detail": "'It fires an arrow!': something unseen is attacking while explore; heading for the stairs", 
+01:50:57 attention 14 [148, 241] [34, 130] {"what": "fight_going_badly", "detail": "HP 148/241 fighting Snaga", 
+01:51:01 nav_cmd 14 [150, 241] [37, 124] {"cmd": "goal", "args": ["hunt", "Kobold_archer"], "wait_report": false}
+01:51:01 goal 14 [150, 241] [37, 124] {"goal": "hunt Kobold archer"}
+01:51:10 attention 14 [154, 241] [37, 122] {"what": "fight_going_badly", "detail": "HP 154/241 fighting Uruk", 
+01:51:20 attention 14 [231, 241] [37, 122] {"what": "goal_failed", "detail": "hunt Kobold archer: lost sight of it", 
+01:51:20 attention 14 [232, 241] [37, 122] {"what": "interesting_item", "detail": "Aluminum Rod seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `stat
+01:51:28 nav_cmd 14 [240, 241] [37, 122] {"cmd": "destroy", "args": ["Short_Bow"], "wait_report": false}
+01:51:29 nav_cmd 14 [241, 241] [37, 122] {"cmd": "pickup", "args": [], "wait_report": false}
+01:51:29 nav_cmd 14 [241, 241] [37, 122] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+01:51:29 goal 14 [241, 241] [37, 122] {"goal": "explore"}
+01:52:42 nav_cmd 14 [241, 241] [15, 147] {"cmd": "destroy", "args": ["Metal_Cap"], "wait_report": false}
+01:52:43 nav_cmd 14 [241, 241] [14, 147] {"cmd": "destroy", "args": ["Awl-Pike"], "wait_report": false}
+01:52:57 attention 14 [226, 241] [16, 126] {"what": "unseen_attacker", "detail": "'It fires an arrow!': probably the Kobold archer (lvl 4) in view; carrying on (HP 94%)", 
+01:53:50 attention 14 [156, 241] [37, 124] {"what": "fight_going_badly", "detail": "HP 156/241 fighting Kobold archer, Uruk", 
+01:54:03 nav_cmd 14 [175, 241] [37, 124] {"cmd": "destroy", "args": ["Flail"], "wait_report": false}
+01:54:11 attention 14 [151, 241] [35, 130] {"what": "fight_going_badly", "detail": "HP 151/241 fighting Uruk", 
+01:54:22 attention 14 [147, 241] [27, 141] {"what": "fight_going_badly", "detail": "HP 147/241 fighting Uruk", 
+01:54:26 nav_cmd 14 [137, 241] [30, 146] {"cmd": "goal", "args": ["hunt", "Uruk"], "wait_report": false}
+01:54:26 goal 14 [137, 241] [30, 146] {"goal": "hunt Uruk"}
+01:54:29 goal 14 [127, 241] [30, 146] {"goal": "flee (unseen attacker)"}
+01:54:29 attention 14 [127, 241] [30, 146] {"what": "unseen_attacker", "detail": "'It fires an arrow!': something unseen is attacking while hunt Uruk; heading for the stairs", 
+01:54:30 attention 14 [118, 241] [30, 145] {"what": "emergency", "detail": "low HP: read Phase Door (Black orc adjacent)", 
+01:54:32 attention 14 [96, 241] [28, 152] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~10 HP/s)", 
+01:54:34 attention 14 [120, 241] [28, 151] {"what": "emergency", "detail": "low HP: heading for the stairs 12 away", 
+01:54:34 goal 14 [120, 241] [28, 151] {"goal": "flee (emergency loop)"}
+01:54:34 attention 14 [120, 241] [28, 151] {"what": "tactic", "detail": "third emergency in 90 s: leaving by the stairs", 
+01:54:34 attention 14 [120, 241] [28, 151] {"what": "emergency", "detail": "low HP: heading for the stairs 12 away", 
+01:54:35 attention 14 [117, 241] [28, 150] {"what": "emergency", "detail": "low HP: read Phase Door (Snaga adjacent)", 
+01:54:37 attention 14 [93, 241] [34, 142] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~11 HP/s)", 
+01:54:38 attention 14 [101, 241] [36, 148] {"what": "emergency", "detail": "low HP: waiting to use Phase Door, cure potions again, fighting on", 
+01:54:38 attention 14 [101, 241] [36, 148] {"what": "emergency", "detail": "low HP: read Phase Door (Black orc, Hill orc, Kobold archer, Large kobold, Tengu adjacent)", 
+01:54:38 attention 14 [97, 241] [30, 142] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Light Wounds (losing ~1 HP/s)", 
+01:54:40 attention 14 [114, 241] [30, 142] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Light Wounds (losing ~1 HP/s)", 
+01:54:41 attention 14 [95, 241] [30, 142] {"what": "emergency", "detail": "low HP: read Phase Door (Black orc, Uruk adjacent)", 
+01:54:41 attention 14 [98, 241] [36, 148] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~10 HP/s)", 
+01:54:43 attention 14 [78, 241] [35, 148] {"what": "emergency", "detail": "low HP: read Phase Door (Black orc, Large kobold, Snaga, Tengu adjacent)", 
+01:54:44 attention 14 [64, 241] [34, 141] {"what": "emergency", "detail": "low HP: read Word of Recall as a last resort", 
+01:54:44 attention 14 [64, 241] [36, 150] {"what": "emergency", "detail": "low HP: read Phase Door (Snaga adjacent)", 
+01:54:45 attention 14 [61, 241] [42, 138] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~15 HP/s)", 
+01:54:46 nav_cmd 14 [89, 241] [42, 138] {"cmd": "read", "args": ["Teleportation"], "wait_report": false}
+01:54:47 attention 14 [89, 241] [54, 50] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Light Wounds", 
+01:55:02 nav_cmd 0 [241, 241] [23, 77] {"cmd": "read", "args": ["Identify", "Aluminum_Rod"], "wait_report": false}
+01:55:02 attention 0 [241, 241] [23, 78] {"what": "tactic", "detail": "learned: Aluminum Rod = Rod of Door/Stair Location", 
+01:55:02 nav_cmd 0 [241, 241] [23, 78] {"cmd": "goal", "args": ["shop", "5", "list"], "wait_report": false}
+01:55:02 goal 0 [241, 241] [23, 78] {"goal": "shop 5"}
+01:55:17 nav_cmd 0 [241, 241] [37, 111] {"cmd": "goal", "args": ["shop", "5", "buy", "Word_of_Recall:3@182", "buy", "Phase_Door:10@24"], "wait_report": false}
+01:55:17 goal 0 [241, 241] [37, 111] {"goal": "shop 5 buy Word of Recall:3@182 buy Phase Door:10@24"}
+01:55:22 nav_cmd 0 [241, 241] [37, 111] {"cmd": "goal", "args": ["shop", "4", "list"], "wait_report": false}
+01:55:22 goal 0 [241, 241] [37, 111] {"goal": "shop 4"}
+01:55:31 nav_cmd 0 [241, 241] [27, 114] {"cmd": "goal", "args": ["shop", "4", "buy", "Cure_Critical:5@160", "buy", "Cure_Light:3@25"], "wait_report": false}
+01:55:31 goal 0 [241, 241] [27, 114] {"goal": "shop 4 buy Cure Critical:5@160 buy Cure Light:3@25"}
+01:55:32 nav_cmd 0 [241, 241] [27, 114] {"cmd": "goal", "args": ["shop", "6", "quote", "Golden_Staff", "quote", "Staff_of_Door/Stair_Location"], "wait_report": false}
+01:55:32 goal 0 [241, 241] [27, 114] {"goal": "shop 6 quote Golden Staff:1 quote Staff of Door/Stair Location:1"}
+01:55:39 nav_cmd 0 [241, 241] [26, 119] {"cmd": "goal", "args": ["shop", "6", "sell", "!Staff_of_Door/Stair_Location:1", "sell", "Golden_Staff:1"], "wait_report": false}
+01:55:39 goal 0 [241, 241] [26, 119] {"goal": "shop 6 sell !Staff of Door/Stair Location:1 sell Golden Staff:1"}
+01:55:40 nav_cmd 0 [241, 241] [26, 119] {"cmd": "gate", "args": ["750", "recall"], "wait_report": false}
+01:55:46 nav_cmd 0 [241, 241] [26, 119] {"cmd": "goal", "args": ["recall"], "wait_report": false}
+01:55:46 goal 0 [241, 241] [26, 119] {"goal": "recall"}
+01:56:03 nav_cmd 14 [241, 241] [39, 22] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+01:56:03 goal 14 [241, 241] [39, 22] {"goal": "explore"}
+01:56:10 attention 14 [241, 241] [25, 16] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", 
+01:59:39 attention 14 [241, 241] [27, 101] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", 
+01:59:44 attention 14 [241, 241] [32, 103] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", 
+01:59:48 attention 14 [239, 241] [31, 104] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", 
+02:00:08 attention 14 [226, 241] [32, 107] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", 
+02:00:10 attention 14 [213, 241] [32, 109] {"what": "tactic", "detail": "afraid: kiting over cleared ground until it wears off", 
+02:00:12 attention 14 [158, 241] [32, 109] {"what": "unseen_attacker", "detail": "'It casts a fearful illusion.': probably the Novice paladin (lvl 8) in view; carrying on (HP 66%)", 
+02:00:12 attention 14 [155, 241] [32, 109] {"what": "fight_going_badly", "detail": "HP 155/241 fighting Novice paladin, White wolf", 
+02:00:12 attention 14 [155, 241] [32, 109] {"what": "tactic", "detail": "White wolf x2, Novice paladin x5 can deal 98 (HP 155): phased away", 
+02:00:13 attention 14 [144, 241] [36, 115] {"what": "tactic", "detail": "(HP falling ~19/s) can deal 57 at worst (HP 144): backing away, not walking into them", 
+02:00:16 attention 14 [120, 241] [36, 114] {"what": "emergency", "detail": "low HP: read Phase Door (Novice paladin, White wolf adjacent)", 
+02:00:17 attention 14 [110, 241] [39, 109] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~12 HP/s)", 
+02:00:17 nav_cmd 14 [110, 241] [39, 109] {"cmd": "quaff", "args": ["Heroism"], "wait_report": false}
+02:00:17 attention 14 [110, 241] [39, 109] {"what": "emergency", "detail": "low HP: waiting to use Phase Door, cure potions again, fighting on", 
+02:00:19 goal 14 [134, 251] [39, 109] {"goal": "flee (a dangerous group)"}
+02:00:19 attention 14 [134, 251] [39, 109] {"what": "danger_seen", "detail": "group danger: Novice paladin x8, White wolf x2 can deal 140 per turn at worst, HP 134 while explore: leaving the level", 
+02:00:19 attention 14 [134, 251] [39, 109] {"what": "emergency", "detail": "Novice paladin x8, White wolf x2 can deal 140 (HP 134) and no stairs are known: read Word of Recall now (it takes 8-23 s)", 
+02:00:20 attention 14 [102, 251] [39, 109] {"what": "emergency_loop", "detail": "third emergency in 90 s and no stairs known nearby: consider Word of Recall or leaving this area", 
+02:00:20 attention 14 [102, 251] [39, 109] {"what": "emergency", "detail": "low HP: read Phase Door (Novice paladin, White wolf adjacent)", 
+02:00:21 attention 14 [79, 251] [38, 98] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~18 HP/s)", 
+02:00:23 attention 14 [107, 251] [38, 98] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Serious Wounds (losing ~8 HP/s)", 
+02:00:24 attention 14 [138, 251] [38, 98] {"what": "tactic", "detail": "flee: no known path to the stairs; trying one through unexplored squares", 
+02:00:25 attention 14 [139, 251] [38, 97] {"what": "fight_going_badly", "detail": "HP 139/251 fighting Novice paladin", 
+02:00:39 attention 0 [99, 251] [17, 42] {"what": "emergency", "detail": "low HP: read Phase Door (Singing, happy drunk adjacent)", 
+02:00:40 attention 0 [100, 251] [17, 41] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Light Wounds", 
+02:00:42 attention 0 [100, 241] [19, 41] {"what": "emergency", "detail": "low HP: read Phase Door (Singing, happy drunk adjacent)", 
+02:00:47 nav_cmd 0 [113, 241] [19, 25] {"cmd": "goal", "args": ["rest"], "wait_report": false}
+02:00:47 goal 0 [113, 241] [19, 25] {"goal": "rest"}
+02:00:51 nav_cmd 0 [241, 241] [19, 25] {"cmd": "goal", "args": ["shop", "5", "buy", "Word_of_Recall:2@245", "buy", "Phase_Door:5@24", "buy", "Identify:1@85"], "wait_report": false}
+02:00:51 goal 0 [241, 241] [19, 25] {"goal": "shop 5 buy Word of Recall:2@245 buy Phase Door:5@24 buy Identify:1@85"}
+02:01:19 nav_cmd 0 [241, 241] [37, 111] {"cmd": "read", "args": ["Identify", "Amber_Amulet"], "wait_report": false}
+02:01:20 attention 0 [241, 241] [37, 111] {"what": "tactic", "detail": "learned: Amber Amulet = Amulet of Teleportation (junk)", 
+02:01:20 nav_cmd 0 [241, 241] [37, 111] {"cmd": "destroy", "args": ["Long_Bow"], "wait_report": false}
+02:01:21 attention 0 [241, 241] [37, 111] {"what": "tactic", "detail": "learned: Amber Amulet = Scroll of Identify", 
+02:01:25 nav_cmd 0 [241, 241] [37, 111] {"cmd": "destroy", "args": ["Amulet_of_Teleportation"], "wait_report": false}
+02:01:25 nav_cmd 0 [241, 241] [37, 111] {"cmd": "goal", "args": ["shop", "4", "buy", "Cure_Critical:3@160", "buy", "Cure_Serious:3@66"], "wait_report": false}
+02:01:25 goal 0 [241, 241] [37, 111] {"goal": "shop 4 buy Cure Critical:3@160 buy Cure Serious:3@66"}
+02:01:36 nav_cmd 0 [241, 241] [27, 114] {"cmd": "goal", "args": ["rest"], "wait_report": false}
+02:01:36 goal 0 [241, 241] [27, 114] {"goal": "rest"}
+02:01:39 nav_cmd 0 [241, 241] [27, 114] {"cmd": "order", "args": ["max_depth=650"], "wait_report": false}
+02:01:40 nav_cmd 0 [241, 241] [27, 114] {"cmd": "goal", "args": ["recall"], "wait_report": false}
+02:01:40 goal 0 [241, 241] [27, 114] {"goal": "recall"}
+02:01:57 nav_cmd 13 [241, 241] [8, 41] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+02:01:57 goal 13 [241, 241] [8, 41] {"goal": "explore"}
+02:02:45 attention 13 [186, 241] [33, 20] {"what": "interesting_item", "detail": "Oak Staff seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`;
+02:03:02 attention 13 [158, 241] [45, 21] {"what": "interesting_item", "detail": "Ring of Slow Digestion seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares'
+02:03:11 attention 13 [234, 241] [47, 22] {"what": "lost", "detail": "You have no room for a Hard Leather Cap [2].", 
+02:03:11 attention 13 [234, 241] [47, 22] {"what": "pack_full", "detail": "You have no room for a Hard Leather Cap [2].", 
+02:03:13 attention 13 [237, 241] [46, 24] {"what": "tactic", "detail": "no effect seen: pick up: a Hard Leather Cap [2].", 
+02:03:20 nav_cmd 13 [241, 241] [28, 29] {"cmd": "destroy", "args": ["Elm_Staff"], "wait_report": false}
+02:03:21 nav_cmd 13 [241, 241] [28, 29] {"cmd": "destroy", "args": ["Furry_Mushroom"], "wait_report": false}
+02:03:22 nav_cmd 13 [233, 241] [28, 29] {"cmd": "destroy", "args": ["Grey_Mushroom"], "wait_report": false}
+02:03:23 nav_cmd 13 [235, 241] [28, 29] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+02:03:23 goal 13 [235, 241] [28, 29] {"goal": "explore"}
+02:04:03 attention 13 [241, 241] [37, 62] {"what": "danger_seen", "detail": "Evil eye (rated 4: lethal until clvl 26) in view, stairs 44 away: NOT fleeing (no faster than you, melee ~0 a turn, 0 at worst; its d
+02:04:14 attention 13 [241, 241] [36, 76] {"what": "goal_failed", "detail": "explore: frontier unreachable", 
+02:04:22 nav_cmd 13 [241, 241] [36, 76] {"cmd": "goal", "args": ["hunt", "Evil_eye"], "wait_report": false}
+02:04:22 goal 13 [241, 241] [36, 76] {"goal": "hunt Evil eye"}
+02:04:28 nav_cmd 13 [241, 241] [36, 75] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+02:04:28 goal 13 [241, 241] [36, 75] {"goal": "explore"}
+02:05:33 attention 13 [217, 241] [39, 101] {"what": "interesting_item", "detail": "Bloodstone Ring seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `s
+02:05:40 attention 13 [230, 241] [33, 92] {"what": "interesting_item", "detail": "Ring of Resist Cold seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in
+02:05:46 goal 13 [237, 241] [28, 92] {"goal": "flee (Boldor, King of the Yeeks)"}
+02:05:46 attention 13 [237, 241] [28, 92] {"what": "danger_seen", "detail": "Boldor, King of the Yeeks (rated 4: lethal until clvl 21) in view while explore: heading for the stairs", 
+02:05:52 attention 13 [188, 241] [29, 93] {"what": "goal_failed", "detail": "flee (Boldor, King of the Yeeks): stuck on the way to the stairs", 
+02:05:52 attention 13 [188, 241] [29, 93] {"what": "emergency", "detail": "couldn't reach the stairs with 12 monsters close: read Word of Recall (8-23 s); phasing while it charges", 
+02:05:52 attention 13 [149, 241] [29, 93] {"what": "tactic", "detail": "Blue yeek, Brown yeek x2, Master yeek x3, Boldor, King of the Yeeks, Pseudo-dragon, Druid can deal 120 (HP 149): phased away", 
+02:05:53 attention 13 [132, 241] [29, 84] {"what": "tactic", "detail": "poisoned in combat: quaffed a Potion of Cure Critical Wounds {25% off}", 
+02:05:54 goal 13 [131, 241] [29, 84] {"goal": "flee (unseen attacker)"}
+02:05:54 attention 13 [131, 241] [29, 84] {"what": "unseen_attacker", "detail": "'It magically summons help!': something unseen is attacking; heading for the stairs", 
+02:05:54 attention 13 [161, 241] [29, 84] {"what": "tactic", "detail": "flee: no known path to the stairs; trying one through unexplored squares", 
+02:05:55 nav_cmd 13 [162, 241] [29, 84] {"cmd": "goal", "args": ["hunt", "Boldor,_King_of_the_Yeeks"], "wait_report": false}
+02:05:55 goal 13 [162, 241] [29, 84] {"goal": "hunt Boldor, King of the Yeeks"}
+02:05:57 attention 13 [155, 241] [29, 84] {"what": "fight_going_badly", "detail": "HP 155/241 fighting Brown yeek, Master yeek", 
+02:05:59 attention 13 [125, 241] [29, 84] {"what": "tactic", "detail": "blind in combat: quaffed a Potion of Cure Light Wounds", 
+02:06:00 attention 13 [129, 241] [29, 84] {"what": "tactic", "detail": "afraid and in danger: quaffed a Potion of Boldness", 
+02:06:02 attention 13 [126, 241] [29, 84] {"what": "tactic", "detail": "blind in combat: quaffed a Potion of Cure Light Wounds", 
+02:06:03 attention 13 [137, 241] [29, 84] {"what": "tactic", "detail": "Brown yeek x11, Master yeek x2, Giant clear centipede can deal 98 (HP 137): phased away", 
+02:06:03 attention 13 [120, 241] [29, 84] {"what": "emergency", "detail": "low HP: waiting to use Phase Door, cure potions again, fighting on", 
+02:06:04 attention 13 [120, 241] [30, 92] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Serious Wounds (losing ~8 HP/s)", 
+02:06:09 nav_cmd 0 [233, 241] [16, 45] {"cmd": "goal", "args": ["recall"], "wait_report": false}
+02:06:10 attention 0 [236, 241] [16, 45] {"what": "goal_failed", "detail": "hunt Boldor, King of the Yeeks: lost sight of it", 
+02:06:17 nav_cmd 0 [241, 241] [16, 45] {"cmd": "goal", "args": ["shop", "5", "buy", "Word_of_Recall:1@245"], "wait_report": false}
+02:06:17 goal 0 [241, 241] [16, 45] {"goal": "shop 5 buy Word of Recall:1@245"}
+02:06:40 nav_cmd 0 [241, 241] [37, 111] {"cmd": "goal", "args": ["recall"], "wait_report": false}
+02:06:40 goal 0 [241, 241] [37, 111] {"goal": "recall"}
+02:06:58 nav_cmd 13 [241, 241] [28, 29] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+02:06:58 goal 13 [241, 241] [28, 29] {"goal": "explore"}
+02:07:08 attention 13 [241, 241] [16, 25] {"what": "unseen_attacker", "detail": "'It fires an arrow!': probably the Black orc (lvl 13) in view; carrying on (HP 100%)", 
+02:07:27 attention 13 [190, 246] [15, 28] {"what": "lost", "detail": "You have no room for a Dagger (1d4).", 
+02:07:27 attention 13 [190, 246] [15, 28] {"what": "pack_full", "detail": "You have no room for a Dagger (1d4).", 
+02:07:29 attention 13 [193, 246] [14, 32] {"what": "tactic", "detail": "no effect seen: pick up: a Dagger (1d4).", 
+02:07:38 nav_cmd 13 [200, 246] [10, 35] {"cmd": "destroy", "args": ["Brass_Lantern"], "wait_report": false}
+02:07:39 nav_cmd 13 [203, 246] [10, 36] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+02:07:39 goal 13 [203, 246] [10, 36] {"goal": "explore"}
+02:08:08 attention 13 [246, 246] [6, 63] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", 
+02:08:22 attention 13 [246, 246] [9, 54] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", 
+02:08:36 attention 13 [241, 246] [8, 82] {"what": "thief", "detail": "Brigand (lvl 10, 2 away) steals items from your pack with a touch, then teleports: kill it before it reaches you (`goal hunt Brigand`), or k
+02:08:41 nav_cmd 13 [213, 246] [8, 82] {"cmd": "goal", "args": ["hunt", "Brigand"], "wait_report": false}
+02:08:41 goal 13 [213, 246] [8, 82] {"goal": "hunt Brigand"}
+02:08:47 attention 13 [159, 246] [8, 82] {"what": "tactic", "detail": "White wolf x6, Clear hound x2 can deal 124 (HP 159): phased away", 
+02:08:57 attention 13 [156, 246] [1, 77] {"what": "goal_failed", "detail": "hunt Brigand: lost sight of it", 
+02:09:01 nav_cmd 13 [173, 246] [1, 77] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+02:09:01 goal 13 [173, 246] [1, 77] {"goal": "explore"}
+02:09:31 attention 13 [208, 246] [12, 43] {"what": "structure", "detail": "inner room centred 16,49 (11-21, 37-61), likely: a dark inner room: most likely a large room (dark ones are common), but pits and nests
+02:09:32 attention 13 [213, 246] [15, 38] {"what": "stat_drained", "detail": "STR drained (blows 3); levels don't restore it: Potion of Restore Strength at the Alchemist (5), ~470 each (the Temple doesn't sell 
+02:09:36 nav_cmd 13 [234, 246] [17, 60] {"cmd": "quaff", "args": ["Restore_Strength"], "wait_report": false}
+02:09:38 user_note 13 [237, 246] [15, 57] {"note": "! You weren't in battle, but still hurt. You should Rest to full", "question": false, "depth_ft": 650, "clvl": 21, "goal": "explore", "last_action": [17922173
+02:09:38 attention 13 [237, 246] [15, 57] {"what": "user_message", "detail": "You weren't in battle, but still hurt. You should Rest to full", 
+02:09:40 attention 13 [240, 246] [15, 55] {"what": "tactic", "detail": "Green jelly (lvl 5, never moves) blocks the way: killing it", 
+02:09:46 nav_cmd 13 [246, 246] [15, 49] {"cmd": "say", "args": ["Noted. HP is 242/246 now (Green jelly next to me, acid, I resist). The Pilot rests at <70% when alone; earlier dips were fights. I'll rest to ful
+02:09:46 nav_say 13 [246, 246] [15, 49] {"text": "Noted. HP is 242/246 now (Green jelly next to me, acid, I resist). The Pilot rests at <70% when alone; earlier dips were fights. I'll rest to full before pushin
+02:10:01 attention 13 [232, 236] [16, 48] {"what": "stat_drained", "detail": "CON drained (blows 3); levels don't restore it: Potion of Restore Constitution at the Alchemist (5), ~470 each (the Temple doesn't s
+02:10:30 user_note 13 [236, 236] [5, 114] {"note": "! The Pilot should always Rest to full when alone unless it is in the process of fleeing etc.", "question": false, "depth_ft": 650, "clvl": 21, "goal": "explo
+02:10:30 attention 13 [236, 236] [5, 114] {"what": "user_message", "detail": "The Pilot should always Rest to full when alone unless it is in the process of fleeing etc.", 
+02:10:34 nav_cmd 13 [236, 236] [5, 124] {"cmd": "order", "args": ["rest_below=0.9", "rest_to=1.0"], "wait_report": false}
+02:10:35 nav_cmd 13 [236, 236] [4, 124] {"cmd": "say", "args": ["Agreed: set rest_below=0.9, rest_to=1.0 so it rests whenever alone and below 90%."], "wait_report": false}
+02:10:35 nav_say 13 [236, 236] [4, 124] {"text": "Agreed: set rest_below=0.9, rest_to=1.0 so it rests whenever alone and below 90%."}
+02:11:22 attention 13 [236, 236] [27, 104] {"what": "tactic", "detail": "hungry: ate a Ration of Food", 
+02:11:34 attention 13 [236, 236] [45, 50] {"what": "unseen_attacker", "detail": "'It magically summons help!': something unseen is attacking and no stairs are known: consider Word of Recall or Phase Door", 
+02:11:39 nav_cmd 13 [174, 236] [45, 50] {"cmd": "zap", "args": ["Door/Stair"], "wait_report": false}
+02:11:40 attention 13 [150, 236] [45, 50] {"what": "tactic", "detail": "Hill orc x11, Zombified human can deal 118 (HP 150): phased away", 
+02:11:44 attention 13 [153, 236] [44, 58] {"what": "fight_going_badly", "detail": "HP 153/236 fighting Zombified orc", 
+02:11:49 nav_cmd 13 [138, 236] [44, 58] {"cmd": "order", "args": ["max_depth=700"], "wait_report": false}
+02:11:49 attention 13 [135, 236] [44, 58] {"what": "interesting_item", "detail": "Balsa Staff seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status
+02:11:50 attention 13 [136, 236] [44, 58] {"what": "tactic", "detail": "Hill orc x7, Gnome mage, White wolf can deal 89 (HP 136): phased away", 
+02:11:53 attention 13 [114, 236] [40, 54] {"what": "emergency", "detail": "low HP: read Phase Door (Hill orc adjacent)", 
+02:11:55 attention 13 [97, 236] [43, 59] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~10 HP/s)", 
+02:11:56 attention 13 [123, 236] [43, 59] {"what": "fight_going_badly", "detail": "HP 123/236 fighting Hill orc", 
+02:11:58 attention 13 [115, 236] [44, 60] {"what": "emergency", "detail": "low HP: read Phase Door (Hill orc, White wolf adjacent)", 
+02:11:59 goal 13 [107, 236] [44, 60] {"goal": "flee (emergency loop)"}
+02:11:59 attention 13 [107, 236] [44, 60] {"what": "tactic", "detail": "third emergency in 90 s: leaving by the stairs", 
+02:12:00 attention 13 [109, 236] [44, 67] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Light Wounds (losing ~5 HP/s)", 
+02:12:02 attention 13 [129, 236] [44, 67] {"what": "tactic", "detail": "flee: no known path to the stairs; trying one through unexplored squares", 
+02:12:02 attention 13 [119, 236] [44, 67] {"what": "lost", "detail": "One of your Potions of Cure Critical Wounds {25% off} (k) was destroyed!", 
+02:12:03 attention 13 [106, 236] [44, 66] {"what": "emergency", "detail": "low HP: read Phase Door (Hill orc adjacent)", 
+02:12:05 attention 13 [107, 236] [38, 62] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Serious Wounds (losing ~8 HP/s)", 
+02:12:05 attention 13 [108, 236] [38, 62] {"what": "emergency", "detail": "low HP: waiting to use Phase Door, cure potions again, fighting on", 
+02:12:06 attention 13 [132, 236] [38, 61] {"what": "fight_going_badly", "detail": "HP 132/236 fighting Hill orc", 
+02:12:11 nav_cmd 13 [128, 236] [40, 56] {"cmd": "read", "args": ["Word_of_Recall"], "wait_report": false}
+02:12:13 attention 13 [113, 236] [41, 55] {"what": "emergency", "detail": "low HP: read Phase Door (Hill orc, Zombified human adjacent)", 
+02:12:16 attention 13 [95, 236] [43, 60] {"what": "emergency", "detail": "low HP: read Phase Door (Hill orc, Zombified human adjacent)", 
+02:12:18 attention 13 [90, 236] [46, 54] {"what": "emergency", "detail": "low HP: took the stairs underfoot (>)", 
+02:12:18 goal 13 [90, 236] [46, 54] {"goal": "recover (fled by >)"}
+02:12:19 attention 14 [91, 236] [24, 180] {"what": "emergency", "detail": "low HP: took the stairs underfoot (<)", 
+02:12:20 attention 13 [92, 236] [12, 176] {"what": "emergency", "detail": "low HP: took the stairs underfoot (>)", 
+02:12:20 attention 14 [92, 236] [39, 42] {"what": "emergency", "detail": "low HP: took the stairs underfoot (<)", 
+02:12:21 nav_cmd 14 [92, 236] [39, 42] {"cmd": "quaff", "args": ["Cure_Critical"], "wait_report": false}
+02:12:21 user_note 14 [92, 236] [39, 42] {"note": "? This fight will be helpful to study", "question": true, "depth_ft": 700, "clvl": 21, "goal": "recover (fled by >)", "last_action": [1792217541.0323157, "cust
+02:12:21 attention 13 [92, 236] [52, 53] {"what": "emergency", "detail": "low HP: took the stairs underfoot (>)", 
+02:12:28 goal 0 [236, 236] [16, 45] {"goal": "flee (emergency loop)", "why": "resumed after recovering"}
+02:12:28 attention 0 [236, 236] [16, 45] {"what": "goal_failed", "detail": "flee (emergency loop): no stairs known", 
+02:12:33 nav_cmd 0 [236, 236] [16, 45] {"cmd": "read", "args": ["Identify", "Bloodstone_Ring"], "wait_report": false}
+02:12:33 nav_cmd 0 [236, 236] [16, 45] {"cmd": "read", "args": ["Identify", "Bloodstone_Ring"], "wait_report": false}
+02:12:41 nav_cmd 0 [236, 236] [16, 45] {"cmd": "read", "args": ["Identify", "t"], "wait_report": false}
+02:12:41 attention 0 [236, 236] [16, 45] {"what": "tactic", "detail": "learned: Bloodstone Ring = Ring of Protection", 
+02:12:41 nav_cmd 0 [236, 236] [16, 45] {"cmd": "read", "args": ["Identify", "s"], "wait_report": false}
+02:12:49 nav_cmd 0 [236, 236] [16, 45] {"cmd": "wearall", "args": [], "wait_report": false}
+02:12:56 nav_cmd 0 [236, 236] [16, 45] {"cmd": "wear", "args": ["Ring_of_Protection"], "wait_report": false}
+02:13:00 nav_cmd 0 [236, 236] [16, 45] {"cmd": "wear", "args": ["r"], "wait_report": false}
+02:13:06 nav_cmd 0 [236, 236] [16, 45] {"cmd": "wear", "args": ["Ring_of_Protection"], "wait_report": false}
+02:13:09 nav_cmd 0 [236, 236] [16, 45] {"cmd": "wear", "args": ["r"], "wait_report": false}
+02:13:15 nav_cmd 0 [236, 236] [16, 45] {"cmd": "inspect", "args": ["c"], "wait_report": false}
+02:13:16 nav_cmd 0 [236, 236] [16, 45] {"cmd": "takeoff", "args": ["c"], "wait_report": false}
+02:13:28 nav_cmd 0 [236, 236] [16, 45] {"cmd": "takeoff", "args": ["Ring_of_Protection"], "wait_report": false}
+02:13:28 nav_cmd 0 [236, 236] [16, 45] {"cmd": "inspect", "args": ["Ring_of_Protection"], "wait_report": false}
+02:13:31 nav_cmd 0 [236, 236] [16, 45] {"cmd": "takeoff", "args": ["{"], "wait_report": false}
+02:13:31 nav_cmd 0 [236, 236] [16, 45] {"cmd": "inspect", "args": ["{"], "wait_report": false}
+02:13:35 nav_cmd 0 [236, 236] [16, 45] {"cmd": "takeoff", "args": ["Protection_{cursed}"], "wait_report": false}
+02:13:38 nav_cmd 0 [236, 236] [16, 45] {"cmd": "inspect", "args": ["Protection_{cursed}"], "wait_report": false}
+02:13:44 nav_cmd 0 [236, 236] [16, 45] {"cmd": "goal", "args": ["shop", "4", "buy", "Remove_Curse:1@165"], "wait_report": false}
+02:13:44 goal 0 [236, 236] [16, 45] {"goal": "shop 4 buy Remove Curse:1@165"}
+02:14:05 nav_cmd 0 [236, 236] [25, 114] {"cmd": "read", "args": ["Remove_Curse"], "wait_report": false}
+02:14:06 nav_cmd 0 [236, 236] [25, 114] {"cmd": "takeoff", "args": ["Protection_{cursed}"], "wait_report": false}
+02:14:13 nav_cmd 0 [236, 236] [25, 114] {"cmd": "takeoff", "args": ["Protection_{uncursed}"], "wait_report": false}
+02:14:19 nav_cmd 0 [236, 236] [25, 114] {"cmd": "goal", "args": ["shop", "6", "quote", "Ring_of_Protection"], "wait_report": false}
+02:14:19 goal 0 [236, 236] [25, 114] {"goal": "shop 6 quote Ring of Protection:1"}
+02:14:30 nav_cmd 0 [236, 236] [25, 119] {"cmd": "destroy", "args": ["Protection_{uncursed}"], "wait_report": false}
+02:14:31 nav_cmd 0 [236, 236] [25, 119] {"cmd": "goal", "args": ["shop", "5", "buy", "Phase_Door:10@25", "buy", "Word_of_Recall:2@190"], "wait_report": false}
+02:14:31 goal 0 [236, 236] [25, 119] {"goal": "shop 5 buy Phase Door:10@25 buy Word of Recall:2@190"}
+02:14:41 nav_cmd 0 [236, 236] [37, 111] {"cmd": "goal", "args": ["shop", "5", "buy", "Word_of_Recall:1@245"], "wait_report": false}
+02:14:41 goal 0 [236, 236] [37, 111] {"goal": "shop 5 buy Word of Recall:1@245"}
+02:14:41 nav_cmd 0 [236, 236] [37, 111] {"cmd": "stop", "args": [], "wait_report": false}
+02:14:41 goal 0 [236, 236] [37, 111] {"goal": null}
+02:14:49 nav_cmd 0 [236, 236] [37, 111] {"cmd": "goal", "args": ["shop", "1", "buy", "Ration:2"], "wait_report": false}
+02:14:49 goal 0 [236, 236] [37, 111] {"goal": "shop 1 buy Ration:2"}
+02:14:54 nav_cmd 0 [236, 236] [34, 121] {"cmd": "complain", "args": ["Pack/equipment letters: after one Identify the pack re-sorts, so two reads by letter hit the same ring and I wore an unidentified cursed rin
+02:14:54 nav_complaint 0 [236, 236] [34, 121] {"text": "Pack/equipment letters: after one Identify the pack re-sorts, so two reads by letter hit the same ring and I wore an unidentified cursed ring (cost 119 Re
+02:14:54 nav_cmd 0 [236, 236] [34, 121] {"cmd": "complain", "args": ["wearall put on one ring then the pilot's Equipment line omitted rings for a while; takeoff/inspect by pack letter hit pack items (equipment 
+02:14:54 nav_complaint 0 [236, 236] [34, 121] {"text": "wearall put on one ring then the pilot's Equipment line omitted rings for a while; takeoff/inspect by pack letter hit pack items (equipment slots use odd 
+02:14:54 nav_cmd 0 [236, 236] [34, 121] {"cmd": "complain", "args": ["Orfax/Boldor yeek levels: stat 'Brown yeek x15' swarms cost ~100 HP in 10 s but no warning on arrival; the Pilot used 8-10 Phase Doors per f
+02:14:54 nav_complaint 0 [236, 236] [34, 121] {"text": "Orfax/Boldor yeek levels: stat 'Brown yeek x15' swarms cost ~100 HP in 10 s but no warning on arrival; the Pilot used 8-10 Phase Doors per fight and read 

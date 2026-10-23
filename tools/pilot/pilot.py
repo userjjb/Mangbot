@@ -1438,6 +1438,9 @@ class Pilot:
         self.fearers_seen = set()
         self.drainers_seen = set()     # (level_t, race name) drainer warnings given
         self.inferred = set()          # abilities seen in play (watch_abilities)
+        self.unique_drop = None        # (level_t, pos, t) of the last unique killed
+        self.policy_t = 0.0
+        self.room_t = 0.0
         self.ability_sources = set()   # unidentified worn items that may give them
         self.ability_seen_t = time.time()
         self.debt_path = os.path.join(rundir, "navigator_debt.json")
@@ -1457,6 +1460,7 @@ class Pilot:
         self.phase_hist = collections.deque()   # emergency Phase Door times (futility check)
         self.traps_here, self.trap_seen_t = (None, 0), time.time()
         self.band_warned = (None, 0)   # (level_t, size) of the last band warning
+        self.band_warned_t = 0.0
         self.thieves_seen = set()      # (level_t, race name) thief warnings given
         self.thief_hit_t = 0.0
         self.kills_t = time.time()     # messages scanned for unique kills
@@ -2210,17 +2214,11 @@ class Pilot:
                 self.skipped_items.add((w.level_t, w.pos))
             if seen and (w.level_t, w.pos) in self.skipped_items:
                 seen = []         # junk we left, or what the Navigator dropped here
-            # Bulky gear (weapons, armour, bows, ammo; not '~': chests) only while the pack
-            # has room: mission 22 filled all 23 slots with a Short Bow, Metal Cap,
-            # Awl-Pike, Flail... and had none left for the good finds. Known good
-            # ones ({good}, an ego name) always
-            if seen and (w.standing_on or "") in "|/\\([])}{" and w.standing_on and \
-                    23 - len(w.items()) <= 5 and \
-                    not re.search(r"\{(good|excellent|special)|\bof [A-Z*]|\([+-]?\d+,[+-]?\d+\) \(", seen[-1][1]):
-                if (w.level_t, w.pos) not in self.skipped_items:
-                    self.notify("tactic", f"left {seen[-1][1][8:].rstrip('.')} (pack nearly full: bulky gear only "
-                                          "with 6+ free slots; `pickup` takes it)", news=True)
-                self.skipped_items.add((w.level_t, w.pos))
+            # By value (restructure step 2.1; the Advisor's set-pieces C3, C4): a unique's
+            # drop always; with the pack full, swap the cheapest non-kit item for a
+            # better find; otherwise leave it and say so. (The bulky-gear rule this
+            # replaces lost Brodda's Scimitar in mission 23.)
+            if seen and not self.pickup_room(seen[-1][1][8:].rstrip(".")):
                 seen = []
             if seen and seen[-1][0] > self.picked_t and w.pos == self.seen_pos(seen[-1][0]):
                 self.picked_t = now
@@ -2469,6 +2467,7 @@ class Pilot:
         if lt == w.level_t and len(near) < size * 1.5:
             return
         self.band_warned = (w.level_t, len(near))
+        self.band_warned_t = time.time()
         names = ", ".join(f"{n} ×{c}" if c > 1 else n
                           for n, c in collections.Counter(r.name for *_, r in near).most_common(6))
         stairs = min((w.dist(q) for q in w.find("<>")), default=None)
@@ -2521,6 +2520,7 @@ class Pilot:
                 continue
             m = re.match(r"You have (?:slain|destroyed) (.+?)\.$", t)
             if m and m.group(1).lower() in self.unique_names:
+                self.unique_drop = (w.level_t, w.pos, ts)     # its drop is always picked up
                 self.notify("unique_slain", f"{m.group(1)} slain at {w.pos[0]},{w.pos[1]}: uniques drop good items "
                                             "(look at 'Item squares' around there)")
         self.kills_t = max([self.kills_t] + [ts for ts, _ in w.messages])
@@ -2681,6 +2681,142 @@ class Pilot:
         except (OSError, ValueError):
             return True
         return self.debt_total() <= limit
+
+    KIT_KINDS = ("Cure Light Wounds", "Cure Serious Wounds", "Cure Critical Wounds", "Healing", "Phase Door",
+                 "Word of Recall", "Teleport", "Identify", "Magic Mapping", "Speed", "Heroism", "Berserk",
+                 "Restore", "Satisfy Hunger", "Deep Descent")
+
+    def pack_value(self, it):
+        """An item's worth to the pack, for making room: kit consumables, kept items,
+        possible ability sources and the light count as priceless."""
+        n = it["name"]
+        if it["tval"] in (TV_FOOD, TV_FLASK, TV_LITE) or any(k in n for k in self.KIT_KINDS) or self.is_kept(n) or \
+                re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", n)).lower() in self.ability_sources:
+            return float("inf")
+        if (self.flavour_of(it) or {}).get("junk") or re.search(r"\{(cursed|worthless|broken|terrible)", n):
+            return 0
+        iv = itemvalue.value(n)
+        return iv.value * SHOP_CUT * max(1, iv.count)
+
+    def pickup_room(self, name):
+        """True if the item underfoot should be picked up now (destroying something
+        cheaper first when the pack is full); False to leave it (with news)."""
+        w, now = self.w, time.time()
+        iv = itemvalue.value(name)
+        worth = iv.value * SHOP_CUT * max(1, iv.count)
+        ud = self.unique_drop
+        unique = bool(ud and ud[0] == w.level_t and w.dist(ud[1]) <= 3)
+        if not unique and iv.known and worth < 1 and not iv.irreplaceable:
+            if (w.level_t, w.pos) not in self.skipped_items:
+                self.skipped_items.add((w.level_t, w.pos))
+            return False                         # worthless: leave it
+        free = 23 - len(w.items())
+        if free >= 1:
+            return True
+        cand = sorted(((self.pack_value(i), i) for i in w.items()), key=lambda vi: vi[0])
+        cheapest = cand[0] if cand else None
+        if cheapest and cheapest[0] < float("inf") and (unique or worth > 1.5 * cheapest[0] + 5):
+            if now - self.room_t > 1.5:
+                self.room_t = now
+                self.c.send("confirm yes")
+                self.cmd(f"custom k item={cheapest[1]['item']} value={cheapest[1]['number']}",
+                         f"make room: destroy {cheapest[1]['name']} (~{cheapest[0]:.0f}) for {name} (~{worth:.0f})",
+                         hold=0.6)
+                self.notify("tactic", f"pack full: destroyed {cheapest[1]['name']} (~{cheapest[0]:.0f} gold) to take "
+                                      f"{name} (~{worth:.0f}{', a unique drop' if unique else ''})", news=True)
+            return False                         # (picked up on the next look, once there's room)
+        if (w.level_t, w.pos) not in self.skipped_items:
+            self.skipped_items.add((w.level_t, w.pos))
+            self.notify("tactic", f"left {name} (~{worth:.0f}): pack full and nothing cheaper to make room with",
+                        news=True)
+        return False
+
+    ARMOUR_SLOTS = {30: "boots", 31: "gloves", 32: "helm", 33: "helm", 34: "shield", 35: "cloak", 36: "body",
+                    37: "body", 38: "body"}
+
+    def policy_tick(self, now):
+        """The Pilot's own item work at safe moments (restructure step 2.1): identify
+        what's worth it, wield a better weapon, wear better armour and good
+        jewellery in empty slots. True if it acted."""
+        w = self.w
+        if now - self.policy_t < 3 or now < self.busy_until or w.store or self.pending_use or w.monsters or \
+                now - w.last_hit_t < 8 or w.hp_frac < 0.5 or isinstance(self.goal, (Flee, Recall, Recover, Shop)) or \
+                w.flag("blind") or w.flag("confused"):
+            return False
+        self.policy_t = now
+        pack, worn = w.items(), w.items(equip=True)
+
+        def bare(n):
+            return re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", n)).lower()
+
+        def cursedish(n):
+            return re.search(r"\{(cursed|worthless|broken|terrible)", n)
+        # 1. identify the most valuable unknown (ability sources first)
+        scroll = next((i for i in pack if i["tval"] == TV_SCROLL and "Identify" in i["name"]), None)
+        staff = next((i for i in pack if i["tval"] == 55 and "Perception" in i["name"]
+                      and not re.search(r"\(0 charges\)", i["name"])), None)
+        if scroll or staff:
+            cands = []
+            for it in pack + worn:
+                if (self.flavour_of(it) or {}).get("junk") or cursedish(it["name"]):
+                    continue
+                iv = itemvalue.value(it["name"])
+                if iv.known is not False:
+                    continue
+                prio = float("inf") if bare(it["name"]) in self.ability_sources else iv.value * SHOP_CUT
+                if prio >= 20:
+                    cands.append((prio, it))
+            if cands:
+                _, it = max(cands, key=lambda pc: pc[0])
+                tool = scroll or staff
+                if self.unknown_flavour(it):
+                    self.id_target = {"t": now, "flavour": flavour_key(it["name"]),
+                                      "letter": None if it["equip"] else chr(97 + it["item"])}
+                self.cmd(f"custom {'r' if tool is scroll else 'u'} item={tool['item']} dir={it['item']}",
+                         f"identify {it['name']} (policy)", hold=1.0)
+                self.notify("tactic", f"identifying {it['name']} (the most valuable unknown)", news=True)
+                return True
+        # 2. a better weapon (plain damage; a brand counts half, as not every monster is affected)
+        wt = self.weapon_table()
+        if wt:
+            def eff(n, b, d):
+                br = weapon_brand(n)
+                return d + 0.5 * (weapon_damage(n, b, br[1]) - d) if br else d
+            cur = max((eff(n, b, d) for n, b, d, eq in wt if eq), default=0)
+            best = max(((eff(n, b, d), n) for n, b, d, eq in wt if not eq and not cursedish(n)), default=None)
+            if best and best[0] > cur * 1.2 and best[0] > 0:
+                it = next((i for i in pack if i["name"] == best[1]), None)
+                if it:
+                    self.cmd(f"custom w item={it['item']}", f"wield {it['name']} (~{best[0]:.0f}/round vs ~{cur:.0f})",
+                             hold=0.8)
+                    self.notify("tactic", f"wielded {it['name']}: ~{best[0]:.0f} a round vs ~{cur:.0f}", news=True)
+                    return True
+        # 3. better armour, slot by slot (by AC; known not cursed; plusses or a feeling known)
+        for it in pack:
+            slot = self.ARMOUR_SLOTS.get(it["tval"])
+            if not slot or cursedish(it["name"]):
+                continue
+            if not (re.search(r"\[\d+,[+-]\d+\]", it["name"]) or re.search(r"\{(average|good|excellent)", it["name"])):
+                continue                  # (no feeling yet: it might be cursed)
+            on = [i for i in worn if self.ARMOUR_SLOTS.get(i["tval"]) == slot]
+            ac_new = self.armour_ac(it["name"]) or 0
+            ac_on = min((self.armour_ac(i["name"]) or 0) for i in on) if on else -1
+            if ac_new > ac_on and not (on and bare(on[0]["name"]) in self.ability_sources):
+                self.cmd(f"custom w item={it['item']}", f"wear {it['name']} (AC {ac_new} vs {ac_on})", hold=0.8)
+                self.notify("tactic", f"wore {it['name']} (AC {ac_new} vs {max(ac_on, 0)})", news=True)
+                return True
+        # 4. good jewellery into an empty ring or amulet slot (identified only)
+        for tv, k in ((45, 2), (40, 1)):
+            if sum(1 for i in worn if i["tval"] == tv) >= k:
+                continue
+            cand = [i for i in pack if i["tval"] == tv and itemvalue.value(i["name"]).known and
+                    itemvalue.value(i["name"]).value > 0 and not (self.flavour_of(i) or {}).get("junk")]
+            if cand:
+                it = max(cand, key=lambda i: itemvalue.value(i["name"]).value)
+                self.cmd(f"custom w item={it['item']}", f"put on {it['name']} (an empty slot)", hold=0.8)
+                self.notify("tactic", f"put on {it['name']} (the slot was empty)", news=True)
+                return True
+        return False
 
     def watch_abilities(self):
         """Abilities shown by the game's answers rather than the sheet: "You are
@@ -3199,7 +3335,10 @@ class Pilot:
         lr = int(self.orders.get("loot_radius", 0))
         if state.get("level") != w.level_t:
             state.update(level=w.level_t, looted=set(), looting=False)
-        if not lr or w.monsters:
+        # (no detours while a band is about: the Advisor's set-piece C5, mission 22's
+        # loot room. A band out of view now may be round the corner)
+        band = self.band_warned[0] == w.level_t and time.time() - self.band_warned_t < 90
+        if not lr or w.monsters or band:
             state["looting"] = False
             return False
         if state["looting"]:
@@ -3704,6 +3843,8 @@ class Pilot:
             return
         if self.parking and not isinstance(self.goal, Recall):
             self.park_tick()
+            return
+        if self.policy_tick(time.time()):      # the Pilot's own item work, at safe moments
             return
         if self.step_goal():
             return

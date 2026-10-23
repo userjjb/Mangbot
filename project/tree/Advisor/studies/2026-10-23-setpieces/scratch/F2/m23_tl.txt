@@ -1,0 +1,133 @@
+22:15:22 nav_cmd 0 [236, 236] [34, 121] {"cmd": "goal", "args": ["goto", "item"], "wait_report": false}
+22:15:22 goal 0 [236, 236] [34, 121] {"goal": "goto item"}
+22:15:26 nav_cmd 0 [236, 236] [33, 121] {"cmd": "pickup", "args": [], "wait_report": false}
+22:15:37 nav_cmd 0 [236, 236] [33, 121] {"cmd": "goal", "args": ["goto", "33,122"], "wait_report": false}
+22:15:37 goal 0 [236, 236] [33, 121] {"goal": "goto 33,122"}
+22:15:39 nav_cmd 0 [236, 236] [33, 122] {"cmd": "goal", "args": ["goto", "34,122"], "wait_report": false}
+22:15:39 goal 0 [236, 236] [33, 122] {"goal": "goto 34,122"}
+22:15:41 nav_cmd 0 [236, 236] [34, 122] {"cmd": "goal", "args": ["goto", "34,123"], "wait_report": false}
+22:15:41 goal 0 [236, 236] [34, 122] {"goal": "goto 34,123"}
+22:15:43 nav_cmd 0 [236, 236] [34, 123] {"cmd": "goal", "args": ["goto", "32,123"], "wait_report": false}
+22:15:43 goal 0 [236, 236] [34, 123] {"goal": "goto 32,123"}
+22:15:46 nav_cmd 0 [236, 236] [32, 123] {"cmd": "goal", "args": ["goto", "34,120"], "wait_report": false}
+22:15:46 goal 0 [236, 236] [32, 123] {"goal": "goto 34,120"}
+22:15:48 nav_cmd 0 [236, 236] [34, 120] {"cmd": "goal", "args": ["goto", "33,120"], "wait_report": false}
+22:15:48 goal 0 [236, 236] [34, 120] {"goal": "goto 33,120"}
+22:15:50 nav_cmd 0 [236, 236] [33, 120] {"cmd": "goal", "args": ["goto", "33,119"], "wait_report": false}
+22:15:50 goal 0 [236, 236] [33, 120] {"goal": "goto 33,119"}
+22:15:55 nav_cmd 0 [236, 236] [33, 119] {"cmd": "goal", "args": ["shop", "6", "sell", "Golden_Staff:1"], "wait_report": false}
+22:15:55 goal 0 [236, 236] [33, 119] {"goal": "shop 6 sell Golden Staff:1"}
+22:16:00 nav_cmd 0 [236, 236] [26, 119] {"cmd": "goal", "args": ["shop", "6", "sell", "!Golden_Staff:1"], "wait_report": false}
+22:16:00 goal 0 [236, 236] [26, 119] {"goal": "shop 6 sell !Golden Staff:1"}
+22:16:03 nav_cmd 0 [236, 236] [26, 119] {"cmd": "goal", "args": ["townfarm", "900", "6"], "wait_report": false}
+22:16:03 goal 0 [236, 236] [26, 119] {"goal": "townfarm to 900 gold"}
+22:16:44 user_note 0 [236, 236] [39, 70] {"note": "! Why was the staff sold un IDed?", "question": false, "depth_ft": 0, "clvl": 21, "goal": "townfarm to 900 gold", "last_action": [1792721763.8810928, "custom w item=19", "townfarm: light on"], "monsters": [[35, 68, "Village idiot"], [36, 69, "Mangy-looking leper"], [48, 68, "Squ
+22:16:44 attention 0 [236, 236] [39, 70] {"what": "user_message", "detail": "Why was the staff sold un IDed?", 
+22:16:49 nav_cmd 0 [236, 236] [42, 75] {"cmd": "say", "args": ["Its flavour was already known (Sleep Monsters, learned last mission), so nothing left to identify; it's a cheap staff, I forced the sale: 26 gold."], "wait_report": false}
+22:16:49 nav_say 0 [236, 236] [42, 75] {"text": "Its flavour was already known (Sleep Monsters, learned last mission), so nothing left to identify; it's a cheap staff, I forced the sale: 26 gold."}
+22:17:06 user_note 0 [236, 236] [51, 96] {"note": "! How much does it sell for IDed?", "question": false, "depth_ft": 0, "clvl": 21, "goal": "townfarm to 900 gold", "last_action": [1792721824.7385066, "walk 3", "townfarm: hit the Squint-eyed rogue first (a thief)"], "monsters": [[48, 95, "Mangy-looking leper"], [57, 99, "Aimless
+22:17:06 attention 0 [236, 236] [51, 96] {"what": "user_message", "detail": "How much does it sell for IDed?", 
+22:17:10 nav_cmd 0 [236, 236] [55, 101] {"cmd": "say", "args": ["Don't know exactly; Sleep Monsters is a low-value staff, probably ~100 base at most. The shop quoted 26 with unknown charges, so I may have lost some. Not checked."], "wait_report": false}
+22:17:10 nav_say 0 [236, 236] [55, 101] {"text": "Don't know exactly; Sleep Monsters is a low-value staff, probably ~100 base at most. The shop quoted 26 with unknown charges, so I may have lost some. Not checked."}
+22:17:26 nav_cmd 0 [236, 236] [54, 131] {"cmd": "goal", "args": ["shop", "5", "list", "buy", "Word_of_Recall:1@260"], "wait_report": false}
+22:17:26 goal 0 [236, 236] [54, 131] {"goal": "shop 5 buy Word of Recall:1@260"}
+22:17:39 nav_cmd 0 [236, 236] [39, 111] {"cmd": "goal", "args": ["shop", "4", "buy", "Cure_Critical:3@170"], "wait_report": false}
+22:17:39 goal 0 [236, 236] [39, 111] {"goal": "shop 4 buy Cure Critical:3@170"}
+22:17:43 nav_cmd 0 [236, 236] [27, 114] {"cmd": "gate", "args": ["650", "recall"], "wait_report": false}
+22:17:47 nav_cmd 0 [236, 236] [27, 114] {"cmd": "order", "args": ["max_depth=650"], "wait_report": false}
+22:17:47 nav_cmd 0 [236, 236] [27, 114] {"cmd": "goal", "args": ["recall"], "wait_report": false}
+22:17:47 goal 0 [236, 236] [27, 114] {"goal": "recall"}
+22:18:01 nav_cmd 13 [236, 236] [29, 112] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+22:18:01 goal 13 [236, 236] [29, 112] {"goal": "explore"}
+22:18:54 user_note 13 [236, 236] [38, 97] {"note": "? Pilot skipped money on the ground", "question": true, "depth_ft": 650, "clvl": 21, "goal": "explore", "last_action": [1792721868.5202603, "custom r item=13", "read 2 Scrolls of Word of Recall {@R650}"], "monsters": [], "standing_on": ".", "recent": [{"t": 1792721863.292, "kin
+22:19:21 attention 13 [236, 236] [39, 105] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", 
+22:19:59 attention 13 [236, 236] [38, 133] {"what": "drainer", "detail": "Giant red ant (lvl 9) drains STR with its blows: weak and no faster than you: kill it fast, don't walk away from it", 
+22:20:24 attention 13 [228, 236] [16, 97] {"what": "tactic", "detail": "confused in combat: quaffed a Potion of Cure Serious Wounds", 
+22:20:27 attention 13 [233, 236] [17, 95] {"what": "tactic", "detail": "left a Metal Cap [3] (pack nearly full: bulky gear only with 6+ free slots; `pickup` takes it)", 
+22:20:48 attention 13 [236, 236] [27, 60] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", 
+22:20:49 attention 13 [236, 236] [27, 59] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", 
+22:20:53 attention 13 [236, 236] [26, 51] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", 
+22:20:53 attention 13 [236, 236] [26, 50] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", 
+22:20:53 attention 13 [236, 236] [25, 49] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", 
+22:20:57 attention 13 [233, 236] [22, 49] {"what": "band", "detail": "a band within 10 squares: White wolf \u00d75 (5 monsters, ~70 worst-case melee a turn together, HP 233): leave now while it's cheap -- no stairs known: read Word of Recall; don't stop for loot", 
+22:21:12 attention 13 [224, 236] [20, 63] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", 
+22:24:18 attention 13 [236, 236] [47, 154] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", 
+22:24:25 attention 13 [236, 236] [47, 159] {"what": "unseen_attacker", "detail": "heard a door burst open: something is coming; be ready to leave", 
+22:24:44 attention 13 [208, 236] [49, 163] {"what": "unique_slain", "detail": "Brodda, the Easterling slain at 49,163: uniques drop good items (look at 'Item squares' around there)", 
+22:24:49 attention 13 [236, 236] [49, 162] {"what": "tactic", "detail": "left a Scimitar (2d5) {Brodda, the Easterling} (pack nearly full: bulky gear only with 6+ free slots; `pickup` takes it)", 
+22:24:52 nav_cmd 13 [236, 236] [50, 160] {"cmd": "goal", "args": ["goto", "49,162"], "wait_report": false}
+22:24:52 goal 13 [236, 236] [50, 160] {"goal": "goto 49,162"}
+22:24:58 nav_cmd 13 [236, 236] [49, 162] {"cmd": "goal", "args": ["goto", "49,161"], "wait_report": false}
+22:24:58 goal 13 [236, 236] [49, 162] {"goal": "goto 49,161"}
+22:24:59 attention 13 [236, 236] [49, 161] {"what": "found", "detail": "picked up a Pair of Metal Shod Boots [6] {Brodda, the Easterling}: identify it before selling (`sell !NAME`)", 
+22:25:06 nav_cmd 13 [236, 236] [49, 161] {"cmd": "inspect", "args": ["u"], "wait_report": false}
+22:25:13 nav_cmd 13 [236, 236] [49, 161] {"cmd": "wear", "args": ["Metal_Shod_Boots"], "wait_report": false}
+22:25:14 nav_cmd 13 [236, 236] [49, 161] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+22:25:14 goal 13 [236, 236] [49, 161] {"goal": "explore"}
+22:25:44 goal 13 [234, 236] [58, 145] {"goal": "flee (unseen attacker)"}
+22:25:44 attention 13 [234, 236] [58, 145] {"what": "unseen_attacker", "detail": "'It breathes light.': something unseen is attacking while explore; heading for the stairs", 
+22:25:48 user_note 13 [233, 236] [52, 147] {"note": "! That scimitar is likely good or excellent", "question": false, "depth_ft": 650, "clvl": 21, "goal": "flee (unseen attacker)", "last_action": [1792722313.4335864, "custom w item=20", "agent: wear ['Metal_Shod_Boots']"], "monsters": [], "standing_on": ".", "recent": [{"t": 179
+22:25:48 attention 13 [233, 236] [52, 147] {"what": "user_message", "detail": "That scimitar is likely good or excellent", 
+22:25:49 nav_cmd 13 [234, 236] [51, 148] {"cmd": "destroy", "args": ["t"], "wait_report": false}
+22:25:54 nav_cmd 12 [236, 236] [26, 177] {"cmd": "say", "args": ["Agreed, going back for it now."], "wait_report": false}
+22:25:54 nav_say 12 [236, 236] [26, 177] {"text": "Agreed, going back for it now."}
+22:26:00 nav_cmd 12 [236, 236] [26, 177] {"cmd": "goal", "args": ["goto", "49,162"], "wait_report": false}
+22:26:00 goal 12 [236, 236] [26, 177] {"goal": "goto 49,162"}
+22:26:00 attention 12 [236, 236] [26, 177] {"what": "tactic", "detail": "goto: no known path; trying one through unexplored squares", 
+22:26:04 goal 12 [236, 236] [27, 179] {"goal": "flee (unseen attacker)"}
+22:26:04 attention 12 [236, 236] [27, 179] {"what": "unseen_attacker", "detail": "'It creates a mesmerising illusion.': something unseen is attacking while goto 49,162; heading for the stairs", 
+22:26:09 nav_cmd 13 [236, 236] [52, 104] {"cmd": "say", "args": ["Too late: the Pilot fled an unseen light-breather by the stairs up before I got there, so the scimitar is on the old level. Lost."], "wait_report": false}
+22:26:09 nav_say 13 [236, 236] [52, 104] {"text": "Too late: the Pilot fled an unseen light-breather by the stairs up before I got there, so the scimitar is on the old level. Lost."}
+22:26:09 nav_cmd 13 [236, 236] [52, 104] {"cmd": "goal", "args": ["explore"], "wait_report": false}
+22:26:09 goal 13 [236, 236] [52, 104] {"goal": "explore"}
+22:26:18 attention 13 [230, 236] [48, 89] {"what": "band", "detail": "a band within 10 squares: Cave orc \u00d72, Black orc, Half-orc, Uruk (5 monsters, ~94 worst-case melee a turn together, HP 230): leave now while it's cheap -- stairs 15 away; don't stop for loot", 
+22:26:33 attention 13 [236, 236] [48, 91] {"what": "interesting_item", "detail": "Amulet of Resist Acid seen on this level (devices and jewellery sell for 50-700 once known): its square is under 'Item squares' in `status`; `goal goto Y,X`. A dive pauses 20 s for it", 
+22:26:43 goal 13 [237, 254] [48, 102] {"goal": "flee (Orc captain)"}
+22:26:43 attention 13 [237, 254] [48, 102] {"what": "danger_seen", "detail": "Orc captain (rated 4: lethal until clvl 26) in view while explore: heading for the stairs", 
+22:26:46 attention 13 [189, 254] [48, 102] {"what": "goal_failed", "detail": "flee (Orc captain): stuck on the way to the stairs", 
+22:26:46 attention 13 [189, 254] [48, 102] {"what": "emergency", "detail": "couldn't reach the stairs with 3 monsters close: read Word of Recall (8-23 s); phasing while it charges", 
+22:26:48 attention 13 [165, 254] [48, 102] {"what": "fight_going_badly", "detail": "HP 165/254 fighting Half-orc", 
+22:26:49 nav_cmd 13 [161, 254] [48, 102] {"cmd": "goal", "args": ["goto", "<", "force"], "wait_report": false}
+22:26:49 goal 13 [161, 254] [48, 102] {"goal": "goto < force"}
+22:26:52 attention 13 [130, 254] [48, 102] {"what": "goal_failed", "detail": "goto < force: stuck", 
+22:26:55 attention 13 [123, 254] [48, 102] {"what": "emergency", "detail": "low HP: read Phase Door (Novice paladin, Orc shaman adjacent)", 
+22:26:55 attention 13 [120, 254] [48, 93] {"what": "emergency", "detail": "low HP: quaffed a Potion of Cure Light Wounds (losing ~4 HP/s)", 
+22:26:57 goal 13 [142, 254] [48, 93] {"goal": "flee (unseen attacker)"}
+22:26:57 attention 13 [142, 254] [48, 93] {"what": "unseen_attacker", "detail": "'It points at you and curses.': something unseen is attacking; heading for the stairs", 
+22:26:58 attention 0 [147, 254] [16, 45] {"what": "goal_failed", "detail": "flee (unseen attacker): no stairs known", 
+22:27:00 user_note 0 [149, 254] [16, 45] {"note": "! That was a very stupid decision. Gear dropped by uniques is often very useful and/or sells for a lot", "question": false, "depth_ft": 0, "clvl": 22, "goal": null, "last_action": [1792722417.5733833, "rest", "rest"], "monsters": [[4, 50, "Filthy street urchin"], [5, 50, "Filthy
+22:27:00 attention 0 [149, 254] [16, 45] {"what": "user_message", "detail": "That was a very stupid decision. Gear dropped by uniques is often very useful and/or sells for a lot", 
+22:27:04 attention 0 [157, 254] [16, 45] {"what": "fight_going_badly", "detail": "HP 157/254 fighting Filthy street urchin", 
+22:27:08 nav_cmd 0 [163, 254] [16, 45] {"cmd": "say", "args": ["Fair criticism: I should have ordered the flee to be overridden or fetched it first. The Pilot's automatic unseen-attacker flee took the stairs before my goto, I could have stopped it and didn't try. Lesson logged."], "wait_report": false}
+22:27:08 nav_say 0 [163, 254] [16, 45] {"text": "Fair criticism: I should have ordered the flee to be overridden or fetched it first. The Pilot's automatic unseen-attacker flee took the stairs before my goto, I could have stopped it and didn't try. Lesson logged."}
+22:27:08 nav_cmd 0 [163, 254] [16, 45] {"cmd": "goal", "args": ["shop", "6", "sell", "Amulet_of_Resist_Acid:1", "sell", "Molybdenum_Rod:1", "sell", "Soft_Leather_Boots:1"], "wait_report": false}
+22:27:08 goal 0 [163, 254] [16, 45] {"goal": "shop 6 sell Amulet of Resist Acid:1 sell Molybdenum Rod:1 sell Soft Leather Boots:1"}
+22:27:24 user_note 0 [254, 254] [20, 81] {"note": "! Serious work needs to be applied to managing a nearly full inventory", "question": false, "depth_ft": 0, "clvl": 22, "goal": "shop 6 sell Amulet of Resist Acid:1 sell Molybdenum Rod:1 sell Soft Leather Boots:1", "last_action": [1792722428.6420748, "rest", "rest"], "monsters": 
+22:27:24 attention 0 [254, 254] [20, 81] {"what": "user_message", "detail": "Serious work needs to be applied to managing a nearly full inventory", 
+22:27:28 nav_cmd 0 [254, 254] [20, 89] {"cmd": "say", "args": ["Agreed. Pack is 22 slots with junk like mushrooms, water, staffs; I'll sell/destroy extras now and complain about the pickup behaviour."], "wait_report": false}
+22:27:28 nav_say 0 [254, 254] [20, 89] {"text": "Agreed. Pack is 22 slots with junk like mushrooms, water, staffs; I'll sell/destroy extras now and complain about the pickup behaviour."}
+22:27:28 nav_cmd 0 [254, 254] [20, 89] {"cmd": "complain", "args": ["Pack nearly full at 650 ft (22 slots: mushrooms, water, spare boots, extra staffs, rods); the bulky-pickup rule made the Pilot skip Brodda's Scimitar. A way to see free slots and choose what to junk, or a pack-slot figure in the report, would help."], "wait_rep
+22:27:28 nav_complaint 0 [254, 254] [20, 89] {"text": "Pack nearly full at 650 ft (22 slots: mushrooms, water, spare boots, extra staffs, rods); the bulky-pickup rule made the Pilot skip Brodda's Scimitar. A way to see free slots and choose what to junk, or a pack-slot figure in the report, would help."}
+22:27:42 nav_cmd 0 [254, 254] [24, 119] {"cmd": "goal", "args": ["shop", "6", "sell", "!Molybdenum_Rod:1", "sell", "!Soft_Leather_Boots:1"], "wait_report": false}
+22:27:42 goal 0 [254, 254] [24, 119] {"goal": "shop 6 sell !Molybdenum Rod:1 sell !Soft Leather Boots:1"}
+22:27:42 nav_cmd 0 [254, 254] [24, 119] {"cmd": "destroy", "args": ["Potion_of_Water"], "wait_report": false}
+22:27:43 nav_cmd 0 [254, 254] [24, 119] {"cmd": "destroy", "args": ["Furry_Mushroom"], "wait_report": false}
+22:27:44 nav_cmd 0 [254, 254] [24, 119] {"cmd": "destroy", "args": ["Black_Mushroom"], "wait_report": false}
+22:27:51 nav_cmd 0 [254, 254] [24, 119] {"cmd": "goal", "args": ["shop", "2", "sell", "!Soft_Leather_Boots:1"], "wait_report": false}
+22:27:51 goal 0 [254, 254] [24, 119] {"goal": "shop 2 sell !Soft Leather Boots:1"}
+22:28:02 nav_cmd 0 [254, 254] [35, 81] {"cmd": "goal", "args": ["shop", "2", "list"], "wait_report": false}
+22:28:02 goal 0 [254, 254] [35, 81] {"goal": "shop 2"}
+22:28:10 nav_cmd 0 [254, 254] [35, 81] {"cmd": "say", "args": ["My mistake: I force-sold the {excellent} boots without inspecting; they were Boots of Free Action, sold for 3 gold. Armoury has them at 2265, I have 525. Townfarming to buy them back."], "wait_report": false}
+22:28:10 nav_say 0 [254, 254] [35, 81] {"text": "My mistake: I force-sold the {excellent} boots without inspecting; they were Boots of Free Action, sold for 3 gold. Armoury has them at 2265, I have 525. Townfarming to buy them back."}
+22:28:11 nav_cmd 0 [254, 254] [35, 81] {"cmd": "complain", "args": ["Unknown {excellent} boots: no cheap way to see the ego without paying Identify; I sold them (my mistake) but the shop goal's sell accepted !NAME for a worn-then-removed {excellent} item. Wish: wearing an {excellent} item should reveal the ego in the report or t
+22:28:11 nav_complaint 0 [254, 254] [35, 81] {"text": "Unknown {excellent} boots: no cheap way to see the ego without paying Identify; I sold them (my mistake) but the shop goal's sell accepted !NAME for a worn-then-removed {excellent} item. Wish: wearing an {excellent} item should reveal the ego in the report or the shop quote 
+22:28:11 nav_cmd 0 [254, 254] [35, 81] {"cmd": "goal", "args": ["townfarm", "2400", "8"], "wait_report": false}
+22:28:11 goal 0 [254, 254] [35, 81] {"goal": "townfarm to 2400 gold"}
+22:29:09 user_note 0 [254, 254] [33, 152] {"note": "? The navigator is hopeless with dealing with items. Leaving behind valuable items, accidentally selling things", "question": true, "depth_ft": 0, "clvl": 22, "goal": "townfarm to 2400 gold", "last_action": [1792722505.696848, "walk 2", "townfarm: hit the Filthy street urchin f
+22:29:41 user_note 0 [254, 254] [40, 177] {"note": "? Serious work needs to be done as this is the MAIN point of the game. Gear is what gives a char power, especially warriors", "question": true, "depth_ft": 0, "clvl": 22, "goal": "townfarm to 2400 gold", "last_action": [1792722505.696848, "walk 2", "townfarm: hit the Filthy str
+22:30:06 user_note 0 [254, 254] [40, 132] {"note": "! Terminate mission early, you're fired", "question": false, "depth_ft": 0, "clvl": 22, "goal": "townfarm to 2400 gold", "last_action": [1792722505.696848, "walk 2", "townfarm: hit the Filthy street urchin first (a thief)"], "monsters": [[41, 140, "Blubbering idiot"], [48, 132,
+22:30:06 attention 0 [254, 254] [40, 132] {"what": "user_message", "detail": "Terminate mission early, you're fired", 
+22:30:12 nav_cmd 0 [254, 254] [41, 123] {"cmd": "stop", "args": [], "wait_report": false}
+22:30:12 goal 0 [254, 254] [41, 123] {"goal": null}
+22:30:12 nav_cmd 0 [254, 254] [41, 123] {"cmd": "say", "args": ["Understood. Stopped, idle in town. Sorry about the boots."], "wait_report": false}
+22:30:12 nav_say 0 [254, 254] [41, 123] {"text": "Understood. Stopped, idle in town. Sorry about the boots."}

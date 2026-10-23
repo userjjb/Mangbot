@@ -9,6 +9,26 @@ need to know how the pilot is written.
 Run commands from `github/tools/pilot/` with `python3 pilotctl.py --nick NAME
 ...` (after `module load python3/3.12.4`).
 
+## The Pilot's item policy (restructure step 2.1, 2026-10-23): read this first
+
+- **In the dungeon the Pilot handles items itself.** `destroy`, `drop`, `wear`, `takeoff`, `pickup`, `fuel`, `eat`,
+  `inscribe`, `wearall` and identify-type reads (`read Identify X`, `use Perception X`) are refused there; they're for
+  town, between trips. Combat consumables (`quaff`, `read` Phase/Recall/Teleport, `use`, `zap`, `aim`) still work.
+- **What the Pilot does by itself:** picks up by value (a unique's drop always; with the pack full it destroys the
+  cheapest non-kit item when the find is worth more, else leaves the find and says so), identifies the most valuable
+  unknown item when it's safe and it has a Scroll of Identify or a Staff of Perception, wields a weapon that does 20%
+  more (brands count half), wears better armour, and puts identified good jewellery into an empty slot. News says
+  what it did.
+- **Values** come from the server's own formula (`itemvalue.py`; a shop pays Dive04 ~38% of value). Unidentified
+  items are valued by expectation.
+- **In town, a sale or destroy you order is checked:** unidentified valuables ("identify it first"), items a shop
+  would pay for (for destroy/drop), resist/ability gear, kept items, and anything that may be the source of an
+  ability seen in play are refused with the reason. **`!NAME` overrides** (`sell !X`, `destroy !X`), and the value
+  lost is added to **your debt** (`debt` shows it). Keep your debt low.
+- **`keep NAME`** protects an item from the policy and from your own sells/destroys; `keep -NAME` releases it.
+- **Abilities seen in play:** "You are unaffected!" after a paralysing attack means Free Action from something you
+  wear; the Pilot counts it, and protects the unidentified worn items until they're identified (`ability` news).
+
 ## Your turn: `wait`
 
 (Your Bash tool times out after 120 s by default: for `wait` longer than ~110 s pass a Bash
