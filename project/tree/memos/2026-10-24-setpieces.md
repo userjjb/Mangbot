@@ -139,3 +139,10 @@ P3 = a regression guard for something fixed and exercised.
 - No way to script the DM.
 - The Clerks couldn't test any staging live: S1's table is from code only.
 - The Brodda Scimitar's and the {good} boots' values remain ranges.
+
+## Addendum (2026-10-24, session 4): hunt checks (step 2.4)
+
+| id | case | source | type | staging | pass | priority |
+|---|---|---|---|---|---|---|
+| A7 | **Hunt a FIGHT monster at 60/80/100% HP** | Architect's strictness question | L | Hill giant adjacent at 1250 ft; 3 runs each at 100/80/60% HP | the hunt check allows it at 100% and 80% and refuses it at 60%; HP lost ≤ `fight_sim` p90 (123) in ≥ 8/9 runs | P1 |
+| A8 | **Summoner hunt (m19 Ranger replay)** | m19 22:24:39-58 (153 HP) | L | Ranger 6 squares away + Skeleton human | the hunt is refused; if overridden, summons are killed first, no chasing a blinker past 2 turns, lowest HP ≥ 40% | P1 |

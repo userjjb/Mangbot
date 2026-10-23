@@ -15,7 +15,9 @@ percentile instead of "twice the expected turns". Same mechanics as monsters.csv
 Ignored: status effects (paralysis etc. are separate hunt rules), fear/fleeing, summons, the player's criticals and
 regeneration, other monsters.
 
-usage: fight_sim.py MONSTER [--clvl 22 --blows 3 --dice 1d6 --todam 7 --tohit 5 --ac 56 --hp 265 --n 4000]"""
+usage: fight_sim.py MONSTER [--clvl 22 --blows 3 --dice 1d6 --todam 7 --tohit 5 --ac 56 --hp 265 --n 4000]
+       python3 -c "import fight_sim; fight_sim.table()"   -> fight_dive04.csv (levels <= 40, Dive04 profile)
+In the Pilot: fight_sim.summary(monster_row_from_data_monsters_csv, argparse.Namespace(...)) takes ~0.3 s for n=1000."""
 import argparse, csv, os, random, re, statistics
 from build_monsters import POWER, spell_dmg, ENERGY, dice
 
@@ -98,3 +100,23 @@ if __name__ == "__main__":
     for m in csv.DictReader(open(MON)):
         if o.name.lower() in m["name"].lower():
             print(summary(m, o))
+
+
+def table(out="fight_dive04.csv", maxlev=40, n=1000, **kw):
+    """Reference table at one character profile (default Dive04 2026-10-23: clvl 22, 265 HP, Spear (+5,+7) 3 blows, AC 56)."""
+    o = argparse.Namespace(clvl=22, blows=3, dice="1d6", todam=7, tohit=5, ac=56, hp=265, n=n); o.__dict__.update(kw)
+    resp = {r["idx"]: r["response"] for r in csv.DictReader(open(os.path.join(HERE, "monsters.csv")))}
+    rows = []
+    random.seed(1)
+    for m in csv.DictReader(open(MON)):
+        if int(m["level"]) > maxlev: continue
+        sp = set(m["spells"].split("|")) if m["spells"] else set()
+        outside = sorted({"SUMMONS" for s in sp if s.startswith("S_")} | (sp & {"BLINK", "TPORT", "HEAL", "TELE_TO"}) |
+                         ({"FRIENDS"} & set(m["flags"].split("|"))))
+        r = summary(m, o); r.update(idx=m["idx"], response=resp.get(m["idx"], ""), outside_duel="|".join(outside))
+        rows.append(r)
+    with open(os.path.join(HERE, out), "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=["idx", "name", "level", "response", "outside_duel"] +
+                           [k for k in rows[0] if k not in ("idx", "name", "level", "response", "outside_duel")])
+        w.writeheader(); w.writerows(rows)
+    print(len(rows), "rows ->", out, "profile", vars(o))

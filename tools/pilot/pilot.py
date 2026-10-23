@@ -809,7 +809,17 @@ class Hunt(Goal):
             return None
         self.last_seen = time.time()
         y, x, r = min(mons, key=lambda m: w.dist(m[:2]))
+        # a blinker with bolts (the Advisor's hunt-strictness memo §4.3): after "X blinks away",
+        # close in at once; if that takes more than ~2 turns, give up and let the escape rules
+        # take over (m19: the Ranger blinked, then four bolts in 3 s while we stood)
+        blink = next((ts for ts, t in w.messages if ts >= self.t0 and "blinks" in t and self.target in t.lower()), None)
+        if blink and blink > getattr(self, "blink_seen", 0):
+            self.blink_seen = blink
+        if getattr(self, "blink_seen", 0) and w.dist((y, x)) > 1 and time.time() - self.blink_seen > 2.5:
+            return ("failed", f"{r.name} blinked away and couldn't be reached in 2 turns: hunt given up "
+                              "(a blinker with bolts wins at range)")
         if w.dist((y, x)) <= 1:
+            self.blink_seen = 0
             p.mover.stop()
             return None           # adjacent: auto-retaliate fights
         near = [(y + dy, x + dx) for dy in (-1, 0, 1) for dx in (-1, 0, 1) if dy or dx]
@@ -5547,6 +5557,32 @@ class Pilot:
         worst = 2 * turns * (melee + sp * float(row["spell_max"] or 0) + float(row["range_turn"] or 0))
         return turns, taken, worst, float(row["breath_max"] or 0), row
 
+    def fight_sim(self, race, n=600):
+        """The Advisor's fight_sim.summary at our live profile, or None (tools/rulebook/fight_sim.py,
+        synced from Advisor/data/rulebook; ~0.1 s for 600 duels)."""
+        try:
+            if not hasattr(self, "_sim"):
+                sys.path.insert(0, os.path.join(HERE, "..", "rulebook"))
+                import fight_sim
+                self._sim = (fight_sim, {r["idx"]: r for r in csv.DictReader(
+                    open(os.path.join(HERE, "..", "rulebook", "monsters_raw.csv")))})
+            mod, rows = self._sim
+            row = rows.get(str(getattr(race, "idx", "")))
+            wt = [x for x in self.weapon_table() if x[3]]
+            if not row or not wt:
+                return None
+            name, blows = wt[0][0], wt[0][1]
+            d = re.search(r"\((\d+d\d+)\)", name)
+            hd = re.search(r"\(([+-]\d+),([+-]\d+)\)", name)
+            import argparse
+            o = argparse.Namespace(clvl=self.w.clvl, blows=blows, dice=d.group(1) if d else "1d4",
+                                   todam=int(hd.group(2)) if hd else 0, tohit=int(hd.group(1)) if hd else 0,
+                                   ac=self.w.ind.get("armor", [0])[0] or 0, hp=max(1, self.w.hp[0]), n=n)
+            return mod.summary(row, o)
+        except Exception as e:             # (a rulebook problem must not break the check)
+            self.log("note", text=f"fight_sim failed: {e!r}")
+            return None
+
     def hunt_refusal(self, name):
         """Why the Pilot won't take this hunt now, or None (and the estimate it used)."""
         w = self.w
@@ -5564,13 +5600,26 @@ class Pilot:
             return None, f"no fight estimate for {race.name}"
         turns, taken, worst, breath, row = est
         hp = max(1, w.hp[0])
-        info = (f"{race.name}: ~{turns:.0f} turns to kill, ~{taken:.0f} HP lost meanwhile, ~{worst:.0f} if it goes "
-                f"badly (you have {w.hp[0]})")
+        sim = self.fight_sim(race)
+        if sim:
+            # the Advisor's duel simulator (hunt-strictness memo, 2026-10-24): the 90th percentile of
+            # the HP lost, at our live profile, replaces "twice the turns"
+            turns, taken, worst = sim["turns_mean"], sim["loss_mean"], sim["loss_p90"]
+        info = (f"{race.name}: ~{turns:.0f} turns to kill, ~{taken:.0f} HP lost on average, ~{worst:.0f} in a bad "
+                f"fight (1 in 10; you have {w.hp[0]})")
         if row.get("response") in ("AVOID", "LEAVE"):
-            return (f"the Advisor's rating for {race.name} is {row['response']} ({row.get('threats', '')})", info)
+            return (f"the Advisor's rating for {race.name} is {row['response']}", info)
         if worst > 0.6 * hp:
-            return (f"{info}: if it goes badly, more than 60% of your HP. Rest to full first, or come back "
+            return (f"{info}: a bad fight would cost more than 60% of your HP. Rest to full first, or come back "
                     "stronger", info)
+        # summoners: once summons arrive the fight is a band (the m19 Ranger: a cheap duel, then
+        # S_ANIMAL and bolts cost 153 HP). Only a clear win, at high HP, alone, with escapes
+        if any(sp.startswith("S_") for sp in race.spells):
+            others = sum(1 for *_, r in w.monsters if r.name != race.name)
+            phase = sum(i["number"] for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"])
+            if worst > 0.3 * hp or w.hp_frac < 0.8 or others or phase < 5:
+                return (f"{race.name} summons help: hunt it only when a bad fight costs under 30% of your HP, you're "
+                        f"at 80%+ HP, nothing else is in view and you carry 5+ Phase Door ({info})", info)
         if breath > 0.6 * hp:
             return (f"{race.name} breathes up to {breath:.0f} (you have {w.hp[0]}): one breath could take "
                     f"60% of your HP", info)

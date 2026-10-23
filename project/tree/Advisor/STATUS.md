@@ -27,8 +27,8 @@ Architect builds everything else.
    subtract already-found artifacts if the server log is kept; empirical drop counts need monster coordinates in the logs.
 2. **Live checks of code-only rulebook claims** once Gandalf is scriptable (or from a mission log): boulders do 0 damage; the low-HP time
    bubble is a constant 1/5; WoR counts down ~10× faster while resting out of sight; "You are unaffected!" pairing.
-3. **Set-pieces:** when the enablers land, write a staging recipe + automatic pass/fail check for each P1 case (A1, A2, A3, A6, B1, C1, C3,
-   C4, C5, C8, D3, F1).
+3. **Set-pieces:** when the enablers land, write a staging recipe + automatic pass/fail check for each P1 case (A1, A2, A3, A6, A7, A8, B1, C1, C3,
+   C4, C5, C8, D3, F1). A7 also validates `fight_sim.py` (Hill giant p90 123 at Dive04's profile).
 4. **Belief-state spec** (if the Architect wants it for step 2): fields, computation, expiry (see starting-over memo §3.4).
 5. **Step 5:** run the scorecard on each new mission vs the m17–23 baseline; Opus vs Sonnet by depth band (m22–23 were Sonnet;
    `data/navigator/response.py` has the missions list; production `scorecard.py` reads `runs/missions.json` which records the model).
@@ -65,6 +65,7 @@ spells, breaths, tags, solo index), `abilities.csv` (messages proving abilities)
 | 10-19 | starting over (sent 10-22) | `2026-10-19-starting-over.md` | |
 | 10-23 | scorecard | `2026-10-23-scorecard.md` | `data/scorecard/` |
 | 10-24 | rulebook r3: drops, value fix, town-kit answers | `2026-10-24-rulebook-r3.md` | `data/rulebook/` (D1, D2) |
+| 10-24 | hunt strictness (step 2.4): simulated p90 + summoner rule; set-pieces A7, A8 | `to_architect/2026-10-24-hunt-strictness.md` | `data/rulebook/fight_sim.py`, `fight_dive04.csv` |
 | 10-24 | set-pieces; rulebook r1 + r2 | `2026-10-24-setpieces.md`, `2026-10-24-rulebook.md`, `2026-10-24-rulebook-r2.md` | `data/rulebook/` |
 
 The user struck one lead (2026-10-07): the live fetch of Bug Reports / Technical Support. Don't propose it again.
@@ -80,6 +81,8 @@ The user struck one lead (2026-10-07): the live fetch of Bug Reports / Technical
   per two of its turns.
 - Running = ×5 game time with no awake monster in LOS; resting ×10 (so WoR charges ~10× faster resting out of sight). Low-HP bubble:
   constant 1/5 below hitpoint_warn×10% (Pilot has it off).
+- Hunt checks: `fight_sim.py` p90 (FIGHT-rated: none > 60% HP at Dive04's profile); summoners and blinkers are outside the duel model
+  (m19 Ranger: duel p90 44, real 153 from summons + ranged phase). The `threats` column of monsters.csv is stale 09-27 text (boulder ~30).
 - Boulders do 0 damage to players; BO_POIS and BR_MANA are empty; breaths use current HP.
 - "You are unaffected!" = Free Action only after HOLD/SLOW/paralysis; after BLIND = rBlind; after TELE_LEVEL = rNexus.
   "You resist the effects!" = a save, so the player LACKS the resist. The `flags` query shows identified flags only.

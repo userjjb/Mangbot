@@ -46,3 +46,9 @@ drops and ordinary kills untestable from logs (no inscriptions in itemlist, no m
 Retrospective: script-first then two Clerks (code audit + own logs) was the right split; D1's audit (164k tokens, 13 min) found the
 one thing that changes the Pilot's policy (unidentified pricing), which the script author missed. Sonnet clerks again did no
 arithmetic in the tables. Lesson: when a value table is "what it's worth", always ask "worth to whom, when": true vs realisable.
+
+## Hunt strictness (step 2.4 question, session 4)
+`fight_sim.py` (duel Monte Carlo, importable; build_monsters.py now import-safe, output byte-identical) + `fight_dive04.csv`. Validated
+against the m19 Ranger log: the duel part matched (7 hits to 1, then blink); the real 153 HP came from summons + a 4-bolt ranged phase
+while the Pilot quaffed — outside any duel model -> summoner/blinker rules. Reply `to_architect/2026-10-24-hunt-strictness.md`;
+set-pieces A7/A8 appended to the set-piece memo.
