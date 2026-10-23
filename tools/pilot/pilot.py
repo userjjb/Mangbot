@@ -862,6 +862,42 @@ class Recover(Goal):
         return ("done", f"healed at {w.depth_ft} ft" + (f"; resuming '{self.prev.describe()}'" if self.prev else ""))
 
 
+class Reprieve(Goal):
+    """A blinker got away (a hunt given up): take the reprieve. The user (2026-10-23): rest
+    is free; resources only in a turn-sensitive situation. Mortal danger near -> leave by the
+    stairs while we can. Something still in view -> step out of its sight over walked ground
+    (spending nothing). Nothing in view -> rest to full. Done when healed, or after 2 minutes."""
+
+    def __init__(self, who):
+        self.who = who
+        self.name = f"reprieve (rest while {who} is away)"
+        self.t0 = time.time()
+
+    def tick(self, p):
+        w = p.w
+        if not w.in_dungeon:
+            return ("done", "not in the dungeon")
+        total, _ = p.group_danger()
+        if p.dangers() or total >= 0.6 * max(1, w.hp[0]):
+            p.stop_resting()
+            p.set_goal(Flee(f"mortal danger near after {self.who} blinked away: leaving while we can"))
+            return None
+        if w.hp_frac >= p.orders["rest_to"]:
+            p.stop_resting()
+            return ("done", f"healed ({w.hp[0]}/{w.hp[1]}) while {self.who} stayed away")
+        if time.time() - self.t0 > 120:
+            p.stop_resting()
+            return ("done", "2 minutes: carrying on")
+        if w.monsters:
+            p.stop_resting()
+            # out of its sight, over ground already walked (no new monsters woken)
+            if not p.retreat_step([m for m in w.monsters], reach=20):
+                return None      # (nowhere better: hold; the fight reflexes still apply)
+            return None
+        p.start_resting()
+        return None
+
+
 class Flee(Goal):
     """Get away from something too dangerous: to the nearest known stairs and
     take them."""
@@ -4051,6 +4087,14 @@ class Pilot:
             ended = self.goal_ending
             if getattr(ended, "overridden", None):
                 self.settle_hunt(ended, status, detail)
+            if isinstance(ended, Hunt) and status == "failed" and "blinked away" in str(detail) and self.w.in_dungeon:
+                self.notify({"done": "goal_done", "failed": "goal_failed"}[status], f"{g}: {detail}", news=quiet)
+                self.goal = Reprieve(ended.target)
+                self.goal_t = time.time()
+                if self.plan and self.plan.paused and ended is self.plan.pause_goal:
+                    self.plan.pause_goal = self.goal      # (the plan waits for the reprieve too)
+                self.log("goal", goal=self.goal.describe(), why="a blinker got away: rest is free (the user)")
+                return True
             if self.plan:
                 if getattr(ended, "by_plan", False):
                     self.plan.goal_ended(self, ended, status, detail)

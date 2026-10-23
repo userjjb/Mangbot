@@ -203,8 +203,10 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    the doubling was the problem; now its **duel simulator** decides (`fight_sim.py` + `monsters_raw.csv`, synced by
    `sync.sh`; `Pilot.fight_sim` at the live profile, p90 loss > 60% HP refuses), plus a **summoner rule** (only if p90
    <= 30% HP, HP >= 80%, alone, 5+ Phase) and a **blinker rule** (Hunt gives up if the target blinked and isn't reached
-   in ~2.5 s). Not done: the memo's "don't quaff or read while closing in" (it would override cure reflexes; ask the
-   user before touching). Set-pieces A7 (Hill giant at 60/80/100% HP) and A8 (Ranger replay) will test it. Hunt override built (`goal hunt !NAME`, `settle_hunt`: wrong = not slain / HP < 50% / an emergency; fight debt in
+   in ~2.5 s). The user's answer on the memo's "don't quaff
+   while closing in": **rest is free, spend resources only when turns matter** (notes_players.md): after a blinker
+   escapes, the `Reprieve` goal flees if mortal danger is near, else steps out of sight and rests. Audit of m17-23
+   spends: the cure reflexes mostly follow it already. Set-pieces A7 (Hill giant at 60/80/100% HP) and A8 (Ranger replay) will test it. Hunt override built (`goal hunt !NAME`, `settle_hunt`: wrong = not slain / HP < 50% / an emergency; fight debt in
    HP, `debt` shows both). **2.5 belief state: done (session 4):** `belief_tick`/`belief_lines` add to the report
    `Out of view` (monsters seen in the last 2 min on this level, last position; uniques and dangers first), `Fight so
    far` (hits x damage per hit vs the rulebook's HP, the health bar), `Rates` (HP lost in 10 s, XP/gold per 10 min),

@@ -66,6 +66,12 @@ target, otherwise it picks one at random). Consequences for the tool:
 
 ## Survival lore (for the Phase 3 rules)
 
+- **Rest is free; spend resources only when turns matter** (the user, 2026-10-23, on a blinker escaping a hunt): when a
+  monster blinks away and nothing dangerous is near, take the reprieve and rest, rather than drinking potions or
+  reading scrolls. Never rest with mortal danger near: then the reprieve is the chance to run. Built as the Pilot's
+  `Reprieve` goal (restructure step 2.4). An audit of m17-23 found the cure reflexes already mostly follow it (64 of 80
+  low-HP spends with a hit in the previous 5 s or a monster adjacent; the other 16 with a monster 2-3 squares away).
+
 - Escapes, in order of use:
   - Phase Door (up to 10 squares);
   - Teleport (across the level, maybe into worse trouble);
