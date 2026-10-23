@@ -24,3 +24,9 @@ Memo `../memos/2026-10-24-rulebook.md` + note. Tables in `data/rulebook/`. Verif
 (spells1.c:3540-4092 case list), CONSTANT_TIME_FACTOR 5 and the bubble code (xtra2.c:5180-5207), the Pilot's --hpwarn 0
 (pilot.py:5135-5141). Brodda melee model vs the m15 log (consistent). Retrospective: "formulas by Clerk, tables by
 script" worked well — no Clerk arithmetic in the tables. Monte Carlo build_feelings.py is slow (~5 min at 3000 samples).
+
+## Release 2 (2026-10-24)
+Architect's order: abilities (A1 Clerk -> abilities.csv, ego_flags.csv), jewellery (build_jewellery.py -> jewellery.csv, fed into
+kinds_by_level), kill time (rule.py fight). Memo `../memos/2026-10-24-rulebook-r2.md`. Verified "You are unaffected!" for
+BLIND (melee2.c:1380) and TELE_LEVEL (:1637) and SLOW (:1422-1425); all 8 Dive04 cases followed SLOW/HOLD.
+Pending: drop expectations.

@@ -30,3 +30,4 @@ metadata:
 - 2026-10-23: **scorecard definitions + baseline m17–23** → `memos/2026-10-23-scorecard.md`, `Advisor/data/scorecard/` (restructure step 1).
 - 2026-10-24: **set-piece list** → `memos/2026-10-24-setpieces.md` (41 cases, 12 P1; Dive04 had FA m18–23 unknowingly).
 - 2026-10-24: **rulebook v1** → `memos/2026-10-24-rulebook.md`, `Advisor/data/rulebook/` (kinds/unknown values, feelings, monsters, constants, shops, char, structures; rule.py).
+- 2026-10-24: **rulebook r2** → `memos/2026-10-24-rulebook-r2.md` (abilities.csv, jewellery.csv, rule.py fight). Session 3 ended with a full STATUS.md handoff.

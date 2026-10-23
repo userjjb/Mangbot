@@ -2869,8 +2869,14 @@ class Pilot:
             if ts <= self.ability_seen_t or not t.startswith("You are unaffected"):
                 continue
             before = [m for tt, m in msgs[max(0, i - 4):i] if ts - tt < 3]
-            if any(re.search(r"gazes|touches|stares|looks deep|paralyz|hold|mesmeri", m, re.I) for m in before) and \
-                    "free_action" not in self.inferred and not self.has_ability("free_action"):
+            # Only the line just before counts, and only a HOLD/SLOW spell or a paralysis
+            # blow proves Free Action: the same "unaffected" follows BLIND (rBlind) and
+            # TELE_LEVEL (rNexus) (the Advisor's rulebook r2, abilities.csv)
+            last = before[-1] if before else ""
+            proves = re.search(r"stares deep into your eyes|drains power from your muscles|mumbles\.$|"
+                               r"touches you|gazes (at )?you", last) and \
+                not re.search(r"burning your eyes|gestures at your feet|mumbles strangely", last)
+            if proves and "free_action" not in self.inferred and not self.has_ability("free_action"):
                 self.inferred.add("free_action")
                 src = [re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", i2["name"])).lower()
                        for i2 in w.items(equip=True) if self.iv(i2["name"]).known is False

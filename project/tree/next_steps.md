@@ -137,7 +137,83 @@ validation.
   the Phase 1 confirm answer), inscribing key items, and the live character "Sneezy".
 - The user's player lore and plan changes are in `notes_players.md` (read it).
 
-### ARCHITECT HANDOFF 2026-10-08 (READ THIS FIRST; the sections below are history)
+### ARCHITECT HANDOFF 2026-10-24 (READ THIS FIRST; the 2026-10-08 section below is the history since)
+
+**Where we are: the RESTRUCTURE, step 2.2 next.** On 2026-10-22, after mission 23 (which the user ended: "you're
+fired"), the user decided to stop patching per mission and restructure the Navigator/Pilot system: **restructure, not
+rewrite; keep Dive04; instruments first.** No missions are being run; don't start one, or patch per incident, unless
+the user asks.
+
+| doc | what |
+|---|---|
+| `restructure.md` | **how to revert** to before it (tag `pre-restructure` = 767bf60; saves and non-git files in `runs/backup-pre-restructure-20261022/`). Only on the user's request |
+| `restructure-step2.md` | the step 2 design (who decides what), agreed with the user; decisions in its §6 |
+| `memos/2026-10-19-starting-over.md` | the Advisor's reflection the plan comes from |
+| `memos/to_advisor/2026-10-22-restructure-plan.md` | the plan as sent to the Advisor |
+
+**Git:** all work is on branch **`restructure`** in `github/` (pushed to GitHub, userjjb/Mangbot); `master` stays at
+the tag. Push after each piece of work (`tools/snapshot.sh`, commit, `git push origin restructure`).
+
+**Running (job 8181626 on scc-pe7, walltime to Sat 10-24 09:50):** the test server under gdb (`testserver/`, port
+28346, with the 10-17 store patch), Dive04's Pilot, the user's viewer (`tmux -L mang attach -t watch`), the inbox
+watcher. A new node means restarting all four (commands in the 2026-10-08 section and `restructure.md`).
+
+**Dive04 now:** clvl 22, 254 HP, in town, 637 gold, max_depth 650; Spear (+5,+7) 3 blows ~32; Hard Studded Leather of
+Resistance (4 resists), Ring of Protection [+8], Brodda's Metal Shod Boots [6] {good} (unidentified); 6 CCW, 2 CSW,
+9 Phase, **1 WoR** (a recall dive needs 2); CON/WIS/CHR drained. **No Free Action** (the boots that gave it were sold
+in m23). Navigator debt 0.
+
+**Restructure steps:**
+1. **Instruments: done** (to the Advisor's `memos/2026-10-23-scorecard.md`). `tools/observe/scorecard.py` (`--table`,
+   `--check` against the Advisor's baseline: matches), `shopmath.py` (exact fair pay from the source),
+   `runs/missions.json`. New logging: numbered reports + `report_age` on every command, `sale`, `itemlist` /
+   `left_behind`, `escape`, per-check state in audit_check, the tracked monster's health bar, `mission_start/end`.
+2. **Who decides what: in progress.** 2.1 **done**, the Pilot's item policy: `tools/pilot/itemvalue.py`
+   (object_value_real + the rulebook; 37/38 past sales matched), Navigator item commands refused in the dungeon,
+   value refusals with `!` override → **the Navigator's debt**, `keep`, Free Action inferred from "You are
+   unaffected!", pickup by value (unique drops always; use a flask/ration, then destroy the cheapest non-kit item),
+   no loot after a `band`, a policy step at safe moments (identify, wield/wear upgrades, jewellery), gold within 10
+   when idle. **Next: 2.2 the town kit** (sell by policy at the right shop, identify, restock to the kit levels,
+   the Navigator's buy list, Restore stats), then 2.3 trip plan (`plan trip LO-HI until COND then recall`), 2.4 order
+   checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
+   toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23.
+3. **Rulebook:** the Advisor's **release 2** is in `Advisor/data/rulebook/`, synced into `github/tools/rulebook/`
+   (`sync.sh` after each release; the Advisor owns it). Used so far: kinds_by_level, unknown_expect, feelings, and
+   abilities.csv's rule for Free Action (only after a HOLD/SLOW spell or a paralysis blow line). Not yet:
+   **jewellery.csv** (ring/amulet plusses and P(cursed): wire into itemvalue for unknown jewellery), **`rule.py fight`**
+   (turns to kill, HP lost: for hunt vetting in 2.4), monsters.csv (set-piece A1's reach sum), constants.csv. The rest
+   of abilities.csv (rBlind, rNexus... and "lacks" evidence) could extend watch_abilities. The Advisor's next: drop
+   expectations.
+4. **Harness:** the Advisor's 41 set-pieces (`memos/2026-10-24-setpieces.md`, P1: A1 A2 A3 A6 B1 C1 C3 C4 C5 C8 D3
+   F1). Its enablers come first: a key-sending verb in the tool client so Gandalf (DM) can stage scenes, and logging the
+   map/status/inventory replies (or `--pktlog`) for replays.
+5. Missions again, with scorecards; then a fair Sonnet/Opus comparison (levels per dungeon hour, like depth bands).
+
+**Rules from the user (keep them):**
+- **The Navigator's debt limit is never a number.** Overrides are revoked by creating
+  `runs/private/dive04.overrides_revoked` (text = why). Every mission prompt states the current debt
+  (`PILOT_ROLE=architect pilotctl --nick dive04 debt`) and that past a limit it isn't told, its freedom to
+  sell/destroy is taken away. Never tell it a figure or how close it is.
+- **Item commands:** refused to the Navigator in the dungeon, allowed in town between trips.
+- **`PILOT_ROLE=architect`** in front of my own pilotctl calls (otherwise they're treated as the Navigator's).
+- **Mission markers:** `pilotctl --nick dive04 mission start mNN navigator=MODEL [effort=..] [notes=..]` at launch,
+  `mission end` at the end (they keep runs/missions.json for the scorecard).
+- The Navigator model is chosen per launch (`model: sonnet` on the Agent call); the agent file still inherits Opus.
+- Save each Navigator report to `runs/pilot/dive04/reports/`, read `runs/complaints.md`, answer the user's `?`
+  viewer notes (`tools/observe/notes.py --nick dive04 --questions`): **I missed some in m21-23; check them after
+  every mission.**
+
+**Open questions for the user:**
+- **Time bubble** (the Advisor, rulebook memo): the Pilot runs `--hpwarn 0`, giving up the server's constant 1/5 time
+  factor at low HP. Turn-based Pilot timers would let both agents use it (5x more real time in close calls).
+  Proposed: queue it after step 2, tested with the harness. Not answered yet.
+- The Advisor asked what rulebook tables come next; I suggested an ability-inference table, jewellery plusses, kill
+  time per monster, then drop expectations.
+
+**Advisor exchange (latest):** to_architect 10-23 scorecard, 10-24 setpieces, 10-24 rulebook, 10-24 rulebook-r2 (all
+read); to_advisor 10-22 restructure-plan, 10-23 scorecard-built, 10-23 step2-items, 10-24 rulebook-in, 10-24 r2-in.
+
+### ARCHITECT HANDOFF 2026-10-08 (history; read the 2026-10-24 section first)
 
 **Start of every session:** start the inbox watcher first (memory `mangband-inbox-watcher`), read
 unread `memos/to_architect/`, check what's running (`ps -u $USER`, `tmux -L mang ls`). After every

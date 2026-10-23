@@ -7,8 +7,10 @@ Writes kinds_by_level.csv: one row per (object level L, flavoured kind) with
               L = (dungeon level + monster level) / 2, xtra2.c monster_death)
   value       true value of one identified item (object_value_real): kind cost (object.txt W:), + 5% of it per
               charge for wands/staffs at the MEAN initial charges (object2.c charge_wand/charge_staff, 1252-1259);
-              rings/amulets: kind cost only (plusses/pval from apply_magic not yet included: see T2)
-  worthless   1 if cost 0 (shops refuse it once known: store_will_buy)
+              rings/amulets: E[value] incl. plusses/pval and the chance of a cursed copy (worth 0), from jewellery.csv
+              (build_jewellery.py), at the nearest tabulated level
+  worthless   P(worth 0): 1 if the kind's cost is 0, or the chance of a cursed copy for rings/amulets (shops refuse
+              worthless items once known: store_will_buy)
   hazard      what using/wearing it unknown does to our warrior (identify study, P/D dispatches): "" if harmless
 How the Pilot uses it: E[value | tval, L, still-unaware kinds] = sum(p*value)/sum(p) over the kinds the character is
 not aware of (awareness = server kind_aware; the flavour table runs/flavours.json maps flavour -> kind).
@@ -46,6 +48,10 @@ for r in csv.DictReader(open(f"{STUDY}/D_devices.csv")):
     if not (c.startswith("GOOD") or c.startswith("HARMLESS")):
         haz[(r["tval"], r["kind"])] = c
 
+JEW = {}
+for r in csv.DictReader(open(os.path.join(HERE, "jewellery.csv"))):
+    JEW[(int(r["tval"]), int(r["sval"]), int(r["level"]))] = (int(r["exp_value"]), float(r["p_cursed"]))
+
 maxlev = int(sys.argv[1]) if len(sys.argv) > 1 else 60
 rows = []
 for L in range(0, maxlev + 1):
@@ -59,10 +65,23 @@ for L in range(0, maxlev + 1):
                 continue
             cost = int(r["cost"])
             ch = charges.get((tn, svname.get((tn, int(r["sval"])), "")), 0) if tn in ("wand", "staff") else 0
+            value, pc = round(cost + (cost // 20) * ch), int(cost == 0)
+            if tv in (40, 45):
+                value, pc = JEW.get((tv, int(r["sval"]), min(60, 5 * round(L / 5))), (cost, int(cost == 0)))
             rows.append(dict(level=L, tval=tn, tval_num=tv, k_idx=k, kind=r["name"], p_in_tval=round(p / tot, 6),
-                             value=round(cost + (cost // 20) * ch), mean_charges=round(ch, 1) if ch else "",
-                             worthless=int(cost == 0), hazard=haz.get((tn, r["name"]), "")))
+                             value=value, mean_charges=round(ch, 1) if ch else "",
+                             worthless=round(pc, 3), hazard=haz.get((tn, r["name"]), "")))
 out = os.path.join(HERE, "kinds_by_level.csv")
 with open(out, "w", newline="") as f:
     w = csv.DictWriter(f, fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
 print(len(rows), "rows ->", out)
+# the short form: E[value], P(worthless), P(hazard) per level and tval over all kinds
+import collections
+agg = collections.defaultdict(lambda: [0.0, 0.0, 0.0])
+for y in rows:
+    a = agg[(y["level"], y["tval"])]; p = y["p_in_tval"]
+    a[0] += p * y["value"]; a[1] += p * y["worthless"]; a[2] += p * (y["hazard"] != "")
+with open(os.path.join(HERE, "unknown_expect.csv"), "w", newline="") as f:
+    w = csv.writer(f); w.writerow(["level", "tval", "expected_value", "p_worthless", "p_hazard"])
+    for (L, tv), (e, pw, ph) in sorted(agg.items()):
+        w.writerow([L, tv, round(e), round(pw, 3), round(ph, 3)])

@@ -2,13 +2,14 @@
 
 Tables generated from the MAngband server source (`github/src/server/`, `github/lib/edit/`) for the Pilot's policies and
 the Navigator's queries. Rebuild after any server or data-file change with `./build_all.sh` (Python 3.12:
-`module load python3/3.12.4`). Query with `rule.py` (see its help). Formulas and code lines are in each build script's
+`module load python3/3.12.4`). Query with `rule.py` (see its help; `rule.py fight MONSTER --clvl --blows --dpb --tohit --ac` estimates turns to kill and HP lost). Formulas and code lines are in each build script's
 docstring and in the study dispatches `Advisor/studies/2026-10-23-rulebook/dispatches/K1-K3.md`.
 
 | file | what | built by |
 |---|---|---|
 | `kinds_by_level.csv` | flavoured kinds (potion..amulet) by object level 0-60: P(kind within its tval), true value (mean charges), worthless, hazard of use | build_kinds.py |
 | `unknown_expect.csv` | E[value], P(worthless), P(hazard) of an unknown flavoured item by tval and level (all kinds; renormalise over still-unaware kinds with kinds_by_level) | build_kinds.py |
+| `jewellery.csv` | rings and amulets by kind and level: P(cursed copy), E/percentiles of value incl. plusses and pval (they are never pseudo-ID'd); feeds kinds_by_level | build_jewellery.py |
 | `feelings.csv` | per weapon/armour kind and level: E[value], percentiles, plusses, P(irreplaceable ego), top egos for "good" and "excellent"; artifact value for "special" | build_feelings.py (Monte Carlo of apply_magic) |
 | `monsters.csv` | all 616 races: hp, speed_x, melee by AC (round and per player turn with recoil), spell %, mean/max cast, breath at full HP, tags, solo danger index, the hand ratings | build_monsters.py |
 | `constants.csv` | timing (ticks, energy, time bubbles, recall, regen, burn), odds (traps, search, disarm, chests, devices, recharge, enchant), ranges | K3 dispatch (code-checked) |

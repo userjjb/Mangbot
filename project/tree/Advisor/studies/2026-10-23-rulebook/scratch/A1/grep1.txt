@@ -1,0 +1,271 @@
+cmd2.c:403:		if (!(p_ptr->resist_pois || p_ptr->oppose_pois))
+cmd2.c:413:		if (!p_ptr->free_act)
+randart.c:1055:	bool aggravate_me = FALSE;
+randart.c:1110:		/* Really powerful items should aggravate. */
+randart.c:1116:				aggravate_me = TRUE;
+randart.c:1266:		if (aggravate_me)
+birth.c:1098:	// and then regenerates when we try to log back on.
+cave.c:2431:	if (!(p_ptr->lite_n)) return;
+cave.c:2434:	for (i = 0; i < p_ptr->lite_n; i++)
+cave.c:2436:		y = p_ptr->lite_y[i];
+cave.c:2437:		x = p_ptr->lite_x[i];
+cave.c:2446:	p_ptr->lite_n = 0;
+cave.c:2465:    p_ptr->lite_y[p_ptr->lite_n] = (Y); \
+cave.c:2466:    p_ptr->lite_x[p_ptr->lite_n] = (X); \
+cave.c:2467:    p_ptr->lite_n++
+cave.c:2523:	for (i = 0; i < p_ptr->lite_n; i++)
+cave.c:2525:		y = p_ptr->lite_y[i];
+cave.c:2526:		x = p_ptr->lite_x[i];
+cave.c:2540:	p_ptr->lite_n = 0;
+cave.c:2682:	for (i = 0; i < p_ptr->lite_n; i++)
+cave.c:2684:		y = p_ptr->lite_y[i];
+cave.c:2685:		x = p_ptr->lite_x[i];
+cave.c:3508: * This means that as long as the player does not "teleport",
+obj-info.c:53:	"teleport",
+obj-info.c:60:	"teleport away",
+obj-info.c:906:	if (f3 & (TR3_FEATHER))     good[gc++] = "makes you fall like a feather";
+obj-info.c:920:	if (f3 & (TR3_TELEPATHY)) good[gc++] = "the power of telepathy";
+obj-info.c:924:	if (f3 & (TR3_AGGRAVATE)) bad[bc++] = "aggravates creatures around you";
+melee1.c:524:					if (!(p_ptr->resist_pois || p_ptr->oppose_pois))
+melee1.c:544:					if (!p_ptr->resist_disen)
+melee1.c:898:					if (!p_ptr->resist_blind)
+melee1.c:918:					if (!p_ptr->resist_conf)
+melee1.c:938:					if (p_ptr->resist_fear)
+melee1.c:968:					if (p_ptr->free_act)
+melee1.c:1102:					if (p_ptr->hold_life && (randint0(100) < 95))
+melee1.c:1109:						if (p_ptr->hold_life)
+melee1.c:1131:					if (p_ptr->hold_life && (randint0(100) < 90))
+melee1.c:1138:						if (p_ptr->hold_life)
+melee1.c:1160:					if (p_ptr->hold_life && (randint0(100) < 75))
+melee1.c:1167:						if (p_ptr->hold_life)
+melee1.c:1189:					if (p_ptr->hold_life && (randint0(100) < 50))
+melee1.c:1196:						if (p_ptr->hold_life)
+melee1.c:1216:					if (!p_ptr->resist_chaos)
+melee2.c:105:		if (p_ptr->resist_acid) smart |= SM_RES_ACID;
+melee2.c:107:		if (p_ptr->immune_acid) smart |= SM_IMM_ACID;
+melee2.c:108:		if (p_ptr->resist_elec) smart |= SM_RES_ELEC;
+melee2.c:110:		if (p_ptr->immune_elec) smart |= SM_IMM_ELEC;
+melee2.c:111:		if (p_ptr->resist_fire) smart |= SM_RES_FIRE;
+melee2.c:113:		if (p_ptr->immune_fire) smart |= SM_IMM_FIRE;
+melee2.c:114:		if (p_ptr->resist_cold) smart |= SM_RES_COLD;
+melee2.c:116:		if (p_ptr->immune_cold) smart |= SM_IMM_COLD;
+melee2.c:119:		if (p_ptr->resist_pois) smart |= SM_RES_POIS;
+melee2.c:123:		if (p_ptr->resist_neth) smart |= SM_RES_NETH;
+melee2.c:124:		if (p_ptr->resist_lite) smart |= SM_RES_LITE;
+melee2.c:125:		if (p_ptr->resist_dark) smart |= SM_RES_DARK;
+melee2.c:126:		if (p_ptr->resist_fear) smart |= SM_RES_FEAR;
+melee2.c:127:		if (p_ptr->resist_conf) smart |= SM_RES_CONF;
+melee2.c:128:		if (p_ptr->resist_chaos) smart |= SM_RES_CHAOS;
+melee2.c:129:		if (p_ptr->resist_disen) smart |= SM_RES_DISEN;
+melee2.c:130:		if (p_ptr->resist_blind) smart |= SM_RES_BLIND;
+melee2.c:131:		if (p_ptr->resist_nexus) smart |= SM_RES_NEXUS;
+melee2.c:132:		if (p_ptr->resist_sound) smart |= SM_RES_SOUND;
+melee2.c:133:		if (p_ptr->resist_shard) smart |= SM_RES_SHARD;
+melee2.c:136:		if (p_ptr->free_act) smart |= SM_IMM_FREE;
+melee2.c:572:			aggravate_monsters(p_ptr, m_idx);
+melee2.c:1104:				if (!p_ptr->resist_conf)
+melee2.c:1134:				if (!p_ptr->resist_blind)
+melee2.c:1138:				if (!p_ptr->resist_conf)
+melee2.c:1142:				if (!p_ptr->free_act)
+melee2.c:1355:			if (p_ptr->resist_fear)
+melee2.c:1378:			if (p_ptr->resist_blind)
+melee2.c:1401:			if (p_ptr->resist_conf)
+melee2.c:1423:			if (p_ptr->free_act)
+melee2.c:1446:			if (p_ptr->free_act)
+melee2.c:1635:			if (p_ptr->resist_nexus)
+melee2.c:2099: * recently occupied by the player (and left via "teleport").
+melee2.c:2203:	if ( (r_ptr->flags2 & RF2_WANDERER) && (!p_ptr->aggravate) 
+melee2.c:2493:	   been regenerated yet.
+melee2.c:2503:		if (!p_ptr->aggravate) notice = randint0(1024);
+melee2.c:2518:			if (p_ptr->aggravate) d = m_ptr->csleep;
+melee2.c:3531:		         (closest_in_los || p_ptr->aggravate))
+monster1.c:246:	if (l_ptr->flags6 & RF6_TPORT)       vp[vn++] = "teleport-self";
+monster1.c:249:	if (l_ptr->flags6 & RF6_TELE_TO)     vp[vn++] = "teleport to";
+monster1.c:250:	if (l_ptr->flags6 & RF6_TELE_AWAY)   vp[vn++] = "teleport away";
+monster1.c:251:	if (l_ptr->flags6 & RF6_TELE_LEVEL)  vp[vn++] = "teleport level";
+monster1.c:678:		text_out(format("%^s is not detected by telepathy.  ", wd_he[msex]));
+monster1.c:682:		text_out(format("%^s is rarely detected by telepathy.  ", wd_he[msex]));
+monster1.c:690:		text_out(format("%^s regenerates quickly.  ", wd_he[msex]));
+monster2.c:1264: * for visibility (natural, infravision, see-invis, telepathy),
+monster2.c:1282: * in certain ways (including "blindness", "infravision", "telepathy",
+monster2.c:1302: * by light or infravision, or (2) nearby and detected by telepathy.
+monster2.c:1332:	/* Seen by telepathy */
+monster2.c:1412:						if (!do_invisible || p_ptr->see_inv) easy = flag = TRUE;
+monster2.c:1417:				if (is_detected(r_ptr->flags3, p_ptr->telepathy))
+monster2.c:1419:					/* Empty mind, no telepathy */
+monster2.c:1425:					/* Weird mind, occasional telepathy */
+monster2.c:1433:					/* Normal mind, allow telepathy */
+monster2.c:1439:					/* Apply telepathy */
+monster2.c:1448:				/* Hack -- Wizards have "perfect telepathy" */
+monster2.c:1601:	/* Seen by telepathy */
+monster2.c:1660:					if (!q_ptr->ghost || p_ptr->see_inv)
+monster2.c:1671:			if (p_ptr->telepathy == TR3_TELEPATHY)
+monster2.c:2850:		if (p_ptr->resist_acid) m_ptr->smart |= SM_RES_ACID;
+monster2.c:2852:		if (p_ptr->immune_acid) m_ptr->smart |= SM_IMM_ACID;
+monster2.c:2856:		if (p_ptr->resist_elec) m_ptr->smart |= SM_RES_ELEC;
+monster2.c:2858:		if (p_ptr->immune_elec) m_ptr->smart |= SM_IMM_ELEC;
+monster2.c:2862:		if (p_ptr->resist_fire) m_ptr->smart |= SM_RES_FIRE;
+monster2.c:2864:		if (p_ptr->immune_fire) m_ptr->smart |= SM_IMM_FIRE;
+monster2.c:2868:		if (p_ptr->resist_cold) m_ptr->smart |= SM_RES_COLD;
+monster2.c:2870:		if (p_ptr->immune_cold) m_ptr->smart |= SM_IMM_COLD;
+monster2.c:2874:		if (p_ptr->resist_pois) m_ptr->smart |= SM_RES_POIS;
+monster2.c:2880:		if (p_ptr->resist_neth) m_ptr->smart |= SM_RES_NETH;
+monster2.c:2884:		if (p_ptr->resist_lite) m_ptr->smart |= SM_RES_LITE;
+monster2.c:2888:		if (p_ptr->resist_dark) m_ptr->smart |= SM_RES_DARK;
+monster2.c:2892:		if (p_ptr->resist_fear) m_ptr->smart |= SM_RES_FEAR;
+monster2.c:2896:		if (p_ptr->resist_conf) m_ptr->smart |= SM_RES_CONF;
+monster2.c:2900:		if (p_ptr->resist_chaos) m_ptr->smart |= SM_RES_CHAOS;
+monster2.c:2904:		if (p_ptr->resist_disen) m_ptr->smart |= SM_RES_DISEN;
+monster2.c:2908:		if (p_ptr->resist_blind) m_ptr->smart |= SM_RES_BLIND;
+monster2.c:2912:		if (p_ptr->resist_nexus) m_ptr->smart |= SM_RES_NEXUS;
+monster2.c:2916:		if (p_ptr->resist_sound) m_ptr->smart |= SM_RES_SOUND;
+monster2.c:2920:		if (p_ptr->resist_shard) m_ptr->smart |= SM_RES_SHARD;
+monster2.c:2925:		if (p_ptr->free_act) m_ptr->smart |= SM_IMM_FREE;
+object1.c:2276:            return "teleport away every 50 turns";
+object1.c:2292:			return "teleport every 45 turns";
+spells2.c:278:		case A_STR: if (p_ptr->sustain_str) sust = TRUE; break;
+spells2.c:279:		case A_INT: if (p_ptr->sustain_int) sust = TRUE; break;
+spells2.c:280:		case A_WIS: if (p_ptr->sustain_wis) sust = TRUE; break;
+spells2.c:281:		case A_DEX: if (p_ptr->sustain_dex) sust = TRUE; break;
+spells2.c:282:		case A_CON: if (p_ptr->sustain_con) sust = TRUE; break;
+spells2.c:283:		case A_CHR: if (p_ptr->sustain_chr) sust = TRUE; break;
+spells2.c:520:	if (p_ptr->aggravate)	 *f3 |= TR3_AGGRAVATE; 
+spells2.c:522:	if (p_ptr->see_inv)	     *f3 |= TR3_SEE_INVIS;
+spells2.c:523:	if (p_ptr->feather_fall) *f3 |= TR3_FEATHER;
+spells2.c:524:	if (p_ptr->free_act)	 *f3 |= TR3_FREE_ACT;
+spells2.c:525:	if (p_ptr->regenerate)	 *f3 |= TR3_REGEN;
+spells2.c:526:	if (p_ptr->slow_digest)	 *f3 |= TR3_SLOW_DIGEST;
+spells2.c:527:	if (p_ptr->telepathy == TR3_TELEPATHY)	 *f3 |= TR3_TELEPATHY;
+spells2.c:528:	if (p_ptr->hold_life)	 *f3 |= TR3_HOLD_LIFE;
+spells2.c:529:	if (p_ptr->lite)	     *f3 |= TR3_LITE;
+spells2.c:531:	if (p_ptr->immune_acid) *f2 |= TR2_IM_ACID;
+spells2.c:532:	if (p_ptr->resist_acid) *f2 |= TR2_RES_ACID;
+spells2.c:534:	if (p_ptr->immune_elec) *f2 |= TR2_IM_ELEC;
+spells2.c:535:	if (p_ptr->resist_elec) *f2 |= TR2_RES_ELEC;
+spells2.c:537:	if (p_ptr->immune_fire) *f2 |= TR2_IM_FIRE;
+spells2.c:538:	if (p_ptr->resist_fire) *f2 |= TR2_RES_FIRE;
+spells2.c:540:	if (p_ptr->immune_cold) *f2 |= TR2_IM_COLD;
+spells2.c:541:	if (p_ptr->resist_cold) *f2 |= TR2_RES_COLD;
+spells2.c:543:	if (p_ptr->resist_pois) *f2 |= TR2_RES_POIS;
+spells2.c:545:	if (p_ptr->resist_lite)	 *f2 |= TR2_RES_LITE;
+spells2.c:546:	if (p_ptr->resist_dark)	 *f2 |= TR2_RES_DARK;
+spells2.c:547:	if (p_ptr->resist_conf)	 *f2 |= TR2_RES_CONFU;
+spells2.c:548:	if (p_ptr->resist_sound) *f2 |= TR2_RES_SOUND;
+spells2.c:549:	if (p_ptr->resist_disen) *f2 |= TR2_RES_DISEN;
+spells2.c:550:	if (p_ptr->resist_chaos) *f2 |= TR2_RES_CHAOS;
+spells2.c:551:	if (p_ptr->resist_shard) *f2 |= TR2_RES_SHARD;
+spells2.c:552:	if (p_ptr->resist_nexus) *f2 |= TR2_RES_NEXUS;
+spells2.c:553:	if (p_ptr->resist_neth)	 *f2 |= TR2_RES_NETHR;
+spells2.c:554:	if (p_ptr->resist_fear)	 *f2 |= TR2_RES_FEAR;
+spells2.c:555:	if (p_ptr->resist_blind) *f2 |= TR2_RES_BLIND;
+spells2.c:557:	if (p_ptr->sustain_str) *f2 |= TR2_SUST_STR;
+spells2.c:558:	if (p_ptr->sustain_int) *f2 |= TR2_SUST_INT;
+spells2.c:559:	if (p_ptr->sustain_wis) *f2 |= TR2_SUST_WIS;
+spells2.c:560:	if (p_ptr->sustain_dex) *f2 |= TR2_SUST_DEX;
+spells2.c:561:	if (p_ptr->sustain_con) *f2 |= TR2_SUST_CON;
+spells2.c:562:	if (p_ptr->sustain_chr) *f2 |= TR2_SUST_CHR;
+spells2.c:669:	if (p_ptr->teleport)
+spells2.c:719:		info[i++] = "You aggravate monsters.";
+spells2.c:739:		info[i++] = "You regenerate quickly.";
+spells2.c:3313:void aggravate_monsters(player_type *p_ptr, int who)
+spells2.c:3675:				if (!p_ptr->resist_blind && !p_ptr->resist_lite)
+wilderness.c:653:	/* Hack -- or regenerate occasionally (1 in 16) */
+cmd1.c:423:				if (p_ptr->immune_acid)
+cmd1.c:438:				if (p_ptr->immune_elec)
+cmd1.c:453:				if (p_ptr->immune_fire)
+cmd1.c:468:				if (p_ptr->immune_cold)
+cmd1.c:483:				if (p_ptr->resist_pois)
+cmd1.c:925:			if (p_ptr->feather_fall)
+cmd1.c:963:			if (p_ptr->feather_fall)
+cmd1.c:979:			if (p_ptr->feather_fall)
+cmd1.c:1009:			if (p_ptr->feather_fall)
+cmd1.c:1028:					if (p_ptr->resist_pois || p_ptr->oppose_pois)
+cmd1.c:1065:			msg_print(p_ptr, "You hit a teleport trap!");
+cmd1.c:1153:			if (!p_ptr->resist_blind)
+cmd1.c:1163:			if (!p_ptr->resist_conf)
+cmd1.c:1173:			if (!p_ptr->resist_pois && !p_ptr->oppose_pois)
+cmd1.c:1183:			if (!p_ptr->free_act)
+cmd1.c:1279:				if (p_ptr->impact && (k > 50)) do_quake = TRUE;
+cmd1.c:1306:				if (q_ptr->resist_conf)
+cmd1.c:1475:				if (p_ptr->impact && (k > 50)) do_quake = TRUE;
+generate.c:329:		/* Refuse to start on anti-teleport grids */
+generate.c:3941: * word of recall or teleport level.
+generate.c:4113: * Hack -- regenerate any "overflow" levels
+dungeon.c:379:/* Note that since this is done in real time, monsters will regenerate
+dungeon.c:397:		/* Check if it's time to regenerate */
+dungeon.c:421:			/* Hack -- Some monsters regenerate quickly */
+dungeon.c:427:			/* Do not over-regenerate */
+dungeon.c:991:	if ((p_ptr->teleport) && (randint0(100) < 1))
+dungeon.c:1138:				if (p_ptr->regenerate) i += 30;
+dungeon.c:1141:				if (p_ptr->slow_digest) i -= 10;
+dungeon.c:1281:		if (p_ptr->regenerate)
+dungeon.c:2154:			   not make players teleport to simmilar locations, this
+dungeon.c:2198:			/* Refuse to start on anti-teleport grids */
+spells1.c:120:			/* Hack -- no teleport onto glyph of warding */
+spells1.c:174:	/* XXX XXX Hack -- hijack teleport in Arena */
+spells1.c:363: /* in the wilderness, teleport to a neighboring wilderness level. */
+spells1.c:371:	/* Ironmen OR Arena fighters don't teleport level */
+spells1.c:393:	/* If in the wilderness, teleport to a random neighboring level */
+spells1.c:995:	if (p_ptr->immune_acid || (dam <= 0)) return;
+spells1.c:998:	if (p_ptr->resist_acid) dam = (dam + 2) / 3;
+spells1.c:1020:	if (p_ptr->immune_elec || (dam <= 0)) return;
+spells1.c:1024:	if (p_ptr->resist_elec) dam = (dam + 2) / 3;
+spells1.c:1044:	if (p_ptr->immune_fire || (dam <= 0)) return;
+spells1.c:1047:	if (p_ptr->resist_fire) dam = (dam + 2) / 3;
+spells1.c:1066:	if (p_ptr->immune_cold || (dam <= 0)) return;
+spells1.c:1069:	if (p_ptr->resist_cold) dam = (dam + 2) / 3;
+spells1.c:2258: * (polymorph and teleport being the obvious ones), a default damage, which
+spells1.c:2262: * Note that this routine can handle "no damage" attacks (like teleport) by
+spells1.c:3065:			/* Prepare to teleport */
+spells1.c:3300:	/* Handle "teleport" */
+spells1.c:3575:		/* Do not become hostile if it was a healing or teleport spell */
+spells1.c:3642:		if (p_ptr->resist_pois) dam = (dam + 2) / 3;
+spells1.c:3645:		if (!(p_ptr->resist_pois || p_ptr->oppose_pois))
+spells1.c:3674:		if (!p_ptr->resist_sound)
+spells1.c:3684:		if (p_ptr->resist_neth)
+spells1.c:3690:			if (p_ptr->hold_life && (randint0(100) < 75))
+spells1.c:3694:			else if (p_ptr->hold_life)
+spells1.c:3711:		if (!p_ptr->resist_sound)
+spells1.c:3715:		if (!p_ptr->resist_conf)
+spells1.c:3725:		if (p_ptr->resist_chaos)
+spells1.c:3729:		if (!p_ptr->resist_conf && !p_ptr->resist_chaos)
+spells1.c:3733:		if (!p_ptr->resist_chaos)
+spells1.c:3737:		if (!p_ptr->resist_neth && !p_ptr->resist_chaos)
+spells1.c:3739:			if (p_ptr->hold_life && (randint0(100) < 75))
+spells1.c:3743:			else if (p_ptr->hold_life)
+spells1.c:3760:		if (p_ptr->resist_shard)
+spells1.c:3774:		if (p_ptr->resist_sound)
+spells1.c:3789:		if (p_ptr->resist_conf)
+spells1.c:3793:		if (!p_ptr->resist_conf)
+spells1.c:3803:		if (p_ptr->resist_disen)
+spells1.c:3817:		if (p_ptr->resist_nexus)
+spells1.c:3831:		if (!p_ptr->resist_sound)
+spells1.c:3848:		if (p_ptr->resist_lite)
+spells1.c:3852:		else if (!blind && !p_ptr->resist_blind)
+spells1.c:3862:		if (p_ptr->resist_dark)
+spells1.c:3866:		else if (!blind && !p_ptr->resist_blind)
+spells1.c:3917:		/* Gravity -- stun plus slowness plus teleport */
+spells1.c:3926:		if (!p_ptr->resist_sound)
+spells1.c:3950:		if (!p_ptr->resist_shard)
+spells1.c:3954:		if (!p_ptr->resist_sound)
+spells1.c:4006:		if (p_ptr->resist_conf)
+spells1.c:4023:		if (p_ptr->free_act)
+spells1.c:4040:		if (p_ptr->free_act)
+spells1.c:4057:		if (p_ptr->resist_fear)
+spells1.c:4076:		if (p_ptr->resist_nexus)
+use-obj.c:21:			if (!(p_ptr->resist_pois || p_ptr->oppose_pois))
+use-obj.c:33:			if (!p_ptr->resist_blind)
+use-obj.c:45:			if (!p_ptr->resist_fear)
+use-obj.c:57:			if (!p_ptr->resist_conf)
+use-obj.c:69:			if (!p_ptr->resist_chaos)
+use-obj.c:81:			if (!p_ptr->free_act)
+use-obj.c:274:			if (!(p_ptr->resist_pois || p_ptr->oppose_pois))
+use-obj.c:286:			if (!p_ptr->resist_blind)
+use-obj.c:298:			if (!p_ptr->resist_conf)
+use-obj.c:310:			if (!p_ptr->free_act)
+use-obj.c:322:			if (!p_ptr->hold_life && (p_ptr->exp > 0))
+use-obj.c:735:			if (!p_ptr->resist_blind)
+use-obj.c:746:			aggravate_monsters(p_ptr, 0);
+use-obj.c:1091:			if (!p_ptr->resist_blind)
+use-obj.c:2774:	"teleport",
+use-obj.c:2781:	"teleport away",
