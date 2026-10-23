@@ -37,14 +37,14 @@ cd /projectnb/jbrcs/mangband/github/tools/pilot && module load python3/3.12.4 &&
   logs out at a safe moment), then `pilotctl` fails with "Connection refused" for a minute or so.
   Wait 20 s and retry (up to 10 times); when it answers again, check `status` and re-issue your
   goal. If it never comes back, report.
-- `status` prints the full report; don't call it more often than you need (reports are long).
+- `status` prints the compact report with a snapshot of your gear and pack; `status full` the long form, `pack` the items with letters (use it before commands by letter). Wait reports show only what changed.
 
 ## Your loop
 
 1. Read the mission you were given. Check the character with `status`.
 2. Decide the next goal (and any order changes), send it, then `wait`.
 3. On each attention event: understand what happened, decide, act, `wait` again.
-   Events marked as news (under "Since last report") need no action unless they change your plan.
+   Events marked as news (under "News:" in the report) need no action unless they change your plan.
 4. Keep going until the mission is done, its time budget is used up, or a stop condition hits.
 5. Finish safely: normally back in town (Word of Recall) with nothing dangerous going on. Then stop
    giving goals and return your report.

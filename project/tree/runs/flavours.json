@@ -1,8 +1,18 @@
 {
+ "Aluminum Rod": {
+  "junk": false,
+  "kind": "Rod of Door/Stair Location",
+  "source": "identified"
+ },
  "Aluminum-Plated Wand": {
   "junk": false,
   "kind": "Wand of Stinking Cloud",
   "source": "Advisor L_items (Dive04 10-03 12:41:49)"
+ },
+ "Amber Amulet": {
+  "junk": false,
+  "kind": "Scroll of Identify",
+  "source": "identified or used"
  },
  "Balsa Staff": {
   "junk": false,
@@ -23,6 +33,11 @@
   "junk": false,
   "kind": "Potion of Resist Heat",
   "source": "Advisor L_items (Dive03 09-26 15:45:42)"
+ },
+ "Bloodstone Ring": {
+  "junk": false,
+  "kind": "Ring of Protection",
+  "source": "identified"
  },
  "Blue Mushroom": {
   "junk": true,

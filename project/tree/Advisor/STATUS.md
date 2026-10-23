@@ -75,6 +75,9 @@ The original six-topic backlog (`../memos/2026-09-27-advisor-study-topics.md`) i
    `data/navigator/baseline_opus_m16-m21.txt` (report -> first action median 6.2 s pooled; m21 Opus too). Sonnet from m22. After the Sonnet missions,
    add them to `MISSIONS` in `data/navigator/response.py` and compare (also decision quality, not just speed).
 
+8. **HELD DRAFT (the user, 10-19): `drafts/2026-10-19-starting-over.md`** ("if we started over" memo). Do NOT send or move it to
+   memos/ until the user says so; then copy to `../memos/` and send a short note to `to_architect/`.
+
 ## Facts a new chat tends to re-derive (verified; cite the memos)
 
 - Our server is upstream develop c97e873 (2022-03), not the v1.5.3 tag; plays as 1.5.3 for a warrior.

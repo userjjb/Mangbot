@@ -15,6 +15,9 @@
                                            # (--brief: status lines, monsters, stairs, news only)
     pilotctl.py attention                  # pending attention events, without waiting
     pilotctl.py monster NAME               # this server's data for a monster + the pilot's verdict
+    pilotctl.py status [full]              # the compact report (full: everything, the long form)
+    pilotctl.py pack | equip | orders      # one part of the full report (pack with letters, ...)
+    pilotctl.py map [R]                    # the map within R squares of @ (default 15)
     pilotctl.py drainers [STAT] [MAXLEVEL]  # monsters whose blows drain a stat (default STR/DEX/CON, to clvl+10)
     pilotctl.py say TEXT...                # answer the user (shown in their viewer, logged)
     pilotctl.py search [N]                 # search the squares around you N times (default 15)
@@ -48,7 +51,9 @@ def call(sock, req, timeout):
 
 
 BRIEF_KEEP = ("USER MESSAGE", "Standing on:", "Supplies:", "Monsters in view:", "Known stairs:", "Since last report:",
-              "Since the last report", "Progress:")
+              "Since the last report", "Progress:",
+              # the compact report's lines
+              "Cures", "Here:", "Monsters:", "News:", "Since last (")
 
 
 def brief_report(report):

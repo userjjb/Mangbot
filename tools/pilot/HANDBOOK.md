@@ -33,7 +33,7 @@ Attention events:
 |---|---|
 | `goal_done`, `goal_failed` | the goal finished (the detail says why) |
 | `interesting` | a dive stopped for something in `stop_on`: a unique, items, a pillared room (these often hold stairs; explore them), danger |
-| `danger_avoided` | (news, doesn't wake you) arrived next to a pack or an out-of-depth monster and went straight back up the stairs. Shown under "Since last report" |
+| `danger_avoided` | (news, doesn't wake you) arrived next to a pack or an out-of-depth monster and went straight back up the stairs. Shown under "News:" |
 | `danger_seen` | a dangerous monster came into view: the pilot dropped the goal and is heading for the stairs. The detail says why. Danger means: `danger_level` above yours, a unique above your level, a breather whose two strongest breaths would kill you at your current HP, breathers whose breaths together would (hound packs), a paralyser while you lack Free Action (`free_action` order; a paralysing blow too weak to get through your armour doesn't count), or a summoner within 5 levels of yours (summons appear next to *you* and stay after it dies). Also, from the Advisor's danger table: a monster rated 5 ("leave on sight"), one rated 4 until you're 8 levels above it, any capital `D`, one whose melee per turn (speed × blows, all hitting) is a third of your current HP or more, Brain Smash without Free Action + both resists below, and a monster within 10 levels that blinds or confuses with its *blows* (no saving throw) while you lack the resist |
 | `emergency` | HP fell below `flee_hp`, or to 2.5 worst-case rounds of one adjacent monster (Brodda's 48 a round: at 120 HP): the pilot took the stairs underfoot, read Phase Door, or quaffed a cure |
 | `fight_going_badly` | HP below `think_hp` while fighting: decide whether to flee (e.g. `stairs`, or `read` Phase Door) |
@@ -42,7 +42,7 @@ Attention events:
 | (group danger) | the pilot adds up the worst-case melee of every monster that can reach you this turn (max damage × speed, +200 for a paralysing blow without Free Action; monsters that never move don't count; drains don't count here, they have the second-drain rule), or the HP actually lost in the last 3 s if that's more (an unseen swarm). Above 30% of your current HP: back up the stairs if just arrived, else back away instead of walking into them (never from something faster than you: it can't be outrun) (`danger_avoided` / `tactic`). Above 60%: the stairs underfoot; Phase Door only once HP is below `think_hp` (`tactic`). Above 100%: it leaves the level (`danger_seen` "group danger"), phases when adjacent (at most every 10 s), and with no stairs known reads Word of Recall at once (`emergency`), since recall takes 15-34 turns. The worst case is pessimistic (every blow at maximum): at low clvl a single monster can reach 60%, so this rule no longer phases at good HP. The pilot also checks that each of its own emergency reads and quaffs took effect ("You have N ... left") and resends it (twice at most, `tactic` news) if not. A second stat drain on one level with monsters in view also makes it leave (`danger_seen`). This is the rule that would have saved Dive03 (4 Uruks + a Giant red scorpion: ~255 vs 207 HP) |
 | `unseen_attacker` | something you can't see is attacking ("It hits you", "It breathes...", or HP falling steadily while nothing has been in view for several seconds): the pilot heads for the stairs (at or below `max_depth` it prefers an up staircase). "You hear a door burst open!" is news only (no flee). Minor ones at HP above `think_hp` are news only and the pilot carries on: "It commands you to return" (a Tengu or Blink dog teleporting you to it), a magic missile, an arrow or bolt from the dark. "It makes a high pitched shriek" (a Shrieker: no damage, it wakes monsters nearby) is always news only. A curse ("points at you and curses") or a fear spell at good HP is minor too, and so is anything while a weak caster (5+ levels below you) is in view within 10 squares: in the dark the game calls even a visible caster "It" (mission 20 fled down twice from Novice priests 3 squares away). Without See Invisible, leaving the level is the answer |
 | `structure` | an inner room, pit or nest recognised on the map (centre Y,X and its extent). A lit or dark inner room is news (doesn't wake you) with how to open it (`goal searchroom Y,X`); an orc pit, monster pit or nest wakes you: leave the level or keep away (the pilot sets avoid zones on it) |
-| `interesting_item` | a wand, staff, rod, ring, amulet or {excellent}/{special} item is in view on this level (often beyond `loot_radius`, so the pilot won't fetch it): worth a detour (mission 15: a Wand of Slow Monster 33 squares away sold for 210). Known junk (cursed, on the junk list, junk per the flavour table) doesn't raise it, nor does an item that reaches your pack within 2.5 s (the pilot was already stepping onto it). **A dive pauses 20 s after it**, so `goal goto Y,X` (the square is under "Item squares") before it takes the stairs |
+| `interesting_item` | a wand, staff, rod, ring, amulet or {excellent}/{special} item is in view on this level (often beyond `loot_radius`, so the pilot won't fetch it): worth a detour (mission 15: a Wand of Slow Monster 33 squares away sold for 210). Known junk (cursed, on the junk list, junk per the flavour table) doesn't raise it, nor does an item that reaches your pack within 2.5 s (the pilot was already stepping onto it). **A dive pauses 20 s after it**, so `goal goto Y,X` (the square is under `Items: ... near:`) before it takes the stairs |
 | `user_message` | the user, watching live, sent you a message: treat it as a change to your mission (their requests outrank your plan, within safety); answer with `say "<text>"` (shown in their viewer), then act |
 | `stuck` | a moving goal hasn't left its square for 20 s (nothing adjacent, not picking a lock or digging), or has gone nowhere for 2 minutes (at most 10 squares visited, no fighting in those 2 minutes): the pilot cleared its command queue and restarted the move. If it repeats, give a different goal (`goto` the stairs, or another level) |
 | `recall_cancelled` | a second Word of Recall was read, which cancels the first: no recall is pending now. Read one again if you still want to go |
@@ -50,7 +50,7 @@ Attention events:
 | `pack_full` | "You have no room for ...": make room (destroy/drop junk, or recall and sell) |
 | `stat_drained`, `blows_changed` | a stat was drained (also a second drain of a stat already drained) or the blows per round changed (a drained DEX can cost a blow: restore it in town, store 5). A second drain on a level leaves it, except when the drainer beside you is weak (5+ levels below you, not a unique) and no faster than you: then the pilot kills it (`tactic` news), since walking away hands it more bites |
 | `thief` | (news only for gold thieves) a monster that steals from the pack with a touch, then teleports away, came into view (once per level): kill it before it reaches you, or keep away. With others adjacent, the pilot hits the thief first |
-| `unique_slain` | you killed a unique: its drop is good (look at `Item squares` around the square) |
+| `unique_slain` | you killed a unique: its drop is good (look at `Items: ... near:` around the square) |
 | `drainer` | (news only for INT/WIS/CHR) a mobile monster whose blows drain a stat came into view (once per level), with advice: kill a weak, slow one fast; `avoid NAME` or leave for the rest. Here the red ones drain STR: Giant red frog (350 ft), Giant red ant (450 ft), Giant red scorpion (850 ft), Red naga; also Yellow worm mass, Moaning spirit and Quasit (DEX). `drainers` lists them |
 | `breeders` | (news only when they're weak and fewer than 8) 3+ breeding monsters (lice, worms) in view: they multiply fast and give no XP. Kill one or two quickly; more than that, leave the area (stairs, or recall) |
 | `afraid` | afraid (a warrior can't melee then) and cornered with nothing to cure it: the pilot phased away. Normally, when afraid, the pilot kites over ground already walked until the fear wears off, and only in danger quaffs Boldness/Heroism/Berserk |
@@ -59,21 +59,35 @@ Attention events:
 | `tactic`, `resumed` | (news) the pilot backed into a corridor against a pack, kited while afraid, cured a status in a fight, killed a stationary monster in its way, or resumed your goal after recovering from an emergency |
 | `dead` | the character died |
 
-## The situation report (`status`)
+## The situation report (`status`, and every `wait`)
 
-- Character line: level, HP, depth (50 ft per dungeon level; Town = 0), gold,
-  blows per round, speed. Then stats, hunger and conditions.
-- **Standing on**: `<` or `>` when you're on a staircase. That is your fastest
-  escape: stairs work even when confused.
-- Equipment, then **Pack** with the letters to use in commands (`a)`, `b)`...).
-- A **map** around you: `@` is you; letters are monsters (named in the next
-  line); `#` wall, `.` floor, `+` closed door, `'` open door, `<` `>` stairs,
-  `^` trap. Other symbols are objects: `!` potion, `?` scroll, `=` ring, `"`
-  amulet, `|` `/` `\` weapons, `(` `[` `]` `)` armour, `$` gold, `~` light or
-  tool, `_` staff, `-` wand or rod, `,` food or mushroom.
-- **Monsters in view**: names, level (compare with yours), UNIQUE, distance.
-- **Items seen**: the server's list of objects seen on this level.
-- Known stairs, recent messages, standing orders.
+The report is **compact** (since 2026-10-22: the old one ran to ~5 KB). Line by line:
+- **Character**: name, level, HP, depth (50 ft per level; Town (day/night)), gold, `max_depth`, the time
+  (you have no clock of your own), the goal. Then **USER MESSAGE(S)** when any are unanswered.
+- **Stats** (`↓` = drained), hunger, conditions in capitals (BLIND, CONFUSED...), speed when not normal,
+  and the wielded weapon with blows and damage per round.
+- **Cures** (CCW / CSW / CLW counts, staff charges) | **Escapes** (Phase and WoR always, 0 included;
+  Teleportation etc. when carried) | **Food** | **Light** (turns, + flasks). `RECALL PENDING` when one is.
+- **Also**: the other potions and scrolls by kind, and your staffs, wands and rods.
+- **Here**: what's under you (`<` `>` = your fastest escape, stairs work even when confused), how you
+  arrived, and the nearest known stairs with distances.
+- **Monsters**: by name, nearest first: count, level (compare with yours), UNIQUE, distances, and
+  `DANGER: why` when the pilot rates it dangerous.
+- **Items**: the server's list for the level | `near:` item squares (`$ ×N` grouped) with y,x and distance.
+- **Map** (in the dungeon only): 19 x 19, centred on `@` (everything within 9 moves; distance is the same
+  in every direction). Each line starts with its row; the header gives the columns. `@` is you; letters
+  are monsters; `#` wall, `.` floor, `+` closed door, `'` open door, `<` `>` stairs, `^` trap; `!` potion,
+  `?` scroll, `=` ring, `"` amulet, `|` `/` `\` weapons, `(` `[` `]` `)` armour, `$` gold, `~` light or
+  tool, `_` staff, `-` wand or rod, `,` food or mushroom. `map R` shows R squares around you (default 15).
+- **Structures**, **News** (since your last wait), **Msgs** (the last few game messages, in a fight),
+  **Since last** (lowest HP, monsters and uniques seen since your last wait), **Progress** (time since
+  the last XP gain, on this level, in this goal).
+- **Changes only**: `Equip changed: +X; -Y`, `Pack (not consumables) changed`, `Weapons`, `Abilities`,
+  `Gear` (empty slots, better armour in the pack), `Orders changed`, `Audit differences`. A plain
+  `status` (not a wait) shows all of these in full, as a snapshot.
+- **On request**: `status full` (the old long report: every item with its letter, all orders, the
+  bigger map), `pack` (every item with its letter: use it before item commands by letter), `equip`,
+  `orders`, `map [R]`. Item commands also answer with the pack as it is now.
 
 ## Goals (one at a time; a new goal replaces the old)
 
@@ -356,7 +370,7 @@ Orders are remembered across pilot restarts.
 - Mission 12 sold 2 Potions of Speed and 2 of Heroism unknown for 8 each (selling one would have
   identified the stack); Dive03 sold 14 unknown devices and jewellery for ~3,600 less than they
   were worth. Discounts vanish when the stock rolls over (~33 s): `list` again after any wait.
-- **New report lines:** `Abilities:` is the character sheet's resist/ability grid (free_act,
+- **Report lines (as named in `status full`; the compact report above carries the same facts):** `Abilities:` is the character sheet's resist/ability grid (free_act,
   see_invis, res_conf, ...), read from the game, so trust it over item names. `Standing on:`
   shows the item under you. `State audit:` counts how often the pilot's picture of the
   character differed from a fresh check (and it resynced). Wait reports show the news since your
@@ -375,8 +389,8 @@ Orders are remembered across pilot restarts.
   rods, rings and amulets, table-known good items, and **a lone unknown scroll: read it instead**
   (free, and it teaches the flavour; the curse scrolls are native to 2500 ft, so a read is safe at
   our depths; mission 18 sold a Teleportation for 8). `sell !NAME` to force.
-- The report's `Supplies:` line (also in `--brief`) lists your potions, scrolls, food, flasks,
-  staffs and wands with counts, a pending recall, max_depth and drained stats. `lost` news means
+- The `Cures | Escapes | Food | Light` and `Also:` lines (`Supplies:` in `status full`) list your potions,
+  scrolls, food, flasks, staffs and wands with counts, and a pending recall. `lost` news means
   something was destroyed, stolen or overflowed (e.g. "Your purse feels lighter": a thief).
 - **The report's first line shows `Town (day)` or `Town (night)`**; townfarm says so when 2 minutes
   bring no gold.

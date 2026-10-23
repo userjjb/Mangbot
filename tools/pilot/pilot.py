@@ -3493,15 +3493,34 @@ class Pilot:
         c = req.get("cmd")
         args = req.get("args", [])
         if c == "status":
+            full = "full" in args
             if req.get("since_wait"):
                 # a wait report: the news since the previous wait (the survey)
                 since, self.news_wait_t = self.news_wait_t, time.time()
-                rep = self.report(news_since=since)
+                rep = self.compact(news_since=since)
                 self.nav_view = (time.time(), self.nav_view_events, rep)
                 return {"ok": True, "report": rep}
-            rep = self.report()
+            rep = self.report() if full else self.compact(snapshot=True)
             self.nav_view = (time.time(), [], rep)
             return {"ok": True, "report": rep}
+        if c == "pack":
+            return {"ok": True, "text": "Pack: " + "; ".join(f"{chr(97 + i['item'])}) {self.short(self.show(i))}"
+                                                           for i in self.w.items())}
+        if c == "equip":
+            return {"ok": True, "text": "Equipment: " + "; ".join(self.short(i["name"]) for i in self.w.items(equip=True))
+                    + "\n" + self.gear_line()}
+        if c == "orders":
+            return {"ok": True, "text": "Orders: " + ", ".join(f"{k}={v}" for k, v in self.orders.items())}
+        if c == "map":
+            w = self.w
+            r = int(args[0]) if args and args[0].isdigit() else 15
+            if not (w.rows and w.pos):
+                return {"ok": False, "error": "no map yet"}
+            y0, x0 = w.pos
+            ys = range(max(0, y0 - r), min(len(w.rows), y0 + r + 1))
+            xa = max(0, x0 - r)
+            return {"ok": True, "text": f"Map (@ {y0},{x0}; rows {ys[0]}-{ys[-1]}, cols {xa}-{x0 + r}):\n"
+                    + "\n".join(f"{y:2d}|" + w.rows[y][xa:x0 + r + 1].rstrip() for y in ys)}
         if c == "view":
             # (the observer's viewer: a bigger map, no side effects)
             rows = int(args[0]) if args else 11
@@ -4143,6 +4162,226 @@ class Pilot:
                         better.append(f"{chr(97 + i['item'])}) {i['name']} (AC {ac} vs {ac_on} worn)")
         return ("Gear: empty slots: " + (", ".join(empty) or "none")
                 + ("; better than worn: " + "; ".join(better) if better else ""))
+
+    # ---- the compact report (what the Navigator reads after every wait) ----
+    # The full report() ran to ~5 KB (the pack twice, every order, a 23 x 67 map
+    # even in town); the Navigator read it 100+ times a mission. This one keeps
+    # what decisions turn on and shows the rest only when it changes; `status
+    # full` gives the old one (the user, 2026-10-22).
+    CURE_ABBR = {"Cure Critical Wounds": "CCW", "Cure Serious Wounds": "CSW", "Cure Light Wounds": "CLW"}
+    ESCAPE_ABBR = {"Phase Door": "Phase", "Word of Recall": "WoR", "Teleportation": "Tele",
+                   "Teleport Level": "TeleLevel", "Deep Descent": "DeepDescent"}
+
+    @staticmethod
+    def short(name):
+        """'5 Potions of Heroism {75% off}' -> '5 Potions of Heroism' ('a '/'an ' dropped)."""
+        n = re.sub(r"\s*\{\d+% off\}", "", name)
+        return re.sub(r"^(a|an) ", "", n)
+
+    @staticmethod
+    def kind_of(name):
+        """'3 Potions of Cure Critical Wounds {25% off}' -> 'Cure Critical Wounds'."""
+        m = re.search(r"(?:Potions?|Scrolls?|Rations?|Flasks?) of ([^{(]+)", name)
+        return m.group(1).strip() if m else None
+
+    def supply_lines(self):
+        w = self.w
+        cures, esc, other, devices = {}, {}, {}, []
+        food = flasks = 0
+        for i in w.items():
+            n, k = i["number"], self.kind_of(i["name"])
+            if i["tval"] in (TV_POTION, TV_SCROLL) and k:
+                if k in self.CURE_ABBR:
+                    cures[self.CURE_ABBR[k]] = cures.get(self.CURE_ABBR[k], 0) + n
+                elif k in self.ESCAPE_ABBR:
+                    esc[self.ESCAPE_ABBR[k]] = esc.get(self.ESCAPE_ABBR[k], 0) + n
+                elif k == "Satisfy Hunger":
+                    food += n
+                else:
+                    other[k] = other.get(k, 0) + n
+            elif i["tval"] == TV_FOOD and "Mushroom" not in i["name"]:
+                food += n
+            elif i["tval"] == TV_FLASK:
+                flasks += n
+            elif i["tval"] in (55, 65, 66):
+                f = self.flavour_of(i)
+                devices.append(self.short(i["name"]) + (f" (= {f['kind']})" if f else ""))
+        for d in devices:
+            m = re.match(r"(Staff|Rod|Wand) of Cure Light Wounds \((\d+) charges\)", d)
+            if m:
+                cures["staff CLW"] = int(m.group(2))
+        lite = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None) or \
+            next((i for i in w.items(tval=TV_LITE)), None)
+        lt = re.search(r"with (\d+) turns", lite["name"]) if lite else None
+        light = ("none" if not lite else (lt.group(1) if lt else "permanent")) + \
+            (f" +{flasks} flask{'s' if flasks != 1 else ''}" if flasks else "")
+        out = ["Cures " + (" · ".join(f"{k} {v}" for k, v in cures.items()) or "NONE")
+               + " | Escapes " + " · ".join(f"{k} {esc.get(k, 0)}" for k in ("Phase", "WoR"))
+               + "".join(f" · {k} {v}" for k, v in esc.items() if k not in ("Phase", "WoR"))
+               + f" | Food {food} | Light {light}"
+               + (f" | RECALL PENDING ({time.time() - w.recall_pending_t:.0f} s; 8-23 s)" if w.recall_pending else "")]
+        extra = [f"{k} {v}" for k, v in other.items()] + [d for d in devices if "Cure Light Wounds" not in d]
+        if extra:
+            out.append("Also: " + " · ".join(extra))
+        return out
+
+    def compact(self, news_since=None, map_r=9, snapshot=False):
+        w, ind, now = self.w, self.w.ind, time.time()
+        lines = []
+        where = ("Town (" + {True: "day", False: "night", None: "day/night?"}[w.is_day()] + ")") if not w.depth \
+            else f"{w.depth_ft} ft"
+        lines.append(f"{ind.get('hist_name_', '?')} L{w.clvl} HP {w.hp[0]}/{w.hp[1]} · {where} · "
+                     f"{ind.get('gold', [0])[0]}g · max {self.orders.get('max_depth')}ft · "
+                     f"{time.strftime('%H:%M:%S')} · goal: {self.goal.describe() if self.goal else 'none'}")
+        if self.unanswered:
+            lines.append("USER MESSAGE(S) NOT YET ANSWERED (reply with say): " + " | ".join(
+                f"{time.strftime('%H:%M:%S', time.localtime(t))} {m}" for t, m in self.unanswered))
+        drained = {n for n, (cur, top) in (self.seen_drained or {}).items() if cur < top}
+        stats = " ".join(f"{s} {v[0] if v[0] <= 18 else '18/%02d' % (v[0] - 18)}{'↓' if s in drained else ''}"
+                         for s, v in zip(self.STAT_NAMES, (ind.get(f"stat{i}", [0]) for i in range(6))))
+        cond = [k for k in ("blind", "confused", "afraid", "poisoned", "cut", "stun") if w.flag(k)]
+        hunger = {0: "Weak", 1: "Weak", 2: "Hungry", 3: "Fed", 4: "Full", 5: "Gorged"}.get(w.hunger, w.hunger)
+        wt = self.weapon_table()
+        wield = next(((n, b, d) for n, b, d, eq in wt if eq), None) if wt else None
+        spd = int(ind.get("speed", [0])[0] or 0)
+        lines.append(f"{stats} · {hunger}" + (f" · {', '.join(cond).upper()}" if cond else "")
+                     + (" · resting" if w.resting else "") + (f" · speed {spd:+d}" if spd else "")
+                     + (f" · {re.sub(r' [(].*', '', self.short(wield[0]))} {wield[1]} blows ~{wield[2]:.0f}"
+                        if wield else ""))
+        lines += self.supply_lines()
+        here = (w.standing_on or "unknown (under @; `stairs <`/`stairs >` tries)") + \
+            (f" (item: {w.floor})" if w.floor else "") + (f" (arrived by {w.arrived_by})" if w.arrived_by else "")
+        stairs = sorted(w.find("<>"), key=w.dist)[:3]
+        lines.append(f"Here: {here}" + (" | Stairs " + ", ".join(f"{w.memory[q]} {q[0]},{q[1]} ({w.dist(q)})"
+                                                                  for q in stairs) if stairs else " | no stairs known"))
+        if w.monsters:
+            seen = {}
+            for y, x, r in w.monsters:
+                seen.setdefault(r.name, []).append((y, x, r))
+            parts = []
+            for n, v in sorted(seen.items(), key=lambda kv: min(w.dist(m[:2]) for m in kv[1])):
+                r = v[0][2]
+                ds = sorted(w.dist(m[:2]) for m in v)
+                why = self.danger_why(r)
+                parts.append(f"{n}{' ×%d' % len(v) if len(v) > 1 else ''} (L{r.level}"
+                             + (", UNIQUE" if "UNIQUE" in r.flags else "")
+                             + f", {ds[0]}{'-%d' % ds[-1] if len(ds) > 1 and ds[-1] != ds[0] else ''} away"
+                             + (f", DANGER: {why[:60]}" if why else "") + ")")
+            lines.append("Monsters: " + "; ".join(parts))
+        else:
+            lines.append("Monsters: none")
+        # items: the server's list (names) and the squares near us ($ grouped)
+        names = [l.strip()[2:].strip() for l in (w.itemlist or [])[1:]]
+        sq = sorted((q for q in self.resolve_target("item") if w.memory.get(q, "?") not in "0123456789"),
+                    key=w.dist)[:10] if w.pos else []          # (not shop and house doors)
+        gold = [q for q in sq if w.memory.get(q) == "$"]
+        rest = [q for q in sq if w.memory.get(q) != "$"][:6]
+        gd = sorted(map(w.dist, gold))
+        bits = ([f"$ ×{len(gold)} ({gd[0]}" + (f"-{gd[-1]})" if gd[-1] != gd[0] else ")")] if gold else []) + \
+            [f"{w.memory.get(q, '?')} {q[0]},{q[1]} ({w.dist(q)})" for q in rest]
+        if names or bits:
+            lines.append("Items: " + (", ".join(names[:8]) or "-") + (" | near: " + ", ".join(bits) if bits else ""))
+        # the map: dungeon only, a square crop (distance is the same in every
+        # direction: radius 9 shows everything within 9 moves)
+        if w.depth and w.rows and w.pos:
+            y0, x0 = w.pos
+            ys = range(max(0, y0 - map_r), min(len(w.rows), y0 + map_r + 1))
+            xa, xb = max(0, x0 - map_r), x0 + map_r + 1
+            lines.append(f"Map (@ {y0},{x0}; rows {ys[0]}-{ys[-1]}, cols {xa}-{xb - 1}):")
+            lines += [f"{y:2d}|" + w.rows[y][xa:xb].rstrip() for y in ys]
+        sts = self.structures_here() if w.in_dungeon else []
+        if sts:
+            lines.append("Structures: " + "; ".join(
+                f"{st['kind']} {Y},{X}" + ("" if st["sure"] else " (likely)") +
+                (f", door {self.room_door(Y, X)[0]},{self.room_door(Y, X)[1]}" if self.room_door(Y, X) else
+                 ", searched" if all((w.level_t, r) in self.searched for _, r in structures.door_spots(Y, X)) else "")
+                for Y, X, st in sts))
+        recent = [e for e in self.news if (e["t"] > news_since if news_since is not None
+                                           else now - e["t"] < 600)][-8:]
+        if recent:
+            lines.append("News: " + " | ".join(
+                f"{time.strftime('%H:%M:%S', time.localtime(e['t']))} {e['what']}: {e['detail']}" for e in recent))
+        if w.depth and (w.monsters or w.hp[0] < w.hp[1]):
+            msgs = w.recent(10)[-6:]
+            if msgs:
+                lines.append("Msgs: " + " | ".join(msgs))
+        sn = getattr(self, "since", None)
+        if sn:
+            lo = sn["min_hp"]
+            mons = sorted(sn["mons"].items(), key=lambda kv: -kv[1])
+            bits = []
+            if lo and lo[0] < lo[1]:
+                bits.append(f"low HP {lo[0]}/{lo[1]} at {time.strftime('%H:%M:%S', time.localtime(lo[2]))}")
+            if mons:
+                bits.append("seen " + ", ".join(f"{n} ×{k}" if k > 1 else n for n, k in mons[:8]))
+            if sn["uniques"]:
+                bits.append("UNIQUES " + ", ".join(sorted(sn["uniques"])))
+            if bits:
+                lines.append(f"Since last ({self.ago(now - sn['t'])}): " + "; ".join(bits))
+            if news_since is not None:
+                self.since = {"t": now, "min_hp": (w.hp[0], w.hp[1], now) if w.hp[1] > 1 else None,
+                              "mons": {}, "uniques": set()}
+        if w.depth:
+            xt = getattr(self, "exp_t", None)
+            lines.append("Progress: " + (f"XP {self.ago(now - xt)} ago" if xt else "no XP yet")
+                         + (f" · level {self.ago(now - w.level_t)}" if w.level_t else "")
+                         + (f" · goal {self.ago(now - getattr(self, 'goal_t', now))}" if self.goal else ""))
+        lines += self.compact_changes(snapshot)
+        return "\n".join(lines)
+
+    def compact_changes(self, snapshot=False):
+        """What changed since the Navigator's last report: equipment, the
+        non-consumables in the pack (with letters), weapons, abilities, empty
+        slots, changed orders, audit differences. All of it on an explicit
+        `status` (snapshot) and the first time; a wait report gets changes only
+        (90 of mission 22's 113 reports came with waits)."""
+        w = self.w
+        cons = (TV_POTION, TV_SCROLL, TV_FOOD, TV_FLASK)
+        now = {
+            "Equip": [self.short(i["name"]) for i in w.items(equip=True)],
+            "Pack (not consumables)": [f"{chr(97 + i['item'])}) {self.short(self.show(i))}" for i in w.items()
+                                       if i["tval"] not in cons and i["tval"] not in (55, 65, 66)],
+            "Weapons": [f"{'WIELDED ' if eq else ''}{self.short(n)} {b} blows ~{d:.0f}"
+                        + (f" (~{weapon_damage(n, b, weapon_brand(n)[1]):.0f} vs not resisting {weapon_brand(n)[0]})"
+                           if weapon_brand(n) else "")
+                        + (" (pluses unknown: identify it)" if re.search(r"\{(good|excellent|special|magical)", n)
+                           and not re.search(r"\([+-]\d+,", n) else "")
+                        for n, b, d, eq in self.weapon_table()] if len(self.weapon_table() or []) > 1 else [],
+            "Abilities": [k for k, v in (w.flags or {}).items() if v and k not in ("stealth", "search", "infra", "tunnel")],
+            "Gear": [self.gear_line()[len("Gear: "):]],
+            "Orders changed": [f"{k}={v}" for k, v in self.orders.items()
+                               if k in DEFAULT_ORDERS and str(v) != str(DEFAULT_ORDERS[k])],
+            "Audit differences": [f"{k} {n}" for k, n in self.audit_counts.items()],
+        }
+        prev = None if snapshot else getattr(self, "compact_prev", None)
+        self.compact_prev = now
+        # (a burning lantern's turns and a staff's charges change all the time:
+        # not a change worth a line)
+        def norm(v):
+            return [re.sub(r"\(with \d+ turns of light\)|\(\d+ charges?\)", "", t).strip() for t in v]
+        out = []
+        for k, v in now.items():
+            if prev is None:
+                if v:
+                    out.append(f"{k}: " + "; ".join(v))
+                continue
+            if norm(v) == norm(prev.get(k, [])):
+                continue
+            if k in ("Equip", "Pack (not consumables)"):
+                strip = (lambda t: norm([t.split(") ", 1)[-1]])[0]) if k.startswith("Pack") else \
+                    (lambda t: norm([t])[0])
+                old = {strip(t) for t in prev.get(k, [])}
+                new = {strip(t) for t in v}
+                ch = [f"+{t}" for t in v if strip(t) not in old] + [f"-{t}" for t in sorted(old - new)]
+                if ch:
+                    out.append(f"{k} changed: " + "; ".join(ch))
+            else:
+                out.append(f"{k}: " + ("; ".join(v) or "none"))
+        if prev is None and not getattr(self, "compact_hinted", False):
+            self.compact_hinted = True
+            out.append("(this is the compact report: `status full` for everything; `pack`, `equip`, `orders`, "
+                       "`map [R]` for one part)")
+        return out
 
     def report(self, rows=11, cols=33, news_since=None):
         w = self.w

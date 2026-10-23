@@ -243,6 +243,19 @@ job 8105290 on scc-wh2, walltime to Mon 10-19 20:47, Dive04 restored from its 10
   paralysis hint on unseen gazes without FA; "Standing on" explains unknown after login; searchroom summary includes the
   spot it was at; `complain` writes directly when the Pilot is down.
 
+- **Mission 22 (2026-10-17 01:45-02:15): the first Sonnet Navigator** (per-launch `model: sonnet`; the agent file still
+  inherits Opus). Report `runs/pilot/dive04/reports/2026-10-17-mission22.md` has the latency table
+  (`tools/observe/latency.py`): alert → order median 8.9 s for both, p90 30 s (Sonnet) vs 81 s (Opus m21); cadence
+  3.9 vs 5.1 s; but 111 alerts vs 17 (mob levels), so not comparable yet. Gold 2621 → 475, clvl 19 → 21. Its 7
+  Pilot problems (loot rooms while a band gathers, Phase Door burn, junk weapon pickups, identify-by-name with twin
+  stacks, equipment letters, hunt overridden by flee, traps) are NOT fixed yet; the user hasn't said.
+- **Compact report (2026-10-22, the user):** `wait` and `status` now return `Pilot.compact()` (~0.4-1.4 KB vs
+  ~5 KB): character, stats, Cures|Escapes|Food|Light, Also, Here+stairs, Monsters (DANGER why), Items, a 19 x 19
+  dungeon map (none in town), Structures, News, Msgs, Since last, Progress, then changes only (Equip, Pack
+  non-consumables, Weapons, Abilities, Gear, Orders changed, Audit), all of them on an explicit `status`.
+  `status full` = the old report; new queries `pack`, `equip`, `orders`, `map [R]`. The viewer still uses
+  report() (the user will handle the viewer separately). Runs on scc-pe7 now (job 8181626, to Sat 10-24 09:50).
+
 ### ARCHITECT HANDOFF 2026-09-29 (history; read the 2026-10-08 section first)
 
 New session (job 448491 on scc-wi2). Test server restarted under gdb 21:34 (gdb costs nothing: the
