@@ -475,14 +475,9 @@ class Dive(Goal):
         w = p.w
         if self.located == w.level_t:
             return False
-        for it in w.items():
-            kind = it["name"] if " of " in it["name"] else (p.flavour_of(it) or {}).get("kind", "")
-            if it["tval"] in (55, 66) and "Door/Stair Location" in kind and "(0 charges)" not in it["name"] \
-                    and "charging" not in it["name"]:
-                self.located = w.level_t
-                p.cmd(f"custom {'u' if it['tval'] == 55 else 'z'} item={it['item']}",
-                      "dive: no stairs known, Door/Stair Location", hold=0.8)
-                return True
+        if p.use_stair_location("dive: no stairs known"):
+            self.located = w.level_t
+            return True
         return False
 
     def tick(self, p):
@@ -1599,6 +1594,7 @@ class TripPlan:
         self.levels = 0
         self.events = collections.Counter()
         self.paused, self.pause_goal = False, None
+        self.arrival, self.located, self.stairs_first = None, False, False
         self.step = "starting"
         self.fails = 0
         self.home_why = None
@@ -1800,6 +1796,26 @@ class TripPlan:
                 self.level, self.level_t0, self.level_done = w.level_t, now, None
                 self.levels += 1
                 self.fails = 0
+                self.arrival = "recall" if any(abs(ts - w.level_t) < 5 and "yanked" in t for ts, t in w.messages) \
+                    else w.arrived_by
+                self.located = self.stairs_first = False
+            # the arrival protocol (the Advisor's m24 memo: the orc-pit level said "something special"
+            # on arrival, and the Pilot explored 92 s without zapping Door/Stair Location): after a
+            # recall, or on a special feeling, map the stairs first and find a way out before exploring
+            special = any(ts >= w.level_t - 1 and "something special about this level" in t for ts, t in w.messages)
+            if (self.arrival == "recall" or special) and not self.located:
+                self.located = True
+                if not w.find("<>") and p.use_stair_location("trip: " + ("recall arrival" if self.arrival == "recall"
+                                                                         else "a special level")):
+                    self.step = "mapping the stairs (arrival protocol)"
+                    return None
+            if special and not self.stairs_first and not w.find("<>") and self.level_done is None:
+                self.stairs_first = True
+                self.step = f"finding stairs first ({d} ft feels special: a pit, nest or vault)"
+                p.notify("plan", f"trip: {d} ft feels special (a pit, nest or vault): finding stairs before exploring",
+                         news=True)
+                p.set_goal(self.mark(Explore(until="stairs")))
+                return None
             if self.level_done is None and now - self.level_t0 > 60 * self.level_min:
                 self.level_done = f"{self.level_min:g} minutes on it"
             if self.level_done:
@@ -2082,11 +2098,14 @@ class Pilot:
               "goal": self.goal.describe() if self.goal else None}
         if what == "emergency":
             self.emerg_times.append(time.time())
+        source = None
         if self.plan and what not in ("plan", "plan_done", "plan_failed"):
             self.plan.on_event(self, what, detail, news or what in self.NEWS)
             if not self.plan.paused and what in self.PLAN_QUIET:
-                news = True            # (the plan handles these: the Navigator reads them as news)
-        self.log("attention", what=what, detail=detail)
+                news, source = True, "plan"   # (the plan handles these: the Navigator reads them as news)
+        if what == "plan":
+            source = "plan"
+        self.log("attention", what=what, detail=detail, **({"source": source} if source else {}))
         if what in self.NEWS or news:
             self.news.append(ev)
             self.news = self.news[-20:]
@@ -4297,6 +4316,21 @@ class Pilot:
             self.warn_light("no light", "no light source")
         return False
 
+    def use_stair_location(self, why):
+        """Use a Staff or zap a Rod of Door/Stair Location (an unknown flavour too, when the
+        flavour table knows it). True if it acted."""
+        w = self.w
+        if time.time() < self.busy_until or w.flag("blind") or w.flag("confused"):
+            return False
+        for it in w.items():
+            kind = it["name"] if " of " in it["name"] else (self.flavour_of(it) or {}).get("kind", "")
+            if it["tval"] in (55, 66) and "Door/Stair Location" in kind and "(0 charges)" not in it["name"] \
+                    and "charging" not in it["name"]:
+                self.cmd(f"custom {'u' if it['tval'] == 55 else 'z'} item={it['item']}",
+                         f"{why}: Door/Stair Location", hold=0.8)
+                return True
+        return False
+
     def wear_light(self, why):
         """Put the best light in the pack on (reading needs one: the Pilot takes it
         off in town). True if it acted."""
@@ -5702,7 +5736,9 @@ class Pilot:
             turns, taken, worst = sim["turns_mean"], sim["loss_mean"], sim["loss_p90"]
         info = (f"{race.name}: ~{turns:.0f} turns to kill, ~{taken:.0f} HP lost on average, ~{worst:.0f} in a bad "
                 f"fight (1 in 10; you have {w.hp[0]})")
-        if row.get("response") in ("AVOID", "LEAVE"):
+        if row.get("response") in ("AVOID", "LEAVE") and row.get("veto_reason", "qualitative") != "strength":
+            # (the Advisor's m24 memo: ratings given for strength alone are the simulator's to judge;
+            # its veto_reason column says which, from its next rulebook build)
             return (f"the Advisor's rating for {race.name} is {row['response']}", info)
         if worst > 0.6 * hp:
             return (f"{info}: a bad fight would cost more than 60% of your HP. Rest to full first, or come back "

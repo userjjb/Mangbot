@@ -54,7 +54,8 @@ def q(xs):
 
 def measure(recs):
     cmds = [d for d in recs if d.get("kind") == "nav_cmd"]
-    alerts = [d for d in recs if d.get("kind") == "attention" and d.get("what") in URGENT]
+    # (the trip plan's news is tagged source=plan since 2026-10-23: it didn't wake the Navigator)
+    alerts = [d for d in recs if d.get("kind") == "attention" and d.get("what") in URGENT and d.get("source") != "plan"]
     users = [d for d in recs if d.get("kind") == "attention" and d.get("what") == "user_message"]
     contact, order, reply = [], [], []
     for a in alerts:

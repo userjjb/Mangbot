@@ -19,7 +19,7 @@ Architect builds everything else.
 | 2 | who decides what | (inputs only) | Architect: 2.4 hunt checks built 10-24 (fight_sim p90 ≤ 60% HP, summoner and blinker rules; "don't quaff before closing in" put to the user); 2.1 item policy done (itemvalue.py from our tables, value refusals with a Navigator **debt**, Free-Action inference, pickup by value); 2.2 town kit next; 2.3/2.4 danger rules (will use `monsters.csv`) |
 | 3 | the rulebook | **ours** | **release 1 + 2 done and synced; release 3 (drops + feelings value fix) + fight_sim.py synced 10-24** (sync.sh also copies fight_sim.py, build_monsters.py, data/monsters/monsters.csv → keep their paths stable; tell the Architect when they change) (`../memos/2026-10-24-rulebook-r3.md`); (`../memos/2026-10-24-rulebook.md`, `-rulebook-r2.md`; `data/rulebook/`, query `rule.py`; r2 synced 10-24, C8 rule fixed by the Architect); the Architect syncs it into the repo with `github/tools/rulebook/sync.sh` — **tell them whenever we rebuild** |
 | 4 | harness / set-pieces | **ours: the list** | **list done** (`../memos/2026-10-24-setpieces.md`: 41 cases, 12 P1); waiting on the Architect's two enablers (a key-sending verb so Gandalf the DM can be scripted; logging map/inventory replies or `--pktlog`) |
-| 5 | missions again with scorecards | scorecard per mission; Opus vs Sonnet | after steps 2–4 |
+| 5 | missions again with scorecards | scorecard per mission; Opus vs Sonnet | **started**: step 2 finished, m24 done (Opus) and reviewed (`../memos/2026-10-24-m24.md`); target for next missions: > 58 XP/min at 500-650 ft, lowest HP >= 50% |
 
 ## Pending Advisor work (in order)
 
@@ -29,7 +29,8 @@ Architect builds everything else.
    bubble is a constant 1/5; WoR counts down ~10× faster while resting out of sight; "You are unaffected!" pairing.
 3. **Set-pieces:** when the enablers land, write a staging recipe + automatic pass/fail check for each P1 case (A1, A2, A3, A6, A7, A8, B1, C1, C3,
    C4, C5, C8, D3, F1). A7 also validates `fight_sim.py` (Hill giant p90 123 at Dive04's profile).
-4. **Belief-state spec** (if the Architect wants it for step 2): fields, computation, expiry (see starting-over memo §3.4).
+4. **Offered:** a `veto_reason` (qualitative/strength) column in monsters.csv if the Architect agrees (m24 memo §2).
+4b. **Belief-state spec** (if the Architect wants it for step 2): fields, computation, expiry (see starting-over memo §3.4).
 5. **Step 5:** run the scorecard on each new mission vs the m17–23 baseline; Opus vs Sonnet by depth band (m22–23 were Sonnet;
    `data/navigator/response.py` has the missions list; production `scorecard.py` reads `runs/missions.json` which records the model).
 6. Housekeeping: the 09-29 shops memo assumed CHR 4 = Dive04's natural CHR; it is drained to 3 now (use `data/rulebook/shop_owners.csv`, CHR 3 columns, until restored).
@@ -65,6 +66,7 @@ spells, breaths, tags, solo index), `abilities.csv` (messages proving abilities)
 | 10-19 | starting over (sent 10-22) | `2026-10-19-starting-over.md` | |
 | 10-23 | scorecard | `2026-10-23-scorecard.md` | `data/scorecard/` |
 | 10-24 | rulebook r3: drops, value fix, town-kit answers | `2026-10-24-rulebook-r3.md` | `data/rulebook/` (D1, D2) |
+| 10-24 | m24 (step 5 begins): recall arrival protocol, depth band 500-650, plan-news metrics | `2026-10-24-m24.md` | `data/scorecard/xp_by_depth.py`, `data/rulebook/depth_value.py` |
 | 10-24 | hunt strictness (step 2.4): simulated p90 + summoner rule; set-pieces A7, A8 | `to_architect/2026-10-24-hunt-strictness.md` | `data/rulebook/fight_sim.py`, `fight_dive04.csv` |
 | 10-24 | set-pieces; rulebook r1 + r2 | `2026-10-24-setpieces.md`, `2026-10-24-rulebook.md`, `2026-10-24-rulebook-r2.md` | `data/rulebook/` |
 
@@ -81,6 +83,8 @@ The user struck one lead (2026-10-07): the live fetch of Bug Reports / Technical
   per two of its turns.
 - Running = ×5 game time with no awake monster in LOS; resting ×10 (so WoR charges ~10× faster resting out of sight). Low-HP bubble:
   constant 1/5 below hitpoint_warn×10% (Pilot has it off).
+- Recall arrival: random floor square, pit/nest monsters awake; "something special about this level" = pit/nest/vault (or artifact) at <= 850 ft;
+  stairs arrivals land on the staircase back; a 2nd WoR read cancels a pending one; no Deep Descent in 1.5. XP/min: 300-450 ft 8.5, 500-650 ft 58.
 - Hunt checks: `fight_sim.py` p90 (FIGHT-rated: none > 60% HP at Dive04's profile); summoners and blinkers are outside the duel model
   (m19 Ranger: duel p90 44, real 153 from summons + ranged phase). The `threats` column of monsters.csv is stale 09-27 text (boulder ~30).
 - Boulders do 0 damage to players; BO_POIS and BR_MANA are empty; breaths use current HP.

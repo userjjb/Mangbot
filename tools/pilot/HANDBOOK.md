@@ -78,7 +78,14 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 
 - **Going down.** With only 2 Words of Recall and little gold, prefer `via=stairs`: one bad recall landing (m24: an
   orc pit, no stairs known) uses both scrolls in minutes. Walking down to 300-450 ft takes a few minutes.
-- **Depth.** Choose LO-HI from the character, not from courage. Up to 1000 ft the gate is clvl × 50 ft (then
+- **Depth** (the Advisor's m24 memo, from our missions m17-24): **work 500-650 ft** (58 XP a minute, against 8.5 at
+  300-450 ft; HP lost per XP is flat from 400 to 1500 ft). Go to 700 ft only when stocked (3+ WoR, 5+ CCW, 10+
+  Phase), stay above ~750 ft until Free Action is found (paralysers), and plan 300-450 ft trips only to rebuild gold
+  when the gate refuses deeper ones. Restore Strength is the best gold-for-XP buy (blows set every kill time).
+- **The arrival protocol** (the Pilot does it): after a recall, or when the level "feels special" (a pit, nest or
+  vault), it maps the stairs with Door/Stair Location first and, on a special level, finds stairs before exploring.
+  Carry the rod.
+- **Choosing the range.** Choose LO-HI from the character, not from courage. Up to 1000 ft the gate is clvl × 50 ft (then
   (clvl - 5) × 50), and **never below 1000 ft without Free Action**. From 500 ft carry 3+ CCW, 5+ Phase and 2 WoR. A
   1d6 weapon with 3 blows and AC ~30 struggled at 650-700 ft; go shallower until the gear improves. Set `max_depth`
   to your HI.
