@@ -49,6 +49,28 @@ sold and bought, what it couldn't afford, and whether the supplies cover a recal
   left out and named in the reply.
 - `goal shop` and your own sells/destroys still work in town, for anything the plan doesn't cover.
 
+## Trips: `plan trip` runs one (restructure step 2.3)
+
+`pilotctl.py --nick NAME plan trip LO-HI [until "COND or COND..."] [then recall|town] [level_min=N] [force]` hands
+the trip to the Pilot. From town it goes down: by the stairs when the trip is near town, else by Word of Recall to
+the planned depth (the supply gate applies; `force` skips it). Then it works levels within LO-HI: it explores each
+level (fights, loot and the item policy as usual) until nothing is left or `level_min` minutes (default 10) have
+passed, then takes the next level (down while above HI, up one at HI). **It leaves a level at once** for a band (by
+the stairs), a pit or nest, breeders, a STR/DEX/CON drainer, a fearer, or a trap-laden level. **When a condition
+holds it comes home:** by the stairs from 150 ft or shallower (Word of Recall if no way up turns up in 3 minutes),
+else by Word of Recall. With `then town` it then runs `plan town`.
+- **Conditions** (joined by `or`): `cures<N` (CLW+CSW+CCW potions), `ccw`, `csw`, `clw`, `phase`, `wor`, `food`,
+  `hp` (percent), `minutes` (since the plan began), `levels` (worked so far), `clvl`, `gold`, `free` (pack slots),
+  `time>HH:MM`; and events since the plan began: `band`, `drained`, `emergency`, `emergency_loop`, `danger`,
+  `pack_full`, `unique_slain`, `unseen_attacker`. Default: `cures<3 or phase<3 or minutes>45`. Always added: no Word
+  of Recall left, and 90 minutes. (`wor<2` is refused: it would hold as soon as the trip has recalled down.)
+- **While it runs, `wait` wakes you only for** `plan_done` / `plan_failed`, user messages, stat drains, emergency loops,
+  low supplies and the like. Bands, dangers, pits, finished goals, stuck moves are **news**: the plan handles them.
+  The report shows a `Plan:` line (time, levels, the current step).
+- **A goal you give pauses the plan** until that goal ends, then it carries on (`plan` alone shows it). `plan stop`
+  ends the plan (the current goal runs on); `stop` stops both. A Pilot restart keeps the plan.
+- Example: `plan trip 600-650 until "cures<4 or phase<5 or minutes>40 or band" then town`.
+
 ## Your turn: `wait`
 
 (Your Bash tool times out after 120 s by default: for `wait` longer than ~110 s pass a Bash
@@ -72,6 +94,7 @@ Attention events:
 | event | meaning |
 |---|---|
 | `goal_done`, `goal_failed` | the goal finished (the detail says why) |
+| `plan_done`, `plan_failed` | the trip plan ended: why (the condition that held), levels worked, minutes. `plan` news (doesn't wake you) says what the plan is doing: leaving a level and why, coming home |
 | `interesting` | a dive stopped for something in `stop_on`: a unique, items, a pillared room (these often hold stairs; explore them), danger |
 | `danger_avoided` | (news, doesn't wake you) arrived next to a pack or an out-of-depth monster and went straight back up the stairs. Shown under "News:" |
 | `danger_seen` | a dangerous monster came into view: the pilot dropped the goal and is heading for the stairs. The detail says why. Danger means: `danger_level` above yours, a unique above your level, a breather whose two strongest breaths would kill you at your current HP, breathers whose breaths together would (hound packs), a paralyser while you lack Free Action (`free_action` order; a paralysing blow too weak to get through your armour doesn't count), or a summoner within 5 levels of yours (summons appear next to *you* and stay after it dies). Also, from the Advisor's danger table: a monster rated 5 ("leave on sight"), one rated 4 until you're 8 levels above it, any capital `D`, one whose melee per turn (speed × blows, all hitting) is a third of your current HP or more, Brain Smash without Free Action + both resists below, and a monster within 10 levels that blinds or confuses with its *blows* (no saving throw) while you lack the resist |

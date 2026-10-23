@@ -158,7 +158,7 @@ the tag. Push after each piece of work (`tools/snapshot.sh`, commit, `git push o
 28346, with the 10-17 store patch), Dive04's Pilot, the user's viewer (`tmux -L mang attach -t watch`), the inbox
 watcher. A new node means restarting all four (commands in the 2026-10-08 section and `restructure.md`).
 
-**Dive04 now (after the first live `plan town`, session 4):** clvl 22, 265 HP, in town, 127 gold, max_depth 650;
+**Dive04 now (after the 2.3 test trips, session 4):** clvl 22, 265 HP, in town, 190 gold, **STR 18/40 drained** (a dart trap), max_depth 650;
 Spear (+5,+7) 3 blows ~32; Hard Studded Leather of Resistance (4 resists), Ring of Protection [+8], Shadow Cloak
 [6,+7], Brodda's Metal Shod Boots [6,+3] (both identified by the town kit); 6 CCW, 4 CSW, 10 Phase, **2 WoR**, 5
 flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt 0.
@@ -184,7 +184,17 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    After the Advisor's rulebook-r3 memo: never-sell devices widened (escape, travel, detection, mapping, Perception,
    Stone to Mud, healing), Restore Charisma as tier 6 (3 -> 4 only, ~125 gold a mission). **Rulebook release 3
    synced** (drops.csv, drops_by_depth.csv: drop expectations per monster; feelings.csv fixed); drops not used yet
-   (candidates: hunt vetting in 2.4, loot value). **Next: 2.3 trip plan** (`plan trip LO-HI until COND then recall`), 2.4 order
+   (candidates: hunt vetting in 2.4, loot value). **2.3 the trip plan: done (session 4):**
+   `plan trip LO-HI [until "COND or ..."] [then recall|town] [level_min=N] [force]`, the `TripPlan` layer in pilot.py
+   (above the goals: reflex goals replace a plan goal without ending the plan; a Navigator goal pauses it; saved in
+   `runs/pilot/NICK/plan.json` across restarts). Down by stairs near town else WoR (Recall now takes a depth); explore
+   each level until done or level_min, then the next (down while above HI, up one at HI); leaves at once for band
+   (Flee), pit/nest, breeders, STR/DEX/CON drainer, fearer, trap-laden; home when a condition holds (stairs from
+   <=150 ft, WoR after 3 min without a way up; else WoR), `then town` runs plan town. While a plan runs, the events it
+   handles are news (PLAN_QUIET); idle recall is off (90-min cap built in). Tested live at 50-150 ft (two trips: 1
+   and 4 levels, home by the stairs, a restart mid-climb resumed). **Cost of the test: a dart trap at 50 ft drained
+   Dive04's STR 18/50 -> 18/40 (still 3 blows); Restore Strength ~480, Dive04 has 190 gold.** **Next: 2.4 order
+   checks** (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
    toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23. Then the time bubble (timers to game turns; decided below).
 3. **Rulebook:** the Advisor's **release 2** is in `Advisor/data/rulebook/`, synced into `github/tools/rulebook/`

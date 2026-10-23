@@ -513,7 +513,7 @@ class Dive(Goal):
             self.explore = None
             self.looted = set()
             self.pillared_done = False
-            why = p.interesting()
+            why = p.interesting() if getattr(self, "stop", True) else None
             if why:
                 return ("interesting", why)
         # Standing orders that save asking the agent: loot what's close...
@@ -901,7 +901,10 @@ class Flee(Goal):
 class Recall(Goal):
     name = "recall"
 
-    def __init__(self):
+    def __init__(self, depth_ft=None):
+        self.depth_ft = depth_ft     # (from town: the recall depth to inscribe; else max_depth)
+        if depth_ft:
+            self.name = f"recall to {depth_ft} ft"
         self.read_t = None
         self.start_depth = None
         self.inscribed = 0           # tries at inscribing @R
@@ -925,7 +928,7 @@ class Recall(Goal):
             # died). Inscribe @R<feet> first: the recall depth (inscription guide).
             # Check what the server will read from it, not a substring
             # ("@R7500" contains "@R750"; a later @R overrides an earlier one).
-            md = int(p.orders.get("max_depth", 0)) // 50 * 50
+            md = int(self.depth_ft or p.orders.get("max_depth", 0)) // 50 * 50
             if w.depth == 0 and md and recall_level(it["name"]) != md // 50:
                 if time.time() - self.inscribe_t < 2.5:
                     return None           # (wait for the pack to show the new inscription)
@@ -1520,6 +1523,277 @@ class TownKit(Goal):
                 (" | " + " | ".join(self.done_log) if self.done_log else ""))
 
 
+class TripPlan:
+    """plan trip LO-HI [until COND] [then recall|town] [level_min=N] (restructure step 2.3):
+    the Navigator's intent, run by the Pilot. Down (Word of Recall to the planned depth, or the
+    stairs near town), then level by level within LO-HI: explore each (fights, loot and the
+    item policy as usual) until it's done or `level_min` minutes pass, then the next level
+    (down while above HI, up one at HI). Bad levels are left at once: a band (stairs), a pit or
+    nest, breeders, a drainer of STR/DEX/CON, a fearer, trap-laden. When a condition holds it
+    comes home (Word of Recall, else the stairs), and with `then town` runs the town kit.
+    It sits above the goals: the Pilot's reflexes (flee, recover) replace a goal without ending
+    the plan, and a goal the Navigator gives pauses it until that goal ends."""
+    VARS = ("cures", "ccw", "csw", "clw", "phase", "wor", "food", "hp", "minutes", "time", "clvl", "gold",
+            "free", "levels")
+    EVENTS = ("band", "drained", "emergency", "emergency_loop", "danger", "pack_full", "unique_slain",
+              "unseen_attacker")
+    LEAVE_ON = {"band": "a band", "breeders": "breeders", "drainer": "a stat drainer", "fearer": "a fearer",
+                "structure": "a pit or nest"}
+
+    def __init__(self, lo, hi, until, then="recall", level_min=10):
+        self.lo, self.hi, self.then, self.level_min = lo, hi, then, level_min
+        self.conds = until
+        self.until_text = " or ".join(c[0] for c in until)
+        self.text = f"trip {lo}-{hi} until \"{' or '.join(c[0] for c in until)}\" then {then}"
+        self.t0 = time.time()
+        self.phase = "down"
+        self.level = None           # level_t of the level being worked
+        self.level_t0 = 0.0
+        self.level_done = None      # why this level is finished (then: the next level)
+        self.levels = 0
+        self.events = collections.Counter()
+        self.paused, self.pause_goal = False, None
+        self.step = "starting"
+        self.fails = 0
+        self.home_why = None
+        self.went_down = False
+        self.town = None
+
+    @staticmethod
+    def parse_until(text):
+        """'cures<4 or phase<5 or time>22:40 or band' -> [(term, var, op, value)], or raises ValueError."""
+        out = []
+        for term in [t.strip() for t in re.split(r"\s+or\s+|,", text) if t.strip()]:
+            m = re.fullmatch(r"(\w+)\s*(<=|>=|<|>|=)\s*(\d+(?::\d\d)?)", term)
+            if m:
+                var, op, val = m.groups()
+                if var not in TripPlan.VARS:
+                    raise ValueError(f"unknown quantity {var!r} (known: {', '.join(TripPlan.VARS)})")
+                if (var == "time") != (":" in val):
+                    raise ValueError(f"{term!r}: time takes HH:MM, the others numbers")
+                out.append((term, var, op, val))
+            elif term in TripPlan.EVENTS:
+                out.append((term, term, None, None))
+            else:
+                raise ValueError(f"can't read {term!r} (VAR<N, VAR>N, time>HH:MM, or an event: "
+                                 f"{', '.join(TripPlan.EVENTS)})")
+        return out
+
+    def value(self, p, var):
+        w = p.w
+
+        def n(word, tv=TV_POTION):
+            return sum(i["number"] for i in w.items(tval=tv) if word in i["name"])
+        if var == "cures":
+            return n("Cure Light Wounds") + n("Cure Serious Wounds") + n("Cure Critical Wounds")
+        return {"ccw": lambda: n("Cure Critical Wounds"), "csw": lambda: n("Cure Serious Wounds"),
+                "clw": lambda: n("Cure Light Wounds"), "phase": lambda: n("Phase Door", TV_SCROLL),
+                "wor": lambda: n("Word of Recall", TV_SCROLL), "food": lambda: p.kit_count("Ration of Food"),
+                "hp": lambda: round(100 * w.hp_frac), "minutes": lambda: (time.time() - self.t0) / 60,
+                "clvl": lambda: w.clvl, "gold": lambda: w.ind.get("gold", [0])[0],
+                "free": lambda: 23 - len(w.items()), "levels": lambda: self.levels,
+                "time": lambda: time.strftime("%H:%M")}[var]()
+
+    def holds(self, p):
+        """The first condition that holds, or None. Two always apply: no Word of Recall
+        left, and 90 minutes (the plan runs unattended)."""
+        for term, var, op, val in self.conds + [("no Word of Recall left", "wor", "<", "1"),
+                                                ("90 minutes", "minutes", ">", "90")]:
+            if op is None:
+                if self.events[var]:
+                    return term
+                continue
+            if var == "wor" and not self.went_down:
+                continue             # (the trip's own Word of Recall isn't read yet)
+            v = self.value(p, var)
+            x = val if var == "time" else int(val)
+            if (op == "<" and v < x) or (op == ">" and v > x) or (op == "<=" and v <= x) or \
+                    (op == ">=" and v >= x) or (op == "=" and v == x):
+                return term
+        return None
+
+    def describe(self):
+        return f"{self.text} ({(time.time() - self.t0) / 60:.0f} min, {plural(self.levels, 'level')}: " \
+               f"{'paused for your goal' if self.paused else self.step})"
+
+    def on_event(self, p, what, detail, news):
+        """Every notify passes here: count the events the conditions name, and leave a bad level."""
+        w = p.w
+        self.events[{"danger_seen": "danger", "stat_drained": "drained"}.get(what, what)] += 1
+        if self.paused or not w.in_dungeon or self.phase != "level":
+            return
+        if what == "band" and "band" in [c[1] for c in self.conds]:
+            return                  # (the condition brings it home instead)
+        why = self.LEAVE_ON.get(what) if not news else None
+        if what == "drainer" and news:
+            why = None
+        if what == "tactic" and "trap-laden" in (detail or ""):
+            why = "trap-laden"
+        if why and self.level == w.level_t and not self.level_done:
+            self.level_done = f"left: {why}"
+            g = p.goal
+            if g is None or getattr(g, "by_plan", False):
+                if what == "band":
+                    p.set_goal(self.mark(Flee("band: the trip leaves the level")))
+                else:
+                    p.set_goal(self.mark(self.next_dive(p)))
+                p.notify("plan", f"trip: leaving {w.depth_ft} ft ({why})", news=True)
+
+    STATE = ("lo", "hi", "then", "level_min", "t0", "phase", "levels", "went_down", "home_why", "until_text")
+
+    def save(self, p):
+        try:
+            json.dump({k: getattr(self, k, None) for k in self.STATE}, open(os.path.join(p.rundir, "plan.json"), "w"))
+        except OSError:
+            pass
+
+    @classmethod
+    def load(cls, p):
+        """The plan a restart interrupted (restart.sh parks the Pilot mid-trip), or None."""
+        try:
+            st = json.load(open(os.path.join(p.rundir, "plan.json")))
+        except (OSError, ValueError):
+            return None
+        if not st or time.time() - st["t0"] > 90 * 60:
+            return None
+        pl = cls(st["lo"], st["hi"], cls.parse_until(st["until_text"]), st["then"], st["level_min"])
+        for k in ("t0", "phase", "levels", "went_down", "home_why"):
+            setattr(pl, k, st[k])
+        return pl
+
+    def mark(self, g):
+        g.by_plan = True
+        g.role = "pilot"
+        return g
+
+    def next_dive(self, p):
+        d = p.w.depth_ft
+        if d < self.hi:
+            g = Dive(d + 50)
+        else:
+            g = Dive(d - 50)       # (at the bottom of the range: up one for a fresh level)
+        g.stop = False
+        return g
+
+    def tick(self, p):
+        """Called when no goal is running (and every 2 s under a plan goal, for the
+        conditions). Returns (status, detail) when the plan ends."""
+        w, now = p.w, time.time()
+        if self.paused:
+            return None
+        if self.phase in ("down", "level") and w.in_dungeon:
+            why = self.holds(p)
+            if why:
+                self.phase, self.home_why = "home", why
+                p.notify("plan", f"trip: coming home ({why})", news=True)
+                if p.goal is not None and getattr(p.goal, "by_plan", False) and \
+                        not isinstance(p.goal, (Flee, Recover, Recall)):
+                    p.set_goal(None)
+        if self.phase == "home" and isinstance(p.goal, Dive) and getattr(p.goal, "by_plan", False) and \
+                now - (getattr(self, "climb_t0", None) or now) > 180 and self.value(p, "wor") >= 1 and \
+                not w.recall_pending:
+            p.notify("plan", "trip: no way up found in 3 minutes: reading Word of Recall instead", news=True)
+            p.set_goal(None)          # (the next tick reads it)
+        if self.phase == "level" and isinstance(p.goal, Explore) and getattr(p.goal, "by_plan", False) and \
+                self.level == w.level_t and not self.level_done and now - self.level_t0 > 60 * self.level_min:
+            self.level_done = f"{self.level_min:g} minutes on it"
+            p.set_goal(None)
+        if p.goal is not None:
+            return None
+        if self.phase == "down":
+            if w.depth == 0:
+                if self.went_down:
+                    return ("done", "back in town before the trip began (a recall by the Pilot's own rules?)")
+                want = min(self.hi, max(self.lo, p.deepest_ft or 0))
+                if want <= 150 or (p.deepest_ft or 0) < 250:
+                    self.step = f"down by the stairs to {self.lo} ft"
+                    g = Dive(self.lo)
+                    g.stop = False
+                    p.set_goal(self.mark(g))
+                else:
+                    self.step = f"recall down to {min(want, p.deepest_ft)} ft"
+                    p.set_goal(self.mark(Recall(depth_ft=min(want, p.deepest_ft))))
+                return None
+            if not w.in_dungeon:
+                self.step = "back to town from the wilderness"
+                p.set_goal(self.mark(Town()))
+                return None
+            self.went_down = True
+            self.phase = "level"
+        if self.phase == "level":
+            if w.depth == 0:
+                return ("done", f"back in town (not by the plan's recall); {plural(self.levels, 'level')} done")
+            d = w.depth_ft
+            if d < self.lo or d > self.hi:
+                self.step = f"to {self.lo if d < self.lo else self.hi} ft"
+                g = Dive(self.lo if d < self.lo else self.hi)
+                g.stop = False
+                p.set_goal(self.mark(g))
+                return None
+            if self.level != w.level_t:
+                self.level, self.level_t0, self.level_done = w.level_t, now, None
+                self.levels += 1
+                self.fails = 0
+            if self.level_done is None and now - self.level_t0 > 60 * self.level_min:
+                self.level_done = f"{self.level_min:g} minutes on it"
+            if self.level_done:
+                self.step = f"next level ({self.level_done})"
+                self.fails += 1
+                if self.fails > 6:
+                    self.phase, self.home_why = "home", f"can't leave {d} ft (no stairs found)"
+                    return None
+                p.set_goal(self.mark(self.next_dive(p)))
+                return None
+            self.step = f"exploring {d} ft"
+            p.set_goal(self.mark(Explore()))
+            return None
+        if self.phase == "home":
+            if self.fails > 10:
+                return ("failed", f"couldn't get home ({self.home_why}): the recall or the climb kept failing")
+            if w.depth == 0:
+                if self.then == "town":
+                    self.phase = "town"
+                    self.step = "the town kit"
+                    p.set_goal(self.mark(TownKit()))
+                    return None
+                return ("done", f"home ({self.home_why}); {plural(self.levels, 'level')} in "
+                                f"{(now - self.t0) / 60:.0f} min")
+            if not w.in_dungeon:
+                p.set_goal(self.mark(Town()))
+                return None
+            self.climb_t0 = getattr(self, "climb_t0", None) or now
+            if w.depth_ft <= 150 and not w.recall_pending and (now - self.climb_t0 < 180 or self.value(p, "wor") < 1):
+                self.step = "climbing home (near town: the stairs save a Word of Recall)"
+                g = Dive(0)
+                g.stop = False
+                p.set_goal(self.mark(g))
+            elif self.value(p, "wor") >= 1 and not w.recall_pending:
+                self.step = "recalling home"
+                p.set_goal(self.mark(Recall()))
+            elif w.recall_pending:
+                self.step = "waiting for the recall"
+                p.set_goal(self.mark(Wait(3)))
+            else:
+                self.step = "climbing home (no Word of Recall)"
+                g = Dive(0)
+                g.stop = False
+                p.set_goal(self.mark(g))
+            return None
+        if self.phase == "town":
+            return ("done", f"home ({self.home_why}) and the town kit run; {plural(self.levels, 'level')} in "
+                            f"{(now - self.t0) / 60:.0f} min")
+        return None
+
+    def goal_ended(self, p, g, status, detail):
+        """A plan goal finished: the level is done when its exploration is."""
+        if isinstance(g, Explore) and self.phase == "level" and self.level == p.w.level_t:
+            self.level_done = detail or status
+        if isinstance(g, (Dive, Recall)) and status == "failed":
+            self.fails += 1
+            if self.fails > 6 and self.phase != "home":
+                self.phase, self.home_why = "home", f"stuck: {detail}"
+
+
 def singular(t):
     """Plural endings dropped, for name matching ("Flask of oil" finds
     "99 Flasks of oil": missions 17-18)."""
@@ -1616,6 +1890,10 @@ class Pilot:
         self.fear_t = 0.0
         self.skipped_items = set()     # (level, square) of junk we chose to leave
         self.resume_after = None
+        self.plan, self.plan_t = None, 0.0      # the Navigator's intent (plan trip), run by the Pilot
+        self.plan = TripPlan.load(self)           # (a restart mid-trip carries on with it)
+        if self.plan:
+            self.log("plan_resumed", plan=self.plan.text, phase=self.plan.phase)
         self.autodestroy_t = 0.0
         self.parking = None
         self.light_t = self.light_warned = 0.0
@@ -1708,7 +1986,11 @@ class Pilot:
 
     # Events that don't need a decision (the pilot already acted): shown in
     # the next report instead of waking the agent
-    NEWS = {"danger_avoided", "started", "tactic", "resumed"}
+    NEWS = {"danger_avoided", "started", "tactic", "resumed", "plan"}
+    # while a trip plan runs, these are news: the plan acts on them itself
+    PLAN_QUIET = {"goal_done", "goal_failed", "interesting", "danger_seen", "band", "structure", "breeders", "drainer",
+                  "fearer", "stuck", "interesting_item", "unique_slain", "pack_full", "thief", "unseen_attacker",
+                  "fight_going_badly", "emergency"}
 
     def notify(self, what, detail=None, news=False):
         if what in ("emergency", "emergency_loop", "danger_seen", "danger_avoided", "fight_going_badly",
@@ -1724,6 +2006,10 @@ class Pilot:
               "goal": self.goal.describe() if self.goal else None}
         if what == "emergency":
             self.emerg_times.append(time.time())
+        if self.plan and what not in ("plan", "plan_done", "plan_failed"):
+            self.plan.on_event(self, what, detail, news or what in self.NEWS)
+            if not self.plan.paused and what in self.PLAN_QUIET:
+                news = True            # (the plan handles these: the Navigator reads them as news)
         self.log("attention", what=what, detail=detail)
         if what in self.NEWS or news:
             self.news.append(ev)
@@ -3594,6 +3880,7 @@ class Pilot:
             status, detail = r
             g = self.goal.describe()
             quiet = getattr(self.goal, "quiet", False)     # the Pilot's own small goals: news only
+            self.goal_ending = self.goal
             self.goal = None
             self.mover.stop()
             if self.resume_after is not None:
@@ -3604,6 +3891,14 @@ class Pilot:
                 self.news.append({"t": round(time.time(), 3), "what": "resumed",
                                   "detail": f"{g}: {detail}; resumed '{self.goal.describe()}'", "goal": None})
                 return True
+            ended = self.goal_ending
+            if self.plan:
+                if getattr(ended, "by_plan", False):
+                    self.plan.goal_ended(self, ended, status, detail)
+                    quiet = True
+                elif self.plan.paused and ended is self.plan.pause_goal:
+                    self.plan.paused = False
+                    self.notify("plan", f"your goal ended ({g}: {detail}); the trip plan carries on")
             self.notify({"done": "goal_done", "failed": "goal_failed"}.get(status, status),
                         f"{g}: {detail}" if detail else g, news=quiet)
             if status == "failed" and g.startswith("flee"):
@@ -3640,6 +3935,8 @@ class Pilot:
 
     def idle(self):
         w = self.w
+        if self.plan and not self.plan.paused:
+            return                 # (the plan is the standing instruction; it has its own 90-minute cap)
         if w.in_dungeon and not self.idle_recalled and \
                 time.time() - self.last_agent > self.orders["idle_recall_s"]:
             self.idle_recalled = True
@@ -3987,7 +4284,8 @@ class Pilot:
                     any(ch == glyph and w.dist(q) <= lr for q, ch in w.memory.items()):
                 self.item_pending.append((now + 1.5, lt, name, glyph, first))
                 continue
-            self.item_hold_until = now + 20       # (a dive pauses so you can fetch it)
+            if not self.plan:
+                self.item_hold_until = now + 20   # (a dive pauses so you can fetch it)
             self.notify("interesting_item", f"{name} seen on this level (devices and jewellery "
                                              "sell for 50-700 once known): its square is under 'Item squares' in "
                                              "`status`; `goal goto Y,X`. A dive pauses 20 s for it")
@@ -4063,6 +4361,9 @@ class Pilot:
         if self.policy_tick(time.time()):      # the Pilot's own item work, at safe moments
             return
         if self.step_goal():
+            self.plan_tick(now, False)
+            return
+        if self.plan_tick(now, True):
             return
         self.idle()
 
@@ -4368,6 +4669,11 @@ class Pilot:
         if c == "stop":
             self.set_goal(None)
             self.stop_resting()
+            if self.plan:
+                self.log("plan_end", plan=self.plan.text, status="stopped")
+                self.plan = None
+                self.clear_plan_file()
+                return {"ok": True, "note": "the trip plan is stopped too"}
             return {"ok": True}
         if c == "order":
             for kv in args:
@@ -4896,11 +5202,106 @@ class Pilot:
                 self._stock = []
         return self._stock
 
+    def plan_tick(self, now, idle):
+        """Run the trip plan: when no goal is running, its next step; every 2 s under
+        a goal, its conditions. True if it acted."""
+        pl = self.plan
+        if not pl or (not idle and now - self.plan_t < 2):
+            return False
+        self.plan_t = now
+        try:
+            r = pl.tick(self)
+        except Exception as e:             # a plan bug must not kill the pilot
+            r = ("failed", f"error: {e!r}")
+        pl.save(self) if not r else self.clear_plan_file()
+        if r:
+            self.plan = None
+            self.log("plan_end", plan=pl.text, status=r[0], detail=r[1], levels=pl.levels,
+                     minutes=round((now - pl.t0) / 60, 1))
+            self.notify("plan_done" if r[0] == "done" else "plan_failed", f"{pl.text}: {r[1]}")
+        return idle and self.goal is not None
+
+    def clear_plan_file(self):
+        try:
+            os.remove(os.path.join(self.rundir, "plan.json"))
+        except OSError:
+            pass
+
+    PLAN_USAGE = ("usage: plan trip LO-HI [until \"COND or COND...\"] [then recall|town] [level_min=N] [force] | "
+                  "plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@MAX],...] | plan stop | plan")
+
+    def request_trip(self, args):
+        w = self.w
+        m = re.fullmatch(r"(\d+)(?:-(\d+))?", args[0]) if args else None
+        if not m:
+            return {"ok": False, "error": self.PLAN_USAGE}
+        lo, hi = int(m.group(1)), int(m.group(2) or m.group(1))
+        if lo > hi or lo % 50 or hi % 50 or lo < 50:
+            return {"ok": False, "error": f"{args[0]}: a depth range in feet, multiples of 50, e.g. 600-700"}
+        md = int(self.orders.get("max_depth", 0) or 0)
+        if md and hi > md:
+            return {"ok": False, "error": f"{hi} ft is below max_depth {md}: `order max_depth={hi}` first "
+                                          "(going deeper is your standing order to give)"}
+        until, then, level_min, force, i = None, "recall", 10, False, 1
+        while i < len(args):
+            a = args[i]
+            if a == "until":
+                j = i + 1
+                while j < len(args) and args[j] not in ("then", "force") and not args[j].startswith("level_min="):
+                    j += 1
+                until, i = " ".join(args[i + 1:j]), j
+                continue
+            if a == "then" and i + 1 < len(args):
+                then, i = args[i + 1], i + 2
+                if then not in ("recall", "town"):
+                    return {"ok": False, "error": "then recall (stop in town) or then town (and run the town kit)"}
+                continue
+            if a.startswith("level_min="):
+                level_min = float(a.split("=", 1)[1])
+            elif a == "force":
+                force = True
+            else:
+                return {"ok": False, "error": f"can't read {a!r}; " + self.PLAN_USAGE}
+            i += 1
+        try:
+            conds = TripPlan.parse_until(until or "cures<3 or phase<3 or minutes>45")
+        except ValueError as e:
+            return {"ok": False, "error": f"until: {e}"}
+        bad = [c[0] for c in conds if c[1] == "wor" and c[2] in ("<", "<=") and int(c[3]) - (c[2] == "<=") >= 1]
+        if bad:
+            return {"ok": False, "error": f"until {bad[0]}: that holds as soon as the trip has recalled down (one "
+                                          "Word of Recall goes on the way down); coming home with none left is "
+                                          "built in"}
+        if w.depth == 0 and not force:
+            want = min(hi, max(lo, self.deepest_ft or 0))
+            gap = self.supply_gate(want, want > 150 and (self.deepest_ft or 0) >= 250)
+            if gap:
+                return {"ok": False, "error": f"supply gate for {want} ft: missing {'; '.join(gap)}. "
+                                              "`plan town` first, or add 'force'"}
+        self.plan = TripPlan(lo, hi, conds, then, level_min)
+        self.set_goal(None)
+        self.log("plan_start", plan=self.plan.text, role=self.req_role)
+        return {"ok": True, "plan": self.plan.text,
+                "note": "the Pilot runs it; `wait` wakes you when it ends (plan_done) and for what it can't "
+                        "handle (user messages, stat drains, emergency loops). Bands, pits, breeders and the "
+                        "like are news: it leaves the level itself. A goal you give pauses the plan until it "
+                        "ends; `plan stop` ends it"}
+
     def request_plan(self, args):
-        """plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@CAP][,...]]..."""
-        if not args or args[0] != "town":
-            return {"ok": False, "error": "usage: plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@CAP],...] "
-                                          "(plan trip comes with step 2.3)"}
+        """plan trip ... | plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@CAP][,...]]... | plan stop | plan"""
+        if not args:
+            return {"ok": True, "text": f"plan: {self.plan.describe()}" if self.plan else "no plan"}
+        if args[0] == "stop":
+            if not self.plan:
+                return {"ok": True, "text": "no plan"}
+            self.log("plan_end", plan=self.plan.text, status="stopped")
+            self.plan = None
+            self.clear_plan_file()
+            return {"ok": True, "text": "plan stopped (the current goal runs on; `stop` stops it)"}
+        if args[0] == "trip":
+            return self.request_trip(args[1:])
+        if args[0] != "town":
+            return {"ok": False, "error": self.PLAN_USAGE}
         if self.w.depth:
             return {"ok": False, "error": "plan town is for the town (recall home first)"}
         kit, buylist, specs, i = None, [], [], 1
@@ -5033,6 +5434,10 @@ class Pilot:
         g.by_navigator = self.req_role != "architect"
         g.role = self.req_role
         self.set_goal(g)
+        if self.plan:
+            # your goal first; the plan carries on when it ends (`plan stop` ends the plan)
+            self.plan.paused, self.plan.pause_goal = True, g
+            return {"ok": True, "goal": g.describe(), "note": "the trip plan is paused until this goal ends"}
         return {"ok": True, "goal": g.describe()}
 
     # --- the situation report ------------------------------------------------
@@ -5279,6 +5684,8 @@ class Pilot:
         lines.append(f"{ind.get('hist_name_', '?')} L{w.clvl} HP {w.hp[0]}/{w.hp[1]} · {where} · "
                      f"{ind.get('gold', [0])[0]}g · max {self.orders.get('max_depth')}ft · "
                      f"{time.strftime('%H:%M:%S')} · goal: {self.goal.describe() if self.goal else 'none'}")
+        if self.plan:
+            lines.append("Plan: " + self.plan.describe())
         if self.unanswered:
             lines.append("USER MESSAGE(S) NOT YET ANSWERED (reply with say): " + " | ".join(
                 f"{time.strftime('%H:%M:%S', time.localtime(t))} {m}" for t, m in self.unanswered))

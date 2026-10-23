@@ -102,7 +102,7 @@ harness. The HANDBOOK shrinks to the judgement calls (~100 lines).
    always; by value per slot when the pack is full); destroy junk; identify when it pays; wear upgrades; sell in town
    by policy. Value refusals without `!`.
 2. **Town kit** (`plan town`): sell, identify, restock to the kit, buy list, Restore stats. **Done 2026-10-23 (session 4)**; see next_steps.md.
-3. **Trip plan** (`plan trip ... until ... then recall`) with the level-leaving rules.
+3. **Trip plan** (`plan trip ... until ... then recall`) with the level-leaving rules. **Done 2026-10-23 (session 4).**
 4. **Order checks**: hunt and fetch vetted, stale orders held, `after_report` premise check.
 5. **Belief state** in the report.
 6. **The new toolset**, the short HANDBOOK and navigator.md.
