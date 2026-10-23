@@ -1,0 +1,47 @@
+{
+ "id": "C3",
+ "tag": "C3-20261023-170003",
+ "depth_ft": 500,
+ "start": "2026-10-23 17:00:03",
+ "checks": {
+  "Farmer Maggot slain": {
+   "pass": true,
+   "detail": "reply {\"ok\": true, \"goal\": \"hunt Farmer Maggot\", \"note\": \"Farmer Maggot: ~13 turns to kill, ~0 HP lost on average, ~0 in a bad"
+  },
+  "his drop picked up": {
+   "pass": false,
+   "detail": "picked []; left []"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"hunt Farmer Maggot\", \"note\": \"Farmer Maggot: ~13 turns to kill, ~0 HP lost on average, ~0 in a bad fight (1 in 10; you have 265)\"}\nNOTE: Farmer Maggot: ~13 turns to kill, ~0 HP lost on average, ~0 in a bad fight (1 in 10; you have 265)",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   265,
+   265
+  ],
+  "attention": [
+   [
+    7.2,
+    "unique_slain",
+    "Farmer Maggot slain at 27,145: uniques drop good items (look at 'Item squares' around there)"
+   ],
+   [
+    7.2,
+    "goal_done",
+    "hunt Farmer Maggot: slain"
+   ]
+  ],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 17:07:39",
+ "pass": false
+}

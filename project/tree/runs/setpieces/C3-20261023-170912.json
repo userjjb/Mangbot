@@ -1,0 +1,73 @@
+{
+ "id": "C3",
+ "tag": "C3-20261023-170912",
+ "depth_ft": 300,
+ "start": "2026-10-23 17:09:12",
+ "checks": {
+  "Ulfast slain": {
+   "pass": true,
+   "detail": "reply {\"ok\": true, \"goal\": \"hunt Ulfast, Son of Ulfang\", \"note\": \"Ulfast, Son of Ulfang: ~14 turns to kill, ~119 HP lost on av"
+  },
+  "his drop picked up": {
+   "pass": false,
+   "detail": "picked []; left []"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"hunt Ulfast, Son of Ulfang\", \"note\": \"Ulfast, Son of Ulfang: ~14 turns to kill, ~119 HP lost on average, ~150 in a bad fight (1 in 10; you have 265)\"}\nNOTE: Ulfast, Son of Ulfang: ~14 turns to kill, ~119 HP lost on average, ~150 in a bad fight (1 in 10; you have 265)",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   200,
+   265
+  ],
+  "attention": [
+   [
+    28.5,
+    "unique_slain",
+    "Ulfast, Son of Ulfang slain at 27,148: uniques drop good items (look at 'Item squares' around there)"
+   ],
+   [
+    31.5,
+    "goal_done",
+    "hunt Ulfast, Son of Ulfang: slain"
+   ],
+   [
+    33.2,
+    "tactic",
+    "hungry and no food: read a Scroll of Satisfy Hunger"
+   ],
+   [
+    35.5,
+    "tactic",
+    "fetching the unique's drop at 28,147"
+   ],
+   [
+    37.1,
+    "goal_done",
+    "goto 28,147"
+   ]
+  ],
+  "acts": [
+   [
+    28.6,
+    "rest",
+    "rest"
+   ],
+   [
+    33.2,
+    "custom r item=10",
+    "hungry (2), no food: read Satisfy Hunger"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 17:12:04",
+ "pass": false
+}

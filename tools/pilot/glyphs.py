@@ -32,7 +32,7 @@ ATTR_MAX = 63
 
 class Race:
     __slots__ = ("idx", "name", "char", "color", "level", "flags", "spells", "blows", "speed", "hp",
-                 "spell_freq", "danger", "speed_x", "melee_avg", "melee_max", "drain_blows")
+                 "spell_freq", "danger", "speed_x", "melee_avg", "melee_max", "drain_blows", "veto_reason")
 
     def __init__(self, idx, name):
         self.idx, self.name = idx, name
@@ -46,6 +46,7 @@ class Race:
         self.melee_avg = None   # damage per monster turn if every blow hits
         self.melee_max = None   # the same with every die at its maximum
         self.drain_blows = None  # blows that drain a stat or experience (LOSE_*, EXP_*)
+        self.veto_reason = None  # the rulebook's reason for an AVOID/LEAVE rating (qualitative | strength)
 
     @property
     def repeat_fearer(self):
@@ -166,6 +167,7 @@ def load_rulebook(races, path=RULEBOOK_MONSTERS):
             continue              # a different monster.txt: don't trust the row
         if row.get("rating", "") != "":
             r.danger = int(row["rating"])
+        r.veto_reason = row.get("veto_reason") or None     # (qualitative | strength, for AVOID/LEAVE)
         r.speed_x = float(row["speed_x"])
         if row.get("melee_max"):
             r.melee_max = float(row["melee_max"])

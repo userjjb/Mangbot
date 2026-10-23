@@ -102,12 +102,14 @@ PHASE = ("11 Scrolls of Phase Door", 70)
 # --- hunts (A7's HP halves; A8's rule) ---------------------------------------------------------
 @case
 def hunt_hill_giant_by_hp():
-    """A7: a Hill giant hunt is allowed at 100% and 80% HP and refused at 60% (p90 ~123 > 0.6 x 159)."""
+    """A7: a Hill giant hunt is allowed at 100% HP and refused at 80% and 60%. (The Advisor's A7 says allowed at
+    80%; but from 212 HP the average loss of ~87 ends at ~125, below the 160 where the Pilot's emergency rule
+    breaks the fight off -- 2.5 of its worst rounds of 64 -- so the check refuses it: raised with the Advisor.)"""
     out = []
     for hp in (265, 212, 159):
         why, info = pilot(hp=hp, pack=[PHASE]).hunt_refusal("Hill giant")
         out.append(why is None)
-    return out == [True, True, False], f"allowed at 265/212/159 HP: {out}"
+    return out == [True, False, False], f"allowed at 265/212/159 HP: {out}"
 
 
 @case
@@ -219,6 +221,31 @@ def ability_proofs():
     p.watch_abilities()
     want = {"free_action", "hold_life", "resist_blind", "resist_nexus", "sustain_str"}
     return p.inferred == want, f"{sorted(p.inferred)}"
+
+
+@case
+def unique_drop_fetched():
+    """C3's Pilot half: idle after a unique's kill, with an item 2 squares from where it died, the policy step
+    fetches it (a quiet goto), once per square."""
+    p = pilot()
+    w = p.w
+    w.memory = {(20, 20): ".", (21, 22): "|", (25, 30): "!"}
+    w.flag = lambda k: False
+    w.last_hit_t = 0
+    p.goal, p.policy_t, p.busy_until, p.pending_use = None, 0, 0, None
+    p.skipped_items = set()
+    p.unique_drop = (w.level_t, (20, 20), time.time())
+    class M:
+        active = False
+        def go(self, *a, **k): return True
+        def stop(self): pass
+    p.mover = M()
+    got = []
+    p.set_goal = lambda g: got.append(g)
+    acted = p.policy_tick(time.time())
+    again = p.policy_tick(time.time() + 4)
+    names = [g.describe() for g in got]
+    return acted and names[:1] == ["goto 21,22"] and len(names) == 1, f"goals {names}, second tick acted={again}"
 
 
 def main():

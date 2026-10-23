@@ -2488,9 +2488,12 @@ class Pilot:
             return f"unique, lvl {r.level}"
         # The Advisor's danger table (memo 2026-09-27 §3): 5 = leave on sight;
         # 4 = lethal until we've outgrown it by about 8 levels
-        if r.danger == 5:
+        # (a rating the rulebook marks as about strength alone is the duel simulator's to judge, below:
+        # Ulfast fled on sight as "rated 4" while the hunt check allowed him -- the set-piece harness)
+        strength_only = getattr(r, "veto_reason", None) == "strength"
+        if r.danger == 5 and not strength_only:
             return "rated 5: leave on sight"
-        if r.danger == 4 and lev < r.level + 8:
+        if r.danger == 4 and lev < r.level + 8 and not strength_only:
             return f"rated 4: lethal until clvl {r.level + 8}"
         # A fast unique near our level: we can't walk away from it (mission 9:
         # Bullroarer, +10, cost 93 -> 51 HP while the pilot backed away)
@@ -2524,10 +2527,28 @@ class Pilot:
                   if not self.has_ability("resist_blind" if e == "BLIND" else "resist_conf")}
         if nosave and "NEVER_MOVE" not in r.flags and r.level >= lev - 10:
             return ("blinds" if "BLIND" in nosave else "confuses") + " with its blows (no save)"
+        # A fight we'd lose on average, by the Advisor's duel simulator (the set-piece harness: Lugdush, lvl
+        # 21 and unrated, fired no rule though a fight costs ~350 HP of 265)
+        sim = self.sim_loss(r) if r.level >= lev - 3 and "NEVER_MOVE" not in r.flags else None
+        if sim and sim > 0.8 * max(1, self.w.hp[0]):
+            return f"a fight costs ~{sim:.0f} HP on average (the duel simulator)"
         # Summons land next to us and stay after the summoner dies (memo §1.2)
         if r.summoner and r.level >= lev - 5:
             return "summons"
         return None
+
+    def sim_loss(self, r):
+        """fight_sim's mean HP lost dueling r at our current profile, cached by race, level,
+        weapon, AC and HP to the nearest 10% (300 duels, ~0.05 s for a new key)."""
+        w = self.w
+        wt = [x for x in self.weapon_table() if x[3]]
+        key = (getattr(r, "idx", None), w.clvl, wt[0][0] if wt else None, (w.ind.get("armor") or [0])[0],
+               round(w.hp_frac * 10))
+        cache = self.__dict__.setdefault("_sim_cache", {})
+        if key not in cache:
+            sm = self.fight_sim(r, n=300)
+            cache[key] = sm["loss_mean"] if sm else None
+        return cache[key]
 
     def dangers(self):
         mons = self.w.monsters
@@ -3577,6 +3598,21 @@ class Pilot:
                 w.flag("blind") or w.flag("confused"):
             return False
         self.policy_t = now
+        # 0a. a unique's drop: the items within 3 squares of where it died (the set-piece C3: Mughash's drop
+        # was left -- looting runs only inside explore and dive, and a hunt ends idle)
+        ud = getattr(self, "unique_drop", None)
+        if self.goal is None and not self.mover.active and ud and ud[0] == w.level_t and now - ud[2] < 300 and w.pos:
+            fetched = self.__dict__.setdefault("drop_fetched", set())
+            drops = [q for q in self.resolve_target("item") if max(abs(q[0] - ud[1][0]), abs(q[1] - ud[1][1])) <= 3
+                     and (w.level_t, q) not in fetched and w.memory.get(q, ".") not in "0123456789"]
+            if drops:
+                q = min(drops, key=w.dist)
+                fetched.add((w.level_t, q))   # (one visit per square; not skipped_items, which the pickup reads as junk)
+                g = Goto(f"{q[0]},{q[1]}")
+                g.quiet = True
+                self.set_goal(g)
+                self.notify("tactic", f"fetching the unique's drop at {q[0]},{q[1]}", news=True)
+                return True
         # 0. gold lying within 10 squares while idle (the user, mission 23: the Pilot
         # left the gold beside it in town; the Navigator needed seven gotos)
         if self.goal is None and not self.mover.active and w.pos:
@@ -3998,8 +4034,10 @@ class Pilot:
             want.append("stun")
         # Blind or confused and still being hit: cure whatever we can see (mission
         # 15: blind + confused 9 s with nothing in view, HP 160 -> 86, no cure)
-        hit_unseen = now - w.last_hit_t <= 3 and (w.damage_rate(3.0) > 0.01 * w.hp[1] or
-                                                   w.hp_frac < self.orders["think_hp"])
+        # (unseen means unseen: the set-piece C3 spent 4 CSW and 2 CCW in 18 s curing confusion from Kobold
+        # shamans at 84-93% HP, because any hits counted here; the user: spend only when it matters)
+        hit_unseen = not mobile_near and now - w.last_hit_t <= 3 and (w.damage_rate(3.0) > 0.01 * w.hp[1] or
+                                                                      w.hp_frac < self.orders["think_hp"])
         if (mobile_near and threat or hit_unseen) and w.flag("confused"):
             want.append("confused")
         if (mobile_near and threat or hit_unseen) and w.flag("blind"):
@@ -5923,6 +5961,14 @@ class Pilot:
             turns, taken, worst = sim["turns_mean"], sim["loss_mean"], sim["loss_p90"]
         info = (f"{race.name}: ~{turns:.0f} turns to kill, ~{taken:.0f} HP lost on average, ~{worst:.0f} in a bad "
                 f"fight (1 in 10; you have {w.hp[0]})")
+        # a fight the Pilot's own emergency rule would break off on average: it phases away once HP is
+        # within 2.5 worst rounds of the monster (or below flee_hp), so a hunt whose average loss ends
+        # there is lost (the set-piece harness's C3: Ulfast, ~118 on average, broken off at 145 HP)
+        abort = max((race.worst_melee[0] or 0) * (race.speed_x or 1) * 2.5,
+                    float(self.orders.get("flee_hp", 0.5)) * w.hp[1])
+        if hp - taken < abort:
+            return (f"{info}: on average it ends below {abort:.0f} HP, where the Pilot's emergency rule breaks a "
+                    "fight off (2.5 of its worst rounds, or flee_hp); rest to full or come back stronger", info)
         if row.get("response") in ("AVOID", "LEAVE") and row.get("veto_reason", "qualitative") != "strength":
             # (the Advisor's m24 memo: ratings given for strength alone are the simulator's to judge;
             # its veto_reason column says which, from its next rulebook build)

@@ -126,6 +126,27 @@ class DM:
         self.clear_hooks()
         return h.replace("Summon ", "")
 
+    K_MAX = 531                 # (lib/edit/limits.txt M:K) the Forge list: kinds by index, then egos 1.. after them
+
+    def forge(self, kind, ego=None, number=1):
+        """Forge an item into Gandalf's pack slot a: kind = object.txt index, ego = ego_item.txt index.
+        It's unidentified to whoever picks it up."""
+        def down(n):
+            return "3" * (n // 20) + "2" * (n % 20)
+        keys = "^F" + down(kind) + "\\r" + "n" + str(number) + "\\r"
+        if ego:
+            keys += down(self.K_MAX + ego - 1 - kind) + "\\r"
+        self.menu(keys, settle=0.05)
+        self._drain(0.8)
+        self.close()
+        inv = self.c.inven()
+        return inv[0]["name"] if inv else None
+
+    def drop_first(self):
+        """Drop pack item a on Gandalf's square (a ghost DM with GHOST_BODY can)."""
+        self.c.send("custom d item=0 value=1")
+        self.c.collect(1.0)
+
     def players(self):
         """Names on the Player page, in its order (Gandalf marked '@')."""
         self.menu("^P")

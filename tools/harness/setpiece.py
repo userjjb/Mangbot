@@ -150,7 +150,8 @@ class Run:
                 break
             self.dm.walk(step_dir(g, spot))
         away = step_dir(me, spot) or 8               # step on, away from Dive04
-        name = self.dm.summon(race_idx(race_name), step=away, after=after)
+        idx = race_name if isinstance(race_name, int) else race_idx(race_name)
+        name = self.dm.summon(idx, step=away, after=after)
         self.say(f"[{self.tag}] summoned {name} at {spot}, {dist} from Dive04 at {me}")
         return spot
 
@@ -311,20 +312,168 @@ def a8w(run):
         run.check("HP >= 80%", st["hp_min"][0] >= 0.8 * st["hp_min"][1], f"lowest {st['hp_min']}")
 
 
-SETPIECES = {"A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9}
+def first_seen(recs, name, t0):
+    for d in recs:
+        if d.get("kind") == "mons" and any(m[2] == name for m in d.get("monsters", [])):
+            return d["t"] - t0
+    return None
+
+
+def a1(run):
+    """A1: an orc mob (Black orcs and a Hill orc group, 6-7 squares off) while a trip plan works the level:
+    a serious band makes the plan leave; lowest HP >= 40%; at most 3 Phase Door reads."""
+    run.bring_dive04()
+    ctl("plan", "trip", f"{run.depth}-{run.depth}", "until", "minutes>3", role="architect")
+    run.t_act = time.time()
+    run.place("Black orc", 6)
+    run.place("Hill orc", 7)
+    run.watch(70)
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    ctl("plan", "stop", role="architect")
+    left = any(d.get("kind") == "goal" and str(d.get("goal", "")).startswith("flee") for d in recs)
+    run.res["notes"].append(f"left the level: {left}; band events: {sum(1 for a in st['attention'] if a[1] == 'band')}")
+    if st["hp_min"]:
+        run.check("lowest HP >= 40%", st["hp_min"][0] >= 0.4 * st["hp_min"][1], f"lowest {st['hp_min']}")
+    run.check("at most 3 Phase Door", st["phase_reads"] <= 3, f"{st['phase_reads']} reads")
+
+
+def a6(run):
+    """A6: a Gnome mage (blinks, summons) adjacent, let it summon: at most 3 Phase Door, then Word of Recall or
+    the stairs; Phase Door never runs out; lowest HP >= 40%."""
+    run.bring_dive04()
+    before = re.search(r"Phase (\d+)", ctl("status", role="architect"))
+    run.t_act = time.time()
+    run.place(202, 1)                       # (the level-15 Gnome mage: BLINK, BO_COLD, S_MONSTER)
+    run.watch(70)
+    st = run.stats(log_since(run.t_act))
+    run.res["stats"] = st
+    after = re.search(r"Phase (\d+)", ctl("status", role="architect"))
+    run.check("at most 3 Phase Door", st["phase_reads"] <= 3, f"{st['phase_reads']} reads")
+    run.check("Phase Door never runs out", after and int(after.group(1)) > 0,
+              f"{before.group(1) if before else '?'} -> {after.group(1) if after else '?'}")
+    if st["hp_min"]:
+        run.check("lowest HP >= 40%", st["hp_min"][0] >= 0.4 * st["hp_min"][1], f"lowest {st['hp_min']}")
+
+
+def a2(run, who="Ulwarth, Son of Ulfang"):
+    """A2: a unique too strong for us appears adjacent, no stairs known (Ulwarth: the danger rule's 'unique
+    above your level'): Word of Recall read within 2 s of first sight; lowest HP >= 40%."""
+    run.bring_dive04()
+    run.t_act = time.time()
+    run.place(who, 1)
+    run.watch(45)
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    seen = first_seen(recs, who, run.t_act)
+    wor = next((a[0] for a in st["acts"] if "word of recall" in str(a[2]).lower()), None)
+    run.check("Word of Recall within 2 s of first sight", seen is not None and wor is not None and wor - seen <= 2,
+              f"seen at {seen}, recall read at {wor}")
+    if st["hp_min"]:
+        run.check("lowest HP >= 40%", st["hp_min"][0] >= 0.4 * st["hp_min"][1], f"lowest {st['hp_min']}")
+
+
+def a2l(run):
+    """A2L: Lugdush (no danger rule fires: level 21, unrated; but fight_sim's average fight costs ~350 HP)."""
+    a2(run, who="Lugdush, the Uruk")
+
+
+def c3(run):
+    """C3: a unique's drop (Ulfast: DROP_90 | DROP_GOOD, no escort, never killed by Dive04 -- a
+    repeat kill of a unique drops nothing, xtra2.c 'cheeze'; Lagduf's and Mughash's escorts made band fights) is picked up after the kill, whatever its bulk. (Not
+    a unique Dive04 has killed: they drop nothing a second time -- Brodda, Bullroarer, Orfax, Wormtongue.)"""
+    run.bring_dive04()
+    run.t_act = time.time()
+    out = {}
+    # (as the Architect: C3 tests the pickup, and the hunt check rightly refuses Lagduf, LEAVE for his escort)
+    run.place("Ulfast, Son of Ulfang", 1, after=lambda: out.update(reply=ctl("goal", "hunt", "Ulfast,_Son_of_Ulfang",
+                                                                        role="architect")))
+    run.res["order_reply"] = out.get("reply")
+    run.watch(120, until=lambda recs: any(d.get("kind") == "attention" and d.get("what") == "unique_slain"
+                                          and "Ulfast" in str(d.get("detail")) for d in recs))
+    time.sleep(25)
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    slain = next((d["t"] for d in recs if d.get("kind") == "attention" and d.get("what") == "unique_slain"
+                  and "Ulfast" in str(d.get("detail"))), None)
+    picked = [a for a in st["acts"] if "pick up" in str(a[2]) and slain and a[0] >= slain - run.t_act]
+    left = [d for d in recs if d.get("kind") == "attention" and "left " in str(d.get("detail")) and "pack full" in str(d.get("detail"))]
+    run.check("Ulfast slain", slain is not None, f"reply {str(out.get('reply'))[:120]}")
+    run.check("his drop picked up", bool(picked) and not left, f"picked {picked[:3]}; left {[str(d.get('detail'))[:60] for d in left]}")
+
+
+def c8(run):
+    """C8: unidentified Boots of Free Action worn, a Floating eye's paralysing gaze: "You are unaffected!"
+    -> the Pilot infers Free Action and protects the boots (keep, identify)."""
+    v = run.bring_dive04()
+    me = tuple(v["pos"])
+    spot = floor_near(v, me, 1)
+    for _ in range(30):
+        g = run.dm.c.pos or (run.dm.status()["y"], run.dm.status()["x"])
+        if tuple(g) == spot:
+            break
+        run.dm.walk(step_dir(g, spot))
+    made = run.dm.forge(91, ego=58)
+    run.res["notes"].append(f"forged: {made}")
+    run.dm.drop_first()
+    run.dm.walk(step_dir(me, spot) or 8)
+    ctl("goal", "goto", f"{spot[0]},{spot[1]}", role="architect")
+    time.sleep(4)
+    ctl("pickup", role="architect")
+    time.sleep(2)
+    pack = ctl("pack", role="architect")
+    boots = re.search(r"([a-w])\) (?:a )?Pair of Soft Leather Boots[^;]*", pack)
+    run.check("boots picked up (unidentified)", bool(boots) and "Free Action" not in boots.group(0),
+              boots.group(0) if boots else pack[:160])
+    if not boots:
+        return
+    ctl("wear", boots.group(1), role="architect")
+    time.sleep(2)
+    run.t_act = time.time()
+    run.place("Floating eye", 1)
+    run.watch(40, until=lambda recs: any(d.get("kind") == "attention" and d.get("what") == "ability" for d in recs))
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    ab = [a for a in st["attention"] if a[1] == "ability"]
+    run.check("Free Action inferred from 'You are unaffected!'", any("Free Action" in a[2] for a in ab), f"{ab[:1]}")
+    run.check("the boots protected", any("soft leather boots" in a[2].lower() for a in ab), f"{ab[:1]}")
+
+
+SETPIECES = {"C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
+             "C3": c3}
+
+
+def fresh_depth(choices=(300, 350, 400, 450, 500)):
+    """The depth used longest ago (going up to town and back doesn't free a level: the server keeps
+    empty levels a while, and a C3 run met the last run's Lagduf and his orcs)."""
+    path = os.path.join(OUT, "depths.json")
+    try:
+        used = json.load(open(path))
+    except (OSError, ValueError):
+        used = {}
+    d = min(choices, key=lambda c: used.get(str(c), 0))
+    used[str(d)] = time.time()
+    os.makedirs(OUT, exist_ok=True)
+    json.dump(used, open(path, "w"))
+    return d
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("sid", help="A7 | A8 | A8o (A8 overridden) | A9 | list")
-    ap.add_argument("--depth", type=int, default=300)
+    ap.add_argument("--depth", type=int, default=0, help="default: the least recently used of 300-500 ft")
     ap.add_argument("--keep", action="store_true")
     a = ap.parse_args()
     if a.sid == "list":
         for k, f in SETPIECES.items():
             print(k, "-", (f.__doc__ or "").strip().splitlines()[0])
         return
-    run = Run(a.sid, a.depth, a.keep)
+    depth = a.depth or fresh_depth()
+    run = Run(a.sid, depth, a.keep)
     try:
         run.setup()
         SETPIECES[a.sid](run)

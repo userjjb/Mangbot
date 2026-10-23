@@ -1,0 +1,79 @@
+{
+ "id": "A1",
+ "tag": "A1-20261023-161258",
+ "depth_ft": 300,
+ "start": "2026-10-23 16:12:58",
+ "checks": {
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [250, 265]"
+  },
+  "at most 3 Phase Door": {
+   "pass": true,
+   "detail": "0 reads"
+  }
+ },
+ "notes": [
+  "left the level: False; band events: 0"
+ ],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   250,
+   265
+  ],
+  "attention": [
+   [
+    40.1,
+    "breeders",
+    "3 breeding monsters in view (Giant white rat): leave this level (stairs, or recall) if they get in t"
+   ],
+   [
+    50.5,
+    "thief",
+    "Smeagol (lvl 3, 3 away) steals gold with a touch, then teleports: kill it before it reaches you (`go"
+   ],
+   [
+    67.2,
+    "tactic",
+    "hungry and no food: read a Scroll of Satisfy Hunger"
+   ]
+  ],
+  "acts": [
+   [
+    11.8,
+    "custom ,",
+    "pick up: a Dagger (1d4)."
+   ],
+   [
+    67.2,
+    "custom r item=10",
+    "hungry (2), no food: read Satisfy Hunger"
+   ],
+   [
+    72.1,
+    "walk 9",
+    "hit the Smeagol first (a thief)"
+   ],
+   [
+    72.4,
+    "walk 9",
+    "hit the Smeagol first (a thief)"
+   ],
+   [
+    72.8,
+    "walk 4",
+    "hit the Smeagol first (a thief)"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 16:16:19",
+ "pass": true
+}

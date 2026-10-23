@@ -1,0 +1,108 @@
+{
+ "id": "C3",
+ "tag": "C3-20261023-164505",
+ "depth_ft": 300,
+ "start": "2026-10-23 16:45:05",
+ "checks": {
+  "Ulfast slain": {
+   "pass": false,
+   "detail": "reply {\"ok\": true, \"goal\": \"hunt Ulfast, Son of Ulfang\", \"note\": \"Ulfast, Son of Ulfang: ~14 turns to kill, ~118 HP lost on av"
+  },
+  "his drop picked up": {
+   "pass": false,
+   "detail": "picked []; left []"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"hunt Ulfast, Son of Ulfang\", \"note\": \"Ulfast, Son of Ulfang: ~14 turns to kill, ~118 HP lost on average, ~148 in a bad fight (1 in 10; you have 149)\"}\nNOTE: Ulfast, Son of Ulfang: ~14 turns to kill, ~118 HP lost on average, ~148 in a bad fight (1 in 10; you have 149)",
+ "stats": {
+  "hp_start": [
+   241,
+   265
+  ],
+  "hp_min": [
+   145,
+   265
+  ],
+  "attention": [
+   [
+    3.7,
+    "fight_going_badly",
+    "HP 170/265 fighting Ulfast, Son of Ulfang"
+   ],
+   [
+    4.9,
+    "emergency",
+    "HP 145 within 2.5 worst rounds (60): read Phase Door (Ulfast, Son of Ulfang adjacent)"
+   ],
+   [
+    8.1,
+    "interesting_item",
+    "Ring of Feather Falling seen on this level (devices and jewellery sell for 50-700 once known): its s"
+   ],
+   [
+    55.5,
+    "goal_failed",
+    "hunt Ulfast, Son of Ulfang: lost sight of it"
+   ],
+   [
+    57.4,
+    "tactic",
+    "hungry and no food: read a Scroll of Satisfy Hunger"
+   ]
+  ],
+  "acts": [
+   [
+    4.9,
+    "custom r item=7",
+    "HP 145 within 2.5 worst rounds (60): phase door"
+   ],
+   [
+    5.5,
+    "rest",
+    "rest"
+   ],
+   [
+    7.4,
+    "rest",
+    "rest"
+   ],
+   [
+    8.4,
+    "rest",
+    "stop resting"
+   ],
+   [
+    9.1,
+    "rest",
+    "rest"
+   ],
+   [
+    10.1,
+    "rest",
+    "stop resting"
+   ],
+   [
+    10.8,
+    "rest",
+    "stop resting"
+   ],
+   [
+    11.3,
+    "rest",
+    "rest"
+   ],
+   [
+    57.4,
+    "custom r item=10",
+    "hungry (2), no food: read Satisfy Hunger"
+   ]
+  ],
+  "emergencies": 1,
+  "phase_reads": 1,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 16:49:34",
+ "pass": false
+}

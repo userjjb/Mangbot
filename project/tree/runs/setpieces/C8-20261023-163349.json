@@ -1,0 +1,17 @@
+{
+ "id": "C8",
+ "tag": "C8-20261023-163349",
+ "depth_ft": 300,
+ "start": "2026-10-23 16:33:49",
+ "checks": {
+  "boots picked up (unidentified)": {
+   "pass": false,
+   "detail": "Pack: a) 5 Flasks of oil; b) 2 Potions of Boldness; c) 4 Potions of Speed; d) 6 Potions of Heroism; e) Potion of Berserk Strength; f) 4 Potions of Cure Serious "
+  }
+ },
+ "notes": [
+  "forged: a Pair of Soft Leather Boots of Free Action [0,+0] {store name Test Shop}"
+ ],
+ "end": "2026-10-23 16:36:26",
+ "pass": false
+}

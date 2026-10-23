@@ -1,0 +1,148 @@
+{
+ "id": "C3",
+ "tag": "C3-20261023-165037",
+ "depth_ft": 350,
+ "start": "2026-10-23 16:50:37",
+ "checks": {
+  "Mughash slain": {
+   "pass": true,
+   "detail": "reply {\"ok\": true, \"goal\": \"hunt Mughash the Kobold Lord\", \"note\": \"Mughash the Kobold Lord: ~6 turns to kill, ~19 HP lost on "
+  },
+  "his drop picked up": {
+   "pass": false,
+   "detail": "picked []; left []"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"hunt Mughash the Kobold Lord\", \"note\": \"Mughash the Kobold Lord: ~6 turns to kill, ~19 HP lost on average, ~31 in a bad fight (1 in 10; you have 265)\"}\nNOTE: Mughash the Kobold Lord: ~6 turns to kill, ~19 HP lost on average, ~31 in a bad fight (1 in 10; you have 265)",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   179,
+   265
+  ],
+  "attention": [
+   [
+    3.5,
+    "band",
+    "a band within 10 squares: Kobold shaman \u00d76, Large kobold \u00d75, Mughash the Kobold Lord (12 monsters, ~"
+   ],
+   [
+    4.3,
+    "unseen_attacker",
+    "'It points at you and curses.': probably the Kobold shaman (lvl 3) in view; carrying on (HP 93%)"
+   ],
+   [
+    5.3,
+    "tactic",
+    "confused in combat: quaffed a Potion of Cure Serious Wounds {25% off}"
+   ],
+   [
+    6.0,
+    "interesting_item",
+    "Lead-Plated Rod seen on this level (devices and jewellery sell for 50-700 once known): its square is"
+   ],
+   [
+    6.9,
+    "tactic",
+    "confused in combat: quaffed a Potion of Cure Serious Wounds {25% off}"
+   ],
+   [
+    8.4,
+    "tactic",
+    "confused in combat: quaffed a Potion of Cure Serious Wounds {25% off}"
+   ],
+   [
+    9.5,
+    "unique_slain",
+    "Mughash the Kobold Lord slain at 27,151: uniques drop good items (look at 'Item squares' around ther"
+   ],
+   [
+    12.4,
+    "tactic",
+    "confused in combat: quaffed a Potion of Cure Serious Wounds {25% off}"
+   ],
+   [
+    16.2,
+    "interesting_item",
+    "Iron Wand seen on this level (devices and jewellery sell for 50-700 once known): its square is under"
+   ],
+   [
+    18.2,
+    "tactic",
+    "confused in combat: quaffed a Potion of Cure Critical Wounds {25% off}"
+   ],
+   [
+    23.0,
+    "tactic",
+    "confused in combat: quaffed a Potion of Cure Critical Wounds {25% off}"
+   ],
+   [
+    23.6,
+    "tactic",
+    "7 monsters together but weak (~62 worst-case melee a turn vs HP 222): fighting on"
+   ],
+   [
+    29.1,
+    "goal_done",
+    "hunt Mughash the Kobold Lord: slain"
+   ],
+   [
+    35.7,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    35.8,
+    "goal_done",
+    "goto 27,152"
+   ]
+  ],
+  "acts": [
+   [
+    5.3,
+    "custom q item=5",
+    "confused in combat: quaff 4 Potions of Cure Serious Wounds {25% off}"
+   ],
+   [
+    6.9,
+    "custom q item=5",
+    "confused in combat: quaff 3 Potions of Cure Serious Wounds {25% off}"
+   ],
+   [
+    8.4,
+    "custom q item=5",
+    "confused in combat: quaff 2 Potions of Cure Serious Wounds {25% off}"
+   ],
+   [
+    12.4,
+    "custom q item=5",
+    "confused in combat: quaff a Potion of Cure Serious Wounds {25% off}"
+   ],
+   [
+    18.2,
+    "custom q item=5",
+    "confused in combat: quaff 6 Potions of Cure Critical Wounds {25% off}"
+   ],
+   [
+    23.0,
+    "custom q item=5",
+    "confused in combat: quaff 5 Potions of Cure Critical Wounds {25% off}"
+   ],
+   [
+    30.1,
+    "rest",
+    "rest"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 6
+ },
+ "end": "2026-10-23 16:53:04",
+ "pass": false
+}

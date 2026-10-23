@@ -1,0 +1,122 @@
+{
+ "id": "A2L",
+ "tag": "A2L-20261023-162232",
+ "depth_ft": 300,
+ "start": "2026-10-23 16:22:32",
+ "checks": {
+  "Word of Recall within 2 s of first sight": {
+   "pass": true,
+   "detail": "seen at 4.114013910293579, recall read at 3.3"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [146, 265]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   146,
+   265
+  ],
+  "attention": [
+   [
+    3.2,
+    "danger_seen",
+    "Lugdush, the Uruk (a fight costs ~349 HP on average (the duel simulator)) in view: heading for the s"
+   ],
+   [
+    3.3,
+    "goal_failed",
+    "flee (Lugdush, the Uruk): no stairs known"
+   ],
+   [
+    3.3,
+    "emergency",
+    "couldn't reach the stairs with 2 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    3.6,
+    "band",
+    "a band within 10 squares: Hill orc \u00d75, Snaga \u00d74, Novice warrior, Uruk, Lugdush, the Uruk (12 monster"
+   ],
+   [
+    7.2,
+    "emergency",
+    "HP 157 within 2.5 worst rounds (72): read Phase Door (Hill orc, Lugdush, the Uruk, Snaga adjacent)"
+   ],
+   [
+    10.9,
+    "fight_going_badly",
+    "HP 149/265 fighting Hill orc"
+   ],
+   [
+    13.1,
+    "danger_seen",
+    "Lugdush, the Uruk (a fight costs ~351 HP on average (the duel simulator)) in view: heading for the s"
+   ],
+   [
+    13.2,
+    "goal_failed",
+    "flee (Lugdush, the Uruk): no stairs known"
+   ],
+   [
+    14.3,
+    "emergency",
+    "couldn't reach the stairs with 2 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    33.4,
+    "tactic",
+    "hungry and no food: read a Scroll of Satisfy Hunger"
+   ]
+  ],
+  "acts": [
+   [
+    3.3,
+    "custom r item=8",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    7.2,
+    "custom r item=7",
+    "HP 157 within 2.5 worst rounds (72): phase door"
+   ],
+   [
+    13.2,
+    "custom r item=7",
+    "flee failed, monsters adjacent: phase door"
+   ],
+   [
+    14.3,
+    "custom r item=8",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    14.8,
+    "rest",
+    "rest"
+   ],
+   [
+    15.9,
+    "rest",
+    "rest"
+   ],
+   [
+    33.4,
+    "custom r item=9",
+    "hungry (2), no food: read Satisfy Hunger"
+   ]
+  ],
+  "emergencies": 3,
+  "phase_reads": 2,
+  "wor_reads": 2,
+  "cures": 0
+ },
+ "end": "2026-10-23 16:25:16",
+ "pass": true
+}

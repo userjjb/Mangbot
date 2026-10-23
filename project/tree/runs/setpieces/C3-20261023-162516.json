@@ -1,0 +1,52 @@
+{
+ "id": "C3",
+ "tag": "C3-20261023-162516",
+ "depth_ft": 300,
+ "start": "2026-10-23 16:25:16",
+ "checks": {
+  "Brodda slain": {
+   "pass": true,
+   "detail": "reply {\"ok\": true, \"goal\": \"hunt Brodda, the Easterling\", \"note\": \"Brodda, the Easterling: ~8 turns to kill, ~45 HP lost on av"
+  },
+  "his drop picked up": {
+   "pass": false,
+   "detail": "picked []; left []"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"hunt Brodda, the Easterling\", \"note\": \"Brodda, the Easterling: ~8 turns to kill, ~45 HP lost on average, ~61 in a bad fight (1 in 10; you have 265)\"}\nNOTE: Brodda, the Easterling: ~8 turns to kill, ~45 HP lost on average, ~61 in a bad fight (1 in 10; you have 265)",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   242,
+   265
+  ],
+  "attention": [
+   [
+    2.2,
+    "unseen_attacker",
+    "heard a door burst open: something is coming; be ready to leave"
+   ],
+   [
+    6.0,
+    "unique_slain",
+    "Brodda, the Easterling slain at 16,144: uniques drop good items (look at 'Item squares' around there"
+   ],
+   [
+    6.1,
+    "goal_done",
+    "hunt Brodda, the Easterling: slain"
+   ]
+  ],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 16:28:41",
+ "pass": false
+}

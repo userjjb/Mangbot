@@ -250,9 +250,15 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    dark), Satisfy Hunger never eaten (went Weak, recalled with 4 scrolls). A8o showed the danger rule reading WoR at full
    HP on sight of a summoner with no stairs known; **the user: walk away if we just walked into its sight, other
    action only if that isn't safe**: the `WalkAway` goal (A8w passes; it needs walked ground, so after a recall or
-   teleport arrival the escapes still apply). **Next:** more set-pieces in the
-   agreed order (A1, A6, A2, C8, C3...; A9's 'special' variant needs a real pit: import a level), then step 5
-   missions, then the time bubble. (`plan trip LO-HI until COND then recall`), 2.4 order
+   teleport arrival the escapes still apply). **Batch 2 (session 4): A1, A6, A2 (Ulwarth), A2L
+   (Lugdush), C3 (Ulfast) all PASS**; C8 not stageable (the Forge's items come out identified; covered by the unit
+   test). Fixed from it: a simulator danger reason (average loss > 80% HP: Lugdush, Ugluk), strength-only ratings
+   left to the simulator in the danger rule too (Ulfast), hunts refused when their average loss ends below the
+   emergency rule's 2.5 worst rounds (Ulfast; the Hill giant from 80% -- a change to the Advisor's A7 criterion,
+   asked), confusion not cured against visible weak monsters (C3 spent 6 potions), a unique's drop fetched after a
+   hunt. Staging facts in the harness README (repeat unique kills drop nothing; escorts; levels persist; depths
+   rotate). **Next:** the rest of the set-piece list by priority (B1, C4, C5, A3...), then step 5 missions, then the
+   time bubble. (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
    toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23. Then the time bubble (timers to game turns; decided below).
 3. **Rulebook:** the Advisor's **release 2** is in `Advisor/data/rulebook/`, synced into `github/tools/rulebook/`

@@ -1,0 +1,98 @@
+{
+ "id": "C3",
+ "tag": "C3-20261023-171229",
+ "depth_ft": 350,
+ "start": "2026-10-23 17:12:29",
+ "checks": {
+  "Ulfast slain": {
+   "pass": true,
+   "detail": "reply {\"ok\": true, \"goal\": \"hunt Ulfast, Son of Ulfang\", \"note\": \"Ulfast, Son of Ulfang: ~14 turns to kill, ~119 HP lost on av"
+  },
+  "his drop picked up": {
+   "pass": true,
+   "detail": "picked [(39.1, 'custom ,', 'pick up: a Light Crossbow (x3) {Ulfast, Son of Ulfang}.')]; left []"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"hunt Ulfast, Son of Ulfang\", \"note\": \"Ulfast, Son of Ulfang: ~14 turns to kill, ~119 HP lost on average, ~150 in a bad fight (1 in 10; you have 241)\"}\nNOTE: Ulfast, Son of Ulfang: ~14 turns to kill, ~119 HP lost on average, ~150 in a bad fight (1 in 10; you have 241)",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   186,
+   265
+  ],
+  "attention": [
+   [
+    30.5,
+    "unique_slain",
+    "Ulfast, Son of Ulfang slain at 28,145: uniques drop good items (look at 'Item squares' around there)"
+   ],
+   [
+    31.8,
+    "goal_done",
+    "hunt Ulfast, Son of Ulfang: slain"
+   ],
+   [
+    35.3,
+    "tactic",
+    "fetching the unique's drop at 27,145"
+   ],
+   [
+    35.9,
+    "goal_done",
+    "goto 27,145"
+   ],
+   [
+    37.3,
+    "tactic",
+    "hungry and no food: read a Scroll of Satisfy Hunger"
+   ],
+   [
+    38.4,
+    "tactic",
+    "fetching the unique's drop at 29,144"
+   ],
+   [
+    39.7,
+    "found",
+    "picked up a Light Crossbow (x3) {Ulfast, Son of Ulfang}: identify it before selling (`sell !NAME`)"
+   ],
+   [
+    41.4,
+    "goal_done",
+    "goto 29,144"
+   ]
+  ],
+  "acts": [
+   [
+    30.7,
+    "rest",
+    "rest"
+   ],
+   [
+    32.8,
+    "rest",
+    "rest"
+   ],
+   [
+    37.3,
+    "custom r item=10",
+    "hungry (2), no food: read Satisfy Hunger"
+   ],
+   [
+    39.1,
+    "custom ,",
+    "pick up: a Light Crossbow (x3) {Ulfast, Son of Ulfang}."
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 17:15:16",
+ "pass": true
+}

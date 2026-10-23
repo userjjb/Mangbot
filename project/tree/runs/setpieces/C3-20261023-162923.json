@@ -1,0 +1,98 @@
+{
+ "id": "C3",
+ "tag": "C3-20261023-162923",
+ "depth_ft": 300,
+ "start": "2026-10-23 16:29:23",
+ "checks": {
+  "Lagduf slain": {
+   "pass": false,
+   "detail": "reply {\"ok\": false, \"error\": \"hunt refused: the Advisor's rating for Lagduf, the Snaga is LEAVE. `goal hunt !NAME` overrides; "
+  },
+  "his drop picked up": {
+   "pass": false,
+   "detail": "picked []; left []"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": false, \"error\": \"hunt refused: the Advisor's rating for Lagduf, the Snaga is LEAVE. `goal hunt !NAME` overrides; if the fight goes wrong, the HP it costs goes into your fight debt\"}",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   152,
+   265
+  ],
+  "attention": [
+   [
+    0.6,
+    "unseen_attacker",
+    "heard a door burst open: something is coming; be ready to leave"
+   ],
+   [
+    3.5,
+    "band",
+    "a band within 10 squares: Hill orc \u00d716, Cave orc \u00d711, Fang, Farmer Maggot's dog, Lagduf, the Snaga, "
+   ],
+   [
+    7.3,
+    "emergency",
+    "Hill orc x10, Cave orc x8, Lagduf, the Snaga, Fang, Farmer Maggot's dog can deal 210 (HP 209) and no"
+   ],
+   [
+    8.1,
+    "tactic",
+    "Hill orc x10, Lagduf, the Snaga, Fang, Farmer Maggot's dog, Cave orc x7 can deal 202 (HP 182): phase"
+   ],
+   [
+    13.8,
+    "fight_going_badly",
+    "HP 167/265 fighting Cave orc, Hill orc"
+   ],
+   [
+    18.9,
+    "tactic",
+    "Lagduf, the Snaga, Hill orc x6, Cave orc x3 can deal 122 (HP 153): phased away"
+   ]
+  ],
+  "acts": [
+   [
+    7.3,
+    "custom r item=8",
+    "group danger 210 vs HP 209: word of recall"
+   ],
+   [
+    8.1,
+    "custom r item=7",
+    "group danger 202 vs HP 182: phase door"
+   ],
+   [
+    18.9,
+    "custom r item=7",
+    "group danger 122 vs HP 153: phase door"
+   ],
+   [
+    19.5,
+    "rest",
+    "rest"
+   ],
+   [
+    24.9,
+    "rest",
+    "rest"
+   ],
+   [
+    29.6,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 1,
+  "phase_reads": 2,
+  "wor_reads": 1,
+  "cures": 0
+ },
+ "end": "2026-10-23 16:33:49",
+ "pass": false
+}

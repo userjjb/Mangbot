@@ -1,0 +1,208 @@
+{
+ "id": "C3",
+ "tag": "C3-20261023-165357",
+ "depth_ft": 400,
+ "start": "2026-10-23 16:53:57",
+ "checks": {
+  "Mughash slain": {
+   "pass": true,
+   "detail": "reply {\"ok\": true, \"goal\": \"hunt Mughash the Kobold Lord\", \"note\": \"Mughash the Kobold Lord: ~6 turns to kill, ~19 HP lost on "
+  },
+  "his drop picked up": {
+   "pass": false,
+   "detail": "picked []; left []"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"hunt Mughash the Kobold Lord\", \"note\": \"Mughash the Kobold Lord: ~6 turns to kill, ~19 HP lost on average, ~30 in a bad fight (1 in 10; you have 254)\"}\nNOTE: Mughash the Kobold Lord: ~6 turns to kill, ~19 HP lost on average, ~30 in a bad fight (1 in 10; you have 254)",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   119,
+   265
+  ],
+  "attention": [
+   [
+    3.0,
+    "band",
+    "a band within 10 squares: Kobold shaman \u00d724, Large kobold \u00d75, Mughash the Kobold Lord (30 monsters, "
+   ],
+   [
+    6.4,
+    "unique_slain",
+    "Mughash the Kobold Lord slain at 28,146: uniques drop good items (look at 'Item squares' around ther"
+   ],
+   [
+    10.9,
+    "tactic",
+    "confused in combat: quaffed a Potion of Cure Serious Wounds {25% off}"
+   ],
+   [
+    14.7,
+    "tactic",
+    "confused in combat: quaffed a Potion of Cure Serious Wounds {25% off}"
+   ],
+   [
+    16.5,
+    "tactic",
+    "confused in combat: quaffed a Potion of Cure Serious Wounds {25% off}"
+   ],
+   [
+    17.2,
+    "tactic",
+    "Large kobold x2, Kobold shaman x11 can deal 108 (HP 143): phased away"
+   ],
+   [
+    17.8,
+    "tactic",
+    "(HP falling ~26/s) can deal 79 at worst (HP 138): backing away, not walking into them"
+   ],
+   [
+    17.8,
+    "goal_done",
+    "hunt Mughash the Kobold Lord: slain"
+   ],
+   [
+    18.7,
+    "emergency",
+    "low HP: losing ~28 HP/s, more than the best potion heals (25): escaping instead"
+   ],
+   [
+    18.7,
+    "emergency",
+    "low HP: read Word of Recall (potions too weak for the damage)"
+   ],
+   [
+    19.3,
+    "emergency",
+    "low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~20 HP/s)"
+   ],
+   [
+    20.3,
+    "fight_going_badly",
+    "HP 146/265 fighting Kobold shaman"
+   ],
+   [
+    20.8,
+    "tactic",
+    "confused in combat: quaffed a Potion of Cure Serious Wounds {25% off}"
+   ],
+   [
+    22.3,
+    "tactic",
+    "confused in combat: quaffed a Potion of Cure Critical Wounds {25% off}"
+   ],
+   [
+    22.9,
+    "emergency_loop",
+    "third emergency in 90 s and no stairs known nearby: consider Word of Recall or leaving this area"
+   ],
+   [
+    22.9,
+    "emergency",
+    "low HP: read Phase Door (Kobold shaman adjacent)"
+   ],
+   [
+    23.8,
+    "emergency",
+    "low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~15 HP/s)"
+   ],
+   [
+    25.4,
+    "emergency",
+    "low HP: read Phase Door (Large kobold adjacent)"
+   ],
+   [
+    26.1,
+    "emergency",
+    "low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~8 HP/s)"
+   ]
+  ],
+  "acts": [
+   [
+    10.9,
+    "custom q item=5",
+    "confused in combat: quaff 4 Potions of Cure Serious Wounds {25% off}"
+   ],
+   [
+    14.7,
+    "custom q item=5",
+    "confused in combat: quaff 3 Potions of Cure Serious Wounds {25% off}"
+   ],
+   [
+    16.5,
+    "custom q item=5",
+    "confused in combat: quaff 2 Potions of Cure Serious Wounds {25% off}"
+   ],
+   [
+    17.2,
+    "custom r item=7",
+    "group danger 108 vs HP 143: phase door"
+   ],
+   [
+    18.7,
+    "custom r item=8",
+    "low HP: word of recall (potions too weak)"
+   ],
+   [
+    19.3,
+    "custom q item=6",
+    "low HP: quaff 6 Potions of Cure Critical Wounds {25% off}"
+   ],
+   [
+    20.8,
+    "custom q item=5",
+    "confused in combat: quaff a Potion of Cure Serious Wounds {25% off}"
+   ],
+   [
+    22.3,
+    "custom q item=5",
+    "confused in combat: quaff 5 Potions of Cure Critical Wounds {25% off}"
+   ],
+   [
+    22.9,
+    "custom r item=6",
+    "low HP: phase door"
+   ],
+   [
+    23.8,
+    "custom q item=5",
+    "low HP: quaff 4 Potions of Cure Critical Wounds {25% off}"
+   ],
+   [
+    25.4,
+    "custom r item=6",
+    "low HP: phase door"
+   ],
+   [
+    26.1,
+    "custom q item=5",
+    "low HP: quaff 3 Potions of Cure Critical Wounds {25% off}"
+   ],
+   [
+    30.1,
+    "rest",
+    "rest"
+   ],
+   [
+    31.7,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ],
+   [
+    32.3,
+    "rest",
+    "rest"
+   ]
+  ],
+  "emergencies": 8,
+  "phase_reads": 3,
+  "wor_reads": 1,
+  "cures": 8
+ },
+ "end": "2026-10-23 16:56:27",
+ "pass": false
+}

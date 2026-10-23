@@ -11,3 +11,19 @@
 - 2026-10-23 15:52:06 **A8w** FAIL (walked away FAIL, no Word of Recall read FAIL, HP >= 80%) `A8w-20261023-155206.json`
 - 2026-10-23 15:55:22 **A8w** PASS (walked away, no Word of Recall read, HP >= 80%) `A8w-20261023-155522.json`
 - 2026-10-23 16:03:11 **A8o** PASS (override accepted) `A8o-20261023-160311.json`
+- 2026-10-23 16:12:58 **A1** PASS (lowest HP >= 40%, at most 3 Phase Door) `A1-20261023-161258.json`
+- 2026-10-23 16:16:19 **A6** PASS (at most 3 Phase Door, Phase Door never runs out, lowest HP >= 40%) `A6-20261023-161619.json`
+- 2026-10-23 16:19:28 **A2** PASS (Word of Recall within 2 s of first sight, lowest HP >= 40%) `A2-20261023-161928.json`
+- 2026-10-23 16:22:32 **A2L** PASS (Word of Recall within 2 s of first sight, lowest HP >= 40%) `A2L-20261023-162232.json`
+- 2026-10-23 16:25:16 **C3** FAIL (Brodda slain, his drop picked up FAIL) `C3-20261023-162516.json`
+- 2026-10-23 16:29:23 **C3** FAIL (Lagduf slain FAIL, his drop picked up FAIL) `C3-20261023-162923.json`
+- 2026-10-23 16:33:49 **C8** FAIL (boots picked up (unidentified) FAIL) `C8-20261023-163349.json`
+- 2026-10-23 16:37:08 **C3** FAIL (Lagduf slain FAIL, his drop picked up FAIL) `C3-20261023-163708.json`
+- 2026-10-23 16:41:41 **C3** FAIL (Ulfast slain, his drop picked up FAIL) `C3-20261023-164141.json`
+- 2026-10-23 16:45:05 **C3** FAIL (Ulfast slain FAIL, his drop picked up FAIL) `C3-20261023-164505.json`
+- 2026-10-23 16:50:37 **C3** FAIL (Mughash slain, his drop picked up FAIL) `C3-20261023-165037.json`
+- 2026-10-23 16:53:57 **C3** FAIL (Mughash slain, his drop picked up FAIL) `C3-20261023-165357.json`
+- 2026-10-23 16:56:51 **C3** FAIL (Farmer Maggot slain, his drop picked up FAIL) `C3-20261023-165651.json`
+- 2026-10-23 17:00:03 **C3** FAIL (Farmer Maggot slain, his drop picked up FAIL) `C3-20261023-170003.json`
+- 2026-10-23 17:09:12 **C3** FAIL (Ulfast slain, his drop picked up FAIL) `C3-20261023-170912.json`
+- 2026-10-23 17:12:29 **C3** PASS (Ulfast slain, his drop picked up) `C3-20261023-171229.json`

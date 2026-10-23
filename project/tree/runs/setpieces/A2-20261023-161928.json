@@ -1,0 +1,82 @@
+{
+ "id": "A2",
+ "tag": "A2-20261023-161928",
+ "depth_ft": 300,
+ "start": "2026-10-23 16:19:28",
+ "checks": {
+  "Word of Recall within 2 s of first sight": {
+   "pass": true,
+   "detail": "seen at 23.47249674797058, recall read at 23.1"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [173, 265]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   173,
+   265
+  ],
+  "attention": [
+   [
+    23.0,
+    "danger_seen",
+    "Ulwarth, Son of Ulfang (unique, lvl 26) in view: heading for the stairs"
+   ],
+   [
+    23.1,
+    "goal_failed",
+    "flee (Ulwarth, Son of Ulfang): no stairs known"
+   ],
+   [
+    23.1,
+    "emergency",
+    "couldn't reach the stairs with 1 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    27.1,
+    "emergency",
+    "HP 173 within 2.5 worst rounds (72): read Phase Door (Ulwarth, Son of Ulfang adjacent)"
+   ]
+  ],
+  "acts": [
+   [
+    23.1,
+    "custom r item=8",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    27.1,
+    "custom r item=7",
+    "HP 173 within 2.5 worst rounds (72): phase door"
+   ],
+   [
+    27.7,
+    "rest",
+    "rest"
+   ],
+   [
+    36.0,
+    "rest",
+    "rest"
+   ],
+   [
+    37.7,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 2,
+  "phase_reads": 1,
+  "wor_reads": 1,
+  "cures": 0
+ },
+ "end": "2026-10-23 16:22:32",
+ "pass": true
+}

@@ -31,6 +31,11 @@ Each run:
 | A8 | Skeleton human at 2, Ranger at 3, `goal hunt Ranger` | refused (a summoner, not alone); lowest HP ≥ 40% |
 | A8o | the same, `goal hunt !Ranger` | the override is accepted; lowest HP ≥ 40% |
 | A8w | a Ranger 3 squares off, no orders | the Pilot walks away (no Word of Recall), HP ≥ 80% |
+| A1 | a trip plan working the level; Black orcs and a Hill orc group 6-7 off | lowest HP ≥ 40%; ≤ 3 Phase Door |
+| A2 | Ulwarth (a unique above our level) adjacent, no stairs known | Word of Recall within 2 s of first sight; lowest HP ≥ 40% |
+| A2L | the same with Lugdush (no rule fired before the simulator danger rule) | the same |
+| A6 | a Gnome mage (blinks, summons) adjacent | ≤ 3 Phase Door; Phase never runs out; lowest HP ≥ 40% |
+| C3 | Ulfast adjacent, the Architect orders the hunt | slain; his drop picked up |
 | A9 | `plan trip 300-300 via=recall` from town, then Snaga and Black orcs summoned 8-9 squares off | Door/Stair Location within 5 s of arriving; no second Word of Recall while one is pending |
 
 The memo's A7 is at 1250 ft and its A8 Ranger at 6 squares; here they're at 300 ft and 3 squares. The DM summons any race
@@ -69,6 +74,33 @@ Recall and a ration. It was then restored properly from the first snapshot.
 - **A7 staging:** the Pilot's own fighting kills a monster summoned beside it in the seconds before an order, and a
   summon (menu and hook cleanup) takes longer than a hunt waits for its target. Orders now go in the instant the
   monster lands.
+
+## Staging facts (learned the hard way)
+
+- **A repeat kill of a unique drops nothing and gives no XP** (`xtra2.c` 'cheeze'): use uniques the character
+  hasn't killed. Dive04 has killed Brodda, Bullroarer, Orfax, Wormtongue and Farmer Maggot. A restore resets
+  `r_killed`, since it lives in the savefile.
+- **The DM's summons come with their escorts.** Lagduf brought 27 orcs and Mughash 24 Kobold shamans, so the run
+  turns into a band fight.
+- **Going up to town and back doesn't free a level:** the server keeps empty levels a while. Runs rotate over
+  300-500 ft (`runs/setpieces/depths.json`), the least recently used first.
+- **The Forge's items come out identified:** C8 (detecting Free Action from unidentified boots) can't be staged with
+  it. The unit test `ability_proofs` covers the inference.
+- **The Forge writes into Gandalf's pack slot a,** destroying whatever was there.
+
+## Found by the batch of 2026-10-23 (fixed)
+
+- **Lugdush and Ugluk triggered no danger rule,** yet the duel simulator expects ~350-440 HP lost. New danger
+  reason: the simulator's average loss is over 80% of current HP (A2L passes on it).
+- **Strength-only ratings:** the danger rule fled Ulfast as "rated 4" while the hunt check allowed him. A rating the
+  rulebook marks as strength-only is now left to the simulator in both.
+- **Hunts the emergency rule would break off:** the hunt check refuses a fight whose average loss ends below 2.5 of
+  the monster's worst rounds (or `flee_hp`): Ulfast at 265 HP, and the Hill giant from 80%.
+- **Confusion cured on every hit:** C3 spent 4 CSW and 2 CCW against Kobold shamans at 84-93% HP. The "being hit
+  unseen" test counted visible attackers. Now it counts only unseen ones.
+- **A unique's drop wasn't fetched** after a hunt (looting runs only in explore and dive). The policy step now
+  fetches the items within 3 squares of the kill. Its first version marked the squares in the pickup's junk set
+  and so never picked them up (C3's last FAIL).
 
 ## Observed, then changed (the user)
 

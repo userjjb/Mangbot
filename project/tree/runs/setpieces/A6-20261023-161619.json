@@ -1,0 +1,91 @@
+{
+ "id": "A6",
+ "tag": "A6-20261023-161619",
+ "depth_ft": 300,
+ "start": "2026-10-23 16:16:19",
+ "checks": {
+  "at most 3 Phase Door": {
+   "pass": true,
+   "detail": "0 reads"
+  },
+  "Phase Door never runs out": {
+   "pass": true,
+   "detail": "11 -> 11"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [265, 265]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   265,
+   265
+  ],
+  "attention": [
+   [
+    0.9,
+    "tactic",
+    "picking up the gold 4 squares away"
+   ],
+   [
+    2.9,
+    "goal_done",
+    "goto 17,143"
+   ],
+   [
+    3.9,
+    "tactic",
+    "picking up the gold 2 squares away"
+   ],
+   [
+    4.6,
+    "goal_done",
+    "goto 17,141"
+   ],
+   [
+    6.9,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    7.0,
+    "goal_done",
+    "goto 16,140"
+   ],
+   [
+    10.0,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    10.1,
+    "goal_done",
+    "goto 16,139"
+   ],
+   [
+    56.3,
+    "tactic",
+    "hungry and no food: read a Scroll of Satisfy Hunger"
+   ]
+  ],
+  "acts": [
+   [
+    56.3,
+    "custom r item=10",
+    "hungry (2), no food: read Satisfy Hunger"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 16:19:28",
+ "pass": true
+}

@@ -1,0 +1,173 @@
+{
+ "id": "C3",
+ "tag": "C3-20261023-164141",
+ "depth_ft": 300,
+ "start": "2026-10-23 16:41:41",
+ "checks": {
+  "Ulfast slain": {
+   "pass": true,
+   "detail": "reply {\"ok\": true, \"goal\": \"hunt Ulfast, Son of Ulfang\", \"note\": \"Ulfast, Son of Ulfang: ~14 turns to kill, ~119 HP lost on av"
+  },
+  "his drop picked up": {
+   "pass": false,
+   "detail": "picked []; left []"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"hunt Ulfast, Son of Ulfang\", \"note\": \"Ulfast, Son of Ulfang: ~14 turns to kill, ~119 HP lost on average, ~149 in a bad fight (1 in 10; you have 226)\"}\nNOTE: Ulfast, Son of Ulfang: ~14 turns to kill, ~119 HP lost on average, ~149 in a bad fight (1 in 10; you have 226)",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   113,
+   265
+  ],
+  "attention": [
+   [
+    3.4,
+    "danger_seen",
+    "Ulfast, Son of Ulfang (rated 4: lethal until clvl 24) in view: heading for the stairs"
+   ],
+   [
+    3.5,
+    "goal_failed",
+    "flee (Ulfast, Son of Ulfang): no stairs known"
+   ],
+   [
+    3.5,
+    "emergency",
+    "couldn't reach the stairs with 8 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    5.4,
+    "tactic",
+    "Hill orc x6, Ulfast, Son of Ulfang, Lagduf, the Snaga can deal 158 (HP 163): phased away"
+   ],
+   [
+    6.0,
+    "tactic",
+    "(HP falling ~31/s) can deal 93 at worst (HP 164): backing away, not walking into them"
+   ],
+   [
+    6.1,
+    "tactic",
+    "(HP falling ~29/s) can deal 87 at worst (HP 164): backing away, not walking into them"
+   ],
+   [
+    6.5,
+    "tactic",
+    "(HP falling ~21/s) can deal 64 at worst (HP 165): backing away, not walking into them"
+   ],
+   [
+    6.5,
+    "fight_going_badly",
+    "HP 165/265 fighting Hill orc"
+   ],
+   [
+    10.2,
+    "interesting_item",
+    "Ring of Feather Falling seen on this level (devices and jewellery sell for 50-700 once known): its s"
+   ],
+   [
+    12.0,
+    "unique_slain",
+    "Lagduf, the Snaga slain at 26,147: uniques drop good items (look at 'Item squares' around there)"
+   ],
+   [
+    12.0,
+    "emergency",
+    "low HP: read Phase Door (Hill orc, Lagduf, the Snaga adjacent)"
+   ],
+   [
+    12.6,
+    "emergency",
+    "low HP: quaffed a Potion of Cure Serious Wounds {25% off} (losing ~8 HP/s)"
+   ],
+   [
+    13.2,
+    "emergency_loop",
+    "third emergency in 90 s and no stairs known nearby: consider Word of Recall or leaving this area"
+   ],
+   [
+    13.2,
+    "emergency",
+    "low HP: waiting to use Phase Door, cure potions again, fighting on"
+   ],
+   [
+    13.5,
+    "danger_seen",
+    "Ulfast, Son of Ulfang (rated 4: lethal until clvl 24) in view while hunt Ulfast, Son of Ulfang: head"
+   ],
+   [
+    13.6,
+    "goal_failed",
+    "flee (Ulfast, Son of Ulfang): no stairs known"
+   ],
+   [
+    14.7,
+    "emergency",
+    "HP 144 within 2.5 worst rounds (60): read Phase Door (Hill orc, Ulfast, Son of Ulfang adjacent)"
+   ],
+   [
+    15.3,
+    "emergency",
+    "low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~12 HP/s)"
+   ]
+  ],
+  "acts": [
+   [
+    3.5,
+    "custom r item=8",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    5.4,
+    "custom r item=7",
+    "group danger 158 vs HP 163: phase door"
+   ],
+   [
+    12.0,
+    "custom r item=7",
+    "low HP: phase door"
+   ],
+   [
+    12.6,
+    "custom q item=5",
+    "low HP: quaff 4 Potions of Cure Serious Wounds {25% off}"
+   ],
+   [
+    14.7,
+    "custom r item=7",
+    "HP 144 within 2.5 worst rounds (60): phase door"
+   ],
+   [
+    15.3,
+    "custom q item=6",
+    "low HP: quaff 6 Potions of Cure Critical Wounds {25% off}"
+   ],
+   [
+    16.0,
+    "rest",
+    "rest"
+   ],
+   [
+    19.5,
+    "rest",
+    "rest"
+   ],
+   [
+    28.7,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 7,
+  "phase_reads": 3,
+  "wor_reads": 1,
+  "cures": 2
+ },
+ "end": "2026-10-23 16:44:07",
+ "pass": false
+}

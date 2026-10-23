@@ -1,0 +1,108 @@
+{
+ "id": "C3",
+ "tag": "C3-20261023-163708",
+ "depth_ft": 300,
+ "start": "2026-10-23 16:37:08",
+ "checks": {
+  "Lagduf slain": {
+   "pass": false,
+   "detail": "reply {\"ok\": true, \"goal\": \"hunt Lagduf, the Snaga\", \"note\": \"Lagduf, the Snaga: ~8 turns to kill, ~32 HP lost on average, ~48"
+  },
+  "his drop picked up": {
+   "pass": false,
+   "detail": "picked []; left []"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"hunt Lagduf, the Snaga\", \"note\": \"Lagduf, the Snaga: ~8 turns to kill, ~32 HP lost on average, ~48 in a bad fight (1 in 10; you have 245)\"}\nNOTE: Lagduf, the Snaga: ~8 turns to kill, ~32 HP lost on average, ~48 in a bad fight (1 in 10; you have 245)",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   134,
+   265
+  ],
+  "attention": [
+   [
+    3.0,
+    "band",
+    "a band within 10 squares: Hill orc \u00d723, Snaga \u00d74, Lagduf, the Snaga (28 monsters, ~300 worst-case me"
+   ],
+   [
+    6.0,
+    "emergency",
+    "Hill orc x15, Snaga x3, Lagduf, the Snaga can deal 212 (HP 207) and no stairs are known: read Word o"
+   ],
+   [
+    6.7,
+    "tactic",
+    "Hill orc x15, Snaga x3, Lagduf, the Snaga can deal 212 (HP 207): phased away"
+   ],
+   [
+    11.6,
+    "fight_going_badly",
+    "HP 171/265 fighting Hill orc"
+   ],
+   [
+    21.6,
+    "fight_going_badly",
+    "HP 159/265 fighting Hill orc"
+   ],
+   [
+    24.5,
+    "tactic",
+    "Hill orc x5, Lagduf, the Snaga can deal 88 (HP 134): phased away"
+   ],
+   [
+    31.2,
+    "goal_failed",
+    "hunt Lagduf, the Snaga: lost sight of it"
+   ]
+  ],
+  "acts": [
+   [
+    6.0,
+    "custom r item=8",
+    "group danger 212 vs HP 207: word of recall"
+   ],
+   [
+    6.7,
+    "custom r item=7",
+    "group danger 212 vs HP 207: phase door"
+   ],
+   [
+    24.5,
+    "custom r item=7",
+    "group danger 88 vs HP 134: phase door"
+   ],
+   [
+    25.1,
+    "rest",
+    "rest"
+   ],
+   [
+    27.0,
+    "rest",
+    "rest"
+   ],
+   [
+    28.0,
+    "rest",
+    "rest"
+   ],
+   [
+    35.1,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 1,
+  "phase_reads": 2,
+  "wor_reads": 1,
+  "cures": 0
+ },
+ "end": "2026-10-23 16:41:31",
+ "pass": false
+}
