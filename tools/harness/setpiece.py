@@ -275,7 +275,7 @@ class Run:
 
 
 # --- forged props (the user allowed the forge, 2026-10-24: each use destroys Gandalf's pack slot a) -----
-def give_item(run, kind, pval=None, want=None, timeout=40):
+def give_item(run, kind, pval=None, want=None, timeout=40, ego=None):
     """Forge an item (identified), drop it beside Dive04 and have Dive04 fetch it. True once its name
     (`want`) shows in Dive04's pack."""
     v = pilot_view()
@@ -284,7 +284,7 @@ def give_item(run, kind, pval=None, want=None, timeout=40):
     if not spot:
         raise RuntimeError(f"no floor square next to Dive04 at {me}")
     run.gandalf_to(spot)
-    name = run.dm.forge(kind, pval=pval)
+    name = run.dm.forge(kind, ego=ego, pval=pval)
     if want is None and name:
         # (a flavour Dive04 may not know: "an Azurite Ring (+5) {for sale 500}" -> "Azurite Ring")
         want = re.sub(r"^(an?|the|\d+) ", "", re.sub(r" ?[({\[].*$", "", name))
@@ -791,6 +791,37 @@ def a2f(run, who="Dark elven lord"):
         run.check("lowest HP >= 60%", st["hp_min"][0] >= 0.6 * st["hp_min"][1], f"lowest {st['hp_min']}")
 
 
+def l3(run):
+    """L3 (a rulebook claim, abilities.csv): with Boots of Free Action worn (forged: identified), an
+    Illusionist (HOLD, BLIND, CONF; fast, blinks) 3 squares off. Expect "You are unaffected!" after a HOLD
+    spell, and not after BLIND (Dive04 has no rBlind): the message pairing the Pilot's ability inference
+    reads."""
+    run.bring_dive04()
+    if not give_item(run, 91, ego=58, want="Free Action") and "Free Action" not in ctl("status", "full", role="architect"):
+        run.check("boots picked up", False, "")
+        return
+    ctl("wear", "Free Action", role="architect")
+    time.sleep(2.5)
+    eq = ctl("status", "full", role="architect").split("Equipment:")[-1].split("\n")[0]
+    run.check("boots worn", "Free Action" in eq, eq[:160])
+    run.t_act = time.time()
+    run.place("Illusionist", 3, gmap=True)
+    run.watch(45)
+    msgs = [m for _, m in messages_since(run.t_act)]
+    run.res["messages"] = msgs[:80]
+    pairs = [(a, b) for a, b in zip(msgs, msgs[1:]) if "Illusionist" in a or a.startswith("It ")]
+    hold = [(a, b) for a, b in pairs if re.search(r"stares deep|gazes deep|looks deep|paraly", a, re.I)]
+    blind = [(a, b) for a, b in pairs if re.search(r"burning your eyes|blind", a, re.I)]
+    run.res["hold_pairs"], run.res["blind_pairs"] = hold, blind
+    run.check("a HOLD cast seen", bool(hold), f"{len(hold)}")
+    run.check("unaffected after HOLD", bool(hold) and all("unaffected" in b for _, b in hold), f"{hold[:2]}")
+    run.check("not unaffected after BLIND (no rBlind)", not any("unaffected" in b for _, b in blind),
+              f"{blind[:2]}")
+    recs = log_since(run.t_act)
+    ab = [d.get("detail") for d in recs if d.get("kind") == "attention" and d.get("what") == "ability"]
+    run.res["ability_news"] = ab[:3]
+
+
 def a7f(run):
     """A7f (the memo's first A7): fear casters. A Novice paladin group (SCARE, CAUSE_1; m22 lost 31% to seven)
     6 squares off. Passes when, once Dive04 is afraid ("too afraid to attack"), a Boldness or Heroism is quaffed
@@ -1072,7 +1103,7 @@ def l2(run, gandalf_away=False):
     run.check("about 10x sooner than standing (< 5 s)", secs is not None and secs < 5, f"{secs and round(secs, 1)} s")
 
 
-SETPIECES = {"A2f": a2f, "L2g": l2g, "A7f": a7f, "A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
+SETPIECES = {"L3": l3, "A2f": a2f, "L2g": l2g, "A7f": a7f, "A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
              "C3": c3}
 
 

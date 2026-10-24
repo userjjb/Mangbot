@@ -44,6 +44,7 @@ Each run:
 | L1 | a Hill giant 5-8 off, in sight | boulders thrown, no HP lost (a rulebook claim from the code: confirmed live) |
 | L2 | a Sabre-tooth tiger fight (17-40 HP lost), then `goal recall` at once, resting while it charges | ~10x sooner than standing: **FAILS, and the claim is wrong in practice**: the fuel (sampled every second) ran at 1x through a 6-s rest and the recall came after ~25 ticks (15-16 s). The speed-up needs no *awake monster in line of sight, seen or not* (`monsters_in_los`); after a fight at 650 ft there usually is one in the dark. The Advisor's CON-ring swap can't set HP here: MAngband scales HP with max HP (`xtra1.c calc_hitpoints`) |
 | L2g | L2 with Gandalf off the level | the same (so his bubble wasn't the cause) |
+| L3 | forged Boots of Free Action (identified) worn, an Illusionist 3 off with a clear line | "You are unaffected!" right after "stares deep into your eyes!" (HOLD): **confirmed live** (2 of 2); no BLIND cast came before it died, so the rBlind half is unseen |
 | A2f | a Dark elven lord (rated 4) 8 off with a clear line, no stairs known | Word of Recall within 2 s of the danger rule (PASS, after a fix: the flee-failed escape counted only monsters within 5 squares, and A2I's Ibun at 12 got 7 s of free fire bolts and Slow) |
 | D3 | walled in: Gandalf carves a secret door and an 8-square corridor into rock off a floor square, Dive04 pulled to its far end (knowing ground outside it can't reach), `goal explore` | walks out through the door; no "nothing left" or "frontier unreachable" before it |
 | B4 | a Scruffy looking hobbit (steals gold) 2 off in town, Dive04 idle | no gold lost; the thief killed (passes as built: one blow kills it) |
@@ -109,7 +110,10 @@ Recall and a ration. It was then restored properly from the first snapshot.
   them (a leftover Ibun spoiled an A3 run). Runs rotate over 300-650 ft (`runs/setpieces/depths.json`), the least recently used first.
 - **The Forge's items come out identified:** C8 (detecting Free Action from unidentified boots) can't be staged with
   it. The unit test `ability_proofs` covers the inference.
-- **The Forge writes into Gandalf's pack slot a,** destroying whatever was there.
+- **The Forge writes into Gandalf's pack slot a,** destroying whatever was there (the user allows it, 2026-10-24).
+  `forge(kind, ego, number, pval)`; `give_item` forges, drops it beside Dive04 and fetches it. Plusses come out
+  known, but a flavour Dive04 hasn't learnt stays unknown ("an Azurite Ring (+5)"); EASY_KNOW rings are learnt
+  on wearing, so C8 still can't be staged with a ring.
 
 ## Found by the batch of 2026-10-23 (fixed)
 

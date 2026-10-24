@@ -1,0 +1,53 @@
+{
+ "id": "L3",
+ "tag": "L3-20261024-014017",
+ "depth_ft": 300,
+ "start": "2026-10-24 01:40:17",
+ "checks": {
+  "boots worn": {
+   "pass": true,
+   "detail": " a Spear (1d6) (+5,+7); a Ring of Protection [+8]; a Brass Lantern (with 4681 turns of light); Hard Studded Leather of Resistance (-1) [7,+9]; a Shadow Cloak [6"
+  },
+  "a HOLD cast seen": {
+   "pass": true,
+   "detail": "2"
+  },
+  "unaffected after HOLD": {
+   "pass": true,
+   "detail": "[('The Illusionist stares deep into your eyes!', 'You are unaffected!'), ('The Illusionist stares deep into your eyes!', 'You are unaffected!')]"
+  },
+  "not unaffected after BLIND (no rBlind)": {
+   "pass": true,
+   "detail": "[]"
+  }
+ },
+ "notes": [],
+ "messages": [
+  "The Illusionist stares deep into your eyes!",
+  "You are unaffected!",
+  "The Illusionist stares deep into your eyes!",
+  "You are unaffected!",
+  "You hit the Illusionist.",
+  "You miss the Illusionist.",
+  "You hit the Illusionist.",
+  "You hit the Illusionist.",
+  "You hit the Illusionist.",
+  "You hit the Illusionist.",
+  "You have slain the Illusionist.",
+  "You are getting hungry."
+ ],
+ "hold_pairs": [
+  [
+   "The Illusionist stares deep into your eyes!",
+   "You are unaffected!"
+  ],
+  [
+   "The Illusionist stares deep into your eyes!",
+   "You are unaffected!"
+  ]
+ ],
+ "blind_pairs": [],
+ "ability_news": [],
+ "end": "2026-10-24 01:44:21",
+ "pass": true
+}

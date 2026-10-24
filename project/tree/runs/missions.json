@@ -1131,5 +1131,15 @@
   "effort": null,
   "report": "compact",
   "notes": "set-piece A2f"
+ },
+ {
+  "label": "sp-L3-20261024-014017",
+  "nick": "dive04",
+  "start": "2026-10-24 01:40",
+  "end": "2026-10-24 01:43",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece L3"
  }
 ]
