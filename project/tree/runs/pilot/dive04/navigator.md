@@ -426,3 +426,7 @@
 - 02:44:03 town 100% | Mughash Broad Sword (+4,+6) and Battle Axe (+1,+5) refused for sale (unique drops) though read-Identified, no ego name | override: sell !NAME:1 at the Weaponsmith | identified plain {good} weapons, worse than the Spear's 3 blows; gold counts, nothing hidden left
 - 02:44:30 town 100% | destroyed spare Ration (by letter; by name it failed: 'You destroy no more Rations') | sell the 2 spare Brass Lanterns at the General store | pack-full cost finds all trip; 5 flasks keep the worn lantern going
 - 02:44:48 town 100% | 02:44:45 idle in town, 1230g, WoR 2, CCW 7, CSW 4, Phase 11, STR restored to 18/60 | mission end: stay idle | budget to 02:50, no time for another trip
+- 02:51:09 town 100% | town, 1343g, 2 WoR | plan town buy WoR:3, then trip 500-650 | handbook says 3 WoR for recall descent
+- 02:51:33 town 100% | 5 WoR, 261g | trip 500-650 until cures<4 or phase<5 or minutes>28 | time budget; via recall
+- 02:55:48 650ft 100% | Aspen staff at 16,109 dist 7, hippogriff adjacent | fetch staff | possible Teleportation/useful, sells
+- 02:58:40 town 100% | trip1 ended by Nar emergency recall (lost 150HP, 304xp); restocked, 3 WoR; staff unknown fails to use | trip2 500-650 time>03:23 | time left

@@ -1020,6 +1020,14 @@ class Flee(Goal):
         if not self.started or not p.mover.active:
             if not p.mover.go(stairs, unknown=True):
                 return ("failed", "no path to stairs, nor one through unexplored squares")
+            # Far stairs with the danger already on us: walking hands it free hits all the way (m26: Nar
+            # adjacent, stairs 75-81 steps off through unexplored squares; 22 s and ~150 HP before the
+            # recall). Fail now: the flee-failed escape reads Word of Recall and phases while it charges.
+            close = [r.name for y, x, r in w.monsters if w.dist((y, x)) <= 2 and p.danger_why(r)]
+            if close and (len(p.mover.path) > 15 or p.mover.unknown):
+                p.mover.stop()
+                return ("failed", f"stairs {len(p.mover.path)} steps away{' through unexplored squares' if p.mover.unknown else ''}"
+                                  f" with {close[0]} beside us")
             if p.mover.unknown:
                 p.notify("tactic", "flee: no known path to the stairs; trying one through unexplored squares",
                          news=True)
@@ -4502,7 +4510,7 @@ class Pilot:
                     self.notify("plan", f"your goal ended ({g}: {detail}); the trip plan carries on")
             self.notify({"done": "goal_done", "failed": "goal_failed"}.get(status, status),
                         f"{g}: {detail}" if detail else g, news=quiet)
-            if status == "failed" and g.startswith("flee"):
+            if status == "failed" and g.startswith(("flee", "leave")):    # (m26's `goal leave` got stuck too)
                 self.flee_failed()
         return True
 
