@@ -430,3 +430,8 @@
 - 02:51:33 town 100% | 5 WoR, 261g | trip 500-650 until cures<4 or phase<5 or minutes>28 | time budget; via recall
 - 02:55:48 650ft 100% | Aspen staff at 16,109 dist 7, hippogriff adjacent | fetch staff | possible Teleportation/useful, sells
 - 02:58:40 town 100% | trip1 ended by Nar emergency recall (lost 150HP, 304xp); restocked, 3 WoR; staff unknown fails to use | trip2 500-650 time>03:23 | time left
+- 03:11:40 town 100% | home 03:11 via escape recall, L23, 691g, 1 WoR | plan town then trip3 until 03:26 | 20 min left
+- 03:12:41 town 100% | Pilot sold Ring of Prot [+12] with empty ring slot | complained, trip3 now | 19 min left
+- 03:15:12 town 100% | hounds band on landing, escape recall, +404xp | trip4 until 03:24 | 2 WoR, 16 min left
+- 03:18:43 town 100% | second escape recall (paladin fear, why?), 84g, 2 WoR | last trip until 03:26 | 12 min left
+- 03:24:06 town 100% | home 03:24, 283/283, 102g, 0 WoR, no cures | end mission, plan town restock then idle | budget

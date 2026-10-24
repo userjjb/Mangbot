@@ -1582,6 +1582,13 @@ class TownKit(Goal):
                 self.t = now
                 return None
             self.stage, self.queue = "sell", p.town_sell_stores()
+        if self.stage == "upgrade again":
+            # what Identify revealed may be worth wearing (m26 identified a Ring of Protection [+12] and sold it
+            # with a ring slot empty)
+            if p.upgrade_step():
+                self.t = now
+                return None
+            self.stage = "sell again"
         if self.stage in ("sell", "sell again"):
             last = getattr(self, "last_sell", None)
             if last and last not in self.again and p.town_sells(last):
@@ -1618,7 +1625,7 @@ class TownKit(Goal):
                 self.sub = Shop(5, buys=[("Identify", n, round(p.price_of("Identify", 5) * 1.5))])
                 self.sub.role = "pilot"
                 return None
-            self.stage = "sell again" if self.identified else "buy"
+            self.stage = "upgrade again" if self.identified else "buy"
             self.queue = p.town_sell_stores() if self.identified else []
             return None
         if self.stage == "buy":
@@ -2610,7 +2617,7 @@ class Pilot:
             else:
                 v = 2.5 * (r.worst_melee[0] or 0) * (r.speed_x or 1)
             total += v
-        return total
+        return total * self.our_slowness()      # (three of our turns are longer when we're slowed: m26)
 
     def sim_loss(self, r):
         """fight_sim's mean HP lost dueling r at our current profile, cached by race, level,
@@ -2790,11 +2797,26 @@ class Pilot:
                 and not isinstance(self.goal, (Flee, Recover, Recall)):
             if self.choke_tick(now):
                 return True
+        # 3a'. Slowed to half speed or worse with something on us: a Potion of Speed (m26: Gorged and slowed to
+        # -20 among six monsters; the Architect quaffed one by hand)
+        if self.our_slowness() >= 2 and (w.adjacent_monsters() or now - w.last_hit_t < 2) and \
+                waited(getattr(self, "speed_t", 0), 40) and not w.flag("fast"):    # (a potion lasts ~20-45 turns)
+            pot = next((i for i in w.items(tval=TV_POTION) if "Speed" in i["name"]), None)
+            if pot:
+                self.speed_t = now
+                self.cmd(f"custom q item={pot['item']}", f"slowed ({(w.ind.get('speed') or [0])[0]}) in a fight: "
+                                                         f"quaff {pot['name']}", hold=0.6)
+                self.notify("tactic", f"slowed to {(w.ind.get('speed') or [0])[0]} with monsters on us: quaffed "
+                                      f"{one_of(pot['name'])}")
+                return True
         # 3b'. Afraid (a warrior can't melee). The user: if not in danger, don't
         # spend consumables -- kite over cleared ground until it wears off; only
         # in danger cure it (Boldness/Heroism/Berserk) or phase away.
         if w.flag("afraid") and mons_near:
-            danger = w.hp_frac < o["think_hp"] or bool(self.dangers())
+            # (or hit by several while we can't hit back: m26 kited, afraid, among a yeek band and a Dark hound
+            # until the Navigator quaffed Heroism by hand)
+            danger = w.hp_frac < o["think_hp"] or bool(self.dangers()) or len(w.adjacent_monsters()) >= 2 or \
+                w.damage_rate(3.0) > 0.02 * max(1, w.hp[1])
             # (just arrived: no walked ground to kite over -- the stairs underfoot
             # are the cheapest way out)
             if not w.walked - {w.pos} and w.standing_on in ("<", ">") and len(mons_near) >= 2:
@@ -2875,8 +2897,10 @@ class Pilot:
                 return False
             # no food: a Scroll of Satisfy Hunger (the town kit counts them as food; the reflex
             # didn't read them, and Dive04 went Weak with four in the pack: the set-piece harness)
+            # (only when Weak: it fills to just under Gorged (use-obj.c, PY_FOOD_MAX - 1), so the next potion
+            # makes you Gorged, -10 speed -- m26 read it Hungry at 03:20 and fought the yeek band Gorged)
             sat = next((i for i in w.items(tval=TV_SCROLL) if "Satisfy Hunger" in i["name"]), None)
-            if sat and now - self.eat_t > 10 and not w.flag("blind") and not w.flag("confused"):
+            if sat and w.hunger <= 1 and now - self.eat_t > 10 and not w.flag("blind") and not w.flag("confused"):
                 if not any(i["tval"] == TV_LITE for i in w.items(equip=True)):
                     return self.wear_light("a light to read Satisfy Hunger by")
                 self.eat_t = now
@@ -3031,6 +3055,11 @@ class Pilot:
             return True           # already on our way (retried after 1.2 s)
         if self.emergency_loop(now):
             return True
+        # (only with something here: arriving by stairs you stand on stairs again, and m26 bounced 650 <-> 600
+        # ft four times in 12 s at 18% HP with a recall pending and nothing in view)
+        threatened = bool(w.monsters) or now - w.last_hit_t < 2
+        if w.standing_on in ("<", ">") and not threatened:
+            return False
         if w.standing_on in ("<", ">"):
             which = w.standing_on
             self.take_stairs(which)
@@ -3997,10 +4026,11 @@ class Pilot:
         lev = w.clvl
         ac = w.ind.get("armor", [0])[0]
         total, who = 0.0, []
+        slow = self.our_slowness()
         for y, x, r in w.monsters:
             if "NEVER_MOVE" in r.flags:
                 continue
-            sx = r.speed_x if r.speed_x is not None else max(1.0, (r.speed - 100) / 10)
+            sx = (r.speed_x if r.speed_x is not None else max(1.0, (r.speed - 100) / 10)) * slow
             if w.dist((y, x)) > 1 + math.ceil(sx):
                 continue
             mx, drains = r.worst_melee
@@ -4014,6 +4044,20 @@ class Pilot:
                 total += g
                 who.append(r.name)
         return total, who
+
+    # tables.c extract_energy, by speed (normal = 0): energy per game turn
+    ENERGY = {-30: 200, -29: 200, -28: 200, -27: 200, -26: 200, -25: 200, -24: 200, -23: 300, -22: 300, -21: 300,
+              -20: 300, -19: 300, -18: 300, -17: 300, -16: 300, -15: 400, -14: 400, -13: 400, -12: 400, -11: 400,
+              -10: 500, -9: 500, -8: 500, -7: 500, -6: 600, -5: 600, -4: 700, -3: 700, -2: 800, -1: 900, 0: 1000}
+
+    def our_slowness(self):
+        """How many times faster than normal monsters act against us: 1 at normal speed or faster, 2 at -10,
+        3.3 at -20 (m26: Gorged and slowed, six weak monsters adjacent took 270 -> 41 HP while no danger rule
+        fired, the rules assuming our normal speed)."""
+        sp = int((self.w.ind.get("speed") or [0])[0] or 0)
+        if sp >= 0:
+            return 1.0
+        return 1000 / self.ENERGY.get(max(-30, sp), 200)
 
     def group_tick(self, now):
         """Tiers against current HP (Borg memo, tuned by the post-mortem memo):
@@ -5741,8 +5785,9 @@ class Pilot:
     def kit_count(self, kind):
         pack = self.w.items()
         if kind == "Ration of Food":
-            return sum(i["number"] for i in pack if (i["tval"] == TV_FOOD and "Mushroom" not in i["name"])
-                       or "Satisfy Hunger" in i["name"])
+            # (rations only: a Scroll of Satisfy Hunger fills you to just under Gorged, and the next potion
+            # tips you over -- speed -10 in m26's worst fight. The scroll is for when you're Weak)
+            return sum(i["number"] for i in pack if i["tval"] == TV_FOOD and "Mushroom" not in i["name"])
         tv = self.KIT_ITEMS.get(kind, (None,))[0]
         key = singular(kind)
         n = sum(i["number"] for i in pack if (tv is None or i["tval"] == tv) and key in singular(i["name"]))
@@ -5859,12 +5904,16 @@ class Pilot:
             if kind == "Flask of oil" and not lamp:
                 continue
             add(4, kind, n)
+        # NAME:N means "have N" (m26's "Word of Recall:3" bought 3 more, to 5)
         for name, n, cap, store in buylist:
-            plan.append([5, name, store, n, cap])
+            more = n - planned(name)
+            if more > 0:
+                plan.append([5, name, store, more, cap])
         # 6. Restore Charisma last: Dive04's natural CHR is 4, so it gives 3 -> 4, ~125 gold a
         # mission in prices (the Advisor's rulebook-r3 memo: pays back in ~4 missions)
+        # (only with gold to spare: m26 spent 498 of its last 759 on it)
         cur, top = (self.seen_drained or {}).get("CHR", (0, 0))
-        if cur < top and not any(r[1] == "Restore Charisma" for r in plan):
+        if cur < top and not any(r[1] == "Restore Charisma" for r in plan) and self.w.ind.get("gold", [0])[0] >= 3000:
             add(6, "Restore Charisma", 1)
         return plan
 

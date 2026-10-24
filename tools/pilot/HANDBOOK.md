@@ -27,8 +27,10 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
 
 1. **In town:** `status`, then `plan town [kit=A|B|C|none] [buy NAME[:N][@MAX],...]`, then `wait`. The Pilot sells
    by policy, identifies what pays, and buys in priority order: Word of Recall to 2, the supply gate's minimums,
-   Restore for a drained STR/DEX/CON, the kit, then your list. The reply says what it bought, what it couldn't
-   afford, and whether you're ready to recall down.
+   Restore for a drained STR/DEX/CON, the kit, then your list (`NAME:N` means *have* N in all, not N more). With
+   3,000+ gold it also restores Charisma (better prices). The reply says what it bought, what it couldn't afford,
+   and whether you're ready to recall down. (`until` can't name `wor<2`: the plan keeps one Word of Recall to come
+   home by itself.)
 2. **Plan a trip:** `plan trip LO-HI until "COND or ..." then town [via=stairs|recall]`, then `wait`. The Pilot goes
    down by the stairs when the trip reaches no deeper than 150 ft or you've never been to 250 ft, else by Word of Recall
    (`via=` chooses; the reply says which). It explores level after level within LO-HI, leaves bad levels by itself (a
