@@ -595,8 +595,20 @@ class Dive(Goal):
         md = int(p.orders.get("max_depth", 0))
         climbing = want == "<"
         scum_ok = not climbing or (self.scum and (not md or w.depth_ft + 50 <= md))
-        # Scum: back the way we came on the staircase we're on, then again
-        if w.standing_on == other and scum_ok:
+        # Scum: back the way we came on the staircase we're on, then again -- unless this level is one the
+        # server keeps (arrived on the very square we scummed from before: m25 took '<' and '>' between
+        # 250 and 300 ft ~150 times in 4 minutes, landing on 33,24 each time): then explore it for a '>'
+        # (kept on the Pilot: the trip plan starts a fresh Dive goal for each leg)
+        if not hasattr(p, "scummed"):
+            p.scummed, p.kept = set(), set()
+        self.scummed, self.kept = p.scummed, p.kept
+        here = (w.depth, w.arrive_pos)
+        if w.standing_on == other and scum_ok and here in self.scummed and w.depth not in self.kept:
+            self.kept.add(w.depth)
+            p.notify("tactic", f"{w.depth_ft} ft is a level the server keeps (back on {w.arrive_pos[0]},"
+                               f"{w.arrive_pos[1]} after scumming): exploring it for a '{want}' instead", news=True)
+        if w.standing_on == other and scum_ok and w.depth not in self.kept:
+            self.scummed.add(here)
             return self._stairs(p, other)
         # No stairs known at all: a Door/Stair Location device maps them
         if not w.find("<>") and waited(w.level_t, 1.0) and not w.monsters and self.locate_stairs(p):

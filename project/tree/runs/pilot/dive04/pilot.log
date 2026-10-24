@@ -1051,3 +1051,27 @@ BrokenPipeError: [Errno 32] Broken pipe
 02:15:03 pilot stopping
 02:15:06 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
 02:15:06 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+02:24:11 pilot stopping
+02:24:14 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+02:24:14 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+Traceback (most recent call last):
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/pilot.py", line 6964, in <module>
+    main()
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/pilot.py", line 6946, in main
+    pilot.tick()
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/pilot.py", line 4962, in tick
+    if self.reflexes():
+       ^^^^^^^^^^^^^^^
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/pilot.py", line 2808, in reflexes
+    if still and self.still_fight_tick(now, still):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/pilot.py", line 4065, in still_fight_tick
+    targets = [m for m in still if disenchants(m[2]) or any(w.dist(g, m[:2]) <= 1 for g in goals)]
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/pilot.py", line 4065, in <genexpr>
+    targets = [m for m in still if disenchants(m[2]) or any(w.dist(g, m[:2]) <= 1 for g in goals)]
+                                                            ^^^^^^^^^^^^^^^^
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/world.py", line 553, in dist
+    return max(abs(a[0] - b[0]), abs(a[1] - b[1]))
+                   ~~~~~^~~~~~
+TypeError: unsupported operand type(s) for -: 'str' and 'int'

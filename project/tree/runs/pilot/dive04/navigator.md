@@ -413,3 +413,7 @@
 - Lantern was found unwielded twice in town (start, after trip 1); I wore it by hand.
 - 02:10:22 town 100% | town 02:10, 172g, kit fine (6 CCW, 11 Phase, 2 WoR) | plan town with no extra buys | too poor for CCW/Restore; let policy sell spare lantern and top up
 - 02:10:38 town 100% | town done, nothing sold/bought | trip 500-650 via stairs, home on cures<4 or phase<5 or time>02:41 | handbook depth band for XP; stairs keep both WoR (one spare for emergency, one home); time margin for 02:50
+- 02:18:13 250ft 100% | user asked: no interest in the balsa staff? | replied: we carry one (Detect Invisible), 2nd copy is just sale value, left to pickup policy; no fetch | low value, diving to 500 ft matters more for the clock
+- 02:20:18 300ft 100% | user: 'the down level is static' | asked what they mean; keep diving, watch for bouncing | at 300 ft after 10 min, stairs dive is slow (~1 level/min)
+- 02:21:41 250ft 100% | Pilot bouncing 250<->300: persistent 300 ft lands on the same < with no stairs known | goal explore until=stairs (sent while it was on 250, by mistake) | need it to search 300 ft for a > instead of scumming
+- 02:24:57 350ft 100% | user: Brown mold next to the > has the Pilot looping (300 ft) | goal hunt Brown mold (passed the check) | L6 mold is trivial, blocking our only known > ; 14 min gone at 300 ft
