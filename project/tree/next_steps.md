@@ -272,8 +272,18 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    Regression A7 on the clock: PASS. A/B: A2I with hpwarn 5 entered the bubble (51% HP, factor 0.2 for 2.4 s until the
    recall) and behaved (1 Phase, no doubled reads, lowest 51%) vs A2/A2K without (45-48%, 2 Phase, 4-5
    emergencies): one run each, so a smoke test, not proof. **Decision for the user:** run missions with --hpwarn 5?
-   Staging note: a unique exists once, so repeat set-pieces rotate uniques (A2I Ibun, A2K Khim). **Next:** the
-   pathfind speed-up (D6), then step 5 missions. (`plan trip LO-HI until COND then recall`), 2.4 order
+   Staging note: a unique exists once, so repeat set-pieces rotate uniques (A2I Ibun, A2K Khim).
+   **Batch 5 (session 4, evening):** the **pathfind speed-up** is in (mover.py `path_run`: server `pathfind` for legs of
+   4+ steps with nothing in view; D6 PASS, 3.2 tiles/s overall vs 1.4; the Advisor's ceiling estimate is 3-4 after
+   stops at new rooms). A3 restaged with a Sabre-tooth tiger (the Wolf chieftain brings 38 wolves): PASS. **`dm.paint`**
+   (the DM's Build page; Gandalf sees the whole level) builds scenes: **D3** (a carved pocket behind a secret door)
+   found 3 Pilot faults, fixed (walled in with known ground out of reach -> search the dead ends; Search counts doors;
+   a refused run made the next step time out; searches paced at a player turn); 5/6 PASS. **B4, B4w** (town thief),
+   **B6** (pit on the line), **A7f** (fear casters: Boldness at once) PASS as built. **A5/A5s** (unseen caster):
+   the rule fled down known stairs at any HP above think_hp; now news only above 80% unless it may be a paralysing
+   gaze (unit test; 22 unit tests). **A4** (Wormtongue) not stageable while he lives on another level. Still open:
+   L2/L3 (need forging: asked), D4 inner room (paintable), B5, A10, A11, D7 (level import?). **Next:** step 5 missions,
+   once the user answers the three questions (`--hpwarn 5`, `flee_hp` 0.4 in vetted solo hunts, more forging). (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
    toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23. Then the time bubble (timers to game turns; decided below).
 3. **Rulebook:** the Advisor's **release 2** is in `Advisor/data/rulebook/`, synced into `github/tools/rulebook/`
@@ -322,7 +332,7 @@ anything important: no rotation, no history purge; follow best practice from now
   time per monster, then drop expectations.
 
 **Advisor exchange (latest):** to_architect 10-23 scorecard, 10-24 setpieces, 10-24 rulebook, 10-24 rulebook-r2, 10-24 rulebook-r3 (all
-read); to_advisor 10-22 restructure-plan, 10-23 scorecard-built, 10-23 step2-items, 10-24 rulebook-in, 10-24 r2-in, 10-23 step22-town-kit.
+read; also 10-24 batch5-reply: fast loners, pathfind ceiling, D3 ok); to_advisor 10-23 setpieces-batch2, 10-22 restructure-plan, 10-23 scorecard-built, 10-23 step2-items, 10-24 rulebook-in, 10-24 r2-in, 10-23 step22-town-kit.
 
 ### ARCHITECT HANDOFF 2026-10-08 (history; read the 2026-10-24 section first)
 
