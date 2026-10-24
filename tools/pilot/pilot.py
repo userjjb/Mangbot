@@ -1023,10 +1023,13 @@ class Flee(Goal):
             # Far stairs with the danger already on us: walking hands it free hits all the way (m26: Nar
             # adjacent, stairs 75-81 steps off through unexplored squares; 22 s and ~150 HP before the
             # recall). Fail now: the flee-failed escape reads Word of Recall and phases while it charges.
+            # (the length of the path, or -- not planned yet -- the distance to the nearest stairs: "through
+            # unexplored" alone read Word of Recall with stairs 0 steps away, m26)
             close = [r.name for y, x, r in w.monsters if w.dist((y, x)) <= 2 and p.danger_why(r)]
-            if close and (len(p.mover.path) > 15 or p.mover.unknown):
+            steps = len(p.mover.path) or min(w.dist(q) for q in stairs)
+            if close and steps > 15:
                 p.mover.stop()
-                return ("failed", f"stairs {len(p.mover.path)} steps away{' through unexplored squares' if p.mover.unknown else ''}"
+                return ("failed", f"stairs {steps} steps away{' through unexplored squares' if p.mover.unknown else ''}"
                                   f" with {close[0]} beside us")
             if p.mover.unknown:
                 p.notify("tactic", "flee: no known path to the stairs; trying one through unexplored squares",
