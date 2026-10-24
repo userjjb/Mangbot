@@ -139,10 +139,18 @@ validation.
 
 ### ARCHITECT HANDOFF 2026-10-24 (READ THIS FIRST; the 2026-10-08 section below is the history since)
 
-**Where we are: the RESTRUCTURE, step 2.2 next.** On 2026-10-22, after mission 23 (which the user ended: "you're
-fired"), the user decided to stop patching per mission and restructure the Navigator/Pilot system: **restructure, not
-rewrite; keep Dive04; instruments first.** No missions are being run; don't start one, or patch per incident, unless
-the user asks.
+**Where we are (end of session 4, 2026-10-24 09:40): the RESTRUCTURE, steps 1-4 done, step 5 (missions) under
+way: m25-m28 run.** On 2026-10-22, after mission 23 (which the user ended: "you're fired"), the user decided to stop
+patching per mission and restructure the Navigator/Pilot system: **restructure, not rewrite; keep Dive04; instruments
+first.** Missions run only when the user asks for them.
+
+**Next session, start here:** (1) restart the four processes on the new node (below); (2) the question left open
+for the user: keep running 40-min missions, alternating Sonnet and Opus on the same Pilot (now that both run the
+same code, the comparison means something: m28 Sonnet 58.8 XP/dmin vs m27 Opus 30.1, but m27 started broke);
+the m29 brief is m28's with the current character state, `--hpwarn 5`, mission markers, an emergency Monitor, then
+`scorecard.py --table` and a report in runs/pilot/dive04/reports/. (3) Open, not requested yet: the Brown mold
+beside the stairs (m25 loop); the Advisor's structures memo (lattice/ring geometry, an asleep flag in the monster
+list); L3's BLIND half; a fair model comparison (same starting state). Read runs/complaints.md after each mission.
 
 | doc | what |
 |---|---|
@@ -154,14 +162,15 @@ the user asks.
 **Git:** all work is on branch **`restructure`** in `github/` (pushed to GitHub, userjjb/Mangbot); `master` stays at
 the tag. Push after each piece of work (`tools/snapshot.sh`, commit, `git push origin restructure`).
 
-**Running (job 8181626 on scc-pe7, walltime to Sat 10-24 09:50):** the test server under gdb (`testserver/`, port
+**Was running (job 8181626 on scc-pe7, ENDED Sat 10-24 09:50; all of it stops with the job):** the test server under gdb (`testserver/`, port
 28346, with the 10-17 store patch), Dive04's Pilot, the user's viewer (`tmux -L mang attach -t watch`), the inbox
 watcher. A new node means restarting all four (commands in the 2026-10-08 section and `restructure.md`).
 
-**Dive04 now (after m24, session 4):** clvl 22, 265 HP, in town, 172 gold, 2 WoR, **STR 18/40 drained** (a dart trap), max_depth 650;
-Spear (+5,+7) 3 blows ~32; Hard Studded Leather of Resistance (4 resists), Ring of Protection [+8], Shadow Cloak
-[6,+7], Brodda's Metal Shod Boots [6,+3] (both identified by the town kit); 6 CCW, 4 CSW, 10 Phase, **2 WoR**, 5
-flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt 0.
+**Dive04 now (after m28, end of session 4):** clvl 24, 288 HP, in town, ~4057 gold, CCW 8, CSW 4, Phase 18,
+**WoR 2**, food 8; DEX restored, WIS drained; max_depth 650 (deepest 700; the recall inscription keeps @R650);
+Rod of Enlightenment sold (the user: a crutch); Staff of CLW sold. **No Free Action.** Navigator debts 0. The Pilot
+on the new node: `tools/pilot/restart.sh Dive04` (`--hpwarn 5` is the default; don't pass `--live` on the test
+server). Last commit on `restructure`: 37cbfac (pushed).
 
 **Restructure steps:**
 1. **Instruments: done** (to the Advisor's `memos/2026-10-23-scorecard.md`). `tools/observe/scorecard.py` (`--table`,
@@ -328,6 +337,7 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    mission yet. (m27 Opus on the same Pilot: 30.1, but it started broke.) After it: identified junk (Haste Monsters,
    the `junk` list) is autodestroyed. **The user (2026-10-24): sell the Rod of Enlightenment (a crutch); `pilot.py
    --live` (default off) switches test/live behaviour: on test, mapping/detection devices are sold; keep the gold.**
+   **Session 4 ended 09:50 with no mission running**; the user set `idleCompaction: false` in ~/.claude/settings.json.
    **Open:** ranged stationary drainers (fixed: it was adjacency out of view); pits/structures (the user: a one-wide long
    hallway is a giveaway; asked the Advisor); the Brown mold beside the stairs (m25); a fair model comparison needs an
    Opus run on the current Pilot from a similar state (Dive04 is broke now: 14 gold, 0 WoR, DEX/WIS drained).
