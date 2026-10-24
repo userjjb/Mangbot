@@ -23,7 +23,7 @@
  },
  "B": {
   "dungeon_min": 24.0,
-  "town_min": 8.2,
+  "town_min": 8.7,
   "exp_per_dmin": 30.1,
   "levels_per_dhour": 0.91,
   "gold_found": 315,
@@ -33,9 +33,8 @@
    "exploring": 7.5,
    "fighting": 4.6,
    "town_no_goal": 4.2,
+   "town_idle_end": 1.9,
    "town_other": 1.9,
-   "town_idle_end": 1.1,
-   "pilot_down": 0.8,
    "recall_wait": 0.7,
    "stuck_looping": 0.6,
    "town_shopping": 0.5,
@@ -112,7 +111,7 @@
  },
  "F": {
   "audit_diffs": 1,
-  "audit_checks": 66,
+  "audit_checks": 67,
   "perception_gaps": 0,
   "goal_failed": 0,
   "stuck": 0,

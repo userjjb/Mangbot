@@ -1211,5 +1211,15 @@
   "effort": null,
   "report": "compact",
   "notes": "step 5: Opus on the Pilot after m26's fixes; kit forged to m26's start (gold 14 vs 1343, WoR 3 vs 2); auto_scum on; 40 min"
+ },
+ {
+  "label": "m28",
+  "nick": "dive04",
+  "start": "2026-10-24 05:17",
+  "end": "2026-10-24 05:53",
+  "navigator": "sonnet",
+  "effort": null,
+  "report": "compact",
+  "notes": "step 5: Sonnet on the current Pilot (after m27's fixes); 4089 gold (the sold Rod of Enlightenment); auto_scum on; 40 min"
  }
 ]

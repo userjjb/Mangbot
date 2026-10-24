@@ -4843,6 +4843,8 @@ class Pilot:
         self.light_warned, self.light_warned_key = now, key
         self.notify("low_supply", text, news=not self.w.in_dungeon)
 
+    JUNK_DEVICES = ("Haste Monsters", "Clone Monster", "Heal Monster")
+
     def auto_destroy(self, now):
         """Destroy pack items whose pseudo-ID feeling is on the autodestroy list
         (the Navigator was cleaning the pack by hand every few minutes)."""
@@ -4850,6 +4852,18 @@ class Pilot:
         feelings = [f.strip() for f in self.orders.get("autodestroy", "").split(",") if f.strip()]
         if not feelings or now < self.busy_until or now - self.autodestroy_t < 2 or w.inven_dirty:
             return False
+        # identified junk too -- a kind on the `junk` list, or a harmful device (m28 kept a Staff of Haste Monsters
+        # and a Scroll of Aggravate Monster after Identify)
+        junk = [j.strip() for j in self.orders.get("junk", "").split(",") if j.strip()] + list(self.JUNK_DEVICES)
+        for it in w.items():
+            n = it["name"]
+            if it["tval"] in (55, 65, 66, 70, 75) and " of " in n and not self.is_kept(n) and \
+                    any(re.search(rf"\bof {re.escape(j)}\b", n) for j in junk) and "@" not in n:
+                self.autodestroy_t = now
+                self.c.send("confirm yes")
+                self.cmd(f"custom k item={it['item']} value={it['number']}", f"autodestroy junk {n}", hold=0.6)
+                w.inven_dirty = True
+                return True
         for it in w.items():
             m = re.search(r"\{([^}]*)\}", it["name"])
             if m and any(re.search(rf"\b{re.escape(f)}\b", m.group(1)) for f in feelings) \

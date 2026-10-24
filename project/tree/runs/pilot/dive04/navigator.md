@@ -459,3 +459,13 @@
 - Trip 2: fleeing an Illusionist the Pilot took a '>' to 700 ft (below the mission limit), then sat stuck 4 min refusing the '<' 17 squares away; I gave goal leave.
 - My mistakes: no fetch for the flagged Ivory Staff until the user asked; 'goal shop buy Phase_Door:11' bought 11 more (171 gold), not up to 11.
 - Item debt 44 (Staff of Object Location sold with ! to fund a 2nd WoR). Fight debt 0.
+- 05:17:41 town 100% | town, 4089g | plan town buy WoR:3, CCW:6, Restore Dexterity | via recall trip needs 3 WoR, DEX drained
+- 05:18:04 town 100% | bought DEX restore, WoR3; wore fresh lantern | trip 500-650 28min via recall | skip ID of unknowns for time
+- 05:27:35 town 100% | back after wolf band, +445xp | town again: WoR3, Identify scrolls to ID rings/staffs | Free Action hunt
+- 05:27:55 town 100% | IDed: Sustain Str ring, Probing staff, Aggravate scroll; no FA | trip 500-650 until minutes>19 | time left ~29min
+- 05:32:52 town 100% | orc pack emergency, came home at 155/288, clvl24 | restock WoR3 CCW8 Phase, last trip 13 min | time 05:33
+- 05:43:37 town 100% | orc band again, +1511xp so far | short last trip until time>05:51 | finish in town by 05:58
+- 05:44:09 650ft 100% | user asked about Ivory Staff | answered: unknown, use failed | honest
+- 05:44:37 650ft 100% | user: why not buy ID | admit, buy 2 more on return | missed staff
+- 05:45:24 650ft 100% | user: duplicate food | choose rations, complained | no control over kit
+- 05:52:07 town 100% | ID scrolls used on Ivory staff; idle in town 05:53 | end mission

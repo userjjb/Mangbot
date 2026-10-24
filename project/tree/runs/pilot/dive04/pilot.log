@@ -1146,3 +1146,21 @@ TypeError: unsupported operand type(s) for -: 'str' and 'int'
 05:16:50 pilot stopping
 05:16:52 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
 05:16:52 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+----------------------------------------
+Exception occurred during processing of request from 
+Traceback (most recent call last):
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 692, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 761, in __init__
+    self.handle()
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/pilot.py", line 7096, in handle
+    self.wfile.write((json.dumps(out) + "\n").encode())
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 840, in write
+    self._sock.sendall(b)
+BrokenPipeError: [Errno 32] Broken pipe
+----------------------------------------
+05:53:47 pilot stopping
+05:53:49 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+05:53:49 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock

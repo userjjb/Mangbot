@@ -15,6 +15,10 @@ have in the live server where we won't have the rod." I also reverted the code t
 **Why:** missions on the test server exist to find what the Pilot/Navigator get wrong; an item or aid that papers
 over a weakness (mapping, stair finding, forged supplies, DM rescues) makes the scores and close calls unrepresentative.
 
+**Built (2026-10-24):** `pilot.py --live` (default off = test server); on test, mapping/detection devices
+(Enlightenment, Detection, Magic Mapping rods/staffs/wands) are sold as loot (`Pilot.CRUTCH_DEVICES`); pass `--live` on a
+live server. The user kept the 4089 gold from the rod (earlier versions lost more than that).
+
 **How to apply:** don't build Pilot features around rare finds; when staging (forged kits, Gandalf), stay close to what
 a live character would have and say so in the scorecard notes; ask before keeping a game-changing item.
 Related: [[mangband-next-steps]], [[mangband-roles]]

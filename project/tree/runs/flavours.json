@@ -14,6 +14,11 @@
   "kind": "Scroll of Identify",
   "source": "identified or used"
  },
+ "Aspen Staff": {
+  "junk": false,
+  "kind": "Staff of Probing",
+  "source": "identified"
+ },
  "Balsa Staff": {
   "junk": false,
   "kind": "Staff of Detect Invisible",
@@ -68,6 +73,11 @@
   "junk": false,
   "kind": "Ring of Resist Cold",
   "source": "identified"
+ },
+ "Chartreuse Potion": {
+  "junk": true,
+  "kind": "Potion of Poison",
+  "source": "sold in a shop"
  },
  "Clear Potion": {
   "junk": true,
@@ -154,6 +164,11 @@
   "kind": "Amulet of Resist Lightning",
   "source": "Advisor L_items (Dive03 09-27 12:26:52)"
  },
+ "Ivory Staff": {
+  "junk": true,
+  "kind": "Staff of Haste Monsters",
+  "source": "identified"
+ },
  "Lead Wand": {
   "junk": true,
   "kind": "Wand of Heal Monster",
@@ -183,6 +198,11 @@
   "junk": false,
   "kind": "Potion of Boldness",
   "source": "Advisor L_items (Dive04 09-29 21:37:17)"
+ },
+ "Mithril Ring": {
+  "junk": false,
+  "kind": "Ring of Sustain Strength",
+  "source": "identified"
  },
  "Molybdenum Rod": {
   "junk": false,
@@ -329,6 +349,11 @@
   "kind": "Scroll of Magic Mapping",
   "source": "sold in a shop"
  },
+ "Scroll titled \"pay dalfvom\"": {
+  "junk": true,
+  "kind": "Scroll of Aggravate Monster",
+  "source": "identified"
+ },
  "Scroll titled \"shu foreng\"": {
   "junk": false,
   "kind": "Scroll of Monster Confusion",
@@ -363,6 +388,11 @@
   "junk": false,
   "kind": "Potion of Restore Dexterity",
   "source": "identified or used"
+ },
+ "Turquoise Ring": {
+  "junk": true,
+  "kind": "Ring of Aggravate Monster",
+  "source": "identified"
  },
  "Vermilion Potion": {
   "junk": false,

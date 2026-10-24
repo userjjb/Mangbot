@@ -323,6 +323,11 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    the recall inscription keeps @R650). Fixed after it: climbing back to max_depth isn't "straight back"; `goal shop
    buy NAME:N` = have N (`+N` more); plan town saves gold for a short Word of Recall and sells unknown devices when
    broke; interesting-item notices give squares. Dive04 now: 30 gold, WoR 2, CCW 4, CSW 3, DEX/WIS drained.
+   **m28 (Sonnet, 05:18-05:52, current Pilot, 4089 gold from the sold Rod of Enlightenment):** **58.8 XP/dmin, 43.3
+   gold/dmin, lowest 45%, 0 close calls, 3 escape recalls, 3 cures** -- the Advisor's target at m27's safety. The best
+   mission yet. (m27 Opus on the same Pilot: 30.1, but it started broke.) After it: identified junk (Haste Monsters,
+   the `junk` list) is autodestroyed. **The user (2026-10-24): sell the Rod of Enlightenment (a crutch); `pilot.py
+   --live` (default off) switches test/live behaviour: on test, mapping/detection devices are sold; keep the gold.**
    **Open:** ranged stationary drainers (fixed: it was adjacency out of view); pits/structures (the user: a one-wide long
    hallway is a giveaway; asked the Advisor); the Brown mold beside the stairs (m25); a fair model comparison needs an
    Opus run on the current Pilot from a similar state (Dive04 is broke now: 14 gold, 0 WoR, DEX/WIS drained).
