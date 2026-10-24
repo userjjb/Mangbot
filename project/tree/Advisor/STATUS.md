@@ -25,7 +25,7 @@ Architect builds everything else.
 
 1. ~~Rulebook: drop expectations~~ **done** (r3: `drops.csv`, `drops_by_depth.csv`, `drop_object_by_level.csv`, `objgen.py`). Possible follow-ups:
    subtract already-found artifacts if the server log is kept; empirical drop counts need monster coordinates in the logs.
-2. **Live checks of code-only rulebook claims**: proposed to the Architect as harness cases L1 (boulders: **confirmed live 10-23**), L2 (WoR resting: open; CON-ring swap proposed to set HP), L3 (unaffected pairing: pending) — `to_architect/2026-10-24-fleehp-live.md`; review the results. Originally: boulders do 0 damage; the low-HP time
+2. **Live checks of code-only rulebook claims**: proposed to the Architect as harness cases L1 (boulders: **confirmed live 10-23**), L2 (resting x10: FAILS in practice — unseen awake monsters count; constants.csv corrected 10-24), L3 (unaffected after HOLD: confirmed; BLIND half unseen) — `to_architect/2026-10-24-fleehp-live.md`; review the results. Originally: boulders do 0 damage; the low-HP time
    bubble is a constant 1/5; WoR counts down ~10× faster while resting out of sight; "You are unaffected!" pairing.
 3. **Set-pieces:** the Architect stages and runs them (harness); my part: criteria, order, and reviewing `runs/setpieces/results.md` for each P1 case, in the agreed order A7, A8, A9 (m24 arrival replay), A1, A6, A2, C8, C3, then (A3, B1, C1,
    C4, C5, D3, F1). A7 also validates `fight_sim.py` (Hill giant p90 123 at Dive04's profile).
@@ -37,7 +37,7 @@ Architect builds everything else.
 
 ## Waiting on the user
 
-- Per the Architect (10-23), with the user: `--hpwarn 5` for missions; `flee_hp` 0.4 inside vetted solo hunts (my proposal); more forging for L2/L3 (CON-ring swap).
+- Nothing pending. The user decided (10-24): missions run with `--hpwarn 5`; `flee_hp` stays 0.5 everywhere (my hunt-only 0.4 declined); the forge may be used.
 - (Earlier: the low-HP time bubble: the user decided "after step 2" — then turn-based Pilot timers and an A/B of `--hpwarn 5` on set-pieces
   A1/A2; `to_advisor/2026-10-23-step22-town-kit.md`.)
 
@@ -82,8 +82,9 @@ The user struck one lead (2026-10-07): the live fetch of Bug Reports / Technical
   unaware flavours 20-90; felt-cursed 0) — 55-72% of a normal drop's true value, 17-29% of a DROP_GOOD one; wearing never identifies; flavours are per server savefile.
 - Blows = blows_table[adj_str_blow·5/max(30,wt)][adj_dex_blow] (matched 3,957 audit records). MONSTER_RECOIL is on: a monster melees once
   per two of its turns.
-- Running = ×5 game time with no awake monster in LOS; resting ×10 (so WoR charges ~10× faster resting out of sight). Low-HP bubble:
-  constant 1/5 below hitpoint_warn×10% (Pilot has it off).
+- Running = ×5 game time and resting ×10 ONLY with no awake monster in LOS, seen or not (`monsters_in_los`, xtra2.c:5116); after a fight there is
+  usually one in the dark: L2 measured recall 15-16 s resting = standing. Current HP scales with max HP (xtra1.c:2024). Low-HP bubble:
+  constant 1/5 below hitpoint_warn×10% (missions now run --hpwarn 5: HP ≤ 50%).
 - Recall arrival: random floor square, pit/nest monsters awake; "something special about this level" = pit/nest/vault (or artifact) at <= 850 ft;
   stairs arrivals land on the staircase back; a 2nd WoR read cancels a pending one; no Deep Descent in 1.5. XP/min: 300-450 ft 8.5, 500-650 ft 58.
 - Server pathfind = running (×5 time with nothing in LOS): explore could be 3-5× faster in wall time (set-piece D6, 10-23); queued after the time bubble.

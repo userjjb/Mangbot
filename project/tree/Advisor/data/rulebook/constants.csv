@@ -18,8 +18,8 @@ time_factor_base,100,percent,,mdefines.h:265
 CONSTANT_TIME_FACTOR,5 defined -> if chp*100/mhp <= hitpoint_warn*10 then tf=100/5=20 (not proportional),,low HP,mdefines.h:271; xtra2.c:5190-5194
 hitpoint_warn_default_tool_mode,"6 (client --hpwarn 0..9) => slow below 60% HP; NOTE the Pilot launches with --hpwarn 0 (pilot.py:5135-5141), so the low-HP bubble is OFF",tenths,tool_mode client,client/c-init.c:718-727
 tf_reset_rule,if hitpoint_warn>9 and no awake monster/hostile player in LOS: tf=100,,,xtra2.c:5201
-tf_rest,1000 if resting and no LOS (overrides low-HP slow),percent,,xtra2.c:5204; mdefines.h:262
-tf_run,500 if running and no LOS,percent,,xtra2.c:5207; mdefines.h:264
+tf_rest,1000 if resting and no AWAKE monster or hostile player in line of sight - SEEN OR NOT (monsters_in_los: mon_los && !csleep ; xtra2.c:5116-5148); right after a fight usually false; set-piece L2 2026-10-24 measured 1x (overrides low-HP slow),percent,,xtra2.c:5204; mdefines.h:262
+tf_run,500 if running and no awake monster in LOS (seen or not; see tf_rest),percent,,xtra2.c:5207; mdefines.h:264
 tf_town,time_factor() returns 100 in town (depth 0); BUT process_player_end uses base_time_factor (no town exemption) for regen/timeouts,,,xtra2.c:5254-5270; dungeon.c:1053
 tf_multi_player,slowest bubble within MAX_SIGHT=20 of any player at same depth (recursive); other players with tf==100 and no LOS count as 1000,,,xtra2.c:5210-5251; mdefines.h:193
 monster_energy_gain,int(extract_energy[mspeed]*time_factor(closest player)/100); cap level_speed; acts when >= level_speed,energy,,melee2.c:3460-3479
@@ -46,7 +46,7 @@ dur_prot_evil_scroll,protevil += randint1(25)+3*plev,blocks,,use-obj.c:976-981
 dur_resist_heat_cold_potion,randint1(10)+10,blocks,,use-obj.c:449-461
 dur_infravision_detect_invis_potion,infra 100+randint1(100); invis 12+randint1(12),blocks,,"use-obj.c:402,411"
 recall_delay,word_recall = randint0(20)+15 = 15..34 blocks; counts down once per block; activation postponed 1 block if in a store,blocks,,spells2.c:1191; dungeon.c:1625-1636
-recall_seconds,word_recall*time/FPS where time=int(int(level_speed/1000)/(tf/100)); tf=1000 resting -> ~10x faster,s,,dungeon.c:1112-1116
+recall_seconds,word_recall*time/FPS where time=int(int(level_speed/1000)/(tf/100)); tf=1000 resting with no awake monster in LOS (seen or not) -> ~10x faster; NOT after a fight with one awake in the dark (L2: 15-16 s resting = standing),s,,dungeon.c:1112-1116
 recall_depth,default max_dlv; @R<n> inscription: n (if n%50==0 then n/50); if n>max_dlv or n==0 -> max_dlv; unvisited wilderness -> 1; read in dungeon -> town,level,,spells2.c:1135-1190; dungeon.c:1645-1680
 max_dlv_update,"max_dlv = max(max_dlv, Depth) on arrival",level,,dungeon.c:2062-2063
 MAX_DEPTH,128 (stairs stop at 127),,,defines.h:162; cmd2.c:158

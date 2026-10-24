@@ -25,7 +25,7 @@ Writes monsters.csv. Columns (all damage before the player's resists unless note
   worst_3turns_acNN  worst melee damage within the next 3 player turns adjacent: melee_max_acNN x ceil(3 x speed_x / 2)
                 (a melee round costs the monster 2 actions, MONSTER_RECOIL); for an emergency threshold (spells/breaths apart)
   veto_reason   for AVOID/LEAVE: "qualitative" (veto_detail lists the tags a duel can't price) or "strength" (let fight_sim decide)
-Corrections vs the 2026-09-27 danger table (K2): BOULDER does no damage to players (project_p has no GF_BOULDER case,
+Corrections vs the 2026-09-27 danger table (K2): BOULDER does no damage to players (live-confirmed, set-piece L1; project_p has no GF_BOULDER case,
 spells1.c:3540-4092: default dam=0); BO_POIS and BR_MANA are empty cases; DARKNESS does no damage or blindness.
 """
 import csv, math, os, re

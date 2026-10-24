@@ -147,3 +147,6 @@ After the memo:
   marks, a contradictions table, coverage/gaps. Send a short note to `to_architect/` with each memo.
 - **Script first, then a code-audit Clerk and an own-logs Clerk** (rulebook r3, 2026-10-24). The audit found what the script's author missed
   (shops price unidentified items on base cost). For any "value" table ask *worth to whom, and when*: true value vs what can be realised.
+- **"Out of sight" ≠ "no LOS".** Two code-only claims failed live (2026-10-24): resting ×10 needs no *awake monster in line of sight, seen or not*;
+  the CON-ring HP trick ignored `calc_hitpoints` scaling current HP. Before proposing a mechanic or a staging trick, open the function that decides it,
+  and mark code-only claims as such until a set-piece confirms them.
