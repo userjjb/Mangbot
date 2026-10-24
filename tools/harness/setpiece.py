@@ -289,7 +289,7 @@ def give_item(run, kind, pval=None, want=None, timeout=40, ego=None, number=1):
         # (a flavour Dive04 may not know: "an Azurite Ring (+5) {for sale 500}" -> "Azurite Ring")
         want = re.sub(r"^(an?|the|\d+) ", "", re.sub(r" ?[({\[].*$", "", name))
     run.forged = want
-    run.dm.drop_first()
+    run.dm.drop_first(number)                        # (the whole stack: value=1 dropped one, the rest was lost)
     run.dm.walk(step_dir(me, spot) or 8)              # off it
     run.say(f"[{run.tag}] forged {name} at {spot}")
     ctl("goal", "fetch", f"{spot[0]},{spot[1]}", role="architect")
@@ -297,9 +297,6 @@ def give_item(run, kind, pval=None, want=None, timeout=40, ego=None, number=1):
     while time.time() - t0 < timeout:
         time.sleep(2)
         if want and want.lower() in ctl("status", "full", role="architect").split("Equipment:")[-1].lower():
-            for _ in range(number - 1):              # (a pickup takes one of a stack)
-                ctl("pickup", role="architect")
-                time.sleep(1.2)
             return True
     return False
 

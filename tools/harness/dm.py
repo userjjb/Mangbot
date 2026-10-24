@@ -162,9 +162,9 @@ class DM:
         inv = self.c.inven()
         return inv[0]["name"] if inv else None
 
-    def drop_first(self):
-        """Drop pack item a on Gandalf's square (a ghost DM with GHOST_BODY can)."""
-        self.c.send("custom d item=0 value=1")
+    def drop_first(self, number=1):
+        """Drop pack item a (number of it: a forged stack) on Gandalf's square (a ghost DM with GHOST_BODY can)."""
+        self.c.send(f"custom d item=0 value={number}")
         self.c.collect(1.0)
 
     def players(self):

@@ -354,6 +354,11 @@
   "kind": "Wand of Confuse Monster",
   "source": "Advisor L_items (Dive03 09-25 20:56:08)"
  },
+ "Tangerine Potion": {
+  "junk": false,
+  "kind": "Potion of Restore Dexterity",
+  "source": "identified or used"
+ },
  "Vermilion Potion": {
   "junk": false,
   "kind": "Potion of Detect Invisible",
