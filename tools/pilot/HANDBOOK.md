@@ -138,7 +138,8 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
   farther, the notice gives the squares: `goal fetch Y,X` (a dive waits 20 s for it).
 - **Counts in buys mean "have N"**, in `plan town` and in `goal shop` alike (`buy NAME:+N` buys N more).
 - **Broke in town** (Word of Recall short and no gold): `plan town` saves every coin for the Word of Recall (food
-  only besides) and sells unknown wands, staffs and rods; then `goal shop N quote NAME` to price spare potions, and
-  take a `{N% off}` Word of Recall line when one shows.
+  only besides) and sells unknown wands, staffs and rods. Then **`goal townfarm GOLD`** (by day: kills gold-dropping
+  townspeople, ~120 gold a minute in m14; little at night), `goal shop N quote NAME` to price spare potions, and a
+  `{N% off}` Word of Recall line when one shows.
 - Monster data here differs from Vanilla Angband: trust `monster NAME` and the levels the Pilot shows.
 - Journal one line per decision. Urgent alerts: order first, then journal. Everything else: journal first.
