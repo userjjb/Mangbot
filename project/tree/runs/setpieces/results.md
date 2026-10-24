@@ -78,3 +78,5 @@
 - 2026-10-23 20:06:57 **A5** PASS (no level change while HP > 80%, reported) `A5-20261023-200657.json`
 - 2026-10-23 20:10:47 **A5s** PASS (no level change while HP > 80%, reported) `A5s-20261023-201047.json`
 - 2026-10-23 20:19:09 **A5s** PASS (no level change while HP > 80%, reported) `A5s-20261023-201909.json`
+- 2026-10-23 20:24:00 **A7f** PASS (fear answered within 5 s, lowest HP >= 50%) `A7f-20261023-202400.json`
+- 2026-10-23 20:27:46 **A7f** PASS (fear answered within 5 s, lowest HP >= 50%) `A7f-20261023-202746.json`

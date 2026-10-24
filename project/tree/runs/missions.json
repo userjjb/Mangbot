@@ -871,5 +871,25 @@
   "effort": null,
   "report": "compact",
   "notes": "set-piece A5s"
+ },
+ {
+  "label": "sp-A7f-20261023-202400",
+  "nick": "dive04",
+  "start": "2026-10-23 20:24",
+  "end": "2026-10-23 20:27",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A7f"
+ },
+ {
+  "label": "sp-A7f-20261023-202746",
+  "nick": "dive04",
+  "start": "2026-10-23 20:28",
+  "end": "2026-10-23 20:31",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A7f"
  }
 ]

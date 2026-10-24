@@ -704,6 +704,29 @@ def a5s(run):
     a5(run, race="Potion mimic", stairs=True)
 
 
+def a7f(run):
+    """A7f (the memo's first A7): fear casters. A Novice paladin group (SCARE, CAUSE_1; m22 lost 31% to seven)
+    6 squares off. Passes when, once Dive04 is afraid ("too afraid to attack"), a Boldness or Heroism is quaffed
+    (or the level left) within 5 s, and the lowest HP stays at 50% or more."""
+    run.bring_dive04()
+    run.t_act = time.time()
+    run.place(118, 6, gmap=True)            # Novice paladin, the lvl 8 one (70 is a lvl 4 namesake); 6 off with a
+    #                                         clear line: they cast on the way (at 3 they died before casting)
+    run.watch(60)
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    msgs = messages_since(run.t_act)
+    afraid = next((t for t, m in msgs if re.search(r"too afraid|You are terrified|You are scared", m)), None)
+    cured = next((d["t"] for d in recs if d.get("kind") == "act" and afraid and d["t"] >= afraid - 0.5 and
+                  re.search(r"Boldness|Heroism|Berserk|recall|stairs|phase", str(d.get("why")), re.I)), None)
+    run.res["afraid_at"] = round(afraid - run.t_act, 1) if afraid else None
+    run.check("fear answered within 5 s", afraid is None or (cured is not None and cured - afraid <= 5),
+              f"afraid at {run.res['afraid_at']}, answered {round(cured - afraid, 1) if cured and afraid else None} s later")
+    if st["hp_min"]:
+        run.check("lowest HP >= 50%", st["hp_min"][0] >= 0.5 * st["hp_min"][1], f"lowest {st['hp_min']}")
+
+
 def a4(run):
     """A4: a slow ranged caster unique (Wormtongue: frost bolts, slow, traps; 250 HP, melee ~6) 3 squares off
     (on unlit ground he isn't seen farther), a '>' painted on the farthest square of Dive04's known floor up to 12
@@ -931,7 +954,7 @@ def l2(run):
     run.check("about 10x sooner than standing (< 5 s)", secs is not None and secs < 5, f"{secs and round(secs, 1)} s")
 
 
-SETPIECES = {"A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
+SETPIECES = {"A7f": a7f, "A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
              "C3": c3}
 
 

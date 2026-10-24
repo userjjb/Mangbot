@@ -50,6 +50,7 @@ Each run:
 | A4 | Wormtongue 3 off, a '>' painted on the farthest known floor up to 12 off | ≤ 8 squares walked in his sight; HP ≥ 60%: **not stageable now** (a unique exists once: while he lives on another level the summon fails silently; its first "pass" was scored on nothing, so the run now checks he was seen) |
 | A5 | a Dark elven priest 5 off on unlit ground (placed from Gandalf's map, with a clear line) | no level change while HP > 80%; reported (PASS) |
 | A5s | a Potion mimic (never moves; curses, blinds, frost bolts) 5 off unseen, a '>' in view | the same (PASS; the old rule fled down known stairs at any HP above `think_hp`, now news only above 80% unless it may be a paralysing gaze: unit `a5_unseen_caster_news_above_80`) |
+| A7f | (the memo's first A7) a Novice paladin group (SCARE, CAUSE_1) 6 off with a clear line | once afraid, Boldness/Heroism (or an escape) within 5 s; HP ≥ 50% (PASS: afraid at 12 s, Boldness at once, lowest 94%; at 3 off they died before casting) |
 | A9 | `plan trip 300-300 via=recall` from town, then Snaga and Black orcs summoned 8-9 squares off | Door/Stair Location within 5 s of arriving; no second Word of Recall while one is pending |
 
 The memo's A7 is at 1250 ft and its A8 Ranger at 6 squares; here they're at 300 ft and 3 squares. The DM summons any race

@@ -1,0 +1,118 @@
+{
+ "id": "A7f",
+ "tag": "A7f-20261023-202746",
+ "depth_ft": 650,
+ "start": "2026-10-23 20:27:46",
+ "checks": {
+  "fear answered within 5 s": {
+   "pass": true,
+   "detail": "afraid at 12.2, answered 0.0 s later"
+  },
+  "lowest HP >= 50%": {
+   "pass": true,
+   "detail": "lowest [248, 265]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   248,
+   265
+  ],
+  "attention": [
+   [
+    7.8,
+    "unseen_attacker",
+    "'It points at you and curses.': probably the Novice paladin (lvl 8) in view; carrying on (HP 100%)"
+   ],
+   [
+    12.2,
+    "tactic",
+    "afraid and in danger: quaffed a Potion of Boldness"
+   ],
+   [
+    20.3,
+    "interesting_item",
+    "Silver-Plated Wand seen on this level (devices and jewellery sell for 50-700 once known): its square"
+   ],
+   [
+    20.7,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    20.8,
+    "goal_done",
+    "goto 19,83"
+   ],
+   [
+    21.5,
+    "interesting_item",
+    "Staff of Door/Stair Location seen on this level (devices and jewellery sell for 50-700 once known): "
+   ],
+   [
+    23.7,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    23.8,
+    "goal_done",
+    "goto 20,82"
+   ],
+   [
+    26.8,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    26.9,
+    "goal_done",
+    "goto 20,83"
+   ],
+   [
+    29.8,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    29.9,
+    "goal_done",
+    "goto 19,84"
+   ],
+   [
+    59.8,
+    "tactic",
+    "hungry and no food: read a Scroll of Satisfy Hunger"
+   ],
+   [
+    63.4,
+    "interesting_item",
+    "Wand of Stinking Cloud seen on this level (devices and jewellery sell for 50-700 once known): its sq"
+   ]
+  ],
+  "acts": [
+   [
+    12.2,
+    "custom q item=1",
+    "afraid and in danger: quaff 2 Potions of Boldness"
+   ],
+   [
+    59.8,
+    "custom r item=10",
+    "hungry (2), no food: read Satisfy Hunger"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "afraid_at": 12.2,
+ "end": "2026-10-23 20:31:05",
+ "pass": true
+}

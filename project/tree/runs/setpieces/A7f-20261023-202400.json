@@ -1,0 +1,78 @@
+{
+ "id": "A7f",
+ "tag": "A7f-20261023-202400",
+ "depth_ft": 600,
+ "start": "2026-10-23 20:24:00",
+ "checks": {
+  "fear answered within 5 s": {
+   "pass": true,
+   "detail": "afraid at None, answered None s later"
+  },
+  "lowest HP >= 50%": {
+   "pass": true,
+   "detail": "lowest [244, 265]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   244,
+   265
+  ],
+  "attention": [
+   [
+    4.6,
+    "tactic",
+    "5 monsters together but weak (~70 worst-case melee a turn vs HP 265): fighting on"
+   ],
+   [
+    7.2,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    7.4,
+    "goal_done",
+    "goto 16,87"
+   ],
+   [
+    10.2,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    10.3,
+    "goal_done",
+    "goto 15,87"
+   ],
+   [
+    15.7,
+    "interesting_item",
+    "Iron Wand seen on this level (devices and jewellery sell for 50-700 once known): its square is under"
+   ],
+   [
+    62.1,
+    "tactic",
+    "hungry and no food: read a Scroll of Satisfy Hunger"
+   ]
+  ],
+  "acts": [
+   [
+    62.1,
+    "custom r item=10",
+    "hungry (2), no food: read Satisfy Hunger"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "afraid_at": null,
+ "end": "2026-10-23 20:27:16",
+ "pass": true
+}
