@@ -134,5 +134,11 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
   `status` (a plan survives the restart). After a fight, first check whether the character died.
 - **At 50% HP or below the server runs your game time at 1/5** (the time bubble): a fight there gives you 5x the wall
   time per turn, so an order sent while hurt is less likely to arrive late. The Pilot's timers follow game time.
+- **`interesting_item` news is yours to act on:** the Pilot fetches loot within `loot_radius` itself; for anything
+  farther, the notice gives the squares: `goal fetch Y,X` (a dive waits 20 s for it).
+- **Counts in buys mean "have N"**, in `plan town` and in `goal shop` alike (`buy NAME:+N` buys N more).
+- **Broke in town** (Word of Recall short and no gold): `plan town` saves every coin for the Word of Recall (food
+  only besides) and sells unknown wands, staffs and rods; then `goal shop N quote NAME` to price spare potions, and
+  take a `{N% off}` Word of Recall line when one shows.
 - Monster data here differs from Vanilla Angband: trust `monster NAME` and the levels the Pilot shows.
 - Journal one line per decision. Urgent alerts: order first, then journal. Everything else: journal first.

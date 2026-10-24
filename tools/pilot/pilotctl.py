@@ -4,7 +4,7 @@
     pilotctl.py [--nick NAME] status
     pilotctl.py goal dive 500 [force] | goal explore [until=stairs] [radius=N] | goal goto Y,X|>|<|item [force]
                 | goal recall [force] | goal rest | goal wait SECS
-                | goal shop N [list] [buy NAME:N[@MAX]] [sell NAME:N] [quote NAME]
+                | goal shop N [list] [buy NAME:N[@MAX] (have N) | NAME:+N (N more)] [sell NAME:N] [quote NAME]
                 | goal search | goal searchroom Y,X
     pilotctl.py stop
     pilotctl.py order flee_hp=0.4 stop_on=unique,danger ...

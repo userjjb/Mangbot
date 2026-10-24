@@ -33,12 +33,14 @@ Architect builds everything else.
 4b. **Belief-state spec** (if the Architect wants it for step 2): fields, computation, expiry (see starting-over memo §3.4).
 5. **Step 5:** run the scorecard on each new mission vs the m17–23 baseline; Opus vs Sonnet by depth band (m22–23 were Sonnet;
    `data/navigator/response.py` has the missions list; production `scorecard.py` reads `runs/missions.json` which records the model).
+5b. **m27** (Opus, kit forged to m26's start, Pilot after m26 fixes): first same-Pilot Opus vs Sonnet comparison; score it vs m26 when done.
+   Arrival feelings now logged (`arrival_feeling` in decisions; `feeling:` in dump headers): later, measure P(pit/nest | special) on scummed levels.
 6. Housekeeping: the 09-29 shops memo assumed CHR 4 = Dive04's natural CHR; it is drained to 3 now (use `data/rulebook/shop_owners.csv`, CHR 3 columns, until restored).
 
 ## Waiting on the user
 
-- **auto_scum on/off for Dive04** (asked via `to_architect/2026-10-24-structures.md`; memo §4). I recommend off + compare a mission or two.
-- Otherwise nothing. The user decided (10-24): missions run with `--hpwarn 5`; `flee_hp` stays 0.5 everywhere (my hunt-only 0.4 declined); the forge may be used.
+- Nothing pending. The user decided (10-24): **auto_scum stays ON** (richer, more dangerous rerolled levels; my "off" declined).
+  Consequence: depth_value.csv / rulebook level-generation numbers assume unscummed levels and understate OOD monsters per level. The user decided (10-24): missions run with `--hpwarn 5`; `flee_hp` stays 0.5 everywhere (my hunt-only 0.4 declined); the forge may be used.
 - (Earlier: the low-HP time bubble: the user decided "after step 2" — then turn-based Pilot timers and an A/B of `--hpwarn 5` on set-pieces
   A1/A2; `to_advisor/2026-10-23-step22-town-kit.md`.)
 

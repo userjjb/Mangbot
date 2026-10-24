@@ -314,7 +314,11 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    item names; time conditions to the second; identified plain unique drops sell; blindness cures only when it
    matters; **a band with no stairs known at high HP locates stairs or walks away before Word of Recall (the user)**.
    Gandalf reset the player counts on 50-650 ft (Unstatic): the set-pieces had left levels the server kept.
-   **Open:** ranged stationary drainers (Radiation eye at 2 squares); pits/structures (the user: a one-wide long
+   **Decisions (the user, 2026-10-24, later): `auto_scum` stays ON (lib/user/options.prf; it rerolls levels below
+   500 ft until special or rich: the Advisor's structures memo); m27 (Opus) starts from a kit forged to m26's start.**
+   The Advisor: m26's Nar group was a summon trap, not a pit (now: Phase Door at once on "enveloped in a cloud of
+   smoke"); arrival feelings are logged per level. Stationary monsters are remembered on the level (the drain zone).
+   **Open:** ranged stationary drainers (fixed: it was adjacency out of view); pits/structures (the user: a one-wide long
    hallway is a giveaway; asked the Advisor); the Brown mold beside the stairs (m25); a fair model comparison needs an
    Opus run on the current Pilot from a similar state (Dive04 is broke now: 14 gold, 0 WoR, DEX/WIS drained).
    The CON-ring swap can't set HP (HP scales with max HP). A2I found the flee-failed escape ignoring a dangerous

@@ -1,0 +1,154 @@
+{
+ "label": "m27",
+ "nav_model": "opus",
+ "effort": null,
+ "report": "compact",
+ "start": "2026-10-24 04:18",
+ "end": "2026-10-24 04:51",
+ "minutes": 33.0,
+ "notes": "step 5: Opus on the Pilot after m26's fixes; kit forged to m26's start (gold 14 vs 1343, WoR 3 vs 2); auto_scum on; 40 min",
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   23,
+   23
+  ],
+  "exp_gain": 721,
+  "gold": [
+   14,
+   30
+  ],
+  "gold_change": 16,
+  "max_depth_ft": 700
+ },
+ "B": {
+  "dungeon_min": 24.0,
+  "town_min": 8.2,
+  "exp_per_dmin": 30.1,
+  "levels_per_dhour": 0.91,
+  "gold_found": 315,
+  "gold_found_per_dmin": 13.1,
+  "time_budget_min": {
+   "travel_dive": 9.8,
+   "exploring": 7.5,
+   "fighting": 4.6,
+   "town_no_goal": 4.2,
+   "town_other": 1.9,
+   "town_idle_end": 1.1,
+   "pilot_down": 0.8,
+   "recall_wait": 0.7,
+   "stuck_looping": 0.6,
+   "town_shopping": 0.5,
+   "dungeon_other": 0.5,
+   "escaping": 0.5,
+   "resting": 0.1,
+   "no_goal_dungeon": 0.0
+  },
+  "navigator_wait_pct": 13
+ },
+ "C": {
+  "lowest_hp": [
+   133,
+   283,
+   47,
+   "04:25:49"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 1,
+  "emergency_episodes": 1,
+  "emergency_alerts": 7,
+  "phase": 2,
+  "wor_escape": 1,
+  "wor_travel": 3,
+  "stairs_flee": 1,
+  "teleport": 0,
+  "cures_quaffed": 3,
+  "escape_records": 9,
+  "recalls_landed": 4
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 15,
+  "loot_abandoned_est": 705,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 0,
+  "total": 720,
+  "sales": 5,
+  "sales_valued": 1,
+  "worst_sales": [],
+  "left_behind": [
+   "Black Mushroom",
+   "Lucerne Hammer (2d5)",
+   "Broad Sword (2d5)",
+   "Scimitar (2d5)",
+   "Potion of Slow Poison",
+   "Ring of Teleportation",
+   "Brown Mushroom",
+   "Rounded Pebbles (1d2) (x21)",
+   "Dagger (1d4)",
+   "Staff of Door/Stair Location"
+  ],
+  "irreplaceable": [
+   "Ring of Resist Cold",
+   "a Potion of Speed {for sale 200}",
+   "a Ring of Resist Cold"
+  ]
+ },
+ "E": {
+  "reports": 25,
+  "commands": 69,
+  "commands_per_min": 2.8,
+  "report_to_action_med_s": 9.9,
+  "report_to_action_p90_s": 24.8,
+  "reports_without_command_pct": 16,
+  "user_messages": 1,
+  "user_reply_med_s": 6.2,
+  "forced_overrides": 1,
+  "complaints": 3,
+  "report_chars": 70110,
+  "order_report_age_med_s": 10.5,
+  "order_report_age_p90_s": 31.8
+ },
+ "F": {
+  "audit_diffs": 1,
+  "audit_checks": 66,
+  "perception_gaps": 0,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.6,
+  "runs_sent": 762,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Ogre": 179,
+  "Dark elven priest": 23,
+  "Crebain": 23,
+  "Hippogriff": 19,
+  "Novice paladin": 15,
+  "Killer brown beetle": 12,
+  "Griffon": 10,
+  "Novice ranger": 9
+ },
+ "alerts": {
+  "goal_done": 14,
+  "tactic": 13,
+  "plan_done": 2,
+  "user_message": 1,
+  "stat_drained": 1,
+  "emergency_loop": 1
+ },
+ "plan_news": {
+  "goal_done": 12,
+  "unseen_attacker": 10,
+  "plan": 8,
+  "emergency": 6,
+  "interesting_item": 3,
+  "stuck": 3,
+  "band": 1,
+  "goal_failed": 1,
+  "fight_going_badly": 1,
+  "danger_seen": 1
+ }
+}

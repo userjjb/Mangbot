@@ -565,7 +565,11 @@ class Dive(Goal):
             w.memory.setdefault(downs[0], ">")
         # Just fled from the level these stairs lead to, arriving here: not straight back (find another)
         fl = getattr(p, "fled_from", None)
-        back = fl and fl[2] == w.level_t and fl[0] == w.depth + (-1 if up else 1) and not waited(fl[1], 300)
+        # (not when the way back is the way up to max_depth: m27 fled down to 700 ft past max_depth 650 and this kept
+        # it there 4 minutes)
+        md_now = int(p.orders.get("max_depth", 0))
+        back = fl and fl[2] == w.level_t and fl[0] == w.depth + (-1 if up else 1) and not waited(fl[1], 300) and \
+            not (up and md_now and w.depth_ft > md_now)
         if back and w.standing_on == want and (w.level_t, w.pos) not in self.bad_stairs:
             self.bad_stairs.add((w.level_t, w.pos))
             self.bad_t[(w.level_t, w.pos)] = gnow() + 10 ** 6       # (never expires on this level)
@@ -5062,9 +5066,12 @@ class Pilot:
                 continue
             if not self.plan:
                 self.item_hold_until = now + 20   # (a dive pauses so you can fetch it)
-            self.notify("interesting_item", f"{name} seen on this level (devices and jewellery "
-                                             "sell for 50-700 once known): its square is under 'Item squares' in "
-                                             "`status`; `goal fetch Y,X`. A dive pauses 20 s for it")
+            # (the squares in the notice itself: m27's Navigator needed a `status full` for each fetch)
+            sq = sorted((q for q, ch in w.memory.items() if ch == glyph), key=w.dist)[:3]
+            where = ", ".join(f"{q[0]},{q[1]} ({w.dist(q)} away)" for q in sq) or "see 'Item squares' in `status full`"
+            self.notify("interesting_item", f"{name} seen on this level (devices and jewellery sell for 50-700 once "
+                                             f"known): a '{glyph}' at {where}; `goal fetch Y,X`. A dive pauses 20 s "
+                                             "for it")
         while w.losses:
             t, text = w.losses.pop(0)
             self.notify("lost", text, news=True)
@@ -5888,7 +5895,9 @@ class Pilot:
         if not self.town_buyers(it) or re.search(r"\{(cursed|worthless|broken|terrible)", name):
             return 0
         if self.unknown_flavour(it):
-            if self.unknown_sell_refusal(it, 1):
+            # (broke for a Word of Recall: unknown wands, staffs and rods sell anyway -- m27 had nothing to sell but
+            # unknown devices and no gold for Identify; jewellery stays)
+            if self.unknown_sell_refusal(it, 1) and not (it["tval"] in (55, 65, 66) and self.broke_for_recall()):
                 return 0
             f = self.flavour_of(it)
             # one of an unknown stack: the sale teaches the flavour (the rest next pass)
@@ -5899,6 +5908,11 @@ class Pilot:
         if iv.kind is None or iv.value <= 0 or iv.value * self.pay_cut(iv.tval) < 1:
             return 0
         return it["number"]
+
+    def broke_for_recall(self):
+        """In town with fewer than 2 Words of Recall and not the gold for the next one."""
+        return not self.w.in_dungeon and self.kit_count("Word of Recall") < 2 and \
+            self.w.ind.get("gold", [0])[0] < (self.price_of("Word of Recall", 5) or 250)
 
     def town_sell_stores(self):
         return sorted({self.town_buyers(i)[0] for i in self.w.items() if self.town_sell_count(i)})
@@ -6014,6 +6028,17 @@ class Pilot:
                 left -= k * price
             if k < n:
                 short.append((kind, n - k))
+                # Word of Recall short of 2 and unaffordable: the gold waits for it -- nothing else but food (m27
+                # spent 62 of 71 gold on a CSW with WoR at 1)
+                if tier == 1 and kind == "Word of Recall":
+                    for t2, k2, s2, n2, c2 in self.town_needs(kit, buylist):
+                        if k2 == "Ration of Food":
+                            pr = self.price_of(k2, s2) or 4
+                            m = min(n2, left // pr)
+                            if m:
+                                buys.append((t2, k2, s2, m, c2))
+                    short.append(("(saving for Word of Recall)", 0))
+                    return buys, short
         return buys, short
 
     def buy_store(self, name):
@@ -6369,9 +6394,18 @@ class Pilot:
                 what, _, n = spec.rpartition(":")
                 what, n = (what, n) if what else (spec, "1")
                 n, _, cap = n.partition("@")        # NAME:COUNT@MAXPRICE (each)
-                n = int(n)
+                plus = n.startswith("+")
+                n = int(n.lstrip("+"))
                 if kind == "buy":
-                    buys.append((what.replace("_", " "), n, int(cap) if cap else None))
+                    # NAME:N means "have N", as in plan town (m27: `buy Phase_Door:11` bought 9 more on top of 11,
+                    # 171 of 179 gold); `buy NAME:+N` buys N more
+                    name = what.replace("_", " ")
+                    if not plus:
+                        key = singular(name.lower())
+                        have = sum(it["number"] for it in self.w.items() if key in singular(it["name"].lower()))
+                        n = n - have
+                    if n > 0:
+                        buys.append((name, n, int(cap) if cap else None))
                 elif kind in ("sell", "quote"):
                     key = what.replace("_", " ")
                     # quote: offer it and decline, to see the price (the Navigator's wish)

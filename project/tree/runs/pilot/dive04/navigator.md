@@ -435,3 +435,27 @@
 - 03:15:12 town 100% | hounds band on landing, escape recall, +404xp | trip4 until 03:24 | 2 WoR, 16 min left
 - 03:18:43 town 100% | second escape recall (paladin fear, why?), 84g, 2 WoR | last trip until 03:26 | 12 min left
 - 03:24:06 town 100% | home 03:24, 283/283, 102g, 0 WoR, no cures | end mission, plan town restock then idle | budget
+- 04:19:22 town 100% | m27 start in town, 14 gold, 3 WoR, 7 CCW, 11 Phase | plan town (sell by policy, no extras) | little gold; let policy sell/identify, then recall down
+- 04:19:39 town 100% | town, unknown Aspen Staff | use it once in town to learn it | could be Teleportation/Detect; town is the safe place to try
+- 04:20:16 town 100% | staff failed 6x (INT 5), keep it | plan trip 500-650 via recall until cures<4 or phase<5 or time>04:51 | handbook depth band, 3 WoR, stocked; time cap leaves 8 min to get home
+- 04:24:02 650ft 100% | user asked why Ivory Staff not picked up | answered (my miss), goal fetch 17,188 then 18,116 | interesting_item news needs my fetch; staffs sell 50-700
+- 04:24:44 650ft 100% | dart trap drained DEX (blows still 3), first staff fetched | fetch the 2nd Ivory Staff at 18,116, carry on | can't afford Restore (56g); blows unchanged
+- 04:26:36 town 100% | ogre band x6 at 650 with no stairs known, Pilot recalled (HP low 134) | let it finish, now in town with 1 WoR | correct escape; need sales to rebuy WoR
+- 04:27:41 town 100% | town, 4 gold, 1 WoR; plan town sold nothing (unknown devices refused, spent 62 on a CSW) | quote devices at Magic shop | need ~250 for 2nd WoR
+- 04:27:57 town 100% | quotes: OL staff 80, unknowns at base (Ivory 28, ring 18, rod 36) | sell Staff of Object Location, then buy Identify for an Ivory Staff | fund 2nd WoR without overriding; identified staffs sell at real value
+- 04:29:06 town 100% | 4 gold, need 182 for discounted WoR | sell 2 CCW (90), 1 Speed (29), Staff of Object Location with ! (80, debt ~56), buy WoR | without a 2nd WoR no recall trip; CCW 4 + CSW 4 stays above kit; OL staff is little use to a warrior and can't be identified without gold
+- 04:29:41 town 100% | got WoR at 90% off (24), 179 gold, WoR 2 | buy Phase to 11, 3rd WoR only if discounted <=150 | keep a spare WoR if cheap, else go now: time matters
+- 04:29:50 town 100% | MISTAKE: goal shop buy Phase_Door:11 bought 11 more (got 9 for 171g), not up to 11 | accept: Phase 18, 8 gold; recall down now 500-650 until cures<4 or phase<5 or time>04:51 | goal shop counts are to buy, plan town counts are totals; I mixed them up
+- 04:34:15 650ft 100% | 650ft, Mithril Ring at 47,148 and Staff of Door/Stair Loc at 37,180 flagged | fetch ring, then staff | unknown ring might be Free Action; D/S staff sells well; both within 40 squares
+- 04:36:06 700ft 100% | ring fetched; Pilot fled an Illusionist (paralyser) down a > to 700ft, below my limit | let the plan climb back to 650 | flee was right, direction wrong; complained
+- 04:40:18 650ft 99% | stuck 4 min at 700ft: dive 650 won't take the < 17 away | goal leave | the < is the way back up; waste of 4 min
+- 04:48:02 650ft 100% | 04:48 at 650, pack full, slow XP, 11 min left | goal recall now (ends trip early) | leave time to sell the loot in town before 04:59
+- 04:48:28 town 100% | home 04:48, 256 gold, WoR 0, pack full | plan town (sell loot, buy WoR) | restock for next mission; end idle in town
+- 04:49:23 town 100% | 04:49 town, 30 gold, WoR 2, CCW 4, CSW 3, Phase 18 | end mission idle in town; no 3rd trip | a 4-min trip would burn a 242-gold WoR; unknown scroll, 2 rings, Ivory/Aspen staffs and Platinum rod left for Identify next time
+
+## Mission 27 end notes (Navigator)
+- 04:19-04:49. Two recall trips to 650 ft (8 min and 18 min). XP +720, gold +16 net (258 sold at the end, 484 spent on 2 WoR). Ended idle in town: 283/283, 30 gold, WoR 2, CCW 4, CSW 3, Phase 18.
+- Trip 1: Ogre band x6 with no stairs known; the Pilot recalled at HP 134/283 (correct). Dart trap drained DEX (blows still 3).
+- Trip 2: fleeing an Illusionist the Pilot took a '>' to 700 ft (below the mission limit), then sat stuck 4 min refusing the '<' 17 squares away; I gave goal leave.
+- My mistakes: no fetch for the flagged Ivory Staff until the user asked; 'goal shop buy Phase_Door:11' bought 11 more (171 gold), not up to 11.
+- Item debt 44 (Staff of Object Location sold with ! to fund a 2nd WoR). Fight debt 0.
