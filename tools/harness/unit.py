@@ -417,6 +417,21 @@ def town_kit_townfarms_when_broke():
 
 
 @case
+def crutch_devices_sold_on_test():
+    """The user: on the test server mapping/detection devices are sold (a crutch the live server won't give us);
+    with --live they're kept like any useful device. Magic Mapping scrolls (sold in shops) stay in the kit."""
+    def count(live, name, tval):
+        p = pilot(pack=[(name, tval)])
+        p.live = live
+        p.town_buyers = lambda it: (6, 100)
+        return p.town_sell_count(p.w.items()[0])
+    test = count(False, "a Rod of Enlightenment", 66)
+    live = count(True, "a Rod of Enlightenment", 66)
+    scroll = count(False, "3 Scrolls of Magic Mapping", 70)
+    return test == 1 and live == 0 and scroll == 0, f"test sells {test}, live sells {live}, scrolls sold {scroll}"
+
+
+@case
 def pack_full_makes_room():
     """C4: pack 23/23 with a worthless Potion of Water among kit items; a Wand of Stinking Cloud underfoot: the
     Pilot destroys the water to take the wand (and never destroys kit consumables)."""

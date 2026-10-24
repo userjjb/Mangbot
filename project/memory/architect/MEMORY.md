@@ -5,3 +5,4 @@
 - [Inbox watcher](mangband-inbox-watcher.md) — start the Architect inbox watcher first thing every session; restart it whenever it ends
 - [Relay agent friction](mangband-relay-agent-friction.md) — a subagent's "my mistake" may be a missing capability; read runs/complaints.md after every mission; relay recurring friction to the user
 - [Restructure (2026-10-22)](mangband-restructure.md) — work on branch `restructure`, instruments first; revert steps in restructure.md (only on the user's request)
+- [No test-server crutches](mangband-no-crutches.md) — the user sold the Rod of Enlightenment: don't let rare items, forged kits or DM help hide problems the live server will show

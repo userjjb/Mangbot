@@ -5896,9 +5896,20 @@ class Pilot:
             return -(f[0] if f else 0)
         return sorted(stores, key=lambda st: (pay(st), stores.index(st)))
 
+    # Devices that map or detect for us, and so would hide what exploring by hand gets wrong: on the test server
+    # they're sold like loot (the user, 2026-10-24: "too much of a crutch ... in the live server we won't have the
+    # rod"); with --live they're kept like any useful device
+    CRUTCH_DEVICES = ("Enlightenment", "Detection", "Magic Mapping")
+
+    def is_crutch(self, it):
+        return not getattr(self, "live", False) and it["tval"] in (55, 65, 66) and \
+            any(k in it["name"] for k in self.CRUTCH_DEVICES)
+
     def town_sell_count(self, it):
         """How many of this pack item the town kit sells (0: keep it)."""
         name = it["name"]
+        if self.is_crutch(it) and not it.get("equip") and self.town_buyers(it):
+            return it["number"]
         if it.get("equip") or it["tval"] in (TV_FOOD, TV_FLASK, TV_LITE) or any(k in name for k in self.KIT_KINDS) \
                 or (it["tval"] in (55, 65, 66) and any(d in name for d in self.USEFUL_DEVICES)) or self.is_kept(name) or \
                 re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower() in self.ability_sources:
@@ -7102,6 +7113,9 @@ def main():
     ap.add_argument("--client", default=os.path.join(repo, "mangclient"))
     ap.add_argument("--libdir", default=os.path.join(repo, "lib"))
     ap.add_argument("--pktlog")
+    ap.add_argument("--live", action="store_true",
+                    help="live-server behaviour (default: test server). Test: mapping/detection devices are sold, not "
+                         "kept (the user: no crutches the live server won't give us)")
     ap.add_argument("--hpwarn", type=int, default=5,
                     help="hitpoint_warn 0-9: below N x 10%% HP the server slows our time bubble to 1/5; the "
                          "Pilot's timers follow on its game clock (default 5, the user 2026-10-24; 0 = off)")
@@ -7129,7 +7143,8 @@ def main():
         say(f"in the game as {nick}: {ready}")
         pilot = Pilot(client, rundir, say=say)
         pilot.hpwarn = args.hpwarn
-        pilot.log("options", hpwarn=args.hpwarn)
+        pilot.live = args.live
+        pilot.log("options", hpwarn=args.hpwarn, live=args.live)
         orig = pilot.w._on_event
         bulky = {"map", "status", "inven", "options", "commands"}   # query replies
         # every event carries the wall clock too ('t' restarts at 0 with each

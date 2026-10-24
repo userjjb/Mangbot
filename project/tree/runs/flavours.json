@@ -209,6 +209,11 @@
   "kind": "Ring of Slow Digestion",
   "source": "identified or used"
  },
+ "Platinum Rod": {
+  "junk": false,
+  "kind": "Rod of Enlightenment",
+  "source": "identified"
+ },
  "Puce Potion": {
   "junk": true,
   "kind": "Potion of Weakness",

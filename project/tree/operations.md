@@ -89,6 +89,9 @@ into the Temple (4), but everything it carried is dropped where it died.
   (`world.gnow`; logs and displayed times stay wall-clock). **`pilot.py --hpwarn` defaults to 5 since
   2026-10-24 (the user: missions run with it)**; `PILOT_ARGS="--hpwarn 0" tools/pilot/restart.sh Dive04` turns
   the bubble off (`setpiece.py --hpwarn 0` for an A/B). Both in `c-init.c` (commit 6274e8b).
+- **`pilot.py --live`** (default off = test server): on the test server, devices that map or detect for us
+  (Enlightenment, Detection, Magic Mapping rods/staffs/wands) are sold like loot, not kept -- the user: no crutches
+  the live server won't give us. On a live server pass `--live` (`PILOT_ARGS="--live"`): they're kept.
 - **The game clock is measured, with no server change** (works on live servers): a worn light loses one
   turn of fuel per game tick of our bubble (dungeon.c "Burn some fuel", scaled by our time factor), the
   fuel shows in its name, and a redraw (free: no game time; never in a store) makes the server resend it.

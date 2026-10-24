@@ -1134,3 +1134,15 @@ TypeError: unsupported operand type(s) for -: 'str' and 'int'
 05:06:39 pilot stopping
 05:06:42 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
 05:06:42 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+05:09:24 pilot stopping
+05:09:26 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+05:09:26 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+05:11:40 pilot stopping
+05:11:43 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+05:11:43 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+05:12:43 pilot stopping
+05:12:46 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+05:12:46 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+05:16:50 pilot stopping
+05:16:52 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+05:16:52 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
