@@ -1,0 +1,46 @@
+{
+ "id": "A5s",
+ "tag": "A5s-20261023-201047",
+ "depth_ft": 500,
+ "start": "2026-10-23 20:10:47",
+ "checks": {
+  "no level change while HP > 80%": {
+   "pass": true,
+   "detail": "[]"
+  },
+  "reported": {
+   "pass": true,
+   "detail": "[] (seen at 3.1577308177948)"
+  }
+ },
+ "notes": [],
+ "stairs": [
+  16,
+  80
+ ],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   265,
+   265
+  ],
+  "attention": [
+   [
+    14.8,
+    "interesting_item",
+    "Ring of Resist Cold seen on this level (devices and jewellery sell for 50-700 once known): its squar"
+   ]
+  ],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "first_seen": 3.1577308177948,
+ "end": "2026-10-23 20:18:52",
+ "pass": true
+}

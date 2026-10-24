@@ -117,6 +117,17 @@ def floor_near(view, target, dist, taken=(), floor="."):
     return best
 
 
+def clear_line(rows, a, b):
+    """Nothing but floor on the straight line between a and b (exclusive) on a map: line of sight, roughly."""
+    n = max(abs(b[0] - a[0]), abs(b[1] - a[1]))
+    for i in range(1, n):
+        y = a[0] + round((b[0] - a[0]) * i / n)
+        x = a[1] + round((b[1] - a[1]) * i / n)
+        if rows[y][x] in "#%*+: ":
+            return False
+    return True
+
+
 def step_dir(a, b):
     dy, dx = (b[0] > a[0]) - (b[0] < a[0]), (b[1] > a[1]) - (b[1] < a[1])
     return {(1, -1): 1, (1, 0): 2, (1, 1): 3, (0, -1): 4, (0, 1): 6, (-1, -1): 7, (-1, 0): 8, (-1, 1): 9}.get((dy, dx))
@@ -164,13 +175,19 @@ class Run:
         m = re.search(r"· (\d+) ft ·", st)
         return int(m.group(1)) if m else 0
 
-    def place(self, race_name, dist, after=None):
-        """Summon race_name about `dist` squares from Dive04 (on a floor square of its map)."""
+    def place(self, race_name, dist, after=None, gmap=False):
+        """Summon race_name about `dist` squares from Dive04 (on a floor square of its map; gmap=True: of
+        Gandalf's, who sees the whole level, with a clear line to Dive04 -- for a monster out of its sight)."""
         if self._depth() != self.depth:
             raise RuntimeError(f"Dive04 isn't on Gandalf's level ({self._depth()} ft): it left before the scene was set")
         v = pilot_view()
         me = tuple(v["pos"])
         taken = getattr(self, "placed", set())
+        if gmap:
+            rows = self.dm.c.map()
+            taken = taken | {q for q in ((y, x) for y in range(len(rows)) for x in range(len(rows[0])))
+                             if 0 < max(abs(q[0] - me[0]), abs(q[1] - me[1])) <= dist + 2 and not clear_line(rows, me, q)}
+            v = {"y0": 0, "x0": 0, "rows": rows}
         spot = next((q for d in (dist, dist + 1, max(1, dist - 1), dist + 2) for q in [floor_near(v, me, d, taken, ". " if self.depth == 0 else ".")] if q),
                     None)
         if not spot:
@@ -642,6 +659,88 @@ def b6(run, width=9):
     run.check("arrived", any(a[1] == "goal_done" for a in done), f"{done[:1]}")
 
 
+def a5(run, race="Dark elven priest", stairs=False):
+    """A5: a caster out of sight at full HP (m17-m21: curses, a HOLD and shrieks from the dark started level
+    changes). A Dark elven priest (blinds, confuses, causes wounds) 5 squares off on unlit ground, beyond the
+    lantern and infravision: the Pilot reports it, and doesn't leave the level (stairs, Word of Recall, Deep
+    Descent) while HP is above 80%. A5s: the same with a '>' painted where Dive04 sees it (with stairs known,
+    the old rule fled down them)."""
+    v = run.bring_dive04()
+    if stairs:
+        me = tuple(v["pos"])
+        q = next((q for d in (2, 1, 3) for q in [floor_near(v, me, d)] if q), None)
+        if q:
+            run.gandalf_to(q)
+            run.dm.paint(7, [step_dir(me, q) or 8])
+            time.sleep(1.5)
+        run.res["stairs"] = q
+    run.t_act = time.time()
+    run.place(race, 5, gmap=True)
+    run.watch(45)
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    depth0 = next((d.get("depth") for d in recs if d.get("depth") is not None), None)
+    left = []
+    for d in recs:
+        hp = d.get("hp")
+        if not hp or not hp[1] or hp[0] <= 0.8 * hp[1]:
+            continue
+        if d.get("kind") == "act" and re.search(r"recall|deep descent|take the stairs|stairs", str(d.get("why")), re.I):
+            left.append((round(d["t"] - run.t_act, 1), d.get("why")))
+        if d.get("depth") is not None and depth0 is not None and d["depth"] != depth0:
+            left.append((round(d["t"] - run.t_act, 1), f"depth {d['depth']}"))
+            break
+    seen_t = first_seen(recs, race, run.t_act)
+    news = [a for a in st["attention"] if a[1] == "unseen_attacker"]
+    run.res["first_seen"] = seen_t
+    run.check("no level change while HP > 80%", not left, f"{left[:2]}")
+    run.check("reported", bool(news) or seen_t is not None, f"{news[:1]} (seen at {seen_t})")
+
+
+def a5s(run):
+    """A5s: an unseen caster that stays unseen (a Potion mimic: never moves; curses, blinds, confuses, frost
+    bolts) with stairs in view. (A Dark elven priest walked into view before it cast.)"""
+    a5(run, race="Potion mimic", stairs=True)
+
+
+def a4(run):
+    """A4: a slow ranged caster unique (Wormtongue: frost bolts, slow, traps; 250 HP, melee ~6) 3 squares off
+    (on unlit ground he isn't seen farther), a '>' painted on the farthest square of Dive04's known floor up to 12
+    off. Passes when Dive04 doesn't walk more than 8 squares in his sight (a flee walk under his bolts) and its
+    lowest HP stays at 60% or more."""
+    v = run.bring_dive04()
+    me = tuple(v["pos"])
+    stairs = next((q for d in range(12, 3, -1) for q in [floor_near(v, me, d)] if q), None)
+    if stairs:
+        run.gandalf_to(stairs)
+        run.dm.paint(7, [8])                     # '>' (he steps north off it)
+        time.sleep(1.0)
+    run.res["stairs"] = stairs
+    run.t_act = time.time()
+    run.place("Wormtongue, Agent of Saruman", 3)
+    run.watch(45)
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    walked, last = 0, None
+    for d in recs:
+        if d.get("kind") == "mons" and d.get("pos") and any("Wormtongue" in m[2] for m in d.get("monsters", [])):
+            p = tuple(d["pos"])
+            if last:
+                walked += max(abs(p[0] - last[0]), abs(p[1] - last[1]))
+            last = p
+        elif d.get("kind") == "mons":
+            last = None
+    run.res["walked_in_sight"] = walked
+    seen = first_seen(recs, "Wormtongue, Agent of Saruman", run.t_act)
+    # (a unique exists once: while he lives on another level the summon fails silently)
+    run.check("Wormtongue staged (seen)", seen is not None, f"first seen {seen} s")
+    run.check("<= 8 squares walked in his sight", walked <= 8, f"{walked} squares (stairs {stairs})")
+    if st["hp_min"]:
+        run.check("lowest HP >= 60%", st["hp_min"][0] >= 0.6 * st["hp_min"][1], f"lowest {st['hp_min']}")
+
+
 def b4(run, walking=False):
     """B4: a town thief (m15-m19 lost ~300 gold to urchins and a Scruffy hobbit while townfarming). A
     Scruffy looking hobbit (touches to steal gold, then teleports) summoned 2 squares from Dive04 in town, no
@@ -832,7 +931,7 @@ def l2(run):
     run.check("about 10x sooner than standing (< 5 s)", secs is not None and secs < 5, f"{secs and round(secs, 1)} s")
 
 
-SETPIECES = {"B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
+SETPIECES = {"A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
              "C3": c3}
 
 

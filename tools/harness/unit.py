@@ -296,6 +296,27 @@ def loot_band_stops_looting():
 
 
 @case
+def a5_unseen_caster_news_above_80():
+    """A5: "It gestures in shadow." from the dark, stairs known: news only at full HP; below 80%, it heads for the
+    stairs (the old rule fled at any HP above think_hp)."""
+    def run(hp):
+        p = pilot(hp=hp)
+        now = P.gnow()
+        p.w.unseen, p.w.heard = (now, "It gestures in shadow."), (0, "")
+        p.w.find = lambda chars: (25, 25)
+        p.heard_warned, p.unseen_warned, p.goal = 0, 0, None
+        p.orders.update(think_hp=0.5, unseen_hp="off")
+        p.has_ability = lambda a: False
+        p.hunt_ordered = lambda *a: False
+        goals = []
+        p.set_goal = goals.append
+        p.unseen_tick(now)
+        return [type(g).__name__ for g in goals], [w for w, _ in p.notes]
+    full, hurt = run(265), run(190)
+    return full == ([], ["unseen_attacker"]) and hurt[0] == ["Flee"], f"full HP: {full}; 72%: {hurt}"
+
+
+@case
 def pack_full_makes_room():
     """C4: pack 23/23 with a worthless Potion of Water among kit items; a Wand of Stinking Cloud underfoot: the
     Pilot destroys the water to take the wand (and never destroys kit consumables)."""

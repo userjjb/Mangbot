@@ -4169,6 +4169,12 @@ class Pilot:
             not self.has_ability("free_action")
         hint = " (it may be paralysis and you have no Free Action: if the stairs are far, read Word of Recall)" \
             if para else ""
+        # Above 80% HP: news only (the Advisor's A5: curses, darkness and confusion from the dark changed
+        # levels at full HP in m17-m21; set-piece A5's Dark elven priest). A paralysing gaze still leaves.
+        if w.hp_frac > 0.8 and not para:
+            self.notify("unseen_attacker", f"'{cause}': something unseen is casting at you; carrying on at HP "
+                                           f"{w.hp_frac:.0%} (it leaves below 80%)", news=True)
+            return False
         if self.hunt_ordered(gnow(), "an unseen attacker"):
             return False
         if w.find("<>"):
@@ -5429,6 +5435,8 @@ class Pilot:
             t0 = gnow()
             for _ in range(n):
                 self.c.send("custom s")
+            # (the server runs them one a player turn, ~0.65 s, so a move sent sooner waits behind them;
+            # busy for longer would hold the emergency reflexes too)
             self.busy_until = gnow() + 0.15 * n
             # wait for the searches to run (one a turn), stop early on a find
             # (mission 16: the reply said "nothing found" while the game had said

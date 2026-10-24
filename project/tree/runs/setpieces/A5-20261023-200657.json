@@ -1,0 +1,42 @@
+{
+ "id": "A5",
+ "tag": "A5-20261023-200657",
+ "depth_ft": 450,
+ "start": "2026-10-23 20:06:57",
+ "checks": {
+  "no level change while HP > 80%": {
+   "pass": true,
+   "detail": "[]"
+  },
+  "reported": {
+   "pass": true,
+   "detail": "[(3.9, 'unseen_attacker', \"'It gestures in shadow.': something unseen is attacking and no stairs are known: consider Word of Re\")] (seen at 5.0245654582977295)"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   265,
+   265
+  ],
+  "attention": [
+   [
+    3.9,
+    "unseen_attacker",
+    "'It gestures in shadow.': something unseen is attacking and no stairs are known: consider Word of Re"
+   ]
+  ],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "first_seen": 5.0245654582977295,
+ "end": "2026-10-23 20:09:49",
+ "pass": true
+}

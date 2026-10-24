@@ -1,0 +1,142 @@
+{
+ "id": "A5s",
+ "tag": "A5s-20261023-201909",
+ "depth_ft": 550,
+ "start": "2026-10-23 20:19:09",
+ "checks": {
+  "no level change while HP > 80%": {
+   "pass": true,
+   "detail": "[]"
+  },
+  "reported": {
+   "pass": true,
+   "detail": "[(4.0, 'unseen_attacker', \"'It casts a fearful illusion.': probably the Baby black dragon (lvl 9) in view; carrying on (HP 100%\")] (seen at None)"
+  }
+ },
+ "notes": [],
+ "stairs": [
+  6,
+  84
+ ],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   219,
+   265
+  ],
+  "attention": [
+   [
+    4.0,
+    "unseen_attacker",
+    "'It casts a fearful illusion.': probably the Baby black dragon (lvl 9) in view; carrying on (HP 100%"
+   ],
+   [
+    4.1,
+    "tactic",
+    "afraid and in danger: quaffed a Potion of Boldness"
+   ],
+   [
+    12.5,
+    "lost",
+    "One of your Flasks of oil (a) was destroyed!"
+   ],
+   [
+    20.2,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    20.3,
+    "goal_done",
+    "goto 5,84"
+   ],
+   [
+    28.4,
+    "unseen_attacker",
+    "'It casts a spell, burning your eyes!': something unseen is casting at you; carrying on at HP 97% (i"
+   ],
+   [
+    50.1,
+    "tactic",
+    "hungry and no food: read a Scroll of Satisfy Hunger"
+   ],
+   [
+    51.1,
+    "unseen_attacker",
+    "'It points at you and curses horribly.': minor attack from something unseen; carrying on (HP 90%)"
+   ],
+   [
+    51.1,
+    "lost",
+    "One of your Potions of Cure Serious Wounds {25% off} (f) was destroyed!"
+   ]
+  ],
+  "acts": [
+   [
+    4.1,
+    "custom q item=1",
+    "afraid and in danger: quaff 2 Potions of Boldness"
+   ],
+   [
+    9.0,
+    "rest",
+    "rest"
+   ],
+   [
+    10.1,
+    "rest",
+    "rest"
+   ],
+   [
+    11.1,
+    "rest",
+    "rest"
+   ],
+   [
+    12.1,
+    "rest",
+    "rest"
+   ],
+   [
+    13.1,
+    "rest",
+    "rest"
+   ],
+   [
+    14.2,
+    "rest",
+    "rest"
+   ],
+   [
+    15.2,
+    "rest",
+    "rest"
+   ],
+   [
+    50.1,
+    "custom r item=10",
+    "hungry (2), no food: read Satisfy Hunger"
+   ],
+   [
+    51.1,
+    "rest",
+    "rest"
+   ],
+   [
+    52.1,
+    "rest",
+    "rest"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "first_seen": null,
+ "end": "2026-10-23 20:22:17",
+ "pass": true
+}

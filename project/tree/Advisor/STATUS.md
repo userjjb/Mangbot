@@ -37,7 +37,8 @@ Architect builds everything else.
 
 ## Waiting on the user
 
-- Nothing. (The low-HP time bubble: the user decided "after step 2" — then turn-based Pilot timers and an A/B of `--hpwarn 5` on set-pieces
+- Per the Architect (10-23), with the user: `--hpwarn 5` for missions; `flee_hp` 0.4 inside vetted solo hunts (my proposal); more forging for L2/L3 (CON-ring swap).
+- (Earlier: the low-HP time bubble: the user decided "after step 2" — then turn-based Pilot timers and an A/B of `--hpwarn 5` on set-pieces
   A1/A2; `to_advisor/2026-10-23-step22-town-kit.md`.)
 
 ## The rulebook (`data/rulebook/`, README there)
