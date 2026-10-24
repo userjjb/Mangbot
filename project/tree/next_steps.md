@@ -302,6 +302,21 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    running fast where the game doesn't ends game timers early: a recall "overdue" and read again cancels it.)
    The server doesn't answer a redraw while resting: a rest is measured when it ends.
    **Decisions (the user, 2026-10-24): flee_hp stays 0.5 everywhere; the forge may be used for set-pieces.**
+   **Step 5 started (session 4, 02:10-03:25):** m25 (Opus, 40 min): 10.9 XP/dmin, lowest 63%, 22 min walking down
+   (loops fixed live: explore runs with a radius, stair-scum on kept levels, stairs straight back into a fled level,
+   a free-run crash, pickups that stack). m26 (Sonnet, 40 min): **53.0 XP/dmin** at 650 ft but lowest 14%, 6 escape
+   recalls, 14 cures, broke at the end (14 gold, 0 WoR). Fixed after them (reports in runs/pilot/dive04/reports/):
+   Satisfy Hunger only when Weak (it fills to just under Gorged; the next potion made m26 Gorged at -10 speed in its
+   worst fight), rations in the kit; group danger and the 3-turn worst case scaled by our slowness; a Speed potion
+   when slowed in a fight; afraid among 2+ attackers counts as danger; no stairs-underfoot bouncing with nothing in
+   view; far stairs with danger beside us -> recall at once; an upgrade pass after town Identify (a [+12] ring was
+   sold); buy NAME:N = have N; Restore Charisma only with 3000+ gold; spare lights/food can make room; multi-word
+   item names; time conditions to the second; identified plain unique drops sell; blindness cures only when it
+   matters; **a band with no stairs known at high HP locates stairs or walks away before Word of Recall (the user)**.
+   Gandalf reset the player counts on 50-650 ft (Unstatic): the set-pieces had left levels the server kept.
+   **Open:** ranged stationary drainers (Radiation eye at 2 squares); pits/structures (the user: a one-wide long
+   hallway is a giveaway; asked the Advisor); the Brown mold beside the stairs (m25); a fair model comparison needs an
+   Opus run on the current Pilot from a similar state (Dive04 is broke now: 14 gold, 0 WoR, DEX/WIS drained).
    The CON-ring swap can't set HP (HP scales with max HP). A2I found the flee-failed escape ignoring a dangerous
    caster beyond 5 squares (Ibun cast for 7 s from 12): fixed, A2f passes. (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
