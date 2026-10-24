@@ -41,7 +41,8 @@ sys.path.insert(0, os.path.join(HERE, "..", "shopcat"))
 
 from mang import MangClient, ClientExited      # noqa: E402
 import glyphs                                   # noqa: E402
-from world import World, gnow, set_time_factor, time_factor, wall_of, _lt   # noqa: E402
+from world import (World, gnow, set_time_factor, time_factor, model_factor, wall_of, wall_since, waited,  # noqa: E402
+                   ghold, light_fuel, set_fast_ok, measured_rate, _lt)
 import structures                                # noqa: E402
 import itemvalue                                 # noqa: E402
 sys.path.insert(0, os.path.join(HERE, "..", "observe"))
@@ -284,7 +285,7 @@ class Goto(Goal):
             # An item underfoot is picked up ~0.6 s after arriving: report after
             # that, or the Navigator sees it still on the floor (mission 5)
             if any(ts > self.arrived_t and t.startswith(("You have ", "You have no room")) for ts, t in w.messages) \
-                    or gnow() - self.arrived_t > 1.5:
+                    or waited(self.arrived_t, 1.5):
                 w.inven_dirty = True
                 return ("done", None)
             return None
@@ -504,7 +505,7 @@ class Dive(Goal):
         want, other = ("<", ">") if up else (">", "<")
         if (not up and w.depth_ft >= self.target_ft) or (up and w.depth_ft <= self.target_ft):
             return ("done", f"reached {w.depth_ft} ft")
-        if self.pending and w.level_t < self.pending and gnow() - self.pending < 3:
+        if self.pending and w.level_t < self.pending and not waited(self.pending, 3):
             return None           # waiting for the level change
         self.pending = None
         # leaving town: the light on before the stairs, as Recall does before reading (the user:
@@ -514,7 +515,7 @@ class Dive(Goal):
             self.light_t = gnow()
             if p.wear_light("going down"):
                 return None
-        if gnow() - w.level_t < 0.6:
+        if not waited(w.level_t, 0.6):
             return None           # let the new level's map arrive
         if w.level_t != self.level_seen:
             self.level_seen = w.level_t
@@ -596,7 +597,7 @@ class Dive(Goal):
         if w.standing_on == other and scum_ok:
             return self._stairs(p, other)
         # No stairs known at all: a Door/Stair Location device maps them
-        if not w.find("<>") and gnow() - w.level_t > 1.0 and not w.monsters and self.locate_stairs(p):
+        if not w.find("<>") and waited(w.level_t, 1.0) and not w.monsters and self.locate_stairs(p):
             return None
         # No stairs under us: explore until we see some (either kind)
         self.expire_bad(w)
@@ -972,9 +973,9 @@ class Flee(Goal):
             # and stairs right after "left by the stairs", mission 4)
             if w.level_t != self.took[0]:
                 return ("done", f"left by the stairs; now at {w.depth_ft} ft")
-            if gnow() - self.took[1] > 5:
+            if waited(self.took[1], 5):
                 return ("done", "took the stairs, but no level change seen")
-            if gnow() - self.took[1] > 1.5 and len(self.took) == 2 and w.standing_on in ("<", ">"):
+            if waited(self.took[1], 1.5) and len(self.took) == 2 and w.standing_on in ("<", ">"):
                 p.take_stairs(w.standing_on)      # a stairs command right after arriving can be ignored
                 self.took = self.took + (True,)
             return None
@@ -1034,7 +1035,7 @@ class Recall(Goal):
             # ("@R7500" contains "@R750"; a later @R overrides an earlier one).
             md = int(self.depth_ft or p.orders.get("max_depth", 0)) // 50 * 50
             if w.depth == 0 and md and recall_level(it["name"]) != md // 50:
-                if gnow() - self.inscribe_t < 2.5:
+                if not waited(self.inscribe_t, 2.5):
                     return None           # (wait for the pack to show the new inscription)
                 if self.inscribed >= 3:
                     return ("failed", f"couldn't inscribe @R{md} on the Word of Recall "
@@ -1048,7 +1049,7 @@ class Recall(Goal):
             # for idling, and the read failed with "You have no light to read by")
             if not any(i["tval"] == TV_LITE for i in w.items(equip=True)):
                 lite = next((i for i in w.items(tval=TV_LITE) if "0 turns" not in i["name"]), None)
-                if lite and gnow() - self.light_t > 2:
+                if lite and waited(self.light_t, 2):
                     self.light_t = gnow()
                     p.light_t = gnow() + 30      # (town_light: don't take it off again)
                     p.cmd(f"custom w item={lite['item']}", "light on to read Word of Recall", hold=0.8)
@@ -1092,7 +1093,7 @@ class Resurrect(Goal):
             return ("done", "resurrected")
         if w.depth:
             # (a stairs command too soon after arriving is ignored: retry)
-            if gnow() - w.level_t > 1.2 and gnow() - self.up_t > 1.5:
+            if waited(w.level_t, 1.2) and waited(self.up_t, 1.5):
                 self.up_t = gnow()
                 p.take_stairs("<")
             return None
@@ -1148,7 +1149,7 @@ class Town(Goal):
             return ("failed", "don't know which edge leads back: read Word of Recall")
         d = EDGE_DIR[edge]
         if edge_of(w.pos) == edge:
-            if gnow() - self.step_t > 0.8:
+            if waited(self.step_t, 0.8):
                 self.step_t = gnow()
                 p.mover.stop()
                 p.cmd(f"walk {d}", f"town: step off the {edge} edge", hold=0.5)
@@ -1202,7 +1203,7 @@ class TownFarm(Goal):
         # mission 14 stood 2 min in the dark with a lantern in the pack)
         worn = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
         wt = re.search(r"with (\d+) turns", worn["name"]) if worn else None
-        if (not worn or (wt and int(wt.group(1)) < 100)) and gnow() - self.light_t > 5:
+        if (not worn or (wt and int(wt.group(1)) < 100)) and waited(self.light_t, 5):
             def left(i):
                 t = re.search(r"with (\d+) turns", i["name"])
                 return int(t.group(1)) if t else (1 if "Lantern" in i["name"] else 0)
@@ -1254,7 +1255,7 @@ class TownFarm(Goal):
         y, x, r = mon
         if w.dist((y, x)) <= 1:
             p.mover.stop()
-            if any("EAT_" in b for b in r.blows) and gnow() - getattr(self, "hit_t", 0) > 0.35:
+            if any("EAT_" in b for b in r.blows) and waited(getattr(self, "hit_t", 0), 0.35):
                 # a thief: hit it ourselves -- auto-retaliate picks its own target,
                 # and in a crowd it killed idiots and beggars while an urchin
                 # beside us stole twice (mission 17). Clear first: a walk queued
@@ -1333,13 +1334,13 @@ class Shop(Goal):
             if w.store and w.store_t >= self.t:
                 self.state = "trade"
                 return None
-            if gnow() - self.t > 4:
+            if waited(self.t, 4):
                 self.state = "walk"
             return None
         if self.state == "trade":
             p.note_store()
             sp = getattr(self, "sale_pending", None)
-            if sp and (w.store_t > sp["t"] or gnow() - sp["t"] > 3):
+            if sp and (w.store_t > sp["t"] or waited(sp["t"], 3)):
                 key = re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", sp["sold_as"])).lower()
                 relist = next((i["price"] for i in (w.store or {}).get("items", [])
                                if re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", i["name"])).lower() == key),
@@ -1355,7 +1356,7 @@ class Shop(Goal):
             if self.pending and getattr(self, "quoting", None):
                 ts, prompt, _ = w.last_confirm
                 m = re.search(r"Accept (\d+) gold", prompt) if ts >= self.pending else None
-                if m is None and gnow() - self.pending < 4:
+                if m is None and not waited(self.pending, 4):
                     return None
                 self.done_log.append(f"quote: {self.quoting}: {m.group(1)} gold (not sold)" if m else
                                      f"quote: {self.quoting}: no offer (the shop doesn't buy it?)")
@@ -1367,7 +1368,7 @@ class Shop(Goal):
                 verdict = next((t for t in said if t.startswith(("You sold", "You bought", "I don't want",
                                                                  "You do not have enough", "You cannot carry",
                                                                  "You have no room", "That item"))), None)
-                if verdict is None and w.store_t < self.pending and gnow() - self.pending < 4:
+                if verdict is None and w.store_t < self.pending and not waited(self.pending, 4):
                     return None   # still waiting
                 self.done_log.append(verdict or f"{self.last} (no answer)")
                 ms = re.match(r"You sold (.+?) for (\d+) gold", verdict or "")
@@ -1452,7 +1453,7 @@ class Shop(Goal):
                 self.last = f"sell {chr(97 + idx)} x{n}"
                 self.pending = gnow()
                 return None
-            if self.buys and gnow() - getattr(self, "need_fresh", 0) < 3 and \
+            if self.buys and not waited(getattr(self, "need_fresh", 0), 3) and \
                     w.store_t < getattr(self, "need_fresh", 0):
                 return None       # (a remainder: wait for the listing after the last purchase)
             if self.buys:
@@ -1535,7 +1536,7 @@ class TownKit(Goal):
             self.bought += sum(int(m) for m in re.findall(r"You bought .+? for (\d+) gold", r[1] or ""))
             self.sub, self.t = None, now
             return None
-        if now - self.t < 1.0 or now < p.busy_until or w.inven_dirty or p.pending_use:
+        if not waited(self.t, 1.0) or now < p.busy_until or w.inven_dirty or p.pending_use:
             return None             # (the pack and gold settle after each step)
         if self.stage == "upgrade":
             # wear/wield what the policy prefers before anything is sold
@@ -2109,6 +2110,7 @@ class Pilot:
         self.far_seen = set()                 # (level, item) valuables seen beyond loot_radius
         self.effect_failures = 0
         self.redraw_t, self.redraw_level = 0.0, None
+        self.factor_logged, self.rate_logged, self.factor_log_t = 1.0, None, 0.0
         self.group_warned = None
         self.mons_log_t = 0.0
         self.drains_here = (None, 0)          # (level, stat drains seen on it)
@@ -2193,7 +2195,7 @@ class Pilot:
         # read the real one as "item=5")
         if self.pending_use and re.match(r"custom [rq] item=", line) and not why.startswith("agent:"):
             self.log("note", text=f"held (a read/quaff is still unconfirmed): {why}")
-            self.busy_until = gnow() + 0.3
+            self.busy_until = gnow() + ghold(0.3)
             self.held_t = gnow()     # notify() drops the caller's "quaffed ..." report
             # (callers set their rate-limit clock before calling: undo it, so
             # this is retried as soon as the last use is confirmed)
@@ -2206,7 +2208,7 @@ class Pilot:
             return
         self.c.send(line)
         self.last_action = (gnow(), line, why)
-        self.busy_until = gnow() + hold
+        self.busy_until = gnow() + ghold(hold)
         self.log("act", cmd=line, why=why)
         self.log_escape(line, why)
         self.expect_effect(line, why)
@@ -2220,7 +2222,7 @@ class Pilot:
             core = next((c for c in USE_VERIFY if it and c in it["name"]), None)
             if core:
                 self.pending_use = {"line": line, "t": gnow(), "core": core, "tries": 0, "why": why}
-                self.mover.hold_clear_until = gnow() + 3.0
+                self.mover.hold_clear_until = gnow() + ghold(3.0)
 
     # Commands whose effect shows in the pack, the equipment or the level
     # (the game-state survey, rule 3: an action is done when its signal comes)
@@ -2270,10 +2272,10 @@ class Pilot:
                     self.learn_flavour(it["flavour"], kind_key(m.group(1)), "identified")
                     self.id_target = None
                     break
-            if self.id_target and now - it["t"] > 5:
+            if self.id_target and waited(it["t"], 5):
                 self.id_target = None
         fw = self.flavour_watch
-        if not fw or now - fw["t"] < 1.0:
+        if not fw or not waited(fw["t"], 1.0):
             return
         self.flavour_watch = None
         after = self.pack_kinds()
@@ -2305,7 +2307,7 @@ class Pilot:
         for e in self.expects:
             if self.effect_sig(e["kind"]) != e["sig"]:
                 continue                    # confirmed
-            if now - e["t"] < 3.0:
+            if not waited(e["t"], 3.0):
                 keep.append(e)
                 continue
             self.log("note", text=f"effect_failed ({e['kind']} unchanged after 3 s): {e['why']}")
@@ -2384,7 +2386,7 @@ class Pilot:
             self.w.inven_dirty = True          # re-read the pack now, before the next use
             self.w.refresh()
             return
-        if now - p["t"] < 2.5:
+        if not waited(p["t"], 2.5):
             return
         if p["tries"] >= 2 or not self.w.in_dungeon:
             self.pending_use = None
@@ -2392,7 +2394,7 @@ class Pilot:
             return
         p["tries"] += 1
         p["t"] = now
-        self.mover.hold_clear_until = now + 3.0
+        self.mover.hold_clear_until = now + ghold(3.0)
         self.c.send(p["line"])
         self.log("act", cmd=p["line"], why=f"resend (no effect seen): {p['why']}")
         self.notify("tactic", f"'{p['why']}' showed no effect: resent it")
@@ -2661,7 +2663,7 @@ class Pilot:
         # A stairs command gets no answer at all if it comes too soon after the
         # level change (seen: '<' 0.7 s after arriving was ignored), so retry
         # after 1.2 s while still on the stairs
-        stairs_pending = w.last_stairs_cmd and now - w.last_stairs_cmd[1] < 1.2
+        stairs_pending = w.last_stairs_cmd and not waited(w.last_stairs_cmd[1], 1.2)
         if now - w.level_t < 6 and w.standing_on in ("<", ">") and not stairs_pending:
             danger = self.dangers()
             # A pack only counts if its members are within 5 levels of ours (a
@@ -2865,7 +2867,7 @@ class Pilot:
             # In the dungeon too: with others adjacent, hit the thief first
             # (mission 21: a Brigand took an {excellent} armour from the pack)
             thieves = [m for m in adj if any(b.split(":")[1:2] in (["EAT_ITEM"], ["EAT_GOLD"]) for b in m[2].blows)]
-            if thieves and len(adj) > 1 and w.depth and now - self.thief_hit_t > 0.35 and \
+            if thieves and len(adj) > 1 and w.depth and waited(self.thief_hit_t, 0.35) and \
                     not isinstance(self.goal, (Flee, Recall)):
                 t = min(thieves, key=lambda m: not any("EAT_ITEM" in b for b in m[2].blows))
                 self.thief_hit_t = now
@@ -2986,7 +2988,7 @@ class Pilot:
         again and again doesn't shake a pack (it burned 10 scrolls in 10 s)."""
         w = self.w
         now = gnow()
-        if w.last_stairs_cmd and now - w.last_stairs_cmd[1] < 1.2:
+        if w.last_stairs_cmd and not waited(w.last_stairs_cmd[1], 1.2):
             return True           # already on our way (retried after 1.2 s)
         if self.emergency_loop(now):
             return True
@@ -3041,7 +3043,7 @@ class Pilot:
                                              "of Recall; Phase Door now only below 20% HP")
                     return True
             pd = None
-        if adj and pd and can_read and (now - self.phase_t > 2.5 or (collapsing and now - self.phase_t > 0.7)):
+        if adj and pd and can_read and (waited(self.phase_t, 2.5) or (collapsing and waited(self.phase_t, 0.7))):
             self.phase_t = now
             self.phase_hist.append(now)
             self.cmd(f"custom r item={pd['item']}", f"{why}: phase door", hold=0.6)
@@ -3052,7 +3054,7 @@ class Pilot:
             stairs = [p for p in w.find("<>") if w.dist(p) <= 20]
             # (a new move sends 'clear', which would drop a read or quaff still
             # waiting in the server's queue for our next turn)
-            used_recently = now - max(self.phase_t, self.cure_t, self.recall_t) < 2.0
+            used_recently = not waited(max(self.phase_t, self.cure_t, self.recall_t), 2.0)
             if stairs and not self.mover.active and not used_recently:
                 if self.mover.go(stairs):
                     self.escaping_to_stairs = True
@@ -3062,7 +3064,7 @@ class Pilot:
                 if st == "arrived" and w.standing_on in ("<", ">"):
                     self.take_stairs(w.standing_on)
                 return True
-        if now - self.cure_t > 1.5:
+        if waited(self.cure_t, 1.5):
             # Heal or escape, by numbers (Advisor memo P3: quaffing CLW while
             # taking 100+ a turn is the commonest fatal mistake). A potion must
             # out-heal what comes in before the next one can land (~1.5 s, plus
@@ -3083,7 +3085,7 @@ class Pilot:
                     self.noescape_t = now
                     self.notify("emergency", f"{why}: losing ~{rate:.0f} HP/s, more than the best potion heals "
                                              f"({pots[-1][0]}): escaping instead")
-                if adj and pd and can_read and now - self.phase_t > 0.7:
+                if adj and pd and can_read and waited(self.phase_t, 0.7):
                     self.phase_t = now
                     self.phase_hist.append(now)
                     self.cmd(f"custom r item={pd['item']}", f"{why}: phase door (potions too weak)", hold=0.6)
@@ -3968,7 +3970,7 @@ class Pilot:
         if g <= 0.3 * hp:
             return False
         names = ", ".join(f"{n} x{c}" if c > 1 else n for n, c in collections.Counter(who).items())
-        stairs_pending = w.last_stairs_cmd and now - w.last_stairs_cmd[1] < 1.2
+        stairs_pending = w.last_stairs_cmd and not waited(w.last_stairs_cmd[1], 1.2)
         on_stairs = w.standing_on in ("<", ">") and not stairs_pending
         if g <= 0.6 * hp:
             if now - w.level_t < 6 and on_stairs:
@@ -4072,7 +4074,7 @@ class Pilot:
         (Advisor memo P4 + Erratum): stun at once, blind/confused when
         something is near, poison only when HP is also getting low."""
         w = self.w
-        if not w.in_dungeon or now - self.cure_t <= 1.5:
+        if not w.in_dungeon or not waited(self.cure_t, 1.5):
             return False
         in_combat = w.adjacent_monsters() or now - w.last_hit_t <= 3
         if not in_combat:
@@ -4765,14 +4767,35 @@ class Pilot:
     def tick(self):
         self.w.drain()
         self.w.refresh()
-        # the game clock's factor: the server's 1/5 below hitpoint_warn x 10% HP (xtra2.c base_time_factor;
-        # resting and running out of sight speed it up, which the timers already tolerate)
+        # the game clock (world.py). The model is the server's rule (xtra2.c base_time_factor, time_factor):
+        # 1 in town; with nothing in sight 10x resting and 5x running; else 1/5 at or below hitpoint_warn x
+        # 10% HP. While resting or running out of sight the fuel's measured rate overrides it (another
+        # server's constants, or a player nearby whose slower bubble we share)
         hw = getattr(self, "hpwarn", 0)
-        hp = self.w.hp
+        w, m = self.w, self.mover
+        hp = w.hp
         slow = hw and hp[1] > 1 and hp[0] * 100 // max(1, hp[1]) <= hw * 10
-        if (time_factor() < 1) != bool(slow):
-            set_time_factor(0.2 if slow else 1.0)
-            self.log("time_factor", factor=time_factor(), hp=hp[:2])
+        # (running: a run under way and the position changing -- the mover's run state also covers the
+        # wait for the first step and the stop, and the fuel measured 2-4x over it, not 5x)
+        running = (m.running is not None or m.free is not None) and wall_since(w.pos_t) < 0.4
+        fast_ok = bool(w.in_dungeon and (w.resting or running) and not w.monsters)
+        model = 1.0 if not w.in_dungeon else (10.0 if fast_ok and w.resting else 5.0 if fast_ok else
+                                              0.2 if slow else 1.0)
+        set_fast_ok(fast_ok)
+        if model != model_factor():
+            set_time_factor(model)
+        # (logged on a new measurement, or a change of the model's factor at most every 5 s: runs
+        # start and stop every second or two)
+        f, r = time_factor(), measured_rate()
+        if r != self.rate_logged or (abs(f - self.factor_logged) > 0.3 * max(f, self.factor_logged)
+                                     and wall_since(self.factor_log_t) > 5):
+            self.factor_logged, self.rate_logged, self.factor_log_t = f, r, gnow()
+            self.log("time_factor", factor=round(f, 2), hp=hp[:2], model=model, measured=r and round(r, 2))
+        # fuel readings (a redraw: free, and the server resends the pack): every 2 s while the clock may
+        # run fast, every 10 s otherwise (to check the model's 1.0 in the log)
+        if self.w.in_dungeon and light_fuel(self.w.inven) is not None and \
+                wall_since(self.redraw_t) > (2 if fast_ok else 10):
+            self.w.need_redraw = True
         self.note_town_stairs()
         if self.wear_queue:
             self.wear_step()
@@ -4803,7 +4826,7 @@ class Pilot:
         # no store_leave), and a purchase after that reads store[-1] -- it
         # crashed the test server in mission 21 and would crash a live one
         shopping = w.store is not None or isinstance(self.goal, Shop) or now - getattr(w, "store_t", 0) < 3
-        if (w.need_redraw or self.redraw_level != w.level_t) and now - self.redraw_t > 2 and not shopping:
+        if (w.need_redraw or self.redraw_level != w.level_t) and wall_since(self.redraw_t) > 2 and not shopping:
             self.redraw_t, self.redraw_level = now, w.level_t
             w.need_redraw = False
             self.c.send("redraw")

@@ -1,0 +1,56 @@
+{
+ "id": "A3",
+ "tag": "A3-20261024-001021",
+ "depth_ft": 650,
+ "start": "2026-10-24 00:10:21",
+ "checks": {
+  "the goto held": {
+   "pass": false,
+   "detail": "[] (order: {\"ok\": true, \"goal\": \"goto 9,98\"})"
+  },
+  "no walking with it adjacent": {
+   "pass": true,
+   "detail": "0 moves while adjacent"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [255, 265]"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"goto 9,98\"}",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   255,
+   265
+  ],
+  "attention": [
+   [
+    4.9,
+    "tactic",
+    "goto: no known path; trying one through unexplored squares"
+   ],
+   [
+    7.5,
+    "interesting_item",
+    "Ivory Staff seen on this level (devices and jewellery sell for 50-700 once known): its square is und"
+   ],
+   [
+    18.3,
+    "goal_failed",
+    "goto 9,98: stuck"
+   ]
+  ],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-24 00:13:00",
+ "pass": false
+}

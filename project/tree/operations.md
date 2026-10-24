@@ -86,9 +86,18 @@ into the Temple (4), but everything it carried is dropped where it died.
   them) and sends `hitpoint_warn` 6 (`--hpwarn N`, 0-9): below N×10% HP the server slows our time
   bubble to a **constant 1/5** (`CONSTANT_TIME_FACTOR`, xtra2.c 5180-5207; the Advisor's rulebook memo
   2026-10-24 §3; not in proportion to HP). **Since 2026-10-23 the Pilot's timers run on a game clock**
-  (`world.gnow`: wall time at factor 1, 1/5 inside the bubble; logs and displayed times stay wall-clock), and
-  `pilot.py --hpwarn N` (default 0) turns the bubble on: `PILOT_ARGS="--hpwarn 5" tools/pilot/restart.sh Dive04`.
-  The decision log records each `time_factor` change. Both in `c-init.c` (commit 6274e8b).
+  (`world.gnow`; logs and displayed times stay wall-clock), and `pilot.py --hpwarn N` (default 0) turns the
+  bubble on: `PILOT_ARGS="--hpwarn 5" tools/pilot/restart.sh Dive04`. Both in `c-init.c` (commit 6274e8b).
+- **The game clock is measured, with no server change** (works on live servers): a worn light loses one
+  turn of fuel per game tick of our bubble (dungeon.c "Burn some fuel", scaled by our time factor), the
+  fuel shows in its name, and a redraw (free: no game time; never in a store) makes the server resend it.
+  At factor 1 a tick is ~0.625 s (1.6 ticks/s in m24's pack log). The server speeds us up (~5x running,
+  ~10x resting) only with nothing in view, so the Pilot uses the fuel rate only then (asking for a redraw
+  every 2 s; every 10 s otherwise, logged as `measured` in the `time_factor` records), and the model
+  elsewhere: 1.0, or 1/5 in the HP bubble. With no burning light worn it's the model alone. Timers that wait
+  on the network (a step showing up, a read confirmed, a store reply, "busy" windows) need the time on
+  both clocks (`waited`, `ghold`): at 10x, 1.5 game seconds is 0.15 s, shorter than a round trip.
+  Live D6: the factor while exploring averages 2.2-3.7 (runs at 5x between stops).
 - The map is 198x66 in absolute coordinates; closed house doors are drawn as `0`. `--visuals`
   gives every monster race a unique glyph (needs option `avoid_other`).
 - The depth indicator is **one signed byte**: wilderness squares beyond index -127 wrap to

@@ -224,7 +224,7 @@ def ability_proofs():
     """'You are unaffected!' proves rBlind after a blinding spell, rNexus after TELE_LEVEL, Free Action after a
     paralysing touch; the sustain and hold-life messages prove themselves."""
     p = pilot()
-    t = time.time()
+    t = P.gnow()
     p.w.messages.extend([(t, "The Dark elven priest casts a spell, burning your eyes!"), (t + .1, "You are unaffected!"),
                          (t + 1, "The Gnome mage gestures at your feet."), (t + 1.1, "You are unaffected!"),
                          (t + 2, "The Ghoul touches you."), (t + 2.1, "You are unaffected!"),
@@ -246,7 +246,7 @@ def unique_drop_fetched():
     w.last_hit_t = 0
     p.goal, p.policy_t, p.busy_until, p.pending_use = None, 0, 0, None
     p.skipped_items = set()
-    p.unique_drop = (w.level_t, (20, 20), time.time())
+    p.unique_drop = (w.level_t, (20, 20), P.gnow())
     class M:
         active = False
         def go(self, *a, **k): return True
@@ -254,8 +254,8 @@ def unique_drop_fetched():
     p.mover = M()
     got = []
     p.set_goal = lambda g: got.append(g)
-    acted = p.policy_tick(time.time())
-    again = p.policy_tick(time.time() + 4)
+    acted = p.policy_tick(P.gnow())
+    again = p.policy_tick(P.gnow() + 4)
     names = [g.describe() for g in got]
     return acted and names[:1] == ["goto 21,22"] and len(names) == 1, f"goals {names}, second tick acted={again}"
 
@@ -287,7 +287,7 @@ def loot_band_stops_looting():
         p.orders["loot_radius"] = 10
         p.skipped_items = set()
         p.mover = _Mover()
-        p.band_warned, p.band_warned_t = ((p.w.level_t, 6), time.time()) if band else ((None, 0), 0.0)
+        p.band_warned, p.band_warned_t = ((p.w.level_t, 6), P.gnow()) if band else ((None, 0), 0.0)
         state = {}
         return p.loot_step(state), p.mover.went
     with_band, without = run(True), run(False)
@@ -314,6 +314,45 @@ def a5_unseen_caster_news_above_80():
         return [type(g).__name__ for g in goals], [w for w, _ in p.notes]
     full, hurt = run(265), run(190)
     return full == ([], ["unseen_attacker"]) and hurt[0] == ["Flee"], f"full HP: {full}; 72%: {hurt}"
+
+
+@case
+def game_clock_from_fuel():
+    """The time bubble's clock (world.py): resting with nothing in view, fuel falling 16 ticks/s (10x)
+    sets the factor to ~10; a monster in view (fast_ok off) puts it back to the model's 1.0 at once; the
+    HP bubble's model 0.2 applies when no speed-up can; a refuel isn't read as time; `waited` needs the
+    wall time too."""
+    import world as Wd
+    out = {}
+    try:
+        Wd.set_time_factor(1.0)
+        Wd.set_fast_ok(True)
+        t0 = time.time()
+        Wd.fuel_reading(5000, t0)                      # (the first value: when it was sent is unknown)
+        for i in range(1, 5):
+            Wd.fuel_reading(5000 - 16 * i, t0 + i)
+        out["resting"] = round(Wd.time_factor(), 1)
+        Wd.fuel_reading(7000, t0 + 5)                  # refuelled: no reading
+        out["after_refuel"] = round(Wd.time_factor(), 1)
+        Wd.set_fast_ok(False)
+        out["monster_in_view"] = Wd.time_factor()
+        Wd.set_time_factor(0.2)
+        out["bubble"] = Wd.time_factor()
+        Wd.set_time_factor(1.0)
+        Wd.set_fast_ok(True)
+        Wd._set_factor(10.0, time.time())
+        g = Wd.gnow()
+        time.sleep(0.02)
+        out["waited_wall_floor"] = Wd.waited(g, 0.05)  # 0.2 game s, 0.02 wall s: not yet
+        time.sleep(0.05)
+        out["waited_after"] = Wd.waited(g, 0.05)
+    finally:
+        Wd.set_fast_ok(False)
+        Wd.set_time_factor(1.0)
+        Wd.fuel_reading(None)
+    ok = (9.5 <= out["resting"] <= 10.5 and out["after_refuel"] == out["resting"] and out["monster_in_view"] == 1.0
+          and out["bubble"] == 0.2 and out["waited_wall_floor"] is False and out["waited_after"] is True)
+    return ok, f"{out}"
 
 
 @case
@@ -413,12 +452,12 @@ def f1_stale_order():
     """F1: a position order answering a report from a level since left is held; a hunt of a monster out of view
     with a report over 5 s old is held; a fresh one passes."""
     p = pilot()
-    p.last_report = (7, time.time() - 17)
+    p.last_report = (7, P.gnow() - 17)
     p.report_state = {"level_t": 0.5, "hp": 1.0}
     a = p.stale_order("goal", ["goto", "30,40"])
     p.report_state = {"level_t": p.w.level_t, "hp": 1.0}
     b = p.stale_order("goal", ["hunt", "Brodda"])
-    p.last_report = (8, time.time())
+    p.last_report = (8, P.gnow())
     c = p.stale_order("goal", ["hunt", "Brodda"])
     return bool(a) and "left" in a and bool(b) and c is None, f"{a!r} | {b!r} | {c!r}"
 

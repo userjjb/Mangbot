@@ -14,37 +14,167 @@ from glyphs import Glyphs
 
 
 # --- the game clock (the time bubble: the user, 2026-10-23, after restructure step 2) -------------
-# Below hitpoint_warn x 10% HP the server runs our time bubble at a constant 1/5 (xtra2.c
-# base_time_factor, CONSTANT_TIME_FACTOR). Every Pilot timer (holds, cooldowns, waits for effects,
-# damage per second, stuck detection) measures game time on this clock, so it stays right inside
-# the bubble; logs and displayed clock times stay on the wall clock (wall_of). With --hpwarn 0
-# (no bubble) it equals the wall clock.
-_CLOCK = {"wall": time.time(), "game": time.time(), "factor": 1.0}
+# The server runs each player's time at a factor (xtra2.c base_time_factor): 1/5 below
+# hitpoint_warn x 10% HP, up to ~10x while resting or running with nothing in view. Every Pilot timer
+# that means game time (holds for effects, cooldowns, damage per second, how long a monster has been
+# out of view) runs on this clock; timers that mean the network (an ack, a step showing up, a window
+# for a reply) compare wall time, `wall_since(t)`. Logs and displayed clock times stay on the wall
+# clock (`wall_of`).
+#
+# The clock is measured where it can be, with no server change: a worn light (not an artifact)
+# loses one turn of fuel per game tick of our bubble (dungeon.c process_player_end, "Burn some
+# fuel": every `time` game turns, scaled by our time factor). The fuel shows in its name ("with
+# 4514 turns of light"), which the server resends at every 100th turn and on a redraw (free: no
+# game time; the Pilot asks for one every few seconds in the dungeon). At factor 1 a tick takes
+# TICK_S seconds (m24's pack log: 1.6 ticks/s).
+# The server speeds our time up only while we rest or run with nothing in view, and slows it to a
+# constant 1/5 in the HP bubble. So the model (`set_time_factor`, from our HP) decides everywhere
+# else, at once, and the fuel measures the speed-up only while it can apply (`set_fast_ok`): a rate
+# averaged over seconds would otherwise carry a run's 5x into the fight that ended it.
+TICK_S = 0.625
+STALE_S = 12.0                  # wall seconds without a fuel change before the model takes over again
+_CLOCK = {"wall": time.time(), "game": time.time(), "factor": 1.0, "model": 1.0, "measured": 0.0,
+          "fast_ok": False, "rate": None}
+_HIST = collections.deque(maxlen=4000)      # (wall, game, factor from there on)
+_HIST.append((_CLOCK["wall"], _CLOCK["game"], 1.0))
+_FUEL = collections.deque(maxlen=16)        # (wall, fuel): the moments the light's fuel changed
+_LOCK = threading.Lock()
+
+
+def _advance(now):
+    _CLOCK["game"] += (now - _CLOCK["wall"]) * _CLOCK["factor"]
+    _CLOCK["wall"] = now
+
+
+def _set_factor(f, now):
+    _advance(now)
+    if f != _CLOCK["factor"]:
+        _CLOCK["factor"] = f
+        _HIST.append((now, _CLOCK["game"], f))
 
 
 def gnow():
-    now = time.time()
-    _CLOCK["game"] += (now - _CLOCK["wall"]) * _CLOCK["factor"]
-    _CLOCK["wall"] = now
-    return _CLOCK["game"]
+    with _LOCK:
+        now = time.time()
+        if _CLOCK["measured"] and now - _CLOCK["measured"] > STALE_S:
+            _CLOCK["measured"] = 0.0
+            _set_factor(_CLOCK["model"], now)
+        _advance(now)
+        return _CLOCK["game"]
 
 
 def set_time_factor(f):
-    gnow()
-    _CLOCK["factor"] = f
+    """The model's factor (the HP bubble, from our HP each tick). It applies at once."""
+    with _LOCK:
+        _CLOCK["model"] = f
+        if not (_CLOCK["fast_ok"] and _CLOCK["measured"]):
+            _set_factor(f, time.time())
+
+
+def set_fast_ok(ok):
+    """Whether the server may be speeding our time up (resting or running, nothing in view, not in the
+    HP bubble). A change starts a new measurement and goes back to the model's factor at once."""
+    with _LOCK:
+        if ok != _CLOCK["fast_ok"]:
+            now = time.time()
+            _CLOCK["fast_ok"] = ok
+            _CLOCK["measured"] = 0.0
+            _FUEL.clear()               # (its next change starts the count)
+            _set_factor(_CLOCK["model"], now)
+
+
+def measured_rate():
+    """The last fuel-measured rate (game seconds per wall second), whatever the mode: for the log."""
+    return _CLOCK["rate"]
 
 
 def time_factor():
     return _CLOCK["factor"]
 
 
+def model_factor():
+    return _CLOCK["model"]
+
+
+def fuel_reading(fuel, now=None):
+    """The worn light's fuel as the client shows it (None: no light that burns). Only a change is a
+    measurement: the client's copy changes when the server sends it."""
+    with _LOCK:
+        now = now or time.time()
+        if fuel is None:
+            _FUEL.clear()
+            _CLOCK["fuel_seen"] = None
+            return
+        if fuel == _CLOCK.get("fuel_seen"):
+            return
+        first = _CLOCK.get("fuel_seen") is None
+        _CLOCK["fuel_seen"] = fuel
+        if first:
+            return                      # (when it was really sent is unknown)
+        if _FUEL and (fuel > _FUEL[-1][1] or _FUEL[-1][1] - fuel > 30 * (now - _FUEL[-1][0]) + 3):
+            _FUEL.clear()               # refuelled, another light, or a gap we can't read
+        _FUEL.append((now, fuel))
+        # the rate over the changes of the last ~12 s (one interval is +-1 tick)
+        pts = [q for q in _FUEL if now - q[0] <= STALE_S]
+        if len(pts) < 2 or pts[-1][0] - pts[0][0] < 1.5:
+            return
+        (w0, f0), (w1, f1) = pts[0], pts[-1]
+        rate = (f0 - f1) * TICK_S / (w1 - w0)
+        _CLOCK["rate"] = rate
+        if _CLOCK["fast_ok"]:
+            _set_factor(min(20.0, max(1.0, rate)), now)      # (a speed-up, never a slow-down)
+            _CLOCK["measured"] = now
+
+
+def wall_at(g):
+    """The wall time at which the game clock read g (from the clock's history)."""
+    with _LOCK:
+        _advance(time.time())
+        for w, g0, f in reversed(_HIST):
+            if g0 <= g:
+                return w + (g - g0) / f
+        w, g0, f = _HIST[0]
+        return w - (g0 - g)
+
+
+def wall_since(g):
+    """Wall seconds since the game clock read g: for timers that mean the network, not the game."""
+    return time.time() - wall_at(g)
+
+
+def waited(t, s):
+    """At least s seconds since game time t on both clocks: for a wait on the server (a step, a run, a
+    read showing up), which needs its game turns and its round trip."""
+    return gnow() - t > s and wall_since(t) > s
+
+
+def ghold(s):
+    """A game-clock span lasting at least s wall seconds at the current factor (for deadlines on the
+    network: `busy_until = gnow() + ghold(0.4)`)."""
+    return s * max(1.0, _CLOCK["factor"])
+
+
 def wall_of(g):
-    """A game-clock time as wall time (for display), at the current offset."""
-    return g + (time.time() - gnow())
+    """A game-clock time as wall time (for display)."""
+    return wall_at(g)
 
 
 def _lt(g):
     return time.localtime(wall_of(g))
+
+
+LIGHT_FUEL = re.compile(r"\(with (\d+) turns of light\)")
+
+
+def light_fuel(inven):
+    """The fuel of the worn light, or None (no light worn, or one that doesn't burn: artifacts,
+    Dwarven lanterns don't show turns)."""
+    for it in inven or ():
+        if it.get("equip") and it.get("tval") == 39:
+            m = LIGHT_FUEL.search(it.get("name", ""))
+            return int(m.group(1)) if m else None
+    return None
+
 
 FT_PER_LEVEL = 50
 
@@ -280,9 +410,10 @@ class World:
 
     def refresh(self, map_every=0.5, status_every=0.3, inven_every=10.0):
         now = gnow()
-        if self.rows is None or self.pos != self.map_pos or now - self.map_t > map_every:
+        # (polling our own client: wall time -- on the game clock the HP bubble polled every 2.5 s)
+        if self.rows is None or self.pos != self.map_pos or wall_since(self.map_t) > map_every:
             self.refresh_map()
-        if now - self.status_t > status_every:
+        if wall_since(self.status_t) > status_every:
             st = self.c.status()
             self.ind = st["ind"]
             if "hp" in self.ind:
@@ -295,9 +426,10 @@ class World:
                 self.depth = self.ind.get("depth", [0])[0]
             if self.in_dungeon is None and self.depth is not None:
                 self.in_dungeon = self.depth > 0
-        if self.inven_dirty or now - self.inven_t > inven_every:
+        if self.inven_dirty or wall_since(self.inven_t) > inven_every:
             equip_before = [i["name"] for i in self.inven if i["equip"]] if self.inven else None
             self.inven = self.c.inven()
+            fuel_reading(light_fuel(self.inven))
             self.inven_t = now
             self.inven_dirty = False
             if equip_before != [i["name"] for i in self.inven if i["equip"]]:
@@ -427,9 +559,10 @@ class World:
     def items(self, *, tval=None, name=None, equip=False):
         # A fresh copy for every decision (a local query to our own client,
         # cheap): a cached pack let a stale letter read the wrong item
-        if gnow() - self.inven_t > 0.25 and getattr(self, "c", None) is not None:
+        if wall_since(self.inven_t) > 0.25 and getattr(self, "c", None) is not None:
             try:
                 self.inven = self.c.inven()
+                fuel_reading(light_fuel(self.inven))
                 self.inven_t = gnow()
                 self.inven_dirty = False
             except Exception:

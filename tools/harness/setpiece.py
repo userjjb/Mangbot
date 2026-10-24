@@ -525,7 +525,7 @@ def a3(run):
     far = floor_near(v, me, 12) or floor_near(v, me, 10) or (me[0], me[1] + 15)   # (a goto may path through unknown)
     out = {}
     race = "Sabre-tooth tiger"
-    run.place(race, 1, after=lambda: (time.sleep(1.0),
+    run.place(race, 1, after=lambda: (time.sleep(0.3),
                                                   out.update(reply=ctl("goal", "goto", f"{far[0]},{far[1]}", role="architect"))))
     reply = out.get("reply", "")
     run.res["order_reply"] = reply

@@ -283,7 +283,17 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    the rule fled down known stairs at any HP above think_hp; now news only above 80% unless it may be a paralysing
    gaze (unit test; 22 unit tests). **A4** (Wormtongue) not stageable while he lives on another level. Still open:
    L2/L3 (need forging: asked), D4 inner room (paintable), B5, A10, A11, D7 (level import?). **Next:** step 5 missions,
-   once the user answers the three questions (`--hpwarn 5`, `flee_hp` 0.4 in vetted solo hunts, more forging). (`plan trip LO-HI until COND then recall`), 2.4 order
+   once the user answers the three questions (`--hpwarn 5`, `flee_hp` 0.4 in vetted solo hunts, more forging).
+   **The game clock, measured (session 4, late; the user: it must work on live servers, no server change):** the
+   worn light's fuel is a per-player game-tick counter (one turn of fuel per tick of our bubble), resent by a free
+   redraw. `world.py`: the model is now the server's whole rule (town 1; nothing in sight: resting 10x, running
+   5x while actually moving; HP bubble 1/5), the fuel rate overrides it while resting/running (other servers'
+   constants, other players' bubbles) and checks it otherwise (normal play measures 0.85-1.0: TICK_S 0.625 s is
+   right). Network waits now need the time on both clocks (`waited`, `ghold`): busy windows, read/quaff
+   confirmation, store replies, stairs pending, the mover's step/run timeouts, world's polling of our own client
+   (in the HP bubble it polled the map only every 2.5 s: fixed). Unit `game_clock_from_fuel`; live D6, A3, A9,
+   B3 PASS after it. Not yet seen live: a long rest measured at ~10x (rests so far were 2-3 s, too short to
+   measure; the model covers them). (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
    toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23. Then the time bubble (timers to game turns; decided below).
 3. **Rulebook:** the Advisor's **release 2** is in `Advisor/data/rulebook/`, synced into `github/tools/rulebook/`

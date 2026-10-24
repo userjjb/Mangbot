@@ -80,3 +80,14 @@
 - 2026-10-23 20:19:09 **A5s** PASS (no level change while HP > 80%, reported) `A5s-20261023-201909.json`
 - 2026-10-23 20:24:00 **A7f** PASS (fear answered within 5 s, lowest HP >= 50%) `A7f-20261023-202400.json`
 - 2026-10-23 20:27:46 **A7f** PASS (fear answered within 5 s, lowest HP >= 50%) `A7f-20261023-202746.json`
+- 2026-10-23 23:49:06 **D6** FAIL (runs >= 3 tiles/s (best 5-s window) FAIL) `D6-20261023-234906.json`
+- 2026-10-23 23:53:01 **D6** PASS (runs >= 3 tiles/s (best 5-s window)) `D6-20261023-235301.json`
+- 2026-10-23 23:55:41 **A9** PASS (Door/Stair Location within 5 s of arriving, no second Word of Recall while one is pending) `A9-20261023-235541.json`
+- 2026-10-23 23:58:42 **A3** PASS (the goto held, no walking with it adjacent, lowest HP >= 40%) `A3-20261023-235842.json`
+- 2026-10-24 00:01:09 **A1** FAIL () `A1-20261024-000109.json`
+- 2026-10-24 00:03:08 **B3** PASS (Brigand slain, nothing stolen) `B3-20261024-000308.json`
+- 2026-10-24 00:07:25 **D6** PASS (runs >= 3 tiles/s (best 5-s window)) `D6-20261024-000725.json`
+- 2026-10-24 00:10:21 **A3** FAIL (the goto held FAIL, no walking with it adjacent, lowest HP >= 40%) `A3-20261024-001021.json`
+- 2026-10-24 00:13:00 **A9** PASS (Door/Stair Location within 5 s of arriving, no second Word of Recall while one is pending) `A9-20261024-001300.json`
+- 2026-10-24 00:17:08 **D6** PASS (runs >= 3 tiles/s (best 5-s window)) `D6-20261024-001708.json`
+- 2026-10-24 00:19:38 **A3** PASS (the goto held, no walking with it adjacent, lowest HP >= 40%) `A3-20261024-001938.json`

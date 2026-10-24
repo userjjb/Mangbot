@@ -1,0 +1,75 @@
+{
+ "id": "A9",
+ "tag": "A9-20261024-001300",
+ "depth_ft": 300,
+ "start": "2026-10-24 00:13:00",
+ "checks": {
+  "Door/Stair Location within 5 s of arriving": {
+   "pass": true,
+   "detail": "[(3.0, 'custom z item=12', 'trip: recall arrival: Door/Stair Location')]"
+  },
+  "no second Word of Recall while one is pending": {
+   "pass": true,
+   "detail": "0 reads"
+  }
+ },
+ "notes": [
+  "no floor square 8 from Dive04 at (40, 68)",
+  "no floor square 9 from Dive04 at (40, 68)"
+ ],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   265,
+   265
+  ],
+  "attention": [
+   [
+    3.0,
+    "goal_done",
+    "recall to 300 ft: arrived at 300 ft"
+   ],
+   [
+    48.7,
+    "tactic",
+    "Green jelly (lvl 5, never moves) blocks the way: killing it"
+   ],
+   [
+    52.7,
+    "tactic",
+    "hungry and no food: read a Scroll of Satisfy Hunger"
+   ]
+  ],
+  "acts": [
+   [
+    3.0,
+    "custom z item=12",
+    "trip: recall arrival: Door/Stair Location"
+   ],
+   [
+    26.3,
+    "custom ,",
+    "pick up: a Scroll of Magic Mapping."
+   ],
+   [
+    51.3,
+    "custom ,",
+    "pick up: a Wand of Slow Monster."
+   ],
+   [
+    52.7,
+    "custom r item=10",
+    "hungry (2), no food: read Satisfy Hunger"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-24 00:16:04",
+ "pass": true
+}

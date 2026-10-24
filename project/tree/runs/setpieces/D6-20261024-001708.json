@@ -1,0 +1,17 @@
+{
+ "id": "D6",
+ "tag": "D6-20261024-001708",
+ "depth_ft": 350,
+ "start": "2026-10-24 00:17:08",
+ "checks": {
+  "runs >= 3 tiles/s (best 5-s window)": {
+   "pass": true,
+   "detail": "best 4.8 tiles/s; overall 2.8 (106 in 38 s)"
+  }
+ },
+ "notes": [
+  "106 tiles in 38 s overall (2.8/s); best 5 s 4.8/s"
+ ],
+ "end": "2026-10-24 00:19:38",
+ "pass": true
+}

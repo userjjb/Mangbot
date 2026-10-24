@@ -1,0 +1,43 @@
+{
+ "id": "B3",
+ "tag": "B3-20261024-000308",
+ "depth_ft": 550,
+ "start": "2026-10-24 00:03:08",
+ "checks": {
+  "Brigand slain": {
+   "pass": true,
+   "detail": ""
+  },
+  "nothing stolen": {
+   "pass": true,
+   "detail": "[]"
+  }
+ },
+ "notes": [
+  "messages: ['You hit the Brigand.', 'You hit the Brigand.', 'You miss the Brigand.', 'The Brigand flees in terror!', 'You hit the Brigand.', 'You have slain the Brigand.']"
+ ],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   265,
+   265
+  ],
+  "attention": [
+   [
+    8.1,
+    "interesting_item",
+    "Nickel-Plated Wand seen on this level (devices and jewellery sell for 50-700 once known): its square"
+   ]
+  ],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-24 00:05:50",
+ "pass": true
+}

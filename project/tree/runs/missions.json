@@ -891,5 +891,115 @@
   "effort": null,
   "report": "compact",
   "notes": "set-piece A7f"
+ },
+ {
+  "label": "sp-D6-20261023-234906",
+  "nick": "dive04",
+  "start": "2026-10-23 23:49",
+  "end": "2026-10-23 23:52",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece D6"
+ },
+ {
+  "label": "sp-D6-20261023-235301",
+  "nick": "dive04",
+  "start": "2026-10-23 23:53",
+  "end": "2026-10-23 23:55",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece D6"
+ },
+ {
+  "label": "sp-A9-20261023-235541",
+  "nick": "dive04",
+  "start": "2026-10-23 23:56",
+  "end": "2026-10-23 23:59",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A9"
+ },
+ {
+  "label": "sp-A3-20261023-235842",
+  "nick": "dive04",
+  "start": "2026-10-23 23:59",
+  "end": "2026-10-24 00:01",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A3"
+ },
+ {
+  "label": "sp-A1-20261024-000109",
+  "nick": "dive04",
+  "start": "2026-10-24 00:01",
+  "end": "2026-10-24 00:02",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A1"
+ },
+ {
+  "label": "sp-B3-20261024-000308",
+  "nick": "dive04",
+  "start": "2026-10-24 00:03",
+  "end": "2026-10-24 00:06",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece B3"
+ },
+ {
+  "label": "sp-D6-20261024-000725",
+  "nick": "dive04",
+  "start": "2026-10-24 00:07",
+  "end": "2026-10-24 00:10",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece D6"
+ },
+ {
+  "label": "sp-A3-20261024-001021",
+  "nick": "dive04",
+  "start": "2026-10-24 00:10",
+  "end": "2026-10-24 00:13",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A3"
+ },
+ {
+  "label": "sp-A9-20261024-001300",
+  "nick": "dive04",
+  "start": "2026-10-24 00:13",
+  "end": "2026-10-24 00:16",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A9"
+ },
+ {
+  "label": "sp-D6-20261024-001708",
+  "nick": "dive04",
+  "start": "2026-10-24 00:17",
+  "end": "2026-10-24 00:20",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece D6"
+ },
+ {
+  "label": "sp-A3-20261024-001938",
+  "nick": "dive04",
+  "start": "2026-10-24 00:20",
+  "end": "2026-10-24 00:22",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A3"
  }
 ]

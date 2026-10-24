@@ -9,7 +9,7 @@ bump); traps and monsters are avoided.
 import heapq
 import time
 
-from world import gnow
+from world import gnow, waited
 
 DIRS = {(-1, -1): 7, (-1, 0): 8, (-1, 1): 9, (0, -1): 4, (0, 1): 6, (1, -1): 1, (1, 0): 2, (1, 1): 3}
 WALLS = set("#%*:") | set("12345678") | {"0", " "}   # ':' rubble ("blocking your way")
@@ -164,7 +164,7 @@ class Mover:
             self.last_progress = gnow()
         started = w.pos != self.run_start_pos
         limit = 0.5 if self.stop_sent else (0.8 if started else self.first_step_window())
-        if gnow() - self.last_progress > limit:
+        if waited(self.last_progress, limit):
             # The run is over (we stopped it, or the server's run logic did)
             self.running = None
             self.sent = self.done
@@ -291,7 +291,7 @@ class Mover:
             self.c.send("walk 5")          # ran onto the goal: stop there
             self.stop_sent = True
         limit = 0.5 if w.pos != self.free[1] else self.first_step_window()
-        if gnow() - self.last_progress > limit:
+        if waited(self.last_progress, limit):
             moved = w.pos != self.free[1]
             if self.pf_target is not None and not moved:
                 self.no_pf_at.add(self.free[1])
@@ -514,7 +514,7 @@ class Mover:
                 self.stop()
                 return "stuck"
             return "moving"
-        if gnow() - self.last_progress > self.STEP_TIMEOUT:
+        if waited(self.last_progress, self.STEP_TIMEOUT):
             # Something blocks the next step (a monster, a door that didn't
             # open, an unseen wall): avoid that tile and replan
             self._clear()
