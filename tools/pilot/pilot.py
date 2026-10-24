@@ -1732,7 +1732,7 @@ class TripPlan:
                 "hp": lambda: round(100 * w.hp_frac), "minutes": lambda: (gnow() - self.t0) / 60,
                 "clvl": lambda: w.clvl, "gold": lambda: w.ind.get("gold", [0])[0],
                 "free": lambda: 23 - len(w.items()), "levels": lambda: self.levels,
-                "time": lambda: time.strftime("%H:%M")}[var]()
+                "time": lambda: time.strftime("%H:%M:%S")}[var]()
 
     def holds(self, p):
         """The first condition that holds, or None. Two always apply: no Word of Recall
@@ -1746,7 +1746,8 @@ class TripPlan:
             if var == "wor" and not self.went_down:
                 continue             # (the trip's own Word of Recall isn't read yet)
             v = self.value(p, var)
-            x = val if var == "time" else int(val)
+            # (time to the second: "time>02:41" holds from 02:41:01 -- as minutes it waited until 02:42, m25)
+            x = val + ":00" if var == "time" else int(val)
             if (op == "<" and v < x) or (op == ">" and v > x) or (op == "<=" and v <= x) or \
                     (op == ">=" and v >= x) or (op == "=" and v == x):
                 return term
@@ -3337,6 +3338,10 @@ class Pilot:
             de = (w.ind.get("exp") or [0])[0] - old[1]
             dg = w.ind.get("gold", [0])[0] - old[2]
             bits.append(f"XP {de:+d}, gold {dg:+d} in the last {(now - old[0]) / 60:.0f} min")
+        mb = getattr(self, "mission_base", None)
+        if mb and getattr(self, "mission_label", None):
+            bits.append(f"this mission: XP {(w.ind.get('exp') or [0])[0] - mb[1]:+d}, gold "
+                        f"{w.ind.get('gold', [0])[0] - mb[2]:+d} in {(now - mb[0]) / 60:.0f} min")
         if bits:
             out.append("Rates: " + "; ".join(bits))
         if w.in_dungeon:
@@ -3599,6 +3604,18 @@ class Pilot:
         """An item's worth to the pack, for making room: kit consumables, kept items,
         possible ability sources and the light count as priceless."""
         n = it["name"]
+        # A spare light beyond the first, and food beyond 5 meals (Satisfy Hunger counts), are worth what they
+        # sell for: m25 kept 2 spare lanterns and a ration while it destroyed a Rod of Trap Location and a
+        # Staff of Object Location to make room
+        if it["tval"] == TV_LITE:
+            spares = sorted((i for i in self.w.items() if i["tval"] == TV_LITE), key=lambda i: -self.iv(i["name"]).value)
+            if spares and spares[0]["item"] != it["item"]:
+                return self.iv(n).value * self.pay_cut(TV_LITE)
+        if it["tval"] == TV_FOOD and "Mushroom" not in n:
+            meals = sum(i["number"] for i in self.w.items() if i["tval"] == TV_FOOD and "Mushroom" not in i["name"]) + \
+                sum(i["number"] for i in self.w.items() if "Satisfy Hunger" in i["name"])
+            if meals - it["number"] >= 5:
+                return self.iv(n).value * self.pay_cut(TV_FOOD) * it["number"]
         if it["tval"] in (TV_FOOD, TV_FLASK, TV_LITE) or any(k in n for k in self.KIT_KINDS) or self.is_kept(n) or \
                 re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", n)).lower() in self.ability_sources:
             return float("inf")
@@ -3659,8 +3676,13 @@ class Pilot:
             return False                         # (picked up on the next look, once there's room)
         if (w.level_t, w.pos) not in self.skipped_items:
             self.skipped_items.add((w.level_t, w.pos))
-            self.notify("tactic", f"left {name} (~{worth:.0f}): pack full and nothing cheaper to make room with",
-                        news=True)
+            # (once per item and level: m25 said "left a Rapier" 5 times and "left a Potion of Heroism" 7)
+            if not hasattr(self, "left_news"):
+                self.left_news = set()
+            if (w.level_t, name) not in self.left_news:
+                self.left_news.add((w.level_t, name))
+                self.notify("tactic", f"left {name} (~{worth:.0f}): pack full and nothing cheaper to make room with",
+                            news=True)
         return False
 
     ARMOUR_SLOTS = {30: "boots", 31: "gloves", 32: "helm", 33: "helm", 34: "shield", 35: "cloak", 36: "body",
@@ -4125,8 +4147,12 @@ class Pilot:
         # 15: blind + confused 9 s with nothing in view, HP 160 -> 86, no cure)
         # (unseen means unseen: the set-piece C3 spent 4 CSW and 2 CCW in 18 s curing confusion from Kobold
         # shamans at 84-93% HP, because any hits counted here; the user: spend only when it matters)
-        hit_unseen = not mobile_near and now - w.last_hit_t <= 3 and (w.damage_rate(3.0) > 0.01 * w.hp[1] or
-                                                                      w.hp_frac < self.orders["think_hp"])
+        # (and blind, everything is unseen: m25 drank 2 CSW at 100% HP against a Novice mage's magic missiles,
+        # ~1% of HP a second. Only when it matters: low HP, hurt and still being hit, or heavy damage)
+        rate = w.damage_rate(3.0)
+        hit_unseen = not mobile_near and now - w.last_hit_t <= 3 and (
+            w.hp_frac < self.orders["think_hp"] or (w.hp_frac < 0.8 and rate > 0.01 * w.hp[1]) or
+            rate > 0.04 * w.hp[1])
         if (mobile_near and threat or hit_unseen) and w.flag("confused"):
             want.append("confused")
         if (mobile_near and threat or hit_unseen) and w.flag("blind"):
@@ -4362,8 +4388,14 @@ class Pilot:
             return True
         # {good} weapons/armour whose pluses aren't known yet (mission 16: a Trident
         # {good} sold for 42 was (+3,+7), resold at 1848; Identify costs ~83)
-        if "good" in tags and not re.search(r"\([+-]\d+,[+-]\d+\)|\[\d+,[+-]\d+\]", name):
+        known = re.search(r"\([+-]\d+,[+-]\d+\)|\[\d+,[+-]\d+\]", name)
+        if "good" in tags and not known:
             return True
+        # identified, with no ego or artifact name: an ordinary item, whoever dropped it (m25: Mughash's
+        # Broad Sword (+4,+6) and Battle Axe (+1,+5) were refused as "probably special" after Identify)
+        bare = re.sub(r"\s*\{[^}]*\}", "", name)
+        if known and " of " not in bare and "'" not in bare and not re.search(r"\b(the|of)\b [A-Z]", bare):
+            return False
         if not self.unique_names:
             self.unique_names = {r.name.lower() for r in self.w.g.races.values() if "UNIQUE" in r.flags}
         return any(u in tags for u in self.unique_names)
@@ -5148,6 +5180,8 @@ class Pilot:
             stamp = time.strftime("%Y-%m-%d %H:%M")
             if args[0] == "start":
                 self.mission_label = label
+                # (the report's mission total: m25's Navigator had only the 10-minute rates)
+                self.mission_base = (gnow(), (self.w.ind.get("exp") or [0])[0], self.w.ind.get("gold", [0])[0])
                 self.log("mission_start", label=label, **kv)
                 ms = [m for m in ms if m.get("label") != label] + [
                     {"label": label, "nick": nick, "start": stamp, "end": None, "navigator": kv.get("navigator"),
@@ -5361,6 +5395,13 @@ class Pilot:
             forced_cmd = args[0].startswith("!") and len(args[0]) > 1
             if forced_cmd:
                 args = [args[0][1:]] + list(args[1:])
+            # a name of several words: `destroy Ration of Food` sent "of" as the count (m25: "You destroy no
+            # more Rations"); only a trailing number, `all` or `force` modifies
+            if c in ("destroy", "drop", "quaff", "eat", "fuel", "wear", "takeoff") and len(args) > 1:
+                args, tail = list(args), []
+                while len(args) > 1 and (args[-1].isdigit() or args[-1] in ("all", "force")):
+                    tail.insert(0, args.pop())
+                args = [" ".join(args)] + tail
             if c == "fuel" and not any(i["tval"] == TV_LITE for i in self.w.items(equip=True)):
                 # The Pilot takes the lantern off when idle in town ("You are not
                 # wielding a light", mission 17): put it on first, then find the
@@ -5651,7 +5692,8 @@ class Pilot:
     # devices never sold by the kit (the Advisor's rulebook-r3 memo: escapes, travel, detection and
     # mapping, Perception, Stone to Mud, healing)
     USEFUL_DEVICES = ("Teleport", "Recall", "Deep Descent", "Detect", "Location", "Mapping", "Enlightenment",
-                      "Perception", "Stone to Mud", "Cure", "Curing", "Healing")
+                      "Perception", "Stone to Mud", "Cure Serious", "Cure Critical", "Curing", "Healing")
+    # (not Cure Light Wounds: ~15-20 HP a charge at 270 HP, a turn each, a pack slot -- the user, m25)
     STAT_FULL = {"STR": "Strength", "DEX": "Dexterity", "CON": "Constitution"}
 
     def note_store(self):

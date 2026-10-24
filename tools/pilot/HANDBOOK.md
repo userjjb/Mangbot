@@ -78,8 +78,11 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 
 ## The judgement calls (yours)
 
-- **Going down.** With only 2 Words of Recall and little gold, prefer `via=stairs`: one bad recall landing (m24: an
-  orc pit, no stairs known) uses both scrolls in minutes. Walking down to 300-450 ft takes a few minutes.
+- **Going down.** Walking down by the stairs takes **10-20 minutes to 450 ft** (m25: 22 minutes, with loops since
+  fixed), so in a mission of 45 minutes or less it eats most of the trip. **Prefer `via=recall` with 3 Words of
+  Recall** (one down, one home, one spare for a bad landing: m24's orc pit used two in minutes): buy the third in
+  town (~250). With only 2 and no gold for a third, walk down but set LO shallower (e.g. 350-550) so the trip earns
+  on the way. A level the server keeps (arriving on the same square each time) is explored, not stair-scummed.
 - **Depth** (the Advisor's m24 memo, from our missions m17-24): **work 500-650 ft** (58 XP a minute, against 8.5 at
   300-450 ft; HP lost per XP is flat from 400 to 1500 ft). Go to 700 ft only when stocked (3+ WoR, 5+ CCW, 10+
   Phase), stay above ~750 ft until Free Action is found (paralysers), and plan 300-450 ft trips only to rebuild gold

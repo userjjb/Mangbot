@@ -1,0 +1,154 @@
+{
+ "label": "m25",
+ "nav_model": "opus",
+ "effort": null,
+ "report": "compact",
+ "start": "2026-10-24 02:09",
+ "end": "2026-10-24 02:46",
+ "minutes": 37.0,
+ "notes": "step 5: first scored mission after the harness; 40 min; hpwarn 5",
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   22,
+   22
+  ],
+  "exp_gain": 338,
+  "gold": [
+   172,
+   1230
+  ],
+  "gold_change": 1058,
+  "max_depth_ft": 450
+ },
+ "B": {
+  "dungeon_min": 31.0,
+  "town_min": 5.4,
+  "exp_per_dmin": 10.9,
+  "levels_per_dhour": 0.37,
+  "gold_found": 819,
+  "gold_found_per_dmin": 26.4,
+  "time_budget_min": {
+   "travel_dive": 16.7,
+   "fighting": 6.5,
+   "exploring": 6.3,
+   "town_no_goal": 2.5,
+   "town_other": 1.5,
+   "town_idle_end": 1.3,
+   "escaping": 1.3,
+   "town_shopping": 0.2,
+   "resting": 0.2,
+   "no_goal_dungeon": 0.1,
+   "recall_wait": 0.1
+  },
+  "navigator_wait_pct": 7
+ },
+ "C": {
+  "lowest_hp": [
+   166,
+   265,
+   63,
+   "02:31:43"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 0,
+  "emergency_alerts": 0,
+  "phase": 0,
+  "wor_escape": 0,
+  "wor_travel": 1,
+  "stairs_flee": 10,
+  "teleport": 0,
+  "cures_quaffed": 2,
+  "escape_records": 47,
+  "recalls_landed": 1
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 470,
+  "loot_abandoned_est": 6167,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 0,
+  "total": 6637,
+  "sales": 8,
+  "sales_valued": 2,
+  "worst_sales": [],
+  "left_behind": [
+   "Copper Wand",
+   "Slime Mold",
+   "Wooden Torch (with 361 turns of light)",
+   "Rodent Skeleton",
+   "Slimy Mushroom",
+   "Small wooden chest",
+   "Scroll of Trap Detection",
+   "Scroll of Monster Confusion",
+   "Rhodonite Ring",
+   "Black Mushroom"
+  ],
+  "irreplaceable": [
+   "a Potion of Resist Cold"
+  ]
+ },
+ "E": {
+  "reports": 16,
+  "commands": 86,
+  "commands_per_min": 2.8,
+  "report_to_action_med_s": 10.3,
+  "report_to_action_p90_s": 31.0,
+  "reports_without_command_pct": 6,
+  "user_messages": 6,
+  "user_reply_med_s": 9.0,
+  "forced_overrides": 2,
+  "complaints": 3,
+  "report_chars": 102837,
+  "order_report_age_med_s": 5.4,
+  "order_report_age_p90_s": 22.7
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 75,
+  "perception_gaps": 1,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 845,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Kobold archer": 59,
+  "Kobold shaman": 39,
+  "Novice warrior": 33,
+  "Cave spider": 19,
+  "Novice mage": 14,
+  "Wild cat": 9,
+  "Copperhead snake": 7,
+  "Baby green dragon": 6
+ },
+ "alerts": {
+  "tactic": 125,
+  "danger_avoided": 20,
+  "goal_done": 6,
+  "user_message": 6,
+  "started": 5,
+  "parked": 4,
+  "lost": 4,
+  "found": 2,
+  "plan_done": 1
+ },
+ "plan_news": {
+  "goal_done": 17,
+  "plan": 8,
+  "danger_seen": 8,
+  "drainer": 5,
+  "unseen_attacker": 5,
+  "interesting_item": 5,
+  "goal_failed": 3,
+  "band": 3,
+  "pack_full": 3,
+  "unique_slain": 1,
+  "fight_going_badly": 1,
+  "thief": 1
+ }
+}
