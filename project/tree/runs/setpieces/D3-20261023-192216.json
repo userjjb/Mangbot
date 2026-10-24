@@ -1,0 +1,83 @@
+{
+ "id": "D3",
+ "tag": "D3-20261023-192216",
+ "depth_ft": 400,
+ "start": "2026-10-23 19:22:16",
+ "checks": {
+  "walked out through the door": {
+   "pass": true,
+   "detail": "out after 7.3 s, 5 searches"
+  },
+  "no giving up before the door": {
+   "pass": true,
+   "detail": "[]"
+  }
+ },
+ "notes": [],
+ "pocket": {
+  "floor": [
+   3,
+   15
+  ],
+  "door": [
+   3,
+   14
+  ],
+  "corridor": [
+   [
+    3,
+    13
+   ],
+   [
+    3,
+    6
+   ]
+  ],
+  "dm_sees": ".......@"
+ },
+ "order_reply": "{\"ok\": true, \"goal\": \"explore\"}",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   265,
+   265
+  ],
+  "attention": [],
+  "acts": [
+   [
+    2.2,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    2.9,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    3.5,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    4.2,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    4.8,
+    "custom s",
+    "search for secret doors"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 19:24:41",
+ "pass": true
+}

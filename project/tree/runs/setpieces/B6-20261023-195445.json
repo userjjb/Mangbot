@@ -1,0 +1,11 @@
+{
+ "id": "B6",
+ "tag": "B6-20261023-195445",
+ "depth_ft": 650,
+ "start": "2026-10-23 19:54:45",
+ "checks": {},
+ "notes": [],
+ "error": "UnboundLocalError(\"cannot access local variable 'b' where it is not associated with a value\")",
+ "end": "2026-10-23 19:57:05",
+ "pass": false
+}

@@ -12,6 +12,7 @@ Without a sort or filter, Summon line N is monster race N (master_fill_monsters)
 
     dm = DM(); dm.connect()
     dm.summon(184, step=4)          # a Hill giant where Gandalf stands; he steps west
+    dm.paint(1, [6] * 5)            # floor on the 5 squares he walks off going east
     dm.invoke("Dive04")             # pull Dive04 to Gandalf
     dm.descend(6)                   # Gandalf (a ghost DM) takes '>' anywhere, one level a press
     dm.quit()
@@ -125,6 +126,23 @@ class DM:
             after()
         self.clear_hooks()
         return h.replace("Summon ", "")
+
+    def paint(self, feat, steps):
+        """Paint terrain `feat` (lib/edit/terrain.txt index: 1 floor, 48 secret door, 56 granite) on each
+        square Gandalf leaves while he walks `steps` (directions; a ghost walks through rock). The
+        Build page's line N is feature N. Clears the hook afterwards."""
+        keys = "^Bx" + "3" * (feat // 20) + "2" * (feat % 20) + "\\r"
+        self.menu(keys, settle=0.05)
+        self._drain(0.8)
+        h = self.hooks().get("x") or ""
+        self.close()
+        if "Build" not in h:
+            raise RuntimeError(f"build hook not set (x: {h!r})")
+        for d in steps:
+            self.c.send(f"walk {d}")
+            self.c.collect(0.3)
+        self.clear_hooks()
+        return h.replace("Build ", "")
 
     K_MAX = 531                 # (lib/edit/limits.txt M:K) the Forge list: kinds by index, then egos 1.. after them
 

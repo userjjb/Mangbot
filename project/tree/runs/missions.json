@@ -671,5 +671,155 @@
   "effort": null,
   "report": "compact",
   "notes": "set-piece A3"
+ },
+ {
+  "label": "sp-D3-20261023-191012",
+  "nick": "dive04",
+  "start": "2026-10-23 19:10",
+  "end": "2026-10-23 19:13",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece D3"
+ },
+ {
+  "label": "sp-D3-20261023-191327",
+  "nick": "dive04",
+  "start": "2026-10-23 19:14",
+  "end": "2026-10-23 19:21",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece D3"
+ },
+ {
+  "label": "sp-D3-20261023-192216",
+  "nick": "dive04",
+  "start": "2026-10-23 19:22",
+  "end": "2026-10-23 19:25",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece D3"
+ },
+ {
+  "label": "sp-D3-20261023-192501",
+  "nick": "dive04",
+  "start": "2026-10-23 19:25",
+  "end": "2026-10-23 19:27",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece D3"
+ },
+ {
+  "label": "sp-D3-20261023-192733",
+  "nick": "dive04",
+  "start": "2026-10-23 19:28",
+  "end": "2026-10-23 19:30",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece D3"
+ },
+ {
+  "label": "sp-D3-20261023-193013",
+  "nick": "dive04",
+  "start": "2026-10-23 19:30",
+  "end": "2026-10-23 19:33",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece D3"
+ },
+ {
+  "label": "sp-B4-20261023-193842",
+  "nick": "dive04",
+  "start": "2026-10-23 19:39",
+  "end": "2026-10-23 19:40",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece B4"
+ },
+ {
+  "label": "sp-B4-20261023-194038",
+  "nick": "dive04",
+  "start": "2026-10-23 19:41",
+  "end": "2026-10-23 19:42",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece B4"
+ },
+ {
+  "label": "sp-B4-20261023-194215",
+  "nick": "dive04",
+  "start": "2026-10-23 19:42",
+  "end": "2026-10-23 19:45",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece B4"
+ },
+ {
+  "label": "sp-B4-20261023-194458",
+  "nick": "dive04",
+  "start": "2026-10-23 19:45",
+  "end": "2026-10-23 19:47",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece B4"
+ },
+ {
+  "label": "sp-B4w-20261023-194731",
+  "nick": "dive04",
+  "start": "2026-10-23 19:48",
+  "end": "2026-10-23 19:50",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece B4w"
+ },
+ {
+  "label": "sp-B4w-20261023-195000",
+  "nick": "dive04",
+  "start": "2026-10-23 19:50",
+  "end": "2026-10-23 19:52",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece B4w"
+ },
+ {
+  "label": "sp-B6-20261023-195225",
+  "nick": "dive04",
+  "start": "2026-10-23 19:52",
+  "end": "2026-10-23 19:54",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece B6"
+ },
+ {
+  "label": "sp-B6-20261023-195445",
+  "nick": "dive04",
+  "start": "2026-10-23 19:55",
+  "end": "2026-10-23 19:57",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece B6"
+ },
+ {
+  "label": "sp-B6-20261023-195711",
+  "nick": "dive04",
+  "start": "2026-10-23 19:57",
+  "end": "2026-10-23 20:00",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece B6"
  }
 ]

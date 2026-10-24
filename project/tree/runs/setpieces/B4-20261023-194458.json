@@ -1,0 +1,39 @@
+{
+ "id": "B4",
+ "tag": "B4-20261023-194458",
+ "depth_ft": 0,
+ "start": "2026-10-23 19:44:58",
+ "checks": {
+  "no gold lost": {
+   "pass": true,
+   "detail": "gold 172 -> 172; []"
+  },
+  "thief killed": {
+   "pass": true,
+   "detail": "['You have slain the Scruffy looking hobbit.']"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   265,
+   265
+  ],
+  "attention": [],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "messages": [
+  "You hit the Scruffy looking hobbit.",
+  "You have slain the Scruffy looking hobbit."
+ ],
+ "end": "2026-10-23 19:47:14",
+ "pass": true
+}

@@ -72,13 +72,41 @@ def log_since(t0):
     return out
 
 
-def floor_near(view, target, dist, taken=()):
-    """A floor square of Dive04's map at Chebyshev distance `dist` from `target` (absolute y,x), not in `taken`."""
+def _tail(name, nbytes=6_000_000):
+    """The last lines of a Pilot log (they grow to 100+ MB)."""
+    with open(os.path.join(RUN, name), "rb") as f:
+        f.seek(0, 2)
+        f.seek(max(0, f.tell() - nbytes))
+        lines = f.read().decode(errors="replace").splitlines()[1:]
+    for line in lines:
+        try:
+            yield json.loads(line)
+        except ValueError:
+            continue
+
+
+def messages_since(t0):
+    """The game's messages to Dive04 since t0 (events.jsonl)."""
+    return [(d["epoch"], d["text"]) for d in _tail("events.jsonl") if d.get("ev") == "message" and d.get("epoch", 0) >= t0]
+
+
+def gold_now():
+    """Dive04's gold from its last status line (state.jsonl)."""
+    g = None
+    for d in _tail("state.jsonl", 2_000_000):
+        if d.get("ev") == "status" and d.get("ind", {}).get("gold"):
+            g = d["ind"]["gold"][0]
+    return g
+
+
+def floor_near(view, target, dist, taken=(), floor="."):
+    """A floor square of Dive04's map at Chebyshev distance `dist` from `target` (absolute y,x), not in `taken`.
+    (In town the open ground shows as ' ': pass floor=". ".)"""
     y0, x0 = view["y0"], view["x0"]
     best = None
     for i, row in enumerate(view.get("rows", [])):
         for j, ch in enumerate(row):
-            if ch != ".":
+            if ch not in floor:
                 continue
             q = (y0 + i, x0 + j)
             if q in taken:
@@ -143,22 +171,32 @@ class Run:
         v = pilot_view()
         me = tuple(v["pos"])
         taken = getattr(self, "placed", set())
-        spot = next((q for d in (dist, dist + 1, max(1, dist - 1), dist + 2) for q in [floor_near(v, me, d, taken)] if q),
+        spot = next((q for d in (dist, dist + 1, max(1, dist - 1), dist + 2) for q in [floor_near(v, me, d, taken, ". " if self.depth == 0 else ".")] if q),
                     None)
         if not spot:
             raise RuntimeError(f"no floor square {dist} from Dive04 at {me}")
-        # walk Gandalf there (a ghost: through walls)
-        for _ in range(80):
-            g = self.dm.c.pos or (self.dm.status()["y"], self.dm.status()["x"])
-            if tuple(g) == spot:
-                break
-            self.dm.walk(step_dir(g, spot))
+        self.gandalf_to(spot)
         away = step_dir(me, spot) or 8               # step on, away from Dive04
         idx = race_name if isinstance(race_name, int) else race_idx(race_name)
         name = self.dm.summon(idx, step=away, after=after)
         self.placed = taken | {spot}
         self.say(f"[{self.tag}] summoned {name} at {spot}, {dist} from Dive04 at {me}")
         return spot
+
+    def gandalf_to(self, spot):
+        """Walk Gandalf to spot (a ghost: through walls in the dungeon, but not through town buildings: a
+        step that doesn't move him is tried 45 and 90 degrees off)."""
+        ring = [8, 9, 6, 3, 2, 1, 4, 7]
+        for _ in range(250):
+            g = tuple(self.dm.c.pos or (self.dm.status()["y"], self.dm.status()["x"]))
+            if g == tuple(spot):
+                return
+            d = step_dir(g, spot)
+            for off in (0, 1, -1, 2, -2):
+                self.dm.walk(ring[(ring.index(d) + off) % 8])
+                if tuple(self.dm.c.pos or g) != g:
+                    break
+        raise RuntimeError(f"Gandalf didn't reach {spot}")
 
     def watch(self, secs, until=None):
         t0 = time.time()
@@ -494,6 +532,160 @@ def a3(run):
         run.check("lowest HP >= 40%", st["hp_min"][0] >= 0.4 * st["hp_min"][1], f"lowest {st['hp_min']}")
 
 
+def find_pocket(rows, length):
+    """A floor square F of Gandalf's map (he sees the whole level) with solid rock straight out from it for
+    length + 2 squares, three wide: room for a door and a corridor that touches nothing else."""
+    H, W = len(rows), len(rows[0])
+
+    def rock(y, x):
+        return 2 <= y < H - 2 and 2 <= x < W - 2 and rows[y][x] in "#%"
+
+    for y in range(2, H - 2):
+        for x in range(2, W - 2):
+            if rows[y][x] != ".":
+                continue
+            for dy, dx in ((0, 1), (0, -1), (1, 0), (-1, 0)):
+                if all(rock(y + dy * k + dx * s, x + dx * k + dy * s) for k in range(1, length + 3) for s in (-1, 0, 1)):
+                    return (y, x), (dy, dx)
+    return None, None
+
+
+def d3(run, length=8):
+    """D3: walled in, the one way out a secret door. Gandalf carves a corridor into solid rock (a secret
+    door, then `length` floor squares) off a floor square of the level, and Dive04 is pulled to its far
+    end, so it knows ground outside it can't reach. `goal explore`: it searches the dead ends (15 each)
+    instead of ending with "frontier unreachable" or "nothing left", finds the door and walks out."""
+    rows = run.dm.c.map()
+    F, d = find_pocket(rows, length)
+    if not F:
+        run.check("a site for the pocket", False, "no floor square with rock beside it")
+        return
+    door = (F[0] + d[0], F[1] + d[1])
+    pocket = [(F[0] + d[0] * k, F[1] + d[1] * k) for k in range(2, length + 2)]
+    fwd, back = step_dir((0, 0), d), step_dir(d, (0, 0))
+    run.gandalf_to(door)
+    run.dm.paint(48, [fwd])                       # the secret door (he steps onto the first corridor square)
+    run.dm.paint(1, [fwd] * length)               # the corridor (he ends in the rock past it)
+    run.dm.walk(back)                             # onto its far end: Dive04 is pulled here
+    rows = run.dm.c.map()
+    built = "".join(rows[y][x] for y, x in pocket)
+    run.res["pocket"] = {"floor": F, "door": door, "corridor": [pocket[0], pocket[-1]], "dm_sees": built}
+    run.say(f"[{run.tag}] pocket: door {door} off {F}, corridor {pocket[0]}-{pocket[-1]} ({built!r})")
+    v = run.bring_dive04()
+    run.dm.walk(fwd, 2)                           # Gandalf back into the rock
+    inside = set(pocket)
+    if tuple(v["pos"]) not in inside:
+        run.check("Dive04 in the pocket", False, f"at {v['pos']}")
+        return
+    run.t_act = time.time()
+    reply = ctl("goal", "explore", role="architect")
+    run.res["order_reply"] = reply
+
+    def out(recs):
+        return any(d.get("pos") and tuple(d["pos"]) not in inside and tuple(d["pos"]) != door for d in recs
+                   if d["t"] > run.t_act)
+    run.watch(300, until=out)
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    searches = sum(1 for d in recs if d.get("kind") == "act" and "secret" in str(d.get("why")))
+    t_out = next((round(d["t"] - run.t_act, 1) for d in recs if d.get("pos") and tuple(d["pos"]) not in inside
+                  and tuple(d["pos"]) != door), None)
+    gave_up = [a for a in st["attention"] if a[1] in ("goal_done", "goal_failed") and
+               ("nothing left" in a[2] or "unreachable" in a[2]) and (t_out is None or a[0] < t_out)]
+    run.check("walked out through the door", t_out is not None, f"out after {t_out} s, {searches} searches")
+    run.check("no giving up before the door", not gave_up, f"{gave_up[:1]}")
+
+
+def find_floor_block(rows, h, w):
+    """The top-left of an h x w block of floor on Gandalf's map (a room), or None."""
+    for y in range(2, len(rows) - h - 2):
+        for x in range(2, len(rows[0]) - w - 2):
+            if all(rows[y + i][x:x + w] == "." * w for i in range(h)):
+                return (y, x)
+    return None
+
+
+def b6(run, width=9):
+    """B6 (the trap half): a known trap on the straight way across a room. Gandalf paints a pit (terrain 17) in
+    the middle of a 5 x `width` block of floor; Dive04 stands near one end and gets a goto to the square
+    mirroring it through the pit: it walks round the trap, even if it only comes into view on the way (the
+    mover checks for traps when it plans)."""
+    rows = run.dm.c.map()
+    tl = find_floor_block(rows, 5, width)
+    if not tl:
+        run.check("a site", False, f"no 5 x {width} block of floor")
+        return
+    a, trap = (tl[0] + 2, tl[1] + 1), (tl[0] + 2, tl[1] + width // 2)
+    run.gandalf_to(trap)
+    run.dm.paint(17, [8])                         # the pit (he steps north off it)
+    run.res["scene"] = {"from": a, "trap": trap, "dm_sees": run.dm.c.map()[trap[0]][trap[1]]}
+    run.gandalf_to(a)
+    v = run.bring_dive04()
+    run.dm.walk(8, 3)                              # out of the way
+    me = tuple(v["pos"])
+    b = (2 * trap[0] - me[0], 2 * trap[1] - me[1])
+    run.res["scene"]["to"] = b
+    run.say(f"[{run.tag}] Dive04 at {v['pos']}, pit at {trap}, goto {b}")
+    run.t_act = time.time()
+    reply = ctl("goal", "goto", f"{b[0]},{b[1]}", role="architect")
+    run.res["order_reply"] = reply
+    run.watch(40, until=lambda recs: any(d.get("kind") == "attention" and d.get("what") in ("goal_done", "goal_failed")
+                                         for d in recs))
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    on = [round(d["t"] - run.t_act, 1) for d in recs if d.get("pos") and tuple(d["pos"]) == trap]
+    msgs = [t for _, t in messages_since(run.t_act) if re.search(r"pit|trap", t, re.I)]
+    done = [a for a in st["attention"] if a[1] in ("goal_done", "goal_failed")]
+    run.check("never on the trap", not on and not any("fall into" in t for t in msgs), f"on it at {on[:3]}; {msgs[:2]}")
+    run.check("arrived", any(a[1] == "goal_done" for a in done), f"{done[:1]}")
+
+
+def b4(run, walking=False):
+    """B4: a town thief (m15-m19 lost ~300 gold to urchins and a Scruffy hobbit while townfarming). A
+    Scruffy looking hobbit (touches to steal gold, then teleports) summoned 2 squares from Dive04 in town, no
+    orders: it's killed or kept off before it touches; no gold lost. B4w: the same while Dive04 walks
+    across town (a goto 25+ squares off, the thief 2 squares ahead on the way)."""
+    v = run.bring_dive04()
+    time.sleep(2.5)
+    g0 = gold_now()
+    run.t_act = time.time()
+    if walking:
+        me = tuple(v["pos"])
+        # open ground 20-30 squares off, as level with Dive04 as can be (not the town's edge rows)
+        cands = [(v["y0"] + i, v["x0"] + j) for i, row in enumerate(v["rows"]) for j, ch in enumerate(row)
+                 if ch in ". " and 3 <= v["y0"] + i <= 62]
+        cands = [q for q in cands if 20 <= abs(q[1] - me[1]) <= 30]
+        far = min(cands, key=lambda q: abs(q[0] - me[0])) if cands else None
+        if not far:
+            run.check("a goto target", False, "no open ground 20-30 squares off")
+            return
+        out = {}
+        # the thief lands, then the goto: it's on (or near) the way
+        run.place("Scruffy looking hobbit", 2, after=lambda: out.update(
+            reply=ctl("goal", "goto", f"{far[0]},{far[1]}", role="architect")))
+        run.res["order_reply"] = out.get("reply")
+    else:
+        run.place("Scruffy looking hobbit", 2)
+    run.watch(40)
+    g1 = gold_now()
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    msgs = [t for _, t in messages_since(run.t_act)]
+    run.res["messages"] = msgs[:40]
+    touched = [t for t in msgs if re.search(r"purse|gold|touches you", t, re.I)]
+    killed = [t for t in msgs if re.search(r"You have (slain|killed) (the )?Scruffy", t)]
+    run.check("no gold lost", g0 is not None and g1 is not None and g1 >= g0, f"gold {g0} -> {g1}; {touched[:2]}")
+    run.check("thief killed", bool(killed), f"{killed[:1]}")
+
+
+def b4w(run):
+    """B4w: the town thief while Dive04 walks across town."""
+    b4(run, walking=True)
+
+
 def b1(run):
     """B1: a stationary drainer (a Purple mushroom patch: CON) 2 squares off and a goto past it: Dive04 never
     stands next to it and loses no stat. (Summoned adjacent, the server's auto-retaliate kills it in one blow
@@ -640,8 +832,11 @@ def l2(run):
     run.check("about 10x sooner than standing (< 5 s)", secs is not None and secs < 5, f"{secs and round(secs, 1)} s")
 
 
-SETPIECES = {"A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
+SETPIECES = {"B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
              "C3": c3}
+
+
+TOWN = {"B4", "B4w"}                # set in town
 
 
 def fresh_depth(choices=(300, 350, 400, 450, 500, 550, 600, 650)):
@@ -670,7 +865,7 @@ def main():
         for k, f in SETPIECES.items():
             print(k, "-", (f.__doc__ or "").strip().splitlines()[0])
         return
-    depth = a.depth or fresh_depth()
+    depth = 0 if a.sid in TOWN else (a.depth or fresh_depth())
     if a.hpwarn:
         os.environ["PILOT_ARGS"] = f"--hpwarn {a.hpwarn}"    # (charsave's save starts the Pilot with it)
     run = Run(a.sid + (f"-hw{a.hpwarn}" if a.hpwarn else ""), depth, a.keep)

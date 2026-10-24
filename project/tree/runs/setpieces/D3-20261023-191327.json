@@ -1,0 +1,149 @@
+{
+ "id": "D3",
+ "tag": "D3-20261023-191327",
+ "depth_ft": 350,
+ "start": "2026-10-23 19:13:27",
+ "checks": {
+  "walked out through the door": {
+   "pass": false,
+   "detail": "out after None s, 15 searches"
+  },
+  "no giving up before the door": {
+   "pass": false,
+   "detail": "[(10.6, 'goal_done', 'explore: nothing left to explore (searched 1 dead end)')]"
+  }
+ },
+ "notes": [],
+ "pocket": {
+  "floor": [
+   3,
+   39
+  ],
+  "door": [
+   3,
+   38
+  ],
+  "corridor": [
+   [
+    3,
+    37
+   ],
+   [
+    3,
+    30
+   ]
+  ],
+  "dm_sees": ".......@"
+ },
+ "order_reply": "{\"ok\": true, \"goal\": \"explore\"}",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   265,
+   265
+  ],
+  "attention": [
+   [
+    10.6,
+    "goal_done",
+    "explore: nothing left to explore (searched 1 dead end)"
+   ],
+   [
+    58.7,
+    "tactic",
+    "hungry and no food: read a Scroll of Satisfy Hunger"
+   ]
+  ],
+  "acts": [
+   [
+    2.1,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    2.5,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    3.0,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    3.5,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    3.9,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    4.4,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    4.8,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    5.3,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    5.8,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    6.2,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    6.7,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    7.1,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    7.6,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    8.0,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    8.5,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    58.7,
+    "custom r item=10",
+    "hungry (2), no food: read Satisfy Hunger"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 19:20:44",
+ "pass": false
+}

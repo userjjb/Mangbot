@@ -1,0 +1,62 @@
+{
+ "id": "B6",
+ "tag": "B6-20261023-195225",
+ "depth_ft": 600,
+ "start": "2026-10-23 19:52:25",
+ "checks": {
+  "never on the trap": {
+   "pass": true,
+   "detail": "on it at []; []"
+  },
+  "arrived": {
+   "pass": true,
+   "detail": "[(1.9, 'goal_done', 'goto 3,85')]"
+  }
+ },
+ "notes": [],
+ "scene": {
+  "from": [
+   3,
+   79
+  ],
+  "to": [
+   3,
+   85
+  ],
+  "trap": [
+   3,
+   82
+  ],
+  "dm_sees": "^"
+ },
+ "order_reply": "{\"ok\": true, \"goal\": \"goto 3,85\"}",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   265,
+   265
+  ],
+  "attention": [
+   [
+    0.1,
+    "tactic",
+    "goto: no known path; trying one through unexplored squares"
+   ],
+   [
+    1.9,
+    "goal_done",
+    "goto 3,85"
+   ]
+  ],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 19:54:29",
+ "pass": true
+}

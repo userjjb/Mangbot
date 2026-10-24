@@ -1,0 +1,11 @@
+{
+ "id": "B4",
+ "tag": "B4-20261023-193842",
+ "depth_ft": 0,
+ "start": "2026-10-23 19:38:42",
+ "checks": {},
+ "notes": [],
+ "error": "RuntimeError('no floor square 2 from Dive04 at (12, 82)')",
+ "end": "2026-10-23 19:40:24",
+ "pass": false
+}

@@ -1,0 +1,46 @@
+{
+ "id": "B4w",
+ "tag": "B4w-20261023-194731",
+ "depth_ft": 0,
+ "start": "2026-10-23 19:47:31",
+ "checks": {
+  "no gold lost": {
+   "pass": true,
+   "detail": "gold 172 -> 172; []"
+  },
+  "thief killed": {
+   "pass": true,
+   "detail": "['You have slain the Scruffy looking hobbit.']"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"goto 0,51\"}",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   265,
+   265
+  ],
+  "attention": [
+   [
+    3.5,
+    "goal_failed",
+    "goto 0,51: no known path, nor one through unexplored squares"
+   ]
+  ],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "messages": [
+  "You hit the Scruffy looking hobbit.",
+  "You have slain the Scruffy looking hobbit."
+ ],
+ "end": "2026-10-23 19:49:46",
+ "pass": true
+}

@@ -43,6 +43,10 @@ Each run:
 | D6 | `goal explore` 40 s | best 5-s window ≥ 3 tiles/s: passes since the mover uses server pathfind (4.2 best, 3.2 overall; was 1.4-1.6) |
 | L1 | a Hill giant 5-8 off, in sight | boulders thrown, no HP lost (a rulebook claim from the code: confirmed live) |
 | L2 | hurt, then `goal recall` resting out of sight | ~10x sooner than standing: **open** (the read came at full HP twice; standing took 17.9 and 20.4 s) |
+| D3 | walled in: Gandalf carves a secret door and an 8-square corridor into rock off a floor square, Dive04 pulled to its far end (knowing ground outside it can't reach), `goal explore` | walks out through the door; no "nothing left" or "frontier unreachable" before it |
+| B4 | a Scruffy looking hobbit (steals gold) 2 off in town, Dive04 idle | no gold lost; the thief killed (passes as built: one blow kills it) |
+| B4w | the same while Dive04 walks a 20-30 square goto across town | the same (passes as built) |
+| B6 | a pit painted mid-room on the straight line between Dive04 and its goto | never springs it; arrives (passes: the mover plans round known traps and the server's pathfind refuses visible ones, `pathfind.c` `is_valid_pf`) |
 | A9 | `plan trip 300-300 via=recall` from town, then Snaga and Black orcs summoned 8-9 squares off | Door/Stair Location within 5 s of arriving; no second Word of Recall while one is pending |
 
 The memo's A7 is at 1250 ft and its A8 Ranger at 6 squares; here they're at 300 ft and 3 squares. The DM summons any race
@@ -52,8 +56,12 @@ for warm-blooded ones. Farther off, the order is rightly held as stale.
 ## Tools
 
 - `dm.py`: drives Gandalf.
-  - `DM().connect()`, `menu(keys)`, `summon(race_idx, step, after)`, `invoke(name)`, `players()`, `clear_hooks()`,
-    `descend(n)`, `ascend(n)`.
+  - `DM().connect()`, `menu(keys)`, `summon(race_idx, step, after)`, `paint(feat, steps)`, `invoke(name)`,
+    `players()`, `clear_hooks()`, `descend(n)`, `ascend(n)`.
+  - `paint`: the Build page (^B; line N is terrain.txt feature N: 1 floor, 48 secret door, 56 granite, 24-31
+    traps) on the movement hook paints each square Gandalf walks off. He walks through rock and **sees the whole
+    level** (`dm.c.map()` is the full 66x198 map), so a scene can be built in solid rock (`find_pocket`). The Level
+    page (^L) can also export and import a level (`server-NAME` files): not used yet.
   - How the DM menu works: `server/xtra2.c` `do_cmd_dungeon_master`. Summon line N is monster race N. The
     movement hook fires when Gandalf steps, and the summon lands on the square he left. **Always clear the hooks**:
     a hook left set summons on every step. `summon()` clears them and checks.
@@ -89,6 +97,8 @@ Recall and a ration. It was then restored properly from the first snapshot.
   `r_killed`, since it lives in the savefile.
 - **The DM's summons come with their escorts.** Lagduf brought 27 orcs, Mughash 24 Kobold shamans and a Wolf chieftain
   38 wolves, so the run turns into a band fight. A3 now uses a Sabre-tooth tiger (+10, no escort).
+- **In town** the open ground shows as ' ' in Dive04's view, and Gandalf can't walk through the buildings
+  (`gandalf_to` steps round them).
 - **Going up to town and back doesn't free a level:** the server keeps empty levels a while, with any monster left on
   them (a leftover Ibun spoiled an A3 run). Runs rotate over 300-650 ft (`runs/setpieces/depths.json`), the least recently used first.
 - **The Forge's items come out identified:** C8 (detecting Free Action from unidentified boots) can't be staged with
@@ -129,6 +139,17 @@ RUNNING_FACTOR), and **its pathfind counts as running** (cmd1.c sets `running` f
 now sends `pathfind Y X` (mover.py `path_run`) for a leg of 4+ steps with no monster in view, aiming up to 20 steps
 along its own path, and stops it like a free run. A square where a pathfind didn't move us isn't tried again. D6: best
 5-s window 4.2 tiles/s, 3.2 overall (1.4 before). Regressions A3, A9 and the unit tests still pass.
+
+## Found by D3 (fixed)
+
+- **Walled in with known ground out of reach** (a teleport or a trap door into a pocket), Explore ended with
+  "frontier unreachable" without searching a dead end. Now it searches the reachable dead ends first (15 each).
+- **A door into ground already known** added no frontier, so Search didn't notice the way out. It now counts
+  doors too.
+- **A refused run made the next step time out at once:** the step timer ran from the run's start, so the walk
+  after it got no time, the next corridor square was marked blocked, and in a 1-wide corridor the mover gave up
+  ("stuck"). Searches were also sent every 0.45 s, faster than a player turn (~0.65 s), so they queued on the
+  server and the move after them waited behind them. Both fixed.
 
 ## Observed, then changed (the user)
 

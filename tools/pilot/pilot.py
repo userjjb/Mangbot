@@ -360,7 +360,9 @@ class Explore(Goal):
             self.search = None
             if r[0] == "failed":
                 return ("done", f"nothing left to explore (searched {plural(self.searched_n, 'dead end')})")
-            # a secret door showed up: explore on through it
+            # a secret door showed up: explore on through it (what was unreachable may not be now)
+            p.unreachable = set()
+            self.fails = 0
         if not p.mover.active or self.loot.get("looting"):
             if p.loot_step(self.loot):
                 return None
@@ -412,6 +414,11 @@ class Explore(Goal):
                 p.unreachable = set()
                 self.fails = 0
                 self.retried = True
+                return None
+            # Walled in with known ground out of reach (a teleport or a trap door into a pocket): its dead
+            # ends may hide the way out (set-piece D3)
+            if not self.radius and Search.dead_ends(w, strict=True, skip=p.searched):
+                self.search = Search(tries=15, strict=True)
                 return None
             return ("failed", "frontier unreachable")
         self.target = p.mover.path[-1] if p.mover.path else None
@@ -679,6 +686,10 @@ class Search(Goal):
         self.spots_log = []           # (spot, searches; 0 = couldn't reach it)
 
     @staticmethod
+    def door_count(w):
+        return sum(1 for ch in w.memory.values() if ch in "+'")
+
+    @staticmethod
     def dead_ends(w, strict=False, skip=()):
         mem = w.memory
 
@@ -719,13 +730,17 @@ class Search(Goal):
         w = p.w
         if self.known is None:
             self.known = len(p.frontier())
-        if len(p.frontier()) > self.known:
+            self.doors = self.door_count(w)
+        # (a door counts too: one into ground already known adds no frontier)
+        if len(p.frontier()) > self.known or self.door_count(w) > self.doors:
             return ("done", "found a way on" + self.summary())
         if self.searching:
             if gnow() < p.busy_until:
                 return None
             self.searching -= 1
-            p.cmd("custom s", "search for secret doors", hold=0.45)
+            # (one a player turn, ~0.65 s: sent faster they queue on the server, and the move after the
+            # last one waited behind them -- set-piece D3)
+            p.cmd("custom s", "search for secret doors", hold=0.65)
             if not self.searching:
                 p.searched.add((w.level_t, self.spot))
                 self.done_n += 1

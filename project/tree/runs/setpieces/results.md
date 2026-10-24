@@ -58,3 +58,18 @@
 - 2026-10-23 18:54:08 **A3** FAIL (the goto held FAIL, no walking with it adjacent, lowest HP >= 40%) `A3-20261023-185408.json`
 - 2026-10-23 18:59:26 **A3** FAIL (the goto held FAIL, no walking with it adjacent, lowest HP >= 40%) `A3-20261023-185926.json`
 - 2026-10-23 19:02:44 **A3** PASS (the goto held, no walking with it adjacent, lowest HP >= 40%) `A3-20261023-190244.json`
+- 2026-10-23 19:10:12 **D3** PASS (walked out through the door, no giving up before the door) `D3-20261023-191012.json`
+- 2026-10-23 19:13:27 **D3** FAIL (walked out through the door FAIL, no giving up before the door FAIL) `D3-20261023-191327.json`
+- 2026-10-23 19:22:16 **D3** PASS (walked out through the door, no giving up before the door) `D3-20261023-192216.json`
+- 2026-10-23 19:25:01 **D3** PASS (walked out through the door, no giving up before the door) `D3-20261023-192501.json`
+- 2026-10-23 19:27:33 **D3** PASS (walked out through the door, no giving up before the door) `D3-20261023-192733.json`
+- 2026-10-23 19:30:13 **D3** PASS (walked out through the door, no giving up before the door) `D3-20261023-193013.json`
+- 2026-10-23 19:38:42 **B4** FAIL () `B4-20261023-193842.json`
+- 2026-10-23 19:40:38 **B4** FAIL () `B4-20261023-194038.json`
+- 2026-10-23 19:42:15 **B4** FAIL () `B4-20261023-194215.json`
+- 2026-10-23 19:44:58 **B4** PASS (no gold lost, thief killed) `B4-20261023-194458.json`
+- 2026-10-23 19:47:31 **B4w** PASS (no gold lost, thief killed) `B4w-20261023-194731.json`
+- 2026-10-23 19:50:00 **B4w** PASS (no gold lost, thief killed) `B4w-20261023-195000.json`
+- 2026-10-23 19:52:25 **B6** PASS (never on the trap, arrived) `B6-20261023-195225.json`
+- 2026-10-23 19:54:45 **B6** FAIL () `B6-20261023-195445.json`
+- 2026-10-23 19:57:11 **B6** PASS (never on the trap, arrived) `B6-20261023-195711.json`

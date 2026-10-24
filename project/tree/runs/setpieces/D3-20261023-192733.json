@@ -1,0 +1,114 @@
+{
+ "id": "D3",
+ "tag": "D3-20261023-192733",
+ "depth_ft": 500,
+ "start": "2026-10-23 19:27:33",
+ "checks": {
+  "walked out through the door": {
+   "pass": true,
+   "detail": "out after 12.2 s, 9 searches"
+  },
+  "no giving up before the door": {
+   "pass": true,
+   "detail": "[]"
+  }
+ },
+ "notes": [],
+ "pocket": {
+  "floor": [
+   3,
+   44
+  ],
+  "door": [
+   3,
+   43
+  ],
+  "corridor": [
+   [
+    3,
+    42
+   ],
+   [
+    3,
+    35
+   ]
+  ],
+  "dm_sees": ".......@"
+ },
+ "order_reply": "{\"ok\": true, \"goal\": \"explore\"}",
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   265,
+   265
+  ],
+  "attention": [
+   [
+    1.6,
+    "unseen_attacker",
+    "heard a door burst open: something is coming; be ready to leave"
+   ],
+   [
+    4.3,
+    "unseen_attacker",
+    "heard a door burst open: something is coming; be ready to leave"
+   ]
+  ],
+  "acts": [
+   [
+    2.3,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    3.0,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    3.7,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    4.3,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    5.0,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    5.7,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    6.3,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    7.0,
+    "custom s",
+    "search for secret doors"
+   ],
+   [
+    7.6,
+    "custom s",
+    "search for secret doors"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-23 19:30:13",
+ "pass": true
+}

@@ -172,6 +172,9 @@ class Mover:
                 # refused ("You cannot run in that direction"): walk from here
                 # (mission 19 resent the same run 61 times in a minute at 37,105)
                 self.no_run_at.add(w.pos)
+                # (and give the first step its full time: timed from the run's start, it timed out
+                # at once, and the corridor square was avoided as blocked -- set-piece D3)
+                self.last_progress = gnow()
         return "moving"
 
     def surface(self):
