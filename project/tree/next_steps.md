@@ -318,6 +318,11 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    500 ft until special or rich: the Advisor's structures memo); m27 (Opus) starts from a kit forged to m26's start.**
    The Advisor: m26's Nar group was a summon trap, not a pit (now: Phase Door at once on "enveloped in a cloud of
    smoke"); arrival feelings are logged per level. Stationary monsters are remembered on the level (the drain zone).
+   **m27 (Opus, 04:19-04:50, kit forged to m26's start, auto_scum on):** 30.1 XP/dmin, lowest 47%, 1 escape recall,
+   3 cures (m26 Sonnet: 53.0, 14%, 6, 14 -- but on the Pilot before m26's fixes). Reached 700 ft (deepest.json now 700;
+   the recall inscription keeps @R650). Fixed after it: climbing back to max_depth isn't "straight back"; `goal shop
+   buy NAME:N` = have N (`+N` more); plan town saves gold for a short Word of Recall and sells unknown devices when
+   broke; interesting-item notices give squares. Dive04 now: 30 gold, WoR 2, CCW 4, CSW 3, DEX/WIS drained.
    **Open:** ranged stationary drainers (fixed: it was adjacency out of view); pits/structures (the user: a one-wide long
    hallway is a giveaway; asked the Advisor); the Brown mold beside the stairs (m25); a fair model comparison needs an
    Opus run on the current Pilot from a similar state (Dive04 is broke now: 14 gold, 0 WoR, DEX/WIS drained).
