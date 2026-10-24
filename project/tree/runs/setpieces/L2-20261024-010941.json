@@ -1,0 +1,46 @@
+{
+ "id": "L2",
+ "tag": "L2-20261024-010941",
+ "depth_ft": 650,
+ "start": "2026-10-24 01:09:41",
+ "checks": {
+  "recalled": {
+   "pass": true,
+   "detail": "18.93385887145996 s"
+  },
+  "rested while it charged": {
+   "pass": true,
+   "detail": ""
+  },
+  "about 10x sooner than standing (< 5 s)": {
+   "pass": false,
+   "detail": "18.9 s"
+  }
+ },
+ "notes": [
+  "status at the read: Dive04 L22 HP 248/265 \u00b7 650 ft \u00b7 172g \u00b7 max 650ft \u00b7 01:11:20 \u00b7 goal: none \u00b7 r5; rested True; 18.93385887145996"
+ ],
+ "hp_after_fight": [
+  246,
+  265
+ ],
+ "time_factors": [
+  [
+   1.2,
+   10.0,
+   null
+  ],
+  [
+   5.3,
+   1.0,
+   0.93
+  ],
+  [
+   19.0,
+   1.0,
+   1.0
+  ]
+ ],
+ "end": "2026-10-24 01:12:19",
+ "pass": false
+}

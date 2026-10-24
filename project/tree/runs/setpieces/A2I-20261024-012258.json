@@ -1,0 +1,162 @@
+{
+ "id": "A2I",
+ "tag": "A2I-20261024-012258",
+ "depth_ft": 450,
+ "start": "2026-10-24 01:22:58",
+ "checks": {
+  "Word of Recall within 2 s of first sight": {
+   "pass": false,
+   "detail": "seen at 0.9761793613433838, recall read at 7.3"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [116, 265]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   116,
+   265
+  ],
+  "attention": [
+   [
+    4.7,
+    "unseen_attacker",
+    "'It drains power from your muscles!': something unseen is casting at you; carrying on at HP 95% (it "
+   ],
+   [
+    7.3,
+    "emergency",
+    "couldn't reach the stairs with 1 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    7.9,
+    "danger_seen",
+    "Ibun, Son of Mim (unique, lvl 24) in view: heading for the stairs"
+   ],
+   [
+    8.0,
+    "goal_failed",
+    "flee (Ibun, Son of Mim): no stairs known"
+   ],
+   [
+    14.5,
+    "fight_going_badly",
+    "HP 161/265 fighting Ibun, Son of Mim"
+   ],
+   [
+    17.3,
+    "emergency",
+    "low HP: read Phase Door (Ibun, Son of Mim adjacent)"
+   ],
+   [
+    20.3,
+    "emergency",
+    "low HP: losing ~16 HP/s, more than the best potion heals (25): escaping instead"
+   ],
+   [
+    20.3,
+    "emergency",
+    "low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~16 HP/s)"
+   ],
+   [
+    23.4,
+    "emergency_loop",
+    "third emergency in 90 s and no stairs known nearby: consider Word of Recall or leaving this area"
+   ],
+   [
+    26.2,
+    "danger_seen",
+    "Ibun, Son of Mim (unique, lvl 24) in view: heading for the stairs"
+   ],
+   [
+    27.8,
+    "goal_failed",
+    "flee (Ibun, Son of Mim): no stairs known"
+   ],
+   [
+    28.2,
+    "emergency",
+    "low HP: read Phase Door (Ibun, Son of Mim adjacent)"
+   ],
+   [
+    32.8,
+    "emergency",
+    "low HP: quaffed a Potion of Cure Critical Wounds {25% off} (losing ~10 HP/s)"
+   ]
+  ],
+  "acts": [
+   [
+    7.3,
+    "custom r item=8",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    17.3,
+    "custom r item=7",
+    "low HP: phase door"
+   ],
+   [
+    20.3,
+    "custom q item=6",
+    "low HP: quaff 6 Potions of Cure Critical Wounds {25% off}"
+   ],
+   [
+    23.6,
+    "rest",
+    "rest"
+   ],
+   [
+    25.0,
+    "rest",
+    "rest"
+   ],
+   [
+    26.2,
+    "rest",
+    "rest"
+   ],
+   [
+    27.3,
+    "rest",
+    "stop resting"
+   ],
+   [
+    28.2,
+    "custom r item=7",
+    "low HP: phase door"
+   ],
+   [
+    32.8,
+    "custom q item=6",
+    "low HP: quaff 5 Potions of Cure Critical Wounds {25% off}"
+   ],
+   [
+    34.9,
+    "rest",
+    "rest"
+   ],
+   [
+    36.0,
+    "rest",
+    "rest"
+   ],
+   [
+    40.0,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 7,
+  "phase_reads": 2,
+  "wor_reads": 1,
+  "cures": 2
+ },
+ "end": "2026-10-24 01:25:49",
+ "pass": false
+}

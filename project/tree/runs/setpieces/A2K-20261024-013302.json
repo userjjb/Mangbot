@@ -1,0 +1,87 @@
+{
+ "id": "A2K",
+ "tag": "A2K-20261024-013302",
+ "depth_ft": 600,
+ "start": "2026-10-24 01:33:02",
+ "checks": {
+  "Word of Recall within 2 s of first sight": {
+   "pass": true,
+   "detail": "seen at 3.5392684936523438, recall read at 3.5"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [134, 265]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   134,
+   265
+  ],
+  "attention": [
+   [
+    3.5,
+    "danger_seen",
+    "Khim, Son of Mim (unique, lvl 24) in view: heading for the stairs"
+   ],
+   [
+    3.5,
+    "goal_failed",
+    "flee (Khim, Son of Mim): no stairs known"
+   ],
+   [
+    3.5,
+    "emergency",
+    "couldn't reach the stairs with 1 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    11.0,
+    "fight_going_badly",
+    "HP 157/265 fighting Khim, Son of Mim"
+   ],
+   [
+    13.5,
+    "danger_seen",
+    "Khim, Son of Mim (unique, lvl 24) in view: heading for the stairs"
+   ],
+   [
+    13.6,
+    "goal_failed",
+    "flee (Khim, Son of Mim): no stairs known"
+   ]
+  ],
+  "acts": [
+   [
+    3.5,
+    "custom r item=8",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    13.6,
+    "custom r item=7",
+    "flee failed, monsters adjacent: phase door"
+   ],
+   [
+    19.1,
+    "rest",
+    "rest"
+   ],
+   [
+    25.9,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 1,
+  "phase_reads": 1,
+  "wor_reads": 1,
+  "cures": 0
+ },
+ "end": "2026-10-24 01:36:03",
+ "pass": true
+}

@@ -93,3 +93,14 @@
 - 2026-10-24 00:19:38 **A3** PASS (the goto held, no walking with it adjacent, lowest HP >= 40%) `A3-20261024-001938.json`
 - 2026-10-24 00:53:30 **A2I** PASS (Word of Recall within 2 s of first sight, lowest HP >= 40%) `A2I-20261024-005330.json`
 - 2026-10-24 00:56:21 **A1** PASS (lowest HP >= 40%, at most 3 Phase Door) `A1-20261024-005621.json`
+- 2026-10-24 01:03:20 **L2** FAIL () `L2-20261024-010320.json`
+- 2026-10-24 01:06:21 **L2** FAIL (hurt by the swap FAIL) `L2-20261024-010621.json`
+- 2026-10-24 01:09:41 **L2** FAIL (recalled, rested while it charged, about 10x sooner than standing (< 5 s) FAIL) `L2-20261024-010941.json`
+- 2026-10-24 01:13:49 **L2** FAIL (recalled, rested while it charged, about 10x sooner than standing (< 5 s) FAIL) `L2-20261024-011349.json`
+- 2026-10-24 01:16:14 **L2g** FAIL (recalled, rested while it charged, about 10x sooner than standing (< 5 s) FAIL) `L2g-20261024-011614.json`
+- 2026-10-24 01:19:57 **A9** PASS (Door/Stair Location within 5 s of arriving, no second Word of Recall while one is pending) `A9-20261024-011957.json`
+- 2026-10-24 01:22:58 **A2I** FAIL (Word of Recall within 2 s of first sight FAIL, lowest HP >= 40%) `A2I-20261024-012258.json`
+- 2026-10-24 01:25:49 **D6** PASS (runs >= 3 tiles/s (best 5-s window)) `D6-20261024-012549.json`
+- 2026-10-24 01:29:54 **A2I** FAIL (Word of Recall within 2 s of first sight FAIL, lowest HP >= 40%) `A2I-20261024-012954.json`
+- 2026-10-24 01:33:02 **A2K** PASS (Word of Recall within 2 s of first sight, lowest HP >= 40%) `A2K-20261024-013302.json`
+- 2026-10-24 01:36:17 **A2f** PASS (danger seen, Word of Recall within 2 s of it, lowest HP >= 60%) `A2f-20261024-013617.json`

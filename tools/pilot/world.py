@@ -28,9 +28,12 @@ from glyphs import Glyphs
 # game time; the Pilot asks for one every few seconds in the dungeon). At factor 1 a tick takes
 # TICK_S seconds (m24's pack log: 1.6 ticks/s).
 # The server speeds our time up only while we rest or run with nothing in view, and slows it to a
-# constant 1/5 in the HP bubble. So the model (`set_time_factor`, from our HP) decides everywhere
-# else, at once, and the fuel measures the speed-up only while it can apply (`set_fast_ok`): a rate
-# averaged over seconds would otherwise carry a run's 5x into the fight that ended it.
+# constant 1/5 in the HP bubble. The speed-up needs no awake monster in line of sight, seen or not, so
+# the model (`set_time_factor`, from our HP) leaves it out: 1, or 1/5 in the bubble (a clock running
+# fast where the game doesn't would end game timers early). The fuel measures the real rate only while
+# a speed-up can apply (`set_fast_ok`): a rate averaged over seconds would otherwise carry a run's 5x
+# into the fight that ended it. (While resting, the server doesn't answer a redraw: a rest is measured
+# when it ends.)
 TICK_S = 0.625
 STALE_S = 12.0                  # wall seconds without a fuel change before the model takes over again
 _CLOCK = {"wall": time.time(), "game": time.time(), "factor": 1.0, "model": 1.0, "measured": 0.0,
@@ -122,7 +125,7 @@ def fuel_reading(fuel, now=None):
         rate = (f0 - f1) * TICK_S / (w1 - w0)
         _CLOCK["rate"] = rate
         if _CLOCK["fast_ok"]:
-            _set_factor(min(20.0, max(1.0, rate)), now)      # (a speed-up, never a slow-down)
+            _set_factor(min(20.0, max(0.05, rate)), now)
             _CLOCK["measured"] = now
 
 

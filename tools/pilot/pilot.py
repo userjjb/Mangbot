@@ -4451,7 +4451,9 @@ class Pilot:
         # (decoded or only listed by the server, as danger_seen counts them:
         # mission 15's Brodda was listed 0.1 s before the map decode, so this
         # saw nothing and no Word of Recall was read at full HP)
-        near = [m for m in w.monsters if w.dist(m[:2]) <= 5] + \
+        # (a dangerous one counts at any range: set-piece A2I's Ibun cast fire bolts and Slow from 12-13
+        # squares for 7 s while this waited for him to come within 5)
+        near = [m for m in w.monsters if w.dist(m[:2]) <= 5 or self.danger_why(m[2])] + \
             [(None, None, r) for r in w.listed_only() if self.danger_why(r)]
         if not w.in_dungeon or not near or w.flag("blind") or w.flag("confused"):
             return
@@ -4767,10 +4769,13 @@ class Pilot:
     def tick(self):
         self.w.drain()
         self.w.refresh()
-        # the game clock (world.py). The model is the server's rule (xtra2.c base_time_factor, time_factor):
-        # 1 in town; with nothing in sight 10x resting and 5x running; else 1/5 at or below hitpoint_warn x
-        # 10% HP. While resting or running out of sight the fuel's measured rate overrides it (another
-        # server's constants, or a player nearby whose slower bubble we share)
+        # the game clock (world.py). The server's rule (xtra2.c base_time_factor, time_factor): 1 in town;
+        # 10x resting and 5x running with no awake monster in line of sight -- seen or not
+        # (monsters_in_los), so after a fight in the dark it's often 1x (set-piece L2: a 6-s rest at 1x);
+        # else 1/5 at or below hitpoint_warn x 10% HP. The model takes the 1/5 (exact, and what matters in
+        # a fight) and 1x for resting and running: a clock running fast where the game doesn't would end
+        # game timers early (a recall "overdue" and read again cancels it). Only the fuel's measured rate
+        # raises it, while resting or running with nothing in view.
         hw = getattr(self, "hpwarn", 0)
         w, m = self.w, self.mover
         hp = w.hp
@@ -4779,8 +4784,8 @@ class Pilot:
         # wait for the first step and the stop, and the fuel measured 2-4x over it, not 5x)
         running = (m.running is not None or m.free is not None) and wall_since(w.pos_t) < 0.4
         fast_ok = bool(w.in_dungeon and (w.resting or running) and not w.monsters)
-        model = 1.0 if not w.in_dungeon else (10.0 if fast_ok and w.resting else 5.0 if fast_ok else
-                                              0.2 if slow else 1.0)
+        # (hurt and resting out of sight: 10x or, with an unseen monster awake in sight, 1/5: the lower)
+        model = 1.0 if not w.in_dungeon else 0.2 if slow else 1.0
         set_fast_ok(fast_ok)
         if model != model_factor():
             set_time_factor(model)

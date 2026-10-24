@@ -90,6 +90,15 @@ def messages_since(t0):
     return [(d["epoch"], d["text"]) for d in _tail("events.jsonl") if d.get("ev") == "message" and d.get("epoch", 0) >= t0]
 
 
+def hp_now():
+    """Dive04's [HP, max HP] from its last status line (state.jsonl)."""
+    hp = None
+    for d in _tail("state.jsonl", 2_000_000):
+        if d.get("ev") == "status" and d.get("ind", {}).get("hp"):
+            hp = d["ind"]["hp"][:2]
+    return hp
+
+
 def gold_now():
     """Dive04's gold from its last status line (state.jsonl)."""
     g = None
@@ -263,6 +272,59 @@ class Run:
                     f"({', '.join(k + ('' if v['pass'] else ' FAIL') for k, v in self.res['checks'].items())}) "
                     f"`{os.path.basename(path)}`\n")
         self.say(f"[{self.tag}] {'PASS' if self.res['pass'] else 'FAIL'} -> {path}")
+
+
+# --- forged props (the user allowed the forge, 2026-10-24: each use destroys Gandalf's pack slot a) -----
+def give_item(run, kind, pval=None, want=None, timeout=40):
+    """Forge an item (identified), drop it beside Dive04 and have Dive04 fetch it. True once its name
+    (`want`) shows in Dive04's pack."""
+    v = pilot_view()
+    me = tuple(v["pos"])
+    spot = floor_near(v, me, 1)
+    if not spot:
+        raise RuntimeError(f"no floor square next to Dive04 at {me}")
+    run.gandalf_to(spot)
+    name = run.dm.forge(kind, pval=pval)
+    if want is None and name:
+        # (a flavour Dive04 may not know: "an Azurite Ring (+5) {for sale 500}" -> "Azurite Ring")
+        want = re.sub(r"^(an?|the|\d+) ", "", re.sub(r" ?[({\[].*$", "", name))
+    run.forged = want
+    run.dm.drop_first()
+    run.dm.walk(step_dir(me, spot) or 8)              # off it
+    run.say(f"[{run.tag}] forged {name} at {spot}")
+    ctl("goal", "fetch", f"{spot[0]},{spot[1]}", role="architect")
+    t0 = time.time()
+    while time.time() - t0 < timeout:
+        time.sleep(2)
+        if want and want.lower() in ctl("status", "full", role="architect").split("Equipment:")[-1].lower():
+            return True
+    return False
+
+
+def con_swap(run, pval=5):
+    """The Advisor's way to leave Dive04 short of max HP, alone (batch4-reply): wear a Ring of Constitution
+    +pval, rest to full, take it off (HP capped at the lower max), put it on again. Returns [HP, max]."""
+    if not give_item(run, 134, pval=pval):
+        raise RuntimeError(f"the Ring of Constitution ({run.forged}) wasn't picked up")
+    ring = run.forged
+    ctl("wear", ring, role="architect")
+    time.sleep(2)
+    ctl("goal", "rest", role="architect")
+    t0 = time.time()
+    while time.time() - t0 < 60:
+        time.sleep(2)
+        hp = hp_now()
+        if hp and hp[0] >= hp[1]:
+            break
+    full = hp_now()
+    ctl("takeoff", ring, role="architect")
+    time.sleep(2)
+    ctl("wear", ring, role="architect")
+    time.sleep(2.5)
+    hp = hp_now()
+    run.res["con_swap"] = {"pval": pval, "full": full, "after": hp}
+    run.say(f"[{run.tag}] CON swap: full {full} -> {hp}")
+    return hp
 
 
 # --- the set-pieces ------------------------------------------------------------------------
@@ -704,6 +766,31 @@ def a5s(run):
     a5(run, race="Potion mimic", stairs=True)
 
 
+def l2g(run):
+    """L2 with Gandalf off the level (no shared time bubble)."""
+    l2(run, gandalf_away=True)
+
+
+def a2f(run, who="Dark elven lord"):
+    """A2f: a dangerous caster at range (a Dark elven lord, rated 4: bolts, blinds, confuses) 8 squares off
+    with a clear line, no stairs known: Word of Recall read within 2 s of the danger rule firing (A2I's Ibun
+    at 12 squares got 7 s of free casts: the escape waited for him to come within 5)."""
+    run.bring_dive04()
+    run.t_act = time.time()
+    run.place(who, 8, gmap=True)
+    run.watch(40)
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    danger = next((a[0] for a in st["attention"] if a[1] == "danger_seen"), None)
+    wor = next((a[0] for a in st["acts"] if "word of recall" in str(a[2]).lower()), None)
+    run.check("danger seen", danger is not None, f"at {danger}")
+    run.check("Word of Recall within 2 s of it", danger is not None and wor is not None and wor - danger <= 2,
+              f"danger at {danger}, recall read at {wor}")
+    if st["hp_min"]:
+        run.check("lowest HP >= 60%", st["hp_min"][0] >= 0.6 * st["hp_min"][1], f"lowest {st['hp_min']}")
+
+
 def a7f(run):
     """A7f (the memo's first A7): fear casters. A Novice paladin group (SCARE, CAUSE_1; m22 lost 31% to seven)
     6 squares off. Passes when, once Dive04 is afraid ("too afraid to attack"), a Boldness or Heroism is quaffed
@@ -919,42 +1006,73 @@ def l1(run):
     run.check("no HP lost to boulders", all(b is None or a is None or a >= b for _, b, a in hits), f"{hits[:4]}")
 
 
-def l2(run):
-    """L2 (a rulebook claim): Word of Recall comes ~10x sooner while resting out of sight. Hurt by a Cave orc
-    group, then `goal recall` (which rests while it charges when hurt and alone) vs. the time a recall
-    takes standing (15-34 player turns, ~10-23 s)."""
+def l2(run, gandalf_away=False):
+    """L2 (a rulebook claim): Word of Recall comes ~10x sooner while resting out of sight. Dive04 fights a
+    Sabre-tooth tiger (A3: 40-50 HP lost) and the moment it's dead gets `goal recall` (which rests while it
+    charges when hurt and alone), vs. the time a recall takes standing (15-34 player turns, ~10-23 s; 17.9
+    and 20.4 s measured). (The Advisor's CON-ring swap can't hurt here: MAngband scales HP with max HP,
+    xtra1.c calc_hitpoints. Cave and Black orcs left HP full by the time they were gone.)"""
     run.bring_dive04()
-    run.t_act = time.time()
-    run.place("Black orc", 2)              # (Cave orcs barely scratched AC 56: the read came at full HP)
-    quiet = 0                               # (5 s in a row with nothing in view: the first run read mid-fight)
-    for _ in range(90):
-        time.sleep(1)
-        st0 = ctl("status", role="architect")
-        hp = re.search(r"HP (\d+)/(\d+)", st0)
-        quiet = quiet + 1 if "Monsters: none" in st0 else 0
-        if hp and int(hp.group(1)) < int(hp.group(2)) and quiet >= 5:
+    t0 = time.time()
+    run.place("Sabre-tooth tiger", 1)
+    dead = None
+    for _ in range(60):
+        time.sleep(0.5)
+        dead = next((t for t, m in messages_since(t0) if "slain the Sabre-tooth" in m), None)
+        if dead:
             break
-    v = pilot_view()
+    hp = hp_now()
+    run.res["hp_after_fight"] = hp
+    if not dead or not hp or hp[0] >= hp[1]:
+        run.check("hurt and alone after the fight", False, f"tiger slain {dead is not None}, HP {hp}")
+        return
+    if gandalf_away:
+        run.dm.ascend(1)                     # (off the level: no shared time bubble)
+    # a fuel reading every second (a redraw is free): the recall counts down on the same tick as the fuel
+    import threading
+    stop = threading.Event()
+
+    def sample():
+        while not stop.is_set():
+            ctl("raw", "redraw", role="architect")
+            stop.wait(1.0)
+    threading.Thread(target=sample, daemon=True).start()
     st_now = ctl("status", role="architect")
     t_read = time.time()
+    run.t_act = t_read
     ctl("goal", "recall", role="architect")
     t_yank = None
     for _ in range(60):
         time.sleep(0.5)
-        yank = [json.loads(l) for l in open(os.path.join(RUN, "events.jsonl")) if "yanked upwards" in l]
-        if yank and yank[-1].get("epoch", 0) > t_read:
-            t_yank = yank[-1]["epoch"]
+        yank = [t for t, m in messages_since(t_read) if "yanked upwards" in m]
+        if yank:
+            t_yank = yank[0]
             break
     recs = log_since(t_read)
     rested = any(d.get("kind") == "act" and d.get("cmd") == "rest" for d in recs)
     secs = (t_yank - t_read) if t_yank else None
     run.res["notes"].append(f"status at the read: {st_now.splitlines()[0][:80]}; rested {rested}; {secs}")
+    stop.set()
+    factors = [(round(d["t"] - t_read, 1), d.get("factor"), d.get("measured")) for d in recs if d.get("kind") == "time_factor"]
+    run.res["time_factors"] = factors[:20]
+    fuel = []
+    for e in _tail("state.jsonl", 3_000_000):
+        if e.get("ev") == "inven" and t_read - 2 < e["epoch"] < t_read + 40:
+            for it in e["items"]:
+                m = re.search(r"with (\d+) turns of light", it["name"])
+                if m and it.get("equip"):
+                    fuel.append((round(e["epoch"] - t_read, 1), int(m.group(1))))
+        if e.get("ev") == "status" and t_read - 2 < e["epoch"] < t_read + 40:
+            fuel.append((round(e["epoch"] - t_read, 1), "rest" if e["ind"].get("state", [0, 0, 0])[2] else "-",
+                         e["ind"].get("hp", [0])[0]))
+    run.res["fuel"] = fuel
+    run.say(f"[{run.tag}] fuel/rest/HP after the read: {fuel}")
     run.check("recalled", t_yank is not None, f"{secs} s")
     run.check("rested while it charged", rested, "")
     run.check("about 10x sooner than standing (< 5 s)", secs is not None and secs < 5, f"{secs and round(secs, 1)} s")
 
 
-SETPIECES = {"A7f": a7f, "A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
+SETPIECES = {"A2f": a2f, "L2g": l2g, "A7f": a7f, "A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
              "C3": c3}
 
 

@@ -146,12 +146,14 @@ class DM:
 
     K_MAX = 531                 # (lib/edit/limits.txt M:K) the Forge list: kinds by index, then egos 1.. after them
 
-    def forge(self, kind, ego=None, number=1):
-        """Forge an item into Gandalf's pack slot a: kind = object.txt index, ego = ego_item.txt index.
-        It's unidentified to whoever picks it up."""
+    def forge(self, kind, ego=None, number=1, pval=None):
+        """Forge an item into Gandalf's pack slot a: kind = object.txt index, ego = ego_item.txt index,
+        pval = its <pval> (a ring's +N). It comes out identified."""
         def down(n):
             return "3" * (n // 20) + "2" * (n % 20)
         keys = "^F" + down(kind) + "\\r" + "n" + str(number) + "\\r"
+        if pval is not None:
+            keys += "p" + str(pval) + "\\r"
         if ego:
             keys += down(self.K_MAX + ego - 1 - kind) + "\\r"
         self.menu(keys, settle=0.05)

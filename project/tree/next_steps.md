@@ -283,7 +283,7 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    the rule fled down known stairs at any HP above think_hp; now news only above 80% unless it may be a paralysing
    gaze (unit test; 22 unit tests). **A4** (Wormtongue) not stageable while he lives on another level. Still open:
    L2/L3 (need forging: asked), D4 inner room (paintable), B5, A10, A11, D7 (level import?). **Next:** step 5 missions,
-   once the user answers the open questions (`flee_hp` 0.4 in vetted solo hunts, more forging). **Decided (the user,
+   (no open questions left from batch 5). **Decided (the user,
    2026-10-24): missions run with `--hpwarn 5`**, now the Pilot's default (HANDBOOK tells the Navigator); A2I and A1
    pass with it.
    **The game clock, measured (session 4, late; the user: it must work on live servers, no server change):** the
@@ -295,7 +295,15 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    confirmation, store replies, stairs pending, the mover's step/run timeouts, world's polling of our own client
    (in the HP bubble it polled the map only every 2.5 s: fixed). Unit `game_clock_from_fuel`; live D6, A3, A9,
    B3 PASS after it. Not yet seen live: a long rest measured at ~10x (rests so far were 2-3 s, too short to
-   measure; the model covers them). (`plan trip LO-HI until COND then recall`), 2.4 order
+   measure; the model covers them). **Then L2 measured it (fuel every second):** resting ran at 1x for 6 s and
+   the recall took ~25 ticks (15-16 s): the server's speed-up needs no awake monster in line of sight, seen or not
+   (`monsters_in_los`), and after a fight there usually is one in the dark. So the model now leaves the speed-ups
+   out (1x, or 1/5 in the HP bubble, also when resting hurt); the fuel raises it only when it sees one. (A model
+   running fast where the game doesn't ends game timers early: a recall "overdue" and read again cancels it.)
+   The server doesn't answer a redraw while resting: a rest is measured when it ends.
+   **Decisions (the user, 2026-10-24): flee_hp stays 0.5 everywhere; the forge may be used for set-pieces.**
+   The CON-ring swap can't set HP (HP scales with max HP). A2I found the flee-failed escape ignoring a dangerous
+   caster beyond 5 squares (Ibun cast for 7 s from 12): fixed, A2f passes. (`plan trip LO-HI until COND then recall`), 2.4 order
    checks (hunt/fetch vetted, stale orders held via `after_report`), 2.5 belief state in the report, 2.6 the new
    toolset + a ~100-line HANDBOOK + navigator.md, 2.7 a short supervised mission scored against m17-23. Then the time bubble (timers to game turns; decided below).
 3. **Rulebook:** the Advisor's **release 2** is in `Advisor/data/rulebook/`, synced into `github/tools/rulebook/`

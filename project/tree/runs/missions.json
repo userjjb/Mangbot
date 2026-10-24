@@ -1021,5 +1021,115 @@
   "effort": null,
   "report": "compact",
   "notes": "set-piece A1"
+ },
+ {
+  "label": "sp-L2-20261024-010320",
+  "nick": "dive04",
+  "start": "2026-10-24 01:03",
+  "end": "2026-10-24 01:06",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece L2"
+ },
+ {
+  "label": "sp-L2-20261024-010621",
+  "nick": "dive04",
+  "start": "2026-10-24 01:06",
+  "end": "2026-10-24 01:09",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece L2"
+ },
+ {
+  "label": "sp-L2-20261024-010941",
+  "nick": "dive04",
+  "start": "2026-10-24 01:10",
+  "end": "2026-10-24 01:12",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece L2"
+ },
+ {
+  "label": "sp-L2-20261024-011349",
+  "nick": "dive04",
+  "start": "2026-10-24 01:14",
+  "end": "2026-10-24 01:16",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece L2"
+ },
+ {
+  "label": "sp-L2g-20261024-011614",
+  "nick": "dive04",
+  "start": "2026-10-24 01:16",
+  "end": "2026-10-24 01:19",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece L2g"
+ },
+ {
+  "label": "sp-A9-20261024-011957",
+  "nick": "dive04",
+  "start": "2026-10-24 01:20",
+  "end": "2026-10-24 01:23",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A9"
+ },
+ {
+  "label": "sp-A2I-20261024-012258",
+  "nick": "dive04",
+  "start": "2026-10-24 01:23",
+  "end": "2026-10-24 01:26",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A2I"
+ },
+ {
+  "label": "sp-D6-20261024-012549",
+  "nick": "dive04",
+  "start": "2026-10-24 01:26",
+  "end": "2026-10-24 01:28",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece D6"
+ },
+ {
+  "label": "sp-A2I-20261024-012954",
+  "nick": "dive04",
+  "start": "2026-10-24 01:30",
+  "end": "2026-10-24 01:33",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A2I"
+ },
+ {
+  "label": "sp-A2K-20261024-013302",
+  "nick": "dive04",
+  "start": "2026-10-24 01:33",
+  "end": "2026-10-24 01:36",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A2K"
+ },
+ {
+  "label": "sp-A2f-20261024-013617",
+  "nick": "dive04",
+  "start": "2026-10-24 01:36",
+  "end": "2026-10-24 01:39",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A2f"
  }
 ]

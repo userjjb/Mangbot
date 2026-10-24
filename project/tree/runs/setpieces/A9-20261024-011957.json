@@ -1,0 +1,65 @@
+{
+ "id": "A9",
+ "tag": "A9-20261024-011957",
+ "depth_ft": 400,
+ "start": "2026-10-24 01:19:57",
+ "checks": {
+  "Door/Stair Location within 5 s of arriving": {
+   "pass": true,
+   "detail": "[(2.4, 'custom z item=12', 'trip: recall arrival: Door/Stair Location')]"
+  },
+  "no second Word of Recall while one is pending": {
+   "pass": true,
+   "detail": "0 reads"
+  }
+ },
+ "notes": [
+  "no floor square 8 from Dive04 at (16, 185)",
+  "no floor square 9 from Dive04 at (16, 185)"
+ ],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   265,
+   265
+  ],
+  "attention": [
+   [
+    2.3,
+    "goal_done",
+    "recall to 400 ft: arrived at 400 ft"
+   ],
+   [
+    15.1,
+    "interesting_item",
+    "Wand of Magic Missile seen on this level (devices and jewellery sell for 50-700 once known): its squ"
+   ],
+   [
+    28.4,
+    "tactic",
+    "hungry and no food: read a Scroll of Satisfy Hunger"
+   ]
+  ],
+  "acts": [
+   [
+    2.4,
+    "custom z item=12",
+    "trip: recall arrival: Door/Stair Location"
+   ],
+   [
+    28.4,
+    "custom r item=10",
+    "hungry (2), no food: read Satisfy Hunger"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-24 01:22:58",
+ "pass": true
+}

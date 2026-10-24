@@ -1,0 +1,11 @@
+{
+ "id": "L2",
+ "tag": "L2-20261024-010320",
+ "depth_ft": 550,
+ "start": "2026-10-24 01:03:20",
+ "checks": {},
+ "notes": [],
+ "error": "RuntimeError(\"the Ring of Constitution wasn't picked up\")",
+ "end": "2026-10-24 01:06:08",
+ "pass": false
+}

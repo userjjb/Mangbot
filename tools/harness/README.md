@@ -42,7 +42,9 @@ Each run:
 | B3 | a Brigand (steals, teleports) adjacent | slain; nothing stolen |
 | D6 | `goal explore` 40 s | best 5-s window ≥ 3 tiles/s: passes since the mover uses server pathfind (4.2 best, 3.2 overall; was 1.4-1.6) |
 | L1 | a Hill giant 5-8 off, in sight | boulders thrown, no HP lost (a rulebook claim from the code: confirmed live) |
-| L2 | hurt, then `goal recall` resting out of sight | ~10x sooner than standing: **open** (the read came at full HP twice; standing took 17.9 and 20.4 s) |
+| L2 | a Sabre-tooth tiger fight (17-40 HP lost), then `goal recall` at once, resting while it charges | ~10x sooner than standing: **FAILS, and the claim is wrong in practice**: the fuel (sampled every second) ran at 1x through a 6-s rest and the recall came after ~25 ticks (15-16 s). The speed-up needs no *awake monster in line of sight, seen or not* (`monsters_in_los`); after a fight at 650 ft there usually is one in the dark. The Advisor's CON-ring swap can't set HP here: MAngband scales HP with max HP (`xtra1.c calc_hitpoints`) |
+| L2g | L2 with Gandalf off the level | the same (so his bubble wasn't the cause) |
+| A2f | a Dark elven lord (rated 4) 8 off with a clear line, no stairs known | Word of Recall within 2 s of the danger rule (PASS, after a fix: the flee-failed escape counted only monsters within 5 squares, and A2I's Ibun at 12 got 7 s of free fire bolts and Slow) |
 | D3 | walled in: Gandalf carves a secret door and an 8-square corridor into rock off a floor square, Dive04 pulled to its far end (knowing ground outside it can't reach), `goal explore` | walks out through the door; no "nothing left" or "frontier unreachable" before it |
 | B4 | a Scruffy looking hobbit (steals gold) 2 off in town, Dive04 idle | no gold lost; the thief killed (passes as built: one blow kills it) |
 | B4w | the same while Dive04 walks a 20-30 square goto across town | the same (passes as built) |

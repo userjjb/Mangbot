@@ -1,0 +1,26 @@
+{
+ "id": "L2",
+ "tag": "L2-20261024-010621",
+ "depth_ft": 600,
+ "start": "2026-10-24 01:06:21",
+ "checks": {
+  "hurt by the swap": {
+   "pass": false,
+   "detail": "HP [292, 292]"
+  }
+ },
+ "notes": [],
+ "con_swap": {
+  "pval": 5,
+  "full": [
+   292,
+   292
+  ],
+  "after": [
+   292,
+   292
+  ]
+ },
+ "end": "2026-10-24 01:08:44",
+ "pass": false
+}

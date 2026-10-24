@@ -1,0 +1,86 @@
+{
+ "id": "A2f",
+ "tag": "A2f-20261024-013617",
+ "depth_ft": 650,
+ "start": "2026-10-24 01:36:17",
+ "checks": {
+  "danger seen": {
+   "pass": true,
+   "detail": "at 4.9"
+  },
+  "Word of Recall within 2 s of it": {
+   "pass": true,
+   "detail": "danger at 4.9, recall read at 5.0"
+  },
+  "lowest HP >= 60%": {
+   "pass": true,
+   "detail": "lowest [224, 265]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   224,
+   265
+  ],
+  "attention": [
+   [
+    4.9,
+    "danger_seen",
+    "Dark elven lord (rated 4: lethal until clvl 28) in view: heading for the stairs"
+   ],
+   [
+    5.0,
+    "goal_failed",
+    "flee (Dark elven lord): no stairs known"
+   ],
+   [
+    5.0,
+    "emergency",
+    "couldn't reach the stairs with 1 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    8.1,
+    "interesting_item",
+    "Wand of Light seen on this level (devices and jewellery sell for 50-700 once known): its square is u"
+   ]
+  ],
+  "acts": [
+   [
+    5.0,
+    "custom r item=8",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    11.8,
+    "rest",
+    "rest"
+   ],
+   [
+    13.3,
+    "rest",
+    "rest"
+   ],
+   [
+    14.3,
+    "rest",
+    "rest"
+   ],
+   [
+    23.4,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 1,
+  "phase_reads": 0,
+  "wor_reads": 1,
+  "cures": 0
+ },
+ "end": "2026-10-24 01:39:16",
+ "pass": true
+}
