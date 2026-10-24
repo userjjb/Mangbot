@@ -1674,6 +1674,17 @@ class TownKit(Goal):
             self.queue = p.town_sell_stores() if self.identified else []
             return None
         if self.stage == "buy":
+            # Short of a Word of Recall and the gold for it, by day: townfarm the difference first (the user,
+            # 2026-10-24: m27 ended broke; townfarm made ~120 gold a minute by day in m14, little at night)
+            if not self.queue and p.broke_for_recall() and not getattr(self, "farmed", False):
+                self.farmed = True
+                if w.is_day():
+                    gold = w.ind.get("gold", [0])[0]
+                    need = (p.price_of("Word of Recall", 5) or 250) * (2 - p.kit_count("Word of Recall")) + 20
+                    self.sub = TownFarm(gold + need, minutes=5)
+                    self.done_log.append(f"short of Word of Recall: townfarm to {gold + need} gold")
+                    return None
+                self.done_log.append("short of Word of Recall, and it's night (townfarm earns little): saving the gold")
             if not self.queue:
                 buys, short = p.town_shopping(self.kit, self.buylist)
                 self.short = short

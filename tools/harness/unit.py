@@ -398,6 +398,25 @@ def band_leave_finds_stairs():
 
 
 @case
+def town_kit_townfarms_when_broke():
+    """The user (after m27, which ended broke): plan town short of a Word of Recall and its price townfarms the
+    difference by day before buying; by night it saves the gold."""
+    def run(day):
+        p = pilot(gold=30, pack=[("a Scroll of Word of Recall", 70)])
+        p.w.depth, p.w.in_dungeon, p.w.inven_dirty = 0, False, False
+        p.w.is_day = lambda: day
+        p.busy_until, p.pending_use = 0.0, None
+        p.price_of = lambda kind, store=None: 242
+        g = P.TownKit()
+        g.stage, g.t = "buy", 0.0
+        p.town_shopping = lambda kit, bl: ([], [])
+        g.tick(p)
+        return type(g.sub).__name__ if g.sub else None, g.done_log[-1:]
+    day, night = run(True), run(False)
+    return day[0] == "TownFarm" and night[0] is None and "night" in night[1][0], f"day: {day}; night: {night}"
+
+
+@case
 def pack_full_makes_room():
     """C4: pack 23/23 with a worthless Potion of Water among kit items; a Wand of Stinking Cloud underfoot: the
     Pilot destroys the water to take the wand (and never destroys kit consumables)."""
