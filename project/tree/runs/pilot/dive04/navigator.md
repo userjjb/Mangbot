@@ -419,3 +419,4 @@
 - 02:24:57 350ft 100% | user: Brown mold next to the > has the Pilot looping (300 ft) | goal hunt Brown mold (passed the check) | L6 mold is trivial, blocking our only known > ; 14 min gone at 300 ft
 - 02:29:08 450ft 98% | user: food + Satisfy Hunger redundant, eat/destroy food to free a slot | replied: eat/destroy are town-only for me; will do in town | pack full; Pilot meanwhile destroyed Rod of Trap Location for Mughash drops
 - 02:30:04 450ft 100% | user: can't you destroy the food? | tried destroy Ration: refused in dungeon; told user, complained | Pilot leaves stackable Heroism, a missing control costs finds
+- 02:32:37 400ft 88% | 02:32 fled Ibun (L24 unique, disenchants: Spear now +4,+6, armour/cloak -1) up to 400 ft; 22 min of the trip spent diving | re-plan trip 400-600 so it explores from here, same home conditions | only ~9 min left before 02:41; walking to 500 eats most of it

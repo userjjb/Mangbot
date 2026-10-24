@@ -563,7 +563,15 @@ class Dive(Goal):
         if not downs and w.depth == 0 and p.town_stairs and not up:
             downs = [tuple(p.town_stairs)]
             w.memory.setdefault(downs[0], ">")
-        if w.standing_on == want:
+        # Just fled from the level these stairs lead to, arriving here: not straight back (find another)
+        fl = getattr(p, "fled_from", None)
+        back = fl and fl[2] == w.level_t and fl[0] == w.depth + (-1 if up else 1) and not waited(fl[1], 300)
+        if back and w.standing_on == want and (w.level_t, w.pos) not in self.bad_stairs:
+            self.bad_stairs.add((w.level_t, w.pos))
+            self.bad_t[(w.level_t, w.pos)] = gnow() + 10 ** 6       # (never expires on this level)
+            p.notify("tactic", f"not taking these stairs back to {fl[0] * 50} ft, which we just fled: looking for "
+                               "other stairs", news=True)
+        if w.standing_on == want and (w.level_t, w.pos) not in self.bad_stairs:
             return self._stairs(p, want)
         downs = [d for d in downs if (w.level_t, d) not in self.bad_stairs]
         if downs and not self.walking:
@@ -987,6 +995,9 @@ class Flee(Goal):
             # Report once the new level is in (the report showed the old depth
             # and stairs right after "left by the stairs", mission 4)
             if w.level_t != self.took[0]:
+                # (where it came out: a dive mustn't take this staircase straight back -- the level may be one
+                # the server keeps, with the danger beside the arrival: m25 looped into Ibun at 450 ft)
+                p.fled_from = (getattr(self, "from_depth", None), gnow(), w.level_t)
                 return ("done", f"left by the stairs; now at {w.depth_ft} ft")
             if waited(self.took[1], 5):
                 return ("done", "took the stairs, but no level change seen")
@@ -1001,6 +1012,7 @@ class Flee(Goal):
         if w.standing_on and w.standing_on in ok:     # (None in "<>" crashed a flee, mission 6)
             p.take_stairs(w.standing_on)
             self.took = (w.level_t, gnow())
+            self.from_depth = w.depth
             return None
         stairs = w.find(ok)
         if not stairs:
