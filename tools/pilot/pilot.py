@@ -4811,13 +4811,16 @@ class Pilot:
         w = self.w
         if gnow() < self.busy_until or w.flag("blind") or w.flag("confused"):
             return False
-        for it in w.items():
-            kind = it["name"] if " of " in it["name"] else (self.flavour_of(it) or {}).get("kind", "")
-            if it["tval"] in (55, 66) and "Door/Stair Location" in kind and "(0 charges)" not in it["name"] \
-                    and "charging" not in it["name"]:
-                self.cmd(f"custom {'u' if it['tval'] == 55 else 'z'} item={it['item']}",
-                         f"{why}: Door/Stair Location", hold=0.8)
-                return True
+        # Door/Stair Location first (cheap), else Enlightenment (maps the whole level, stairs included: a
+        # Rod of Enlightenment identified after m27)
+        for want in ("Door/Stair Location", "Enlightenment"):
+            for it in w.items():
+                kind = it["name"] if " of " in it["name"] else (self.flavour_of(it) or {}).get("kind", "")
+                if it["tval"] in (55, 66) and want in kind and "(0 charges)" not in it["name"] \
+                        and "charging" not in it["name"]:
+                    self.cmd(f"custom {'u' if it['tval'] == 55 else 'z'} item={it['item']}",
+                             f"{why}: {want}", hold=0.8)
+                    return True
         return False
 
     def wear_light(self, why):
