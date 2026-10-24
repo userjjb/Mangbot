@@ -1,5 +1,5 @@
 #!/bin/bash
-# restart.sh NICK -- update the Pilot safely (Pilot options in PILOT_ARGS, e.g. PILOT_ARGS="--hpwarn 5"): park (log out at a safe moment),
+# restart.sh NICK -- update the Pilot safely (Pilot options in PILOT_ARGS, e.g. PILOT_ARGS="--hpwarn 0" for no time bubble; the default is 5): park (log out at a safe moment),
 # wait for the old Pilot to exit, start the new one (logs back in).
 set -u
 NICK=${1:?usage: restart.sh NICK [PORT]}; PORT=${2:-28346}

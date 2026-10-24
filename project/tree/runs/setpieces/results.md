@@ -91,3 +91,5 @@
 - 2026-10-24 00:13:00 **A9** PASS (Door/Stair Location within 5 s of arriving, no second Word of Recall while one is pending) `A9-20261024-001300.json`
 - 2026-10-24 00:17:08 **D6** PASS (runs >= 3 tiles/s (best 5-s window)) `D6-20261024-001708.json`
 - 2026-10-24 00:19:38 **A3** PASS (the goto held, no walking with it adjacent, lowest HP >= 40%) `A3-20261024-001938.json`
+- 2026-10-24 00:53:30 **A2I** PASS (Word of Recall within 2 s of first sight, lowest HP >= 40%) `A2I-20261024-005330.json`
+- 2026-10-24 00:56:21 **A1** PASS (lowest HP >= 40%, at most 3 Phase Door) `A1-20261024-005621.json`

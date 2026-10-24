@@ -981,16 +981,17 @@ def main():
     ap.add_argument("sid", help="A7 | A8 | A8o (A8 overridden) | A9 | list")
     ap.add_argument("--depth", type=int, default=0, help="default: the least recently used of 300-500 ft")
     ap.add_argument("--keep", action="store_true")
-    ap.add_argument("--hpwarn", type=int, default=0, help="run the Pilot with --hpwarn N (the time bubble A/B)")
+    ap.add_argument("--hpwarn", type=int, default=None,
+                    help="run the Pilot with --hpwarn N (default: the Pilot's, 5; 0 = no time bubble, for an A/B)")
     a = ap.parse_args()
     if a.sid == "list":
         for k, f in SETPIECES.items():
             print(k, "-", (f.__doc__ or "").strip().splitlines()[0])
         return
     depth = 0 if a.sid in TOWN else (a.depth or fresh_depth())
-    if a.hpwarn:
+    if a.hpwarn is not None:
         os.environ["PILOT_ARGS"] = f"--hpwarn {a.hpwarn}"    # (charsave's save starts the Pilot with it)
-    run = Run(a.sid + (f"-hw{a.hpwarn}" if a.hpwarn else ""), depth, a.keep)
+    run = Run(a.sid + (f"-hw{a.hpwarn}" if a.hpwarn is not None else ""), depth, a.keep)
     try:
         run.setup()
         SETPIECES[a.sid](run)

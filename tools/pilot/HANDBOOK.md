@@ -127,5 +127,7 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 
 - `parked` means the Pilot is updating. "Connection refused" for a minute or two is normal: wait 20 s and retry, then
   `status` (a plan survives the restart). After a fight, first check whether the character died.
+- **At 50% HP or below the server runs your game time at 1/5** (the time bubble): a fight there gives you 5x the wall
+  time per turn, so an order sent while hurt is less likely to arrive late. The Pilot's timers follow game time.
 - Monster data here differs from Vanilla Angband: trust `monster NAME` and the levels the Pilot shows.
 - Journal one line per decision. Urgent alerts: order first, then journal. Everything else: journal first.

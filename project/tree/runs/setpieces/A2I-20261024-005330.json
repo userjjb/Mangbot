@@ -1,0 +1,87 @@
+{
+ "id": "A2I",
+ "tag": "A2I-20261024-005330",
+ "depth_ft": 450,
+ "start": "2026-10-24 00:53:30",
+ "checks": {
+  "Word of Recall within 2 s of first sight": {
+   "pass": true,
+   "detail": "seen at 3.551058292388916, recall read at 3.5"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [160, 265]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   160,
+   265
+  ],
+  "attention": [
+   [
+    3.4,
+    "danger_seen",
+    "Ibun, Son of Mim (unique, lvl 24) in view: heading for the stairs"
+   ],
+   [
+    3.5,
+    "goal_failed",
+    "flee (Ibun, Son of Mim): no stairs known"
+   ],
+   [
+    3.5,
+    "emergency",
+    "couldn't reach the stairs with 1 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    11.5,
+    "fight_going_badly",
+    "HP 164/265 fighting Ibun, Son of Mim"
+   ],
+   [
+    13.5,
+    "danger_seen",
+    "Ibun, Son of Mim (unique, lvl 24) in view: heading for the stairs"
+   ],
+   [
+    13.5,
+    "goal_failed",
+    "flee (Ibun, Son of Mim): no stairs known"
+   ]
+  ],
+  "acts": [
+   [
+    3.5,
+    "custom r item=8",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    13.5,
+    "custom r item=7",
+    "flee failed, monsters adjacent: phase door"
+   ],
+   [
+    21.5,
+    "rest",
+    "rest"
+   ],
+   [
+    24.6,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 1,
+  "phase_reads": 1,
+  "wor_reads": 1,
+  "cures": 0
+ },
+ "end": "2026-10-24 00:56:21",
+ "pass": true
+}

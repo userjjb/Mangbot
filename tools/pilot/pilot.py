@@ -6840,9 +6840,9 @@ def main():
     ap.add_argument("--client", default=os.path.join(repo, "mangclient"))
     ap.add_argument("--libdir", default=os.path.join(repo, "lib"))
     ap.add_argument("--pktlog")
-    ap.add_argument("--hpwarn", type=int, default=0,
+    ap.add_argument("--hpwarn", type=int, default=5,
                     help="hitpoint_warn 0-9: below N x 10%% HP the server slows our time bubble to 1/5; the "
-                         "Pilot's timers follow on its game clock (0 = off, the default)")
+                         "Pilot's timers follow on its game clock (default 5, the user 2026-10-24; 0 = off)")
     args = ap.parse_args()
 
     nick = args.nick
@@ -6855,6 +6855,7 @@ def main():
     # --hpwarn N: below N x 10% HP the server runs our time bubble at 1/5. Since 2026-10-23 the
     # Pilot's timers are on a game clock that follows it (world.gnow); before, they were
     # wall-clock, and at low HP re-plans fired between our turns (mission 7), so it ran with 0.
+    # Missions run with 5 since 2026-10-24 (the user).
     client = MangClient(args.client, args.libdir, nick,
                         args.passfile or os.path.join(priv, nick.lower() + ".pass"),
                         args.host, args.port, config=args.config or os.path.join(priv, nick.lower() + ".mangrc"),

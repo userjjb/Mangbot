@@ -271,7 +271,7 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    `wall_of`); `pilot.py --hpwarn N` (default 0; `PILOT_ARGS` in restart.sh/charsave.sh; `setpiece.py --hpwarn`).
    Regression A7 on the clock: PASS. A/B: A2I with hpwarn 5 entered the bubble (51% HP, factor 0.2 for 2.4 s until the
    recall) and behaved (1 Phase, no doubled reads, lowest 51%) vs A2/A2K without (45-48%, 2 Phase, 4-5
-   emergencies): one run each, so a smoke test, not proof. **Decision for the user:** run missions with --hpwarn 5?
+   emergencies): one run each, so a smoke test, not proof. (Decided 2026-10-24: missions run with --hpwarn 5.)
    Staging note: a unique exists once, so repeat set-pieces rotate uniques (A2I Ibun, A2K Khim).
    **Batch 5 (session 4, evening):** the **pathfind speed-up** is in (mover.py `path_run`: server `pathfind` for legs of
    4+ steps with nothing in view; D6 PASS, 3.2 tiles/s overall vs 1.4; the Advisor's ceiling estimate is 3-4 after
@@ -283,7 +283,9 @@ flasks; CON restored (WIS/CHR still drained). **No Free Action.** Navigator debt
    the rule fled down known stairs at any HP above think_hp; now news only above 80% unless it may be a paralysing
    gaze (unit test; 22 unit tests). **A4** (Wormtongue) not stageable while he lives on another level. Still open:
    L2/L3 (need forging: asked), D4 inner room (paintable), B5, A10, A11, D7 (level import?). **Next:** step 5 missions,
-   once the user answers the three questions (`--hpwarn 5`, `flee_hp` 0.4 in vetted solo hunts, more forging).
+   once the user answers the open questions (`flee_hp` 0.4 in vetted solo hunts, more forging). **Decided (the user,
+   2026-10-24): missions run with `--hpwarn 5`**, now the Pilot's default (HANDBOOK tells the Navigator); A2I and A1
+   pass with it.
    **The game clock, measured (session 4, late; the user: it must work on live servers, no server change):** the
    worn light's fuel is a per-player game-tick counter (one turn of fuel per tick of our bubble), resent by a free
    redraw. `world.py`: the model is now the server's whole rule (town 1; nothing in sight: resting 10x, running

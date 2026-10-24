@@ -1,0 +1,104 @@
+{
+ "id": "A1",
+ "tag": "A1-20261024-005621",
+ "depth_ft": 500,
+ "start": "2026-10-24 00:56:21",
+ "checks": {
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [182, 265]"
+  },
+  "at most 3 Phase Door": {
+   "pass": true,
+   "detail": "0 reads"
+  }
+ },
+ "notes": [
+  "left the level: True; band events: 1"
+ ],
+ "stats": {
+  "hp_start": [
+   265,
+   265
+  ],
+  "hp_min": [
+   182,
+   265
+  ],
+  "attention": [
+   [
+    10.9,
+    "unseen_attacker",
+    "'It fires an arrow!': minor attack from something unseen; carrying on (HP 100%)"
+   ],
+   [
+    20.5,
+    "tactic",
+    "5 monsters together but weak (~50 worst-case melee a turn vs HP 217): fighting on"
+   ],
+   [
+    21.0,
+    "plan",
+    "trip: leaving 500 ft (a band)"
+   ],
+   [
+    21.0,
+    "band",
+    "a band within 10 squares: Hill orc \u00d77 (7 monsters, ~70 worst-case melee a turn together, HP 218): le"
+   ],
+   [
+    21.0,
+    "goal_failed",
+    "flee (band: the trip leaves the level): no stairs known"
+   ],
+   [
+    21.0,
+    "emergency",
+    "couldn't reach the stairs with 7 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    35.2,
+    "plan_done",
+    "trip 500-500 until \"minutes>3\" then recall: back in town (not by the plan's recall); 1 level done"
+   ]
+  ],
+  "acts": [
+   [
+    17.9,
+    "rest",
+    "rest"
+   ],
+   [
+    19.3,
+    "rest",
+    "rest"
+   ],
+   [
+    21.0,
+    "custom r item=8",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    29.9,
+    "rest",
+    "rest"
+   ],
+   [
+    33.2,
+    "rest",
+    "rest"
+   ],
+   [
+    36.7,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 1,
+  "phase_reads": 0,
+  "wor_reads": 1,
+  "cures": 0
+ },
+ "end": "2026-10-24 00:59:55",
+ "pass": true
+}
