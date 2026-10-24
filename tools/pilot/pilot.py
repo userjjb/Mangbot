@@ -4045,7 +4045,8 @@ class Pilot:
         kill: leave the level, never path around it."""
         w = self.w
         lev = w.clvl
-        goals = self.mover.goals if self.mover.active and self.mover.goals else set()
+        # (squares only: a free run's goals are {"free-run"} -- a crash in m25)
+        goals = {g for g in (self.mover.goals or ()) if isinstance(g, tuple)} if self.mover.active else set()
         if goals:
             self.still_goals = (w.level_t, set(goals))
         elif self.still_goals[0] == w.level_t:

@@ -1075,3 +1075,5 @@ Traceback (most recent call last):
     return max(abs(a[0] - b[0]), abs(a[1] - b[1]))
                    ~~~~~^~~~~~
 TypeError: unsupported operand type(s) for -: 'str' and 'int'
+02:25:42 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+02:25:42 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
