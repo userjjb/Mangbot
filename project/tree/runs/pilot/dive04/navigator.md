@@ -411,3 +411,5 @@
 - Trip 1 (recall to 600 ft) cost both WoR in 3 min: orc-pit level + band + no stairs known; 310 XP. Net gold for the mission about -18 (190 -> 172) but WoR back to 2.
 - Trip 2 (stairs, 300-400 ft, 27 min, 6 levels): ~700 gold gross, little XP (clvl 22 vs L6 monsters). Left 4 levels for weak "bands" (Snaga, Cave spider, Novice rogue).
 - Lantern was found unwielded twice in town (start, after trip 1); I wore it by hand.
+- 02:10:22 town 100% | town 02:10, 172g, kit fine (6 CCW, 11 Phase, 2 WoR) | plan town with no extra buys | too poor for CCW/Restore; let policy sell spare lantern and top up
+- 02:10:38 town 100% | town done, nothing sold/bought | trip 500-650 via stairs, home on cures<4 or phase<5 or time>02:41 | handbook depth band for XP; stairs keep both WoR (one spare for emergency, one home); time margin for 02:50
