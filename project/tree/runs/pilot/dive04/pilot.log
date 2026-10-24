@@ -1077,3 +1077,6 @@ Traceback (most recent call last):
 TypeError: unsupported operand type(s) for -: 'str' and 'int'
 02:25:42 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
 02:25:42 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+02:32:12 pilot stopping
+02:32:15 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+02:32:15 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock

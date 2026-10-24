@@ -603,12 +603,13 @@ class Dive(Goal):
             p.scummed, p.kept = set(), set()
         self.scummed, self.kept = p.scummed, p.kept
         here = (w.depth, w.arrive_pos)
-        if w.standing_on == other and scum_ok and here in self.scummed and w.depth not in self.kept:
+        if w.standing_on == other and scum_ok and w.arrive_pos and here in self.scummed and w.depth not in self.kept:
             self.kept.add(w.depth)
             p.notify("tactic", f"{w.depth_ft} ft is a level the server keeps (back on {w.arrive_pos[0]},"
                                f"{w.arrive_pos[1]} after scumming): exploring it for a '{want}' instead", news=True)
         if w.standing_on == other and scum_ok and w.depth not in self.kept:
-            self.scummed.add(here)
+            if w.arrive_pos:
+                self.scummed.add(here)
             return self._stairs(p, other)
         # No stairs known at all: a Door/Stair Location device maps them
         if not w.find("<>") and waited(w.level_t, 1.0) and not w.monsters and self.locate_stairs(p):
@@ -3608,6 +3609,11 @@ class Pilot:
             return False                         # worthless: leave it
         free = 23 - len(w.items())
         if free >= 1:
+            return True
+        # one that stacks with what we carry needs no slot (m25 left a Potion of Heroism 7 times, "pack full",
+        # with 6 in the pack)
+        key = self.kind_key_of(name)
+        if any(self.kind_key_of(i["name"]) == key for i in w.items()):
             return True
         # Use something up before destroying anything (the user, mission 21: a robe and
         # a scroll were destroyed with a flask of oil in the pack that could have

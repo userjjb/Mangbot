@@ -417,3 +417,5 @@
 - 02:20:18 300ft 100% | user: 'the down level is static' | asked what they mean; keep diving, watch for bouncing | at 300 ft after 10 min, stairs dive is slow (~1 level/min)
 - 02:21:41 250ft 100% | Pilot bouncing 250<->300: persistent 300 ft lands on the same < with no stairs known | goal explore until=stairs (sent while it was on 250, by mistake) | need it to search 300 ft for a > instead of scumming
 - 02:24:57 350ft 100% | user: Brown mold next to the > has the Pilot looping (300 ft) | goal hunt Brown mold (passed the check) | L6 mold is trivial, blocking our only known > ; 14 min gone at 300 ft
+- 02:29:08 450ft 98% | user: food + Satisfy Hunger redundant, eat/destroy food to free a slot | replied: eat/destroy are town-only for me; will do in town | pack full; Pilot meanwhile destroyed Rod of Trap Location for Mughash drops
+- 02:30:04 450ft 100% | user: can't you destroy the food? | tried destroy Ration: refused in dungeon; told user, complained | Pilot leaves stackable Heroism, a missing control costs finds
