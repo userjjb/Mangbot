@@ -19,7 +19,7 @@ Architect builds everything else.
 | 2 | who decides what | (inputs only) | Architect: 2.4 hunt checks built 10-24 (fight_sim p90 ≤ 60% HP, summoner and blinker rules; "don't quaff before closing in" put to the user); 2.1 item policy done (itemvalue.py from our tables, value refusals with a Navigator **debt**, Free-Action inference, pickup by value); 2.2 town kit next; 2.3/2.4 danger rules (will use `monsters.csv`) |
 | 3 | the rulebook | **ours** | **release 1 + 2 done and synced; release 3 (drops + feelings value fix) + fight_sim.py synced 10-24** (sync.sh also copies fight_sim.py, build_monsters.py, data/monsters/monsters.csv → keep their paths stable; tell the Architect when they change) (`../memos/2026-10-24-rulebook-r3.md`); (`../memos/2026-10-24-rulebook.md`, `-rulebook-r2.md`; `data/rulebook/`, query `rule.py`; r2 synced 10-24, C8 rule fixed by the Architect); the Architect syncs it into the repo with `github/tools/rulebook/sync.sh` — **tell them whenever we rebuild** |
 | 4 | harness / set-pieces | **ours: the list** | **harness built 10-23** (`github/tools/harness/`, results `runs/setpieces/results.md`): A1, A2, A2L, A6, A7, A8(o,w), A9 (summoned), C3 pass live; C8 unit-only. Proposed speed/AC-aware emergency threshold (`worst_3turns_acNN`, `to_architect/2026-10-24-emergency-threshold.md`); next A3, B1, C4, C5 List: `../memos/2026-10-24-setpieces.md` (41 cases + A7-A9 addenda) |
-| 5 | missions again with scorecards | scorecard per mission; Opus vs Sonnet | **started**: step 2 finished, m24 done (Opus) and reviewed (`../memos/2026-10-24-m24.md`); target for next missions: > 58 XP/min at 500-650 ft, lowest HP >= 50% |
+| 5 | missions again with scorecards | scorecard per mission; Opus vs Sonnet | **started**: m24 (Opus) reviewed (`../memos/2026-10-24-m24.md`); m25 (Opus, walked down, 10.9 XP/dmin) and m26 (Sonnet, 650 ft, 50.7 XP/min at 500-650 but low HP 14%) scored by the Architect; Pilot changed between them; target for next missions: > 58 XP/min at 500-650 ft, lowest HP >= 50% |
 
 ## Pending Advisor work (in order)
 
@@ -37,7 +37,8 @@ Architect builds everything else.
 
 ## Waiting on the user
 
-- Nothing pending. The user decided (10-24): missions run with `--hpwarn 5`; `flee_hp` stays 0.5 everywhere (my hunt-only 0.4 declined); the forge may be used.
+- **auto_scum on/off for Dive04** (asked via `to_architect/2026-10-24-structures.md`; memo §4). I recommend off + compare a mission or two.
+- Otherwise nothing. The user decided (10-24): missions run with `--hpwarn 5`; `flee_hp` stays 0.5 everywhere (my hunt-only 0.4 declined); the forge may be used.
 - (Earlier: the low-HP time bubble: the user decided "after step 2" — then turn-based Pilot timers and an A/B of `--hpwarn 5` on set-pieces
   A1/A2; `to_advisor/2026-10-23-step22-town-kit.md`.)
 
@@ -54,6 +55,7 @@ spells, breaths, tags, solo index), `abilities.csv` (messages proving abilities)
 
 | date | study | memo | data |
 |---|---|---|---|
+| 10-24 | structures (pits/nests/vaults from partial maps; m26 summon trap; auto_scum) | `2026-10-24-structures.md` | `data/structures/` |
 | 09-26 | forum distillation (pre-fork) | `2026-09-26-forum-distillation.md` | `data/forum/` |
 | 09-27 | danger table 0–1500 ft | `2026-09-27-danger-table.md` | `data/monsters/` |
 | 09-28 | the Angband Borg | `2026-09-28-borg.md` | `data/borg/` |
@@ -87,6 +89,10 @@ The user struck one lead (2026-10-07): the live fetch of Bug Reports / Technical
   constant 1/5 below hitpoint_warn×10% (missions now run --hpwarn 5: HP ≤ 50%).
 - Recall arrival: random floor square, pit/nest monsters awake; "something special about this level" = pit/nest/vault (or artifact) at <= 850 ft;
   stairs arrivals land on the staircase back; a 2nd WoR read cancels a pending one; no Deep Descent in 1.5. XP/min: 300-450 ft 8.5, 500-650 ft 58.
+- **auto_scum is ON** (client `lib/user/options.prf`): at 500 ft+ fresh levels are rerolled until "special" or rating > 20 (generate.c:4275);
+  0 of 38 informative arrivals at 500-700 ft were below "luck is turning", 14 special. At <= 850 ft a non-special, non-suppressed feeling
+  proves no pit/nest/vault. dungeon_align is on: rooms centred at X in {16,49,82,115,148,181}, Y = 11k+5. Normal tunnels 2 wide; lit 11x25
+  room never a pit/nest; at 500-1000 ft pits = orc, nests = jelly. m26's Nar group = summon trap (3-5 awake, Depth+5, uniques).
 - Server pathfind = running (×5 time with nothing in LOS): explore could be 3-5× faster in wall time (set-piece D6, 10-23); queued after the time bubble.
 - flee_hp: keep 0.5 (11 drops below 50% in m17-m24 fell on to a median 44%, 5 below 40%); 0.4 only inside a vetted solo hunt (proposed 10-24).
 - A repeat kill of a unique gives no XP and no drop (xtra2.c 'cheeze'); Dive04 has killed Brodda, Bullroarer, Orfax, Wormtongue, Farmer Maggot.

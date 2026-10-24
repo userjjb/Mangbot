@@ -1,0 +1,709 @@
+hook,kind,depth,cap,race,idx,level,char,rarity,speed,share,p_present
+jelly,nest,10,20,Grey mold,15,1,m,1,110,0.0178,0.587
+jelly,nest,10,20,Grey mushroom patch,16,1,",",1,110,0.0178,0.586
+jelly,nest,10,20,White icky thing,19,1,i,1,110,0.0172,0.583
+jelly,nest,10,20,Clear icky thing,20,1,i,1,110,0.0172,0.566
+jelly,nest,10,20,Shrieker mushroom patch,32,2,",",1,110,0.0233,0.683
+jelly,nest,10,20,Blubbering icky thing,33,2,i,1,110,0.0235,0.698
+jelly,nest,10,20,Yellow mushroom patch,39,2,",",1,110,0.023,0.693
+jelly,nest,10,20,White jelly,40,2,j,1,120,0.0233,0.691
+jelly,nest,10,20,Green ooze,53,3,j,2,120,0.0142,0.516
+jelly,nest,10,20,Spotted mushroom patch,58,3,",",1,110,0.0297,0.773
+jelly,nest,10,20,Silver jelly,59,3,j,2,120,0.0146,0.515
+jelly,nest,10,20,Yellow jelly,60,3,j,1,120,0.0295,0.773
+jelly,nest,10,20,Yellow mold,63,3,m,1,110,0.0287,0.764
+jelly,nest,10,20,Blue jelly,71,4,j,1,110,0.0344,0.824
+jelly,nest,10,20,Blue ooze,79,5,j,1,110,0.0374,0.848
+jelly,nest,10,20,Green jelly,81,5,j,1,120,0.0373,0.852
+jelly,nest,10,20,Grey icky thing,84,5,i,1,110,0.0377,0.847
+jelly,nest,10,20,Rot jelly,549,5,j,1,120,0.038,0.852
+jelly,nest,10,20,Purple mushroom patch,88,6,",",2,110,0.0214,0.654
+jelly,nest,10,20,Brown mold,92,6,m,1,110,0.0418,0.886
+jelly,nest,10,20,Red jelly,103,7,j,1,110,0.0454,0.902
+jelly,nest,10,20,Green icky thing,105,7,i,2,110,0.0232,0.686
+jelly,nest,10,20,Green mold,116,8,m,1,110,0.0487,0.923
+jelly,nest,10,20,Bloodshot icky thing,123,9,i,3,110,0.0161,0.556
+jelly,nest,10,20,Clear mushroom patch,139,10,",",2,120,0.0268,0.744
+jelly,nest,10,20,Hairy mold,142,10,m,1,110,0.0528,0.928
+jelly,nest,10,20,Disenchanter mold,143,10,m,1,110,0.0521,0.922
+jelly,nest,10,20,Grape jelly,157,12,j,3,110,0.0187,0.601
+jelly,nest,10,20,Spotted jelly,170,12,j,3,120,0.0178,0.594
+jelly,nest,10,20,Ochre jelly,179,13,j,3,120,0.0194,0.614
+jelly,nest,10,20,Blue icky thing,183,14,i,4,100,0.0144,0.516
+jelly,nest,10,20,Magic mushroom patch,191,15,",",2,140,0.0288,0.779
+jelly,nest,10,20,Gelatinous cube,207,16,j,4,110,0.0143,0.507
+jelly,nest,10,20,Shambling mound,229,18,",",2,110,0.0302,0.78
+jelly,nest,10,20,Red mold,233,19,m,1,110,0.0611,0.956
+jelly,nest,13,23,Grey mold,15,1,m,1,110,0.0165,0.559
+jelly,nest,13,23,Grey mushroom patch,16,1,",",1,110,0.0163,0.566
+jelly,nest,13,23,White icky thing,19,1,i,1,110,0.0165,0.559
+jelly,nest,13,23,Clear icky thing,20,1,i,1,110,0.0167,0.568
+jelly,nest,13,23,Shrieker mushroom patch,32,2,",",1,110,0.0226,0.676
+jelly,nest,13,23,Blubbering icky thing,33,2,i,1,110,0.0217,0.665
+jelly,nest,13,23,Yellow mushroom patch,39,2,",",1,110,0.0221,0.668
+jelly,nest,13,23,White jelly,40,2,j,1,120,0.0217,0.664
+jelly,nest,13,23,Green ooze,53,3,j,2,120,0.0143,0.499
+jelly,nest,13,23,Spotted mushroom patch,58,3,",",1,110,0.0275,0.75
+jelly,nest,13,23,Silver jelly,59,3,j,2,120,0.014,0.501
+jelly,nest,13,23,Yellow jelly,60,3,j,1,120,0.0278,0.76
+jelly,nest,13,23,Yellow mold,63,3,m,1,110,0.0287,0.77
+jelly,nest,13,23,Blue jelly,71,4,j,1,110,0.0318,0.795
+jelly,nest,13,23,Blue ooze,79,5,j,1,110,0.0355,0.825
+jelly,nest,13,23,Green jelly,81,5,j,1,120,0.0356,0.829
+jelly,nest,13,23,Grey icky thing,84,5,i,1,110,0.0368,0.841
+jelly,nest,13,23,Rot jelly,549,5,j,1,120,0.0355,0.839
+jelly,nest,13,23,Purple mushroom patch,88,6,",",2,110,0.0203,0.637
+jelly,nest,13,23,Brown mold,92,6,m,1,110,0.0402,0.872
+jelly,nest,13,23,Red jelly,103,7,j,1,110,0.0432,0.888
+jelly,nest,13,23,Green icky thing,105,7,i,2,110,0.0215,0.673
+jelly,nest,13,23,Green mold,116,8,m,1,110,0.0455,0.901
+jelly,nest,13,23,Bloodshot icky thing,123,9,i,3,110,0.0154,0.536
+jelly,nest,13,23,Clear mushroom patch,139,10,",",2,120,0.024,0.706
+jelly,nest,13,23,Hairy mold,142,10,m,1,110,0.048,0.917
+jelly,nest,13,23,Disenchanter mold,143,10,m,1,110,0.0478,0.907
+jelly,nest,13,23,Grape jelly,157,12,j,3,110,0.0181,0.594
+jelly,nest,13,23,Spotted jelly,170,12,j,3,120,0.0174,0.579
+jelly,nest,13,23,Ochre jelly,179,13,j,3,120,0.0173,0.588
+jelly,nest,13,23,Blue icky thing,183,14,i,4,100,0.0133,0.485
+jelly,nest,13,23,Magic mushroom patch,191,15,",",2,140,0.027,0.746
+jelly,nest,13,23,Gelatinous cube,207,16,j,4,110,0.0141,0.497
+jelly,nest,13,23,Shambling mound,229,18,",",2,110,0.0273,0.747
+jelly,nest,13,23,Red mold,233,19,m,1,110,0.0575,0.947
+jelly,nest,13,23,Black ooze,260,23,j,1,90,0.0584,0.949
+jelly,nest,17,27,Grey mold,15,1,m,1,110,0.0164,0.566
+jelly,nest,17,27,Grey mushroom patch,16,1,",",1,110,0.0158,0.546
+jelly,nest,17,27,White icky thing,19,1,i,1,110,0.0159,0.565
+jelly,nest,17,27,Clear icky thing,20,1,i,1,110,0.0159,0.55
+jelly,nest,17,27,Shrieker mushroom patch,32,2,",",1,110,0.0209,0.646
+jelly,nest,17,27,Blubbering icky thing,33,2,i,1,110,0.021,0.653
+jelly,nest,17,27,Yellow mushroom patch,39,2,",",1,110,0.0211,0.653
+jelly,nest,17,27,White jelly,40,2,j,1,120,0.0213,0.664
+jelly,nest,17,27,Green ooze,53,3,j,2,120,0.013,0.475
+jelly,nest,17,27,Spotted mushroom patch,58,3,",",1,110,0.0264,0.738
+jelly,nest,17,27,Silver jelly,59,3,j,2,120,0.013,0.479
+jelly,nest,17,27,Yellow jelly,60,3,j,1,120,0.0263,0.73
+jelly,nest,17,27,Yellow mold,63,3,m,1,110,0.0263,0.736
+jelly,nest,17,27,Blue jelly,71,4,j,1,110,0.0301,0.78
+jelly,nest,17,27,Blue ooze,79,5,j,1,110,0.0333,0.81
+jelly,nest,17,27,Green jelly,81,5,j,1,120,0.0335,0.805
+jelly,nest,17,27,Grey icky thing,84,5,i,1,110,0.0338,0.821
+jelly,nest,17,27,Rot jelly,549,5,j,1,120,0.0339,0.82
+jelly,nest,17,27,Purple mushroom patch,88,6,",",2,110,0.0197,0.627
+jelly,nest,17,27,Brown mold,92,6,m,1,110,0.0382,0.859
+jelly,nest,17,27,Red jelly,103,7,j,1,110,0.0406,0.872
+jelly,nest,17,27,Green icky thing,105,7,i,2,110,0.0201,0.632
+jelly,nest,17,27,Green mold,116,8,m,1,110,0.0413,0.879
+jelly,nest,17,27,Bloodshot icky thing,123,9,i,3,110,0.0147,0.505
+jelly,nest,17,27,Clear mushroom patch,139,10,",",2,120,0.0225,0.68
+jelly,nest,17,27,Hairy mold,142,10,m,1,110,0.0468,0.91
+jelly,nest,17,27,Disenchanter mold,143,10,m,1,110,0.0462,0.909
+jelly,nest,17,27,Grape jelly,157,12,j,3,110,0.0164,0.557
+jelly,nest,17,27,Spotted jelly,170,12,j,3,120,0.0155,0.541
+jelly,nest,17,27,Ochre jelly,179,13,j,3,120,0.0167,0.561
+jelly,nest,17,27,Blue icky thing,183,14,i,4,100,0.0126,0.467
+jelly,nest,17,27,Magic mushroom patch,191,15,",",2,140,0.0259,0.715
+jelly,nest,17,27,Gelatinous cube,207,16,j,4,110,0.013,0.478
+jelly,nest,17,27,Shambling mound,229,18,",",2,110,0.0261,0.723
+jelly,nest,17,27,Red mold,233,19,m,1,110,0.0527,0.934
+jelly,nest,17,27,Black ooze,260,23,j,1,90,0.0562,0.936
+jelly,nest,17,27,Shimmering mold,554,27,m,1,110,0.0562,0.946
+jelly,nest,20,30,Grey mold,15,1,m,1,110,0.0161,0.548
+jelly,nest,20,30,Grey mushroom patch,16,1,",",1,110,0.016,0.558
+jelly,nest,20,30,White icky thing,19,1,i,1,110,0.0168,0.559
+jelly,nest,20,30,Clear icky thing,20,1,i,1,110,0.0156,0.543
+jelly,nest,20,30,Shrieker mushroom patch,32,2,",",1,110,0.0215,0.662
+jelly,nest,20,30,Blubbering icky thing,33,2,i,1,110,0.0206,0.64
+jelly,nest,20,30,Yellow mushroom patch,39,2,",",1,110,0.0211,0.652
+jelly,nest,20,30,White jelly,40,2,j,1,120,0.0212,0.659
+jelly,nest,20,30,Green ooze,53,3,j,2,120,0.0131,0.484
+jelly,nest,20,30,Spotted mushroom patch,58,3,",",1,110,0.0267,0.733
+jelly,nest,20,30,Silver jelly,59,3,j,2,120,0.0132,0.487
+jelly,nest,20,30,Yellow jelly,60,3,j,1,120,0.0264,0.738
+jelly,nest,20,30,Yellow mold,63,3,m,1,110,0.0268,0.737
+jelly,nest,20,30,Blue jelly,71,4,j,1,110,0.0292,0.77
+jelly,nest,20,30,Blue ooze,79,5,j,1,110,0.0337,0.812
+jelly,nest,20,30,Green jelly,81,5,j,1,120,0.0351,0.835
+jelly,nest,20,30,Grey icky thing,84,5,i,1,110,0.0333,0.809
+jelly,nest,20,30,Rot jelly,549,5,j,1,120,0.0336,0.813
+jelly,nest,20,30,Purple mushroom patch,88,6,",",2,110,0.0194,0.622
+jelly,nest,20,30,Brown mold,92,6,m,1,110,0.039,0.855
+jelly,nest,20,30,Red jelly,103,7,j,1,110,0.0404,0.872
+jelly,nest,20,30,Green icky thing,105,7,i,2,110,0.0204,0.637
+jelly,nest,20,30,Green mold,116,8,m,1,110,0.0421,0.884
+jelly,nest,20,30,Bloodshot icky thing,123,9,i,3,110,0.0142,0.514
+jelly,nest,20,30,Clear mushroom patch,139,10,",",2,120,0.0235,0.692
+jelly,nest,20,30,Hairy mold,142,10,m,1,110,0.0455,0.892
+jelly,nest,20,30,Disenchanter mold,143,10,m,1,110,0.0461,0.906
+jelly,nest,20,30,Grape jelly,157,12,j,3,110,0.0167,0.564
+jelly,nest,20,30,Spotted jelly,170,12,j,3,120,0.0159,0.543
+jelly,nest,20,30,Ochre jelly,179,13,j,3,120,0.0159,0.555
+jelly,nest,20,30,Blue icky thing,183,14,i,4,100,0.0121,0.466
+jelly,nest,20,30,Magic mushroom patch,191,15,",",2,140,0.0247,0.713
+jelly,nest,20,30,Gelatinous cube,207,16,j,4,110,0.0126,0.468
+jelly,nest,20,30,Shambling mound,229,18,",",2,110,0.026,0.729
+jelly,nest,20,30,Red mold,233,19,m,1,110,0.0528,0.93
+jelly,nest,20,30,Black ooze,260,23,j,1,90,0.0549,0.941
+jelly,nest,20,30,Shimmering mold,554,27,m,1,110,0.0564,0.935
+animal,nest,10,20,Giant yellow centipede,17,1,c,1,110,0.0063,0.277
+animal,nest,10,20,Giant white centipede,18,1,c,1,110,0.006,0.261
+animal,nest,10,20,Giant white mouse,21,1,r,1,110,0.0059,0.26
+animal,nest,10,20,Large brown snake,22,1,J,1,100,0.0062,0.264
+animal,nest,10,20,Large white snake,23,1,J,1,100,0.0063,0.275
+animal,nest,10,20,White worm mass,26,1,w,1,100,0.0062,0.265
+animal,nest,10,20,Rock lizard,28,1,R,1,110,0.0065,0.279
+animal,nest,10,20,Jackal,29,1,C,1,110,0.0063,0.272
+animal,nest,10,20,Soldier ant,30,1,a,1,110,0.0065,0.284
+animal,nest,10,20,Fruit bat,31,1,b,1,120,0.0064,0.267
+animal,nest,10,20,Metallic green centipede,34,2,c,1,120,0.0077,0.314
+animal,nest,10,20,Giant green frog,41,2,R,1,110,0.0079,0.332
+animal,nest,10,20,Giant black ant,42,2,a,1,110,0.0077,0.317
+animal,nest,10,20,Salamander,43,2,R,1,110,0.008,0.334
+animal,nest,10,20,White harpy,44,2,H,1,110,0.0079,0.329
+animal,nest,10,20,Blue yeek,45,2,y,1,110,0.0082,0.33
+animal,nest,10,20,Green worm mass,48,2,w,1,100,0.0081,0.328
+animal,nest,10,20,Large yellow snake,49,2,J,1,100,0.0081,0.333
+animal,nest,10,20,Cave spider,50,2,S,1,120,0.0081,0.334
+animal,nest,10,20,Wild cat,51,2,f,2,120,0.004,0.181
+animal,nest,10,20,Crow,559,2,B,2,120,0.0042,0.189
+animal,nest,10,20,Metallic blue centipede,55,3,c,1,120,0.0094,0.383
+animal,nest,10,20,Giant white louse,56,3,l,1,120,0.0096,0.379
+animal,nest,10,20,Giant white ant,62,3,a,1,110,0.0093,0.377
+animal,nest,10,20,Metallic red centipede,64,3,c,1,120,0.0095,0.367
+animal,nest,10,20,Yellow worm mass,65,3,w,2,100,0.0045,0.206
+animal,nest,10,20,Clear worm mass,66,3,w,2,100,0.0047,0.207
+animal,nest,10,20,Cave lizard,68,4,R,1,110,0.011,0.425
+animal,nest,10,20,Giant white rat,73,4,r,1,110,0.011,0.417
+animal,nest,10,20,Blue worm mass,74,4,w,1,100,0.0106,0.403
+animal,nest,10,20,Large grey snake,75,4,J,1,100,0.011,0.409
+animal,nest,10,20,Silver mouse,548,4,r,1,110,0.0103,0.406
+animal,nest,10,20,Raven,560,4,B,2,120,0.0051,0.222
+animal,nest,10,20,Red worm mass,86,5,w,1,100,0.0114,0.433
+animal,nest,10,20,Copperhead snake,87,5,J,1,110,0.0121,0.443
+animal,nest,10,20,Giant brown bat,93,6,b,1,130,0.012,0.455
+animal,nest,10,20,Rattlesnake,97,6,J,1,110,0.0117,0.446
+animal,nest,10,20,Wood spider,99,7,S,3,120,0.0046,0.199
+animal,nest,10,20,Giant red frog,104,7,R,1,110,0.0122,0.462
+animal,nest,10,20,Night lizard,109,7,R,2,110,0.0061,0.266
+animal,nest,10,20,Brown yeek,113,8,y,1,110,0.0126,0.47
+animal,nest,10,20,Giant salamander,115,8,R,1,110,0.0128,0.48
+animal,nest,10,20,Nighthawk,598,8,B,2,120,0.0063,0.271
+animal,nest,10,20,Yeti,122,9,Y,3,110,0.0042,0.19
+animal,nest,10,20,Giant grey rat,124,9,r,1,110,0.0139,0.506
+animal,nest,10,20,Black harpy,125,9,H,1,120,0.0141,0.504
+animal,nest,10,20,Giant red ant,132,9,a,2,110,0.0066,0.281
+animal,nest,10,20,King cobra,134,9,J,2,110,0.0069,0.291
+animal,nest,10,20,Cave bear,563,9,q,1,110,0.0136,0.487
+animal,nest,10,20,Giant spider,135,10,S,2,110,0.0076,0.312
+animal,nest,10,20,Giant white tick,141,10,S,2,100,0.007,0.293
+animal,nest,10,20,Wolf,147,10,C,1,120,0.0147,0.512
+animal,nest,10,20,Giant fruit fly,148,10,I,3,120,0.0047,0.208
+animal,nest,10,20,Panther,149,10,f,2,120,0.0067,0.287
+animal,nest,10,20,Hippogriff,152,11,H,1,110,0.0147,0.519
+animal,nest,10,20,Black mamba,155,12,J,3,120,0.0049,0.223
+animal,nest,10,20,White wolf,156,12,C,1,120,0.0149,0.527
+animal,nest,10,20,Nether worm mass,158,12,w,3,100,0.0051,0.219
+animal,nest,10,20,Master yeek,160,12,y,2,110,0.0079,0.322
+animal,nest,10,20,Tiger,166,12,f,2,120,0.0075,0.312
+animal,nest,10,20,Stegocentipede,169,12,c,2,120,0.0077,0.322
+animal,nest,10,20,Killer brown beetle,172,13,K,1,110,0.0154,0.544
+animal,nest,10,20,Giant flea,180,14,I,3,120,0.0058,0.247
+animal,nest,10,20,Giant white dragon fly,182,14,F,2,110,0.0079,0.323
+animal,nest,10,20,Warg,186,14,C,2,120,0.008,0.333
+animal,nest,10,20,Giant black louse,187,14,l,1,120,0.0167,0.564
+animal,nest,10,20,Wererat,189,15,r,2,110,0.0088,0.361
+animal,nest,10,20,Light hound,193,15,Z,1,110,0.0176,0.591
+animal,nest,10,20,Dark hound,194,15,Z,1,110,0.0173,0.584
+animal,nest,10,20,Giant tarantula,196,15,S,3,120,0.0055,0.244
+animal,nest,10,20,Giant clear centipede,197,15,c,2,110,0.009,0.362
+animal,nest,10,20,Mirkwood spider,198,15,S,2,120,0.0087,0.348
+animal,nest,10,20,Griffon,200,15,H,1,110,0.0176,0.579
+animal,nest,10,20,Clear hound,203,15,Z,1,110,0.0179,0.596
+animal,nest,10,20,Giant tan bat,550,15,b,2,130,0.0083,0.339
+animal,nest,10,20,Umber hulk,205,16,X,1,110,0.018,0.593
+animal,nest,10,20,Giant green dragon fly,208,16,F,2,110,0.0096,0.389
+animal,nest,10,20,Hummerhorn,210,16,I,4,120,0.0044,0.203
+animal,nest,10,20,Crebain,561,16,B,4,120,0.0049,0.215
+animal,nest,10,20,Grizzly bear,564,16,q,2,110,0.0088,0.366
+animal,nest,10,20,2-headed hydra,216,17,M,2,110,0.0093,0.374
+animal,nest,10,20,Giant red scorpion,218,17,S,1,110,0.0189,0.611
+animal,nest,10,20,Fire hound,221,18,Z,1,110,0.0201,0.63
+animal,nest,10,20,Cold hound,222,18,Z,1,110,0.0196,0.632
+animal,nest,10,20,Energy hound,223,18,Z,1,110,0.02,0.628
+animal,nest,10,20,Blink dog,225,18,C,2,120,0.0099,0.395
+animal,nest,10,20,Giant black dragon fly,231,18,F,2,120,0.0106,0.409
+animal,nest,10,20,Giant gold dragon fly,234,19,F,2,120,0.0104,0.41
+animal,nest,10,20,Neekerbreeker,592,19,I,4,120,0.0046,0.212
+animal,nest,10,20,Phase spider,236,20,S,2,120,0.0108,0.409
+animal,nest,10,20,3-headed hydra,237,20,M,2,120,0.0111,0.427
+animal,nest,10,20,Earth hound,238,20,Z,1,110,0.0209,0.661
+animal,nest,10,20,Air hound,239,20,Z,1,110,0.0214,0.646
+animal,nest,10,20,Sabre-tooth tiger,240,20,f,2,120,0.0104,0.407
+animal,nest,10,20,Water hound,241,20,Z,1,110,0.0211,0.653
+animal,nest,10,20,Quylthulg,243,20,Q,1,110,0.0215,0.65
+animal,nest,10,20,Sasquatch,244,20,Y,3,120,0.0068,0.282
+animal,nest,10,20,Werewolf,245,20,C,1,110,0.021,0.653
+animal,nest,13,23,Giant yellow centipede,17,1,c,1,110,0.0055,0.236
+animal,nest,13,23,Giant white centipede,18,1,c,1,110,0.0053,0.231
+animal,nest,13,23,Giant white mouse,21,1,r,1,110,0.0056,0.247
+animal,nest,13,23,Large brown snake,22,1,J,1,100,0.0055,0.239
+animal,nest,13,23,Large white snake,23,1,J,1,100,0.0056,0.241
+animal,nest,13,23,White worm mass,26,1,w,1,100,0.0053,0.239
+animal,nest,13,23,Rock lizard,28,1,R,1,110,0.0056,0.246
+animal,nest,13,23,Jackal,29,1,C,1,110,0.0054,0.234
+animal,nest,13,23,Soldier ant,30,1,a,1,110,0.0056,0.241
+animal,nest,13,23,Fruit bat,31,1,b,1,120,0.0056,0.243
+animal,nest,13,23,Metallic green centipede,34,2,c,1,120,0.0069,0.296
+animal,nest,13,23,Giant green frog,41,2,R,1,110,0.0075,0.307
+animal,nest,13,23,Giant black ant,42,2,a,1,110,0.0069,0.283
+animal,nest,13,23,Salamander,43,2,R,1,110,0.0074,0.304
+animal,nest,13,23,White harpy,44,2,H,1,110,0.007,0.298
+animal,nest,13,23,Blue yeek,45,2,y,1,110,0.0071,0.292
+animal,nest,13,23,Green worm mass,48,2,w,1,100,0.0072,0.301
+animal,nest,13,23,Large yellow snake,49,2,J,1,100,0.007,0.292
+animal,nest,13,23,Cave spider,50,2,S,1,120,0.007,0.296
+animal,nest,13,23,Wild cat,51,2,f,2,120,0.0038,0.168
+animal,nest,13,23,Crow,559,2,B,2,120,0.0036,0.162
+animal,nest,13,23,Metallic blue centipede,55,3,c,1,120,0.0083,0.344
+animal,nest,13,23,Giant white louse,56,3,l,1,120,0.0084,0.349
+animal,nest,13,23,Giant white ant,62,3,a,1,110,0.0083,0.344
+animal,nest,13,23,Metallic red centipede,64,3,c,1,120,0.0085,0.338
+animal,nest,13,23,Yellow worm mass,65,3,w,2,100,0.0044,0.197
+animal,nest,13,23,Clear worm mass,66,3,w,2,100,0.0044,0.197
+animal,nest,13,23,Cave lizard,68,4,R,1,110,0.0092,0.371
+animal,nest,13,23,Giant white rat,73,4,r,1,110,0.0092,0.366
+animal,nest,13,23,Blue worm mass,74,4,w,1,100,0.0093,0.366
+animal,nest,13,23,Large grey snake,75,4,J,1,100,0.0092,0.367
+animal,nest,13,23,Silver mouse,548,4,r,1,110,0.0092,0.373
+animal,nest,13,23,Raven,560,4,B,2,120,0.0049,0.213
+animal,nest,13,23,Red worm mass,86,5,w,1,100,0.0097,0.383
+animal,nest,13,23,Copperhead snake,87,5,J,1,110,0.0097,0.38
+animal,nest,13,23,Giant brown bat,93,6,b,1,130,0.0105,0.401
+animal,nest,13,23,Rattlesnake,97,6,J,1,110,0.0096,0.382
+animal,nest,13,23,Wood spider,99,7,S,3,120,0.0036,0.166
+animal,nest,13,23,Giant red frog,104,7,R,1,110,0.0106,0.424
+animal,nest,13,23,Night lizard,109,7,R,2,110,0.0056,0.243
+animal,nest,13,23,Brown yeek,113,8,y,1,110,0.0114,0.435
+animal,nest,13,23,Giant salamander,115,8,R,1,110,0.011,0.415
+animal,nest,13,23,Nighthawk,598,8,B,2,120,0.0056,0.241
+animal,nest,13,23,Yeti,122,9,Y,3,110,0.0035,0.163
+animal,nest,13,23,Giant grey rat,124,9,r,1,110,0.0114,0.434
+animal,nest,13,23,Black harpy,125,9,H,1,120,0.0114,0.441
+animal,nest,13,23,Giant red ant,132,9,a,2,110,0.0064,0.262
+animal,nest,13,23,King cobra,134,9,J,2,110,0.0061,0.26
+animal,nest,13,23,Cave bear,563,9,q,1,110,0.0114,0.433
+animal,nest,13,23,Giant spider,135,10,S,2,110,0.0062,0.266
+animal,nest,13,23,Giant white tick,141,10,S,2,100,0.006,0.258
+animal,nest,13,23,Wolf,147,10,C,1,120,0.0127,0.471
+animal,nest,13,23,Giant fruit fly,148,10,I,3,120,0.0043,0.191
+animal,nest,13,23,Panther,149,10,f,2,120,0.0063,0.273
+animal,nest,13,23,Hippogriff,152,11,H,1,110,0.0127,0.468
+animal,nest,13,23,Black mamba,155,12,J,3,120,0.0045,0.195
+animal,nest,13,23,White wolf,156,12,C,1,120,0.0133,0.485
+animal,nest,13,23,Nether worm mass,158,12,w,3,100,0.0042,0.191
+animal,nest,13,23,Master yeek,160,12,y,2,110,0.0065,0.272
+animal,nest,13,23,Tiger,166,12,f,2,120,0.0064,0.277
+animal,nest,13,23,Stegocentipede,169,12,c,2,120,0.0068,0.283
+animal,nest,13,23,Killer brown beetle,172,13,K,1,110,0.0138,0.495
+animal,nest,13,23,Giant flea,180,14,I,3,120,0.0044,0.204
+animal,nest,13,23,Giant white dragon fly,182,14,F,2,110,0.0068,0.291
+animal,nest,13,23,Warg,186,14,C,2,120,0.0068,0.296
+animal,nest,13,23,Giant black louse,187,14,l,1,120,0.0133,0.498
+animal,nest,13,23,Wererat,189,15,r,2,110,0.0075,0.305
+animal,nest,13,23,Light hound,193,15,Z,1,110,0.0145,0.514
+animal,nest,13,23,Dark hound,194,15,Z,1,110,0.015,0.52
+animal,nest,13,23,Giant tarantula,196,15,S,3,120,0.005,0.218
+animal,nest,13,23,Giant clear centipede,197,15,c,2,110,0.0074,0.308
+animal,nest,13,23,Mirkwood spider,198,15,S,2,120,0.0076,0.306
+animal,nest,13,23,Griffon,200,15,H,1,110,0.0147,0.53
+animal,nest,13,23,Clear hound,203,15,Z,1,110,0.0145,0.511
+animal,nest,13,23,Giant tan bat,550,15,b,2,130,0.0076,0.313
+animal,nest,13,23,Umber hulk,205,16,X,1,110,0.0159,0.542
+animal,nest,13,23,Giant green dragon fly,208,16,F,2,110,0.0081,0.328
+animal,nest,13,23,Hummerhorn,210,16,I,4,120,0.004,0.178
+animal,nest,13,23,Crebain,561,16,B,4,120,0.0038,0.176
+animal,nest,13,23,Grizzly bear,564,16,q,2,110,0.0079,0.324
+animal,nest,13,23,2-headed hydra,216,17,M,2,110,0.0079,0.33
+animal,nest,13,23,Giant red scorpion,218,17,S,1,110,0.0159,0.548
+animal,nest,13,23,Fire hound,221,18,Z,1,110,0.0162,0.548
+animal,nest,13,23,Cold hound,222,18,Z,1,110,0.0169,0.576
+animal,nest,13,23,Energy hound,223,18,Z,1,110,0.0173,0.571
+animal,nest,13,23,Blink dog,225,18,C,2,120,0.0085,0.353
+animal,nest,13,23,Giant black dragon fly,231,18,F,2,120,0.008,0.332
+animal,nest,13,23,Giant gold dragon fly,234,19,F,2,120,0.0085,0.35
+animal,nest,13,23,Neekerbreeker,592,19,I,4,120,0.0043,0.189
+animal,nest,13,23,Phase spider,236,20,S,2,120,0.0088,0.356
+animal,nest,13,23,3-headed hydra,237,20,M,2,120,0.0093,0.368
+animal,nest,13,23,Earth hound,238,20,Z,1,110,0.0187,0.614
+animal,nest,13,23,Air hound,239,20,Z,1,110,0.018,0.601
+animal,nest,13,23,Sabre-tooth tiger,240,20,f,2,120,0.0093,0.362
+animal,nest,13,23,Water hound,241,20,Z,1,110,0.0184,0.599
+animal,nest,13,23,Quylthulg,243,20,Q,1,110,0.0178,0.593
+animal,nest,13,23,Sasquatch,244,20,Y,3,120,0.0059,0.262
+animal,nest,13,23,Werewolf,245,20,C,1,110,0.0182,0.609
+animal,nest,13,23,Blue dragon bat,250,21,b,1,130,0.0196,0.618
+animal,nest,13,23,Killer stag beetle,257,22,K,1,110,0.0192,0.619
+animal,nest,13,23,Giant yellow scorpion,259,22,S,1,110,0.0194,0.612
+animal,nest,13,23,Wyvern,555,22,d,2,120,0.0096,0.38
+animal,nest,13,23,Red dragon bat,264,23,b,1,130,0.0205,0.631
+animal,nest,13,23,Killer white beetle,265,23,K,1,110,0.0211,0.641
+animal,nest,13,23,Giant bronze dragon fly,266,23,F,2,120,0.0098,0.391
+animal,nest,13,23,Giant silver ant,551,23,a,1,110,0.0205,0.643
+animal,nest,17,27,Giant yellow centipede,17,1,c,1,110,0.0052,0.223
+animal,nest,17,27,Giant white centipede,18,1,c,1,110,0.0048,0.214
+animal,nest,17,27,Giant white mouse,21,1,r,1,110,0.0048,0.212
+animal,nest,17,27,Large brown snake,22,1,J,1,100,0.0047,0.209
+animal,nest,17,27,Large white snake,23,1,J,1,100,0.005,0.213
+animal,nest,17,27,White worm mass,26,1,w,1,100,0.0049,0.221
+animal,nest,17,27,Rock lizard,28,1,R,1,110,0.0048,0.211
+animal,nest,17,27,Jackal,29,1,C,1,110,0.0049,0.219
+animal,nest,17,27,Soldier ant,30,1,a,1,110,0.0051,0.227
+animal,nest,17,27,Fruit bat,31,1,b,1,120,0.005,0.213
+animal,nest,17,27,Metallic green centipede,34,2,c,1,120,0.0062,0.27
+animal,nest,17,27,Giant green frog,41,2,R,1,110,0.0063,0.261
+animal,nest,17,27,Giant black ant,42,2,a,1,110,0.0064,0.264
+animal,nest,17,27,Salamander,43,2,R,1,110,0.0066,0.284
+animal,nest,17,27,White harpy,44,2,H,1,110,0.0064,0.269
+animal,nest,17,27,Blue yeek,45,2,y,1,110,0.0064,0.277
+animal,nest,17,27,Green worm mass,48,2,w,1,100,0.0063,0.269
+animal,nest,17,27,Large yellow snake,49,2,J,1,100,0.0063,0.27
+animal,nest,17,27,Cave spider,50,2,S,1,120,0.0057,0.258
+animal,nest,17,27,Wild cat,51,2,f,2,120,0.0032,0.148
+animal,nest,17,27,Crow,559,2,B,2,120,0.0032,0.15
+animal,nest,17,27,Metallic blue centipede,55,3,c,1,120,0.0071,0.301
+animal,nest,17,27,Giant white louse,56,3,l,1,120,0.007,0.286
+animal,nest,17,27,Giant white ant,62,3,a,1,110,0.007,0.299
+animal,nest,17,27,Metallic red centipede,64,3,c,1,120,0.0071,0.298
+animal,nest,17,27,Yellow worm mass,65,3,w,2,100,0.0037,0.173
+animal,nest,17,27,Clear worm mass,66,3,w,2,100,0.0034,0.154
+animal,nest,17,27,Cave lizard,68,4,R,1,110,0.0077,0.32
+animal,nest,17,27,Giant white rat,73,4,r,1,110,0.008,0.321
+animal,nest,17,27,Blue worm mass,74,4,w,1,100,0.0078,0.329
+animal,nest,17,27,Large grey snake,75,4,J,1,100,0.008,0.329
+animal,nest,17,27,Silver mouse,548,4,r,1,110,0.0077,0.314
+animal,nest,17,27,Raven,560,4,B,2,120,0.004,0.178
+animal,nest,17,27,Red worm mass,86,5,w,1,100,0.009,0.367
+animal,nest,17,27,Copperhead snake,87,5,J,1,110,0.0082,0.341
+animal,nest,17,27,Giant brown bat,93,6,b,1,130,0.0089,0.355
+animal,nest,17,27,Rattlesnake,97,6,J,1,110,0.009,0.364
+animal,nest,17,27,Wood spider,99,7,S,3,120,0.0032,0.148
+animal,nest,17,27,Giant red frog,104,7,R,1,110,0.0091,0.368
+animal,nest,17,27,Night lizard,109,7,R,2,110,0.0044,0.2
+animal,nest,17,27,Brown yeek,113,8,y,1,110,0.0096,0.377
+animal,nest,17,27,Giant salamander,115,8,R,1,110,0.0095,0.377
+animal,nest,17,27,Nighthawk,598,8,B,2,120,0.0048,0.213
+animal,nest,17,27,Yeti,122,9,Y,3,110,0.0033,0.156
+animal,nest,17,27,Giant grey rat,124,9,r,1,110,0.0096,0.381
+animal,nest,17,27,Black harpy,125,9,H,1,120,0.0102,0.397
+animal,nest,17,27,Giant red ant,132,9,a,2,110,0.0052,0.223
+animal,nest,17,27,King cobra,134,9,J,2,110,0.005,0.223
+animal,nest,17,27,Cave bear,563,9,q,1,110,0.0099,0.397
+animal,nest,17,27,Giant spider,135,10,S,2,110,0.0056,0.243
+animal,nest,17,27,Giant white tick,141,10,S,2,100,0.0053,0.231
+animal,nest,17,27,Wolf,147,10,C,1,120,0.0107,0.413
+animal,nest,17,27,Giant fruit fly,148,10,I,3,120,0.0032,0.147
+animal,nest,17,27,Panther,149,10,f,2,120,0.0051,0.227
+animal,nest,17,27,Hippogriff,152,11,H,1,110,0.0105,0.412
+animal,nest,17,27,Black mamba,155,12,J,3,120,0.0039,0.176
+animal,nest,17,27,White wolf,156,12,C,1,120,0.0111,0.422
+animal,nest,17,27,Nether worm mass,158,12,w,3,100,0.0035,0.163
+animal,nest,17,27,Master yeek,160,12,y,2,110,0.0055,0.239
+animal,nest,17,27,Tiger,166,12,f,2,120,0.0056,0.243
+animal,nest,17,27,Stegocentipede,169,12,c,2,120,0.0055,0.239
+animal,nest,17,27,Killer brown beetle,172,13,K,1,110,0.0112,0.429
+animal,nest,17,27,Giant flea,180,14,I,3,120,0.0039,0.177
+animal,nest,17,27,Giant white dragon fly,182,14,F,2,110,0.0059,0.252
+animal,nest,17,27,Warg,186,14,C,2,120,0.0058,0.251
+animal,nest,17,27,Giant black louse,187,14,l,1,120,0.0116,0.436
+animal,nest,17,27,Wererat,189,15,r,2,110,0.0065,0.278
+animal,nest,17,27,Light hound,193,15,Z,1,110,0.0126,0.465
+animal,nest,17,27,Dark hound,194,15,Z,1,110,0.0122,0.459
+animal,nest,17,27,Giant tarantula,196,15,S,3,120,0.004,0.184
+animal,nest,17,27,Giant clear centipede,197,15,c,2,110,0.0062,0.259
+animal,nest,17,27,Mirkwood spider,198,15,S,2,120,0.0062,0.267
+animal,nest,17,27,Griffon,200,15,H,1,110,0.0122,0.455
+animal,nest,17,27,Clear hound,203,15,Z,1,110,0.012,0.452
+animal,nest,17,27,Giant tan bat,550,15,b,2,130,0.0059,0.262
+animal,nest,17,27,Umber hulk,205,16,X,1,110,0.013,0.48
+animal,nest,17,27,Giant green dragon fly,208,16,F,2,110,0.0062,0.266
+animal,nest,17,27,Hummerhorn,210,16,I,4,120,0.0033,0.15
+animal,nest,17,27,Crebain,561,16,B,4,120,0.003,0.146
+animal,nest,17,27,Grizzly bear,564,16,q,2,110,0.0067,0.29
+animal,nest,17,27,2-headed hydra,216,17,M,2,110,0.007,0.294
+animal,nest,17,27,Giant red scorpion,218,17,S,1,110,0.0136,0.494
+animal,nest,17,27,Fire hound,221,18,Z,1,110,0.0139,0.499
+animal,nest,17,27,Cold hound,222,18,Z,1,110,0.0141,0.497
+animal,nest,17,27,Energy hound,223,18,Z,1,110,0.0141,0.503
+animal,nest,17,27,Blink dog,225,18,C,2,120,0.0069,0.287
+animal,nest,17,27,Giant black dragon fly,231,18,F,2,120,0.007,0.295
+animal,nest,17,27,Giant gold dragon fly,234,19,F,2,120,0.007,0.296
+animal,nest,17,27,Neekerbreeker,592,19,I,4,120,0.0034,0.162
+animal,nest,17,27,Phase spider,236,20,S,2,120,0.0072,0.308
+animal,nest,17,27,3-headed hydra,237,20,M,2,120,0.0075,0.306
+animal,nest,17,27,Earth hound,238,20,Z,1,110,0.0152,0.537
+animal,nest,17,27,Air hound,239,20,Z,1,110,0.0153,0.537
+animal,nest,17,27,Sabre-tooth tiger,240,20,f,2,120,0.0073,0.306
+animal,nest,17,27,Water hound,241,20,Z,1,110,0.0154,0.529
+animal,nest,17,27,Quylthulg,243,20,Q,1,110,0.0154,0.541
+animal,nest,17,27,Sasquatch,244,20,Y,3,120,0.0049,0.224
+animal,nest,17,27,Werewolf,245,20,C,1,110,0.0156,0.54
+animal,nest,17,27,Blue dragon bat,250,21,b,1,130,0.0157,0.542
+animal,nest,17,27,Killer stag beetle,257,22,K,1,110,0.0158,0.546
+animal,nest,17,27,Giant yellow scorpion,259,22,S,1,110,0.0155,0.547
+animal,nest,17,27,Wyvern,555,22,d,2,120,0.0079,0.323
+animal,nest,17,27,Red dragon bat,264,23,b,1,130,0.0173,0.576
+animal,nest,17,27,Killer white beetle,265,23,K,1,110,0.0164,0.558
+animal,nest,17,27,Giant bronze dragon fly,266,23,F,2,120,0.0082,0.338
+animal,nest,17,27,Giant silver ant,551,23,a,1,110,0.0164,0.56
+animal,nest,17,27,4-headed hydra,270,24,M,2,120,0.008,0.339
+animal,nest,17,27,Vampire bat,272,24,b,2,120,0.0086,0.35
+animal,nest,17,27,Werebear,565,24,q,2,110,0.0087,0.352
+animal,nest,17,27,Giant firefly,593,24,I,4,120,0.0043,0.191
+animal,nest,17,27,Wereworm,280,25,w,3,110,0.0054,0.235
+animal,nest,17,27,Carrion crawler,281,25,c,2,110,0.0085,0.347
+animal,nest,17,27,Killer red beetle,282,25,K,1,110,0.0171,0.574
+animal,nest,17,27,Giant brown tick,552,25,S,2,110,0.009,0.361
+animal,nest,17,27,Giant grey ant,283,26,a,1,110,0.0177,0.592
+animal,nest,17,27,Displacer beast,285,26,f,2,110,0.0088,0.358
+animal,nest,17,27,Giant fire tick,286,26,S,1,110,0.0184,0.607
+animal,nest,17,27,Disenchanter bat,553,26,b,4,130,0.0047,0.203
+animal,nest,17,27,Wolf chieftain,607,26,C,5,120,0.0037,0.168
+animal,nest,17,27,Killer fire beetle,291,27,K,1,110,0.0178,0.6
+animal,nest,17,27,Vibration hound,294,27,Z,2,110,0.0092,0.37
+animal,nest,17,27,Nexus hound,295,27,Z,2,110,0.0091,0.366
+animal,nest,20,30,Giant yellow centipede,17,1,c,1,110,0.0046,0.205
+animal,nest,20,30,Giant white centipede,18,1,c,1,110,0.0048,0.207
+animal,nest,20,30,Giant white mouse,21,1,r,1,110,0.0051,0.222
+animal,nest,20,30,Large brown snake,22,1,J,1,100,0.0049,0.21
+animal,nest,20,30,Large white snake,23,1,J,1,100,0.0049,0.211
+animal,nest,20,30,White worm mass,26,1,w,1,100,0.0051,0.224
+animal,nest,20,30,Rock lizard,28,1,R,1,110,0.0048,0.211
+animal,nest,20,30,Jackal,29,1,C,1,110,0.0043,0.202
+animal,nest,20,30,Soldier ant,30,1,a,1,110,0.0048,0.212
+animal,nest,20,30,Fruit bat,31,1,b,1,120,0.0046,0.202
+animal,nest,20,30,Metallic green centipede,34,2,c,1,120,0.006,0.258
+animal,nest,20,30,Giant green frog,41,2,R,1,110,0.0058,0.252
+animal,nest,20,30,Giant black ant,42,2,a,1,110,0.006,0.256
+animal,nest,20,30,Salamander,43,2,R,1,110,0.0061,0.257
+animal,nest,20,30,White harpy,44,2,H,1,110,0.0062,0.257
+animal,nest,20,30,Blue yeek,45,2,y,1,110,0.0062,0.261
+animal,nest,20,30,Green worm mass,48,2,w,1,100,0.0058,0.256
+animal,nest,20,30,Large yellow snake,49,2,J,1,100,0.0064,0.264
+animal,nest,20,30,Cave spider,50,2,S,1,120,0.0061,0.261
+animal,nest,20,30,Wild cat,51,2,f,2,120,0.003,0.141
+animal,nest,20,30,Crow,559,2,B,2,120,0.0031,0.146
+animal,nest,20,30,Metallic blue centipede,55,3,c,1,120,0.0067,0.29
+animal,nest,20,30,Giant white louse,56,3,l,1,120,0.0066,0.278
+animal,nest,20,30,Giant white ant,62,3,a,1,110,0.0068,0.285
+animal,nest,20,30,Metallic red centipede,64,3,c,1,120,0.0072,0.303
+animal,nest,20,30,Yellow worm mass,65,3,w,2,100,0.0035,0.161
+animal,nest,20,30,Clear worm mass,66,3,w,2,100,0.0032,0.152
+animal,nest,20,30,Cave lizard,68,4,R,1,110,0.0074,0.314
+animal,nest,20,30,Giant white rat,73,4,r,1,110,0.0076,0.317
+animal,nest,20,30,Blue worm mass,74,4,w,1,100,0.0072,0.306
+animal,nest,20,30,Large grey snake,75,4,J,1,100,0.0076,0.304
+animal,nest,20,30,Silver mouse,548,4,r,1,110,0.0081,0.329
+animal,nest,20,30,Raven,560,4,B,2,120,0.0038,0.168
+animal,nest,20,30,Red worm mass,86,5,w,1,100,0.008,0.317
+animal,nest,20,30,Copperhead snake,87,5,J,1,110,0.0079,0.327
+animal,nest,20,30,Giant brown bat,93,6,b,1,130,0.0084,0.34
+animal,nest,20,30,Rattlesnake,97,6,J,1,110,0.0083,0.343
+animal,nest,20,30,Wood spider,99,7,S,3,120,0.0028,0.131
+animal,nest,20,30,Giant red frog,104,7,R,1,110,0.0088,0.36
+animal,nest,20,30,Night lizard,109,7,R,2,110,0.0042,0.19
+animal,nest,20,30,Brown yeek,113,8,y,1,110,0.0086,0.349
+animal,nest,20,30,Giant salamander,115,8,R,1,110,0.009,0.362
+animal,nest,20,30,Nighthawk,598,8,B,2,120,0.0045,0.199
+animal,nest,20,30,Yeti,122,9,Y,3,110,0.0029,0.135
+animal,nest,20,30,Giant grey rat,124,9,r,1,110,0.0094,0.375
+animal,nest,20,30,Black harpy,125,9,H,1,120,0.0093,0.376
+animal,nest,20,30,Giant red ant,132,9,a,2,110,0.0046,0.206
+animal,nest,20,30,King cobra,134,9,J,2,110,0.0047,0.207
+animal,nest,20,30,Cave bear,563,9,q,1,110,0.0092,0.377
+animal,nest,20,30,Giant spider,135,10,S,2,110,0.005,0.22
+animal,nest,20,30,Giant white tick,141,10,S,2,100,0.0048,0.217
+animal,nest,20,30,Wolf,147,10,C,1,120,0.0098,0.394
+animal,nest,20,30,Giant fruit fly,148,10,I,3,120,0.0032,0.15
+animal,nest,20,30,Panther,149,10,f,2,120,0.0049,0.22
+animal,nest,20,30,Hippogriff,152,11,H,1,110,0.0102,0.395
+animal,nest,20,30,Black mamba,155,12,J,3,120,0.0038,0.174
+animal,nest,20,30,White wolf,156,12,C,1,120,0.0103,0.405
+animal,nest,20,30,Nether worm mass,158,12,w,3,100,0.0033,0.15
+animal,nest,20,30,Master yeek,160,12,y,2,110,0.0052,0.227
+animal,nest,20,30,Tiger,166,12,f,2,120,0.0051,0.227
+animal,nest,20,30,Stegocentipede,169,12,c,2,120,0.0054,0.232
+animal,nest,20,30,Killer brown beetle,172,13,K,1,110,0.0105,0.404
+animal,nest,20,30,Giant flea,180,14,I,3,120,0.0036,0.161
+animal,nest,20,30,Giant white dragon fly,182,14,F,2,110,0.0053,0.232
+animal,nest,20,30,Warg,186,14,C,2,120,0.0058,0.26
+animal,nest,20,30,Giant black louse,187,14,l,1,120,0.011,0.42
+animal,nest,20,30,Wererat,189,15,r,2,110,0.0057,0.247
+animal,nest,20,30,Light hound,193,15,Z,1,110,0.0119,0.446
+animal,nest,20,30,Dark hound,194,15,Z,1,110,0.0113,0.426
+animal,nest,20,30,Giant tarantula,196,15,S,3,120,0.0039,0.179
+animal,nest,20,30,Giant clear centipede,197,15,c,2,110,0.0059,0.242
+animal,nest,20,30,Mirkwood spider,198,15,S,2,120,0.0058,0.249
+animal,nest,20,30,Griffon,200,15,H,1,110,0.0115,0.429
+animal,nest,20,30,Clear hound,203,15,Z,1,110,0.0119,0.443
+animal,nest,20,30,Giant tan bat,550,15,b,2,130,0.0057,0.252
+animal,nest,20,30,Umber hulk,205,16,X,1,110,0.0123,0.467
+animal,nest,20,30,Giant green dragon fly,208,16,F,2,110,0.0061,0.265
+animal,nest,20,30,Hummerhorn,210,16,I,4,120,0.003,0.132
+animal,nest,20,30,Crebain,561,16,B,4,120,0.0035,0.149
+animal,nest,20,30,Grizzly bear,564,16,q,2,110,0.0063,0.266
+animal,nest,20,30,2-headed hydra,216,17,M,2,110,0.0066,0.282
+animal,nest,20,30,Giant red scorpion,218,17,S,1,110,0.0127,0.466
+animal,nest,20,30,Fire hound,221,18,Z,1,110,0.0129,0.486
+animal,nest,20,30,Cold hound,222,18,Z,1,110,0.0127,0.462
+animal,nest,20,30,Energy hound,223,18,Z,1,110,0.0133,0.483
+animal,nest,20,30,Blink dog,225,18,C,2,120,0.0065,0.271
+animal,nest,20,30,Giant black dragon fly,231,18,F,2,120,0.0064,0.273
+animal,nest,20,30,Giant gold dragon fly,234,19,F,2,120,0.007,0.286
+animal,nest,20,30,Neekerbreeker,592,19,I,4,120,0.0034,0.157
+animal,nest,20,30,Phase spider,236,20,S,2,120,0.0072,0.294
+animal,nest,20,30,3-headed hydra,237,20,M,2,120,0.0069,0.287
+animal,nest,20,30,Earth hound,238,20,Z,1,110,0.0143,0.499
+animal,nest,20,30,Air hound,239,20,Z,1,110,0.0141,0.507
+animal,nest,20,30,Sabre-tooth tiger,240,20,f,2,120,0.0069,0.301
+animal,nest,20,30,Water hound,241,20,Z,1,110,0.0141,0.508
+animal,nest,20,30,Quylthulg,243,20,Q,1,110,0.0142,0.507
+animal,nest,20,30,Sasquatch,244,20,Y,3,120,0.0042,0.193
+animal,nest,20,30,Werewolf,245,20,C,1,110,0.0139,0.501
+animal,nest,20,30,Blue dragon bat,250,21,b,1,130,0.015,0.527
+animal,nest,20,30,Killer stag beetle,257,22,K,1,110,0.0148,0.518
+animal,nest,20,30,Giant yellow scorpion,259,22,S,1,110,0.015,0.523
+animal,nest,20,30,Wyvern,555,22,d,2,120,0.0072,0.299
+animal,nest,20,30,Red dragon bat,264,23,b,1,130,0.0152,0.531
+animal,nest,20,30,Killer white beetle,265,23,K,1,110,0.0154,0.531
+animal,nest,20,30,Giant bronze dragon fly,266,23,F,2,120,0.0077,0.314
+animal,nest,20,30,Giant silver ant,551,23,a,1,110,0.0151,0.54
+animal,nest,20,30,4-headed hydra,270,24,M,2,120,0.0077,0.316
+animal,nest,20,30,Vampire bat,272,24,b,2,120,0.0085,0.342
+animal,nest,20,30,Werebear,565,24,q,2,110,0.0075,0.32
+animal,nest,20,30,Giant firefly,593,24,I,4,120,0.004,0.175
+animal,nest,20,30,Wereworm,280,25,w,3,110,0.0053,0.234
+animal,nest,20,30,Carrion crawler,281,25,c,2,110,0.0081,0.342
+animal,nest,20,30,Killer red beetle,282,25,K,1,110,0.0159,0.553
+animal,nest,20,30,Giant brown tick,552,25,S,2,110,0.0079,0.317
+animal,nest,20,30,Giant grey ant,283,26,a,1,110,0.0171,0.579
+animal,nest,20,30,Displacer beast,285,26,f,2,110,0.0084,0.341
+animal,nest,20,30,Giant fire tick,286,26,S,1,110,0.0166,0.557
+animal,nest,20,30,Disenchanter bat,553,26,b,4,130,0.004,0.175
+animal,nest,20,30,Wolf chieftain,607,26,C,5,120,0.0033,0.152
+animal,nest,20,30,Killer fire beetle,291,27,K,1,110,0.0169,0.57
+animal,nest,20,30,Vibration hound,294,27,Z,2,110,0.0088,0.349
+animal,nest,20,30,Nexus hound,295,27,Z,2,110,0.0085,0.349
+animal,nest,20,30,5-headed hydra,302,28,M,2,120,0.0084,0.342
+animal,nest,20,30,Basilisk,308,28,R,3,120,0.0055,0.24
+animal,nest,20,30,Bat of Gorgoroth,605,28,b,3,120,0.0057,0.237
+animal,nest,20,30,Purple worm,310,29,w,3,110,0.006,0.254
+animal,nest,20,30,Catoblepas,312,29,q,2,110,0.0085,0.343
+animal,nest,20,30,Giant blue ant,322,30,a,2,110,0.0091,0.36
+animal,nest,20,30,Giant army ant,323,30,a,3,120,0.0058,0.249
+animal,nest,20,30,Killer slicer beetle,325,30,K,2,110,0.009,0.359
+undead,nest,10,20,Poltergeist,54,3,G,1,130,0.05,0.921
+undead,nest,10,20,Green glutton ghost,80,5,G,1,130,0.0706,0.974
+undead,nest,10,20,Skeleton kobold,83,5,s,1,110,0.0698,0.972
+undead,nest,10,20,Zombified kobold,106,7,z,1,110,0.0952,0.992
+undead,nest,10,20,Lost soul,107,7,G,2,110,0.0474,0.911
+undead,nest,10,20,Skeleton orc,117,8,s,1,110,0.1144,0.998
+undead,nest,10,20,Zombified orc,153,11,z,1,110,0.1305,1.0
+undead,nest,10,20,Skeleton human,164,12,s,1,110,0.1622,1.0
+undead,nest,10,20,Zombified human,165,12,z,1,110,0.1617,1.0
+undead,nest,10,20,Moaning spirit,167,12,G,2,120,0.0798,0.985
+undead,nest,13,23,Poltergeist,54,3,G,1,130,0.045,0.901
+undead,nest,13,23,Green glutton ghost,80,5,G,1,130,0.0598,0.951
+undead,nest,13,23,Skeleton kobold,83,5,s,1,110,0.0595,0.956
+undead,nest,13,23,Zombified kobold,106,7,z,1,110,0.0804,0.982
+undead,nest,13,23,Lost soul,107,7,G,2,110,0.0394,0.862
+undead,nest,13,23,Skeleton orc,117,8,s,1,110,0.0948,0.995
+undead,nest,13,23,Zombified orc,153,11,z,1,110,0.1097,0.997
+undead,nest,13,23,Skeleton human,164,12,s,1,110,0.1348,0.999
+undead,nest,13,23,Zombified human,165,12,z,1,110,0.1326,0.998
+undead,nest,13,23,Moaning spirit,167,12,G,2,120,0.0668,0.969
+undead,nest,13,23,Mummified orc,256,21,z,1,110,0.1572,1.0
+undead,nest,17,27,Poltergeist,54,3,G,1,130,0.0275,0.746
+undead,nest,17,27,Green glutton ghost,80,5,G,1,130,0.0349,0.827
+undead,nest,17,27,Skeleton kobold,83,5,s,1,110,0.0342,0.816
+undead,nest,17,27,Zombified kobold,106,7,z,1,110,0.0421,0.891
+undead,nest,17,27,Lost soul,107,7,G,2,110,0.021,0.648
+undead,nest,17,27,Skeleton orc,117,8,s,1,110,0.0479,0.915
+undead,nest,17,27,Zombified orc,153,11,z,1,110,0.0545,0.936
+undead,nest,17,27,Skeleton human,164,12,s,1,110,0.061,0.954
+undead,nest,17,27,Zombified human,165,12,z,1,110,0.0635,0.958
+undead,nest,17,27,Moaning spirit,167,12,G,2,120,0.0309,0.793
+undead,nest,17,27,Mummified orc,256,21,z,1,110,0.0719,0.977
+undead,nest,17,27,Forest wight,267,24,W,1,110,0.0833,0.989
+undead,nest,17,27,Mummified human,271,24,z,1,110,0.0821,0.984
+undead,nest,17,27,Vampire bat,272,24,b,2,120,0.0419,0.887
+undead,nest,17,27,Banshee,275,24,G,2,120,0.0429,0.887
+undead,nest,17,27,White wraith,288,26,W,1,110,0.0959,0.992
+undead,nest,17,27,Ghoul,599,26,z,2,110,0.0487,0.918
+undead,nest,17,27,Vampire,298,27,V,1,110,0.1048,0.995
+undead,nest,20,30,Poltergeist,54,3,G,1,130,0.024,0.693
+undead,nest,20,30,Green glutton ghost,80,5,G,1,130,0.0287,0.756
+undead,nest,20,30,Skeleton kobold,83,5,s,1,110,0.0281,0.764
+undead,nest,20,30,Zombified kobold,106,7,z,1,110,0.0352,0.828
+undead,nest,20,30,Lost soul,107,7,G,2,110,0.0174,0.584
+undead,nest,20,30,Skeleton orc,117,8,s,1,110,0.039,0.86
+undead,nest,20,30,Zombified orc,153,11,z,1,110,0.042,0.879
+undead,nest,20,30,Skeleton human,164,12,s,1,110,0.0495,0.918
+undead,nest,20,30,Zombified human,165,12,z,1,110,0.0497,0.915
+undead,nest,20,30,Moaning spirit,167,12,G,2,120,0.0252,0.721
+undead,nest,20,30,Mummified orc,256,21,z,1,110,0.0572,0.944
+undead,nest,20,30,Forest wight,267,24,W,1,110,0.0644,0.967
+undead,nest,20,30,Mummified human,271,24,z,1,110,0.0648,0.965
+undead,nest,20,30,Vampire bat,272,24,b,2,120,0.0325,0.804
+undead,nest,20,30,Banshee,275,24,G,2,120,0.032,0.804
+undead,nest,20,30,White wraith,288,26,W,1,110,0.0756,0.978
+undead,nest,20,30,Ghoul,599,26,z,2,110,0.0376,0.855
+undead,nest,20,30,Vampire,298,27,V,1,110,0.0808,0.983
+undead,nest,20,30,Skeleton troll,320,30,s,1,110,0.088,0.989
+undead,nest,20,30,Grave wight,324,30,W,1,110,0.0881,0.991
+undead,nest,20,30,Ghast,600,30,z,3,120,0.0289,0.766
+orc,pit,10,20,Snaga,96,6,o,1,110,0.3289,0.681
+orc,pit,10,20,Cave orc,98,7,o,1,110,0.1858,0.638
+orc,pit,10,20,Hill orc,120,8,o,1,110,0.1337,0.722
+orc,pit,10,20,Orc shaman,126,9,o,1,110,0.1361,0.805
+orc,pit,10,20,Black orc,178,13,o,1,110,0.1179,0.881
+orc,pit,10,20,Half-orc,195,15,o,2,110,0.0436,0.629
+orc,pit,10,20,Uruk,226,16,o,1,110,0.0494,0.946
+orc,pit,10,20,Orc captain,206,18,o,3,110,0.0046,0.372
+orc,pit,13,23,Snaga,96,6,o,1,110,0.3321,0.689
+orc,pit,13,23,Cave orc,98,7,o,1,110,0.1803,0.628
+orc,pit,13,23,Hill orc,120,8,o,1,110,0.136,0.722
+orc,pit,13,23,Orc shaman,126,9,o,1,110,0.1358,0.811
+orc,pit,13,23,Black orc,178,13,o,1,110,0.1157,0.873
+orc,pit,13,23,Half-orc,195,15,o,2,110,0.0454,0.638
+orc,pit,13,23,Uruk,226,16,o,1,110,0.0502,0.938
+orc,pit,13,23,Orc captain,206,18,o,3,110,0.0046,0.361
+orc,pit,17,27,Snaga,96,6,o,1,110,0.3316,0.689
+orc,pit,17,27,Cave orc,98,7,o,1,110,0.1784,0.624
+orc,pit,17,27,Hill orc,120,8,o,1,110,0.1384,0.732
+orc,pit,17,27,Orc shaman,126,9,o,1,110,0.1352,0.806
+orc,pit,17,27,Black orc,178,13,o,1,110,0.1176,0.868
+orc,pit,17,27,Half-orc,195,15,o,2,110,0.0443,0.642
+orc,pit,17,27,Uruk,226,16,o,1,110,0.0497,0.943
+orc,pit,17,27,Orc captain,206,18,o,3,110,0.0046,0.371
+orc,pit,20,30,Snaga,96,6,o,1,110,0.335,0.699
+orc,pit,20,30,Cave orc,98,7,o,1,110,0.1746,0.621
+orc,pit,20,30,Hill orc,120,8,o,1,110,0.1403,0.73
+orc,pit,20,30,Orc shaman,126,9,o,1,110,0.1348,0.811
+orc,pit,20,30,Black orc,178,13,o,1,110,0.1182,0.876
+orc,pit,20,30,Half-orc,195,15,o,2,110,0.0439,0.633
+orc,pit,20,30,Uruk,226,16,o,1,110,0.0484,0.939
+orc,pit,20,30,Orc captain,206,18,o,3,110,0.0049,0.379
+troll,pit,10,20,Forest troll,214,17,T,1,110,0.9993,1.0
+troll,pit,13,23,Forest troll,214,17,T,1,110,0.9987,1.0
+troll,pit,17,27,Forest troll,214,17,T,1,110,0.4694,0.898
+troll,pit,17,27,Stone troll,278,25,T,1,110,0.2324,0.912
+troll,pit,17,27,Troll priest,279,26,T,1,110,0.2089,0.978
+troll,pit,17,27,Algroth,293,27,T,1,110,0.089,0.996
+troll,pit,20,30,Forest troll,214,17,T,1,110,0.4074,0.817
+troll,pit,20,30,Stone troll,278,25,T,1,110,0.2022,0.796
+troll,pit,20,30,Troll priest,279,26,T,1,110,0.1801,0.904
+troll,pit,20,30,Algroth,293,27,T,1,110,0.1476,0.959
+troll,pit,20,30,Ice troll,309,28,T,1,110,0.0622,0.981
+giant,pit,17,27,Hill giant,184,25,P,1,110,0.999,1.0
+giant,pit,20,30,Hill giant,184,25,P,1,110,0.5486,0.963
+giant,pit,20,30,Frost giant,199,28,P,1,110,0.3002,0.988
+giant,pit,20,30,Fire giant,209,30,P,1,110,0.1509,1.0

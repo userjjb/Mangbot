@@ -1,0 +1,6 @@
+4.1 inner room+1 monster mean 5.88 min 2 max 9
+4.2 inner-inner (locked door) mean 0.98 min 0 max 1
+4.3 pillars mean 1.03 min 0 max 4
+4.4 checkerboard {(5, 16): 8.29, (16, 16): 6.65, (5, 49): 6.65, (16, 49): 8.31}
+4.5 four small rooms mean 20.88 min 11 max 24
+3.2 cross-room inner vault: 1 monster (only the centre grid is floor)

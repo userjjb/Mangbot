@@ -2,10 +2,10 @@
 """XP and risk by depth, per mission, from the Pilot's 30-second audit_check records (decisions.jsonl: t, depth, hp, exp).
 
 Each interval between consecutive checks (gap < 120 s) is credited to the earlier check's depth: minutes there, exp gained
-(exp[0] difference; drains/restores show as negative/positive jumps), lowest HP% seen. Town (depth 0) is listed apart.
+(exp[0] difference; drains/restores show as negative/positive jumps), lowest HP% seen (30 s samples: misses short dips; scorecard.py has the true low). Town (depth 0) is listed apart.
 Bands: 50-250, 300-450, 500-650, 700+ ft.
 
-usage: xp_by_depth.py [MISSION ...]   (default: all in runs/missions.json); writes xp_by_depth.csv next to this script."""
+usage: xp_by_depth.py [MISSION ...]   (default: all real missions in runs/missions.json; set-pieces need naming); writes xp_by_depth.csv next to this script."""
 import csv, collections, json, os, sys, time
 HERE = os.path.dirname(os.path.abspath(__file__))
 RUNS = "/projectnb/jbrcs/mangband/runs"
@@ -31,7 +31,7 @@ for line in open(f"{RUNS}/pilot/dive04/decisions.jsonl"):
         checks["dive04"].append(r)
 rows = []
 for m in missions:
-    if want and m["label"] not in want:
+    if want and m["label"] not in want or not want and m.get("navigator") == "harness":
         continue
     t0, t1 = epoch(m["start"]), epoch(m["end"]) + 60
     cs = [c for c in checks[m["nick"]] if t0 <= c["t"] <= t1]

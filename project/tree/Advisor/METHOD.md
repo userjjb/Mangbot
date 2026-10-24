@@ -150,3 +150,6 @@ After the memo:
 - **"Out of sight" ≠ "no LOS".** Two code-only claims failed live (2026-10-24): resting ×10 needs no *awake monster in line of sight, seen or not*;
   the CON-ring HP trick ignored `calc_hitpoints` scaling current HP. Before proposing a mechanic or a staging trick, open the function that decides it,
   and mark code-only claims as such until a set-piece confirms them.
+- **When a log rate disagrees with the generator model, look for an option or mode first** (structures, 2026-10-24): "special" feelings
+  at 37% vs a modelled 5% turned out to be the client's `auto_scum` rerolling levels. Check client prefs (`lib/user/*.prf`) and server
+  config before trusting any generation-rate model against our logs.

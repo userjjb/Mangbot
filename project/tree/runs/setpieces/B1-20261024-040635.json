@@ -1,0 +1,47 @@
+{
+ "id": "B1",
+ "tag": "B1-20261024-040635",
+ "depth_ft": 500,
+ "start": "2026-10-24 04:06:35",
+ "checks": {
+  "no stat drained": {
+   "pass": true,
+   "detail": "CON 18/10 -> 18/10; []"
+  },
+  "never next to it": {
+   "pass": true,
+   "detail": "0 records adjacent; goto: {\"ok\": true, \"goal\": \"goto 21,108\"}"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"goto 21,108\"}",
+ "stats": {
+  "hp_start": [
+   283,
+   283
+  ],
+  "hp_min": [
+   278,
+   283
+  ],
+  "attention": [
+   [
+    9.8,
+    "tactic",
+    "goto: no known path; trying one through unexplored squares"
+   ],
+   [
+    25.2,
+    "goal_failed",
+    "goto 21,108: stuck"
+   ]
+  ],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-24 04:09:10",
+ "pass": true
+}

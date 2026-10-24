@@ -21,10 +21,18 @@ def passable(ch):
     return ch not in WALLS
 
 
+def still_monsters(world):
+    """Monsters that never move: those in view and those seen earlier on this level (World.still_seen)."""
+    seen = {(y, x): r for y, x, r in world.monsters if "NEVER_MOVE" in getattr(r, "flags", ())}
+    for q, r in (getattr(world, "still_seen", None) or {}).items():
+        seen.setdefault(q, r)
+    return [(y, x, r) for (y, x), r in seen.items()]
+
+
 def drain_zone_of(world):
-    """Squares next to a stationary drainer (and its own square)."""
-    return {(y + dy, x + dx) for y, x, r in world.monsters if "NEVER_MOVE" in getattr(r, "flags", ())
-            and getattr(r, "drains", False) for dy in (-1, 0, 1) for dx in (-1, 0, 1)}
+    """Squares next to a stationary drainer (and its own square), in view or remembered."""
+    return {(y + dy, x + dx) for y, x, r in still_monsters(world)
+            if getattr(r, "drains", False) for dy in (-1, 0, 1) for dx in (-1, 0, 1)}
 
 
 def plan(world, goals, avoid=(), monster_cost=40, max_cost=4000, unknown_cost=None):
@@ -38,8 +46,7 @@ def plan(world, goals, avoid=(), monster_cost=40, max_cost=4000, unknown_cost=No
     mon = {(y, x) for y, x, _ in world.monsters}
     # Next to a monster that never moves (molds, jellies, floating eyes): the
     # server's auto-retaliate would fight it (and a floating eye's gaze paralyses)
-    still = {(y + dy, x + dx) for y, x, r in world.monsters if "NEVER_MOVE" in getattr(r, "flags", ())
-             for dy in (-1, 0, 1) for dx in (-1, 0, 1)}
+    still = {(y + dy, x + dx) for y, x, r in still_monsters(world) for dy in (-1, 0, 1) for dx in (-1, 0, 1)}
     # Never next to a stationary drainer (mission 16: explore walked back beside
     # a Purple mushroom patch, CON 18 -> 14), nor into the Navigator's avoid
     # zones: impassable, unless it's the goal itself
@@ -546,8 +553,10 @@ class Mover:
                 self.stop_sent = False
                 self.last_progress = gnow()
                 return "moving"
+            # (not near a stationary drainer, seen or remembered: the server's path ignores our avoid zones)
             if len(self.path) - self.done >= self.PF_MIN and self.runs_ok(free=True) and not w.monsters \
-                    and self.w.pos not in self.no_pf_at and self.replans <= self.max_replans:
+                    and self.w.pos not in self.no_pf_at and self.replans <= self.max_replans \
+                    and not any(w.dist(q) <= 12 for q in drain_zone_of(w)):
                 self.replans += 1          # (like free runs: against the replan budget)
                 self.path_run(self.path[min(self.done + self.PF_MAX, len(self.path)) - 1])
                 return "moving"

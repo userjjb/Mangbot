@@ -1,0 +1,5 @@
+levels 385 with 1-wide run>=5: 24 with 2-wide run>=5: 65
+1-wide run length hist (>=5): [(5, 11), (6, 8), (7, 6), (8, 1), (9, 4), (10, 4), (11, 3), (12, 1), (13, 2), (14, 1), (21, 4)]
+structures flagged: Counter({'inner room': 5, 'nest': 1, 'orc pit': 1})
+lattice X mod 33 of flagged: Counter({16: 7}) Y mod 11: Counter({5: 7})
+X values: [(49, 2), (115, 1), (148, 2), (181, 2)]

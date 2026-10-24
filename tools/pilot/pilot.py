@@ -2838,6 +2838,21 @@ class Pilot:
                 and not isinstance(self.goal, (Flee, Recover, Recall)):
             if self.choke_tick(now):
                 return True
+        # 3a''. A summon trap ("You are enveloped in a cloud of smoke!", cmd1.c 1049): 3-5 awake monsters from 5 levels
+        # deeper, uniques allowed, appear around us -- m26's Nar group (the Advisor's structures memo). Phase Door at
+        # once, before they act; the danger rules take it from there
+        smoke = [ts for ts, t in w.messages if t.startswith("You are enveloped in a cloud of smoke") and now - ts < 2]
+        if smoke and w.in_dungeon and max(smoke) > getattr(self, "smoke_t", 0) and not w.flag("blind") \
+                and not w.flag("confused"):
+            self.smoke_t = max(smoke)
+            pd = w.tagged("r", 1) or next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
+            if pd:
+                self.phase_t = now
+                self.phase_hist.append(now)
+                self.cmd(f"custom r item={pd['item']}", "summon trap: phase door before they act", hold=0.6)
+                self.notify("emergency", "a summon trap (monsters from 5 levels deeper appear around us): phased away "
+                                         "at once")
+                return True
         # 3a'. Slowed to half speed or worse with something on us: a Potion of Speed (m26: Gorged and slowed to
         # -20 among six monsters; the Architect quaffed one by hand)
         if self.our_slowness() >= 2 and (w.adjacent_monsters() or now - w.last_hit_t < 2) and \
@@ -6518,6 +6533,15 @@ class Pilot:
         runs/pilot/<nick>/levels/ (only 11x31 crops were logged, so the
         recogniser couldn't be checked against real levels afterwards)."""
         w = self.w
+        # the arrival feeling, logged per level (the Advisor's structures memo: at <= 850 ft any pit, nest or
+        # vault forces "special"; another feeling proves there is none)
+        if w.in_dungeon and getattr(self, "feeling_level", None) != w.level_t and waited(w.level_t, 3):
+            self.feeling_level = w.level_t
+            fl = next((t for ts, t in w.messages if ts >= w.level_t - 0.5 and re.search(
+                r"special about this level|feeling|Looks like any other level|Omens of death|murderous|"
+                r"terribly dangerous|nervous|bad feeling|quiet, peaceful|safe|Luck is turning|lucky", t)), None)
+            self.level_feeling = fl
+            self.log("arrival_feeling", depth_ft=w.depth_ft, feeling=fl, arrived_by=w.arrived_by)
         snap = getattr(self, "map_snap", None)
         if snap and snap["level"] != w.level_t:
             try:
@@ -6530,13 +6554,16 @@ class Pilot:
                                        + f"-{snap['ft']}ft.txt"), "w") as f:
                     f.write(f"# {snap['ft']} ft, {time.strftime('%Y-%m-%d %H:%M:%S', _lt(snap['t0']))} - "
                             f"{time.strftime('%H:%M:%S', _lt(snap['t']))}; structures: "
-                            f"{', '.join(found) or 'none'}\n" + "\n".join(rows) + "\n")
+                            f"{', '.join(found) or 'none'}; feeling: {snap.get('feeling') or 'none'}\n"
+                            + "\n".join(rows) + "\n")
             except OSError:
                 pass
             snap = None
         if w.in_dungeon and w.memory:
             self.map_snap = {"level": w.level_t, "mem": dict(w.memory), "ft": w.depth_ft,
-                             "t0": snap["t0"] if snap else now, "t": now}
+                             "t0": snap["t0"] if snap else now, "t": now,
+                             "feeling": getattr(self, "level_feeling", None)
+                             if getattr(self, "feeling_level", None) == w.level_t else None}
         else:
             self.map_snap = None
 

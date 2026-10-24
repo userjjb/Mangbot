@@ -1191,5 +1191,15 @@
   "effort": null,
   "report": "compact",
   "notes": "set-piece A9"
+ },
+ {
+  "label": "sp-B1-20261024-040635",
+  "nick": "dive04",
+  "start": "2026-10-24 04:07",
+  "end": "2026-10-24 04:09",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece B1"
  }
 ]

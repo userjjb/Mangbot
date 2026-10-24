@@ -201,6 +201,7 @@ class World:
         self.map_pos = None                    # position when the map was taken
         self.memory = {}                       # (y, x) -> terrain char seen there (this level)
         self.monsters = []                     # [(y, x, Race)]
+        self.still_seen = {}                   # (y, x) -> Race: stationary monsters seen on this level
         self.monlist = []                      # [(name, count, our char)]
         self.itemlist = []                     # item list lines
         self.ind = {}
@@ -309,6 +310,7 @@ class World:
                 self.arrive_pos = None
                 self.rows = None
                 self.monsters, self.itemlist = [], []
+                self.still_seen = {}
                 sc = self.last_stairs_cmd
                 if sc and gnow() - sc[1] < 5 and old is not None:
                     # Connected stairs: '>' leaves you on an up staircase and vice versa
@@ -326,6 +328,11 @@ class World:
             elif k == "message":
                 t = ev["text"]
                 self.messages.append((gnow(), t))
+                km = re.match(r"You have (?:slain|destroyed|killed) (?:the )?(.+?)\.$", t)
+                if km and self.still_seen:
+                    dead = [q for q, r in self.still_seen.items() if r.name.lower() == km.group(1).lower()]
+                    if dead and self.pos:
+                        self.still_seen.pop(min(dead, key=self.dist))
                 if t.startswith("You have ") or t.startswith("You see ") or "no more" in t \
                         or t.startswith("You are wearing") or t.startswith("You are wielding") \
                         or t.startswith("Was wearing") or t.startswith("You destroy") \
@@ -459,6 +466,11 @@ class World:
         self.map_t = gnow()
         self.map_pos = self.pos
         self.monsters = self.g.monsters(self.rows, self.attrs, skip=self.pos)
+        # (a monster that never moves stays where it was seen, in view or not: m26 walked next to a Radiation eye
+        # out of the lantern's reach, and its gaze drained STR)
+        for y, x, r in self.monsters:
+            if "NEVER_MOVE" in getattr(r, "flags", ()):
+                self.still_seen[(y, x)] = r
         if self.monsters:
             self.monster_seen_t = self.map_t
         mon_at = {(y, x) for y, x, _ in self.monsters}

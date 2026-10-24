@@ -108,3 +108,4 @@
 - 2026-10-24 03:38:07 **A9** FAIL (arrived by recall FAIL) `A9-20261024-033807.json`
 - 2026-10-24 03:41:41 **A9** FAIL (arrived by recall FAIL) `A9-20261024-034141.json`
 - 2026-10-24 03:45:26 **A9** PASS (Door/Stair Location within 5 s of arriving, no second Word of Recall while one is pending) `A9-20261024-034526.json`
+- 2026-10-24 04:06:35 **B1** PASS (no stat drained, never next to it) `B1-20261024-040635.json`
