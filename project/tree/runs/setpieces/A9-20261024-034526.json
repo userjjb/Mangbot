@@ -1,0 +1,96 @@
+{
+ "id": "A9",
+ "tag": "A9-20261024-034526",
+ "depth_ft": 450,
+ "start": "2026-10-24 03:45:26",
+ "checks": {
+  "Door/Stair Location within 5 s of arriving": {
+   "pass": true,
+   "detail": "[(2.2, 'custom z item=9', 'trip: recall arrival: Door/Stair Location')]"
+  },
+  "no second Word of Recall while one is pending": {
+   "pass": true,
+   "detail": "0 reads"
+  }
+ },
+ "notes": [
+  "no floor square 8 from Dive04 at (14, 146)",
+  "no floor square 9 from Dive04 at (14, 146)"
+ ],
+ "plan_reply": "{\"ok\": true, \"plan\": \"trip 450-450 until \\\"minutes>3\\\" then recall (down by Word of Recall)\", \"note\": \"the Pilot runs it; `wait` wakes you when it ends (plan_done) and for what it can't handle (user messages, stat drains, emergency loops). Bands, pits, breeders and the like are news: it leaves the l",
+ "stats": {
+  "hp_start": [
+   283,
+   283
+  ],
+  "hp_min": [
+   219,
+   283
+  ],
+  "attention": [
+   [
+    2.1,
+    "goal_done",
+    "recall to 450 ft: arrived at 450 ft"
+   ],
+   [
+    3.0,
+    "plan",
+    "trip: coming home (no Word of Recall left)"
+   ],
+   [
+    12.7,
+    "thief",
+    "Wormtongue, Agent of Saruman (lvl 8, 4 away) steals gold with a touch, then teleports: kill it befor"
+   ],
+   [
+    19.4,
+    "unique_slain",
+    "Wormtongue, Agent of Saruman slain at 17,155: uniques drop good items (look at 'Item squares' around"
+   ],
+   [
+    58.1,
+    "unseen_attacker",
+    "'It breathes sound.': something unseen is casting at you; carrying on at HP 93% (it leaves below 80%"
+   ]
+  ],
+  "acts": [
+   [
+    2.2,
+    "custom z item=9",
+    "trip: recall arrival: Door/Stair Location"
+   ],
+   [
+    3.0,
+    "custom <",
+    "stairs <"
+   ],
+   [
+    19.6,
+    "rest",
+    "rest"
+   ],
+   [
+    59.2,
+    "rest",
+    "rest"
+   ],
+   [
+    60.2,
+    "rest",
+    "rest"
+   ],
+   [
+    61.9,
+    "rest",
+    "rest"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-24 03:49:05",
+ "pass": true
+}

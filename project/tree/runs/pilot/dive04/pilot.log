@@ -1095,3 +1095,27 @@ TypeError: unsupported operand type(s) for -: 'str' and 'int'
 03:29:47 pilot stopping
 03:29:50 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
 03:29:50 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+03:37:57 pilot stopping
+03:38:00 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+03:38:00 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+03:38:09 pilot stopping
+03:38:32 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+03:38:32 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+03:40:47 pilot stopping
+03:41:10 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+03:41:10 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+03:41:43 pilot stopping
+03:42:06 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+03:42:06 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+03:44:33 pilot stopping
+03:44:56 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+03:44:57 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+03:45:28 pilot stopping
+03:45:52 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+03:45:52 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+03:48:34 pilot stopping
+03:48:58 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+03:48:58 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+03:49:33 pilot stopping
+03:49:35 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+03:49:35 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock

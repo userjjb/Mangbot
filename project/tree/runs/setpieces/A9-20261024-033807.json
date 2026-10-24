@@ -1,0 +1,15 @@
+{
+ "id": "A9",
+ "tag": "A9-20261024-033807",
+ "depth_ft": 350,
+ "start": "2026-10-24 03:38:07",
+ "checks": {
+  "arrived by recall": {
+   "pass": false,
+   "detail": "no arrival in 60 s"
+  }
+ },
+ "notes": [],
+ "end": "2026-10-24 03:41:17",
+ "pass": false
+}

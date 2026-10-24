@@ -356,6 +356,48 @@ def game_clock_from_fuel():
 
 
 @case
+def band_leave_finds_stairs():
+    """The user (after m26, every trip ending in an escape recall): a band, no stairs known, HP full, nothing
+    adjacent -> no Word of Recall at once: BandLeave reads Magic Mapping (no Door/Stair device), then flees to
+    the stairs it shows. A second failure on the level, or HP low, still recalls."""
+    def make(hp=265):
+        p = pilot(hp=hp, pack=[("2 Scrolls of Word of Recall", 70), ("3 Scrolls of Magic Mapping", 70)])
+        p.w.adjacent_monsters = lambda: []
+        p.w.find = lambda chars: []
+        p.w.in_dungeon, p.w.level_t = True, 5.0
+        p.danger_why = lambda r: None
+        p.recall_started = lambda now: False
+        p.use_stair_location = lambda why: False
+        p.busy_until, p.goal = 0.0, None
+        p.set_goal = lambda g: setattr(p, "goal", g)
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append((line, why))
+        p.w.listed_only = lambda: []
+        p.flee_fail_t = 0
+        p.phase_t, p.phase_hist = 0, collections.deque()
+        p.w.tagged = lambda c, d: None
+        return p
+    p = make()
+    p.flee_failed("flee (band: the trip leaves the level)")
+    first = type(p.goal).__name__
+    p.goal.tick(p)
+    mm = [w for _, w in p.cmds]
+    p.w.find = lambda chars: [(25, 25)]
+    p.goal.t0 -= 5
+    p.mover = type("M", (), {"go": lambda self, *a, **k: True, "active": True, "unknown": False, "path": [(1, 1)] * 5,
+                             "tick": lambda self: "moving", "stop": lambda self: None})()
+    p.w.standing_on = None
+    r = p.goal.tick(p)
+    second = p.goal.flee is not None
+    q = make(hp=150)
+    q.w.monsters = [(22, 20, BYNAME["cave orc"])]
+    q.flee_failed("flee (band: the trip leaves the level)")
+    recalled = any("word of recall" in w for _, w in q.cmds)
+    ok = first == "BandLeave" and any("Magic Mapping" in w for w in mm) and second and recalled
+    return ok, f"goal {first}; reads {mm}; fled to stairs {second}; at 57% HP recalled {recalled}"
+
+
+@case
 def pack_full_makes_room():
     """C4: pack 23/23 with a worthless Potion of Water among kit items; a Wand of Stinking Cloud underfoot: the
     Pilot destroys the water to take the wand (and never destroys kit consumables)."""

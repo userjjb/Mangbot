@@ -275,7 +275,7 @@ class Run:
 
 
 # --- forged props (the user allowed the forge, 2026-10-24: each use destroys Gandalf's pack slot a) -----
-def give_item(run, kind, pval=None, want=None, timeout=40, ego=None):
+def give_item(run, kind, pval=None, want=None, timeout=40, ego=None, number=1):
     """Forge an item (identified), drop it beside Dive04 and have Dive04 fetch it. True once its name
     (`want`) shows in Dive04's pack."""
     v = pilot_view()
@@ -284,7 +284,7 @@ def give_item(run, kind, pval=None, want=None, timeout=40, ego=None):
     if not spot:
         raise RuntimeError(f"no floor square next to Dive04 at {me}")
     run.gandalf_to(spot)
-    name = run.dm.forge(kind, ego=ego, pval=pval)
+    name = run.dm.forge(kind, ego=ego, pval=pval, number=number)
     if want is None and name:
         # (a flavour Dive04 may not know: "an Azurite Ring (+5) {for sale 500}" -> "Azurite Ring")
         want = re.sub(r"^(an?|the|\d+) ", "", re.sub(r" ?[({\[].*$", "", name))
@@ -297,6 +297,9 @@ def give_item(run, kind, pval=None, want=None, timeout=40, ego=None):
     while time.time() - t0 < timeout:
         time.sleep(2)
         if want and want.lower() in ctl("status", "full", role="architect").split("Equipment:")[-1].lower():
+            for _ in range(number - 1):              # (a pickup takes one of a stack)
+                ctl("pickup", role="architect")
+                time.sleep(1.2)
             return True
     return False
 
@@ -393,7 +396,14 @@ def a9(run):
     """A9 (summoned variant): a recall arrival with a band forming and stairs unknown. The trip plan's
     arrival protocol uses Door/Stair Location within 5 s; no second Word of Recall is read while
     one is pending. (The 'special' feeling needs a real pit: not staged here.)"""
-    ctl("plan", "trip", f"{run.depth}-{run.depth}", "via=recall", "until", "minutes>3", role="architect")
+    if " WoR 0" in ctl("status", role="architect") or " WoR 1 " in ctl("status", role="architect"):
+        # (the trip plan wants 2: Gandalf comes up to town with 3, then goes back down)
+        run.dm.ascend(run.depth // 50)
+        give_item(run, WOR_KIND, number=3, want="Word of Recall")
+        run.dm.descend(run.depth // 50)
+        time.sleep(1)
+    rep = ctl("plan", "trip", f"{run.depth}-{run.depth}", "via=recall", "until", "minutes>3", "force", role="architect")
+    run.res["plan_reply"] = rep[:300]
     t_arrive = None
     for _ in range(60):
         time.sleep(1)
@@ -1107,7 +1117,20 @@ SETPIECES = {"L3": l3, "A2f": a2f, "L2g": l2g, "A7f": a7f, "A5": a5, "A5s": a5s,
              "C3": c3}
 
 
-TOWN = {"B4", "B4w"}                # set in town
+TOWN = {"B4", "B4w"}
+WOR_KIND = None              # set below from object.txt                # set in town
+
+
+def _kind(name):
+    import re as _re
+    for line in open(os.path.join(HERE, "..", "..", "lib", "edit", "object.txt")):
+        m = _re.match(r"N:(\d+):(.+)$", line.strip())
+        if m and m.group(2) == name:
+            return int(m.group(1))
+    return None
+
+
+WOR_KIND = _kind("Word of Recall")
 
 
 def fresh_depth(choices=(300, 350, 400, 450, 500, 550, 600, 650)):

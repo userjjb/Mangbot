@@ -939,6 +939,47 @@ class Reprieve(Goal):
         return None
 
 
+class BandLeave(Goal):
+    """The trip leaves a level for a band, no stairs known, HP high, nothing on us: find stairs instead of
+    reading Word of Recall at once (m26 ended every trip in an escape recall, ~970 gold of scrolls in 25
+    minutes; the user, 2026-10-24). Door/Stair Location, else Magic Mapping, then flee to what it shows;
+    with neither, walk out of the band's sight. A second failure on the level recalls (flee_failed)."""
+
+    def __init__(self, names):
+        self.names = set(names)
+        self.name = "flee (band: locating stairs)"
+        self.t0 = None
+        self.flee = None
+
+    def tick(self, p):
+        w = p.w
+        if self.flee:
+            return self.flee.tick(p)
+        if self.t0 is None:
+            used = p.use_stair_location("band, no stairs known")
+            if not used:
+                mm = next((i for i in w.items(tval=TV_SCROLL) if "Magic Mapping" in i["name"]), None)
+                if mm and not w.flag("blind") and not w.flag("confused") and gnow() >= p.busy_until:
+                    p.cmd(f"custom r item={mm['item']}", "band, no stairs known: Magic Mapping", hold=0.8)
+                    used = True
+            if not used:
+                p.set_goal(WalkAway(self.names))
+                p.notify("tactic", "a band and no stairs known: walking out of its sight instead of reading Word of "
+                                   "Recall", news=True)
+                return None
+            self.t0 = gnow()
+            return None
+        if not waited(self.t0, 1.5):
+            return None
+        if not w.find("<>"):
+            return ("failed", "located nothing: no stairs known")
+        p.notify("tactic", "a band and no stairs known: found stairs, leaving by them instead of Word of Recall",
+                 news=True)
+        self.flee = Flee("band: the trip leaves the level")
+        self.flee.name = "flee (band: to the stairs located)"
+        return self.flee.tick(p)
+
+
 class WalkAway(Goal):
     """A summoner just came into view, not adjacent and no faster than us: walk out of its sight
     over ground already walked, then keep away (an avoid zone where it was). The user (2026-10-23,
@@ -4558,16 +4599,25 @@ class Pilot:
             self.notify({"done": "goal_done", "failed": "goal_failed"}.get(status, status),
                         f"{g}: {detail}" if detail else g, news=quiet)
             if status == "failed" and g.startswith(("flee", "leave")):    # (m26's `goal leave` got stuck too)
-                self.flee_failed()
+                self.flee_failed(g)
         return True
 
-    def flee_failed(self):
+    def flee_failed(self, goal=None):
         """A flee that can't reach the stairs, with monsters close: don't go
         idle among them (mission 14: Lagduf's pack, stairs 66 away, the
         Navigator had to read Word of Recall itself) -- start a recall and
-        phase out of reach while it charges."""
+        phase out of reach while it charges. A planned leave for a band at high HP with nothing on us
+        first looks for stairs (BandLeave), once per level."""
         w, now = self.w, gnow()
         self.flee_fail_t = now
+        soft = self.__dict__.setdefault("band_soft_levels", set())
+        if goal and "band" in goal and w.in_dungeon and w.level_t not in soft and w.hp_frac >= 0.8 and \
+                not w.adjacent_monsters() and not any(self.danger_why(r) for *_, r in w.monsters) and \
+                not self.recall_started(now):
+            soft.add(w.level_t)
+            names = sorted({r.name for y, x, r in w.monsters if w.dist((y, x)) <= 10}) or ["the band"]
+            self.set_goal(BandLeave(names))
+            return
         # (decoded or only listed by the server, as danger_seen counts them:
         # mission 15's Brodda was listed 0.1 s before the map decode, so this
         # saw nothing and no Word of Recall was read at full HP)

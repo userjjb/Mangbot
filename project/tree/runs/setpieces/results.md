@@ -105,3 +105,6 @@
 - 2026-10-24 01:33:02 **A2K** PASS (Word of Recall within 2 s of first sight, lowest HP >= 40%) `A2K-20261024-013302.json`
 - 2026-10-24 01:36:17 **A2f** PASS (danger seen, Word of Recall within 2 s of it, lowest HP >= 60%) `A2f-20261024-013617.json`
 - 2026-10-24 01:40:17 **L3** PASS (boots worn, a HOLD cast seen, unaffected after HOLD, not unaffected after BLIND (no rBlind)) `L3-20261024-014017.json`
+- 2026-10-24 03:38:07 **A9** FAIL (arrived by recall FAIL) `A9-20261024-033807.json`
+- 2026-10-24 03:41:41 **A9** FAIL (arrived by recall FAIL) `A9-20261024-034141.json`
+- 2026-10-24 03:45:26 **A9** PASS (Door/Stair Location within 5 s of arriving, no second Word of Recall while one is pending) `A9-20261024-034526.json`
