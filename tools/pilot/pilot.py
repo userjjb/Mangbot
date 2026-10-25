@@ -1064,6 +1064,18 @@ class Flee(Goal):
         # At or below max_depth, go up if an up staircase is known (mission 4:
         # flights kept taking '>' past max_depth)
         md = int(p.orders.get("max_depth", 0))
+        # With only '>' known there, teleport away on this level instead (m38: two flees at 650 ft took '>' to 700
+        # ft, and finding a '<' there took 10 minutes); '>' only without a teleport, or one used in the last minute
+        if md and w.depth_ft >= md and not w.find("<") and not self.started:
+            t = p.teleport_item()
+            if t and not w.flag("blind") and (t[0] == "u" or not w.flag("confused")) and \
+                    gnow() - getattr(p, "flee_tele_t", -99.0) > 60:
+                p.flee_tele_t = gnow()
+                p.cmd(f"custom {t[0]} item={t[1]['item']}", f"flee at {w.depth_ft} ft (max_depth), only '>' known: "
+                                                            f"{t[1]['name']}", hold=0.8)
+                p.notify("tactic", f"flee at max_depth with only '>' known: teleported ({one_of(t[1]['name'])}) "
+                                   "rather than going deeper", news=True)
+                return ("done", "teleported away on this level (max_depth, no '<' known)")
         ok = "<" if md and w.depth_ft >= md and w.find("<") else "<>"
         if w.standing_on and w.standing_on in ok:     # (None in "<>" crashed a flee, mission 6)
             p.take_stairs(w.standing_on)

@@ -1269,6 +1269,32 @@ def unique_drop_pushes_out_only_cheap():
     return tulwar == [] and len(helm) == 1, f"over a Tulwar: {tulwar}; over a [5,-3] helm: {helm}"
 
 
+@case
+def flee_at_max_depth_teleports():
+    """m38: two flees at 650 ft (max_depth) with only '>' known went to 700 ft; finding a '<' there took 10 minutes.
+    Now: teleport away on the level (staff or scroll), once a minute; without one, '>' as before."""
+    def run(pack):
+        p = pilot(pack=pack)
+        p.w.depth_ft, p.w.depth, p.w.standing_on = 650, 13, "."
+        p.w.find = lambda chars: [] if chars == "<" else [(25, 25)]
+        p.w.adjacent_monsters = lambda: []
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append(line)
+        p.take_stairs = lambda ch: p.cmds.append("stairs " + ch)
+        p.mover = type("M", (), {"active": False, "path": [1] * 5, "unknown": False, "go": lambda self, g, unknown=False: True,
+                                 "tick": lambda self: "moving", "stop": lambda self: None})()
+        p.danger_why = lambda r: None
+        g = P.Flee("band: the trip leaves the level")
+        r = g.tick(p)
+        r2 = P.Flee("again").tick(p)
+        return r, r2, p.cmds
+    staff = run([("a Staff of Teleportation (9 charges)", 55)])
+    none = run([PHASE])
+    ok = (staff[0] == ("done", "teleported away on this level (max_depth, no '<' known)") and staff[2][0].startswith("custom u")
+          and staff[1] is None and none[0] is None)
+    return ok, f"with the staff: {staff}; without: {none}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

@@ -162,8 +162,9 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
   waits 20 s for it).
 - **Counts in buys mean "have N"**, in `plan town` and in `goal shop` alike (`buy NAME:+N` buys N more). To pick
   one of several lines with the same name, put the plus in the name: `goal shop 6 buy Ring_of_Protection_[+12]:+1`.
-- **A flee at `max_depth` takes `<` when one is known; with only `>` known it goes down one level and straight back
-  up** (seconds, m37): the recall depth isn't changed by it. Items beside a disenchanter (a mold) are left, not
+- **A flee at `max_depth` takes `<` when one is known; with only `>` known it teleports away on the level** (the
+  staff or a scroll; m38 lost 10 minutes at 700 ft finding a `<`), and takes `>` only without one. The trip then
+  heads for a `<`. Going below doesn't change the recall depth. Items beside a disenchanter (a mold) are left, not
   fought for; a lost plus is news (`disenchanted`).
 - **Broke in town** (Word of Recall short and no gold): `plan town` sells unknown wands, staffs and rods, saves every
   coin for the Word of Recall (food only besides) and **by day townfarms the difference by itself** (kills
