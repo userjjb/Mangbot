@@ -1,0 +1,161 @@
+{
+ "label": "m32",
+ "nav_model": "opus",
+ "effort": "high",
+ "report": "compact",
+ "start": "2026-10-25 08:06",
+ "end": "2026-10-25 08:34",
+ "minutes": 28.0,
+ "notes": "baseline matrix 2/4: Opus high, 30 min; same Pilot as m31 (cave-run loop not fixed)",
+ "tokens": {
+  "turns": 37,
+  "input": 74,
+  "output": 15403,
+  "cache_read": 1318747,
+  "cache_write": 54820,
+  "write_5m": 54820,
+  "write_1h": 0,
+  "model": "claude-opus-5-5",
+  "final_usage_turns": 37,
+  "usd": 0.846,
+  "transcript": "agent-af1252a5ea5692e2c.jsonl"
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   25,
+   25
+  ],
+  "exp_gain": 627,
+  "gold": [
+   2724,
+   384
+  ],
+  "gold_change": -2340,
+  "max_depth_ft": 650
+ },
+ "B": {
+  "dungeon_min": 20.1,
+  "town_min": 7.2,
+  "exp_per_dmin": 31.1,
+  "levels_per_dhour": 0.34,
+  "gold_found": 1408,
+  "gold_found_per_dmin": 69.9,
+  "time_budget_min": {
+   "exploring": 14.0,
+   "fighting": 4.2,
+   "town_no_goal": 2.9,
+   "town_other": 2.2,
+   "town_idle_end": 1.7,
+   "travel_dive": 1.2,
+   "recall_wait": 0.6,
+   "town_shopping": 0.6,
+   "escaping": 0.5,
+   "resting": 0.1,
+   "no_goal_dungeon": 0.1
+  },
+  "navigator_wait_pct": 11
+ },
+ "C": {
+  "lowest_hp": [
+   130,
+   303,
+   43,
+   "08:10:13"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 1,
+  "emergency_episodes": 1,
+  "emergency_alerts": 7,
+  "phase": 1,
+  "wor_escape": 1,
+  "wor_travel": 3,
+  "stairs_flee": 1,
+  "teleport": 0,
+  "cures_quaffed": 4,
+  "escape_records": 7,
+  "recalls_landed": 4
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 0,
+  "loot_abandoned_est": 344,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 0,
+  "total": 344,
+  "sales": 9,
+  "sales_valued": 1,
+  "worst_sales": [],
+  "left_behind": [
+   "Great Axe (4d4)",
+   "Wand of Wonder",
+   "Scroll of Satisfy Hunger",
+   "Book of Magic Spells [Magic for Beginners]",
+   "Amulet of Teleportation",
+   "Scroll of Aggravate Monster",
+   "Potion of Salt Water",
+   "Staff of Haste Monsters",
+   "Rhodonite Ring",
+   "Iron Shots (1d4) (x19)"
+  ],
+  "irreplaceable": [
+   "a Ring of Resist Cold"
+  ]
+ },
+ "E": {
+  "reports": 20,
+  "commands": 49,
+  "commands_per_min": 2.5,
+  "report_to_action_med_s": 6.3,
+  "report_to_action_p90_s": 10.2,
+  "reports_without_command_pct": 20,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 2,
+  "report_chars": 52928,
+  "order_report_age_med_s": 5.8,
+  "order_report_age_p90_s": 10.2
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 55,
+  "perception_gaps": 3,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 852,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Clear hound": 27,
+  "Black orc": 21,
+  "Hill orc": 21,
+  "Pseudo-dragon": 20,
+  "Creeping mithril coins": 15,
+  "Master yeek": 14,
+  "Hippogriff": 13,
+  "Kobold archer": 13
+ },
+ "alerts": {
+  "tactic": 16,
+  "goal_done": 9,
+  "plan_done": 3,
+  "stat_drained": 2,
+  "blows_changed": 2,
+  "emergency_loop": 1
+ },
+ "plan_news": {
+  "unseen_attacker": 16,
+  "goal_done": 14,
+  "plan": 6,
+  "emergency": 6,
+  "drainer": 3,
+  "interesting_item": 3,
+  "fight_going_badly": 2,
+  "thief": 1,
+  "structure": 1
+ }
+}

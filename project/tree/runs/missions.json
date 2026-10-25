@@ -1588,10 +1588,23 @@
   "label": "m32",
   "nick": "dive04",
   "start": "2026-10-25 08:06",
-  "end": null,
+  "end": "2026-10-25 08:34",
   "navigator": "opus",
   "effort": "high",
   "report": "compact",
-  "notes": "baseline matrix 2/4: Opus high, 30 min; same Pilot as m31 (cave-run loop not fixed)"
+  "notes": "baseline matrix 2/4: Opus high, 30 min; same Pilot as m31 (cave-run loop not fixed)",
+  "tokens": {
+   "turns": 37,
+   "input": 74,
+   "output": 15403,
+   "cache_read": 1318747,
+   "cache_write": 54820,
+   "write_5m": 54820,
+   "write_1h": 0,
+   "model": "claude-opus-5-5",
+   "final_usage_turns": 37,
+   "usd": 0.846,
+   "transcript": "agent-af1252a5ea5692e2c.jsonl"
+  }
  }
 ]

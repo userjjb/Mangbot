@@ -498,3 +498,6 @@
 - 08:10:20 650ft 53% | 650ft arrival: Moaning spirit drained DEX (4->3 blows), Nar fight at 130/303, Pilot read WoR | let the recall run, no override | wanted to go home anyway to restore DEX (~470); Nar + invisible drainer not worth it
 - 08:11:27 town 100% | 08:11 town after escape recall: no Restore DEX at 5 or BM, 3 blows ~30 | buy 3rd WoR, trip 500-650 via recall until cures<4 or phase<5 or time>08:30 | 3 WoR rule; recall lands at 650 anyway; Pilot leaves drainer levels itself
 - 08:23:04 600ft 99% | 600ft: 2nd DEX drain (17), found Scimitar of Westernesse (2d5)(+9,+8)(+1) | keep it, let plan continue to 08:30, wield in town | Westernesse = Free Action + See Invisible (sees Moaning spirits); wear is town-only; trip earning ~1000g/10min
+- 08:31:51 town 100% | 08:31 home, 4966g, +627 XP, 6 levels | wield Scimitar of Westernesse, keep Main Gauche | Free Action + See Invisible + stats worth far more than 2 dmg/round; mission ends 08:37, no more trips
+- 08:32:18 town 100% | 08:32 town 4966g, store 6 has Staff of Teleportation 4582 | buy it | handbook: save for Teleportation at clvl ~20; best escape for a warrior, objective 1 is survival; gold is spent in town, not lost
+- 08:32:30 town 100% | 08:32 town idle, 384g, Westernesse wielded (FA+SI), Staff of Teleportation bought | mission done, stop here | 5 min left, no room for another trip

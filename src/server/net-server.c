@@ -465,9 +465,13 @@ void setup_network_server()
    arrived. So this little function flushes them all right after
    we handled network.
 */
+static bool time_frozen(void);
+
 void post_process_players(void)
 {
 	int Ind;
+	/* (frozen, test server: commands wait in the queue -- a step with stored energy ran at once otherwise) */
+	bool frozen = time_frozen();
 	for (Ind = 1; Ind <= NumPlayers; Ind++)
 	{
 		player_type *p_ptr = Players[Ind];
@@ -476,7 +480,7 @@ void post_process_players(void)
 		if (p_ptr->new_level_flag == TRUE) continue;
 		
 		/* Try to execute any commands on the command queue. */
-		(void) process_player_commands(p_ptr);
+		if (!frozen) (void) process_player_commands(p_ptr);
 	}
 	/* Next loop flushes all potential update flags Players have set
 	 * for each other. */

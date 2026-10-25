@@ -210,7 +210,10 @@ net-server.c (file `testserver/FREEZE`, only with `MANGBAND_FREEZE_FILE` set), P
 ~0, the Pilot holds, report says TIME FROZEN), `tools/freeze.sh`, viewer F5/Ctrl-F. The binary is rebuilt
 (`github/mangband`; the old one kept as `testserver/mangband.prefreeze`); the running server is the old one. **After
 m34: restart the server with the variable (operations.md), the Pilot (loads fear order, run loop, freeze) and the
-viewer; test the freeze live.**
+viewer; test the freeze live.** -> **Deployed after m32 (the user: "after this mission"), 08:34-08:36:** the first
+live test let one queued step through (post_process_players runs commands as they arrive, with stored energy);
+fixed, rebuilt, restarted; live: a step sent while frozen waited 5 s and ran at the thaw. m33-m34 run on the new
+server and Pilot (fear order, run loop, freeze); m31-m32 ran on the old ones.
 **The Brown mold (m25) fixed:** `stairs_beside_still` -- stairs underfoot or a step away beside a stationary monster
 harmless for a turn (no drain/paralyse/disenchant, melee < 25% HP) are taken, not stepped away from; Dive presses '>'
 only on its stairs (a step-away's "arrived" pressed it 6 squares off). Unit `stairs_beside_mold`; live set-piece
