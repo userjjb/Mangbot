@@ -1611,10 +1611,23 @@
   "label": "m33",
   "nick": "dive04",
   "start": "2026-10-25 08:36",
-  "end": null,
+  "end": "2026-10-25 09:04",
   "navigator": "opus",
   "effort": "medium",
   "report": "compact",
-  "notes": "baseline matrix 3/4: Opus medium, 30 min; NEW server (time freeze) and Pilot (fear order, cave run loop) from here; Dive04 now has Free Action and See Invisible (Westernesse), 384 gold, DEX drained"
+  "notes": "baseline matrix 3/4: Opus medium, 30 min; NEW server (time freeze) and Pilot (fear order, cave run loop) from here; Dive04 now has Free Action and See Invisible (Westernesse), 384 gold, DEX drained",
+  "tokens": {
+   "turns": 21,
+   "input": 42,
+   "output": 7298,
+   "cache_read": 508246,
+   "cache_write": 35403,
+   "write_5m": 35403,
+   "write_1h": 0,
+   "model": "claude-opus-5-5",
+   "final_usage_turns": 21,
+   "usd": 0.425,
+   "transcript": "agent-aadb292f432e4b259.jsonl"
+  }
  }
 ]

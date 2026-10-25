@@ -503,3 +503,6 @@
 - 08:32:30 town 100% | 08:32 town idle, 384g, Westernesse wielded (FA+SI), Staff of Teleportation bought | mission done, stop here | 5 min left, no room for another trip
 - 08:37:11 town 100% | town 08:37, 384g, 2 WoR, 30 min budget | plan town buy third WoR | recall down/up with a spare; walking down eats the budget
 - 08:37:26 town 100% | town ready 3 WoR 14 CCW 20 Phase | plan trip 500-650 via recall until cures<4 or phase<5 or time>09:00 | handbook's best XP band, within max_depth 650; time cond leaves 7 min for recall home
+- 08:53:10 600ft 100% | 08:52 Pilot left 650 ft over a Giant red frog (L7 STR drainer) while its own news says kill it fast | let it run | noting as over-cautious level leave for the report
+- 09:02:11 town 100% | 09:02 town, 1247g, DEX restored; Pilot swapped Westernesse for Main Gauche (40 vs 28 dmg) losing Free Action + See Invisible | re-wield the Scimitar, add standing note | FA is the one item that can't be bought; paralysers live at 600 ft
+- 09:02:39 town 100% | 09:02:13 Pilot re-swapped to Main Gauche 2 s after my wear; no order pins a weapon | leave it, report it; mission ends in town idle | not fighting the policy in a loop; its danger rules treat paralysers as danger without FA

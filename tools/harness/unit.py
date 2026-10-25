@@ -876,6 +876,24 @@ def run_loop_walks():
     return ok, f"no runs: {first}; one: {once}; two: {twice}; another square: {other}; a new level: {new_level}"
 
 
+@case
+def ability_weapon_kept():
+    """m33: the town weapon policy wielded a Main Gauche (~40 a round) over a Scimitar of Westernesse (~28: Free
+    Action, See Invisible, +STR/DEX/CON), twice. A weapon that loses an ability isn't wielded; a plain upgrade is."""
+    def run(worn, pack):
+        p = pilot(worn=worn, pack=pack)
+        p.w.depth, p.w.in_dungeon = 0, False
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append(why)
+        p.ARMOUR_SLOTS = {}
+        p.upgrade_step()
+        return p.cmds[-1] if p.cmds else None
+    west = run([("a Scimitar of Westernesse (2d5) (+9,+8) (+1)", 23, 130)], [("a Main Gauche (1d5) (+0,+7)", 23)])
+    plain = run([("a Dagger (1d4) (+0,+0)", 23, 12)], [("a Main Gauche (1d5) (+0,+7)", 23)])
+    ok = west is None and plain and "Main Gauche" in plain
+    return ok, f"Westernesse wielded: {west}; a plain Dagger wielded: {plain!r}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

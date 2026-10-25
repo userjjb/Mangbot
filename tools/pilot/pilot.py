@@ -3951,7 +3951,15 @@ class Pilot:
                 br = weapon_brand(n)
                 return d + 0.5 * (weapon_damage(n, b, br[1]) - d) if br else d
             cur = max((eff(n, b, d) for n, b, d, eq in wt if eq), default=0)
-            best = max(((eff(n, b, d), n) for n, b, d, eq in wt if not eq and not cursedish(n)), default=None)
+            # (never for a weapon that loses an ability the wielded one gives: m33 swapped a Scimitar of Westernesse,
+            # Free Action and See Invisible, for a Main Gauche doing ~40 vs ~28, and again 2 s after the Navigator
+            # put it back. Artifacts are never swapped away: their abilities aren't in the ego table)
+            on = next((n for n, b, d, eq in wt if eq), None)
+            keep_ab = self.weapon_abilities(on) if on else set()
+            best = max(((eff(n, b, d), n) for n, b, d, eq in wt if not eq and not cursedish(n)
+                        and keep_ab <= self.weapon_abilities(n)), default=None)
+            if on and self.is_artifact(on):
+                best = None
             if best and best[0] > cur * 1.2 and best[0] > 0:
                 it = next((i for i in pack if i["name"] == best[1]), None)
                 if it:
@@ -4037,6 +4045,28 @@ class Pilot:
                                        + (", ".join(src) or "none found") + "). The Pilot won't sell or drop those; "
                                        "identify them")
         self.ability_seen_t = max([self.ability_seen_t] + [ts for ts, _ in msgs])
+
+    WEAPON_ABILITY_FLAGS = {"FREE_ACT", "SEE_INVIS", "HOLD_LIFE", "TELEPATHY", "FEATHER", "REGEN", "SLOW_DIGEST", "SPEED",
+                     "STR", "DEX", "CON", "BLOWS", "LITE"}
+
+    def weapon_abilities(self, name):
+        """What a weapon gives beyond damage, from the rulebook's ego table (ego_flags.csv): Free Action, See
+        Invisible, resists, sustains, stats... An unknown ego or a plain weapon: nothing."""
+        if not hasattr(self, "_ego_flags"):
+            try:
+                self._ego_flags = {r["name"]: set(r["flags"].split()) for r in csv.DictReader(
+                    open(os.path.join(HERE, "..", "rulebook", "ego_flags.csv")))}
+            except OSError:
+                self._ego_flags = {}
+        for ego, flags in self._ego_flags.items():
+            if ego and re.search(rf"\b{re.escape(ego)}\b", name or ""):
+                return {f for f in flags if f in self.WEAPON_ABILITY_FLAGS or f.startswith(("RES_", "SUST_", "IM_"))}
+        return set()
+
+    @staticmethod
+    def is_artifact(name):
+        """A named artifact ('Dagger 'Narthanc'', 'the Phial of Galadriel'): its abilities aren't in the ego table."""
+        return bool(re.search(r"'\w|\bthe \w+ of [A-Z]", name or ""))
 
     def weapon_table(self):
         """[(name, blows, damage per round, wielded?)] for the wielded weapon and
