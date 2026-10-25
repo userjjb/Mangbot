@@ -21,3 +21,5 @@ metadata:
 - 2026-09-29: mission 9 replay (`memos/to_architect/2026-09-29-mission9-replay.md`) and versions/live-rules memo (`memos/2026-09-29-versions-and-forum-rules.md`). Status: next_steps.md handoff.
 - 2026-10-03: game-state survey (`memos/2026-10-03-game-state.md`, requested by the user): §6 done in 771d141. Status: next_steps.md handoff.
 - 2026-10-07: identify-and-sell, flavour-messages, mission 13 replay, warrior progression (`memos/2026-10-07-warrior-progression.md`). Status: next_steps.md handoff.
+
+- 2026-10-25 (in `memos/to_architect/`): **estimator** (emergency option estimator: 4 rule fixes, built), **replay** (calibration on 21 episodes; shadow mode next), **shadow-policy** (`options_sim.POLICY_VERSION`; the Pilot imports `Advisor/data/estimator/options_sim.py` live -- tell the Advisor when escape()/berserk_tick/fear_cure change; XP_PER_GOLD kept 1.0 by the user). Handoff: next_steps.md 2026-10-25.

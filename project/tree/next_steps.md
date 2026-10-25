@@ -137,7 +137,56 @@ validation.
   the Phase 1 confirm answer), inscribing key items, and the live character "Sneezy".
 - The user's player lore and plan changes are in `notes_players.md` (read it).
 
-### ARCHITECT HANDOFF 2026-10-24 (READ THIS FIRST; the 2026-10-08 section below is the history since)
+### ARCHITECT HANDOFF 2026-10-25 (READ THIS FIRST; the 2026-10-24 section below has session 5's details and history)
+
+**Where we are (end of session 5, 2026-10-25 ~13:15).** The chat ended, not the job: SGE job 8268425 on scc-pc4 runs to
+**Thu 10-29 09:47**, so a new chat in it finds everything running:
+- **Running:** the test server under gdb, port 28346, **the new build with the time freeze** (started with
+  `MANGBAND_FREEZE_FILE=$PWD/FREEZE`, operations.md); Dive04's Pilot on the latest code (git `restructure` 33c580e,
+  pushed: everything below is loaded); the viewer (`tmux -L mang attach -t watch`; F5/Ctrl-F freezes time). The inbox
+  watcher must be restarted in the new chat (SessionStart hook).
+- **Dive04:** clvl 25, 310 HP, idle in town, 2998 gold. Scimitar of Westernesse (2d5) (+9,+8) (+1): **Free Action and See
+  Invisible**; Staff of Teleportation (10 charges); CCW 14, CSW 4, Phase 19, WoR 2, Speed 1, Heroism 6, Berserk 1,
+  Magic Mapping 4, Rod of Door/Stair Location; DEX restored, **WIS drained**; Orcish Shield [5,+4] (disenchanted once).
+  Debts: item 44 gold, fight 0 HP. max_depth 650 (deepest 700).
+
+**Next session, start here:**
+1. Start the inbox watcher; check the processes (`pgrep -af "gdb -batch|pilot.py"`, `tmux -L mang ls`). If the job died:
+   server (operations.md, **with the freeze variable**), Pilot (`tools/pilot/restart.sh Dive04`), viewer.
+2. **Proposed, not yet chosen by the user:** run 3-5 missions to collect shadow-mode estimates (scorecard `est` column;
+   the Advisor reviews the `estimator` records from m35 on). Keep `XP_PER_GOLD` at 1.0 (the user, 10-25).
+3. **Open (todo):** a between-mission **gear optimization step** (the user, 10-25; below); the Advisor's structures memo
+   (pits / one-wide hallways); L3's BLIND half; plan town's forecast "at 5" (the shop number reads like a price);
+   `Rates:` gold counts purchases; an asleep flag per monster (the estimator's top data gap); an intermittent unit-test
+   failure (~1 in 20 runs of `unit.py`, twice, not reproduced since).
+
+**The user's rules added in session 5 (keep them):** set a Navigator's effort only when the user asks (Agent `effort`);
+after every mission: `mission end`, `python3 tools/observe/tokens.py mNN`, `scorecard.py --table`, a report in
+`runs/pilot/dive04/reports/`, complaints and `?` notes; **the time freeze is a testing tool, never part of a decision**
+(everything must work on live servers); Pilot changes may be loaded mid-mission with `tools/pilot/hotswap.sh Dive04`
+(tested: H1, H1r); don't restart the Pilot during a matrix unless the user asks or a bug is breaking.
+
+**Session 5 in brief** (details in the 2026-10-24 section below, under "Session 5"):
+- **Missions:** m29 Opus/high 71.3 XP/dmin (best); m30 Sonnet/high 46.9 (one close call, 38%); **baseline matrix m31-m34**
+  (30 min each: Sonnet medium 24.5, Opus high 31.1, Opus medium 53.5, Sonnet high 15.8 XP/dmin; cost per mission
+  $0.13 / $0.85 / $0.43 / $0.15) -- `runs/pilot/dive04/reports/2026-10-25-matrix-m31-m34.md`. Efforts so far: Opus
+  defaults to high, Sonnet to medium.
+- **Pilot fixes, all loaded:** stairs beside a harmless mold (M1); loot passed up / devices within 30 (M2); provisions (one
+  food, no oil; eat and fuel in town); Speed first in emergencies, Teleport one turn from death; Berserk in hard fights;
+  Boldness sold, fear cure Heroism > Boldness > Berserk; the m30 stall loop; leave after an unseen drain (M3); `band`
+  condition only while live; town makes pack room; `plan resume`; item replies `DONE:`; the cave run loop; ability
+  weapons never swapped for damage; bands by expected fight cost, weak drainers fought; quiet levels left;
+  disenchanters fought only when in the way; a flee with no known path reads Magic Mapping; the Advisor's four rules
+  (no resent recall/teleport, no second escape in flight, kill a quick caster, teleport over phase in a crowd, no HP cure
+  with 2+ adjacent); a pending recall survives a Pilot restart; emergency records carry a 21x21 map; **shadow mode**.
+- **Tools:** `tools/observe/tokens.py` (Navigator tokens and cost at list prices per mission; scorecard `usd`, `usd/dh`,
+  `usd/kxp`, `gold/usd`, `est`); `tools/freeze.sh` (+ server `time_frozen`, Pilot holds); `tools/pilot/hotswap.sh`;
+  `tools/pilot/shadow.py`; set-pieces M1-M4, H1, H1r (harness README).
+- **Advisor:** memos 10-25 estimator, replay, shadow-policy. Shadow mode imports `Advisor/data/estimator/options_sim.py`
+  live (`POLICY_VERSION pilot-escape-2026-10-25b`): tell the Advisor whenever `escape()`, `berserk_tick` or `fear_cure`
+  change, so its base policy stays in step.
+
+### ARCHITECT HANDOFF 2026-10-24 (history; read the 2026-10-25 section first -- session 5's details are in here)
 
 **Where we are (end of session 4, 2026-10-24 09:40): the RESTRUCTURE, steps 1-4 done, step 5 (missions) under
 way: m25-m28 run.** On 2026-10-22, after mission 23 (which the user ended: "you're fired"), the user decided to stop
