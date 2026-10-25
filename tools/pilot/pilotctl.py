@@ -28,7 +28,7 @@
     pilotctl.py gate FEET [recall]         # the supply gate: what's missing for going down to FEET
     pilotctl.py plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@MAX],...]   # the whole town visit, by policy
     pilotctl.py plan trip LO-HI [until "COND or ..."] [then recall|town] [level_min=N] [force]   # a whole trip
-    pilotctl.py plan | plan stop           # the plan now / end it
+    pilotctl.py plan | plan stop | plan resume   # the plan now / end it / end your goal, hand back to the plan
     pilotctl.py standing [TEXT | -N]       # standing instructions shown in every report (add / remove / list)
     pilotctl.py rule [monster|drop|fight|feeling|unknown|owner|const|object|room] ...   # query the rulebook
     pilotctl.py complain TEXT...           # what you lacked / what got in your way (not your mistakes)
@@ -126,6 +126,8 @@ def main():
     if "report" in out:
         print(out["report"])
     elif "pack" in out:
+        if out.get("did"):
+            print("DONE: " + out["did"] + (f" -- {out['note']}" if out.get("note") else ""))
         for line in out.get("said", []):
             print(line)
         print("Pack now: " + "; ".join(out["pack"]))

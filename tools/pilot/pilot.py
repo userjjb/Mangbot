@@ -5789,6 +5789,8 @@ class Pilot:
                                       "letter": None if tit["equip"] else chr(97 + target)}
             t0 = gnow()
             before = (self.effect_sig("pack"), self.effect_sig("equip"))
+            it_before = next((i for i in self.w.inven if i["item"] == item), None)
+            pos_before = self.w.pos
             self.cmd(f"custom {key} item={item}{extra}", f"agent: {c} {args}")
             pack = self.pack_now()
             # (mission 20: a destroy's reply showed the pack before it landed, and
@@ -5799,7 +5801,16 @@ class Pilot:
                 pack = self.pack_now(0.6)
             noise = ("You enter a maze", "Looks like", "You feel", "You hear", "You have found")
             said = [t for ts, t in self.w.messages if ts >= t0 and not t.startswith(noise)]
-            out = {"ok": True, "said": said[-4:], "pack": pack}
+            # (say what was done first: m30's `read Teleportation` worked, but the reply was the pack, and the
+            # Navigator read the second scroll by letter 9 s later)
+            did = f"{c} {it_before['name'] if it_before else args[0]}"
+            if it_before and not it_before.get("equip"):
+                kind = re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", it_before["name"]))
+                now_n = sum(i["number"] for i in self.w.items() if singular(kind) in singular(i["name"]))
+                did += f" ({it_before['number']} -> {now_n} left)"
+            if pos_before and self.w.pos and self.w.pos != pos_before:
+                did += f"; moved {pos_before} -> {self.w.pos} ({self.w.dist(pos_before)} squares)"
+            out = {"ok": True, "did": did, "said": said[-4:], "pack": pack}
             if c in ("use", "aim", "zap") and said:
                 pass          # a device's effect is what the game said (an unknown staff shows no charges)
             elif c != "inspect" and (self.effect_sig("pack"), self.effect_sig("equip")) == before:
@@ -6353,7 +6364,7 @@ class Pilot:
 
     PLAN_USAGE = ("usage: plan trip LO-HI [until \"COND or COND...\"] [then recall|town] [level_min=N] [via=stairs|recall] "
                   "[force] | "
-                  "plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@MAX],...] | plan stop | plan")
+                  "plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@MAX],...] | plan stop | plan resume | plan")
 
     def request_trip(self, args):
         w = self.w
@@ -6421,10 +6432,11 @@ class Pilot:
                 "note": "the Pilot runs it; `wait` wakes you when it ends (plan_done) and for what it can't "
                         "handle (user messages, stat drains, emergency loops). Bands, pits, breeders and the "
                         "like are news: it leaves the level itself. A goal you give pauses the plan until it "
-                        "ends; `plan stop` ends it"}
+                        "ends (`plan resume` ends your goal and hands back); `plan stop` ends it"}
 
     def request_plan(self, args):
-        """plan trip ... | plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@CAP][,...]]... | plan stop | plan"""
+        """plan trip ... | plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@CAP][,...]]... | plan stop | plan resume |
+        plan"""
         if not args:
             return {"ok": True, "text": f"plan: {self.plan.describe()}" if self.plan else "no plan"}
         if args[0] == "stop":
@@ -6434,6 +6446,19 @@ class Pilot:
             self.plan = None
             self.clear_plan_file()
             return {"ok": True, "text": "plan stopped (the current goal runs on; `stop` stops it)"}
+        if args[0] == "resume":
+            # (m30: the Navigator's `goal explore` paused the plan for 7 minutes on a quiet level, with no way to
+            # hand control back short of the goal ending)
+            if not self.plan:
+                return {"ok": True, "text": "no plan"}
+            if not self.plan.paused:
+                return {"ok": True, "text": f"the plan isn't paused: {self.plan.describe()}"}
+            ended = self.goal.describe() if self.goal else None
+            self.set_goal(None)
+            self.plan.paused, self.plan.pause_goal = False, None
+            self.log("plan_resumed", plan=self.plan.text, ended=ended)
+            return {"ok": True, "text": f"plan resumed{' (ended ' + repr(ended) + ')' if ended else ''}: "
+                                        f"{self.plan.describe()}"}
         if args[0] == "trip":
             return self.request_trip(args[1:])
         if args[0] != "town":
