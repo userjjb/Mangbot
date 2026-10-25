@@ -630,8 +630,9 @@ class Dive(Goal):
             if w.arrive_pos:
                 self.scummed.add(here)
             return self._stairs(p, other)
-        # No stairs known at all: a Door/Stair Location device maps them
-        if not w.find("<>") and waited(w.level_t, 1.0) and not w.monsters and self.locate_stairs(p):
+        # No stairs of the kind we want known: a Door/Stair Location device maps them (m38 arrived at 700 ft on a '>'
+        # and explored ~10 minutes for a '<' with the rod in the pack: "no stairs at all" never held)
+        if w.depth and not w.find(want) and waited(w.level_t, 1.0) and not w.monsters and self.locate_stairs(p):
             return None
         # No stairs under us: explore until we see some (either kind)
         self.expire_bad(w)
