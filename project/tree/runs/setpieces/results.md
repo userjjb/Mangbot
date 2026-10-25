@@ -139,3 +139,4 @@
 - 2026-10-25 11:48:23 **M4** PASS (no HP cure with 2+ adjacent, teleport, not Phase Door, with 4+ about, lowest HP >= 40%) `M4-20261025-114823.json`
 - 2026-10-25 11:52:38 **M4** FAIL (a site FAIL) `M4-20261025-115238.json`
 - 2026-10-25 11:54:34 **M4** PASS (no HP cure with 2+ adjacent, teleport, not Phase Door, with 4+ about, lowest HP >= 40%) `M4-20261025-115434.json`
+- 2026-10-25 12:27:35 **A2K** PASS (Word of Recall within 2 s of first sight, lowest HP >= 40%) `A2K-20261025-122735.json`

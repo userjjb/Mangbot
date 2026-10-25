@@ -1038,6 +1038,38 @@ def estimator_memo_rules():
     return ok, f"caster: {caster!r}; crowd: {crowd!r}; two adjacent: {two!r}; recall resent: {resent}"
 
 
+@case
+def shadow_estimator_logs():
+    """Shadow mode (the user, 10-25): an emergency decision hands its state to the Advisor's estimator in the
+    background; the answer is logged as an `estimator` record with the rules' action, the choice, the compute time and
+    whether it would have arrived in time (one player turn; before the Pilot's next action). The Pilot never waits."""
+    import time as _t
+    p = pilot(hp=140, worn=[("a Scimitar of Westernesse (2d5) (+9,+8) (+1)", 23, 130)],
+              pack=[("5 Potions of Cure Critical Wounds", 75), ("11 Scrolls of Phase Door", 70),
+                    ("2 Scrolls of Word of Recall", 70)],
+              monsters=[(20, 21, BYNAME["uruk"]), (21, 21, BYNAME["uruk"]), (23, 23, BYNAME["black orc"])])
+    p.w.hp = [140, 310]
+    p.w.in_dungeon, p.w.depth, p.w.clvl = True, 12, 25
+    p.w.find = lambda chars: []
+    p.our_slowness = lambda: 1.0
+    logged = []
+    p.log = lambda kind, **kw: logged.append((kind, kw))
+    t0 = _t.time()
+    started = p.shadow_decision("low HP: read Phase Door (Uruk, Uruk adjacent)")
+    waited_s = round(_t.time() - t0, 3)
+    for _ in range(60):
+        _t.sleep(0.1)
+        p.shadow_results()
+        if any(k == "estimator" for k, _ in logged):
+            break
+    rec = next((kw for k, kw in logged if k == "estimator"), {})
+    ok = started == "started" and waited_s < 0.2 and rec.get("choice") and rec.get("rules") == "phase" and \
+        "in_time_turn" in rec and "before_next_act" in rec and not rec.get("error")
+    return ok, (f"submit took {waited_s} s; choice {rec.get('choice')!r} ({rec.get('why')}); rules {rec.get('rules')}; "
+                f"compute {rec.get('compute_s')} s vs a turn of {rec.get('turn_s')} s: in time {rec.get('in_time_turn')}; "
+                f"error {rec.get('error')}")
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

@@ -241,6 +241,15 @@ Phase Door with 4+ about in the open; with 2+ adjacent no HP cure (read an escap
 Emergency attention records now carry a 21x21 remembered map (`map21`, `map_at`, `mons`) for the replay. Unit
 `estimator_memo_rules`; live A6, M4 PASS, but no live emergency reached the new rules (the Pilot beat or escaped
 the staged crowds first).
+**Shadow mode (the user, 10-25; the Advisor's replay memo):** `tools/pilot/shadow.py` -- at each emergency decision the
+Pilot hands a snapshot (HP, buffs/status, weapon profile, consumables, stairs distance, pending recall, the monsters in
+view and those only in the server's list at 3 squares) to the Advisor's `options_sim.choose` (n=40) in a background
+thread, imported from `Advisor/data/estimator` (the Advisor owns it: keep its base_policy in step with the Pilot's
+rules); never waits, never acts. Logged as `estimator` records: rules vs choice, `agree` (None when it knew no
+monster), compute_s, `in_time_turn` (within one player turn at the decision's time factor) and `before_next_act`;
+the emergency record says `shadow: started|skipped|off`. Scorecard: an `H estimator` line and an `est` column.
+Unit `shadow_estimator_logs`; live A2K: 1 estimate, agreed, 0.012 s (its fight was empty -- Khim in the server's list
+only -- hence the listed-monster fix). Run 3-5 missions, then compare.
 **Baseline matrix done (m31-m34, 07:42-09:29):** summary `runs/pilot/dive04/reports/2026-10-25-matrix-m31-m34.md`.
 Cost is clear (Opus high $0.85, Opus medium $0.43, Sonnet $0.13-0.15 per 30 min); XP (16-54/dmin) is dominated by
 level luck and Pilot problems at n=1 per cell, with the Pilot changed after m32 and Free Action + See Invisible found

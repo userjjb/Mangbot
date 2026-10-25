@@ -191,6 +191,16 @@ def card(m):
     c = {"label": m["label"], "nav_model": m.get("navigator"), "effort": m.get("effort"), "report": m.get("report"),
          "start": m["start"], "end": m.get("end") or "(running)", "minutes": round((t1 - t0) / 60, 1),
          "notes": m.get("notes", ""), "tokens": m.get("tokens")}
+    # shadow mode (2026-10-25): the estimator's answers beside the rules' emergency decisions
+    est = [d for d in recs if d.get("kind") == "estimator"]
+    cmp_ = [d for d in est if d.get("agree") is not None]
+    c["estimator"] = {"n": len(est), "compared": len(cmp_), "agree": sum(1 for d in cmp_ if d["agree"]),
+                      "in_time_turn": sum(1 for d in est if d.get("in_time_turn")),
+                      "before_next_act": sum(1 for d in est if d.get("before_next_act")),
+                      "skipped": sum(1 for d in att if d.get("what") == "emergency" and d.get("shadow") == "skipped"),
+                      "compute_max_s": max((d.get("compute_s") or 0 for d in est), default=None),
+                      "disagreements": [(d.get("rules"), d.get("choice"), (d.get("why") or "")[:80])
+                                        for d in cmp_ if not d["agree"]][:8]}
 
     # A. outcome
     c["A"] = {"deaths": acount.get("dead", 0)}
@@ -564,6 +574,11 @@ def show(c):
            f"{F['stuck']}, no-movement {F['stuck_looping_min']} min; runs {F['runs_sent']}; down {F['pilot_down_min']} "
            f"min; server crashes {F['server_crashes']}",
            "  damage by    " + (", ".join(f"{k} {v}" for k, v in c["damage_by_monster"].items()) or "-"),
+           (lambda e: f"  H estimator  shadow: {e['n']} estimates ({e['skipped']} skipped while busy), {e['agree']}/"
+                      f"{e['compared']} agree with the rules; in time: {e['in_time_turn']} within a turn, "
+                      f"{e['before_next_act']} before the next action; slowest {e['compute_max_s']} s"
+                      + ("; disagreed: " + "; ".join(f"{a} -> {b} ({w})" for a, b, w in e["disagreements"][:3])
+                         if e["disagreements"] else "") if e and e["n"] else None)(c.get("estimator")),
            (lambda t: f"  G tokens     Navigator {t['turns']} turns; output {t['output'] if t['output'] is not None else 'not logged'}, cache read {t['cache_read']}, "
                       f"cache write {t['cache_write']}, input {t['input']}; ${t.get('usd')} at list prices (tokens.py)" if t else
                       "  G tokens     - (run tokens.py LABEL)")(c.get("tokens"))]
@@ -579,6 +594,8 @@ TABLE = [("mission", lambda c: c["label"]), ("nav", lambda c: c["nav_model"]), (
          ("lost", lambda c: c["D"]["total"]), ("forced$", lambda c: c["D"]["sale_shortfall_forced"]),
          ("r->a", lambda c: c["E"]["report_to_action_med_s"]), ("reply", lambda c: c["E"]["user_reply_med_s"]),
          ("wait%", lambda c: c["B"]["navigator_wait_pct"]),
+         ("est", lambda c: f"{c['estimator']['agree']}/{c['estimator']['compared']}" if (c.get("estimator") or {}).get("n")
+          else None),
          ("usd", lambda c: _usd(c)),
          ("usd/dh", lambda c: _per(_usd(c), c["B"]["dungeon_min"] / 60)),
          ("usd/kxp", lambda c: _per(_usd(c), c["A"].get("exp_gain", 0) / 1000)),

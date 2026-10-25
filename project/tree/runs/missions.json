@@ -1822,5 +1822,15 @@
   "effort": null,
   "report": "compact",
   "notes": "set-piece M4"
+ },
+ {
+  "label": "sp-A2K-20261025-122735",
+  "nick": "dive04",
+  "start": "2026-10-25 12:28",
+  "end": "2026-10-25 12:30",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A2K"
  }
 ]

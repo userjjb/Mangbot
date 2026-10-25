@@ -44,6 +44,7 @@ import glyphs                                   # noqa: E402
 from world import (World, gnow, set_time_factor, time_factor, model_factor, wall_of, wall_since, waited,  # noqa: E402
                    ghold, light_fuel, set_fast_ok, measured_rate, _lt, frozen)
 import structures                                # noqa: E402
+import shadow                                    # noqa: E402
 import itemvalue                                 # noqa: E402
 sys.path.insert(0, os.path.join(HERE, "..", "observe"))
 import shopmath                                  # noqa: E402
@@ -2342,6 +2343,8 @@ class Pilot:
         if what == "plan":
             source = "plan"
         extra = {"source": source} if source else {}
+        if what == "emergency" and self.w.in_dungeon:
+            extra["shadow"] = self.shadow_decision(detail)
         if what in ("emergency", "emergency_loop"):
             # (the Advisor's estimator memo: the remembered map around @, 21x21, and the monsters, for replays)
             w = self.w
@@ -2383,6 +2386,7 @@ class Pilot:
         self.c.send(line)
         self.last_action = (gnow(), line, why)
         self.busy_until = gnow() + ghold(hold)
+        self.__dict__.setdefault("act_walls", collections.deque(maxlen=50)).append(time.time())
         mr = re.match(r"custom [ru] item=(\d+)", line)
         if mr:
             iu = next((i for i in self.w.items() if i["item"] == int(mr.group(1))), None)
@@ -3514,6 +3518,72 @@ class Pilot:
             self.notify("emergency", f"{why}: attacking {r.name} first (summons or casts blind/confuse/hold; ~{best[0]:.0f} "
                                      f"HP, two rounds)")
         return True
+
+    def shadow_decision(self, detail):
+        """Shadow mode (the user, 10-25): hand this emergency decision's state to the Advisor's estimator in the
+        background (shadow.py). Never waits, never acts on it. Returns 'started', 'skipped' (one running) or 'off'."""
+        sh = self.__dict__.get("shadow_est")
+        if sh is None:
+            sh = self.shadow_est = shadow.Shadow()
+            if sh.error:
+                self.log("note", text=f"shadow mode off: the estimator didn't load ({sh.error})")
+        if not sh.sim:
+            return "off"
+        w = self.w
+        wt = [x for x in self.weapon_table() if x[3]]
+        prof = shadow.weapon_profile(wt[0][0] if wt else "", wt[0][1] if wt else 1)
+
+        def n(word, tv):
+            return sum(i["number"] for i in w.items(tval=tv) if word in i["name"])
+        staff = next((i for i in w.items(tval=55) if "Teleportation" in i["name"]), None)
+        m = re.search(r"\((\d+) charges?\)", staff["name"]) if staff else None
+        stairs = min((sh.sim.adist(q[0] - w.pos[0], q[1] - w.pos[1]) for q in w.find("<>")), default=None) \
+            if w.pos else None
+        p = dict(hp=w.hp[0], mhp=w.hp[1], ac=(w.ind.get("armor") or [0])[0] or 0, clvl=w.clvl,
+                 depth=w.depth or 1, stairs=stairs, free_action=bool(self.has_ability("free_action")),
+                 save=sh.sim.SAVE, max_adj=shadow.MAX_ADJ, **prof,
+                 inv=dict(ccw=n("Cure Critical", TV_POTION), csw=n("Cure Serious", TV_POTION),
+                          clw=n("Cure Light", TV_POTION), phase=n("Phase Door", TV_SCROLL),
+                          tele=n("Teleportation", TV_SCROLL), staff=int(m.group(1)) if m else 0,
+                          wor=n("Word of Recall", TV_SCROLL), speed=n("Speed", TV_POTION),
+                          berserk=n("Berserk", TV_POTION), hero=n("Heroism", TV_POTION)))
+        for k, on in (("fast", self.buff_on("fast")), ("hero", self.buff_on("hero")), ("berserk", self.buff_on("shero")),
+                      ("blind", w.flag("blind")), ("confused", w.flag("confused")), ("afraid", w.flag("afraid")),
+                      ("slow", self.our_slowness() > 1)):
+            if on:
+                p[k] = 5
+        if w.recall_pending:
+            p["recall"] = max(1, int(25 - (gnow() - w.recall_pending_t) / shadow.TURN_S))
+        team = [(r.name, max(1, sh.sim.adist(y - w.pos[0], x - w.pos[1]))) for y, x, r in w.monsters] if w.pos else []
+        # (and what the server's list names but the map doesn't show yet, 3 squares off: A2K's first emergency had
+        # Khim in the list only, and the estimator played an empty fight)
+        team += [(r.name, 3) for r in (w.listed_only() if hasattr(w, "listed_only") else [])]
+        snap = {"p": p, "team": team, "rules": shadow.rules_option(detail), "rules_detail": (detail or "")[:160],
+                "wall": time.time(), "factor": time_factor(), "speed": (w.ind.get("speed") or [0])[0] or 0}
+        return sh.submit(snap)
+
+    def shadow_results(self):
+        """Log the estimator's answers (the main thread writes the log): with whether it would have arrived in time --
+        within one player turn at the time factor of the decision, and before the Pilot's next action."""
+        sh = self.__dict__.get("shadow_est")
+        if not sh:
+            return
+        while not sh.results.empty():
+            r = sh.results.get()
+            snap = r.get("snap") or {}
+            sp = snap.get("speed", 0)
+            energy = 1.0 + max(-0.5, min(1.0, sp / 10.0))          # (roughly: +10 doubles our turns)
+            turn_s = shadow.TURN_S / max(0.05, snap.get("factor") or 1.0) / energy
+            nxt = next((t for t in self.__dict__.get("act_walls", ()) if t > snap.get("wall", 0) + 0.05), None)
+            in_turn = r.get("compute_s", 99) <= turn_s
+            before_next = nxt is None or r.get("done_wall", 0) <= nxt
+            # (no monster the estimator knows: nothing to compare -- agree is None)
+            agree = (r.get("choice") in ("rules", snap.get("rules"))) if r.get("team") else None
+            self.log("estimator", rules=snap.get("rules"), rules_detail=snap.get("rules_detail"),
+                     choice=r.get("choice"), why=r.get("why"), agree=agree,
+                     compute_s=r.get("compute_s"), turn_s=round(turn_s, 2), in_time_turn=in_turn,
+                     before_next_act=before_next, next_act_after_s=round(nxt - snap["wall"], 2) if nxt else None,
+                     team=r.get("team"), p=r.get("p"), inv=r.get("inv"), table=r.get("table"), error=r.get("error"))
 
     def recall_memory(self):
         """A pending Word of Recall survives a Pilot restart in the game but not in our memory (the client only says
@@ -5596,6 +5666,7 @@ class Pilot:
             self.w.recall_cancelled = False
             self.notify("recall_cancelled", "a Word of Recall was cancelled (a second one was read): no recall is pending now")
         self.recall_memory()
+        self.shadow_results()
         self.handle_requests()
         if not self.running:
             return

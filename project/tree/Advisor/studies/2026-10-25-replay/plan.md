@@ -22,3 +22,11 @@ JSON per `replay_schema.md`. Advisor: `data/estimator/replay.py` (forced-action 
 
 **Pass log**
 - pass 1 launched 2026-10-25.
+- pass 1 done (R1, R2 + Advisor calibration). Memo ../memos/2026-10-25-replay.md; note to_architect/2026-10-25-replay.md.
+
+## Retrospective
+- Two Clerks on a shared JSON schema worked well; adding a field mid-run by message worked (both included mons_series).
+- Decomposing the calibration (per blow -> per round -> engagement -> whole episode) located the error quickly; the whole-episode
+  replay alone would only have said "wrong".
+- The decision rule needed a significance margin: with ~equal options the top choice is noise. Lesson for any estimator memo:
+  report which verdicts are stable across sample sizes.

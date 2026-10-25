@@ -1,0 +1,102 @@
+{
+ "id": "A2K",
+ "tag": "A2K-20261025-122735",
+ "depth_ft": 600,
+ "start": "2026-10-25 12:27:35",
+ "checks": {
+  "Word of Recall within 2 s of first sight": {
+   "pass": true,
+   "detail": "seen at 3.609261989593506, recall read at 3.5"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [237, 340]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   310,
+   310
+  ],
+  "hp_min": [
+   237,
+   340
+  ],
+  "attention": [
+   [
+    3.5,
+    "danger_seen",
+    "Khim, Son of Mim (a fight costs ~465 HP on average (the duel simulator)) in view: heading for the st"
+   ],
+   [
+    3.5,
+    "goal_failed",
+    "flee (Khim, Son of Mim): no stairs known"
+   ],
+   [
+    3.6,
+    "emergency",
+    "couldn't reach the stairs with 1 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    4.1,
+    "tactic",
+    "a hard fight with Khim, Son of Mim: quaffed a Potion of Berserk Strength (+to-hit, +30 HP, no fear)"
+   ],
+   [
+    13.3,
+    "danger_seen",
+    "Khim, Son of Mim (a fight costs ~524 HP on average (the duel simulator)) in view: heading for the st"
+   ],
+   [
+    13.3,
+    "goal_failed",
+    "flee (Khim, Son of Mim): no stairs known"
+   ]
+  ],
+  "acts": [
+   [
+    3.5,
+    "custom r item=7",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    4.1,
+    "custom q item=3",
+    "a hard fight (Khim, Son of Mim): quaff a Potion of Berserk Strength"
+   ],
+   [
+    13.3,
+    "custom r item=5",
+    "flee failed, monsters adjacent: phase door"
+   ],
+   [
+    13.9,
+    "rest",
+    "rest"
+   ],
+   [
+    15.0,
+    "rest",
+    "rest"
+   ],
+   [
+    16.3,
+    "rest",
+    "rest"
+   ],
+   [
+    24.0,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 1,
+  "phase_reads": 1,
+  "wor_reads": 1,
+  "cures": 0
+ },
+ "end": "2026-10-25 12:30:33",
+ "pass": true
+}

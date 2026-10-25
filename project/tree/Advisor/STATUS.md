@@ -33,7 +33,8 @@ Architect builds everything else.
 4b. **Belief-state spec** (if the Architect wants it for step 2): fields, computation, expiry (see starting-over memo §3.4).
 5. **Step 5:** run the scorecard on each new mission vs the m17–23 baseline; Opus vs Sonnet by depth band (m22–23 were Sonnet;
    `data/navigator/response.py` has the missions list; production `scorecard.py` reads `runs/missions.json` which records the model).
-5a. **Estimator** (memo 10-25): offered the Architect a calibration-replay study (21 episodes) as next; wait for the answer.
+5a. **Estimator**: memo 10-25 + replay/calibration memo 10-25 (`2026-10-25-replay.md`); user: no freeze per decision; Architect adds
+   the 4 rule fixes + 21x21 map windows in emergency records. Next if asked: shadow-mode review; grid version once asleep flag + windows exist.
 5b. **m27** (Opus, kit forged to m26's start, Pilot after m26 fixes): first same-Pilot Opus vs Sonnet comparison; score it vs m26 when done.
    Arrival feelings now logged (`arrival_feeling` in decisions; `feeling:` in dump headers): later, measure P(pit/nest | special) on scummed levels.
 5c. Next rulebook build: add constants.csv rows for Hero/Berserk (to_h +12/+24, AC -10, mhp +10/+30 rescaled, res_fear),
@@ -60,6 +61,7 @@ spells, breaths, tags, solo index), `abilities.csv` (messages proving abilities)
 
 | date | study | memo | data |
 |---|---|---|---|
+| 10-25 | estimator calibration on 21 replays (`studies/2026-10-25-replay/`) | `2026-10-25-replay.md` | `data/estimator/` |
 | 10-25 | emergency option estimator (worth it? model, method, budget, validation; 47 episodes m17-m34) | `2026-10-25-estimator.md` | `data/estimator/` |
 | 10-24 | structures (pits/nests/vaults from partial maps; m26 summon trap; auto_scum) | `2026-10-24-structures.md` | `data/structures/` |
 | 09-26 | forum distillation (pre-fork) | `2026-09-26-forum-distillation.md` | `data/forum/` |
@@ -99,6 +101,8 @@ The user struck one lead (2026-10-07): the live fetch of Bug Reports / Technical
   0 of 38 informative arrivals at 500-700 ft were below "luck is turning", 14 special. At <= 850 ft a non-special, non-suppressed feeling
   proves no pit/nest/vault. dungeon_align is on: rooms centred at X in {16,49,82,115,148,181}, Y = 11k+5. Normal tunnels 2 wide; lit 11x25
   room never a pit/nest; at 500-1000 ft pits = orc, nests = jelly. m26's Nar group = summon trap (3-5 awake, Depth+5, uniques).
+- Estimator calibration (10-25): monster hit x1.10 vs model; ~2 attackers at once (max 3); non-adjacent monsters close at
+  ~0.4 of straight-walk (asleep/unnoticed); 1 block = 0.625 s wall (TICK_S), ~3.3 s in the bubble.
 - Cures heal flat: CLW 15, CSW 20-24, CCW 25-29 (use-obj.c:483-510) — status cures, not heals, at 300 HP. No monster flow
   (MONSTER_FLOW compiled out): monsters walk straight at us; Phase helps only through a wall. Reading blocked by confusion/blind/dark.
   A 2nd WoR read cancels (the Pilot once resent one, m26 03:22). Commands take 4-19 s wall in the bubble. Time freeze live (10-25).

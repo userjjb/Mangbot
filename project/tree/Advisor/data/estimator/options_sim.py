@@ -127,6 +127,7 @@ class State:
         self.lowest = p["hp"]
         self.block = 0
         self.xp = 0.0
+        self.rounds = 0
 
 
 def roll(rng, n, s):
@@ -314,6 +315,7 @@ def monster_act(st, m):
             cast(st, m, rng.choice(m.spells))
             return 1
         if m.blows and "NEVER_BLOW" not in m.flags:
+            st.rounds += 1
             for eff, n, s, ph in m.blows:
                 if rng.random() < ph:
                     d = roll(rng, n, s)
@@ -424,7 +426,7 @@ def rollout(p, team, plan, seed, horizon=30, arrivals=(), trace=False, actor=Non
                 m.energy -= monster_act(st, m)
             if st.p["hp"] <= 0:
                 return dict(dead=True, end_hp=st.p["hp"], low=st.p["hp"], spent=st.spent, escaped=None, blocks=blk,
-                            xp=st.xp, path=path + [st.p["hp"]] if trace else None)
+                            xp=st.xp, rounds=st.rounds, path=path + [st.p["hp"]] if trace else None)
         st.lowest = min(st.lowest, st.p["hp"])
         if trace:
             path.append(st.p["hp"])
@@ -438,7 +440,7 @@ def rollout(p, team, plan, seed, horizon=30, arrivals=(), trace=False, actor=Non
             st.recall -= 1
             if st.recall <= 0:
                 st.escaped = "recall"
-    return dict(dead=False, end_hp=st.p["hp"], low=st.lowest, spent=st.spent, xp=st.xp,
+    return dict(dead=False, end_hp=st.p["hp"], low=st.lowest, spent=st.spent, xp=st.xp, rounds=st.rounds,
                 escaped=st.escaped or ("cleared" if not st.mons else None), blocks=blk, path=path if trace else None)
 
 
@@ -449,6 +451,7 @@ def q(a, f):
 
 SAFE_NEAR = 0.02       # an option is safe if P(lowest HP <= 10%) <= 2% ...
 SAFE_LOW_P10 = 0.30    # ... and its 10th-percentile lowest HP is >= 30% of max
+XP_PER_GOLD = 1.0      # exchange rate for "clearly better": Dive04 makes ~50 XP and ~30 gold a dungeon minute (rough)
 
 
 def evaluate(p, team, n=200, options=None, arrivals=()):
@@ -505,3 +508,55 @@ if __name__ == "__main__":
     for r in rows:
         print(r)
     print(f"{len(rows)} options x {o.n} rollouts in {dt:.2f} s ({1000 * dt / len(rows) / o.n:.2f} ms per rollout)")
+
+
+def evaluate_fast(p, team, budget_s=0.5, arrivals=(), n1=30, keep=4, options=None):
+    """Successive halving within a wall-time budget: n1 rollouts for every applicable option, then the best `keep` (by
+    evaluate's ranking) get more rollouts (same seeds continued) until the budget is spent. Returns the ranked list."""
+    t0 = time.time()
+    opts = [o for o in (options or OPTIONS) if not (o == "stairs" and p.get("stairs") is None)
+            and not (o == "staff" and not p["inv"].get("staff"))]
+    first = evaluate(p, team, n1, opts, arrivals)
+    per = (time.time() - t0) / max(1, len(opts) * n1)
+    top = [r["option"] for r in first[:keep]]
+    n2 = int(max(0.0, budget_s - (time.time() - t0)) / max(per, 1e-6) / len(top))
+    if n2 < 10:
+        return first
+    return evaluate(p, team, n1 + n2, top, arrivals) + first[keep:]
+
+
+def choose(p, team, n=100, arrivals=(), options=None, z=2.0):
+    """The decision: keep the rules unless another option is clearly better on the same seeds (paired, common random
+    numbers): (a) the rules are unsafe and the option is safe, or (b) both are safe and the option's XP net of gold
+    (XP_PER_GOLD) beats the rules' by more than z standard errors of the paired difference and by >= 10%.
+    Returns (option, why, table)."""
+    opts = [o for o in (options or OPTIONS) if not (o == "stairs" and p.get("stairs") is None)
+            and not (o == "staff" and not p["inv"].get("staff"))]
+    res = {o: [rollout(p, team, OPTIONS[o], seed=i, arrivals=arrivals) for i in range(n)] for o in opts}
+
+    def summary(rs):
+        near = sum(r["dead"] or r["low"] <= 0.1 * p["mhp"] for r in rs) / n
+        low10 = q([r["low"] for r in rs], 0.1)
+        return near, low10, near <= SAFE_NEAR and low10 >= SAFE_LOW_P10 * p["mhp"]
+    base = res["rules"]
+    bn, bl, bsafe = summary(base)
+    table, best, why = [], "rules", "rules (no option clearly better)"
+    best_gain = 0.0
+    for o, rs in res.items():
+        nn, ll, safe = summary(rs)
+        d = [(a["xp"] - b["xp"]) - XP_PER_GOLD * (a["spent"] - b["spent"]) for a, b in zip(rs, base)]
+        mean = statistics.mean(d); se = statistics.stdev(d) / n ** 0.5 if n > 1 else 0.0
+        table.append(dict(option=o, safe=safe, p_near_death=round(nn, 3), low_p10=ll,
+                          xp=round(statistics.mean(r["xp"] for r in rs)), dxp=round(mean, 1), se=round(se, 1),
+                          gold=round(statistics.mean(r["spent"] for r in rs))))
+        if o == "rules":
+            continue
+        if not bsafe and safe and (best == "rules" or nn < best_gain):
+            best, why, best_gain = o, f"rules unsafe (P near death {bn:.2f}); {o} safe ({nn:.2f})", nn
+        elif bsafe and safe and best_gain >= 0 and mean > z * se and mean >= 0.10 * max(1.0, statistics.mean(
+                r["xp"] for r in base)) and mean > best_gain:
+            best, why, best_gain = o, f"+{mean:.0f} XP net of gold vs rules (SE {se:.0f}), both safe", mean
+    if not bsafe and best == "rules":
+        safest = min(table, key=lambda r: (r["p_near_death"], -r["low_p10"]))
+        best, why = safest["option"], f"nothing safe; least risky (P near death {safest['p_near_death']:.2f})"
+    return best, why, sorted(table, key=lambda r: (not r["safe"], -r["xp"]))

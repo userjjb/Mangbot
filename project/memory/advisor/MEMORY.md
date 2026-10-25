@@ -1,5 +1,5 @@
 - [MAngband roles](mangband-roles.md) — you are the ADVISOR (own project, forked 2026-09-27); runs studies via Clerk subagents (METHOD.md); roles.md
 - [Territory rules](mangband-territory.md) — I may edit only Advisor/ and my memory; memos/ for memos; memos/to_architect for suggestions; read memos/to_advisor each session
-- [MAngband next steps](mangband-next-steps.md) — READ FIRST: restructure since 10-22; rulebook r1-r3 done; step 5 (m24-m26 seen); structures 10-24; estimator memo 10-25 (calibration replay offered); handoff = Advisor/STATUS.md
+- [MAngband next steps](mangband-next-steps.md) — READ FIRST: restructure since 10-22; rulebook r1-r3 done; step 5 (m24-m26 seen); structures 10-24; estimator + replay calibration memos 10-25 (shadow mode next); handoff = Advisor/STATUS.md
 - [MAngband project map](mangband-project-map.md) — where everything lives (operations.md, notes_players.md, HANDBOOK, memos); critical gotchas; SYNC RULE: update memory pointers whenever project notes change
 - [MAngband advisor memos](mangband-advisor-memos.md) — dated log of every Advisor memo and study (09-26 → 10-24 incl. restructure work, rulebook r3) with data locations; forum scraping gotchas
