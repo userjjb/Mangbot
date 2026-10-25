@@ -21,6 +21,7 @@ TURN_S = 0.625      # wall seconds per player turn at normal speed and time fact
 # the rules' action, from the emergency notice, as the estimator's option names
 RULES_AS = ((r"Teleportation|teleport", "teleport"), (r"Staff of Teleport", "staff"), (r"Word of Recall", "recall+phase"),
             (r"Phase Door", "phase"), (r"Speed", "speed"), (r"Berserk", "berserk"), (r"Cure Critical", "ccw"),
+            (r"Cure (Serious|Light)", "cure"),     # (not an estimator option: CSW/CLW; m36's record said None)
             (r"stairs", "stairs"), (r"attacking|fighting on", "fight"))
 
 
