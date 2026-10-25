@@ -165,6 +165,10 @@ weak ones and molds don't count; a band does) fetched within 25 once clear; devi
 short is retried (3 tries; the old code marked the square looted when the walk began); the interesting_item notice
 says the Pilot fetches those. Unit `loot_owed_and_valuables`; live set-piece **M2** PASS (after 3 fixes it found);
 M1 still passes. HANDBOOK updated.
+**m30 (Sonnet at HIGH effort, the user; 06:11-06:45 10-25):** 46.9 XP/dmin, lowest 38% (1 close call: a mixed crowd
+at 650 ft, fire burned WoR), $0.56; two DEX drains (dart trap on arrival; an unseen wailer, likely a Quasit, as in
+m29); a 6-min stall beside a '>' refused as "just fled"; the `band` condition fires on weak bands; plan town can't
+make pack room. Report `reports/2026-10-25-mission30.md`. Not yet fixed: all of these (listed to the user).
 **The Brown mold (m25) fixed:** `stairs_beside_still` -- stairs underfoot or a step away beside a stationary monster
 harmless for a turn (no drain/paralyse/disenchant, melee < 25% HP) are taken, not stepped away from; Dive presses '>'
 only on its stairs (a step-away's "arrived" pressed it 6 squares off). Unit `stairs_beside_mold`; live set-piece

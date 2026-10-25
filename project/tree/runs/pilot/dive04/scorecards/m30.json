@@ -1,0 +1,167 @@
+{
+ "label": "m30",
+ "nav_model": "sonnet",
+ "effort": "high",
+ "report": "compact",
+ "start": "2026-10-25 06:11",
+ "end": "2026-10-25 06:46",
+ "minutes": 35.0,
+ "notes": "step 5: Sonnet at high effort (the user), same brief as m28/m29; 5621 gold; loot fix and mold fix in; 40 min",
+ "tokens": {
+  "turns": 58,
+  "input": 116,
+  "output": 16420,
+  "cache_read": 2286058,
+  "cache_write": 65451,
+  "write_5m": 65451,
+  "write_1h": 0,
+  "model": "claude-sonnet-5-5",
+  "final_usage_turns": 58,
+  "usd": 0.557,
+  "transcript": "agent-a07c6a6b3cb0b879b.jsonl"
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   25,
+   25
+  ],
+  "exp_gain": 1297,
+  "gold": [
+   5621,
+   2263
+  ],
+  "gold_change": -3358,
+  "max_depth_ft": 650
+ },
+ "B": {
+  "dungeon_min": 27.7,
+  "town_min": 6.7,
+  "exp_per_dmin": 46.9,
+  "levels_per_dhour": 0.51,
+  "gold_found": 465,
+  "gold_found_per_dmin": 16.8,
+  "time_budget_min": {
+   "exploring": 9.7,
+   "travel_dive": 6.3,
+   "fighting": 6.2,
+   "town_no_goal": 3.2,
+   "dungeon_other": 3.1,
+   "town_other": 2.0,
+   "stuck_looping": 1.2,
+   "escaping": 1.1,
+   "town_idle_end": 0.9,
+   "recall_wait": 0.6,
+   "resting": 0.3,
+   "town_shopping": 0.1,
+   "no_goal_dungeon": 0.1
+  },
+  "navigator_wait_pct": 9
+ },
+ "C": {
+  "lowest_hp": [
+   115,
+   303,
+   38,
+   "06:43:40"
+  ],
+  "close_calls_lt40": 1,
+  "near_calls_40_50": 1,
+  "emergency_episodes": 1,
+  "emergency_alerts": 12,
+  "phase": 5,
+  "wor_escape": 2,
+  "wor_travel": 4,
+  "stairs_flee": 0,
+  "teleport": 1,
+  "cures_quaffed": 6,
+  "escape_records": 15,
+  "recalls_landed": 6
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 191,
+  "loot_abandoned_est": 234,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 73,
+  "total": 498,
+  "sales": 3,
+  "sales_valued": 0,
+  "worst_sales": [],
+  "left_behind": [
+   "Nickel-Plated Wand",
+   "Grey Mushroom",
+   "Small wooden chest",
+   "Morning Star (2d6)",
+   "Dagger (1d4)",
+   "Scroll of Door/Stair Location",
+   "Scroll of Satisfy Hunger",
+   "Potion of Berserk Strength",
+   "Piece of Elvish Waybread",
+   "Mushroom of Poison"
+  ],
+  "irreplaceable": []
+ },
+ "E": {
+  "reports": 30,
+  "commands": 65,
+  "commands_per_min": 2.7,
+  "report_to_action_med_s": 4.8,
+  "report_to_action_p90_s": 9.6,
+  "reports_without_command_pct": 37,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 1,
+  "report_chars": 91041,
+  "order_report_age_med_s": 4.4,
+  "order_report_age_p90_s": 9.7
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 68,
+  "perception_gaps": 1,
+  "goal_failed": 1,
+  "stuck": 1,
+  "stuck_looping_min": 1.2,
+  "runs_sent": 757,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Fire hound": 63,
+  "Swordsman": 57,
+  "Novice warrior": 56,
+  "Black ogre": 51,
+  "Druid": 51,
+  "Wolf": 47,
+  "White wolf": 29,
+  "Yeti": 29
+ },
+ "alerts": {
+  "tactic": 31,
+  "lost": 9,
+  "goal_done": 7,
+  "emergency": 6,
+  "unseen_attacker": 5,
+  "blows_changed": 4,
+  "stat_drained": 2,
+  "drainer": 2,
+  "interesting_item": 1,
+  "stuck": 1,
+  "pack_full": 1,
+  "band": 1
+ },
+ "plan_news": {
+  "goal_done": 10,
+  "plan": 9,
+  "unseen_attacker": 7,
+  "emergency": 5,
+  "interesting_item": 3,
+  "stuck": 3,
+  "drainer": 2,
+  "band": 2,
+  "fight_going_badly": 1
+ }
+}

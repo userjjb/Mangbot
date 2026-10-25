@@ -480,3 +480,13 @@
 - 20:31:08 town 100% | Town 20:31, DEX restored (4 blows), 3 WoR, 1586g | plan trip 500-650 via recall until cures<5 or phase<6 or time>20:46 | recall home has taken ~15 s, so 20:46 still ends idle by 20:53
 - 20:35:02 650ft 100% | 650ft 20:35: Golfimbul slain, clvl 25, HP fine | let the plan run | going well
 - 20:47:28 town 100% | Town 20:47 after trip 2: Golfimbul slain, Rod of Acid Balls sold 2475, clvl 25, 5621g | stop here, idle in town | deadline 20:53, no time for another trip
+- 06:12:34 town 100% | town, 5621g, lantern was not wielded (wielded spare 6369) | plan town kit=C buy WoR:3, CCW:15, Phase:20, Flask:15 | 3rd WoR for via=recall, more cures for 500-650ft
+- 06:12:54 town 100% | kit done, 4714g | plan trip 500-650 via recall until cures<4 or phase<5 or minutes>28 or band | m>28 leaves time to recall home by 06:46
+- 06:13:30 town 100% | DEX drained by dart trap on arrival; plan's 'drained' condition triggered recall (WoR used, 1 left) | let recall finish, grabbed Speed potion; in town plan town restores DEX, buy WoR to 3 | my mistake: put 'drained' in until at a trap-prone depth
+- 06:15:22 town 100% | DEX restored, 4171g, WoR 3 | trip 500-650 via recall until cures<4 or phase<5 or minutes>27 or band; no 'drained' (I get woken anyway) | time ~06:16, ends by ~06:44
+- 06:17:00 650ft 100% | invisible ghost (wails, touches: DEX drained again, blows 3) on arrival level | goal leave | a drainer; stairs > 17 away
+- 06:30:20 600ft 100% | 600ft level quiet, 13 min, XP ~300/10min, stairs far | goal leave for a fresh level | time left ~15 min
+- 06:34:30 town 100% | home 06:34 (band cond fired after fight was already won), DEX still 3 blows | plan town buy Restore DEX, then short trip minutes>8 | 12 min left
+- 06:35:19 town 100% | DEX restored (pack was full: destroyed spare 290 lantern to make room), 3392g | short trip 550-650 minutes>8, no band cond | 06:35, must be home by 06:46
+- 06:44:30 town 100% | recalled home 06:44 from a monster zoo at 650ft (umber hulk, hounds, druid; 3 emergencies, HP low 121; fire burned 3 WoR, scrolls) | stop; restock via plan town, end mission idle in town | out of time
+- 06:45:06 town 100% | 06:45 idle in town, restocked (WoR 3, CCW 15, Phase 20), 2263g | mission over
