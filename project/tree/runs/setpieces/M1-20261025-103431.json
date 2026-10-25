@@ -1,0 +1,68 @@
+{
+ "id": "M1",
+ "tag": "M1-20261025-103431",
+ "depth_ft": 300,
+ "start": "2026-10-25 10:34:31",
+ "checks": {
+  "down the painted '>' within 45 s": {
+   "pass": true,
+   "detail": "at 16.7 s; presses [(16.4, (4, 55))]"
+  },
+  "no '>' pressed off the stairs": {
+   "pass": true,
+   "detail": "[]"
+  }
+ },
+ "notes": [],
+ "scene": {
+  "dive04": [
+   3,
+   50
+  ],
+  "stairs": [
+   4,
+   55
+  ],
+  "mold": [
+   3,
+   55
+  ],
+  "summoned": "Brown mold"
+ },
+ "order_reply": "{\"ok\": true, \"goal\": \"dive 350ft\"}",
+ "stats": {
+  "hp_start": [
+   310,
+   310
+  ],
+  "hp_min": [
+   310,
+   310
+  ],
+  "attention": [
+   [
+    16.7,
+    "goal_done",
+    "dive 350ft: reached 350 ft"
+   ]
+  ],
+  "acts": [
+   [
+    5.3,
+    "custom ,",
+    "pick up: a Potion of Boldness."
+   ],
+   [
+    16.4,
+    "custom >",
+    "stairs >"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-25 10:37:11",
+ "pass": true
+}

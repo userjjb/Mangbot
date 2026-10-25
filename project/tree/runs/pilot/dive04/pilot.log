@@ -1262,3 +1262,30 @@ BrokenPipeError: [Errno 32] Broken pipe
 09:04:29 pilot stopping
 09:04:31 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
 09:04:31 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+10:27:17 pilot stopping
+10:27:20 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+10:27:20 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+10:27:29 pilot stopping
+10:27:52 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+10:27:53 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+10:30:22 pilot stopping
+10:30:46 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+10:30:46 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+10:30:55 pilot stopping
+10:31:19 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+10:31:19 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+10:33:48 pilot stopping
+10:34:12 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+10:34:12 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+10:34:33 pilot stopping
+10:34:56 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+10:34:56 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+10:36:40 pilot stopping
+10:37:03 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+10:37:04 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+10:37:13 pilot stopping
+10:37:36 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+10:37:36 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+10:39:17 pilot stopping
+10:39:41 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+10:39:41 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock

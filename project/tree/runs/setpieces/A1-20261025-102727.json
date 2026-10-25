@@ -1,0 +1,94 @@
+{
+ "id": "A1",
+ "tag": "A1-20261025-102727",
+ "depth_ft": 400,
+ "start": "2026-10-25 10:27:27",
+ "checks": {
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [242, 310]"
+  },
+  "at most 3 Phase Door": {
+   "pass": true,
+   "detail": "0 reads"
+  }
+ },
+ "notes": [
+  "left the level: False; band events: 0"
+ ],
+ "stats": {
+  "hp_start": [
+   310,
+   310
+  ],
+  "hp_min": [
+   242,
+   310
+  ],
+  "attention": [
+   [
+    2.6,
+    "unseen_attacker",
+    "'It fires an arrow!': minor attack from something unseen; carrying on (HP 97%)"
+   ],
+   [
+    22.7,
+    "unseen_attacker",
+    "'It fires an arrow!': minor attack from something unseen; carrying on (HP 94%)"
+   ],
+   [
+    27.1,
+    "tactic",
+    "5 monsters together but weak (~109 HP expected to fight them all, vs HP 291): fighting on"
+   ],
+   [
+    72.5,
+    "interesting_item",
+    "Wand of Confuse Monster seen on this level at 15,45 (21 away): fetching it once the area is clear"
+   ],
+   [
+    86.6,
+    "tactic",
+    "a hard fight with Grip, Farmer Maggot's dog: quaffed a Potion of Berserk Strength (+to-hit, +30 HP, "
+   ],
+   [
+    87.2,
+    "unseen_attacker",
+    "'It casts a fearful illusion.': probably the Novice priest (lvl 6) in view; carrying on (HP 100%)"
+   ],
+   [
+    87.7,
+    "unique_slain",
+    "Grip, Farmer Maggot's dog slain at 29,79: uniques drop good items (look at 'Item squares' around the"
+   ]
+  ],
+  "acts": [
+   [
+    33.4,
+    "rest",
+    "rest"
+   ],
+   [
+    34.5,
+    "custom ,",
+    "pick up: a Rod of Light."
+   ],
+   [
+    40.2,
+    "rest",
+    "rest"
+   ],
+   [
+    86.6,
+    "custom q item=3",
+    "a hard fight (Grip, Farmer Maggot's dog): quaff a Potion of Berserk Strength"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-25 10:30:53",
+ "pass": true
+}

@@ -122,3 +122,7 @@
 - 2026-10-25 07:08:08 **M3** PASS (left within 30 s of the drain) `M3-20261025-070808.json`
 - 2026-10-25 07:29:53 **A1** PASS (lowest HP >= 40%, at most 3 Phase Door) `A1-20261025-072953.json`
 - 2026-10-25 07:33:30 **A2L** PASS (Word of Recall within 2 s of first sight, lowest HP >= 40%) `A2L-20261025-073330.json`
+- 2026-10-25 10:27:27 **A1** PASS (lowest HP >= 40%, at most 3 Phase Door) `A1-20261025-102727.json`
+- 2026-10-25 10:30:53 **B2** PASS (drained at most twice, acted on the second drain) `B2-20261025-103053.json`
+- 2026-10-25 10:34:31 **M1** PASS (down the painted '>' within 45 s, no '>' pressed off the stairs) `M1-20261025-103431.json`
+- 2026-10-25 10:37:11 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261025-103711.json`

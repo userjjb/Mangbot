@@ -1,0 +1,41 @@
+{
+ "id": "B2",
+ "tag": "B2-20261025-103053",
+ "depth_ft": 450,
+ "start": "2026-10-25 10:30:53",
+ "checks": {
+  "drained at most twice": {
+   "pass": true,
+   "detail": "0 drains"
+  },
+  "acted on the second drain": {
+   "pass": true,
+   "detail": "[]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   310,
+   310
+  ],
+  "hp_min": [
+   310,
+   310
+  ],
+  "attention": [
+   [
+    14.0,
+    "drainer",
+    "Giant red ant (lvl 9) drains STR with its blows: weak and no faster than you: kill it fast, don't wa"
+   ]
+  ],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-25 10:34:19",
+ "pass": true
+}

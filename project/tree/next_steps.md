@@ -235,6 +235,11 @@ in m32. Breaking fix between m33 and m34: an ability weapon is never swapped for
 Next Pilot fixes from the matrix: weak drainers / weak bands make the plan leave; slow quiet levels; meleeing
 disenchanter molds beside the path; recall arrival fights before locating stairs. Dive04 now: clvl 25, 310 HP, 2998
 gold, Free Action + See Invisible, DEX restored, WIS drained, Staff of Teleportation.
+**Matrix fixes done (the user, 10-25, in order; loaded 10:27):** (1) bands judged by the expected cost of fighting
+them one by one (`band_cost`: rulebook melee_exp at our AC x speed, quickest kills first, 8 at once in a room, 2 in a
+corridor; serious above 50% HP or a dangerous member) and weak drainers are news, not a leave; (2) a level under 10
+XP a minute over 3 minutes is left (`TripPlan.quiet`); (3) disenchanters fought only when in the way; (4) a flee
+with stairs known but no known path reads Magic Mapping first. Units 38-41; live A1, B2, M1, M2 PASS.
 **The Brown mold (m25) fixed:** `stairs_beside_still` -- stairs underfoot or a step away beside a stationary monster
 harmless for a turn (no drain/paralyse/disenchant, melee < 25% HP) are taken, not stepped away from; Dive presses '>'
 only on its stairs (a step-away's "arrived" pressed it 6 squares off). Unit `stairs_beside_mold`; live set-piece

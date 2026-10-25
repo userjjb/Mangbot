@@ -1,0 +1,73 @@
+{
+ "id": "M2",
+ "tag": "M2-20261025-103711",
+ "depth_ft": 300,
+ "start": "2026-10-25 10:37:11",
+ "checks": {
+  "the wand fetched": {
+   "pass": true,
+   "detail": "picked up at 9.3 s; left behind [['Potion of Detect Invisible']]"
+  },
+  "then down the '>' within 60 s": {
+   "pass": true,
+   "detail": "at 14.6 s"
+  }
+ },
+ "notes": [],
+ "scene": {
+  "dive04": [
+   52,
+   40
+  ],
+  "wand": [
+   52,
+   56
+  ],
+  "stairs": [
+   49,
+   38
+  ],
+  "forged": "an Aluminum-Plated Wand"
+ },
+ "order_reply": "{\"ok\": true, \"goal\": \"dive 350ft\"}",
+ "stats": {
+  "hp_start": [
+   310,
+   310
+  ],
+  "hp_min": [
+   310,
+   310
+  ],
+  "attention": [
+   [
+    14.6,
+    "goal_done",
+    "dive 350ft: reached 350 ft"
+   ]
+  ],
+  "acts": [
+   [
+    6.0,
+    "custom ,",
+    "pick up: a Short Bow (x2)."
+   ],
+   [
+    9.3,
+    "custom ,",
+    "pick up: a Wand of Stinking Cloud."
+   ],
+   [
+    14.2,
+    "custom >",
+    "stairs >"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-25 10:39:48",
+ "pass": true
+}
