@@ -55,6 +55,7 @@ Each run:
 | A5s | a Potion mimic (never moves; curses, blinds, frost bolts) 5 off unseen, a '>' in view | the same (PASS; the old rule fled down known stairs at any HP above `think_hp`, now news only above 80% unless it may be a paralysing gaze: unit `a5_unseen_caster_news_above_80`) |
 | A7f | (the memo's first A7) a Novice paladin group (SCARE, CAUSE_1) 6 off with a clear line | once afraid, Boldness/Heroism (or an escape) within 5 s; HP ≥ 50% (PASS: afraid at 12 s, Boldness at once, lowest 94%; at 3 off they died before casting) |
 | A9 | `plan trip 300-300 via=recall` from town, then Snaga and Black orcs summoned 8-9 squares off | Door/Stair Location within 5 s of arriving; no second Word of Recall while one is pending |
+| M1 | a Brown mold (confuses: never fought) summoned beside a painted `>` 6 squares off, `goal dive` one level down (m25's 2-minute loop) | down those stairs within 45 s, `>` pressed nowhere else (FAILED as m25 did, looping 17,7 <-> 16,13; PASS after the fix: 8.7 s) |
 
 The memo's A7 is at 1250 ft and its A8 Ranger at 6 squares; here they're at 300 ft and 3 squares. The DM summons any race
 at any depth. On unlit ground a monster is seen only within the lantern's 2 squares, or the Half-Orc's infravision of 3

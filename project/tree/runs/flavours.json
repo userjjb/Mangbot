@@ -159,6 +159,11 @@
   "kind": "Potion of Slime Mold Juice",
   "source": "Advisor L_items (Dive04 09-29 21:37:38)"
  },
+ "Iron Wand": {
+  "junk": false,
+  "kind": "Wand of Sleep Monster",
+  "source": "identified"
+ },
  "Ivory Amulet": {
   "junk": false,
   "kind": "Amulet of Resist Lightning",
@@ -413,6 +418,11 @@
   "junk": false,
   "kind": "Potion of Infravision",
   "source": "Advisor L_items (Dive03 09-26 04:56:54)"
+ },
+ "Zinc Rod": {
+  "junk": false,
+  "kind": "Rod of Acid Balls",
+  "source": "identified"
  },
  "Zirconium Wand": {
   "junk": false,

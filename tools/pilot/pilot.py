@@ -505,6 +505,7 @@ class Dive(Goal):
             self.start_ft = w.depth_ft
             up = self.target_ft < self.start_ft
         want, other = ("<", ">") if up else (">", "<")
+        self.want = want             # (the stationary-monster check asks: take these stairs beside a mold)
         if (not up and w.depth_ft >= self.target_ft) or (up and w.depth_ft <= self.target_ft):
             return ("done", f"reached {w.depth_ft} ft")
         if self.pending and w.level_t < self.pending and not waited(self.pending, 3):
@@ -585,9 +586,14 @@ class Dive(Goal):
                 self.mark_bad(w, downs)
         if self.walking:
             st = p.mover.tick()
-            if st == "arrived" or (st == "idle" and w.pos in downs):
+            # (on the stairs only: a step-away retargets the shared mover, and its "arrived" pressed '>' 6
+            # squares from them, m25)
+            if st in ("arrived", "idle") and w.pos in downs:
                 self.walking = False
                 return self._stairs(p, want)
+            if st == "arrived":
+                self.walking = False
+                return None
             if st == "idle":
                 # the mover was stopped (a fight): walk on next tick
                 self.walking = False
@@ -2923,6 +2929,8 @@ class Pilot:
         hunting = self.goal.target if isinstance(self.goal, Hunt) else None
         still = [m for m in w.adjacent_monsters() if "NEVER_MOVE" in m[2].flags
                  and not (hunting and hunting in m[2].name.lower())]
+        if still and self.stairs_beside_still(still):
+            still = []
         if still and self.still_fight_tick(now, still):
             return True
         if still and (self.retreat_step(still, reach=6) or self.sidestep(still)):
@@ -4201,6 +4209,35 @@ class Pilot:
             self.notify("tactic", f"{names} can deal {g:.0f} (HP {hp}): phased away")
             return True
         return False
+
+    def stairs_beside_still(self, still):
+        """The stairs we're walking to are a step away (or under us) and the
+        stationary monsters beside us are harmless for a turn: take them, don't
+        step away. m25: a Brown mold (confuses, so never fought) beside the only
+        '>' at 300 ft; the step-away walked 6 squares back and the dive pressed
+        '>' there, for 2 minutes. Confusion doesn't stop the stairs (cmd2.c)."""
+        w = self.w
+        goals = {g for g in (self.mover.goals or ()) if isinstance(g, tuple)} if self.mover.active else set()
+        if not goals and self.still_goals[0] == w.level_t:
+            goals = self.still_goals[1]
+        # (on the stairs the mover has already stopped: ask the goal -- M1 looped on with the mover check alone)
+        g = self.goal
+        want = getattr(g, "want", None) if isinstance(g, Dive) else "<>" if isinstance(g, Flee) else None
+        if want and w.standing_on in ("<", ">") and w.standing_on in want:
+            goals = set(goals) | {w.pos}
+
+        def stairs(g):
+            return w.memory.get(g) in ("<", ">") or (g == w.pos and w.standing_on in ("<", ">"))
+
+        if not any(w.dist(g) <= 1 and stairs(g) for g in goals):
+            return False
+
+        def harmless(r):
+            bad = ("PARALYZE", "UN_BONUS", "DISENCHANT")
+            return not r.drains and not any(b.split(":")[1:2] and b.split(":")[1] in bad for b in r.blows) \
+                and r.per_turn < 0.25 * max(1, w.hp[0])
+
+        return all(harmless(m[2]) for m in still)
 
     def still_fight_tick(self, now, still):
         """A stationary monster next to us that blocks the way (sits by the

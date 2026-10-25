@@ -23,7 +23,7 @@
  },
  "B": {
   "dungeon_min": 29.6,
-  "town_min": 5.6,
+  "town_min": 5.8,
   "exp_per_dmin": 58.8,
   "levels_per_dhour": 1.5,
   "gold_found": 1281,
@@ -106,7 +106,7 @@
  },
  "F": {
   "audit_diffs": 0,
-  "audit_checks": 71,
+  "audit_checks": 72,
   "perception_gaps": 2,
   "goal_failed": 0,
   "stuck": 0,

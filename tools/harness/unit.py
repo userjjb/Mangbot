@@ -538,6 +538,38 @@ def f1_stale_order():
     return bool(a) and "left" in a and bool(b) and c is None, f"{a!r} | {b!r} | {c!r}"
 
 
+@case
+def stairs_beside_mold():
+    """m25: a Brown mold (confuses: never fought) beside the only '>' at 300 ft; the step-away walked 6 squares
+    back and the dive pressed '>' there, 2 minutes. Stairs a step away (or under us) beside a stationary monster
+    harmless for a turn -> take them; a disenchanter, a drainer, a floating eye, or stairs far off -> not."""
+    def check(name, goal=(15, 32), pos=(15, 32), dive=False):
+        p = pilot()
+        p.w.pos, p.w.level_t = pos, 5.0
+        p.w.memory = {(15, 32): ">"}
+        p.w.standing_on = ">" if pos == (15, 32) else "."
+        p.mover = type("M", (), {"goals": None if dive else {goal}, "active": not dive})()
+        p.still_goals = (None, set())
+        p.goal = None
+        if dive:                       # (on the stairs the mover has already stopped: the live M1 run)
+            p.goal = P.Dive.__new__(P.Dive)
+            p.goal.want = ">"
+        return p.stairs_beside_still([(14, 32, BYNAME[name])])
+    got = {
+        "brown mold on '>'": check("brown mold"),
+        "brown mold on '>', mover stopped, diving": check("brown mold", dive=True),
+        "brown mold, '>' a step off": check("brown mold", pos=(15, 31)),
+        "disenchanter mold": check("disenchanter mold"),
+        "purple mushroom patch": check("purple mushroom patch"),
+        "floating eye": check("floating eye"),
+        "brown mold, goal not stairs": check("brown mold", goal=(15, 26), pos=(15, 25)),
+    }
+    want = {"brown mold on '>'": True, "brown mold on '>', mover stopped, diving": True,
+            "brown mold, '>' a step off": True, "disenchanter mold": False,
+            "purple mushroom patch": False, "floating eye": False, "brown mold, goal not stairs": False}
+    return got == want, ", ".join(f"{k}: {'take' if v else 'step away'}" for k, v in got.items())
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

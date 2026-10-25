@@ -469,3 +469,14 @@
 - 05:44:37 650ft 100% | user: why not buy ID | admit, buy 2 more on return | missed staff
 - 05:45:24 650ft 100% | user: duplicate food | choose rations, complained | no control over kit
 - 05:52:07 town 100% | ID scrolls used on Ivory staff; idle in town 05:53 | end mission
+- 20:12:41 town 100% | Start m29 in town, 4057g, 2 WoR | look at weaponsmith stock for a 4-blow weapon before plan town | 1d6 spear 3 blows is the weak point at 500-650
+- 20:12:59 town 100% | Weaponsmith has Dagger (1d4)(+3,+6) 1474g | buy it (4 blows ~34/round vs spear 28), 3rd WoR, CCW to 10 | blows set kill time; 3 WoR for recall dive
+- 20:14:00 town 100% | The (+3,+6) Dagger was gone (stock turned over), plan bought a plain 16g Dagger | swap to Main Gauche 41g + 5 To-Dam scrolls (~950g) to reach ~+5, 4 blows ~32 | MG 1d5 beats dagger 1d4 at same blows; enchant +0..+5 fails rarely
+- 20:15:28 town 100% | MG now (+0,+5) 4 blows ~32 wielded, spear sold 394, lantern 4505 wielded (none was wielded!), 2561g, 3 WoR 10 CCW 18 Phase | plan trip 500-650 via recall until cures<5 or phase<6 or time>20:45 | Handbook's best XP band, stocked; 20:45 leaves margin for 20:53 deadline
+- 20:23:38 650ft 100% | 650ft: lost 3 CCW to Baby green dragon poison, 196g to a hobbit; plan leaving for a STR-drainer ant but only > stairs known, searching for < for ~3 min | let it continue, it is still killing things | taking > would break max_depth 650
+- 20:27:27 650ft 74% | USER: 'This is a pit/nest' while fighting Uruks/Black orc at the mouth of a dark inner room at 650; dive-up had found no < in 7 min | said leaving; goal recall, then rebuy WoR and recall back down | user + handbook: leave pits; only > known and 700 is off-limits
+- 20:27:43 town 100% | Town 20:27, 2518g, 1 WoR, 9 CCW, loot to sell | plan town buy WoR:3, CCW:10, then trip 500-650 via recall until time>20:45 | ~18 min left for a second trip
+- 20:30:16 600ft 100% | 600ft 20:30: invisible caster (fear + DEX-drain touch, likely Quasit) drained DEX, blows 4->3 | goal recall, restore DEX in town (~483), rebuy WoR, recall back | restore is needed anyway; the drainer is still on this level; 15 min at 3 blows loses ~25% damage
+- 20:31:08 town 100% | Town 20:31, DEX restored (4 blows), 3 WoR, 1586g | plan trip 500-650 via recall until cures<5 or phase<6 or time>20:46 | recall home has taken ~15 s, so 20:46 still ends idle by 20:53
+- 20:35:02 650ft 100% | 650ft 20:35: Golfimbul slain, clvl 25, HP fine | let the plan run | going well
+- 20:47:28 town 100% | Town 20:47 after trip 2: Golfimbul slain, Rod of Acid Balls sold 2475, clvl 25, 5621g | stop here, idle in town | deadline 20:53, no time for another trip

@@ -1221,5 +1221,65 @@
   "effort": null,
   "report": "compact",
   "notes": "step 5: Sonnet on the current Pilot (after m27's fixes); 4089 gold (the sold Rod of Enlightenment); auto_scum on; 40 min"
+ },
+ {
+  "label": "m29",
+  "nick": "dive04",
+  "start": "2026-10-24 20:12",
+  "end": "2026-10-24 20:49",
+  "navigator": "opus",
+  "effort": null,
+  "report": "compact",
+  "notes": "step 5: Opus on the current Pilot, same brief as m28; 4057 gold, WoR 2, DEX restored; auto_scum on; --hpwarn 5; 40 min"
+ },
+ {
+  "label": "sp-M1-20261024-205019",
+  "nick": "dive04",
+  "start": "2026-10-24 20:50",
+  "end": "2026-10-24 20:53",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M1"
+ },
+ {
+  "label": "sp-M1-20261024-205829",
+  "nick": "dive04",
+  "start": "2026-10-24 20:59",
+  "end": "2026-10-24 21:01",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M1"
+ },
+ {
+  "label": "sp-M1-20261024-210049",
+  "nick": "dive04",
+  "start": "2026-10-24 21:01",
+  "end": "2026-10-24 21:04",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M1"
+ },
+ {
+  "label": "sp-M1-20261024-210922",
+  "nick": "dive04",
+  "start": "2026-10-24 21:09",
+  "end": "2026-10-24 21:13",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M1"
+ },
+ {
+  "label": "sp-M1-20261024-211900",
+  "nick": "dive04",
+  "start": "2026-10-24 21:19",
+  "end": "2026-10-24 21:22",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M1"
  }
 ]

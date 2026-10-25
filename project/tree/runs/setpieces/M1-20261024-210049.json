@@ -1,0 +1,57 @@
+{
+ "id": "M1",
+ "tag": "M1-20261024-210049",
+ "depth_ft": 650,
+ "start": "2026-10-24 21:00:49",
+ "checks": {
+  "down the painted '>' within 45 s": {
+   "pass": false,
+   "detail": "at None s; presses []"
+  },
+  "no '>' pressed off the stairs": {
+   "pass": true,
+   "detail": "[]"
+  }
+ },
+ "notes": [],
+ "scene": {
+  "dive04": [
+   5,
+   139
+  ],
+  "stairs": [
+   4,
+   146
+  ],
+  "mold": [
+   3,
+   146
+  ],
+  "summoned": "Brown mold"
+ },
+ "order_reply": "{\"ok\": true, \"goal\": \"dive 700ft\", \"note\": \"capped at max_depth 650 ft (order max_depth=... to change)\"}\nNOTE: capped at max_depth 650 ft (order max_depth=... to change)",
+ "stats": {
+  "hp_start": [
+   303,
+   303
+  ],
+  "hp_min": [
+   303,
+   303
+  ],
+  "attention": [
+   [
+    0.1,
+    "goal_done",
+    "dive 650ft (max_depth): reached 650 ft"
+   ]
+  ],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-24 21:09:14",
+ "pass": false
+}

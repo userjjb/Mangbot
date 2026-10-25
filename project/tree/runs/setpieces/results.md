@@ -109,3 +109,8 @@
 - 2026-10-24 03:41:41 **A9** FAIL (arrived by recall FAIL) `A9-20261024-034141.json`
 - 2026-10-24 03:45:26 **A9** PASS (Door/Stair Location within 5 s of arriving, no second Word of Recall while one is pending) `A9-20261024-034526.json`
 - 2026-10-24 04:06:35 **B1** PASS (no stat drained, never next to it) `B1-20261024-040635.json`
+- 2026-10-24 20:50:19 **M1** FAIL (down the painted '>' within 45 s FAIL, no '>' pressed off the stairs) `M1-20261024-205019.json`
+- 2026-10-24 20:58:29 **M1** FAIL (a site FAIL) `M1-20261024-205829.json`
+- 2026-10-24 21:00:49 **M1** FAIL (down the painted '>' within 45 s FAIL, no '>' pressed off the stairs) `M1-20261024-210049.json`
+- 2026-10-24 21:09:22 **M1** FAIL (down the painted '>' within 45 s FAIL, no '>' pressed off the stairs) `M1-20261024-210922.json`
+- 2026-10-24 21:19:00 **M1** PASS (down the painted '>' within 45 s, no '>' pressed off the stairs) `M1-20261024-211900.json`

@@ -152,6 +152,19 @@ the m29 brief is m28's with the current character state, `--hpwarn 5`, mission m
 beside the stairs (m25 loop); the Advisor's structures memo (lattice/ring geometry, an asleep flag in the monster
 list); L3's BLIND half; a fair model comparison (same starting state). Read runs/complaints.md after each mission.
 
+**Session 5 (2026-10-24 19:57-, job 8268425 on scc-pc4, walltime Thu 10-29 09:47):** the four processes restarted
+on scc-pc4. **m29 (Opus, 20:12-20:48, m28's brief):** **71.3 XP/dmin** (best yet; m28 Sonnet 58.8), 39.6 gold/dmin,
+lowest 57%, 0 close, 3 escape recalls, 7 cures; clvl 25, 5621 gold, Golfimbul slain; report
+`runs/pilot/dive04/reports/2026-10-24-mission29.md` (complaints: shop buy takes the cheapest name match; no light
+wielded but status showed one; leaving 650 ft = max_depth with only '>' known searched 6.5 min for '<' without Magic
+Mapping). **The user's `?` (m29 20:26): items and gold left behind** -- loot is off while any monster is in view and
+never revisited beyond loot_radius 10; under a plan the interesting-item pause doesn't happen (the notice says it
+does). Fix proposed to the user (a per-level list of skipped loot fetched when clear, <= ~25 squares), not built yet.
+**The Brown mold (m25) fixed:** `stairs_beside_still` -- stairs underfoot or a step away beside a stationary monster
+harmless for a turn (no drain/paralyse/disenchant, melee < 25% HP) are taken, not stepped away from; Dive presses '>'
+only on its stairs (a step-away's "arrived" pressed it 6 squares off). Unit `stairs_beside_mold`; live set-piece
+**M1** (a mold summoned beside a painted '>') reproduced the loop, then PASS (8.7 s).
+
 | doc | what |
 |---|---|
 | `restructure.md` | **how to revert** to before it (tag `pre-restructure` = 767bf60; saves and non-git files in `runs/backup-pre-restructure-20261022/`). Only on the user's request |

@@ -1110,7 +1110,43 @@ def l2(run, gandalf_away=False):
     run.check("about 10x sooner than standing (< 5 s)", secs is not None and secs < 5, f"{secs and round(secs, 1)} s")
 
 
-SETPIECES = {"L3": l3, "A2f": a2f, "L2g": l2g, "A7f": a7f, "A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
+def m1(run, race="Brown mold"):
+    """M1: a stationary monster beside the only known '>' (m25: a Brown mold, which confuses and so is never
+    fought, beside the '>' at 300 ft; the step-away walked 6 squares back, the dive pressed '>' there, and it
+    looped 2 minutes). A '>' painted 6 squares from Dive04, a Brown mold summoned beside it, `goal dive` one
+    level down: Dive04 goes down those stairs within 45 s, pressing '>' nowhere else."""
+    rows = run.dm.c.map()
+    tl = find_floor_block(rows, 5, 9)            # (a room on Gandalf's map: he sees the whole level)
+    if not tl:
+        run.check("a site", False, "no 5 x 9 block of floor")
+        return
+    start, stairs, mold = (tl[0] + 2, tl[1] + 1), (tl[0] + 2, tl[1] + 7), (tl[0] + 1, tl[1] + 7)
+    run.gandalf_to(stairs)
+    run.dm.paint(7, [8])                         # the '>' (he steps north off it, onto the mold's square)
+    name = run.dm.summon(race_idx(race), step=8, after=None)
+    run.gandalf_to(start)
+    v = run.bring_dive04()
+    run.dm.walk(2, 3)                            # out of the way
+    me = tuple(v["pos"])
+    run.res["scene"] = {"dive04": me, "stairs": stairs, "mold": mold, "summoned": name}
+    run.say(f"[{run.tag}] Dive04 at {me}, '>' at {stairs}, {name} at {mold}")
+    time.sleep(2.0)
+    run.t_act = time.time()
+    run.res["order_reply"] = ctl("goal", "dive", str(run.depth + 50), role="architect")
+    run.watch(45, until=lambda recs: any(d.get("depth") is not None and d["depth"] * 50 > run.depth for d in recs))
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    presses = [(round(d["t"] - run.t_act, 1), tuple(d["pos"])) for d in recs
+               if d.get("kind") == "act" and d.get("cmd") == "custom >" and d.get("pos")]
+    down = next((round(d["t"] - run.t_act, 1) for d in recs if d.get("depth") is not None and d["depth"] * 50 > run.depth),
+                None)
+    stray = [p for p in presses if p[1] not in (stairs, me)]   # (the first press on arrival probes the tile underfoot)
+    run.check("down the painted '>' within 45 s", down is not None, f"at {down} s; presses {presses[:6]}")
+    run.check("no '>' pressed off the stairs", not stray, f"{stray[:4]}")
+
+
+SETPIECES = {"M1": m1, "L3": l3, "A2f": a2f, "L2g": l2g, "A7f": a7f, "A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
              "C3": c3}
 
 

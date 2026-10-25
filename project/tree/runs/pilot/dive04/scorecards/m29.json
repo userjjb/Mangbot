@@ -1,0 +1,150 @@
+{
+ "label": "m29",
+ "nav_model": "opus",
+ "effort": null,
+ "report": "compact",
+ "start": "2026-10-24 20:12",
+ "end": "2026-10-24 20:49",
+ "minutes": 37.0,
+ "notes": "step 5: Opus on the current Pilot, same brief as m28; 4057 gold, WoR 2, DEX restored; auto_scum on; --hpwarn 5; 40 min",
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   24,
+   25
+  ],
+  "exp_gain": 2015,
+  "gold": [
+   4057,
+   5621
+  ],
+  "gold_change": 1564,
+  "max_depth_ft": 650
+ },
+ "B": {
+  "dungeon_min": 28.3,
+  "town_min": 8.0,
+  "exp_per_dmin": 71.3,
+  "levels_per_dhour": 1.39,
+  "gold_found": 1120,
+  "gold_found_per_dmin": 39.6,
+  "time_budget_min": {
+   "fighting": 11.3,
+   "exploring": 9.6,
+   "travel_dive": 7.0,
+   "town_no_goal": 2.9,
+   "town_other": 2.8,
+   "town_idle_end": 1.6,
+   "recall_wait": 1.0,
+   "town_shopping": 0.6,
+   "resting": 0.2,
+   "no_goal_dungeon": 0.0
+  },
+  "navigator_wait_pct": 8
+ },
+ "C": {
+  "lowest_hp": [
+   163,
+   288,
+   57,
+   "20:25:28"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 0,
+  "emergency_alerts": 0,
+  "phase": 0,
+  "wor_escape": 3,
+  "wor_travel": 3,
+  "stairs_flee": 0,
+  "teleport": 0,
+  "cures_quaffed": 7,
+  "escape_records": 7,
+  "recalls_landed": 6
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 216,
+  "loot_abandoned_est": 745,
+  "stolen": 292,
+  "destroyed_by_monsters_est": 4,
+  "total": 1257,
+  "sales": 12,
+  "sales_valued": 3,
+  "worst_sales": [],
+  "left_behind": [
+   "Zinc Wand",
+   "Scroll titled \"nin nisish\"",
+   "Clotted Red Potion",
+   "Slimy Mushroom",
+   "Rapier (1d6)",
+   "Set of Gauntlets [2]",
+   "Scroll of Door/Stair Location",
+   "Potion of Detect Invisible",
+   "Holy Book of Prayers [Beginners Handbook]",
+   "Amulet of Teleportation"
+  ],
+  "irreplaceable": []
+ },
+ "E": {
+  "reports": 22,
+  "commands": 56,
+  "commands_per_min": 2.1,
+  "report_to_action_med_s": 5.7,
+  "report_to_action_p90_s": 18.2,
+  "reports_without_command_pct": 23,
+  "user_messages": 1,
+  "user_reply_med_s": 11.6,
+  "forced_overrides": 0,
+  "complaints": 3,
+  "report_chars": 46248,
+  "order_report_age_med_s": 5.7,
+  "order_report_age_p90_s": 13.1
+ },
+ "F": {
+  "audit_diffs": 1,
+  "audit_checks": 75,
+  "perception_gaps": 2,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 1048,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Stegocentipede": 143,
+  "Light hound": 126,
+  "Baby green dragon": 115,
+  "Black orc": 98,
+  "Cave orc": 94,
+  "Uruk": 56,
+  "Baby bronze dragon": 47,
+  "Ogre": 42
+ },
+ "alerts": {
+  "tactic": 31,
+  "goal_done": 10,
+  "blows_changed": 3,
+  "plan_done": 3,
+  "lost": 2,
+  "user_message": 1,
+  "stat_drained": 1,
+  "found": 1
+ },
+ "plan_news": {
+  "unseen_attacker": 24,
+  "goal_done": 11,
+  "plan": 6,
+  "interesting_item": 5,
+  "stuck": 4,
+  "fight_going_badly": 3,
+  "thief": 2,
+  "structure": 2,
+  "drainer": 1,
+  "band": 1,
+  "unique_slain": 1,
+  "breeders": 1
+ }
+}
