@@ -1052,6 +1052,7 @@ def shadow_estimator_logs():
     p.w.in_dungeon, p.w.depth, p.w.clvl = True, 12, 25
     p.w.find = lambda chars: []
     p.our_slowness = lambda: 1.0
+    p.mover = type("M", (), {"in_corridor": lambda self: False})()
     logged = []
     p.log = lambda kind, **kw: logged.append((kind, kw))
     t0 = _t.time()
@@ -1064,7 +1065,7 @@ def shadow_estimator_logs():
             break
     rec = next((kw for k, kw in logged if k == "estimator"), {})
     ok = started == "started" and waited_s < 0.2 and rec.get("choice") and rec.get("rules") == "phase" and \
-        "in_time_turn" in rec and "before_next_act" in rec and not rec.get("error")
+        "in_time_turn" in rec and "before_next_act" in rec and not rec.get("error") and rec.get("policy_version")
     return ok, (f"submit took {waited_s} s; choice {rec.get('choice')!r} ({rec.get('why')}); rules {rec.get('rules')}; "
                 f"compute {rec.get('compute_s')} s vs a turn of {rec.get('turn_s')} s: in time {rec.get('in_time_turn')}; "
                 f"error {rec.get('error')}")
