@@ -160,7 +160,11 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
   (10+ levels below you, not dangerous) don't hold it up; a band does. **`interesting_item` news** says "fetching it
   once the area is clear" for those; anything farther is yours: `goal fetch Y,X` (outside a trip plan a dive
   waits 20 s for it).
-- **Counts in buys mean "have N"**, in `plan town` and in `goal shop` alike (`buy NAME:+N` buys N more).
+- **Counts in buys mean "have N"**, in `plan town` and in `goal shop` alike (`buy NAME:+N` buys N more). To pick
+  one of several lines with the same name, put the plus in the name: `goal shop 6 buy Ring_of_Protection_[+12]:+1`.
+- **A flee at `max_depth` takes `<` when one is known; with only `>` known it goes down one level and straight back
+  up** (seconds, m37): the recall depth isn't changed by it. Items beside a disenchanter (a mold) are left, not
+  fought for; a lost plus is news (`disenchanted`).
 - **Broke in town** (Word of Recall short and no gold): `plan town` sells unknown wands, staffs and rods, saves every
   coin for the Word of Recall (food only besides) and **by day townfarms the difference by itself** (kills
   gold-dropping townspeople, up to 5 minutes; ~120 gold a minute in m14). At night it can't: `goal townfarm GOLD`

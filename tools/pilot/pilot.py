@@ -1731,6 +1731,10 @@ class TownKit(Goal):
                 self.sub = Shop(st, buys=self.plan[st])
                 self.sub.role = "pilot"
                 return None
+            # wear what was bought (m37: the Iron Helm the Navigator's buy list got stayed in the pack)
+            if p.upgrade_step():
+                self.t = now
+                return None
             # drink the Restore bought for a drained stat (once each)
             pot = p.restore_potion(self.__dict__.setdefault("quaffed", set()))
             if pot:
@@ -3725,6 +3729,10 @@ class Pilot:
             m = re.match(r"You (?:hit|smite|bite|claw|bash) (?:the )?(.+?)[.!]$", t)
             if m:
                 self.hits[(w.level_t, m.group(1).lower())] += 1
+            # (m37: the cloak and the new helm lost +1 each to a Disenchanter mold; nothing in the news)
+            m = re.match(r"Your (.+?) \(.\) (?:was|were) disenchanted!", t)
+            if m:
+                self.notify("disenchanted", f"{m.group(1)} lost a plus (disenchanted)", news=True)
             m = re.match(r"You have (?:slain|destroyed|killed) (?:the )?(.+?)[.!]$", t)
             if m:
                 k = m.group(1).lower()
@@ -4710,6 +4718,19 @@ class Pilot:
         # (only when it blocks the way, disenchanters too: m33 and m34 meleed Disenchanter molds beside the path, and
         # m33's shield lost +1 -- a mold can't follow, so stepping on past it costs nothing)
         targets = [m for m in still if any(w.dist(g, m[:2]) <= 1 for g in goals)]
+        # (an item beside a disenchanter isn't worth the enchantment: m37 meleed a Disenchanter mold to reach Boldor's
+        # drops, and the cloak and the new helm lost +1 each. The item is left; stairs and the way on still count)
+        loot = self.__dict__.get("loot_mem") or {}
+        for m in [m for m in targets if disenchants(m[2])]:
+            items = [g for g in goals if w.dist(g, m[:2]) <= 1 and w.memory.get(g, " ") not in ".#%'+<>^:; "]
+            if items and len(items) == len(goals):
+                if loot.get("level") == w.level_t:
+                    loot["done"] |= set(items)
+                self.mover.stop()
+                self.still_goals = (w.level_t, set())
+                targets.remove(m)
+                self.notify("tactic", f"left the item at {items[0][0]},{items[0][1]}: it lies beside a {m[2].name}, "
+                                      "which would disenchant our gear", news=True)
         fight = [m for m in targets if killable(m[2])]
         if any(m[2].drains for m in still):
             fight = []      # (mission 16: killing a Green mold put it next to a Purple mushroom patch)
@@ -7458,6 +7479,11 @@ class Pilot:
                 empty.append(slot + (f" (you carry {cand[0]['name']})" if cand else ""))
             elif slot not in ("weapon", "bow", "ring", "amulet", "light"):
                 ac_on = min((self.armour_ac(i["name"]) or 0) for i in on)
+                # (as the upgrade step: never over a piece whose abilities the other lacks, nor over an artifact --
+                # m37's line offered Metal Lamellar [23] over the Leather of Resistance)
+                if self.is_artifact(on[0]["name"]):
+                    continue
+                cand = [i for i in cand if self.weapon_abilities(on[0]["name"]) <= self.weapon_abilities(i["name"])]
                 for i in cand:
                     ac = self.armour_ac(i["name"])
                     if ac is not None and ac > ac_on:

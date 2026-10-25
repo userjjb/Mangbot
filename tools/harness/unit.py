@@ -950,10 +950,14 @@ def quiet_level_left():
 @case
 def disenchanter_beside_path_not_fought():
     """m33, m34: Disenchanter molds beside the path were meleed ("disenchants: killing it"); m33's shield lost +1. A
-    disenchanter adjacent but not by the square we're heading for: no fight (step past); in the way: fought."""
-    def run(goal):
+    disenchanter adjacent but not by the square we're heading for: no fight (step past); in the way: fought; by an
+    item we're fetching (m37): the item is left."""
+    def run(goal, glyph=None):
         p = pilot()
         p.w.pos, p.w.level_t, p.w.clvl = (20, 20), 5.0, 25
+        if glyph:
+            p.w.memory[goal] = glyph
+            p.loot_mem = {"level": 5.0, "done": set()}
         p.mover = type("M", (), {"goals": {goal}, "active": True, "stop": lambda self: None})()
         p.still_goals, p.still_fighting = (None, set()), None
         p.orders["think_hp"] = 0.65
@@ -961,7 +965,9 @@ def disenchanter_beside_path_not_fought():
         return p.still_fight_tick(P.gnow(), [(20, 21, BYNAME["disenchanter mold"])])
     beside = run((25, 10))
     blocking = run((20, 22))
-    return beside is False and blocking is True, f"beside the path: fight {beside}; by the goal: fight {blocking}"
+    item = run((20, 22), "!")          # (m37: Boldor's drops beside a Disenchanter mold)
+    return beside is False and blocking is True and item is False, \
+        f"beside the path: fight {beside}; by the goal: fight {blocking}; an item by it: fight {item}"
 
 
 @case
@@ -1219,6 +1225,27 @@ def better_ring_replaces_worn():
     ok = (a.cmds == ["take off a Ring of Protection [+8] for a Ring of Protection [+9]"]
           and b.cmds == ["take off a Ring of Resist Cold for a Ring of Protection [+9]"] and c.cmds == [])
     return ok, f"bigger bonus: {a.cmds}; redundant: {b.cmds}; smaller: {c.cmds}"
+
+
+@case
+def gear_line_keeps_ability_armour():
+    """m37: 'better than worn' offered Metal Lamellar Armour [23] over the Hard Studded Leather of Resistance (four
+    resists), by AC alone; the line now follows the upgrade step's rule. A disenchant message is news."""
+    p = pilot(worn=[("Hard Studded Leather of Resistance (-1) [7,+8]", 37, 100), ("an Iron Helm [5,-1]", 32, 75)],
+              pack=[("a Metal Lamellar Armour (-3) [23] {good}", 38), ("an Iron Helm [5,+2]", 32)])
+    p.flavour_of = lambda it: None
+    line = p.gear_line()
+    q = pilot()
+    q.gain_hist, q.w.hp_hist, q.hits, q.mons_mem = collections.deque(maxlen=80), [], collections.Counter(), {}
+    q.belief_msg_t, q.kills_t = 0.0, 0.0
+    q.w.messages.append((P.gnow(), "Your Shadow Cloak (h) was disenchanted!"))
+    try:
+        q.belief_tick(P.gnow())
+    except Exception:
+        pass
+    news = [d for what, d in q.notes if what == "disenchanted"]
+    ok = "Lamellar" not in line and "Iron Helm [5,+2]" in line and news == ["Shadow Cloak lost a plus (disenchanted)"]
+    return ok, f"{line}; news {news}"
 
 
 def main():
