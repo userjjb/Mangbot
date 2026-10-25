@@ -506,3 +506,6 @@
 - 08:53:10 600ft 100% | 08:52 Pilot left 650 ft over a Giant red frog (L7 STR drainer) while its own news says kill it fast | let it run | noting as over-cautious level leave for the report
 - 09:02:11 town 100% | 09:02 town, 1247g, DEX restored; Pilot swapped Westernesse for Main Gauche (40 vs 28 dmg) losing Free Action + See Invisible | re-wield the Scimitar, add standing note | FA is the one item that can't be bought; paralysers live at 600 ft
 - 09:02:39 town 100% | 09:02:13 Pilot re-swapped to Main Gauche 2 s after my wear; no order pins a weapon | leave it, report it; mission ends in town idle | not fighting the policy in a loop; its danger rules treat paralysers as danger without FA
+- 09:05:38 town 100% | town, 1247g, 2 WoR, 30 min budget | plan town buying 3rd WoR | handbook: recall with 3 WoR; short mission
+- 09:06:09 town 100% | ready, 3 WoR, 1021g | trip 500-650 via recall, home at cures<4 or phase<5 or time>09:27 | 30 min budget; 650 cap
+- 09:28:59 town 100% | home 09:28, 2998g, XP+330 gold+1751 in 25 min | stop, idle in town | no time for another trip

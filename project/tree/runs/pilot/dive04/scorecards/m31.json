@@ -36,7 +36,7 @@
  },
  "B": {
   "dungeon_min": 20.8,
-  "town_min": 3.6,
+  "town_min": 4.0,
   "exp_per_dmin": 24.5,
   "levels_per_dhour": 0.27,
   "gold_found": 519,
@@ -102,8 +102,8 @@
  },
  "E": {
   "reports": 8,
-  "commands": 13,
-  "commands_per_min": 0.8,
+  "commands": 17,
+  "commands_per_min": 1.0,
   "report_to_action_med_s": 0.2,
   "report_to_action_p90_s": 0.2,
   "reports_without_command_pct": 50,
@@ -111,13 +111,13 @@
   "user_reply_med_s": null,
   "forced_overrides": 0,
   "complaints": 1,
-  "report_chars": 15502,
-  "order_report_age_med_s": 0.2,
+  "report_chars": 17793,
+  "order_report_age_med_s": 0.3,
   "order_report_age_p90_s": 0.3
  },
  "F": {
   "audit_diffs": 0,
-  "audit_checks": 50,
+  "audit_checks": 51,
   "perception_gaps": 0,
   "goal_failed": 0,
   "stuck": 0,

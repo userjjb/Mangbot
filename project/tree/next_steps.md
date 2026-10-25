@@ -228,6 +228,13 @@ the freeze stops, and a login before that resumes the character in memory. **Not
 matrix in a dungeon set-piece (in town orphans are freed at once): monsters near, a trip plan running, a recall
 pending (park avoids logouts during a recall: "a logout reset its depth once"); check Dive04 resumes in place, the
 plan resumes, nothing acted meanwhile, and whether logins wait for the thaw.
+**Baseline matrix done (m31-m34, 07:42-09:29):** summary `runs/pilot/dive04/reports/2026-10-25-matrix-m31-m34.md`.
+Cost is clear (Opus high $0.85, Opus medium $0.43, Sonnet $0.13-0.15 per 30 min); XP (16-54/dmin) is dominated by
+level luck and Pilot problems at n=1 per cell, with the Pilot changed after m32 and Free Action + See Invisible found
+in m32. Breaking fix between m33 and m34: an ability weapon is never swapped for damage (`weapon_abilities`).
+Next Pilot fixes from the matrix: weak drainers / weak bands make the plan leave; slow quiet levels; meleeing
+disenchanter molds beside the path; recall arrival fights before locating stairs. Dive04 now: clvl 25, 310 HP, 2998
+gold, Free Action + See Invisible, DEX restored, WIS drained, Staff of Teleportation.
 **The Brown mold (m25) fixed:** `stairs_beside_still` -- stairs underfoot or a step away beside a stationary monster
 harmless for a turn (no drain/paralyse/disenchant, melee < 25% HP) are taken, not stepped away from; Dive presses '>'
 only on its stairs (a step-away's "arrived" pressed it 6 squares off). Unit `stairs_beside_mold`; live set-piece

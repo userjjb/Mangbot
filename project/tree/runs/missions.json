@@ -1629,5 +1629,28 @@
    "usd": 0.425,
    "transcript": "agent-aadb292f432e4b259.jsonl"
   }
+ },
+ {
+  "label": "m34",
+  "nick": "dive04",
+  "start": "2026-10-25 09:05",
+  "end": "2026-10-25 09:30",
+  "navigator": "sonnet",
+  "effort": "high",
+  "report": "compact",
+  "notes": "baseline matrix 4/4: Sonnet high, 30 min; new server and Pilot + the ability-weapon fix (deployed 09:04); Free Action + See Invisible, DEX restored, 1247 gold",
+  "tokens": {
+   "turns": 15,
+   "input": 30,
+   "output": 4719,
+   "cache_read": 300688,
+   "cache_write": 28169,
+   "write_5m": 28169,
+   "write_1h": 0,
+   "model": "claude-sonnet-5-5",
+   "final_usage_turns": 15,
+   "usd": 0.148,
+   "transcript": "agent-a8799d0c3af6d02db.jsonl"
+  }
  }
 ]
