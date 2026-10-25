@@ -3347,12 +3347,16 @@ class Pilot:
         # serious only when together they could take 30% of current HP in a turn, or one of them
         # is dangerous (the user, m24: 5-8 Novice rogues or Snaga at clvl 22 / 265 HP made the trip
         # leave four levels and a Word of Recall on the floor); weaker ones are fought, and looted
-        serious = worst >= 0.3 * max(w.hp[0], 1) or any(self.danger_why(r) for *_, r in near)
+        # (since m34: by the expected cost of fighting them one by one, not the sum of every member's maximum hit:
+        # m30's Novice warriors x6 + Swordsman and m34's Hill orcs counted as bands at 30% that way. 50% of HP
+        # expected, or a dangerous member)
+        cost = self.band_cost([r for *_, r in near])
+        serious = cost > 0.5 * max(w.hp[0], 1) or any(self.danger_why(r) for *_, r in near)
         if not serious:
             if getattr(self, "weak_band_said", None) != w.level_t:
                 self.weak_band_said = w.level_t
-                self.notify("tactic", f"{len(near)} monsters together but weak (~{worst:.0f} worst-case melee a turn "
-                                      f"vs HP {w.hp[0]}): fighting on", news=True)
+                self.notify("tactic", f"{len(near)} monsters together but weak (~{cost:.0f} HP expected to fight them "
+                                      f"all, vs HP {w.hp[0]}): fighting on", news=True)
             return
         lt, size = self.band_warned
         if lt == w.level_t and len(near) < size * 1.5:
@@ -3362,10 +3366,35 @@ class Pilot:
         names = ", ".join(f"{n} ×{c}" if c > 1 else n
                           for n, c in collections.Counter(r.name for *_, r in near).most_common(6))
         stairs = min((w.dist(q) for q in w.find("<>")), default=None)
-        self.notify("band", f"a band within 10 squares: {names} ({len(near)} monsters, ~{worst:.0f} worst-case melee "
-                            f"a turn together, HP {w.hp[0]}): leave now while it's cheap -- "
+        self.notify("band", f"a band within 10 squares: {names} ({len(near)} monsters, ~{cost:.0f} HP expected to fight "
+                            f"them all, HP {w.hp[0]}): leave now while it's cheap -- "
                             + (f"stairs {stairs} away" if stairs is not None else "no stairs known: read Word of Recall")
                             + "; don't stop for loot")
+
+    def band_cost(self, races):
+        """Expected HP lost fighting these monsters one at a time, the quickest kills first: while each dies, those
+        still alive hit for their expected melee at our AC (rulebook melee_exp_acNN a monster turn, x their speed),
+        at most 8 at once in a room, 2 in a corridor. Our damage: the wielded weapon's per round."""
+        rows = self.fight_rows()
+        ac = (self.w.ind.get("armor") or [0])[0] or 0
+        col = min((20, 40, 60), key=lambda a: abs(a - ac))
+        wt = [x for x in self.weapon_table() if x[3]]
+        dmg = max(1.0, wt[0][2] if wt else 10.0)
+        cap = 2 if self.mover.in_corridor() else 8
+
+        def stats(r):
+            row = rows.get(getattr(r, "idx", None)) or {}
+            hp = float(row.get("hp") or 0) or 10.0
+            hit = float(row.get(f"melee_exp_ac{col}") or 0) * (r.speed_x or 1) if row else \
+                0.5 * (r.worst_melee[0] or 0) * (r.speed_x or 1)
+            return hp, hit
+        alive = sorted((stats(r) for r in races), key=lambda s: s[0])
+        total = 0.0
+        while alive:
+            t = max(1.0, alive[0][0] / dmg)
+            total += t * sum(sorted((h for _, h in alive), reverse=True)[:cap])
+            alive.pop(0)
+        return total * self.our_slowness()
 
     def band_live(self):
         """A band warned on this level in the last 20 s, or 3+ of its kind of monsters still within 10."""
@@ -3578,12 +3607,15 @@ class Pilot:
                 continue
             self.drainers_seen.add((w.level_t, r.name))
             key = stats & {"STR", "DEX", "CON"}          # blows and HP: what a warrior can't spare
-            if r.level <= w.clvl - 5 and r.speed <= mine and "UNIQUE" not in r.flags:
+            weak = r.level <= w.clvl - 5 and r.speed <= mine and "UNIQUE" not in r.flags
+            if weak:
                 advice = "weak and no faster than you: kill it fast, don't walk away from it"
             else:
                 advice = f"`avoid {r.name.replace(' ', '_')}`, or leave the level"
+            # (a weak one is news, not a reason for the trip plan to leave the level: m33 left 650 ft for a Giant red
+            # frog, m34's Navigator thought the same of others; it's fought when it comes)
             self.notify("drainer", f"{r.name} (lvl {r.level}) drains {', '.join(sorted(stats))} with its blows: "
-                                   f"{advice}", news=not key)
+                                   f"{advice}", news=not key or weak)
 
     def watch_progress(self):
         """A goal that goes nowhere: at most 10 different squares in 2 minutes

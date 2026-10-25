@@ -894,6 +894,37 @@ def ability_weapon_kept():
     return ok, f"Westernesse wielded: {west}; a plain Dagger wielded: {plain!r}"
 
 
+@case
+def bands_by_expected_cost_weak_drainers_news():
+    """The matrix (m30, m33, m34): the plan left levels for weak bands and weak drainers. A band is serious by the
+    expected cost of fighting it one by one (> 50% HP), not the sum of maximum hits; in a corridor only 2 reach us.
+    A weak drainer (10+... 5+ levels below, no faster, not unique) is news, not a reason to leave."""
+    def make(corridor=False):
+        p = pilot(hp=310, worn=[("a Scimitar of Westernesse (2d5) (+9,+8) (+1)", 23, 130)])
+        p.w.hp = [310, 310]
+        p.w.clvl = 25
+        p.mover = type("M", (), {"in_corridor": lambda self: corridor})()
+        p.our_slowness = lambda: 1.0
+        return p
+    def cost(names, corridor=False):
+        return make(corridor).band_cost([BYNAME[n] for n in names])
+    novice = cost(["novice warrior"] * 6 + ["swordsman"])
+    orcs22 = cost(["cave orc"] * 4 + ["snaga"] * 3 + ["black orc"] * 3)
+    hill = cost(["hill orc"] * 10)
+    hill_c = cost(["hill orc"] * 10, corridor=True)
+    p = make()
+    p.w.in_dungeon, p.w.level_t = True, 3.0
+    p.drainers_seen = set()
+    p.w.monsters = [(20, 25, BYNAME["giant red frog"])]
+    said = []
+    p.notify = lambda what, d=None, news=False: said.append((what, news))
+    p.watch_drainers()
+    frog = said[-1] if said else None
+    ok = novice < 155 and orcs22 > 155 and hill > 155 and hill_c < hill / 2 and frog == ("drainer", True)
+    return ok, (f"expected HP: Novice warriors {novice:.0f}, m22's orcs {orcs22:.0f}, 10 Hill orcs {hill:.0f} "
+                f"(in a corridor {hill_c:.0f}); 50% of 310 = 155; frog notice (what, news): {frog}")
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0
