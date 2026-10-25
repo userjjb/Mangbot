@@ -4124,6 +4124,8 @@ class Pilot:
         iv = self.iv(n)
         return iv.value * self.pay_cut(iv.tval) * max(1, iv.count)
 
+    UNIQUE_DROP_BUMP = 50
+
     def pickup_room(self, name):
         """True if the item underfoot should be picked up now (destroying something
         cheaper first when the pack is full); False to leave it (with news)."""
@@ -4164,7 +4166,10 @@ class Pilot:
                 return False
         cand = sorted(((self.pack_value(i), i) for i in w.items()), key=lambda vi: vi[0])
         cheapest = cand[0] if cand else None
-        if cheapest and cheapest[0] < float("inf") and (unique or worth > 1.5 * cheapest[0] + 5):
+        # (a unique's drop is "good" but unknown: it may push out only cheap things. m37 destroyed a Tulwar (~76)
+        # for Boldor's 4-gold Dagger, and an Amulet of Infravision (~86) for boots it then destroyed for a Katana)
+        if cheapest and cheapest[0] < float("inf") and ((unique and cheapest[0] < self.UNIQUE_DROP_BUMP)
+                                                         or worth > 1.5 * cheapest[0] + 5):
             if now - self.room_t > 1.5:
                 self.room_t = now
                 self.c.send("confirm yes")

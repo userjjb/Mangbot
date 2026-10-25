@@ -1248,6 +1248,27 @@ def gear_line_keeps_ability_armour():
     return ok, f"{line}; news {news}"
 
 
+@case
+def unique_drop_pushes_out_only_cheap():
+    """m37: Boldor's drops took every slot by force (a Tulwar ~76 destroyed for a 4-gold Dagger). A unique's drop
+    may push out only things worth under 50; otherwise it competes on value."""
+    def run(cheap):
+        pack = [cheap] + [(f"{n} Potions of Cure Critical Wounds", 75) for n in range(2, 24)]
+        p = pilot(pack=pack)
+        p.skipped_items, p.room_t = set(), 0.0
+        p.unique_drop = (p.w.level_t, p.w.pos)
+        p.w.hunger = 3
+        p.flavour_of = lambda it: None
+        sent = []
+        p.cmd = lambda line, why, hold=0.4: sent.append(why)
+        p.c = type("C", (), {"send": lambda self, x: None})()
+        p.pickup_room("a Dagger (1d4)")
+        return [x for x in sent if "destroy" in x]
+    tulwar = run(("a Tulwar (2d4) {average}", 21))
+    helm = run(("an Iron Helm [5,-3]", 32))
+    return tulwar == [] and len(helm) == 1, f"over a Tulwar: {tulwar}; over a [5,-3] helm: {helm}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0
