@@ -183,6 +183,9 @@ goal on its second stall (`goal.abort`) instead of restarting it again.
 **Fixed 2/7, the unseen drainer:** both DEX drains (m29, m30) were a Moaning spirit (invisible, PASS_WALL,
 +10, TOUCH:LOSE_DEX). A STR/DEX/CON drain with no drainer in view and no trap message now leaves the level (the
 plan's drainer leave; without a plan, Flee). Unit `unseen_drainer_leaves`; live set-piece M3 PASS.
+**Fixed 3/7, the `band` condition:** it counted any band ever warned on the trip; m30's beaten Novice warrior
+band ended the trip 3 min later on a new level. Now it holds only while the band is live (`band_live`: warned <20 s
+ago on this level, or 3+ monsters within 10). Unit `band_condition_only_while_live`.
 **The Brown mold (m25) fixed:** `stairs_beside_still` -- stairs underfoot or a step away beside a stationary monster
 harmless for a turn (no drain/paralyse/disenchant, melee < 25% HP) are taken, not stepped away from; Dive presses '>'
 only on its stairs (a step-away's "arrived" pressed it 6 squares off). Unit `stairs_beside_mold`; live set-piece

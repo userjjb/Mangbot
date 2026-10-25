@@ -740,6 +740,29 @@ def unseen_drainer_leaves():
     return ok, f"unseen: {ghost}; dart trap: {dart}; a visible frog (its own rules): {frog}"
 
 
+@case
+def band_condition_only_while_live():
+    """m30: the `band` condition fired 3 minutes after a beaten Novice warrior band, on a new level, when the plan
+    resumed after the Navigator's goal. It holds while the band is live (warned in the last 20 s on this level, or
+    3+ monsters still within 10); a band gone or beaten clears it."""
+    p = pilot()
+    p.w.level_t = 5.0
+    tp = P.TripPlan(500, 650, P.TripPlan.parse_until("band or minutes>30"))
+    tp.events["band"] = 1
+    p.band_warned, p.band_warned_t = (5.0, 7), P.gnow()
+    fresh = tp.holds(p)
+    p.band_warned_t = P.gnow() - 60
+    p.w.monsters = [(20, 22 + i, BYNAME["novice warrior"]) for i in range(4)]
+    still = tp.holds(p)
+    p.w.monsters = []
+    beaten = tp.holds(p)
+    tp.events["band"] = 1
+    p.w.level_t = 6.0                     # left the level meanwhile
+    moved = tp.holds(p)
+    ok = fresh == "band" and still == "band" and beaten is None and moved is None and tp.events["band"] == 0
+    return ok, f"just warned: {fresh}; 60 s on, 4 in view: {still}; beaten: {beaten}; on a new level: {moved}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

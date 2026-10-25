@@ -1829,6 +1829,10 @@ class TripPlan:
         for term, var, op, val in self.conds + [("no Word of Recall left", "wor", "<", "1"),
                                                 ("90 minutes", "minutes", ">", "90")]:
             if op is None:
+                # (a band holds only while it's live: m30's Novice warrior band was beaten, and the trip went home
+                # 3 minutes later on a new level when the plan resumed. A band gone or beaten clears the count)
+                if var == "band" and self.events[var] and not p.band_live():
+                    self.events[var] = 0
                 if self.events[var]:
                     return term
                 continue
@@ -3335,6 +3339,15 @@ class Pilot:
                             f"a turn together, HP {w.hp[0]}): leave now while it's cheap -- "
                             + (f"stairs {stairs} away" if stairs is not None else "no stairs known: read Word of Recall")
                             + "; don't stop for loot")
+
+    def band_live(self):
+        """A band warned on this level in the last 20 s, or 3+ of its kind of monsters still within 10."""
+        w = self.w
+        if self.band_warned[0] != w.level_t:
+            return False
+        if gnow() - self.band_warned_t < 20:
+            return True
+        return sum(1 for y, x, r in w.monsters if "NEVER_MOVE" not in r.flags and w.dist((y, x)) <= 10) >= 3
 
     def watch_traps(self):
         """Three traps sprung on one level: say so (mission 22: dart traps
