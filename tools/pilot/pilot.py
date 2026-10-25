@@ -1072,6 +1072,17 @@ class Flee(Goal):
         stairs = w.find(ok)
         if not stairs:
             return ("failed", "no stairs known")
+        # Stairs known but no known way to them (Door/Stair Location shows stairs, not corridors): Magic Mapping
+        # first, once per level. m31: an Ogre band, stairs 16 away, the flee went through unexplored squares, got
+        # stuck, and a Word of Recall ended the trip -- with 4 Magic Mapping scrolls in the pack
+        if not self.started and getattr(self, "mapped", None) != w.level_t and not plan(w, stairs) and \
+                not w.flag("blind") and not w.flag("confused") and not w.adjacent_monsters():
+            mm = next((i for i in w.items(tval=TV_SCROLL) if "Magic Mapping" in i["name"]), None)
+            if mm:
+                self.mapped = w.level_t
+                p.cmd(f"custom r item={mm['item']}", "flee: no known way to the stairs: read Magic Mapping", hold=0.8)
+                p.notify("tactic", "flee: stairs known but no known way to them: read Magic Mapping", news=True)
+                return None
         if not self.started or not p.mover.active:
             if not p.mover.go(stairs, unknown=True):
                 return ("failed", "no path to stairs, nor one through unexplored squares")
@@ -1957,6 +1968,11 @@ class TripPlan:
                 self.level == w.level_t and not self.level_done and now - self.level_t0 > 60 * self.level_min:
             self.level_done = f"{self.level_min:g} minutes on it"
             p.set_goal(None)
+        quiet = self.quiet(p, now)
+        if self.phase == "level" and isinstance(p.goal, Explore) and getattr(p.goal, "by_plan", False) and \
+                self.level == w.level_t and not self.level_done and quiet:
+            self.level_done = quiet
+            p.set_goal(None)
         if p.goal is not None:
             return None
         if self.phase == "down":
@@ -2061,6 +2077,28 @@ class TripPlan:
         if self.phase == "town":
             return ("done", f"home ({self.home_why}) and the town kit run; {plural(self.levels, 'level')} in "
                             f"{(now - self.t0) / 60:.0f} min")
+        return None
+
+    QUIET_MIN, QUIET_XP = 3.0, 10.0       # a level that earned under 10 XP a minute over 3 minutes is left
+
+    def quiet(self, p, now):
+        """'quiet: N XP in 3 minutes' when this level has earned under QUIET_XP a minute over the last QUIET_MIN
+        minutes (after at least that long on it), else None. The matrix: m33 spent its last 10 minutes on one 600 ft
+        level for 22 XP; m34 had 4-minute stretches without a kill (good missions: 50-70 XP a minute)."""
+        w = p.w
+        exp = (w.ind.get("exp") or [0])[0]
+        hist = self.__dict__.setdefault("xp_hist", [])
+        if not hist or hist[-1][2] != w.level_t or now - hist[-1][0] >= 5:
+            hist.append((now, exp, w.level_t))
+        del hist[:max(0, len(hist) - 200)]
+        if self.level != w.level_t or now - self.level_t0 < 60 * self.QUIET_MIN or w.monsters:
+            return None
+        old = [(t, e) for t, e, lt in hist if lt == w.level_t and now - t >= 60 * self.QUIET_MIN]
+        if not old:
+            return None
+        gained = exp - old[-1][1]
+        if gained < self.QUIET_XP * self.QUIET_MIN:
+            return f"quiet: {gained} XP in {self.QUIET_MIN:g} minutes"
         return None
 
     def goal_ended(self, p, g, status, detail):
@@ -4362,11 +4400,12 @@ class Pilot:
 
     def still_fight_tick(self, now, still):
         """A stationary monster next to us that blocks the way (sits by the
-        square the mover is heading for) or disenchants: kill it if it's weak,
-        by standing still (auto-retaliate). Mission 6 stalled a step from the
-        only '>' beside a Disenchanter eye, stepping away and back while its
-        gaze disenchanted the weapon and armour. A disenchanter too strong to
-        kill: leave the level, never path around it."""
+        square the mover is heading for): kill it if it's weak, by standing
+        still (auto-retaliate). Mission 6 stalled a step from the only '>'
+        beside a Disenchanter eye, stepping away and back while its gaze
+        disenchanted the weapon and armour. A disenchanter in the way too strong
+        to kill: leave the level. One beside the path, not in the way, is
+        stepped away from like any other (m33, m34)."""
         w = self.w
         lev = w.clvl
         # (squares only: a free run's goals are {"free-run"} -- a crash in m25)
@@ -4387,7 +4426,9 @@ class Pilot:
             return r.level <= lev and not (paralyses and not self.has_ability("free_action")) \
                 and not nosave and not drains
 
-        targets = [m for m in still if disenchants(m[2]) or any(w.dist(g, m[:2]) <= 1 for g in goals)]
+        # (only when it blocks the way, disenchanters too: m33 and m34 meleed Disenchanter molds beside the path, and
+        # m33's shield lost +1 -- a mold can't follow, so stepping on past it costs nothing)
+        targets = [m for m in still if any(w.dist(g, m[:2]) <= 1 for g in goals)]
         fight = [m for m in targets if killable(m[2])]
         if any(m[2].drains for m in still):
             fight = []      # (mission 16: killing a Green mold put it next to a Purple mushroom patch)

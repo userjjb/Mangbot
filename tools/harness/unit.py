@@ -58,6 +58,7 @@ class W:
         self.inven += [{"item": i, "name": n, "tval": t, "weight": 10, "equip": False,
                         "number": int(n.split()[0]) if n[0].isdigit() else 1} for i, (n, t) in enumerate(pack)]
         self.clvl = 22
+        self.memory, self.still_seen, self.avoid_zone, self.avoid_inside = {}, {}, set(), False
 
     @property
     def hp_frac(self):
@@ -923,6 +924,67 @@ def bands_by_expected_cost_weak_drainers_news():
     ok = novice < 155 and orcs22 > 155 and hill > 155 and hill_c < hill / 2 and frog == ("drainer", True)
     return ok, (f"expected HP: Novice warriors {novice:.0f}, m22's orcs {orcs22:.0f}, 10 Hill orcs {hill:.0f} "
                 f"(in a corridor {hill_c:.0f}); 50% of 310 = 155; frog notice (what, news): {frog}")
+
+
+@case
+def quiet_level_left():
+    """The matrix: long stays on quiet levels (m33: 22 XP in its last 10 minutes on one 600 ft level). After 3
+    minutes on a level, under 10 XP a minute over the last 3 -> the level is done; a busy level isn't."""
+    p = pilot()
+    p.w.level_t = 7.0
+    tp = P.TripPlan(500, 650, P.TripPlan.parse_until("minutes>30"))
+    tp.level, tp.level_t0 = 7.0, 0.0
+    tp.xp_hist = [(0.0, 1000, 7.0), (10.0, 1005, 7.0)]
+    p.w.ind["exp"] = [1012]
+    quiet = tp.quiet(p, 200.0)
+    tp.xp_hist = [(0.0, 1000, 7.0), (10.0, 1005, 7.0)]
+    p.w.ind["exp"] = [1300]
+    busy = tp.quiet(p, 200.0)
+    early = tp.quiet(p, 100.0)
+    ok = quiet and quiet.startswith("quiet") and busy is None and early is None
+    return ok, f"12 XP in 3 min: {quiet!r}; 300 XP: {busy}; at 100 s: {early}"
+
+
+@case
+def disenchanter_beside_path_not_fought():
+    """m33, m34: Disenchanter molds beside the path were meleed ("disenchants: killing it"); m33's shield lost +1. A
+    disenchanter adjacent but not by the square we're heading for: no fight (step past); in the way: fought."""
+    def run(goal):
+        p = pilot()
+        p.w.pos, p.w.level_t, p.w.clvl = (20, 20), 5.0, 25
+        p.mover = type("M", (), {"goals": {goal}, "active": True, "stop": lambda self: None})()
+        p.still_goals, p.still_fighting = (None, set()), None
+        p.orders["think_hp"] = 0.65
+        p.notify = lambda *a, **k: None
+        return p.still_fight_tick(P.gnow(), [(20, 21, BYNAME["disenchanter mold"])])
+    beside = run((25, 10))
+    blocking = run((20, 22))
+    return beside is False and blocking is True, f"beside the path: fight {beside}; by the goal: fight {blocking}"
+
+
+@case
+def flee_maps_before_unexplored():
+    """m31: stairs known (Door/Stair Location) but no known path; the flee went through unexplored squares, got
+    stuck, and Word of Recall ended the trip with 4 Magic Mapping scrolls carried. Now: Magic Mapping first, once
+    per level; with a known path, no scroll."""
+    def run(mem):
+        p = pilot(pack=[("4 Scrolls of Magic Mapping", 70)])
+        p.w.pos, p.w.level_t, p.w.depth, p.w.depth_ft, p.w.in_dungeon = (20, 20), 5.0, 13, 650, True
+        p.w.memory = mem
+        p.w.find = lambda chars: [q for q, ch in p.w.memory.items() if ch in chars]
+        p.w.monsters, p.w.still_seen, p.w.avoid_zone, p.w.avoid_inside = [], {}, set(), False
+        p.w.adjacent_monsters = lambda: []
+        p.w.standing_on = "."
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append(why)
+        p.mover = type("M", (), {"go": lambda self, *a, **k: True, "active": True, "unknown": True, "path": [1] * 9,
+                                 "tick": lambda self: "moving", "stop": lambda self: None})()
+        P.Flee("band").tick(p)
+        return p.cmds[-1] if p.cmds else None
+    no_path = run({(20, 20): ".", (20, 36): ">"})
+    path = run({**{(20, x): "." for x in range(20, 36)}, (20, 36): ">"})
+    ok = no_path and "Magic Mapping" in no_path and path is None
+    return ok, f"stairs 16 off, no known path: {no_path!r}; a known corridor: {path}"
 
 
 def main():
