@@ -58,7 +58,8 @@ monsters (with `DANGER: why`), items, the map, news. Then the Pilot's memory:
 - `Plan:` the trip and its step;
 - `Out of view:` monsters seen in the last 2 minutes but not now (a unique that walked away is still there);
 - `Fight so far:` hits landed and estimated damage against the monster's HP;
-- `Rates:` HP lost in the last 10 s, XP and gold found in the dungeon per 10 minutes (net gold, with shopping, in brackets);
+- `Rates:` HP lost in the last 10 s, XP and gold found in the dungeon per 10 minutes (net gold, with shopping, in brackets),
+  XP a minute on this level (good levels at 500-650 ft give 50-70), and the mission's totals;
 - `Counts:` drains, traps, searches here, emergencies;
 - `Standing:` kept items, avoids, and standing instructions.
 

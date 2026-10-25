@@ -1127,8 +1127,23 @@ def rates_gold_found_not_shopping():
         p.track_gains(t0 + dt)
     p.w.in_dungeon = False
     line = next((l for l in p.belief_lines() if l.startswith("Rates:")), "")
-    ok = p.gold_found == 350 and "gold found +350 (net -250" in line
-    return ok, f"found {p.gold_found}; {line}"
+    # XP on this level: a new level resets it
+    q = pilot()
+    q.gain_hist, q.w.hp_hist = collections.deque(maxlen=80), []
+    q.avoid_names, q.avoid_zones, q.standing = set(), {}, []
+    q.w.in_dungeon, q.w.ind["exp"] = True, [1000]
+    q.drains_here = q.traps_here = (None, 0)
+    q.searched, q.phase_hist, q.mons_mem, q.hits = set(), [], {}, {}
+    q.weapon_table, q.fight_rows = (lambda: []), (lambda: {})
+    q.track_gains(t0 - 300)
+    q.w.ind["exp"] = [1300]
+    q.track_gains(t0 - 120)
+    q.w.level_t, q.w.ind["exp"] = 2.0, [1400]
+    q.track_gains(t0 - 120)
+    q.w.ind["exp"] = [1600]
+    lvl = next((l for l in q.belief_lines() if l.startswith("Rates:")), "")
+    ok = p.gold_found == 350 and "gold found +350 (net -250" in line and "this level: XP +200 in 2 min (100 a" in lvl
+    return ok, f"found {p.gold_found}; {line} | {lvl}"
 
 
 def main():

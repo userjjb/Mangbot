@@ -3745,6 +3745,10 @@ class Pilot:
         if w.in_dungeon and g > self.__dict__.get("gold_last", g):
             self.gold_found = self.__dict__.get("gold_found", 0) + g - self.gold_last
         self.gold_last = g
+        # XP since arriving on this level (the Navigators' "stay or leave": m31-m34 asked for a per-level rate)
+        lb = self.__dict__.get("level_base")
+        if w.in_dungeon and (not lb or lb[2] != w.level_t):
+            self.level_base = (now, (w.ind.get("exp") or [0])[0], w.level_t)
         if not self.gain_hist or now - self.gain_hist[-1][0] >= 15:
             self.gain_hist.append((now, (w.ind.get("exp") or [0])[0], g, self.__dict__.get("gold_found", 0)))
 
@@ -3792,6 +3796,10 @@ class Pilot:
             dg = w.ind.get("gold", [0])[0] - old[2]
             bits.append(f"XP {de:+d}, gold found {found - old[3]:+d} (net {dg:+d}, with shopping) in the last "
                         f"{(now - old[0]) / 60:.0f} min")
+        lb = self.__dict__.get("level_base")
+        if w.in_dungeon and lb and lb[2] == w.level_t and now - lb[0] >= 60:
+            de = (w.ind.get("exp") or [0])[0] - lb[1]
+            bits.append(f"this level: XP {de:+d} in {(now - lb[0]) / 60:.0f} min ({de / ((now - lb[0]) / 60):.0f} a minute)")
         mb = getattr(self, "mission_base", None)
         if mb and getattr(self, "mission_label", None):
             bits.append(f"this mission: XP {(w.ind.get('exp') or [0])[0] - mb[1]:+d}, gold found "
