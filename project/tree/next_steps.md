@@ -198,6 +198,9 @@ berserk tracked from the game's messages (`buff_on`: the status had no indicator
 False). Unit `emergency_speed_first_berserk_hard_fights`; live A1, A2L PASS (A2L: Speed at 4.3 s, Berserk 6.9 s).
 The user's idea of a danger-time option estimator (simulate options, take the best; real time under hpwarn): asked
 the Advisor (to_advisor 10-25 emergency-estimator).
+**Fear cure order (the user, 10-25, during the baseline matrix m31-m34):** Heroism, then Boldness (only without
+Heroism), then Berserk (`fear_cure`; unit `fear_cure_order`). **Committed but NOT loaded: the user said not to
+restart the Pilot during the matrix; restart it after m34.**
 **The Brown mold (m25) fixed:** `stairs_beside_still` -- stairs underfoot or a step away beside a stationary monster
 harmless for a turn (no drain/paralyse/disenchant, melee < 25% HP) are taken, not stepped away from; Dive presses '>'
 only on its stairs (a step-away's "arrived" pressed it 6 squares off). Unit `stairs_beside_mold`; live set-piece

@@ -2927,8 +2927,7 @@ class Pilot:
                 return True
             if now - self.fear_t > 3:
                 self.fear_t = now
-                pot = next((i for i in w.items(tval=TV_POTION)
-                            if any(n in i["name"] for n in ("Boldness", "Heroism", "Berserk"))), None)
+                pot = self.fear_cure()
                 if pot:
                     self.cmd(f"custom q item={pot['item']}", f"afraid and in danger: quaff {pot['name']}", hold=0.6)
                     self.notify("tactic", f"afraid and in danger: quaffed {one_of(pot['name'])}")
@@ -4362,6 +4361,13 @@ class Pilot:
             elif t.startswith(off):
                 last = False
         return last
+
+    def fear_cure(self):
+        """The potion to quaff when afraid and in danger: Heroism first (it does all Boldness does, plus to-hit and
+        HP), Boldness only without it, Berserk last (kept for hard fights) -- the user, 10-25; it was the pack's
+        order before."""
+        pots = self.w.items(tval=TV_POTION)
+        return next((i for n in ("Heroism", "Boldness", "Berserk") for i in pots if n in i["name"]), None)
 
     def berserk_tick(self, now):
         """A Potion of Berserk Strength at the start of a hard melee fight (the user, 10-25: carried, never used):

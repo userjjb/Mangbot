@@ -490,3 +490,5 @@
 - 06:35:19 town 100% | DEX restored (pack was full: destroyed spare 290 lantern to make room), 3392g | short trip 550-650 minutes>8, no band cond | 06:35, must be home by 06:46
 - 06:44:30 town 100% | recalled home 06:44 from a monster zoo at 650ft (umber hulk, hounds, druid; 3 emergencies, HP low 121; fire burned 3 WoR, scrolls) | stop; restock via plan town, end mission idle in town | out of time
 - 06:45:06 town 100% | 06:45 idle in town, restocked (WoR 3, CCW 15, Phase 20), 2263g | mission over
+- 07:43:23 town 100% | town, ready, 3 WoR 15 CCW 20 Phase | skip shopping, trip 500-650 via recall | 30 min budget, kit full
+- 07:46:53 town 100% | ogre band at 650, recalled home, WoR 1 | plan town to rebuy WoR to 3 | continue trip

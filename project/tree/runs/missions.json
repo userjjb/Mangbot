@@ -1560,5 +1560,15 @@
   "effort": null,
   "report": "compact",
   "notes": "set-piece A2L"
+ },
+ {
+  "label": "m31",
+  "nick": "dive04",
+  "start": "2026-10-25 07:42",
+  "end": null,
+  "navigator": "sonnet",
+  "effort": "medium",
+  "report": "compact",
+  "notes": "baseline matrix 1/4 (the user, 10-25): Sonnet medium, 30 min; order S-med, O-high, O-med, S-high; after the provisions, potion and m30 fixes"
  }
 ]

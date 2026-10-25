@@ -833,6 +833,19 @@ def emergency_speed_first_berserk_hard_fights():
                 f"adjacent, berserk: {berserk}; a Jackal: {weak}")
 
 
+@case
+def fear_cure_order():
+    """The user (10-25): afraid and in danger, Heroism first; Boldness only without Heroism; Berserk last (the
+    pack's own order decided before)."""
+    def pick(pack):
+        return (pilot(pack=pack).fear_cure() or {}).get("name")
+    both = pick([("a Potion of Boldness", 75), ("a Potion of Berserk Strength", 75), ("2 Potions of Heroism", 75)])
+    bold = pick([("a Potion of Berserk Strength", 75), ("a Potion of Boldness", 75)])
+    last = pick([("a Potion of Berserk Strength", 75)])
+    ok = both == "2 Potions of Heroism" and bold == "a Potion of Boldness" and last == "a Potion of Berserk Strength"
+    return ok, f"all three: {both}; no Heroism: {bold}; only Berserk: {last}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0
