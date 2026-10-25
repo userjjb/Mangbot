@@ -33,8 +33,11 @@ Architect builds everything else.
 4b. **Belief-state spec** (if the Architect wants it for step 2): fields, computation, expiry (see starting-over memo §3.4).
 5. **Step 5:** run the scorecard on each new mission vs the m17–23 baseline; Opus vs Sonnet by depth band (m22–23 were Sonnet;
    `data/navigator/response.py` has the missions list; production `scorecard.py` reads `runs/missions.json` which records the model).
+5a. **Estimator** (memo 10-25): offered the Architect a calibration-replay study (21 episodes) as next; wait for the answer.
 5b. **m27** (Opus, kit forged to m26's start, Pilot after m26 fixes): first same-Pilot Opus vs Sonnet comparison; score it vs m26 when done.
    Arrival feelings now logged (`arrival_feeling` in decisions; `feeling:` in dump headers): later, measure P(pit/nest | special) on scummed levels.
+5c. Next rulebook build: add constants.csv rows for Hero/Berserk (to_h +12/+24, AC -10, mhp +10/+30 rescaled, res_fear),
+   cure amounts, no-flow movement, spell range 18 (from `studies/2026-10-25-estimator/scratch/E2/mechanics.csv`).
 6. Housekeeping: the 09-29 shops memo assumed CHR 4 = Dive04's natural CHR; it is drained to 3 now (use `data/rulebook/shop_owners.csv`, CHR 3 columns, until restored).
 
 ## Waiting on the user
@@ -57,6 +60,7 @@ spells, breaths, tags, solo index), `abilities.csv` (messages proving abilities)
 
 | date | study | memo | data |
 |---|---|---|---|
+| 10-25 | emergency option estimator (worth it? model, method, budget, validation; 47 episodes m17-m34) | `2026-10-25-estimator.md` | `data/estimator/` |
 | 10-24 | structures (pits/nests/vaults from partial maps; m26 summon trap; auto_scum) | `2026-10-24-structures.md` | `data/structures/` |
 | 09-26 | forum distillation (pre-fork) | `2026-09-26-forum-distillation.md` | `data/forum/` |
 | 09-27 | danger table 0–1500 ft | `2026-09-27-danger-table.md` | `data/monsters/` |
@@ -95,6 +99,9 @@ The user struck one lead (2026-10-07): the live fetch of Bug Reports / Technical
   0 of 38 informative arrivals at 500-700 ft were below "luck is turning", 14 special. At <= 850 ft a non-special, non-suppressed feeling
   proves no pit/nest/vault. dungeon_align is on: rooms centred at X in {16,49,82,115,148,181}, Y = 11k+5. Normal tunnels 2 wide; lit 11x25
   room never a pit/nest; at 500-1000 ft pits = orc, nests = jelly. m26's Nar group = summon trap (3-5 awake, Depth+5, uniques).
+- Cures heal flat: CLW 15, CSW 20-24, CCW 25-29 (use-obj.c:483-510) — status cures, not heals, at 300 HP. No monster flow
+  (MONSTER_FLOW compiled out): monsters walk straight at us; Phase helps only through a wall. Reading blocked by confusion/blind/dark.
+  A 2nd WoR read cancels (the Pilot once resent one, m26 03:22). Commands take 4-19 s wall in the bubble. Time freeze live (10-25).
 - Server pathfind = running (×5 time with nothing in LOS): explore could be 3-5× faster in wall time (set-piece D6, 10-23); queued after the time bubble.
 - flee_hp: keep 0.5 (11 drops below 50% in m17-m24 fell on to a median 44%, 5 below 40%); 0.4 only inside a vetted solo hunt (proposed 10-24).
 - A repeat kill of a unique gives no XP and no drop (xtra2.c 'cheeze'); Dive04 has killed Brodda, Bullroarer, Orfax, Wormtongue, Farmer Maggot.

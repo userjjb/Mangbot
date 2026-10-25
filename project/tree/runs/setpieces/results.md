@@ -126,3 +126,11 @@
 - 2026-10-25 10:30:53 **B2** PASS (drained at most twice, acted on the second drain) `B2-20261025-103053.json`
 - 2026-10-25 10:34:31 **M1** PASS (down the painted '>' within 45 s, no '>' pressed off the stairs) `M1-20261025-103431.json`
 - 2026-10-25 10:37:11 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261025-103711.json`
+- 2026-10-25 10:56:48 **H1** PASS (swapped while frozen, resumed in place, nothing moved while frozen, the plan resumed and the Pilot acts after the thaw) `H1-20261025-105648.json`
+- 2026-10-25 10:59:41 **H1r** FAIL (swapped while frozen, resumed in place, nothing moved while frozen FAIL, the plan resumed and the Pilot acts after the thaw, the recall still landed FAIL) `H1r-20261025-105941.json`
+- 2026-10-25 11:03:10 **H1r** FAIL () `H1r-20261025-110310.json`
+- 2026-10-25 11:05:08 **H1r** FAIL (swapped while frozen, resumed in place FAIL, nothing moved while frozen, the plan resumed and the Pilot acts after the thaw, the recall still landed FAIL) `H1r-20261025-110508.json`
+- 2026-10-25 11:09:30 **H1r** FAIL (swapped while frozen, resumed in place, nothing moved while frozen FAIL, the plan resumed and the Pilot acts after the thaw, the recall still landed) `H1r-20261025-110930.json`
+- 2026-10-25 11:12:19 **H1r** FAIL (swapped while frozen, resumed in place, the plan resumed and the Pilot acts after the thaw FAIL, the recall still landed) `H1r-20261025-111219.json`
+- 2026-10-25 11:15:08 **H1r** PASS (swapped while frozen, resumed in place, the plan resumed, the recall still landed) `H1r-20261025-111508.json`
+- 2026-10-25 11:17:49 **H1** PASS (swapped while frozen, resumed in place, the plan resumed and the Pilot acts after the thaw) `H1-20261025-111749.json`

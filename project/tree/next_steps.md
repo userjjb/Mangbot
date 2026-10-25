@@ -228,6 +228,11 @@ the freeze stops, and a login before that resumes the character in memory. **Not
 matrix in a dungeon set-piece (in town orphans are freed at once): monsters near, a trip plan running, a recall
 pending (park avoids logouts during a recall: "a logout reset its depth once"); check Dive04 resumes in place, the
 plan resumes, nothing acted meanwhile, and whether logins wait for the thaw.
+-> **Tested (2026-10-25 11:00-11:20): set-pieces H1 and H1r PASS.** The swap takes ~4 s, all frozen; logins work while
+frozen (no wait for the thaw); Dive04 resumes in place (same square, HP, monsters); the plan resumes and acts 0.4 s
+after the thaw. **H1r found a bug, fixed:** a pending recall survived in the game but not in the new Pilot's memory, and
+the resumed plan read a second scroll, cancelling it -- now kept in `runs/pilot/NICK/recall.json` (`recall_memory`).
+**Hot swap is now the way to load Pilot changes mid-mission** (`tools/pilot/hotswap.sh Dive04`).
 **Baseline matrix done (m31-m34, 07:42-09:29):** summary `runs/pilot/dive04/reports/2026-10-25-matrix-m31-m34.md`.
 Cost is clear (Opus high $0.85, Opus medium $0.43, Sonnet $0.13-0.15 per 30 min); XP (16-54/dmin) is dominated by
 level luck and Pilot problems at n=1 per cell, with the Pilot changed after m32 and Free Action + See Invisible found

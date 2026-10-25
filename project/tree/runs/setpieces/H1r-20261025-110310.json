@@ -1,0 +1,11 @@
+{
+ "id": "H1r",
+ "tag": "H1r-20261025-110310",
+ "depth_ft": 350,
+ "start": "2026-10-25 11:03:10",
+ "checks": {},
+ "notes": [],
+ "error": "RuntimeError('no floor square 6 from Dive04 at (53, 55)')",
+ "end": "2026-10-25 11:05:00",
+ "pass": false
+}

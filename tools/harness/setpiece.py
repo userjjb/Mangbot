@@ -1226,7 +1226,72 @@ def m3(run):
               f"drained at {drained} s, left at {left} s")
 
 
-SETPIECES = {"M1": m1, "M2": m2, "M3": m3, "L3": l3, "A2f": a2f, "L2g": l2g, "A7f": a7f, "A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
+FREEZE = os.path.join(HERE, "..", "freeze.sh")
+HOTSWAP = os.path.join(HERE, "..", "pilot", "hotswap.sh")
+
+
+def h1(run, recall=False):
+    """H1: the hot swap (tools/pilot/hotswap.sh) mid-trip, in the dungeon: a trip plan working the level, a Cave orc
+    3 squares off; freeze, swap the Pilot, and before the thaw the new Pilot must see Dive04 where it was, with the
+    same HP and the orc where it was (resumed in memory, not reloaded); after the thaw the plan carries on. H1r: the
+    same with a Word of Recall read just before: it still lands."""
+    run.bring_dive04()
+    run.place("Cave orc", 3)                     # (in view: a dark room shows only the lantern's 2 squares + infravision)
+    run.dm.walk(2, 8)                              # Gandalf out of the way
+    time.sleep(2)
+    run.res["plan_reply"] = ctl("plan", "trip", f"{run.depth}-{run.depth}", "until", "minutes>10", "then", "recall",
+                                role="architect")
+    time.sleep(4)
+    if recall:
+        run.res["recall_reply"] = ctl("read", "Recall", role="architect")
+        time.sleep(1.5)
+    subprocess.run([FREEZE, "on"], capture_output=True)
+    time.sleep(1.5)
+    def live_hp():                               # (state.jsonl's thinned status can lag a regeneration tick)
+        m = re.search(r"HP (\d+)/(\d+)", ctl("status", role="architect"))
+        return [int(m.group(1)), int(m.group(2))] if m else None
+    before, hp0, d0 = pilot_view(), live_hp(), run._depth()
+    run.t_act = time.time()
+    out = subprocess.run([HOTSWAP, "Dive04"], capture_output=True, text=True, timeout=240)
+    swap_s = round(time.time() - run.t_act, 1)
+    after, hp1, d1 = pilot_view(), live_hp(), run._depth()
+    still = subprocess.run([FREEZE, "status"], capture_output=True, text=True).stdout.strip()
+    run.res["swap"] = {"seconds": swap_s, "out": out.stdout.strip().splitlines()[-4:], "frozen_after": still}
+    t_thaw = time.time()
+    subprocess.run([FREEZE, "off"], capture_output=True)
+    if recall:
+        run.watch(60, until=lambda recs: any(d.get("depth") == 0 for d in recs))
+    else:
+        time.sleep(30)
+    recs = log_since(run.t_act)
+    run.res["stats"] = run.stats(recs)
+    mons0 = sorted(tuple(m[:2]) for m in before.get("mons", []))
+    mons1 = sorted(tuple(m[:2]) for m in after.get("mons", []))
+    run.res["scene"] = {"pos": [before.get("pos"), after.get("pos")], "hp": [hp0, hp1], "depth": [d0, d1],
+                        "mons": [mons0, mons1]}
+    run.check("swapped while frozen", "FROZEN" in still, f"{swap_s} s; {run.res['swap']['out']}")
+    run.check("resumed in place", after.get("pos") == before.get("pos") and d1 == d0 and hp1 == hp0,
+              f"pos {before.get('pos')} -> {after.get('pos')}, depth {d0} -> {d1}, HP {hp0} -> {hp1}")
+    if mons0 or mons1:
+        run.check("nothing moved while frozen", mons0 == mons1, f"monsters {mons0} -> {mons1}")
+    else:
+        run.res["notes"].append("no monster in view at the freeze (killed first): the 'nothing moved' check n/a")
+    resumed = any(d.get("kind") == "plan_resumed" for d in recs)
+    acted = [round(d["t"] - t_thaw, 1) for d in recs if d["t"] > t_thaw and d.get("kind") in ("act", "move")]
+    # (with a recall pending the Pilot rightly waits for it rather than acting: there the landing is the proof)
+    run.check("the plan resumed" + ("" if recall else " and the Pilot acts after the thaw"),
+              resumed and (recall or bool(acted)), f"plan_resumed {resumed}; first act {acted[:1]} s after the thaw")
+    if recall:
+        home = next((round(d["t"] - t_thaw, 1) for d in recs if d.get("depth") == 0 and d["t"] > t_thaw), None)
+        run.check("the recall still landed", home is not None, f"in town {home} s after the thaw")
+
+
+def h1r(run):
+    """H1r: H1 with a Word of Recall read just before the swap."""
+    h1(run, recall=True)
+
+
+SETPIECES = {"H1": h1, "H1r": h1r, "M1": m1, "M2": m2, "M3": m3, "L3": l3, "A2f": a2f, "L2g": l2g, "A7f": a7f, "A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
              "C3": c3}
 
 

@@ -1,0 +1,163 @@
+{
+ "id": "H1r",
+ "tag": "H1r-20261025-111508",
+ "depth_ft": 450,
+ "start": "2026-10-25 11:15:08",
+ "checks": {
+  "swapped while frozen": {
+   "pass": true,
+   "detail": "4.1 s; ['11:16:47 frozen', '11:16:49 old Pilot stopped', \"11:16:51 new Pilot answering: Dive04 L25 HP 310/310 \u00b7 450 ft \u00b7 3043g \u00b7 max 650ft \u00b7 11:16:51 \u00b7 goal: none \u00b7 TIME FROZEN (test server: nothing moves until it's thawed) \u00b7 r2\", 'time was frozen before: left frozen']"
+  },
+  "resumed in place": {
+   "pass": true,
+   "detail": "pos [53, 48] -> [53, 48], depth 450 -> 450, HP [310, 310] -> [310, 310]"
+  },
+  "the plan resumed": {
+   "pass": true,
+   "detail": "plan_resumed True; first act [0.4] s after the thaw"
+  },
+  "the recall still landed": {
+   "pass": true,
+   "detail": "in town 17.1 s after the thaw"
+  }
+ },
+ "notes": [
+  "no monster in view at the freeze (killed first): the 'nothing moved' check n/a"
+ ],
+ "plan_reply": "{\"ok\": true, \"plan\": \"trip 450-450 until \\\"minutes>10\\\" then recall\", \"note\": \"the Pilot runs it; `wait` wakes you when it ends (plan_done) and for what it can't handle (user messages, stat drains, emergency loops). Bands, pits, breeders and the like are news: it leaves the level itself. A goal you give pauses the plan until it ends (`plan resume` ends your goal and hands back); `plan stop` ends it\"}\nNOTE: the Pilot runs it; `wait` wakes you when it ends (plan_done) and for what it can't handle (user messages, stat drains, emergency loops). Bands, pits, breeders and the like are news: it leaves the level itself. A goal you give pauses the plan until it ends (`plan resume` ends your goal and hands back); `plan stop` ends it",
+ "recall_reply": "DONE: read 2 Scrolls of Word of Recall {@R650} (2 -> 1 left)\nThe air about you becomes charged...\nYou have a Scroll of Word of Recall {@R650}.\nPack now: a) 3 Rations of Food {for sale 200}; b) a Potion of Speed {for sale 200}; c) 6 Potions of Heroism {for sale 200}; d) a Potion of Berserk Strength; e) 4 Potions of Cure Serious Wounds {for sale 200}; f) 14 Potions of Cure Critical Wounds {for sale 200}; g) 19 Scrolls of Phase Door {for sale 200}; h) a Scroll of Word of Recall {@R650}; i) 4 Scrolls of Magic Mapping {75% off}; j) a Rod of Door/Stair Location (charging); k) a Staff of Teleportation (10 charges); l) a Pair of Hard Leather Boots [3]; m) a Main Gauche (1d5) (+0,+7)",
+ "swap": {
+  "seconds": 4.1,
+  "out": [
+   "11:16:47 frozen",
+   "11:16:49 old Pilot stopped",
+   "11:16:51 new Pilot answering: Dive04 L25 HP 310/310 \u00b7 450 ft \u00b7 3043g \u00b7 max 650ft \u00b7 11:16:51 \u00b7 goal: none \u00b7 TIME FROZEN (test server: nothing moves until it's thawed) \u00b7 r2",
+   "time was frozen before: left frozen"
+  ],
+  "frozen_after": "FROZEN (frozen by jbevan 11:16:47)"
+ },
+ "stats": {
+  "hp_start": [
+   0,
+   1
+  ],
+  "hp_min": [
+   0,
+   1
+  ],
+  "attention": [
+   [
+    3.8,
+    "started",
+    "in the game at None (depth)"
+   ],
+   [
+    3.8,
+    "tactic",
+    "a Main Gauche (1d5) (+0,+7) would do ~40 per round (4 blows) vs ~28 now: wield it"
+   ],
+   [
+    3.8,
+    "tactic",
+    "a Word of Recall read before the restart is still pending: not reading another"
+   ],
+   [
+    3.8,
+    "time_frozen",
+    "time is frozen on the test server: the Pilot holds until it's thawed"
+   ],
+   [
+    4.8,
+    "time_frozen",
+    "time flows again: the Pilot carries on"
+   ],
+   [
+    4.8,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    4.9,
+    "goal_done",
+    "goto 53,49"
+   ],
+   [
+    8.0,
+    "goal_done",
+    "wait 3"
+   ],
+   [
+    11.1,
+    "goal_done",
+    "wait 3"
+   ],
+   [
+    14.2,
+    "goal_done",
+    "wait 3"
+   ],
+   [
+    15.0,
+    "interesting_item",
+    "Ring of Slow Digestion seen on this level at 52,49 (1 away): fetching it once the area is clear"
+   ],
+   [
+    17.3,
+    "goal_done",
+    "wait 3"
+   ],
+   [
+    20.4,
+    "goal_done",
+    "wait 3"
+   ],
+   [
+    23.5,
+    "goal_done",
+    "wait 3"
+   ],
+   [
+    23.5,
+    "plan_done",
+    "trip 450-450 until \"minutes>10\" then recall: home (the Pilot's escape recall); 1 level in 1 min"
+   ]
+  ],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "scene": {
+  "pos": [
+   [
+    53,
+    48
+   ],
+   [
+    53,
+    48
+   ]
+  ],
+  "hp": [
+   [
+    310,
+    310
+   ],
+   [
+    310,
+    310
+   ]
+  ],
+  "depth": [
+   450,
+   450
+  ],
+  "mons": [
+   [],
+   []
+  ]
+ },
+ "end": "2026-10-25 11:17:49",
+ "pass": true
+}

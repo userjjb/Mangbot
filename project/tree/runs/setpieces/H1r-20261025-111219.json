@@ -1,0 +1,133 @@
+{
+ "id": "H1r",
+ "tag": "H1r-20261025-111219",
+ "depth_ft": 400,
+ "start": "2026-10-25 11:12:19",
+ "checks": {
+  "swapped while frozen": {
+   "pass": true,
+   "detail": "5.2 s; ['11:13:56 frozen', '11:13:58 old Pilot stopped', \"11:14:01 new Pilot answering: Dive04 L25 HP 310/310 \u00b7 400 ft \u00b7 3153g \u00b7 max 650ft \u00b7 11:14:01 \u00b7 goal: none \u00b7 TIME FROZEN (test server: nothing moves until it's thawed) \u00b7 r2\", 'time was frozen before: left frozen']"
+  },
+  "resumed in place": {
+   "pass": true,
+   "detail": "pos [55, 49] -> [55, 49], depth 400 -> 400, HP [310, 310] -> [310, 310]"
+  },
+  "the plan resumed and the Pilot acts after the thaw": {
+   "pass": false,
+   "detail": "plan_resumed True; first act [] s after the thaw"
+  },
+  "the recall still landed": {
+   "pass": true,
+   "detail": "in town 9.7 s after the thaw"
+  }
+ },
+ "notes": [
+  "no monster in view at the freeze (killed first): the 'nothing moved' check n/a"
+ ],
+ "plan_reply": "{\"ok\": true, \"plan\": \"trip 400-400 until \\\"minutes>10\\\" then recall\", \"note\": \"the Pilot runs it; `wait` wakes you when it ends (plan_done) and for what it can't handle (user messages, stat drains, emergency loops). Bands, pits, breeders and the like are news: it leaves the level itself. A goal you give pauses the plan until it ends (`plan resume` ends your goal and hands back); `plan stop` ends it\"}\nNOTE: the Pilot runs it; `wait` wakes you when it ends (plan_done) and for what it can't handle (user messages, stat drains, emergency loops). Bands, pits, breeders and the like are news: it leaves the level itself. A goal you give pauses the plan until it ends (`plan resume` ends your goal and hands back); `plan stop` ends it",
+ "recall_reply": "DONE: read 2 Scrolls of Word of Recall {@R650} (2 -> 1 left)\nYou have 2 Potions of Speed {for sale 200} (b).\nThe air about you becomes charged...\nYou have a Scroll of Word of Recall {@R650}.\nPack now: a) 3 Rations of Food {for sale 200}; b) 2 Potions of Speed {for sale 200}; c) 6 Potions of Heroism {for sale 200}; d) a Potion of Berserk Strength; e) 4 Potions of Cure Serious Wounds {for sale 200}; f) 14 Potions of Cure Critical Wounds {for sale 200}; g) 19 Scrolls of Phase Door {for sale 200}; h) a Scroll of Word of Recall {@R650}; i) 4 Scrolls of Magic Mapping {75% off}; j) a Rod of Door/Stair Location (charging); k) a Wand of Light; l) a Staff of Teleportation (10 charges); m) a Main Gauche (1d5) (+0,+7)",
+ "swap": {
+  "seconds": 5.2,
+  "out": [
+   "11:13:56 frozen",
+   "11:13:58 old Pilot stopped",
+   "11:14:01 new Pilot answering: Dive04 L25 HP 310/310 \u00b7 400 ft \u00b7 3153g \u00b7 max 650ft \u00b7 11:14:01 \u00b7 goal: none \u00b7 TIME FROZEN (test server: nothing moves until it's thawed) \u00b7 r2",
+   "time was frozen before: left frozen"
+  ],
+  "frozen_after": "FROZEN (frozen by jbevan 11:13:56)"
+ },
+ "stats": {
+  "hp_start": [
+   0,
+   1
+  ],
+  "hp_min": [
+   0,
+   1
+  ],
+  "attention": [
+   [
+    4.1,
+    "started",
+    "in the game at None (depth)"
+   ],
+   [
+    4.1,
+    "tactic",
+    "a Main Gauche (1d5) (+0,+7) would do ~40 per round (4 blows) vs ~28 now: wield it"
+   ],
+   [
+    4.1,
+    "tactic",
+    "a Word of Recall read before the restart is still pending: not reading another"
+   ],
+   [
+    4.1,
+    "time_frozen",
+    "time is frozen on the test server: the Pilot holds until it's thawed"
+   ],
+   [
+    6.0,
+    "time_frozen",
+    "time flows again: the Pilot carries on"
+   ],
+   [
+    9.1,
+    "goal_done",
+    "wait 3"
+   ],
+   [
+    12.2,
+    "goal_done",
+    "wait 3"
+   ],
+   [
+    15.2,
+    "goal_done",
+    "wait 3"
+   ],
+   [
+    15.3,
+    "plan_done",
+    "trip 400-400 until \"minutes>10\" then recall: home (the Pilot's escape recall); 1 level in 0 min"
+   ]
+  ],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "scene": {
+  "pos": [
+   [
+    55,
+    49
+   ],
+   [
+    55,
+    49
+   ]
+  ],
+  "hp": [
+   [
+    310,
+    310
+   ],
+   [
+    310,
+    310
+   ]
+  ],
+  "depth": [
+   400,
+   400
+  ],
+  "mons": [
+   [],
+   []
+  ]
+ },
+ "end": "2026-10-25 11:14:53",
+ "pass": false
+}

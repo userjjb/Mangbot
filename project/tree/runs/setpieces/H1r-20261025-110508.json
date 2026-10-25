@@ -1,0 +1,151 @@
+{
+ "id": "H1r",
+ "tag": "H1r-20261025-110508",
+ "depth_ft": 350,
+ "start": "2026-10-25 11:05:08",
+ "checks": {
+  "swapped while frozen": {
+   "pass": true,
+   "detail": "4.2 s; ['11:06:44 frozen', '11:06:46 old Pilot stopped', \"11:06:48 new Pilot answering: Dive04 L25 HP 276/310 \u00b7 350 ft \u00b7 2998g \u00b7 max 650ft \u00b7 11:06:48 \u00b7 goal: none \u00b7 TIME FROZEN (test server: nothing moves until it's thawed) \u00b7 r2\", 'time was frozen before: left frozen']"
+  },
+  "resumed in place": {
+   "pass": false,
+   "detail": "pos [46, 44] -> [46, 44], depth 350 -> 350, HP [275, 310] -> [276, 310]"
+  },
+  "nothing moved while frozen": {
+   "pass": true,
+   "detail": "monsters [(49, 45)] -> [(49, 45)]"
+  },
+  "the plan resumed and the Pilot acts after the thaw": {
+   "pass": true,
+   "detail": "plan_resumed True; first act [0.5] s after the thaw"
+  },
+  "the recall still landed": {
+   "pass": false,
+   "detail": "in town None s after the thaw"
+  }
+ },
+ "notes": [],
+ "plan_reply": "{\"ok\": true, \"plan\": \"trip 350-350 until \\\"minutes>10\\\" then recall\", \"note\": \"the Pilot runs it; `wait` wakes you when it ends (plan_done) and for what it can't handle (user messages, stat drains, emergency loops). Bands, pits, breeders and the like are news: it leaves the level itself. A goal you give pauses the plan until it ends (`plan resume` ends your goal and hands back); `plan stop` ends it\"}\nNOTE: the Pilot runs it; `wait` wakes you when it ends (plan_done) and for what it can't handle (user messages, stat drains, emergency loops). Bands, pits, breeders and the like are news: it leaves the level itself. A goal you give pauses the plan until it ends (`plan resume` ends your goal and hands back); `plan stop` ends it",
+ "recall_reply": "DONE: read 2 Scrolls of Word of Recall {@R650} (2 -> 1 left)\nThe air about you becomes charged...\nYou have a Scroll of Word of Recall {@R650}.\nPack now: a) 3 Rations of Food {for sale 200}; b) a Potion of Speed {for sale 200}; c) 6 Potions of Heroism {for sale 200}; d) a Potion of Berserk Strength; e) 4 Potions of Cure Serious Wounds {for sale 200}; f) 14 Potions of Cure Critical Wounds {for sale 200}; g) 19 Scrolls of Phase Door {for sale 200}; h) a Scroll of Word of Recall {@R650}; i) 4 Scrolls of Magic Mapping {75% off}; j) a Rod of Door/Stair Location; k) a Staff of Teleportation (10 charges); l) a Main Gauche (1d5) (+0,+7)",
+ "swap": {
+  "seconds": 4.2,
+  "out": [
+   "11:06:44 frozen",
+   "11:06:46 old Pilot stopped",
+   "11:06:48 new Pilot answering: Dive04 L25 HP 276/310 \u00b7 350 ft \u00b7 2998g \u00b7 max 650ft \u00b7 11:06:48 \u00b7 goal: none \u00b7 TIME FROZEN (test server: nothing moves until it's thawed) \u00b7 r2",
+   "time was frozen before: left frozen"
+  ],
+  "frozen_after": "FROZEN (frozen by jbevan 11:06:44)"
+ },
+ "stats": {
+  "hp_start": [
+   0,
+   1
+  ],
+  "hp_min": [
+   0,
+   1
+  ],
+  "attention": [
+   [
+    3.8,
+    "started",
+    "in the game at None (depth)"
+   ],
+   [
+    3.8,
+    "tactic",
+    "a Main Gauche (1d5) (+0,+7) would do ~40 per round (4 blows) vs ~28 now: wield it"
+   ],
+   [
+    3.8,
+    "time_frozen",
+    "time is frozen on the test server: the Pilot holds until it's thawed"
+   ],
+   [
+    4.8,
+    "time_frozen",
+    "time flows again: the Pilot carries on"
+   ],
+   [
+    5.5,
+    "recall_cancelled",
+    "a Word of Recall was cancelled (a second one was read): no recall is pending now"
+   ],
+   [
+    14.9,
+    "interesting_item",
+    "Staff of Light seen on this level at 46,45 (2 away), 48,46 (3 away): fetching it once the area is cl"
+   ],
+   [
+    64.8,
+    "goal_failed",
+    "recall: recall didn't happen: the game said 'A tension leaves the air around you...'"
+   ],
+   [
+    64.9,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    65.0,
+    "goal_done",
+    "goto 46,42"
+   ]
+  ],
+  "acts": [
+   [
+    4.8,
+    "custom r item=7",
+    "read a Scroll of Word of Recall {@R650}"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 1,
+  "cures": 0
+ },
+ "scene": {
+  "pos": [
+   [
+    46,
+    44
+   ],
+   [
+    46,
+    44
+   ]
+  ],
+  "hp": [
+   [
+    275,
+    310
+   ],
+   [
+    276,
+    310
+   ]
+  ],
+  "depth": [
+   350,
+   350
+  ],
+  "mons": [
+   [
+    [
+     49,
+     45
+    ]
+   ],
+   [
+    [
+     49,
+     45
+    ]
+   ]
+  ]
+ },
+ "end": "2026-10-25 11:08:28",
+ "pass": false
+}

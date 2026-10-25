@@ -3409,6 +3409,33 @@ class Pilot:
                             + (f"stairs {stairs} away" if stairs is not None else "no stairs known: read Word of Recall")
                             + "; don't stop for loot")
 
+    def recall_memory(self):
+        """A pending Word of Recall survives a Pilot restart in the game but not in our memory (the client only says
+        "becomes charged" once): kept in runs/pilot/NICK/recall.json, restored at start when the depth still matches.
+        The hot-swap set-piece H1r: the new Pilot's plan read a second scroll, which cancelled the pending one."""
+        w = self.w
+        path = os.path.join(self.rundir, "recall.json")
+        if not getattr(self, "recall_restored", False):
+            if w.depth is None:
+                return
+            self.recall_restored = True
+            try:
+                st = json.load(open(path))
+            except (OSError, ValueError):
+                st = None
+            if st and st.get("pending") and st.get("depth") == w.depth and time.time() - st.get("t", 0) < 600 and \
+                    not w.recall_pending:
+                w.recall_pending, w.recall_pending_t = True, gnow()
+                self.notify("tactic", "a Word of Recall read before the restart is still pending: not reading another",
+                            news=True)
+        now_st = (w.recall_pending, w.depth)
+        if now_st != getattr(self, "recall_saved", None):
+            self.recall_saved = now_st
+            try:
+                json.dump({"pending": w.recall_pending, "depth": w.depth, "t": time.time()}, open(path, "w"))
+            except OSError:
+                pass
+
     def band_cost(self, races):
         """Expected HP lost fighting these monsters one at a time, the quickest kills first: while each dies, those
         still alive hit for their expected melee at our AC (rulebook melee_exp_acNN a monster turn, x their speed),
@@ -5462,6 +5489,7 @@ class Pilot:
         if self.w.recall_cancelled:
             self.w.recall_cancelled = False
             self.notify("recall_cancelled", "a Word of Recall was cancelled (a second one was read): no recall is pending now")
+        self.recall_memory()
         self.handle_requests()
         if not self.running:
             return

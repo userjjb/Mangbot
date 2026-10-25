@@ -1,0 +1,97 @@
+time,epoch_s,hp_of_303,"pos_y,x",our_actions,hits_misses_on_us (monster:outcome xN),other_messages_and_pilot_notes,adjacent_monster_names (last monster list <=3s old),n_adjacent,n_in_view,nearest_monster_dist
+06:42:55,1792924975,303,"48,30",,,,,0,,
+06:42:56,1792924976,303,"50,30",,,,,0,,
+06:42:57,1792924977,303,"53,35",,,,,0,,
+06:42:58,1792924978,303,"56,39",,,,,0,,
+06:42:59,1792924979,303,"56,42",,,,,0,,
+06:43:00,1792924980,303,"55,44",,,,,0,,
+06:43:01,1792924981,303,"55,48",,,,,0,,
+06:43:02,1792924982,303,"52,51",,,,,0,,
+06:43:03,1792924983,303,"48,51",,,It drains power from your muscles! ; You feel yourself moving slower!,,0,,
+06:43:04,1792924984,303,"47,50",,,"It casts a spell, burning your eyes! ; You are blind!",,0,,
+06:43:05,1792924985,303,"47,50",,,You feel yourself speed up.,,0,,
+06:43:06,1792924986,303,"47,50",,It:hit x2,It mumbles. ; You are paralyzed!,,0,,
+06:43:07,1792924987,303,"47,50",,,,,0,,
+06:43:08,1792924988,303,"47,50",,It:hit x2,It mumbles. ; It starts moving faster.,,0,,
+06:43:09,1792924989,303,"47,50",,It:hit x1,,,0,,
+06:43:10,1792924990,303,"47,50",,It:hit x3,It mumbles. ; It starts moving faster.,,0,,
+06:43:11,1792924991,267,"47,50",rest | rest,It:hit x8 ; Druid:hit x2 ; Griffon:miss x2 ; own melee x1,It mumbles. ; You are struck by electricity! ; Your Nickel-Plated Wand (q) was destroyed! ; [Pilot] lost: Your Nickel-Plated Wand (q) was destroyed!,,0,,
+06:43:12,1792924992,237,"47,50",custom r item=7 | HP 237 within 3 turns of the worst (285): phase door ; cmd:custom r item=7 ; ESC phase: HP 237 within 3 turns of the worst (285): phase door ,own melee x5 ; Black harpy:hit x1 ; Black harpy:miss x2 ; Yeti:hit x3,"[goal] flee (band: the trip leaves the level) ; The Druid starts moving faster. ; The Druid magically summons animals. ; You have slain the Energy hound. ; [Pilot] emergency: HP 237 within 3 turns of the worst (285): read Phase Door (Black harpy, Copperh","Black harpy,Copperhead snake,Druid,Energy hound,Giant black ant,Griffon,Yeti",7,7,1
+06:43:13,1792924993,211,"52,43",rest | rest,Druid:miss x2 ; Copperhead snake:miss x1 ; Fire hound:hit x2 ; Fire hound:miss x1 ; Wolf:hit x1 ; Giant black ant:miss x1 ; Black harpy:hit x1 ; Black harpy:miss x2 ; Griffon:hit x1 ; Griffon:miss x1,You have 19 Scrolls of Phase Door {for sale 200}. ; It blinks away.,,0,21,5
+06:43:14,1792924994,208,"52,43",,own melee x3 ; Wolf:miss x1,It casts a fire bolt. ; It drains power from your muscles! ; You resist the effects! ; It breathes fire. ; One of your Scrolls of Phase Door {for sale 200} (h) was destroyed! ; [Pilot] lost: One of your Scrolls of Phase Door {for sale 200} (h) was destroyed! ; [time factor 1.0] ; You have slain the Wolf. ; [Pilot] tactic: flee: no known path to the stairs; trying one through unexplored squares,,0,2,2
+06:43:15,1792924995,203,"52,43",custom q item=2 | slowed (-10) in a fight: quaff 3 Potions of Speed {for sale 200} ; cmd:custom q item=2,Wolf:miss x1 ; Wolf:hit x3 ; own melee x3,It breathes fire. ; [Pilot] tactic: 5 monsters together but weak (~60 worst-case melee a turn vs HP 208): fighting on ; It drains power from your muscles! ; You feel yourself moving slower! ; [Pilot] tactic: slowed to -10 with monsters on us: quaffed a Potion of Speed {for sale 200} ; It blinks away. ; It breathes fire. ; You have slain the Wolf. ; It breathes fire.,Wolf,1,5,1
+06:43:16,1792924996,186,"52,43",,Wolf:hit x3 ; own melee x3,[Pilot] fight_going_badly: HP 186/303 fighting Wolf ; You have slain the Wolf. ; You have slain the Wolf. ; The Fire hound breathes fire. ; One of your Scrolls of Phase Door {for sale 200} (h) was destroyed! ; One of your Scrolls of Satisfy Hunger {50% off} (l) was destroyed! ; [Pilot] lost: One of your Scrolls of Phase Door {for sale 200} (h) was destroyed! ; [Pilot] lost: One of your Scrolls of Satisfy Hunger {50% off} (l) was destroyed! ; [time factor 1.0],Wolf,3,10,1
+06:43:17,1792924997,174,"51,42",,Wolf:hit x2,It breathes fire.,Wolf,2,6,1
+06:43:18,1792924998,153,"51,42",custom r item=7 | HP 153 within 3 turns of the worst (172): phase door ; ESC phase: HP 153 within 3 turns of the worst (172): phase door  ; cmd:custom r item=7,Black harpy:hit x2 ; Black harpy:miss x1 ; Yeti:hit x2 ; Yeti:miss x1 ; Wolf:hit x2,"[Pilot] emergency: HP 153 within 3 turns of the worst (172): read Phase Door (Black harpy, Wolf, Y","Black harpy,Wolf,Yeti",4,9,1
+06:43:19,1792924999,153,"51,42",,own melee x2,You feel yourself speed up. ; You have slain the Black harpy.,"Black harpy,Wolf,Yeti",4,9,1
+06:43:20,1792925000,153,"51,42",,,,"Black harpy,Wolf,Yeti",4,9,1
+06:43:21,1792925001,153,"50,43",,Wolf:miss x1 ; Fire hound:hit x3,[time factor 0.2] ; *** LOW HITPOINT WARNING! *** ; You are enveloped in flames!,"Black harpy,Fire hound,Wolf,Yeti",5,9,1
+06:43:22,1792925002,142,"50,43",,,The Fire hound breathes fire.,"Fire hound,Umber hulk,Wolf,Yeti",6,15,1
+06:43:23,1792925003,142,"50,43",,Wolf:miss x1 ; Yeti:hit x2 ; Yeti:miss x1,,"Fire hound,Umber hulk,Wolf,Yeti",6,15,1
+06:43:24,1792925004,129,"46,50",custom q item=6 | low HP: quaff 15 Potions of Cure Critical Wounds {for sale 200} ; cmd:custom q item=6,Umber hulk:hit x2 ; Umber hulk:miss x1,You have 16 Scrolls of Phase Door {for sale 200}. ; [Pilot] emergency: low HP: quaffed a Potion of Cure Critical Wounds {for sale 200} (losing ~16 HP/,,0,15,4
+06:43:25,1792925005,129,"46,50",,,It breathes fire.,,0,15,4
+06:43:26,1792925006,129,"46,50",,,[time factor 0.2],,0,,
+06:43:27,1792925007,124,"46,50",,,"[Pilot] emergency_loop: third emergency in 90 s and no stairs known nearby: consider Word of Recal ; [Pilot] emergency: low HP: waiting to use Phase Door, cure potions again, fighting on",,0,2,2
+06:43:28,1792925008,124,"46,50",,,You feel much better. ; You have 14 Potions of Cure Critical Wounds {for sale 200}.,,0,2,2
+06:43:29,1792925009,152,"46,50",,,"It breathes fire. ; *** LOW HITPOINT WARNING! *** ; Some of your Scrolls of Phase Door {for sale 200} (h) were destroyed! ; Your Scroll titled ""oxtri ab od"" (n) was destroyed! ; [Pilot] lost: Some of your Scrolls of Phase Door {for sale 200} (h) were destroyed! ; [Pilot] lost: Your Scroll titled ""oxtri ab od"" (n) was destroyed! ; [time factor 0.2]",,0,2,2
+06:43:30,1792925010,152,"46,50",,,,,0,2,2
+06:43:31,1792925011,147,"47,50",custom r item=7 | low HP: phase door ; ESC phase: low HP: phase door adj=['Fire hound'] ; cmd:custom r item=7,,[Pilot] emergency: low HP: read Phase Door (Fire hound adjacent),,0,,
+06:43:32,1792925012,147,"47,50","NAV read ['Teleportation'] ; custom r item=8 | agent: read ['Teleportation'] ; ESC teleport: agent: read ['Teleportation'] adj=['Fire hound', ' ; cmd:custom r item=8",Wolf:miss x1,,"Fire hound,Wolf",2,6,1
+06:43:33,1792925013,147,"47,50",NAV goal ['recall'],Fire hound:hit x2 ; Fire hound:miss x1,"It breathes fire. ; Your Scroll titled ""ip anrog eresh"" {tried} (m) was destroyed! ; It breathes fire. ; You are enveloped in flames! ; One of your Scrolls of Word of Recall {@R650} (j) was destroyed! ; [Pilot] lost: Your Scroll titled ""ip anrog eresh"" {tried} (m) was destroyed! ; [Pilot] lost: One of your Scrolls of Word of Recall {@R650} (j) was destroyed! ; [time factor 0.2] ; [goal] recall","Fire hound,Wolf",2,6,1
+06:43:34,1792925014,147,"47,50",,own melee x2,You have slain the Wolf.,"Fire hound,Wolf",2,6,1
+06:43:35,1792925015,147,"47,50",,Wolf:hit x1,,"Fire hound,Wolf",2,6,1
+06:43:36,1792925016,147,"41,48",,,You have 13 Scrolls of Phase Door {for sale 200}.,,0,,
+06:43:37,1792925017,130,"41,48",custom q item=5 | low HP: quaff 4 Potions of Cure Serious Wounds {for sale 200} ; cmd:custom q item=5,,[Pilot] emergency: low HP: quaffed a Potion of Cure Serious Wounds {for sale 200} (losing ~8 HP/s),,0,1,2
+06:43:38,1792925018,130,"41,48",,,The Druid drains power from your muscles! ; You resist the effects!,,0,1,2
+06:43:39,1792925019,130,"57,129",,,The Druid casts a fire bolt. ; You have a Scroll of Teleportation.,,0,1,79
+06:43:40,1792925020,130,"57,129",,,,,0,1,79
+06:43:41,1792925021,115,"57,129",NAV read ['i'] ; custom r item=8 | agent: read ['i'] ; ESC teleport: agent: read ['i'] adj=[] ; cmd:custom r item=8,,,,0,,
+06:43:42,1792925022,115,"57,129",,,,,0,,
+06:43:43,1792925023,115,"57,129",,,You feel much better. ; You have 3 Potions of Cure Serious Wounds {for sale 200}. ; [time factor 0.2],,0,,
+06:43:44,1792925024,115,"57,129",,,,,0,,
+06:43:45,1792925025,136,"57,129",custom q item=6 | low HP: quaff 14 Potions of Cure Critical Wounds {for sale 200} ; cmd:custom q item=6,,[Pilot] emergency: low HP: quaffed a Potion of Cure Critical Wounds {for sale 200} (losing ~11 HP/,,0,,
+06:43:46,1792925026,136,"58,57",,,You have no more Scrolls of Teleportation.,,0,,
+06:43:47,1792925027,136,"58,57",,,,,0,,
+06:43:48,1792925028,136,"58,57",,,,,0,,
+06:43:49,1792925029,166,"58,57",custom r item=8 | read a Scroll of Word of Recall {@R650} ; ESC wor_travel: read a Scroll of Word of Recall {@R650} adj=[] ; cmd:custom r item=8,,You feel much better. ; You have 13 Potions of Cure Critical Wounds {for sale 200}. ; [time factor 1.0],,0,,
+06:43:50,1792925030,167,"58,57",rest | rest,,The air about you becomes charged... ; You have no more Scrolls of Word of Recall {@R650}.,,0,,
+06:43:51,1792925031,167,"58,57",,own melee x1,You have slain the Wolf.,,0,,
+06:43:52,1792925032,171,"58,57",,own melee x2,You have slain the Wolf.,,0,1,2
+06:43:53,1792925033,172,"58,57",,own melee x5,You have slain the Fire hound. ; [time factor 1.0],,0,1,2
+06:43:54,1792925034,174,"58,57",,own melee x7,You have slain the Fire hound. ; You have slain the Wolf.,,0,1,2
+06:43:55,1792925035,176,"58,57",,own melee x4,You have slain the Fire hound.,,0,1,2
+06:43:56,1792925036,173,"58,57",,own melee x8,"The Fire hound breathes fire. ; [goal] flee (Umber hulk) ; [Pilot] danger_seen: Umber hulk (confuses with its blows (no save)) in view while recall: heading  ; [Pilot] tactic: flee: no known path to the stairs; trying one through unexplored squares ; It breathes fire. ; [Pilot] fight_going_badly: HP 174/303 fighting Fire hound, Umber hulk",,0,1,2
+06:43:57,1792925037,156,"58,57",custom q item=5 | confused in combat: quaff 3 Potions of Cure Serious Wounds {for sale 2 ; cmd:custom q item=5,own melee x8 ; Umber hulk:hit x3,You have slain the Fire hound. ; You are confused! ; [Pilot] tactic: confused in combat: quaffed a Potion of Cure Serious Wounds {for sale 200} ; You have slain the Fire hound.,Umber hulk,1,3,1
+06:43:58,1792925038,157,"58,57",,Umber hulk:hit x3,You feel much better. ; You feel less confused now. ; You have 2 Potions of Cure Serious Wounds {for sale 200}.,"Fire hound,Umber hulk",2,3,1
+06:43:59,1792925039,161,"59,56",,Fire hound:miss x3 ; Fire hound:hit x3 ; own melee x4,You are enveloped in flames! ; [Pilot] tactic: 3 traps sprung on this level: it's trap-laden; leave it (stairs or a fresh level) ,Fire hound,1,4,1
+06:44:00,1792925040,155,"59,56",custom r item=7 | group danger 114 vs HP 155: phase door ; ESC phase: group danger 114 vs HP 155: phase door adj=['Fire hou ; cmd:custom r item=7,own melee x3 ; Fire hound:miss x2 ; Fire hound:hit x1,"[Pilot] tactic: Fire hound x3, Umber hulk can deal 114 (HP 155): phased away ; You have slain the Fire hound. ; You are enveloped in flames! ; [time factor 0.2]","Fire hound,Umber hulk",3,4,1
+06:44:01,1792925041,155,"59,56",,,,"Fire hound,Umber hulk",3,4,1
+06:44:02,1792925042,155,"52,52",,Umber hulk:miss x2 ; Umber hulk:hit x1,*** LOW HITPOINT WARNING! *** ; You have 12 Scrolls of Phase Door {for sale 200}.,,0,4,5
+06:44:03,1792925043,144,"52,52",custom q item=6 | low HP: quaff 13 Potions of Cure Critical Wounds {for sale 200} ; cmd:custom q item=6,,"The Druid casts a spell, burning your eyes! ; You are blind! ; [time factor 0.2] ; [Pilot] emergency: low HP: quaffed a Potion of Cure Critical Wounds {for sale 200} (losing ~12 HP/",,0,4,5
+06:44:04,1792925044,144,"52,52",,,It mumbles. ; You are hit by fire!,,0,,
+06:44:05,1792925045,144,"52,51",,,,,0,,
+06:44:06,1792925046,144,"52,51",,,It mumbles. ; You are hit by lightning!,,0,,
+06:44:07,1792925047,144,"52,51",,,"[Pilot] emergency: low HP: waiting to use Phase Door, cure potions again, fighting on ; It drains power from your muscles! ; You resist the effects!",,0,,
+06:44:08,1792925048,144,"52,51",,,It mumbles. ; You are hit by lightning!,,0,,
+06:44:09,1792925049,144,"52,51",,own melee x2,You have killed it. ; It mumbles. ; You are hit by fire!,,0,,
+06:44:10,1792925050,144,"52,51",,,It blinks away. ; You feel much better. ; You have 12 Potions of Cure Critical Wounds {for sale 200}.,,0,,
+06:44:11,1792925051,124,"52,51",NAV quaff ['g'] ; custom q item=6 | agent: quaff ['g'] ; cmd:custom q item=6,,,Yeti,1,3,1
+06:44:12,1792925052,124,"52,51",,,,Yeti,1,3,1
+06:44:13,1792925053,124,"52,51",,Yeti:hit x2 ; Yeti:miss x1,[time factor 0.2],Yeti,1,3,1
+06:44:14,1792925054,147,"52,51","custom r item=7 | low HP: phase door ; ESC phase: low HP: phase door adj=['Copperhead snake', 'Yeti', ' ; cmd:custom r item=7",,"You feel much better. ; You have 11 Potions of Cure Critical Wounds {for sale 200}. ; [Pilot] emergency: low HP: read Phase Door (Copperhead snake, Griffon, Yeti adjacent)",Yeti,1,3,1
+06:44:15,1792925055,147,"52,51",,,,,0,,
+06:44:16,1792925056,148,"52,51",,Griffon:miss x1 ; Griffon:hit x1,,"Copperhead snake,Griffon,Yeti",3,4,1
+06:44:17,1792925057,142,"46,50",custom q item=6 | low HP: quaff 11 Potions of Cure Critical Wounds {for sale 200} ; cmd:custom q item=6,Copperhead snake:miss x1,You have 11 Scrolls of Phase Door {for sale 200}. ; [Pilot] emergency: low HP: quaffed a Potion of Cure Critical Wounds {for sale 200} (losing ~19 HP/,,0,4,5
+06:44:18,1792925058,142,"46,50",,,,,0,4,5
+06:44:19,1792925059,142,"46,50",,White wolf:hit x2,The Druid magically summons animals.,,0,4,5
+06:44:20,1792925060,155,"46,50",rest | rest,White wolf:miss x1 ; White wolf:hit x1 ; It:hit x1,"The Druid casts a spell, burning your eyes! ; You are blind! ; You feel much better. ; You have 10 Potions of Cure Critical Wounds {for sale 200}. ; [time factor 1.0]",,0,,
+06:44:21,1792925061,155,"16,45",,Giant red frog:miss x1,You feel yourself yanked upwards! ; [time factor 1.0],,0,10,27
+06:44:22,1792925062,155,"16,45",,,[time factor 1.0],,0,10,27
+06:44:23,1792925063,155,"16,45",,,,,0,10,27
+06:44:24,1792925064,155,"16,45",,,,,0,10,27
+06:44:25,1792925065,155,"16,45",,,,,0,,
+06:44:26,1792925066,155,"16,45",,,,,0,,
+06:44:27,1792925067,155,"16,45",,,,,0,,
+06:44:28,1792925068,155,"16,45",,,,,0,,
+06:44:29,1792925069,155,"16,45",,,,,0,,
+06:44:30,1792925070,303,"16,48","NAV stop [] ; NAV journal ['recalled home 06:44 from a monster zoo at 650ft (umber hulk, hounds, druid; 3 emergencies, HP low 121; fire burned 3 WoR, scrolls) | stop; restock via plan town, end mission idle in town | out of time'] ; NAV plan ['town', 'kit=C', 'buy', 'Word of Recall:3,Cure Critical Wounds:15,Phase Door:20,Cure Serious Wounds:4']",,[goal] None ; [goal] plan town kit=C buy 5/Word of Recall:3 buy 4/Cure ,,0,,
