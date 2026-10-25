@@ -159,6 +159,17 @@ validation.
    (pits / one-wide hallways); L3's BLIND half; plan town's forecast "at 5" (the shop number reads like a price);
    `Rates:` gold counts purchases; an asleep flag per monster (the estimator's top data gap); an intermittent unit-test
    failure (~1 in 20 runs of `unit.py`, twice, not reproduced since).
+   Also open (from m31-m34's reports and complaints): `plan town` replies before its own identify step ends (m32: the
+   Navigator's `read Identify` collided with it); a per-level XP rate in the report (the Navigators' "stay or leave"
+   question); HANDBOOK additions -- Moaning spirits at 600-650 ft drain DEX and See Invisible counters them; Restore
+   Dexterity can be out of stock; `time>HH:MM` needs 2-3 more minutes for the recall and the town visit; short missions
+   shouldn't bother with a second recall trip; the TIME FROZEN report (only the briefs mention it so far).
+   **Set-piece uniques:** today's runs killed Lugdush, Khim and others; a unique can't be summoned twice, so A2/A2L/A2K
+   need other uniques next time (harness README). **Shadow mode** imports the Advisor's estimator live: if its code
+   breaks, the Pilot logs "shadow mode off" and plays on.
+   **Fixed at the very end (loaded):** the armour upgrade went by AC alone (a plain mail would have replaced the Leather
+   of Resistance and its four resists); now armour that loses an ability or resist the worn piece gives isn't worn, nor
+   over a worn artifact (the ego table, as for weapons; unit `ability_armour_kept`).
 
 **The user's rules added in session 5 (keep them):** set a Navigator's effort only when the user asks (Agent `effort`);
 after every mission: `mission end`, `python3 tools/observe/tokens.py mNN`, `scorecard.py --table`, a report in

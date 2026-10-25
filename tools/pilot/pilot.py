@@ -4252,6 +4252,12 @@ class Pilot:
             on = [i for i in worn if self.ARMOUR_SLOTS.get(i["tval"]) == slot]
             ac_new = self.armour_ac(it["name"]) or 0
             ac_on = min((self.armour_ac(i["name"]) or 0) for i in on) if on else -1
+            # (never for armour that loses an ability or resist the worn piece gives -- the ego table, as for weapons --
+            # nor over a worn artifact: by AC alone a plain mail would have replaced the Hard Studded Leather of
+            # Resistance and its four resists)
+            if on and (self.is_artifact(on[0]["name"]) or
+                       not self.weapon_abilities(on[0]["name"]) <= self.weapon_abilities(it["name"])):
+                continue
             if ac_new > ac_on and not (on and bare(on[0]["name"]) in self.ability_sources):
                 self.cmd(f"custom w item={it['item']}", f"wear {it['name']} (AC {ac_new} vs {ac_on})", hold=0.8)
                 self.notify("tactic", f"wore {it['name']} (AC {ac_new} vs {max(ac_on, 0)})", news=True)
@@ -4325,8 +4331,8 @@ class Pilot:
                      "STR", "DEX", "CON", "BLOWS", "LITE"}
 
     def weapon_abilities(self, name):
-        """What a weapon gives beyond damage, from the rulebook's ego table (ego_flags.csv): Free Action, See
-        Invisible, resists, sustains, stats... An unknown ego or a plain weapon: nothing."""
+        """What a weapon (or armour) gives beyond damage and AC, from the rulebook's ego table (ego_flags.csv): Free
+        Action, See Invisible, resists, sustains, stats... An unknown ego or a plain item: nothing."""
         if not hasattr(self, "_ego_flags"):
             try:
                 self._ego_flags = {r["name"]: set(r["flags"].split()) for r in csv.DictReader(

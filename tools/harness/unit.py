@@ -1071,6 +1071,25 @@ def shadow_estimator_logs():
                 f"error {rec.get('error')}")
 
 
+@case
+def ability_armour_kept():
+    """Same class as m33's weapon swap: the armour upgrade went by AC alone, so a plain Metal Scale Mail would have
+    replaced the Hard Studded Leather of Resistance (four resists). Armour that loses an ability isn't worn; a plain
+    upgrade over plain armour is."""
+    def run(worn, pack):
+        p = pilot(worn=worn, pack=pack)
+        p.w.depth, p.w.in_dungeon = 0, False
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append(why)
+        p.weapon_table = lambda: []
+        p.upgrade_step()
+        return p.cmds[-1] if p.cmds else None
+    res = run([("Hard Studded Leather of Resistance (-1) [7,+8]", 37, 100)], [("Metal Scale Mail (-2) [38,+0]", 37)])
+    plain = run([("Soft Leather Armour [8,+0]", 36, 80)], [("Metal Scale Mail (-2) [38,+0]", 37)])
+    ok = res is None and plain and "Metal Scale Mail" in plain
+    return ok, f"over the Leather of Resistance: {res}; over plain leather: {plain!r}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0
