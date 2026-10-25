@@ -1183,7 +1183,8 @@ def gear_review_finds_free_slot():
                      7: {"prices": {"large metal shield [5,+3]": 2775}}}
     text = p.gear_review()
     ok = ("c) a Ring of Resist Cold: res_cold also from g)" in text and "e) an Amulet of Resist Lightning" in text
-          and "ring of protection [+9] for 2240 at the Magic Shop (6): +9 AC (in the free slot)" in text
+          and "ring of protection [+9] for 2240 at the Magic Shop (6) [`buy 6/ring_of_protection_[+9]@2464`]: +9 AC"
+          " (in the free slot)" in text
           and "brigandine" not in text and "missing, most wanted first: resist poison" in text)
     return ok, text.replace("\n", " | ")
 

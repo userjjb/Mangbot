@@ -7631,7 +7631,10 @@ class Pilot:
             for name, price in (st.get("prices") or {}).items():
                 if price > max(0, spare):
                     continue
-                lab = f"{name} for {price} at the {self.STORE_LABEL.get(store, store)} ({store})"
+                # (with the exact buy line: m41 bought "set_of_leather_gloves" and got the plain [1,+0] for 5 gold,
+                # not the [1,+5] suggested -- the cheapest line of a name is taken)
+                lab = f"{name} for {price} at the {self.STORE_LABEL.get(store, store)} ({store}) " \
+                      f"[`buy {store}/{name.replace(' ', '_')}@{int(price * 1.1)}`]"
                 if name.startswith(("ring of", "amulet of")):
                     tv = 45 if name.startswith("ring") else 40
                     gives = self.jewel_gives(name) - {f for f, sl in flags.items() if sl}
