@@ -214,6 +214,20 @@ viewer; test the freeze live.** -> **Deployed after m32 (the user: "after this m
 live test let one queued step through (post_process_players runs commands as they arrive, with stored energy);
 fixed, rebuilt, restarted; live: a step sent while frozen waited 5 s and ran at the thaw. m33-m34 run on the new
 server and Pilot (fear order, run loop, freeze); m31-m32 ran on the old ones.
+**TODO (the user, 10-25): a between-mission gear optimization step.** After each mission (and before the next), go
+over Dive04's gear as a whole: wear/wield by abilities and resists, not damage alone (m32: the Pilot's weapon policy
+compared 28 vs 30 and never flagged a Scimitar of Westernesse with Free Action and See Invisible; the Navigator
+wielded it by hand); spares worth keeping or selling; what to buy toward the next upgrade (Free Action, See
+Invisible, resists, a better weapon, a launcher for the empty bow slot); standing restores (Restore Dexterity was out
+of stock in m32 -- buy when it comes back). Who runs it (the Pilot's policy, a `plan gear` step, or the Architect
+between missions) is open.
+**Hot swap (the user, 10-25: "with the freeze we can deploy Pilot changes whenever"):** `tools/pilot/hotswap.sh NICK`
+-- freeze, stop the Pilot at once (no park: a frozen Pilot never reaches its safe moment), start the new one, wait
+for it to answer, thaw. Why it should be safe: an orphan is freed after 15 s idle by a timer in the game tick, which
+the freeze stops, and a login before that resumes the character in memory. **Not tested yet** -- test after the
+matrix in a dungeon set-piece (in town orphans are freed at once): monsters near, a trip plan running, a recall
+pending (park avoids logouts during a recall: "a logout reset its depth once"); check Dive04 resumes in place, the
+plan resumes, nothing acted meanwhile, and whether logins wait for the thaw.
 **The Brown mold (m25) fixed:** `stairs_beside_still` -- stairs underfoot or a step away beside a stationary monster
 harmless for a turn (no drain/paralyse/disenchant, melee < 25% HP) are taken, not stepped away from; Dive presses '>'
 only on its stairs (a step-away's "arrived" pressed it 6 squares off). Unit `stairs_beside_mold`; live set-piece

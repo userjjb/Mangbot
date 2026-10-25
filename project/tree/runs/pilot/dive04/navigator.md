@@ -501,3 +501,5 @@
 - 08:31:51 town 100% | 08:31 home, 4966g, +627 XP, 6 levels | wield Scimitar of Westernesse, keep Main Gauche | Free Action + See Invisible + stats worth far more than 2 dmg/round; mission ends 08:37, no more trips
 - 08:32:18 town 100% | 08:32 town 4966g, store 6 has Staff of Teleportation 4582 | buy it | handbook: save for Teleportation at clvl ~20; best escape for a warrior, objective 1 is survival; gold is spent in town, not lost
 - 08:32:30 town 100% | 08:32 town idle, 384g, Westernesse wielded (FA+SI), Staff of Teleportation bought | mission done, stop here | 5 min left, no room for another trip
+- 08:37:11 town 100% | town 08:37, 384g, 2 WoR, 30 min budget | plan town buy third WoR | recall down/up with a spare; walking down eats the budget
+- 08:37:26 town 100% | town ready 3 WoR 14 CCW 20 Phase | plan trip 500-650 via recall until cures<4 or phase<5 or time>09:00 | handbook's best XP band, within max_depth 650; time cond leaves 7 min for recall home
