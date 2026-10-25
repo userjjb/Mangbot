@@ -9,6 +9,7 @@ Pilot or rulebook change:
 import collections
 import json
 import os
+import random
 import re
 import sys
 import time
@@ -120,6 +121,7 @@ def hunt_hill_giant_by_hp():
     for hp, flee in ((265, 0.5), (212, 0.5), (212, 0.4), (159, 0.4)):
         p = pilot(hp=hp, pack=[PHASE])
         p.orders["flee_hp"] = flee
+        random.seed(1)          # (the duel simulator's 600 duels: 212/0.4 sits near the line, ~1 run in 20 flipped)
         out.append(p.hunt_refusal("Hill giant")[0] is None)
     return out == [True, False, True, False], f"allowed at 265/0.5, 212/0.5, 212/0.4, 159/0.4: {out}"
 
