@@ -316,9 +316,10 @@ class Explore(Goal):
     """Walk to the nearest frontier (known floor next to unknown) until none is
     left, or until stairs are seen (until='stairs')."""
 
-    def __init__(self, until=None, radius=None):
+    def __init__(self, until=None, radius=None, skip=None):
         self.until = until
         self.radius = radius
+        self.skip = skip            # () -> stairs squares that don't count as seen (a dive's refused ones)
         self.name = "explore" + (f" until {until}" if until else "") + (f" radius {radius}" if radius else "")
         self.center = None
         self.fails = 0
@@ -330,6 +331,16 @@ class Explore(Goal):
         self.search = None
         self.searched_n = 0
         self.retried = False
+
+    def stairs_seen(self, w):
+        """'stairs down seen' / 'stairs up seen' when the stairs `until` asks for are known and reachable,
+        not counting those in skip()."""
+        skip = self.skip() if self.skip else set()
+        want = {"stairs": ">", "upstairs": "<"}.get(self.until)
+        found = [q for q in w.find(want) if q not in skip] if want else []
+        if found and plan(w, found):
+            return "stairs down seen" if want == ">" else "stairs up seen"
+        return None
 
     def tick(self, p):
         w = p.w
@@ -345,10 +356,11 @@ class Explore(Goal):
         # (only stairs we can reach: a Phase Door once left us in a pocket cut
         # off from a known '<', and this ended at once -- the Advisor's mission 9
         # replay)
-        if self.until == "stairs" and w.find(">") and plan(w, w.find(">")):
-            return ("done", "stairs down seen")
-        if self.until == "upstairs" and w.find("<") and plan(w, w.find("<")):
-            return ("done", "stairs up seen")
+        # (not stairs the dive refused: m30 stalled 6 minutes at 600 ft, this ending at once on the '>' it had
+        # just refused as the way back to a fled level, and the dive starting it again, with nothing logged)
+        seen = self.stairs_seen(w)
+        if seen:
+            return ("done", seen)
         if p.level_seen != w.level_t:
             p.level_seen = w.level_t
             p.unreachable = set()
@@ -535,7 +547,7 @@ class Dive(Goal):
         if p.orders.get("pillared") == "explore" and not self.pillared_done and not w.find(want) \
                 and p.pillared():
             if self.explore is None:
-                self.explore = Explore(until="upstairs" if want == "<" else "stairs", radius=15)
+                self.explore = Explore(until="upstairs" if want == "<" else "stairs", radius=15, skip=self.refused)
             r = self.explore.tick(p)
             if r is None:
                 return None
@@ -638,7 +650,7 @@ class Dive(Goal):
                     self.mark_bad(w, ups)
         if self.explore is None:
             self.explore = Search() if self.need_search else \
-                Explore(until="upstairs" if want == "<" else "stairs")
+                Explore(until="upstairs" if want == "<" else "stairs", skip=self.refused)
         r = self.explore.tick(p)
         if isinstance(self.explore, Search):
             if r and r[0] == "failed":
@@ -670,6 +682,10 @@ class Dive(Goal):
         if r:
             self.explore = None
         return None
+
+    def refused(self):
+        """Stairs on this level the dive won't take (unreachable, or the way back to a level just fled)."""
+        return {q for lt, q in self.bad_stairs if lt == self.level_seen}
 
     def mark_bad(self, w, tiles):
         now = gnow()
@@ -3569,9 +3585,17 @@ class Pilot:
         self.stuck_t = now
         self.c.send("clear")
         self.mover.stop()
+        # the second time for the same goal, end it: restarting the move can't fix a goal whose own logic loops
+        # (m30: a dive at 600 ft went nowhere for 6 minutes, restarted twice; the trip plan then moves on)
+        if getattr(self.goal, "stuck_once", False):
+            self.goal.abort = f"went nowhere for 4 minutes (around {w.pos})"
+            self.notify("stuck", f"'{self.goal.describe()}' has gone nowhere for 4 minutes (around {w.pos}): "
+                                 "ending it", news=bool(self.plan))
+            return
+        self.goal.stuck_once = True
         self.notify("stuck", f"'{self.goal.describe()}' has gone nowhere for 2 minutes "
                              f"(around {w.pos}): cleared the command queue and restarted the move. "
-                             "If it happens again, give another goal")
+                             "If it happens again, the goal ends")
 
     ABILITY_FLAGS = {"free_action": "free_act", "resist_blind": "res_blind", "resist_conf": "res_conf",
                      "see_invisible": "see_invis", "resist_nexus": "res_nexus", "hold_life": "hold_life",
@@ -4664,7 +4688,7 @@ class Pilot:
                 self.mover.stop()
             return True
         try:
-            r = self.goal.tick(self)
+            r = ("failed", self.goal.abort) if getattr(self.goal, "abort", None) else self.goal.tick(self)
         except Exception as e:           # a goal bug must not kill the pilot
             r = ("failed", f"error: {e!r}")
         if r:

@@ -686,6 +686,31 @@ def provisions_one_food_no_oil():
                 f"town sells {sells}")
 
 
+@case
+def refused_stairs_dont_end_explore():
+    """m30 06:17-06:23: at 600 ft the dive refused the '>' back to the 650 ft level it had just fled, started an
+    'explore until stairs', which ended at once on that same '>' -- 6 minutes of nothing, logged as nothing.
+    The refused stairs no longer count as seen; another '>' does."""
+    import mover as M
+    class Wd:
+        pos = (10, 10)
+        in_dungeon, depth = True, 12
+        monsters, still_seen, avoid_zone, avoid_inside = [], {}, set(), False
+        def __init__(self, mem):
+            self.memory = mem
+        def find(self, chars):
+            return [q for q, ch in self.memory.items() if ch in chars]
+    floor = {(10, x): "." for x in range(5, 20)}
+    d = P.Dive.__new__(P.Dive)
+    d.bad_stairs, d.level_seen = {(7.0, (10, 12))}, 7.0
+    e = P.Explore(until="stairs", skip=d.refused)
+    only = e.stairs_seen(Wd({**floor, (10, 12): ">"}))
+    other = e.stairs_seen(Wd({**floor, (10, 12): ">", (10, 18): ">"}))
+    plain = P.Explore(until="stairs").stairs_seen(Wd({**floor, (10, 12): ">"}))
+    ok = only is None and other == "stairs down seen" and plain == "stairs down seen"
+    return ok, f"only the refused '>': {only}; another '>' too: {other}; no skip (as before): {plain}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0
