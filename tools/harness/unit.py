@@ -265,6 +265,7 @@ class _Mover:
 
     def __init__(self):
         self.went = []
+        self.path = []
 
     def go(self, goals, **k):
         self.went.append(list(goals))
@@ -568,6 +569,64 @@ def stairs_beside_mold():
             "brown mold, '>' a step off": True, "disenchanter mold": False,
             "purple mushroom patch": False, "floating eye": False, "brown mold, goal not stairs": False}
     return got == want, ", ".join(f"{k}: {'take' if v else 'step away'}" for k, v in got.items())
+
+
+@case
+def loot_owed_and_valuables():
+    """The user (m29 20:26): gold and an unknown wand left beside the path while a Baby black dragon was in view,
+    never revisited. Passed up with a monster in view -> fetched once clear (12 away, beyond loot_radius 10);
+    a wand 20 away fetched without being owed; a plain item 20 away not; a walk cut short is retried; a mold in
+    view doesn't stop looting, nor a weak one (10+ levels below us: a Jackal); a Black orc or an Uruk does."""
+    class Mover:
+        def __init__(self):
+            self.active, self.path, self.sent = False, [], []
+
+        def go(self, goals, **k):
+            g = list(goals)[0]
+            self.sent.append(g)
+            self.active, self.path = True, [g] * max(abs(g[0] - p.w.pos[0]), abs(g[1] - p.w.pos[1]))
+            return True
+
+        def tick(self):
+            return "moving"
+
+        def stop(self):
+            self.active = False
+    p = pilot()
+    p.w.pos, p.w.level_t = (20, 20), 5.0
+    p.orders.update(loot_radius=10, think_hp=0.65, pickup="all")
+    p.band_warned, p.band_warned_t = (None, 0), 0.0
+    p.skipped_items = set()
+    p.mover = Mover()
+    p.danger_why = lambda r, *a, **k: None
+    p.w.memory = {(20, 21): "$", (21, 22): "-", (20, 40): "-", (40, 20): "|"}
+    dragon = (19, 23, BYNAME["black orc"])     # (level 13 against our 22: blocks)
+    st = {}
+    p.w.monsters = [dragon]
+    blocked = p.loot_step(st)
+    owed = set(p.loot_mem["owed"])
+    p.w.monsters = []
+    p.w.pos = (20, 9)                     # walked on: the gold is 12 away now, the near wand 13
+    first = p.loot_step(st), p.mover.sent[-1]
+    p.w.monsters = [(20, 12, BYNAME["uruk"])]   # the walk is cut short: a monster comes
+    p.loot_step(st)
+    tries = p.loot_mem["tries"][(20, 21)]
+    p.w.monsters = [(20, 8, BYNAME["brown mold"]), (20, 11, BYNAME["jackal"])]   # a mold, a weak monster 2 off
+    again = p.loot_step(st), p.mover.sent[-1]
+    p.mover.active = False
+    st["looting"] = False
+    p.loot_mem["done"] |= {(20, 21), (21, 22)}
+    p.w.monsters = []
+    p.w.pos = (20, 20)
+    far = p.loot_step(st), p.mover.sent[-1]
+    p.mover.active = False
+    st["looting"] = False
+    p.loot_mem["done"].add((20, 40))
+    plain = p.loot_step(st)
+    ok = not blocked and owed == {(20, 21), (21, 22)} and first == (True, (20, 21)) and tries == 1 and \
+        again == (True, (20, 21)) and far == (True, (20, 40)) and plain is False
+    return ok, (f"blocked {blocked}, owed {sorted(owed)}; clear: {first}; cut short: tries {tries}; mold in view: "
+                f"{again} (with a Jackal 2 off); wand 20 off: {far}; plain item 20 off fetched: {plain}")
 
 
 def main():

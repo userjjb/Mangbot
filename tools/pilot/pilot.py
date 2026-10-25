@@ -467,8 +467,7 @@ class Dive(Goal):
         self.explore = None
         self.reported = set()
         self.probed = None
-        self.looted = set()
-        self.looting = False
+        self.loot = {}              # (the shared loot step's state)
         self.pillared_done = False
         self.need_search = False
         self.stuck = 0
@@ -524,25 +523,14 @@ class Dive(Goal):
             self.level_seen = w.level_t
             self.walking = False
             self.explore = None
-            self.looted = set()
             self.pillared_done = False
             why = p.interesting() if getattr(self, "stop", True) else None
             if why:
                 return ("interesting", why)
         # Standing orders that save asking the agent: loot what's close...
-        lr = int(p.orders.get("loot_radius", 0))
-        if lr and not self.walking and not w.monsters:
-            items = [t for t in p.resolve_target("item") if w.dist(t) <= lr and t not in self.looted]
-            if items and not p.mover.active:
-                tgt = min(items, key=w.dist)
-                self.looted.add(tgt)
-                if p.mover.go([tgt]):
-                    self.looting = True
-            if getattr(self, "looting", False):
-                st = p.mover.tick()
-                if st == "moving":
-                    return None
-                self.looting = False
+        # (the shared loot step: what's close, what was passed up while monsters were in view, valuables)
+        if not self.walking and (not p.mover.active or self.loot.get("looting")) and p.loot_step(self.loot):
+            return None
         # ... and explore a pillared room for a '>' (the user: they often hold stairs)
         if p.orders.get("pillared") == "explore" and not self.pillared_done and not w.find(want) \
                 and p.pillared():
@@ -4563,34 +4551,79 @@ class Pilot:
             self.unique_names = {r.name.lower() for r in self.w.g.races.values() if "UNIQUE" in r.flags}
         return any(u in tags for u in self.unique_names)
 
+    LOOT_OWED_R = 25          # items passed up while monsters were in view: fetched once it's clear, this far
+    LOOT_VALUABLE_R = 30      # devices and jewellery: the Pilot fetches them itself, this far
+    VALUABLE_GLYPHS = "-_=\""   # wand/rod, staff, ring, amulet
+
     def loot_step(self, state):
-        """Fetch items seen within loot_radius (dive and explore share this).
-        state: a dict kept by the goal ({'looted': set, 'looting': bool, 'level': t}).
-        Returns True while fetching."""
+        """Fetch items (dive and explore share this): those within loot_radius; those passed up while
+        monsters were in view, within LOOT_OWED_R once it's clear; devices and jewellery within
+        LOOT_VALUABLE_R. An item counts as done once we've stood on it (the pickup policy decides) or after
+        3 interrupted walks. The user (m29): gold and an unknown wand left beside the path while a Baby black
+        dragon was in view, never revisited (12 squares off, beyond loot_radius 10); a walk cut short was
+        never retried (the square was marked looted when the walk began); the interesting-item notice waited
+        for a `goal fetch` nobody sent under a trip plan.
+        state: the goal's dict ({'looting': bool, 'target': square, 'level': t}). True while fetching."""
         w = self.w
         lr = int(self.orders.get("loot_radius", 0))
+        mem = self.__dict__.setdefault("loot_mem", {})
+        if mem.get("level") != w.level_t:
+            mem.clear()
+            mem.update(level=w.level_t, done=set(), tries=collections.Counter(), owed=set())
         if state.get("level") != w.level_t:
-            state.update(level=w.level_t, looted=set(), looting=False)
-        # (no detours while a band is about: the Advisor's set-piece C5, mission 22's
-        # loot room. A band out of view now may be round the corner)
-        band = self.band_warned[0] == w.level_t and gnow() - self.band_warned_t < 90
-        if not lr or w.monsters or band:
-            state["looting"] = False
+            state.update(level=w.level_t, looting=False, target=None)
+        if not lr:
             return False
-        if state["looting"]:
+        items = [t for t in self.resolve_target("item") if t not in mem["done"]]
+        # (no detours while a band is about: the Advisor's set-piece C5, mission 22's loot room. A band out of
+        # view now may be round the corner. Molds don't count: the planner keeps clear of them; nor do weak
+        # monsters, 10+ levels below us and not dangerous: auto-retaliate kills them if they come. The set-piece
+        # M2: a Cave lizard 16 squares off held a wand back for good; a Jackal pack cut the walk short and the
+        # dive left without it)
+        band = self.band_warned[0] == w.level_t and gnow() - self.band_warned_t < 90
+        mobile = [m for m in w.monsters if "NEVER_MOVE" not in m[2].flags
+                  and (m[2].level > w.clvl - 10 or self.danger_why(m[2]))]
+        if mobile or band or w.hp_frac < self.orders.get("think_hp", 0.65) or w.flag("blind") or w.flag("confused"):
+            mem["owed"] |= {t for t in items if w.dist(t) <= lr}
+            if state.get("looting"):
+                state["looting"] = False
+                mem["tries"][state["target"]] += 1
+                self.mover.stop()
+            return False
+        if state.get("looting"):
             st = self.mover.tick()
             if st == "moving":
                 return True
+            tgt = state["target"]
             state["looting"] = False
+            if w.pos == tgt or st == "arrived":
+                mem["done"].add(tgt)
+            else:
+                mem["tries"][tgt] += 1
+            # (on to the next, or the same again: handing back here let the dive head for the stairs -- M2, a
+            # Rock lizard's fight stopped the walk 2 squares from the wand)
+        if self.mover.active:
             return False
-        items = [t for t in self.resolve_target("item") if w.dist(t) <= lr and t not in state["looted"]]
-        if items and not self.mover.active:
-            tgt = min(items, key=w.dist)
-            state["looted"].add(tgt)
-            if self.mover.go([tgt]):
-                state["looting"] = True
-                return True
-        return False
+        for t in [t for t in items if mem["tries"][t] >= 3]:
+            mem["done"].add(t)
+        items = [t for t in items if t not in mem["done"]]
+        valuable = {t for t in items if w.memory.get(t) in self.VALUABLE_GLYPHS and w.dist(t) <= self.LOOT_VALUABLE_R}
+        owed = {t for t in items if t in mem["owed"] and w.dist(t) <= self.LOOT_OWED_R}
+        cands = {t for t in items if w.dist(t) <= lr} | owed | valuable
+        if not cands:
+            return False
+        tgt = min(cands, key=w.dist)
+        if not self.mover.go([tgt]):
+            mem["done"].add(tgt)
+            return False
+        # (a wall between: a walk far longer than the distance isn't worth it)
+        reach = self.LOOT_VALUABLE_R if tgt in valuable else self.LOOT_OWED_R if tgt in owed else lr
+        if len(self.mover.path) > reach * 3 // 2:
+            self.mover.stop()
+            mem["done"].add(tgt)
+            return False
+        state.update(looting=True, target=tgt)
+        return True
 
     def recall_started(self, now):
         """A Word of Recall is already under way: the server said so ("becomes
@@ -5126,14 +5159,20 @@ class Pilot:
                     any(ch == glyph and w.dist(q) <= lr for q, ch in w.memory.items()):
                 self.item_pending.append((now + 1.5, lt, name, glyph, first))
                 continue
-            if not self.plan:
-                self.item_hold_until = now + 20   # (a dive pauses so you can fetch it)
             # (the squares in the notice itself: m27's Navigator needed a `status full` for each fetch)
             sq = sorted((q for q, ch in w.memory.items() if ch == glyph), key=w.dist)[:3]
             where = ", ".join(f"{q[0]},{q[1]} ({w.dist(q)} away)" for q in sq) or "see 'Item squares' in `status full`"
+            # devices and jewellery this close: the loot step fetches them once it's clear (m29: nobody did)
+            if lr and self.orders.get("pickup") == "all" and glyph in self.VALUABLE_GLYPHS and sq and \
+                    w.dist(sq[0]) <= self.LOOT_VALUABLE_R:
+                self.notify("interesting_item", f"{name} seen on this level at {where}: fetching it once the "
+                                                 "area is clear", news=True)
+                continue
+            if not self.plan:
+                self.item_hold_until = now + 20   # (a dive pauses so you can fetch it)
             self.notify("interesting_item", f"{name} seen on this level (devices and jewellery sell for 50-700 once "
-                                             f"known): a '{glyph}' at {where}; `goal fetch Y,X`. A dive pauses 20 s "
-                                             "for it")
+                                             f"known): a '{glyph}' at {where}; `goal fetch Y,X`"
+                                             + ("" if self.plan else ". A dive pauses 20 s for it"))
         while w.losses:
             t, text = w.losses.pop(0)
             self.notify("lost", text, news=True)

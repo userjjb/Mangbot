@@ -1,0 +1,68 @@
+{
+ "id": "M2",
+ "tag": "M2-20261025-053550",
+ "depth_ft": 300,
+ "start": "2026-10-25 05:35:50",
+ "checks": {
+  "the wand fetched": {
+   "pass": true,
+   "detail": "picked up at None s; in the pack now: True"
+  },
+  "then down the '>' within 60 s": {
+   "pass": true,
+   "detail": "at 4.5 s"
+  }
+ },
+ "notes": [],
+ "scene": {
+  "dive04": [
+   15,
+   106
+  ],
+  "wand": [
+   15,
+   124
+  ],
+  "stairs": [
+   18,
+   106
+  ],
+  "forged": "an Aluminum-Plated Wand"
+ },
+ "order_reply": "{\"ok\": true, \"goal\": \"dive 350ft\"}",
+ "stats": {
+  "hp_start": [
+   303,
+   303
+  ],
+  "hp_min": [
+   303,
+   303
+  ],
+  "attention": [
+   [
+    4.5,
+    "goal_done",
+    "dive 350ft: reached 350 ft"
+   ]
+  ],
+  "acts": [
+   [
+    0.1,
+    "custom >",
+    "stairs >"
+   ],
+   [
+    3.9,
+    "custom >",
+    "stairs >"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-25 05:38:17",
+ "pass": true
+}

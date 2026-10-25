@@ -1146,7 +1146,54 @@ def m1(run, race="Brown mold"):
     run.check("no '>' pressed off the stairs", not stray, f"{stray[:4]}")
 
 
-SETPIECES = {"M1": m1, "L3": l3, "A2f": a2f, "L2g": l2g, "A7f": a7f, "A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
+def m2(run):
+    """M2: a valuable beyond loot_radius (the user's m29 question: an unknown wand left 12 squares off). A forged
+    Wand of Stinking Cloud dropped on floor Dive04 sees 13-20 squares away, a '>' painted 3 squares the other
+    way, `goal dive` one level down: Dive04 fetches the wand first, then goes down, within 60 s."""
+    rows = run.dm.c.map()
+    tl = find_floor_block(rows, 3, 24) or find_floor_block(rows, 3, 18)
+    if not tl:
+        run.check("a site", False, "no 3 x 18 block of floor")
+        return
+    run.gandalf_to((tl[0] + 1, tl[1] + 2))
+    v = run.bring_dive04()
+    me = tuple(v["pos"])
+    y0, x0 = v["y0"], v["x0"]
+    seen = [(y0 + i, x0 + j) for i, row in enumerate(v["rows"]) for j, ch in enumerate(row) if ch == "."]
+    far = [q for q in seen if 13 <= max(abs(q[0] - me[0]), abs(q[1] - me[1])) <= 20 and q[1] > me[1]]
+    if not far:
+        run.check("a site", False, f"no floor Dive04 sees 13-20 squares east of {me} (a dark room?)")
+        return
+    spot = min(far, key=lambda q: (abs(q[0] - me[0]), -q[1]))
+    stairs = floor_near(v, me, 3, taken={spot})
+    stairs = next((q for q in seen if q[1] <= me[1] - 2 and max(abs(q[0] - me[0]), abs(q[1] - me[1])) == 3), stairs)
+    run.gandalf_to(stairs)
+    run.dm.paint(7, [8])                         # the '>' (he steps north off it)
+    run.gandalf_to(spot)
+    name = run.dm.forge(290)                     # Wand of Stinking Cloud (identified)
+    run.dm.drop_first(1)
+    for _ in range(8):                           # out of the room, into the rock (a ghost)
+        run.dm.walk(8)
+    run.res["scene"] = {"dive04": me, "wand": spot, "stairs": stairs, "forged": name}
+    run.say(f"[{run.tag}] Dive04 at {me}, {name} at {spot} ({max(abs(spot[0] - me[0]), abs(spot[1] - me[1]))} "
+            f"away), '>' at {stairs}")
+    time.sleep(2.0)
+    run.t_act = time.time()
+    run.res["order_reply"] = ctl("goal", "dive", str(run.depth + 50), role="architect")
+    run.watch(60, until=lambda recs: any(d.get("depth") is not None and d["depth"] * 50 > run.depth for d in recs))
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    picked = next((round(d["t"] - run.t_act, 1) for d in recs if d.get("kind") == "act"
+                   and "Stinking Cloud" in str(d.get("why")) and "pick up" in str(d.get("why"))), None)
+    down = next((round(d["t"] - run.t_act, 1) for d in recs if d.get("depth") is not None and d["depth"] * 50 > run.depth),
+                None)
+    left = [d.get("items") for d in recs if d.get("kind") == "left_behind"]
+    run.check("the wand fetched", picked is not None, f"picked up at {picked} s; left behind {left[:2]}")
+    run.check("then down the '>' within 60 s", down is not None and (picked is None or down > picked), f"at {down} s")
+
+
+SETPIECES = {"M1": m1, "M2": m2, "L3": l3, "A2f": a2f, "L2g": l2g, "A7f": a7f, "A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
              "C3": c3}
 
 

@@ -159,7 +159,12 @@ lowest 57%, 0 close, 3 escape recalls, 7 cures; clvl 25, 5621 gold, Golfimbul sl
 wielded but status showed one; leaving 650 ft = max_depth with only '>' known searched 6.5 min for '<' without Magic
 Mapping). **The user's `?` (m29 20:26): items and gold left behind** -- loot is off while any monster is in view and
 never revisited beyond loot_radius 10; under a plan the interesting-item pause doesn't happen (the notice says it
-does). Fix proposed to the user (a per-level list of skipped loot fetched when clear, <= ~25 squares), not built yet.
+does). **Fixed (the user: "fix the loot issue", 10-25):** one shared `loot_step` for dive and explore: items
+within loot_radius; items passed up while a monster that matters was in view (within 10 levels of ours or dangerous;
+weak ones and molds don't count; a band does) fetched within 25 once clear; devices/jewellery within 30; a walk cut
+short is retried (3 tries; the old code marked the square looted when the walk began); the interesting_item notice
+says the Pilot fetches those. Unit `loot_owed_and_valuables`; live set-piece **M2** PASS (after 3 fixes it found);
+M1 still passes. HANDBOOK updated.
 **The Brown mold (m25) fixed:** `stairs_beside_still` -- stairs underfoot or a step away beside a stationary monster
 harmless for a turn (no drain/paralyse/disenchant, melee < 25% HP) are taken, not stepped away from; Dive presses '>'
 only on its stairs (a step-away's "arrived" pressed it 6 squares off). Unit `stairs_beside_mold`; live set-piece

@@ -134,8 +134,11 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
   `status` (a plan survives the restart). After a fight, first check whether the character died.
 - **At 50% HP or below the server runs your game time at 1/5** (the time bubble): a fight there gives you 5x the wall
   time per turn, so an order sent while hurt is less likely to arrive late. The Pilot's timers follow game time.
-- **`interesting_item` news is yours to act on:** the Pilot fetches loot within `loot_radius` itself; for anything
-  farther, the notice gives the squares: `goal fetch Y,X` (a dive waits 20 s for it).
+- **Loot the Pilot fetches itself:** items within `loot_radius` (10); items it passed up while a monster that
+  matters was in view, within 25 once it's clear; devices and jewellery (`-` `_` `=` `"`) within 30. Weak monsters
+  (10+ levels below you, not dangerous) don't hold it up; a band does. **`interesting_item` news** says "fetching it
+  once the area is clear" for those; anything farther is yours: `goal fetch Y,X` (outside a trip plan a dive
+  waits 20 s for it).
 - **Counts in buys mean "have N"**, in `plan town` and in `goal shop` alike (`buy NAME:+N` buys N more).
 - **Broke in town** (Word of Recall short and no gold): `plan town` sells unknown wands, staffs and rods, saves every
   coin for the Word of Recall (food only besides) and **by day townfarms the difference by itself** (kills

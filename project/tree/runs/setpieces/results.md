@@ -114,3 +114,8 @@
 - 2026-10-24 21:00:49 **M1** FAIL (down the painted '>' within 45 s FAIL, no '>' pressed off the stairs) `M1-20261024-210049.json`
 - 2026-10-24 21:09:22 **M1** FAIL (down the painted '>' within 45 s FAIL, no '>' pressed off the stairs) `M1-20261024-210922.json`
 - 2026-10-24 21:19:00 **M1** PASS (down the painted '>' within 45 s, no '>' pressed off the stairs) `M1-20261024-211900.json`
+- 2026-10-25 05:35:50 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261025-053550.json`
+- 2026-10-25 05:39:25 **M2** FAIL (the wand fetched FAIL, then down the '>' within 60 s) `M2-20261025-053925.json`
+- 2026-10-25 05:42:56 **M2** FAIL (the wand fetched FAIL, then down the '>' within 60 s) `M2-20261025-054256.json`
+- 2026-10-25 05:45:55 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261025-054555.json`
+- 2026-10-25 05:48:44 **M1** PASS (down the painted '>' within 45 s, no '>' pressed off the stairs) `M1-20261025-054844.json`

@@ -1,0 +1,78 @@
+{
+ "id": "M1",
+ "tag": "M1-20261025-054844",
+ "depth_ft": 300,
+ "start": "2026-10-25 05:48:44",
+ "checks": {
+  "down the painted '>' within 45 s": {
+   "pass": true,
+   "detail": "at 42.9 s; presses [(16.3, (5, 44)), (42.5, (4, 49))]"
+  },
+  "no '>' pressed off the stairs": {
+   "pass": true,
+   "detail": "[]"
+  }
+ },
+ "notes": [],
+ "scene": {
+  "dive04": [
+   5,
+   44
+  ],
+  "stairs": [
+   4,
+   49
+  ],
+  "mold": [
+   3,
+   49
+  ],
+  "summoned": "Brown mold"
+ },
+ "order_reply": "{\"ok\": true, \"goal\": \"dive 350ft\"}",
+ "stats": {
+  "hp_start": [
+   303,
+   303
+  ],
+  "hp_min": [
+   303,
+   303
+  ],
+  "attention": [
+   [
+    27.5,
+    "unique_slain",
+    "Fang, Farmer Maggot's dog slain at 7,48: uniques drop good items (look at 'Item squares' around ther"
+   ],
+   [
+    42.9,
+    "goal_done",
+    "dive 350ft: reached 350 ft"
+   ]
+  ],
+  "acts": [
+   [
+    16.3,
+    "custom >",
+    "stairs >"
+   ],
+   [
+    19.3,
+    "custom z item=14",
+    "dive: no stairs known: Door/Stair Location"
+   ],
+   [
+    42.5,
+    "custom >",
+    "stairs >"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-25 05:51:55",
+ "pass": true
+}
