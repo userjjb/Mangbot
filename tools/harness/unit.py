@@ -43,6 +43,7 @@ class W:
     inven_dirty = False
     level_t = 1.0
     pos = (20, 20)
+    recall_pending = False
 
     def __init__(self, hp=265, pack=(), worn=None, monsters=(), gold=172):
         self.hp = [hp, 265]
@@ -101,6 +102,7 @@ def pilot(w=None, **kw):
     p.notify = lambda what, d=None, news=False: p.notes.append((what, d))
     p.ability_seen_t = 0
     p.emerg_times = []
+    p.plan = None
     return p
 
 
@@ -761,6 +763,30 @@ def band_condition_only_while_live():
     moved = tp.holds(p)
     ok = fresh == "band" and still == "band" and beaten is None and moved is None and tp.events["band"] == 0
     return ok, f"just warned: {fresh}; 60 s on, 4 in view: {still}; beaten: {beaten}; on a new level: {moved}"
+
+
+@case
+def town_makes_room_before_buying():
+    """m30 06:34: plan town's Restore Dexterity buy failed twice on a full pack ("You cannot carry that many
+    items"), silently. A buy of a kind not in the pack, with no slot free: sell the cheapest unprotected item (or
+    destroy it if no shop buys it) first; with nothing to let go, say so."""
+    filler = [(f"a Dagger (1d4) (+{k},+0)", 23) for k in range(20)] + [("3 Rations of Food", 80),
+              ("9 Potions of Cure Critical Wounds", 75), ("3 Scrolls of Word of Recall", 70)]
+    p = pilot(pack=filler)
+    p.w.depth, p.w.depth_ft, p.w.in_dungeon = 0, 0, False
+    p.cmds = []
+    p.cmd = lambda line, why, hold=0.4: p.cmds.append(line)
+    p.c = type("C", (), {"send": lambda self, x: None})()
+    kit = P.TownKit("C")
+    buys = [(3, "Restore Dexterity", 5, 1, None)]
+    acted = p.town_make_room(kit, buys)
+    how = type(kit.sub).__name__ if kit.sub else (p.cmds[-1] if p.cmds else None)
+    roomy = pilot(pack=filler[:10])
+    roomy.w.depth, roomy.w.in_dungeon = 0, False
+    kit2 = P.TownKit("C")
+    no_need = roomy.town_make_room(kit2, buys)
+    ok = acted and how == "Shop" and "selling a Dagger" in " ".join(kit.done_log) and no_need is False
+    return ok, f"full pack: acted {acted} by {how} ({kit.done_log}); 10 items: acted {no_need}"
 
 
 def main():

@@ -1698,6 +1698,11 @@ class TownKit(Goal):
             if not self.queue:
                 buys, short = p.town_shopping(self.kit, self.buylist)
                 self.short = short
+                # room first: a buy into a full pack fails ("You cannot carry that many items": m30 lost its Restore
+                # Dexterity twice that way, silently)
+                if p.town_make_room(self, buys):
+                    self.t = now + 1.0
+                    return None
                 order = []
                 for tier, kind, store, n, cap in sorted(buys, key=lambda b: b[0]):
                     if store not in order:
@@ -6117,6 +6122,38 @@ class Pilot:
         if iv.kind is None or iv.value <= 0 or iv.value * self.pay_cut(iv.tval) < 1:
             return 0
         return it["number"]
+
+    PACK_SLOTS = 23
+
+    def town_make_room(self, kit, buys):
+        """Free the pack slots the buys need (kinds not in the pack yet): sell the cheapest item the policy doesn't
+        protect where a shop buys it, else destroy it. One item per call (letters shift). True if it acted."""
+        w = self.w
+        new = {kind for _, kind, _, n, _ in buys if n > 0 and self.kit_count(kind) == 0}
+        free = self.PACK_SLOTS - len(w.items())
+        if len(new) <= free:
+            return False
+        tries = kit.__dict__.setdefault("room_tries", 0)
+        cand = sorted(((self.pack_value(i), i) for i in w.items()), key=lambda vi: vi[0])
+        cand = [(v, i) for v, i in cand if v < float("inf")]
+        if not cand or tries >= 6:
+            if not kit.__dict__.get("room_said"):
+                kit.room_said = True
+                kit.done_log.append(f"pack full: no room for {', '.join(sorted(new))} (nothing the policy lets go)")
+            return False
+        kit.room_tries = tries + 1
+        v, it = cand[0]
+        store = (self.town_buyers(it) or [None])[0]
+        if store and v >= 1:
+            kit.sub = Shop(store, sells=[(it["item"], it["number"])])
+            kit.sub.role = "pilot"
+            kit.done_log.append(f"room for {', '.join(sorted(new))}: selling {it['name']}")
+        else:
+            self.c.send("confirm yes")
+            self.cmd(f"custom k item={it['item']} value={it['number']}", f"town kit: make room, destroy {it['name']}",
+                     hold=0.6)
+            kit.done_log.append(f"room for {', '.join(sorted(new))}: destroyed {it['name']}")
+        return True
 
     def provision_step(self, kit):
         """The town visit's last step: fill the lantern from the flasks bought for it (worn: it refuels the
