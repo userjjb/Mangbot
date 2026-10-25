@@ -108,7 +108,7 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
   to your HI.
 - **When to come home.** Pick conditions that leave a margin: `cures<4 or phase<5 or minutes>40` is a sane default
   at 500-1000 ft. Add `band` if bands keep forming at that depth. **`time>HH:MM` needs 2-3 minutes more** than the
-  recall itself: the recall takes 15-35 s, then the town visit (selling, buying, eating). In a mission of 45 minutes or
+  recall itself: the recall takes ~15 s (longer while hurt: the time bubble), then the town visit (selling, buying, eating). In a mission of 45 minutes or
   less, one long trip earns more than two: a second trip pays the recall and the arrival twice (m31-m34).
 - **Step in when the plan can't judge.** A summoner or a caster pack that hurts at range: `goal leave` before the
   plan's rules fire. `fight_going_badly` against 3+ monsters of level 13+: `goal leave` at once. A unique near your
