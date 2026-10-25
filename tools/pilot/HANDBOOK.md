@@ -107,7 +107,9 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
   1d6 weapon with 3 blows and AC ~30 struggled at 650-700 ft; go shallower until the gear improves. Set `max_depth`
   to your HI.
 - **When to come home.** Pick conditions that leave a margin: `cures<4 or phase<5 or minutes>40` is a sane default
-  at 500-1000 ft. Add `band` if bands keep forming at that depth.
+  at 500-1000 ft. Add `band` if bands keep forming at that depth. **`time>HH:MM` needs 2-3 minutes more** than the
+  recall itself: the recall takes 15-35 s, then the town visit (selling, buying, eating). In a mission of 45 minutes or
+  less, one long trip earns more than two: a second trip pays the recall and the arrival twice (m31-m34).
 - **Step in when the plan can't judge.** A summoner or a caster pack that hurts at range: `goal leave` before the
   plan's rules fire. `fight_going_badly` against 3+ monsters of level 13+: `goal leave` at once. A unique near your
   level with a pack: leave. A strange situation (repeated stuck, a level that keeps hurting you): leave or recall.
@@ -130,7 +132,9 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
   over ground it has walked, and set an avoid zone where it was (news). It flees the level or recalls only when
   walking away isn't safe (the user: spend resources only when you must).
 - **Stat drains** cost blows (STR, DEX) or HP (CON). Restore is ~480 at the Alchemist and levels never restore them.
-  Dart traps drain too, at any depth.
+  Dart traps drain too, at any depth. **Moaning spirits** (invisible, through walls) drain DEX at 600-650 ft: See
+  Invisible shows them, and without it the Pilot leaves a level where an unseen monster drains. Restore Dexterity
+  is sometimes out of stock (m32): when blows matter, a spare one in the pack is worth its price.
 - **Packs that breathe or cast**, a capital `D`, pits and vaults: leave. Inner rooms are ordinary only when lit.
 - **Never go down without 2 Words of Recall**: one to go, one to come home. A recall arrival has no stairs underfoot.
 
@@ -140,6 +144,8 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
   groups are fought (and looted) where they stand. **Dark inner rooms** get an avoid zone over their ring corridor (a
   pit looks the same until it opens): `avoid clear` if you mean to open one.
 
+- **TIME FROZEN** in a report means the Architect froze the test server's time (to load a Pilot change or look at
+  something): the Pilot holds and nothing happens in the game. Just `wait`; it never counts against you.
 - `parked` means the Pilot is updating. "Connection refused" for a minute or two is normal: wait 20 s and retry, then
   `status` (a plan survives the restart). After a fight, first check whether the character died.
 - **At 50% HP or below the server runs your game time at 1/5** (the time bubble): a fight there gives you 5x the wall
