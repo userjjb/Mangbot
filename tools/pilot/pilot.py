@@ -1677,8 +1677,10 @@ class TownKit(Goal):
                 self.stage = "identify"
         if self.stage == "identify":
             # an Identify scroll for each unknown worth more than one, within the gold
-            # that the essentials leave
-            r = p.identify_step(now, minimum=2 * p.price_of("Identify", 5))   # (m24: 3 scrolls when poor)
+            # that the essentials leave (m24: 3 scrolls when poor). Scrolls in hand are read at the idle
+            # tactic's threshold, here: m32's plan replied "identified 0" and the idle tactic then read the
+            # leftover scroll on the Oak Staff the Navigator was about to identify
+            r = p.identify_step(now)
             if r:
                 self.identified += r is True        # ("light": it put the lantern on first)
                 self.t = now + 1.0
@@ -3733,8 +3735,18 @@ class Pilot:
                     if mm["n"] <= 0:
                         self.mons_mem = {n: v for n, v in self.mons_mem.items() if v is not mm}
         self.belief_msg_t = max([self.belief_msg_t] + [ts for ts, _ in w.messages])
+        self.track_gains(now)
+
+    def track_gains(self, now):
+        # gold found: rises in the dungeon only (the Rates line counted purchases and sales; the scorecard's
+        # gold_found, the same way)
+        w = self.w
+        g = w.ind.get("gold", [0])[0]
+        if w.in_dungeon and g > self.__dict__.get("gold_last", g):
+            self.gold_found = self.__dict__.get("gold_found", 0) + g - self.gold_last
+        self.gold_last = g
         if not self.gain_hist or now - self.gain_hist[-1][0] >= 15:
-            self.gain_hist.append((now, (w.ind.get("exp") or [0])[0], w.ind.get("gold", [0])[0]))
+            self.gain_hist.append((now, (w.ind.get("exp") or [0])[0], g, self.__dict__.get("gold_found", 0)))
 
     def belief_lines(self):
         """The report's belief-state lines: threats out of view, the fight so far, rates,
@@ -3773,15 +3785,18 @@ class Pilot:
         bits = []
         if hh and hh[0][1] - w.hp[0] > 0.05 * max(1, w.hp[1]):
             bits.append(f"HP -{hh[0][1] - w.hp[0]} in the last {now - hh[0][0]:.0f} s")
-        old = next(((t, e, g) for t, e, g in self.gain_hist if now - t <= 600), None)
+        found = self.__dict__.get("gold_found", 0)
+        old = next((h for h in self.gain_hist if now - h[0] <= 600), None)
         if old and now - old[0] > 60:
             de = (w.ind.get("exp") or [0])[0] - old[1]
             dg = w.ind.get("gold", [0])[0] - old[2]
-            bits.append(f"XP {de:+d}, gold {dg:+d} in the last {(now - old[0]) / 60:.0f} min")
+            bits.append(f"XP {de:+d}, gold found {found - old[3]:+d} (net {dg:+d}, with shopping) in the last "
+                        f"{(now - old[0]) / 60:.0f} min")
         mb = getattr(self, "mission_base", None)
         if mb and getattr(self, "mission_label", None):
-            bits.append(f"this mission: XP {(w.ind.get('exp') or [0])[0] - mb[1]:+d}, gold "
-                        f"{w.ind.get('gold', [0])[0] - mb[2]:+d} in {(now - mb[0]) / 60:.0f} min")
+            bits.append(f"this mission: XP {(w.ind.get('exp') or [0])[0] - mb[1]:+d}, gold found "
+                        f"{found - (mb[3] if len(mb) > 3 else 0):+d} (net {w.ind.get('gold', [0])[0] - mb[2]:+d}) "
+                        f"in {(now - mb[0]) / 60:.0f} min")
         if bits:
             out.append("Rates: " + "; ".join(bits))
         if w.in_dungeon:
@@ -5860,7 +5875,8 @@ class Pilot:
             if args[0] == "start":
                 self.mission_label = label
                 # (the report's mission total: m25's Navigator had only the 10-minute rates)
-                self.mission_base = (gnow(), (self.w.ind.get("exp") or [0])[0], self.w.ind.get("gold", [0])[0])
+                self.mission_base = (gnow(), (self.w.ind.get("exp") or [0])[0], self.w.ind.get("gold", [0])[0],
+                                     self.__dict__.get("gold_found", 0))
                 self.log("mission_start", label=label, **kv)
                 ms = [m for m in ms if m.get("label") != label] + [
                     {"label": label, "nick": nick, "start": stamp, "end": None, "navigator": kv.get("navigator"),
@@ -6365,6 +6381,9 @@ class Pilot:
                  "Magic Shop": 6, "Black Market": 7,
                  # (the rulebook's shop_stock.csv names)
                  "General Store": 1, "Weaponsmith": 3, "Alchemy shop": 5, "Magic-User store": 6, "Black market": 7}
+    # (`plan town`'s forecast said "2 Word of Recall at 5", which read like a price)
+    STORE_LABEL = {1: "General Store", 2: "Armoury", 3: "Weaponsmith", 4: "Temple", 5: "Alchemist", 6: "Magic Shop",
+                   7: "Black Market"}
     # who buys what (store.c store_will_buy), best first; never the Black Market (it pays a third)
     BUYERS = {80: (1,), 39: (1,), 77: (1,), 16: (1, 3), 17: (1, 3), 18: (1, 3), 20: (3, 1), 35: (2, 1),
               30: (2,), 31: (2,), 32: (2,), 33: (2,), 34: (2,), 36: (2,), 37: (2,), 38: (2,),
@@ -6890,7 +6909,8 @@ class Pilot:
         self.set_goal(g)
         buys, short = self.town_shopping(kit, buylist)
         return {"ok": True, "goal": g.describe(),
-                "note": "will buy (by the prices last seen): " + (", ".join(f"{n} {k} at {st}" for _, k, st, n, _ in buys)
+                "note": "will buy (by the prices last seen): " + (", ".join(f"{n} {k} at the {self.STORE_LABEL.get(st, st)} ({st})"
+                                                                           for _, k, st, n, _ in buys)
                                                                  or "nothing") +
                         (("; can't afford yet: " + ", ".join(f"{n} {k}" for k, n in short)) if short else "") +
                         " (selling first may change this)"}

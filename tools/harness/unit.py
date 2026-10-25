@@ -1090,6 +1090,47 @@ def ability_armour_kept():
     return ok, f"over the Leather of Resistance: {res}; over plain leather: {plain!r}"
 
 
+@case
+def town_identifies_scrolls_in_hand():
+    """m32 08:07: plan town replied "identified 0" (its threshold was twice a scroll's price), then the idle tactic
+    (20 gold) read the leftover scroll on the Oak Staff the Navigator was about to identify. The plan now reads
+    scrolls in hand at the idle threshold before it replies."""
+    p = pilot(pack=[("a Scroll of Identify", 70), ("an Oak Staff", 55)],
+              worn=[("a Spear (1d6) (+5,+7)", 22, 50), ("a Brass Lantern", 39, 50)])
+    p.w.depth, p.w.depth_ft, p.w.in_dungeon = 0, 0, False
+    p.busy_until, p.pending_use = 0.0, None
+    p.price_of = lambda kind, store: 80
+    p.unknown_flavour = lambda it: False
+    staff = p.w.items()[1]
+    p.identify_candidates = lambda minimum: [(50, staff)] if 50 >= minimum else []
+    p.cmds = []
+    p.cmd = lambda line, why, hold=0.4: p.cmds.append(why)
+    kit = P.TownKit()
+    kit.stage = "identify"
+    kit.tick(p)
+    ok = kit.identified == 1 and p.cmds == ["identify an Oak Staff (policy)"]
+    return ok, f"identified {kit.identified}, commands {p.cmds}"
+
+
+@case
+def rates_gold_found_not_shopping():
+    """The Rates line counted purchases as gold (a town visit read as gold lost); gold found counts rises in the
+    dungeon only, and the net change is shown beside it."""
+    p = pilot(gold=1000)
+    p.gain_hist = collections.deque(maxlen=80)
+    p.w.hp_hist = []
+    p.avoid_names, p.avoid_zones, p.standing = set(), {}, []
+    t0 = P.gnow()
+    steps = [(-200, True, 1000), (-190, True, 1300), (-170, False, 1300), (-150, False, 700), (-100, True, 750)]
+    for dt, dun, g in steps:
+        p.w.in_dungeon, p.w.ind["gold"] = dun, [g]
+        p.track_gains(t0 + dt)
+    p.w.in_dungeon = False
+    line = next((l for l in p.belief_lines() if l.startswith("Rates:")), "")
+    ok = p.gold_found == 350 and "gold found +350 (net -250" in line
+    return ok, f"found {p.gold_found}; {line}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0
