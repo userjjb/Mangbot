@@ -235,34 +235,82 @@ def escape_move(st, crowd):
     return any(use(st, it) for it in order)
 
 
+POLICY_VERSION = "pilot-escape-2026-10-25b"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
+
+
+def worst_turn(st, adj):
+    """The adjacent monsters' worst melee in one of our turns (Pilot: worst_3turns / 3): max blows x their rounds per turn."""
+    return sum(m.melee_max * max(1.0, m.sx / speed_energy(st) / 2) for m in adj)
+
+
 def base_policy(st):
-    """The Pilot's emergency rules (10-25) with the four fixes."""
+    """The Pilot's rules (POLICY_VERSION). Emergency = HP < 50% or the adjacent worst turn >= 1/3 of HP:
+    escape() order: one turn from death -> Teleportation, else Phase; Speed first; Word of Recall below 30% HP; phasing
+    futile (3 phases, still adjacent) -> recall; kill a summoner/status caster that dies in 2 rounds; 4+ about (not
+    stationary, within 5) in the open -> Teleportation/staff; Phase; out of melee: stairs within 20, else cure (none with
+    2+ adjacent). Outside emergencies: status cure (blind/confused, CLW first) when threatened; fear cure (Heroism >
+    Berserk) when afraid with something adjacent; Berserk at the start of a hard melee; else fight."""
     p = st.p
     adj = [m for m in st.mons if m.dist <= 1]
-    near = sum(1 for m in st.mons if m.dist <= 3)
-    worst = sum(m.melee_max for m in adj)
-    in_danger = adj and worst >= 0.9 * p["hp"]
-    if (st.blind or st.confused) and (in_danger or p["hp"] < 0.5 * p["mhp"]):
-        for c in ("clw", "csw", "ccw"):                       # status cure first, then read
-            if use(st, c):
+    can_read = not st.blind and not st.confused
+    worst = worst_turn(st, adj)
+    emergency = p["hp"] < 0.5 * p["mhp"] or (adj and 3 * worst >= p["hp"])
+    if emergency:
+        if st.stairs is not None and st.stairs <= 0:
+            st.escaped = "stairs"
+            return
+        one_turn = bool(adj) and worst >= 0.9 * p["hp"]
+        if one_turn and can_read and (use(st, "tele") or use(st, "phase")):
+            st.last_phase = st.block
+            return
+        if not one_turn and not st.fast and st.block - getattr(st, "speed_at", -99) >= 30 and use(st, "speed"):
+            st.speed_at = st.block
+            return
+        if p["hp"] < 0.3 * p["mhp"] and can_read and st.recall is None and use(st, "wor"):
+            return
+        phases = [b for b in getattr(st, "phase_hist", []) if st.block - b <= 30]
+        if adj and len(phases) >= 3 and p["hp"] >= 0.2 * p["mhp"] and st.recall is None and can_read and use(st, "wor"):
+            return
+        casters = [m for m in adj if m.caster and m.hp <= 2 * our_damage_per_turn(st, m)]
+        if casters and not st.afraid and attack(st, min(casters, key=lambda m: m.hp)):
+            return
+        crowd = sum(1 for m in st.mons if m.dist <= 5 and "NEVER_MOVE" not in m.flags)
+        in_corridor = p.get("max_adj", 8) <= 2
+        if adj and crowd >= 4 and not in_corridor and (
+                (can_read and use(st, "tele")) or use(st, "staff")):
+            return
+        collapsing = p["hp"] < 0.35 * p["mhp"]
+        if adj and can_read and (st.block - getattr(st, "last_phase", -99) >= 4 or collapsing) and use(st, "phase"):
+            st.last_phase = st.block
+            st.phase_hist = phases + [st.block]
+            return
+        if not adj:
+            if st.stairs is not None and st.stairs <= 20:
+                st.stairs -= 1
+                if st.stairs <= 0:
+                    st.escaped = "stairs"
                 return
-    if in_danger and escape_move(st, near):
-        return
-    if adj and not st.fast and (len(adj) >= 2 or st.slow) and use(st, "speed"):
-        return
-    if p["hp"] < 0.5 * p["mhp"]:
-        if len(adj) >= 2:                                     # fix 1: no HP cures with 2+ adjacent
-            if escape_move(st, near):
-                return
-        else:
             for c in ("ccw", "csw", "clw"):
                 if use(st, c):
                     return
-    if st.stairs is not None and st.stairs <= 1 and p["hp"] < 0.5 * p["mhp"]:
-        st.escaped = "stairs"
-        return
-    if adj and not st.berserk and (any(m.unique or m.rl >= p["clvl"] - 5 for m in adj)
-                                   or (len(adj) >= 2 and p["hp"] < 0.75 * p["mhp"])) and use(st, "berserk"):
+            return
+        if len(adj) <= 1:
+            for c in ("ccw", "csw", "clw"):
+                if use(st, c):
+                    return
+    threatened = adj and (p["hp"] < 0.5 * p["mhp"] or any(m.rl >= p["clvl"] - 5 for m in adj))
+    if (st.blind or st.confused) and threatened:
+        for c in ("clw", "csw", "ccw"):
+            if use(st, c):
+                return
+    if st.afraid and adj:
+        for c in ("hero", "berserk"):
+            if use(st, c):
+                return
+    if adj and not st.berserk and st.block - getattr(st, "berserk_at", -99) >= 30 and (
+            any(m.unique or m.rl >= p["clvl"] - 5 for m in adj if "NEVER_MOVE" not in m.flags)
+            or (len(adj) >= 2 and p["hp"] < 0.75 * p["mhp"])) and use(st, "berserk"):
+        st.berserk_at = st.block
         return
     attack(st)
 

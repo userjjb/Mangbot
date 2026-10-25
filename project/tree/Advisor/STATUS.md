@@ -34,7 +34,10 @@ Architect builds everything else.
 5. **Step 5:** run the scorecard on each new mission vs the m17–23 baseline; Opus vs Sonnet by depth band (m22–23 were Sonnet;
    `data/navigator/response.py` has the missions list; production `scorecard.py` reads `runs/missions.json` which records the model).
 5a. **Estimator**: memo 10-25 + replay/calibration memo 10-25 (`2026-10-25-replay.md`); user: no freeze per decision; Architect adds
-   the 4 rule fixes + 21x21 map windows in emergency records. Next if asked: shadow-mode review; grid version once asleep flag + windows exist.
+   the 4 rule fixes + 21x21 map windows in emergency records. **Shadow mode ON (10-25):** the Pilot imports
+   `data/estimator/options_sim.py` LIVE (shadow.py -> choose(p, team, n=40)) — treat it as an interface: keep choose()'s signature,
+   keep base_policy = pilot.py escape()/berserk_tick/fear_cure (POLICY_VERSION), edit via a copy + mv, and tell the Architect
+   before changes. Next: review `estimator` records in decisions.jsonl from m35 on; XP_PER_GOLD knob offered to the user.
 5b. **m27** (Opus, kit forged to m26's start, Pilot after m26 fixes): first same-Pilot Opus vs Sonnet comparison; score it vs m26 when done.
    Arrival feelings now logged (`arrival_feeling` in decisions; `feeling:` in dump headers): later, measure P(pit/nest | special) on scummed levels.
 5c. Next rulebook build: add constants.csv rows for Hero/Berserk (to_h +12/+24, AC -10, mhp +10/+30 rescaled, res_fear),

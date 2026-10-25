@@ -3541,7 +3541,7 @@ class Pilot:
             if w.pos else None
         p = dict(hp=w.hp[0], mhp=w.hp[1], ac=(w.ind.get("armor") or [0])[0] or 0, clvl=w.clvl,
                  depth=w.depth or 1, stairs=stairs, free_action=bool(self.has_ability("free_action")),
-                 save=sh.sim.SAVE, max_adj=shadow.MAX_ADJ, **prof,
+                 save=sh.sim.SAVE, max_adj=2 if self.mover.in_corridor() else shadow.MAX_ADJ, **prof,
                  inv=dict(ccw=n("Cure Critical", TV_POTION), csw=n("Cure Serious", TV_POTION),
                           clw=n("Cure Light", TV_POTION), phase=n("Phase Door", TV_SCROLL),
                           tele=n("Teleportation", TV_SCROLL), staff=int(m.group(1)) if m else 0,
@@ -3583,7 +3583,9 @@ class Pilot:
                      choice=r.get("choice"), why=r.get("why"), agree=agree,
                      compute_s=r.get("compute_s"), turn_s=round(turn_s, 2), in_time_turn=in_turn,
                      before_next_act=before_next, next_act_after_s=round(nxt - snap["wall"], 2) if nxt else None,
-                     team=r.get("team"), p=r.get("p"), inv=r.get("inv"), table=r.get("table"), error=r.get("error"))
+                     team=r.get("team"), p=r.get("p"), inv=r.get("inv"), table=r.get("table"), error=r.get("error"),
+                     policy_version=getattr(sh.sim, "POLICY_VERSION", None), max_adj=(r.get("p") or {}).get("max_adj"),
+                     arrivals=[])
 
     def recall_memory(self):
         """A pending Word of Recall survives a Pilot restart in the game but not in our memory (the client only says
