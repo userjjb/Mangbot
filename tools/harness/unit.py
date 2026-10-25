@@ -1295,6 +1295,24 @@ def flee_at_max_depth_teleports():
     return ok, f"with the staff: {staff}; without: {none}"
 
 
+@case
+def fullest_lantern_worn():
+    """m39: '"0 turns" not in name' skipped the 13290-turn lantern (it ends in "0 turns"), the recall's light-on wore
+    the 4383-turn one, and lantern_fuel (the max of all) hid it from the top-up; the worn one ran down to ~700 turns
+    with the spare carried. The fullest is worn; a low worn lantern with no oil swaps to a fuller spare."""
+    lamps = [("a Brass Lantern (with 4383 turns of light)", 39), ("a Brass Lantern (with 13290 turns of light)", 39)]
+    p = pilot(pack=lamps)
+    best = p.best_light()["name"]
+    q = pilot(worn=[("a Brass Lantern (with 700 turns of light)", 39, 50)], pack=lamps[1:])
+    q.light_t = q.busy_until = 0.0
+    q.cmds = []
+    q.cmd = lambda line, why, hold=0.4: q.cmds.append(why)
+    q.keep_light(P.gnow())
+    fuel = q.lantern_fuel()
+    ok = "13290" in best and q.cmds and "swap to the fuller lantern" in q.cmds[0] and fuel == 700
+    return ok, f"best {best}; low worn: {q.cmds}; fuel read {fuel}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

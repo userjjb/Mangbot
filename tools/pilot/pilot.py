@@ -1166,7 +1166,9 @@ class Recall(Goal):
             # No light, no reading (mission 13: at night in town the light was off
             # for idling, and the read failed with "You have no light to read by")
             if not any(i["tval"] == TV_LITE for i in w.items(equip=True)):
-                lite = next((i for i in w.items(tval=TV_LITE) if "0 turns" not in i["name"]), None)
+                # (the fullest: '"0 turns" not in' skipped m39's 13290-turn lantern -- it ends in "0 turns" -- and
+                # lit the 4383-turn one, which ran low mid-trip)
+                lite = p.best_light()
                 if lite and waited(self.light_t, 2):
                     self.light_t = gnow()
                     p.light_t = gnow() + 30      # (town_light: don't take it off again)
@@ -5385,6 +5387,14 @@ class Pilot:
             if flask:
                 self.cmd(f"custom F item={flask['item']}", f"refill lantern ({turns} turns left)", hold=0.6)
                 return True
+            # a fuller lantern in the pack (m39 ran its worn one down to ~700 turns with a 13290-turn spare carried)
+            spare = self.best_light()
+            if spare and self.light_left(spare) > turns + 1000:
+                self.cmd(f"custom w item={spare['item']}", f"swap to the fuller lantern ({turns} turns left on the "
+                                                           f"worn one)", hold=0.6)
+                self.notify("tactic", f"lantern at {turns} turns: swapped to the spare ({self.light_left(spare)} turns)",
+                            news=True)
+                return True
             self.warn_light("lantern out" if turns == 0 else "lantern low",
                             f"lantern at {turns} turns and no flasks of oil")
         elif worn and "Torch" in worn["name"] and turns is not None and turns < 500:
@@ -5401,10 +5411,7 @@ class Pilot:
             self.warn_light("torch out" if turns == 0 else "torch low",
                             f"torch at {turns} turns and no fresher torch: buy torches or a lantern")
         elif not worn and w.depth != 0:
-            def light_left(i):
-                t = re.search(r"with (\d+) turns", i["name"])
-                return int(t.group(1)) if t else (1 if "Lantern" in i["name"] else 0)
-            spare = max((i for i in w.items(tval=TV_LITE) if light_left(i) > 0), key=light_left, default=None)
+            spare = self.best_light()
             if spare:
                 self.cmd(f"custom w item={spare['item']}", "wield a light", hold=0.6)
                 return True
@@ -5426,13 +5433,19 @@ class Pilot:
                 return True
         return False
 
+    @staticmethod
+    def light_left(i):
+        t = re.search(r"with (\d+) turns", i["name"])
+        return int(t.group(1)) if t else (1 if "Lantern" in i["name"] else 0)
+
+    def best_light(self):
+        """The light in the pack with the most fuel left (not a burnt-out one), or None."""
+        return max((i for i in self.w.items(tval=TV_LITE) if self.light_left(i) > 0), key=self.light_left, default=None)
+
     def wear_light(self, why):
         """Put the best light in the pack on (reading needs one: the Pilot takes it
         off in town). True if it acted."""
-        def left(i):
-            t = re.search(r"with (\d+) turns", i["name"])
-            return int(t.group(1)) if t else (1 if "Lantern" in i["name"] else 0)
-        lite = max((i for i in self.w.items(tval=TV_LITE) if left(i) > 0), key=left, default=None)
+        lite = self.best_light()
         if not lite:
             return False
         self.light_t = gnow() + 60         # (town_light leaves it on meanwhile)
@@ -6545,9 +6558,12 @@ class Pilot:
 
     def lantern_fuel(self):
         """Turns of fuel in the lantern (worn, else the best in the pack), or None without one."""
-        lamps = [i for i in self.w.items(equip=True) + self.w.items() if "Lantern" in i["name"]]
-        fuels = [int(m.group(1)) for i in lamps for m in [re.search(r"with (\d+) turns", i["name"])] if m]
-        return max(fuels) if fuels else None
+        def fuels(items):
+            return [int(m.group(1)) for i in items if "Lantern" in i["name"]
+                    for m in [re.search(r"with (\d+) turns", i["name"])] if m]
+        worn = fuels(self.w.items(equip=True))      # (not the max of all: a full spare hid a half-empty worn one, m39)
+        pack = fuels(self.w.items())
+        return worn[0] if worn else max(pack) if pack else None
 
     def trip_minutes_left(self):
         """How soon this trip should end, in minutes, or None if nobody knows: a Word of Recall under way;
@@ -6683,6 +6699,14 @@ class Pilot:
         light in hand), then eat rations until Full (at most 3). True if it acted."""
         w = self.w
         fuel = self.lantern_fuel()
+        # the fuller lantern on first (m39 left town with 4383 turns worn and 13290 in the pack)
+        spare = self.best_light()
+        if fuel is not None and spare and self.light_left(spare) > fuel + 1000 and \
+                any(i["tval"] == TV_LITE for i in w.items(equip=True)) and not kit.__dict__.get("swapped"):
+            kit.swapped = True
+            self.cmd(f"custom w item={spare['item']}", f"town kit: wear the fuller lantern ({self.light_left(spare)} "
+                                                       f"turns vs {fuel})", hold=0.8)
+            return True
         flask = next((i for i in w.items(tval=TV_FLASK)), None)
         if fuel is not None and fuel < self.FUEL_TOPUP and flask and kit.__dict__.get("fuelled", 0) < 3:
             worn = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
