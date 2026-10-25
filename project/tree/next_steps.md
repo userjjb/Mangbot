@@ -233,6 +233,14 @@ frozen (no wait for the thaw); Dive04 resumes in place (same square, HP, monster
 after the thaw. **H1r found a bug, fixed:** a pending recall survived in the game but not in the new Pilot's memory, and
 the resumed plan read a second scroll, cancelling it -- now kept in `runs/pilot/NICK/recall.json` (`recall_memory`).
 **Hot swap is now the way to load Pilot changes mid-mission** (`tools/pilot/hotswap.sh Dive04`).
+**Estimator memo (the Advisor, 10-25): the user approved its calibration replay; no time freeze per decision (it must
+work live).** Its four rule fixes, built and loaded 11:40: Word of Recall and Teleportation never resent (8 s for an
+answer, then give up); the Navigator's second escape within 3 s refused (`force` overrides); an adjacent summoner or
+status caster that dies in 2 rounds is attacked first (`kill_caster_step`); Teleportation (scroll, or the staff) over
+Phase Door with 4+ about in the open; with 2+ adjacent no HP cure (read an escape; blind/confused: cure that first).
+Emergency attention records now carry a 21x21 remembered map (`map21`, `map_at`, `mons`) for the replay. Unit
+`estimator_memo_rules`; live A6, M4 PASS, but no live emergency reached the new rules (the Pilot beat or escaped
+the staged crowds first).
 **Baseline matrix done (m31-m34, 07:42-09:29):** summary `runs/pilot/dive04/reports/2026-10-25-matrix-m31-m34.md`.
 Cost is clear (Opus high $0.85, Opus medium $0.43, Sonnet $0.13-0.15 per 30 min); XP (16-54/dmin) is dominated by
 level luck and Pilot problems at n=1 per cell, with the Pilot changed after m32 and Free Action + See Invisible found

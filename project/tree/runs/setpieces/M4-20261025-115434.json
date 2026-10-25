@@ -1,0 +1,67 @@
+{
+ "id": "M4",
+ "tag": "M4-20261025-115434",
+ "depth_ft": 450,
+ "start": "2026-10-25 11:54:34",
+ "checks": {
+  "no HP cure with 2+ adjacent": {
+   "pass": true,
+   "detail": "[]"
+  },
+  "teleport, not Phase Door, with 4+ about": {
+   "pass": true,
+   "detail": "phases with 4+ near: []; teleports at []"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [297, 310]"
+  }
+ },
+ "notes": [
+  "Dive04 isn't on Gandalf's level (0 ft): it left before the scene was set",
+  "Dive04 isn't on Gandalf's level (0 ft): it left before the scene was set",
+  "Dive04 isn't on Gandalf's level (0 ft): it left before the scene was set",
+  "Dive04 isn't on Gandalf's level (0 ft): it left before the scene was set",
+  "Dive04 isn't on Gandalf's level (0 ft): it left before the scene was set"
+ ],
+ "stats": {
+  "hp_start": [
+   310,
+   310
+  ],
+  "hp_min": [
+   297,
+   310
+  ],
+  "attention": [
+   [
+    3.7,
+    "danger_seen",
+    "Umber hulk (confuses with its blows (no save)) in view: heading for the stairs"
+   ],
+   [
+    3.7,
+    "goal_failed",
+    "flee (Umber hulk): no stairs known"
+   ],
+   [
+    3.7,
+    "emergency",
+    "couldn't reach the stairs with 3 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ]
+  ],
+  "acts": [
+   [
+    3.7,
+    "custom r item=7",
+    "flee failed with monsters close: word of recall"
+   ]
+  ],
+  "emergencies": 1,
+  "phase_reads": 0,
+  "wor_reads": 1,
+  "cures": 0
+ },
+ "end": "2026-10-25 11:57:33",
+ "pass": true
+}

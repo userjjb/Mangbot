@@ -1,0 +1,22 @@
+idx,mission,hp0,mhp,monsters,inv,best,best_safe,best_near,best_low10,best_xp,best_gold,rules_safe,rules_near,rules_low10,rules_xp,rules_gold,second,seconds
+0,m17,160,177,17,ccw3 csw5 clw5 phase11 tele1 wor1 hero5 ,ccw,True,0.0,75.0,135,232,True,0.0,72.0,128,115,phase+ccw,0.9
+1,m18,199,215,1,ccw2 csw4 clw3 phase8 tele1 wor1 hero5 ,rules,True,0.0,189,10,0,True,0.0,189,10,0,fight,0.16
+3,m18,198,215,21,ccw3 csw4 phase7 tele1 wor1 hero5 ,ccw,True,0.0,99.0,112,202,True,0.0,96.0,98,46,phase+ccw,0.91
+4,m19,178,220,4,ccw4 csw2 clw5 phase8 tele1 wor1 hero5 ,phase+ccw,True,0.0,101.5,86,221,True,0.0,97.0,77,55,ccw,0.47
+6,m22,210,233,37,ccw6 csw4 clw5 phase10 tele1 wor1 hero5 ,rules,True,0.0,141,111,0,True,0.0,141,111,0,fight,2.33
+7,m22,221,241,17,ccw6 csw3 clw4 phase7 tele1 wor1 hero5 ,ccw,True,0.0,102.5,88,202,True,0.0,106.0,83,42,rules,0.99
+8,m22,167,241,33,ccw5 csw3 clw4 phase6 tele1 wor1 hero5 ,ccw,True,0.0,123,59,165,True,0.0,113.5,52,57,phase+ccw,0.63
+9,m22,224,241,20,ccw6 csw3 clw4 phase10 wor2 hero5 ,rules,True,0.0,93.0,93,482,True,0.0,93.0,93,482,fight,1.99
+10,m22,220,241,32,ccw7 csw5 clw4 phase10 wor2 hero4 ,recall+phase,False,0.1,31,52,541,False,0.15,12.5,60,654,phase+ccw,3.24
+11,m22,226,246,18,ccw6 csw4 clw2 phase8 wor1 hero4 ,rules,True,0.0,113,292,135,True,0.0,113,292,135,fight,1.31
+12,m22,223,236,27,ccw6 csw4 clw2 phase7 wor1 hero4 ,phase,True,0.0,83.0,131,369,True,0.0,84.0,129,425,phase+ccw,2.63
+14,m23,237,254,13,ccw6 csw2 clw1 phase10 wor2 ,rules,True,0.0,96.5,138,474,True,0.0,96.5,138,474,fight,1.42
+15,m24,239,265,9,ccw5 csw2 clw2 phase10 wor1 ,rules,True,0.0,117.5,115,142,True,0.0,117.5,115,142,fight,1.07
+25,m26,267,270,4,ccw7 csw4 phase11 wor4 speed4 berserk1 hero6 ,rules,True,0.0,148.5,228,196,True,0.0,148.5,228,196,fight,0.86
+32,m26,257,283,20,ccw7 csw4 phase10 wor1 speed4 berserk1 hero5 ,phase,True,0.0,151.0,159,261,True,0.0,150,150,240,phase+ccw,2.09
+33,m27,268,283,8,ccw7 csw4 phase11 wor2 speed4 berserk1 hero6 ,speed+berserk,True,0.0,246,189,175,True,0.0,204,188,98,rules,0.88
+36,m28,263,288,12,ccw6 csw4 phase17 wor2 speed2 berserk1 hero6 ,fight,True,0.0,174.5,150,181,True,0.0,191.0,146,171,berserk,1.22
+37,m29,208,288,1,ccw11 csw4 phase18 wor2 speed2 berserk1 hero6 ,rules,True,0.0,180,12,0,True,0.0,180,12,0,fight,0.26
+38,m29,265,288,1,ccw9 csw4 phase18 wor2 speed2 berserk1 hero6 ,rules,True,0.0,245,20,0,True,0.0,245,20,0,fight,0.15
+41,m30,303,303,32,ccw15 csw4 phase20 tele2 wor2 speed3 berserk1 hero7 ,speed,True,0.02,137.5,291,240,True,0.02,117.5,197,221,speed+berserk,1.48
+43,m32,290,313,2,ccw15 csw4 phase21 wor2 speed3 hero6 ,speed,True,0.0,147,170,124,True,0.0,125.0,116,752,speed+berserk,0.8

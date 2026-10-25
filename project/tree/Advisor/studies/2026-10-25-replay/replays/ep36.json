@@ -1,0 +1,3526 @@
+{
+"idx": 36,
+"mission": "m28",
+"depth_ft": 650,
+"level_dump": "20261024-052808-650ft.txt",
+"t0": 1792834261.662,
+"t_trigger": 1792834271.0,
+"t_end": 1792834332.0,
+"t0_rule": "latest of last HP>=90% max (A=05:31:01) and last mons record with none within 2 squares (B=05:30:42) within 60 s before trigger",
+"player": {
+"pos": [
+42,
+52
+],
+"hp": 263,
+"mhp": 288,
+"clvl": 24,
+"ac": 61,
+"status": {
+"slow": false,
+"fast": false,
+"hero": false,
+"berserk": false,
+"blind": false,
+"confused": false,
+"afraid": false,
+"poisoned": false,
+"paralyzed": false
+},
+"free_action": null,
+"see_invisible": null
+},
+"inventory": {
+"ccw": 6,
+"csw": 4,
+"clw": 0,
+"phase": 17,
+"tele": 0,
+"staff_tele": 0,
+"wor": 2,
+"speed": 2,
+"berserk": 1,
+"hero": 6,
+"boldness": 1,
+"magic_mapping": 3,
+"door_stair_rod": 1
+},
+"inventory_source": "state.jsonl inven at 05:31:01 (game clock; +1 s from t0, approx)",
+"inventory_raw": [
+"5 Rations of Food {for sale 200}",
+"5 Flasks of oil",
+"a Potion of Boldness",
+"2 Potions of Speed {for sale 200}",
+"6 Potions of Heroism {for sale 200}",
+"a Potion of Berserk Strength",
+"4 Potions of Cure Serious Wounds {for sale 200}",
+"6 Potions of Cure Critical Wounds {for sale 200}",
+"a Scroll of Aggravate Monster",
+"17 Scrolls of Phase Door {for sale 200}",
+"2 Scrolls of Word of Recall {@R650}",
+"3 Scrolls of Magic Mapping {75% off}",
+"4 Scrolls of Satisfy Hunger {50% off}",
+"a Rod of Door/Stair Location",
+"a Staff of Probing (3 charges)",
+"an Ivory Staff",
+"a Ring of Sustain Strength",
+"a Brass Lantern (with 290 turns of light)",
+"a Pair of Hard Leather Boots [3] {average}",
+"a Quarterstaff (1d9) {average}",
+"a Spear (1d6) (+4,+6)",
+"a Ring of Resist Cold",
+"a Ring of Protection [+8]",
+"a Brass Lantern (with 8549 turns of light)",
+"Hard Studded Leather of Resistance (-1) [7,+8]",
+"a Shadow Cloak [6,+5]",
+"an Orcish Shield [5,+5] (+1)",
+"an Iron Helm [5,-1]",
+"a Set of Gauntlets [2,+0]",
+"a Pair of Metal Shod Boots [6,+3] {good - Brodda, the Easterling}"
+],
+"monsters_t0": [
+{
+"name": "Snaga",
+"y": 42,
+"x": 49,
+"dist": 3
+},
+{
+"name": "Black orc",
+"y": 42,
+"x": 50,
+"dist": 2
+},
+{
+"name": "Black orc",
+"y": 42,
+"x": 51,
+"dist": 1
+},
+{
+"name": "Uruk",
+"y": 42,
+"x": 53,
+"dist": 1
+},
+{
+"name": "Cave orc",
+"y": 43,
+"x": 49,
+"dist": 3
+},
+{
+"name": "Snaga",
+"y": 43,
+"x": 50,
+"dist": 2
+},
+{
+"name": "Black orc",
+"y": 43,
+"x": 51,
+"dist": 1
+}
+],
+"arrivals": [
+{
+"t": 1792834262.674,
+"name": "Hill orc",
+"y": 43,
+"x": 49,
+"dist": 3
+},
+{
+"t": 1792834267.761,
+"name": "Cave orc",
+"y": 43,
+"x": 49,
+"dist": 3
+},
+{
+"t": 1792834270.807,
+"name": "Cave orc",
+"y": 42,
+"x": 51,
+"dist": 1
+},
+{
+"t": 1792834276.926,
+"name": "Black orc",
+"y": 42,
+"x": 50,
+"dist": 2
+},
+{
+"t": 1792834297.092,
+"name": "Cave orc",
+"y": 47,
+"x": 57,
+"dist": 2
+}
+],
+"summons": [],
+"unseen_hits": [
+{
+"t": 1792834262.039,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834262.654,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834263.56,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834263.879,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834266.227,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834267.561,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834267.561,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834268.227,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834270.014,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834270.014,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834270.627,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834271.854,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834273.892,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834274.561,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834287.8,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834294.374,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834297.64,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834299.373,
+"text": "It fires an arrow!"
+}
+],
+"hostile_msgs": [
+{
+"t": 1792834261.96,
+"text": "The Black orc hits you."
+},
+{
+"t": 1792834261.96,
+"text": "The Black orc misses you."
+},
+{
+"t": 1792834262.039,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834262.36,
+"text": "The Uruk misses you."
+},
+{
+"t": 1792834262.36,
+"text": "The Uruk misses you."
+},
+{
+"t": 1792834262.654,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834262.706,
+"text": "The Black orc misses you."
+},
+{
+"t": 1792834262.706,
+"text": "The Black orc misses you."
+},
+{
+"t": 1792834263.56,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834263.654,
+"text": "The Cave orc hits you."
+},
+{
+"t": 1792834263.695,
+"text": "The Uruk hits you."
+},
+{
+"t": 1792834263.695,
+"text": "The Uruk misses you."
+},
+{
+"t": 1792834263.879,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834264.2,
+"text": "The Black orc misses you."
+},
+{
+"t": 1792834264.2,
+"text": "The Black orc hits you."
+},
+{
+"t": 1792834264.494,
+"text": "The Black orc fires an arrow!"
+},
+{
+"t": 1792834265.026,
+"text": "The Uruk hits you."
+},
+{
+"t": 1792834265.026,
+"text": "The Uruk hits you."
+},
+{
+"t": 1792834265.148,
+"text": "The Hill orc misses you."
+},
+{
+"t": 1792834265.694,
+"text": "The Black orc hits you."
+},
+{
+"t": 1792834265.694,
+"text": "The Black orc hits you."
+},
+{
+"t": 1792834266.227,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834266.361,
+"text": "The Uruk fires an arrow!"
+},
+{
+"t": 1792834266.641,
+"text": "The Hill orc misses you."
+},
+{
+"t": 1792834267.027,
+"text": "The Uruk hits you."
+},
+{
+"t": 1792834267.027,
+"text": "The Uruk misses you."
+},
+{
+"t": 1792834267.187,
+"text": "The Snaga misses you."
+},
+{
+"t": 1792834267.561,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834267.561,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834268.093,
+"text": "The Black orc misses you."
+},
+{
+"t": 1792834268.093,
+"text": "The Black orc hits you."
+},
+{
+"t": 1792834268.174,
+"text": "The Black orc fires an arrow!"
+},
+{
+"t": 1792834268.227,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834268.361,
+"text": "The Uruk misses you."
+},
+{
+"t": 1792834268.361,
+"text": "The Uruk hits you."
+},
+{
+"t": 1792834268.681,
+"text": "The Snaga misses you."
+},
+{
+"t": 1792834269.399,
+"text": "The Black orc fires an arrow!"
+},
+{
+"t": 1792834269.427,
+"text": "The Black orc hits you."
+},
+{
+"t": 1792834269.427,
+"text": "The Black orc hits you."
+},
+{
+"t": 1792834270.014,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834270.014,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834270.627,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834270.761,
+"text": "The Black orc fires an arrow!"
+},
+{
+"t": 1792834270.761,
+"text": "The Cave orc hits you."
+},
+{
+"t": 1792834271.24,
+"text": "The Black orc fires an arrow!"
+},
+{
+"t": 1792834271.426,
+"text": "The Black orc hits you."
+},
+{
+"t": 1792834271.426,
+"text": "The Black orc misses you."
+},
+{
+"t": 1792834271.854,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834272.093,
+"text": "The Cave orc hits you."
+},
+{
+"t": 1792834272.761,
+"text": "The Cave orc misses you."
+},
+{
+"t": 1792834273.693,
+"text": "The Snaga hits you."
+},
+{
+"t": 1792834273.892,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834274.307,
+"text": "The Black orc fires an arrow!"
+},
+{
+"t": 1792834274.561,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834275.426,
+"text": "The Cave orc misses you."
+},
+{
+"t": 1792834275.533,
+"text": "The Black orc fires an arrow!"
+},
+{
+"t": 1792834278.574,
+"text": "The Black orc hits you."
+},
+{
+"t": 1792834278.574,
+"text": "The Black orc hits you."
+},
+{
+"t": 1792834281.72,
+"text": "The Cave orc misses you."
+},
+{
+"t": 1792834287.187,
+"text": "The Black orc hits you."
+},
+{
+"t": 1792834287.187,
+"text": "The Black orc hits you."
+},
+{
+"t": 1792834287.8,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834294.172,
+"text": "The Cave orc hits you."
+},
+{
+"t": 1792834294.374,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834294.827,
+"text": "The Cave orc misses you."
+},
+{
+"t": 1792834295.373,
+"text": "The Cave orc misses you."
+},
+{
+"t": 1792834295.506,
+"text": "The Cave orc hits you."
+},
+{
+"t": 1792834296.828,
+"text": "The Black orc misses you."
+},
+{
+"t": 1792834296.828,
+"text": "The Black orc hits you."
+},
+{
+"t": 1792834297.373,
+"text": "The Cave orc misses you."
+},
+{
+"t": 1792834297.44,
+"text": "The Black orc fires an arrow!"
+},
+{
+"t": 1792834297.507,
+"text": "The Cave orc hits you."
+},
+{
+"t": 1792834297.507,
+"text": "The Cave orc misses you."
+},
+{
+"t": 1792834297.64,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834298.707,
+"text": "The Cave orc misses you."
+},
+{
+"t": 1792834298.839,
+"text": "The Cave orc misses you."
+},
+{
+"t": 1792834299.373,
+"text": "It fires an arrow!"
+},
+{
+"t": 1792834299.639,
+"text": "The Black orc fires an arrow!"
+},
+{
+"t": 1792834299.892,
+"text": "The Black orc hits you."
+},
+{
+"t": 1792834299.892,
+"text": "The Black orc hits you."
+},
+{
+"t": 1792834300.627,
+"text": "The Cave orc hits you."
+},
+{
+"t": 1792834301.346,
+"text": "The Cave orc hits you."
+},
+{
+"t": 1792834304.68,
+"text": "The Cave orc misses you."
+},
+{
+"t": 1792834304.827,
+"text": "The Cave orc hits you."
+},
+{
+"t": 1792834310.733,
+"text": "The Cave orc hits you."
+},
+{
+"t": 1792834314.438,
+"text": "The Cave orc hits you."
+},
+{
+"t": 1792834314.972,
+"text": "The Cave orc hits you."
+},
+{
+"t": 1792834321.692,
+"text": "The Black orc misses you."
+},
+{
+"t": 1792834321.693,
+"text": "The Black orc misses you."
+},
+{
+"t": 1792834323.026,
+"text": "The Black orc fires an arrow!"
+},
+{
+"t": 1792834324.453,
+"text": "The Cave orc hits you."
+}
+],
+"status_msgs": [],
+"actions": [
+{
+"t": 1792834274.647,
+"cmd": "custom r item=10",
+"what": "wor",
+"why": "read 3 Scrolls of Word of Recall {@R650}",
+"src": "pilot",
+"t_effect": 1792834275.054
+},
+{
+"t": 1792834278.791,
+"cmd": "custom r item=9",
+"what": "phase",
+"why": "low HP: phase door",
+"src": "pilot",
+"t_effect": 1792834282.026
+},
+{
+"t": 1792834283.323,
+"cmd": "custom q item=6",
+"what": "csw",
+"why": "low HP: quaff 4 Potions of Cure Serious Wounds {for sale 200}",
+"src": "pilot",
+"t_effect": 1792834285.361
+},
+{
+"t": 1792834285.712,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792834288.021,
+"cmd": "custom r item=9",
+"what": "phase",
+"why": "low HP: phase door",
+"src": "pilot",
+"t_effect": 1792834290.386
+},
+{
+"t": 1792834291.089,
+"cmd": "custom q item=6",
+"what": "csw",
+"why": "low HP: quaff 3 Potions of Cure Serious Wounds {for sale 200}",
+"src": "pilot",
+"t_effect": 1792834293.72
+},
+{
+"t": 1792834294.006,
+"cmd": "walk 8",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792834296.173
+},
+{
+"t": 1792834295.598,
+"cmd": "walk 9",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792834298.398
+},
+{
+"t": 1792834295.598,
+"cmd": "walk 7",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792834299.066
+},
+{
+"t": 1792834296.187,
+"cmd": "walk 7",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792834299.733
+},
+{
+"t": 1792834297.796,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792834297.796,
+"cmd": "walk 1",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792834298.439,
+"cmd": "walk 7",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792834299.081,
+"cmd": "walk 8",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792834299.779,
+"cmd": "walk 8",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792834299.992,
+"cmd": "custom r item=9",
+"what": "phase",
+"why": "low HP: phase door",
+"src": "pilot",
+"t_effect": 1792834306.88
+},
+{
+"t": 1792834307.564,
+"cmd": "custom q item=6",
+"what": "csw",
+"why": "low HP: quaff 2 Potions of Cure Serious Wounds {for sale 200}",
+"src": "pilot",
+"t_effect": 1792834310.213
+},
+{
+"t": 1792834327.6,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792834331.506,
+"cmd": "custom . dir=3",
+"what": "run",
+"why": null,
+"src": "pilot",
+"t_effect": 1792834331.692
+}
+],
+"melee_by_us": [
+{
+"t": 1792834261.733,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834261.96,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834262.186,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834262.4,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834262.626,
+"text": "You miss the Black orc."
+},
+{
+"t": 1792834262.854,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834263.067,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834263.294,
+"text": "You miss the Cave orc."
+},
+{
+"t": 1792834263.52,
+"text": "You miss the Cave orc."
+},
+{
+"t": 1792834263.734,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834263.961,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834264.187,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834264.401,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834264.628,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834264.854,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834265.066,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834265.295,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834265.521,
+"text": "You miss the Black orc."
+},
+{
+"t": 1792834265.734,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834265.96,
+"text": "You miss the Black orc."
+},
+{
+"t": 1792834266.187,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834266.4,
+"text": "You hit the Hill orc."
+},
+{
+"t": 1792834266.626,
+"text": "You hit the Hill orc."
+},
+{
+"t": 1792834266.853,
+"text": "You hit the Hill orc."
+},
+{
+"t": 1792834267.067,
+"text": "You hit the Hill orc."
+},
+{
+"t": 1792834267.294,
+"text": "You hit the Hill orc."
+},
+{
+"t": 1792834267.521,
+"text": "You hit the Uruk."
+},
+{
+"t": 1792834267.735,
+"text": "You hit the Uruk."
+},
+{
+"t": 1792834267.961,
+"text": "You hit the Uruk."
+},
+{
+"t": 1792834268.187,
+"text": "You hit the Uruk."
+},
+{
+"t": 1792834268.399,
+"text": "You hit the Uruk."
+},
+{
+"t": 1792834268.626,
+"text": "You miss the Uruk."
+},
+{
+"t": 1792834268.853,
+"text": "You miss the Uruk."
+},
+{
+"t": 1792834269.066,
+"text": "You hit the Uruk."
+},
+{
+"t": 1792834269.293,
+"text": "You hit the Uruk."
+},
+{
+"t": 1792834269.52,
+"text": "You hit the Snaga."
+},
+{
+"t": 1792834269.734,
+"text": "You hit the Snaga."
+},
+{
+"t": 1792834269.961,
+"text": "You hit the Snaga."
+},
+{
+"t": 1792834270.186,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834270.4,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834270.627,
+"text": "You miss the Black orc."
+},
+{
+"t": 1792834270.853,
+"text": "You miss the Black orc."
+},
+{
+"t": 1792834271.067,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834271.293,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834271.521,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834271.733,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834271.961,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834272.187,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834272.4,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834272.626,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834272.853,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834273.067,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834273.293,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834273.52,
+"text": "You miss the Cave orc."
+},
+{
+"t": 1792834273.733,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834273.96,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834274.187,
+"text": "You hit the Snaga."
+},
+{
+"t": 1792834274.4,
+"text": "You hit the Snaga."
+},
+{
+"t": 1792834275.293,
+"text": "You miss the Cave orc."
+},
+{
+"t": 1792834275.521,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834276.481,
+"text": "You miss the Cave orc."
+},
+{
+"t": 1792834277.599,
+"text": "You miss the Cave orc."
+},
+{
+"t": 1792834278.707,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834286.587,
+"text": "You miss the Black orc."
+},
+{
+"t": 1792834286.587,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834286.773,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834287.0,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834287.228,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834287.44,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834287.812,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834293.959,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834294.612,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834294.612,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834294.612,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834295.28,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834295.281,
+"text": "You miss the Cave orc."
+},
+{
+"t": 1792834295.281,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834295.521,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834296.841,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834296.841,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834296.841,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834297.508,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834297.508,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834297.508,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834297.747,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834302.427,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834302.427,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834302.427,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834305.76,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834310.452,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834310.678,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834310.893,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834311.12,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834311.346,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834313.0,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834313.0,
+"text": "You miss the Cave orc."
+},
+{
+"t": 1792834313.0,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834313.013,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834313.013,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834313.013,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834313.626,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834313.627,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834313.666,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834313.893,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834314.119,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834314.332,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834314.558,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834314.785,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834315.052,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834316.172,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834317.279,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834317.279,
+"text": "It was a great hit!"
+},
+{
+"t": 1792834318.385,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834319.507,
+"text": "You hit the Cave orc."
+},
+{
+"t": 1792834320.612,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834321.72,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834322.839,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834323.945,
+"text": "You miss the Black orc."
+},
+{
+"t": 1792834324.333,
+"text": "You hit the Black orc."
+},
+{
+"t": 1792834324.333,
+"text": "It was a great hit!"
+},
+{
+"t": 1792834324.892,
+"text": "You hit the Snaga."
+},
+{
+"t": 1792834325.999,
+"text": "You hit the Snaga."
+},
+{
+"t": 1792834327.106,
+"text": "You hit the Snaga."
+}
+],
+"kills": [
+{
+"t": 1792834262.854,
+"name": "Black orc"
+},
+{
+"t": 1792834264.401,
+"name": "Cave orc"
+},
+{
+"t": 1792834266.187,
+"name": "Black orc"
+},
+{
+"t": 1792834267.294,
+"name": "Hill orc"
+},
+{
+"t": 1792834269.293,
+"name": "Uruk"
+},
+{
+"t": 1792834269.961,
+"name": "Snaga"
+},
+{
+"t": 1792834271.733,
+"name": "Black orc"
+},
+{
+"t": 1792834272.853,
+"name": "Cave orc"
+},
+{
+"t": 1792834273.96,
+"name": "Cave orc"
+},
+{
+"t": 1792834274.4,
+"name": "Snaga"
+},
+{
+"t": 1792834287.44,
+"name": "Black orc"
+},
+{
+"t": 1792834295.281,
+"name": "Cave orc"
+},
+{
+"t": 1792834296.841,
+"name": "Black orc"
+},
+{
+"t": 1792834305.76,
+"name": "Black orc"
+},
+{
+"t": 1792834311.346,
+"name": "Cave orc"
+},
+{
+"t": 1792834313.013,
+"name": "Cave orc"
+},
+{
+"t": 1792834314.119,
+"name": "Cave orc"
+},
+{
+"t": 1792834316.172,
+"name": "Cave orc"
+},
+{
+"t": 1792834319.507,
+"name": "Cave orc"
+},
+{
+"t": 1792834324.333,
+"name": "Black orc"
+},
+{
+"t": 1792834327.106,
+"name": "Snaga"
+}
+],
+"hp_series": [
+[
+1792834231.806,
+279,
+288
+],
+[
+1792834232.233,
+279,
+288
+],
+[
+1792834232.913,
+280,
+288
+],
+[
+1792834233.072,
+281,
+288
+],
+[
+1792834233.128,
+281,
+288
+],
+[
+1792834234.31,
+284,
+288
+],
+[
+1792834236.401,
+287,
+288
+],
+[
+1792834237.081,
+288,
+288
+],
+[
+1792834237.243,
+288,
+288
+],
+[
+1792834237.296,
+288,
+288
+],
+[
+1792834239.408,
+288,
+288
+],
+[
+1792834239.625,
+288,
+288
+],
+[
+1792834240.211,
+288,
+288
+],
+[
+1792834240.636,
+288,
+288
+],
+[
+1792834241.275,
+288,
+288
+],
+[
+1792834241.647,
+288,
+288
+],
+[
+1792834242.231,
+288,
+288
+],
+[
+1792834242.655,
+288,
+288
+],
+[
+1792834243.186,
+288,
+288
+],
+[
+1792834244.152,
+288,
+288
+],
+[
+1792834244.416,
+288,
+288
+],
+[
+1792834245.204,
+288,
+288
+],
+[
+1792834245.831,
+288,
+288
+],
+[
+1792834246.249,
+288,
+288
+],
+[
+1792834246.252,
+288,
+288
+],
+[
+1792834247.147,
+288,
+288
+],
+[
+1792834247.25,
+288,
+288
+],
+[
+1792834247.306,
+288,
+288
+],
+[
+1792834247.832,
+288,
+288
+],
+[
+1792834248.255,
+288,
+288
+],
+[
+1792834248.635,
+288,
+288
+],
+[
+1792834249.273,
+288,
+288
+],
+[
+1792834249.276,
+288,
+288
+],
+[
+1792834249.97,
+288,
+288
+],
+[
+1792834250.287,
+288,
+288
+],
+[
+1792834251.307,
+288,
+288
+],
+[
+1792834251.31,
+288,
+288
+],
+[
+1792834252.311,
+288,
+288
+],
+[
+1792834253.361,
+288,
+288
+],
+[
+1792834253.676,
+288,
+288
+],
+[
+1792834253.944,
+288,
+288
+],
+[
+1792834254.637,
+288,
+288
+],
+[
+1792834256.607,
+288,
+288
+],
+[
+1792834256.609,
+288,
+288
+],
+[
+1792834257.609,
+288,
+288
+],
+[
+1792834257.666,
+288,
+288
+],
+[
+1792834258.615,
+288,
+288
+],
+[
+1792834258.726,
+288,
+288
+],
+[
+1792834259.1,
+288,
+288
+],
+[
+1792834259.473,
+288,
+288
+],
+[
+1792834259.524,
+288,
+288
+],
+[
+1792834259.633,
+288,
+288
+],
+[
+1792834260.22,
+280,
+288
+],
+[
+1792834260.645,
+271,
+288
+],
+[
+1792834261.662,
+263,
+288
+],
+[
+1792834262.674,
+256,
+288
+],
+[
+1792834263.317,
+257,
+288
+],
+[
+1792834263.693,
+258,
+288
+],
+[
+1792834264.709,
+241,
+288
+],
+[
+1792834265.724,
+226,
+288
+],
+[
+1792834266.742,
+210,
+288
+],
+[
+1792834267.331,
+203,
+288
+],
+[
+1792834267.761,
+204,
+288
+],
+[
+1792834268.779,
+191,
+288
+],
+[
+1792834269.744,
+182,
+288
+],
+[
+1792834269.798,
+182,
+288
+],
+[
+1792834270.807,
+183,
+288
+],
+[
+1792834271.823,
+169,
+288
+],
+[
+1792834272.832,
+168,
+288
+],
+[
+1792834273.366,
+169,
+288
+],
+[
+1792834273.845,
+170,
+288
+],
+[
+1792834274.43,
+152,
+288
+],
+[
+1792834274.593,
+152,
+288
+],
+[
+1792834274.593,
+152,
+288
+],
+[
+1792834274.594,
+152,
+288
+],
+[
+1792834274.594,
+152,
+288
+],
+[
+1792834274.647,
+152,
+288
+],
+[
+1792834274.647,
+152,
+288
+],
+[
+1792834274.852,
+152,
+288
+],
+[
+1792834276.819,
+145,
+288
+],
+[
+1792834276.926,
+145,
+288
+],
+[
+1792834278.415,
+146,
+288
+],
+[
+1792834278.791,
+135,
+288
+],
+[
+1792834278.791,
+135,
+288
+],
+[
+1792834278.792,
+135,
+288
+],
+[
+1792834281.814,
+136,
+288
+],
+[
+1792834281.814,
+136,
+288
+],
+[
+1792834281.972,
+136,
+288
+],
+[
+1792834283.323,
+136,
+288
+],
+[
+1792834283.324,
+136,
+288
+],
+[
+1792834283.894,
+136,
+288
+],
+[
+1792834284.414,
+137,
+288
+],
+[
+1792834284.416,
+137,
+288
+],
+[
+1792834285.712,
+161,
+288
+],
+[
+1792834286.237,
+162,
+288
+],
+[
+1792834287.282,
+164,
+288
+],
+[
+1792834287.756,
+151,
+288
+],
+[
+1792834288.021,
+142,
+288
+],
+[
+1792834288.022,
+142,
+288
+],
+[
+1792834288.022,
+142,
+288
+],
+[
+1792834288.486,
+142,
+288
+],
+[
+1792834288.488,
+142,
+288
+],
+[
+1792834289.374,
+142,
+288
+],
+[
+1792834291.037,
+143,
+288
+],
+[
+1792834291.037,
+143,
+288
+],
+[
+1792834291.089,
+143,
+288
+],
+[
+1792834291.089,
+143,
+288
+],
+[
+1792834292.595,
+143,
+288
+],
+[
+1792834292.598,
+143,
+288
+],
+[
+1792834293.947,
+166,
+288
+],
+[
+1792834294.005,
+166,
+288
+],
+[
+1792834294.061,
+166,
+288
+],
+[
+1792834295.063,
+163,
+288
+],
+[
+1792834296.075,
+163,
+288
+],
+[
+1792834296.661,
+164,
+288
+],
+[
+1792834296.664,
+164,
+288
+],
+[
+1792834296.879,
+164,
+288
+],
+[
+1792834297.092,
+160,
+288
+],
+[
+1792834298.112,
+155,
+288
+],
+[
+1792834299.133,
+157,
+288
+],
+[
+1792834299.99,
+143,
+288
+],
+[
+1792834299.992,
+143,
+288
+],
+[
+1792834299.992,
+143,
+288
+],
+[
+1792834299.992,
+143,
+288
+],
+[
+1792834300.72,
+143,
+288
+],
+[
+1792834300.772,
+143,
+288
+],
+[
+1792834300.775,
+143,
+288
+],
+[
+1792834303.017,
+132,
+288
+],
+[
+1792834303.018,
+132,
+288
+],
+[
+1792834304.53,
+133,
+288
+],
+[
+1792834304.53,
+133,
+288
+],
+[
+1792834304.839,
+133,
+288
+],
+[
+1792834304.842,
+133,
+288
+],
+[
+1792834305.731,
+131,
+288
+],
+[
+1792834306.047,
+131,
+288
+],
+[
+1792834306.047,
+131,
+288
+],
+[
+1792834306.154,
+131,
+288
+],
+[
+1792834307.564,
+131,
+288
+],
+[
+1792834307.564,
+131,
+288
+],
+[
+1792834310.326,
+155,
+288
+],
+[
+1792834310.328,
+155,
+288
+],
+[
+1792834310.697,
+155,
+288
+],
+[
+1792834311.17,
+150,
+288
+],
+[
+1792834311.327,
+150,
+288
+],
+[
+1792834312.328,
+150,
+288
+],
+[
+1792834313.336,
+152,
+288
+],
+[
+1792834314.344,
+154,
+288
+],
+[
+1792834314.979,
+144,
+288
+],
+[
+1792834315.458,
+144,
+288
+],
+[
+1792834315.459,
+144,
+288
+],
+[
+1792834316.835,
+144,
+288
+],
+[
+1792834319.535,
+145,
+288
+],
+[
+1792834319.537,
+145,
+288
+],
+[
+1792834321.863,
+146,
+288
+],
+[
+1792834323.611,
+146,
+288
+],
+[
+1792834323.613,
+146,
+288
+],
+[
+1792834324.356,
+146,
+288
+],
+[
+1792834326.209,
+144,
+288
+],
+[
+1792834326.899,
+144,
+288
+],
+[
+1792834327.545,
+144,
+288
+],
+[
+1792834327.547,
+144,
+288
+],
+[
+1792834327.547,
+144,
+288
+],
+[
+1792834327.6,
+144,
+288
+],
+[
+1792834327.702,
+144,
+288
+],
+[
+1792834327.705,
+144,
+288
+],
+[
+1792834328.226,
+157,
+288
+],
+[
+1792834331.504,
+288,
+288
+],
+[
+1792834331.505,
+288,
+288
+]
+],
+"pos_series": [
+[
+1792834282.026,
+44,
+56
+],
+[
+1792834290.386,
+50,
+57
+],
+[
+1792834296.173,
+49,
+58
+],
+[
+1792834298.398,
+50,
+58
+],
+[
+1792834299.066,
+51,
+57
+],
+[
+1792834299.733,
+50,
+56
+],
+[
+1792834306.88,
+51,
+49
+],
+[
+1792834327.493,
+16,
+45
+],
+[
+1792834331.692,
+17,
+46
+],
+[
+1792834331.798,
+18,
+47
+],
+[
+1792834331.904,
+19,
+48
+]
+],
+"time_factor": [
+[
+1792834208.891,
+1.0
+],
+[
+1792834239.408,
+4.55
+],
+[
+1792834244.416,
+1.0
+],
+[
+1792834263.317,
+1.0
+],
+[
+1792834273.366,
+1.0
+],
+[
+1792834278.415,
+0.2
+],
+[
+1792834283.894,
+0.2
+],
+[
+1792834293.947,
+1.0
+],
+[
+1792834299.99,
+0.2
+],
+[
+1792834306.154,
+0.2
+],
+[
+1792834311.17,
+1.0
+],
+[
+1792834314.979,
+0.2
+],
+[
+1792834326.209,
+0.2
+],
+[
+1792834328.226,
+1.0
+]
+],
+"mons_series": [
+[
+1792834252.311,
+[
+[
+40,
+50,
+"Creeping mithril coins"
+]
+]
+],
+[
+1792834253.361,
+[
+[
+40,
+50,
+"Creeping mithril coins"
+]
+]
+],
+[
+1792834256.607,
+[
+[
+43,
+51,
+"Snaga"
+]
+]
+],
+[
+1792834257.609,
+[
+[
+42,
+52,
+"Snaga"
+],
+[
+43,
+51,
+"Cave orc"
+]
+]
+],
+[
+1792834258.615,
+[
+[
+42,
+52,
+"Cave orc"
+],
+[
+43,
+51,
+"Uruk"
+]
+]
+],
+[
+1792834259.633,
+[
+[
+42,
+49,
+"Black orc"
+],
+[
+42,
+50,
+"Black orc"
+],
+[
+42,
+51,
+"Snaga"
+],
+[
+42,
+53,
+"Uruk"
+],
+[
+43,
+49,
+"Snaga"
+],
+[
+43,
+50,
+"Black orc"
+]
+]
+],
+[
+1792834260.645,
+[
+[
+42,
+49,
+"Black orc"
+],
+[
+42,
+50,
+"Black orc"
+],
+[
+42,
+51,
+"Snaga"
+],
+[
+42,
+53,
+"Uruk"
+],
+[
+43,
+49,
+"Snaga"
+],
+[
+43,
+50,
+"Snaga"
+],
+[
+43,
+51,
+"Black orc"
+]
+]
+],
+[
+1792834261.662,
+[
+[
+42,
+49,
+"Snaga"
+],
+[
+42,
+50,
+"Black orc"
+],
+[
+42,
+51,
+"Black orc"
+],
+[
+42,
+53,
+"Uruk"
+],
+[
+43,
+49,
+"Cave orc"
+],
+[
+43,
+50,
+"Snaga"
+],
+[
+43,
+51,
+"Black orc"
+]
+]
+],
+[
+1792834262.674,
+[
+[
+42,
+49,
+"Snaga"
+],
+[
+42,
+50,
+"Snaga"
+],
+[
+42,
+51,
+"Black orc"
+],
+[
+42,
+53,
+"Uruk"
+],
+[
+43,
+49,
+"Hill orc"
+],
+[
+43,
+50,
+"Cave orc"
+],
+[
+43,
+51,
+"Black orc"
+]
+]
+],
+[
+1792834263.693,
+[
+[
+42,
+49,
+"Snaga"
+],
+[
+42,
+50,
+"Snaga"
+],
+[
+42,
+51,
+"Black orc"
+],
+[
+42,
+53,
+"Uruk"
+],
+[
+43,
+49,
+"Black orc"
+],
+[
+43,
+50,
+"Hill orc"
+],
+[
+43,
+51,
+"Cave orc"
+]
+]
+],
+[
+1792834264.709,
+[
+[
+42,
+49,
+"Snaga"
+],
+[
+42,
+50,
+"Snaga"
+],
+[
+42,
+51,
+"Black orc"
+],
+[
+42,
+53,
+"Uruk"
+],
+[
+43,
+49,
+"Black orc"
+],
+[
+43,
+51,
+"Hill orc"
+]
+]
+],
+[
+1792834265.724,
+[
+[
+42,
+49,
+"Black orc"
+],
+[
+42,
+50,
+"Snaga"
+],
+[
+42,
+51,
+"Black orc"
+],
+[
+42,
+53,
+"Uruk"
+],
+[
+43,
+49,
+"Black orc"
+],
+[
+43,
+50,
+"Snaga"
+],
+[
+43,
+51,
+"Hill orc"
+]
+]
+],
+[
+1792834266.742,
+[
+[
+42,
+49,
+"Black orc"
+],
+[
+42,
+50,
+"Snaga"
+],
+[
+42,
+51,
+"Snaga"
+],
+[
+42,
+53,
+"Uruk"
+],
+[
+43,
+49,
+"Black orc"
+],
+[
+43,
+51,
+"Hill orc"
+]
+]
+],
+[
+1792834267.761,
+[
+[
+42,
+49,
+"Black orc"
+],
+[
+42,
+50,
+"Snaga"
+],
+[
+42,
+51,
+"Snaga"
+],
+[
+42,
+53,
+"Uruk"
+],
+[
+43,
+49,
+"Cave orc"
+],
+[
+43,
+50,
+"Cave orc"
+],
+[
+43,
+51,
+"Black orc"
+]
+]
+],
+[
+1792834268.779,
+[
+[
+42,
+49,
+"Black orc"
+],
+[
+42,
+50,
+"Snaga"
+],
+[
+42,
+51,
+"Snaga"
+],
+[
+42,
+53,
+"Uruk"
+],
+[
+43,
+49,
+"Cave orc"
+],
+[
+43,
+50,
+"Cave orc"
+],
+[
+43,
+51,
+"Black orc"
+]
+]
+],
+[
+1792834269.798,
+[
+[
+42,
+49,
+"Black orc"
+],
+[
+42,
+50,
+"Snaga"
+],
+[
+42,
+51,
+"Snaga"
+],
+[
+43,
+49,
+"Cave orc"
+],
+[
+43,
+50,
+"Cave orc"
+],
+[
+43,
+51,
+"Black orc"
+]
+]
+],
+[
+1792834270.807,
+[
+[
+42,
+49,
+"Black orc"
+],
+[
+42,
+50,
+"Snaga"
+],
+[
+42,
+51,
+"Cave orc"
+],
+[
+43,
+49,
+"Cave orc"
+],
+[
+43,
+50,
+"Cave orc"
+],
+[
+43,
+51,
+"Black orc"
+]
+]
+],
+[
+1792834271.823,
+[
+[
+42,
+49,
+"Black orc"
+],
+[
+42,
+51,
+"Cave orc"
+],
+[
+43,
+49,
+"Cave orc"
+],
+[
+43,
+50,
+"Cave orc"
+],
+[
+43,
+51,
+"Black orc"
+]
+]
+],
+[
+1792834272.832,
+[
+[
+42,
+49,
+"Black orc"
+],
+[
+42,
+50,
+"Cave orc"
+],
+[
+42,
+51,
+"Cave orc"
+],
+[
+43,
+50,
+"Snaga"
+],
+[
+43,
+51,
+"Cave orc"
+]
+]
+],
+[
+1792834273.845,
+[
+[
+42,
+49,
+"Black orc"
+],
+[
+42,
+50,
+"Cave orc"
+],
+[
+42,
+51,
+"Snaga"
+],
+[
+43,
+49,
+"Black orc"
+],
+[
+43,
+50,
+"Black orc"
+],
+[
+43,
+51,
+"Cave orc"
+]
+]
+],
+[
+1792834274.852,
+[
+[
+42,
+49,
+"Black orc"
+],
+[
+42,
+50,
+"Cave orc"
+],
+[
+43,
+49,
+"Black orc"
+],
+[
+43,
+50,
+"Black orc"
+]
+]
+],
+[
+1792834276.926,
+[
+[
+42,
+49,
+"Snaga"
+],
+[
+42,
+50,
+"Black orc"
+],
+[
+42,
+51,
+"Cave orc"
+],
+[
+43,
+49,
+"Black orc"
+],
+[
+43,
+50,
+"Black orc"
+],
+[
+43,
+51,
+"Black orc"
+]
+]
+],
+[
+1792834281.972,
+[
+[
+42,
+49,
+"Snaga"
+],
+[
+42,
+50,
+"Black orc"
+],
+[
+42,
+51,
+"Cave orc"
+],
+[
+43,
+49,
+"Black orc"
+],
+[
+43,
+50,
+"Black orc"
+],
+[
+43,
+51,
+"Black orc"
+]
+]
+],
+[
+1792834286.237,
+[
+[
+41,
+53,
+"Cave orc"
+]
+]
+],
+[
+1792834287.282,
+[
+[
+42,
+54,
+"Cave orc"
+],
+[
+42,
+55,
+"Black orc"
+],
+[
+43,
+55,
+"Black orc"
+]
+]
+],
+[
+1792834289.374,
+[
+[
+42,
+54,
+"Snaga"
+],
+[
+43,
+55,
+"Cave orc"
+],
+[
+43,
+56,
+"Black orc"
+],
+[
+47,
+56,
+"Cave orc"
+]
+]
+],
+[
+1792834294.061,
+[
+[
+48,
+56,
+"Cave orc"
+],
+[
+50,
+55,
+"Cave orc"
+],
+[
+50,
+56,
+"Cave orc"
+]
+]
+],
+[
+1792834295.063,
+[
+[
+49,
+57,
+"Cave orc"
+],
+[
+50,
+55,
+"Cave orc"
+],
+[
+50,
+56,
+"Cave orc"
+]
+]
+],
+[
+1792834296.075,
+[
+[
+47,
+56,
+"Black orc"
+],
+[
+49,
+56,
+"Cave orc"
+],
+[
+50,
+56,
+"Cave orc"
+],
+[
+51,
+54,
+"Cave orc"
+]
+]
+],
+[
+1792834297.092,
+[
+[
+47,
+57,
+"Cave orc"
+],
+[
+48,
+57,
+"Black orc"
+],
+[
+49,
+57,
+"Cave orc"
+],
+[
+50,
+55,
+"Cave orc"
+],
+[
+50,
+56,
+"Cave orc"
+]
+]
+],
+[
+1792834298.112,
+[
+[
+46,
+57,
+"Black orc"
+],
+[
+48,
+56,
+"Snaga"
+],
+[
+48,
+58,
+"Cave orc"
+],
+[
+49,
+57,
+"Cave orc"
+],
+[
+50,
+57,
+"Cave orc"
+]
+]
+],
+[
+1792834299.133,
+[
+[
+48,
+56,
+"Black orc"
+],
+[
+48,
+57,
+"Black orc"
+],
+[
+48,
+58,
+"Snaga"
+],
+[
+49,
+57,
+"Cave orc"
+],
+[
+49,
+58,
+"Cave orc"
+],
+[
+50,
+57,
+"Cave orc"
+]
+]
+],
+[
+1792834300.72,
+[
+[
+48,
+57,
+"Black orc"
+],
+[
+49,
+56,
+"Black orc"
+],
+[
+49,
+57,
+"Cave orc"
+],
+[
+49,
+58,
+"Snaga"
+],
+[
+50,
+57,
+"Cave orc"
+],
+[
+50,
+58,
+"Cave orc"
+],
+[
+51,
+54,
+"Cave orc"
+]
+]
+],
+[
+1792834305.731,
+[
+[
+47,
+56,
+"Snaga"
+],
+[
+47,
+57,
+"Hill orc"
+],
+[
+48,
+56,
+"Black orc"
+],
+[
+48,
+57,
+"Black orc"
+],
+[
+49,
+56,
+"Black orc"
+],
+[
+49,
+57,
+"Cave orc"
+],
+[
+49,
+58,
+"Snaga"
+],
+[
+50,
+55,
+"Cave orc"
+],
+[
+50,
+57,
+"Cave orc"
+],
+[
+51,
+57,
+"Cave orc"
+]
+]
+],
+[
+1792834310.326,
+[
+[
+51,
+50,
+"Cave orc"
+],
+[
+56,
+49,
+"Cave orc"
+]
+]
+],
+[
+1792834311.327,
+[
+[
+51,
+50,
+"Cave orc"
+]
+]
+],
+[
+1792834312.328,
+[
+[
+54,
+49,
+"Cave orc"
+]
+]
+],
+[
+1792834313.336,
+[
+[
+50,
+51,
+"Cave orc"
+],
+[
+50,
+52,
+"Cave orc"
+],
+[
+51,
+51,
+"Cave orc"
+]
+]
+],
+[
+1792834314.344,
+[
+[
+50,
+50,
+"Cave orc"
+],
+[
+50,
+51,
+"Cave orc"
+],
+[
+50,
+52,
+"Black orc"
+]
+]
+],
+[
+1792834316.835,
+[
+[
+50,
+51,
+"Cave orc"
+],
+[
+50,
+52,
+"Snaga"
+],
+[
+51,
+50,
+"Cave orc"
+],
+[
+51,
+51,
+"Black orc"
+]
+]
+],
+[
+1792834321.863,
+[
+[
+50,
+50,
+"Black orc"
+],
+[
+50,
+51,
+"Snaga"
+],
+[
+50,
+52,
+"Black orc"
+],
+[
+51,
+51,
+"Cave orc"
+]
+]
+],
+[
+1792834326.899,
+[
+[
+50,
+50,
+"Snaga"
+],
+[
+50,
+51,
+"Black orc"
+],
+[
+50,
+52,
+"Hill orc"
+],
+[
+51,
+50,
+"Cave orc"
+]
+]
+]
+],
+"map_window": [
+"                #..#                     ",
+"          #######..#                     ",
+"          #........#                     ",
+"          #........#                     ",
+"          #..######                      ",
+"          #..#                           ",
+"          #..#                           ",
+"          #..#                           ",
+"          #..#                           ",
+"          #..#                           ",
+"          #..#                           ",
+"          #..# ###############           ",
+"          #..# #.............#           ",
+"          #..# #.....|.......#           ",
+"###########..###.............#           ",
+"#............................#           ",
+"...-.........................#           ",
+"...#%##%%*%%%%%%.............#           ",
+"~..#           #.$$..(.......#           ",
+"...%           %*%%++..%###%*%           ",
+"%##%             .$(?....%               ",
+"                 .$,!%....#              ",
+"                   ### #..#              ",
+"                       #..#              ",
+"                       #..               ",
+"                        ..##             ",
+"                       #.?...            ",
+"                ###   ##.....            ",
+"                #.... .....##            ",
+"                #4$.. ..#..#             ",
+"                #$.#    ####             ",
+"                #..                      ",
+"                 .                       ",
+"                                         ",
+"                 ''                      ",
+"                ....                     ",
+"                ....                     ",
+"                ....                     ",
+"                ....                     ",
+"                ....                     ",
+"                .....                    "
+],
+"outcome": {
+"lowest_hp": 131,
+"t_lowest": 1792834305.731,
+"end": "recall",
+"consumables": {
+"wor": 1,
+"phase": 3,
+"csw": 3
+},
+"consumables_by_messages": {
+"phase": 3,
+"csw": 3
+},
+"levels_seen": [
+[
+1792834327.494,
+0
+]
+]
+},
+"notes": "state.jsonl status nearest before t0 (1 s, game clock): level [24, 24], armor [61, 31, 30], speed [0], afraid [0], blind [0], confused [0], poisoned [0]"
+}

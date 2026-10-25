@@ -134,3 +134,8 @@
 - 2026-10-25 11:12:19 **H1r** FAIL (swapped while frozen, resumed in place, the plan resumed and the Pilot acts after the thaw FAIL, the recall still landed) `H1r-20261025-111219.json`
 - 2026-10-25 11:15:08 **H1r** PASS (swapped while frozen, resumed in place, the plan resumed, the recall still landed) `H1r-20261025-111508.json`
 - 2026-10-25 11:17:49 **H1** PASS (swapped while frozen, resumed in place, the plan resumed and the Pilot acts after the thaw) `H1-20261025-111749.json`
+- 2026-10-25 11:41:24 **A6** PASS (at most 3 Phase Door, Phase Door never runs out, lowest HP >= 40%) `A6-20261025-114124.json`
+- 2026-10-25 11:44:57 **A2L** FAIL (Word of Recall within 2 s of first sight FAIL, lowest HP >= 40%) `A2L-20261025-114457.json`
+- 2026-10-25 11:48:23 **M4** PASS (no HP cure with 2+ adjacent, teleport, not Phase Door, with 4+ about, lowest HP >= 40%) `M4-20261025-114823.json`
+- 2026-10-25 11:52:38 **M4** FAIL (a site FAIL) `M4-20261025-115238.json`
+- 2026-10-25 11:54:34 **M4** PASS (no HP cure with 2+ adjacent, teleport, not Phase Door, with 4+ about, lowest HP >= 40%) `M4-20261025-115434.json`

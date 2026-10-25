@@ -2341,7 +2341,17 @@ class Pilot:
                 news, source = True, "plan"   # (the plan handles these: the Navigator reads them as news)
         if what == "plan":
             source = "plan"
-        self.log("attention", what=what, detail=detail, **({"source": source} if source else {}))
+        extra = {"source": source} if source else {}
+        if what in ("emergency", "emergency_loop"):
+            # (the Advisor's estimator memo: the remembered map around @, 21x21, and the monsters, for replays)
+            w = self.w
+            if w.pos:
+                y, x = w.pos
+                extra["map21"] = ["".join(w.memory.get((yy, xx), " ") for xx in range(x - 10, x + 11))
+                                  for yy in range(y - 10, y + 11)]
+                extra["map_at"] = [y - 10, x - 10]
+                extra["mons"] = [(my, mx, r.name) for my, mx, r in w.monsters]
+        self.log("attention", what=what, detail=detail, **extra)
         if what in self.NEWS or news:
             self.news.append(ev)
             self.news = self.news[-20:]
@@ -2373,6 +2383,11 @@ class Pilot:
         self.c.send(line)
         self.last_action = (gnow(), line, why)
         self.busy_until = gnow() + ghold(hold)
+        mr = re.match(r"custom [ru] item=(\d+)", line)
+        if mr:
+            iu = next((i for i in self.w.items() if i["item"] == int(mr.group(1))), None)
+            if iu and re.search(r"Teleport|Phase Door", iu["name"]):
+                self.escape_read_t = gnow()
         self.log("act", cmd=line, why=why)
         self.log_escape(line, why)
         self.expect_effect(line, why)
@@ -2549,6 +2564,15 @@ class Pilot:
             self.pending_use = None
             self.w.inven_dirty = True          # re-read the pack now, before the next use
             self.w.refresh()
+            return
+        # Never resent: a second Word of Recall cancels the first, a second Teleportation lands somewhere else (the
+        # Advisor's estimator memo: m26 resent a recall that had gone through). Wait longer for the answer, then give
+        # up on it -- the next decision sees whether it happened
+        if p["core"] in ("Word of Recall", "Teleport"):
+            if waited(p["t"], 8.0):
+                self.pending_use = None
+                self.notify("tactic", f"'{p['why']}': no answer seen in 8 s; not resending it (a second read would "
+                                      "cancel or double it)")
             return
         if not waited(p["t"], 2.5):
             return
@@ -3268,6 +3292,21 @@ class Pilot:
                                              "of Recall; Phase Door now only below 20% HP")
                     return True
             pd = None
+        # A summoner or status caster beside us that dies in two rounds: kill it first (the Advisor's estimator
+        # memo: m30's Druid paralysed, blinded three times and summoned three times, and was never attacked)
+        if self.kill_caster_step(adj, why):
+            return True
+        # Four or more about in the open: Teleportation, not Phase Door (no monster flow in this build: they walk
+        # straight back unless a wall intervenes; 4 of m30's 5 phases landed 6-7 squares from contact)
+        crowd = [m for m in w.monsters if "NEVER_MOVE" not in m[2].flags and w.dist(m[:2]) <= 5]
+        tele = self.teleport_item()
+        if adj and tele and len(crowd) >= 4 and not self.mover.in_corridor() and (can_read or tele[0] == "u") and \
+                waited(self.phase_t, 2.0):
+            self.phase_t = now
+            self.cmd(f"custom {tele[0]} item={tele[1]['item']}", f"{why}: teleport ({len(crowd)} about in the open)",
+                     hold=0.6)
+            self.notify("emergency", f"{why}: {len(crowd)} monsters about in the open: {one_of(tele[1]['name'])}")
+            return True
         if adj and pd and can_read and (waited(self.phase_t, 2.5) or (collapsing and waited(self.phase_t, 0.7))):
             self.phase_t = now
             self.phase_hist.append(now)
@@ -3323,6 +3362,31 @@ class Pilot:
                     return True
                 if not adj:
                     pick = pots[-1]      # shot at, nothing to hit back: any HP helps
+            # Two or more beside us: an HP cure (a flat 15-29 HP, use-obj.c) is outpaced -- read an escape instead;
+            # blind or confused, cure that first so the next turn can read (the Advisor's estimator memo)
+            if pick and len(adj) >= 2:
+                if not can_read:
+                    st = "blind" if w.flag("blind") else "confused"
+                    cure = next((i for c in STATUS_CURES[st] for i in w.items(tval=TV_POTION) if c in i["name"]
+                                 and not (c == "Healing" and "*Healing*" in i["name"])), None)
+                    if cure:
+                        self.cure_t = now
+                        self.cmd(f"custom q item={cure['item']}", f"{why}: {st} with {len(adj)} adjacent: quaff "
+                                                                   f"{cure['name']} to read an escape next", hold=0.6)
+                        self.notify("emergency", f"{why}: {st} with {len(adj)} adjacent: quaffed {one_of(cure['name'])} "
+                                                 "so the next turn can read")
+                        return True
+                else:
+                    esc = tele if tele and len(crowd) >= 4 else (("r", pd) if pd else tele)
+                    if esc and waited(self.phase_t, 0.7):
+                        self.phase_t = now
+                        if "Phase" in esc[1]["name"]:
+                            self.phase_hist.append(now)
+                        self.cmd(f"custom {esc[0]} item={esc[1]['item']}", f"{why}: {len(adj)} adjacent: "
+                                                                            f"{esc[1]['name']} rather than a cure", hold=0.6)
+                        self.notify("emergency", f"{why}: {len(adj)} adjacent, a cure would be outpaced: read "
+                                                 f"{one_of(esc[1]['name'])}")
+                        return True
             if pick:
                 pot = pick[1]
                 self.cure_t = now
@@ -3408,6 +3472,48 @@ class Pilot:
                             f"them all, HP {w.hp[0]}): leave now while it's cheap -- "
                             + (f"stairs {stairs} away" if stairs is not None else "no stairs known: read Word of Recall")
                             + "; don't stop for loot")
+
+    def teleport_item(self):
+        """('r', a Scroll of Teleportation) or ('u', a Staff of Teleportation with charges), or None."""
+        w = self.w
+        sc = next((i for i in w.items(tval=TV_SCROLL) if "Teleportation" in i["name"]), None)
+        if sc:
+            return ("r", sc)
+        st = next((i for i in w.items(tval=55) if "Teleportation" in i["name"] and
+                   not re.search(r"\(0 charges\)", i["name"])), None)
+        return ("u", st) if st else None
+
+    STATUS_SPELLS = ("BLIND", "CONF", "HOLD", "SLOW", "SCARE", "FORGET", "DRAIN_MANA", "TELE_TO", "TELE_LEVEL")
+
+    def kill_caster_step(self, adj, why):
+        """Attack an adjacent summoner or status caster (blind, confuse, hold, slow, scare...) that our blows kill in
+        two rounds (rulebook hp vs the wielded weapon's damage). True if the attack was sent."""
+        w = self.w
+        if not adj or not waited(getattr(self, "caster_t", -99.0), 0.6):
+            return False
+        rows = self.fight_rows()
+        wt = [x for x in self.weapon_table() if x[3]]
+        dmg = wt[0][2] if wt else 0
+        if not dmg:
+            return False
+        best = None
+        for y, x, r in adj:
+            if not (r.summoner or any(s in self.STATUS_SPELLS for s in r.spells)):
+                continue
+            hp = float((rows.get(getattr(r, "idx", None)) or {}).get("hp") or 0)
+            if hp and hp <= 2 * dmg and (best is None or hp < best[0]):
+                best = (hp, y, x, r)
+        if not best:
+            return False
+        _, y, x, r = best
+        self.caster_t = gnow()
+        self.cmd(f"walk {direction(w.pos, (y, x))}", f"{why}: attack {r.name} first (a caster, dies in 2 rounds)",
+                 hold=0.4)
+        if not getattr(self, "caster_said", None) == (w.level_t, r.name):
+            self.caster_said = (w.level_t, r.name)
+            self.notify("emergency", f"{why}: attacking {r.name} first (summons or casts blind/confuse/hold; ~{best[0]:.0f} "
+                                     f"HP, two rounds)")
+        return True
 
     def recall_memory(self):
         """A pending Word of Recall survives a Pilot restart in the game but not in our memory (the client only says
@@ -5930,7 +6036,13 @@ class Pilot:
             except ValueError as e:
                 return {"ok": False, "error": str(e)}
             extra = ""
-            if c == "read" and "Word of Recall" in next((i["name"] for i in self.w.inven if i["item"] == item), "") \
+            iname0 = next((i["name"] for i in self.w.inven if i["item"] == item), "")
+            if c in ("read", "use") and re.search(r"Teleport|Phase Door", iname0) and "force" not in args[1:] and \
+                    not waited(getattr(self, "escape_read_t", -99.0), 3.0):
+                # (m30: the Navigator read a second Teleportation 2 s after the first landed, back beside the hounds)
+                return {"ok": False, "error": "an escape was read less than 3 s ago and may still be landing: look "
+                                              "again (`status`), or add 'force'"}
+            if c == "read" and "Word of Recall" in iname0 \
                     and self.recall_started(gnow()) and "force" not in args[1:]:
                 return {"ok": False, "error": "a recall is already under way: reading another cancels it "
                                               "(add 'force' to cancel it on purpose)"}

@@ -60,6 +60,7 @@ Each run:
 | M3 | a Moaning spirit (invisible, passes walls, +10, TOUCH:LOSE_DEX: m29's and m30's drainer) summoned 2 off, a `>` painted 6 off, no orders | after a drain, off the level within 30 s (PASS: drained at 5.4 s, left at 8.8 s) |
 | H1 | the hot swap (`tools/pilot/hotswap.sh`) mid-trip: a trip plan working the level, a Cave orc 3 off; freeze, swap, compare before the thaw | swapped while frozen; the new Pilot sees Dive04 in place, same HP, the monsters where they were; the plan resumes and acts after the thaw (PASS: 4.3 s swap, first act 0.4 s after the thaw; logins work while frozen) |
 | H1r | H1 with a Word of Recall read just before | the recall still lands (FAILED first: the new Pilot didn't know a recall was pending, its plan read a second scroll and cancelled it; fixed with `recall.json`; PASS: in town 17 s after the thaw) |
+| M4 | a crowd round Dive04 in a room (the Advisor's estimator memo) | no HP cure with 2+ adjacent; teleport not Phase with 4+ about; lowest HP >= 40% (PASS both ways, but neither reached an emergency: four Uruks and a priest were beaten at 72% with Berserk; an Umber hulk/hound crowd made the danger rule recall at once, 97% HP -- the memo's rules are unit-tested) |
 
 The memo's A7 is at 1250 ft and its A8 Ranger at 6 squares; here they're at 300 ft and 3 squares. The DM summons any race
 at any depth. On unlit ground a monster is seen only within the lantern's 2 squares, or the Half-Orc's infravision of 3

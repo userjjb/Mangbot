@@ -1,0 +1,3904 @@
+{
+"idx": 41,
+"mission": "m30",
+"depth_ft": 650,
+"level_dump": "20261025-064150-650ft.txt",
+"t0": 1792924984.337,
+"t_trigger": 1792924992.096,
+"t_end": 1792925066.0,
+"t0_rule": "latest of last HP>=90% max (A=06:43:04) and last mons record with none within 2 squares (B=06:42:41) within 60 s before trigger",
+"player": {
+"pos": [
+48,
+51
+],
+"hp": 303,
+"mhp": 303,
+"clvl": 25,
+"ac": 54,
+"status": {
+"slow": true,
+"fast": false,
+"hero": false,
+"berserk": false,
+"blind": false,
+"confused": false,
+"afraid": false,
+"poisoned": false,
+"paralyzed": false
+},
+"free_action": null,
+"see_invisible": null
+},
+"inventory": {
+"ccw": 15,
+"csw": 4,
+"clw": 0,
+"phase": 20,
+"tele": 2,
+"staff_tele": 0,
+"wor": 2,
+"speed": 3,
+"berserk": 1,
+"hero": 7,
+"boldness": 0,
+"magic_mapping": 4,
+"door_stair_rod": 1
+},
+"inventory_source": "state.jsonl inven at 06:43:03 (game clock; +1 s from t0, approx)",
+"inventory_raw": [
+"4 Rations of Food {for sale 200}",
+"14 Flasks of oil",
+"3 Potions of Speed {for sale 200}",
+"7 Potions of Heroism {for sale 200}",
+"a Potion of Berserk Strength",
+"4 Potions of Cure Serious Wounds {for sale 200}",
+"15 Potions of Cure Critical Wounds {for sale 200}",
+"20 Scrolls of Phase Door {for sale 200}",
+"2 Scrolls of Teleportation",
+"2 Scrolls of Word of Recall {@R650}",
+"4 Scrolls of Magic Mapping {75% off}",
+"3 Scrolls of Satisfy Hunger {50% off}",
+"a Scroll titled \"ip anrog eresh\" {tried}",
+"a Scroll titled \"oxtri ab od\"",
+"a Rod of Door/Stair Location",
+"a Wand of Stinking Cloud",
+"a Nickel-Plated Wand",
+"a Staff of Treasure Location (20 charges)",
+"a Staff of Object Location (15 charges)",
+"a Staff of Slow Monsters",
+"an Ivory Amulet",
+"a Lucerne Hammer (2d5) {average}",
+"a Flail (2d6) {average}",
+"a Main Gauche (1d5) (+0,+5)",
+"a Ring of Resist Cold",
+"a Ring of Protection [+8]",
+"a Brass Lantern (with 9421 turns of light)",
+"Hard Studded Leather of Resistance (-1) [7,+8]",
+"a Shadow Cloak [6,+3]",
+"an Orcish Shield [5,+5] (+1)",
+"an Iron Helm [5,-3]",
+"a Set of Gauntlets [2,-2]",
+"a Pair of Metal Shod Boots [6,+2] {good - Brodda, the Easterling}"
+],
+"monsters_t0": [
+{
+"name": "Novice warrior",
+"y": 49,
+"x": 14,
+"dist": 37
+}
+],
+"arrivals": [
+{
+"t": 1792924992.095,
+"name": "Yeti",
+"y": 46,
+"x": 49,
+"dist": 1
+},
+{
+"t": 1792924992.095,
+"name": "Druid",
+"y": 46,
+"x": 50,
+"dist": 1
+},
+{
+"t": 1792924992.095,
+"name": "Griffon",
+"y": 46,
+"x": 51,
+"dist": 1
+},
+{
+"t": 1792924992.095,
+"name": "Energy hound",
+"y": 47,
+"x": 49,
+"dist": 1
+},
+{
+"t": 1792924992.095,
+"name": "Giant black ant",
+"y": 47,
+"x": 51,
+"dist": 1
+},
+{
+"t": 1792924992.095,
+"name": "Black harpy",
+"y": 48,
+"x": 49,
+"dist": 1
+},
+{
+"t": 1792924992.095,
+"name": "Copperhead snake",
+"y": 48,
+"x": 50,
+"dist": 1
+},
+{
+"t": 1792924993.129,
+"name": "Umber hulk",
+"y": 45,
+"x": 50,
+"dist": 2
+},
+{
+"t": 1792924993.129,
+"name": "Giant white mouse",
+"y": 47,
+"x": 47,
+"dist": 3
+},
+{
+"t": 1792924993.129,
+"name": "Wolf",
+"y": 47,
+"x": 49,
+"dist": 1
+},
+{
+"t": 1792924993.129,
+"name": "Wolf",
+"y": 47,
+"x": 49,
+"dist": 1
+},
+{
+"t": 1792924993.129,
+"name": "Wolf",
+"y": 47,
+"x": 49,
+"dist": 1
+},
+{
+"t": 1792924993.129,
+"name": "Wolf",
+"y": 47,
+"x": 49,
+"dist": 1
+},
+{
+"t": 1792924993.129,
+"name": "Wolf",
+"y": 47,
+"x": 49,
+"dist": 1
+},
+{
+"t": 1792924993.129,
+"name": "Wolf",
+"y": 47,
+"x": 49,
+"dist": 1
+},
+{
+"t": 1792924993.129,
+"name": "Fire hound",
+"y": 47,
+"x": 52,
+"dist": 2
+},
+{
+"t": 1792924993.129,
+"name": "Fire hound",
+"y": 47,
+"x": 52,
+"dist": 2
+},
+{
+"t": 1792924993.129,
+"name": "Fire hound",
+"y": 47,
+"x": 52,
+"dist": 2
+},
+{
+"t": 1792924993.129,
+"name": "Fire hound",
+"y": 47,
+"x": 52,
+"dist": 2
+},
+{
+"t": 1792924993.129,
+"name": "Fire hound",
+"y": 47,
+"x": 52,
+"dist": 2
+},
+{
+"t": 1792924993.129,
+"name": "Fire hound",
+"y": 47,
+"x": 52,
+"dist": 2
+},
+{
+"t": 1792924993.129,
+"name": "Fire hound",
+"y": 47,
+"x": 52,
+"dist": 2
+},
+{
+"t": 1792924996.258,
+"name": "Wolf",
+"y": 50,
+"x": 44,
+"dist": 2
+},
+{
+"t": 1792925061.17,
+"name": "Clear worm mass",
+"y": 45,
+"x": 49,
+"dist": 1
+},
+{
+"t": 1792925061.17,
+"name": "Yellow worm mass",
+"y": 45,
+"x": 50,
+"dist": 1
+},
+{
+"t": 1792925061.17,
+"name": "Giant red frog",
+"y": 46,
+"x": 49,
+"dist": 1
+},
+{
+"t": 1792925061.17,
+"name": "White wolf",
+"y": 46,
+"x": 51,
+"dist": 1
+},
+{
+"t": 1792925061.17,
+"name": "White wolf",
+"y": 46,
+"x": 51,
+"dist": 1
+},
+{
+"t": 1792925061.17,
+"name": "White wolf",
+"y": 46,
+"x": 51,
+"dist": 1
+},
+{
+"t": 1792925061.17,
+"name": "White wolf",
+"y": 46,
+"x": 51,
+"dist": 1
+},
+{
+"t": 1792925061.17,
+"name": "Giant white dragon fly",
+"y": 47,
+"x": 50,
+"dist": 1
+}
+],
+"summons": [
+{
+"t": 1792924991.315,
+"text": "You hear many things appear nearby."
+},
+{
+"t": 1792924992.595,
+"text": "The Druid magically summons animals."
+},
+{
+"t": 1792925059.366,
+"text": "The Druid magically summons animals."
+}
+],
+"unseen_hits": [
+{
+"t": 1792924984.541,
+"text": "It casts a spell, burning your eyes!"
+},
+{
+"t": 1792924986.126,
+"text": "It mumbles."
+},
+{
+"t": 1792924986.874,
+"text": "It hits you."
+},
+{
+"t": 1792924986.874,
+"text": "It hits you."
+},
+{
+"t": 1792924988.367,
+"text": "It mumbles."
+},
+{
+"t": 1792924988.367,
+"text": "It starts moving faster."
+},
+{
+"t": 1792924988.727,
+"text": "It hits you."
+},
+{
+"t": 1792924988.727,
+"text": "It hits you."
+},
+{
+"t": 1792924989.434,
+"text": "It hits you."
+},
+{
+"t": 1792924990.14,
+"text": "It mumbles."
+},
+{
+"t": 1792924990.141,
+"text": "It starts moving faster."
+},
+{
+"t": 1792924990.381,
+"text": "It hits you."
+},
+{
+"t": 1792924990.381,
+"text": "It hits you."
+},
+{
+"t": 1792924990.846,
+"text": "It hits you."
+},
+{
+"t": 1792924991.315,
+"text": "It mumbles."
+},
+{
+"t": 1792924991.554,
+"text": "It hits you."
+},
+{
+"t": 1792924991.623,
+"text": "It claws you."
+},
+{
+"t": 1792924991.687,
+"text": "It claws you."
+},
+{
+"t": 1792924991.687,
+"text": "It claws you."
+},
+{
+"t": 1792924991.687,
+"text": "It bites you."
+},
+{
+"t": 1792924991.807,
+"text": "It claws you."
+},
+{
+"t": 1792924991.807,
+"text": "It claws you."
+},
+{
+"t": 1792924991.807,
+"text": "It bites you."
+},
+{
+"t": 1792924994.166,
+"text": "It casts a fire bolt."
+},
+{
+"t": 1792924994.394,
+"text": "It drains power from your muscles!"
+},
+{
+"t": 1792924994.407,
+"text": "It breathes fire."
+},
+{
+"t": 1792924995.02,
+"text": "It breathes fire."
+},
+{
+"t": 1792924995.074,
+"text": "It drains power from your muscles!"
+},
+{
+"t": 1792924995.568,
+"text": "It breathes fire."
+},
+{
+"t": 1792924995.913,
+"text": "It breathes fire."
+},
+{
+"t": 1792924997.049,
+"text": "It breathes fire."
+},
+{
+"t": 1792925005.234,
+"text": "It breathes fire."
+},
+{
+"t": 1792925009.5,
+"text": "It breathes fire."
+},
+{
+"t": 1792925013.207,
+"text": "It breathes fire."
+},
+{
+"t": 1792925013.207,
+"text": "It breathes fire."
+},
+{
+"t": 1792925036.832,
+"text": "It breathes fire."
+},
+{
+"t": 1792925044.25,
+"text": "It mumbles."
+},
+{
+"t": 1792925046.405,
+"text": "It mumbles."
+},
+{
+"t": 1792925047.486,
+"text": "It drains power from your muscles!"
+},
+{
+"t": 1792925048.565,
+"text": "It mumbles."
+},
+{
+"t": 1792925049.647,
+"text": "It mumbles."
+},
+{
+"t": 1792925060.765,
+"text": "It hits you."
+}
+],
+"hostile_msgs": [
+{
+"t": 1792924984.541,
+"text": "It casts a spell, burning your eyes!"
+},
+{
+"t": 1792924986.126,
+"text": "It mumbles."
+},
+{
+"t": 1792924986.874,
+"text": "It hits you."
+},
+{
+"t": 1792924986.874,
+"text": "It hits you."
+},
+{
+"t": 1792924988.367,
+"text": "It mumbles."
+},
+{
+"t": 1792924988.367,
+"text": "It starts moving faster."
+},
+{
+"t": 1792924988.727,
+"text": "It hits you."
+},
+{
+"t": 1792924988.727,
+"text": "It hits you."
+},
+{
+"t": 1792924989.434,
+"text": "It hits you."
+},
+{
+"t": 1792924990.14,
+"text": "It mumbles."
+},
+{
+"t": 1792924990.141,
+"text": "It starts moving faster."
+},
+{
+"t": 1792924990.381,
+"text": "It hits you."
+},
+{
+"t": 1792924990.381,
+"text": "It hits you."
+},
+{
+"t": 1792924990.846,
+"text": "It hits you."
+},
+{
+"t": 1792924991.315,
+"text": "It mumbles."
+},
+{
+"t": 1792924991.554,
+"text": "It hits you."
+},
+{
+"t": 1792924991.623,
+"text": "It claws you."
+},
+{
+"t": 1792924991.687,
+"text": "It claws you."
+},
+{
+"t": 1792924991.687,
+"text": "It claws you."
+},
+{
+"t": 1792924991.687,
+"text": "It bites you."
+},
+{
+"t": 1792924991.807,
+"text": "It claws you."
+},
+{
+"t": 1792924991.807,
+"text": "It claws you."
+},
+{
+"t": 1792924991.807,
+"text": "It bites you."
+},
+{
+"t": 1792924991.807,
+"text": "You are struck by electricity!"
+},
+{
+"t": 1792924991.901,
+"text": "The Druid hits you."
+},
+{
+"t": 1792924991.901,
+"text": "The Druid hits you."
+},
+{
+"t": 1792924991.928,
+"text": "The Griffon misses you."
+},
+{
+"t": 1792924991.928,
+"text": "The Griffon misses you."
+},
+{
+"t": 1792924992.368,
+"text": "The Druid concentrates on his body."
+},
+{
+"t": 1792924992.595,
+"text": "The Druid magically summons animals."
+},
+{
+"t": 1792924992.727,
+"text": "The Black harpy claws you."
+},
+{
+"t": 1792924992.727,
+"text": "The Black harpy misses you."
+},
+{
+"t": 1792924992.727,
+"text": "The Black harpy misses you."
+},
+{
+"t": 1792924992.781,
+"text": "The Yeti claws you."
+},
+{
+"t": 1792924992.781,
+"text": "The Yeti claws you."
+},
+{
+"t": 1792924992.781,
+"text": "The Yeti bites you."
+},
+{
+"t": 1792924992.821,
+"text": "The Druid concentrates on his body."
+},
+{
+"t": 1792924993.047,
+"text": "The Druid misses you."
+},
+{
+"t": 1792924993.047,
+"text": "The Druid misses you."
+},
+{
+"t": 1792924993.128,
+"text": "The Copperhead snake misses you."
+},
+{
+"t": 1792924993.194,
+"text": "The Fire hound claws you."
+},
+{
+"t": 1792924993.194,
+"text": "The Fire hound claws you."
+},
+{
+"t": 1792924993.194,
+"text": "The Fire hound misses you."
+},
+{
+"t": 1792924993.206,
+"text": "The Wolf bites you."
+},
+{
+"t": 1792924993.328,
+"text": "The Giant black ant misses you."
+},
+{
+"t": 1792924993.34,
+"text": "The Black harpy claws you."
+},
+{
+"t": 1792924993.34,
+"text": "The Black harpy misses you."
+},
+{
+"t": 1792924993.341,
+"text": "The Black harpy misses you."
+},
+{
+"t": 1792924993.42,
+"text": "The Griffon hits you."
+},
+{
+"t": 1792924993.42,
+"text": "The Griffon misses you."
+},
+{
+"t": 1792924994.166,
+"text": "It casts a fire bolt."
+},
+{
+"t": 1792924994.394,
+"text": "It drains power from your muscles!"
+},
+{
+"t": 1792924994.407,
+"text": "It breathes fire."
+},
+{
+"t": 1792924994.407,
+"text": "One of your Scrolls of Phase Door {for sale 200} (h) was destroyed!"
+},
+{
+"t": 1792924994.608,
+"text": "The Wolf misses you."
+},
+{
+"t": 1792924995.02,
+"text": "It breathes fire."
+},
+{
+"t": 1792924995.074,
+"text": "It drains power from your muscles!"
+},
+{
+"t": 1792924995.168,
+"text": "The Wolf misses you."
+},
+{
+"t": 1792924995.355,
+"text": "The Wolf bites you."
+},
+{
+"t": 1792924995.568,
+"text": "It breathes fire."
+},
+{
+"t": 1792924995.913,
+"text": "It breathes fire."
+},
+{
+"t": 1792924995.968,
+"text": "The Wolf bites you."
+},
+{
+"t": 1792924995.981,
+"text": "The Wolf bites you."
+},
+{
+"t": 1792924996.087,
+"text": "The Wolf bites you."
+},
+{
+"t": 1792924996.595,
+"text": "The Fire hound breathes fire."
+},
+{
+"t": 1792924996.595,
+"text": "One of your Scrolls of Phase Door {for sale 200} (h) was destroyed!"
+},
+{
+"t": 1792924996.595,
+"text": "One of your Scrolls of Satisfy Hunger {50% off} (l) was destroyed!"
+},
+{
+"t": 1792924996.687,
+"text": "The Wolf bites you."
+},
+{
+"t": 1792924996.995,
+"text": "The Wolf bites you."
+},
+{
+"t": 1792924997.049,
+"text": "It breathes fire."
+},
+{
+"t": 1792924997.06,
+"text": "The Wolf bites you."
+},
+{
+"t": 1792924997.673,
+"text": "The Wolf bites you."
+},
+{
+"t": 1792924998.247,
+"text": "The Black harpy claws you."
+},
+{
+"t": 1792924998.247,
+"text": "The Black harpy claws you."
+},
+{
+"t": 1792924998.247,
+"text": "The Black harpy misses you."
+},
+{
+"t": 1792924998.286,
+"text": "The Yeti claws you."
+},
+{
+"t": 1792924998.287,
+"text": "The Yeti claws you."
+},
+{
+"t": 1792924998.287,
+"text": "The Yeti misses you."
+},
+{
+"t": 1792924998.487,
+"text": "The Wolf bites you."
+},
+{
+"t": 1792924998.594,
+"text": "The Wolf bites you."
+},
+{
+"t": 1792925001.847,
+"text": "The Wolf misses you."
+},
+{
+"t": 1792925001.979,
+"text": "The Fire hound claws you."
+},
+{
+"t": 1792925001.98,
+"text": "The Fire hound claws you."
+},
+{
+"t": 1792925001.98,
+"text": "The Fire hound bites you."
+},
+{
+"t": 1792925001.98,
+"text": "You are enveloped in flames!"
+},
+{
+"t": 1792925002.193,
+"text": "The Fire hound breathes fire."
+},
+{
+"t": 1792925003.153,
+"text": "The Wolf misses you."
+},
+{
+"t": 1792925003.181,
+"text": "The Yeti claws you."
+},
+{
+"t": 1792925003.181,
+"text": "The Yeti claws you."
+},
+{
+"t": 1792925003.181,
+"text": "The Yeti misses you."
+},
+{
+"t": 1792925004.127,
+"text": "The Umber hulk hits you."
+},
+{
+"t": 1792925004.127,
+"text": "The Umber hulk misses you."
+},
+{
+"t": 1792925004.127,
+"text": "The Umber hulk bites you."
+},
+{
+"t": 1792925005.234,
+"text": "It breathes fire."
+},
+{
+"t": 1792925009.5,
+"text": "It breathes fire."
+},
+{
+"t": 1792925009.501,
+"text": "Some of your Scrolls of Phase Door {for sale 200} (h) were destroyed!"
+},
+{
+"t": 1792925012.394,
+"text": "The Wolf misses you."
+},
+{
+"t": 1792925013.207,
+"text": "It breathes fire."
+},
+{
+"t": 1792925013.207,
+"text": "It breathes fire."
+},
+{
+"t": 1792925013.274,
+"text": "The Fire hound claws you."
+},
+{
+"t": 1792925013.274,
+"text": "The Fire hound misses you."
+},
+{
+"t": 1792925013.274,
+"text": "The Fire hound bites you."
+},
+{
+"t": 1792925013.274,
+"text": "You are enveloped in flames!"
+},
+{
+"t": 1792925013.274,
+"text": "One of your Scrolls of Word of Recall {@R650} (j) was destroyed!"
+},
+{
+"t": 1792925015.433,
+"text": "The Wolf bites you."
+},
+{
+"t": 1792925018.567,
+"text": "The Druid drains power from your muscles!"
+},
+{
+"t": 1792925019.647,
+"text": "The Druid casts a fire bolt."
+},
+{
+"t": 1792925036.032,
+"text": "The Fire hound breathes fire."
+},
+{
+"t": 1792925036.832,
+"text": "It breathes fire."
+},
+{
+"t": 1792925037.285,
+"text": "The Umber hulk gazes at you."
+},
+{
+"t": 1792925037.285,
+"text": "The Umber hulk hits you."
+},
+{
+"t": 1792925037.285,
+"text": "The Umber hulk hits you."
+},
+{
+"t": 1792925037.285,
+"text": "The Umber hulk bites you."
+},
+{
+"t": 1792925038.779,
+"text": "The Umber hulk hits you."
+},
+{
+"t": 1792925038.779,
+"text": "The Umber hulk hits you."
+},
+{
+"t": 1792925038.78,
+"text": "The Umber hulk bites you."
+},
+{
+"t": 1792925039.183,
+"text": "The Fire hound misses you."
+},
+{
+"t": 1792925039.183,
+"text": "The Fire hound claws you."
+},
+{
+"t": 1792925039.183,
+"text": "The Fire hound misses you."
+},
+{
+"t": 1792925039.9,
+"text": "The Fire hound claws you."
+},
+{
+"t": 1792925039.9,
+"text": "The Fire hound misses you."
+},
+{
+"t": 1792925039.9,
+"text": "The Fire hound bites you."
+},
+{
+"t": 1792925039.9,
+"text": "You are enveloped in flames!"
+},
+{
+"t": 1792925040.672,
+"text": "The Fire hound misses you."
+},
+{
+"t": 1792925040.672,
+"text": "The Fire hound misses you."
+},
+{
+"t": 1792925040.672,
+"text": "The Fire hound bites you."
+},
+{
+"t": 1792925040.672,
+"text": "You are enveloped in flames!"
+},
+{
+"t": 1792925042.38,
+"text": "The Umber hulk misses you."
+},
+{
+"t": 1792925042.38,
+"text": "The Umber hulk misses you."
+},
+{
+"t": 1792925042.38,
+"text": "The Umber hulk bites you."
+},
+{
+"t": 1792925043.167,
+"text": "The Druid casts a spell, burning your eyes!"
+},
+{
+"t": 1792925044.25,
+"text": "It mumbles."
+},
+{
+"t": 1792925044.25,
+"text": "You are hit by fire!"
+},
+{
+"t": 1792925046.405,
+"text": "It mumbles."
+},
+{
+"t": 1792925046.405,
+"text": "You are hit by lightning!"
+},
+{
+"t": 1792925047.486,
+"text": "It drains power from your muscles!"
+},
+{
+"t": 1792925048.565,
+"text": "It mumbles."
+},
+{
+"t": 1792925048.566,
+"text": "You are hit by lightning!"
+},
+{
+"t": 1792925049.647,
+"text": "It mumbles."
+},
+{
+"t": 1792925049.647,
+"text": "You are hit by fire!"
+},
+{
+"t": 1792925053.993,
+"text": "The Yeti claws you."
+},
+{
+"t": 1792925053.993,
+"text": "The Yeti misses you."
+},
+{
+"t": 1792925053.993,
+"text": "The Yeti bites you."
+},
+{
+"t": 1792925056.125,
+"text": "The Griffon misses you."
+},
+{
+"t": 1792925056.125,
+"text": "The Griffon bites you."
+},
+{
+"t": 1792925057.458,
+"text": "The Copperhead snake misses you."
+},
+{
+"t": 1792925059.366,
+"text": "The Druid magically summons animals."
+},
+{
+"t": 1792925059.898,
+"text": "The White wolf bites you."
+},
+{
+"t": 1792925059.899,
+"text": "The White wolf bites you."
+},
+{
+"t": 1792925060.325,
+"text": "The White wolf misses you."
+},
+{
+"t": 1792925060.325,
+"text": "The White wolf bites you."
+},
+{
+"t": 1792925060.449,
+"text": "The Druid casts a spell, burning your eyes!"
+},
+{
+"t": 1792925060.765,
+"text": "It hits you."
+},
+{
+"t": 1792925060.992,
+"text": "The Druid concentrates on his body."
+},
+{
+"t": 1792925061.115,
+"text": "The Giant red frog misses you."
+}
+],
+"status_msgs": [
+{
+"t": 1792924984.541,
+"text": "You are blind!"
+},
+{
+"t": 1792924985.861,
+"text": "You feel yourself speed up."
+},
+{
+"t": 1792924986.127,
+"text": "You are paralyzed!"
+},
+{
+"t": 1792924989.86,
+"text": "You can move again."
+},
+{
+"t": 1792924991.861,
+"text": "You can see again."
+},
+{
+"t": 1792924994.394,
+"text": "You resist the effects!"
+},
+{
+"t": 1792924995.074,
+"text": "You feel yourself moving slower!"
+},
+{
+"t": 1792924999.194,
+"text": "You feel yourself speed up."
+},
+{
+"t": 1792925018.568,
+"text": "You resist the effects!"
+},
+{
+"t": 1792925037.285,
+"text": "You are confused!"
+},
+{
+"t": 1792925038.538,
+"text": "You feel less confused now."
+},
+{
+"t": 1792925043.167,
+"text": "You are blind!"
+},
+{
+"t": 1792925047.486,
+"text": "You resist the effects!"
+},
+{
+"t": 1792925050.847,
+"text": "You can see again."
+},
+{
+"t": 1792925060.449,
+"text": "You are blind!"
+},
+{
+"t": 1792925060.845,
+"text": "You can see again."
+}
+],
+"actions": [
+{
+"t": 1792924984.338,
+"cmd": "custom . dir=7",
+"what": "run",
+"why": null,
+"src": "pilot",
+"t_effect": 1792924984.622
+},
+{
+"t": 1792924984.77,
+"cmd": "walk 5",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792924991.783,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792924992.82,
+"cmd": "custom r item=7",
+"what": "phase",
+"why": "HP 237 within 3 turns of the worst (285): phase door",
+"src": "pilot",
+"t_effect": 1792924993.474
+},
+{
+"t": 1792924993.75,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792924994.787,
+"cmd": "walk 6",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792924997.593
+},
+{
+"t": 1792924994.787,
+"cmd": "walk 9",
+"what": "melee",
+"why": null,
+"src": "pilot",
+"t_effect": 1792924995.593
+},
+{
+"t": 1792924995.104,
+"cmd": "custom q item=2",
+"what": "speed",
+"why": "slowed (-10) in a fight: quaff 3 Potions of Speed {for sale 200}",
+"src": "pilot",
+"t_effect": 1792924999.194
+},
+{
+"t": 1792924996.373,
+"cmd": "walk 7",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792924996.373,
+"cmd": "walk 8",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792924997.618,
+"cmd": "walk 9",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792925001.394
+},
+{
+"t": 1792924998.688,
+"cmd": "custom r item=7",
+"what": "phase",
+"why": "HP 153 within 3 turns of the worst (172): phase door",
+"src": "pilot",
+"t_effect": 1792925004.726
+},
+{
+"t": 1792925004.819,
+"cmd": "custom q item=6",
+"what": "ccw",
+"why": "low HP: quaff 15 Potions of Cure Critical Wounds {for sale 200}",
+"src": "pilot",
+"t_effect": 1792925008.061
+},
+{
+"t": 1792925009.208,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792925011.394
+},
+{
+"t": 1792925011.237,
+"cmd": "custom r item=7",
+"what": "phase",
+"why": "low HP: phase door",
+"src": "pilot",
+"t_effect": 1792925016.394
+},
+{
+"t": 1792925012.578,
+"cmd": "custom r item=8",
+"what": "tele",
+"why": "agent: read ['Teleportation']",
+"src": "navigator",
+"t_effect": 1792925019.727
+},
+{
+"t": 1792925017.713,
+"cmd": "custom q item=5",
+"what": "csw",
+"why": "low HP: quaff 4 Potions of Cure Serious Wounds {for sale 200}",
+"src": "pilot",
+"t_effect": 1792925023.061
+},
+{
+"t": 1792925021.629,
+"cmd": "custom r item=8",
+"what": "tele",
+"why": "agent: read ['i'] [letter i = slot 8 = 2 Scrolls of Teleportation at t0 snapshot; may have shifted]",
+"src": "navigator",
+"t_effect": 1792925026.393
+},
+{
+"t": 1792925025.247,
+"cmd": "custom q item=6",
+"what": "ccw",
+"why": "low HP: quaff 14 Potions of Cure Critical Wounds {for sale 200}",
+"src": "pilot",
+"t_effect": 1792925029.725
+},
+{
+"t": 1792925029.868,
+"cmd": "custom r item=8",
+"what": "wor",
+"why": "read a Scroll of Word of Recall {@R650}",
+"src": "pilot",
+"t_effect": 1792925030.393
+},
+{
+"t": 1792925030.878,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792925036.621,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792925039.206
+},
+{
+"t": 1792925037.403,
+"cmd": "custom q item=5",
+"what": "csw",
+"why": "confused in combat: quaff 3 Potions of Cure Serious Wounds {for sale 200}",
+"src": "pilot",
+"t_effect": 1792925038.538
+},
+{
+"t": 1792925038.197,
+"cmd": "walk 1",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792925042.513
+},
+{
+"t": 1792925038.197,
+"cmd": "walk 7",
+"what": "melee",
+"why": null,
+"src": "pilot",
+"t_effect": 1792925039.874
+},
+{
+"t": 1792925039.245,
+"cmd": "walk 7",
+"what": "melee",
+"why": null,
+"src": "pilot",
+"t_effect": 1792925040.54
+},
+{
+"t": 1792925040.302,
+"cmd": "custom r item=7",
+"what": "phase",
+"why": "group danger 114 vs HP 155: phase door",
+"src": "pilot",
+"t_effect": 1792925045.846
+},
+{
+"t": 1792925041.129,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792925043.96,
+"cmd": "custom q item=6",
+"what": "ccw",
+"why": "low HP: quaff 13 Potions of Cure Critical Wounds {for sale 200}",
+"src": "pilot",
+"t_effect": 1792925050.847
+},
+{
+"t": 1792925051.117,
+"cmd": "custom q item=6",
+"what": "ccw",
+"why": "agent: quaff ['g'] [letter g = slot 6 = 15 Potions of Cure Critical Wounds {for sale 200} at t0 snapshot; may have shifted]",
+"src": "navigator",
+"t_effect": 1792925054.18
+},
+{
+"t": 1792925054.719,
+"cmd": "custom r item=7",
+"what": "phase",
+"why": "low HP: phase door",
+"src": "pilot",
+"t_effect": 1792925057.513
+},
+{
+"t": 1792925057.766,
+"cmd": "custom q item=6",
+"what": "ccw",
+"why": "low HP: quaff 11 Potions of Cure Critical Wounds {for sale 200}",
+"src": "pilot",
+"t_effect": 1792925060.846
+},
+{
+"t": 1792925060.86,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+}
+],
+"melee_by_us": [
+{
+"t": 1792924991.993,
+"text": "You hit the Energy hound."
+},
+{
+"t": 1792924992.154,
+"text": "You hit the Energy hound."
+},
+{
+"t": 1792924992.327,
+"text": "You hit the Energy hound."
+},
+{
+"t": 1792924992.488,
+"text": "You hit the Energy hound."
+},
+{
+"t": 1792924992.66,
+"text": "You hit the Energy hound."
+},
+{
+"t": 1792924992.821,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792924994.354,
+"text": "You hit the Wolf."
+},
+{
+"t": 1792924994.514,
+"text": "You hit the Wolf."
+},
+{
+"t": 1792924994.688,
+"text": "You hit the Wolf."
+},
+{
+"t": 1792924995.593,
+"text": "You hit the Wolf."
+},
+{
+"t": 1792924995.593,
+"text": "You miss the Wolf."
+},
+{
+"t": 1792924995.593,
+"text": "You hit the Wolf."
+},
+{
+"t": 1792924996.328,
+"text": "You hit the Wolf."
+},
+{
+"t": 1792924996.341,
+"text": "You hit the Wolf."
+},
+{
+"t": 1792924996.341,
+"text": "You hit the Wolf."
+},
+{
+"t": 1792924999.727,
+"text": "You hit the Black harpy."
+},
+{
+"t": 1792924999.727,
+"text": "You hit the Black harpy."
+},
+{
+"t": 1792925014.728,
+"text": "You miss the Wolf."
+},
+{
+"t": 1792925014.728,
+"text": "You hit the Wolf."
+},
+{
+"t": 1792925031.567,
+"text": "You hit the Wolf."
+},
+{
+"t": 1792925032.473,
+"text": "You hit the Wolf."
+},
+{
+"t": 1792925032.473,
+"text": "You hit the Wolf."
+},
+{
+"t": 1792925033.379,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925033.379,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925033.379,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925033.38,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925033.392,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925034.392,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925034.392,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925034.392,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925034.392,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925034.414,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925034.953,
+"text": "You hit the Wolf."
+},
+{
+"t": 1792925034.953,
+"text": "You hit the Wolf."
+},
+{
+"t": 1792925035.38,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925035.38,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925035.38,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925035.38,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925035.38,
+"text": "It was a good hit!"
+},
+{
+"t": 1792925036.552,
+"text": "You hit the Umber hulk."
+},
+{
+"t": 1792925036.552,
+"text": "You miss the Umber hulk."
+},
+{
+"t": 1792925036.553,
+"text": "You hit the Umber hulk."
+},
+{
+"t": 1792925036.553,
+"text": "You hit the Umber hulk."
+},
+{
+"t": 1792925036.566,
+"text": "You hit the Umber hulk."
+},
+{
+"t": 1792925036.566,
+"text": "You miss the Umber hulk."
+},
+{
+"t": 1792925036.566,
+"text": "You hit the Umber hulk."
+},
+{
+"t": 1792925036.566,
+"text": "You hit the Umber hulk."
+},
+{
+"t": 1792925037.207,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925037.207,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925037.207,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925037.207,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925037.873,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925037.873,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925037.874,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925037.874,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925039.874,
+"text": "You miss the Fire hound."
+},
+{
+"t": 1792925039.874,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925039.874,
+"text": "You miss the Fire hound."
+},
+{
+"t": 1792925039.874,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925040.54,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925040.54,
+"text": "You miss the Fire hound."
+},
+{
+"t": 1792925040.54,
+"text": "You hit the Fire hound."
+},
+{
+"t": 1792925049.18,
+"text": "You hit it."
+},
+{
+"t": 1792925049.18,
+"text": "You hit it."
+}
+],
+"kills": [
+{
+"t": 1792924992.66,
+"name": "Energy hound"
+},
+{
+"t": 1792924994.688,
+"name": "Wolf"
+},
+{
+"t": 1792924995.593,
+"name": "Wolf"
+},
+{
+"t": 1792924996.328,
+"name": "Wolf"
+},
+{
+"t": 1792924996.341,
+"name": "Wolf"
+},
+{
+"t": 1792924999.727,
+"name": "Black harpy"
+},
+{
+"t": 1792925014.728,
+"name": "Wolf"
+},
+{
+"t": 1792925031.567,
+"name": "Wolf"
+},
+{
+"t": 1792925032.473,
+"name": "Wolf"
+},
+{
+"t": 1792925033.392,
+"name": "Fire hound"
+},
+{
+"t": 1792925034.414,
+"name": "Fire hound"
+},
+{
+"t": 1792925034.953,
+"name": "Wolf"
+},
+{
+"t": 1792925035.38,
+"name": "Fire hound"
+},
+{
+"t": 1792925037.207,
+"name": "Fire hound"
+},
+{
+"t": 1792925037.874,
+"name": "Fire hound"
+},
+{
+"t": 1792925040.54,
+"name": "Fire hound"
+},
+{
+"t": 1792925049.18,
+"name": "it"
+}
+],
+"hp_series": [
+[
+1792924954.969,
+303,
+303
+],
+[
+1792924954.969,
+303,
+303
+],
+[
+1792924955.562,
+303,
+303
+],
+[
+1792924955.562,
+303,
+303
+],
+[
+1792924956.153,
+303,
+303
+],
+[
+1792924956.153,
+303,
+303
+],
+[
+1792924957.399,
+303,
+303
+],
+[
+1792924957.401,
+303,
+303
+],
+[
+1792924958.083,
+303,
+303
+],
+[
+1792924958.444,
+303,
+303
+],
+[
+1792924958.761,
+303,
+303
+],
+[
+1792924959.441,
+303,
+303
+],
+[
+1792924959.492,
+303,
+303
+],
+[
+1792924960.071,
+303,
+303
+],
+[
+1792924960.538,
+303,
+303
+],
+[
+1792924960.755,
+303,
+303
+],
+[
+1792924960.755,
+303,
+303
+],
+[
+1792924961.549,
+303,
+303
+],
+[
+1792924961.758,
+303,
+303
+],
+[
+1792924962.6,
+303,
+303
+],
+[
+1792924963.635,
+296,
+303
+],
+[
+1792924963.796,
+296,
+303
+],
+[
+1792924963.796,
+296,
+303
+],
+[
+1792924965.193,
+301,
+303
+],
+[
+1792924965.359,
+301,
+303
+],
+[
+1792924965.359,
+301,
+303
+],
+[
+1792924965.961,
+303,
+303
+],
+[
+1792924965.961,
+303,
+303
+],
+[
+1792924966.553,
+303,
+303
+],
+[
+1792924966.553,
+303,
+303
+],
+[
+1792924967.144,
+303,
+303
+],
+[
+1792924967.144,
+303,
+303
+],
+[
+1792924967.197,
+303,
+303
+],
+[
+1792924967.855,
+303,
+303
+],
+[
+1792924967.855,
+303,
+303
+],
+[
+1792924967.912,
+303,
+303
+],
+[
+1792924968.286,
+303,
+303
+],
+[
+1792924968.288,
+303,
+303
+],
+[
+1792924968.46,
+303,
+303
+],
+[
+1792924968.46,
+303,
+303
+],
+[
+1792924969.105,
+303,
+303
+],
+[
+1792924969.105,
+303,
+303
+],
+[
+1792924969.698,
+303,
+303
+],
+[
+1792924969.698,
+303,
+303
+],
+[
+1792924970.708,
+303,
+303
+],
+[
+1792924970.82,
+303,
+303
+],
+[
+1792924970.82,
+303,
+303
+],
+[
+1792924972.16,
+303,
+303
+],
+[
+1792924972.16,
+303,
+303
+],
+[
+1792924972.859,
+303,
+303
+],
+[
+1792924972.859,
+303,
+303
+],
+[
+1792924973.45,
+303,
+303
+],
+[
+1792924973.45,
+303,
+303
+],
+[
+1792924974.314,
+303,
+303
+],
+[
+1792924974.315,
+303,
+303
+],
+[
+1792924975.019,
+303,
+303
+],
+[
+1792924975.071,
+303,
+303
+],
+[
+1792924976.21,
+303,
+303
+],
+[
+1792924976.263,
+303,
+303
+],
+[
+1792924977.02,
+303,
+303
+],
+[
+1792924978.274,
+303,
+303
+],
+[
+1792924978.327,
+303,
+303
+],
+[
+1792924979.734,
+303,
+303
+],
+[
+1792924979.734,
+303,
+303
+],
+[
+1792924980.324,
+303,
+303
+],
+[
+1792924980.324,
+303,
+303
+],
+[
+1792924980.918,
+303,
+303
+],
+[
+1792924980.918,
+303,
+303
+],
+[
+1792924982.051,
+303,
+303
+],
+[
+1792924982.051,
+303,
+303
+],
+[
+1792924982.646,
+303,
+303
+],
+[
+1792924982.646,
+303,
+303
+],
+[
+1792924983.347,
+303,
+303
+],
+[
+1792924983.347,
+303,
+303
+],
+[
+1792924983.839,
+303,
+303
+],
+[
+1792924984.337,
+303,
+303
+],
+[
+1792924984.337,
+303,
+303
+],
+[
+1792924991.783,
+267,
+303
+],
+[
+1792924991.836,
+254,
+303
+],
+[
+1792924992.095,
+255,
+303
+],
+[
+1792924992.096,
+255,
+303
+],
+[
+1792924992.096,
+255,
+303
+],
+[
+1792924992.096,
+255,
+303
+],
+[
+1792924992.611,
+245,
+303
+],
+[
+1792924992.82,
+237,
+303
+],
+[
+1792924992.821,
+237,
+303
+],
+[
+1792924992.821,
+237,
+303
+],
+[
+1792924993.129,
+237,
+303
+],
+[
+1792924993.438,
+211,
+303
+],
+[
+1792924993.438,
+211,
+303
+],
+[
+1792924993.75,
+211,
+303
+],
+[
+1792924994.162,
+212,
+303
+],
+[
+1792924994.42,
+207,
+303
+],
+[
+1792924994.474,
+207,
+303
+],
+[
+1792924994.786,
+208,
+303
+],
+[
+1792924994.786,
+208,
+303
+],
+[
+1792924994.786,
+208,
+303
+],
+[
+1792924995.049,
+208,
+303
+],
+[
+1792924995.104,
+203,
+303
+],
+[
+1792924995.104,
+203,
+303
+],
+[
+1792924995.205,
+203,
+303
+],
+[
+1792924995.722,
+197,
+303
+],
+[
+1792924996.044,
+186,
+303
+],
+[
+1792924996.258,
+186,
+303
+],
+[
+1792924996.65,
+182,
+303
+],
+[
+1792924996.65,
+182,
+303
+],
+[
+1792924996.706,
+178,
+303
+],
+[
+1792924997.295,
+174,
+303
+],
+[
+1792924998.307,
+159,
+303
+],
+[
+1792924998.688,
+153,
+303
+],
+[
+1792924998.688,
+153,
+303
+],
+[
+1792924998.689,
+153,
+303
+],
+[
+1792925001.721,
+154,
+303
+],
+[
+1792925001.724,
+154,
+303
+],
+[
+1792925001.724,
+154,
+303
+],
+[
+1792925002.032,
+142,
+303
+],
+[
+1792925003.267,
+134,
+303
+],
+[
+1792925003.267,
+134,
+303
+],
+[
+1792925004.819,
+129,
+303
+],
+[
+1792925004.82,
+129,
+303
+],
+[
+1792925006.72,
+124,
+303
+],
+[
+1792925007.081,
+124,
+303
+],
+[
+1792925007.852,
+124,
+303
+],
+[
+1792925007.853,
+124,
+303
+],
+[
+1792925007.904,
+124,
+303
+],
+[
+1792925007.905,
+124,
+303
+],
+[
+1792925009.207,
+152,
+303
+],
+[
+1792925009.208,
+152,
+303
+],
+[
+1792925009.527,
+147,
+303
+],
+[
+1792925009.527,
+147,
+303
+],
+[
+1792925009.581,
+147,
+303
+],
+[
+1792925010.152,
+147,
+303
+],
+[
+1792925010.153,
+147,
+303
+],
+[
+1792925011.237,
+147,
+303
+],
+[
+1792925011.237,
+147,
+303
+],
+[
+1792925011.237,
+147,
+303
+],
+[
+1792925012.112,
+147,
+303
+],
+[
+1792925012.578,
+147,
+303
+],
+[
+1792925012.578,
+147,
+303
+],
+[
+1792925012.579,
+147,
+303
+],
+[
+1792925013.334,
+132,
+303
+],
+[
+1792925013.334,
+132,
+303
+],
+[
+1792925013.39,
+132,
+303
+],
+[
+1792925013.391,
+132,
+303
+],
+[
+1792925013.391,
+132,
+303
+],
+[
+1792925014.629,
+132,
+303
+],
+[
+1792925014.629,
+132,
+303
+],
+[
+1792925016.171,
+130,
+303
+],
+[
+1792925016.171,
+130,
+303
+],
+[
+1792925016.428,
+130,
+303
+],
+[
+1792925017.144,
+130,
+303
+],
+[
+1792925017.556,
+130,
+303
+],
+[
+1792925017.557,
+130,
+303
+],
+[
+1792925017.713,
+130,
+303
+],
+[
+1792925017.713,
+130,
+303
+],
+[
+1792925020.544,
+115,
+303
+],
+[
+1792925020.546,
+115,
+303
+],
+[
+1792925021.628,
+115,
+303
+],
+[
+1792925021.629,
+115,
+303
+],
+[
+1792925021.629,
+115,
+303
+],
+[
+1792925023.589,
+136,
+303
+],
+[
+1792925023.591,
+136,
+303
+],
+[
+1792925023.644,
+136,
+303
+],
+[
+1792925025.247,
+136,
+303
+],
+[
+1792925025.248,
+136,
+303
+],
+[
+1792925026.945,
+137,
+303
+],
+[
+1792925026.946,
+137,
+303
+],
+[
+1792925029.865,
+166,
+303
+],
+[
+1792925029.868,
+166,
+303
+],
+[
+1792925029.868,
+166,
+303
+],
+[
+1792925030.767,
+166,
+303
+],
+[
+1792925030.768,
+166,
+303
+],
+[
+1792925030.878,
+167,
+303
+],
+[
+1792925032.179,
+171,
+303
+],
+[
+1792925033.236,
+172,
+303
+],
+[
+1792925033.652,
+173,
+303
+],
+[
+1792925034.069,
+174,
+303
+],
+[
+1792925034.071,
+174,
+303
+],
+[
+1792925034.279,
+174,
+303
+],
+[
+1792925035.059,
+175,
+303
+],
+[
+1792925035.06,
+175,
+303
+],
+[
+1792925035.321,
+176,
+303
+],
+[
+1792925036.357,
+173,
+303
+],
+[
+1792925036.566,
+173,
+303
+],
+[
+1792925036.566,
+173,
+303
+],
+[
+1792925036.62,
+173,
+303
+],
+[
+1792925036.62,
+173,
+303
+],
+[
+1792925036.621,
+173,
+303
+],
+[
+1792925036.882,
+174,
+303
+],
+[
+1792925037.403,
+156,
+303
+],
+[
+1792925037.403,
+156,
+303
+],
+[
+1792925037.403,
+156,
+303
+],
+[
+1792925038.457,
+157,
+303
+],
+[
+1792925038.508,
+157,
+303
+],
+[
+1792925038.51,
+157,
+303
+],
+[
+1792925039.504,
+161,
+303
+],
+[
+1792925039.925,
+155,
+303
+],
+[
+1792925040.302,
+155,
+303
+],
+[
+1792925040.303,
+155,
+303
+],
+[
+1792925040.303,
+155,
+303
+],
+[
+1792925040.506,
+155,
+303
+],
+[
+1792925040.87,
+152,
+303
+],
+[
+1792925042.459,
+143,
+303
+],
+[
+1792925042.459,
+143,
+303
+],
+[
+1792925043.703,
+144,
+303
+],
+[
+1792925043.96,
+144,
+303
+],
+[
+1792925043.961,
+144,
+303
+],
+[
+1792925044.013,
+144,
+303
+],
+[
+1792925044.014,
+144,
+303
+],
+[
+1792925047.006,
+121,
+303
+],
+[
+1792925047.313,
+121,
+303
+],
+[
+1792925047.314,
+121,
+303
+],
+[
+1792925051.062,
+124,
+303
+],
+[
+1792925051.115,
+124,
+303
+],
+[
+1792925051.117,
+124,
+303
+],
+[
+1792925053.733,
+125,
+303
+],
+[
+1792925053.733,
+125,
+303
+],
+[
+1792925053.735,
+125,
+303
+],
+[
+1792925054.719,
+147,
+303
+],
+[
+1792925054.719,
+147,
+303
+],
+[
+1792925054.719,
+147,
+303
+],
+[
+1792925054.874,
+147,
+303
+],
+[
+1792925054.876,
+147,
+303
+],
+[
+1792925056.111,
+148,
+303
+],
+[
+1792925057.093,
+142,
+303
+],
+[
+1792925057.095,
+142,
+303
+],
+[
+1792925057.766,
+142,
+303
+],
+[
+1792925057.766,
+142,
+303
+],
+[
+1792925059.621,
+143,
+303
+],
+[
+1792925059.621,
+143,
+303
+],
+[
+1792925060.34,
+138,
+303
+],
+[
+1792925060.341,
+138,
+303
+],
+[
+1792925060.857,
+155,
+303
+],
+[
+1792925060.86,
+155,
+303
+],
+[
+1792925061.17,
+155,
+303
+],
+[
+1792925061.231,
+156,
+303
+],
+[
+1792925061.285,
+156,
+303
+],
+[
+1792925062.772,
+211,
+303
+],
+[
+1792925064.867,
+303,
+303
+],
+[
+1792925064.919,
+303,
+303
+],
+[
+1792925064.923,
+303,
+303
+]
+],
+"pos_series": [
+[
+1792924984.622,
+47,
+50
+],
+[
+1792924993.474,
+52,
+43
+],
+[
+1792924997.593,
+51,
+42
+],
+[
+1792925001.394,
+50,
+43
+],
+[
+1792925004.726,
+46,
+50
+],
+[
+1792925011.394,
+47,
+50
+],
+[
+1792925016.394,
+41,
+48
+],
+[
+1792925019.727,
+57,
+129
+],
+[
+1792925026.393,
+58,
+57
+],
+[
+1792925039.206,
+59,
+56
+],
+[
+1792925042.513,
+52,
+52
+],
+[
+1792925045.846,
+52,
+51
+],
+[
+1792925057.513,
+46,
+50
+],
+[
+1792925061.207,
+16,
+45
+]
+],
+"time_factor": [
+[
+1792924994.474,
+1.0
+],
+[
+1792924996.706,
+1.0
+],
+[
+1792925001.721,
+0.2
+],
+[
+1792925006.72,
+0.2
+],
+[
+1792925009.581,
+0.2
+],
+[
+1792925013.39,
+0.2
+],
+[
+1792925023.644,
+0.2
+],
+[
+1792925029.865,
+1.0
+],
+[
+1792925033.652,
+1.0
+],
+[
+1792925040.87,
+0.2
+],
+[
+1792925043.703,
+0.2
+],
+[
+1792925053.733,
+0.2
+],
+[
+1792925060.857,
+1.0
+],
+[
+1792925061.285,
+1.0
+],
+[
+1792925062.772,
+1.0
+]
+],
+"mons_series": [
+[
+1792924992.095,
+[
+[
+46,
+49,
+"Yeti"
+],
+[
+46,
+50,
+"Druid"
+],
+[
+46,
+51,
+"Griffon"
+],
+[
+47,
+49,
+"Energy hound"
+],
+[
+47,
+51,
+"Giant black ant"
+],
+[
+48,
+49,
+"Black harpy"
+],
+[
+48,
+50,
+"Copperhead snake"
+]
+]
+],
+[
+1792924993.129,
+[
+[
+45,
+50,
+"Umber hulk"
+],
+[
+46,
+49,
+"Yeti"
+],
+[
+46,
+50,
+"Druid"
+],
+[
+46,
+51,
+"Griffon"
+],
+[
+47,
+47,
+"Giant white mouse"
+],
+[
+47,
+49,
+"Wolf"
+],
+[
+47,
+51,
+"Giant black ant"
+],
+[
+47,
+52,
+"Fire hound"
+],
+[
+48,
+48,
+"Wolf"
+],
+[
+48,
+49,
+"Black harpy"
+],
+[
+48,
+50,
+"Copperhead snake"
+],
+[
+48,
+51,
+"Fire hound"
+],
+[
+48,
+52,
+"Fire hound"
+],
+[
+49,
+48,
+"Wolf"
+],
+[
+49,
+49,
+"Wolf"
+],
+[
+49,
+50,
+"Fire hound"
+],
+[
+49,
+51,
+"Fire hound"
+],
+[
+49,
+52,
+"Fire hound"
+],
+[
+50,
+49,
+"Wolf"
+],
+[
+50,
+50,
+"Wolf"
+],
+[
+50,
+51,
+"Fire hound"
+]
+]
+],
+[
+1792924994.162,
+[
+[
+50,
+45,
+"Wolf"
+],
+[
+51,
+46,
+"Wolf"
+]
+]
+],
+[
+1792924995.205,
+[
+[
+50,
+45,
+"Wolf"
+],
+[
+51,
+45,
+"Wolf"
+],
+[
+52,
+44,
+"Wolf"
+],
+[
+52,
+45,
+"Wolf"
+],
+[
+52,
+46,
+"Wolf"
+]
+]
+],
+[
+1792924996.258,
+[
+[
+49,
+44,
+"Giant white mouse"
+],
+[
+50,
+44,
+"Wolf"
+],
+[
+50,
+45,
+"Black harpy"
+],
+[
+51,
+43,
+"Wolf"
+],
+[
+51,
+44,
+"Wolf"
+],
+[
+51,
+45,
+"Wolf"
+],
+[
+51,
+46,
+"Fire hound"
+],
+[
+52,
+44,
+"Wolf"
+],
+[
+52,
+45,
+"Wolf"
+],
+[
+52,
+46,
+"Wolf"
+]
+]
+],
+[
+1792924997.295,
+[
+[
+50,
+44,
+"Yeti"
+],
+[
+51,
+43,
+"Wolf"
+],
+[
+51,
+44,
+"Wolf"
+],
+[
+51,
+46,
+"Fire hound"
+],
+[
+52,
+42,
+"Wolf"
+],
+[
+52,
+46,
+"Wolf"
+]
+]
+],
+[
+1792924998.307,
+[
+[
+49,
+44,
+"Fire hound"
+],
+[
+50,
+42,
+"Black harpy"
+],
+[
+50,
+44,
+"Wolf"
+],
+[
+51,
+43,
+"Yeti"
+],
+[
+51,
+44,
+"Fire hound"
+],
+[
+51,
+45,
+"Wolf"
+],
+[
+52,
+42,
+"Wolf"
+],
+[
+52,
+43,
+"Wolf"
+],
+[
+52,
+45,
+"Wolf"
+]
+]
+],
+[
+1792925002.032,
+[
+[
+48,
+44,
+"Fire hound"
+],
+[
+48,
+45,
+"Griffon"
+],
+[
+49,
+43,
+"Fire hound"
+],
+[
+49,
+44,
+"Umber hulk"
+],
+[
+49,
+45,
+"Fire hound"
+],
+[
+49,
+46,
+"Giant black ant"
+],
+[
+50,
+42,
+"Wolf"
+],
+[
+50,
+44,
+"Fire hound"
+],
+[
+50,
+45,
+"Wolf"
+],
+[
+51,
+42,
+"Wolf"
+],
+[
+51,
+43,
+"Yeti"
+],
+[
+51,
+45,
+"Fire hound"
+],
+[
+52,
+42,
+"Wolf"
+],
+[
+52,
+44,
+"Wolf"
+],
+[
+52,
+45,
+"Fire hound"
+]
+]
+],
+[
+1792925007.081,
+[
+[
+47,
+47,
+"Giant black ant"
+],
+[
+48,
+48,
+"Fire hound"
+]
+]
+],
+[
+1792925012.112,
+[
+[
+46,
+48,
+"Giant black ant"
+],
+[
+47,
+47,
+"Copperhead snake"
+],
+[
+47,
+49,
+"Fire hound"
+],
+[
+48,
+48,
+"Fire hound"
+],
+[
+48,
+49,
+"Wolf"
+],
+[
+49,
+48,
+"Wolf"
+]
+]
+],
+[
+1792925017.144,
+[
+[
+41,
+50,
+"Druid"
+]
+]
+],
+[
+1792925032.179,
+[
+[
+56,
+55,
+"Wolf"
+]
+]
+],
+[
+1792925033.236,
+[
+[
+56,
+55,
+"Fire hound"
+]
+]
+],
+[
+1792925034.279,
+[
+[
+56,
+55,
+"Fire hound"
+]
+]
+],
+[
+1792925035.321,
+[
+[
+56,
+55,
+"Fire hound"
+]
+]
+],
+[
+1792925036.357,
+[
+[
+57,
+55,
+"Fire hound"
+]
+]
+],
+[
+1792925037.403,
+[
+[
+56,
+55,
+"Fire hound"
+],
+[
+57,
+55,
+"Fire hound"
+],
+[
+57,
+56,
+"Umber hulk"
+]
+]
+],
+[
+1792925038.457,
+[
+[
+56,
+55,
+"Fire hound"
+],
+[
+57,
+56,
+"Umber hulk"
+],
+[
+58,
+56,
+"Fire hound"
+]
+]
+],
+[
+1792925039.504,
+[
+[
+56,
+55,
+"Fire hound"
+],
+[
+57,
+55,
+"Fire hound"
+],
+[
+57,
+56,
+"Umber hulk"
+],
+[
+58,
+56,
+"Fire hound"
+]
+]
+],
+[
+1792925040.506,
+[
+[
+57,
+55,
+"Fire hound"
+],
+[
+58,
+55,
+"Fire hound"
+],
+[
+58,
+56,
+"Fire hound"
+],
+[
+58,
+57,
+"Umber hulk"
+]
+]
+],
+[
+1792925051.062,
+[
+[
+50,
+49,
+"Copperhead snake"
+],
+[
+53,
+50,
+"Yeti"
+],
+[
+54,
+53,
+"Griffon"
+]
+]
+],
+[
+1792925056.111,
+[
+[
+51,
+50,
+"Copperhead snake"
+],
+[
+53,
+50,
+"Yeti"
+],
+[
+53,
+52,
+"Griffon"
+],
+[
+54,
+53,
+"Fire hound"
+]
+]
+],
+[
+1792925061.17,
+[
+[
+43,
+49,
+"Druid"
+],
+[
+45,
+49,
+"Clear worm mass"
+],
+[
+45,
+50,
+"Yellow worm mass"
+],
+[
+46,
+49,
+"Giant red frog"
+],
+[
+46,
+51,
+"White wolf"
+],
+[
+47,
+49,
+"Griffon"
+],
+[
+47,
+50,
+"Giant white dragon fly"
+],
+[
+47,
+51,
+"White wolf"
+],
+[
+48,
+49,
+"White wolf"
+],
+[
+48,
+50,
+"White wolf"
+]
+]
+]
+],
+"map_window": [
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"      ####################               ",
+"      #..................#               ",
+"      #..................#               ",
+"      #.........,........#               ",
+"      #..................#               ",
+"#     #..................#               ",
+"#     #...................               ",
+"#     ############'# ####.               ",
+"#                                        ",
+"#                 ..#                    ",
+"#                #'.##                   ",
+"#                .....                   ",
+"#               .......                  ",
+"#          .... .......                  ",
+"# ####### #..... ......                  ",
+"# #.....###.....  .....                  ",
+"####.....##.....  ......                 ",
+".........##..... ...3...                 ",
+".........######  #''#.#.                 ",
+"#######..#########..##.                  ",
+"      #..#..........#                    ",
+"      #..#..........    .###             ",
+"      #.....#######    ....##            ",
+"      ##<...#          ......            ",
+"       #####           ......            ",
+"                       ##...             ",
+"                        #..              ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         "
+],
+"outcome": {
+"lowest_hp": 115,
+"t_lowest": 1792925020.544,
+"end": "recall",
+"consumables": {
+"phase": 5,
+"speed": 1,
+"ccw": 5,
+"tele": 2,
+"csw": 2,
+"wor": 1
+},
+"consumables_by_messages": {
+"phase": 5,
+"ccw": 5,
+"tele": 2,
+"csw": 2
+},
+"levels_seen": [
+[
+1792925061.208,
+0
+]
+]
+},
+"notes": "state.jsonl status nearest before t0 (1 s, game clock): level [25, 25], armor [54, 31, 23], speed [0], afraid [0], blind [0], confused [0], poisoned [0]"
+}

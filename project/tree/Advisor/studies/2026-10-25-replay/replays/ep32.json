@@ -1,0 +1,6661 @@
+{
+"idx": 32,
+"mission": "m26",
+"depth_ft": 650,
+"level_dump": "20261024-031858-650ft.txt",
+"t0": 1792826464.779,
+"t_trigger": 1792826467.971,
+"t_end": 1792826641.0,
+"t0_rule": "latest of last HP>=90% max (A=03:21:04) and last mons record with none within 2 squares (B=None) within 60 s before trigger",
+"player": {
+"pos": [
+19,
+20
+],
+"hp": 257,
+"mhp": 283,
+"clvl": 23,
+"ac": 61,
+"status": {
+"slow": true,
+"fast": false,
+"hero": false,
+"berserk": false,
+"blind": false,
+"confused": false,
+"afraid": true,
+"poisoned": false,
+"paralyzed": false
+},
+"free_action": null,
+"see_invisible": null
+},
+"inventory": {
+"ccw": 7,
+"csw": 4,
+"clw": 0,
+"phase": 10,
+"tele": 0,
+"staff_tele": 0,
+"wor": 1,
+"speed": 4,
+"berserk": 1,
+"hero": 5,
+"boldness": 3,
+"magic_mapping": 4,
+"door_stair_rod": 1
+},
+"inventory_source": "state.jsonl inven at 03:21:03 (game clock; +1 s from t0, approx)",
+"inventory_raw": [
+"5 Flasks of oil",
+"3 Potions of Boldness",
+"4 Potions of Speed",
+"5 Potions of Heroism {75% off}",
+"a Potion of Berserk Strength",
+"4 Potions of Cure Serious Wounds {25% off}",
+"7 Potions of Cure Critical Wounds {25% off}",
+"10 Scrolls of Phase Door {50% off}",
+"a Scroll of Word of Recall {@R650}",
+"4 Scrolls of Magic Mapping {75% off}",
+"4 Scrolls of Satisfy Hunger {50% off}",
+"a Rod of Door/Stair Location",
+"an Aspen Staff",
+"a Dagger (1d4) {average}",
+"a Spear (1d6) (+4,+6)",
+"a Ring of Resist Cold",
+"a Ring of Protection [+8]",
+"a Brass Lantern (with 8589 turns of light)",
+"Hard Studded Leather of Resistance (-1) [7,+8]",
+"a Shadow Cloak [6,+5]",
+"an Orcish Shield [5,+5] (+1)",
+"an Iron Helm [5,-1]",
+"a Set of Gauntlets [2,+0]",
+"a Pair of Metal Shod Boots [6,+3] {good - Brodda, the Easterling}"
+],
+"monsters_t0": [
+{
+"name": "Bullroarer the Hobbit",
+"y": 18,
+"x": 20,
+"dist": 1
+},
+{
+"name": "Blue yeek",
+"y": 18,
+"x": 21,
+"dist": 1
+},
+{
+"name": "Brown yeek",
+"y": 19,
+"x": 18,
+"dist": 2
+},
+{
+"name": "Master yeek",
+"y": 19,
+"x": 19,
+"dist": 1
+},
+{
+"name": "Baby gold dragon",
+"y": 19,
+"x": 21,
+"dist": 1
+},
+{
+"name": "Brown yeek",
+"y": 19,
+"x": 23,
+"dist": 3
+},
+{
+"name": "Master yeek",
+"y": 20,
+"x": 20,
+"dist": 1
+},
+{
+"name": "Blue yeek",
+"y": 20,
+"x": 21,
+"dist": 1
+},
+{
+"name": "Brown yeek",
+"y": 21,
+"x": 20,
+"dist": 2
+},
+{
+"name": "Giant black louse",
+"y": 21,
+"x": 21,
+"dist": 2
+}
+],
+"arrivals": [
+{
+"t": 1792826465.783,
+"name": "Boldor, King of the Yeeks",
+"y": 18,
+"x": 22,
+"dist": 2
+},
+{
+"t": 1792826466.836,
+"name": "Master yeek",
+"y": 19,
+"x": 18,
+"dist": 2
+},
+{
+"t": 1792826466.836,
+"name": "Orc shaman",
+"y": 19,
+"x": 21,
+"dist": 1
+},
+{
+"t": 1792826469.144,
+"name": "Brown yeek",
+"y": 17,
+"x": 21,
+"dist": 2
+},
+{
+"t": 1792826469.144,
+"name": "Giant black louse",
+"y": 21,
+"x": 20,
+"dist": 2
+},
+{
+"t": 1792826470.163,
+"name": "Brown yeek",
+"y": 16,
+"x": 20,
+"dist": 3
+},
+{
+"t": 1792826474.326,
+"name": "Kobold shaman",
+"y": 25,
+"x": 22,
+"dist": 1
+},
+{
+"t": 1792826482.486,
+"name": "Dark hound",
+"y": 28,
+"x": 20,
+"dist": 1
+},
+{
+"t": 1792826537.559,
+"name": "Brown yeek",
+"y": 37,
+"x": 16,
+"dist": 2
+},
+{
+"t": 1792826545.558,
+"name": "Brown yeek",
+"y": 38,
+"x": 16,
+"dist": 2
+}
+],
+"summons": [
+{
+"t": 1792826465.342,
+"text": "It magically summons help!"
+},
+{
+"t": 1792826469.449,
+"text": "Boldor, King of the Yeeks magically summons his minions."
+},
+{
+"t": 1792826473.781,
+"text": "It magically summons help!"
+},
+{
+"t": 1792826481.902,
+"text": "It magically summons help!"
+}
+],
+"unseen_hits": [
+{
+"t": 1792826465.342,
+"text": "It magically summons help!"
+},
+{
+"t": 1792826466.956,
+"text": "It casts a spell, burning your eyes!"
+},
+{
+"t": 1792826467.036,
+"text": "It hits you."
+},
+{
+"t": 1792826467.183,
+"text": "It mumbles."
+},
+{
+"t": 1792826467.528,
+"text": "It hits you."
+},
+{
+"t": 1792826467.701,
+"text": "It hits you."
+},
+{
+"t": 1792826467.769,
+"text": "It hits you."
+},
+{
+"t": 1792826468.661,
+"text": "It hits you."
+},
+{
+"t": 1792826469.942,
+"text": "It casts a stinking cloud."
+},
+{
+"t": 1792826471.689,
+"text": "It bites you."
+},
+{
+"t": 1792826471.783,
+"text": "It mumbles."
+},
+{
+"t": 1792826471.783,
+"text": "It sounds REALLY healthy!"
+},
+{
+"t": 1792826472.182,
+"text": "It drains power from your muscles!"
+},
+{
+"t": 1792826472.822,
+"text": "It bites you."
+},
+{
+"t": 1792826473.781,
+"text": "It magically summons help!"
+},
+{
+"t": 1792826474.181,
+"text": "It drains power from your muscles!"
+},
+{
+"t": 1792826478.155,
+"text": "It casts a stinking cloud."
+},
+{
+"t": 1792826480.649,
+"text": "It wails at you."
+},
+{
+"t": 1792826481.902,
+"text": "It magically summons help!"
+},
+{
+"t": 1792826481.927,
+"text": "It wails at you."
+},
+{
+"t": 1792826483.129,
+"text": "It drains power from your muscles!"
+},
+{
+"t": 1792826483.702,
+"text": "It hits you."
+},
+{
+"t": 1792826483.847,
+"text": "It wails at you."
+},
+{
+"t": 1792826483.901,
+"text": "It breathes."
+},
+{
+"t": 1792826483.901,
+"text": "You are hit by something!"
+},
+{
+"t": 1792826484.661,
+"text": "It mumbles."
+},
+{
+"t": 1792826484.688,
+"text": "It mumbles."
+},
+{
+"t": 1792826484.7,
+"text": "It hits you."
+},
+{
+"t": 1792826485.234,
+"text": "It claws you."
+},
+{
+"t": 1792826485.234,
+"text": "It bites you."
+},
+{
+"t": 1792826485.369,
+"text": "It hits you."
+},
+{
+"t": 1792826486.021,
+"text": "It mumbles."
+},
+{
+"t": 1792826486.034,
+"text": "It hits you."
+},
+{
+"t": 1792826487.036,
+"text": "It hits you."
+},
+{
+"t": 1792826488.035,
+"text": "It breathes."
+},
+{
+"t": 1792826488.035,
+"text": "You are hit by something!"
+},
+{
+"t": 1792826488.501,
+"text": "It mumbles."
+},
+{
+"t": 1792826499.849,
+"text": "It points at you and curses."
+},
+{
+"t": 1792826502.649,
+"text": "It creates a mesmerising illusion."
+},
+{
+"t": 1792826518.516,
+"text": "It drains power from your muscles!"
+},
+{
+"t": 1792826522.047,
+"text": "It breathes darkness."
+},
+{
+"t": 1792826550.5,
+"text": "It casts a spell, burning your eyes!"
+}
+],
+"hostile_msgs": [
+{
+"t": 1792826464.862,
+"text": "The Blue yeek hits you."
+},
+{
+"t": 1792826465.035,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826465.035,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826465.102,
+"text": "The Master yeek hits you."
+},
+{
+"t": 1792826465.13,
+"text": "The Blue yeek misses you."
+},
+{
+"t": 1792826465.169,
+"text": "The Master yeek misses you."
+},
+{
+"t": 1792826465.342,
+"text": "It magically summons help!"
+},
+{
+"t": 1792826465.701,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826465.701,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826465.995,
+"text": "The Orc shaman misses you."
+},
+{
+"t": 1792826465.995,
+"text": "The Orc shaman misses you."
+},
+{
+"t": 1792826466.195,
+"text": "The Blue yeek misses you."
+},
+{
+"t": 1792826466.368,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826466.368,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826466.435,
+"text": "The Master yeek misses you."
+},
+{
+"t": 1792826466.621,
+"text": "The Blue yeek hits you."
+},
+{
+"t": 1792826466.636,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826466.663,
+"text": "The Master yeek hits you."
+},
+{
+"t": 1792826466.956,
+"text": "It casts a spell, burning your eyes!"
+},
+{
+"t": 1792826467.036,
+"text": "It hits you."
+},
+{
+"t": 1792826467.183,
+"text": "It mumbles."
+},
+{
+"t": 1792826467.528,
+"text": "It hits you."
+},
+{
+"t": 1792826467.701,
+"text": "It hits you."
+},
+{
+"t": 1792826467.769,
+"text": "It hits you."
+},
+{
+"t": 1792826468.661,
+"text": "It hits you."
+},
+{
+"t": 1792826469.035,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826469.035,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826469.261,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826469.449,
+"text": "Boldor, King of the Yeeks magically summons his minions."
+},
+{
+"t": 1792826469.516,
+"text": "The Master yeek hits you."
+},
+{
+"t": 1792826469.609,
+"text": "The Blue yeek hits you."
+},
+{
+"t": 1792826469.622,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826469.701,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826469.701,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826469.942,
+"text": "It casts a stinking cloud."
+},
+{
+"t": 1792826469.997,
+"text": "The Orc shaman hits you."
+},
+{
+"t": 1792826469.997,
+"text": "The Orc shaman hits you."
+},
+{
+"t": 1792826470.702,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826470.702,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826470.755,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826471.115,
+"text": "Boldor, King of the Yeeks casts a spell, burning your eyes!"
+},
+{
+"t": 1792826471.689,
+"text": "It bites you."
+},
+{
+"t": 1792826471.783,
+"text": "It mumbles."
+},
+{
+"t": 1792826471.783,
+"text": "It sounds REALLY healthy!"
+},
+{
+"t": 1792826472.182,
+"text": "It drains power from your muscles!"
+},
+{
+"t": 1792826472.822,
+"text": "It bites you."
+},
+{
+"t": 1792826473.781,
+"text": "It magically summons help!"
+},
+{
+"t": 1792826474.021,
+"text": "The Kobold shaman misses you."
+},
+{
+"t": 1792826474.181,
+"text": "It drains power from your muscles!"
+},
+{
+"t": 1792826474.675,
+"text": "The Giant black louse bites you."
+},
+{
+"t": 1792826475.356,
+"text": "The Kobold shaman misses you."
+},
+{
+"t": 1792826475.421,
+"text": "The Giant black louse misses you."
+},
+{
+"t": 1792826475.503,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826476.035,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826476.035,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826477.035,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826477.035,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826477.115,
+"text": "Boldor, King of the Yeeks misses you."
+},
+{
+"t": 1792826477.115,
+"text": "Boldor, King of the Yeeks misses you."
+},
+{
+"t": 1792826477.115,
+"text": "Boldor, King of the Yeeks hits you."
+},
+{
+"t": 1792826477.356,
+"text": "The Kobold shaman creates a mesmerising illusion."
+},
+{
+"t": 1792826477.661,
+"text": "The Giant black louse bites you."
+},
+{
+"t": 1792826477.782,
+"text": "Boldor, King of the Yeeks hits you."
+},
+{
+"t": 1792826477.783,
+"text": "Boldor, King of the Yeeks misses you."
+},
+{
+"t": 1792826477.783,
+"text": "Boldor, King of the Yeeks misses you."
+},
+{
+"t": 1792826478.155,
+"text": "It casts a stinking cloud."
+},
+{
+"t": 1792826478.368,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826478.368,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826478.688,
+"text": "The Kobold shaman creates a mesmerising illusion."
+},
+{
+"t": 1792826479.034,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826479.034,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826479.169,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826479.169,
+"text": "The Giant black louse bites you."
+},
+{
+"t": 1792826479.702,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826479.702,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826479.995,
+"text": "The Orc shaman misses you."
+},
+{
+"t": 1792826479.996,
+"text": "The Orc shaman hits you."
+},
+{
+"t": 1792826480.061,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826480.369,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826480.369,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826480.381,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826480.649,
+"text": "It wails at you."
+},
+{
+"t": 1792826481.035,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826481.035,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826481.276,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826481.329,
+"text": "The Orc shaman casts a magic missile."
+},
+{
+"t": 1792826481.596,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826481.702,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826481.702,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826481.902,
+"text": "It magically summons help!"
+},
+{
+"t": 1792826481.927,
+"text": "It wails at you."
+},
+{
+"t": 1792826482.302,
+"text": "The Blue yeek misses you."
+},
+{
+"t": 1792826482.367,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826482.367,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826482.568,
+"text": "The Dark hound claws you."
+},
+{
+"t": 1792826482.569,
+"text": "The Dark hound misses you."
+},
+{
+"t": 1792826482.569,
+"text": "The Dark hound bites you."
+},
+{
+"t": 1792826483.035,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826483.035,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826483.129,
+"text": "It drains power from your muscles!"
+},
+{
+"t": 1792826483.381,
+"text": "The Master yeek casts a spell, burning your eyes!"
+},
+{
+"t": 1792826483.702,
+"text": "It hits you."
+},
+{
+"t": 1792826483.847,
+"text": "It wails at you."
+},
+{
+"t": 1792826483.901,
+"text": "It breathes."
+},
+{
+"t": 1792826483.901,
+"text": "You are hit by something!"
+},
+{
+"t": 1792826484.661,
+"text": "It mumbles."
+},
+{
+"t": 1792826484.688,
+"text": "It mumbles."
+},
+{
+"t": 1792826484.7,
+"text": "It hits you."
+},
+{
+"t": 1792826485.234,
+"text": "It claws you."
+},
+{
+"t": 1792826485.234,
+"text": "It bites you."
+},
+{
+"t": 1792826485.369,
+"text": "It hits you."
+},
+{
+"t": 1792826486.021,
+"text": "It mumbles."
+},
+{
+"t": 1792826486.034,
+"text": "It hits you."
+},
+{
+"t": 1792826487.036,
+"text": "It hits you."
+},
+{
+"t": 1792826488.035,
+"text": "It breathes."
+},
+{
+"t": 1792826488.035,
+"text": "You are hit by something!"
+},
+{
+"t": 1792826488.501,
+"text": "It mumbles."
+},
+{
+"t": 1792826491.062,
+"text": "The Dark hound misses you."
+},
+{
+"t": 1792826491.062,
+"text": "The Dark hound claws you."
+},
+{
+"t": 1792826491.062,
+"text": "The Dark hound misses you."
+},
+{
+"t": 1792826491.528,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826491.528,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826492.194,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826492.194,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826492.395,
+"text": "The Dark hound claws you."
+},
+{
+"t": 1792826492.396,
+"text": "The Dark hound claws you."
+},
+{
+"t": 1792826492.396,
+"text": "The Dark hound bites you."
+},
+{
+"t": 1792826492.862,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826492.862,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826493.182,
+"text": "The Kobold shaman casts a magic missile."
+},
+{
+"t": 1792826493.528,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826493.528,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826494.396,
+"text": "The Dark hound misses you."
+},
+{
+"t": 1792826494.396,
+"text": "The Dark hound misses you."
+},
+{
+"t": 1792826494.396,
+"text": "The Dark hound bites you."
+},
+{
+"t": 1792826494.527,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826494.527,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826495.529,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826495.529,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826496.194,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826496.194,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826497.061,
+"text": "The Dark hound misses you."
+},
+{
+"t": 1792826497.061,
+"text": "The Dark hound claws you."
+},
+{
+"t": 1792826497.061,
+"text": "The Dark hound misses you."
+},
+{
+"t": 1792826497.195,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826497.195,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826497.848,
+"text": "The Kobold shaman casts a magic missile."
+},
+{
+"t": 1792826498.194,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826498.194,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826498.394,
+"text": "The Dark hound breathes darkness."
+},
+{
+"t": 1792826498.862,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826498.862,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826499.849,
+"text": "It points at you and curses."
+},
+{
+"t": 1792826499.861,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826499.862,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826499.98,
+"text": "The Master yeek casts a stinking cloud."
+},
+{
+"t": 1792826502.047,
+"text": "The Dark hound breathes darkness."
+},
+{
+"t": 1792826502.649,
+"text": "It creates a mesmerising illusion."
+},
+{
+"t": 1792826504.382,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826504.382,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826505.727,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826507.393,
+"text": "The Master yeek misses you."
+},
+{
+"t": 1792826507.715,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826507.715,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826512.715,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826512.716,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826514.808,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826518.516,
+"text": "It drains power from your muscles!"
+},
+{
+"t": 1792826522.047,
+"text": "It breathes darkness."
+},
+{
+"t": 1792826526.048,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826526.049,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826529.381,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826529.381,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826529.874,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826532.047,
+"text": "The Dark hound breathes darkness."
+},
+{
+"t": 1792826532.713,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826532.713,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826533.34,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826535.381,
+"text": "The Dark hound breathes darkness."
+},
+{
+"t": 1792826536.046,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826536.046,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826537.288,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826538.714,
+"text": "The Dark hound misses you."
+},
+{
+"t": 1792826538.714,
+"text": "The Dark hound claws you."
+},
+{
+"t": 1792826538.714,
+"text": "The Dark hound bites you."
+},
+{
+"t": 1792826539.38,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826539.38,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826539.873,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826540.752,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826542.566,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826542.567,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826544.341,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826544.486,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826545.166,
+"text": "The Dark hound claws you."
+},
+{
+"t": 1792826545.166,
+"text": "The Dark hound claws you."
+},
+{
+"t": 1792826545.166,
+"text": "The Dark hound misses you."
+},
+{
+"t": 1792826545.726,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826545.846,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826545.846,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826548.059,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826549.114,
+"text": "The Kobold shaman casts a magic missile."
+},
+{
+"t": 1792826549.179,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826549.18,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826550.5,
+"text": "It casts a spell, burning your eyes!"
+},
+{
+"t": 1792826550.5,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826551.753,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826551.794,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826551.834,
+"text": "The Dark hound breathes darkness."
+},
+{
+"t": 1792826551.899,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826552.3,
+"text": "The Orc shaman hits you."
+},
+{
+"t": 1792826552.3,
+"text": "The Orc shaman misses you."
+},
+{
+"t": 1792826552.514,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826552.514,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826555.167,
+"text": "The Dark hound claws you."
+},
+{
+"t": 1792826555.167,
+"text": "The Dark hound claws you."
+},
+{
+"t": 1792826555.167,
+"text": "The Dark hound misses you."
+},
+{
+"t": 1792826555.472,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826555.78,
+"text": "The Kobold shaman points at you and curses."
+},
+{
+"t": 1792826555.847,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826555.847,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826556.566,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826556.581,
+"text": "The Master yeek casts a stinking cloud."
+},
+{
+"t": 1792826557.86,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826558.966,
+"text": "The Orc shaman hits you."
+},
+{
+"t": 1792826558.966,
+"text": "The Orc shaman misses you."
+},
+{
+"t": 1792826559.166,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826559.179,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826559.179,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826559.313,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826561.832,
+"text": "The Dark hound misses you."
+},
+{
+"t": 1792826561.833,
+"text": "The Dark hound misses you."
+},
+{
+"t": 1792826561.833,
+"text": "The Dark hound misses you."
+},
+{
+"t": 1792826562.513,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826562.513,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826562.634,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826562.887,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826563.926,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826565.633,
+"text": "The Orc shaman misses you."
+},
+{
+"t": 1792826565.633,
+"text": "The Orc shaman misses you."
+},
+{
+"t": 1792826565.847,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826565.847,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826566.58,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826566.725,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826568.505,
+"text": "The Dark hound breathes darkness."
+},
+{
+"t": 1792826568.7,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826569.179,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826569.179,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826569.993,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826570.3,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826571.833,
+"text": "The Dark hound misses you."
+},
+{
+"t": 1792826571.833,
+"text": "The Dark hound claws you."
+},
+{
+"t": 1792826571.833,
+"text": "The Dark hound bites you."
+},
+{
+"t": 1792826572.3,
+"text": "The Orc shaman misses you."
+},
+{
+"t": 1792826572.3,
+"text": "The Orc shaman misses you."
+},
+{
+"t": 1792826572.445,
+"text": "The Kobold shaman creates a mesmerising illusion."
+},
+{
+"t": 1792826572.513,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826572.513,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826573.992,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826574.14,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826574.766,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826575.846,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826575.846,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826576.06,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826577.713,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826578.5,
+"text": "The Dark hound misses you."
+},
+{
+"t": 1792826578.5,
+"text": "The Dark hound claws you."
+},
+{
+"t": 1792826578.5,
+"text": "The Dark hound misses you."
+},
+{
+"t": 1792826579.178,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826579.178,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826579.647,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826580.831,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826581.405,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826581.552,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826582.125,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826582.512,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826582.512,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826585.125,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826585.167,
+"text": "The Dark hound breathes darkness."
+},
+{
+"t": 1792826585.846,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826585.846,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826586.899,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826587.058,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826588.192,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826588.5,
+"text": "The Dark hound claws you."
+},
+{
+"t": 1792826588.5,
+"text": "The Dark hound claws you."
+},
+{
+"t": 1792826588.5,
+"text": "The Dark hound bites you."
+},
+{
+"t": 1792826588.82,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826588.967,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826589.179,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826589.18,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826592.512,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826592.512,
+"text": "Bullroarer the Hobbit misses you."
+},
+{
+"t": 1792826592.539,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826594.259,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826594.472,
+"text": "The Brown yeek misses you."
+},
+{
+"t": 1792826595.846,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826595.846,
+"text": "Bullroarer the Hobbit hits you."
+},
+{
+"t": 1792826596.232,
+"text": "The Brown yeek hits you."
+},
+{
+"t": 1792826598.112,
+"text": "The Blue yeek misses you."
+}
+],
+"status_msgs": [
+{
+"t": 1792826464.835,
+"text": "You are too afraid to attack the Master yeek!"
+},
+{
+"t": 1792826466.168,
+"text": "You are too afraid to attack the Master yeek!"
+},
+{
+"t": 1792826466.956,
+"text": "You are blind!"
+},
+{
+"t": 1792826467.009,
+"text": "You feel bolder now."
+},
+{
+"t": 1792826467.676,
+"text": "You feel yourself speed up."
+},
+{
+"t": 1792826468.916,
+"text": "You can see again."
+},
+{
+"t": 1792826469.582,
+"text": "You feel like a hero!"
+},
+{
+"t": 1792826469.942,
+"text": "You are poisoned!"
+},
+{
+"t": 1792826471.116,
+"text": "You are blind!"
+},
+{
+"t": 1792826472.182,
+"text": "You resist the effects!"
+},
+{
+"t": 1792826472.915,
+"text": "You can see again."
+},
+{
+"t": 1792826473.676,
+"text": "You are no longer poisoned."
+},
+{
+"t": 1792826474.182,
+"text": "You feel yourself moving slower!"
+},
+{
+"t": 1792826476.342,
+"text": "You feel yourself speed up."
+},
+{
+"t": 1792826477.356,
+"text": "You are confused!"
+},
+{
+"t": 1792826478.157,
+"text": "You are poisoned!"
+},
+{
+"t": 1792826479.555,
+"text": "You feel less confused now."
+},
+{
+"t": 1792826479.555,
+"text": "You have gorged yourself!"
+},
+{
+"t": 1792826480.649,
+"text": "You stand your ground!"
+},
+{
+"t": 1792826481.008,
+"text": "You are no longer gorged."
+},
+{
+"t": 1792826481.008,
+"text": "You are no longer poisoned."
+},
+{
+"t": 1792826481.928,
+"text": "You stand your ground!"
+},
+{
+"t": 1792826482.274,
+"text": "You have gorged yourself!"
+},
+{
+"t": 1792826483.129,
+"text": "You feel yourself moving slower!"
+},
+{
+"t": 1792826483.381,
+"text": "You are blind!"
+},
+{
+"t": 1792826483.848,
+"text": "You stand your ground!"
+},
+{
+"t": 1792826487.008,
+"text": "You feel yourself speed up."
+},
+{
+"t": 1792826490.981,
+"text": "You can see again."
+},
+{
+"t": 1792826499.674,
+"text": "The heroism wears off."
+},
+{
+"t": 1792826499.849,
+"text": "You resist the effects!"
+},
+{
+"t": 1792826499.98,
+"text": "You are poisoned!"
+},
+{
+"t": 1792826502.649,
+"text": "You disbelieve the feeble spell."
+},
+{
+"t": 1792826514.341,
+"text": "You are no longer poisoned."
+},
+{
+"t": 1792826518.516,
+"text": "You feel yourself moving slower!"
+},
+{
+"t": 1792826534.339,
+"text": "You are no longer gorged."
+},
+{
+"t": 1792826534.648,
+"text": "You have gorged yourself!"
+},
+{
+"t": 1792826537.673,
+"text": "You feel yourself speed up."
+},
+{
+"t": 1792826541.007,
+"text": "You are no longer bleeding."
+},
+{
+"t": 1792826550.5,
+"text": "You resist the effects!"
+},
+{
+"t": 1792826555.647,
+"text": "You feel yourself moving faster!"
+},
+{
+"t": 1792826556.581,
+"text": "You are poisoned!"
+},
+{
+"t": 1792826565.646,
+"text": "You are no longer poisoned."
+},
+{
+"t": 1792826572.446,
+"text": "You are confused!"
+},
+{
+"t": 1792826591.005,
+"text": "You feel less confused now."
+},
+{
+"t": 1792826635.883,
+"text": "You feel yourself slow down."
+},
+{
+"t": 1792826637.005,
+"text": "You are no longer gorged."
+}
+],
+"actions": [
+{
+"t": 1792826465.071,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826466.621,
+"cmd": "walk 3",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826470.248
+},
+{
+"t": 1792826466.621,
+"cmd": "walk 1",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826470.915
+},
+{
+"t": 1792826467.341,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826471.582
+},
+{
+"t": 1792826467.971,
+"cmd": "custom q item=5",
+"what": "csw",
+"why": "blind in combat: quaff 4 Potions of Cure Serious Wounds {25% off}",
+"src": "pilot",
+"t_effect": 1792826468.916
+},
+{
+"t": 1792826468.383,
+"cmd": "custom q item=3",
+"what": "hero",
+"why": "agent: quaff ['Heroism']",
+"src": "navigator",
+"t_effect": 1792826469.582
+},
+{
+"t": 1792826469.15,
+"cmd": "walk 3",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826472.249
+},
+{
+"t": 1792826469.15,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826473.581
+},
+{
+"t": 1792826470.298,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826474.316
+},
+{
+"t": 1792826470.952,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826475.649
+},
+{
+"t": 1792826471.49,
+"cmd": "custom q item=5",
+"what": "csw",
+"why": "blind in combat: quaff 3 Potions of Cure Serious Wounds {25% off}",
+"src": "pilot",
+"t_effect": 1792826472.916
+},
+{
+"t": 1792826472.27,
+"cmd": "custom . dir=2",
+"what": "run",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826476.662
+},
+{
+"t": 1792826473.32,
+"cmd": "walk 5",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826477.327
+},
+{
+"t": 1792826473.374,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826477.997
+},
+{
+"t": 1792826473.588,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826474.328,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826478.661
+},
+{
+"t": 1792826475.704,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826476.713,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826481.608
+},
+{
+"t": 1792826477.357,
+"cmd": "walk 2",
+"what": "melee",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826479.329
+},
+{
+"t": 1792826478.052,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826478.42,
+"cmd": "custom q item=5",
+"what": "csw",
+"why": "confused in combat: quaff 2 Potions of Cure Serious Wounds {25% off}",
+"src": "pilot",
+"t_effect": 1792826479.555
+},
+{
+"t": 1792826479.104,
+"cmd": "walk 3",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826483.928
+},
+{
+"t": 1792826479.104,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826480.615,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826480.667,
+"cmd": "custom q item=6",
+"what": "ccw",
+"why": "poisoned in combat: quaff 7 Potions of Cure Critical Wounds {25% off}",
+"src": "pilot",
+"t_effect": 1792826482.274
+},
+{
+"t": 1792826481.623,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826486.155
+},
+{
+"t": 1792826483.208,
+"cmd": "walk 3",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826483.208,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826483.81,
+"cmd": "custom q item=5",
+"what": "csw",
+"why": "blind in combat: quaff a Potion of Cure Serious Wounds {25% off}",
+"src": "pilot",
+"t_effect": 1792826490.982
+},
+{
+"t": 1792826486.313,
+"cmd": "custom q item=5",
+"what": "csw",
+"why": "resend (no effect seen): blind in combat: quaff a Potion of Cure Serious Wounds {25% off}",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826491.373,
+"cmd": "custom . dir=2",
+"what": "run",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826493.648
+},
+{
+"t": 1792826491.43,
+"cmd": "walk 5",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826494.982
+},
+{
+"t": 1792826491.964,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826496.315
+},
+{
+"t": 1792826493.511,
+"cmd": "walk 1",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826497.648
+},
+{
+"t": 1792826493.511,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826493.675,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826494.999,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826498.982
+},
+{
+"t": 1792826496.37,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826497.695,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826501.649
+},
+{
+"t": 1792826499.017,
+"cmd": "walk 3",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826500.021,
+"cmd": "custom r item=6",
+"what": "phase",
+"why": "low HP: phase door",
+"src": "pilot",
+"t_effect": 1792826508.314
+},
+{
+"t": 1792826512.56,
+"cmd": "custom r item=6",
+"what": "phase",
+"why": "resend (no effect seen): low HP: phase door",
+"src": "pilot",
+"t_effect": 1792826514.981
+},
+{
+"t": 1792826515.298,
+"cmd": "custom q item=5",
+"what": "ccw",
+"why": "low HP: quaff 5 Potions of Cure Critical Wounds {25% off}",
+"src": "pilot",
+"t_effect": 1792826534.648
+},
+{
+"t": 1792826527.801,
+"cmd": "custom q item=5",
+"what": "ccw",
+"why": "resend (no effect seen): low HP: quaff 5 Potions of Cure Critical Wounds {25% off}",
+"src": "pilot",
+"t_effect": 1792826542.527
+},
+{
+"t": 1792826536.17,
+"cmd": "custom r item=7",
+"what": "wor",
+"why": "low HP: phasing isn't shaking them: word of recall",
+"src": "pilot",
+"t_effect": 1792826548.979
+},
+{
+"t": 1792826541.692,
+"cmd": "custom q item=2",
+"what": "speed",
+"why": "agent: quaff ['Speed']",
+"src": "navigator",
+"t_effect": 1792826555.647
+},
+{
+"t": 1792826542.997,
+"cmd": "custom q item=2",
+"what": "speed",
+"why": "agent: quaff ['Speed']",
+"src": "navigator",
+"t_effect": 1792826558.981
+},
+{
+"t": 1792826548.721,
+"cmd": "custom r item=7",
+"what": "wor",
+"why": "resend (no effect seen): low HP: phasing isn't shaking them: word of recall",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826550.06,
+"cmd": "custom q item=5",
+"what": "ccw",
+"why": "low HP: quaff 3 Potions of Cure Critical Wounds {25% off}",
+"src": "pilot",
+"t_effect": 1792826565.646
+},
+{
+"t": 1792826562.603,
+"cmd": "custom q item=5",
+"what": "ccw",
+"why": "resend (no effect seen): low HP: quaff 3 Potions of Cure Critical Wounds {25% off}",
+"src": "pilot",
+"t_effect": 1792826568.979
+},
+{
+"t": 1792826569.102,
+"cmd": "custom q item=5",
+"what": "ccw",
+"why": "low HP: quaff a Potion of Cure Critical Wounds {25% off}",
+"src": "pilot",
+"t_effect": 1792826572.313
+},
+{
+"t": 1792826573.25,
+"cmd": "custom r item=5",
+"what": "phase",
+"why": "agent: read ['Phase']",
+"src": "navigator",
+"t_effect": 1792826598.792
+},
+{
+"t": 1792826595.907,
+"cmd": "custom r item=5",
+"what": "phase",
+"why": "low HP: phase door",
+"src": "pilot",
+"t_effect": 1792826605.924
+},
+{
+"t": 1792826605.92,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792826609.244
+},
+{
+"t": 1792826605.921,
+"cmd": "walk 7",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826605.983,
+"cmd": "walk 7",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826612.589,
+"cmd": "custom <",
+"what": "stairs",
+"why": "stairs <",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826615.951,
+"cmd": "custom >",
+"what": "stairs",
+"why": "stairs >",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826619.289,
+"cmd": "custom <",
+"what": "stairs",
+"why": "stairs <",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826622.643,
+"cmd": "custom >",
+"what": "stairs",
+"why": "stairs >",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826624.184,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826629.219,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826634.256,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826635.442,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826636.475,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792826637.505,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+}
+],
+"melee_by_us": [
+{
+"t": 1792826467.503,
+"text": "You hit it."
+},
+{
+"t": 1792826467.503,
+"text": "You hit it."
+},
+{
+"t": 1792826467.503,
+"text": "You hit it."
+},
+{
+"t": 1792826468.248,
+"text": "You miss it."
+},
+{
+"t": 1792826468.248,
+"text": "You hit it."
+},
+{
+"t": 1792826468.248,
+"text": "You hit it."
+},
+{
+"t": 1792826479.329,
+"text": "You hit the Giant black louse."
+},
+{
+"t": 1792826575.659,
+"text": "You hit the Orc shaman."
+},
+{
+"t": 1792826575.659,
+"text": "You hit the Orc shaman."
+},
+{
+"t": 1792826575.659,
+"text": "You hit the Orc shaman."
+},
+{
+"t": 1792826591.02,
+"text": "You miss the Brown yeek."
+},
+{
+"t": 1792826591.02,
+"text": "You hit the Brown yeek."
+},
+{
+"t": 1792826591.02,
+"text": "You hit the Brown yeek."
+},
+{
+"t": 1792826591.033,
+"text": "You miss the Dark hound."
+},
+{
+"t": 1792826591.033,
+"text": "You hit the Dark hound."
+},
+{
+"t": 1792826591.046,
+"text": "You miss the Brown yeek."
+},
+{
+"t": 1792826592.138,
+"text": "You hit the Brown yeek."
+},
+{
+"t": 1792826593.247,
+"text": "You hit the Brown yeek."
+},
+{
+"t": 1792826594.353,
+"text": "You hit the Kobold shaman."
+},
+{
+"t": 1792826595.473,
+"text": "You miss the Brown yeek."
+}
+],
+"kills": [
+{
+"t": 1792826468.248,
+"name": "it"
+},
+{
+"t": 1792826479.329,
+"name": "Giant black louse"
+},
+{
+"t": 1792826575.66,
+"name": "Orc shaman"
+},
+{
+"t": 1792826591.02,
+"name": "Brown yeek"
+},
+{
+"t": 1792826591.033,
+"name": "Dark hound"
+},
+{
+"t": 1792826593.247,
+"name": "Brown yeek"
+},
+{
+"t": 1792826594.353,
+"name": "Kobold shaman"
+}
+],
+"hp_series": [
+[
+1792826435.145,
+283,
+283
+],
+[
+1792826435.145,
+283,
+283
+],
+[
+1792826435.729,
+283,
+283
+],
+[
+1792826435.729,
+283,
+283
+],
+[
+1792826436.95,
+283,
+283
+],
+[
+1792826436.95,
+283,
+283
+],
+[
+1792826437.531,
+283,
+283
+],
+[
+1792826437.531,
+283,
+283
+],
+[
+1792826438.752,
+283,
+283
+],
+[
+1792826438.752,
+283,
+283
+],
+[
+1792826439.972,
+283,
+283
+],
+[
+1792826439.972,
+283,
+283
+],
+[
+1792826440.559,
+283,
+283
+],
+[
+1792826441.729,
+283,
+283
+],
+[
+1792826441.729,
+283,
+283
+],
+[
+1792826442.587,
+283,
+283
+],
+[
+1792826442.588,
+283,
+283
+],
+[
+1792826443.628,
+283,
+283
+],
+[
+1792826443.628,
+283,
+283
+],
+[
+1792826444.213,
+283,
+283
+],
+[
+1792826444.213,
+283,
+283
+],
+[
+1792826445.385,
+283,
+283
+],
+[
+1792826446.187,
+283,
+283
+],
+[
+1792826446.663,
+283,
+283
+],
+[
+1792826446.663,
+283,
+283
+],
+[
+1792826449.214,
+283,
+283
+],
+[
+1792826449.214,
+283,
+283
+],
+[
+1792826450.065,
+283,
+283
+],
+[
+1792826450.065,
+283,
+283
+],
+[
+1792826452.249,
+283,
+283
+],
+[
+1792826452.302,
+283,
+283
+],
+[
+1792826455.453,
+283,
+283
+],
+[
+1792826456.841,
+283,
+283
+],
+[
+1792826456.842,
+283,
+283
+],
+[
+1792826457.531,
+283,
+283
+],
+[
+1792826457.585,
+283,
+283
+],
+[
+1792826459.511,
+283,
+283
+],
+[
+1792826459.511,
+283,
+283
+],
+[
+1792826460.094,
+283,
+283
+],
+[
+1792826460.094,
+283,
+283
+],
+[
+1792826461.055,
+283,
+283
+],
+[
+1792826461.055,
+283,
+283
+],
+[
+1792826461.162,
+283,
+283
+],
+[
+1792826461.637,
+283,
+283
+],
+[
+1792826462.682,
+283,
+283
+],
+[
+1792826463.726,
+268,
+283
+],
+[
+1792826464.353,
+261,
+283
+],
+[
+1792826464.357,
+261,
+283
+],
+[
+1792826464.357,
+261,
+283
+],
+[
+1792826464.408,
+261,
+283
+],
+[
+1792826464.41,
+261,
+283
+],
+[
+1792826464.779,
+257,
+283
+],
+[
+1792826465.008,
+253,
+283
+],
+[
+1792826465.008,
+253,
+283
+],
+[
+1792826465.008,
+253,
+283
+],
+[
+1792826465.016,
+253,
+283
+],
+[
+1792826465.783,
+248,
+283
+],
+[
+1792826466.836,
+237,
+283
+],
+[
+1792826467.339,
+234,
+283
+],
+[
+1792826467.971,
+224,
+283
+],
+[
+1792826467.971,
+224,
+283
+],
+[
+1792826468.382,
+224,
+283
+],
+[
+1792826468.383,
+224,
+283
+],
+[
+1792826469.144,
+242,
+283
+],
+[
+1792826470.163,
+230,
+293
+],
+[
+1792826471.164,
+218,
+293
+],
+[
+1792826471.49,
+217,
+293
+],
+[
+1792826471.491,
+217,
+293
+],
+[
+1792826472.269,
+214,
+293
+],
+[
+1792826473.318,
+230,
+293
+],
+[
+1792826474.326,
+229,
+293
+],
+[
+1792826475.376,
+230,
+293
+],
+[
+1792826475.431,
+230,
+293
+],
+[
+1792826476.389,
+231,
+293
+],
+[
+1792826477.407,
+218,
+293
+],
+[
+1792826478.42,
+185,
+293
+],
+[
+1792826478.42,
+185,
+293
+],
+[
+1792826478.421,
+185,
+293
+],
+[
+1792826479.048,
+180,
+293
+],
+[
+1792826479.424,
+178,
+293
+],
+[
+1792826480.449,
+193,
+293
+],
+[
+1792826480.667,
+180,
+293
+],
+[
+1792826480.667,
+180,
+293
+],
+[
+1792826481.451,
+168,
+293
+],
+[
+1792826482.486,
+192,
+293
+],
+[
+1792826483.531,
+190,
+293
+],
+[
+1792826483.81,
+191,
+293
+],
+[
+1792826483.81,
+191,
+293
+],
+[
+1792826485.319,
+157,
+293
+],
+[
+1792826485.319,
+157,
+293
+],
+[
+1792826485.422,
+157,
+293
+],
+[
+1792826485.424,
+157,
+293
+],
+[
+1792826485.634,
+151,
+293
+],
+[
+1792826485.634,
+151,
+293
+],
+[
+1792826485.943,
+152,
+293
+],
+[
+1792826485.944,
+152,
+293
+],
+[
+1792826486.262,
+150,
+293
+],
+[
+1792826486.262,
+150,
+293
+],
+[
+1792826486.313,
+150,
+293
+],
+[
+1792826486.313,
+150,
+293
+],
+[
+1792826486.574,
+151,
+293
+],
+[
+1792826486.575,
+151,
+293
+],
+[
+1792826486.889,
+151,
+293
+],
+[
+1792826486.889,
+151,
+293
+],
+[
+1792826487.148,
+148,
+293
+],
+[
+1792826487.359,
+148,
+293
+],
+[
+1792826487.359,
+148,
+293
+],
+[
+1792826488.87,
+149,
+293
+],
+[
+1792826488.871,
+149,
+293
+],
+[
+1792826490.385,
+149,
+293
+],
+[
+1792826490.385,
+149,
+293
+],
+[
+1792826491.372,
+169,
+293
+],
+[
+1792826491.427,
+169,
+293
+],
+[
+1792826492.171,
+166,
+293
+],
+[
+1792826492.333,
+166,
+293
+],
+[
+1792826492.387,
+192,
+293
+],
+[
+1792826492.441,
+192,
+293
+],
+[
+1792826493.451,
+179,
+293
+],
+[
+1792826494.464,
+180,
+293
+],
+[
+1792826495.471,
+177,
+293
+],
+[
+1792826495.58,
+175,
+293
+],
+[
+1792826495.581,
+175,
+293
+],
+[
+1792826496.472,
+171,
+293
+],
+[
+1792826497.479,
+168,
+293
+],
+[
+1792826498.485,
+168,
+293
+],
+[
+1792826498.642,
+168,
+293
+],
+[
+1792826498.644,
+168,
+293
+],
+[
+1792826499.491,
+166,
+293
+],
+[
+1792826500.02,
+140,
+283
+],
+[
+1792826500.021,
+140,
+283
+],
+[
+1792826500.021,
+140,
+283
+],
+[
+1792826500.021,
+140,
+283
+],
+[
+1792826501.728,
+139,
+283
+],
+[
+1792826501.729,
+139,
+283
+],
+[
+1792826502.404,
+139,
+283
+],
+[
+1792826502.404,
+139,
+283
+],
+[
+1792826503.022,
+139,
+283
+],
+[
+1792826503.022,
+139,
+283
+],
+[
+1792826504.57,
+136,
+283
+],
+[
+1792826504.57,
+136,
+283
+],
+[
+1792826504.829,
+136,
+283
+],
+[
+1792826504.831,
+136,
+283
+],
+[
+1792826506.12,
+136,
+283
+],
+[
+1792826506.12,
+136,
+283
+],
+[
+1792826507.408,
+136,
+283
+],
+[
+1792826507.664,
+136,
+283
+],
+[
+1792826507.664,
+136,
+283
+],
+[
+1792826507.923,
+136,
+283
+],
+[
+1792826507.925,
+136,
+283
+],
+[
+1792826509.172,
+128,
+283
+],
+[
+1792826509.172,
+128,
+283
+],
+[
+1792826510.691,
+128,
+283
+],
+[
+1792826510.692,
+128,
+283
+],
+[
+1792826511.008,
+128,
+283
+],
+[
+1792826511.009,
+128,
+283
+],
+[
+1792826512.198,
+127,
+283
+],
+[
+1792826512.198,
+127,
+283
+],
+[
+1792826512.404,
+127,
+283
+],
+[
+1792826512.456,
+127,
+283
+],
+[
+1792826512.56,
+127,
+283
+],
+[
+1792826512.56,
+127,
+283
+],
+[
+1792826513.747,
+125,
+283
+],
+[
+1792826513.747,
+125,
+283
+],
+[
+1792826514.107,
+125,
+283
+],
+[
+1792826514.109,
+125,
+283
+],
+[
+1792826515.298,
+124,
+283
+],
+[
+1792826515.298,
+124,
+283
+],
+[
+1792826517.223,
+124,
+283
+],
+[
+1792826517.225,
+124,
+283
+],
+[
+1792826517.485,
+124,
+283
+],
+[
+1792826518.324,
+125,
+283
+],
+[
+1792826518.376,
+125,
+283
+],
+[
+1792826518.427,
+125,
+283
+],
+[
+1792826518.428,
+125,
+283
+],
+[
+1792826520.724,
+125,
+283
+],
+[
+1792826520.724,
+125,
+283
+],
+[
+1792826521.912,
+125,
+283
+],
+[
+1792826521.912,
+125,
+283
+],
+[
+1792826522.275,
+125,
+283
+],
+[
+1792826522.275,
+125,
+283
+],
+[
+1792826522.431,
+125,
+283
+],
+[
+1792826522.535,
+125,
+283
+],
+[
+1792826523.778,
+125,
+283
+],
+[
+1792826523.778,
+125,
+283
+],
+[
+1792826525.326,
+126,
+283
+],
+[
+1792826525.326,
+126,
+283
+],
+[
+1792826526.873,
+123,
+283
+],
+[
+1792826526.873,
+123,
+283
+],
+[
+1792826527.542,
+123,
+283
+],
+[
+1792826527.801,
+124,
+283
+],
+[
+1792826527.801,
+124,
+283
+],
+[
+1792826528.428,
+124,
+283
+],
+[
+1792826528.429,
+124,
+283
+],
+[
+1792826529.354,
+124,
+283
+],
+[
+1792826529.355,
+124,
+283
+],
+[
+1792826529.978,
+118,
+283
+],
+[
+1792826529.978,
+118,
+283
+],
+[
+1792826531.525,
+114,
+283
+],
+[
+1792826531.525,
+114,
+283
+],
+[
+1792826532.452,
+114,
+283
+],
+[
+1792826532.557,
+114,
+283
+],
+[
+1792826533.073,
+110,
+283
+],
+[
+1792826533.073,
+110,
+283
+],
+[
+1792826534.621,
+108,
+283
+],
+[
+1792826534.622,
+108,
+283
+],
+[
+1792826536.17,
+136,
+283
+],
+[
+1792826536.17,
+136,
+283
+],
+[
+1792826536.171,
+136,
+283
+],
+[
+1792826536.221,
+136,
+283
+],
+[
+1792826536.223,
+136,
+283
+],
+[
+1792826537.559,
+136,
+283
+],
+[
+1792826538.695,
+137,
+283
+],
+[
+1792826538.696,
+137,
+283
+],
+[
+1792826540.196,
+123,
+283
+],
+[
+1792826540.196,
+123,
+283
+],
+[
+1792826541.692,
+118,
+283
+],
+[
+1792826541.692,
+118,
+283
+],
+[
+1792826542.997,
+118,
+283
+],
+[
+1792826542.997,
+118,
+283
+],
+[
+1792826545.503,
+118,
+283
+],
+[
+1792826545.503,
+118,
+283
+],
+[
+1792826545.558,
+134,
+283
+],
+[
+1792826546.076,
+124,
+283
+],
+[
+1792826546.079,
+124,
+283
+],
+[
+1792826546.08,
+124,
+283
+],
+[
+1792826547.005,
+124,
+283
+],
+[
+1792826547.007,
+124,
+283
+],
+[
+1792826547.007,
+124,
+283
+],
+[
+1792826547.572,
+124,
+283
+],
+[
+1792826547.572,
+124,
+283
+],
+[
+1792826547.629,
+124,
+283
+],
+[
+1792826547.631,
+124,
+283
+],
+[
+1792826548.509,
+125,
+283
+],
+[
+1792826548.509,
+125,
+283
+],
+[
+1792826548.721,
+125,
+283
+],
+[
+1792826548.721,
+125,
+283
+],
+[
+1792826550.06,
+119,
+283
+],
+[
+1792826550.061,
+119,
+283
+],
+[
+1792826550.112,
+119,
+283
+],
+[
+1792826550.113,
+119,
+283
+],
+[
+1792826550.58,
+114,
+283
+],
+[
+1792826555.298,
+104,
+283
+],
+[
+1792826555.3,
+104,
+283
+],
+[
+1792826555.618,
+99,
+283
+],
+[
+1792826555.619,
+99,
+283
+],
+[
+1792826559.394,
+50,
+283
+],
+[
+1792826559.395,
+50,
+283
+],
+[
+1792826559.396,
+50,
+283
+],
+[
+1792826559.396,
+50,
+283
+],
+[
+1792826560.641,
+50,
+283
+],
+[
+1792826560.897,
+50,
+283
+],
+[
+1792826560.897,
+50,
+283
+],
+[
+1792826561.675,
+49,
+283
+],
+[
+1792826562.398,
+49,
+283
+],
+[
+1792826562.398,
+49,
+283
+],
+[
+1792826562.603,
+49,
+283
+],
+[
+1792826562.603,
+49,
+283
+],
+[
+1792826563.484,
+41,
+283
+],
+[
+1792826563.486,
+41,
+283
+],
+[
+1792826563.901,
+41,
+283
+],
+[
+1792826563.901,
+41,
+283
+],
+[
+1792826565.403,
+40,
+283
+],
+[
+1792826565.403,
+40,
+283
+],
+[
+1792826565.662,
+69,
+283
+],
+[
+1792826565.664,
+69,
+283
+],
+[
+1792826567.582,
+66,
+283
+],
+[
+1792826567.585,
+66,
+283
+],
+[
+1792826568.375,
+67,
+283
+],
+[
+1792826568.426,
+67,
+283
+],
+[
+1792826568.427,
+67,
+283
+],
+[
+1792826569.102,
+93,
+283
+],
+[
+1792826569.102,
+93,
+283
+],
+[
+1792826570.707,
+85,
+283
+],
+[
+1792826571.69,
+86,
+283
+],
+[
+1792826571.692,
+86,
+283
+],
+[
+1792826573.249,
+106,
+283
+],
+[
+1792826573.25,
+106,
+283
+],
+[
+1792826573.25,
+106,
+283
+],
+[
+1792826575.757,
+106,
+283
+],
+[
+1792826575.759,
+106,
+283
+],
+[
+1792826575.815,
+100,
+283
+],
+[
+1792826575.816,
+100,
+283
+],
+[
+1792826575.817,
+100,
+283
+],
+[
+1792826575.872,
+95,
+283
+],
+[
+1792826579.829,
+79,
+283
+],
+[
+1792826579.831,
+79,
+283
+],
+[
+1792826580.818,
+76,
+283
+],
+[
+1792826583.937,
+72,
+283
+],
+[
+1792826583.939,
+72,
+283
+],
+[
+1792826585.864,
+73,
+283
+],
+[
+1792826585.918,
+73,
+283
+],
+[
+1792826588.01,
+72,
+283
+],
+[
+1792826588.012,
+72,
+283
+],
+[
+1792826590.919,
+61,
+283
+],
+[
+1792826592.117,
+62,
+283
+],
+[
+1792826592.119,
+62,
+283
+],
+[
+1792826595.907,
+49,
+283
+],
+[
+1792826595.908,
+49,
+283
+],
+[
+1792826595.908,
+49,
+283
+],
+[
+1792826595.962,
+49,
+283
+],
+[
+1792826595.963,
+49,
+283
+],
+[
+1792826595.963,
+49,
+283
+],
+[
+1792826595.965,
+49,
+283
+],
+[
+1792826596.224,
+49,
+283
+],
+[
+1792826596.227,
+49,
+283
+],
+[
+1792826600.313,
+47,
+283
+],
+[
+1792826600.314,
+47,
+283
+],
+[
+1792826605.92,
+49,
+283
+],
+[
+1792826605.92,
+49,
+283
+],
+[
+1792826605.977,
+49,
+283
+],
+[
+1792826605.977,
+49,
+283
+],
+[
+1792826605.979,
+49,
+283
+],
+[
+1792826612.533,
+51,
+283
+],
+[
+1792826612.535,
+51,
+283
+],
+[
+1792826612.589,
+51,
+283
+],
+[
+1792826612.589,
+51,
+283
+],
+[
+1792826612.589,
+51,
+283
+],
+[
+1792826612.589,
+51,
+283
+],
+[
+1792826612.64,
+51,
+283
+],
+[
+1792826612.642,
+51,
+283
+],
+[
+1792826615.95,
+51,
+283
+],
+[
+1792826615.951,
+51,
+283
+],
+[
+1792826615.951,
+51,
+283
+],
+[
+1792826615.951,
+51,
+283
+],
+[
+1792826616.004,
+51,
+283
+],
+[
+1792826616.106,
+51,
+283
+],
+[
+1792826616.107,
+51,
+283
+],
+[
+1792826619.289,
+52,
+283
+],
+[
+1792826619.289,
+52,
+283
+],
+[
+1792826619.289,
+52,
+283
+],
+[
+1792826619.342,
+52,
+283
+],
+[
+1792826619.343,
+52,
+283
+],
+[
+1792826619.344,
+52,
+283
+],
+[
+1792826621.302,
+53,
+283
+],
+[
+1792826621.304,
+53,
+283
+],
+[
+1792826622.643,
+53,
+283
+],
+[
+1792826622.643,
+53,
+283
+],
+[
+1792826622.643,
+53,
+283
+],
+[
+1792826622.696,
+53,
+283
+],
+[
+1792826622.697,
+53,
+283
+],
+[
+1792826622.698,
+53,
+283
+],
+[
+1792826624.184,
+53,
+283
+],
+[
+1792826625.416,
+54,
+283
+],
+[
+1792826625.418,
+54,
+283
+],
+[
+1792826625.986,
+54,
+283
+],
+[
+1792826629.219,
+55,
+283
+],
+[
+1792826629.526,
+55,
+283
+],
+[
+1792826629.528,
+55,
+283
+],
+[
+1792826633.639,
+56,
+283
+],
+[
+1792826633.641,
+56,
+283
+],
+[
+1792826634.256,
+56,
+283
+],
+[
+1792826634.467,
+59,
+283
+],
+[
+1792826635.442,
+62,
+283
+],
+[
+1792826636.475,
+81,
+283
+],
+[
+1792826637.505,
+87,
+283
+],
+[
+1792826637.711,
+89,
+283
+],
+[
+1792826637.713,
+89,
+283
+],
+[
+1792826640.094,
+195,
+283
+]
+],
+"pos_series": [
+[
+1792826470.248,
+20,
+21
+],
+[
+1792826470.915,
+21,
+21
+],
+[
+1792826471.582,
+22,
+21
+],
+[
+1792826472.249,
+23,
+21
+],
+[
+1792826473.581,
+24,
+21
+],
+[
+1792826474.316,
+25,
+21
+],
+[
+1792826475.649,
+26,
+21
+],
+[
+1792826476.662,
+27,
+21
+],
+[
+1792826477.327,
+28,
+21
+],
+[
+1792826477.997,
+29,
+21
+],
+[
+1792826478.661,
+28,
+20
+],
+[
+1792826481.608,
+29,
+20
+],
+[
+1792826483.928,
+30,
+21
+],
+[
+1792826486.155,
+31,
+21
+],
+[
+1792826493.648,
+32,
+20
+],
+[
+1792826494.982,
+33,
+20
+],
+[
+1792826496.315,
+34,
+20
+],
+[
+1792826497.648,
+35,
+20
+],
+[
+1792826498.982,
+36,
+20
+],
+[
+1792826501.649,
+37,
+20
+],
+[
+1792826508.314,
+38,
+21
+],
+[
+1792826514.981,
+30,
+21
+],
+[
+1792826523.742,
+38,
+18
+],
+[
+1792826598.792,
+33,
+26
+],
+[
+1792826605.924,
+33,
+25
+],
+[
+1792826609.244,
+32,
+24
+],
+[
+1792826612.578,
+31,
+23
+],
+[
+1792826615.929,
+37,
+136
+],
+[
+1792826619.258,
+54,
+44
+],
+[
+1792826622.592,
+12,
+107
+],
+[
+1792826625.927,
+28,
+178
+],
+[
+1792826634.419,
+16,
+45
+]
+],
+"time_factor": [
+[
+1792826487.148,
+0.2
+],
+[
+1792826492.171,
+1.0
+],
+[
+1792826492.387,
+1.0
+],
+[
+1792826500.02,
+0.2
+],
+[
+1792826502.404,
+0.2
+],
+[
+1792826512.404,
+0.2
+],
+[
+1792826522.431,
+0.2
+],
+[
+1792826532.452,
+0.2
+],
+[
+1792826555.618,
+0.2
+],
+[
+1792826561.675,
+0.2
+],
+[
+1792826565.662,
+0.2
+],
+[
+1792826575.872,
+0.2
+],
+[
+1792826585.918,
+0.2
+],
+[
+1792826595.962,
+0.2
+],
+[
+1792826605.977,
+0.2
+],
+[
+1792826616.004,
+0.2
+],
+[
+1792826619.342,
+0.2
+],
+[
+1792826622.696,
+0.2
+],
+[
+1792826625.986,
+0.2
+],
+[
+1792826634.467,
+1.0
+],
+[
+1792826640.094,
+1.0
+]
+],
+"mons_series": [
+[
+1792826461.637,
+[
+[
+19,
+21,
+"Baby gold dragon"
+]
+]
+],
+[
+1792826462.682,
+[
+[
+19,
+21,
+"Baby gold dragon"
+]
+]
+],
+[
+1792826463.726,
+[
+[
+18,
+20,
+"Bullroarer the Hobbit"
+],
+[
+19,
+21,
+"Baby gold dragon"
+]
+]
+],
+[
+1792826464.779,
+[
+[
+18,
+20,
+"Bullroarer the Hobbit"
+],
+[
+18,
+21,
+"Blue yeek"
+],
+[
+19,
+18,
+"Brown yeek"
+],
+[
+19,
+19,
+"Master yeek"
+],
+[
+19,
+21,
+"Baby gold dragon"
+],
+[
+19,
+23,
+"Brown yeek"
+],
+[
+20,
+20,
+"Master yeek"
+],
+[
+20,
+21,
+"Blue yeek"
+],
+[
+21,
+20,
+"Brown yeek"
+],
+[
+21,
+21,
+"Giant black louse"
+]
+]
+],
+[
+1792826465.783,
+[
+[
+18,
+18,
+"Brown yeek"
+],
+[
+18,
+20,
+"Bullroarer the Hobbit"
+],
+[
+18,
+21,
+"Blue yeek"
+],
+[
+18,
+22,
+"Boldor, King of the Yeeks"
+],
+[
+19,
+19,
+"Master yeek"
+],
+[
+19,
+22,
+"Baby gold dragon"
+],
+[
+19,
+23,
+"Brown yeek"
+],
+[
+20,
+20,
+"Master yeek"
+],
+[
+20,
+21,
+"Blue yeek"
+],
+[
+21,
+20,
+"Brown yeek"
+],
+[
+22,
+21,
+"Giant black louse"
+]
+]
+],
+[
+1792826466.836,
+[
+[
+18,
+19,
+"Brown yeek"
+],
+[
+18,
+20,
+"Bullroarer the Hobbit"
+],
+[
+18,
+21,
+"Blue yeek"
+],
+[
+18,
+22,
+"Brown yeek"
+],
+[
+19,
+18,
+"Master yeek"
+],
+[
+19,
+19,
+"Master yeek"
+],
+[
+19,
+21,
+"Orc shaman"
+],
+[
+20,
+20,
+"Master yeek"
+],
+[
+20,
+21,
+"Blue yeek"
+],
+[
+21,
+21,
+"Brown yeek"
+],
+[
+22,
+20,
+"Giant black louse"
+]
+]
+],
+[
+1792826469.144,
+[
+[
+17,
+19,
+"Boldor, King of the Yeeks"
+],
+[
+17,
+21,
+"Brown yeek"
+],
+[
+18,
+19,
+"Brown yeek"
+],
+[
+18,
+20,
+"Bullroarer the Hobbit"
+],
+[
+18,
+21,
+"Blue yeek"
+],
+[
+18,
+23,
+"Brown yeek"
+],
+[
+19,
+19,
+"Master yeek"
+],
+[
+19,
+21,
+"Orc shaman"
+],
+[
+19,
+22,
+"Master yeek"
+],
+[
+20,
+20,
+"Brown yeek"
+],
+[
+20,
+21,
+"Blue yeek"
+],
+[
+21,
+20,
+"Giant black louse"
+],
+[
+21,
+21,
+"Giant black louse"
+]
+]
+],
+[
+1792826470.163,
+[
+[
+16,
+20,
+"Brown yeek"
+],
+[
+17,
+19,
+"Boldor, King of the Yeeks"
+],
+[
+17,
+22,
+"Brown yeek"
+],
+[
+18,
+19,
+"Brown yeek"
+],
+[
+18,
+20,
+"Bullroarer the Hobbit"
+],
+[
+18,
+21,
+"Blue yeek"
+],
+[
+19,
+19,
+"Master yeek"
+],
+[
+19,
+21,
+"Orc shaman"
+],
+[
+19,
+22,
+"Master yeek"
+],
+[
+19,
+23,
+"Brown yeek"
+],
+[
+20,
+20,
+"Brown yeek"
+],
+[
+22,
+21,
+"Giant black louse"
+]
+]
+],
+[
+1792826471.164,
+[
+[
+18,
+20,
+"Boldor, King of the Yeeks"
+],
+[
+18,
+21,
+"Blue yeek"
+],
+[
+18,
+22,
+"Brown yeek"
+],
+[
+19,
+19,
+"Master yeek"
+],
+[
+19,
+20,
+"Bullroarer the Hobbit"
+],
+[
+19,
+21,
+"Orc shaman"
+],
+[
+19,
+22,
+"Brown yeek"
+],
+[
+20,
+20,
+"Brown yeek"
+],
+[
+22,
+20,
+"Giant black louse"
+]
+]
+],
+[
+1792826473.318,
+[
+[
+20,
+20,
+"Brown yeek"
+],
+[
+20,
+21,
+"Bullroarer the Hobbit"
+],
+[
+21,
+20,
+"Brown yeek"
+],
+[
+21,
+21,
+"Orc shaman"
+],
+[
+22,
+20,
+"Giant black louse"
+],
+[
+22,
+21,
+"Giant black louse"
+]
+]
+],
+[
+1792826474.326,
+[
+[
+22,
+21,
+"Giant black louse"
+],
+[
+23,
+20,
+"Brown yeek"
+],
+[
+24,
+20,
+"Giant black louse"
+],
+[
+25,
+22,
+"Kobold shaman"
+]
+]
+],
+[
+1792826475.376,
+[
+[
+22,
+20,
+"Brown yeek"
+],
+[
+22,
+21,
+"Orc shaman"
+],
+[
+23,
+21,
+"Giant black louse"
+],
+[
+24,
+19,
+"Bullroarer the Hobbit"
+],
+[
+24,
+20,
+"Giant black louse"
+],
+[
+24,
+21,
+"Brown yeek"
+],
+[
+25,
+22,
+"Kobold shaman"
+]
+]
+],
+[
+1792826476.389,
+[
+[
+23,
+20,
+"Brown yeek"
+],
+[
+23,
+21,
+"Orc shaman"
+],
+[
+24,
+19,
+"Giant black louse"
+],
+[
+24,
+21,
+"Brown yeek"
+],
+[
+25,
+19,
+"Giant black louse"
+],
+[
+25,
+20,
+"Bullroarer the Hobbit"
+],
+[
+25,
+22,
+"Kobold shaman"
+]
+]
+],
+[
+1792826477.407,
+[
+[
+25,
+20,
+"Brown yeek"
+],
+[
+25,
+22,
+"Orc shaman"
+],
+[
+26,
+20,
+"Bullroarer the Hobbit"
+],
+[
+26,
+21,
+"Kobold shaman"
+],
+[
+27,
+20,
+"Boldor, King of the Yeeks"
+],
+[
+28,
+20,
+"Giant black louse"
+]
+]
+],
+[
+1792826478.42,
+[
+[
+26,
+20,
+"Brown yeek"
+],
+[
+26,
+21,
+"Kobold shaman"
+],
+[
+26,
+22,
+"Orc shaman"
+],
+[
+27,
+20,
+"Boldor, King of the Yeeks"
+],
+[
+28,
+20,
+"Giant black louse"
+],
+[
+28,
+21,
+"Bullroarer the Hobbit"
+]
+]
+],
+[
+1792826479.424,
+[
+[
+25,
+19,
+"Blue yeek"
+],
+[
+26,
+19,
+"Brown yeek"
+],
+[
+26,
+20,
+"Brown yeek"
+],
+[
+26,
+21,
+"Kobold shaman"
+],
+[
+27,
+19,
+"Giant black louse"
+],
+[
+27,
+20,
+"Brown yeek"
+],
+[
+27,
+22,
+"Orc shaman"
+],
+[
+28,
+21,
+"Bullroarer the Hobbit"
+]
+]
+],
+[
+1792826480.449,
+[
+[
+25,
+20,
+"Brown yeek"
+],
+[
+26,
+19,
+"Blue yeek"
+],
+[
+26,
+20,
+"Brown yeek"
+],
+[
+27,
+19,
+"Brown yeek"
+],
+[
+27,
+20,
+"Brown yeek"
+],
+[
+27,
+21,
+"Orc shaman"
+],
+[
+27,
+22,
+"Kobold shaman"
+],
+[
+28,
+21,
+"Bullroarer the Hobbit"
+]
+]
+],
+[
+1792826481.451,
+[
+[
+25,
+20,
+"Brown yeek"
+],
+[
+25,
+21,
+"Master yeek"
+],
+[
+26,
+19,
+"Brown yeek"
+],
+[
+27,
+18,
+"Blue yeek"
+],
+[
+27,
+19,
+"Brown yeek"
+],
+[
+27,
+20,
+"Brown yeek"
+],
+[
+27,
+21,
+"Orc shaman"
+],
+[
+27,
+22,
+"Brown yeek"
+],
+[
+28,
+21,
+"Bullroarer the Hobbit"
+],
+[
+28,
+22,
+"Kobold shaman"
+]
+]
+],
+[
+1792826482.486,
+[
+[
+26,
+20,
+"Brown yeek"
+],
+[
+26,
+21,
+"Brown yeek"
+],
+[
+27,
+18,
+"Brown yeek"
+],
+[
+27,
+19,
+"Brown yeek"
+],
+[
+27,
+20,
+"Brown yeek"
+],
+[
+27,
+21,
+"Orc shaman"
+],
+[
+28,
+19,
+"Blue yeek"
+],
+[
+28,
+20,
+"Dark hound"
+],
+[
+28,
+21,
+"Bullroarer the Hobbit"
+],
+[
+28,
+22,
+"Kobold shaman"
+]
+]
+],
+[
+1792826483.531,
+[
+[
+26,
+19,
+"Brown yeek"
+],
+[
+26,
+21,
+"Master yeek"
+],
+[
+27,
+18,
+"Brown yeek"
+],
+[
+27,
+19,
+"Brown yeek"
+],
+[
+27,
+20,
+"Brown yeek"
+],
+[
+27,
+21,
+"Orc shaman"
+],
+[
+27,
+22,
+"Brown yeek"
+],
+[
+28,
+19,
+"Blue yeek"
+],
+[
+28,
+20,
+"Dark hound"
+],
+[
+28,
+21,
+"Bullroarer the Hobbit"
+],
+[
+28,
+22,
+"Kobold shaman"
+]
+]
+],
+[
+1792826491.427,
+[
+[
+28,
+20,
+"Brown yeek"
+],
+[
+28,
+21,
+"Blue yeek"
+],
+[
+28,
+22,
+"Brown yeek"
+],
+[
+29,
+20,
+"Brown yeek"
+],
+[
+29,
+21,
+"Kobold shaman"
+],
+[
+30,
+20,
+"Bullroarer the Hobbit"
+],
+[
+30,
+21,
+"Dark hound"
+]
+]
+],
+[
+1792826492.441,
+[
+[
+28,
+20,
+"Brown yeek"
+],
+[
+28,
+21,
+"Blue yeek"
+],
+[
+28,
+22,
+"Brown yeek"
+],
+[
+29,
+20,
+"Brown yeek"
+],
+[
+29,
+21,
+"Kobold shaman"
+],
+[
+30,
+20,
+"Bullroarer the Hobbit"
+],
+[
+30,
+21,
+"Dark hound"
+]
+]
+],
+[
+1792826493.451,
+[
+[
+28,
+20,
+"Brown yeek"
+],
+[
+28,
+21,
+"Blue yeek"
+],
+[
+28,
+22,
+"Brown yeek"
+],
+[
+29,
+20,
+"Brown yeek"
+],
+[
+29,
+21,
+"Kobold shaman"
+],
+[
+30,
+20,
+"Bullroarer the Hobbit"
+],
+[
+30,
+21,
+"Dark hound"
+]
+]
+],
+[
+1792826494.464,
+[
+[
+29,
+20,
+"Brown yeek"
+],
+[
+29,
+21,
+"Brown yeek"
+],
+[
+30,
+21,
+"Kobold shaman"
+],
+[
+31,
+20,
+"Dark hound"
+],
+[
+31,
+21,
+"Bullroarer the Hobbit"
+]
+]
+],
+[
+1792826495.471,
+[
+[
+30,
+20,
+"Brown yeek"
+],
+[
+30,
+21,
+"Kobold shaman"
+],
+[
+31,
+20,
+"Dark hound"
+],
+[
+31,
+21,
+"Bullroarer the Hobbit"
+]
+]
+],
+[
+1792826496.472,
+[
+[
+31,
+20,
+"Brown yeek"
+],
+[
+31,
+21,
+"Kobold shaman"
+],
+[
+32,
+20,
+"Bullroarer the Hobbit"
+],
+[
+32,
+21,
+"Dark hound"
+]
+]
+],
+[
+1792826497.479,
+[
+[
+31,
+20,
+"Brown yeek"
+],
+[
+32,
+20,
+"Kobold shaman"
+],
+[
+32,
+21,
+"Brown yeek"
+],
+[
+33,
+20,
+"Dark hound"
+],
+[
+33,
+21,
+"Bullroarer the Hobbit"
+]
+]
+],
+[
+1792826498.485,
+[
+[
+32,
+20,
+"Kobold shaman"
+],
+[
+33,
+20,
+"Dark hound"
+],
+[
+33,
+21,
+"Brown yeek"
+],
+[
+34,
+20,
+"Bullroarer the Hobbit"
+]
+]
+],
+[
+1792826499.491,
+[
+[
+33,
+20,
+"Dark hound"
+],
+[
+34,
+20,
+"Bullroarer the Hobbit"
+],
+[
+34,
+21,
+"Brown yeek"
+],
+[
+35,
+17,
+"Master yeek"
+]
+]
+],
+[
+1792826502.404,
+[
+[
+34,
+20,
+"Brown yeek"
+],
+[
+34,
+21,
+"Dark hound"
+],
+[
+35,
+20,
+"Bullroarer the Hobbit"
+],
+[
+36,
+17,
+"Brown yeek"
+],
+[
+36,
+18,
+"Master yeek"
+],
+[
+36,
+20,
+"Brown yeek"
+]
+]
+],
+[
+1792826507.408,
+[
+[
+34,
+20,
+"Brown yeek"
+],
+[
+35,
+20,
+"Brown yeek"
+],
+[
+35,
+21,
+"Dark hound"
+],
+[
+36,
+17,
+"Brown yeek"
+],
+[
+36,
+18,
+"Brown yeek"
+],
+[
+36,
+19,
+"Bullroarer the Hobbit"
+],
+[
+36,
+20,
+"Brown yeek"
+],
+[
+37,
+19,
+"Master yeek"
+]
+]
+],
+[
+1792826512.456,
+[
+[
+35,
+20,
+"Dark hound"
+],
+[
+35,
+21,
+"Brown yeek"
+],
+[
+36,
+19,
+"Brown yeek"
+],
+[
+36,
+20,
+"Brown yeek"
+],
+[
+37,
+19,
+"Master yeek"
+],
+[
+37,
+20,
+"Bullroarer the Hobbit"
+],
+[
+37,
+21,
+"Brown yeek"
+],
+[
+38,
+19,
+"Brown yeek"
+]
+]
+],
+[
+1792826517.485,
+[
+[
+32,
+20,
+"Blue yeek"
+],
+[
+33,
+21,
+"Kobold shaman"
+]
+]
+],
+[
+1792826522.535,
+[
+[
+31,
+21,
+"Blue yeek"
+],
+[
+32,
+21,
+"Kobold shaman"
+],
+[
+33,
+20,
+"Brown yeek"
+],
+[
+33,
+21,
+"Brown yeek"
+]
+]
+],
+[
+1792826527.542,
+[
+[
+36,
+17,
+"Brown yeek"
+],
+[
+36,
+19,
+"Dark hound"
+],
+[
+37,
+17,
+"Brown yeek"
+],
+[
+37,
+18,
+"Bullroarer the Hobbit"
+],
+[
+37,
+20,
+"Brown yeek"
+]
+]
+],
+[
+1792826532.557,
+[
+[
+36,
+18,
+"Brown yeek"
+],
+[
+36,
+19,
+"Brown yeek"
+],
+[
+37,
+17,
+"Brown yeek"
+],
+[
+37,
+18,
+"Bullroarer the Hobbit"
+],
+[
+37,
+19,
+"Dark hound"
+],
+[
+37,
+20,
+"Brown yeek"
+],
+[
+38,
+19,
+"Brown yeek"
+]
+]
+],
+[
+1792826537.559,
+[
+[
+36,
+18,
+"Brown yeek"
+],
+[
+36,
+20,
+"Brown yeek"
+],
+[
+37,
+16,
+"Brown yeek"
+],
+[
+37,
+17,
+"Brown yeek"
+],
+[
+37,
+18,
+"Bullroarer the Hobbit"
+],
+[
+37,
+19,
+"Dark hound"
+],
+[
+38,
+19,
+"Brown yeek"
+],
+[
+39,
+19,
+"Brown yeek"
+]
+]
+],
+[
+1792826545.558,
+[
+[
+36,
+17,
+"Brown yeek"
+],
+[
+36,
+19,
+"Blue yeek"
+],
+[
+37,
+17,
+"Brown yeek"
+],
+[
+37,
+18,
+"Bullroarer the Hobbit"
+],
+[
+37,
+19,
+"Dark hound"
+],
+[
+38,
+16,
+"Brown yeek"
+],
+[
+38,
+17,
+"Brown yeek"
+],
+[
+38,
+19,
+"Brown yeek"
+],
+[
+38,
+20,
+"Brown yeek"
+],
+[
+39,
+19,
+"Brown yeek"
+],
+[
+39,
+20,
+"Orc shaman"
+]
+]
+],
+[
+1792826550.58,
+[
+[
+36,
+17,
+"Blue yeek"
+],
+[
+36,
+20,
+"Kobold shaman"
+],
+[
+37,
+16,
+"Brown yeek"
+],
+[
+37,
+17,
+"Brown yeek"
+],
+[
+37,
+18,
+"Bullroarer the Hobbit"
+],
+[
+37,
+19,
+"Dark hound"
+],
+[
+38,
+17,
+"Brown yeek"
+],
+[
+38,
+19,
+"Brown yeek"
+],
+[
+38,
+20,
+"Brown yeek"
+],
+[
+39,
+17,
+"Brown yeek"
+],
+[
+39,
+18,
+"Orc shaman"
+],
+[
+39,
+19,
+"Brown yeek"
+]
+]
+],
+[
+1792826555.619,
+[
+[
+36,
+18,
+"Blue yeek"
+],
+[
+36,
+19,
+"Kobold shaman"
+],
+[
+37,
+16,
+"Brown yeek"
+],
+[
+37,
+17,
+"Brown yeek"
+],
+[
+37,
+18,
+"Bullroarer the Hobbit"
+],
+[
+37,
+19,
+"Dark hound"
+],
+[
+37,
+20,
+"Brown yeek"
+],
+[
+38,
+17,
+"Brown yeek"
+],
+[
+38,
+19,
+"Brown yeek"
+],
+[
+39,
+17,
+"Brown yeek"
+],
+[
+39,
+18,
+"Orc shaman"
+],
+[
+39,
+19,
+"Brown yeek"
+],
+[
+40,
+17,
+"Master yeek"
+]
+]
+],
+[
+1792826560.641,
+[
+[
+36,
+17,
+"Blue yeek"
+],
+[
+36,
+18,
+"Kobold shaman"
+],
+[
+37,
+16,
+"Brown yeek"
+],
+[
+37,
+17,
+"Brown yeek"
+],
+[
+37,
+18,
+"Bullroarer the Hobbit"
+],
+[
+37,
+19,
+"Dark hound"
+],
+[
+38,
+17,
+"Brown yeek"
+],
+[
+38,
+19,
+"Brown yeek"
+],
+[
+38,
+20,
+"Brown yeek"
+],
+[
+39,
+17,
+"Brown yeek"
+],
+[
+39,
+18,
+"Orc shaman"
+],
+[
+39,
+19,
+"Brown yeek"
+],
+[
+40,
+18,
+"Master yeek"
+]
+]
+],
+[
+1792826565.664,
+[
+[
+36,
+18,
+"Blue yeek"
+],
+[
+36,
+19,
+"Kobold shaman"
+],
+[
+37,
+17,
+"Brown yeek"
+],
+[
+37,
+18,
+"Bullroarer the Hobbit"
+],
+[
+37,
+19,
+"Dark hound"
+],
+[
+38,
+16,
+"Brown yeek"
+],
+[
+38,
+17,
+"Brown yeek"
+],
+[
+38,
+19,
+"Brown yeek"
+],
+[
+38,
+20,
+"Brown yeek"
+],
+[
+39,
+17,
+"Brown yeek"
+],
+[
+39,
+18,
+"Orc shaman"
+],
+[
+39,
+19,
+"Brown yeek"
+],
+[
+40,
+17,
+"Master yeek"
+]
+]
+],
+[
+1792826570.707,
+[
+[
+36,
+17,
+"Blue yeek"
+],
+[
+37,
+17,
+"Brown yeek"
+],
+[
+37,
+18,
+"Bullroarer the Hobbit"
+],
+[
+37,
+19,
+"Dark hound"
+],
+[
+38,
+16,
+"Brown yeek"
+],
+[
+38,
+17,
+"Brown yeek"
+],
+[
+38,
+19,
+"Brown yeek"
+],
+[
+38,
+20,
+"Kobold shaman"
+],
+[
+39,
+17,
+"Brown yeek"
+],
+[
+39,
+18,
+"Orc shaman"
+],
+[
+39,
+19,
+"Brown yeek"
+],
+[
+39,
+20,
+"Brown yeek"
+],
+[
+40,
+17,
+"Master yeek"
+]
+]
+],
+[
+1792826575.815,
+[
+[
+36,
+18,
+"Blue yeek"
+],
+[
+37,
+17,
+"Brown yeek"
+],
+[
+37,
+18,
+"Bullroarer the Hobbit"
+],
+[
+37,
+19,
+"Dark hound"
+],
+[
+37,
+20,
+"Kobold shaman"
+],
+[
+38,
+16,
+"Brown yeek"
+],
+[
+38,
+17,
+"Brown yeek"
+],
+[
+38,
+19,
+"Brown yeek"
+],
+[
+39,
+17,
+"Brown yeek"
+],
+[
+39,
+19,
+"Brown yeek"
+],
+[
+40,
+19,
+"Brown yeek"
+]
+]
+],
+[
+1792826580.818,
+[
+[
+36,
+18,
+"Blue yeek"
+],
+[
+37,
+16,
+"Brown yeek"
+],
+[
+37,
+17,
+"Brown yeek"
+],
+[
+37,
+18,
+"Bullroarer the Hobbit"
+],
+[
+37,
+19,
+"Dark hound"
+],
+[
+38,
+17,
+"Brown yeek"
+],
+[
+38,
+19,
+"Brown yeek"
+],
+[
+38,
+20,
+"Kobold shaman"
+],
+[
+39,
+17,
+"Brown yeek"
+],
+[
+39,
+18,
+"Brown yeek"
+],
+[
+39,
+19,
+"Brown yeek"
+]
+]
+],
+[
+1792826585.864,
+[
+[
+36,
+17,
+"Blue yeek"
+],
+[
+37,
+16,
+"Brown yeek"
+],
+[
+37,
+17,
+"Brown yeek"
+],
+[
+37,
+18,
+"Bullroarer the Hobbit"
+],
+[
+37,
+19,
+"Dark hound"
+],
+[
+37,
+20,
+"Kobold shaman"
+],
+[
+38,
+17,
+"Brown yeek"
+],
+[
+38,
+19,
+"Brown yeek"
+],
+[
+39,
+17,
+"Brown yeek"
+],
+[
+39,
+18,
+"Brown yeek"
+],
+[
+39,
+19,
+"Brown yeek"
+]
+]
+],
+[
+1792826590.919,
+[
+[
+36,
+17,
+"Blue yeek"
+],
+[
+37,
+16,
+"Brown yeek"
+],
+[
+37,
+17,
+"Brown yeek"
+],
+[
+37,
+18,
+"Bullroarer the Hobbit"
+],
+[
+37,
+19,
+"Dark hound"
+],
+[
+37,
+20,
+"Kobold shaman"
+],
+[
+38,
+17,
+"Brown yeek"
+],
+[
+38,
+19,
+"Brown yeek"
+],
+[
+39,
+17,
+"Brown yeek"
+],
+[
+39,
+18,
+"Brown yeek"
+],
+[
+39,
+19,
+"Brown yeek"
+]
+]
+],
+[
+1792826595.963,
+[
+[
+37,
+17,
+"Blue yeek"
+],
+[
+37,
+18,
+"Bullroarer the Hobbit"
+],
+[
+38,
+16,
+"Brown yeek"
+],
+[
+38,
+17,
+"Brown yeek"
+],
+[
+38,
+19,
+"Brown yeek"
+],
+[
+39,
+18,
+"Brown yeek"
+],
+[
+39,
+19,
+"Brown yeek"
+]
+]
+]
+],
+"map_window": [
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"     #                     ####  ######  ",
+"     #                     '          '  ",
+"     #              .      '   #      '  ",
+"     #             ....    #####      #  ",
+"     #            ......   '          #  ",
+"     #           .......   '          #  ",
+"     ###############$.##########  ##  ###",
+"                   #..#        #####  #  ",
+"                   #..#            #  #  ",
+"          ##########..##           #  #  ",
+"          #............#           #  #  ",
+"          #............#           #  ###",
+"          #....?.......#           #     ",
+"          #............#           ##    ",
+"          #............#            #####",
+"          ######..##''##                 ",
+"               #..##..####               ",
+"               #..##..#<.##    ##########",
+"               #..##..#.1.######.........",
+"               #..##..#..................",
+"               #..##..#............######",
+"            ####''##..#..#######...#    #",
+"            #.........#..#     #.:.#   ##",
+"            #.........#..#     #...#   #.",
+"            #.........#..#######...#   #.",
+"            #.....$...'..#.........#   #_"
+],
+"outcome": {
+"lowest_hp": 40,
+"t_lowest": 1792826565.403,
+"end": "recall",
+"consumables": {
+"csw": 5,
+"hero": 1,
+"ccw": 6,
+"phase": 4,
+"wor": 2,
+"speed": 2
+},
+"consumables_by_messages": {
+"csw": 4,
+"hero": 1,
+"ccw": 7,
+"phase": 3,
+"speed": 2
+},
+"levels_seen": [
+[
+1792826615.93,
+12
+],
+[
+1792826619.259,
+13
+],
+[
+1792826622.593,
+12
+],
+[
+1792826625.928,
+13
+],
+[
+1792826634.42,
+0
+]
+]
+},
+"notes": "state.jsonl status nearest before t0 (0 s, game clock): level [23, 23], armor [61, 31, 30], speed [0], afraid [0], blind [0], confused [0], poisoned [0]"
+}

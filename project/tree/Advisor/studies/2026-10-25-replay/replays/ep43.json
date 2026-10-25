@@ -1,0 +1,2447 @@
+{
+"idx": 43,
+"mission": "m32",
+"depth_ft": 650,
+"level_dump": "20261025-080842-650ft.txt",
+"t0": 1792930177.084,
+"t_trigger": 1792930187.0,
+"t_end": 1792930226.0,
+"t0_rule": "latest of last HP>=90% max (A=08:09:37) and last mons record with none within 2 squares (B=08:09:36) within 60 s before trigger",
+"player": {
+"pos": [
+50,
+49
+],
+"hp": 290,
+"mhp": 313,
+"clvl": 25,
+"ac": 54,
+"status": {
+"slow": false,
+"fast": false,
+"hero": true,
+"berserk": false,
+"blind": false,
+"confused": false,
+"afraid": false,
+"poisoned": false,
+"paralyzed": false
+},
+"free_action": null,
+"see_invisible": null
+},
+"inventory": {
+"ccw": 15,
+"csw": 4,
+"clw": 0,
+"phase": 21,
+"tele": 0,
+"staff_tele": 0,
+"wor": 2,
+"speed": 3,
+"berserk": 0,
+"hero": 6,
+"boldness": 0,
+"magic_mapping": 4,
+"door_stair_rod": 1
+},
+"inventory_source": "state.jsonl inven at 08:09:33 (game clock; +4 s from t0, approx)",
+"inventory_raw": [
+"3 Rations of Food {for sale 200}",
+"3 Potions of Speed {for sale 200}",
+"6 Potions of Heroism {for sale 200}",
+"4 Potions of Cure Serious Wounds {for sale 200}",
+"15 Potions of Cure Critical Wounds {for sale 200}",
+"21 Scrolls of Phase Door {for sale 200}",
+"2 Scrolls of Word of Recall {@R650}",
+"4 Scrolls of Magic Mapping {75% off}",
+"a Rod of Door/Stair Location",
+"Hard Leather Armour [6]",
+"a Main Gauche (1d5) (+0,+7)",
+"a Ring of Resist Cold",
+"a Ring of Protection [+8]",
+"an Amulet of Resist Lightning",
+"a Brass Lantern (with 10100 turns of light)",
+"Hard Studded Leather of Resistance (-1) [7,+8]",
+"a Shadow Cloak [6,+3]",
+"an Orcish Shield [5,+5] (+1)",
+"an Iron Helm [5,-3]",
+"a Set of Gauntlets [2,-2]",
+"a Pair of Metal Shod Boots [6,+2] {good - Brodda, the Easterling}"
+],
+"monsters_t0": [
+{
+"name": "Nar, the Dwarf",
+"y": 51,
+"x": 50,
+"dist": 1
+}
+],
+"arrivals": [
+{
+"t": 1792930225.43,
+"name": "Red worm mass",
+"y": 37,
+"x": 17,
+"dist": 18
+}
+],
+"summons": [],
+"unseen_hits": [
+{
+"t": 1792930180.33,
+"text": "It casts a fearful illusion."
+},
+{
+"t": 1792930183.531,
+"text": "It casts a fearful illusion."
+},
+{
+"t": 1792930195.597,
+"text": "It creates a mesmerising illusion."
+},
+{
+"t": 1792930206.131,
+"text": "It casts a spell, burning your eyes!"
+},
+{
+"t": 1792930207.516,
+"text": "It hits you."
+},
+{
+"t": 1792930207.516,
+"text": "It hits you."
+},
+{
+"t": 1792930207.516,
+"text": "It hits you."
+},
+{
+"t": 1792930212.783,
+"text": "It points at you and curses horribly."
+},
+{
+"t": 1792930221.424,
+"text": "It casts a spell, burning your eyes!"
+}
+],
+"hostile_msgs": [
+{
+"t": 1792930177.198,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930177.198,
+"text": "Nar, the Dwarf misses you."
+},
+{
+"t": 1792930177.198,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930177.198,
+"text": "Nar, the Dwarf misses you."
+},
+{
+"t": 1792930179.197,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930179.197,
+"text": "Nar, the Dwarf misses you."
+},
+{
+"t": 1792930179.197,
+"text": "Nar, the Dwarf misses you."
+},
+{
+"t": 1792930179.197,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930180.33,
+"text": "It casts a fearful illusion."
+},
+{
+"t": 1792930180.531,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930180.531,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930180.531,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930180.531,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930181.865,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930181.865,
+"text": "Nar, the Dwarf misses you."
+},
+{
+"t": 1792930181.865,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930181.865,
+"text": "Nar, the Dwarf misses you."
+},
+{
+"t": 1792930183.197,
+"text": "Nar, the Dwarf misses you."
+},
+{
+"t": 1792930183.197,
+"text": "Nar, the Dwarf misses you."
+},
+{
+"t": 1792930183.197,
+"text": "Nar, the Dwarf misses you."
+},
+{
+"t": 1792930183.198,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930183.531,
+"text": "It casts a fearful illusion."
+},
+{
+"t": 1792930184.531,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930184.531,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930184.531,
+"text": "Nar, the Dwarf misses you."
+},
+{
+"t": 1792930184.531,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930185.865,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930185.865,
+"text": "Nar, the Dwarf misses you."
+},
+{
+"t": 1792930185.865,
+"text": "Nar, the Dwarf misses you."
+},
+{
+"t": 1792930185.865,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930187.197,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930187.197,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930187.197,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930187.197,
+"text": "Nar, the Dwarf misses you."
+},
+{
+"t": 1792930188.53,
+"text": "Nar, the Dwarf gazes deep into your eyes."
+},
+{
+"t": 1792930189.198,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930189.198,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930189.198,
+"text": "Nar, the Dwarf misses you."
+},
+{
+"t": 1792930189.198,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930195.597,
+"text": "It creates a mesmerising illusion."
+},
+{
+"t": 1792930200.383,
+"text": "Nar, the Dwarf gazes deep into your eyes."
+},
+{
+"t": 1792930206.131,
+"text": "It casts a spell, burning your eyes!"
+},
+{
+"t": 1792930207.516,
+"text": "It hits you."
+},
+{
+"t": 1792930207.516,
+"text": "It hits you."
+},
+{
+"t": 1792930207.516,
+"text": "It hits you."
+},
+{
+"t": 1792930210.784,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930210.784,
+"text": "Nar, the Dwarf misses you."
+},
+{
+"t": 1792930210.784,
+"text": "Nar, the Dwarf misses you."
+},
+{
+"t": 1792930210.784,
+"text": "Nar, the Dwarf hits you."
+},
+{
+"t": 1792930212.783,
+"text": "It points at you and curses horribly."
+},
+{
+"t": 1792930221.424,
+"text": "It casts a spell, burning your eyes!"
+}
+],
+"status_msgs": [
+{
+"t": 1792930180.33,
+"text": "You refuse to be frightened."
+},
+{
+"t": 1792930181.063,
+"text": "The heroism wears off."
+},
+{
+"t": 1792930183.531,
+"text": "You refuse to be frightened."
+},
+{
+"t": 1792930188.531,
+"text": "You resist the effects!"
+},
+{
+"t": 1792930192.198,
+"text": "You feel yourself moving faster!"
+},
+{
+"t": 1792930195.597,
+"text": "You disbelieve the feeble spell."
+},
+{
+"t": 1792930200.383,
+"text": "You resist the effects!"
+},
+{
+"t": 1792930206.132,
+"text": "You are blind!"
+},
+{
+"t": 1792930206.823,
+"text": "You are confused!"
+},
+{
+"t": 1792930207.398,
+"text": "You feel less confused now."
+},
+{
+"t": 1792930209.943,
+"text": "You can see again."
+},
+{
+"t": 1792930215.729,
+"text": "You feel yourself slow down."
+},
+{
+"t": 1792930221.424,
+"text": "You are blind!"
+},
+{
+"t": 1792930224.93,
+"text": "You can see again."
+}
+],
+"actions": [
+{
+"t": 1792930174.504,
+"cmd": "custom . dir=7",
+"what": "run",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930177.131
+},
+{
+"t": 1792930175.034,
+"cmd": "walk 5",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930177.812
+},
+{
+"t": 1792930175.561,
+"cmd": "walk 7",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930179.797
+},
+{
+"t": 1792930177.872,
+"cmd": "walk 3",
+"what": "melee",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930179.13
+},
+{
+"t": 1792930177.873,
+"cmd": "walk 2",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792930178.551,
+"cmd": "walk 6",
+"what": "melee",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930180.037
+},
+{
+"t": 1792930178.551,
+"cmd": "walk 3",
+"what": "melee",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930180.265
+},
+{
+"t": 1792930189.327,
+"cmd": "custom q item=1",
+"what": "speed",
+"why": "low HP: quaff 3 Potions of Speed {for sale 200} (an emergency: speed first)",
+"src": "pilot",
+"t_effect": 1792930192.198
+},
+{
+"t": 1792930192.353,
+"cmd": "custom r item=5",
+"what": "phase",
+"why": "low HP: phase door",
+"src": "pilot",
+"t_effect": 1792930193.863
+},
+{
+"t": 1792930195.396,
+"cmd": "custom q item=3",
+"what": "csw",
+"why": "low HP: quaff 4 Potions of Cure Serious Wounds {for sale 200}",
+"src": "pilot",
+"t_effect": 1792930195.53
+},
+{
+"t": 1792930196.17,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792930197.258,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930197.261
+},
+{
+"t": 1792930197.313,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792930198.398,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930198.718
+},
+{
+"t": 1792930198.817,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930199.051
+},
+{
+"t": 1792930199.077,
+"cmd": "walk 1",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930199.384
+},
+{
+"t": 1792930199.438,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930199.716
+},
+{
+"t": 1792930199.753,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930200.05
+},
+{
+"t": 1792930200.064,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930200.384
+},
+{
+"t": 1792930200.429,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930200.717
+},
+{
+"t": 1792930200.744,
+"cmd": "walk 1",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930201.05
+},
+{
+"t": 1792930201.055,
+"cmd": "walk 1",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930201.384
+},
+{
+"t": 1792930201.736,
+"cmd": "custom . dir=4",
+"what": "run",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930202.063
+},
+{
+"t": 1792930202.102,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792930203.187,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930203.291
+},
+{
+"t": 1792930203.345,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930203.624
+},
+{
+"t": 1792930203.68,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930203.957
+},
+{
+"t": 1792930203.995,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930204.29
+},
+{
+"t": 1792930204.31,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930204.624
+},
+{
+"t": 1792930204.997,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792930206.082,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930206.084
+},
+{
+"t": 1792930206.136,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792930207.166,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792930209.938,
+"cmd": "custom q item=3",
+"what": "csw",
+"why": "blind in combat: quaff 3 Potions of Cure Serious Wounds {for sale 200}",
+"src": "pilot",
+"t_effect": 1792930209.943
+},
+{
+"t": 1792930211.235,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930211.49
+},
+{
+"t": 1792930211.499,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930211.824
+},
+{
+"t": 1792930211.863,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930212.157
+},
+{
+"t": 1792930212.176,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930212.489
+},
+{
+"t": 1792930213.021,
+"cmd": "custom r item=6",
+"what": "wor",
+"why": "low HP: word of recall (potions too weak)",
+"src": "pilot",
+"t_effect": 1792930214.651
+},
+{
+"t": 1792930215.543,
+"cmd": "custom q item=4",
+"what": "ccw",
+"why": "low HP: quaff 15 Potions of Cure Critical Wounds {for sale 200}",
+"src": "pilot",
+"t_effect": 1792930216.918
+},
+{
+"t": 1792930217.352,
+"cmd": "custom . dir=4",
+"what": "run",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930217.596
+},
+{
+"t": 1792930218.149,
+"cmd": "walk 5",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930218.251
+},
+{
+"t": 1792930218.2,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930218.917
+},
+{
+"t": 1792930218.835,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930219.588
+},
+{
+"t": 1792930218.941,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930220.25
+},
+{
+"t": 1792930219.627,
+"cmd": "walk 4",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930220.916
+},
+{
+"t": 1792930220.259,
+"cmd": "walk 7",
+"what": "walk",
+"why": null,
+"src": "pilot",
+"t_effect": 1792930221.584
+},
+{
+"t": 1792930221.592,
+"cmd": "custom <",
+"what": "stairs",
+"why": "stairs <",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792930221.903,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792930222.942,
+"cmd": "custom k item=9 value=1",
+"what": "other",
+"why": "autodestroy Hard Leather Armour [6] {cursed}",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792930223.563,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+},
+{
+"t": 1792930225.218,
+"cmd": "rest",
+"what": "rest",
+"why": "rest",
+"src": "pilot",
+"t_effect": null
+}
+],
+"melee_by_us": [
+{
+"t": 1792930179.13,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930179.13,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930179.13,
+"text": "You miss Nar, the Dwarf."
+},
+{
+"t": 1792930180.037,
+"text": "You miss Nar, the Dwarf."
+},
+{
+"t": 1792930180.265,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930180.487,
+"text": "You miss Nar, the Dwarf."
+},
+{
+"t": 1792930180.703,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930180.931,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930181.144,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930181.37,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930181.597,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930181.812,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930182.038,
+"text": "You miss Nar, the Dwarf."
+},
+{
+"t": 1792930182.265,
+"text": "You miss Nar, the Dwarf."
+},
+{
+"t": 1792930182.488,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930182.705,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930182.931,
+"text": "You miss Nar, the Dwarf."
+},
+{
+"t": 1792930183.145,
+"text": "You miss Nar, the Dwarf."
+},
+{
+"t": 1792930183.371,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930183.598,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930183.811,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930184.037,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930184.263,
+"text": "You miss Nar, the Dwarf."
+},
+{
+"t": 1792930184.481,
+"text": "You miss Nar, the Dwarf."
+},
+{
+"t": 1792930184.703,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930184.93,
+"text": "You miss Nar, the Dwarf."
+},
+{
+"t": 1792930185.144,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930185.371,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930185.597,
+"text": "You miss Nar, the Dwarf."
+},
+{
+"t": 1792930185.81,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930186.037,
+"text": "You miss Nar, the Dwarf."
+},
+{
+"t": 1792930186.264,
+"text": "You miss Nar, the Dwarf."
+},
+{
+"t": 1792930186.477,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930186.703,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930186.93,
+"text": "You miss Nar, the Dwarf."
+},
+{
+"t": 1792930187.144,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930187.37,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930187.597,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930187.81,
+"text": "You miss Nar, the Dwarf."
+},
+{
+"t": 1792930188.037,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930188.264,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930188.477,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930188.477,
+"text": "It was a good hit!"
+},
+{
+"t": 1792930188.704,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930188.931,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930189.145,
+"text": "You miss Nar, the Dwarf."
+},
+{
+"t": 1792930210.062,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930210.17,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930210.276,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930210.396,
+"text": "You miss Nar, the Dwarf."
+},
+{
+"t": 1792930210.503,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930210.61,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930210.729,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930210.837,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930210.943,
+"text": "You hit Nar, the Dwarf."
+},
+{
+"t": 1792930211.063,
+"text": "You miss Nar, the Dwarf."
+},
+{
+"t": 1792930211.17,
+"text": "You hit Nar, the Dwarf."
+}
+],
+"kills": [],
+"hp_series": [
+[
+1792930147.841,
+281,
+303
+],
+[
+1792930149.179,
+283,
+303
+],
+[
+1792930149.982,
+283,
+303
+],
+[
+1792930151.544,
+287,
+303
+],
+[
+1792930152.619,
+291,
+303
+],
+[
+1792930152.673,
+291,
+303
+],
+[
+1792930153.257,
+292,
+303
+],
+[
+1792930154.299,
+293,
+303
+],
+[
+1792930155.343,
+285,
+303
+],
+[
+1792930155.916,
+270,
+303
+],
+[
+1792930155.916,
+270,
+303
+],
+[
+1792930156.382,
+270,
+303
+],
+[
+1792930157.43,
+272,
+303
+],
+[
+1792930158.478,
+294,
+313
+],
+[
+1792930159.215,
+294,
+313
+],
+[
+1792930159.524,
+295,
+313
+],
+[
+1792930159.892,
+295,
+313
+],
+[
+1792930160.521,
+296,
+313
+],
+[
+1792930160.571,
+296,
+313
+],
+[
+1792930161.2,
+296,
+313
+],
+[
+1792930161.618,
+297,
+313
+],
+[
+1792930161.884,
+298,
+313
+],
+[
+1792930162.144,
+298,
+313
+],
+[
+1792930162.513,
+299,
+313
+],
+[
+1792930162.666,
+299,
+313
+],
+[
+1792930163.719,
+300,
+313
+],
+[
+1792930163.877,
+300,
+313
+],
+[
+1792930163.88,
+300,
+313
+],
+[
+1792930163.934,
+300,
+313
+],
+[
+1792930164.15,
+301,
+313
+],
+[
+1792930164.74,
+302,
+313
+],
+[
+1792930165.747,
+304,
+313
+],
+[
+1792930166.754,
+305,
+313
+],
+[
+1792930167.655,
+306,
+313
+],
+[
+1792930167.758,
+306,
+313
+],
+[
+1792930168.766,
+308,
+313
+],
+[
+1792930169.771,
+284,
+313
+],
+[
+1792930170.777,
+286,
+313
+],
+[
+1792930171.153,
+287,
+313
+],
+[
+1792930171.153,
+287,
+313
+],
+[
+1792930172.382,
+289,
+313
+],
+[
+1792930172.382,
+289,
+313
+],
+[
+1792930172.544,
+291,
+313
+],
+[
+1792930173.072,
+291,
+313
+],
+[
+1792930173.544,
+292,
+313
+],
+[
+1792930173.813,
+293,
+313
+],
+[
+1792930174.503,
+294,
+313
+],
+[
+1792930174.503,
+294,
+313
+],
+[
+1792930175.033,
+294,
+313
+],
+[
+1792930175.506,
+295,
+313
+],
+[
+1792930175.826,
+295,
+313
+],
+[
+1792930176.034,
+296,
+313
+],
+[
+1792930176.192,
+289,
+313
+],
+[
+1792930176.193,
+289,
+313
+],
+[
+1792930176.193,
+289,
+313
+],
+[
+1792930176.193,
+289,
+313
+],
+[
+1792930176.193,
+289,
+313
+],
+[
+1792930176.194,
+289,
+313
+],
+[
+1792930176.195,
+289,
+313
+],
+[
+1792930176.197,
+289,
+313
+],
+[
+1792930177.084,
+290,
+313
+],
+[
+1792930177.871,
+278,
+313
+],
+[
+1792930178.13,
+278,
+313
+],
+[
+1792930179.174,
+279,
+313
+],
+[
+1792930180.214,
+267,
+313
+],
+[
+1792930181.255,
+237,
+303
+],
+[
+1792930182.294,
+222,
+303
+],
+[
+1792930183.334,
+224,
+303
+],
+[
+1792930184.169,
+218,
+303
+],
+[
+1792930184.375,
+218,
+303
+],
+[
+1792930185.418,
+200,
+303
+],
+[
+1792930185.889,
+185,
+303
+],
+[
+1792930186.457,
+185,
+303
+],
+[
+1792930187.444,
+164,
+303
+],
+[
+1792930187.445,
+164,
+303
+],
+[
+1792930187.496,
+164,
+303
+],
+[
+1792930188.535,
+165,
+303
+],
+[
+1792930189.325,
+141,
+303
+],
+[
+1792930189.327,
+141,
+303
+],
+[
+1792930189.327,
+141,
+303
+],
+[
+1792930190.406,
+141,
+303
+],
+[
+1792930192.353,
+141,
+303
+],
+[
+1792930192.353,
+141,
+303
+],
+[
+1792930192.353,
+141,
+303
+],
+[
+1792930194.679,
+142,
+303
+],
+[
+1792930195.396,
+142,
+303
+],
+[
+1792930195.396,
+142,
+303
+],
+[
+1792930196.17,
+164,
+303
+],
+[
+1792930196.478,
+166,
+303
+],
+[
+1792930197.258,
+172,
+303
+],
+[
+1792930197.313,
+172,
+303
+],
+[
+1792930198.141,
+173,
+303
+],
+[
+1792930198.345,
+173,
+303
+],
+[
+1792930198.347,
+173,
+303
+],
+[
+1792930198.766,
+174,
+303
+],
+[
+1792930199.179,
+174,
+303
+],
+[
+1792930199.696,
+175,
+303
+],
+[
+1792930200.219,
+176,
+303
+],
+[
+1792930201.262,
+177,
+303
+],
+[
+1792930201.628,
+177,
+303
+],
+[
+1792930201.629,
+177,
+303
+],
+[
+1792930201.736,
+177,
+303
+],
+[
+1792930202.102,
+178,
+303
+],
+[
+1792930203.131,
+188,
+303
+],
+[
+1792930203.131,
+188,
+303
+],
+[
+1792930203.186,
+188,
+303
+],
+[
+1792930204.148,
+189,
+303
+],
+[
+1792930204.997,
+190,
+303
+],
+[
+1792930205.512,
+194,
+303
+],
+[
+1792930206.081,
+197,
+303
+],
+[
+1792930206.136,
+197,
+303
+],
+[
+1792930207.166,
+167,
+303
+],
+[
+1792930207.733,
+151,
+303
+],
+[
+1792930209.938,
+152,
+303
+],
+[
+1792930209.939,
+152,
+303
+],
+[
+1792930210.045,
+152,
+303
+],
+[
+1792930210.766,
+176,
+303
+],
+[
+1792930211.182,
+163,
+303
+],
+[
+1792930211.182,
+163,
+303
+],
+[
+1792930211.183,
+163,
+303
+],
+[
+1792930211.235,
+163,
+303
+],
+[
+1792930212.225,
+164,
+303
+],
+[
+1792930212.748,
+165,
+303
+],
+[
+1792930213.021,
+130,
+303
+],
+[
+1792930213.021,
+130,
+303
+],
+[
+1792930213.021,
+130,
+303
+],
+[
+1792930213.021,
+130,
+303
+],
+[
+1792930213.022,
+130,
+303
+],
+[
+1792930213.072,
+130,
+303
+],
+[
+1792930213.073,
+130,
+303
+],
+[
+1792930215.543,
+130,
+303
+],
+[
+1792930215.544,
+130,
+303
+],
+[
+1792930217.351,
+159,
+303
+],
+[
+1792930217.351,
+159,
+303
+],
+[
+1792930218.148,
+159,
+303
+],
+[
+1792930219.466,
+161,
+303
+],
+[
+1792930220.309,
+162,
+303
+],
+[
+1792930220.325,
+162,
+303
+],
+[
+1792930220.798,
+163,
+303
+],
+[
+1792930221.592,
+164,
+303
+],
+[
+1792930221.592,
+164,
+303
+],
+[
+1792930221.903,
+165,
+303
+],
+[
+1792930222.27,
+165,
+303
+],
+[
+1792930222.942,
+166,
+303
+],
+[
+1792930223.563,
+169,
+303
+],
+[
+1792930225.218,
+189,
+303
+],
+[
+1792930225.43,
+189,
+303
+]
+],
+"pos_series": [
+[
+1792930177.131,
+51,
+49
+],
+[
+1792930177.812,
+50,
+48
+],
+[
+1792930179.797,
+51,
+49
+],
+[
+1792930193.863,
+57,
+49
+],
+[
+1792930197.261,
+57,
+48
+],
+[
+1792930197.584,
+57,
+47
+],
+[
+1792930198.718,
+57,
+46
+],
+[
+1792930199.051,
+57,
+45
+],
+[
+1792930199.384,
+57,
+44
+],
+[
+1792930199.716,
+58,
+43
+],
+[
+1792930200.05,
+58,
+42
+],
+[
+1792930200.384,
+58,
+41
+],
+[
+1792930200.717,
+58,
+40
+],
+[
+1792930201.05,
+58,
+39
+],
+[
+1792930201.384,
+59,
+38
+],
+[
+1792930201.717,
+60,
+37
+],
+[
+1792930202.063,
+60,
+36
+],
+[
+1792930203.291,
+60,
+35
+],
+[
+1792930203.624,
+60,
+34
+],
+[
+1792930203.957,
+60,
+33
+],
+[
+1792930204.29,
+60,
+32
+],
+[
+1792930204.624,
+60,
+31
+],
+[
+1792930204.958,
+60,
+30
+],
+[
+1792930206.084,
+60,
+29
+],
+[
+1792930206.41,
+60,
+28
+],
+[
+1792930211.49,
+60,
+27
+],
+[
+1792930211.824,
+60,
+26
+],
+[
+1792930212.157,
+60,
+25
+],
+[
+1792930212.489,
+60,
+24
+],
+[
+1792930212.984,
+60,
+23
+],
+[
+1792930217.596,
+60,
+22
+],
+[
+1792930218.251,
+60,
+21
+],
+[
+1792930218.917,
+60,
+20
+],
+[
+1792930219.588,
+60,
+19
+],
+[
+1792930220.25,
+60,
+18
+],
+[
+1792930220.916,
+60,
+17
+],
+[
+1792930221.584,
+59,
+16
+],
+[
+1792930222.264,
+55,
+16
+],
+[
+1792930225.744,
+16,
+45
+]
+],
+"time_factor": [
+[
+1792930120.523,
+1.0
+],
+[
+1792930140.832,
+3.99
+],
+[
+1792930145.839,
+1.0
+],
+[
+1792930162.144,
+1.0
+],
+[
+1792930189.325,
+0.2
+],
+[
+1792930194.679,
+0.2
+],
+[
+1792930199.696,
+1.0
+],
+[
+1792930207.733,
+0.2
+],
+[
+1792930212.748,
+1.0
+]
+],
+"mons_series": [
+[
+1792930167.758,
+[
+[
+59,
+41,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930168.766,
+[
+[
+59,
+42,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930169.771,
+[
+[
+59,
+43,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930170.777,
+[
+[
+59,
+44,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930172.544,
+[
+[
+57,
+48,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930173.544,
+[
+[
+57,
+48,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930175.033,
+[
+[
+54,
+49,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930176.034,
+[
+[
+53,
+49,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930177.084,
+[
+[
+51,
+50,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930178.13,
+[
+[
+51,
+50,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930179.174,
+[
+[
+50,
+49,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930180.214,
+[
+[
+50,
+49,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930181.255,
+[
+[
+50,
+49,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930182.294,
+[
+[
+50,
+49,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930183.334,
+[
+[
+50,
+49,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930184.375,
+[
+[
+50,
+49,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930185.418,
+[
+[
+50,
+49,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930186.457,
+[
+[
+50,
+49,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930187.496,
+[
+[
+50,
+49,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930188.535,
+[
+[
+50,
+49,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930190.406,
+[
+[
+50,
+49,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930196.478,
+[
+[
+54,
+49,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930198.141,
+[
+[
+56,
+49,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930199.179,
+[
+[
+57,
+47,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930200.219,
+[
+[
+57,
+46,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930201.262,
+[
+[
+57,
+45,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930203.131,
+[
+[
+59,
+39,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930204.148,
+[
+[
+59,
+38,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930205.512,
+[
+[
+60,
+33,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930210.045,
+[
+[
+60,
+29,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930211.182,
+[
+[
+60,
+29,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930212.225,
+[
+[
+60,
+28,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930218.148,
+[
+[
+60,
+25,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930219.466,
+[
+[
+60,
+23,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930220.798,
+[
+[
+60,
+21,
+"Nar, the Dwarf"
+]
+]
+],
+[
+1792930225.43,
+[
+[
+37,
+17,
+"Red worm mass"
+]
+]
+]
+],
+"map_window": [
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                  ....                   ",
+"                 ......                  ",
+"                 ......                  ",
+"                 ###''#                  ",
+"                   #..#                  ",
+"                   #..#                  ",
+"                   #..##                 ",
+"                   #....                 ",
+"        ############..#.                 ",
+"        #,............#                  ",
+"        #.............#                  ",
+"#########.............'                  ",
+"........'.............'                  ",
+"........'.............#                  ",
+"#########.............#                  ",
+"        #...........].#                  ",
+"        ###############                  ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         ",
+"                                         "
+],
+"outcome": {
+"lowest_hp": 130,
+"t_lowest": 1792930213.021,
+"end": "recall",
+"consumables": {
+"speed": 1,
+"phase": 1,
+"csw": 2,
+"wor": 1,
+"ccw": 1
+},
+"consumables_by_messages": {
+"speed": 1,
+"phase": 1,
+"csw": 2,
+"ccw": 1
+},
+"levels_seen": [
+[
+1792930222.266,
+12
+],
+[
+1792930225.745,
+0
+]
+]
+},
+"notes": "state.jsonl status nearest before t0 (0 s, game clock): level [25, 25], armor [54, 31, 23], speed [0], afraid [0], blind [0], confused [0], poisoned [0]"
+}

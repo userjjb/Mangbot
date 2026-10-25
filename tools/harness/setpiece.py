@@ -1291,7 +1291,55 @@ def h1r(run):
     h1(run, recall=True)
 
 
-SETPIECES = {"H1": h1, "H1r": h1r, "M1": m1, "M2": m2, "M3": m3, "L3": l3, "A2f": a2f, "L2g": l2g, "A7f": a7f, "A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
+def m4(run):
+    """M4: a crowd in the open (m30 06:43: hounds, a Druid, an Umber hulk...; the Advisor's estimator memo rules).
+    An Umber hulk, Fire and Energy hounds, two Uruks and a Dark elven priest summoned 1-2 squares round Dive04 in a
+    room (Dive04 beat four Uruks and a priest without an emergency): no HP cure with 2+ adjacent; an
+    escape read with 4+ about is a teleport, not Phase Door; lowest HP >= 40%."""
+    rows = run.dm.c.map()
+    tl = find_floor_block(rows, 7, 11)
+    if not tl:
+        run.check("a site", False, "no 7 x 11 block of floor")
+        return
+    run.gandalf_to((tl[0] + 3, tl[1] + 5))
+    run.bring_dive04()
+    run.dm.walk(8, 2)
+    time.sleep(1.5)
+    run.t_act = time.time()
+    for race, d in (("Umber hulk", 1), ("Fire hound", 1), ("Fire hound", 2), ("Energy hound", 2), ("Uruk", 1),
+                    ("Uruk", 2), ("Dark elven priest", 2)):
+        try:
+            run.place(race, d)
+        except RuntimeError as e:
+            run.res["notes"].append(str(e))
+    run.dm.walk(8, 6)
+    run.watch(60, until=lambda recs: any(d.get("depth") is not None and d["depth"] * 50 != run.depth for d in recs))
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    adj_n, near_n, bad_cures, phases_in_crowd, teles = 0, 0, [], [], []
+    for d in recs:
+        if d.get("kind") == "mons" and d.get("pos"):
+            p = d["pos"]
+            ds = [max(abs(m[0] - p[0]), abs(m[1] - p[1])) for m in d.get("monsters", [])]
+            adj_n, near_n = sum(1 for x in ds if x == 1), sum(1 for x in ds if x <= 5)
+        if d.get("kind") == "act":
+            why = str(d.get("why"))
+            t = round(d["t"] - run.t_act, 1)
+            if "quaff" in why and "Cure" in why and "blind" not in why and "confused" not in why and adj_n >= 2:
+                bad_cures.append((t, adj_n, why[:60]))
+            if "phase door" in why.lower() and near_n >= 4 and "agent" not in why:
+                phases_in_crowd.append((t, near_n))
+            if "teleport" in why.lower():
+                teles.append(t)
+    run.check("no HP cure with 2+ adjacent", not bad_cures, f"{bad_cures[:3]}")
+    run.check("teleport, not Phase Door, with 4+ about", not phases_in_crowd, f"phases with 4+ near: "
+              f"{phases_in_crowd[:3]}; teleports at {teles[:3]}")
+    if st["hp_min"]:
+        run.check("lowest HP >= 40%", st["hp_min"][0] >= 0.4 * st["hp_min"][1], f"lowest {st['hp_min']}")
+
+
+SETPIECES = {"M4": m4, "H1": h1, "H1r": h1r, "M1": m1, "M2": m2, "M3": m3, "L3": l3, "A2f": a2f, "L2g": l2g, "A7f": a7f, "A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
              "C3": c3}
 
 

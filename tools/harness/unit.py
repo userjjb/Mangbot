@@ -987,6 +987,57 @@ def flee_maps_before_unexplored():
     return ok, f"stairs 16 off, no known path: {no_path!r}; a known corridor: {path}"
 
 
+@case
+def estimator_memo_rules():
+    """The Advisor's estimator memo (m17-m34 emergencies): never resend Word of Recall; a Navigator's second escape
+    within 3 s refused; attack an adjacent status caster that dies in 2 rounds; Teleportation (staff too) over Phase
+    against 4+ in the open; with 2+ adjacent no HP cure -- read an escape instead."""
+    def make(hp, adj, pack, extra=()):
+        p = pilot(hp=hp, pack=pack, monsters=list(adj) + list(extra),
+                  worn=[("a Scimitar of Westernesse (2d5) (+9,+8) (+1)", 23, 130)])
+        p.w.in_dungeon, p.w.standing_on, p.w.last_stairs_cmd = True, ".", None
+        p.w.adjacent_monsters = lambda: [m for m in p.w.monsters if p.w.dist(m[:2]) == 1]
+        p.w.tagged = lambda c, d: None
+        p.w.damage_rate = lambda s: 5.0
+        p.w.last_hit_t = P.gnow()
+        p.emergency_loop = lambda now: False
+        p.recall_started = lambda now: True             # (no last-resort recall here)
+        p.phase_futile = lambda now: False
+        p.phase_t, p.phase_hist, p.cure_t, p.recall_t, p.noescape_t = -99.0, collections.deque(), -99.0, -99.0, -99.0
+        p.mover = type("M", (), {"active": False, "stop": lambda self: None, "in_corridor": lambda self: False})()
+        p.escaping_to_stairs = False
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append(line + " | " + why)
+        return p
+    pots = [("5 Potions of Cure Critical Wounds", 75), ("11 Scrolls of Phase Door", 70)]
+    orc = BYNAME["cave orc"]
+    # 1. a caster beside us that dies in 2 rounds: attacked
+    a = make(200, [(20, 21, BYNAME["dark elven priest"]), (21, 21, orc)], pots)
+    a.escape("low HP")
+    caster = a.cmds[-1]
+    # 2. 5 about in the open, a Staff of Teleportation: used instead of Phase
+    b = make(200, [(20, 21, orc), (21, 21, orc)], pots + [("a Staff of Teleportation (10 charges)", 55)],
+             extra=[(23, 23, orc), (22, 24, orc), (24, 20, orc)])
+    b.escape("low HP")
+    crowd = b.cmds[-1]
+    # 3. two adjacent, phase rate-limited: no cure, Phase Door anyway (0.7 s rule)
+    c = make(120, [(20, 21, orc), (21, 21, orc)], pots)
+    c.phase_t = P.gnow() - 1.0
+    c.escape("low HP")
+    two = c.cmds[-1] if c.cmds else None
+    # 4. a pending Word of Recall with no answer: not resent
+    d = make(200, [], pots)
+    d.c = type("C", (), {"sent": [], "send": lambda self, x: self.sent.append(x)})()
+    d.dead, d.w.ghost = False, False
+    d.notify = lambda *a, **k: None
+    d.pending_use = {"line": "custom r item=3", "t": P.gnow() - 3.0, "core": "Word of Recall", "tries": 0, "why": "x"}
+    d.verify_use()
+    resent = list(d.c.sent)
+    ok = "walk" in caster and "Dark elven priest" in caster and crowd.startswith("custom u") and \
+        two and "Phase" in two and "quaff" not in two and resent == []
+    return ok, f"caster: {caster!r}; crowd: {crowd!r}; two adjacent: {two!r}; recall resent: {resent}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

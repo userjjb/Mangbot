@@ -1,0 +1,35 @@
+{
+ "id": "A2L",
+ "tag": "A2L-20261025-114457",
+ "depth_ft": 550,
+ "start": "2026-10-25 11:44:57",
+ "checks": {
+  "Word of Recall within 2 s of first sight": {
+   "pass": false,
+   "detail": "seen at None, recall read at None"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [310, 310]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   310,
+   310
+  ],
+  "hp_min": [
+   310,
+   310
+  ],
+  "attention": [],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-25 11:47:55",
+ "pass": false
+}

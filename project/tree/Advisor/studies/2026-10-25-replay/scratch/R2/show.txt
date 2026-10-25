@@ -1,0 +1,308 @@
+===== 15 m24 600 t0 12:27:08 trig 12:27:09 end 12:27:28 dur 20
+ rule: latest of last HP>=90% max (A=12:27:08) and last mons record with none within 2 squares (B=12:27:05) within 60 s before trigger
+ player [17, 192] 239 265 None None []
+ inv None None
+ notes 
+ mons0 [('Snaga', 3), ('Black orc', 2), ('Black orc', 1), ('Black orc', 2)]
+ arr Counter({'Orc shaman': 3, 'Snaga': 1, 'Uruk': 1})
+ host [(('Black orc', 'hits'), 6), (('Black orc', 'misses'), 4), (('Orc shaman', 'hits'), 4), (('Orc shaman', 'misses'), 4), (('Orc shaman', 'casts'), 3), (('Black orc', 'fires'), 2), (('Snaga', 'hits'), 2), (('Orc shaman', 'points'), 2), (('Uruk', 'hits'), 2), (('Snaga', 'misses'), 1), (('It', 'points'), 1), (('Uruk', 'fires'), 1)]
+ unseen [('12:27:12', 'It points at you and curses.')] 1
+ summ []
+ status [('12:27:12', 'You resist the effects!'), ('12:27:18', 'You resist the effects!')]
+ kills Counter({'Orc shaman': 11, 'Black orc': 4, 'Snaga': 4, 'Uruk': 1}) melee 90
+    12:27:09 wor custom r item=9 eff 0.6 flee failed with monsters close: word of recall pilot
+ walks 0 melee-acts 0
+ outcome {'lowest_hp': 153, 't_lowest': 1792772840.494, 'end': 'recall', 'consumables': {'wor': 1}, 'consumables_by_messages': {}, 'levels_seen': [[1792772848.364, 0]]}
+ tf [] 93
+                   #.#                   
+                   #$#                   
+                   #$#                   
+                   #5#                   
+                   #$#                   
+                   #,#                   
+                   ..                    
+===== 25 m26 650 t0 02:57:12 trig 02:57:20 end 02:57:51 dur 38
+ rule: latest of last HP>=90% max (A=02:57:12) and last mons record with none within 2 squares (B=02:56:56) within 60 s before trigger
+ player [39, 127] 267 270 22 62 []
+ inv {'ccw': 7, 'csw': 4, 'clw': 0, 'phase': 11, 'tele': 0, 'staff_tele': 0, 'wor': 4, 'speed': 4, 'berserk': 1, 'hero': 6, 'boldness': 2, 'magic_mapping': 4, 'door_stair_rod': 1} state.jsonl inven at 02:57:11 (game clock; +1 s from t0, approx)
+ notes inventory phase: snapshot 11 vs message-derived 10 at t0 (messages ignore items burnt by fire/other loss); kept snapshot; state.jsonl status nearest before t0 (0 s, game clock): level [22, 22], armor [62, 31, 31], speed [0], afraid [0], blind [0], confused [0], poisoned [0]
+ mons0 [('Nar, the Dwarf', 1), ('Purple mushroom patch', 1), ('Orc shaman', 1), ('Giant salamander', 1)]
+ arr Counter()
+ host [(('Nar, the Dwarf', 'hits'), 21), (('Nar, the Dwarf', 'misses'), 15), (('Orc shaman', 'misses'), 3), (('Orc shaman', 'hits'), 3), (('Giant salamander', 'breathes'), 2), (('It', 'breathes'), 1), (('One of your Scrolls of Phase D', ''), 1), (('Giant salamander', 'misses'), 1), (('It', 'casts'), 1)]
+ unseen [('02:57:16', 'It breathes fire.'), ('02:57:33', 'It casts a spell, burning your eyes!')] 2
+ summ []
+ status [('02:57:33', 'You resist the effects!')]
+ kills Counter({'it': 1, 'Orc shaman': 1, 'Wolf': 1, 'Giant salamander': 1}) melee 35
+    02:57:15 melee walk 3 eff 2.0  pilot
+    02:57:16 melee walk 4 eff 2.0  pilot
+    02:57:17 melee walk 4 eff 1.3  pilot
+    02:57:18 melee walk 7 eff 0.6  pilot
+    02:57:18 melee walk 4 eff 1.2  pilot
+    02:57:22 phase custom r item=7 eff 6.7 low HP: phase door pilot
+    02:57:30 csw custom q item=5 eff 2.5 low HP: quaff 4 Potions of Cure Serious Wounds {25% off} pilot
+    02:57:33 rest rest eff None rest pilot
+    02:57:34 wor custom r item=8 eff 0.3 flee failed with monsters close: word of recall pilot
+    02:57:37 phase custom r item=7 eff 5.4 low HP: phase door pilot
+    02:57:46 csw custom q item=5 eff 3.0 low HP: quaff 3 Potions of Cure Serious Wounds {25% off} pilot
+    02:57:49 rest rest eff None rest pilot
+ walks 11 melee-acts 5
+ outcome {'lowest_hp': 117, 't_lowest': 1792825050.326, 'end': 'recall', 'consumables': {'phase': 2, 'csw': 2, 'wor': 1}, 'consumables_by_messages': {'phase': 2, 'csw': 2}, 'levels_seen': [[1792825071.058, 0]]}
+ tf [[1792825028.066, 1.0], [1792825042.866, 0.2], [1792825047.46, 0.2]] 172
+               ...%.%                    
+               ..5%.#%#%#%%%%%#%         
+               #%#%.?,...........        
+                  #..............        
+                  #.#############        
+                                         
+                                         
+===== 32 m26 650 t0 03:21:04 trig 03:21:07 end 03:24:01 dur 176
+ rule: latest of last HP>=90% max (A=03:21:04) and last mons record with none within 2 squares (B=None) within 60 s before trigger
+ player [19, 20] 257 283 23 61 ['slow', 'afraid']
+ inv {'ccw': 7, 'csw': 4, 'clw': 0, 'phase': 10, 'tele': 0, 'staff_tele': 0, 'wor': 1, 'speed': 4, 'berserk': 1, 'hero': 5, 'boldness': 3, 'magic_mapping': 4, 'door_stair_rod': 1} state.jsonl inven at 03:21:03 (game clock; +1 s from t0, approx)
+ notes state.jsonl status nearest before t0 (0 s, game clock): level [23, 23], armor [61, 31, 30], speed [0], afraid [0], blind [0], confused [0], poisoned [0]
+ mons0 [('Bullroarer the Hobbit', 1), ('Blue yeek', 1), ('Brown yeek', 2), ('Master yeek', 1), ('Baby gold dragon', 1), ('Brown yeek', 3), ('Master yeek', 1), ('Blue yeek', 1), ('Brown yeek', 2), ('Giant black louse', 2)]
+ arr Counter({'Brown yeek': 4, 'Boldor, King of the Yeeks': 1, 'Master yeek': 1, 'Orc shaman': 1, 'Giant black louse': 1, 'Kobold shaman': 1, 'Dark hound': 1})
+ host [(('Bullroarer the Hobbit', 'misses'), 65), (('Bullroarer the Hobbit', 'hits'), 39), (('Brown yeek', 'hits'), 30), (('Brown yeek', 'misses'), 28), (('Dark hound', 'misses'), 16), (('Dark hound', 'claws'), 14), (('It', 'hits'), 10), (('Orc shaman', 'misses'), 9), (('Dark hound', 'breathes'), 7), (('It', 'mumbles'), 6), (('Dark hound', 'bites'), 6), (('Orc shaman', 'hits'), 5), (('Blue yeek', 'misses'), 4), (('It', 'casts'), 4)]
+ unseen [('03:21:05', 'It magically summons help!'), ('03:21:06', 'It casts a spell, burning your eyes!'), ('03:21:07', 'It hits you.'), ('03:21:07', 'It mumbles.'), ('03:21:07', 'It hits you.'), ('03:21:07', 'It hits you.')] 42
+ summ [('03:21:05', 'It magically summons help!'), ('03:21:09', 'Boldor, King of the Yeeks magically summons his minions.'), ('03:21:13', 'It magically summons help!'), ('03:21:21', 'It magically summons help!')]
+ status [('03:21:04', 'You are too afraid to attack the Master yeek!'), ('03:21:06', 'You are too afraid to attack the Master yeek!'), ('03:21:06', 'You are blind!'), ('03:21:07', 'You feel bolder now.'), ('03:21:07', 'You feel yourself speed up.'), ('03:21:08', 'You can see again.'), ('03:21:09', 'You feel like a hero!'), ('03:21:09', 'You are poisoned!'), ('03:21:11', 'You are blind!'), ('03:21:12', 'You resist the effects!'), ('03:21:12', 'You can see again.'), ('03:21:13', 'You are no longer poisoned.'), ('03:21:14', 'You feel yourself moving slower!'), ('03:21:16', 'You feel yourself speed up.')]
+ kills Counter({'Brown yeek': 2, 'it': 1, 'Giant black louse': 1, 'Orc shaman': 1, 'Dark hound': 1, 'Kobold shaman': 1}) melee 20
+    03:21:07 csw custom q item=5 eff 0.9 blind in combat: quaff 4 Potions of Cure Serious Wounds {25% off} pilot
+    03:21:08 hero custom q item=3 eff 1.2 agent: quaff ['Heroism'] navigator
+    03:21:11 csw custom q item=5 eff 1.4 blind in combat: quaff 3 Potions of Cure Serious Wounds {25% off} pilot
+    03:21:17 melee walk 2 eff 2.0  pilot
+    03:21:18 csw custom q item=5 eff 1.1 confused in combat: quaff 2 Potions of Cure Serious Wounds {25% off} pilot
+    03:21:20 ccw custom q item=6 eff 1.6 poisoned in combat: quaff 7 Potions of Cure Critical Wounds {25% off} pilot
+    03:21:23 csw custom q item=5 eff 7.2 blind in combat: quaff a Potion of Cure Serious Wounds {25% off} pilot
+    03:21:26 csw custom q item=5 eff None resend (no effect seen): blind in combat: quaff a Potion of Cure Serio pilot
+    03:21:40 phase custom r item=6 eff 8.3 low HP: phase door pilot
+    03:21:52 phase custom r item=6 eff 2.4 resend (no effect seen): low HP: phase door pilot
+    03:21:55 ccw custom q item=5 eff 19.3 low HP: quaff 5 Potions of Cure Critical Wounds {25% off} pilot
+    03:22:07 ccw custom q item=5 eff 14.7 resend (no effect seen): low HP: quaff 5 Potions of Cure Critical Woun pilot
+    03:22:16 wor custom r item=7 eff 12.8 low HP: phasing isn't shaking them: word of recall pilot
+    03:22:21 speed custom q item=2 eff 14.0 agent: quaff ['Speed'] navigator
+    03:22:22 speed custom q item=2 eff 16.0 agent: quaff ['Speed'] navigator
+    03:22:28 wor custom r item=7 eff None resend (no effect seen): low HP: phasing isn't shaking them: word of r pilot
+    03:22:30 ccw custom q item=5 eff 15.6 low HP: quaff 3 Potions of Cure Critical Wounds {25% off} pilot
+    03:22:42 ccw custom q item=5 eff 6.4 resend (no effect seen): low HP: quaff 3 Potions of Cure Critical Woun pilot
+    03:22:49 ccw custom q item=5 eff 3.2 low HP: quaff a Potion of Cure Critical Wounds {25% off} pilot
+    03:22:53 phase custom r item=5 eff 25.5 agent: read ['Phase'] navigator
+    03:23:15 phase custom r item=5 eff 10.0 low HP: phase door pilot
+    03:23:32 stairs custom < eff None stairs < pilot
+    03:23:35 stairs custom > eff None stairs > pilot
+    03:23:39 stairs custom < eff None stairs < pilot
+    03:23:42 stairs custom > eff None stairs > pilot
+    03:23:44 rest rest eff None rest pilot
+    03:23:49 rest rest eff None rest pilot
+    03:23:54 rest rest eff None rest pilot
+    03:23:55 rest rest eff None rest pilot
+    03:23:56 rest rest eff None rest pilot
+    03:23:57 rest rest eff None rest pilot
+ walks 33 melee-acts 1
+ outcome {'lowest_hp': 40, 't_lowest': 1792826565.403, 'end': 'recall', 'consumables': {'csw': 5, 'hero': 1, 'ccw': 6, 'phase': 4, 'wor': 2, 'speed': 2}, 'consumables_by_messages': {'csw': 4, 'hero': 1, 'ccw': 7, 'phase': 3, 'speed': 2}, 'levels_seen': [[1792826615.93, 12], [1792826619.259, 13], [1792826622.593, 12], [1792826625.928, 13], [1792826634.42, 0]]}
+ tf [[1792826487.148, 0.2], [1792826492.171, 1.0], [1792826492.387, 1.0]] 358
+     #              .      '   #      '  
+     #             ....    #####      #  
+     #            ......   '          #  
+     #           .......   '          #  
+     ###############$.##########  ##  ###
+                   #..#        #####  #  
+                   #..#            #  #  
+===== 33 m27 650 t0 04:25:41 trig 04:25:41 end 04:26:10 dur 28
+ rule: latest of last HP>=90% max (A=04:25:41) and last mons record with none within 2 squares (B=04:25:39) within 60 s before trigger
+ player [16, 65] 268 283 23 61 []
+ inv {'ccw': 7, 'csw': 4, 'clw': 0, 'phase': 11, 'tele': 0, 'staff_tele': 0, 'wor': 2, 'speed': 4, 'berserk': 1, 'hero': 6, 'boldness': 2, 'magic_mapping': 3, 'door_stair_rod': 1} state.jsonl inven at 04:25:40 (game clock; +1 s from t0, approx)
+ notes state.jsonl status nearest before t0 (0 s, game clock): level [23, 23], armor [61, 31, 30], speed [0], afraid [0], blind [0], confused [0], poisoned [0]
+ mons0 [('Ogre', 1), ('Ogre', 1), ('Ogre', 2), ('Ogre', 2)]
+ arr Counter({'Ogre': 2, 'Crebain': 2})
+ host [(('Ogre', 'hits'), 21), (('Ogre', 'misses'), 13), (('Crebain', 'misses'), 6), (('Crebain', 'claws'), 6), (('Crebain', 'makes'), 4), (('It', 'makes'), 1)]
+ unseen [('04:25:41', 'It makes a high pitched shriek.')] 1
+ summ [('04:25:41', 'You feel a sudden stirring nearby!')]
+ status []
+ kills Counter({'Ogre': 5, 'Crebain': 2}) melee 40
+    04:25:41 wor custom r item=9 eff 0.5 flee failed with monsters close: word of recall pilot
+    04:25:46 phase custom r item=8 eff 2.7 low HP: phase door pilot
+    04:25:49 ccw custom q item=7 eff 3.0 low HP: quaff 7 Potions of Cure Critical Wounds {for sale 200} pilot
+    04:25:52 rest rest eff None rest pilot
+    04:25:56 phase custom r item=8 eff 2.6 low HP: phase door pilot
+    04:25:59 csw custom q item=6 eff 2.9 low HP: quaff 4 Potions of Cure Serious Wounds {for sale 200} pilot
+    04:26:02 rest rest eff None rest pilot
+    04:26:03 stairs custom < eff None stairs < pilot
+    04:26:04 rest rest eff None rest pilot
+ walks 1 melee-acts 0
+ outcome {'lowest_hp': 133, 't_lowest': 1792830349.163, 'end': 'recall', 'consumables': {'wor': 1, 'phase': 2, 'ccw': 1, 'csw': 1}, 'consumables_by_messages': {'phase': 2, 'ccw': 1, 'csw': 1}, 'levels_seen': [[1792830364.927, 0]]}
+ tf [[1792830305.242, 1.0], [1792830315.246, 1.0], [1792830321.851, 1.0]] 125
+                                     ++  
+  #########        #%##       #..........
+  #......... ..#   %..%########..........
+  .............##  #..........'..........
+  ............5.#  #\!........'..........
+  #.........#..... ...%%%#%####..........
+  #..        ...   ...                   
+===== 36 m28 650 t0 05:31:01 trig 05:31:11 end 05:32:12 dur 70
+ rule: latest of last HP>=90% max (A=05:31:01) and last mons record with none within 2 squares (B=05:30:42) within 60 s before trigger
+ player [42, 52] 263 288 24 61 []
+ inv {'ccw': 6, 'csw': 4, 'clw': 0, 'phase': 17, 'tele': 0, 'staff_tele': 0, 'wor': 2, 'speed': 2, 'berserk': 1, 'hero': 6, 'boldness': 1, 'magic_mapping': 3, 'door_stair_rod': 1} state.jsonl inven at 05:31:01 (game clock; +1 s from t0, approx)
+ notes state.jsonl status nearest before t0 (1 s, game clock): level [24, 24], armor [61, 31, 30], speed [0], afraid [0], blind [0], confused [0], poisoned [0]
+ mons0 [('Snaga', 3), ('Black orc', 2), ('Black orc', 1), ('Uruk', 1), ('Cave orc', 3), ('Snaga', 2), ('Black orc', 1)]
+ arr Counter({'Cave orc': 3, 'Hill orc': 1, 'Black orc': 1})
+ host [(('It', 'fires'), 18), (('Black orc', 'hits'), 15), (('Cave orc', 'hits'), 13), (('Black orc', 'fires'), 10), (('Cave orc', 'misses'), 10), (('Black orc', 'misses'), 9), (('Uruk', 'misses'), 5), (('Uruk', 'hits'), 5), (('Hill orc', 'misses'), 2), (('Snaga', 'misses'), 2), (('Uruk', 'fires'), 1), (('Snaga', 'hits'), 1)]
+ unseen [('05:31:02', 'It fires an arrow!'), ('05:31:02', 'It fires an arrow!'), ('05:31:03', 'It fires an arrow!'), ('05:31:03', 'It fires an arrow!'), ('05:31:06', 'It fires an arrow!'), ('05:31:07', 'It fires an arrow!')] 18
+ summ []
+ status []
+ kills Counter({'Cave orc': 9, 'Black orc': 7, 'Snaga': 3, 'Hill orc': 1, 'Uruk': 1}) melee 123
+    05:31:14 wor custom r item=10 eff 0.4 read 3 Scrolls of Word of Recall {@R650} pilot
+    05:31:18 phase custom r item=9 eff 3.2 low HP: phase door pilot
+    05:31:23 csw custom q item=6 eff 2.0 low HP: quaff 4 Potions of Cure Serious Wounds {for sale 200} pilot
+    05:31:25 rest rest eff None rest pilot
+    05:31:28 phase custom r item=9 eff 2.4 low HP: phase door pilot
+    05:31:31 csw custom q item=6 eff 2.6 low HP: quaff 3 Potions of Cure Serious Wounds {for sale 200} pilot
+    05:31:39 phase custom r item=9 eff 6.9 low HP: phase door pilot
+    05:31:47 csw custom q item=6 eff 2.6 low HP: quaff 2 Potions of Cure Serious Wounds {for sale 200} pilot
+    05:32:07 rest rest eff None rest pilot
+ walks 9 melee-acts 0
+ outcome {'lowest_hp': 131, 't_lowest': 1792834305.731, 'end': 'recall', 'consumables': {'wor': 1, 'phase': 3, 'csw': 3}, 'consumables_by_messages': {'phase': 3, 'csw': 3}, 'levels_seen': [[1792834327.494, 0]]}
+ tf [[1792834208.891, 1.0], [1792834239.408, 4.55], [1792834244.416, 1.0]] 168
+...#%##%%*%%%%%%.............#           
+~..#           #.$$..(.......#           
+...%           %*%%++..%###%*%           
+%##%             .$(?....%               
+                 .$,!%....#              
+                   ### #..#              
+                       #..#              
+===== 37 m29 650 t0 20:18:14 trig 20:18:14 end 20:18:38 dur 24
+ rule: latest of last HP>=90% max (A=20:17:56) and last mons record with none within 2 squares (B=20:18:05) within 60 s before trigger; moved to first hostile message (20:18:14)
+ player [39, 40] 208 288 24 59 []
+ inv {'ccw': 11, 'csw': 4, 'clw': 0, 'phase': 18, 'tele': 0, 'staff_tele': 0, 'wor': 2, 'speed': 2, 'berserk': 1, 'hero': 6, 'boldness': 1, 'magic_mapping': 4, 'door_stair_rod': 1} state.jsonl inven at 20:18:12 (game clock; +2 s from t0, approx)
+ notes state.jsonl status nearest before t0 (1 s, game clock): level [24, 24], armor [59, 31, 28], speed [0], afraid [0], blind [0], confused [0], poisoned [0]
+ mons0 [('Baby green dragon', 2)]
+ arr Counter()
+ host [(('Baby green dragon', 'claws'), 4), (('Baby green dragon', 'breathes'), 3), (('Baby green dragon', 'misses'), 3), (('Baby green dragon', 'bites'), 2), (('A small dart barely', 'misses'), 1)]
+ unseen [] 0
+ summ []
+ status [('20:18:14', 'You are poisoned!'), ('20:18:15', 'You are no longer poisoned.'), ('20:18:19', 'You are poisoned!'), ('20:18:20', 'You are no longer poisoned.'), ('20:18:21', 'You are poisoned!'), ('20:18:22', 'You are no longer poisoned.')]
+ kills Counter({'Baby green dragon': 1}) melee 12
+    20:18:14 ccw custom q item=7 eff 1.1 poisoned in combat: quaff 11 Potions of Cure Critical Wounds {for sale pilot
+    20:18:19 ccw custom q item=7 eff 1.0 poisoned in combat: quaff 10 Potions of Cure Critical Wounds {for sale pilot
+    20:18:22 ccw custom q item=7 eff 1.0 poisoned in combat: quaff 9 Potions of Cure Critical Wounds {for sale  pilot
+ walks 18 melee-acts 0
+ outcome {'lowest_hp': 166, 't_lowest': 1792887501.968, 'end': 'other', 'consumables': {'ccw': 3}, 'consumables_by_messages': {'ccw': 3}, 'levels_seen': []}
+ tf [[1792887513.323, 4.62]] 134
+                         #######..#      
+     ###########################..#######
+     :...................................
+     :....$..............................
+     ####################################
+                                         
+                                         
+===== 38 m29 650 t0 20:25:11 trig 20:25:26 end 20:25:33 dur 21
+ rule: latest of last HP>=90% max (A=20:25:11) and last mons record with none within 2 squares (B=20:24:49) within 60 s before trigger
+ player [61, 171] 265 288 24 59 []
+ inv {'ccw': 9, 'csw': 4, 'clw': 0, 'phase': 18, 'tele': 0, 'staff_tele': 0, 'wor': 2, 'speed': 2, 'berserk': 1, 'hero': 6, 'boldness': 1, 'magic_mapping': 4, 'door_stair_rod': 1} state.jsonl inven at 20:25:10 (game clock; +2 s from t0, approx)
+ notes state.jsonl status nearest before t0 (1 s, game clock): level [24, 24], armor [59, 31, 28], speed [0], afraid [0], blind [0], confused [0], poisoned [0]
+ mons0 [('Stegocentipede', 1)]
+ arr Counter()
+ host [(('Stegocentipede', 'bites'), 19), (('Stegocentipede', 'misses'), 19), (('Stegocentipede', 'stings'), 7)]
+ unseen [] 0
+ summ []
+ status []
+ kills Counter({'Stegocentipede': 1}) melee 7
+    20:25:26 melee walk 6 eff 0.6  pilot
+    20:25:28 rest rest eff None rest pilot
+ walks 20 melee-acts 1
+ outcome {'lowest_hp': 163, 't_lowest': 1792887928.185, 'end': 'other', 'consumables': {}, 'consumables_by_messages': {}, 'levels_seen': []}
+ tf [[1792887915.685, 1.0], [1792887923.713, 1.0], [1792887930.618, 9.27]] 112
+.......           #...............#      
+......            #...............#      
+.                 #...............#      
+                  #...............       
+                  #..............        
+                  ##############         
+                                         
+===== 41 m30 650 t0 06:43:04 trig 06:43:12 end 06:44:26 dur 82
+ rule: latest of last HP>=90% max (A=06:43:04) and last mons record with none within 2 squares (B=06:42:41) within 60 s before trigger
+ player [48, 51] 303 303 25 54 ['slow']
+ inv {'ccw': 15, 'csw': 4, 'clw': 0, 'phase': 20, 'tele': 2, 'staff_tele': 0, 'wor': 2, 'speed': 3, 'berserk': 1, 'hero': 7, 'boldness': 0, 'magic_mapping': 4, 'door_stair_rod': 1} state.jsonl inven at 06:43:03 (game clock; +1 s from t0, approx)
+ notes state.jsonl status nearest before t0 (1 s, game clock): level [25, 25], armor [54, 31, 23], speed [0], afraid [0], blind [0], confused [0], poisoned [0]
+ mons0 [('Novice warrior', 37)]
+ arr Counter({'Wolf': 7, 'Fire hound': 7, 'White wolf': 4, 'Yeti': 1, 'Druid': 1, 'Griffon': 1, 'Energy hound': 1, 'Giant black ant': 1, 'Black harpy': 1, 'Copperhead snake': 1, 'Umber hulk': 1, 'Giant white mouse': 1, 'Clear worm mass': 1, 'Yellow worm mass': 1, 'Giant red frog': 1, 'Giant white dragon fly': 1})
+ host [(('Wolf', 'bites'), 12), (('It', 'hits'), 10), (('It', 'breathes'), 10), (('It', 'mumbles'), 8), (('Yeti', 'claws'), 7), (('Fire hound', 'claws'), 7), (('Fire hound', 'misses'), 7), (('It', 'claws'), 5), (('Black harpy', 'misses'), 5), (('Wolf', 'misses'), 5), (('Umber hulk', 'hits'), 5), (('Griffon', 'misses'), 4), (('Black harpy', 'claws'), 4), (('Fire hound', 'bites'), 4)]
+ unseen [('06:43:04', 'It casts a spell, burning your eyes!'), ('06:43:06', 'It mumbles.'), ('06:43:06', 'It hits you.'), ('06:43:06', 'It hits you.'), ('06:43:08', 'It mumbles.'), ('06:43:08', 'It starts moving faster.')] 42
+ summ [('06:43:11', 'You hear many things appear nearby.'), ('06:43:12', 'The Druid magically summons animals.'), ('06:44:19', 'The Druid magically summons animals.')]
+ status [('06:43:04', 'You are blind!'), ('06:43:05', 'You feel yourself speed up.'), ('06:43:06', 'You are paralyzed!'), ('06:43:09', 'You can move again.'), ('06:43:11', 'You can see again.'), ('06:43:14', 'You resist the effects!'), ('06:43:15', 'You feel yourself moving slower!'), ('06:43:19', 'You feel yourself speed up.'), ('06:43:38', 'You resist the effects!'), ('06:43:57', 'You are confused!'), ('06:43:58', 'You feel less confused now.'), ('06:44:03', 'You are blind!'), ('06:44:07', 'You resist the effects!'), ('06:44:10', 'You can see again.')]
+ kills Counter({'Wolf': 8, 'Fire hound': 6, 'Energy hound': 1, 'Black harpy': 1, 'it': 1}) melee 64
+    06:43:11 rest rest eff None rest pilot
+    06:43:12 phase custom r item=7 eff 0.7 HP 237 within 3 turns of the worst (285): phase door pilot
+    06:43:13 rest rest eff None rest pilot
+    06:43:14 melee walk 9 eff 0.8  pilot
+    06:43:15 speed custom q item=2 eff 4.1 slowed (-10) in a fight: quaff 3 Potions of Speed {for sale 200} pilot
+    06:43:18 phase custom r item=7 eff 6.0 HP 153 within 3 turns of the worst (172): phase door pilot
+    06:43:24 ccw custom q item=6 eff 3.2 low HP: quaff 15 Potions of Cure Critical Wounds {for sale 200} pilot
+    06:43:31 phase custom r item=7 eff 5.2 low HP: phase door pilot
+    06:43:32 tele custom r item=8 eff 7.1 agent: read ['Teleportation'] navigator
+    06:43:37 csw custom q item=5 eff 5.3 low HP: quaff 4 Potions of Cure Serious Wounds {for sale 200} pilot
+    06:43:41 tele custom r item=8 eff 4.8 agent: read ['i'] [letter i = slot 8 = 2 Scrolls of Teleportation at t navigator
+    06:43:45 ccw custom q item=6 eff 4.5 low HP: quaff 14 Potions of Cure Critical Wounds {for sale 200} pilot
+    06:43:49 wor custom r item=8 eff 0.5 read a Scroll of Word of Recall {@R650} pilot
+    06:43:50 rest rest eff None rest pilot
+    06:43:57 csw custom q item=5 eff 1.1 confused in combat: quaff 3 Potions of Cure Serious Wounds {for sale 2 pilot
+    06:43:58 melee walk 7 eff 1.7  pilot
+    06:43:59 melee walk 7 eff 1.3  pilot
+    06:44:00 phase custom r item=7 eff 5.5 group danger 114 vs HP 155: phase door pilot
+    06:44:03 ccw custom q item=6 eff 6.9 low HP: quaff 13 Potions of Cure Critical Wounds {for sale 200} pilot
+    06:44:11 ccw custom q item=6 eff 3.1 agent: quaff ['g'] [letter g = slot 6 = 15 Potions of Cure Critical Wo navigator
+    06:44:14 phase custom r item=7 eff 2.8 low HP: phase door pilot
+    06:44:17 ccw custom q item=6 eff 3.1 low HP: quaff 11 Potions of Cure Critical Wounds {for sale 200} pilot
+    06:44:20 rest rest eff None rest pilot
+ walks 9 melee-acts 3
+ outcome {'lowest_hp': 115, 't_lowest': 1792925020.544, 'end': 'recall', 'consumables': {'phase': 5, 'speed': 1, 'ccw': 5, 'tele': 2, 'csw': 2, 'wor': 1}, 'consumables_by_messages': {'phase': 5, 'ccw': 5, 'tele': 2, 'csw': 2}, 'levels_seen': [[1792925061.208, 0]]}
+ tf [[1792924994.474, 1.0], [1792924996.706, 1.0], [1792925001.721, 0.2]] 241
+#                #'.##                   
+#                .....                   
+#               .......                  
+#          .... .......                  
+# ####### #..... ......                  
+# #.....###.....  .....                  
+####.....##.....  ......                 
+===== 43 m32 650 t0 08:09:37 trig 08:09:47 end 08:10:26 dur 49
+ rule: latest of last HP>=90% max (A=08:09:37) and last mons record with none within 2 squares (B=08:09:36) within 60 s before trigger
+ player [50, 49] 290 313 25 54 ['hero']
+ inv {'ccw': 15, 'csw': 4, 'clw': 0, 'phase': 21, 'tele': 0, 'staff_tele': 0, 'wor': 2, 'speed': 3, 'berserk': 0, 'hero': 6, 'boldness': 0, 'magic_mapping': 4, 'door_stair_rod': 1} state.jsonl inven at 08:09:33 (game clock; +4 s from t0, approx)
+ notes state.jsonl status nearest before t0 (0 s, game clock): level [25, 25], armor [54, 31, 23], speed [0], afraid [0], blind [0], confused [0], poisoned [0]
+ mons0 [('Nar, the Dwarf', 1)]
+ arr Counter({'Red worm mass': 1})
+ host [(('Nar, the Dwarf', 'hits'), 24), (('Nar, the Dwarf', 'misses'), 16), (('It', 'casts'), 4), (('It', 'hits'), 3), (('Nar, the Dwarf', 'gazes'), 2), (('It', 'creates'), 1), (('It', 'points'), 1)]
+ unseen [('08:09:40', 'It casts a fearful illusion.'), ('08:09:43', 'It casts a fearful illusion.'), ('08:09:55', 'It creates a mesmerising illusion.'), ('08:10:06', 'It casts a spell, burning your eyes!'), ('08:10:07', 'It hits you.'), ('08:10:07', 'It hits you.')] 9
+ summ []
+ status [('08:09:40', 'You refuse to be frightened.'), ('08:09:41', 'The heroism wears off.'), ('08:09:43', 'You refuse to be frightened.'), ('08:09:48', 'You resist the effects!'), ('08:09:52', 'You feel yourself moving faster!'), ('08:09:55', 'You disbelieve the feeble spell.'), ('08:10:00', 'You resist the effects!'), ('08:10:06', 'You are blind!'), ('08:10:06', 'You are confused!'), ('08:10:07', 'You feel less confused now.'), ('08:10:09', 'You can see again.'), ('08:10:15', 'You feel yourself slow down.'), ('08:10:21', 'You are blind!'), ('08:10:24', 'You can see again.')]
+ kills Counter() melee 57
+    08:09:37 melee walk 3 eff 1.3  pilot
+    08:09:38 melee walk 6 eff 1.5  pilot
+    08:09:38 melee walk 3 eff 1.7  pilot
+    08:09:49 speed custom q item=1 eff 2.9 low HP: quaff 3 Potions of Speed {for sale 200} (an emergency: speed f pilot
+    08:09:52 phase custom r item=5 eff 1.5 low HP: phase door pilot
+    08:09:55 csw custom q item=3 eff 0.1 low HP: quaff 4 Potions of Cure Serious Wounds {for sale 200} pilot
+    08:09:56 rest rest eff None rest pilot
+    08:09:57 rest rest eff None rest pilot
+    08:10:02 rest rest eff None rest pilot
+    08:10:04 rest rest eff None rest pilot
+    08:10:06 rest rest eff None rest pilot
+    08:10:07 rest rest eff None rest pilot
+    08:10:09 csw custom q item=3 eff 0.0 blind in combat: quaff 3 Potions of Cure Serious Wounds {for sale 200} pilot
+    08:10:13 wor custom r item=6 eff 1.6 low HP: word of recall (potions too weak) pilot
+    08:10:15 ccw custom q item=4 eff 1.4 low HP: quaff 15 Potions of Cure Critical Wounds {for sale 200} pilot
+    08:10:21 stairs custom < eff None stairs < pilot
+    08:10:21 rest rest eff None rest pilot
+    08:10:22 other custom k item=9 value=1 eff None autodestroy Hard Leather Armour [6] {cursed} pilot
+    08:10:23 rest rest eff None rest pilot
+    08:10:25 rest rest eff None rest pilot
+ walks 29 melee-acts 3
+ outcome {'lowest_hp': 130, 't_lowest': 1792930213.021, 'end': 'recall', 'consumables': {'speed': 1, 'phase': 1, 'csw': 2, 'wor': 1, 'ccw': 1}, 'consumables_by_messages': {'speed': 1, 'phase': 1, 'csw': 2, 'ccw': 1}, 'levels_seen': [[1792930222.266, 12], [1792930225.745, 0]]}
+ tf [[1792930120.523, 1.0], [1792930140.832, 3.99], [1792930145.839, 1.0]] 147
+                                         
+                  ....                   
+                 ......                  
+                 ......                  
+                 ###''#                  
+                   #..#                  
+                   #..#                  

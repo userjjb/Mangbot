@@ -1,0 +1,116 @@
+{
+ "id": "M4",
+ "tag": "M4-20261025-114823",
+ "depth_ft": 500,
+ "start": "2026-10-25 11:48:23",
+ "checks": {
+  "no HP cure with 2+ adjacent": {
+   "pass": true,
+   "detail": "[]"
+  },
+  "teleport, not Phase Door, with 4+ about": {
+   "pass": true,
+   "detail": "phases with 4+ near: []; teleports at []"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [223, 310]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   310,
+   310
+  ],
+  "hp_min": [
+   223,
+   310
+  ],
+  "attention": [
+   [
+    5.8,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    5.9,
+    "goal_done",
+    "goto 15,48"
+   ],
+   [
+    18.6,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    18.7,
+    "goal_done",
+    "goto 15,49"
+   ],
+   [
+    30.8,
+    "band",
+    "a band within 10 squares: Uruk \u00d76 (6 monsters, ~474 HP expected to fight them all, HP 310): leave no"
+   ],
+   [
+    32.4,
+    "interesting_item",
+    "Amulet of Adornment seen on this level at 14,49 (1 away): fetching it once the area is clear"
+   ],
+   [
+    34.1,
+    "tactic",
+    "a hard fight with Uruk: quaffed a Potion of Berserk Strength (+to-hit, +30 HP, no fear)"
+   ],
+   [
+    49.6,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    50.2,
+    "goal_done",
+    "goto 14,50"
+   ],
+   [
+    52.6,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    52.7,
+    "goal_done",
+    "goto 15,50"
+   ]
+  ],
+  "acts": [
+   [
+    34.1,
+    "custom q item=3",
+    "a hard fight (Uruk): quaff a Potion of Berserk Strength"
+   ],
+   [
+    44.8,
+    "rest",
+    "rest"
+   ],
+   [
+    46.9,
+    "rest",
+    "rest"
+   ],
+   [
+    47.9,
+    "rest",
+    "rest"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-25 11:52:25",
+ "pass": true
+}
