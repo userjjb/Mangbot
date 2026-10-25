@@ -31,8 +31,13 @@ can read them. Memory now only points here.) Credentials are **not** in this fil
 
 - `testserver/` has its own `mangband.cfg` (port 28346, `NEWBIES_CANNOT_DROP=false`). The `-c`
   flag is broken (init2.c:2362), so run it from that directory. Stop it with SIGTERM (clean save).
-- Run it under gdb to catch crashes: `cd testserver && nohup gdb -batch -ex run -ex bt --args
-  ../github/mangband >> gdb_run.log 2>&1 &`.
+- Run it under gdb to catch crashes: `cd testserver && MANGBAND_FREEZE_FILE=$PWD/FREEZE nohup gdb -batch -ex run
+  -ex bt --args ../github/mangband >> gdb_run.log 2>&1 &`.
+- **Time freeze (test server only, 2026-10-25, the user):** with `MANGBAND_FREEZE_FILE` set, the server processes
+  no game turns while that file exists (net-server.c `time_frozen`; checked every 10 ticks; players get "*** Time
+  is frozen ***"). Toggle: `github/tools/freeze.sh on|off|toggle|status`, or F5/Ctrl-F in the viewer. The Pilot
+  stops its game clock and holds (answers requests, acts on nothing) while it exists. A Pilot or client
+  connecting while frozen waits until thawed. Without the variable (any other server) it never freezes.
 - **Known crashes:**
   - A player disconnecting while walk/run commands are queued: NULL `pcommands[pkt]` in
     `process_player_commands` (net-game.c:2428). A crash rolls characters back to their last save.

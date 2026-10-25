@@ -41,7 +41,7 @@ Only on the user's explicit request: Dive04 loses everything it gained since.
    or find the gdb child with `pgrep -af mangband`; check `testserver/gdb_run.log` ends cleanly.
 3. Copy back: `cp -p runs/backup-pre-restructure-20261022/Dive04 runs/backup-pre-restructure-20261022/server testserver/save/`.
 4. Restore the other files from the table above (flavours.json, complaints.md if wanted, orders.json).
-5. Start the server: `cd testserver && nohup gdb -batch -ex run -ex bt --args ../github/mangband >> gdb_run.log 2>&1 &`,
+5. Start the server: `cd testserver && MANGBAND_FREEZE_FILE=$PWD/FREEZE nohup gdb -batch -ex run -ex bt --args ../github/mangband >> gdb_run.log 2>&1 &`,
    then the Pilot: `github/tools/pilot/restart.sh Dive04`.
 6. Check: `pilotctl.py --nick dive04 status` shows clvl 22, 254 HP, 542 gold, Town.
 

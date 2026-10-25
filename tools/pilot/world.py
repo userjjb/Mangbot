@@ -6,6 +6,7 @@ item lists, indicators (HP, hunger, ...), inventory, recent messages, and
 whether we are standing on a staircase (the map only ever shows '@' there).
 """
 import collections
+import os
 import re
 import threading
 import time
@@ -42,6 +43,21 @@ _HIST = collections.deque(maxlen=4000)      # (wall, game, factor from there on)
 _HIST.append((_CLOCK["wall"], _CLOCK["game"], 1.0))
 _FUEL = collections.deque(maxlen=16)        # (wall, fuel): the moments the light's fuel changed
 _LOCK = threading.Lock()
+# The test server's time freeze (the user, 10-25): while this file exists the server processes no game turns
+# (net-server.c time_frozen, with $MANGBAND_FREEZE_FILE), so our game clock stops too. `tools/freeze.sh`, the
+# viewer's F key. The live server has no such file: never frozen there.
+FREEZE_FILE = os.environ.get("MANGBAND_FREEZE_FILE") or \
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "testserver", "FREEZE")
+FROZEN_F = 1e-6
+_FROZEN = {"t": 0.0, "on": False}
+
+
+def frozen():
+    """The test server's time is frozen (the file checked at most twice a second)."""
+    now = time.time()
+    if now - _FROZEN["t"] > 0.5:
+        _FROZEN["t"], _FROZEN["on"] = now, os.path.exists(FREEZE_FILE)
+    return _FROZEN["on"]
 
 
 def _advance(now):
@@ -50,6 +66,8 @@ def _advance(now):
 
 
 def _set_factor(f, now):
+    if _FROZEN["on"]:
+        f = FROZEN_F
     _advance(now)
     if f != _CLOCK["factor"]:
         _CLOCK["factor"] = f
@@ -59,6 +77,9 @@ def _set_factor(f, now):
 def gnow():
     with _LOCK:
         now = time.time()
+        was = _FROZEN["on"]
+        if frozen() != was:
+            _set_factor(_CLOCK["model"], now)      # (frozen: FROZEN_F; thawed: the model again)
         if _CLOCK["measured"] and now - _CLOCK["measured"] > STALE_S:
             _CLOCK["measured"] = 0.0
             _set_factor(_CLOCK["model"], now)

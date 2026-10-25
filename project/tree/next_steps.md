@@ -205,6 +205,12 @@ restart the Pilot during the matrix; restart it after m34.**
 followed it back to the start; 'moving away' is straight-line). Fix: `Mover.run_loop` -- two free runs from one
 square within a minute -> walk from it (unit `run_loop_walks`). **Committed, NOT loaded** (asked the user whether to
 load it mid-matrix; no answer yet). m31 report saved.
+**Time freeze (the user, 10-25):** built, **not deployed** (the matrix runs on): server `time_frozen` in
+net-server.c (file `testserver/FREEZE`, only with `MANGBAND_FREEZE_FILE` set), Pilot `world.frozen()` (clock factor
+~0, the Pilot holds, report says TIME FROZEN), `tools/freeze.sh`, viewer F5/Ctrl-F. The binary is rebuilt
+(`github/mangband`; the old one kept as `testserver/mangband.prefreeze`); the running server is the old one. **After
+m34: restart the server with the variable (operations.md), the Pilot (loads fear order, run loop, freeze) and the
+viewer; test the freeze live.**
 **The Brown mold (m25) fixed:** `stairs_beside_still` -- stairs underfoot or a step away beside a stationary monster
 harmless for a turn (no drain/paralyse/disenchant, melee < 25% HP) are taken, not stepped away from; Dive presses '>'
 only on its stairs (a step-away's "arrived" pressed it 6 squares off). Unit `stairs_beside_mold`; live set-piece

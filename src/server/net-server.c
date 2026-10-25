@@ -13,6 +13,7 @@
  *
  */
 #include "mangband.h"
+#include <sys/stat.h>
 #include "net-server.h"
 
 #define ONE_SECOND	1000000 /* 1 million "microseconds" */
@@ -696,8 +697,46 @@ int second_tick(int data1, data data2) {
 	return 1;
 }
 
+/*
+ * Test-server time freeze (2026-10-25): while the file named by $MANGBAND_FREEZE_FILE exists, no game turns are
+ * processed -- monsters, players and timers all wait; connections stay up and commands queue. Without the
+ * variable the server never freezes. Checked every 10 ticks; players are told when it changes.
+ */
+static bool time_frozen(void)
+{
+	static bool checked = FALSE, frozen = FALSE;
+	static char *path = NULL;
+	static int countdown = 0;
+	struct stat st;
+	bool now;
+	int i;
+
+	if (!checked)
+	{
+		path = getenv("MANGBAND_FREEZE_FILE");
+		checked = TRUE;
+		if (path && *path) plog_fmt("Time freeze enabled: %s", path);
+	}
+	if (!path || !*path) return FALSE;
+	if (--countdown > 0) return frozen;
+	countdown = 10;
+
+	now = (stat(path, &st) == 0);
+	if (now != frozen)
+	{
+		frozen = now;
+		plog(frozen ? "Time frozen" : "Time thawed");
+		for (i = 1; i <= NumPlayers; i++)
+			msg_print(Players[i], frozen ? "*** Time is frozen (test server) ***" : "*** Time flows again ***");
+	}
+	return frozen;
+}
+
 int dungeon_tick(int data1, data data2) {
 	/* plog("The Clock Ticked"); */ ticks++;
+
+	/* Frozen (test server): no game turn */
+	if (time_frozen()) return 2;
 
 	/* Game Turn */
 	dungeon();

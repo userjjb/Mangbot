@@ -42,7 +42,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "shopcat"))
 from mang import MangClient, ClientExited      # noqa: E402
 import glyphs                                   # noqa: E402
 from world import (World, gnow, set_time_factor, time_factor, model_factor, wall_of, wall_since, waited,  # noqa: E402
-                   ghold, light_fuel, set_fast_ok, measured_rate, _lt)
+                   ghold, light_fuel, set_fast_ok, measured_rate, _lt, frozen)
 import structures                                # noqa: E402
 import itemvalue                                 # noqa: E402
 sys.path.insert(0, os.path.join(HERE, "..", "observe"))
@@ -5362,6 +5362,17 @@ class Pilot:
         self.handle_requests()
         if not self.running:
             return
+        # The test server's time freeze: nothing happens in the game, so act on nothing (commands sent now would
+        # queue and run on stale reasons when it thaws); requests are still answered
+        if frozen():
+            if not getattr(self, "frozen_said", False):
+                self.frozen_said = True
+                self.mover.stop()
+                self.notify("time_frozen", "time is frozen on the test server: the Pilot holds until it's thawed")
+            return
+        if getattr(self, "frozen_said", False):
+            self.frozen_said = False
+            self.notify("time_frozen", "time flows again: the Pilot carries on", news=True)
         if self.reflexes():
             return
         if self.parking and not isinstance(self.goal, Recall):
@@ -7124,7 +7135,8 @@ class Pilot:
             else f"{w.depth_ft} ft"
         lines.append(f"{ind.get('hist_name_', '?')} L{w.clvl} HP {w.hp[0]}/{w.hp[1]} · {where} · "
                      f"{ind.get('gold', [0])[0]}g · max {self.orders.get('max_depth')}ft · "
-                     f"{time.strftime('%H:%M:%S')} · goal: {self.goal.describe() if self.goal else 'none'}")
+                     f"{time.strftime('%H:%M:%S')} · goal: {self.goal.describe() if self.goal else 'none'}"
+                     + (" · TIME FROZEN (test server: nothing moves until it's thawed)" if frozen() else ""))
         if self.plan:
             lines.append("Plan: " + self.plan.describe())
         if self.unanswered:

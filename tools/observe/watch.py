@@ -313,7 +313,9 @@ def items_in_view(seen, squares):
 
 
 HELP = ("Enter: note · '!' to the Navigator · '?' for the Architect · Tab: Navigator's view · F2: equipment · "
-        "F3: pack · Esc: back/clear · PgUp/PgDn: feed")
+        "F3: pack · F5/Ctrl-F: freeze time · Esc: back/clear · PgUp/PgDn: feed")
+# The test server's time freeze (tools/freeze.sh; the server checks this file, the Pilot holds while it exists)
+FREEZE_FILE = os.path.join(RUNS, "..", "testserver", "FREEZE")
 MSG_T = [0.0]                          # when the last message was set (it shows 6 s, then the keys again)
 
 
@@ -437,6 +439,8 @@ def draw(scr, sock, feed, buf, msg, scroll):
     # the note line
     scr.hline(H - 2, 0, curses.ACS_HLINE, W - 1)
     text = msg if msg and time.time() - MSG_T[0] < 6 else HELP
+    if os.path.exists(FREEZE_FILE):
+        text = "*** TIME FROZEN (F5/Ctrl-F to thaw) *** " + text
     scr.addnstr(H - 2, 2, f" {text} ", W - 4)
     prompt = "note> "
     scr.addnstr(H - 1, 0, prompt + buf[-(W - len(prompt) - 1):], W - 1)
@@ -485,6 +489,14 @@ def main(scr, args):
             want = "equip" if ch in (curses.KEY_F2, "\x05") else "pack"
             MODE["panel"] = None if MODE["panel"] == want else want
             msg = {"equip": "equipment (F2/Esc: back)", "pack": "the pack (F3/Esc: back)", None: "game view"}[MODE["panel"]]
+        elif ch in (curses.KEY_F5, "\x06"):
+            if os.path.exists(FREEZE_FILE):
+                os.remove(FREEZE_FILE)
+                msg = "time flows again"
+            else:
+                with open(FREEZE_FILE, "w") as f:
+                    f.write(f"frozen in the viewer {time.strftime('%H:%M:%S')}\n")
+                msg = "TIME FROZEN on the test server (F5/Ctrl-F to thaw)"
         elif ch == "\x1b":
             if MODE["panel"]:
                 MODE["panel"] = None
