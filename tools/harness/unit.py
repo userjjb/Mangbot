@@ -1313,6 +1313,23 @@ def fullest_lantern_worn():
     return ok, f"best {best}; low worn: {q.cmds}; fuel read {fuel}"
 
 
+@case
+def breeder_swarm_leaves():
+    """m40: weak breeders (Giant fruit flies) were news once per level; they grew to 16 and boxed the Pilot in. At 8
+    or more the notice comes again, not as news (the trip leaves on it)."""
+    fly = next(r for r in RACES.values() if "MULTIPLY" in r.flags and r.level <= 10)
+    p = pilot(monsters=[(20, 22 + k, fly) for k in range(3)])
+    p.goal, p.breeder_level, p.w.clvl = None, None, 27
+    notes = []
+    p.notify = lambda what, d=None, news=False: notes.append((what, news))
+    p.watch_breeders()
+    p.w.monsters = [(20, 22 + k, fly) for k in range(9)]
+    p.watch_breeders()
+    p.watch_breeders()
+    ok = notes == [("breeders", True), ("breeders", False)]
+    return ok, f"{fly.name}: {notes}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

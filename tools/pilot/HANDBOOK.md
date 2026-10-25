@@ -36,7 +36,8 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
    home by itself.)
 2. **Plan a trip:** `plan trip LO-HI until "COND or ..." then town [via=stairs|recall]`, then `wait`. The Pilot goes
    down by the stairs when the trip reaches no deeper than 150 ft or you've never been to 250 ft, else by Word of Recall
-   (`via=` chooses; the reply says which). It explores level after level within LO-HI, leaves bad levels by itself (a
+   (`via=` chooses; the reply says which). A recall lands one level above HI when LO allows (600 ft for 500-650),
+   so both stairs lead somewhere useful. It explores level after level within LO-HI, leaves bad levels by itself (a
    serious band, a pit or nest, breeders, drainers, fearers, traps), and comes home when a condition holds. Conditions: `cures<N`
    (all CLW + CSW + CCW potions together), `ccw`, `csw`, `phase`, `wor`, `food`, `hp`, `minutes>N`, `levels>N`, `clvl>=N`, `gold>N`, `free<N`, `time>HH:MM`, or
    events since the start (`band`, `drained`, `emergency`, `danger`, `unique_slain`, `pack_full`). No Word of Recall

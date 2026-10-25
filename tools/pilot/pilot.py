@@ -2002,6 +2002,10 @@ class TripPlan:
                 if self.went_down:
                     return ("done", "back in town before the trip began (a recall by the Pilot's own rules?)")
                 want = min(self.hi, max(self.lo, p.deepest_ft or 0))
+                # one level above HI when the range allows: there both '<' and '>' lead somewhere useful (m40 landed
+                # at 650 = max_depth on an orc pit with only '>' known and spent ~10 minutes finding a '<')
+                if want == self.hi and self.hi - 50 >= self.lo:
+                    want = self.hi - 50
                 if self.stairs_down(p):
                     self.step = f"down by the stairs to {self.lo} ft"
                     g = Dive(self.lo)
@@ -5340,7 +5344,10 @@ class Pilot:
         tell the agent once per level that it's time to leave."""
         w = self.w
         br = [r for *_, r in w.monsters if "MULTIPLY" in r.flags]
-        if len(br) >= 3 and self.breeder_level != w.level_t:
+        # (again when weak ones swarm: m40's Giant fruit flies grew to 16 after a news-only notice, boxed the Pilot in
+        # and made it stuck; the trip only leaves on a notice that isn't news)
+        swarm = len(br) >= 8 and self.breeder_level == w.level_t and getattr(self, "breeder_weak", False)
+        if (len(br) >= 3 and self.breeder_level != w.level_t) or swarm:
             self.breeder_level = w.level_t
             if isinstance(self.goal, Dive):
                 return            # a dive is leaving this level anyway
@@ -5348,6 +5355,7 @@ class Pilot:
             # the Navigator for nothing (mission 3)
             lev = w.clvl
             weak = all(r.level <= lev - 10 for r in br) and len(br) < 8
+            self.breeder_weak = weak
             self.notify("breeders", f"{len(br)} breeding monsters in view ({br[0].name}): leave this level "
                                     "(stairs, or recall)" + (" if they get in the way" if weak else ""), news=weak)
 
@@ -7695,10 +7703,12 @@ class Pilot:
             m = re.match(r"(Staff|Rod|Wand) of Cure Light Wounds \((\d+) charges\)", d)
             if m:
                 cures["staff CLW"] = int(m.group(2))
-        lite = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None) or \
-            next((i for i in w.items(tval=TV_LITE)), None)
+        worn_lite = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
+        lite = worn_lite or self.best_light()
         lt = re.search(r"with (\d+) turns", lite["name"]) if lite else None
+        # (m40: "Light 408" while no light was worn and the fuller lantern sat in the pack)
         light = ("none" if not lite else (lt.group(1) if lt else "permanent")) + \
+            ("" if worn_lite or not lite else " (off, in the pack)") + \
             (f" +{flasks} flask{'s' if flasks != 1 else ''}" if flasks else "")
         out = ["Cures " + (" · ".join(f"{k} {v}" for k, v in cures.items()) or "NONE")
                + " | Escapes " + " · ".join(f"{k} {esc.get(k, 0)}" for k in ("Phase", "WoR"))
