@@ -1176,6 +1176,51 @@ def gear_review_finds_free_slot():
     return ok, text.replace("\n", " | ")
 
 
+@case
+def speed_potion_over_junk_weapon():
+    """m36 15:09: a Potion of Speed left on the floor, "pack full and nothing cheaper (~34)", with average Flails
+    in the pack. Kit consumables found are worth their replacement cost: the Flail goes."""
+    pack = [("a Flail (2d6) {average}", 21)] + [(f"{n} Potions of Cure Critical Wounds", 75) for n in range(2, 24)]
+    p = pilot(pack=pack)
+    p.skipped_items, p.room_t, p.unique_drop = set(), 0.0, None
+    p.w.hunger = 3
+    p.flavour_of = lambda it: None
+    sent = []
+    p.cmd = lambda line, why, hold=0.4: sent.append((line, why))
+    p.c = type("C", (), {"send": lambda self, x: None})()
+    took = p.pickup_room("a Potion of Speed")
+    destroyed = [x for x in sent if x[0].startswith("custom k")]
+    return (not took and len(destroyed) == 1 and "Flail" in destroyed[0][1]), f"sent {sent}"
+
+
+@case
+def better_ring_replaces_worn():
+    """m36 15:26: plan town sold a Ring of Protection [+9] while the [+8] was worn. In town a bigger bonus of the
+    same kind, or a ring that adds AC over one whose resist other gear gives, is worn (off first, then on)."""
+    worn = [("a Ring of Protection [+8]", 45, 1), ("a Ring of Resist Cold", 45, 1),
+            ("Hard Studded Leather of Resistance (-1) [7,+8]", 37, 100)]
+
+    def make(pack, flags):
+        p = pilot(worn=worn, pack=pack)
+        p.w.inven = [dict(i, item={0: 26, 1: 27, 2: 30}[k]) if i["equip"] else i for k, i in enumerate(p.w.inven)]
+        p.w.depth, p.w.in_dungeon = 0, False
+        p.w.flags = flags
+        p.flavour_of = lambda it: None
+        p.weapon_table = lambda: []
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append(why)
+        return p
+    a = make([("a Ring of Protection [+9]", 45)], {"res_cold": "d"})            # Resist Cold not redundant
+    a.upgrade_step()
+    b = make([("a Ring of Protection [+9]", 45)], {"res_cold": "dg"})           # the Leather gives cold too
+    b.upgrade_step()
+    c = make([("a Ring of Protection [+7]", 45)], {"res_cold": "d"})
+    c.upgrade_step()
+    ok = (a.cmds == ["take off a Ring of Protection [+8] for a Ring of Protection [+9]"]
+          and b.cmds == ["take off a Ring of Resist Cold for a Ring of Protection [+9]"] and c.cmds == [])
+    return ok, f"bigger bonus: {a.cmds}; redundant: {b.cmds}; smaller: {c.cmds}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

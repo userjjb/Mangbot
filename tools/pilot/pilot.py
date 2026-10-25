@@ -4073,6 +4073,22 @@ class Pilot:
     KIT_KINDS = ("Cure Light Wounds", "Cure Serious Wounds", "Cure Critical Wounds", "Healing", "Phase Door",
                  "Word of Recall", "Teleport", "Identify", "Magic Mapping", "Speed", "Heroism", "Berserk",
                  "Restore", "Deep Descent", "Resist Poison")    # (not Boldness: Heroism does all it does, the user)
+    # what a kit consumable found in the dungeon is worth to us: what replacing it costs (the Alchemist's price
+    # last seen, else these; Speed, Healing and Berserk only at the Black Market). m36 left a Potion of Speed,
+    # "pack full and nothing cheaper (~34)", with no Speed in the pack and junk weapons in it
+    KIT_USE = {"Speed": 600, "Healing": 1500, "Berserk": 500, "Teleport": 150, "Heroism": 60, "Magic Mapping": 65,
+               "Deep Descent": 100, "Resist Poison": 100, "Restore": 480}
+
+    def kit_use_value(self, name):
+        """Replacement cost of a kit consumable (potion or scroll), else 0."""
+        kind = next((k for k in self.KIT_KINDS if k in name), None)
+        if not kind or not re.search(r"\b(Potions?|Scrolls?) of\b", name):
+            return 0
+        m = re.match(r"(\d+) ", name)
+        n = int(m.group(1)) if m else 1
+        full = next((k for k in self.KIT_ITEMS if k in name), None)
+        price = (self.price_of(full, self.KIT_ITEMS[full][1]) if full else None) or self.KIT_USE.get(kind, 0)
+        return price * n
 
     def pack_value(self, it):
         """An item's worth to the pack, for making room: kit consumables, kept items,
@@ -4105,7 +4121,7 @@ class Pilot:
         cheaper first when the pack is full); False to leave it (with news)."""
         w, now = self.w, gnow()
         iv = self.iv(name)
-        worth = iv.value * self.pay_cut(iv.tval) * max(1, iv.count)
+        worth = max(iv.value * self.pay_cut(iv.tval) * max(1, iv.count), self.kit_use_value(name))
         ud = self.unique_drop
         unique = bool(ud and ud[0] == w.level_t and w.dist(ud[1]) <= 3)
         if not unique and iv.known and worth < 1 and not iv.irreplaceable:
@@ -4286,16 +4302,47 @@ class Pilot:
                 self.notify("tactic", f"wore {it['name']} (AC {ac_new} vs {max(ac_on, 0)})", news=True)
                 return True
         # 4. good jewellery into an empty ring or amulet slot (identified only)
+        swap = self.__dict__.get("jewel_swap")
         for tv, k in ((45, 2), (40, 1)):
             if sum(1 for i in worn if i["tval"] == tv) >= k:
                 continue
             cand = [i for i in pack if i["tval"] == tv and self.iv(i["name"]).known and
                     self.iv(i["name"]).value > 0 and not (self.flavour_of(i) or {}).get("junk")]
             if cand:
-                it = max(cand, key=lambda i: self.iv(i["name"]).value)
+                it = next((i for i in cand if i["name"] == swap), None) or \
+                    max(cand, key=lambda i: self.iv(i["name"]).value)
+                self.jewel_swap = None
                 self.cmd(f"custom w item={it['item']}", f"put on {it['name']} (an empty slot)", hold=0.8)
                 self.notify("tactic", f"put on {it['name']} (the slot was empty)", news=True)
                 return True
+        # 5. in town: better jewellery over a worn piece (m36 sold a Ring of Protection [+9] while wearing the [+8]):
+        # the same kind with a bigger bonus, or anything that adds an ability or AC over a piece whose abilities
+        # another worn piece already gives. Off first; step 4 then puts the new one on.
+        if not w.depth and not w.in_dungeon:
+            have = {f for f, sl in (w.flags or {}).items() if sl}
+            spare = [r[0] for r in self.redundant_worn()]
+
+            def bonus(n):
+                m = re.search(r"\[\+(\d+)\]", n)
+                return int(m.group(1)) if m else 0
+
+            def kind(n):
+                return re.sub(r"\s*\[[^]]*\]|\s*\{[^}]*\}|^(an?|\d+) ", "", n)
+            for it in pack:
+                if it["tval"] not in (40, 45) or not self.iv(it["name"]).known or cursedish(it["name"]) or \
+                        (self.flavour_of(it) or {}).get("junk"):
+                    continue
+                # (a redundant piece goes first: swapping the [+8] would lose 8 AC that the free slot keeps)
+                for on in sorted((i for i in worn if i["tval"] == it["tval"]), key=lambda i: i not in spare):
+                    same = kind(on["name"]) == kind(it["name"]) and bonus(it["name"]) > bonus(on["name"])
+                    adds = on in spare and (self.jewel_gives(it["name"]) - have or bonus(it["name"]))
+                    if (same or adds) and not self.is_artifact(on["name"]):
+                        self.jewel_swap = it["name"]
+                        self.cmd(f"custom t item={on['item']}", f"take off {on['name']} for {it['name']}", hold=0.8)
+                        self.notify("tactic", f"took off {on['name']} to wear {it['name']} ("
+                                              + ("a bigger bonus" if same else "its abilities are given by other gear")
+                                              + ")", news=True)
+                        return True
         return False
 
     # what proves an ability in play (the rulebook's abilities.csv, restructure step 3): (ability,
@@ -7450,6 +7497,19 @@ class Pilot:
                     break
         return out
 
+    def redundant_worn(self):
+        """[(item, flags, other slot letters)]: worn rings and amulets with no AC or pluses whose every ability
+        another worn piece gives too (Dive04's Ring of Resist Cold beside its Leather of Resistance)."""
+        flags = self.w.flags or {}
+        out = []
+        for it in self.w.items(equip=True):
+            L = self.EQUIP_LETTER[it["item"] - 24] if 24 <= it["item"] < 24 + len(self.EQUIP_LETTER) else "?"
+            gives = [f for f, sl in flags.items() if L in (sl or "")]
+            if it["tval"] in (40, 45) and gives and all((flags.get(f) or "").replace(L, "") for f in gives) \
+                    and not re.search(r"\[[+-]?\d+|\([+-]\d+", it["name"]):
+                out.append((it, gives, sorted({c for f in gives for c in (flags.get(f) or "") if c != L})))
+        return out
+
     def gear_review(self):
         """Gear as a whole, for the between-mission step: abilities had and missing, worn pieces whose abilities
         another piece already gives (a free slot), pack items better than worn, and shop stock (as last seen) that
@@ -7468,15 +7528,8 @@ class Pilot:
         def letter(it):
             return self.EQUIP_LETTER[it["item"] - 24] if 24 <= it["item"] < 24 + len(self.EQUIP_LETTER) else "?"
         # worn pieces whose every ability is given by another piece too, and no AC or pluses of their own
-        free = []
-        for it in worn:
-            L = letter(it)
-            gives = [f for f, sl in flags.items() if L in (sl or "")]
-            if it["tval"] in (40, 45) and gives and all(len((flags.get(f) or "").replace(L, "")) > 0 for f in gives) \
-                    and not re.search(r"\[[+-]?\d+|\([+-]\d+", it["name"]):
-                others = sorted({c for f in gives for c in (flags.get(f) or "") if c != L})
-                free.append((it, f"{L}) {it['name']}: {', '.join(gives)} also from "
-                                 f"{', '.join(o + ')' for o in others)}"))
+        free = [(it, f"{letter(it)}) {it['name']}: {', '.join(gives)} also from {', '.join(o + ')' for o in others)}")
+                for it, gives, others in self.redundant_worn()]
         if free:
             out.append("Redundant (the slot is free for something else): " + "; ".join(t for _, t in free))
         # the pack, against what's worn
