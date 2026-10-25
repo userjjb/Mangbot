@@ -186,6 +186,11 @@ plan's drainer leave; without a plan, Flee). Unit `unseen_drainer_leaves`; live 
 **Fixed 3/7, the `band` condition:** it counted any band ever warned on the trip; m30's beaten Novice warrior
 band ended the trip 3 min later on a new level. Now it holds only while the band is live (`band_live`: warned <20 s
 ago on this level, or 3+ monsters within 10). Unit `band_condition_only_while_live`.
+**Fixed 4-7/7:** plan town makes pack room before a buy needs a new slot (`town_make_room`: sells/destroys the
+cheapest unprotected item; unit `town_makes_room_before_buying`); `plan resume` ends the Navigator's goal and hands
+back to the paused plan; item commands reply `DONE: <item> (N -> M left); moved ...` (m30's `read Teleportation`
+worked but looked like it hadn't: both scrolls used); HANDBOOK: plan resume, item commands and `goal shop sell`,
+the `band`/`drained` condition caveats. **All 7 m30 items fixed (2026-10-25).**
 **The Brown mold (m25) fixed:** `stairs_beside_still` -- stairs underfoot or a step away beside a stationary monster
 harmless for a turn (no drain/paralyse/disenchant, melee < 25% HP) are taken, not stepped away from; Dive presses '>'
 only on its stairs (a step-away's "arrived" pressed it 6 squares off). Unit `stairs_beside_mold`; live set-piece

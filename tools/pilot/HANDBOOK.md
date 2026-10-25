@@ -40,10 +40,14 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
    serious band, a pit or nest, breeders, drainers, fearers, traps), and comes home when a condition holds. Conditions: `cures<N`, `ccw`,
    `csw`, `phase`, `wor`, `food`, `hp`, `minutes>N`, `levels>N`, `clvl>=N`, `gold>N`, `free<N`, `time>HH:MM`, or
    events since the start (`band`, `drained`, `emergency`, `danger`, `unique_slain`, `pack_full`). No Word of Recall
-   left and 90 minutes are built in.
+   left and 90 minutes are built in. **`band` holds only while the band is live** (warned in the last 20 s, or 3+ of
+   it still near): one the Pilot fought and beat doesn't send you home. **Avoid `drained` on deep trips:** a dart
+   trap on arrival sends you home in seconds (m30), and a stat drain wakes you anyway; the Pilot leaves a level
+   where an unseen monster drains (a Moaning spirit or Quasit) by itself.
 3. **While it runs:** `wait 240` (pass a Bash timeout of 300000). You're woken for `plan_done`/`plan_failed`, user
    messages, stat drains, emergency loops and low supplies. Bands, dangers and finished goals are news. Read the news,
-   and step in only for what the plan can't judge (below). A goal you give pauses the plan until that goal ends.
+   and step in only for what the plan can't judge (below). A goal you give pauses the plan until that goal ends;
+   `plan resume` ends your goal and hands back.
 4. **When the plan ends:** read why, write your journal line, decide the next town visit and trip, and repeat until
    the mission's budget is used. End in town.
 
@@ -66,11 +70,14 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 | command | use |
 |---|---|
 | `plan town ...`, `plan trip ...`, `plan`, `plan stop` | the visit, the trip, show it, end it |
+| `plan resume` | end your own goal and hand control back to the paused plan (a goal you give pauses the plan) |
 | `goal leave` | this level, now, by the nearest stairs (always allowed) |
 | `goal recall` | home now (or down, from town; supply gate applies) |
 | `goal hunt NAME` / `goal hunt !NAME` | fight one monster; checked (the Advisor's rating, paralysis without Free Action, the duel simulator's bad case over 60% of your HP, summoners, breath, bands); the reply gives turns and HP expected |
 | `goal fetch Y,X` | one item detour (refused with a band or danger about) |
 | `goal dive FEET`, `goal explore`, `goal searchroom Y,X`, `goal rest`, `goal shop N ...`, `goal townfarm GOLD` | single steps, when a plan doesn't fit |
+| `read NAME\|L`, `quaff`, `eat`, `use`, `aim`, `zap` | by name or pack letter; the reply starts `DONE:` with the item and its count before and after (and any move): trust it, don't repeat the read |
+| `goal shop N sell NAME[:N]`, `destroy NAME [N\|all]`, `drop NAME` | in town only (item commands are refused in the dungeon); `!NAME` overrides the value policy and adds to your debt. `plan town` already sells by policy and makes pack room before it buys |
 | `keep NAME` / `keep -NAME` | protect an item from the policy (free) |
 | `avoid Y,X [R]` / `avoid NAME` / `avoid clear` | no-go zones and monsters for the Pilot's paths |
 | `order max_depth=FEET` (and the other orders in the reference) | standing orders; `max_depth` caps every plan |
