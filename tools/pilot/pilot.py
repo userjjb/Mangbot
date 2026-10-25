@@ -3329,12 +3329,16 @@ class Pilot:
         # straight back unless a wall intervenes; 4 of m30's 5 phases landed 6-7 squares from contact)
         crowd = [m for m in w.monsters if "NEVER_MOVE" not in m[2].flags and w.dist(m[:2]) <= 5]
         tele = self.teleport_item()
-        if adj and tele and len(crowd) >= 4 and not self.mover.in_corridor() and (can_read or tele[0] == "u") and \
-                waited(self.phase_t, 2.0):
+        # (afraid with 2+ adjacent: we can't hit back, and a phase lands within reach again -- m41 phased 3 times
+        # with a Half-orc, a Master yeek and a 2-headed hydra on it, 156 -> 123 HP, then read Word of Recall)
+        pinned = w.flag("afraid") and len(adj) >= 2
+        if adj and tele and ((len(crowd) >= 4 and not self.mover.in_corridor()) or pinned) and \
+                (can_read or tele[0] == "u") and waited(self.phase_t, 2.0):
             self.phase_t = now
-            self.cmd(f"custom {tele[0]} item={tele[1]['item']}", f"{why}: teleport ({len(crowd)} about in the open)",
-                     hold=0.6)
-            self.notify("emergency", f"{why}: {len(crowd)} monsters about in the open: {one_of(tele[1]['name'])}")
+            what = "afraid with " + plural(len(adj), "monster") + " adjacent" if pinned else \
+                f"{len(crowd)} about in the open"
+            self.cmd(f"custom {tele[0]} item={tele[1]['item']}", f"{why}: teleport ({what})", hold=0.6)
+            self.notify("emergency", f"{why}: {what}: {one_of(tele[1]['name'])}")
             return True
         if adj and pd and can_read and (waited(self.phase_t, 2.5) or (collapsing and waited(self.phase_t, 0.7))):
             self.phase_t = now
@@ -6511,15 +6515,18 @@ class Pilot:
                  "Cure Serious Wounds": (75, 4, 65), "Cure Light Wounds": (75, 4, 25), "Phase Door": (70, 5, 25),
                  "Identify": (70, 5, 80), "Flask of oil": (77, 1, 5), "Ration of Food": (80, 1, 5),
                  "Restore Strength": (75, 5, 490), "Restore Dexterity": (75, 5, 490),
-                 "Restore Constitution": (75, 5, 490), "Restore Charisma": (75, 5, 490)}
+                 "Restore Constitution": (75, 5, 490), "Restore Charisma": (75, 5, 490),
+                 # (the only fear cure kept since Boldness went, the user 10-25; m41 ran out and phased 3 times
+                 # afraid with three on it)
+                 "Heroism": (75, 4, 55)}
     # stock levels per stage (the Advisor's shops memo §3 and the Borg minimums):
     # A to 500 ft, B to 1000 ft, C deeper. No flasks: the town visit tops the lantern up instead (the user,
     # 10-25: oil, food and potions nobody uses fill the pack). Rations: one stack, eaten to Full before a trip
     KITS = {"A": {"Word of Recall": 2, "Cure Light Wounds": 5, "Phase Door": 5, "Ration of Food": 3},
             "B": {"Word of Recall": 2, "Cure Critical Wounds": 4, "Cure Serious Wounds": 4, "Phase Door": 10,
-                  "Ration of Food": 3},
+                  "Ration of Food": 3, "Heroism": 3},
             "C": {"Word of Recall": 2, "Cure Critical Wounds": 6, "Cure Serious Wounds": 4, "Phase Door": 12,
-                  "Ration of Food": 3},
+                  "Ration of Food": 3, "Heroism": 3},
             "none": {}}
     # The lantern leaves town with this much fuel: a full lantern (15000) burned ~7500 in ~35 dungeon minutes
     # (m29-m30), and a trip ends within 30; a flask adds 7500 (object.txt; FUEL_LAMP 15000, mdefines.h)

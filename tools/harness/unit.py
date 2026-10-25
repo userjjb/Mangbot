@@ -213,7 +213,7 @@ def town_kit_tiers():
     need = [(t, k, n) for t, k, s, n, c in p.town_needs(None, ())]
     # (no flasks: the lantern's 6370 turns and the 3 flasks reach 9000; rations: kit B's 3, had)
     want = [(1, "Word of Recall", 1), (3, "Restore Constitution", 1), (4, "Cure Serious Wounds", 2),
-            (4, "Phase Door", 1)]
+            (4, "Phase Door", 1), (4, "Heroism", 3)]       # (Heroism in kit B since m41)
     return need == want, f"{need}"
 
 
@@ -1028,6 +1028,11 @@ def estimator_memo_rules():
              extra=[(23, 23, orc), (22, 24, orc), (24, 20, orc)])
     b.escape("low HP")
     crowd = b.cmds[-1]
+    # 2b. afraid with two adjacent (m41): the staff, not Phase Door
+    b2 = make(150, [(20, 21, orc), (21, 21, orc)], pots + [("a Staff of Teleportation (10 charges)", 55)])
+    b2.w.flag = lambda k: k == "afraid"
+    b2.escape("low HP")
+    afraid = b2.cmds[-1] if b2.cmds else ""
     # 3. two adjacent, phase rate-limited: no cure, Phase Door anyway (0.7 s rule)
     c = make(120, [(20, 21, orc), (21, 21, orc)], pots)
     c.phase_t = P.gnow() - 1.0
@@ -1042,6 +1047,7 @@ def estimator_memo_rules():
     d.verify_use()
     resent = list(d.c.sent)
     ok = "walk" in caster and "Dark elven priest" in caster and crowd.startswith("custom u") and \
+        afraid.startswith("custom u") and "afraid" in afraid and \
         two and "Phase" in two and "quaff" not in two and resent == []
     return ok, f"caster: {caster!r}; crowd: {crowd!r}; two adjacent: {two!r}; recall resent: {resent}"
 
