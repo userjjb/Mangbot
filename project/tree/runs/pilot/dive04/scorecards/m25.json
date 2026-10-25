@@ -1,12 +1,21 @@
 {
  "label": "m25",
  "nav_model": "opus",
- "effort": null,
+ "effort": "high",
  "report": "compact",
  "start": "2026-10-24 02:09",
  "end": "2026-10-24 02:46",
  "minutes": 37.0,
  "notes": "step 5: first scored mission after the harness; 40 min; hpwarn 5",
+ "tokens": {
+  "turns": 63,
+  "input": 126,
+  "output": 22309,
+  "cache_read": 2719340,
+  "cache_write": 70747,
+  "model": "claude-opus-5-5",
+  "transcript": "agent-a316efc9af062b150.jsonl"
+ },
  "A": {
   "deaths": 0,
   "clvl": [

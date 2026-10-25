@@ -1,12 +1,21 @@
 {
  "label": "m17",
  "nav_model": "opus",
- "effort": null,
+ "effort": "high",
  "report": "full",
  "start": "2026-10-16 13:57",
  "end": "2026-10-16 14:40",
  "minutes": 43.0,
  "notes": "650 ft no-path emergency; Restore CON",
+ "tokens": {
+  "turns": 80,
+  "input": 160,
+  "output": 4732,
+  "cache_read": 5410380,
+  "cache_write": 102757,
+  "model": "claude-opus-5-5",
+  "transcript": "agent-a523187248aaba9d9.jsonl"
+ },
  "A": {
   "deaths": 0,
   "clvl": [

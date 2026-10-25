@@ -6,7 +6,18 @@
   "end": "2026-10-16 14:40",
   "navigator": "opus",
   "report": "full",
-  "notes": "650 ft no-path emergency; Restore CON"
+  "notes": "650 ft no-path emergency; Restore CON",
+  "effort": "high",
+  "tokens": {
+   "turns": 80,
+   "input": 160,
+   "output": null,
+   "cache_read": 5410380,
+   "cache_write": 102757,
+   "model": "claude-opus-5-5",
+   "final_usage_turns": 3,
+   "transcript": "agent-a523187248aaba9d9.jsonl"
+  }
  },
  {
   "label": "m18",
@@ -15,7 +26,18 @@
   "end": "2026-10-16 19:26",
   "navigator": "opus",
   "report": "full",
-  "notes": "Nighthawk; Ufthak band"
+  "notes": "Nighthawk; Ufthak band",
+  "effort": "high",
+  "tokens": {
+   "turns": 77,
+   "input": 154,
+   "output": null,
+   "cache_read": 5585244,
+   "cache_write": 108540,
+   "model": "claude-opus-5-5",
+   "final_usage_turns": 1,
+   "transcript": "agent-ac167d4f31db89dae.jsonl"
+  }
  },
  {
   "label": "m19",
@@ -24,7 +46,18 @@
   "end": "2026-10-16 22:55",
   "navigator": "opus",
   "report": "full",
-  "notes": "STR drains (ant, frog); Ranger hunt"
+  "notes": "STR drains (ant, frog); Ranger hunt",
+  "effort": "high",
+  "tokens": {
+   "turns": 91,
+   "input": 182,
+   "output": null,
+   "cache_read": 7533447,
+   "cache_write": 123763,
+   "model": "claude-opus-5-5",
+   "final_usage_turns": 1,
+   "transcript": "agent-ae774eb0e5857700c.jsonl"
+  }
  },
  {
   "label": "m20",
@@ -33,7 +66,18 @@
   "end": "2026-10-17 00:18",
   "navigator": "opus",
   "report": "full",
-  "notes": "52 -> 793 gold; first recogniser hit"
+  "notes": "52 -> 793 gold; first recogniser hit",
+  "effort": "high",
+  "tokens": {
+   "turns": 110,
+   "input": 220,
+   "output": null,
+   "cache_read": 9318972,
+   "cache_write": 130171,
+   "model": "claude-opus-5-5",
+   "final_usage_turns": 1,
+   "transcript": "agent-abac5bbf9ee66b5bd.jsonl"
+  }
  },
  {
   "label": "m21",
@@ -42,7 +86,18 @@
   "end": "2026-10-17 01:35",
   "navigator": "opus",
   "report": "full",
-  "notes": "server crash 00:48:48-00:58 (store[-1]); Wormtongue killed; user watching"
+  "notes": "server crash 00:48:48-00:58 (store[-1]); Wormtongue killed; user watching",
+  "effort": "high",
+  "tokens": {
+   "turns": 106,
+   "input": 212,
+   "output": null,
+   "cache_read": 9288654,
+   "cache_write": 133673,
+   "model": "claude-opus-5-5",
+   "final_usage_turns": 1,
+   "transcript": "agent-ad9dc54325fd045e5.jsonl"
+  }
  },
  {
   "label": "m22",
@@ -51,7 +106,18 @@
   "end": "2026-10-17 02:16",
   "navigator": "sonnet",
   "report": "full",
-  "notes": "first Sonnet trial; mob levels; 2621 -> 475 gold"
+  "notes": "first Sonnet trial; mob levels; 2621 -> 475 gold",
+  "effort": "medium",
+  "tokens": {
+   "turns": 129,
+   "input": 258,
+   "output": null,
+   "cache_read": 11745357,
+   "cache_write": 134765,
+   "model": "claude-sonnet-5-5",
+   "final_usage_turns": 1,
+   "transcript": "agent-a76b0043524b24a90.jsonl"
+  }
  },
  {
   "label": "m23",
@@ -60,7 +126,18 @@
   "end": "2026-10-22 22:31",
   "navigator": "sonnet",
   "report": "compact",
-  "notes": "user ended it; Free Action boots sold for 3; Brodda's Scimitar lost"
+  "notes": "user ended it; Free Action boots sold for 3; Brodda's Scimitar lost",
+  "effort": "medium",
+  "tokens": {
+   "turns": 46,
+   "input": 92,
+   "output": null,
+   "cache_read": 2349942,
+   "cache_write": 70028,
+   "model": "claude-sonnet-5-5",
+   "final_usage_turns": 0,
+   "transcript": "agent-a0517dec453247443.jsonl"
+  }
  },
  {
   "label": "m24",
@@ -68,9 +145,19 @@
   "start": "2026-10-23 12:23",
   "end": "2026-10-23 12:59",
   "navigator": "opus",
-  "effort": null,
+  "effort": "high",
   "report": "compact",
-  "notes": "restructure step 2.7: first supervised mission with plan town / plan trip, the new toolset and short HANDBOOK; 40 min; max 650 ft"
+  "notes": "restructure step 2.7: first supervised mission with plan town / plan trip, the new toolset and short HANDBOOK; 40 min; max 650 ft",
+  "tokens": {
+   "turns": 39,
+   "input": 78,
+   "output": 13534,
+   "cache_read": 1278542,
+   "cache_write": 50252,
+   "model": "claude-opus-5-5",
+   "final_usage_turns": 39,
+   "transcript": "agent-a6c7a15db16e96f68.jsonl"
+  }
  },
  {
   "label": "sp-A7-20261023-140757",
@@ -1148,9 +1235,19 @@
   "start": "2026-10-24 02:09",
   "end": "2026-10-24 02:46",
   "navigator": "opus",
-  "effort": null,
+  "effort": "high",
   "report": "compact",
-  "notes": "step 5: first scored mission after the harness; 40 min; hpwarn 5"
+  "notes": "step 5: first scored mission after the harness; 40 min; hpwarn 5",
+  "tokens": {
+   "turns": 63,
+   "input": 126,
+   "output": 22309,
+   "cache_read": 2719340,
+   "cache_write": 70747,
+   "model": "claude-opus-5-5",
+   "final_usage_turns": 63,
+   "transcript": "agent-a316efc9af062b150.jsonl"
+  }
  },
  {
   "label": "m26",
@@ -1158,9 +1255,19 @@
   "start": "2026-10-24 02:50",
   "end": "2026-10-24 03:26",
   "navigator": "sonnet",
-  "effort": null,
+  "effort": "medium",
   "report": "compact",
-  "notes": "step 5: Sonnet, same brief as m25; Pilot fixed after m25; 40 min; hpwarn 5"
+  "notes": "step 5: Sonnet, same brief as m25; Pilot fixed after m25; 40 min; hpwarn 5",
+  "tokens": {
+   "turns": 42,
+   "input": 84,
+   "output": 10720,
+   "cache_read": 1424211,
+   "cache_write": 54494,
+   "model": "claude-sonnet-5-5",
+   "final_usage_turns": 42,
+   "transcript": "agent-ab26e118f59e5b0dd.jsonl"
+  }
  },
  {
   "label": "sp-A9-20261024-033807",
@@ -1208,9 +1315,19 @@
   "start": "2026-10-24 04:18",
   "end": "2026-10-24 04:51",
   "navigator": "opus",
-  "effort": null,
+  "effort": "high",
   "report": "compact",
-  "notes": "step 5: Opus on the Pilot after m26's fixes; kit forged to m26's start (gold 14 vs 1343, WoR 3 vs 2); auto_scum on; 40 min"
+  "notes": "step 5: Opus on the Pilot after m26's fixes; kit forged to m26's start (gold 14 vs 1343, WoR 3 vs 2); auto_scum on; 40 min",
+  "tokens": {
+   "turns": 52,
+   "input": 104,
+   "output": 21594,
+   "cache_read": 2059882,
+   "cache_write": 63961,
+   "model": "claude-opus-5-5",
+   "final_usage_turns": 52,
+   "transcript": "agent-aa6006a0bebc53b34.jsonl"
+  }
  },
  {
   "label": "m28",
@@ -1218,9 +1335,19 @@
   "start": "2026-10-24 05:17",
   "end": "2026-10-24 05:53",
   "navigator": "sonnet",
-  "effort": null,
+  "effort": "medium",
   "report": "compact",
-  "notes": "step 5: Sonnet on the current Pilot (after m27's fixes); 4089 gold (the sold Rod of Enlightenment); auto_scum on; 40 min"
+  "notes": "step 5: Sonnet on the current Pilot (after m27's fixes); 4089 gold (the sold Rod of Enlightenment); auto_scum on; 40 min",
+  "tokens": {
+   "turns": 28,
+   "input": 56,
+   "output": 7601,
+   "cache_read": 740645,
+   "cache_write": 40410,
+   "model": "claude-sonnet-5-5",
+   "final_usage_turns": 28,
+   "transcript": "agent-a727e9f67f81d2ef2.jsonl"
+  }
  },
  {
   "label": "m29",
@@ -1228,9 +1355,19 @@
   "start": "2026-10-24 20:12",
   "end": "2026-10-24 20:49",
   "navigator": "opus",
-  "effort": null,
+  "effort": "high",
   "report": "compact",
-  "notes": "step 5: Opus on the current Pilot, same brief as m28; 4057 gold, WoR 2, DEX restored; auto_scum on; --hpwarn 5; 40 min"
+  "notes": "step 5: Opus on the current Pilot, same brief as m28; 4057 gold, WoR 2, DEX restored; auto_scum on; --hpwarn 5; 40 min",
+  "tokens": {
+   "turns": 36,
+   "input": 72,
+   "output": 17128,
+   "cache_read": 1434727,
+   "cache_write": 62286,
+   "model": "claude-opus-5-5",
+   "final_usage_turns": 36,
+   "transcript": "agent-a69297d825e19e4e4.jsonl"
+  }
  },
  {
   "label": "sp-M1-20261024-205019",

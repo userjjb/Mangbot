@@ -1,12 +1,22 @@
 {
  "label": "m28",
  "nav_model": "sonnet",
- "effort": null,
+ "effort": "medium",
  "report": "compact",
  "start": "2026-10-24 05:17",
  "end": "2026-10-24 05:53",
  "minutes": 36.0,
  "notes": "step 5: Sonnet on the current Pilot (after m27's fixes); 4089 gold (the sold Rod of Enlightenment); auto_scum on; 40 min",
+ "tokens": {
+  "turns": 28,
+  "input": 56,
+  "output": 7601,
+  "cache_read": 740645,
+  "cache_write": 40410,
+  "model": "claude-sonnet-5-5",
+  "final_usage_turns": 28,
+  "transcript": "agent-a727e9f67f81d2ef2.jsonl"
+ },
  "A": {
   "deaths": 0,
   "clvl": [

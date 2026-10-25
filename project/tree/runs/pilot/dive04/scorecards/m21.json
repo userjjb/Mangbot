@@ -1,12 +1,21 @@
 {
  "label": "m21",
  "nav_model": "opus",
- "effort": null,
+ "effort": "high",
  "report": "full",
  "start": "2026-10-17 00:47",
  "end": "2026-10-17 01:35",
  "minutes": 48.0,
  "notes": "server crash 00:48:48-00:58 (store[-1]); Wormtongue killed; user watching",
+ "tokens": {
+  "turns": 106,
+  "input": 212,
+  "output": 1056,
+  "cache_read": 9288654,
+  "cache_write": 133673,
+  "model": "claude-opus-5-5",
+  "transcript": "agent-ad9dc54325fd045e5.jsonl"
+ },
  "A": {
   "deaths": 0,
   "clvl": [

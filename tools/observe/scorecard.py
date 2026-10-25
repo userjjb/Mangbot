@@ -190,7 +190,7 @@ def card(m):
     aud = [d for d in recs if d.get("kind") == "audit_check"]
     c = {"label": m["label"], "nav_model": m.get("navigator"), "effort": m.get("effort"), "report": m.get("report"),
          "start": m["start"], "end": m.get("end") or "(running)", "minutes": round((t1 - t0) / 60, 1),
-         "notes": m.get("notes", "")}
+         "notes": m.get("notes", ""), "tokens": m.get("tokens")}
 
     # A. outcome
     c["A"] = {"deaths": acount.get("dead", 0)}
@@ -563,7 +563,10 @@ def show(c):
            f"  F pilot      audit {F['audit_diffs']}/{F['audit_checks']}; goal_failed {F['goal_failed']}, stuck "
            f"{F['stuck']}, no-movement {F['stuck_looping_min']} min; runs {F['runs_sent']}; down {F['pilot_down_min']} "
            f"min; server crashes {F['server_crashes']}",
-           "  damage by    " + (", ".join(f"{k} {v}" for k, v in c["damage_by_monster"].items()) or "-")]
+           "  damage by    " + (", ".join(f"{k} {v}" for k, v in c["damage_by_monster"].items()) or "-"),
+           (lambda t: f"  G tokens     Navigator {t['turns']} turns; output {t['output'] if t['output'] is not None else 'not logged'}, cache read {t['cache_read']}, "
+                      f"cache write {t['cache_write']}, input {t['input']} (tokens.py)" if t else
+                      "  G tokens     - (run tokens.py LABEL)")(c.get("tokens"))]
     return "\n".join(l for l in out if l)
 
 
@@ -575,7 +578,9 @@ TABLE = [("mission", lambda c: c["label"]), ("nav", lambda c: c["nav_model"]), (
          ("woresc", lambda c: c["C"]["wor_escape"]), ("cures", lambda c: c["C"]["cures_quaffed"]),
          ("lost", lambda c: c["D"]["total"]), ("forced$", lambda c: c["D"]["sale_shortfall_forced"]),
          ("r->a", lambda c: c["E"]["report_to_action_med_s"]), ("reply", lambda c: c["E"]["user_reply_med_s"]),
-         ("wait%", lambda c: c["B"]["navigator_wait_pct"])]
+         ("wait%", lambda c: c["B"]["navigator_wait_pct"]),
+         ("out_k", lambda c: round(c["tokens"]["output"] / 1000, 1) if (c.get("tokens") or {}).get("output") is not None else None),
+         ("cache_M", lambda c: round(c["tokens"]["cache_read"] / 1e6, 2) if c.get("tokens") else None)]
 
 
 def table(cards):

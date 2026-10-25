@@ -390,6 +390,10 @@ anything important: no rotation, no history purge; follow best practice from now
 - **`PILOT_ROLE=architect`** in front of my own pilotctl calls (otherwise they're treated as the Navigator's).
 - **Mission markers:** `pilotctl --nick dive04 mission start mNN navigator=MODEL [effort=..] [notes=..]` at launch,
   `mission end` at the end (they keep runs/missions.json for the scorecard).
+  **Then `python3 tools/observe/tokens.py mNN`** (the user, 2026-10-25): the Navigator's tokens (turns, output,
+  cache read/write, input; from its transcript) into missions.json; `scorecard.py --table` shows `out_k`/`cache_M`.
+  m17-m23 have no output count (their transcripts lack the final usage); m17-m29 backfilled. Effort is recorded
+  too: so far Opus ran at high and Sonnet at medium (their defaults), a confound in model comparisons.
 - The Navigator model is chosen per launch (`model: sonnet` on the Agent call); the agent file still inherits Opus.
 - Save each Navigator report to `runs/pilot/dive04/reports/`, read `runs/complaints.md`, answer the user's `?`
   viewer notes (`tools/observe/notes.py --nick dive04 --questions`): **I missed some in m21-23; check them after

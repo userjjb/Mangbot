@@ -1,12 +1,21 @@
 {
  "label": "m24",
  "nav_model": "opus",
- "effort": null,
+ "effort": "high",
  "report": "compact",
  "start": "2026-10-23 12:23",
  "end": "2026-10-23 12:59",
  "minutes": 36.0,
  "notes": "restructure step 2.7: first supervised mission with plan town / plan trip, the new toolset and short HANDBOOK; 40 min; max 650 ft",
+ "tokens": {
+  "turns": 39,
+  "input": 78,
+  "output": 13534,
+  "cache_read": 1278542,
+  "cache_write": 50252,
+  "model": "claude-opus-5-5",
+  "transcript": "agent-a6c7a15db16e96f68.jsonl"
+ },
  "A": {
   "deaths": 0,
   "clvl": [

@@ -1,12 +1,21 @@
 {
  "label": "m23",
  "nav_model": "sonnet",
- "effort": null,
+ "effort": "medium",
  "report": "compact",
  "start": "2026-10-22 22:15",
  "end": "2026-10-22 22:31",
  "minutes": 16.0,
  "notes": "user ended it; Free Action boots sold for 3; Brodda's Scimitar lost",
+ "tokens": {
+  "turns": 46,
+  "input": 92,
+  "output": 523,
+  "cache_read": 2349942,
+  "cache_write": 70028,
+  "model": "claude-sonnet-5-5",
+  "transcript": "agent-a0517dec453247443.jsonl"
+ },
  "A": {
   "deaths": 0,
   "clvl": [

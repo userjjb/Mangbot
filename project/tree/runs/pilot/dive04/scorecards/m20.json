@@ -1,12 +1,22 @@
 {
  "label": "m20",
  "nav_model": "opus",
- "effort": null,
+ "effort": "high",
  "report": "full",
  "start": "2026-10-16 23:41",
  "end": "2026-10-17 00:18",
  "minutes": 37.0,
  "notes": "52 -> 793 gold; first recogniser hit",
+ "tokens": {
+  "turns": 110,
+  "input": 220,
+  "output": null,
+  "cache_read": 9318972,
+  "cache_write": 130171,
+  "model": "claude-opus-5-5",
+  "final_usage_turns": 1,
+  "transcript": "agent-abac5bbf9ee66b5bd.jsonl"
+ },
  "A": {
   "deaths": 0,
   "clvl": [

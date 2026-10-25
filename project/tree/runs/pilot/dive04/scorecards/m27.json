@@ -1,12 +1,22 @@
 {
  "label": "m27",
  "nav_model": "opus",
- "effort": null,
+ "effort": "high",
  "report": "compact",
  "start": "2026-10-24 04:18",
  "end": "2026-10-24 04:51",
  "minutes": 33.0,
  "notes": "step 5: Opus on the Pilot after m26's fixes; kit forged to m26's start (gold 14 vs 1343, WoR 3 vs 2); auto_scum on; 40 min",
+ "tokens": {
+  "turns": 52,
+  "input": 104,
+  "output": 21594,
+  "cache_read": 2059882,
+  "cache_write": 63961,
+  "model": "claude-opus-5-5",
+  "final_usage_turns": 52,
+  "transcript": "agent-aa6006a0bebc53b34.jsonl"
+ },
  "A": {
   "deaths": 0,
   "clvl": [

@@ -1,12 +1,21 @@
 {
  "label": "m22",
  "nav_model": "sonnet",
- "effort": null,
+ "effort": "medium",
  "report": "full",
  "start": "2026-10-17 01:45",
  "end": "2026-10-17 02:16",
  "minutes": 31.0,
  "notes": "first Sonnet trial; mob levels; 2621 -> 475 gold",
+ "tokens": {
+  "turns": 129,
+  "input": 258,
+  "output": 1264,
+  "cache_read": 11745357,
+  "cache_write": 134765,
+  "model": "claude-sonnet-5-5",
+  "transcript": "agent-a76b0043524b24a90.jsonl"
+ },
  "A": {
   "deaths": 0,
   "clvl": [

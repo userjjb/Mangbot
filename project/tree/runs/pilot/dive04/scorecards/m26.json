@@ -1,12 +1,22 @@
 {
  "label": "m26",
  "nav_model": "sonnet",
- "effort": null,
+ "effort": "medium",
  "report": "compact",
  "start": "2026-10-24 02:50",
  "end": "2026-10-24 03:26",
  "minutes": 36.0,
  "notes": "step 5: Sonnet, same brief as m25; Pilot fixed after m25; 40 min; hpwarn 5",
+ "tokens": {
+  "turns": 42,
+  "input": 84,
+  "output": 10720,
+  "cache_read": 1424211,
+  "cache_write": 54494,
+  "model": "claude-sonnet-5-5",
+  "final_usage_turns": 42,
+  "transcript": "agent-ab26e118f59e5b0dd.jsonl"
+ },
  "A": {
   "deaths": 0,
   "clvl": [
