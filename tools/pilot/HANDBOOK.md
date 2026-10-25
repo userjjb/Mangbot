@@ -37,8 +37,8 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
 2. **Plan a trip:** `plan trip LO-HI until "COND or ..." then town [via=stairs|recall]`, then `wait`. The Pilot goes
    down by the stairs when the trip reaches no deeper than 150 ft or you've never been to 250 ft, else by Word of Recall
    (`via=` chooses; the reply says which). It explores level after level within LO-HI, leaves bad levels by itself (a
-   serious band, a pit or nest, breeders, drainers, fearers, traps), and comes home when a condition holds. Conditions: `cures<N`, `ccw`,
-   `csw`, `phase`, `wor`, `food`, `hp`, `minutes>N`, `levels>N`, `clvl>=N`, `gold>N`, `free<N`, `time>HH:MM`, or
+   serious band, a pit or nest, breeders, drainers, fearers, traps), and comes home when a condition holds. Conditions: `cures<N`
+   (all CLW + CSW + CCW potions together), `ccw`, `csw`, `phase`, `wor`, `food`, `hp`, `minutes>N`, `levels>N`, `clvl>=N`, `gold>N`, `free<N`, `time>HH:MM`, or
    events since the start (`band`, `drained`, `emergency`, `danger`, `unique_slain`, `pack_full`). No Word of Recall
    left and 90 minutes are built in. **`band` holds only while the band is live** (warned in the last 20 s, or 3+ of
    it still near): one the Pilot fought and beat doesn't send you home. **Avoid `drained` on deep trips:** a dart
@@ -145,6 +145,9 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
   groups are fought (and looted) where they stand. **Dark inner rooms** get an avoid zone over their ring corridor (a
   pit looks the same until it opens): `avoid clear` if you mean to open one.
 
+- **The Pilot's own emergency recall can land before yours:** after an emergency, check `status` before sending
+  `goal recall` (a second Word of Recall would cancel the first; the Pilot refuses to resend one, so yours is wasted
+  at worst).
 - **TIME FROZEN** in a report means the Architect froze the test server's time (to load a Pilot change or look at
   something): the Pilot holds and nothing happens in the game. Just `wait`; it never counts against you.
 - `parked` means the Pilot is updating. "Connection refused" for a minute or two is normal: wait 20 s and retry, then
