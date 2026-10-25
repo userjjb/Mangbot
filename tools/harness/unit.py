@@ -1148,6 +1148,34 @@ def rates_gold_found_not_shopping():
     return ok, f"found {p.gold_found}; {line} | {lvl}"
 
 
+@case
+def gear_review_finds_free_slot():
+    """The user (10-25): a between-mission gear step. Dive04 wears a Ring of Resist Cold and an Amulet of Resist
+    Lightning while its Leather of Resistance gives both: two free slots; the Magic Shop's Ring of Protection [+9]
+    goes in one. Plain armour with more AC never replaces a piece that gives an ability."""
+    worn = [("a Scimitar of Westernesse (2d5) (+9,+8) (+1)", 23, 130), ("a Ring of Resist Cold", 45, 1),
+            ("a Ring of Protection [+8]", 45, 1), ("an Amulet of Resist Lightning", 40, 3), ("a Brass Lantern", 39, 50),
+            ("Hard Studded Leather of Resistance (-1) [7,+8]", 37, 100), ("a Shadow Cloak [6,+3]", 35, 10),
+            ("an Orcish Shield [5,+4] (+1)", 34, 60), ("an Iron Helm [5,-3]", 32, 75), ("a Set of Gauntlets [2,-2]", 31, 25),
+            ("a Pair of Metal Shod Boots [6,+2]", 30, 60)]
+    p = pilot(worn=worn, gold=5455)
+    p.w.inven = [dict(i, item=24 + (0 if k == 0 else k + 1)) for k, i in enumerate(p.w.inven)]   # (no bow: slot b)
+    p.w.flags = {"res_acid": "g", "res_elec": "eg", "res_fire": "g", "res_cold": "cg", "see_invis": "a", "free_act": "a",
+                 "res_dark": "h"}
+    p.w.depth, p.w.in_dungeon = 0, False
+    p.town_reserve = lambda: 500
+    p.flavour_of = lambda it: None
+    p.stores_seen = {6: {"prices": {"ring of protection [+9]": 2240, "amulet of slow digestion": 320}},
+                     2: {"prices": {"metal brigandine armour (-3) [19,+0]": 1248, "large leather shield [4,+0]": 187,
+                                    "pair of hard leather boot [3,+4]": 643}},
+                     7: {"prices": {"large metal shield [5,+3]": 2775}}}
+    text = p.gear_review()
+    ok = ("c) a Ring of Resist Cold: res_cold also from g)" in text and "e) an Amulet of Resist Lightning" in text
+          and "ring of protection [+9] for 2240 at the Magic Shop (6): +9 AC (in the free slot)" in text
+          and "brigandine" not in text and "missing, most wanted first: resist poison" in text)
+    return ok, text.replace("\n", " | ")
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

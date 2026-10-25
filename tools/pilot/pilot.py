@@ -6049,6 +6049,8 @@ class Pilot:
             return {"ok": True, "text": self.monster_info(" ".join(args).replace("_", " "))}
         if c == "drainers":
             return {"ok": True, "text": self.drainers_info(args)}
+        if c == "gear":
+            return {"ok": True, "text": self.gear_review()}
         if self.dead and c not in ("attention", "quit", "orders", "events", "news", "map", "inventory",
                                    "note", "view", "say", "viewmap", "journal") and \
                 not (c == "goal" and args[:1] == ["resurrect"]):
@@ -7415,6 +7417,115 @@ class Pilot:
                         better.append(f"{chr(97 + i['item'])}) {i['name']} (AC {ac} vs {ac_on} worn)")
         return ("Gear: empty slots: " + (", ".join(empty) or "none")
                 + ("; better than worn: " + "; ".join(better) if better else ""))
+
+    # --- the gear review (the user, 10-25: a between-mission gear step; read-only) ------------------------------
+    # what the abilities are worth to a warrior at 500-1000 ft, best first (the Advisor's memos: paralysis, poison
+    # breath, blindness and confusion stop a melee character; hold life and the base four resists next)
+    GEAR_WANTED = (("free_act", "Free Action"), ("see_invis", "See Invisible"), ("res_pois", "resist poison"),
+                   ("res_blind", "resist blindness"), ("res_conf", "resist confusion"), ("hold_life", "hold life"),
+                   ("res_fire", "resist fire"), ("res_cold", "resist cold"), ("res_elec", "resist lightning"),
+                   ("res_acid", "resist acid"), ("res_fear", "resist fear"), ("res_nexus", "resist nexus"),
+                   ("res_sound", "resist sound"), ("res_shard", "resist shards"), ("res_nether", "resist nether"),
+                   ("res_dark", "resist darkness"), ("res_lite", "resist light"), ("slow_digest", "slow digestion"),
+                   ("regen", "regeneration"), ("telepathy", "telepathy"), ("speed", "speed"))
+    EQUIP_LETTER = "abcdefghijkl"           # the flags grid's columns: weapon, bow, 2 rings, amulet, light, body...
+    # jewellery by what it gives (shop names are lower case and cut: "ring of protection [+9]")
+    JEWEL_FLAGS = (("free action", "free_act"), ("see invisible", "see_invis"), ("resist poison", "res_pois"),
+                   ("resist fire and cold", "res_fire res_cold"), ("resist fire", "res_fire"),
+                   ("resist cold", "res_cold"), ("resist lightning", "res_elec"), ("resist acid", "res_acid"),
+                   ("slow digestion", "slow_digest"), ("feather fall", "feather"), ("hold life", "hold_life"),
+                   ("regeneration", "regen"), ("esp", "telepathy"), ("telepathy", "telepathy"))
+    SHOP_SLOT = (("shield", "shield"), ("cap", "helm"), ("helm", "helm"), ("crown", "helm"), ("glov", "gloves"),
+                 ("gauntlet", "gloves"), ("cesti", "gloves"), ("boot", "boots"), ("cloak", "cloak"),
+                 ("armour", "body armour"), ("mail", "body armour"), ("leather", "body armour"),
+                 ("robe", "body armour"), ("rob ", "body armour"))
+
+    def jewel_gives(self, name):
+        n = name.lower()
+        out = set()
+        for key, fl in self.JEWEL_FLAGS:
+            if key in n:
+                out |= set(fl.split())
+                if key == "resist fire and cold":
+                    break
+        return out
+
+    def gear_review(self):
+        """Gear as a whole, for the between-mission step: abilities had and missing, worn pieces whose abilities
+        another piece already gives (a free slot), pack items better than worn, and shop stock (as last seen) that
+        would improve a slot within the gold the essentials leave. Read-only: it changes nothing."""
+        w = self.w
+        worn, pack = w.items(equip=True), w.items()
+        flags = w.flags or {}
+        gold = w.ind.get("gold", [0])[0]
+        spare = gold - self.town_reserve()
+        out = [f"Gold {gold} ({max(0, spare)} beyond the essentials' reserve); AC {(w.ind.get('armor') or [0])[0]}"]
+        have = [lab for f, lab in self.GEAR_WANTED if flags.get(f)]
+        miss = [lab for f, lab in self.GEAR_WANTED if not flags.get(f)]
+        out.append("Abilities: " + (", ".join(have) or "none") + " | missing, most wanted first: " +
+                   (", ".join(miss[:8]) or "none"))
+
+        def letter(it):
+            return self.EQUIP_LETTER[it["item"] - 24] if 24 <= it["item"] < 24 + len(self.EQUIP_LETTER) else "?"
+        # worn pieces whose every ability is given by another piece too, and no AC or pluses of their own
+        free = []
+        for it in worn:
+            L = letter(it)
+            gives = [f for f, sl in flags.items() if L in (sl or "")]
+            if it["tval"] in (40, 45) and gives and all(len((flags.get(f) or "").replace(L, "")) > 0 for f in gives) \
+                    and not re.search(r"\[[+-]?\d+|\([+-]\d+", it["name"]):
+                others = sorted({c for f in gives for c in (flags.get(f) or "") if c != L})
+                free.append((it, f"{L}) {it['name']}: {', '.join(gives)} also from "
+                                 f"{', '.join(o + ')' for o in others)}"))
+        if free:
+            out.append("Redundant (the slot is free for something else): " + "; ".join(t for _, t in free))
+        # the pack, against what's worn
+        gl = self.gear_line()
+        out.append(gl)
+        # shops, as last seen
+        ideas = []
+        worn_ac = {}
+        for slot, tvals, k in self.SLOTS:
+            on = [i for i in worn if i["tval"] in tvals]
+            worn_ac[slot] = (min((self.armour_ac(i["name"]) or 0) for i in on) if len(on) >= k else -1,
+                             any(letter(i) in "".join(flags.values()) for i in on), on)
+        free_tv = {it["tval"] for it, _ in free}
+        for store, st in sorted(self.stores_seen.items()):
+            mult = 1
+            for name, price in (st.get("prices") or {}).items():
+                if price > max(0, spare):
+                    continue
+                lab = f"{name} for {price} at the {self.STORE_LABEL.get(store, store)} ({store})"
+                if name.startswith(("ring of", "amulet of")):
+                    tv = 45 if name.startswith("ring") else 40
+                    gives = self.jewel_gives(name) - {f for f, sl in flags.items() if sl}
+                    pr = re.search(r"protection \[\+(\d+)\]", name)
+                    slot_free = tv in free_tv or sum(1 for i in worn if i["tval"] == tv) < (2 if tv == 45 else 1)
+                    if slot_free and (gives or pr):
+                        ideas.append(lab + (f": {', '.join(sorted(gives))}" if gives else f": +{pr.group(1)} AC")
+                                     + " (in the free slot)")
+                    elif gives & {"free_act", "see_invis", "res_pois", "hold_life"}:
+                        ideas.append(lab + f": {', '.join(sorted(gives))} (needs a slot)")
+                    continue
+                slot = next((sl for key, sl in self.SHOP_SLOT if key in name), None)
+                ac = self.armour_ac(name)
+                if not slot or ac is None or slot not in worn_ac:
+                    continue
+                ac_on, gives_flags, on = worn_ac[slot]
+                if gives_flags or (on and self.is_artifact(on[0]["name"])):
+                    continue              # (the worn piece gives an ability: AC alone isn't worth losing it)
+                if ac > ac_on + 2:
+                    ideas.append(lab + f": AC {ac} vs {max(ac_on, 0)} worn ({slot})")
+        out.append("Shop ideas (prices last seen): " + ("; ".join(ideas[:8]) if ideas else "none within the gold"))
+        # stats and standing restores
+        drained = [n for i, n in enumerate(self.STAT_NAMES) if len(w.ind.get(f"stat{i}", [])) >= 2
+                   and w.ind[f"stat{i}"][0] < w.ind[f"stat{i}"][1]]
+        if drained:
+            out.append("Drained: " + ", ".join(drained) + " (Restore at the Alchemist ~" +
+                       f"{self.price_of('Restore Strength', 5) or 480}; STR and DEX set the blows, CON the HP)")
+        if not any(i["tval"] == 19 for i in worn):
+            out.append("Bow slot empty (the Pilot doesn't shoot: a launcher is only worth it for its abilities)")
+        return "\n".join(out)
 
     # ---- the compact report (what the Navigator reads after every wait) ----
     # The full report() ran to ~5 KB (the pack twice, every order, a 23 x 67 map

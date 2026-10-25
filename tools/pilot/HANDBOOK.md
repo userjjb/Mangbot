@@ -86,6 +86,7 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 | `monster NAME` | this server's data for a monster, whether a danger rule fires, **the hunt check's verdict** (turns, HP on average and in a bad fight) and **what a kill drops** |
 | `rule drop NAME [DEPTH]`, `rule fight NAME ...`, `rule feeling KIND FEELING [LEVEL]`, `rule unknown TVAL LEVEL`, `rule owner NAME`, `rule const WORD` | the Advisor's rulebook, built from the server's source (no Pilot needed) |
 | `drainers`, `gate FEET [recall]`, `debt`, `pack`, `equip`, `map [R]`, `status full` | queries |
+| `gear` | the gear review (in town, before `plan town`): abilities had and missing, worn jewellery made redundant by another piece (a free slot), and shop stock that would improve a slot within your spare gold. Buy with `plan town buy STORE/NAME@MAX`; the Pilot wears it |
 | `say TEXT`, `journal "situation \| decision \| why"`, `complain TEXT` | the user, your journal, what you lacked |
 | `stop` | stop the goal and the plan (safe idle) |
 
