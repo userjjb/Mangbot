@@ -134,6 +134,11 @@
   "kind": "Staff of Earthquakes",
   "source": "identified"
  },
+ "Gold Speckled Potion": {
+  "junk": true,
+  "kind": "Potion of Blindness",
+  "source": "sold in a shop"
+ },
  "Gold Wand": {
   "junk": false,
   "kind": "Wand of Light",
@@ -223,6 +228,11 @@
   "junk": false,
   "kind": "Wand of Trap/Door Destruction",
   "source": "Advisor L_items (Dive03 09-27 12:19:15)"
+ },
+ "Oak Staff": {
+  "junk": true,
+  "kind": "Staff of Summoning",
+  "source": "identified"
  },
  "Orange Speckled Potion": {
   "junk": false,
@@ -382,6 +392,11 @@
  "Silver Amulet": {
   "junk": false,
   "kind": "Amulet of Resist Acid",
+  "source": "identified"
+ },
+ "Silver Staff": {
+  "junk": false,
+  "kind": "Staff of *Destruction*",
   "source": "identified"
  },
  "Steel-Plated Wand": {

@@ -492,3 +492,4 @@
 - 06:45:06 town 100% | 06:45 idle in town, restocked (WoR 3, CCW 15, Phase 20), 2263g | mission over
 - 07:43:23 town 100% | town, ready, 3 WoR 15 CCW 20 Phase | skip shopping, trip 500-650 via recall | 30 min budget, kit full
 - 07:46:53 town 100% | ogre band at 650, recalled home, WoR 1 | plan town to rebuy WoR to 3 | continue trip
+- 08:07:22 town 100% | 08:07 town, 2724g, WoR 2, 30-min mission | plan town buy WoR:3, Identify:2 (for Oak/Silver staffs), Enchant To-Dam:3@150 | 3rd WoR for recall dive per handbook; unknown staffs might be Teleportation; (+0,+5) weapon benefits from To-Dam

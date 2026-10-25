@@ -140,6 +140,7 @@ class Mover:
         self.run_start_pos = None
         self.free_dist, self.free_away = None, 0
         self.no_pf_at = set()         # squares where a server pathfind made no progress
+        self.run_hist = []            # (level_t, square, t) of the free runs started lately (run_loop)
         self.pf_target = None
 
     RUN_MIN = 3
@@ -248,6 +249,7 @@ class Mover:
         goals), carries on towards the goals from wherever the run ended."""
         goals = self.goals if keep_goals else None
         self.stop()
+        self.run_hist = [h for h in self.run_hist if gnow() - h[2] < 60] + [(self.w.level_t, self.w.pos, gnow())]
         self.resume_goals = goals
         self.goals = {"free-run"}
         self.path = []
@@ -257,6 +259,13 @@ class Mover:
         self.free_pos = self.w.pos
         self.c.send(f"custom . dir={d}")
         self.log(run="free", dir=d, frm=self.w.pos)        # (runs were only event acks: the Advisor)
+
+    def run_loop(self, pos=None):
+        """Two free runs started from this square in the last minute: the server's run is taking us round a
+        loop (m31: a cave corridor led every run north from 16,109 back to 16,112, 157 times in 8 minutes; the
+        'moving away' check is by straight-line distance, which didn't grow). Walk from here instead."""
+        pos = pos or self.w.pos
+        return sum(1 for lt, q, t in self.run_hist if lt == self.w.level_t and q == pos and gnow() - t < 60) >= 2
 
     def path_run(self, target):
         """Server pathfind to target (a square on our path): the server counts it as running, and with
@@ -561,7 +570,7 @@ class Mover:
                 self.path_run(self.path[min(self.done + self.PF_MAX, len(self.path)) - 1])
                 return "moving"
             if self.in_corridor() and len(self.path) - self.done >= 3 and self.runs_ok(free=True) \
-                    and self.replans <= self.max_replans:
+                    and self.replans <= self.max_replans and not self.run_loop():
                 self.replans += 1          # (free runs count against the replan budget)
                 self.free_run(d, keep_goals=True)
                 return "moving"

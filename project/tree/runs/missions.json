@@ -1565,10 +1565,33 @@
   "label": "m31",
   "nick": "dive04",
   "start": "2026-10-25 07:42",
-  "end": null,
+  "end": "2026-10-25 08:07",
   "navigator": "sonnet",
   "effort": "medium",
   "report": "compact",
-  "notes": "baseline matrix 1/4 (the user, 10-25): Sonnet medium, 30 min; order S-med, O-high, O-med, S-high; after the provisions, potion and m30 fixes"
+  "notes": "baseline matrix 1/4 (the user, 10-25): Sonnet medium, 30 min; order S-med, O-high, O-med, S-high; after the provisions, potion and m30 fixes",
+  "tokens": {
+   "turns": 11,
+   "input": 22,
+   "output": 4031,
+   "cache_read": 202931,
+   "cache_write": 25952,
+   "write_5m": 25952,
+   "write_1h": 0,
+   "model": "claude-sonnet-5-5",
+   "final_usage_turns": 11,
+   "usd": 0.126,
+   "transcript": "agent-a71261e99e3f5e07e.jsonl"
+  }
+ },
+ {
+  "label": "m32",
+  "nick": "dive04",
+  "start": "2026-10-25 08:06",
+  "end": null,
+  "navigator": "opus",
+  "effort": "high",
+  "report": "compact",
+  "notes": "baseline matrix 2/4: Opus high, 30 min; same Pilot as m31 (cave-run loop not fixed)"
  }
 ]

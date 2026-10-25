@@ -846,6 +846,36 @@ def fear_cure_order():
     return ok, f"all three: {both}; no Heroism: {bold}; only Berserk: {last}"
 
 
+@case
+def run_loop_walks():
+    """m31: explore's free runs looped 157 times through a cave corridor (16,112 -> 16,111 -> 16,109 -> north,
+    back round to 16,112). Two free runs from one square within a minute: walk from it instead."""
+    import mover as M
+    class C:
+        def __init__(self):
+            self.sent = []
+
+        def send(self, x):
+            self.sent.append(x)
+    w = type("Wd", (), {"pos": (16, 109), "level_t": 3.0})()
+    m = M.Mover.__new__(M.Mover)
+    m.w, m.c, m.log = w, C(), lambda **k: None
+    m.goals, m.path, m.running, m.free, m.run_hist = None, [], None, None, []
+    m.stop = lambda: None
+    first = m.run_loop()
+    m.free_run(8)
+    once = m.run_loop()
+    m.free_run(8)
+    twice = m.run_loop()
+    w.pos = (16, 112)
+    other = m.run_loop()
+    w.level_t = 4.0
+    w.pos = (16, 109)
+    new_level = m.run_loop()
+    ok = not first and not once and twice and not other and not new_level
+    return ok, f"no runs: {first}; one: {once}; two: {twice}; another square: {other}; a new level: {new_level}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

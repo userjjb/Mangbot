@@ -201,6 +201,10 @@ the Advisor (to_advisor 10-25 emergency-estimator).
 **Fear cure order (the user, 10-25, during the baseline matrix m31-m34):** Heroism, then Boldness (only without
 Heroism), then Berserk (`fear_cure`; unit `fear_cure_order`). **Committed but NOT loaded: the user said not to
 restart the Pilot during the matrix; restart it after m34.**
+**Cave run loop (m31, 07:49-07:57):** explore's free runs looped 157x through a cave corridor (the server's run
+followed it back to the start; 'moving away' is straight-line). Fix: `Mover.run_loop` -- two free runs from one
+square within a minute -> walk from it (unit `run_loop_walks`). **Committed, NOT loaded** (asked the user whether to
+load it mid-matrix; no answer yet). m31 report saved.
 **The Brown mold (m25) fixed:** `stairs_beside_still` -- stairs underfoot or a step away beside a stationary monster
 harmless for a turn (no drain/paralyse/disenchant, melee < 25% HP) are taken, not stepped away from; Dive presses '>'
 only on its stairs (a step-away's "arrived" pressed it 6 squares off). Unit `stairs_beside_mold`; live set-piece

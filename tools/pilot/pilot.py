@@ -444,7 +444,7 @@ class Explore(Goal):
         # not how we get there; without runs it zig-zagged diagonally down two-wide corridors, m25, the user)
         m = p.mover
         if m.path and not m._monster_near(5) and \
-                (m.in_corridor() or len(m.path) <= 2) and self.no_run_at != w.pos:
+                (m.in_corridor() or len(m.path) <= 2) and self.no_run_at != w.pos and not m.run_loop(w.pos):
             d = direction(w.pos, m.path[0])
             # Two-wide corridors: the nearest frontier is always in the other lane,
             # so plans alternate diagonals (9, 7, 9...) and each diagonal run is a
