@@ -169,6 +169,13 @@ M1 still passes. HANDBOOK updated.
 at 650 ft, fire burned WoR), $0.56; two DEX drains (dart trap on arrival; an unseen wailer, likely a Quasit, as in
 m29); a 6-min stall beside a '>' refused as "just fled"; the `band` condition fires on weak bands; plan town can't
 make pack room. Report `reports/2026-10-25-mission30.md`. Not yet fixed: all of these (listed to the user).
+**Provisions (the user, 10-25: food AND Satisfy Hunger, oil by the handful, potions never used):** one food
+source (rations); plan town eats rations to Full (no digestion in town, dungeon.c) and fills the lantern to 9000+
+(FUEL_TOPUP; flasks bought only for that), kits carry 3 rations and no flasks; other food, surplus flasks and the
+unused Treasure/Object Location staffs are sold (USEFUL_DEVICES keeps only Door/Stair Location); near a trip's end
+(`trip_minutes_left`: recall pending, or <=3 min, or <=20 while Full) spare rations/flasks go first for room.
+Unit `provisions_one_food_no_oil`; live plan town: pack 18 -> 10 slots. Proposed, not built: Speed in emergencies,
+one fear cure (Heroism; sell Boldness/Berserk).
 **The Brown mold (m25) fixed:** `stairs_beside_still` -- stairs underfoot or a step away beside a stationary monster
 harmless for a turn (no drain/paralyse/disenchant, melee < 25% HP) are taken, not stepped away from; Dive presses '>'
 only on its stairs (a step-away's "arrived" pressed it 6 squares off). Unit `stairs_beside_mold`; live set-piece

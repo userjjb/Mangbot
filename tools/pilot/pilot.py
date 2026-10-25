@@ -1704,6 +1704,11 @@ class TownKit(Goal):
                 self.done_log.append(f"quaffed {pot['name']}")
                 self.t = now + 1.0
                 return None
+            # leave town fed and fuelled: no food is digested in town (dungeon.c), so eat rations to Full here,
+            # and top the lantern up (the user, 10-25: no oil and one food stack in the pack)
+            if p.provision_step(self):
+                self.t = now + 1.5
+                return None
             # an essential still missing because the shop had none: one more look
             gap = p.supply_gate(p.planned_depth(), True)
             if gap and not self.retried and any("in stock" in l for l in self.done_log):
@@ -3705,7 +3710,7 @@ class Pilot:
 
     KIT_KINDS = ("Cure Light Wounds", "Cure Serious Wounds", "Cure Critical Wounds", "Healing", "Phase Door",
                  "Word of Recall", "Teleport", "Identify", "Magic Mapping", "Speed", "Heroism", "Berserk",
-                 "Restore", "Satisfy Hunger", "Deep Descent", "Boldness", "Resist Poison")
+                 "Restore", "Deep Descent", "Boldness", "Resist Poison")
 
     def pack_value(self, it):
         """An item's worth to the pack, for making room: kit consumables, kept items,
@@ -3718,11 +3723,13 @@ class Pilot:
             spares = sorted((i for i in self.w.items() if i["tval"] == TV_LITE), key=lambda i: -self.iv(i["name"]).value)
             if spares and spares[0]["item"] != it["item"]:
                 return self.iv(n).value * self.pay_cut(TV_LITE)
-        if it["tval"] == TV_FOOD and "Mushroom" not in n:
-            meals = sum(i["number"] for i in self.w.items() if i["tval"] == TV_FOOD and "Mushroom" not in i["name"]) + \
-                sum(i["number"] for i in self.w.items() if "Satisfy Hunger" in i["name"])
-            if meals - it["number"] >= 5:
-                return self.iv(n).value * self.pay_cut(TV_FOOD) * it["number"]
+        # One food source, rations (eaten blind or confused; a Scroll of Satisfy Hunger fills to just under
+        # Gorged): other food, flasks beyond what the lantern needs, and near a trip's end the spare rations
+        # and flasks are worth what they sell for (the user, 10-25: food, oil and potions fill the pack)
+        if it["tval"] == TV_FOOD and "Mushroom" not in n and ("Ration" not in n or self.provisions_spare()):
+            return self.iv(n).value * self.pay_cut(TV_FOOD) * it["number"]
+        if it["tval"] == TV_FLASK and ((self.lantern_fuel() or 0) >= self.FUEL_TOPUP or self.provisions_spare()):
+            return self.iv(n).value * self.pay_cut(TV_FLASK) * it["number"]
         if it["tval"] in (TV_FOOD, TV_FLASK, TV_LITE) or any(k in n for k in self.KIT_KINDS) or self.is_kept(n) or \
                 re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", n)).lower() in self.ability_sources:
             return float("inf")
@@ -5909,18 +5916,23 @@ class Pilot:
                  "Restore Strength": (75, 5, 490), "Restore Dexterity": (75, 5, 490),
                  "Restore Constitution": (75, 5, 490), "Restore Charisma": (75, 5, 490)}
     # stock levels per stage (the Advisor's shops memo §3 and the Borg minimums):
-    # A to 500 ft, B to 1000 ft, C deeper. Food counts rations and Satisfy Hunger
-    KITS = {"A": {"Word of Recall": 2, "Cure Light Wounds": 5, "Phase Door": 5, "Flask of oil": 3,
-                  "Ration of Food": 3},
+    # A to 500 ft, B to 1000 ft, C deeper. No flasks: the town visit tops the lantern up instead (the user,
+    # 10-25: oil, food and potions nobody uses fill the pack). Rations: one stack, eaten to Full before a trip
+    KITS = {"A": {"Word of Recall": 2, "Cure Light Wounds": 5, "Phase Door": 5, "Ration of Food": 3},
             "B": {"Word of Recall": 2, "Cure Critical Wounds": 4, "Cure Serious Wounds": 4, "Phase Door": 10,
-                  "Flask of oil": 5, "Ration of Food": 4},
+                  "Ration of Food": 3},
             "C": {"Word of Recall": 2, "Cure Critical Wounds": 6, "Cure Serious Wounds": 4, "Phase Door": 12,
-                  "Flask of oil": 5, "Ration of Food": 4},
+                  "Ration of Food": 3},
             "none": {}}
+    # The lantern leaves town with this much fuel: a full lantern (15000) burned ~7500 in ~35 dungeon minutes
+    # (m29-m30), and a trip ends within 30; a flask adds 7500 (object.txt; FUEL_LAMP 15000, mdefines.h)
+    FUEL_TOPUP, FLASK_FUEL = 9000, 7500
     # devices never sold by the kit (the Advisor's rulebook-r3 memo: escapes, travel, detection and
     # mapping, Perception, Stone to Mud, healing)
-    USEFUL_DEVICES = ("Teleport", "Recall", "Deep Descent", "Detect", "Location", "Mapping", "Enlightenment",
+    USEFUL_DEVICES = ("Teleport", "Recall", "Deep Descent", "Detect", "Door/Stair Location", "Mapping", "Enlightenment",
                       "Perception", "Stone to Mud", "Cure Serious", "Cure Critical", "Curing", "Healing")
+    # (only Door/Stair Location of the Location devices: the trip plan uses it on arrival. Treasure and Object
+    # Location were never used in 30 missions and held two slots -- the user, 10-25: the pack fills up)
     # (not Cure Light Wounds: ~15-20 HP a charge at 270 HP, a turn each, a pack slot -- the user, m25)
     STAT_FULL = {"STR": "Strength", "DEX": "Dexterity", "CON": "Constitution"}
 
@@ -5954,6 +5966,39 @@ class Pilot:
         if seen:
             return min(seen)
         return self.KIT_ITEMS.get(kind, (0, 0, None))[2]
+
+    def lantern_fuel(self):
+        """Turns of fuel in the lantern (worn, else the best in the pack), or None without one."""
+        lamps = [i for i in self.w.items(equip=True) + self.w.items() if "Lantern" in i["name"]]
+        fuels = [int(m.group(1)) for i in lamps for m in [re.search(r"with (\d+) turns", i["name"])] if m]
+        return max(fuels) if fuels else None
+
+    def trip_minutes_left(self):
+        """How soon this trip should end, in minutes, or None if nobody knows: a Word of Recall under way;
+        else the trip plan's time conditions (minutes>N, time>HH:MM) and its 90-minute cap."""
+        if self.w.recall_pending:
+            return 0.5
+        tp = self.plan
+        if not tp:
+            return None
+        left = [90 - (gnow() - tp.t0) / 60]
+        for _, var, op, val in tp.conds:
+            if var == "minutes" and op in (">", ">="):
+                left.append(float(val) - (gnow() - tp.t0) / 60)
+            elif var == "time" and op in (">", ">="):
+                hh, mm = map(int, val.split(":"))
+                lt = time.localtime()
+                d = (hh * 60 + mm) - (lt.tm_hour * 60 + lt.tm_min + lt.tm_sec / 60)
+                left.append(d + 1440 if d < -720 else d)
+        return max(0.0, min(left))
+
+    def provisions_spare(self):
+        """Near a trip's end, the spare rations and flasks are no longer needed (the user, 10-25: eat, refill,
+        and the rest frees pack slots): Word of Recall under way, or the trip ending within 3 minutes, or
+        within 20 while Full (Full is 10000+ food, ~22 dungeon minutes before Hungry; the lantern leaves town
+        with 9000+ turns)."""
+        left = self.trip_minutes_left()
+        return left is not None and (left <= 3 or (left <= 20 and self.w.hunger >= 4))
 
     def kit_count(self, kind):
         pack = self.w.items()
@@ -6000,7 +6045,11 @@ class Pilot:
         name = it["name"]
         if self.is_crutch(it) and not it.get("equip") and self.town_buyers(it):
             return it["number"]
-        if it.get("equip") or it["tval"] in (TV_FOOD, TV_FLASK, TV_LITE) or any(k in name for k in self.KIT_KINDS) \
+        # (food other than rations, and flasks the lantern doesn't need, are sold: one food source, no oil)
+        spare = (it["tval"] == TV_FOOD and "Ration" not in name and "Mushroom" not in name) or \
+            (it["tval"] == TV_FLASK and (self.lantern_fuel() or 0) >= self.FUEL_TOPUP)
+        if it.get("equip") or (it["tval"] in (TV_FOOD, TV_FLASK, TV_LITE) and not spare) or \
+                any(k in name for k in self.KIT_KINDS) \
                 or (it["tval"] in (55, 65, 66) and any(d in name for d in self.USEFUL_DEVICES)) or self.is_kept(name) or \
                 re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower() in self.ability_sources:
             return 0
@@ -6020,6 +6069,29 @@ class Pilot:
         if iv.kind is None or iv.value <= 0 or iv.value * self.pay_cut(iv.tval) < 1:
             return 0
         return it["number"]
+
+    def provision_step(self, kit):
+        """The town visit's last step: fill the lantern from the flasks bought for it (worn: it refuels the
+        light in hand), then eat rations until Full (at most 3). True if it acted."""
+        w = self.w
+        fuel = self.lantern_fuel()
+        flask = next((i for i in w.items(tval=TV_FLASK)), None)
+        if fuel is not None and fuel < self.FUEL_TOPUP and flask and kit.__dict__.get("fuelled", 0) < 3:
+            worn = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
+            if not worn or "Lantern" not in worn["name"]:
+                return self.wear_light("town kit: the lantern on to refuel it")
+            kit.fuelled = kit.__dict__.get("fuelled", 0) + 1
+            self.cmd(f"custom F item={flask['item']}", f"town kit: fill the lantern ({fuel} turns)", hold=0.8)
+            kit.done_log.append(f"filled the lantern ({fuel} turns)")
+            return True
+        ration = next((i for i in w.items(tval=TV_FOOD) if "Ration" in i["name"]), None)
+        if ration and w.hunger <= 3 and kit.__dict__.get("ate", 0) < 3:
+            kit.ate = kit.__dict__.get("ate", 0) + 1
+            self.cmd(f"eat {ration['item']}", "town kit: eat to Full before the trip", hold=1.0)
+            if kit.ate == 1:
+                kit.done_log.append("ate to Full")
+            return True
+        return False
 
     def broke_for_recall(self):
         """In town with fewer than 2 Words of Recall and not the gold for the next one."""
@@ -6083,17 +6155,13 @@ class Pilot:
                 k = "Cure Serious Wounds" if want >= 500 else "Cure Light Wounds"
                 add(2, k, planned(k) + cures - total)
             add(2, "Phase Door", ph)
-        lamp = next((i for i in self.w.items(equip=True) + self.w.items() if "Lantern" in i["name"]), None)
-        if lamp:
-            lt = re.search(r"with (\d+) turns", lamp["name"])
-            if lt and int(lt.group(1)) < 1000:
-                add(2, "Flask of oil", 1)
+        fuel = self.lantern_fuel()
+        if fuel is not None and fuel < self.FUEL_TOPUP:
+            add(2, "Flask of oil", -(-(self.FUEL_TOPUP - fuel) // self.FLASK_FUEL))
         for stat, (cur, top) in (self.seen_drained or {}).items():
             if stat in self.STAT_FULL and cur < top:
                 add(3, f"Restore {self.STAT_FULL[stat]}", 1)
         for kind, n in self.KITS.get(kit, {}).items():
-            if kind == "Flask of oil" and not lamp:
-                continue
             add(4, kind, n)
         # NAME:N means "have N" (m26's "Word of Recall:3" bought 3 more, to 5)
         for name, n, cap, store in buylist:

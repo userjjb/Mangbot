@@ -62,6 +62,14 @@ class W:
     def hp_frac(self):
         return self.hp[0] / self.hp[1]
 
+    @property
+    def hunger(self):
+        return self.ind.get("hunger", [3])[0]
+
+    @hunger.setter
+    def hunger(self, v):
+        self.ind["hunger"] = [v]
+
     def items(self, *, tval=None, name=None, equip=False):
         return [i for i in self.inven if i["equip"] == equip and (tval is None or i["tval"] == tval)]
 
@@ -189,7 +197,7 @@ def shop_pay_by_owner():
 # --- the town kit -----------------------------------------------------------------------------
 @case
 def town_kit_tiers():
-    """Dive04's pack after m23: WoR to 2 first, Restore CON before the kit's extras, the kit's CSW/Phase/flasks."""
+    """Dive04's pack after m23: WoR to 2 first, Restore CON before the kit's extras, the kit's CSW/Phase."""
     pack = [("3 Rations of Food", 80), ("3 Flasks of oil", 77), ("2 Potions of Cure Serious Wounds", 75),
             ("6 Potions of Cure Critical Wounds", 75), ("9 Scrolls of Phase Door", 70),
             ("a Scroll of Word of Recall {@R650}", 70), ("a Brass Lantern (with 6370 turns of light)", 39)]
@@ -198,8 +206,9 @@ def town_kit_tiers():
     p = pilot(w)
     p.seen_drained = {"CON": (17, 18)}
     need = [(t, k, n) for t, k, s, n, c in p.town_needs(None, ())]
+    # (no flasks: the lantern's 6370 turns and the 3 flasks reach 9000; rations: kit B's 3, had)
     want = [(1, "Word of Recall", 1), (3, "Restore Constitution", 1), (4, "Cure Serious Wounds", 2),
-            (4, "Phase Door", 1), (4, "Flask of oil", 2), (4, "Ration of Food", 1)]   # (food 3 of kit B's 4)
+            (4, "Phase Door", 1)]
     return need == want, f"{need}"
 
 
@@ -627,6 +636,54 @@ def loot_owed_and_valuables():
         again == (True, (20, 21)) and far == (True, (20, 40)) and plain is False
     return ok, (f"blocked {blocked}, owed {sorted(owed)}; clear: {first}; cut short: tries {tries}; mold in view: "
                 f"{again} (with a Jackal 2 off); wand 20 off: {far}; plain item 20 off fetched: {plain}")
+
+
+@case
+def provisions_one_food_no_oil():
+    """The user (10-25): food AND Satisfy Hunger, flasks by the handful. One food source (rations), eaten to Full
+    in town; the lantern topped up to 9000 in town (flasks bought for it, then used); no oil carried. Near a
+    trip's end the spare rations and flasks go first when loot needs room."""
+    def make(pack, hunger=3, worn=None):
+        p = pilot(pack=pack, worn=worn)
+        p.w.depth, p.w.depth_ft, p.w.in_dungeon = 0, 0, False
+        p.w.ind["hunger"] = [hunger]
+        p.plan = None
+        p.w.recall_pending = False
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append(line)
+        return p
+    low = make([("3 Rations of Food", 80)], worn=[("a Brass Lantern (with 2000 turns of light)", 39, 50)])
+    flasks = [(t, k, n) for t, k, s, n, c in low.town_needs("C", ()) if k == "Flask of oil"]
+    full = make([("3 Rations of Food", 80)], worn=[("a Brass Lantern (with 12000 turns of light)", 39, 50)])
+    none = [k for t, k, s, n, c in full.town_needs("C", ()) if k == "Flask of oil"]
+    # the town step: fill the lantern first, then eat
+    kit = P.TownKit("C")
+    tw = make([("a Flask of oil", 77), ("3 Rations of Food", 80)], hunger=2,
+              worn=[("a Brass Lantern (with 2000 turns of light)", 39, 50)])
+    tw.provision_step(kit)
+    first = tw.cmds[-1]
+    tw.w.inven = [i for i in tw.w.inven if i["tval"] != 77]
+    tw.w.inven[0]["name"] = "a Brass Lantern (with 9500 turns of light)"
+    tw.provision_step(kit)
+    second = tw.cmds[-1]
+    tw.w.ind["hunger"] = [4]
+    third = tw.provision_step(kit)
+    # pack values and town sales
+    pv = make([("3 Rations of Food", 80), ("2 Scrolls of Satisfy Hunger", 70), ("a Piece of Elvish Waybread", 80),
+               ("2 Flasks of oil", 77)], worn=[("a Brass Lantern (with 12000 turns of light)", 39, 50)])
+    it = {i["name"]: i for i in pv.w.inven if not i["equip"]}
+    kept = pv.pack_value(it["3 Rations of Food"]) == float("inf")
+    cheap = [n for n in ("2 Scrolls of Satisfy Hunger", "a Piece of Elvish Waybread", "2 Flasks of oil")
+             if pv.pack_value(it[n]) < float("inf")]
+    pv.w.recall_pending = True
+    spare = pv.pack_value(it["3 Rations of Food"]) < float("inf")
+    sells = [n for n in it if pv.town_sell_count(it[n])]
+    ok = flasks == [(2, "Flask of oil", 1)] and not none and first.startswith("custom F") and \
+        second.startswith("eat") and third is False and kept and len(cheap) == 3 and spare and \
+        "a Piece of Elvish Waybread" in sells and "2 Flasks of oil" in sells and "3 Rations of Food" not in sells
+    return ok, (f"lantern 2000: buy {flasks}; 12000: {none}; town step: {first!r}, then {second!r}, then Full: "
+                f"{third}; rations kept {kept}; worth their price: {cheap}; recall pending, rations spare: {spare}; "
+                f"town sells {sells}")
 
 
 def main():
