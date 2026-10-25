@@ -1,0 +1,162 @@
+{
+ "id": "A2L",
+ "tag": "A2L-20261025-073330",
+ "depth_ft": 350,
+ "start": "2026-10-25 07:33:30",
+ "checks": {
+  "Word of Recall within 2 s of first sight": {
+   "pass": true,
+   "detail": "seen at 3.6160738468170166, recall read at 3.5"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [138, 333]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   303,
+   303
+  ],
+  "hp_min": [
+   138,
+   333
+  ],
+  "attention": [
+   [
+    3.4,
+    "danger_seen",
+    "Orc captain (rated 4: lethal until clvl 26) in view: heading for the stairs"
+   ],
+   [
+    3.5,
+    "goal_failed",
+    "flee (Orc captain): no stairs known"
+   ],
+   [
+    3.5,
+    "emergency",
+    "couldn't reach the stairs with 1 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    3.6,
+    "band",
+    "a band within 10 squares: Black orc \u00d715, Hill orc \u00d711, Uruk \u00d710, Snaga \u00d75, Half-orc \u00d72, Lugdush, the"
+   ],
+   [
+    4.3,
+    "emergency",
+    "HP 247 within 3 turns of the worst (298): quaffed a Potion of Speed {for sale 200} first"
+   ],
+   [
+    4.9,
+    "emergency",
+    "HP 229 within 3 turns of the worst (298): read Phase Door (Black orc, Hill orc, Lugdush, the Uruk, S"
+   ],
+   [
+    6.9,
+    "tactic",
+    "a hard fight with Hill orc, Snaga: quaffed a Potion of Berserk Strength (+to-hit, +30 HP, no fear)"
+   ],
+   [
+    12.0,
+    "fight_going_badly",
+    "HP 214/333 fighting Black orc, Hill orc, Snaga"
+   ],
+   [
+    13.2,
+    "emergency_loop",
+    "third emergency in 90 s and no stairs known nearby: consider Word of Recall or leaving this area"
+   ],
+   [
+    13.2,
+    "emergency",
+    "low HP: read Phase Door (Black orc, Hill orc, Snaga, Uruk adjacent)"
+   ],
+   [
+    16.3,
+    "emergency",
+    "low HP: losing ~21 HP/s, more than the best potion heals (25): escaping instead"
+   ],
+   [
+    24.9,
+    "emergency",
+    "low HP: quaffed a Potion of Cure Critical Wounds {for sale 200} (losing ~15 HP/s)"
+   ],
+   [
+    29.4,
+    "unseen_attacker",
+    "'It fires an arrow!': something unseen is attacking and no stairs are known: consider Word of Recall"
+   ],
+   [
+    34.4,
+    "emergency",
+    "low HP: quaffed a Potion of Cure Serious Wounds {for sale 200} (losing ~2 HP/s)"
+   ]
+  ],
+  "acts": [
+   [
+    3.5,
+    "custom r item=7",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    4.3,
+    "custom q item=1",
+    "HP 247 within 3 turns of the worst (298): quaff 3 Potions of Speed {for sale 200"
+   ],
+   [
+    4.9,
+    "custom r item=6",
+    "HP 229 within 3 turns of the worst (298): phase door"
+   ],
+   [
+    6.9,
+    "custom q item=3",
+    "a hard fight (Hill orc, Snaga): quaff a Potion of Berserk Strength"
+   ],
+   [
+    13.2,
+    "custom r item=5",
+    "low HP: phase door"
+   ],
+   [
+    24.9,
+    "custom q item=4",
+    "low HP: quaff 15 Potions of Cure Critical Wounds {for sale 200}"
+   ],
+   [
+    34.4,
+    "custom q item=3",
+    "low HP: quaff 4 Potions of Cure Serious Wounds {for sale 200}"
+   ],
+   [
+    36.1,
+    "rest",
+    "rest"
+   ],
+   [
+    37.2,
+    "rest",
+    "rest"
+   ],
+   [
+    38.2,
+    "rest",
+    "rest"
+   ],
+   [
+    41.2,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 8,
+  "phase_reads": 2,
+  "wor_reads": 1,
+  "cures": 2
+ },
+ "end": "2026-10-25 07:36:15",
+ "pass": true
+}

@@ -2783,6 +2783,8 @@ class Pilot:
             return True
         # 2a. Status cures, in combat only (out of combat, rest it off: the
         # user). Stun can become a knock-out; blind or confused can't read.
+        if self.berserk_tick(now):
+            return True
         if self.status_tick(now, mons_near):
             return True
         # 3. Arrival into danger (connected stairs: the way back is underfoot)
@@ -2895,7 +2897,7 @@ class Pilot:
         # 3a'. Slowed to half speed or worse with something on us: a Potion of Speed (m26: Gorged and slowed to
         # -20 among six monsters; the Architect quaffed one by hand)
         if self.our_slowness() >= 2 and (w.adjacent_monsters() or now - w.last_hit_t < 2) and \
-                waited(getattr(self, "speed_t", 0), 40) and not w.flag("fast"):    # (a potion lasts ~20-45 turns)
+                waited(getattr(self, "speed_t", 0), 40) and not self.buff_on("fast"):    # (a potion lasts ~20-45 turns)
             pot = next((i for i in w.items(tval=TV_POTION) if "Speed" in i["name"]), None)
             if pot:
                 self.speed_t = now
@@ -3183,6 +3185,27 @@ class Pilot:
             # something in view but not fighting (asleep, slow): back off over
             # walked ground, out of its sight, and rest there
             return self.retreat_step([m for m in w.monsters if w.dist(m[:2]) <= 7] or w.monsters)
+        # One turn from death (the adjacent monsters' worst turn at our AC is about our HP): get out now --
+        # Teleportation, else Phase Door, rate limit or not. Otherwise Speed first, at the start of an emergency:
+        # +10 doubles our turns against everything here (the user, 10-25; m30's crowd took 303 -> 115 in ~70 s)
+        one_turn = bool(adj) and self.worst_3turns([r for *_, r in adj]) / 3 >= 0.9 * w.hp[0]
+        if one_turn and can_read:
+            tele = next((i for i in w.items(tval=TV_SCROLL) if "Teleportation" in i["name"]), None)
+            if tele or pd:
+                use = tele or pd
+                if not tele:
+                    self.phase_t = now
+                    self.phase_hist.append(now)
+                self.cmd(f"custom r item={use['item']}", f"{why}: one turn from death: {use['name']}", hold=0.6)
+                self.notify("emergency", f"{why}: one turn from death ({', '.join(sorted({r.name for *_, r in adj}))} "
+                                         f"adjacent): read {one_of(use['name'])}")
+                return True
+        sp = next((i for i in w.items(tval=TV_POTION) if "Speed" in i["name"]), None)
+        if sp and not one_turn and not self.buff_on("fast") and waited(getattr(self, "speed_t", 0), 20):
+            self.speed_t = now
+            self.cmd(f"custom q item={sp['item']}", f"{why}: quaff {sp['name']} (an emergency: speed first)", hold=0.6)
+            self.notify("emergency", f"{why}: quaffed {one_of(sp['name'])} first")
+            return True
         # Last resort, started early because it takes 15-34 turns (8-23 s): Word of Recall
         if w.hp_frac < 0.3 and can_read and not self.recall_started(now):
             wor = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
@@ -3752,7 +3775,7 @@ class Pilot:
 
     KIT_KINDS = ("Cure Light Wounds", "Cure Serious Wounds", "Cure Critical Wounds", "Healing", "Phase Door",
                  "Word of Recall", "Teleport", "Identify", "Magic Mapping", "Speed", "Heroism", "Berserk",
-                 "Restore", "Deep Descent", "Boldness", "Resist Poison")
+                 "Restore", "Deep Descent", "Resist Poison")    # (not Boldness: Heroism does all it does, the user)
 
     def pack_value(self, it):
         """An item's worth to the pack, for making room: kit consumables, kept items,
@@ -4323,6 +4346,41 @@ class Pilot:
                                        f"to kill{' while ' + prev if prev else ''}: heading for the stairs")
             return True
         return False
+
+    BUFF_MSGS = {"fast": ("You feel yourself moving faster!", "You feel yourself slow down."),
+                 "hero": ("You feel like a hero!", "The heroism wears off."),
+                 "shero": ("You feel like a killing machine!", "You feel less Berserk.")}
+
+    def buff_on(self, buff):
+        """A timed effect (fast, hero, shero) on now, from the game's start and end messages (the status
+        reply has no indicator for them: `flag("fast")` was always False)."""
+        on, off = self.BUFF_MSGS[buff]
+        last = False
+        for _, t in self.w.messages:
+            if t.startswith(on):
+                last = True
+            elif t.startswith(off):
+                last = False
+        return last
+
+    def berserk_tick(self, now):
+        """A Potion of Berserk Strength at the start of a hard melee fight (the user, 10-25: carried, never used):
+        +30 max HP and 30 healed, +24 to-hit, no fear, -10 AC for 25-50 turns (use-obj.c, xtra1.c). Hard: a
+        unique, or a monster within 5 levels of ours, adjacent; or two or more adjacent and HP under 75%."""
+        w = self.w
+        if not w.in_dungeon or self.buff_on("shero") or not waited(getattr(self, "berserk_t", 0), 30):
+            return False
+        adj = [r for *_, r in w.adjacent_monsters() if "NEVER_MOVE" not in r.flags]
+        hard = any("UNIQUE" in r.flags or r.level >= w.clvl - 5 for r in adj) or (len(adj) >= 2 and w.hp_frac < 0.75)
+        pot = next((i for i in w.items(tval=TV_POTION) if "Berserk" in i["name"]), None)
+        if not (adj and hard and pot):
+            return False
+        self.berserk_t = now
+        self.cmd(f"custom q item={pot['item']}", f"a hard fight ({', '.join(sorted({r.name for r in adj}))}): quaff "
+                                                 f"{pot['name']}", hold=0.6)
+        self.notify("tactic", f"a hard fight with {', '.join(sorted({r.name for r in adj}))}: quaffed "
+                              f"{one_of(pot['name'])} (+to-hit, +30 HP, no fear)", news=True)
+        return True
 
     def status_tick(self, now, mons_near):
         """Quaff the cheapest potion that cures a dangerous status in a fight

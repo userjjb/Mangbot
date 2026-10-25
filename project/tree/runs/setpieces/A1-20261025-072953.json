@@ -1,0 +1,79 @@
+{
+ "id": "A1",
+ "tag": "A1-20261025-072953",
+ "depth_ft": 300,
+ "start": "2026-10-25 07:29:53",
+ "checks": {
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [271, 303]"
+  },
+  "at most 3 Phase Door": {
+   "pass": true,
+   "detail": "0 reads"
+  }
+ },
+ "notes": [
+  "left the level: False; band events: 0"
+ ],
+ "stats": {
+  "hp_start": [
+   303,
+   303
+  ],
+  "hp_min": [
+   271,
+   303
+  ],
+  "attention": [
+   [
+    11.9,
+    "breeders",
+    "3 breeding monsters in view (Giant white rat): leave this level (stairs, or recall) if they get in t"
+   ],
+   [
+    35.1,
+    "tactic",
+    "5 monsters together but weak (~50 worst-case melee a turn vs HP 299): fighting on"
+   ],
+   [
+    54.8,
+    "unseen_attacker",
+    "heard a door burst open: something is coming; be ready to leave"
+   ]
+  ],
+  "acts": [
+   [
+    47.8,
+    "custom ,",
+    "pick up: a Ring of Slow Digestion."
+   ],
+   [
+    48.7,
+    "custom ,",
+    "pick up: a Dagger (1d4)."
+   ],
+   [
+    51.6,
+    "custom ,",
+    "pick up: a Ration of Food."
+   ],
+   [
+    52.5,
+    "custom ,",
+    "pick up: a Whip (1d3)."
+   ],
+   [
+    59.8,
+    "custom k item=11 value=1",
+    "autodestroy a Dagger (1d4) {cursed}"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-25 07:33:23",
+ "pass": true
+}

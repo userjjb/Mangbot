@@ -789,6 +789,50 @@ def town_makes_room_before_buying():
     return ok, f"full pack: acted {acted} by {how} ({kit.done_log}); 10 items: acted {no_need}"
 
 
+@case
+def emergency_speed_first_berserk_hard_fights():
+    """The user (10-25): Speed at the start of an emergency, unless one turn from death -- then Teleportation (else
+    Phase Door); Berserk at the start of a hard fight (a unique or a monster near our level adjacent), not for
+    weak ones; haste tracked from the game's messages (the status has no indicator)."""
+    def make(hp, adj, pack, msgs=()):
+        p = pilot(hp=hp, pack=pack, monsters=adj)
+        p.w.in_dungeon, p.w.standing_on, p.w.last_stairs_cmd = True, ".", None
+        p.w.adjacent_monsters = lambda: [m for m in p.w.monsters if p.w.dist(m[:2]) == 1]
+        p.w.tagged = lambda c, d: None
+        p.w.damage_rate = lambda s: 5.0
+        p.w.last_hit_t = P.gnow()
+        p.emergency_loop = lambda now: False
+        p.recall_started = lambda now: False
+        p.phase_futile = lambda now: False
+        p.phase_t, p.phase_hist, p.cure_t, p.recall_t = 0.0, collections.deque(), 0.0, 0.0
+        p.mover = type("M", (), {"active": False, "stop": lambda self: None})()
+        p.escaping_to_stairs = False
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append(why)
+        for t in msgs:
+            p.w.messages.append((P.gnow(), t))
+        return p
+    pack = [("2 Potions of Speed", 75), ("11 Scrolls of Phase Door", 70), ("a Scroll of Teleportation", 70),
+            ("a Potion of Berserk Strength", 75)]
+    orc = [(20, 21, BYNAME["black orc"]), (21, 21, BYNAME["black orc"])]
+    p = make(150, orc, pack)
+    p.escape("low HP")
+    first = p.cmds[-1]
+    q = make(150, orc, pack, msgs=["You feel yourself moving faster!"])
+    q.escape("low HP")
+    hasted = q.cmds[-1]
+    giant = [(20, 21, BYNAME["hill giant"])]
+    r = make(20, giant, pack)
+    r.escape("low HP")
+    dying = r.cmds[-1]
+    b = make(250, [(20, 21, BYNAME["ulfast, son of ulfang"])], pack)
+    berserk = b.berserk_tick(P.gnow()) and "Berserk" in b.cmds[-1]
+    weak = make(250, [(20, 21, BYNAME["jackal"])], pack).berserk_tick(P.gnow())
+    ok = "Speed" in first and "Speed" not in hasted and "Teleportation" in dying and berserk and weak is False
+    return ok, (f"emergency: {first!r}; already hasted: {hasted!r}; one turn from death: {dying!r}; Ulfast "
+                f"adjacent, berserk: {berserk}; a Jackal: {weak}")
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

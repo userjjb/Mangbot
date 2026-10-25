@@ -191,6 +191,13 @@ cheapest unprotected item; unit `town_makes_room_before_buying`); `plan resume` 
 back to the paused plan; item commands reply `DONE: <item> (N -> M left); moved ...` (m30's `read Teleportation`
 worked but looked like it hadn't: both scrolls used); HANDBOOK: plan resume, item commands and `goal shop sell`,
 the `band`/`drained` condition caveats. **All 7 m30 items fixed (2026-10-25).**
+**Potions (the user, 10-25):** an emergency quaffs Speed first, unless one turn from death (adjacent worst turn >=
+90% HP): then Teleportation, else Phase Door; Berserk at the start of a hard melee (a unique or a monster within
+5 levels adjacent, or 2+ adjacent under 75% HP); Boldness no longer kit (Heroism covers it; sold). Haste/hero/
+berserk tracked from the game's messages (`buff_on`: the status had no indicator, `flag("fast")` was always
+False). Unit `emergency_speed_first_berserk_hard_fights`; live A1, A2L PASS (A2L: Speed at 4.3 s, Berserk 6.9 s).
+The user's idea of a danger-time option estimator (simulate options, take the best; real time under hpwarn): asked
+the Advisor (to_advisor 10-25 emergency-estimator).
 **The Brown mold (m25) fixed:** `stairs_beside_still` -- stairs underfoot or a step away beside a stationary monster
 harmless for a turn (no drain/paralyse/disenchant, melee < 25% HP) are taken, not stepped away from; Dive presses '>'
 only on its stairs (a step-away's "arrived" pressed it 6 squares off). Unit `stairs_beside_mold`; live set-piece
