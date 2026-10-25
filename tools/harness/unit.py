@@ -711,6 +711,35 @@ def refused_stairs_dont_end_explore():
     return ok, f"only the refused '>': {only}; another '>' too: {other}; no skip (as before): {plain}"
 
 
+@case
+def unseen_drainer_leaves():
+    """m29, m30: a Moaning spirit (invisible, passes walls, +10, TOUCH:LOSE_DEX) drained DEX; nothing was in view
+    so no drainer rule fired. A drain with nothing in view that drains (and no trap's dart) -> leave the level
+    (the trip plan's drainer leave; without a plan, Flee to known stairs). A dart trap -> no leave."""
+    def run(msg, monsters=()):
+        p = pilot()
+        p.w.in_dungeon, p.w.level_t = True, 5.0
+        p.w.monsters = list(monsters)
+        p.w.ind.update({f"stat{i}": [v, v] for i, v in enumerate((58, 5, 9, 28, 18, 3))})
+        p.seen_drained, p.seen_blows = None, None
+        p.drains_here = (None, 0)
+        p.plan, p.goal = None, None
+        p.w.find = lambda chars: [(30, 30)]
+        p.w.adjacent_monsters = lambda: [m for m in p.w.monsters if p.w.dist(m[:2]) == 1]
+        p.set_goal = lambda g: setattr(p, "goal", g)
+        p.watch_character()                       # the baseline
+        p.w.ind["stat3"] = [18, 28]               # DEX 18/10 -> 18
+        p.w.messages.append((P.gnow(), msg))
+        p.watch_character()
+        return [w for w, _ in p.notes], type(p.goal).__name__
+    ghost = run("It touches you.")
+    dart = run("A small dart hits you!")
+    frog = run("The Giant red frog bites you.", [(20, 21, BYNAME["giant red frog"])])
+    ok = "drainer" in ghost[0] and ghost[1] == "Flee" and "drainer" not in dart[0] and dart[1] == "NoneType" and \
+        "drainer" not in frog[0]
+    return ok, f"unseen: {ghost}; dart trap: {dart}; a visible frog (its own rules): {frog}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

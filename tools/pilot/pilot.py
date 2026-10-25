@@ -5003,7 +5003,18 @@ class Pilot:
                 # Second drain on this level from something in view: leave
                 # (Borg memo §3.2; mission 7's scorpion drained STR three times)
                 w = self.w
-                if w.monsters and w.in_dungeon:
+                # Drained by something we can't see (not a trap's dart): leave at once. m29 and m30 lost DEX to a
+                # Moaning spirit (invisible, passes walls, +10 speed, TOUCH:LOSE_DEX; "It wails at you", "It
+                # touches you"): it can't be fought or walked away from, and each drain costs a ~470 potion
+                now = gnow()
+                trap = any(now - ts < 4 and re.search(r"dart|trap|rune", t, re.I) for ts, t in w.messages)
+                seen = any(r.drains or r.worst_melee[1] > 0 for *_, r in w.monsters)
+                if w.in_dungeon and not trap and not seen and set(new) & {"STR", "DEX", "CON"}:
+                    self.notify("drainer", f"an unseen monster drained {', '.join(new)} (invisible: a Moaning spirit or "
+                                           "a Quasit at these depths): leaving the level", news=False)
+                    if not self.plan and w.find("<>") and not isinstance(self.goal, (Flee, Recall, Recover)):
+                        self.set_goal(Flee("an unseen stat drainer"))
+                elif w.monsters and w.in_dungeon:
                     n = self.drains_here[1] + 1 if self.drains_here[0] == w.level_t else 1
                     self.drains_here = (w.level_t, n)
                     mine = 110 + int(w.ind.get("speed", [0])[0] or 0)

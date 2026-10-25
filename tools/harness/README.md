@@ -57,6 +57,7 @@ Each run:
 | A9 | `plan trip 300-300 via=recall` from town, then Snaga and Black orcs summoned 8-9 squares off | Door/Stair Location within 5 s of arriving; no second Word of Recall while one is pending |
 | M1 | a Brown mold (confuses: never fought) summoned beside a painted `>` 6 squares off, `goal dive` one level down (m25's 2-minute loop) | down those stairs within 45 s, `>` pressed nowhere else (FAILED as m25 did, looping 17,7 <-> 16,13; PASS after the fix: 8.7 s) |
 | M2 | a forged wand on floor Dive04 sees 13-20 squares off, a `>` painted 3 squares the other way, `goal dive` (the user's m29 `?`: a wand left 12 squares off) | the wand fetched, then down within 60 s (FAILED three ways on the way to the fix: a far Cave lizard blocked looting for good; a Jackal pack cut the walk short and the dive left; a Rock lizard's fight ended the walk and the dive took over. PASS: fetched at 5.3 s, down at 10.5 s) |
+| M3 | a Moaning spirit (invisible, passes walls, +10, TOUCH:LOSE_DEX: m29's and m30's drainer) summoned 2 off, a `>` painted 6 off, no orders | after a drain, off the level within 30 s (PASS: drained at 5.4 s, left at 8.8 s) |
 
 The memo's A7 is at 1250 ft and its A8 Ranger at 6 squares; here they're at 300 ft and 3 squares. The DM summons any race
 at any depth. On unlit ground a monster is seen only within the lantern's 2 squares, or the Half-Orc's infravision of 3

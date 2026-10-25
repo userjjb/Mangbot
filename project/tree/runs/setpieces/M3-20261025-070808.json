@@ -1,0 +1,73 @@
+{
+ "id": "M3",
+ "tag": "M3-20261025-070808",
+ "depth_ft": 600,
+ "start": "2026-10-25 07:08:08",
+ "checks": {
+  "left within 30 s of the drain": {
+   "pass": true,
+   "detail": "drained at 5.4 s, left at 8.8 s"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   303,
+   303
+  ],
+  "hp_min": [
+   302,
+   303
+  ],
+  "attention": [
+   [
+    5.2,
+    "unseen_attacker",
+    "'It touches you.': something unseen is casting at you; carrying on at HP 100% (it leaves below 80%)"
+   ],
+   [
+    5.4,
+    "stat_drained",
+    "DEX drained (blows 3); levels don't restore it: Potion of Restore Dexterity at the Alchemist (5), ~4"
+   ],
+   [
+    5.4,
+    "drainer",
+    "an unseen monster drained DEX (invisible: a Moaning spirit or a Quasit at these depths): leaving the"
+   ],
+   [
+    5.4,
+    "blows_changed",
+    "blows per round 4 -> 3"
+   ],
+   [
+    8.8,
+    "goal_done",
+    "flee (an unseen stat drainer): left by the stairs; now at 650 ft"
+   ]
+  ],
+  "acts": [
+   [
+    8.1,
+    "custom >",
+    "stairs >"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "scene": {
+  "dive04": [
+   3,
+   81
+  ],
+  "stairs": [
+   4,
+   86
+  ]
+ },
+ "end": "2026-10-25 07:10:40",
+ "pass": true
+}

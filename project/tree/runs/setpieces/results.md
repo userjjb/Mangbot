@@ -119,3 +119,4 @@
 - 2026-10-25 05:42:56 **M2** FAIL (the wand fetched FAIL, then down the '>' within 60 s) `M2-20261025-054256.json`
 - 2026-10-25 05:45:55 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261025-054555.json`
 - 2026-10-25 05:48:44 **M1** PASS (down the painted '>' within 45 s, no '>' pressed off the stairs) `M1-20261025-054844.json`
+- 2026-10-25 07:08:08 **M3** PASS (left within 30 s of the drain) `M3-20261025-070808.json`

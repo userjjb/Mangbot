@@ -1193,7 +1193,40 @@ def m2(run):
     run.check("then down the '>' within 60 s", down is not None and (picked is None or down > picked), f"at {down} s")
 
 
-SETPIECES = {"M1": m1, "M2": m2, "L3": l3, "A2f": a2f, "L2g": l2g, "A7f": a7f, "A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
+def m3(run):
+    """M3: an unseen stat drainer (m29, m30: a Moaning spirit -- invisible, passes walls, +10, TOUCH:LOSE_DEX).
+    A '>' painted 6 squares from Dive04, a Moaning spirit summoned 2 squares off, no orders: once DEX is drained
+    Dive04 leaves the level within 30 s (Dive04 is restored afterwards)."""
+    rows = run.dm.c.map()
+    tl = find_floor_block(rows, 5, 9)
+    if not tl:
+        run.check("a site", False, "no 5 x 9 block of floor")
+        return
+    start, stairs = (tl[0] + 2, tl[1] + 1), (tl[0] + 2, tl[1] + 7)
+    run.gandalf_to(stairs)
+    run.dm.paint(7, [8])                         # the '>'
+    run.gandalf_to(start)
+    v = run.bring_dive04()
+    run.dm.walk(2, 3)
+    time.sleep(1.5)
+    run.t_act = time.time()
+    run.place("Moaning spirit", 2)
+    run.watch(90, until=lambda recs: any(d.get("depth") is not None and d["depth"] * 50 != run.depth for d in recs))
+    recs = log_since(run.t_act)
+    st = run.stats(recs)
+    run.res["stats"] = st
+    drained = next((round(d["t"] - run.t_act, 1) for d in recs if d.get("what") == "stat_drained"), None)
+    left = next((round(d["t"] - run.t_act, 1) for d in recs if d.get("depth") is not None and d["depth"] * 50 != run.depth),
+                None)
+    run.res["scene"] = {"dive04": tuple(v["pos"]), "stairs": stairs}
+    if drained is None:
+        run.check("drained (the scene happened)", False, f"no drain in 90 s; left at {left}")
+        return
+    run.check("left within 30 s of the drain", left is not None and left - drained <= 30,
+              f"drained at {drained} s, left at {left} s")
+
+
+SETPIECES = {"M1": m1, "M2": m2, "M3": m3, "L3": l3, "A2f": a2f, "L2g": l2g, "A7f": a7f, "A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
              "C3": c3}
 
 

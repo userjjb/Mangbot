@@ -1530,5 +1530,15 @@
    "usd": 0.557,
    "transcript": "agent-a07c6a6b3cb0b879b.jsonl"
   }
+ },
+ {
+  "label": "sp-M3-20261025-070808",
+  "nick": "dive04",
+  "start": "2026-10-25 07:08",
+  "end": "2026-10-25 07:11",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M3"
  }
 ]
