@@ -565,7 +565,7 @@ def show(c):
            f"min; server crashes {F['server_crashes']}",
            "  damage by    " + (", ".join(f"{k} {v}" for k, v in c["damage_by_monster"].items()) or "-"),
            (lambda t: f"  G tokens     Navigator {t['turns']} turns; output {t['output'] if t['output'] is not None else 'not logged'}, cache read {t['cache_read']}, "
-                      f"cache write {t['cache_write']}, input {t['input']} (tokens.py)" if t else
+                      f"cache write {t['cache_write']}, input {t['input']}; ${t.get('usd')} at list prices (tokens.py)" if t else
                       "  G tokens     - (run tokens.py LABEL)")(c.get("tokens"))]
     return "\n".join(l for l in out if l)
 
@@ -579,8 +579,19 @@ TABLE = [("mission", lambda c: c["label"]), ("nav", lambda c: c["nav_model"]), (
          ("lost", lambda c: c["D"]["total"]), ("forced$", lambda c: c["D"]["sale_shortfall_forced"]),
          ("r->a", lambda c: c["E"]["report_to_action_med_s"]), ("reply", lambda c: c["E"]["user_reply_med_s"]),
          ("wait%", lambda c: c["B"]["navigator_wait_pct"]),
-         ("out_k", lambda c: round(c["tokens"]["output"] / 1000, 1) if (c.get("tokens") or {}).get("output") is not None else None),
-         ("cache_M", lambda c: round(c["tokens"]["cache_read"] / 1e6, 2) if c.get("tokens") else None)]
+         ("usd", lambda c: _usd(c)),
+         ("usd/dh", lambda c: _per(_usd(c), c["B"]["dungeon_min"] / 60)),
+         ("usd/kxp", lambda c: _per(_usd(c), c["A"].get("exp_gain", 0) / 1000)),
+         ("gold/usd", lambda c: _per(c["B"].get("gold_found"), _usd(c), 0))]
+
+
+def _usd(c):
+    """The Navigator's cost at API list prices (tokens.py), or None."""
+    return (c.get("tokens") or {}).get("usd")
+
+
+def _per(a, b, nd=2):
+    return round(a / b, nd) if a is not None and b else None
 
 
 def table(cards):

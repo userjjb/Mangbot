@@ -13,8 +13,11 @@
   "output": 7601,
   "cache_read": 740645,
   "cache_write": 40410,
+  "write_5m": 40410,
+  "write_1h": 0,
   "model": "claude-sonnet-5-5",
   "final_usage_turns": 28,
+  "usd": 0.251,
   "transcript": "agent-a727e9f67f81d2ef2.jsonl"
  },
  "A": {

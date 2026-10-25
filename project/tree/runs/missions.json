@@ -14,8 +14,11 @@
    "output": null,
    "cache_read": 5410380,
    "cache_write": 102757,
+   "write_5m": 102757,
+   "write_1h": 0,
    "model": "claude-opus-5-5",
    "final_usage_turns": 3,
+   "usd": null,
    "transcript": "agent-a523187248aaba9d9.jsonl"
   }
  },
@@ -34,8 +37,11 @@
    "output": null,
    "cache_read": 5585244,
    "cache_write": 108540,
+   "write_5m": 108540,
+   "write_1h": 0,
    "model": "claude-opus-5-5",
    "final_usage_turns": 1,
+   "usd": null,
    "transcript": "agent-ac167d4f31db89dae.jsonl"
   }
  },
@@ -54,8 +60,11 @@
    "output": null,
    "cache_read": 7533447,
    "cache_write": 123763,
+   "write_5m": 123763,
+   "write_1h": 0,
    "model": "claude-opus-5-5",
    "final_usage_turns": 1,
+   "usd": null,
    "transcript": "agent-ae774eb0e5857700c.jsonl"
   }
  },
@@ -74,8 +83,11 @@
    "output": null,
    "cache_read": 9318972,
    "cache_write": 130171,
+   "write_5m": 130171,
+   "write_1h": 0,
    "model": "claude-opus-5-5",
    "final_usage_turns": 1,
+   "usd": null,
    "transcript": "agent-abac5bbf9ee66b5bd.jsonl"
   }
  },
@@ -94,8 +106,11 @@
    "output": null,
    "cache_read": 9288654,
    "cache_write": 133673,
+   "write_5m": 133673,
+   "write_1h": 0,
    "model": "claude-opus-5-5",
    "final_usage_turns": 1,
+   "usd": null,
    "transcript": "agent-ad9dc54325fd045e5.jsonl"
   }
  },
@@ -114,8 +129,11 @@
    "output": null,
    "cache_read": 11745357,
    "cache_write": 134765,
+   "write_5m": 134765,
+   "write_1h": 0,
    "model": "claude-sonnet-5-5",
    "final_usage_turns": 1,
+   "usd": null,
    "transcript": "agent-a76b0043524b24a90.jsonl"
   }
  },
@@ -134,8 +152,11 @@
    "output": null,
    "cache_read": 2349942,
    "cache_write": 70028,
+   "write_5m": 70028,
+   "write_1h": 0,
    "model": "claude-sonnet-5-5",
    "final_usage_turns": 0,
+   "usd": null,
    "transcript": "agent-a0517dec453247443.jsonl"
   }
  },
@@ -154,8 +175,11 @@
    "output": 13534,
    "cache_read": 1278542,
    "cache_write": 50252,
+   "write_5m": 50252,
+   "write_1h": 0,
    "model": "claude-opus-5-5",
    "final_usage_turns": 39,
+   "usd": 0.778,
    "transcript": "agent-a6c7a15db16e96f68.jsonl"
   }
  },
@@ -1244,8 +1268,11 @@
    "output": 22309,
    "cache_read": 2719340,
    "cache_write": 70747,
+   "write_5m": 70747,
+   "write_1h": 0,
    "model": "claude-opus-5-5",
    "final_usage_turns": 63,
+   "usd": 1.344,
    "transcript": "agent-a316efc9af062b150.jsonl"
   }
  },
@@ -1264,8 +1291,11 @@
    "output": 10720,
    "cache_read": 1424211,
    "cache_write": 54494,
+   "write_5m": 54494,
+   "write_1h": 0,
    "model": "claude-sonnet-5-5",
    "final_usage_turns": 42,
+   "usd": 0.386,
    "transcript": "agent-ab26e118f59e5b0dd.jsonl"
   }
  },
@@ -1324,8 +1354,11 @@
    "output": 21594,
    "cache_read": 2059882,
    "cache_write": 63961,
+   "write_5m": 63961,
+   "write_1h": 0,
    "model": "claude-opus-5-5",
    "final_usage_turns": 52,
+   "usd": 1.164,
    "transcript": "agent-aa6006a0bebc53b34.jsonl"
   }
  },
@@ -1344,8 +1377,11 @@
    "output": 7601,
    "cache_read": 740645,
    "cache_write": 40410,
+   "write_5m": 40410,
+   "write_1h": 0,
    "model": "claude-sonnet-5-5",
    "final_usage_turns": 28,
+   "usd": 0.251,
    "transcript": "agent-a727e9f67f81d2ef2.jsonl"
   }
  },
@@ -1364,8 +1400,11 @@
    "output": 17128,
    "cache_read": 1434727,
    "cache_write": 62286,
+   "write_5m": 62286,
+   "write_1h": 0,
    "model": "claude-opus-5-5",
    "final_usage_turns": 36,
+   "usd": 0.941,
    "transcript": "agent-a69297d825e19e4e4.jsonl"
   }
  },

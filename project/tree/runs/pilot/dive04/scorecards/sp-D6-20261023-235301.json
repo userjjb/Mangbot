@@ -1,0 +1,107 @@
+{
+ "label": "sp-D6-20261023-235301",
+ "nav_model": "harness",
+ "effort": null,
+ "report": "compact",
+ "start": "2026-10-23 23:53",
+ "end": "2026-10-23 23:55",
+ "minutes": 2.0,
+ "notes": "set-piece D6",
+ "tokens": null,
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   22,
+   22
+  ],
+  "exp_gain": 1,
+  "gold": [
+   172,
+   172
+  ],
+  "gold_change": 0,
+  "max_depth_ft": 350
+ },
+ "B": {
+  "dungeon_min": 0.9,
+  "town_min": 1.0,
+  "exp_per_dmin": 1.1,
+  "levels_per_dhour": 0.04,
+  "gold_found": 0,
+  "gold_found_per_dmin": 0.0,
+  "time_budget_min": {
+   "town_no_goal": 1.1,
+   "exploring": 0.6,
+   "fighting": 0.2,
+   "no_goal_dungeon": 0.1
+  },
+  "navigator_wait_pct": 60
+ },
+ "C": {
+  "lowest_hp": [
+   265,
+   265,
+   100,
+   "23:53:01"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 0,
+  "emergency_alerts": 0,
+  "phase": 0,
+  "wor_escape": 0,
+  "wor_travel": 0,
+  "stairs_flee": 0,
+  "teleport": 0,
+  "cures_quaffed": 0,
+  "escape_records": null,
+  "recalls_landed": 1
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 0,
+  "loot_abandoned_est": 0,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 0,
+  "total": 0,
+  "sales": 0,
+  "sales_valued": 0,
+  "worst_sales": [],
+  "left_behind": [],
+  "irreplaceable": []
+ },
+ "E": {
+  "reports": 0,
+  "commands": 7,
+  "commands_per_min": 3.5,
+  "report_to_action_med_s": null,
+  "report_to_action_p90_s": null,
+  "reports_without_command_pct": null,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 0,
+  "report_chars": 3999,
+  "order_report_age_med_s": 65.8,
+  "order_report_age_p90_s": 75.7
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 4,
+  "perception_gaps": 0,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 29,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {},
+ "alerts": {
+  "parked": 2,
+  "started": 1,
+  "tactic": 1
+ },
+ "plan_news": {}
+}

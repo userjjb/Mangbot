@@ -13,8 +13,11 @@
   "output": 21594,
   "cache_read": 2059882,
   "cache_write": 63961,
+  "write_5m": 63961,
+  "write_1h": 0,
   "model": "claude-opus-5-5",
   "final_usage_turns": 52,
+  "usd": 1.164,
   "transcript": "agent-aa6006a0bebc53b34.jsonl"
  },
  "A": {

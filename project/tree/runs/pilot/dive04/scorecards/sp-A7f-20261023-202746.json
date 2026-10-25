@@ -1,0 +1,117 @@
+{
+ "label": "sp-A7f-20261023-202746",
+ "nav_model": "harness",
+ "effort": null,
+ "report": "compact",
+ "start": "2026-10-23 20:28",
+ "end": "2026-10-23 20:31",
+ "minutes": 3.0,
+ "notes": "set-piece A7f",
+ "tokens": null,
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   22,
+   22
+  ],
+  "exp_gain": 0,
+  "gold": [
+   172,
+   172
+  ],
+  "gold_change": 0,
+  "max_depth_ft": 650
+ },
+ "B": {
+  "dungeon_min": 1.9,
+  "town_min": 0.9,
+  "exp_per_dmin": 0.0,
+  "levels_per_dhour": 1.51,
+  "gold_found": 134,
+  "gold_found_per_dmin": 72.3,
+  "time_budget_min": {
+   "no_goal_dungeon": 1.4,
+   "town_no_goal": 0.9,
+   "fighting": 0.4,
+   "travel_goto": 0.0,
+   "town_idle_end": 0.0
+  },
+  "navigator_wait_pct": 78
+ },
+ "C": {
+  "lowest_hp": [
+   248,
+   265,
+   94,
+   "20:29:27"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 0,
+  "emergency_alerts": 0,
+  "phase": 0,
+  "wor_escape": 0,
+  "wor_travel": 0,
+  "stairs_flee": 0,
+  "teleport": 0,
+  "cures_quaffed": 0,
+  "escape_records": null,
+  "recalls_landed": 1
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 0,
+  "loot_abandoned_est": 285,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 0,
+  "total": 285,
+  "sales": 0,
+  "sales_valued": 0,
+  "worst_sales": [],
+  "left_behind": [
+   "Silver-Plated Wand",
+   "Staff of Door/Stair Location",
+   "Wand of Stinking Cloud"
+  ],
+  "irreplaceable": []
+ },
+ "E": {
+  "reports": 0,
+  "commands": 5,
+  "commands_per_min": 1.7,
+  "report_to_action_med_s": null,
+  "report_to_action_p90_s": null,
+  "reports_without_command_pct": null,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 0,
+  "report_chars": 5633,
+  "order_report_age_med_s": 77.7,
+  "order_report_age_p90_s": 77.7
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 6,
+  "perception_gaps": 0,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 0,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Novice paladin": 4
+ },
+ "alerts": {
+  "tactic": 6,
+  "goal_done": 4,
+  "interesting_item": 3,
+  "started": 2,
+  "unseen_attacker": 1,
+  "parked": 1
+ },
+ "plan_news": {}
+}
