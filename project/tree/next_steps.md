@@ -137,7 +137,29 @@ validation.
   the Phase 1 confirm answer), inscribing key items, and the live character "Sneezy".
 - The user's player lore and plan changes are in `notes_players.md` (read it).
 
-### ARCHITECT HANDOFF 2026-10-26, end of session 6 (READ THIS FIRST; the session-6 section below has its details)
+### ARCHITECT HANDOFF 2026-10-26, session 7 (READ THIS FIRST, then the end-of-session-6 section below)
+
+**Session 7 (the user: "fix 1 and 3, raise speed cap to 600"), loaded ~15:52 (Pilot restarted in town):**
+- **Open issue 1 fixed. It was not a quiet level:** m45 fled an 18-orc band at 700 ft (00:35:17) down to 750 ft;
+  breeders there -> the trip's `dive 700ft`; the only '<' was the way back to the fled level, refused for 5 minutes
+  and then for good on that level, so the dive explored for another '<' through a Giant flea swarm (146 fleas
+  killed in 55 s; the 20-s stuck notices were the swarm). Now: `Dive.FLED_HOLD` 120 s (300 on a level the server
+  keeps), and the refusal expires with it; **`TripPlan.LEAVE_MAX` 300 s**: a finished level not left in 5 minutes
+  -> home by Word of Recall (the count restarts after a Navigator's goal pauses the plan). The quiet rule is
+  unchanged (it only shortens an exploration, and never fires with monsters in view).
+- **Open issue 3 fixed:** plan.json keeps the current level's state (`lvl`: depth, time on it, done reason, arrival,
+  located, special, stairs_first, fails); a restart on the same depth resumes it. The special-level "find stairs
+  first" is re-issued every time the plan picks a goal (not once: a fight or `plan resume` also lost it).
+  **mission.json** keeps the mission label, its start and gold found (saved every 15 s, ignored after 30 min
+  stale); `mission end` with no label works after a hot-swap.
+- **Speed kit cap 450 -> 600** (`KIT_CAP`; HANDBOOK, FIELD-NOTES). The Advisor's break-even estimate was ~500 g:
+  memo to_advisor 10-26 speed-cap-600.
+- Unit cases: fled_stairs_refused_two_minutes_only, trip_level_state_survives_restart,
+  trip_recalls_when_a_level_wont_let_go, mission_label_survives_restart (70 pass).
+- Still open: issue 2 (Ring of Strength vs Protection: the user's call) and the older list below. Verify live: the
+  first `couldn't leave` recall, a hot-swap on a special level, `mission end` without a label after a swap.
+
+### ARCHITECT HANDOFF 2026-10-26, end of session 6 (the session-6 section below has its details)
 
 **Where we are (2026-10-26 ~08:05).** Same SGE job 8268425 on scc-pc4, walltime **Thu 10-29 09:47**: test server (freeze
 build), Dive04's Pilot (git `restructure` 7534708, pushed, all loaded), viewer (`tmux -L mang attach -t watch`). **Start
