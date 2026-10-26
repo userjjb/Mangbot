@@ -34,7 +34,9 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
    Restore for a drained STR/DEX/CON, the kit, then your list (`NAME:N` means *have* N in all, not N more). Below
    500 ft the kit keeps **3 Heroism** (the fear cure) and **2 Potions of Speed** (Black Market, at most 450 each; often
    out of stock): the Pilot drinks Speed **at the start of a hard fight** (a unique or a monster near your level
-   adjacent), not only in emergencies. With
+   adjacent), not only in emergencies. **Restore potions and Wands of Stone to Mud stay in the tavern (8)** during a
+   mission: `plan town` leaves them there as its last step, and fetches the right Restore when STR/DEX/CON is drained
+   (before buying one). In the dungeon a found Restore is picked up and drunk once the fight is over. With
    3,000+ gold it also restores Charisma (better prices). Last it **eats rations to Full and fills the lantern**
    (food isn't digested in town; 9000+ turns of light last a trip), so you carry one food stack and no oil:
    other food and spare flasks are sold, and near a trip's end spare rations go first when loot needs room. Don't
