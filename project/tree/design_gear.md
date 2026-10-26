@@ -14,11 +14,11 @@ by components; the first option is the current gear.
 
 | component | what | source |
 |---|---|---|
-| rules | abilities the depth requires: Free Action (any depth), See Invisible (from 600 ft). An option losing one is vetoed. With `no_loss` (the Pilot's automatic swaps) losing any of `NO_LOSS` (Free Action, See Invisible, resist blindness, resist confusion, hold life: they gate escapes and fights) rules it out; elemental resists are simulated (options_sim 26f) and may be traded | `REQUIRED`, `NO_LOSS` |
+| rules | abilities the depth requires: Free Action (any depth), See Invisible (from 600 ft). An option losing one is vetoed. With `no_loss` (the Pilot's automatic swaps) losing any of `NO_LOSS` (Free Action, See Invisible, resist blindness, resist confusion, hold life: they gate escapes and fights) rules it out; other resists too unless `TRADE_RESISTS` (off: the user's decision pending; they're simulated since options_sim 26f) | `REQUIRED`, `NO_LOSS` |
 | static | the numbers the server derives from the loadout: stats (`modify_stat_value`), blows (the blows table, STR/DEX, weight), damage per round, to-hit, AC (incl. DEX), max HP (CON), speed, abilities/resists gained and lost. The gear-free parts are backed out of the sheet once (`Character`), and `check()` compares the model with the sheet | `xtra1.c`, rulebook `char_stat_tables.csv`, `char_blows_table.csv`; items from `lib/edit/object.txt`, `ego_item.txt`, `artifact.txt` |
 | sim | the Advisor's `options_sim.rollout` (26f: elemental and high resists, saving throws vs cause wounds/mind blast) with its base policy (the Pilot's rules), the same seeds for every option, every monster awake, full HP, over four sets: **met** = 40 fights Dive04 met at the depth range (its decision log's `mons` records, 20 seeds each in `gearcmp`, 10 in town), **depth** and **deeper** = 500 fights each from the Advisor's `scenarios.make` at the depth and 100 ft deeper (boost 2 for auto_scum, uniques already killed left out, one seed), **hard** = the 21 replayed emergencies | `Advisor/data/estimator/options_sim.py`, `scenarios.py` (imported) |
-| score | **(XP - gold spent x the rolling XP-per-gold) / (fight turns + rest turns to regain the HP lost)**, pooled over met + depth (the Advisor, 10-26: puts AC and damage on one scale). Rest turns: regenhp (`dungeon.c`: mhp x 394/65536 a turn resting) / 4.5 (the time bubble speeds a rest up ~4.5x) | `summary`, `rest_turns` |
-| verdict | vetoes; an option less safe in hard / depth / deeper (near-death rate worse beyond 2 SE, or the worst 5% of fights ending 4+ points of max HP lower, or the worst 1% 8+) is ruled out; a change must beat the current score by 3% **and** 2 standard errors of the paired difference (by scenario, delta method); ties within 1% go to the safer option (lowest HP in the hard fights, then AC) | `compare`, `paired_gain` |
+| score | **(XP - gold spent x the rolling XP-per-gold) / (fight turns + rest turns to regain the HP lost)**, pooled over met + depth (the Advisor, 10-26: puts AC and damage on one scale). Rest turns: regenhp (`dungeon.c`: (mhp x 394 + 1442)/65536 HP a block resting), game time like the fight turns (the Advisor's second review: an earlier /4.5 for the time bubble mixed clocks) | `summary`, `rest_turns` |
+| verdict | vetoes; an option less safe in hard / depth / deeper (near-death rate worse beyond 2 SE, or the worst 5% of fights' lowest HP lower with a bootstrap 95% interval over the scenarios below 0) is ruled out; a change must beat the current score by 3% **and** 2 standard errors of the paired difference (by scenario, delta method); ties within 1% go to the safer option (lowest HP in the hard fights, then AC) | `compare`, `paired_gain` |
 
 **The item slot evaluator** (`compare_slot`): one option per candidate in its slot; a ring is tried in place of each
 worn ring.
@@ -31,11 +31,13 @@ worn ring.
   never losing one of `NO_LOSS`; at most one swap per 30 s. Items that improve nothing (damage, AC, HP, speed, a
   new ability) skip the simulation. Records `gear_eval` in the decision log.
 
-**First answers (10-26, after the Advisor's review):** a Ring of Strength (+2) takes STR 18/70 -> 18/90, still 2 blows
-with the 17 lb Battle Axe: score -2.0% +/- 1.9% (for the [+10]) -> keep the Protection rings (m45's open issue 2: the
-policy's sale was right). A Ring of Damage (+0,+6) in place of the [+10] Protection ring: +4.1% +/- 3.2% -> worn. The
-Scimitar of Westernesse: -7.6%. The Advisor's lever: a ~7 lb weapon would give 3 blows at STR 18/70, DEX 18/20 (the
-17 lb axe can't at this DEX for any STR) -- the evaluator compares any weapon named, e.g. a shop's.
+**First answers (10-26, after the Advisor's two reviews):** Ring of Strength (+2) for a Protection ring: -6%, and less
+safe (worst 5% of fights 65-67% HP vs 73%) -> keep Protection (m45's open issue 2: the sale was right). Ring of Damage
+(+0,+6) for Protection [+10]: +1.1% +/- 3.4% -> not worth it. The Scimitar: worse than the axe. A plain Metal Scale Mail
+[38,+5] over the Leather of Resistance: **+21%** (28 AC: less resting), losing resist acid/fire/cold -- the Advisor:
+consistent with its resist table at 800-1000 ft, re-check at 1250 ft+ (hound packs); a resist doesn't save the pack
+here. Whether automatic swaps may make such trades is the user's call (`TRADE_RESISTS`). The Advisor's lever: a ~7 lb
+weapon would give 3 blows at STR 18/70, DEX 18/20.
 
 ## Limits (to fix, mostly in the Advisor's simulator)
 

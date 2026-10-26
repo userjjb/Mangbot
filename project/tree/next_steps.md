@@ -172,7 +172,11 @@ validation.
   turns for the HP lost); a change needs +3% and 2 paired SE; tail gates (worst 5% -4 points, worst 1% -8); the
   weight limit's speed penalty (slower = ruled out). Now: Ring of Damage (+0,+6) +4% but ruled out (worst 5% of
   fights 69% vs 73% HP); a plain Metal Scale Mail [38,+5] over the Leather of Resistance would WIN (+8.8%, losing 3
-  resists) -- asked the user whether resists may be traded that way. 75 unit cases pass.
+  resists) -- asked the user whether resists may be traded that way. 74 unit cases pass.
+  **Advisor's 2nd review (to_architect gear-review-2), built:** rest turns in game time (no /4.5: HP lost was
+  under-weighted), the tail gate = bootstrap 95% interval of the worst-5% difference. Now: Ring of Damage +1.1% (no),
+  Ring of Strength -6% and less safe, Metal Scale Mail +21%. **`geareval.TRADE_RESISTS` = False** (automatic swaps keep
+  every resist) until the user decides; `gearcmp` shows the trades.
 - Still open: the older list below. Verify live: the
   first `couldn't leave` recall, a hot-swap on a special level, `mission end` without a label after a swap.
 
