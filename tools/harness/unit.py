@@ -213,7 +213,7 @@ def town_kit_tiers():
     need = [(t, k, n) for t, k, s, n, c in p.town_needs(None, ())]
     # (no flasks: the lantern's 6370 turns and the 3 flasks reach 9000; rations: kit B's 3, had)
     want = [(1, "Word of Recall", 1), (3, "Restore Constitution", 1), (4, "Cure Serious Wounds", 2),
-            (4, "Phase Door", 1), (4, "Heroism", 3)]       # (Heroism in kit B since m41)
+            (4, "Phase Door", 1), (4, "Heroism", 3), (4, "Potion of Speed", 2)]   # (Heroism since m41, Speed since)
     return need == want, f"{need}"
 
 
@@ -1373,11 +1373,67 @@ def hard_fight_shadow_once_per_fight():
     weak = make(kit, [(20, 21, BYNAME["cave orc"])])
     none = weak.hard_fight_shadow(P.gnow())
     ok = (first == "started" and again is None and none is None and a.cmds == [] and rec.get("trigger") == "hard_fight"
-          and rec.get("rules") == "berserk" and rec.get("options") == list(P.Pilot.HARD_FIGHT_OPTIONS)
+          and rec.get("rules") == "speed+berserk" and rec.get("options") == list(P.Pilot.HARD_FIGHT_OPTIONS)
           and rec.get("choice") and not rec.get("error"))
     return ok, (f"{ogre.name}: {first}, 5 s later {again}; a Cave orc: {none}; record: trigger {rec.get('trigger')}, rules "
                 f"{rec.get('rules')}, choice {rec.get('choice')!r} ({rec.get('why')}), {rec.get('compute_s')} s, "
                 f"error {rec.get('error')}")
+
+
+@case
+def speed_at_hard_fight_start_and_kit():
+    """The user (10-25), on the Advisor's replays: a carried Potion of Speed is quaffed at the start of a hard fight
+    (berserk_tick's test), not only in an emergency; kits B/C keep 2, bought at the Black Market under a 450-gold cap."""
+    def make(mons, pack):
+        p = pilot(hp=300, pack=pack, monsters=mons)
+        p.w.in_dungeon = True
+        p.w.adjacent_monsters = lambda: [m for m in p.w.monsters if p.w.dist(m[:2]) == 1]
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append(why)
+        return p
+    strong = next(r for r in sorted(RACES.values(), key=lambda r: (r.level, r.name)) if 22 <= r.level <= 30 and
+                  "UNIQUE" not in r.flags and "NEVER_MOVE" not in r.flags)
+    speed = [("2 Potions of Speed", 75)]
+    a = make([(20, 21, strong)], speed)
+    a.speed_start_tick(P.gnow())
+    b = make([(20, 21, BYNAME["cave orc"])], speed)
+    b.speed_start_tick(P.gnow())
+    c = make([(20, 21, strong)], speed)
+    c.buff_on = lambda k: k == "fast"
+    c.speed_start_tick(P.gnow())
+    # the kit: Speed at 383 bought; at 3000 over the cap
+    k = pilot(pack=[], gold=20000)
+    k.w.depth, k.w.depth_ft, k.w.in_dungeon = 0, 0, False
+    k.stores_seen = {7: {"prices": {"potion of speed": 383}}}
+    buys, _ = k.town_shopping("B", ())
+    k.stores_seen = {7: {"prices": {"potion of speed": 3000}}}
+    buys2, short2 = k.town_shopping("B", ())
+    sp = [b_ for b_ in buys if b_[1] == "Potion of Speed"]
+    sp2 = [b_ for b_ in buys2 if b_[1] == "Potion of Speed"]
+    ok = (len(a.cmds) == 1 and "at the start" in a.cmds[0] and b.cmds == [] and c.cmds == []
+          and sp and sp[0][2] == 7 and sp[0][3] == 2 and not sp2 and any("over 450" in x[0] for x in short2))
+    return ok, f"{strong.name}: {a.cmds}; a Cave orc: {b.cmds}; hasted: {c.cmds}; kit at 383: {sp}; at 3000: {sp2}"
+
+
+@case
+def xp_per_gold_rolling():
+    """The user (10-25): XP_PER_GOLD from recent play -- XP earned per gold earned (found + sold), 10-minute buckets,
+    the last 30 with any gain, seeded with the shadow series (0.41) and fading out as real buckets fill. The
+    estimator gets it with every snapshot."""
+    import tempfile
+    p = pilot()
+    p.rundir = tempfile.mkdtemp()
+    p.gain_hist = collections.deque(maxlen=80)
+    seed = p.xp_per_gold()
+    t = P.gnow()
+    p.w.in_dungeon = True
+    for k in range(31):                     # 30 buckets of 100 XP and 100 gold found: the seed is gone
+        p.w.ind["exp"], p.w.ind["gold"] = [1000 + 100 * k], [1000 + 100 * k]
+        p.track_gains(t + 600 * k)
+    full = p.xp_per_gold()
+    saved = json.load(open(os.path.join(p.rundir, "rates.json")))["buckets"]
+    ok = abs(seed - 0.409) < 0.01 and abs(full - 1.0) < 0.01 and len(saved) == 30
+    return ok, f"seed only: {seed}; after 30 buckets of 100 XP / 100 gold: {full}; buckets saved {len(saved)}"
 
 
 def main():

@@ -27,7 +27,10 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
 
 1. **In town:** `status`, then `plan town [kit=A|B|C|none] [buy NAME[:N][@MAX],...]`, then `wait`. The Pilot sells
    by policy, identifies what pays, and buys in priority order: Word of Recall to 2, the supply gate's minimums,
-   Restore for a drained STR/DEX/CON, the kit, then your list (`NAME:N` means *have* N in all, not N more). With
+   Restore for a drained STR/DEX/CON, the kit, then your list (`NAME:N` means *have* N in all, not N more). Below
+   500 ft the kit keeps **3 Heroism** (the fear cure) and **2 Potions of Speed** (Black Market, at most 450 each; often
+   out of stock): the Pilot drinks Speed **at the start of a hard fight** (a unique or a monster near your level
+   adjacent), not only in emergencies. With
    3,000+ gold it also restores Charisma (better prices). Last it **eats rations to Full and fills the lantern**
    (food isn't digested in town; 9000+ turns of light last a trip), so you carry one food stack and no oil:
    other food and spare flasks are sold, and near a trip's end spare rations go first when loot needs room. Don't

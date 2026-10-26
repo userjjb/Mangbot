@@ -59,6 +59,9 @@ class Shadow:
         t0 = time.time()
         try:
             team = [(n, d) for n, d in snap["team"] if n in self.sim.RACES]
+            # the Pilot's rolling XP-per-gold rate (the user, 10-25) in place of the module's constant
+            if snap.get("xp_per_gold"):
+                self.sim.XP_PER_GOLD = snap["xp_per_gold"]
             choice, why, table = self.sim.choose(snap["p"], team, n=N, options=snap.get("options"))
             out = {"choice": choice, "why": why, "table": table[:6], "team": team}
         except Exception as e:

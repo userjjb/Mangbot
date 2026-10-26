@@ -2875,6 +2875,8 @@ class Pilot:
         # 2a. Status cures, in combat only (out of combat, rest it off: the
         # user). Stun can become a knock-out; blind or confused can't read.
         self.hard_fight_shadow(now)          # (never acts: the estimator's view of the fight's start)
+        if self.speed_start_tick(now):
+            return True
         if self.berserk_tick(now):
             return True
         if self.status_tick(now, mons_near):
@@ -3591,7 +3593,7 @@ class Pilot:
         team += [(r.name, 3) for r in (w.listed_only() if hasattr(w, "listed_only") else [])]
         snap = {"p": p, "team": team, "rules": rules or shadow.rules_option(detail), "rules_detail": (detail or "")[:160],
                 "wall": time.time(), "factor": time_factor(), "speed": (w.ind.get("speed") or [0])[0] or 0,
-                "options": list(options) if options else None, "trigger": trigger}
+                "options": list(options) if options else None, "trigger": trigger, "xp_per_gold": self.xp_per_gold()}
         return sh.submit(snap)
 
     def shadow_results(self):
@@ -3612,6 +3614,7 @@ class Pilot:
             # (no monster the estimator knows: nothing to compare -- agree is None)
             agree = (r.get("choice") in ("rules", snap.get("rules"))) if r.get("team") else None
             self.log("estimator", trigger=snap.get("trigger", "emergency"), options=snap.get("options"),
+                     xp_per_gold=snap.get("xp_per_gold"),
                      rules=snap.get("rules"), rules_detail=snap.get("rules_detail"),
                      choice=r.get("choice"), why=r.get("why"), agree=agree,
                      compute_s=r.get("compute_s"), turn_s=round(turn_s, 2), in_time_turn=in_turn,
@@ -3756,6 +3759,10 @@ class Pilot:
             m = re.match(r"You (?:hit|smite|bite|claw|bash) (?:the )?(.+?)[.!]$", t)
             if m:
                 self.hits[(w.level_t, m.group(1).lower())] += 1
+            # gold from sales, for the rolling XP-per-gold rate (rate_tick)
+            m = re.match(r"You sold .+? for (\d+) gold", t)
+            if m:
+                self.gold_sold = self.__dict__.get("gold_sold", 0) + int(m.group(1))
             # (m37: the cloak and the new helm lost +1 each to a Disenchanter mold; nothing in the news)
             m = re.match(r"Your (.+?) \(.\) (?:was|were) disenchanted!", t)
             if m:
@@ -3780,12 +3787,61 @@ class Pilot:
         if w.in_dungeon and g > self.__dict__.get("gold_last", g):
             self.gold_found = self.__dict__.get("gold_found", 0) + g - self.gold_last
         self.gold_last = g
+        xp = (w.ind.get("exp") or [0])[0]
+        if xp > self.__dict__.get("xp_last", xp):
+            self.xp_gained = self.__dict__.get("xp_gained", 0) + xp - self.xp_last
+        self.xp_last = xp
+        self.rate_tick(now)
         # XP since arriving on this level (the Navigators' "stay or leave": m31-m34 asked for a per-level rate)
         lb = self.__dict__.get("level_base")
         if w.in_dungeon and (not lb or lb[2] != w.level_t):
             self.level_base = (now, (w.ind.get("exp") or [0])[0], w.level_t)
         if not self.gain_hist or now - self.gain_hist[-1][0] >= 15:
             self.gain_hist.append((now, (w.ind.get("exp") or [0])[0], g, self.__dict__.get("gold_found", 0)))
+
+    # the rolling exchange rate between XP and gold (the user, 10-25: "the real limiting factor is time"): XP earned per
+    # gold earned (found + sold) over the recent play, in 10-minute buckets, the last RATE_WINDOW with any gain; seeded
+    # with the shadow series m35-m42 (14190 XP, 12900 found, 21794 sold over 319 min: 0.41), which fades out as real
+    # buckets fill the window. Used by the estimator (shadow mode) and shown by `gear`.
+    RATE_BUCKET_S = 600
+    RATE_WINDOW = 30
+    RATE_SEED = (14190, 12900 + 21794)
+    RATE_CLAMP = (0.1, 3.0)
+
+    def rate_state(self):
+        st = self.__dict__.get("rates")
+        if st is None:
+            try:
+                st = json.load(open(os.path.join(self.rundir, "rates.json")))
+            except (OSError, ValueError, AttributeError):
+                st = {}
+            st.setdefault("buckets", [])
+            self.rates = st
+        return st
+
+    def rate_tick(self, now):
+        cur = (self.__dict__.get("xp_gained", 0), self.__dict__.get("gold_found", 0) + self.__dict__.get("gold_sold", 0))
+        op = self.__dict__.get("rate_open")
+        if op is None or now - op[0] >= self.RATE_BUCKET_S:
+            if op is not None:
+                d = [c - b for c, b in zip(cur, op[1])]
+                if any(d):
+                    st = self.rate_state()
+                    st["buckets"] = (st["buckets"] + [[round(time.time()), d[0], d[1]]])[-self.RATE_WINDOW:]
+                    try:
+                        json.dump(st, open(os.path.join(self.rundir, "rates.json"), "w"))
+                    except (OSError, AttributeError):
+                        pass
+            self.rate_open = (now, cur)
+
+    def xp_per_gold(self):
+        """XP per gold from recent play: the buckets, plus the seed weighted by the window's unfilled share."""
+        b = self.rate_state()["buckets"]
+        seed_w = max(0.0, 1 - len(b) / self.RATE_WINDOW)
+        xp = sum(x[1] for x in b) + seed_w * self.RATE_SEED[0]
+        gold = sum(x[2] for x in b) + seed_w * self.RATE_SEED[1]
+        lo, hi = self.RATE_CLAMP
+        return round(min(hi, max(lo, xp / gold)), 3) if gold > 0 else 1.0
 
     def belief_lines(self):
         """The report's belief-state lines: threats out of view, the fight so far, rates,
@@ -4835,10 +4891,29 @@ class Pilot:
         seen[key], self.hard_fight_t = now, now
         pot = any("Berserk" in i["name"] for i in w.items(tval=TV_POTION))
         berserk = pot and not self.buff_on("shero") and waited(getattr(self, "berserk_t", 0), 30)
+        fast = any("of Speed" in i["name"] for i in w.items(tval=TV_POTION)) and not self.buff_on("fast") and \
+            waited(getattr(self, "speed_start_t", 0), 30)
+        label = "speed+berserk" if fast and berserk else "speed" if fast else "berserk" if berserk else "fight"
         names = ", ".join(sorted({r.name for r in adj}))
-        return self.shadow_decision(f"hard fight with {names}: " + ("quaff Berserk" if berserk else "fighting on"),
-                                    options=self.HARD_FIGHT_OPTIONS, trigger="hard_fight",
-                                    rules="berserk" if berserk else "fight")
+        return self.shadow_decision(f"hard fight with {names}: rules {label}", options=self.HARD_FIGHT_OPTIONS,
+                                    trigger="hard_fight", rules=label)
+
+    def speed_start_tick(self, now):
+        """A Potion of Speed at the start of a hard fight (the user, 10-25, on the Advisor's replays: drunk at the
+        start rather than when the emergency fires, it beat the rules in 3 of 4 hard fights -- the gain is mostly
+        timing, the same potion drunk earlier). Same test as Berserk (hard_fight); not when already hasted."""
+        w = self.w
+        if not w.in_dungeon or self.buff_on("fast") or not waited(getattr(self, "speed_start_t", 0), 30):
+            return False
+        adj, hard = self.hard_fight()
+        pot = next((i for i in w.items(tval=TV_POTION) if "Potion" in i["name"] and "of Speed" in i["name"]), None)
+        if not (hard and pot):
+            return False
+        self.speed_start_t = now
+        names = ", ".join(sorted({r.name for r in adj}))
+        self.cmd(f"custom q item={pot['item']}", f"a hard fight ({names}): quaff {pot['name']} at the start", hold=0.6)
+        self.notify("tactic", f"a hard fight with {names}: quaffed {one_of(pot['name'])} at the start", news=True)
+        return True
 
     def berserk_tick(self, now):
         """A Potion of Berserk Strength at the start of a hard melee fight (the user, 10-25: carried, never used):
@@ -6555,15 +6630,20 @@ class Pilot:
                  "Restore Constitution": (75, 5, 490), "Restore Charisma": (75, 5, 490),
                  # (the only fear cure kept since Boldness went, the user 10-25; m41 ran out and phased 3 times
                  # afraid with three on it)
-                 "Heroism": (75, 4, 55)}
+                 "Heroism": (75, 4, 55),
+                 # (the user, 10-25: Speed drunk at the start of hard fights; only the Black Market sells it, ~383 in
+                 # m40; the Advisor's replays: it pays below ~500-600 gold at the rolling XP-per-gold rate)
+                 "Potion of Speed": (75, 7, 400)}
+    # hard price caps for kit lines (else 1.5x the price last seen): Black Market stock is sometimes far dearer
+    KIT_CAP = {"Potion of Speed": 450}
     # stock levels per stage (the Advisor's shops memo §3 and the Borg minimums):
     # A to 500 ft, B to 1000 ft, C deeper. No flasks: the town visit tops the lantern up instead (the user,
     # 10-25: oil, food and potions nobody uses fill the pack). Rations: one stack, eaten to Full before a trip
     KITS = {"A": {"Word of Recall": 2, "Cure Light Wounds": 5, "Phase Door": 5, "Ration of Food": 3},
             "B": {"Word of Recall": 2, "Cure Critical Wounds": 4, "Cure Serious Wounds": 4, "Phase Door": 10,
-                  "Ration of Food": 3, "Heroism": 3},
+                  "Ration of Food": 3, "Heroism": 3, "Potion of Speed": 2},
             "C": {"Word of Recall": 2, "Cure Critical Wounds": 6, "Cure Serious Wounds": 4, "Phase Door": 12,
-                  "Ration of Food": 3, "Heroism": 3},
+                  "Ration of Food": 3, "Heroism": 3, "Potion of Speed": 2},
             "none": {}}
     # The lantern leaves town with this much fuel: a full lantern (15000) burned ~7500 in ~35 dungeon minutes
     # (m29-m30), and a trip ends within 30; a flask adds 7500 (object.txt; FUEL_LAMP 15000, mdefines.h)
@@ -6825,7 +6905,7 @@ class Pilot:
         def add(tier, kind, target):
             n = target - planned(kind)
             if n > 0:
-                plan.append([tier, kind, self.KIT_ITEMS[kind][1], n, None])
+                plan.append([tier, kind, self.KIT_ITEMS[kind][1], n, self.KIT_CAP.get(kind)])
         add(1, "Word of Recall", 2)
         if want >= 250:
             _, cures, serious, critical, ph = max((st for st in self.SUPPLY_STAGES if want >= st[0]),
@@ -6885,6 +6965,9 @@ class Pilot:
             price = self.price_of(kind, store) or cap
             if not price:
                 buys.append((tier, kind, store, n, cap))      # (unknown price: the cap decides)
+                continue
+            if cap and price > cap:
+                short.append((f"{kind} (over {cap})", n))     # (the shop asks more than the line is worth)
                 continue
             k = min(n, left // price)
             if k:
@@ -7639,7 +7722,9 @@ class Pilot:
         flags = w.flags or {}
         gold = w.ind.get("gold", [0])[0]
         spare = gold - self.town_reserve()
-        out = [f"Gold {gold} ({max(0, spare)} beyond the essentials' reserve); AC {(w.ind.get('armor') or [0])[0]}"]
+        r = self.xp_per_gold()
+        out = [f"Gold {gold} ({max(0, spare)} beyond the essentials' reserve); AC {(w.ind.get('armor') or [0])[0]}; "
+               f"XP per gold (recent play) {r}: 1000 gold costs ~{1000 * r:.0f} XP of playing time"]
         have = [lab for f, lab in self.GEAR_WANTED if flags.get(f)]
         miss = [lab for f, lab in self.GEAR_WANTED if not flags.get(f)]
         out.append("Abilities: " + (", ".join(have) or "none") + " | missing, most wanted first: " +
