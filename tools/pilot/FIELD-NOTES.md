@@ -62,6 +62,12 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
 
 ## Pilot habits to expect (not bugs to work around)
 
+- **One long trip fits a 45-minute mission (m46, 81 XP/dmin):** town ~4 min, one trip of ~30 minutes
+  (`minutes>32`), town again. A recall down for a 650-750 trip lands at 700 ft (one level above the top, by design).
+- **Thieves take gold you carry (m46: Smeagol took ~2400 of 26k in one touch).** If a thief is in view, kill it or
+  move away; spending gold in town before a trip limits the loss.
+- **Black Market items:** `plan town buy Potion_of_Speed:2` now finds store 7 by itself (m46 needed `7/`).
+
 - **Leaving a level (fixed after m45):** m45's "stuck" dive was really a Giant flea swarm at 750 ft: it refused
   the only `<` (back to the level it had fled 4.5 minutes before) and fought fleas while looking for another. Now
   the stairs back aren't refused on the test server (a level left is a fresh one), 2 minutes on a live server; a trip that can't leave a finished level in 5 minutes recalls

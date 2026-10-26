@@ -7651,6 +7651,9 @@ class Pilot:
                 return {"ok": False, "error": f"can't read the buy item {sp!r}: [STORE/]NAME[:COUNT][@MAXPRICE]"}
             name = m.group(2).replace("_", " ").strip()
             store = int(m.group(1)) if m.group(1) else self.buy_store(name)
+            # (a kit line knows its shop: m46's Navigator was told to "name the shop" for a Potion of Speed)
+            if not store:
+                store = next((v[1] for k, v in self.KIT_ITEMS.items() if k.lower() == name.lower()), None)
             if not store:
                 return {"ok": False, "error": f"no shop's stock table has {name!r}: name the shop (e.g. 7/{m.group(2)}"
                                               " for the Black Market, which charges 3x)"}
