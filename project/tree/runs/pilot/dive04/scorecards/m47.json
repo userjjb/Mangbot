@@ -1,0 +1,177 @@
+{
+ "label": "m47",
+ "nav_model": "haiku",
+ "effort": "low",
+ "report": "compact",
+ "start": "2026-10-26 18:37",
+ "end": "2026-10-26 19:15",
+ "minutes": 38.0,
+ "notes": "",
+ "tokens": {
+  "turns": 17,
+  "input": 34,
+  "output": 8191,
+  "cache_read": 513564,
+  "cache_write": 37350,
+  "write_5m": 37350,
+  "write_1h": 0,
+  "model": "claude-haiku-5-5",
+  "final_usage_turns": 17,
+  "usd": 0.011,
+  "transcript": "agent-a4a6b0ae26b2ea240.jsonl"
+ },
+ "estimator": {
+  "n": 2,
+  "compared": 1,
+  "agree": 1,
+  "in_time_turn": 2,
+  "before_next_act": 2,
+  "skipped": 0,
+  "compute_max_s": 0.275,
+  "disagreements": [],
+  "hard_n": 1,
+  "hard_compared": 1,
+  "hard_agree": 1,
+  "hard_choices": {}
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   28,
+   28
+  ],
+  "exp_gain": 2469,
+  "gold": [
+   26038,
+   31290
+  ],
+  "gold_change": 5252,
+  "max_depth_ft": 750
+ },
+ "B": {
+  "dungeon_min": 31.5,
+  "town_min": 6.1,
+  "exp_per_dmin": 78.4,
+  "levels_per_dhour": 0.29,
+  "gold_found": 1107,
+  "gold_found_per_dmin": 35.1,
+  "time_budget_min": {
+   "exploring": 14.8,
+   "fighting": 10.3,
+   "travel_dive": 4.6,
+   "town_other": 3.0,
+   "town_idle_end": 1.5,
+   "escaping": 1.5,
+   "town_no_goal": 1.4,
+   "recall_wait": 0.6,
+   "resting": 0.2,
+   "no_goal_dungeon": 0.1
+  },
+  "navigator_wait_pct": 4
+ },
+ "C": {
+  "lowest_hp": [
+   234,
+   333,
+   70,
+   "18:51:01"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 1,
+  "emergency_alerts": 1,
+  "phase": 0,
+  "wor_escape": 1,
+  "wor_travel": 3,
+  "stairs_flee": 0,
+  "teleport": 0,
+  "cures_quaffed": 2,
+  "escape_records": 6,
+  "recalls_landed": 4
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 168,
+  "loot_abandoned_est": 1376,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 6,
+  "total": 1550,
+  "sales": 17,
+  "sales_valued": 5,
+  "worst_sales": [],
+  "left_behind": [
+   "Pick (1d3)",
+   "Flail (2d6)",
+   "Scroll of Trap Detection",
+   "Scroll of Satisfy Hunger",
+   "Black Mushroom",
+   "Dark Blue Mushroom",
+   "Green Mushroom",
+   "Arrows (1d4) (x29)",
+   "Bolts (1d5) (x30)",
+   "Awl-Pike (1d8)"
+  ],
+  "irreplaceable": [
+   "a Ring of Resist Fire"
+  ]
+ },
+ "E": {
+  "reports": 12,
+  "commands": 34,
+  "commands_per_min": 1.2,
+  "report_to_action_med_s": 4.8,
+  "report_to_action_p90_s": 4.8,
+  "reports_without_command_pct": 0,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 0,
+  "report_chars": 59281,
+  "order_report_age_med_s": 23.8,
+  "order_report_age_p90_s": 29.8
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 77,
+  "perception_gaps": 4,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 1214,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Uruk": 162,
+  "Warg": 91,
+  "White wolf": 86,
+  "Dark hound": 42,
+  "Giant black louse": 42,
+  "Novice ranger": 26,
+  "Wolf": 24,
+  "Black orc": 23
+ },
+ "alerts": {
+  "tactic": 88,
+  "goal_done": 2,
+  "plan_done": 2,
+  "parked": 1,
+  "started": 1,
+  "stat_drained": 1,
+  "lost": 1
+ },
+ "plan_news": {
+  "unseen_attacker": 26,
+  "goal_done": 12,
+  "plan": 6,
+  "interesting_item": 6,
+  "thief": 2,
+  "fearer": 1,
+  "drainer": 1,
+  "band": 1,
+  "goal_failed": 1,
+  "emergency": 1,
+  "structure": 1
+ }
+}

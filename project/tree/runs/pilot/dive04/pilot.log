@@ -1478,3 +1478,116 @@ BrokenPipeError: [Errno 32] Broken pipe
 17:20:22 pilot stopping
 17:20:25 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
 17:20:25 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+18:09:32 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+18:09:32 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from 
+----------------------------------------
+Exception occurred during processing of request from 
+Exception occurred during processing of request from 
+Traceback (most recent call last):
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 692, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 692, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 761, in __init__
+    self.handle()
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/pilot.py", line 8967, in handle
+    self.wfile.write((json.dumps(out) + "\n").encode())
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 761, in __init__
+    self.handle()
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 840, in write
+    self._sock.sendall(b)
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/pilot.py", line 8967, in handle
+    self.wfile.write((json.dumps(out) + "\n").encode())
+BrokenPipeError: [Errno 32] Broken pipe
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 840, in write
+    self._sock.sendall(b)
+----------------------------------------
+BrokenPipeError: [Errno 32] Broken pipe
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 692, in process_request_thread
+    self.finish_request(request, client_address)
+----------------------------------------
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 761, in __init__
+    self.handle()
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/pilot.py", line 8967, in handle
+    self.wfile.write((json.dumps(out) + "\n").encode())
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 840, in write
+    self._sock.sendall(b)
+BrokenPipeError: [Errno 32] Broken pipe
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from 
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from 
+Exception occurred during processing of request from 
+----------------------------------------
+Exception occurred during processing of request from 
+Traceback (most recent call last):
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 692, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 761, in __init__
+    self.handle()
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/pilot.py", line 8967, in handle
+    self.wfile.write((json.dumps(out) + "\n").encode())
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 840, in write
+    self._sock.sendall(b)
+BrokenPipeError: [Errno 32] Broken pipe
+----------------------------------------
+Traceback (most recent call last):
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 692, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 761, in __init__
+    self.handle()
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/pilot.py", line 8967, in handle
+    self.wfile.write((json.dumps(out) + "\n").encode())
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 840, in write
+    self._sock.sendall(b)
+BrokenPipeError: [Errno 32] Broken pipe
+----------------------------------------
+Traceback (most recent call last):
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 692, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 761, in __init__
+    self.handle()
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/pilot.py", line 8967, in handle
+    self.wfile.write((json.dumps(out) + "\n").encode())
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 840, in write
+    self._sock.sendall(b)
+BrokenPipeError: [Errno 32] Broken pipe
+----------------------------------------
+Traceback (most recent call last):
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 692, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 761, in __init__
+    self.handle()
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/pilot.py", line 8967, in handle
+    self.wfile.write((json.dumps(out) + "\n").encode())
+  File "/share/pkg.8/python3/3.12.4/install/lib/python3.12/socketserver.py", line 840, in write
+    self._sock.sendall(b)
+BrokenPipeError: [Errno 32] Broken pipe
+----------------------------------------
+18:37:02 pilot stopping
+18:37:05 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+18:37:05 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+19:14:42 pilot stopping
+19:14:45 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+19:14:45 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock

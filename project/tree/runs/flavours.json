@@ -124,6 +124,11 @@
   "kind": "Ring of Feather Falling",
   "source": "Advisor L_items (Dive03 09-27 12:07:32)"
  },
+ "Cottonwood Staff": {
+  "junk": false,
+  "kind": "Staff of Enlightenment",
+  "source": "identified"
+ },
  "Dark Red Potion": {
   "junk": true,
   "kind": "Potion of Lose Memories",
@@ -268,6 +273,11 @@
   "junk": false,
   "kind": "Ring of Slow Digestion",
   "source": "identified or used"
+ },
+ "Pink Potion": {
+  "junk": false,
+  "kind": "Potion of Restore Mana",
+  "source": "identified"
  },
  "Platinum Rod": {
   "junk": false,

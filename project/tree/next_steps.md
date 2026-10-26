@@ -178,7 +178,16 @@ validation.
   under-weighted), the tail gate = bootstrap 95% interval of the worst-5% difference. Now: Ring of Damage +1.1% (no),
   Ring of Strength -6% and less safe, Metal Scale Mail +21%. **`geareval.TRADE_RESISTS` = False** (automatic swaps keep
   every resist): **the user chose B (10-26)** -- keep it so; `gearcmp` shows the trades for the user/Navigator.
-- Still open: the older list below. Verify live: the
+- **Missions (the user: "start m46, and another one after that; monitor for bugs and fix"):** m46 Haiku low 18:01-18:36,
+  **81.0 XP/dmin** (best Haiku), $0.013, 0 close calls; report reports/2026-10-26-mission46.md. Fixed during it: the
+  drain notice names the stash (hot-swap 18:09: label + plan survived), never destroy the last food, leave heavy loot
+  that would slow us (weight limit), kit items know their shop, BrokenPipe silenced. Stash fetch verified live.
+  **m47** Haiku low 18:38-19:14: **78.4 XP/dmin**, $0.011, 0 close calls, 1 escape recall (9 Wargs, stairs 28 steps
+  off), Restore CON fetched from the stash; fixed: the "too heavy" notice once per item. Report mission47.md.
+  Monitor script: $CLAUDE_JOB_DIR/tmp/watch_mission.py (job-local). Dive04 now: clvl 28, 31290 gold, in town.
+  **Open from m46-m47:** the fight-vs-flee rule for fast weak bands with far stairs (m35, m47 Wargs); staffs aren't
+  weight-checked on pickup; rations near trip end go down to one.
+- Still open: thieves (m46 Smeagol -2400), no Black Market Speed (3 visits), and the older list below. Verify live: the
   first `couldn't leave` recall, a hot-swap on a special level, `mission end` without a label after a swap.
 
 ### ARCHITECT HANDOFF 2026-10-26, end of session 6 (the session-6 section below has its details)
