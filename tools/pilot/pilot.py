@@ -45,6 +45,7 @@ from world import (World, gnow, set_time_factor, time_factor, model_factor, wall
                    ghold, light_fuel, set_fast_ok, measured_rate, _lt, frozen)
 import structures                                # noqa: E402
 import shadow                                    # noqa: E402
+import geareval                                  # noqa: E402
 import itemvalue                                 # noqa: E402
 sys.path.insert(0, os.path.join(HERE, "..", "observe"))
 import shopmath                                  # noqa: E402
@@ -4768,6 +4769,24 @@ class Pilot:
                                               + ("a bigger bonus" if same else "its abilities are given by other gear")
                                               + ")", news=True)
                         return True
+        # 6. in town: the gear evaluator's choice among the identified wearables in the pack (simulated fights, never
+        # losing an ability or resist; the user, 10-26). A ring over a worn one: off first, step 4 puts it on.
+        if not w.depth and not w.in_dungeon and not self.__dict__.get("gear_swapped_t", 0) > gnow() - 30:
+            for it in pack:
+                got = self.gear_better(it)
+                if not got:
+                    continue
+                label, (_, old) = got
+                on = next((i for i in worn if i["name"] == old), None) if old else None
+                self.gear_swapped_t = gnow()
+                if it["tval"] in (40, 45) and on is not None:
+                    self.jewel_swap = it["name"]
+                    self.cmd(f"custom t item={on['item']}", f"take off {on['name']} for {it['name']} (gear evaluator)",
+                             hold=0.8)
+                else:
+                    self.cmd(f"custom w item={it['item']}", f"wear {it['name']} (gear evaluator)", hold=0.8)
+                self.notify("tactic", f"gear evaluator: {label} (simulated fights; `gearcmp` for the table)", news=True)
+                return True
         return False
 
     # what proves an ability in play (the rulebook's abilities.csv, restructure step 3): (ability,
@@ -6654,6 +6673,35 @@ class Pilot:
             return {"ok": True, "text": self.drainers_info(args)}
         if c == "gear":
             return {"ok": True, "text": self.gear_review()}
+        if c == "gearcmp":
+            # the item slot evaluator (geareval.py): each named pack item (letter or name) or item name against the
+            # worn slot; no argument: every identified wearable in the pack
+            if self.w.in_dungeon and self.w.monsters:
+                return {"ok": False, "error": "gearcmp runs ~1-3 s of simulation: not with monsters in view"}
+            pack = self.w.items()
+            items = []
+            for a in args or []:
+                a2 = a.replace("_", " ")
+                if len(a2) == 1 and a2.islower():
+                    try:
+                        idx = self.item_index(a2)
+                    except ValueError as e:
+                        return {"ok": False, "error": str(e)}
+                    it = next((i for i in pack if i["item"] == idx), None)
+                else:
+                    it = next((i for i in pack if a2.lower() in i["name"].lower()), None) or a2
+                if it:
+                    items.append(it)
+            if not args:
+                items = [i for i in pack if i["tval"] in geareval.SLOT_OF_TVAL and i["tval"] != TV_LITE and
+                         self.iv(i["name"]).known]
+            if not items:
+                return {"ok": True, "text": "nothing to compare (name pack items by letter or name, or an item name)"}
+            try:
+                res = self.gear_eval(items, n=20)
+            except Exception as e:
+                return {"ok": False, "error": f"gear evaluator failed: {e!r}"}
+            return {"ok": True, "text": geareval.report(res)}
         if c == "why":
             return {"ok": True, "text": self.why_info(args)}
         if c == "prep":
@@ -7183,6 +7231,9 @@ class Pilot:
             return it["number"] if (f and f["junk"]) or it["number"] == 1 else 1
         if self.probably_special(name) or self.value_refusal(it, "sell", "navigator"):
             return 0                    # (identify first)
+        # (the gear evaluator would wear it: m45 sold a Ring of Strength (+2) right after identifying it, unjudged)
+        if self.gear_better(it):
+            return 0
         iv = self.iv(name)
         if iv.kind is None or iv.value <= 0 or iv.value * self.pay_cut(iv.tval) < 1:
             return 0
@@ -8168,7 +8219,7 @@ class Pilot:
             elif k == "act":
                 text = f"act{' [' + d['by'] + ']' if d.get('by') else ''}: {d.get('why') or d.get('cmd')}"
             elif k == "nav_cmd":
-                if d.get("cmd") in ("status", "wait", "prep", "why", "gear", "pack", "say", "journal", "complain"):
+                if d.get("cmd") in ("status", "wait", "prep", "why", "gear", "gearcmp", "pack", "say", "journal", "complain"):
                     continue
                 text = f"{'ARCH' if d.get('role') == 'architect' else 'NAV'}> {d.get('cmd')} {' '.join(map(str, d.get('args') or []))}"
             elif k == "escape":
@@ -8371,6 +8422,71 @@ class Pilot:
                     and not re.search(r"\[[+-]?\d+|\([+-]\d+", it["name"]):
                 out.append((it, gives, sorted({c for f in gives for c in (flags.get(f) or "") if c != L})))
         return out
+
+    def gear_character(self):
+        """The character for the gear evaluator (geareval.py): the sheet's stats, HP and AC, the worn gear (with each
+        piece's weight from the inventory), the sheet's abilities, the consumables the simulator uses."""
+        w = self.w
+        worn = {}
+        for i in w.items(equip=True):
+            it = geareval.Item(i["name"], i["tval"], i["weight"] // max(1, i.get("number", 1)))
+            if it.slot:
+                worn.setdefault(it.slot, []).append(it)
+        stats = {n: (w.ind.get(f"stat{k}") or [3])[0] for k, n in enumerate(self.STAT_NAMES)}
+        flags = {("SEE_INVIS" if f == "see_invis" else f.upper()) for f, on in (w.flags or {}).items() if on}
+
+        def n(word, tv):
+            return sum(i["number"] for i in w.items(tval=tv) if word in i["name"])
+        staff = next((i for i in w.items(tval=55) if "Teleportation" in i["name"]), None)
+        m = re.search(r"\((\d+) charges?\)", staff["name"]) if staff else None
+        inv = dict(ccw=n("Cure Critical", TV_POTION), csw=n("Cure Serious", TV_POTION), clw=n("Cure Light", TV_POTION),
+                   phase=n("Phase Door", TV_SCROLL), tele=n("Teleportation", TV_SCROLL), staff=int(m.group(1)) if m else 0,
+                   wor=n("Word of Recall", TV_SCROLL), speed=n("Speed", TV_POTION), berserk=n("Berserk", TV_POTION),
+                   hero=n("Heroism", TV_POTION))
+        depth = int(self.orders.get("max_depth", 0)) or (self.deepest_ft or 500)
+        return geareval.Character(w.clvl, stats, w.hp[1], (w.ind.get("armor") or [0])[0] or 0, worn, flags=flags,
+                                  depth_ft=depth, inv=inv)
+
+    def gear_eval(self, items, n=10, no_loss=False):
+        """The item slot evaluator on these pack items (or names): geareval.compare_slot. Cached per item and gear."""
+        ch = self.gear_character()
+        cands = [geareval.Item(i["name"], i["tval"], i["weight"] // max(1, i.get("number", 1))) if isinstance(i, dict)
+                 else geareval.Item(i) for i in items]
+        key = (tuple(c.name for c in cands), tuple(sorted(i.name for v in ch.worn.values() for i in v)),
+               tuple(sorted(ch.sheet["stats"].items())), ch.clvl, ch.depth_ft, no_loss, n)
+        cache = self.__dict__.setdefault("gear_eval_cache", {})
+        if key not in cache:
+            cache[key] = geareval.compare_slot(ch, [c for c in cands if c.slot], n=n, no_loss=no_loss,
+                                               decisions=os.path.join(self.rundir, "decisions.jsonl"),
+                                               xp_per_gold=self.xp_per_gold())
+        return cache[key]
+
+    def gear_better(self, it):
+        """(the evaluator's chosen option, (item, replaced)) when wearing this identified pack item beats what's worn
+        (town only: a run takes ~1 s; never one that loses an ability or resist), else None."""
+        w = self.w
+        if w.depth or w.in_dungeon or it.get("equip") or it["tval"] not in geareval.SLOT_OF_TVAL or \
+                it["tval"] == TV_LITE or re.search(r"\{(cursed|worthless|broken|terrible)", it["name"]) or \
+                not self.iv(it["name"]).known or (self.flavour_of(it) or {}).get("junk"):
+            return None
+        try:
+            # (nothing it could improve -- damage, AC, HP, speed, an ability -- no simulation: most loot)
+            ch = self.gear_character()
+            gi = geareval.Item(it["name"], it["tval"], it["weight"] // max(1, it.get("number", 1)))
+            cur = ch.derive()
+            if not gi.slot or not any(
+                    (d["dmg"] > cur["dmg"] or d["ac"] > cur["ac"] or d["mhp"] > cur["mhp"] or d["speed"] > cur["speed"]
+                     or d["flags"] - cur["flags"])
+                    for d in (ch.derive(ch.swap(gi, j)) for j in range(2 if gi.slot == "ring" else 1))):
+                return None
+            res = self.gear_eval([it], no_loss=True)
+        except Exception as e:                 # (the evaluator must not stop the town visit)
+            self.log("note", text=f"gear evaluator failed on {it['name']}: {e!r}")
+            return None
+        if res["best"] == "current":
+            return None
+        self.log("gear_eval", item=it["name"], best=res["best"], score={k: round(v, 3) for k, v in res["score"].items()})
+        return res["best"], res["swaps"][res["best"]]
 
     def gear_review(self):
         """Gear as a whole, for the between-mission step: abilities had and missing, worn pieces whose abilities

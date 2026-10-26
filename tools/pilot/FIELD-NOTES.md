@@ -66,8 +66,9 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
   the only `<` (back to the level it had fled 4.5 minutes before) and fought fleas while looking for another. Now
   the stairs back are refused for 2 minutes only, and a trip that can't leave a finished level in 5 minutes recalls
   home by itself. Your `goal explore` + `plan resume` still works, and resets that 5-minute count.
-- **Rings of Strength are sold by policy** (m45 sold a +2 right after identifying it). If blows matter, `keep Ring of
-  Strength` before `plan town`.
+- **Gear choices go through the gear evaluator (since 10-26):** `gearcmp` compares pack items (or shop items by name)
+  with what's worn, by simulated fights. m45's Ring of Strength (+2) was rightly sold: STR 18/90 still gives 2 blows
+  with the Battle Axe. In town the Pilot wears the evaluator's pick itself and doesn't sell it.
 
 - **Don't put `band` in a trip's conditions** at 650-750 ft. It ends the trip on any band, including the ones the
   Pilot would fight and win: m43's first trip ended after 5 minutes on 5 Black orcs. The Pilot leaves dangerous bands

@@ -114,7 +114,7 @@ def draw_map(scr, y, width, top_h, vm):
 FEED_KINDS = ("act", "attention", "goal", "goal_done", "goal_failed", "user_note", "audit", "nav_say",
               "nav_complaint", "nav_cmd", "nav_ask", "arch_answer")
 # the Navigator's commands that only look (not shown as decisions)
-NAV_QUERIES = {"status", "wait", "prep", "why", "gear", "pack", "equip", "map", "monster", "drainers", "gate", "debt",
+NAV_QUERIES = {"status", "wait", "prep", "why", "gear", "gearcmp", "pack", "equip", "map", "monster", "drainers", "gate", "debt",
                "journal", "say", "complain", "rule", "inventory", "orders", "events", "news", "view", "viewmap",
                "navview", "note", "goalstate", "mission", "attention", "options", "flags", "commands"}
 BY_TAG = {"pilot": "[P]", "plan": "[plan]", "nav": "[N]", "arch": "[A]"}

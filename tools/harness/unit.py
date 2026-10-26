@@ -1817,6 +1817,63 @@ def mission_label_survives_restart():
     return ok, f"label {q.mission_label}, base {q.mission_base[1:3]}, found {found}, {age:.0f} s in"
 
 
+def _dive04_character():
+    import geareval as GE
+    worn = {}
+    for n in GE.DIVE04_WORN:
+        it = GE.Item(n)
+        worn.setdefault(it.slot, []).append(it)
+    return GE, GE.Character(28, {"STR": 88, "INT": 5, "WIS": 8, "DEX": 38, "CON": 38, "CHR": 4}, mhp=340, ac=76,
+                            worn=worn, flags={"FREE_ACT", "SEE_INVIS", "RES_FIRE", "RES_COLD", "RES_ELEC", "RES_ACID",
+                                              "RES_DARK"}, depth_ft=750, inv=dict(ccw=20, phase=18, wor=2))
+
+
+@case
+def gear_items_parsed_from_names():
+    """The gear evaluator reads items from the names the client shows, with the game's data files: kind, ego or
+    artifact, dice, plusses, AC, pval, abilities (the Battle Axe of Westernesse once read as an artifact)."""
+    import geareval as GE
+    ax = GE.Item("Battle Axe of Westernesse (2d8) (+10,+9) (+1)")
+    arm = GE.Item("Hard Studded Leather of Resistance (-1) [7,+8]")
+    ring = GE.Item("Ring of Protection [+12]")
+    st = GE.Item("Ring of Strength (+2)")
+    ing = GE.Item("the Amulet of Ingwe")
+    lamp = GE.Item("Brass Lantern (with 14943 turns of light)")
+    ok = (ax.slot == "weapon" and ax.weight == 170 and (ax.to_h, ax.to_d, ax.pval) == (10, 9, 1) and
+          ax.abilities() == {"FREE_ACT", "SEE_INVIS"} and ax.stat_bonus() == {"STR": 1, "DEX": 1, "CON": 1} and
+          arm.slot == "body" and (arm.ac, arm.to_a, arm.to_h) == (7, 8, -1) and
+          arm.abilities() == {"RES_ACID", "RES_ELEC", "RES_FIRE", "RES_COLD"} and ring.to_a == 12 and
+          st.stat_bonus() == {"STR": 2} and ing.art and "FREE_ACT" in ing.abilities() and lamp.pval == 0)
+    return ok, f"axe {ax.weight} {ax.abilities()} {ax.stat_bonus()}; armour {arm.ac},{arm.to_a},{arm.to_h} " \
+               f"{sorted(arm.abilities())}; Ingwe {bool(ing.art)}"
+
+
+@case
+def gear_model_matches_dive04_sheet():
+    """Dive04's sheet (10-26: STR 18/70, 2 blows, AC 76, 340 HP) from its worn gear; a Ring of Strength (+2) makes
+    STR 18/90 and still 2 blows with the 17 lb axe (the m45 question: the Protection ring's 10-12 AC is worth more)."""
+    GE, ch = _dive04_character()
+    d = ch.derive()
+    d2 = ch.derive(ch.swap(GE.Item("Ring of Strength (+2)"), 1))
+    ok = ch.check() == [] and d["blows"] == 2 and d["ac"] == 76 and d["mhp"] == 340 and \
+        d2["stats"]["STR"] == 108 and d2["blows"] == 2 and d2["ac"] == 66 and d2["dmg"] > d["dmg"]
+    return ok, f"check {ch.check()}; now blows {d['blows']} ~{d['dmg']}/round AC {d['ac']}; with STR+2: " \
+               f"STR {d2['stats']['STR']} blows {d2['blows']} ~{d2['dmg']}/round AC {d2['ac']}"
+
+
+@case
+def gear_evaluator_never_auto_loses_a_resist():
+    """The simulator doesn't model elemental resists, so for the Pilot's automatic swaps (no_loss) an option that loses
+    an ability or resist is ruled out: plain armour with more AC doesn't replace the Leather of Resistance; Free
+    Action lost is vetoed in any case."""
+    GE, ch = _dive04_character()
+    res = GE.compare_slot(ch, [GE.Item("Metal Scale Mail [38,+5]")], hard=False, no_loss=True)
+    res2 = GE.compare_slot(ch, [GE.Item("Battle Axe (2d8) (+20,+20)")], hard=False)
+    ok = res["best"] == "current" and res2["best"] == "current" and \
+        any("Free Action" in x for x in res2["notes"][res2["options"][1]])
+    return ok, f"mail: {res['best']} ({res['notes']}); plain axe: {res2['best']} ({res2['notes'][res2['options'][1]]})"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0
