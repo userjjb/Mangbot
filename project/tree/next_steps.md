@@ -166,6 +166,13 @@ validation.
   evaluator's pick (never losing an ability/resist). **Issue 2 answered:** Ring of Strength (+2) = still 2 blows, keep
   Protection. Advisor asked (to_advisor 10-26 gear-evaluator) for resists in the sim, depth-native scenarios, a check.
   Unit cases gear_* (73 pass).
+  **Then the Advisor's review (to_architect 10-26 gear-evaluator) was built in:** options_sim 26f simulates resists
+  (so only Free Action, See Invisible, resist blindness/confusion, hold life are never lost by an automatic swap);
+  sets met + depth + deeper (scenarios.make, 500 each, boost 2) + hard; score = (XP - gold x XP/gold) / (fight + rest
+  turns for the HP lost); a change needs +3% and 2 paired SE; tail gates (worst 5% -4 points, worst 1% -8); the
+  weight limit's speed penalty (slower = ruled out). Now: Ring of Damage (+0,+6) +4% but ruled out (worst 5% of
+  fights 69% vs 73% HP); a plain Metal Scale Mail [38,+5] over the Leather of Resistance would WIN (+8.8%, losing 3
+  resists) -- asked the user whether resists may be traded that way. 75 unit cases pass.
 - Still open: the older list below. Verify live: the
   first `couldn't leave` recall, a hot-swap on a special level, `mission end` without a label after a swap.
 

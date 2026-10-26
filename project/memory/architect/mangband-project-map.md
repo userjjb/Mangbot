@@ -8,6 +8,7 @@ All substance is in `/projectnb/jbrcs/mangband/` (moved out of memory 2026-09-27
 - `next_steps.md`: **start with the "ARCHITECT HANDOFF" section** (state, operating rules, next steps).
 - `operations.md`: environment, test server, characters (credentials in `runs/private/`), tool-mode client facts, verified server behaviour, live server, user decisions, tooling gotchas.
 - `notes_players.md`: game knowledge (docs digest, observed human play, the user's advice).
+- `design_gear.md`: the gear evaluator (`github/tools/pilot/geareval.py`, `pilotctl gearcmp`), its limits, the loadout-optimizer TODO.
 - `design_pilot.md` + `github/tools/pilot/HANDBOOK.md` (the short Navigator handbook since 2026-10-23) + `HANDBOOK-reference.md` (the full old one): Pilot architecture and features; `roles.md`; `memos/` (Advisor memos); `notes_merge.md` (protocol survey).
 
 - `github/tools/pilot/FIELD-NOTES.md` (lessons for Navigators, updated by the Architect after each mission); Pilot state files in `runs/pilot/dive04/`: `rates.json` (rolling XP-per-gold, XP by depth), `stash.json` (the tavern stash), `asks.jsonl` (Navigator questions for the Architect).

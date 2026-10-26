@@ -33,8 +33,9 @@ MON = "/projectnb/jbrcs/mangband/Advisor/data/monsters/monsters.csv"
 RACES = {r["name"]: r for r in csv.DictReader(open(MON))}
 
 HEAL = dict(clw=(15, 15), csw=(20, 24), ccw=(25, 29))      # flat HP (use-obj.c:483-510)
-PRICE = dict(clw=24, csw=50, ccw=150, phase=20, tele=250, staff=250, wor=200, speed=75, berserk=100, hero=35)
-# E1's prices; Teleportation is not sold (scarcity price) and a Staff of Teleportation charge ~ 2000 g / 8 charges
+PRICE = dict(clw=24, csw=50, ccw=150, phase=20, tele=250, staff=250, wor=200, speed=400, berserk=100, hero=35)
+# E1's prices; Teleportation is not sold (scarcity price); a Staff of Teleportation charge ~ 2000 g / 8 charges;
+# Speed = the kit's Black Market line (~383-450, cap 450; 643465e)
 SAVE = 0.45                                                 # P(our saving throw): skill_sav ~40 + adj_wis at clvl 25
 PHASE_DIST = (5, 10)
 P_SEE_AFTER_PHASE = 0.5
@@ -236,7 +237,7 @@ def escape_move(st, crowd):
     return any(use(st, it) for it in order)
 
 
-POLICY_VERSION = "pilot-escape-2026-10-25d"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
+POLICY_VERSION = "pilot-escape-2026-10-25e"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
 
 
 def worst_turn(st, adj):
@@ -246,6 +247,7 @@ def worst_turn(st, adj):
 
 def base_policy(st):
     """The Pilot's rules (POLICY_VERSION). Emergency = HP < 50% or the adjacent worst turn >= 1/3 of HP:
+    Hard-fight start (berserk_tick's test): speed_start_tick (Speed if not hasted), then berserk_tick.
     escape() order: one turn from death -> Teleportation, else Phase; Speed first; Word of Recall below 30% HP; phasing
     futile (3 phases, still adjacent) -> recall; kill a summoner/status caster that dies in 2 rounds; 4+ about (not
     stationary, within 5) in the open -> Teleportation/staff; Phase; out of melee: stairs within 20, else cure (none with
@@ -310,6 +312,11 @@ def base_policy(st):
         for c in ("hero", "berserk"):
             if use(st, c):
                 return
+    hard = adj and (any(m.unique or m.rl >= p["clvl"] - 5 for m in adj if "NEVER_MOVE" not in m.flags)
+                    or (len(adj) >= 2 and p["hp"] < 0.75 * p["mhp"]))
+    if hard and not st.fast and st.block - getattr(st, "speed_at", -99) >= 48 and use(st, "speed"):
+        st.speed_at = st.block                                # speed_start_tick (643465e): Speed, then Berserk; 30 s apart
+        return
     if adj and not st.berserk and st.block - getattr(st, "berserk_at", -99) >= 30 and (
             any(m.unique or m.rl >= p["clvl"] - 5 for m in adj if "NEVER_MOVE" not in m.flags)
             or (len(adj) >= 2 and p["hp"] < 0.75 * p["mhp"])) and use(st, "berserk"):
@@ -503,7 +510,8 @@ def q(a, f):
 SAFE_NEAR = 0.02       # an option is safe if P(lowest HP <= 10%) <= 2% ...
 SAFE_LOW_P10 = 0.30    # ... and its 10th-percentile lowest HP is >= 30% of max
 MIN_GAIN = 50          # ... and by at least this much (XP net of gold; ~5 kills at 650 ft) to override the rules on XP
-XP_PER_GOLD = 1.0      # the user's decision (10-25): 1 XP per gold in "clearly better"
+XP_PER_GOLD = 1.0      # FALLBACK only: the Pilot sets options_sim.XP_PER_GOLD per snapshot (rolling XP/gold, 643465e);
+                       # replays should use the estimator record's xp_per_gold
 
 
 def evaluate(p, team, n=200, options=None, arrivals=()):
