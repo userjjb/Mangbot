@@ -64,7 +64,7 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
 
 - **Leaving a level (fixed after m45):** m45's "stuck" dive was really a Giant flea swarm at 750 ft: it refused
   the only `<` (back to the level it had fled 4.5 minutes before) and fought fleas while looking for another. Now
-  the stairs back are refused for 2 minutes only, and a trip that can't leave a finished level in 5 minutes recalls
+  the stairs back aren't refused on the test server (a level left is a fresh one), 2 minutes on a live server; a trip that can't leave a finished level in 5 minutes recalls
   home by itself. Your `goal explore` + `plan resume` still works, and resets that 5-minute count.
 - **Gear choices go through the gear evaluator (since 10-26):** `gearcmp` compares pack items (or shop items by name)
   with what's worn, by simulated fights. m45's Ring of Strength (+2) was rightly sold: STR 18/90 still gives 2 blows

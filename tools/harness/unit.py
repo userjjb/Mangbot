@@ -1694,7 +1694,7 @@ class _Stub:
         return None
 
 
-def _dive_on_back_stairs(fled_ago, kept=False):
+def _dive_on_back_stairs(fled_ago, kept=False, live=True, login_level=False):
     """A dive up from 750 ft standing on the '<' it arrived by, fled_ago seconds after fleeing 700 ft: the stairs
     taken (or not), and the dive."""
     p = pilot()
@@ -1707,7 +1707,8 @@ def _dive_on_back_stairs(fled_ago, kept=False):
     p.loot_step = lambda st: False
     p.mover = type("M", (), {"active": False})()
     p.kept, p.scummed = ({14} if kept else set()), set()
-    p.fled_from = (14, P.gnow() - fled_ago, w.level_t)
+    p.live = live
+    p.fled_from = (14, P.gnow() - fled_ago, w.level_t, login_level)
     took = []
     p.take_stairs = took.append
     d = P.Dive(700)
@@ -1720,17 +1721,21 @@ def _dive_on_back_stairs(fled_ago, kept=False):
 def fled_stairs_refused_two_minutes_only():
     """m45: fled a band at 700 ft down to 750 ft; 4.5 minutes later the trip's dive up refused the only '<' (back to
     the level fled: held 5 minutes, then never on that level) and spent 10 minutes in a Giant flea swarm looking for
-    another. The hold is 2 minutes now (5 on a level the server keeps), and the refusal expires with it."""
+    another. Live server: the hold is 2 minutes (5 on a level the server keeps), and the refusal expires with it. Test
+    server (the user, 10-26: one player, no saved levels): no hold, unless the level is kept -- seen kept, or the one
+    this Pilot logged in on (our own logout made it static)."""
     took_early, d, p = _dive_on_back_stairs(30)
     key = (p.w.level_t, (4, 150))
     expires = d.bad_t.get(key, 0) - p.fled_from[1]
     took_late, _, _ = _dive_on_back_stairs(130)
     took_kept, _, _ = _dive_on_back_stairs(130, kept=True)
+    took_test, _, _ = _dive_on_back_stairs(30, live=False)
+    took_test_login, _, _ = _dive_on_back_stairs(30, live=False, login_level=True)
     ok = took_early == [] and key in d.bad_stairs and abs(expires - 105) < 1 and took_late == ["<"] and \
-        took_kept == []
-    return ok, f"30 s after: took {took_early} (refusal ends {expires + 15:.0f} s after the flee); " \
-               f"130 s after: took {took_late}; on a kept level: {took_kept}"
-
+        took_kept == [] and took_test == ["<"] and took_test_login == []
+    return ok, f"live, 30 s after: took {took_early} (refusal ends {expires + 15:.0f} s after the flee); " \
+               f"130 s after: took {took_late}; on a kept level: {took_kept}; test server 30 s after: {took_test}, " \
+               f"on the login level: {took_test_login}"
 
 def _trip_on_level(p, tp):
     p.goal = None

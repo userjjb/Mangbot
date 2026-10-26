@@ -574,8 +574,12 @@ class Dive(Goal):
         # it there 4 minutes)
         md_now = int(p.orders.get("max_depth", 0))
         # (for FLED_HOLD only, longer on a level the server keeps: m45 refused the only '<' 4.5 minutes after fleeing
-        # a band and spent 10 minutes in a Giant flea swarm looking for another; the level behind it is a fresh one)
-        hold = 300 if fl and fl[0] in getattr(p, "kept", ()) else self.FLED_HOLD
+        # a band and spent 10 minutes in a Giant flea swarm looking for another; the level behind it is a fresh one.
+        # On the test server -- one player, so a level is freed when we leave it -- no hold at all (the user, 10-26),
+        # unless the level is kept: one we've seen the server keep (p.kept), or the one we logged in on (our own
+        # previous logout made it static). Operations.md, Level persistence)
+        kept = fl and (fl[0] in getattr(p, "kept", ()) or (len(fl) > 3 and fl[3]))
+        hold = 300 if kept else self.FLED_HOLD if getattr(p, "live", False) else 0
         back = fl and fl[2] == w.level_t and fl[0] == w.depth + (-1 if up else 1) and not waited(fl[1], hold) and \
             not (up and md_now and w.depth_ft > md_now)
         if back and w.standing_on == want and (w.level_t, w.pos) not in self.bad_stairs:
@@ -1060,7 +1064,9 @@ class Flee(Goal):
             if w.level_t != self.took[0]:
                 # (where it came out: a dive mustn't take this staircase straight back -- the level may be one
                 # the server keeps, with the danger beside the arrival: m25 looped into Ibun at 450 ft)
-                p.fled_from = (getattr(self, "from_depth", None), gnow(), w.level_t)
+                # (and whether the level fled is one the server keeps: we logged in on it)
+                p.fled_from = (getattr(self, "from_depth", None), gnow(), w.level_t,
+                               self.took[0] == p.__dict__.get("first_level_t"))
                 return ("done", f"left by the stairs; now at {w.depth_ft} ft")
             if waited(self.took[1], 5):
                 return ("done", "took the stairs, but no level change seen")
@@ -7978,6 +7984,10 @@ class Pilot:
         runs/pilot/<nick>/levels/ (only 11x31 crops were logged, so the
         recogniser couldn't be checked against real levels afterwards)."""
         w = self.w
+        # the level this Pilot logged in on (None: in town): the previous Pilot's logout left it "static" on the
+        # server, kept after we leave it (operations.md, Level persistence) -- Dive.FLED_HOLD's test-server edge case
+        if "first_level_t" not in self.__dict__ and w.depth is not None and w.level_t:
+            self.first_level_t = w.level_t if w.in_dungeon else None
         # the arrival feeling, logged per level (the Advisor's structures memo: at <= 850 ft any pit, nest or
         # vault forces "special"; another feeling proves there is none)
         if w.in_dungeon and getattr(self, "feeling_level", None) != w.level_t and waited(w.level_t, 3):
