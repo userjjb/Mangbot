@@ -6014,9 +6014,15 @@ class Pilot:
             if new:
                 full = {"STR": "Strength", "INT": "Intelligence", "WIS": "Wisdom", "DEX": "Dexterity",
                         "CON": "Constitution", "CHR": "Charisma"}
+                # (the tavern stash first: m46's Navigator read "at the Alchemist" and planned to buy one, with a
+                # Restore Dexterity waiting in the tavern)
+                def where(n):
+                    k = f"Restore {full[n]}"
+                    if self.stash_has(k):
+                        return f"Potion of {k}: one is in the tavern stash -- `plan town` fetches it, don't buy one"
+                    return f"Potion of {k} at the Alchemist (5), ~470 (the Temple doesn't sell them)"
                 self.notify("stat_drained", f"{', '.join(new)} drained (blows {blows}); levels don't restore it: "
-                            + ", ".join(f"Potion of Restore {full[n]}" for n in new)
-                            + " at the Alchemist (5), ~470 each (the Temple doesn't sell them)")
+                            + "; ".join(where(n) for n in new))
                 # Second drain on this level from something in view: leave
                 # (Borg memo §3.2; mission 7's scorpion drained STR three times)
                 w = self.w
