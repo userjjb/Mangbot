@@ -52,7 +52,7 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
 - **The tavern stash** (since 2026-10-26): spare Restores and the Stone to Mud wands wait in the tavern (8), not in
   the pack. `plan town` handles it. Don't buy spare Restores to carry.
 
-- **Black Market (store 7):** Speed ~383 (m40). The kit buys 2 Speed at no more than 450 each. A Black Market
+- **Black Market (store 7):** Speed ~383 (m40). The kit buys 2 Speed at no more than 600 each (450 until m45). A Black Market
   buy needs the `7/` prefix. Stock is often missing.
 - **Exact lines:** to buy one particular line among several with the same name, copy the line `gear` prints (m41
   got plain gloves instead of [1,+5]).
@@ -62,8 +62,10 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
 
 ## Pilot habits to expect (not bugs to work around)
 
-- **A plan `dive` stuck on a quiet level** (m45: about 8 minutes at one square, with no XP): `goal explore`, then
-  `plan resume` once something moves, got it going again. Use `why` to see what it was doing.
+- **Leaving a level (fixed after m45):** m45's "stuck" dive was really a Giant flea swarm at 750 ft: it refused
+  the only `<` (back to the level it had fled 4.5 minutes before) and fought fleas while looking for another. Now
+  the stairs back are refused for 2 minutes only, and a trip that can't leave a finished level in 5 minutes recalls
+  home by itself. Your `goal explore` + `plan resume` still works, and resets that 5-minute count.
 - **Rings of Strength are sold by policy** (m45 sold a +2 right after identifying it). If blows matter, `keep Ring of
   Strength` before `plan town`.
 

@@ -1383,7 +1383,7 @@ def hard_fight_shadow_once_per_fight():
 @case
 def speed_at_hard_fight_start_and_kit():
     """The user (10-25), on the Advisor's replays: a carried Potion of Speed is quaffed at the start of a hard fight
-    (berserk_tick's test), not only in an emergency; kits B/C keep 2, bought at the Black Market under a 450-gold cap."""
+    (berserk_tick's test), not only in an emergency; kits B/C keep 2, bought at the Black Market under a 600-gold cap (450 until 10-26)."""
     def make(mons, pack):
         p = pilot(hp=300, pack=pack, monsters=mons)
         p.w.in_dungeon = True
@@ -1411,7 +1411,7 @@ def speed_at_hard_fight_start_and_kit():
     sp = [b_ for b_ in buys if b_[1] == "Potion of Speed"]
     sp2 = [b_ for b_ in buys2 if b_[1] == "Potion of Speed"]
     ok = (len(a.cmds) == 1 and "at the start" in a.cmds[0] and b.cmds == [] and c.cmds == []
-          and sp and sp[0][2] == 7 and sp[0][3] == 2 and not sp2 and any("over 450" in x[0] for x in short2))
+          and sp and sp[0][2] == 7 and sp[0][3] == 2 and not sp2 and any("over 600" in x[0] for x in short2))
     return ok, f"{strong.name}: {a.cmds}; a Cave orc: {b.cmds}; hasted: {c.cmds}; kit at 383: {sp}; at 3000: {sp2}"
 
 
@@ -1684,6 +1684,137 @@ def tavern_stash_and_one_lantern():
           and want_with is None and want == "Restore Dexterity" and "Restore Dexterity" not in needs
           and lamps == {"1977": 1, "14943": 0})
     return ok, f"stash kinds {stash}; tavern {ent}; fetch {want!r}; buy list {needs}; lanterns sold {lamps}"
+
+
+class _Stub:
+    """A goal stand-in that never ends."""
+    name = "stub"
+
+    def tick(self, p):
+        return None
+
+
+def _dive_on_back_stairs(fled_ago, kept=False):
+    """A dive up from 750 ft standing on the '<' it arrived by, fled_ago seconds after fleeing 700 ft: the stairs
+    taken (or not), and the dive."""
+    p = pilot()
+    w = p.w
+    w.depth, w.depth_ft, w.level_t, w.pos = 15, 750, P.gnow() - 300, (4, 150)
+    w.standing_on, w.arrive_pos, w.arrived_by = "<", (4, 150), ">"
+    w.find = lambda chars: [(4, 150)] if "<" in chars else []
+    p.orders["max_depth"] = 750
+    p.item_hold_until, p.dangers, p.interesting = 0, lambda: [], lambda: None
+    p.loot_step = lambda st: False
+    p.mover = type("M", (), {"active": False})()
+    p.kept, p.scummed = ({14} if kept else set()), set()
+    p.fled_from = (14, P.gnow() - fled_ago, w.level_t)
+    took = []
+    p.take_stairs = took.append
+    d = P.Dive(700)
+    d.stop, d.level_seen, d.explore, d.probed = False, w.level_t, _Stub(), (w.level_t, w.pos)
+    d.tick(p)
+    return took, d, p
+
+
+@case
+def fled_stairs_refused_two_minutes_only():
+    """m45: fled a band at 700 ft down to 750 ft; 4.5 minutes later the trip's dive up refused the only '<' (back to
+    the level fled: held 5 minutes, then never on that level) and spent 10 minutes in a Giant flea swarm looking for
+    another. The hold is 2 minutes now (5 on a level the server keeps), and the refusal expires with it."""
+    took_early, d, p = _dive_on_back_stairs(30)
+    key = (p.w.level_t, (4, 150))
+    expires = d.bad_t.get(key, 0) - p.fled_from[1]
+    took_late, _, _ = _dive_on_back_stairs(130)
+    took_kept, _, _ = _dive_on_back_stairs(130, kept=True)
+    ok = took_early == [] and key in d.bad_stairs and abs(expires - 105) < 1 and took_late == ["<"] and \
+        took_kept == []
+    return ok, f"30 s after: took {took_early} (refusal ends {expires + 15:.0f} s after the flee); " \
+               f"130 s after: took {took_late}; on a kept level: {took_kept}"
+
+
+def _trip_on_level(p, tp):
+    p.goal = None
+    p.set_goal = lambda g: setattr(p, "goal", g)
+    p.use_stair_location = lambda why: False
+    p.band_live = lambda: False
+    p.w.find = lambda chars: []
+    p.w.arrived_by = ">"
+    tp.tick(p)
+    return p.goal
+
+
+@case
+def trip_level_state_survives_restart():
+    """m45 00:33: a hot-swap on a 700 ft level that felt special (an orc pit) lost "find stairs first" -- the new Pilot
+    saw a new level_t, no feeling message, and explored the pit. plan.json now keeps this level's state; a restart on
+    the same depth carries on with it (stairs first again; not one more level; its time on it kept)."""
+    import tempfile
+    p = pilot(pack=[("2 Scrolls of Word of Recall", 70), ("9 Potions of Cure Critical Wounds", 75)])
+    p.rundir = tempfile.mkdtemp()
+    p.w.depth, p.w.depth_ft, p.w.level_t = 14, 700, P.gnow() - 20
+    p.w.messages.append((p.w.level_t + 1, "You feel there is something special about this level."))
+    tp = P.TripPlan(650, 750, P.TripPlan.parse_until("minutes>60"))
+    tp.phase, tp.went_down, tp.levels = "level", True, 2
+    g1 = _trip_on_level(p, tp)
+    tp.level_t0 -= 90
+    tp.save(p)
+    p.w.level_t = P.gnow() - 2                   # (the new process: the same level, a new level_t, no messages)
+    p.w.messages.clear()
+    tp2 = P.TripPlan.load(p)
+    g2 = _trip_on_level(p, tp2)
+    on = round(P.gnow() - tp2.level_t0)
+    ok = isinstance(g1, P.Explore) and g1.until == "stairs" and isinstance(g2, P.Explore) and g2.until == "stairs" \
+        and tp2.levels == 3 and 85 <= on <= 95
+    return ok, f"before: {g1 and g1.describe()}; after the restart: {g2 and g2.describe()}, levels {tp2.levels}, " \
+               f"{on} s on the level"
+
+
+@case
+def trip_recalls_when_a_level_wont_let_go():
+    """m45: 13 minutes trying to leave 750 ft (breeders) -- the stuck watchdog doesn't count fighting, and the quiet
+    rule only shortens explorations. After LEAVE_MAX on a finished level the trip recalls home; not while the
+    Navigator's own goal has the plan paused."""
+    p = pilot(pack=[("2 Scrolls of Word of Recall", 70)])
+    p.w.depth, p.w.depth_ft, p.w.level_t = 15, 750, P.gnow() - 600
+    tp = P.TripPlan(650, 750, P.TripPlan.parse_until("minutes>60"))
+    tp.phase, tp.went_down, tp.levels = "level", True, 3
+    tp.level, tp.level_t0, tp.level_done = p.w.level_t, P.gnow() - 500, "left: breeders"
+    p.goal = tp.mark(P.Dive(700))
+    p.set_goal = lambda g: setattr(p, "goal", g)
+    p.band_live = lambda: False
+    tp.tick(p)
+    first = tp.phase
+    tp.leave_since = (p.w.level_t, P.gnow() - tp.LEAVE_MAX - 5)
+    tp.paused = True
+    tp.tick(p)
+    paused = tp.phase
+    tp.paused = False
+    tp.tick(p)
+    resumed = tp.phase
+    tp.leave_since = (p.w.level_t, P.gnow() - tp.LEAVE_MAX - 5)
+    tp.tick(p)
+    ok = first == paused == resumed == "level" and tp.phase == "home" and "couldn't leave 750 ft" in tp.home_why
+    return ok, f"phases {first}/{paused}/{resumed} -> {tp.phase}: {tp.home_why}"
+
+
+@case
+def mission_label_survives_restart():
+    """m44/m45: a hot-swap lost the mission label (`mission end` needed it by name) and the mission's totals. They
+    live in mission.json now, and a new Pilot picks them up."""
+    import tempfile
+    p = pilot()
+    p.rundir = tempfile.mkdtemp()
+    p.w.ind["exp"] = [5000]
+    p.mission_label, p.mission_base, p.gold_found = "m99", (P.gnow() - 600, 4000, 100, 50), 350
+    p.save_mission()
+    q = pilot()
+    q.rundir = p.rundir
+    q.load_mission()
+    q.gold_found = 20                     # (found since the restart)
+    found = q.gold_found - q.mission_base[3]
+    age = P.gnow() - q.mission_base[0]
+    ok = q.mission_label == "m99" and q.mission_base[1:3] == (4000, 100) and found == 320 and 595 < age < 610
+    return ok, f"label {q.mission_label}, base {q.mission_base[1:3]}, found {found}, {age:.0f} s in"
 
 
 def main():

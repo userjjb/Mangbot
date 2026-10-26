@@ -32,7 +32,7 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
 1. **In town:** `status`, then `plan town [kit=A|B|C|none] [buy NAME[:N][@MAX],...]`, then `wait`. The Pilot sells
    by policy, identifies what pays, and buys in priority order: Word of Recall to 2, the supply gate's minimums,
    Restore for a drained STR/DEX/CON, the kit, then your list (`NAME:N` means *have* N in all, not N more). Below
-   500 ft the kit keeps **3 Heroism** (the fear cure) and **2 Potions of Speed** (Black Market, at most 450 each; often
+   500 ft the kit keeps **3 Heroism** (the fear cure) and **2 Potions of Speed** (Black Market, at most 600 each; often
    out of stock): the Pilot drinks Speed **at the start of a hard fight** (a unique or a monster near your level
    adjacent), not only in emergencies. **Restore potions and Wands of Stone to Mud stay in the tavern (8)** during a
    mission: `plan town` leaves them there as its last step, and fetches the right Restore when STR/DEX/CON is drained

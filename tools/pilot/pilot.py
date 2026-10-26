@@ -469,6 +469,8 @@ class Dive(Goal):
     '>' is known and reachable, take it; else go back up and down for a fresh
     level. Not on stairs and none known: explore until some are seen."""
 
+    FLED_HOLD = 120         # seconds the stairs back to a level just fled are refused
+
     def __init__(self, target_ft, scum=False):
         self.target_ft = int(target_ft)
         self.scum = scum         # a climb may go down a '>' for a fresh level
@@ -570,11 +572,14 @@ class Dive(Goal):
         # (not when the way back is the way up to max_depth: m27 fled down to 700 ft past max_depth 650 and this kept
         # it there 4 minutes)
         md_now = int(p.orders.get("max_depth", 0))
-        back = fl and fl[2] == w.level_t and fl[0] == w.depth + (-1 if up else 1) and not waited(fl[1], 300) and \
+        # (for FLED_HOLD only, longer on a level the server keeps: m45 refused the only '<' 4.5 minutes after fleeing
+        # a band and spent 10 minutes in a Giant flea swarm looking for another; the level behind it is a fresh one)
+        hold = 300 if fl and fl[0] in getattr(p, "kept", ()) else self.FLED_HOLD
+        back = fl and fl[2] == w.level_t and fl[0] == w.depth + (-1 if up else 1) and not waited(fl[1], hold) and \
             not (up and md_now and w.depth_ft > md_now)
         if back and w.standing_on == want and (w.level_t, w.pos) not in self.bad_stairs:
             self.bad_stairs.add((w.level_t, w.pos))
-            self.bad_t[(w.level_t, w.pos)] = gnow() + 10 ** 6       # (never expires on this level)
+            self.bad_t[(w.level_t, w.pos)] = fl[1] + hold - 15       # (expire_bad frees it when the hold ends)
             p.notify("tactic", f"not taking these stairs back to {fl[0] * 50} ft, which we just fled: looking for "
                                "other stairs", news=True)
         if w.standing_on == want and (w.level_t, w.pos) not in self.bad_stairs:
@@ -1915,7 +1920,9 @@ class TripPlan:
         self.levels = 0
         self.events = collections.Counter()
         self.paused, self.pause_goal = False, None
-        self.arrival, self.located, self.stairs_first = None, False, False
+        self.arrival, self.located, self.stairs_first, self.special = None, False, False, False
+        self.resume_lvl = None      # (load: the level a restart interrupted)
+        self.leave_since = None     # (level_t, when this level was done): the LEAVE_MAX watchdog
         self.step = "starting"
         self.fails = 0
         self.home_why = None
@@ -2027,8 +2034,16 @@ class TripPlan:
     STATE = ("lo", "hi", "then", "level_min", "t0", "phase", "levels", "went_down", "home_why", "until_text", "via")
 
     def save(self, p):
+        st = {k: getattr(self, k, None) for k in self.STATE}
+        # this level's state: a restart or hot-swap lands on the same level under a new level_t, and m45's hot-swap
+        # lost the special level's "find stairs first" (it explored the 700 ft pit level instead)
+        w = p.w
+        if w.in_dungeon and self.phase == "level" and self.level == w.level_t:
+            st["lvl"] = {"depth": w.depth, "age": round(gnow() - self.level_t0, 1), "done": self.level_done,
+                         "arrival": self.arrival, "located": self.located, "special": self.special,
+                         "stairs_first": self.stairs_first, "fails": self.fails}
         try:
-            json.dump({k: getattr(self, k, None) for k in self.STATE}, open(os.path.join(p.rundir, "plan.json"), "w"))
+            json.dump(st, open(os.path.join(p.rundir, "plan.json"), "w"))
         except OSError:
             pass
 
@@ -2044,6 +2059,7 @@ class TripPlan:
         pl = cls(st["lo"], st["hi"], cls.parse_until(st["until_text"]), st["then"], st["level_min"], st.get("via"))
         for k in ("t0", "phase", "levels", "went_down", "home_why"):
             setattr(pl, k, st[k])
+        pl.resume_lvl = st.get("lvl")
         return pl
 
     def stairs_down(self, p):
@@ -2073,6 +2089,7 @@ class TripPlan:
         conditions). Returns (status, detail) when the plan ends."""
         w, now = p.w, gnow()
         if self.paused:
+            self.leave_since = None     # (the Navigator's own goal: LEAVE_MAX counts again from a resume)
             return None
         if w.in_dungeon and w.recall_pending and self.phase in ("down", "level", "home") and self.went_down:
             # a recall is under way (the Pilot's escape, or the plan's own): wait for it, don't
@@ -2107,6 +2124,19 @@ class TripPlan:
                 self.level == w.level_t and not self.level_done and now - self.level_t0 > 60 * self.level_min:
             self.level_done = f"{self.level_min:g} minutes on it"
             p.set_goal(None)
+        # a level that won't let us go: recall home after LEAVE_MAX (m45: 13 minutes leaving 750 ft -- the only '<'
+        # led back to the level just fled, and a Giant flea swarm pinned the dive; the stuck watchdog doesn't count
+        # time spent fighting, and the quiet rule only cuts an exploration short)
+        if self.phase == "level" and w.in_dungeon and self.level == w.level_t and self.level_done:
+            if not self.leave_since or self.leave_since[0] != w.level_t:
+                self.leave_since = (w.level_t, now)
+            elif now - self.leave_since[1] > self.LEAVE_MAX and self.value(p, "wor") >= 1 and not w.recall_pending:
+                self.phase = "home"
+                self.home_why = f"couldn't leave {w.depth_ft} ft in {self.LEAVE_MAX / 60:g} minutes ({self.level_done})"
+                p.notify("plan", f"trip: coming home ({self.home_why})", news=True)
+                if p.goal is not None and getattr(p.goal, "by_plan", False) and \
+                        not isinstance(p.goal, (Flee, Recover, Recall)):
+                    p.set_goal(None)
         quiet = self.quiet(p, now)
         if self.phase == "level" and isinstance(p.goal, Explore) and getattr(p.goal, "by_plan", False) and \
                 self.level == w.level_t and not self.level_done and quiet:
@@ -2151,28 +2181,38 @@ class TripPlan:
                 g.stop = False
                 p.set_goal(self.mark(g))
                 return None
+            rl, self.resume_lvl = self.resume_lvl, None
+            if self.level != w.level_t and rl and rl["depth"] == w.depth:
+                # the level a restart interrupted (the same level: the character stayed in the world)
+                self.level, self.level_t0, self.level_done = w.level_t, now - rl["age"], rl["done"]
+                self.arrival, self.located, self.special = rl["arrival"], rl["located"], rl["special"]
+                self.stairs_first, self.fails = rl["stairs_first"], rl["fails"]
             if self.level != w.level_t:
                 self.level, self.level_t0, self.level_done = w.level_t, now, None
                 self.levels += 1
                 self.fails = 0
                 self.arrival = "recall" if any(abs(ts - w.level_t) < 5 and "yanked" in t for ts, t in w.messages) \
                     else w.arrived_by
-                self.located = self.stairs_first = False
+                self.located = self.stairs_first = self.special = False
             # the arrival protocol (the Advisor's m24 memo: the orc-pit level said "something special"
             # on arrival, and the Pilot explored 92 s without zapping Door/Stair Location): after a
             # recall, or on a special feeling, map the stairs first and find a way out before exploring
-            special = any(ts >= w.level_t - 1 and "something special about this level" in t for ts, t in w.messages)
+            special = self.special = self.special or \
+                any(ts >= w.level_t - 1 and "something special about this level" in t for ts, t in w.messages)
             if (self.arrival == "recall" or special) and not self.located:
                 self.located = True
                 if not w.find("<>") and p.use_stair_location("trip: " + ("recall arrival" if self.arrival == "recall"
                                                                          else "a special level")):
                     self.step = "mapping the stairs (arrival protocol)"
                     return None
-            if special and not self.stairs_first and not w.find("<>") and self.level_done is None:
-                self.stairs_first = True
+            # (each time the plan picks a goal, not once: after a fight, a `plan resume` or a restart it went back to
+            # plain exploring)
+            if special and not w.find("<>") and self.level_done is None:
+                if not self.stairs_first:
+                    self.stairs_first = True
+                    p.notify("plan", f"trip: {d} ft feels special (a pit, nest or vault): finding stairs before "
+                                     "exploring", news=True)
                 self.step = f"finding stairs first ({d} ft feels special: a pit, nest or vault)"
-                p.notify("plan", f"trip: {d} ft feels special (a pit, nest or vault): finding stairs before exploring",
-                         news=True)
                 p.set_goal(self.mark(Explore(until="stairs")))
                 return None
             if self.level_done is None and now - self.level_t0 > 60 * self.level_min:
@@ -2225,6 +2265,7 @@ class TripPlan:
                             f"{(now - self.t0) / 60:.0f} min")
         return None
 
+    LEAVE_MAX = 300                       # seconds to find a way off a finished level before recalling home
     QUIET_MIN, QUIET_XP = 3.0, 10.0       # a level that earned under 10 XP a minute over 3 minutes is left
 
     def quiet(self, p, now):
@@ -2370,6 +2411,7 @@ class Pilot:
         except (OSError, ValueError):
             self.standing = []
         self.plan = TripPlan.load(self)           # (a restart mid-trip carries on with it)
+        self.load_mission()                       # (and a mission with its label)
         if self.plan:
             self.log("plan_resumed", plan=self.plan.text, phase=self.plan.phase)
         self.autodestroy_t = 0.0
@@ -4010,6 +4052,33 @@ class Pilot:
             self.level_base = (now, (w.ind.get("exp") or [0])[0], w.level_t)
         if not self.gain_hist or now - self.gain_hist[-1][0] >= 15:
             self.gain_hist.append((now, (w.ind.get("exp") or [0])[0], g, self.__dict__.get("gold_found", 0)))
+            self.save_mission()
+
+    def save_mission(self):
+        """The running mission (label, its start and the totals so far) in mission.json: a restart or hot-swap
+        carries it on (m44/m45: the swap lost the label, so `mission end` needed it by name)."""
+        mb = getattr(self, "mission_base", None)
+        if not (mb and getattr(self, "mission_label", None)):
+            return
+        try:
+            json.dump({"label": self.mission_label, "age": round(gnow() - mb[0], 1), "exp": mb[1], "gold": mb[2],
+                       "found": self.__dict__.get("gold_found", 0) - (mb[3] if len(mb) > 3 else 0)},
+                      open(os.path.join(self.rundir, "mission.json"), "w"))
+        except OSError:
+            pass
+
+    def load_mission(self):
+        try:
+            path = os.path.join(self.rundir, "mission.json")
+            if time.time() - os.path.getmtime(path) > 1800:
+                return          # (a mission nobody ended, long ago)
+            ms = json.load(open(path))
+            # (gold_found starts at 0 in a new process: the base goes negative by what was found before)
+            self.mission_label = ms["label"]
+            self.mission_base = (gnow() - ms["age"], ms["exp"], ms["gold"],
+                                 self.__dict__.get("gold_found", 0) - ms["found"])
+        except (OSError, ValueError, KeyError, TypeError):
+            pass
 
     # the rolling exchange rate between XP and gold (the user, 10-25: "the real limiting factor is time"): XP earned per
     # gold earned (found + sold) over the recent play, in 10-minute buckets, the last RATE_WINDOW with any gain; seeded
@@ -6408,6 +6477,7 @@ class Pilot:
                 # (the report's mission total: m25's Navigator had only the 10-minute rates)
                 self.mission_base = (gnow(), (self.w.ind.get("exp") or [0])[0], self.w.ind.get("gold", [0])[0],
                                      self.__dict__.get("gold_found", 0))
+                self.save_mission()
                 self.log("mission_start", label=label, **kv)
                 ms = [m for m in ms if m.get("label") != label] + [
                     {"label": label, "nick": nick, "start": stamp, "end": None, "navigator": kv.get("navigator"),
@@ -6418,6 +6488,10 @@ class Pilot:
                     if m.get("label") == label:
                         m["end"] = time.strftime("%Y-%m-%d %H:%M", _lt(gnow() + 59))
                 self.mission_label = None
+                try:
+                    os.remove(os.path.join(self.rundir, "mission.json"))
+                except OSError:
+                    pass
             with open(path, "w") as f:
                 json.dump(ms, f, indent=1)
             return {"ok": True, "text": f"mission {args[0]}: {label} at {stamp}"}
@@ -6945,7 +7019,7 @@ class Pilot:
                  # m40; the Advisor's replays: it pays below ~500-600 gold at the rolling XP-per-gold rate)
                  "Potion of Speed": (75, 7, 400)}
     # hard price caps for kit lines (else 1.5x the price last seen): Black Market stock is sometimes far dearer
-    KIT_CAP = {"Potion of Speed": 450}
+    KIT_CAP = {"Potion of Speed": 600}     # (450 until 10-26: the user raised it)
     # stock levels per stage (the Advisor's shops memo §3 and the Borg minimums):
     # A to 500 ft, B to 1000 ft, C deeper. No flasks: the town visit tops the lantern up instead (the user,
     # 10-25: oil, food and potions nobody uses fill the pack). Rations: one stack, eaten to Full before a trip
