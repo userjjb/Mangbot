@@ -1861,6 +1861,19 @@ class TripPlan:
                 "free": lambda: 23 - len(w.items()), "levels": lambda: self.levels,
                 "time": lambda: time.strftime("%H:%M:%S")}[var]()
 
+    def clock_target(self, hhmm):
+        """The epoch of the first HH:MM at or after the plan's start (wall clock; across midnight too)."""
+        cache = self.__dict__.setdefault("clock_targets", {})
+        if hhmm not in cache:
+            start = time.time() - (gnow() - self.t0)
+            lt = time.localtime(start)
+            h, m = map(int, hhmm.split(":")[:2])
+            t = time.mktime((lt.tm_year, lt.tm_mon, lt.tm_mday, h, m, 0, 0, 0, -1))
+            if t < start - 60:
+                t += 86400
+            cache[hhmm] = t
+        return cache[hhmm]
+
     def holds(self, p):
         """The first condition that holds, or None. Two always apply: no Word of Recall
         left, and 90 minutes (the plan runs unattended)."""
@@ -1879,6 +1892,10 @@ class TripPlan:
             v = self.value(p, var)
             # (time to the second: "time>02:41" holds from 02:41:01 -- as minutes it waited until 02:42, m25)
             x = val + ":00" if var == "time" else int(val)
+            if var == "time":
+                # as a moment, not a string: the next HH:MM after the plan started (m44's "time>00:26" set at 23:54
+                # held at once -- "23:54:41" > "00:26:00" -- and the trip came home on arrival)
+                v, x = time.time(), self.clock_target(val)
             if (op == "<" and v < x) or (op == ">" and v > x) or (op == "<=" and v <= x) or \
                     (op == ">=" and v >= x) or (op == "=" and v == x):
                 return term

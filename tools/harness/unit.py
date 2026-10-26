@@ -1637,6 +1637,22 @@ def engage_nearby_monster_only_when_appropriate():
     return ok, f"{strong.name}: exploring {e}; fleeing {f}; at 46% HP {h}; a danger in view {d}"
 
 
+@case
+def trip_clock_condition_across_midnight():
+    """m44: "time>00:26" set at 23:54 held at once (a string comparison: "23:54:41" > "00:26:00") and the trip came
+    home on arrival. HH:MM is the next such moment after the plan started."""
+    import time as _t
+    pl = P.TripPlan.__new__(P.TripPlan)
+    pl.t0 = P.gnow() - 60                    # (started a minute ago)
+    now = _t.time()
+    soon = _t.strftime("%H:%M", _t.localtime(now + 1800))     # 30 min from now (may be after midnight)
+    past = _t.strftime("%H:%M", _t.localtime(now - 120))      # 2 min ago, before the start: tomorrow
+    started_after = _t.strftime("%H:%M", _t.localtime(now - 30))
+    t_soon, t_past = pl.clock_target(soon), pl.clock_target(past)
+    ok = 1500 < t_soon - now < 1900 and t_past - now > 80000 and pl.clock_target(started_after) - now < 60
+    return ok, f"{soon}: in {(t_soon - now) / 60:.0f} min; {past}: in {(t_past - now) / 3600:.1f} h"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0
