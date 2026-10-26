@@ -145,7 +145,7 @@ class Item:
 
 
 def _plural_free(s):
-    s = re.sub(r"\b(Potion|Scroll|Ring|Amulet|Wand|Rod|Flask|Ration|Pair|Set)s\b", r"\1", s)
+    s = re.sub(r"\b(Potion|Scroll|Ring|Amulet|Wand|Rod|Staff|Flask|Ration|Pair|Set)s\b", r"\1", s)   # (Staffs: m43 valued 2 at 0)
     return re.sub(r"\bStaves\b", "Staff", s)
 
 

@@ -2144,6 +2144,11 @@ class TripPlan:
                 self.phase, self.home_why = "home", f"stuck: {detail}"
 
 
+def split_specs(a):
+    """Buy specs split on commas outside [..] and (..): `[3,+6]` is part of a name (m43)."""
+    return [x.strip() for x in re.split(r",(?![^\[(]*[\])])", a) if x.strip()]
+
+
 def singular(t):
     """Plural endings dropped, for name matching ("Flask of oil" finds
     "99 Flasks of oil": missions 17-18)."""
@@ -3170,6 +3175,9 @@ class Pilot:
             self.notify("pack_full", full[-1])
         if not w.monsters and not w.store and self.auto_destroy(now):
             return True
+        # 5b. A monster worth killing a few steps off: go and fight it, then carry on (the user, m43)
+        if self.engage_tick(now):
+            return True
         # 6. Rest when hurt and alone
         if w.hp_frac < o["rest_below"] and not w.monsters and not isinstance(self.goal, (Recall,)):
             if not self.mover.active or isinstance(self.goal, Dive):
@@ -3184,6 +3192,77 @@ class Pilot:
             # ended once HP passed rest_below and the explorer walked off at 76%)
             return True
         return False
+
+    ENGAGE_STEPS = 7          # how far a detour to fight may go (path steps)
+    ENGAGE_GIVE_UP_S = 20
+
+    def engage_tick(self, now):
+        """The user (m43): "The char often is near enemies but doesn't engage them ... it could kill the monster and
+        then run after" -- "and this mustn't override legit reasons not to engage (kiting, fleeing...)". A mobile
+        monster a few steps off that the hunt check allows: walk to it and let auto-retaliate fight (section 5),
+        then the goal carries on. Only while exploring or diving, HP at least think_hp, not blind/confused/afraid/
+        slowed, no live band, no dangerous monster or summoner in view, not a breeder, not on the avoid list, not
+        while the plan is leaving the level for a reason. The escapes, the group/choke rules and the walk-away run
+        earlier in the reflexes, so they still win. Gives up after ENGAGE_GIVE_UP_S."""
+        w = self.w
+        st = self.__dict__.setdefault("engage", {"target": None, "t0": 0.0, "replan_t": 0.0, "dropped": set()})
+        g = self.goal
+        leaving = self.plan is not None and str(getattr(self.plan, "level_done", "") or "").startswith("left")
+        ok = (w.in_dungeon and w.depth and w.pos and (g is None or isinstance(g, (Explore, Dive))) and not leaving
+              and w.hp_frac >= self.orders.get("think_hp", 0.65) and not self.band_live()
+              and not any(w.flag(k) for k in ("blind", "confused", "afraid")) and self.our_slowness() <= 1
+              and not w.recall_pending)
+        mons = [m for m in w.monsters if "NEVER_MOVE" not in m[2].flags]
+        if ok and any(self.danger_why(m[2]) for m in mons):
+            ok = False                               # (a danger in view: the flee/walk-away rules decide)
+        if not ok:
+            if st["target"]:
+                st["target"] = None
+                self.mover.stop()
+            return False
+        tgt = st["target"]
+        if tgt:
+            cur = next((m for m in mons if m[2].name == tgt), None)
+            if cur is None or now - st["t0"] > self.ENGAGE_GIVE_UP_S:
+                st["target"] = None                  # (killed, gone, or not reached: carry on)
+                if cur is not None:
+                    st["dropped"].add((w.level_t, tgt))
+                self.mover.stop()
+                return False
+        else:
+            cands = []
+            for y, x, r in mons:
+                if w.dist((y, x)) < 2 or w.dist((y, x)) > self.ENGAGE_STEPS or "MULTIPLY" in r.flags or \
+                        (w.level_t, r.name) in st["dropped"] or any(n in r.name.lower() for n in self.avoid_names):
+                    continue
+                if r.level < w.clvl - 20:
+                    continue                         # (no XP worth the detour)
+                cache = self.__dict__.setdefault("engage_ok", {})
+                key = (w.level_t, r.name)
+                if key not in cache:
+                    try:
+                        cache[key] = self.hunt_refusal(r.name)[0] is None
+                    except Exception:
+                        cache[key] = False
+                if cache[key]:
+                    cands.append((w.dist((y, x)), y, x, r))
+            if not cands:
+                return False
+            d, y, x, r = min(cands, key=lambda c: c[0])
+            st.update(target=r.name, t0=now, replan_t=0.0)
+            self.log("act", cmd="engage", why=f"engage {r.name} (L{r.level}, {d} away) on the way", by="pilot")
+            tgt = r.name
+        cur = next(m for m in mons if m[2].name == tgt)
+        if now - st["replan_t"] > 1.5 or not self.mover.active:
+            st["replan_t"] = now
+            near = [(cur[0] + dy, cur[1] + dx) for dy in (-1, 0, 1) for dx in (-1, 0, 1) if dy or dx]
+            if not self.mover.go(near) or len(self.mover.path) > self.ENGAGE_STEPS + 2:
+                self.mover.stop()
+                st["dropped"].add((w.level_t, tgt))
+                st["target"] = None
+                return False
+        self.mover.tick()
+        return True
 
     def emergency_loop(self, now):
         """Three emergency actions within 90 s: phasing and drinking isn't
@@ -6360,6 +6439,12 @@ class Pilot:
             with open(os.path.join(self.rundir, "commentary.jsonl"), "a") as f:
                 f.write(json.dumps({"t": round(time.time(), 3), "who": "navigator", "note": text}) + "\n")
             return {"ok": True, "text": "said"}
+        if c == "ask":
+            return self.ask_architect(" ".join(args))
+        if c == "answer":
+            return self.answer_navigator(args)
+        if c == "price":
+            return {"ok": True, "text": self.price_info(" ".join(args))}
         if c == "monster":
             return {"ok": True, "text": self.monster_info(" ".join(args).replace("_", " "))}
         if c == "drainers":
@@ -7246,7 +7331,9 @@ class Pilot:
             elif a == "buy":
                 pass
             else:
-                specs += [x.strip() for x in a.split(",") if x.strip()]
+                # (not inside [..] or (..): m43's `2/pair_of_hard_leather_boot_[3,+6]@1050`, the line `gear` printed,
+                # split into "boot_[3" and "+6]")
+                specs += split_specs(a)
             i += 1
         for sp in specs:
             m = re.fullmatch(r"(?:([1-7])/)?([^:@]+)(?::(\d+))?(?:@(\d+))?", sp)
@@ -7929,6 +8016,82 @@ class Pilot:
         out += ["", "Then: `plan town [buy ...]`, `plan trip LO-HI until \"...\" then town`. Note your plan in the journal."]
         return "\n".join(out)
 
+    # the Navigator's live line to the Architect (the user, m43: "the Navigator should be able to ask questions and
+    # escalate issues to the Architect live during a mission. We don't want the Navigator to spam this though")
+    ASK_GAP_S = 300            # one question every 5 minutes
+    ASK_PER_HOUR = 4
+
+    def ask_architect(self, text):
+        text = text.strip()
+        if not text:
+            return {"ok": False, "error": "usage: ask TEXT (a question or an escalation for the Architect)"}
+        now = time.time()
+        asks = [a for a in self.__dict__.setdefault("asks_sent", []) if now - a < 3600]
+        self.asks_sent = asks
+        if asks and now - asks[-1] < self.ASK_GAP_S:
+            return {"ok": False, "error": f"one question every {self.ASK_GAP_S // 60} minutes: next after "
+                                          f"{time.strftime('%H:%M', time.localtime(asks[-1] + self.ASK_GAP_S))}; "
+                                          "`complain` for what isn't urgent"}
+        if len(asks) >= self.ASK_PER_HOUR:
+            return {"ok": False, "error": f"{self.ASK_PER_HOUR} questions in the last hour: use `complain` (read "
+                                          "after the mission)"}
+        asks.append(now)
+        aid = self.__dict__.get("ask_seq", 0) + 1
+        self.ask_seq = aid
+        rec = {"t": round(now, 1), "id": aid, "text": text, "depth_ft": self.w.depth_ft, "hp": list(self.w.hp[:2]),
+               "goal": self.goal.describe() if self.goal else None}
+        try:
+            with open(os.path.join(self.rundir, "asks.jsonl"), "a") as f:
+                f.write(json.dumps(rec) + "\n")
+        except OSError as e:
+            return {"ok": False, "error": f"couldn't send it ({e})"}
+        self.log("nav_ask", id=aid, text=text)
+        return {"ok": True, "text": f"asked the Architect (#{aid}). The answer comes as ARCHITECT ANSWER in your "
+                                    "reports (usually within a few minutes): carry on meanwhile, don't wait for it"}
+
+    def answer_navigator(self, args):
+        if self.req_role != "architect":
+            return {"ok": False, "error": "answers come from the Architect"}
+        if not args or not args[0].lstrip("#").isdigit():
+            return {"ok": False, "error": "usage: answer ID TEXT"}
+        aid, text = int(args[0].lstrip("#")), " ".join(args[1:])
+        self.__dict__.setdefault("arch_answers", []).append((gnow(), aid, text))
+        self.log("arch_answer", id=aid, text=text)
+        self.notify("architect_answer", f"#{aid}: {text}")
+        return {"ok": True, "text": f"answer #{aid} sent"}
+
+    def price_info(self, what):
+        """`price NAME|LETTER` (the user, m43: "so the Pilot knows item values, but you have no way to check?"): the
+        Pilot's own valuation of a pack or worn item -- value, what a shop pays and which, the last price seen, and
+        what the policy will do with it."""
+        if not what:
+            return "usage: price NAME|LETTER (a pack or worn item)"
+        try:
+            idx = self.item_index(what.strip().replace(" ", "_"))
+        except ValueError as e:
+            return str(e)
+        it = next((i for i in self.w.items() + self.w.items(equip=True) if i["item"] == idx), None)
+        if not it:
+            return f"no item {what}"
+        iv = self.iv(it["name"])
+        cut = self.pay_cut(iv.tval)
+        buyers = self.town_buyers(it) if not it.get("equip") else []
+        n = max(1, iv.count or it.get("number", 1))
+        seen = [(st, p) for st, sv in self.stores_seen.items() for k, p in (sv.get("prices") or {}).items()
+                if iv.kind and singular(iv.kind).lower() in k]
+        out = [f"{it['name']}: worth ~{iv.value} each ({'an estimate' if iv.estimate else 'known'}"
+               + (f", P(irreplaceable) {iv.p_irreplaceable:.2f}" if iv.p_irreplaceable else "") + ")",
+               f"a shop pays ~{iv.value * cut:.0f} each ({cut:.0%} of value)" + (f" at the "
+               f"{self.STORE_LABEL.get(buyers[0], buyers[0])} ({buyers[0]})" if buyers else " -- no shop buys it")
+               + (f"; x{n} = ~{iv.value * cut * n:.0f}" if n > 1 else "")]
+        if seen:
+            st, p = min(seen, key=lambda sp: sp[1])
+            out.append(f"last seen for sale: {p} at the {self.STORE_LABEL.get(st, st)} ({st})")
+        pol = "worn" if it.get("equip") else "kept (kit/kept/useful)" if not self.town_sell_count(it) else \
+            "sold by plan town"
+        out.append(f"the policy: {pol}")
+        return "\n".join(out)
+
     def redundant_worn(self):
         """[(item, flags, other slot letters)]: worn rings and amulets with no AC or pluses whose every ability
         another worn piece gives too (Dive04's Ring of Resist Cold beside its Leather of Resistance)."""
@@ -8092,6 +8255,10 @@ class Pilot:
                      + (" · TIME FROZEN (test server: nothing moves until it's thawed)" if frozen() else ""))
         if self.plan:
             lines.append("Plan: " + self.plan.describe())
+        aa = [a for a in self.__dict__.get("arch_answers", []) if gnow() - a[0] < 600]
+        if aa:
+            lines.append("ARCHITECT ANSWER(S): " + " | ".join(f"#{i} {time.strftime('%H:%M:%S', _lt(t))} {m}"
+                                                               for t, i, m in aa))
         if self.unanswered:
             lines.append("USER MESSAGE(S) NOT YET ANSWERED (reply with say): " + " | ".join(
                 f"{time.strftime('%H:%M:%S', _lt(t))} {m}" for t, m in self.unanswered))

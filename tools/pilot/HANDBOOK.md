@@ -95,6 +95,8 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 | `rule drop NAME [DEPTH]`, `rule fight NAME ...`, `rule feeling KIND FEELING [LEVEL]`, `rule unknown TVAL LEVEL`, `rule owner NAME`, `rule const WORD` | the Advisor's rulebook, built from the server's source (no Pilot needed) |
 | `drainers`, `gate FEET [recall]`, `debt`, `pack`, `equip`, `map [R]`, `status full` | queries |
 | `prep` | the planning report for a mission's start (see "Your loop", step 0) |
+| `price NAME\|LETTER` | the Pilot's own valuation of a pack or worn item: value, what a shop pays and which, the last shop price seen, and what the policy will do with it |
+| `ask TEXT` | a question or escalation for the **Architect**, live (one every 5 minutes, 4 an hour; the answer shows as `ARCHITECT ANSWER` in your reports -- carry on meanwhile). For a game question you can't settle with `price`, `monster`, `why` or `rule`, or a Pilot behaviour that is costing the mission now. Everything else: `complain` (read after the mission) |
 | `why [HH:MM[:SS]]` | what the Pilot saw and did around a moment (default: its last escape, emergency or trip end): HP, monsters in view and adjacent, the timeline. Use it before asking "why did it recall?" |
 | `gear` | the gear review (in town, before `plan town`): abilities had and missing, worn jewellery made redundant by another piece (a free slot), and shop stock that would improve a slot within your spare gold. Buy with `plan town buy STORE/NAME@MAX`: the Pilot wears armour itself; for jewellery, `takeoff` the redundant piece first (it then fills the empty slot) |
 | `say TEXT`, `journal "situation \| decision \| why"`, `complain TEXT` | the user, your journal, what you lacked |

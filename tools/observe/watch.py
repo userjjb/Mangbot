@@ -112,7 +112,7 @@ def draw_map(scr, y, width, top_h, vm):
 
 
 FEED_KINDS = ("act", "attention", "goal", "goal_done", "goal_failed", "user_note", "audit", "nav_say",
-              "nav_complaint", "nav_cmd")
+              "nav_complaint", "nav_cmd", "nav_ask", "arch_answer")
 # the Navigator's commands that only look (not shown as decisions)
 NAV_QUERIES = {"status", "wait", "prep", "why", "gear", "pack", "equip", "map", "monster", "drainers", "gate", "debt",
                "journal", "say", "complain", "rule", "inventory", "orders", "events", "news", "view", "viewmap",
@@ -141,6 +141,10 @@ def feed_line(e):
         txt = f"NAVIGATOR: {e.get('text')}"
     elif k == "nav_complaint":
         txt = f"NAVIGATOR LACKS: {e.get('text')}"
+    elif k == "nav_ask":
+        txt = f"NAVIGATOR ASKS THE ARCHITECT #{e.get('id')}: {e.get('text')}"
+    elif k == "arch_answer":
+        txt = f"ARCHITECT ANSWERS #{e.get('id')}: {e.get('text')}"
     elif k == "attention" and e.get("what") == "user_message":
         txt = "(sent to the Navigator)"
     elif k == "audit":
@@ -463,6 +467,8 @@ def draw(scr, sock, feed, buf, msg, scroll):
             attr = FEED_COL.get("nav", 0) | curses.A_BOLD
         if k == "nav_complaint":
             attr = FEED_COL.get("alert", 0) | curses.A_REVERSE
+        if k in ("nav_ask", "arch_answer"):
+            attr = FEED_COL.get("journal", 0) | curses.A_REVERSE
         if k == "nav_journal":
             attr = FEED_COL.get("journal", 0)
         scr.addnstr(fy + 1 + i, fx, f"{t:9} {piece}", fw, attr)

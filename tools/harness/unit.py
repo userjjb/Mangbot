@@ -1576,6 +1576,67 @@ def blind_cured_when_it_matters():
     return ok, f"band warned: {band.cmds}; a Druid seen 3 s ago: {seen.cmds}; alone: {alone.cmds}"
 
 
+@case
+def ask_price_and_buy_commas():
+    """The user (m43): a live, rate-limited line from the Navigator to the Architect (`ask`, one per 5 min, 4 an hour;
+    `answer` shows in the reports); `price` gives the Pilot's own valuation; buy specs split on commas outside [..]
+    (m43's `[3,+6]` broke)."""
+    import tempfile, re as _re
+    p = pilot(pack=[("2 Staffs of Cure Light Wounds (21 charges)", 55)])
+    p.rundir = tempfile.mkdtemp()
+    p.req_role, p.ask_seq = "navigator", 0
+    p.goal = None
+    p.w.depth_ft = 700
+    a1 = p.ask_architect("what are the Staffs of CLW worth?")
+    a2 = p.ask_architect("again?")
+    p.req_role = "architect"
+    ans = p.answer_navigator(["1", "~218 each in town"])
+    p.stores_seen = {}
+    pr = p.price_info("Cure_Light")
+    split = P.split_specs("2/pair_of_hard_leather_boot_[3,+6]@1050,Word_of_Recall:3")
+    asks = open(os.path.join(p.rundir, "asks.jsonl")).read()
+    ok = a1["ok"] and not a2["ok"] and "5 minutes" in a2["error"] and ans["ok"] and p.arch_answers and \
+        "worth ~" in pr and "the policy:" in pr and split == ["2/pair_of_hard_leather_boot_[3,+6]@1050",
+                                                              "Word_of_Recall:3"] and "Staffs of CLW" in asks
+    return ok, f"ask: {a1.get('text', '')[:40]}; again: {a2.get('error', '')[:50]}; price: {pr.replace(chr(10), ' | ')}"
+
+
+@case
+def engage_nearby_monster_only_when_appropriate():
+    """The user (m43): engage a nearby monster instead of walking on past it -- but never over the legit reasons not
+    to (fleeing, a danger in view, low HP, a breeder). Exploring, a killable monster 4 steps off: engaged."""
+    strong = next(r for r in sorted(RACES.values(), key=lambda r: (r.level, r.name)) if 15 <= r.level <= 25 and
+                  "UNIQUE" not in r.flags and "NEVER_MOVE" not in r.flags and "MULTIPLY" not in r.flags)
+
+    def make(goal, hp=300, mons=None, danger=None):
+        p = pilot(hp=hp, monsters=mons if mons is not None else [(20, 24, strong)])
+        p.w.hp = [hp, 326]
+        p.w.in_dungeon, p.w.depth, p.w.clvl = True, 13, 27
+        p.goal, p.plan = goal, None
+        p.orders["think_hp"] = 0.65
+        p.band_live = lambda: False
+        p.our_slowness = lambda: 1.0
+        p.w.recall_pending = False
+        p.danger_why = lambda r: danger
+        p.hunt_refusal = lambda name: (None, None)
+        p.avoid_names = set()
+        p.logs = []
+        p.log = lambda kind, **kw: p.logs.append((kind, kw))
+        p.mover = type("M", (), {"active": False, "path": [1, 2, 3], "go": lambda self, g, unknown=False: True,
+                                 "tick": lambda self: "moving", "stop": lambda self: None})()
+        return p
+    explore = make(P.Explore())
+    e = explore.engage_tick(P.gnow())
+    flee = make(P.Flee("x"))
+    f = flee.engage_tick(P.gnow())
+    hurt = make(P.Explore(), hp=150)
+    h = hurt.engage_tick(P.gnow())
+    danger = make(P.Explore(), danger="breathes fire")
+    d = danger.engage_tick(P.gnow())
+    ok = e is True and explore.engage["target"] == strong.name and f is False and h is False and d is False
+    return ok, f"{strong.name}: exploring {e}; fleeing {f}; at 46% HP {h}; a danger in view {d}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

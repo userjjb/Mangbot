@@ -23,7 +23,11 @@ TRANSCRIPTS = os.path.expanduser("~/.claude/projects/*/*/subagents/*.jsonl")
 # USD per million tokens, API list prices (platform.claude.com/docs/en/about-claude/pricing, fetched 2026-10-25):
 # base input, 5-minute cache write (1.25x), 1-hour cache write (2x), cache read (0.05x on these two), output
 PRICES = {"claude-opus-5-5": {"input": 4.0, "write_5m": 5.0, "write_1h": 8.0, "cache_read": 0.20, "output": 20.0},
-          "claude-sonnet-5-5": {"input": 2.0, "write_5m": 2.50, "write_1h": 4.0, "cache_read": 0.10, "output": 10.0}}
+          "claude-sonnet-5-5": {"input": 2.0, "write_5m": 2.50, "write_1h": 4.0, "cache_read": 0.10, "output": 10.0},
+          # (Haiku 5.5: input/output from the claude-api skill's model table, cached 2026-10-06, for prompts up to 100K
+          # tokens; the cache prices are derived with the multipliers the two rows above follow -- write 5m x1.25,
+          # write 1h x2, read x0.05 -- not quoted)
+          "claude-haiku-5-5": {"input": 0.10, "write_5m": 0.125, "write_1h": 0.20, "cache_read": 0.005, "output": 0.50}}
 
 
 def cost_usd(t):

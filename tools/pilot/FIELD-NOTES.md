@@ -54,6 +54,14 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
 
 ## Pilot habits to expect (not bugs to work around)
 
+- **Don't put `band` in a trip's conditions** at 650-750 ft. It ends the trip on any band, including the ones the
+  Pilot would fight and win: m43's first trip ended after 5 minutes on 5 Black orcs. The Pilot leaves dangerous bands
+  by itself.
+- Since m43: the Pilot fights a killable monster a few steps off instead of walking past it (never while fleeing or
+  hurt). It cures blindness when it's in a fight or must read. It drinks a carried Restore once a fight is over (so 1
+  spare Restore STR/DEX is worth carrying). It sells spare staffs, such as Cure Light Wounds or a Staff of
+  Door/Stair Location beside the Rod. It destroys known junk on the floor when nothing is around.
+
 - The Pilot's own emergency recall often lands before your `goal recall`. Check `status` first; `why` explains it.
 - `plan town` sells what the policy sells, and that includes Boldness (Heroism covers fear). Don't buy Boldness.
 - Unidentified weapons and spare staffs can stay in the pack when the identify budget is short, so the pack can be
