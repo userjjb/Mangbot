@@ -432,9 +432,9 @@ SIM_RES = {"RES_ACID": "res_acid", "RES_ELEC": "res_elec", "RES_FIRE": "res_fire
 # what the Pilot's automatic swaps may never lose: the abilities that gate escapes and fights (the Advisor, 10-26: the
 # elemental resists are simulated now and may be traded for a measured gain)
 NO_LOSS = {"FREE_ACT", "SEE_INVIS", "RES_BLIND", "RES_CONFU", "HOLD_LIFE"}
-# whether the automatic swaps may trade the other resists for a measured gain: off until the user decides (10-26: a plain
+# whether the automatic swaps may trade the other resists for a measured gain (10-26: a plain
 # Metal Scale Mail [38,+5] beat the Leather of Resistance by ~21% in the simulation)
-TRADE_RESISTS = False
+TRADE_RESISTS = False          # (the user, 10-26: option B -- automatic swaps keep every resist)
 # resting: regenhp (dungeon.c:1245-1306) heals (mhp x 197 x 2 + 1442) / 65536 HP a block (one normal-speed player
 # turn of game time) while resting. Fight and rest turns are both game time (the Advisor, 10-26: an earlier /4.5 for
 # the time bubble mixed clocks and under-weighted HP lost -- the AC side of every comparison)
