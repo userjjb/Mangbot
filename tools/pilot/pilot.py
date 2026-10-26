@@ -4770,7 +4770,8 @@ class Pilot:
                                               + ")", news=True)
                         return True
         # 6. in town: the gear evaluator's choice among the identified wearables in the pack (simulated fights, never
-        # losing an ability or resist; the user, 10-26). A ring over a worn one: off first, step 4 puts it on.
+        # losing Free Action, See Invisible, resist blindness/confusion or hold life; the user, 10-26). A ring over a worn
+        # one: off first, step 4 puts it on.
         if not w.depth and not w.in_dungeon and not self.__dict__.get("gear_swapped_t", 0) > gnow() - 30:
             for it in pack:
                 got = self.gear_better(it)
@@ -8445,7 +8446,7 @@ class Pilot:
                    hero=n("Heroism", TV_POTION))
         depth = int(self.orders.get("max_depth", 0)) or (self.deepest_ft or 500)
         return geareval.Character(w.clvl, stats, w.hp[1], (w.ind.get("armor") or [0])[0] or 0, worn, flags=flags,
-                                  depth_ft=depth, inv=inv)
+                                  depth_ft=depth, inv=inv, pack_weight=sum(i["weight"] for i in w.items()))
 
     def gear_eval(self, items, n=10, no_loss=False):
         """The item slot evaluator on these pack items (or names): geareval.compare_slot. Cached per item and gear."""
@@ -8456,14 +8457,19 @@ class Pilot:
                tuple(sorted(ch.sheet["stats"].items())), ch.clvl, ch.depth_ft, no_loss, n)
         cache = self.__dict__.setdefault("gear_eval_cache", {})
         if key not in cache:
-            cache[key] = geareval.compare_slot(ch, [c for c in cands if c.slot], n=n, no_loss=no_loss,
+            try:
+                killed = set(json.load(open(os.path.join(self.rundir, "uniques_killed.json"))))
+            except (OSError, ValueError):
+                killed = set()
+            cache[key] = geareval.compare_slot(ch, cands, n=n, no_loss=no_loss, skip=killed,
                                                decisions=os.path.join(self.rundir, "decisions.jsonl"),
                                                xp_per_gold=self.xp_per_gold())
         return cache[key]
 
     def gear_better(self, it):
         """(the evaluator's chosen option, (item, replaced)) when wearing this identified pack item beats what's worn
-        (town only: a run takes ~1 s; never one that loses an ability or resist), else None."""
+        (town only: a run takes ~2-3 s; never one that loses Free Action, See Invisible, resist blindness or
+        confusion, hold life -- geareval.NO_LOSS), else None."""
         w = self.w
         if w.depth or w.in_dungeon or it.get("equip") or it["tval"] not in geareval.SLOT_OF_TVAL or \
                 it["tval"] == TV_LITE or re.search(r"\{(cursed|worthless|broken|terrible)", it["name"]) or \

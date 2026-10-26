@@ -1862,16 +1862,39 @@ def gear_model_matches_dive04_sheet():
 
 
 @case
-def gear_evaluator_never_auto_loses_a_resist():
-    """The simulator doesn't model elemental resists, so for the Pilot's automatic swaps (no_loss) an option that loses
-    an ability or resist is ruled out: plain armour with more AC doesn't replace the Leather of Resistance; Free
-    Action lost is vetoed in any case."""
+def gear_evaluator_no_loss_rules():
+    """The Pilot's automatic swaps never lose Free Action, See Invisible, resist blindness/confusion or hold life
+    (geareval.NO_LOSS); elemental resists are simulated since the Advisor's options_sim 26f and may be traded (the
+    Advisor, 10-26). A plain axe that loses Free Action is vetoed in any case (REQUIRED). With no simulation sets the
+    verdict keeps the current gear (no measured gain)."""
     GE, ch = _dive04_character()
-    res = GE.compare_slot(ch, [GE.Item("Metal Scale Mail [38,+5]")], hard=False, no_loss=True)
-    res2 = GE.compare_slot(ch, [GE.Item("Battle Axe (2d8) (+20,+20)")], hard=False)
-    ok = res["best"] == "current" and res2["best"] == "current" and \
-        any("Free Action" in x for x in res2["notes"][res2["options"][1]])
-    return ok, f"mail: {res['best']} ({res['notes']}); plain axe: {res2['best']} ({res2['notes'][res2['options'][1]]})"
+    res = GE.compare_slot(ch, [GE.Item("Metal Scale Mail [38,+5]")], hard=False, depth_n=0, no_loss=True)
+    res2 = GE.compare_slot(ch, [GE.Item("Battle Axe (2d8) (+20,+20)")], hard=False, depth_n=0)
+    mail = res["options"][1]
+    ok = res["best"] == "current" and res["notes"][mail] == [] and "RES_ACID" in res["rules"][mail]["lost"] and \
+        res2["best"] == "current" and any("Free Action" in x for x in res2["notes"][res2["options"][1]])
+    return ok, f"mail (loses {res['rules'][mail]['lost']}): notes {res['notes'][mail]}, {res['best']}; " \
+               f"plain axe: {res2['notes'][res2['options'][1]]}"
+
+
+@case
+def gear_score_rests_and_paired_error():
+    """The score counts the turns to rest back the HP lost (regenhp, resting x2, the time bubble); the paired standard
+    error of a difference is 0 for identical options."""
+    import geareval as GE
+    rt = GE.rest_turns(100, 340)
+    rows = [dict(xp=10.0 * k, turns=5 + k, rest=1.0, spent=0.0, lows=[0.9], dead=0) for k in range(1, 6)]
+    g, se = GE.paired_gain(rows, rows, 0.41)
+    # encumbrance: STR 18/70 carries 300 lb (adj_str_wgt 30 x 100 tenth-pounds); over 150 lb, -1 speed per 30 lb
+    GE2, ch = _dive04_character()
+    worn_wt = sum(i.weight for v in ch.worn.values() for i in v)
+    ch.pack_weight = 1750 - worn_wt          # (175 lb carried: under the next 30 lb step; the mail adds 14 lb)
+    heavy = ch.derive(ch.swap(GE.Item("Metal Scale Mail [38,+5]")))
+    res = GE.compare_slot(ch, [GE.Item("Metal Scale Mail [38,+5]")], hard=False, depth_n=0)
+    slow = any("slower" in x for x in res["notes"][res["options"][1]])
+    ok = 9 < rt < 12 and g == 0 and se == 0 and ch.derive()["speed"] == 0 and heavy["speed"] < 0 and slow
+    return ok, f"100 HP of 340: {rt:.1f} turns; identical options: gain {g}, SE {se}; 175 lb carried: speed " \
+               f"{ch.derive()['speed']}, with a 25 lb mail {heavy['speed']} (ruled out: {slow})"
 
 
 def main():

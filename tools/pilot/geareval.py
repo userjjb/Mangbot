@@ -49,13 +49,15 @@ REQUIRED = {"FREE_ACT": 0, "SEE_INVIS": 600}
 LABEL = {"FREE_ACT": "Free Action", "SEE_INVIS": "See Invisible", "HOLD_LIFE": "hold life", "FEATHER": "feather fall",
          "TELEPATHY": "telepathy", "REGEN": "regeneration", "SLOW_DIGEST": "slow digestion"}
 ABILITY_FLAGS = set(LABEL)
+SHEET_FLAG = {"RES_CONF": "RES_CONFU", "RES_NETHER": "RES_NETHR", "RES_SHARDS": "RES_SHARD", "SEE_INV": "SEE_INVIS",
+              "FREE_ACTION": "FREE_ACT"}
 
 
 def label(f):
     """'RES_POIS' -> 'resist poison', 'SUST_STR' -> 'sustain STR', 'FREE_ACT' -> 'Free Action'."""
     if f in LABEL:
         return LABEL[f]
-    el = {"POIS": "poison", "ELEC": "lightning", "CONF": "confusion", "BLIND": "blindness", "SHARD": "shards",
+    el = {"POIS": "poison", "ELEC": "lightning", "CONF": "confusion", "CONFU": "confusion", "NETHR": "nether", "BLIND": "blindness", "SHARD": "shards",
           "DISEN": "disenchantment", "LITE": "light", "DARK": "darkness"}
     m = re.match(r"(RES|IM|SUST)_(\w+)", f)
     if m:
@@ -275,11 +277,13 @@ class Character:
     stats: {'STR': value as used (18/70 = 88), ...}; mhp, ac: the sheet's totals; worn: {slot: [Item]}.
     The gear-free parts (stat_cur, player_hp, the base AC and to-hit) are backed out of the sheet once."""
 
-    def __init__(self, clvl, stats, mhp, ac, worn, flags=(), depth_ft=700, inv=None):
+    def __init__(self, clvl, stats, mhp, ac, worn, flags=(), depth_ft=700, inv=None, pack_weight=0):
         self.clvl, self.depth_ft = clvl, depth_ft
+        self.pack_weight = pack_weight          # (tenth-pounds carried in the pack: the weight limit's other half)
         self.worn = {s: list(v) for s, v in worn.items()}
         self.sheet = dict(stats=dict(stats), mhp=mhp, ac=ac)
-        self.sheet_flags = set(flags)
+        # (the Pilot's sheet names -> the game's flag names)
+        self.sheet_flags = {SHEET_FLAG.get(f, f) for f in flags}
         self.inv = dict(inv or {})
         bonus = self._stat_bonus(self.worn)
         self.stat_cur = {s: modify_stat_value(v, -bonus.get(s, 0)) for s, v in stats.items()}
@@ -322,6 +326,11 @@ class Character:
         ac = sum(i.ac + i.to_a for v in worn.values() for i in v) + t[di]["adj_dex_ta"] + self.ac_other
         mhp = max(self.clvl + 1, self.player_hp + t[ci]["adj_con_mhp"] * self.clvl // 100)
         speed = sum(i.pval for v in worn.values() for i in v if "SPEED" in i.flags)
+        # encumbrance (xtra1.c:2772): over half the weight limit (adj_str_wgt x 100 tenth-pounds), -1 speed a tenth
+        limit = t[si]["adj_str_wgt"] * 100
+        load = self.pack_weight + sum(i.weight for v in worn.values() for i in v)
+        if load > limit // 2:
+            speed -= (load - limit // 2) // (limit // 10)
         flags = self._flags(worn) | self.extra_flags
         return dict(stats=st, blows=nb, dice=f"{dn}d{ds}", tohit=w_h + to_h, todam=w_d + to_d, dmg=round(dmg, 1),
                     ac=ac, mhp=mhp, speed=speed, flags=flags)
@@ -414,50 +423,115 @@ def hard_fights():
 
 
 # ------------------------------------------------------------------ simulation
+# the simulator's resist flags (options_sim 2026-10-26f) from the game's flag names (an immunity counts as the resist)
+SIM_RES = {"RES_ACID": "res_acid", "RES_ELEC": "res_elec", "RES_FIRE": "res_fire", "RES_COLD": "res_cold",
+           "IM_ACID": "res_acid", "IM_ELEC": "res_elec", "IM_FIRE": "res_fire", "IM_COLD": "res_cold",
+           "RES_POIS": "res_pois", "RES_NETHR": "res_neth", "RES_CHAOS": "res_chaos", "RES_SHARD": "res_shard",
+           "RES_NEXUS": "res_nexus", "RES_DISEN": "res_disen", "RES_SOUND": "res_sound", "RES_CONFU": "res_conf",
+           "RES_LITE": "res_lite", "RES_DARK": "res_dark", "RES_BLIND": "res_blind"}
+# what the Pilot's automatic swaps may never lose: the abilities that gate escapes and fights (the Advisor, 10-26: the
+# elemental resists are simulated now and may be traded for a measured gain)
+NO_LOSS = {"FREE_ACT", "SEE_INVIS", "RES_BLIND", "RES_CONFU", "HOLD_LIFE"}
+# resting: regenhp (dungeon.c) heals mhp x 197 x 2 (resting) / 65536 + 1442 / 65536 HP a regen tick, about one tick a
+# player turn; the server's time bubble runs a rest ~4.5x faster than real time (the Pilot's time_factor records)
+REST_SPEEDUP = 4.5
+
+
+def rest_turns(hp_lost, mhp):
+    """Player turns (in real time, a fight turn's worth) to rest back hp_lost."""
+    return hp_lost / ((mhp * 394 + 1442) / 65536) / REST_SPEEDUP if hp_lost > 0 else 0.0
+
+
 def sim_player(d, ch, depth):
     """The simulator's player from derived numbers (full HP: a gear choice is made before the fight)."""
     S = _sim()
     inv = dict(ccw=0, csw=0, clw=0, phase=0, tele=0, staff=0, wor=1, speed=0, berserk=0, hero=0)
     inv.update(ch.inv)
-    return dict(hp=d["mhp"], mhp=d["mhp"], ac=d["ac"], clvl=ch.clvl, depth=depth, stairs=None,
-                free_action="FREE_ACT" in d["flags"], res_blind="RES_BLIND" in d["flags"],
-                res_conf="RES_CONF" in d["flags"], save=S.SAVE, max_adj=3, blows=d["blows"], dice=d["dice"],
-                tohit=d["tohit"], todam=d["todam"], inv=inv)
+    p = dict(hp=d["mhp"], mhp=d["mhp"], ac=d["ac"], clvl=ch.clvl, depth=depth, stairs=None,
+             free_action="FREE_ACT" in d["flags"], save=S.SAVE, max_adj=3, blows=d["blows"], dice=d["dice"],
+             tohit=d["tohit"], todam=d["todam"], inv=inv)
+    for f in d["flags"]:
+        if f in SIM_RES:
+            p[SIM_RES[f]] = True
+    return p
 
 
 def simulate(ch, derived, scenarios, n=20, p_awake=None):
-    """Rollouts of every scenario under the base policy, n seeds each; per option: the metrics. p_awake 1.0: every
-    monster comes (a fight we take on: kill speed shows; at the simulator's 0.4 most turns are spent waiting)."""
+    """Rollouts of every scenario under the base policy, n seeds each, the same seeds for every option.
+    Returns {option: [per-scenario totals {xp, turns, rest, spent, lows: [lowest HP / max], dead}]}.
+    p_awake 1.0: every monster comes (a fight we take on: kill speed shows; at the simulator's 0.4 most turns are
+    spent waiting)."""
     S = _sim()
     out = {}
     for name, d in derived.items():
-        lows, near, blocks, xp, spent, cleared, dead = [], 0, [], 0.0, 0.0, 0, 0
+        rows = []
         for k, sc in enumerate(scenarios):
             p = sim_player(d, ch, sc["depth"])
             if p_awake is not None:
                 p["p_awake"] = p_awake
+            row = dict(xp=0.0, turns=0, rest=0.0, spent=0.0, lows=[], dead=0)
             for i in range(n):
                 r = S.rollout(p, sc["team"], [], seed=1000 * k + i, arrivals=sc.get("arrivals", ()))
-                frac = r["low"] / d["mhp"]
-                lows.append(frac)
-                near += frac <= NEAR_DEATH
-                dead += r["dead"]
-                blocks.append(r["blocks"] + 1)
-                xp += r["xp"]
-                spent += r["spent"]
-                cleared += r["escaped"] == "cleared"
-        runs = len(scenarios) * n
-        out[name] = dict(runs=runs, p_near=near / runs, p_dead=dead / runs, low_mean=statistics.fmean(lows),
-                         low_p10=sorted(lows)[runs // 10], turns=statistics.fmean(blocks), xp_turn=xp / sum(blocks),
-                         spent=spent / runs, cleared=cleared / runs)
+                row["xp"] += r["xp"]
+                row["turns"] += r["blocks"] + 1
+                row["rest"] += rest_turns(d["mhp"] - max(0, r["end_hp"]), d["mhp"])
+                row["spent"] += r["spent"]
+                row["lows"].append(max(0, r["low"]) / d["mhp"])
+                row["dead"] += r["dead"]
+            rows.append(row)
+        out[name] = rows
     return out
 
 
+def summary(rows, xp_per_gold):
+    """An option's metrics over a set's per-scenario rows. score = (XP - gold spent x XP-per-gold) per turn of fighting
+    and resting back the HP lost (the Advisor, 10-26: AC and damage on one scale)."""
+    lows = sorted(x for r in rows for x in r["lows"])
+    runs = len(lows)
+    xp, turns, rest = (sum(r[k] for r in rows) for k in ("xp", "turns", "rest"))
+    spent = sum(r["spent"] for r in rows)
+    return dict(runs=runs, score=(xp - spent * xp_per_gold) / max(1e-9, turns + rest), turns=turns / runs,
+                rest=rest / runs, xp=xp / runs, spent=spent / runs, p_near=sum(x <= NEAR_DEATH for x in lows) / runs,
+                p_dead=sum(r["dead"] for r in rows) / runs, low_mean=statistics.fmean(lows),
+                low_p10=lows[runs // 10], low_p5=lows[runs // 20], low_p1=lows[runs // 100])
+
+
+def paired_gain(rows_a, rows_b, xp_per_gold):
+    """B's score less A's, and its standard error, paired by scenario (the same seeds; the delta method for a ratio of
+    sums: SE from the scenario residuals)."""
+    def tot(rows):
+        return [(r["xp"] - r["spent"] * xp_per_gold, r["turns"] + r["rest"]) for r in rows]
+    a, b = tot(rows_a), tot(rows_b)
+    ta, tb = sum(t for _, t in a), sum(t for _, t in b)
+    ra, rb = sum(x for x, _ in a) / ta, sum(x for x, _ in b) / tb
+    tm = (ta + tb) / 2 / len(a)
+    z = [((xb - rb * tbk) - (xa - ra * tak)) / tm for (xa, tak), (xb, tbk) in zip(a, b)]
+    se = statistics.stdev(z) / len(z) ** 0.5 if len(z) > 1 else float("inf")
+    return rb - ra, se
+
+
 # ------------------------------------------------------------------ the evaluator
-def compare(ch, options, decisions=None, n=20, lo_ft=None, hi_ft=None, hard=True, xp_per_gold=0.41, no_loss=False):
+SCORE_SETS = ("met", "depth")              # where the score comes from (pooled)
+SAFETY_SETS = ("hard", "depth", "deeper")  # where an option can be less safe
+
+
+def _paired_gain_sets(sims, cur, k, xp_per_gold):
+    rows_a = [r for s in SCORE_SETS if s in sims for r in sims[s][cur]]
+    rows_b = [r for s in SCORE_SETS if s in sims for r in sims[s][k]]
+    return paired_gain(rows_a, rows_b, xp_per_gold) if rows_a else (0.0, float("inf"))
+
+
+def d_slower(derived, cur, k):
+    return derived[k]["speed"] < derived[cur]["speed"]
+
+
+def compare(ch, options, decisions=None, n=10, lo_ft=None, hi_ft=None, hard=True, depth_n=500, xp_per_gold=0.41,
+            no_loss=False, skip=frozenset()):
     """options: {label: loadout ({slot: [Item]})}, the first being the current one. Returns a report dict.
-    no_loss: an option that loses any ability or resist is ruled out (the Pilot's automatic swaps: the simulator
-    doesn't model elemental resists, so losing one would look free)."""
+    Sets: met (the fights in the log at lo-hi ft, n seeds each), depth / deeper (the Advisor's scenarios.make at the
+    depth and 100 ft deeper, boost 2 for auto_scum, depth_n each, one seed), hard (the 21 replays, n seeds).
+    no_loss: an option losing one of NO_LOSS (Free Action, See Invisible, resist blindness/confusion, hold life) is
+    ruled out -- the Pilot's automatic swaps; elemental resists are simulated and may be traded."""
     lo_ft = lo_ft or max(50, ch.depth_ft - 100)
     hi_ft = hi_ft or ch.depth_ft
     t0 = time.time()
@@ -471,42 +545,67 @@ def compare(ch, options, decisions=None, n=20, lo_ft=None, hi_ft=None, hard=True
         rules[k] = dict(lost=sorted(lost), gained=sorted(gained), veto=veto)
     sets = {}
     if decisions:
-        sets["met"] = encounters(decisions, lo_ft, hi_ft)
+        sets["met"] = (encounters(decisions, lo_ft, hi_ft), n, 1.0)
+    if depth_n:
+        try:
+            if ADVISOR_SIM not in sys.path:
+                sys.path.insert(0, ADVISOR_SIM)
+            import scenarios as SC                 # noqa: E402
+            for name, ft in (("depth", ch.depth_ft), ("deeper", ch.depth_ft + 100)):
+                low = {u.lower() for u in skip}
+                sc = SC.make(ft, depth_n, seed=7, boost=2,
+                             skip=frozenset(r["name"] for r in SC.RACES.values() if r["name"].lower() in low))
+                sets[name] = ([dict(x, depth=ft // 50) for x in sc], 1, 1.0)
+        except Exception:                          # (no scenario generator: the other sets only)
+            pass
     if hard:
-        sets["hard"] = hard_fights()
-    sims = {s: simulate(ch, derived, sc, n=n, p_awake=1.0 if s == "met" else None) for s, sc in sets.items() if sc}
-    # verdict: vetoes; then safety in the hard fights (a worse near-death rate by more than noise); then XP per turn
-    # net of consumables in the fights met (XP_PER_GOLD converts the gold spent)
-    score, notes = {}, {}
+        sets["hard"] = (hard_fights(), n, None)
+    raw = {s: simulate(ch, derived, sc, n=nn, p_awake=pa) for s, (sc, nn, pa) in sets.items() if sc}
+    sims = {s: {k: summary(rows, xp_per_gold) for k, rows in v.items()} for s, v in raw.items()}
+    # the score: pooled over the score sets
+    score = {}
+    for k in options:
+        rows = [r for s in SCORE_SETS if s in raw for r in raw[s][k]]
+        score[k] = summary(rows, xp_per_gold)["score"] if rows else 0.0
+    notes, gains = {}, {}
     for k in options:
         why = []
         if rules[k]["veto"]:
             why.append("loses " + ", ".join(rules[k]["veto"]))
-        elif no_loss and rules[k]["lost"]:
-            why.append("loses " + ", ".join(label(f) for f in rules[k]["lost"]) + " (an automatic swap never does)")
-        if "hard" in sims and k != cur:
-            a, b = sims["hard"][cur], sims["hard"][k]
-            se = ((a["p_near"] * (1 - a["p_near"]) + b["p_near"] * (1 - b["p_near"])) / max(1, a["runs"])) ** 0.5
-            if b["p_near"] - a["p_near"] > max(0.01, 2 * se):
-                why.append(f"less safe in the hard fights (near death {b['p_near']:.1%} vs {a['p_near']:.1%})")
-        m = sims.get("met", sims.get("hard"))
-        score[k] = (m[k]["xp_turn"] - m[k]["spent"] * xp_per_gold / max(1e-9, m[k]["turns"])) if m else 0.0
+        elif no_loss and set(rules[k]["lost"]) & NO_LOSS:
+            why.append("loses " + ", ".join(label(f) for f in sorted(set(rules[k]["lost"]) & NO_LOSS)) +
+                       " (an automatic swap never does)")
+        if k != cur and d_slower(derived, cur, k):
+            why.append(f"slower (speed {derived[k]['speed']:+d} vs {derived[cur]['speed']:+d}: the weight limit; "
+                       "the simulator doesn't model speed)")
+        if k != cur:
+            for s in SAFETY_SETS:
+                if s not in sims:
+                    continue
+                a, b = sims[s][cur], sims[s][k]
+                se = ((a["p_near"] * (1 - a["p_near"]) + b["p_near"] * (1 - b["p_near"])) / max(1, a["runs"])) ** 0.5
+                if b["p_near"] - a["p_near"] > max(0.005, 2 * se):
+                    why.append(f"less safe ({s}: near death {b['p_near']:.1%} vs {a['p_near']:.1%})")
+                # (the tail: the worst 5% by 4 points of max HP, or the worst 1% by 8 -- the worst 1% of 500 one-seed
+                # fights is 5 fights: a 5-point rule ruled out the Ring of Damage on noise)
+                elif a["low_p5"] - b["low_p5"] > 0.04 or a["low_p1"] - b["low_p1"] > 0.08:
+                    why.append(f"less safe ({s}: worst 5% / 1% of fights end at {b['low_p5']:.0%} / {b['low_p1']:.0%} HP "
+                               f"vs {a['low_p5']:.0%} / {a['low_p1']:.0%})")
+            gains[k] = _paired_gain_sets(raw, cur, k, xp_per_gold)
         notes[k] = why
-    ok = [k for k in options if not notes[k]]
-    # (ties within 1% go to the safer option: lowest HP in the hard fights, then AC -- swapping the Ring of Protection
-    # [+10] rather than the [+12] for the same kill speed)
-    top = max((score[k] for k in ok), default=0)
+    # the verdict: a change must beat the current gear by 3% and by 2 standard errors of the paired difference (the
+    # Advisor, 10-26); ties within 1% go to the safer option (the hard fights' lowest HP, then AC)
+    ok = [k for k in options if k == cur or (not notes[k] and gains[k][0] > max(0.03 * abs(score[cur]),
+                                                                                 2 * gains[k][1]))]
+    top = max(score[k] for k in ok)
 
     def safety(k):
-        h = sims.get("hard", {}).get(k)
+        h = sims.get("hard", {}).get(k) or sims.get("deeper", {}).get(k)
         return (round(h["low_mean"], 2) if h else 0, derived[k]["ac"], k == cur)
-    best = max((k for k in ok if score[k] >= top * 0.99), key=safety) if ok else cur
-    # (a change must beat the current gear by more than 3% to be worth a swap: the simulation's noise)
-    if best != cur and score[best] < score[cur] * 1.03:
-        best = cur
+    best = max((k for k in ok if score[k] >= top * 0.99), key=safety)
     return dict(options=list(options), derived=derived, rules=rules, sims=sims, score=score, notes=notes,
-                best=best, sets={s: len(v) for s, v in sets.items()}, seconds=round(time.time() - t0, 1),
-                check=ch.check())
+                gains=gains, best=best, sets={s: len(v[0]) for s, v in sets.items()},
+                seconds=round(time.time() - t0, 1), check=ch.check())
 
 
 def compare_slot(ch, candidates, **kw):
@@ -525,6 +624,7 @@ def compare_slot(ch, candidates, **kw):
             options[k] = ch.swap(it)
             swaps[k] = (it.name, on[0].name if on else None)
     res = compare(ch, options, **kw)
+    res["unread"] = [it.name for it in candidates if not it.slot]
     res["swaps"] = swaps          # label -> (the item worn, the piece it replaces or None)
     return res
 
@@ -532,6 +632,8 @@ def compare_slot(ch, candidates, **kw):
 def report(res):
     """The comparison as text."""
     lines = []
+    if res.get("unread"):
+        lines.append("not a wearable this game knows (left out): " + ", ".join(res["unread"]))
     if res["check"]:
         lines.append("model vs sheet (the model is off here): " + ", ".join(f"{k} {a} vs {b}" for k, a, b in
                                                                              res["check"]))
@@ -547,16 +649,23 @@ def report(res):
                          (("-" + ", -".join(label(f) for f in r["lost"])) if r["lost"] else ""))
         for s, sim in res["sims"].items():
             m = sim[k]
-            lines.append(f"    sim {s:4} ({res['sets'][s]} fights x {m['runs'] // max(1, res['sets'][s])}): "
-                         f"{m['turns']:.1f} turns/fight, XP/turn {m['xp_turn']:.2f}, lowest HP {m['low_mean']:.0%} "
-                         f"(p10 {m['low_p10']:.0%}), near death {m['p_near']:.1%}, consumables {m['spent']:.0f} g")
+            lines.append(f"    sim {s:6} ({res['sets'][s]} x {m['runs'] // max(1, res['sets'][s])}): "
+                         f"{m['turns']:.1f} turns + {m['rest']:.1f} resting/fight, score {m['score']:.2f}, "
+                         f"lowest HP {m['low_mean']:.0%} (worst 5% {m['low_p5']:.0%}, 1% {m['low_p1']:.0%}), near death {m['p_near']:.1%}, "
+                         f"consumables {m['spent']:.0f} g")
+        cur = res["options"][0]
+        if k != cur and res["score"][cur]:
+            g, se = res["gains"][k]
+            lines.append(f"    score {res['score'][k]:.3f} vs {res['score'][cur]:.3f}: {g / res['score'][cur]:+.1%} "
+                         f"(+/- {2 * se / res['score'][cur]:.1%} at 2 SE)")
         if res["notes"][k]:
             lines.append("    against: " + "; ".join(res["notes"][k]))
     cur = res["options"][0]
     gain = res["score"][res["best"]] / res["score"][cur] - 1 if res["score"][cur] else 0
     lines.append(f"verdict: {res['best']}" + (" (keep what's worn)" if res["best"] == cur else
-                                             f" ({gain:+.0%} XP per turn net of consumables)") +
-                 f" -- {res['seconds']} s")
+                                             f" ({gain:+.1%} XP per turn of fighting and resting, net of "
+                                             "consumables)") + f" -- {res['seconds']} s. score = (XP - gold spent "
+                 "x XP-per-gold) / (fight turns + rest turns for the HP lost); a change needs +3% and 2 SE")
     return "\n".join(lines)
 
 
