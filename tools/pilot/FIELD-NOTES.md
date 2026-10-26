@@ -28,6 +28,11 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
 
 ## Dangers met at 600-700 ft
 
+- **750 ft (m43-m45, the trial):** Forest troll bands with a Priest and Black orcs, Paladins (they cause fear, drain
+  STR and cast; m44 had to read an emergency Word of Recall when its flee failed with the stairs 153 steps away),
+  Light hound packs (their breath blinds again and again; the Pilot now stops curing it after two). Lowest HP
+  41-71%, no close calls in three missions. Nar the Dwarf was killed at 750 ft (m44: 133 XP/min on that level).
+
 - **Fear disables a warrior: carry Heroism.** m41: afraid, three monsters adjacent, 36% HP. The kit now keeps 3.
   The Pilot quaffs one when afraid and in danger.
 - **Thieves take carried gold.** Novice rogues, Scruffy hobbits and Brigands do this. m41 lost ~1590 in one touch,
@@ -53,6 +58,11 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
 - **XP per gold** (from recent play; `gear` and `prep` show it) is about 0.4. 1000 gold is worth ~400 XP of play.
 
 ## Pilot habits to expect (not bugs to work around)
+
+- **A plan `dive` stuck on a quiet level** (m45: about 8 minutes at one square, with no XP): `goal explore`, then
+  `plan resume` once something moves, got it going again. Use `why` to see what it was doing.
+- **Rings of Strength are sold by policy** (m45 sold a +2 right after identifying it). If blows matter, `keep Ring of
+  Strength` before `plan town`.
 
 - **Don't put `band` in a trip's conditions** at 650-750 ft. It ends the trip on any band, including the ones the
   Pilot would fight and win: m43's first trip ended after 5 minutes on 5 Black orcs. The Pilot leaves dangerous bands
