@@ -13,6 +13,12 @@ to message the Navigator playing the character: it's woken at once, and its
 answers show in the feed as NAVIGATOR: ... The Navigator's journal lines
 (its reasoning, one per decision) show as NAV: ... (magenta) when written.
 
+Who acted (the user, 2026-10-25): the Navigator's decisions show as NAV> its command
+(cyan; queries like status/wait/prep are left out; ARCH> for the Architect's). Every
+action and goal line starts with its origin: [P] the Pilot on its own (reflexes,
+policy, loot), [plan] the Pilot carrying out the Navigator's plan town / plan trip,
+[N] a goal or item command the Navigator gave directly, [A] the Architect.
+
     python3 watch.py [--nick dive04] [--hash]
 
 Walls draw as solid blocks (granite and secret doors full, mineral veins
@@ -106,14 +112,27 @@ def draw_map(scr, y, width, top_h, vm):
 
 
 FEED_KINDS = ("act", "attention", "goal", "goal_done", "goal_failed", "user_note", "audit", "nav_say",
-              "nav_complaint")
+              "nav_complaint", "nav_cmd")
+# the Navigator's commands that only look (not shown as decisions)
+NAV_QUERIES = {"status", "wait", "prep", "why", "gear", "pack", "equip", "map", "monster", "drainers", "gate", "debt",
+               "journal", "say", "complain", "rule", "inventory", "orders", "events", "news", "view", "viewmap",
+               "navview", "note", "goalstate", "mission", "attention", "options", "flags", "commands"}
+BY_TAG = {"pilot": "[P]", "plan": "[plan]", "nav": "[N]", "arch": "[A]"}
 
 
 def feed_line(e):
     t = time.strftime("%H:%M:%S", time.localtime(e["t"]))
     k = e["kind"]
+    tag = BY_TAG.get(e.get("by"), "") + " " if e.get("by") else ""
+    if k == "nav_cmd":
+        if e.get("cmd") in NAV_QUERIES or (e.get("cmd") == "plan" and not e.get("args")):
+            return None
+        who = "ARCH>" if e.get("role") == "architect" else "NAV>"
+        return t, "nav_cmd_arch" if who == "ARCH>" else k, f"{who} {e.get('cmd')} {' '.join(map(str, e.get('args') or []))}"
     if k == "act":
-        txt = f"{e.get('why') or ''}  [{e.get('cmd')}]"
+        txt = f"{tag}{e.get('why') or ''}  [{e.get('cmd')}]"
+    elif k == "goal":
+        txt = f"{tag}goal: {e.get('goal') or '(none)'}"
     elif k == "attention":
         txt = f"{e.get('what')}: {e.get('detail') or ''}"
     elif k == "user_note":
@@ -156,7 +175,9 @@ class Feed:
                 except ValueError:
                     continue
                 if e.get("kind") in FEED_KINDS:
-                    self.lines.append(feed_line(e))
+                    fl = feed_line(e)
+                    if fl:
+                        self.lines.append(fl)
             self.pos = f.tell()
         self.lines = self.lines[-500:]
 
@@ -417,7 +438,8 @@ def draw(scr, sock, feed, buf, msg, scroll):
         fx, fy, fw, fh = 0, top_h, W - 1, H - top_h - 2
         scr.hline(fy, 0, curses.ACS_HLINE, W - 1)
         fy, fh = fy + 1, fh - 1
-    scr.addnstr(fy, fx, "Pilot actions (newest last; PgUp/PgDn scroll)", fw, curses.A_BOLD)
+    scr.addnstr(fy, fx, "Actions -- [P] Pilot  [plan] Navigator's plan  [N] Navigator  NAV> its commands", fw,
+                curses.A_BOLD)
     rows = []
     for t, k, txt in feed.lines:
         for i, piece in enumerate(textwrap.wrap(txt, max(10, fw - 10)) or [""]):
@@ -431,6 +453,14 @@ def draw(scr, sock, feed, buf, msg, scroll):
             attr = FEED_COL.get("you", 0) | curses.A_REVERSE
         if k == "nav_say":
             attr = FEED_COL.get("nav", 0) | curses.A_REVERSE
+        if k == "nav_cmd":
+            attr = FEED_COL.get("nav", 0) | curses.A_BOLD
+        if k == "nav_cmd_arch":
+            attr = FEED_COL.get("journal", 0) | curses.A_BOLD
+        if k == "act" and piece.startswith("[plan]") and t:
+            attr = FEED_COL.get("nav", 0)
+        if k in ("act", "goal") and piece.startswith("[N]") and t:
+            attr = FEED_COL.get("nav", 0) | curses.A_BOLD
         if k == "nav_complaint":
             attr = FEED_COL.get("alert", 0) | curses.A_REVERSE
         if k == "nav_journal":

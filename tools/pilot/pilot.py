@@ -2424,7 +2424,7 @@ class Pilot:
             iu = next((i for i in self.w.items() if i["item"] == int(mr.group(1))), None)
             if iu and re.search(r"Teleport|Phase Door", iu["name"]):
                 self.escape_read_t = gnow()
-        self.log("act", cmd=line, why=why)
+        self.log("act", cmd=line, why=why, by=self.__dict__.get("acting", "pilot"))
         self.log_escape(line, why)
         self.expect_effect(line, why)
         if re.match(r"custom [qruazE] item=", line):
@@ -5318,10 +5318,13 @@ class Pilot:
         if old is not None and getattr(old, "overridden", None) and old is not goal:
             self.settle_hunt(old, "replaced", goal.describe() if goal else "stopped")
         self.mover.stop()
+        # (a goal set while handling the Navigator's or the Architect's request is theirs: goal_origin reads it)
+        if goal is not None and getattr(goal, "role", None) is None and self.__dict__.get("acting") in ("nav", "arch"):
+            goal.role = "navigator" if self.acting == "nav" else "architect"
         self.goal = goal
         self.goal_t = gnow()             # (watch_progress counts from here)
         self.idle_recalled = False
-        self.log("goal", goal=goal.describe() if goal else None)
+        self.log("goal", goal=goal.describe() if goal else None, by=self.__dict__.get("acting", "pilot"))
 
     def step_goal(self):
         if not self.goal:
@@ -5954,6 +5957,10 @@ class Pilot:
         if getattr(self, "frozen_said", False):
             self.frozen_said = False
             self.notify("time_frozen", "time flows again: the Pilot carries on", news=True)
+        # who each action is for (the user, 10-25: "when does the Navigator act vs the Pilot?"): stamped as `by` on
+        # every act and goal record and shown in the viewer -- pilot (reflexes, policy, idle), plan (the Navigator's
+        # plan town / plan trip, run by the Pilot), nav (a goal the Navigator gave directly), arch (the Architect)
+        self.acting = "pilot"
         if self.reflexes():
             return
         if self.parking and not isinstance(self.goal, Recall):
@@ -5961,12 +5968,26 @@ class Pilot:
             return
         if self.policy_tick(gnow()):      # the Pilot's own item work, at safe moments
             return
+        self.acting = self.goal_origin(self.goal)
         if self.step_goal():
+            self.acting = "plan"
             self.plan_tick(now, False)
             return
+        self.acting = "plan"
         if self.plan_tick(now, True):
             return
+        self.acting = "pilot"
         self.idle()
+
+    def goal_origin(self, g):
+        """Who a goal acts for: the plan's goals and the Navigator's plan town -> plan; another goal the Navigator or
+        the Architect gave -> nav / arch; the Pilot's own (flee, recover, recall by reflex...) -> pilot."""
+        if g is None:
+            return "pilot"
+        if getattr(g, "by_plan", False) or isinstance(g, TownKit):
+            return "plan"
+        role = getattr(g, "role", None)
+        return {"navigator": "nav", "architect": "arch"}.get(role, "pilot")
 
     # --- control requests (from the socket thread) ---------------------------
 
@@ -5984,13 +6005,15 @@ class Pilot:
                 # the Navigator's commands as received (latency studies could only
                 # see the next recorded order: the Advisor)
                 rid, rt = self.last_report
-                self.log("nav_cmd", cmd=req.get("cmd"), args=req.get("args", [])[:12],
+                self.log("nav_cmd", cmd=req.get("cmd"), args=req.get("args", [])[:12], role=req.get("role", "navigator"),
                          wait_report=bool(req.get("since_wait")), after_report=rid,
                          report_age=round(gnow() - rt, 1) if rt else None)
+            self.acting = "arch" if req.get("role") == "architect" else "nav"
             try:
                 out = self.do_request(req)
             except Exception as e:
                 out = {"ok": False, "error": repr(e)}
+            self.acting = "pilot"
             if self.unanswered and isinstance(out, dict) and req.get("cmd") not in ("note", "say", "status"):
                 # on every answer, not only wait/status (mission 16: 'Pause 1 sec'
                 # was seen 35 s late, during chest commands)
@@ -7725,7 +7748,7 @@ class Pilot:
 
     WHY_KINDS = ("emergency", "emergency_loop", "stat_drained", "danger_seen", "band", "fight_going_badly",
                  "unseen_attacker", "thief", "drainer", "fearer", "unique_slain", "lost", "disenchanted")
-    WHY_SKIP = ("move", "mons", "itemlist", "time_factor", "report", "audit_check", "audit", "state", "nav_cmd",
+    WHY_SKIP = ("move", "mons", "itemlist", "time_factor", "report", "audit_check", "audit", "state",
                 "perception_gap", "options", "estimator")
 
     def why_info(self, args):
@@ -7792,12 +7815,16 @@ class Pilot:
             if k == "attention":
                 text = f"{d.get('what')}: {d.get('detail')}"
             elif k == "act":
-                text = f"act: {d.get('why') or d.get('cmd')}"
+                text = f"act{' [' + d['by'] + ']' if d.get('by') else ''}: {d.get('why') or d.get('cmd')}"
+            elif k == "nav_cmd":
+                if d.get("cmd") in ("status", "wait", "prep", "why", "gear", "pack", "say", "journal", "complain"):
+                    continue
+                text = f"{'ARCH' if d.get('role') == 'architect' else 'NAV'}> {d.get('cmd')} {' '.join(map(str, d.get('args') or []))}"
             elif k == "escape":
                 text = f"ESCAPE ({d.get('escape')}): {d.get('trigger')}" + \
                     (f" -- adjacent {', '.join(d['adjacent'])}" if d.get("adjacent") else "")
             elif k in ("goal", "goal_done", "goal_failed"):
-                text = f"{k}: {d.get('goal') or ''} {d.get('detail') or ''}".strip()
+                text = f"{k}{' [' + d['by'] + ']' if d.get('by') else ''}: {d.get('goal') or ''} {d.get('detail') or ''}".strip()
             elif k in ("plan_end", "plan_start"):
                 text = f"{k}: {d.get('plan')} -- {d.get('detail') or d.get('status') or ''}"
             else:

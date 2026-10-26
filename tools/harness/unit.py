@@ -1483,6 +1483,40 @@ def prep_report_sections():
     return ok, text.replace("\n", " | ")[:500]
 
 
+@case
+def actions_say_who():
+    """The user (10-25): "when does the Navigator act vs the Pilot?" -- every act and goal record carries `by`: pilot
+    (reflexes, policy, idle), plan (the plan's goals and plan town), nav (a goal or item command the Navigator gave),
+    arch (the Architect); a goal set while handling a request is marked as that requester's."""
+    p = pilot()
+    recs = []
+    p.log = lambda kind, **kw: recs.append((kind, kw))
+    p.mover = type("M", (), {"stop": lambda self: None})()
+    p.c = type("C", (), {"send": lambda self, x: None})()
+    p.pending_use, p.busy_until = None, 0.0
+    p.log_escape = p.expect_effect = lambda *a: None
+    p.watch_flavours = lambda: None
+    p.goal = None
+    p.acting = "nav"
+    g = P.Goal()
+    p.set_goal(g)                                   # a goal the Navigator gave
+    nav_goal = P.Pilot.goal_origin(p, g)
+    p.acting = "pilot"
+    reflex = P.Goal()
+    p.set_goal(reflex)                              # a reflex's goal (flee, recover...)
+    kit = P.TownKit()
+    kit.role = "navigator"
+    planned = P.Goal()
+    planned.by_plan = True
+    p.acting = "plan"
+    p.cmd("custom r item=3", "trip: read Word of Recall", hold=0.1)
+    origins = (nav_goal, P.Pilot.goal_origin(p, reflex), P.Pilot.goal_origin(p, kit), P.Pilot.goal_origin(p, planned))
+    acts = [kw.get("by") for k, kw in recs if k == "act"]
+    goals = [kw.get("by") for k, kw in recs if k == "goal"]
+    ok = origins == ("nav", "pilot", "plan", "plan") and acts == ["plan"] and goals == ["nav", "pilot"]
+    return ok, f"origins (nav goal, reflex, plan town, plan goal): {origins}; act by {acts}; goals by {goals}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0
