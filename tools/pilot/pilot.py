@@ -3166,8 +3166,12 @@ class Pilot:
                     and "no items" not in t]
             if seen and self.is_junk_name(seen[-1][1][8:].rstrip(".")):
                 # known junk: leave it (it filled the pack on the way down) -- or, at a quiet moment, destroy it
-                # where it lies (the user, 10-25: less clutter on the map and in the report's Items line)
-                if (w.level_t, w.pos) not in self.skipped_items:
+                # where it lies (the user, 10-25: less clutter on the map and in the report's Items line). Once per
+                # sighting: the message stays "recent" 3 s, and m44 stepped on while engaging an Ogre and sent the
+                # destroy again on 3 empty squares ("There's nothing on the floor")
+                done = self.__dict__.setdefault("junk_msgs_done", set())
+                if (w.level_t, w.pos) not in self.skipped_items and seen[-1][0] not in done:
+                    done.add(seen[-1][0])
                     self.destroy_floor_junk(seen[-1][1][8:].rstrip("."), now)
                 seen = []
                 self.skipped_items.add((w.level_t, w.pos))
@@ -5129,7 +5133,14 @@ class Pilot:
                          w.dist(m["pos"]) <= 6 for m in mm.values())
         band_recent = self.band_warned[0] == w.level_t and now - self.band_warned_t < 30
         must_read = isinstance(self.goal, (Flee, Recall, Recover))
-        if w.flag("blind") and (mobile_near and threat or hit_unseen or seen_close or band_recent or must_read):
+        # (but not again and again: m44's Light hounds re-blinded it with their breath and 16 CLW went in one fight.
+        # After 2 blind cures in 30 s, fight on blind -- auto-retaliate needs no sight -- unless an escape must read or
+        # HP is low)
+        bc = [t for t in self.__dict__.setdefault("blind_cures", []) if now - t < 30]
+        self.blind_cures = bc
+        spent = len(bc) >= 2 and not must_read and w.hp_frac >= self.orders["think_hp"]
+        if w.flag("blind") and not spent and (mobile_near and threat or hit_unseen or seen_close or band_recent
+                                                or must_read):
             want.append("blind")
         if w.flag("poisoned") and w.hp_frac < self.orders["think_hp"]:
             want.append("poisoned")
@@ -5140,6 +5151,8 @@ class Pilot:
                             and not (cure == "Healing" and "*Healing*" in i["name"])), None)
                 if pot:
                     self.cure_t = now
+                    if status == "blind":
+                        self.blind_cures.append(now)
                     self.cmd(f"custom q item={pot['item']}", f"{status} in combat: quaff {pot['name']}", hold=0.6)
                     self.notify("tactic", f"{status} in combat: quaffed {one_of(pot['name'])}")
                     return True

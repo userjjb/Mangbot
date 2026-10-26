@@ -1572,8 +1572,12 @@ def blind_cured_when_it_matters():
     seen.status_tick(P.gnow(), [])
     alone = make()
     alone.status_tick(P.gnow(), [])
-    ok = band.cmds and "Cure Light Wounds" in band.cmds[0] and seen.cmds and alone.cmds == []
-    return ok, f"band warned: {band.cmds}; a Druid seen 3 s ago: {seen.cmds}; alone: {alone.cmds}"
+    # (m44: Light hounds re-blinding -- after 2 cures in 30 s it fights on blind)
+    again = make(band_warned=(1.0, 10), band_warned_t=P.gnow() - 5, blind_cures=[P.gnow() - 10, P.gnow() - 4])
+    again.status_tick(P.gnow(), [])
+    ok = band.cmds and "Cure Light Wounds" in band.cmds[0] and seen.cmds and alone.cmds == [] and again.cmds == []
+    return ok, f"band warned: {band.cmds}; a Druid seen 3 s ago: {seen.cmds}; alone: {alone.cmds}; 3rd in 30 s: " \
+               f"{again.cmds}"
 
 
 @case
