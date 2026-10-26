@@ -154,9 +154,19 @@ validation.
   stale); `mission end` with no label works after a hot-swap.
 - **Speed kit cap 450 -> 600** (`KIT_CAP`; HANDBOOK, FIELD-NOTES). The Advisor's break-even estimate was ~500 g:
   memo to_advisor 10-26 speed-cap-600.
-- Unit cases: fled_stairs_refused_two_minutes_only, trip_level_state_survives_restart,
+- Unit cases (fixes 1 and 3): fled_stairs_refused_two_minutes_only, trip_level_state_survives_restart,
   trip_recalls_when_a_level_wont_let_go, mission_label_survives_restart (70 pass).
-- Still open: issue 2 (Ring of Strength vs Protection: the user's call) and the older list below. Verify live: the
+- **Fled-stairs rule, explained to the user:** levels are freed when empty, unless static (another player there, or a
+  logout there); operations.md "Level persistence". Fresh level on the test server almost always.
+- **The gear evaluator (the user: "an evaluator process that can compare A or B or C gear decisions, simulation one
+  component ... an item slot evaluator now, a loadout optimizer as a todo"):** `github/tools/pilot/geareval.py`,
+  design + limits + the optimizer TODO in **`design_gear.md`**. Components: rules (required abilities), static (a
+  calc_bonuses model backed out of the sheet: matches Dive04 exactly), sim (options_sim rollouts: 40 fights met at the
+  depth + 21 replayed emergencies), verdict. `pilotctl gearcmp [ITEM...]`; in town the Pilot doesn't sell and wears the
+  evaluator's pick (never losing an ability/resist). **Issue 2 answered:** Ring of Strength (+2) = still 2 blows, keep
+  Protection. Advisor asked (to_advisor 10-26 gear-evaluator) for resists in the sim, depth-native scenarios, a check.
+  Unit cases gear_* (73 pass).
+- Still open: the older list below. Verify live: the
   first `couldn't leave` recall, a hot-swap on a special level, `mission end` without a label after a swap.
 
 ### ARCHITECT HANDOFF 2026-10-26, end of session 6 (the session-6 section below has its details)

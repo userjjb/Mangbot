@@ -144,6 +144,15 @@ into the Temple (4), but everything it carried is dropped where it died.
 - The server auto-retaliates against an adjacent visible monster when no command is queued.
 - Stairs are connected: after `>` you stand on `<` and vice versa. A stairs command right after
   arriving can be ignored (retry).
+- Level persistence (`dungeon.c:2035-2046`, `1832-1860`): a level is freed the moment nobody is on it
+  (`players_on_depth` 0), so stairs back to a level just left lead to a fresh one -- unless the level
+  is "static": another player is on that depth (all players at one depth share one level), or a
+  character logged out there (a Pilot restart, park or hot-swap in the dungeon does this). A static
+  level with nobody in it unstatics at random, 1 in `LEVEL_UNSTATIC_CHANCE x (depth+5)/5` per check
+  (30 here: 1 in ~119 at 750 ft), so it can last a long time. Arriving on a kept level puts you on a
+  fixed square (`level_up_y/x` coming up, `level_down_y/x` going down: m25 landed on 33,24 each time).
+  Special levels (`check_special_level`) and the town are never freed. The Pilot's `Dive.FLED_HOLD`
+  (session 7) refuses the stairs back to a fled level 2 minutes only, for this reason.
 - Word of Recall: from town it goes to the deepest level ever reached, unless the scroll is
   inscribed `@R<feet>`. A logout during a pending recall reset that depth once.
 - The command queue: a walk sent while the character lacks energy waits on the server. A step
