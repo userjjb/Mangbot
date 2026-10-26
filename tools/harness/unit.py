@@ -1929,8 +1929,11 @@ def last_food_never_destroyed_and_heavy_loot_left():
     room, slow = q.weight_room()
     q.unique_drop, q.skipped_items, q.room_t = None, set(), 0.0
     took_heavy = q.pickup_room("a Lucerne Hammer (2d5)")
+    q.w.pos = (20, 21)
+    q.pickup_room("a Lucerne Hammer (2d5)")          # (walking past it: said once per level, m47 said it 9 times)
+    said = sum(1 for n in q.notes if "Lucerne" in str(n[1]))
     took_light = q.pickup_room("a Potion of Cure Critical Wounds")
-    ok = n3 == 2 and v1 == float("inf") and room == 50 and slow == 0 and took_heavy is False and took_light is True
+    ok = n3 == 2 and v1 == float("inf") and room == 50 and slow == 0 and took_heavy is False and took_light is True and said == 1
     return ok, f"3 rations: destroy {n3}; the last one worth {v1}; 145 lb carried: {room / 10:.0f} lb to spare, " \
                f"a Lucerne Hammer taken {took_heavy}, a potion {took_light}"
 

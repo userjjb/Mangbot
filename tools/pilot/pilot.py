@@ -4577,8 +4577,11 @@ class Pilot:
         if wt and not unique and not iv.irreplaceable and worth < self.HEAVY_LOOT_MIN:
             room, _ = self.weight_room()
             if wt > room:
-                if (w.level_t, w.pos) not in self.skipped_items:
-                    self.skipped_items.add((w.level_t, w.pos))
+                self.skipped_items.add((w.level_t, w.pos))
+                # (once per item and level: m47 said "left a Battle Axe" 9 times walking past it)
+                said = self.__dict__.setdefault("left_news", set())
+                if (w.level_t, name) not in said:
+                    said.add((w.level_t, name))
                     self.notify("tactic", f"left {name} (~{worth:.0f}): {wt / 10:.0f} lb would slow you (the weight "
                                           f"limit; {max(0, room) / 10:.0f} lb to spare)", news=True)
                 return False

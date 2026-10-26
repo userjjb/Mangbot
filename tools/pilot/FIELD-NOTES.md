@@ -62,6 +62,10 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
 
 ## Pilot habits to expect (not bugs to work around)
 
+- **Heavy loot is left (since m46):** "left a Battle Axe: 17 lb would slow you" is the weight rule, not a bug. A pack
+  near the line still takes potions, scrolls and staffs. m47: an Awl-Pike, a Lance and a Battle Axe left at 750 ft.
+- **Warg packs at 750 ft (m47):** 9 Wargs (fast) + a Dark elven warrior: the Pilot fled to stairs 28 steps away, got
+  stuck and recalled at 78% HP. Weak in total (~197 HP to fight them all), but fast.
 - **One long trip fits a 45-minute mission (m46, 81 XP/dmin):** town ~4 min, one trip of ~30 minutes
   (`minutes>32`), town again. A recall down for a 650-750 trip lands at 700 ft (one level above the top, by design).
 - **Thieves take gold you carry (m46: Smeagol took ~2400 of 26k in one touch).** If a thief is in view, kill it or
