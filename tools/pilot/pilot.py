@@ -1965,8 +1965,12 @@ class TripPlan:
             # a recall is under way (the Pilot's escape, or the plan's own): wait for it, don't
             # start a new dive meanwhile (m24: a dive walked the pit's ring while it charged)
             if self.phase != "home":
-                self.phase, self.home_why = "home", "the Pilot's escape recall"
-                p.notify("plan", "trip: a recall is under way (the Pilot's escape): coming home", news=True)
+                # (with the escape's trigger: m42's Navigator couldn't tell why its trip ended at 19:19)
+                le = getattr(p, "last_escape", None)
+                why = f": {le[2]} (HP {le[3][0]}/{le[3][1]})" if le and gnow() - le[0] < 60 else ""
+                self.phase, self.home_why = "home", f"the Pilot's escape recall{why}"
+                p.notify("plan", f"trip: a recall is under way (the Pilot's escape{why}): coming home -- "
+                                 "`why` for the details", news=True)
             if p.goal is not None and getattr(p.goal, "by_plan", False) and isinstance(p.goal, (Dive, Explore)):
                 p.set_goal(None)
             if p.goal is None:
@@ -2023,7 +2027,10 @@ class TripPlan:
             self.phase = "level"
         if self.phase == "level":
             if w.depth == 0:
-                return ("done", f"back in town (not by the plan's recall); {plural(self.levels, 'level')} done")
+                le = getattr(p, "last_escape", None)
+                why = f": the Pilot's escape at HP {le[3][0]}/{le[3][1]}, {le[2]}" if le and gnow() - le[0] < 120 else ""
+                return ("done", f"back in town (not by the plan's recall{why}); {plural(self.levels, 'level')} done -- "
+                                "`why` for the details")
             d = w.depth_ft
             if d < self.lo or d > self.hi:
                 self.step = f"to {self.lo if d < self.lo else self.hi} ft"
@@ -2639,6 +2646,7 @@ class Pilot:
                                                     or gnow() - self.escalation_t < 10):
             kind = "stairs"
         if kind:
+            self.last_escape = (gnow(), kind, why[:120], list(w.hp[:2]))
             self.log("escape", escape=kind, trigger=why[:120], hp=w.hp[:2],
                      adjacent=[r.name for *_, r in w.adjacent_monsters()][:6],
                      goal=self.goal.describe() if self.goal else None)
@@ -3788,9 +3796,20 @@ class Pilot:
             self.gold_found = self.__dict__.get("gold_found", 0) + g - self.gold_last
         self.gold_last = g
         xp = (w.ind.get("exp") or [0])[0]
-        if xp > self.__dict__.get("xp_last", xp):
-            self.xp_gained = self.__dict__.get("xp_gained", 0) + xp - self.xp_last
+        dxp = max(0, xp - self.__dict__.get("xp_last", xp))
+        if dxp:
+            self.xp_gained = self.__dict__.get("xp_gained", 0) + dxp
         self.xp_last = xp
+        # XP and minutes by depth (for `prep`: where the XP has been), kept with the rates
+        last = self.__dict__.get("depth_t")
+        if w.in_dungeon and w.depth_ft:
+            if last is not None and now - last < 5:
+                d = self.rate_state().setdefault("depth", {}).setdefault(str(w.depth_ft), [0, 0])
+                d[0] += dxp
+                d[1] = round(d[1] + now - last, 1)
+            self.depth_t = now
+        else:
+            self.depth_t = None
         self.rate_tick(now)
         # XP since arriving on this level (the Navigators' "stay or leave": m31-m34 asked for a per-level rate)
         lb = self.__dict__.get("level_base")
@@ -6274,6 +6293,10 @@ class Pilot:
             return {"ok": True, "text": self.drainers_info(args)}
         if c == "gear":
             return {"ok": True, "text": self.gear_review()}
+        if c == "why":
+            return {"ok": True, "text": self.why_info(args)}
+        if c == "prep":
+            return {"ok": True, "text": self.prep_info()}
         if self.dead and c not in ("attention", "quit", "orders", "events", "news", "map", "inventory",
                                    "note", "view", "say", "viewmap", "journal") and \
                 not (c == "goal" and args[:1] == ["resurrect"]):
@@ -7700,6 +7723,131 @@ class Pilot:
                     break
         return out
 
+    WHY_KINDS = ("emergency", "emergency_loop", "stat_drained", "danger_seen", "band", "fight_going_badly",
+                 "unseen_attacker", "thief", "drainer", "fearer", "unique_slain", "lost", "disenchanted")
+    WHY_SKIP = ("move", "mons", "itemlist", "time_factor", "report", "audit_check", "audit", "state", "nav_cmd",
+                "perception_gap", "options", "estimator")
+
+    def why_info(self, args):
+        """`why [HH:MM[:SS]]` (the Navigators, m40-m42: "why did the Pilot recall?"): what the Pilot saw and did around
+        a moment -- by default the last escape, emergency or end of a trip -- from its decision log: HP over the window,
+        the monsters in view and adjacent, and the timeline of attention events, actions, goals and escapes."""
+        path = os.path.join(self.rundir, "decisions.jsonl")
+        try:
+            size = os.path.getsize(path)
+            with open(path, "rb") as f:
+                f.seek(max(0, size - 8_000_000))     # (~the last 8 hours)
+                lines = f.read().decode("utf-8", "replace").splitlines()[1:]
+        except OSError as e:
+            return f"no decision log ({e})"
+        recs = []
+        for l in lines:
+            try:
+                recs.append(json.loads(l))
+            except ValueError:
+                pass
+        if not recs:
+            return "the decision log is empty"
+        if args:
+            m = re.fullmatch(r"(\d{1,2}):(\d{2})(?::(\d{2}))?", args[0])
+            if not m:
+                return "usage: why [HH:MM[:SS]] (today; default: the last escape, emergency or trip end)"
+            lt = time.localtime()
+            t = time.mktime((lt.tm_year, lt.tm_mon, lt.tm_mday, int(m.group(1)), int(m.group(2)),
+                             int(m.group(3) or 0), 0, 0, -1))
+        else:
+            notable = [d for d in recs if d.get("kind") in ("escape", "plan_end", "goal_failed")
+                       or (d.get("kind") == "attention" and d.get("what") in ("emergency", "emergency_loop"))]
+            if not notable:
+                return "nothing notable in the recent log: give a time (why HH:MM:SS)"
+            t = notable[-1]["t"]
+        win = [d for d in recs if t - 40 <= d.get("t", 0) <= t + 8]
+        if not win:
+            return f"nothing in the log around {time.strftime('%H:%M:%S', time.localtime(t))}"
+
+        def hm(x):
+            return time.strftime("%H:%M:%S", time.localtime(x))
+        hp = [(d["t"], d["hp"]) for d in win if d.get("hp") and d["hp"][1]]
+        lo = min(hp, key=lambda x: x[1][0]) if hp else None
+        dft = next((d.get("depth") for d in reversed(win) if d.get("t", 0) <= t and d.get("depth") is not None), None)
+        out = [f"Around {hm(t)} ({'town' if not dft else f'{dft * 50} ft'}), 40 s before to 8 s after:"]
+        if hp:
+            out.append(f"HP {hp[0][1][0]}/{hp[0][1][1]} at {hm(hp[0][0])} -> lowest {lo[1][0]} at {hm(lo[0])} -> "
+                       f"{hp[-1][1][0]} at {hm(hp[-1][0])}")
+        seen, adj = [], []
+        for d in win:
+            if d.get("kind") == "mons" and d.get("pos"):
+                for y, x, n in d.get("monsters") or []:
+                    if n not in seen:
+                        seen.append(n)
+                    if max(abs(y - d["pos"][0]), abs(x - d["pos"][1])) <= 1 and n not in adj:
+                        adj.append(n)
+        if seen:
+            out.append("In view: " + ", ".join(seen[:12]) + (f"; adjacent at some point: {', '.join(adj[:8])}" if adj else ""))
+        out.append("Timeline:")
+        for d in win:
+            k = d.get("kind")
+            if k in self.WHY_SKIP or (k == "act" and str(d.get("cmd", "")).startswith(("walk", "custom . "))):
+                continue
+            if k == "attention":
+                text = f"{d.get('what')}: {d.get('detail')}"
+            elif k == "act":
+                text = f"act: {d.get('why') or d.get('cmd')}"
+            elif k == "escape":
+                text = f"ESCAPE ({d.get('escape')}): {d.get('trigger')}" + \
+                    (f" -- adjacent {', '.join(d['adjacent'])}" if d.get("adjacent") else "")
+            elif k in ("goal", "goal_done", "goal_failed"):
+                text = f"{k}: {d.get('goal') or ''} {d.get('detail') or ''}".strip()
+            elif k in ("plan_end", "plan_start"):
+                text = f"{k}: {d.get('plan')} -- {d.get('detail') or d.get('status') or ''}"
+            else:
+                text = f"{k}: " + str({x: v for x, v in d.items() if x not in ("t", "kind", "depth", "pos", "hp", "crop")})[:160]
+            out.append(f"  {hm(d['t'])} {d['hp'][0] if d.get('hp') else '?'} HP  {text[:170]}")
+        return "\n".join(out[:60])
+
+    def prep_info(self):
+        """`prep` (the user, 10-25: a planning step at a mission's start): everything a mission plan needs in one
+        report -- the character, the gear review, what `plan town` would buy now, notable shop stock, where the XP
+        has come from by depth, the XP-per-gold rate, standing orders, and the field notes to read."""
+        w = self.w
+        gold = w.ind.get("gold", [0])[0]
+        out = ["PREP -- read this, then FIELD-NOTES.md, then plan the mission (town visit, trips, conditions).", ""]
+        rep = self.compact(snapshot=True).split("\n")
+        out += ["== Character"] + [l for l in rep[:6] if not l.startswith(("Here:", "Monsters:"))]
+        out += ["", "== Gear review (`gear`)"] + self.gear_review().split("\n")
+        try:
+            buys, short = self.town_shopping(None, ())
+            out += ["", "== `plan town` would buy now (by the prices last seen): " +
+                    (", ".join(f"{n} {k} at the {self.STORE_LABEL.get(st, st)}" for _, k, st, n, _ in buys) or "nothing")
+                    + ("; short: " + ", ".join(f"{n} {k}" for k, n in short) if short else "")]
+        except Exception as e:                       # (a forecast problem must not hide the rest)
+            out += ["", f"== `plan town` forecast unavailable ({e!r})"]
+        notable = []
+        now_wall = time.time()
+        for st in (7, 6, 5):
+            seen = self.stores_seen.get(st) or {}
+            age = (now_wall - seen.get("t", now_wall)) / 60 if seen.get("t") else None
+            for name, price in sorted((seen.get("prices") or {}).items(), key=lambda kv: -kv[1]):
+                # (no mapping/detection devices on the test server: the user's no-crutch rule)
+                if price <= max(0, gold - self.town_reserve()) and re.match(r"(potion|scroll|ring|amulet|staff|rod|wand) of",
+                                                                              name) and price >= 150 and \
+                        (getattr(self, "live", False) or not any(c.lower() in name for c in self.CRUTCH_DEVICES)):
+                    notable.append(f"{name} {price} ({st}" + (f", seen {age:.0f} min ago" if age is not None else "") + ")")
+        out += ["", "== Shop stock you could afford (Black Market 7, Magic 6, Alchemist 5; prices last seen): " +
+                ("; ".join(notable[:12]) if notable else "nothing notable")]
+        dep = self.rate_state().get("depth") or {}
+        rows = sorted(((int(k), v[0], v[1] / 60) for k, v in dep.items() if v[1] >= 60), key=lambda r: r[0])
+        out += ["", "== XP by depth (recent play): " + ("; ".join(
+            f"{ft} ft {xp / mins:.0f} XP/min over {mins:.0f} min" for ft, xp, mins in rows) or "no record yet")
+            + f"  [max_depth {self.orders.get('max_depth')}]"]
+        r = self.xp_per_gold()
+        out += [f"== XP per gold (recent play) {r}: 1000 gold is worth ~{1000 * r:.0f} XP of playing time"]
+        st_ = [f"keep {', '.join(sorted(self.keep))}"] if self.keep else []
+        st_ += [f"\"{x['text']}\" ({x['by']})" for x in self.standing]
+        out += ["== Standing: " + ("; ".join(st_) or "none")]
+        out += ["", "Then: `plan town [buy ...]`, `plan trip LO-HI until \"...\" then town`. Note your plan in the journal."]
+        return "\n".join(out)
+
     def redundant_worn(self):
         """[(item, flags, other slot letters)]: worn rings and amulets with no AC or pluses whose every ability
         another worn piece gives too (Dive04's Ring of Resist Cold beside its Leather of Resistance)."""
@@ -7746,7 +7894,7 @@ class Pilot:
         for slot, tvals, k in self.SLOTS:
             on = [i for i in worn if i["tval"] in tvals]
             worn_ac[slot] = (min((self.armour_ac(i["name"]) or 0) for i in on) if len(on) >= k else -1,
-                             any(letter(i) in "".join(flags.values()) for i in on), on)
+                             any(letter(i) in "".join(str(v or "") for v in flags.values()) for i in on), on)
         free_tv = {it["tval"] for it, _ in free}
         for store, st in sorted(self.stores_seen.items()):
             mult = 1

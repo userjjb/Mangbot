@@ -25,6 +25,10 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
 
 ## Your loop
 
+0. **Plan first (the first 2-3 minutes of a mission):** `prep` (the character, the gear review, what `plan town`
+   would buy, affordable shop stock, XP by depth, XP per gold, standing orders), then read **`FIELD-NOTES.md`** (next
+   to this file: lessons from past missions). Decide the mission: town buys, depth range, number of trips, conditions,
+   standing orders. Write that plan in your journal.
 1. **In town:** `status`, then `plan town [kit=A|B|C|none] [buy NAME[:N][@MAX],...]`, then `wait`. The Pilot sells
    by policy, identifies what pays, and buys in priority order: Word of Recall to 2, the supply gate's minimums,
    Restore for a drained STR/DEX/CON, the kit, then your list (`NAME:N` means *have* N in all, not N more). Below
@@ -90,6 +94,8 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 | `monster NAME` | this server's data for a monster, whether a danger rule fires, **the hunt check's verdict** (turns, HP on average and in a bad fight) and **what a kill drops** |
 | `rule drop NAME [DEPTH]`, `rule fight NAME ...`, `rule feeling KIND FEELING [LEVEL]`, `rule unknown TVAL LEVEL`, `rule owner NAME`, `rule const WORD` | the Advisor's rulebook, built from the server's source (no Pilot needed) |
 | `drainers`, `gate FEET [recall]`, `debt`, `pack`, `equip`, `map [R]`, `status full` | queries |
+| `prep` | the planning report for a mission's start (see "Your loop", step 0) |
+| `why [HH:MM[:SS]]` | what the Pilot saw and did around a moment (default: its last escape, emergency or trip end): HP, monsters in view and adjacent, the timeline. Use it before asking "why did it recall?" |
 | `gear` | the gear review (in town, before `plan town`): abilities had and missing, worn jewellery made redundant by another piece (a free slot), and shop stock that would improve a slot within your spare gold. Buy with `plan town buy STORE/NAME@MAX`: the Pilot wears armour itself; for jewellery, `takeoff` the redundant piece first (it then fills the empty slot) |
 | `say TEXT`, `journal "situation \| decision \| why"`, `complain TEXT` | the user, your journal, what you lacked |
 | `stop` | stop the goal and the plan (safe idle) |

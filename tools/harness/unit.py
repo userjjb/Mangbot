@@ -1436,6 +1436,53 @@ def xp_per_gold_rolling():
     return ok, f"seed only: {seed}; after 30 buckets of 100 XP / 100 gold: {full}; buckets saved {len(saved)}"
 
 
+@case
+def why_explains_the_last_escape():
+    """The Navigators (m40-m42): "why did the Pilot recall?" -- `why [HH:MM[:SS]]` reads the decision log around the
+    last escape (or a given time): HP over the window, monsters in view and adjacent, the timeline."""
+    import tempfile
+    p = pilot()
+    p.rundir = tempfile.mkdtemp()
+    t = __import__("time").time() - 30
+    recs = [{"t": t - 20, "kind": "mons", "depth": 12, "pos": [10, 10], "hp": [300, 326],
+             "monsters": [[10, 11, "Umber hulk"], [14, 14, "Priest"]]},
+            {"t": t - 10, "kind": "attention", "depth": 12, "pos": [10, 10], "hp": [214, 326], "what": "fight_going_badly",
+             "detail": "HP 214/336 fighting Umber hulk"},
+            {"t": t - 2, "kind": "move", "depth": 12, "pos": [10, 10], "hp": [190, 326]},
+            {"t": t, "kind": "escape", "depth": 12, "pos": [10, 10], "hp": [191, 326], "escape": "wor_escape",
+             "trigger": "flee failed with monsters close: word of recall", "adjacent": ["Umber hulk"]},
+            {"t": t + 4, "kind": "attention", "depth": 12, "pos": [10, 10], "hp": [151, 326], "what": "emergency",
+             "detail": "low HP: quaffed a Potion of Cure Critical Wounds"}]
+    with open(os.path.join(p.rundir, "decisions.jsonl"), "w") as f:
+        f.write("\n".join(json.dumps(r) for r in [{"t": t - 999, "kind": "note"}] + recs) + "\n")
+    text = p.why_info([])
+    ok = ("600 ft" in text and "lowest 151" in text and "adjacent at some point: Umber hulk" in text
+          and "ESCAPE (wor_escape): flee failed" in text and "move" not in text and "fight_going_badly" in text)
+    return ok, text.replace("\n", " | ")[:400]
+
+
+@case
+def prep_report_sections():
+    """The user (10-25): a planning step at a mission's start -- `prep` gathers the character, the gear review, the
+    town forecast, affordable shop stock (no crutch devices on the test server), XP by depth and the XP-per-gold rate."""
+    import tempfile
+    p = pilot(gold=18000)
+    p.rundir = tempfile.mkdtemp()
+    json.dump({"buckets": [], "depth": {"600": [2131, 4081], "650": [8969, 9931]}}, open(os.path.join(p.rundir,
+                                                                                                    "rates.json"), "w"))
+    p.w.depth, p.w.depth_ft, p.w.in_dungeon = 0, 0, False
+    p.compact = lambda snapshot=False: "Dive04 L27 HP 326/326\nSTR ...\nCures CCW 25 | Escapes Phase 21\nAlso: ..."
+    p.flavour_of = lambda it: None
+    p.standing = []
+    p.stores_seen = {7: {"t": 0, "prices": {"potion of speed": 383, "staff of enlightenment (6 charg)": 1507}},
+                     6: {"t": 0, "prices": {"staff of teleportation (7 charg avg)": 4185}}}
+    text = p.prep_info()
+    ok = ("== Gear review" in text and "would buy now" in text and "650 ft 54 XP/min over 166 min" in text
+          and "staff of teleportation" in text and "enlightenment" not in text and "XP per gold" in text
+          and "Cures CCW 25" in text)
+    return ok, text.replace("\n", " | ")[:500]
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0
