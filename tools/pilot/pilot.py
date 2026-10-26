@@ -4183,6 +4183,11 @@ class Pilot:
     KIT_USE = {"Speed": 600, "Healing": 1500, "Berserk": 500, "Teleport": 150, "Heroism": 60, "Magic Mapping": 65,
                "Deep Descent": 100, "Resist Poison": 100, "Restore": 480}
 
+    def is_kit_item(self, it):
+        """A kit consumable: a potion or scroll of a kit kind. (Not a staff or wand with the same words: m43 kept two
+        Staffs of Cure Light Wounds as if they were the potions -- the user: "2 staffs of cure light wounds?")"""
+        return it["tval"] in (TV_POTION, TV_SCROLL) and any(k in it["name"] for k in self.KIT_KINDS)
+
     def kit_use_value(self, name):
         """Replacement cost of a kit consumable (potion or scroll), else 0."""
         kind = next((k for k in self.KIT_KINDS if k in name), None)
@@ -4212,7 +4217,7 @@ class Pilot:
             return self.iv(n).value * self.pay_cut(TV_FOOD) * it["number"]
         if it["tval"] == TV_FLASK and ((self.lantern_fuel() or 0) >= self.FUEL_TOPUP or self.provisions_spare()):
             return self.iv(n).value * self.pay_cut(TV_FLASK) * it["number"]
-        if it["tval"] in (TV_FOOD, TV_FLASK, TV_LITE) or any(k in n for k in self.KIT_KINDS) or self.is_kept(n) or \
+        if it["tval"] in (TV_FOOD, TV_FLASK, TV_LITE) or self.is_kit_item(it) or self.is_kept(n) or \
                 re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", n)).lower() in self.ability_sources:
             return float("inf")
         if (self.flavour_of(it) or {}).get("junk") or re.search(r"\{(cursed|worthless|broken|terrible)", n):
@@ -4332,6 +4337,16 @@ class Pilot:
                 w.flag("blind") or w.flag("confused"):
             return False
         self.policy_t = now
+        # 0. a drained STR/DEX/CON with its Restore in the pack: drink it now, the fight over (never mid-fight: m42's
+        # Navigator quaffed one next to the Giant red ant and was drained again, ~480 gold lost) -- the reason a
+        # spare Restore is carried at all (the user, m43: "why bring the restore potions?")
+        if w.in_dungeon and self.quiet_moment(now):
+            pot = self.restore_potion()
+            if pot and any(f"Restore {v}" in pot["name"] for v in self.STAT_FULL.values()):   # (not CHR: town does it)
+                self.cmd(f"custom q item={pot['item']}", f"restore a drained stat now the fight is over: quaff "
+                                                         f"{pot['name']}", hold=0.8)
+                self.notify("tactic", f"quaffed {one_of(pot['name'])}: the drain is undone, the fight over", news=True)
+                return True
         # 0a. a unique's drop: the items within 3 squares of where it died (the set-piece C3: Mughash's drop
         # was left -- looting runs only inside explore and dive, and a hunt ends idle)
         ud = getattr(self, "unique_drop", None)
@@ -4987,7 +5002,7 @@ class Pilot:
         if not w.in_dungeon or not waited(self.cure_t, 1.5):
             return False
         in_combat = w.adjacent_monsters() or now - w.last_hit_t <= 3
-        if not in_combat:
+        if not in_combat and not w.flag("blind"):     # (blind: the triggers below decide -- m43)
             return False
         want = []
         mobile_near = [m for m in mons_near if "NEVER_MOVE" not in m[2].flags]
@@ -5010,7 +5025,15 @@ class Pilot:
             rate > 0.04 * w.hp[1])
         if (mobile_near and threat or hit_unseen) and w.flag("confused"):
             want.append("confused")
-        if (mobile_near and threat or hit_unseen) and w.flag("blind"):
+        # (and blind in a fight we were in a moment ago, or while an escape needs to read: m43 23:20, blinded in a
+        # 10-monster band at 84% HP -- no monster "near" can be seen blind, so it rested three times while unseen
+        # things bit it, and the flee couldn't read its Magic Mapping. The user: "doesn't a cure potion fix that?")
+        mm = self.__dict__.get("mons_mem") or {}
+        seen_close = any(now - m["t"] < 10 and m.get("level") == w.level_t and w.pos and m.get("pos") and
+                         w.dist(m["pos"]) <= 6 for m in mm.values())
+        band_recent = self.band_warned[0] == w.level_t and now - self.band_warned_t < 30
+        must_read = isinstance(self.goal, (Flee, Recall, Recover))
+        if w.flag("blind") and (mobile_near and threat or hit_unseen or seen_close or band_recent or must_read):
             want.append("blind")
         if w.flag("poisoned") and w.hp_frac < self.orders["think_hp"]:
             want.append("poisoned")
@@ -6845,9 +6868,13 @@ class Pilot:
         # (food other than rations, and flasks the lantern doesn't need, are sold: one food source, no oil)
         spare = (it["tval"] == TV_FOOD and "Ration" not in name and "Mushroom" not in name) or \
             (it["tval"] == TV_FLASK and (self.lantern_fuel() or 0) >= self.FUEL_TOPUP)
+        # (a staff doing what a carried rod does is spare: m43 carried a Staff of Door/Stair Location beside the Rod)
+        rod_dup = it["tval"] == 55 and any(i["tval"] == 66 and re.sub(r".*\bof ", "", re.sub(r"\s*\(.*", "", i["name"]))
+                                           in name for i in self.w.items())
         if it.get("equip") or (it["tval"] in (TV_FOOD, TV_FLASK, TV_LITE) and not spare) or \
-                any(k in name for k in self.KIT_KINDS) \
-                or (it["tval"] in (55, 65, 66) and any(d in name for d in self.USEFUL_DEVICES)) or self.is_kept(name) or \
+                self.is_kit_item(it) \
+                or (it["tval"] in (55, 65, 66) and any(d in name for d in self.USEFUL_DEVICES) and not rod_dup) \
+                or self.is_kept(name) or \
                 re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower() in self.ability_sources:
             return 0
         if not self.town_buyers(it) or re.search(r"\{(cursed|worthless|broken|terrible)", name):

@@ -137,7 +137,7 @@ _GEAR = sorted(((k["N"].lower(), k) for k in KINDS if k["I"][0] in PVAL_GEAR | {
 
 class Item:
     __slots__ = ("name", "kind", "tval", "count", "value", "known", "ego", "artifact", "flags", "irreplaceable",
-                 "pseudo", "estimate", "p_irreplaceable", "p_cursed")
+                 "pseudo", "estimate", "p_irreplaceable", "p_cursed", "unfelt")
 
     def __repr__(self):
         return (f"Item({self.name!r}: value {self.value}{' (estimate)' if self.estimate else ''}, "
@@ -155,7 +155,7 @@ def value(name, level=15, aware=()):
     it = Item()
     it.name, it.kind, it.tval, it.ego, it.artifact, it.flags = name, None, None, None, None, set()
     it.known, it.estimate, it.irreplaceable, it.value, it.p_irreplaceable = True, False, False, 0, 0.0
-    it.p_cursed = 0.0
+    it.p_cursed, it.unfelt = 0.0, False
     raw = name.strip()
     m = re.match(r"(\d+) ", raw)
     it.count = int(m.group(1)) if m else 1
@@ -276,6 +276,24 @@ def value(name, level=15, aware=()):
             else:
                 val += bonus
             it.known, it.estimate = False, True
+    # unfelt gear (no plusses shown, no feeling yet: on the floor, or just picked up): the expectation over what
+    # apply_magic rolls (object2.c: good with f1 = min(75, level + 10) %, then great with f2 = min(20, f1 / 2) %;
+    # else cursed with f1 %, broken with f2 %) -- the user, 10-25: "Soft Leather Boots ~3" ignored the chance of
+    # magic. Good and excellent use the feeling tables' values; cursed/broken count 0. `known` stays as it was (a
+    # warrior's pseudo-ID gives the feeling for free once carried: no Identify scroll for it)
+    elif it.tval in WEAPONS | ARMOUR and not hd and not (ac and ac.group(2)) and not pseudo and not it.ego \
+            and not it.artifact:
+        f1 = min(75, int(level) + 10) / 100
+        f2 = min(20, int(min(75, int(level) + 10) / 2)) / 100
+        p_good, p_great = f1 * (1 - f2), f1 * f2
+        p_plain = (1 - f1) * (1 - f1)
+        fg = feeling_value(it.kind or "", level, "good")
+        fe = feeling_value(it.kind or "", level, "excellent")
+        good = fg[0] if fg else val + PSEUDO_BONUS["good"]
+        great = fe[0] if fe else val + PSEUDO_BONUS["excellent"]
+        val = int(round(p_plain * val + p_good * good + p_great * great))
+        it.p_irreplaceable = p_great * (fe[1] if fe else 0)
+        it.estimate, it.unfelt = True, True
     if it.tval in (65, 55) and not charges:
         it.known, it.estimate = False, True
         val += int((val // 20) * mean_charges(it.kind or "", it.tval, level))

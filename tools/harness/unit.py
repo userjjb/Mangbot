@@ -1545,6 +1545,37 @@ def floor_junk_destroyed_when_quiet():
     return ok, f"quiet: {quiet.cmds}; an orc in view: {busy.cmds}; hit 2 s ago: {hit.cmds}; not junk: {kept}"
 
 
+@case
+def blind_cured_when_it_matters():
+    """m43 23:20: blinded in a 10-monster band at 84% HP, nothing "near" can be seen blind -- it rested while unseen
+    monsters bit it and the flee couldn't read. Blind is cured (cheapest first) when a band was warned in the last
+    30 s, monsters were seen within 6 squares in the last 10 s, or an escape needs to read; not blind and alone."""
+    def make(**kw):
+        p = pilot(hp=274, pack=[("2 Potions of Cure Light Wounds", 75), ("5 Potions of Cure Critical Wounds", 75)])
+        p.w.hp = [274, 326]
+        p.w.in_dungeon = True
+        p.w.flag = lambda k: k == "blind"
+        p.w.adjacent_monsters = lambda: []
+        p.w.last_hit_t = P.gnow() - 20
+        p.w.damage_rate = lambda s: 0.0
+        p.cure_t, p.goal = 0.0, None
+        p.orders["think_hp"] = 0.65
+        p.mons_mem = {}
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append(why)
+        for k, v in kw.items():
+            setattr(p, k, v)
+        return p
+    band = make(band_warned=(1.0, 10), band_warned_t=P.gnow() - 5)
+    band.status_tick(P.gnow(), [])
+    seen = make(mons_mem={"Druid": {"level": 1.0, "pos": (22, 22), "n": 1, "t": P.gnow() - 3}})
+    seen.status_tick(P.gnow(), [])
+    alone = make()
+    alone.status_tick(P.gnow(), [])
+    ok = band.cmds and "Cure Light Wounds" in band.cmds[0] and seen.cmds and alone.cmds == []
+    return ok, f"band warned: {band.cmds}; a Druid seen 3 s ago: {seen.cmds}; alone: {alone.cmds}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0
