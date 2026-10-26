@@ -8077,8 +8077,11 @@ class Pilot:
         cut = self.pay_cut(iv.tval)
         buyers = self.town_buyers(it) if not it.get("equip") else []
         n = max(1, iv.count or it.get("number", 1))
+        # (the same type too: a Staff of Cure Light Wounds isn't the potion's 24 gold)
+        word = (re.search(r"\b(Potion|Scroll|Staff|Staffs|Wand|Rod|Ring|Amulet)\b", it["name"]) or [None, ""])[1].lower()
+        word = word[:-1] if word.endswith("s") and word != "staffs" else ("staff" if word == "staffs" else word)
         seen = [(st, p) for st, sv in self.stores_seen.items() for k, p in (sv.get("prices") or {}).items()
-                if iv.kind and singular(iv.kind).lower() in k]
+                if iv.kind and singular(iv.kind).lower() in k and (not word or k.startswith(word))]
         out = [f"{it['name']}: worth ~{iv.value} each ({'an estimate' if iv.estimate else 'known'}"
                + (f", P(irreplaceable) {iv.p_irreplaceable:.2f}" if iv.p_irreplaceable else "") + ")",
                f"a shop pays ~{iv.value * cut:.0f} each ({cut:.0%} of value)" + (f" at the "
