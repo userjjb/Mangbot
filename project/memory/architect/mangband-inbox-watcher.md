@@ -12,4 +12,4 @@ Start `.claude/hooks/inbox.sh watch memos/to_architect` (Bash, run_in_background
 
 **Why:** on 2026-10-07 the identify-and-sell memo sat unread for about an hour. The watcher wasn't running, and the post-Bash hook only fires on my own commands. The user asked why it didn't trigger me.
 
-**How to apply:** at session start, run the watcher before anything else. While idle between missions, keep restarting it when its task ends. Related: [[mangband-roles]], [[mangband-next-steps]]
+**How to apply:** at session start, run the watcher before anything else -- even when the SessionStart hook says one is "already running": that one may belong to a previous (dead) chat and its alerts won't reach you (session 6). While idle between missions, keep restarting it when its task ends. Related: [[mangband-roles]], [[mangband-next-steps]]

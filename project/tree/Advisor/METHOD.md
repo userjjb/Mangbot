@@ -153,3 +153,6 @@ After the memo:
 - **When a log rate disagrees with the generator model, look for an option or mode first** (structures, 2026-10-24): "special" feelings
   at 37% vs a modelled 5% turned out to be the client's `auto_scum` rerolling levels. Check client prefs (`lib/user/*.prf`) and server
   config before trusting any generation-rate model against our logs.
+- **Measure the sensitivity; don't assert it** (Speed price, 2026-10-25): I wrote "the gain falls 1:1 with price" from one
+  intuition; my own table showed 0.2. Any break-even or slope in a memo comes from a sweep over the parameter, with the
+  mechanism counted (here: potions drunk per option). Separate "buy" from "use" decisions — different counterfactuals.

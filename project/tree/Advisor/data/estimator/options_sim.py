@@ -33,7 +33,9 @@ MON = "/projectnb/jbrcs/mangband/Advisor/data/monsters/monsters.csv"
 RACES = {r["name"]: r for r in csv.DictReader(open(MON))}
 
 HEAL = dict(clw=(15, 15), csw=(20, 24), ccw=(25, 29))      # flat HP (use-obj.c:483-510)
-PRICE = dict(clw=24, csw=50, ccw=150, phase=20, tele=40, staff=0, wor=200, speed=75, berserk=100, hero=35)  # E1's prices
+PRICE = dict(clw=24, csw=50, ccw=150, phase=20, tele=250, staff=250, wor=200, speed=400, berserk=100, hero=35)
+# E1's prices; Teleportation is not sold (scarcity price); a Staff of Teleportation charge ~ 2000 g / 8 charges;
+# Speed = the kit's Black Market line (~383-450, cap 450; 643465e)
 SAVE = 0.45                                                 # P(our saving throw): skill_sav ~40 + adj_wis at clvl 25
 PHASE_DIST = (5, 10)
 P_SEE_AFTER_PHASE = 0.5
@@ -235,7 +237,7 @@ def escape_move(st, crowd):
     return any(use(st, it) for it in order)
 
 
-POLICY_VERSION = "pilot-escape-2026-10-25b"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
+POLICY_VERSION = "pilot-escape-2026-10-25e"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
 
 
 def worst_turn(st, adj):
@@ -245,6 +247,7 @@ def worst_turn(st, adj):
 
 def base_policy(st):
     """The Pilot's rules (POLICY_VERSION). Emergency = HP < 50% or the adjacent worst turn >= 1/3 of HP:
+    Hard-fight start (berserk_tick's test): speed_start_tick (Speed if not hasted), then berserk_tick.
     escape() order: one turn from death -> Teleportation, else Phase; Speed first; Word of Recall below 30% HP; phasing
     futile (3 phases, still adjacent) -> recall; kill a summoner/status caster that dies in 2 rounds; 4+ about (not
     stationary, within 5) in the open -> Teleportation/staff; Phase; out of melee: stairs within 20, else cure (none with
@@ -276,6 +279,8 @@ def base_policy(st):
             return
         crowd = sum(1 for m in st.mons if m.dist <= 5 and "NEVER_MOVE" not in m.flags)
         in_corridor = p.get("max_adj", 8) <= 2
+        if st.afraid and len(adj) >= 2 and ((can_read and use(st, "tele")) or use(st, "staff")):
+            return                                            # afraid, 2+ adjacent: teleport, corridor too (8945cb6)
         if adj and crowd >= 4 and not in_corridor and (
                 (can_read and use(st, "tele")) or use(st, "staff")):
             return
@@ -307,6 +312,11 @@ def base_policy(st):
         for c in ("hero", "berserk"):
             if use(st, c):
                 return
+    hard = adj and (any(m.unique or m.rl >= p["clvl"] - 5 for m in adj if "NEVER_MOVE" not in m.flags)
+                    or (len(adj) >= 2 and p["hp"] < 0.75 * p["mhp"]))
+    if hard and not st.fast and st.block - getattr(st, "speed_at", -99) >= 48 and use(st, "speed"):
+        st.speed_at = st.block                                # speed_start_tick (643465e): Speed, then Berserk; 30 s apart
+        return
     if adj and not st.berserk and st.block - getattr(st, "berserk_at", -99) >= 30 and (
             any(m.unique or m.rl >= p["clvl"] - 5 for m in adj if "NEVER_MOVE" not in m.flags)
             or (len(adj) >= 2 and p["hp"] < 0.75 * p["mhp"])) and use(st, "berserk"):
@@ -499,7 +509,9 @@ def q(a, f):
 
 SAFE_NEAR = 0.02       # an option is safe if P(lowest HP <= 10%) <= 2% ...
 SAFE_LOW_P10 = 0.30    # ... and its 10th-percentile lowest HP is >= 30% of max
-XP_PER_GOLD = 1.0      # exchange rate for "clearly better": Dive04 makes ~50 XP and ~30 gold a dungeon minute (rough)
+MIN_GAIN = 50          # ... and by at least this much (XP net of gold; ~5 kills at 650 ft) to override the rules on XP
+XP_PER_GOLD = 1.0      # FALLBACK only: the Pilot sets options_sim.XP_PER_GOLD per snapshot (rolling XP/gold, 643465e);
+                       # replays should use the estimator record's xp_per_gold
 
 
 def evaluate(p, team, n=200, options=None, arrivals=()):
@@ -578,8 +590,13 @@ def choose(p, team, n=100, arrivals=(), options=None, z=2.0):
     numbers): (a) the rules are unsafe and the option is safe, or (b) both are safe and the option's XP net of gold
     (XP_PER_GOLD) beats the rules' by more than z standard errors of the paired difference and by >= 10%.
     Returns (option, why, table)."""
+    if not team:
+        return "rules", "no known monster", []
+    inv = p.get("inv") or {}
     opts = [o for o in (options or OPTIONS) if not (o == "stairs" and p.get("stairs") is None)
-            and not (o == "staff" and not p["inv"].get("staff"))]
+            and not (OPTIONS[o] and OPTIONS[o][0] in PRICE and inv.get(OPTIONS[o][0], 0) <= 0)]
+    if "rules" not in opts:
+        opts = ["rules"] + opts
     res = {o: [rollout(p, team, OPTIONS[o], seed=i, arrivals=arrivals) for i in range(n)] for o in opts}
 
     def summary(rs):
@@ -601,7 +618,7 @@ def choose(p, team, n=100, arrivals=(), options=None, z=2.0):
             continue
         if not bsafe and safe and (best == "rules" or nn < best_gain):
             best, why, best_gain = o, f"rules unsafe (P near death {bn:.2f}); {o} safe ({nn:.2f})", nn
-        elif bsafe and safe and best_gain >= 0 and mean > z * se and mean >= 0.10 * max(1.0, statistics.mean(
+        elif bsafe and safe and best_gain >= 0 and mean > z * se and mean >= max(MIN_GAIN, 0.10 * statistics.mean(
                 r["xp"] for r in base)) and mean > best_gain:
             best, why, best_gain = o, f"+{mean:.0f} XP net of gold vs rules (SE {se:.0f}), both safe", mean
     if not bsafe and best == "rules":

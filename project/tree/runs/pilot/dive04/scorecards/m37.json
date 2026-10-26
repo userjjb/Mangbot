@@ -1,0 +1,183 @@
+{
+ "label": "m37",
+ "nav_model": "opus",
+ "effort": "medium",
+ "report": "compact",
+ "start": "2026-10-25 15:30",
+ "end": "2026-10-25 16:10",
+ "minutes": 40.0,
+ "notes": "shadow-mode series 3: 45 min, Opus medium; 9622 gold, WoR 2; Speed pickup + jewellery swap fixes and the gear review loaded",
+ "tokens": {
+  "turns": 31,
+  "input": 62,
+  "output": 9938,
+  "cache_read": 941605,
+  "cache_write": 41114,
+  "write_5m": 41114,
+  "write_1h": 0,
+  "model": "claude-opus-5-5",
+  "final_usage_turns": 31,
+  "usd": 0.593,
+  "transcript": "agent-a3e72fb5a18330a53.jsonl"
+ },
+ "estimator": {
+  "n": 2,
+  "compared": 2,
+  "agree": 1,
+  "in_time_turn": 2,
+  "before_next_act": 2,
+  "skipped": 0,
+  "compute_max_s": 0.213,
+  "disagreements": [
+   [
+    null,
+    "staff",
+    "+116 XP net of gold vs rules (SE 18), both safe"
+   ]
+  ]
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   26,
+   26
+  ],
+  "exp_gain": 1490,
+  "gold": [
+   9622,
+   9619
+  ],
+  "gold_change": -3,
+  "max_depth_ft": 700
+ },
+ "B": {
+  "dungeon_min": 34.2,
+  "town_min": 5.4,
+  "exp_per_dmin": 43.5,
+  "levels_per_dhour": 0.32,
+  "gold_found": 2359,
+  "gold_found_per_dmin": 68.9,
+  "time_budget_min": {
+   "exploring": 14.1,
+   "fighting": 9.1,
+   "travel_dive": 7.0,
+   "escaping": 3.6,
+   "town_other": 2.6,
+   "town_no_goal": 1.4,
+   "town_idle_end": 1.1,
+   "recall_wait": 0.7,
+   "no_goal_dungeon": 0.1,
+   "town_shopping": 0.0,
+   "resting": 0.0
+  },
+  "navigator_wait_pct": 4
+ },
+ "C": {
+  "lowest_hp": [
+   158,
+   320,
+   49,
+   "15:41:00"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 2,
+  "emergency_episodes": 2,
+  "emergency_alerts": 2,
+  "phase": 0,
+  "wor_escape": 1,
+  "wor_travel": 3,
+  "stairs_flee": 1,
+  "teleport": 0,
+  "cures_quaffed": 1,
+  "escape_records": 5,
+  "recalls_landed": 4
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 298,
+  "loot_abandoned_est": 1399,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 12,
+  "total": 1709,
+  "sales": 10,
+  "sales_valued": 1,
+  "worst_sales": [],
+  "left_behind": [
+   "Lucerne Hammer (2d5)",
+   "Small Sword (1d6)",
+   "Double Chain Mail [16]",
+   "Ring of Feather Falling",
+   "Staff of Trap Location",
+   "Small wooden chest",
+   "Long Bow (x3)",
+   "Flail (2d6)",
+   "Sabre (1d7)",
+   "Robe [2]"
+  ],
+  "irreplaceable": [
+   "Amulet of Resist Lightning",
+   "a Ring of Resist Cold",
+   "a Ring of Resist Fire",
+   "an Amulet of Resist Acid"
+  ]
+ },
+ "E": {
+  "reports": 17,
+  "commands": 27,
+  "commands_per_min": 1.1,
+  "report_to_action_med_s": 5.2,
+  "report_to_action_p90_s": 8.8,
+  "reports_without_command_pct": 53,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 2,
+  "report_chars": 45652,
+  "order_report_age_med_s": 5.2,
+  "order_report_age_p90_s": 20.4
+ },
+ "F": {
+  "audit_diffs": 1,
+  "audit_checks": 81,
+  "perception_gaps": 4,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 1362,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Black orc": 177,
+  "Uruk": 87,
+  "Brown yeek": 49,
+  "Novice paladin": 46,
+  "White wolf": 43,
+  "Novice warrior": 35,
+  "Hill orc": 34,
+  "Ogre": 33
+ },
+ "alerts": {
+  "tactic": 35,
+  "goal_done": 4,
+  "found": 3,
+  "lost": 2,
+  "plan_done": 2,
+  "stat_drained": 1
+ },
+ "plan_news": {
+  "goal_done": 16,
+  "unseen_attacker": 16,
+  "interesting_item": 7,
+  "plan": 5,
+  "band": 5,
+  "fight_going_badly": 3,
+  "drainer": 3,
+  "emergency": 2,
+  "thief": 2,
+  "breeders": 1,
+  "unique_slain": 1,
+  "stuck": 1
+ }
+}

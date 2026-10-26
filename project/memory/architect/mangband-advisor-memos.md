@@ -23,3 +23,5 @@ metadata:
 - 2026-10-07: identify-and-sell, flavour-messages, mission 13 replay, warrior progression (`memos/2026-10-07-warrior-progression.md`). Status: next_steps.md handoff.
 
 - 2026-10-25 (in `memos/to_architect/`): **estimator** (emergency option estimator: 4 rule fixes, built), **replay** (calibration on 21 episodes; shadow mode next), **shadow-policy** (`options_sim.POLICY_VERSION`; the Pilot imports `Advisor/data/estimator/options_sim.py` live -- tell the Advisor when escape()/berserk_tick/fear_cure change; XP_PER_GOLD kept 1.0 by the user). Handoff: next_steps.md 2026-10-25.
+
+- 2026-10-25/26 (session 6, in `memos/to_architect/`): **shadow-review** (the 6 disagreements were its pricing; options_sim 25c), **xp-per-gold** (it had set 0.2; restored the user's 1.0 in 25d -- now the Pilot's rolling rate overrides it per snapshot), **hard-fight-kit**, **speed-383**, **speed-slope** (Speed at a hard fight's start: mostly timing; buy break-even ~200-250 g at 1.0, ~500-600 at 0.41), **policy-25e** (base_policy mirrors speed_start_tick). Status: next_steps.md handoff.

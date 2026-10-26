@@ -33,7 +33,8 @@ MON = "/projectnb/jbrcs/mangband/Advisor/data/monsters/monsters.csv"
 RACES = {r["name"]: r for r in csv.DictReader(open(MON))}
 
 HEAL = dict(clw=(15, 15), csw=(20, 24), ccw=(25, 29))      # flat HP (use-obj.c:483-510)
-PRICE = dict(clw=24, csw=50, ccw=150, phase=20, tele=40, staff=0, wor=200, speed=75, berserk=100, hero=35)  # E1's prices
+PRICE = dict(clw=24, csw=50, ccw=150, phase=20, tele=250, staff=250, wor=200, speed=75, berserk=100, hero=35)
+# E1's prices; Teleportation is not sold (scarcity price) and a Staff of Teleportation charge ~ 2000 g / 8 charges
 SAVE = 0.45                                                 # P(our saving throw): skill_sav ~40 + adj_wis at clvl 25
 PHASE_DIST = (5, 10)
 P_SEE_AFTER_PHASE = 0.5
@@ -235,34 +236,84 @@ def escape_move(st, crowd):
     return any(use(st, it) for it in order)
 
 
+POLICY_VERSION = "pilot-escape-2026-10-25d"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
+
+
+def worst_turn(st, adj):
+    """The adjacent monsters' worst melee in one of our turns (Pilot: worst_3turns / 3): max blows x their rounds per turn."""
+    return sum(m.melee_max * max(1.0, m.sx / speed_energy(st) / 2) for m in adj)
+
+
 def base_policy(st):
-    """The Pilot's emergency rules (10-25) with the four fixes."""
+    """The Pilot's rules (POLICY_VERSION). Emergency = HP < 50% or the adjacent worst turn >= 1/3 of HP:
+    escape() order: one turn from death -> Teleportation, else Phase; Speed first; Word of Recall below 30% HP; phasing
+    futile (3 phases, still adjacent) -> recall; kill a summoner/status caster that dies in 2 rounds; 4+ about (not
+    stationary, within 5) in the open -> Teleportation/staff; Phase; out of melee: stairs within 20, else cure (none with
+    2+ adjacent). Outside emergencies: status cure (blind/confused, CLW first) when threatened; fear cure (Heroism >
+    Berserk) when afraid with something adjacent; Berserk at the start of a hard melee; else fight."""
     p = st.p
     adj = [m for m in st.mons if m.dist <= 1]
-    near = sum(1 for m in st.mons if m.dist <= 3)
-    worst = sum(m.melee_max for m in adj)
-    in_danger = adj and worst >= 0.9 * p["hp"]
-    if (st.blind or st.confused) and (in_danger or p["hp"] < 0.5 * p["mhp"]):
-        for c in ("clw", "csw", "ccw"):                       # status cure first, then read
-            if use(st, c):
+    can_read = not st.blind and not st.confused
+    worst = worst_turn(st, adj)
+    emergency = p["hp"] < 0.5 * p["mhp"] or (adj and 3 * worst >= p["hp"])
+    if emergency:
+        if st.stairs is not None and st.stairs <= 0:
+            st.escaped = "stairs"
+            return
+        one_turn = bool(adj) and worst >= 0.9 * p["hp"]
+        if one_turn and can_read and (use(st, "tele") or use(st, "phase")):
+            st.last_phase = st.block
+            return
+        if not one_turn and not st.fast and st.block - getattr(st, "speed_at", -99) >= 30 and use(st, "speed"):
+            st.speed_at = st.block
+            return
+        if p["hp"] < 0.3 * p["mhp"] and can_read and st.recall is None and use(st, "wor"):
+            return
+        phases = [b for b in getattr(st, "phase_hist", []) if st.block - b <= 30]
+        if adj and len(phases) >= 3 and p["hp"] >= 0.2 * p["mhp"] and st.recall is None and can_read and use(st, "wor"):
+            return
+        casters = [m for m in adj if m.caster and m.hp <= 2 * our_damage_per_turn(st, m)]
+        if casters and not st.afraid and attack(st, min(casters, key=lambda m: m.hp)):
+            return
+        crowd = sum(1 for m in st.mons if m.dist <= 5 and "NEVER_MOVE" not in m.flags)
+        in_corridor = p.get("max_adj", 8) <= 2
+        if st.afraid and len(adj) >= 2 and ((can_read and use(st, "tele")) or use(st, "staff")):
+            return                                            # afraid, 2+ adjacent: teleport, corridor too (8945cb6)
+        if adj and crowd >= 4 and not in_corridor and (
+                (can_read and use(st, "tele")) or use(st, "staff")):
+            return
+        collapsing = p["hp"] < 0.35 * p["mhp"]
+        if adj and can_read and (st.block - getattr(st, "last_phase", -99) >= 4 or collapsing) and use(st, "phase"):
+            st.last_phase = st.block
+            st.phase_hist = phases + [st.block]
+            return
+        if not adj:
+            if st.stairs is not None and st.stairs <= 20:
+                st.stairs -= 1
+                if st.stairs <= 0:
+                    st.escaped = "stairs"
                 return
-    if in_danger and escape_move(st, near):
-        return
-    if adj and not st.fast and (len(adj) >= 2 or st.slow) and use(st, "speed"):
-        return
-    if p["hp"] < 0.5 * p["mhp"]:
-        if len(adj) >= 2:                                     # fix 1: no HP cures with 2+ adjacent
-            if escape_move(st, near):
-                return
-        else:
             for c in ("ccw", "csw", "clw"):
                 if use(st, c):
                     return
-    if st.stairs is not None and st.stairs <= 1 and p["hp"] < 0.5 * p["mhp"]:
-        st.escaped = "stairs"
-        return
-    if adj and not st.berserk and (any(m.unique or m.rl >= p["clvl"] - 5 for m in adj)
-                                   or (len(adj) >= 2 and p["hp"] < 0.75 * p["mhp"])) and use(st, "berserk"):
+            return
+        if len(adj) <= 1:
+            for c in ("ccw", "csw", "clw"):
+                if use(st, c):
+                    return
+    threatened = adj and (p["hp"] < 0.5 * p["mhp"] or any(m.rl >= p["clvl"] - 5 for m in adj))
+    if (st.blind or st.confused) and threatened:
+        for c in ("clw", "csw", "ccw"):
+            if use(st, c):
+                return
+    if st.afraid and adj:
+        for c in ("hero", "berserk"):
+            if use(st, c):
+                return
+    if adj and not st.berserk and st.block - getattr(st, "berserk_at", -99) >= 30 and (
+            any(m.unique or m.rl >= p["clvl"] - 5 for m in adj if "NEVER_MOVE" not in m.flags)
+            or (len(adj) >= 2 and p["hp"] < 0.75 * p["mhp"])) and use(st, "berserk"):
+        st.berserk_at = st.block
         return
     attack(st)
 
@@ -451,7 +502,8 @@ def q(a, f):
 
 SAFE_NEAR = 0.02       # an option is safe if P(lowest HP <= 10%) <= 2% ...
 SAFE_LOW_P10 = 0.30    # ... and its 10th-percentile lowest HP is >= 30% of max
-XP_PER_GOLD = 1.0      # exchange rate for "clearly better": Dive04 makes ~50 XP and ~30 gold a dungeon minute (rough)
+MIN_GAIN = 50          # ... and by at least this much (XP net of gold; ~5 kills at 650 ft) to override the rules on XP
+XP_PER_GOLD = 1.0      # the user's decision (10-25): 1 XP per gold in "clearly better"
 
 
 def evaluate(p, team, n=200, options=None, arrivals=()):
@@ -530,8 +582,13 @@ def choose(p, team, n=100, arrivals=(), options=None, z=2.0):
     numbers): (a) the rules are unsafe and the option is safe, or (b) both are safe and the option's XP net of gold
     (XP_PER_GOLD) beats the rules' by more than z standard errors of the paired difference and by >= 10%.
     Returns (option, why, table)."""
+    if not team:
+        return "rules", "no known monster", []
+    inv = p.get("inv") or {}
     opts = [o for o in (options or OPTIONS) if not (o == "stairs" and p.get("stairs") is None)
-            and not (o == "staff" and not p["inv"].get("staff"))]
+            and not (OPTIONS[o] and OPTIONS[o][0] in PRICE and inv.get(OPTIONS[o][0], 0) <= 0)]
+    if "rules" not in opts:
+        opts = ["rules"] + opts
     res = {o: [rollout(p, team, OPTIONS[o], seed=i, arrivals=arrivals) for i in range(n)] for o in opts}
 
     def summary(rs):
@@ -553,7 +610,7 @@ def choose(p, team, n=100, arrivals=(), options=None, z=2.0):
             continue
         if not bsafe and safe and (best == "rules" or nn < best_gain):
             best, why, best_gain = o, f"rules unsafe (P near death {bn:.2f}); {o} safe ({nn:.2f})", nn
-        elif bsafe and safe and best_gain >= 0 and mean > z * se and mean >= 0.10 * max(1.0, statistics.mean(
+        elif bsafe and safe and best_gain >= 0 and mean > z * se and mean >= max(MIN_GAIN, 0.10 * statistics.mean(
                 r["xp"] for r in base)) and mean > best_gain:
             best, why, best_gain = o, f"+{mean:.0f} XP net of gold vs rules (SE {se:.0f}), both safe", mean
     if not bsafe and best == "rules":

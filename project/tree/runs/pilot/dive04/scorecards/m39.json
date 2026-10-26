@@ -1,0 +1,176 @@
+{
+ "label": "m39",
+ "nav_model": "sonnet",
+ "effort": "medium",
+ "report": "compact",
+ "start": "2026-10-25 16:53",
+ "end": "2026-10-25 17:34",
+ "minutes": 41.0,
+ "notes": "shadow-mode series 5: 45 min, Sonnet medium; 11845 gold, WoR 2; flee-teleport at max_depth, unique-drop limit loaded; stale keeps (main gauche, aspen staff) cleared by the Architect",
+ "tokens": {
+  "turns": 25,
+  "input": 50,
+  "output": 7581,
+  "cache_read": 693276,
+  "cache_write": 34991,
+  "write_5m": 34991,
+  "write_1h": 0,
+  "model": "claude-sonnet-5-5",
+  "final_usage_turns": 25,
+  "usd": 0.233,
+  "transcript": "agent-a596c048317840955.jsonl"
+ },
+ "estimator": {
+  "n": 1,
+  "compared": 1,
+  "agree": 1,
+  "in_time_turn": 1,
+  "before_next_act": 1,
+  "skipped": 0,
+  "compute_max_s": 0.234,
+  "disagreements": []
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   26,
+   27
+  ],
+  "exp_gain": 1709,
+  "gold": [
+   11845,
+   13790
+  ],
+  "gold_change": 1945,
+  "max_depth_ft": 700
+ },
+ "B": {
+  "dungeon_min": 30.3,
+  "town_min": 10.1,
+  "exp_per_dmin": 56.4,
+  "levels_per_dhour": 0.38,
+  "gold_found": 1727,
+  "gold_found_per_dmin": 57.0,
+  "time_budget_min": {
+   "exploring": 14.8,
+   "fighting": 11.8,
+   "town_no_goal": 6.1,
+   "travel_dive": 2.8,
+   "town_other": 2.6,
+   "town_idle_end": 1.3,
+   "recall_wait": 1.2,
+   "escaping": 0.2,
+   "no_goal_dungeon": 0.0
+  },
+  "navigator_wait_pct": 15
+ },
+ "C": {
+  "lowest_hp": [
+   246,
+   320,
+   77,
+   "17:12:55"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 1,
+  "emergency_alerts": 1,
+  "phase": 1,
+  "wor_escape": 1,
+  "wor_travel": 3,
+  "stairs_flee": 0,
+  "teleport": 0,
+  "cures_quaffed": 0,
+  "escape_records": 5,
+  "recalls_landed": 4
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 50,
+  "loot_abandoned_est": 471,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 38,
+  "total": 559,
+  "sales": 16,
+  "sales_valued": 4,
+  "worst_sales": [],
+  "left_behind": [
+   "Holy Book of Prayers [Beginners Handbook]",
+   "Potion of Sleep",
+   "Amulet of Teleportation",
+   "Potion of Salt Water",
+   "Clotted Red Potion",
+   "Grey Mushroom",
+   "Green Mushroom",
+   "Large iron chest",
+   "Mace (2d4)",
+   "Main Gauche (1d5)"
+  ],
+  "irreplaceable": [
+   "Amulet of Resist Lightning",
+   "Potion of Resist Cold",
+   "Potion of Speed"
+  ]
+ },
+ "E": {
+  "reports": 18,
+  "commands": 35,
+  "commands_per_min": 1.3,
+  "report_to_action_med_s": 5.0,
+  "report_to_action_p90_s": 28.0,
+  "reports_without_command_pct": 28,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 0,
+  "report_chars": 45517,
+  "order_report_age_med_s": 4.3,
+  "order_report_age_p90_s": 6.9
+ },
+ "F": {
+  "audit_diffs": 1,
+  "audit_checks": 83,
+  "perception_gaps": 1,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 1101,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Black orc": 116,
+  "Novice paladin": 81,
+  "Hill orc": 61,
+  "White wolf": 59,
+  "Dark elven priest": 49,
+  "Ogre": 35,
+  "Tiger": 34,
+  "Stegocentipede": 22
+ },
+ "alerts": {
+  "tactic": 26,
+  "goal_done": 3,
+  "low_supply": 2,
+  "plan_done": 2,
+  "parked": 1,
+  "started": 1,
+  "lost": 1,
+  "stat_drained": 1
+ },
+ "plan_news": {
+  "unseen_attacker": 16,
+  "goal_done": 5,
+  "plan": 3,
+  "interesting_item": 3,
+  "fearer": 2,
+  "thief": 2,
+  "breeders": 1,
+  "emergency": 1,
+  "drainer": 1,
+  "goal_failed": 1,
+  "band": 1,
+  "stuck": 1
+ }
+}

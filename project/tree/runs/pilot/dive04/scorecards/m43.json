@@ -1,0 +1,184 @@
+{
+ "label": "m43",
+ "nav_model": "haiku",
+ "effort": "low",
+ "report": "compact",
+ "start": "2026-10-25 23:13",
+ "end": "2026-10-25 23:50",
+ "minutes": 37.0,
+ "notes": "Haiku low effort trial (the user, 10-25), 45 min; checkpoint runs/setpieces/saves/dive04-pre-m43 (restore with charsave.sh restore Dive04 dive04-pre-m43 on death or a permanent bad outcome); max_depth 750; prep/why/FIELD-NOTES in",
+ "tokens": {
+  "turns": 30,
+  "input": 60,
+  "output": 14261,
+  "cache_read": 1064544,
+  "cache_write": 53378,
+  "write_5m": 53378,
+  "write_1h": 0,
+  "model": "claude-haiku-5-5",
+  "final_usage_turns": 30,
+  "usd": 0.019,
+  "transcript": "agent-a6c3c5af969b301a3.jsonl"
+ },
+ "estimator": {
+  "n": 0,
+  "compared": 0,
+  "agree": 0,
+  "in_time_turn": 0,
+  "before_next_act": 0,
+  "skipped": 0,
+  "compute_max_s": null,
+  "disagreements": [],
+  "hard_n": 0,
+  "hard_compared": 0,
+  "hard_agree": 0,
+  "hard_choices": {}
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   27,
+   27
+  ],
+  "exp_gain": 2174,
+  "gold": [
+   18170,
+   17961
+  ],
+  "gold_change": -209,
+  "max_depth_ft": 750
+ },
+ "B": {
+  "dungeon_min": 31.6,
+  "town_min": 5.1,
+  "exp_per_dmin": 68.8,
+  "levels_per_dhour": 0.38,
+  "gold_found": 1292,
+  "gold_found_per_dmin": 40.9,
+  "time_budget_min": {
+   "exploring": 19.0,
+   "fighting": 9.6,
+   "town_other": 2.6,
+   "escaping": 1.6,
+   "town_no_goal": 1.1,
+   "town_idle_end": 1.0,
+   "travel_dive": 0.9,
+   "recall_wait": 0.8,
+   "town_shopping": 0.1,
+   "no_goal_dungeon": 0.1,
+   "resting": 0.0
+  },
+  "navigator_wait_pct": 3
+ },
+ "C": {
+  "lowest_hp": [
+   231,
+   326,
+   71,
+   "23:46:09"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 0,
+  "emergency_alerts": 0,
+  "phase": 0,
+  "wor_escape": 1,
+  "wor_travel": 3,
+  "stairs_flee": 2,
+  "teleport": 0,
+  "cures_quaffed": 0,
+  "escape_records": 5,
+  "recalls_landed": 4
+ },
+ "D": {
+  "sale_shortfall": 13,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 265,
+  "loot_abandoned_est": 1219,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 638,
+  "total": 2135,
+  "sales": 7,
+  "sales_valued": 1,
+  "worst_sales": [
+   {
+    "item": "a Scroll of Trap/Door Destruction",
+    "got": 8,
+    "fair": 21,
+    "forced": false
+   }
+  ],
+  "left_behind": [
+   "Birch Staff",
+   "Furry Mushroom",
+   "Wrinkled Mushroom",
+   "Whip (1d3)",
+   "Broad Sword (2d5)",
+   "Potion of Detect Invisible",
+   "Potion of Slowness",
+   "Wand of Sleep Monster",
+   "Clotted Red Potion",
+   "Dark Blue Mushroom"
+  ],
+  "irreplaceable": []
+ },
+ "E": {
+  "reports": 17,
+  "commands": 38,
+  "commands_per_min": 1.5,
+  "report_to_action_med_s": 42.7,
+  "report_to_action_p90_s": 116.4,
+  "reports_without_command_pct": 24,
+  "user_messages": 3,
+  "user_reply_med_s": 4.0,
+  "forced_overrides": 0,
+  "complaints": 2,
+  "report_chars": 57646,
+  "order_report_age_med_s": 19.6,
+  "order_report_age_p90_s": 138.2
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 76,
+  "perception_gaps": 2,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 1314,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Energy hound": 62,
+  "Light hound": 57,
+  "Black orc": 41,
+  "Ogre": 30,
+  "Warg": 29,
+  "Cave spider": 21,
+  "Swordsman": 17,
+  "White wolf": 14
+ },
+ "alerts": {
+  "tactic": 42,
+  "lost": 9,
+  "goal_done": 3,
+  "time_frozen": 3,
+  "user_message": 3,
+  "started": 2,
+  "plan_done": 2,
+  "stat_drained": 1
+ },
+ "plan_news": {
+  "unseen_attacker": 14,
+  "goal_done": 13,
+  "plan": 8,
+  "drainer": 4,
+  "interesting_item": 4,
+  "band": 3,
+  "structure": 2,
+  "fearer": 2,
+  "breeders": 2,
+  "goal_failed": 1,
+  "stuck": 1
+ }
+}

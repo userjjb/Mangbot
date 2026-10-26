@@ -1,0 +1,180 @@
+{
+ "label": "m44",
+ "nav_model": "haiku",
+ "effort": "low",
+ "report": "compact",
+ "start": "2026-10-25 23:53",
+ "end": "2026-10-26 00:31",
+ "minutes": 38.0,
+ "notes": "Haiku low (the user: Haiku low missions until 01:30), 45 min; m43 fixes loaded (engage, blind cure, restore at quiet moment, staffs sold, unfelt gear EV, floor junk, ask/price, buy commas); max_depth 750",
+ "tokens": {
+  "turns": 23,
+  "input": 46,
+  "output": 13348,
+  "cache_read": 802677,
+  "cache_write": 47966,
+  "write_5m": 47966,
+  "write_1h": 0,
+  "model": "claude-haiku-5-5",
+  "final_usage_turns": 23,
+  "usd": 0.017,
+  "transcript": "agent-a75f9dcfbb5148a1d.jsonl"
+ },
+ "estimator": {
+  "n": 3,
+  "compared": 1,
+  "agree": 1,
+  "in_time_turn": 3,
+  "before_next_act": 3,
+  "skipped": 0,
+  "compute_max_s": 0.194,
+  "disagreements": [],
+  "hard_n": 2,
+  "hard_compared": 2,
+  "hard_agree": 2,
+  "hard_choices": {}
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   27,
+   27
+  ],
+  "exp_gain": 2307,
+  "gold": [
+   17961,
+   22150
+  ],
+  "gold_change": 4189,
+  "max_depth_ft": 750
+ },
+ "B": {
+  "dungeon_min": 31.5,
+  "town_min": 6.2,
+  "exp_per_dmin": 73.2,
+  "levels_per_dhour": 0.4,
+  "gold_found": 889,
+  "gold_found_per_dmin": 28.2,
+  "time_budget_min": {
+   "fighting": 15.1,
+   "exploring": 14.8,
+   "town_other": 4.1,
+   "town_no_goal": 1.1,
+   "recall_wait": 1.1,
+   "escaping": 0.9,
+   "town_idle_end": 0.4,
+   "travel_dive": 0.3,
+   "resting": 0.0,
+   "stuck_looping": 0.0,
+   "no_goal_dungeon": 0.0
+  },
+  "navigator_wait_pct": 3
+ },
+ "C": {
+  "lowest_hp": [
+   183,
+   326,
+   56,
+   "00:08:29"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 1,
+  "emergency_alerts": 1,
+  "phase": 0,
+  "wor_escape": 1,
+  "wor_travel": 5,
+  "stairs_flee": 1,
+  "teleport": 1,
+  "cures_quaffed": 16,
+  "escape_records": 8,
+  "recalls_landed": 6
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 346,
+  "loot_abandoned_est": 445,
+  "stolen": 1872,
+  "destroyed_by_monsters_est": 38,
+  "total": 2701,
+  "sales": 15,
+  "sales_valued": 2,
+  "worst_sales": [],
+  "left_behind": [
+   "Green Mushroom",
+   "Set of Gauntlets [2]",
+   "Potion of Neutralize Poison",
+   "Holy Book of Prayers [Words of Wisdom]",
+   "Ring of Teleportation",
+   "Potion of Sleep",
+   "Furry Mushroom (x2)",
+   "Ring of Resist Cold",
+   "Ring of Searching",
+   "Dwarf Skeleton"
+  ],
+  "irreplaceable": [
+   "Ring of Resist Cold",
+   "a Ring of Resist Fire",
+   "left a Ring of Resist Cold (~105): pack full and nothing cheaper to make room with"
+  ]
+ },
+ "E": {
+  "reports": 13,
+  "commands": 25,
+  "commands_per_min": 1.0,
+  "report_to_action_med_s": 4.7,
+  "report_to_action_p90_s": 5.1,
+  "reports_without_command_pct": 31,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 1,
+  "report_chars": 42209,
+  "order_report_age_med_s": 12.6,
+  "order_report_age_p90_s": 41.1
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 77,
+  "perception_gaps": 8,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 1039,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Light hound": 139,
+  "Black ogre": 78,
+  "Wererat": 60,
+  "Uruk": 48,
+  "Black orc": 48,
+  "Clear hound": 33,
+  "Hippogriff": 28,
+  "Paladin": 22
+ },
+ "alerts": {
+  "tactic": 68,
+  "plan_done": 3,
+  "lost": 2,
+  "goal_done": 1,
+  "stat_drained": 1,
+  "found": 1
+ },
+ "plan_news": {
+  "goal_done": 17,
+  "unseen_attacker": 15,
+  "interesting_item": 9,
+  "plan": 4,
+  "danger_seen": 3,
+  "breeders": 2,
+  "band": 2,
+  "stuck": 2,
+  "drainer": 2,
+  "goal_failed": 2,
+  "structure": 1,
+  "fight_going_badly": 1
+ }
+}

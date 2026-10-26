@@ -137,7 +137,142 @@ validation.
   the Phase 1 confirm answer), inscribing key items, and the live character "Sneezy".
 - The user's player lore and plan changes are in `notes_players.md` (read it).
 
-### ARCHITECT HANDOFF 2026-10-25 (READ THIS FIRST; the 2026-10-24 section below has session 5's details and history)
+### ARCHITECT HANDOFF 2026-10-26, end of session 6 (READ THIS FIRST; the session-6 section below has its details)
+
+**Where we are (2026-10-26 ~08:05).** Same SGE job 8268425 on scc-pc4, walltime **Thu 10-29 09:47**: test server (freeze
+build), Dive04's Pilot (git `restructure` 7534708, pushed, all loaded), viewer (`tmux -L mang attach -t watch`). **Start
+your own inbox watcher** (a "running" one may belong to a dead chat).
+- **Dive04:** clvl 28, 340 HP, AC ~77, idle in town (on the tavern entrance, 27,89), **24901 gold**, `max_depth` 750
+  (a trial since 10-25: 650-750 ft). **Battle Axe of Westernesse (2d8) (+10,+9)** wielded (Free Action, See Invisible);
+  Scimitar of Westernesse in the pack; Leather of Resistance; Rings of Protection [+12] and [+10]; Amulet of Resist
+  Lightning (redundant); Staff of Teleportation (6); 20 CCW, 4 CSW, Healing, 18 Phase, 2 WoR, 3 Heroism; WIS drained.
+  **The tavern stash** (stash.json): Restore Dexterity, Restore Constitution, 2 Wands of Stone to Mud -- plus an old
+  1977-turn lantern on the tavern floor (an Architect test drop). Debts 44 / 0. Checkpoint
+  runs/setpieces/saves/dive04-pre-m43 (clvl 27, before the Haiku runs; restore only on the user's word or a death).
+- **Last missions:** Haiku at LOW effort m43-m45: 68.8 / 73.2 / 77.6 XP/dmin at $0.014-0.019 each, no close calls --
+  as good as Sonnet (series m35-m42: 62-87 at $0.17-0.24) for ~1/10 of the cost; Opus dearest and not better. n is
+  small and the Pilot changed between missions.
+
+**Next session, start here:**
+1. Inbox watcher; check the processes (`pgrep -af "gdb -batch|pilot.py"`, `tmux -L mang ls`); if the job died: server
+   (operations.md, with `MANGBAND_FREEZE_FILE`), Pilot (`tools/pilot/restart.sh Dive04`), viewer.
+2. Ask the user what to run. Missions so far use the m45 brief (Agent prompt: state, max_depth 750, "plan first",
+   the verdict list). Wrap-up per mission: **`github/tools/observe/wrap.sh mNN`** (mission end by name, tokens,
+   scorecard, complaints, ? notes, status), then 
+   `tools/observe/tokens.py mNN`, `scorecard.py --table`, a report in runs/pilot/dive04/reports/, complaints, the viewer's `?`/`!`
+   notes (commentary.jsonl), **new lessons into FIELD-NOTES.md**; during missions watch decisions.jsonl for
+   emergencies/deaths **and `nav_ask`** (answer with `PILOT_ROLE=architect pilotctl answer ID TEXT`).
+3. **Verify live on the next missions:** the stash fetch (a drained stat -> StashFetch picks the Restore up in the
+   tavern; only unit-tested), engage_tick (46 engagements in m44, judged sensible by m45's Navigator), unfelt-gear
+   values (pack churn), blind-cure cap, `ask`/`price` (not used yet).
+
+**The 4 open issues (noted 2026-10-26, not yet fixed):**
+1. **A plan `dive` stalls on a quiet level** (m45 00:38-00:46: 'dive 700ft' stuck at one square on a quiet 750 ft
+   level, the stuck notices repeated, the quiet-level rule didn't fire; the Navigator's `goal explore` + `plan resume`
+   got it moving). Look at the stuck watchdog's second-stall abort and why `TripPlan.quiet` didn't fire.
+2. **A Ring of Strength (+2) sold right after identifying it** (m45 01:04): both ring slots hold Protection; for a
+   warrior short of blows (2 blows), STR may beat AC -- a judgement the user should make (blows table at STR 18/70
+   vs 18/90).
+3. **A hot-swap loses the trip's in-memory state**: the "special level: find stairs first" mode (m45 00:33 at 700 ft
+   went back to plain exploring) and the mission label (`mission end mNN` by name). Persist both (plan.json / a
+   mission file).
+4. **No Potion of Speed at the Black Market** twice (m45): the kit's 2-Speed line stays short; the Speed-at-start rule
+   rarely has a potion. Options for the user: the cap (450), the Alchemist never stocks it; or accept.
+
+**Routine reminders:** after each piece of work `github/tools/snapshot.sh`, commit, `git push origin restructure`
+(the public repo's project/ copy: run at the end of session 6). The user's session-6 decisions: XP_PER_GOLD rolling
+(the Pilot's rate overrides the estimator's constant); max_depth 750 trial; Speed kit line (BM, cap 450) and Speed at
+a hard fight's start; the tavern stash; Navigator `ask` rate-limited (1/5 min, 4/h) with the Architect answering live;
+hot-swaps allowed mid-mission (in the dungeon: in town a swap is a plain restart and loses a running plan town).
+**Also open (older):** the Advisor's MIN_GAIN 50 (its own addition, kept); the per-monster asleep flag (proposed);
+a fight-vs-flee rule for fast bands with far stairs (m35); the Advisor's structures lattice (needs dungeon_align on);
+L3's BLIND half; `Weapons: none` display; Navigator empowerment items not built: executable standing orders, an
+item-review queue, dungeon pack control.
+
+### ARCHITECT HANDOFF 2026-10-25, session 6 (details; read the 2026-10-26 section above first)
+
+**Where we are (end of the shadow series, 2026-10-25 ~19:40).** Same SGE job 8268425 on scc-pc4 (to **Thu 10-29
+09:47**): test server (freeze build), Dive04's Pilot (git `restructure` at the latest commit, loaded 19:36, **not
+pushed**), viewer. Start the inbox watcher (the SessionStart hook's "already running" watcher may belong to a dead
+chat: start your own).
+- **Dive04:** clvl 27, 326 HP, AC ~77, idle in town, **18170 gold**, **max_depth 750 (trial)**. Scimitar of Westernesse (FA, SeeInv), Leather of
+  Resistance, Rings of Protection [+12] and [+10], Amulet of Resist Lightning (redundant: `gear` says so), Metal Cap
+  [3,+5], Gauntlets [2,+5]; Staff of Teleportation (6), 25 CCW, 21 Phase, 2 WoR, 3 Heroism; WIS drained. Debts 44 / 0.
+  Keeps now: the scimitar, the Leather of Resistance, the staff (the Architect removed the stale Main Gauche/Aspen
+  Staff keeps after m38).
+
+**Session 6 (the user: "45-min missions rotating Sonnet/Opus x medium/high for 5.5 hours; fix bugs and small
+improvements, no major breaking changes"):** m35-m42 run, all reports in `runs/pilot/dive04/reports/`, summary
+**`reports/2026-10-25-shadow-series-m35-m42.md`** (table, by-cell averages, all fixes, open items). Sonnet high best
+(87.2, 62.5 XP/dmin), Opus dearer and no better -- confounded (the Pilot changed between missions, n=2). One close
+call (m41 afraid; fixed). Brief template: the m42 Agent prompt (state + `gear` line + the verdict list); wrap-up per
+mission: `mission end`, `tokens.py`, `scorecard.py --table`, report, complaints.
+**Advisor:** reviewed the 19 estimates (memo to_architect 10-25 shadow-review): its pricing caused all 6
+disagreements; options_sim **2026-10-25d** (XP_PER_GOLD 1.0 kept -- it briefly set 0.2, then restored the user's
+value; staff/scroll 250 g; afraid rule; MIN_GAIN 50) agrees 17/19. Loaded at 19:36.
+
+**Done after the series (the user: "push it, and build the hard-fight estimator"):** pushed (`restructure` 7a18f03);
+**shadow mode at the start of hard fights** (`hard_fight_shadow`: berserk_tick's test, once per fight, options fight /
+speed / berserk / speed+berserk / phase, rules label berserk|fight; records `trigger: hard_fight`; scorecard `estHF`),
+loaded ~19:50; Advisor told (to_advisor 10-25 hard-fight-shadow). Dive04 rarely carries Speed/Berserk, so most
+hard-fight records will compare fight/phase only -- stocking Speed is a kit decision for the user. The Advisor
+(to_architect 10-25 hard-fight-kit): found Speed pays at the start of hard fights (gain up to a ~200 g price), not at
+3000 -- but the Black Market price seen was 383 (m40); its re-run at 383 (to_architect 10-25 speed-383): Speed first
+beats the rules in 3 of 4 replays, Speed+Berserk in 4 of 4; break-even ~500 g -> a 1-2 Speed kit line (cap ~450 g)
+pays, if quaffed at the start of hard fights.
+Slope rechecked (to_architect speed-slope: the rules drink the same Speed later, so price bites on ~0.2 extra potion).
+**The user then: "set XP_PER_GOLD rolling, and build both Speed changes" -- built, loaded, pushed (643465e):**
+`xp_per_gold()` (XP / gold found+sold over the last 30 active 10-min buckets, rates.json, seeded 0.41 from the
+series; fed to the estimator per snapshot; shown by `gear`); kits B/C keep 2 Potions of Speed (Black Market, cap
+450); `speed_start_tick` quaffs a carried Speed at a hard fight's start. Advisor asked to mirror it in base_policy
+(to_advisor 10-25 speed-built). -> options_sim **2026-10-25e** (to_architect policy-25e): base_policy quaffs Speed then
+Berserk at a hard fight's start, PRICE speed 400, the module XP_PER_GOLD only a fallback; with the rules doing it,
+choose() keeps the rules in all 5 replays at 0.41. Loaded (Pilot restarted ~22:0x).
+**Navigator tools (the user: "build 4, 5 and 6" of my empowerment list; 5512cdc, loaded, pushed):** `why [HH:MM[:SS]]`
+(the decision log around the last escape/emergency/trip end: HP, monsters, timeline; a trip ending in the Pilot's
+escape now names its trigger); `prep` (the planning report: character, gear review, plan town forecast, affordable
+shop stock, XP by depth -- tracked in rates.json "depth", seeded from m35-m42: 600 ft 31, 650 ft 54, 700 ft 125
+XP/min over 14 min -- XP per gold, standing orders); **`github/tools/pilot/FIELD-NOTES.md`** (lessons from m24-m42).
+HANDBOOK loop step 0 "plan first" and .claude/agents/navigator.md (FIELD-NOTES in its sources, prep in its loop).
+**Architect's routine from now on:** after each mission, add the mission's lessons to FIELD-NOTES.md (newest first,
+short, with the mission number) alongside the report; briefs start with "plan first: `prep`, FIELD-NOTES.md".
+Not built (the user chose 4-6 of 7): executable standing orders, an item-review queue, dungeon pack control.
+**Depth (the user, 10-25 late): `max_depth` 750 -- a trial for 2-3 missions, trips 650-750**; then 800-850 if the
+lowest HP and close calls hold (650 ft: lowest 36-80%, 1 close call in 8). 1000 ft waits for resist poison (Air hound
+packs) or clvl ~30; resist confusion matters from 800 ft (Umber hulks, Hummerhorns). Briefs must say "max_depth 750".
+Also set the stale `free_action` order to yes (the sheet's flags win once read; the order is the fallback).
+**Checkpoint + Haiku trial (the user, 10-25 23:13):** `tools/harness/charsave.sh save Dive04 dive04-pre-m43` (savefile
++ Pilot state incl. rates/recall -> runs/setpieces/saves/dive04-pre-m43/); m43 = Haiku at LOW effort, 45 min, the
+standard brief with max_depth 750. **On death or a permanently bad outcome: `charsave.sh restore Dive04
+dive04-pre-m43`** (server-wide state -- uniques killed, shop stock, levels -- isn't rolled back).
+**Who acted (the user, 10-25 23:2x; a654037, hot-swapped into m43 at 23:29:48 at 750 ft, viewer restarted):** every
+act/goal record has `by` = pilot | plan | nav | arch; the viewer shows NAV>/ARCH> commands (queries left out) and
+[P]/[plan]/[N]/[A] tags with a legend; `why` shows them. Records before 23:29:52 have no `by`.
+**m43 (Haiku low, 68.8 XP/dmin, $0.019) and the user's m43 notes, fixed (c218514, da5d277, loaded 23:53):** unfelt gear
+valued by apply_magic's odds; staffs aren't kit (CLW staffs sold), rod-duplicate staffs sold; Restore drunk at a quiet
+moment; blindness cured when it matters; engage_tick (fight a killable monster a few steps off, never over flee/
+danger/low HP); `ask`/`answer` (asks.jsonl, 1 per 5 min, 4/h; **the Architect watches asks.jsonl during missions
+and answers with `pilotctl answer ID TEXT`**); `price`; buy specs keep [..] commas; 'Staffs' valued; Haiku prices
+in tokens.py. **The user then: run low-effort Haiku missions until 01:30** -- m44 from 23:53.
+Hot-swap gotchas: the swap loses the in-memory mission label -> `mission end mNN` by name; and a trip's
+"special level: find stairs first" mode (m45 00:33: at 700 ft it went back to plain exploring) -- worth persisting.
+m44 (Haiku low): 73.2 XP/dmin, $0.017, Nar slain; its `time>00:26` at 23:54 held at once (string compare) -> fixed
+(40449f1); live check of the m43 fixes: engage 46x, floor junk 23x (re-sent on empty squares -> once per sighting),
+blind cures 16x vs re-blinding Light hounds (-> capped at 2 in 30 s) (37d5601, hot-swapped into m45 00:33).
+**Haiku low runs done (the user: until 01:30): m43 68.8, m44 73.2, m45 77.6 XP/dmin at $0.014-0.019 each**, 0 close
+calls, no deaths (checkpoint dive04-pre-m43 never needed). Dive04 now: clvl 28, 340 HP, 24901 gold, Battle Axe of
+Westernesse (FA, SI) wielded, Scimitar of Westernesse in the pack, max_depth 750. Open from m45: a plan 'dive' goal
+stalled ~8 min on a quiet level (the quiet rule didn't fire); a Ring of Strength (+2) sold right after identify
+(STR rings vs Protection rings for a warrior short of blows); the hot-swap loses the special-level mode.
+**Waiting on the user:** (2) the Advisor's MIN_GAIN 50 floor (its own addition); (3) the per-monster asleep flag (tool-client `look` cycling the server's
+look mode, ", asleep" in xtra2.c:3371; ~40 lines C + rebuild + ~60 Pilot) -- proposed, not built; (4) a fight-vs-flee
+rule for a fast band with far stairs (m35).
+**Open (not yet fixed):** plan town leaves unidentified junk in the pack when the identify budget doesn't cover it
+(full pack on arrival, m42); an escape-recall plan end gives no reason in the report; thieves reach us (m41 -1590);
+the pack fills ~10 min into long trips; `Weapons: none` after town sales (display); L3's BLIND half; the structures
+lattice (CENTRE_X step 33 only with dungeon_align on -- a player option on live servers, so left as is).
+
+### ARCHITECT HANDOFF 2026-10-25 (session 5; history -- read the session-6 section above first)
 
 **Where we are (end of session 5, 2026-10-25 ~13:15).** The chat ended, not the job: SGE job 8268425 on scc-pc4 runs to
 **Thu 10-29 09:47**, so a new chat in it finds everything running:

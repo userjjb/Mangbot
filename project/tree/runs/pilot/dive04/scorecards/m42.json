@@ -1,0 +1,199 @@
+{
+ "label": "m42",
+ "nav_model": "sonnet",
+ "effort": "high",
+ "report": "compact",
+ "start": "2026-10-25 18:54",
+ "end": "2026-10-25 19:36",
+ "minutes": 42.0,
+ "notes": "shadow-mode series 8 (last): 45 min, Sonnet high; 14225 gold, WoR 2; afraid-teleport and Heroism kit loaded",
+ "tokens": {
+  "turns": 22,
+  "input": 44,
+  "output": 7915,
+  "cache_read": 602555,
+  "cache_write": 41024,
+  "write_5m": 41024,
+  "write_1h": 0,
+  "model": "claude-sonnet-5-5",
+  "final_usage_turns": 22,
+  "usd": 0.242,
+  "transcript": "agent-a3a229accb54f52e1.jsonl"
+ },
+ "estimator": {
+  "n": 7,
+  "compared": 7,
+  "agree": 4,
+  "in_time_turn": 7,
+  "before_next_act": 7,
+  "skipped": 0,
+  "compute_max_s": 0.165,
+  "disagreements": [
+   [
+    "teleport",
+    "ccw",
+    "+873 XP net of gold vs rules (SE 85), both safe"
+   ],
+   [
+    "fight",
+    "ccw",
+    "rules unsafe (P near death 0.00); ccw safe (0.00)"
+   ],
+   [
+    "cure",
+    "fight",
+    "+134 XP net of gold vs rules (SE 33), both safe"
+   ]
+  ],
+  "hard_n": 0,
+  "hard_compared": 0,
+  "hard_agree": 0,
+  "hard_choices": {}
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   27,
+   27
+  ],
+  "exp_gain": 2085,
+  "gold": [
+   14225,
+   18170
+  ],
+  "gold_change": 3945,
+  "max_depth_ft": 650
+ },
+ "B": {
+  "dungeon_min": 33.3,
+  "town_min": 8.1,
+  "exp_per_dmin": 62.5,
+  "levels_per_dhour": 0.34,
+  "gold_found": 1428,
+  "gold_found_per_dmin": 42.8,
+  "time_budget_min": {
+   "exploring": 16.9,
+   "fighting": 12.0,
+   "town_other": 5.0,
+   "travel_dive": 3.6,
+   "town_no_goal": 1.8,
+   "town_idle_end": 1.3,
+   "escaping": 0.6,
+   "recall_wait": 0.4,
+   "resting": 0.2,
+   "stuck_looping": 0.1,
+   "no_goal_dungeon": 0.0
+  },
+  "navigator_wait_pct": 4
+ },
+ "C": {
+  "lowest_hp": [
+   151,
+   336,
+   45,
+   "19:18:37"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 1,
+  "emergency_episodes": 1,
+  "emergency_alerts": 7,
+  "phase": 0,
+  "wor_escape": 1,
+  "wor_travel": 3,
+  "stairs_flee": 1,
+  "teleport": 0,
+  "cures_quaffed": 2,
+  "escape_records": 6,
+  "recalls_landed": 4
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 72,
+  "loot_abandoned_est": 2145,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 0,
+  "total": 2217,
+  "sales": 19,
+  "sales_valued": 7,
+  "worst_sales": [],
+  "left_behind": [
+   "Small wooden chest",
+   "Rounded Pebbles (1d2) (x18)",
+   "Lance (2d8)",
+   "Sabre (1d7)",
+   "Scimitar (2d5)",
+   "Pair of Hard Leather Boots [3]",
+   "Metal Cap [3]",
+   "Hard Leather Armour [6]",
+   "Brass Lantern (with 4493 turns of light)",
+   "Ring of Resist Cold"
+  ],
+  "irreplaceable": [
+   "Ring of Resist Cold",
+   "a Ring of Resist Cold",
+   "a Ring of Resist Fire",
+   "an Amulet of Resist Lightning",
+   "left a Ring of Resist Cold (~112): pack full and nothing cheaper to make room with"
+  ]
+ },
+ "E": {
+  "reports": 14,
+  "commands": 28,
+  "commands_per_min": 1.0,
+  "report_to_action_med_s": 3.8,
+  "report_to_action_p90_s": 4.3,
+  "reports_without_command_pct": 43,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 1,
+  "report_chars": 53677,
+  "order_report_age_med_s": 0.2,
+  "order_report_age_p90_s": 37.7
+ },
+ "F": {
+  "audit_diffs": 1,
+  "audit_checks": 85,
+  "perception_gaps": 5,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.1,
+  "runs_sent": 1142,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Priest": 113,
+  "Ogre": 89,
+  "Umber hulk": 56,
+  "Master yeek": 56,
+  "Hill orc": 41,
+  "Panther": 36,
+  "Dark elven mage": 35,
+  "Griffon": 35
+ },
+ "alerts": {
+  "tactic": 61,
+  "lost": 5,
+  "goal_done": 2,
+  "plan_done": 2,
+  "stat_drained": 2,
+  "parked": 1,
+  "started": 1
+ },
+ "plan_news": {
+  "unseen_attacker": 23,
+  "goal_done": 16,
+  "plan": 10,
+  "interesting_item": 7,
+  "emergency": 7,
+  "fearer": 6,
+  "drainer": 4,
+  "thief": 3,
+  "pack_full": 3,
+  "fight_going_badly": 3,
+  "breeders": 2,
+  "goal_failed": 2
+ }
+}

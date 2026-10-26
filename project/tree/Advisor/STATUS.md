@@ -37,7 +37,9 @@ Architect builds everything else.
    the 4 rule fixes + 21x21 map windows in emergency records. **Shadow mode ON (10-25):** the Pilot imports
    `data/estimator/options_sim.py` LIVE (shadow.py -> choose(p, team, n=40)) — treat it as an interface: keep choose()'s signature,
    keep base_policy = pilot.py escape()/berserk_tick/fear_cure (POLICY_VERSION), edit via a copy + mv, and tell the Architect
-   before changes. Next: review `estimator` records in decisions.jsonl from m35 on; XP_PER_GOLD knob offered to the user.
+   before changes. m35-m41 reviewed (19 records; disagreements were my zero staff price): now POLICY_VERSION 2026-10-25d, XP_PER_GOLD 1.0
+   (THE USER'S DECISION — don't change), MIN_GAIN 50 (mine; offered to the user) -> 17/19 agree. Hard-fight shadow live
+   (trigger: hard_fight). options_sim now 25e (speed_start_tick mirrored, PRICE speed 400; XP_PER_GOLD rolling, set by the Pilot per snapshot). Speed value (speed-slope memo): drinking a carried one at the start pays (break-even 350-1600 g); buying pays on XP only below ~200-250 g at XP_PER_GOLD 1 (safety not counted). Script data/estimator/speed_value.py. Review estimator records of new missions. (`to_architect/2026-10-25-shadow-review.md`); proposed running it at the start of hard fights.
 5b. **m27** (Opus, kit forged to m26's start, Pilot after m26 fixes): first same-Pilot Opus vs Sonnet comparison; score it vs m26 when done.
    Arrival feelings now logged (`arrival_feeling` in decisions; `feeling:` in dump headers): later, measure P(pit/nest | special) on scummed levels.
 5c. Next rulebook build: add constants.csv rows for Hero/Berserk (to_h +12/+24, AC -10, mhp +10/+30 rescaled, res_fear),

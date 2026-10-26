@@ -49,6 +49,11 @@
   "kind": "Mushroom of Confusion",
   "source": "Dive04 mission 14 (sold unknown)"
  },
+ "Blue Potion": {
+  "junk": false,
+  "kind": "Potion of Enlightenment",
+  "source": "sold in a shop"
+ },
  "Blue Speckled Potion": {
   "junk": true,
   "kind": "Potion of Sleep",
@@ -119,6 +124,16 @@
   "kind": "Ring of Feather Falling",
   "source": "Advisor L_items (Dive03 09-27 12:07:32)"
  },
+ "Dark Red Potion": {
+  "junk": true,
+  "kind": "Potion of Lose Memories",
+  "source": "identified"
+ },
+ "Diamond Ring": {
+  "junk": false,
+  "kind": "Ring of Lightning",
+  "source": "identified"
+ },
  "Dogwood Staff": {
   "junk": false,
   "kind": "Staff of Perception",
@@ -179,6 +194,11 @@
   "kind": "Staff of Haste Monsters",
   "source": "identified"
  },
+ "Ivory Wand": {
+  "junk": true,
+  "kind": "Wand of Clone Monster",
+  "source": "identified"
+ },
  "Lead Wand": {
   "junk": true,
   "kind": "Wand of Heal Monster",
@@ -232,6 +252,11 @@
  "Oak Staff": {
   "junk": true,
   "kind": "Staff of Summoning",
+  "source": "identified"
+ },
+ "Opal Ring": {
+  "junk": false,
+  "kind": "Ring of Strength",
   "source": "identified"
  },
  "Orange Speckled Potion": {
@@ -359,6 +384,11 @@
   "kind": "Scroll of Trap Detection",
   "source": "Advisor L_items (Dive03 09-27 12:47:27)"
  },
+ "Scroll titled \"nin nisish\"": {
+  "junk": false,
+  "kind": "Scroll of Trap/Door Destruction",
+  "source": "sold in a shop"
+ },
  "Scroll titled \"ornta prok\"": {
   "junk": false,
   "kind": "Scroll of Magic Mapping",
@@ -399,6 +429,16 @@
   "kind": "Staff of *Destruction*",
   "source": "identified"
  },
+ "Silver-Plated Wand": {
+  "junk": false,
+  "kind": "Wand of Scare Monster",
+  "source": "identified"
+ },
+ "Spruce Staff": {
+  "junk": false,
+  "kind": "Staff of Detect Evil",
+  "source": "identified"
+ },
  "Steel-Plated Wand": {
   "junk": false,
   "kind": "Wand of Confuse Monster",
@@ -408,6 +448,11 @@
   "junk": false,
   "kind": "Potion of Restore Dexterity",
   "source": "identified or used"
+ },
+ "Teak Staff": {
+  "junk": false,
+  "kind": "Staff of Power",
+  "source": "identified"
  },
  "Turquoise Ring": {
   "junk": true,
@@ -437,6 +482,11 @@
  "Zinc Rod": {
   "junk": false,
   "kind": "Rod of Acid Balls",
+  "source": "identified"
+ },
+ "Zinc Wand": {
+  "junk": false,
+  "kind": "Wand of Stone to Mud",
   "source": "identified"
  },
  "Zirconium Wand": {

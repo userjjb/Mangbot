@@ -1,0 +1,175 @@
+{
+ "label": "m40",
+ "nav_model": "opus",
+ "effort": "high",
+ "report": "compact",
+ "start": "2026-10-25 17:35",
+ "end": "2026-10-25 18:16",
+ "minutes": 41.0,
+ "notes": "shadow-mode series 6: 45 min, Opus high; 13790 gold, WoR 2, clvl 27; lantern fix and dive-locate fix loaded",
+ "tokens": {
+  "turns": 34,
+  "input": 68,
+  "output": 12533,
+  "cache_read": 1172185,
+  "cache_write": 54754,
+  "write_5m": 54754,
+  "write_1h": 0,
+  "model": "claude-opus-5-5",
+  "final_usage_turns": 34,
+  "usd": 0.759,
+  "transcript": "agent-a4ba6b596fd05dc16.jsonl"
+ },
+ "estimator": {
+  "n": 1,
+  "compared": 1,
+  "agree": 1,
+  "in_time_turn": 1,
+  "before_next_act": 1,
+  "skipped": 0,
+  "compute_max_s": 0.395,
+  "disagreements": []
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   27,
+   27
+  ],
+  "exp_gain": 1296,
+  "gold": [
+   13790,
+   16428
+  ],
+  "gold_change": 2638,
+  "max_depth_ft": 650
+ },
+ "B": {
+  "dungeon_min": 34.4,
+  "town_min": 6.4,
+  "exp_per_dmin": 37.7,
+  "levels_per_dhour": 0.21,
+  "gold_found": 1677,
+  "gold_found_per_dmin": 48.8,
+  "time_budget_min": {
+   "exploring": 14.9,
+   "fighting": 13.9,
+   "travel_dive": 4.9,
+   "town_other": 2.3,
+   "town_no_goal": 1.8,
+   "town_idle_end": 1.7,
+   "recall_wait": 0.9,
+   "escaping": 0.3,
+   "town_shopping": 0.1,
+   "no_goal_dungeon": 0.1,
+   "resting": 0.0,
+   "travel_goto": 0.0
+  },
+  "navigator_wait_pct": 5
+ },
+ "C": {
+  "lowest_hp": [
+   261,
+   326,
+   80,
+   "17:57:26"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 1,
+  "emergency_alerts": 1,
+  "phase": 0,
+  "wor_escape": 1,
+  "wor_travel": 5,
+  "stairs_flee": 0,
+  "teleport": 1,
+  "cures_quaffed": 0,
+  "escape_records": 8,
+  "recalls_landed": 6
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 310,
+  "loot_abandoned_est": 687,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 0,
+  "total": 997,
+  "sales": 9,
+  "sales_valued": 3,
+  "worst_sales": [],
+  "left_behind": [
+   "Slimy Mushroom",
+   "Violet Mushroom",
+   "Iron Spikes (x18)",
+   "Rounded Pebbles (1d2) (x22)",
+   "Small Metal Shield [3]",
+   "Soft Leather Armour [4]",
+   "Wand of Confuse Monster",
+   "Scroll of Detect Invisible",
+   "Scroll of Monster Confusion",
+   "Ring of Aggravate Monster"
+  ],
+  "irreplaceable": [
+   "Amulet of Resist Acid",
+   "a Ring of Resist Fire"
+  ]
+ },
+ "E": {
+  "reports": 16,
+  "commands": 37,
+  "commands_per_min": 1.3,
+  "report_to_action_med_s": 10.9,
+  "report_to_action_p90_s": 37.8,
+  "reports_without_command_pct": 38,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 3,
+  "report_chars": 48745,
+  "order_report_age_med_s": 9.8,
+  "order_report_age_p90_s": 117.1
+ },
+ "F": {
+  "audit_diffs": 1,
+  "audit_checks": 84,
+  "perception_gaps": 2,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 1228,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Giant fruit fly": 142,
+  "Black orc": 99,
+  "Novice ranger": 43,
+  "Half-orc": 33,
+  "Baby blue dragon": 32,
+  "Novice priest": 26,
+  "Ogre": 18,
+  "Novice paladin": 16
+ },
+ "alerts": {
+  "tactic": 28,
+  "goal_done": 4,
+  "plan_done": 3,
+  "parked": 1,
+  "started": 1
+ },
+ "plan_news": {
+  "unseen_attacker": 19,
+  "goal_done": 18,
+  "interesting_item": 8,
+  "plan": 7,
+  "drainer": 3,
+  "structure": 2,
+  "stuck": 2,
+  "band": 1,
+  "breeders": 1,
+  "goal_failed": 1,
+  "emergency": 1,
+  "thief": 1
+ }
+}

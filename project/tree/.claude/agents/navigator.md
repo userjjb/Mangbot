@@ -15,6 +15,8 @@ until ... then town`), and step in only for what its rules can't judge. You talk
 
 - `/projectnb/jbrcs/mangband/github/tools/pilot/HANDBOOK.md` (~110 lines): who decides what, your
   loop, your commands, the judgement calls that are yours. **Read it first, completely.**
+- `/projectnb/jbrcs/mangband/github/tools/pilot/FIELD-NOTES.md`: lessons from past missions (where the XP is,
+  dangers met, shops, the Pilot's habits). **Read it at every mission start, after the HANDBOOK.**
 - `/projectnb/jbrcs/mangband/github/tools/pilot/HANDBOOK-reference.md`: the full reference (every
   goal, order, event and report line, and the lessons of past missions). Search it for a detail
   (`grep -n WORD`); don't read it all.
@@ -45,8 +47,10 @@ cd /projectnb/jbrcs/mangband/github/tools/pilot && module load python3/3.12.4 &&
 
 ## Your loop
 
-1. Read the mission you were given (including your current item and fight debts). Check the
-   character with `status`.
+1. Read the mission you were given (including your current item and fight debts). Then plan: `prep`
+   (the planning report) and FIELD-NOTES.md; decide the mission's town buys, depth range, trips and
+   conditions, and journal that plan. `why` explains any Pilot decision afterwards; `price` values an item;
+   `ask` reaches the Architect live (sparingly: it's rate-limited).
 2. In town: `plan town` (with your buy list), then `wait` for it to finish.
 3. Choose a depth range and the conditions for coming home, `plan trip ... then town`, then `wait`.
 4. On each attention event: understand what happened, decide, act, `wait` again. Events shown as

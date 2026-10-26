@@ -1,0 +1,168 @@
+{
+ "label": "m35",
+ "nav_model": "sonnet",
+ "effort": "medium",
+ "report": "compact",
+ "start": "2026-10-25 14:10",
+ "end": "2026-10-25 14:46",
+ "minutes": 36.0,
+ "notes": "shadow-mode series 1 (the user, 10-25 session 6): 45 min, rotating S-med, O-high, O-med, S-high; 2998 gold, WoR 2; armour-ability fix in",
+ "tokens": {
+  "turns": 18,
+  "input": 36,
+  "output": 4971,
+  "cache_read": 413236,
+  "cache_write": 31583,
+  "write_5m": 31583,
+  "write_1h": 0,
+  "model": "claude-sonnet-5-5",
+  "final_usage_turns": 18,
+  "usd": 0.17,
+  "transcript": "agent-af7253a80cadc36b5.jsonl"
+ },
+ "estimator": {
+  "n": 1,
+  "compared": 1,
+  "agree": 1,
+  "in_time_turn": 1,
+  "before_next_act": 1,
+  "skipped": 0,
+  "compute_max_s": 0.262,
+  "disagreements": []
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   25,
+   26
+  ],
+  "exp_gain": 1394,
+  "gold": [
+   2998,
+   5455
+  ],
+  "gold_change": 2457,
+  "max_depth_ft": 650
+ },
+ "B": {
+  "dungeon_min": 33.1,
+  "town_min": 2.8,
+  "exp_per_dmin": 42.1,
+  "levels_per_dhour": 0.41,
+  "gold_found": 1042,
+  "gold_found_per_dmin": 31.5,
+  "time_budget_min": {
+   "exploring": 20.1,
+   "fighting": 9.8,
+   "travel_dive": 2.4,
+   "town_other": 1.1,
+   "town_no_goal": 0.8,
+   "resting": 0.7,
+   "escaping": 0.6,
+   "recall_wait": 0.4,
+   "no_goal_dungeon": 0.1
+  },
+  "navigator_wait_pct": 2
+ },
+ "C": {
+  "lowest_hp": [
+   155,
+   310,
+   50,
+   "14:25:27"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 1,
+  "emergency_alerts": 1,
+  "phase": 0,
+  "wor_escape": 2,
+  "wor_travel": 2,
+  "stairs_flee": 0,
+  "teleport": 0,
+  "cures_quaffed": 4,
+  "escape_records": 4,
+  "recalls_landed": 4
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 0,
+  "loot_abandoned_est": 784,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 0,
+  "total": 784,
+  "sales": 9,
+  "sales_valued": 4,
+  "worst_sales": [],
+  "left_behind": [
+   "Trident (1d8)",
+   "Ring of Aggravate Monster",
+   "Broad Sword (2d5)",
+   "Scroll titled \"nin nisish\"",
+   "Scroll titled \"odiv san doki\"",
+   "Rounded Pebbles (1d2) (x24)",
+   "Short Bow (x2)",
+   "Set of Gauntlets [2]",
+   "Dwarf Skeleton",
+   "Potion of Blindness"
+  ],
+  "irreplaceable": []
+ },
+ "E": {
+  "reports": 13,
+  "commands": 14,
+  "commands_per_min": 0.8,
+  "report_to_action_med_s": 3.2,
+  "report_to_action_p90_s": 3.4,
+  "reports_without_command_pct": 62,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 0,
+  "report_chars": 30361,
+  "order_report_age_med_s": 3.0,
+  "order_report_age_p90_s": 3.4
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 75,
+  "perception_gaps": 2,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 1340,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Baby bronze dragon": 336,
+  "Black orc": 182,
+  "Baby green dragon": 54,
+  "Ogre": 52,
+  "Clear hound": 51,
+  "Tiger": 44,
+  "Orc shaman": 43,
+  "Priest": 29
+ },
+ "alerts": {
+  "tactic": 25,
+  "goal_done": 2,
+  "plan_done": 2,
+  "fight_going_badly": 1
+ },
+ "plan_news": {
+  "unseen_attacker": 22,
+  "goal_done": 11,
+  "interesting_item": 7,
+  "plan": 6,
+  "fearer": 2,
+  "stuck": 2,
+  "fight_going_badly": 2,
+  "band": 2,
+  "drainer": 2,
+  "breeders": 1,
+  "goal_failed": 1,
+  "emergency": 1
+ }
+}

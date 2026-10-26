@@ -1,0 +1,203 @@
+{
+ "label": "m41",
+ "nav_model": "opus",
+ "effort": "medium",
+ "report": "compact",
+ "start": "2026-10-25 18:16",
+ "end": "2026-10-25 18:54",
+ "minutes": 38.0,
+ "notes": "shadow-mode series 7 (last): 45 min, Opus medium; 16428 gold, WoR 2; recall above HI, breeder swarm, status light loaded",
+ "tokens": {
+  "turns": 31,
+  "input": 62,
+  "output": 10138,
+  "cache_read": 957733,
+  "cache_write": 41186,
+  "write_5m": 41186,
+  "write_1h": 0,
+  "model": "claude-opus-5-5",
+  "final_usage_turns": 31,
+  "usd": 0.6,
+  "transcript": "agent-a38fbaa07686d0741.jsonl"
+ },
+ "estimator": {
+  "n": 9,
+  "compared": 6,
+  "agree": 2,
+  "in_time_turn": 9,
+  "before_next_act": 9,
+  "skipped": 0,
+  "compute_max_s": 0.385,
+  "disagreements": [
+   [
+    "phase",
+    "staff",
+    "+91 XP net of gold vs rules (SE 18), both safe"
+   ],
+   [
+    "cure",
+    "stairs",
+    "+155 XP net of gold vs rules (SE 9), both safe"
+   ],
+   [
+    "phase",
+    "staff",
+    "+81 XP net of gold vs rules (SE 13), both safe"
+   ],
+   [
+    "recall+phase",
+    "staff",
+    "+369 XP net of gold vs rules (SE 54), both safe"
+   ]
+  ],
+  "hard_n": 0,
+  "hard_compared": 0,
+  "hard_agree": 0,
+  "hard_choices": {}
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   27,
+   27
+  ],
+  "exp_gain": 1252,
+  "gold": [
+   16428,
+   14225
+  ],
+  "gold_change": -2203,
+  "max_depth_ft": 650
+ },
+ "B": {
+  "dungeon_min": 32.5,
+  "town_min": 5.2,
+  "exp_per_dmin": 38.6,
+  "levels_per_dhour": 0.21,
+  "gold_found": 527,
+  "gold_found_per_dmin": 16.2,
+  "time_budget_min": {
+   "exploring": 17.2,
+   "fighting": 9.2,
+   "travel_dive": 2.9,
+   "escaping": 2.8,
+   "town_other": 2.5,
+   "town_no_goal": 1.1,
+   "town_idle_end": 0.9,
+   "recall_wait": 0.7,
+   "resting": 0.2,
+   "no_goal_dungeon": 0.1
+  },
+  "navigator_wait_pct": 3
+ },
+ "C": {
+  "lowest_hp": [
+   116,
+   326,
+   36,
+   "18:26:23"
+  ],
+  "close_calls_lt40": 1,
+  "near_calls_40_50": 1,
+  "emergency_episodes": 3,
+  "emergency_alerts": 10,
+  "phase": 3,
+  "wor_escape": 2,
+  "wor_travel": 2,
+  "stairs_flee": 2,
+  "teleport": 0,
+  "cures_quaffed": 7,
+  "escape_records": 9,
+  "recalls_landed": 4
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 53,
+  "loot_abandoned_est": 1782,
+  "stolen": 1669,
+  "destroyed_by_monsters_est": 6,
+  "total": 3510,
+  "sales": 9,
+  "sales_valued": 1,
+  "worst_sales": [],
+  "left_behind": [
+   "Amulet of Resist Lightning",
+   "Amulet of Resist Lightning",
+   "Cutlass (1d7)",
+   "Pair of Soft Leather Boots [2]",
+   "Broken Sword (1d2)",
+   "Wand of Slow Monster",
+   "Scroll of Teleportation",
+   "Scroll of Identify",
+   "Copper Wand",
+   "Grey Mushroom"
+  ],
+  "irreplaceable": [
+   "Amulet of Resist Lightning",
+   "Ring of Resist Fire",
+   "a Ring of Resist Fire",
+   "an Amulet of Resist Acid"
+  ]
+ },
+ "E": {
+  "reports": 15,
+  "commands": 30,
+  "commands_per_min": 1.2,
+  "report_to_action_med_s": 4.5,
+  "report_to_action_p90_s": 9.4,
+  "reports_without_command_pct": 40,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 2,
+  "report_chars": 47900,
+  "order_report_age_med_s": 4.4,
+  "order_report_age_p90_s": 68.4
+ },
+ "F": {
+  "audit_diffs": 2,
+  "audit_checks": 78,
+  "perception_gaps": 8,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 1236,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Half-orc": 158,
+  "Dark elven priest": 119,
+  "White wolf": 77,
+  "Giant tarantula": 50,
+  "Priest": 37,
+  "Master yeek": 30,
+  "Wolf": 22,
+  "Baby bronze dragon": 22
+ },
+ "alerts": {
+  "tactic": 28,
+  "lost": 4,
+  "goal_done": 3,
+  "plan_done": 2,
+  "parked": 1,
+  "started": 1,
+  "emergency_loop": 1,
+  "stat_drained": 1
+ },
+ "plan_news": {
+  "unseen_attacker": 22,
+  "goal_done": 13,
+  "plan": 10,
+  "emergency": 9,
+  "interesting_item": 6,
+  "fearer": 5,
+  "band": 3,
+  "thief": 2,
+  "drainer": 2,
+  "fight_going_badly": 1,
+  "goal_failed": 1,
+  "pack_full": 1
+ }
+}
