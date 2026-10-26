@@ -157,7 +157,8 @@ validation.
 - Unit cases (fixes 1 and 3): fled_stairs_refused_two_minutes_only, trip_level_state_survives_restart,
   trip_recalls_when_a_level_wont_let_go, mission_label_survives_restart (70 pass).
 - **Fled-stairs rule, explained to the user:** levels are freed when empty, unless static (another player there, or a
-  logout there); operations.md "Level persistence". Fresh level on the test server almost always.
+  logout there); operations.md "Level persistence". **The user: off on the test server** (no hold; kept only for a
+  level seen kept or the login level), the 2-minute hold (5 on a kept level) stays for `--live`.
 - **The gear evaluator (the user: "an evaluator process that can compare A or B or C gear decisions, simulation one
   component ... an item slot evaluator now, a loadout optimizer as a todo"):** `github/tools/pilot/geareval.py`,
   design + limits + the optimizer TODO in **`design_gear.md`**. Components: rules (required abilities), static (a
@@ -176,7 +177,7 @@ validation.
   **Advisor's 2nd review (to_architect gear-review-2), built:** rest turns in game time (no /4.5: HP lost was
   under-weighted), the tail gate = bootstrap 95% interval of the worst-5% difference. Now: Ring of Damage +1.1% (no),
   Ring of Strength -6% and less safe, Metal Scale Mail +21%. **`geareval.TRADE_RESISTS` = False** (automatic swaps keep
-  every resist) until the user decides; `gearcmp` shows the trades.
+  every resist): **the user chose B (10-26)** -- keep it so; `gearcmp` shows the trades for the user/Navigator.
 - Still open: the older list below. Verify live: the
   first `couldn't leave` recall, a hot-swap on a special level, `mission end` without a label after a swap.
 

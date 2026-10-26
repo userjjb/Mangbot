@@ -151,8 +151,9 @@ into the Temple (4), but everything it carried is dropped where it died.
   level with nobody in it unstatics at random, 1 in `LEVEL_UNSTATIC_CHANCE x (depth+5)/5` per check
   (30 here: 1 in ~119 at 750 ft), so it can last a long time. Arriving on a kept level puts you on a
   fixed square (`level_up_y/x` coming up, `level_down_y/x` going down: m25 landed on 33,24 each time).
-  Special levels (`check_special_level`) and the town are never freed. The Pilot's `Dive.FLED_HOLD`
-  (session 7) refuses the stairs back to a fled level 2 minutes only, for this reason.
+  Special levels (`check_special_level`) and the town are never freed. The Pilot's dive refuses the
+  stairs back to a fled level for `Dive.FLED_HOLD` (2 minutes) on a live server only; on the test server (one player)
+  not at all, unless the level is kept: one seen kept, or the one the Pilot logged in on (the user, 10-26).
 - Word of Recall: from town it goes to the deepest level ever reached, unless the scroll is
   inscribed `@R<feet>`. A logout during a pending recall reset that depth once.
 - The command queue: a walk sent while the character lacks energy waits on the server. A step
