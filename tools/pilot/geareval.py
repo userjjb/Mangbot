@@ -432,14 +432,17 @@ SIM_RES = {"RES_ACID": "res_acid", "RES_ELEC": "res_elec", "RES_FIRE": "res_fire
 # what the Pilot's automatic swaps may never lose: the abilities that gate escapes and fights (the Advisor, 10-26: the
 # elemental resists are simulated now and may be traded for a measured gain)
 NO_LOSS = {"FREE_ACT", "SEE_INVIS", "RES_BLIND", "RES_CONFU", "HOLD_LIFE"}
-# resting: regenhp (dungeon.c) heals mhp x 197 x 2 (resting) / 65536 + 1442 / 65536 HP a regen tick, about one tick a
-# player turn; the server's time bubble runs a rest ~4.5x faster than real time (the Pilot's time_factor records)
-REST_SPEEDUP = 4.5
+# whether the automatic swaps may trade the other resists for a measured gain: off until the user decides (10-26: a plain
+# Metal Scale Mail [38,+5] beat the Leather of Resistance by ~21% in the simulation)
+TRADE_RESISTS = False
+# resting: regenhp (dungeon.c:1245-1306) heals (mhp x 197 x 2 + 1442) / 65536 HP a block (one normal-speed player
+# turn of game time) while resting. Fight and rest turns are both game time (the Advisor, 10-26: an earlier /4.5 for
+# the time bubble mixed clocks and under-weighted HP lost -- the AC side of every comparison)
 
 
 def rest_turns(hp_lost, mhp):
-    """Player turns (in real time, a fight turn's worth) to rest back hp_lost."""
-    return hp_lost / ((mhp * 394 + 1442) / 65536) / REST_SPEEDUP if hp_lost > 0 else 0.0
+    """Blocks of resting to regain hp_lost."""
+    return hp_lost / ((mhp * 394 + 1442) / 65536) if hp_lost > 0 else 0.0
 
 
 def sim_player(d, ch, depth):
@@ -494,6 +497,23 @@ def summary(rows, xp_per_gold):
                 rest=rest / runs, xp=xp / runs, spent=spent / runs, p_near=sum(x <= NEAR_DEATH for x in lows) / runs,
                 p_dead=sum(r["dead"] for r in rows) / runs, low_mean=statistics.fmean(lows),
                 low_p10=lows[runs // 10], low_p5=lows[runs // 20], low_p1=lows[runs // 100])
+
+
+def tail_interval(rows_a, rows_b, q=0.05, boots=300, seed=11):
+    """The bootstrap 95% interval of B's q-quantile lowest HP less A's, resampling scenarios (paired: the same
+    scenario indices for both)."""
+    rng = random.Random(seed)
+    k = len(rows_a)
+
+    def quant(rows, idx):
+        v = sorted(x for i in idx for x in rows[i]["lows"])
+        return v[int(q * len(v))]
+    d = []
+    for _ in range(boots):
+        idx = [rng.randrange(k) for _ in range(k)]
+        d.append(quant(rows_b, idx) - quant(rows_a, idx))
+    d.sort()
+    return d[int(0.025 * boots)], d[int(0.975 * boots) - 1]
 
 
 def paired_gain(rows_a, rows_b, xp_per_gold):
@@ -572,9 +592,9 @@ def compare(ch, options, decisions=None, n=10, lo_ft=None, hi_ft=None, hard=True
         why = []
         if rules[k]["veto"]:
             why.append("loses " + ", ".join(rules[k]["veto"]))
-        elif no_loss and set(rules[k]["lost"]) & NO_LOSS:
-            why.append("loses " + ", ".join(label(f) for f in sorted(set(rules[k]["lost"]) & NO_LOSS)) +
-                       " (an automatic swap never does)")
+        elif no_loss and set(rules[k]["lost"]) & (NO_LOSS if TRADE_RESISTS else set(rules[k]["lost"])):
+            kept = sorted(set(rules[k]["lost"]) & NO_LOSS) if TRADE_RESISTS else rules[k]["lost"]
+            why.append("loses " + ", ".join(label(f) for f in kept) + " (an automatic swap never does)")
         if k != cur and d_slower(derived, cur, k):
             why.append(f"slower (speed {derived[k]['speed']:+d} vs {derived[cur]['speed']:+d}: the weight limit; "
                        "the simulator doesn't model speed)")
@@ -586,11 +606,13 @@ def compare(ch, options, decisions=None, n=10, lo_ft=None, hi_ft=None, hard=True
                 se = ((a["p_near"] * (1 - a["p_near"]) + b["p_near"] * (1 - b["p_near"])) / max(1, a["runs"])) ** 0.5
                 if b["p_near"] - a["p_near"] > max(0.005, 2 * se):
                     why.append(f"less safe ({s}: near death {b['p_near']:.1%} vs {a['p_near']:.1%})")
-                # (the tail: the worst 5% by 4 points of max HP, or the worst 1% by 8 -- the worst 1% of 500 one-seed
-                # fights is 5 fights: a 5-point rule ruled out the Ring of Damage on noise)
-                elif a["low_p5"] - b["low_p5"] > 0.04 or a["low_p1"] - b["low_p1"] > 0.08:
-                    why.append(f"less safe ({s}: worst 5% / 1% of fights end at {b['low_p5']:.0%} / {b['low_p1']:.0%} HP "
-                               f"vs {a['low_p5']:.0%} / {a['low_p1']:.0%})")
+                else:
+                    # (the tail: the worst 5% of fights' lowest HP, B less A, with a bootstrap 95% interval over the
+                    # scenarios -- the Advisor, 10-26: the data's own noise in place of fixed points)
+                    lo, hi = tail_interval(raw[s][cur], raw[s][k])
+                    if hi < 0:
+                        why.append(f"less safe ({s}: the worst 5% of fights end at {b['low_p5']:.0%} HP vs "
+                                   f"{a['low_p5']:.0%}; 95% interval {lo:+.1%} to {hi:+.1%})")
             gains[k] = _paired_gain_sets(raw, cur, k, xp_per_gold)
         notes[k] = why
     # the verdict: a change must beat the current gear by 3% and by 2 standard errors of the paired difference (the
