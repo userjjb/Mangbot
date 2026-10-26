@@ -1337,6 +1337,49 @@ def breeder_swarm_leaves():
     return ok, f"{fly.name}: {notes}"
 
 
+@case
+def hard_fight_shadow_once_per_fight():
+    """The user (10-25): the estimator also runs at the start of a hard fight (berserk_tick's test), choosing among
+    fight / speed / berserk / speed+berserk / phase; once per fight (a new set of adjacent monsters, not within 60 s of
+    the same set nor 20 s of the last). The rules' label: berserk when berserk_tick would quaff, else fight. Logged as
+    an estimator record with trigger hard_fight. Never acts."""
+    import time as _t
+    def make(pack, mons):
+        p = pilot(hp=300, worn=[("a Scimitar of Westernesse (2d5) (+9,+8) (+1)", 23, 130)], pack=pack, monsters=mons)
+        p.w.hp = [300, 326]
+        p.w.in_dungeon, p.w.depth, p.w.clvl = True, 12, 27
+        p.w.find = lambda chars: []
+        p.w.adjacent_monsters = lambda: [m for m in p.w.monsters if p.w.dist(m[:2]) == 1]
+        p.our_slowness = lambda: 1.0
+        p.mover = type("M", (), {"in_corridor": lambda self: False})()
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append(line)
+        p.logged = []
+        p.log = lambda kind, **kw: p.logged.append((kind, kw))
+        return p
+    kit = [("5 Potions of Cure Critical Wounds", 75), ("11 Scrolls of Phase Door", 70), ("2 Potions of Speed", 75),
+           ("a Potion of Berserk Strength", 75)]
+    ogre = next(r for r in sorted(RACES.values(), key=lambda r: (r.level, r.name)) if 22 <= r.level <= 30 and
+                "UNIQUE" not in r.flags and "NEVER_MOVE" not in r.flags)
+    a = make(kit, [(20, 21, ogre)])
+    first = a.hard_fight_shadow(P.gnow())
+    again = a.hard_fight_shadow(P.gnow() + 5)
+    for _ in range(80):
+        _t.sleep(0.1)
+        a.shadow_results()
+        if any(k == "estimator" for k, _ in a.logged):
+            break
+    rec = next((kw for k, kw in a.logged if k == "estimator"), {})
+    weak = make(kit, [(20, 21, BYNAME["cave orc"])])
+    none = weak.hard_fight_shadow(P.gnow())
+    ok = (first == "started" and again is None and none is None and a.cmds == [] and rec.get("trigger") == "hard_fight"
+          and rec.get("rules") == "berserk" and rec.get("options") == list(P.Pilot.HARD_FIGHT_OPTIONS)
+          and rec.get("choice") and not rec.get("error"))
+    return ok, (f"{ogre.name}: {first}, 5 s later {again}; a Cave orc: {none}; record: trigger {rec.get('trigger')}, rules "
+                f"{rec.get('rules')}, choice {rec.get('choice')!r} ({rec.get('why')}), {rec.get('compute_s')} s, "
+                f"error {rec.get('error')}")
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

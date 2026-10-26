@@ -59,7 +59,7 @@ class Shadow:
         t0 = time.time()
         try:
             team = [(n, d) for n, d in snap["team"] if n in self.sim.RACES]
-            choice, why, table = self.sim.choose(snap["p"], team, n=N)
+            choice, why, table = self.sim.choose(snap["p"], team, n=N, options=snap.get("options"))
             out = {"choice": choice, "why": why, "table": table[:6], "team": team}
         except Exception as e:
             out = {"error": repr(e)}

@@ -2874,6 +2874,7 @@ class Pilot:
             return True
         # 2a. Status cures, in combat only (out of combat, rest it off: the
         # user). Stun can become a knock-out; blind or confused can't read.
+        self.hard_fight_shadow(now)          # (never acts: the estimator's view of the fight's start)
         if self.berserk_tick(now):
             return True
         if self.status_tick(now, mons_near):
@@ -3548,9 +3549,10 @@ class Pilot:
                                      f"HP, two rounds)")
         return True
 
-    def shadow_decision(self, detail):
-        """Shadow mode (the user, 10-25): hand this emergency decision's state to the Advisor's estimator in the
-        background (shadow.py). Never waits, never acts on it. Returns 'started', 'skipped' (one running) or 'off'."""
+    def shadow_decision(self, detail, options=None, trigger="emergency", rules=None):
+        """Shadow mode (the user, 10-25): hand this decision's state to the Advisor's estimator in the background
+        (shadow.py): an emergency (all options), or the start of a hard fight (hard_fight_shadow: its own options).
+        Never waits, never acts on it. Returns 'started', 'skipped' (one running) or 'off'."""
         sh = self.__dict__.get("shadow_est")
         if sh is None:
             sh = self.shadow_est = shadow.Shadow()
@@ -3587,8 +3589,9 @@ class Pilot:
         # (and what the server's list names but the map doesn't show yet, 3 squares off: A2K's first emergency had
         # Khim in the list only, and the estimator played an empty fight)
         team += [(r.name, 3) for r in (w.listed_only() if hasattr(w, "listed_only") else [])]
-        snap = {"p": p, "team": team, "rules": shadow.rules_option(detail), "rules_detail": (detail or "")[:160],
-                "wall": time.time(), "factor": time_factor(), "speed": (w.ind.get("speed") or [0])[0] or 0}
+        snap = {"p": p, "team": team, "rules": rules or shadow.rules_option(detail), "rules_detail": (detail or "")[:160],
+                "wall": time.time(), "factor": time_factor(), "speed": (w.ind.get("speed") or [0])[0] or 0,
+                "options": list(options) if options else None, "trigger": trigger}
         return sh.submit(snap)
 
     def shadow_results(self):
@@ -3608,7 +3611,8 @@ class Pilot:
             before_next = nxt is None or r.get("done_wall", 0) <= nxt
             # (no monster the estimator knows: nothing to compare -- agree is None)
             agree = (r.get("choice") in ("rules", snap.get("rules"))) if r.get("team") else None
-            self.log("estimator", rules=snap.get("rules"), rules_detail=snap.get("rules_detail"),
+            self.log("estimator", trigger=snap.get("trigger", "emergency"), options=snap.get("options"),
+                     rules=snap.get("rules"), rules_detail=snap.get("rules_detail"),
                      choice=r.get("choice"), why=r.get("why"), agree=agree,
                      compute_s=r.get("compute_s"), turn_s=round(turn_s, 2), in_time_turn=in_turn,
                      before_next_act=before_next, next_act_after_s=round(nxt - snap["wall"], 2) if nxt else None,
@@ -4802,6 +4806,40 @@ class Pilot:
         pots = self.w.items(tval=TV_POTION)
         return next((i for n in ("Heroism", "Boldness", "Berserk") for i in pots if n in i["name"]), None)
 
+    def hard_fight(self):
+        """The adjacent mobile monsters and whether the fight is hard (berserk_tick's test): a unique, or a monster
+        within 5 levels of ours, adjacent; or two or more adjacent and HP under 75%."""
+        w = self.w
+        adj = [r for *_, r in w.adjacent_monsters() if "NEVER_MOVE" not in r.flags]
+        hard = any("UNIQUE" in r.flags or r.level >= w.clvl - 5 for r in adj) or (len(adj) >= 2 and w.hp_frac < 0.75)
+        return adj, bool(adj) and hard
+
+    HARD_FIGHT_OPTIONS = ("fight", "speed", "berserk", "speed+berserk", "phase")
+
+    def hard_fight_shadow(self, now):
+        """Shadow mode at the start of a hard fight (the user, 10-25, on the Advisor's shadow-review memo: its replays'
+        one consistent gain was Speed or Speed+Berserk quaffed at the start of hard fights, which the rules only quaff
+        in an emergency). Once per fight: a new set of adjacent monsters on this level, not within 60 s of the same set,
+        nor 20 s of the last. The rules' choice here is Berserk when berserk_tick would quaff it, else fighting on.
+        Never acts."""
+        w = self.w
+        if not w.in_dungeon or not w.pos:
+            return None
+        adj, hard = self.hard_fight()
+        if not hard:
+            return None
+        key = (w.level_t, frozenset(r.name for r in adj))
+        seen = self.__dict__.setdefault("hard_fight_seen", {})
+        if now - seen.get(key, -99.0) < 60 or now - self.__dict__.get("hard_fight_t", -99.0) < 20:
+            return None
+        seen[key], self.hard_fight_t = now, now
+        pot = any("Berserk" in i["name"] for i in w.items(tval=TV_POTION))
+        berserk = pot and not self.buff_on("shero") and waited(getattr(self, "berserk_t", 0), 30)
+        names = ", ".join(sorted({r.name for r in adj}))
+        return self.shadow_decision(f"hard fight with {names}: " + ("quaff Berserk" if berserk else "fighting on"),
+                                    options=self.HARD_FIGHT_OPTIONS, trigger="hard_fight",
+                                    rules="berserk" if berserk else "fight")
+
     def berserk_tick(self, now):
         """A Potion of Berserk Strength at the start of a hard melee fight (the user, 10-25: carried, never used):
         +30 max HP and 30 healed, +24 to-hit, no fear, -10 AC for 25-50 turns (use-obj.c, xtra1.c). Hard: a
@@ -4809,8 +4847,7 @@ class Pilot:
         w = self.w
         if not w.in_dungeon or self.buff_on("shero") or not waited(getattr(self, "berserk_t", 0), 30):
             return False
-        adj = [r for *_, r in w.adjacent_monsters() if "NEVER_MOVE" not in r.flags]
-        hard = any("UNIQUE" in r.flags or r.level >= w.clvl - 5 for r in adj) or (len(adj) >= 2 and w.hp_frac < 0.75)
+        adj, hard = self.hard_fight()
         pot = next((i for i in w.items(tval=TV_POTION) if "Berserk" in i["name"]), None)
         if not (adj and hard and pot):
             return False

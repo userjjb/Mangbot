@@ -193,7 +193,7 @@ def card(m):
          "notes": m.get("notes", ""), "tokens": m.get("tokens")}
     # shadow mode (2026-10-25): the estimator's answers beside the rules' emergency decisions
     est = [d for d in recs if d.get("kind") == "estimator"]
-    cmp_ = [d for d in est if d.get("agree") is not None]
+    cmp_ = [d for d in est if d.get("agree") is not None and d.get("trigger") != "hard_fight"]
     c["estimator"] = {"n": len(est), "compared": len(cmp_), "agree": sum(1 for d in cmp_ if d["agree"]),
                       "in_time_turn": sum(1 for d in est if d.get("in_time_turn")),
                       "before_next_act": sum(1 for d in est if d.get("before_next_act")),
@@ -201,6 +201,11 @@ def card(m):
                       "compute_max_s": max((d.get("compute_s") or 0 for d in est), default=None),
                       "disagreements": [(d.get("rules"), d.get("choice"), (d.get("why") or "")[:80])
                                         for d in cmp_ if not d["agree"]][:8]}
+    # (since session 6 the estimator also runs at the start of hard fights: counted apart)
+    hf = [d for d in est if d.get("agree") is not None and d.get("trigger") == "hard_fight"]
+    c["estimator"].update(hard_n=sum(1 for d in est if d.get("trigger") == "hard_fight"), hard_compared=len(hf),
+                          hard_agree=sum(1 for d in hf if d["agree"]),
+                          hard_choices=dict(collections.Counter(d.get("choice") for d in hf if not d["agree"])))
 
     # A. outcome
     c["A"] = {"deaths": acount.get("dead", 0)}
@@ -577,6 +582,8 @@ def show(c):
            (lambda e: f"  H estimator  shadow: {e['n']} estimates ({e['skipped']} skipped while busy), {e['agree']}/"
                       f"{e['compared']} agree with the rules; in time: {e['in_time_turn']} within a turn, "
                       f"{e['before_next_act']} before the next action; slowest {e['compute_max_s']} s"
+                      + (f"; hard-fight starts {e['hard_agree']}/{e['hard_compared']} agree"
+                         + (f" (else {e['hard_choices']})" if e.get("hard_choices") else "") if e.get("hard_n") else "")
                       + ("; disagreed: " + "; ".join(f"{a} -> {b} ({w})" for a, b, w in e["disagreements"][:3])
                          if e["disagreements"] else "") if e and e["n"] else None)(c.get("estimator")),
            (lambda t: f"  G tokens     Navigator {t['turns']} turns; output {t['output'] if t['output'] is not None else 'not logged'}, cache read {t['cache_read']}, "
@@ -596,6 +603,8 @@ TABLE = [("mission", lambda c: c["label"]), ("nav", lambda c: c["nav_model"]), (
          ("wait%", lambda c: c["B"]["navigator_wait_pct"]),
          ("est", lambda c: f"{c['estimator']['agree']}/{c['estimator']['compared']}" if (c.get("estimator") or {}).get("n")
           else None),
+         ("estHF", lambda c: f"{c['estimator']['hard_agree']}/{c['estimator']['hard_compared']}"
+          if (c.get("estimator") or {}).get("hard_n") else None),
          ("usd", lambda c: _usd(c)),
          ("usd/dh", lambda c: _per(_usd(c), c["B"]["dungeon_min"] / 60)),
          ("usd/kxp", lambda c: _per(_usd(c), c["A"].get("exp_gain", 0) / 1000)),
