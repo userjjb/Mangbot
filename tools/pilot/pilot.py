@@ -1617,6 +1617,90 @@ class Shop(Goal):
         return None
 
 
+class StashDeposit(Goal):
+    """Leave the stash kinds (Restore potions, Wands of Stone to Mud) in the tavern (8) for the mission (the user,
+    2026-10-26: "leave the potions in the tavern during a mission"; the wands were never aimed). Walk onto the
+    entrance; each drop lands on a floor square of the tavern room (drop_near: a shop entrance takes no object).
+    Town objects aren't wiped (depth 0 is skipped), but on a live server another player could take them, and a full
+    object list compacts objects anywhere."""
+    name = "stash in the tavern"
+
+    def __init__(self):
+        self.t = 0.0
+        self.tries = 0
+        self.dropped = []
+
+    def tick(self, p):
+        w, now = p.w, gnow()
+        ent = p.tavern_entrance()
+        if not ent:
+            return ("done", "no tavern seen on the town map: nothing stashed")
+        items = [i for i in w.items() if p.is_stash_item(i["name"])]
+        if not items:
+            return ("done", "stashed " + ", ".join(self.dropped) if self.dropped else "nothing to stash")
+        if w.pos != tuple(ent):
+            if not p.mover.active:
+                self.tries += 1
+                if self.tries > 3 or not p.mover.go([tuple(ent)]):
+                    return ("failed", "couldn't reach the tavern")
+            p.mover.tick()
+            return None
+        if not waited(self.t, 1.0) or now < p.busy_until or w.inven_dirty:
+            return None
+        it = items[0]
+        self.t = now
+        p.cmd(f"custom d item={it['item']} value={it['number']}", f"stash in the tavern: {it['name']}", hold=0.8)
+        p.stash_add(it["name"])
+        self.dropped.append(it["name"])
+        return None
+
+
+class StashFetch(Goal):
+    """Fetch one stash kind from the tavern room (a Restore for a drained stat): walk its squares, nearest first,
+    until the pack holds it; the pickup reflex takes only what's being fetched."""
+    def __init__(self, kind):
+        self.kind = kind
+        self.name = f"fetch {kind} from the tavern"
+        self.visited = set()
+        self.target = None
+        self.lit = False
+
+    def tick(self, p):
+        w = p.w
+        if any(self.kind in i["name"] for i in w.items()):
+            p.fetching = None
+            p.stash_remove(self.kind)
+            return ("done", f"fetched {self.kind} from the tavern")
+        ent = p.tavern_entrance()
+        if not ent:
+            p.fetching = None
+            return ("failed", "no tavern seen on the town map")
+        p.fetching = self.kind
+        if not self.lit and not any(i["tval"] == TV_LITE for i in w.items(equip=True)):
+            self.lit = True                  # (to see the floor items at night)
+            if p.wear_light("the tavern floor"):
+                return None
+        if self.target and w.pos == self.target:
+            self.visited.add(self.target)
+            self.target = None
+            return None                      # (a tick for the pickup reflex)
+        if self.target is None or not p.mover.active:
+            cands = [q for q, ch in w.memory.items() if w.dist(q, tuple(ent)) <= 4 and q not in self.visited
+                     and ch not in "#%8+'" and not ch.isdigit()]
+            if not cands:
+                p.fetching = None
+                p.stash_remove(self.kind)
+                return ("failed", f"no {self.kind} left in the tavern")
+            # (item glyphs first: '!' potions, '-' wands)
+            self.target = min(cands, key=lambda q: (w.memory.get(q) not in "!-?", w.dist(q)))
+            if not p.mover.go([self.target]):
+                self.visited.add(self.target)
+                self.target = None
+                return None
+        p.mover.tick()
+        return None
+
+
 class TownKit(Goal):
     """plan town (restructure step 2.2): the Pilot's whole town visit, by policy.
     Sell what the policy sells, at the shop that pays (store.c store_will_buy);
@@ -1658,6 +1742,13 @@ class TownKit(Goal):
             return None
         if not waited(self.t, 1.0) or now < p.busy_until or w.inven_dirty or p.pending_use:
             return None             # (the pack and gold settle after each step)
+        # a drained stat whose Restore waits in the tavern: fetch it first (bought only if it isn't there)
+        if self.stage == "upgrade" and not getattr(self, "fetched", False):
+            kind = p.stash_wanted()
+            if kind:
+                self.sub = StashFetch(kind)
+                return None
+            self.fetched = True
         if self.stage == "upgrade":
             # wear/wield what the policy prefers before anything is sold
             if p.upgrade_step():
@@ -1770,6 +1861,11 @@ class TownKit(Goal):
                 self.stage = "buy"
                 self.sub = Wait(40)
                 self.done_log.append(f"still missing {'; '.join(gap)}: waiting 40 s for new stock")
+                return None
+            # last: the stash kinds go to the tavern for the mission (Restore potions, Stone to Mud wands)
+            if not getattr(self, "stashed", False) and any(p.is_stash_item(i["name"]) for i in w.items()):
+                self.stashed = True
+                self.sub = StashDeposit()
                 return None
             return self.finish(p)
         return None
@@ -3177,6 +3273,9 @@ class Pilot:
                 self.skipped_items.add((w.level_t, w.pos))
             if seen and (w.level_t, w.pos) in self.skipped_items:
                 seen = []         # junk we left, or what the Navigator dropped here
+            if seen and not w.depth and self.is_stash_item(seen[-1][1]) and \
+                    not (self.__dict__.get("fetching") and self.fetching in seen[-1][1]):
+                seen = []         # (the tavern stash stays there: the user, 10-26)
             # By value (restructure step 2.1; the Advisor's set-pieces C3, C4): a unique's
             # drop always; with the pack full, swap the cheapest non-kit item for a
             # better find; otherwise leave it and say so. (The bulky-gear rule this
@@ -6983,6 +7082,12 @@ class Pilot:
         # (food other than rations, and flasks the lantern doesn't need, are sold: one food source, no oil)
         spare = (it["tval"] == TV_FOOD and "Ration" not in name and "Mushroom" not in name) or \
             (it["tval"] == TV_FLASK and (self.lantern_fuel() or 0) >= self.FUEL_TOPUP)
+        # (one lantern is enough -- the user, 10-26: "why two lanterns?" -- the fullest is kept, worn or in the pack;
+        # a spare is sold)
+        if it["tval"] == TV_LITE and "Lantern" in name and not it.get("equip"):
+            others = [i for i in self.w.items(equip=True) + self.w.items() if i["tval"] == TV_LITE and
+                      "Lantern" in i["name"] and i["item"] != it["item"]]
+            spare = any(self.light_left(o) >= self.light_left(it) for o in others)
         # (a staff doing what a carried rod does is spare: m43 carried a Staff of Door/Stair Location beside the Rod)
         rod_dup = it["tval"] == 55 and any(i["tval"] == 66 and re.sub(r".*\bof ", "", re.sub(r"\s*\(.*", "", i["name"]))
                                            in name for i in self.w.items())
@@ -7139,7 +7244,8 @@ class Pilot:
             add(2, "Flask of oil", -(-(self.FUEL_TOPUP - fuel) // self.FLASK_FUEL))
         for stat, (cur, top) in (self.seen_drained or {}).items():
             if stat in self.STAT_FULL and cur < top:
-                add(3, f"Restore {self.STAT_FULL[stat]}", 1)
+                if not self.stash_has(f"Restore {self.STAT_FULL[stat]}"):     # (fetched from the tavern instead)
+                    add(3, f"Restore {self.STAT_FULL[stat]}", 1)
         for kind, n in self.KITS.get(kit, {}).items():
             add(4, kind, n)
         # NAME:N means "have N" (m26's "Word of Recall:3" bought 3 more, to 5)
@@ -8124,6 +8230,60 @@ class Pilot:
             "sold by plan town"
         out.append(f"the policy: {pol}")
         return "\n".join(out)
+
+    # --- the tavern stash (the user, 10-26) --------------------------------------------------------------------
+    def is_stash_item(self, name):
+        return ("Restore" in name and "Potion" in name) or ("Stone to Mud" in name and "Wand" in name)
+
+    def stash_state(self):
+        st = self.__dict__.get("stash")
+        if st is None:
+            try:
+                st = json.load(open(os.path.join(self.rundir, "stash.json")))
+            except (OSError, ValueError, AttributeError):
+                st = {}
+            st.setdefault("items", [])
+            self.stash = st
+        return st
+
+    def stash_save(self):
+        try:
+            json.dump(self.stash_state(), open(os.path.join(self.rundir, "stash.json"), "w"), indent=1)
+        except (OSError, AttributeError):
+            pass
+
+    def stash_add(self, name):
+        self.stash_state()["items"].append(name)
+        self.stash_save()
+
+    def stash_remove(self, kind):
+        st = self.stash_state()
+        hit = next((n for n in st["items"] if kind in n), None)
+        if hit:
+            st["items"].remove(hit)
+            self.stash_save()
+
+    def stash_has(self, kind):
+        return any(kind in n for n in self.stash_state()["items"])
+
+    def tavern_entrance(self):
+        """The tavern's '8' on the town map (remembered in stash.json)."""
+        st = self.stash_state()
+        if not st.get("entrance") and not self.w.depth:
+            q = next((q for q, ch in self.w.memory.items() if ch == "8"), None)
+            if q:
+                st["entrance"] = list(q)
+                self.stash_save()
+        return tuple(st["entrance"]) if st.get("entrance") else None
+
+    def stash_wanted(self):
+        """The Restore kind a drained STR/DEX/CON needs, if the pack lacks it and the tavern has it."""
+        for stat, (cur, top) in (self.seen_drained or {}).items():
+            if stat in self.STAT_FULL and cur < top:
+                kind = f"Restore {self.STAT_FULL[stat]}"
+                if not any(kind in i["name"] for i in self.w.items()) and self.stash_has(kind):
+                    return kind
+        return None
 
     def redundant_worn(self):
         """[(item, flags, other slot letters)]: worn rings and amulets with no AC or pluses whose every ability

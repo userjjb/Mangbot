@@ -1657,6 +1657,35 @@ def trip_clock_condition_across_midnight():
     return ok, f"{soon}: in {(t_soon - now) / 60:.0f} min; {past}: in {(t_past - now) / 3600:.1f} h"
 
 
+@case
+def tavern_stash_and_one_lantern():
+    """The user (10-26): Restore potions and Wands of Stone to Mud (never aimed) stay in the tavern (8) during a
+    mission -- deposited at the end of plan town, the matching Restore fetched for a drained stat instead of bought,
+    stash kinds not picked up in town otherwise; and one lantern: a spare (not the fullest) is sold."""
+    import tempfile
+    p = pilot(pack=[("a Potion of Restore Dexterity", 75), ("2 Wands of Stone to Mud (21 charges)", 65),
+                    ("a Brass Lantern (with 1977 turns of light)", 39), ("a Brass Lantern (with 14943 turns of light)", 39),
+                    ("9 Potions of Cure Critical Wounds", 75)])
+    p.rundir = tempfile.mkdtemp()
+    p.w.depth, p.w.in_dungeon = 0, False
+    p.w.memory = {(27, 89): "8", (27, 90): ".", (28, 90): "!"}
+    p.flavour_of = lambda it: None
+    stash = [i["name"] for i in p.w.items() if p.is_stash_item(i["name"])]
+    ent = p.tavern_entrance()
+    p.stash_add("a Potion of Restore Dexterity")
+    p.seen_drained = {"DEX": (18, 38)}
+    want_with = p.stash_wanted()
+    p.w.inven = [i for i in p.w.inven if "Restore" not in i["name"]]
+    want = p.stash_wanted()
+    needs = [r[1] for r in p.town_needs(None, ())]
+    lamps = {("1977" if "1977" in i["name"] else "14943"): p.town_sell_count(i) for i in p.w.items()
+             if "Lantern" in i["name"]}
+    ok = (stash == ["a Potion of Restore Dexterity", "2 Wands of Stone to Mud (21 charges)"] and ent == (27, 89)
+          and want_with is None and want == "Restore Dexterity" and "Restore Dexterity" not in needs
+          and lamps == {"1977": 1, "14943": 0})
+    return ok, f"stash kinds {stash}; tavern {ent}; fetch {want!r}; buy list {needs}; lanterns sold {lamps}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0
