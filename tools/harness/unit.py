@@ -1909,6 +1909,32 @@ def gear_score_rests_and_paired_error():
                f"{ch.derive()['speed']}, with a 25 lb mail {heavy['speed']} (ruled out: {slow})"
 
 
+@case
+def last_food_never_destroyed_and_heavy_loot_left():
+    """m46: near a trip's end the make-room destroyed all 3 Rations of Food (the only food) for a ~30-gold rod, and
+    six weapons carried for sale made Dive04 speed -1. Now a ration stack goes down to one and a lone last food is
+    priceless; loot that would cross the weight limit's slow-down line is left unless worth 300+ gold."""
+    p = pilot(pack=[("3 Rations of Food", P.TV_FOOD), ("a Rod of Trap Location", 66)])
+    p.trip_minutes_left = lambda: 2               # (near the trip's end: rations count as spare)
+    p.flavour_of = lambda it: None
+    rations = p.w.items()[0]
+    n3 = p.destroy_count(rations)
+    rations["number"] = 1
+    v1 = p.pack_value(rations)
+    # the weight limit: STR 18/70 (88) carries 150 lb before slowing
+    q = pilot(pack=[("a Lucerne Hammer (2d5)", 22)])
+    q.w.ind["stat0"] = [88]
+    for i in q.w.inven:
+        i["weight"] = 1450 if not i["equip"] else 0    # (145 lb carried)
+    room, slow = q.weight_room()
+    q.unique_drop, q.skipped_items, q.room_t = None, set(), 0.0
+    took_heavy = q.pickup_room("a Lucerne Hammer (2d5)")
+    took_light = q.pickup_room("a Potion of Cure Critical Wounds")
+    ok = n3 == 2 and v1 == float("inf") and room == 50 and slow == 0 and took_heavy is False and took_light is True
+    return ok, f"3 rations: destroy {n3}; the last one worth {v1}; 145 lb carried: {room / 10:.0f} lb to spare, " \
+               f"a Lucerne Hammer taken {took_heavy}, a potion {took_light}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

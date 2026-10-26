@@ -4489,7 +4489,11 @@ class Pilot:
         # Gorged): other food, flasks beyond what the lantern needs, and near a trip's end the spare rations
         # and flasks are worth what they sell for (the user, 10-25: food, oil and potions fill the pack)
         if it["tval"] == TV_FOOD and "Mushroom" not in n and ("Ration" not in n or self.provisions_spare()):
-            return self.iv(n).value * self.pay_cut(TV_FOOD) * it["number"]
+            # (never the last meal: m46 destroyed all 3 rations near a trip's end for a ~30-gold rod, and the Navigator
+            # found "Food 0" -- a ration stack goes down to one, the last food item is priceless)
+            if self.destroy_count(it) == 0:
+                return float("inf")
+            return self.iv(n).value * self.pay_cut(TV_FOOD) * self.destroy_count(it)
         if it["tval"] == TV_FLASK and ((self.lantern_fuel() or 0) >= self.FUEL_TOPUP or self.provisions_spare()):
             return self.iv(n).value * self.pay_cut(TV_FLASK) * it["number"]
         if it["tval"] in (TV_FOOD, TV_FLASK, TV_LITE) or self.is_kit_item(it) or self.is_kept(n) or \
@@ -4502,6 +4506,26 @@ class Pilot:
 
     UNIQUE_DROP_BUMP = 50
 
+    def destroy_count(self, it):
+        """How many of this pack item a make-room may destroy: all, except the last food -- rations keep one, and a
+        lone food item stays when it's the only one."""
+        if it["tval"] == TV_FOOD and "Mushroom" not in it["name"]:
+            others = sum(i["number"] for i in self.w.items() if i["tval"] == TV_FOOD and "Mushroom" not in i["name"]
+                         and i["item"] != it["item"])
+            return it["number"] if others else it["number"] - 1
+        return it["number"]
+
+    def weight_room(self):
+        """Tenth-pounds the pack can still take before the weight limit slows us (xtra1.c:2772: over half of
+        adj_str_wgt x 100), and the current speed lost to weight."""
+        w = self.w
+        t = geareval.stat_table()
+        limit = t[geareval.stat_index((w.ind.get("stat0") or [18])[0])]["adj_str_wgt"] * 100
+        load = sum(i["weight"] for i in w.items() + w.items(equip=True))
+        slow = (load - limit // 2) // (limit // 10) if load > limit // 2 else 0
+        return limit // 2 - load, slow
+
+    HEAVY_LOOT_MIN = 300      # gold: below this, loot that would slow us is left
     def is_junk_name(self, name):
         """Known junk by name: the junk order (Salt Water, Weakness...), spellbooks for a warrior, Broken items, and
         flavours the flavour table marks junk though the character doesn't know them (mission 21: an unknown Summon
@@ -4547,6 +4571,17 @@ class Pilot:
             if (w.level_t, w.pos) not in self.skipped_items:
                 self.skipped_items.add((w.level_t, w.pos))
             return False                         # worthless: leave it
+        # (too heavy: m46 carried six weapons for sale and went speed -1. Loot that would take us past the weight limit's
+        # slow-down line is left unless it's worth HEAVY_LOOT_MIN or can't be replaced)
+        wt = geareval.Item(name).weight * max(1, iv.count) if iv.tval in geareval.SLOT_OF_TVAL else 0
+        if wt and not unique and not iv.irreplaceable and worth < self.HEAVY_LOOT_MIN:
+            room, _ = self.weight_room()
+            if wt > room:
+                if (w.level_t, w.pos) not in self.skipped_items:
+                    self.skipped_items.add((w.level_t, w.pos))
+                    self.notify("tactic", f"left {name} (~{worth:.0f}): {wt / 10:.0f} lb would slow you (the weight "
+                                          f"limit; {max(0, room) / 10:.0f} lb to spare)", news=True)
+                return False
         free = 23 - len(w.items())
         if free >= 1:
             return True
@@ -4574,6 +4609,7 @@ class Pilot:
                 self.cmd(f"custom E item={food['item']}", f"make room: eat {food['name']} for {name}", hold=0.6)
                 return False
         cand = sorted(((self.pack_value(i), i) for i in w.items()), key=lambda vi: vi[0])
+        cand = [(v, i) for v, i in cand if self.destroy_count(i) > 0]
         cheapest = cand[0] if cand else None
         # (a unique's drop is "good" but unknown: it may push out only cheap things. m37 destroyed a Tulwar (~76)
         # for Boldor's 4-gold Dagger, and an Amulet of Infravision (~86) for boots it then destroyed for a Katana)
@@ -4582,7 +4618,7 @@ class Pilot:
             if now - self.room_t > 1.5:
                 self.room_t = now
                 self.c.send("confirm yes")
-                self.cmd(f"custom k item={cheapest[1]['item']} value={cheapest[1]['number']}",
+                self.cmd(f"custom k item={cheapest[1]['item']} value={self.destroy_count(cheapest[1])}",
                          f"make room: destroy {cheapest[1]['name']} (~{cheapest[0]:.0f}) for {name} (~{worth:.0f})",
                          hold=0.6)
                 self.notify("tactic", f"pack full: destroyed {cheapest[1]['name']} (~{cheapest[0]:.0f} gold) to take "
@@ -7279,7 +7315,7 @@ class Pilot:
             kit.done_log.append(f"room for {', '.join(sorted(new))}: selling {it['name']}")
         else:
             self.c.send("confirm yes")
-            self.cmd(f"custom k item={it['item']} value={it['number']}", f"town kit: make room, destroy {it['name']}",
+            self.cmd(f"custom k item={it['item']} value={self.destroy_count(it)}", f"town kit: make room, destroy {it['name']}",
                      hold=0.6)
             kit.done_log.append(f"room for {', '.join(sorted(new))}: destroyed {it['name']}")
         return True
@@ -8964,7 +9000,10 @@ class Handler(socketserver.StreamRequestHandler):
                 out = reply.get(timeout=30)
             except queue.Empty:
                 out = {"ok": False, "error": "pilot busy"}
-        self.wfile.write((json.dumps(out) + "\n").encode())
+        try:
+            self.wfile.write((json.dumps(out) + "\n").encode())
+        except BrokenPipeError:
+            pass          # (the client gave up waiting -- pilotctl's timeout: nothing to tell it)
 
 
 class Server(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
