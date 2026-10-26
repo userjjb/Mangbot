@@ -1517,6 +1517,34 @@ def actions_say_who():
     return ok, f"origins (nav goal, reflex, plan town, plan goal): {origins}; act by {acts}; goals by {goals}"
 
 
+@case
+def floor_junk_destroyed_when_quiet():
+    """The user (10-25): known junk underfoot (Salt Water...) is destroyed where it lies -- only when not in combat (no
+    mobile monster in view, not hit for 5 s, HP fine, not fleeing/recalling) -- and left out of the Items line."""
+    def make(mons=()):
+        p = pilot(hp=265, monsters=list(mons))
+        p.orders.update(junk="Salt Water,Weakness", autodestroy="worthless,cursed", think_hp=0.65)
+        p.goal, p.busy_until = None, 0.0
+        p.w.last_hit_t, p.w.recall_pending = 0.0, False
+        p.flavour_of = lambda it: None
+        p.sent, p.cmds = [], []
+        p.c = type("C", (), {"send": lambda self, x: p.sent.append(x)})()
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append(line)
+        return p
+    quiet = make()
+    quiet.destroy_floor_junk("3 Potions of Salt Water", P.gnow())
+    busy = make([(25, 25, BYNAME["cave orc"])])
+    busy.destroy_floor_junk("a Potion of Salt Water", P.gnow())
+    hit = make()
+    hit.w.last_hit_t = P.gnow() - 2
+    hit.destroy_floor_junk("a Potion of Salt Water", P.gnow())
+    names = ["a Potion of Salt Water", "a Dagger {worthless}", "a Wand of Stinking Cloud", "a Broken Sword (1d2)"]
+    kept = [n for n in names if not quiet.is_junk_name(n)]
+    ok = quiet.cmds == ["custom k item=-11 value=3"] and "confirm yes" in quiet.sent and busy.cmds == [] and \
+        hit.cmds == [] and kept == ["a Wand of Stinking Cloud"]
+    return ok, f"quiet: {quiet.cmds}; an orc in view: {busy.cmds}; hit 2 s ago: {hit.cmds}; not junk: {kept}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

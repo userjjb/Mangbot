@@ -3142,18 +3142,12 @@ class Pilot:
         if o["pickup"] == "all" and not adj and not w.store:
             seen = [(ts, t) for ts, t in w.messages if now - ts < 3 and t.startswith("You see ")
                     and "no items" not in t]
-            junk = [j.strip().lower() for j in o.get("junk", "").split(",") if j.strip()]
-            if w.ind.get("class_") == "Warrior":
-                junk += ["book of magic spells", "holy book of prayers"]   # can't read them
-            if seen and (any(f"of {j}" in seen[-1][1].lower() or seen[-1][1].lower().rstrip(".").endswith(j)
-                             or j.startswith("book") and j in seen[-1][1].lower() or
-                             j.startswith("holy book") and j in seen[-1][1].lower() for j in junk)
-                         or " Broken " in seen[-1][1]
-                         # junk per the flavour table though the character doesn't
-                         # know it (mission 21: an unknown Summon Undead took the slot
-                         # freed for an {excellent} armour)
-                         or (self.flavours.get(flavour_key(seen[-1][1][8:].rstrip("."))) or {}).get("junk")):
-                seen = []         # known junk: leave it (it filled the pack on the way down)
+            if seen and self.is_junk_name(seen[-1][1][8:].rstrip(".")):
+                # known junk: leave it (it filled the pack on the way down) -- or, at a quiet moment, destroy it
+                # where it lies (the user, 10-25: less clutter on the map and in the report's Items line)
+                if (w.level_t, w.pos) not in self.skipped_items:
+                    self.destroy_floor_junk(seen[-1][1][8:].rstrip("."), now)
+                seen = []
                 self.skipped_items.add((w.level_t, w.pos))
             if seen and (w.level_t, w.pos) in self.skipped_items:
                 seen = []         # junk we left, or what the Navigator dropped here
@@ -4227,6 +4221,39 @@ class Pilot:
         return iv.value * self.pay_cut(iv.tval) * max(1, iv.count)
 
     UNIQUE_DROP_BUMP = 50
+
+    def is_junk_name(self, name):
+        """Known junk by name: the junk order (Salt Water, Weakness...), spellbooks for a warrior, Broken items, and
+        flavours the flavour table marks junk though the character doesn't know them (mission 21: an unknown Summon
+        Undead took the slot freed for an {excellent} armour)."""
+        n = name.lower().rstrip(".")
+        junk = [j.strip().lower() for j in self.orders.get("junk", "").split(",") if j.strip()]
+        if self.w.ind.get("class_") == "Warrior":
+            junk += ["book of magic spells", "holy book of prayers"]   # can't read them
+        feel = [f.strip() for f in self.orders.get("autodestroy", "").split(",") if f.strip()]
+        return any(f"of {j}" in n or n.endswith(j) or (j.startswith(("book", "holy book")) and j in n) for j in junk) \
+            or " broken " in f" {n} " or any("{" + f in n for f in feel) \
+            or bool((self.flavours.get(flavour_key(name)) or {}).get("junk"))
+
+    def quiet_moment(self, now):
+        """Not in combat (the user, 10-25: floor junk is destroyed only then): no awake mobile monster in view, not
+        hit in the last 5 s, HP at least think_hp, not blind or confused, and not fleeing, recalling or recovering."""
+        w = self.w
+        mobile = [m for m in w.monsters if "NEVER_MOVE" not in m[2].flags]
+        return not mobile and now - getattr(w, "last_hit_t", 0) > 5 and w.hp_frac >= self.orders.get("think_hp", 0.65) \
+            and not isinstance(self.goal, (Flee, Recall, Recover)) and not w.recall_pending and not w.flag("blind") \
+            and not w.flag("confused")
+
+    def destroy_floor_junk(self, name, now):
+        """Destroy the junk underfoot (k with the floor index -11, as the client sends it: any negative item is the floor, cmd3.c do_cmd_destroy) at a quiet moment.
+        One try per square (the caller marks it skipped); True if sent."""
+        if not self.quiet_moment(now) or now < self.busy_until:
+            return False
+        m = re.match(r"(\d+) ", name)
+        n = int(m.group(1)) if m else 1
+        self.c.send("confirm yes")
+        self.cmd(f"custom k item=-11 value={n}", f"destroy junk on the floor: {name}", hold=0.6)   # (FLOOR_INDEX, as the client)
+        return True
 
     def pickup_room(self, name):
         """True if the item underfoot should be picked up now (destroying something
@@ -8077,6 +8104,8 @@ class Pilot:
             lines.append("Monsters: none")
         # items: the server's list (names) and the squares near us ($ grouped)
         names = [l.strip()[2:].strip() for l in (w.itemlist or [])[1:]]
+        # (known junk left out: the user, 10-25 -- the Pilot destroys it when it passes over it at a quiet moment)
+        names = [n for n in names if not self.is_junk_name(n)]
         sq = sorted((q for q in self.resolve_target("item") if w.memory.get(q, "?") not in "0123456789"),
                     key=w.dist)[:10] if w.pos else []          # (not shop and house doors)
         gold = [q for q in sq if w.memory.get(q) == "$"]
