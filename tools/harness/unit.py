@@ -169,6 +169,15 @@ def jewellery_unknown_plusses():
 
 
 @case
+def bracketed_ego_valued():
+    """m53: a Sabre (Holy Avenger) was valued ~2750 (the parser cut the name at the first bracket and lost the ego's
+    20000); the shop paid 8721 (its owner's purse). Bracketed egos count now; a plain Sabre doesn't change."""
+    a = itemvalue.value("a Sabre (Holy Avenger) (2d7) (+11,+7) [+2] (+1)", 14)
+    b = itemvalue.value("a Sabre (2d7) (+11,+7)", 14)
+    return a.ego == "(Holy Avenger)" and a.value > 20000 and b.value < 3000, f"Holy Avenger {a.value}, plain {b.value}"
+
+
+@case
 def unique_drop_feeling():
     """{good - Brodda, the Easterling} reads as a {good} feeling (unidentified)."""
     v = itemvalue.value("a Pair of Metal Shod Boots [6] {good - Brodda, the Easterling}", 13)

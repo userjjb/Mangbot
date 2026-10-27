@@ -150,7 +150,7 @@ The report is **compact** (since 2026-10-22: the old one ran to ~5 KB). Line by 
   arrived, and the nearest known stairs with distances.
 - **Monsters**: by name, nearest first: count, level (compare with yours), UNIQUE, distances, and
   `DANGER: why` when the pilot rates it dangerous.
-- **Items**: the server's list for the level | `near:` item squares (`$ ×N` grouped) with y,x and distance.
+- **Items**: the server's list for the level | `near:` item squares (`$ ×N (distances; nearest y,x)` grouped; the others with y,x and distance).
 - **Map** (in the dungeon only): 19 x 19, centred on `@` (everything within 9 moves; distance is the same
   in every direction). Each line starts with its row; the header gives the columns. `@` is you; letters
   are monsters; `#` wall, `.` floor, `+` closed door, `'` open door, `<` `>` stairs, `^` trap; `!` potion,

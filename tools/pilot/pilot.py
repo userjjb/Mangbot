@@ -9204,7 +9204,9 @@ class Pilot:
         gold = [q for q in sq if w.memory.get(q) == "$"]
         rest = [q for q in sq if w.memory.get(q) != "$"][:6]
         gd = sorted(map(w.dist, gold))
-        bits = ([f"$ ×{len(gold)} ({gd[0]}" + (f"-{gd[-1]})" if gd[-1] != gd[0] else ")")] if gold else []) + \
+        # (the nearest pile's square: m49's Navigator guessed one from the map for `goal fetch`)
+        bits = ([f"$ ×{len(gold)} ({gd[0]}" + (f"-{gd[-1]}" if gd[-1] != gd[0] else "")
+                 + f"; nearest {gold[0][0]},{gold[0][1]})"] if gold else []) + \
             [f"{w.memory.get(q, '?')} {q[0]},{q[1]} ({w.dist(q)})" for q in rest]
         if names or bits:
             lines.append("Items: " + (", ".join(names[:8]) or "-") + (" | near: " + ", ".join(bits) if bits else ""))

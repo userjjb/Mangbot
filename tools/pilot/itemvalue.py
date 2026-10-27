@@ -208,6 +208,11 @@ def value(name, level=15, aware=()):
         it.flags = set(k["F"])
         val = k["W"][3]
         rest = core[len(kn):].strip()
+        # the egos named in brackets, which `core` cut off: "a Sabre (Holy Avenger) (2d7) ..." (m53: valued ~2750
+        # without the ego's 20000; the shop paid 8721)
+        pe = re.match(r"\s*(\([A-Z][A-Za-z' ]+\))", n[n.find(core) + len(core):]) if not rest else None
+        if pe and pe.group(1) in EGOS:
+            rest = pe.group(1)
         if rest:
             if rest in EGOS:
                 e = next((x for x in EGOS[rest] if it.tval in x.get("T", [])), EGOS[rest][0])
