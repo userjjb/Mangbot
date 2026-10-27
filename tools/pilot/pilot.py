@@ -2044,6 +2044,19 @@ class TripPlan:
         self.events[{"danger_seen": "danger", "stat_drained": "drained"}.get(what, what)] += 1
         if self.paused or not w.in_dungeon or self.phase != "level":
             return
+        # (pinned by a breeder swarm while leaving: m45 at 750 ft, Giant fleas, 13 minutes; m48 at 750 ft, Giant white
+        # lice, 5 minutes to LEAVE_MAX's recall. The first stuck notice on such a level: one teleport away from the
+        # swarm, then the dive goes on to the stairs)
+        if what == "stuck" and self.level == w.level_t and "breeders" in str(self.level_done or "") and \
+                self.__dict__.get("swarm_tele") != w.level_t:
+            tp = p.teleport_item()
+            if tp and (tp[0] == "u" or not (w.flag("blind") or w.flag("confused"))):
+                self.swarm_tele = w.level_t
+                p.cmd(f"custom {tp[0]} item={tp[1]['item']}", "trip: pinned by breeders while leaving: teleport away",
+                      hold=0.8)
+                p.notify("plan", f"trip: pinned by breeders while leaving {w.depth_ft} ft: teleported "
+                                 f"({one_of(tp[1]['name'])}), on to the stairs", news=True)
+                return
         if what == "band" and "band" in [c[1] for c in self.conds]:
             return                  # (the condition brings it home instead)
         why = self.LEAVE_ON.get(what) if not news else None

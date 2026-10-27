@@ -2065,6 +2065,25 @@ def asleep_flags_from_look_answers():
     return ok, f"asleep flags {flags}"
 
 
+@case
+def breeder_swarm_pin_teleports_once():
+    """m45 (fleas) and m48 (lice): a dive leaving a breeder level got pinned in the swarm (stuck notices) until
+    LEAVE_MAX's recall. Now the first stuck notice on such a level reads/uses a teleport, once per level."""
+    p = pilot(pack=[("a Staff of Teleportation (6 charges)", 55)])
+    p.w.level_t = 7.0
+    tp = P.TripPlan(700, 800, P.TripPlan.parse_until("minutes>30"))
+    tp.phase, tp.level, tp.level_done = "level", 7.0, "left: breeders"
+    sent = []
+    p.cmd = lambda c, why, hold=0: sent.append(c)
+    tp.on_event(p, "stuck", "'dive 800ft' hasn't moved", False)
+    tp.on_event(p, "stuck", "'dive 800ft' hasn't moved", False)
+    tp2 = P.TripPlan(700, 800, P.TripPlan.parse_until("minutes>30"))
+    tp2.phase, tp2.level, tp2.level_done = "level", 7.0, "left: a band"
+    tp2.on_event(p, "stuck", "x", False)
+    ok = sent == ["custom u item=0"]
+    return ok, f"sent {sent}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0
