@@ -409,6 +409,11 @@
   "kind": "Scroll of Aggravate Monster",
   "source": "identified"
  },
+ "Scroll titled \"po valsnik\"": {
+  "junk": false,
+  "kind": "Scroll of Teleport Level",
+  "source": "identified"
+ },
  "Scroll titled \"shu foreng\"": {
   "junk": false,
   "kind": "Scroll of Monster Confusion",

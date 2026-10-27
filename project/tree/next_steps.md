@@ -185,8 +185,24 @@ validation.
   **m47** Haiku low 18:38-19:14: **78.4 XP/dmin**, $0.011, 0 close calls, 1 escape recall (9 Wargs, stairs 28 steps
   off), Restore CON fetched from the stash; fixed: the "too heavy" notice once per item. Report mission47.md.
   Monitor script: $CLAUDE_JOB_DIR/tmp/watch_mission.py (job-local). Dive04 now: clvl 28, 31290 gold, in town.
+  **Shadow mode (the user, after m47's Wargs, 22de61f):** agreement now by the action taken (`shadow_agree`; m47's
+  recall was the estimator's worst row yet logged "agree"), resists passed to the sim, and a new `trigger: band`
+  record at each serious band's leave decision (fight / stairs / recall+phase / phase). Advisor told (to_advisor
+  shadow-band); its reply: options_sim 26g time cost (band records pass xp_per_block), and an m47-like check: fight
+  safe and best, walking 28 steps to stairs the UNSAFE line. Collect band records -> decide the rule with the user.
   **Open from m46-m47:** the fight-vs-flee rule for fast weak bands with far stairs (m35, m47 Wargs); staffs aren't
   weight-checked on pickup; rations near trip end go down to one.
+- **Batch after m47 (the user: "fix 8, 12, 13, 14; raise max_depth; build 3; run a mission"):** max_depth **800**
+  (trial, 700-800 ft); item 8: staffs weight-checked, rations never destroyed for room, `Weapons` always lists the
+  wielded one, structures on the dungeon_align lattice (step 33), L3b set-piece written but **not stageable** (the DM
+  forge won't make a Metal Cap of Seeing; harness README); 12: geareval score in XP per real minute (rests 2.6x,
+  measured); 13: **`react`** (leave/hunt NAME, thieves kill, afraid teleport), **`review`** queue, destroy/drop in
+  the dungeon, `order nopickup=`, `order band_frac=`; 14: "this trip" XP rate, a no-food warning; 3: **asleep flag**
+  (client `look N` + look_tick; p_awake in shadow snapshots; Advisor told). 5ab29bd, 751a520. 80 unit cases.
+- **m48** (Haiku low, 21:06-21:35, first at max_depth 800): 68.9 XP/dmin, **1 close call (24%)**: a Light hound band
+  blinded Dive04 for 40 s, both escape reads refused; fixed (46a5764: staff when blind, refused reads seen, eat to Fed).
+  Also fixed live: breeder-pin teleport, band shadow under plans. Report mission48.md. **Decision for the user:**
+  keep max_depth 800, or back to 750 until resist blindness (the close call was at 750 ft).
 - Still open: thieves (m46 Smeagol -2400), no Black Market Speed (3 visits), and the older list below. Verify live: the
   first `couldn't leave` recall, a hot-swap on a special level, `mission end` without a label after a swap.
 

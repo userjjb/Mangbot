@@ -1,0 +1,15 @@
+{
+ "id": "L3b",
+ "tag": "L3b-20261026-205832",
+ "depth_ft": 300,
+ "start": "2026-10-26 20:58:32",
+ "checks": {
+  "cap picked up": {
+   "pass": false,
+   "detail": ""
+  }
+ },
+ "notes": [],
+ "end": "2026-10-26 21:01:20",
+ "pass": false
+}

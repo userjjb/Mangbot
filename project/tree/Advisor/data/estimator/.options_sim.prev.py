@@ -18,6 +18,9 @@ slowed: -10 speed. Monster spells: BLIND 12+d4, CONF 4+d4, SCARE 4+d4, SLOW 4+d4
 stops HOLD/SLOW); blows: CONFUSE 3+d(rlev) no save, BLIND 10+d(rlev), TERRIFY 3+d(rlev) (save), PARALYZE 3+d(rlev) (FA,
 save). Summons: count per spell type (melee2.c:1704-1975), level (depth + rlev)/2 + 5, drawn by rarity from the matching
 races (no best-of-2 boost), placed 1-3 squares away.
+Resists (26f): p flags res_acid/elec/fire/cold/pois (1/3), res_neth/chaos/shard/nexus/disen (x6/(d6+6)),
+res_sound/conf (x5/(d6+6)), res_lite/dark (x4/(d6+6)), res_blind; unresisted conf/chaos/water confuse, lite/dark blind;
+cause wounds / mind blast negated by a saving throw.
 Placeholders: Phase landing (each monster ends 5-10 away; P_SEE_AFTER_PHASE), Teleport = escape, summon placement success
 P_SUMMON_PLACE, our saving throw SAVE, erratic movers treated as straight, no walls/corridors except max_adj.
 
@@ -237,7 +240,7 @@ def escape_move(st, crowd):
     return any(use(st, it) for it in order)
 
 
-POLICY_VERSION = "pilot-escape-2026-10-25e"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
+POLICY_VERSION = "pilot-escape-2026-10-26g"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
 
 
 def worst_turn(st, adj):
@@ -379,6 +382,8 @@ def monster_act(st, m):
                     d = roll(rng, n, s)
                     if eff in ("HURT", "SHATTER"):
                         d -= d * min(p["ac"], 150) // 250
+                    elif eff in ("ACID", "ELEC", "FIRE", "COLD"):
+                        d = resisted(st, eff.lower(), d)          # melee1.c -> acid/elec/fire/cold_dam
                     elif eff == "CONFUSE" and not p.get("res_conf"):
                         st.confused += 3 + rng.randint(1, m.rl)
                     elif eff == "BLIND" and not p.get("res_blind"):
@@ -400,6 +405,32 @@ def monster_act(st, m):
         if m.dist <= 3:
             m.seen = True
     return 1
+
+
+# ---------------- resists (spells1.c project_p, acid/elec/fire/cold_dam; melee2.c cause/mind blast) ----------------
+ELEMENT = {"ACID": "acid", "ELEC": "elec", "FIRE": "fire", "COLD": "cold", "ICEE": "cold", "POIS": "pois", "NETH": "neth",
+           "CONF": "conf", "SOUN": "sound", "SHAR": "shard", "NEXU": "nexus", "DARK": "dark", "LITE": "lite",
+           "CHAO": "chaos", "DISE": "disen", "WATE": "water", "PLAS": "plasma", "INER": "inertia", "MANA": "mana",
+           "GRAV": "gravity", "TIME": "time", "WALL": "force"}
+RES_THIRD = ("acid", "elec", "fire", "cold", "pois")                 # (dam + 2) / 3 with resist (also elemental blows)
+RES_RAND = dict(neth=6, chaos=6, shard=6, nexus=6, disen=6, sound=5, conf=5, lite=4, dark=4)   # dam * k / (d6 + 6)
+SAVE_DMG = ("CAUSE_1", "CAUSE_2", "CAUSE_3", "CAUSE_4", "MIND_BLAST", "BRAIN_SMASH")      # a saving throw negates them
+
+
+def resisted(st, element, dam):
+    """Damage after our resist to `element` (p flags res_<element>), plus the unresisted side effects we model:
+    confusion (conf, chaos, water), blindness (lite, dark; res_blind stops it)."""
+    p, rng = st.p, st.rng
+    if element in RES_THIRD:
+        return (dam + 2) // 3 if p.get("res_" + element) else dam
+    if element in RES_RAND and p.get("res_" + element):
+        return dam * RES_RAND[element] // (rng.randint(1, 6) + 6)
+    if element in ("conf", "water") or (element == "chaos" and not p.get("res_chaos")):
+        if not p.get("res_conf"):
+            st.confused += rng.randint(1, 20) + 10 if element != "water" else rng.randint(1, 5) + 5
+    if element in ("lite", "dark") and not p.get("res_blind") and not st.blind:
+        st.blind = rng.randint(1, 5) + 2
+    return dam
 
 
 def cast(st, m, sp):
@@ -438,8 +469,15 @@ def cast(st, m, sp):
             for _ in range(SUMMON_COUNT.get(sp, 1)):
                 if rng.random() < P_SUMMON_PLACE:
                     st.mons.append(Mon(RACES[rng.choices(names, w)[0]], rng.randint(1, 3), p["ac"], rng))
+    elif sp in SAVE_DMG:
+        if not saves(st):
+            p["hp"] -= spell_dmg(sp, m.rl, m.hp)[0]
+            if sp in ("MIND_BLAST", "BRAIN_SMASH") and not p.get("res_conf"):
+                st.confused += 4 + rng.randint(0, 3)
     elif sp.startswith(RANGED):
-        p["hp"] -= spell_dmg(sp, m.rl, m.hp)[0]
+        d = spell_dmg(sp, m.rl, m.hp)[0]
+        el = ELEMENT.get(sp.split("_", 1)[1]) if "_" in sp else None
+        p["hp"] -= resisted(st, el, d) if el else d
 
 
 # ---------------- rollout ----------------
@@ -589,6 +627,8 @@ def choose(p, team, n=100, arrivals=(), options=None, z=2.0):
     """The decision: keep the rules unless another option is clearly better on the same seeds (paired, common random
     numbers): (a) the rules are unsafe and the option is safe, or (b) both are safe and the option's XP net of gold
     (XP_PER_GOLD) beats the rules' by more than z standard errors of the paired difference and by >= 10%.
+    Optional p["xp_per_block"]: the XP a game turn earns elsewhere (e.g. the rolling rate); each line is then charged for the
+    blocks it takes (fight or walk out + resting back the HP lost), which matters for fight-vs-leave (band) decisions.
     Returns (option, why, table)."""
     if not team:
         return "rules", "no known monster", []
@@ -603,13 +643,20 @@ def choose(p, team, n=100, arrivals=(), options=None, z=2.0):
         near = sum(r["dead"] or r["low"] <= 0.1 * p["mhp"] for r in rs) / n
         low10 = q([r["low"] for r in rs], 0.1)
         return near, low10, near <= SAFE_NEAR and low10 >= SAFE_LOW_P10 * p["mhp"]
+    xpb = p.get("xp_per_block", 0.0)          # opportunity cost of time (0 = off): the rolling XP per game turn elsewhere
+    regen = (p["mhp"] * 394 + 1442) / 65536    # HP regained per resting block (dungeon.c:1245-1306)
+
+    def time_used(r):
+        """Blocks this line takes: the fight (or the walk out) plus resting back the HP it cost."""
+        return r["blocks"] + 1 + max(0, p["hp"] - max(0, r["end_hp"])) / regen
     base = res["rules"]
     bn, bl, bsafe = summary(base)
     table, best, why = [], "rules", "rules (no option clearly better)"
     best_gain = 0.0
     for o, rs in res.items():
         nn, ll, safe = summary(rs)
-        d = [(a["xp"] - b["xp"]) - XP_PER_GOLD * (a["spent"] - b["spent"]) for a, b in zip(rs, base)]
+        d = [(a["xp"] - b["xp"]) - XP_PER_GOLD * (a["spent"] - b["spent"]) - xpb * (time_used(a) - time_used(b))
+             for a, b in zip(rs, base)]
         mean = statistics.mean(d); se = statistics.stdev(d) / n ** 0.5 if n > 1 else 0.0
         table.append(dict(option=o, safe=safe, p_near_death=round(nn, 3), low_p10=ll,
                           xp=round(statistics.mean(r["xp"] for r in rs)), dxp=round(mean, 1), se=round(se, 1),

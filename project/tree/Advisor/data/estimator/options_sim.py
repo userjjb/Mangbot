@@ -240,7 +240,7 @@ def escape_move(st, crowd):
     return any(use(st, it) for it in order)
 
 
-POLICY_VERSION = "pilot-escape-2026-10-26f"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
+POLICY_VERSION = "pilot-escape-2026-10-26h"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
 
 
 def worst_turn(st, adj):
@@ -486,12 +486,16 @@ def speed_energy(st):
 
 
 def rollout(p, team, plan, seed, horizon=30, arrivals=(), trace=False, actor=None):
-    """team: [(name, dist[, hp_frac])]; plan: list of first moves; arrivals: [(block, name, dist)].
+    """team: [(name, dist[, hp_frac[, awake]])] (hp_frac None = full; awake True/False from the Pilot's look, None = unknown ->
+    p_awake); plan: list of first moves; arrivals: [(block, name, dist)].
     Returns dict(dead, end_hp, low, spent, escaped, blocks[, path])."""
     rng = random.Random(seed)
-    mons = [Mon(RACES[t[0]], t[1], p["ac"], rng, t[2] if len(t) > 2 else 1.0) for t in team]
-    for m in mons:
-        if m.dist > 1 and rng.random() > p.get("p_awake", P_AWAKE):
+    mons = [Mon(RACES[t[0]], t[1], p["ac"], rng, t[2] if len(t) > 2 and t[2] is not None else 1.0) for t in team]
+    for t, m in zip(team, mons):
+        known = t[3] if len(t) > 3 else None                  # the Pilot's look: True awake, False asleep, None unknown
+        if known is not None:
+            m.awake = bool(known) or m.dist <= 1
+        elif m.dist > 1 and rng.random() > p.get("p_awake", P_AWAKE):
             m.awake = False
     cap = p.get("max_adj", 8)
     for m in sorted(mons, key=lambda m: m.dist)[cap:]:
@@ -627,6 +631,8 @@ def choose(p, team, n=100, arrivals=(), options=None, z=2.0):
     """The decision: keep the rules unless another option is clearly better on the same seeds (paired, common random
     numbers): (a) the rules are unsafe and the option is safe, or (b) both are safe and the option's XP net of gold
     (XP_PER_GOLD) beats the rules' by more than z standard errors of the paired difference and by >= 10%.
+    Optional p["xp_per_block"]: the XP a game turn earns elsewhere (e.g. the rolling rate); each line is then charged for the
+    blocks it takes (fight or walk out + resting back the HP lost), which matters for fight-vs-leave (band) decisions.
     Returns (option, why, table)."""
     if not team:
         return "rules", "no known monster", []
@@ -641,13 +647,20 @@ def choose(p, team, n=100, arrivals=(), options=None, z=2.0):
         near = sum(r["dead"] or r["low"] <= 0.1 * p["mhp"] for r in rs) / n
         low10 = q([r["low"] for r in rs], 0.1)
         return near, low10, near <= SAFE_NEAR and low10 >= SAFE_LOW_P10 * p["mhp"]
+    xpb = p.get("xp_per_block", 0.0)          # opportunity cost of time (0 = off): the rolling XP per game turn elsewhere
+    regen = (p["mhp"] * 394 + 1442) / 65536    # HP regained per resting block (dungeon.c:1245-1306)
+
+    def time_used(r):
+        """Blocks this line takes: the fight (or the walk out) plus resting back the HP it cost."""
+        return r["blocks"] + 1 + max(0, p["hp"] - max(0, r["end_hp"])) / regen
     base = res["rules"]
     bn, bl, bsafe = summary(base)
     table, best, why = [], "rules", "rules (no option clearly better)"
     best_gain = 0.0
     for o, rs in res.items():
         nn, ll, safe = summary(rs)
-        d = [(a["xp"] - b["xp"]) - XP_PER_GOLD * (a["spent"] - b["spent"]) for a, b in zip(rs, base)]
+        d = [(a["xp"] - b["xp"]) - XP_PER_GOLD * (a["spent"] - b["spent"]) - xpb * (time_used(a) - time_used(b))
+             for a, b in zip(rs, base)]
         mean = statistics.mean(d); se = statistics.stdev(d) / n ** 0.5 if n > 1 else 0.0
         table.append(dict(option=o, safe=safe, p_near_death=round(nn, 3), low_p10=ll,
                           xp=round(statistics.mean(r["xp"] for r in rs)), dxp=round(mean, 1), se=round(se, 1),

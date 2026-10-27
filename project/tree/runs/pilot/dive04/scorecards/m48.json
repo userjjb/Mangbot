@@ -1,0 +1,206 @@
+{
+ "label": "m48",
+ "nav_model": "haiku",
+ "effort": "low",
+ "report": "compact",
+ "start": "2026-10-26 21:06",
+ "end": "2026-10-26 21:36",
+ "minutes": 30.0,
+ "notes": "",
+ "tokens": {
+  "turns": 40,
+  "input": 80,
+  "output": 15012,
+  "cache_read": 1653587,
+  "cache_write": 62662,
+  "write_5m": 62662,
+  "write_1h": 0,
+  "model": "claude-haiku-5-5",
+  "final_usage_turns": 40,
+  "usd": 0.024,
+  "transcript": "agent-a6fc2920946e0af0d.jsonl"
+ },
+ "estimator": {
+  "n": 13,
+  "compared": 6,
+  "agree": 1,
+  "in_time_turn": 13,
+  "before_next_act": 13,
+  "skipped": 1,
+  "compute_max_s": 0.356,
+  "disagreements": [
+   [
+    "recall+phase",
+    "rules",
+    "rules (no option clearly better)"
+   ],
+   [
+    "stairs",
+    "rules",
+    "rules (no option clearly better)"
+   ],
+   [
+    "recall+phase",
+    "rules",
+    "rules (no option clearly better)"
+   ],
+   [
+    "recall+phase",
+    "rules",
+    "rules (no option clearly better)"
+   ],
+   [
+    "teleport",
+    "rules",
+    "rules (no option clearly better)"
+   ]
+  ],
+  "hard_n": 3,
+  "hard_compared": 3,
+  "hard_agree": 3,
+  "hard_choices": {}
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   28,
+   28
+  ],
+  "exp_gain": 1633,
+  "gold": [
+   31290,
+   30823
+  ],
+  "gold_change": -467,
+  "max_depth_ft": 800
+ },
+ "B": {
+  "dungeon_min": 23.7,
+  "town_min": 5.6,
+  "exp_per_dmin": 68.9,
+  "levels_per_dhour": 0.25,
+  "gold_found": 1186,
+  "gold_found_per_dmin": 50.0,
+  "time_budget_min": {
+   "fighting": 11.4,
+   "exploring": 9.0,
+   "town_other": 3.0,
+   "escaping": 1.8,
+   "town_idle_end": 1.5,
+   "recall_wait": 1.3,
+   "town_no_goal": 0.8,
+   "travel_dive": 0.6,
+   "resting": 0.3,
+   "no_goal_dungeon": 0.1,
+   "stuck_looping": 0.1
+  },
+  "navigator_wait_pct": 3
+ },
+ "C": {
+  "lowest_hp": [
+   82,
+   340,
+   24,
+   "21:33:14"
+  ],
+  "close_calls_lt40": 1,
+  "near_calls_40_50": 2,
+  "emergency_episodes": 3,
+  "emergency_alerts": 10,
+  "phase": 2,
+  "wor_escape": 4,
+  "wor_travel": 5,
+  "stairs_flee": 0,
+  "teleport": 1,
+  "cures_quaffed": 15,
+  "escape_records": 12,
+  "recalls_landed": 8
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 0,
+  "loot_abandoned_est": 705,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 53,
+  "total": 758,
+  "sales": 8,
+  "sales_valued": 2,
+  "worst_sales": [],
+  "left_behind": [
+   "Clotted Red Potion",
+   "Sling (x2)",
+   "Hard Leather Armour [6]",
+   "Ring of Teleportation",
+   "Staff of Summoning",
+   "Wand of Heal Monster",
+   "Mushroom of Poison",
+   "Wand of Sleep Monster",
+   "Staff of Sleep Monsters",
+   "Wand of Sleep Monster"
+  ],
+  "irreplaceable": []
+ },
+ "E": {
+  "reports": 17,
+  "commands": 69,
+  "commands_per_min": 2.9,
+  "report_to_action_med_s": 4.9,
+  "report_to_action_p90_s": 7.9,
+  "reports_without_command_pct": 18,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 1,
+  "report_chars": 165049,
+  "order_report_age_med_s": 2.1,
+  "order_report_age_p90_s": 21.8
+ },
+ "F": {
+  "audit_diffs": 2,
+  "audit_checks": 61,
+  "perception_gaps": 4,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.1,
+  "runs_sent": 608,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Light hound": 245,
+  "Black orc": 163,
+  "Priest": 84,
+  "Neekerbreeker": 76,
+  "Hippogriff": 55,
+  "Giant white louse": 50,
+  "Werewolf": 38,
+  "Giant tan bat": 30
+ },
+ "alerts": {
+  "tactic": 41,
+  "time_frozen": 9,
+  "plan_done": 4,
+  "started": 3,
+  "lost": 2,
+  "goal_done": 1,
+  "rule": 1,
+  "fight_going_badly": 1,
+  "review": 1,
+  "emergency_loop": 1
+ },
+ "plan_news": {
+  "unseen_attacker": 30,
+  "goal_done": 13,
+  "plan": 9,
+  "emergency": 9,
+  "goal_failed": 4,
+  "band": 3,
+  "fight_going_badly": 3,
+  "fearer": 3,
+  "breeders": 2,
+  "stuck": 2,
+  "drainer": 2,
+  "thief": 2
+ }
+}

@@ -39,12 +39,14 @@ Architect builds everything else.
    keep base_policy = pilot.py escape()/berserk_tick/fear_cure (POLICY_VERSION), edit via a copy + mv, and tell the Architect
    before changes. m35-m41 reviewed (19 records; disagreements were my zero staff price): now POLICY_VERSION 2026-10-25d, XP_PER_GOLD 1.0
    (THE USER'S DECISION — don't change), MIN_GAIN 50 (mine; offered to the user) -> 17/19 agree. Hard-fight shadow live
-   (trigger: hard_fight). options_sim now 25e (speed_start_tick mirrored, PRICE speed 400; XP_PER_GOLD rolling, set by the Pilot per snapshot). options_sim 26f: resists modelled (gear evaluator github/tools/pilot/geareval.py imports it too); scenarios.py for depth-native fights. geareval reviewed twice (rest in game time, bootstrap tail gate; resist trading = user decision).
+   (trigger: hard_fight). options_sim now 25e (speed_start_tick mirrored, PRICE speed 400; XP_PER_GOLD rolling, set by the Pilot per snapshot). options_sim 26f: resists modelled (gear evaluator github/tools/pilot/geareval.py imports it too); scenarios.py for depth-native fights. options_sim now 26h (per-member awake flag; optional xp_per_block time cost; band trigger in shadow mode, agree = actual action). geareval reviewed twice (rest in game time, bootstrap tail gate; resist trading = user decision).
    Speed value (speed-slope memo): drinking a carried one at the start pays (break-even 350-1600 g); buying pays on XP only below ~200-250 g at XP_PER_GOLD 1 (safety not counted). Script data/estimator/speed_value.py. Speed purchases: decisions.jsonl kind act, why "buy ... Potion of Speed", entry= total paid (3 at 383 by 10-26); BM prices in runs/pilot/dive04/stores.json (store 7). PRICE speed 400 ~ paid; revisit if the paid average moves. Review estimator records of new missions. (`to_architect/2026-10-25-shadow-review.md`); proposed running it at the start of hard fights.
 5b. **m27** (Opus, kit forged to m26's start, Pilot after m26 fixes): first same-Pilot Opus vs Sonnet comparison; score it vs m26 when done.
    Arrival feelings now logged (`arrival_feeling` in decisions; `feeling:` in dump headers): later, measure P(pit/nest | special) on scummed levels.
 5c. Next rulebook build: add constants.csv rows for Hero/Berserk (to_h +12/+24, AC -10, mhp +10/+30 rescaled, res_fear),
    cure amounts, no-flow movement, spell range 18 (from `studies/2026-10-25-estimator/scratch/E2/mechanics.csv`).
+5d. When `looks` records exist (m48+): calibrate options_sim P_WAKE (sleeper wake rate near a fight; 5%/block guess) and
+   re-check P_AWAKE against observed shares.
 6. Housekeeping: the 09-29 shops memo assumed CHR 4 = Dive04's natural CHR; it is drained to 3 now (use `data/rulebook/shop_owners.csv`, CHR 3 columns, until restored).
 
 ## Waiting on the user
