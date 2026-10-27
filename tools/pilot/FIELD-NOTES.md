@@ -96,6 +96,16 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
 - The Pilot drinks Speed at the start of hard fights, and in emergencies. It teleports when afraid with 2+ adjacent,
   or when 4+ monsters are about in the open.
 
+## New tools (10-26, after m47)
+
+- **`react`** turns your judgement into Pilot-speed reactions: `react thieves kill` (m46 lost ~2400 to Smeagol, m41
+  ~1590), `react leave NAME` for a monster you never want to meet, `react hunt NAME`, `react afraid teleport`.
+- **`review`**: gear with an ability, an artifact, or worth 1000+ that the evaluator wouldn't wear is held for you,
+  not sold. Decide with `review sell|keep|wear NAME` (`gearcmp NAME` first).
+- **Pack control**: `destroy`/`drop` work in the dungeon now; `order nopickup=Lance,Pike` keeps kinds out.
+- **Asleep monsters** show as "asleep" in the `Monsters:` line: a sleeping group can be left alone or fought on your
+  terms.
+
 ## What the best Navigator moves have been
 
 - **Noticing what the policy can't value:** m32 wielded the Scimitar of Westernesse (Free Action + See Invisible)
