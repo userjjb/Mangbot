@@ -5,6 +5,24 @@ reviews everything here. Session 8 makes **no meaningful code changes**: it help
 what it sees. Keep entries short, dated (HH:MM, mission), and concrete (what happened, the evidence: a decision-log
 time, a `why` output, a complaint; what you'd want built or changed). Newest at the top of each section.
 
+## Session 9 triage (2026-10-27, the session-9 Architect)
+Resolved from the logs (session 8's open questions):
+- **The "unexplained" gold losses were thefts**: m51 05:37:08 "2617 coins were stolen!" and m53 06:52:15 "2392 coins
+  were stolen!", both by Novice rogues (they come in groups; the touch lands while we fight the others). Since 10-25,
+  five touches took ~11,200 gold (1669, 1872, 2631, 2617, 2392): ~10% of the purse each (melee1.c EAT_GOLD). Session 8
+  searched state.jsonl, whose "epoch" was the game clock, ~3 min behind after freezes, and missed them.
+- **m53 "WoR read failed"**: not a failure; the read at 06:38:01 used the last scroll ("You have no more" is the pack
+  line) and the recall landed. **"The staff rule fires too early"**: the staff uses were the Architect's own.
+- **m49 Gorged** was not a potion: the make-room rule ate a Piece of Elvish Waybread (7500 food) while Fed, beside
+  Wargs and a Black ogre, to pick up a scroll (22:29:10). **m49 "money walked by"**: the dive walking to the stairs
+  (leaving a Silver mouse level) loots only before it sets off.
+- **The Holy Avenger Sabre**: valued 2750 because the parser lost bracketed egos (now 22750); gearcmp said +12.9%,
+  sold for losing Free Action. Wielding it with Free Action from a ring is the loadout optimizer's job (not built).
+Fixed (d939b59, 2f95e09, 7c9e149; 88 unit cases): thefts are news with a total; make-room eating never gorges;
+the dive stops for loot within 3 squares of its path; state.jsonl on the wall clock; bracketed egos valued; the
+nearest gold pile's square in `near:`; at the weight limit the cheapest heavy item is shed for loot worth 1.5x.
+Open: see next_steps.md, HANDOFF TO ARCHITECT 10 (or the session-9 section).
+
 Session 8 ran one mission, m49 (Dive04, Haiku Navigator, low effort, 22:05-22:41, 10-26). Full report:
 `runs/pilot/dive04/reports/2026-10-26-mission49.md`.
 

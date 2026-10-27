@@ -1784,7 +1784,8 @@ def town_houses(memory):
         oy = dy - 1 if dy == y else dy + 1 if dy == y2 else dy
         ox = dx - 1 if dx == x else dx + 1 if dx == x2 else dx
         inn = (dy + (1 if dy == y else -1 if dy == y2 else 0), dx + (1 if dx == x else -1 if dx == x2 else 0))
-        if inn not in inside or not passable(g((oy, ox), " ")):
+        # (the street outside may be unmapped at night: anything but a wall or a shop)
+        if inn not in inside or g((oy, ox), " ") in "#%0123456789":
             continue
         out.append(dict(area=len(inside), door=(dy, dx), inside=inside, step_in=inn, outside=(oy, ox),
                         box=(y, x, y2, x2)))

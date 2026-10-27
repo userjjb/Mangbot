@@ -54,7 +54,27 @@ weapon would give 3 blows at STR 18/70, DEX 18/20.
 - The model backs the gear-free parts out of the sheet; an unknown item (no plusses shown, `{good}`) is read as its
   base kind.
 
-## TODO: the loadout optimizer (not built; the user: "add it as a todo")
+## The loadout optimizer (built, session 9: `geareval.optimize`, `pilotctl loadout [shops]`)
+
+The user (10-27), after m53 sold a Sabre (Holy Avenger) because the axe it would replace gives Free Action: "work on
+the loadout optimizer". **Search:** the pool is the pack's identified wearables (and, with `shops`, the stock last
+seen in each shop within the gold beyond the essentials' reserve; each with its price). Per slot, a candidate no
+better than a worn piece or another candidate on every static count (AC, to-hit, to-dam, abilities, stat bonuses,
+weight, price; a weapon by the damage it gives) is pruned. Loadouts = the worn set with **one or two slots changed**
+(a ring pair is one slot), **keeping every ability and resist worn now** (NO_LOSS + REQUIRED, and the elemental
+resists while TRADE_RESISTS is off), within the budget, no slower (weight). A static proxy (log damage per round +
+half the log of damage taken through AC, `1 - AC/250`, + HP + speed) picks the best 5 with a positive proxy; `compare`
+simulates them against the current gear with `no_loss` (the same verdict: +3% and 2 SE, the safety gates).
+**First answer (the demo):** the Sabre + a Ring of Free Action (1500 g) for a Protection ring: 3 blows ~54/round vs
+2 ~44, AC 76 -> 68, STR/DEX/CON -1 (the axe's (+1)): -3% +/- 13% without slays; **with slays (options_sim 27k: geareval passes
+the weapon's slays, brands and weight for criticals) +2-4% +/- 8%: a tie** -- the axe of Westernesse slays orcs, trolls
+and giants (41% of monster HP at 750 ft), the Sabre evil (65%). The Advisor's verdict (10-27 slays memo): keep the axe;
+selling the Holy Avenger was right. The proxy now uses the depth's slay mix and the Advisor's AC term (hit chance x
+wound reduction, `melee_taken`).
+**Limits:** three-slot moves aren't searched; it advises only (no automatic buying or swapping); the static proxy
+decides which loadouts get simulated.
+
+## The original TODO (kept for the sketch)
 
 Gear choices across slots: e.g. new boots of Resist Nexus in place of Free Action boots -- worth it only if Free Action
 comes from somewhere else (a ring, a weapon, an amulet). Sketch: candidates = worn + pack + affordable shop stock;

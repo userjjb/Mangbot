@@ -294,6 +294,11 @@
   "kind": "Potion of Restore Mana",
   "source": "identified"
  },
+ "Platinum Ring": {
+  "junk": false,
+  "kind": "Ring of Dexterity",
+  "source": "identified"
+ },
  "Platinum Rod": {
   "junk": false,
   "kind": "Rod of Enlightenment",

@@ -156,6 +156,55 @@ def saves(st):
 
 
 # ---------------- player ----------------
+def slay_mult(p, m):
+    """tot_dam_aux (cmd1.c:183-500): the best multiplier for this monster -- p["slays"] {race flag: mult}, e.g. {"EVIL": 2,
+    "UNDEAD": 3, "ORC": 3}, and p["brands"] {element: 3}, void against the monster's IM_<element>."""
+    mult = 1
+    for flag, k in (p.get("slays") or {}).items():
+        if flag in m.flags and k > mult:
+            mult = k
+    for el, k in (p.get("brands") or {}).items():
+        if ("IM_" + el) not in m.flags and k > mult:
+            mult = k
+    return mult
+
+
+def crit_mean_factor(p):
+    """critical_norm (cmd1.c:119): chance (weight + 5 x to-hit + 3 x clvl)/5000, then by weight + d650: x2+5 / x2+10 / x3+15 /
+    x3+20 / x3.5+25. Returns (chance, [(cum_prob, mult, add)]) or None without p["weight"] (tenth-pounds)."""
+    w = p.get("weight")
+    if not w:
+        return None
+    chance = min(1.0, (w + 5 * p["tohit"] + 3 * p["clvl"]) / 5000)
+    bands = [(400, 2, 5), (700, 2, 10), (900, 3, 15), (1300, 3, 20), (10 ** 9, 3.5, 25)]
+    out, prev = [], 0
+    for top, mu, add in bands:
+        hi = min(650, max(0, top - w - 1))
+        pr = max(0, hi - prev) / 650
+        prev = max(prev, hi)
+        if pr > 0:
+            out.append((pr, mu, add))
+    return chance, out
+
+
+def hit_damage(st, m, rng):
+    """One blow that hit: dice x slay, maybe a critical (on the multiplied dice), + to-dam (cmd1.c:1464-1481)."""
+    p = st.p
+    pn, ps = dice(p["dice"])
+    d = roll(rng, pn, ps) * slay_mult(p, m)
+    cr = p.get("_crit")
+    if cr is None:
+        cr = p["_crit"] = crit_mean_factor(p) or False
+    if cr and rng.random() < cr[0]:
+        x = rng.random()
+        for pr, mu, add in cr[1]:
+            if x < pr:
+                d = int(d * mu) + add
+                break
+            x -= pr
+    return d + p["todam"]
+
+
 def our_damage_per_turn(st, m):
     p = st.p
     tohit = p["tohit"] + (24 if st.berserk else 0) + (12 if st.hero else 0)
@@ -164,7 +213,7 @@ def our_damage_per_turn(st, m):
         chance = (chance + 1) // 2
     ph = 0.05 + 0.90 * max(0, chance - m.ac * 3 // 4) / chance
     pn, ps = dice(p["dice"])
-    return p["blows"] * ph * (pn * (ps + 1) / 2 + p["todam"])
+    return p["blows"] * ph * (pn * (ps + 1) / 2 * slay_mult(p, m) + p["todam"])
 
 
 def pick_target(st, adj):
@@ -192,7 +241,7 @@ def attack(st, target=None):
         k = rng.random()
         hit = k < 0.05 if k < 0.10 else rng.random() * chance >= m.ac * 3 // 4
         if hit:
-            m.hp -= roll(rng, pn, ps) + p["todam"]
+            m.hp -= hit_damage(st, m, rng)
     if m.hp <= 0:
         st.mons.remove(m)
         st.xp += int(m.r["exp"]) * m.rl / st.p["clvl"]
@@ -249,7 +298,7 @@ def escape_move(st, crowd):
     return any(use(st, it) for it in order)
 
 
-POLICY_VERSION = "pilot-escape-2026-10-26j"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
+POLICY_VERSION = "pilot-escape-2026-10-27k"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
 
 
 def worst_turn(st, adj):
@@ -501,7 +550,8 @@ def speed_energy(st):
 
 
 def rollout(p, team, plan, seed, horizon=30, arrivals=(), trace=False, actor=None):
-    """team: [(name, dist[, hp_frac[, awake]])] (hp_frac None = full; awake True/False from the Pilot's look, None = unknown ->
+    """Optional player keys: slays {flag: mult}, brands {element: mult}, weight (tenth-pounds: criticals).
+    team: [(name, dist[, hp_frac[, awake]])] (hp_frac None = full; awake True/False from the Pilot's look, None = unknown ->
     p_awake); plan: list of first moves; arrivals: [(block, name, dist)].
     Returns dict(dead, end_hp, low, spent, escaped, blocks[, path])."""
     rng = random.Random(seed)

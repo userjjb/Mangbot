@@ -73,6 +73,14 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
   was drained again (~480 wasted).
 - **XP per gold** (from recent play; `gear` and `prep` show it) is about 0.4. 1000 gold is worth ~400 XP of play.
 
+## Gold, thieves and the house (session 9)
+- Thieves (Novice rogues in groups, Brigands, Cutpurses) take **~10% of the gold you carry** per touch: five touches
+  took ~11,200 gold from 10-25 to 10-27. Since 10-27 Dive04 **banks its gold in a town house** (door 38,155):
+  `plan town` takes it out at the start and puts all but ~300 back at the end; the status line shows `(+N banked)`.
+  Shopping without `plan town`? `house withdraw` first. A theft is news now ("N gold stolen by a touch").
+- **Breeders that confuse** (Hummerhorns, 800 ft, m55): confused, you can't read scrolls and staffs often fail. The
+  Pilot now cures a long confusion itself (CSW, then CCW); leave such a level at once.
+
 ## Pilot habits to expect (not bugs to work around)
 
 - **Heavy loot is left (since m46):** "left a Battle Axe: 17 lb would slow you" is the weight rule, not a bug. A pack

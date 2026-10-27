@@ -138,10 +138,35 @@ validation.
 - The user's player lore and plan changes are in `notes_players.md` (read it).
 
 ### >>> WHICH HANDOFF IS YOURS? <<<
-- **Session 8 ("The Architect's Vacation", a Haiku Architect)**: read **"HANDOFF TO ARCHITECT 8"** right below. Only
-  that section and the files it names.
-- **Session 9 (normal work resumes)**: read **"HANDOFF TO ARCHITECT 9"** below it, first step: VACATION-NOTES.md.
-- Later sessions: the newest handoff written by the session before you, at the top.
+- **Session 10 and later**: read **"HANDOFF TO ARCHITECT 10"** right below (written by session 9).
+- Sessions 8 and 9 are over; their handoffs below are history.
+
+### HANDOFF TO ARCHITECT 10 (written 2026-10-27 ~17:40 by the session-9 Architect)
+
+**State:** Dive04 in town, clvl 29, 358/358, **300 gold carried + 19799 banked in its house** (door 38,155, bought
+17:34 for 10125: the user's gold bank against thieves). max_depth 800 (the user: keep). Git `restructure` pushed.
+SGE job 8268425 (scc-pc4) ends **Thu 10-29 09:47**. `runs/pilot/dive04/ask_unlimited` **kept** (the user, 10-27: and
+tell the Navigator `ask` never blocks -- now in the HANDBOOK, the brief template and the navigator agent file).
+Missions: m55 (Haiku low, 19.0 XP/dmin: 15 minutes confused on a Hummerhorn breeder level; report mission55.md).
+
+**Session 9 built (VACATION-NOTES.md "Session 9 triage" has the findings):** thefts are news (the "unexplained" m51/m53
+losses were Novice rogue touches); make-room eating never gorges; the dive loots within 3 squares of its path;
+state.jsonl on the wall clock; bracketed egos valued (Holy Avenger 22750); nearest gold square in `near:`; weight-limit
+shedding; **`goal quiet [SECS]`** (the user's quiet wait); ESCAPE LANDING / escaped / FAILED in the status header; a
+trap door below max_depth is news; **the loadout optimizer** (`geareval.optimize`, `pilotctl loadout [shops]`,
+design_gear.md; with the Advisor's slays 27k: the Sabre + FA ring vs the axe is a tie); **the gold bank**
+(`town_houses`, HouseBank, `pilotctl house`, plan town withdraws first / deposits last, operations.md "Houses");
+the confusion lock is cured (CSW/CCW), Recall cures blindness/confusion first, unseen missiles count as combat, the
+Review line shows the sale deadline. 94 unit cases.
+
+**Next:**
+1. **Verify live** the house bank in a `plan town` (withdraw at the start, deposit at the end), the confusion-lock
+   cure, `goal quiet`, the dive's loot detour, ESCAPE FAILED. Start the next brief's "New since" with the house.
+2. The Navigator still never uses `ask` (m49-m55), even told it doesn't block: ask the user whether to require one
+   check-in per trip or leave it.
+3. A set-piece for a confusing breeder swarm (m55) when harness work resumes; old open items from HANDOFF 9 below
+   (fight-vs-flee for bands, resist blindness, thieves check, loadout with shop stock live).
+4. Routine as before: snapshot, commit, push; after each mission wrap.sh, a report, FIELD-NOTES, complaints.
 
 ### HANDOFF TO ARCHITECT 8: "The Architect's Vacation" (written 2026-10-26 ~22:00 by the session-7 Architect)
 

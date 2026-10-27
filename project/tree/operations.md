@@ -170,6 +170,20 @@ into the Temple (4), but everything it carried is dropped where it died.
   Breath = monster HP / 3 or / 6, capped by element (`melee2.c`; table in `tools/pilot/glyphs.py`).
 - More, from the forums and the code: `memos/2026-09-26-forum-distillation.md`.
 
+### Houses and the gold bank (session 9, 2026-10-27; research from the source)
+- A town house is bought with `h` toward its door (cmd2.c:4378): price = interior area x 20 x (81..120) x the CHR
+  factor (130 at CHR 3 .. 100 at CHR 18) x 5 in town. Opening an unowned door says "This house costs N gold."
+  Ownership is saved with the server state, keyed by character name, never expires (lost only by selling -- refund
+  ~1/10 -- a DM reset, or permanent death, which also deletes the contents: cmd2.c:920).
+- Owner's `open` makes the door walkable; others get a store screen showing only "for sale" items. Floor objects in
+  houses persist (town levels are never wiped); monsters can't spawn in or enter closed houses and never take floor
+  gold. Gold is dropped with `custom $ value=N` ("You drop N pieces of gold."), picked up by stepping on it.
+  **Gold piles never merge and a drop with no free square vanishes** (object2.c:4142): the bank keeps one pile.
+- **Dive04 owns the 1-square house, door 38,155** (bought 17:34 10-27 for 10125). State in `runs/pilot/dive04/house.json`;
+  `pilotctl house` / `house deposit [KEEP]` / `house withdraw` (`house buy` is the Architect's). `plan town` withdraws
+  first and deposits all but `BANK_FLOAT` (300) last. Live: NEWBIES_CANNOT_DROP is on (level 1 only); a house there
+  may already be owned by someone; keep the door closed.
+
 ## Live server
 
 - mangband.org:18346 (1.5.3), found with `shopcat.py --list-servers` (metaserver

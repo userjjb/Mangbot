@@ -37,6 +37,8 @@ RACES = {r["name"]: r for r in csv.DictReader(open(MON))}
 
 HEAL = dict(clw=(15, 15), csw=(20, 24), ccw=(25, 29))      # flat HP (use-obj.c:483-510)
 FOOD = dict(clw=50, csw=100, ccw=100)                       # nourishment per potion (object.txt pval); optional p["food"]
+FOOD_LEVEL = {"Weak": (500, 999), "Hungry": (1000, 1999), "Fed": (2000, 9999), "Full": (10000, 14999),
+              "Gorged": (15000, 15000)}                     # mdefines.h PY_FOOD_*: the range behind each hunger level
 PRICE = dict(clw=24, csw=50, ccw=150, phase=20, tele=250, staff=250, wor=200, speed=400, berserk=100, hero=35)
 # E1's prices; Teleportation is not sold (scarcity price); a Staff of Teleportation charge ~ 2000 g / 8 charges;
 # Speed = the kit's Black Market line (~383-450, cap 450; 643465e)
@@ -121,6 +123,8 @@ class State:
 
     def __init__(self, p, mons, rng):
         self.p = dict(p)
+        if isinstance(self.p.get("food"), (tuple, list)):     # a hunger level's range: draw this rollout's counter
+            self.p["food"] = rng.uniform(*self.p["food"])
         self.inv = dict(p["inv"])
         self.mons = mons
         self.rng = rng
@@ -245,7 +249,7 @@ def escape_move(st, crowd):
     return any(use(st, it) for it in order)
 
 
-POLICY_VERSION = "pilot-escape-2026-10-26i"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
+POLICY_VERSION = "pilot-escape-2026-10-26j"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
 
 
 def worst_turn(st, adj):
@@ -255,7 +259,8 @@ def worst_turn(st, adj):
 
 def base_policy(st):
     """The Pilot's rules (POLICY_VERSION). Emergency = HP < 50% or the adjacent worst turn >= 1/3 of HP:
-    Optional p["food"]: cure potions add their nourishment; at 15000 (Gorged) we are slowed -10 for the rest of the fight.
+    Optional p["food"] (a number, or a (lo, hi) range drawn per rollout -- the client only knows the level: Weak 1000-2000,
+    Hungry... use FOOD_LEVEL[level]): cure potions add their nourishment; at 15000 (Gorged) we are slowed -10 for the rest of the fight.
     Can't read (blind/confused) with the adjacent worst turn >= 1/3 HP: the Staff of Teleportation, 16 blocks apart (46a5764).
     Hard-fight start (berserk_tick's test): speed_start_tick (Speed if not hasted), then berserk_tick.
     escape() order: one turn from death -> Teleportation, else Phase; Speed first; Word of Recall below 30% HP; phasing
