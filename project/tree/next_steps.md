@@ -307,8 +307,8 @@ blind escapes (staff when a scroll can't be read, refused reads detected, eat to
   (client `look N` + look_tick; p_awake in shadow snapshots; Advisor told). 5ab29bd, 751a520. 80 unit cases.
 - **m48** (Haiku low, 21:06-21:35, first at max_depth 800): 68.9 XP/dmin, **1 close call (24%)**: a Light hound band
   blinded Dive04 for 40 s, both escape reads refused; fixed (46a5764: staff when blind, refused reads seen, eat to Fed).
-  Also fixed live: breeder-pin teleport, band shadow under plans. Report mission48.md. **Decision for the user:**
-  keep max_depth 800, or back to 750 until resist blindness (the close call was at 750 ft).
+  Also fixed live: breeder-pin teleport, band shadow under plans. Report mission48.md. **The user decided (22:00): keep
+  max_depth 800.**
 - Still open: thieves (m46 Smeagol -2400), no Black Market Speed (3 visits), and the older list below. Verify live: the
   first `couldn't leave` recall, a hot-swap on a special level, `mission end` without a label after a swap.
 

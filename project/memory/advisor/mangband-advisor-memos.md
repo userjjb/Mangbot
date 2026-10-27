@@ -54,3 +54,4 @@ metadata:
 - 2026-10-26 (session 5): per-member asleep flag live from mid-m48 (team entries (name, dist, None, awake)); P_WAKE calibration waits for a few missions of `looks` records.
 - 2026-10-26 (session 5): m48 light-hound band: options_sim 26i (blind -> staff; optional p["food"] gorging at 15000). Replay: near-Gorged P(HP<=10%) 13% -> 0% with res_blind or the staff; eat-to-Fed fix matters (`to_architect/2026-10-26-blind-escapes.md`).
 - 2026-10-26 (session 5): options_sim 26j: p["food"] may be a (lo, hi) range per hunger level (FOOD_LEVEL); Full as range -> 4% near death vs 0.3% midpoint in the m48 band (`to_architect/2026-10-26-food-range.md`).
+- 2026-10-26: Architect session 8 = "vacation" (Haiku, live Navigator help, no code changes; ../VACATION-NOTES.md); code requests wait for session 9.

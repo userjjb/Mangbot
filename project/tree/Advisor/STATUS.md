@@ -49,6 +49,12 @@ Architect builds everything else.
    re-check P_AWAKE against observed shares.
 6. Housekeeping: the 09-29 shops memo assumed CHR 4 = Dive04's natural CHR; it is drained to 3 now (use `data/rulebook/shop_owners.csv`, CHR 3 columns, until restored).
 
+## Architect schedule
+
+- Session 8 = "The Architect's Vacation" (Haiku, helps the Navigator live, NO code changes; notes in ../VACATION-NOTES.md).
+  Code requests wait for session 9. Avoid options_sim changes meanwhile (nobody to coordinate a Pilot restart); good time for
+  data studies (P_WAKE from `looks`, band/hard-fight shadow records).
+
 ## Waiting on the user
 
 - Nothing pending. The user decided (10-24): **auto_scum stays ON** (richer, more dangerous rerolled levels; my "off" declined).
