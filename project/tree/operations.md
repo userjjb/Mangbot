@@ -186,8 +186,9 @@ into the Temple (4), but everything it carried is dropped where it died.
 - **Dive04's bank is the 4-square house in the tile NORTH of town** (depth -1, "-50 ft"): door 60,129, stand at 60,130,
   reached by walking north off town at 1,130 (you arrive at 64,130); bought 18:00 10-27 for 5455 (the user: practice for
   the live server, where we won't buy in town). A bank trip from the north edge takes ~20 s each way.
-- Dive04 also still owns the **town** 1-square house (door 38,155, bought 17:34 for 10125, empty; on record in
-  house.json `old_houses`; selling refunds ~1000). State in `runs/pilot/dive04/house.json`;
+- The **town** 1-square house (door 38,155, bought 17:34 for 10125) was **sold 19:53 for 1012** (the user): `h` toward
+  your own door from outside, with `confirm yes` first (the offer comes as a confirm prompt). State in
+  `runs/pilot/dive04/house.json` (`old_houses` keeps the record);
   `pilotctl house` / `house deposit [KEEP]` / `house withdraw` (`house buy` is the Architect's). `plan town` withdraws
   first and deposits all but `BANK_FLOAT` (300) last. Live: NEWBIES_CANNOT_DROP is on (level 1 only); a house there
   may already be owned by someone; keep the door closed.
