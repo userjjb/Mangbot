@@ -78,7 +78,8 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
   took ~11,200 gold from 10-25 to 10-27. Since 10-27 Dive04 **banks its gold in a house just north of town** (walk off
   town's north edge at 1,130; the house door is 60,129 on that tile; the Pilot does the walking):
   `plan town` takes it out at the start and puts all but ~300 back at the end; the status line shows `(+N banked)`.
-  Shopping without `plan town`? `house withdraw` first. A theft is news now ("N gold stolen by a touch").
+  Shopping without `plan town`? `house withdraw` first. The stash (stat restores, Stone to Mud wands) is kept in that
+  house too; the tavern floor isn't safe (town monsters took the wands). A theft is news now ("N gold stolen by a touch").
 - **Breeders that confuse** (Hummerhorns, 800 ft, m55): confused, you can't read scrolls and staffs often fail. The
   Pilot now cures a long confusion itself (CSW, then CCW); leave such a level at once.
 

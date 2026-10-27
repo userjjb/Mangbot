@@ -146,8 +146,8 @@ validation.
 **State:** Dive04 in town, clvl 29, 358/358, **300 gold carried + 14344 banked in its WILDERNESS house** (the tile
 north of town: door 60,129, reached off town's north edge at 1,130; bought 18:00 for 5455 -- the user: "practice for
 the live server, where we don't want to buy a home in town"). The town house (door 38,155) was sold 19:53 for 1012 (the
-user). **The tavern stash isn't safe**: at 18:10 an unseen town monster picked up a Wand of Stone to Mud from it --
-consider moving the stash kinds into the wilderness house (ask the user). max_depth 800 (the user: keep). Git `restructure` pushed.
+user). **The stash moved into the wilderness house** (the user, 10-27): the tavern
+floor lost all three Wands of Stone to Mud to town monsters (18:10, 19:16) before the move; the house holds none yet. max_depth 800 (the user: keep). Git `restructure` pushed.
 SGE job 8268425 (scc-pc4) ends **Thu 10-29 09:47**. `runs/pilot/dive04/ask_unlimited` **kept** (the user, 10-27: and
 tell the Navigator `ask` never blocks -- now in the HANDBOOK, the brief template and the navigator agent file).
 Missions: m55 (Haiku low, 19.0 XP/dmin: 15 minutes confused on a Hummerhorn breeder level; report mission55.md).

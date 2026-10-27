@@ -186,6 +186,10 @@ into the Temple (4), but everything it carried is dropped where it died.
 - **Dive04's bank is the 4-square house in the tile NORTH of town** (depth -1, "-50 ft"): door 60,129, stand at 60,130,
   reached by walking north off town at 1,130 (you arrive at 64,130); bought 18:00 10-27 for 5455 (the user: practice for
   the live server, where we won't buy in town). A bank trip from the north edge takes ~20 s each way.
+- **The stash lives in the house** (the user, 10-27): stat restores and Stone to Mud wands, one stack a square on
+  the interior squares other than the gold's (house.json `items`); `plan town` fetches a Restore a drained stat wants
+  when it withdraws and stashes when it deposits. The tavern floor wasn't safe: unseen town monsters took all three
+  Wands of Stone to Mud (10-27 18:10, 19:16).
 - The **town** 1-square house (door 38,155, bought 17:34 for 10125) was **sold 19:53 for 1012** (the user): `h` toward
   your own door from outside, with `confirm yes` first (the offer comes as a confirm prompt). State in
   `runs/pilot/dive04/house.json` (`old_houses` keeps the record);

@@ -1807,6 +1807,66 @@ class HouseBank(Goal):
         self.step, self.t, self.tries, self.price = "go", 0.0, 0, None
         self.gold0 = None
 
+    def item_step(self, p, h, inside):
+        """Inside, door closed: the stash (the user, 10-27: "move the stash into the wilderness house" -- at 18:10 a
+        town monster took a Wand of Stone to Mud off the tavern floor). One stack a square on the interior squares
+        other than the gold's; house.json `items` maps square -> name. A deposit drops the stash kinds carried; a
+        withdraw fetches the kind a drained stat wants (stash_wanted). Then back to the gold's square. True while
+        acting."""
+        w = p.w
+        st = p.house_state()
+        slots = st.setdefault("items", {})
+        y1, x1, y2, x2 = h["box"]
+        interior = [(y, x) for y in range(y1 + 1, y2) for x in range(x1 + 1, x2)]
+        free = [q for q in interior if q != inside and f"{q[0]},{q[1]}" not in slots]
+
+        def walk_to(q):
+            dy, dx = (q[0] > w.pos[0]) - (q[0] < w.pos[0]), (q[1] > w.pos[1]) - (q[1] < w.pos[1])
+            p.cmd(f"walk {direction(w.pos, (w.pos[0] + dy, w.pos[1] + dx))}", f"house: to {q[0]},{q[1]}", hold=0.6)
+            return True
+        if self.mode == "deposit":
+            it = next((i for i in w.items() if p.is_stash_item(i["name"])), None)
+            if it and free:
+                q = max(free, key=lambda q: w.dist(q, inside))      # (the far squares first)
+                if w.pos != q:
+                    return walk_to(q)
+                p.cmd(f"custom d item={it['item']} value={it['number']}", f"house: stash {it['name']}", hold=0.8)
+                slots[f"{q[0]},{q[1]}"] = it["name"]
+                p.stash_add(it["name"])
+                p.house_save()
+                return True
+            if it and not getattr(self, "full_told", False):
+                self.full_told = True
+                p.notify("tactic", f"house: no free square for {it['name']} (one stack a square): kept in the pack",
+                         news=True)
+        if self.mode == "withdraw":
+            kind = p.stash_wanted()
+            key = next((k for k, n in slots.items() if kind and kind in n), None)
+            if key:
+                q = tuple(int(v) for v in key.split(","))
+                if any(kind in i["name"] for i in w.items()):
+                    del slots[key]
+                    p.stash_remove(kind)
+                    p.fetching = None
+                    p.house_save()
+                    return True
+                if w.pos != q:
+                    return walk_to(q)
+                self.picks = getattr(self, "picks", 0) + 1
+                if self.picks > 4:
+                    del slots[key]                 # (not there after all)
+                    p.stash_remove(kind)
+                    p.house_save()
+                    p.notify("tactic", f"house: no {kind} on {key} after all", news=True)
+                    return True
+                p.fetching = kind
+                p.cmd("custom ,", f"house: pick up the {kind}", hold=0.8)
+                return True
+        if w.pos != inside:
+            return walk_to(inside)
+        p.fetching = None
+        return False
+
     def tick(self, p):
         w, now = p.w, gnow()
         h = self.house or p.house_state().get("house")
@@ -1938,6 +1998,11 @@ class HouseBank(Goal):
                 self.step = "out0"
                 return None
             st["banked"] = 0
+            p.house_save()
+            if not getattr(self, "items_done", False):
+                if self.item_step(p, h, inside):
+                    return None
+                self.items_done = True
             if self.mode == "deposit":
                 keep = int(self.keep if self.keep is not None else p.BANK_FLOAT)
                 amt = gold - keep
@@ -2040,12 +2105,12 @@ class TownKit(Goal):
         # the bank first: the shopping needs the gold (HouseBank)
         if self.stage == "upgrade" and not getattr(self, "withdrawn", False):
             self.withdrawn = True
-            if p.banked():
-                self.sub = HouseBank("withdraw")
+            if p.house_state().get("house") and (p.banked() or p.stash_wanted()):
+                self.sub = HouseBank("withdraw")   # (and the stash kind a drained stat wants)
                 return None
         # a drained stat whose Restore waits in the tavern: fetch it first (bought only if it isn't there)
         if self.stage == "upgrade" and not getattr(self, "fetched", False):
-            kind = p.stash_wanted()
+            kind = p.stash_wanted() if not p.house_state().get("items") else None   # (the house's: fetched above)
             if kind:
                 self.sub = StashFetch(kind)
                 return None
@@ -2164,13 +2229,15 @@ class TownKit(Goal):
                 self.done_log.append(f"still missing {'; '.join(gap)}: waiting 40 s for new stock")
                 return None
             # last: the stash kinds go to the tavern for the mission (Restore potions, Stone to Mud wands)
-            if not getattr(self, "stashed", False) and any(p.is_stash_item(i["name"]) for i in w.items()):
+            if not getattr(self, "stashed", False) and not p.house_state().get("house") and \
+                    any(p.is_stash_item(i["name"]) for i in w.items()):
                 self.stashed = True
                 self.sub = StashDeposit()
                 return None
             # and last of all, the gold into the house: the dungeon has no use for it, its thieves do
             if not getattr(self, "deposited", False) and p.house_state().get("house") and \
-                    w.ind.get("gold", [0])[0] > p.BANK_FLOAT + 500:
+                    (w.ind.get("gold", [0])[0] > p.BANK_FLOAT + 500 or any(p.is_stash_item(i["name"])
+                                                                         for i in w.items())):
                 self.deposited = True
                 self.sub = HouseBank("deposit")
                 return None
@@ -3756,7 +3823,7 @@ class Pilot:
                 self.skipped_items.add((w.level_t, w.pos))
             if seen and (w.level_t, w.pos) in self.skipped_items:
                 seen = []         # junk we left, or what the Navigator dropped here
-            if seen and not w.depth and self.is_stash_item(seen[-1][1]) and \
+            if seen and not w.in_dungeon and self.is_stash_item(seen[-1][1]) and \
                     not (self.__dict__.get("fetching") and self.fetching in seen[-1][1]):
                 seen = []         # (the tavern stash stays there: the user, 10-26)
             # By value (restructure step 2.1; the Advisor's set-pieces C3, C4): a unique's

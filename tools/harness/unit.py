@@ -2116,6 +2116,72 @@ def house_bank_in_the_wilderness():
     return ok, f"{r}; depth {w.depth} at {w.pos}; banked {p.banked()}; sent {sent}"
 
 
+@case
+def house_keeps_the_stash():
+    """The user (10-27): the stash moves into the house (a town monster took a wand off the tavern floor). In the
+    4-square house (door 60,129) a deposit drops each stash stack on its own square away from the gold's (60,128),
+    the gold on 60,128; a withdraw with STR drained fetches the Restore Strength from its square, gold too."""
+    import tempfile
+    mem = {}
+    for x in range(124, 130):
+        mem[(59, x)] = mem[(61, x)] = "#"
+    mem[(60, 124)], mem[(60, 129)] = "#", "0"
+    for x in range(125, 129):
+        mem[(60, x)] = "."
+    for y in range(57, 64):
+        for x in range(130, 134):
+            mem[(y, x)] = "."
+    hs = P.town_houses(mem)
+    h = {k: (list(v) if isinstance(v, tuple) else v) for k, v in hs[0].items() if k != "inside"}
+    p = pilot(gold=5300, pack=[("2 Wands of Stone to Mud (21 charges)", 65), ("a Potion of Restore Strength", 75)])
+    w = p.w
+    w.depth, w.in_dungeon, w.memory, w.pos = 0, False, mem, (60, 130)
+    p.rundir, p.busy_until = tempfile.mkdtemp(), 0
+    p._house, p.stash = {"house": h, "banked": 0}, {"items": []}
+    p.stash_save = lambda: None
+    floor = {}
+    dirs = {4: (0, -1), 6: (0, 1)}
+
+    def cmd(line, why, hold=0.4):
+        m = re.match(r"walk (\d)", line)
+        if m:
+            dy, dx = dirs[int(m.group(1))]
+            w.pos = (w.pos[0] + dy, w.pos[1] + dx)
+            if "$" in floor.get(w.pos, ""):
+                w.ind["gold"][0] += int(floor.pop(w.pos)[1:])
+        m = re.match(r"custom d item=(\d+)", line)
+        if m:
+            it = next(i for i in w.inven if i["item"] == int(m.group(1)))
+            w.inven.remove(it)
+            floor[w.pos] = it["name"]
+        m = re.match(r"custom \$ value=(\d+)", line)
+        if m:
+            w.ind["gold"][0] -= int(m.group(1))
+            floor[w.pos] = "$" + m.group(1)
+            w.messages.append((P.gnow(), f"You drop {m.group(1)} pieces of gold."))
+        if line == "custom ,":
+            n = floor.pop(w.pos)
+            w.inven.append({"item": 30, "name": n, "tval": 75, "weight": 4, "number": 1, "equip": False})
+    p.cmd = cmd
+    p.mover = type("M", (), {"active": False, "go": lambda self, t: True, "tick": lambda self: "arrived"})()
+
+    def run(g):
+        for _ in range(80):
+            g.t = -99.0
+            r = g.tick(p)
+            if r:
+                return r
+    a = run(P.HouseBank("deposit"))
+    dep = dict(floor)
+    p.seen_drained = {"STR": (58, 68)}
+    b = run(P.HouseBank("withdraw"))
+    ok = a and b and dep.get((60, 128)) == "$5000" and sorted(v for k, v in dep.items() if k != (60, 128)) == \
+        ["2 Wands of Stone to Mud (21 charges)", "a Potion of Restore Strength"] and \
+        any("Restore Strength" in i["name"] for i in w.items()) and w.ind["gold"][0] == 5300 and \
+        list(floor.values()) == ["2 Wands of Stone to Mud (21 charges)"] and w.pos == (60, 130)
+    return ok, f"deposit {a}: floor {dep}; withdraw {b}: floor {floor}; pack {[i['name'] for i in w.items()]}"
+
+
 def _trip_on_level(p, tp):
     p.goal = None
     p.set_goal = lambda g: setattr(p, "goal", g)
