@@ -3921,9 +3921,12 @@ class Pilot:
         if looked:
             p["p_awake"] = round(sum(1 for z in looked if not z) / len(looked), 2)
             p["asleep_seen"] = sum(1 for z in looked if z)
-        # (the food counter for options_sim 26i's gorging: the client gives the hunger level only, so a level's middle --
-        # Weak 1000, Hungry 1500, Fed 6000, Full 12500, Gorged 15000; the real counter can be up to ~2500 off)
-        p["food"] = {0: 500, 1: 1000, 2: 1500, 3: 6000, 4: 12500, 5: 15000}.get(w.hunger, 6000)
+        # (the food counter for options_sim's gorging: the client gives the hunger level only, so the level's range,
+        # drawn per rollout -- options_sim 26j's FOOD_LEVEL; gorging is a threshold, the Advisor: a midpoint hid the risk)
+        lvl = {0: "Weak", 1: "Weak", 2: "Hungry", 3: "Fed", 4: "Full", 5: "Gorged"}.get(w.hunger, "Fed")
+        fl = getattr(sh.sim, "FOOD_LEVEL", None)
+        p["food"] = fl[lvl] if fl and lvl in fl else {"Weak": 750, "Hungry": 1500, "Fed": 6000, "Full": 12500,
+                                                      "Gorged": 15000}[lvl]
         p.update(extra_p or {})
         # (name, distance, hp_frac, awake): options_sim 26h takes the asleep flag per member (the `look` answers; None =
         # unknown, the p_awake share then 0.4 stand in) -- the Advisor: 7 Wargs, six at 4 squares, ~11 HP lost if
