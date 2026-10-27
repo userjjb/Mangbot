@@ -179,7 +179,15 @@ into the Temple (4), but everything it carried is dropped where it died.
   houses persist (town levels are never wiped); monsters can't spawn in or enter closed houses and never take floor
   gold. Gold is dropped with `custom $ value=N` ("You drop N pieces of gold."), picked up by stepping on it.
   **Gold piles never merge and a drop with no free square vanishes** (object2.c:4142): the bank keeps one pile.
-- **Dive04 owns the 1-square house, door 38,155** (bought 17:34 10-27 for 10125). State in `runs/pilot/dive04/house.json`;
+- **Wilderness houses are far cheaper** (wilderness.c:1189-1195: area x (900..1099) + 33 x area^2 (+ a cube term past
+  40 squares), x CHR, **no x5**): ~1,200 for 1 square, ~5,500 for 4 at CHR 4. The tile beside town has extra for-sale
+  ("town home", door `0`) houses. Walking off the town's edge (TOWN_WALL false on both servers) enters the tile; its
+  objects aren't wiped when it empties (generate.c:4090: verified, a pile was there after the tile emptied).
+- **Dive04's bank is the 4-square house in the tile NORTH of town** (depth -1, "-50 ft"): door 60,129, stand at 60,130,
+  reached by walking north off town at 1,130 (you arrive at 64,130); bought 18:00 10-27 for 5455 (the user: practice for
+  the live server, where we won't buy in town). A bank trip from the north edge takes ~20 s each way.
+- Dive04 also still owns the **town** 1-square house (door 38,155, bought 17:34 for 10125, empty; on record in
+  house.json `old_houses`; selling refunds ~1000). State in `runs/pilot/dive04/house.json`;
   `pilotctl house` / `house deposit [KEEP]` / `house withdraw` (`house buy` is the Architect's). `plan town` withdraws
   first and deposits all but `BANK_FLOAT` (300) last. Live: NEWBIES_CANNOT_DROP is on (level 1 only); a house there
   may already be owned by someone; keep the door closed.

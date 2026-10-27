@@ -1647,3 +1647,5 @@ BrokenPipeError: [Errno 32] Broken pipe
 17:33:03 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
 17:33:58 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
 17:33:58 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+17:58:47 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+17:58:47 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock

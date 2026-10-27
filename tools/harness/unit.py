@@ -2059,6 +2059,63 @@ def confusion_lock_is_cured():
     return ok, f"{first}, {second}, {third}: {sent}; {line!r}"
 
 
+@case
+def house_bank_in_the_wilderness():
+    """The user (10-27): a small house just outside town (practice for the live server, where town houses cost 5x).
+    A deposit from town walks to the edge square it was reached by, off the edge into the house's tile, banks, and
+    walks back into town by the same edge."""
+    import tempfile
+    houses = P.town_houses(_town_memory())
+    h = dict({k: (list(v) if isinstance(v, tuple) else v) for k, v in houses[0].items() if k != "inside"},
+             depth=-1, cross={"town": [1, 130], "wild": [64, 130], "depth": -1})
+    p = pilot(gold=10300)
+    w = p.w
+    w.depth, w.in_dungeon, w.memory, w.pos = 0, False, _town_memory(), (1, 130)
+    p.rundir, p.busy_until = tempfile.mkdtemp(), 0
+    p._house = {"house": h, "banked": 0}
+    dirs = {2: (1, 0), 4: (0, -1), 6: (0, 1), 8: (-1, 0)}
+    sent = []
+
+    def cmd(line, why, hold=0.4):
+        sent.append(line)
+        m = re.match(r"walk (\d)", line)
+        if m:
+            if w.depth == 0 and w.pos == (1, 130) and m.group(1) == "8":
+                w.depth, w.pos = -1, (38, 154)          # (the scripted tile: the house's outside square)
+                return
+            if w.depth == -1 and w.pos == (64, 130) and m.group(1) == "2":
+                w.depth, w.pos = 0, (1, 130)
+                return
+            dy, dx = dirs.get(int(m.group(1)), (0, 0))
+            w.pos = (w.pos[0] + dy, w.pos[1] + dx)
+        m = re.match(r"custom \$ value=(\d+)", line)
+        if m:
+            w.ind["gold"][0] -= int(m.group(1))
+            w.messages.append((P.gnow(), f"You drop {m.group(1)} pieces of gold."))
+    p.cmd = cmd
+
+    class M:
+        active = False
+        def go(self, t):
+            w.pos = tuple(t[0])          # (the scripted walk arrives at once)
+            return True
+        def tick(self):
+            return "arrived"
+        def stop(self):
+            pass
+    p.mover = M()
+    g = P.HouseBank("deposit")
+    r = None
+    for _ in range(80):
+        g.t = -99.0
+        r = g.tick(p)
+        if r:
+            break
+    ok = r and r[0] == "done" and w.depth == 0 and w.pos == (1, 130) and p.banked() == 10000 and \
+        sent.count("walk 8") == 1 and sent.count("walk 2") == 1
+    return ok, f"{r}; depth {w.depth} at {w.pos}; banked {p.banked()}; sent {sent}"
+
+
 def _trip_on_level(p, tp):
     p.goal = None
     p.set_goal = lambda g: setattr(p, "goal", g)

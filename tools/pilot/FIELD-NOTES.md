@@ -75,7 +75,8 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
 
 ## Gold, thieves and the house (session 9)
 - Thieves (Novice rogues in groups, Brigands, Cutpurses) take **~10% of the gold you carry** per touch: five touches
-  took ~11,200 gold from 10-25 to 10-27. Since 10-27 Dive04 **banks its gold in a town house** (door 38,155):
+  took ~11,200 gold from 10-25 to 10-27. Since 10-27 Dive04 **banks its gold in a house just north of town** (walk off
+  town's north edge at 1,130; the house door is 60,129 on that tile; the Pilot does the walking):
   `plan town` takes it out at the start and puts all but ~300 back at the end; the status line shows `(+N banked)`.
   Shopping without `plan town`? `house withdraw` first. A theft is news now ("N gold stolen by a touch").
 - **Breeders that confuse** (Hummerhorns, 800 ft, m55): confused, you can't read scrolls and staffs often fail. The

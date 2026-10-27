@@ -1809,14 +1809,49 @@ class HouseBank(Goal):
 
     def tick(self, p):
         w, now = p.w, gnow()
-        if w.depth:
-            return ("failed", "the house is in town")
         h = self.house or p.house_state().get("house")
         if not h:
             return ("failed", "no house owned (`house buy`)")
+        hd = int(h.get("depth", 0))
+        if w.in_dungeon or (w.depth not in (0, hd)):
+            return ("failed", "the house is in town or the tile beside it: go to town first")
         door, inside, outside = tuple(h["door"]), tuple(h["step_in"]), tuple(h["outside"])
         if not waited(self.t, 1.0) or now < p.busy_until or w.inven_dirty:
             return None
+        # a wilderness house: walk off the town's edge where we did when it was found, and back the same way
+        cross = h.get("cross")
+        if hd and self.step not in ("back", "home"):
+            if w.depth == 0:
+                if self.step == "closed":
+                    self.step = "home"            # (back in town: done below)
+                else:
+                    tc = tuple(cross["town"])
+                    if w.pos != tc:
+                        if not p.mover.active and not p.mover.go([tc]):
+                            return ("failed", f"no way to the town edge at {tc[0]},{tc[1]}")
+                        p.mover.tick()
+                        self.t = now - 1.0
+                        return None
+                    self.t = now
+                    p.cmd(f"walk {p.edge_dir(tc)}", "house: off the town's edge to the house's tile", hold=1.5)
+                    return None
+        if self.step == "back":
+            if w.depth == 0:
+                self.step = "home"
+                return None
+            wc = tuple(cross["wild"])
+            if w.pos != wc:
+                if not p.mover.active and not p.mover.go([wc]):
+                    return ("failed", f"no way back to the edge at {wc[0]},{wc[1]}")
+                p.mover.tick()
+                self.t = now - 1.0
+                return None
+            self.t = now
+            p.cmd(f"walk {p.edge_dir(wc)}", "house: back into town", hold=1.5)
+            return None
+        if self.step == "home":
+            st = p.house_state()
+            return ("done", f"{self.name}: {st.get('banked', 0)} gold in the house, {w.ind.get('gold', [0])[0]} carried")
         gold = w.ind.get("gold", [0])[0]
         said = [t for ts, t in w.messages if ts >= self.t - 1.0]
         self.t = now
@@ -1865,6 +1900,8 @@ class HouseBank(Goal):
                     return ("failed", "the purchase didn't go through: " + "; ".join(said[-3:]))
                 return None
             st = p.house_state()
+            if st.get("house"):
+                st.setdefault("old_houses", []).append(st["house"])   # (an earlier house: kept on record)
             st["house"] = dict(h, price=self.price, bought=time.strftime("%Y-%m-%d %H:%M"))
             st["banked"] = 0
             p.house_save()
@@ -1947,6 +1984,9 @@ class HouseBank(Goal):
         if self.step == "closed":
             st = p.house_state()
             p.log("bank", banked=st.get("banked", 0), purse=gold)
+            if hd:
+                self.step = "back"
+                return None
             return ("done", f"{self.name}: {st.get('banked', 0)} gold in the house, {gold} carried")
         return ("failed", f"unknown step {self.step}")
 
@@ -6924,6 +6964,7 @@ class Pilot:
     def tick(self):
         self.w.drain()
         self.w.refresh()
+        self.note_edge_cross()
         # the game clock (world.py). The server's rule (xtra2.c base_time_factor, time_factor): 1 in town;
         # 10x resting and 5x running with no awake monster in line of sight -- seen or not
         # (monsters_in_los), so after a fight in the dark it's often 1x (set-piece L2: a 6-s rest at 1x);
@@ -9311,6 +9352,24 @@ class Pilot:
 
     BANK_FLOAT = 300           # gold carried out of town when a house holds the rest (no use for it in the dungeon)
 
+    @staticmethod
+    def edge_dir(pos):
+        """The direction that walks off the map edge from this square (MAX_HGT 66, MAX_WID 198), else None."""
+        y, x = pos
+        return 8 if y <= 1 else 2 if y >= MAX_HGT - 2 else 4 if x <= 1 else 6 if x >= MAX_WID - 2 else None
+
+    def note_edge_cross(self):
+        """The last walk off the town's edge into a wilderness tile: {town square, wilderness square, depth} -- the
+        way a wilderness house is reached (the user, 10-27: a small house just outside town, for the live server)."""
+        w = self.w
+        last = self.__dict__.get("surface_last")
+        if w.pos and w.depth is not None and w.depth <= 0 and not w.in_dungeon:
+            if last and last[0] == 0 and w.depth < 0 and self.edge_dir(last[1]):
+                self.edge_cross = {"town": list(last[1]), "wild": list(w.pos), "depth": w.depth}
+            self.surface_last = (w.depth, w.pos)
+        else:
+            self.surface_last = None
+
     def house_state(self):
         if not hasattr(self, "_house"):
             try:
@@ -9337,27 +9396,35 @@ class Pilot:
         if not sub:
             h = st.get("house")
             if not h:
-                houses = town_houses(self.w.memory) if not self.w.depth else []
+                houses = town_houses(self.w.memory) if not self.w.in_dungeon else []
                 return {"ok": True, "text": "no house owned" + (f"; the smallest on the map: {houses[0]['area']} square(s), "
                                                                f"door {houses[0]['door']}" if houses else "")}
             return {"ok": True, "text": f"house: door {h['door'][0]},{h['door'][1]}, bought {h.get('bought')} for "
                                         f"{h.get('price')}; {st.get('banked', 0)} gold banked (as of {st.get('t')}); "
                                         f"{self.w.ind.get('gold', [0])[0]} carried"}
-        if self.w.depth:
-            return {"ok": False, "error": "the house is in town"}
+        if self.w.in_dungeon:
+            return {"ok": False, "error": "the house is in town or the tile beside it"}
         if sub == "buy":
             if self.req_role != "architect":
                 return {"ok": False, "error": "buying a house is the Architect's decision"}
-            if st.get("house"):
-                return {"ok": False, "error": f"a house is owned already (door {st['house']['door']})"}
+            if st.get("house") and st.get("banked"):
+                return {"ok": False, "error": f"the house at {st['house']['door']} holds {st['banked']} gold: "
+                                              "`house withdraw` first"}
             houses = town_houses(self.w.memory)
             if len(args) > 1:
                 m = re.match(r"^(\d+)[ ,](\d+)$", " ".join(args[1:3]))
                 houses = [h for h in houses if m and h["door"] == (int(m.group(1)), int(m.group(2)))]
             if not houses:
                 return {"ok": False, "error": "no such house on the town map (walls '#' round a door '0')"}
-            g = HouseBank("buy", house={k: (list(v) if isinstance(v, tuple) else v) for k, v in houses[0].items()
-                                        if k != "inside"})
+            hh = {k: (list(v) if isinstance(v, tuple) else v) for k, v in houses[0].items() if k != "inside"}
+            if self.w.depth:
+                # (a wilderness tile: remember how we came, the way back to it)
+                cr = self.__dict__.get("edge_cross")
+                if not cr or cr["depth"] != self.w.depth:
+                    return {"ok": False, "error": "walk here from town (off the town's edge) before buying, so the "
+                                                  "Pilot knows the way"}
+                hh.update(depth=self.w.depth, cross=cr)
+            g = HouseBank("buy", house=hh)
         elif sub in ("deposit", "withdraw"):
             if not st.get("house"):
                 return {"ok": False, "error": "no house owned"}
