@@ -1944,6 +1944,74 @@ def loadout_moves_free_action():
     return ok, f"with the ring: {a}; without: {b}; under budget 1000: {c}; searched {sa}"
 
 
+# a piece of Dive04's town (10-27): the 1-square house at 37-39,155-157 (door 38,155) and a 4-square one
+_TOWN = {37: "....###....#....#", 38: "....0.#....#..0.", 39: "....###....####.."}
+
+
+def _town_memory():
+    mem = {}
+    for y, row in _TOWN.items():
+        for i, ch in enumerate(row):
+            mem[(y, 151 + i)] = ch
+    for y in (36, 40):
+        for x in range(151, 168):
+            mem[(y, x)] = "."
+    return mem
+
+
+@case
+def house_bank_round_trip():
+    """The gold bank (the user, 10-27): the smallest house on the map is found (door 38,155, step in at 38,156, stand
+    at 38,154); a deposit walks in, closes the door, drops all but the float, walks out and closes it; a withdraw picks
+    the pile up by stepping in. Simulated server: walks move, the drop takes the gold and leaves a pile."""
+    houses = P.town_houses(_town_memory())
+    h = houses[0] if houses else {}
+    import tempfile
+    p = pilot(gold=20300)
+    w = p.w
+    w.depth, w.in_dungeon, w.memory, w.pos = 0, False, _town_memory(), (38, 154)
+    p.rundir, p.busy_until = tempfile.mkdtemp(), 0
+    p._house = {"house": {k: (list(v) if isinstance(v, tuple) else v) for k, v in h.items() if k != "inside"},
+                "banked": 0}
+    pile, sent = [0], []
+    dirs = {1: (1, -1), 2: (1, 0), 3: (1, 1), 4: (0, -1), 6: (0, 1), 7: (-1, -1), 8: (-1, 0), 9: (-1, 1)}
+
+    def cmd(line, why, hold=0.4):
+        sent.append(line)
+        m = re.match(r"walk (\d)", line)
+        if m:
+            dy, dx = dirs[int(m.group(1))]
+            w.pos = (w.pos[0] + dy, w.pos[1] + dx)
+            if w.pos == tuple(h["step_in"]) and pile[0]:
+                w.ind["gold"][0] += pile[0]
+                pile[0] = 0
+        m = re.match(r"custom \$ value=(\d+)", line)
+        if m:
+            w.ind["gold"][0] -= int(m.group(1))
+            pile[0] += int(m.group(1))
+            w.messages.append((P.gnow(), f"You drop {m.group(1)} pieces of gold."))
+    p.cmd = cmd
+    p.mover = type("M", (), {"active": False, "go": lambda self, t: True, "tick": lambda self: "arrived"})()
+    p.town_reserve = lambda: 1000
+
+    def run(g):
+        for _ in range(60):
+            g.t = -99.0
+            r = g.tick(p)
+            if r:
+                return r
+    a = run(P.HouseBank("deposit"))
+    after_dep = (w.ind["gold"][0], pile[0], p.banked(), w.pos)
+    b = run(P.HouseBank("withdraw"))
+    after_wd = (w.ind["gold"][0], pile[0], p.banked(), w.pos)
+    ok = h.get("door") == (38, 155) and h.get("outside") == (38, 154) and h.get("step_in") == (38, 156) and \
+        a and a[0] == "done" and after_dep == (300, 20000, 20000, (38, 154)) and \
+        b and b[0] == "done" and after_wd == (20300, 0, 0, (38, 154)) and "custom c dir=4" in sent and \
+        "custom c dir=6" in sent
+    return ok, f"house {h.get('door')}/{h.get('step_in')}/{h.get('outside')}; deposit {a} -> {after_dep}; " \
+               f"withdraw {b} -> {after_wd}; sent {sent[:8]}"
+
+
 def _trip_on_level(p, tp):
     p.goal = None
     p.set_goal = lambda g: setattr(p, "goal", g)

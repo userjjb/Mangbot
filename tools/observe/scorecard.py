@@ -211,8 +211,10 @@ def card(m):
     c["A"] = {"deaths": acount.get("dead", 0)}
     if aud:
         a, b = aud[0], aud[-1]
+        # (gold counts what the house holds: a deposit isn't a loss -- the gold bank, session 9)
+        ga, gb = ((x.get("gold") or 0) + (x.get("banked") or 0) for x in (a, b))
         c["A"].update(clvl=[a.get("clvl"), b.get("clvl")], exp_gain=(b.get("exp") or [0])[0] - (a.get("exp") or [0])[0],
-                      gold=[a.get("gold"), b.get("gold")], gold_change=(b.get("gold") or 0) - (a.get("gold") or 0),
+                      gold=[ga, gb], gold_change=gb - ga,
                       max_depth_ft=max(d.get("depth_ft") or 0 for d in aud))
 
     # B. efficiency

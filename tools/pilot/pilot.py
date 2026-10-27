@@ -1738,6 +1738,202 @@ class StashFetch(Goal):
         return None
 
 
+def town_houses(memory):
+    """The houses on a town map (the Pilot's memory: walls '#', house doors '0'): rectangles of wall with a door,
+    as [{area, door, inside, outside, box}], smallest first. inside: the interior squares; outside: the open square
+    across the door from the interior (where we stand to open it)."""
+    g = memory.get
+    seen, out = set(), []
+    for (y, x), ch in sorted(memory.items()):
+        if ch not in "#0" or (y, x) in seen or g((y - 1, x), " ") in "#0" or g((y, x - 1), " ") in "#0":
+            continue
+        x2, y2 = x, y
+        while g((y, x2 + 1), " ") in "#0":
+            x2 += 1
+        while g((y2 + 1, x), " ") in "#0":
+            y2 += 1
+        if x2 - x < 2 or y2 - y < 2:
+            continue
+        border = {(y, i) for i in range(x, x2 + 1)} | {(y2, i) for i in range(x, x2 + 1)} | \
+            {(j, x) for j in range(y, y2 + 1)} | {(j, x2) for j in range(y, y2 + 1)}
+        if not all(g(q, " ") in "#0" for q in border):
+            continue
+        seen |= border
+        doors = sorted(q for q in border if g(q) == "0")
+        if len(doors) != 1:
+            continue
+        dy, dx = doors[0]
+        inside = [(j, i) for j in range(y + 1, y2) for i in range(x + 1, x2)]
+        # (the door's outward neighbour: across from the interior)
+        oy = dy - 1 if dy == y else dy + 1 if dy == y2 else dy
+        ox = dx - 1 if dx == x else dx + 1 if dx == x2 else dx
+        inn = (dy + (1 if dy == y else -1 if dy == y2 else 0), dx + (1 if dx == x else -1 if dx == x2 else 0))
+        if inn not in inside or not passable(g((oy, ox), " ")):
+            continue
+        out.append(dict(area=len(inside), door=(dy, dx), inside=inside, step_in=inn, outside=(oy, ox),
+                        box=(y, x, y2, x2)))
+    return sorted(out, key=lambda h: (h["area"], h["door"]))
+
+
+class HouseBank(Goal):
+    """The gold bank (the user, 10-27: thieves took ~11,200 gold in five touches, ~10% of the purse each; "buy a house
+    and bank gold"). An owned town house keeps what's dropped in it (saved with the server; monsters can't enter or
+    take floor gold; cmd2.c, melee2.c). One pile on the square inside the door (gold piles never merge, and a drop
+    with no free square vanishes -- object2.c): stepping in picks the whole bank up, then a deposit drops all but
+    `keep` back on that square with the door closed. mode: 'buy' (open the door: "This house costs N gold."; buy
+    with 'h' if we can spare it, then deposit), 'deposit' or 'withdraw'."""
+
+    def __init__(self, mode, keep=None, house=None):
+        self.mode, self.keep, self.house = mode, keep, house
+        self.name = {"buy": "buy a house", "deposit": "bank gold in the house",
+                     "withdraw": "take gold from the house"}[mode]
+        self.step, self.t, self.tries, self.price = "go", 0.0, 0, None
+        self.gold0 = None
+
+    def tick(self, p):
+        w, now = p.w, gnow()
+        if w.depth:
+            return ("failed", "the house is in town")
+        h = self.house or p.house_state().get("house")
+        if not h:
+            return ("failed", "no house owned (`house buy`)")
+        door, inside, outside = tuple(h["door"]), tuple(h["step_in"]), tuple(h["outside"])
+        if not waited(self.t, 1.0) or now < p.busy_until or w.inven_dirty:
+            return None
+        gold = w.ind.get("gold", [0])[0]
+        said = [t for ts, t in w.messages if ts >= self.t - 1.0]
+        self.t = now
+        if self.step != getattr(self, "last_step", None):
+            self.last_step, self.tries = self.step, 0
+        if self.step == "go":
+            if w.pos == outside:
+                self.step = "open"
+                self.gold_out, self.banked0 = gold, p.banked()
+                return None
+            if not p.mover.active:
+                self.tries += 1
+                if self.tries > 3 or not p.mover.go([outside]):
+                    return ("failed", f"couldn't reach the house door at {door[0]},{door[1]}")
+            p.mover.tick()
+            self.t = now - 1.0
+            return None
+        if self.step == "open":
+            if self.mode == "buy" and self.price is None:
+                m = next((re.search(r"This house costs (\d+) gold", t) for t in said if "This house costs" in t), None)
+                if m:
+                    self.price = int(m.group(1))
+                elif any("already owned" in t for t in said):
+                    return ("failed", "that house is already owned")
+                elif self.tries < 6:
+                    self.tries += 1
+                    p.cmd(f"open {direction(w.pos, door)}", "house: open the door (its price)", hold=0.8)
+                    return None
+                else:
+                    return ("failed", "the door gave no price")
+                spare = gold - p.town_reserve()
+                if self.price > spare:
+                    return ("failed", f"the house costs {self.price}; {spare} gold to spare beyond the reserve")
+                self.gold0 = gold
+                p.c.send("confirm yes")
+                p.cmd(f"custom h dir={direction(w.pos, door)}", f"house: buy it for {self.price}", hold=1.0)
+                self.step = "bought"
+                return None
+            p.cmd(f"open {direction(w.pos, door)}", "house: open the door", hold=0.8)
+            self.step = "in1"
+            return None
+        if self.step == "bought":
+            if gold > self.gold0 - self.price:
+                self.tries += 1
+                if self.tries > 12:
+                    return ("failed", "the purchase didn't go through: " + "; ".join(said[-3:]))
+                return None
+            st = p.house_state()
+            st["house"] = dict(h, price=self.price, bought=time.strftime("%Y-%m-%d %H:%M"))
+            st["banked"] = 0
+            p.house_save()
+            p.notify("tactic", f"bought the house at {door[0]},{door[1]} for {self.price} gold", news=True)
+            self.mode, self.step = "deposit", "in1"      # (the door stays open after a purchase)
+            return None
+        if self.step == "in1":
+            if w.pos == door:
+                self.step = "in2"
+                return None
+            self.tries += 1
+            if self.tries > 8:
+                return ("failed", "the door didn't open: " + "; ".join(said[-3:]))
+            if self.tries % 3 == 0:
+                p.cmd(f"open {direction(w.pos, door)}", "house: open the door again", hold=0.8)
+            else:
+                p.cmd(f"walk {direction(w.pos, door)}", "house: into the doorway", hold=0.6)
+            return None
+        if self.step == "in2":
+            if w.pos == inside:
+                self.gold0 = gold
+                p.cmd(f"custom c dir={direction(inside, door)}", "house: close the door behind us", hold=0.8)
+                self.step = "inside"
+                return None
+            p.cmd(f"walk {direction(w.pos, inside)}", "house: step inside (the pile is picked up)", hold=0.8)
+            return None
+        if self.step == "inside":
+            st = p.house_state()
+            # (stepping in takes the pile. If it didn't, a second drop would find no free square and vanish)
+            if self.banked0 and gold < self.gold_out + 0.9 * self.banked0:
+                p.notify("tactic", f"house: the bank's {self.banked0} gold wasn't picked up on the way in (carrying "
+                                   f"{gold}); nothing dropped -- check the house square", news=True)
+                self.mode = "withdraw"
+                self.step = "out0"
+                return None
+            st["banked"] = 0
+            if self.mode == "deposit":
+                keep = int(self.keep if self.keep is not None else p.BANK_FLOAT)
+                amt = gold - keep
+                if amt > 0:
+                    p.cmd(f"custom $ value={amt}", f"house: bank {amt} gold (keep {keep})", hold=1.0)
+                    self.amt = amt
+                    self.step = "dropped"
+                    p.house_save()
+                    return None
+            p.house_save()
+            self.step = "out0"
+            return None
+        if self.step == "dropped":
+            if any(t.startswith("You drop") and "gold" in t for t in said) or gold <= self.gold0 - self.amt:
+                st = p.house_state()
+                st["banked"] = self.amt
+                st["t"] = time.strftime("%Y-%m-%d %H:%M")
+                p.house_save()
+                p.log("bank", banked=self.amt, purse=gold)
+                self.step = "out0"
+                return None
+            self.tries += 1
+            if self.tries > 10:
+                return ("failed", "the drop didn't show: " + "; ".join(said[-3:]))
+            return None
+        if self.step == "out0":
+            p.cmd(f"open {direction(w.pos, door)}", "house: open the door to leave", hold=0.8)
+            self.step = "out1"
+            return None
+        if self.step == "out1":
+            if w.pos == outside:
+                p.cmd(f"custom c dir={direction(outside, door)}", "house: close the door", hold=0.8)
+                self.step = "closed"
+                return None
+            nxt = door if w.pos == inside else outside
+            self.tries += 1
+            if self.tries > 12:
+                return ("failed", "couldn't leave the house: " + "; ".join(said[-3:]))
+            if self.tries % 4 == 0 and w.pos == inside:
+                p.cmd(f"open {direction(w.pos, door)}", "house: open the door again", hold=0.8)
+            else:
+                p.cmd(f"walk {direction(w.pos, nxt)}", "house: out", hold=0.6)
+            return None
+        if self.step == "closed":
+            st = p.house_state()
+            p.log("bank", banked=st.get("banked", 0), purse=gold)
+            return ("done", f"{self.name}: {st.get('banked', 0)} gold in the house, {gold} carried")
+        return ("failed", f"unknown step {self.step}")
+
+
 class TownKit(Goal):
     """plan town (restructure step 2.2): the Pilot's whole town visit, by policy.
     Sell what the policy sells, at the shop that pays (store.c store_will_buy);
@@ -1784,6 +1980,12 @@ class TownKit(Goal):
             return None
         if not waited(self.t, 1.0) or now < p.busy_until or w.inven_dirty or p.pending_use:
             return None             # (the pack and gold settle after each step)
+        # the bank first: the shopping needs the gold (HouseBank)
+        if self.stage == "upgrade" and not getattr(self, "withdrawn", False):
+            self.withdrawn = True
+            if p.banked():
+                self.sub = HouseBank("withdraw")
+                return None
         # a drained stat whose Restore waits in the tavern: fetch it first (bought only if it isn't there)
         if self.stage == "upgrade" and not getattr(self, "fetched", False):
             kind = p.stash_wanted()
@@ -1909,6 +2111,12 @@ class TownKit(Goal):
                 self.stashed = True
                 self.sub = StashDeposit()
                 return None
+            # and last of all, the gold into the house: the dungeon has no use for it, its thieves do
+            if not getattr(self, "deposited", False) and p.house_state().get("house") and \
+                    w.ind.get("gold", [0])[0] > p.BANK_FLOAT + 500:
+                self.deposited = True
+                self.sub = HouseBank("deposit")
+                return None
             return self.finish(p)
         return None
 
@@ -1918,7 +2126,7 @@ class TownKit(Goal):
         gap = p.supply_gate(want, True) if want else []
         short = [f"{n} {k}" for k, n in getattr(self, "short", []) if n > 0]
         head = (f"sold for {self.sold}, bought for {self.bought}, identified {self.identified}; "
-                f"gold now {w.ind.get('gold', [0])[0]}")
+                f"gold now {w.ind.get('gold', [0])[0]}" + (f" (+{p.banked()} in the house)" if p.banked() else ""))
         tail = (f"; supplies for recalling to {want} ft: " + ("OK" if not gap else "MISSING " + "; ".join(gap))) \
             if want else ""
         p.log("town_kit", sold=self.sold, bought=self.bought, identified=self.identified,
@@ -2844,7 +3052,7 @@ class Pilot:
                  exp=st["ind"].get("exp"), clvl=w.clvl, depth_ft=w.depth_ft,   # (exp: for XP-rate studies)
                  stats={n: st["ind"].get(f"stat{i}") for i, n in enumerate(self.STAT_NAMES)},
                  blows=st["ind"].get("skills2", [None])[0], ac=st["ind"].get("armor"),
-                 gold=st["ind"].get("gold", [None])[0],
+                 gold=st["ind"].get("gold", [None])[0], banked=self.banked(),
                  # per-check state (the Advisor's scorecard memo §5.4)
                  resting=bool(w.resting), in_combat=bool(w.adjacent_monsters() or gnow() - w.last_hit_t < 5),
                  recall_pending=bool(w.recall_pending), goal=self.goal.describe() if self.goal else None,
@@ -7309,6 +7517,8 @@ class Pilot:
             except Exception as e:
                 return {"ok": False, "error": f"gear evaluator failed: {e!r}"}
             return {"ok": True, "text": geareval.report(res)}
+        if c == "house":
+            return self.house_info(args)
         if c == "loadout":
             # the loadout optimizer (geareval.optimize): changes across slots, e.g. a better weapon without Free
             # Action, with Free Action from a ring. `loadout shops` adds the shops' stock as last seen, within the gold
@@ -9040,6 +9250,66 @@ class Pilot:
     def stash_has(self, kind):
         return any(kind in n for n in self.stash_state()["items"])
 
+    BANK_FLOAT = 300           # gold carried out of town when a house holds the rest (no use for it in the dungeon)
+
+    def house_state(self):
+        if not hasattr(self, "_house"):
+            try:
+                self._house = json.load(open(os.path.join(self.rundir, "house.json")))
+            except (OSError, ValueError):
+                self._house = {}
+        return self._house
+
+    def house_save(self):
+        try:
+            with open(os.path.join(self.rundir, "house.json"), "w") as f:
+                json.dump(self.house_state(), f, indent=1)
+        except OSError:
+            pass
+
+    def banked(self):
+        return int(self.house_state().get("banked", 0)) if self.house_state().get("house") else 0
+
+    def house_info(self, args):
+        """`house` (state), `house buy [Y,X]` (the Architect: the smallest house, or the one with that door),
+        `house deposit [KEEP]`, `house withdraw`."""
+        st = self.house_state()
+        sub = args[0] if args else ""
+        if not sub:
+            h = st.get("house")
+            if not h:
+                houses = town_houses(self.w.memory) if not self.w.depth else []
+                return {"ok": True, "text": "no house owned" + (f"; the smallest on the map: {houses[0]['area']} square(s), "
+                                                               f"door {houses[0]['door']}" if houses else "")}
+            return {"ok": True, "text": f"house: door {h['door'][0]},{h['door'][1]}, bought {h.get('bought')} for "
+                                        f"{h.get('price')}; {st.get('banked', 0)} gold banked (as of {st.get('t')}); "
+                                        f"{self.w.ind.get('gold', [0])[0]} carried"}
+        if self.w.depth:
+            return {"ok": False, "error": "the house is in town"}
+        if sub == "buy":
+            if self.req_role != "architect":
+                return {"ok": False, "error": "buying a house is the Architect's decision"}
+            if st.get("house"):
+                return {"ok": False, "error": f"a house is owned already (door {st['house']['door']})"}
+            houses = town_houses(self.w.memory)
+            if len(args) > 1:
+                m = re.match(r"^(\d+)[ ,](\d+)$", " ".join(args[1:3]))
+                houses = [h for h in houses if m and h["door"] == (int(m.group(1)), int(m.group(2)))]
+            if not houses:
+                return {"ok": False, "error": "no such house on the town map (walls '#' round a door '0')"}
+            g = HouseBank("buy", house={k: (list(v) if isinstance(v, tuple) else v) for k, v in houses[0].items()
+                                        if k != "inside"})
+        elif sub in ("deposit", "withdraw"):
+            if not st.get("house"):
+                return {"ok": False, "error": "no house owned"}
+            keep = int(args[1]) if sub == "deposit" and len(args) > 1 and args[1].isdigit() else None
+            g = HouseBank(sub, keep=keep)
+        else:
+            return {"ok": False, "error": "usage: house [buy [Y,X] | deposit [KEEP] | withdraw]"}
+        g.by_navigator = self.req_role != "architect"
+        self.set_goal(g)
+        return {"ok": True, "goal": g.describe()}
+
     def tavern_entrance(self):
         """The tavern's '8' on the town map (remembered in stash.json)."""
         st = self.stash_state()
@@ -9324,7 +9594,8 @@ class Pilot:
         where = ("Town (" + {True: "day", False: "night", None: "day/night?"}[w.is_day()] + ")") if not w.depth \
             else f"{w.depth_ft} ft"
         lines.append(f"{ind.get('hist_name_', '?')} L{w.clvl} HP {w.hp[0]}/{w.hp[1]} · {where} · "
-                     f"{ind.get('gold', [0])[0]}g · max {self.orders.get('max_depth')}ft · "
+                     f"{ind.get('gold', [0])[0]}g" + (f" (+{self.banked()} banked)" if self.banked() else "")
+                     + f" · max {self.orders.get('max_depth')}ft · "
                      f"{time.strftime('%H:%M:%S')} · goal: {self.goal.describe() if self.goal else 'none'}"
                      + (" · TIME FROZEN (test server: nothing moves until it's thawed)" if frozen() else "")
                      + self.escape_line())
