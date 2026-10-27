@@ -419,6 +419,12 @@ def hard_fights():
                 arr.append((int((a["t"] - ep["t0"]) / 0.625), a["name"], max(1, a.get("dist") or 5)))
         if team:
             out.append({"team": team, "arrivals": arr, "depth": ep["depth_ft"] // 50, "ep": f})
+    # (m48's close call at 750 ft, the Advisor's request: a Light hound pack -- blindness keeps scrolls unreadable, so
+    # resist blindness/light is decisive there, which the random depth sets rarely draw)
+    lh = [("Light hound", 2 + k % 5) for k in range(13)] + [("Warg", 3 + k % 4) for k in range(7)] + \
+        [("Mirkwood spider", 4 + k % 3) for k in range(5)] + [("Druid", 6)]
+    if all(n in S.RACES for n, _ in lh):
+        out.append({"team": lh, "arrivals": [], "depth": 15, "ep": "m48-light-hounds"})
     return out
 
 
