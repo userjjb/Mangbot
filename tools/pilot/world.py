@@ -224,6 +224,7 @@ class World:
         self.monsters = []                     # [(y, x, Race)]
         self.still_seen = {}                   # (y, x) -> Race: stationary monsters seen on this level
         self.monlist = []                      # [(name, count, our char)]
+        self.targets = []                      # [(t, y, x, text)]: the `look` verb's answers (session 7)
         self.itemlist = []                     # item list lines
         self.ind = {}
         self.status_t = 0.0
@@ -416,6 +417,10 @@ class World:
                 self.store_left_why = ev.get("why")
             elif k == "monlist":
                 self.monlist = self.g.parse_monlist(ev["lines"])
+            elif k == "target":
+                # "A Warg (unhurt, asleep) [r,...]" for the grid the server's targeting points at (screen y, x)
+                self.targets.append((gnow(), ev.get("y"), ev.get("x"), ev.get("text") or ""))
+                del self.targets[:-80]
             elif k == "itemlist":
                 self.itemlist = [l for l in ev["lines"] if l.strip()]
         return out

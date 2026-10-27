@@ -2049,6 +2049,22 @@ def navigator_rules_review_and_nopickup():
                f"{released}; Lance picked up {lance}"
 
 
+@case
+def asleep_flags_from_look_answers():
+    """The per-monster asleep flag (the user, 10-26): the client's `look N` answers ("A Warg (unhurt, asleep) [r,...]"
+    at the monster's screen square) mark monsters asleep or awake, by position, else by name; the report says so."""
+    warg, wolf = BYNAME["warg"], BYNAME["wolf"]
+    p = pilot(monsters=[(20, 25, warg), (22, 26, wolf), (18, 30, warg)])
+    p.log = lambda *a, **k: None
+    p.w.targets = [(P.gnow(), 20, 25, "A Warg (unhurt, asleep) [r,t,p,o,+,-,<dir>]"),
+                   (P.gnow(), 99, 99, "A Wolf (unhurt) [r,t,p,o,+,-,<dir>]"),
+                   (P.gnow(), 18, 30, "A Warg (somewhat wounded, asleep, afraid) [r,...]")]
+    p.read_looks()
+    flags = (p.is_asleep(20, 25), p.is_asleep(22, 26), p.is_asleep(18, 30))
+    ok = flags == (True, False, True)
+    return ok, f"asleep flags {flags}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

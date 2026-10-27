@@ -1742,6 +1742,9 @@ int recv_target_info(connection_type *ct) {
 
 	if (cq_scanf(&ct->rbuf, "%c%c%c%s", &x, &y, &win, buf) < 4) return 0;
 
+	/* The tool client's `look` (session 7): each target's description is an event */
+	if (tool_mode) tool_note_target(x, y, win, buf);
+
 	if (!looking) return 1;
 
 	/* Hack -- information recall */

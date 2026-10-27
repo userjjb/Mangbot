@@ -38,6 +38,7 @@
  *   examine SLOT                            -- in a store; reply is a popup
  *   leave                                   -- leave the store
  *   eat ITEM                                -- ITEM = inventory index (a=0)
+ *   look N                                  -- N steps of the server's targeting: "target" events
  *   clear                                   -- drop our queued commands on the server
  *   redraw                                  -- ask the server to resend all our state (PKT_REDRAW)
  *   flags                                   -- query: resist/ability grid {flag: slots granting it}
@@ -430,6 +431,18 @@ void tool_note_cursor(byte vis, byte y, byte x)
 	tool_ev_end();
 }
 
+/* recv_target_info() -- the server describes the grid targeting points at (screen x, y): for a monster
+ * "a Warg (unhurt, asleep) [r,...]" (xtra2.c look_mon_desc). The `look` verb's events. */
+void tool_note_target(byte x, byte y, byte win, cptr text)
+{
+	tool_ev_begin("target");
+	tool_kv_int("y", y);
+	tool_kv_int("x", x);
+	tool_kv_int("win", win);
+	tool_kv_str("text", text);
+	tool_ev_end();
+}
+
 static void tool_error(cptr cmd, cptr text)
 {
 	tool_ev_begin("error");
@@ -749,6 +762,18 @@ static void tool_do_command(char *line)
 	{
 		tool_in_store = FALSE;
 		send_store_leave();
+		tool_ack(line);
+	}
+	else if (streq(verb, "look"))
+	{
+		/* look N (session 7: the per-monster asleep flag): the server's targeting in 'kill' mode cycles
+		 * the visible monsters in line of sight, nearest first; N steps (space), then ESC. Each step's
+		 * description comes back as a "target" event. Looking takes no game time. */
+		int i, steps = (n >= 2 && a > 0) ? (a < 30 ? a : 30) : 10;
+
+		send_target_interactive(TARGET_KILL, 0);
+		for (i = 1; i < steps; i++) send_target_interactive(TARGET_KILL, ' ');
+		send_target_interactive(TARGET_KILL, ESCAPE);
 		tool_ack(line);
 	}
 	else if (streq(verb, "clear"))

@@ -3882,6 +3882,13 @@ class Pilot:
                 p[k] = 5
         if w.recall_pending:
             p["recall"] = max(1, int(25 - (gnow() - w.recall_pending_t) / shadow.TURN_S))
+        # (the asleep flags the `look` answers give: the share awake among the looked-at monsters not adjacent, for
+        # the simulator's p_awake -- its 0.4 stood in for this; the Advisor's top data gap)
+        looked = [self.is_asleep(y, x) for y, x, _ in w.monsters if w.pos and w.dist((y, x)) > 1]
+        looked = [z for z in looked if z is not None]
+        if looked:
+            p["p_awake"] = round(sum(1 for z in looked if not z) / len(looked), 2)
+            p["asleep_seen"] = sum(1 for z in looked if z)
         p.update(extra_p or {})
         team = [(r.name, max(1, sh.sim.adist(y - w.pos[0], x - w.pos[1]))) for y, x, r in w.monsters] if w.pos else []
         # (and what the server's list names but the map doesn't show yet, 3 squares off: A2K's first emergency had
@@ -5337,6 +5344,56 @@ class Pilot:
                 last = False
         return last
 
+    # --- the per-monster asleep flag (the user, 10-26; the estimator's top data gap, memo 2026-10-25-replay) ---
+    LOOK_EVERY = 5.0
+
+    def look_tick(self, now):
+        """Ask the server's targeting about the visible monsters (the client's `look N`: 'kill' mode cycles the
+        monsters in line of sight, each described "A Warg (unhurt, asleep)"), when the set in view has changed, at
+        most every LOOK_EVERY seconds; not with a monster adjacent or while resting. Then read the answers."""
+        w = self.w
+        self.read_looks()
+        if not w.in_dungeon or not w.monsters or w.adjacent_monsters() or w.resting or \
+                now - self.__dict__.get("look_t", -99.0) < self.LOOK_EVERY:
+            return
+        key = (w.level_t, frozenset((y, x) for y, x, _ in w.monsters))
+        if key == self.__dict__.get("look_key"):
+            return
+        self.look_key, self.look_t = key, now
+        self.c.send(f"look {min(12, len(w.monsters))}")
+
+    def read_looks(self):
+        """The `target` answers since the last read -> self.asleep {(y, x): (t, name, asleep)}: by position when a
+        visible monster stands there, else by name (the nearest of that name not yet placed)."""
+        w = self.w
+        new = [t for t in w.targets if t[0] > self.__dict__.get("looks_read_t", 0.0)]
+        if not new:
+            return
+        self.looks_read_t = new[-1][0]
+        sl = self.__dict__.setdefault("asleep", {})
+        mons = {(y, x): r for y, x, r in w.monsters}
+        placed = set()
+        for t, y, x, text in new:
+            m = re.match(r"(?:an?|the) (.+?) \(([^)]*)\)", text, re.I)
+            if not m:
+                continue
+            name, cond = m.group(1), m.group(2)
+            q = (y, x) if (y, x) in mons and mons[(y, x)].name.lower() == name.lower() else next(
+                (p for p in sorted(mons, key=w.dist) if mons[p].name.lower() == name.lower() and p not in placed), None)
+            if q:
+                placed.add(q)
+                sl[q] = (t, mons[q].name, "asleep" in cond)
+        for q in [q for q in sl if q not in mons]:
+            del sl[q]                  # (moved or gone: unknown again)
+        # (for the first live checks: are the answers' screen positions the map's?)
+        self.log("looks", n=len(new), placed=len(placed), by_pos=sum(1 for _, y, x, _ in new if (y, x) in mons),
+                 asleep=sorted(f"{v[1]}@{q[0]},{q[1]}" for q, v in sl.items() if v[2])[:12],
+                 sample=[(y, x, tx[:60]) for _, y, x, tx in new[:3]])
+
+    def is_asleep(self, y, x):
+        v = self.__dict__.get("asleep", {}).get((y, x))
+        return v[2] if v and gnow() - v[0] < 60 else None
+
     # --- the Navigator's executable standing orders (the user, 10-26: "decide in advance, act at Pilot speed") ---
     RULE_KINDS = {"leave": "leave the level when NAME is in view",
                   "hunt": "hunt NAME on sight (the hunt checks apply, as for `goal hunt NAME`)",
@@ -6593,6 +6650,7 @@ class Pilot:
             return
         if self.rule_tick(gnow()):        # the Navigator's executable standing orders (`react`)
             return
+        self.look_tick(gnow())            # (never acts: asks the server which monsters are asleep)
         if self.policy_tick(gnow()):      # the Pilot's own item work, at safe moments
             return
         self.acting = self.goal_origin(self.goal)
@@ -9019,10 +9077,12 @@ class Pilot:
             for n, v in sorted(seen.items(), key=lambda kv: min(w.dist(m[:2]) for m in kv[1])):
                 r = v[0][2]
                 ds = sorted(w.dist(m[:2]) for m in v)
+                zz = sum(1 for y, x, _ in v if self.is_asleep(y, x))
                 why = self.danger_why(r)
                 parts.append(f"{n}{' ×%d' % len(v) if len(v) > 1 else ''} (L{r.level}"
                              + (", UNIQUE" if "UNIQUE" in r.flags else "")
                              + f", {ds[0]}{'-%d' % ds[-1] if len(ds) > 1 and ds[-1] != ds[0] else ''} away"
+                             + ((", asleep" if zz == len(v) else f", {zz} asleep") if zz else "")
                              + (f", DANGER: {why[:60]}" if why else "") + ")")
             lines.append("Monsters: " + "; ".join(parts))
         else:
