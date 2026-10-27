@@ -1328,6 +1328,28 @@ def theft_is_news():
 
 
 @case
+def weight_limit_sheds_cheap_heavy_loot():
+    """m50: Bullroarer's weapons held the weight limit and a Staff of Trap Location was left. At the limit the cheapest
+    item heavy enough is destroyed for loot worth 1.5x it (a Gnomish Shovel for the staff); a kit item never is."""
+    def run(pack, weights):
+        p = pilot(pack=pack)
+        for it, wt in zip(p.w.items(), weights):
+            it["weight"] = wt
+        p.skipped_items, p.room_t, p.unique_drop = set(), 0.0, None
+        p.flavour_of = lambda it: None
+        p.weight_room = lambda: (20, 0)
+        sent = []
+        p.cmd = lambda line, why, hold=0.4: sent.append(why)
+        p.c = type("C", (), {"send": lambda self, x: None})()
+        p.pickup_room("a Staff of Trap Location (12 charges)")
+        return sent
+    shovel = run([("a Gnomish Shovel (1d2) (+0,+0) <+1>", 20), PHASE], [60, 10])
+    kit = run([PHASE, ("3 Potions of Cure Critical Wounds", 75)], [10, 12])
+    ok = len(shovel) == 1 and "Gnomish Shovel" in shovel[0] and kit == []
+    return ok, f"with a shovel: {shovel}; kit only: {kit}"
+
+
+@case
 def flee_at_max_depth_teleports():
     """m38: two flees at 650 ft (max_depth) with only '>' known went to 700 ft; finding a '<' there took 10 minutes.
     Now: teleport away on the level (staff or scroll), once a minute; without one, '>' as before."""

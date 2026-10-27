@@ -4742,6 +4742,22 @@ class Pilot:
             50 * max(1, iv.count) if iv.tval == 55 else 0          # (staffs: 5 lb each, m47's pack sat on the line)
         if wt and not unique and not iv.irreplaceable and worth < self.HEAVY_LOOT_MIN:
             room, _ = self.weight_room()
+            # (m50: Bullroarer's Dagger, Cutlass, Gnomish Shovel and Lucerne Hammer sat at the weight limit and a
+            # Staff of Trap Location was left. As for a full pack: shed the cheapest thing heavy enough, if this is
+            # worth 1.5x it)
+            shed = sorted(((self.pack_value(i), i) for i in w.items() if self.destroy_count(i) > 0
+                           and i["weight"] * self.destroy_count(i) // max(1, i["number"]) >= wt - room),
+                          key=lambda vi: vi[0]) if wt > room else []
+            if shed and worth > 1.5 * shed[0][0] + 5:
+                if now - self.room_t > 1.5:
+                    v, it = shed[0]
+                    self.room_t = now
+                    self.c.send("confirm yes")
+                    self.cmd(f"custom k item={it['item']} value={self.destroy_count(it)}",
+                             f"make weight room: destroy {it['name']} (~{v:.0f}) for {name} (~{worth:.0f})", hold=0.6)
+                    self.notify("tactic", f"at the weight limit: destroyed {it['name']} (~{v:.0f} gold) to take {name} "
+                                          f"(~{worth:.0f})", news=True)
+                return False                     # (picked up on the next look, once there's room)
             if wt > room:
                 self.skipped_items.add((w.level_t, w.pos))
                 # (once per item and level: m47 said "left a Battle Axe" 9 times walking past it)
