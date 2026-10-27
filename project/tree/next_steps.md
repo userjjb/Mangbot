@@ -137,7 +137,113 @@ validation.
   the Phase 1 confirm answer), inscribing key items, and the live character "Sneezy".
 - The user's player lore and plan changes are in `notes_players.md` (read it).
 
-### ARCHITECT HANDOFF 2026-10-26, session 7 (READ THIS FIRST, then the end-of-session-6 section below)
+### >>> WHICH HANDOFF IS YOURS? <<<
+- **Session 8 ("The Architect's Vacation", a Haiku Architect)**: read **"HANDOFF TO ARCHITECT 8"** right below. Only
+  that section and the files it names.
+- **Session 9 (normal work resumes)**: read **"HANDOFF TO ARCHITECT 9"** below it, first step: VACATION-NOTES.md.
+- Later sessions: the newest handoff written by the session before you, at the top.
+
+### HANDOFF TO ARCHITECT 8: "The Architect's Vacation" (written 2026-10-26 ~22:00 by the session-7 Architect)
+
+**What this session is (the user's words, 10-26):** a special one-time session to test a hybrid approach where the
+Architect has a bigger hand in helping the Navigator with the missions. You are a Haiku model at medium effort.
+- **No meaningful code changes this session.** Don't edit `github/tools/**/*.py`, the client/server C, or the HANDBOOK.
+  Don't commit code. You may: run missions, run `pilotctl` commands, read anything, write mission reports
+  (`runs/pilot/dive04/reports/`), append to `github/tools/pilot/FIELD-NOTES.md` (lessons for Navigators), and write
+  **`/projectnb/jbrcs/mangband/VACATION-NOTES.md`** (the main product of this session).
+- **Flag, don't fix:** every bug, feature or improvement you'd want goes in VACATION-NOTES.md for Architect 9.
+- **Tell the Navigator you're on vacation from coding** and more available: the brief's **[VACATION]** paragraph
+  (`github/tools/pilot/BRIEF-TEMPLATE.md`) says so; you answer questions, investigate, and intervene on its behalf.
+- **Record** in VACATION-NOTES.md: bugs; wanted features; what you learned while helping; the Navigator's blind spots
+  and deficiencies; what future, less hands-on Architects should know; every intervention; how the ask/answer
+  channel worked. The file has a section for each.
+
+**Already set up for you (by session 7):**
+- **`ask` has no rate limit** while the file `runs/pilot/dive04/ask_unlimited` exists (it does). Leave it; Architect 9
+  deletes it. `answer` never had a limit.
+- **The brief:** `github/tools/pilot/BRIEF-TEMPLATE.md` (fill the `{...}` fields from `status`, `equip`, `pack`; keep
+  the [VACATION] lines). The model/effort: Haiku low unless the user says otherwise.
+- **The monitor:** `github/tools/observe/watch_mission.py` (run it in the background; it exits on a Navigator question,
+  an emergency, a death, a stat drain, a stuck plan, a plan end, a Pilot error...; restart it each time).
+- **The state:** Dive04 in town, clvl 28, 340 HP, 30823 gold, **0 Word of Recall** (the first `plan town` buys them),
+  10 CCW, 1 CSW, 16 Phase, 1 Teleportation, 1 Teleport Level, Staff of Teleportation (5), 3 rations, Heroism x3;
+  Battle Axe of Westernesse (Free Action, See Invisible); WIS drained; a Ring of Resist Fire in the pack (the Navigator
+  chose `review sell`: it sells at the next `plan town`); `react thieves kill` is set. **max_depth 800** (the user: keep
+  it). The tavern stash holds 2 Wands of Stone to Mud. Debts 44 gold / 0 HP.
+- **Running:** SGE job 8268425 on scc-pc4, walltime **Thu 10-29 09:47**; the test server (port 28346, freeze build),
+  Dive04's Pilot (git `restructure`, all loaded), the viewer (`tmux -L mang attach -t watch`).
+
+**Start here:**
+1. Start your inbox watcher: `/projectnb/jbrcs/mangband/.claude/hooks/inbox.sh watch /projectnb/jbrcs/mangband/memos/to_architect`
+   (Bash, run_in_background). Advisor memos: read, `inbox.sh mark-read FILE`, restart the watcher. Answer the Advisor
+   by memo (`memos/to_advisor/.tmp-SLUG.md` then mv to `YYYY-MM-DD-SLUG.md`) if useful; don't build what it suggests:
+   note it for Architect 9.
+2. Check the processes: `pgrep -af "gdb -batch|pilot.py"`, `tmux -L mang ls`. If the job died, tell the user (restarting
+   the server is in `operations.md`; it's not a code change, you may do it).
+3. Read `github/tools/pilot/HANDBOOK.md` and `FIELD-NOTES.md` (you'll be answering the Navigator's questions), then
+   ask the user what to run.
+
+**Per mission** (in `/projectnb/jbrcs/mangband/github/tools`, `module load python3/3.12.4`, `export PILOT_ROLE=architect`):
+1. `python3 pilot/pilotctl.py --nick dive04 mission start mNN navigator=haiku effort=low` (next number: m49).
+2. Launch the Navigator (Agent tool, `subagent_type: navigator`, background) with the filled template.
+3. Start `python3 observe/watch_mission.py 1500` in the background; when it exits, look, act, restart it.
+4. **Questions:** a NAV ASK line shows the id and text (also `runs/pilot/dive04/asks.jsonl`). Investigate (`status`,
+   `status full`, `why`, `why HH:MM`, `monster NAME`, `gear`, `prep`, the decision log `runs/pilot/dive04/decisions.jsonl`)
+   and answer: `python3 pilot/pilotctl.py --nick dive04 answer ID "text"`. Answer fast: the Navigator plays on meanwhile.
+   You can also message the Navigator directly (SendMessage to its agent id).
+5. **Intervening** (as the Architect, the Pilot obeys at once): e.g. `goal recall`, `goal leave`, `quaff Cure_Critical`,
+   `use Staff_of_Teleportation force` (works blind), `plan stop`, `stop`, `react ...`. Only when it clearly helps; log each one in
+   VACATION-NOTES.md section 6. Mind food: a potion while Full can make you Gorged (-10 speed).
+6. **Don't**: hot-swap or restart the Pilot (only to recover a crash), change `max_depth` or other orders without the
+   user, use the time freeze to make decisions (it's a testing tool), or edit code.
+7. **Wrap-up:** `bash observe/wrap.sh mNN` (mission end, cost, scorecard row, complaints, status); write
+   `runs/pilot/dive04/reports/YYYY-MM-DD-missionNN.md` (see mission48.md); add lessons to FIELD-NOTES.md; fill
+   VACATION-NOTES.md (sections 1-8).
+
+**At the end of the session:** make VACATION-NOTES.md complete and readable on its own; add one line at the top of
+"HANDOFF TO ARCHITECT 9" saying the session is over and naming the missions run (nothing else there needs changing).
+Ask the user before committing anything to git (session 9 commits).
+
+### HANDOFF TO ARCHITECT 9: normal work resumes (written 2026-10-26 ~22:00 by the session-7 Architect)
+
+**First:** session 8 was "The Architect's Vacation" (a Haiku Architect helping the Navigator live, no code changes).
+1. **Read `/projectnb/jbrcs/mangband/VACATION-NOTES.md`** completely: its bugs, wanted features, lessons, Navigator blind
+   spots and interventions are your inputs. Triage them with the user (fix / later / no).
+2. **Delete `runs/pilot/dive04/ask_unlimited`** (restores `ask`'s limits: one every 5 minutes, 4 an hour) unless the
+   user wants to keep the Architect live-answering. The vacation brief lines in BRIEF-TEMPLATE.md are marked [VACATION].
+3. Commit what session 8 wrote (reports, FIELD-NOTES, VACATION-NOTES) with a snapshot (`github/tools/snapshot.sh`).
+4. Start your inbox watcher (`.claude/hooks/inbox.sh watch memos/to_architect`, run_in_background), check the processes
+   (job 8268425 ends **Thu 10-29 09:47**), then ask the user what to run.
+
+**State at the end of session 7 (Mon 10-26 ~22:00):** Dive04 in town, clvl 28, 30823 gold, 0 WoR, **max_depth 800**
+(the user: keep it, after m48's close call -- which happened at 750 ft). Git `restructure` pushed (see `git log`).
+Missions m46-m48 (Haiku low): 81.0 / 78.4 / 68.9 XP/dmin; m48 had the first close call since m41 (24%, a Light hound
+band's blindness: fixed). Reports: `runs/pilot/dive04/reports/2026-10-26-mission46..48.md`.
+
+**What session 7 built** (details in the "session 7" section below): the gear evaluator (`geareval.py`, `gearcmp`,
+`design_gear.md`; with the Advisor's options_sim 26f-j: resists, depth scenarios, food); fled-level stairs (no hold on
+the test server); LEAVE_MAX + the breeder-pin teleport; hot-swap-safe plan/level/mission state; the asleep flag
+(client `look N`); shadow mode fixes (agree by action, band trigger, per-member awake flags, resists, food range);
+Navigator tools `react`, `review`, dungeon destroy/drop, `nopickup`, `band_frac`, "this trip" rate, food warning;
+blind escapes (staff when a scroll can't be read, refused reads detected, eat to Fed); many small fixes. 83 unit cases.
+
+**Open items (carry over, beside whatever VACATION-NOTES.md adds):**
+1. **Fight-vs-flee for bands** (m35, m47 Wargs, m48 band records): every band record so far says fleeing to far stairs
+   is the unsafe line and fighting is safe. Collect a few more `trigger: band` estimator records, then propose a rule
+   to the user (e.g. fight a band whose expected cost is under X% HP when the stairs are far and it's faster).
+2. **Resist blindness** is decisive vs Light hound packs (the Advisor's replay: P(<=10% HP) 13% -> 0%): watch shops
+   (`gearcmp`), and consider it in the kit/gear review.
+3. Thieves (m46 Smeagol -2400): `react thieves kill` exists now; see whether it fires.
+4. The Black Market's Speed: bought twice in m48 at the second visit; the cap is 600.
+5. **The loadout optimizer** (the user's todo, `design_gear.md`): not built.
+6. **Small:** L3b set-piece not stageable (the DM forge won't make a Metal Cap of Seeing; harness README); the Advisor's
+   MIN_GAIN 50 floor (its own addition, never approved by the user); TRADE_RESISTS stays off (the user: option B).
+7. **Verify live** (not yet seen): the breeder-pin teleport; the group-danger staff escape when blind; `review` after 2
+   undecided town visits; `react leave/hunt`; a gear-evaluator swap in town.
+8. Routine: after each piece of work `github/tools/snapshot.sh`, commit, `git push origin restructure`; after each
+   mission `observe/wrap.sh mNN`, a report, FIELD-NOTES lessons; watch `asks.jsonl` and answer live.
+
+### ARCHITECT HANDOFF 2026-10-26, session 7 (details of session 7; history for Architect 9)
 
 **Session 7 (the user: "fix 1 and 3, raise speed cap to 600"), loaded ~15:52 (Pilot restarted in town):**
 - **Open issue 1 fixed. It was not a quiet level:** m45 fled an 18-orc band at 700 ft (00:35:17) down to 750 ft;

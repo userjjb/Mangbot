@@ -52,3 +52,5 @@ metadata:
 - 2026-10-26 (session 5): band trigger in shadow mode (agree by actual action, `actual_row`); options_sim 26g adds optional p["xp_per_block"] time cost; m47-like band: fight safe/best, walking 28 steps to stairs unsafe (`to_architect/2026-10-26-shadow-band.md`).
 - 2026-10-26 (session 5): asleep flag built (Pilot `look`, decisions kind "looks"; p_awake share in snapshots); options_sim 26h accepts per-member awake (team tuple 4th element). TODO when data exists: calibrate P_WAKE (5%/block guess) from looks records.
 - 2026-10-26 (session 5): per-member asleep flag live from mid-m48 (team entries (name, dist, None, awake)); P_WAKE calibration waits for a few missions of `looks` records.
+- 2026-10-26 (session 5): m48 light-hound band: options_sim 26i (blind -> staff; optional p["food"] gorging at 15000). Replay: near-Gorged P(HP<=10%) 13% -> 0% with res_blind or the staff; eat-to-Fed fix matters (`to_architect/2026-10-26-blind-escapes.md`).
+- 2026-10-26 (session 5): options_sim 26j: p["food"] may be a (lo, hi) range per hunger level (FOOD_LEVEL); Full as range -> 4% near death vs 0.3% midpoint in the m48 band (`to_architect/2026-10-26-food-range.md`).

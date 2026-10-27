@@ -1,5 +1,5 @@
 - [MAngband roles](mangband-roles.md) — you are the Architect (the Advisor is a separate project in ./Advisor since 2026-09-27); Pilot/Navigator/Architect/Advisor (roles.md); memory is for main chats only
-- [MAngband next steps](mangband-next-steps.md) — READ FIRST: next_steps.md "ARCHITECT HANDOFF 2026-10-26, session 7" then "end of session 6" (state, start-here, open issues); older sections are history
+- [MAngband next steps](mangband-next-steps.md) — READ FIRST: next_steps.md ">>> WHICH HANDOFF IS YOURS? <<<" (session 8 = The Architect's Vacation, Haiku, no code changes, VACATION-NOTES.md; session 9 resumes normal work)
 - [MAngband project map](mangband-project-map.md) — where everything lives (operations.md, notes_players.md, HANDBOOK, memos); critical gotchas; SYNC RULE: update memory pointers whenever project notes change
 - [MAngband advisor memos](mangband-advisor-memos.md) — forum distillation memo (complete), danger table, Borg, run post-mortem, shops, message-catalogue, game-state, identify-and-sell and warrior-progression memos, study backlog (memos/2026-09-27-advisor-study-topics.md), scraping gotchas
 - [Inbox watcher](mangband-inbox-watcher.md) — start the Architect inbox watcher first thing every session; restart it whenever it ends

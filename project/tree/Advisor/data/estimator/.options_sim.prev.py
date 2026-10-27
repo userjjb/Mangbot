@@ -36,6 +36,7 @@ MON = "/projectnb/jbrcs/mangband/Advisor/data/monsters/monsters.csv"
 RACES = {r["name"]: r for r in csv.DictReader(open(MON))}
 
 HEAL = dict(clw=(15, 15), csw=(20, 24), ccw=(25, 29))      # flat HP (use-obj.c:483-510)
+FOOD = dict(clw=50, csw=100, ccw=100)                       # nourishment per potion (object.txt pval); optional p["food"]
 PRICE = dict(clw=24, csw=50, ccw=150, phase=20, tele=250, staff=250, wor=200, speed=400, berserk=100, hero=35)
 # E1's prices; Teleportation is not sold (scarcity price); a Staff of Teleportation charge ~ 2000 g / 8 charges;
 # Speed = the kit's Black Market line (~383-450, cap 450; 643465e)
@@ -205,6 +206,10 @@ def use(st, item):
     if item in HEAL:
         p["hp"] = min(p["mhp"], p["hp"] + rng.randint(*HEAL[item]))
         st.confused = st.blind = 0
+        if p.get("food") is not None:                         # potions nourish (object.txt pval); Gorged at 15000: -10 speed
+            p["food"] += FOOD.get(item, 0)
+            if p["food"] >= 15000:
+                st.slow = max(st.slow, 1000)
     elif item == "speed":
         st.fast = st.fast + 5 if st.fast else rng.randint(1, 25) + 15
     elif item == "berserk":
@@ -240,7 +245,7 @@ def escape_move(st, crowd):
     return any(use(st, it) for it in order)
 
 
-POLICY_VERSION = "pilot-escape-2026-10-26g"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
+POLICY_VERSION = "pilot-escape-2026-10-26i"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
 
 
 def worst_turn(st, adj):
@@ -250,6 +255,8 @@ def worst_turn(st, adj):
 
 def base_policy(st):
     """The Pilot's rules (POLICY_VERSION). Emergency = HP < 50% or the adjacent worst turn >= 1/3 of HP:
+    Optional p["food"]: cure potions add their nourishment; at 15000 (Gorged) we are slowed -10 for the rest of the fight.
+    Can't read (blind/confused) with the adjacent worst turn >= 1/3 HP: the Staff of Teleportation, 16 blocks apart (46a5764).
     Hard-fight start (berserk_tick's test): speed_start_tick (Speed if not hasted), then berserk_tick.
     escape() order: one turn from death -> Teleportation, else Phase; Speed first; Word of Recall below 30% HP; phasing
     futile (3 phases, still adjacent) -> recall; kill a summoner/status caster that dies in 2 rounds; 4+ about (not
@@ -261,6 +268,9 @@ def base_policy(st):
     can_read = not st.blind and not st.confused
     worst = worst_turn(st, adj)
     emergency = p["hp"] < 0.5 * p["mhp"] or (adj and 3 * worst >= p["hp"])
+    if adj and not can_read and worst >= p["hp"] / 3 and st.block - getattr(st, "staff_at", -99) >= 16 and use(st, "staff"):
+        st.staff_at = st.block                                # group_tick / teleport_item (46a5764): can't read -> the staff
+        return
     if emergency:
         if st.stairs is not None and st.stairs <= 0:
             st.escaped = "stairs"
@@ -486,12 +496,16 @@ def speed_energy(st):
 
 
 def rollout(p, team, plan, seed, horizon=30, arrivals=(), trace=False, actor=None):
-    """team: [(name, dist[, hp_frac])]; plan: list of first moves; arrivals: [(block, name, dist)].
+    """team: [(name, dist[, hp_frac[, awake]])] (hp_frac None = full; awake True/False from the Pilot's look, None = unknown ->
+    p_awake); plan: list of first moves; arrivals: [(block, name, dist)].
     Returns dict(dead, end_hp, low, spent, escaped, blocks[, path])."""
     rng = random.Random(seed)
-    mons = [Mon(RACES[t[0]], t[1], p["ac"], rng, t[2] if len(t) > 2 else 1.0) for t in team]
-    for m in mons:
-        if m.dist > 1 and rng.random() > p.get("p_awake", P_AWAKE):
+    mons = [Mon(RACES[t[0]], t[1], p["ac"], rng, t[2] if len(t) > 2 and t[2] is not None else 1.0) for t in team]
+    for t, m in zip(team, mons):
+        known = t[3] if len(t) > 3 else None                  # the Pilot's look: True awake, False asleep, None unknown
+        if known is not None:
+            m.awake = bool(known) or m.dist <= 1
+        elif m.dist > 1 and rng.random() > p.get("p_awake", P_AWAKE):
             m.awake = False
     cap = p.get("max_adj", 8)
     for m in sorted(mons, key=lambda m: m.dist)[cap:]:
