@@ -1938,6 +1938,34 @@ def last_food_never_destroyed_and_heavy_loot_left():
                f"a Lucerne Hammer taken {took_heavy}, a potion {took_light}"
 
 
+@case
+def shadow_agrees_by_the_action_taken():
+    """m47: at the Wargs the estimator kept "rules" (its copy fought) while the Pilot read Word of Recall -- the table's
+    worst row, -102 XP -- and "agree" was logged. Now "rules" agrees only if the Pilot's own row is safe and within
+    noise of the best; a band's leave decision is shadowed too (once per band), with the resists passed."""
+    table = [{"option": "rules", "safe": True, "dxp": 0.0, "se": 0.0}, {"option": "fight", "safe": True, "dxp": 0.0},
+             {"option": "phase", "safe": True, "dxp": -6.0, "se": 3.5},
+             {"option": "ccw", "safe": True, "dxp": -12.5, "se": 3.5},
+             {"option": "recall+phase", "safe": True, "dxp": -101.8, "se": 3.7}]
+    a1, row = P.shadow_agree("rules", "recall+phase", table)
+    a2, _ = P.shadow_agree("rules", "phase", table)
+    a3, _ = P.shadow_agree("rules", "cure", table)         # (no row for it: can't tell, agree)
+    a5, _ = P.shadow_agree("rules", "ccw", table)          # (-12.5: beyond 10 XP and 2 SE)
+    a4, _ = P.shadow_agree("fight", "recall+phase", table)
+    warg = BYNAME["warg"]
+    p = pilot(monsters=[(20, 22 + k, warg) for k in range(9)])
+    p.w.find = lambda chars: [(30, 30)]
+    calls = []
+    p.shadow_decision = lambda detail, options=None, trigger="emergency", rules=None: calls.append((trigger, rules,
+                                                                                                    options)) or "started"
+    r1 = p.band_shadow("a band within 10 squares: Warg x9")
+    r2 = p.band_shadow("a band within 10 squares: Warg x9")
+    ok = a1 is False and row["dxp"] == -101.8 and a2 is True and a3 is True and a4 is False and a5 is False and \
+        r1 == "started" and \
+        r2 is None and calls == [("band", "stairs", P.Pilot.BAND_OPTIONS)]
+    return ok, f"recall row: {a1}; phase: {a2}; no row: {a3}; other choice: {a4}; band: {calls}, again {r2}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

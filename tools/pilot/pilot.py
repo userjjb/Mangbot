@@ -124,6 +124,22 @@ def weapon_damage(name, blows, mult=1):
     return (dice + (int(b.group(1)) if b else 0)) * blows
 
 
+def shadow_agree(choice, actual, table):
+    """(agree, the actual action's row) for an estimator answer: the estimator chose the action the Pilot took; or it
+    kept its copy of the rules ("rules") and the action the Pilot took (when the table has a row for it) is safe and
+    within noise of the best row (2 SE, at least 10 XP net of gold)."""
+    rows = {t.get("option"): t for t in table or ()}
+    row = rows.get(actual) if actual != "rules" else None
+    if choice == actual:
+        return True, row
+    if choice == "rules":
+        if row is None:
+            return True, None
+        best = max((t.get("dxp", 0) for t in rows.values() if t.get("safe")), default=0)
+        return bool(row.get("safe")) and row.get("dxp", 0) >= best - max(10, 2 * (row.get("se") or 0)), row
+    return False, row
+
+
 def flavour_key(name):
     """'2 Puce Potions {tried}' -> 'Puce Potion' (the flavour table's key)."""
     n = re.sub(r"\{.*?\}", "", name).strip()
@@ -2544,6 +2560,10 @@ class Pilot:
         extra = {"source": source} if source else {}
         if what == "emergency" and self.w.in_dungeon:
             extra["shadow"] = self.shadow_decision(detail)
+        if what == "band" and self.w.in_dungeon and not news:
+            sh_band = self.band_shadow(detail)
+            if sh_band:
+                extra["shadow"] = sh_band
         if what in ("emergency", "emergency_loop"):
             # (the Advisor's estimator memo: the remembered map around @, 21x21, and the monsters, for replays)
             w = self.w
@@ -3824,6 +3844,11 @@ class Pilot:
             if w.pos else None
         p = dict(hp=w.hp[0], mhp=w.hp[1], ac=(w.ind.get("armor") or [0])[0] or 0, clvl=w.clvl,
                  depth=w.depth or 1, stairs=stairs, free_action=bool(self.has_ability("free_action")),
+                 # (the sheet's resists, as the simulator's flags: options_sim 26f models them; m47's Dark hounds'
+                 # darkness breath was simulated at full damage on a Half-Orc)
+                 **{geareval.SIM_RES[f]: True for f in
+                    ({geareval.SHEET_FLAG.get(k.upper(), k.upper()) for k, on in (w.flags or {}).items() if on}
+                     & set(geareval.SIM_RES))},
                  save=sh.sim.SAVE, max_adj=2 if self.mover.in_corridor() else shadow.MAX_ADJ, **prof,
                  inv=dict(ccw=n("Cure Critical", TV_POTION), csw=n("Cure Serious", TV_POTION),
                           clw=n("Cure Light", TV_POTION), phase=n("Phase Door", TV_SCROLL),
@@ -3861,12 +3886,18 @@ class Pilot:
             nxt = next((t for t in self.__dict__.get("act_walls", ()) if t > snap.get("wall", 0) + 0.05), None)
             in_turn = r.get("compute_s", 99) <= turn_s
             before_next = nxt is None or r.get("done_wall", 0) <= nxt
-            # (no monster the estimator knows: nothing to compare -- agree is None)
-            agree = (r.get("choice") in ("rules", snap.get("rules"))) if r.get("team") else None
+            # (no monster the estimator knows: nothing to compare -- agree is None). The estimator's "rules" row is
+            # its copy of the Pilot's rules, which can act differently from the Pilot (m47: its copy fought the Wargs
+            # where the Pilot read Word of Recall, the table's worst row at -102 XP, and "agree" was logged). So
+            # when the Pilot's actual action has its own row, "rules" agrees only if that row is safe and within noise
+            # of the best (2 SE, at least 10 XP).
+            agree, actual_row = shadow_agree(r.get("choice"), snap.get("rules"), r.get("table"))
+            if not r.get("team"):
+                agree = None
             self.log("estimator", trigger=snap.get("trigger", "emergency"), options=snap.get("options"),
                      xp_per_gold=snap.get("xp_per_gold"),
                      rules=snap.get("rules"), rules_detail=snap.get("rules_detail"),
-                     choice=r.get("choice"), why=r.get("why"), agree=agree,
+                     choice=r.get("choice"), why=r.get("why"), agree=agree, actual_row=actual_row,
                      compute_s=r.get("compute_s"), turn_s=round(turn_s, 2), in_time_turn=in_turn,
                      before_next_act=before_next, next_act_after_s=round(nxt - snap["wall"], 2) if nxt else None,
                      team=r.get("team"), p=r.get("p"), inv=r.get("inv"), table=r.get("table"), error=r.get("error"),
@@ -5265,6 +5296,21 @@ class Pilot:
         return adj, bool(adj) and hard
 
     HARD_FIGHT_OPTIONS = ("fight", "speed", "berserk", "speed+berserk", "phase")
+    BAND_OPTIONS = ("fight", "stairs", "recall+phase", "phase")
+
+    def band_shadow(self, detail):
+        """Shadow mode at a band's leave decision (the user, 10-26, after m47: 9 Wargs, ~197 HP to fight them all vs
+        333, fled to stairs 28 steps off, stuck, recalled -- shadow mode only ran once the flee had failed). The rules'
+        action: the stairs when known, else Word of Recall. Once per band and level (20 s apart). Never acts."""
+        w, now = self.w, gnow()
+        key = (w.level_t, frozenset(r.name for *_, r in w.monsters))
+        seen = self.__dict__.setdefault("band_shadow_seen", {})
+        if now - seen.get(key, -99.0) < 60 or now - self.__dict__.get("band_shadow_t", -99.0) < 20:
+            return None
+        seen[key], self.band_shadow_t = now, now
+        rules = "stairs" if w.find("<>") else "recall+phase"
+        return self.shadow_decision(f"band: rules {rules} ({detail[:100]})", options=self.BAND_OPTIONS,
+                                    trigger="band", rules=rules)
 
     def hard_fight_shadow(self, now):
         """Shadow mode at the start of a hard fight (the user, 10-25, on the Advisor's shadow-review memo: its replays'
