@@ -2035,6 +2035,30 @@ def recall_cures_confusion_first():
     return ok, f"confused: {conf}; blind: {blind}; clear: {clear}"
 
 
+@case
+def confusion_lock_is_cured():
+    """m55: Hummerhorns kept Dive04 confused for 15 minutes; the dive waited for it to wear off. After 8 s confused
+    with monsters adjacent the Pilot quaffs Cure Serious (not before 8 s, not again within 8 s, at most 4 a level);
+    an escape the game refused shows as FAILED, not LANDING."""
+    p = pilot(pack=[("3 Potions of Cure Serious Wounds", 75), ("3 Potions of Cure Critical Wounds", 75)],
+              monsters=[(20, 21, BYNAME["hummerhorn"])])
+    p.w.flag = lambda k: k == "confused"
+    p.w.adjacent_monsters = lambda: [(20, 21, BYNAME["hummerhorn"])]
+    p.busy_until = 0
+    sent = []
+    p.cmd = lambda line, why, hold=0.4: sent.append(why)
+    first = p.confusion_lock()
+    p.conf_since -= 9
+    second = p.confusion_lock()
+    third = p.confusion_lock()
+    p.escape_read_t, p.escape_from = P.gnow() - 1, ((20, 20), "a Staff of Teleportation")
+    p.w.messages.append((P.gnow() - 0.5, "You failed to use the staff properly."))
+    line = p.escape_line()
+    ok = (first, second, third) == (False, True, False) and len(sent) == 1 and "Cure Serious" in sent[0] and \
+        "FAILED" in line
+    return ok, f"{first}, {second}, {third}: {sent}; {line!r}"
+
+
 def _trip_on_level(p, tp):
     p.goal = None
     p.set_goal = lambda g: setattr(p, "goal", g)

@@ -3165,6 +3165,33 @@ class Pilot:
         self.w.last_stairs_cmd = (which, gnow())
         self.cmd(f"custom {which}", f"stairs {which}", hold=0.3)
 
+    def confusion_lock(self):
+        """Confused 8 s on end with the goal waiting or monsters adjacent: cure it (m55: 27 Hummerhorns at 800 ft
+        kept Dive04 confused from 17:04 to 17:19 -- the dive waited "for it to wear off", two staff uses failed
+        (confusion halves device skill), the recall couldn't be read; the Navigator quaffed CCW/CSW by hand). The
+        cheapest that ends it (Cure Serious, then Critical: use-obj.c), at most every 8 s; in the clear window the
+        goal (or the breeders' teleport, a read) acts."""
+        w, now = self.w, gnow()
+        if not w.flag("confused"):
+            self.conf_since = None
+            return False
+        self.conf_since = self.__dict__.get("conf_since") or now
+        if now - self.conf_since < 8 or not waited(self.__dict__.get("conf_cure_t", 0.0), 8) or now < self.busy_until:
+            return False
+        pot = next((i for k in ("Cure Serious", "Cure Critical") for i in w.items(tval=TV_POTION) if k in i["name"]),
+                   None)
+        n = self.__dict__.setdefault("conf_cures", {})
+        if not pot or n.get(w.level_t, 0) >= 4:          # (a swarm re-confuses: at most 4 cures a level)
+            return False
+        n[w.level_t] = n.get(w.level_t, 0) + 1
+        self.conf_cure_t = now
+        self.cmd(f"custom q item={pot['item']}", f"confused {now - self.conf_since:.0f} s: quaff {pot['name']}",
+                 hold=0.6)
+        self.notify("tactic", f"confused for {now - self.conf_since:.0f} s"
+                              + (f" with {len(w.adjacent_monsters())} adjacent" if w.adjacent_monsters() else "")
+                              + f": quaffed {one_of(pot['name'])} to act again", news=True)
+        return True
+
     def escape_line(self):
         """The status header's escape marker (session 8: a staff's teleport showed "no change", then landed; a scroll
         read on top was refused, and nobody could tell which escape was still landing)."""
@@ -3172,6 +3199,10 @@ class Pilot:
         age = gnow() - t
         if not name or age > 6:
             return ""
+        # (m55: both staff uses failed confused -- "You failed to use the staff properly" -- and the line said LANDING)
+        if any(ts >= t - 0.3 and t_.startswith(("You failed to use", "You have no charges", "You can't see",
+                                                  "You are too confused")) for ts, t_ in self.w.messages):
+            return f" · escape FAILED ({name}, {age:.0f} s ago: the game refused it)"
         if self.w.pos == pos and age <= 3:
             return f" · ESCAPE LANDING ({name}, {age:.0f} s ago: don't repeat it yet)"
         if self.w.pos != pos and pos and self.w.pos:
@@ -4653,8 +4684,16 @@ class Pilot:
             out.append("Standing: " + "; ".join(st))
         rv = self.review_state()["items"]
         if rv:
+            # (m55: the Navigator missed that undecided items are sold after 2 town visits -- the Boots of Stability)
+            tv = self.review_state()["town_visits"]
+
+            def left(v):
+                k = 2 - (tv - v["visit"])
+                return "SOLD at this town visit if undecided" if k <= 0 else \
+                    "sold at the next town visit if undecided" if k == 1 else \
+                    "sold at the second town visit from now if undecided"
             out.append(f"Review ({len(rv)}, `review sell|keep|wear NAME`): " + "; ".join(
-                f"{n} ({v['why']})" for n, v in rv.items()))
+                f"{n} ({v['why']}; {left(v)})" for n, v in rv.items()))
         return out
 
     def numbered(self, rep, kind):
@@ -6451,7 +6490,10 @@ class Pilot:
             # moves into walls): wait it out (fights and cures still run)
             if self.mover.active:
                 self.mover.stop()
+            self.confusion_lock()
             return True
+        if self.w.in_dungeon and self.w.flag("confused") and self.w.adjacent_monsters():
+            self.confusion_lock()
         try:
             r = ("failed", self.goal.abort) if getattr(self.goal, "abort", None) else self.goal.tick(self)
         except Exception as e:           # a goal bug must not kill the pilot
