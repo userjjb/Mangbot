@@ -29,6 +29,12 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
 
 ## Dangers met at 600-700 ft
 
+- **Light hound packs blind you again and again (m48, 750 ft: 13 of them with Wargs and Mirkwood spiders; HP 340 ->
+  82).** Blind, you can't read scrolls -- Word of Recall and Teleportation reads are refused. The Staff of
+  Teleportation works blind: since m48 the Pilot uses it when it can't read. Resist blindness would end this; buy it
+  when you see it (Metal Caps of Seeing, some amulets/rings). If a Light hound pack shows on arrival, leave at once.
+- **Don't drink potions while Full in a long fight: Gorged is -10 speed** (m48). The town now feeds to Fed only.
+
 - **750 ft (m43-m45, the trial):** Forest troll bands with a Priest and Black orcs, Paladins (they cause fear, drain
   STR and cast; m44 had to read an emergency Word of Recall when its flee failed with the stairs 153 steps away),
   Light hound packs (their breath blinds again and again; the Pilot now stops curing it after two). Lowest HP
