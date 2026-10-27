@@ -1,0 +1,169 @@
+{
+ "label": "m50",
+ "nav_model": "haiku",
+ "effort": "low",
+ "report": "compact",
+ "start": "2026-10-26 22:43",
+ "end": "2026-10-26 23:20",
+ "minutes": 37.0,
+ "notes": "",
+ "tokens": null,
+ "estimator": {
+  "n": 1,
+  "compared": 0,
+  "agree": 0,
+  "in_time_turn": 1,
+  "before_next_act": 1,
+  "skipped": 0,
+  "compute_max_s": 0.022,
+  "disagreements": [],
+  "hard_n": 1,
+  "hard_compared": 1,
+  "hard_agree": 1,
+  "hard_choices": {}
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   28,
+   28
+  ],
+  "exp_gain": 2932,
+  "gold": [
+   26919,
+   24981
+  ],
+  "gold_change": -1938,
+  "max_depth_ft": 850
+ },
+ "B": {
+  "dungeon_min": 31.3,
+  "town_min": 4.8,
+  "exp_per_dmin": 93.7,
+  "levels_per_dhour": 0.34,
+  "gold_found": 1644,
+  "gold_found_per_dmin": 52.5,
+  "time_budget_min": {
+   "exploring": 16.4,
+   "fighting": 10.1,
+   "travel_dive": 4.4,
+   "town_other": 2.7,
+   "town_no_goal": 1.5,
+   "pilot_down": 0.9,
+   "recall_wait": 0.5,
+   "town_idle_end": 0.3,
+   "no_goal_dungeon": 0.1,
+   "resting": 0.0
+  },
+  "navigator_wait_pct": 4
+ },
+ "C": {
+  "lowest_hp": [
+   274,
+   340,
+   81,
+   "23:15:40"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 0,
+  "emergency_alerts": 0,
+  "phase": 0,
+  "wor_escape": 0,
+  "wor_travel": 2,
+  "stairs_flee": 0,
+  "teleport": 0,
+  "cures_quaffed": 3,
+  "escape_records": 4,
+  "recalls_landed": 2
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 235,
+  "loot_abandoned_est": 983,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 0,
+  "total": 1218,
+  "sales": 8,
+  "sales_valued": 1,
+  "worst_sales": [],
+  "left_behind": [
+   "Copper Amulet",
+   "Short Sword (1d7)",
+   "Tulwar (2d4)",
+   "Small Metal Shield [3]",
+   "Staff of Light",
+   "Scroll of Treasure Detection",
+   "Staff of Haste Monsters",
+   "Battle Axe (2d8)",
+   "Pair of Soft Leather Boots [2]",
+   "Scroll of Door/Stair Location"
+  ],
+  "irreplaceable": [
+   "Potion of Speed",
+   "Ring of Resist Fire",
+   "an Amulet of Resist Lightning",
+   "left a Ring of Resist Fire (~100): pack full and nothing cheaper to make room with"
+  ]
+ },
+ "E": {
+  "reports": 12,
+  "commands": 76,
+  "commands_per_min": 2.4,
+  "report_to_action_med_s": 5.5,
+  "report_to_action_p90_s": 7.4,
+  "reports_without_command_pct": 0,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 1,
+  "report_chars": 248912,
+  "order_report_age_med_s": 2.1,
+  "order_report_age_p90_s": 21.0
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 74,
+  "perception_gaps": 4,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 1342,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Black orc": 145,
+  "Umber hulk": 84,
+  "Clear hound": 42,
+  "Earth hound": 41,
+  "Warg": 35,
+  "Mirkwood spider": 35,
+  "Wolf": 18,
+  "Forest troll": 16
+ },
+ "alerts": {
+  "tactic": 50,
+  "lost": 4,
+  "found": 3,
+  "review": 3,
+  "goal_done": 2,
+  "rule": 1,
+  "stat_drained": 1,
+  "plan_done": 1
+ },
+ "plan_news": {
+  "unseen_attacker": 19,
+  "goal_done": 15,
+  "plan": 8,
+  "interesting_item": 5,
+  "thief": 3,
+  "pack_full": 3,
+  "stuck": 2,
+  "structure": 1,
+  "unique_slain": 1,
+  "fearer": 1,
+  "goal_failed": 1
+ }
+}

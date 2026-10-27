@@ -206,6 +206,8 @@ Ask the user before committing anything to git (session 9 commits).
 
 ### HANDOFF TO ARCHITECT 9: normal work resumes (written 2026-10-26 ~22:00 by the session-7 Architect)
 
+**Session 8 is over (2026-10-26 22:41 to 2026-10-27 07:16). Missions run: m49 (10-26), m50-m54 (10-27; m54 was a shortened 21-minute mission, so it isn't comparable). Read VACATION-NOTES.md first; it has the bugs, the interventions, and the open questions (the unexplained gold losses at m51 and m53, the Holy Avenger sale, the early staff teleports). Each mission's report is in runs/pilot/dive04/reports/.**
+
 **First:** session 8 was "The Architect's Vacation" (a Haiku Architect helping the Navigator live, no code changes).
 1. **Read `/projectnb/jbrcs/mangband/VACATION-NOTES.md`** completely: its bugs, wanted features, lessons, Navigator blind
    spots and interventions are your inputs. Triage them with the user (fix / later / no).
@@ -242,6 +244,12 @@ blind escapes (staff when a scroll can't be read, refused reads detected, eat to
    undecided town visits; `react leave/hunt`; a gear-evaluator swap in town.
 8. Routine: after each piece of work `github/tools/snapshot.sh`, commit, `git push origin restructure`; after each
    mission `observe/wrap.sh mNN`, a report, FIELD-NOTES lessons; watch `asks.jsonl` and answer live.
+9. **TODO (user, 10-27): a "quiet wait" Pilot function for the Navigator.** When the Pilot is not in combat, it pauses
+   the current plan/goal, walks to a previously cleared room, and waits there. It wakes if a monster appears or if it
+   is in combat and has to defend itself, then resumes or hands back. The Navigator uses it when it wants time to
+   think, plan, survey the map, or check its inventory. Today the Navigator can only use `goal wait SECS` (a bare
+   countdown, no safety logic), `goal rest`, `goal goto Y,X` and `stop`, and must pick the spot itself
+   (see the vacation-mode notes in VACATION-NOTES.md).
 
 ### ARCHITECT HANDOFF 2026-10-26, session 7 (details of session 7; history for Architect 9)
 

@@ -1,0 +1,202 @@
+{
+ "label": "m53",
+ "nav_model": "haiku",
+ "effort": "low",
+ "report": "compact",
+ "start": "2026-10-27 06:25",
+ "end": "2026-10-27 07:03",
+ "minutes": 38.0,
+ "notes": "",
+ "tokens": null,
+ "estimator": {
+  "n": 19,
+  "compared": 11,
+  "agree": 4,
+  "in_time_turn": 19,
+  "before_next_act": 19,
+  "skipped": 1,
+  "compute_max_s": 0.564,
+  "disagreements": [
+   [
+    "teleport",
+    "stairs",
+    "+185 XP net of gold vs rules (SE 8), both safe"
+   ],
+   [
+    "recall+phase",
+    "rules",
+    "rules (no option clearly better)"
+   ],
+   [
+    "stairs",
+    "rules",
+    "rules (no option clearly better)"
+   ],
+   [
+    "teleport",
+    "stairs",
+    "+159 XP net of gold vs rules (SE 9), both safe"
+   ],
+   [
+    "teleport",
+    "stairs",
+    "+163 XP net of gold vs rules (SE 8), both safe"
+   ],
+   [
+    "stairs",
+    "rules",
+    "rules (no option clearly better)"
+   ],
+   [
+    "recall+phase",
+    "rules",
+    "rules (no option clearly better)"
+   ]
+  ],
+  "hard_n": 4,
+  "hard_compared": 4,
+  "hard_agree": 4,
+  "hard_choices": {}
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   29,
+   29
+  ],
+  "exp_gain": 1709,
+  "gold": [
+   21895,
+   28898
+  ],
+  "gold_change": 7003,
+  "max_depth_ft": 800
+ },
+ "B": {
+  "dungeon_min": 28.4,
+  "town_min": 8.8,
+  "exp_per_dmin": 60.3,
+  "levels_per_dhour": 0.13,
+  "gold_found": 2343,
+  "gold_found_per_dmin": 82.6,
+  "time_budget_min": {
+   "exploring": 13.0,
+   "fighting": 6.5,
+   "town_other": 6.0,
+   "travel_dive": 4.4,
+   "escaping": 3.3,
+   "recall_wait": 1.8,
+   "town_idle_end": 1.4,
+   "town_no_goal": 1.1,
+   "resting": 0.1,
+   "dungeon_other": 0.1,
+   "no_goal_dungeon": 0.1
+  },
+  "navigator_wait_pct": 3
+ },
+ "C": {
+  "lowest_hp": [
+   144,
+   358,
+   40,
+   "06:52:35"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 1,
+  "emergency_episodes": 5,
+  "emergency_alerts": 11,
+  "phase": 1,
+  "wor_escape": 3,
+  "wor_travel": 5,
+  "stairs_flee": 1,
+  "teleport": 0,
+  "cures_quaffed": 11,
+  "escape_records": 14,
+  "recalls_landed": 8
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 13,
+  "loot_abandoned_est": 1634,
+  "stolen": 2392,
+  "destroyed_by_monsters_est": 835,
+  "total": 4874,
+  "sales": 18,
+  "sales_valued": 3,
+  "worst_sales": [],
+  "left_behind": [
+   "Clotted Red Potion",
+   "Dark Blue Mushroom",
+   "Sabre (1d7)",
+   "Tulwar (2d4)",
+   "Metal Cap [3]",
+   "Hard Leather Armour [6]",
+   "Amulet of Searching",
+   "Staff of Detect Invisible",
+   "Holy Book of Prayers [Words of Wisdom]",
+   "Rodent Skeleton"
+  ],
+  "irreplaceable": [
+   "Ring of Resist Fire"
+  ]
+ },
+ "E": {
+  "reports": 13,
+  "commands": 97,
+  "commands_per_min": 2.9,
+  "report_to_action_med_s": 4.4,
+  "report_to_action_p90_s": 198.9,
+  "reports_without_command_pct": 0,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 1,
+  "report_chars": 271836,
+  "order_report_age_med_s": 3.5,
+  "order_report_age_p90_s": 12.4
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 75,
+  "perception_gaps": 7,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 1132,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Uruk": 163,
+  "Novice ranger": 153,
+  "Light hound": 114,
+  "Cave orc": 75,
+  "Novice rogue": 70,
+  "Forest troll": 68,
+  "White wolf": 52,
+  "Mirkwood spider": 39
+ },
+ "alerts": {
+  "tactic": 42,
+  "lost": 7,
+  "plan_done": 4,
+  "goal_done": 3,
+  "rule": 3,
+  "review": 2
+ },
+ "plan_news": {
+  "goal_done": 16,
+  "plan": 14,
+  "unseen_attacker": 11,
+  "interesting_item": 11,
+  "emergency": 11,
+  "band": 6,
+  "goal_failed": 5,
+  "thief": 4,
+  "fearer": 2,
+  "fight_going_badly": 2,
+  "structure": 1,
+  "stuck": 1
+ }
+}

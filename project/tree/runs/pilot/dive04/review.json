@@ -1,7 +1,24 @@
 {
- "items": {},
- "decided": {
-  "a Ring of Resist Fire": "sell"
+ "items": {
+  "an Amulet of Slow Digestion": {
+   "why": "gives slow digestion",
+   "visit": 10,
+   "t": "2026-10-26 23:17"
+  },
+  "a Pair of Soft Leather Boots of Stability [2,+6]": {
+   "why": "gives feather fall, resist nexus",
+   "visit": 21,
+   "t": "2026-10-27 06:24"
+  }
  },
- "town_visits": 4
+ "decided": {
+  "a Ring of Resist Fire": "sell",
+  "a Ring of Protection [+7]": "sell",
+  "a Dagger (1d4) (+5,+5) {good - Bullroarer the Hobbit}": "sell",
+  "an Amulet of Resist Lightning": "sell",
+  "a Short Sword (1d7) (+3,+7)": "sell",
+  "a Sabre (Holy Avenger) (2d7) (+11,+7) [+2] (+1)": "sell",
+  "a Ring of Slow Digestion": "sell"
+ },
+ "town_visits": 32
 }

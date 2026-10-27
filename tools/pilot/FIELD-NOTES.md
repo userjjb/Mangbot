@@ -33,7 +33,13 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
   82).** Blind, you can't read scrolls -- Word of Recall and Teleportation reads are refused. The Staff of
   Teleportation works blind: since m48 the Pilot uses it when it can't read. Resist blindness would end this; buy it
   when you see it (Metal Caps of Seeing, some amulets/rings). If a Light hound pack shows on arrival, leave at once.
-- **Don't drink potions while Full in a long fight: Gorged is -10 speed** (m48). The town now feeds to Fed only.
+- **Don't drink potions while Full in a long fight: Gorged is -10 speed** (m48, and again in m49 at 800 ft: a potion
+  while Full, then a Warg pack took HP 302 -> 166 in a minute). The town now feeds to Fed only; in the dungeon, eat
+  to Fed before a fight, or leave the potion until the state is Fed.
+- **Gold near a fight is still gold** (m49, 750-800 ft): two piles were left after a Drider fight and one more 7 steps
+  off with a stationary monster in view. After a fight, `status` shows the `$` piles near you; fetch them.
+- **Warg packs at 800 ft (m49):** 3-4 Wargs with a Black ogre and a giant red ant took the Navigator from 340 to 170 in
+  about 40 seconds. Staff of Teleportation broke contact both times. A Phase Door had no effect on the adjacent group.
 
 - **750 ft (m43-m45, the trial):** Forest troll bands with a Priest and Black orcs, Paladins (they cause fear, drain
   STR and cast; m44 had to read an emergency Word of Recall when its flee failed with the stairs 153 steps away),

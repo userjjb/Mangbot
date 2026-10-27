@@ -10,7 +10,8 @@
 # Unix login and host), third-party material (the forum corpus, the Borg and
 # upstream MAngband source copies), bulky recordings and raw event streams,
 # sockets, packet logs (a login packet carries the password), raw timeline
-# extracts, inbox state files, and any file over 5 MB.
+# extracts, raw agent transcripts (they name the login and host), inbox state
+# files, and any file over 5 MB.
 #
 #   tools/snapshot.sh          then commit and push as usual
 set -eu
@@ -27,7 +28,7 @@ rsync -a --delete --delete-excluded --max-size=5m \
   --exclude '/Advisor/data/forum/' --exclude '/Advisor/data/borg/' --exclude '/Advisor/data/versions/' \
   --exclude '/runs/observe/' --exclude '/runs/pilot/*/events.jsonl' --exclude '/runs/live-*-events.jsonl' \
   --exclude '*.sock' --exclude '*.fifo' --exclude '__pycache__/' --exclude '*.pyc' \
-  --exclude '*.pkt' --exclude '/runs/phase0/' --exclude '*.tl' \
+  --exclude '*.pkt' --exclude '/runs/phase0/' --exclude '*.tl' --exclude '/runs/pilot/*/*navigators*.txt' \
   --exclude '.watcher' --exclude '.seen' --exclude '.notified' \
   "$PROJ/" "$DST/tree/"
 rsync -a --delete "$MEM/-projectnb-jbrcs-mangband/memory/" "$DST/memory/architect/"

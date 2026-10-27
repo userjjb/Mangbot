@@ -1,0 +1,184 @@
+{
+ "label": "m51",
+ "nav_model": "haiku",
+ "effort": "low",
+ "report": "compact",
+ "start": "2026-10-27 05:20",
+ "end": "2026-10-27 05:54",
+ "minutes": 34.0,
+ "notes": "",
+ "tokens": null,
+ "estimator": {
+  "n": 5,
+  "compared": 3,
+  "agree": 1,
+  "in_time_turn": 5,
+  "before_next_act": 5,
+  "skipped": 0,
+  "compute_max_s": 0.17,
+  "disagreements": [
+   [
+    "stairs",
+    "rules",
+    "rules (no option clearly better)"
+   ],
+   [
+    "stairs",
+    "rules",
+    "rules (no option clearly better)"
+   ]
+  ],
+  "hard_n": 2,
+  "hard_compared": 2,
+  "hard_agree": 1,
+  "hard_choices": {
+   "rules": 1
+  }
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   28,
+   28
+  ],
+  "exp_gain": 1792,
+  "gold": [
+   24981,
+   24448
+  ],
+  "gold_change": -533,
+  "max_depth_ft": 800
+ },
+ "B": {
+  "dungeon_min": 29.4,
+  "town_min": 4.0,
+  "exp_per_dmin": 61.0,
+  "levels_per_dhour": 0.22,
+  "gold_found": 1918,
+  "gold_found_per_dmin": 65.3,
+  "time_budget_min": {
+   "exploring": 17.4,
+   "fighting": 8.9,
+   "town_other": 1.9,
+   "travel_dive": 1.5,
+   "town_no_goal": 1.2,
+   "escaping": 0.9,
+   "town_idle_end": 0.9,
+   "recall_wait": 0.8,
+   "stuck_looping": 0.1,
+   "no_goal_dungeon": 0.1,
+   "resting": 0.1
+  },
+  "navigator_wait_pct": 4
+ },
+ "C": {
+  "lowest_hp": [
+   202,
+   340,
+   59,
+   "05:24:13"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 1,
+  "emergency_alerts": 1,
+  "phase": 0,
+  "wor_escape": 1,
+  "wor_travel": 3,
+  "stairs_flee": 1,
+  "teleport": 0,
+  "cures_quaffed": 1,
+  "escape_records": 5,
+  "recalls_landed": 4
+ },
+ "D": {
+  "sale_shortfall": 45,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 84,
+  "loot_abandoned_est": 1134,
+  "stolen": 2617,
+  "destroyed_by_monsters_est": 0,
+  "total": 3880,
+  "sales": 10,
+  "sales_valued": 4,
+  "worst_sales": [
+   {
+    "item": "a Scroll of Enchant Armor",
+    "got": 9,
+    "fair": 54,
+    "forced": false
+   }
+  ],
+  "left_behind": [
+   "Birch Staff",
+   "Dark Red Mushroom",
+   "Amulet of Adornment",
+   "Scroll of Trap Detection",
+   "Potion of Cure Light Wounds",
+   "Ration of Food",
+   "Potion of Neutralize Poison",
+   "Grey Mushroom",
+   "Wrinkled Mushroom",
+   "Large wooden chest"
+  ],
+  "irreplaceable": []
+ },
+ "E": {
+  "reports": 11,
+  "commands": 59,
+  "commands_per_min": 2.1,
+  "report_to_action_med_s": 4.6,
+  "report_to_action_p90_s": 5.3,
+  "reports_without_command_pct": 0,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 1,
+  "report_chars": 166584,
+  "order_report_age_med_s": 4.0,
+  "order_report_age_p90_s": 15.7
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 71,
+  "perception_gaps": 1,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.1,
+  "runs_sent": 1119,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Mirkwood spider": 106,
+  "Black orc": 63,
+  "Druid": 50,
+  "Uruk": 41,
+  "Clear hound": 35,
+  "Orc shaman": 29,
+  "Griffon": 26,
+  "Half-orc": 26
+ },
+ "alerts": {
+  "tactic": 33,
+  "rule": 6,
+  "goal_done": 2,
+  "plan_done": 2,
+  "lost": 1,
+  "review": 1
+ },
+ "plan_news": {
+  "goal_done": 25,
+  "plan": 16,
+  "unseen_attacker": 4,
+  "interesting_item": 2,
+  "band": 2,
+  "fearer": 2,
+  "fight_going_badly": 1,
+  "goal_failed": 1,
+  "emergency": 1,
+  "thief": 1,
+  "drainer": 1,
+  "breeders": 1
+ }
+}
