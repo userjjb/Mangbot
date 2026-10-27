@@ -1216,6 +1216,22 @@ class Recall(Goal):
                 p.log("note", text="recall already under way: not reading another")
                 self.read_t = gnow()
                 return None
+            # Blind or confused, the scroll can't be read (m55: a `goal recall` sat 4 minutes confused by
+            # Hummerhorns until the Navigator quaffed a CSW): the cheapest cure first (use-obj.c: Cure Light Wounds
+            # ends blindness, Serious and Critical end both), then read
+            if w.flag("blind") or w.flag("confused"):
+                if waited(getattr(self, "cure_t", 0), 3):
+                    kinds = (["Cure Light"] if not w.flag("confused") else []) + ["Cure Serious", "Cure Critical"]
+                    pot = next((i for k in kinds for i in w.items(tval=TV_POTION) if k in i["name"]), None)
+                    self.cure_t = gnow()
+                    if pot:
+                        p.cmd(f"custom q item={pot['item']}", f"recall: {'confused' if w.flag('confused') else 'blind'}"
+                                                              f", can't read: quaff {pot['name']}", hold=0.8)
+                    elif not getattr(self, "told", False):
+                        self.told = True
+                        p.notify("tactic", "recall: blind or confused and no cure for it: waiting to be able to read",
+                                 news=True)
+                return None
             p.cmd(f"custom r item={it['item']}", f"read {it['name']}")
             self.read_t = p.recall_t = gnow()
             return None

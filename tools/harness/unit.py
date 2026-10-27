@@ -2012,6 +2012,29 @@ def house_bank_round_trip():
                f"withdraw {b} -> {after_wd}; sent {sent[:8]}"
 
 
+@case
+def recall_cures_confusion_first():
+    """m55: `goal recall` sat 4 minutes, confused by Hummerhorns, the read refused; the Navigator quaffed a CSW. Now
+    the recall quaffs the cheapest cure first: confused -> Cure Serious (CLW doesn't end it); blind only -> CLW."""
+    def run(state):
+        p = pilot(pack=[("2 Scrolls of Word of Recall", 70), ("3 Potions of Cure Light Wounds", 75),
+                        ("3 Potions of Cure Serious Wounds", 75), ("a Brass Lantern", P.TV_LITE)])
+        p.w.inven[0]["equip"] = True
+        p.w.inven[0]["tval"] = P.TV_LITE
+        p.w.flag = lambda k: k == state
+        p.w.recall_pending = False
+        p.recall_t = 0.0
+        sent = []
+        p.cmd = lambda line, why, hold=0.4: sent.append(why)
+        g = P.Recall()
+        g.tick(p)
+        return sent
+    conf, blind, clear = run("confused"), run("blind"), run(None)
+    ok = len(conf) == 1 and "Cure Serious" in conf[0] and len(blind) == 1 and "Cure Light" in blind[0] and \
+        len(clear) == 1 and clear[0].startswith("read ")
+    return ok, f"confused: {conf}; blind: {blind}; clear: {clear}"
+
+
 def _trip_on_level(p, tp):
     p.goal = None
     p.set_goal = lambda g: setattr(p, "goal", g)
