@@ -3821,7 +3821,7 @@ class Pilot:
                                      f"HP, two rounds)")
         return True
 
-    def shadow_decision(self, detail, options=None, trigger="emergency", rules=None):
+    def shadow_decision(self, detail, options=None, trigger="emergency", rules=None, extra_p=None):
         """Shadow mode (the user, 10-25): hand this decision's state to the Advisor's estimator in the background
         (shadow.py): an emergency (all options), or the start of a hard fight (hard_fight_shadow: its own options).
         Never waits, never acts on it. Returns 'started', 'skipped' (one running) or 'off'."""
@@ -3862,6 +3862,7 @@ class Pilot:
                 p[k] = 5
         if w.recall_pending:
             p["recall"] = max(1, int(25 - (gnow() - w.recall_pending_t) / shadow.TURN_S))
+        p.update(extra_p or {})
         team = [(r.name, max(1, sh.sim.adist(y - w.pos[0], x - w.pos[1]))) for y, x, r in w.monsters] if w.pos else []
         # (and what the server's list names but the map doesn't show yet, 3 squares off: A2K's first emergency had
         # Khim in the list only, and the estimator played an empty fight)
@@ -5309,8 +5310,12 @@ class Pilot:
             return None
         seen[key], self.band_shadow_t = now, now
         rules = "stairs" if w.find("<>") else "recall+phase"
+        # (time is part of the trade: options_sim 26g charges each line xp_per_block for its blocks and the rest to
+        # recover -- the Advisor: our XP per dungeon minute at this depth / 96 blocks a minute)
+        d = (self.rate_state().get("depth") or {}).get(str(w.depth_ft))
+        xpb = round(d[0] / (d[1] / 60) / 96, 3) if d and d[1] > 300 else 0
         return self.shadow_decision(f"band: rules {rules} ({detail[:100]})", options=self.BAND_OPTIONS,
-                                    trigger="band", rules=rules)
+                                    trigger="band", rules=rules, extra_p={"xp_per_block": xpb})
 
     def hard_fight_shadow(self, now):
         """Shadow mode at the start of a hard fight (the user, 10-25, on the Advisor's shadow-review memo: its replays'

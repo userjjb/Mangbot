@@ -1956,7 +1956,8 @@ def shadow_agrees_by_the_action_taken():
     p = pilot(monsters=[(20, 22 + k, warg) for k in range(9)])
     p.w.find = lambda chars: [(30, 30)]
     calls = []
-    p.shadow_decision = lambda detail, options=None, trigger="emergency", rules=None: calls.append((trigger, rules,
+    p.rate_state = lambda: {"depth": {"300": [5300, 6000]}}
+    p.shadow_decision = lambda detail, options=None, trigger="emergency", rules=None, extra_p=None: calls.append((trigger, rules,
                                                                                                     options)) or "started"
     r1 = p.band_shadow("a band within 10 squares: Warg x9")
     r2 = p.band_shadow("a band within 10 squares: Warg x9")
