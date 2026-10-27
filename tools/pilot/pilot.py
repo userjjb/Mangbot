@@ -7309,6 +7309,13 @@ class Pilot:
             except Exception as e:
                 return {"ok": False, "error": f"gear evaluator failed: {e!r}"}
             return {"ok": True, "text": geareval.report(res)}
+        if c == "loadout":
+            # the loadout optimizer (geareval.optimize): changes across slots, e.g. a better weapon without Free
+            # Action, with Free Action from a ring. `loadout shops` adds the shops' stock as last seen, within the gold
+            # the essentials leave
+            if self.w.in_dungeon and self.w.monsters:
+                return {"ok": False, "error": "loadout runs ~2-5 s of simulation: not with monsters in view"}
+            return {"ok": True, "text": self.loadout_info(shops="shops" in args)}
         if c == "why":
             return {"ok": True, "text": self.why_info(args)}
         if c == "prep":
@@ -8855,7 +8862,8 @@ class Pilot:
             elif k == "act":
                 text = f"act{' [' + d['by'] + ']' if d.get('by') else ''}: {d.get('why') or d.get('cmd')}"
             elif k == "nav_cmd":
-                if d.get("cmd") in ("status", "wait", "prep", "why", "gear", "gearcmp", "pack", "say", "journal", "complain"):
+                if d.get("cmd") in ("status", "wait", "prep", "why", "gear", "gearcmp", "loadout", "pack", "say", "journal",
+                                   "complain"):
                     continue
                 text = f"{'ARCH' if d.get('role') == 'architect' else 'NAV'}> {d.get('cmd')} {' '.join(map(str, d.get('args') or []))}"
             elif k == "escape":
@@ -9105,6 +9113,43 @@ class Pilot:
                                                decisions=os.path.join(self.rundir, "decisions.jsonl"),
                                                xp_per_gold=self.xp_per_gold())
         return cache[key]
+
+    def loadout_info(self, shops=False):
+        """`loadout [shops]`: the optimizer's best few loadouts from the pack (and shop stock) against what's worn."""
+        w = self.w
+        ch = self.gear_character()
+        pool = [geareval.Item(i["name"], i["tval"], i["weight"] // max(1, i.get("number", 1))) for i in w.items()
+                if i["tval"] in geareval.SLOT_OF_TVAL and i["tval"] not in (TV_LITE, 19) and self.iv(i["name"]).known
+                and not re.search(r"\{(cursed|worthless|broken|terrible)", i["name"])]
+        budget = 0
+        if shops:
+            budget = max(0, w.ind.get("gold", [0])[0] - self.town_reserve())
+            for store, st in sorted(self.stores_seen.items()):
+                for name, price in (st.get("prices") or {}).items():
+                    it = geareval.Item(name)
+                    if it.slot and it.slot not in ("light", "bow") and price <= budget:
+                        it.price, it.store = price, store
+                        pool.append(it)
+        try:
+            killed = set(json.load(open(os.path.join(self.rundir, "uniques_killed.json"))))
+        except (OSError, ValueError):
+            killed = set()
+        try:
+            res = geareval.optimize(ch, pool, budget=budget, n=10, skip=killed,
+                                    decisions=os.path.join(self.rundir, "decisions.jsonl"),
+                                    xp_per_gold=self.xp_per_gold())
+        except Exception as e:
+            return f"loadout optimizer failed: {e!r}"
+        head = (f"loadout: {res['searched']['loadouts']} loadouts of one or two slot changes searched (pack"
+                + (f" + shop stock within {budget} gold" if shops else "") + "; every ability and resist worn is kept; "
+                "the best few simulated). Slays, brands and criticals aren't simulated.")
+        if len(res["options"]) == 1:
+            return head + "\nnothing to try: no loadout keeps your abilities and resists and looks better on paper"
+        out = [head, geareval.report(res)]
+        if res["best"] != "current":
+            out.append("to do: " + "; ".join((f"buy {a} ({p} g), then " if p else "") + f"wear {a}"
+                                             for a, _, p in res["changes"][res["best"]] if a))
+        return "\n".join(out)
 
     def gear_better(self, it):
         """(the evaluator's chosen option, (item, replaced)) when wearing this identified pack item beats what's worn

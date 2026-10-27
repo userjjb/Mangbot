@@ -1915,6 +1915,35 @@ def escape_landing_and_trapdoor_notes():
     return ok, f"{a!r} then {b!r}; trap door: {news}"
 
 
+@case
+def loadout_moves_free_action():
+    """The loadout optimizer (m53's Holy Avenger Sabre, sold for losing Free Action): with a Ring of Free Action to
+    buy, the Sabre + the ring in place of a Protection ring is searched; without the ring the Sabre never is (Free
+    Action lost); a ring beyond the budget isn't either; a worse Protection ring is pruned."""
+    import geareval as G
+    worn = {}
+    for n in G.DIVE04_WORN:
+        it = G.Item(n)
+        worn.setdefault(it.slot, []).append(it)
+    ch = G.Character(28, {"STR": 88, "INT": 5, "WIS": 8, "DEX": 38, "CON": 38, "CHR": 4}, mhp=340, ac=76, worn=worn,
+                     flags={"FREE_ACT", "SEE_INVIS", "RES_FIRE", "RES_COLD", "RES_ELEC", "RES_ACID", "RES_DARK"},
+                     depth_ft=750)
+
+    def run(with_ring, budget=5000):
+        pool = [G.Item("a Sabre (Holy Avenger) (2d7) (+11,+7) [+2] (+1)"), G.Item("a Ring of Protection [+5]")]
+        if with_ring:
+            pool.append(G.Item("a Ring of Free Action"))
+            pool[-1].price = 1500
+        res = G.optimize(ch, pool, budget=budget, hard=False, depth_n=0)
+        return [k for k in res["changes"] if k != "current"], res["searched"]
+    a, sa = run(True)
+    b, _ = run(False)
+    c, _ = run(True, budget=1000)
+    ok = any("Sabre" in k and "Free Action" in k for k in a) and not any("Sabre" in k for k in b + c) and \
+        "ring" in sa["candidates"] and sa["candidates"]["ring"] == 1
+    return ok, f"with the ring: {a}; without: {b}; under budget 1000: {c}; searched {sa}"
+
+
 def _trip_on_level(p, tp):
     p.goal = None
     p.set_goal = lambda g: setattr(p, "goal", g)

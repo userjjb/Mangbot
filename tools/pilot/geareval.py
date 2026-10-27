@@ -193,6 +193,12 @@ class Item:
                     self.ego = next((e for e in egos().get(" ".join(words[i:]), ()) if k["tval"] in e["tvals"]),
                                     None)
                     break
+        # the egos named in brackets: 'a Sabre (Holy Avenger) (2d7) ...' (the base name stops at the bracket)
+        if self.kind and not self.ego and not self.art:
+            m = re.search(r"\(([A-Za-z][A-Za-z' ]+)\)", n)
+            if m:
+                self.ego = next((e for e in egos().get(_norm(f"({m.group(1)})"), ()) if self.kind["tval"] in e["tvals"]),
+                                None)
         src = self.art or self.kind or {}
         self.tval = tval or src.get("tval")
         self.slot = SLOT_OF_TVAL.get(self.tval)
@@ -664,6 +670,103 @@ def compare_slot(ch, candidates, **kw):
     res = compare(ch, options, **kw)
     res["unread"] = [it.name for it in candidates if not it.slot]
     res["swaps"] = swaps          # label -> (the item worn, the piece it replaces or None)
+    return res
+
+
+# ------------------------------------------------------------------ the loadout optimizer
+OPT_SLOTS = ("weapon", "body", "cloak", "shield", "helm", "gloves", "boots", "amulet", "ring")
+
+
+def _dominated(a, b, ch):
+    """b is at least as good as a in its slot on every static count (AC, to-hit, to-dam, abilities, stat bonuses,
+    speed, weight, price) -- a weapon by the damage it gives alone."""
+    if not a.flags <= b.flags or any(b.stat_bonus().get(s, 0) < v for s, v in a.stat_bonus().items()):
+        return False
+    if a.slot == "weapon":
+        da, db = ch.derive(ch.swap(a)), ch.derive(ch.swap(b))
+        return db["dmg"] >= da["dmg"] and db["tohit"] >= da["tohit"] and b.ac + b.to_a >= a.ac + a.to_a
+    return (b.ac + b.to_a >= a.ac + a.to_a and b.to_h >= a.to_h and b.to_d >= a.to_d and b.weight <= a.weight
+            and getattr(b, "price", 0) <= getattr(a, "price", 0))
+
+
+def proxy(d, cur):
+    """A static guess of a loadout's worth, to choose which few go to the simulation: kill speed (damage per round)
+    and damage taken (AC: a monster's melee hits less and, for wounds, does damage x (1 - AC/250) -- melee1.c),
+    HP, speed."""
+    import math
+    hurt = lambda ac: 1 - min(ac, 150) / 250
+    return (math.log(max(1e-9, d["dmg"]) / max(1e-9, cur["dmg"])) + 0.5 * math.log(hurt(cur["ac"]) / hurt(d["ac"]))
+            + 0.5 * (d["mhp"] - cur["mhp"]) / max(1, cur["mhp"]) + 0.1 * (d["speed"] - cur["speed"]))
+
+
+def optimize(ch, pool, budget=0, max_sim=5, **kw):
+    """The loadout optimizer (design_gear.md): gear choices across slots, e.g. a Sabre (Holy Avenger) in place of
+    the Free Action axe, worth it only with Free Action from a ring. pool: candidate Items (pack wearables; shop
+    stock with an `price` attribute, gold). Loadouts = the worn set with one or two slots changed (a ring pair
+    counts as one slot), keeping every ability and resist worn now (Free Action, See Invisible ... and, as
+    TRADE_RESISTS is off, the elemental ones) and costing at most `budget`; dominated items are pruned per slot.
+    The static proxy picks max_sim of them; geareval.compare simulates those against the current gear (no_loss).
+    Returns compare's report dict with `changes` {label: [(item worn, the piece it replaces, price)]}."""
+    import itertools
+    cur = ch.derive()
+    keep = {f for f in cur["flags"] if f in NO_LOSS or f in REQUIRED or (not TRADE_RESISTS and f.startswith(("RES_", "IM_")))}
+    by_slot = {s: [i for i in pool if i.slot == s] for s in OPT_SLOTS}
+    for s in OPT_SLOTS:                   # (prune: a candidate no better than a worn piece or another candidate)
+        rivals = by_slot[s] + list(ch.worn.get(s, ()))
+        by_slot[s] = [a for a in by_slot[s] if not any(b is not a and _dominated(a, b, ch) and not _dominated(b, a, ch)
+                                                      for b in rivals)]
+    # one slot's changes: (new pieces for the slot, [(item, replaced)])
+    moves = {}
+    for s, cands in by_slot.items():
+        on = list(ch.worn.get(s, ()))
+        out = []
+        if s == "ring":
+            pieces = on + cands
+            for pair in itertools.combinations(range(len(pieces)), min(2, len(pieces))):
+                new = [pieces[j] for j in pair]
+                if {id(x) for x in new} == {id(x) for x in on}:
+                    continue
+                gone = [x for x in on if all(x is not y for y in new)]
+                added = [x for x in new if all(x is not y for y in on)]
+                out.append((new, list(itertools.zip_longest(added, gone))))
+        else:
+            for c in cands:
+                out.append(([c], [(c, on[0] if on else None)]))
+        if out:
+            moves[s] = out
+    combos = [[(s, m)] for s, ms in moves.items() for m in ms]
+    combos += [[(s1, m1), (s2, m2)] for (s1, ms1), (s2, ms2) in itertools.combinations(moves.items(), 2)
+               for m1 in ms1 for m2 in ms2]
+    scored = []
+    for combo in combos:
+        worn = {s: list(v) for s, v in ch.worn.items()}
+        changes = []
+        for s, (new, ch_) in combo:
+            worn[s] = list(new)
+            changes += ch_
+        cost = sum(getattr(a, "price", 0) for a, _ in changes if a is not None)
+        if cost > budget:
+            continue
+        d = ch.derive(worn)
+        if not keep <= d["flags"] or d["speed"] < cur["speed"]:
+            continue
+        scored.append((proxy(d, cur), worn, changes, cost))
+    scored.sort(key=lambda x: -x[0])
+    options, changes = {"current": ch.worn}, {"current": []}
+    for pr, worn, chg, cost in scored[:max_sim]:
+        if pr <= 0:
+            break
+        lab = " + ".join(f"{a.name}" + (f" (buy {getattr(a, 'price')} g)" if getattr(a, "price", 0) else "")
+                         + (f" for {b.name}" if b else "") for a, b in chg if a is not None) or \
+            " + ".join(f"take off {b.name}" for _, b in chg)
+        options[lab] = worn
+        changes[lab] = [(a.name if a else None, b.name if b else None, getattr(a, "price", 0) if a else 0)
+                        for a, b in chg]
+    res = compare(ch, options, no_loss=True, **kw) if len(options) > 1 else \
+        dict(options=["current"], best="current", derived={"current": cur}, score={"current": 0.0}, notes={},
+             rules={}, sims={}, gains={}, sets={}, seconds=0.0, check=ch.check())
+    res["changes"] = changes
+    res["searched"] = dict(loadouts=len(scored), candidates={s: len(v) for s, v in by_slot.items() if v})
     return res
 
 
