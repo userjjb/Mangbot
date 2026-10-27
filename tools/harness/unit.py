@@ -1278,6 +1278,47 @@ def unique_drop_pushes_out_only_cheap():
 
 
 @case
+def room_eat_never_gorges():
+    """m49: the make-room rule ate a Piece of Elvish Waybread (7500 food) while Fed, beside Wargs: Gorged, -10 speed.
+    Food is eaten for room only if the top of the hunger level plus its food stays 1000 under Gorged: Waybread or a
+    ration not when Fed; a ration when Hungry; Jerky (1500) when Fed."""
+    def run(food, hunger):
+        pack = [(food, P.TV_FOOD)] + [(f"{n} Potions of Cure Critical Wounds", 75) for n in range(2, 24)]
+        p = pilot(pack=pack)
+        p.skipped_items, p.room_t, p.unique_drop = set(), 0.0, None
+        p.w.hunger = hunger
+        p.flavour_of = lambda it: None
+        sent = []
+        p.cmd = lambda line, why, hold=0.4: sent.append(why)
+        p.c = type("C", (), {"send": lambda self, x: None})()
+        p.pickup_room("a Scroll of Enchant Weapon To-Dam")
+        return any("make room: eat" in x for x in sent)
+    got = [run("a Piece of Elvish Waybread", 3), run("a Ration of Food", 3), run("a Ration of Food", 2),
+           run("a Strip of Beef Jerky", 3), run("a Piece of Elvish Waybread", 2)]
+    return got == [False, False, True, True, True], \
+        f"eaten (Waybread Fed, ration Fed, ration Hungry, Jerky Fed, Waybread Hungry): {got}"
+
+
+@case
+def theft_is_news():
+    """m51, m53: Novice rogues stole 2617 and 2392 gold and nothing said so. The theft message is news, with the
+    total; a stolen item too."""
+    q = pilot()
+    q.gain_hist, q.w.hp_hist, q.hits, q.mons_mem = collections.deque(maxlen=80), [], collections.Counter(), {}
+    q.belief_msg_t, q.kills_t = 0.0, 0.0
+    for t in ("2617 coins were stolen!", "2392 coins were stolen!", "Your Hard Studded Leather [7] {excellent} (u) "
+              "was stolen!"):
+        q.w.messages.append((P.gnow(), t))
+    try:
+        q.belief_tick(P.gnow())
+    except Exception:
+        pass
+    news = [d for what, d in q.notes if what == "thief"]
+    ok = len(news) == 3 and "5009 stolen" in news[1] and news[2].startswith("Hard Studded Leather [7] {excellent} stolen")
+    return ok, f"news {news}"
+
+
+@case
 def flee_at_max_depth_teleports():
     """m38: two flees at 650 ft (max_depth) with only '>' known went to 700 ft; finding a '<' there took 10 minutes.
     Now: teleport away on the level (staff or scroll), once a minute; without one, '>' as before."""
@@ -1737,6 +1778,41 @@ def fled_stairs_refused_two_minutes_only():
     return ok, f"live, 30 s after: took {took_early} (refusal ends {expires + 15:.0f} s after the flee); " \
                f"130 s after: took {took_late}; on a kept level: {took_kept}; test server 30 s after: {took_test}, " \
                f"on the login level: {took_test_login}"
+
+@case
+def dive_loots_beside_its_path():
+    """m49: leaving a breeders level, the dive walked past two gold piles beside its path to the stairs (it looted only
+    before setting off). Walking, it now stops for loot within 3 squares, not for one 5 away, nor with a Stone troll
+    in view."""
+    def run(item_at, monsters=()):
+        p = pilot(monsters=monsters)
+        w = p.w
+        w.depth, w.depth_ft, w.level_t, w.pos, w.clvl = 15, 750, P.gnow() - 300, (20, 20), 28
+        w.standing_on, w.arrive_pos, w.arrived_by = None, (4, 150), ">"
+        w.memory = {item_at: "$", (20, 40): ">"}
+        w.find = lambda chars: [(20, 40)] if ">" in chars else []
+        p.skipped_items, p.loot_mem = set(), {"level": w.level_t, "done": set(), "tries": collections.Counter(),
+                                               "owed": set()}
+        p.item_hold_until, p.dangers, p.interesting = 0, lambda: [], lambda: None
+        p.danger_why = lambda r: None
+        p.orders["loot_radius"], p.orders["pillared"], p.busy_until = 10, "no", 0
+        p.orders["max_depth"] = 800
+        p.loot_step = lambda st: looted.append(True) or True
+        stopped, looted = [], []
+        p.mover = type("M", (), {"active": True, "stop": lambda self: stopped.append(True) or setattr(self, "active", False),
+                                 "tick": lambda self: "moving", "go": lambda self, t: True,
+                                 "path": []})()
+        p.kept, p.scummed, p.live, p.fled_from = set(), set(), False, None
+        d = P.Dive(800)
+        d.stop, d.level_seen, d.explore, d.probed = False, w.level_t, _Stub(), (w.level_t, w.pos)
+        d.walking = True
+        d.tick(p)
+        return bool(stopped and looted)
+    near, far = run((22, 21)), run((25, 21))
+    troll = run((22, 21), monsters=[(30, 30, BYNAME["stone troll"])])
+    return (near, far, troll) == (True, False, False), \
+        f"stopped for loot 2 away {near}, 5 away {far}, a Stone troll in view {troll}"
+
 
 def _trip_on_level(p, tp):
     p.goal = None

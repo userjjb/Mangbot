@@ -52,6 +52,7 @@ import shopmath                                  # noqa: E402
 from mover import Mover, direction, passable, plan, drain_zone_of, MAX_HGT, MAX_WID   # noqa: E402
 
 TV_SCROLL, TV_POTION, TV_FOOD, TV_FLASK, TV_LITE = 70, 75, 80, 77, 39
+PY_FOOD_MAX = 15000          # Gorged (-10 speed) from here (mdefines.h)
 SHOP_CUT = 0.38   # what a shop pays Dive04 of an item's value at CHR 3 (shopmath: 34-43%; Black Market 10%)
 CURE_POTIONS = ("Cure Critical Wounds", "Cure Serious Wounds", "Cure Light Wounds", "Healing")
 # HP each potion heals (server use-obj.c:483-540; CSW 20-24, CCW 25-29). Longest
@@ -563,6 +564,12 @@ class Dive(Goal):
                 return ("interesting", why)
         # Standing orders that save asking the agent: loot what's close...
         # (the shared loot step: what's close, what was passed up while monsters were in view, valuables)
+        # (m49, leaving a breeders level: two gold piles beside the path to the stairs were walked past -- the user:
+        # "money walked by for no reason". The walk loots only before it sets off; now it stops for loot within
+        # LOOT_PATH_R, and walks on after)
+        if self.walking and not self.loot.get("looting") and p.loot_beside():
+            p.mover.stop()
+            self.walking = False
         if not self.walking and (not p.mover.active or self.loot.get("looting")) and p.loot_step(self.loot):
             return None
         # ... and explore a pillared room for a '>' (the user: they often hold stairs)
@@ -4119,6 +4126,16 @@ class Pilot:
             m = re.match(r"Your (.+?) \(.\) (?:was|were) disenchanted!", t)
             if m:
                 self.notify("disenchanted", f"{m.group(1)} lost a plus (disenchanted)", news=True)
+            # (m51, m53: Novice rogues took 2617 and 2392 gold, ~10% of the purse a touch, and nothing said so; the
+            # session-8 Architect called both losses "unexplained")
+            m = re.match(r"(\d+) coins were stolen!", t) or re.match(r"Your (.+?) \(.\) (?:was|were) stolen!", t)
+            if m:
+                gold = m.group(1).isdigit()
+                if gold:
+                    self.gold_stolen = self.__dict__.get("gold_stolen", 0) + int(m.group(1))
+                self.notify("thief", f"{m.group(1) + ' gold' if gold else m.group(1)} stolen by a touch"
+                                     + (f" ({self.gold_stolen} stolen since the Pilot started)" if gold else ""),
+                            news=True)
             m = re.match(r"You have (?:slain|destroyed|killed) (?:the )?(.+?)[.!]$", t)
             if m:
                 k = m.group(1).lower()
@@ -4657,6 +4674,17 @@ class Pilot:
         slow = (load - limit // 2) // (limit // 10) if load > limit // 2 else 0
         return limit // 2 - load, slow
 
+    # the top of each hunger level (the client sends only the level: Weak, Hungry, Fed, Full) and the food in each
+    # kind we may eat (object.txt pvals; mushrooms 500)
+    FOOD_TOP = {0: 1000, 1: 1000, 2: 2000, 3: 10000, 4: PY_FOOD_MAX}
+    FOOD_VALUES = (("Ration", 5000), ("Biscuit", 500), ("Jerky", 1500), ("Slime Mold", 3000), ("Waybread", 7500),
+                   ("Ale", 500), ("Wine", 1000), ("Potato", 1500), ("Cabbage", 1500), ("Carrot", 500), ("Beet", 750),
+                   ("Squash", 2000), ("Corn", 1500))
+
+    @classmethod
+    def food_value(cls, name):
+        return next((v for k, v in cls.FOOD_VALUES if k in name), 500)
+
     HEAVY_LOOT_MIN = 300      # gold: below this, loot that would slow us is left
     def is_junk_name(self, name):
         """Known junk by name: the junk order (Salt Water, Weakness...), spellbooks for a warrior, Broken items, and
@@ -4745,7 +4773,9 @@ class Pilot:
                 self.cmd(f"custom F item={flask['item']}", f"make room: fuel the lantern with the last flask for {name}",
                          hold=0.6)
                 return False
-            if food and w.hunger <= 3:
+            # (m49: a Piece of Elvish Waybread, 7500 food, eaten for room while Fed beside Wargs and a Black ogre: Gorged,
+            # -10 speed. Eaten only if the top of our hunger level plus the food stays a potion margin under Gorged)
+            if food and self.FOOD_TOP.get(w.hunger, PY_FOOD_MAX) + self.food_value(food["name"]) < PY_FOOD_MAX - 1000:
                 self.room_t = now
                 self.cmd(f"custom E item={food['item']}", f"make room: eat {food['name']} for {name}", hold=0.6)
                 return False
@@ -5987,10 +6017,7 @@ class Pilot:
         # monsters, 10+ levels below us and not dangerous: auto-retaliate kills them if they come. The set-piece
         # M2: a Cave lizard 16 squares off held a wand back for good; a Jackal pack cut the walk short and the
         # dive left without it)
-        band = self.band_warned[0] == w.level_t and gnow() - self.band_warned_t < 90
-        mobile = [m for m in w.monsters if "NEVER_MOVE" not in m[2].flags
-                  and (m[2].level > w.clvl - 10 or self.danger_why(m[2]))]
-        if mobile or band or w.hp_frac < self.orders.get("think_hp", 0.65) or w.flag("blind") or w.flag("confused"):
+        if self.loot_blocked():
             mem["owed"] |= {t for t in items if w.dist(t) <= lr}
             if state.get("looting"):
                 state["looting"] = False
@@ -6031,6 +6058,26 @@ class Pilot:
             return False
         state.update(looting=True, target=tgt)
         return True
+
+    def loot_blocked(self):
+        """No detours for loot now (loot_step's test): a band about, a mobile monster that matters, low HP, blind or
+        confused."""
+        w = self.w
+        band = self.band_warned[0] == w.level_t and gnow() - self.band_warned_t < 90
+        mobile = [m for m in w.monsters if "NEVER_MOVE" not in m[2].flags
+                  and (m[2].level > w.clvl - 10 or self.danger_why(m[2]))]
+        return bool(mobile or band or w.hp_frac < self.orders.get("think_hp", 0.65) or w.flag("blind")
+                    or w.flag("confused"))
+
+    LOOT_PATH_R = 3           # walking to the stairs: a detour this far for loot beside the path
+    def loot_beside(self):
+        """An item not yet looted within LOOT_PATH_R, and nothing against a detour (the dive walking to the stairs,
+        which otherwise loots only before it sets off)."""
+        mem = self.__dict__.get("loot_mem") or {}
+        if mem.get("level") != self.w.level_t or not int(self.orders.get("loot_radius", 0)):
+            return False
+        return any(self.w.dist(t) <= self.LOOT_PATH_R for t in self.resolve_target("item")
+                   if t not in mem["done"]) and not self.loot_blocked()
 
     def recall_started(self, now):
         """A Word of Recall is already under way: the server said so ("becomes
@@ -9479,7 +9526,9 @@ def main():
         last = {"status": [0.0, None], "inven": [0.0, None], "map": [0.0, None]}
 
         def log_state(ev):
-            k, now = ev.get("ev"), gnow()
+            # 'epoch' is the wall clock like events.jsonl's; the throttle stays on the game clock (session 8: logging
+            # gnow put state.jsonl ~3 minutes behind after freezes, and a theft was searched for in the wrong minutes)
+            k, now, wall = ev.get("ev"), gnow(), time.time()
             if k not in last or now - last[k][0] < {"status": 2.0, "inven": 0.0, "map": 10.0}[k]:
                 return
             if k == "status":
@@ -9495,12 +9544,12 @@ def main():
                     last[k][0] = now
                     return
                 last[k] = [now, rows]
-                statelog.write(json.dumps({"ev": k, "epoch": round(now, 3), **body}) + "\n")
+                statelog.write(json.dumps({"ev": k, "epoch": round(wall, 3), **body}) + "\n")
                 return
             if body == last[k][1]:
                 return
             last[k] = [now, body]
-            statelog.write(json.dumps({"ev": k, "epoch": round(now, 3), **body}) + "\n")
+            statelog.write(json.dumps({"ev": k, "epoch": round(wall, 3), **body}) + "\n")
 
         pilot.w.c.log = lambda ev: (orig(ev), log_state(ev) if ev.get("ev") in bulky else
                                     evlog.write(json.dumps({**ev, "epoch": round(time.time(), 3)}) + "\n"))
