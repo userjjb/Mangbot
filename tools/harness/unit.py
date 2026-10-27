@@ -2119,6 +2119,22 @@ def blind_escape_uses_the_staff_and_sees_refused_reads():
     return ok, f"seeing: {seeing[0]}; blind: {blind[0]}; after a refused read: {after[0]}; pending {p.pending_use}"
 
 
+@case
+def ask_limits_lifted_by_the_flag_file():
+    """The user (10-26, "The Architect's Vacation"): the file ask_unlimited in the run directory lifts `ask`'s limits
+    (one every 5 minutes, 4 an hour); without it they hold."""
+    import tempfile
+    p = pilot()
+    p.rundir = tempfile.mkdtemp()
+    p.goal = None
+    p.w.depth_ft = 750
+    r1, r2 = p.ask_architect("one?"), p.ask_architect("two?")
+    open(os.path.join(p.rundir, "ask_unlimited"), "w").close()
+    r3 = p.ask_architect("three?")
+    ok = r1["ok"] and not r2["ok"] and r3["ok"]
+    return ok, f"limited: {r1['ok']}, {r2['ok']}; with the flag: {r3['ok']}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0

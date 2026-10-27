@@ -8746,11 +8746,14 @@ class Pilot:
         now = time.time()
         asks = [a for a in self.__dict__.setdefault("asks_sent", []) if now - a < 3600]
         self.asks_sent = asks
-        if asks and now - asks[-1] < self.ASK_GAP_S:
+        # (the file runs/pilot/NICK/ask_unlimited lifts the limits: the user, 10-26, for "The Architect's Vacation"
+        # session, when the Architect answers live all session; delete it to restore them)
+        unlimited = os.path.exists(os.path.join(self.rundir, "ask_unlimited"))
+        if asks and now - asks[-1] < self.ASK_GAP_S and not unlimited:
             return {"ok": False, "error": f"one question every {self.ASK_GAP_S // 60} minutes: next after "
                                           f"{time.strftime('%H:%M', time.localtime(asks[-1] + self.ASK_GAP_S))}; "
                                           "`complain` for what isn't urgent"}
-        if len(asks) >= self.ASK_PER_HOUR:
+        if len(asks) >= self.ASK_PER_HOUR and not unlimited:
             return {"ok": False, "error": f"{self.ASK_PER_HOUR} questions in the last hour: use `complain` (read "
                                           "after the mission)"}
         asks.append(now)
@@ -8815,7 +8818,9 @@ class Pilot:
 
     # --- the tavern stash (the user, 10-26) --------------------------------------------------------------------
     def is_stash_item(self, name):
-        return ("Restore" in name and "Potion" in name) or ("Stone to Mud" in name and "Wand" in name)
+        # (stat restores only: a Potion of Restore Mana went into the stash in m48 -- useless to a warrior)
+        return bool(re.search(r"Potions? of Restore (Strength|Intelligence|Wisdom|Dexterity|Constitution|Charisma)",
+                              name)) or ("Stone to Mud" in name and "Wand" in name)
 
     def stash_state(self):
         st = self.__dict__.get("stash")
