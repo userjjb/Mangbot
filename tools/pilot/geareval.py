@@ -246,6 +246,41 @@ class Item:
         return f"Item({self.name!r}, {self.slot})"
 
 
+# ------------------------------------------------------------------ slays and brands
+# (options_sim 2026-10-27k, the Advisor's slays memo: the multiplier applies to the dice only, the best one wins;
+# cmd1.c tot_dam_aux)
+SLAY_MULT = {"SLAY_EVIL": ("EVIL", 2), "SLAY_ANIMAL": ("ANIMAL", 2), "SLAY_UNDEAD": ("UNDEAD", 3),
+             "SLAY_DEMON": ("DEMON", 3), "SLAY_ORC": ("ORC", 3), "SLAY_TROLL": ("TROLL", 3), "SLAY_GIANT": ("GIANT", 3),
+             "SLAY_DRAGON": ("DRAGON", 3), "KILL_DRAGON": ("DRAGON", 5), "KILL_DEMON": ("DEMON", 5),
+             "KILL_UNDEAD": ("UNDEAD", 5)}
+BRAND_MULT = {"BRAND_ACID": "ACID", "BRAND_ELEC": "ELEC", "BRAND_FIRE": "FIRE", "BRAND_COLD": "COLD",
+              "BRAND_POIS": "POIS"}
+# the HP-weighted share of monsters with each race flag (the Advisor, scenarios.make, 3000 draws; flags overlap)
+RACE_MIX = {750: {"EVIL": .65, "ORC": .27, "TROLL": .09, "GIANT": .05, "UNDEAD": .02, "DEMON": .04, "ANIMAL": .24,
+                  "DRAGON": .04},
+            1000: {"EVIL": .52, "ORC": .25, "TROLL": .05, "GIANT": .04, "UNDEAD": .02, "DEMON": .03, "ANIMAL": .37,
+                   "DRAGON": .03}}
+
+
+def weapon_mults(weapon):
+    """({race flag: mult}, {element: mult}) of a weapon's slays and brands."""
+    slays, brands = {}, {}
+    for f in (weapon.flags if weapon else ()):
+        if f in SLAY_MULT:
+            race, m = SLAY_MULT[f]
+            slays[race] = max(slays.get(race, 1), m)
+        elif f in BRAND_MULT:
+            brands[BRAND_MULT[f]] = 3
+    return slays, brands
+
+
+def mean_mult(slays, depth_ft):
+    """The expected dice multiplier over the depth's monsters: 1 + the sum of share x (mult - 1), capped where the
+    best multiplier would win (an approximation: the flags overlap -- undead and demons are evil)."""
+    mix = RACE_MIX[750 if depth_ft < 875 else 1000]
+    return 1 + min(sum(mix.get(r, 0) * (m - 1) for r, m in slays.items()), max([m - 1 for m in slays.values()] or [0]))
+
+
 # ------------------------------------------------------------------ the character
 def stat_index(v):
     return max(0, min(37, v - 3 if v <= 18 else 15 + (v - 18) // 10))
@@ -338,8 +373,10 @@ class Character:
         if load > limit // 2:
             speed -= (load - limit // 2) // (limit // 10)
         flags = self._flags(worn) | self.extra_flags
+        slays, brands = weapon_mults(weapon)
         return dict(stats=st, blows=nb, dice=f"{dn}d{ds}", tohit=w_h + to_h, todam=w_d + to_d, dmg=round(dmg, 1),
-                    ac=ac, mhp=mhp, speed=speed, flags=flags)
+                    ac=ac, mhp=mhp, speed=speed, flags=flags, slays=slays, brands=brands,
+                    wweight=weapon.weight if weapon else 0)
 
     def check(self):
         """The model against the sheet: (field, model, sheet) where they differ."""
@@ -476,6 +513,13 @@ def sim_player(d, ch, depth):
     for f in d["flags"]:
         if f in SIM_RES:
             p[SIM_RES[f]] = True
+    # (options_sim 27k: slays and brands on the dice, criticals from the weapon's weight)
+    if d.get("slays"):
+        p["slays"] = dict(d["slays"])
+    if d.get("brands"):
+        p["brands"] = dict(d["brands"])
+    if d.get("wweight"):
+        p["weight"] = d["wweight"]
     return p
 
 
@@ -689,13 +733,23 @@ def _dominated(a, b, ch):
             and getattr(b, "price", 0) <= getattr(a, "price", 0))
 
 
-def proxy(d, cur):
-    """A static guess of a loadout's worth, to choose which few go to the simulation: kill speed (damage per round)
-    and damage taken (AC: a monster's melee hits less and, for wounds, does damage x (1 - AC/250) -- melee1.c),
-    HP, speed."""
+def melee_taken(ac, power=135):
+    """A monster's expected melee damage at this AC, relative: the hit chance (check_hit: 5% always, else
+    randint(power) > 3/4 AC; power = blow power 60 + 3 x level ~25) x the wound reduction (1 - AC/250)."""
+    return (0.05 + 0.9 * max(0.0, 1 - 0.75 * ac / power)) * (1 - min(ac, 150) / 250)
+
+
+def proxy(d, cur, depth_ft=750):
+    """A static guess of a loadout's worth, to choose which few go to the simulation (the Advisor's slays memo,
+    10-27): kill speed (blows x (mean dice x the depth's mean slay multiplier + to-dam)), damage taken (melee_taken:
+    AC cuts the hit chance and the wounds), HP, speed."""
     import math
-    hurt = lambda ac: 1 - min(ac, 150) / 250
-    return (math.log(max(1e-9, d["dmg"]) / max(1e-9, cur["dmg"])) + 0.5 * math.log(hurt(cur["ac"]) / hurt(d["ac"]))
+
+    def dmg(x):
+        dn, ds = (int(v) for v in x["dice"].split("d"))
+        return x["blows"] * (dn * (ds + 1) / 2 * mean_mult(x.get("slays") or {}, depth_ft) + x["todam"])
+    return (math.log(max(1e-9, dmg(d)) / max(1e-9, dmg(cur)))
+            + 0.5 * math.log(melee_taken(cur["ac"]) / melee_taken(d["ac"]))
             + 0.5 * (d["mhp"] - cur["mhp"]) / max(1, cur["mhp"]) + 0.1 * (d["speed"] - cur["speed"]))
 
 
@@ -750,7 +804,7 @@ def optimize(ch, pool, budget=0, max_sim=5, **kw):
         d = ch.derive(worn)
         if not keep <= d["flags"] or d["speed"] < cur["speed"]:
             continue
-        scored.append((proxy(d, cur), worn, changes, cost))
+        scored.append((proxy(d, cur, ch.depth_ft), worn, changes, cost))
     scored.sort(key=lambda x: -x[0])
     options, changes = {"current": ch.worn}, {"current": []}
     for pr, worn, chg, cost in scored[:max_sim]:
