@@ -2378,6 +2378,57 @@ class RestGoal(Goal):
         return None
 
 
+class QuietWait(Goal):
+    """`goal quiet [SECS]` (the user, 10-27): time for the Navigator to think, plan, survey the map or sort the pack.
+    The plan (or the goal it replaced) is paused; the Pilot walks to a quiet spot on ground already walked (a room,
+    away from unexplored squares and doors: quiet_spot), rests there if hurt, and waits. It wakes when a monster that
+    moves comes into view or something hits us (the fight reflexes defend as always), or when the time is up; then
+    what it paused carries on, and the Navigator is told. In town it just waits (townspeople don't wake it)."""
+
+    quiet = True                 # (its end is reported by itself, as an alert)
+
+    def __init__(self, secs=120, prev=None):
+        self.secs = int(min(600, max(10, float(secs))))
+        self.name = f"quiet wait {self.secs}s"
+        self.t0 = gnow()
+        self.prev = prev
+        self.spot = None
+        self.walking = False
+
+    def end(self, p, why):
+        p.stop_resting()
+        if self.prev is not None:
+            p.resume_after = self.prev
+            if p.plan and p.plan.pause_goal is self:
+                p.plan.pause_goal = self.prev     # (the plan waits for the goal we paused, as before)
+        then = (f"resuming '{self.prev.describe()}'" if self.prev is not None else
+                "the trip plan carries on" if p.plan and p.plan.paused else "your move")
+        p.notify("quiet_end", f"quiet wait: {why} after {gnow() - self.t0:.0f} s; {then}")
+        return ("done", why)
+
+    def tick(self, p):
+        w = p.w
+        hit = gnow() - w.last_hit_t < 2
+        mob = [r for _, _, r in w.monsters if "NEVER_MOVE" not in r.flags] if w.in_dungeon else []
+        if mob or hit:
+            return self.end(p, "woke: " + (f"{mob[0].name} came into view" if mob else "something hit us"))
+        if gnow() - self.t0 >= self.secs:
+            return self.end(p, f"{self.secs} s are up")
+        if w.in_dungeon and self.spot is None and w.pos:
+            self.spot = p.quiet_spot() or w.pos
+            if self.spot != w.pos and p.mover.go([self.spot]):
+                self.walking = True
+                p.notify("tactic", f"quiet wait: walking to a quiet spot at {self.spot[0]},{self.spot[1]} "
+                                   f"({w.dist(self.spot)} away)", news=True)
+        if self.walking:
+            if p.mover.tick() == "moving":
+                return None
+            self.walking = False          # (arrived, or stuck: wait where we are)
+        if w.hp_frac < p.orders["rest_to"]:
+            p.start_resting()
+        return None
+
+
 # --------------------------------------------------------------------------
 
 class Pilot:
@@ -5895,6 +5946,28 @@ class Pilot:
             return True
         return False
 
+    def quiet_spot(self, reach=30):
+        """A square to wait on (QuietWait): one we've walked this level, inside a room (7+ of its 8 neighbours open
+        floor), 4+ from any unexplored square and 3+ from a door; the most sheltered (far from the unknown) of the
+        near ones. None if there's no such square within reach."""
+        w = self.w
+        front = self.frontier()
+        doors = [q for q, ch in w.memory.items() if ch in "+'"]
+
+        def room(t):
+            return sum(1 for dy in (-1, 0, 1) for dx in (-1, 0, 1) if (dy or dx)
+                       and w.memory.get((t[0] + dy, t[1] + dx)) == ".") >= 7
+
+        def far(t, qs):
+            return min((w.dist(t, q) for q in qs), default=99)
+
+        cands = [t for t in w.walked if w.dist(t) <= reach and w.memory.get(t) == "." and room(t)]
+        cands = [(min(far(t, front), 10), t) for t in cands if far(t, doors) >= 3]
+        cands = [(f, t) for f, t in cands if f >= 4]
+        if not cands:
+            return None
+        return max(cands, key=lambda ft: (ft[0] - w.dist(ft[1]) / 3, -w.dist(ft[1])))[1]
+
     FLAVOURED = {75, 70, 65, 55, 66, 45, 40}     # potion, scroll, wand, staff, rod, ring, amulet
 
     # --- the flavour table (the Advisor's identify-and-sell memo, 2026-10-07):
@@ -8418,6 +8491,20 @@ class Pilot:
             g = RestGoal()
         elif name == "wait":
             g = Wait(rest[0] if rest else 5)
+        elif name == "quiet":
+            try:
+                secs = float(rest[0]) if rest else 120
+            except ValueError:
+                return {"ok": False, "error": "usage: goal quiet [SECS] (10-600, default 120)"}
+            mob = sorted({r.name for _, _, r in self.w.monsters if "NEVER_MOVE" not in r.flags}) \
+                if self.w.in_dungeon else []
+            if mob:
+                return {"ok": False, "error": f"not quiet: {', '.join(mob[:3])} in view (it would wake at once). "
+                                              "Deal with it, or `goal leave`"}
+            # (the goal it replaces carries on after; a plan's own goal comes back with the plan)
+            prev = self.goal if self.goal is not None and not getattr(self.goal, "by_plan", False) and \
+                not isinstance(self.goal, QuietWait) else None
+            g = QuietWait(secs, prev)
         else:
             return {"ok": False, "error": f"unknown goal {name}"}
         g.by_navigator = self.req_role != "architect"

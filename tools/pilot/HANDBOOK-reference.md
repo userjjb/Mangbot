@@ -204,6 +204,7 @@ The report is **compact** (since 2026-10-22: the old one ran to ~5 KB). Line by 
 | `goal recall` | read Word of Recall (takes 15-34 turns, 8-23 s here, to work; the pilot stays safe meanwhile). From town it takes you to your deepest level so far, or to `max_depth` if that order is set (the pilot inscribes the scroll `@R<feet>` first). A second Word of Recall **cancels** the first, so while one is pending the pilot won't read another (neither this goal nor `read`, unless you add `force` to cancel it on purpose) From town the same supply gate applies (2 Word of Recall: one to go, one to come home); `goal recall force` overrides |
 | `goal rest` | rest until healed |
 | `goal wait SECS` | stand still |
+| `goal quiet [SECS]` | wait somewhere quiet: walks to a walked room spot away from the unexplored, rests if hurt; wakes on a moving monster or a hit, then the paused plan/goal resumes (`quiet_end` alert) |
 | `stop` | cancel the goal (safe idle) |
 
 ## Actions (immediate)

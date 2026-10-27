@@ -1845,6 +1845,54 @@ def dive_loots_beside_its_path():
         f"stopped for loot 2 away {near}, 5 away {far}, a Stone troll in view {troll}"
 
 
+def _quiet_level():
+    """A walked 11x21 room (rows 10-20, cols 10-30) with a corridor east from 15,31 into the unknown."""
+    p = pilot()
+    w = p.w
+    w.memory = {(y, x): "." for y in range(10, 21) for x in range(10, 31)}
+    for y in range(9, 22):
+        w.memory[(y, 9)] = w.memory[(y, 31)] = "#"
+    for x in range(9, 32):
+        w.memory[(9, x)] = w.memory[(21, x)] = "#"
+    for x in range(31, 40):
+        w.memory[(15, x)] = "."
+    w.walked = {q for q, ch in w.memory.items() if ch == "."}
+    w.pos, w.clvl, w.last_hit_t, w.resting = (15, 36), 28, 0.0, False
+    p.unreachable, p.busy_until = set(), 0
+    return p
+
+
+@case
+def quiet_wait_finds_a_spot_and_wakes():
+    """The user's 'quiet wait' (10-27): from a corridor into the unknown, the Pilot walks into the walked room (away
+    from the unexplored corridor end), waits; a monster that moves wakes it and the goal it paused resumes; a mold
+    doesn't; the time running out ends it too."""
+    p = _quiet_level()
+    spot = p.quiet_spot()
+    went = []
+    p.mover = type("M", (), {"active": False, "go": lambda self, t: went.append(t) or True,
+                             "tick": lambda self: "arrived", "stop": lambda self: None})()
+    p.cmd = lambda line, why, hold=0.4: None
+    prev = P.Explore() if hasattr(P, "Explore") else None
+    g = P.QuietWait(60, prev)
+    r1 = g.tick(p)
+    p.w.monsters = [(12, 12, BYNAME["disenchanter mold"])]
+    r2 = g.tick(p)
+    p.w.monsters = [(12, 12, BYNAME["stone troll"])]
+    r3 = g.tick(p)
+    woke = [d for what, d in p.notes if what == "quiet_end"]
+    q = _quiet_level()
+    q.mover = p.mover
+    q.cmd = p.cmd
+    g2 = P.QuietWait(10)
+    g2.t0 -= 11
+    r4 = g2.tick(q)
+    ok = spot is not None and spot[1] <= 26 and went == [[spot]] and r1 is None and r2 is None and \
+        r3 and r3[0] == "done" and p.resume_after is prev and woke and "Stone troll" in woke[0] and \
+        r4 == ("done", "10 s are up")
+    return ok, f"spot {spot}; went {went}; ticks {r1}, {r2}, {r3}, timeout {r4}; told {woke}"
+
+
 def _trip_on_level(p, tp):
     p.goal = None
     p.set_goal = lambda g: setattr(p, "goal", g)

@@ -35,6 +35,12 @@ the Pilot uses the Staff of Teleportation then. No resist blindness yet: if you 
 
 **New since the last mission:** {one line per change the Navigator should know about}.
 
+**Asking the Architect:** the Architect watches this mission live. `ask TEXT` has **no rate limit** (while
+`runs/pilot/dive04/ask_unlimited` exists: the user kept it, 10-27; without it, say "one every 5 minutes"), and it
+**never blocks**: it returns at once, the Pilot plays on, and the answer comes as ARCHITECT ANSWER in a later
+report. Ask whenever you're unsure: what just happened, what something means (a gold drop, an odd count), whether a
+plan is safe, what to buy. Past Navigators didn't ask because they thought `ask` would hold them up; it doesn't.
+
 **[VACATION]** **The Architect is on vacation from coding this session** and is here to help you: it watches the mission
 live, answers questions, investigates, and can intervene on your behalf. `ask TEXT` has **no rate limit** this
 session -- use it whenever you're unsure (what just happened, what something means, whether a plan is safe, what to
