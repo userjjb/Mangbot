@@ -2696,6 +2696,7 @@ class Pilot:
             iu = next((i for i in self.w.items() if i["item"] == int(mr.group(1))), None)
             if iu and re.search(r"Teleport|Phase Door", iu["name"]):
                 self.escape_read_t = gnow()
+                self.escape_from = (self.w.pos, one_of(iu["name"]))    # (the status line's ESCAPE LANDING)
         self.log("act", cmd=line, why=why, by=self.__dict__.get("acting", "pilot"))
         self.log_escape(line, why)
         self.expect_effect(line, why)
@@ -2939,6 +2940,19 @@ class Pilot:
         self.mover.stop()
         self.w.last_stairs_cmd = (which, gnow())
         self.cmd(f"custom {which}", f"stairs {which}", hold=0.3)
+
+    def escape_line(self):
+        """The status header's escape marker (session 8: a staff's teleport showed "no change", then landed; a scroll
+        read on top was refused, and nobody could tell which escape was still landing)."""
+        t, (pos, name) = getattr(self, "escape_read_t", -99.0), getattr(self, "escape_from", (None, None))
+        age = gnow() - t
+        if not name or age > 6:
+            return ""
+        if self.w.pos == pos and age <= 3:
+            return f" · ESCAPE LANDING ({name}, {age:.0f} s ago: don't repeat it yet)"
+        if self.w.pos != pos and pos and self.w.pos:
+            return f" · escaped ({name}, {age:.0f} s ago: moved {self.w.dist(pos)} squares)"
+        return ""
 
     def start_resting(self):
         if not self.w.resting and gnow() > self.busy_until:
@@ -4108,7 +4122,19 @@ class Pilot:
                 if n == 3:
                     self.notify("tactic", "3 traps sprung on this level: it's trap-laden; leave it (stairs or a "
                                           "fresh level) rather than explore on", news=True)
+                if t.startswith("You fall through"):
+                    self.trapdoor = (ts, w.depth_ft)
         self.trap_seen_t = max([self.trap_seen_t] + [ts for ts, _ in w.messages])
+        # (m50: a trap door dropped us to 850 ft, below max_depth 800; the climb back took ~4.5 minutes and only the
+        # depth column showed it. Say so, and log it for the mission's record)
+        td = self.__dict__.get("trapdoor")
+        if td and w.level_t > td[0]:
+            self.trapdoor = None
+            md = int(self.orders.get("max_depth", 0))
+            self.log("trapdoor", from_ft=td[1], to_ft=w.depth_ft, max_depth=md)
+            if md and w.depth_ft > md:
+                self.notify("tactic", f"a trap door dropped us from {td[1]} to {w.depth_ft} ft, below max_depth {md}: "
+                                      "climbing back (deeper monsters until then)", news=True)
 
     def watch_thieves(self):
         """A thief in view in the dungeon: say so once per level, before it
@@ -7472,6 +7498,9 @@ class Pilot:
             out = {"ok": True, "did": did, "said": said[-4:], "pack": pack}
             if c in ("use", "aim", "zap") and said:
                 pass          # a device's effect is what the game said (an unknown staff shows no charges)
+            elif c in ("read", "use") and re.search(r"Teleport|Phase Door", iname0) and \
+                    (self.effect_sig("pack"), self.effect_sig("equip")) == before:
+                out["note"] = "an escape: its landing can take ~2 s; the status line shows ESCAPE LANDING until we move"
             elif c != "inspect" and (self.effect_sig("pack"), self.effect_sig("equip")) == before:
                 # (the game-state survey: never report as done what didn't happen)
                 out["note"] = "no change in the pack or equipment yet: it may not have happened"
@@ -9252,7 +9281,8 @@ class Pilot:
         lines.append(f"{ind.get('hist_name_', '?')} L{w.clvl} HP {w.hp[0]}/{w.hp[1]} · {where} · "
                      f"{ind.get('gold', [0])[0]}g · max {self.orders.get('max_depth')}ft · "
                      f"{time.strftime('%H:%M:%S')} · goal: {self.goal.describe() if self.goal else 'none'}"
-                     + (" · TIME FROZEN (test server: nothing moves until it's thawed)" if frozen() else ""))
+                     + (" · TIME FROZEN (test server: nothing moves until it's thawed)" if frozen() else "")
+                     + self.escape_line())
         if self.plan:
             lines.append("Plan: " + self.plan.describe())
         aa = [a for a in self.__dict__.get("arch_answers", []) if gnow() - a[0] < 600]

@@ -1893,6 +1893,28 @@ def quiet_wait_finds_a_spot_and_wakes():
     return ok, f"spot {spot}; went {went}; ticks {r1}, {r2}, {r3}, timeout {r4}; told {woke}"
 
 
+@case
+def escape_landing_and_trapdoor_notes():
+    """Session 8: a staff's teleport looked like "no change" and a scroll was read on top. The status header says
+    ESCAPE LANDING until we move, then "escaped". m50: a trap door below max_depth is news."""
+    p = pilot()
+    p.escape_read_t, p.escape_from = P.gnow() - 1, ((20, 20), "a Staff of Teleportation")
+    a = p.escape_line()
+    p.w.pos = (40, 60)
+    b = p.escape_line()
+    q = pilot()
+    q.orders["max_depth"] = 800
+    q.trap_seen_t, q.traps_here = 0.0, (None, 0)
+    q.w.depth_ft, q.w.level_t = 800, P.gnow() - 10
+    q.w.messages.append((P.gnow() - 5, "You fall through a trap door!"))
+    q.watch_traps()
+    q.w.depth_ft, q.w.level_t = 850, P.gnow()
+    q.watch_traps()
+    news = [d for what, d in q.notes if what == "tactic"]
+    ok = "ESCAPE LANDING" in a and "escaped" in b and "moved 40 squares" in b and len(news) == 1 and "850 ft" in news[0]
+    return ok, f"{a!r} then {b!r}; trap door: {news}"
+
+
 def _trip_on_level(p, tp):
     p.goal = None
     p.set_goal = lambda g: setattr(p, "goal", g)
