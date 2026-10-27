@@ -1965,12 +1965,24 @@ def shadow_agrees_by_the_action_taken():
     p.rate_state = lambda: {"depth": {"300": [5300, 6000]}}
     p.shadow_decision = lambda detail, options=None, trigger="emergency", rules=None, extra_p=None: calls.append((trigger, rules,
                                                                                                     options)) or "started"
+    # (through notify, with a trip plan running: m48's plan turned every band notice into news first and none was
+    # shadowed)
+    p.plan = type("Pl", (), {"paused": False, "on_event": lambda *a: None})()
+    p.goal, p.notes, p.events_seen, p.news = None, [], [], collections.deque(maxlen=50)
+    try:
+        P.Pilot.notify(p, "band", "a band within 10 squares: Warg x9")
+    except Exception:
+        pass                  # (the rest of notify needs a live Pilot: the shadow request comes first)
+    via_notify = [c for c in calls if c[0] == "band"]
+    calls.clear()
+    p.band_shadow_seen, p.band_shadow_t = {}, -99.0
     r1 = p.band_shadow("a band within 10 squares: Warg x9")
     r2 = p.band_shadow("a band within 10 squares: Warg x9")
     ok = a1 is False and row["dxp"] == -101.8 and a2 is True and a3 is True and a4 is False and a5 is False and \
         r1 == "started" and \
-        r2 is None and calls == [("band", "stairs", P.Pilot.BAND_OPTIONS)]
-    return ok, f"recall row: {a1}; phase: {a2}; no row: {a3}; other choice: {a4}; band: {calls}, again {r2}"
+        r2 is None and calls == [("band", "stairs", P.Pilot.BAND_OPTIONS)] and len(via_notify) == 1
+    return ok, f"recall row: {a1}; phase: {a2}; no row: {a3}; other choice: {a4}; band: {calls}, again {r2}; " \
+               f"via notify {via_notify}"
 
 
 @case

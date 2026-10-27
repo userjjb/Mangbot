@@ -2576,6 +2576,7 @@ class Pilot:
         if what == "emergency":
             self.emerg_times.append(gnow())
         source = None
+        news_asked = news             # (before the plan turns its events into news: the band shadow's test)
         if self.plan and what not in ("plan", "plan_done", "plan_failed"):
             self.plan.on_event(self, what, detail, news or what in self.NEWS)
             if not self.plan.paused and what in self.PLAN_QUIET:
@@ -2585,7 +2586,8 @@ class Pilot:
         extra = {"source": source} if source else {}
         if what == "emergency" and self.w.in_dungeon:
             extra["shadow"] = self.shadow_decision(detail)
-        if what == "band" and self.w.in_dungeon and not news:
+        # (news_asked: under a trip plan every band notice became news first, and no band record was ever made -- m48)
+        if what == "band" and self.w.in_dungeon and not news_asked:
             sh_band = self.band_shadow(detail)
             if sh_band:
                 extra["shadow"] = sh_band
