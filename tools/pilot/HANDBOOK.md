@@ -18,8 +18,8 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
   override is scored. Value lost on items goes into your **item debt** (gold). HP lost when an overridden hunt goes
   wrong goes into your **fight debt** (HP). `debt` shows both. **Past limits you aren't told, the user and the
   Architect take that freedom away.** Override only when you're sure, and say why in your journal.
-- **Item commands** (`sell`, `destroy`, `drop`, `wear`, `takeoff`, `read`/`use` on an item, `fuel`, `eat`, `pickup`)
-  work **in town only**. In the dungeon, combat consumables still work (`quaff`, `read` Phase/Recall, `use`, `zap`,
+- **Item commands** (`sell`, `wear`, `takeoff`, `read`/`use` on an item, `fuel`, `eat`, `pickup`) work **in town
+  only**; `destroy` and `drop` work in the dungeon too. In the dungeon, combat consumables still work (`quaff`, `read` Phase/Recall, `use`, `zap`,
   `aim`), but the Pilot already uses them when it matters. `goal goto`, `stairs` and `raw` are the Pilot's: use
   `goal leave` or `goal fetch Y,X`.
 
@@ -88,10 +88,13 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 | `goal fetch Y,X` | one item detour (refused with a band or danger about) |
 | `goal dive FEET`, `goal explore`, `goal searchroom Y,X`, `goal rest`, `goal shop N ...`, `goal townfarm GOLD` | single steps, when a plan doesn't fit |
 | `read NAME\|L`, `quaff`, `eat`, `use`, `aim`, `zap` | by name or pack letter; the reply starts `DONE:` with the item and its count before and after (and any move): trust it, don't repeat the read |
-| `goal shop N sell NAME[:N]`, `destroy NAME [N\|all]`, `drop NAME` | in town only (item commands are refused in the dungeon); `!NAME` overrides the value policy and adds to your debt. `plan town` already sells by policy and makes pack room before it buys |
+| `goal shop N sell NAME[:N]`, `destroy NAME [N\|all]`, `drop NAME` | selling in town; `destroy`/`drop` in the dungeon too (pack control: the pack fills ~10 minutes into a trip); `!NAME` overrides the value policy and adds to your debt. `plan town` already sells by policy and makes pack room before it buys |
+| `order nopickup=NAME,NAME` | name parts the Pilot never picks up this trip (e.g. `nopickup=Lance,Pike,Cloak`); `order nopickup=` clears it |
+| `react leave NAME` / `react hunt NAME` / `react thieves kill` / `react afraid teleport`; `react -N`, `react clear`, `react` | **executable standing orders**: decided by you in advance, done by the Pilot at once -- leave the level when NAME is in view; hunt NAME on sight (the hunt checks apply); hunt a thief within 6 squares; afraid with no fear cure and monsters adjacent -> teleport. Shown on the `Standing:` line |
+| `review` / `review sell\|keep\|wear NAME` | **the item-review queue**: identified gear that gives an ability or resist, artifacts, and gear worth 1000+ that the gear evaluator wouldn't wear are held for your word instead of sold (the `Review:` line). Undecided after 2 town visits, the policy sells |
 | `keep NAME` / `keep -NAME` | protect an item from the policy (free) |
 | `avoid Y,X [R]` / `avoid NAME` / `avoid clear` | no-go zones and monsters for the Pilot's paths |
-| `order max_depth=FEET` (and the other orders in the reference) | standing orders; `max_depth` caps every plan |
+| `order max_depth=FEET` (and the other orders in the reference) | standing orders; `max_depth` caps every plan; `band_frac=0.5` is what counts as a band to leave (fighting it all would cost more than this x your HP) |
 | `standing TEXT` / `standing -N` | standing instructions shown in every report (the user's "don't kill the Rot jelly") |
 | `monster NAME` | this server's data for a monster, whether a danger rule fires, **the hunt check's verdict** (turns, HP on average and in a bad fight) and **what a kill drops** |
 | `rule drop NAME [DEPTH]`, `rule fight NAME ...`, `rule feeling KIND FEELING [LEVEL]`, `rule unknown TVAL LEVEL`, `rule owner NAME`, `rule const WORD` | the Advisor's rulebook, built from the server's source (no Pilot needed) |

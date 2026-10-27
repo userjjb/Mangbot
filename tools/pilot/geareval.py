@@ -440,6 +440,14 @@ TRADE_RESISTS = False          # (the user, 10-26: option B -- automatic swaps k
 # the time bubble mixed clocks and under-weighted HP lost -- the AC side of every comparison)
 
 
+# Real time (the user, 10-26: score in wall time, as missions are scored in XP per dungeon minute): a fight block takes
+# BLOCK_S at normal time; a resting block takes BLOCK_S / REST_SPEEDUP -- measured from 25 rests in m43-m47 (clvl
+# 27-28): HP regained per wall second vs regenhp's rate at 1x, pooled 2.6x (median 2.2; ~8x when the time bubble
+# applies, ~1x or less when a monster is in view or the rest is cut short)
+BLOCK_S = 0.625
+REST_SPEEDUP = 2.6
+
+
 def rest_turns(hp_lost, mhp):
     """Blocks of resting to regain hp_lost."""
     return hp_lost / ((mhp * 394 + 1442) / 65536) if hp_lost > 0 else 0.0
@@ -493,7 +501,8 @@ def summary(rows, xp_per_gold):
     runs = len(lows)
     xp, turns, rest = (sum(r[k] for r in rows) for k in ("xp", "turns", "rest"))
     spent = sum(r["spent"] for r in rows)
-    return dict(runs=runs, score=(xp - spent * xp_per_gold) / max(1e-9, turns + rest), turns=turns / runs,
+    wall_min = (turns + rest / REST_SPEEDUP) * BLOCK_S / 60
+    return dict(runs=runs, score=(xp - spent * xp_per_gold) / max(1e-9, wall_min), turns=turns / runs,
                 rest=rest / runs, xp=xp / runs, spent=spent / runs, p_near=sum(x <= NEAR_DEATH for x in lows) / runs,
                 p_dead=sum(r["dead"] for r in rows) / runs, low_mean=statistics.fmean(lows),
                 low_p10=lows[runs // 10], low_p5=lows[runs // 20], low_p1=lows[runs // 100])
@@ -520,7 +529,8 @@ def paired_gain(rows_a, rows_b, xp_per_gold):
     """B's score less A's, and its standard error, paired by scenario (the same seeds; the delta method for a ratio of
     sums: SE from the scenario residuals)."""
     def tot(rows):
-        return [(r["xp"] - r["spent"] * xp_per_gold, r["turns"] + r["rest"]) for r in rows]
+        return [(r["xp"] - r["spent"] * xp_per_gold, (r["turns"] + r["rest"] / REST_SPEEDUP) * BLOCK_S / 60)
+                for r in rows]
     a, b = tot(rows_a), tot(rows_b)
     ta, tb = sum(t for _, t in a), sum(t for _, t in b)
     ra, rb = sum(x for x, _ in a) / ta, sum(x for x, _ in b) / tb
@@ -672,22 +682,23 @@ def report(res):
         for s, sim in res["sims"].items():
             m = sim[k]
             lines.append(f"    sim {s:6} ({res['sets'][s]} x {m['runs'] // max(1, res['sets'][s])}): "
-                         f"{m['turns']:.1f} turns + {m['rest']:.1f} resting/fight, score {m['score']:.2f}, "
+                         f"{m['turns']:.1f} turns + {m['rest']:.1f} resting/fight, {m['score']:.0f} XP/min, "
                          f"lowest HP {m['low_mean']:.0%} (worst 5% {m['low_p5']:.0%}, 1% {m['low_p1']:.0%}), near death {m['p_near']:.1%}, "
                          f"consumables {m['spent']:.0f} g")
         cur = res["options"][0]
         if k != cur and res["score"][cur]:
             g, se = res["gains"][k]
-            lines.append(f"    score {res['score'][k]:.3f} vs {res['score'][cur]:.3f}: {g / res['score'][cur]:+.1%} "
+            lines.append(f"    {res['score'][k]:.1f} vs {res['score'][cur]:.1f} XP per real minute: {g / res['score'][cur]:+.1%} "
                          f"(+/- {2 * se / res['score'][cur]:.1%} at 2 SE)")
         if res["notes"][k]:
             lines.append("    against: " + "; ".join(res["notes"][k]))
     cur = res["options"][0]
     gain = res["score"][res["best"]] / res["score"][cur] - 1 if res["score"][cur] else 0
     lines.append(f"verdict: {res['best']}" + (" (keep what's worn)" if res["best"] == cur else
-                                             f" ({gain:+.1%} XP per turn of fighting and resting, net of "
-                                             "consumables)") + f" -- {res['seconds']} s. score = (XP - gold spent "
-                 "x XP-per-gold) / (fight turns + rest turns for the HP lost); a change needs +3% and 2 SE")
+                                             f" ({gain:+.1%} XP per real minute of fighting and resting, net "
+                                             "of consumables)") + f" -- {res['seconds']} s. score = (XP - gold spent "
+                 f"x XP-per-gold) / real minutes (fight turns x {BLOCK_S} s + rest turns x {BLOCK_S} s / "
+                 f"{REST_SPEEDUP}); a change needs +3% and 2 SE")
     return "\n".join(lines)
 
 

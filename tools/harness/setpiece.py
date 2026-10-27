@@ -829,6 +829,33 @@ def l3(run):
     run.res["ability_news"] = ab[:3]
 
 
+def l3b(run):
+    """L3b (the session-7 todo: L3's rBlind half, unseen because the Illusionist died first): a Metal Cap of Seeing
+    (resist blindness, See Invisible; forged: identified) worn, two Illusionists (HOLD, BLIND, CONF; fast, blink) 5
+    squares off with a clear line. Expect "You are unaffected!" after each BLIND cast (the message pairing the Pilot's
+    ability inference reads), and never blinded."""
+    run.bring_dive04()
+    if not give_item(run, 95, ego=30, pval=2, want="Seeing") and "Seeing" not in ctl("status", "full", role="architect"):
+        run.check("cap picked up", False, "")
+        return
+    ctl("wear", "Seeing", role="architect")
+    time.sleep(2.5)
+    eq = ctl("status", "full", role="architect").split("Equipment:")[-1].split("\n")[0]
+    run.check("cap worn", "Seeing" in eq, eq[:160])
+    run.t_act = time.time()
+    run.place("Illusionist", 5, gmap=True)
+    run.place("Illusionist", 5, gmap=True)
+    run.watch(60)
+    msgs = [m for _, m in messages_since(run.t_act)]
+    run.res["messages"] = msgs[:100]
+    pairs = [(a, b) for a, b in zip(msgs, msgs[1:]) if "Illusionist" in a or a.startswith("It ")]
+    blind = [(a, b) for a, b in pairs if re.search(r"burning your eyes|casts a spell, burning", a, re.I)]
+    run.res["blind_pairs"] = blind
+    run.check("a BLIND cast seen", bool(blind), f"{len(blind)}")
+    run.check("unaffected after BLIND (rBlind)", bool(blind) and all("unaffected" in b for _, b in blind), f"{blind[:2]}")
+    run.check("never blinded", not any(re.search(r"You are blind", m) for m in msgs), "")
+
+
 def a7f(run):
     """A7f (the memo's first A7): fear casters. A Novice paladin group (SCARE, CAUSE_1; m22 lost 31% to seven)
     6 squares off. Passes when, once Dive04 is afraid ("too afraid to attack"), a Boldness or Heroism is quaffed
@@ -1339,7 +1366,7 @@ def m4(run):
         run.check("lowest HP >= 40%", st["hp_min"][0] >= 0.4 * st["hp_min"][1], f"lowest {st['hp_min']}")
 
 
-SETPIECES = {"M4": m4, "H1": h1, "H1r": h1r, "M1": m1, "M2": m2, "M3": m3, "L3": l3, "A2f": a2f, "L2g": l2g, "A7f": a7f, "A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
+SETPIECES = {"M4": m4, "H1": h1, "H1r": h1r, "M1": m1, "M2": m2, "M3": m3, "L3": l3, "L3b": l3b, "A2f": a2f, "L2g": l2g, "A7f": a7f, "A5": a5, "A5s": a5s, "A4": a4, "B6": b6, "B4": b4, "B4w": b4w, "D3": d3, "A2I": a2i, "A2K": a2k, "B2": b2, "B3": b3, "D6": d6, "L1": l1, "L2": l2, "A3": a3, "B1": b1, "C8": c8, "A1": a1, "A2": a2, "A2L": a2l, "A6": a6, "A7": a7, "A8": a8, "A8o": a8o, "A8w": a8w, "A9": a9,
              "C3": c3}
 
 

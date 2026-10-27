@@ -24,7 +24,12 @@ DOORS = set("+'")              # a door found in the inner wall
 NOT_FLOOR = WALLS | set(" :*12345678")
 
 CENTRE_Y = range(5, 61, 11)    # 5, 16, ..., 60
-CENTRE_X = range(16, 182, 11)  # 16, 27, ..., 181 (bx 1..16: the room spans 3 blocks)
+# dungeon_align (generate.c:3193): rooms slide to block columns 1, 4, 7, ... (x % 3 == 1), so their centres sit on
+# X = 16, 49, ..., 181 (the Advisor's structures memo §1). Our client always sends it on (lib/user/options.prf
+# Y:dungeon_align, and the option's default is TRUE), live servers included: the player option decides
+# (generate.c:4133). Without it, every block column.
+ALIGNED = True
+CENTRE_X = range(16, 182, 33) if ALIGNED else range(16, 182, 11)
 
 
 def ring_squares(Y, X):

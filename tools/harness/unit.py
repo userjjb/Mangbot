@@ -681,13 +681,14 @@ def provisions_one_food_no_oil():
     cheap = [n for n in ("2 Scrolls of Satisfy Hunger", "a Piece of Elvish Waybread", "2 Flasks of oil")
              if pv.pack_value(it[n]) < float("inf")]
     pv.w.recall_pending = True
-    spare = pv.pack_value(it["3 Rations of Food"]) < float("inf")
+    # (since 10-26 rations are never destroyed for room, near a trip's end too: m46-m47 ended trips short of food)
+    spare = pv.pack_value(it["3 Rations of Food"]) == float("inf")
     sells = [n for n in it if pv.town_sell_count(it[n])]
     ok = flasks == [(2, "Flask of oil", 1)] and not none and first.startswith("custom F") and \
         second.startswith("eat") and third is False and kept and len(cheap) == 3 and spare and \
         "a Piece of Elvish Waybread" in sells and "2 Flasks of oil" in sells and "3 Rations of Food" not in sells
     return ok, (f"lantern 2000: buy {flasks}; 12000: {none}; town step: {first!r}, then {second!r}, then Full: "
-                f"{third}; rations kept {kept}; worth their price: {cheap}; recall pending, rations spare: {spare}; "
+                f"{third}; rations kept {kept}; worth their price: {cheap}; recall pending, rations kept for room: {spare}; "
                 f"town sells {sells}")
 
 
@@ -1912,8 +1913,8 @@ def gear_score_rests_and_paired_error():
 @case
 def last_food_never_destroyed_and_heavy_loot_left():
     """m46: near a trip's end the make-room destroyed all 3 Rations of Food (the only food) for a ~30-gold rod, and
-    six weapons carried for sale made Dive04 speed -1. Now a ration stack goes down to one and a lone last food is
-    priceless; loot that would cross the weight limit's slow-down line is left unless worth 300+ gold."""
+    six weapons carried for sale made Dive04 speed -1; m47 cut 3 rations to 1. Now rations are never destroyed for room;
+    loot that would cross the weight limit's slow-down line (weapons, armour, staffs) is left unless worth 300+ gold."""
     p = pilot(pack=[("3 Rations of Food", P.TV_FOOD), ("a Rod of Trap Location", 66)])
     p.trip_minutes_left = lambda: 2               # (near the trip's end: rations count as spare)
     p.flavour_of = lambda it: None
@@ -1933,8 +1934,13 @@ def last_food_never_destroyed_and_heavy_loot_left():
     q.pickup_room("a Lucerne Hammer (2d5)")          # (walking past it: said once per level, m47 said it 9 times)
     said = sum(1 for n in q.notes if "Lucerne" in str(n[1]))
     took_light = q.pickup_room("a Potion of Cure Critical Wounds")
-    ok = n3 == 2 and v1 == float("inf") and room == 50 and slow == 0 and took_heavy is False and took_light is True and said == 1
-    return ok, f"3 rations: destroy {n3}; the last one worth {v1}; 145 lb carried: {room / 10:.0f} lb to spare, " \
+    for i in q.w.inven:
+        i["weight"] = 1460 if not i["equip"] else 0    # (146 lb: 4 lb to spare, a 5 lb staff crosses the line)
+    took_staff = q.pickup_room("a Staff of Light")
+    for i in q.w.inven:
+        i["weight"] = 1450 if not i["equip"] else 0
+    ok = n3 == 0 and v1 == float("inf") and took_staff is False and room == 50 and slow == 0 and took_heavy is False and took_light is True and said == 1
+    return ok, f"3 rations: destroy {n3}; the last one worth {v1}; a staff taken {took_staff}; 145 lb carried: {room / 10:.0f} lb to spare, " \
                f"a Lucerne Hammer taken {took_heavy}, a potion {took_light}"
 
 
@@ -1965,6 +1971,82 @@ def shadow_agrees_by_the_action_taken():
         r1 == "started" and \
         r2 is None and calls == [("band", "stairs", P.Pilot.BAND_OPTIONS)]
     return ok, f"recall row: {a1}; phase: {a2}; no row: {a3}; other choice: {a4}; band: {calls}, again {r2}"
+
+
+@case
+def structures_on_the_aligned_lattice():
+    """dungeon_align (our client sends it on): rooms sit on block columns 1, 4, 7... so a double room's centre is at X =
+    16, 49, ..., 181 (the Advisor's structures memo). A drawn double room at (16, 49) is found; the same shape at
+    (16, 27) -- a centre only the unaligned grid has -- isn't (fewer false pits)."""
+    import structures as ST
+
+    def room(Y, X):
+        mem = {}
+        for y in range(Y - 5, Y + 6):
+            for x in range(X - 12, X + 13):
+                edge = y in (Y - 5, Y + 5) or x in (X - 12, X + 12)
+                ring = y in (Y - 4, Y + 4) or x in (X - 11, X + 11)
+                inner_wall = (y in (Y - 3, Y + 3) and X - 10 <= x <= X + 10) or \
+                    (x in (X - 10, X + 10) and Y - 3 <= y <= Y + 3)
+                mem[(y, x)] = "#" if edge else "." if ring else "#" if inner_wall else " "
+        return mem
+    on = [(Y, X) for Y, X, ev in ST.scan(room(16, 49))]
+    off = [(Y, X) for Y, X, ev in ST.scan(room(16, 27))]
+    ok = ST.ALIGNED and (16, 49) in on and (16, 27) not in off
+    return ok, f"room at 16,49 -> {on}; at 16,27 -> {off}"
+
+
+@case
+def food_warning_and_trip_rate():
+    """m46-m47 Navigators: "Food 0" came with no warning, and they wanted XP a minute per trip. Now news once per trip
+    when the pack holds no food in the dungeon, and the trip plan keeps its XP base (persisted for hot-swaps)."""
+    p = pilot(pack=[("9 Potions of Cure Critical Wounds", 75)])
+    p.c = object()
+    p.w.ind["hunger"] = [3]
+    p.plan = type("Pl", (), {"t0": 5.0})()
+    p.food_watch()
+    p.food_watch()
+    warned = [d for w, d in p.notes if w == "supply"]
+    tp = P.TripPlan(650, 750, P.TripPlan.parse_until("minutes>30"))
+    ok = len(warned) == 1 and "no food" in warned[0] and "xp0" in P.TripPlan.STATE and getattr(tp, "xp0", None) is None
+    return ok, f"warnings {warned}"
+
+
+@case
+def navigator_rules_review_and_nopickup():
+    """The user (10-26, the Navigator empowerment list): executable standing orders (`rule leave NAME` acts at Pilot
+    speed; `rule thieves kill` hunts a thief in view), the item-review queue (an identified wearable with an ability is
+    held, not sold, until the Navigator decides; released after 2 town visits), and `order nopickup=`."""
+    import tempfile
+    warg, rogue = BYNAME["warg"], BYNAME["novice rogue"]
+    p = pilot(monsters=[(20, 25, warg)])
+    p.rundir = tempfile.mkdtemp()
+    p.goal, p.plan = None, None
+    p.set_goal = lambda g: setattr(p, "goal", g)
+    p.nav_rules = [{"kind": "leave", "arg": "warg", "by": "navigator"}]
+    acted = p.rule_tick(100.0)
+    left = isinstance(p.goal, P.Flee)
+    again = p.rule_tick(101.0)
+    q = pilot(monsters=[(20, 24, rogue)])
+    q.rundir, q.goal, q.plan = p.rundir, None, None
+    q.nav_rules = [{"kind": "thieves", "arg": "kill", "by": "navigator"}]
+    q.danger_why = lambda r: None
+    asked = []
+    q.do_request = lambda req: asked.append(req["args"]) or {"ok": True}
+    hunted = q.rule_tick(100.0)
+    r = pilot(pack=[("an Amulet of Resist Lightning", 40)])
+    r.rundir = tempfile.mkdtemp()
+    amu = r.w.items()[0]
+    held = r.review_hold(amu)
+    r.review_state()["town_visits"] += 2
+    released = r.review_hold(amu)
+    r.orders["nopickup"] = "Lance,Pike"
+    r.unique_drop, r.skipped_items, r.room_t = None, set(), 0.0
+    lance = r.pickup_room("a Lance (2d8)")
+    ok = acted and left and not again and hunted and asked == [["hunt", "Novice_rogue"]] and held is True and \
+        released is False and lance is False
+    return ok, f"leave: {acted}/{left}, again {again}; thief hunt {asked}; review held {held}, after 2 visits " \
+               f"{released}; Lance picked up {lance}"
 
 
 def main():

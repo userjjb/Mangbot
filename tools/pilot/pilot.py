@@ -232,6 +232,8 @@ DEFAULT_ORDERS = {
             "Apple Juice,Slime Mold,Darkness,Aggravate Monster,Curse Weapon,Curse Armour,"
             "Summon Undead,Summon Monster,Treasure Detection,Detect Invisible",
                                  # items "of <these>" aren't picked up (unknown items still are)
+    "band_frac": 0.5,            # a band is serious (leave) when fighting it all costs more than this x HP
+    "nopickup": "",              # comma list of name parts never picked up (the Navigator's per-trip junk list)
     "max_depth": 0,              # feet; 0 = no limit. Dives stop there, explore refuses below it,
                                  # and after an emergency trip down the stairs we come back up
 }
@@ -1741,6 +1743,7 @@ class TownKit(Goal):
 
     def __init__(self, kit=None, buylist=()):
         self.kit, self.buylist = kit, list(buylist)
+        self.counted = False           # (the review queue's town-visit count, on the first tick)
         self.name = "plan town" + (f" kit={kit}" if kit else "") + \
             "".join(f" buy {s_}/{n}:{c}" + (f"@{cap}" if cap else "") for n, c, cap, s_ in self.buylist)
         self.stage = "upgrade"
@@ -1757,6 +1760,10 @@ class TownKit(Goal):
         w, now = p.w, gnow()
         if w.depth:
             return ("failed", "plan town is for the town")
+        if not self.counted:
+            self.counted = True
+            p.review_state()["town_visits"] += 1
+            p.review_save()
         if self.sub:
             r = self.sub.tick(p)
             if r is None:
@@ -2054,7 +2061,8 @@ class TripPlan:
                     p.set_goal(self.mark(self.next_dive(p)))
                 p.notify("plan", f"trip: leaving {w.depth_ft} ft ({why})", news=True)
 
-    STATE = ("lo", "hi", "then", "level_min", "t0", "phase", "levels", "went_down", "home_why", "until_text", "via")
+    STATE = ("lo", "hi", "then", "level_min", "t0", "phase", "levels", "went_down", "home_why", "until_text", "via",
+             "xp0")
 
     def save(self, p):
         st = {k: getattr(self, k, None) for k in self.STATE}
@@ -2082,6 +2090,7 @@ class TripPlan:
         pl = cls(st["lo"], st["hi"], cls.parse_until(st["until_text"]), st["then"], st["level_min"], st.get("via"))
         for k in ("t0", "phase", "levels", "went_down", "home_why"):
             setattr(pl, k, st[k])
+        pl.xp0 = st.get("xp0")
         pl.resume_lvl = st.get("lvl")
         return pl
 
@@ -2111,6 +2120,9 @@ class TripPlan:
         """Called when no goal is running (and every 2 s under a plan goal, for the
         conditions). Returns (status, detail) when the plan ends."""
         w, now = p.w, gnow()
+        # (the trip's XP base, for the report's "this trip" rate: m47's Navigator wanted XP a minute per trip)
+        if getattr(self, "xp0", None) is None and (w.ind.get("exp") or [None])[0] is not None:
+            self.xp0 = w.ind["exp"][0]
         if self.paused:
             self.leave_since = None     # (the Navigator's own goal: LEAVE_MAX counts again from a resume)
             return None
@@ -3221,6 +3233,13 @@ class Pilot:
                     self.cmd(f"custom q item={pot['item']}", f"afraid and in danger: quaff {pot['name']}", hold=0.6)
                     self.notify("tactic", f"afraid and in danger: quaffed {one_of(pot['name'])}")
                     return True
+                tp = self.teleport_item() if self.has_rule("afraid", "teleport") else None
+                if tp and w.adjacent_monsters() and (tp[0] == "u" or not (w.flag("blind") or w.flag("confused"))):
+                    self.cmd(f"custom {tp[0]} item={tp[1]['item']}", "afraid, no cure: teleport (the Navigator's rule)",
+                             hold=0.6)
+                    self.notify("rule", f"afraid with no fear cure: teleported ({one_of(tp[1]['name'])}) -- your "
+                                        "`react afraid teleport`")
+                    return True
                 pd = next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
                 if pd and w.adjacent_monsters() and not w.flag("blind") and not w.flag("confused"):
                     self.cmd(f"custom r item={pd['item']}", "afraid: phase door away", hold=0.6)
@@ -3759,7 +3778,8 @@ class Pilot:
         # m30's Novice warriors x6 + Swordsman and m34's Hill orcs counted as bands at 30% that way. 50% of HP
         # expected, or a dangerous member)
         cost = self.band_cost([r for *_, r in near])
-        serious = cost > 0.5 * max(w.hp[0], 1) or any(self.danger_why(r) for *_, r in near)
+        serious = cost > float(self.orders.get("band_frac", 0.5)) * max(w.hp[0], 1) or \
+            any(self.danger_why(r) for *_, r in near)
         if not serious:
             if getattr(self, "weak_band_said", None) != w.level_t:
                 self.weak_band_said = w.level_t
@@ -4092,6 +4112,20 @@ class Pilot:
         if not self.gain_hist or now - self.gain_hist[-1][0] >= 15:
             self.gain_hist.append((now, (w.ind.get("exp") or [0])[0], g, self.__dict__.get("gold_found", 0)))
             self.save_mission()
+            self.food_watch()
+
+    def food_watch(self):
+        """News once per trip when the pack holds no food in the dungeon (m46's Navigator found "Food 0" with no
+        warning; the cause, make-room destroying rations, is fixed, but eating the last one isn't)."""
+        w = self.w
+        if not w.in_dungeon or not hasattr(self, "c"):
+            return
+        n = self.kit_count("Ration of Food")
+        key = getattr(self.plan, "t0", None) or w.level_t
+        if n == 0 and self.__dict__.get("food_warned") != key:
+            self.food_warned = key
+            self.notify("supply", f"no food left in the pack (hunger: {('Weak', 'Weak', 'Hungry', 'Fed', 'Full')[min(4, max(0, w.hunger))]}): "
+                                  "`plan town` buys rations; a Full character lasts ~20 dungeon minutes", news=True)
 
     def save_mission(self):
         """The running mission (label, its start and the totals so far) in mission.json: a restart or hot-swap
@@ -4211,6 +4245,10 @@ class Pilot:
         if w.in_dungeon and lb and lb[2] == w.level_t and now - lb[0] >= 60:
             de = (w.ind.get("exp") or [0])[0] - lb[1]
             bits.append(f"this level: XP {de:+d} in {(now - lb[0]) / 60:.0f} min ({de / ((now - lb[0]) / 60):.0f} a minute)")
+        pl = self.plan
+        if pl and getattr(pl, "xp0", None) is not None and now - pl.t0 >= 60:
+            de = (w.ind.get("exp") or [0])[0] - pl.xp0
+            bits.append(f"this trip: XP {de:+d} in {(now - pl.t0) / 60:.0f} min ({de / ((now - pl.t0) / 60):.0f} a minute)")
         mb = getattr(self, "mission_base", None)
         if mb and getattr(self, "mission_label", None):
             bits.append(f"this mission: XP {(w.ind.get('exp') or [0])[0] - mb[1]:+d}, gold found "
@@ -4239,8 +4277,16 @@ class Pilot:
         if self.avoid_zones.get(w.level_t):
             st.append(f"{plural(len(self.avoid_zones[w.level_t]), 'avoid zone')} here")
         st += [f"\"{x['text']}\" ({x['by']})" for x in self.standing]
+        st += [f"react {x['kind']} {x['arg']}" for x in self.rules()]
+        nop = str(self.orders.get("nopickup", "")).strip()
+        if nop:
+            st.append(f"never pick up {nop}")
         if st:
             out.append("Standing: " + "; ".join(st))
+        rv = self.review_state()["items"]
+        if rv:
+            out.append(f"Review ({len(rv)}, `review sell|keep|wear NAME`): " + "; ".join(
+                f"{n} ({v['why']})" for n, v in rv.items()))
         return out
 
     def numbered(self, rep, kind):
@@ -4533,14 +4579,18 @@ class Pilot:
             return float("inf")
         if (self.flavour_of(it) or {}).get("junk") or re.search(r"\{(cursed|worthless|broken|terrible)", n):
             return 0
+        if n in self.review_state()["items"]:
+            return float("inf")            # (waiting for the Navigator's review)
         iv = self.iv(n)
         return iv.value * self.pay_cut(iv.tval) * max(1, iv.count)
 
     UNIQUE_DROP_BUMP = 50
 
     def destroy_count(self, it):
-        """How many of this pack item a make-room may destroy: all, except the last food -- rations keep one, and a
-        lone food item stays when it's the only one."""
+        """How many of this pack item a make-room may destroy: all, except food -- rations never (one slot, cheap; the
+        town visit sells extras), other food not the last of it."""
+        if it["tval"] == TV_FOOD and "Ration" in it["name"]:
+            return 0          # (rations: never -- m47 cut 3 to 1 for a Staff of CLW and the Navigator bought food)
         if it["tval"] == TV_FOOD and "Mushroom" not in it["name"]:
             others = sum(i["number"] for i in self.w.items() if i["tval"] == TV_FOOD and "Mushroom" not in i["name"]
                          and i["item"] != it["item"])
@@ -4595,6 +4645,11 @@ class Pilot:
         """True if the item underfoot should be picked up now (destroying something
         cheaper first when the pack is full); False to leave it (with news)."""
         w, now = self.w, gnow()
+        # (the Navigator's never-pick-up list, `order nopickup=Lance,Pike`: dungeon pack control, the user 10-26)
+        nop = [x.strip().lower() for x in str(self.orders.get("nopickup", "")).split(",") if x.strip()]
+        if any(x in name.lower() for x in nop):
+            self.skipped_items.add((w.level_t, w.pos))
+            return False
         iv = self.iv(name)
         worth = max(iv.value * self.pay_cut(iv.tval) * max(1, iv.count), self.kit_use_value(name))
         ud = self.unique_drop
@@ -4605,7 +4660,8 @@ class Pilot:
             return False                         # worthless: leave it
         # (too heavy: m46 carried six weapons for sale and went speed -1. Loot that would take us past the weight limit's
         # slow-down line is left unless it's worth HEAVY_LOOT_MIN or can't be replaced)
-        wt = geareval.Item(name).weight * max(1, iv.count) if iv.tval in geareval.SLOT_OF_TVAL else 0
+        wt = geareval.Item(name).weight * max(1, iv.count) if iv.tval in geareval.SLOT_OF_TVAL else \
+            50 * max(1, iv.count) if iv.tval == 55 else 0          # (staffs: 5 lb each, m47's pack sat on the line)
         if wt and not unique and not iv.irreplaceable and worth < self.HEAVY_LOOT_MIN:
             room, _ = self.weight_room()
             if wt > room:
@@ -5280,6 +5336,126 @@ class Pilot:
             elif t.startswith(off):
                 last = False
         return last
+
+    # --- the Navigator's executable standing orders (the user, 10-26: "decide in advance, act at Pilot speed") ---
+    RULE_KINDS = {"leave": "leave the level when NAME is in view",
+                  "hunt": "hunt NAME on sight (the hunt checks apply, as for `goal hunt NAME`)",
+                  "thieves": "kill: hunt a thief (steals gold or items) in view within 6 squares",
+                  "afraid": "teleport: afraid with no Heroism/Boldness/Berserk and monsters adjacent -> teleport"}
+
+    def rules(self):
+        if "nav_rules" not in self.__dict__:
+            try:
+                self.nav_rules = json.load(open(os.path.join(self.rundir, "rules.json")))
+            except (OSError, ValueError, AttributeError):
+                self.nav_rules = []
+        return self.nav_rules
+
+    def save_rules(self):
+        try:
+            json.dump(self.rules(), open(os.path.join(self.rundir, "rules.json"), "w"), indent=1)
+        except (OSError, AttributeError):
+            pass
+
+    def has_rule(self, kind, arg=None):
+        return any(r["kind"] == kind and (arg is None or r["arg"] == arg) for r in self.rules())
+
+    def rule_tick(self, now):
+        """Run the Navigator's reactions (`react`): leave the level when NAME is in view; hunt NAME on sight; kill thieves.
+        True if it acted. (`react afraid teleport` runs in the fear handling.)"""
+        w = self.w
+        if not w.in_dungeon or not w.monsters or not self.rules() or isinstance(self.goal, (Flee, Recall, Recover)):
+            return False
+        done = self.__dict__.setdefault("rules_done", {})
+        names = {r.name.lower(): (y, x, r) for y, x, r in w.monsters}
+        for rl in self.rules():
+            arg = rl["arg"]
+            if rl["kind"] == "leave" and arg in names and done.get(("leave", arg)) != w.level_t:
+                done[("leave", arg)] = w.level_t
+                pl = self.plan
+                if pl and pl.phase == "level" and pl.level == w.level_t and not pl.paused:
+                    pl.level_done = f"your rule: leave when {names[arg][2].name} is seen"
+                    self.set_goal(pl.mark(pl.next_dive(self)))
+                else:
+                    self.set_goal(Flee(f"your rule: {names[arg][2].name} seen"))
+                self.notify("rule", f"{names[arg][2].name} seen: leaving the level (your `react leave`)", news=True)
+                return True
+            target = None
+            if rl["kind"] == "hunt" and arg in names:
+                target = names[arg][2]
+            if rl["kind"] == "thieves" and arg == "kill":
+                th = [(w.dist((y, x)), r) for y, x, r in w.monsters
+                      if any(b.split(":")[1:2] in (["EAT_ITEM"], ["EAT_GOLD"]) for b in r.blows) and w.dist((y, x)) <= 6]
+                if th and not any(self.danger_why(r) for _, r in th):
+                    target = min(th, key=lambda t: t[0])[1]
+            if target is not None and not isinstance(self.goal, Hunt) and \
+                    now - done.get(("hunt", target.name, w.level_t), -99.0) > 30:
+                done[("hunt", target.name, w.level_t)] = now
+                role = self.req_role
+                try:
+                    out = self.do_request({"cmd": "goal", "args": ["hunt", target.name.replace(" ", "_")],
+                                           "role": "navigator"})
+                finally:
+                    self.req_role = role
+                self.notify("rule", f"{target.name} in view: " + ("hunting it" if out.get("ok") else
+                                                                 f"no hunt ({out.get('error', '')[:120]})")
+                            + f" (your `react {rl['kind']}`)", news=True)
+                return bool(out.get("ok"))
+        return False
+
+    # --- the item-review queue (the user, 10-26: route judgement calls to the Navigator before they're irreversible) ---
+    REVIEW_MIN_VALUE = 1000
+
+    def review_state(self):
+        if "review" not in self.__dict__:
+            try:
+                self.review = json.load(open(os.path.join(self.rundir, "review.json")))
+            except (OSError, ValueError, AttributeError):
+                self.review = {}
+            self.review.setdefault("items", {})
+            self.review.setdefault("decided", {})
+            self.review.setdefault("town_visits", 0)
+        return self.review
+
+    def review_save(self):
+        try:
+            json.dump(self.review_state(), open(os.path.join(self.rundir, "review.json"), "w"), indent=1)
+        except (OSError, AttributeError):
+            pass
+
+    def review_hold(self, it):
+        """True while this identified wearable waits for the Navigator's word instead of being sold: it gives an ability
+        or resist, or it's an artifact, or worth REVIEW_MIN_VALUE+ -- and the gear evaluator wouldn't wear it. Two town
+        visits undecided: the policy sells it (news)."""
+        name = it["name"]
+        st = self.review_state()
+        dec = st["decided"].get(name)
+        if dec:
+            return dec != "sell"
+        if it["tval"] not in geareval.SLOT_OF_TVAL or it["tval"] == TV_LITE:
+            return False
+        gi = geareval.Item(name, it["tval"])
+        iv = self.iv(name)
+        why = "an artifact" if self.is_artifact(name) else \
+            f"gives {', '.join(geareval.label(f) for f in sorted(gi.abilities()))}" if gi.abilities() else \
+            f"worth ~{iv.value}" if iv.value >= self.REVIEW_MIN_VALUE else None
+        if not why or not iv.known:
+            return False
+        q = st["items"].get(name)
+        if q is None:
+            st["items"][name] = {"why": why, "visit": st["town_visits"], "t": time.strftime("%Y-%m-%d %H:%M")}
+            self.review_save()
+            self.notify("review", f"held for your decision: {name} ({why}). `gearcmp {name.replace(' ', '_')[:30]}` "
+                                  "compares it; `review sell|keep|wear NAME`. Undecided after 2 town visits, the "
+                                  "policy sells it", news=True)
+            return True
+        if st["town_visits"] - q["visit"] >= 2:
+            st["decided"][name] = "sell"
+            st["items"].pop(name, None)
+            self.review_save()
+            self.notify("review", f"{name}: undecided for 2 town visits, the policy sells it", news=True)
+            return False
+        return True
 
     def fear_cure(self):
         """The potion to quaff when afraid and in danger: Heroism first (it does all Boldness does, plus to-hit and
@@ -6415,6 +6591,8 @@ class Pilot:
         if self.parking and not isinstance(self.goal, Recall):
             self.park_tick()
             return
+        if self.rule_tick(gnow()):        # the Navigator's executable standing orders (`react`)
+            return
         if self.policy_tick(gnow()):      # the Pilot's own item work, at safe moments
             return
         self.acting = self.goal_origin(self.goal)
@@ -6543,7 +6721,9 @@ class Pilot:
 
     # In the dungeon the Pilot handles items itself (restructure step 2, the user's
     # hybrid: item commands for the Navigator in town only, between trips)
-    DUNGEON_ITEM_CMDS = {"destroy", "drop", "wear", "takeoff", "pickup", "fuel", "eat", "inscribe", "wearall"}
+    # (destroy and drop are allowed in the dungeon since 10-26 -- dungeon pack control, the user: the pack fills ~10
+    # minutes into a trip; the value refusals and the debt rules apply as in town)
+    DUNGEON_ITEM_CMDS = {"wear", "takeoff", "pickup", "fuel", "eat", "inscribe", "wearall"}
 
     def do_request(self, req):
         c = req.get("cmd")
@@ -6553,8 +6733,9 @@ class Pilot:
                 c in self.DUNGEON_ITEM_CMDS or
                 (c in ("read", "use") and len(args) > 1 and args[1] != "force")):      # identify-type reads
             return {"ok": False, "error": f"in the dungeon the Pilot handles items itself (pickup, identify, "
-                                          f"wear upgrades, destroy junk, fuel, eat): `{c}` is for town, between "
-                                          "trips. To protect an item from its policy use `keep NAME`"}
+                                          f"wear upgrades, fuel, eat): `{c}` is for town, between trips. You may "
+                                          "`destroy`/`drop` junk, and `order nopickup=NAME,...` keeps kinds out. To "
+                                          "protect an item from its policy use `keep NAME`"}
         if self.req_role != "architect" and (c in ("raw", "stairs") or (c == "goal" and args[:1] == ["goto"])):
             # the new toolset (restructure step 2.6): movement is the Pilot's; the Navigator
             # gives intents (`goal leave` for the stairs, `goal fetch Y,X` for an item)
@@ -6643,6 +6824,55 @@ class Pilot:
             json.dump(self.standing, open(os.path.join(self.rundir, "standing.json"), "w"), indent=1)
             return {"ok": True, "text": "standing: " + ("; ".join(f"{i + 1}. {x['text']} ({x['by']})"
                                                                 for i, x in enumerate(self.standing)) or "none")}
+        if c == "react":
+            # executable standing orders (the user, 10-26): `react KIND ARG`, `react -N`, `react clear`, `react`
+            # (not `rule`: pilotctl answers that one itself, the Advisor's rulebook)
+            rl = self.rules()
+            if args and args[0] == "clear":
+                rl.clear()
+            elif args and re.fullmatch(r"-\d+", args[0]):
+                i = int(args[0][1:]) - 1
+                if not 0 <= i < len(rl):
+                    return {"ok": False, "error": f"no reaction {i + 1}"}
+                rl.pop(i)
+            elif args:
+                kind, arg = args[0], " ".join(args[1:]).replace("_", " ").lower().strip()
+                if kind not in self.RULE_KINDS or not arg:
+                    return {"ok": False, "error": "usage: react leave NAME | react hunt NAME | react thieves kill | "
+                                                  "react afraid teleport | react -N | react clear. " +
+                                                  "; ".join(f"{k}: {v}" for k, v in self.RULE_KINDS.items())}
+                if kind in ("leave", "hunt") and not any(r.name.lower() == arg for r in self.w.g.races.values()):
+                    return {"ok": False, "error": f"no monster named {arg!r} (use the name `monster` shows)"}
+                if (kind, arg) in {("thieves", "kill"), ("afraid", "teleport")} or kind in ("leave", "hunt"):
+                    rl.append({"kind": kind, "arg": arg, "by": self.req_role, "t": time.strftime("%Y-%m-%d %H:%M")})
+                else:
+                    return {"ok": False, "error": f"react {kind} takes: " + self.RULE_KINDS[kind]}
+            self.save_rules()
+            return {"ok": True, "text": "reactions: " + ("; ".join(f"{i + 1}. {r['kind']} {r['arg']} ({r['by']})"
+                                                               for i, r in enumerate(rl)) or "none")}
+        if c == "review":
+            # the item-review queue (the user, 10-26): items held for the Navigator's word before they're sold
+            st = self.review_state()
+            if not args:
+                return {"ok": True, "text": "review: " + ("; ".join(f"{n} ({v['why']})" for n, v in st["items"].items())
+                                                          or "nothing held")}
+            if args[0] not in ("sell", "keep", "wear") or len(args) < 2:
+                return {"ok": False, "error": "usage: review | review sell|keep|wear NAME"}
+            frag = " ".join(args[1:]).replace("_", " ").lower()
+            name = next((n for n in st["items"] if frag in n.lower()), None)
+            if not name:
+                return {"ok": False, "error": f"nothing held matches {frag!r}: " + ", ".join(st["items"])}
+            st["items"].pop(name)
+            st["decided"][name] = "sell" if args[0] == "sell" else "keep"
+            self.review_save()
+            if args[0] == "keep":
+                self.keep.add(re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower())
+                json.dump(sorted(self.keep), open(os.path.join(self.rundir, "keep.json"), "w"))
+            if args[0] == "wear":
+                it = next((i for i in self.w.items() if i["name"] == name), None)
+                if it and not self.w.in_dungeon:
+                    self.cmd(f"custom w item={it['item']}", f"wear {name} (your review)", hold=0.8)
+            return {"ok": True, "text": f"review: {name} -> {args[0]}"}
         if c == "debt":
             e = self.debt.get("entries", [])
             fe = self.debt.get("fight_entries", [])
@@ -7336,6 +7566,9 @@ class Pilot:
             return 0                    # (identify first)
         # (the gear evaluator would wear it: m45 sold a Ring of Strength (+2) right after identifying it, unjudged)
         if self.gear_better(it):
+            return 0
+        # (a judgement call: held for the Navigator's review)
+        if self.review_hold(it):
             return 0
         iv = self.iv(name)
         if iv.kind is None or iv.value <= 0 or iv.value * self.pay_cut(iv.tval) < 1:
@@ -8873,7 +9106,8 @@ class Pilot:
                            if weapon_brand(n) else "")
                         + (" (pluses unknown: identify it)" if re.search(r"\{(good|excellent|special|magical)", n)
                            and not re.search(r"\([+-]\d+,", n) else "")
-                        for n, b, d, eq in self.weapon_table()] if len(self.weapon_table() or []) > 1 else [],
+                        for n, b, d, eq in self.weapon_table()],     # (always the wielded one: with
+            # the others sold in town the list went empty and the report said "Weapons: none", m27/m29/m31)
             "Abilities": [k for k, v in (w.flags or {}).items() if v and k not in ("stealth", "search", "infra", "tunnel")],
             "Gear": [self.gear_line()[len("Gear: "):]],
             "Orders changed": [f"{k}={v}" for k, v in self.orders.items()

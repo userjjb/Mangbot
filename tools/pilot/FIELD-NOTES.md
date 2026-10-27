@@ -16,10 +16,11 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
 
   700 ft is a small sample: only trapdoor and flee visits. `prep` shows the current numbers. Deeper has paid
   better at every step so far.
-- **`max_depth` is 750 since 2026-10-25 (the user), a trial.** Work 650-750 ft for the next 2-3 missions. The
-  threats native to 700-750 ft are covered: Free Action (Homunculus), See Invisible (Clear hounds), resist cold
-  (Gnome mages). The rest are packs the Pilot already fights. What comes next, at 800-900 ft, is confusion with no
-  save (Umber hulks, breeding Hummerhorns; no resist confusion yet). At 1000 ft come poison-breathing Air hound
+- **`max_depth` is 800 since 2026-10-26 (the user), a trial** after five clean missions at 750 (m43-m47: no close
+  calls, lowest HP 41-70%). Work 700-800 ft. New at 800 ft: confusion with no save (Umber hulks dig through walls and
+  confuse with their gaze; breeding Hummerhorns confuse with their bite; no resist confusion yet) -- a confused
+  character can't read scrolls, so the Pilot's escapes are the Staff of Teleportation and potions. The 700-750 ft
+  threats stay covered: Free Action (Homunculus), See Invisible (Clear hounds), resist cold (Gnome mages). At 1000 ft come poison-breathing Air hound
   packs (no resist poison) and the orc-captain uniques. Raising the cap again is the user's call: ask with `say`.
 - **One long trip beats two or three in a 45-minute mission.** Each recall costs ~2 minutes and a risky arrival. m40
   ran three trips and had the series' lowest XP (37.7/dmin). The best missions ran 1-2 trips (m38: 87.2).
