@@ -3890,7 +3890,12 @@ class Pilot:
             p["p_awake"] = round(sum(1 for z in looked if not z) / len(looked), 2)
             p["asleep_seen"] = sum(1 for z in looked if z)
         p.update(extra_p or {})
-        team = [(r.name, max(1, sh.sim.adist(y - w.pos[0], x - w.pos[1]))) for y, x, r in w.monsters] if w.pos else []
+        # (name, distance, hp_frac, awake): options_sim 26h takes the asleep flag per member (the `look` answers; None =
+        # unknown, the p_awake share then 0.4 stand in) -- the Advisor: 7 Wargs, six at 4 squares, ~11 HP lost if
+        # known asleep, ~55 awake, ~23 unknown
+        team = [(r.name, max(1, sh.sim.adist(y - w.pos[0], x - w.pos[1])), None,
+                 None if self.is_asleep(y, x) is None else not self.is_asleep(y, x))
+                for y, x, r in w.monsters] if w.pos else []
         # (and what the server's list names but the map doesn't show yet, 3 squares off: A2K's first emergency had
         # Khim in the list only, and the estimator played an empty fight)
         team += [(r.name, 3) for r in (w.listed_only() if hasattr(w, "listed_only") else [])]

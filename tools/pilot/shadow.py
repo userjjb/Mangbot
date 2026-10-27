@@ -58,7 +58,8 @@ class Shadow:
     def _run(self, snap):
         t0 = time.time()
         try:
-            team = [(n, d) for n, d in snap["team"] if n in self.sim.RACES]
+            # (entries (name, dist[, hp_frac, awake]): options_sim 26h reads the asleep flag per member)
+            team = [tuple(m) for m in snap["team"] if m[0] in self.sim.RACES]
             # the Pilot's rolling XP-per-gold rate (the user, 10-25) in place of the module's constant
             if snap.get("xp_per_gold"):
                 self.sim.XP_PER_GOLD = snap["xp_per_gold"]
