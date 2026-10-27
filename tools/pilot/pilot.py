@@ -2809,6 +2809,18 @@ class Pilot:
             self.pending_use = None           # (mission 10 kept resending after death)
             return
         said = [t for ts, t in self.w.messages if ts >= p["t"] - 0.05]
+        # (the server refused the read -- blind, confused, no light: m48's Word of Recall at 21:32:54 was refused 1 s
+        # later, "You can't see anything.", and the Pilot waited 8 s for it and wouldn't try again. Now: done at once,
+        # the escape timers reset, and teleport_item turns to the staff for 10 s)
+        if any(t.startswith(("You can't see anything", "You are too confused", "You have no light to read"))
+               for t in said):
+            self.pending_use = None
+            self.read_failed_t = gnow()
+            self.escape_read_t = -99.0
+            self.recall_t = 0.0
+            self.notify("tactic", f"'{p['why']}': the read was refused ({next(t for t in said if t.startswith(('You ca', 'You are too', 'You have no l')))}): "
+                                  "the next escape uses a staff or a cure first")
+            return
         if any(t.startswith("You have") and p["core"] in t for t in said) or \
                 any("The air about you becomes charged" in t for t in said):
             self.pending_use = None
@@ -3815,13 +3827,18 @@ class Pilot:
                             + "; don't stop for loot")
 
     def teleport_item(self):
-        """('r', a Scroll of Teleportation) or ('u', a Staff of Teleportation with charges), or None."""
+        """('r', a Scroll of Teleportation) or ('u', a Staff of Teleportation with charges), or None. Blind, confused
+        or just refused a read: the staff first (a scroll can't be read blind, cmd6.c:275 -- m48: 13 Light hounds
+        re-blinded Dive04 within a second of each cure, and two escape reads failed; the staff works blind)."""
         w = self.w
         sc = next((i for i in w.items(tval=TV_SCROLL) if "Teleportation" in i["name"]), None)
-        if sc:
-            return ("r", sc)
         st = next((i for i in w.items(tval=55) if "Teleportation" in i["name"] and
                    not re.search(r"\(0 charges\)", i["name"])), None)
+        unreadable = w.flag("blind") or w.flag("confused") or gnow() - self.__dict__.get("read_failed_t", -99.0) < 10
+        if st and (unreadable or not sc):
+            return ("u", st)
+        if sc and not unreadable:
+            return ("r", sc)
         return ("u", st) if st else None
 
     STATUS_SPELLS = ("BLIND", "CONF", "HOLD", "SLOW", "SCARE", "FORGET", "DRAIN_MANA", "TELE_TO", "TELE_LEVEL")
@@ -5241,6 +5258,17 @@ class Pilot:
                          hold=0.5)
                 self.notify("emergency", f"{names} can deal {g:.0f} (HP {hp}) and no stairs are known: "
                                          "read Word of Recall now (it takes 8-23 s)")
+                return True
+        # Blind or confused (no scroll can be read) with the group's worst above our HP: the staff, which works blind
+        # (m48: 13 Light hounds, 7 Wargs, 5 Mirkwood spiders; blind for 40 s, HP 340 -> 82, no read got through)
+        if g > hp and not can_read and w.adjacent_monsters() and now - self.__dict__.get("blind_tele_t", -99.0) > 10:
+            tp = self.teleport_item()
+            if tp and tp[0] == "u":
+                self.blind_tele_t = now
+                self.cmd(f"custom u item={tp[1]['item']}", f"group danger {g:.0f} vs HP {hp}, can't read: staff of "
+                                                           "teleportation", hold=0.6)
+                self.notify("emergency", f"{names} can deal {g:.0f} (HP {hp}) and you can't read (blind or confused): "
+                                         "used the Staff of Teleportation")
                 return True
         # Phase only when it's really going badly: at 0.6-1.0x only once HP is
         # already below think_hp, and at most every 10 s (mission 9: a lone
@@ -7687,7 +7715,9 @@ class Pilot:
 
     def provision_step(self, kit):
         """The town visit's last step: fill the lantern from the flasks bought for it (worn: it refuels the
-        light in hand), then eat rations until Full (at most 3). True if it acted."""
+        light in hand), then eat rations until Fed (at most 3) -- not Full: a ration is 5000 food, Full starts at 10000
+        and Gorged (-10 speed) at 15000, so a Full character is a few potions from Gorged (m48: the 5th Cure Critical in
+        a blind fight). The Pilot eats its ration in the dungeon when Hungry. True if it acted."""
         w = self.w
         fuel = self.lantern_fuel()
         # the fuller lantern on first (m39 left town with 4383 turns worn and 13290 in the pack)
@@ -7708,11 +7738,11 @@ class Pilot:
             kit.done_log.append(f"filled the lantern ({fuel} turns)")
             return True
         ration = next((i for i in w.items(tval=TV_FOOD) if "Ration" in i["name"]), None)
-        if ration and w.hunger <= 3 and kit.__dict__.get("ate", 0) < 3:
+        if ration and w.hunger <= 2 and kit.__dict__.get("ate", 0) < 3:
             kit.ate = kit.__dict__.get("ate", 0) + 1
-            self.cmd(f"eat {ration['item']}", "town kit: eat to Full before the trip", hold=1.0)
+            self.cmd(f"eat {ration['item']}", "town kit: eat to Fed before the trip", hold=1.0)
             if kit.ate == 1:
-                kit.done_log.append("ate to Full")
+                kit.done_log.append("ate to Fed")
             return True
         return False
 

@@ -2096,6 +2096,29 @@ def breeder_swarm_pin_teleports_once():
     return ok, f"sent {sent}"
 
 
+@case
+def blind_escape_uses_the_staff_and_sees_refused_reads():
+    """m48 (750 ft, 13 Light hounds re-blinding): a Word of Recall read 0.14 s before the blinding was refused ("You
+    can't see anything.") and the Pilot waited 8 s and wouldn't retry; a Teleportation scroll later failed the same way;
+    the Staff of Teleportation (usable blind) only came when the Navigator forced it. Now: blind -> the staff; a refused
+    read is seen at once, the escape timers reset, and the staff is preferred for 10 s."""
+    p = pilot(pack=[("a Scroll of Teleportation", 70), ("a Staff of Teleportation (5 charges)", 55)])
+    p.w.flag = lambda k: False
+    seeing = p.teleport_item()
+    p.w.flag = lambda k: k == "blind"
+    blind = p.teleport_item()
+    p.w.flag = lambda k: False
+    p.pending_use = {"t": P.gnow() - 1, "core": "Word of Recall", "why": "group danger", "tries": 0}
+    p.dead, p.w.ghost = False, False
+    p.escape_read_t, p.recall_t = P.gnow() - 1, P.gnow() - 1
+    p.w.messages.append((P.gnow() - 0.5, "You can't see anything."))
+    p.verify_use()
+    after = p.teleport_item()
+    ok = seeing[0] == "r" and blind[0] == "u" and p.pending_use is None and p.escape_read_t < 0 and \
+        p.recall_t == 0.0 and after[0] == "u" and any("refused" in str(d) for _, d in p.notes)
+    return ok, f"seeing: {seeing[0]}; blind: {blind[0]}; after a refused read: {after[0]}; pending {p.pending_use}"
+
+
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     fails = 0
