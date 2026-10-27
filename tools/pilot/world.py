@@ -375,7 +375,10 @@ class World:
                     self.unseen = (gnow(), t)
                 elif t.startswith("You hear a door burst open"):
                     self.heard = (gnow(), t)
-                if self.RE_ATTACK.search(t) or self.RE_RANGED.match(t):
+                # (m55 17:00:14-19: "It fires an arrow!" from an unseen Black orc archer didn't count as combat,
+                # and the rest reflex rested under fire for 5 s; an unseen missile or spell counts now)
+                if self.RE_ATTACK.search(t) or self.RE_RANGED.match(t) or \
+                        re.match(r"^(It|Something) (fires|breathes|casts|hurls)", t):
                     self.hits_taken += 1
                     self.last_hit_t = gnow()
                 if re.match(r"You (hit|miss|have slain|have destroyed|have killed|smite|bite|claw)", t) or \
