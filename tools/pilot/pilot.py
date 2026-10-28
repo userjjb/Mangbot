@@ -2100,7 +2100,9 @@ class TownKit(Goal):
 
     def tick(self, p):
         w, now = p.w, gnow()
-        if w.depth:
+        # (m56: the house step walks to the wilderness tile, depth -1, and this check killed the visit there -- the
+        # Opus Navigator's first `ask`)
+        if w.in_dungeon or (w.depth and not isinstance(self.sub, HouseBank)):
             return ("failed", "plan town is for the town")
         if not self.counted:
             self.counted = True

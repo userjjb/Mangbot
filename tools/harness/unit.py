@@ -2284,6 +2284,21 @@ def ehp_gate_and_tie_break():
     return ok, f"EHP drops {', '.join(f'{v:+.1%}' for v in drops.values())}; ruled out by EHP: {len(cut)}"
 
 
+@case
+def plan_town_survives_the_house_tile():
+    """m56 (the Opus Navigator's ask): plan town failed "plan town is for the town" once its HouseBank step walked to
+    the house's wilderness tile (depth -1). Under a HouseBank step it carries on; elsewhere off town it still fails."""
+    p = pilot()
+    p.w.depth, p.w.in_dungeon = -1, False
+    k = P.TownKit()
+    k.counted = True
+    k.sub = type("HB", (P.HouseBank,), {"tick": lambda self, p: None})("withdraw")
+    a = k.tick(p)
+    k.sub = None
+    b = k.tick(p)
+    return a is None and b and b[0] == "failed", f"under the house step: {a}; without it: {b}"
+
+
 def _trip_on_level(p, tp):
     p.goal = None
     p.set_goal = lambda g: setattr(p, "goal", g)
