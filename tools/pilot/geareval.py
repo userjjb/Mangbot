@@ -612,7 +612,7 @@ def d_slower(derived, cur, k):
 
 
 def compare(ch, options, decisions=None, n=10, lo_ft=None, hi_ft=None, hard=True, depth_n=500, xp_per_gold=0.41,
-            no_loss=False, skip=frozenset()):
+            no_loss=False, skip=frozenset(), mix=None):
     """options: {label: loadout ({slot: [Item]})}, the first being the current one. Returns a report dict.
     Sets: met (the fights in the log at lo-hi ft, n seeds each), depth / deeper (the Advisor's scenarios.make at the
     depth and 100 ft deeper, boost 2 for auto_scum, depth_n each, one seed), hard (the 21 replays, n seeds).
@@ -691,9 +691,11 @@ def compare(ch, options, decisions=None, n=10, lo_ft=None, hi_ft=None, hard=True
         h = sims.get("hard", {}).get(k) or sims.get("deeper", {}).get(k)
         return (round(h["low_mean"], 2) if h else 0, derived[k]["ac"], k == cur)
     best = max((k for k in ok if score[k] >= top * 0.99), key=safety)
+    mx, lvl, src = mix or (DEFAULT_MIX, DEFAULT_MELEE_LEVEL, "the default mix")
     return dict(options=list(options), derived=derived, rules=rules, sims=sims, score=score, notes=notes,
                 gains=gains, best=best, sets={s: len(v[0]) for s, v in sets.items()},
-                seconds=round(time.time() - t0, 1), check=ch.check())
+                seconds=round(time.time() - t0, 1), check=ch.check(),
+                ehp={k: round(ehp(d, mx, lvl)) for k, d in derived.items()}, ehp_src=src)
 
 
 def compare_slot(ch, candidates, **kw):
@@ -737,6 +739,61 @@ def melee_taken(ac, power=135):
     """A monster's expected melee damage at this AC, relative: the hit chance (check_hit: 5% always, else
     randint(power) > 3/4 AC; power = blow power 60 + 3 x level ~25) x the wound reduction (1 - AC/250)."""
     return (0.05 + 0.9 * max(0.0, 1 - 0.75 * ac / power)) * (1 - min(ac, 150) / 250)
+
+
+# ------------------------------------------------------------------ effective HP
+# (the user, 10-28: "add the EHP column to gearcmp and loadout"). EHP = the HP an unarmoured, unresisted character
+# would need to last as long: max HP x (damage taken with no AC and no resists) / (damage taken with this gear), over
+# the damage mix the character actually took (observe/damage_mix.py -> runs/pilot/NICK/damage_mix.json)
+DEFAULT_MIX = {"hurt": 0.51, "melee_other": 0.12, "fire": 0.13, "cold": 0.03, "lite": 0.016, "elec": 0.014,
+               "pois": 0.009, "dark": 0.005, "shard": 0.003, "other": 0.16}   # (Dive04 at 700-800 ft, 10-24..10-28)
+DEFAULT_MELEE_LEVEL = 13
+# resists: the basic four and poison cut a third (immunity: nothing); the high resists x6/(d6+6), ~0.65 on average
+EHP_RES = {"acid": (("RES_ACID", 1 / 3), ("IM_ACID", 0.0)), "elec": (("RES_ELEC", 1 / 3), ("IM_ELEC", 0.0)),
+           "fire": (("RES_FIRE", 1 / 3), ("IM_FIRE", 0.0)), "cold": (("RES_COLD", 1 / 3), ("IM_COLD", 0.0)),
+           "pois": (("RES_POIS", 1 / 3),), "lite": (("RES_LITE", 0.65),), "dark": (("RES_DARK", 0.65),),
+           "shard": (("RES_SHARD", 0.65),), "nexus": (("RES_NEXUS", 0.65),), "sound": (("RES_SOUND", 0.65),),
+           "nether": (("RES_NETHR", 0.65),), "chaos": (("RES_CHAOS", 0.65),), "disen": (("RES_DISEN", 0.65),)}
+
+
+def hit_chance(ac, power, level):
+    """melee1.c check_hit: 5% always hit, 5% always miss, else randint1(power + 3 x level) > 3/4 AC; blow power 60
+    for HURT/SHATTER, 0-20 for the status blows (melee1.c:243-271)."""
+    return 0.05 + 0.9 * max(0.0, 1 - 0.75 * ac / max(1, power + 3 * level))
+
+
+def damage_factor(d, mix, level, armour=True):
+    """The share of the mix's damage that gets through this gear (armour=False: no AC, no resists)."""
+    ac = d["ac"] if armour else 0
+    flags = d["flags"] if armour else set()
+    f = 0.0
+    for kind, share in mix.items():
+        if kind == "hurt":
+            f += share * hit_chance(ac, 60, level) * (1 - min(ac, 150) / 250)
+        elif kind == "melee_other":
+            f += share * hit_chance(ac, 8, level)
+        elif kind in EHP_RES:
+            f += share * min([m for flag, m in EHP_RES[kind] if flag in flags] or [1.0])
+        else:
+            f += share
+    return f
+
+
+def ehp(d, mix=None, level=None):
+    mix, level = mix or DEFAULT_MIX, level or DEFAULT_MELEE_LEVEL
+    return d["mhp"] * damage_factor(d, mix, level, armour=False) / max(1e-9, damage_factor(d, mix, level))
+
+
+def load_mix(path):
+    """(mix, melee level, source text) from a damage_mix.json, or the defaults."""
+    try:
+        m = json.load(open(path))
+        if m.get("mix"):
+            return m["mix"], m.get("melee_level") or DEFAULT_MELEE_LEVEL, \
+                f"damage taken at {m['range'][0]}-{m['range'][1]} ft since {m['since']} ({m['hp_lost']} HP)"
+    except (OSError, ValueError, KeyError):
+        pass
+    return DEFAULT_MIX, DEFAULT_MELEE_LEVEL, "the default mix (Dive04 at 700-800 ft, 10-24..10-28)"
 
 
 def proxy(d, cur, depth_ft=750):
@@ -818,7 +875,8 @@ def optimize(ch, pool, budget=0, max_sim=5, **kw):
                         for a, b in chg]
     res = compare(ch, options, no_loss=True, **kw) if len(options) > 1 else \
         dict(options=["current"], best="current", derived={"current": cur}, score={"current": 0.0}, notes={},
-             rules={}, sims={}, gains={}, sets={}, seconds=0.0, check=ch.check())
+             rules={}, sims={}, gains={}, sets={}, seconds=0.0, check=ch.check(),
+             ehp={"current": round(ehp(cur, *(kw.get("mix") or (None, None, None))[:2]))}, ehp_src="")
     res["changes"] = changes
     res["searched"] = dict(loadouts=len(scored), candidates={s: len(v) for s, v in by_slot.items() if v})
     return res
@@ -836,8 +894,11 @@ def report(res):
         d, r = res["derived"][k], res["rules"][k]
         st = " ".join(f"{s} {fmt_stat(d['stats'][s])}" for s in ("STR", "DEX", "CON"))
         lines.append(f"{'*' if k == res['best'] else ' '} {k}")
+        e, e0 = (res.get("ehp") or {}).get(k), (res.get("ehp") or {}).get(res["options"][0])
         lines.append(f"    {st} | blows {d['blows']} | ~{d['dmg']:.0f}/round | to-hit {d['tohit']} | AC {d['ac']} | "
-                     f"HP {d['mhp']}" + (f" | speed +{d['speed']}" if d["speed"] else ""))
+                     f"HP {d['mhp']}" + (f" | EHP {e}" + (f" ({e / e0 - 1:+.1%})" if e0 and k != res["options"][0]
+                                                          else "") if e else "")
+                     + (f" | speed +{d['speed']}" if d["speed"] else ""))
         if r["lost"] or r["gained"]:
             lines.append("    abilities: " + (("+" + ", +".join(label(f) for f in r["gained"])) if r["gained"]
                                               else "") + (" " if r["gained"] and r["lost"] else "") +
@@ -855,6 +916,9 @@ def report(res):
                          f"(+/- {2 * se / res['score'][cur]:.1%} at 2 SE)")
         if res["notes"][k]:
             lines.append("    against: " + "; ".join(res["notes"][k]))
+    if res.get("ehp"):
+        lines.append(f"EHP = the HP an unarmoured, unresisted character would need to last as long, over "
+                     f"{res.get('ehp_src')} (AC cuts melee hits and wounds; resists cut their element)")
     cur = res["options"][0]
     gain = res["score"][res["best"]] / res["score"][cur] - 1 if res["score"][cur] else 0
     lines.append(f"verdict: {res['best']}" + (" (keep what's worn)" if res["best"] == cur else

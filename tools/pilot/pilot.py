@@ -9590,7 +9590,8 @@ class Pilot:
                 killed = set()
             cache[key] = geareval.compare_slot(ch, cands, n=n, no_loss=no_loss, skip=killed,
                                                decisions=os.path.join(self.rundir, "decisions.jsonl"),
-                                               xp_per_gold=self.xp_per_gold())
+                                               xp_per_gold=self.xp_per_gold(),
+                                               mix=geareval.load_mix(os.path.join(self.rundir, "damage_mix.json")))
         return cache[key]
 
     def loadout_info(self, shops=False):
@@ -9616,7 +9617,8 @@ class Pilot:
         try:
             res = geareval.optimize(ch, pool, budget=budget, n=10, skip=killed,
                                     decisions=os.path.join(self.rundir, "decisions.jsonl"),
-                                    xp_per_gold=self.xp_per_gold())
+                                    xp_per_gold=self.xp_per_gold(),
+                                    mix=geareval.load_mix(os.path.join(self.rundir, "damage_mix.json")))
         except Exception as e:
             return f"loadout optimizer failed: {e!r}"
         head = (f"loadout: {res['searched']['loadouts']} loadouts of one or two slot changes searched (pack"

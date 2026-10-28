@@ -2234,6 +2234,23 @@ def tavern_stash_drops_inside():
     return ok, f"{r}; dropped on {floor}"
 
 
+@case
+def ehp_counts_ac_hp_and_resists():
+    """The user's EHP column (10-28): EHP = max HP x (damage with no AC/resists) / (damage with this gear), over the
+    damage mix taken. More HP scales it exactly; AC helps only the melee share (status blows mostly miss already at AC
+    76 vs level-13 attackers); a fire resist helps only the fire share; a mix of pure fire makes AC worthless."""
+    import geareval as G
+    base = dict(mhp=358, ac=76, flags={"RES_FIRE"})
+    e0 = G.ehp(base)
+    con = G.ehp(dict(base, mhp=416)) / e0 - 1
+    ac = G.ehp(dict(base, ac=87)) / e0 - 1
+    nofire = G.ehp(dict(base, flags=set())) / e0 - 1
+    fire_only = {"fire": 1.0}
+    ac_fire = G.ehp(dict(base, ac=150), fire_only, 13) / G.ehp(base, fire_only, 13) - 1
+    ok = abs(con - 58 / 358) < 0.002 and 0.04 < ac < 0.15 and nofire < -0.05 and abs(ac_fire) < 1e-9
+    return ok, f"EHP {e0:.0f}; +58 HP {con:+.1%}, +11 AC {ac:+.1%}, no fire resist {nofire:+.1%}, AC vs pure fire {ac_fire:+.1%}"
+
+
 def _trip_on_level(p, tp):
     p.goal = None
     p.set_goal = lambda g: setattr(p, "goal", g)
