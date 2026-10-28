@@ -13,9 +13,26 @@
   "output": null,
   "cache_read": 9318972,
   "cache_write": 130171,
+  "write_5m": 130171,
+  "write_1h": 0,
   "model": "claude-opus-5-5",
   "final_usage_turns": 1,
+  "usd": null,
   "transcript": "agent-abac5bbf9ee66b5bd.jsonl"
+ },
+ "estimator": {
+  "n": 0,
+  "compared": 0,
+  "agree": 0,
+  "in_time_turn": 0,
+  "before_next_act": 0,
+  "skipped": 0,
+  "compute_max_s": null,
+  "disagreements": [],
+  "hard_n": 0,
+  "hard_compared": 0,
+  "hard_agree": 0,
+  "hard_choices": {}
  },
  "A": {
   "deaths": 0,

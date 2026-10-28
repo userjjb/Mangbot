@@ -74,7 +74,7 @@
  },
  "B": {
   "dungeon_min": 28.4,
-  "town_min": 8.8,
+  "town_min": 9.5,
   "exp_per_dmin": 60.3,
   "levels_per_dhour": 0.13,
   "gold_found": 2343,
@@ -82,17 +82,16 @@
   "time_budget_min": {
    "exploring": 13.0,
    "fighting": 6.5,
-   "town_other": 6.0,
+   "town_other": 6.3,
    "travel_dive": 4.4,
    "escaping": 3.3,
+   "town_no_goal": 2.2,
    "recall_wait": 1.8,
-   "town_idle_end": 1.4,
-   "town_no_goal": 1.1,
    "resting": 0.1,
    "dungeon_other": 0.1,
    "no_goal_dungeon": 0.1
   },
-  "navigator_wait_pct": 3
+  "navigator_wait_pct": 6
  },
  "C": {
   "lowest_hp": [
@@ -122,7 +121,7 @@
   "stolen": 2392,
   "destroyed_by_monsters_est": 835,
   "total": 4874,
-  "sales": 18,
+  "sales": 19,
   "sales_valued": 3,
   "worst_sales": [],
   "left_behind": [
@@ -143,8 +142,8 @@
  },
  "E": {
   "reports": 13,
-  "commands": 97,
-  "commands_per_min": 2.9,
+  "commands": 103,
+  "commands_per_min": 3.1,
   "report_to_action_med_s": 4.4,
   "report_to_action_p90_s": 198.9,
   "reports_without_command_pct": 0,
@@ -152,18 +151,18 @@
   "user_reply_med_s": null,
   "forced_overrides": 0,
   "complaints": 1,
-  "report_chars": 271836,
-  "order_report_age_med_s": 3.5,
-  "order_report_age_p90_s": 12.4
+  "report_chars": 279222,
+  "order_report_age_med_s": 3.7,
+  "order_report_age_p90_s": 12.5
  },
  "F": {
   "audit_diffs": 0,
-  "audit_checks": 75,
+  "audit_checks": 76,
   "perception_gaps": 7,
   "goal_failed": 0,
   "stuck": 0,
   "stuck_looping_min": 0.0,
-  "runs_sent": 1132,
+  "runs_sent": 1136,
   "pilot_down_min": 0.0,
   "server_crashes": 0
  },

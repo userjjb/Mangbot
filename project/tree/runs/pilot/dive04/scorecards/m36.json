@@ -34,7 +34,11 @@
     "stairs",
     "+77 XP net of gold vs rules (SE 18), both safe"
    ]
-  ]
+  ],
+  "hard_n": 0,
+  "hard_compared": 0,
+  "hard_agree": 0,
+  "hard_choices": {}
  },
  "A": {
   "deaths": 0,

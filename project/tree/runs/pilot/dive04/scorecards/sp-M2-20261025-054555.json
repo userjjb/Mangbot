@@ -1,0 +1,126 @@
+{
+ "label": "sp-M2-20261025-054555",
+ "nav_model": "harness",
+ "effort": null,
+ "report": "compact",
+ "start": "2026-10-25 05:46",
+ "end": "2026-10-25 05:48",
+ "minutes": 2.0,
+ "notes": "set-piece M2",
+ "tokens": null,
+ "estimator": {
+  "n": 0,
+  "compared": 0,
+  "agree": 0,
+  "in_time_turn": 0,
+  "before_next_act": 0,
+  "skipped": 0,
+  "compute_max_s": null,
+  "disagreements": [],
+  "hard_n": 0,
+  "hard_compared": 0,
+  "hard_agree": 0,
+  "hard_choices": {}
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   25,
+   25
+  ],
+  "exp_gain": 3,
+  "gold": [
+   5621,
+   5648
+  ],
+  "gold_change": 27,
+  "max_depth_ft": 350
+ },
+ "B": {
+  "dungeon_min": 0.8,
+  "town_min": 0.8,
+  "exp_per_dmin": 3.7,
+  "levels_per_dhour": 0.04,
+  "gold_found": 27,
+  "gold_found_per_dmin": 33.3,
+  "time_budget_min": {
+   "town_no_goal": 0.8,
+   "no_goal_dungeon": 0.6,
+   "travel_dive": 0.1,
+   "fighting": 0.1,
+   "stuck_looping": 0.0
+  },
+  "navigator_wait_pct": 69
+ },
+ "C": {
+  "lowest_hp": [
+   303,
+   303,
+   100,
+   "05:46:21"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 0,
+  "emergency_alerts": 0,
+  "phase": 0,
+  "wor_escape": 0,
+  "wor_travel": 0,
+  "stairs_flee": 0,
+  "teleport": 0,
+  "cures_quaffed": 0,
+  "escape_records": null,
+  "recalls_landed": 1
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 0,
+  "loot_abandoned_est": 38,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 0,
+  "total": 38,
+  "sales": 0,
+  "sales_valued": 0,
+  "worst_sales": [],
+  "left_behind": [
+   "Rod of Trap Location"
+  ],
+  "irreplaceable": []
+ },
+ "E": {
+  "reports": 0,
+  "commands": 5,
+  "commands_per_min": 2.5,
+  "report_to_action_med_s": null,
+  "report_to_action_p90_s": null,
+  "reports_without_command_pct": null,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 0,
+  "report_chars": 3970,
+  "order_report_age_med_s": 37.4,
+  "order_report_age_p90_s": 46.7
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 4,
+  "perception_gaps": 0,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 6,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {},
+ "alerts": {
+  "goal_done": 2,
+  "interesting_item": 2,
+  "started": 1,
+  "tactic": 1,
+  "parked": 1
+ },
+ "plan_news": {}
+}

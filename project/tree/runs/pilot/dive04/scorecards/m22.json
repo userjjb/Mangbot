@@ -10,11 +10,29 @@
  "tokens": {
   "turns": 129,
   "input": 258,
-  "output": 1264,
+  "output": null,
   "cache_read": 11745357,
   "cache_write": 134765,
+  "write_5m": 134765,
+  "write_1h": 0,
   "model": "claude-sonnet-5-5",
+  "final_usage_turns": 1,
+  "usd": null,
   "transcript": "agent-a76b0043524b24a90.jsonl"
+ },
+ "estimator": {
+  "n": 0,
+  "compared": 0,
+  "agree": 0,
+  "in_time_turn": 0,
+  "before_next_act": 0,
+  "skipped": 0,
+  "compute_max_s": null,
+  "disagreements": [],
+  "hard_n": 0,
+  "hard_compared": 0,
+  "hard_agree": 0,
+  "hard_choices": {}
  },
  "A": {
   "deaths": 0,

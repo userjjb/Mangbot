@@ -28,7 +28,11 @@
   "before_next_act": 1,
   "skipped": 0,
   "compute_max_s": 0.234,
-  "disagreements": []
+  "disagreements": [],
+  "hard_n": 0,
+  "hard_compared": 0,
+  "hard_agree": 0,
+  "hard_choices": {}
  },
  "A": {
   "deaths": 0,

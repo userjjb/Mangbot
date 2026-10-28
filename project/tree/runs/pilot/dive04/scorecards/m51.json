@@ -51,7 +51,7 @@
  },
  "B": {
   "dungeon_min": 29.4,
-  "town_min": 4.0,
+  "town_min": 4.5,
   "exp_per_dmin": 61.0,
   "levels_per_dhour": 0.22,
   "gold_found": 1918,
@@ -59,17 +59,16 @@
   "time_budget_min": {
    "exploring": 17.4,
    "fighting": 8.9,
+   "town_no_goal": 2.0,
    "town_other": 1.9,
    "travel_dive": 1.5,
-   "town_no_goal": 1.2,
    "escaping": 0.9,
-   "town_idle_end": 0.9,
    "recall_wait": 0.8,
    "stuck_looping": 0.1,
    "no_goal_dungeon": 0.1,
    "resting": 0.1
   },
-  "navigator_wait_pct": 4
+  "navigator_wait_pct": 6
  },
  "C": {
   "lowest_hp": [
@@ -125,8 +124,8 @@
  },
  "E": {
   "reports": 11,
-  "commands": 59,
-  "commands_per_min": 2.1,
+  "commands": 64,
+  "commands_per_min": 2.2,
   "report_to_action_med_s": 4.6,
   "report_to_action_p90_s": 5.3,
   "reports_without_command_pct": 0,
@@ -134,8 +133,8 @@
   "user_reply_med_s": null,
   "forced_overrides": 0,
   "complaints": 1,
-  "report_chars": 166584,
-  "order_report_age_med_s": 4.0,
+  "report_chars": 173672,
+  "order_report_age_med_s": 8.2,
   "order_report_age_p90_s": 15.7
  },
  "F": {
@@ -145,7 +144,7 @@
   "goal_failed": 0,
   "stuck": 0,
   "stuck_looping_min": 0.1,
-  "runs_sent": 1119,
+  "runs_sent": 1120,
   "pilot_down_min": 0.0,
   "server_crashes": 0
  },

@@ -20,6 +20,20 @@
   "usd": 0.126,
   "transcript": "agent-a71261e99e3f5e07e.jsonl"
  },
+ "estimator": {
+  "n": 0,
+  "compared": 0,
+  "agree": 0,
+  "in_time_turn": 0,
+  "before_next_act": 0,
+  "skipped": 0,
+  "compute_max_s": null,
+  "disagreements": [],
+  "hard_n": 0,
+  "hard_compared": 0,
+  "hard_agree": 0,
+  "hard_choices": {}
+ },
  "A": {
   "deaths": 0,
   "clvl": [

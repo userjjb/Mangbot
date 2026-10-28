@@ -1,0 +1,125 @@
+{
+ "label": "sp-M3-20261025-070808",
+ "nav_model": "harness",
+ "effort": null,
+ "report": "compact",
+ "start": "2026-10-25 07:08",
+ "end": "2026-10-25 07:11",
+ "minutes": 3.0,
+ "notes": "set-piece M3",
+ "tokens": null,
+ "estimator": {
+  "n": 0,
+  "compared": 0,
+  "agree": 0,
+  "in_time_turn": 0,
+  "before_next_act": 0,
+  "skipped": 0,
+  "compute_max_s": null,
+  "disagreements": [],
+  "hard_n": 0,
+  "hard_compared": 0,
+  "hard_agree": 0,
+  "hard_choices": {}
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   25,
+   25
+  ],
+  "exp_gain": 0,
+  "gold": [
+   2997,
+   2997
+  ],
+  "gold_change": 0,
+  "max_depth_ft": 650
+ },
+ "B": {
+  "dungeon_min": 0.9,
+  "town_min": 1.6,
+  "exp_per_dmin": 0.0,
+  "levels_per_dhour": 0.0,
+  "gold_found": 0,
+  "gold_found_per_dmin": 0.0,
+  "time_budget_min": {
+   "town_no_goal": 1.5,
+   "no_goal_dungeon": 0.9,
+   "town_idle_end": 0.4,
+   "escaping": 0.1
+  },
+  "navigator_wait_pct": 79
+ },
+ "C": {
+  "lowest_hp": [
+   302,
+   303,
+   100,
+   "07:09:54"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 0,
+  "emergency_alerts": 0,
+  "phase": 0,
+  "wor_escape": 0,
+  "wor_travel": 0,
+  "stairs_flee": 1,
+  "teleport": 0,
+  "cures_quaffed": 0,
+  "escape_records": 1,
+  "recalls_landed": 1
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 0,
+  "loot_abandoned_est": 0,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 0,
+  "total": 0,
+  "sales": 0,
+  "sales_valued": 0,
+  "worst_sales": [],
+  "left_behind": [],
+  "irreplaceable": []
+ },
+ "E": {
+  "reports": 0,
+  "commands": 7,
+  "commands_per_min": 2.3,
+  "report_to_action_med_s": null,
+  "report_to_action_p90_s": null,
+  "reports_without_command_pct": null,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 0,
+  "report_chars": 6263,
+  "order_report_age_med_s": 184.6,
+  "order_report_age_p90_s": 350.0
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 5,
+  "perception_gaps": 0,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 2,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {},
+ "alerts": {
+  "parked": 2,
+  "started": 2,
+  "unseen_attacker": 1,
+  "stat_drained": 1,
+  "drainer": 1,
+  "blows_changed": 1,
+  "goal_done": 1
+ },
+ "plan_news": {}
+}

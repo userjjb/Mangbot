@@ -8,6 +8,20 @@
  "minutes": 4.0,
  "notes": "set-piece M1",
  "tokens": null,
+ "estimator": {
+  "n": 0,
+  "compared": 0,
+  "agree": 0,
+  "in_time_turn": 0,
+  "before_next_act": 0,
+  "skipped": 0,
+  "compute_max_s": null,
+  "disagreements": [],
+  "hard_n": 0,
+  "hard_compared": 0,
+  "hard_agree": 0,
+  "hard_choices": {}
+ },
  "A": {
   "deaths": 0,
   "clvl": [

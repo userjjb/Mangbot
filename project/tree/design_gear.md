@@ -54,6 +54,21 @@ weapon would give 3 blows at STR 18/70, DEX 18/20.
 - The model backs the gear-free parts out of the sheet; an unknown item (no plusses shown, `{good}`) is read as its
   base kind.
 
+## Effective HP (session 9, the user 10-28: "add the EHP column to gearcmp and loadout")
+
+`geareval.ehp`: **EHP = max HP x (damage with no AC and no resists) / (damage with this gear)**, over the damage mix
+the character actually took -- `observe/damage_mix.py` splits every HP drop at 700-800 ft (decision log) over the
+attack messages of that moment (events.jsonl): wounding melee (by each monster's share of HURT/SHATTER blows), other
+melee blows, each element, other (arrows, missiles, unexplained). Written to `runs/pilot/NICK/damage_mix.json`,
+refreshed by `observe/wrap.sh` after each mission. AC: melee1.c check_hit (power 60 for wounds, ~8 for status blows,
++3 x the attackers' mean level) x the wound cut 1 - AC/250; resists: /3 (basic four, poison; immunity 0), x0.65 (high
+resists). First mix (Dive04, 10-24..28, 11609 HP): wounds 51%, other melee 12%, fire 13%, other elements 7%, other 16%;
+attackers level 13. Dive04 now EHP 838; +6 CON +16.2%, +11 AC +9.1%, the four basic resists +29% (838 vs 651).
+Shown in `gearcmp` and `loadout` per option, and **the optimizer's proxy uses it** (the user, 10-28): log(damage per round
+ratio, slay mix) + 0.5 log(EHP ratio) + 0.1 per point of speed -- replacing the separate AC and HP terms, so a resist
+now ranks (a Ring of Resist Fire for a Protection ring, -10 AC: +0.06 with 13% fire, -0.12 against melee only). Not in
+the verdict (the simulation decides).
+
 ## The loadout optimizer (built, session 9: `geareval.optimize`, `pilotctl loadout [shops]`)
 
 The user (10-27), after m53 sold a Sabre (Holy Avenger) because the axe it would replace gives Free Action: "work on
@@ -69,8 +84,7 @@ simulates them against the current gear with `no_loss` (the same verdict: +3% an
 2 ~44, AC 76 -> 68, STR/DEX/CON -1 (the axe's (+1)): -3% +/- 13% without slays; **with slays (options_sim 27k: geareval passes
 the weapon's slays, brands and weight for criticals) +2-4% +/- 8%: a tie** -- the axe of Westernesse slays orcs, trolls
 and giants (41% of monster HP at 750 ft), the Sabre evil (65%). The Advisor's verdict (10-27 slays memo): keep the axe;
-selling the Holy Avenger was right. The proxy now uses the depth's slay mix and the Advisor's AC term (hit chance x
-wound reduction, `melee_taken`).
+selling the Holy Avenger was right. The proxy uses the depth's slay mix and (since 10-28) EHP for AC, HP and resists.
 **Limits:** three-slot moves aren't searched; it advises only (no automatic buying or swapping); the static proxy
 decides which loadouts get simulated.
 

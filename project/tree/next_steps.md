@@ -163,14 +163,23 @@ design_gear.md; with the Advisor's slays 27k: the Sabre + FA ring vs the axe is 
 the confusion lock is cured (CSW/CCW), Recall cures blindness/confusion first, unseen missiles count as combat, the
 Review line shows the sale deadline. 94 unit cases.
 
-**Next:**
-1. **Verify live** the house bank in a `plan town` (withdraw at the start, deposit at the end), the confusion-lock
-   cure, `goal quiet`, the dive's loot detour, ESCAPE FAILED. Start the next brief's "New since" with the house.
-2. The Navigator still never uses `ask` (m49-m55), even told it doesn't block: ask the user whether to require one
-   check-in per trip or leave it.
-3. A set-piece for a confusing breeder swarm (m55) when harness work resumes; old open items from HANDOFF 9 below
-   (fight-vs-flee for bands, resist blindness, thieves check, loadout with shop stock live).
-4. Routine as before: snapshot, commit, push; after each mission wrap.sh, a report, FIELD-NOTES, complaints.
+**Also built after m55 (10-27/28):** the bank moved to a **wilderness house** (above); the town house sold; the stash
+lives in that house (HouseBank stashes/fetches; the tavern fallback now drops inside the room -- the user: townsfolk
+can't enter it, but they take items from the street, which is where the old entrance drops landed); **EHP**
+(`geareval.ehp` over `observe/damage_mix.py`'s measured mix, refreshed by wrap.sh) in `gearcmp`/`loadout` and in the
+optimizer's proxy; 99 unit cases.
+
+**Open (the list given to the user 10-28):**
+- *The user's call:* `ask` policy (unused m49-m55: require one check-in per trip?); an interleaved Haiku/Sonnet
+  comparison on the current Pilot (offered); EHP in gearcmp's verdict (offered); the fight-vs-flee band rule (collect
+  more `trigger: band` records first).
+- *Verify live:* the wilderness bank inside `plan town`; the house stash (drop/fetch) and the tavern inside-drop; the
+  confusion-lock cure, Recall's cure, `goal quiet`, the dive's loot detour, ESCAPE FAILED, weight shedding, theft news;
+  older: breeder-pin teleport, the blind staff escape, `react leave/hunt`, `loadout shops`.
+- *Gaps:* loot picked up mid-flee (m55 17:00:14, a Scroll of Light during a band flee); a set-piece for a confusing
+  breeder swarm; resist blindness (watch shops); the optimizer is 1-2 slot moves and advisory only.
+- *Small:* L3b set-piece unstageable; the Advisor's MIN_GAIN 50 floor (never approved); WIS drained (no matter).
+- Routine: snapshot, commit, push; after each mission wrap.sh, a report, FIELD-NOTES, complaints.
 
 ### HANDOFF TO ARCHITECT 8: "The Architect's Vacation" (written 2026-10-26 ~22:00 by the session-7 Architect)
 
