@@ -190,6 +190,11 @@ optimizer's proxy; 99 unit cases.
 - **Built 10-28 (after m57):** supplies in dungeon minutes (status, plan town, arrival, alerts under 15/5; quiet waits
   capped), recharging empty useful staffs/wands in town, enchanting disenchanted armour to the +7/+8 stopping place
   (verified live: 4 scrolls, cloak -6 -> -2; the Alchemist stocks few, so it takes several visits).
+- **Model comparison (10-28, current Pilot, 700-800 ft):** 45 min: m56 Opus-medium 58.0 XP/dmin (low 87%, $1.05),
+  m57 Sonnet-medium 94.0 (65%, $0.22). 30 min: m58 Opus-medium 73.9 (63%, $0.40), m59 Sonnet-medium 128.6 (71%,
+  $0.18; 14.6 dmin), m60 Haiku-medium 47.1 (92%, $0.013). Haiku-low m43-m55 median 68.9. Sonnet-medium leads twice;
+  single missions, level luck dominates. Open from these: the m59 flee "no known path" with stairs known; the "this
+  trip" rate not in dungeon reports (m58); a full pack losing a pickup (m60).
 - **TODOs from the user (10-28):**
   1. **(Built 10-28: `ask quiet TEXT` waits for the answer -- "more ..." answers keep it; HANDBOOK "when to stop and
      think"; gearcmp/loadout refusals point at it; the brief and the agent file say so. Verify live.)**

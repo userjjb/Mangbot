@@ -7184,8 +7184,9 @@ class Pilot:
         self.note_edge_cross()
         # (the M5 set-piece, 10-28: confused 40 s among 26 Hummerhorns with no goal, and nothing happened -- the check
         # lived in step_goal, which returns at once without a goal)
-        if self.w.in_dungeon and self.w.flag("confused") and (self.w.adjacent_monsters() or self.goal) and \
-                self.confusion_lock():
+        if not self.w.flag("confused"):
+            self.conf_since = None        # (m60: "confused for 1773 s" -- the clock ran on between confusions)
+        elif self.w.in_dungeon and (self.w.adjacent_monsters() or self.goal) and self.confusion_lock():
             return
         if self.confusion_window():
             return

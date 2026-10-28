@@ -1,0 +1,180 @@
+{
+ "label": "m58",
+ "nav_model": "opus",
+ "effort": "medium",
+ "report": "compact",
+ "start": "2026-10-28 17:58",
+ "end": "2026-10-28 18:26",
+ "minutes": 28.0,
+ "notes": "",
+ "tokens": {
+  "turns": 16,
+  "input": 32,
+  "output": 5103,
+  "cache_read": 464794,
+  "cache_write": 39963,
+  "write_5m": 39963,
+  "write_1h": 0,
+  "model": "claude-opus-5-5",
+  "final_usage_turns": 16,
+  "usd": 0.395,
+  "transcript": "agent-aee119d8145565bec.jsonl"
+ },
+ "estimator": {
+  "n": 3,
+  "compared": 2,
+  "agree": 1,
+  "in_time_turn": 3,
+  "before_next_act": 3,
+  "skipped": 0,
+  "compute_max_s": 0.149,
+  "disagreements": [
+   [
+    "stairs",
+    "rules",
+    "rules (no option clearly better)"
+   ]
+  ],
+  "hard_n": 1,
+  "hard_compared": 1,
+  "hard_agree": 0,
+  "hard_choices": {
+   "berserk": 1
+  }
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   29,
+   29
+  ],
+  "exp_gain": 1407,
+  "gold": [
+   21042,
+   17458
+  ],
+  "gold_change": -3584,
+  "max_depth_ft": 800
+ },
+ "B": {
+  "dungeon_min": 19.1,
+  "town_min": 8.6,
+  "exp_per_dmin": 73.9,
+  "levels_per_dhour": 0.16,
+  "gold_found": 1348,
+  "gold_found_per_dmin": 70.8,
+  "time_budget_min": {
+   "exploring": 10.8,
+   "town_other": 6.4,
+   "fighting": 6.3,
+   "town_no_goal": 1.3,
+   "travel_dive": 0.9,
+   "town_idle_end": 0.7,
+   "escaping": 0.7,
+   "recall_wait": 0.5,
+   "no_goal_dungeon": 0.1,
+   "resting": 0.1
+  },
+  "navigator_wait_pct": 5
+ },
+ "C": {
+  "lowest_hp": [
+   245,
+   388,
+   63,
+   "18:20:02"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 0,
+  "emergency_alerts": 0,
+  "phase": 0,
+  "wor_escape": 1,
+  "wor_travel": 1,
+  "stairs_flee": 2,
+  "teleport": 0,
+  "cures_quaffed": 2,
+  "escape_records": 4,
+  "recalls_landed": 2
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 0,
+  "loot_abandoned_est": 515,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 38,
+  "total": 553,
+  "sales": 5,
+  "sales_valued": 0,
+  "worst_sales": [],
+  "left_behind": [
+   "Light Blue Mushroom",
+   "Rounded Pebbles (1d2) (x25)",
+   "Staff of Sleep Monsters",
+   "Dagger (1d4)",
+   "Dagger (1d4)",
+   "Rhodonite Ring",
+   "Copper Wand",
+   "Scroll of Monster Confusion",
+   "Potion of Slow Poison",
+   "Amulet of Teleportation"
+  ],
+  "irreplaceable": []
+ },
+ "E": {
+  "reports": 8,
+  "commands": 21,
+  "commands_per_min": 1.0,
+  "report_to_action_med_s": 5.3,
+  "report_to_action_p90_s": 6.8,
+  "reports_without_command_pct": 38,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 1,
+  "report_chars": 32864,
+  "order_report_age_med_s": 29.2,
+  "order_report_age_p90_s": 59.8
+ },
+ "F": {
+  "audit_diffs": 1,
+  "audit_checks": 57,
+  "perception_gaps": 3,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 765,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Uruk": 214,
+  "Air hound": 62,
+  "Baby green dragon": 53,
+  "Wolf": 30,
+  "Novice ranger": 26,
+  "Gnome mage": 24,
+  "Griffon": 17,
+  "Novice paladin": 8
+ },
+ "alerts": {
+  "tactic": 16,
+  "review": 3,
+  "goal_done": 1,
+  "lost": 1,
+  "plan_done": 1
+ },
+ "plan_news": {
+  "unseen_attacker": 14,
+  "goal_done": 7,
+  "plan": 6,
+  "band": 2,
+  "breeders": 2,
+  "interesting_item": 2,
+  "thief": 1,
+  "structure": 1,
+  "fight_going_badly": 1,
+  "drainer": 1
+ }
+}

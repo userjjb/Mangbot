@@ -1,11 +1,5 @@
 {
- "items": {
-  "a Ring of Protection [+16]": {
-   "why": "worth ~2100",
-   "visit": 42,
-   "t": "2026-10-28 12:20"
-  }
- },
+ "items": {},
  "decided": {
   "a Ring of Resist Fire": "sell",
   "a Ring of Protection [+7]": "sell",
@@ -19,7 +13,12 @@
   "a Trident of Venom (1d8) (+13,+4)": "sell",
   "a Flail (2d6) (+3,+4)": "sell",
   "a Ring of Sustain Charisma": "sell",
-  "a Ring of Protection [+10]": "sell"
+  "a Ring of Protection [+10]": "sell",
+  "a Ring of Protection [+16]": "keep",
+  "a Cutlass of Flame (1d7) (+2,+7)": "sell",
+  "a Quarterstaff of Slay Troll (1d9) (+6,+5)": "sell",
+  "a Ring of Resist Cold": "sell",
+  "a Ring of Protection [+6]": "sell"
  },
- "town_visits": 43
+ "town_visits": 49
 }
