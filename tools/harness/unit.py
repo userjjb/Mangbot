@@ -1991,7 +1991,8 @@ def house_bank_round_trip():
             pile[0] += int(m.group(1))
             w.messages.append((P.gnow(), f"You drop {m.group(1)} pieces of gold."))
     p.cmd = cmd
-    p.mover = type("M", (), {"active": False, "go": lambda self, t: True, "tick": lambda self: "arrived"})()
+    p.mover = type("M", (), {"active": False, "go": lambda self, t: True, "tick": lambda self: "arrived",
+                             "stop": lambda self: None})()
     p.town_reserve = lambda: 1000
 
     def run(g):
@@ -2163,7 +2164,8 @@ def house_keeps_the_stash():
             n = floor.pop(w.pos)
             w.inven.append({"item": 30, "name": n, "tval": 75, "weight": 4, "number": 1, "equip": False})
     p.cmd = cmd
-    p.mover = type("M", (), {"active": False, "go": lambda self, t: True, "tick": lambda self: "arrived"})()
+    p.mover = type("M", (), {"active": False, "go": lambda self, t: True, "tick": lambda self: "arrived",
+                             "stop": lambda self: None})()
 
     def run(g):
         for _ in range(80):
@@ -2297,6 +2299,34 @@ def plan_town_survives_the_house_tile():
     k.sub = None
     b = k.tick(p)
     return a is None and b and b[0] == "failed", f"under the house step: {a}; without it: {b}"
+
+
+@case
+def house_walk_stops_at_the_crossing():
+    """m56: from town, the walk to the edge kept running on the house's tile (toward the town square's coordinates),
+    passed the house's outside square, and the bank opened the door from 10 squares off. A level change stops the walk;
+    reaching the outside square stops it too."""
+    import tempfile
+    h = {"door": [60, 129], "step_in": [60, 128], "outside": [60, 130], "box": [59, 124, 61, 129], "depth": -1,
+         "cross": {"town": [1, 130], "wild": [64, 130], "depth": -1}}
+    p = pilot()
+    w = p.w
+    w.depth, w.in_dungeon, w.pos, w.level_t = -1, False, (63, 130), P.gnow()
+    p.rundir, p.busy_until, p._house = tempfile.mkdtemp(), 0, {"house": h, "banked": 0}
+    stops = []
+    p.mover = type("M", (), {"active": True, "go": lambda self, t: True, "tick": lambda self: "moving",
+                             "stop": lambda self: stops.append(w.pos)})()
+    p.cmd = lambda line, why, hold=0.4: None
+    g = P.HouseBank("deposit")
+    g.seen_level = w.level_t - 5            # (it started in town)
+    g.t = -99.0
+    g.tick(p)
+    first = list(stops)
+    w.pos = (60, 130)
+    g.t = -99.0
+    g.tick(p)
+    ok = first == [(63, 130)] and stops[-1] == (60, 130) and g.step == "open"
+    return ok, f"stops at {stops}; step {g.step}"
 
 
 def _trip_on_level(p, tp):

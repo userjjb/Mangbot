@@ -1934,8 +1934,15 @@ class HouseBank(Goal):
         self.t = now
         if self.step != getattr(self, "last_step", None):
             self.last_step, self.tries = self.step, 0
+        # (m56: from town, the walk to the edge was still running after the crossing, toward the town square's
+        # coordinates on the new tile; it ran through the house's outside square, the bank took that for arrival and
+        # opened the door from 10 squares off -- "the door didn't open". A new level stops the walk)
+        if w.level_t != getattr(self, "seen_level", None):
+            self.seen_level = w.level_t
+            p.mover.stop()
         if self.step == "go":
             if w.pos == outside:
+                p.mover.stop()
                 self.step = "open"
                 self.gold_out, self.banked0 = gold, p.banked()
                 return None
