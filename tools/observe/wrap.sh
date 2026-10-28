@@ -10,7 +10,7 @@ export PILOT_ROLE=architect
 python3 pilot/pilotctl.py --nick "$NICK" mission end "$LABEL" 2>&1 | head -2
 python3 observe/tokens.py "$LABEL" 2>&1 | tail -1
 python3 observe/scorecard.py --table "$LABEL" 2>&1 | tail -2
-python3 observe/damage_mix.py --nick dive04 >/dev/null 2>&1 && echo "damage mix refreshed (runs/pilot/dive04/damage_mix.json: the EHP column)"
+python3 observe/damage_mix.py --nick "$NICK" >/dev/null 2>&1 && echo "damage mix refreshed (runs/pilot/$NICK/damage_mix.json: the EHP column)"
 echo "--- complaints (last 2 h)"
 grep "$(date +%Y-%m-%d) \($(date +%H)\|$(date -d '-1 hour' +%H)\)" ../../runs/complaints.md | cut -c1-260
 echo "--- questions (viewer ? notes)"
