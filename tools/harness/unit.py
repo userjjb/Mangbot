@@ -2443,6 +2443,28 @@ def supply_minutes_and_quiet_cap():
     return ok, f"slow digestion {slow[0]:.0f}/{slow[1]:.0f} min, normal {fast[0]:.0f}; told {told}; quiet {g.secs} s"
 
 
+@case
+def enchant_armour_to_the_stopping_place():
+    """The user (10-28): undo disenchantment, stopping where the failure chance says. spells2.c: +1 succeeds with
+    1 - table[to_a]/1000 (always below +0); enchant while the next point is >= 50% (+7 -> +8 is the last), the likeliest
+    first; the scrolls wanted = the expected count to get every piece there."""
+    p = pilot(worn=[("a Shadow Cloak [6,-6]", 35, 10), ("a Set of Gauntlets [2,-1]", 31, 25),
+                    ("a Metal Cap [3,+2]", 32, 20), ("a Pair of Hard Leather Boots of Stability [3,+7]", 30, 40),
+                    ("Hard Studded Leather of Resistance (-1) [7,+8]", 37, 100)])
+    p.is_artifact = lambda n: False
+    ch = {it["name"]: p.enchant_chance(it) for it in p.w.items(equip=True)}
+    plan = [it["name"] for it, c in p.enchant_plan()]
+    n = p.enchant_scrolls_wanted()
+    # cloak -6..+7: 6 sure points to +0, then +0..+7 = 1/1 + 1/.99 + 1/.95 + 1/.9 + 1/.8 + 1/.7 + 1/.6 + 1/.5
+    tail = sum(1 / (1 - t / 1000) for t in p.ENCHANT_TABLE[:8])
+    want = (6 + tail) + (1 + tail) + sum(1 / (1 - t / 1000) for t in p.ENCHANT_TABLE[2:8]) + 2.0
+    ok = ch["a Shadow Cloak [6,-6]"] == 1.0 and abs(ch["a Pair of Hard Leather Boots of Stability [3,+7]"] - 0.5) < 1e-9 \
+        and abs(ch["Hard Studded Leather of Resistance (-1) [7,+8]"] - 0.3) < 1e-9 and \
+        "Hard Studded Leather of Resistance (-1) [7,+8]" not in plan and plan[-1].startswith("a Pair of Hard Leather") \
+        and abs(n - want) < 0.01
+    return ok, f"chances {ch}; plan {plan}; scrolls wanted {n:.1f} (expected {want:.1f})"
+
+
 def _trip_on_level(p, tp):
     p.goal = None
     p.set_goal = lambda g: setattr(p, "goal", g)

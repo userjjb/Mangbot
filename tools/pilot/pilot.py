@@ -2275,6 +2275,26 @@ class TownKit(Goal):
                     self.sub = Shop(5, buys=[("Recharging", len(todo),
                                               round((p.price_of("Recharging", 5) or 250) * 1.5))])
                     return None
+            # enchant worn armour back up (disenchantment), while the next point is >= 50% (enchant_plan)
+            plan = p.enchant_plan()
+            if plan:
+                sc = next((i for i in w.items(tval=TV_SCROLL) if "Enchant Armor" in i["name"]), None)
+                if sc:
+                    it, c = plan[0]
+                    p.cmd(f"custom r item={sc['item']} dir={it['item']}", f"town kit: enchant {it['name']} ({c:.0%})",
+                          hold=1.0)
+                    self.enchanted = self.__dict__.get("enchanted", 0) + 1
+                    self.t = now + 1.0
+                    return None
+                if not getattr(self, "enchant_bought", False):
+                    self.enchant_bought = True
+                    price = p.price_of("Enchant Armor", 5) or 190
+                    spare = w.ind.get("gold", [0])[0] - p.town_reserve()
+                    n = min(int(round(p.enchant_scrolls_wanted())), max(0, spare // max(1, int(price * 1.1))), 25)
+                    if n > 0:
+                        self.sub = Shop(5, buys=[("Enchant Armor", n, round(price * 1.5))])
+                        self.done_log.append(f"Enchant Armor x{n} for {len(plan)} piece(s)")
+                        return None
             # last: the stash kinds go to the tavern for the mission (Restore potions, Stone to Mud wands)
             if not getattr(self, "stashed", False) and not p.house_state().get("house") and \
                     any(p.is_stash_item(i["name"]) for i in w.items()):
@@ -8208,6 +8228,41 @@ class Pilot:
     # (not Cure Light Wounds: ~15-20 HP a charge at 270 HP, a turn each, a pack slot -- the user, m25)
     STAT_FULL = {"STR": "Strength", "DEX": "Dexterity", "CON": "Constitution"}
     RECHARGE_MAX_FAIL = 0.15
+    # (the user, 10-28: undo disenchantment with Scrolls of Enchant Armour, "consult the chance of enchantment failure
+    # to find a reasonable stopping place". spells2.c enchant(): +1 to-AC succeeds with 1 - table[to_a]/1000 (always
+    # below +0, never past +15, halved on artifacts); a failure wastes only the scroll. The table's knee: up to +7 a
+    # point costs <= 2 scrolls on average, +8 -> +9 3.3, +9 -> +10 20 -- so enchant while the next point is >= 50%)
+    ENCHANT_TABLE = (0, 10, 50, 100, 200, 300, 400, 500, 700, 950, 990, 992, 995, 997, 999, 1000)
+    ENCHANT_MIN_CHANCE = 0.5
+
+    def enchant_chance(self, it):
+        """The chance a Scroll of Enchant Armour adds +1 to this worn armour piece, or None (no [ac,+a] shown)."""
+        m = re.search(r"\[(\d+),([+-]\d+)\]", it["name"])
+        if not m or it["tval"] not in self.ARMOUR_SLOTS:
+            return None
+        to_a = int(m.group(2))
+        c = 1.0 if to_a < 0 else 0.0 if to_a > 15 else 1 - self.ENCHANT_TABLE[to_a] / 1000
+        return c * (0.5 if self.is_artifact(it["name"]) else 1.0)
+
+    def enchant_plan(self):
+        """(worn armour piece, chance) worth a Scroll of Enchant Armour now, the likeliest first."""
+        out = [(it, self.enchant_chance(it)) for it in self.w.items(equip=True)]
+        return sorted(((it, c) for it, c in out if c is not None and c >= self.ENCHANT_MIN_CHANCE), key=lambda x: -x[1])
+
+    def enchant_scrolls_wanted(self):
+        """Expected scrolls to bring every worn piece to the stopping place (sum of 1/chance per point)."""
+        n = 0.0
+        for it in self.w.items(equip=True):
+            m = re.search(r"\[(\d+),([+-]\d+)\]", it["name"])
+            if not m or it["tval"] not in self.ARMOUR_SLOTS:
+                continue
+            k = 0.5 if self.is_artifact(it["name"]) else 1.0
+            for to_a in range(int(m.group(2)), 16):
+                c = (1.0 if to_a < 0 else 1 - self.ENCHANT_TABLE[to_a] / 1000) * k
+                if c < self.ENCHANT_MIN_CHANCE:
+                    break
+                n += 1 / c
+        return n
 
     @staticmethod
     @functools.lru_cache(maxsize=None)
