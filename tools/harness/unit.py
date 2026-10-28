@@ -2271,6 +2271,19 @@ def proxy_counts_resists_by_ehp():
     return fire > 0 > melee, f"proxy with the measured mix {fire:+.3f}, melee only {melee:+.3f}"
 
 
+@case
+def ehp_gate_and_tie_break():
+    """The user (10-28): EHP in the verdict. A ring that adds damage but gives up a Protection ring's AC enough to cut
+    EHP >5% is ruled out ("less staying power"); a smaller EHP cut isn't."""
+    GE, ch = _dive04_character()
+    res = GE.compare_slot(ch, [GE.Item("Ring of Damage (+0,+6)")], hard=False, depth_n=0)
+    cut = {k: v for k, v in res["notes"].items() if any("staying power" in x for x in v)}
+    e = res["ehp"]
+    drops = {k: e[k] / e["current"] - 1 for k in e if k != "current"}
+    ok = all((drops[k] < -GE.EHP_GATE) == (k in cut) for k in drops)
+    return ok, f"EHP drops {', '.join(f'{v:+.1%}' for v in drops.values())}; ruled out by EHP: {len(cut)}"
+
+
 def _trip_on_level(p, tp):
     p.goal = None
     p.set_goal = lambda g: setattr(p, "goal", g)
@@ -2405,7 +2418,8 @@ def gear_evaluator_no_loss_rules():
     """The Pilot's automatic swaps never lose Free Action, See Invisible, resist blindness/confusion or hold life
     (geareval.NO_LOSS); other resists only with TRADE_RESISTS (off until the user decides: they're simulated since
     options_sim 26f). A plain axe that loses Free Action is vetoed in any case (REQUIRED). With no simulation sets the
-    verdict keeps the current gear (no measured gain)."""
+    verdict keeps the current gear (no measured gain). With resists traded, the plain mail is still ruled out: it cuts
+    EHP by 6% (the EHP gate, the user 10-28: the lost fire resist outweighs 28 AC against the damage taken)."""
     GE, ch = _dive04_character()
     mail_it = GE.Item("Metal Scale Mail [38,+5]")
     res = GE.compare_slot(ch, [mail_it], hard=False, depth_n=0, no_loss=True)      # (TRADE_RESISTS off: the default)
@@ -2417,7 +2431,7 @@ def gear_evaluator_no_loss_rules():
     res2 = GE.compare_slot(ch, [GE.Item("Battle Axe (2d8) (+20,+20)")], hard=False, depth_n=0)
     mail = res["options"][1]
     ok = res["best"] == "current" and any("resist acid" in x for x in res["notes"][mail]) and \
-        res_t["notes"][mail] == [] and res2["best"] == "current" and \
+        len(res_t["notes"][mail]) == 1 and "EHP" in res_t["notes"][mail][0] and res2["best"] == "current" and \
         any("Free Action" in x for x in res2["notes"][res2["options"][1]])
     return ok, f"mail: {res['notes'][mail]}; trading resists: {res_t['notes'][mail]}; " \
                f"plain axe: {res2['notes'][res2['options'][1]]}"

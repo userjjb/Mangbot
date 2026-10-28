@@ -653,9 +653,15 @@ def compare(ch, options, decisions=None, n=10, lo_ft=None, hi_ft=None, hard=True
     for k in options:
         rows = [r for s in SCORE_SETS if s in raw for r in raw[s][k]]
         score[k] = summary(rows, xp_per_gold)["score"] if rows else 0.0
+    mx, lvl, src = mix or (DEFAULT_MIX, DEFAULT_MELEE_LEVEL, "the default mix")
+    ehps = {k: ehp(d, mx, lvl) for k, d in derived.items()}
     notes, gains = {}, {}
     for k in options:
         why = []
+        # (the user, 10-28: EHP in the verdict. The fights simulated miss rare breaths, archers and traps -- the damage
+        # EHP weighs by what was actually taken: an option that cuts it by more than EHP_GATE is ruled out)
+        if k != cur and ehps[k] < (1 - EHP_GATE) * ehps[cur]:
+            why.append(f"less staying power (EHP {ehps[k]:.0f} vs {ehps[cur]:.0f}, {ehps[k] / ehps[cur] - 1:+.0%})")
         if rules[k]["veto"]:
             why.append("loses " + ", ".join(rules[k]["veto"]))
         elif no_loss and set(rules[k]["lost"]) & (NO_LOSS if TRADE_RESISTS else set(rules[k]["lost"])):
@@ -682,20 +688,19 @@ def compare(ch, options, decisions=None, n=10, lo_ft=None, hi_ft=None, hard=True
             gains[k] = _paired_gain_sets(raw, cur, k, xp_per_gold)
         notes[k] = why
     # the verdict: a change must beat the current gear by 3% and by 2 standard errors of the paired difference (the
-    # Advisor, 10-26); ties within 1% go to the safer option (the hard fights' lowest HP, then AC)
+    # Advisor, 10-26); ties within 1% go to the safer option (the hard fights' lowest HP, then EHP: the user, 10-28)
     ok = [k for k in options if k == cur or (not notes[k] and gains[k][0] > max(0.03 * abs(score[cur]),
                                                                                  2 * gains[k][1]))]
     top = max(score[k] for k in ok)
 
     def safety(k):
         h = sims.get("hard", {}).get(k) or sims.get("deeper", {}).get(k)
-        return (round(h["low_mean"], 2) if h else 0, derived[k]["ac"], k == cur)
+        return (round(h["low_mean"], 2) if h else 0, round(ehps[k]), k == cur)
     best = max((k for k in ok if score[k] >= top * 0.99), key=safety)
-    mx, lvl, src = mix or (DEFAULT_MIX, DEFAULT_MELEE_LEVEL, "the default mix")
     return dict(options=list(options), derived=derived, rules=rules, sims=sims, score=score, notes=notes,
                 gains=gains, best=best, sets={s: len(v[0]) for s, v in sets.items()},
                 seconds=round(time.time() - t0, 1), check=ch.check(),
-                ehp={k: round(ehp(d, mx, lvl)) for k, d in derived.items()}, ehp_src=src)
+                ehp={k: round(v) for k, v in ehps.items()}, ehp_src=src)
 
 
 def compare_slot(ch, candidates, **kw):
@@ -742,6 +747,7 @@ def _dominated(a, b, ch):
 DEFAULT_MIX = {"hurt": 0.51, "melee_other": 0.12, "fire": 0.13, "cold": 0.03, "lite": 0.016, "elec": 0.014,
                "pois": 0.009, "dark": 0.005, "shard": 0.003, "other": 0.16}   # (Dive04 at 700-800 ft, 10-24..10-28)
 DEFAULT_MELEE_LEVEL = 13
+EHP_GATE = 0.05        # an option with more than 5% less EHP than worn is ruled out (compare's verdict)
 # resists: the basic four and poison cut a third (immunity: nothing); the high resists x6/(d6+6), ~0.65 on average
 EHP_RES = {"acid": (("RES_ACID", 1 / 3), ("IM_ACID", 0.0)), "elec": (("RES_ELEC", 1 / 3), ("IM_ELEC", 0.0)),
            "fire": (("RES_FIRE", 1 / 3), ("IM_FIRE", 0.0)), "cold": (("RES_COLD", 1 / 3), ("IM_COLD", 0.0)),
@@ -921,7 +927,7 @@ def report(res):
                                              f" ({gain:+.1%} XP per real minute of fighting and resting, net "
                                              "of consumables)") + f" -- {res['seconds']} s. score = (XP - gold spent "
                  f"x XP-per-gold) / real minutes (fight turns x {BLOCK_S} s + rest turns x {BLOCK_S} s / "
-                 f"{REST_SPEEDUP}); a change needs +3% and 2 SE")
+                 f"{REST_SPEEDUP}); a change needs +3% and 2 SE, and no more than {EHP_GATE:.0%} less EHP")
     return "\n".join(lines)
 
 
