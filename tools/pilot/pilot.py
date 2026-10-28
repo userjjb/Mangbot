@@ -1693,17 +1693,26 @@ class StashDeposit(Goal):
         items = [i for i in w.items() if p.is_stash_item(i["name"])]
         if not items:
             return ("done", "stashed " + ", ".join(self.dropped) if self.dropped else "nothing to stash")
-        if w.pos != tuple(ent):
+        # Inside the room, on an empty square (the user, 10-27: the inside is walkable). Dropped from the entrance,
+        # which takes no object, the wands landed on the street and townsfolk with TAKE_ITEM took them
+        room = next((h for h in town_houses(w.memory, door="8") if h["door"] == tuple(ent)), None)
+        used = {tuple(q) for q in p.stash_state().get("squares", [])}
+        free = [q for q in (room["inside"] if room else []) if q not in used and w.memory.get(q) == "."]
+        if not free:
+            return ("failed", "no empty square seen inside the tavern room: not dropping at the door")
+        target = max(free, key=lambda q: (w.dist(q, tuple(ent)), q))
+        if w.pos != target:
             if not p.mover.active:
                 self.tries += 1
-                if self.tries > 3 or not p.mover.go([tuple(ent)]):
-                    return ("failed", "couldn't reach the tavern")
+                if self.tries > 4 or not p.mover.go([target]):
+                    return ("failed", f"couldn't reach {target[0]},{target[1]} in the tavern")
             p.mover.tick()
             return None
         if not waited(self.t, 1.0) or now < p.busy_until or w.inven_dirty:
             return None
         it = items[0]
         self.t = now
+        p.stash_state().setdefault("squares", []).append(list(target))
         p.cmd(f"custom d item={it['item']} value={it['number']}", f"stash in the tavern: {it['name']}", hold=0.8)
         p.stash_add(it["name"])
         self.dropped.append(it["name"])
@@ -1725,6 +1734,10 @@ class StashFetch(Goal):
         if any(self.kind in i["name"] for i in w.items()):
             p.fetching = None
             p.stash_remove(self.kind)
+            sq = p.stash_state().get("squares", [])
+            if list(w.pos) in sq:
+                sq.remove(list(w.pos))           # (the square is free for the next stash drop)
+                p.stash_save()
             return ("done", f"fetched {self.kind} from the tavern")
         ent = p.tavern_entrance()
         if not ent:
@@ -1756,28 +1769,29 @@ class StashFetch(Goal):
         return None
 
 
-def town_houses(memory):
+def town_houses(memory, door="0"):
     """The houses on a town map (the Pilot's memory: walls '#', house doors '0'): rectangles of wall with a door,
     as [{area, door, inside, outside, box}], smallest first. inside: the interior squares; outside: the open square
     across the door from the interior (where we stand to open it)."""
     g = memory.get
     seen, out = set(), []
     for (y, x), ch in sorted(memory.items()):
-        if ch not in "#0" or (y, x) in seen or g((y - 1, x), " ") in "#0" or g((y, x - 1), " ") in "#0":
+        wall = "#" + door
+        if ch not in wall or (y, x) in seen or g((y - 1, x), " ") in wall or g((y, x - 1), " ") in wall:
             continue
         x2, y2 = x, y
-        while g((y, x2 + 1), " ") in "#0":
+        while g((y, x2 + 1), " ") in wall:
             x2 += 1
-        while g((y2 + 1, x), " ") in "#0":
+        while g((y2 + 1, x), " ") in wall:
             y2 += 1
         if x2 - x < 2 or y2 - y < 2:
             continue
         border = {(y, i) for i in range(x, x2 + 1)} | {(y2, i) for i in range(x, x2 + 1)} | \
             {(j, x) for j in range(y, y2 + 1)} | {(j, x2) for j in range(y, y2 + 1)}
-        if not all(g(q, " ") in "#0" for q in border):
+        if not all(g(q, " ") in wall for q in border):
             continue
         seen |= border
-        doors = sorted(q for q in border if g(q) == "0")
+        doors = sorted(q for q in border if g(q) == door)
         if len(doors) != 1:
             continue
         dy, dx = doors[0]

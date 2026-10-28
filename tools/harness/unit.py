@@ -2182,6 +2182,58 @@ def house_keeps_the_stash():
     return ok, f"deposit {a}: floor {dep}; withdraw {b}: floor {floor}; pack {[i['name'] for i in w.items()]}"
 
 
+@case
+def tavern_stash_drops_inside():
+    """10-27: the tavern stash dropped from the entrance (27,89), which holds no object; the wands landed on the
+    street (27,88, 28,88) and townsfolk with TAKE_ITEM took them. The user: the inside is walkable. Now each stash
+    stack goes on an empty square inside the room, the farthest from the door first."""
+    import tempfile
+    mem = {}
+    for x in range(89, 95):
+        mem[(26, x)] = mem[(29, x)] = "#"
+    for y in (27, 28):
+        mem[(y, 94)] = "#"
+        for x in range(90, 94):
+            mem[(y, x)] = "."
+    mem[(27, 89)], mem[(28, 89)] = "8", "#"
+    for y in range(25, 31):
+        mem[(y, 88)] = "."
+    p = pilot(pack=[("2 Wands of Stone to Mud (21 charges)", 65), ("a Potion of Restore Dexterity", 75)])
+    w = p.w
+    w.depth, w.in_dungeon, w.memory, w.pos = 0, False, mem, (27, 88)
+    p.rundir, p.busy_until = tempfile.mkdtemp(), 0
+    p.stash = {"items": [], "entrance": [27, 89]}
+    p.stash_save = lambda: None
+    floor = {}
+
+    def cmd(line, why, hold=0.4):
+        m = re.match(r"custom d item=(\d+)", line)
+        if m:
+            it = next(i for i in w.inven if i["item"] == int(m.group(1)))
+            w.inven.remove(it)
+            floor[w.pos] = it["name"]
+    p.cmd = cmd
+
+    class M:
+        active = False
+        def go(self, t):
+            w.pos = tuple(t[0])
+            return True
+        def tick(self):
+            return "arrived"
+    p.mover = M()
+    g = P.StashDeposit()
+    r = None
+    for _ in range(30):
+        g.t = -99.0
+        r = g.tick(p)
+        if r:
+            break
+    inside = all(26 < y < 29 and 89 < x < 94 for y, x in floor)
+    ok = r and r[0] == "done" and len(floor) == 2 and inside and (28, 93) in floor
+    return ok, f"{r}; dropped on {floor}"
+
+
 def _trip_on_level(p, tp):
     p.goal = None
     p.set_goal = lambda g: setattr(p, "goal", g)
