@@ -2368,18 +2368,22 @@ def trip_dmin_counts_dungeon_minutes():
 
 
 @case
-def empty_devices_sold_kept_ones_kept():
-    """m56: an empty Staff of Perception was carried all mission, "kept" as a useful device. Empty staffs and wands are
-    sold (unless a Scroll of Recharging is carried); a kept kind stays, and the keep list matches plural stacks
-    ("staff of teleportation" vs "2 Staffs of Teleportation")."""
-    p = pilot(pack=[("a Staff of Perception (0 charges)", 55), ("a Staff of Perception (5 charges)", 55),
+def empty_devices_recharged_or_sold():
+    """m56: an empty Staff of Perception was carried all mission. The user (10-28): recharge it rather than sell it. An
+    empty useful staff is kept when a Scroll of Recharging would refill it at <=15% risk of destroying it (Perception,
+    level 10: 1 in 10; the town kit then recharges it), sold when the risk is higher (Healing, level 70: 1 in 6); the
+    keep list matches plural stacks ("staff of teleportation" vs "2 Staffs of Teleportation")."""
+    p = pilot(pack=[("a Staff of Perception (0 charges)", 55), ("a Staff of Healing (0 charges)", 55),
                     ("2 Staffs of Teleportation (0 charges)", 55)])
     p.keep = {"staff of teleportation"}
     p.flavour_of = lambda it: None
     p.town_buyers = lambda it: [5]
     p.unknown_flavour = lambda it: False
     got = [p.town_sell_count(it) for it in p.w.items()]
-    return got == [1, 0, 0], f"sell counts {got}"
+    want = [i["name"] for i in p.recharge_wanted()]
+    risk = round(p.recharge_fail(p.w.items()[0]), 3)
+    return got == [0, 1, 0] and want[:1] == ["a Staff of Perception (0 charges)"] and risk == 0.1, \
+        f"sell counts {got}; recharge {want}; Perception risk {risk}"
 
 
 @case
@@ -2404,6 +2408,39 @@ def ask_quiet_waits_for_the_answer():
     r2 = g.tick(p)
     ok = out["ok"] and isinstance(g, P.QuietWait) and g.wait_answer == 1 and r1 is None and r2 and r2[0] == "done"
     return ok, f"{out.get('text', out)[:70]}; after 'more': {r1}; after the answer: {r2}"
+
+
+@case
+def supply_minutes_and_quiet_cap():
+    """The user (10-28): the Navigator should know how long food and light last. Food (reserves counted, slow
+    digestion halves it) and light (lantern + flasks) in dungeon minutes; a reminder under 15 and 5 minutes; a quiet
+    wait capped at a quarter of what's left."""
+    p = pilot(pack=[("3 Rations of Food", P.TV_FOOD), ("2 Flasks of oil", P.TV_FLASK)],
+              worn=[("a Spear (1d6) (+5,+7)", 22, 50), ("a Brass Lantern (with 2150 turns of light)", P.TV_LITE, 50)])
+    p.w.hunger = 3
+    for it in p.w.items():
+        if it["tval"] == P.TV_FLASK:
+            it["number"] = 2
+    p.w.flags["slow_digest"] = 1
+    slow = p.supply_minutes()
+    p.w.flags["slow_digest"] = 0
+    fast = p.supply_minutes()
+    p.supply_told = set()
+    p.w.items = lambda **k: [i for i in p.w.inven if i["equip"] == k.get("equip", False)
+                             and (k.get("tval") is None or i["tval"] == k["tval"]) and i["tval"] != P.TV_FLASK]
+    for it in p.w.inven:
+        if it["tval"] == P.TV_LITE:
+            it["name"] = "a Brass Lantern (with 900 turns of light)"
+    p.supply_watch()
+    told = [d for what, d in p.notes if what == "supplies"]
+    g = P.QuietWait(600)
+    p.mover = type("M", (), {"active": False, "go": lambda self, t: False, "tick": lambda self: "arrived",
+                             "stop": lambda self: None})()
+    p.quiet_spot, p.w.last_hit_t, p.w.pos, p.cmd = (lambda: None), 0.0, (20, 20), (lambda *a, **k: None)
+    g.tick(p)
+    ok = abs(slow[0] - (6000 + 15000 - 1000) / 215) < 1 and abs(fast[0] - slow[0] / 2) < 1 and \
+        abs(slow[1] - (2150 + 15000) / 215) < 1 and len(told) == 1 and "light" in told[0] and g.secs < 600
+    return ok, f"slow digestion {slow[0]:.0f}/{slow[1]:.0f} min, normal {fast[0]:.0f}; told {told}; quiet {g.secs} s"
 
 
 def _trip_on_level(p, tp):

@@ -23,6 +23,7 @@ See HANDBOOK.md for the player's view; design_pilot.md for the why.
 """
 import argparse
 import collections
+import functools
 import csv
 import math
 import json
@@ -2116,6 +2117,7 @@ class TownKit(Goal):
             self.counted = True
             p.review_state()["town_visits"] += 1
             p.review_save()
+            p.notify("tactic", f"plan town: came back with {p.supply_text()} (reserves counted)", news=True)
         if self.sub:
             r = self.sub.tick(p)
             if r is None:
@@ -2255,6 +2257,24 @@ class TownKit(Goal):
                 self.sub = Wait(40)
                 self.done_log.append(f"still missing {'; '.join(gap)}: waiting 40 s for new stock")
                 return None
+            # recharge an empty useful staff or wand (a Scroll of Recharging from the Alchemist; the user, 10-28)
+            tried = self.__dict__.setdefault("recharged", set())
+            todo = [d for d in p.recharge_wanted() if d["name"] not in tried]
+            dev = todo[0] if todo else None
+            if dev:
+                sc = next((i for i in w.items(tval=TV_SCROLL) if "Recharging" in i["name"]), None)
+                if sc:
+                    tried.add(dev["name"])
+                    p.cmd(f"custom r item={sc['item']} dir={dev['item']}",
+                          f"town kit: recharge {dev['name']} ({p.recharge_fail(dev):.0%} risk)", hold=1.0)
+                    self.done_log.append(f"recharged {dev['name']}")
+                    self.t = now + 1.0
+                    return None
+                if not getattr(self, "recharge_bought", False):
+                    self.recharge_bought = True
+                    self.sub = Shop(5, buys=[("Recharging", len(todo),
+                                              round((p.price_of("Recharging", 5) or 250) * 1.5))])
+                    return None
             # last: the stash kinds go to the tavern for the mission (Restore potions, Stone to Mud wands)
             if not getattr(self, "stashed", False) and not p.house_state().get("house") and \
                     any(p.is_stash_item(i["name"]) for i in w.items()):
@@ -2277,7 +2297,8 @@ class TownKit(Goal):
         gap = p.supply_gate(want, True) if want else []
         short = [f"{n} {k}" for k, n in getattr(self, "short", []) if n > 0]
         head = (f"sold for {self.sold}, bought for {self.bought}, identified {self.identified}; "
-                f"gold now {w.ind.get('gold', [0])[0]}" + (f" (+{p.banked()} in the house)" if p.banked() else ""))
+                f"gold now {w.ind.get('gold', [0])[0]}" + (f" (+{p.banked()} in the house)" if p.banked() else "")
+                + f"; leaving with {p.supply_text()}")
         tail = (f"; supplies for recalling to {want} ft: " + ("OK" if not gap else "MISSING " + "; ".join(gap))) \
             if want else ""
         p.log("town_kit", sold=self.sold, bought=self.bought, identified=self.identified,
@@ -2349,6 +2370,7 @@ class TripPlan:
         w = p.w
         if w.in_dungeon and not self.__dict__.get("dungeon_t0"):
             self.dungeon_t0 = gnow()
+            p.notify("plan", f"trip: down at {w.depth_ft} ft with {p.supply_text()}", news=True)
 
         def n(word, tv=TV_POTION):
             return sum(i["number"] for i in w.items(tval=tv) if word in i["name"])
@@ -2784,6 +2806,14 @@ class QuietWait(Goal):
         if gnow() - self.t0 >= self.secs:
             return self.end(p, f"{self.secs} s are up")
         if w.in_dungeon and self.spot is None and w.pos:
+            # (the user, 10-28: cap the wait by the food and light left -- at most a quarter of either; resting runs
+            # the game clock ~10x)
+            food, light = p.supply_minutes()
+            left = min(m for m in (food, light) if m is not None) if light is not None else food
+            cap = max(10, int(0.25 * 60 * left))
+            if cap < self.secs:
+                p.notify("tactic", f"quiet wait: {cap} s, not {self.secs} ({p.supply_text()})", news=True)
+                self.secs = cap
             self.spot = p.quiet_spot() or w.pos
             if self.spot != w.pos and p.mover.go([self.spot]):
                 self.walking = True
@@ -7122,6 +7152,7 @@ class Pilot:
             return
         if self.confusion_window():
             return
+        self.supply_watch()
         # the game clock (world.py). The server's rule (xtra2.c base_time_factor, time_factor): 1 in town;
         # 10x resting and 5x running with no awake monster in line of sight -- seen or not
         # (monsters_in_los), so after a fight in the dark it's often 1x (set-piece L2: a 6-s rest at 1x);
@@ -8176,6 +8207,43 @@ class Pilot:
     # Location were never used in 30 missions and held two slots -- the user, 10-25: the pack fills up)
     # (not Cure Light Wounds: ~15-20 HP a charge at 270 HP, a turn each, a pack slot -- the user, m25)
     STAT_FULL = {"STR": "Strength", "DEX": "Dexterity", "CON": "Constitution"}
+    RECHARGE_MAX_FAIL = 0.15
+
+    @staticmethod
+    @functools.lru_cache(maxsize=None)
+    def device_level(kind):
+        """object.txt level of a staff or wand kind ('Perception' -> 10), or None."""
+        for r in geareval._read_txt(os.path.join(geareval.LIB, "object.txt")):
+            if r.get("N") == kind and "I" in r and r["I"][0] in ("55", "65") and "W" in r:
+                return int(r["W"][0])
+        return None
+
+    def recharge_fail(self, it):
+        """The chance a Scroll of Recharging destroys this staff/wand (spells2.c recharge_aux, strength 60, no
+        SAFE_RECHARGE: 1 in (160 - level - 10 x charges per item) / 15), or None for a kind we don't know."""
+        m = re.search(r"(Staff|Staffs|Wand|Wands) of (.+?) \((\d+) charges?\)", it["name"])
+        if not m:
+            return None
+        lev = self.device_level(m.group(2))
+        if lev is None:
+            return None
+        i = (160 - lev - 10 * (int(m.group(3)) // max(1, it["number"]))) // 15
+        return 1.0 if i <= 1 else 1.0 / i
+
+    def recharge_wanted(self):
+        """Useful staffs and wands at 0-1 charges per item that a Scroll of Recharging would refill with at most
+        RECHARGE_MAX_FAIL risk of destroying them (the user, 10-28: "hopefully it doesn't sell it, but rather it
+        recharges it": a Staff of Perception refills 3-8 charges for one ~200-gold scroll, 1 in 10 lost)."""
+        out = []
+        for it in self.w.items():
+            m = re.search(r"\((\d+) charges?\)", it["name"])
+            if it["tval"] not in (55, 65) or not m or int(m.group(1)) // max(1, it["number"]) > 1 or \
+                    not any(d in it["name"] for d in self.USEFUL_DEVICES):
+                continue
+            f = self.recharge_fail(it)
+            if f is not None and f <= self.RECHARGE_MAX_FAIL:
+                out.append(it)
+        return out
 
     def note_store(self):
         """Remember the shop we're in: its owner and the cheapest price per kind."""
@@ -8305,7 +8373,8 @@ class Pilot:
                 self.is_kit_item(it) \
                 or (it["tval"] in (55, 65, 66) and any(d in name for d in self.USEFUL_DEVICES) and not rod_dup
                     and not (it["tval"] in (55, 65) and re.search(r"\(0 charges\)", name)
-                             and not any("Recharging" in i["name"] for i in self.w.items()))) \
+                             and not any("Recharging" in i["name"] for i in self.w.items())
+                             and not any(r["item"] == it["item"] for r in self.recharge_wanted()))) \
                 or self.is_kept(name) or \
                 re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower() in self.ability_sources:
             return 0
@@ -9530,6 +9599,55 @@ class Pilot:
 
     BANK_FLOAT = 300           # gold carried out of town when a house holds the rest (no use for it in the dungeon)
 
+    # (the user, 10-28: "is the Navigator made aware of how much time until we are Starving or without light?")
+    # The lantern burns a turn of fuel a player turn, ~215 a dungeon minute with the resting/running speed-ups
+    # (FIELD-NOTES: 15000 -> 7500 in ~35 dungeon minutes, m29-m30). Food: 20 a food tick every 10 player turns at
+    # normal speed, 10 with slow digestion (dungeon.c:1129-1147), none in town -- 1 or 2 a player turn, so on the same
+    # clock. Food runs from the hunger level's middle (the client sends the level only) down to Weak (1000).
+    TURNS_PER_DMIN = 215
+    FOOD_MID = {0: 750, 1: 750, 2: 1500, 3: 6000, 4: 12500, 5: 15000}
+
+    def supply_minutes(self):
+        """(food, light): dungeon minutes left counting the reserves (rations and other food; flasks), or None for a
+        light that needs no fuel."""
+        w = self.w
+        per_turn = 1.0 if (w.flags or {}).get("slow_digest") else 2.0
+        reserve = sum(self.food_value(i["name"]) * i["number"] for i in w.items(tval=TV_FOOD)
+                      if "Mushroom" not in i["name"])
+        food = max(0.0, self.FOOD_MID.get(w.hunger, 6000) + reserve - 1000) / (per_turn * self.TURNS_PER_DMIN)
+        fuel = self.lantern_fuel()
+        if fuel is None:
+            light = None if any(i["tval"] == TV_LITE for i in w.items(equip=True)) else 0.0
+        else:
+            flasks = sum(i["number"] for i in w.items(tval=TV_FLASK))
+            light = (fuel + flasks * self.FLASK_FUEL) / self.TURNS_PER_DMIN
+        return food, light
+
+    def supply_text(self):
+        food, light = self.supply_minutes()
+        return f"food ~{food:.0f} dungeon min, light ~{light:.0f}" if light is not None else \
+            f"food ~{food:.0f} dungeon min, light permanent"
+
+    def supply_watch(self):
+        """In the dungeon: tell the Navigator once when food or light (reserves counted) falls under 15, then 5,
+        dungeon minutes."""
+        w = self.w
+        if not w.in_dungeon:
+            return
+        food, light = self.supply_minutes()
+        told = self.__dict__.setdefault("supply_told", set())
+        for what, m, how in (("food", food, "rations"), ("light", light, "flasks of oil")):
+            if m is None:
+                continue
+            new = [th for th in (15, 5) if m < th and (what, th) not in told]
+            if new:
+                told.update((what, th) for th in new)     # (both crossed at once: one notice)
+                self.notify("supplies", f"{what}: ~{m:.0f} dungeon minutes left with the {how} carried -- plan to "
+                                        f"be home before then (`goal recall`)")
+            if m >= 20:
+                told.discard((what, 15))
+                told.discard((what, 5))
+
     @staticmethod
     def edge_dir(pos):
         """The direction that walks off the map edge from this square (MAX_HGT 66, MAX_WID 198), else None."""
@@ -9887,7 +10005,7 @@ class Pilot:
         out = ["Cures " + (" · ".join(f"{k} {v}" for k, v in cures.items()) or "NONE")
                + " | Escapes " + " · ".join(f"{k} {esc.get(k, 0)}" for k in ("Phase", "WoR"))
                + "".join(f" · {k} {v}" for k, v in esc.items() if k not in ("Phase", "WoR"))
-               + f" | Food {food} | Light {light}"
+               + f" | Food {food} | Light {light}" + (f" ({self.supply_text()})" if w.in_dungeon or not w.depth else "")
                + (f" | RECALL PENDING ({gnow() - w.recall_pending_t:.0f} s; 8-23 s)" if w.recall_pending else "")]
         extra = [f"{k} {v}" for k, v in other.items()] + [d for d in devices if "Cure Light Wounds" not in d]
         if extra:
