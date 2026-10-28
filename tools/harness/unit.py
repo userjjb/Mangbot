@@ -2329,6 +2329,59 @@ def house_walk_stops_at_the_crossing():
     return ok, f"stops at {stops}; step {g.step}"
 
 
+@case
+def item_commands_wait_for_the_pack():
+    """m57: Speed (the last of its stack) then Berserk 1 s later by a stale letter -- a Cure Light Wounds was drunk and
+    the Berserk "showed no effect" twice. A second item command waits until the pack has come back (3 s at most);
+    the first marks the pack dirty so it comes back at once."""
+    p = pilot(pack=[("a Potion of Speed", 75), ("a Potion of Berserk Strength", 75)])
+    sent = []
+    p.c = type("C", (), {"send": lambda self, x: sent.append(x)})()
+    p.pending_use, p.log, p.held_t = None, (lambda *a, **k: None), 0.0
+    p.expect_effect = p.log_escape = p.watch_flavours = lambda *a, **k: None
+    p.w.inven_t = P.gnow() - 5
+    p.cmd("custom q item=0", "speed")
+    dirty = p.w.inven_dirty
+    p.cmd("custom q item=1", "berserk")
+    held = list(sent)
+    p.w.inven_t = P.gnow() + 0.01            # (the pack came back)
+    p.cmd("custom q item=0", "berserk again")
+    ok = held == ["custom q item=0"] and dirty and sent == ["custom q item=0", "custom q item=0"]
+    return ok, f"sent {sent}; pack marked dirty {dirty}"
+
+
+@case
+def trip_dmin_counts_dungeon_minutes():
+    """m57: `minutes>30` counted the town visit and the recall down, and ended the trip early. `dmin` counts from the
+    trip's first moment in the dungeon (0 in town)."""
+    p = pilot()
+    tp = P.TripPlan(700, 800, P.TripPlan.parse_until("dmin>20"))
+    tp.t0 -= 600
+    p.w.in_dungeon = False
+    town = tp.value(p, "dmin")
+    p.w.in_dungeon = True
+    tp.value(p, "minutes")
+    tp.dungeon_t0 -= 21 * 60
+    later = tp.value(p, "dmin")
+    ok = town == 0 and 20.9 < later < 21.1 and tp.value(p, "minutes") > 9.9
+    return ok, f"in town {town}; 21 min after arriving {later:.1f}; minutes {tp.value(p, 'minutes'):.1f}"
+
+
+@case
+def empty_devices_sold_kept_ones_kept():
+    """m56: an empty Staff of Perception was carried all mission, "kept" as a useful device. Empty staffs and wands are
+    sold (unless a Scroll of Recharging is carried); a kept kind stays, and the keep list matches plural stacks
+    ("staff of teleportation" vs "2 Staffs of Teleportation")."""
+    p = pilot(pack=[("a Staff of Perception (0 charges)", 55), ("a Staff of Perception (5 charges)", 55),
+                    ("2 Staffs of Teleportation (0 charges)", 55)])
+    p.keep = {"staff of teleportation"}
+    p.flavour_of = lambda it: None
+    p.town_buyers = lambda it: [5]
+    p.unknown_flavour = lambda it: False
+    got = [p.town_sell_count(it) for it in p.w.items()]
+    return got == [1, 0, 0], f"sell counts {got}"
+
+
 def _trip_on_level(p, tp):
     p.goal = None
     p.set_goal = lambda g: setattr(p, "goal", g)

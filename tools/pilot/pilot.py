@@ -2296,7 +2296,7 @@ class TripPlan:
     comes home (Word of Recall, else the stairs), and with `then town` runs the town kit.
     It sits above the goals: the Pilot's reflexes (flee, recover) replace a goal without ending
     the plan, and a goal the Navigator gives pauses it until that goal ends."""
-    VARS = ("cures", "ccw", "csw", "clw", "phase", "wor", "food", "hp", "minutes", "time", "clvl", "gold",
+    VARS = ("cures", "ccw", "csw", "clw", "phase", "wor", "food", "hp", "minutes", "dmin", "time", "clvl", "gold",
             "free", "levels")
     EVENTS = ("band", "drained", "emergency", "emergency_loop", "danger", "pack_full", "unique_slain",
               "unseen_attacker")
@@ -2347,6 +2347,8 @@ class TripPlan:
 
     def value(self, p, var):
         w = p.w
+        if w.in_dungeon and not self.__dict__.get("dungeon_t0"):
+            self.dungeon_t0 = gnow()
 
         def n(word, tv=TV_POTION):
             return sum(i["number"] for i in w.items(tval=tv) if word in i["name"])
@@ -2356,6 +2358,9 @@ class TripPlan:
                 "clw": lambda: n("Cure Light Wounds"), "phase": lambda: n("Phase Door", TV_SCROLL),
                 "wor": lambda: n("Word of Recall", TV_SCROLL), "food": lambda: p.kit_count("Ration of Food"),
                 "hp": lambda: round(100 * w.hp_frac), "minutes": lambda: (gnow() - self.t0) / 60,
+                # (m57: `minutes>30` counted the town visit and the recall down; dmin = minutes since the trip first
+                # reached the dungeon)
+                "dmin": lambda: (gnow() - self.__dict__["dungeon_t0"]) / 60 if self.__dict__.get("dungeon_t0") else 0,
                 "clvl": lambda: w.clvl, "gold": lambda: w.ind.get("gold", [0])[0],
                 "free": lambda: 23 - len(w.items()), "levels": lambda: self.levels,
                 "time": lambda: time.strftime("%H:%M:%S")}[var]()
@@ -2441,7 +2446,7 @@ class TripPlan:
                 p.notify("plan", f"trip: leaving {w.depth_ft} ft ({why})", news=True)
 
     STATE = ("lo", "hi", "then", "level_min", "t0", "phase", "levels", "went_down", "home_why", "until_text", "via",
-             "xp0")
+             "xp0", "dungeon_t0")
 
     def save(self, p):
         st = {k: getattr(self, k, None) for k in self.STATE}
@@ -2467,7 +2472,7 @@ class TripPlan:
         if not st or gnow() - st["t0"] > 90 * 60:
             return None
         pl = cls(st["lo"], st["hi"], cls.parse_until(st["until_text"]), st["then"], st["level_min"], st.get("via"))
-        for k in ("t0", "phase", "levels", "went_down", "home_why"):
+        for k in ("t0", "phase", "levels", "went_down", "home_why", "dungeon_t0"):
             setattr(pl, k, st[k])
         pl.xp0 = st.get("xp0")
         pl.resume_lvl = st.get("lvl")
@@ -3033,8 +3038,14 @@ class Pilot:
         # stack can still shrink and shift the pack letters (mission 9 read
         # "item=7" as Word of Recall 5 s after a potion stack ran out, then
         # read the real one as "item=5")
-        if self.pending_use and re.match(r"custom [rq] item=", line) and not why.startswith("agent:"):
-            self.log("note", text=f"held (a read/quaff is still unconfirmed): {why}")
+        # (m57 12:04: a Potion of Speed, the last of its stack, then 1 s later "quaff item=3" for Berserk -- the
+        # letters had shifted and it drank a Cure Light Wounds; the Berserk "showed no effect" and was resent twice.
+        # No item command until the pack has come back since the last one, 3 s at most)
+        item_cmd = re.match(r"custom [qrEuzaF] item=", line) and not why.startswith("agent:")
+        lt = self.__dict__.get("item_cmd_t", 0.0)
+        stale = item_cmd and lt and self.w.inven_t < lt and gnow() - lt < 3
+        if (self.pending_use and re.match(r"custom [rq] item=", line) and not why.startswith("agent:")) or stale:
+            self.log("note", text=f"held ({'the pack has not come back since the last item command' if stale else 'a read/quaff is still unconfirmed'}): {why}")
             self.busy_until = gnow() + ghold(0.3)
             self.held_t = gnow()     # notify() drops the caller's "quaffed ..." report
             # (callers set their rate-limit clock before calling: undo it, so
@@ -3047,6 +3058,9 @@ class Pilot:
                 self.cure_t = 0.0
             return
         self.c.send(line)
+        if item_cmd:
+            self.item_cmd_t = gnow()
+            self.w.inven_dirty = True        # (the next refresh fetches the pack: the hold above lasts ~0.3 s)
         self.last_action = (gnow(), line, why)
         self.busy_until = gnow() + ghold(hold)
         self.__dict__.setdefault("act_walls", collections.deque(maxlen=50)).append(time.time())
@@ -3876,6 +3890,11 @@ class Pilot:
             # drop always; with the pack full, swap the cheapest non-kit item for a
             # better find; otherwise leave it and say so. (The bulky-gear rule this
             # replaces lost Brodda's Scimitar in mission 23.)
+            # (m55 17:00:14: a Scroll of Light picked up mid-flee from a Black orc band. Fleeing with monsters in view,
+            # only a find worth over 500 is worth the turn)
+            if seen and isinstance(self.goal, (Flee, BandLeave, WalkAway)) and w.monsters and \
+                    self.iv(seen[-1][1][8:].rstrip(".")).value < 500:
+                seen = []
             if seen and not self.pickup_room(seen[-1][1][8:].rstrip(".")):
                 seen = []
             if seen and seen[-1][0] > self.picked_t and w.pos == self.seen_pos(seen[-1][0]):
@@ -4923,6 +4942,9 @@ class Pilot:
                                                       "You dig", "You have removed", "You failed to make",
                                                       "This seems to be permanent", "The door "))
                       for ts, t in w.messages)
+        # (acting in place is progress too: m57 12:20, plan town reading 7 Identify scrolls at the Alchemist for 20 s)
+        la = self.__dict__.get("last_action")
+        working = working or bool(la and now - la[0] < 4 and not str(la[1]).startswith(("walk", "pathfind", "run")))
         if not idle_goal and self.mover.active and not w.adjacent_monsters() and not w.resting and not working and \
                 now - self.stuck_t > 60 and now - getattr(self, "goal_t", 0) > 20:
             recent = [q for t, q, d in self.pos_hist if now - t <= 20]
@@ -5039,7 +5061,8 @@ class Pilot:
 
     def is_kept(self, name):
         b = re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower()
-        return any(k in b for k in self.keep)
+        # (singular too: "staff of teleportation" on the keep list missed "2 Staffs of Teleportation")
+        return any(k in b or k in singular(b) for k in self.keep)
 
     def debt_total(self):
         return sum(e.get("gold", 0) for e in self.debt.get("entries", []))
@@ -7244,7 +7267,9 @@ class Pilot:
                 self.wild_trail.pop()             # retracing: one sector closer
             elif edge_of(w.arrive_pos):
                 self.wild_trail.append(edge_of(w.arrive_pos))
-                if len(self.wild_trail) == 1:
+                # (not for the bank's own trip to the house tile: m57 read it as the Pilot wandering off)
+                banking = isinstance(self.goal, HouseBank) or isinstance(getattr(self.goal, "sub", None), HouseBank)
+                if len(self.wild_trail) == 1 and not banking:
                     self.notify("left_town", f"walked off the town map into the wilderness ({w.depth_ft} ft); "
                                              "'goal town' walks back")
         if w.in_dungeon and w.monsters and now - self.mons_log_t >= 1.0:
@@ -8271,7 +8296,9 @@ class Pilot:
                                            in name for i in self.w.items())
         if it.get("equip") or (it["tval"] in (TV_FOOD, TV_FLASK, TV_LITE) and not spare) or \
                 self.is_kit_item(it) \
-                or (it["tval"] in (55, 65, 66) and any(d in name for d in self.USEFUL_DEVICES) and not rod_dup) \
+                or (it["tval"] in (55, 65, 66) and any(d in name for d in self.USEFUL_DEVICES) and not rod_dup
+                    and not (it["tval"] in (55, 65) and re.search(r"\(0 charges\)", name)
+                             and not any("Recharging" in i["name"] for i in self.w.items()))) \
                 or self.is_kept(name) or \
                 re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower() in self.ability_sources:
             return 0
