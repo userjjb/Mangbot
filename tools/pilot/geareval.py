@@ -735,12 +735,6 @@ def _dominated(a, b, ch):
             and getattr(b, "price", 0) <= getattr(a, "price", 0))
 
 
-def melee_taken(ac, power=135):
-    """A monster's expected melee damage at this AC, relative: the hit chance (check_hit: 5% always, else
-    randint(power) > 3/4 AC; power = blow power 60 + 3 x level ~25) x the wound reduction (1 - AC/250)."""
-    return (0.05 + 0.9 * max(0.0, 1 - 0.75 * ac / power)) * (1 - min(ac, 150) / 250)
-
-
 # ------------------------------------------------------------------ effective HP
 # (the user, 10-28: "add the EHP column to gearcmp and loadout"). EHP = the HP an unarmoured, unresisted character
 # would need to last as long: max HP x (damage taken with no AC and no resists) / (damage taken with this gear), over
@@ -796,18 +790,20 @@ def load_mix(path):
     return DEFAULT_MIX, DEFAULT_MELEE_LEVEL, "the default mix (Dive04 at 700-800 ft, 10-24..10-28)"
 
 
-def proxy(d, cur, depth_ft=750):
+def proxy(d, cur, depth_ft=750, mix=None):
     """A static guess of a loadout's worth, to choose which few go to the simulation (the Advisor's slays memo,
-    10-27): kill speed (blows x (mean dice x the depth's mean slay multiplier + to-dam)), damage taken (melee_taken:
-    AC cuts the hit chance and the wounds), HP, speed."""
+    10-27): kill speed (blows x (mean dice x the depth's mean slay multiplier + to-dam)), staying power (the user,
+    10-28: effective HP over the damage mix taken -- AC, HP and resists on one scale; mix = (mix, melee level, ...)
+    as load_mix gives), speed."""
     import math
+    mx, lvl = (mix[0], mix[1]) if mix else (None, None)
 
     def dmg(x):
         dn, ds = (int(v) for v in x["dice"].split("d"))
         return x["blows"] * (dn * (ds + 1) / 2 * mean_mult(x.get("slays") or {}, depth_ft) + x["todam"])
     return (math.log(max(1e-9, dmg(d)) / max(1e-9, dmg(cur)))
-            + 0.5 * math.log(melee_taken(cur["ac"]) / melee_taken(d["ac"]))
-            + 0.5 * (d["mhp"] - cur["mhp"]) / max(1, cur["mhp"]) + 0.1 * (d["speed"] - cur["speed"]))
+            + 0.5 * math.log(ehp(d, mx, lvl) / max(1e-9, ehp(cur, mx, lvl)))
+            + 0.1 * (d["speed"] - cur["speed"]))
 
 
 def optimize(ch, pool, budget=0, max_sim=5, **kw):
@@ -861,7 +857,7 @@ def optimize(ch, pool, budget=0, max_sim=5, **kw):
         d = ch.derive(worn)
         if not keep <= d["flags"] or d["speed"] < cur["speed"]:
             continue
-        scored.append((proxy(d, cur, ch.depth_ft), worn, changes, cost))
+        scored.append((proxy(d, cur, ch.depth_ft, kw.get("mix")), worn, changes, cost))
     scored.sort(key=lambda x: -x[0])
     options, changes = {"current": ch.worn}, {"current": []}
     for pr, worn, chg, cost in scored[:max_sim]:

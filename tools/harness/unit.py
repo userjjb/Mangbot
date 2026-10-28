@@ -2251,6 +2251,26 @@ def ehp_counts_ac_hp_and_resists():
     return ok, f"EHP {e0:.0f}; +58 HP {con:+.1%}, +11 AC {ac:+.1%}, no fire resist {nofire:+.1%}, AC vs pure fire {ac_fire:+.1%}"
 
 
+@case
+def proxy_counts_resists_by_ehp():
+    """The user (10-28): EHP feeds the optimizer's proxy. A Ring of Resist Fire for a Protection ring (-10 AC) ranks
+    as a gain against the measured mix (13% fire) for a character without fire resistance, and as a loss against a
+    melee-only mix."""
+    import geareval as G
+    worn = {}
+    for n in ["Battle Axe of Westernesse (2d8) (+10,+9) (+1)", "Ring of Protection [+12]", "Ring of Protection [+10]",
+              "Metal Scale Mail [38,+5]", "Shadow Cloak [6,+2]", "Orcish Shield [5,+4]", "Metal Cap [3,+4]"]:
+        it = G.Item(n)
+        worn.setdefault(it.slot, []).append(it)
+    ch = G.Character(29, {"STR": 88, "INT": 5, "WIS": 8, "DEX": 38, "CON": 38, "CHR": 4}, mhp=358, ac=90, worn=worn,
+                     flags={"FREE_ACT", "SEE_INVIS"}, depth_ft=750)
+    cur = ch.derive()
+    d = ch.derive(ch.swap(G.Item("a Ring of Resist Fire"), 1))
+    fire = G.proxy(d, cur, 750, (G.DEFAULT_MIX, 13))
+    melee = G.proxy(d, cur, 750, ({"hurt": 1.0}, 13))
+    return fire > 0 > melee, f"proxy with the measured mix {fire:+.3f}, melee only {melee:+.3f}"
+
+
 def _trip_on_level(p, tp):
     p.goal = None
     p.set_goal = lambda g: setattr(p, "goal", g)
