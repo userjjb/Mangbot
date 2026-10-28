@@ -188,8 +188,10 @@ into the Temple (4), but everything it carried is dropped where it died.
   the live server, where we won't buy in town). A bank trip from the north edge takes ~20 s each way.
 - **The stash lives in the house** (the user, 10-27): stat restores and Stone to Mud wands, one stack a square on
   the interior squares other than the gold's (house.json `items`); `plan town` fetches a Restore a drained stat wants
-  when it withdraws and stashes when it deposits. The tavern floor wasn't safe: unseen town monsters took all three
-  Wands of Stone to Mud (10-27 18:10, 19:16).
+  when it withdraws and stashes when it deposits. The tavern itself is safe (townsfolk can't enter it), but **StashDeposit
+  dropped from the entrance square** (27,89), which holds no object: drop_near put the wands on the street outside
+  (27,88, 28,88), where townsfolk with TAKE_ITEM (urchins, rogues, beggars, idiots: monster.txt) took all three
+  (10-27 18:10, 19:16). A tavern drop must be made from inside the room.
 - The **town** 1-square house (door 38,155, bought 17:34 for 10125) was **sold 19:53 for 1012** (the user): `h` toward
   your own door from outside, with `confirm yes` first (the offer comes as a confirm prompt). State in
   `runs/pilot/dive04/house.json` (`old_houses` keeps the record);

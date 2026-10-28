@@ -5,8 +5,7 @@
   89
  ],
  "lost": [
-  "a Wand of Stone to Mud (taken by a town monster 10-27 18:10)",
-  "2 Wands of Stone to Mud (21 charges) (taken 10-27 19:16)"
+  "2 Wands of Stone to Mud (21 charges), a Wand of Stone to Mud: dropped from the tavern entrance (27,89), they landed on the street at 27,88 / 28,88 and town monsters with TAKE_ITEM took them (10-27 18:10, 19:16)"
  ],
- "where": "house (since 10-27 20:00: HouseBank stashes; the tavern isn't safe)"
+ "where": "house (since 10-27 20:00)"
 }

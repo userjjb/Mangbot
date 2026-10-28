@@ -1675,7 +1675,9 @@ class StashDeposit(Goal):
     2026-10-26: "leave the potions in the tavern during a mission"; the wands were never aimed). Walk onto the
     entrance; each drop lands on a floor square of the tavern room (drop_near: a shop entrance takes no object).
     Town objects aren't wiped (depth 0 is skipped), but on a live server another player could take them, and a full
-    object list compacts objects anywhere."""
+    object list compacts objects anywhere. **Dropped from the entrance, a drop can land on the street outside**
+    (10-27: the wands went to 27,88 and 28,88 and townsfolk with TAKE_ITEM took them): with a house, HouseBank keeps
+    the stash instead (TownKit skips this goal)."""
     name = "stash in the tavern"
 
     def __init__(self):
