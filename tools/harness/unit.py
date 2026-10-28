@@ -2510,6 +2510,34 @@ def town_waits_for_restock():
         f"waits with WoR missing {missing}; with nothing missing {fine}; STR drained, no Restore {restore}"
 
 
+@case
+def flee_replans_after_a_phase():
+    """m59 18:44: a flee had a known path to stairs 21 off; a Phase Door landed Dive04 among unmapped squares; the
+    replan used known squares only (the go allowed unexplored ones only when no known path existed at the start),
+    failed, "stuck" -> Word of Recall. A replan now falls back to unexplored squares when the go allowed it."""
+    import mover as M
+    w = W()
+    # a corridor 20,10..20,30 to stairs at 20,30, known; the landing at 24,20 is in unknown ground four rows off
+    w.memory = {(20, x): "." for x in range(10, 31)}
+    w.memory[(20, 30)] = ">"
+    w.pos = (20, 10)
+    w.bump_walls = {}
+    sent = []
+    c = type("C", (), {"send": lambda self, x: sent.append(x)})()
+    try:
+        m = M.Mover(c, w, log=lambda *a, **k: None)
+    except TypeError:
+        m = M.Mover(c, w)
+    ok = m.go([(20, 30)], unknown=True)
+    known_first = ok and not m.unknown
+    w.pos = (24, 20)                         # (the phase)
+    for y in range(21, 25):
+        w.memory.pop((y, 20), None)
+    st = m.tick()
+    return known_first and st == "moving" and m.unknown, f"first plan known {known_first}; after the jump {st}, " \
+                                                         f"through unexplored {m.unknown}"
+
+
 def _trip_on_level(p, tp):
     p.goal = None
     p.set_goal = lambda g: setattr(p, "goal", g)

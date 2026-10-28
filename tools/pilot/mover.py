@@ -321,7 +321,7 @@ class Mover:
                 if w.pos in goals:
                     self.goals = None
                     return "arrived"
-                if not self._plan():
+                if not self._replan():
                     self.goals = None
                     return "stuck"
                 return "moving"
@@ -335,6 +335,8 @@ class Mover:
         to stairs past a corridor seen only with orcs in it)."""
         self.goals = set(goals)
         self.avoid = set(avoid)
+        self.avoid0 = set(avoid)
+        self.allow_unknown = unknown
         self.replans = 0
         self.unknown = False
         self.no_run_at = set()
@@ -348,6 +350,16 @@ class Mover:
         near = min(self.goals, key=lambda g: max(abs(g[0] - self.w.pos[0]), abs(g[1] - self.w.pos[1]))) \
             if self.w.pos and self.goals else None
         self.log(goals=len(self.goals), nearest=near, path=len(self.path), ok=ok)
+        return ok
+
+    def _replan(self):
+        """A replan from where we are. Through unexplored squares too if the go allowed it (m59 18:44: a flee had a
+        known path, a Phase Door landed it among unmapped squares, the known-only replan failed, and "stuck" read Word
+        of Recall with the stairs 21 away)."""
+        ok = self._plan()
+        if not ok and getattr(self, "allow_unknown", False) and not self.unknown:
+            self.unknown = True
+            ok = self._plan()
         return ok
 
     def _clear(self):
@@ -387,7 +399,7 @@ class Mover:
             w.memory[tile] = "#"
             self.avoid.add(tile)
             self.dig_t0 = 0.0
-            if not self._plan():
+            if not self._replan():
                 self.stop()
                 return "stuck"
             return "moving"
@@ -470,7 +482,7 @@ class Mover:
             self.stop()
             return "arrived"
         if not self.path:
-            if self.replans >= self.max_replans or not self._plan():
+            if self.replans >= self.max_replans or not self._replan():
                 self.stop()
                 return "stuck"
             self.replans += 1
@@ -491,8 +503,11 @@ class Mover:
             if self.running is not None:
                 self.c.send("walk 5")
                 self.running = None
+            last = self.path[self.done - 1] if self.done else self.here
+            if last and w.pos and max(abs(last[0] - w.pos[0]), abs(last[1] - w.pos[1])) > 2:
+                self.avoid = set(getattr(self, "avoid0", ()))    # (a phase/teleport: a new start)
             self.replans += 1
-            if self.replans > self.max_replans or not self._plan():
+            if self.replans > self.max_replans or not self._replan():
                 self.stop()
                 return "stuck"
             return "moving"
@@ -526,7 +541,7 @@ class Mover:
                 return "moving"           # next tick digs it
             self.avoid.add(self.path[self.done])
             self.replans += 1
-            if self.replans > self.max_replans or not self._plan():
+            if self.replans > self.max_replans or not self._replan():
                 self.stop()
                 return "stuck"
             return "moving"
@@ -536,7 +551,7 @@ class Mover:
             self._clear()
             self.avoid.add(self.path[self.done])
             self.replans += 1
-            if self.replans > self.max_replans or not self._plan():
+            if self.replans > self.max_replans or not self._replan():
                 self.stop()
                 return "stuck"
             return "moving"

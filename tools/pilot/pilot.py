@@ -1157,6 +1157,10 @@ class Flee(Goal):
             self.started = True
         st = p.mover.tick()
         if st == "stuck":
+            # (m59: "stuck" 4 s after a phase moved us, then Word of Recall: plan again from here, twice, first)
+            self.regone = getattr(self, "regone", 0) + 1
+            if self.regone <= 2 and p.mover.go(stairs, unknown=True):
+                return None
             return ("failed", "stuck on the way to the stairs")
         return None
 
