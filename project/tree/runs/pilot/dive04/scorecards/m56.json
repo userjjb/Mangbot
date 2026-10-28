@@ -1,0 +1,176 @@
+{
+ "label": "m56",
+ "nav_model": "opus",
+ "effort": "medium",
+ "report": "compact",
+ "start": "2026-10-28 11:01",
+ "end": "2026-10-28 11:44",
+ "minutes": 43.0,
+ "notes": "",
+ "tokens": {
+  "turns": 46,
+  "input": 92,
+  "output": 14359,
+  "cache_read": 2059206,
+  "cache_write": 69466,
+  "write_5m": 69466,
+  "write_1h": 0,
+  "model": "claude-opus-5-5",
+  "final_usage_turns": 46,
+  "usd": 1.047,
+  "transcript": "agent-a81b91ddf9b12eea5.jsonl"
+ },
+ "estimator": {
+  "n": 0,
+  "compared": 0,
+  "agree": 0,
+  "in_time_turn": 0,
+  "before_next_act": 0,
+  "skipped": 0,
+  "compute_max_s": null,
+  "disagreements": [],
+  "hard_n": 0,
+  "hard_compared": 0,
+  "hard_agree": 0,
+  "hard_choices": {}
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   29,
+   29
+  ],
+  "exp_gain": 1857,
+  "gold": [
+   15709,
+   19508
+  ],
+  "gold_change": 3799,
+  "max_depth_ft": 800
+ },
+ "B": {
+  "dungeon_min": 32.0,
+  "town_min": 10.1,
+  "exp_per_dmin": 58.0,
+  "levels_per_dhour": 0.13,
+  "gold_found": 781,
+  "gold_found_per_dmin": 24.4,
+  "time_budget_min": {
+   "exploring": 19.4,
+   "fighting": 9.4,
+   "town_other": 6.1,
+   "travel_dive": 3.0,
+   "town_no_goal": 2.5,
+   "town_idle_end": 0.9,
+   "pilot_down": 0.8,
+   "town_shopping": 0.3,
+   "recall_wait": 0.2,
+   "resting": 0.2,
+   "no_goal_dungeon": 0.1
+  },
+  "navigator_wait_pct": 6
+ },
+ "C": {
+  "lowest_hp": [
+   310,
+   358,
+   87,
+   "11:15:35"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 0,
+  "emergency_alerts": 0,
+  "phase": 0,
+  "wor_escape": 1,
+  "wor_travel": 1,
+  "stairs_flee": 0,
+  "teleport": 0,
+  "cures_quaffed": 5,
+  "escape_records": 2,
+  "recalls_landed": 2
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 457,
+  "loot_abandoned_est": 831,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 0,
+  "total": 1288,
+  "sales": 6,
+  "sales_valued": 0,
+  "worst_sales": [],
+  "left_behind": [
+   "Clotted Red Potion",
+   "Black Spotted Mushroom",
+   "Broken Dagger (1d1)",
+   "Wooden Torch (with 1174 turns of light)",
+   "Wand of Trap/Door Destruction",
+   "Wand of Trap/Door Destruction",
+   "Scroll of Detect Invisible",
+   "Potion of Detect Invisible",
+   "Mushroom of Poison",
+   "Dagger (1d4)"
+  ],
+  "irreplaceable": []
+ },
+ "E": {
+  "reports": 30,
+  "commands": 56,
+  "commands_per_min": 2.0,
+  "report_to_action_med_s": 5.5,
+  "report_to_action_p90_s": 10.7,
+  "reports_without_command_pct": 33,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 2,
+  "report_chars": 90539,
+  "order_report_age_med_s": 5.8,
+  "order_report_age_p90_s": 58.9
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 86,
+  "perception_gaps": 1,
+  "goal_failed": 6,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 1306,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Black orc": 47,
+  "Uruk": 44,
+  "Dark elven priest": 37,
+  "Hill orc": 31,
+  "Clear hound": 22,
+  "Mirkwood spider": 16,
+  "Ogre": 9,
+  "Dark hound": 9
+ },
+ "alerts": {
+  "tactic": 51,
+  "goal_failed": 6,
+  "goal_done": 6,
+  "left_town": 5,
+  "time_frozen": 3,
+  "architect_answer": 2,
+  "stat_drained": 1,
+  "plan_done": 1,
+  "started": 1,
+  "review": 1
+ },
+ "plan_news": {
+  "unseen_attacker": 23,
+  "goal_done": 13,
+  "plan": 8,
+  "interesting_item": 4,
+  "drainer": 3,
+  "fearer": 3,
+  "thief": 1,
+  "structure": 1
+ }
+}

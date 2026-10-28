@@ -109,6 +109,11 @@
   "kind": "Amulet of Searching",
   "source": "identified"
  },
+ "Copper Speckled Potion": {
+  "junk": false,
+  "kind": "Potion of Restore Intelligence",
+  "source": "sold in a shop"
+ },
  "Copper Wand": {
   "junk": true,
   "kind": "Wand of Haste Monster",
@@ -214,6 +219,11 @@
   "kind": "Wand of Clone Monster",
   "source": "identified"
  },
+ "Jet Ring": {
+  "junk": false,
+  "kind": "Ring of Sustain Charisma",
+  "source": "identified"
+ },
  "Lead Wand": {
   "junk": true,
   "kind": "Wand of Heal Monster",
@@ -233,6 +243,11 @@
   "junk": true,
   "kind": "Potion of Confusion",
   "source": "Advisor L_items (Dive04 09-28 02:02:32)"
+ },
+ "Magnesium Wand": {
+  "junk": false,
+  "kind": "Wand of Frost Bolts",
+  "source": "identified"
  },
  "Maple Staff": {
   "junk": false,

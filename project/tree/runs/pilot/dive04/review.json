@@ -1,9 +1,9 @@
 {
  "items": {
-  "an Amulet of Slow Digestion": {
-   "why": "gives slow digestion",
-   "visit": 10,
-   "t": "2026-10-26 23:17"
+  "a Ring of Protection [+16]": {
+   "why": "worth ~2100",
+   "visit": 42,
+   "t": "2026-10-28 12:20"
   }
  },
  "decided": {
@@ -14,7 +14,12 @@
   "a Short Sword (1d7) (+3,+7)": "sell",
   "a Sabre (Holy Avenger) (2d7) (+11,+7) [+2] (+1)": "sell",
   "a Ring of Slow Digestion": "sell",
-  "a Pair of Soft Leather Boots of Stability [2,+6]": "sell"
+  "a Pair of Soft Leather Boots of Stability [2,+6]": "sell",
+  "an Amulet of Slow Digestion": "keep",
+  "a Trident of Venom (1d8) (+13,+4)": "sell",
+  "a Flail (2d6) (+3,+4)": "sell",
+  "a Ring of Sustain Charisma": "sell",
+  "a Ring of Protection [+10]": "sell"
  },
- "town_visits": 35
+ "town_visits": 42
 }

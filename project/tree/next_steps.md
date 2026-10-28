@@ -182,6 +182,11 @@ optimizer's proxy; 99 unit cases.
 - *Small:* L3b set-piece unstageable; WIS drained (no matter). **MIN_GAIN settled (10-28, the user: "do 14"):** kept
   (it blocked 7 shadow overrides worth 9-47 XP each, mostly fights over escapes in emergencies); the Advisor asked to
   scale it to max(50, 30 s of play at the current XP rate) (memo to_advisor 2026-10-28-min-gain).
+- **From m56/m57 (10-28, the Opus/Sonnet comparison):** Berserk "showed no effect" x3 and resent in a fight (m57
+  12:03); `plan town` stuck 20 s at 37,111 (m57 12:20); the "walked off the town map" attention should be quiet on a
+  house trip; `minutes>N` counts from the trip's start (HANDBOOK: say so, point at `time>HH:MM`); an empty Staff of
+  Perception "kept" (m56). Fixed in session: plan town on the house tile, the walk carried across the edge, the recall
+  wording.
 - **TODOs from the user (10-28):**
   1. **The Navigator uses `goal quiet`** when it would benefit from an extended conversation with the Architect, or
      needs time to think on a level (survey the map, plan routes, think about gear). Today `goal quiet` exists but no
