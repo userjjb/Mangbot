@@ -182,6 +182,23 @@ optimizer's proxy; 99 unit cases.
 - *Small:* L3b set-piece unstageable; WIS drained (no matter). **MIN_GAIN settled (10-28, the user: "do 14"):** kept
   (it blocked 7 shadow overrides worth 9-47 XP each, mostly fights over escapes in emergencies); the Advisor asked to
   scale it to max(50, 30 s of play at the current XP rate) (memo to_advisor 2026-10-28-min-gain).
+- **TODOs from the user (10-28):**
+  1. **The Navigator uses `goal quiet`** when it would benefit from an extended conversation with the Architect, or
+     needs time to think on a level (survey the map, plan routes, think about gear). Today `goal quiet` exists but no
+     Navigator has used it. Ideas: HANDBOOK/brief guidance on when; `ask ... quiet` (park in a quiet wait until the
+     ARCHITECT ANSWER arrives, then resume); the quiet wait as the place for `gearcmp`/`loadout` (they refuse with
+     monsters in view).
+  2. **The user plays the Navigator for a mission**, to feel what the Navigator has to work with. Needs: a way for the
+     user to issue `pilotctl` commands (a shell in tmux beside the viewer, or the viewer's own command line), the same
+     brief/HANDBOOK, the mission markers and scorecard as usual; the Architect watches and answers `ask` live.
+  3. **A separate test server for set-pieces**, distinct from (a) the local server that stands in for the live one and
+     (b) the live server: a second local server (its own port, save dir, config, freeze file), so set-pieces never touch
+     the stand-in's world or its characters (no charsave dance; copies of Dive04 made for it).
+  4. **Set-pieces built with server-side test features, not DM automation** (the M5 lesson: 6 staged runs failed): a
+     test-server branch of the source with test commands -- e.g. place monsters/items/terrain at exact squares, set
+     player state (confused, AC, HP, stats), freeze/step monster AI, load a level from a file (the DM's Level
+     export/import is a start), fixed RNG seeds -- driven by the harness. Builds on 3.
+
 - Routine: snapshot, commit, push; after each mission wrap.sh, a report, FIELD-NOTES, complaints.
 
 ### HANDOFF TO ARCHITECT 8: "The Architect's Vacation" (written 2026-10-26 ~22:00 by the session-7 Architect)
