@@ -187,6 +187,9 @@ optimizer's proxy; 99 unit cases.
   "stuck"; no wilderness notice on the bank's trip; `dmin>N` (dungeon minutes); empty staffs/wands sold, the keep list
   matches plural stacks; no pickups mid-flee under 500 gold; plan town on the house tile; the walk carried across the
   edge; the recall wording.
+- **Built 10-28 (after m57):** supplies in dungeon minutes (status, plan town, arrival, alerts under 15/5; quiet waits
+  capped), recharging empty useful staffs/wands in town, enchanting disenchanted armour to the +7/+8 stopping place
+  (verified live: 4 scrolls, cloak -6 -> -2; the Alchemist stocks few, so it takes several visits).
 - **TODOs from the user (10-28):**
   1. **(Built 10-28: `ask quiet TEXT` waits for the answer -- "more ..." answers keep it; HANDBOOK "when to stop and
      think"; gearcmp/loadout refusals point at it; the brief and the agent file say so. Verify live.)**
