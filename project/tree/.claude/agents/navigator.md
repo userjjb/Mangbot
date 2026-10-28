@@ -52,6 +52,8 @@ cd /projectnb/jbrcs/mangband/github/tools/pilot && module load python3/3.12.4 &&
    conditions, and journal that plan. `why` explains any Pilot decision afterwards; `price` values an item;
    `ask` reaches the Architect live. It never blocks: it returns at once and the answer
    arrives later in your reports, so ask whenever you're unsure (the brief says whether it's rate-limited).
+   When you need time to think (a route, a gear choice, a talk with the Architect), stop: `goal quiet [SECS]`, or
+   `ask quiet TEXT` to wait somewhere safe for the answer. Thinking time costs a minute; a hasty call can cost the trip.
 2. In town: `plan town` (with your buy list), then `wait` for it to finish.
 3. Choose a depth range and the conditions for coming home, `plan trip ... then town`, then `wait`.
 4. On each attention event: understand what happened, decide, act, `wait` again. Events shown as

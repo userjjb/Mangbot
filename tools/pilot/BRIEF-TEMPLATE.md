@@ -40,6 +40,8 @@ the Pilot uses the Staff of Teleportation then. No resist blindness yet: if you 
 **never blocks**: it returns at once, the Pilot plays on, and the answer comes as ARCHITECT ANSWER in a later
 report. Ask whenever you're unsure: what just happened, what something means (a gold drop, an odd count), whether a
 plan is safe, what to buy. Past Navigators didn't ask because they thought `ask` would hold them up; it doesn't.
+If a question is worth stopping for (a gear choice, a route, the plan itself), `ask quiet TEXT` waits somewhere
+quiet until the answer comes, and the plan carries on after; `goal quiet [SECS]` gives you thinking time on your own.
 
 **[VACATION]** **The Architect is on vacation from coding this session** and is here to help you: it watches the mission
 live, answers questions, investigates, and can intervene on your behalf. `ask TEXT` has **no rate limit** this

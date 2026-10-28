@@ -2776,6 +2776,11 @@ class QuietWait(Goal):
         mob = [r for _, _, r in w.monsters if "NEVER_MOVE" not in r.flags] if w.in_dungeon else []
         if mob or hit:
             return self.end(p, "woke: " + (f"{mob[0].name} came into view" if mob else "something hit us"))
+        aid = getattr(self, "wait_answer", None)
+        if aid is not None:
+            ans = [a for a in p.__dict__.get("arch_answers", []) if a[1] == aid and a[0] >= self.t0]
+            if ans and not ans[-1][2].lower().startswith("more"):
+                return self.end(p, f"the Architect answered #{aid}")
         if gnow() - self.t0 >= self.secs:
             return self.end(p, f"{self.secs} s are up")
         if w.in_dungeon and self.spot is None and w.pos:
@@ -7746,7 +7751,8 @@ class Pilot:
             # the item slot evaluator (geareval.py): each named pack item (letter or name) or item name against the
             # worn slot; no argument: every identified wearable in the pack
             if self.w.in_dungeon and self.w.monsters:
-                return {"ok": False, "error": "gearcmp runs ~1-3 s of simulation: not with monsters in view"}
+                return {"ok": False, "error": "gearcmp runs ~1-3 s of simulation: not with monsters in view -- "
+                                              "`goal quiet` first (it waits somewhere clear), then gearcmp"}
             pack = self.w.items()
             items = []
             for a in args or []:
@@ -7778,7 +7784,8 @@ class Pilot:
             # Action, with Free Action from a ring. `loadout shops` adds the shops' stock as last seen, within the gold
             # the essentials leave
             if self.w.in_dungeon and self.w.monsters:
-                return {"ok": False, "error": "loadout runs ~2-5 s of simulation: not with monsters in view"}
+                return {"ok": False, "error": "loadout runs ~2-5 s of simulation: not with monsters in view -- "
+                                              "`goal quiet` first (it waits somewhere clear), then loadout"}
             return {"ok": True, "text": self.loadout_info(shops="shops" in args)}
         if c == "why":
             return {"ok": True, "text": self.why_info(args)}
@@ -9394,8 +9401,13 @@ class Pilot:
 
     def ask_architect(self, text):
         text = text.strip()
+        # `ask quiet TEXT` (the user, 10-28: the Navigator's quiet wait for "an extended conversation with the
+        # Architect"): the question goes, and the Pilot waits somewhere quiet until the answer comes
+        quiet = text.split()[:1] == ["quiet"]
+        if quiet:
+            text = text[len("quiet"):].strip()
         if not text:
-            return {"ok": False, "error": "usage: ask TEXT (a question or an escalation for the Architect)"}
+            return {"ok": False, "error": "usage: ask [quiet] TEXT (a question or an escalation for the Architect)"}
         now = time.time()
         asks = [a for a in self.__dict__.setdefault("asks_sent", []) if now - a < 3600]
         self.asks_sent = asks
@@ -9419,7 +9431,17 @@ class Pilot:
                 f.write(json.dumps(rec) + "\n")
         except OSError as e:
             return {"ok": False, "error": f"couldn't send it ({e})"}
-        self.log("nav_ask", id=aid, text=text)
+        self.log("nav_ask", id=aid, text=text, quiet=quiet)
+        if quiet:
+            out = self.request_goal(["quiet", "600"])
+            if out.get("ok") and isinstance(self.goal, QuietWait):
+                self.goal.wait_answer = aid
+                self.goal.name = f"quiet wait for the Architect's answer (#{aid})"
+                return {"ok": True, "text": f"asked the Architect (#{aid}); waiting somewhere quiet for the answer "
+                                            "(10 minutes at most; a monster that moves or a hit ends it, and what it "
+                                            "paused carries on)"}
+            return {"ok": True, "text": f"asked the Architect (#{aid}); no quiet wait ({out.get('error', '?')}): carry "
+                                        "on, the answer comes as ARCHITECT ANSWER in your reports"}
         return {"ok": True, "text": f"asked the Architect (#{aid}). The answer comes as ARCHITECT ANSWER in your "
                                     "reports (usually within a few minutes): carry on meanwhile, don't wait for it"}
 

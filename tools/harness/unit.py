@@ -2382,6 +2382,30 @@ def empty_devices_sold_kept_ones_kept():
     return got == [1, 0, 0], f"sell counts {got}"
 
 
+@case
+def ask_quiet_waits_for_the_answer():
+    """The user (10-28): the Navigator's quiet wait for a conversation with the Architect. `ask quiet TEXT` asks and
+    starts a quiet wait that ends on the answer; an answer starting "more" keeps it (a back-and-forth)."""
+    import tempfile
+    p = _quiet_level()
+    p.rundir, p.plan, p.goal, p.req_role, p.resume_after = tempfile.mkdtemp(), None, None, "navigator", None
+    p.set_goal = lambda g: setattr(p, "goal", g)
+    p.mover = type("M", (), {"active": False, "go": lambda self, t: True, "tick": lambda self: "arrived",
+                             "stop": lambda self: None})()
+    p.cmd = lambda line, why, hold=0.4: None
+    p.dangers = lambda: []
+    import threading
+    p.att_cond, p.attention, p.news = threading.Condition(), [], []
+    out = p.ask_architect("quiet should I take the Lance or the Pike?")
+    g = p.goal
+    p.arch_answers = [(P.gnow(), 1, "more: which slot is free?")]
+    r1 = g.tick(p)
+    p.arch_answers.append((P.gnow(), 1, "the Pike: lighter"))
+    r2 = g.tick(p)
+    ok = out["ok"] and isinstance(g, P.QuietWait) and g.wait_answer == 1 and r1 is None and r2 and r2[0] == "done"
+    return ok, f"{out.get('text', out)[:70]}; after 'more': {r1}; after the answer: {r2}"
+
+
 def _trip_on_level(p, tp):
     p.goal = None
     p.set_goal = lambda g: setattr(p, "goal", g)
