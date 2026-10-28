@@ -223,6 +223,7 @@ DEFAULT_ORDERS = {
     "resist_conf": "no",   # the same for confusing blows
     "unseen_hp": "on",     # off: don't treat HP loss with nothing in view as an unseen attacker
     "autowear": "on",      # off: the Pilot doesn't wear, wield or swap gear by itself (upgrade_step)
+    "enchant_max": 25,     # Scrolls of Enchant Armor plan town may buy a visit (0: none) -- m58: 25 for 5025 gold, unasked
     "idle_recall_s": 600,  # no goal and no agent contact for this long -> recall to town
                            # (long enough for a slow agent turn; 180 s fired mid-thought)
     "pickup": "all",       # all | none
@@ -2300,7 +2301,8 @@ class TownKit(Goal):
                     self.enchant_bought = True
                     price = p.price_of("Enchant Armor", 5) or 190
                     spare = w.ind.get("gold", [0])[0] - p.town_reserve()
-                    n = min(int(round(p.enchant_scrolls_wanted())), max(0, spare // max(1, int(price * 1.1))), 25)
+                    n = min(int(round(p.enchant_scrolls_wanted())), max(0, spare // max(1, int(price * 1.1))),
+                            int(p.orders.get("enchant_max", 25)))
                     if n > 0:
                         self.sub = Shop(5, buys=[("Enchant Armor", n, round(price * 1.5))])
                         self.done_log.append(f"Enchant Armor x{n} for {len(plan)} piece(s)")
@@ -6166,6 +6168,11 @@ class Pilot:
             self.review.setdefault("items", {})
             self.review.setdefault("decided", {})
             self.review.setdefault("town_visits", 0)
+        # (m58: a Ring of Protection [+16] worn since m57 was still listed "SOLD at this town visit if undecided": what's
+        # worn leaves the queue)
+        worn = {i["name"] for i in (self.w.items(equip=True) if getattr(self, "w", None) else [])}
+        for n in [n for n in self.review["items"] if n in worn]:
+            del self.review["items"][n]
         return self.review
 
     def review_save(self):
@@ -7646,7 +7653,9 @@ class Pilot:
                 if kind in ("leave", "hunt") and not any(r.name.lower() == arg for r in self.w.g.races.values()):
                     return {"ok": False, "error": f"no monster named {arg!r} (use the name `monster` shows)"}
                 if (kind, arg) in {("thieves", "kill"), ("afraid", "teleport")} or kind in ("leave", "hunt"):
-                    rl.append({"kind": kind, "arg": arg, "by": self.req_role, "t": time.strftime("%Y-%m-%d %H:%M")})
+                    # (m58: `react thieves kill` listed three times -- the same reaction isn't added twice)
+                    if not any(r["kind"] == kind and r["arg"] == arg for r in rl):
+                        rl.append({"kind": kind, "arg": arg, "by": self.req_role, "t": time.strftime("%Y-%m-%d %H:%M")})
                 else:
                     return {"ok": False, "error": f"react {kind} takes: " + self.RULE_KINDS[kind]}
             self.save_rules()
@@ -8259,6 +8268,17 @@ class Pilot:
         out = [(it, self.enchant_chance(it)) for it in self.w.items(equip=True)]
         return sorted(((it, c) for it, c in out if c is not None and c >= self.ENCHANT_MIN_CHANCE), key=lambda x: -x[1])
 
+    def town_extras_note(self):
+        """What plan town may spend beyond the kit and the list (m58: 5025 gold of Enchant Armor, never announced)."""
+        bits = []
+        n = min(int(round(self.enchant_scrolls_wanted())), int(self.orders.get("enchant_max", 25)))
+        if n and self.enchant_plan():
+            pr = self.price_of("Enchant Armor", 5) or 190
+            bits.append(f"up to {n} Scrolls of Enchant Armor (~{n * pr} gold; `order enchant_max=N` caps it, 0 skips)")
+        if self.recharge_wanted():
+            bits.append("Scrolls of Recharging for " + ", ".join(i["name"] for i in self.recharge_wanted()))
+        return ("; also, as stock allows: " + "; ".join(bits)) if bits else ""
+
     def enchant_scrolls_wanted(self):
         """Expected scrolls to bring every worn piece to the stopping place (sum of 1/chance per point)."""
         n = 0.0
@@ -8848,7 +8868,7 @@ class Pilot:
                                                                            for _, k, st, n, _ in buys)
                                                                  or "nothing") +
                         (("; can't afford yet: " + ", ".join(f"{n} {k}" for k, n in short)) if short else "") +
-                        " (selling first may change this)"}
+                        self.town_extras_note() + " (selling first may change this)"}
 
     # --- order checks (restructure step 2.4) ------------------------------------
     def fight_rows(self):
