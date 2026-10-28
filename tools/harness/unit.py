@@ -88,6 +88,15 @@ class W:
 
 
 def pilot(w=None, **kw):
+    # (a case that leaves the game clock fast, slow or frozen made the 0.7-s Phase rule flaky -- game time 1 s ago read
+    # as 0.46 wall s: every case starts with a fresh 1x clock, its segment history cleared)
+    import world as _W
+    with _W._LOCK:
+        now = time.time()
+        _W._CLOCK.update(wall=now, game=now, factor=1.0, model=1.0, measured=0.0, fast_ok=False, rate=None)
+        _W._HIST.clear()
+        _W._HIST.append((now, now, 1.0))
+        _W._FUEL.clear()
     p = P.Pilot.__new__(P.Pilot)
     p.w = w or W(**kw)
     p.orders = {"max_depth": 650, "rest_to": 1.0}
@@ -2463,6 +2472,42 @@ def enchant_armour_to_the_stopping_place():
         "Hard Studded Leather of Resistance (-1) [7,+8]" not in plan and plan[-1].startswith("a Pair of Hard Leather") \
         and abs(n - want) < 0.01
     return ok, f"chances {ch}; plan {plan}; scrolls wanted {n:.1f} (expected {want:.1f})"
+
+
+@case
+def town_waits_for_restock():
+    """The user (10-28): shops restock every ~30 s -- wait for what's critically needed. A supply-gate essential missing
+    because the shop was out (or a Restore for a drained STR/DEX/CON): up to 4 waits of 35 s, then it goes on; nothing
+    missing: no wait."""
+    def run(gap, drained=False):
+        p = pilot()
+        p.seen_drained = {"STR": (58, 68)} if drained else {}
+        p.w.depth, p.w.in_dungeon = 0, False
+        p.upgrade_step = lambda: False
+        p.restore_potion = lambda skip=(): None
+        p.provision_step = lambda k: False
+        p.supply_gate = lambda depth, recall: list(gap)
+        p.planned_depth = lambda: 750
+        p.recharge_wanted = lambda: []
+        p.enchant_plan = lambda: []
+        p.house_state = lambda: {}
+        p.stash_has = lambda k: False
+        p.busy_until, p.pending_use = 0, None
+        k = P.TownKit()
+        k.counted, k.withdrawn, k.fetched = True, True, True
+        k.done_log = ["5: no Word of Recall in stock"]
+        waits = 0
+        for _ in range(8):
+            k.stage, k.queue, k.sub, k.t = "buying", [], None, -99.0
+            k.tick(p)
+            if isinstance(k.sub, P.Wait):
+                waits += 1
+            elif k.sub is None:
+                break
+        return waits
+    missing, fine, restore = run(["Word of Recall x2"]), run([]), run([], drained=True)
+    return (missing, fine, restore) == (4, 0, 4), \
+        f"waits with WoR missing {missing}; with nothing missing {fine}; STR drained, no Restore {restore}"
 
 
 def _trip_on_level(p, tp):

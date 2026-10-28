@@ -2092,6 +2092,8 @@ class TownKit(Goal):
     essential item out of stock gets one more look after 40 s (stock turns over
     every ~33 s)."""
 
+    RESTOCK_WAITS = 4          # critical items out of stock: up to 4 waits of 35 s for the shops to restock
+
     def __init__(self, kit=None, buylist=()):
         self.kit, self.buylist = kit, list(buylist)
         self.counted = False           # (the review queue's town-visit count, on the first tick)
@@ -2249,13 +2251,21 @@ class TownKit(Goal):
             if p.provision_step(self):
                 self.t = now + 1.5
                 return None
-            # an essential still missing because the shop had none: one more look
+            # an essential still missing because the shop had none: wait for new stock and look again (the user, 10-28:
+            # shops restock every ~30 s -- wait for what's critical). Critical: the supply gate's minimums for the
+            # planned depth, and a Restore for a drained STR/DEX/CON (blows, HP); up to RESTOCK_WAITS x 35 s
             gap = p.supply_gate(p.planned_depth(), True)
-            if gap and not self.retried and any("in stock" in l for l in self.done_log):
-                self.retried = True
+            gap += [f"Restore {p.STAT_FULL[st]}" for st, (cur, top) in (p.seen_drained or {}).items()
+                    if st in p.STAT_FULL and cur < top
+                    and not any(f"Restore {p.STAT_FULL[st]}" in i["name"] for i in w.items())
+                    and not p.stash_has(f"Restore {p.STAT_FULL[st]}")]
+            waits = self.__dict__.get("restock_waits", 0)
+            if gap and waits < self.RESTOCK_WAITS and any("in stock" in l for l in self.done_log):
+                self.restock_waits = waits + 1
                 self.stage = "buy"
-                self.sub = Wait(40)
-                self.done_log.append(f"still missing {'; '.join(gap)}: waiting 40 s for new stock")
+                self.sub = Wait(35)
+                self.done_log.append(f"still missing {'; '.join(gap)}: waiting 35 s for new stock "
+                                     f"({self.restock_waits}/{self.RESTOCK_WAITS})")
                 return None
             # recharge an empty useful staff or wand (a Scroll of Recharging from the Alchemist; the user, 10-28)
             tried = self.__dict__.setdefault("recharged", set())
