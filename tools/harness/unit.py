@@ -2609,6 +2609,42 @@ def navigator_rules_review_and_nopickup():
 
 
 @case
+def confusion_window_teleports():
+    """M5 (10-28): each cure bought ~1 s before the next Hummerhorn bite. Cured (0.3-4 s ago), clear, 3+ adjacent: the
+    staff (or a scroll) teleports us away, once a cure; not with fewer adjacent, not while still confused."""
+    def run(adj, confused=False, ago=1.0):
+        p = pilot(pack=[("a Staff of Teleportation (12 charges)", 55)])
+        p.w.adjacent_monsters = lambda: [(20, 21, BYNAME["hummerhorn"])] * adj
+        p.w.flag = lambda k: confused and k == "confused"
+        p.busy_until, p.conf_cure_t = 0, P.gnow() - ago
+        sent = []
+        p.cmd = lambda line, why, hold=0.4: sent.append(line)
+        first = p.confusion_window()
+        again = p.confusion_window()
+        return first, again, sent
+    a, b, c = run(5), run(2), run(5, confused=True)
+    ok = a[0] and not a[1] and a[2] == ["custom u item=0"] and not b[0] and not c[0]
+    return ok, f"5 adjacent {a}; 2 adjacent {b[0]}; still confused {c[0]}"
+
+
+@case
+def react_hunt_resumes_the_goal():
+    """M5 (10-28): `react thieves kill` hunted a Scruffy looking hobbit during a `goal dive`, and the dive was lost when
+    the hunt ended. Now the interrupted goal (not a plan's: the plan resumes itself) comes back after the hunt."""
+    import tempfile
+    q = pilot(monsters=[(20, 24, BYNAME["novice rogue"])])
+    q.rundir, q.plan, q.resume_after = tempfile.mkdtemp(), None, None
+    dive = P.Dive(500)
+    q.goal = dive
+    q.nav_rules = [{"kind": "thieves", "arg": "kill", "by": "navigator"}]
+    q.danger_why = lambda r: None
+    q.do_request = lambda req: (setattr(q, "goal", P.Hunt("Novice rogue")), {"ok": True})[1]
+    hunted = q.rule_tick(100.0)
+    ok = hunted and isinstance(q.goal, P.Hunt) and q.resume_after is dive
+    return ok, f"hunting {type(q.goal).__name__}; resumes {q.resume_after and q.resume_after.describe()}"
+
+
+@case
 def asleep_flags_from_look_answers():
     """The per-monster asleep flag (the user, 10-26): the client's `look N` answers ("A Warg (unhurt, asleep) [r,...]"
     at the monster's screen square) mark monsters asleep or awake, by position, else by name; the report says so."""

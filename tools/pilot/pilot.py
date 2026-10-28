@@ -3316,6 +3316,25 @@ class Pilot:
                               + f": quaffed {one_of(pot['name'])} to act again", news=True)
         return True
 
+    def confusion_window(self):
+        """Just cured of a confusion lock, with 3+ monsters adjacent: teleport away in the clear second before the next
+        bite (M5, 10-28: 26 Hummerhorns re-confused Dive04 within a second of each of 4 cures; the m55 Navigator's
+        way out was a cure and an immediate read). The goal carries on from the landing, unconfused."""
+        w, now = self.w, gnow()
+        t = self.__dict__.get("conf_cure_t", 0.0)
+        if not (w.in_dungeon and 0.3 < now - t < 4 and not w.flag("confused") and now >= self.busy_until) or \
+                self.__dict__.get("conf_tele_t", 0.0) >= t or len(w.adjacent_monsters()) < 3:
+            return False
+        tp = self.teleport_item()
+        if not tp:
+            return False
+        self.conf_tele_t = now
+        self.cmd(f"custom {tp[0]} item={tp[1]['item']}", f"clear for a moment among {len(w.adjacent_monsters())}: "
+                                                          f"teleport away ({one_of(tp[1]['name'])})", hold=0.8)
+        self.notify("tactic", f"cured, with {len(w.adjacent_monsters())} adjacent: teleported away before the next "
+                              "bite", news=True)
+        return True
+
     def escape_line(self):
         """The status header's escape marker (session 8: a staff's teleport showed "no change", then landed; a scroll
         read on top was refused, and nobody could tell which escape was still landing)."""
@@ -4378,6 +4397,10 @@ class Pilot:
         fl = getattr(sh.sim, "FOOD_LEVEL", None)
         p["food"] = fl[lvl] if fl and lvl in fl else {"Weak": 750, "Hungry": 1500, "Fed": 6000, "Full": 12500,
                                                       "Gorged": 15000}[lvl]
+        # (options_sim 28l, the Advisor's MIN_GAIN memo 10-28: the XP-override floor is max(50, 30 s of play) at this
+        # rate; unlike xp_per_block it charges no time cost, so it goes in every snapshot, emergencies too)
+        dr = (self.rate_state().get("depth") or {}).get(str(w.depth_ft))
+        p["xp_rate_per_block"] = round(dr[0] / (dr[1] / 60) / 96, 3) if dr and dr[1] > 300 else 0
         p.update(extra_p or {})
         # (name, distance, hp_frac, awake): options_sim 26h takes the asleep flag per member (the `look` answers; None =
         # unknown, the p_awake share then 0.4 stand in) -- the Advisor: 7 Wargs, six at 4 squares, ~11 HP lost if
@@ -6013,11 +6036,16 @@ class Pilot:
                     now - done.get(("hunt", target.name, w.level_t), -99.0) > 30:
                 done[("hunt", target.name, w.level_t)] = now
                 role = self.req_role
+                # (M5, 10-28: a Scruffy looking hobbit's hunt replaced a `goal dive` and the dive was lost when it
+                # ended. A plan resumes by itself; a plain goal comes back after the hunt)
+                prev = self.goal if self.goal is not None and not getattr(self.goal, "by_plan", False) else None
                 try:
                     out = self.do_request({"cmd": "goal", "args": ["hunt", target.name.replace(" ", "_")],
                                            "role": "navigator"})
                 finally:
                     self.req_role = role
+                if out.get("ok") and prev is not None:
+                    self.resume_after = prev
                 self.notify("rule", f"{target.name} in view: " + ("hunting it" if out.get("ok") else
                                                                  f"no hunt ({out.get('error', '')[:120]})")
                             + f" (your `react {rl['kind']}`)", news=True)
@@ -6614,10 +6642,7 @@ class Pilot:
             # moves into walls): wait it out (fights and cures still run)
             if self.mover.active:
                 self.mover.stop()
-            self.confusion_lock()
             return True
-        if self.w.in_dungeon and self.w.flag("confused") and self.w.adjacent_monsters():
-            self.confusion_lock()
         try:
             r = ("failed", self.goal.abort) if getattr(self.goal, "abort", None) else self.goal.tick(self)
         except Exception as e:           # a goal bug must not kill the pilot
@@ -7048,6 +7073,13 @@ class Pilot:
         self.w.drain()
         self.w.refresh()
         self.note_edge_cross()
+        # (the M5 set-piece, 10-28: confused 40 s among 26 Hummerhorns with no goal, and nothing happened -- the check
+        # lived in step_goal, which returns at once without a goal)
+        if self.w.in_dungeon and self.w.flag("confused") and (self.w.adjacent_monsters() or self.goal) and \
+                self.confusion_lock():
+            return
+        if self.confusion_window():
+            return
         # the game clock (world.py). The server's rule (xtra2.c base_time_factor, time_factor): 1 in town;
         # 10x resting and 5x running with no awake monster in line of sight -- seen or not
         # (monsters_in_los), so after a fight in the dark it's often 1x (set-piece L2: a 6-s rest at 1x);
