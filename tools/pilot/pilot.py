@@ -1233,7 +1233,8 @@ class Recall(Goal):
                         p.notify("tactic", "recall: blind or confused and no cure for it: waiting to be able to read",
                                  news=True)
                 return None
-            p.cmd(f"custom r item={it['item']}", f"read {it['name']}")
+            # (m56: "read 2 Scrolls of Word of Recall" read as two reads; one scroll of the stack is read)
+            p.cmd(f"custom r item={it['item']}", f"read a Word of Recall ({it['number']} in the pack)")
             self.read_t = p.recall_t = gnow()
             return None
         # while it charges, rest when hurt and nothing is in view: free healing, and time runs 10x
