@@ -1,0 +1,11 @@
+{
+ "id": "M5",
+ "tag": "M5-20261028-090802",
+ "depth_ft": 500,
+ "start": "2026-10-28 09:08:02",
+ "checks": {},
+ "notes": [],
+ "error": "RuntimeError(\"Gandalf didn't reach (5, 56)\")",
+ "end": "2026-10-28 09:10:52",
+ "pass": false
+}

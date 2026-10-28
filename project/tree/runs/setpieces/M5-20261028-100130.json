@@ -1,0 +1,65 @@
+{
+ "id": "M5",
+ "tag": "M5-20261028-100130",
+ "depth_ft": 550,
+ "start": "2026-10-28 10:01:30",
+ "checks": {
+  "confused (the scene happened)": {
+   "pass": false,
+   "detail": "never confused; down at 97.2 s"
+  }
+ },
+ "notes": [
+  "no floor square 1 from Dive04 at (5, 7)"
+ ],
+ "ac": [
+  "60"
+ ],
+ "order_reply": "{\"ok\": true, \"goal\": \"dive 600ft\"}",
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   358,
+   358
+  ],
+  "attention": [
+   [
+    97.2,
+    "goal_done",
+    "dive 600ft: reached 600 ft"
+   ]
+  ],
+  "acts": [
+   [
+    91.3,
+    "custom >",
+    "stairs >"
+   ],
+   [
+    96.5,
+    "custom >",
+    "stairs >"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "scene": {
+  "dive04": [
+   5,
+   7
+  ],
+  "stairs": [
+   4,
+   16
+  ],
+  "hummerhorns": 30
+ },
+ "end": "2026-10-28 10:10:59",
+ "pass": false
+}

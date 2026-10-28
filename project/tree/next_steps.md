@@ -175,10 +175,13 @@ optimizer's proxy; 99 unit cases.
   more `trigger: band` records first).
 - *Verify live:* the wilderness bank inside `plan town`; the house stash (drop/fetch) and the tavern inside-drop; the
   confusion-lock cure, Recall's cure, `goal quiet`, the dive's loot detour, ESCAPE FAILED, weight shedding, theft news;
-  older: breeder-pin teleport, the blind staff escape, `react leave/hunt`, `loadout shops`.
-- *Gaps:* loot picked up mid-flee (m55 17:00:14, a Scroll of Light during a band flee); a set-piece for a confusing
-  breeder swarm; resist blindness (watch shops); the optimizer is 1-2 slot moves and advisory only.
-- *Small:* L3b set-piece unstageable; the Advisor's MIN_GAIN 50 floor (never approved); WIS drained (no matter).
+  older: breeder-pin teleport, the blind staff escape, `react leave/hunt`, `loadout shops`. **Seen live 10-28:** the
+  confusion cure + teleport-in-the-clear-second (in a set-piece's leftover Hummerhorn scene; M5 itself isn't stageable:
+  harness README).
+- *Gaps:* loot picked up mid-flee (m55 17:00:14, a Scroll of Light during a band flee); resist blindness (watch shops); the optimizer is 1-2 slot moves and advisory only.
+- *Small:* L3b set-piece unstageable; WIS drained (no matter). **MIN_GAIN settled (10-28, the user: "do 14"):** kept
+  (it blocked 7 shadow overrides worth 9-47 XP each, mostly fights over escapes in emergencies); the Advisor asked to
+  scale it to max(50, 30 s of play at the current XP rate) (memo to_advisor 2026-10-28-min-gain).
 - Routine: snapshot, commit, push; after each mission wrap.sh, a report, FIELD-NOTES, complaints.
 
 ### HANDOFF TO ARCHITECT 8: "The Architect's Vacation" (written 2026-10-26 ~22:00 by the session-7 Architect)

@@ -56,3 +56,4 @@ metadata:
 - 2026-10-26 (session 5): options_sim 26j: p["food"] may be a (lo, hi) range per hunger level (FOOD_LEVEL); Full as range -> 4% near death vs 0.3% midpoint in the m48 band (`to_architect/2026-10-26-food-range.md`).
 - 2026-10-26: Architect session 8 = "vacation" (Haiku, live Navigator help, no code changes; ../VACATION-NOTES.md); code requests wait for session 9.
 - 2026-10-27 (session 5): options_sim 27k adds slays/brands (dice-only multiplier, best wins) + criticals (critical_norm); Sabre (Holy Avenger)+FA ring vs Battle Axe of Westernesse (which slays orc/troll/giant x3) = tie -> keep axe; optimizer proxy: dmg with E[slay mult] from depth mix (750 ft: EVIL 65%, ORC 27%, TROLL 9%), AC term ~5x too weak (`to_architect/2026-10-27-slays.md`).
+- 2026-10-28: MIN_GAIN kept by the user, scaled: options_sim 28l floor = max(50, 48 blocks x p["xp_rate_per_block"]) (`to_architect/2026-10-28-min-gain.md`).

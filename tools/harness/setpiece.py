@@ -1253,33 +1253,41 @@ def m3(run):
               f"drained at {drained} s, left at {left} s")
 
 
-def m5(run, n=8):
+def m5(run, n=30):
     """M5: a confusing breeder swarm (m55 at 800 ft: Hummerhorns kept Dive04 confused from 17:04 to 17:19; the dive
     waited for the confusion to wear off, two staff uses failed, the recall couldn't be read). A '>' painted 8 squares
     from Dive04, n Hummerhorns summoned 1-2 squares round it, `goal dive` one level down. Pass: confused (the scene
     happened); the Pilot cures a long confusion itself (CSW/CCW within 20 s of it starting, at most 4); down those
-    stairs within 120 s; lowest HP >= 60%."""
+    stairs within 120 s; lowest HP >= 60%. (20 of them: 8 died to one blow each before a single bite.)"""
     rows = run.dm.c.map()
-    tl = find_floor_block(rows, 7, 11)
+    tl = find_floor_block(rows, 5, 11)
     if not tl:
-        run.check("a site", False, "no 7 x 11 block of floor")
+        run.check("a site", False, "no 5 x 11 block of floor")
         return
-    start, stairs = (tl[0] + 3, tl[1] + 1), (tl[0] + 3, tl[1] + 9)
+    start, stairs = (tl[0] + 2, tl[1] + 1), (tl[0] + 2, tl[1] + 9)
     run.gandalf_to(stairs)
     run.dm.paint(7, [8])                         # the '>'
     run.gandalf_to(start)
     v = run.bring_dive04()
+    # (Hummerhorn bites rarely land at AC 76 -- power 10 + 3 x 16 vs 3/4 AC: ~6% -- so three runs were never
+    # confused, and a forged Potion of Confusion is junk the Pilot destroys underfoot. Stage m55's state by AC instead:
+    # the body armour, shield and Protection rings off (AC ~20: ~70% a bite); charsave restores the gear)
+    ctl("order", "autowear=off", role="architect")      # (or the Pilot wears it all again at once)
+    for slot in ("E", "G", "B", "C"):
+        ctl("takeoff", slot, role="architect")
+        time.sleep(1.2)
+    run.res["ac"] = re.findall(r"AC (\d+)", ctl("gear", role="architect"))[:1]
     run.dm.walk(2, 3)
     time.sleep(1.5)
     for k in range(n):
         try:
-            run.place("Hummerhorn", 1 + k % 2)
+            run.place("Hummerhorn", 1 + k % 3)
         except RuntimeError as e:
             run.res["notes"].append(str(e))
-    # (m55's state: confused before the leave -- run 1 went down in 5.7 s, unbitten. Wait for the first confusion,
-    # up to 30 s; auto-retaliate fights the swarm meanwhile)
+    # (m55's state: confused before the leave -- run 1 went down in 5.7 s, unbitten; with 8, all died to one blow
+    # each before a bite. 20, and wait for the first confusion up to 45 s; auto-retaliate fights the swarm meanwhile)
     run.t_act = time.time()
-    t_end = time.time() + 30
+    t_end = time.time() + 90
     while time.time() < t_end and not any(m.startswith("You are confused") for _, m in messages_since(run.t_act)):
         time.sleep(1.0)
     run.res["order_reply"] = ctl("goal", "dive", str(run.depth + 50), role="architect")

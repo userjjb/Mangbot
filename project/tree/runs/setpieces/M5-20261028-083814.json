@@ -1,0 +1,60 @@
+{
+ "id": "M5",
+ "tag": "M5-20261028-083814",
+ "depth_ft": 350,
+ "start": "2026-10-28 08:38:14",
+ "checks": {
+  "confused (the scene happened)": {
+   "pass": false,
+   "detail": "never confused; down at 5.7 s"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"dive 400ft\"}",
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   358,
+   358
+  ],
+  "attention": [
+   [
+    5.7,
+    "goal_done",
+    "dive 400ft: reached 400 ft"
+   ]
+  ],
+  "acts": [
+   [
+    0.1,
+    "custom >",
+    "stairs >"
+   ],
+   [
+    5.1,
+    "custom >",
+    "stairs >"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "scene": {
+  "dive04": [
+   27,
+   7
+  ],
+  "stairs": [
+   26,
+   15
+  ],
+  "hummerhorns": 8
+ },
+ "end": "2026-10-28 08:42:23",
+ "pass": false
+}

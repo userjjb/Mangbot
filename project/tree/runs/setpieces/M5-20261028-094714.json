@@ -1,0 +1,105 @@
+{
+ "id": "M5",
+ "tag": "M5-20261028-094714",
+ "depth_ft": 500,
+ "start": "2026-10-28 09:47:14",
+ "checks": {
+  "confused (the scene happened)": {
+   "pass": false,
+   "detail": "never confused; down at None s"
+  }
+ },
+ "notes": [
+  "no floor square 2 from Dive04 at (3, 143)"
+ ],
+ "ac": [
+  "60"
+ ],
+ "order_reply": "{\"ok\": true, \"goal\": \"dive 550ft\"}",
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   352,
+   358
+  ],
+  "attention": [
+   [
+    49.6,
+    "tactic",
+    "no effect seen: destroy junk on the floor: a Ring of Weakness"
+   ],
+   [
+    57.0,
+    "tactic",
+    "Hairy mold (lvl 10, never moves) blocks the way: killing it"
+   ],
+   [
+    108.3,
+    "unseen_attacker",
+    "'It casts a fearful illusion.': minor attack from something unseen; carrying on (HP 100%)"
+   ],
+   [
+    166.6,
+    "tactic",
+    "Hairy mold (lvl 10, never moves) blocks the way: killing it"
+   ]
+  ],
+  "acts": [
+   [
+    46.6,
+    "custom k item=-11 value=1",
+    "destroy junk on the floor: a Ring of Weakness"
+   ],
+   [
+    47.2,
+    "custom z item=9",
+    "dive: no stairs known: Door/Stair Location"
+   ],
+   [
+    48.1,
+    "custom >",
+    "stairs >"
+   ],
+   [
+    70.1,
+    "custom ,",
+    "pick up: a Scimitar (2d5)."
+   ],
+   [
+    90.3,
+    "engage",
+    "engage Creeping gold coins (L10, 2 away) on the way"
+   ],
+   [
+    101.0,
+    "custom ,",
+    "pick up: a Potion of Infravision."
+   ],
+   [
+    109.4,
+    "engage",
+    "engage Pseudo-dragon (L10, 2 away) on the way"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "scene": {
+  "dive04": [
+   3,
+   143
+  ],
+  "stairs": [
+   4,
+   151
+  ],
+  "hummerhorns": 20
+ },
+ "end": "2026-10-28 10:01:02",
+ "pass": false
+}

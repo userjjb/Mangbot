@@ -66,8 +66,11 @@ resists). First mix (Dive04, 10-24..28, 11609 HP): wounds 51%, other melee 12%, 
 attackers level 13. Dive04 now EHP 838; +6 CON +16.2%, +11 AC +9.1%, the four basic resists +29% (838 vs 651).
 Shown in `gearcmp` and `loadout` per option, and **the optimizer's proxy uses it** (the user, 10-28): log(damage per round
 ratio, slay mix) + 0.5 log(EHP ratio) + 0.1 per point of speed -- replacing the separate AC and HP terms, so a resist
-now ranks (a Ring of Resist Fire for a Protection ring, -10 AC: +0.06 with 13% fire, -0.12 against melee only). Not in
-the verdict (the simulation decides).
+now ranks (a Ring of Resist Fire for a Protection ring, -10 AC: +0.06 with 13% fire, -0.12 against melee only). **In the verdict
+(the user, 10-28):** an option with more than `EHP_GATE` (5%) less EHP than worn is ruled out ("less staying power":
+the simulated fights miss rare breaths, archers and traps, which EHP weighs by what was taken), and ties within 1% go
+to the higher EHP (was AC). It rules out the plain Metal Scale Mail for the Leather of Resistance even with
+TRADE_RESISTS on (EHP -6%), and the Ring of Damage (+0,+6) for a Protection ring (-8 to -9%).
 
 ## The loadout optimizer (built, session 9: `geareval.optimize`, `pilotctl loadout [shops]`)
 

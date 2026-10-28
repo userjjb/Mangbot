@@ -221,6 +221,7 @@ DEFAULT_ORDERS = {
     "resist_blind": "no",  # yes once worn: monsters that blind with their blows stop counting as danger
     "resist_conf": "no",   # the same for confusing blows
     "unseen_hp": "on",     # off: don't treat HP loss with nothing in view as an unseen attacker
+    "autowear": "on",      # off: the Pilot doesn't wear, wield or swap gear by itself (upgrade_step)
     "idle_recall_s": 600,  # no goal and no agent contact for this long -> recall to town
                            # (long enough for a slow agent turn; 180 s fired mid-thought)
     "pickup": "all",       # all | none
@@ -5391,7 +5392,10 @@ class Pilot:
 
     def upgrade_step(self):
         """Wield a better weapon, wear better armour, put good jewellery into
-        empty slots: one change per call. True if it acted."""
+        empty slots: one change per call. True if it acted. `order autowear=off` pauses it (an item kept off on
+        purpose; the M5 set-piece stages a low AC)."""
+        if str(self.orders.get("autowear", "on")) == "off":
+            return False
         w = self.w
         pack, worn = w.items(), w.items(equip=True)
 

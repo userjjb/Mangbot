@@ -1,0 +1,111 @@
+{
+ "id": "M5",
+ "tag": "M5-20261028-091616",
+ "depth_ft": 600,
+ "start": "2026-10-28 09:16:16",
+ "checks": {
+  "confused (the scene happened)": {
+   "pass": false,
+   "detail": "never confused; down at 113.9 s"
+  }
+ },
+ "notes": [
+  "no floor square 1 from Dive04 at (48, 175)",
+  "no floor square 2 from Dive04 at (48, 175)",
+  "no floor square 3 from Dive04 at (48, 175)",
+  "no floor square 1 from Dive04 at (48, 175)",
+  "no floor square 2 from Dive04 at (48, 175)",
+  "no floor square 3 from Dive04 at (48, 175)",
+  "no floor square 1 from Dive04 at (48, 175)",
+  "no floor square 2 from Dive04 at (48, 175)",
+  "no floor square 3 from Dive04 at (48, 175)",
+  "no floor square 1 from Dive04 at (48, 175)",
+  "no floor square 2 from Dive04 at (48, 175)",
+  "no floor square 3 from Dive04 at (48, 175)",
+  "no floor square 1 from Dive04 at (48, 175)",
+  "no floor square 2 from Dive04 at (48, 175)",
+  "no floor square 3 from Dive04 at (48, 175)",
+  "no floor square 1 from Dive04 at (48, 175)",
+  "no floor square 2 from Dive04 at (48, 175)",
+  "no floor square 3 from Dive04 at (48, 175)",
+  "no floor square 1 from Dive04 at (48, 175)",
+  "no floor square 2 from Dive04 at (48, 175)"
+ ],
+ "order_reply": "{\"ok\": true, \"goal\": \"dive 650ft\"}",
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   358,
+   358
+  ],
+  "attention": [
+   [
+    95.3,
+    "thief",
+    "Novice rogue (lvl 6, 1 away) steals gold with a touch, then teleports: kill it before it reaches you"
+   ],
+   [
+    96.2,
+    "rule",
+    "Novice rogue in view: hunting it (your `react thieves`)"
+   ],
+   [
+    113.9,
+    "goal_done",
+    "dive 650ft: reached 650 ft"
+   ]
+  ],
+  "acts": [
+   [
+    46.7,
+    "custom >",
+    "stairs >"
+   ],
+   [
+    49.7,
+    "custom z item=9",
+    "dive: no stairs known: Door/Stair Location"
+   ],
+   [
+    98.5,
+    "custom ,",
+    "pick up: a Staff of Object Location."
+   ],
+   [
+    107.7,
+    "custom ,",
+    "pick up: a Ration of Food."
+   ],
+   [
+    110.7,
+    "custom ,",
+    "pick up: a Potion of Cure Serious Wounds."
+   ],
+   [
+    113.2,
+    "custom >",
+    "stairs >"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "scene": {
+  "dive04": [
+   48,
+   175
+  ],
+  "stairs": [
+   48,
+   184
+  ],
+  "hummerhorns": 20
+ },
+ "end": "2026-10-28 09:20:55",
+ "pass": false
+}

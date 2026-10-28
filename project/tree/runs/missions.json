@@ -2257,5 +2257,125 @@
    "usd": 0.02,
    "transcript": "agent-a397fb79c62e29e17.jsonl"
   }
+ },
+ {
+  "label": "sp-M5-20261028-083814",
+  "nick": "dive04",
+  "start": "2026-10-28 08:38",
+  "end": "2026-10-28 08:42",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M5"
+ },
+ {
+  "label": "sp-M5-20261028-084253",
+  "nick": "dive04",
+  "start": "2026-10-28 08:43",
+  "end": "2026-10-28 08:49",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M5"
+ },
+ {
+  "label": "sp-M5-20261028-090802",
+  "nick": "dive04",
+  "start": "2026-10-28 09:08",
+  "end": "2026-10-28 09:11",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M5"
+ },
+ {
+  "label": "sp-M5-20261028-091116",
+  "nick": "dive04",
+  "start": "2026-10-28 09:11",
+  "end": "2026-10-28 09:16",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M5"
+ },
+ {
+  "label": "sp-M5-20261028-091616",
+  "nick": "dive04",
+  "start": "2026-10-28 09:16",
+  "end": "2026-10-28 09:21",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M5"
+ },
+ {
+  "label": "sp-M5-20261028-092144",
+  "nick": "dive04",
+  "start": "2026-10-28 09:22",
+  "end": "2026-10-28 09:30",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M5"
+ },
+ {
+  "label": "sp-M5-20261028-093012",
+  "nick": "dive04",
+  "start": "2026-10-28 09:30",
+  "end": "2026-10-28 09:34",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M5"
+ },
+ {
+  "label": "sp-M5-20261028-093408",
+  "nick": "dive04",
+  "start": "2026-10-28 09:34",
+  "end": "2026-10-28 09:36",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M5"
+ },
+ {
+  "label": "sp-M5-20261028-093709",
+  "nick": "dive04",
+  "start": "2026-10-28 09:37",
+  "end": "2026-10-28 09:39",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M5"
+ },
+ {
+  "label": "sp-M5-20261028-093911",
+  "nick": "dive04",
+  "start": "2026-10-28 09:39",
+  "end": "2026-10-28 09:46",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M5"
+ },
+ {
+  "label": "sp-M5-20261028-094714",
+  "nick": "dive04",
+  "start": "2026-10-28 09:47",
+  "end": "2026-10-28 09:56",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M5"
+ },
+ {
+  "label": "sp-M5-20261028-100130",
+  "nick": "dive04",
+  "start": "2026-10-28 10:02",
+  "end": "2026-10-28 10:11",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M5"
  }
 ]

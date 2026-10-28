@@ -1,0 +1,70 @@
+{
+ "id": "M5",
+ "tag": "M5-20261028-092144",
+ "depth_ft": 650,
+ "start": "2026-10-28 09:21:44",
+ "checks": {
+  "confused (the scene happened)": {
+   "pass": false,
+   "detail": "never confused; down at 98.2 s"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"dive 700ft\"}",
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   358,
+   358
+  ],
+  "attention": [
+   [
+    69.4,
+    "tactic",
+    "Disenchanter mold (lvl 10, never moves) disenchants: killing it"
+   ],
+   [
+    98.2,
+    "goal_done",
+    "dive 700ft: reached 700 ft"
+   ]
+  ],
+  "acts": [
+   [
+    46.1,
+    "custom z item=9",
+    "dive: no stairs known: Door/Stair Location"
+   ],
+   [
+    65.0,
+    "custom ,",
+    "pick up: a Potion of Resist Heat."
+   ],
+   [
+    97.6,
+    "custom >",
+    "stairs >"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "scene": {
+  "dive04": [
+   37,
+   47
+  ],
+  "stairs": [
+   38,
+   54
+  ],
+  "hummerhorns": 20
+ },
+ "end": "2026-10-28 09:29:45",
+ "pass": false
+}

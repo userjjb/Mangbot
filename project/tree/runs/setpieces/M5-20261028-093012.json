@@ -1,0 +1,15 @@
+{
+ "id": "M5",
+ "tag": "M5-20261028-093012",
+ "depth_ft": 300,
+ "start": "2026-10-28 09:30:12",
+ "checks": {
+  "a Potion of Confusion in the pack": {
+   "pass": false,
+   "detail": "the fetch didn't bring it"
+  }
+ },
+ "notes": [],
+ "end": "2026-10-28 09:33:33",
+ "pass": false
+}

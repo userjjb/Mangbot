@@ -1,0 +1,15 @@
+{
+ "id": "M5",
+ "tag": "M5-20261028-093408",
+ "depth_ft": 350,
+ "start": "2026-10-28 09:34:08",
+ "checks": {
+  "a Potion of Confusion in the pack": {
+   "pass": false,
+   "detail": "no Magenta Potion picked up at (26, 78)"
+  }
+ },
+ "notes": [],
+ "end": "2026-10-28 09:36:29",
+ "pass": false
+}

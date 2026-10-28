@@ -1,0 +1,97 @@
+{
+ "id": "M5",
+ "tag": "M5-20261028-093911",
+ "depth_ft": 450,
+ "start": "2026-10-28 09:39:11",
+ "checks": {
+  "confused (the scene happened)": {
+   "pass": false,
+   "detail": "never confused; down at 92.6 s"
+  }
+ },
+ "notes": [
+  "no floor square 3 from Dive04 at (5, 40)",
+  "no floor square 3 from Dive04 at (5, 40)",
+  "no floor square 2 from Dive04 at (5, 40)"
+ ],
+ "ac": [
+  "76"
+ ],
+ "order_reply": "{\"ok\": true, \"goal\": \"dive 500ft\"}",
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   358,
+   358
+  ],
+  "attention": [
+   [
+    73.3,
+    "tactic",
+    "a hard fight with Fang, Farmer Maggot's dog: quaffed a Potion of Speed at the start"
+   ],
+   [
+    73.9,
+    "tactic",
+    "a hard fight with Fang, Farmer Maggot's dog: quaffed a Potion of Berserk Strength (+to-hit, +30 HP, "
+   ],
+   [
+    74.4,
+    "unique_slain",
+    "Fang, Farmer Maggot's dog slain at 8,41: uniques drop good items (look at 'Item squares' around ther"
+   ]
+  ],
+  "acts": [
+   [
+    46.2,
+    "custom >",
+    "stairs >"
+   ],
+   [
+    49.2,
+    "custom z item=9",
+    "dive: no stairs known: Door/Stair Location"
+   ],
+   [
+    73.3,
+    "custom q item=1",
+    "a hard fight (Fang, Farmer Maggot's dog): quaff 2 Potions of Speed at the start"
+   ],
+   [
+    73.9,
+    "custom q item=3",
+    "a hard fight (Fang, Farmer Maggot's dog): quaff a Potion of Berserk Strength"
+   ],
+   [
+    81.9,
+    "custom ,",
+    "pick up: a Sabre (1d7)."
+   ],
+   [
+    92.0,
+    "custom >",
+    "stairs >"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "scene": {
+  "dive04": [
+   5,
+   40
+  ],
+  "stairs": [
+   4,
+   47
+  ],
+  "hummerhorns": 20
+ },
+ "end": "2026-10-28 09:46:02",
+ "pass": false
+}

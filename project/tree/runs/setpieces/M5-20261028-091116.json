@@ -1,0 +1,75 @@
+{
+ "id": "M5",
+ "tag": "M5-20261028-091116",
+ "depth_ft": 550,
+ "start": "2026-10-28 09:11:16",
+ "checks": {
+  "confused (the scene happened)": {
+   "pass": false,
+   "detail": "never confused; down at 40.3 s"
+  }
+ },
+ "notes": [],
+ "order_reply": "{\"ok\": true, \"goal\": \"dive 600ft\"}",
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   358,
+   358
+  ],
+  "attention": [
+   [
+    40.3,
+    "goal_done",
+    "dive 600ft: reached 600 ft"
+   ],
+   [
+    40.7,
+    "tactic",
+    "no effect seen: destroy junk on the floor: a Potion of Slow Poison"
+   ]
+  ],
+  "acts": [
+   [
+    32.2,
+    "custom ,",
+    "pick up: a Staff of Object Location."
+   ],
+   [
+    36.2,
+    "custom ,",
+    "pick up: a Scroll titled \"ip anrog eresh\" {tried}."
+   ],
+   [
+    37.7,
+    "custom k item=-11 value=1",
+    "destroy junk on the floor: a Potion of Slow Poison"
+   ],
+   [
+    39.6,
+    "custom >",
+    "stairs >"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "scene": {
+  "dive04": [
+   61,
+   112
+  ],
+  "stairs": [
+   59,
+   117
+  ],
+  "hummerhorns": 8
+ },
+ "end": "2026-10-28 09:15:40",
+ "pass": false
+}

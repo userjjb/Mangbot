@@ -142,3 +142,14 @@
 - 2026-10-25 12:27:35 **A2K** PASS (Word of Recall within 2 s of first sight, lowest HP >= 40%) `A2K-20261025-122735.json`
 - 2026-10-26 20:54:43 **L3b** FAIL (cap picked up FAIL) `L3b-20261026-205443.json`
 - 2026-10-26 20:58:32 **L3b** FAIL (cap picked up FAIL) `L3b-20261026-205832.json`
+- 2026-10-28 08:38:14 **M5** FAIL (confused (the scene happened) FAIL) `M5-20261028-083814.json`
+- 2026-10-28 09:08:02 **M5** FAIL () `M5-20261028-090802.json`
+- 2026-10-28 09:11:16 **M5** FAIL (confused (the scene happened) FAIL) `M5-20261028-091116.json`
+- 2026-10-28 09:16:16 **M5** FAIL (confused (the scene happened) FAIL) `M5-20261028-091616.json`
+- 2026-10-28 09:21:44 **M5** FAIL (confused (the scene happened) FAIL) `M5-20261028-092144.json`
+- 2026-10-28 09:30:12 **M5** FAIL (a Potion of Confusion in the pack FAIL) `M5-20261028-093012.json`
+- 2026-10-28 09:34:08 **M5** FAIL (a Potion of Confusion in the pack FAIL) `M5-20261028-093408.json`
+- 2026-10-28 09:37:09 **M5** FAIL (a site FAIL) `M5-20261028-093709.json`
+- 2026-10-28 09:39:11 **M5** FAIL (confused (the scene happened) FAIL) `M5-20261028-093911.json`
+- 2026-10-28 09:47:14 **M5** FAIL (confused (the scene happened) FAIL) `M5-20261028-094714.json`
+- 2026-10-28 10:01:30 **M5** FAIL (confused (the scene happened) FAIL) `M5-20261028-100130.json`
