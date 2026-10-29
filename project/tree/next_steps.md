@@ -21,11 +21,11 @@ The handoff between Architect sessions: the current state, what the next session
 
 ### >>> WHICH HANDOFF IS YOURS? <<<
 - **Session 10 is done** (2026-10-29: the Documentation in `docs/`, the cleanup list `docs/refactor-candidates.md`,
-  bug fixes A1-A3/A6/A8-A11; continued that afternoon: A4/A5/A7/A12-A14, group C, `CHANGELOG.md` and versions --
-  version 2.37.0; Part B has it all). If the user asks for more cleanup from that list, HANDOFF 10 below has the rules.
+  bug fixes A1-A3/A6/A8-A11; continued that afternoon: A4/A5/A7/A12-A14, group C, B4, `CHANGELOG.md` and versions:
+  2.37.0, then 2.37.1; Part B has it all, unified). If the user asks for more cleanup from that list, HANDOFF 10 below has the rules.
 - **Session 11** (missions and implementation resume): read **"HANDOFF TO ARCHITECT 11"** below -- **Part B first**
   (by session 10), then Part A (by session 9).
-- Sessions 8 and 9 are over; the older handoffs further down are history.
+- Sessions 1-9 are over; their handoffs are in `history/handoffs-s1-s9.md`.
 
 ### HANDOFF TO ARCHITECT 10: "Cataloging and housecleaning" (written 2026-10-28 ~20:00 by the session-9 Architect)
 
@@ -164,62 +164,68 @@ level luck dominates. More interleaved missions would settle it (offered to the 
 
 #### Part B -- from session 10
 
-*Written 2026-10-29 ~08:40 by the session-10 Architect.*
+*Session 10 ran in two chats on 2026-10-29: the original session (morning, SGE job 8268425) and "Architect 10
+parallel" (afternoon, job 8327794 on scc-va4, ends Tue 11-03 08:47), which carried on without the first chat's
+context; the original chat then reviewed its work (agreed, with follow-ups below). Unified here 10-29 afternoon.
+Later session-10 work appends below "State now".*
 
-**The Documentation exists: `docs/`.** Start with `docs/CONDENSED.md` (3 pages); `docs/README.md` is the index of ten
-component files (client-server, pilot-core, pilot-combat, pilot-items, goals-and-plans, commands -- every pilotctl
-command --, gear-and-estimator, observe, harness-rulebook-ops, process). They describe the code at dd2200d. **Read the
-component file before opening its source**, and keep it in step when you change that component. roles.md,
+**The Documentation: `docs/`.** Start with `docs/CONDENSED.md` (3 pages); `docs/README.md` indexes ten component files
+(client-server, pilot-core, pilot-combat, pilot-items, goals-and-plans, commands -- every pilotctl command --,
+gear-and-estimator, observe, harness-rulebook-ops, process). They match the code at 2.37.1 (4ef8d55). **Read the
+component file before opening its source, and keep it in step when you change that component.** roles.md,
 operations.md and the memory point to it.
 
-**Cleanup list: `docs/refactor-candidates.md`** (75 items in groups A bugs, B doc fixes, C remove/archive, D
-duplicates, E splits incl. a pilot.py module plan, F defaults/safety). The user approved and session 10 did **A1-A3,
-A6, A8-A11** (commit dd2200d, 117 unit cases; the Pilot restarted 08:35 on that code; the Advisor told by memo):
-- A1: escape's stairs walk no longer hijacks later walks (`escaping_to_stairs` is tied to its walk and level).
-- A2: flavour learning matches item type; the bad "Amber Amulet = Scroll of Identify" entry removed from runs/flavours.json.
-- A3: the shadow estimator gets total to-hit/to-dam (agree rates will shift: compare estimator records before/after
-  10-29 08:35 separately).
-- A6: gearcmp's verdict and the loadout optimizer share one loss rule (`geareval.auto_swap_losses`).
-- A8: `damage_mix.py --mission LABEL` (wrap.sh passes it): the EHP damage mix follows the mission's depth band.
-- A9: `scorecard.py` with no labels only prints the table; `--all` rescores real missions, `--sp` adds set-pieces.
-- A10: `watch_mission.py --nick N` (default dive04) **resumes where its last run stopped** (state in
-  `runs/pilot/<nick>/watch_mission.state`; `--fresh` to start at the ends); pilot.log alerts only on tracebacks and
-  "client exited". wrap.sh complaints and `notes.py --mission` filtered to the mission's time.
-- A11: `review wear` in the dungeon says "kept, NOT worn ... wear it in town".
-**Still open, waiting on the user:** groups B-F (the user hasn't chosen yet) and A4, A5, A7, A12, A13, A14 (A14: the Advisor asks for slays/brands/weight in shadow snapshots; A13: Rings of
-Damage/Accuracy count for nothing in geareval). **Navigator-facing doc errors to know before briefing a Navigator**
-(B1-B8, not fixed yet): the HANDBOOK names a `sell` command that doesn't exist (selling is `goal shop N sell
-[!]NAME`); it says the stash is in the tavern (it's in the wilderness house) and that `plan town` eats to Full (Fed);
-HANDBOOK-reference still offers `goal goto`/`stairs` (refused to the Navigator); BRIEF-TEMPLATE's fixed gear text is
-dated (Rings [+16]/[+12], Boots of Stability now). Fix them (if the user agrees) before the first mission, or tell the
-Navigator in the brief.
+**Versions (the user's decision):** `major.minor.patch`; **minor = play can differ, patch = it can't** (scorecards
+compare within a minor). `github/VERSION` holds it; the Pilot shows it (`status full`, the `started` notice), `mission
+start` records it in missions.json. `CHANGELOG.md` (project top) lists every version, newest first, with its missions;
+2.36.0 and older were assigned retroactively (72 versions, m1-m60 mapped). **Every session: bump VERSION, add a
+CHANGELOG entry, tag `vX.Y.Z` on the version's last commit, push with `git push origin restructure --tags`.**
 
-**Session 10, continued (2026-10-29 afternoon, new SGE job 8327794 on scc-va4, ends Tue 11-03 08:47): version 2.37.0.**
-The user approved and this session did A4, A5, A7, A12, A13, A14 and group C (C1, C2, C5-C13; C11 with a new
-`CHANGELOG.md` and **versions**). See `docs/refactor-candidates.md` ("done (session 10)") and CHANGELOG 2.37.0.
-- **Versions (the user's decision):** `major.minor.patch`; **minor = play can differ, patch = it can't** (scorecards
-  compare within a minor). `github/VERSION` holds it; the Pilot shows it (`status full`, `started`), `mission start`
-  records it in missions.json. **Every session: bump VERSION, add a CHANGELOG entry (missions on it), tag `vX.Y.Z` on
-  the version's last commit, push tags (`git push origin restructure --tags`).** 2.36.0 and older were assigned
-  retroactively (72 versions; m1-m60 mapped).
-- **Later the same day (2.37.1):** C3 done (the study tools in `observe/study/`: the user will record again); C4
-  kept (the live shop catalog will be wanted: `live-deploy-todo.md`); B4 done (HANDBOOK-reference); C14 deferred to
-  an A/B test (TODO above). **Still waiting on the user:** groups B (except B4), D, E, F. B1-B3 and B5-B8
-  (Navigator-facing doc errors) are still unfixed.
-  C8: only the Pilot's dead-character whitelist changed (the scorecard/viewer query lists also hold names Navigators
-  really typed, `help`, `news`, `inventory`: merge them in D7).
-- **Open from the Advisor (29o):** the estimator now wakes sleepers by noise and distance; an optional `p["noise"]`
-  (0 = idle) would be right when the Pilot has been standing still (resting, band waits). Not built.
-- Running at the end: test server (gdb, freeze-enabled), Dive04's Pilot (2.37.0), the viewer (`tmux -L mang attach -t
-  watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked.
+**The cleanup list: `docs/refactor-candidates.md`** (groups A bugs, B doc fixes, C remove/archive, D duplicates, E
+splits incl. a pilot.py module plan, F defaults/safety). Done items are marked "done (session 10)". All by the user's
+approval:
+- **2.36.0 (dd2200d):** A1 escape's stairs walk no longer hijacks later walks; A2 flavour learning matches item type
+  (bad "Amber Amulet" entry removed); A3 the shadow estimator gets total to-hit/to-dam (compare estimator records
+  before/after 10-29 08:35 separately); A6 one auto-swap loss rule for gearcmp and the optimizer; A8 the EHP damage
+  mix follows the mission's depth band (`damage_mix.py --mission`); A9 `scorecard.py` rescores only what is asked
+  (`--all`, `--sp`); A10 `watch_mission.py --nick N` resumes from saved offsets (`--fresh` to start at the ends),
+  alerts only on tracebacks; wrap.sh/notes.py filter to the mission; A11 `review wear` says what happens.
+- **2.37.0 (a188d02):** A4 the emergency loop counts escape actions only; A5 `order pickup=none` makes no loot walks;
+  A7 gear evaluation's "met" fights come from the log's recent tail; A12 pilotctl prints each note once; A13 Rings of
+  Damage/Accuracy count; A14 shadow snapshots carry slays, brands, weapon weight (the Advisor asked). Group C: C1, C2
+  to `tools/attic/`; C5-C10 dead code and fallbacks gone (the rulebook files must exist); C11 old handoffs and retired
+  notes in `history/`; C12 set-piece snapshots pruned; C13 testserver clutter deleted.
+- **2.37.1 (4ef8d55):** B4 HANDBOOK-reference fixed (`goal leave`/`goal fetch`, the four missing orders, the real
+  emergency trigger and escape order; `danger_seen` drops the goal -- the survey's "resumed" was wrong); C3 the
+  human-play study tools in `tools/observe/study/` (the user will record again; `record.py` still defaults to the live
+  port); C4 the shop-tour tool kept for the live catalog; C14 deferred to an A/B test (TODO at the top).
 
-**Process note for future sessions:** session 10 surveyed with ten parallel subagents (one per component; ~5 min
-each, wrote the docs directly), then one merging the candidates; three more fixed the bugs on disjoint files. The main
-context stayed small. Reuse that pattern for big reading jobs.
+**Follow-ups from the review (agreed by both chats; the parallel chat is doing them):**
+1. A4: count escapes where the escape action happens (one place), instead of every `emergency` notice unless marked
+   `action=False` -- a future non-action notice would silently count again.
+2. A7: window the "met" fights by time or recent missions (with a minimum count) instead of the log's last 24 MB.
+3. C12: keep the newest 3-5 timestamped set-piece snapshots instead of deleting each right after "restored".
+4. C7: ask the user whether the viewer should label `!` messages "(sent to the Navigator)" (the dead branch was deleted).
+5. live-deploy-todo.md: pin or snapshot the Advisor's `options_sim.py` for live runs (shadow mode and geareval import it
+   live).
 
-**Defaults to beware (F1/F2, not fixed):** `pilot.py --port` and `MangClient` default to **18346, the live server**;
-always pass 28346 (restart.sh does). pilotctl's default nick is `dive01`: always pass `--nick dive04`.
+**Still open, waiting on the user:** groups **B** (except B4), **D**, **E**, **F**. **Before the first mission, fix or
+brief around the Navigator-facing doc errors (B1-B3, B5-B8):** the HANDBOOK names a `sell` command that doesn't exist
+(selling is `goal shop N sell [!]NAME`); it says the stash is in the tavern (it's in the wilderness house) and that
+`plan town` eats to Full (Fed); BRIEF-TEMPLATE's fixed gear text is dated (Rings [+16]/[+12], Boots of Stability now);
+the pilotctl help text is stale. C8: only the Pilot's dead-character whitelist changed; the scorecard/viewer query
+lists wait for D7. From the Advisor (29o): an optional `p["noise"]` in estimator snapshots (0 while the Pilot stands
+still) -- not built.
 
-**SGE:** job 8268425 ends 10-29 09:47 and takes the test server, the Pilot and the viewer with it: restart them per
-operations.md in the new job (Dive04 was idle in town, 358/358, 300 gold + 19,327 banked).
+**Defaults to beware (F1/F2, not fixed):** `pilot.py --port`, `MangClient` and `observe/study/record.py` default to
+**18346, the live server**; always pass 28346 (restart.sh does). pilotctl's default nick is `dive01`: always pass
+`--nick dive04`.
 
+**Process note:** session 10 surveyed with ten parallel subagents (one per component, ~5 min each, writing the docs
+directly), then one merging the candidates; bug fixes went to agents on disjoint files. The main context stayed small.
+Reuse that for big reading jobs. And: before continuing a session in a new job, `claude --resume` it -- a fresh chat
+lacks the context (how the parallel chat happened).
+
+**State now (10-29 afternoon):** version **2.37.1**; working tree clean. Running in SGE job 8327794 (scc-va4, ends Tue
+11-03 08:47): the test server (gdb, freeze-enabled), Dive04's Pilot (2.37.1), the viewer (`tmux -L mang attach -t
+watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wilderness house. 120 unit cases pass.
