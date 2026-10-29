@@ -4106,6 +4106,11 @@ class Pilot:
             self.resume_after = prev
             self.notify("tactic", "third emergency in 90 s: leaving by the stairs")
             return True
+        if stairs:
+            # (already fleeing: the old text said "no stairs known nearby" here, refactor-candidates A21)
+            self.notify("emergency_loop", "third emergency in 90 s, already fleeing to the stairs: "
+                                          "consider Word of Recall if it doesn't get there")
+            return False
         self.notify("emergency_loop", "third emergency in 90 s and no stairs known nearby: "
                                       "consider Word of Recall or leaving this area")
         return False
@@ -5287,11 +5292,15 @@ class Pilot:
             return self.iv(n).value * self.pay_cut(TV_FOOD) * self.destroy_count(it)
         if it["tval"] == TV_FLASK and ((self.lantern_fuel() or 0) >= self.FUEL_TOPUP or self.provisions_spare()):
             return self.iv(n).value * self.pay_cut(TV_FLASK) * it["number"]
-        if it["tval"] in (TV_FOOD, TV_FLASK, TV_LITE) or self.is_kit_item(it) or self.is_kept(n) or \
-                re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", n)).lower() in self.ability_sources:
-            return float("inf")
-        if (self.flavour_of(it) or {}).get("junk") or re.search(r"\{(cursed|worthless|broken|terrible)", n):
+        prized = self.is_kit_item(it) or self.is_kept(n) or \
+            re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", n)).lower() in self.ability_sources
+        # junk first: food, flasks and lights were priceless before this test, so an unknown or table-junk Mushroom
+        # was never destroyed to make room (refactor-candidates A17); kit, kept and ability items stay priceless
+        if not prized and ((self.flavour_of(it) or {}).get("junk") or
+                           re.search(r"\{(cursed|worthless|broken|terrible)", n)):
             return 0
+        if it["tval"] in (TV_FOOD, TV_FLASK, TV_LITE) or prized:
+            return float("inf")
         if n in self.review_state()["items"]:
             return float("inf")            # (waiting for the Navigator's review)
         iv = self.iv(n)
@@ -7089,7 +7098,9 @@ class Pilot:
         (the Navigator was cleaning the pack by hand every few minutes)."""
         w = self.w
         feelings = [f.strip() for f in self.orders.get("autodestroy", "").split(",") if f.strip()]
-        if not feelings or now < self.busy_until or now - self.autodestroy_t < 2 or w.inven_dirty:
+        # (an empty autodestroy order turns off only the feeling pass below: it used to return here and stop the
+        # junk-kind pass too, refactor-candidates A16)
+        if now < self.busy_until or now - self.autodestroy_t < 2 or w.inven_dirty:
             return False
         # identified junk too -- a kind on the `junk` list, or a harmful device (m28 kept a Staff of Haste Monsters
         # and a Scroll of Aggravate Monster after Identify)
@@ -7103,7 +7114,7 @@ class Pilot:
                 self.cmd(f"custom k item={it['item']} value={it['number']}", f"autodestroy junk {n}", hold=0.6)
                 w.inven_dirty = True
                 return True
-        for it in w.items():
+        for it in (w.items() if feelings else ()):
             m = re.search(r"\{([^}]*)\}", it["name"])
             # (never a kept item: the keep list's promise -- this pass skipped the check, refactor-candidates A15)
             if m and any(re.search(rf"\b{re.escape(f)}\b", m.group(1)) for f in feelings) \
@@ -7947,12 +7958,27 @@ class Pilot:
                 return {"ok": True, "note": "the trip plan is stopped too"}
             return {"ok": True}
         if c == "order":
+            # every KEY=VALUE checked before any is applied: `order a=1 b=bad` used to set a in memory, then fail
+            # before orders.json was written (lost on restart), with a bare ValueError (refactor-candidates A22, F5)
+            if not args:
+                return {"ok": False, "error": "usage: order KEY=VALUE ... (`orders` lists them)"}
+            new = {}
             for kv in args:
+                if "=" not in kv:
+                    return {"ok": False, "error": f"order {kv}: give KEY=VALUE, e.g. `order {kv}=...` "
+                                                  f"(now {self.orders.get(kv, '?')}); nothing changed"}
                 k, v = kv.split("=", 1)
                 if k not in self.orders:
-                    return {"ok": False, "error": f"no order {k}"}
+                    return {"ok": False, "error": f"no order {k} (known: {', '.join(sorted(self.orders))}); "
+                                                  "nothing changed"}
                 cur = self.orders[k]
-                self.orders[k] = type(cur)(v) if not isinstance(cur, str) else v
+                try:
+                    new[k] = type(cur)(v) if not isinstance(cur, str) else v
+                except ValueError:
+                    return {"ok": False, "error": f"order {k}={v}: {k} takes "
+                                                  f"{'a whole number' if isinstance(cur, int) else 'a number'} "
+                                                  f"(now {cur}); nothing changed"}
+            self.orders.update(new)
             with open(self.orders_file, "w") as f:
                 json.dump(self.orders, f)
             out = {"ok": True, "orders": self.orders}
@@ -9763,7 +9789,18 @@ class Pilot:
         food = max(0.0, self.FOOD_MID.get(w.hunger, 6000) + reserve - 1000) / (per_turn * self.TURNS_PER_DMIN)
         fuel = self.lantern_fuel()
         if fuel is None:
-            light = None if any(i["tval"] == TV_LITE for i in w.items(equip=True)) else 0.0
+            # no lantern: a worn light that shows turns (a torch) burns out -- its turns plus spare torches'; one that
+            # shows none (an artifact) is permanent (a torch read as permanent: refactor-candidates A19)
+            worn = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
+            m = re.search(r"with (\d+) turns", worn["name"]) if worn else None
+            if not worn:
+                light = 0.0
+            elif not m:
+                light = None
+            else:
+                spare = sum(int(t.group(1)) * i["number"] for i in w.items(tval=TV_LITE) if not i.get("equip")
+                            for t in [re.search(r"with (\d+) turns", i["name"])] if t)
+                light = (int(m.group(1)) + spare) / self.TURNS_PER_DMIN
         else:
             flasks = sum(i["number"] for i in w.items(tval=TV_FLASK))
             light = (fuel + flasks * self.FLASK_FUEL) / self.TURNS_PER_DMIN

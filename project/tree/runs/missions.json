@@ -2525,5 +2525,16 @@
   "report": "compact",
   "notes": "set-piece A2L",
   "version": "2.38.0"
+ },
+ {
+  "label": "sp-M2-20261029-172346",
+  "nick": "dive04",
+  "start": "2026-10-29 17:24",
+  "end": "2026-10-29 17:27",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M2",
+  "version": "2.39.0"
  }
 ]

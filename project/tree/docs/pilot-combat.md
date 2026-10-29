@@ -165,7 +165,8 @@ Advisor's estimator `base_policy`, `POLICY_VERSION pilot-escape-2026-10-29o` in 
 2. `emergency_loop`: 3 escape actions in 90 s (`emergency` notices except those sent with `action=False`, which report
    no action: "waiting to use ... fighting on", "potions too weak", "attacking X first"; plus the weak-potions phase
    door). With stairs ≤ 30 away: `Flee("emergency loop")` and resume the old
-   goal afterwards. Without: an `emergency_loop` alert. At most once per 60 s.
+   goal afterwards. Without stairs: an `emergency_loop` alert ("no stairs known nearby"); stairs known but already
+   fleeing: an `emergency_loop` alert saying so (A21, 2.40.0). At most once per 60 s.
 3. **Stairs underfoot** while threatened (something in view, or hit < 2 s ago): take them, then goal `Recover`. Standing
    on stairs with nothing threatening: do nothing (stops stair-bouncing).
 4. **Not in combat** (nothing adjacent, not hit in 3 s, and HP not falling with a monster in view): rest if nothing is in

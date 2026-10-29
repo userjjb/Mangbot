@@ -3193,6 +3193,84 @@ def failed_hunt_never_counts_as_slain():
 
 
 @case
+def autodestroy_junk_kinds_without_feelings():
+    """A16 (session 10): `order autodestroy=` (empty) turns off only the pseudo-ID pass; a kind on the junk order is
+    still destroyed."""
+    p = pilot(pack=[("a Potion of Salt Water", 75), ("a Dagger (1d4) {cursed}", 23)])
+    p.orders.update(autodestroy="", junk="Salt Water")
+    p.keep, p.busy_until, p.autodestroy_t = set(), 0.0, -99.0
+    p.c = types.SimpleNamespace(send=lambda *a: None)
+    p.cmds = []
+    p.cmd = lambda line, why, hold=0.4: p.cmds.append((line, why))
+    first = p.auto_destroy(P.gnow()), list(p.cmds)
+    p.w.inven = [i for i in p.w.inven if "Salt" not in i["name"]]
+    p.w.inven_dirty, p.autodestroy_t, p.cmds = False, -99.0, []
+    second = p.auto_destroy(P.gnow()), list(p.cmds)
+    return first[0] and "Salt Water" in first[1][0][1] and second == (False, []), f"{first}; then {second}"
+
+
+@case
+def junk_mushroom_not_priceless():
+    """A17 (session 10): make-room values -- a mushroom the flavour table knows as junk is worth 0 (the junk test runs
+    before the food rule); an unknown one stays priceless."""
+    p = pilot()
+    junk = {"item": 0, "name": "a Black Spotted Mushroom", "tval": 80, "number": 1, "equip": False}
+    unknown = {"item": 1, "name": "a Grey Mushroom", "tval": 80, "number": 1, "equip": False}
+    p.flavour_of = lambda it: {"junk": True} if "Black" in it["name"] else None
+    p.is_kit_item = lambda it: False
+    p.ability_sources = set()
+    p.review_state = lambda: {"items": {}}
+    vj, vu = p.pack_value(junk), p.pack_value(unknown)
+    return vj == 0 and vu == float("inf"), f"junk {vj}, unknown {vu}"
+
+
+@case
+def torch_light_is_not_permanent():
+    """A19 (session 10): a worn Wooden Torch counts its turns (and spare torches'), an artifact light is permanent."""
+    def light(worn, pack=()):
+        p = pilot(worn=[worn], pack=list(pack))
+        p.w.hunger, p.w.flags = 3, {}
+        return p.supply_minutes()[1]
+    torch = light(("a Wooden Torch (with 2150 turns) (1 turn)", 39, 30),
+                  [("a Wooden Torch (with 5000 turns)", 39)])
+    art = light(("the Phial of Galadriel", 39, 10))
+    return torch is not None and abs(torch - 7150 / P.Pilot.TURNS_PER_DMIN) < 0.01 and art is None, \
+        f"torch {torch}, artifact {art}"
+
+
+@case
+def emergency_loop_says_already_fleeing():
+    """A21 (session 10): the third emergency in 90 s while already fleeing to known stairs says so (it used to say
+    "no stairs known nearby")."""
+    p = pilot()
+    now = P.gnow()
+    p.emerg_times, p.loop_warned = [now - 5, now - 3, now - 1], 0.0
+    p.w.find = lambda chars: [(20, 22)]
+    p.w.dist = lambda q: 2
+    p.goal = P.Flee("test")
+    r = p.emergency_loop(now)
+    said = [d for w_, d in p.notes if w_ == "emergency_loop"]
+    return r is False and said and "already fleeing" in said[0], f"{r}, {said}"
+
+
+@case
+def order_all_or_nothing():
+    """A22 (session 10): `order a=1 b=bad` changes nothing and says why; a good order is applied and saved."""
+    import tempfile
+    p = pilot()
+    p.orders.update(flee_hp=0.5, loot_radius=10)
+    p.orders_file = os.path.join(tempfile.mkdtemp(), "orders.json")
+    p.stale_order = lambda c, a: None
+    p.dead = False
+    bad = p.do_request({"cmd": "order", "args": ["flee_hp=0.4", "loot_radius=far"]})
+    kept = p.orders["flee_hp"]
+    good = p.do_request({"cmd": "order", "args": ["flee_hp=0.4"]})
+    saved = json.load(open(p.orders_file))["flee_hp"] if os.path.exists(p.orders_file) else None
+    return (not bad["ok"] and "nothing changed" in bad["error"] and kept == 0.5 and good.get("ok") and saved == 0.4), \
+        f"bad: {bad}; flee_hp then {kept}; good saved {saved}"
+
+
+@case
 def pickup_none_no_loot_walks():
     """A5 (session 10): order pickup=none: loot_step makes no walk to the item 5 squares off (pickup=all does)."""
     def run(pickup):

@@ -27,6 +27,15 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.40.0 -- 2026-10-29 (session 10, continued)
+No missions yet. Details: `docs/refactor-candidates.md` "A2".
+- An empty `autodestroy` order no longer stops the destroying of `junk`-order kinds and harmful devices (A16).
+- Make-room values: junk food, flasks and lights (e.g. a junk mushroom) are worth 0, not priceless (A17).
+- A worn torch's turns count as light left; only a light that shows no turns is permanent (A19).
+- The emergency loop's alert says "already fleeing to the stairs" instead of "no stairs known" when it is (A21).
+- `order`: every KEY=VALUE is checked before any is applied; a bad one changes nothing and gets a usage error (A22,
+  F5).
+
 ## 2.39.0 -- 2026-10-29 (session 10, continued)
 No missions yet. Details: `docs/refactor-candidates.md` "A2" (bugs found by the doc verification).
 - Auto-destroy never destroys a kept item, in its pseudo-ID pass too (A15).

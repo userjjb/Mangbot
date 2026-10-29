@@ -92,7 +92,8 @@ by a unit test. The old `kinds.csv` and its fallback were removed in session 10 
 kit consumables (`is_kit_item`: potions/scrolls of `KIT_KINDS` -- cures, Phase, Recall, Teleport, Identify, Magic
 Mapping, Speed, Heroism, Berserk, Restore, Deep Descent, Resist Poison), kept items, possible ability sources, the
 best light, the last meal, the lantern's needed oil, items waiting in the review queue. Spare lights, food beyond the
-ration supply, and spare flasks are worth their sale price. Flavour-table junk and cursed/worthless items are 0.
+ration supply, and spare flasks are worth their sale price. Flavour-table junk and cursed/worthless items are 0,
+food, flasks and lights included (the junk test runs first, A17, 2.40.0); kit, kept and ability items stay priceless.
 Everything else: value x pay_cut x count. `destroy_count` never destroys rations and keeps the last other food.
 `kit_use_value` values a kit consumable found in the dungeon at its replacement cost (last Alchemist price, else
 `KIT_USE`: Speed 600, Healing 1500, Berserk 500, ...).
@@ -114,7 +115,7 @@ seen on the level map that aren't known junk; within reach the Pilot fetches the
 
 | Mechanism | What | When |
 |---|---|---|
-| `auto_destroy` | pack devices/scrolls/potions identified as a kind on the `junk` order or `JUNK_DEVICES` (Haste Monsters, Clone Monster, Heal Monster); then pack items whose pseudo-ID feeling is on `autodestroy` | no monsters in view, not in a shop, every 2 s; skips kept items in both passes (A15, 2.39.0) and anything inscribed with `@` (or `!` in the feeling tag) |
+| `auto_destroy` | pack devices/scrolls/potions identified as a kind on the `junk` order or `JUNK_DEVICES` (Haste Monsters, Clone Monster, Heal Monster); then (only when the `autodestroy` order isn't empty: an empty one turns off only this pass, A16, 2.40.0) pack items whose pseudo-ID feeling is on `autodestroy` | no monsters in view, not in a shop, every 2 s; skips kept items in both passes (A15, 2.39.0) and anything inscribed with `@` (or `!` in the feeling tag) |
 | `destroy_floor_junk` | known junk underfoot | a quiet moment (`quiet_moment`: no mobile monster in view, not hit for 5 s, HP >= think_hp, not fleeing/recalling/recovering, not blind/confused) |
 | make-room destroys | the cheapest pack item | in `pickup_room` (above) |
 
@@ -224,7 +225,8 @@ ambiguity); `pack_now` re-reads the pack after an action so letters aren't stale
 
 ## 8. Orders (`DEFAULT_ORDERS`)
 
-Set with `order KEY=VALUE` (typed like the default), listed with `orders`, saved in `runs/pilot/NICK/orders.json`
+Set with `order KEY=VALUE` (typed like the default; every pair is checked first and a bad one changes nothing,
+with a usage error -- A22, 2.40.0), listed with `orders`, saved in `runs/pilot/NICK/orders.json`
 (saved values override the defaults). Item orders first; the rest are explained in pilot-combat.md / goals-and-plans.md.
 
 | Key | Default | Meaning |

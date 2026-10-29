@@ -72,18 +72,18 @@ none is fixed. **[N]** = Navigator-facing.
 - **A15** `auto_destroy` checks the keep list only for junk kinds: its pass by pseudo-ID feeling (`{cursed}`,
   `{worthless}`) destroys a kept item. -- S/S -- **ask** (check `is_kept` in both passes). **done (session 10, 2.39.0)**
 - **A16** `order autodestroy=` (empty) also turns off destroying `junk`-order kinds and `JUNK_DEVICES` (the method
-  returns at once). -- S/S -- **ask**.
+  returns at once). -- S/S -- **ask**. **done (session 10, 2.40.0)**
 - **A17** `pack_value` treats every Mushroom as priceless (the `TV_FOOD` test precedes the junk check): unknown or
-  table-junk mushrooms are never destroyed to make room. -- S/S -- **ask**.
+  table-junk mushrooms are never destroyed to make room. -- S/S -- **ask**. **done (session 10, 2.40.0)**
 - **A18** `request_trip` accepts `until "wor<=1"`, which holds as soon as the trip has recalled down (the guard
   `int(c[3]) - (c[2] == "<=") >= 1` looks reversed). **[N]** -- S/S -- **ask**. **done (session 10, 2.39.0)**
 - **A19** `supply_minutes` counts any worn light that isn't a lantern (a torch) as permanent: "light permanent", and
-  `supply_watch` never warns. -- S/S -- **ask**.
+  `supply_watch` never warns. -- S/S -- **ask**. **done (session 10, 2.40.0)**
 - **A20** `reflexes`' hunger step returns early (food eaten < 10 s ago; Hungry with only Satisfy Hunger scrolls), which
   skips pickup, auto-destroy, engage and rest for that tick, possibly until Weak. -- S/M -- **ask**. **done (session 10, 2.39.0)**
-- **A21** `emergency_loop` with stairs known but the goal already Flee sends "no stairs known nearby". -- S/S -- **ask**.
+- **A21** `emergency_loop` with stairs known but the goal already Flee sends "no stairs known nearby". -- S/S -- **ask**. **done (session 10, 2.40.0)**
 - **A22** `order a=1 b=bad`: `a` is set in memory, then the error returns before orders.json is written (lost on
-  restart). With F5. **[N]** -- S/S -- **ask**.
+  restart). With F5. **[N]** -- S/S -- **ask**. **done (session 10, 2.40.0)**
 - **A23** `settle_hunt`: `status == "done" and "slain" in d or "killed" in d` -- a failed hunt whose detail says
   "killed" counts as slain, so no fight debt. -- S/S -- **ask**. **done (session 10, 2.39.0)**
 - **A24** scorecard `commands_per_min` counts `wait_report` records, which `commands` excludes. The Advisor's metric:
@@ -287,7 +287,7 @@ none is fixed. **[N]** = Navigator-facing.
   -- **do** the navigator.md line now (B8); **ask** for a token file / socket-peer check.
 - **F4** `mission` command has no role check (Architect's). -- S/S -- **do** (architect-only).
 - **F5** `order` parsing: `type(cur)(v)` and `order KEY` without `=` surface a bare `ValueError` repr. -- S/S -- **do**
-  (friendly usage error). **[N]**
+  (friendly usage error). **[N]** **done with A22 (session 10, 2.40.0)**
 
 ## Suggested order for the session
 

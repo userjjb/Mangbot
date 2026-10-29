@@ -231,7 +231,8 @@ Food and light are measured in **dungeon minutes** (`Pilot.supply_minutes`), the
 `TURNS_PER_DMIN` = 215 player turns a dungeon minute (the resting and running speed-ups included; field-measured: a
 full lantern's 7500 turns in ~35 minutes).
 
-- **Light** = (lantern fuel + flasks x 7500) / 215; `None` for a permanent light; 0 without one.
+- **Light** = (lantern fuel + flasks x 7500) / 215; without a lantern, a worn light that shows turns (a torch) counts
+  them plus spare torches' (A19, 2.40.0); `None` for a permanent light (one that shows no turns); 0 without one.
 - **Food** = (the middle of the current hunger level, `FOOD_MID`, plus the food value of rations and other food
   carried, minus 1000 for Weak) / (2 a turn, 1 with slow digestion, x 215). Food isn't digested in town.
 - `supply_text()`: "food ~N dungeon min, light ~M" (on the status line via `supply_lines`, at `plan town`'s start and
