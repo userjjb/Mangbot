@@ -1,7 +1,7 @@
 # The Documentation
 
 What everything in this project does, so you can understand the whole and each part without reading the code.
-Written in session 10 (2026-10-29) from the code as it stood at git `d53ba3b` (branch `restructure`). Where a doc and
+Written in session 10 (2026-10-29) from the code at git `d53ba3b` and kept in step since (now version 2.37.1; `github/VERSION`, `../CHANGELOG.md`). Where a doc and
 the code disagreed, these files follow the code. When you change a component, update its file here too.
 
 **In a hurry?** Read [CONDENSED.md](CONDENSED.md) (the 3-page version for Architects and Advisors).
