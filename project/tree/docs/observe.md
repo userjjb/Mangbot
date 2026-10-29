@@ -19,7 +19,7 @@ test server in [harness-rulebook-ops.md](harness-rulebook-ops.md).
 | Tool | Who | When | Reads | Writes |
 |---|---|---|---|---|
 | `watch.py` | the user | any time, live | `ctl.sock` (`view`, `viewmap`, `navview`, `note`), `decisions.jsonl`, `navigator.md` | notes via the Pilot (`commentary.jsonl`, `user_note` records); `testserver/FREEZE` (F5) |
-| `watch_mission.py` | Architect | during a mission, in the background, restarted on each exit | new lines of `decisions.jsonl`, `asks.jsonl`, `pilot.log` | stdout only |
+| `watch_mission.py` | Architect | during a mission, in the background, restarted on each exit | new lines of `decisions.jsonl`, `asks.jsonl`, `pilot.log` | stdout; its read offsets in `runs/pilot/<nick>/watch_mission.state` |
 | `wrap.sh` | Architect | after each mission | (runs the tools below + `pilotctl`) | `missions.json` (end, tokens), scorecard JSON, `damage_mix.json` |
 | `scorecard.py` | Architect, Advisor (reads cards) | after a mission (via `wrap.sh`), or ad hoc | `missions.json`, `decisions.jsonl`, `events.jsonl`, `testserver/gdb_run.log`, game tables | `runs/pilot/<nick>/scorecards/<label>.json` |
 | `tokens.py` | Architect | after `mission end` (via `wrap.sh`) | `missions.json`, Claude Code subagent transcripts | `missions.json` (`tokens`, `effort`) |
@@ -96,19 +96,23 @@ message for 6 s, then the key help again.
 
 ## watch_mission.py -- the Architect's mission monitor
 
-`python3 github/tools/observe/watch_mission.py [MAX_S]` (default 1500 s), run with Bash `run_in_background`;
-when it exits, look, act, and start it again.
+`python3 github/tools/observe/watch_mission.py [MAX_S] [--nick dive04] [--fresh] [--backlog 3600]` (MAX_S default
+1500 s), run with Bash `run_in_background`; when it exits, look, act, and start it again with the same command line.
 
-It opens `runs/pilot/dive04/decisions.jsonl`, `asks.jsonl` and `pilot.log` **at their current ends** and polls
-every 2 s. It exits as soon as any poll finds a hit (printing every hit of that poll), or after MAX_S seconds with
-`quiet for N s`. The nick is hard-coded to dive04.
+It reads `runs/pilot/<nick>/decisions.jsonl`, `asks.jsonl` and `pilot.log` from where the previous run stopped
+(byte offsets saved after every poll in `runs/pilot/<nick>/watch_mission.state`), so events between an exit and the
+restart are reported by the next run. It starts **at the current file ends** instead (and says so in its first
+line) with `--fresh`, with no state file, or when the state is more than `--backlog` seconds old (a new session
+rather than a restart); a file replaced or truncated since is read from its start. It reads complete lines only
+and polls every 2 s. It exits as soon as any poll finds a hit (printing every hit of that poll), or after MAX_S
+seconds with `quiet for N s`.
 
 **Exit conditions (a hit):**
 
 | Source | Condition |
 |---|---|
 | `asks.jsonl` | any new line: `NAV ASK: {...}` (a Navigator question; answer with `pilotctl answer ID "text"`) |
-| `pilot.log` | a line containing `Traceback`, `Error` or `error:` (a Python error in the Pilot) |
+| `pilot.log` | a Python traceback's exception line (`TypeError: ...`, with the innermost `tools/` frame as `at pilot.py line N in fn`), except `BrokenPipeError`/`ConnectionResetError` in a control-socket request (a `pilotctl` client hung up); or the Pilot's `client exited` line |
 | `decisions.jsonl` `kind: escape` | any escape except `escape: wor_travel` (a plain trip recall) |
 | `kind: gear_eval` | a gear evaluator swap |
 | `kind: plan_end` | the Navigator's plan (town/trip) ended |
@@ -119,8 +123,8 @@ every 2 s. It exits as soon as any poll finds a hit (printing every hit of that 
 
 Each decision hit prints `HH:MM:SS kind what: {record minus map/crop/t}` (500 chars).
 
-**Gotchas.** Events that happen while it is not running (between an exit and the restart) are never reported:
-it always starts at the file ends. It does not report the user's `?` notes (those wait for the wrap-up) or plain
+**Gotchas.** After more than `--backlog` seconds without a run (default 1 h), or with `--fresh`, it starts at the
+file ends, so what happened meanwhile is not reported. It does not report the user's `?` notes (those wait for the wrap-up) or plain
 `attention` alerts such as `danger_seen` (the Navigator handles those).
 
 ---
@@ -134,12 +138,12 @@ it always starts at the file ends. It does not report the user's `?` notes (thos
    `runs/missions.json`.
 2. `tokens.py LABEL` -- the Navigator's tokens and cost into `missions.json` (last output line shown).
 3. `scorecard.py --table LABEL` -- writes the card JSON and prints the table row (header + row).
-4. `damage_mix.py --nick NICK` -- refreshes `runs/pilot/NICK/damage_mix.json` with the default 700-800 ft band
-   and 4-day window (prints one confirmation line).
-5. Complaints: lines of `runs/complaints.md` stamped today in the current or previous clock hour (so between
-   ~1 and 2 hours back, not "the last 2 hours" exactly; across midnight it misses yesterday's).
-6. Questions: `notes.py --nick NICK --questions`, cut to the last one or two `QUESTION` blocks (3 lines each). No time filter,
-   so these can be from an older mission.
+4. `damage_mix.py --nick NICK --mission LABEL` -- refreshes `runs/pilot/NICK/damage_mix.json` at the mission's
+   depth band (see damage_mix.py below) and the 4-day window; prints one confirmation line with the band.
+5. Complaints: lines of `runs/complaints.md` stamped (`- YYYY-MM-DD HH:MM...`) at or after the mission's start in
+   `missions.json` (2 hours back if the label isn't there).
+6. Questions: `notes.py --nick NICK --questions --mission LABEL` (the `?` notes made during the mission), cut to
+   the last one or two `QUESTION` blocks (3 lines each).
 7. Status: the first 12 lines of `pilotctl status` and 4 of `pilotctl debt`.
 
 After it, the Architect writes the mission report in `runs/pilot/NICK/reports/YYYY-MM-DD-missionNN.md` and the
@@ -155,18 +159,19 @@ Implements the Advisor's definitions (`memos/2026-10-23-scorecard.md`; the Advis
 ```
 python3 scorecard.py m48            # print one card (and write its JSON)
 python3 scorecard.py --table m48    # the table row only (what wrap.sh uses)
-python3 scorecard.py --table        # every mission in missions.json: cards written, table printed
+python3 scorecard.py --all          # rescore every real mission (cards rewritten, then the table); sp-* only with --sp
+python3 scorecard.py                # the table of the cards already written (read only, nothing rescored)
 python3 scorecard.py --json m48     # the numbers as JSON
 python3 scorecard.py --check m17 .. # ours vs the Advisor's baseline CSV (Advisor/data/scorecard/baseline_m17-m23.csv)
 ```
 
 **Inputs.** The mission's row in `runs/missions.json` (`label, nick, start, end, navigator, effort, report, notes,
 tokens`; written by `pilotctl mission start/end`, `tokens.py`, and the set-piece harness, which adds `sp-*`
-missions). Every `decisions.jsonl` record with `start <= t <= end` (minute resolution; a running mission ends
-now); `events.jsonl` `message` events in the window and `store` listings up to 60 s after it;
+missions; scored only when named, or with `--all --sp`). Every `decisions.jsonl` record with `start <= t <= end`
+(minute resolution; a running mission ends now); `events.jsonl` `message` events in the window and `store` listings up to 60 s after it;
 `testserver/gdb_run.log` for crashes; `src/server/tables.c` (`player_exp`), `lib/edit/object.txt` (kind costs) and
-`shopmath`. **Output:** `runs/pilot/<nick>/scorecards/<label>.json` for every mission processed, and the printed
-card/table.
+`shopmath`. **Output:** `runs/pilot/<nick>/scorecards/<label>.json` for every mission scored (named or `--all`), and
+the printed card/table. With no labels and no `--all` it only reads the existing cards.
 
 **The card** (JSON keys; the printed card shows the same groups):
 
@@ -230,7 +235,7 @@ decision, `in_time_turn`, `before_next_act`, `skipped` (emergencies while the es
 `compute_max_s`, up to 8 `disagreements`, and the hard-fight-start estimates apart (`hard_n`, `hard_compared`,
 `hard_agree`, `hard_choices`). The printed card's group G shows `tokens` (from `tokens.py`).
 
-**The table** (`--table`, or several cards) has one row per mission: `mission nav min dmin lv/dh exp/dm $/dm low%
+**The table** (`--table`, several cards, or no labels) has one row per mission: `mission nav min dmin lv/dh exp/dm $/dm low%
 close near phase woresc cures lost forced$ r->a reply wait% est estHF usd usd/dh usd/kxp gold/usd` (the last four:
 Navigator cost, per dungeon hour, per 1000 exp, and gold found per dollar).
 
@@ -258,7 +263,7 @@ brief must keep the "Mission NN for character" wording or the transcript isn't f
 
 ## damage_mix.py -- where the damage comes from (for EHP)
 
-`python3 damage_mix.py [--nick dive04] [--lo 700] [--hi 800] [--days 4]`
+`python3 damage_mix.py [--nick dive04] [--mission LABEL] [--lo 700] [--hi 800] [--days 4] [--out FILE]`
 
 Finds HP drops in `decisions.jsonl` (consecutive records with `hp` and `depth`, same max HP, less than 5 s apart,
 depth in LO-HI ft, in the last DAYS days) and splits each over the attack messages in `events.jsonl` around it
@@ -271,15 +276,19 @@ Status-only spells (scare, confuse, blind) are ignored.
 Writes `runs/pilot/<nick>/damage_mix.json`: `{"mix": {category: share}, "melee_level": damage-weighted mean level of
 melee attackers, "hp_lost", "drops", "range", "since", "made"}`. The Pilot's gear evaluator reads it
 (`geareval.load_mix`) for the effective-HP (EHP) column of `gearcmp` and `loadout`. Refreshed by `wrap.sh` after
-every mission, always with the default 700-800 ft band.
+every mission with `--mission LABEL`: the band is the 100 ft span of the depths that mission spent at least 10% of
+its dungeon time at (750 -> 700-800, 800 -> 800-900, 700-850 -> 700-900; it prints `mNN: played A-B ft -> band
+LO-HI ft` on stderr). `--lo`/`--hi` override; 700-800 ft without `--mission` or for a mission with no dungeon time.
+`--out` writes elsewhere (for tests; the Pilot reads the run directory's file live).
 
 ---
 
 ## notes.py -- the user's notes with the play around them
 
-`python3 notes.py [--nick dive04] [--since HH:MM | --today] [--before 20] [--after 5] [--questions]`
+`python3 notes.py [--nick dive04] [--since HH:MM | --today | --mission LABEL] [--before 20] [--after 5] [--questions]`
 
-For each entry of `commentary.jsonl` (optionally only `?` questions, or since a time today) prints a header
+For each entry of `commentary.jsonl` (optionally only `?` questions; since a time today, or during a mission's
+start-end in `missions.json` plus a minute) prints a header
 (`QUESTION`, `TO NAVIGATOR` for `!`, `NAVIGATOR` for its `say`, or `note`), the snapshot (depth, position, HP,
 clvl, goal, standing on, monsters), and the decision records from BEFORE seconds before to AFTER seconds after
 (kinds `act, attention, goal, goal_done, goal_failed, audit, note, nav_journal, nav_say, nav_complaint`; later

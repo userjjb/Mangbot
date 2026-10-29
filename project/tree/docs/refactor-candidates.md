@@ -1,7 +1,11 @@
 # Refactor candidates (session 10, consolidated)
 
 One de-duplicated list from the ten survey notes (`docs/survey-notes/*-candidates.md`) and their doc/code discrepancy
-reports, **for the user to approve item by item**. Nothing here has been done yet.
+reports, **for the user to approve item by item**.
+
+**Status (2026-10-29, session 10):** the user approved A1-A3, A6, A8-A11: **done** (commit dd2200d, 117 unit
+cases, Pilot restarted 08:35, Advisor told). A13 added (found while fixing A3). B15 partly done (memory pointers).
+Everything else is still open: the user's choice of groups B-F is pending.
 
 **Rules for every step**
 - Behaviour unchanged unless the item says otherwise and the user agreed (all of group A, and items marked *behaviour*).
@@ -49,6 +53,10 @@ Format: **ID** what -- *evidence* -- risk/effort (S/M/L) -- **do / ask / skip**.
   **do** (say so in the reply). **[N]**
 - **A12** pilotctl prints notes twice (`DONE: ... -- note` then `NOTE:`; goal replies print JSON then `NOTE:`). --
   *commands survey* -- S/S -- **ask** (Navigator-visible output; HANDBOOK quotes no exact format). **[N]**
+
+- **A13** (found while fixing A3) `geareval.Item` reads "a Ring of Damage (+6)" / "a Ring of Accuracy (+8)" as a pval,
+  so their to-dam/to-hit count for nothing in gear verdicts and in the shadow snapshot's totals (the server's
+  `object1.c` prints a lone to-dam/to-hit that way; Dive04 has met Rings of Damage). -- S/S -- **ask**.
 
 ## B. Doc fixes (stale docs vs code; no behaviour change)
 

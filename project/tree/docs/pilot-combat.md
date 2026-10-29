@@ -175,7 +175,8 @@ Advisor's estimator `base_policy`, `POLICY_VERSION pilot-escape-2026-10-28m`, so
     Teleportation scroll or staff, rate-limited 2 s.
 11. **Phase Door** with a monster adjacent: every 2.5 s, or every 0.7 s when HP < 35%. An item inscribed `@r1` is used
     first.
-12. **Out of melee**: walk to stairs ≤ 20 away (`escaping_to_stairs`) and take them on arrival. Not within 2 s of
+12. **Out of melee**: walk to stairs ≤ 20 away (`escaping_to_stairs`: true only while that walk
+    is the mover's current one on this level) and take them on arrival. Not within 2 s of
     another use, since a new move sends `clear` and would drop a queued read.
 13. **Potions by numbers** (every 1.5 s): need = max(2 s × damage rate, 10% max HP when HP < 30%). Drink the weakest
     potion that heals more than need. If none is enough and damage isn't dire, drink the biggest. If every potion is too

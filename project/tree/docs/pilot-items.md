@@ -140,8 +140,8 @@ the Identify price (the TownKit buys scrolls for them).
 - **identified** -- `learn_flavours_tick` watches for the game's "In your pack: ... (x)" line after an Identify aimed at
   an unknown flavour (`id_target`);
 - **identified or used** -- after any quaff/read/use/aim/zap/eat (`watch_flavours` snapshots the pack): if exactly one
-  unknown flavour of a type vanished and one known kind of that type appeared (or "You have no more X" said so), they
-  are the same;
+  unknown flavour of a type vanished and one known kind of that type appeared (or "You have no more X" said so, X's type
+  matching the vanished one's), they are the same; `learn_flavour` refuses any pairing whose type words differ;
 - **sold in a shop** -- the sale identifies it (Shop goal).
 
 `junk` comes from `load_flavours`: a kind is junk when the rulebook says it is worthless or worth <= 1 gold at every
@@ -186,7 +186,7 @@ priceless in `pack_value`, appear on the report's `Review (N, ...)` line with ho
 `review` alert. Worn items leave the queue.
 
 The Navigator answers `review sell|keep|wear NAME` (`review` lists): `keep` also adds it to the keep list; `wear`
-wears it (in town; recorded as keep). **Undecided after 2 town visits** (counted by TownKit), the policy sells it.
+wears it in town (recorded as keep; in the dungeon it's only kept, not worn, and the reply says so). **Undecided after 2 town visits** (counted by TownKit), the policy sells it.
 State: `runs/pilot/NICK/review.json` (`items`, `decided`, `town_visits`).
 
 ## 7. Keep list, value refusals and the debt

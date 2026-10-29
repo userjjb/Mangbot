@@ -22,7 +22,7 @@ Related docs: [pilot-items.md](pilot-items.md) (upgrade_step's static steps, sel
 |---|---|---|
 | `tools/pilot/geareval.py` | The gear evaluator: item parser, character model, scenario sets, simulation, EHP, verdict, loadout optimizer, text report. `--demo` runs Dive04's session-7 Ring of Strength question | pilot.py (`gearcmp`, `loadout`, `gear_better`; also reused: the stat tables by the weight-limit check, `Item`/`label` by `review_hold`, `SIM_RES`/`SHEET_FLAG` by shadow mode). It does not use `itemvalue.py`; the Pilot filters its candidates with `itemvalue`'s `known` flag |
 | `tools/pilot/shadow.py` | Shadow mode: runs `options_sim.choose` in a background thread and queues the answers | pilot.py (`shadow_decision`, `shadow_results`) -- live |
-| `tools/observe/damage_mix.py` | Splits the HP the character lost at 700-800 ft into damage kinds; writes `runs/pilot/NICK/damage_mix.json` (EHP's input) | `observe/wrap.sh` after each mission; read by `geareval.load_mix` |
+| `tools/observe/damage_mix.py` | Splits the HP the character lost in a depth band (the last mission's, else 700-800 ft) into damage kinds; writes `runs/pilot/NICK/damage_mix.json` (EHP's input) | `observe/wrap.sh` after each mission; read by `geareval.load_mix` |
 | `tools/pilot/replay_group.py` | An offline script: replays the Borg group-danger tiers over a run's logs (`python3 replay_group.py runs/pilot/dive03`) | nobody in code. It was used once to tune `group_tick` (next_steps.md). Not part of gear or the estimator |
 | `Advisor/data/estimator/options_sim.py` | The Advisor's Monte Carlo fight simulator and estimator (`rollout`, `choose`, `base_policy`, `OPTIONS`) | imported live by path by geareval and shadow. The Advisor's file: read, never edit |
 | `Advisor/data/estimator/scenarios.py` | Depth-native random encounters: `make(depth_ft, n, seed, skip, boost)` | geareval's depth sets |
@@ -129,12 +129,13 @@ this gear)**: the HP an unarmoured, unresisted character would need to last as l
   applies to `gearcmp`, automatic swaps and `loadout` alike.
 - EHP is also the second tie-break (below) and half of the optimizer's proxy.
 
-`observe/damage_mix.py [--nick dive04] [--lo 700] [--hi 800] [--days 4]`: every HP drop in the decision log in that
+`observe/damage_mix.py [--nick dive04] [--mission LABEL] [--lo 700] [--hi 800] [--days 4] [--out FILE]`: every HP drop in the decision log in that
 depth range and time window is split over the attack messages of that moment in `events.jsonl`: melee by the monster's
 share of HURT/SHATTER blows ("hurt") vs other blows ("melee_other"), breaths/bolts/balls/traps by element, arrows and
 missiles and drops with no message as "other". Output: `{"mix", "melee_level", "hp_lost", "drops", "range", "since",
-"made"}`. `observe/wrap.sh` refreshes it after each mission with the defaults (700-800 ft, last 4 days), whatever depth
-the character now plays.
+"made"}`. `observe/wrap.sh` refreshes it after each mission with `--mission mNN`: the band is the 100 ft span of the
+depths that mission spent at least 10% of its dungeon time at (750 -> 700-800, 700-850 -> 700-900), last 4 days;
+700-800 ft if it had no dungeon time or without `--mission`.
 
 ### 2.7 The verdict (`compare`)
 
@@ -183,7 +184,8 @@ There is no `MIN_GAIN` in geareval: the "+3% and 2 SE" bar is its equivalent. `M
 2. **Prune:** per slot, a candidate that another candidate or a worn piece beats on every static count (AC, to-hit,
    to-dam, abilities, stat bonuses, weight, price; a weapon by damage, to-hit and AC) is dropped (`_dominated`).
 3. **Enumerate:** the worn set with **one or two slots changed** (a ring pair counts as one slot), within the budget,
-   keeping every Free Action / See Invisible / NO_LOSS ability and every resist or immunity worn now, and no slower.
+   losing nothing the verdict's `no_loss` rule forbids (`auto_swap_losses`, shared with `compare`: with `TRADE_RESISTS`
+   off, every ability, resist, immunity and sustain worn now is kept), and no slower.
 4. **Proxy:** `log(damage-per-round ratio, with the depth's mean slay multiplier) + 0.5 log(EHP ratio) + 0.1 x speed
    difference`. The best 5 with a positive proxy (`max_sim`) go on.
 5. **Simulate:** `compare(..., no_loss=True)` against the current gear (the same verdict as above).
@@ -264,7 +266,9 @@ rate, whichever is more). If the rules are unsafe and nothing is safe, it names 
 | `hard_fight` | each tick in the reflex chain, before the Speed/Berserk ticks (`hard_fight_shadow`): a hard fight (a unique or a monster within 5 levels adjacent, or 2+ adjacent under 75% HP); once per (level, adjacent set) per 60 s, 20 s apart | `fight, speed, berserk, speed+berserk, phase` | what `speed_start_tick`/`berserk_tick` would quaff, else `fight` |
 
 `shadow_decision` builds the snapshot: HP, max HP, AC, level, depth, distance to the nearest known stairs, Free Action,
-the sheet's resists, `save` 0.45, `max_adj` (2 in a corridor, else 3), the wielded weapon's dice/to-hit/to-dam and blows,
+the sheet's resists, `save` 0.45, `max_adj` (2 in a corridor, else 3), the wielded weapon's dice and blows, the **total**
+to-hit and to-dam (weapon + other gear + STR/DEX, from `gear_character().derive()` as geareval passes them; the weapon's
+own plusses only if the gear model fails),
 consumable counts, timers (hasted, hero, berserk, blind, confused, afraid, slowed: 5 blocks), turns left on a pending
 recall, the awake share from `look` answers (`p_awake`, `asleep_seen`), food from the hunger level, `xp_rate_per_block`
 (the rolling XP per minute at this depth / 96, once 300 s of data exist), `xp_per_gold`. Team: each visible monster as

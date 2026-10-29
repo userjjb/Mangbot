@@ -138,9 +138,10 @@ validation.
 - The user's player lore and plan changes are in `notes_players.md` (read it).
 
 ### >>> WHICH HANDOFF IS YOURS? <<<
-- **Session 10** (special: cataloging and housecleaning, **no missions**): read **"HANDOFF TO ARCHITECT 10"** right below.
-- **Session 11** (missions and implementation resume): read **"HANDOFF TO ARCHITECT 11"** below it -- Part A was
-  written by session 9, Part B (if any) by session 10.
+- **Session 10 is done** (2026-10-29: the Documentation in `docs/`, the cleanup list `docs/refactor-candidates.md`,
+  bug fixes A1-A3/A6/A8-A11). If the user asks for more cleanup from that list, HANDOFF 10 below has the rules.
+- **Session 11** (missions and implementation resume): read **"HANDOFF TO ARCHITECT 11"** below -- **Part B first**
+  (by session 10), then Part A (by session 9).
 - Sessions 8 and 9 are over; the older handoffs further down are history.
 
 ### HANDOFF TO ARCHITECT 10: "Cataloging and housecleaning" (written 2026-10-28 ~20:00 by the session-9 Architect)
@@ -280,8 +281,45 @@ level luck dominates. More interleaved missions would settle it (offered to the 
 
 #### Part B -- from session 10
 
-*(Session 10: write here what session 11 should know -- what you documented, restructured or removed, renamed
-commands, where the Documentation lives. Leave Part A as it is.)*
+*Written 2026-10-29 ~08:40 by the session-10 Architect.*
+
+**The Documentation exists: `docs/`.** Start with `docs/CONDENSED.md` (3 pages); `docs/README.md` is the index of ten
+component files (client-server, pilot-core, pilot-combat, pilot-items, goals-and-plans, commands -- every pilotctl
+command --, gear-and-estimator, observe, harness-rulebook-ops, process). They describe the code at dd2200d. **Read the
+component file before opening its source**, and keep it in step when you change that component. roles.md,
+operations.md and the memory point to it.
+
+**Cleanup list: `docs/refactor-candidates.md`** (75 items in groups A bugs, B doc fixes, C remove/archive, D
+duplicates, E splits incl. a pilot.py module plan, F defaults/safety). The user approved and session 10 did **A1-A3,
+A6, A8-A11** (commit dd2200d, 117 unit cases; the Pilot restarted 08:35 on that code; the Advisor told by memo):
+- A1: escape's stairs walk no longer hijacks later walks (`escaping_to_stairs` is tied to its walk and level).
+- A2: flavour learning matches item type; the bad "Amber Amulet = Scroll of Identify" entry removed from runs/flavours.json.
+- A3: the shadow estimator gets total to-hit/to-dam (agree rates will shift: compare estimator records before/after
+  10-29 08:35 separately).
+- A6: gearcmp's verdict and the loadout optimizer share one loss rule (`geareval.auto_swap_losses`).
+- A8: `damage_mix.py --mission LABEL` (wrap.sh passes it): the EHP damage mix follows the mission's depth band.
+- A9: `scorecard.py` with no labels only prints the table; `--all` rescores real missions, `--sp` adds set-pieces.
+- A10: `watch_mission.py --nick N` (default dive04) **resumes where its last run stopped** (state in
+  `runs/pilot/<nick>/watch_mission.state`; `--fresh` to start at the ends); pilot.log alerts only on tracebacks and
+  "client exited". wrap.sh complaints and `notes.py --mission` filtered to the mission's time.
+- A11: `review wear` in the dungeon says "kept, NOT worn ... wear it in town".
+**Still open, waiting on the user:** groups B-F (the user hasn't chosen yet) and A4, A5, A7, A12, A13 (A13: Rings of
+Damage/Accuracy count for nothing in geareval). **Navigator-facing doc errors to know before briefing a Navigator**
+(B1-B8, not fixed yet): the HANDBOOK names a `sell` command that doesn't exist (selling is `goal shop N sell
+[!]NAME`); it says the stash is in the tavern (it's in the wilderness house) and that `plan town` eats to Full (Fed);
+HANDBOOK-reference still offers `goal goto`/`stairs` (refused to the Navigator); BRIEF-TEMPLATE's fixed gear text is
+dated (Rings [+16]/[+12], Boots of Stability now). Fix them (if the user agrees) before the first mission, or tell the
+Navigator in the brief.
+
+**Process note for future sessions:** session 10 surveyed with ten parallel subagents (one per component; ~5 min
+each, wrote the docs directly), then one merging the candidates; three more fixed the bugs on disjoint files. The main
+context stayed small. Reuse that pattern for big reading jobs.
+
+**Defaults to beware (F1/F2, not fixed):** `pilot.py --port` and `MangClient` default to **18346, the live server**;
+always pass 28346 (restart.sh does). pilotctl's default nick is `dive01`: always pass `--nick dive04`.
+
+**SGE:** job 8268425 ends 10-29 09:47 and takes the test server, the Pilot and the viewer with it: restart them per
+operations.md in the new job (Dive04 was idle in town, 358/358, 300 gold + 19,327 banked).
 
 ### HANDOFF TO ARCHITECT 8: "The Architect's Vacation" (written 2026-10-26 ~22:00 by the session-7 Architect)
 
