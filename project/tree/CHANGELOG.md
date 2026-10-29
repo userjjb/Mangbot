@@ -27,6 +27,15 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.39.0 -- 2026-10-29 (session 10, continued)
+No missions yet. Details: `docs/refactor-candidates.md` "A2" (bugs found by the doc verification).
+- Auto-destroy never destroys a kept item, in its pseudo-ID pass too (A15).
+- `plan trip ... until`: `wor<=1` is refused (it held as soon as the trip recalled down); `wor<1` is allowed (A18).
+- The hunger reflex no longer skips pickup, auto-destroy, engage and rest while it waits for a meal to show (A20).
+- A failed override hunt never counts as slain, so its fight debt is charged (A23).
+- Scorecard: `commands_per_min` counts commands only, not wait reports (A24, the Advisor's definition); all real
+  missions rescored.
+
 ## 2.38.0 -- 2026-10-29 (session 10, continued)
 No missions yet. Details: `next_steps.md` Part B, `docs/refactor-candidates.md` (A2, B, review follow-ups).
 - The emergency loop's count: every `emergency` notice states whether it reports an escape action (a unit case

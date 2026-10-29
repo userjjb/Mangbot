@@ -13,6 +13,7 @@ import random
 import re
 import sys
 import time
+import types
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "pilot"))
@@ -3143,6 +3144,52 @@ def emergency_notices_say_if_action():
              and n.args and isinstance(n.args[0], ast.Constant) and n.args[0].value == "emergency"]
     bad = [n.lineno for n in calls if not any(k.arg == "action" for k in n.keywords)]
     return bool(calls) and not bad, f"{len(calls)} emergency notices; without action=: {bad}"
+
+
+@case
+def autodestroy_spares_kept_items():
+    """A15 (session 10): the pseudo-ID pass of auto_destroy never destroys an item on the keep list; an unkept
+    {cursed} item still goes."""
+    def run(keep):
+        p = pilot(pack=[("a Dagger (1d4) {cursed}", 23)])
+        p.orders.update(autodestroy="cursed,worthless", junk="")
+        p.keep = set(keep)
+        p.busy_until, p.autodestroy_t = 0.0, -99.0
+        p.c = types.SimpleNamespace(send=lambda *a: None)
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append(line)
+        p.auto_destroy(P.gnow())
+        return p.cmds
+    kept, unkept = run({"dagger"}), run(set())
+    return kept == [] and len(unkept) == 1 and unkept[0].startswith("custom k"), f"kept: {kept}; not kept: {unkept}"
+
+
+@case
+def trip_until_wor_guard():
+    """A18 (session 10): `until` refuses wor<2 and wor<=1 (they hold with the one Word of Recall kept for coming
+    home) and lets wor<1 and wor<=0 through."""
+    out = {}
+    for cond in ("wor<2", "wor<=1", "wor<1", "wor<=0"):
+        p = pilot()
+        try:
+            r = p.request_trip(["500-650", "until", cond])
+        except Exception:            # (past the guard, the fixture lacks the plan's state: not refused here)
+            r = {}
+        out[cond] = "holds as soon as" in str(r.get("error", ""))
+    return out == {"wor<2": True, "wor<=1": True, "wor<1": False, "wor<=0": False}, f"refused: {out}"
+
+
+@case
+def failed_hunt_never_counts_as_slain():
+    """A23 (session 10): a hunt that failed with "killed" in its detail is wrong (fight debt), not slain."""
+    import tempfile
+    p = pilot(hp=100)
+    p.w.hp = [100, 300]
+    p.debt, p.debt_path = {}, os.path.join(tempfile.mkdtemp(), "debt.json")
+    p.fight_debt_total = lambda: sum(e["hp"] for e in p.debt.get("fight_entries", []))
+    g = types.SimpleNamespace(target="Grip", overridden={"hp0": 300, "hp_min": 100, "emerg0": 0, "why": "test"})
+    P.Pilot.settle_hunt(p, g, "failed", "killed by nothing: it fled")
+    return len(p.debt.get("fight_entries", [])) == 1, f"fight entries: {p.debt.get('fight_entries')}"
 
 
 @case

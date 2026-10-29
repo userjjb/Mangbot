@@ -22,7 +22,7 @@ The handoff between Architect sessions: the current state, what the next session
 ### >>> WHICH HANDOFF IS YOURS? <<<
 - **Session 10 is done** (2026-10-29: the Documentation in `docs/`, the cleanup list `docs/refactor-candidates.md`,
   bug fixes A1-A3/A6/A8-A11; continued that afternoon: A4/A5/A7/A12-A14, group C, B4, `CHANGELOG.md` and versions:
-  2.37.0, 2.37.1, then 2.38.0: review follow-ups, B1-B3/B5-B8, every docs/ file verified against the code; Part B
+  2.37.0, 2.37.1, 2.38.0, then 2.39.0 (A15/A18/A20/A23/A24): review follow-ups, B1-B3/B5-B8, every docs/ file verified against the code; Part B
   has it all). If the user asks for more cleanup from that list, HANDOFF 10 below has the rules.
 - **Session 11** (missions and implementation resume): read **"HANDOFF TO ARCHITECT 11"** below -- **Part B first**
   (by session 10), then Part A (by session 9).
@@ -212,11 +212,16 @@ approval:
   agents (one per file); they settled: logins work while frozen (operations.md was wrong), a bad password exits 255,
   restart.sh parks and the parked Pilot sends `clear`, `hotswap.sh Dive04` (capital D: its pgrep is case-sensitive).
 
-**Still open, waiting on the user:** groups **B** (B9-B18), **D**, **E**, **F**, and **A15-A25**: code bugs the
-verification found (refactor-candidates "A2": e.g. A15 auto-destroy ignores the keep list for `{cursed}`/`{worthless}`
-items; A18 `until wor<=1` accepted; A20 the hunger step skips pickup/destroy/rest; A23 a failed hunt can count as
-slain; A24 a scorecard rate counts reports -- the Advisor says fix it; A25 set-pieces A2I/A2L re-run: FAIL on a stale
-criterion -- the Pilot fought and won correctly, the scenarios need a unique above clvl 29). C8: only the Pilot's dead-character whitelist changed; the scorecard/viewer query
+- **2.39.0 (the user approved, 10-29):** bugs the verification found: A15 auto-destroy spares kept items in its
+  pseudo-ID pass too; A18 `until` refuses `wor<=1` (and no longer `wor<1`); A20 the hunger step no longer skips
+  pickup/auto-destroy/engage/rest while it waits; A23 a failed hunt never counts as slain (fight debt); A24 the
+  scorecard's `commands_per_min` excludes wait reports (the Advisor's definition; every real mission rescored).
+  124 unit cases.
+
+**Still open, waiting on the user:** groups **B** (B9-B18), **D**, **E**, **F**, and A16, A17, A19, A21, A22
+(refactor-candidates "A2"). **A25** (set-pieces A2I/A2L, FAIL on a stale criterion: the Pilot fought and won
+correctly; the scenarios need a unique above clvl 29) **waits until we have implemented the test server** (the
+user). C8: only the Pilot's dead-character whitelist changed; the scorecard/viewer query
 lists wait for D7. From the Advisor (29o): an optional `p["noise"]` in estimator snapshots (0 while the Pilot stands
 still) -- not built.
 
@@ -229,6 +234,6 @@ directly), then one merging the candidates; bug fixes went to agents on disjoint
 Reuse that for big reading jobs. And: before continuing a session in a new job, `claude --resume` it -- a fresh chat
 lacks the context (how the parallel chat happened).
 
-**State now (10-29 evening):** version **2.38.0**. Running in SGE job 8327794 (scc-va4, ends Tue
-11-03 08:47): the test server (gdb, freeze-enabled), Dive04's Pilot (2.38.0), the viewer (`tmux -L mang attach -t
-watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wilderness house. 121 unit cases pass.
+**State now (10-29 evening):** version **2.39.0**. Running in SGE job 8327794 (scc-va4, ends Tue
+11-03 08:47): the test server (gdb, freeze-enabled), Dive04's Pilot (2.39.0), the viewer (`tmux -L mang attach -t
+watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wilderness house. 124 unit cases pass.

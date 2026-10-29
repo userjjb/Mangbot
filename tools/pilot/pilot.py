@@ -3911,13 +3911,13 @@ class Pilot:
                 self.cmd(f"eat {food[0]['item']}", f"hungry ({w.hunger})", hold=1.0)
                 self.notify("tactic", f"hungry: ate {one_of(food[0]['name'])}")
                 return True
-            if food:
-                return False
+            # (waiting for a meal to show, or for Weak before a scroll: the steps below still run -- this used to
+            # return here, skipping pickup, auto-destroy, engage and rest, refactor-candidates A20)
             # no food: a Scroll of Satisfy Hunger (the town kit counts them as food; the reflex
             # didn't read them, and Dive04 went Weak with four in the pack: the set-piece harness)
             # (only when Weak: it fills to just under Gorged (use-obj.c, PY_FOOD_MAX - 1), so the next potion
             # makes you Gorged, -10 speed -- m26 read it Hungry at 03:20 and fought the yeek band Gorged)
-            sat = next((i for i in w.items(tval=TV_SCROLL) if "Satisfy Hunger" in i["name"]), None)
+            sat = None if food else next((i for i in w.items(tval=TV_SCROLL) if "Satisfy Hunger" in i["name"]), None)
             if sat and w.hunger <= 1 and now - self.eat_t > 10 and not w.flag("blind") and not w.flag("confused"):
                 if not any(i["tval"] == TV_LITE for i in w.items(equip=True)):
                     return self.wear_light("a light to read Satisfy Hunger by")
@@ -3925,9 +3925,7 @@ class Pilot:
                 self.cmd(f"custom r item={sat['item']}", f"hungry ({w.hunger}), no food: read Satisfy Hunger", hold=1.0)
                 self.notify("tactic", "hungry and no food: read a Scroll of Satisfy Hunger")
                 return True
-            if sat:
-                return False
-            if w.hunger <= 1 and not isinstance(self.goal, Recall) and w.depth:
+            if not food and not sat and w.hunger <= 1 and not isinstance(self.goal, Recall) and w.depth:
                 self.notify("low_supply", "weak from hunger and no food: recalling")
                 self.set_goal(Recall())
         # 5. Adjacent monster: let the server's auto-retaliate fight
@@ -5224,7 +5222,8 @@ class Pilot:
         g.overridden = None
         lost = max(0, ov["hp0"] - ov["hp_min"])
         emerg = len(self.emerg_times) - ov["emerg0"]
-        slain = status == "done" and "slain" in str(detail) or "killed" in str(detail)
+        # (A23: the parentheses -- a failed hunt whose detail said "killed" counted as slain, so no fight debt)
+        slain = status == "done" and ("slain" in str(detail) or "killed" in str(detail))
         wrong = not slain or ov["hp_min"] < 0.5 * max(1, w.hp[1]) or emerg > 0
         self.log("hunt_override_end", target=g.target, status=status, detail=detail, hp_lost=lost,
                  hp_min=ov["hp_min"], emergencies=emerg, wrong=wrong)
@@ -7106,8 +7105,9 @@ class Pilot:
                 return True
         for it in w.items():
             m = re.search(r"\{([^}]*)\}", it["name"])
+            # (never a kept item: the keep list's promise -- this pass skipped the check, refactor-candidates A15)
             if m and any(re.search(rf"\b{re.escape(f)}\b", m.group(1)) for f in feelings) \
-                    and "@" not in m.group(1) and "!" not in m.group(1):
+                    and "@" not in m.group(1) and "!" not in m.group(1) and not self.is_kept(it["name"]):
                 self.autodestroy_t = now
                 self.c.send("confirm yes")
                 self.cmd(f"custom k item={it['item']} value={it['number']}", f"autodestroy {it['name']}", hold=0.6)
@@ -8834,7 +8834,9 @@ class Pilot:
             conds = TripPlan.parse_until(until or "cures<3 or phase<3 or minutes>45")
         except ValueError as e:
             return {"ok": False, "error": f"until: {e}"}
-        bad = [c[0] for c in conds if c[1] == "wor" and c[2] in ("<", "<=") and int(c[3]) - (c[2] == "<=") >= 1]
+        # (holds with the one Word of Recall left after the recall down: wor<N for N >= 2, wor<=N for N >= 1 -- the
+        # old test let wor<=1 through and refused the harmless wor<1, refactor-candidates A18)
+        bad = [c[0] for c in conds if c[1] == "wor" and c[2] in ("<", "<=") and int(c[3]) + (c[2] == "<=") >= 2]
         if bad:
             return {"ok": False, "error": f"until {bad[0]}: that holds as soon as the trip has recalled down (one "
                                           "Word of Recall goes on the way down); coming home with none left is "

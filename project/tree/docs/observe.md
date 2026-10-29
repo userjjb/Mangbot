@@ -215,7 +215,7 @@ D. Value lost (`value_lost`, gold equivalents)
   Action, See Invisible, Telepathy, Hold Life, Speed, resistances, Regeneration...).
 
 E. Navigator
-- `reports` (`nav_cmd` with `wait_report`: each report handed to the Navigator), `commands`, `commands_per_min`.
+- `reports` (`nav_cmd` with `wait_report`: each report handed to the Navigator), `commands`, `commands_per_min` (commands, i.e. without `wait_report` records, per mission minute: A24, 2.39.0; cards rescored 10-29).
 - `report_to_action_med_s` / `_p90_s`: from a report to the first non-query command before the next report.
   `reports_without_command_pct`: reports followed by no command at all.
 - `user_messages` (`!` notes) and `user_reply_med_s` (to the next `nav_say`, within 300 s).

@@ -124,7 +124,7 @@
  "E": {
   "reports": 25,
   "commands": 69,
-  "commands_per_min": 2.8,
+  "commands_per_min": 2.1,
   "report_to_action_med_s": 9.9,
   "report_to_action_p90_s": 24.8,
   "reports_without_command_pct": 16,

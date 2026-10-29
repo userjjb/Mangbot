@@ -87,7 +87,7 @@ under a goal (to check the conditions). Its own goals are marked `by_plan`; thei
 | var | meaning |
 |---|---|
 | `cures` / `ccw` / `csw` / `clw` | Cure potions carried (all three / each kind) |
-| `phase`, `wor` | Phase Door, Word of Recall scrolls (`wor` is ignored until the trip has gone down; `wor<1`-style conditions are refused: one recall is spent going down, and "no Word of Recall left" is built in) |
+| `phase`, `wor` | Phase Door, Word of Recall scrolls (`wor` is ignored until the trip has gone down; `wor<N` for N ≥ 2 and `wor<=N` for N ≥ 1 are refused, since they hold with the one recall kept for coming home; `wor<1` and `wor<=0` are allowed but redundant: "no Word of Recall left" is built in -- A18, 2.39.0) |
 | `food` | rations (`kit_count`) |
 | `hp` | HP percent |
 | `minutes`, `dmin` | minutes since the plan was given / since it first reached the dungeon |

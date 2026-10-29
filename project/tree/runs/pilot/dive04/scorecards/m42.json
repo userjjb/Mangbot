@@ -140,7 +140,7 @@
  "E": {
   "reports": 14,
   "commands": 28,
-  "commands_per_min": 1.0,
+  "commands_per_min": 0.7,
   "report_to_action_med_s": 3.8,
   "report_to_action_p90_s": 4.3,
   "reports_without_command_pct": 43,

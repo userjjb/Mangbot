@@ -185,7 +185,7 @@ def card(m):
     recs, msgs, stores = load(nick, t0, t1)
     att = [d for d in recs if d.get("kind") == "attention"]
     # (the trip plan's news, tagged source=plan since 2026-10-23, didn't wake the Navigator: counted
-    # apart, the Advisor's veto-reason memo; deaths, emergencies and escalations still use every record)
+    # apart, the Advisor's veto-reason memo); deaths, emergencies and escalations come from acount (plan news excluded)
     acount = collections.Counter(d.get("what") for d in att if d.get("source") != "plan")
     plan_news = collections.Counter(d.get("what") for d in att if d.get("source") == "plan")
     aud = [d for d in recs if d.get("kind") == "audit_check"]
@@ -315,7 +315,7 @@ def card(m):
     rep = [says[j] - u for u in users for j in [bisect.bisect_right(says, u)] if j < len(says) and says[j] - u < 300]
     ages = [d["report_age"] for d in nc if d.get("report_age") is not None and d.get("cmd") not in QUERY_CMDS]
     reps = [d for d in recs if d.get("kind") == "report"]
-    c["E"] = {"reports": len(reports), "commands": len(cmds), "commands_per_min": round(len(nc) / max(1, c["minutes"]), 1),
+    c["E"] = {"reports": len(reports), "commands": len(cmds), "commands_per_min": round(len(cmds) / max(1, c["minutes"]), 1),
               "report_to_action_med_s": med(lat), "report_to_action_p90_s": p90(lat),
               "reports_without_command_pct": round(100 * silent / len(reports)) if reports else None,
               "user_messages": len(users), "user_reply_med_s": med(rep),

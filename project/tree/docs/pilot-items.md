@@ -114,7 +114,7 @@ seen on the level map that aren't known junk; within reach the Pilot fetches the
 
 | Mechanism | What | When |
 |---|---|---|
-| `auto_destroy` | pack devices/scrolls/potions identified as a kind on the `junk` order or `JUNK_DEVICES` (Haste Monsters, Clone Monster, Heal Monster); then pack items whose pseudo-ID feeling is on `autodestroy` | no monsters in view, not in a shop, every 2 s; skips kept items and anything inscribed with `@` (or `!` in the feeling tag) |
+| `auto_destroy` | pack devices/scrolls/potions identified as a kind on the `junk` order or `JUNK_DEVICES` (Haste Monsters, Clone Monster, Heal Monster); then pack items whose pseudo-ID feeling is on `autodestroy` | no monsters in view, not in a shop, every 2 s; skips kept items in both passes (A15, 2.39.0) and anything inscribed with `@` (or `!` in the feeling tag) |
 | `destroy_floor_junk` | known junk underfoot | a quiet moment (`quiet_moment`: no mobile monster in view, not hit for 5 s, HP >= think_hp, not fleeing/recalling/recovering, not blind/confused) |
 | make-room destroys | the cheapest pack item | in `pickup_room` (above) |
 
