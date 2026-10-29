@@ -215,7 +215,8 @@ approval:
 **Still open, waiting on the user:** groups **B** (B9-B18), **D**, **E**, **F**, and **A15-A25**: code bugs the
 verification found (refactor-candidates "A2": e.g. A15 auto-destroy ignores the keep list for `{cursed}`/`{worthless}`
 items; A18 `until wor<=1` accepted; A20 the hunger step skips pickup/destroy/rest; A23 a failed hunt can count as
-slain; A24 a scorecard rate counts reports; A25 re-run set-pieces A2I/A2L, last FAIL). C8: only the Pilot's dead-character whitelist changed; the scorecard/viewer query
+slain; A24 a scorecard rate counts reports -- the Advisor says fix it; A25 set-pieces A2I/A2L re-run: FAIL on a stale
+criterion -- the Pilot fought and won correctly, the scenarios need a unique above clvl 29). C8: only the Pilot's dead-character whitelist changed; the scorecard/viewer query
 lists wait for D7. From the Advisor (29o): an optional `p["noise"]` in estimator snapshots (0 while the Pilot stands
 still) -- not built.
 

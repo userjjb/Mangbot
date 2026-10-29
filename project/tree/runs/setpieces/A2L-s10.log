@@ -1,0 +1,8 @@
+[A2L-20261029-163814] snapshot Dive04
+saved Dive04 to /projectnb/jbrcs/mangband/runs/setpieces/saves/A2L-20261029-163814
+[A2L-20261029-163814] Gandalf at 300 ft
+[A2L-20261029-163814] summoned Lugdush, the Uruk at (5, 45), 1 from Dive04 at (6, 45)
+[A2L-20261029-163814]   FAIL Word of Recall within 2 s of first sight: seen at 3.6126482486724854, recall read at None
+[A2L-20261029-163814]   PASS lowest HP >= 40%: lowest [294, 388]
+[A2L-20261029-163814] restored Dive04 from /projectnb/jbrcs/mangband/runs/setpieces/saves/A2L-20261029-163814
+[A2L-20261029-163814] FAIL -> /projectnb/jbrcs/mangband/runs/setpieces/A2L-20261029-163814.json

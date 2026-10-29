@@ -87,9 +87,14 @@ none is fixed. **[N]** = Navigator-facing.
 - **A23** `settle_hunt`: `status == "done" and "slain" in d or "killed" in d` -- a failed hunt whose detail says
   "killed" counts as slain, so no fight debt. -- S/S -- **ask**.
 - **A24** scorecard `commands_per_min` counts `wait_report` records, which `commands` excludes. The Advisor's metric:
-  memo it. -- S/S -- **ask**.
+  memo it. -- S/S -- **ask**. **The Advisor (memo 10-29 commands-per-min): not intended; fix it** (same
+  population as `commands`; a separate `reports_per_min` if wanted; regenerating past cards is fine), and reword the
+  `deaths` comment to "deaths, emergencies and escalations come from acount (plan news excluded)".
 - **A25** Set-pieces A2I (10-24) and A2L (10-25, "Lugdush never seen") last ran FAIL and were never re-run. -- S/S --
-  **do** (re-run before the next mission).
+  **do** (re-run before the next mission). **Re-run 10-29 on 2.38.0: both FAIL "Word of Recall within 2 s", but the
+  Pilot was right:** Ibun and Lugdush are no longer above clvl-29 Dive04, so it drank Speed + Berserk, killed the unique
+  and its band (lowest HP 76-80%) and fetched the drop. The scenarios are stale, not the Pilot: to test the recall rule
+  they need a unique above our level (A2's Ulwarth is also below 29 now). **ask** (rescale A2/A2I/A2L).
 - **Text only (add to B11/B16):** `loadout_info`'s header tells the Navigator "slays, brands and criticals aren't
   simulated" (they are) **[N]**; geareval's module docstring (optimizer "not built", no resists/criticals);
   `group_danger` docstring (+150 drain weight); world.py's `arrived_by` 'recall'; `compact()` "map: dungeon only";

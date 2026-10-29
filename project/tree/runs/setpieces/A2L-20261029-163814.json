@@ -1,0 +1,182 @@
+{
+ "id": "A2L",
+ "tag": "A2L-20261029-163814",
+ "depth_ft": 300,
+ "start": "2026-10-29 16:38:14",
+ "checks": {
+  "Word of Recall within 2 s of first sight": {
+   "pass": false,
+   "detail": "seen at 3.6126482486724854, recall read at None"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [294, 388]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   294,
+   388
+  ],
+  "attention": [
+   [
+    3.6,
+    "band",
+    "a band within 10 squares: Black orc \u00d77, Cave orc \u00d75, Snaga \u00d74, Lugdush, the Uruk, Orc captain (18 mo"
+   ],
+   [
+    3.6,
+    "tactic",
+    "a hard fight with Black orc, Cave orc, Lugdush, the Uruk, Orc captain: quaffed a Potion of Speed at "
+   ],
+   [
+    4.3,
+    "tactic",
+    "a hard fight with Black orc, Cave orc, Lugdush, the Uruk, Orc captain: quaffed a Potion of Berserk S"
+   ],
+   [
+    9.7,
+    "unique_slain",
+    "Lugdush, the Uruk slain at 6,45: uniques drop good items (look at 'Item squares' around there)"
+   ],
+   [
+    32.9,
+    "tactic",
+    "fetching the unique's drop at 5,42"
+   ],
+   [
+    33.0,
+    "goal_done",
+    "goto 5,42"
+   ],
+   [
+    36.0,
+    "tactic",
+    "fetching the unique's drop at 5,43"
+   ],
+   [
+    36.1,
+    "goal_done",
+    "goto 5,43"
+   ],
+   [
+    39.0,
+    "tactic",
+    "fetching the unique's drop at 4,44"
+   ],
+   [
+    39.7,
+    "found",
+    "picked up a Long Sword (2d5) {Lugdush, the Uruk}: identify it before selling (`sell !NAME`)"
+   ],
+   [
+    41.4,
+    "goal_done",
+    "goto 4,44"
+   ],
+   [
+    42.0,
+    "tactic",
+    "fetching the unique's drop at 4,45"
+   ],
+   [
+    42.1,
+    "goal_done",
+    "goto 4,45"
+   ],
+   [
+    45.1,
+    "tactic",
+    "fetching the unique's drop at 4,46"
+   ],
+   [
+    47.5,
+    "goal_done",
+    "goto 4,46"
+   ],
+   [
+    48.1,
+    "tactic",
+    "fetching the unique's drop at 4,47"
+   ],
+   [
+    48.2,
+    "goal_done",
+    "goto 4,47"
+   ],
+   [
+    51.1,
+    "tactic",
+    "fetching the unique's drop at 5,46"
+   ],
+   [
+    51.2,
+    "goal_done",
+    "goto 5,46"
+   ],
+   [
+    54.2,
+    "tactic",
+    "fetching the unique's drop at 5,45"
+   ]
+  ],
+  "acts": [
+   [
+    3.6,
+    "custom q item=1",
+    "a hard fight (Black orc, Cave orc, Lugdush, the Uruk, Orc captain): quaff 2 Poti"
+   ],
+   [
+    4.3,
+    "custom q item=3",
+    "a hard fight (Black orc, Cave orc, Lugdush, the Uruk, Orc captain): quaff 2 Poti"
+   ],
+   [
+    23.7,
+    "engage",
+    "engage Black orc (L13, 5 away) on the way"
+   ],
+   [
+    23.7,
+    "custom ,",
+    "pick up: a Ration of Food."
+   ],
+   [
+    25.7,
+    "rest",
+    "rest"
+   ],
+   [
+    27.1,
+    "rest",
+    "rest"
+   ],
+   [
+    39.1,
+    "custom ,",
+    "pick up: a Long Sword (2d5) {Lugdush, the Uruk}."
+   ],
+   [
+    45.2,
+    "custom ,",
+    "pick up: a Pair of Soft Leather Boots [2]."
+   ],
+   [
+    54.3,
+    "custom ,",
+    "pick up: a Pair of Hard Leather Boots [3]."
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-29 16:41:10",
+ "pass": false
+}

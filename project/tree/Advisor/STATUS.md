@@ -13,7 +13,7 @@ emergency, hard_fight and band triggers -> `estimator` records in decisions.json
 bump POLICY_VERSION, keep `choose()`/`rollout()` signatures, memo the Architect; `base_policy` must mirror the Pilot's escape rules
 (the Architect announces changes); never change user-decided values (XP_PER_GOLD is now passed per call; MIN_GAIN floor approved).
 Contract and player-dict keys: `../memos/to_architect/2026-10-28-advisor-docs.md` (+ `noise`, 29o).
-Pilot version 2.37.0 (10-29 12:42); versions/missions in `../CHANGELOG.md`. Last missions m56-m60 (10-28); none since 2.37.0.
+Pilot version 2.38.0 (10-29; no escape-order change, 29o still mirrors it; geareval encounters window days=3/min_n=20; replied on commands_per_min in to_architect/2026-10-29-commands-per-min.md); versions/missions in `../CHANGELOG.md`. Last missions m56-m60 (10-28); none since 2.37.0.
 
 **Next:** (1) review the `estimator` records of the next missions — three eras: before 10-29 08:35 (understated to-hit/to-dam),
 08:35-12:42 (no slays), from 12:42 (complete); compare agree rates per era and trigger; (2) re-check the wake calibration with

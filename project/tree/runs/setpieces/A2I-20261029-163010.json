@@ -1,0 +1,127 @@
+{
+ "id": "A2I",
+ "tag": "A2I-20261029-163010",
+ "depth_ft": 650,
+ "start": "2026-10-29 16:30:10",
+ "checks": {
+  "Word of Recall within 2 s of first sight": {
+   "pass": false,
+   "detail": "seen at 3.593806266784668, recall read at None"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [310, 388]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   310,
+   388
+  ],
+  "attention": [
+   [
+    3.7,
+    "tactic",
+    "a hard fight with Ibun, Son of Mim: quaffed a Potion of Speed at the start"
+   ],
+   [
+    4.3,
+    "tactic",
+    "a hard fight with Ibun, Son of Mim: quaffed a Potion of Berserk Strength (+to-hit, +30 HP, no fear)"
+   ],
+   [
+    8.8,
+    "band",
+    "a band within 10 squares: Novice paladin \u00d74, Ibun, Son of Mim (5 monsters, ~440 HP expected to fight"
+   ],
+   [
+    10.4,
+    "band",
+    "a band within 10 squares: Novice paladin \u00d77, Ibun, Son of Mim (8 monsters, ~537 HP expected to fight"
+   ],
+   [
+    10.9,
+    "unseen_attacker",
+    "'It points at you and curses.': probably the Novice paladin (lvl 8) in view; carrying on (HP 89%)"
+   ],
+   [
+    11.0,
+    "unique_slain",
+    "Ibun, Son of Mim slain at 6,45: uniques drop good items (look at 'Item squares' around there)"
+   ],
+   [
+    11.4,
+    "tactic",
+    "6 monsters together but weak (~59 HP expected to fight them all, vs HP 335): fighting on"
+   ],
+   [
+    24.9,
+    "tactic",
+    "fetching the unique's drop at 5,44"
+   ],
+   [
+    27.5,
+    "goal_done",
+    "goto 5,44"
+   ],
+   [
+    27.9,
+    "tactic",
+    "fetching the unique's drop at 4,45"
+   ],
+   [
+    28.0,
+    "goal_done",
+    "goto 4,45"
+   ],
+   [
+    29.9,
+    "tactic",
+    "afraid and in danger: quaffed a Potion of Heroism"
+   ],
+   [
+    31.2,
+    "unseen_attacker",
+    "'It casts a fearful illusion.': probably the Novice paladin (lvl 8) in view; carrying on (HP 96%)"
+   ]
+  ],
+  "acts": [
+   [
+    3.7,
+    "custom q item=1",
+    "a hard fight (Ibun, Son of Mim): quaff 2 Potions of Speed at the start"
+   ],
+   [
+    4.3,
+    "custom q item=3",
+    "a hard fight (Ibun, Son of Mim): quaff 2 Potions of Berserk Strength"
+   ],
+   [
+    16.6,
+    "rest",
+    "rest"
+   ],
+   [
+    25.1,
+    "custom ,",
+    "pick up: a Black Spotted Mushroom."
+   ],
+   [
+    29.9,
+    "custom q item=3",
+    "afraid and in danger: quaff 3 Potions of Heroism"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-29 16:38:14",
+ "pass": false
+}

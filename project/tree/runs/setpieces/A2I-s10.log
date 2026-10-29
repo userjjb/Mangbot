@@ -1,0 +1,8 @@
+[A2I-20261029-163010] snapshot Dive04
+saved Dive04 to /projectnb/jbrcs/mangband/runs/setpieces/saves/A2I-20261029-163010
+[A2I-20261029-163010] Gandalf at 650 ft
+[A2I-20261029-163010] summoned Ibun, Son of Mim at (5, 45), 1 from Dive04 at (6, 45)
+[A2I-20261029-163010]   FAIL Word of Recall within 2 s of first sight: seen at 3.593806266784668, recall read at None
+[A2I-20261029-163010]   PASS lowest HP >= 40%: lowest [310, 388]
+[A2I-20261029-163010] restored Dive04 from /projectnb/jbrcs/mangband/runs/setpieces/saves/A2I-20261029-163010
+[A2I-20261029-163010] FAIL -> /projectnb/jbrcs/mangband/runs/setpieces/A2I-20261029-163010.json

@@ -154,3 +154,5 @@
 - 2026-10-28 09:47:14 **M5** FAIL (confused (the scene happened) FAIL) `M5-20261028-094714.json`
 - 2026-10-28 10:01:30 **M5** FAIL (confused (the scene happened) FAIL) `M5-20261028-100130.json`
 - 2026-10-29 12:42:53 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261029-124253.json`
+- 2026-10-29 16:30:10 **A2I** FAIL (Word of Recall within 2 s of first sight FAIL, lowest HP >= 40%) `A2I-20261029-163010.json`
+- 2026-10-29 16:38:14 **A2L** FAIL (Word of Recall within 2 s of first sight FAIL, lowest HP >= 40%) `A2L-20261029-163814.json`
