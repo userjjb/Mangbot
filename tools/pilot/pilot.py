@@ -158,6 +158,14 @@ def kind_key(name):
     return re.sub(r"\s+[-+]\d+.*$", "", n).strip()
 
 
+def type_word(name):
+    """'Amber Amulet' / 'Scroll titled "foo"' / 'Potion of Speed' -> 'Amulet' / 'Scroll' / 'Potion' (None if
+    none): a flavour and the kind it's paired with must agree on it (refactor-candidates A2)."""
+    n = re.sub(r'"[^"]*"', "", name).split(" of ")[0]
+    m = re.search(r"\b(Potion|Scroll|Wand|Staff|Rod|Ring|Amulet|Mushroom)s?\b", n)
+    return m.group(1) if m else None
+
+
 def one_of(name):
     """'2 Potions of Boldness' -> 'a Potion of Boldness' (what one use takes;
     mission 6's news said 'quaffed 2 Potions' when 1 was left)."""
@@ -3222,7 +3230,8 @@ class Pilot:
                 continue
             if m and " of " in m.group(1):
                 k = kind_key(m.group(1))
-                tv = next((tv for tv, _ in gone), None)
+                # (only an unknown of the same type: any vanished unknown made "Amber Amulet" = Scroll of Identify)
+                tv = next((tv for tv, g in gone if type_word(g) == type_word(k)), None)
                 if tv is not None and (tv, k) not in fw["before"]:
                     new.add((tv, k))
         for tv in {t for t, _ in gone}:
@@ -4123,6 +4132,20 @@ class Pilot:
             self.phase_hist.popleft()
         return len(self.phase_hist) >= 3
 
+    @property
+    def escaping_to_stairs(self):
+        """The mover's current walk is escape()'s walk to stairs. Tied to that walk (Mover.walk_id) on this level:
+        arriving, a stop, any later go() (Explore etc. reuse the mover) or a new level ends it. (It was a plain flag
+        never reset: after the first escape walk every walk was ticked as one, and the emergency reflex stopped
+        stopping the mover -- refactor-candidates A1.)"""
+        tag = getattr(self, "_escape_walk", None)
+        return tag is not None and bool(self.mover.active) and \
+            tag == (getattr(self.mover, "walk_id", None), self.w.level_t)
+
+    @escaping_to_stairs.setter
+    def escaping_to_stairs(self, on):
+        self._escape_walk = (getattr(self.mover, "walk_id", None), self.w.level_t) if on else None
+
     def escape(self, why):
         """Emergency: stairs underfoot > out of combat, rest (never potions)
         > (in melee) Phase Door > (not in melee) walk to nearby stairs, else
@@ -4458,6 +4481,15 @@ class Pilot:
         w = self.w
         wt = [x for x in self.weapon_table() if x[3]]
         prof = shadow.weapon_profile(wt[0][0] if wt else "", wt[0][1] if wt else 1)
+        # (A3: the estimator's tohit/todam are totals -- the weapon's plus rings, gloves and other gear and the STR/DEX
+        # bonuses, the Advisor's docs memo 10-28 §4 -- from the gear evaluator's model, as geareval.sim_player passes)
+        try:
+            d = self.gear_character().derive()
+            prof.update(tohit=d["tohit"], todam=d["todam"])
+        except Exception as e:                     # (the weapon's own numbers then; said once in the log)
+            if not self.__dict__.get("shadow_gear_said"):
+                self.shadow_gear_said = True
+                self.log("note", text=f"shadow mode: the gear model failed, the weapon's own (+h,+d) passed ({e!r})")
 
         def n(word, tv):
             return sum(i["number"] for i in w.items(tval=tv) if word in i["name"])
@@ -6555,6 +6587,9 @@ class Pilot:
     def learn_flavour(self, flavour, kind, how):
         if not flavour or not kind or " of " not in kind or self.flavours.get(flavour, {}).get("kind") == kind:
             return
+        if type_word(flavour) != type_word(kind):
+            self.log("note", text=f"flavour pairing refused (type mismatch): {flavour} = {kind} ({how})")
+            return
         self.flavours[flavour] = {"kind": kind, "junk": self.junk_kinds.get(kind, False), "source": how}
         try:
             cur = {}
@@ -7685,9 +7720,16 @@ class Pilot:
                 self.keep.add(re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower())
                 json.dump(sorted(self.keep), open(os.path.join(self.rundir, "keep.json"), "w"))
             if args[0] == "wear":
+                # (recorded as keep; worn now only in town -- `wear` is for town, between trips: DUNGEON_ITEM_CMDS. It
+                # said "-> wear" and in the dungeon wore nothing: refactor-candidates A11)
                 it = next((i for i in self.w.items() if i["name"] == name), None)
-                if it and not self.w.in_dungeon:
-                    self.cmd(f"custom w item={it['item']}", f"wear {name} (your review)", hold=0.8)
+                if self.w.in_dungeon:
+                    return {"ok": True, "text": f"review: {name} -> kept, NOT worn: in the dungeon the Pilot handles "
+                                                f"items itself. `wear` it in town, between trips"}
+                if not it:
+                    return {"ok": True, "text": f"review: {name} -> kept, NOT worn: it isn't in the pack"}
+                self.cmd(f"custom w item={it['item']}", f"wear {name} (your review)", hold=0.8)
+                return {"ok": True, "text": f"review: {name} -> kept; wearing it now"}
             return {"ok": True, "text": f"review: {name} -> {args[0]}"}
         if c == "debt":
             e = self.debt.get("entries", [])

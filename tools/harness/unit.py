@@ -1105,6 +1105,37 @@ def shadow_estimator_logs():
 
 
 @case
+def shadow_snapshot_total_plusses():
+    """A3: the estimator's tohit/todam are totals (the Advisor's docs memo 10-28 §4) -- the weapon's plusses, a ring of
+    Slaying's and the STR/DEX bonuses, as geareval.sim_player passes them -- not the weapon's own (+5,+7)."""
+    import geareval as GE
+    import shadow as SH
+
+    def snap(worn):
+        p = pilot(hp=140, worn=worn, monsters=[(20, 21, BYNAME["uruk"])])
+        p.w.find = lambda chars: []
+        p.our_slowness = lambda: 1.0
+        p.mover = type("M", (), {"in_corridor": lambda self: False})()
+        got = []
+        sh = p.shadow_est = SH.Shadow()
+        if not sh.sim:
+            return None
+        sh.submit = lambda s: got.append(s) or "started"
+        p.shadow_decision("low HP: read Phase Door (Uruk adjacent)")
+        return got[0]["p"] if got else None
+    spear = ("a Spear (1d6) (+5,+7)", 22, 50)
+    a, b = snap([spear]), snap([spear, ("a Ring of Slaying (+4,+6)", 45, 2)])
+    if not a or not b:
+        return False, "the estimator didn't load"
+    t = GE.stat_table()
+    si, di = GE.stat_index(58), GE.stat_index(28)          # (W: STR 18/40, DEX 18/10)
+    td, th = 7 + t[si]["adj_str_td"], 5 + t[si]["adj_str_th"] + t[di]["adj_dex_th"]
+    ok = (a["todam"], a["tohit"]) == (td, th) and (b["todam"], b["tohit"]) == (td + 6, th + 4) and \
+        b["dice"] == "1d6" and b["blows"] >= 1
+    return ok, f"spear: +{a['tohit']},+{a['todam']} (expected +{th},+{td}); with the ring: +{b['tohit']},+{b['todam']}"
+
+
+@case
 def ability_armour_kept():
     """Same class as m33's weapon swap: the armour upgrade went by AC alone, so a plain Metal Scale Mail would have
     replaced the Hard Studded Leather of Resistance (four resists). Armour that loses an ability isn't worn; a plain
@@ -2692,6 +2723,26 @@ def gear_evaluator_no_loss_rules():
 
 
 @case
+def gear_optimizer_same_loss_rule_as_verdict():
+    """A6: the optimizer proposes only loadouts the verdict's no_loss rule allows (one predicate, auto_swap_losses):
+    a Ring of Slaying in place of the Ring of Strength loses its sustain and looks better on paper, but isn't
+    simulated; in place of a Ring of Protection it is (no sustain lost)."""
+    GE, ch = _dive04_character()
+    strength = GE.Item("Ring of Strength (+2)")
+    ch.worn["ring"] = [ch.worn["ring"][0], strength]
+    slaying = GE.Item("a Ring of Slaying (+4,+6)")
+    bad = ch.swap(slaying, 1)                                   # (for the Ring of Strength: loses SUST_STR)
+    bad_proxy = GE.proxy(ch.derive(bad), ch.derive(), ch.depth_ft)
+    res = GE.optimize(ch, [slaying], hard=False, depth_n=0)
+    labels = res["options"][1:]
+    never = [k for k in labels if any("automatic swap never does" in x for x in res["notes"][k])]
+    ok = bad_proxy > 0 and GE.auto_swap_losses(ch.derive()["flags"], ch.derive(bad)["flags"]) == ["SUST_STR"] and \
+        not never and labels and not any("for Ring of Strength" in k for k in labels) and \
+        any("for Ring of Protection" in k for k in labels)
+    return ok, f"the swap for Strength: proxy {bad_proxy:+.3f}; simulated: {labels}; ruled out for a loss: {never}"
+
+
+@case
 def gear_score_rests_and_paired_error():
     """The score counts the turns to rest back the HP lost (regenhp, resting x2, game time: ~2 HP a block at 340 HP); the paired standard
     error of a difference is 0 for identical options."""
@@ -2970,6 +3021,99 @@ def ask_limits_lifted_by_the_flag_file():
     r3 = p.ask_architect("three?")
     ok = r1["ok"] and not r2["ok"] and r3["ok"]
     return ok, f"limited: {r1['ok']}, {r2['ok']}; with the flag: {r3['ok']}"
+
+
+@case
+def escape_stairs_flag_ends_with_its_walk():
+    """refactor-candidates A1: `escaping_to_stairs` means the mover's current walk is escape()'s walk to stairs. It was
+    never reset: after one escape walk, an emergency ticked any later walk (Explore) as an escape and took whatever
+    stairs it reached, and the reflex no longer stopped the mover. Now arrival, a new go() or a new level ends it."""
+    p = pilot(hp=100, monsters=[(20, 24, BYNAME["cave orc"])])
+    w = p.w
+    w.ghost, w.standing_on, w.last_stairs_cmd, w.last_hit_t = False, ".", None, P.gnow()
+    w.adjacent_monsters = lambda: []
+    w.tagged = lambda c, d: None
+    w.damage_rate = lambda s: 5.0
+    w.find = lambda chars: [(20, 30)]
+    p.dead, p.busy_until, p.orders["flee_hp"] = False, 0.0, 0.5
+    p.worst_3turns = lambda races: 0.0
+    p.emergency_loop = lambda now: False
+    p.recall_started = lambda now: True
+    p.phase_futile = lambda now: False
+    p.kill_caster_step = lambda adj, why: False
+    p.teleport_item = lambda: None
+    p.phase_t, p.phase_hist, p.cure_t, p.recall_t, p.noescape_t = -99.0, collections.deque(), -99.0, -99.0, -99.0
+    p.cmd = lambda line, why, hold=0.4: None
+    m = P.Mover(None, w)
+    m._plan = lambda: bool(setattr(m, "path", [(0, 0)])) or True
+    ticks = []
+    m.tick = lambda: ticks.append(sorted(m.goals)) or "moving"
+    p.mover = m
+    p.escaping_to_stairs = False
+    p.reflexes()                                    # 1. out of melee, stairs 10 away: the escape walk starts
+    started = p.escaping_to_stairs and ticks == [[(20, 30)]]
+    m.goals = None                                  # 2. it arrives (Mover.tick clears goals)
+    after_arrival = p.escaping_to_stairs
+    m.go([(5, 5)])                                  # 3. an Explore walk on the reused mover
+    explore_flag = p.escaping_to_stairs
+    p.reflexes()                                    # the emergency again: not ticked as an escape; stopped
+    explore_ticked, stopped = len(ticks) > 1, not m.active
+    m.go([(20, 30)])                                # 4. an escape walk, then a new level
+    p.escaping_to_stairs = True
+    w.level_t = 2.0
+    new_level = p.escaping_to_stairs
+    ok = started and not after_arrival and not explore_flag and not explore_ticked and stopped and not new_level
+    return ok, f"escape walk started {started}; flag after arrival {after_arrival}, on an Explore walk {explore_flag}, " \
+               f"Explore walk ticked as an escape {explore_ticked}, reflex stopped it {stopped}; after a new level " \
+               f"{new_level}"
+
+
+@case
+def flavour_no_more_matches_type():
+    """refactor-candidates A2: "You have no more Scrolls of Identify." paired with a vanished unknown amulet
+    (runs/flavours.json: "Amber Amulet" = "Scroll of Identify"). Only an unknown of X's type pairs; learn_flavour
+    refuses a flavour and kind whose type words differ."""
+    import tempfile
+
+    def run(unknown, said):
+        p = pilot()
+        p.flavour_file = os.path.join(tempfile.mkdtemp(), "flavours.json")
+        p.id_target = None
+        p.flavour_watch = {"t": P.gnow() - 2, "before": {unknown}, "unknown": {unknown}}
+        p.w.messages.append((P.gnow(), said))
+        p.learn_flavours_tick(P.gnow())
+        return p.flavours
+    amulet = run((40, "Amber Amulet"), "You have no more Scrolls of Identify.")
+    scroll = run((70, 'Scroll titled "foo bar"'), "You have no more Scrolls of Light.")
+    q = pilot()
+    q.flavour_file = os.path.join(tempfile.mkdtemp(), "flavours.json")
+    q.learn_flavour("Amber Amulet", "Scroll of Identify", "test")
+    ok = amulet == {} and scroll.get('Scroll titled "foo bar"', {}).get("kind") == "Scroll of Light" and \
+        q.flavours == {}
+    return ok, f"amulet + no more Identify: {amulet}; scroll + no more Light: {scroll}; direct mismatch: {q.flavours}"
+
+
+@case
+def review_wear_says_what_happens():
+    """refactor-candidates A11: `review wear NAME` in the dungeon is kept, not worn (`wear` is for town), and the reply
+    says so; in town it's worn now."""
+    import tempfile
+    out = []
+    for dungeon in (True, False):
+        name = "a Ring of Protection [+10]"
+        p = pilot(pack=[(name, 45)])
+        p.w.in_dungeon = dungeon
+        p.rundir = tempfile.mkdtemp()
+        p.stale_order = lambda c, a: None
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append(line)
+        p.review_state()["items"][name] = {"why": "test", "visit": 0, "t": ""}
+        r = p.do_request({"cmd": "review", "args": ["wear", "protection"]})
+        out.append((r.get("text", r.get("error")), p.review_state()["decided"].get(name), p.cmds))
+    (dt, dd, dc), (tt, td, tc) = out
+    ok = "NOT worn" in dt and dd == "keep" and dc == [] and "wearing it now" in tt and td == "keep" and \
+        tc == ["custom w item=0"]
+    return ok, f"dungeon: {dt!r} {dd} {dc}; town: {tt!r} {td} {tc}"
 
 
 def main():

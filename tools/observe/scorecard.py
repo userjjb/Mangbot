@@ -4,9 +4,10 @@ definitions (memos/2026-10-23-scorecard.md; reference: Advisor/data/scorecard/sc
 
 Missions are listed in runs/missions.json (`pilotctl mission start/end` keeps it).
 
-    python3 scorecard.py m23                 # one card
-    python3 scorecard.py --all               # every card, then the comparison table
-    python3 scorecard.py --table             # the table only
+    python3 scorecard.py m23                 # one card (rescored, its JSON rewritten)
+    python3 scorecard.py --table m23         # its table row only (what wrap.sh uses)
+    python3 scorecard.py --all [--table]     # rescore every real mission (+ the sp-* set pieces with --sp), then the table
+    python3 scorecard.py                     # the table of the cards already written (read only, no rescoring)
     python3 scorecard.py --json m23          # the numbers
     python3 scorecard.py --check             # compare with the Advisor's baseline CSV
 
@@ -646,20 +647,42 @@ def check(cards):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[1])
-    ap.add_argument("labels", nargs="*")
-    ap.add_argument("--all", action="store_true")
+    ap.add_argument("labels", nargs="*", help="missions to score (their cards are rewritten); a set piece (sp-*) "
+                    "only when named")
+    ap.add_argument("--all", action="store_true", help="rescore every real mission and rewrite its card (sp-* only "
+                    "with --sp)")
+    ap.add_argument("--sp", action="store_true", help="include the set-piece sp-* missions (--all or no labels)")
     ap.add_argument("--table", action="store_true")
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--check", action="store_true")
     a = ap.parse_args()
-    pick = [m for m in load_missions() if not a.labels or m["label"] in a.labels]
+    missions = load_missions()
     cards = []
-    for m in pick:
-        c = card(m)
-        cards.append(c)
-        out_dir = os.path.join(RUNS, "pilot", m["nick"], "scorecards")
-        os.makedirs(out_dir, exist_ok=True)
-        json.dump(c, open(os.path.join(out_dir, m["label"] + ".json"), "w"), indent=1)
+    if a.labels or a.all:
+        pick = [m for m in missions if m["label"] in a.labels] if a.labels else \
+            [m for m in missions if a.sp or not m["label"].startswith("sp-")]
+        for x in sorted(set(a.labels) - {m["label"] for m in pick}):
+            print(f"no mission {x} in runs/missions.json", file=sys.stderr)
+        for m in pick:
+            c = card(m)
+            cards.append(c)
+            out_dir = os.path.join(RUNS, "pilot", m["nick"], "scorecards")
+            os.makedirs(out_dir, exist_ok=True)
+            json.dump(c, open(os.path.join(out_dir, m["label"] + ".json"), "w"), indent=1)
+    else:
+        # no labels and no --all: the cards already written, read only (nothing is rescored), as a table
+        a.table = True
+        missing = []
+        for m in missions:
+            if m["label"].startswith("sp-") and not a.sp:
+                continue
+            f = os.path.join(RUNS, "pilot", m["nick"], "scorecards", m["label"] + ".json")
+            if os.path.exists(f):
+                cards.append(json.load(open(f)))
+            else:
+                missing.append(m["label"])
+        if missing:
+            print(f"(no card yet for {', '.join(missing)}: scorecard.py LABEL or --all writes them)", file=sys.stderr)
     if a.json:
         print(json.dumps(cards, indent=1))
     elif a.check:

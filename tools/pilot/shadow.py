@@ -79,7 +79,8 @@ class Shadow:
 
 
 def weapon_profile(name, blows):
-    """dice, to-hit, to-dam from 'a Scimitar of Westernesse (2d5) (+9,+8) (+1)'."""
+    """dice, to-hit, to-dam from 'a Scimitar of Westernesse (2d5) (+9,+8) (+1)': the weapon's own plusses (the
+    Pilot's snapshot replaces to-hit and to-dam with the totals from geareval's model; this is the fallback)."""
     d = re.search(r"\((\d+d\d+)\)", name or "")
     m = re.search(r"\(([+-]\d+),([+-]\d+)\)", name or "")
     return {"dice": d.group(1) if d else "1d4", "tohit": int(m.group(1)) if m else 0,

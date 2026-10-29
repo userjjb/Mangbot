@@ -119,6 +119,7 @@ class Mover:
     def __init__(self, client, world, log=None):
         self.c, self.w, self.log = client, world, log or (lambda *a, **k: None)
         self.goals = None
+        self.walk_id = 0        # counts go() calls: identifies the current walk (free runs within it keep it)
         self.path = []
         self.unknown = False    # this job may cross unseen squares (go(unknown=True) fallback)
         self.no_run_at = set()  # squares where a run was refused: walk from them
@@ -333,6 +334,7 @@ class Mover:
         """unknown: when no known path exists, try one through unseen squares
         (escapes and the Navigator's goto: mission 17's flee found "no path"
         to stairs past a corridor seen only with orcs in it)."""
+        self.walk_id = getattr(self, "walk_id", 0) + 1     # each go() is a new walk (the pilot's escaping_to_stairs)
         self.goals = set(goals)
         self.avoid = set(avoid)
         self.avoid0 = set(avoid)

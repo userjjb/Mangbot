@@ -484,6 +484,15 @@ NO_LOSS = {"FREE_ACT", "SEE_INVIS", "RES_BLIND", "RES_CONFU", "HOLD_LIFE"}
 # whether the automatic swaps may trade the other resists for a measured gain (10-26: a plain
 # Metal Scale Mail [38,+5] beat the Leather of Resistance by ~21% in the simulation)
 TRADE_RESISTS = False          # (the user, 10-26: option B -- automatic swaps keep every resist)
+
+
+def auto_swap_losses(cur_flags, flags):
+    """What a loadout with `flags` loses that an automatic swap may not lose, against the current `cur_flags` (empty:
+    allowed). TRADE_RESISTS off: any ability, resist or sustain; on: only NO_LOSS. The one rule for compare(no_loss)
+    and optimize (A6: optimize kept only NO_LOSS + REQUIRED + resists, so loadouts losing e.g. a sustain were
+    simulated, then ruled out)."""
+    lost = set(cur_flags) - set(flags)
+    return sorted(lost & NO_LOSS if TRADE_RESISTS else lost)
 # resting: regenhp (dungeon.c:1245-1306) heals (mhp x 197 x 2 + 1442) / 65536 HP a block (one normal-speed player
 # turn of game time) while resting. Fight and rest turns are both game time (the Advisor, 10-26: an earlier /4.5 for
 # the time bubble mixed clocks and under-weighted HP lost -- the AC side of every comparison)
@@ -616,8 +625,9 @@ def compare(ch, options, decisions=None, n=10, lo_ft=None, hi_ft=None, hard=True
     """options: {label: loadout ({slot: [Item]})}, the first being the current one. Returns a report dict.
     Sets: met (the fights in the log at lo-hi ft, n seeds each), depth / deeper (the Advisor's scenarios.make at the
     depth and 100 ft deeper, boost 2 for auto_scum, depth_n each, one seed), hard (the 21 replays, n seeds).
-    no_loss: an option losing one of NO_LOSS (Free Action, See Invisible, resist blindness/confusion, hold life) is
-    ruled out -- the Pilot's automatic swaps; elemental resists are simulated and may be traded."""
+    no_loss: an option losing what auto_swap_losses forbids is ruled out -- the Pilot's automatic swaps: any ability,
+    resist or sustain while TRADE_RESISTS is off; with it on, only NO_LOSS (Free Action, See Invisible, resist
+    blindness/confusion, hold life), the elemental resists being simulated and tradeable."""
     lo_ft = lo_ft or max(50, ch.depth_ft - 100)
     hi_ft = hi_ft or ch.depth_ft
     t0 = time.time()
@@ -664,8 +674,8 @@ def compare(ch, options, decisions=None, n=10, lo_ft=None, hi_ft=None, hard=True
             why.append(f"less staying power (EHP {ehps[k]:.0f} vs {ehps[cur]:.0f}, {ehps[k] / ehps[cur] - 1:+.0%})")
         if rules[k]["veto"]:
             why.append("loses " + ", ".join(rules[k]["veto"]))
-        elif no_loss and set(rules[k]["lost"]) & (NO_LOSS if TRADE_RESISTS else set(rules[k]["lost"])):
-            kept = sorted(set(rules[k]["lost"]) & NO_LOSS) if TRADE_RESISTS else rules[k]["lost"]
+        elif no_loss and auto_swap_losses(derived[cur]["flags"], derived[k]["flags"]):
+            kept = auto_swap_losses(derived[cur]["flags"], derived[k]["flags"])
             why.append("loses " + ", ".join(label(f) for f in kept) + " (an automatic swap never does)")
         if k != cur and d_slower(derived, cur, k):
             why.append(f"slower (speed {derived[k]['speed']:+d} vs {derived[cur]['speed']:+d}: the weight limit; "
@@ -816,13 +826,13 @@ def optimize(ch, pool, budget=0, max_sim=5, **kw):
     """The loadout optimizer (design_gear.md): gear choices across slots, e.g. a Sabre (Holy Avenger) in place of
     the Free Action axe, worth it only with Free Action from a ring. pool: candidate Items (pack wearables; shop
     stock with an `price` attribute, gold). Loadouts = the worn set with one or two slots changed (a ring pair
-    counts as one slot), keeping every ability and resist worn now (Free Action, See Invisible ... and, as
-    TRADE_RESISTS is off, the elemental ones) and costing at most `budget`; dominated items are pruned per slot.
+    counts as one slot), losing nothing an automatic swap may not lose (auto_swap_losses, compare(no_loss)'s rule: with
+    TRADE_RESISTS off, every ability, resist and sustain worn now) and costing at most `budget`; dominated items are
+    pruned per slot.
     The static proxy picks max_sim of them; geareval.compare simulates those against the current gear (no_loss).
     Returns compare's report dict with `changes` {label: [(item worn, the piece it replaces, price)]}."""
     import itertools
     cur = ch.derive()
-    keep = {f for f in cur["flags"] if f in NO_LOSS or f in REQUIRED or (not TRADE_RESISTS and f.startswith(("RES_", "IM_")))}
     by_slot = {s: [i for i in pool if i.slot == s] for s in OPT_SLOTS}
     for s in OPT_SLOTS:                   # (prune: a candidate no better than a worn piece or another candidate)
         rivals = by_slot[s] + list(ch.worn.get(s, ()))
@@ -861,7 +871,7 @@ def optimize(ch, pool, budget=0, max_sim=5, **kw):
         if cost > budget:
             continue
         d = ch.derive(worn)
-        if not keep <= d["flags"] or d["speed"] < cur["speed"]:
+        if auto_swap_losses(cur["flags"], d["flags"]) or d["speed"] < cur["speed"]:
             continue
         scored.append((proxy(d, cur, ch.depth_ft, kw.get("mix")), worn, changes, cost))
     scored.sort(key=lambda x: -x[0])
