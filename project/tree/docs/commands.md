@@ -38,9 +38,9 @@ The Pilot answers a JSON dict; pilotctl prints, in order:
 1. `USER MESSAGE(S) NOT YET ANSWERED (reply with say): ...` when the user sent a message (`note !TEXT`) nobody has
    answered with `say` yet. It is added to every reply except `note`, `say` and `status` (the report carries it there).
 2. One of: the `report` (status, view, navview); for item actions `DONE: <what> (N -> M left)[; moved ...]`, the
-   game's messages, then `Pack now: a) ...; b) ...`; a `text`; attention `events`; **otherwise the raw JSON** (this is
-   how goals, `order`, `stop`, refusals `{"ok": false, "error": "..."}` and debug commands print).
-3. `NOTE: ...` if the reply had a note (so a note also appears inside the JSON or the DONE line: printed twice).
+   game's messages, then `Pack now: a) ...; b) ...`; a `text`; attention `events`; **otherwise the raw JSON** without
+   its `note` (this is how goals, `order`, `stop`, refusals `{"ok": false, "error": "..."}` and debug commands print).
+3. `NOTE: ...` if the reply had a note the DONE line didn't already show (each note is printed once).
 
 Every report the Navigator receives is numbered (`· rN` on its first line) and remembered with the level and HP it
 showed; that is what the stale-order check compares against.
@@ -86,7 +86,7 @@ Further role rules inside commands:
 | command | does / prints | who | refuses |
 |---|---|---|---|
 | `status` | the compact report (`compact(snapshot=True)`: character, supplies, here, monsters, news, gear/pack snapshot) | all | -- |
-| `status full` | the long report (`report()`: stats, map, equipment, pack, messages, orders...) | all | -- |
+| `status full` | the long report (`report()`: stats, map, equipment, pack, messages, orders...; the first line ends with `Pilot vX.Y.Z`, the code's version) | all | -- |
 | `wait [SECS] [--brief]` | blocks (default 600 s) until an attention event, then prints `ATTENTION what: detail (goal: ...)` per event and the wait report (`compact(news_since=last wait)`: only what changed). A quiet timeout prints `(no attention events)` and the brief form; `--brief` always keeps only the first two lines and the lines starting `USER MESSAGE`, `Supplies:`, `Here:`, `Monsters:`, `News:`, `Since last`, `Progress:`, `Cures`... Pass a Bash timeout above SECS | all | -- |
 | `attention` | the pending attention events without waiting (and clears them) | all | -- |
 | `pack` | `Pack: a) ...; b) ...` with the Pilot's short names and values | all | -- |
@@ -204,7 +204,7 @@ Goals.
 
 | command | does | who |
 |---|---|---|
-| `mission start LABEL [navigator=MODEL] [effort=LEVEL] [notes=TEXT]` | marks a mission's start: sets the label and the baseline (time, XP, gold, gold found) for the report's mission totals, saves `runs/pilot/<nick>/mission.json` (survives a restart or hot-swap), logs `mission_start`, and adds/replaces the entry in `runs/missions.json` (`label nick start end navigator effort report notes`) | the Architect (no role check in code) |
+| `mission start LABEL [navigator=MODEL] [effort=LEVEL] [notes=TEXT]` | marks a mission's start: sets the label and the baseline (time, XP, gold, gold found) for the report's mission totals, saves `runs/pilot/<nick>/mission.json` (survives a restart or hot-swap), logs `mission_start` (with `version`), and adds/replaces the entry in `runs/missions.json` (`label nick start end navigator effort report notes version`; `version` = the Pilot's code version from `github/VERSION`) | the Architect (no role check in code) |
 | `mission end [LABEL]` | logs `mission_end`, sets the entry's `end` in `missions.json`, clears the label and deletes `mission.json`. LABEL defaults to the running mission | the Architect |
 
 Prints `mission start: LABEL at YYYY-MM-DD HH:MM`. Scorecards and the viewer read these markers
@@ -251,5 +251,6 @@ Prints `mission start: LABEL at YYYY-MM-DD HH:MM`. Scorecards and the viewer rea
   `park`, `quit`, `raw`, `option(s)`, `goalstate`, `dump`, `view`, `viewmap`, `navview` (mostly Architect/viewer
   commands, which is fine); `goal town`, `goal wait`, `goal search`, `goal resurrect` are only in the reference.
 - **`mission`** is described as the Architect's but has no role check.
-- The dead-character whitelist names `events`, `news`, `inventory`, which aren't commands; the viewer's and
-  scorecard's query lists name more that don't exist (`flags`, `commands`, `help`, `floor`, `quote`).
+- The viewer's and scorecard's query lists name commands that don't exist (`flags`, `commands`, `help`, `floor`,
+  `quote`); kept on purpose, since Navigators did type them (D7 will merge the lists). The dead-character whitelist's
+  `events`, `news`, `inventory` went in session 10 (C8).

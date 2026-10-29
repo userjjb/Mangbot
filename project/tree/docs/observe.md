@@ -26,7 +26,6 @@ test server in [harness-rulebook-ops.md](harness-rulebook-ops.md).
 | `damage_mix.py` | Architect | after each mission (via `wrap.sh`) | `decisions.jsonl`, `events.jsonl`, the rulebook | `runs/pilot/<nick>/damage_mix.json` (read by the Pilot's gear evaluator) |
 | `notes.py` | Architect | after a mission (via `wrap.sh`), to answer `?` notes | `commentary.jsonl`, `decisions.jsonl` | stdout |
 | `shopmath.py` | library | imported | `lib/edit/shop_own.txt`, `cost_adj.txt`, `p_race.txt`, `src/server/tables.c` | nothing |
-| `latency.py` | Architect | ad hoc (model trials, m21-m22) | `decisions.jsonl` | stdout |
 | `record.py` | the user (human play) | study sessions (Sept 2026) | tmux pane | `runs/observe/<stamp>/` |
 | `timeline.py`, `screen.py` | Architect/Advisor | study a `record.py` session | `pkt.jsonl`, `screens.jsonl` | stdout |
 | `scribe.py` | Architect | at the user's request only | a FIFO | in-game private chat |
@@ -166,7 +165,7 @@ python3 scorecard.py --check m17 .. # ours vs the Advisor's baseline CSV (Adviso
 ```
 
 **Inputs.** The mission's row in `runs/missions.json` (`label, nick, start, end, navigator, effort, report, notes,
-tokens`; written by `pilotctl mission start/end`, `tokens.py`, and the set-piece harness, which adds `sp-*`
+version, tokens`; written by `pilotctl mission start/end`, `tokens.py`, and the set-piece harness, which adds `sp-*`
 missions; scored only when named, or with `--all --sp`). Every `decisions.jsonl` record with `start <= t <= end`
 (minute resolution; a running mission ends now); `events.jsonl` `message` events in the window and `store` listings up to 60 s after it;
 `testserver/gdb_run.log` for crashes; `src/server/tables.c` (`player_exp`), `lib/edit/object.txt` (kind costs) and
@@ -318,18 +317,13 @@ it against every identified sale: within 1 gold.
 
 ---
 
-## latency.py -- Navigator response times
+## latency.py -- Navigator response times (retired)
 
-```
-python3 latency.py --nick dive04 --from "2026-10-17 00:59" --to "2026-10-17 01:35" [--label m21]
-python3 latency.py --nick dive04 --mission "label,FROM,TO" [--mission ...]
-```
-
-From `decisions.jsonl` in a window: `alert -> contact` (an urgent attention event, not `source: plan`, to the
-Navigator's next command within 600 s), `alert -> order` (to its next non-query command within 120 s),
-`user -> reply` (a `user_message` to its next `say`), and the command cadence; each as n, median, p90, max. Built
-for the Sonnet/Opus model trials (m21-m22); the scorecard's group E now covers similar ground
-(report -> action, user reply). Not called by any script.
+Moved to `tools/attic/` in session 10 (C2; see its README.md). From `decisions.jsonl` in a window: `alert ->
+contact` (an urgent attention event, not `source: plan`, to the Navigator's next command within 600 s), `alert ->
+order` (to its next non-query command within 120 s), `user -> reply` (a `user_message` to its next `say`), and the
+command cadence; each as n, median, p90, max. Built for the Sonnet/Opus model trials (m21-m22); the scorecard's
+group E now covers similar ground (report -> action, user reply).
 
 ---
 

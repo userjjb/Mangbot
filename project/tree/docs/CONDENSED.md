@@ -94,7 +94,7 @@ estimator's `choose` in the background at emergencies, bands and hard fights and
   `observe/watch_mission.py`: the Architect's monitor (exits on an ask, emergency, death, drain, stuck plan, plan end,
   Pilot error -- restart it each time). `observe/wrap.sh mNN` after a mission: scorecard, token cost, damage mix,
   complaints. `observe/shopmath.py` is imported by the Advisor's `build_shops.py`: keep its path.
-- `harness/unit.py`: 112 offline cases on the real decision code (~3 s; **must pass after every change**).
+- `harness/unit.py`: 120 offline cases on the real decision code (~3 s; **must pass after every change**).
   `harness/setpiece.py`: ~40 live scenes staged by the Dungeon Master (`dm.py`), Dive04 saved/restored by `charsave.sh`.
 - `rulebook/`: the Advisor's tables of game facts (copied by `sync.sh`); `pilotctl rule` queries them.
 - Ops: `freeze.sh`, `snapshot.sh` (whole project into `github/project/` for the public repo; no secrets), `restart.sh`,
@@ -105,6 +105,9 @@ estimator's `choose` in the background at emergencies, bands and hard fights and
 `mission start mNN navigator=M effort=E` -> fill `BRIEF-TEMPLATE.md` (with the debts) -> launch the Navigator in the
 background -> `watch_mission.py`, answer asks -> `wrap.sh mNN` -> report in `runs/pilot/dive04/reports/` -> lessons in
 `FIELD-NOTES.md` -> read `runs/complaints.md` -> `snapshot.sh`, commit, push (branch `restructure`).
+
+**Versions:** `github/VERSION` holds `major.minor.patch` (minor = play can differ, patch = it can't); `../CHANGELOG.md`
+lists them. The Pilot shows `Pilot vX.Y.Z` in `status full` and `started`; `mission start` stores it in `missions.json`.
 
 ## Rules of the house
 

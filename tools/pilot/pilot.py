@@ -38,6 +38,12 @@ import threading
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+try:
+    # the code's version (major.minor.patch, CHANGELOG.md; minor = play can differ, patch = it can't): read once at
+    # startup, so it names the code this Pilot runs
+    VERSION = open(os.path.join(HERE, "..", "..", "VERSION")).read().strip()
+except OSError:
+    VERSION = "?"
 sys.path.insert(0, os.path.join(HERE, "..", "shopcat"))
 
 from mang import MangClient, ClientExited      # noqa: E402
@@ -3062,7 +3068,9 @@ class Pilot:
                   "fearer", "stuck", "interesting_item", "unique_slain", "pack_full", "thief", "unseen_attacker",
                   "fight_going_badly", "emergency"}
 
-    def notify(self, what, detail=None, news=False):
+    def notify(self, what, detail=None, news=False, action=True):
+        """action=False: an emergency notice that reports no escape action (waiting, fighting on, attacking a caster
+        first): it doesn't count towards the emergency loop's three in 90 s (refactor-candidates A4)."""
         if what in ("emergency", "emergency_loop", "danger_seen", "danger_avoided", "fight_going_badly",
                     "unseen_attacker", "band", "stat_drained"):
             self.escalation_t = gnow()      # (escape records: stairs taken in an emergency)
@@ -3074,7 +3082,7 @@ class Pilot:
             return
         ev = {"t": round(gnow(), 3), "what": what, "detail": detail,
               "goal": self.goal.describe() if self.goal else None}
-        if what == "emergency":
+        if what == "emergency" and action:
             self.emerg_times.append(gnow())
         source = None
         news_asked = news             # (before the plan turns its events into news: the band shadow's test)
@@ -4294,10 +4302,11 @@ class Pilot:
                 if now - self.noescape_t > 10:
                     self.noescape_t = now
                     self.notify("emergency", f"{why}: losing ~{rate:.0f} HP/s, more than the best potion heals "
-                                             f"({pots[-1][0]}): escaping instead")
+                                             f"({pots[-1][0]}): escaping instead", action=False)
                 if adj and pd and can_read and waited(self.phase_t, 0.7):
                     self.phase_t = now
                     self.phase_hist.append(now)
+                    self.emerg_times.append(now)     # (this phase sends no notice of its own)
                     self.cmd(f"custom r item={pd['item']}", f"{why}: phase door (potions too weak)", hold=0.6)
                     return True
                 wor = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
@@ -4344,7 +4353,7 @@ class Pilot:
             left = [n for n, ok in (("Phase Door", pd), ("cure potions", any(
                     any(c in i["name"] for c in CURE_POTIONS) for i in w.items(tval=TV_POTION)))) if ok]
             self.notify("emergency", f"{why}: " + (f"waiting to use {', '.join(left)} again, fighting on"
-                                                   if left else "nothing left to escape with, fighting on"))
+                                                   if left else "nothing left to escape with, fighting on"), action=False)
         return False
 
     def watch_perception(self):
@@ -4464,7 +4473,7 @@ class Pilot:
         if not getattr(self, "caster_said", None) == (w.level_t, r.name):
             self.caster_said = (w.level_t, r.name)
             self.notify("emergency", f"{why}: attacking {r.name} first (summons or casts blind/confuse/hold; ~{best[0]:.0f} "
-                                     f"HP, two rounds)")
+                                     f"HP, two rounds)", action=False)
         return True
 
     def shadow_decision(self, detail, options=None, trigger="emergency", rules=None, extra_p=None):
@@ -4486,6 +4495,10 @@ class Pilot:
         try:
             d = self.gear_character().derive()
             prof.update(tohit=d["tohit"], todam=d["todam"])
+            # (A14, the Advisor's memo 2026-10-29-s10-reply: slays, brands and the weapon's weight, as sim_player)
+            prof.update({k: dict(d[k]) for k in ("slays", "brands") if d.get(k)})
+            if d.get("wweight"):
+                prof["weight"] = d["wweight"]
         except Exception as e:                     # (the weapon's own numbers then; said once in the log)
             if not self.__dict__.get("shadow_gear_said"):
                 self.shadow_gear_said = True
@@ -6568,21 +6581,14 @@ class Pilot:
         self.junk_kinds = {}
         tv = {"potion": "Potion", "scroll": "Scroll", "wand": "Wand", "staff": "Staff", "rod": "Rod",
               "ring": "Ring", "amulet": "Amulet"}
-        try:
-            # the rulebook (restructure step 3): a kind is junk when it's worthless at every level, or
-            # worth at most a gold piece (Water, Apple Juice); the same 38 kinds as the old kinds.csv
-            rows = {}
-            for r in csv.DictReader(open(os.path.join(HERE, "..", "rulebook", "kinds_by_level.csv"))):
-                rows.setdefault(f"{tv.get(r['tval'], r['tval'])} of {r['kind']}", []).append(r)
-            for name, rs in rows.items():
-                self.junk_kinds[name] = all(float(r["worthless"] or 0) >= 1 or float(r["value"] or 0) <= 1 for r in rs)
-        except (OSError, ValueError, KeyError):
-            try:
-                for k in csv.DictReader(open(os.path.join(HERE, "kinds.csv"))):
-                    self.junk_kinds[f"{tv.get(k['kind'], k['kind'])} of {k['name']}"] = \
-                        k["sell_known"] in ("0-0", "0") or "CURSE" in k["flags"]
-            except OSError:
-                pass
+        # the rulebook (restructure step 3): a kind is junk when it's worthless at every level, or
+        # worth at most a gold piece (Water, Apple Juice): 38 kinds. The file must exist (the old kinds.csv
+        # fallback went in session 10, C10)
+        rows = {}
+        for r in csv.DictReader(open(os.path.join(HERE, "..", "rulebook", "kinds_by_level.csv"))):
+            rows.setdefault(f"{tv.get(r['tval'], r['tval'])} of {r['kind']}", []).append(r)
+        for name, rs in rows.items():
+            self.junk_kinds[name] = all(float(r["worthless"] or 0) >= 1 or float(r["value"] or 0) <= 1 for r in rs)
 
     def learn_flavour(self, flavour, kind, how):
         if not flavour or not kind or " of " not in kind or self.flavours.get(flavour, {}).get("kind") == kind:
@@ -6687,7 +6693,11 @@ class Pilot:
             mem.update(level=w.level_t, done=set(), tries=collections.Counter(), owed=set())
         if state.get("level") != w.level_t:
             state.update(level=w.level_t, looting=False, target=None)
-        if not lr:
+        if not lr or self.orders.get("pickup", "all") != "all":
+            # (order pickup=none: no walks to loot either; it used to walk there and leave it -- refactor-candidates A5)
+            if state.get("looting"):
+                state["looting"] = False
+                self.mover.stop()
             return False
         items = [t for t in self.resolve_target("item") if t not in mem["done"]]
         # (no detours while a band is about: the Advisor's set-piece C5, mission 22's loot room. A band out of
@@ -6912,7 +6922,7 @@ class Pilot:
         mem = w.memory
         cands = []
         for (y, x), ch in mem.items():
-            if w.dist((y, x)) > 10 or ch in "#%*: 12345678" or ch in "<>" and False:
+            if w.dist((y, x)) > 10 or ch in "#%*: 12345678":
                 continue
             if max(abs(y - cy), abs(x - cx)) <= d_now:
                 continue
@@ -7630,10 +7640,11 @@ class Pilot:
                 self.mission_base = (gnow(), (self.w.ind.get("exp") or [0])[0], self.w.ind.get("gold", [0])[0],
                                      self.__dict__.get("gold_found", 0))
                 self.save_mission()
-                self.log("mission_start", label=label, **kv)
+                self.log("mission_start", label=label, version=VERSION, **kv)
                 ms = [m for m in ms if m.get("label") != label] + [
                     {"label": label, "nick": nick, "start": stamp, "end": None, "navigator": kv.get("navigator"),
-                     "effort": kv.get("effort"), "report": "compact", "notes": kv.get("notes", "")}]
+                     "effort": kv.get("effort"), "report": "compact", "notes": kv.get("notes", ""),
+                     "version": VERSION}]
             else:
                 self.log("mission_end", label=label, **kv)
                 for m in ms:
@@ -7908,8 +7919,8 @@ class Pilot:
             return {"ok": True, "text": self.why_info(args)}
         if c == "prep":
             return {"ok": True, "text": self.prep_info()}
-        if self.dead and c not in ("attention", "quit", "orders", "events", "news", "map", "inventory",
-                                   "note", "view", "say", "viewmap", "journal") and \
+        if self.dead and c not in ("attention", "quit", "orders", "map", "note", "view", "say", "viewmap",
+                                   "journal") and \
                 not (c == "goal" and args[:1] == ["resurrect"]):
             return {"ok": False, "error": "the character is dead (a ghost): only 'goal resurrect' works"}
         if c == "goal":
@@ -8175,15 +8186,6 @@ class Pilot:
                            "memory": [[y, x, ch] for (y, x), ch in self.w.memory.items()],
                            "monsters": [[y, x, r.idx] for y, x, r in self.w.monsters]}, f)
             return {"ok": True, "file": path}
-        if c == "plan":
-            # debug: path from here to Y,X on the remembered map
-            from mover import plan as _plan
-            goals = self.resolve_target(" ".join(args))
-            path = _plan(self.w, goals) if goals else None
-            around = {f"{dy},{dx}": self.w.memory.get((self.w.pos[0] + dy, self.w.pos[1] + dx), " ")
-                      for dy in (-1, 0, 1) for dx in (-1, 0, 1)}
-            return {"ok": True, "goals": goals, "path": path, "pos": self.w.pos, "around": around,
-                    "depth": self.w.depth, "memory": len(self.w.memory)}
         if c == "raw":
             self.cmd(" ".join(args), "agent: raw")
             return {"ok": True}
@@ -10330,7 +10332,7 @@ class Pilot:
                      f"level {w.clvl}" + (f" (max {ind['level'][0]})" if len(ind.get('level', [])) > 1 and ind['level'][0] != w.clvl else "") + f", HP {w.hp[0]}/{w.hp[1]}, "
                      f"{('Town (' + {True: 'day', False: 'night', None: 'day/night?'}[w.is_day()] + ')') if not w.depth else str(w.depth_ft) + ' ft'}, gold {ind.get('gold', [0])[0]}, "
                      f"blows {ind.get('skills2', ['?'])[0]}, speed {ind.get('speed', [0])[0]}"
-                     f" | now {time.strftime('%H:%M:%S')}")   # (the Navigator has no clock of its own)
+                     f" | now {time.strftime('%H:%M:%S')} | Pilot v{VERSION}")   # (the Navigator has no clock of its own)
         cond = [k for k in ("blind", "confused", "afraid", "poisoned", "cut", "stun") if w.flag(k)]
         hunger = {0: "Weak", 1: "Weak", 2: "Hungry", 3: "Fed", 4: "Full", 5: "Gorged"}.get(w.hunger, w.hunger)
         lines.append(f"{stats}  | {hunger}" + (f" | {', '.join(cond)}" if cond else "")
@@ -10577,7 +10579,7 @@ def main():
         srv.pilot = pilot
         threading.Thread(target=srv.serve_forever, daemon=True).start()
         say(f"control socket {sock}")
-        pilot.notify("started", f"in the game at {pilot.w.depth} (depth)")
+        pilot.notify("started", f"in the game at {pilot.w.depth} (depth), Pilot v{VERSION}")
         while pilot.running:
             pilot.tick()
             client.collect(0.05)          # drain the client's own queue; paces the loop

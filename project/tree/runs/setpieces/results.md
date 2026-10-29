@@ -153,3 +153,4 @@
 - 2026-10-28 09:39:11 **M5** FAIL (confused (the scene happened) FAIL) `M5-20261028-093911.json`
 - 2026-10-28 09:47:14 **M5** FAIL (confused (the scene happened) FAIL) `M5-20261028-094714.json`
 - 2026-10-28 10:01:30 **M5** FAIL (confused (the scene happened) FAIL) `M5-20261028-100130.json`
+- 2026-10-29 12:42:53 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261029-124253.json`

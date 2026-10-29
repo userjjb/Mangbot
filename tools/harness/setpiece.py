@@ -14,6 +14,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -243,6 +244,11 @@ class Run:
                 out = subprocess.run([os.path.join(HERE, "charsave.sh"), "restore", "Dive04", self.tag],
                                      capture_output=True, text=True, env=env).stdout.strip().splitlines()
                 self.say(f"[{self.tag}] " + (out[0] if out else "restore: no output"))
+                # (a good restore: the run's snapshot has done its job -- 158 of them, 55 MB, had piled up by 10-29;
+                # named checkpoints such as dive04-pre-m43 never match the timestamped tag)
+                snap = os.path.join(ROOT, "runs", "setpieces", "saves", self.tag)
+                if out and out[0].startswith("restored ") and re.search(r"-\d{8}-\d{6}$", self.tag):
+                    shutil.rmtree(snap, ignore_errors=True)
 
     # --- scoring ----------------------------------------------------------------------
     def stats(self, recs):

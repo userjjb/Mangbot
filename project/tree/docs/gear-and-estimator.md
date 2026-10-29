@@ -23,7 +23,7 @@ Related docs: [pilot-items.md](pilot-items.md) (upgrade_step's static steps, sel
 | `tools/pilot/geareval.py` | The gear evaluator: item parser, character model, scenario sets, simulation, EHP, verdict, loadout optimizer, text report. `--demo` runs Dive04's session-7 Ring of Strength question | pilot.py (`gearcmp`, `loadout`, `gear_better`; also reused: the stat tables by the weight-limit check, `Item`/`label` by `review_hold`, `SIM_RES`/`SHEET_FLAG` by shadow mode). It does not use `itemvalue.py`; the Pilot filters its candidates with `itemvalue`'s `known` flag |
 | `tools/pilot/shadow.py` | Shadow mode: runs `options_sim.choose` in a background thread and queues the answers | pilot.py (`shadow_decision`, `shadow_results`) -- live |
 | `tools/observe/damage_mix.py` | Splits the HP the character lost in a depth band (the last mission's, else 700-800 ft) into damage kinds; writes `runs/pilot/NICK/damage_mix.json` (EHP's input) | `observe/wrap.sh` after each mission; read by `geareval.load_mix` |
-| `tools/pilot/replay_group.py` | An offline script: replays the Borg group-danger tiers over a run's logs (`python3 replay_group.py runs/pilot/dive03`) | nobody in code. It was used once to tune `group_tick` (next_steps.md). Not part of gear or the estimator |
+| `tools/attic/replay_group.py` | An offline script: replays the Borg group-danger tiers over a run's logs. Retired to `tools/attic/` in session 10 (C1; see its README.md) | nobody. It was used once to tune `group_tick`. Not part of gear or the estimator |
 | `Advisor/data/estimator/options_sim.py` | The Advisor's Monte Carlo fight simulator and estimator (`rollout`, `choose`, `base_policy`, `OPTIONS`) | imported live by path by geareval and shadow. The Advisor's file: read, never edit |
 | `Advisor/data/estimator/scenarios.py` | Depth-native random encounters: `make(depth_ft, n, seed, skip, boost)` | geareval's depth sets |
 | `Advisor/studies/2026-10-25-replay/replays/ep*.json` | The 21 replayed emergencies (frozen) | geareval's hard set |
@@ -52,7 +52,8 @@ amulet, ring; two rings). The first option is always what is worn now ("current"
 
 - `Item(name, tval=None, weight=None)` reads a name as the client shows it ("a Battle Axe of Westernesse (2d8)
   (+10,+9) (+1)") against `object.txt`, `ego_item.txt` and `artifact.txt`: kind, ego (also bracketed egos such as
-  "(Holy Avenger)"), artifact, slot, weight, flags, dice, to-hit/to-dam, AC/to-AC, pval. An unidentified item (`{good}`,
+  "(Holy Avenger)"), artifact, slot, weight, flags, dice, to-hit/to-dam, AC/to-AC, pval. A Ring of Damage's or
+  Accuracy's lone "(+n)" is its to-dam or to-hit (the server prints it so: `object1.c`), not a pval. An unidentified item (`{good}`,
   no plusses shown) is read as its base kind. `abilities()` = the ability flags (Free Action, See Invisible, hold life,
   feather fall, telepathy, regeneration, slow digestion) plus every `RES_*`, `IM_*`, `SUST_*`.
 - `Character(clvl, stats, mhp, ac, worn, flags, depth_ft, inv, pack_weight)` backs the gear-free parts out of the sheet
@@ -83,7 +84,7 @@ report is without slays.
 
 | Set | Fights | Seeds per fight | Monsters awake | Used for |
 |---|---|---|---|---|
-| **met** | Up to 40 fights the character actually met: `mons` records in `runs/pilot/NICK/decisions.jsonl` at depth-100 ft to depth, a monster within 3 squares, team = monsters within 7, at most one per 30 s, sampled with seed 1 (`encounters`) | n (20 in `gearcmp`, 10 for automatic swaps and `loadout`) | all (`p_awake` 1.0) | score, not safety |
+| **met** | Up to 40 fights the character actually met: `mons` records in `runs/pilot/NICK/decisions.jsonl` at depth-100 ft to depth, a monster within 3 squares, team = monsters within 7, at most one per 30 s, sampled with seed 1 (`encounters`), from the log's last 24 MB only (`tail_mb`: about the last day of play) | n (20 in `gearcmp`, 10 for automatic swaps and `loadout`) | all (`p_awake` 1.0) | score, not safety |
 | **depth** | 500 fights from `scenarios.make(depth_ft, 500, seed=7, boost=2)` (boost 2 stands in for auto_scum's harder levels); uniques already killed (`uniques_killed.json`) are re-drawn | 1 | all | score and safety |
 | **deeper** | The same at depth + 100 ft | 1 | all | safety |
 | **hard** | The 21 replayed emergencies (their monsters and arrivals, at full HP), plus one built-in Light hound pack ("m48-light-hounds": 13 Light hounds, 7 Wargs, 5 Mirkwood spiders, a Druid at 750 ft) | n | the simulator's default (`P_AWAKE` 0.4) | safety |
@@ -268,8 +269,8 @@ rate, whichever is more). If the rules are unsafe and nothing is safe, it names 
 `shadow_decision` builds the snapshot: HP, max HP, AC, level, depth, distance to the nearest known stairs, Free Action,
 the sheet's resists, `save` 0.45, `max_adj` (2 in a corridor, else 3), the wielded weapon's dice and blows, the **total**
 to-hit and to-dam (weapon + other gear + STR/DEX, from `gear_character().derive()` as geareval passes them; the weapon's
-own plusses only if the gear model fails),
-consumable counts, timers (hasted, hero, berserk, blind, confused, afraid, slowed: 5 blocks), turns left on a pending
+own plusses only if the gear model fails), the weapon's slays and brands and its weight (also from `derive()`, as
+geareval's `sim_player`), consumable counts, timers (hasted, hero, berserk, blind, confused, afraid, slowed: 5 blocks), turns left on a pending
 recall, the awake share from `look` answers (`p_awake`, `asleep_seen`), food from the hunger level, `xp_rate_per_block`
 (the rolling XP per minute at this depth / 96, once 300 s of data exist), `xp_per_gold`. Team: each visible monster as
 (name, distance, None, awake?) plus monsters only in the server's list at distance 3.
@@ -297,6 +298,6 @@ recall, the awake share from `look` answers (`p_awake`, `asleep_seen`), food fro
 
 - `shadow.py`: yes, live -- imported by pilot.py; every emergency, band and hard-fight decision in the dungeon goes
   through it (117 `estimator` records in Dive04's log so far).
-- `replay_group.py`: no caller in code, hooks or scripts. An offline analysis of the Borg group-danger tiers over a
+- `replay_group.py`: no; moved to `tools/attic/` in session 10 (C1). An offline analysis of the Borg group-danger tiers over a
   run's logs (reads `danger_table.csv`, `decisions.jsonl`, `events.jsonl`), used once to tune the group-danger rule; the
   Advisor has its own `replay_group_danger.py`. Unrelated to gear.

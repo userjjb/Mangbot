@@ -1,0 +1,83 @@
+{
+ "id": "M2",
+ "tag": "M2-20261029-124253",
+ "depth_ft": 600,
+ "start": "2026-10-29 12:42:53",
+ "checks": {
+  "the wand fetched": {
+   "pass": true,
+   "detail": "picked up at 9.1 s; left behind []"
+  },
+  "then down the '>' within 60 s": {
+   "pass": true,
+   "detail": "at 18.4 s"
+  }
+ },
+ "notes": [],
+ "scene": {
+  "dive04": [
+   2,
+   43
+  ],
+  "wand": [
+   2,
+   60
+  ],
+  "stairs": [
+   2,
+   40
+  ],
+  "forged": "an Aluminum-Plated Wand"
+ },
+ "order_reply": "{\"ok\": true, \"goal\": \"dive 650ft\"}",
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   358,
+   358
+  ],
+  "attention": [
+   [
+    1.2,
+    "rule",
+    "Scruffy looking hobbit in view: hunting it (your `react thieves`)"
+   ],
+   [
+    18.4,
+    "goal_done",
+    "dive 650ft: reached 650 ft"
+   ]
+  ],
+  "acts": [
+   [
+    4.8,
+    "custom ,",
+    "pick up: a Small Sword (1d6)."
+   ],
+   [
+    7.0,
+    "custom ,",
+    "pick up: a Long Sword (2d5)."
+   ],
+   [
+    9.1,
+    "custom ,",
+    "pick up: a Wand of Stinking Cloud."
+   ],
+   [
+    17.8,
+    "custom >",
+    "stairs >"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-29 12:45:46",
+ "pass": true
+}

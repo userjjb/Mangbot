@@ -132,7 +132,7 @@ Attention events:
 | `breeders` | (news only when they're weak and fewer than 8) 3+ breeding monsters (lice, worms) in view: they multiply fast and give no XP. Kill one or two quickly; more than that, leave the area (stairs, or recall) |
 | `afraid` | afraid (a warrior can't melee then) and cornered with nothing to cure it: the pilot phased away. Normally, when afraid, the pilot kites over ground already walked until the fear wears off, and only in danger quaffs Boldness/Heroism/Berserk |
 | `fearer` | a monster that frightens you again and again is near (e.g. Poltergeist, Ghost, Banshee, Priest, molds): the pilot moves away from it (phases if it's dangerous and adjacent). Usually best to leave that area or level |
-| `emergency_loop` | third emergency in 90 s and no stairs nearby: phasing and potions aren't working; recall or leave the area (with stairs known, the pilot leaves by itself) |
+| `emergency_loop` | third emergency escape action in 90 s and no stairs nearby: phasing and potions aren't working; recall or leave the area (with stairs known, the pilot leaves by itself) |
 | `tactic`, `resumed` | (news) the pilot backed into a corridor against a pack, kited while afraid, cured a status in a fight, killed a stationary monster in its way, or resumed your goal after recovering from an emergency |
 | `dead` | the character died |
 
@@ -257,7 +257,7 @@ of Phase Door and cure potions: it will use them.
 | `choke` | on | when a pack (3+) comes at you in the open, back into a corridor within 10 squares and fight them there (experimental). Corridors here are **two wide** (doorways too), so up to 3 reach you at once; it prefers a dead end or one-wide spot, then a corner or corridor end, then a straight corridor |
 | `max_depth` | 0 | feet, 0 = no limit: dives stop there, exploring below it is refused, and after an emergency escape down the stairs the pilot rests and comes back up |
 | `loot_radius` | 10 | during a dive, fetch items seen within this many squares (0 = never) |
-| `pickup` | all | all or none |
+| `pickup` | all | all or none (none: no walks to loot either) |
 | `autodestroy` | worthless,cursed | pseudo-ID feelings (`{average}`, `{worthless}`, `{cursed}`...) whose items the pilot destroys by itself (never items you inscribed with `@` or `!`). Add `average` when pack space matters more than the few coins they sell for |
 | `junk` | Salt Water, Blindness, ... | comma list: items "of" these are never picked up (unknown items still are) |
 
@@ -372,7 +372,7 @@ Orders are remembered across pilot restarts.
   the line shows that figure too (mission 21 sold a Lucerne Hammer of Venom, ~63 a round against
   non-poison-resistant monsters, for 1707, against a Spear's ~32). Slays add x2-3 against one race.
 - **Monsters that kill a diving warrior (0–1500 ft)** (Advisor danger-table memo, checked in the
-  server code; the pilot's `danger_table.csv` rates every monster to level 40):
+  server code; the rulebook's `monsters.csv` rates every monster):
   - Paralysis stacks until you die: without Free Action, leave any level with a paralyser that can
     reach you (Carrion crawlers, Ghouls, Homunculus, Evil eyes, Ogre mages, Basilisks).
   - Monsters that blind or confuse *with their blows* (Umber hulk, Hummerhorn, Giant firefly,

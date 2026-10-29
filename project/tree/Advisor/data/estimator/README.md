@@ -9,6 +9,7 @@ Danger-time option estimator (studies `2026-10-25-estimator/`, `2026-10-25-repla
 | `replay.py` | loads replay files; `start_state`; forced-action replay of the logged actions (our melee only when logged) vs the logged HP; `level1` damage check on logged geometry; writes `replay_calibration.csv` |
 | `calib_blows.py` | per-blow check: hit rate, damage from logged hits, round interval |
 | `calib_adj.py` | simultaneous attackers vs crowd size |
+| `calib_wake.py` | asleep -> re-seen pairs from the Pilot's `looks` records vs the server's wake rule |
 | `calib_move.py` | monster closing rate vs straight-walk |
 | `scenarios.py` | depth-native fight scenarios (get_mon_num, FRIENDS groups, second encounters; `boost` for auto_scum) for the gear evaluator: `make(depth_ft, n, seed, skip, boost)` |
 | `speed_value.py` | Speed potion value: drinking at hard-fight start vs buying |

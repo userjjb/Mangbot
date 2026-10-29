@@ -8,7 +8,7 @@ Read this first in a new Advisor chat, then `METHOD.md` before starting any stud
 **No study is running.** The project is restructuring its autonomous player (the user's decision after mission 23):
 restructure, not rewrite; keep Dive04; instruments first; mission-by-mission patching is frozen. The Architect works on git
 branch `restructure` (tag `pre-restructure` = 767bf60 is the restore point). Plan: `../memos/to_advisor/2026-10-22-restructure-plan.md`;
-step-2 design: `../restructure-step2.md` (read only). Basis: our `../memos/2026-10-19-starting-over.md`.
+step-2 design: `../history/restructure-step2.md` (read only; moved 10-29). Basis: our `../memos/2026-10-19-starting-over.md`.
 
 **Roles agreed:** the Advisor owns **the rulebook tables** and **the set-piece list**, and defined **the scorecard**; the
 Architect builds everything else.
@@ -39,22 +39,24 @@ Architect builds everything else.
    keep base_policy = pilot.py escape()/berserk_tick/fear_cure (POLICY_VERSION), edit via a copy + mv, and tell the Architect
    before changes. m35-m41 reviewed (19 records; disagreements were my zero staff price): now POLICY_VERSION 2026-10-25d, XP_PER_GOLD 1.0
    (THE USER'S DECISION — don't change), MIN_GAIN (approved by the user 10-28, scaled to 30 s of play) -> 17/19 agree. Hard-fight shadow live
-   (trigger: hard_fight). options_sim now 25e (speed_start_tick mirrored, PRICE speed 400; XP_PER_GOLD rolling, set by the Pilot per snapshot). options_sim 26f: resists modelled (gear evaluator github/tools/pilot/geareval.py imports it too); scenarios.py for depth-native fights. options_sim now 28n (confusion lock + recall-cure mirrored; p["xp_per_gold"] per call; MIN_GAIN = max(50, 48 blocks x xp_rate_per_block) — user-approved 10-28; slays/brands/criticals optional; blind -> staff; optional food/gorging, food may be a FOOD_LEVEL range; per-member awake flag; optional xp_per_block time cost; band trigger in shadow mode, agree = actual action). geareval reviewed twice (rest in game time, bootstrap tail gate; resist trading = user decision).
+   (trigger: hard_fight). options_sim now 25e (speed_start_tick mirrored, PRICE speed 400; XP_PER_GOLD rolling, set by the Pilot per snapshot). options_sim 26f: resists modelled (gear evaluator github/tools/pilot/geareval.py imports it too); scenarios.py for depth-native fights. options_sim now 29o (server wake rule, NOISE_FIGHT 18; confusion lock + recall-cure mirrored; p["xp_per_gold"] per call; MIN_GAIN = max(50, 48 blocks x xp_rate_per_block) — user-approved 10-28; slays/brands/criticals optional; blind -> staff; optional food/gorging, food may be a FOOD_LEVEL range; per-member awake flag; optional xp_per_block time cost; band trigger in shadow mode, agree = actual action). geareval reviewed twice (rest in game time, bootstrap tail gate; resist trading = user decision).
    Speed value (speed-slope memo): drinking a carried one at the start pays (break-even 350-1600 g); buying pays on XP only below ~200-250 g at XP_PER_GOLD 1 (safety not counted). Script data/estimator/speed_value.py. Speed purchases: decisions.jsonl kind act, why "buy ... Potion of Speed", entry= total paid (3 at 383 by 10-26); BM prices in runs/pilot/dive04/stores.json (store 7). PRICE speed 400 ~ paid; revisit if the paid average moves. Review estimator records of new missions. (`to_architect/2026-10-25-shadow-review.md`); proposed running it at the start of hard fights.
 5b. **m27** (Opus, kit forged to m26's start, Pilot after m26 fixes): first same-Pilot Opus vs Sonnet comparison; score it vs m26 when done.
    Arrival feelings now logged (`arrival_feeling` in decisions; `feeling:` in dump headers): later, measure P(pit/nest | special) on scummed levels.
 5c. Next rulebook build: add constants.csv rows for Hero/Berserk (to_h +12/+24, AC -10, mhp +10/+30 rescaled, res_fear),
    cure amounts, no-flow movement, spell range 18 (from `studies/2026-10-25-estimator/scratch/E2/mechanics.csv`).
-5c2. **Estimator records:** analyse before/after 2026-10-29 08:35 separately (A3: earlier snapshots passed weapon-only to-hit/
-   to-dam -> understated damage, biased to escapes). Asked the Architect to also pass slays/brands/weight. Docs: ../docs/README.md,
+5c2. **Estimator records:** three eras — before 10-29 08:35 (A3: weapon-only to-hit/to-dam -> understated damage, biased to
+   escapes), 08:35-12:42 (totals, no slays), from 12:42 (Pilot v2.37.0: + slays/brands/weight). Analyse separately.
+   Versions: missions.json `version`, ../CHANGELOG.md (minor = play can differ; compare scorecards within one minor).
+   Rulebook sync: the Pilot now REQUIRES tools/rulebook/monsters.csv and kinds_by_level.csv — keep both when rebuilding. Docs: ../docs/README.md,
    ../docs/CONDENSED.md (Architect session 10), my side quoted from to_architect/2026-10-28-advisor-docs.md.
-5d. When `looks` records exist (m48+): calibrate options_sim P_WAKE (sleeper wake rate near a fight; 5%/block guess) and
-   re-check P_AWAKE against observed shares.
+5d. ~~P_WAKE~~ done 10-29: options_sim 29o uses the server's wake rule (100/dist per noticed turn; NOISE_FIGHT 18 calibrated).
+   Re-check with more looks pairs in fights later (only 21 pairs, mostly idle).
 6. Housekeeping: the 09-29 shops memo assumed CHR 4 = Dive04's natural CHR; it is drained to 3 now (use `data/rulebook/shop_owners.csv`, CHR 3 columns, until restored).
 
 ## Architect schedule
 
-- Session 8 = "The Architect's Vacation" (Haiku, helps the Navigator live, NO code changes; notes in ../VACATION-NOTES.md).
+- Session 8 = "The Architect's Vacation" (Haiku, helps the Navigator live, NO code changes; notes in ../history/VACATION-NOTES.md).
   Code requests wait for session 9. Avoid options_sim changes meanwhile (nobody to coordinate a Pilot restart); good time for
   data studies (P_WAKE from `looks`, band/hard-fight shadow records).
 

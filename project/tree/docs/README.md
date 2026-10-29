@@ -63,6 +63,9 @@ the **rulebook** tables and the ops scripts ([harness-rulebook-ops.md](harness-r
 | Test server, its config and saves | `testserver/` (start/restart: `../operations.md`) |
 | The Pilot's per-character state and logs | `runs/pilot/<nick>/` ([pilot-core.md](pilot-core.md) lists every file) |
 | Missions, scorecards, reports | `runs/missions.json`, `runs/pilot/dive04/scorecards/`, `.../reports/` |
+| The code's version and its history | `github/VERSION` (major.minor.patch), `../CHANGELOG.md` ([process.md](process.md)) |
+| Retired scripts and data | `github/tools/attic/` (its README.md says why each went) |
+| Old handoffs and retired notes | `../history/` |
 | Credentials | `runs/private/` (never in the public repo) |
 | Advisor's work, memos | `Advisor/` (its own), `memos/` (shared: `to_architect/`, `to_advisor/`) |
 | Handoffs between Architect sessions | `../next_steps.md` (">>> WHICH HANDOFF IS YOURS? <<<") |

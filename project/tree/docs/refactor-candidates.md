@@ -5,11 +5,14 @@ reports, **for the user to approve item by item**.
 
 **Status (2026-10-29, session 10):** the user approved A1-A3, A6, A8-A11: **done** (commit dd2200d, 117 unit
 cases, Pilot restarted 08:35, Advisor told). A13 added (found while fixing A3). B15 partly done (memory pointers).
-Everything else is still open: the user's choice of groups B-F is pending.
+The user then approved, and session 10 did, A4, A5, A7, A12, A13, A14 and group C's C1, C2, C5-C13 (C11 with a
+`CHANGELOG.md` and code versions, `github/VERSION`): 120 unit cases. C8: the dead-character whitelist lost `events`,
+`news`, `inventory`; the scorecard/viewer query lists were kept (Navigators did type those names, so they classify
+real attempts; D7 will merge the lists). C3, C4, C14 still await the user; groups B, D-F are still open.
 
 **Rules for every step**
 - Behaviour unchanged unless the item says otherwise and the user agreed (all of group A, and items marked *behaviour*).
-- After each step all 112 unit cases pass: `python3 tools/harness/unit.py`; Pilot changes also get a hotswap and one
+- After each step all 120 unit cases pass: `python3 tools/harness/unit.py`; Pilot changes also get a hotswap and one
   set-piece before the next mission.
 - Advisor constraints: keep `tools/observe/shopmath.py` at its path (Advisor's `build_shops.py` imports it by absolute
   path); keep the log formats (decisions/events/state.jsonl kinds and fields, `levels/*.txt`, scorecards,
@@ -32,14 +35,14 @@ Format: **ID** what -- *evidence* -- risk/effort (S/M/L) -- **do / ask / skip**.
   passes totals* -- S-M/S -- **do** (build from `gear_character().derive()`; tell the Advisor, agree-rates shift).
 - **A4** `emergency_loop` counts every `emergency` notice, incl. non-actions ("waiting to use ... fighting on" every
   10 s, "potions too weak", kill_caster's "attacking X first"), so `until emergency_loop` can end trips early. --
-  *pilot-combat survey* -- S-M/S -- **ask** (count escape actions from `log_escape`/cures instead).
+  *pilot-combat survey* -- S-M/S -- **ask** (count escape actions from `log_escape`/cures instead). **done (session 10)**
 - **A5** `order pickup=none` still walks to loot within `loot_radius` (`loot_step` not gated). -- *pilot-items survey;
-  order comment implies otherwise* -- S/S -- **ask** (gate `loot_step` on `pickup == "all"`?).
+  order comment implies otherwise* -- S/S -- **ask** (gate `loot_step` on `pickup == "all"`?). **done (session 10)**
 - **A6** Gear: `optimize` keeps NO_LOSS+REQUIRED+resists but `compare(no_loss=True)` rejects losing *any* flag, so
   loadouts losing a sustain are simulated then ruled out with "an automatic swap never does". -- *geareval* -- S/S --
   **do** (one shared predicate).
 - **A7** Gear eval's `encounters()` reads the whole decision log each time (no `since`); the "met fights" set includes
-  fights from much earlier in Dive04's life. -- *gear survey* -- S/S -- **ask** (window it like `why_info`).
+  fights from much earlier in Dive04's life. -- *gear survey* -- S/S -- **ask** (window it like `why_info`). **done (session 10)**
 - **A8** `damage_mix.py` always uses the 700-800 ft band (`wrap.sh` passes no depth): EHP goes stale as we dive. -- *wrap.sh*
   -- S/S -- **do** (pass the mission's depth band).
 - **A9** scorecard.py: no labels = rescore all 200 missions (incl. 156 `sp-*`) and rewrite every card, even with
@@ -52,15 +55,15 @@ Format: **ID** what -- *evidence* -- risk/effort (S/M/L) -- **do / ask / skip**.
 - **A11** `review wear NAME` is recorded as `keep` and in the dungeon silently wears nothing. -- *pilot-items* -- S/S --
   **do** (say so in the reply). **[N]**
 - **A12** pilotctl prints notes twice (`DONE: ... -- note` then `NOTE:`; goal replies print JSON then `NOTE:`). --
-  *commands survey* -- S/S -- **ask** (Navigator-visible output; HANDBOOK quotes no exact format). **[N]**
+  *commands survey* -- S/S -- **ask** (Navigator-visible output; HANDBOOK quotes no exact format). **[N]** **done (session 10)**
 
 - **A13** (found while fixing A3) `geareval.Item` reads "a Ring of Damage (+6)" / "a Ring of Accuracy (+8)" as a pval,
   so their to-dam/to-hit count for nothing in gear verdicts and in the shadow snapshot's totals (the server's
-  `object1.c` prints a lone to-dam/to-hit that way; Dive04 has met Rings of Damage). -- S/S -- **ask**.
+  `object1.c` prints a lone to-dam/to-hit that way; Dive04 has met Rings of Damage). -- S/S -- **ask**. **done (session 10)**
 
 - **A14** (the Advisor asked, memo 2026-10-29-s10-reply) Pass `slays`, `brands` and `weight` in shadow snapshots, as
   geareval's `sim_player` does: worth ~10-15% of our damage at 750 ft plus ~6% criticals. Shadow mode never acts, so
-  only the estimator records change. -- S/S -- **ask** (small; the follow-up to A3).
+  only the estimator records change. -- S/S -- **ask** (small; the follow-up to A3). **done (session 10)**
 
 ## B. Doc fixes (stale docs vs code; no behaviour change)
 
@@ -113,33 +116,34 @@ Format: **ID** what -- *evidence* -- risk/effort (S/M/L) -- **do / ask / skip**.
 ## C. Remove / archive (dead scripts and code)
 
 - **C1** `tools/pilot/replay_group.py`: no caller in tools/, hooks or scripts; one-off tuning script reading legacy
-  `pilot/danger_table.csv` by absolute path. -- S/S -- **do** (move to `tools/attic/`).
+  `pilot/danger_table.csv` by absolute path. -- S/S -- **do** (move to `tools/attic/`). **done (session 10)**
 - **C2** `observe/latency.py`: no caller since m22, last edit 10-23; scorecard group E covers report->action. -- S/S --
-  **do** (attic; fold alert->contact into the scorecard only if the Advisor wants it).
+  **do** (attic; fold alert->contact into the scorecard only if the Advisor wants it). **done (session 10)**
 - **C3** `observe/record.py`, `timeline.py`, `screen.py`, `scribe.py`: unused since 09-25, only operations.md lists them;
   timeline's commit says "untested draft"; record.py defaults to port 18346. -- S/S -- **ask** (move to `observe/study/`).
 - **C4** `shopcat/shopcat.py`, `nav.py`, `wild.py`, `report.py`, `runs/regress.py`: no importers, last run 09-25 (the
   Pilot has its own mover). Keep `mang.py` (see E7) and `newchar.py`. -- S/S -- **ask** (live shop tour wanted again?).
 - **C5** Dead second `plan` branch in `do_request` (`mover.plan` debug): the earlier `if c == "plan": return
-  self.request_plan(args)` always wins. -- S/S -- **do** (delete, or rename to `path` if wanted).
-- **C6** `choke_tick`: `ch in "<>" and False` is never true. -- S/S -- **do**.
+  self.request_plan(args)` always wins. -- S/S -- **do** (delete, or rename to `path` if wanted). **done (session 10)**
+- **C6** `choke_tick`: `ch in "<>" and False` is never true. -- S/S -- **do**. **done (session 10)**
 - **C7** watch.py `feed_line`: `elif k == "attention" and what == "user_message"` follows `elif k == "attention"`, so never
-  runs. -- S/S -- **do** (reorder if the display was meant, else delete; viewer only).
+  runs. -- S/S -- **do** (reorder if the display was meant, else delete; viewer only). **done (session 10)**
 - **C8** Nonexistent command names in whitelists: dead-character whitelist (`events`, `news`, `inventory`), watch.py
   `NAV_QUERIES` (`flags`, `commands`, ...), scorecard/latency lists (`help`, `floor`, `quote`, `dump`). -- S/S -- **do**
-  via D7 (scorecard list: check `--check` with the Advisor's definitions).
+  via D7 (scorecard list: check `--check` with the Advisor's definitions). **done (session 10)** (the whitelist only;
+  the query lists kept, see Status)
 - **C9** `pilot/danger_table.csv` fallback: `glyphs.load_danger` runs only if `rulebook/monsters.csv` is missing; 09-28
-  table, duplicated as `rulebook/danger_table_v1.csv`. -- S/S -- **do** (missing monsters.csv = startup error).
+  table, duplicated as `rulebook/danger_table_v1.csv`. -- S/S -- **do** (missing monsters.csv = startup error). **done (session 10)**
 - **C10** `kinds.csv`: read only as a fallback in `load_flavours` when `rulebook/kinds_by_level.csv` is missing. -- S/S --
-  **do** (drop file + branch; update unit.py's "38 kinds of the old kinds.csv" check).
+  **do** (drop file + branch; update unit.py's "38 kinds of the old kinds.csv" check). **done (session 10)**
 - **C11** next_steps.md is ~1,800 lines, ~1,500 history; the 09-25 "Read these first" table is wrong (memory holds
   passwords, shopcat main tool); watch_mission path stale. Move old handoffs + Reflections to `history/handoffs-s1-s9.md`;
   also move `restructure-step2.md`, `VACATION-NOTES.md`, `notes_merge.md`, `spells.md` to `history/`. -- S/S -- **do**
-  (update memory pointers and snapshot paths).
+  (update memory pointers and snapshot paths). **done (session 10)**
 - **C12** `runs/setpieces/saves/`: 158 snapshot dirs, 55 MB, never deleted; only named checkpoints (e.g.
-  `dive04-pre-m43`) matter. -- S/S -- **do** (delete unnamed; setpiece deletes its tag dir after a good restore).
+  `dive04-pre-m43`) matter. -- S/S -- **do** (delete unnamed; setpiece deletes its tag dir after a good restore). **done (session 10)**
 - **C13** `testserver/` clutter: `mangband.prefreeze` (Oct 17 binary), `crash1..4`, `gdb.log`, `watch.log`; and the
-  snapshot copies `testserver/data/Makefile.am` into github/project. -- S/S -- **ask**.
+  snapshot copies `testserver/data/Makefile.am` into github/project. -- S/S -- **ask**. **done (session 10)**
 - **C14** HANDBOOK-reference.md (569 lines, "not required reading", lessons of m1-23) overlaps HANDBOOK + docs/commands.md.
   -- M/M -- **ask** (shrink to the event/report-line glossary; the Navigator greps it). **[N]**
 - **Skip:** unused rulebook CSVs (Advisor's, sync.sh copies all); c-tool verbs no tool sends (`alter`, `suicide`,
@@ -221,8 +225,8 @@ Format: **ID** what -- *evidence* -- risk/effort (S/M/L) -- **do / ask / skip**.
   mirroring `__init__`. -- S-M/M -- **do** (first, before E1).
 - **E7** `MangClient` lives in `tools/shopcat/mang.py` but pilot.py, harness/dm.py, observe/scribe.py import it via
   `sys.path` hacks: move to `tools/client/`, leave a shim. -- M/S -- **do**.
-- **E8** `unit.py` (2,992 lines, 112 cases) -> files by family + `fixtures.py`; `setpiece.py` (1,492) -> `Run` framework
-  vs 39 scenarios; harness/README -> reference table + findings log. -- S-M/M -- **do** (unit count must stay 112).
+- **E8** `unit.py` (3,177 lines, 120 cases) -> files by family + `fixtures.py`; `setpiece.py` (1,492) -> `Run` framework
+  vs 39 scenarios; harness/README -> reference table + findings log. -- S-M/M -- **do** (unit count must stay 120).
 - **E9** scorecard.py `card()` (~170 lines) -> one function per group. -- S/S -- **do** (cards byte-identical).
 - **Skip:** move shopmath.py (Advisor constraint; shim only if ever needed); c-tool.c `tool_do_command` verb table (C
   rebuild, low value).

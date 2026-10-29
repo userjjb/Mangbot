@@ -110,7 +110,7 @@ def pilot(w=None, **kw):
     p.band_warned, p.band_warned_t = (None, 0), 0.0
     p.log = lambda *a, **k: None
     p.notes = []
-    p.notify = lambda what, d=None, news=False: p.notes.append((what, d))
+    p.notify = lambda what, d=None, news=False, action=True: p.notes.append((what, d))
     p.ability_seen_t = 0
     p.emerg_times = []
     p.plan = None
@@ -195,7 +195,7 @@ def unique_drop_feeling():
 
 @case
 def junk_kinds_from_rulebook():
-    """The rulebook's junk kinds are the 38 of the old kinds.csv."""
+    """The rulebook's junk kinds: 38 (the same as the retired kinds.csv's)."""
     p = pilot()
     p.flavour_file = "/nonexistent"
     p.load_flavours()
@@ -939,7 +939,7 @@ def bands_by_expected_cost_weak_drainers_news():
     p.drainers_seen = set()
     p.w.monsters = [(20, 25, BYNAME["giant red frog"])]
     said = []
-    p.notify = lambda what, d=None, news=False: said.append((what, news))
+    p.notify = lambda what, d=None, news=False, action=True: said.append((what, news))
     p.watch_drainers()
     frog = said[-1] if said else None
     ok = novice < 155 and orcs22 > 155 and hill > 155 and hill_c < hill / 2 and frog == ("drainer", True)
@@ -1441,7 +1441,7 @@ def breeder_swarm_leaves():
     p = pilot(monsters=[(20, 22 + k, fly) for k in range(3)])
     p.goal, p.breeder_level, p.w.clvl = None, None, 27
     notes = []
-    p.notify = lambda what, d=None, news=False: notes.append((what, news))
+    p.notify = lambda what, d=None, news=False, action=True: notes.append((what, news))
     p.watch_breeders()
     p.w.monsters = [(20, 22 + k, fly) for k in range(9)]
     p.watch_breeders()
@@ -3114,6 +3114,47 @@ def review_wear_says_what_happens():
     ok = "NOT worn" in dt and dd == "keep" and dc == [] and "wearing it now" in tt and td == "keep" and \
         tc == ["custom w item=0"]
     return ok, f"dungeon: {dt!r} {dd} {dc}; town: {tt!r} {td} {tc}"
+
+
+@case
+def emergency_loop_counts_actions_only():
+    """A4 (session 10): emergency notices that report no action (waiting/fighting on, attacking a caster first)
+    don't count towards the emergency loop's three in 90 s; a Phase Door notice does."""
+    import threading
+    p = pilot()
+    p.held_t, p.goal, p.escalation_t, p.news = 0.0, None, 0.0, []
+    p.shadow_decision = lambda *a, **k: None
+    p.att_cond, p.attention = threading.Condition(), []
+    P.Pilot.notify(p, "emergency", "low HP: waiting to use Phase Door again, fighting on", action=False)
+    P.Pilot.notify(p, "emergency", "low HP: attacking Dark elven priest first", action=False)
+    n_wait = len(p.emerg_times)
+    P.Pilot.notify(p, "emergency", "low HP: read Phase Door (Cave orc adjacent)")
+    return (n_wait, len(p.emerg_times), len(p.attention)) == (0, 1, 3), \
+        f"after 2 non-actions: {n_wait}; after a phase: {len(p.emerg_times)}; notices {len(p.attention)}"
+
+
+@case
+def pickup_none_no_loot_walks():
+    """A5 (session 10): order pickup=none: loot_step makes no walk to the item 5 squares off (pickup=all does)."""
+    def run(pickup):
+        p = pilot()
+        p.w.memory = {(20, 20): ".", (20, 25): "-"}
+        p.orders.update(loot_radius=10, pickup=pickup)
+        p.skipped_items = set()
+        p.mover = _Mover()
+        return p.loot_step({}), p.mover.went
+    none, all_ = run("none"), run("all")
+    return none == (False, []) and all_[0] and all_[1] == [[(20, 25)]], f"none: {none}; all: {all_}"
+
+
+@case
+def rings_of_damage_and_accuracy():
+    """A13 (session 10): a lone (+n) on a Ring of Damage/Accuracy is its to-dam/to-hit (object1.c), not a pval;
+    a Ring of Strength's (+3) stays a pval."""
+    import geareval
+    got = [(i.to_h, i.to_d, i.pval) for i in (geareval.Item(n, tval=45) for n in (
+        "a Ring of Damage (+6)", "a Ring of Accuracy (+8)", "a Ring of Strength (+3)"))]
+    return got == [(0, 6, 0), (8, 0, 0), (0, 0, 3)], f"{got}"
 
 
 def main():

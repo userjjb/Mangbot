@@ -123,11 +123,13 @@ def main():
         return
     if out.get("user_messages"):
         print("USER MESSAGE(S) NOT YET ANSWERED (reply with say): " + " | ".join(out["user_messages"]))
+    note_said = False       # (each note printed once: refactor-candidates A12)
     if "report" in out:
         print(out["report"])
     elif "pack" in out:
         if out.get("did"):
             print("DONE: " + out["did"] + (f" -- {out['note']}" if out.get("note") else ""))
+            note_said = True
         for line in out.get("said", []):
             print(line)
         print("Pack now: " + "; ".join(out["pack"]))
@@ -137,8 +139,8 @@ def main():
         for ev in out["events"]:
             print(f"ATTENTION {ev['what']}: {ev.get('detail') or ''}")
     else:
-        print(json.dumps(out))
-    if out.get("note"):
+        print(json.dumps({k: v for k, v in out.items() if k != "note"}))
+    if out.get("note") and not note_said:
         print("NOTE: " + out["note"])
 
 

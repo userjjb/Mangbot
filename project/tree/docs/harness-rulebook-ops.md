@@ -19,7 +19,7 @@ commands in [client-server.md](client-server.md); the viewer's freeze key in [ob
 
 | piece | what | who runs it | live / stale |
 |---|---|---|---|
-| `harness/unit.py` | 112 offline unit cases of the Pilot's decision code | the Architect, after every Pilot or rulebook change | live; the regression gate (all must pass) |
+| `harness/unit.py` | 120 offline unit cases of the Pilot's decision code | the Architect, after every Pilot or rulebook change | live; the regression gate (all must pass) |
 | `harness/setpiece.py` | 39 live scenarios staged on the test server and scored | the Architect, by hand, one at a time | live code, but last batch 10-23..10-28; not re-run as a suite since |
 | `harness/dm.py` | scripts the DM character Gandalf (summon, paint terrain, forge, pull a player) | `setpiece.py` | live |
 | `harness/charsave.sh` | save/restore a character's savefile + Pilot state | `setpiece.py`; the Architect for checkpoints | live |
@@ -44,7 +44,7 @@ criteria and result, staging facts and the bugs the harness found; read it befor
 
 ### `unit.py` -- offline unit cases
 
-**What:** 112 functions decorated `@case`, each building a situation by hand and calling the real Pilot decision code
+**What:** 120 functions decorated `@case`, each building a situation by hand and calling the real Pilot decision code
 on it, returning `(ok, detail)`. No server, no client, no network.
 
 **How it works:** it imports `pilot/pilot.py` (as `P`), `glyphs` and `itemvalue`, loads the monster races merged with
@@ -63,20 +63,20 @@ python3 unit.py hunt                                # only cases whose name cont
 ```
 
 Output: one `PASS|FAIL name: detail` line per case and a total. No files written by the suite itself. There is no
-`--help` (an argument is taken as a name filter). **Run today (2026-10-29): 112 passed, 0 failed, 2.9 s.**
-next_steps.md records an intermittent failure (~1 in 20 runs, twice, not reproduced since).
+`--help` (an argument is taken as a name filter). **Run today (2026-10-29, after session 10's changes): 120 passed, 0 failed.**
+The old handoffs (`history/handoffs-s1-s9.md`) record an intermittent failure (~1 in 20 runs, twice, not reproduced since).
 
 **Case families** (names are descriptive; grep `unit.py` for the full list):
 
 | family | examples |
 |---|---|
 | Hunt check and fight vetoes | `hunt_hill_giant_by_hp`, `hunt_ranger_summoner`, `hunt_qualitative_vetoes`, `hunt_repeat_unique`, `engage_nearby_monster_only_when_appropriate`, `disenchanter_beside_path_not_fought` |
-| Danger, emergency and escapes | `a5_unseen_caster_news_above_80`, `estimator_memo_rules`, `emergency_speed_first_berserk_hard_fights`, `speed_at_hard_fight_start_and_kit`, `flee_at_max_depth_teleports`, `flee_maps_before_unexplored`, `flee_replans_after_a_phase`, `why_explains_the_last_escape`, `escape_landing_and_trapdoor_notes` |
+| Danger, emergency and escapes | `a5_unseen_caster_news_above_80`, `estimator_memo_rules`, `emergency_speed_first_berserk_hard_fights`, `speed_at_hard_fight_start_and_kit`, `flee_at_max_depth_teleports`, `flee_maps_before_unexplored`, `flee_replans_after_a_phase`, `why_explains_the_last_escape`, `escape_landing_and_trapdoor_notes`, `emergency_loop_counts_actions_only` |
 | Status effects | `fear_cure_order`, `blind_cured_when_it_matters`, `blind_escape_uses_the_staff_and_sees_refused_reads`, `recall_cures_confusion_first`, `confusion_lock_is_cured`, `confusion_window_teleports`, `unseen_drainer_leaves`, `breeder_swarm_leaves`, `breeder_swarm_pin_teleports_once`, `theft_is_news` |
 | Bands and levels | `band_leave_finds_stairs`, `bands_by_expected_cost_weak_drainers_news`, `band_condition_only_while_live`, `quiet_level_left`, `quiet_wait_finds_a_spot_and_wakes`, `stairs_beside_mold`, `fled_stairs_refused_two_minutes_only`, `refused_stairs_dont_end_explore`, `structures_on_the_aligned_lattice`, `run_loop_walks` |
 | Item values and identification | `jewellery_unknown_plusses`, `bracketed_ego_valued`, `unique_drop_feeling`, `junk_kinds_from_rulebook`, `c2_unknown_charges`, `c6_ambiguous_names`, `c7_unknown_ring_not_worn`, `c9_identify_good_first`, `ability_proofs`, `asleep_flags_from_look_answers` |
-| Looting, pack room, destroying | `unique_drop_fetched`, `loot_band_stops_looting`, `loot_owed_and_valuables`, `dive_loots_beside_its_path`, `pack_full_makes_room`, `weight_limit_sheds_cheap_heavy_loot`, `unique_drop_pushes_out_only_cheap`, `floor_junk_destroyed_when_quiet`, `last_food_never_destroyed_and_heavy_loot_left`, `navigator_rules_review_and_nopickup` |
-| Gear (evaluator, loadout, review) | `gear_model_matches_dive04_sheet`, `gear_evaluator_no_loss_rules`, `gear_score_rests_and_paired_error`, `ehp_counts_ac_hp_and_resists`, `proxy_counts_resists_by_ehp`, `ehp_gate_and_tie_break`, `gear_review_finds_free_slot`, `better_ring_replaces_worn`, `gear_line_keeps_ability_armour`, `ability_weapon_kept`, `ability_armour_kept`, `loadout_moves_free_action`, `fullest_lantern_worn`, `speed_potion_over_junk_weapon`, `gear_items_parsed_from_names` |
+| Looting, pack room, destroying | `unique_drop_fetched`, `loot_band_stops_looting`, `loot_owed_and_valuables`, `dive_loots_beside_its_path`, `pack_full_makes_room`, `weight_limit_sheds_cheap_heavy_loot`, `unique_drop_pushes_out_only_cheap`, `floor_junk_destroyed_when_quiet`, `last_food_never_destroyed_and_heavy_loot_left`, `navigator_rules_review_and_nopickup`, `pickup_none_no_loot_walks` |
+| Gear (evaluator, loadout, review) | `gear_model_matches_dive04_sheet`, `gear_evaluator_no_loss_rules`, `gear_score_rests_and_paired_error`, `ehp_counts_ac_hp_and_resists`, `proxy_counts_resists_by_ehp`, `ehp_gate_and_tie_break`, `gear_review_finds_free_slot`, `better_ring_replaces_worn`, `gear_line_keeps_ability_armour`, `ability_weapon_kept`, `ability_armour_kept`, `loadout_moves_free_action`, `fullest_lantern_worn`, `speed_potion_over_junk_weapon`, `gear_items_parsed_from_names`, `rings_of_damage_and_accuracy` |
 | Shops and town | `shop_pay_by_owner`, `c1_valuable_sale_refused`, `town_kit_tiers`, `town_kit_townfarms_when_broke`, `crutch_devices_sold_on_test`, `town_makes_room_before_buying`, `town_identifies_scrolls_in_hand`, `town_waits_for_restock`, `ask_price_and_buy_commas`, `empty_devices_recharged_or_sold`, `enchant_armour_to_the_stopping_place`, `plan_town_survives_the_house_tile` |
 | House bank and stash | `house_bank_round_trip`, `house_bank_in_the_wilderness`, `house_keeps_the_stash`, `house_walk_stops_at_the_crossing`, `tavern_stash_and_one_lantern`, `tavern_stash_drops_inside` |
 | Trips, supplies, clocks | `trip_conditions_parse`, `trip_clock_condition_across_midnight`, `trip_dmin_counts_dungeon_minutes`, `trip_level_state_survives_restart`, `trip_recalls_when_a_level_wont_let_go`, `e1_supply_gate`, `supply_minutes_and_quiet_cap`, `provisions_one_food_no_oil`, `food_warning_and_trip_rate`, `room_eat_never_gorges`, `game_clock_from_fuel` |
@@ -130,8 +130,9 @@ an A/B. A run takes a few minutes.
 - A repeat kill of a unique drops nothing and gives no XP; DM summons come with escorts; uniques exist once (a summon
   of one alive elsewhere fails silently); empty levels persist a while (hence the depth rotation).
 - The Forge destroys whatever is in Gandalf's pack slot a; forged items are identified.
-- Every run leaves a snapshot in `runs/setpieces/saves/TAG/` (158 of them, 55 MB, never pruned; excluded from
-  `snapshot.sh` because savefiles hold passwords).
+- Every run takes a snapshot in `runs/setpieces/saves/TAG/` and deletes it after a good restore (since session 10,
+  C12; the 156 old ones were deleted). Named checkpoints such as `dive04-pre-m43` stay. Excluded from `snapshot.sh`
+  because savefiles hold passwords.
 
 ### `dm.py` -- the Dungeon Master driver
 
@@ -205,7 +206,7 @@ by reading):
 |---|---|---|
 | `monsters.csv` | all 616 races: hp, speed per player turn, melee by AC, spells, breath, hand rating, `veto_reason`, `worst_3turns_acNN` | `glyphs.load_rulebook` (ratings, speeds, emergency threshold), `rule.py monster` |
 | `monsters_raw.csv` | raw `monster.txt` parse (dice, blows, spells, flags) | `Pilot.fight_sim` |
-| `danger_table_v1.csv` | the 09-27 hand danger table (merged into monsters.csv) | none (the Pilot's fallback is its own `pilot/danger_table.csv`) |
+| `danger_table_v1.csv` | the 09-27 hand danger table (merged into monsters.csv) | none (the Pilot's old fallback copy is now `tools/attic/danger_table.csv`) |
 | `fight_dive04.csv` | every monster to level 40 dueled 1,000x at Dive04's 10-23 profile | none (the Pilot simulates live) |
 | `drops.csv` | per monster: expected gold, items, value, P(ego/artifact) at native depth | `Pilot` (hunt verdict, `monster` reply), `rule.py drop` |
 | `drops_by_depth.csv` | the same at dungeon levels 1,5..100 | `rule.py drop NAME DEPTH` |

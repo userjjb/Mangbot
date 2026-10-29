@@ -49,7 +49,9 @@ P_SUMMON_PLACE = 0.6
 P_AWAKE = 0.4          # a monster in view that hasn't attacked yet is hunting us (calib_move.py: non-adjacent monsters close at
                        # ~0.4 of the straight-walk rate while we stand still; no asleep flag in our logs)
 HIT_SCALE = 1.10       # monster blows land 0.572 observed vs 0.518 modelled over 976 logged blows (calib_blows.py)
-P_WAKE = 0.05          # per block, a sleeper near a fight wakes
+P_WAKE = 0.05          # OBSOLETE since 29o (kept for importers): sleepers now follow the server's rule, see wake_step
+NOISE_FIGHT = 18       # effective noise in a fight, calibrated on the 21 replays (sim/real melee rounds 0.99); the code's cap
+                       # while acting every turn is 29-30 (cmd1.c:2936 +29 an action, dungeon.c:1322 -2 a turn), an upper bound
 RANGED = ("BR_", "BO_", "BA_", "ARROW", "MISSILE", "MIND_BLAST", "BRAIN_SMASH", "CAUSE")
 STATUS_SPELLS = {"BLIND", "CONF", "SCARE", "SLOW", "HOLD"}
 SUMMON_COUNT = dict(S_KIN=6, S_MONSTER=1, S_MONSTERS=8, S_ANIMAL=6, S_ANIMALS=6, S_SPIDER=6, S_HOUND=6, S_HYDRA=6,
@@ -84,7 +86,7 @@ def summon_pool(kind, level, symbol):
 
 class Mon:
     __slots__ = ("r", "name", "hp", "hpmax", "dist", "energy", "sx", "pct", "spells", "blows", "rl", "ac", "flags",
-                 "seen", "unique", "caster", "melee_max", "awake")
+                 "seen", "unique", "caster", "melee_max", "awake", "csleep")
 
     def __init__(self, r, dist, ac_player, rng, hp_frac=1.0):
         self.r, self.name = r, r["name"]
@@ -102,6 +104,7 @@ class Mon:
         self.ac = int(r["ac"])
         self.seen = True
         self.awake = True
+        self.csleep = 0
         self.unique = "UNIQUE" in self.flags
         self.caster = any(s.startswith("S_") or s in STATUS_SPELLS for s in self.spells)
         self.blows, self.melee_max = [], 0
@@ -298,8 +301,8 @@ def escape_move(st, crowd):
     return any(use(st, it) for it in order)
 
 
-POLICY_VERSION = "pilot-escape-2026-10-28n"
-CONF_LOCK_BLOCKS = 4   # the Pilot's 8 s of confusion with monsters adjacent, as player actions (~3 s a block in the HP bubble)   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
+POLICY_VERSION = "pilot-escape-2026-10-29o"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
+CONF_LOCK_BLOCKS = 4   # the Pilot's 8 s of confusion with monsters adjacent, as player actions (~3 s a block in the HP bubble)
 
 
 def worst_turn(st, adj):
@@ -444,11 +447,32 @@ def player_act(st, plan):
 
 
 # ---------------- monsters ----------------
+def fall_asleep(m, rng):
+    """monster2.c:1981: csleep = 2 x alertness + randint1(10 x alertness); alertness 0 never sleeps."""
+    v = int(m.r.get("alertness") or 0)
+    if v <= 0:
+        m.awake = True
+        return
+    m.awake = False
+    m.csleep = 2 * v + rng.randint(1, 10 * v)
+
+
+def wake_step(st, m):
+    """melee2.c:2498-2540, 3484-3501: each turn of a sleeper, it notices our noise if randint0(1024)^3 <= 2^min(30, noise),
+    then loses 100/distance sleep (1 at 50+ squares); awake at 0. p["noise"]: NOISE_FIGHT while we act every turn; 0 if idle
+    (then a 1% chance a turn of 2^(30 - stealth), not modelled)."""
+    n = st.p.get("noise", NOISE_FIGHT)
+    q = min(1.0, (2.0 ** min(30, n)) ** (1 / 3) / 1024) if n > 0 else 0.0
+    if q and st.rng.random() < q:
+        m.csleep -= 100 // max(1, m.dist) if m.dist < 50 else 1
+        if m.csleep <= 0:
+            m.awake = True
+
+
 def monster_act(st, m):
     p, rng = st.p, st.rng
     if not m.awake:
-        if rng.random() < P_WAKE:
-            m.awake = True
+        wake_step(st, m)
         return 1
     if m.dist <= 1:
         if m.spells and rng.random() < m.pct:
@@ -574,9 +598,10 @@ def rollout(p, team, plan, seed, horizon=30, arrivals=(), trace=False, actor=Non
     for t, m in zip(team, mons):
         known = t[3] if len(t) > 3 else None                  # the Pilot's look: True awake, False asleep, None unknown
         if known is not None:
-            m.awake = bool(known) or m.dist <= 1
+            if not known and m.dist > 1:
+                fall_asleep(m, rng)
         elif m.dist > 1 and rng.random() > p.get("p_awake", P_AWAKE):
-            m.awake = False
+            fall_asleep(m, rng)
     cap = p.get("max_adj", 8)
     for m in sorted(mons, key=lambda m: m.dist)[cap:]:
         m.dist = max(m.dist, 2)
@@ -589,7 +614,8 @@ def rollout(p, team, plan, seed, horizon=30, arrivals=(), trace=False, actor=Non
         while arr and arr[0][0] <= blk:
             _, n, d = arr.pop(0)
             m = Mon(RACES[n], d, st.p["ac"], rng)
-            m.awake = d <= 1 or rng.random() < p.get("p_awake", P_AWAKE)
+            if d > 1 and rng.random() >= p.get("p_awake", P_AWAKE):
+                fall_asleep(m, rng)
             st.mons.append(m)
         if st.paralyzed:
             pe = 0.0

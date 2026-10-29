@@ -59,9 +59,8 @@ average of its possible owners. `SHOP_CUT` (38%, Dive04 at CHR 3) is only the fa
 `Pilot.iv(name)` is the wrapper everything uses: it calls `itemvalue.value` with the current depth (or the deepest
 reached, or 750 ft) and the kinds the flavour table already knows.
 
-`kinds.csv` (one row per flavoured kind: cost, flags, sell ranges, `id_scroll_pays`) is legacy: it is read only as a
-fallback in `load_flavours` when `rulebook/kinds_by_level.csv` is missing, and a unit test checks the rulebook gives
-the same 38 junk kinds.
+The junk kinds come from `rulebook/kinds_by_level.csv` alone (`load_flavours`; the file must exist): 38 kinds, checked
+by a unit test. The old `kinds.csv` and its fallback were removed in session 10 (C10).
 
 ## 2. Pickup and loot
 
@@ -98,9 +97,9 @@ Everything else: value x pay_cut x count. `destroy_count` never destroys rations
 `kit_use_value` values a kit consumable found in the dungeon at its replacement cost (last Alchemist price, else
 `KIT_USE`: Speed 600, Healing 1500, Berserk 500, ...).
 
-**Loot fetching** (`loot_step`, used by the Dive and Explore goals): walks to items within `loot_radius` (order, 10);
-items passed up while monsters mattered, within `LOOT_OWED_R` (25) once clear; devices and jewellery (glyphs `- _ = "`)
-within `LOOT_VALUABLE_R` (30). Gives up on a square after 3 interrupted walks or a path longer than 1.5x the reach.
+**Loot fetching** (`loot_step`, used by the Dive and Explore goals; only with order `pickup=all`): walks to items
+within `loot_radius` (order, 10); items passed up while monsters mattered, within `LOOT_OWED_R` (25) once clear;
+devices and jewellery (glyphs `- _ = "`) within `LOOT_VALUABLE_R` (30). Gives up on a square after 3 interrupted walks or a path longer than 1.5x the reach.
 `loot_blocked` stops detours while a mobile monster that matters is in view (not weak ones 10+ levels below us), a band
 was warned in the last 90 s, HP is under `think_hp`, or we're blind/confused. `loot_beside` lets a dive walking to the
 stairs detour up to `LOOT_PATH_R` (3) squares.
@@ -206,7 +205,7 @@ own). Refused, with the reason:
 Table-junk and cursed/worthless items are never refused. Selling also applies `unknown_sell_refusal` and
 `probably_special`.
 
-**Overrides and the debt** (the user's decision, restructure-step2.md, 2026-10-23): the Navigator may prefix `!`
+**Overrides and the debt** (the user's decision, history/restructure-step2.md, 2026-10-23): the Navigator may prefix `!`
 (`sell !NAME`, `destroy !NAME`, `drop !NAME`). If the policy would have refused, the fair value lost is added to its
 **item debt** (`add_debt`): for a sale, fair pay at that owner (`shopmath.fair_pay` from the relist price, else
 value x pay_cut) minus what was received; for destroy/drop, value x pay_cut. Hunts have a separate **fight debt**
@@ -229,7 +228,7 @@ Set with `order KEY=VALUE` (typed like the default), listed with `orders`, saved
 
 | Key | Default | Meaning |
 |---|---|---|
-| `pickup` | `all` | `all` picks up by policy; anything else (`none`) picks nothing up (but `loot_step` still walks to items within `loot_radius`: set that to 0 too) |
+| `pickup` | `all` | `all` picks up by policy; anything else (`none`) picks nothing up and makes no loot walks (`loot_step`) |
 | `loot_radius` | 10 | dive/explore fetch items this close (0 = off) |
 | `nopickup` | `` | comma list of name parts never picked up (the Navigator's per-trip junk list) |
 | `junk` | Salt Water, Blindness, Weakness, Sleep, Poison, Lose Memories, Confusion, Sickliness, Apple Juice, Slime Mold, Darkness, Aggravate Monster, Curse Weapon, Curse Armour, Summon Undead, Summon Monster, Treasure Detection, Detect Invisible | items "of" these aren't picked up; identified potions, scrolls and devices of these in the pack are destroyed |

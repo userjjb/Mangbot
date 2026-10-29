@@ -33,11 +33,13 @@ mangclient -mtool  <--stdin/stdout JSON-->  pilot.py (daemon)  <--unix socket ru
 ```
 
 - **Start**: `python3 pilot.py --nick Dive04 --port 28346 [--hpwarn N] [--live]`, normally through `restart.sh`.
-  `main()` writes the unique-glyph table (`visuals.txt`, see Glyphs below), starts `MangClient` (the C client as a
-  child, with `--visuals` and `--hpwarn`; password `runs/private/<nick>.pass`, config `runs/private/<nick>.mangrc`),
-  waits for it to log in, builds the `Pilot`, sets game options `avoid_other`, `stack_force_costs`, `disturb_near`,
-  `disturb_panel`, logs the character's options, opens the control socket and loops `pilot.tick();
-  client.collect(0.05)` until `pilot.running` is false.
+  On import `pilot.py` reads the code's version once from `github/VERSION` (`VERSION`, "?" if missing; see
+  [process.md](process.md)). `main()` writes the unique-glyph table (`visuals.txt`, see Glyphs below), starts
+  `MangClient` (the C client as a child, with `--visuals` and `--hpwarn`; password `runs/private/<nick>.pass`, config
+  `runs/private/<nick>.mangrc`), waits for it to log in, builds the `Pilot`, sets game options `avoid_other`,
+  `stack_force_costs`, `disturb_near`, `disturb_panel`, logs the character's options, opens the control socket,
+  notifies `started` (with `Pilot vX.Y.Z`) and loops `pilot.tick(); client.collect(0.05)` until `pilot.running` is
+  false.
 - **Options**: `--nick` (required), `--host` (localhost), `--port` (default **18346**: the live server's port --
   always pass 28346 for the test server; the scripts do), `--passfile`, `--config`, `--rundir` (default
   `runs/pilot/<nick lowercase>`), `--client`, `--libdir`, `--pktlog`, `--live` (live-server behaviour: keep
@@ -218,7 +220,8 @@ the buckets plus a seed (m35-m42: 14190 XP per 34694 gold) weighted by the windo
 
 ### Missions (`save_mission`, `load_mission`)
 `pilotctl mission start LABEL navigator=MODEL ...` sets `mission_label` and a base (time, XP, gold, gold found),
-logs `mission_start`, and records it in `runs/missions.json` (read by the scorecard). `save_mission` writes
+logs `mission_start`, and records it in `runs/missions.json` (read by the scorecard); both carry `version` (the
+Pilot's `VERSION`). `save_mission` writes
 `mission.json` every 15 s so a restart or hotswap carries the mission on (the report's "this mission" rates);
 `load_mission` ignores a file older than 30 minutes. `mission end` logs `mission_end`.
 
@@ -237,8 +240,8 @@ logs `mission_start`, and records it in `runs/missions.json` (read by the scorec
 - **Ratings** merged onto each race (`load_rulebook`): from **`tools/rulebook/monsters.csv`** (the Advisor's table,
   synced into the rulebook; all races): `rating` -> `Race.danger` (0 trivial .. 5 leave on sight), `veto_reason`,
   `speed_x` (actions per player turn), `melee_max`, `drain_blows`. Rows whose idx/name don't match this
-  `monster.txt` are ignored. Only if that file is missing does it fall back to `tools/pilot/danger_table.csv` (the
-  Advisor's 2026-09-27 table, levels 0-40, `load_danger`). `pilot.py` also reads `monsters.csv` directly for the
+  `monster.txt` are ignored. The file must exist: a missing one is a startup error (the old fallback to
+  `pilot/danger_table.csv`, `load_danger`, went in session 10, C9). `pilot.py` also reads `monsters.csv` directly for the
   fight estimate (`fight_rows`). How these ratings drive danger decisions (`danger_why`, `worst_3turns`): see
   [pilot-combat.md](pilot-combat.md).
 
@@ -296,8 +299,8 @@ All paths relative to `runs/pilot/<nick lowercase>/` unless noted. "Pilot" = `pi
 
 | File | Written by | Read by | Format / contents |
 |---|---|---|---|
-| `decisions.jsonl` | Pilot `log()` (append, line-buffered) | viewer, scorecard, notes, latency, set-piece harness, unit tests, damage_mix, the Architect/Advisor | one JSON object per line: `t` (wall epoch), `kind`, `depth`, `pos`, `hp` + kind fields. Kinds below |
-| `events.jsonl` | `main()`: every client event except query replies | scorecard, damage_mix, set-piece harness, `replay_group.py` | the client's event JSON + `epoch`; its `t` restarts at 0 with each Pilot process (a `pilot_start` line marks it) |
+| `decisions.jsonl` | Pilot `log()` (append, line-buffered) | viewer, scorecard, notes, set-piece harness, unit tests, damage_mix, the Architect/Advisor | one JSON object per line: `t` (wall epoch), `kind`, `depth`, `pos`, `hp` + kind fields. Kinds below |
+| `events.jsonl` | `main()`: every client event except query replies | scorecard, damage_mix, set-piece harness | the client's event JSON + `epoch`; its `t` restarts at 0 with each Pilot process (a `pilot_start` line marks it) |
 | `state.jsonl` | `main()` `log_state`, thinned | scorecard, set-piece harness (replays) | `{"ev": "status"\|"inven"\|"map", "epoch", ...}`: status (y, x, indicators) every 2 s when changed; the pack whenever it changes; the map's changed rows every 10 s |
 | `levels/YYYYMMDD-HHMMSS-<ft>ft.txt` | `save_level_map` when we leave a dungeon level | the Architect/Advisor (checking the structure recogniser, post-mortems) | header `# <ft> ft, <start> - <end>; structures: ...; feeling: ...`, then the remembered map, 66 rows |
 | `orders.json` | `order` command | Pilot at start (merged over `DEFAULT_ORDERS`) | standing orders `{key: value}` (only known keys are kept) |
@@ -362,7 +365,7 @@ Three forms, all built on the main thread:
 - **wait report** (after `wait-attention`) -> `compact(news_since=<last wait>)`: the same, news since the last wait,
   and only the changes in the bottom section.
 - **`status full`** -> `report()`: the long form (full pack and equipment, a 23 x 67 map, 12 recent messages,
-  item squares, all orders).
+  item squares, all orders); its first line ends with `| now HH:MM:SS | Pilot vX.Y.Z`.
 
 Every report is numbered (`numbered()`: ` · rN` on the first line, a `report` log record), so later commands can be
 checked for staleness against what the Navigator saw.
@@ -410,5 +413,5 @@ MESSAGE`, `Here:`, `Monsters:`, `News:`, `Since last (`, `Progress:`, `Cures` (a
 - What survives any restart: everything in the files table above. What doesn't: the World's map memory (a new
   level_t even on the same level), `mons_mem`, hits, news and attention queues, avoid zones, structures found,
   searched squares.
-- The Navigator sees a restart as "Pilot not answering" from pilotctl, then a `started` news event; it must re-issue
+- The Navigator sees a restart as "Pilot not answering" from pilotctl, then a `started` news event (naming the Pilot's version); it must re-issue
   its goal (a plan resumes by itself).

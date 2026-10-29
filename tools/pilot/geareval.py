@@ -229,8 +229,16 @@ class Item:
                     self.ac = int(m.group(1))
         # single (+n) groups: before the [..] on armour = to-hit; otherwise (after dice/(h,d)/[..]) = pval
         cut = n.find("[")
+        lone = None
+        if re.search(r"\bRing of (Damage|Accuracy)\b", n):
+            # (the server prints a lone to-dam or to-hit as "(+n)", before any pval: object1.c object_desc;
+            # Rings of Damage/Accuracy counted for nothing -- refactor-candidates A13)
+            lone = "to_d" if "Damage" in n else "to_h"
         for m in re.finditer(r"\(([+-]\d+)\)", n):
-            if self.tval and self.tval not in WEAPON_TVALS and self.tval not in (19, 40, 45) and cut > 0 and \
+            if lone:
+                setattr(self, lone, int(m.group(1)))
+                lone = None
+            elif self.tval and self.tval not in WEAPON_TVALS and self.tval not in (19, 40, 45) and cut > 0 and \
                     m.start() < cut:
                 self.to_h = int(m.group(1))
             else:
@@ -411,12 +419,19 @@ def _sim():
     return options_sim
 
 
-def encounters(decisions, lo_ft, hi_ft, n=40, radius=7, since=None, seed=1):
+def encounters(decisions, lo_ft, hi_ft, n=40, radius=7, since=None, seed=1, tail_mb=24):
     """The fights Dive04 met at lo-hi ft: `mons` records with a monster within 3 squares, the monsters within
-    `radius` (distance as the simulator measures it), at most one record per 30 s; n of them, spread over the log."""
+    `radius` (distance as the simulator measures it), at most one record per 30 s; n of them, spread over the log.
+    Only the log's last `tail_mb` MB are read (~1 MB per hour of play: about the last day), so the set follows
+    recent play and gearcmp doesn't scan the whole 50 MB log (refactor-candidates A7)."""
     S = _sim()
     out, last = [], 0.0
-    for line in open(decisions):
+    f = open(decisions, "rb")
+    size = os.fstat(f.fileno()).st_size
+    if tail_mb and size > tail_mb * 1_000_000:
+        f.seek(size - tail_mb * 1_000_000)
+        f.readline()                                # (a partial line)
+    for line in (b.decode("utf-8", "replace") for b in f):
         if '"kind": "mons"' not in line:
             continue
         try:

@@ -298,7 +298,8 @@ def escape_move(st, crowd):
     return any(use(st, it) for it in order)
 
 
-POLICY_VERSION = "pilot-escape-2026-10-28m"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
+POLICY_VERSION = "pilot-escape-2026-10-28n"
+CONF_LOCK_BLOCKS = 4   # the Pilot's 8 s of confusion with monsters adjacent, as player actions (~3 s a block in the HP bubble)   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
 
 
 def worst_turn(st, adj):
@@ -322,6 +323,16 @@ def base_policy(st):
     can_read = not st.blind and not st.confused
     worst = worst_turn(st, adj)
     emergency = p["hp"] < 0.5 * p["mhp"] or (adj and 3 * worst >= p["hp"])
+    # confusion lock (Pilot.confusion_lock / confusion_window, session 9): confused for CONF_LOCK_BLOCKS actions with something
+    # adjacent -> CSW, else CCW (at most 4 a level, 4 blocks apart); in the clear turn after, 3+ adjacent -> teleport
+    st.conf_n = getattr(st, "conf_n", 0) + 1 if st.confused else 0
+    if st.confused and adj and st.conf_n >= CONF_LOCK_BLOCKS and getattr(st, "lock_cures", 0) < 4 and \
+            st.block - getattr(st, "lock_at", -99) >= 4 and (use(st, "csw") or use(st, "ccw")):
+        st.lock_cures, st.lock_at, st.conf_n = getattr(st, "lock_cures", 0) + 1, st.block, 0
+        return
+    if st.block - getattr(st, "lock_at", -99) <= 1 and len(adj) >= 3 and \
+            ((can_read and use(st, "tele")) or use(st, "staff")):
+        return
     if adj and not can_read and worst >= p["hp"] / 3 and st.block - getattr(st, "staff_at", -99) >= 16 and use(st, "staff"):
         st.staff_at = st.block                                # group_tick / teleport_item (46a5764): can't read -> the staff
         return
@@ -336,6 +347,10 @@ def base_policy(st):
         if not one_turn and not st.fast and st.block - getattr(st, "speed_at", -99) >= 30 and use(st, "speed"):
             st.speed_at = st.block
             return
+        if p["hp"] < 0.3 * p["mhp"] and not can_read and st.recall is None and st.inv.get("wor", 0) > 0:
+            for c in (("csw", "ccw") if st.confused else ("clw", "csw", "ccw")):   # recall blind/confused: cure, then read
+                if use(st, c):
+                    return
         if p["hp"] < 0.3 * p["mhp"] and can_read and st.recall is None and use(st, "wor"):
             return
         phases = [b for b in getattr(st, "phase_hist", []) if st.block - b <= 30]
@@ -372,7 +387,7 @@ def base_policy(st):
                     return
     threatened = adj and (p["hp"] < 0.5 * p["mhp"] or any(m.rl >= p["clvl"] - 5 for m in adj))
     if (st.blind or st.confused) and threatened:
-        for c in ("clw", "csw", "ccw"):
+        for c in (("csw", "ccw") if st.confused else ("clw", "csw", "ccw")):   # CLW for blindness only (session 9)
             if use(st, c):
                 return
     if st.afraid and adj:

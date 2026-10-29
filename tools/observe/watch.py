@@ -145,8 +145,6 @@ def feed_line(e):
         txt = f"NAVIGATOR ASKS THE ARCHITECT #{e.get('id')}: {e.get('text')}"
     elif k == "arch_answer":
         txt = f"ARCHITECT ANSWERS #{e.get('id')}: {e.get('text')}"
-    elif k == "attention" and e.get("what") == "user_message":
-        txt = "(sent to the Navigator)"
     elif k == "audit":
         txt = f"audit difference: {', '.join(e.get('diffs', {}))}"
     else:

@@ -40,10 +40,10 @@ class Race:
         self.flags, self.spells, self.blows = set(), set(), []
         self.speed, self.hp = 110, "1d1"
         self.spell_freq = 0     # casts 1 time in N (0 = no spells)
-        # From the Advisor's danger table (danger_table.csv), when it has this race:
+        # From the rulebook's monsters.csv (load_rulebook), when it has this race:
         self.danger = None      # 0 trivial .. 5 leave on sight, for our warrior
         self.speed_x = None     # actions per normal-speed player turn
-        self.melee_avg = None   # damage per monster turn if every blow hits
+        self.melee_avg = None   # damage per monster turn if every blow hits (None: from the blows)
         self.melee_max = None   # the same with every die at its maximum
         self.drain_blows = None  # blows that drain a stat or experience (LOSE_*, EXP_*)
         self.veto_reason = None  # the rulebook's reason for an AVOID/LEAVE rating (qualitative | strength)
@@ -148,9 +148,6 @@ BREATHS = {"BR_ACID": (3, 1600), "BR_ELEC": (3, 1600), "BR_FIRE": (3, 1600), "BR
            "BR_SHAR": (6, 500), "BR_PLAS": (6, 150), "BR_WALL": (6, 200)}
 # (no BR_MANA: a no-op in 1.5, melee2.c:876; danger-table memo §3.8)
 
-DANGER_TABLE = os.path.join(HERE, "danger_table.csv")
-
-
 RULEBOOK_MONSTERS = os.path.join(HERE, "..", "rulebook", "monsters.csv")
 
 
@@ -158,9 +155,7 @@ def load_rulebook(races, path=RULEBOOK_MONSTERS):
     """Merge the rulebook's monster table (restructure step 3; the Advisor's monsters.csv, built
     from the server source, with the hand ratings of the 09-27 danger table merged in and kept
     up to date): rating, speed per player turn, worst melee per monster turn. Every race, not
-    only levels 0-40. Falls back to the old danger table if the rulebook copy is missing."""
-    if not os.path.exists(path):
-        return load_danger(races)
+    only levels 0-40. The rulebook copy must exist (the old danger-table fallback went in session 10, C9)."""
     for row in csv.DictReader(open(path, encoding="utf-8")):
         r = races.get(int(row["idx"]))
         if r is None or r.name != row["name"]:
@@ -172,24 +167,6 @@ def load_rulebook(races, path=RULEBOOK_MONSTERS):
         if row.get("melee_max"):
             r.melee_max = float(row["melee_max"])
             r.drain_blows = sum(1 for b in r.blows if (b.split(":")[1:2] or [""])[0].startswith(("LOSE_", "EXP_")))
-    return races
-
-
-def load_danger(races, path=DANGER_TABLE):
-    """Merge the Advisor's danger table (Advisor/data/monsters/danger_table.csv,
-    copied here; levels 0-40, keyed by monster.txt N: = Race.idx)."""
-    if not os.path.exists(path):
-        return races
-    for row in csv.DictReader(open(path, encoding="utf-8")):
-        r = races.get(int(row["idx"]))
-        if r is None or r.name != row["name"]:
-            continue              # a different monster.txt: don't trust the row
-        r.danger = int(row["danger"])
-        r.speed_x = float(row["speed_x"])
-        r.melee_avg = float(row["melee_avg"])
-        if row.get("melee_max"):
-            r.melee_max = float(row["melee_max"])
-            r.drain_blows = int(row["drain_blows"])
     return races
 
 

@@ -12,7 +12,7 @@ Upstream is MAngband 1.5.3 (commit 1 of `github/`, "Pristine MAngband 1.5.3 sour
 2022-03-13). Our changes: `git diff 6963c00 HEAD -- src` (17 files, ~1800 lines added, ~1100 of them `c-tool.c`).
 Related docs: [pilot-core.md](pilot-core.md) (how the Pilot uses the client), [commands.md](commands.md)
 (`pilotctl`, including `raw`, which passes a line straight to this client), [harness-rulebook-ops.md](harness-rulebook-ops.md)
-(set-pieces, `dm.py`, ops scripts). Protocol background: `notes_merge.md` (survey of the upstream protocol).
+(set-pieces, `dm.py`, ops scripts). Protocol background: `history/notes_merge.md` (survey of the upstream protocol).
 
 ## Files
 

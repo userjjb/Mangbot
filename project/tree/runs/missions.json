@@ -2492,5 +2492,16 @@
    "usd": 0.013,
    "transcript": "agent-aa18b8a7f9206341a.jsonl"
   }
+ },
+ {
+  "label": "sp-M2-20261029-124253",
+  "nick": "dive04",
+  "start": "2026-10-29 12:43",
+  "end": "2026-10-29 12:46",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M2",
+  "version": "2.37.0"
  }
 ]

@@ -156,7 +156,9 @@ speed.
 Advisor's estimator `base_policy`, `POLICY_VERSION pilot-escape-2026-10-28m`, so **tell the Advisor when it changes**):
 
 1. A stairs command is already on its way (< 1.2 s): wait.
-2. `emergency_loop`: 3 `emergency` notices in 90 s. With stairs ≤ 30 away: `Flee("emergency loop")` and resume the old
+2. `emergency_loop`: 3 escape actions in 90 s (`emergency` notices except those sent with `action=False`, which report
+   no action: "waiting to use ... fighting on", "potions too weak", "attacking X first"; plus the weak-potions phase
+   door). With stairs ≤ 30 away: `Flee("emergency loop")` and resume the old
    goal afterwards. Without: an `emergency_loop` alert. At most once per 60 s.
 3. **Stairs underfoot** while threatened (something in view, or hit < 2 s ago): take them, then goal `Recover`. Standing
    on stairs with nothing threatening: do nothing (stops stair-bouncing).
@@ -307,7 +309,7 @@ The `what` values for notices about danger and fighting: `emergency`, `emergency
 
 `NEWS` kinds (`danger_avoided`, `tactic`, …) and notices sent with `news=True` go to the report's news and don't wake
 the Navigator. While a trip plan runs, `PLAN_QUIET` kinds (including `emergency`, `band`, `danger_seen`) are news too,
-because the plan acts on them. `emergency` notices also feed `emerg_times` (the emergency loop) and the status line's
+because the plan acts on them. `emergency` notices that report an action also feed `emerg_times` (the emergency loop) and the status line's
 counters. The status header shows `escape_line()`: ESCAPE LANDING / escaped / FAILED for 6 s after a Phase or Teleport.
 
 ## 7. Bookkeeping that protects the fight
@@ -330,8 +332,6 @@ counters. The status header shows `escape_line()`: ESCAPE LANDING / escaped / FA
 - **Sleep is barely used.** `is_asleep` (from `look`) is collected for the estimator, but the reflexes don't consult it.
 - **Blindness.** The map decode sees nothing, so the unseen rule is off and auto-retaliate fights on. Only the staff
   escapes.
-- **The emergency loop counts notices, not actions.** "Waiting to use…/fighting on" and "attacking X first" count
-  toward the 3-in-90-s trigger as well.
 - The danger flee takes the nearest stairs. A walk through unexplored squares can meet more monsters. Far stairs with a
   danger beside us fail over to Word of Recall.
 - Corridors are mostly two wide here, so `choke` limits attackers to about 3, not 1.
