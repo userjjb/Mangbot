@@ -27,6 +27,19 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.38.0 -- 2026-10-29 (session 10, continued)
+No missions yet. Details: `next_steps.md` Part B, `docs/refactor-candidates.md` (A2, B, review follow-ups).
+- The emergency loop's count: every `emergency` notice states whether it reports an escape action (a unit case
+  checks it), and one method counts them (A4 follow-up; same behaviour).
+- Gear evaluation's "met" fights: the last 3 days of the log, doubled until 20 fights (was the last 24 MB; A7
+  follow-up). Gear verdicts can differ: hence a minor version.
+- Set-pieces keep the newest 5 snapshots (C12 follow-up).
+- Navigator-facing docs fixed (B1-B3, B5-B8): HANDBOOK (`goal shop N sell`, the stash in the house, eats to Fed, all
+  eight trip events), FIELD-NOTES, BRIEF-TEMPLATE (gear and stats are fill-in fields), pilotctl's help, navigator.md.
+- Every `docs/` file verified against the code (ten agents, ~100 doc fixes); suspected code bugs listed as A15-A25.
+  `docs/survey-notes/` to `history/`; the per-version checklist in docs/process.md; live-deploy-todo.md: pin the
+  Advisor's simulator.
+
 ## 2.37.1 -- 2026-10-29 (session 10, continued)
 No missions yet. Details: `docs/refactor-candidates.md` (B4, C3, C4, C14), `next_steps.md` TODO.
 - HANDBOOK-reference fixed (B4): `goal leave` / `goal fetch` instead of the refused `goal goto` / `stairs`; the four

@@ -13,7 +13,7 @@ until ... then town`), and step in only for what its rules can't judge. You talk
 
 ## Your sources (and only these)
 
-- `/projectnb/jbrcs/mangband/github/tools/pilot/HANDBOOK.md` (~110 lines): who decides what, your
+- `/projectnb/jbrcs/mangband/github/tools/pilot/HANDBOOK.md` (~200 lines): who decides what, your
   loop, your commands, the judgement calls that are yours. **Read it first, completely.**
 - `/projectnb/jbrcs/mangband/github/tools/pilot/FIELD-NOTES.md`: lessons from past missions (where the XP is,
   dangers met, shops, the Pilot's habits). **Read it at every mission start, after the HANDBOOK.**
@@ -36,6 +36,7 @@ cd /projectnb/jbrcs/mangband/github/tools/pilot && module load python3/3.12.4 &&
   python3 pilotctl.py --nick NICK <command>
 ```
 
+- **Never set `PILOT_ROLE`** (or any other environment variable) on these commands: run them exactly as above.
 - `wait 240` is your turn: it blocks until the Pilot needs you (or 240 s pass) and prints the
   attention events plus a situation report. While a plan runs, most of your time is in `wait`.
 - Keep Bash calls under 10 minutes (`wait 240` with a Bash timeout of 300000, not longer).

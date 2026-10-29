@@ -1,7 +1,7 @@
 # The Documentation
 
 What everything in this project does, so you can understand the whole and each part without reading the code.
-Written in session 10 (2026-10-29) from the code at git `d53ba3b` and kept in step since (now version 2.37.1; `github/VERSION`, `../CHANGELOG.md`). Where a doc and
+Written in session 10 (2026-10-29) from the code at git `d53ba3b` and kept in step since (now version 2.38.0, every claim checked against the code on 10-29; `github/VERSION`, `../CHANGELOG.md`). Where a doc and
 the code disagreed, these files follow the code. When you change a component, update its file here too.
 
 **In a hurry?** Read [CONDENSED.md](CONDENSED.md) (the 3-page version for Architects and Advisors).
@@ -87,7 +87,7 @@ the **rulebook** tables and the ops scripts ([harness-rulebook-ops.md](harness-r
 | [gear-and-estimator.md](gear-and-estimator.md) | `gearcmp`, `loadout`, the simulator's fight sets, EHP, the verdict rules, auto-wear, shadow mode and the Advisor's estimator contract |
 | [observe.md](observe.md) | the viewer, the mission monitor, `wrap.sh`, scorecards (every metric), token costs, the damage mix, shop maths, study tools |
 | [harness-rulebook-ops.md](harness-rulebook-ops.md) | unit cases, live set-pieces and the Dungeon Master, the rulebook tables, shopcat, freeze/snapshot/restart/hotswap |
-| `survey-notes/*-candidates.md` | session 10's raw refactor/remove candidates per component (input to the refactor list) |
+| `../history/survey-notes/*-candidates.md` | session 10's raw refactor/remove candidates per component (all merged into the refactor list; moved to history/ 10-29) |
 
 ## Other docs (not replaced by these)
 

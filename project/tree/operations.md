@@ -37,14 +37,16 @@ can read them. Memory now only points here.) Credentials are **not** in this fil
 - Run it under gdb to catch crashes: `cd testserver && MANGBAND_FREEZE_FILE=$PWD/FREEZE nohup gdb -batch -ex run
   -ex bt --args ../github/mangband >> gdb_run.log 2>&1 &`.
 - **Time freeze (test server only, 2026-10-25, the user):** with `MANGBAND_FREEZE_FILE` set, the server processes
-  no game turns while that file exists (net-server.c `time_frozen`; checked every 10 ticks; players get "*** Time
+  no game turns while that file exists (net-server.c `time_frozen`; checked on every 10th pass of the server loop, many times a second; players get "*** Time
   is frozen ***"). Toggle: `github/tools/freeze.sh on|off|toggle|status`, or F5/Ctrl-F in the viewer. The Pilot
-  stops its game clock and holds (answers requests, acts on nothing) while it exists. A Pilot or client
-  connecting while frozen waits until thawed. Without the variable (any other server) it never freezes.
+  stops its game clock and holds (answers requests, acts on nothing) while it exists. Logins still work while
+  frozen (harness H1); the character just does nothing until the thaw. Without the variable (any other server)
+  it never freezes.
 - **Known crashes:**
   - A player disconnecting while walk/run commands are queued: NULL `pcommands[pkt]` in
     `process_player_commands` (net-game.c:2428). A crash rolls characters back to their last save.
-    Update the Pilot only with `tools/pilot/restart.sh` (it parks first and sends `clear`).
+    Update the Pilot only with `tools/pilot/restart.sh` (it parks the Pilot first, and the parked Pilot sends
+    `clear` before it logs out).
   - A store purchase arriving when the player is no longer in a store (`store_num` -1): `get_store_item`
     read `store[-1]` and segfaulted (store.c:1625, 2026-10-17, mission 21's Gauntlets buy). Patched in the
     test server: get_store_item, store_purchase and store_sell refuse when not in a store or past the stock.

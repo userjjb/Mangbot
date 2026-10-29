@@ -62,8 +62,9 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
 
 ## Shops and money
 
-- **The tavern stash** (since 2026-10-26): spare Restores and the Stone to Mud wands wait in the tavern (8), not in
-  the pack. `plan town` handles it. Don't buy spare Restores to carry.
+- **The stash** (since 2026-10-26; in the wilderness house since 10-28, the tavern (8) only without a house): spare
+  Restores and the Stone to Mud wands wait there, not in the pack. `plan town` handles it. Don't buy spare Restores to
+  carry.
 
 - **Black Market (store 7):** Speed ~383 (m40). The kit buys 2 Speed at no more than 600 each (450 until m45). A Black Market
   buy needs the `7/` prefix. Stock is often missing.

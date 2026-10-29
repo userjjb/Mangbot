@@ -31,7 +31,7 @@ Rules that cut across roles:
   irreversible (a hunt, a fetch, selling or destroying over a refusal) is checked, and an override with `!` is scored as
   **debt** (section 3.6).
 - **The `role` of a pilotctl call:** every request carries `role` from the env var `PILOT_ROLE` (default
-  `navigator`). `PILOT_ROLE=architect` marks the Architect's and the harness's calls: they skip the value refusals,
+  `navigator`; navigator.md tells the Navigator never to set it). `PILOT_ROLE=architect` marks the Architect's and the harness's calls: they skip the value refusals,
   the override limits and the stale-order hold, may use `goal goto`, `stairs` and `raw` and item commands in the
   dungeon, and only they may `answer` asks. `mission start/end` is not enforced by role: the brief tells the Navigator
   not to touch it. The decision log tags each command `nav_cmd ... role=`.
@@ -44,7 +44,7 @@ Rules that cut across roles:
 
 | File | What it is |
 |---|---|
-| `.claude/agents/navigator.md` | The Navigator subagent definition (tools: Bash, Read). Its sources: `HANDBOOK.md` (read fully first), `FIELD-NOTES.md` (every mission start), `HANDBOOK-reference.md` (grep only), `notes_players.md`. How to run pilotctl (`wait 240` with a 300 s Bash timeout; `parked` / "Connection refused" during a Pilot update: retry every 20 s). Its loop (plan with `prep`, `plan town`, `plan trip`, react to attention events, end in town). User messages (`ATTENTION user_message`, the `USER MESSAGE(S) NOT YET ANSWERED` banner; answer with `say` first). Journal (`pilotctl journal "situation | decision | why"`, stamped by the Pilot; urgent alerts: order first, journal after). `complain` for what it lacked (vs its own mistakes). The final report's sections (state, close calls, Pilot problems, what I lacked, handbook suggestions). Kept outside the git repo (snapshotted into `github/project/tree/.claude/`). |
+| `.claude/agents/navigator.md` | The Navigator subagent definition (tools: Bash, Read). Its sources: `HANDBOOK.md` (read fully first), `FIELD-NOTES.md` (every mission start), `HANDBOOK-reference.md` (grep only), `notes_players.md`. How to run pilotctl (never set `PILOT_ROLE` or any other env var; `wait 240` with a 300 s Bash timeout; `parked` / "Connection refused" during a Pilot update: retry every 20 s). Its loop (plan with `prep`, `plan town`, `plan trip`, react to attention events, end in town). User messages (`ATTENTION user_message`, the `USER MESSAGE(S) NOT YET ANSWERED` banner; answer with `say` first). Journal (`pilotctl journal "situation | decision | why"`, stamped by the Pilot; urgent alerts: order first, journal after). `complain` for what it lacked (vs its own mistakes). The final report's sections (state, close calls, Pilot problems, what I lacked, handbook suggestions). Kept outside the git repo (snapshotted into `github/project/tree/.claude/`). |
 | `.claude/settings.json` | Wires `inbox.sh` into three Claude Code hooks for the Architect's inbox `memos/to_architect`: `SessionStart` (`hook-session`), `PostToolUse` matcher `*` (`hook-post`), `Stop` (`hook-stop`); and allows `Bash(.../inbox.sh *)` without a prompt. No other hooks. |
 | `.claude/hooks/inbox.sh` | The memo notifier (section 4). The Advisor keeps an identical copy in `Advisor/.claude/hooks/inbox.sh` for `memos/to_advisor`. |
 | `Advisor/.claude/agents/clerk.md`, `Advisor/.claude/settings.json` | The Advisor's side (not ours to edit). |
@@ -61,6 +61,12 @@ set-pieces from the harness use `sp-...` labels in the same records. The per-mis
 played on each. The Pilot reads it once at startup and shows `Pilot vX.Y.Z` in `status full` and its `started`
 notice; `mission start` records it (`version` in `runs/missions.json` and the `mission_start` record).
 
+**Every version (the per-version checklist):** update the component file in `docs/` for each component the change
+touches, and the version line in `docs/README.md` and `docs/CONDENSED.md`; bump `github/VERSION` (minor if play can
+differ, else patch); add a CHANGELOG entry (with the missions on it); `tools/snapshot.sh`, commit, tag `vX.Y.Z` on the
+version's last commit, `git push origin restructure --tags`; restart the Pilot (idle in town) so it runs and reports
+the new version.
+
 **Before (once per session):** start the inbox watcher; check the processes (`pgrep -af "gdb -batch|pilot.py"`,
 `tmux -L mang ls`): the test server (under gdb, with `MANGBAND_FREEZE_FILE`), Dive04's Pilot, the user's viewer
 (`tmux -L mang attach -t watch`). Restart them per `operations.md` "Test server" and `tools/pilot/restart.sh Dive04`
@@ -69,13 +75,13 @@ if the SGE job ended. Ask the user what to run (model, effort, length).
 | # | Step | Command / tool (in `github/tools`, `module load python3/3.12.4`, `export PILOT_ROLE=architect`) | Writes |
 |---|---|---|---|
 | 1 | Mark the start | `python3 pilot/pilotctl.py --nick dive04 mission start mNN navigator=MODEL [effort=L] [notes=..]` | `mission_start` in `decisions.jsonl`; a record in `runs/missions.json` (label, nick, start, navigator, effort, version); the Pilot's mission baseline for "this mission" rates |
-| 2 | Fill the brief | Copy `tools/pilot/BRIEF-TEMPLATE.md` below its `---`; fill `{...}` from `status`, `equip`, `pack` (time budget START/END, clvl/HP/AC/gold, supplies, debts, "New since the last mission"); keep the rest word for word so missions stay comparable. `[VACATION]` lines only in a vacation session. | -- |
+| 2 | Fill the brief | Copy `tools/pilot/BRIEF-TEMPLATE.md` below its `---`; fill `{...}` from `status`, `status full`, `equip`, `pack` (time budget START/END, clvl/HP/AC/gold, the weapon and the rest of `equip`, stats, supplies, debts, "New since the last mission"); keep the rest word for word so missions stay comparable. `[VACATION]` lines only in a vacation session. | -- |
 | 3 | Launch the Navigator | Agent tool: `subagent_type: "navigator"`, `model`/`effort` only as the user asks, `run_in_background: true`, the brief as prompt | its transcript (Claude's subagent jsonl; `observe/tokens.py` reads it for cost) |
-| 4 | Monitor | `python3 observe/watch_mission.py 1500` in the background; it exits on a Navigator question (`NAV ASK`), an emergency or escape, a death, a stat drain, a user message, a stuck plan, a plan end, a gear swap, a Python error in `pilot.log`, or after 1500 s quiet. Look, act, **restart it every time**. Kill it only with a bracketed pattern (`pkill -f "watch_mission[.]py"`). | -- |
+| 4 | Monitor | `python3 observe/watch_mission.py 1500` in the background; it exits on a Navigator question (`NAV ASK`), an emergency or escape, a death, a stat drain, a user message, a stuck plan, a plan end, a gear swap, a Python error in `pilot.log`, or after 1500 s quiet. Look, act, **restart it every time** with the same command line (it resumes from saved offsets; `--fresh` starts at the file ends). Kill it only with a bracketed pattern (`pkill -f "watch_mission[.]py"`). | -- |
 | 5 | Asks and answers | The Navigator's `ask TEXT` never blocks: it appends to `runs/pilot/dive04/asks.jsonl` and logs `nav_ask`. Rate limit 1 per 5 min and 4 per hour (`Pilot.ASK_GAP_S`, `ASK_PER_HOUR`) unless `runs/pilot/dive04/ask_unlimited` exists (it does: the user kept it, 10-27). `ask quiet TEXT` also starts a quiet wait (up to 10 min, ends on the answer or a threat). The Architect investigates (`status`, `why`, `decisions.jsonl`) and replies `pilotctl answer ID "text"` (logged `arch_answer`; shown to the Navigator as `ARCHITECT ANSWER #ID`). The Architect may also SendMessage the Navigator agent directly. | `asks.jsonl`, `decisions.jsonl` |
 | 6 | User messages | The user types in the viewer (`watch.py`): `!text` goes to the Navigator (attention event `user_message`; answered with `say`), `?text` is a question for the Architect, plain text is commentary. | `commentary.jsonl`, `user_note` in `decisions.jsonl` |
 | 7 | Interventions | Only when it clearly helps: `goal recall`, `goal leave`, `quaff ...`, `use Staff_of_Teleportation force`, `plan stop`, `stop`, `react ...` as `PILOT_ROLE=architect`. Don't change `max_depth` or orders without the user; the time freeze is a testing tool, not for deciding. | `nav_cmd role=architect` |
-| 8 | Pilot updates mid-mission | Only `tools/pilot/hotswap.sh dive04` (freezes time, swaps, thaws) or `restart.sh` (parks first); never `pkill` the Pilot mid-move (crashes the test server). The Navigator sees `parked`, then "Connection refused" for a minute; a plan survives. | -- |
+| 8 | Pilot updates mid-mission | Only `tools/pilot/hotswap.sh Dive04` (the nick as the Pilot was started: it finds the process by it; freezes time, swaps, thaws) or `restart.sh` (parks first); never `pkill` the Pilot mid-move (crashes the test server). The Navigator sees `parked`, then "Connection refused" for a minute; a plan survives. | -- |
 | 9 | The Navigator returns | Its final report: state, close calls, Pilot problems, what it lacked, verdicts on the brief's list. | -- |
 | 10 | Wrap up | `bash observe/wrap.sh mNN` | `mission end` by label (a hotswap loses the in-memory label) -> `mission_end`, `missions.json` end; `tokens.py` -> the record's `tokens` (turns, cache, USD); `scorecard.py --table` -> `runs/pilot/dive04/scorecards/mNN.json` and a table row; `damage_mix.py --mission mNN` -> `damage_mix.json` (EHP, at the mission's depth band); prints `runs/complaints.md` lines and the viewer's `?` questions since the mission start, `status` and `debt` |
 | 11 | Mission report | Write `runs/pilot/dive04/reports/YYYY-MM-DD-missionNN.md` (header: mission, Navigator model/effort, times; then what happened, numbers, problems, verdicts). Templates: the latest reports (mission60.md). | report |
@@ -131,7 +137,7 @@ verifies the claims the memo relies on and writes the synthesis. Each study's tr
 replays, the rulebook via `tools/rulebook/sync.sh`) and what a pilot.py split must keep: see
 [gear-and-estimator.md](gear-and-estimator.md).
 
-**Advisor memos by topic** (finished studies in `memos/`; ~57 notes in `to_architect/`, ~54 Architect replies in
+**Advisor memos by topic** (finished studies in `memos/`; ~59 notes in `to_architect/`, ~56 Architect replies in
 `to_advisor/`):
 
 | Topic | Memos |
@@ -164,7 +170,7 @@ replays, the rulebook via `tools/rulebook/sync.sh`) and what a pilot.py split mu
 | `runs/phase0/` | an early birth packet log | History |
 | Claude memory | Architect: `~/.claude/projects/-projectnb-jbrcs-mangband/memory/`; Advisor: `...-Advisor/memory/` | Pointers only (section 6) |
 | `Advisor/` | The Advisor's studies, data (rulebook, estimator, monsters, forum corpus), `STATUS.md` | Read-only for us |
-| git: `github/` | Code; branch **`restructure`** (current work, ~360 commits, pushed), `master` (at tag `pre-restructure` = 767bf60, 2026-10-22); remote `origin` = https://github.com/userjjb/Mangbot | The public repo |
+| git: `github/` | Code; branch **`restructure`** (current work, ~370 commits, pushed), `master` (at tag `pre-restructure` = 767bf60, 2026-10-22); remote `origin` = https://github.com/userjjb/Mangbot | The public repo |
 | `github/project/` | The snapshot of everything above that isn't code or secret: `tree/` (the project dir minus `github/`), `memory/architect/`, `memory/advisor/`, `claude/global-CLAUDE.md`, `SNAPSHOT_TIME` | Made by `tools/snapshot.sh` (excludes passwords, saves, server logs, the forum corpus, raw event streams, files > 5 MB; refuses if a secret-looking string slipped in). Restoring: `project/README.md`. |
 
 ## 6. The Architect's memory
@@ -197,9 +203,10 @@ routine; **history** = a record of a past phase (may be stale).
 | `docs/` (this set) | The Documentation (session 10): an index and one file per component | current |
 | `roles.md` | The roles table, where knowledge lives, the SYNC RULE | current (the Navigator is "to be built": it is built) |
 | `operations.md` | Practical facts for every agent: environment (python module, the public repo and push routine, build), the test server (start under gdb, the time freeze, known crashes and their patches), the characters table (Dive04 is the mission character; Surveyor, Gandalf the DM ghost, Scribe...; passwords in `runs/private/`), tool-mode client facts, verified server behaviour (incl. houses and the gold bank), the live server (mangband.org:18346; ask the admins before a live run), user decisions (never chat, throwaway build, ghosts on), agent-tooling gotchas (the viewer, `pkill -f`, logs), live-server rules a bot must follow | current |
-| `next_steps.md` (~200 lines) | The Architect handoff: a header (pointers, the USER TODO), then **">>> WHICH HANDOFF IS YOURS? <<<"**, which names the handoff for each session number, then the current handoffs. Each session writes the next handoff; session N+1 writes only its own Part. Older handoffs: `history/` | current |
+| `next_steps.md` (~230 lines) | The Architect handoff: a header (pointers, the USER TODO, the TODO), then **">>> WHICH HANDOFF IS YOURS? <<<"**, which names the handoff for each session number, then the current handoffs. Each session writes the next handoff; session N+1 writes only its own Part. Older handoffs: `history/` | current |
 | `CHANGELOG.md` | What changed when, by version (major.minor.patch: minor = play can differ, patch = it can't); missions per version | current |
-| `history/` | Retired notes: `handoffs-s1-s9.md` (the old handoffs, the 09-25 "state of play", "Reflections from the agent who built this"), `restructure-step2.md`, `VACATION-NOTES.md`, `notes_merge.md`, `spells.md` (moved 2026-10-29, C11) | history |
+| `history/` | Retired notes: `handoffs-s1-s9.md` (the old handoffs, the 09-25 "state of play", "Reflections from the agent who built this"), `restructure-step2.md`, `VACATION-NOTES.md`, `notes_merge.md`, `spells.md` (moved 2026-10-29, C11), `survey-notes/` (session 10's per-component refactor candidates, merged into `docs/refactor-candidates.md`) | history |
+| `live-deploy-todo.md` | The checklist for going live (mangband.org:18346): before the first live run, after deploying; add items as they come up (the user, 2026-10-29) | current |
 | `restructure.md` | How to revert to before the restructure (tag `pre-restructure`, backups in `runs/backup-pre-restructure-20261022/`); only on the user's request | reference |
 | `history/restructure-step2.md` | The design of restructure step 2, "who decides what" (log analysis of missions 17-23, the Pilot/Navigator split, intents with conditions, the user's decisions 10-23) | history (built) |
 | `history/VACATION-NOTES.md` | Session 8 ("The Architect's Vacation": the Architect helped Navigators live, no coding): bugs, wishes, blind spots, interventions, the ask channel; plus session 9's triage at the top | history |
@@ -211,7 +218,7 @@ routine; **history** = a record of a past phase (may be stale).
 | `github/tools/pilot/HANDBOOK.md` | The Navigator's manual (~200 lines): who decides what, the loop, the report, commands, judgement calls, the deadly few, housekeeping | current (the Navigator's truth; wins over the reference) |
 | `github/tools/pilot/HANDBOOK-reference.md` | The old full handbook: every goal, order, event, report line, lessons of missions 1-23; grep only | reference (partly stale) |
 | `github/tools/pilot/FIELD-NOTES.md` | Lessons from missions for Navigators (where the XP is, dangers by depth, shops and money, gold/thieves/the house, Pilot habits, best Navigator moves); the Architect adds after each mission | current |
-| `github/tools/pilot/BRIEF-TEMPLATE.md` | The mission brief and how to launch a mission | current (some fixed gear text is dated) |
+| `github/tools/pilot/BRIEF-TEMPLATE.md` | The mission brief and how to launch a mission (gear, stats and supplies are fill-in fields) | current |
 | `github/tools/harness/README.md`, `rulebook/README.md`, `shopcat/README.md` | Component READMEs | see [harness-rulebook-ops.md](harness-rulebook-ops.md) |
 | `github/project/README.md` | What the snapshot holds and how to restore from a commit | current |
 | `memos/` | Advisor memos and the two inboxes (section 4) | current (each memo dated) |

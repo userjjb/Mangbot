@@ -1,6 +1,6 @@
 # Refactor candidates (session 10, consolidated)
 
-One de-duplicated list from the ten survey notes (`docs/survey-notes/*-candidates.md`) and their doc/code discrepancy
+One de-duplicated list from the ten survey notes (now `history/survey-notes/*-candidates.md`) and their doc/code discrepancy
 reports, **for the user to approve item by item**.
 
 **Status (2026-10-29, session 10):** the user approved A1-A3, A6, A8-A11: **done** (commit dd2200d, 117 unit
@@ -65,28 +65,61 @@ Format: **ID** what -- *evidence* -- risk/effort (S/M/L) -- **do / ask / skip**.
   geareval's `sim_player` does: worth ~10-15% of our damage at 750 ft plus ~6% criticals. Shadow mode never acts, so
   only the estimator records change. -- S/S -- **ask** (small; the follow-up to A3). **done (session 10)**
 
+## A2. Found by the doc verification (session 10, 10-29; behaviour changes: need the user's OK)
+
+Ten agents checked each docs/ file against the code (~1,200 claims, ~100 doc fixes). These look like **code** bugs;
+none is fixed. **[N]** = Navigator-facing.
+- **A15** `auto_destroy` checks the keep list only for junk kinds: its pass by pseudo-ID feeling (`{cursed}`,
+  `{worthless}`) destroys a kept item. -- S/S -- **ask** (check `is_kept` in both passes).
+- **A16** `order autodestroy=` (empty) also turns off destroying `junk`-order kinds and `JUNK_DEVICES` (the method
+  returns at once). -- S/S -- **ask**.
+- **A17** `pack_value` treats every Mushroom as priceless (the `TV_FOOD` test precedes the junk check): unknown or
+  table-junk mushrooms are never destroyed to make room. -- S/S -- **ask**.
+- **A18** `request_trip` accepts `until "wor<=1"`, which holds as soon as the trip has recalled down (the guard
+  `int(c[3]) - (c[2] == "<=") >= 1` looks reversed). **[N]** -- S/S -- **ask**.
+- **A19** `supply_minutes` counts any worn light that isn't a lantern (a torch) as permanent: "light permanent", and
+  `supply_watch` never warns. -- S/S -- **ask**.
+- **A20** `reflexes`' hunger step returns early (food eaten < 10 s ago; Hungry with only Satisfy Hunger scrolls), which
+  skips pickup, auto-destroy, engage and rest for that tick, possibly until Weak. -- S/M -- **ask**.
+- **A21** `emergency_loop` with stairs known but the goal already Flee sends "no stairs known nearby". -- S/S -- **ask**.
+- **A22** `order a=1 b=bad`: `a` is set in memory, then the error returns before orders.json is written (lost on
+  restart). With F5. **[N]** -- S/S -- **ask**.
+- **A23** `settle_hunt`: `status == "done" and "slain" in d or "killed" in d` -- a failed hunt whose detail says
+  "killed" counts as slain, so no fight debt. -- S/S -- **ask**.
+- **A24** scorecard `commands_per_min` counts `wait_report` records, which `commands` excludes. The Advisor's metric:
+  memo it. -- S/S -- **ask**.
+- **A25** Set-pieces A2I (10-24) and A2L (10-25, "Lugdush never seen") last ran FAIL and were never re-run. -- S/S --
+  **do** (re-run before the next mission).
+- **Text only (add to B11/B16):** `loadout_info`'s header tells the Navigator "slays, brands and criticals aren't
+  simulated" (they are) **[N]**; geareval's module docstring (optimizer "not built", no resists/criticals);
+  `group_danger` docstring (+150 drain weight); world.py's `arrived_by` 'recall'; `compact()` "map: dungeon only";
+  TownKit "one more look after 40 s"; c-tool.c header `interactive 21` (13); hotswap.sh "untested"; setpiece.py
+  `--depth`/`sid` help; harness/README traps "24-31" (16-31); unit.py's filtered total line; scorecard "16
+  categories" (17); scribe.py's `--birth`; watch_mission's usage without `--backlog`; pilot.py installs no SIGTERM
+  handler (hotswap's kill is Python's default exit).
+
 ## B. Doc fixes (stale docs vs code; no behaviour change)
 
 - **B1 [N]** HANDBOOK names a `sell` command (lines ~17, 21: `sell !NAME`); it doesn't exist: `goal shop N sell
-  [!]NAME`. Also: `inscribe`/`wearall` are blocked in the dungeon, undocumented. -- S/S -- **do**.
+  [!]NAME`. Also: `inscribe`/`wearall` are blocked in the dungeon, undocumented. -- S/S -- **do**. **done (session 10, 2.38.0)**
 - **B2 [N]** Stash "in the tavern (8)" in HANDBOOK (l.37), BRIEF-TEMPLATE (l.29), FIELD-NOTES (~l.65): since session 9
-  it's the wilderness house (HouseBank, `stash_wanted`). -- S/S -- **do** (after D10 is decided, wording "the house").
+  it's the wilderness house (HouseBank, `stash_wanted`). -- S/S -- **do** (after D10 is decided, wording "the house"). **done (session 10, 2.38.0)**
 - **B3 [N]** HANDBOOK "eats rations to Full" (l.40) and the `KITS` comment: code eats to Fed, <=3 rations, when Hungry or
-  worse. -- S/S -- **do**.
+  worse. -- S/S -- **do**. **done (session 10, 2.38.0)**
 - **B4 [N]** HANDBOOK-reference: `goal goto`/`stairs` in ~5 places (refused to the Navigator); orders table lacks
   `autowear`, `enchant_max`, `band_frac`, `nopickup`; emergency "2.5 worst-case rounds" (code: worst 3 turns, <90% HP);
   `danger_seen` "dropped the goal" (it's resumed); newer escape steps missing. -- S/S -- **do** (or see C14). **done (session 10**, the user: B4 now, C14 later; and
   `danger_seen` really does drop the goal -- only a trip plan carries on -- so "resumed" above was wrong)
 - **B5 [N]** HANDBOOK `plan trip ... until`: check the condition list against the code (`emergency_loop`,
-  `unseen_attacker`). -- S/S -- **do**.
+  `unseen_attacker`). -- S/S -- **do**. **done (session 10, 2.38.0)**
 - **B6 [N]** pilotctl.py docstring (its help): advertises `goal goto`/`stairs`/`raw`, lacks ~15 commands (ask, answer,
   debt, price, why, prep, gearcmp, loadout, react, review, keep, house...). -- S/S -- **do** (cut to a pointer to
-  docs/commands.md now; generate from the table after E2).
+  docs/commands.md now; generate from the table after E2). **done (session 10, 2.38.0)**
 - **B7 [N]** BRIEF-TEMPLATE fixed text: gear (Rings [+12]/[+10], Brodda's boots; now [+16]/[+12], Boots of Stability),
   tavern stash, session-8 `[VACATION]` paragraphs. -- S/S -- **ask** (move gear into `{...}` fields; changes mission
-  comparability).
+  comparability). **done (session 10, 2.38.0)**
 - **B8 [N]** `.claude/agents/navigator.md`: HANDBOOK "~110 lines" (198); add "never set PILOT_ROLE" (see F3). -- S/S --
-  **do**.
+  **do**. **done (session 10, 2.38.0)**
 - **B9** `design_pilot.md` stale beyond its disclaimer (non-goals as goals, orders `danger`/`keep (min rations)`, `pilotctl
   log`, 10 Hz vs 20, "Phase 1 (C)"). -- S/S -- **do** (keep the architecture part, mark the rest history, point to
   docs/pilot-core.md, goals-and-plans.md).

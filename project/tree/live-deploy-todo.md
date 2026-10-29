@@ -30,6 +30,9 @@ version. Background: operations.md ("Live server", "Live-server rules a bot must
   holds of 0.3-0.6 s). Measure the round trip to mangband.org and check the reflexes still act in time.
 - [ ] **The time bubble.** `--hpwarn 5` makes the server slow our time to 1/5 below 50% HP. Check it behaves the
   same on live.
+- [ ] **Pin the Advisor's simulator.** Shadow mode and the gear evaluator (`gearcmp`, `loadout`, automatic swaps) import
+  `Advisor/data/estimator/options_sim.py` live, so a change there changes the Pilot's gear decisions mid-run. Pin or
+  snapshot it (a copy, or a version check) for live runs (the session-10 review).
 - [ ] **The rulebook vs the live version.** The rulebook is built from the 1.5.3 source; the live server may be
   patched. Spot-check monsters, items and prices against what live play shows (the Advisor's versions memo).
 

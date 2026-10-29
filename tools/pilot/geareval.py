@@ -419,37 +419,69 @@ def _sim():
     return options_sim
 
 
-def encounters(decisions, lo_ft, hi_ft, n=40, radius=7, since=None, seed=1, tail_mb=24):
+def _offset_at(f, size, t):
+    """A byte offset in a time-ordered JSON-lines log at or before the first record with "t" >= t (bisection)."""
+    lo, hi = 0, size
+    while hi - lo > 65536:
+        mid = (lo + hi) // 2
+        f.seek(mid)
+        f.readline()                                # (a partial line)
+        line = f.readline()
+        try:
+            tm = json.loads(line)["t"]
+        except (ValueError, KeyError, TypeError):
+            tm = None
+        if tm is not None and tm < t:
+            lo = mid
+        else:
+            hi = mid
+    return lo
+
+
+def encounters(decisions, lo_ft, hi_ft, n=40, radius=7, since=None, seed=1, days=3.0, min_n=20):
     """The fights Dive04 met at lo-hi ft: `mons` records with a monster within 3 squares, the monsters within
-    `radius` (distance as the simulator measures it), at most one record per 30 s; n of them, spread over the log.
-    Only the log's last `tail_mb` MB are read (~1 MB per hour of play: about the last day), so the set follows
-    recent play and gearcmp doesn't scan the whole 50 MB log (refactor-candidates A7)."""
+    `radius` (distance as the simulator measures it), at most one record per 30 s; n of them, spread over the window.
+    The window is the log's last `days` days (wall clock), doubled until it holds at least `min_n` fights or covers
+    the whole log, so the set follows recent play even after a change of depth (refactor-candidates A7; `since`
+    fixes the start instead)."""
     S = _sim()
-    out, last = [], 0.0
     f = open(decisions, "rb")
     size = os.fstat(f.fileno()).st_size
-    if tail_mb and size > tail_mb * 1_000_000:
-        f.seek(size - tail_mb * 1_000_000)
-        f.readline()                                # (a partial line)
-    for line in (b.decode("utf-8", "replace") for b in f):
-        if '"kind": "mons"' not in line:
-            continue
-        try:
-            r = json.loads(line)
-        except ValueError:
-            continue
-        if since and r["t"] < since or not r.get("pos") or r["t"] - last < 30:
-            continue
-        d = (r.get("depth") or 0) * 50
-        if not lo_ft <= d <= hi_ft:
-            continue
-        y0, x0 = r["pos"]
-        team = [(nm, max(1, S.adist(y - y0, x - x0))) for y, x, nm in r["monsters"] if nm in S.RACES]
-        team = [m for m in team if m[1] <= radius]
-        if not team or min(m[1] for m in team) > 3:
-            continue
-        last = r["t"]
-        out.append({"team": team[:12], "depth": d // 50, "t": r["t"]})
+    f.seek(max(0, size - 65536))
+    tail = [ln for ln in f.read().split(b"\n") if ln.strip()]
+    try:
+        t_end = json.loads(tail[-1])["t"]
+    except (IndexError, ValueError, KeyError):
+        t_end = time.time()
+    span = days * 86400
+    while True:
+        start = since if since else t_end - span
+        f.seek(_offset_at(f, size, start) if start > 0 else 0)
+        if f.tell():
+            f.readline()                            # (a partial line)
+        out, last = [], 0.0
+        for line in (b.decode("utf-8", "replace") for b in f):
+            if '"kind": "mons"' not in line:
+                continue
+            try:
+                r = json.loads(line)
+            except ValueError:
+                continue
+            if r["t"] < start or not r.get("pos") or r["t"] - last < 30:
+                continue
+            d = (r.get("depth") or 0) * 50
+            if not lo_ft <= d <= hi_ft:
+                continue
+            y0, x0 = r["pos"]
+            team = [(nm, max(1, S.adist(y - y0, x - x0))) for y, x, nm in r["monsters"] if nm in S.RACES]
+            team = [m for m in team if m[1] <= radius]
+            if not team or min(m[1] for m in team) > 3:
+                continue
+            last = r["t"]
+            out.append({"team": team[:12], "depth": d // 50, "t": r["t"]})
+        if since or len(out) >= min_n or start <= 0 or _offset_at(f, size, start) == 0:
+            break
+        span *= 2
     if len(out) > n:
         out = random.Random(seed).sample(out, n)
     return out

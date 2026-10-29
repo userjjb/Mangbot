@@ -32,7 +32,7 @@ amulets with unknown plusses).
 | plusses | +100 per to-hit, to-dam, to-AC (weapons, armour, jewellery); ammo +5 per to-hit/to-dam |
 | extra dice | weapons: +100 x (extra dice x sides) over the kind's dice |
 | charges | wands/staffs: +5% of value per charge (per item of a stack) |
-| zero | cursed, broken, worthless, terrible tags; `Broken ...`; a negative pval; negative AC/plusses (armour, jewellery); to-hit + to-dam < 0 (weapons) |
+| zero | cursed, broken, worthless, terrible tags; `Broken ...`; a negative pval; a negative to-AC (armour); any negative plus (jewellery); to-hit + to-dam < 0 (weapons) |
 
 **Estimates** (`Item.estimate = True`, and `known = False` where an identify would reveal more):
 
@@ -147,7 +147,8 @@ the Identify price (the TownKit buys scrolls for them).
 level. `flavour_of(it)` returns the table entry for an item the character isn't aware of yet (`unknown_flavour`:
 flavoured tval or a Mushroom, no ` of ` in the name); `show()` adds "(= KIND; not aware)" in the `pack` listing.
 
-**Rules for unknowns**: `unknown_sell_refusal` (used by selling): table-junk sells; one of a stack sells (a free
+**Rules for unknowns**: `unknown_sell_refusal` (used by selling): table-junk sells; a flavour the table knows as a non-junk kind doesn't (use or identify it);
+one of a stack sells (a free
 identification); a lone unknown scroll should be read; potions/scrolls sell while we've never been below 1000 ft;
 deeper potions/scrolls, and all unknown devices and jewellery, should be identified first. `probably_special(name)`:
 `{excellent}`/`{special}`/artifact tags, `{good}` gear with unknown plusses, or a unique's name in the tag -- not sold
@@ -206,8 +207,8 @@ Table-junk and cursed/worthless items are never refused. Selling also applies `u
 `probably_special`.
 
 **Overrides and the debt** (the user's decision, history/restructure-step2.md, 2026-10-23): the Navigator may prefix `!`
-(`sell !NAME`, `destroy !NAME`, `drop !NAME`). If the policy would have refused, the fair value lost is added to its
-**item debt** (`add_debt`): for a sale, fair pay at that owner (`shopmath.fair_pay` from the relist price, else
+(`sell !NAME`, `destroy !NAME`, `drop !NAME`). If the policy would have refused (for a sale: any `!` sale), the fair value lost is added to
+its **item debt** (`add_debt`): for a sale, fair pay at that owner (`shopmath.fair_pay` from the relist price, else
 value x pay_cut) minus what was received; for destroy/drop, value x pay_cut. Hunts have a separate **fight debt**
 (`settle_hunt`): a hunt ordered over the Pilot's refusal (`goal hunt !NAME`) that ends unslain, with HP under 50%, or
 with an emergency escape adds the HP lost (see pilot-combat.md). Both live in `runs/pilot/NICK/navigator_debt.json`

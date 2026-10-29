@@ -74,7 +74,7 @@ the Architect magenta reverse. The feed keeps the last 500 entries.
 | F2 or Ctrl-E | the equipment as the game's 12 slots a)-l), `(nothing)` in empty ones (`equipment_slots`; uses `itemvalue` for item types) |
 | F3 or Ctrl-P | the whole pack |
 | F2/F3 again or Esc | back to the game view |
-| F5 or Ctrl-F | toggle the test server's time freeze: creates/removes `testserver/FREEZE` (same as `github/tools/freeze.sh toggle`). The note line then shows `*** TIME FROZEN ***`. Only the test server (started with `MANGBAND_FREEZE_FILE`) honours it; the Pilot holds while it exists |
+| F5 or Ctrl-F | toggle the test server's time freeze: creates/removes `testserver/FREEZE` (same as `github/tools/freeze.sh toggle`). The note line then shows `*** TIME FROZEN (F5/Ctrl-F to thaw) ***`. Only the test server (started with `MANGBAND_FREEZE_FILE`) honours it; the Pilot holds while it exists |
 | Esc | clear the typed line (when no panel is open) |
 | PgUp / PgDn | scroll the feed by 10 lines |
 | Ctrl-C | quit (the character keeps playing) |
@@ -142,7 +142,7 @@ file ends, so what happened meanwhile is not reported. It does not report the us
 5. Complaints: lines of `runs/complaints.md` stamped (`- YYYY-MM-DD HH:MM...`) at or after the mission's start in
    `missions.json` (2 hours back if the label isn't there).
 6. Questions: `notes.py --nick NICK --questions --mission LABEL` (the `?` notes made during the mission), cut to
-   the last one or two `QUESTION` blocks (3 lines each).
+   the last 8 lines of the `QUESTION` blocks (each the `QUESTION` line and the 3 after it).
 7. Status: the first 12 lines of `pilotctl status` and 4 of `pilotctl debt`.
 
 After it, the Architect writes the mission report in `runs/pilot/NICK/reports/YYYY-MM-DD-missionNN.md` and the
@@ -158,7 +158,7 @@ Implements the Advisor's definitions (`memos/2026-10-23-scorecard.md`; the Advis
 ```
 python3 scorecard.py m48            # print one card (and write its JSON)
 python3 scorecard.py --table m48    # the table row only (what wrap.sh uses)
-python3 scorecard.py --all          # rescore every real mission (cards rewritten, then the table); sp-* only with --sp
+python3 scorecard.py --all          # rescore every real mission (cards rewritten and printed, then the table; with --table only the table); sp-* only with --sp
 python3 scorecard.py                # the table of the cards already written (read only, nothing rescored)
 python3 scorecard.py --json m48     # the numbers as JSON
 python3 scorecard.py --check m17 .. # ours vs the Advisor's baseline CSV (Advisor/data/scorecard/baseline_m17-m23.csv)
@@ -219,7 +219,7 @@ E. Navigator
 - `report_to_action_med_s` / `_p90_s`: from a report to the first non-query command before the next report.
   `reports_without_command_pct`: reports followed by no command at all.
 - `user_messages` (`!` notes) and `user_reply_med_s` (to the next `nav_say`, within 300 s).
-- `forced_overrides` (args starting with `!`), `complaints`, `report_chars`, `order_report_age_med_s` / `_p90_s`
+- `forced_overrides` (args with `!` in their first two characters), `complaints`, `report_chars`, `order_report_age_med_s` / `_p90_s`
   (the `report_age` of non-query commands: how stale the report an order was based on).
 
 F. Pilot health
@@ -249,10 +249,11 @@ python3 tokens.py --all               # every mNN mission with no tokens yet and
 ```
 
 Finds the Navigator's Claude Code subagent transcript (`~/.claude/projects/*/*/subagents/*.jsonl`) modified after
-the mission start minus 10 min whose first 20 KB contain "Mission NN for character" (or "for Dive04" in m17-m23);
-the newest wins. Sums usage per API turn (a turn's usage repeats on each content block; the largest value per field
-is kept): `turns, input, output, cache_read, cache_write, write_5m, write_1h, model, final_usage_turns`, and `usd`
-at the list prices in `PRICES` (Opus/Sonnet/Haiku 5.5, fetched 2026-10-25). If fewer than half the turns have
+the mission start minus 10 min whose first 20 KB contain "Mission NN for character" (or "for Dive04" in m17-m23,
+or "for \*\*"); the newest wins. Sums usage per API turn (a turn's usage repeats on each content block; the largest
+value per field is kept): `turns, input, output, cache_read, cache_write, write_5m, write_1h, model,
+final_usage_turns`, `usd` at the list prices in `PRICES` (Opus/Sonnet 5.5 fetched 2026-10-25; Haiku 5.5 from the
+claude-api skill's table, its cache prices derived), and `transcript` (the file name). If fewer than half the turns have
 a final usage (transcripts up to m23), `output` is `None` and so is `usd`. Writes `tokens` (and `effort` if
 missing) into `runs/missions.json`, re-reading the file first because the Pilot also writes it. Only the
 Navigator's tokens: the Pilot is code and the Architect's tokens aren't counted. Gotcha: the Navigator's
@@ -348,7 +349,7 @@ studies read those `pkt.jsonl` files). No script calls them.
 
 ## scribe.py -- a messenger character
 
-`python3 scribe.py --to CHARNAME [--nick Scribe] [--port 28346] [--fifo runs/observe/scribe.fifo] &`, then
+`python3 study/scribe.py --to CHARNAME [--nick Scribe] [--port 28346] [--fifo runs/observe/scribe.fifo] &`, then
 `echo "text" > runs/observe/scribe.fifo`. Logs in a town-bound character through the shopcat client
 (`tools/shopcat/mang.py`, `newchar.py`; creates it if needed) and sends each line written to the FIFO as private
 chat to `--to`, split to fit the 59-character chat line. Lets Claude answer the user in game while they play.

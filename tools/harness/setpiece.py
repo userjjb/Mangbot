@@ -244,11 +244,14 @@ class Run:
                 out = subprocess.run([os.path.join(HERE, "charsave.sh"), "restore", "Dive04", self.tag],
                                      capture_output=True, text=True, env=env).stdout.strip().splitlines()
                 self.say(f"[{self.tag}] " + (out[0] if out else "restore: no output"))
-                # (a good restore: the run's snapshot has done its job -- 158 of them, 55 MB, had piled up by 10-29;
-                # named checkpoints such as dive04-pre-m43 never match the timestamped tag)
-                snap = os.path.join(ROOT, "runs", "setpieces", "saves", self.tag)
-                if out and out[0].startswith("restored ") and re.search(r"-\d{8}-\d{6}$", self.tag):
-                    shutil.rmtree(snap, ignore_errors=True)
+                # (after a good restore, keep only the newest 5 timestamped snapshots -- 158, 55 MB, had piled up by
+                # 10-29 -- in case a bad restore shows up later; named checkpoints such as dive04-pre-m43 never match)
+                if out and out[0].startswith("restored "):
+                    saves = os.path.join(ROOT, "runs", "setpieces", "saves")
+                    stamped = sorted((re.search(r"(\d{8}-\d{6})$", d).group(1), d) for d in os.listdir(saves)
+                                     if re.search(r"-\d{8}-\d{6}$", d))
+                    for _, d in stamped[:-5]:
+                        shutil.rmtree(os.path.join(saves, d), ignore_errors=True)
 
     # --- scoring ----------------------------------------------------------------------
     def stats(self, recs):

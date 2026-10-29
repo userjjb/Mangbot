@@ -156,3 +156,7 @@ After the memo:
 - **Measure the sensitivity; don't assert it** (Speed price, 2026-10-25): I wrote "the gain falls 1:1 with price" from one
   intuition; my own table showed 0.2. Any break-even or slope in a memo comes from a sweep over the parameter, with the
   mechanism counted (here: potions drunk per option). Separate "buy" from "use" decisions — different counterfactuals.
+- **A module the Pilot imports is an interface, not a script** (options_sim, 2026-10-25 → 29): change it only via a copy + atomic
+  `mv`, bump its version string, keep signatures, test it on the replays before installing, and memo the Architect. Before changing
+  any parameter it uses, grep `../next_steps.md` for a user decision (the XP_PER_GOLD slip). When a calibration fit worsens after
+  a code-faithful change (the wake rule), re-tune the knob the logs can't see (effective noise), and say so.

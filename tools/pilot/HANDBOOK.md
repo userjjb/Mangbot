@@ -14,12 +14,12 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
   leaves bad levels.
 - **You may always order something safer**: `goal leave`, `goal recall`, `plan stop`, `stop`, `avoid`, `keep`.
 - **Something riskier or irreversible is checked** (a hunt, a fetch, selling or destroying). A refusal says why and
-  what would allow it. You may override with `!` (`goal hunt !NAME`, `sell !NAME`, `destroy !NAME`), but every
+  what would allow it. You may override with `!` (`goal hunt !NAME`, `goal shop N sell !NAME`, `destroy !NAME`), but every
   override is scored. Value lost on items goes into your **item debt** (gold). HP lost when an overridden hunt goes
   wrong goes into your **fight debt** (HP). `debt` shows both. **Past limits you aren't told, the user and the
   Architect take that freedom away.** Override only when you're sure, and say why in your journal.
-- **Item commands** (`sell`, `wear`, `takeoff`, `read`/`use` on an item, `fuel`, `eat`, `pickup`) work **in town
-  only**; `destroy` and `drop` work in the dungeon too. In the dungeon, combat consumables still work (`quaff`, `read` Phase/Recall, `use`, `zap`,
+- **Item commands** (selling with `goal shop N sell NAME`, `wear`, `wearall`, `takeoff`, `inscribe`, `read`/`use`
+  on an item, `fuel`, `eat`, `pickup`) work **in town only**; `destroy` and `drop` work in the dungeon too. In the dungeon, combat consumables still work (`quaff`, `read` Phase/Recall, `use`, `zap`,
   `aim`), but the Pilot already uses them when it matters. `goal goto`, `stairs` and `raw` are the Pilot's: use
   `goal leave` or `goal fetch Y,X`.
 
@@ -34,11 +34,11 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
    Restore for a drained STR/DEX/CON, the kit, then your list (`NAME:N` means *have* N in all, not N more). Below
    500 ft the kit keeps **3 Heroism** (the fear cure) and **2 Potions of Speed** (Black Market, at most 600 each; often
    out of stock): the Pilot drinks Speed **at the start of a hard fight** (a unique or a monster near your level
-   adjacent), not only in emergencies. **Restore potions and Wands of Stone to Mud stay in the tavern (8)** during a
-   mission: `plan town` leaves them there as its last step, and fetches the right Restore when STR/DEX/CON is drained
+   adjacent), not only in emergencies. **Restore potions and Wands of Stone to Mud stay in the stash** (the house, in the
+   wilderness tile north of town) during a mission: `plan town` leaves them there as its last step, and fetches the right Restore when STR/DEX/CON is drained
    (before buying one). In the dungeon a found Restore is picked up and drunk once the fight is over. With
-   3,000+ gold it also restores Charisma (better prices). Last it **eats rations to Full and fills the lantern**
-   (food isn't digested in town; 9000+ turns of light last a trip), so you carry one food stack and no oil:
+   3,000+ gold it also restores Charisma (better prices). Last it **eats rations to Fed (at most 3, when Hungry or
+   worse) and fills the lantern** (food isn't digested in town; 9000+ turns of light last a trip), so you carry one food stack and no oil:
    other food and spare flasks are sold, and near a trip's end spare rations go first when loot needs room. Don't
    buy flasks or Satisfy Hunger. The reply says what it bought, what it couldn't afford,
    and whether you're ready to recall down. (`until` can't name `wor<2`: the plan keeps one Word of Recall to come
@@ -49,7 +49,8 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
    so both stairs lead somewhere useful. It explores level after level within LO-HI, leaves bad levels by itself (a
    serious band, a pit or nest, breeders, drainers, fearers, traps), and comes home when a condition holds. Conditions: `cures<N`
    (all CLW + CSW + CCW potions together), `ccw`, `csw`, `phase`, `wor`, `food`, `hp`, `minutes>N` (from when you issue the plan: the town visit and the recall down count), `dmin>N` (minutes since the trip reached the dungeon), `levels>N`, `clvl>=N`, `gold>N`, `free<N`, `time>HH:MM`, or
-   events since the start (`band`, `drained`, `emergency`, `danger`, `unique_slain`, `pack_full`). No Word of Recall
+   events since the start (`band`, `drained`, `emergency`, `emergency_loop`, `danger`, `unique_slain`, `pack_full`,
+   `unseen_attacker`). No Word of Recall
    left and 90 minutes are built in. **`band` holds only while the band is live** (warned in the last 20 s, or 3+ of
    it still near): one the Pilot fought and beat doesn't send you home. **Avoid `drained` on deep trips:** a dart
    trap on arrival sends you home in seconds (m30), and a stat drain wakes you anyway; the Pilot leaves a level

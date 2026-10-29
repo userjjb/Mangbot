@@ -1,9 +1,26 @@
-# Advisor status and handoff (updated 2026-10-24, session 4; the clock said 2026-10-23 — file dates follow the 10-24 series)
+# Advisor status and handoff (updated 2026-10-29, end of "Advisor 4" chat; next chat = "Advisor 5")
 
 Read this first in a new Advisor chat, then `METHOD.md` before starting any study. Check
-`../memos/to_advisor/` for unread memos (`.claude/hooks/inbox.sh unread ../memos/to_advisor`).
+`../memos/to_advisor/` for unread memos (`.claude/hooks/inbox.sh unread ../memos/to_advisor`) and start the watcher.
+System docs (Architect, 10-29): `../docs/README.md`, `../docs/CONDENSED.md`; our side: `../memos/to_architect/2026-10-28-advisor-docs.md`.
 
-## State: the RESTRUCTURE (since 2026-10-22)
+## Current state (2026-10-29)
+
+**No study running.** The main line since 10-25 is the **danger-time option estimator**, `data/estimator/options_sim.py`
+(POLICY_VERSION `pilot-escape-2026-10-29o`). **It is a LIVE interface:** the Pilot imports it in shadow mode (`tools/pilot/shadow.py`:
+emergency, hard_fight and band triggers -> `estimator` records in decisions.jsonl) and the gear evaluator imports it plus
+`scenarios.py` and reads the 21 replay files (`studies/2026-10-25-replay/replays/`). Rules: edit only via a copy + atomic `mv`,
+bump POLICY_VERSION, keep `choose()`/`rollout()` signatures, memo the Architect; `base_policy` must mirror the Pilot's escape rules
+(the Architect announces changes); never change user-decided values (XP_PER_GOLD is now passed per call; MIN_GAIN floor approved).
+Contract and player-dict keys: `../memos/to_architect/2026-10-28-advisor-docs.md` (+ `noise`, 29o).
+Pilot version 2.37.0 (10-29 12:42); versions/missions in `../CHANGELOG.md`. Last missions m56-m60 (10-28); none since 2.37.0.
+
+**Next:** (1) review the `estimator` records of the next missions — three eras: before 10-29 08:35 (understated to-hit/to-dam),
+08:35-12:42 (no slays), from 12:42 (complete); compare agree rates per era and trigger; (2) re-check the wake calibration with
+looks pairs taken during fights; (3) mirror any announced escape-rule change; (4) rulebook rebuilds must keep
+`monsters.csv` and `kinds_by_level.csv` (the Pilot now requires both).
+
+## Background: the RESTRUCTURE (since 2026-10-22; steps 1-4 done, step 5 = missions with scorecards)
 
 **No study is running.** The project is restructuring its autonomous player (the user's decision after mission 23):
 restructure, not rewrite; keep Dive04; instruments first; mission-by-mission patching is frozen. The Architect works on git
@@ -56,13 +73,14 @@ Architect builds everything else.
 
 ## Architect schedule
 
-- Session 8 = "The Architect's Vacation" (Haiku, helps the Navigator live, NO code changes; notes in ../history/VACATION-NOTES.md).
-  Code requests wait for session 9. Avoid options_sim changes meanwhile (nobody to coordinate a Pilot restart); good time for
-  data studies (P_WAKE from `looks`, band/hard-fight shadow records).
+- Sessions 8 (vacation, no code) and 9-10 (fixes, docs, cleanup, versions) are done; the Architect announces its next session's focus
+  in to_advisor memos. Old handoffs and moved notes: `../history/`.
 
 ## Waiting on the user
 
-- Nothing pending. The user decided (10-24): **auto_scum stays ON** (richer, more dangerous rerolled levels; my "off" declined).
+- **Resist trading in automatic gear swaps** (`TRADE_RESISTS` False in geareval until the user decides; my data: elemental resists
+  are worth little in HP at 650-1000 ft, res_blind is decisive vs Light hounds — memos to_architect 2026-10-26-gear-evaluator, -blind-escapes).
+- Decided (10-26..28): Speed kit cap 600 g; XP_PER_GOLD rolling (passed per call); MIN_GAIN kept, scaled to 30 s of play. The user decided (10-24): **auto_scum stays ON** (richer, more dangerous rerolled levels; my "off" declined).
   Consequence: depth_value.csv / rulebook level-generation numbers assume unscummed levels and understate OOD monsters per level. The user decided (10-24): missions run with `--hpwarn 5`; `flee_hp` stays 0.5 everywhere (my hunt-only 0.4 declined); the forge may be used.
 - (Earlier: the low-HP time bubble: the user decided "after step 2" — then turn-based Pilot timers and an A/B of `--hpwarn 5` on set-pieces
   A1/A2; `to_advisor/2026-10-23-step22-town-kit.md`.)

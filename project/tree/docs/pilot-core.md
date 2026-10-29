@@ -1,6 +1,6 @@
 # Pilot core: architecture, tick loop, perception, movement, logs, the report
 
-The **Pilot** (`github/tools/pilot/pilot.py`, ~10.5k lines, plus `world.py`, `mover.py`, `glyphs.py`,
+The **Pilot** (`github/tools/pilot/pilot.py`, ~10.6k lines, plus `world.py`, `mover.py`, `glyphs.py`,
 `structures.py`) is a Python daemon that plays one MAngband character second to second. It owns a tool-mode C
 client (`mangclient -mtool`), builds a model of the game from the client's events and queries, and acts on it
 about 20 times a second: reflexes first (survival), then the Navigator's standing reactions, the Pilot's own item
@@ -45,8 +45,8 @@ mangclient -mtool  <--stdin/stdout JSON-->  pilot.py (daemon)  <--unix socket ru
   `runs/pilot/<nick lowercase>`), `--client`, `--libdir`, `--pktlog`, `--live` (live-server behaviour: keep
   mapping/detection devices instead of selling them as crutches), `--hpwarn N` (0-9, default 5: below N x 10% HP the
   server slows our time to 1/5; the Pilot's game clock follows).
-- **Threads**: the client's reader thread only queues events (`World._on_event`); all game logic runs on the main
-  thread. The socket server (`Server`, a threading `UnixStreamServer`) runs a `Handler` thread per connection: it
+- **Threads**: the client's reader thread only queues events (`World._on_event`) and writes `events.jsonl` /
+  `state.jsonl`; all game logic runs on the main thread. The socket server (`Server`, a threading `UnixStreamServer`) runs a `Handler` thread per connection: it
   reads one JSON line, puts `(request, reply_queue)` on `Pilot.requests` and waits up to 30 s for the main thread's
   answer (`{"ok": false, "error": "pilot busy"}` on timeout). `wait-attention` is the exception: the handler thread
   blocks on `Pilot.att_cond` until an attention event arrives (or the timeout), then asks the main thread for a
@@ -120,7 +120,7 @@ The module docstring at the top of `pilot.py` still lists the old 8-rule order; 
 
 ### Goals: how they are driven
 A goal is an object with `tick(pilot)` returning `None` (still working) or `(status, detail)` with status `done`
-or `failed`, and `describe()`. Base class `Goal`; ~25 subclasses (Wait, Goto, Explore, Dive, Search, Hunt, Recover,
+or `failed`, and `describe()`. Base class `Goal`; 22 subclasses (Wait, Goto, Explore, Dive, Search, Hunt, Recover,
 Reprieve, BandLeave, WalkAway, Flee, Recall, Resurrect, Town, TownFarm, Shop, StashDeposit, StashFetch, HouseBank,
 TownKit, RestGoal, QuietWait). `TripPlan` is not a goal: it sits in `Pilot.plan` and sets goals. See
 [goals-and-plans.md](goals-and-plans.md).
@@ -159,7 +159,8 @@ a second read/quaff while the last is unconfirmed, and any item command until th
 last one (pack letters shift when a stack runs out). It sets `busy_until`, logs `act` (with `cmd`, `why`, `by`),
 logs escapes, registers expected effects (`EFFECTS`: equip/pack/level signals checked by `verify_effects`) and, for
 the Pilot's own reads/quaffs of escapes and cures (`USE_VERIFY`), a `pending_use` that `verify_use` confirms from
-the server's "You have N ..." message or resends (twice at most). The mover sends walk/run/pathfind/clear commands
+the server's "You have N ..." message or resends (twice at most; a Word of Recall or Teleport is never resent:
+after 8 s without an answer it gives up). The mover sends walk/run/pathfind/clear commands
 directly through the client, not through `cmd`.
 
 ## The world model (`world.py`)
@@ -182,7 +183,7 @@ Built from client events (`drain`) and polled queries (`refresh`):
 |---|---|
 | `pos`, `pos_t`, `arrive_pos`, `walked` | position, when it last changed, where we entered the level, squares stood on |
 | `depth`, `depth_ft`, `level_t`, `in_dungeon` | depth (50 ft/level), arrival time on this level (the level's identity everywhere), dungeon vs town/wilderness (`_level_kind`: the depth byte wraps in far wilderness, so judged by how we got here) |
-| `arrived_by`, `standing_on`, `last_stairs_cmd` | how we came (`>`/`<`/recall/other); the tile under `@` (the map never shows it: after a stair trip we stand on the opposite stair; after a step, whatever memory had there) |
+| `arrived_by`, `standing_on`, `last_stairs_cmd` | how we came (`>`/`<`, else `other`: recall, trapdoor, login); the tile under `@` (the map never shows it: after a stair trip we stand on the opposite stair; after a step, whatever memory had there) |
 | `rows`, `attrs` | the latest full-level map (chars, colours) from the `map` query |
 | `memory` | `(y, x) -> char` remembered terrain and floor objects for this level (cleared on level change); monsters are not stored, and a square seen only with a (non-wall-passing) monster on it is remembered as floor |
 | `monsters` | `[(y, x, Race)]` decoded from the map by unique glyphs |
@@ -223,7 +224,8 @@ the buckets plus a seed (m35-m42: 14190 XP per 34694 gold) weighted by the windo
 logs `mission_start`, and records it in `runs/missions.json` (read by the scorecard); both carry `version` (the
 Pilot's `VERSION`). `save_mission` writes
 `mission.json` every 15 s so a restart or hotswap carries the mission on (the report's "this mission" rates);
-`load_mission` ignores a file older than 30 minutes. `mission end` logs `mission_end`.
+`load_mission` ignores a file older than 30 minutes. `mission end` logs `mission_end`, stamps the end in
+`runs/missions.json` and removes `mission.json`.
 
 ## Glyph and monster knowledge (`glyphs.py`)
 
@@ -325,7 +327,7 @@ All paths relative to `runs/pilot/<nick lowercase>/` unless noted. "Pilot" = `pi
 | `ctl.sock` | `main()` | pilotctl | the control socket (recreated at start) |
 | `visuals.txt` | `main()` | the client (`--visuals`) | the unique-glyph table |
 | `pilot.log` | the scripts' `nohup` redirect | humans | the Pilot's stderr (`say`): login, socket, stop, tracebacks |
-| `reports/`, `scorecards/` | `observe/wrap.sh`, `observe/scorecard.py` | humans | mission reports and scorecards ([observe.md](observe.md)) |
+| `reports/`, `scorecards/` | the Architect (after `observe/wrap.sh`), `observe/scorecard.py` | humans | mission reports and scorecards ([observe.md](observe.md)) |
 
 Shared, outside the character directory: `runs/pilot/town.json` (the town's `>` position), `runs/flavours.json`
 (the server-wide flavour table, [pilot-items.md](pilot-items.md)), `runs/missions.json` (mission list),
@@ -365,7 +367,7 @@ Three forms, all built on the main thread:
 - **wait report** (after `wait-attention`) -> `compact(news_since=<last wait>)`: the same, news since the last wait,
   and only the changes in the bottom section.
 - **`status full`** -> `report()`: the long form (full pack and equipment, a 23 x 67 map, 12 recent messages,
-  item squares, all orders); its first line ends with `| now HH:MM:SS | Pilot vX.Y.Z`.
+  item squares, all orders); its first line ends with `| now HH:MM:SS | Pilot vX.Y.Z · rN`.
 
 Every report is numbered (`numbered()`: ` · rN` on the first line, a `report` log record), so later commands can be
 checked for staleness against what the Navigator saw.
@@ -379,14 +381,14 @@ checked for staleness against what the Navigator saw.
 5. `Here:` what we stand on, how we arrived, the 3 nearest stairs with distances.
 6. `Monsters:` each race in view: count, level, UNIQUE, distance range, asleep, `DANGER: why`.
 7. `Items:` the server's item list (known junk hidden) and the nearest item squares (`$` grouped).
-8. `Map` (dungeon only): a square crop of radius 9 with row numbers.
+8. `Map` (outside town: dungeon and wilderness): a square crop of radius 9 with row numbers.
 9. `Structures:` this level's (with door found / searched).
 10. Belief lines (`belief_lines`): `Out of view` (recent monsters by threat), `Fight so far`, `Rates` (HP lost in the
     last 10 s, XP and gold found in 10 min, this level, this trip, this mission), `Counts` (drains, traps, searches,
     emergencies and Phase Doors in 90 s), `Standing` (keep, avoid, standing instructions, react rules, nopickup),
     `Review` (items awaiting a decision and when they'll be sold).
 11. `News:` the last 8 news items (since the last wait, or the last 10 minutes).
-12. `Msgs:` the last 6 messages, in the dungeon when hurt or with monsters in view.
+12. `Msgs:` the last 6 messages of the last 10 s, outside town when hurt or with monsters in view.
 13. `Since last (...)`: lowest HP, monsters seen (most at once), uniques; reset by wait reports.
 14. `Progress:` time since the last XP gain, on this level, under this goal.
 15. `compact_changes`: Equip, Pack (not consumables), Weapons, Abilities, Gear (empty slots / better items),
@@ -399,9 +401,10 @@ MESSAGE`, `Here:`, `Monsters:`, `News:`, `Since last (`, `Progress:`, `Cures` (a
 
 ## Updating a running Pilot
 
-- **`restart.sh NICK [PORT=28346]`** (the normal way): if a Pilot runs, `pilotctl park` (drop the goal unless a
-  recall is pending; log out when nothing is within 15 squares, HP >= 70%, no store, no stairs just taken, no recall
-  pending -- or after 5 minutes regardless; sends `clear` and a `parked` attention first), waits up to 330 s for the
+- **`restart.sh NICK [PORT=28346]`** (the normal way): if a Pilot runs, `pilotctl park` (drop the goal unless it is a
+  Recall; log out when nothing is within 15 squares, HP >= 70%, no store, no stairs just taken, no recall
+  pending -- or after 5 minutes regardless; on logging out the Pilot sends a `parked` attention, then `clear`;
+  restart.sh itself sends no `clear`), waits up to 330 s for the
   process to exit, starts `pilot.py` with `nohup` (extra options from `$PILOT_ARGS`, e.g. `--hpwarn 0`), appends to
   `pilot.log`, and prints the first status lines. The character logs out and back in, so the level is regenerated
   unless the server kept it.

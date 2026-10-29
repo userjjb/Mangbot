@@ -23,7 +23,8 @@ the `pilotctl` syntax of every command in [commands.md](commands.md).
   navigator / architect / pilot, read by `goal_origin` for the viewer and debts) and logs a `goal` record.
   `set_goal(None)` is the safe idle.
 - **Ticking.** `Pilot.tick` runs reflexes, the park check, the Navigator's `react` rules, the item policy, *then*
-  `step_goal()`; only if no goal ran does the plan get its turn, then `idle()`. While blind or confused, `Explore`,
+  `step_goal()`; if no goal ran the plan gets its turn (under a goal it is ticked every 2 s, for its conditions),
+  then `idle()`. While blind or confused, `Explore`,
   `Search` and `Dive` are paused (steps go astray). An exception inside a goal ends it as `failed: error: ...`; a goal
   given an `abort` attribute fails with that text on its next tick.
 - **Ending.** `step_goal` clears the goal and notifies `goal_done` / `goal_failed` (an alert that wakes the
@@ -33,9 +34,10 @@ the `pilotctl` syntax of every command in [commands.md](commands.md).
   `flee_failed` (a `BandLeave`, or Word of Recall plus Phase Door with monsters close).
 - **Who sets goals.**
   - The Navigator (or Architect) with `pilotctl goal NAME ARGS` (`Pilot.request_goal`), `plan town` (`TownKit`) and
-    `house buy|deposit|withdraw` (`HouseBank`). Positional orders (`goto Y,X`, `fetch`, `searchroom`, `hunt`) are
-    refused if they answer a report from a level since left, or (`hunt`) the monster isn't in view after 5 s, or
-    (`goto`/`fetch`) HP fell 25+ points since the report (`Pilot.stale_order`). A goal given while a trip plan runs
+    `house buy|deposit|withdraw` (`HouseBank`). Positional orders (`goto` other than `goto <`/`>`, `fetch`,
+    `searchroom`, `hunt`, `avoid Y,X`) are refused if they answer a report from a level since left, or, when the
+    report is over 5 s old, (`hunt`) the monster isn't in view, or (`goto`/`fetch`) HP fell by more than 25% of
+    max HP since the report (`Pilot.stale_order`). A goal given while a trip plan runs
     **pauses the plan** until it ends (`plan resume` ends it early).
   - The trip plan sets its goals itself, marked `by_plan` (`TripPlan.mark`).
   - The Pilot's reflexes: `Flee` (danger, groups, emergency loop, unseen attacker, stat drain, the Navigator's
@@ -61,21 +63,21 @@ the `pilotctl` syntax of every command in [commands.md](commands.md).
 | `WalkAway` | reflex: a summoner in view | names | walk out of its sight over walked ground (pilot-combat.md) | fails to the flee rules when it closes in |
 | `Flee` | `goal leave`; reflexes; the trip plan for a band | why | to the nearest known stairs and take them (pilot-combat.md) | done on the new level |
 | `Recall` | `goal recall [force]`; reflexes; the plan | depth_ft (from town: the depth to inscribe; default `max_depth`) | in town first inscribes `@R<feet>` on the scroll (the server reads the recall depth from it; checked by parsing, 3 tries); puts a light on (no light, no reading); cures blindness/confusion with the cheapest potion; doesn't read a second scroll if one is already under way; reads one; while it charges, rests if hurt and nothing is in view (time runs ~10x resting). From town, `goal recall` checks the supply gate for the planned depth (2 Words of Recall) unless `force` | done when the level changed *and* the recall flag cleared; failed: no scroll, can't inscribe, nothing after 120 s (60 s if never pending; quotes the game's reason) |
-| `Resurrect` | `goal resurrect` (the only command a ghost may give) | - | a ghost: `<` anywhere, one level a press; in town walks onto the Temple entrance (`4`), which resurrects (costs half the experience) | done resurrected; failed: no Temple on the map |
+| `Resurrect` | `goal resurrect` (the only goal a ghost may give; read-only commands still work) | - | a ghost: `<` anywhere, one level a press; in town walks onto the Temple entrance (`4`), which resurrects (costs half the experience) | done resurrected; failed: no Temple on the map |
 | `Town` | `goal town`; the plan | - | from the wilderness back to town: walks off each sector by the edge it came in through (`Pilot.wild_trail`, else `edge_of` the arrival square) | done in town; failed in the dungeon or edge unknown |
 | `TownFarm` | `goal townfarm GOLD [MINUTES]` (default 10); TownKit when broke | target gold, minutes | in town: light on, then chase thieves within 8 squares first (item thieves before gold ones, hitting them directly), walk over dropped gold, kill the gold-dropping townspeople (`TARGETS`), else sweep the town in a zig-zag | done at the target, time up, or no gold gained in 2 minutes (townspeople thinned out / night) |
 | `Shop` | `goal shop N [list] [buy NAME:N[@MAX]] [buy NAME:+N] [sell NAME\|LETTER:N] [quote NAME]`; TownKit | store number, buys `(name, n, cap)`, sells `(index or name, n)`, list_stock | walks next to the door (unseen squares count, for night), enters, then: sells (from the end of the pack first; names resolved when their turn comes) with the item policy's refusals (unknown items, value policy, "probably special"; `!NAME` forces and the value lost goes into the Navigator's debt), learns a flavour sold unknown, logs a `sale` record with the re-listing price; quotes (offer and decline); buys the **cheapest** matching line, within the cap and the gold, continuing at the next price if the cheap stack runs out. `NAME:N` in `goal shop` means *have* N; `:+N` buys N more. Re-enters (twice) if its own command closed the store | done with a log of what happened; failed: not in town, store not on the map, can't reach, thrown out |
 | `StashDeposit` | TownKit (no house only) | - | drops each stash item (below) on an empty square **inside** the tavern room (farthest from the door first; the entrance square holds no object, and drops from it land on the street where townsfolk take them); records the squares in stash.json | done when none is carried; failed: no empty square seen inside |
-| `StashFetch` | TownKit, for a drained stat's Restore in the tavern | kind | lights up, walks the tavern's squares (item glyphs first) until the pickup reflex (`p.fetching`) takes the kind | done when in the pack; failed: none left / no tavern |
+| `StashFetch` | TownKit, for a drained stat's Restore in the tavern | kind | lights up, walks the squares within 4 of the tavern entrance (item glyphs first) until the pickup reflex (`p.fetching`) takes the kind | done when in the pack; failed: none left / no tavern |
 | `HouseBank` | `house buy [Y,X]` (Architect only), `house deposit [KEEP]`, `house withdraw`; TownKit | mode buy/deposit/withdraw, keep, house | see "The gold bank" below | done: "N gold in the house, M carried" |
-| `TownKit` | `plan town ...`; a trip plan with `then town` | kit, buylist | the whole town visit: see "plan town" below | done with a summary |
+| `TownKit` | `plan town ...`; a trip plan with `then town` | kit, buylist | the whole town visit: see "plan town" below | done with a summary; failed outside town (the house's wilderness tile excepted) |
 | `RestGoal` | `goal rest` | - | rests until HP >= `rest_to` (0.95) and SP full | failed if monsters are in view |
 | `QuietWait` | `goal quiet [SECS]` (10-600, default 120; refused with a moving monster in view); `ask quiet` | secs, prev (the goal it replaced) | time for the Navigator to think: pauses the plan or the replaced goal, caps the wait at a quarter of the food/light minutes left, walks to a `quiet_spot` (a room on walked ground, away from doors and the unknown), rests if hurt, waits. In town it just waits | ends (alert `quiet_end`, then the paused goal or plan resumes) when a moving monster comes into view, something hits us, the Architect answers the `ask quiet`, or time is up |
 
 ## The trip plan (`plan trip`)
 
 `plan trip LO-HI [until "COND or COND ..."] [then recall|town] [level_min=N] [via=stairs|recall] [force]`
-(`Pilot.request_trip`). LO/HI are feet, multiples of 50; HI may not exceed `max_depth` (raise it with `order` first).
+(`Pilot.request_trip`). LO/HI are feet, multiples of 50 (LO at least 50); HI may not exceed `max_depth` (raise it with `order` first).
 Defaults: `until "cures<3 or phase<3 or minutes>45"`, `then recall`, `level_min=10`. `TripPlan` is not a goal: it
 sits above the goals in `Pilot.plan` and is ticked by `Pilot.plan_tick` every tick when no goal runs, and every 2 s
 under a goal (to check the conditions). Its own goals are marked `by_plan`; their ends are news only.
@@ -93,23 +95,24 @@ under a goal (to check the conditions). Its own goals are marked `by_plan`; thei
 | `clvl`, `gold`, `free` (pack slots free of 23), `levels` (levels worked) | |
 | events | `band` (only while the band is live: `Pilot.band_live`), `drained`, `emergency`, `emergency_loop`, `danger`, `pack_full`, `unique_slain`, `unseen_attacker`: counted since the plan began from the Pilot's notifications (`TripPlan.on_event`) |
 
-Always added: "no Word of Recall left" and "90 minutes". In town (unless `force`) the **supply gate** for the depth
-the trip will start at is checked first, needing 2 Words of Recall when going down by recall and 1 by the stairs.
+Always added: "no Word of Recall left" and "90 minutes". In town (unless `force`) the **supply gate** for
+`min(HI, max(LO, deepest))` is checked first, needing 2 Words of Recall when going down by recall and 1 by the stairs.
 
 **Phases** (`TripPlan.tick`, `phase` attribute; `step` is the human-readable sub-step shown by `plan`):
 
 1. **down.** In town: down by the stairs (`Dive(LO)`) if `via=stairs`, or (no `via`) when the target is at most
    150 ft or the character has never reached 250 ft (`stairs_down`); else `Recall(depth)` to
-   `min(HI, max(LO, deepest))`, one level above HI when the range allows (both stairs lead somewhere useful). In the
+   `min(HI, max(LO, deepest))`, one level above HI when the range allows (both stairs lead somewhere useful), and
+   never deeper than the deepest level reached (a `Dive` then goes the rest of the way). In the
    wilderness: `Town` first. Arriving in the dungeon starts **level**.
 2. **level.** Outside LO-HI: a `Dive` into range. On each new level: the **arrival protocol** (after a recall, or a
    "something special" feeling, use Door/Stair Location once; on a special level `Explore(until=stairs)` first),
    then `Explore()`. A level is **done** when its exploration ends, after `level_min` minutes, when it's **quiet**
    (under 10 XP a minute over the last 3 minutes, nothing in view: `TripPlan.quiet`), or when a **bad level**
-   notification arrives (`LEAVE_ON`: band -> `Flee`; pit/nest, breeders, a STR/DEX/CON drainer, a fearer, trap-laden
-   -> the next dive). The next level is `Dive(depth+50)` while above HI, `Dive(depth-50)` at HI (a fresh level). Pinned
+   notification arrives (`LEAVE_ON`: band -> `Flee`, unless `band` is an `until` condition, which brings the trip
+   home instead; pit/nest, breeders, a STR/DEX/CON drainer, a fearer, trap-laden -> the next dive). The next level is `Dive(depth+50)` while above HI, `Dive(depth-50)` at HI (a fresh level). Pinned
    by breeders while leaving: one teleport. Watchdogs: more than 6 failed leaves -> home; a done level not left within
-   `LEAVE_MAX` (300 s) -> recall home.
+   `LEAVE_MAX` (300 s) -> recall home (if a Word of Recall is carried).
 3. **home** (a condition held, an escape recall is under way, or a watchdog). Within 150 ft: climb by the stairs
    (`Dive(0)`, saves a scroll) for up to 3 minutes; else `Recall()`; with no scroll, climb. A plan dive home that
    finds no way up in 3 minutes switches to Word of Recall. A recall already pending (the Pilot's own escape) is waited
@@ -120,7 +123,7 @@ The plan ends **done** at home (`then recall`), after the town kit (`then town`)
 town by another route (an escape recall: the reply names it and points to `why`). On end it logs `plan_end` and
 notifies `plan_done` / `plan_failed`. `plan` shows it, `plan stop` (or `stop`) ends it, `plan resume` ends the
 Navigator's pausing goal. The Pilot's reflex goals (flee, recover, recall) replace a plan goal without pausing the
-plan; while a plan runs `idle()` never recalls. `Pilot.trip_minutes_left` (from the recall, the `minutes`/`time`
+plan; while a plan runs (not paused) `idle()` never recalls. `Pilot.trip_minutes_left` (from the recall, the `minutes`/`time`
 conditions and the 90-minute cap) tells the item policy when spare rations and flasks can go (`provisions_spare`:
 within 3 minutes, or 20 when Full).
 
@@ -142,8 +145,8 @@ It starts a `TownKit` goal, which works through **stages**, one sub-goal (`Shop`
    twice the scroll's price (ability sources and likely-irreplaceable items always count), limited by gold beyond
    `town_reserve`, capped at 1.5x the price. Staff of Perception charges count as Identify scrolls. If anything was
    identified: **upgrade again** and **sell again**.
-4. **buy**: if `broke_for_recall` (fewer than 2 Words of Recall and not the gold for one) and it's day, `TownFarm` to
-   the shortfall for 5 minutes (at night it saves the gold instead). Then `town_shopping` turns the list into buys,
+4. **buy**: if `broke_for_recall` (fewer than 2 Words of Recall and not the gold for one) and it's day, `TownFarm`
+   for 5 minutes, to the gold now plus the price of the missing Words (+20) (at night it saves the gold instead). Then `town_shopping` turns the list into buys,
    `town_make_room` frees pack slots for new kinds (sells the least valuable unprotected item, else destroys it; 6 tries),
    and the stores are ordered by the highest-priority line each holds.
 5. **buying**: one `Shop` per store; then wear what was bought; quaff a Restore bought for a drained stat
@@ -178,7 +181,7 @@ already planned:
 3 Heroism, 2 Potion of Speed. **C** = as B with 6 CCW, 12 Phase. **none** = nothing. `KIT_ITEMS` gives each kind's
 tval, store and a price guess (Speed comes from the Black Market, 7; potions of healing and Heroism from the Temple, 4;
 scrolls and Restores from the Alchemist, 5; food and oil from the General Store, 1). `town_shopping` spends the gold
-down the list: a line's price is the last seen (`price_of`), else its cap; tier 4 lines are capped at 1.5x the price
+down the list: a line's price is `price_of` (the last seen, else the `KIT_ITEMS` guess), else its cap; tier 4 lines are capped at 1.5x the price
 seen, `KIT_CAP` caps Speed at 600; lines over their cap are reported as short. If Word of Recall (tier 1) can't be
 fully afforded, everything else but rations waits ("saving for Word of Recall"). `town_reserve()` is the gold tiers 1-2
 need: Identify, Enchant Armor and a house purchase only spend beyond it.
@@ -201,7 +204,7 @@ need: Identify, Enchant Armor and a house purchase only spend beyond it.
 | `town_extras_note()` | the `plan town` reply's note of Enchant Armor / Recharging spending |
 | `note_store()` | on entering a shop: owner and the cheapest price per kind -> `stores.json` |
 | `price_of(kind, store)` | the cheapest price seen for a kind at a store, else the `KIT_ITEMS` guess |
-| `buy_store(name)`, `stock_table()` | which store sells a name (`rulebook/shop_stock.csv`, else listings seen, never 7) |
+| `buy_store(name)`, `stock_table()` | which store sells a name (`rulebook/shop_stock.csv`, which gives 7 for its few Black Market rows such as Healing; else listings seen, never 7) |
 | `lantern_fuel()` | turns in the worn lantern, else the fullest in the pack |
 | `kit_count(kind)` | how many carried (rations only for food; Perception charges count as Identify) |
 | `planned_depth()` | `min(max_depth, deepest)` (or whichever is set) |
@@ -281,7 +284,7 @@ holds; `stash_wanted()` names the Restore a drained STR/DEX/CON needs when the p
 | `plan.json` | `TripPlan.save` every plan tick; removed by `clear_plan_file` when the plan ends or stops | the trip's `STATE` (range, then, level_min, start time, phase, levels, went_down, home_why, conditions text, via, XP base, dungeon start) and the current level's state (`lvl`: depth, age, done, arrival, located, special, stairs_first, fails). `TripPlan.load` at Pilot start resumes a plan under 90 minutes old (restart.sh parks mid-trip) |
 | `stores.json` | `note_store` | per store number: `owner`, `t`, `prices` (cheapest per kind key) |
 | `house.json` | `HouseBank`, `house_save` | `house` (area, door, step_in, outside, box, depth, cross, price, bought), `banked`, `t`, `items` ("Y,X" -> stash item), `old_houses` |
-| `stash.json` | `stash_save` | `items` (stash item names, wherever they are), `entrance` (the tavern's), `squares` (tavern squares used), free-text `where`/`lost` notes |
+| `stash.json` | `stash_save` | `items` (stash item names, wherever they are), `entrance` (the tavern's), `squares` (tavern squares used), free-text `where`/`lost` notes (hand-written; the code never writes them) |
 | `review.json` | TownKit's first tick | `town_visits` (the item-review queue's clock: pilot-items.md) |
 | `deepest.json` | the Pilot | `{"ft": N}`: the deepest level reached (`deepest_ft`), used by `planned_depth`, the recall depth and `stairs_down` |
 | `decisions.jsonl` | `Pilot.log` | one JSON record a line; this component writes `goal`, `plan_start`, `plan_end`, `plan_resumed`, `town_kit`, `bank`, `sale` |

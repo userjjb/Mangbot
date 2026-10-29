@@ -22,7 +22,8 @@ The handoff between Architect sessions: the current state, what the next session
 ### >>> WHICH HANDOFF IS YOURS? <<<
 - **Session 10 is done** (2026-10-29: the Documentation in `docs/`, the cleanup list `docs/refactor-candidates.md`,
   bug fixes A1-A3/A6/A8-A11; continued that afternoon: A4/A5/A7/A12-A14, group C, B4, `CHANGELOG.md` and versions:
-  2.37.0, then 2.37.1; Part B has it all, unified). If the user asks for more cleanup from that list, HANDOFF 10 below has the rules.
+  2.37.0, 2.37.1, then 2.38.0: review follow-ups, B1-B3/B5-B8, every docs/ file verified against the code; Part B
+  has it all). If the user asks for more cleanup from that list, HANDOFF 10 below has the rules.
 - **Session 11** (missions and implementation resume): read **"HANDOFF TO ARCHITECT 11"** below -- **Part B first**
   (by session 10), then Part A (by session 9).
 - Sessions 1-9 are over; their handoffs are in `history/handoffs-s1-s9.md`.
@@ -171,15 +172,16 @@ Later session-10 work appends below "State now".*
 
 **The Documentation: `docs/`.** Start with `docs/CONDENSED.md` (3 pages); `docs/README.md` indexes ten component files
 (client-server, pilot-core, pilot-combat, pilot-items, goals-and-plans, commands -- every pilotctl command --,
-gear-and-estimator, observe, harness-rulebook-ops, process). They match the code at 2.37.1 (4ef8d55). **Read the
+gear-and-estimator, observe, harness-rulebook-ops, process). They match the code at 2.38.0, **checked claim by claim against the code on 10-29** (~1,200 claims, ~100 doc
+fixes). **Read the
 component file before opening its source, and keep it in step when you change that component.** roles.md,
 operations.md and the memory point to it.
 
 **Versions (the user's decision):** `major.minor.patch`; **minor = play can differ, patch = it can't** (scorecards
 compare within a minor). `github/VERSION` holds it; the Pilot shows it (`status full`, the `started` notice), `mission
 start` records it in missions.json. `CHANGELOG.md` (project top) lists every version, newest first, with its missions;
-2.36.0 and older were assigned retroactively (72 versions, m1-m60 mapped). **Every session: bump VERSION, add a
-CHANGELOG entry, tag `vX.Y.Z` on the version's last commit, push with `git push origin restructure --tags`.**
+2.36.0 and older were assigned retroactively (72 versions, m1-m60 mapped). The per-version checklist is in `docs/process.md`
+("Versions"): **docs in step, VERSION, CHANGELOG, tag, push, Pilot restart.**
 
 **The cleanup list: `docs/refactor-candidates.md`** (groups A bugs, B doc fixes, C remove/archive, D duplicates, E
 splits incl. a pilot.py module plan, F defaults/safety). Done items are marked "done (session 10)". All by the user's
@@ -200,20 +202,20 @@ approval:
   human-play study tools in `tools/observe/study/` (the user will record again; `record.py` still defaults to the live
   port); C4 the shop-tour tool kept for the live catalog; C14 deferred to an A/B test (TODO at the top).
 
-**Follow-ups from the review (agreed by both chats; the parallel chat is doing them):**
-1. A4: count escapes where the escape action happens (one place), instead of every `emergency` notice unless marked
-   `action=False` -- a future non-action notice would silently count again.
-2. A7: window the "met" fights by time or recent missions (with a minimum count) instead of the log's last 24 MB.
-3. C12: keep the newest 3-5 timestamped set-piece snapshots instead of deleting each right after "restored".
-4. C7: ask the user whether the viewer should label `!` messages "(sent to the Navigator)" (the dead branch was deleted).
-5. live-deploy-todo.md: pin or snapshot the Advisor's `options_sim.py` for live runs (shadow mode and geareval import it
-   live).
+- **2.38.0 (the user approved, 10-29 evening):** the review's follow-ups: A4 every `emergency` notice must pass
+  `action=True/False` (a unit case fails otherwise) and one `count_escape()` counts; A7 the "met" fights come from the
+  last 3 days, doubled until 20 fights; C12 set-pieces keep the newest 5 snapshots; C7 the viewer stays as it is (the
+  user); `live-deploy-todo.md` pins the Advisor's simulator. **B1-B3, B5-B8 done** (HANDBOOK: `goal shop N sell`,
+  the stash in the house, eats to Fed, the trip events; FIELD-NOTES stash; **BRIEF-TEMPLATE's gear and stats are now
+  fill-in fields**; pilotctl's help is a pointer; navigator.md: ~200 lines, never set PILOT_ROLE). `docs/survey-notes/`
+  moved to `history/`; the per-version checklist is in docs/process.md "Versions". **The docs were verified** by ten
+  agents (one per file); they settled: logins work while frozen (operations.md was wrong), a bad password exits 255,
+  restart.sh parks and the parked Pilot sends `clear`, `hotswap.sh Dive04` (capital D: its pgrep is case-sensitive).
 
-**Still open, waiting on the user:** groups **B** (except B4), **D**, **E**, **F**. **Before the first mission, fix or
-brief around the Navigator-facing doc errors (B1-B3, B5-B8):** the HANDBOOK names a `sell` command that doesn't exist
-(selling is `goal shop N sell [!]NAME`); it says the stash is in the tavern (it's in the wilderness house) and that
-`plan town` eats to Full (Fed); BRIEF-TEMPLATE's fixed gear text is dated (Rings [+16]/[+12], Boots of Stability now);
-the pilotctl help text is stale. C8: only the Pilot's dead-character whitelist changed; the scorecard/viewer query
+**Still open, waiting on the user:** groups **B** (B9-B18), **D**, **E**, **F**, and **A15-A25**: code bugs the
+verification found (refactor-candidates "A2": e.g. A15 auto-destroy ignores the keep list for `{cursed}`/`{worthless}`
+items; A18 `until wor<=1` accepted; A20 the hunger step skips pickup/destroy/rest; A23 a failed hunt can count as
+slain; A24 a scorecard rate counts reports; A25 re-run set-pieces A2I/A2L, last FAIL). C8: only the Pilot's dead-character whitelist changed; the scorecard/viewer query
 lists wait for D7. From the Advisor (29o): an optional `p["noise"]` in estimator snapshots (0 while the Pilot stands
 still) -- not built.
 
@@ -226,6 +228,6 @@ directly), then one merging the candidates; bug fixes went to agents on disjoint
 Reuse that for big reading jobs. And: before continuing a session in a new job, `claude --resume` it -- a fresh chat
 lacks the context (how the parallel chat happened).
 
-**State now (10-29 afternoon):** version **2.37.1**; working tree clean. Running in SGE job 8327794 (scc-va4, ends Tue
-11-03 08:47): the test server (gdb, freeze-enabled), Dive04's Pilot (2.37.1), the viewer (`tmux -L mang attach -t
-watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wilderness house. 120 unit cases pass.
+**State now (10-29 evening):** version **2.38.0**. Running in SGE job 8327794 (scc-va4, ends Tue
+11-03 08:47): the test server (gdb, freeze-enabled), Dive04's Pilot (2.38.0), the viewer (`tmux -L mang attach -t
+watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wilderness house. 121 unit cases pass.

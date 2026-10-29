@@ -1,37 +1,12 @@
 #!/usr/bin/env python3
-"""pilotctl -- talk to a running pilot (see HANDBOOK.md).
+"""pilotctl -- talk to a running Pilot: one command per call, the reply printed.
 
-    pilotctl.py [--nick NAME] status
-    pilotctl.py goal dive 500 [force] | goal explore [until=stairs] [radius=N] | goal goto Y,X|>|<|item [force]
-                | goal recall [force] | goal rest | goal wait SECS
-                | goal shop N [list] [buy NAME:N[@MAX] (have N) | NAME:+N (N more)] [sell NAME:N] [quote NAME]
-                | goal search | goal searchroom Y,X
-    pilotctl.py stop
-    pilotctl.py order flee_hp=0.4 stop_on=unique,danger ...
-    pilotctl.py wear|takeoff|quaff|read|eat|fuel|inspect LETTER
-    pilotctl.py destroy|drop LETTER [COUNT]
-    pilotctl.py inscribe LETTER TEXT...    | pickup | stairs [<|>]
-    pilotctl.py wait [SECS] [--brief]      # block until the pilot asks for attention
-                                           # (--brief: status lines, monsters, stairs, news only)
-    pilotctl.py attention                  # pending attention events, without waiting
-    pilotctl.py monster NAME               # this server's data for a monster + the pilot's verdict
-    pilotctl.py mission start LABEL navigator=MODEL [effort=L] [notes=..] | mission end   # (the Architect) mission markers
-    pilotctl.py status [full]              # the compact report (full: everything, the long form)
-    pilotctl.py pack | equip | orders      # one part of the full report (pack with letters, ...)
-    pilotctl.py map [R]                    # the map within R squares of @ (default 15)
-    pilotctl.py drainers [STAT] [MAXLEVEL]  # monsters whose blows drain a stat (default STR/DEX/CON, to clvl+10)
-    pilotctl.py say TEXT...                # answer the user (shown in their viewer, logged)
-    pilotctl.py search [N]                 # search the squares around you N times (default 15)
-    pilotctl.py disarm|open [DIR]          # a chest/trap/door in DIR (5 = underfoot)
-    pilotctl.py journal "situation | decision | why"   # your journal line, stamped with time/depth/HP
-    pilotctl.py avoid Y,X [R] | avoid NAME | avoid clear | avoid   # no-go zones the paths route around
-    pilotctl.py gate FEET [recall]         # the supply gate: what's missing for going down to FEET
-    pilotctl.py plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@MAX],...]   # the whole town visit, by policy
-    pilotctl.py plan trip LO-HI [until "COND or ..."] [then recall|town] [level_min=N] [force]   # a whole trip
-    pilotctl.py plan | plan stop | plan resume   # the plan now / end it / end your goal, hand back to the plan
-    pilotctl.py standing [TEXT | -N]       # standing instructions shown in every report (add / remove / list)
-    pilotctl.py rule [monster|drop|fight|feeling|unknown|owner|const|object|room] ...   # query the rulebook
-    pilotctl.py complain TEXT...           # what you lacked / what got in your way (not your mistakes)
+    pilotctl.py --nick NICK COMMAND [ARGS...]      e.g. status, wait 240, plan town, plan trip 700-800 until "...",
+                                                   goal leave, journal "...", say TEXT, complain TEXT
+
+The commands: the Navigator's are in HANDBOOK.md (every goal, order, event and report line: HANDBOOK-reference.md);
+every command, who may use it and what it refuses: docs/commands.md (/projectnb/jbrcs/mangband/docs/).
+`wait [SECS] [--brief]` blocks until the Pilot asks for attention; `rule ...` queries the rulebook (no Pilot needed).
 """
 import json
 import os

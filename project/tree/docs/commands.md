@@ -62,7 +62,7 @@ Further role rules inside commands:
 |---|---|---|
 | `goal hunt` checks (`hunt_refusal`) | refused unless `!NAME`; an override is judged at the hunt's end and a bad one adds HP to the **fight debt** | never refused |
 | `goal fetch` | refused in the dungeon with a band flagged in the last 2 minutes, or a dangerous monster in view | not checked |
-| `destroy`/`drop`/`goal shop ... sell` value refusals | refused unless `!NAME`; an override adds the value lost to the **item debt** | refused too unless `!NAME`; the override costs no debt |
+| `destroy`/`drop`/`goal shop ... sell` value refusals | refused unless `!NAME`; an override adds the value lost to the **item debt** | never refused (`value_refusal` skips the Architect); `goal shop ... sell` still holds unknown and probably-special items unless `!NAME`, at no debt |
 | overrides at all | allowed until revoked: the file `runs/private/<nick>.overrides_revoked` (items) or `<nick>.hunt_overrides_revoked` (hunts) exists. The Navigator isn't told the limit | always |
 | `wear` an unidentified ring/amulet | refused unless `force` (unknown jewellery is often cursed and can't come off) | allowed |
 | `house buy`, `answer` | refused | allowed |
@@ -86,7 +86,7 @@ Further role rules inside commands:
 | command | does / prints | who | refuses |
 |---|---|---|---|
 | `status` | the compact report (`compact(snapshot=True)`: character, supplies, here, monsters, news, gear/pack snapshot) | all | -- |
-| `status full` | the long report (`report()`: stats, map, equipment, pack, messages, orders...; the first line ends with `Pilot vX.Y.Z`, the code's version) | all | -- |
+| `status full` | the long report (`report()`: stats, map, equipment, pack, messages, orders...; the first line ends with `Pilot vX.Y.Z · rN`, the code's version and the report number) | all | -- |
 | `wait [SECS] [--brief]` | blocks (default 600 s) until an attention event, then prints `ATTENTION what: detail (goal: ...)` per event and the wait report (`compact(news_since=last wait)`: only what changed). A quiet timeout prints `(no attention events)` and the brief form; `--brief` always keeps only the first two lines and the lines starting `USER MESSAGE`, `Supplies:`, `Here:`, `Monsters:`, `News:`, `Since last`, `Progress:`, `Cures`... Pass a Bash timeout above SECS | all | -- |
 | `attention` | the pending attention events without waiting (and clears them) | all | -- |
 | `pack` | `Pack: a) ...; b) ...` with the Pilot's short names and values | all | -- |
@@ -120,14 +120,14 @@ given, so the next `wait` is about it. A goal given while a trip plan runs **pau
 | `goal goto Y,X\|>\|<\|item [force]` | walk there | **Architect only** | Navigator: refused (use `leave`/`fetch`) |
 | `goal fetch Y,X` | one item detour (a Goto named `fetch`) | all | Navigator in the dungeon: a band flagged on this level in the last 2 min, or a dangerous monster in view; stale-order hold |
 | `goal leave` | leave this level by the nearest stairs (a `Flee` goal; up at `max_depth`) | all | in town/wilderness ("for dungeon levels") |
-| `goal hunt NAME` / `goal hunt !NAME` | walk up to NAME and fight it (spaces as `_`). The reply's note is the estimate | all; checks for non-Architect | `hunt_refusal`: unique already killed (no XP/drop again); a paralyser without Free Action; the average fight ending below the Pilot's own abort line (worst 3 turns or `flee_hp`); the Advisor's rating AVOID/LEAVE (unless rated for strength alone); a bad fight (90th percentile of HP lost from the duel simulator, else twice the turns) over 60% of HP; a summoner unless bad case <30% HP, HP 80%+, nothing else in view and 5+ Phase Door; a breath over 60% of HP; a band flagged in the last 2 min. Logged `order_refused`. `!` overrides (fight debt); refused if hunt overrides are revoked |
+| `goal hunt NAME` / `goal hunt !NAME` | walk up to NAME and fight it (spaces as `_`). The reply's note is the estimate (with a plan running, the pause note instead) | all; checks for non-Architect | `hunt_refusal`: unique already killed (no XP/drop again); a paralyser without Free Action; the average fight ending below the Pilot's own abort line (worst 3 turns or `flee_hp`); the Advisor's rating AVOID/LEAVE (unless rated for strength alone); a bad fight (90th percentile of HP lost from the duel simulator, else twice the turns) over 60% of HP; a summoner unless bad case <30% HP, HP 80%+, nothing else in view and 5+ Phase Door; a breath over 60% of HP; a band flagged on this level in the last 2 min with 5+ mobile monsters in view. Logged `order_refused`. `!` overrides (fight debt); refused if hunt overrides are revoked |
 | `goal recall [force]` | read Word of Recall (from town: down to `max_depth` or the deepest level, inscribing `@R`) | all | from town: supply gate for that depth by recall unless `force` |
 | `goal rest` | rest until healed | all | -- |
 | `goal wait [SECS]` | stand still (default 5 s) | all | -- |
 | `goal quiet [SECS]` | time to think (10-600 s, default 120): walk to a quiet walked spot, rest if hurt, wait; ends on a moving monster, a hit or the time (`quiet_end` alert); the goal it replaced (not a plan's own) carries on after | all | a mobile monster in view in the dungeon ("not quiet") |
 | `goal search` | search for secret doors at dead ends and corners, nearest first | all | -- |
 | `goal searchroom Y,X` | search the 4 possible secret-door spots of an inner room (20 each) | all | usage; the room's door already shows; stale-order hold |
-| `goal shop N [list] [buy NAME:N[@MAX]] [buy NAME:+N] [sell NAME:N] [quote NAME] ...` | walk into store N (1-7), sell, buy, leave. `NAME:N` = **have** N in all (buys the difference), `NAME:+N` = N more, `@MAX` = price cap each; `list` puts the whole stock first; `quote` offers and declines to see the price; `sell !NAME` overrides the value policy. Names use `_` for spaces; a single letter is a pack letter | all (town) | sells: unknown-item and value refusals appear in the result ("not sold: ... `sell !NAME` overrides") rather than as an error |
+| `goal shop N [list] [buy NAME:N[@MAX]] [buy NAME:+N] [sell NAME:N] [quote NAME] ...` | walk into store N (1-7), sell, buy, leave. `NAME:N` = **have** N in all (buys the difference), `NAME:+N` = N more, `@MAX` = price cap each; `list` puts the whole stock first; `quote` offers and declines to see the price; `sell !NAME` overrides the value policy. Names use `_` for spaces; for `sell`/`quote` a single letter is a pack letter | all (town) | sells: unknown-item, value and probably-special refusals appear in the result ("NOT sold (...; sell !NAME to force): NAME") rather than as an error |
 | `goal town` | (wilderness) walk back to town | all | -- |
 | `goal townfarm GOLD [MINUTES]` | kill gold-dropping townspeople until GOLD (default 10 min) | all | usage |
 | `goal resurrect` | as a ghost: float up to town and enter the Temple | all | -- |
@@ -137,8 +137,8 @@ given, so the next `wait` is about it. A goal given while a trip plan runs **pau
 
 | command | does | who | refuses |
 |---|---|---|---|
-| `plan town [kit=A\|B\|C\|none] [buy [STORE/]NAME[:N][@MAX],...]` | the whole town visit as one goal (`TownKit`): sell by policy, identify, buy Word of Recall to 2, the gate's minimums, Restore for drains, the kit, then the list (`:N` = have N), bank, stash, eat, fuel. Kits: A to 500 ft, B to 1000 ft, C deeper. The reply's note forecasts what it will buy by the prices last seen and what's short | all (town) | in the dungeon; unknown kit; an unreadable buy item; a NAME no shop's stock table has (name the store: `7/NAME`) |
-| `plan trip LO-HI [until "COND or ..."] [then recall\|town] [level_min=N] [via=stairs\|recall] [force]` | a whole trip (`TripPlan`): down (by stairs or recall), work levels in LO-HI (each until done or `level_min` minutes, default 10), leave bad levels, come home when a condition holds; `then town` also runs the town kit. Default until: `cures<3 or phase<3 or minutes>45`. Conditions: `VAR<N`/`>`/`<=`/`>=`/`=` over `cures ccw csw clw phase wor food hp minutes dmin time clvl gold free levels` (`time>HH:MM`), or events since the start `band drained emergency emergency_loop danger pack_full unique_slain unseen_attacker`. Replaces the goal. Reply: the plan text and "(down by the stairs / by Word of Recall)" | all | LO/HI not multiples of 50 or LO<50; HI below `max_depth` ("`order max_depth=` first"); unreadable `until`; `wor<N` (holds as soon as it recalls down); in town, the supply gate for the depth it will reach unless `force` |
+| `plan town [kit=A\|B\|C\|none] [buy [STORE/]NAME[:N][@MAX],...]` | the whole town visit as one goal (`TownKit`): sell by policy, identify, buy Word of Recall to 2, the gate's minimums, Restore for drains, the kit, then the list (`:N` = have N), bank, stash, eat, fuel. Kits: A to 500 ft, B to 1000 ft, C deeper. The reply's note forecasts what it will buy by the prices last seen and what's short | all (town) | outside town (dungeon or wilderness); unknown kit; an unreadable buy item; a NAME no shop's stock table has (name the store: `7/NAME`) |
+| `plan trip LO-HI [until "COND or ..."] [then recall\|town] [level_min=N] [via=stairs\|recall] [force]` | a whole trip (`TripPlan`): down (by stairs or recall), work levels in LO-HI (each until done or `level_min` minutes, default 10), leave bad levels, come home when a condition holds; `then town` also runs the town kit. Default until: `cures<3 or phase<3 or minutes>45`. Conditions: `VAR<N`/`>`/`<=`/`>=`/`=` over `cures ccw csw clw phase wor food hp minutes dmin time clvl gold free levels` (`time>HH:MM`), or events since the start `band drained emergency emergency_loop danger pack_full unique_slain unseen_attacker`. Replaces the goal. Reply: the plan text and "(down by the stairs / by Word of Recall)" | all | LO/HI not multiples of 50, LO<50 or LO>HI; HI deeper than `max_depth` ("`order max_depth=` first"); unreadable `until`; `wor<N` (holds as soon as it recalls down); in town, the supply gate for the depth it will reach unless `force` |
 | `plan stop` | end the plan (the current goal runs on) | all | -- |
 | `plan resume` | end your own goal and hand back to the paused plan | all | -- ("the plan isn't paused") |
 | `plan` | show the plan | all | -- |
@@ -158,7 +158,7 @@ ambiguous names are refused with the candidates). Words after a name: a trailing
 | `use L [TARGET]`, `aim L [DIR]`, `zap L` | staff (TARGET for Perception), wand (DIR 1-9, 5 = nearest target), rod | all; `use` with TARGET town only for the Navigator | escape-read 3 s rule for `use` |
 | `eat L`, `fuel L` | eat; refill the lantern (puts the lantern on first if it's off, as in town) | all; town only for the Navigator | `fuel`: no lantern |
 | `wear L [force]`, `takeoff L`, `wearall` | wear; take off; put on everything that fills an empty slot (queued) | all; town only for the Navigator | Navigator: unidentified ring/amulet unless `force` |
-| `destroy L [N\|all]`, `drop L [N\|all]` | destroy (auto-confirmed) / drop (the square is then skipped by auto-pickup and looting) | all, also in the dungeon | value refusal ("not destroyed: why. `destroy !NAME` overrides...") unless `!`; `!` refused when overrides are revoked |
+| `destroy L [N\|all]`, `drop L [N\|all]` | destroy (auto-confirmed) / drop (the square is then skipped by auto-pickup and looting) | all, also in the dungeon | Navigator: value refusal ("not destroyed: why. `destroy !NAME` overrides...") unless `!`; `!` refused when overrides are revoked |
 | `inspect L` | the game's description of the item | all | -- |
 | `inscribe L TEXT` | inscribe; prints the pack | all; town only for the Navigator | -- |
 | `pickup` | pick up what's underfoot | all; town only for the Navigator | -- |
@@ -215,7 +215,7 @@ Prints `mission start: LABEL at YYYY-MM-DD HH:MM`. Scorecards and the viewer rea
 | command | does | who |
 |---|---|---|
 | `stop` | drop the goal, stop resting, end the plan (note: "the trip plan is stopped too") | all |
-| `park` | log out at the next safe moment (nothing close, HP OK) for a Pilot update; drops the goal unless it's a pending recall; note "will log out when safe". The Navigator sees a `parked` event | Architect (restart.sh / hotswap.sh) |
+| `park` | log out at the next safe moment (nothing close, HP 70%+, no recall pending; after 5 min it logs out anyway) for a Pilot update; drops the goal unless it's a pending recall; note "will log out when safe". The Navigator sees a `parked` event | Architect (restart.sh / hotswap.sh) |
 | `quit` | stop the Pilot's main loop | Architect |
 | `stairs [<\|>]` | take the stairs (default: the kind underfoot) | **Architect only** |
 | `raw TEXT` | send a raw tool-client command | **Architect only** |
@@ -230,25 +230,24 @@ Prints `mission start: LABEL at YYYY-MM-DD HH:MM`. Scorecards and the viewer rea
 
 | command | returns |
 |---|---|
-| `view [ROWS] [COLS]` | the long report with a bigger map and the news of the last 10 minutes |
+| `view [ROWS] [COLS]` | the long report (unnumbered) with a map of the size asked (default 11 x 33, as `status full`) and the news of the last 10 minutes |
 | `viewmap [ROWS] [COLS]` | JSON: the map rows and colour attributes around @, monsters with their colours |
 | `navview` | what the Navigator last saw: its time, the attention events and the report text |
 
 ## Discrepancies (doc vs code)
 
-- **No `sell` command.** HANDBOOK.md lists `sell` among the item commands and `sell !NAME` as an override; selling
-  is `goal shop N sell [!]NAME[:N]` (or `plan town`). The `!` works there.
-- **Town-only item commands:** HANDBOOK names `sell wear takeoff read/use-on-an-item fuel eat pickup`; the code also
-  blocks `inscribe` and `wearall` in the dungeon for the Navigator, and allows plain `read`/`use` anywhere.
+- **No `sell` command.** Selling is `goal shop N sell [!]NAME[:N]` (or `plan town`); HANDBOOK.md now says so.
+- **Town-only item commands:** HANDBOOK.md now lists the same set as the code (`wear wearall takeoff inscribe`,
+  `read`/`use` on an item, `fuel eat pickup`; plain `read`/`use` anywhere).
 - **HANDBOOK-reference.md** told the Navigator to `goal goto` / `stairs` and lacked four orders: **fixed 2026-10-29
   (B4, 2.37.1)**: it now points to `goal leave` / `goal fetch`, marks `goal goto` Architect-only, lists `autowear`,
   `enchant_max`, `band_frac`, `nopickup`, and describes the current emergency trigger and escape order.
-- **`plan trip` events:** the code also accepts `emergency_loop` and `unseen_attacker`; HANDBOOK.md doesn't list them.
-- **pilotctl.py's docstring** (printed with no arguments) is old: it advertises `goal goto` and `stairs` and omits
-  `react review keep debt price why prep gear gearcmp loadout house ask answer` and `goal hunt/fetch/leave/quiet`.
-- **Not in either handbook:** `attention`, `orders`, `inspect`, `inscribe`, `wearall`, `note`, `answer`, `mission`,
-  `park`, `quit`, `raw`, `option(s)`, `goalstate`, `dump`, `view`, `viewmap`, `navview` (mostly Architect/viewer
-  commands, which is fine); `goal town`, `goal wait`, `goal search`, `goal resurrect` are only in the reference.
+- **`plan trip` events:** both handbooks now list all eight, `emergency_loop` and `unseen_attacker` included.
+- **pilotctl.py's docstring** (printed with no arguments) is now a pointer to the handbooks and this file.
+- **Not in either handbook:** `attention`, `note`, `answer` (as a command; `ARCHITECT ANSWER` is), `mission`,
+  `park`, `quit`, `option(s)`, `goalstate`, `dump`, `view`, `viewmap`, `navview` (Architect/viewer commands, which is
+  fine). `orders`, `inspect`, `inscribe` and `wearall` are in HANDBOOK-reference.md; `goal town`, `goal wait`,
+  `goal search`, `goal resurrect` are only in the reference.
 - **`mission`** is described as the Architect's but has no role check.
 - The viewer's and scorecard's query lists name commands that don't exist (`flags`, `commands`, `help`, `floor`,
   `quote`); kept on purpose, since Navigators did type them (D7 will merge the lists). The dead-character whitelist's

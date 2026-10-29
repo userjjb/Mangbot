@@ -9,7 +9,7 @@ the live one included. The few server changes (a time freeze, store guards, a wi
 our build, which runs only as the local **test server**.
 
 Upstream is MAngband 1.5.3 (commit 1 of `github/`, "Pristine MAngband 1.5.3 sources"; really upstream develop of
-2022-03-13). Our changes: `git diff 6963c00 HEAD -- src` (17 files, ~1800 lines added, ~1100 of them `c-tool.c`).
+2022-03-13). Our changes: `git diff 6963c00 HEAD -- src` (16 files, ~1800 lines added, ~1100 of them `c-tool.c`).
 Related docs: [pilot-core.md](pilot-core.md) (how the Pilot uses the client), [commands.md](commands.md)
 (`pilotctl`, including `raw`, which passes a line straight to this client), [harness-rulebook-ops.md](harness-rulebook-ops.md)
 (set-pieces, `dm.py`, ops scripts). Protocol background: `history/notes_merge.md` (survey of the upstream protocol).
@@ -60,7 +60,7 @@ normally started by `tools/pilot/restart.sh NICK [PORT]` (port 28346, the test s
 | `--pktlog PATH` | Append a packet log (also env `MANG_PKTLOG`). Works in the interactive client too. |
 
 Exit: a bad password, a missing or dead character without `--birth`, or a lost connection makes the client quit
-(stderr says why; a bad password or missing character exits 255). `MangClient` drains stderr and raises
+(stderr says why; every such exit has code 255, while `quit` and EOF on stdin exit 0). `MangClient` drains stderr and raises
 `ClientExited` with its last lines. EOF on stdin (the parent died) also quits the client.
 
 ### Login and birth automation
@@ -117,7 +117,7 @@ non-store `custom`) end with `store_leave {why}` when the client thought it was 
 | `open DIR`, `alter DIR` | The server's `o` / `+` custom commands (e.g. enter a player shop). |
 | `eat ITEM` | The `E` custom command. |
 | `examine SLOT` | In a store: the `l` store command; the reply is a `popup`. Refused outside a store. |
-| `leave` | Leave the store (PKT_STORE_LEAVE). |
+| `leave` | Leave the store (sends `walk 0`, PKT_WALK, as the stock client does). |
 | `custom KEY [store] [item=N] [dir=N] [value=N] [entry=TEXT]` | Any server-defined custom command, found by its key (indices are never hard-coded; `store` picks the store variant of the key). `entry=` takes the rest of the line (max 59 chars). Examples the Pilot uses: `custom q item=3` (quaff), `r` read, `w` wield, `t` take off, `k` destroy, `F` fuel, `,` stay/pick up, `c dir=` close, `h dir=` buy a house, `s store item=I value=N` sell, `p store item=SLOT value=N entry=TOTALPRICE` buy (`entry` is the offer the server checks), `M` the map screen. `commands` lists them all. |
 | `rest` | Toggle resting (PKT_REST: not a custom command; the `state` indicator shows it). |
 | `look N` | N steps (default 10, max 30) of the server's targeting in kill mode: it cycles visible monsters in line of sight, nearest first, then ESC. Each step returns a `target` event. Takes no game time. |
@@ -192,17 +192,19 @@ because on the wire the hash works like the password; keys typed at private (pas
 While the file named by `$MANGBAND_FREEZE_FILE` exists, the server runs no game turns: `dungeon_tick` returns
 before `dungeon()`, and `post_process_players` doesn't execute queued player commands (otherwise a step with stored
 energy would still run at once). Connections, keepalives and the command queue keep working; commands wait.
-The file is checked every 10 ticks; on a change the server logs "Time frozen"/"Time thawed" and tells every player
+The file is checked on every 10th call (each network-loop pass and each game tick call it, so many times a
+second); on a change the server logs "Time frozen"/"Time thawed" and tells every player
 `*** Time is frozen (test server) ***` / `*** Time flows again ***`. Without the variable the server never
 freezes, so the feature is inert anywhere else. Why: the user wanted to pause the world to look at a situation (or
 let the Architect think) without the character dying. Toggle with `tools/freeze.sh on|off|toggle|status` (file
 `testserver/FREEZE`) or F5/Ctrl-F in the viewer. The Pilot watches the same file (`world.py`, `FREEZE_FILE`) and
-holds its game clock. A client logging in while frozen waits until thawed.
+holds its game clock. Logins still complete while frozen (login and entering the game are packet handlers, not
+game turns; set-piece H1 relies on it); the character just does nothing until the thaw.
 
 ### Store guards (`store.c`)
 
 `get_store_item`, `store_purchase` and `store_sell` refuse when the player's `store_num` is outside 0-8, and
-`get_store_item` refuses a slot past the stock. Why: the server leaves a store silently on any non-store command
+`get_store_item` refuses a slot past the stock (not in a player shop). Why: the server leaves a store silently on any non-store command
 and on a redraw (`store_num` = -1, no store_leave packet); a purchase arriving after that read `store[-1]` and
 segfaulted the test server (2026-10-17, mission 21). The client-side fix (below) protects live servers, which lack
 this patch.

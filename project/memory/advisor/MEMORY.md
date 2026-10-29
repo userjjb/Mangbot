@@ -2,5 +2,5 @@
 - [Territory rules](mangband-territory.md) — I may edit only Advisor/ and my memory; memos/ for memos; memos/to_architect for suggestions; read memos/to_advisor each session
 - [MAngband next steps](mangband-next-steps.md) — READ FIRST: estimator options_sim (29o) is imported LIVE by the Pilot (shadow) and geareval; next = estimator records split at 10-29 08:35 (when missions exist); wake rule done (29o); handoff = Advisor/STATUS.md
 - [MAngband project map](mangband-project-map.md) — where everything lives (operations.md, notes_players.md, HANDBOOK, memos); critical gotchas; SYNC RULE: update memory pointers whenever project notes change
-- [MAngband advisor memos](mangband-advisor-memos.md) — dated log of every Advisor memo and study (09-26 → 10-24 incl. restructure work, rulebook r3) with data locations; forum scraping gotchas
+- [MAngband advisor memos](mangband-advisor-memos.md) — dated log of every Advisor memo and study (09-26 → 10-29: restructure, rulebook r3, structures, estimator + shadow mode, gear support) with data locations; forum scraping gotchas
 - [User decisions first](feedback-user-decisions.md) — grep ../next_steps.md for a user decision before changing any parameter the Pilot uses (XP_PER_GOLD slip, 10-25)

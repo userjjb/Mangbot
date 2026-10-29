@@ -20,13 +20,12 @@ idle by {END = START + 45}.** If a trip is still running at ~{END - 7}, end it (
 **Plan first** (the HANDBOOK's loop, step 0): run `prep`, read the field notes, decide the mission (town buys, depth
 range, number of trips, conditions, and any `react` rules), and journal that plan before your first `plan town`.
 
-**The character now:** Half-Orc Warrior, clvl {28}, {340/340} HP, AC ~{75}, in town, **{gold} gold**. **Battle Axe of
-Westernesse (2d8) (+10,+9) (+1): Free Action and See Invisible**, 2 blows (a Scimitar of Westernesse is in the pack).
-Hard Studded Leather of Resistance (four basic resists), Rings of Protection [+12] and [+10], Amulet of Resist
-Lightning, Shadow Cloak, Orcish Shield, Metal Cap, Gauntlets, Brodda's Metal Shod Boots; Brass Lantern. STR 18/70,
-DEX 18/20, CON 18/20; **WIS drained**. Supplies (check `status`): {CCW, CSW, Phase, Teleportation, Word of Recall,
+**The character now:** Half-Orc Warrior, clvl {28}, {340/340} HP, AC ~{75}, in town, **{gold} gold** {(+N banked)}.
+{The weapon from `equip`, with what it gives, e.g. **Battle Axe of Westernesse (2d8) (+10,+9) (+1): Free Action and
+See Invisible**, 2 blows}. {The rest of `equip`, one line: body armour (resists), rings, amulet, cloak, shield, helm,
+gloves, boots, light}. {Stats from `status full`: STR, DEX, CON; any **drained** stat}. Supplies (check `status`): {CCW, CSW, Phase, Teleportation, Word of Recall,
 rations, Heroism, Magic Mapping, Rod of Door/Stair Location, **Staff of Teleportation (N charges)**, Speed}. Stone to
-Mud wands wait in the tavern (the stash). {Anything special: no Word of Recall left -> `plan town` buys them first.}
+Mud wands wait in the stash (the wilderness house). {Anything special: no Word of Recall left -> `plan town` buys them first.}
 
 **`max_depth` is 800 (a trial, the user's decision): work 700-800 ft; don't go below 800 ft (don't raise
 max_depth).** Light hound packs (750-800 ft) blind you again and again, and a blind character can't read scrolls:

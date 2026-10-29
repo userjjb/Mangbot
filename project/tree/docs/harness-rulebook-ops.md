@@ -19,11 +19,11 @@ commands in [client-server.md](client-server.md); the viewer's freeze key in [ob
 
 | piece | what | who runs it | live / stale |
 |---|---|---|---|
-| `harness/unit.py` | 120 offline unit cases of the Pilot's decision code | the Architect, after every Pilot or rulebook change | live; the regression gate (all must pass) |
-| `harness/setpiece.py` | 39 live scenarios staged on the test server and scored | the Architect, by hand, one at a time | live code, but last batch 10-23..10-28; not re-run as a suite since |
+| `harness/unit.py` | 121 offline unit cases of the Pilot's decision code | the Architect, after every Pilot or rulebook change | live; the regression gate (all must pass) |
+| `harness/setpiece.py` | 39 live scenarios staged on the test server and scored | the Architect, by hand, one at a time | live code, but last batch 10-23..10-28 (M2 re-run 10-29); not re-run as a suite since |
 | `harness/dm.py` | scripts the DM character Gandalf (summon, paint terrain, forge, pull a player) | `setpiece.py` | live |
 | `harness/charsave.sh` | save/restore a character's savefile + Pilot state | `setpiece.py`; the Architect for checkpoints | live |
-| `rulebook/` | 26 CSV tables + `rule.py`, `fight_sim.py` | the Pilot (loads tables), the Navigator (`pilotctl rule`), the Architect | live; synced 2026-10-24, identical to the Advisor's copy today |
+| `rulebook/` | 27 CSV tables (26 from the Advisor + `monsters_raw.csv`) + `rule.py`, `fight_sim.py` | the Pilot (loads tables), the Navigator (`pilotctl rule`), the Architect | live; synced 2026-10-24, identical to the Advisor's copy today |
 | `shopcat/mang.py` | Python wrapper for the tool-mode client | the Pilot, `dm.py`, `observe/study/scribe.py` | **live, core** |
 | `shopcat/newchar.py` | create a throwaway character + its private files | the Architect (rarely); `scribe.py` imports two helpers | live, rarely used |
 | `shopcat/shopcat.py`, `nav.py`, `wild.py`, `report.py` | the player-shop cataloguer | nobody since 2026-09-25 | **stale** |
@@ -44,8 +44,9 @@ criteria and result, staging facts and the bugs the harness found; read it befor
 
 ### `unit.py` -- offline unit cases
 
-**What:** 120 functions decorated `@case`, each building a situation by hand and calling the real Pilot decision code
-on it, returning `(ok, detail)`. No server, no client, no network.
+**What:** 121 functions decorated `@case`, each building a situation by hand and calling the real Pilot decision code
+on it, returning `(ok, detail)` (one, `emergency_notices_say_if_action`, is a static check of `pilot.py`'s source). No
+server, no client, no network.
 
 **How it works:** it imports `pilot/pilot.py` (as `P`), `glyphs` and `itemvalue`, loads the monster races merged with
 the rulebook (`glyphs.load_rulebook`). `W` is a fake World: Dive04 as of 2026-10-23 (clvl 22, 265 HP, 300 ft, a Spear
@@ -63,7 +64,7 @@ python3 unit.py hunt                                # only cases whose name cont
 ```
 
 Output: one `PASS|FAIL name: detail` line per case and a total. No files written by the suite itself. There is no
-`--help` (an argument is taken as a name filter). **Run today (2026-10-29, after session 10's changes): 120 passed, 0 failed.**
+`--help` (an argument is taken as a name filter). **Run today (2026-10-29, after session 10's changes): 121 passed, 0 failed.**
 The old handoffs (`history/handoffs-s1-s9.md`) record an intermittent failure (~1 in 20 runs, twice, not reproduced since).
 
 **Case families** (names are descriptive; grep `unit.py` for the full list):
@@ -71,7 +72,7 @@ The old handoffs (`history/handoffs-s1-s9.md`) record an intermittent failure (~
 | family | examples |
 |---|---|
 | Hunt check and fight vetoes | `hunt_hill_giant_by_hp`, `hunt_ranger_summoner`, `hunt_qualitative_vetoes`, `hunt_repeat_unique`, `engage_nearby_monster_only_when_appropriate`, `disenchanter_beside_path_not_fought` |
-| Danger, emergency and escapes | `a5_unseen_caster_news_above_80`, `estimator_memo_rules`, `emergency_speed_first_berserk_hard_fights`, `speed_at_hard_fight_start_and_kit`, `flee_at_max_depth_teleports`, `flee_maps_before_unexplored`, `flee_replans_after_a_phase`, `why_explains_the_last_escape`, `escape_landing_and_trapdoor_notes`, `emergency_loop_counts_actions_only` |
+| Danger, emergency and escapes | `a5_unseen_caster_news_above_80`, `estimator_memo_rules`, `emergency_speed_first_berserk_hard_fights`, `speed_at_hard_fight_start_and_kit`, `flee_at_max_depth_teleports`, `flee_maps_before_unexplored`, `flee_replans_after_a_phase`, `why_explains_the_last_escape`, `escape_landing_and_trapdoor_notes`, `emergency_loop_counts_actions_only`, `emergency_notices_say_if_action` |
 | Status effects | `fear_cure_order`, `blind_cured_when_it_matters`, `blind_escape_uses_the_staff_and_sees_refused_reads`, `recall_cures_confusion_first`, `confusion_lock_is_cured`, `confusion_window_teleports`, `unseen_drainer_leaves`, `breeder_swarm_leaves`, `breeder_swarm_pin_teleports_once`, `theft_is_news` |
 | Bands and levels | `band_leave_finds_stairs`, `bands_by_expected_cost_weak_drainers_news`, `band_condition_only_while_live`, `quiet_level_left`, `quiet_wait_finds_a_spot_and_wakes`, `stairs_beside_mold`, `fled_stairs_refused_two_minutes_only`, `refused_stairs_dont_end_explore`, `structures_on_the_aligned_lattice`, `run_loop_walks` |
 | Item values and identification | `jewellery_unknown_plusses`, `bracketed_ego_valued`, `unique_drop_feeling`, `junk_kinds_from_rulebook`, `c2_unknown_charges`, `c6_ambiguous_names`, `c7_unknown_ring_not_worn`, `c9_identify_good_first`, `ability_proofs`, `asleep_flags_from_look_answers` |
@@ -117,7 +118,7 @@ an A/B. A run takes a few minutes.
 
 | group | IDs | tests | latest |
 |---|---|---|---|
-| A: danger, hunts, escapes | A1 (trip plan vs orc groups), A2/A2I/A2K/A2L (an out-of-depth unique adjacent, no stairs: recall in 2 s), A2f (a rated caster 8 off), A3 (a goto held while a tiger is adjacent), A4 (Wormtongue near stairs), A5/A5s (unseen caster: no level change above 80% HP), A6 (blinking summoner, Phase budget), A7 (hunt a Hill giant), A7f (fear answered), A8/A8o/A8w (summoner hunt refused / overridden / walked away from), A9 (recall arrival: Door/Stair Location first) | danger rule, hunt check, WalkAway, escapes | all PASS except A4 (not stageable: Wormtongue killed, a unique exists once) |
+| A: danger, hunts, escapes | A1 (trip plan vs orc groups), A2/A2I/A2K/A2L (an out-of-depth unique adjacent, no stairs: recall in 2 s), A2f (a rated caster 8 off), A3 (a goto held while a tiger is adjacent), A4 (Wormtongue near stairs), A5/A5s (unseen caster: no level change above 80% HP), A6 (blinking summoner, Phase budget), A7 (hunt a Hill giant), A7f (fear answered), A8/A8o/A8w (summoner hunt refused / overridden / walked away from), A9 (recall arrival: Door/Stair Location first) | danger rule, hunt check, WalkAway, escapes | all PASSed at least once; the latest A2I (10-24) and A2L (10-25: Lugdush never seen) runs FAIL and weren't re-run (why unverified); A4 not stageable (Wormtongue killed, a unique exists once) |
 | B: hazards | B1 (mold beside path), B2 (STR-draining ants), B3 (Brigand thief), B4/B4w (town gold thief, idle/walking), B6 (painted trap on the path) | avoidance, drain response, thieves, traps | all PASS |
 | C: items/uniques | C3 (hunt Ulfast, fetch his drop), C8 (unidentified Free Action boots vs a Floating eye) | drop fetching, ability inference | C3 PASS; C8 not stageable (the Forge's items come out identified; unit `ability_proofs` covers it) |
 | D: movement | D3 (walled in behind a secret door), D6 (explore speed >= 3 tiles/s) | explore, search, mover/pathfind | PASS |
@@ -130,8 +131,9 @@ an A/B. A run takes a few minutes.
 - A repeat kill of a unique drops nothing and gives no XP; DM summons come with escorts; uniques exist once (a summon
   of one alive elsewhere fails silently); empty levels persist a while (hence the depth rotation).
 - The Forge destroys whatever is in Gandalf's pack slot a; forged items are identified.
-- Every run takes a snapshot in `runs/setpieces/saves/TAG/` and deletes it after a good restore (since session 10,
-  C12; the 156 old ones were deleted). Named checkpoints such as `dive04-pre-m43` stay. Excluded from `snapshot.sh`
+- Every run takes a snapshot in `runs/setpieces/saves/TAG/` (TAG = `ID-YYYYMMDD-HHMMSS`); after a good restore only the
+  newest 5 timestamped snapshots are kept (since session 10, C12; 158 had piled up). Named checkpoints such as
+  `dive04-pre-m43` stay. Excluded from `snapshot.sh`
   because savefiles hold passwords.
 
 ### `dm.py` -- the Dungeon Master driver
@@ -146,7 +148,7 @@ and `special` events.
 | `menu(keys)`, `close()` | send keys into the open DM menu, keep the last screen in `self.screen` |
 | `hooks()`, `clear_hooks()` | read / clear the menu's hook slots (a hook left set summons on every step) |
 | `summon(race, step, after)` | put monster race N on the movement hook, step Gandalf so it lands where he stood, clear the hook, check |
-| `paint(feat, steps)` | Build page: paint terrain feature N (1 floor, 48 secret door, 56 granite, 24-31 traps) on each square he walks off |
+| `paint(feat, steps)` | Build page: paint terrain feature N (1 floor, 48 secret door, 56 granite, 16-31 traps) on each square he walks off |
 | `forge(kind, ego, number, pval)`, `drop_first(n)` | make an item in pack slot a, drop it |
 | `players()`, `invoke(name)` | list players; pull one to Gandalf's square (same level) or recall it to his depth |
 | `status()`, `walk(d, n)`, `descend(n)`, `ascend(n)` | Gandalf's state and movement (a ghost: walks through rock, sees the whole level) |
@@ -204,7 +206,7 @@ by reading):
 
 | table | contents | consumer |
 |---|---|---|
-| `monsters.csv` | all 616 races: hp, speed per player turn, melee by AC, spells, breath, hand rating, `veto_reason`, `worst_3turns_acNN` | `glyphs.load_rulebook` (ratings, speeds, emergency threshold), `rule.py monster` |
+| `monsters.csv` | all 616 races: hp, speed per player turn, melee by AC, spells, breath, hand rating, `veto_reason`, `worst_3turns_acNN` | `glyphs.load_rulebook` (ratings, speeds, emergency threshold), `Pilot.fight_estimate`, `rule.py monster` |
 | `monsters_raw.csv` | raw `monster.txt` parse (dice, blows, spells, flags) | `Pilot.fight_sim` |
 | `danger_table_v1.csv` | the 09-27 hand danger table (merged into monsters.csv) | none (the Pilot's old fallback copy is now `tools/attic/danger_table.csv`) |
 | `fight_dive04.csv` | every monster to level 40 dueled 1,000x at Dive04's 10-23 profile | none (the Pilot simulates live) |
@@ -249,7 +251,7 @@ README documents the options, output format and limits (including the server's 1
   DEX>STR>CON>WIS>CHR>INT. `observe/study/scribe.py` imports `private_files` and `DEFAULT_BIRTH`. Needed again only for a new
   character (e.g. the planned live character Sneezy).
 
-`shopcat.py`, `nav.py`, `wild.py`, `report.py` have no importers and haven't changed or run since 2026-09-25 (the Pilot
+`shopcat.py`, `nav.py`, `wild.py`, `report.py` have no importers outside `shopcat/` and haven't changed or run since 2026-09-25 (the Pilot
 has its own mover).
 
 ---
@@ -277,7 +279,7 @@ has its own mover).
 
 `freeze.sh on|off|toggle|status` creates/removes `testserver/FREEZE` (contents "frozen by USER HH:MM:SS"). With the
 server started with `MANGBAND_FREEZE_FILE`, no game turns run while the file exists (`net-server.c time_frozen`,
-checked every 10 ticks; players see "*** Time is frozen ***"); the Pilot stops its game clock and holds (answers
+checked every 10 ticks; players see "*** Time is frozen (test server) ***"); the Pilot stops its game clock and holds (answers
 requests, acts on nothing). Logins work while frozen. Without the variable (any other server) nothing freezes.
 
 ### `pilot/restart.sh` and `pilot/hotswap.sh` (operational use)

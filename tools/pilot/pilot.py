@@ -2265,7 +2265,7 @@ class TownKit(Goal):
                 self.done_log.append(f"quaffed {pot['name']}")
                 self.t = now + 1.0
                 return None
-            # leave town fed and fuelled: no food is digested in town (dungeon.c), so eat rations to Full here,
+            # leave town fed and fuelled: no food is digested in town (dungeon.c), so eat rations to Fed here,
             # and top the lantern up (the user, 10-25: no oil and one food stack in the pack)
             if p.provision_step(self):
                 self.t = now + 1.5
@@ -3068,9 +3068,11 @@ class Pilot:
                   "fearer", "stuck", "interesting_item", "unique_slain", "pack_full", "thief", "unseen_attacker",
                   "fight_going_badly", "emergency"}
 
-    def notify(self, what, detail=None, news=False, action=True):
-        """action=False: an emergency notice that reports no escape action (waiting, fighting on, attacking a caster
-        first): it doesn't count towards the emergency loop's three in 90 s (refactor-candidates A4)."""
+    def notify(self, what, detail=None, news=False, action=None):
+        """action: an `emergency` notice must say whether it reports an escape action (True: a read, quaff, staff,
+        stairs, a walk to stairs) or not (False: waiting, fighting on, attacking a caster first). Only actions count
+        towards the emergency loop's three in 90 s (refactor-candidates A4; the unit case
+        emergency_notices_say_if_action fails on one that doesn't say)."""
         if what in ("emergency", "emergency_loop", "danger_seen", "danger_avoided", "fight_going_badly",
                     "unseen_attacker", "band", "stat_drained"):
             self.escalation_t = gnow()      # (escape records: stairs taken in an emergency)
@@ -3083,7 +3085,7 @@ class Pilot:
         ev = {"t": round(gnow(), 3), "what": what, "detail": detail,
               "goal": self.goal.describe() if self.goal else None}
         if what == "emergency" and action:
-            self.emerg_times.append(gnow())
+            self.count_escape()
         source = None
         news_asked = news             # (before the plan turns its events into news: the band shadow's test)
         if self.plan and what not in ("plan", "plan_done", "plan_failed"):
@@ -3803,7 +3805,7 @@ class Pilot:
                 self.phase_hist.append(now)
                 self.cmd(f"custom r item={pd['item']}", "summon trap: phase door before they act", hold=0.6)
                 self.notify("emergency", "a summon trap (monsters from 5 levels deeper appear around us): phased away "
-                                         "at once")
+                                         "at once", action=True)
                 return True
         # 3a'. Slowed to half speed or worse with something on us: a Potion of Speed (m26: Gorged and slowed to
         # -20 among six monsters; the Architect quaffed one by hand)
@@ -4087,6 +4089,10 @@ class Pilot:
         self.mover.tick()
         return True
 
+    def count_escape(self):
+        """One escape action towards emergency_loop's three in 90 s (A4: actions only, never mere notices)."""
+        self.emerg_times.append(gnow())
+
     def emergency_loop(self, now):
         """Three emergency actions within 90 s: phasing and drinking isn't
         working (HP stuck around 50%, monsters always in view): leave by stairs
@@ -4173,7 +4179,7 @@ class Pilot:
         if w.standing_on in ("<", ">"):
             which = w.standing_on
             self.take_stairs(which)
-            self.notify("emergency", f"{why}: took the stairs underfoot ({which})")
+            self.notify("emergency", f"{why}: took the stairs underfoot ({which})", action=True)
             # then heal on the other side instead of carrying on with the goal
             if not isinstance(self.goal, Recover):
                 self.goal = Recover(which, self.goal)
@@ -4209,13 +4215,13 @@ class Pilot:
                     self.phase_hist.append(now)
                 self.cmd(f"custom r item={use['item']}", f"{why}: one turn from death: {use['name']}", hold=0.6)
                 self.notify("emergency", f"{why}: one turn from death ({', '.join(sorted({r.name for *_, r in adj}))} "
-                                         f"adjacent): read {one_of(use['name'])}")
+                                         f"adjacent): read {one_of(use['name'])}", action=True)
                 return True
         sp = next((i for i in w.items(tval=TV_POTION) if "Speed" in i["name"]), None)
         if sp and not one_turn and not self.buff_on("fast") and waited(getattr(self, "speed_t", 0), 20):
             self.speed_t = now
             self.cmd(f"custom q item={sp['item']}", f"{why}: quaff {sp['name']} (an emergency: speed first)", hold=0.6)
-            self.notify("emergency", f"{why}: quaffed {one_of(sp['name'])} first")
+            self.notify("emergency", f"{why}: quaffed {one_of(sp['name'])} first", action=True)
             return True
         # Last resort, started early because it takes 15-34 turns (8-23 s): Word of Recall
         if w.hp_frac < 0.3 and can_read and not self.recall_started(now):
@@ -4223,7 +4229,7 @@ class Pilot:
             if wor and w.in_dungeon:
                 self.recall_t = now
                 self.cmd(f"custom r item={wor['item']}", f"{why}: word of recall (last resort)", hold=0.5)
-                self.notify("emergency", f"{why}: read Word of Recall as a last resort")
+                self.notify("emergency", f"{why}: read Word of Recall as a last resort", action=True)
                 return True
         # Rate-limited (repeated phasing doesn't shake a pack), except when HP
         # is collapsing with something next to us
@@ -4239,7 +4245,7 @@ class Pilot:
                     self.cmd(f"custom r item={wor['item']}", f"{why}: phasing isn't shaking them: word of recall",
                              hold=0.5)
                     self.notify("emergency", f"{why}: 3 Phase Doors in 20 s and they're still adjacent: read Word "
-                                             "of Recall; Phase Door now only below 20% HP")
+                                             "of Recall; Phase Door now only below 20% HP", action=True)
                     return True
             pd = None
         # A summoner or status caster beside us that dies in two rounds: kill it first (the Advisor's estimator
@@ -4259,13 +4265,14 @@ class Pilot:
             what = "afraid with " + plural(len(adj), "monster") + " adjacent" if pinned else \
                 f"{len(crowd)} about in the open"
             self.cmd(f"custom {tele[0]} item={tele[1]['item']}", f"{why}: teleport ({what})", hold=0.6)
-            self.notify("emergency", f"{why}: {what}: {one_of(tele[1]['name'])}")
+            self.notify("emergency", f"{why}: {what}: {one_of(tele[1]['name'])}", action=True)
             return True
         if adj and pd and can_read and (waited(self.phase_t, 2.5) or (collapsing and waited(self.phase_t, 0.7))):
             self.phase_t = now
             self.phase_hist.append(now)
             self.cmd(f"custom r item={pd['item']}", f"{why}: phase door", hold=0.6)
-            self.notify("emergency", f"{why}: read Phase Door ({', '.join(sorted({r.name for *_, r in adj}))} adjacent)")
+            self.notify("emergency", f"{why}: read Phase Door ({', '.join(sorted({r.name for *_, r in adj}))} adjacent)",
+                        action=True)
             return True
         if not adj:
             # Out of melee: make for stairs if some are close, else heal
@@ -4276,7 +4283,8 @@ class Pilot:
             if stairs and not self.mover.active and not used_recently:
                 if self.mover.go(stairs):
                     self.escaping_to_stairs = True
-                    self.notify("emergency", f"{why}: heading for the stairs {min(w.dist(p) for p in stairs)} away")
+                    self.notify("emergency", f"{why}: heading for the stairs {min(w.dist(p) for p in stairs)} away",
+                                action=True)
             if self.mover.active and self.escaping_to_stairs:
                 st = self.mover.tick()
                 if st == "arrived" and w.standing_on in ("<", ">"):
@@ -4306,14 +4314,15 @@ class Pilot:
                 if adj and pd and can_read and waited(self.phase_t, 0.7):
                     self.phase_t = now
                     self.phase_hist.append(now)
-                    self.emerg_times.append(now)     # (this phase sends no notice of its own)
+                    self.count_escape()     # (this phase sends no notice of its own)
                     self.cmd(f"custom r item={pd['item']}", f"{why}: phase door (potions too weak)", hold=0.6)
                     return True
                 wor = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
                 if wor and can_read and w.in_dungeon and not self.recall_started(now):
                     self.recall_t = now
                     self.cmd(f"custom r item={wor['item']}", f"{why}: word of recall (potions too weak)", hold=0.5)
-                    self.notify("emergency", f"{why}: read Word of Recall (potions too weak for the damage)")
+                    self.notify("emergency", f"{why}: read Word of Recall (potions too weak for the damage)",
+                                action=True)
                     return True
                 if not adj:
                     pick = pots[-1]      # shot at, nothing to hit back: any HP helps
@@ -4329,7 +4338,7 @@ class Pilot:
                         self.cmd(f"custom q item={cure['item']}", f"{why}: {st} with {len(adj)} adjacent: quaff "
                                                                    f"{cure['name']} to read an escape next", hold=0.6)
                         self.notify("emergency", f"{why}: {st} with {len(adj)} adjacent: quaffed {one_of(cure['name'])} "
-                                                 "so the next turn can read")
+                                                 "so the next turn can read", action=True)
                         return True
                 else:
                     esc = tele if tele and len(crowd) >= 4 else (("r", pd) if pd else tele)
@@ -4340,13 +4349,14 @@ class Pilot:
                         self.cmd(f"custom {esc[0]} item={esc[1]['item']}", f"{why}: {len(adj)} adjacent: "
                                                                             f"{esc[1]['name']} rather than a cure", hold=0.6)
                         self.notify("emergency", f"{why}: {len(adj)} adjacent, a cure would be outpaced: read "
-                                                 f"{one_of(esc[1]['name'])}")
+                                                 f"{one_of(esc[1]['name'])}", action=True)
                         return True
             if pick:
                 pot = pick[1]
                 self.cure_t = now
                 self.cmd(f"custom q item={pot['item']}", f"{why}: quaff {pot['name']}", hold=0.6)
-                self.notify("emergency", f"{why}: quaffed {one_of(pot['name'])}" + (f" (losing ~{rate:.0f} HP/s)" if rate else ""))
+                self.notify("emergency", f"{why}: quaffed {one_of(pot['name'])}" + (f" (losing ~{rate:.0f} HP/s)" if rate else ""),
+                            action=True)
                 return True
         if now - self.noescape_t > 10:
             self.noescape_t = now
@@ -5949,7 +5959,7 @@ class Pilot:
                 self.cmd(f"custom r item={wor['item']}", f"group danger {g:.0f} vs HP {hp}: word of recall",
                          hold=0.5)
                 self.notify("emergency", f"{names} can deal {g:.0f} (HP {hp}) and no stairs are known: "
-                                         "read Word of Recall now (it takes 8-23 s)")
+                                         "read Word of Recall now (it takes 8-23 s)", action=True)
                 return True
         # Blind or confused (no scroll can be read) with the group's worst above our HP: the staff, which works blind
         # (m48: 13 Light hounds, 7 Wargs, 5 Mirkwood spiders; blind for 40 s, HP 340 -> 82, no read got through)
@@ -5960,7 +5970,7 @@ class Pilot:
                 self.cmd(f"custom u item={tp[1]['item']}", f"group danger {g:.0f} vs HP {hp}, can't read: staff of "
                                                            "teleportation", hold=0.6)
                 self.notify("emergency", f"{names} can deal {g:.0f} (HP {hp}) and you can't read (blind or confused): "
-                                         "used the Staff of Teleportation")
+                                         "used the Staff of Teleportation", action=True)
                 return True
         # Phase only when it's really going badly: at 0.6-1.0x only once HP is
         # already below think_hp, and at most every 10 s (mission 9: a lone
@@ -6878,7 +6888,7 @@ class Pilot:
                 self.recall_t = now
                 self.cmd(f"custom r item={wor['item']}", "flee failed with monsters close: word of recall", hold=0.5)
                 self.notify("emergency", f"couldn't reach the stairs with {len(near)} monsters close: read Word of "
-                                         "Recall (8-23 s); phasing while it charges")
+                                         "Recall (8-23 s); phasing while it charges", action=True)
                 return
         pd = w.tagged("r", 1) or next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
         if pd and w.adjacent_monsters() and now - self.phase_t > 2.5:
@@ -8277,7 +8287,7 @@ class Pilot:
     KIT_CAP = {"Potion of Speed": 600}     # (450 until 10-26: the user raised it)
     # stock levels per stage (the Advisor's shops memo §3 and the Borg minimums):
     # A to 500 ft, B to 1000 ft, C deeper. No flasks: the town visit tops the lantern up instead (the user,
-    # 10-25: oil, food and potions nobody uses fill the pack). Rations: one stack, eaten to Full before a trip
+    # 10-25: oil, food and potions nobody uses fill the pack). Rations: one stack, eaten to Fed (at most 3) before a trip
     KITS = {"A": {"Word of Recall": 2, "Cure Light Wounds": 5, "Phase Door": 5, "Ration of Food": 3},
             "B": {"Word of Recall": 2, "Cure Critical Wounds": 4, "Cure Serious Wounds": 4, "Phase Door": 10,
                   "Ration of Food": 3, "Heroism": 3, "Potion of Speed": 2},

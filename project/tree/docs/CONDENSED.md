@@ -1,7 +1,7 @@
 # The Documentation, condensed (for Architects and Advisors)
 
 The full version is [README.md](README.md) and its ten component files. This page is what a new Architect or Advisor
-needs in their head before touching anything. Session 10, 2026-10-29; matches version 2.37.1 (`github/VERSION`, CHANGELOG.md).
+needs in their head before touching anything. Session 10, 2026-10-29; matches version 2.38.0 (`github/VERSION`, CHANGELOG.md).
 
 ## What this is
 

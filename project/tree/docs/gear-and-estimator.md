@@ -84,7 +84,7 @@ report is without slays.
 
 | Set | Fights | Seeds per fight | Monsters awake | Used for |
 |---|---|---|---|---|
-| **met** | Up to 40 fights the character actually met: `mons` records in `runs/pilot/NICK/decisions.jsonl` at depth-100 ft to depth, a monster within 3 squares, team = monsters within 7, at most one per 30 s, sampled with seed 1 (`encounters`), from the log's last 24 MB only (`tail_mb`: about the last day of play) | n (20 in `gearcmp`, 10 for automatic swaps and `loadout`) | all (`p_awake` 1.0) | score, not safety |
+| **met** | Up to 40 fights the character actually met: `mons` records in `runs/pilot/NICK/decisions.jsonl` at depth-100 ft to depth, a monster within 3 squares, team = monsters within 7 (at most 12), at most one per 30 s, sampled with seed 1 (`encounters`), from the log's last 3 days only (`days`; doubled until the window holds 20 fights (`min_n`) or covers the whole log; `since` fixes the start instead) | n (20 in `gearcmp`, 10 for automatic swaps and `loadout`) | all (`p_awake` 1.0) | score, not safety |
 | **depth** | 500 fights from `scenarios.make(depth_ft, 500, seed=7, boost=2)` (boost 2 stands in for auto_scum's harder levels); uniques already killed (`uniques_killed.json`) are re-drawn | 1 | all | score and safety |
 | **deeper** | The same at depth + 100 ft | 1 | all | safety |
 | **hard** | The 21 replayed emergencies (their monsters and arrivals, at full HP), plus one built-in Light hound pack ("m48-light-hounds": 13 Light hounds, 7 Wargs, 5 Mirkwood spiders, a Druid at 750 ft) | n | the simulator's default (`P_AWAKE` 0.4) | safety |
@@ -120,7 +120,7 @@ differences.
 this gear)**: the HP an unarmoured, unresisted character would need to last as long (`ehp`, `damage_factor`).
 
 - The mix comes from `runs/pilot/NICK/damage_mix.json` (`load_mix`), else `DEFAULT_MIX` (Dive04 at 700-800 ft,
-  10-24..10-28: wounding melee 51%, other melee 12%, fire 13%, other elements ~7%, other 16%; attacker level 13).
+  10-24..10-28: wounding melee 51%, other melee 12%, fire 13%, other elements ~8%, other 16%; attacker level 13).
 - Wounding melee ("hurt"): x the hit chance at blow power 60 x the wound cut `1 - min(AC,150)/250`. Other melee: x the
   hit chance at power 8. Hit chance = `0.05 + 0.9 x max(0, 1 - 0.75 AC / (power + 3 x level))` (`melee1.c check_hit`).
 - Elements: the basic four and poison x1/3 with the resist (x0 with immunity); the high resists (light, dark, shards,

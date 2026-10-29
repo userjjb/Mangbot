@@ -3128,9 +3128,21 @@ def emergency_loop_counts_actions_only():
     P.Pilot.notify(p, "emergency", "low HP: waiting to use Phase Door again, fighting on", action=False)
     P.Pilot.notify(p, "emergency", "low HP: attacking Dark elven priest first", action=False)
     n_wait = len(p.emerg_times)
-    P.Pilot.notify(p, "emergency", "low HP: read Phase Door (Cave orc adjacent)")
+    P.Pilot.notify(p, "emergency", "low HP: read Phase Door (Cave orc adjacent)", action=True)
     return (n_wait, len(p.emerg_times), len(p.attention)) == (0, 1, 3), \
         f"after 2 non-actions: {n_wait}; after a phase: {len(p.emerg_times)}; notices {len(p.attention)}"
+
+
+@case
+def emergency_notices_say_if_action():
+    """A4 (session 10): every `emergency` notice in pilot.py says whether it reports an escape action (action=True or
+    False), so a new non-action notice can't count towards the emergency loop by default."""
+    import ast
+    tree = ast.parse(open(os.path.join(HERE, "..", "pilot", "pilot.py")).read())
+    calls = [n for n in ast.walk(tree) if isinstance(n, ast.Call) and getattr(n.func, "attr", None) == "notify"
+             and n.args and isinstance(n.args[0], ast.Constant) and n.args[0].value == "emergency"]
+    bad = [n.lineno for n in calls if not any(k.arg == "action" for k in n.keywords)]
+    return bool(calls) and not bad, f"{len(calls)} emergency notices; without action=: {bad}"
 
 
 @case
