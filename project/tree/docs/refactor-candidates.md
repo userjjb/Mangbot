@@ -58,6 +58,10 @@ Format: **ID** what -- *evidence* -- risk/effort (S/M/L) -- **do / ask / skip**.
   so their to-dam/to-hit count for nothing in gear verdicts and in the shadow snapshot's totals (the server's
   `object1.c` prints a lone to-dam/to-hit that way; Dive04 has met Rings of Damage). -- S/S -- **ask**.
 
+- **A14** (the Advisor asked, memo 2026-10-29-s10-reply) Pass `slays`, `brands` and `weight` in shadow snapshots, as
+  geareval's `sim_player` does: worth ~10-15% of our damage at 750 ft plus ~6% criticals. Shadow mode never acts, so
+  only the estimator records change. -- S/S -- **ask** (small; the follow-up to A3).
+
 ## B. Doc fixes (stale docs vs code; no behaviour change)
 
 - **B1 [N]** HANDBOOK names a `sell` command (lines ~17, 21: `sell !NAME`); it doesn't exist: `goal shop N sell

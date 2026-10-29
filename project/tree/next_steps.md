@@ -303,7 +303,7 @@ A6, A8-A11** (commit dd2200d, 117 unit cases; the Pilot restarted 08:35 on that 
   `runs/pilot/<nick>/watch_mission.state`; `--fresh` to start at the ends); pilot.log alerts only on tracebacks and
   "client exited". wrap.sh complaints and `notes.py --mission` filtered to the mission's time.
 - A11: `review wear` in the dungeon says "kept, NOT worn ... wear it in town".
-**Still open, waiting on the user:** groups B-F (the user hasn't chosen yet) and A4, A5, A7, A12, A13 (A13: Rings of
+**Still open, waiting on the user:** groups B-F (the user hasn't chosen yet) and A4, A5, A7, A12, A13, A14 (A14: the Advisor asks for slays/brands/weight in shadow snapshots; A13: Rings of
 Damage/Accuracy count for nothing in geareval). **Navigator-facing doc errors to know before briefing a Navigator**
 (B1-B8, not fixed yet): the HANDBOOK names a `sell` command that doesn't exist (selling is `goal shop N sell
 [!]NAME`); it says the stash is in the tavern (it's in the wilderness house) and that `plan town` eats to Full (Fed);

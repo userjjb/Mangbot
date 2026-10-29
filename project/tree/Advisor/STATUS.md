@@ -45,6 +45,9 @@ Architect builds everything else.
    Arrival feelings now logged (`arrival_feeling` in decisions; `feeling:` in dump headers): later, measure P(pit/nest | special) on scummed levels.
 5c. Next rulebook build: add constants.csv rows for Hero/Berserk (to_h +12/+24, AC -10, mhp +10/+30 rescaled, res_fear),
    cure amounts, no-flow movement, spell range 18 (from `studies/2026-10-25-estimator/scratch/E2/mechanics.csv`).
+5c2. **Estimator records:** analyse before/after 2026-10-29 08:35 separately (A3: earlier snapshots passed weapon-only to-hit/
+   to-dam -> understated damage, biased to escapes). Asked the Architect to also pass slays/brands/weight. Docs: ../docs/README.md,
+   ../docs/CONDENSED.md (Architect session 10), my side quoted from to_architect/2026-10-28-advisor-docs.md.
 5d. When `looks` records exist (m48+): calibrate options_sim P_WAKE (sleeper wake rate near a fight; 5%/block guess) and
    re-check P_AWAKE against observed shares.
 6. Housekeeping: the 09-29 shops memo assumed CHR 4 = Dive04's natural CHR; it is drained to 3 now (use `data/rulebook/shop_owners.csv`, CHR 3 columns, until restored).

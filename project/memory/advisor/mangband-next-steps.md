@@ -4,7 +4,14 @@ description: READ FIRST (Advisor) - restructure since 2026-10-22; scorecard, set
 metadata:
   type: project
 ---
-**State (2026-10-24, session 4):** no study running. The project is in the RESTRUCTURE (the user's decision 2026-10-22). The Advisor owns the rulebook tables (`Advisor/data/rulebook/`) and the set-piece list, and defined the scorecard. Done: scorecard (10-23), set-pieces (10-24), rulebook releases 1-3 (r3 = drop expectations + feelings value fix + town-kit answers, sent 10-24, awaiting the Architect's re-sync). **Next:** estimator memos 10-25; SHADOW MODE ON: the Pilot imports Advisor/data/estimator/options_sim.py live — edit only via copy+mv, keep choose() signature and base_policy = pilot escape(), tell the Architect first; review estimator records from m35; review each new mission (step 5: m24-m26 seen, m27-m34 run by the Architect; target >58 XP/min at 500-650 ft); live checks of code-only claims; set-piece recipes once the Architect makes Gandalf scriptable; belief-state spec if asked. **Waiting on the user:** nothing (10-24: auto_scum stays ON, user decision). The full handoff is **`/projectnb/jbrcs/mangband/Advisor/STATUS.md`** (state table, pending list, facts, tooling).
+**State (2026-10-29, end of session 5 chat):** no study running. Since 10-25 the main line is the **danger-time option estimator**
+(`Advisor/data/estimator/options_sim.py`, POLICY_VERSION pilot-escape-2026-10-28n): the Pilot imports it LIVE in shadow mode
+(emergency, hard_fight, band triggers) and geareval imports it plus `scenarios.py`. Interface contract and player-dict keys:
+`memos/to_architect/2026-10-28-advisor-docs.md` (quoted in ../docs/process.md). Edit only via copy + atomic mv, bump
+POLICY_VERSION, memo the Architect; never change user-decided values (XP_PER_GOLD rolling/per call; MIN_GAIN floor = user-approved).
+**Next:** (1) analyse estimator records before/after 2026-10-29 08:35 separately (A3 to-hit/to-dam fix); (2) calibrate P_WAKE
+from `looks` records; (3) mirror any escape-rule change the Architect announces; (4) review new missions. The full handoff is
+**`/projectnb/jbrcs/mangband/Advisor/STATUS.md`**.
 
 **At the start of a chat:** read STATUS.md; check `../memos/to_advisor/` (`Advisor/.claude/hooks/inbox.sh unread /projectnb/jbrcs/mangband/memos/to_advisor`); read `Advisor/METHOD.md` before any study; when the rulebook is rebuilt, tell the Architect to re-sync.
 
