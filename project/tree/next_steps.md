@@ -138,83 +138,140 @@ validation.
 - The user's player lore and plan changes are in `notes_players.md` (read it).
 
 ### >>> WHICH HANDOFF IS YOURS? <<<
-- **Session 10 and later**: read **"HANDOFF TO ARCHITECT 10"** right below (written by session 9).
-- Sessions 8 and 9 are over; their handoffs below are history.
+- **Session 10** (special: cataloging and housecleaning, **no missions**): read **"HANDOFF TO ARCHITECT 10"** right below.
+- **Session 11** (missions and implementation resume): read **"HANDOFF TO ARCHITECT 11"** below it -- Part A was
+  written by session 9, Part B (if any) by session 10.
+- Sessions 8 and 9 are over; the older handoffs further down are history.
 
-### HANDOFF TO ARCHITECT 10 (written 2026-10-27 ~17:40 by the session-9 Architect)
+### HANDOFF TO ARCHITECT 10: "Cataloging and housecleaning" (written 2026-10-28 ~20:00 by the session-9 Architect)
 
-**State:** Dive04 in town, clvl 29, 358/358, **300 gold carried + 14344 banked in its WILDERNESS house** (the tile
-north of town: door 60,129, reached off town's north edge at 1,130; bought 18:00 for 5455 -- the user: "practice for
-the live server, where we don't want to buy a home in town"). The town house (door 38,155) was sold 19:53 for 1012 (the
-user). **The stash moved into the wilderness house** (the user, 10-27): the three
-Wands of Stone to Mud were lost first: StashDeposit dropped them from the tavern entrance, they landed on the street
-outside and townsfolk (TAKE_ITEM) took them (18:10, 19:16). The tavern room itself is safe. The house holds none yet. max_depth 800 (the user: keep). Git `restructure` pushed.
-SGE job 8268425 (scc-pc4) ends **Thu 10-29 09:47**. `runs/pilot/dive04/ask_unlimited` **kept** (the user, 10-27: and
-tell the Navigator `ask` never blocks -- now in the HANDBOOK, the brief template and the navigator agent file).
-Missions: m55 (Haiku low, 19.0 XP/dmin: 15 minutes confused on a Hummerhorn breeder level; report mission55.md).
+**What this session is (the user, 10-28):** a special session. **No missions.** Three phases, in order:
+1. **The Documentation.** Go through everything that isn't data and isn't unmodified MAngband code, and write the
+   Documentation that catalogs all our functionality and says what each piece does -- so someone can read it and
+   understand the big picture *and* the components without reading the code. The user's examples: what does
+   `gearcmp` do? what are the functions in the `pilotctl` interface and what do they do? what are goals, plans, etc.?
+   what are the Architect, Advisor, Pilot, Navigator? Then a **condensed version** for future Architects and Advisors.
+2. **If context allows:** from that survey, identify what should be **refactored, removed, or broken up** (e.g.
+   pilot.py), and agree the list with the user.
+3. **Carry out** the agreed improvements.
 
-**Session 9 built (VACATION-NOTES.md "Session 9 triage" has the findings):** thefts are news (the "unexplained" m51/m53
-losses were Novice rogue touches); make-room eating never gorges; the dive loots within 3 squares of its path;
-state.jsonl on the wall clock; bracketed egos valued (Holy Avenger 22750); nearest gold square in `near:`; weight-limit
-shedding; **`goal quiet [SECS]`** (the user's quiet wait); ESCAPE LANDING / escaped / FAILED in the status header; a
-trap door below max_depth is news; **the loadout optimizer** (`geareval.optimize`, `pilotctl loadout [shops]`,
-design_gear.md; with the Advisor's slays 27k: the Sabre + FA ring vs the axe is a tie); **the gold bank**
-(`town_houses`, HouseBank, `pilotctl house`, plan town withdraws first / deposits last, operations.md "Houses");
-the confusion lock is cured (CSW/CCW), Recall cures blindness/confusion first, unseen missiles count as combat, the
-Review line shows the sale deadline. 94 unit cases.
+**In scope (not exclusive):** our modified MAngband code (the tool-mode client, the server changes), the Pilot
+(`github/tools/pilot/`), the viewer and observers (`tools/observe/`), the harness (`tools/harness/`), the rulebook
+(`tools/rulebook/`), `tools/shopcat/`, `tools/freeze.sh`, `tools/snapshot.sh`, the hooks (`.claude/hooks/inbox.sh`),
+the Navigator agent (`.claude/agents/navigator.md`), the project docs (roles.md, operations.md, design_*.md,
+HANDBOOK*.md, FIELD-NOTES.md, BRIEF-TEMPLATE.md, notes_*.md, restructure*.md, spells.md), the memory files, and
+how the Advisor's pieces plug in (its memos, `options_sim`/`scenarios` that geareval and the shadow estimator import)
+-- **describe the Advisor's side, don't edit `Advisor/`** (its territory). **Out of scope:** data (runs/: mission
+transcripts, scorecards, decision/event logs, levels, reports) and unmodified upstream MAngband code (read it only
+where needed to explain ours).
 
-**Also built after m55 (10-27/28):** the bank moved to a **wilderness house** (above); the town house sold; the stash
-lives in that house (HouseBank stashes/fetches; the tavern fallback now drops inside the room -- the user: townsfolk
-can't enter it, but they take items from the street, which is where the old entrance drops landed); **EHP**
-(`geareval.ehp` over `observe/damage_mix.py`'s measured mix, refreshed by wrap.sh) in `gearcmp`/`loadout` and in the
-optimizer's proxy; 99 unit cases.
+**The inventory to start from (10-28):**
+- Pilot: `pilot.py` **10,558 lines** (the Pilot class, ~30 Goal classes, TripPlan, TownKit, HouseBank, the command
+  dispatcher, the status report), `geareval.py` 966, `world.py` 642, `mover.py` 604, `glyphs.py` 332,
+  `itemvalue.py` 318, `structures.py` 148, `pilotctl.py` 146, `shadow.py` 84, `replay_group.py` 71; shell:
+  `restart.sh`, `hotswap.sh`; docs: HANDBOOK.md 198, HANDBOOK-reference.md 569, FIELD-NOTES.md 137,
+  BRIEF-TEMPLATE.md 81.
+- Harness: `unit.py` 2,992 (112 cases), `setpiece.py` 1,492 (~40 live set-pieces), `dm.py` 219, `charsave.sh`, README.
+- Observe: `scorecard.py` 676, `watch.py` 567 (the user's viewer), `timeline.py`, `tokens.py`, `damage_mix.py`,
+  `record.py`, `latency.py`, `notes.py`, `shopmath.py`, `scribe.py`, `watch_mission.py`, `screen.py`, `wrap.sh`.
+- Rulebook: 34 files (CSV tables from the source, `build_monsters.py`).
+- MAngband changes: 15 files, +1520 lines since the tool client was added -- `src/client/c-tool.c` (+1087, the tool
+  mode), `main-tool.c`, `c-birth.c`, `c-init.c`, `c-pktlog.c`, `c-util.c`, `c-externs.h`, `client.c`,
+  `net-client.c`, `c-files.c`, `c-xtra2.c`, `Makefile.am`; server `net-server.c`, `store.c`, `tables.c` (and the
+  freeze build: operations.md "Test server"). `git diff --stat <first c-tool.c commit>^ HEAD -- src` lists them.
+- Git: branch `restructure`, ~360 commits; tag `pre-restructure`.
 
-**Open (the list given to the user 10-28):**
-- *The user's call:* `ask` policy (unused m49-m55: require one check-in per trip?); an interleaved Haiku/Sonnet
-  comparison on the current Pilot (offered); EHP in gearcmp's verdict (offered); the fight-vs-flee band rule (collect
-  more `trigger: band` records first).
-- *Verify live:* the wilderness bank inside `plan town`; the house stash (drop/fetch) and the tavern inside-drop; the
-  confusion-lock cure, Recall's cure, `goal quiet`, the dive's loot detour, ESCAPE FAILED, weight shedding, theft news;
-  older: breeder-pin teleport, the blind staff escape, `react leave/hunt`, `loadout shops`. **Seen live 10-28:** the
-  confusion cure + teleport-in-the-clear-second (in a set-piece's leftover Hummerhorn scene; M5 itself isn't stageable:
-  harness README).
-- *Gaps:* loot picked up mid-flee (m55 17:00:14, a Scroll of Light during a band flee); resist blindness (watch shops); the optimizer is 1-2 slot moves and advisory only.
-- *Small:* L3b set-piece unstageable; WIS drained (no matter). **MIN_GAIN settled (10-28, the user: "do 14"):** kept
-  (it blocked 7 shadow overrides worth 9-47 XP each, mostly fights over escapes in emergencies); the Advisor asked to
-  scale it to max(50, 30 s of play at the current XP rate) (memo to_advisor 2026-10-28-min-gain).
-- **From m56/m57 (10-28, the Opus/Sonnet comparison): all fixed (f623146 and after)** -- item commands wait for the
-  pack after a stack empties (the "Berserk no effect" was a stale letter drinking a CLW); in-place actions aren't
-  "stuck"; no wilderness notice on the bank's trip; `dmin>N` (dungeon minutes); empty staffs/wands sold, the keep list
-  matches plural stacks; no pickups mid-flee under 500 gold; plan town on the house tile; the walk carried across the
-  edge; the recall wording.
-- **Built 10-28 (after m57):** supplies in dungeon minutes (status, plan town, arrival, alerts under 15/5; quiet waits
-  capped), recharging empty useful staffs/wands in town, enchanting disenchanted armour to the +7/+8 stopping place
-  (verified live: 4 scrolls, cloak -6 -> -2; the Alchemist stocks few, so it takes several visits).
-- **Model comparison (10-28, current Pilot, 700-800 ft):** 45 min: m56 Opus-medium 58.0 XP/dmin (low 87%, $1.05),
-  m57 Sonnet-medium 94.0 (65%, $0.22). 30 min: m58 Opus-medium 73.9 (63%, $0.40), m59 Sonnet-medium 128.6 (71%,
-  $0.18; 14.6 dmin), m60 Haiku-medium 47.1 (92%, $0.013). Haiku-low m43-m55 median 68.9. Sonnet-medium leads twice;
-  single missions, level luck dominates. Open from these (the m59 flee "stuck" after a phase: FIXED, the replan now falls back to unexplored squares); the "this
-  trip" rate not in dungeon reports (m58); a full pack losing a pickup (m60).
-- **TODOs from the user (10-28):**
-  1. **(Built 10-28: `ask quiet TEXT` waits for the answer -- "more ..." answers keep it; HANDBOOK "when to stop and
-     think"; gearcmp/loadout refusals point at it; the brief and the agent file say so. Verify live.)**
-     **The Navigator uses `goal quiet`** when it would benefit from an extended conversation with the Architect, or
-     needs time to think on a level (survey the map, plan routes, think about gear). Today `goal quiet` exists but no
-     Navigator has used it. Ideas: HANDBOOK/brief guidance on when; `ask ... quiet` (park in a quiet wait until the
-     ARCHITECT ANSWER arrives, then resume); the quiet wait as the place for `gearcmp`/`loadout` (they refuse with
-     monsters in view).
-  2. **The user plays the Navigator for a mission**, to feel what the Navigator has to work with. Needs: a way for the
-     user to issue `pilotctl` commands (a shell in tmux beside the viewer, or the viewer's own command line), the same
-     brief/HANDBOOK, the mission markers and scorecard as usual; the Architect watches and answers `ask` live.
-  3. **A separate test server for set-pieces**, distinct from (a) the local server that stands in for the live one and
-     (b) the live server: a second local server (its own port, save dir, config, freeze file), so set-pieces never touch
-     the stand-in's world or its characters (no charsave dance; copies of Dive04 made for it).
-  4. **Set-pieces built with server-side test features, not DM automation** (the M5 lesson: 6 staged runs failed): a
-     test-server branch of the source with test commands -- e.g. place monsters/items/terrain at exact squares, set
-     player state (confused, AC, HP, stats), freeze/step monster AI, load a level from a file (the DM's Level
-     export/import is a start), fixed RNG seeds -- driven by the harness. Builds on 3.
+**Suggested shape of the Documentation** (adjust as you see fit; the user cares about the content):
+`/projectnb/jbrcs/mangband/docs/` with an index (`README.md`: the big picture -- the roles, how a mission flows from
+brief to scorecard, the test vs live server, where state lives) and one file per component (tool client, Pilot core,
+goals, plans, the town kit and bank, gear evaluation, the command interface (`pilotctl`, every command: what it does,
+who may use it, what it refuses), observers and viewer, harness, rulebook, ops scripts, agents/hooks/memos). Then the
+condensed version (one file, ~2-3 pages) for Architects and Advisors. Point roles.md, operations.md and the memory at it
+(the SYNC RULE: memory pointers must match the docs).
 
-- Routine: snapshot, commit, push; after each mission wrap.sh, a report, FIELD-NOTES, complaints.
+**How to read without burning context (the session-9 analysis, 10-28; use it):**
+- Session 9's output tokens: ~34% went to project code (thinking included, attributed per reply), ~24% to
+  investigating/running (much of it really code design), ~10% prose to the user, ~10% docs, ~9% scratch analysis code.
+- Its **input**: ~297M billed tokens, almost all cache reads -- the whole context (avg ~480k) re-read on each of 620
+  turns, no compaction. Of what was read in, ~44% was **our own tooling's code** (pilot.py above all), ~27% logs and
+  status, ~11% docs, ~7% MAngband source/data. Content read early is re-billed every later turn.
+- So: **survey big files by structure first** (`grep -n "^class \|    def \|if c == "` on pilot.py, the docstrings),
+  read only the parts you need, and consider **delegating per-component surveys to subagents** (Explore/general-purpose)
+  that return summaries -- the per-file reading then never enters the main context. Keep the main thread for writing.
+- `pilot.py` is the obvious split candidate (Goals, TripPlan/TownKit/HouseBank, the command dispatcher, the report,
+  the item policy, gear, supplies...); also: two `light_left` helpers (world/pilot), old handoff history in
+  next_steps.md (~1500 lines), HANDBOOK vs HANDBOOK-reference overlap, `shadow.py`/`replay_group.py` (still used?),
+  `tools/shopcat/`. Phase 2 decides; ask the user before removing anything.
+
+**Rules for phase 3 (the improvements):** behaviour must not change unless agreed; **all 112 unit cases pass after
+every step** (`python3 tools/harness/unit.py`); load Pilot changes only with `pilot/hotswap.sh` or `restart.sh` while
+Dive04 is idle in town; commit + `tools/snapshot.sh` + push after each step; keep the HANDBOOK/brief in step with any
+renamed command. Don't run missions (session 11 does).
+
+**State at the end of session 9 (10-28 ~20:00):** Dive04 idle in town, clvl 29, 358/358, AC ~94 (armour re-enchanted),
+300 gold carried + **19,327 banked** in the wilderness house (tile north of town, door 60,129). Server, Pilot (all
+session-9 code loaded), viewer running; SGE job 8268425 (scc-pc4) ends **Thu 10-29 09:47** -- session 10 may run in a
+new job: check `pgrep -af "gdb -batch|pilot.py"` and operations.md for restarting. Start the inbox watcher first.
+
+**Session 11's handoff already exists** (below, Part A, by session 9). Anything session 10 wants session 11 to know
+goes in **Part B** of that handoff, marked as coming from session 10 -- don't rewrite Part A. Update the memory
+pointer (mangband-next-steps) at the end of session 10.
+
+### HANDOFF TO ARCHITECT 11 (missions and implementation resume)
+
+#### Part A -- written 2026-10-28 ~20:00 by the session-9 Architect
+
+**State (end of session 9; session 10 changes nothing in play):** Dive04 in town, clvl 29, 358/358, AC ~94, Battle Axe
+of Westernesse (FA, SI), Rings of Protection [+16]/[+12], Leather of Resistance, Boots of Stability; 300 gold carried +
+19,327 banked in the **wilderness house** (the tile north of town: walk off town's north edge at 1,130, arrive at
+64,130, door 60,129; operations.md "Houses and the gold bank"); the stash lives in that house (empty now).
+`max_depth` 800 (the user: keep). `runs/pilot/dive04/ask_unlimited` kept (the user). Missions run in session 9:
+m55-m60. Session 10 may have restructured the code: read its Part B first.
+
+**Session 9 built** (details: VACATION-NOTES.md "Session 9 triage", design_gear.md, operations.md "Houses", the
+reports `runs/pilot/dive04/reports/2026-10-2[78]-mission5[5-9]*.md`, mission60):
+- Theft news; make-room eating never gorges; the dive's loot detour; state.jsonl on the wall clock; bracketed egos
+  valued; weight-limit shedding; trap door below max_depth news; ESCAPE LANDING / escaped / FAILED.
+- `goal quiet [SECS]`, **`ask quiet TEXT`** (waits for the Architect's answer; "more" keeps it).
+- **The loadout optimizer** (`pilotctl loadout [shops]`), **EHP** (`observe/damage_mix.py` + `geareval.ehp`) in gearcmp,
+  loadout, the optimizer's proxy and gearcmp's verdict (a >5% EHP cut is ruled out; ties by EHP). Slays/brands in the
+  simulator (the Advisor's options_sim 27k); MIN_GAIN scaled to play time (28l).
+- **The gold bank** in a wilderness house (HouseBank: buy/deposit/withdraw, the edge crossing; plan town withdraws
+  first, deposits last); the stash in the house; the tavern fallback drops inside the room.
+- **plan town** also recharges empty useful staffs, enchants disenchanted armour to the +7/+8 stopping place
+  (`order enchant_max=N`, announced in the opening note), waits up to 4 x 35 s for a restock of a critical item.
+- Supplies in dungeon minutes (status line, plan town, arrival, alerts under 15/5; quiet waits capped).
+- Confusion: cured after 8 s with monsters adjacent (every tick, the clock reset between confusions), then a teleport
+  in the clear second; Recall cures first. Flee replans through unexplored squares after a phase; Flee replans twice.
+- Item commands wait for the pack after a stack empties; react hunts resume their goal; worn items leave review;
+  react de-duplicates; `dmin>N`; empty devices recharged or sold; the keep list matches plural stacks; no pickups
+  mid-flee; `order autowear=off`. The M5 set-piece (not stageable). 112 unit cases (the flaky clock case fixed).
+
+**Model comparison so far** (current Pilot, 700-800 ft): 45 min -- m56 Opus-medium 58.0 XP/dmin (low 87%, $1.05),
+m57 Sonnet-medium 94.0 (65%, $0.22); 30 min -- m58 Opus-medium 73.9 (63%, $0.40), m59 Sonnet-medium 128.6 (71%,
+$0.18), m60 Haiku-medium 47.1 (92%, $0.013); Haiku-low m43-m55 median 68.9. Sonnet-medium led twice; one mission each,
+level luck dominates. More interleaved missions would settle it (offered to the user).
+
+**Open items for session 11:**
+1. **Verify live** (built, not yet seen in a mission): `ask quiet` / `goal quiet` used by a Navigator; recharging; the
+   restock waits; the flee replan after a phase (m59's case); the confusion clock reset; the house stash drop/fetch;
+   `loadout shops`; older: the breeder-pin teleport, the blind staff escape, `react hunt`.
+2. **Small gaps:** the "this trip" XP rate isn't in the dungeon wait reports (m58); a full pack lost a wand pickup
+   (m60 19:05); resist blindness (watch shops); the optimizer is 1-2 slot moves and advisory only.
+3. **The user's TODOs (10-28):** (2) **the user plays the Navigator** for a mission (a way to issue pilotctl commands
+   beside the viewer; the same brief; the Architect answers asks live); (3) **a separate local test server** for
+   set-pieces (own port, saves, config, freeze file; copies of Dive04); (4) **server-side test features** for
+   set-pieces on a test-server branch (place monsters/items/terrain, set player state, step AI, load levels, fixed
+   seeds) -- the M5 lesson; builds on 3. (1, the Navigator's quiet wait, is built: verify it.)
+4. **Waiting on the user:** the `ask` policy (still unused by most Navigators: require one check-in per trip?); the
+   fight-vs-flee band rule (collect `trigger: band` estimator records first); more model-comparison missions.
+5. **Routine:** after each mission `observe/wrap.sh mNN` (it also refreshes the damage mix), a report in
+   `runs/pilot/dive04/reports/`, FIELD-NOTES lessons, complaints and asks read; snapshot, commit, push.
+
+#### Part B -- from session 10
+
+*(Session 10: write here what session 11 should know -- what you documented, restructured or removed, renamed
+commands, where the Documentation lives. Leave Part A as it is.)*
 
 ### HANDOFF TO ARCHITECT 8: "The Architect's Vacation" (written 2026-10-26 ~22:00 by the session-7 Architect)
 
