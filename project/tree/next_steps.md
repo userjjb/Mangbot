@@ -213,6 +213,10 @@ renamed command. Don't run missions (session 11 does).
 session-9 code loaded), viewer running; SGE job 8268425 (scc-pc4) ends **Thu 10-29 09:47** -- session 10 may run in a
 new job: check `pgrep -af "gdb -batch|pilot.py"` and operations.md for restarting. Start the inbox watcher first.
 
+**The Advisor was asked (memo to_advisor 2026-10-28-session10-docs) for a memo describing its side for the
+Documentation** (its role and method, the files the Pilot/geareval import and their interfaces, whether a pilot.py
+split breaks anything it reads): check memos/to_architect for the answer before writing the Advisor chapter.
+
 **Session 11's handoff already exists** (below, Part A, by session 9). Anything session 10 wants session 11 to know
 goes in **Part B** of that handoff, marked as coming from session 10 -- don't rewrite Part A. Update the memory
 pointer (mangband-next-steps) at the end of session 10.

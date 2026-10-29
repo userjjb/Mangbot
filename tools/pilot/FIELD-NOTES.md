@@ -83,6 +83,14 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
 - **Breeders that confuse** (Hummerhorns, 800 ft, m55): confused, you can't read scrolls and staffs often fail. The
   Pilot now cures a long confusion itself (CSW, then CCW); leave such a level at once.
 
+## 700-800 ft at clvl 29, AC ~94 (m56-m60, 10-28)
+- **Mirkwood spider bands at 750 ft** ended or shortened three trips (m57, m59): the Pilot phases, drinks Speed and
+  leaves; with 9+ close and no stairs reachable it recalls home. Let it -- a trip that ends early on a band is a good
+  trip, not a failure.
+- **One long trip beats two** in a 30-45 minute mission (each recall pair costs ~2-3 minutes); `dmin>N` ends it on
+  dungeon minutes, `time>HH:MM` on the clock.
+- `plan town` now takes 2-3 minutes (the house trip, enchanting, restock waits): budget for it.
+
 ## Pilot habits to expect (not bugs to work around)
 
 - **Heavy loot is left (since m46):** "left a Battle Axe: 17 lb would slow you" is the weight rule, not a bug. A pack
