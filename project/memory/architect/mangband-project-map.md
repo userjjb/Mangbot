@@ -5,7 +5,12 @@ metadata:
   type: reference
 ---
 All substance is in `/projectnb/jbrcs/mangband/` (moved out of memory 2026-09-27):
-- `next_steps.md`: **start with the "ARCHITECT HANDOFF" section** (state, operating rules, next steps).
+- `next_steps.md`: **start with ">>> WHICH HANDOFF IS YOURS? <<<"** (state, operating rules, next steps).
+- **`docs/` (the Documentation, session 10, 2026-10-29):** `docs/README.md` (big picture + index of 10 component
+  files: client-server, pilot-core, pilot-combat, pilot-items, goals-and-plans, commands (every pilotctl command),
+  gear-and-estimator, observe, harness-rulebook-ops, process) and `docs/CONDENSED.md` (the short version). Read
+  CONDENSED.md before reading code; read a component file before opening its source. `docs/refactor-candidates.md`:
+  session 10's cleanup list.
 - `operations.md` (incl. "Houses and the gold bank"): environment, test server, characters (credentials in `runs/private/`), tool-mode client facts, verified server behaviour, live server, user decisions, tooling gotchas.
 - `notes_players.md`: game knowledge (docs digest, observed human play, the user's advice).
 - `VACATION-NOTES.md` (session 8's findings for session 9); `github/tools/pilot/BRIEF-TEMPLATE.md` (the mission brief); `github/tools/observe/watch_mission.py` (the live mission monitor).

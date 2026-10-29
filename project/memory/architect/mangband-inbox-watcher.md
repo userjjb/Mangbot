@@ -8,7 +8,7 @@ metadata:
   modified: 2026-10-07T18:28:32.791Z
 ---
 
-Start `.claude/hooks/inbox.sh watch memos/to_architect` (Bash, run_in_background, timeout 600000) as the first action of every session, and restart it each time it exits (it lasts at most 10 minutes, and exits at once while a memo is unread, so mark memos read first).
+Start `.claude/hooks/inbox.sh watch memos/to_architect` (Bash, run_in_background, timeout 600000) as the first action of every session, and restart it each time it exits (the script loops, but the Bash background timeout ends it after at most 10 minutes; it exits at once while a memo is unread, so mark memos read first).
 
 **Why:** on 2026-10-07 the identify-and-sell memo sat unread for about an hour. The watcher wasn't running, and the post-Bash hook only fires on my own commands. The user asked why it didn't trigger me.
 

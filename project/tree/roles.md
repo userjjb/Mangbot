@@ -4,6 +4,9 @@ Formalized by the user 2026-09-26. Every agent working on this project should kn
 is in and stay inside it. Until now the Architect and Navigator roles were played by the same chat
 at the same time; they are now separate.
 
+**The Documentation** (what every component does, how a mission flows): `docs/README.md`; the short version for
+Architects and Advisors: `docs/CONDENSED.md`; roles and territories in detail: `docs/process.md`.
+
 | Role | Who | Does | Does not |
 |---|---|---|---|
 | **Pilot** | `github/tools/pilot/pilot.py` (Python daemon that owns the client) | Plays second to second: reflexes (flee, eat, rest, fight what's adjacent, idle recall) and carries out the current goal. Reports done/failed/attention. | Set strategy. |

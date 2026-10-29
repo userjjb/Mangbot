@@ -298,7 +298,7 @@ def escape_move(st, crowd):
     return any(use(st, it) for it in order)
 
 
-POLICY_VERSION = "pilot-escape-2026-10-28l"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
+POLICY_VERSION = "pilot-escape-2026-10-28m"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
 
 
 def worst_turn(st, adj):
@@ -713,6 +713,7 @@ def choose(p, team, n=100, arrivals=(), options=None, z=2.0):
         near = sum(r["dead"] or r["low"] <= 0.1 * p["mhp"] for r in rs) / n
         low10 = q([r["low"] for r in rs], 0.1)
         return near, low10, near <= SAFE_NEAR and low10 >= SAFE_LOW_P10 * p["mhp"]
+    xpg = p.get("xp_per_gold", XP_PER_GOLD)   # per call (thread-safe); the module value is the fallback
     xpb = p.get("xp_per_block", 0.0)          # opportunity cost of time (0 = off): the rolling XP per game turn elsewhere
     regen = (p["mhp"] * 394 + 1442) / 65536    # HP regained per resting block (dungeon.c:1245-1306)
 
@@ -727,7 +728,7 @@ def choose(p, team, n=100, arrivals=(), options=None, z=2.0):
     best_gain = 0.0
     for o, rs in res.items():
         nn, ll, safe = summary(rs)
-        d = [(a["xp"] - b["xp"]) - XP_PER_GOLD * (a["spent"] - b["spent"]) - xpb * (time_used(a) - time_used(b))
+        d = [(a["xp"] - b["xp"]) - xpg * (a["spent"] - b["spent"]) - xpb * (time_used(a) - time_used(b))
              for a, b in zip(rs, base)]
         mean = statistics.mean(d); se = statistics.stdev(d) / n ** 0.5 if n > 1 else 0.0
         table.append(dict(option=o, safe=safe, p_near_death=round(nn, 3), low_p10=ll,

@@ -5,6 +5,9 @@ and humans. (Moved here from the Architect's private memory on 2026-09-27, so th
 can read them. Memory now only points here.) Credentials are **not** in this file: see
 `runs/private/`.
 
+**What each component does** (the Pilot, pilotctl commands, client, observers, harness...): `docs/README.md`
+(the Documentation, session 10) and `docs/CONDENSED.md`. This file keeps the how-tos.
+
 ## Environment
 
 - Shared SCC cluster, Alma 8, SGE batch jobs (sessions end at their walltime; the node changes
