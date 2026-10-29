@@ -11,6 +11,14 @@ The handoff between Architect sessions: the current state, what the next session
   this file in session 10, C11). Bring anything worth keeping back into `docs/` or `CHANGELOG.md`. Architects: remind the
   user at the start of a session while this item is open.
 
+### TODO (the user, 2026-10-29)
+- **Live deployment:** the checklist is `live-deploy-todo.md` (project top). Add to it whenever something live-only
+  comes up.
+- **C14 as an A/B test:** shrinking HANDBOOK-reference.md (refactor-candidates C14) is deferred. Before doing it, run
+  a few missions on the current reference (B4-fixed, version 2.37.1+) as the baseline; then shrink it and run the same
+  number with the same Navigator model and effort. Compare Navigator asks/questions, held or refused orders,
+  report-to-action latency and the scorecards (BRIEF-TEMPLATE's "did you need HANDBOOK-reference.md?" answers too).
+
 ### >>> WHICH HANDOFF IS YOURS? <<<
 - **Session 10 is done** (2026-10-29: the Documentation in `docs/`, the cleanup list `docs/refactor-candidates.md`,
   bug fixes A1-A3/A6/A8-A11; continued that afternoon: A4/A5/A7/A12-A14, group C, `CHANGELOG.md` and versions --
@@ -194,8 +202,10 @@ The user approved and this session did A4, A5, A7, A12, A13, A14 and group C (C1
   records it in missions.json. **Every session: bump VERSION, add a CHANGELOG entry (missions on it), tag `vX.Y.Z` on
   the version's last commit, push tags (`git push origin restructure --tags`).** 2.36.0 and older were assigned
   retroactively (72 versions; m1-m60 mapped).
-- **Still waiting on the user:** C3 (old observers to `observe/study/`), C4 (shopcat tour scripts to the attic), C14
-  (shrink HANDBOOK-reference); groups B, D, E, F. B1-B8 (the Navigator-facing doc errors above) are still unfixed.
+- **Later the same day (2.37.1):** C3 done (the study tools in `observe/study/`: the user will record again); C4
+  kept (the live shop catalog will be wanted: `live-deploy-todo.md`); B4 done (HANDBOOK-reference); C14 deferred to
+  an A/B test (TODO above). **Still waiting on the user:** groups B (except B4), D, E, F. B1-B3 and B5-B8
+  (Navigator-facing doc errors) are still unfixed.
   C8: only the Pilot's dead-character whitelist changed (the scorecard/viewer query lists also hold names Navigators
   really typed, `help`, `news`, `inventory`: merge them in D7).
 - **Open from the Advisor (29o):** the estimator now wakes sleepers by noise and distance; an optional `p["noise"]`

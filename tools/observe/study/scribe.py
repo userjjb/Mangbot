@@ -20,7 +20,7 @@ import threading
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "..", "shopcat"))
+sys.path.insert(0, os.path.join(HERE, "..", "..", "shopcat"))
 from mang import MangClient      # noqa: E402
 from newchar import private_files, DEFAULT_BIRTH   # noqa: E402
 
@@ -28,7 +28,7 @@ MAX_CHAT = 59
 
 
 def main():
-    repo = os.path.abspath(os.path.join(HERE, "..", ".."))
+    repo = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
     runs = os.path.abspath(os.path.join(repo, "..", "runs"))
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[1])
     ap.add_argument("--nick", default="Scribe")

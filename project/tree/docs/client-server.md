@@ -177,7 +177,7 @@ Anything else gives `error {text: "Unknown command"}`.
 - `S` (client to server): one record per flushed chunk (leading keepalives split out), named from the server's table.
 - `E`: notes (`pktlog started epoch=...` gives the wall clock of t=0; `connected to server`; `connection closed`).
 - `K`: a key consumed by a command or prompt in the interactive client: `{key, code, keymap, icky}` (`keymap` = from a
-  keymap expansion, `icky` = a menu/popup was up). Used by `tools/observe/record.py` to study a human's play next to
+  keymap expansion, `icky` = a menu/popup was up). Used by `tools/observe/study/record.py` to study a human's play next to
   the packets it produced.
 
 Privacy: password hashes in sent packets (`$1$` + 32 hex, from login and password change) are blanked to `X`,

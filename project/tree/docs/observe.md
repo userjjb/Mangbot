@@ -26,9 +26,9 @@ test server in [harness-rulebook-ops.md](harness-rulebook-ops.md).
 | `damage_mix.py` | Architect | after each mission (via `wrap.sh`) | `decisions.jsonl`, `events.jsonl`, the rulebook | `runs/pilot/<nick>/damage_mix.json` (read by the Pilot's gear evaluator) |
 | `notes.py` | Architect | after a mission (via `wrap.sh`), to answer `?` notes | `commentary.jsonl`, `decisions.jsonl` | stdout |
 | `shopmath.py` | library | imported | `lib/edit/shop_own.txt`, `cost_adj.txt`, `p_race.txt`, `src/server/tables.c` | nothing |
-| `record.py` | the user (human play) | study sessions (Sept 2026) | tmux pane | `runs/observe/<stamp>/` |
-| `timeline.py`, `screen.py` | Architect/Advisor | study a `record.py` session | `pkt.jsonl`, `screens.jsonl` | stdout |
-| `scribe.py` | Architect | at the user's request only | a FIFO | in-game private chat |
+| `study/record.py` | the user (human play) | study sessions (Sept 2026) | tmux pane | `runs/observe/<stamp>/` |
+| `study/timeline.py`, `study/screen.py` | Architect/Advisor | study a `record.py` session | `pkt.jsonl`, `screens.jsonl` | stdout |
+| `study/scribe.py` | Architect | at the user's request only | a FIFO | in-game private chat |
 
 Run Python tools with `module load python3/3.12.4`. Paths below are relative to `/projectnb/jbrcs/mangband`.
 
@@ -327,7 +327,7 @@ group E now covers similar ground (report -> action, user reply).
 
 ---
 
-## Human-play study tools (September 2026)
+## Human-play study tools (September 2026; in `observe/study/` since 2026-10-29)
 
 Used once, on 2026-09-25, to record the user playing for study (`runs/observe/session1-3`; the Advisor's early
 studies read those `pkt.jsonl` files). No script calls them.

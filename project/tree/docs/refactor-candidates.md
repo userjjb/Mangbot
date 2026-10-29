@@ -75,7 +75,8 @@ Format: **ID** what -- *evidence* -- risk/effort (S/M/L) -- **do / ask / skip**.
   worse. -- S/S -- **do**.
 - **B4 [N]** HANDBOOK-reference: `goal goto`/`stairs` in ~5 places (refused to the Navigator); orders table lacks
   `autowear`, `enchant_max`, `band_frac`, `nopickup`; emergency "2.5 worst-case rounds" (code: worst 3 turns, <90% HP);
-  `danger_seen` "dropped the goal" (it's resumed); newer escape steps missing. -- S/S -- **do** (or see C14).
+  `danger_seen` "dropped the goal" (it's resumed); newer escape steps missing. -- S/S -- **do** (or see C14). **done (session 10**, the user: B4 now, C14 later; and
+  `danger_seen` really does drop the goal -- only a trip plan carries on -- so "resumed" above was wrong)
 - **B5 [N]** HANDBOOK `plan trip ... until`: check the condition list against the code (`emergency_loop`,
   `unseen_attacker`). -- S/S -- **do**.
 - **B6 [N]** pilotctl.py docstring (its help): advertises `goal goto`/`stairs`/`raw`, lacks ~15 commands (ask, answer,
@@ -121,8 +122,12 @@ Format: **ID** what -- *evidence* -- risk/effort (S/M/L) -- **do / ask / skip**.
   **do** (attic; fold alert->contact into the scorecard only if the Advisor wants it). **done (session 10)**
 - **C3** `observe/record.py`, `timeline.py`, `screen.py`, `scribe.py`: unused since 09-25, only operations.md lists them;
   timeline's commit says "untested draft"; record.py defaults to port 18346. -- S/S -- **ask** (move to `observe/study/`).
+  **done (session 10**: the user will record their play again; moved, paths fixed, `study/README.md` warns of the
+  live-port default)
 - **C4** `shopcat/shopcat.py`, `nav.py`, `wild.py`, `report.py`, `runs/regress.py`: no importers, last run 09-25 (the
   Pilot has its own mover). Keep `mang.py` (see E7) and `newchar.py`. -- S/S -- **ask** (live shop tour wanted again?).
+  **Kept (the user, 10-29):** the shop catalog will be updated once we deploy to live; repairing the tour is an item in
+  `live-deploy-todo.md`.
 - **C5** Dead second `plan` branch in `do_request` (`mover.plan` debug): the earlier `if c == "plan": return
   self.request_plan(args)` always wins. -- S/S -- **do** (delete, or rename to `path` if wanted). **done (session 10)**
 - **C6** `choke_tick`: `ch in "<>" and False` is never true. -- S/S -- **do**. **done (session 10)**
@@ -146,6 +151,9 @@ Format: **ID** what -- *evidence* -- risk/effort (S/M/L) -- **do / ask / skip**.
   snapshot copies `testserver/data/Makefile.am` into github/project. -- S/S -- **ask**. **done (session 10)**
 - **C14** HANDBOOK-reference.md (569 lines, "not required reading", lessons of m1-23) overlaps HANDBOOK + docs/commands.md.
   -- M/M -- **ask** (shrink to the event/report-line glossary; the Navigator greps it). **[N]**
+  **Deferred (the user, 10-29):** B4 first; shrink later as an **A/B test**: compare missions on the pre-C14 reference
+  with missions after the shrink (Navigator questions/asks, held or refused orders, report-to-action latency,
+  scorecard), same Navigator model and effort. Todo in next_steps.md.
 - **Skip:** unused rulebook CSVs (Advisor's, sync.sh copies all); c-tool verbs no tool sends (`alter`, `suicide`,
   `minimap`, ...: manual use); `ask_unlimited` rate-limit code (the user kept it 10-27); old `runs/` dirs (data).
 

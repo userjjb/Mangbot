@@ -240,10 +240,9 @@ Prints `mission start: LABEL at YYYY-MM-DD HH:MM`. Scorecards and the viewer rea
   is `goal shop N sell [!]NAME[:N]` (or `plan town`). The `!` works there.
 - **Town-only item commands:** HANDBOOK names `sell wear takeoff read/use-on-an-item fuel eat pickup`; the code also
   blocks `inscribe` and `wearall` in the dungeon for the Navigator, and allows plain `read`/`use` anywhere.
-- **HANDBOOK-reference.md** still tells the Navigator to `goal goto Y,X` / `goto` stairs / `stairs` in several places
-  (`interesting_item`, `stuck`, `fight_going_badly`, `goal explore`, `goal searchroom`), all refused now; its intro
-  says HANDBOOK.md wins. Its orders table lacks `autowear`, `enchant_max`, `band_frac`, `nopickup` (HANDBOOK.md
-  mentions the last three; `autowear` is documented nowhere for the Navigator).
+- **HANDBOOK-reference.md** told the Navigator to `goal goto` / `stairs` and lacked four orders: **fixed 2026-10-29
+  (B4, 2.37.1)**: it now points to `goal leave` / `goal fetch`, marks `goal goto` Architect-only, lists `autowear`,
+  `enchant_max`, `band_frac`, `nopickup`, and describes the current emergency trigger and escape order.
 - **`plan trip` events:** the code also accepts `emergency_loop` and `unseen_attacker`; HANDBOOK.md doesn't list them.
 - **pilotctl.py's docstring** (printed with no arguments) is old: it advertises `goal goto` and `stairs` and omits
   `react review keep debt price why prep gear gearcmp loadout house ask answer` and `goal hunt/fetch/leave/quiet`.

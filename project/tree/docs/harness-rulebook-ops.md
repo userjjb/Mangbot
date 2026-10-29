@@ -24,7 +24,7 @@ commands in [client-server.md](client-server.md); the viewer's freeze key in [ob
 | `harness/dm.py` | scripts the DM character Gandalf (summon, paint terrain, forge, pull a player) | `setpiece.py` | live |
 | `harness/charsave.sh` | save/restore a character's savefile + Pilot state | `setpiece.py`; the Architect for checkpoints | live |
 | `rulebook/` | 26 CSV tables + `rule.py`, `fight_sim.py` | the Pilot (loads tables), the Navigator (`pilotctl rule`), the Architect | live; synced 2026-10-24, identical to the Advisor's copy today |
-| `shopcat/mang.py` | Python wrapper for the tool-mode client | the Pilot, `dm.py`, `observe/scribe.py` | **live, core** |
+| `shopcat/mang.py` | Python wrapper for the tool-mode client | the Pilot, `dm.py`, `observe/study/scribe.py` | **live, core** |
 | `shopcat/newchar.py` | create a throwaway character + its private files | the Architect (rarely); `scribe.py` imports two helpers | live, rarely used |
 | `shopcat/shopcat.py`, `nav.py`, `wild.py`, `report.py` | the player-shop cataloguer | nobody since 2026-09-25 | **stale** |
 | `freeze.sh` | stop/start game time on the test server | the Architect, `hotswap.sh`, set-piece H1 | live |
@@ -242,11 +242,11 @@ README documents the options, output format and limits (including the server's 1
 **Still used?** Only two pieces:
 - **`mang.py`** (`MangClient`, `ClientExited`, `meta_servers`): the Python wrapper for `mangclient -mtool` (start it,
   send a command line, read JSON events, `wait`, `collect`, `query`, `status`/`map`/`inven`). **Everything imports it**:
-  `pilot/pilot.py`, `harness/dm.py`, `observe/scribe.py`. It lives here only for history.
+  `pilot/pilot.py`, `harness/dm.py`, `observe/study/scribe.py`. It lives here only for history.
 - **`newchar.py`**: `newchar.py --nick NAME [--birth RACE:CLASS:SEX:STATS] [--privdir DIR]` writes
   `runs/private/NAME.pass` and `.mangrc` (mode 600), logs in with `--birth` (creates the character, or **replaces a
   dead one**), wields/wears the starting kit and prints a summary. Default build: Half-Orc Warrior,
-  DEX>STR>CON>WIS>CHR>INT. `observe/scribe.py` imports `private_files` and `DEFAULT_BIRTH`. Needed again only for a new
+  DEX>STR>CON>WIS>CHR>INT. `observe/study/scribe.py` imports `private_files` and `DEFAULT_BIRTH`. Needed again only for a new
   character (e.g. the planned live character Sneezy).
 
 `shopcat.py`, `nav.py`, `wild.py`, `report.py` have no importers and haven't changed or run since 2026-09-25 (the Pilot

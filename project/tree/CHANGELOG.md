@@ -27,6 +27,14 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.37.1 -- 2026-10-29 (session 10, continued)
+No missions yet. Details: `docs/refactor-candidates.md` (B4, C3, C4, C14), `next_steps.md` TODO.
+- HANDBOOK-reference fixed (B4): `goal leave` / `goal fetch` instead of the refused `goal goto` / `stairs`; the four
+  missing orders (`autowear`, `enchant_max`, `band_frac`, `nopickup`); the real emergency trigger and escape order.
+- The human-play study tools moved to `tools/observe/study/` (C3; the user will record play again).
+- The shop-tour tool is kept for the live catalog (C4); `live-deploy-todo.md` started (the live deployment checklist).
+- Shrinking HANDBOOK-reference (C14) deferred to an A/B test (missions before vs after).
+
 ## 2.37.0 -- 2026-10-29 (session 10, continued)
 No missions yet. Details: `docs/refactor-candidates.md` (items marked "done (session 10)"), Part B.
 - **Versions start** (the user's decision): `github/VERSION`, this changelog (2.36.0 and older assigned retroactively),

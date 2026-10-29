@@ -11,8 +11,8 @@ Open `/projectnb/jbrcs/mangband/next_steps.md` and read **">>> WHICH HANDOFF IS 
 - **Session 10 is done** (2026-10-29): wrote the Documentation (`docs/CONDENSED.md`, `docs/README.md` + ten component
   files) and the cleanup list `docs/refactor-candidates.md`; fixed the user-approved bugs A1-A3, A6, A8-A11 (dd2200d,
   117 unit cases). Continued 10-29 afternoon (job 8327794): A4/A5/A7/A12-A14, group C, `CHANGELOG.md` + versions
-  (minor = play can differ, patch = can't; `github/VERSION` 2.37.0, tags vX.Y.Z; bump + CHANGELOG + tag every session).
-  Still waiting on the user: C3, C4, C14, groups B/D/E/F. **USER TODO** at the top of next_steps.md: the user reviews
+  (minor = play can differ, patch = can't; `github/VERSION` 2.37.1, tags vX.Y.Z; bump + CHANGELOG + tag every session).
+  Later: C3 moved to observe/study, C4 kept (live), B4 done, C14 deferred to an A/B test (TODO in next_steps.md). Still waiting on the user: groups B (rest), D, E, F. **USER TODO** at the top of next_steps.md: the user reviews
   the old handoffs (now `history/handoffs-s1-s9.md`); remind them at session start while it's open.
 - **Session 11** resumes missions and todos: "HANDOFF TO ARCHITECT 11" -- Part A by session 9, **Part B by session 10
   (read it first: the docs, the fixes, the Navigator-facing HANDBOOK errors, the 18346 live-port default)**.

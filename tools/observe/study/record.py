@@ -40,7 +40,7 @@ def alive():
 
 def main():
     here = os.path.dirname(os.path.abspath(__file__))
-    repo = os.path.abspath(os.path.join(here, "..", ".."))
+    repo = os.path.abspath(os.path.join(here, "..", "..", ".."))
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[1])
     ap.add_argument("--host", default="localhost")
     ap.add_argument("--port", type=int, default=18346)

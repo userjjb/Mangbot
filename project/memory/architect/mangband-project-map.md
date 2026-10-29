@@ -5,7 +5,7 @@ metadata:
   type: reference
 ---
 All substance is in `/projectnb/jbrcs/mangband/` (moved out of memory 2026-09-27):
-- `next_steps.md`: **start with ">>> WHICH HANDOFF IS YOURS? <<<"** (state, operating rules, next steps). `CHANGELOG.md`: what changed when, by version. `history/`: retired notes (old handoffs s1-s9, VACATION-NOTES, restructure-step2, notes_merge, spells).
+- `next_steps.md`: **start with ">>> WHICH HANDOFF IS YOURS? <<<"** (state, operating rules, next steps). `CHANGELOG.md`: what changed when, by version. `live-deploy-todo.md`: the checklist for going live (the user, 10-29). `history/`: retired notes (old handoffs s1-s9, VACATION-NOTES, restructure-step2, notes_merge, spells).
 - **`docs/` (the Documentation, session 10, 2026-10-29):** `docs/README.md` (big picture + index of 10 component
   files: client-server, pilot-core, pilot-combat, pilot-items, goals-and-plans, commands (every pilotctl command),
   gear-and-estimator, observe, harness-rulebook-ops, process) and `docs/CONDENSED.md` (the short version). Read

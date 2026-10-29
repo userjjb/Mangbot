@@ -67,7 +67,7 @@ can read them. Memory now only points here.) Credentials are **not** in this fil
 | Dive01, Dive02 | test | Half-Orc Warriors (throwaways) | made with `tools/shopcat/newchar.py` |
 | Dive03 | test | Half-Orc Warrior | dead for good (mission 7, 2026-09-27: its ghost faded away) |
 | Dive04 | test | Half-Orc Warrior (throwaway) | made 2026-09-28 01:35 for mission 8 |
-| Scribe | test | messenger | `tools/observe/scribe.py`: answers the user in game while they play (local server, at the user's request only) |
+| Scribe | test | messenger | `tools/observe/study/scribe.py`: answers the user in game while they play (local server, at the user's request only) |
 | Happy | live | shop-catalog tool character | the user stocked it; no purchases wanted |
 | Sneezy | live | (not created yet) | the live dungeon character for validation (user's choice; not Happy) |
 
@@ -127,7 +127,7 @@ into the Temple (4), but everything it carried is dropped where it died.
 
 - `github/tools/shopcat/`: the shop cataloger (README). Regression run: `runs/regress.py`
   (Surveyor: home from 1E, restock twice, 6 town doors, a 1N tour).
-- `github/tools/observe/`: `record.py` (record a human's session), `timeline.py` / `screen.py`
+- `github/tools/observe/study/`: `record.py` (record a human's session), `timeline.py` / `screen.py`
   (study it), `scribe.py` (answer the user in game).
 - `github/tools/pilot/`: the Pilot, `pilotctl.py`, `restart.sh`, `HANDBOOK.md` (see
   `design_pilot.md`).
@@ -247,7 +247,7 @@ into the Temple (4), but everything it carried is dropped where it died.
   `python3 github/tools/observe/notes.py --nick dive04 --today` shows each with the decisions
   around it. From any shell on the node: `pilotctl.py --nick dive04 note "text"`. The control
   socket is local: the viewer must run on the job's node.
-- Human play is recorded with `tools/observe/record.py` (tmux -L mang; attach from a shell on the
+- Human play is recorded with `tools/observe/study/record.py` (tmux -L mang; attach from a shell on the
   job's node). The OnDemand web terminal adds key lag.
 - Forum research (Advisor): mangband.org/forum was down (502) on 2026-09-26. The Wayback Machine
   allows ~12 requests/min (faster gets connection refused for a while). Many Aug–Oct 2025
