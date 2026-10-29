@@ -213,9 +213,15 @@ renamed command. Don't run missions (session 11 does).
 session-9 code loaded), viewer running; SGE job 8268425 (scc-pc4) ends **Thu 10-29 09:47** -- session 10 may run in a
 new job: check `pgrep -af "gdb -batch|pilot.py"` and operations.md for restarting. Start the inbox watcher first.
 
-**The Advisor was asked (memo to_advisor 2026-10-28-session10-docs) for a memo describing its side for the
-Documentation** (its role and method, the files the Pilot/geareval import and their interfaces, whether a pilot.py
-split breaks anything it reads): check memos/to_architect for the answer before writing the Advisor chapter.
+**The Advisor has already described its side for the Documentation: `memos/to_architect/2026-10-28-advisor-docs.md`**
+(read; quote or link it): its role and method (studies, Clerks, METHOD.md, STATUS.md), memo conventions, the files our
+tools import (`options_sim.py`, `scenarios.py`, the replays, the rulebook via `tools/rulebook/sync.sh`) and the
+estimator contract (`choose`, the player-dict keys). **Constraints for the refactor:** nothing in Advisor/ imports
+pilot.py/world.py -- except `data/rulebook/build_shops.py`, which imports **`tools/observe/shopmath.py`** (keep that
+path or tell the Advisor); **the logs are the real interface** (decisions/events/state.jsonl kinds and fields,
+levels/*.txt, scorecards, missions.json): keep their formats; `TICK_S = 0.625` (world.py) is mirrored in its replay.py;
+if escape()/group_tick/speed_start/berserk/fear functions are renamed, tell the Advisor (its POLICY_VERSION comment
+names them).
 
 **Session 11's handoff already exists** (below, Part A, by session 9). Anything session 10 wants session 11 to know
 goes in **Part B** of that handoff, marked as coming from session 10 -- don't rewrite Part A. Update the memory

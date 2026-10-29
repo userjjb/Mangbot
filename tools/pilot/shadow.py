@@ -60,10 +60,12 @@ class Shadow:
         try:
             # (entries (name, dist[, hp_frac, awake]): options_sim 26h reads the asleep flag per member)
             team = [tuple(m) for m in snap["team"] if m[0] in self.sim.RACES]
-            # the Pilot's rolling XP-per-gold rate (the user, 10-25) in place of the module's constant
+            # the Pilot's rolling XP-per-gold rate (the user, 10-25), passed per call in the player dict (options_sim
+            # 28m, the Advisor's docs memo 10-28: thread-safe, in place of setting the module's XP_PER_GOLD)
+            p = dict(snap["p"])
             if snap.get("xp_per_gold"):
-                self.sim.XP_PER_GOLD = snap["xp_per_gold"]
-            choice, why, table = self.sim.choose(snap["p"], team, n=N, options=snap.get("options"))
+                p["xp_per_gold"] = snap["xp_per_gold"]
+            choice, why, table = self.sim.choose(p, team, n=N, options=snap.get("options"))
             out = {"choice": choice, "why": why, "table": table[:6], "team": team}
         except Exception as e:
             out = {"error": repr(e)}

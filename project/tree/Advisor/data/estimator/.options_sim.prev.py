@@ -298,7 +298,7 @@ def escape_move(st, crowd):
     return any(use(st, it) for it in order)
 
 
-POLICY_VERSION = "pilot-escape-2026-10-27k"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
+POLICY_VERSION = "pilot-escape-2026-10-28l"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
 
 
 def worst_turn(st, adj):
@@ -616,7 +616,8 @@ def q(a, f):
 
 SAFE_NEAR = 0.02       # an option is safe if P(lowest HP <= 10%) <= 2% ...
 SAFE_LOW_P10 = 0.30    # ... and its 10th-percentile lowest HP is >= 30% of max
-MIN_GAIN = 50          # ... and by at least this much (XP net of gold; ~5 kills at 650 ft) to override the rules on XP
+MIN_GAIN = 50          # ... and by at least this much (XP net of gold) to override the rules on XP -- or 30 s of play,
+MIN_GAIN_BLOCKS = 48   # whichever is more: 48 blocks x p["xp_rate_per_block"] (else xp_per_block) (the user via the Architect, 10-28)
 XP_PER_GOLD = 1.0      # FALLBACK only: the Pilot sets options_sim.XP_PER_GOLD per snapshot (rolling XP/gold, 643465e);
                        # replays should use the estimator record's xp_per_gold
 
@@ -718,6 +719,8 @@ def choose(p, team, n=100, arrivals=(), options=None, z=2.0):
     def time_used(r):
         """Blocks this line takes: the fight (or the walk out) plus resting back the HP it cost."""
         return r["blocks"] + 1 + max(0, p["hp"] - max(0, r["end_hp"])) / regen
+    rate = p.get("xp_rate_per_block", xpb)  # the play rate (XP per game turn) for the floor; doesn't switch on the time cost
+    min_gain = max(MIN_GAIN, MIN_GAIN_BLOCKS * rate)
     base = res["rules"]
     bn, bl, bsafe = summary(base)
     table, best, why = [], "rules", "rules (no option clearly better)"
@@ -734,7 +737,7 @@ def choose(p, team, n=100, arrivals=(), options=None, z=2.0):
             continue
         if not bsafe and safe and (best == "rules" or nn < best_gain):
             best, why, best_gain = o, f"rules unsafe (P near death {bn:.2f}); {o} safe ({nn:.2f})", nn
-        elif bsafe and safe and best_gain >= 0 and mean > z * se and mean >= max(MIN_GAIN, 0.10 * statistics.mean(
+        elif bsafe and safe and best_gain >= 0 and mean > z * se and mean >= max(min_gain, 0.10 * statistics.mean(
                 r["xp"] for r in base)) and mean > best_gain:
             best, why, best_gain = o, f"+{mean:.0f} XP net of gold vs rules (SE {se:.0f}), both safe", mean
     if not bsafe and best == "rules":
