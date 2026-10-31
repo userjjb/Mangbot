@@ -95,7 +95,7 @@ none is fixed. **[N]** = Navigator-facing.
   Pilot was right:** Ibun and Lugdush are no longer above clvl-29 Dive04, so it drank Speed + Berserk, killed the unique
   and its band (lowest HP 76-80%) and fetched the drop. The scenarios are stale, not the Pilot: to test the recall rule
   they need a unique above our level (A2's Ulwarth is also below 29 now). **ask** (rescale A2/A2I/A2L). **Waits until we have implemented the test server (the user, 10-29).**
-- **Text only (add to B11/B16):** `loadout_info`'s header tells the Navigator "slays, brands and criticals aren't
+- **Text only (add to B11/B16; done with them in 2.43.1, except the SIGTERM note, which is no text fix):** `loadout_info`'s header tells the Navigator "slays, brands and criticals aren't
   simulated" (they are) **[N]**; geareval's module docstring (optimizer "not built", no resists/criticals);
   `group_danger` docstring (+150 drain weight); world.py's `arrived_by` 'recall'; `compact()` "map: dungeon only";
   TownKit "one more look after 40 s"; c-tool.c header `interactive 21` (13); hotswap.sh "untested"; setpiece.py
@@ -127,30 +127,30 @@ none is fixed. **[N]** = Navigator-facing.
   **do**. **done (session 10, 2.38.0)**
 - **B9** `design_pilot.md` stale beyond its disclaimer (non-goals as goals, orders `danger`/`keep (min rations)`, `pilotctl
   log`, 10 Hz vs 20, "Phase 1 (C)"). -- S/S -- **do** (keep the architecture part, mark the rest history, point to
-  docs/pilot-core.md, goals-and-plans.md).
+  docs/pilot-core.md, goals-and-plans.md). **done (session 10, 2.43.1)**
 - **B10** `design_gear.md`: score per game turn (code: per real minute); tie-break AC (code: lowest HP then EHP);
-  slays/brands now simulated; hard set 22 not 21; awake 0.4. -- S/S -- **do**.
+  slays/brands now simulated; hard set 22 not 21; awake 0.4. -- S/S -- **do**. **done (session 10, 2.43.1)**
 - **B11** Stale docstrings/comments in code (text only): pilot.py module docstring (2026-09 8-rule order); `escape()`
   (misses teleport, Speed, WoR, futility, kill-caster, crowd teleport); `Recover` ("arrival rule" is the reflexes');
   TownKit ("40 s"; code 4 x 35 s); HouseBank ("town house"); `loadout_info` and geareval module ("slays not
-  simulated", "optimizer not built"); reflexes step numbers ("3a'" twice). -- S/S -- **do**.
+  simulated", "optimizer not built"); reflexes step numbers ("3a'" twice). -- S/S -- **do**. **done (session 10, 2.43.1)**
 - **B12** `c-tool.c` header: DM menu is 13 not 21; "(PKT_CLEAR...)" under the wrong verb; event list misses
-  `local_browser`, `target`, `flags`, `floor`, `options`, `minimap`. -- S/S (comment, no rebuild needed) -- **do**.
+  `local_browser`, `target`, `flags`, `floor`, `options`, `minimap`. -- S/S (comment, no rebuild needed) -- **do**. **done (session 10, 2.43.1)**
 - **B13** operations.md: `git push origin master` (we push `restructure`); "frozen logins wait" (H1: they work);
   "depth indicator is one signed byte" (live only; test server sends 16 bits); "Tools" section stale (link docs/);
-  record the user's 10-27 decision to keep `ask_unlimited` under "User decisions". -- S/S -- **do**.
+  record the user's 10-27 decision to keep `ask_unlimited` under "User decisions". -- S/S -- **do**. **done (session 10, 2.43.1)**
 - **B14** roles.md: Navigator "to be built" (built 09-27); "Where knowledge lives" misses FIELD-NOTES, BRIEF-TEMPLATE,
-  docs/. -- S/S -- **do**.
+  docs/. -- S/S -- **do**. **done (session 10, 2.43.1)**
 - **B15** Memory pointers: project-map "ARCHITECT HANDOFF" (now "WHICH HANDOFF IS YOURS"); inbox-watcher "lasts at most
   10 minutes" (script loops; 10 min is the Bash timeout); advisor-memos is a log ending 10-26 (point to memos/). --
-  S/S -- **do** (with C11, per the SYNC RULE).
+  S/S -- **do** (with C11, per the SYNC RULE). **done (session 10, 2.43.1)**
 - **B16** Ops/harness headers: hotswap.sh "Untested in the dungeon yet" (H1/H1r passed 10-25); setpiece.py argparse help
   (`sid` lists 4 of 39, `--depth` 300-500 vs 300-650); harness/README misses A2I, A2K, C8; scorecard.py docstring "six
-  groups/16 categories" (8/17); watch.py docstring omits F5/Ctrl-F and says it never sends a game command. -- S/S -- **do**.
+  groups/16 categories" (8/17); watch.py docstring omits F5/Ctrl-F and says it never sends a game command. -- S/S -- **do**. **done (session 10, 2.43.1)**
 - **B17** One home for the mission checklist (now spread over HANDOFF 8/11, VACATION-NOTES §5, BRIEF-TEMPLATE): docs/process.md
-  §3, linked from brief and handoff. -- S/S -- **do**.
+  §3, linked from brief and handoff. -- S/S -- **do**. **done (session 10, 2.43.1)**
 - **B18** Advisor-owned files (don't edit, memo the Advisor): `rulebook/README.md` (`build_all.sh`, missing
-  `depth_value.csv`); `rulebook/fight_sim.py` hard-codes `Advisor/data/monsters/monsters.csv`. -- S/S -- **do** (memo).
+  `depth_value.csv`); `rulebook/fight_sim.py` hard-codes `Advisor/data/monsters/monsters.csv`. -- S/S -- **do** (memo). **done (session 10, 2.43.1)**
 
 ## C. Remove / archive (dead scripts and code)
 

@@ -16,9 +16,9 @@ by components; the first option is the current gear.
 |---|---|---|
 | rules | abilities the depth requires: Free Action (any depth), See Invisible (from 600 ft). An option losing one is vetoed. With `no_loss` (the Pilot's automatic swaps) losing any of `NO_LOSS` (Free Action, See Invisible, resist blindness, resist confusion, hold life: they gate escapes and fights) rules it out; other resists too unless `TRADE_RESISTS` (off: the user chose B on 10-26 -- automatic swaps keep every resist; `gearcmp` shows the trades for the user or the Navigator to decide) | `REQUIRED`, `NO_LOSS` |
 | static | the numbers the server derives from the loadout: stats (`modify_stat_value`), blows (the blows table, STR/DEX, weight), damage per round, to-hit, AC (incl. DEX), max HP (CON), speed, abilities/resists gained and lost. The gear-free parts are backed out of the sheet once (`Character`), and `check()` compares the model with the sheet | `xtra1.c`, rulebook `char_stat_tables.csv`, `char_blows_table.csv`; items from `lib/edit/object.txt`, `ego_item.txt`, `artifact.txt` |
-| sim | the Advisor's `options_sim.rollout` (26f: elemental and high resists, saving throws vs cause wounds/mind blast) with its base policy (the Pilot's rules), the same seeds for every option, every monster awake, full HP, over four sets: **met** = 40 fights Dive04 met at the depth range (its decision log's `mons` records, 20 seeds each in `gearcmp`, 10 in town), **depth** and **deeper** = 500 fights each from the Advisor's `scenarios.make` at the depth and 100 ft deeper (boost 2 for auto_scum, uniques already killed left out, one seed), **hard** = the 21 replayed emergencies | `Advisor/data/estimator/options_sim.py`, `scenarios.py` (imported) |
-| score | **(XP - gold spent x the rolling XP-per-gold) / (fight turns + rest turns to regain the HP lost)**, pooled over met + depth (the Advisor, 10-26: puts AC and damage on one scale). Rest turns: regenhp (`dungeon.c`: (mhp x 394 + 1442)/65536 HP a block resting), game time like the fight turns (the Advisor's second review: an earlier /4.5 for the time bubble mixed clocks) | `summary`, `rest_turns` |
-| verdict | vetoes; an option less safe in hard / depth / deeper (near-death rate worse beyond 2 SE, or the worst 5% of fights' lowest HP lower with a bootstrap 95% interval over the scenarios below 0) is ruled out; a change must beat the current score by 3% **and** 2 standard errors of the paired difference (by scenario, delta method); ties within 1% go to the safer option (lowest HP in the hard fights, then AC) | `compare`, `paired_gain` |
+| sim | the Advisor's `options_sim.rollout` (26f: elemental and high resists, saving throws vs cause wounds/mind blast) with its base policy (the Pilot's rules), the same seeds for every option, full HP, over four sets (every monster awake, except in **hard**: the simulator's P(awake) 0.4): **met** = 40 fights Dive04 met at the depth range (its decision log's `mons` records, 20 seeds each in `gearcmp`, 10 in town), **depth** and **deeper** = 500 fights each from the Advisor's `scenarios.make` at the depth and 100 ft deeper (boost 2 for auto_scum, uniques already killed left out, one seed), **hard** = 22 fights: the 21 replayed emergencies and a built-in Light hound pack (m48) | `Advisor/data/estimator/options_sim.py`, `scenarios.py` (imported) |
+| score | **(XP - gold spent x the rolling XP-per-gold) / real minutes**, real minutes = (fight turns + rest turns to regain the HP lost / 2.6) x 0.625 s / 60, pooled over met + depth (the Advisor, 10-26: puts AC and damage on one scale). Rest turns: regenhp (`dungeon.c`: (mhp x 394 + 1442)/65536 HP a block resting); 2.6 (`REST_SPEEDUP`) is the measured speed-up of resting in wall time | `summary`, `rest_turns` |
+| verdict | vetoes; an option less safe in hard / depth / deeper (near-death rate worse beyond 2 SE, or the worst 5% of fights' lowest HP lower with a bootstrap 95% interval over the scenarios below 0) is ruled out; a change must beat the current score by 3% **and** 2 standard errors of the paired difference (by scenario, delta method); ties within 1% go to the safer option (lowest HP in the hard fights, then EHP, then the current gear) | `compare`, `paired_gain` |
 
 **The item slot evaluator** (`compare_slot`): one option per candidate in its slot; a ring is tried in place of each
 worn ring.
@@ -44,12 +44,13 @@ weapon would give 3 blows at STR 18/70, DEX 18/20.
 - Resists are simulated since options_sim 26f (the Advisor's table: at 650-1000 ft their value is small, e.g. p99 HP
   lost 129 -> 117 with the four base resists at 1000 ft). In this server a resist doesn't protect the pack (the item
   damage chance comes from the unresisted damage; only immunity does), so a resist is its damage reduction.
-- No criticals, no slays/brands in the simulator (the static damage ignores them too; `weapon_brand` in pilot.py
-  counts brands at half), no speed from gear (the simulator's speed is the Speed potion's timer), no stealth, no
-  light radius, no stat sustains or drains over time, no weight limit (slowness from a heavy pack).
+- Slays, brands and criticals are simulated since options_sim 27k (geareval passes the weapon's slays, brands and
+  weight); the static `~N/round` ignores them (`weapon_brand` in pilot.py counts brands at half). No speed from
+  gear (the simulator's speed is the Speed potion's timer; a slower loadout is ruled out instead), no stealth, no
+  light radius, no stat sustains or drains over time.
 - Scenario sets: most fights are trivial (the Advisor: the differences live in the tail), hence the 500-fight depth
   sets and the tail gates. Escorts aren't modelled in `scenarios.make`; the hard set is 21 old emergencies (300-700
-  ft, Spear-era).
+  ft, Spear-era) and one Light hound pack (750 ft).
 - Time: ~2-3 s for one candidate (2 options), ~5 s for six options; cached per item and gear in the Pilot.
 - The model backs the gear-free parts out of the sheet; an unknown item (no plusses shown, `{good}`) is read as its
   base kind.

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """scribe -- a messenger character, so Claude can answer the user in game.
 
-Logs in a character (created with --birth if needed) that stays in town, and
+Logs in a character (--nick, default Scribe; created with newchar.py's
+DEFAULT_BIRTH if needed) that stays in town, and
 sends every line written to FIFO as a private chat message to --to (the
 user's character). Long lines are split into chat-sized pieces (a chat line
 holds 59 characters, including the "Name: " prefix).

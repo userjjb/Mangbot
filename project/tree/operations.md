@@ -16,7 +16,9 @@ can read them. Memory now only points here.) Credentials are **not** in this fil
 - **Public repo: https://github.com/userjjb/Mangbot** (remote `origin` of `github/`, the user's,
   2026-10-07). Before a push run `tools/snapshot.sh` (copies the project state, both memories and
   the global CLAUDE.md into `github/project/`, minus secrets and bulk; see `project/README.md`),
-  commit, then `git push origin master`. Auth: the user's token in git's credential store.
+  commit, then `git push origin restructure --tags` (the current branch; `master` stays at tag
+  `pre-restructure`; docs/process.md has the per-version checklist). Auth: the user's token in git's
+  credential store.
 - Source tree: `github/`, a git repo (commit 1 = pristine MAngband 1.5.3; per the Advisor's
   versions memo, `memos/2026-09-29-versions-and-forum-rules.md`, it is upstream develop at
   2022-03-13, c97e873, not the v1.5.3 tag: 6 files differ, mostly archery energy; plays as 1.5.3). Build: `cd github &&
@@ -114,9 +116,10 @@ into the Temple (4), but everything it carried is dropped where it died.
   Live D6: the factor while exploring averages 2.2-3.7 (runs at 5x between stops).
 - The map is 198x66 in absolute coordinates; closed house doors are drawn as `0`. `--visuals`
   gives every monster race a unique glyph (needs option `avoid_other`).
-- The depth indicator is **one signed byte**: wilderness squares beyond index -127 wrap to
-  positive values (14N 2W = index -543 showed as -31). The `minimap` query (after `custom M`)
-  gives the true position, e.g. `[14N, 2W]`.
+- On the **live server** the depth indicator is **one signed byte**: wilderness squares beyond
+  index -127 wrap to positive values (14N 2W = index -543 showed as -31). The `minimap` query
+  (after `custom M`) gives the true position, e.g. `[14N, 2W]`. Our test server sends it as 16 bits
+  (no wrap; docs/client-server.md "Depth indicator").
 - `--pktlog FILE` logs every packet (and keys in the interactive client). Password hashes are
   blanked. Verified on the wire: store rows come before STORE_INFO; leaving a store = PKT_WALK
   dir 0.
@@ -127,12 +130,9 @@ into the Temple (4), but everything it carried is dropped where it died.
 
 ## Tools
 
-- `github/tools/shopcat/`: the shop cataloger (README). Regression run: `runs/regress.py`
-  (Surveyor: home from 1E, restock twice, 6 town doors, a 1N tour).
-- `github/tools/observe/study/`: `record.py` (record a human's session), `timeline.py` / `screen.py`
-  (study it), `scribe.py` (answer the user in game).
-- `github/tools/pilot/`: the Pilot, `pilotctl.py`, `restart.sh`, `HANDBOOK.md` (see
-  `design_pilot.md`).
+Every tool (the Pilot, pilotctl, observers, harness, rulebook, shopcat, ops scripts) is described in
+`docs/README.md` and the component files it links. Not there in detail: the shopcat regression
+run `runs/regress.py` (Surveyor: home from 1E, restock twice, 6 town doors, a 1N tour).
 
 ## Verified server behaviour
 
@@ -225,6 +225,11 @@ into the Temple (4), but everything it carried is dropped where it died.
 - Keep ghosts ON (mirrors the live servers).
 - Night travel: a Brass Lantern and oil rather than waiting for day.
 - Roles: `roles.md`. Main chats are the Architect unless the user says otherwise (e.g. Advisor).
+  The Architect's `pilotctl` calls (e.g. `house buy`) need `PILOT_ROLE=architect` **and**
+  `PILOT_TOKEN` from `runs/private/architect.token`; without the token they run as the Navigator's
+  (docs/commands.md "Role"). The Navigator never sets either.
+- Keep `runs/pilot/dive04/ask_unlimited` (the user, 2026-10-27): while it exists the Navigator's
+  `ask` has no rate limit (otherwise 1 per 5 minutes, 4 per hour).
 
 ## Agent-tooling gotchas
 

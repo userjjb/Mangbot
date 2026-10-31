@@ -26,9 +26,12 @@ shaded); --hash keeps the game's '#' and '%'.
 
 Keys: type + Enter = note; Tab = the Navigator's view (exactly what it last
 read from the Pilot, and how long ago) / back; F2 (or Ctrl-E) = the equipment, F3 (or Ctrl-P) = the
-whole pack, again or Esc = back; Esc = clear the line; PgUp/PgDn = scroll the feed;
-Ctrl-C = quit (the character keeps playing). Watching never sends a game
-command.
+whole pack, again or Esc = back; F5 (or Ctrl-F) = freeze/thaw the test server's time
+(testserver/FREEZE, as `freeze.sh toggle`; the Pilot holds while frozen); Esc = clear
+the line; PgUp/PgDn = scroll the feed; Ctrl-C = quit (the character keeps playing).
+
+Watching sends no game command: it polls the Pilot (view, viewmap, navview) and sends
+it notes. But F5 does stop the test server's clock, for every player on it.
 """
 import argparse
 import curses

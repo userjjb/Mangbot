@@ -13,7 +13,7 @@ emergency, hard_fight and band triggers -> `estimator` records in decisions.json
 bump POLICY_VERSION, keep `choose()`/`rollout()` signatures, memo the Architect; `base_policy` must mirror the Pilot's escape rules
 (the Architect announces changes); never change user-decided values (XP_PER_GOLD is now passed per call; MIN_GAIN floor approved).
 Contract and player-dict keys: `../memos/to_architect/2026-10-28-advisor-docs.md` (+ `noise`, 29o).
-Pilot version 2.38.0 (10-29; no escape-order change, 29o still mirrors it; geareval encounters window days=3/min_n=20; replied on commands_per_min in to_architect/2026-10-29-commands-per-min.md); versions/missions in `../CHANGELOG.md`. Last missions m56-m60 (10-28); none since 2.37.0.
+Pilot version 2.43.0 (10-31: 2.41 rations/oil valued by need, 2.42 mushrooms by itemvalue, 2.43 new log kind role_refused; nothing mirrored changed). 2.38.0 (10-29; no escape-order change, 29o still mirrors it; geareval encounters window days=3/min_n=20; replied on commands_per_min in to_architect/2026-10-29-commands-per-min.md); versions/missions in `../CHANGELOG.md`. Last missions m56-m60 (10-28); none since 2.37.0.
 
 **Next:** (1) review the `estimator` records of the next missions — three eras: before 10-29 08:35 (understated to-hit/to-dam),
 08:35-12:42 (no slays), from 12:42 (complete); compare agree rates per era and trigger; (2) re-check the wake calibration with
@@ -69,6 +69,7 @@ Architect builds everything else.
    ../docs/CONDENSED.md (Architect session 10), my side quoted from to_architect/2026-10-28-advisor-docs.md.
 5d. ~~P_WAKE~~ done 10-29: options_sim 29o uses the server's wake rule (100/dist per noticed turn; NOISE_FIGHT 18 calibrated).
    Re-check with more looks pairs in fights later (only 21 pairs, mostly idle).
+5e. 10-31: rulebook README (build_all path, depth_value row) + fight_sim MON prefers monsters_raw.csv beside it (B18); Architect to re-sync.
 6. Housekeeping: the 09-29 shops memo assumed CHR 4 = Dive04's natural CHR; it is drained to 3 now (use `data/rulebook/shop_owners.csv`, CHR 3 columns, until restored).
 
 ## Architect schedule

@@ -5,7 +5,7 @@
 # is freed only after 15 s idle, and that idle timer runs in the game tick, which is stopped (operations.md,
 # Orphans), so the new Pilot resumes it in memory, where it was. The trip plan resumes from plan.json; the
 # Pilot's own memory (the level map it built, refused stairs, fights) starts over, as in any restart.
-# Untested in the dungeon yet: see next_steps.md.
+# Tested in the dungeon by set-pieces H1 (mid-trip) and H1r (with a recall pending), both passed 2026-10-25 (~4 s swap).
 set -u
 NICK=${1:?usage: hotswap.sh NICK [PORT]}; PORT=${2:-28346}
 HERE=$(cd "$(dirname "$0")" && pwd); RUNS=$(cd "$HERE/../../.." && pwd)/runs

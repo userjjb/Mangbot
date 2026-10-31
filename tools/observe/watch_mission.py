@@ -1,5 +1,5 @@
-"""watch_mission.py [MAX_S] [--nick dive04] [--fresh] -- wait for something the Architect should look at during a
-mission; print it and exit (or after MAX_S seconds, default 1500: "quiet for N s").
+"""watch_mission.py [MAX_S] [--nick dive04] [--fresh] [--backlog S] -- wait for something the Architect should look at
+during a mission; print it and exit (or after MAX_S seconds, default 1500: "quiet for N s").
 
 Watches runs/pilot/NICK/decisions.jsonl, asks.jsonl and pilot.log: Navigator questions (NAV ASK), emergencies and
 escapes (not plain trip recalls), deaths, stat drains, user messages, stuck plans, plan ends, the trip's "couldn't

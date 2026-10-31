@@ -1,5 +1,8 @@
 # Navigator mission brief: the template (the Architect, session 7, 2026-10-26)
 
+**The whole mission checklist (before, launch, monitor, answer, intervene, wrap-up) is in
+`/projectnb/jbrcs/mangband/docs/process.md` §3, "How a mission flows".** This file is only the brief.
+
 How to launch a mission (as the Architect: `export PILOT_ROLE=architect PILOT_TOKEN=$(cat /projectnb/jbrcs/mangband/runs/private/architect.token)`): `python3 pilot/pilotctl.py --nick dive04 mission start mNN navigator=haiku
 effort=low` (in `github/tools`), then the Agent tool with `subagent_type: "navigator"`, `model: "haiku"`, `effort: "low"`
 (set a model or effort only as the user asks), `run_in_background: true`, and the prompt below. Fill the `{...}`

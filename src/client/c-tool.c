@@ -17,10 +17,12 @@
  *   interactive  {header, kept}             -- remote browser; ESC sent back unless
  *                                             keys are queued ('interactive' verb)
  *   special      {lines[]}                  -- the special screen (DM menu), on refresh
+ *   local_browser {header}                  -- server asked for a local file browser (reported only)
  *   confirm      {type, id, prompt, answer} -- declined unless "confirm yes"
  *                                             was sent within the last 5 s
  *   monlist      {lines[]}                  -- the server's list of visible monsters
  *   itemlist     {lines[]}                  -- ... and of seen objects
+ *   target       {y, x, win, text}          -- one 'look' step, e.g. "a Warg (unhurt, asleep) [r,...]"
  *   level        {depth}                    -- depth changed (also once at start)
  *   store        {flag, name, owner, num, items[]}
  *   store_leave  {why?}                     -- server closed the store (why: we sent a non-store command, which closes it on the server)
@@ -28,8 +30,9 @@
  *   pos          {y, x}                     -- own position (absolute), on change
  *   ack          {cmd}                      -- command accepted and sent
  *   error        {text[, cmd]}
- *   (replies)    commands, status, inven, map -- see tool_do_command();
- *                map has rows[] (chars) and attrs[] (chr(48+attr) per cell)
+ *   (replies)    commands, status, inven, map, flags, floor, options,
+ *                minimap -- see tool_do_command(); map has rows[] (chars)
+ *                and attrs[] (chr(48+attr) per cell)
  *
  * Commands (one per line; DIR is a keypad digit 1-9, 5/0 = none):
  *   walk DIR                                -- also leaves a store
@@ -40,10 +43,10 @@
  *   eat ITEM                                -- ITEM = inventory index (a=0)
  *   look N                                  -- N steps of the server's targeting: "target" events
  *   clear                                   -- drop our queued commands on the server
+ *                                             (PKT_CLEAR, what ESC sends)
  *   redraw                                  -- ask the server to resend all our state (PKT_REDRAW)
  *   flags                                   -- query: resist/ability grid {flag: slots granting it}
  *   floor                                   -- query: the item under us {name, tval, number}
- *                                             (PKT_CLEAR, what ESC sends)
  *   rest                                    -- toggle resting (PKT_REST; the
  *                                             'state' indicator shows it)
  *   custom KEY [store] [item=N] [dir=N] [value=N] [entry=TEXT]
@@ -60,10 +63,10 @@
  *   minimap                                 -- query: the (M)ap screen's rows, after
  *                                             'custom M'; its frame shows the
  *                                             wilderness position, e.g. [14N, 2W]
- *   interactive TYPE                        -- open a server screen (e.g. 21 = the DM
- *                                             menu, '&'); it stays open while keys
- *                                             are queued, and its text arrives as
- *                                             'special' events
+ *   interactive TYPE                        -- open a server screen (e.g. 13 =
+ *                                             SPECIAL_FILE_MASTER, the DM menu, '&');
+ *                                             it stays open while keys are queued,
+ *                                             and its text arrives as 'special' events
  *   keys TEXT                               -- queue keys for it (\e ESC, \r Enter,
  *                                             ^X Ctrl-X, \xNN, \\); ESC closes it
  *   special                                 -- query: the special screen's rows

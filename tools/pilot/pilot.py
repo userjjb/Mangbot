@@ -1,25 +1,15 @@
 #!/usr/bin/env python3
 """pilot -- plays a MAngband character second to second; an agent steers it.
 
-Runs as a daemon that owns the client (mangclient -mtool). Each tick (~20/s)
-it applies client events to its World, then acts on the first rule that
-fires:
+Runs as a daemon that owns the client (mangclient -mtool). Each tick (~20/s) it applies the client's events to its
+World, answers requests, then acts on the first layer that acts: the reflexes (survival: death, emergency escape,
+group danger, cures, danger in view, fear, hunger, adjacent monsters, rest; see Pilot.reflexes), the Navigator's
+`react` rules, the Pilot's item work at quiet moments, one step of the current goal, the trip plan, and last the
+idle rule (Word of Recall after idle_recall_s without the agent).
 
-  1. dead/ghost                  -> stop
-  2. emergency (HP < flee_hp)    -> stairs underfoot, else Phase Door, else a
-                                    cure potion; then tell the agent
-  3. arrival into danger         -> take the stairs straight back
-  4. hungry                      -> eat (no food: recall)
-  5. monster adjacent            -> stand still: the server's auto-retaliate
-                                    fights (warn the agent below think_hp)
-  6. hurt, nothing in view       -> rest
-  7. the current goal            -> one step of it
-  8. no goal                     -> safe idle; after idle_recall_s without
-                                    the agent, read Word of Recall
-
-The agent talks to it through pilotctl.py (a unix socket): status, goals,
-orders, actions, and wait-attention (block until the pilot needs a decision).
-See HANDBOOK.md for the player's view; design_pilot.md for the why.
+The agent talks to it through pilotctl.py (a unix socket): status, goals, plans, orders, actions, and wait-attention
+(block until the pilot needs a decision). The code as it is: docs/pilot-core.md (this module, the tick loop),
+docs/pilot-combat.md (reflexes, escape), docs/goals-and-plans.md, docs/commands.md; the player's view: HANDBOOK.md.
 """
 import argparse
 import collections
@@ -956,10 +946,10 @@ class Hunt(Goal):
 
 
 class Recover(Goal):
-    """After an emergency escape by the stairs: rest on the staircase, take it
-    again if threatened (the arrival rule), and once healed go back up if we
-    came down past max_depth -- rather than carrying on at the new depth
-    (Dive03 kept exploring at 1000 ft after fleeing down and died there)."""
+    """After an emergency escape by the stairs: rest on the staircase (the reflexes, not this goal, take the stairs
+    again if the arrival is into danger), and once healed go back up if we came down past max_depth -- rather than
+    carrying on at the new depth (Dive03 kept exploring at 1000 ft after fleeing down and died there). Then the
+    interrupted goal resumes."""
 
     def __init__(self, came_by, prev_goal=None):
         self.came_by = came_by
@@ -1848,11 +1838,12 @@ def town_houses(memory, door="0"):
 
 class HouseBank(Goal):
     """The gold bank (the user, 10-27: thieves took ~11,200 gold in five touches, ~10% of the purse each; "buy a house
-    and bank gold"). An owned town house keeps what's dropped in it (saved with the server; monsters can't enter or
-    take floor gold; cmd2.c, melee2.c). One pile on the square inside the door (gold piles never merge, and a drop
-    with no free square vanishes -- object2.c): stepping in picks the whole bank up, then a deposit drops all but
-    `keep` back on that square with the door closed. mode: 'buy' (open the door: "This house costs N gold."; buy
-    with 'h' if we can spare it, then deposit), 'deposit' or 'withdraw'."""
+    and bank gold"). An owned house (Dive04's: the wilderness house north of town, depth -1) keeps what's dropped in
+    it (saved with the server; monsters can't enter or take floor gold; cmd2.c, melee2.c). One pile on the square
+    inside the door (gold piles never merge, and a drop with no free square vanishes -- object2.c): stepping in picks
+    the whole bank up, then a deposit drops all but `keep` back on that square with the door closed. mode: 'buy'
+    (open the door: "This house costs N gold."; buy with 'h' if we can spare it, then deposit), 'deposit' or
+    'withdraw'."""
 
     def __init__(self, mode, keep=None, house=None):
         self.mode, self.keep, self.house = mode, keep, house
@@ -2124,8 +2115,8 @@ class TownKit(Goal):
     be; then buy by priority: two Words of Recall, the supply gate's minimums for
     the planned depth, Restore for a drained STR/DEX/CON, the kit's stock levels,
     and last the Navigator's buy list. Each shop is visited once per stage; an
-    essential item out of stock gets one more look after 40 s (stock turns over
-    every ~33 s)."""
+    essential item out of stock gets up to 4 waits of 35 s (RESTOCK_WAITS) for
+    the shops to restock (stock turns over every ~33 s)."""
 
     RESTOCK_WAITS = 4          # critical items out of stock: up to 4 waits of 35 s for the shops to restock
 
@@ -3794,13 +3785,13 @@ class Pilot:
             self.notify("danger_seen", f"{self.danger_text(near_danger[0])} in view"
                                        f"{' while ' + prev if prev else ''}: heading for the stairs")
             return True
-        # 3a'. Something we can't see is attacking (an invisible monster, or one
+        # 3b. Something we can't see is attacking (an invisible monster, or one
         # out of sight): we can't fight it, so leave (Advisor memo, Addendum 2
         # item 3). Also HP falling with nothing in view and nothing else to
         # explain it.
         if self.unseen_tick(now):
             return True
-        # 3b. A pack coming at us in the open: back into a corridor so they
+        # 3c. A pack coming at us in the open: back into a corridor so they
         # trickle into melee one at a time ("retreat behind a turn")
         # (never while fleeing: mission 10 backed into a corridor twice instead
         # of walking to the stairs away from Mughash, and died there)
@@ -3808,7 +3799,7 @@ class Pilot:
                 and not isinstance(self.goal, (Flee, Recover, Recall)):
             if self.choke_tick(now):
                 return True
-        # 3a''. A summon trap ("You are enveloped in a cloud of smoke!", cmd1.c 1049): 3-5 awake monsters from 5 levels
+        # 3d. A summon trap ("You are enveloped in a cloud of smoke!", cmd1.c 1049): 3-5 awake monsters from 5 levels
         # deeper, uniques allowed, appear around us -- m26's Nar group (the Advisor's structures memo). Phase Door at
         # once, before they act; the danger rules take it from there
         smoke = [ts for ts, t in w.messages if t.startswith("You are enveloped in a cloud of smoke") and now - ts < 2]
@@ -3823,7 +3814,7 @@ class Pilot:
                 self.notify("emergency", "a summon trap (monsters from 5 levels deeper appear around us): phased away "
                                          "at once", action=True)
                 return True
-        # 3a'. Slowed to half speed or worse with something on us: a Potion of Speed (m26: Gorged and slowed to
+        # 3e. Slowed to half speed or worse with something on us: a Potion of Speed (m26: Gorged and slowed to
         # -20 among six monsters; the Architect quaffed one by hand)
         if self.our_slowness() >= 2 and (w.adjacent_monsters() or now - w.last_hit_t < 2) and \
                 waited(getattr(self, "speed_t", 0), 40) and not self.buff_on("fast"):    # (a potion lasts ~20-45 turns)
@@ -3835,7 +3826,7 @@ class Pilot:
                 self.notify("tactic", f"slowed to {(w.ind.get('speed') or [0])[0]} with monsters on us: quaffed "
                                       f"{one_of(pot['name'])}")
                 return True
-        # 3b'. Afraid (a warrior can't melee). The user: if not in danger, don't
+        # 3f. Afraid (a warrior can't melee). The user: if not in danger, don't
         # spend consumables -- kite over cleared ground until it wears off; only
         # in danger cure it (Boldness/Heroism/Berserk) or phase away.
         if w.flag("afraid") and mons_near:
@@ -3873,10 +3864,7 @@ class Pilot:
                     self.cmd(f"custom r item={pd['item']}", "afraid: phase door away", hold=0.6)
                     self.notify("afraid", "afraid (can't melee) and cornered: phased away")
                     return True
-        # 3b''. Monsters that frighten you again and again: not worth it. Walk
-        # away over cleared ground (phase if it's dangerous and next to us), and
-        # tell the Navigator once per level.
-        # Monsters that never move (molds, jellies, mushroom patches, floating
+        # 3g. Monsters that never move (molds, jellies, mushroom patches, floating
         # eyes) only matter next to us, and there auto-retaliate fights them: a
         # poison-mold cluster killed a forum player, a death mold disenchants, a
         # floating eye paralyses. Step away quietly (no event), unless the
@@ -3890,6 +3878,9 @@ class Pilot:
             return True
         if still and (self.retreat_step(still, reach=6) or self.sidestep(still)):
             return True
+        # 3h. Monsters that frighten you again and again: not worth it. Walk
+        # away over cleared ground (phase if it's dangerous and next to us), and
+        # tell the Navigator once per level.
         fearers = [m for m in mons_near if m[2].repeat_fearer and "NEVER_MOVE" not in m[2].flags]
         if fearers and not isinstance(self.goal, (Flee, Recall)):
             f = fearers[0][2]
@@ -3907,7 +3898,7 @@ class Pilot:
                     return True
             if self.retreat_step(fearers):
                 return True
-        # 3c. Light
+        # 3i. Light
         if self.town_light(now):
             return True
         # (no light at all in the dungeon: wield one even with a monster adjacent -- the set-piece
@@ -4180,10 +4171,15 @@ class Pilot:
         self._escape_walk = (getattr(self.mover, "walk_id", None), self.w.level_t) if on else None
 
     def escape(self, why):
-        """Emergency: stairs underfoot > out of combat, rest (never potions)
-        > (in melee) Phase Door > (not in melee) walk to nearby stairs, else
-        a cure potion. Rate-limited: Phase Door
-        again and again doesn't shake a pack (it burned 10 scrolls in 10 s)."""
+        """Emergency: at most one action per call, the first that applies (docs/pilot-combat.md §3; the Advisor's
+        estimator mirrors this order, so tell the Advisor when it changes): a stairs command on its way -> wait;
+        emergency loop (3 escapes in 90 s) -> Flee to stairs; stairs underfoot while threatened -> take them, then
+        Recover; out of combat -> rest or step out of sight (never potions); one turn from death -> Teleportation,
+        else Phase Door; a Potion of Speed if not fast; HP < 30% -> Word of Recall; phasing futile (3 in 20 s) ->
+        Word of Recall; an adjacent summoner/status caster we kill in 2 rounds -> attack it; a crowd in the open (or
+        afraid with 2+ adjacent) -> Teleportation; adjacent -> Phase Door (rate-limited: phasing again and again
+        doesn't shake a pack; it burned 10 scrolls in 10 s); out of melee -> walk to stairs <= 20 away; potions by
+        numbers (or Phase/Recall when they're too small); else say there's nothing left and fight on."""
         w = self.w
         now = gnow()
         if w.last_stairs_cmd and not waited(w.last_stairs_cmd[1], 1.2):
@@ -5951,12 +5947,12 @@ class Pilot:
 
     def group_danger(self):
         """Worst-case melee of everything that can reach us this turn, the
-        Borg's way: max dice x speed, +150 per stat/exp-drain blow, +200 for a
-        paralysing blow without Free Action. Monsters that never move don't
-        count (they only matter next to us, and we step away). Drain weight 50
-        (the Advisor's run post-mortem replay; the Borg uses 150). Replayed
-        over Dive03's logs, 0.3x fired 5-14 s before every drop below 50% HP,
-        0.6x only 1-5 s before."""
+        Borg's way: max dice x speed (x our_slowness), +200 for a paralysing
+        blow that beats 3/4 of our AC without Free Action; (total, names).
+        Monsters that never move don't count (they only matter next to us, and
+        we step away). No drain weight (the Borg adds 150 per drain blow; see
+        the comment below). Replayed over Dive03's logs, 0.3x fired 5-14 s
+        before every drop below 50% HP, 0.6x only 1-5 s before."""
         w = self.w
         lev = w.clvl
         ac = w.ind.get("armor", [0])[0]
@@ -10121,7 +10117,8 @@ class Pilot:
             return f"loadout optimizer failed: {e!r}"
         head = (f"loadout: {res['searched']['loadouts']} loadouts of one or two slot changes searched (pack"
                 + (f" + shop stock within {budget} gold" if shops else "") + "; every ability and resist worn is kept; "
-                "the best few simulated). Slays, brands and criticals aren't simulated.")
+                "the best few simulated, slays, brands and criticals included; the ~N/round figures leave out "
+                "slays).")
         if len(res["options"]) == 1:
             return head + "\nnothing to try: no loadout keeps your abilities and resists and looks better on paper"
         out = [head, geareval.report(res)]
@@ -10368,7 +10365,7 @@ class Pilot:
             [f"{w.memory.get(q, '?')} {q[0]},{q[1]} ({w.dist(q)})" for q in rest]
         if names or bits:
             lines.append("Items: " + (", ".join(names[:8]) or "-") + (" | near: " + ", ".join(bits) if bits else ""))
-        # the map: dungeon only, a square crop (distance is the same in every
+        # the map: outside town (dungeon and wilderness), a square crop (distance is the same in every
         # direction: radius 9 shows everything within 9 moves)
         if w.depth and w.rows and w.pos:
             y0, x0 = w.pos

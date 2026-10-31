@@ -3354,17 +3354,18 @@ def rings_of_damage_and_accuracy():
 
 def main():
     want = sys.argv[1] if len(sys.argv) > 1 else ""
-    fails = 0
+    fails = ran = 0
     for f in CASES:
         if want and want not in f.__name__:
             continue
+        ran += 1
         try:
             ok, detail = f()
         except Exception as e:
             ok, detail = False, f"error {e!r}"
         fails += not ok
         print(f"{'PASS' if ok else 'FAIL'} {f.__name__}: {detail}")
-    print(f"{len(CASES) - fails if not want else ''} passed, {fails} failed")
+    print(f"{ran - fails} passed, {fails} failed")
     sys.exit(1 if fails else 0)
 
 

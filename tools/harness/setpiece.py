@@ -1476,8 +1476,9 @@ def fresh_depth(choices=(300, 350, 400, 450, 500, 550, 600, 650)):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("sid", help="A7 | A8 | A8o (A8 overridden) | A9 | list")
-    ap.add_argument("--depth", type=int, default=0, help="default: the least recently used of 300-500 ft")
+    ap.add_argument("sid", help="a set-piece id, e.g. A7 or H1 (`list` lists them all)")
+    ap.add_argument("--depth", type=int, default=0,
+                    help="default: the least recently used of 300-650 ft (town set-pieces always run in town)")
     ap.add_argument("--keep", action="store_true")
     ap.add_argument("--hpwarn", type=int, default=None,
                     help="run the Pilot with --hpwarn N (default: the Pilot's, 5; 0 = no time bubble, for an A/B)")

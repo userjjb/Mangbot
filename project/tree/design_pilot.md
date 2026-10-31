@@ -1,8 +1,11 @@
 # Design: pilot + agent (light)
 
-> **Status 2026-09-27:** the architecture and the reflex list below are current. The goals, orders
-> and events lists further down aren't: `github/tools/pilot/HANDBOOK.md` is the reference for
-> those (it is the Navigator's manual), and the handoff section in `next_steps.md` has the state.
+> **Status 2026-10-31:** only the opening part (up to the diagram) is current, and in outline only.
+> Everything from "History" down is the 2026-09-26/27 design, kept as history: the reflex list,
+> goals, orders, events, CLI and Phase 1 lists no longer match the code. The current design is
+> `docs/pilot-core.md` (architecture, tick loop), `docs/pilot-combat.md` (reflexes),
+> `docs/goals-and-plans.md` (goals, plans), `docs/commands.md` (pilotctl) and
+> `docs/pilot-items.md` (orders); `github/tools/pilot/HANDBOOK.md` is the Navigator's manual.
 
 Decided with the user 2026-09-26. The **pilot** (Python, long-running, owns the client) plays
 second to second. The **agent** (Claude in chat now, later probably a dedicated subagent) sets
@@ -19,6 +22,15 @@ mangclient -mtool  <--stdin/stdout JSON-->  pilot.py (daemon)  <--unix socket-->
                                               v                                     |
                                             runs/pilot/<char>/*.jsonl  --Monitor--> agent
 ```
+
+## History: the 2026-09 design (superseded)
+
+Kept for the reasoning. Known differences from the code (2.43.0): the loop runs ~20 times a second,
+not 10, and the reflex stack has grown (`docs/pilot-combat.md`); `pickup`, `drop`, `destroy`,
+`wear`, `takeoff`, `inscribe`, `use`, `fire`/`throw` are item commands, not goals, and `goto` is
+refused to the Navigator; there is no `danger` order (`danger_level` and the flags orders instead)
+and `keep` is a list of protected item kinds, not minimum supplies; there is no `pilotctl log`
+(`wait` returns the events); the Phase 1 C pieces are all built (`docs/client-server.md`).
 
 ## Pilot responsibilities (reflexes, no waiting on the agent)
 Priority loop in `Pilot.reflexes()`, first match wins, ~10 Hz (as of 2026-09-27):

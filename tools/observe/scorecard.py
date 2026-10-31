@@ -11,9 +11,10 @@ Missions are listed in runs/missions.json (`pilotctl mission start/end` keeps it
     python3 scorecard.py --json m23          # the numbers
     python3 scorecard.py --check             # compare with the Advisor's baseline CSV
 
-Six groups: A outcome, B efficiency (with a 16-category time budget), C safety, D value
-lost, E Navigator, F Pilot health; plus damage taken by monster. Figures that are estimates
-say so. Cards are also written to runs/pilot/NICK/scorecards/LABEL.json.
+Eight groups: A outcome, B efficiency (with a 17-category time budget), C safety, D value
+lost, E Navigator, F Pilot health, G tokens (the Navigator's cost, from tokens.py), H the
+estimator in shadow mode; plus damage taken by monster. Figures that are estimates say so
+(docs/observe.md has every field). Cards are also written to runs/pilot/NICK/scorecards/LABEL.json.
 """
 import argparse
 import bisect

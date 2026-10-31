@@ -1,7 +1,8 @@
 # The rulebook (restructure step 3)
 
 Tables generated from the MAngband server source (`github/src/server/`, `github/lib/edit/`) for the Pilot's policies and
-the Navigator's queries. Rebuild after any server or data-file change with `./build_all.sh` (Python 3.12:
+the Navigator's queries. Rebuild after any server or data-file change with `/projectnb/jbrcs/mangband/Advisor/data/rulebook/build_all.sh` (it lives only
+in the Advisor's directory; the synced copy in `github/tools/rulebook/` has no build scripts) (Python 3.12:
 `module load python3/3.12.4`). Query with `rule.py` (see its help; `rule.py fight MONSTER --clvl --blows --dpb --tohit --ac` estimates turns to kill and HP lost). Formulas and code lines are in each build script's
 docstring and in the study dispatches `Advisor/studies/2026-10-23-rulebook/dispatches/K1-K3.md`.
 
@@ -20,7 +21,8 @@ docstring and in the study dispatches `Advisor/studies/2026-10-23-rulebook/dispa
 | `store_gear.csv` | weapons/armour sold in town with dice, weight, AC, prices | progression study (G3) |
 | `drop_object_by_level.csv` | one generated object at object level 0-127, mode normal/good/great: E[value] (artifacts apart), capped at 25k/item, P(worthless), P(ego), P(irreplaceable ego), P(artifact) and its expected cost, E[gold pile], value share by class | build_drops.py (exact kind odds x Monte Carlo per kind; objgen.py) |
 | `drops.csv`, `drops_by_depth.csv` | per monster: drop flags, expected drops, gold, items, item value, P(any ego), P(any artifact) at its native depth / at dungeon levels 1,5..100 (`rule.py drop NAME [DEPTH]`) | build_drops.py |
-| `fight_dive04.csv` | every monster to level 40 dueled 1,000 times at Dive04's profile (clvl 22, 265 HP, Spear (+5,+7) x3, AC 56): HP lost mean/p50/p90/p95, turns, P(escaped), p90 % of HP, what the duel leaves out (summons, blink, heal, teleport, friends) | fight_sim.py (`fight_sim.py NAME [--clvl ..]`, or import `summary`) |
+| `fight_dive04.csv` | every monster to level 40 dueled 1,000 times at Dive04's profile (clvl 22, 265 HP, Spear (+5,+7) x3, AC 56): HP lost mean/p50/p90/p95, turns, P(escaped), p90 % of HP, what the duel leaves out (summons, blink, heal, teleport, friends) | fight_sim.py (`fight_sim.py NAME [--clvl ..]`, or import `summary`; reads `monsters_raw.csv` beside it if present, else `Advisor/data/monsters/monsters.csv`) |
+| `depth_value.csv` | what a dungeon level offers by depth (levels 1-30, 50-1500 ft): XP and HP lost per kill, share of monsters the hunt check refuses or rates AVOID/LEAVE, XP and HP per allowed kill, XP per HP, P(level holds a severe monster); assumes unscummed levels (auto_scum is on, so it understates out-of-depth monsters) | depth_value.py (`depth_value.py [CLVL]`, default 22; uses fight_dive04.csv) |
 | `danger_table_v1.csv` | the 2026-09-27 hand-rated danger table (kept for its ratings; merged into monsters.csv) | |
 
 Shared model: `objgen.py` (kinds, egos, artifacts, get_obj_num odds, power roll, one weapon/armour item's value, artifact odds) is

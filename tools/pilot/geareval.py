@@ -2,22 +2,25 @@
 
 An option is a loadout: the worn set with some slots changed. Each option is judged by components:
 
-  1. rules     abilities the depth requires (Free Action, See Invisible): an option that loses one is vetoed.
+  1. rules     abilities and resists gained and lost; vetoes (losing Free Action, or See Invisible from 600 ft,
+               always; with `no_loss` (automatic swaps, the optimizer) any ability, resist or sustain).
   2. static    the numbers the game derives from the loadout, recomputed as the server does (xtra1.c calc_bonuses,
-               calc_hitpoints, modify_stat_value): stats, blows, damage per round, to-hit, AC, max HP, speed,
+               calc_hitpoints, modify_stat_value): stats, blows, damage per round, to-hit, AC, max HP, speed, EHP,
                abilities and resists gained or lost.
-  3. sim       the Advisor's fight simulator (options_sim.rollout, its base policy = the Pilot's rules) over two
-               scenario sets, the same random numbers for every option: the fights Dive04 actually met at the
-               depth (its decision log's `mons` records) and the 21 replayed emergencies (the Advisor's replay
-               study). Kill speed, XP per turn, lowest HP, P(near death), consumables used.
-  4. verdict   vetoes first, then safety (near-death rate in the hard set), then XP per turn net of consumables.
+  3. sim       the Advisor's fight simulator (options_sim.rollout, its base policy = the Pilot's escape rules) over
+               scenario sets, the same random numbers for every option: the fights the character actually met
+               (its decision log's `mons` records), generated fights at the depth and 100 ft deeper, and the
+               replayed emergencies (the Advisor's replay study). Kill speed, XP per turn, lowest HP, P(near
+               death), consumables used.
+  4. verdict   vetoes first, then safety (near-death rate in the safety sets), then XP per turn net of consumables.
 
 The item slot evaluator (`compare_slot`) builds one option per candidate for one slot (both ring slots for a ring).
-Not built yet (design_gear.md): a loadout optimizer over combinations of slots (e.g. boots with resist nexus in
-place of Free Action boots, with Free Action moved to another slot).
+The loadout optimizer (`optimize`, the Pilot's `loadout [shops]`) searches the worn set with one or two slots
+changed, from the pack (and shop stock within a budget), ranks them by a static proxy and simulates the best few.
 
-The simulator models paralysis, blindness, confusion, fear, slowing and AC, not elemental resists (a resist changes
-the static and rules columns only), and no criticals: see design_gear.md for its limits.
+The simulator models paralysis, blindness, confusion, fear, slowing, AC, saving throws, resists (elemental and
+high), slays, brands and criticals; not gear speed (a slower option is ruled out instead), stealth, light radius,
+walls or escorts. The code as it is: docs/gear-and-estimator.md.
 
 usage: geareval.py --demo        (Dive04's Ring of Strength (+2) question, from the session-7 snapshot)
 In the Pilot: `gearcmp ITEM [ITEM...]` (pilotctl) compares pack items or names against the worn slot."""

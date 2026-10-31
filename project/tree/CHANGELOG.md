@@ -27,6 +27,15 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.43.1 -- 2026-10-31 (session 10, continued)
+No missions yet. Details: `docs/refactor-candidates.md` B9-B18.
+- Text only: design_pilot.md's old parts marked history; design_gear.md, operations.md, roles.md and the harness
+  README brought up to date; code docstrings, comments and help text (the Navigator's `loadout` header no longer says
+  slays and brands aren't simulated); the c-tool.c header comment.
+- One home for the mission checklist: docs/process.md §3 (the brief and the handoff point to it).
+- The rulebook re-synced with the Advisor's fixes: fight_sim reads the synced `monsters_raw.csv`.
+- unit.py's total line counts the cases run when filtered.
+
 ## 2.43.0 -- 2026-10-31 (session 10, continued)
 No missions yet. Details: `docs/refactor-candidates.md` F1-F4, `docs/commands.md` (Nick, Role).
 - Port defaults are the test server's (28346) everywhere; `pilot.py` refuses the live port without `--live` (F1).

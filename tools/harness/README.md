@@ -33,9 +33,12 @@ Each run:
 | A8w | a Ranger 3 squares off, no orders | the Pilot walks away (no Word of Recall), HP ≥ 80% |
 | A1 | a trip plan working the level; Black orcs and a Hill orc group 6-7 off | lowest HP ≥ 40%; ≤ 3 Phase Door |
 | A2 | Ulwarth (a unique above our level) adjacent, no stairs known | Word of Recall within 2 s of first sight; lowest HP ≥ 40% |
+| A2I | the same with Ibun, Son of Mim (a unique exists once: a second Ulwarth summon fails while the first lives on an old level) | the same |
+| A2K | the same with Khim, Son of Mim | the same |
 | A2L | the same with Lugdush (no rule fired before the simulator danger rule) | the same |
 | A6 | a Gnome mage (blinks, summons) adjacent | ≤ 3 Phase Door; Phase never runs out; lowest HP ≥ 40% |
 | C3 | Ulfast adjacent, the Architect orders the hunt | slain; his drop picked up |
+| C8 | forged Boots of Free Action dropped beside Dive04, picked up and worn unidentified, then a Floating eye (paralysing gaze) adjacent | boots picked up unidentified; Free Action inferred from "You are unaffected!"; the boots protected: **not stageable** (the Forge's items come out identified: FAIL 10-23; unit `ability_proofs` covers it) |
 | A3 | a Sabre-tooth tiger (+10, alone) adjacent, then an Architect goto 12 off | the goto is held; no walking with it adjacent |
 | B1 | a Purple mushroom patch 2 off, a goto past it | never adjacent; no stat drained |
 | B2 | three Giant red ants (STR drainers) | at most 2 drains; the second acted on (leave, or kill the weak one) |
@@ -63,6 +66,13 @@ Each run:
 | H1r | H1 with a Word of Recall read just before | the recall still lands (FAILED first: the new Pilot didn't know a recall was pending, its plan read a second scroll and cancelled it; fixed with `recall.json`; PASS: in town 17 s after the thaw) |
 | M4 | a crowd round Dive04 in a room (the Advisor's estimator memo) | no HP cure with 2+ adjacent; teleport not Phase with 4+ about; lowest HP >= 40% (PASS both ways, but neither reached an emergency: four Uruks and a priest were beaten at 72% with Berserk; an Umber hulk/hound crowd made the danger rule recall at once, 97% HP -- the memo's rules are unit-tested) |
 | M5 | a confusing breeder swarm (m55: Hummerhorns kept Dive04 confused 15 minutes at 800 ft): Hummerhorns round Dive04, AC lowered (`order autowear=off`, armour off), `goal dive` once confused | a long confusion cured by the Pilot within 20 s, at most 4 cures, down the painted '>' within 120 s, HP >= 60%: **not reliably stageable** -- 6 runs (8-30 Hummerhorns, AC 60-76, up to 90 s) never confused Dive04: they move erratically 75% of the time (RAND_50 \| RAND_25) and a CONFUSE bite (power 10) rarely beats AC; m55's needed minutes of breeding. **Verified live instead (10-28 08:53-09:00)**, in the scene a killed run left: confused among 26-30, no goal -> nothing for 40 s (fixed: the check runs every tick); then confused 8 s -> CCW -> 0.6 s later the staff teleport from (3,76) to (25,13), clear of the swarm; a react-thieves hunt then dropped the dive (fixed: the goal resumes) |
+
+**A2, A2I, A2L are stale (10-29, refactor list A25):** the 10-29 re-runs of A2I and A2L FAIL only "Word of Recall
+within 2 s": Dive04 (clvl 29) now out-levels Ibun and Lugdush (and Ulwarth), so no rule calls for a recall; it drank
+Speed + Berserk, killed the unique and its band (lowest HP 76-80%) and fetched the drop. The Pilot was right; the
+scenarios need a unique above our level (rescaling them waits until we have implemented the test server: the user,
+10-29).
+
 The memo's A7 is at 1250 ft and its A8 Ranger at 6 squares; here they're at 300 ft and 3 squares. The DM summons any race
 at any depth. On unlit ground a monster is seen only within the lantern's 2 squares, or the Half-Orc's infravision of 3
 for warm-blooded ones. Farther off, the order is rightly held as stale.
@@ -72,7 +82,7 @@ for warm-blooded ones. Farther off, the order is rightly held as stale.
 - `dm.py`: drives Gandalf.
   - `DM().connect()`, `menu(keys)`, `summon(race_idx, step, after)`, `paint(feat, steps)`, `invoke(name)`,
     `players()`, `clear_hooks()`, `descend(n)`, `ascend(n)`.
-  - `paint`: the Build page (^B; line N is terrain.txt feature N: 1 floor, 48 secret door, 56 granite, 24-31
+  - `paint`: the Build page (^B; line N is terrain.txt feature N: 1 floor, 48 secret door, 56 granite, 16-31
     traps) on the movement hook paints each square Gandalf walks off. He walks through rock and **sees the whole
     level** (`dm.c.map()` is the full 66x198 map), so a scene can be built in solid rock (`find_pocket`). The Level
     page (^L) can also export and import a level (`server-NAME` files): not used yet.

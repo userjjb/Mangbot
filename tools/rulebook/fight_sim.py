@@ -22,7 +22,11 @@ import argparse, csv, os, random, re, statistics
 from build_monsters import POWER, spell_dmg, ENERGY, dice
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-MON = "/projectnb/jbrcs/mangband/Advisor/data/monsters/monsters.csv"
+# the raw monster table: the synced copy beside this file first (tools/rulebook/sync.sh copies it as monsters_raw.csv,
+# so the Pilot's duels use the same release as the other tables), else the Advisor's live one
+MON = os.path.join(HERE, "monsters_raw.csv")
+if not os.path.exists(MON):
+    MON = "/projectnb/jbrcs/mangband/Advisor/data/monsters/monsters.csv"
 
 
 def roll(n, s):

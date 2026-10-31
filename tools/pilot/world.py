@@ -216,7 +216,7 @@ class World:
         self.pos = None
         self.depth = None
         self.level_t = 0.0                     # when we arrived on this level
-        self.arrived_by = None                 # '>' '<' 'recall' 'other'
+        self.arrived_by = None                 # '>' '<' (a stairs command < 5 s before), else 'other' (recall...)
         self.rows, self.attrs = None, None
         self.map_t = 0.0
         self.map_pos = None                    # position when the map was taken
