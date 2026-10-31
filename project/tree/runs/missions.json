@@ -2558,5 +2558,27 @@
   "report": "compact",
   "notes": "set-piece M2",
   "version": "2.41.0"
+ },
+ {
+  "label": "sp-M2-20261031-011148",
+  "nick": "dive04",
+  "start": "2026-10-31 01:12",
+  "end": "2026-10-31 01:14",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M2",
+  "version": "2.42.0"
+ },
+ {
+  "label": "sp-M2-20261031-011407",
+  "nick": "dive04",
+  "start": "2026-10-31 01:14",
+  "end": "2026-10-31 01:17",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M2",
+  "version": "2.42.0"
  }
 ]

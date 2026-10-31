@@ -1,0 +1,8 @@
+[M2-20261031-005645] snapshot Dive04
+saved Dive04 to /projectnb/jbrcs/mangband/runs/setpieces/saves/M2-20261031-005645
+[M2-20261031-005645] Gandalf at 450 ft
+[M2-20261031-005645] Dive04 at (23, 140), an Aluminum-Plated Wand at (23, 156) (16 away), '>' at (26, 138)
+[M2-20261031-005645]   PASS the wand fetched: picked up at 12.4 s; left behind []
+[M2-20261031-005645]   FAIL then down the '>' within 60 s: at None s
+[M2-20261031-005645] pilot still running
+[M2-20261031-005645] FAIL -> /projectnb/jbrcs/mangband/runs/setpieces/M2-20261031-005645.json

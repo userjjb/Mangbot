@@ -64,7 +64,8 @@ notice; `mission start` records it (`version` in `runs/missions.json` and the `m
 **Every version (the per-version checklist):** update the component file in `docs/` for each component the change
 touches, and the version line in `docs/README.md` and `docs/CONDENSED.md`; bump `github/VERSION` (minor if play can
 differ, else patch); add a CHANGELOG entry (with the missions on it); `tools/snapshot.sh`, commit, tag `vX.Y.Z` on the
-version's last commit, `git push origin restructure --tags`; restart the Pilot (idle in town) so it runs and reports
+version's last commit, `git push origin restructure --tags`; restart the Pilot (idle in town, and **no set-piece
+running**: `pgrep -af setpiece.py` -- a restart's park mid-set-piece spoils the run and blocks its restore, 10-31) so it runs and reports
 the new version.
 
 **Before (once per session):** start the inbox watcher; check the processes (`pgrep -af "gdb -batch|pilot.py"`,

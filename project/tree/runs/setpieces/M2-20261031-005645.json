@@ -1,0 +1,68 @@
+{
+ "id": "M2",
+ "tag": "M2-20261031-005645",
+ "depth_ft": 450,
+ "start": "2026-10-31 00:56:45",
+ "checks": {
+  "the wand fetched": {
+   "pass": true,
+   "detail": "picked up at 12.4 s; left behind []"
+  },
+  "then down the '>' within 60 s": {
+   "pass": false,
+   "detail": "at None s"
+  }
+ },
+ "notes": [],
+ "scene": {
+  "dive04": [
+   23,
+   140
+  ],
+  "wand": [
+   23,
+   156
+  ],
+  "stairs": [
+   26,
+   138
+  ],
+  "forged": "an Aluminum-Plated Wand"
+ },
+ "order_reply": "{\"ok\": true, \"goal\": \"dive 500ft\"}",
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   357,
+   358
+  ],
+  "attention": [
+   [
+    62.6,
+    "stuck",
+    "'dive 500ft' hasn't moved from (25, 144) for 20 s: cleared the command queue and restarted the move."
+   ]
+  ],
+  "acts": [
+   [
+    1.7,
+    "custom ,",
+    "pick up: a Potion of Infravision."
+   ],
+   [
+    12.4,
+    "custom ,",
+    "pick up: a Wand of Stinking Cloud."
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-10-31 01:05:31",
+ "pass": false
+}

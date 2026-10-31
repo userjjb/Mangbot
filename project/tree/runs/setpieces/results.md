@@ -158,3 +158,6 @@
 - 2026-10-29 16:38:14 **A2L** FAIL (Word of Recall within 2 s of first sight FAIL, lowest HP >= 40%) `A2L-20261029-163814.json`
 - 2026-10-29 17:23:46 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261029-172346.json`
 - 2026-10-29 17:58:30 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261029-175830.json`
+- 2026-10-31 00:56:45 **M2** FAIL (the wand fetched, then down the '>' within 60 s FAIL) `M2-20261031-005645.json`
+- 2026-10-31 01:11:48 **M2** FAIL (a site FAIL) `M2-20261031-011148.json`
+- 2026-10-31 01:14:07 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261031-011407.json`
