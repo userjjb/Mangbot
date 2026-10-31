@@ -38,6 +38,9 @@ amulets with unknown plusses).
 
 - **Unknown flavour** (`a Bloodstone Ring`, `Scroll titled "..."`): expected value over the kinds of that type at that
   level, renormalised over the kinds not yet known (`unknown_flavour_value`); fallback `UNKNOWN_FLAVOUR` per type.
+- **Mushrooms** (2.42.0, the user): an unknown one (`a Black Spotted Mushroom`) is worth the plain average value of the
+  mushroom kinds not yet known (`unknown_mushroom_value`: the 26 food kinds with sval < 32 in object.txt; ~80 gold with
+  none known); a known one (`a Mushroom of Restoring`) its kind's value. Both were 0 before.
 - **Known jewellery kind, plusses not shown** (a Ring of Protection with no `[+N]`): `jewellery_unknown` gives E[value]
   and P(cursed copy). Kinds whose copies are all alike (Free Action, resists) are valued exactly.
 - **Pseudo-ID'd weapon/armour** (`{good}`, `{excellent}`, `{special}`, `{magical}`): the median value of that kind at
@@ -92,7 +95,8 @@ by a unit test. The old `kinds.csv` and its fallback were removed in session 10 
 **`pack_value(it)`** (what an item is worth to the pack when making room): **priceless** (never destroyed for room) =
 kit consumables (`is_kit_item`: potions/scrolls of `KIT_KINDS` -- cures, Phase, Recall, Teleport, Identify, Magic
 Mapping, Speed, Heroism, Berserk, Restore, Deep Descent, Resist Poison), kept items, possible ability sources, the
-best light, the last meal, the lantern's needed oil, items waiting in the review queue. Spare lights, food beyond the
+best light, the last meal, the lantern's needed oil, items waiting in the review queue. **Mushrooms are not
+priceless food** (2.42.0): they are valued like any item (`itemvalue`: expected value when unknown; 0 when junk). Spare lights, food beyond the
 ration supply, and spare flasks are worth their sale price. **In the dungeon, food (not mushrooms) and flasks go by
 need** (2.41.0, the user): `supply_spare` counts what the stomach (`FOOD_MID`) or the worn lantern and the other stacks
 don't cover until `supply_horizon` (the trip's `trip_minutes_left`, else `SUPPLY_UNKNOWN_DMIN` = 40, plus
@@ -101,7 +105,9 @@ destroys; with none spare, the stack is worth the minutes of the shortfall it co
 `xp_per_gold`, from the rate buckets) and is destroyed whole only for a find worth 1.5x that. Kept items stay
 priceless. In town the old rules hold (rations never destroyed; spare flasks only near a trip's end). Flavour-table junk and cursed/worthless items are 0,
 food, flasks and lights included (the junk test runs first, A17, 2.40.0); kit, kept and ability items stay priceless.
-Everything else: value x pay_cut x count. `destroy_count`: in the dungeon, the spare units of food and flasks (above); in town, never rations and not the last other food.
+Everything else: value x pay_cut x count. `destroy_count`: in the dungeon, the spare units of food and flasks (above). In town: never rations; other food
+(not a ration or a mushroom: a Slime Mold, Waybread, Jerky...) keeps one piece when it's the only food carried (3 Slime
+Molds and no rations: 2 may go; with rations: all 3).
 `kit_use_value` values a kit consumable found in the dungeon at its replacement cost (last Alchemist price, else
 `KIT_USE`: Speed 600, Healing 1500, Berserk 500, ...).
 

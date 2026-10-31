@@ -3215,18 +3215,23 @@ def autodestroy_junk_kinds_without_feelings():
 
 
 @case
-def junk_mushroom_not_priceless():
-    """A17 (session 10): make-room values -- a mushroom the flavour table knows as junk is worth 0 (the junk test runs
-    before the food rule); an unknown one stays priceless."""
+def mushrooms_by_expected_value():
+    """A17 + the user (10-31): a mushroom the flavour table knows as junk is worth 0; an unknown one is worth the
+    average value of the mushroom kinds not yet known (x the shop pay cut), less once valuable kinds are known; a known
+    Mushroom of Restoring its kind's value. None is priceless as food."""
     p = pilot()
     junk = {"item": 0, "name": "a Black Spotted Mushroom", "tval": 80, "number": 1, "equip": False}
     unknown = {"item": 1, "name": "a Grey Mushroom", "tval": 80, "number": 1, "equip": False}
+    known = {"item": 2, "name": "a Mushroom of Restoring", "tval": 80, "number": 1, "equip": False}
     p.flavour_of = lambda it: {"junk": True} if "Black" in it["name"] else None
     p.is_kit_item = lambda it: False
     p.ability_sources = set()
     p.review_state = lambda: {"items": {}}
-    vj, vu = p.pack_value(junk), p.pack_value(unknown)
-    return vj == 0 and vu == float("inf"), f"junk {vj}, unknown {vu}"
+    vj, vu, vk = p.pack_value(junk), p.pack_value(unknown), p.pack_value(known)
+    p.flavours = {"Pink Mushroom": {"kind": "Mushroom of Restoring"}}
+    vu2 = p.pack_value(unknown)
+    return vj == 0 and 0 < vu < float("inf") and vu2 < vu and vk > vu, \
+        f"junk {vj}, unknown {vu:.0f} (Restoring known: {vu2:.0f}), Restoring {vk:.0f}"
 
 
 @case

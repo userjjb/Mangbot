@@ -5308,7 +5308,9 @@ class Pilot:
         if not prized and ((self.flavour_of(it) or {}).get("junk") or
                            re.search(r"\{(cursed|worthless|broken|terrible)", n)):
             return 0
-        if it["tval"] in (TV_FOOD, TV_FLASK, TV_LITE) or prized:
+        # (mushrooms aren't food here: an unknown one is worth the average of the mushroom kinds not yet known, a known
+        # one its kind's value -- itemvalue, the user 10-31; they were priceless as food)
+        if (it["tval"] in (TV_FOOD, TV_FLASK, TV_LITE) and "Mushroom" not in n) or prized:
             return float("inf")
         if n in self.review_state()["items"]:
             return float("inf")            # (waiting for the Navigator's review)

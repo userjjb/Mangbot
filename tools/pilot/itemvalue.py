@@ -144,8 +144,21 @@ class Item:
                 f"known={self.known}, irreplaceable={self.irreplaceable})")
 
 
+# Mushrooms: the flavoured food kinds (sval below SV_FOOD_MIN_FOOD 32, object.txt). An unknown one ("a Black Spotted
+# Mushroom") is worth the plain average over the mushroom kinds not yet known (the user, 10-31); a known one ("a Mushroom
+# of Restoring") its kind's value. Both read as 0 before, and the Pilot kept every mushroom as food.
+MUSHROOMS = {k["N"].lower(): k for k in KINDS if k["I"][0] == 80 and k["I"][1] < 32}
+
+
+def unknown_mushroom_value(aware=()):
+    """The average value of the mushroom kinds not yet known (aware: kind names, lower case, with or without
+    "mushroom of")."""
+    vals = [k["W"][3] for n, k in MUSHROOMS.items() if n not in aware and f"mushroom of {n}" not in aware]
+    return round(sum(vals) / len(vals)) if vals else 0
+
+
 def _plural_free(s):
-    s = re.sub(r"\b(Potion|Scroll|Ring|Amulet|Wand|Rod|Staff|Flask|Ration|Pair|Set)s\b", r"\1", s)   # (Staffs: m43 valued 2 at 0)
+    s = re.sub(r"\b(Potion|Scroll|Ring|Amulet|Wand|Rod|Staff|Flask|Ration|Pair|Set|Mushroom)s\b", r"\1", s)   # (Staffs: m43 valued 2 at 0)
     return re.sub(r"\bStaves\b", "Staff", s)
 
 
@@ -193,6 +206,16 @@ def value(name, level=15, aware=()):
                 it.known, it.estimate = False, True
                 it.irreplaceable = bool(it.flags & IRREPLACEABLE_FLAGS)
                 return it
+    elif core.startswith("Mushroom of "):
+        k = MUSHROOMS.get(core[len("Mushroom of "):].lower())
+        it.tval = 80
+        if k:
+            it.kind, it.flags, it.value = k["N"], set(k["F"]), k["W"][3]
+        return it
+    elif core.endswith(" Mushroom"):
+        it.tval, it.known, it.estimate = 80, False, True
+        it.value = unknown_mushroom_value(aware)
+        return it
     elif re.match(r".+ (Potion|Ring|Amulet|Wand|Staff|Rod)$", core) or core.startswith("Scroll titled"):
         tv = FLAVOURED.get(core.split()[-1], 70)
         it.tval, it.known, it.estimate = tv, False, True

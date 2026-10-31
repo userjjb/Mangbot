@@ -27,6 +27,14 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.42.0 -- 2026-10-31 (session 10, continued)
+No missions yet. Details: `docs/pilot-items.md` (itemvalue, `pack_value`).
+- **Mushrooms by expected value** (the user): an unknown mushroom is worth the average value of the mushroom kinds not
+  yet identified (~80 gold with none known); a known one its kind's value (a Mushroom of Restoring 1000). Both were
+  valued 0 before, and the Pilot kept every non-junk mushroom as priceless food; now they compete for pack room
+  like any item.
+- Doc: `destroy_count`'s "last other food" rule explained with an example.
+
 ## 2.41.0 -- 2026-10-31 (session 10, continued)
 No missions yet. Details: `docs/pilot-items.md` (`pack_value`, make room), `next_steps.md` Part B.
 - **Rations and oil by need** (the user's own play): in the dungeon, food and flasks that last until the expected
