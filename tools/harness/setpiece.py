@@ -39,8 +39,12 @@ def ctl(*args, role=None, timeout=60):
     """pilotctl for dive04 (role None = the Navigator's, as a real order would be)."""
     env = dict(os.environ)
     env.pop("PILOT_ROLE", None)
+    env.pop("PILOT_TOKEN", None)
     if role:
         env["PILOT_ROLE"] = role
+    if role == "architect":
+        # (the Architect's token, refactor-candidates F3)
+        env["PILOT_TOKEN"] = open(os.path.join(ROOT, "runs", "private", "architect.token")).read().strip()
     r = subprocess.run([sys.executable, os.path.join(HERE, "..", "pilot", "pilotctl.py"), "--nick", "dive04", *args],
                        capture_output=True, text=True, env=env, timeout=timeout)
     return (r.stdout + r.stderr).strip()
@@ -51,7 +55,7 @@ def pilot_view():
     import socket
     s = socket.socket(socket.AF_UNIX)
     s.connect(os.path.join(RUN, "ctl.sock"))
-    s.sendall((json.dumps({"cmd": "viewmap", "args": ["12", "30"], "role": "architect"}) + "\n").encode())
+    s.sendall((json.dumps({"cmd": "viewmap", "args": ["12", "30"]}) + "\n").encode())    # (read-only: no role)
     buf = b""
     while not buf.endswith(b"\n"):
         d = s.recv(65536)

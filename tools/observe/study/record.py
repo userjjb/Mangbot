@@ -43,7 +43,7 @@ def main():
     repo = os.path.abspath(os.path.join(here, "..", "..", ".."))
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[1])
     ap.add_argument("--host", default="localhost")
-    ap.add_argument("--port", type=int, default=18346)
+    ap.add_argument("--port", type=int, default=28346)     # (the live server: --port 18346; F1)
     ap.add_argument("--nick", help="pre-fill the character name (the client still asks for the password)")
     ap.add_argument("--out", help="output directory (default: runs/observe/<time>)")
     ap.add_argument("--config", help="client config file (default: OUT/mangrc, fresh)")

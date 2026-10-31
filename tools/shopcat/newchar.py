@@ -105,7 +105,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[1])
     ap.add_argument("--nick", required=True)
     ap.add_argument("--host", default="localhost")
-    ap.add_argument("--port", type=int, default=18346)
+    ap.add_argument("--port", type=int, default=28346)     # (the live server: --port 18346; F1)
     ap.add_argument("--birth", default=DEFAULT_BIRTH, help="RACE:CLASS:SEX:STAT,... (default: %(default)s)")
     ap.add_argument("--privdir", default=os.path.join(repo, "..", "runs", "private"),
                     help="where the password and config files live")

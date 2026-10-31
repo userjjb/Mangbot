@@ -1,9 +1,9 @@
 # Navigator mission brief: the template (the Architect, session 7, 2026-10-26)
 
-How to launch a mission: `PILOT_ROLE=architect python3 pilot/pilotctl.py --nick dive04 mission start mNN navigator=haiku
+How to launch a mission (as the Architect: `export PILOT_ROLE=architect PILOT_TOKEN=$(cat /projectnb/jbrcs/mangband/runs/private/architect.token)`): `python3 pilot/pilotctl.py --nick dive04 mission start mNN navigator=haiku
 effort=low` (in `github/tools`), then the Agent tool with `subagent_type: "navigator"`, `model: "haiku"`, `effort: "low"`
 (set a model or effort only as the user asks), `run_in_background: true`, and the prompt below. Fill the `{...}`
-fields from `status`, `equip`, `pack` (`PILOT_ROLE=architect python3 pilot/pilotctl.py --nick dive04 status`). Keep
+fields from `status`, `equip`, `pack` (`python3 pilot/pilotctl.py --nick dive04 status`). Keep
 the rest word for word, so missions stay comparable. Lines marked **[VACATION]** go in only during "The Architect's
 Vacation" (session 8).
 

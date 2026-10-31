@@ -1,7 +1,7 @@
 # The Documentation, condensed (for Architects and Advisors)
 
 The full version is [README.md](README.md) and its ten component files. This page is what a new Architect or Advisor
-needs in their head before touching anything. Session 10, 2026-10-29; matches version 2.42.0 (`github/VERSION`, CHANGELOG.md).
+needs in their head before touching anything. Session 10, 2026-10-29; matches version 2.43.0 (`github/VERSION`, CHANGELOG.md).
 
 ## What this is
 
@@ -69,8 +69,8 @@ QuietWait...). A **plan** sits above goals:
 
 ## The command surface ([commands.md](commands.md))
 
-`python3 tools/pilot/pilotctl.py --nick dive04 CMD` (default nick `dive01`!). `PILOT_ROLE=navigator` (default) or
-`architect` -- unauthenticated, a convention. The Navigator may not walk or use most item commands in the dungeon;
+`python3 tools/pilot/pilotctl.py --nick dive04 CMD` (no `--nick`: the one running Pilot). `PILOT_ROLE=navigator` (default)
+or `architect`, which needs `PILOT_TOKEN` from `runs/private/architect.token` (else refused and reported). The Navigator may not walk or use most item commands in the dungeon;
 stale positional orders are held; hunts and value-policy sales are checked; `!` (on an item or monster name) skips a value or
 hunt refusal and costs debt; `force` skips a safety check that isn't policy (the supply gate, a second escape read,
 a second Recall...) and costs nothing. Families: info (`status`, `wait`, `pack`, `equip`, `map`, `monster`,

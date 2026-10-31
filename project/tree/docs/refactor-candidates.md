@@ -280,12 +280,12 @@ none is fixed. **[N]** = Navigator-facing.
 ## F. Defaults / safety
 
 - **F1** Default `--port 18346` (the live server) in `pilot.py: main`, `MangClient.__init__`, `record.py`; every script
-  passes 28346. -- S/S -- **do** (default 28346, or require `--port`).
+  passes 28346. -- S/S -- **do** (default 28346, or require `--port`). **done (session 10, 2.43.0)**
 - **F2** pilotctl default nick `dive01` (`$PILOT_NICK`): a bare `pilotctl status` hits a dead socket. -- S/S -- **do**
-  (require `--nick`/env, or default to the one running Pilot).
+  (require `--nick`/env, or default to the one running Pilot). **done (session 10, 2.43.0)**
 - **F3** `PILOT_ROLE` is an unauthenticated env var: anyone can claim `architect` and skip hunt checks and debt. -- S/S
-  -- **do** the navigator.md line now (B8); **ask** for a token file / socket-peer check.
-- **F4** `mission` command has no role check (Architect's). -- S/S -- **do** (architect-only).
+  -- **do** the navigator.md line now (B8); **ask** for a token file / socket-peer check. **done (session 10, 2.43.0)**
+- **F4** `mission` command has no role check (Architect's). -- S/S -- **do** (architect-only). **done (session 10, 2.43.0)**
 - **F5** `order` parsing: `type(cur)(v)` and `order KEY` without `=` surface a bare `ValueError` repr. -- S/S -- **do**
   (friendly usage error). **[N]** **done with A22 (session 10, 2.40.0)**
 

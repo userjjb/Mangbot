@@ -27,6 +27,15 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.43.0 -- 2026-10-31 (session 10, continued)
+No missions yet. Details: `docs/refactor-candidates.md` F1-F4, `docs/commands.md` (Nick, Role).
+- Port defaults are the test server's (28346) everywhere; `pilot.py` refuses the live port without `--live` (F1).
+- pilotctl without `--nick` uses the one Pilot that answers (the old default, dive01, is long dead) (F2).
+- The Architect's role needs a token (`runs/private/architect.token`, made by the Pilot): a bare
+  `PILOT_ROLE=architect` runs as the Navigator and raises `role_refused` (a guard, not security: same Unix user) (F3).
+- `mission` start/end is the Architect's only (F4).
+- New log kind: `role_refused` (decisions.jsonl and an attention event).
+
 ## 2.42.0 -- 2026-10-31 (session 10, continued)
 No missions yet. Details: `docs/pilot-items.md` (itemvalue, `pack_value`).
 - **Mushrooms by expected value** (the user): an unknown mushroom is worth the average value of the mushroom kinds not

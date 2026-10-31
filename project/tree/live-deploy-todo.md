@@ -15,9 +15,8 @@ version. Background: operations.md ("Live server", "Live-server rules a bot must
   power-levelling; never chat (`say` goes to the viewer, not the game: check nothing else reaches game chat).
 - [ ] **Run with `--live`** (`PILOT_ARGS="--live"`): it keeps mapping/detection devices and holds off the stairs back
   to a fled level.
-- [ ] **Port defaults (refactor-candidates F1).** `pilot.py` and `MangClient` default to 18346, the live port. Decide
-  whether to default to the test port or require `--port` before both servers are in use. `observe/study/record.py`
-  defaults to the live port too.
+- [x] **Port defaults (refactor-candidates F1)** -- done 2026-10-31, 2.43.0: every default is the test port 28346;
+  `pilot.py` refuses 18346 without `--live`. For live: `--port 18346 --live` (and `--port 18346` for shopcat/newchar).
 - [ ] **No test-server tools on live:** no time freeze, so `hotswap.sh` can't be used (use `restart.sh`, which parks
   first, and only at a safe moment); no DM, no set-pieces, no `charsave.sh` restores. A death is permanent.
 - [ ] **What the live server lacks:** our server patches (store guards, the 16-bit depth indicator). The client-side

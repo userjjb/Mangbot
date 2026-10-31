@@ -14,13 +14,17 @@ lines in [pilot-core.md](pilot-core.md); the rulebook behind `rule` in [harness-
 ```
 cd /projectnb/jbrcs/mangband/github/tools/pilot && module load python3/3.12.4
 python3 pilotctl.py --nick dive04 status                 # as the Navigator (the default role)
-PILOT_ROLE=architect python3 pilotctl.py --nick dive04 answer 7 "yes, sell it"   # as the Architect
+PILOT_ROLE=architect PILOT_TOKEN=$(cat ../../../runs/private/architect.token) \
+  python3 pilotctl.py --nick dive04 answer 7 "yes, sell it"                       # as the Architect
 ```
 
-- **Nick.** `--nick NAME` must be the first argument; otherwise `$PILOT_NICK`, default `dive01`. The socket is
+- **Nick.** `--nick NAME` must be the first argument; otherwise `$PILOT_NICK`; otherwise the one Pilot whose socket
+  answers (none or several: it asks for `--nick`; F2, 2.43.0). The socket is
   `runs/pilot/<nick lowercase>/ctl.sock`.
-- **Role.** `PILOT_ROLE` (env, default `navigator`) is sent with every request as `role`. It is not authenticated:
-  it's a convention that the Architect and the harness set `PILOT_ROLE=architect` on their own calls. The role decides
+- **Role.** `PILOT_ROLE` (env, default `navigator`) is sent with every request as `role`, and `PILOT_TOKEN` as `token`.
+  A claim of `architect` needs the Architect's token (`runs/private/architect.token`, made by the Pilot at startup,
+  mode 600; F3, 2.43.0): without it the request runs as the Navigator's, and (except the viewer's read-only queries)
+  is logged `role_refused` and raised as a `role_refused` attention event. Same Unix user: a guard, not security. The role decides
   the refusals below, whose goal it is in the logs (`[N]`/`[A]` in the viewer), and whether `!` overrides cost debt.
 - **Transport.** pilotctl waits 40 s for an answer; the Pilot's socket thread gives up after 30 s with
   `{"ok": false, "error": "pilot busy"}`. If the socket is gone (Pilot parked or restarting) it prints

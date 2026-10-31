@@ -131,7 +131,7 @@ file ends, so what happened meanwhile is not reported. It does not report the us
 ## wrap.sh -- the after-mission wrap-up
 
 `bash github/tools/observe/wrap.sh LABEL [NICK]` (NICK defaults to dive04). Runs as the Architect
-(`PILOT_ROLE=architect`) from `github/tools`, in this order:
+(`PILOT_ROLE=architect` with the Architect's `PILOT_TOKEN`, read from `runs/private/architect.token`) from `github/tools`, in this order:
 
 1. `pilotctl mission end LABEL` -- by name, because a hot-swap loses the Pilot's in-memory label. Sets `end` in
    `runs/missions.json`.
@@ -338,8 +338,8 @@ studies read those `pkt.jsonl` files). No script calls them.
   `play`), and polls the pane every 0.2 s. Writes, in a private (0700) `runs/observe/<stamp>/`: `pkt.jsonl` (every
   packet and key, from the client's `--pktlog`), `screens.jsonl` (`{t, size, rows}` whenever the screen changes,
   colours as ANSI escapes), `meta.json`, and a fresh `mangrc`. The player attaches with
-  `tmux -L mang attach -t play`; recording stops when the client exits. Note the default `--port` is 18346, not
-  the test server's 28346.
+  `tmux -L mang attach -t play`; recording stops when the client exits. The default `--port` is 28346, the test server (since 2.43.0, F1);
+  pass `--port 18346` for the live server.
 - **`timeline.py SESSION`**: merges a recorded session into one time-ordered log on the pktlog clock: `NOTE` (the
   player's chat as commentary), `KEYS` (bursts), `>>` (commands sent; walk/run directions decoded), `msg` (server
   messages), `==` (sidebar changes read from the screen: depth, HP, level, gold); repeats collapsed. Committed as an

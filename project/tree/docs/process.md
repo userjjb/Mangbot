@@ -31,7 +31,7 @@ Rules that cut across roles:
   irreversible (a hunt, a fetch, selling or destroying over a refusal) is checked, and an override with `!` is scored as
   **debt** (section 3.6).
 - **The `role` of a pilotctl call:** every request carries `role` from the env var `PILOT_ROLE` (default
-  `navigator`; navigator.md tells the Navigator never to set it). `PILOT_ROLE=architect` marks the Architect's and the harness's calls: they skip the value refusals,
+  `navigator`; navigator.md tells the Navigator never to set it). `PILOT_ROLE=architect` with `PILOT_TOKEN` (the Architect's token, `runs/private/architect.token`; without it the claim is refused and reported, F3) marks the Architect's and the harness's calls: they skip the value refusals,
   the override limits and the stale-order hold, may use `goal goto`, `stairs` and `raw` and item commands in the
   dungeon, and only they may `answer` asks. `mission start/end` is not enforced by role: the brief tells the Navigator
   not to touch it. The decision log tags each command `nav_cmd ... role=`.
@@ -73,7 +73,7 @@ the new version.
 (`tmux -L mang attach -t watch`). Restart them per `operations.md` "Test server" and `tools/pilot/restart.sh Dive04`
 if the SGE job ended. Ask the user what to run (model, effort, length).
 
-| # | Step | Command / tool (in `github/tools`, `module load python3/3.12.4`, `export PILOT_ROLE=architect`) | Writes |
+| # | Step | Command / tool (in `github/tools`, `module load python3/3.12.4`, `export PILOT_ROLE=architect PILOT_TOKEN=$(cat /projectnb/jbrcs/mangband/runs/private/architect.token)`) | Writes |
 |---|---|---|---|
 | 1 | Mark the start | `python3 pilot/pilotctl.py --nick dive04 mission start mNN navigator=MODEL [effort=L] [notes=..]` | `mission_start` in `decisions.jsonl`; a record in `runs/missions.json` (label, nick, start, navigator, effort, version); the Pilot's mission baseline for "this mission" rates |
 | 2 | Fill the brief | Copy `tools/pilot/BRIEF-TEMPLATE.md` below its `---`; fill `{...}` from `status`, `status full`, `equip`, `pack` (time budget START/END, clvl/HP/AC/gold, the weapon and the rest of `equip`, stats, supplies, debts, "New since the last mission"); keep the rest word for word so missions stay comparable. `[VACATION]` lines only in a vacation session. | -- |

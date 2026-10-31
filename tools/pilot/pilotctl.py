@@ -47,12 +47,31 @@ def brief_report(report):
 
 def main():
     argv = sys.argv[1:]
-    nick = os.environ.get("PILOT_NICK", "dive01")
+    nick = os.environ.get("PILOT_NICK")
     if argv[:1] == ["--nick"]:
         nick, argv = argv[1], argv[2:]
     if not argv:
         print(__doc__)
         return
+    if not nick:
+        # (refactor-candidates F2: the default was dive01, long dead) the one Pilot whose socket answers
+        live = []
+        for d in sorted(os.listdir(os.path.join(RUNS, "pilot"))):
+            sp = os.path.join(RUNS, "pilot", d, "ctl.sock")
+            if os.path.exists(sp):
+                try:
+                    s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+                    s.settimeout(1)
+                    s.connect(sp)
+                    s.close()
+                    live.append(d)
+                except OSError:
+                    pass
+        if len(live) != 1:
+            print("which Pilot? " + (f"{len(live)} are running ({', '.join(live)})" if live else "none is running")
+                  + ": give --nick NAME")
+            return
+        nick = live[0]
     sock = os.path.join(RUNS, "pilot", nick.lower(), "ctl.sock")
     cmd, args = argv[0], argv[1:]
     if cmd == "rule":
@@ -83,7 +102,10 @@ def main():
     try:
         # (PILOT_ROLE=architect marks the Architect's and the harness's own calls;
         # the Navigator's are refused some things in the dungeon: restructure step 2)
-        out = call(sock, {"cmd": cmd, "args": args, "role": os.environ.get("PILOT_ROLE", "navigator")}, 40)
+        req = {"cmd": cmd, "args": args, "role": os.environ.get("PILOT_ROLE", "navigator")}
+        if os.environ.get("PILOT_TOKEN"):
+            req["token"] = os.environ["PILOT_TOKEN"]
+        out = call(sock, req, 40)
     except (ConnectionError, FileNotFoundError, json.JSONDecodeError, OSError) as e:
         if cmd == "complain" and args:
             # the Pilot is down, which is often what there is to complain about

@@ -54,7 +54,7 @@ class ClientExited(RuntimeError):
 
 
 class MangClient:
-    def __init__(self, binary, libdir, nick, passfile, host="localhost", port=18346,
+    def __init__(self, binary, libdir, nick, passfile, host="localhost", port=28346,
                  config=None, pktlog=None, cwd=None, log=None, birth=None, extra_args=()):
         args = [binary, "-mtool", "--libdir", libdir, *extra_args]
         if config:

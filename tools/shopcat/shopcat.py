@@ -541,7 +541,7 @@ def main():
     ap.add_argument("--nick")
     ap.add_argument("--passfile", help="file whose first line is the password")
     ap.add_argument("--host", default="localhost")
-    ap.add_argument("--port", type=int, default=18346)
+    ap.add_argument("--port", type=int, default=28346)     # (the live server: --port 18346; F1)
     ap.add_argument("--client", default=os.path.join(repo, "mangclient"))
     ap.add_argument("--libdir", default=os.path.join(repo, "lib"))
     ap.add_argument("--config", help="client config file (default: client's own)")

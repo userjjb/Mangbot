@@ -3309,6 +3309,26 @@ def oil_by_need_and_fuel_before_destroying():
 
 
 @case
+def architect_role_needs_the_token():
+    """F3/F4 (session 10): a request claiming the architect role without the token runs as the Navigator's (logged and
+    reported; the viewer's read-only queries quietly); with the token it is the Architect's. `mission` is the
+    Architect's only."""
+    p = pilot()
+    p.arch_token = "secret"
+    logs = []
+    p.log = lambda kind, **k: logs.append(kind)
+    bare = p.authenticate({"cmd": "goal", "args": ["recall"], "role": "architect"})
+    view = p.authenticate({"cmd": "viewmap", "args": [], "role": "architect"})
+    good = p.authenticate({"cmd": "goal", "args": ["recall"], "role": "architect", "token": "secret"})
+    p.dead, p.last_report = False, (0, 0.0)
+    p.req_role = "navigator"
+    refused = p.do_request({"cmd": "mission", "args": ["start", "m99"], "role": "navigator"})
+    ok = bare["role"] == "navigator" and view["role"] == "navigator" and good["role"] == "architect" and \
+        logs.count("role_refused") == 1 and [w for w, _ in p.notes] == ["role_refused"] and not refused["ok"]
+    return ok, f"bare {bare['role']}, viewer {view['role']}, token {good['role']}; logs {logs}; mission: {refused}"
+
+
+@case
 def pickup_none_no_loot_walks():
     """A5 (session 10): order pickup=none: loot_step makes no walk to the item 5 squares off (pickup=all does)."""
     def run(pickup):

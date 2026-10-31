@@ -40,8 +40,8 @@ mangclient -mtool  <--stdin/stdout JSON-->  pilot.py (daemon)  <--unix socket ru
   `stack_force_costs`, `disturb_near`, `disturb_panel`, logs the character's options, opens the control socket,
   notifies `started` (with `Pilot vX.Y.Z`) and loops `pilot.tick(); client.collect(0.05)` until `pilot.running` is
   false.
-- **Options**: `--nick` (required), `--host` (localhost), `--port` (default **18346**: the live server's port --
-  always pass 28346 for the test server; the scripts do), `--passfile`, `--config`, `--rundir` (default
+- **Options**: `--nick` (required), `--host` (localhost), `--port` (default 28346, the test server, since 2.43.0;
+  the live port 18346 is refused without `--live`: F1), `--passfile`, `--config`, `--rundir` (default
   `runs/pilot/<nick lowercase>`), `--client`, `--libdir`, `--pktlog`, `--live` (live-server behaviour: keep
   mapping/detection devices instead of selling them as crutches), `--hpwarn N` (0-9, default 5: below N x 10% HP the
   server slows our time to 1/5; the Pilot's game clock follows).
@@ -57,8 +57,9 @@ mangclient -mtool  <--stdin/stdout JSON-->  pilot.py (daemon)  <--unix socket ru
 
 ### pilotctl transport (`pilotctl.py`)
 One request per connection: `{"cmd", "args", "role"}` as a JSON line to `runs/pilot/<nick>/ctl.sock`, one JSON line
-back. The nick comes from `--nick` or `$PILOT_NICK` (default `dive01`). `role` is `$PILOT_ROLE` (default
-`navigator`; the Architect and harness set `architect`): the Pilot refuses some commands to the Navigator (movement
+back. The nick comes from `--nick` or `$PILOT_NICK`, else the one Pilot whose socket answers (F2). `role` is `$PILOT_ROLE`
+(default `navigator`; the Architect and harness set `architect` **with the token** `$PILOT_TOKEN`, from
+`runs/private/architect.token`, made by the Pilot at startup; without it the claim is refused, F3): the Pilot refuses some commands to the Navigator (movement
 verbs, item commands in the dungeon) and stamps who acted. `wait [SECS] [--brief]` sends `wait-attention` and
 prints the events and the report (brief form on a quiet timeout). `rule ...` runs `tools/rulebook/rule.py` without a
 Pilot. When the socket doesn't answer, `complain` appends straight to `runs/complaints.md`; other commands print

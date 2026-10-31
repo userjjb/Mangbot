@@ -22,7 +22,7 @@ The handoff between Architect sessions: the current state, what the next session
 ### >>> WHICH HANDOFF IS YOURS? <<<
 - **Session 10 is done** (2026-10-29: the Documentation in `docs/`, the cleanup list `docs/refactor-candidates.md`,
   bug fixes A1-A3/A6/A8-A11; continued that afternoon: A4/A5/A7/A12-A14, group C, B4, `CHANGELOG.md` and versions:
-  2.37.0, 2.37.1, 2.38.0, 2.39.0 (A15/A18/A20/A23/A24), 2.40.0 (A16/A17/A19/A21/A22), 2.41.0 (rations and oil by need), then 2.42.0 (mushrooms by expected value): review follow-ups, B1-B3/B5-B8, every docs/ file verified against the code; Part B
+  2.37.0, 2.37.1, 2.38.0, 2.39.0 (A15/A18/A20/A23/A24), 2.40.0 (A16/A17/A19/A21/A22), 2.41.0 (rations and oil by need), 2.42.0 (mushrooms by expected value), then 2.43.0 (F1-F4): review follow-ups, B1-B3/B5-B8, every docs/ file verified against the code; Part B
   has it all). If the user asks for more cleanup from that list, HANDOFF 10 below has the rules.
 - **Session 11** (missions and implementation resume): read **"HANDOFF TO ARCHITECT 11"** below -- **Part B first**
   (by session 10), then Part A (by session 9).
@@ -232,21 +232,22 @@ approval:
   mushroom kinds not yet known (~80 gold with none known), a known one at its kind's value (itemvalue read both as
   0).
 
-**Still open, waiting on the user:** groups **B** (B9-B18), **D**, **E**, **F** (F1-F4). **A25** (set-pieces A2I/A2L, FAIL on a stale criterion: the Pilot fought and won
+**Still open, waiting on the user:** groups **B** (B9-B18), **D**, **E**. (A: only A25, waiting for the test server.) **A25** (set-pieces A2I/A2L, FAIL on a stale criterion: the Pilot fought and won
 correctly; the scenarios need a unique above clvl 29) **waits until we have implemented the test server** (the
 user). C8: only the Pilot's dead-character whitelist changed; the scorecard/viewer query
 lists wait for D7. From the Advisor (29o): an optional `p["noise"]` in estimator snapshots (0 while the Pilot stands
 still) -- not built.
 
-**Defaults to beware (F1/F2, not fixed):** `pilot.py --port`, `MangClient` and `observe/study/record.py` default to
-**18346, the live server**; always pass 28346 (restart.sh does). pilotctl's default nick is `dive01`: always pass
-`--nick dive04`.
+**Defaults and the Architect's role (F1-F4, fixed in 2.43.0):** every port default is 28346 (the test server), and
+`pilot.py` refuses 18346 without `--live`; pilotctl without `--nick` finds the one running Pilot; **the Architect's
+commands need the token**: `export PILOT_ROLE=architect PILOT_TOKEN=$(cat /projectnb/jbrcs/mangband/runs/private/architect.token)` (the harness and wrap.sh read it themselves); a bare `PILOT_ROLE=architect`
+runs as the Navigator and raises `role_refused`; `mission` is the Architect's only.
 
 **Process note:** session 10 surveyed with ten parallel subagents (one per component, ~5 min each, writing the docs
 directly), then one merging the candidates; bug fixes went to agents on disjoint files. The main context stayed small.
 Reuse that for big reading jobs. And: before continuing a session in a new job, `claude --resume` it -- a fresh chat
 lacks the context (how the parallel chat happened).
 
-**State now (10-31):** version **2.42.0**. Running in SGE job 8327794 (scc-va4, ends Tue
-11-03 08:47): the test server (gdb, freeze-enabled), Dive04's Pilot (2.42.0), the viewer (`tmux -L mang attach -t
-watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wilderness house. 130 unit cases pass.
+**State now (10-31):** version **2.43.0**. Running in SGE job 8327794 (scc-va4, ends Tue
+11-03 08:47): the test server (gdb, freeze-enabled), Dive04's Pilot (2.43.0), the viewer (`tmux -L mang attach -t
+watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wilderness house. 131 unit cases pass.

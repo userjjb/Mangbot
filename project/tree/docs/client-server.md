@@ -254,7 +254,8 @@ The client is the same for both.
 - **Wilderness arenas crash the test server:** an 11th wilderness arena overflows `MAX_ARENAS` (no bounds check,
   `wilderness.c`) and the server segfaults later. Keep tool characters out of the far wilderness there (live is patched).
 - **Same nickname twice:** a second login kicks the first ("Reconnect from other location").
-- **Ports:** `pilot.py` and `MangClient` default to port 18346 (the live port) on localhost; the scripts pass 28346.
+- **Ports:** `pilot.py`, `MangClient`, `shopcat.py`, `newchar.py` and `record.py` default to 28346, the test server
+  (2.43.0, F1; they defaulted to the live 18346); `pilot.py` refuses 18346 without `--live`.
 - **Config rewrite:** the client rewrites its `--config` file on exit; never point it at the tracked `github/.mangrc`.
 - `quit(msg)` treats a message starting with `-` as an exit code. Stat names arrive as `"STR: "`.
 - Inventory data arrives ~1 s after `ready`.

@@ -7,7 +7,7 @@
 LABEL=${1:?usage: wrap.sh LABEL [NICK]}; NICK=${2:-dive04}
 cd "$(dirname "$0")/.." || exit 1
 module load python3/3.12.4 2>/dev/null
-export PILOT_ROLE=architect
+export PILOT_ROLE=architect PILOT_TOKEN=$(cat "$(dirname "$0")/../../../runs/private/architect.token")
 python3 pilot/pilotctl.py --nick "$NICK" mission end "$LABEL" 2>&1 | head -2
 python3 observe/tokens.py "$LABEL" 2>&1 | tail -1
 python3 observe/scorecard.py --table "$LABEL" 2>&1 | tail -2

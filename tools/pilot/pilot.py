@@ -44,6 +44,22 @@ try:
     VERSION = open(os.path.join(HERE, "..", "..", "VERSION")).read().strip()
 except OSError:
     VERSION = "?"
+
+ARCH_TOKEN_FILE = "architect.token"
+
+
+def architect_token(priv):
+    """The Architect's token (runs/private/architect.token, made on first use, mode 600): a request claiming the
+    architect role must carry it (refactor-candidates F3). The Navigator runs as the same Unix user, so this isn't
+    security: it stops a bare PILOT_ROLE=architect, and a claim without it is refused and reported."""
+    import secrets
+    path = os.path.join(priv, ARCH_TOKEN_FILE)
+    if not os.path.exists(path):
+        os.makedirs(priv, exist_ok=True)
+        fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+        with os.fdopen(fd, "w") as f:
+            f.write(secrets.token_hex(16) + "\n")
+    return open(path).read().strip()
 sys.path.insert(0, os.path.join(HERE, "..", "shopcat"))
 
 from mang import MangClient, ClientExited      # noqa: E402
@@ -7566,12 +7582,28 @@ class Pilot:
 
     # --- control requests (from the socket thread) ---------------------------
 
+    READ_ONLY_CMDS = ("viewmap", "view", "navview", "goalstate")
+
+    def authenticate(self, req):
+        """A request claiming the architect role without the Architect's token is the Navigator's (F3); refused
+        claims other than the viewer's read-only queries are logged and raised as an attention event."""
+        if req.get("role") != "architect" or req.get("token") == self.__dict__.get("arch_token"):
+            return req
+        req = dict(req, role="navigator")
+        if req.get("cmd") not in self.READ_ONLY_CMDS:
+            self.log("role_refused", cmd=req.get("cmd"), args=req.get("args", [])[:6])
+            self.notify("role_refused", f"`{req.get('cmd')}` claimed the Architect's role without its token: run as "
+                                        "the Navigator's (set nothing in the environment; only the Architect "
+                                        "and the harness use that role)")
+        return req
+
     def handle_requests(self):
         while True:
             try:
                 req, reply = self.requests.get_nowait()
             except queue.Empty:
                 return
+            req = self.authenticate(req)
             if req.get("cmd") not in ("viewmap", "view", "navview", "note", "goalstate", "mission"):
                 # (only the Navigator's own commands count as activity: the viewer's
                 # twice-a-second polls kept town_light from ever taking the lantern
@@ -7707,6 +7739,8 @@ class Pilot:
             self.nav_view = (time.time(), [], rep)
             return {"ok": True, "report": rep}
         if c == "mission":
+            if self.req_role != "architect":
+                return {"ok": False, "error": "mission markers are the Architect's (refactor-candidates F4)"}
             # mission_start / mission_end markers with the Navigator's model (the
             # Advisor's scorecard memo §5.5); also kept in runs/missions.json
             if not args or args[0] not in ("start", "end"):
@@ -10601,7 +10635,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[1])
     ap.add_argument("--nick", required=True)
     ap.add_argument("--host", default="localhost")
-    ap.add_argument("--port", type=int, default=18346)
+    ap.add_argument("--port", type=int, default=28346,
+                    help="default 28346, the test server; the live server (18346) needs --live too")
     ap.add_argument("--passfile")
     ap.add_argument("--config")
     ap.add_argument("--rundir", help="default runs/pilot/<nick>")
@@ -10615,9 +10650,13 @@ def main():
                     help="hitpoint_warn 0-9: below N x 10%% HP the server slows our time bubble to 1/5; the "
                          "Pilot's timers follow on its game clock (default 5, the user 2026-10-24; 0 = off)")
     args = ap.parse_args()
+    # (refactor-candidates F1: the default was 18346, the live server; now the live port must be meant)
+    if args.port == 18346 and not args.live:
+        sys.exit("port 18346 is the live server: add --live (live-server behaviour) if that is meant")
 
     nick = args.nick
     priv = os.path.join(runs, "private")
+    arch_token = architect_token(priv)
     rundir = args.rundir or os.path.join(runs, "pilot", nick.lower())
     os.makedirs(rundir, exist_ok=True)
     visuals = os.path.join(rundir, "visuals.txt")
@@ -10637,6 +10676,7 @@ def main():
         ready = client.wait_ready()
         say(f"in the game as {nick}: {ready}")
         pilot = Pilot(client, rundir, say=say)
+        pilot.arch_token = arch_token
         pilot.hpwarn = args.hpwarn
         pilot.live = args.live
         pilot.log("options", hpwarn=args.hpwarn, live=args.live)
