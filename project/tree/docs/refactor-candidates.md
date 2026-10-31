@@ -26,13 +26,13 @@ Format: **ID** what -- *evidence* -- risk/effort (S/M/L) -- **do / ask / skip**.
 - **A1** `escaping_to_stairs` is never reset: after the first escape walk to stairs, `escape()` skips its rest/retreat
   branch whenever any mover runs, ticks *any* mover (e.g. Explore) as an escape walk and takes whatever stairs it reaches,
   and the emergency reflex stops stopping the mover. -- *set True in `escape()`, False only in `__init__` (verified by
-  the Architect)* -- M/S -- **do** (clear on walk end / level change; tell the Advisor: base_policy).
+  the Architect)* -- M/S -- **do** (clear on walk end / level change; tell the Advisor: base_policy). **done (session 10, 2.36.0, dd2200d)**
 - **A2** Flavour learning pairs the wrong item: the "You have no more X" branch of `learn_flavours_tick` takes any
   vanished unknown's tval; `learn_flavour` never checks type words. -- *`runs/flavours.json`: "Amber Amulet" = "Scroll
-  of Identify"* -- S/S -- **do** (match tval by X's type word, reject mismatches, then delete the bad entry).
+  of Identify"* -- S/S -- **do** (match tval by X's type word, reject mismatches, then delete the bad entry). **done (session 10, 2.36.0, dd2200d)**
 - **A3** Shadow snapshot passes the weapon's own (+h,+d), not totals; the estimator underrates our damage (rings,
   gloves, STR missing). -- *`shadow.weapon_profile`; Advisor memo 2026-10-28 §4 says totals; geareval's `sim_player`
-  passes totals* -- S-M/S -- **do** (build from `gear_character().derive()`; tell the Advisor, agree-rates shift).
+  passes totals* -- S-M/S -- **do** (build from `gear_character().derive()`; tell the Advisor, agree-rates shift). **done (session 10, 2.36.0, dd2200d)**
 - **A4** `emergency_loop` counts every `emergency` notice, incl. non-actions ("waiting to use ... fighting on" every
   10 s, "potions too weak", kill_caster's "attacking X first"), so `until emergency_loop` can end trips early. --
   *pilot-combat survey* -- S-M/S -- **ask** (count escape actions from `log_escape`/cures instead). **done (session 10)**
@@ -40,20 +40,20 @@ Format: **ID** what -- *evidence* -- risk/effort (S/M/L) -- **do / ask / skip**.
   order comment implies otherwise* -- S/S -- **ask** (gate `loot_step` on `pickup == "all"`?). **done (session 10)**
 - **A6** Gear: `optimize` keeps NO_LOSS+REQUIRED+resists but `compare(no_loss=True)` rejects losing *any* flag, so
   loadouts losing a sustain are simulated then ruled out with "an automatic swap never does". -- *geareval* -- S/S --
-  **do** (one shared predicate).
+  **do** (one shared predicate). **done (session 10, 2.36.0, dd2200d)**
 - **A7** Gear eval's `encounters()` reads the whole decision log each time (no `since`); the "met fights" set includes
   fights from much earlier in Dive04's life. -- *gear survey* -- S/S -- **ask** (window it like `why_info`). **done (session 10)**
 - **A8** `damage_mix.py` always uses the 700-800 ft band (`wrap.sh` passes no depth): EHP goes stale as we dive. -- *wrap.sh*
-  -- S/S -- **do** (pass the mission's depth band).
+  -- S/S -- **do** (pass the mission's depth band). **done (session 10, 2.36.0, dd2200d)**
 - **A9** scorecard.py: no labels = rescore all 200 missions (incl. 156 `sp-*`) and rewrite every card, even with
   `--table`; `--all` is a no-op. -- *`pick = [m for m in missions if not a.labels or ...]`* -- S/S -- **do** (explicit
-  `--all`, skip `sp-*` unless asked; card format unchanged).
+  `--all`, skip `sp-*` unless asked; card format unchanged). **done (session 10, 2.36.0, dd2200d)**
 - **A10** Mission watchers: `watch_mission.py` hard-codes `runs/pilot/dive04`, starts at file ends (events between exit
   and restart lost), and matches any "Error" in pilot.log; `wrap.sh` complaints window breaks across midnight;
   `notes.py --questions` has no time filter. -- *observe survey* -- S/S -- **do** (`--nick`, start offset,
-  traceback-only match, time filters).
+  traceback-only match, time filters). **done (session 10, 2.36.0, dd2200d)**
 - **A11** `review wear NAME` is recorded as `keep` and in the dungeon silently wears nothing. -- *pilot-items* -- S/S --
-  **do** (say so in the reply). **[N]**
+  **do** (say so in the reply). **[N]** **done (session 10, 2.36.0, dd2200d)**
 - **A12** pilotctl prints notes twice (`DONE: ... -- note` then `NOTE:`; goal replies print JSON then `NOTE:`). --
   *commands survey* -- S/S -- **ask** (Navigator-visible output; HANDBOOK quotes no exact format). **[N]** **done (session 10)**
 
