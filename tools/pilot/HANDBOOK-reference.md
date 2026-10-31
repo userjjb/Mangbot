@@ -409,7 +409,8 @@ Orders are remembered across pilot restarts.
   - Gear to aim for: Free Action by 1000 ft (the most valuable item), resist poison by ~1000 ft
     (air hounds, Basilisk), resist confusion and blindness from ~800 ft (no-save blows start
     there; until then carry CCW).
-- **Pack space runs out before food.** Keep ~1 spare ration. Destroy
+- **Pack space runs out before food.** The Pilot keeps the rations and oil that last until the expected recall
+  (+5 minutes) and lets the rest go for worthy loot (since 2.41.0). Destroy
   `{average}` weapons and armour you won't use. Rings and amulets found very
   shallow are usually bad. Quaff-test an unknown potion only when all hold: a stack of 2+, HP at
   80% or less (a cure at full HP doesn't identify), nothing in view, food in the pack (Salt Water

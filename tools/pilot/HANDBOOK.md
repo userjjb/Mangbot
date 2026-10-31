@@ -39,7 +39,9 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
    (before buying one). In the dungeon a found Restore is picked up and drunk once the fight is over. With
    3,000+ gold it also restores Charisma (better prices). Last it **eats rations to Fed (at most 3, when Hungry or
    worse) and fills the lantern** (food isn't digested in town; 9000+ turns of light last a trip), so you carry one food stack and no oil:
-   other food and spare flasks are sold, and near a trip's end spare rations go first when loot needs room. Don't
+   other food and spare flasks are sold. In the dungeon, when loot needs room, the Pilot eats (if it won't Gorge) and
+   fills the lantern first, then treats food and oil beyond what lasts to the expected recall + 5 minutes (40 minutes
+   without a trip plan) as spare, worth only its sale price; what is needed is worth the dungeon time it buys. Don't
    buy flasks or Satisfy Hunger. The reply says what it bought, what it couldn't afford,
    and whether you're ready to recall down. (`until` can't name `wor<2`: the plan keeps one Word of Recall to come
    home by itself.)

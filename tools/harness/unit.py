@@ -2764,17 +2764,21 @@ def gear_score_rests_and_paired_error():
 
 
 @case
-def last_food_never_destroyed_and_heavy_loot_left():
-    """m46: near a trip's end the make-room destroyed all 3 Rations of Food (the only food) for a ~30-gold rod, and
-    six weapons carried for sale made Dive04 speed -1; m47 cut 3 rations to 1. Now rations are never destroyed for room;
-    loot that would cross the weight limit's slow-down line (weapons, armour, staffs) is left unless worth 300+ gold."""
+def rations_by_need_and_heavy_loot_left():
+    """Rations by need (the user, 10-31; was "never destroyed", after m46/m47): Fed with the trip ending in 2 minutes,
+    all 3 are spare (worth their sale price); Hungry with 60 minutes to go, all are needed and worth the dungeon time
+    they buy. And m46's six weapons (speed -1): loot that would cross the weight limit's slow-down line (weapons,
+    armour, staffs) is left unless worth 300+ gold."""
     p = pilot(pack=[("3 Rations of Food", P.TV_FOOD), ("a Rod of Trap Location", 66)])
-    p.trip_minutes_left = lambda: 2               # (near the trip's end: rations count as spare)
+    p.w.in_dungeon, p.w.hunger, p.w.flags = True, 3, {}
+    p.trip_minutes_left = lambda: 2
     p.flavour_of = lambda it: None
+    p.rates = {"buckets": []}
     rations = p.w.items()[0]
-    n3 = p.destroy_count(rations)
-    rations["number"] = 1
-    v1 = p.pack_value(rations)
+    n3, v3 = p.destroy_count(rations), p.pack_value(rations)
+    p.w.hunger = 2
+    p.trip_minutes_left = lambda: 60
+    n_need, v_need = p.destroy_count(rations), p.pack_value(rations)
     # the weight limit: STR 18/70 (88) carries 150 lb before slowing
     q = pilot(pack=[("a Lucerne Hammer (2d5)", 22)])
     q.w.ind["stat0"] = [88]
@@ -2792,8 +2796,9 @@ def last_food_never_destroyed_and_heavy_loot_left():
     took_staff = q.pickup_room("a Staff of Light")
     for i in q.w.inven:
         i["weight"] = 1450 if not i["equip"] else 0
-    ok = n3 == 0 and v1 == float("inf") and took_staff is False and room == 50 and slow == 0 and took_heavy is False and took_light is True and said == 1
-    return ok, f"3 rations: destroy {n3}; the last one worth {v1}; a staff taken {took_staff}; 145 lb carried: {room / 10:.0f} lb to spare, " \
+    ok = n3 == 3 and v3 < 10 and n_need == 3 and v_need > 1000 and took_staff is False and room == 50 and slow == 0 and took_heavy is False and took_light is True and said == 1
+    return ok, f"3 rations, Fed, 2 min left: destroy {n3} (~{v3:.0f}); Hungry, 60 min left: {n_need} (~{v_need:.0f}); " \
+               f"a staff taken {took_staff}; 145 lb carried: {room / 10:.0f} lb to spare, " \
                f"a Lucerne Hammer taken {took_heavy}, a potion {took_light}"
 
 
@@ -3268,6 +3273,34 @@ def order_all_or_nothing():
     saved = json.load(open(p.orders_file))["flee_hp"] if os.path.exists(p.orders_file) else None
     return (not bad["ok"] and "nothing changed" in bad["error"] and kept == 0.5 and good.get("ok") and saved == 0.4), \
         f"bad: {bad}; flee_hp then {kept}; good saved {saved}"
+
+
+@case
+def oil_by_need_and_fuel_before_destroying():
+    """Oil by need (the user, 10-31): a full lantern and the trip ending soon: 3 flasks are spare; a lantern at 2000
+    turns and 60 minutes to go: two flasks are needed (~56 dungeon minutes short), one is spare. Pack full: the lantern is
+    filled from a stack of flasks before anything is destroyed (once it can take a whole flask)."""
+    def setup(turns, left):
+        p = pilot(worn=[("a Brass Lantern (with %d turns) (7 turns)" % turns, P.TV_LITE, 50)],
+                  pack=[("3 Flasks of oil", P.TV_FLASK)] + [("a Scroll of Light", 70)] * 22)
+        p.w.in_dungeon, p.w.hunger, p.w.flags = True, 3, {}
+        p.trip_minutes_left = lambda: left
+        p.flavour_of = lambda it: None
+        p.rates = {"buckets": []}
+        return p
+    p = setup(15000, 2)
+    flasks = p.w.items()[0]
+    full = p.destroy_count(flasks), round(p.pack_value(flasks))
+    p = setup(2000, 60)
+    flasks = p.w.items()[0]
+    low = p.destroy_count(flasks), round(p.pack_value(flasks))
+    p.unique_drop, p.skipped_items, p.room_t = None, set(), 0.0
+    p.c = types.SimpleNamespace(send=lambda *a: None)
+    p.cmds = []
+    p.cmd = lambda line, why, hold=0.4: p.cmds.append(line)
+    p.pickup_room("a Wand of Stone to Mud (5 charges)")
+    return full[0] == 3 and full[1] < 50 and low[0] == 1 and low[1] < 50 and p.cmds[:1] == ["custom F item=0"], \
+        f"full lantern, 2 min: destroy {full}; 2000 turns, 60 min: destroy {low}; pack full: {p.cmds[:1]}"
 
 
 @case

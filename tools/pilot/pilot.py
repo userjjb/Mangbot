@@ -4865,6 +4865,7 @@ class Pilot:
     RATE_BUCKET_S = 600
     RATE_WINDOW = 30
     RATE_SEED = (14190, 12900 + 21794)
+    RATE_SEED_MIN = 319            # (the seed's minutes: m35-m42)
     RATE_CLAMP = (0.1, 3.0)
 
     def rate_state(self):
@@ -5284,6 +5285,14 @@ class Pilot:
         # One food source, rations (eaten blind or confused; a Scroll of Satisfy Hunger fills to just under
         # Gorged): other food, flasks beyond what the lantern needs, and near a trip's end the spare rations
         # and flasks are worth what they sell for (the user, 10-25: food, oil and potions fill the pack)
+        # In the dungeon, food (not mushrooms) and flasks by need (the user, 10-31): what lasts until the expected
+        # recall plus SUPPLY_MARGIN_DMIN is needed, worth the dungeon time it buys; the rest is spare, worth its sale
+        # price. (Was: rations never, flasks only near the trip's end.)
+        if self.w.in_dungeon and self.supply_kind(it) and not self.is_kept(n):
+            spare, short_min = self.supply_spare(it)
+            if spare > 0:
+                return self.iv(n).value * self.pay_cut(it["tval"]) * spare
+            return short_min * self.gold_per_dmin() if short_min > 0 else self.iv(n).value * self.pay_cut(it["tval"])
         if it["tval"] == TV_FOOD and "Mushroom" not in n and ("Ration" not in n or self.provisions_spare()):
             # (never the last meal: m46 destroyed all 3 rations near a trip's end for a ~30-gold rod, and the Navigator
             # found "Food 0" -- a ration stack goes down to one, the last food item is priceless)
@@ -5311,8 +5320,11 @@ class Pilot:
     def destroy_count(self, it):
         """How many of this pack item a make-room may destroy: all, except food -- rations never (one slot, cheap; the
         town visit sells extras), other food not the last of it."""
+        if self.w.in_dungeon and self.supply_kind(it):
+            spare, _ = self.supply_spare(it)
+            return spare if spare > 0 else it["number"]      # (none spare: the whole stack, at the value of its time)
         if it["tval"] == TV_FOOD and "Ration" in it["name"]:
-            return 0          # (rations: never -- m47 cut 3 to 1 for a Staff of CLW and the Navigator bought food)
+            return 0          # (rations: never in town -- m47 cut 3 to 1 for a Staff of CLW and the Navigator bought food)
         if it["tval"] == TV_FOOD and "Mushroom" not in it["name"]:
             others = sum(i["number"] for i in self.w.items() if i["tval"] == TV_FOOD and "Mushroom" not in i["name"]
                          and i["item"] != it["item"])
@@ -5339,6 +5351,55 @@ class Pilot:
     @classmethod
     def food_value(cls, name):
         return next((v for k, v in cls.FOOD_VALUES if k in name), 500)
+
+    SUPPLY_MARGIN_DMIN = 5         # dungeon minutes of food and light kept beyond the expected recall (the user, 10-31)
+    SUPPLY_UNKNOWN_DMIN = 40       # the horizon when no trip end is known, e.g. a hand-given goal (the user, 10-31)
+
+    @staticmethod
+    def supply_kind(it):
+        """'food' (not mushrooms), 'oil' (flasks), or None: the supplies valued by need in the dungeon."""
+        if it["tval"] == TV_FOOD and "Mushroom" not in it["name"]:
+            return "food"
+        return "oil" if it["tval"] == TV_FLASK else None
+
+    def supply_horizon(self):
+        """Dungeon minutes of food and light needed from now: the expected recall plus the margin."""
+        left = self.trip_minutes_left()
+        return (self.SUPPLY_UNKNOWN_DMIN if left is None else left) + self.SUPPLY_MARGIN_DMIN
+
+    def supply_spare(self, it):
+        """(units of this food or flask stack not needed before the horizon, dungeon minutes of the shortfall this
+        stack covers). Needed = what the stomach (or the lantern) and the other stacks of the same supply don't cover
+        (the user, 10-31: leave Full and topped up, recall before starving or the light runs out; when the pack is full
+        eat, fill the lantern, and discard the extra)."""
+        w, kind = self.w, self.supply_kind(it)
+        need = self.supply_horizon()
+        if kind == "food":
+            per = (1.0 if (w.flags or {}).get("slow_digest") else 2.0) * self.TURNS_PER_DMIN
+            have = max(0.0, self.FOOD_MID.get(w.hunger, 6000) - 1000) / per
+            unit = self.food_value(it["name"]) / per
+        else:
+            lamp = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE and "Lantern" in i["name"]), None)
+            m = re.search(r"with (\d+) turns", lamp["name"]) if lamp else None
+            if not m:
+                return it["number"], 0.0          # (no lantern to fill: oil is only worth its sale)
+            have = int(m.group(1)) / self.TURNS_PER_DMIN
+            unit = self.FLASK_FUEL / self.TURNS_PER_DMIN
+        others = sum((self.food_value(i["name"]) / per if kind == "food" else unit) * i["number"]
+                     for i in w.items() if self.supply_kind(i) == kind and i["item"] != it["item"])
+        short = max(0.0, need - have - others)
+        units = min(it["number"], math.ceil(short / unit)) if unit > 0 else it["number"]
+        return it["number"] - units, min(short, units * unit)
+
+    def gold_per_dmin(self):
+        """Gold-equivalent earned per minute of play (gold found + sold, plus XP at the XP-per-gold rate), from the
+        rate buckets (10-minute buckets with a gain; seeded like xp_per_gold): what a minute more in the dungeon is worth."""
+        b = self.rate_state()["buckets"]
+        seed_w = max(0.0, 1 - len(b) / self.RATE_WINDOW)
+        xp = sum(x[1] for x in b) + seed_w * self.RATE_SEED[0]
+        gold = sum(x[2] for x in b) + seed_w * self.RATE_SEED[1]
+        mins = len(b) * self.RATE_BUCKET_S / 60 + seed_w * self.RATE_SEED_MIN
+        return (gold + xp / max(0.1, self.xp_per_gold())) / max(1.0, mins)
 
     HEAVY_LOOT_MIN = 300      # gold: below this, loot that would slow us is left
     def is_junk_name(self, name):
@@ -5432,16 +5493,21 @@ class Pilot:
             return True
         # Use something up before destroying anything (the user, mission 21: a robe and
         # a scroll were destroyed with a flask of oil in the pack that could have
-        # filled the lantern): a lone flask into the lantern, a lone ration eaten
+        # filled the lantern): a flask into the lantern, food eaten (below)
         if now - self.room_t > 1.5:
             lamp = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE and "Lantern" in i["name"]), None)
             lt = re.search(r"with (\d+) turns", lamp["name"]) if lamp else None
-            flask = next((i for i in w.items() if i["tval"] == TV_FLASK and i["number"] == 1), None)
-            food = next((i for i in w.items() if i["tval"] == TV_FOOD and i["number"] == 1
-                         and "Mushroom" not in i["name"]), None)
-            if flask and lt and int(lt.group(1)) < 14000:
+            # (the user, 10-31: eat if you can and fill the lantern from any stack, then discard the extra -- a
+            # lone item first, as it frees its slot; from a bigger stack only when no fuel is wasted)
+            flasks = sorted((i for i in w.items() if i["tval"] == TV_FLASK), key=lambda i: i["number"])
+            foods = sorted((i for i in w.items() if i["tval"] == TV_FOOD and "Mushroom" not in i["name"]),
+                           key=lambda i: i["number"])
+            flask = next((i for i in flasks if lt and (int(lt.group(1)) < 14000 if i["number"] == 1
+                                                       else int(lt.group(1)) <= 15000 - self.FLASK_FUEL)), None)
+            food = foods[0] if foods else None
+            if flask and lt:
                 self.room_t = now
-                self.cmd(f"custom F item={flask['item']}", f"make room: fuel the lantern with the last flask for {name}",
+                self.cmd(f"custom F item={flask['item']}", f"make room: fuel the lantern with a flask for {name}",
                          hold=0.6)
                 return False
             # (m49: a Piece of Elvish Waybread, 7500 food, eaten for room while Fed beside Wargs and a Black ogre: Gorged,

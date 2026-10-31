@@ -27,6 +27,15 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.41.0 -- 2026-10-31 (session 10, continued)
+No missions yet. Details: `docs/pilot-items.md` (`pack_value`, make room), `next_steps.md` Part B.
+- **Rations and oil by need** (the user's own play): in the dungeon, food and flasks that last until the expected
+  recall plus 5 dungeon minutes (40 minutes when no trip end is known) are needed and worth the dungeon time they buy
+  (gold + XP per minute from the Pilot's rates); the rest is spare, worth its sale price, and goes for worthy loot.
+  Rations were never destroyed before.
+- Pack full: the Pilot eats (if it won't Gorge) and fills the lantern from any stack before destroying anything.
+- The town kit is unchanged (eats to Fed, the user).
+
 ## 2.40.0 -- 2026-10-29 (session 10, continued)
 No missions yet. Details: `docs/refactor-candidates.md` "A2".
 - An empty `autodestroy` order no longer stops the destroying of `junk`-order kinds and harmful devices (A16).
