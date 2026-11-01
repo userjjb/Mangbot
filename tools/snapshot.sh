@@ -35,6 +35,11 @@ rsync -a --delete "$MEM/-projectnb-jbrcs-mangband/memory/" "$DST/memory/architec
 rsync -a --delete "$MEM/-projectnb-jbrcs-mangband-Advisor/memory/" "$DST/memory/advisor/"
 cp "$HOME/.claude/CLAUDE.md" "$DST/claude/global-CLAUDE.md"
 date -Is > "$DST/SNAPSHOT_TIME"
+# the inbox hook exists twice, ours and the Advisor's (refactor-candidates D16): say when they drift -- never edit the
+# Advisor's copy; tell the Advisor by memo
+if ! cmp -s "$PROJ/.claude/hooks/inbox.sh" "$PROJ/Advisor/.claude/hooks/inbox.sh"; then
+  echo "snapshot.sh: warning: .claude/hooks/inbox.sh and Advisor/.claude/hooks/inbox.sh differ (memo the Advisor)" >&2
+fi
 # refuse to continue if anything secret-looking slipped in
 if grep -rIl -E 'ghp_[A-Za-z0-9]{20}|github_pat_|BEGIN (RSA|OPENSSH) PRIVATE' "$DST" ; then
   echo "snapshot.sh: secret-looking content above; not safe to commit" >&2; exit 1

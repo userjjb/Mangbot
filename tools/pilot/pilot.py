@@ -55,7 +55,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "shopcat"))
 from mang import MangClient, ClientExited      # noqa: E402
 import glyphs                                   # noqa: E402
 from world import (World, gnow, set_time_factor, time_factor, model_factor, wall_of, wall_since, waited,  # noqa: E402
-                   ghold, light_fuel, set_fast_ok, measured_rate, _lt, frozen)
+                   ghold, light_fuel, light_turns, set_fast_ok, measured_rate, _lt, frozen)
 import structures                                # noqa: E402
 import shadow                                    # noqa: E402
 import geareval                                  # noqa: E402
@@ -168,6 +168,17 @@ def kind_key(name):
     n = re.sub(r"^(a|an|\d+) ", "", n)
     n = re.sub(r"(Potion|Scroll|Wand|Staff|Rod|Ring|Amulet|Mushroom)s\b", r"\1", n)
     return re.sub(r"\s+[-+]\d+.*$", "", n).strip()
+
+
+def bare_name(name):
+    """'3 Flasks of oil {@v1}' -> 'Flasks of oil': the name without its inscription and its article or count (kind_key
+    also drops the (charges) and the plural; refactor-candidates D2)."""
+    return re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name))
+
+
+def bad_inscription(name):
+    """True if the name shows a curse or a bad feeling: {cursed}, {worthless}, {broken}, {terrible}."""
+    return bool(re.search(r"\{(cursed|worthless|broken|terrible)", name))
 
 
 def type_word(name):
@@ -1032,7 +1043,7 @@ class BandLeave(Goal):
         if self.t0 is None:
             used = p.use_stair_location("band, no stairs known")
             if not used:
-                mm = next((i for i in w.items(tval=TV_SCROLL) if "Magic Mapping" in i["name"]), None)
+                mm = p.find_item("Magic Mapping", TV_SCROLL)
                 if mm and not w.flag("blind") and not w.flag("confused") and gnow() >= p.busy_until:
                     p.cmd(f"custom r item={mm['item']}", "band, no stairs known: Magic Mapping", hold=0.8)
                     used = True
@@ -1151,7 +1162,7 @@ class Flee(Goal):
         # stuck, and a Word of Recall ended the trip -- with 4 Magic Mapping scrolls in the pack
         if not self.started and getattr(self, "mapped", None) != w.level_t and not plan(w, stairs) and \
                 not w.flag("blind") and not w.flag("confused") and not w.adjacent_monsters():
-            mm = next((i for i in w.items(tval=TV_SCROLL) if "Magic Mapping" in i["name"]), None)
+            mm = p.find_item("Magic Mapping", TV_SCROLL)
             if mm:
                 self.mapped = w.level_t
                 p.cmd(f"custom r item={mm['item']}", "flee: no known way to the stairs: read Magic Mapping", hold=0.8)
@@ -1207,7 +1218,7 @@ class Recall(Goal):
         if self.read_t and w.depth != self.start_depth and not w.recall_pending:
             return ("done", f"arrived at {w.depth_ft} ft")
         if self.read_t is None:
-            it = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
+            it = p.find_item("Word of Recall", TV_SCROLL)
             if not it:
                 return ("failed", "no Word of Recall")
             # From town, recall goes to the deepest level ever reached -- which
@@ -1232,11 +1243,8 @@ class Recall(Goal):
             if not any(i["tval"] == TV_LITE for i in w.items(equip=True)):
                 # (the fullest: '"0 turns" not in' skipped m39's 13290-turn lantern -- it ends in "0 turns" -- and
                 # lit the 4383-turn one, which ran low mid-trip)
-                lite = p.best_light()
-                if lite and waited(self.light_t, 2):
-                    self.light_t = gnow()
-                    p.light_t = gnow() + 30      # (town_light: don't take it off again)
-                    p.cmd(f"custom w item={lite['item']}", "light on to read Word of Recall", hold=0.8)
+                if waited(self.light_t, 2) and p.wear_light("to read Word of Recall"):
+                    self.light_t = gnow()        # (wear_light holds town_light off meanwhile)
                     return None
             if p.recall_started(gnow()):
                 # Already under way (e.g. the last-resort recall): a second read would cancel it
@@ -1403,16 +1411,10 @@ class TownFarm(Goal):
         # light, to see them at night (a dead or dying torch counts as none:
         # mission 14 stood 2 min in the dark with a lantern in the pack)
         worn = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
-        wt = re.search(r"with (\d+) turns", worn["name"]) if worn else None
-        if (not worn or (wt and int(wt.group(1)) < 100)) and waited(self.light_t, 5):
-            def left(i):
-                t = re.search(r"with (\d+) turns", i["name"])
-                return int(t.group(1)) if t else (1 if "Lantern" in i["name"] else 0)
-            lite = max((i for i in w.items(tval=TV_LITE) if left(i) > 0), key=left, default=None)
-            if lite:
+        wt = light_turns(worn["name"]) if worn else None
+        if (not worn or (wt is not None and wt < 100)) and waited(self.light_t, 5):
+            if p.wear_light("townfarm"):
                 self.light_t = gnow()
-                p.light_t = gnow() + 30
-                p.cmd(f"custom w item={lite['item']}", "townfarm: light on", hold=0.8)
                 return None
         # Thieves first, on sight (the Advisor's Navigator-decisions memo: ~120
         # gold stolen by urchins and rogues in mission 15's townfarm): anything
@@ -1542,9 +1544,9 @@ class Shop(Goal):
             p.note_store()
             sp = getattr(self, "sale_pending", None)
             if sp and (w.store_t > sp["t"] or waited(sp["t"], 3)):
-                key = re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", sp["sold_as"])).lower()
+                key = bare_name(sp["sold_as"]).lower()
                 relist = next((i["price"] for i in (w.store or {}).get("items", [])
-                               if re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", i["name"])).lower() == key),
+                               if bare_name(i["name"]).lower() == key),
                               None) if w.store_t > sp["t"] else None
                 p.log("sale", **{k: v for k, v in sp.items() if k != "t"}, relist=relist)
                 if sp.get("forced") and getattr(self, "role", "navigator") != "architect":
@@ -2298,7 +2300,7 @@ class TownKit(Goal):
             todo = [d for d in p.recharge_wanted() if d["name"] not in tried]
             dev = todo[0] if todo else None
             if dev:
-                sc = next((i for i in w.items(tval=TV_SCROLL) if "Recharging" in i["name"]), None)
+                sc = p.find_item("Recharging", TV_SCROLL)
                 if sc:
                     tried.add(dev["name"])
                     p.cmd(f"custom r item={sc['item']} dir={dev['item']}",
@@ -2314,7 +2316,7 @@ class TownKit(Goal):
             # enchant worn armour back up (disenchantment), while the next point is >= 50% (enchant_plan)
             plan = p.enchant_plan()
             if plan:
-                sc = next((i for i in w.items(tval=TV_SCROLL) if "Enchant Armor" in i["name"]), None)
+                sc = p.find_item("Enchant Armor", TV_SCROLL)
                 if sc:
                     it, c = plan[0]
                     p.cmd(f"custom r item={sc['item']} dir={it['item']}", f"town kit: enchant {it['name']} ({c:.0%})",
@@ -2441,7 +2443,7 @@ class TripPlan:
                 # reached the dungeon)
                 "dmin": lambda: (gnow() - self.__dict__["dungeon_t0"]) / 60 if self.__dict__.get("dungeon_t0") else 0,
                 "clvl": lambda: w.clvl, "gold": lambda: w.ind.get("gold", [0])[0],
-                "free": lambda: 23 - len(w.items()), "levels": lambda: self.levels,
+                "free": lambda: p.PACK_SLOTS - len(w.items()), "levels": lambda: self.levels,
                 "time": lambda: time.strftime("%H:%M:%S")}[var]()
 
     def clock_target(self, hhmm):
@@ -3806,7 +3808,7 @@ class Pilot:
         if smoke and w.in_dungeon and max(smoke) > getattr(self, "smoke_t", 0) and not w.flag("blind") \
                 and not w.flag("confused"):
             self.smoke_t = max(smoke)
-            pd = w.tagged("r", 1) or next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
+            pd = self.phase_item()
             if pd:
                 self.phase_t = now
                 self.phase_hist.append(now)
@@ -3818,7 +3820,7 @@ class Pilot:
         # -20 among six monsters; the Architect quaffed one by hand)
         if self.our_slowness() >= 2 and (w.adjacent_monsters() or now - w.last_hit_t < 2) and \
                 waited(getattr(self, "speed_t", 0), 40) and not self.buff_on("fast"):    # (a potion lasts ~20-45 turns)
-            pot = next((i for i in w.items(tval=TV_POTION) if "Speed" in i["name"]), None)
+            pot = self.find_item("Speed", TV_POTION)
             if pot:
                 self.speed_t = now
                 self.cmd(f"custom q item={pot['item']}", f"slowed ({(w.ind.get('speed') or [0])[0]}) in a fight: "
@@ -3859,7 +3861,7 @@ class Pilot:
                     self.notify("rule", f"afraid with no fear cure: teleported ({one_of(tp[1]['name'])}) -- your "
                                         "`react afraid teleport`")
                     return True
-                pd = next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
+                pd = self.phase_item()
                 if pd and w.adjacent_monsters() and not w.flag("blind") and not w.flag("confused"):
                     self.cmd(f"custom r item={pd['item']}", "afraid: phase door away", hold=0.6)
                     self.notify("afraid", "afraid (can't melee) and cornered: phased away")
@@ -3890,7 +3892,7 @@ class Pilot:
                                       "consider leaving the level")
             dangerous = f.level >= w.clvl - 2
             if dangerous and w.adjacent_monsters() and now - self.phase_t > 2.5:
-                pd = next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
+                pd = self.phase_item()
                 if pd and not w.flag("blind") and not w.flag("confused"):
                     self.phase_t = now
                     self.phase_hist.append(now)
@@ -3924,7 +3926,7 @@ class Pilot:
             # didn't read them, and Dive04 went Weak with four in the pack: the set-piece harness)
             # (only when Weak: it fills to just under Gorged (use-obj.c, PY_FOOD_MAX - 1), so the next potion
             # makes you Gorged, -10 speed -- m26 read it Hungry at 03:20 and fought the yeek band Gorged)
-            sat = None if food else next((i for i in w.items(tval=TV_SCROLL) if "Satisfy Hunger" in i["name"]), None)
+            sat = None if food else self.find_item("Satisfy Hunger", TV_SCROLL)
             if sat and w.hunger <= 1 and now - self.eat_t > 10 and not w.flag("blind") and not w.flag("confused"):
                 if not any(i["tval"] == TV_LITE for i in w.items(equip=True)):
                     return self.wear_light("a light to read Satisfy Hunger by")
@@ -4202,7 +4204,7 @@ class Pilot:
             return True
         adj = w.adjacent_monsters()
         can_read = not w.flag("blind") and not w.flag("confused")
-        pd = w.tagged("r", 1) or next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
+        pd = self.phase_item()
         # Out of combat, potions and scrolls are a waste: rest instead (the
         # user). In combat = something next to us, hit in the last 3 s (ranged
         # attacks count), or HP falling with a monster in view (not poison or
@@ -4222,7 +4224,7 @@ class Pilot:
         # +10 doubles our turns against everything here (the user, 10-25; m30's crowd took 303 -> 115 in ~70 s)
         one_turn = bool(adj) and self.worst_3turns([r for *_, r in adj]) / 3 >= 0.9 * w.hp[0]
         if one_turn and can_read:
-            tele = next((i for i in w.items(tval=TV_SCROLL) if "Teleportation" in i["name"]), None)
+            tele = self.find_item("Teleportation", TV_SCROLL)
             if tele or pd:
                 use = tele or pd
                 if not tele:
@@ -4232,7 +4234,7 @@ class Pilot:
                 self.notify("emergency", f"{why}: one turn from death ({', '.join(sorted({r.name for *_, r in adj}))} "
                                          f"adjacent): read {one_of(use['name'])}", action=True)
                 return True
-        sp = next((i for i in w.items(tval=TV_POTION) if "Speed" in i["name"]), None)
+        sp = self.find_item("Speed", TV_POTION)
         if sp and not one_turn and not self.buff_on("fast") and waited(getattr(self, "speed_t", 0), 20):
             self.speed_t = now
             self.cmd(f"custom q item={sp['item']}", f"{why}: quaff {sp['name']} (an emergency: speed first)", hold=0.6)
@@ -4240,7 +4242,7 @@ class Pilot:
             return True
         # Last resort, started early because it takes 15-34 turns (8-23 s): Word of Recall
         if w.hp_frac < 0.3 and can_read and not self.recall_started(now):
-            wor = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
+            wor = self.find_item("Word of Recall", TV_SCROLL)
             if wor and w.in_dungeon:
                 self.recall_t = now
                 self.cmd(f"custom r item={wor['item']}", f"{why}: word of recall (last resort)", hold=0.5)
@@ -4254,7 +4256,7 @@ class Pilot:
         # Doors for when HP is really low
         if adj and pd and can_read and self.phase_futile(now) and w.hp_frac >= 0.2:
             if not self.recall_started(now) and w.in_dungeon:
-                wor = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
+                wor = self.find_item("Word of Recall", TV_SCROLL)
                 if wor:
                     self.recall_t = now
                     self.cmd(f"custom r item={wor['item']}", f"{why}: phasing isn't shaking them: word of recall",
@@ -4332,7 +4334,7 @@ class Pilot:
                     self.count_escape()     # (this phase sends no notice of its own)
                     self.cmd(f"custom r item={pd['item']}", f"{why}: phase door (potions too weak)", hold=0.6)
                     return True
-                wor = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
+                wor = self.find_item("Word of Recall", TV_SCROLL)
                 if wor and can_read and w.in_dungeon and not self.recall_started(now):
                     self.recall_t = now
                     self.cmd(f"custom r item={wor['item']}", f"{why}: word of recall (potions too weak)", hold=0.5)
@@ -4454,12 +4456,25 @@ class Pilot:
                             + (f"stairs {stairs} away" if stairs is not None else "no stairs known: read Word of Recall")
                             + "; don't stop for loot")
 
+    def phase_item(self):
+        """The Phase Door to read: the item inscribed @r1 first (the player's pick; refactor-candidates D4: the fear
+        phases used to skip it), else the first Phase Door in the pack; None without one."""
+        tag = self.w.tagged("r", 1)
+        # (only a Phase Door: tagged() also returns any item inscribed a plain @1)
+        if tag and tag["tval"] == TV_SCROLL and "Phase Door" in tag["name"]:
+            return tag
+        return self.find_item("Phase Door", TV_SCROLL)
+
+    def find_item(self, word, tval):
+        """The first pack item of `tval` whose name holds `word` (case as written), or None (refactor-candidates D4)."""
+        return next((i for i in self.w.items(tval=tval) if word in i["name"]), None)
+
     def teleport_item(self):
         """('r', a Scroll of Teleportation) or ('u', a Staff of Teleportation with charges), or None. Blind, confused
         or just refused a read: the staff first (a scroll can't be read blind, cmd6.c:275 -- m48: 13 Light hounds
         re-blinded Dive04 within a second of each cure, and two escape reads failed; the staff works blind)."""
         w = self.w
-        sc = next((i for i in w.items(tval=TV_SCROLL) if "Teleportation" in i["name"]), None)
+        sc = self.find_item("Teleportation", TV_SCROLL)
         st = next((i for i in w.items(tval=55) if "Teleportation" in i["name"] and
                    not re.search(r"\(0 charges\)", i["name"])), None)
         unreadable = w.flag("blind") or w.flag("confused") or gnow() - self.__dict__.get("read_failed_t", -99.0) < 10
@@ -4528,11 +4543,6 @@ class Pilot:
             if not self.__dict__.get("shadow_gear_said"):
                 self.shadow_gear_said = True
                 self.log("note", text=f"shadow mode: the gear model failed, the weapon's own (+h,+d) passed ({e!r})")
-
-        def n(word, tv):
-            return sum(i["number"] for i in w.items(tval=tv) if word in i["name"])
-        staff = next((i for i in w.items(tval=55) if "Teleportation" in i["name"]), None)
-        m = re.search(r"\((\d+) charges?\)", staff["name"]) if staff else None
         stairs = min((sh.sim.adist(q[0] - w.pos[0], q[1] - w.pos[1]) for q in w.find("<>")), default=None) \
             if w.pos else None
         p = dict(hp=w.hp[0], mhp=w.hp[1], ac=(w.ind.get("armor") or [0])[0] or 0, clvl=w.clvl,
@@ -4543,11 +4553,7 @@ class Pilot:
                     ({geareval.SHEET_FLAG.get(k.upper(), k.upper()) for k, on in (w.flags or {}).items() if on}
                      & set(geareval.SIM_RES))},
                  save=sh.sim.SAVE, max_adj=2 if self.mover.in_corridor() else shadow.MAX_ADJ, **prof,
-                 inv=dict(ccw=n("Cure Critical", TV_POTION), csw=n("Cure Serious", TV_POTION),
-                          clw=n("Cure Light", TV_POTION), phase=n("Phase Door", TV_SCROLL),
-                          tele=n("Teleportation", TV_SCROLL), staff=int(m.group(1)) if m else 0,
-                          wor=n("Word of Recall", TV_SCROLL), speed=n("Speed", TV_POTION),
-                          berserk=n("Berserk", TV_POTION), hero=n("Heroism", TV_POTION)))
+                 inv=self.consumables_inv())
         for k, on in (("fast", self.buff_on("fast")), ("hero", self.buff_on("hero")), ("berserk", self.buff_on("shero")),
                       ("blind", w.flag("blind")), ("confused", w.flag("confused")), ("afraid", w.flag("afraid")),
                       ("slow", self.our_slowness() > 1)):
@@ -5146,10 +5152,10 @@ class Pilot:
         if self.is_kept(name):
             return "you said keep it (`keep -NAME` releases it)"
         if self.ability_sources and self.iv(name).known is False and \
-                any(s == re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower() for s in self.ability_sources):
+                any(s == bare_name(name).lower() for s in self.ability_sources):
             return (f"it may be what gives you {', '.join(sorted(self.inferred))} (seen in play, not identified): "
                     "identify it first")
-        junk = (self.flavour_of(it) or {}).get("junk") or re.search(r"\{(cursed|worthless|broken|terrible)", name)
+        junk = (self.flavour_of(it) or {}).get("junk") or bad_inscription(name)
         if junk:
             return None
         iv = self.iv(name)
@@ -5202,7 +5208,7 @@ class Pilot:
         return itemvalue.value(name, level, self.aware_cache[1])
 
     def is_kept(self, name):
-        b = re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower()
+        b = bare_name(name).lower()
         # (singular too: "staff of teleportation" on the keep list missed "2 Staffs of Teleportation")
         return any(k in b or k in singular(b) for k in self.keep)
 
@@ -5314,11 +5320,11 @@ class Pilot:
         if it["tval"] == TV_FLASK and ((self.lantern_fuel() or 0) >= self.FUEL_TOPUP or self.provisions_spare()):
             return self.iv(n).value * self.pay_cut(TV_FLASK) * it["number"]
         prized = self.is_kit_item(it) or self.is_kept(n) or \
-            re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", n)).lower() in self.ability_sources
+            bare_name(n).lower() in self.ability_sources
         # junk first: food, flasks and lights were priceless before this test, so an unknown or table-junk Mushroom
         # was never destroyed to make room (refactor-candidates A17); kit, kept and ability items stay priceless
         if not prized and ((self.flavour_of(it) or {}).get("junk") or
-                           re.search(r"\{(cursed|worthless|broken|terrible)", n)):
+                           bad_inscription(n)):
             return 0
         # (mushrooms aren't food here: an unknown one is worth the average of the mushroom kinds not yet known, a known
         # one its kind's value -- itemvalue, the user 10-31; they were priceless as food)
@@ -5394,10 +5400,10 @@ class Pilot:
             unit = self.food_value(it["name"]) / per
         else:
             lamp = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE and "Lantern" in i["name"]), None)
-            m = re.search(r"with (\d+) turns", lamp["name"]) if lamp else None
-            if not m:
+            lt = light_turns(lamp["name"]) if lamp else None
+            if lt is None:
                 return it["number"], 0.0          # (no lantern to fill: oil is only worth its sale)
-            have = int(m.group(1)) / self.TURNS_PER_DMIN
+            have = lt / self.TURNS_PER_DMIN
             unit = self.FLASK_FUEL / self.TURNS_PER_DMIN
         others = sum((self.food_value(i["name"]) / per if kind == "food" else unit) * i["number"]
                      for i in w.items() if self.supply_kind(i) == kind and i["item"] != it["item"])
@@ -5497,7 +5503,7 @@ class Pilot:
                     self.notify("tactic", f"left {name} (~{worth:.0f}): {wt / 10:.0f} lb would slow you (the weight "
                                           f"limit; {max(0, room) / 10:.0f} lb to spare)", news=True)
                 return False
-        free = 23 - len(w.items())
+        free = self.PACK_SLOTS - len(w.items())
         if free >= 1:
             return True
         # one that stacks with what we carry needs no slot (m25 left a Potion of Heroism 7 times, "pack full",
@@ -5510,16 +5516,16 @@ class Pilot:
         # filled the lantern): a flask into the lantern, food eaten (below)
         if now - self.room_t > 1.5:
             lamp = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE and "Lantern" in i["name"]), None)
-            lt = re.search(r"with (\d+) turns", lamp["name"]) if lamp else None
+            lt = light_turns(lamp["name"]) if lamp else None
             # (the user, 10-31: eat if you can and fill the lantern from any stack, then discard the extra -- a
             # lone item first, as it frees its slot; from a bigger stack only when no fuel is wasted)
             flasks = sorted((i for i in w.items() if i["tval"] == TV_FLASK), key=lambda i: i["number"])
             foods = sorted((i for i in w.items() if i["tval"] == TV_FOOD and "Mushroom" not in i["name"]),
                            key=lambda i: i["number"])
-            flask = next((i for i in flasks if lt and (int(lt.group(1)) < 14000 if i["number"] == 1
-                                                       else int(lt.group(1)) <= 15000 - self.FLASK_FUEL)), None)
+            flask = next((i for i in flasks if lt is not None and (lt < 14000 if i["number"] == 1
+                                                                   else lt <= 15000 - self.FLASK_FUEL)), None)
             food = foods[0] if foods else None
-            if flask and lt:
+            if flask and lt is not None:
                 self.room_t = now
                 self.cmd(f"custom F item={flask['item']}", f"make room: fuel the lantern with a flask for {name}",
                          hold=0.6)
@@ -5557,8 +5563,8 @@ class Pilot:
                             news=True)
         return False
 
-    ARMOUR_SLOTS = {30: "boots", 31: "gloves", 32: "helm", 33: "helm", 34: "shield", 35: "cloak", 36: "body",
-                    37: "body", 38: "body"}
+    # (the gear evaluator's tval -> slot table, armour only: boots..body armour, tvals 30-38; refactor-candidates D11)
+    ARMOUR_SLOTS = {tv: s for tv, s in geareval.SLOT_OF_TVAL.items() if 30 <= tv <= 38}
 
     def policy_tick(self, now):
         """The Pilot's own item work at safe moments (restructure step 2.1): identify
@@ -5646,11 +5652,6 @@ class Pilot:
         w = self.w
         pack, worn = w.items(), w.items(equip=True)
 
-        def bare(n):
-            return re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", n)).lower()
-
-        def cursedish(n):
-            return re.search(r"\{(cursed|worthless|broken|terrible)", n)
         # 2. a better weapon (plain damage; a brand counts half, as not every monster is affected)
         wt = self.weapon_table()
         if wt:
@@ -5663,7 +5664,7 @@ class Pilot:
             # put it back. Artifacts are never swapped away: their abilities aren't in the ego table)
             on = next((n for n, b, d, eq in wt if eq), None)
             keep_ab = self.weapon_abilities(on) if on else set()
-            best = max(((eff(n, b, d), n) for n, b, d, eq in wt if not eq and not cursedish(n)
+            best = max(((eff(n, b, d), n) for n, b, d, eq in wt if not eq and not bad_inscription(n)
                         and keep_ab <= self.weapon_abilities(n)), default=None)
             if on and self.is_artifact(on):
                 best = None
@@ -5677,7 +5678,7 @@ class Pilot:
         # 3. better armour, slot by slot (by AC; known not cursed; plusses or a feeling known)
         for it in pack:
             slot = self.ARMOUR_SLOTS.get(it["tval"])
-            if not slot or cursedish(it["name"]):
+            if not slot or bad_inscription(it["name"]):
                 continue
             if not (re.search(r"\[\d+,[+-]\d+\]", it["name"]) or re.search(r"\{(average|good|excellent)", it["name"])):
                 continue                  # (no feeling yet: it might be cursed)
@@ -5690,7 +5691,7 @@ class Pilot:
             if on and (self.is_artifact(on[0]["name"]) or
                        not self.weapon_abilities(on[0]["name"]) <= self.weapon_abilities(it["name"])):
                 continue
-            if ac_new > ac_on and not (on and bare(on[0]["name"]) in self.ability_sources):
+            if ac_new > ac_on and not (on and bare_name(on[0]["name"]).lower() in self.ability_sources):
                 self.cmd(f"custom w item={it['item']}", f"wear {it['name']} (AC {ac_new} vs {ac_on})", hold=0.8)
                 self.notify("tactic", f"wore {it['name']} (AC {ac_new} vs {max(ac_on, 0)})", news=True)
                 return True
@@ -5722,7 +5723,7 @@ class Pilot:
             def kind(n):
                 return re.sub(r"\s*\[[^]]*\]|\s*\{[^}]*\}|^(an?|\d+) ", "", n)
             for it in pack:
-                if it["tval"] not in (40, 45) or not self.iv(it["name"]).known or cursedish(it["name"]) or \
+                if it["tval"] not in (40, 45) or not self.iv(it["name"]).known or bad_inscription(it["name"]) or \
                         (self.flavour_of(it) or {}).get("junk"):
                     continue
                 # (a redundant piece goes first: swapping the [+8] would lose 8 AC that the free slot keeps)
@@ -5798,7 +5799,7 @@ class Pilot:
                 if (need and not re.search(need, last)) or (veto and re.search(veto, last)):
                     continue
                 self.inferred.add(ab)
-                src = [re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", i2["name"])).lower()
+                src = [bare_name(i2["name"]).lower()
                        for i2 in w.items(equip=True) if self.iv(i2["name"]).known is False
                        or re.search(r"\{(good|excellent|special|magical)", i2["name"])]
                 self.ability_sources |= set(src)
@@ -6041,7 +6042,7 @@ class Pilot:
         can_read = not w.flag("blind") and not w.flag("confused")
         far = not any(w.dist(q) <= 25 for q in w.find("<>"))   # (mission 14: stairs 66 away)
         if g > hp and far and can_read and not self.recall_started(now):
-            wor = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
+            wor = self.find_item("Word of Recall", TV_SCROLL)
             if wor:
                 self.recall_t = now
                 self.cmd(f"custom r item={wor['item']}", f"group danger {g:.0f} vs HP {hp}: word of recall",
@@ -6063,7 +6064,7 @@ class Pilot:
         # Phase only when it's really going badly: at 0.6-1.0x only once HP is
         # already below think_hp, and at most every 10 s (mission 9: a lone
         # Giant red frog, 58 worst-case vs 97 HP, cost 4 Phase Doors at full HP)
-        pd = w.tagged("r", 1) or next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
+        pd = self.phase_item()
         hurting = g > hp or w.hp_frac < self.orders["think_hp"]
         if w.adjacent_monsters() and pd and can_read and hurting and now - self.phase_t > 10:
             self.phase_t = now
@@ -6449,7 +6450,7 @@ class Pilot:
         if not w.in_dungeon or self.buff_on("shero") or not waited(getattr(self, "berserk_t", 0), 30):
             return False
         adj, hard = self.hard_fight()
-        pot = next((i for i in w.items(tval=TV_POTION) if "Berserk" in i["name"]), None)
+        pot = self.find_item("Berserk", TV_POTION)
         if not (adj and hard and pot):
             return False
         self.berserk_t = now
@@ -6665,7 +6666,7 @@ class Pilot:
             return None
         return max(cands, key=lambda ft: (ft[0] - w.dist(ft[1]) / 3, -w.dist(ft[1])))[1]
 
-    FLAVOURED = {75, 70, 65, 55, 66, 45, 40}     # potion, scroll, wand, staff, rod, ring, amulet
+    FLAVOURED = set(itemvalue.FLAVOURED.values())     # potion, scroll, wand, staff, rod, ring, amulet
 
     # --- the flavour table (the Advisor's identify-and-sell memo, 2026-10-07):
     # flavours are fixed per server, so what any character learns holds for all
@@ -6971,14 +6972,14 @@ class Pilot:
         if not w.in_dungeon or not near or w.flag("blind") or w.flag("confused"):
             return
         if not self.recall_started(now):
-            wor = next((i for i in w.items(tval=TV_SCROLL) if "Word of Recall" in i["name"]), None)
+            wor = self.find_item("Word of Recall", TV_SCROLL)
             if wor:
                 self.recall_t = now
                 self.cmd(f"custom r item={wor['item']}", "flee failed with monsters close: word of recall", hold=0.5)
                 self.notify("emergency", f"couldn't reach the stairs with {len(near)} monsters close: read Word of "
                                          "Recall (8-23 s); phasing while it charges", action=True)
                 return
-        pd = w.tagged("r", 1) or next((i for i in w.items(tval=TV_SCROLL) if "Phase Door" in i["name"]), None)
+        pd = self.phase_item()
         if pd and w.adjacent_monsters() and now - self.phase_t > 2.5:
             self.phase_t = now
             self.phase_hist.append(now)
@@ -7089,8 +7090,7 @@ class Pilot:
         if unlit:
             self.unlit_try_t = now           # (in the dungeon without a light: at once, not after the 5-60 s wait)
         self.light_t = now + 5
-        m = re.search(r"with (\d+) turns", worn["name"]) if worn else None
-        turns = int(m.group(1)) if m else None
+        turns = light_turns(worn["name"]) if worn else None
         if worn and "Lantern" in worn["name"] and turns is not None and turns < 3000:
             flask = next((i for i in w.items(tval=TV_FLASK)), None)
             if flask:
@@ -7101,7 +7101,7 @@ class Pilot:
             if spare and self.light_left(spare) > turns + 1000:
                 self.cmd(f"custom w item={spare['item']}", f"swap to the fuller lantern ({turns} turns left on the "
                                                            f"worn one)", hold=0.6)
-                self.notify("tactic", f"lantern at {turns} turns: swapped to the spare ({self.light_left(spare)} turns)",
+                self.notify("tactic", f"lantern at {turns} turns: swapped to the spare ({self.light_text(spare)})",
                             news=True)
                 return True
             self.warn_light("lantern out" if turns == 0 else "lantern low",
@@ -7109,11 +7109,8 @@ class Pilot:
         elif worn and "Torch" in worn["name"] and turns is not None and turns < 500:
             # only a light with more left (burnt-out spares were swapped ~2100
             # times while Dive04 idled in town); a lantern in the pack counts
-            def left(i):
-                t = re.search(r"with (\d+) turns", i["name"])
-                return int(t.group(1)) if t else 0
-            torch = max((i for i in w.items(tval=TV_LITE) if left(i) > turns),
-                        key=left, default=None)
+            torch = max((i for i in w.items(tval=TV_LITE) if self.light_left(i) > turns),
+                        key=self.light_left, default=None)
             if torch:
                 self.cmd(f"custom w item={torch['item']}", f"fresh torch ({turns} turns left)", hold=0.6)
                 return True
@@ -7142,10 +7139,18 @@ class Pilot:
                 return True
         return False
 
+    def light_text(self, it):
+        """'N turns', or 'permanent' for a light that shows none (messages: not "1000000 turns")."""
+        t = light_turns(it["name"])
+        return "permanent" if t is None else f"{t} turns"
+
+    PERMANENT_LIGHT = 10 ** 6       # (light_left of a light that shows no turns: it doesn't burn, so it ranks first)
+
     @staticmethod
     def light_left(i):
-        t = re.search(r"with (\d+) turns", i["name"])
-        return int(t.group(1)) if t else (1 if "Lantern" in i["name"] else 0)
+        """Turns of light left (world.light_turns), a permanent light (no turns shown) as PERMANENT_LIGHT."""
+        t = light_turns(i["name"])
+        return Pilot.PERMANENT_LIGHT if t is None else t
 
     def best_light(self):
         """The light in the pack with the most fuel left (not a burnt-out one), or None."""
@@ -7273,9 +7278,9 @@ class Pilot:
             self.notify("blows_changed", f"blows per round {self.seen_blows} -> {blows}")
         self.seen_drained, self.seen_blows = drained, blows
 
-    WEAR_TVALS = {21: "weapon", 22: "weapon", 23: "weapon", 19: "bow", 39: "light", 30: "boots", 31: "gloves",
-                  32: "helm", 33: "helm", 34: "shield", 35: "cloak", 36: "body", 37: "body", 38: "body",
-                  40: "amulet"}
+    # (`wearall`'s slots: the gear evaluator's table without diggers (20: not a weapon to fill the hands with) and
+    # rings (45) -- left out as they always were; refactor-candidates D11)
+    WEAR_TVALS = {tv: s for tv, s in geareval.SLOT_OF_TVAL.items() if tv not in (20, 45)}
 
     def wear_step(self):
         """One item per call (letters shift after each): wear what fills an empty slot."""
@@ -7283,14 +7288,10 @@ class Pilot:
         if gnow() < self.busy_until or w.inven_dirty:
             return
         worn = {self.WEAR_TVALS.get(i["tval"]) for i in w.items(equip=True)}
-
-        def light_left(i):
-            t = re.search(r"with (\d+) turns", i["name"])
-            return int(t.group(1)) if t else 0
         # (the best light first: mission 12 put on a 403-turn torch with a
         # full lantern in the pack)
-        for it in sorted(w.items(), key=lambda i: -light_left(i) if i["tval"] == TV_LITE else 0):
-            if it["tval"] == TV_LITE and light_left(it) == 0:
+        for it in sorted(w.items(), key=lambda i: -self.light_left(i) if i["tval"] == TV_LITE else 0):
+            if it["tval"] == TV_LITE and self.light_left(it) == 0:
                 continue
             if it["tval"] in (40, 45) and self.unknown_flavour(it):
                 continue            # unknown jewellery: 19-58% cursed, sticks, never identifies (Advisor)
@@ -7847,7 +7848,7 @@ class Pilot:
             st["decided"][name] = "sell" if args[0] == "sell" else "keep"
             self.review_save()
             if args[0] == "keep":
-                self.keep.add(re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower())
+                self.keep.add(bare_name(name).lower())
                 json.dump(sorted(self.keep), open(os.path.join(self.rundir, "keep.json"), "w"))
             if args[0] == "wear":
                 # (recorded as keep; worn now only in town -- `wear` is for town, between trips: DUNGEON_ITEM_CMDS. It
@@ -8113,7 +8114,7 @@ class Pilot:
                 # The Pilot takes the lantern off when idle in town ("You are not
                 # wielding a light", mission 17): put it on first, then find the
                 # flask again (the letters shift when the lantern leaves the pack)
-                lan = next((i for i in self.w.items(tval=TV_LITE) if "Lantern" in i["name"]), None)
+                lan = self.find_item("Lantern", TV_LITE)
                 if not lan:
                     return {"ok": False, "error": "no lantern worn or in the pack to fuel"}
                 try:
@@ -8230,7 +8231,7 @@ class Pilot:
             # Navigator read the second scroll by letter 9 s later)
             did = f"{c} {it_before['name'] if it_before else args[0]}"
             if it_before and not it_before.get("equip"):
-                kind = re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", it_before["name"]))
+                kind = bare_name(it_before["name"])
                 now_n = sum(i["number"] for i in self.w.items() if singular(kind) in singular(i["name"]))
                 did += f" ({it_before['number']} -> {now_n} left)"
             if pos_before and self.w.pos and self.w.pos != pos_before:
@@ -8369,9 +8370,7 @@ class Pilot:
         if wor < need_wor:
             missing.append(f"Word of Recall {wor}/{need_wor}" + (" (one to go, one to come home)" if recall_down else ""))
         # the worn light, or one in the pack (the Pilot takes the lantern off in town)
-        def turns(i):
-            m = re.search(r"with (\d+) turns", i["name"])
-            return int(m.group(1)) if m else 10 ** 6          # no count shown: permanent
+        turns = self.light_left                 # (no count shown: permanent)
         lights = [i for i in w.items(equip=True) if i["tval"] == TV_LITE] + list(w.items(tval=TV_LITE))
         best = max(lights, key=turns, default=None)
         flask = any(i["tval"] == TV_FLASK for i in w.items())
@@ -8534,7 +8533,7 @@ class Pilot:
 
     @staticmethod
     def kind_key_of(name):
-        return singular(re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).strip())
+        return singular(bare_name(name).strip())
 
     def price_of(self, kind, store):
         """What `kind` cost at `store` last time we looked (the cheapest line), else a guess."""
@@ -8547,8 +8546,7 @@ class Pilot:
     def lantern_fuel(self):
         """Turns of fuel in the lantern (worn, else the best in the pack), or None without one."""
         def fuels(items):
-            return [int(m.group(1)) for i in items if "Lantern" in i["name"]
-                    for m in [re.search(r"with (\d+) turns", i["name"])] if m]
+            return [t for i in items if "Lantern" in i["name"] for t in [light_turns(i["name"])] if t is not None]
         worn = fuels(self.w.items(equip=True))      # (not the max of all: a full spare hid a half-empty worn one, m39)
         pack = fuels(self.w.items())
         return worn[0] if worn else max(pack) if pack else None
@@ -8644,9 +8642,9 @@ class Pilot:
                              and not any("Recharging" in i["name"] for i in self.w.items())
                              and not any(r["item"] == it["item"] for r in self.recharge_wanted()))) \
                 or self.is_kept(name) or \
-                re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower() in self.ability_sources:
+                bare_name(name).lower() in self.ability_sources:
             return 0
-        if not self.town_buyers(it) or re.search(r"\{(cursed|worthless|broken|terrible)", name):
+        if not self.town_buyers(it) or bad_inscription(name):
             return 0
         if self.unknown_flavour(it):
             # (broke for a Word of Recall: unknown wands, staffs and rods sell anyway -- m27 had nothing to sell but
@@ -8725,7 +8723,7 @@ class Pilot:
             self.cmd(f"custom F item={flask['item']}", f"town kit: fill the lantern ({fuel} turns)", hold=0.8)
             kit.done_log.append(f"filled the lantern ({fuel} turns)")
             return True
-        ration = next((i for i in w.items(tval=TV_FOOD) if "Ration" in i["name"]), None)
+        ration = self.find_item("Ration", TV_FOOD)
         if ration and w.hunger <= 2 and kit.__dict__.get("ate", 0) < 3:
             kit.ate = kit.__dict__.get("ate", 0) + 1
             self.cmd(f"eat {ration['item']}", "town kit: eat to Fed before the trip", hold=1.0)
@@ -8751,12 +8749,12 @@ class Pilot:
         out = []
         for it in self.w.items() + self.w.items(equip=True):
             name = it["name"]
-            if (self.flavour_of(it) or {}).get("junk") or re.search(r"\{(cursed|worthless|broken|terrible)", name):
+            if (self.flavour_of(it) or {}).get("junk") or bad_inscription(name):
                 continue
             iv = self.iv(name)
             if iv.known is not False:
                 continue
-            bare = re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", name)).lower()
+            bare = bare_name(name).lower()
             prio = float("inf") if bare in self.ability_sources or iv.p_irreplaceable >= 0.2 else iv.value * self.pay_cut(iv.tval)
             if prio >= minimum:
                 out.append((prio, it))
@@ -9319,9 +9317,7 @@ class Pilot:
         elif name == "recall":
             g = Recall()
             if self.w.depth == 0 and not force:
-                md = int(self.orders.get("max_depth", 0))
-                deepest = getattr(self, "deepest_ft", 0) or 0
-                want = min(md, deepest) if md and deepest else (md or deepest)
+                want = self.planned_depth()
                 gap = self.supply_gate(want, True) if want else []
                 if gap:
                     return {"ok": False, "error": f"supply gate for recalling down to ~{want} ft: missing "
@@ -9498,7 +9494,7 @@ class Pilot:
         lo = sn["min_hp"]
         mons = sorted(sn["mons"].items(), key=lambda kv: -kv[1])
         out.append(f"Since the last report ({now - sn['t']:.0f} s): lowest HP "
-                   + (f"{lo[0]}/{lo[1]} at {time.strftime('%H:%M:%S', _lt(lo[2]))}" if lo else "?")
+                   + (self.low_hp_text(lo) if lo else "?")
                    + "; monsters seen (most at once): " + (", ".join(f"{n} x{k}" for n, k in mons[:12]) or "none")
                    + (f"; UNIQUES: {', '.join(sorted(sn['uniques']))}" if sn["uniques"] else ""))
         xt = getattr(self, "exp_t", None)
@@ -9508,9 +9504,79 @@ class Pilot:
                    + (f"; goal '{self.goal.describe()}' for {self.ago(now - getattr(self, 'goal_t', now))}"
                       if self.goal else ""))
         if reset:
-            self.since = {"t": now, "min_hp": (w.hp[0], w.hp[1], now) if w.hp[1] > 1 else None,
-                          "mons": {}, "uniques": set()}
+            self.since_reset(now)
         return out
+
+    # --- formatting shared by compact() and report() (refactor-candidates D12) ---------------------------------------
+    def since_reset(self, now):
+        """Start the next report's "since last" window (HP low, monsters and uniques seen)."""
+        w = self.w
+        self.since = {"t": now, "min_hp": (w.hp[0], w.hp[1], now) if w.hp[1] > 1 else None,
+                      "mons": {}, "uniques": set()}
+
+    @staticmethod
+    def low_hp_text(lo):
+        """since["min_hp"] (hp, max, t) -> '100/265 at 02:59:10'."""
+        return f"{lo[0]}/{lo[1]} at {time.strftime('%H:%M:%S', _lt(lo[2]))}"
+
+    @staticmethod
+    def stat_text(v):
+        """A stat as the sheet shows it: 3..18, then 18/01..18/100+."""
+        return v if v <= 18 else '18/%02d' % (v - 18)
+
+    def conditions(self):
+        """(the status conditions on, the hunger word)."""
+        w = self.w
+        cond = [k for k in ("blind", "confused", "afraid", "poisoned", "cut", "stun") if w.flag(k)]
+        hunger = {0: "Weak", 1: "Weak", 2: "Hungry", 3: "Fed", 4: "Full", 5: "Gorged"}.get(w.hunger, w.hunger)
+        return cond, hunger
+
+    def unanswered_line(self):
+        return "USER MESSAGE(S) NOT YET ANSWERED (reply with say): " + " | ".join(
+            f"{time.strftime('%H:%M:%S', _lt(t))} {m}" for t, m in self.unanswered)
+
+    def news_line(self, head, news_since, n, now=None):
+        """The news since `news_since` (else of the last 10 minutes), the last n, after `head`; None if none."""
+        now = gnow() if now is None else now
+        recent = [e for e in self.news if (e["t"] > news_since if news_since is not None
+                                           else now - e["t"] < 600)][-n:]
+        if not recent:
+            return None
+        return head + " | ".join(f"{time.strftime('%H:%M:%S', _lt(e['t']))} {e['what']}: {e['detail']}" for e in recent)
+
+    def monster_groups(self):
+        """{name: [(y, x, race)]} of the monsters in view."""
+        seen = {}
+        for y, x, r in self.w.monsters:
+            seen.setdefault(r.name, []).append((y, x, r))
+        return seen
+
+    def weapon_text(self, n, b, d, eq, full=False):
+        """A weapon_table row for the reports: compact (the short name), or full (report(): the whole name, slays,
+        the longer hints)."""
+        brand = weapon_brand(n)
+        return (f"{'WIELDED ' if eq else ''}{n if full else self.short(n)} {b} blows ~{d:.0f}"
+                + (f" (~{weapon_damage(n, b, brand[1]):.0f} vs {'monsters ' if full else ''}not resisting {brand[0]})"
+                   if brand else "")
+                + (" (+ x2-3 vs its slain race)" if full and re.search(r"\bof \*?Slay ", n) else "")
+                + ((" (pluses unknown: identify it, it may be much better)" if full else " (pluses unknown: identify it)")
+                   if re.search(r"\{(good|excellent|special|magical)", n) and not re.search(r"\([+-]\d+,", n) else ""))
+
+    def structures_line(self, full=False):
+        """'Structures: ...' (the inner rooms and vaults here, with a door seen or 'searched') in compact()'s wording,
+        or report()'s (full); None outside the dungeon or with none."""
+        w = self.w
+        sts = self.structures_here() if w.in_dungeon else []
+        if not sts:
+            return None
+
+        def one(Y, X, st):
+            door = self.room_door(Y, X)
+            return (f"{st['kind']} {'centred ' if full else ''}{Y},{X}" + ("" if st["sure"] else " (likely)") +
+                    (f"{' - door at ' if full else ', door '}{door[0]},{door[1]}" if door else
+                     (" - searched" if full else ", searched")
+                     if all((w.level_t, r) in self.searched for _, r in structures.door_spots(Y, X)) else ""))
+        return "Structures: " + "; ".join(one(Y, X, st) for Y, X, st in sts)
 
     def movement_line(self, window=60, step=8):
         """Where we've been in the last minute, a point every ~8 s (the
@@ -9551,7 +9617,7 @@ class Pilot:
         empty, better = [], []
         for slot, tvals, k in self.SLOTS:
             on = [i for i in worn if i["tval"] in tvals]
-            cand = [i for i in pack if i["tval"] in tvals and not re.search(r"\{(cursed|worthless|broken|terrible)", i["name"])
+            cand = [i for i in pack if i["tval"] in tvals and not bad_inscription(i["name"])
                     and not (self.flavour_of(i) or {}).get("junk")]
             if len(on) < k:
                 if slot == "light" and cand and not w.depth:
@@ -9890,15 +9956,15 @@ class Pilot:
             # no lantern: a worn light that shows turns (a torch) burns out -- its turns plus spare torches'; one that
             # shows none (an artifact) is permanent (a torch read as permanent: refactor-candidates A19)
             worn = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
-            m = re.search(r"with (\d+) turns", worn["name"]) if worn else None
+            m = light_turns(worn["name"]) if worn else None
             if not worn:
                 light = 0.0
-            elif not m:
+            elif m is None:
                 light = None
             else:
-                spare = sum(int(t.group(1)) * i["number"] for i in w.items(tval=TV_LITE) if not i.get("equip")
-                            for t in [re.search(r"with (\d+) turns", i["name"])] if t)
-                light = (int(m.group(1)) + spare) / self.TURNS_PER_DMIN
+                spare = sum(t * i["number"] for i in w.items(tval=TV_LITE) if not i.get("equip")
+                            for t in [light_turns(i["name"])] if t is not None)
+                light = (m + spare) / self.TURNS_PER_DMIN
         else:
             flasks = sum(i["number"] for i in w.items(tval=TV_FLASK))
             light = (fuel + flasks * self.FLASK_FUEL) / self.TURNS_PER_DMIN
@@ -10045,6 +10111,20 @@ class Pilot:
                 out.append((it, gives, sorted({c for f in gives for c in (flags.get(f) or "") if c != L})))
         return out
 
+    def consumables_inv(self):
+        """The consumables the simulator uses (shadow_decision's and gear_character's `inv`): potions and scrolls
+        counted by name, the Staff of Teleportation's charges (refactor-candidates D5)."""
+        w = self.w
+
+        def n(word, tv):
+            return sum(i["number"] for i in w.items(tval=tv) if word in i["name"])
+        staff = self.find_item("Teleportation", 55)
+        m = re.search(r"\((\d+) charges?\)", staff["name"]) if staff else None
+        return dict(ccw=n("Cure Critical", TV_POTION), csw=n("Cure Serious", TV_POTION), clw=n("Cure Light", TV_POTION),
+                    phase=n("Phase Door", TV_SCROLL), tele=n("Teleportation", TV_SCROLL),
+                    staff=int(m.group(1)) if m else 0, wor=n("Word of Recall", TV_SCROLL), speed=n("Speed", TV_POTION),
+                    berserk=n("Berserk", TV_POTION), hero=n("Heroism", TV_POTION))
+
     def gear_character(self):
         """The character for the gear evaluator (geareval.py): the sheet's stats, HP and AC, the worn gear (with each
         piece's weight from the inventory), the sheet's abilities, the consumables the simulator uses."""
@@ -10056,15 +10136,7 @@ class Pilot:
                 worn.setdefault(it.slot, []).append(it)
         stats = {n: (w.ind.get(f"stat{k}") or [3])[0] for k, n in enumerate(self.STAT_NAMES)}
         flags = {("SEE_INVIS" if f == "see_invis" else f.upper()) for f, on in (w.flags or {}).items() if on}
-
-        def n(word, tv):
-            return sum(i["number"] for i in w.items(tval=tv) if word in i["name"])
-        staff = next((i for i in w.items(tval=55) if "Teleportation" in i["name"]), None)
-        m = re.search(r"\((\d+) charges?\)", staff["name"]) if staff else None
-        inv = dict(ccw=n("Cure Critical", TV_POTION), csw=n("Cure Serious", TV_POTION), clw=n("Cure Light", TV_POTION),
-                   phase=n("Phase Door", TV_SCROLL), tele=n("Teleportation", TV_SCROLL), staff=int(m.group(1)) if m else 0,
-                   wor=n("Word of Recall", TV_SCROLL), speed=n("Speed", TV_POTION), berserk=n("Berserk", TV_POTION),
-                   hero=n("Heroism", TV_POTION))
+        inv = self.consumables_inv()
         depth = int(self.orders.get("max_depth", 0)) or (self.deepest_ft or 500)
         return geareval.Character(w.clvl, stats, w.hp[1], (w.ind.get("armor") or [0])[0] or 0, worn, flags=flags,
                                   depth_ft=depth, inv=inv, pack_weight=sum(i["weight"] for i in w.items()))
@@ -10094,7 +10166,7 @@ class Pilot:
         ch = self.gear_character()
         pool = [geareval.Item(i["name"], i["tval"], i["weight"] // max(1, i.get("number", 1))) for i in w.items()
                 if i["tval"] in geareval.SLOT_OF_TVAL and i["tval"] not in (TV_LITE, 19) and self.iv(i["name"]).known
-                and not re.search(r"\{(cursed|worthless|broken|terrible)", i["name"])]
+                and not bad_inscription(i["name"])]
         budget = 0
         if shops:
             budget = max(0, w.ind.get("gold", [0])[0] - self.town_reserve())
@@ -10133,7 +10205,7 @@ class Pilot:
         confusion, hold life -- geareval.NO_LOSS), else None."""
         w = self.w
         if w.depth or w.in_dungeon or it.get("equip") or it["tval"] not in geareval.SLOT_OF_TVAL or \
-                it["tval"] == TV_LITE or re.search(r"\{(cursed|worthless|broken|terrible)", it["name"]) or \
+                it["tval"] == TV_LITE or bad_inscription(it["name"]) or \
                 not self.iv(it["name"]).known or (self.flavour_of(it) or {}).get("junk"):
             return None
         try:
@@ -10279,9 +10351,9 @@ class Pilot:
                 cures["staff CLW"] = int(m.group(2))
         worn_lite = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
         lite = worn_lite or self.best_light()
-        lt = re.search(r"with (\d+) turns", lite["name"]) if lite else None
+        lt = light_turns(lite["name"]) if lite else None
         # (m40: "Light 408" while no light was worn and the fuller lantern sat in the pack)
-        light = ("none" if not lite else (lt.group(1) if lt else "permanent")) + \
+        light = ("none" if not lite else (str(lt) if lt is not None else "permanent")) + \
             ("" if worn_lite or not lite else " (off, in the pack)") + \
             (f" +{flasks} flask{'s' if flasks != 1 else ''}" if flasks else "")
         out = ["Cures " + (" · ".join(f"{k} {v}" for k, v in cures.items()) or "NONE")
@@ -10312,13 +10384,11 @@ class Pilot:
             lines.append("ARCHITECT ANSWER(S): " + " | ".join(f"#{i} {time.strftime('%H:%M:%S', _lt(t))} {m}"
                                                                for t, i, m in aa))
         if self.unanswered:
-            lines.append("USER MESSAGE(S) NOT YET ANSWERED (reply with say): " + " | ".join(
-                f"{time.strftime('%H:%M:%S', _lt(t))} {m}" for t, m in self.unanswered))
+            lines.append(self.unanswered_line())
         drained = {n for n, (cur, top) in (self.seen_drained or {}).items() if cur < top}
-        stats = " ".join(f"{s} {v[0] if v[0] <= 18 else '18/%02d' % (v[0] - 18)}{'↓' if s in drained else ''}"
+        stats = " ".join(f"{s} {self.stat_text(v[0])}{'↓' if s in drained else ''}"
                          for s, v in zip(self.STAT_NAMES, (ind.get(f"stat{i}", [0]) for i in range(6))))
-        cond = [k for k in ("blind", "confused", "afraid", "poisoned", "cut", "stun") if w.flag(k)]
-        hunger = {0: "Weak", 1: "Weak", 2: "Hungry", 3: "Fed", 4: "Full", 5: "Gorged"}.get(w.hunger, w.hunger)
+        cond, hunger = self.conditions()
         wt = self.weapon_table()
         wield = next(((n, b, d) for n, b, d, eq in wt if eq), None) if wt else None
         spd = int(ind.get("speed", [0])[0] or 0)
@@ -10333,11 +10403,8 @@ class Pilot:
         lines.append(f"Here: {here}" + (" | Stairs " + ", ".join(f"{w.memory[q]} {q[0]},{q[1]} ({w.dist(q)})"
                                                                   for q in stairs) if stairs else " | no stairs known"))
         if w.monsters:
-            seen = {}
-            for y, x, r in w.monsters:
-                seen.setdefault(r.name, []).append((y, x, r))
             parts = []
-            for n, v in sorted(seen.items(), key=lambda kv: min(w.dist(m[:2]) for m in kv[1])):
+            for n, v in sorted(self.monster_groups().items(), key=lambda kv: min(w.dist(m[:2]) for m in kv[1])):
                 r = v[0][2]
                 ds = sorted(w.dist(m[:2]) for m in v)
                 zz = sum(1 for y, x, _ in v if self.is_asleep(y, x))
@@ -10373,19 +10440,13 @@ class Pilot:
             xa, xb = max(0, x0 - map_r), x0 + map_r + 1
             lines.append(f"Map (@ {y0},{x0}; rows {ys[0]}-{ys[-1]}, cols {xa}-{xb - 1}):")
             lines += [f"{y:2d}|" + w.rows[y][xa:xb].rstrip() for y in ys]
-        sts = self.structures_here() if w.in_dungeon else []
-        if sts:
-            lines.append("Structures: " + "; ".join(
-                f"{st['kind']} {Y},{X}" + ("" if st["sure"] else " (likely)") +
-                (f", door {self.room_door(Y, X)[0]},{self.room_door(Y, X)[1]}" if self.room_door(Y, X) else
-                 ", searched" if all((w.level_t, r) in self.searched for _, r in structures.door_spots(Y, X)) else "")
-                for Y, X, st in sts))
+        st_line = self.structures_line()
+        if st_line:
+            lines.append(st_line)
         lines += self.belief_lines()
-        recent = [e for e in self.news if (e["t"] > news_since if news_since is not None
-                                           else now - e["t"] < 600)][-8:]
-        if recent:
-            lines.append("News: " + " | ".join(
-                f"{time.strftime('%H:%M:%S', _lt(e['t']))} {e['what']}: {e['detail']}" for e in recent))
+        news = self.news_line("News: ", news_since, 8, now)
+        if news:
+            lines.append(news)
         if w.depth and (w.monsters or w.hp[0] < w.hp[1]):
             msgs = w.recent(10)[-6:]
             if msgs:
@@ -10396,7 +10457,7 @@ class Pilot:
             mons = sorted(sn["mons"].items(), key=lambda kv: -kv[1])
             bits = []
             if lo and lo[0] < lo[1]:
-                bits.append(f"low HP {lo[0]}/{lo[1]} at {time.strftime('%H:%M:%S', _lt(lo[2]))}")
+                bits.append(f"low HP {self.low_hp_text(lo)}")
             if mons:
                 bits.append("seen " + ", ".join(f"{n} ×{k}" if k > 1 else n for n, k in mons[:8]))
             if sn["uniques"]:
@@ -10404,8 +10465,7 @@ class Pilot:
             if bits:
                 lines.append(f"Since last ({self.ago(now - sn['t'])}): " + "; ".join(bits))
             if news_since is not None:
-                self.since = {"t": now, "min_hp": (w.hp[0], w.hp[1], now) if w.hp[1] > 1 else None,
-                              "mons": {}, "uniques": set()}
+                self.since_reset(now)
         if w.depth:
             xt = getattr(self, "exp_t", None)
             lines.append("Progress: " + (f"XP {self.ago(now - xt)} ago" if xt else "no XP yet")
@@ -10426,11 +10486,7 @@ class Pilot:
             "Equip": [f"{chr(65 + k)}) {self.short(i['name'])}" for k, i in enumerate(w.items(equip=True))],
             "Pack (not consumables)": [f"{chr(97 + i['item'])}) {self.short(self.show(i))}" for i in w.items()
                                        if i["tval"] not in cons and i["tval"] not in (55, 65, 66)],
-            "Weapons": [f"{'WIELDED ' if eq else ''}{self.short(n)} {b} blows ~{d:.0f}"
-                        + (f" (~{weapon_damage(n, b, weapon_brand(n)[1]):.0f} vs not resisting {weapon_brand(n)[0]})"
-                           if weapon_brand(n) else "")
-                        + (" (pluses unknown: identify it)" if re.search(r"\{(good|excellent|special|magical)", n)
-                           and not re.search(r"\([+-]\d+,", n) else "")
+            "Weapons": [self.weapon_text(n, b, d, eq)
                         for n, b, d, eq in self.weapon_table()],     # (always the wielded one: with
             # the others sold in town the list went empty and the report said "Weapons: none", m27/m29/m31)
             "Abilities": [k for k, v in (w.flags or {}).items() if v and k not in ("stealth", "search", "infra", "tunnel")],
@@ -10473,7 +10529,7 @@ class Pilot:
         w = self.w
         ind = w.ind
         lines = []
-        stats = " ".join(f"{s}:{v[0] if v[0] <= 18 else '18/%02d' % (v[0] - 18)}"
+        stats = " ".join(f"{s}:{self.stat_text(v[0])}"
                          for s, v in zip(("STR", "INT", "WIS", "DEX", "CON", "CHR"),
                                          (ind.get(f"stat{i}", [0]) for i in range(6))))
         lines.append(f"{ind.get('hist_name_', '?')} the {ind.get('race_', '?')} {ind.get('class_', '?')}, "
@@ -10481,8 +10537,7 @@ class Pilot:
                      f"{('Town (' + {True: 'day', False: 'night', None: 'day/night?'}[w.is_day()] + ')') if not w.depth else str(w.depth_ft) + ' ft'}, gold {ind.get('gold', [0])[0]}, "
                      f"blows {ind.get('skills2', ['?'])[0]}, speed {ind.get('speed', [0])[0]}"
                      f" | now {time.strftime('%H:%M:%S')} | Pilot v{VERSION}")   # (the Navigator has no clock of its own)
-        cond = [k for k in ("blind", "confused", "afraid", "poisoned", "cut", "stun") if w.flag(k)]
-        hunger = {0: "Weak", 1: "Weak", 2: "Hungry", 3: "Fed", 4: "Full", 5: "Gorged"}.get(w.hunger, w.hunger)
+        cond, hunger = self.conditions()
         lines.append(f"{stats}  | {hunger}" + (f" | {', '.join(cond)}" if cond else "")
                      + (" | resting" if w.resting else ""))
         # (after a login the map shows @ over whatever is there: mission 21 stood
@@ -10503,12 +10558,9 @@ class Pilot:
                 seg = w.rows[y][max(0, x0 - cols):x0 + cols + 1]
                 lines.append(f"  {y:2d}|" + seg.rstrip())
         if w.monsters:
-            seen = {}
-            for y, x, r in w.monsters:
-                seen.setdefault(r.name, []).append((y, x, r))
             lines.append("Monsters in view: " + "; ".join(
                 f"{n} x{len(v)} (lvl {v[0][2].level}{', UNIQUE' if 'UNIQUE' in v[0][2].flags else ''}) "
-                f"nearest {min(w.dist(m[:2]) for m in v)} away" for n, v in seen.items()))
+                f"nearest {min(w.dist(m[:2]) for m in v)} away" for n, v in self.monster_groups().items()))
         else:
             lines.append("Monsters in view: none")
         lines.append("Items seen: " + ("; ".join(l.strip() for l in w.itemlist) if w.itemlist else "?"))
@@ -10534,18 +10586,11 @@ class Pilot:
         if self.unanswered:
             # (mission 15: a message sent before the Navigator's first wait was
             # only seen 4 minutes later in the news)
-            lines.insert(1, "USER MESSAGE(S) NOT YET ANSWERED (reply with say): " + " | ".join(
-                f"{time.strftime('%H:%M:%S', _lt(t))} {m}" for t, m in self.unanswered))
+            lines.insert(1, self.unanswered_line())
         wt = self.weapon_table()
         if wt:
             lines.append("Weapons (blows, avg damage per round at your STR/DEX): " + "; ".join(
-                f"{'WIELDED ' if eq else ''}{n} {b} blows ~{d:.0f}"
-                + (f" (~{weapon_damage(n, b, weapon_brand(n)[1]):.0f} vs monsters not resisting "
-                   f"{weapon_brand(n)[0]})" if weapon_brand(n) else "")
-                + (" (+ x2-3 vs its slain race)" if re.search(r"\bof \*?Slay ", n) else "")
-                + (" (pluses unknown: identify it, it may be much better)"
-                   if re.search(r"\{(good|excellent|special|magical)", n) and not re.search(r"\([+-]\d+,", n) else "")
-                for n, b, d, eq in wt))
+                self.weapon_text(n, b, d, eq, full=True) for n, b, d, eq in wt))
         if w.flags:
             # from the character sheet's grid (tool query 'flags'): facts, not guesses
             ab = [k for k, v in w.flags.items() if v and k not in ("stealth", "search", "infra", "tunnel")]
@@ -10555,19 +10600,13 @@ class Pilot:
                          + ("; differences: " + ", ".join(f"{k} {n}" for k, n in self.audit_counts.items())
                             if self.audit_counts else ", no differences"))
         # News of the last 10 minutes, every time (status calls used to clear it)
-        recent = [e for e in self.news if (e["t"] > news_since if news_since is not None
-                                           else gnow() - e["t"] < 600)][-12:]
-        if recent:
-            lines.append("Since last report: " + " | ".join(
-                f"{time.strftime('%H:%M:%S', _lt(e['t']))} {e['what']}: {e['detail']}" for e in recent))
+        news = self.news_line("Since last report: ", news_since, 12)
+        if news:
+            lines.append(news)
         lines.append("Recent messages: " + " | ".join(w.recent(30)[-12:]))
-        here = self.structures_here() if w.in_dungeon else []
-        if here:
-            lines.append("Structures: " + "; ".join(
-                f"{st['kind']} centred {Y},{X}" + ("" if st["sure"] else " (likely)") +
-                (f" - door at {self.room_door(Y, X)[0]},{self.room_door(Y, X)[1]}" if self.room_door(Y, X) else
-                 " - searched" if all((w.level_t, r) in self.searched for _, r in structures.door_spots(Y, X)) else "")
-                for Y, X, st in here))
+        st_line = self.structures_line(full=True)
+        if st_line:
+            lines.append(st_line)
         lines += self.since_lines(reset=news_since is not None)
         mv = self.movement_line()
         if mv:

@@ -187,7 +187,14 @@ def _lt(g):
     return time.localtime(wall_of(g))
 
 
-LIGHT_FUEL = re.compile(r"\(with (\d+) turns of light\)")
+LIGHT_FUEL = re.compile(r"with (\d+) turns")      # ("(with 4514 turns of light)"; the unit fixtures drop "of light")
+
+
+def light_turns(name):
+    """The turns of fuel a light's name shows, or None: a light that shows none doesn't burn (artifacts,
+    Dwarven lanterns): permanent. The one light-fuel parser (refactor-candidates D1)."""
+    m = LIGHT_FUEL.search(name or "")
+    return int(m.group(1)) if m else None
 
 
 def light_fuel(inven):
@@ -195,8 +202,7 @@ def light_fuel(inven):
     Dwarven lanterns don't show turns)."""
     for it in inven or ():
         if it.get("equip") and it.get("tval") == 39:
-            m = LIGHT_FUEL.search(it.get("name", ""))
-            return int(m.group(1)) if m else None
+            return light_turns(it.get("name", ""))
     return None
 
 
