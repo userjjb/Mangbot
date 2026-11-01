@@ -46,6 +46,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "pilot"))
 from pilotctl import call, RUNS      # noqa: E402
 import itemvalue                       # noqa: E402  (item types for the equipment slots)
+sys.path.insert(0, HERE)
+from logs import NAV_QUERIES           # noqa: E402  (the Navigator's commands that only look; not shown as decisions)
 
 # Angband's 16 colours (attr index = position; monster.txt letters in LETTERS),
 # as xterm-256 shades and as the nearest of the 8 basic colours (+ bold)
@@ -116,10 +118,6 @@ def draw_map(scr, y, width, top_h, vm):
 
 FEED_KINDS = ("act", "attention", "goal", "goal_done", "goal_failed", "user_note", "audit", "nav_say",
               "nav_complaint", "nav_cmd", "nav_ask", "arch_answer")
-# the Navigator's commands that only look (not shown as decisions)
-NAV_QUERIES = {"status", "wait", "prep", "why", "gear", "gearcmp", "pack", "equip", "map", "monster", "drainers", "gate", "debt",
-               "journal", "say", "complain", "rule", "inventory", "orders", "events", "news", "view", "viewmap",
-               "navview", "note", "goalstate", "mission", "attention", "options", "flags", "commands"}
 BY_TAG = {"pilot": "[P]", "plan": "[plan]", "nav": "[N]", "arch": "[A]"}
 
 

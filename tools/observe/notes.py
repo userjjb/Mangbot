@@ -20,8 +20,8 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "..", "pilot"))
-from pilotctl import RUNS      # noqa: E402
+sys.path.insert(0, HERE)
+import logs                    # noqa: E402
 
 SHOW = ("act", "attention", "goal", "goal_done", "goal_failed", "audit", "note", "nav_journal", "nav_say",
         "nav_complaint")
@@ -41,16 +41,16 @@ def main():
     ap.add_argument("--after", type=float, default=5)
     ap.add_argument("--questions", action="store_true", help="only notes starting with '?'")
     a = ap.parse_args()
-    d = os.path.join(RUNS, "pilot", a.nick.lower())
-    notes = [json.loads(l) for l in open(os.path.join(d, "commentary.jsonl")) if l.strip()]
+    nick = a.nick.lower()
+    notes = [json.loads(l) for l in open(os.path.join(logs.run_dir(nick), "commentary.jsonl")) if l.strip()]
     start, end = 0.0, float("inf")
     if a.mission:
-        ms = [m for m in json.load(open(os.path.join(RUNS, "missions.json"))) if m.get("label") == a.mission]
-        if not ms:
+        m = logs.find_mission(a.mission)
+        if not m:
             sys.exit(f"no mission {a.mission} in runs/missions.json")
-        start = time.mktime(time.strptime(ms[-1]["start"], "%Y-%m-%d %H:%M"))
-        if ms[-1].get("end"):        # (minute resolution; a minute of slack for questions typed during the wrap-up)
-            end = time.mktime(time.strptime(ms[-1]["end"], "%Y-%m-%d %H:%M")) + 60
+        start = logs.epoch(m["start"])
+        if m.get("end"):        # (minute resolution; a minute of slack for questions typed during the wrap-up)
+            end = logs.epoch(m["end"]) + 60
     elif a.since:
         hh, mm = map(int, a.since.split(":"))
         lt = time.localtime()
@@ -64,15 +64,7 @@ def main():
         return
     lo = notes[0]["t"] - a.before
     hi = notes[-1]["t"] + a.after
-    recs = []
-    for l in open(os.path.join(d, "decisions.jsonl")):
-        try:
-            e = json.loads(l)
-        except ValueError:
-            continue
-        t = e.get("t")
-        if isinstance(t, (int, float)) and lo <= t <= hi and e.get("kind") in SHOW:
-            recs.append(e)
+    recs = [e for e in logs.decisions(nick, lo, hi) if e.get("kind") in SHOW]
     ts = [e["t"] for e in recs]
     for n in notes:
         q = "NAVIGATOR" if n.get("who") == "navigator" else "QUESTION" if n.get("question") else \

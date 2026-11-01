@@ -27,8 +27,9 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "pilot"))
 import glyphs                      # noqa: E402
+sys.path.insert(0, HERE)
+import logs                        # noqa: E402
 
-RUNS = os.path.join(HERE, "..", "..", "..", "runs", "pilot")
 MELEE = re.compile(r"^(?:The (.+?)|It|Something) (hits|bites|claws|stings|touches|kicks|butts|crushes|engulfs|"
                    r"crawls on|spits on|gazes at|wails at|punches|grabs|drools on|releases spores|begs|insults|"
                    r"moans) you")
@@ -56,25 +57,18 @@ def classify(text):
     return None
 
 
-def mission_band(rundir, label, min_share=0.10):
+def mission_band(nick, label, min_share=0.10):
     """(lo, hi, played) ft: the 100 ft band of the dungeon depths mission LABEL spent at least MIN_SHARE of its
     dungeon time at (each record weighted by the time to the next one, gaps capped at 60 s); None if the mission
     isn't in runs/missions.json or had no dungeon time."""
-    ms = [m for m in json.load(open(os.path.join(RUNS, "..", "missions.json"))) if m.get("label") == label]
-    if not ms:
+    m = logs.find_mission(label)
+    if not m:
         return None
-    t0 = time.mktime(time.strptime(ms[-1]["start"], "%Y-%m-%d %H:%M"))
-    t1 = time.mktime(time.strptime(ms[-1]["end"], "%Y-%m-%d %H:%M")) if ms[-1].get("end") else time.time()
+    t0, t1 = logs.mission_window(m)
     at, last = {}, None
-    for line in open(os.path.join(rundir, "decisions.jsonl")):
-        if '"depth": ' not in line:
-            continue
-        try:
-            r = json.loads(line)
-        except ValueError:
-            continue
-        t, d = r.get("t"), r.get("depth")
-        if not isinstance(t, (int, float)) or not isinstance(d, int) or not t0 <= t <= t1:
+    for r in logs.decisions(nick, t0, t1, keep=lambda l: '"depth": ' in l):
+        t, d = r["t"], r.get("depth")
+        if not isinstance(d, int):
             continue
         if last and last[1] > 0:
             at[last[1]] = at.get(last[1], 0) + min(t - last[0], 60)
@@ -96,8 +90,8 @@ def main():
     ap.add_argument("--days", type=float, default=4)
     ap.add_argument("--out", help="write here instead of runs/pilot/NICK/damage_mix.json")
     a = ap.parse_args()
-    rundir = os.path.join(RUNS, a.nick)
-    band = mission_band(rundir, a.mission) if a.mission else None
+    rundir = logs.run_dir(a.nick)
+    band = mission_band(a.nick, a.mission) if a.mission else None
     if a.mission:
         print(f"{a.mission}: " + (f"played {band[2][0]}-{band[2][-1]} ft -> band {band[0]}-{band[1]} ft" if band else
                                   "no dungeon time found -> band 700-800 ft"), file=sys.stderr)
@@ -108,14 +102,8 @@ def main():
 
     # HP drops at the depth range: (t0, t1, amount)
     drops, last = [], None
-    for line in open(os.path.join(rundir, "decisions.jsonl")):
-        if '"hp": [' not in line or '"depth": ' not in line:
-            continue
-        try:
-            r = json.loads(line)
-        except ValueError:
-            continue
-        if r.get("t", 0) < since or not r.get("hp"):
+    for r in logs.decisions(a.nick, since, keep=lambda l: '"hp": [' in l and '"depth": ' in l):
+        if not r.get("hp"):
             continue
         cur = (r["t"], r["hp"][0], r["hp"][1], r.get("depth") or 0)
         if last and cur[2] == last[2] and cur[1] < last[1] and a.lo <= cur[3] * 50 <= a.hi and cur[0] - last[0] < 5:
@@ -124,20 +112,11 @@ def main():
 
     # attack messages in the same period
     msgs = []
-    with open(os.path.join(rundir, "events.jsonl"), "rb") as f:
-        for raw in f:
-            if b'"message"' not in raw[:30] or not (b"you" in raw or b"You" in raw or b"breathes" in raw
-                                                   or b"casts" in raw or b"fires" in raw):
-                continue
-            try:
-                e = json.loads(raw)
-            except ValueError:
-                continue
-            if e.get("epoch", 0) < since:
-                continue
-            c = classify(e.get("text", ""))
-            if c:
-                msgs.append((e["epoch"], c))
+    for e in logs.events(a.nick, since, keep=lambda l: '"message"' in l[:30] and (
+            "you" in l or "You" in l or "breathes" in l or "casts" in l or "fires" in l)):
+        c = classify(e.get("text", ""))
+        if c:
+            msgs.append((e["epoch"], c))
     msgs.sort()
 
     import bisect

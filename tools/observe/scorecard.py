@@ -29,6 +29,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+import logs  # noqa: E402  (the shared log readers and query-command lists)
 import shopmath  # noqa: E402
 
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
@@ -36,9 +37,6 @@ RUNS = os.path.join(ROOT, "runs")
 REPO = os.path.join(ROOT, "github")
 ADVISOR = os.path.join(ROOT, "Advisor", "data", "scorecard")
 
-QUERY_CMDS = {"status", "journal", "gate", "monster", "inventory", "complain", "drainers", "say", "note", "options",
-              "flags", "floor", "help", "plan", "dump", "quote", "view", "orders", "events", "attention", "news",
-              "map", "pack", "equip", "mission"}
 ESCALATION = {"emergency", "emergency_loop", "fight_going_badly", "danger_seen", "unseen_attacker", "stat_drained",
               "band"}
 CURE_RE = re.compile(r"Cure (Light|Serious|Critical) Wounds|Healing")
@@ -114,34 +112,14 @@ def base_cost(name):
 
 
 # --- loading ----------------------------------------------------------------------
-def epoch(s):
-    return time.mktime(time.strptime(s, "%Y-%m-%d %H:%M"))
-
-
-def load_missions():
-    return json.load(open(os.path.join(RUNS, "missions.json")))
-
-
 def load(nick, t0, t1):
-    recs = []
-    for line in open(os.path.join(RUNS, "pilot", nick, "decisions.jsonl")):
-        try:
-            d = json.loads(line)
-        except ValueError:
-            continue
-        if t0 <= d.get("t", 0) <= t1:
-            recs.append(d)
+    """(decision records in [t0, t1], [(epoch, text)] of messages in [t0, t1], [(epoch, owner, [(name, price)])] of
+    store listings in [t0, t1 + 60])."""
+    recs = list(logs.decisions(nick, t0, t1))
     msgs, stores = [], []
-    for line in open(os.path.join(RUNS, "pilot", nick, "events.jsonl")):
-        if '"epoch"' not in line or ('"message"' not in line and '"ev": "store"' not in line):
-            continue
-        try:
-            d = json.loads(line)
-        except ValueError:
-            continue
-        e = d.get("epoch", 0)
-        if not t0 <= e <= t1 + 60:
-            continue
+    for d in logs.events(nick, t0, t1 + 60, keep=lambda l: '"epoch"' in l and ('"message"' in l or
+                                                                                '"ev": "store"' in l)):
+        e = d["epoch"]
         if d.get("ev") == "message" and e <= t1:
             msgs.append((e, d.get("text", "")))
         elif d.get("ev") == "store":
@@ -181,8 +159,7 @@ def bare(name):
 # --- the card -----------------------------------------------------------------------
 def card(m):
     nick = m["nick"]
-    t0 = epoch(m["start"])
-    t1 = epoch(m["end"]) if m.get("end") else time.time()
+    t0, t1 = logs.mission_window(m)       # (a running mission ends now)
     recs, msgs, stores = load(nick, t0, t1)
     att = [d for d in recs if d.get("kind") == "attention"]
     # (the trip plan's news, tagged source=plan since 2026-10-23, didn't wake the Navigator: counted
@@ -302,7 +279,7 @@ def card(m):
     nc = [d for d in recs if d.get("kind") == "nav_cmd"]
     reports = [d["t"] for d in nc if d.get("wait_report")]
     cmds = [(d["t"], d.get("cmd"), d.get("args") or []) for d in nc if not d.get("wait_report")]
-    acts = [t for t, cm, _ in cmds if cm not in QUERY_CMDS]
+    acts = [t for t, cm, _ in cmds if cm not in logs.QUERY_CMDS]
     lat, silent = [], 0
     for i, r in enumerate(reports):
         nxt = reports[i + 1] if i + 1 < len(reports) else t1
@@ -314,7 +291,7 @@ def card(m):
     users = sorted(d["t"] for d in recs if d.get("kind") == "user_note" and str(d.get("note", "")).startswith("!"))
     says = sorted(d["t"] for d in recs if d.get("kind") == "nav_say")
     rep = [says[j] - u for u in users for j in [bisect.bisect_right(says, u)] if j < len(says) and says[j] - u < 300]
-    ages = [d["report_age"] for d in nc if d.get("report_age") is not None and d.get("cmd") not in QUERY_CMDS]
+    ages = [d["report_age"] for d in nc if d.get("report_age") is not None and d.get("cmd") not in logs.QUERY_CMDS]
     reps = [d for d in recs if d.get("kind") == "report"]
     c["E"] = {"reports": len(reports), "commands": len(cmds), "commands_per_min": round(len(cmds) / max(1, c["minutes"]), 1),
               "report_to_action_med_s": med(lat), "report_to_action_p90_s": p90(lat),
@@ -657,7 +634,7 @@ def main():
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--check", action="store_true")
     a = ap.parse_args()
-    missions = load_missions()
+    missions = logs.load_missions()
     cards = []
     if a.labels or a.all:
         pick = [m for m in missions if m["label"] in a.labels] if a.labels else \
