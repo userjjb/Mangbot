@@ -254,6 +254,8 @@ none is fixed. **[N]** = Navigator-facing.
 
   Steps (each its own commit, unit.py + hotswap between): E6 first; then daemon.py + report.py; goals/town_goals/plan
   (top-level classes, easiest); gear, items, town, combat mixins; commands last (with E2). -- M/L -- **do**, in steps.
+  **In progress (session 10):** steps 1-3 done (2.44.5-2.44.7: daemon, report, common, goals, town_goals, plan,
+  gear, items); pilot.py 5,799 lines. Left: town.py, combat.py, commands.py (with E2). See next_steps.md Part B.
 - **E2** `do_request` (626 lines of `if c == ...`) -> command table `{name: (method, roles, where, positional)}`; role
   checks now spread over `do_request`, `request_goal`, `house_info`, `answer_navigator`, `Shop.tick`, `wear`; extract
   the ~150-line item-action branch (`parse_item_args`, `action_refusal`, `action_reply`); pilotctl help from the table. --

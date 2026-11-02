@@ -30,6 +30,7 @@ rsync -a --delete --delete-excluded --max-size=5m \
   --exclude '*.sock' --exclude '*.fifo' --exclude '__pycache__/' --exclude '*.pyc' \
   --exclude '*.pkt' --exclude '/runs/phase0/' --exclude '*.tl' --exclude '/runs/pilot/*/*navigators*.txt' \
   --exclude '.watcher' --exclude '.seen' --exclude '.notified' \
+  --exclude '/.claude/settings.local.json' \
   "$PROJ/" "$DST/tree/"
 rsync -a --delete "$MEM/-projectnb-jbrcs-mangband/memory/" "$DST/memory/architect/"
 rsync -a --delete "$MEM/-projectnb-jbrcs-mangband-Advisor/memory/" "$DST/memory/advisor/"

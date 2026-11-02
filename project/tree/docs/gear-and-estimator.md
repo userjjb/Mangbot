@@ -14,6 +14,12 @@ Related docs: [pilot-items.md](pilot-items.md) (upgrade_step's static steps, sel
 `design_gear.md` (the design history), and the Advisor's interface memo
 [`memos/to_architect/2026-10-28-advisor-docs.md`](../memos/to_architect/2026-10-28-advisor-docs.md).
 
+**Where the code is** (E1 step 3): the Pilot-side methods named here (`gear_character`, `gear_eval`, `gear_better`,
+`loadout_info`, `gear_review`, `gear_line`, `ac_better`, `consumables_inv`, `shadow_decision`, `shadow_results`,
+`band_shadow`, `hard_fight_shadow`, `fight_rows`/`fight_estimate`/`fight_sim`) and `shadow_agree` live in
+`tools/pilot/gear.py` as `GearMixin`, still `Pilot`'s names; `weapon_table` and `upgrade_step` are in items.py,
+`hard_fight` and the Speed/Berserk ticks still in pilot.py.
+
 ---
 
 ## 1. Files

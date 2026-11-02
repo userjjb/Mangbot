@@ -1,5 +1,5 @@
 """common -- constants and helpers the Pilot's modules share (refactor-candidates E1): pilot.py, report.py, daemon.py,
-goals.py, town_goals.py, plan.py.
+goals.py, town_goals.py, plan.py, gear.py, items.py.
 
 pilot.py imports them all back (P.VERSION, P.TV_FOOD, P.weapon_damage, ...), so its names stay where they were.
 """
@@ -123,3 +123,8 @@ def singular(t):
     """Plural endings dropped, for name matching ("Flask of oil" finds
     "99 Flasks of oil": missions 17-18)."""
     return re.sub(r"\b(\w+?)(?:es|s)\b", r"\1", t.lower())
+
+
+def bad_inscription(name):
+    """True if the name shows a curse or a bad feeling: {cursed}, {worthless}, {broken}, {terrible}."""
+    return bool(re.search(r"\{(cursed|worthless|broken|terrible)", name))

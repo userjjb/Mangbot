@@ -10,6 +10,11 @@ pack-side policy. Related files: town buying and selling (TownKit, `town_sell_co
 `gear_better`) are in [gear-and-estimator.md](gear-and-estimator.md); every `pilotctl` command is in
 [commands.md](commands.md); the tick loop, report and logs are in [pilot-core.md](pilot-core.md).
 
+**Where the code is** (E1 step 3): the methods below live in `tools/pilot/items.py` as `ItemsMixin` (still `Pilot`'s
+names), with `weapon_blows`/`stat_index` and the blow tables; still in pilot.py: `has_ability`, `watch_character`,
+`teleport_item`, `use_stair_location`, the command side (`item_index`, `pack_now`, `DUNGEON_ITEM_CMDS`), the town side
+(`identify_candidates`, `town_sell_count`, ...), `expect_effect`/`verify_effects`, `heal_of`, `STATUS_CURES`.
+
 ## 1. What an item is worth: `itemvalue.py`
 
 `itemvalue.value(name, level=15, aware=())` parses an item's **display name** (as the game shows it, e.g.

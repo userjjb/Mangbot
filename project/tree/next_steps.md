@@ -267,9 +267,17 @@ Reuse that for big reading jobs. And: before continuing a session in a new job, 
 lacks the context (how the parallel chat happened).
 
 **Group E (the user, 11-02: in steps, a commit each; stop at a clean commit if the context runs short):** E6 done
-(2.44.2), E7 done (2.44.3: tools/client/mang.py), E4 + E9 done (2.44.4), E1 steps 1-2 done (2.44.5: daemon.py, report.py, common.py; 2.44.6: goals.py, town_goals.py, plan.py; pilot.py
-7,587 lines). Next: E1 step 3, the Pilot mixins (gear, items, town, combat), then commands with E2 (docs/refactor-candidates.md E1's layout), then E2, E3, E5, E8.
+(2.44.2), E7 done (2.44.3: tools/client/mang.py), E4 + E9 done (2.44.4), E1 steps 1-3 done (2.44.5: daemon.py, report.py, common.py; 2.44.6: goals.py, town_goals.py, plan.py, and a golden-
+file report unit case; 2.44.7: gear.py, items.py mixins; pilot.py 11,060 -> 5,799 lines). **Next (session 11 or
+later):** E1 step 4 `town.py` (town_*, supply_minutes/supply_watch with TURNS_PER_DMIN/FOOD_MID, identify_candidates),
+step 5 `combat.py` -- on its own, it holds escape/group_tick/speed_start_tick/berserk_tick/fear_cure (the Advisor's
+mirrored names: they stay on Pilot), has_ability, watch_character, teleport_item, hard_fight -- then E2 (the command
+table, with commands.py), E3, E5, E8. **How each step was done and checked** (reuse it): a split script moving whole
+methods verbatim into a mixin; unit.py (incl. reports_match_golden); a dry start of the real __init__ on a fake client,
+old tree vs new (scratchpad e3_dry.py -- the scratchpad is session-local: rewrite it if gone); tick() equivalence over
+28 scripted states (e3_equiv.py); pyflakes with no undefined names (goal ticks swallow exceptions!); live: restart,
+~15 commands, a set-piece (M2; retry its staging failures -- dark levels); commit + tag a patch version. (docs/refactor-candidates.md E1's layout), then E2, E3, E5, E8.
 
-**State now (11-02):** version **2.44.6**. Running in SGE job 8327794 (scc-va4, ends Tue
-11-03 08:47): the test server (gdb, freeze-enabled), Dive04's Pilot (2.44.6), the viewer (`tmux -L mang attach -t
+**State now (11-02):** version **2.44.7**. Running in SGE job 8327794 (scc-va4, ends Tue
+11-03 08:47): the test server (gdb, freeze-enabled), Dive04's Pilot (2.44.7), the viewer (`tmux -L mang attach -t
 watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wilderness house. 139 unit cases pass (a golden-file report case).
