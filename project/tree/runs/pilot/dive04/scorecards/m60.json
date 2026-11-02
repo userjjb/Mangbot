@@ -20,6 +20,7 @@
   "usd": 0.013,
   "transcript": "agent-aa18b8a7f9206341a.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 0,
   "compared": 0,
@@ -91,10 +92,10 @@
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
   "destroyed_est": 0,
-  "loot_abandoned_est": 285,
+  "loot_abandoned_est": 981,
   "stolen": 0,
   "destroyed_by_monsters_est": 0,
-  "total": 285,
+  "total": 981,
   "sales": 9,
   "sales_valued": 3,
   "worst_sales": [],
@@ -108,6 +109,7 @@
   ],
   "irreplaceable": []
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 8,
   "commands": 25,
@@ -136,13 +138,15 @@
  },
  "damage_by_monster": {
   "Giant black louse": 62,
-  "Light hound": 22,
-  "Dark hound": 10,
-  "Baby bronze dragon": 9,
+  "Light hound": 12,
+  "Dark hound": 9,
   "Novice ranger": 7,
   "Snaga": 2,
-  "Yeti": 1
+  "Yeti": 1,
+  "unseen": 47,
+  "unattributed": 18
  },
+ "damage_hp_lost": 157,
  "alerts": {
   "tactic": 17,
   "rule": 2,

@@ -67,7 +67,7 @@ the `pilotctl` syntax of every command in [commands.md](commands.md).
 | `Town` | `goal town`; the plan | - | from the wilderness back to town: walks off each sector by the edge it came in through (`Pilot.wild_trail`, else `edge_of` the arrival square) | done in town; failed in the dungeon or edge unknown |
 | `TownFarm` | `goal townfarm GOLD [MINUTES]` (default 10); TownKit when broke | target gold, minutes | in town: light on, then chase thieves within 8 squares first (item thieves before gold ones, hitting them directly), walk over dropped gold, kill the gold-dropping townspeople (`TARGETS`), else sweep the town in a zig-zag | done at the target, time up, or no gold gained in 2 minutes (townspeople thinned out / night) |
 | `Shop` | `goal shop N [list] [buy NAME:N[@MAX]] [buy NAME:+N] [sell NAME\|LETTER:N] [quote NAME]`; TownKit | store number, buys `(name, n, cap)`, sells `(index or name, n)`, list_stock | walks next to the door (unseen squares count, for night), enters, then: sells (from the end of the pack first; names resolved when their turn comes) with the item policy's refusals (unknown items, value policy, "probably special"; `!NAME` forces and the value lost goes into the Navigator's debt), learns a flavour sold unknown, logs a `sale` record with the re-listing price; quotes (offer and decline); buys the **cheapest** matching line, within the cap and the gold, continuing at the next price if the cheap stack runs out. `NAME:N` in `goal shop` means *have* N; `:+N` buys N more. Re-enters (twice) if its own command closed the store | done with a log of what happened; failed: not in town, store not on the map, can't reach, thrown out |
-| `StashDeposit` | TownKit (no house only) | - | drops each stash item (below) on an empty square **inside** the tavern room (farthest from the door first; the entrance square holds no object, and drops from it land on the street where townsfolk take them); records the squares in stash.json | done when none is carried; failed: no empty square seen inside |
+| `StashDeposit` | TownKit (no house only) | - | drops each stash item (below) on an empty square **inside** the tavern room (farthest from the door first; the entrance square holds no object, and drops from it land on the street where townsfolk take them); records square -> name in house.json `tavern.items` | done when none is carried; failed: no empty square seen inside |
 | `StashFetch` | TownKit, for a drained stat's Restore in the tavern | kind | lights up, walks the squares within 4 of the tavern entrance (item glyphs first) until the pickup reflex (`p.fetching`) takes the kind | done when in the pack; failed: none left / no tavern |
 | `HouseBank` | `house buy [Y,X]` (Architect only), `house deposit [KEEP]`, `house withdraw`; TownKit | mode buy/deposit/withdraw, keep, house | see "The gold bank" below | done: "N gold in the house, M carried" |
 | `TownKit` | `plan town ...`; a trip plan with `then town` | kit, buylist | the whole town visit: see "plan town" below | done with a summary; failed outside town (the house's wilderness tile excepted) |
@@ -274,9 +274,14 @@ inside the door), `outside` (where to stand to open it) and `box`, smallest firs
 
 **The stash** = stat-restore potions (STR/INT/WIS/DEX/CON/CHR, not Restore Mana) and Wands of Stone to Mud
 (`is_stash_item`): kept in town during a mission. With a house they live there (above); without one, in the tavern
-room (`StashDeposit`/`StashFetch`, the entrance from `tavern_entrance`, remembered in stash.json). `stash_add`,
-`stash_remove(kind)`, `stash_has(kind)` keep the list in stash.json; `town_needs` doesn't buy a Restore the stash
-holds; `stash_wanted()` names the Restore a drained STR/DEX/CON needs when the pack lacks it and the stash has it.
+room (`StashDeposit`/`StashFetch`, the entrance from `tavern_entrance`). **house.json is the stash's only record**
+(refactor-candidates D10, 2026-11-01): the house's `items`, and without a house `tavern` (`entrance`, `items`
+"Y,X" -> name). `stash_places()`, `stash_where(kind)` (house first, the house's items only while a house is owned),
+`stash_has(kind)`, `stash_take(at, kind, square)` read and strike off; `town_needs` doesn't buy a Restore the stash
+holds; `stash_wanted(at)` names the Restore a drained stat needs when the pack lacks it and the stash (in `at`, or
+either) has it. `house` shows the stored items. The old `stash.json` (items, tavern squares, hand-written `where`/`lost`
+notes) is retired at load (`retire_stash_json`: entrance and tavern items into house.json, the file renamed
+`stash.json.retired-DATE`); Dive04's became `stash.json.retired-2026-11-01`.
 
 ## State files (`runs/pilot/<nick>/`)
 
@@ -284,8 +289,8 @@ holds; `stash_wanted()` names the Restore a drained STR/DEX/CON needs when the p
 |---|---|---|
 | `plan.json` | `TripPlan.save` every plan tick; removed by `clear_plan_file` when the plan ends or stops | the trip's `STATE` (range, then, level_min, start time, phase, levels, went_down, home_why, conditions text, via, XP base, dungeon start) and the current level's state (`lvl`: depth, age, done, arrival, located, special, stairs_first, fails). `TripPlan.load` at Pilot start resumes a plan under 90 minutes old (restart.sh parks mid-trip) |
 | `stores.json` | `note_store` | per store number: `owner`, `t`, `prices` (cheapest per kind key) |
-| `house.json` | `HouseBank`, `house_save` | `house` (area, door, step_in, outside, box, depth, cross, price, bought), `banked`, `t`, `items` ("Y,X" -> stash item), `old_houses` |
-| `stash.json` | `stash_save` | `items` (stash item names, wherever they are), `entrance` (the tavern's), `squares` (tavern squares used), free-text `where`/`lost` notes (hand-written; the code never writes them) |
+| `house.json` | `HouseBank`, `house_save` | `house` (area, door, step_in, outside, box, depth, cross, price, bought), `banked`, `t`, `items` ("Y,X" -> stash item), `old_houses`, `tavern` (no-house fallback: `entrance`, `items`) |
+| `stash.json.retired-DATE` | `retire_stash_json` (rename) | the old stash record, kept as history (D10, 2026-11-01) |
 | `review.json` | TownKit's first tick | `town_visits` (the item-review queue's clock: pilot-items.md) |
 | `deepest.json` | the Pilot | `{"ft": N}`: the deepest level reached (`deepest_ft`), used by `planned_depth`, the recall depth and `stairs_down` |
 | `decisions.jsonl` | `Pilot.log` | one JSON record a line; this component writes `goal`, `plan_start`, `plan_end`, `plan_resumed`, `town_kit`, `bank`, `sale` |

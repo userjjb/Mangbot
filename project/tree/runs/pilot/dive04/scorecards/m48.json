@@ -20,6 +20,7 @@
   "usd": 0.024,
   "transcript": "agent-a6fc2920946e0af0d.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 13,
   "compared": 6,
@@ -120,10 +121,10 @@
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
   "destroyed_est": 0,
-  "loot_abandoned_est": 705,
+  "loot_abandoned_est": 1581,
   "stolen": 0,
-  "destroyed_by_monsters_est": 53,
-  "total": 758,
+  "destroyed_by_monsters_est": 63,
+  "total": 1644,
   "sales": 8,
   "sales_valued": 2,
   "worst_sales": [],
@@ -141,6 +142,7 @@
   ],
   "irreplaceable": []
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 17,
   "commands": 69,
@@ -168,15 +170,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Light hound": 245,
-  "Black orc": 163,
-  "Priest": 84,
-  "Neekerbreeker": 76,
-  "Hippogriff": 55,
-  "Giant white louse": 50,
+  "Black orc": 161,
+  "Hippogriff": 78,
+  "Neekerbreeker": 66,
+  "Light hound": 53,
+  "Giant white louse": 49,
+  "Giant tan bat": 46,
   "Werewolf": 38,
-  "Giant tan bat": 30
+  "Priest": 34,
+  "unseen": 647,
+  "unattributed": 94
  },
+ "damage_hp_lost": 1414,
  "alerts": {
   "tactic": 41,
   "time_frozen": 9,

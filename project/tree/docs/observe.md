@@ -6,8 +6,8 @@ its scorecard (`scorecard.py`), Navigator cost (`tokens.py`) and damage mix (`da
 analysis and human-play study tools. None of them sends a game command. Most read the Pilot's run directory
 `runs/pilot/<nick>/` (`decisions.jsonl`, `events.jsonl`, `commentary.jsonl`, `pilot.log`, `asks.jsonl`) and the
 mission list `runs/missions.json`; a few talk to the Pilot's control socket (`ctl.sock`) through
-`pilotctl.call`. One module, `shopmath.py`, is a library: the Pilot, the scorecard, the unit tests and the
-Advisor's `build_shops.py` import it.
+`pilotctl.call`. Two modules are libraries: `shopmath.py` (the Pilot, the scorecard, the unit tests and the
+Advisor's `build_shops.py` import it) and `logs.py` (the shared log readers and query-command lists, D7).
 
 Related docs: the log formats and the Pilot's `view`/`viewmap`/`navview`/`note`/`say` handlers are in
 [pilot-core.md](pilot-core.md) and [commands.md](commands.md); the EHP use of the damage mix in
@@ -21,10 +21,11 @@ test server in [harness-rulebook-ops.md](harness-rulebook-ops.md).
 | `watch.py` | the user | any time, live | `ctl.sock` (`view`, `viewmap`, `navview`, `note`), `decisions.jsonl`, `navigator.md` | notes via the Pilot (`commentary.jsonl`, `user_note` records); `testserver/FREEZE` (F5) |
 | `watch_mission.py` | Architect | during a mission, in the background, restarted on each exit | new lines of `decisions.jsonl`, `asks.jsonl`, `pilot.log` | stdout; its read offsets in `runs/pilot/<nick>/watch_mission.state` |
 | `wrap.sh` | Architect | after each mission | (runs the tools below + `pilotctl`) | `missions.json` (end, tokens), scorecard JSON, `damage_mix.json` |
-| `scorecard.py` | Architect, Advisor (reads cards) | after a mission (via `wrap.sh`), or ad hoc | `missions.json`, `decisions.jsonl`, `events.jsonl`, `testserver/gdb_run.log`, game tables | `runs/pilot/<nick>/scorecards/<label>.json` |
+| `scorecard.py` | Architect, Advisor (reads cards) | after a mission (via `wrap.sh`), or ad hoc | `missions.json`, `decisions.jsonl`, `events.jsonl`, `state.jsonl`, `runs/flavours.json`, `testserver/gdb_run.log`, game tables, `itemvalue` | `runs/pilot/<nick>/scorecards/<label>.json` |
 | `tokens.py` | Architect | after `mission end` (via `wrap.sh`) | `missions.json`, Claude Code subagent transcripts | `missions.json` (`tokens`, `effort`) |
 | `damage_mix.py` | Architect | after each mission (via `wrap.sh`) | `decisions.jsonl`, `events.jsonl`, the rulebook | `runs/pilot/<nick>/damage_mix.json` (read by the Pilot's gear evaluator) |
 | `notes.py` | Architect | after a mission (via `wrap.sh`), to answer `?` notes | `commentary.jsonl`, `decisions.jsonl` | stdout |
+| `logs.py` | library | imported by `scorecard.py`, `notes.py`, `damage_mix.py`, `watch.py` | `missions.json`, `decisions.jsonl`, `events.jsonl`, `state.jsonl`, the monster rulebook (damage) | nothing |
 | `shopmath.py` | library | imported | `lib/edit/shop_own.txt`, `cost_adj.txt`, `p_race.txt`, `src/server/tables.c` | nothing |
 | `study/record.py` | the user (human play) | study sessions (Sept 2026) | tmux pane | `runs/observe/<stamp>/` |
 | `study/timeline.py`, `study/screen.py` | Architect/Advisor | study a `record.py` session | `pkt.jsonl`, `screens.jsonl` | stdout |
@@ -58,10 +59,15 @@ these kinds: `act`, `attention`, `goal`, `goal_done`, `goal_failed`, `user_note`
 `navigator.md` (shown as `NAV: ...`, magenta, with the last 4 earlier ones at start). Who acted is tagged from the
 record's `by` field: `[P]` the Pilot on its own, `[plan]` the Pilot carrying out the Navigator's `plan`, `[N]` a
 command the Navigator gave directly, `[A]` the Architect. Navigator commands show as `NAV> cmd args` (cyan),
-Architect commands as `ARCH>`; pure queries (`status`, `wait`, `prep`, `gear`, `map`, ... the `NAV_QUERIES` set)
+Architect commands as `ARCH>`; pure queries (`status`, `wait`, `prep`, `gear`, `map`, ... `logs.NAV_QUERIES`)
 are hidden. Colours: alerts and failed goals red bold, actions green, your notes yellow reverse, Navigator replies
 (`NAVIGATOR: ...`) cyan reverse, Navigator complaints (`NAVIGATOR LACKS: ...`) red reverse, ask/answer pairs with
 the Architect magenta reverse. The feed keeps the last 500 entries.
+
+An `attention` line reads `what: detail`. **Log kinds:** `supplies` (fields `supply` food|light and `level`
+low|out|recalling, shown beside the kind: `supplies (food out): ...`) replaced `low_supply` and `supply` on
+2026-11-01 (version 2.44.0, D14); old logs keep the old names, shown as before (`low_supply: ...`). Every observer
+shows or counts attention kinds by name, so both spellings appear in older cards' `alerts`.
 
 **Keys**
 
@@ -168,13 +174,19 @@ python3 scorecard.py --check m17 .. # ours vs the Advisor's baseline CSV (Adviso
 version, tokens`; written by `pilotctl mission start/end`, `tokens.py`, and the set-piece harness, which adds `sp-*`
 missions; scored only when named, or with `--all --sp`). Every `decisions.jsonl` record with `start <= t <= end`
 (minute resolution; a running mission ends now); `events.jsonl` `message` events in the window and `store` listings up to 60 s after it;
-`testserver/gdb_run.log` for crashes; `src/server/tables.c` (`player_exp`), `lib/edit/object.txt` (kind costs) and
-`shopmath`. **Output:** `runs/pilot/<nick>/scorecards/<label>.json` for every mission scored (named or `--all`), and
+`testserver/gdb_run.log` for crashes; `src/server/tables.c` (`player_exp`), `shopmath` and the Pilot's `itemvalue`;
+for item values as of then, `state.jsonl` status records (CHR, `aware`), the store screens in all of `events.jsonl`
+(the owners seen) and `runs/flavours.json` (D9 below). **Output:** `runs/pilot/<nick>/scorecards/<label>.json` for every mission scored (named or `--all`), and
 the printed card/table. With no labels and no `--all` it only reads the existing cards.
 
 **The card** (JSON keys; the printed card shows the same groups):
 
-Header: `label, nav_model, effort, report` (full/compact), `start, end, minutes, notes, tokens`.
+Header: `label, nav_model, effort, report` (full/compact), `start, end, minutes, notes, tokens`; `defs` (the date
+and version of the damage and value definitions: `2026-11-01 (2.44.0)`, D8/D9 below; cards without it were made by
+the older code) and `values_aware` (how the kinds known were had for the item values: "as logged", or "today's
+runs/flavours.json" when the log has no `aware`, i.e. every mission before 2026-11-01). The printed card shows both
+on its second line. **Compare value and damage numbers only between cards with the same `defs`**; the Advisor's
+baseline `baseline_m17-m23.csv` used a third value definition (fair pay from the shop's re-listing).
 
 A. Outcome (from the first and last `audit_check` records)
 - `deaths`: `attention: dead` count. `clvl` [start, end]. `exp_gain`. `gold` [start, end] and `gold_change`,
@@ -210,7 +222,17 @@ D. Value lost (`value_lost`, gold equivalents)
   `sale_shortfall_forced`: the part on sales the Navigator forced (`!`).
 - `destroyed_est` ("You destroy X"), `loot_abandoned_est` (`left_behind` records, "left ..." tactics, or for old
   missions `interesting_item` alerts never picked up), `stolen` (coins + stolen items), `destroyed_by_monsters_est`:
-  estimated as `object.txt` kind cost x count x 0.38 (the shop cut), 0 for cursed/broken junk. Marked `~` in print.
+  valued as the Pilot values items (**D9, definition as of 2026-11-01, 2.44.0**; the Advisor's memo
+  2026-11-01-d-merges): `itemvalue.value(name, level, aware).value x shopmath.pay_cut(tval, CHR, owners seen) x
+  count`, each **as of the event**: `aware` from the latest `state.jsonl` status record carrying it at or before the
+  event (else today's `runs/flavours.json`, said in the header), the level the dungeon level (ft/50) of the last
+  decision record at or before it (in town the deepest of the mission so far, else 15), CHR from the latest status
+  record (else the mission's last audit), and the owners from the last store screen of each shop before it (what the
+  Pilot's `stores_seen`/`stores.json` held). itemvalue gives 0 for cursed/broken/minus-plussed items and an
+  expectation for unknown flavours and unfelt gear. Marked `~` in print. Before 2.44.0: `object.txt` kind cost x
+  count x a flat 0.38, unknown flavours and spellbooks 0, a junk regex (Rusty, Skeleton, Bone...) 0; regenerated
+  cards rose on every mission (mostly abandoned loot: unknown wands/staffs/rings, spellbooks, unfelt weapons at the
+  weaponsmith's 0.55 cut).
 - `total`, `sales`, `sales_valued`, `worst_sales` (5), `left_behind` (10), `irreplaceable` (lost items matching Free
   Action, See Invisible, Telepathy, Hold Life, Speed, resistances, Regeneration...).
 
@@ -227,8 +249,12 @@ F. Pilot health
   counts), `stuck_looping_min`, `runs_sent` (moves sent as runs), `pilot_down_min` (record gaps > 45 s),
   `server_crashes` (SIGSEGV lines in `gdb_run.log` in the window).
 
-Also: `damage_by_monster` (top 8; each HP drop within 10 s shared among the monsters whose attack messages fall
-in it), `alerts` (top 12 attention kinds, excluding the trip plan's `source: plan` news), `plan_news` (those),
+Also: `damage_by_monster` and `damage_hp_lost` (**D8, definition as of 2026-11-01, 2.44.0**: `logs.damage_rows`,
+the same attribution as damage_mix.py, summed by monster over the mission: the top 8 named attackers, then
+`unseen` ("It"/"Something" and unnamed "You are hit by..." messages) and `unattributed` (HP drops with no attack
+message), and `damage_hp_lost` = all HP lost in drops, which those rows add up to when 8 or fewer attackers are named.
+Before 2.44.0: HP changes up to 10 s apart, attack messages from 1 s before, a different pattern, and the unnamed
+part dropped), `alerts` (top 12 attention kinds, excluding the trip plan's `source: plan` news), `plan_news` (those),
 and `estimator` (shadow mode: printed as group H): estimates `n`, `compared`, `agree` with the rules' emergency
 decision, `in_time_turn`, `before_next_act`, `skipped` (emergencies while the estimator was busy),
 `compute_max_s`, up to 8 `disagreements`, and the hard-fight-start estimates apart (`hard_n`, `hard_compared`,
@@ -267,7 +293,10 @@ brief must keep the "Mission NN for character" wording or the transcript isn't f
 
 Finds HP drops in `decisions.jsonl` (consecutive records with `hp` and `depth`, same max HP, less than 5 s apart,
 depth in LO-HI ft, in the last DAYS days) and splits each over the attack messages in `events.jsonl` around it
-(0.6 s before to 0.2 s after). Melee blows are split by the attacker's blows in the rulebook: its share of
+(0.6 s before to 0.2 s after). Since 2026-11-01 (2.44.0, D8) this is `logs.damage` -- one attribution shared with
+the scorecard's `damage_by_monster` (rows `t, amount, category, monster, depth`; the mix sums them by category);
+the output is unchanged. Gotcha: uniques' messages ("Ibun, Son of Mim hits you") have no "The", so they match no
+pattern and their damage goes to `other` (the card: `unattributed`). Melee blows are split by the attacker's blows in the rulebook: its share of
 HURT/SHATTER blows goes to `hurt` (AC cuts it twice: hit chance and damage), the rest to `melee_other`. Breaths,
 bolts, balls and traps go to their element (`fire, cold, acid, elec, pois, lite, dark, shard, nexus, sound, nether,
 chaos, disen`); arrows, magic missiles and drops with no message (poison, cuts, unseen spells) to `other`.
@@ -297,6 +326,26 @@ ones marked `>>`). The Architect uses it to answer the user's `?` questions afte
 
 ---
 
+## logs.py -- shared log readers and query-command lists
+
+A library (no command line; D7, session 11). `load_missions()`, `find_mission(label)` (the last row with that label),
+`epoch("YYYY-MM-DD HH:MM")`, `mission_window(m)` (start to end, or to now while running); `decisions(nick, t0, t1,
+keep)`, `events(nick, t0, t1, keep)` and `states(nick, t0, t1, keep)`: generators of the parsed records of
+`runs/pilot/<nick>/decisions.jsonl` (by `t`), `events.jsonl` and `state.jsonl` (by `epoch`) whose time is a number in
+[t0, t1], unparsable lines skipped; `keep(line)`
+is an optional substring test on the raw line before parsing (events.jsonl is ~300 MB). Two query-command sets
+on a shared core: `QUERY_CMDS` (the scorecard's, the Advisor's definition: `plan`, `help`, `floor`, `dump`, `quote`
+are queries) and `NAV_QUERIES` (the viewer's: also hides `wait`, `prep`, `why`, `gear`, `gearcmp`, `debt`, `rule`,
+`viewmap`, `navview`, `goalstate`, `commands`, which the scorecard counts as actions, and shows `help` and `plan ARGS`).
+Both keep names Navigators typed that aren't commands (`help`, `news`, `inventory`): they classify real attempts.
+The damage attribution (D8, 2026-11-01, 2.44.0; the Advisor's definition): `hp_drops(recs)` (consecutive records with
+`hp` and `depth`, under 5 s apart, same max HP), `attack(text)` (MELEE / RANGED + element patterns -> (kind, monster
+or `unseen`)), `damage_rows(recs, msgs)` (each drop split evenly over the attack messages from 0.6 s before its first
+record to 0.2 s after its last; a melee message gives a `hurt` and a `melee_other` row by the monster's HURT/SHATTER
+blow share, 0.7 when unknown; no message -> `other`/`unattributed`) and `damage(nick, t0, t1)` (the same from the logs).
+
+---
+
 ## shopmath.py -- shop prices from the server source
 
 A library (no command line). From `store.c price_item`: a shop prices an item at value x adjust / 100 with greed
@@ -310,6 +359,7 @@ Market (store index 6) asks x3 and pays /3.
 | `stat_index(v)` | a stat as the indicators give it (3..18, then 18 + tens) -> table index |
 | `factors(owner, chr, race="Half-Orc")` | (buy adjust, sell adjust, store index); owner matched exactly or by prefix; None if unknown |
 | `fair_pay(relist, owner, chr, race)` | what the shop should have paid for an item it re-lists at `relist` (relist x buy / sell, /9 at the Black Market) |
+| `SHOP_CUT`, `BUYERS`, `pay_cut(tval, chr, owners_seen, race, default)` | what a shop pays of an item's value: the best of the shops that buy the tval (`BUYERS`, by the Pilot's store numbers 1-7, never the Black Market), each by the owner last seen there, else that shop's average owner, at this CHR; `SHOP_CUT` (0.38) when none buys it. Moved from `Pilot.pay_cut` (D9, 2026-11-01) so the Pilot and the scorecard share one rule |
 
 Importers: `pilot.py` (the shop cut used in item values, sale records' fair pay), `scorecard.py`,
 `harness/unit.py` (a test), and the Advisor's `Advisor/data/rulebook/build_shops.py`, which imports it by the

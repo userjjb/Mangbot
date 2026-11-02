@@ -20,6 +20,7 @@
   "usd": 0.182,
   "transcript": "agent-afae2ba01737f50da.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 2,
   "compared": 2,
@@ -102,11 +103,11 @@
  "D": {
   "sale_shortfall": 27,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 14,
-  "loot_abandoned_est": 675,
+  "destroyed_est": 20,
+  "loot_abandoned_est": 1794,
   "stolen": 0,
-  "destroyed_by_monsters_est": 15,
-  "total": 731,
+  "destroyed_by_monsters_est": 17,
+  "total": 1858,
   "sales": 12,
   "sales_valued": 3,
   "worst_sales": [
@@ -133,6 +134,7 @@
    "a Ring of Resist Cold"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 8,
   "commands": 32,
@@ -160,15 +162,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Mirkwood spider": 44,
-  "Wererat": 41,
-  "Black orc": 38,
-  "Gnome mage": 35,
-  "Novice ranger": 25,
-  "Novice paladin": 21,
-  "Ranger": 20,
-  "Half-orc": 18
+  "Mirkwood spider": 46,
+  "Black orc": 27,
+  "Gnome mage": 27,
+  "Ranger": 16,
+  "Half-orc": 14,
+  "Novice ranger": 14,
+  "Umber hulk": 14,
+  "Lemure": 13,
+  "unseen": 103,
+  "unattributed": 87
  },
+ "damage_hp_lost": 409,
  "alerts": {
   "tactic": 15,
   "time_frozen": 3,

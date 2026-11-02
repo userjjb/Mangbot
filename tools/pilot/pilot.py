@@ -66,7 +66,7 @@ from mover import Mover, direction, passable, plan, drain_zone_of, MAX_HGT, MAX_
 
 TV_SCROLL, TV_POTION, TV_FOOD, TV_FLASK, TV_LITE = 70, 75, 80, 77, 39
 PY_FOOD_MAX = 15000          # Gorged (-10 speed) from here (mdefines.h)
-SHOP_CUT = 0.38   # what a shop pays Dive04 of an item's value at CHR 3 (shopmath: 34-43%; Black Market 10%)
+SHOP_CUT = shopmath.SHOP_CUT   # what a shop pays Dive04 of an item's value at CHR 3 (34-43%; Black Market 10%)
 CURE_POTIONS = ("Cure Critical Wounds", "Cure Serious Wounds", "Cure Light Wounds", "Healing")
 # HP each potion heals (server use-obj.c:483-540; CSW 20-24, CCW 25-29). Longest
 # names first, so "*Healing*" isn't read as "Healing".
@@ -129,13 +129,12 @@ def weapon_brand(name):
 
 
 def weapon_damage(name, blows, mult=1):
-    """Average damage per round: (dice average + to-dam) x blows."""
-    m = re.search(r"\((\d+)d(\d+)\)", name)
-    if not m:
+    """Average damage per round: (dice average + to-dam) x blows (0 without dice)."""
+    it = geareval.Item(name)              # (the dice and plusses as the gear evaluator reads them: D6)
+    dn, ds = (int(x) for x in it.dice.split("d"))
+    if not dn:
         return 0.0
-    dice = int(m.group(1)) * (int(m.group(2)) + 1) / 2 * mult
-    b = re.search(r"\([+-]\d+,([+-]\d+)\)", name)
-    return (dice + (int(b.group(1)) if b else 0)) * blows
+    return (dn * (ds + 1) / 2 * mult + it.to_d) * blows
 
 
 def shadow_agree(choice, actual, table):
@@ -1702,7 +1701,8 @@ class Shop(Goal):
 
 class StashDeposit(Goal):
     """Leave the stash kinds (Restore potions, Wands of Stone to Mud) in the tavern (8) for the mission (the user,
-    2026-10-26: "leave the potions in the tavern during a mission"; the wands were never aimed). Walk onto the
+    2026-10-26: "leave the potions in the tavern during a mission"; the wands were never aimed; recorded in house.json
+    `tavern`, refactor-candidates D10). Walk onto the
     entrance; each drop lands on a floor square of the tavern room (drop_near: a shop entrance takes no object).
     Town objects aren't wiped (depth 0 is skipped), but on a live server another player could take them, and a full
     object list compacts objects anywhere. **Dropped from the entrance, a drop can land on the street outside**
@@ -1726,7 +1726,7 @@ class StashDeposit(Goal):
         # Inside the room, on an empty square (the user, 10-27: the inside is walkable). Dropped from the entrance,
         # which takes no object, the wands landed on the street and townsfolk with TAKE_ITEM took them
         room = next((h for h in town_houses(w.memory, door="8") if h["door"] == tuple(ent)), None)
-        used = {tuple(q) for q in p.stash_state().get("squares", [])}
+        used = {tuple(int(v) for v in k.split(",")) for k in p.tavern_state().get("items", {}) if "," in k}
         free = [q for q in (room["inside"] if room else []) if q not in used and w.memory.get(q) == "."]
         if not free:
             return ("failed", "no empty square seen inside the tavern room: not dropping at the door")
@@ -1742,9 +1742,9 @@ class StashDeposit(Goal):
             return None
         it = items[0]
         self.t = now
-        p.stash_state().setdefault("squares", []).append(list(target))
         p.cmd(f"custom d item={it['item']} value={it['number']}", f"stash in the tavern: {it['name']}", hold=0.8)
-        p.stash_add(it["name"])
+        p.tavern_state().setdefault("items", {})[f"{target[0]},{target[1]}"] = it["name"]
+        p.house_save()
         self.dropped.append(it["name"])
         return None
 
@@ -1763,11 +1763,7 @@ class StashFetch(Goal):
         w = p.w
         if any(self.kind in i["name"] for i in w.items()):
             p.fetching = None
-            p.stash_remove(self.kind)
-            sq = p.stash_state().get("squares", [])
-            if list(w.pos) in sq:
-                sq.remove(list(w.pos))           # (the square is free for the next stash drop)
-                p.stash_save()
+            p.stash_take("tavern", self.kind, w.pos)     # (its square is free for the next stash drop)
             return ("done", f"fetched {self.kind} from the tavern")
         ent = p.tavern_entrance()
         if not ent:
@@ -1787,7 +1783,7 @@ class StashFetch(Goal):
                      and ch not in "#%8+'" and not ch.isdigit()]
             if not cands:
                 p.fetching = None
-                p.stash_remove(self.kind)
+                p.stash_take("tavern", self.kind)
                 return ("failed", f"no {self.kind} left in the tavern")
             # (item glyphs first: '!' potions, '-' wands)
             self.target = min(cands, key=lambda q: (w.memory.get(q) not in "!-?", w.dist(q)))
@@ -1879,7 +1875,6 @@ class HouseBank(Goal):
                     return walk_to(q)
                 p.cmd(f"custom d item={it['item']} value={it['number']}", f"house: stash {it['name']}", hold=0.8)
                 slots[f"{q[0]},{q[1]}"] = it["name"]
-                p.stash_add(it["name"])
                 p.house_save()
                 return True
             if it and not getattr(self, "full_told", False):
@@ -1887,13 +1882,12 @@ class HouseBank(Goal):
                 p.notify("tactic", f"house: no free square for {it['name']} (one stack a square): kept in the pack",
                          news=True)
         if self.mode == "withdraw":
-            kind = p.stash_wanted()
+            kind = p.stash_wanted("house")
             key = next((k for k, n in slots.items() if kind and kind in n), None)
             if key:
                 q = tuple(int(v) for v in key.split(","))
                 if any(kind in i["name"] for i in w.items()):
                     del slots[key]
-                    p.stash_remove(kind)
                     p.fetching = None
                     p.house_save()
                     return True
@@ -1902,7 +1896,6 @@ class HouseBank(Goal):
                 self.picks = getattr(self, "picks", 0) + 1
                 if self.picks > 4:
                     del slots[key]                 # (not there after all)
-                    p.stash_remove(kind)
                     p.house_save()
                     p.notify("tactic", f"house: no {kind} on {key} after all", news=True)
                     return True
@@ -2164,12 +2157,12 @@ class TownKit(Goal):
         # the bank first: the shopping needs the gold (HouseBank)
         if self.stage == "upgrade" and not getattr(self, "withdrawn", False):
             self.withdrawn = True
-            if p.house_state().get("house") and (p.banked() or p.stash_wanted()):
+            if p.house_state().get("house") and (p.banked() or p.stash_wanted("house")):
                 self.sub = HouseBank("withdraw")   # (and the stash kind a drained stat wants)
                 return None
         # a drained stat whose Restore waits in the tavern: fetch it first (bought only if it isn't there)
         if self.stage == "upgrade" and not getattr(self, "fetched", False):
-            kind = p.stash_wanted() if not p.house_state().get("items") else None   # (the house's: fetched above)
+            kind = p.stash_wanted("tavern")              # (the house's: fetched above)
             if kind:
                 self.sub = StashFetch(kind)
                 return None
@@ -3077,11 +3070,13 @@ class Pilot:
                   "fearer", "stuck", "interesting_item", "unique_slain", "pack_full", "thief", "unseen_attacker",
                   "fight_going_badly", "emergency"}
 
-    def notify(self, what, detail=None, news=False, action=None):
+    def notify(self, what, detail=None, news=False, action=None, fields=None):
         """action: an `emergency` notice must say whether it reports an escape action (True: a read, quaff, staff,
         stairs, a walk to stairs) or not (False: waiting, fighting on, attacking a caster first). Only actions count
         towards the emergency loop's three in 90 s (refactor-candidates A4; the unit case
-        emergency_notices_say_if_action fails on one that doesn't say)."""
+        emergency_notices_say_if_action fails on one that doesn't say). fields: extra fields on the attention event
+        and its decisions.jsonl record (a `supplies` notice's `supply` and `level`: D14), so readers filter without
+        parsing the detail. They never replace the record's own fields (`what` is the kind)."""
         if what in ("emergency", "emergency_loop", "danger_seen", "danger_avoided", "fight_going_badly",
                     "unseen_attacker", "band", "stat_drained"):
             self.escalation_t = gnow()      # (escape records: stairs taken in an emergency)
@@ -3093,6 +3088,7 @@ class Pilot:
             return
         ev = {"t": round(gnow(), 3), "what": what, "detail": detail,
               "goal": self.goal.describe() if self.goal else None}
+        ev.update({k: v for k, v in (fields or {}).items() if k not in ev})
         if what == "emergency" and action:
             self.count_escape()
         source = None
@@ -3104,6 +3100,7 @@ class Pilot:
         if what == "plan":
             source = "plan"
         extra = {"source": source} if source else {}
+        extra.update({k: v for k, v in (fields or {}).items() if k not in ("what", "detail", "kind", "t")})
         if what == "emergency" and self.w.in_dungeon:
             extra["shadow"] = self.shadow_decision(detail)
         # (news_asked: under a trip plan every band notice became news first, and no band record was ever made -- m48)
@@ -3935,7 +3932,8 @@ class Pilot:
                 self.notify("tactic", "hungry and no food: read a Scroll of Satisfy Hunger")
                 return True
             if not food and not sat and w.hunger <= 1 and not isinstance(self.goal, Recall) and w.depth:
-                self.notify("low_supply", "weak from hunger and no food: recalling")
+                self.notify("supplies", "weak from hunger and no food: recalling",
+                            fields={"supply": "food", "level": "recalling"})
                 self.set_goal(Recall())
         # 5. Adjacent monster: let the server's auto-retaliate fight
         adj = w.adjacent_monsters()
@@ -3967,7 +3965,7 @@ class Pilot:
         if o["pickup"] == "all" and not adj and not w.store:
             seen = [(ts, t) for ts, t in w.messages if now - ts < 3 and t.startswith("You see ")
                     and "no items" not in t]
-            if seen and self.is_junk_name(seen[-1][1][8:].rstrip(".")):
+            if seen and self.is_junk(seen[-1][1][8:].rstrip(".")):
                 # known junk: leave it (it filled the pack on the way down) -- or, at a quiet moment, destroy it
                 # where it lies (the user, 10-25: less clutter on the map and in the report's Items line). Once per
                 # sighting: the message stays "recent" 3 s, and m44 stepped on while engaging an Ogre and sent the
@@ -4835,20 +4833,6 @@ class Pilot:
         if not self.gain_hist or now - self.gain_hist[-1][0] >= 15:
             self.gain_hist.append((now, (w.ind.get("exp") or [0])[0], g, self.__dict__.get("gold_found", 0)))
             self.save_mission()
-            self.food_watch()
-
-    def food_watch(self):
-        """News once per trip when the pack holds no food in the dungeon (m46's Navigator found "Food 0" with no
-        warning; the cause, make-room destroying rations, is fixed, but eating the last one isn't)."""
-        w = self.w
-        if not w.in_dungeon or not hasattr(self, "c"):
-            return
-        n = self.kit_count("Ration of Food")
-        key = getattr(self.plan, "t0", None) or w.level_t
-        if n == 0 and self.__dict__.get("food_warned") != key:
-            self.food_warned = key
-            self.notify("supply", f"no food left in the pack (hunger: {('Weak', 'Weak', 'Hungry', 'Fed', 'Full')[min(4, max(0, w.hunger))]}): "
-                                  "`plan town` buys rations; a Full character lasts ~20 dungeon minutes", news=True)
 
     def save_mission(self):
         """The running mission (label, its start and the totals so far) in mission.json: a restart or hot-swap
@@ -5174,38 +5158,30 @@ class Pilot:
 
     def pay_cut(self, tval=None):
         """What a shop pays of an item's value (restructure step 3: shopmath and the owners, not one
-        38% for everything): the best of the shops that buy this kind of item, by the owner we
-        last saw there, else the average owner of that shop, at the current CHR. SHOP_CUT when
-        nothing is known."""
+        38% for everything): shopmath.pay_cut -- the best of the shops that buy this kind of item, by the owner we
+        last saw there, else the average owner of that shop, at the current CHR; SHOP_CUT when nothing is known
+        (D9: the rule moved to shopmath for the scorecard; the cache stays here)."""
         chr_v = (self.w.ind.get("stat5") or [3])[0] if self.w.ind else 3
-        stores = self.BUYERS.get(tval, ()) if tval is not None else (1, 2, 3, 4, 5, 6)
-        key = (tval, chr_v, tuple(sorted((k, (v or {}).get("owner")) for k, v in getattr(self, "stores_seen", {}).items())))
+        owners = {k: (v or {}).get("owner") for k, v in getattr(self, "stores_seen", {}).items()}
+        key = (tval, chr_v, tuple(sorted(owners.items())))
         cache = self.__dict__.setdefault("_pay_cache", {})
-        if key in cache:
-            return cache[key]
-        best = None
-        for st in stores:
-            owner = (getattr(self, "stores_seen", {}).get(st) or {}).get("owner")
-            f = shopmath.factors(re.sub(r"\s*\(.*\)$", "", owner), chr_v) if owner else None
-            if f:
-                cut = f[0] / 100         # (the shop's buying adjust: its pay, % of value)
-            else:
-                fs = [shopmath.factors(o, chr_v) for o, (idx, _r, _g) in shopmath.OWNERS.items() if idx == st - 1]
-                fs = [x for x in fs if x]
-                cut = sum(x[0] for x in fs) / len(fs) / 100 if fs else None
-            if cut is not None and (best is None or cut > best):
-                best = cut
-        cache[key] = best if best is not None else SHOP_CUT
+        if key not in cache:
+            cache[key] = shopmath.pay_cut(tval, chr_v, owners)
         return cache[key]
 
     def iv(self, name):
         """itemvalue.value with the depth items now come from (for expectations) and
         the kinds already known (the flavour table)."""
         level = max(1, (self.w.depth_ft or getattr(self, "deepest_ft", 0) or 750) // 50)
+        return itemvalue.value(name, level, self.aware_kinds())
+
+    def aware_kinds(self):
+        """The kinds the flavour table knows, lower case without the type word ('cure light wounds'): what iv passes
+        to itemvalue as `aware`, and what the state snapshot logs (D9: the scorecard values as of then)."""
         if self.aware_cache[0] != len(self.flavours):
             self.aware_cache = (len(self.flavours), {re.sub(r"^(Potion|Scroll|Ring|Amulet|Wand|Staff|Rod) of ", "",
-                                                            f.get("kind", "")).lower() for f in self.flavours.values()})
-        return itemvalue.value(name, level, self.aware_cache[1])
+                                                            f.get("kind", "")).lower() for f in list(self.flavours.values())})
+        return self.aware_cache[1]
 
     def is_kept(self, name):
         b = bare_name(name).lower()
@@ -5422,18 +5398,45 @@ class Pilot:
         return (gold + xp / max(0.1, self.xp_per_gold())) / max(1.0, mins)
 
     HEAVY_LOOT_MIN = 300      # gold: below this, loot that would slow us is left
-    def is_junk_name(self, name):
-        """Known junk by name: the junk order (Salt Water, Weakness...), spellbooks for a warrior, Broken items, and
-        flavours the flavour table marks junk though the character doesn't know them (mission 21: an unknown Summon
-        Undead took the slot freed for an {excellent} armour)."""
-        n = name.lower().rstrip(".")
-        junk = [j.strip().lower() for j in self.orders.get("junk", "").split(",") if j.strip()]
-        if self.w.ind.get("class_") == "Warrior":
-            junk += ["book of magic spells", "holy book of prayers"]   # can't read them
+    JUNK_DEVICES = ("Haste Monsters", "Clone Monster", "Heal Monster")
+
+    def town_books(self):
+        """The spellbooks the town sells ('[magic for beginners]', ...): the rulebook's stock table, tvals 90/91
+        (the Magic-User store and the Temple). Cheap, so junk for a warrior; the dungeon-only books sell well."""
+        if not hasattr(self, "_town_books"):
+            self._town_books = {r["item_name"].lower() for r in self.stock_table() if r.get("tval_num") in ("90", "91")}
+        return self._town_books
+
+    def is_junk(self, it):
+        """Junk (destroyed in the pack and underfoot, not picked up or reported), one rule for all three (refactor-
+        candidates D3; the user, 11-01: the union of the old lists). `it` is a pack item or a name (the floor, the
+        item list). Never a kept item, nor one inscribed with @ or with ! in its tag. Junk is: a kind on the junk order
+        or a harmful device (JUNK_DEVICES; m28 kept a Staff of Haste Monsters after Identify), "of" it as a whole
+        word (not Resist/Neutralize Poison, Cure Blindness: the old suffix match took them); a kind the rulebook
+        marks worthless at every level; a flavour the flavour table marks junk though the character doesn't know it
+        (mission 21: an unknown Summon Undead took the slot freed for an {excellent} armour); Broken items; a
+        pseudo-ID feeling on the autodestroy order (cursed, worthless); for a warrior, the spellbooks the town sells
+        (the user, 11-01: the dungeon-only books are loot)."""
+        name = it if isinstance(it, str) else it["name"]
+        name = name.rstrip(".")
+        tags = re.findall(r"\{([^}]*)\}", name)
+        if any("@" in t or "!" in t for t in tags) or self.is_kept(name):
+            return False
+        n = name.lower()
+        bare = singular(bare_name(n).strip())
+        kind = kind_key(name)
+        junk = [j.strip().lower() for j in self.orders.get("junk", "").split(",") if j.strip()] + \
+            [j.lower() for j in self.JUNK_DEVICES]
+        if any(re.search(rf"\bof {re.escape(j)}\b", n) or bare == j for j in junk):
+            return True
+        if self.junk_kinds.get(kind) or (self.flavours.get(flavour_key(name)) or {}).get("junk"):
+            return True
         feel = [f.strip() for f in self.orders.get("autodestroy", "").split(",") if f.strip()]
-        return any(f"of {j}" in n or n.endswith(j) or (j.startswith(("book", "holy book")) and j in n) for j in junk) \
-            or " broken " in f" {n} " or any("{" + f in n for f in feel) \
-            or bool((self.flavours.get(flavour_key(name)) or {}).get("junk"))
+        if " broken " in f" {n} " or any(re.search(rf"\b{re.escape(f)}\b", t) for t in tags for f in feel):
+            return True
+        book = re.search(r"\[[^\]]*[a-z][^\]]*\]", n)
+        return bool(self.w.ind.get("class_") == "Warrior" and re.search(r"\bbooks? of (magic spells|prayers)\b", n)
+                    and book and book.group(0) in self.town_books())
 
     def quiet_moment(self, now):
         """Not in combat (the user, 10-25: floor junk is destroyed only then): no awake mobile monster in view, not
@@ -5683,15 +5686,13 @@ class Pilot:
             if not (re.search(r"\[\d+,[+-]\d+\]", it["name"]) or re.search(r"\{(average|good|excellent)", it["name"])):
                 continue                  # (no feeling yet: it might be cursed)
             on = [i for i in worn if self.ARMOUR_SLOTS.get(i["tval"]) == slot]
-            ac_new = self.armour_ac(it["name"]) or 0
-            ac_on = min((self.armour_ac(i["name"]) or 0) for i in on) if on else -1
-            # (never for armour that loses an ability or resist the worn piece gives -- the ego table, as for weapons --
-            # nor over a worn artifact: by AC alone a plain mail would have replaced the Hard Studded Leather of
-            # Resistance and its four resists)
-            if on and (self.is_artifact(on[0]["name"]) or
-                       not self.weapon_abilities(on[0]["name"]) <= self.weapon_abilities(it["name"])):
-                continue
-            if ac_new > ac_on and not (on and bare_name(on[0]["name"]).lower() in self.ability_sources):
+            # (D13: the gear evaluator's verdict -- never for armour that loses an ability or resist the worn piece
+            # gives, nor more than 5% of the EHP: by AC alone a plain mail would have replaced the Hard Studded
+            # Leather of Resistance and its four resists; a plain AC comparison only for what it can't read)
+            better, ac_new, ac_on = self.ac_better(it["name"], on, it["tval"],
+                                                   it["weight"] // max(1, it.get("number", 1)))
+            ac_new = ac_new or 0
+            if better:
                 self.cmd(f"custom w item={it['item']}", f"wear {it['name']} (AC {ac_new} vs {ac_on})", hold=0.8)
                 self.notify("tactic", f"wore {it['name']} (AC {ac_new} vs {max(ac_on, 0)})", news=True)
                 return True
@@ -7174,39 +7175,20 @@ class Pilot:
         if key == self.light_warned_key and now - self.light_warned < 600:
             return
         self.light_warned, self.light_warned_key = now, key
-        self.notify("low_supply", text, news=not self.w.in_dungeon)
-
-    JUNK_DEVICES = ("Haste Monsters", "Clone Monster", "Heal Monster")
+        self.notify("supplies", text, news=not self.w.in_dungeon,
+                    fields={"supply": "light", "level": "out" if key in ("lantern out", "torch out", "no light") else "low"})
 
     def auto_destroy(self, now):
-        """Destroy pack items whose pseudo-ID feeling is on the autodestroy list
-        (the Navigator was cleaning the pack by hand every few minutes)."""
+        """Destroy the pack's junk (is_junk: the junk order, harmful devices, junk flavours, Broken items, the
+        autodestroy feelings...; the Navigator was cleaning the pack by hand every few minutes)."""
         w = self.w
-        feelings = [f.strip() for f in self.orders.get("autodestroy", "").split(",") if f.strip()]
-        # (an empty autodestroy order turns off only the feeling pass below: it used to return here and stop the
-        # junk-kind pass too, refactor-candidates A16)
         if now < self.busy_until or now - self.autodestroy_t < 2 or w.inven_dirty:
             return False
-        # identified junk too -- a kind on the `junk` list, or a harmful device (m28 kept a Staff of Haste Monsters
-        # and a Scroll of Aggravate Monster after Identify)
-        junk = [j.strip() for j in self.orders.get("junk", "").split(",") if j.strip()] + list(self.JUNK_DEVICES)
         for it in w.items():
-            n = it["name"]
-            if it["tval"] in (55, 65, 66, 70, 75) and " of " in n and not self.is_kept(n) and \
-                    any(re.search(rf"\bof {re.escape(j)}\b", n) for j in junk) and "@" not in n:
+            if self.is_junk(it):
                 self.autodestroy_t = now
                 self.c.send("confirm yes")
-                self.cmd(f"custom k item={it['item']} value={it['number']}", f"autodestroy junk {n}", hold=0.6)
-                w.inven_dirty = True
-                return True
-        for it in (w.items() if feelings else ()):
-            m = re.search(r"\{([^}]*)\}", it["name"])
-            # (never a kept item: the keep list's promise -- this pass skipped the check, refactor-candidates A15)
-            if m and any(re.search(rf"\b{re.escape(f)}\b", m.group(1)) for f in feelings) \
-                    and "@" not in m.group(1) and "!" not in m.group(1) and not self.is_kept(it["name"]):
-                self.autodestroy_t = now
-                self.c.send("confirm yes")
-                self.cmd(f"custom k item={it['item']} value={it['number']}", f"autodestroy {it['name']}", hold=0.6)
+                self.cmd(f"custom k item={it['item']} value={it['number']}", f"autodestroy junk {it['name']}", hold=0.6)
                 w.inven_dirty = True
                 return True
         return False
@@ -7236,8 +7218,10 @@ class Pilot:
                 # Restore Dexterity waiting in the tavern)
                 def where(n):
                     k = f"Restore {full[n]}"
-                    if self.stash_has(k):
-                        return f"Potion of {k}: one is in the tavern stash -- `plan town` fetches it, don't buy one"
+                    at = self.stash_where(k)
+                    if at:
+                        return f"Potion of {k}: one is in the {'house' if at == 'house' else 'tavern stash'} -- " \
+                               "`plan town` fetches it, don't buy one"
                     return f"Potion of {k} at the Alchemist (5), ~470 (the Temple doesn't sell them)"
                 self.notify("stat_drained", f"{', '.join(new)} drained (blows {blows}); levels don't restore it: "
                             + "; ".join(where(n) for n in new))
@@ -7422,11 +7406,8 @@ class Pilot:
         if w.in_dungeon and w.itemlist:
             for line in w.itemlist[1:]:
                 name = line.strip()[2:].strip()
-                junk = [j.strip().lower() for j in self.orders.get("junk", "").split(",") if j.strip()]
-                known_junk = "{cursed" in name or any(j in name.lower() for j in junk) or \
-                    self.junk_kinds.get(kind_key(name)) or (self.flavours.get(flavour_key(name)) or {}).get("junk")
                 if re.search(r"\b(Wand|Staff|Rod|Ring|Amulet)\b|\{(excellent|special)", name) and \
-                        not known_junk and (w.level_t, name) not in self.far_seen:
+                        not self.is_junk(name) and (w.level_t, name) not in self.far_seen:
                     self.far_seen.add((w.level_t, name))
                     # (mission 15: the user spotted a Wand of Slow Monster 33 squares
                     # away, outside loot_radius; it sold for 210). Held 2.5 s: often
@@ -8390,10 +8371,7 @@ class Pilot:
     STORE_LABEL = {1: "General Store", 2: "Armoury", 3: "Weaponsmith", 4: "Temple", 5: "Alchemist", 6: "Magic Shop",
                    7: "Black Market"}
     # who buys what (store.c store_will_buy), best first; never the Black Market (it pays a third)
-    BUYERS = {80: (1,), 39: (1,), 77: (1,), 16: (1, 3), 17: (1, 3), 18: (1, 3), 20: (3, 1), 35: (2, 1),
-              30: (2,), 31: (2,), 32: (2,), 33: (2,), 34: (2,), 36: (2,), 37: (2,), 38: (2,),
-              19: (3,), 21: (3, 4), 22: (3,), 23: (3,), 75: (5, 4, 6), 70: (5, 4, 6),
-              40: (6,), 45: (6,), 55: (6,), 65: (6,), 66: (6,)}
+    BUYERS = shopmath.BUYERS          # (D9: the table lives in shopmath, beside the pay rule that reads it)
     # kit kinds: (tval, the store that sells them, a price guess before we've seen one)
     KIT_ITEMS = {"Word of Recall": (70, 5, 250), "Cure Critical Wounds": (75, 4, 160),
                  "Cure Serious Wounds": (75, 4, 65), "Cure Light Wounds": (75, 4, 25), "Phase Door": (70, 5, 25),
@@ -8799,7 +8777,7 @@ class Pilot:
             add(2, "Flask of oil", -(-(self.FUEL_TOPUP - fuel) // self.FLASK_FUEL))
         for stat, (cur, top) in (self.seen_drained or {}).items():
             if stat in self.STAT_FULL and cur < top:
-                if not self.stash_has(f"Restore {self.STAT_FULL[stat]}"):     # (fetched from the tavern instead)
+                if not self.stash_has(f"Restore {self.STAT_FULL[stat]}"):     # (fetched from the stash instead)
                     add(3, f"Restore {self.STAT_FULL[stat]}", 1)
         for kind, n in self.KITS.get(kit, {}).items():
             add(4, kind, n)
@@ -9075,8 +9053,7 @@ class Pilot:
         if not row or not wt:
             return None
         name, blows, dpr, _ = wt[0]
-        th = re.search(r"\(([+-]\d+),[+-]\d+\)", name)
-        chance = 82 + 45 * self.w.clvl // 10 + 3 * (int(th.group(1)) if th else 0)
+        chance = 82 + 45 * self.w.clvl // 10 + 3 * geareval.Item(name).to_h
         ph = 0.05 + 0.90 * max(0.0, 1 - (int(row["ac"]) * 3 // 4) / chance)
         per_turn = max(0.1, ph * dpr)
         turns = int(row["hp"]) / per_turn
@@ -9101,12 +9078,10 @@ class Pilot:
             wt = [x for x in self.weapon_table() if x[3]]
             if not row or not wt:
                 return None
-            name, blows = wt[0][0], wt[0][1]
-            d = re.search(r"\((\d+d\d+)\)", name)
-            hd = re.search(r"\(([+-]\d+),([+-]\d+)\)", name)
+            prof = shadow.weapon_profile(wt[0][0], wt[0][1])      # (geareval.Item's numbers: D6)
             import argparse
-            o = argparse.Namespace(clvl=self.w.clvl, blows=blows, dice=d.group(1) if d else "1d4",
-                                   todam=int(hd.group(2)) if hd else 0, tohit=int(hd.group(1)) if hd else 0,
+            o = argparse.Namespace(clvl=self.w.clvl, blows=prof["blows"], dice=prof["dice"],
+                                   todam=prof["todam"], tohit=prof["tohit"],
                                    ac=self.w.ind.get("armor", [0])[0] or 0, hp=max(1, self.w.hp[0]), n=n)
             return mod.summary(row, o)
         except Exception as e:             # (a rulebook problem must not break the check)
@@ -9609,12 +9584,50 @@ class Pilot:
         m = re.search(r"\[(\d+)(?:,([+-]\d+))?\]", name)
         return int(m.group(1)) + int(m.group(2) or 0) if m else None
 
+    def ac_better(self, name, on, tval=None, weight=None, ch=None, margin=0, worn_gives=False):
+        """D13 (the user, 11-01): is this armour piece (a pack item's or a shop's name) better AC than `on`, the worn
+        piece(s) of its slot? The gear evaluator's verdict (geareval.ac_verdict: more AC by over `margin`, every
+        ability and resist kept -- geareval.auto_swap_losses --, no more than 5% less EHP) wherever it can read the
+        piece and what's worn; only else a plain AC comparison, with the old guards (never over an artifact, nor over
+        a piece whose ego gives what this one lacks, nor -- worn_gives -- one the flags grid shows giving an ability).
+        Never over a worn piece that may give an ability unidentified (ability_sources). (ok, the AC shown for the
+        piece, the worn piece's)."""
+        ac_new = self.armour_ac(name)
+        ac_on = min((self.armour_ac(i["name"]) or 0) for i in on) if on else -1
+        if on and bare_name(on[0]["name"]).lower() in self.ability_sources:
+            return False, ac_new, ac_on
+        try:
+            ch = ch or self.gear_character()
+            try:
+                mix = geareval.load_mix(os.path.join(self.rundir, "damage_mix.json"))
+            except AttributeError:
+                mix = None
+            v = geareval.ac_verdict(ch, geareval.Item(name, tval, weight), mix)
+        except Exception as e:                 # (the evaluator must not stop the report: the plain rule then)
+            self.log("note", text=f"gear evaluator failed on {name}: {e!r}")
+            v = None
+        if v is not None:
+            return v[0] and v[1] > margin, ac_new, ac_on
+        if on and (worn_gives or self.is_artifact(on[0]["name"]) or
+                   not self.weapon_abilities(on[0]["name"]) <= self.weapon_abilities(name)):
+            return False, ac_new, ac_on
+        return ac_new is not None and ac_new > ac_on + margin, ac_new, ac_on
+
     def gear_line(self):
         """Empty slots, and pack items better than what's worn (the Advisor's
         memo §3.2: armour and jewellery against worn or empty slots)."""
         w = self.w
         worn, pack = w.items(equip=True), w.items()
         empty, better = [], []
+        ch = []
+
+        def character():           # (the gear evaluator's character, made once when a candidate needs it)
+            if not ch:
+                try:
+                    ch.append(self.gear_character())
+                except Exception:
+                    ch.append(None)
+            return ch[0]
         for slot, tvals, k in self.SLOTS:
             on = [i for i in worn if i["tval"] in tvals]
             cand = [i for i in pack if i["tval"] in tvals and not bad_inscription(i["name"])
@@ -9624,15 +9637,12 @@ class Pilot:
                     continue          # (off in town to save fuel; worn again before leaving it)
                 empty.append(slot + (f" (you carry {cand[0]['name']})" if cand else ""))
             elif slot not in ("weapon", "bow", "ring", "amulet", "light"):
-                ac_on = min((self.armour_ac(i["name"]) or 0) for i in on)
-                # (as the upgrade step: never over a piece whose abilities the other lacks, nor over an artifact --
-                # m37's line offered Metal Lamellar [23] over the Leather of Resistance)
-                if self.is_artifact(on[0]["name"]):
-                    continue
-                cand = [i for i in cand if self.weapon_abilities(on[0]["name"]) <= self.weapon_abilities(i["name"])]
+                # (D13: the gear evaluator's verdict, as the upgrade step -- never losing an ability or resist: m37's
+                # line offered Metal Lamellar [23] over the Leather of Resistance)
                 for i in cand:
-                    ac = self.armour_ac(i["name"])
-                    if ac is not None and ac > ac_on:
+                    ok, ac, ac_on = self.ac_better(i["name"], on, i["tval"], i["weight"] // max(1, i.get("number", 1)),
+                                                   ch=character())
+                    if ok:
                         better.append(f"{chr(97 + i['item'])}) {i['name']} (AC {ac} vs {ac_on} worn)")
         return ("Gear: empty slots: " + (", ".join(empty) or "none")
                 + ("; better than worn: " + "; ".join(better) if better else ""))
@@ -9896,42 +9906,41 @@ class Pilot:
         out.append(f"the policy: {pol}")
         return "\n".join(out)
 
-    # --- the tavern stash (the user, 10-26) --------------------------------------------------------------------
+    # --- the stash (the user, 10-26; refactor-candidates D10, 11-01: house.json is its only record) --------------
+    # In the house: house.json `items` ("Y,X" -> name, HouseBank.item_step). Without a house, the tavern room:
+    # house.json `tavern` ({"entrance": [Y, X], "items": {"Y,X": name}}; StashDeposit/StashFetch). The old stash.json
+    # (its items, tavern squares and the hand-written where/lost notes) was retired on 2026-11-01.
     def is_stash_item(self, name):
         # (stat restores only: a Potion of Restore Mana went into the stash in m48 -- useless to a warrior)
         return bool(re.search(r"Potions? of Restore (Strength|Intelligence|Wisdom|Dexterity|Constitution|Charisma)",
                               name)) or ("Stone to Mud" in name and "Wand" in name)
 
-    def stash_state(self):
-        st = self.__dict__.get("stash")
-        if st is None:
-            try:
-                st = json.load(open(os.path.join(self.rundir, "stash.json")))
-            except (OSError, ValueError, AttributeError):
-                st = {}
-            st.setdefault("items", [])
-            self.stash = st
-        return st
+    def tavern_state(self):
+        """The no-house fallback's record in house.json: the tavern's entrance and the stash items in its room."""
+        return self.house_state().setdefault("tavern", {})
 
-    def stash_save(self):
-        try:
-            json.dump(self.stash_state(), open(os.path.join(self.rundir, "stash.json"), "w"), indent=1)
-        except (OSError, AttributeError):
-            pass
+    def stash_places(self):
+        """{'house': {"Y,X": name}, 'tavern': {"Y,X": name}}: what the stash holds and where (the house's items count
+        only while a house is owned)."""
+        st = self.house_state()
+        return {"house": st.get("items", {}) if st.get("house") else {},
+                "tavern": st.get("tavern", {}).get("items", {})}
 
-    def stash_add(self, name):
-        self.stash_state()["items"].append(name)
-        self.stash_save()
-
-    def stash_remove(self, kind):
-        st = self.stash_state()
-        hit = next((n for n in st["items"] if kind in n), None)
-        if hit:
-            st["items"].remove(hit)
-            self.stash_save()
+    def stash_where(self, kind):
+        """'house' or 'tavern' where a stash item of this kind waits (the house first), else None."""
+        return next((at for at, slots in self.stash_places().items() if any(kind in n for n in slots.values())), None)
 
     def stash_has(self, kind):
-        return any(kind in n for n in self.stash_state()["items"])
+        return self.stash_where(kind) is not None
+
+    def stash_take(self, at, kind, square=None):
+        """Strike one item of this kind off the record of `at` (house|tavern): the one on `square` if it's there."""
+        slots = self.house_state().get("items", {}) if at == "house" else self.tavern_state().get("items", {})
+        key = f"{square[0]},{square[1]}" if square else None
+        key = key if key in slots and kind in slots[key] else next((k for k, n in slots.items() if kind in n), None)
+        if key:
+            del slots[key]
+            self.house_save()
 
     BANK_FLOAT = 300           # gold carried out of town when a house holds the rest (no use for it in the dungeon)
 
@@ -9977,10 +9986,19 @@ class Pilot:
 
     def supply_watch(self):
         """In the dungeon: tell the Navigator once when food or light (reserves counted) falls under 15, then 5,
-        dungeon minutes."""
+        dungeon minutes; and, as news, once a trip when the pack holds no food (m46's Navigator found "Food 0" with no
+        warning; the cause, make-room destroying rations, is fixed, but eating the last one isn't -- food_watch, merged
+        here by D14). All are `supplies` notices with fields what (food|light) and level (low|out|recalling)."""
         w = self.w
         if not w.in_dungeon:
             return
+        key = getattr(self.plan, "t0", None) or w.level_t
+        if self.kit_count("Ration of Food") == 0 and self.__dict__.get("food_warned") != key:
+            self.food_warned = key
+            self.notify("supplies", f"no food left in the pack (hunger: "
+                                    f"{('Weak', 'Weak', 'Hungry', 'Fed', 'Full')[min(4, max(0, w.hunger))]}): "
+                                    "`plan town` buys rations; a Full character lasts ~20 dungeon minutes", news=True,
+                        fields={"supply": "food", "level": "out"})
         food, light = self.supply_minutes()
         told = self.__dict__.setdefault("supply_told", set())
         for what, m, how in (("food", food, "rations"), ("light", light, "flasks of oil")):
@@ -9990,7 +10008,7 @@ class Pilot:
             if new:
                 told.update((what, th) for th in new)     # (both crossed at once: one notice)
                 self.notify("supplies", f"{what}: ~{m:.0f} dungeon minutes left with the {how} carried -- plan to "
-                                        f"be home before then (`goal recall`)")
+                                        f"be home before then (`goal recall`)", fields={"supply": what, "level": "low"})
             if m >= 20:
                 told.discard((what, 15))
                 told.discard((what, 5))
@@ -10017,15 +10035,39 @@ class Pilot:
         if not hasattr(self, "_house"):
             try:
                 self._house = json.load(open(os.path.join(self.rundir, "house.json")))
-            except (OSError, ValueError):
+            except (OSError, ValueError, AttributeError):
                 self._house = {}
+            self.retire_stash_json()
         return self._house
+
+    def retire_stash_json(self):
+        """A stash.json left by an older Pilot (D10, 11-01: house.json is the stash's only record): its tavern
+        entrance, and the items the house doesn't hold when there's no house, go into house.json `tavern`; the file
+        is renamed stash.json.retired-DATE (its hand-written notes stay there, as history)."""
+        try:
+            path = os.path.join(self.rundir, "stash.json")
+            old = json.load(open(path))
+        except (OSError, ValueError, AttributeError):
+            return
+        st, tav = self._house, self._house.setdefault("tavern", {})
+        if old.get("entrance") and not tav.get("entrance"):
+            tav["entrance"] = old["entrance"]
+        if not st.get("house"):
+            held = list(tav.get("items", {}).values())
+            squares = [f"{q[0]},{q[1]}" for q in old.get("squares", [])]
+            for i, n in enumerate(x for x in old.get("items", []) if x not in held):
+                key = squares[i] if i < len(squares) else f"?{i}"          # (the fetch searches the room anyway)
+                tav.setdefault("items", {})[key] = n
+        self.house_save()
+        new = f"{path}.retired-{time.strftime('%Y-%m-%d')}"
+        os.rename(path, new if not os.path.exists(new) else f"{new}-{int(time.time())}")
+        self.log("note", text=f"stash.json retired into house.json (D10): {os.path.basename(new)}")
 
     def house_save(self):
         try:
             with open(os.path.join(self.rundir, "house.json"), "w") as f:
                 json.dump(self.house_state(), f, indent=1)
-        except OSError:
+        except (OSError, AttributeError):
             pass
 
     def banked(self):
@@ -10040,11 +10082,15 @@ class Pilot:
             h = st.get("house")
             if not h:
                 houses = town_houses(self.w.memory) if not self.w.in_dungeon else []
-                return {"ok": True, "text": "no house owned" + (f"; the smallest on the map: {houses[0]['area']} square(s), "
-                                                               f"door {houses[0]['door']}" if houses else "")}
+                tav = sorted(self.stash_places()["tavern"].values())
+                return {"ok": True, "text": "no house owned" + (f"; the smallest on the map: {houses[0]['area']} "
+                                                                   f"square(s), door {houses[0]['door']}" if houses else "")
+                                            + (f"; tavern stash: {', '.join(tav)}" if tav else "")}
+            held = sorted(self.stash_places()["house"].values())
             return {"ok": True, "text": f"house: door {h['door'][0]},{h['door'][1]}, bought {h.get('bought')} for "
                                         f"{h.get('price')}; {st.get('banked', 0)} gold banked (as of {st.get('t')}); "
-                                        f"{self.w.ind.get('gold', [0])[0]} carried"}
+                                        f"{self.w.ind.get('gold', [0])[0]} carried"
+                                        + (f"; stash: {', '.join(held)}" if held else "")}
         if self.w.in_dungeon:
             return {"ok": False, "error": "the house is in town or the tile beside it"}
         if sub == "buy":
@@ -10080,21 +10126,23 @@ class Pilot:
         return {"ok": True, "goal": g.describe()}
 
     def tavern_entrance(self):
-        """The tavern's '8' on the town map (remembered in stash.json)."""
-        st = self.stash_state()
+        """The tavern's '8' on the town map (remembered in house.json `tavern`)."""
+        st = self.tavern_state()
         if not st.get("entrance") and not self.w.depth:
             q = next((q for q, ch in self.w.memory.items() if ch == "8"), None)
             if q:
                 st["entrance"] = list(q)
-                self.stash_save()
+                self.house_save()
         return tuple(st["entrance"]) if st.get("entrance") else None
 
-    def stash_wanted(self):
-        """The Restore kind a drained STR/DEX/CON needs, if the pack lacks it and the tavern has it."""
+    def stash_wanted(self, at=None):
+        """The Restore kind a drained stat needs, if the pack lacks it and the stash has it (in `at`: house|tavern,
+        or either)."""
         for stat, (cur, top) in (self.seen_drained or {}).items():
             if stat in self.STAT_FULL and cur < top:
                 kind = f"Restore {self.STAT_FULL[stat]}"
-                if not any(kind in i["name"] for i in self.w.items()) and self.stash_has(kind):
+                if not any(kind in i["name"] for i in self.w.items()) and \
+                        (self.stash_where(kind) == at if at else self.stash_has(kind)):
                     return kind
         return None
 
@@ -10257,6 +10305,15 @@ class Pilot:
         # shops, as last seen
         ideas = []
         worn_ac = {}
+        ch = []
+
+        def character():
+            if not ch:
+                try:
+                    ch.append(self.gear_character())
+                except Exception:
+                    ch.append(None)
+            return ch[0]
         for slot, tvals, k in self.SLOTS:
             on = [i for i in worn if i["tval"] in tvals]
             worn_ac[slot] = (min((self.armour_ac(i["name"]) or 0) for i in on) if len(on) >= k else -1,
@@ -10287,10 +10344,11 @@ class Pilot:
                 if not slot or ac is None or slot not in worn_ac:
                     continue
                 ac_on, gives_flags, on = worn_ac[slot]
-                if gives_flags or (on and self.is_artifact(on[0]["name"])):
-                    continue              # (the worn piece gives an ability: AC alone isn't worth losing it)
-                if ac > ac_on + 2:
-                    ideas.append(lab + f": AC {ac} vs {max(ac_on, 0)} worn ({slot})")
+                # (D13: the gear evaluator's verdict, more than 2 AC better; the plain rule only for what it can't
+                # read, and then never over a worn piece that gives an ability: AC alone isn't worth losing it)
+                if not self.ac_better(name, on, ch=character(), margin=2, worn_gives=gives_flags)[0]:
+                    continue
+                ideas.append(lab + f": AC {ac} vs {max(ac_on, 0)} worn ({slot})")
         out.append("Shop ideas (prices last seen): " + ("; ".join(ideas[:8]) if ideas else "none within the gold"))
         # stats and standing restores
         drained = [n for i, n in enumerate(self.STAT_NAMES) if len(w.ind.get(f"stat{i}", [])) >= 2
@@ -10420,7 +10478,7 @@ class Pilot:
         # items: the server's list (names) and the squares near us ($ grouped)
         names = [l.strip()[2:].strip() for l in (w.itemlist or [])[1:]]
         # (known junk left out: the user, 10-25 -- the Pilot destroys it when it passes over it at a quiet moment)
-        names = [n for n in names if not self.is_junk_name(n)]
+        names = [n for n in names if not self.is_junk(n)]
         sq = sorted((q for q in self.resolve_target("item") if w.memory.get(q, "?") not in "0123456789"),
                     key=w.dist)[:10] if w.pos else []          # (not shop and house doors)
         gold = [q for q in sq if w.memory.get(q) == "$"]
@@ -10726,6 +10784,7 @@ def main():
         # the pack whenever it changes, the map's changed rows every 10 s
         statelog = open(os.path.join(rundir, "state.jsonl"), "a", buffering=1)
         last = {"status": [0.0, None], "inven": [0.0, None], "map": [0.0, None]}
+        last_aware = [None]
 
         def log_state(ev):
             # 'epoch' is the wall clock like events.jsonl's; the throttle stays on the game clock (session 8: logging
@@ -10735,6 +10794,17 @@ def main():
                 return
             if k == "status":
                 body = {"y": ev.get("y"), "x": ev.get("x"), "ind": ev.get("ind")}
+                # the kinds known (D9, for the scorecard's values as of then): in a status record when they changed
+                # since the last one, so always in the first after a start
+                try:
+                    aware = sorted(pilot.aware_kinds())
+                except RuntimeError:              # (the table changed under us: the next record has it)
+                    aware = last_aware[0]
+                if aware != last_aware[0]:
+                    last_aware[0] = aware
+                    last[k] = [now, body]
+                    statelog.write(json.dumps({"ev": k, "epoch": round(wall, 3), **body, "aware": aware}) + "\n")
+                    return
             elif k == "inven":
                 body = {"items": ev.get("items")}
             else:

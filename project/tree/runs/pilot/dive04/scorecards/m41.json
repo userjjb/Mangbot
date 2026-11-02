@@ -20,6 +20,7 @@
   "usd": 0.6,
   "transcript": "agent-a38fbaa07686d0741.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 9,
   "compared": 6,
@@ -113,11 +114,11 @@
  "D": {
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 53,
-  "loot_abandoned_est": 1782,
+  "destroyed_est": 102,
+  "loot_abandoned_est": 3897,
   "stolen": 1669,
   "destroyed_by_monsters_est": 6,
-  "total": 3510,
+  "total": 5674,
   "sales": 9,
   "sales_valued": 1,
   "worst_sales": [],
@@ -140,6 +141,7 @@
    "an Amulet of Resist Acid"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 15,
   "commands": 30,
@@ -168,14 +170,17 @@
  },
  "damage_by_monster": {
   "Half-orc": 158,
-  "Dark elven priest": 119,
   "White wolf": 77,
-  "Giant tarantula": 50,
-  "Priest": 37,
-  "Master yeek": 30,
-  "Wolf": 22,
-  "Baby bronze dragon": 22
+  "Dark elven priest": 75,
+  "Giant tarantula": 45,
+  "Priest": 40,
+  "Master yeek": 25,
+  "Wolf": 24,
+  "Forest troll": 19,
+  "unseen": 47,
+  "unattributed": 241
  },
+ "damage_hp_lost": 912,
  "alerts": {
   "tactic": 28,
   "lost": 4,

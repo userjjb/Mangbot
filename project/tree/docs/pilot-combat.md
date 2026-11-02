@@ -54,7 +54,7 @@ Here and below, "within N levels of ours" means a monster level ≥ ours − N: 
 | 12 | Stationary monsters (molds, jellies, eyes) adjacent | NEVER_MOVE adjacent, not the hunt target | `stairs_beside_still`: the wanted stairs are a step away and these monsters are harmless for one turn, so take the stairs. `still_fight_tick` (§2.5): kill it if it blocks the way and is killable, or flee a strong disenchanter. Otherwise step away (`retreat_step` reach 6, else `sidestep`). |
 | 13 | Repeat fearers | a mobile monster that frightens again and again, within 7; not during Flee or Recall | `fearer` alert once per level; Phase Door if it is within 2 levels of ours and any monster is adjacent (every 2.5 s at most); otherwise retreat. |
 | 14 | Light | `town_light`, `keep_light` (§5) | Skipped with a monster adjacent, **unless we have no light at all** in the dungeon. |
-| 15 | Hunger | hunger ≤ 2 (Hungry), nothing in view for 5 s and not hit for 5 s | Eat (once per 10 s). No food: read Satisfy Hunger only when Weak (≤ 1), because it fills you to Gorged. Neither, and Weak in the dungeon: goal `Recall` (`low_supply`). While it waits (a meal under 10 s ago, or Hungry with only scrolls) the later steps still run (A20, 2.39.0). |
+| 15 | Hunger | hunger ≤ 2 (Hungry), nothing in view for 5 s and not hit for 5 s | Eat (once per 10 s). No food: read Satisfy Hunger only when Weak (≤ 1), because it fills you to Gorged. Neither, and Weak in the dungeon: goal `Recall` (`supplies`, level `recalling`). While it waits (a meal under 10 s ago, or Hungry with only scrolls) the later steps still run (A20, 2.39.0). |
 | 16 | **Adjacent monster** | any adjacent | Stop the mover (except during Goto/Flee) and stop resting. Below `think_hp`: `fight_going_badly` alert (once per 10 s). With 2+ adjacent and one a thief (EAT_ITEM/EAT_GOLD blows), hit the thief first (item thieves before gold thieves). Otherwise hold, so auto-retaliate fights. A Goto or Flee goal keeps moving instead. |
 | 17 | Pickup / auto-destroy | standing on an item | Belongs to the item policy ([pilot-items.md](pilot-items.md)). While fleeing (Flee, BandLeave, WalkAway) with monsters in view, only items worth 500 or more are picked up. |
 | 18 | **Engage** | `engage_tick` (§2.2) | Walk to a weak monster a few steps off and fight it. |
@@ -284,10 +284,9 @@ All run every tick. Most only notify; the ones that act are marked.
 | `watch_kills` | "You have slain <unique>" | `unique_slain`. Records `uniques_killed.json` (repeat kills give nothing) and marks the drop for pickup. |
 | `watch_perception` | the server's monster list names a monster the map decode doesn't show for 1.5 s | Logs `perception_gap` (with a map crop), once per level and name. |
 | `watch_progress` (acts) | the mover stuck on one square for 20 s; or a goal visiting ≤ 10 squares in 2 minutes while not fighting | Clears the server queue and restarts the move (`stuck`). The second 2-minute trigger for the same goal ends the goal. Waiting goals (Wait, Rest, Search, Recall, Recover, Shop) are exempt. |
-| `food_watch` | no rations in the pack in the dungeon (checked every 15 s, from `track_gains`) | A `supply` notice once per trip. |
-| `supply_watch` | food or light (reserves counted, `supply_minutes`) under 15, then 5, dungeon minutes | A `supplies` notice; it re-arms above 20. |
+| `supply_watch` | in the dungeon: no rations in the pack (once per trip; `food_watch` merged here, D14); food or light (reserves counted, `supply_minutes`) under 15, then 5, dungeon minutes | A `supplies` notice: news with level `out` for no food; level `low` for the minutes (re-arms above 20). |
 | `town_light` (acts) | in town, idle, no agent contact for 20 s | Takes the light off (it burns 10× while resting). |
-| `keep_light` (acts) | lantern < 3000 turns, torch < 500, or no light in the dungeon | Refill from a flask, swap to a fuller lantern or torch, or wield the best light (`best_light`). Else `warn_light`: a `low_supply` notice once per state, every 10 min at most; news in town. |
+| `keep_light` (acts) | lantern < 3000 turns, torch < 500, or no light in the dungeon | Refill from a flask, swap to a fuller lantern or torch, or wield the best light (`best_light`). Else `warn_light`: a `supplies` notice (supply `light`, level `low` or `out`) once per state, every 10 min at most; news in town. |
 | `confusion_lock` / `confusion_window` (act) | see §2.3 | |
 
 `monster_info` (the `monster NAME` command) shows this server's facts for a monster, its `danger_why` verdict, the hunt
@@ -312,7 +311,7 @@ because the status reply has no flag for them.
 
 The `what` values for notices about danger and fighting: `emergency`, `emergency_loop`, `danger_seen`,
 `danger_avoided`, `fight_going_badly`, `unseen_attacker`, `band`, `stat_drained`, `drainer`, `thief`, `breeders`,
-`fearer`, `afraid`, `rule`, `tactic`, `dead`, `low_supply`, `supply`, `supplies`, `blows_changed`, `stuck`,
+`fearer`, `afraid`, `rule`, `tactic`, `dead`, `supplies` (fields `supply`, `level`; `low_supply` and `supply` before 2026-11-01, D14), `blows_changed`, `stuck`,
 `idle_recall`, `recall_cancelled`, `unique_slain`.
 
 `NEWS` kinds (`danger_avoided`, `tactic`, …) and notices sent with `news=True` go to the report's news and don't wake

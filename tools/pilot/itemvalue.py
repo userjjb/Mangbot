@@ -188,6 +188,15 @@ def value(name, level=15, aware=()):
     if re.search(r"\b(cursed|broken|worthless|terrible)\b", " ".join(tags), re.I) or core.startswith("Broken "):
         it.value = 0
         return it
+    # spellbooks: "a Book of Magic Spells [Magic for Beginners]", "a Holy Book of Prayers [Wrath of God]" -- the kind's
+    # cost (the user, 11-01: the dungeon-only books sell well; they read as 0 before)
+    bm = re.match(r"(Holy )?Books? of (?:Magic Spells|Prayers) (\[[^\]]+\])", n)
+    if bm:
+        it.tval = 91 if bm.group(1) else 90
+        k = _BY_TV_NAME.get((it.tval, bm.group(2).lower()))
+        if k:
+            it.kind, it.flags, it.value = k["N"], set(k["F"]), k["W"][3]
+        return it
     # flavoured kinds: "Potion of X"; unknown flavours: "Bloodstone Ring", "Scroll titled ..."
     fm = re.match(r"(Potion|Scroll|Ring|Amulet|Wand|Staff|Rod) of (.+)", core)
     if fm:

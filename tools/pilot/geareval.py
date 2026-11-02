@@ -816,6 +816,29 @@ EHP_RES = {"acid": (("RES_ACID", 1 / 3), ("IM_ACID", 0.0)), "elec": (("RES_ELEC"
            "nether": (("RES_NETHR", 0.65),), "chaos": (("RES_CHAOS", 0.65),), "disen": (("RES_DISEN", 0.65),)}
 
 
+def ac_verdict(ch, item, mix=None):
+    """"Better AC than worn" by the gear evaluator's static rules (refactor-candidates D13, the user, 11-01): wearing
+    `item` in its slot (in place of the piece there) raises the total AC, loses nothing auto_swap_losses forbids
+    (every ability and resist, TRADE_RESISTS off) and costs no more than EHP_GATE of the EHP over the damage mix
+    (mix = (mix, melee level, ...) as load_mix gives). (ok, AC gain, why not) -- None when it can't decide: the item
+    or a worn piece of its slot isn't read (no kind or artifact) or its plusses aren't known."""
+    on = ch.worn.get(item.slot) or []
+    if not item.slot or not (item.kind or item.art) or not item.known or \
+            any(not (i.kind or i.art) or not i.known for i in on):
+        return None
+    mx, lvl = (mix[0], mix[1]) if mix else (None, None)
+    cur, new = ch.derive(), ch.derive(ch.swap(item))
+    gain = new["ac"] - cur["ac"]
+    lost = auto_swap_losses(cur["flags"], new["flags"])
+    if lost:
+        return False, gain, "loses " + ", ".join(label(f) for f in lost)
+    if ehp(new, mx, lvl) < (1 - EHP_GATE) * ehp(cur, mx, lvl):
+        return False, gain, f"EHP {ehp(new, mx, lvl) / ehp(cur, mx, lvl) - 1:+.0%}"
+    if gain < 0 or (gain == 0 and on):
+        return False, gain, "no more AC"
+    return True, gain, ""
+
+
 def hit_chance(ac, power, level):
     """melee1.c check_hit: 5% always hit, 5% always miss, else randint1(power + 3 x level) > 3/4 AC; blow power 60
     for HURT/SHATTER, 0-20 for the status blows (melee1.c:243-271)."""

@@ -8,6 +8,7 @@
  "minutes": 34.0,
  "notes": "",
  "tokens": null,
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 5,
   "compared": 3,
@@ -93,11 +94,11 @@
  "D": {
   "sale_shortfall": 45,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 84,
-  "loot_abandoned_est": 1134,
+  "destroyed_est": 163,
+  "loot_abandoned_est": 3642,
   "stolen": 2617,
   "destroyed_by_monsters_est": 0,
-  "total": 3880,
+  "total": 6467,
   "sales": 10,
   "sales_valued": 4,
   "worst_sales": [
@@ -122,6 +123,7 @@
   ],
   "irreplaceable": []
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 11,
   "commands": 64,
@@ -149,15 +151,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Mirkwood spider": 106,
-  "Black orc": 63,
-  "Druid": 50,
-  "Uruk": 41,
+  "Mirkwood spider": 104,
+  "Black orc": 62,
+  "Uruk": 39,
   "Clear hound": 35,
-  "Orc shaman": 29,
   "Griffon": 26,
-  "Half-orc": 26
+  "Half-orc": 26,
+  "Giant tan bat": 24,
+  "Orc shaman": 22,
+  "unseen": 56,
+  "unattributed": 6
  },
+ "damage_hp_lost": 468,
  "alerts": {
   "tactic": 33,
   "rule": 6,

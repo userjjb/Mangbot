@@ -20,6 +20,7 @@
   "usd": 0.395,
   "transcript": "agent-aee119d8145565bec.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 3,
   "compared": 2,
@@ -101,10 +102,10 @@
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
   "destroyed_est": 0,
-  "loot_abandoned_est": 515,
+  "loot_abandoned_est": 2233,
   "stolen": 0,
-  "destroyed_by_monsters_est": 38,
-  "total": 553,
+  "destroyed_by_monsters_est": 46,
+  "total": 2279,
   "sales": 5,
   "sales_valued": 0,
   "worst_sales": [],
@@ -122,6 +123,7 @@
   ],
   "irreplaceable": []
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 8,
   "commands": 21,
@@ -149,15 +151,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Uruk": 214,
-  "Air hound": 62,
-  "Baby green dragon": 53,
-  "Wolf": 30,
-  "Novice ranger": 26,
-  "Gnome mage": 24,
+  "Uruk": 155,
+  "Air hound": 60,
+  "Baby green dragon": 52,
+  "Gnome mage": 23,
   "Griffon": 17,
-  "Novice paladin": 8
+  "Novice paladin": 9,
+  "Novice ranger": 9,
+  "Wolf": 9,
+  "unseen": 166,
+  "unattributed": 55
  },
+ "damage_hp_lost": 581,
  "alerts": {
   "tactic": 16,
   "review": 3,

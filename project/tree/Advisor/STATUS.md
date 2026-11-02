@@ -70,6 +70,7 @@ Architect builds everything else.
 5d. ~~P_WAKE~~ done 10-29: options_sim 29o uses the server's wake rule (100/dist per noticed turn; NOISE_FIGHT 18 calibrated).
    Re-check with more looks pairs in fights later (only 21 pairs, mostly idle).
 5e. 10-31: rulebook README (build_all path, depth_value row) + fight_sim MON prefers monsters_raw.csv beside it (B18); Architect to re-sync.
+5f. 11-01: replied D8/D9/D14 (to_architect/2026-11-01-d-merges.md): damage attribution = damage_mix timing + names; card values = itemvalue + pay_cut as of then; supplies kind with what/level fields. D14 done 11-01 (field is `supply`, not `what`); response.py updated. state.jsonl status now carries `aware`; shopmath.pay_cut(tval, chr, owners_seen). Architect will announce the D8/D9 scorecard release.
 6. Housekeeping: the 09-29 shops memo assumed CHR 4 = Dive04's natural CHR; it is drained to 3 now (use `data/rulebook/shop_owners.csv`, CHR 3 columns, until restored).
 
 ## Architect schedule

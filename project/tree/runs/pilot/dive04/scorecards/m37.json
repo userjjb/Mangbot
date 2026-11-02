@@ -20,6 +20,7 @@
   "usd": 0.593,
   "transcript": "agent-a3e72fb5a18330a53.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 2,
   "compared": 2,
@@ -99,11 +100,11 @@
  "D": {
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 298,
-  "loot_abandoned_est": 1399,
+  "destroyed_est": 400,
+  "loot_abandoned_est": 3014,
   "stolen": 0,
-  "destroyed_by_monsters_est": 12,
-  "total": 1709,
+  "destroyed_by_monsters_est": 14,
+  "total": 3428,
   "sales": 10,
   "sales_valued": 1,
   "worst_sales": [],
@@ -126,6 +127,7 @@
    "an Amulet of Resist Acid"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 17,
   "commands": 27,
@@ -153,15 +155,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Black orc": 177,
-  "Uruk": 87,
-  "Brown yeek": 49,
-  "Novice paladin": 46,
-  "White wolf": 43,
-  "Novice warrior": 35,
-  "Hill orc": 34,
-  "Ogre": 33
+  "Black orc": 158,
+  "Uruk": 78,
+  "Brown yeek": 50,
+  "White wolf": 48,
+  "Novice paladin": 39,
+  "Novice warrior": 34,
+  "Hill orc": 30,
+  "Ogre": 29,
+  "unseen": 184,
+  "unattributed": 66
  },
+ "damage_hp_lost": 859,
  "alerts": {
   "tactic": 35,
   "goal_done": 4,

@@ -20,6 +20,7 @@
   "usd": 0.02,
   "transcript": "agent-a397fb79c62e29e17.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 3,
   "compared": 2,
@@ -103,10 +104,10 @@
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
   "destroyed_est": 0,
-  "loot_abandoned_est": 1170,
+  "loot_abandoned_est": 2330,
   "stolen": 0,
   "destroyed_by_monsters_est": 0,
-  "total": 1170,
+  "total": 2330,
   "sales": 10,
   "sales_valued": 4,
   "worst_sales": [],
@@ -126,6 +127,7 @@
    "an Amulet of Resist Lightning"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 14,
   "commands": 50,
@@ -154,14 +156,17 @@
  },
  "damage_by_monster": {
   "Hummerhorn": 790,
-  "Black orc": 143,
-  "Novice paladin": 39,
+  "Black orc": 107,
+  "Novice paladin": 21,
   "Manes": 19,
   "Griffon": 11,
   "White wolf": 7,
   "Large kobold": 7,
-  "Brigand": 6
+  "Brigand": 6,
+  "unseen": 89,
+  "unattributed": 33
  },
+ "damage_hp_lost": 1091,
  "alerts": {
   "tactic": 22,
   "goal_done": 2,

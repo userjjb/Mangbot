@@ -20,6 +20,7 @@
   "usd": 0.418,
   "transcript": "agent-a06e5b310574f0eb3.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 1,
   "compared": 1,
@@ -97,11 +98,11 @@
  "D": {
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 584,
-  "loot_abandoned_est": 1175,
+  "destroyed_est": 1062,
+  "loot_abandoned_est": 5310,
   "stolen": 0,
   "destroyed_by_monsters_est": 0,
-  "total": 1759,
+  "total": 6372,
   "sales": 15,
   "sales_valued": 4,
   "worst_sales": [],
@@ -125,6 +126,7 @@
    "left a Potion of Speed (~34): pack full and nothing cheaper to make room with"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 11,
   "commands": 19,
@@ -152,15 +154,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Black orc": 223,
-  "Uruk": 71,
-  "Master yeek": 65,
-  "Cave orc": 38,
-  "Hill orc": 35,
-  "Wolf": 32,
-  "Novice mage": 29,
-  "Giant spider": 26
+  "Black orc": 194,
+  "Master yeek": 61,
+  "Uruk": 59,
+  "Cave orc": 40,
+  "Hill orc": 37,
+  "Wolf": 29,
+  "Novice mage": 26,
+  "Giant spider": 26,
+  "unseen": 50,
+  "unattributed": 100
  },
+ "damage_hp_lost": 812,
  "alerts": {
   "tactic": 47,
   "goal_done": 1,

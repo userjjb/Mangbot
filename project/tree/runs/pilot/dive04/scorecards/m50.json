@@ -8,6 +8,7 @@
  "minutes": 37.0,
  "notes": "",
  "tokens": null,
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 1,
   "compared": 0,
@@ -79,11 +80,11 @@
  "D": {
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 235,
-  "loot_abandoned_est": 983,
+  "destroyed_est": 529,
+  "loot_abandoned_est": 4976,
   "stolen": 0,
   "destroyed_by_monsters_est": 0,
-  "total": 1218,
+  "total": 5505,
   "sales": 8,
   "sales_valued": 1,
   "worst_sales": [],
@@ -106,6 +107,7 @@
    "left a Ring of Resist Fire (~100): pack full and nothing cheaper to make room with"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 12,
   "commands": 76,
@@ -133,15 +135,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Black orc": 145,
+  "Black orc": 140,
   "Umber hulk": 84,
   "Clear hound": 42,
   "Earth hound": 41,
   "Warg": 35,
-  "Mirkwood spider": 35,
+  "Mirkwood spider": 32,
   "Wolf": 18,
-  "Forest troll": 16
+  "Forest troll": 16,
+  "unseen": 27,
+  "unattributed": 64
  },
+ "damage_hp_lost": 582,
  "alerts": {
   "tactic": 50,
   "lost": 4,

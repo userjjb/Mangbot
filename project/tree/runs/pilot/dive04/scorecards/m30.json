@@ -20,6 +20,7 @@
   "usd": 0.557,
   "transcript": "agent-a07c6a6b3cb0b879b.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 0,
   "compared": 0,
@@ -95,11 +96,11 @@
  "D": {
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 191,
-  "loot_abandoned_est": 234,
+  "destroyed_est": 236,
+  "loot_abandoned_est": 2734,
   "stolen": 0,
-  "destroyed_by_monsters_est": 73,
-  "total": 498,
+  "destroyed_by_monsters_est": 675,
+  "total": 3645,
   "sales": 3,
   "sales_valued": 0,
   "worst_sales": [],
@@ -117,6 +118,7 @@
   ],
   "irreplaceable": []
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 30,
   "commands": 65,
@@ -144,15 +146,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Fire hound": 63,
-  "Swordsman": 57,
-  "Novice warrior": 56,
-  "Black ogre": 51,
-  "Druid": 51,
-  "Wolf": 47,
+  "Novice warrior": 59,
+  "Swordsman": 58,
+  "Black ogre": 48,
+  "Fire hound": 41,
+  "Wolf": 35,
+  "Yeti": 33,
   "White wolf": 29,
-  "Yeti": 29
+  "Cave orc": 28,
+  "unseen": 161,
+  "unattributed": 5
  },
+ "damage_hp_lost": 658,
  "alerts": {
   "tactic": 31,
   "lost": 9,

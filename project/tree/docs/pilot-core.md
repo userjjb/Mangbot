@@ -211,8 +211,8 @@ Built from client events (`drain`) and polled queries (`refresh`):
   the monster's HP from the rulebook).
 - From messages: gold from sales (`gold_sold`), disenchantment and theft news (`gold_stolen`), kills.
 - `track_gains`: gold found in the dungeon, XP gained, XP and minutes per depth (stored in `rates.json`
-  under `depth`), the per-level XP base, a 15-s gain history (`gain_hist`), and every 15 s `save_mission` and
-  `food_watch`.
+  under `depth`), the per-level XP base, a 15-s gain history (`gain_hist`), and every 15 s `save_mission` (the no-food
+  notice moved to `supply_watch`, D14).
 
 ### Rates (`rate_state`, `rate_tick`, `xp_per_gold`)
 A rolling XP-per-gold exchange rate: every 10 minutes (`RATE_BUCKET_S`) the XP gained and gold earned (found +
@@ -304,7 +304,7 @@ All paths relative to `runs/pilot/<nick lowercase>/` unless noted. "Pilot" = `pi
 |---|---|---|---|
 | `decisions.jsonl` | Pilot `log()` (append, line-buffered) | viewer, scorecard, notes, set-piece harness, unit tests, damage_mix, the Architect/Advisor | one JSON object per line: `t` (wall epoch), `kind`, `depth`, `pos`, `hp` + kind fields. Kinds below |
 | `events.jsonl` | `main()`: every client event except query replies | scorecard, damage_mix, set-piece harness | the client's event JSON + `epoch`; its `t` restarts at 0 with each Pilot process (a `pilot_start` line marks it) |
-| `state.jsonl` | `main()` `log_state`, thinned | scorecard, set-piece harness (replays) | `{"ev": "status"\|"inven"\|"map", "epoch", ...}`: status (y, x, indicators) every 2 s when changed; the pack whenever it changes; the map's changed rows every 10 s |
+| `state.jsonl` | `main()` `log_state`, thinned | scorecard, set-piece harness (replays) | `{"ev": "status"\|"inven"\|"map", "epoch", ...}`: status (y, x, indicators) every 2 s when changed, with `aware` (the kinds the flavour table knows, as `iv` passes them to itemvalue: lower case, no type word) in the first after a start and whenever it changed (D9, 2026-11-01); the pack whenever it changes; the map's changed rows every 10 s |
 | `levels/YYYYMMDD-HHMMSS-<ft>ft.txt` | `save_level_map` when we leave a dungeon level | the Architect/Advisor (checking the structure recogniser, post-mortems) | header `# <ft> ft, <start> - <end>; structures: ...; feeling: ...`, then the remembered map, 66 rows |
 | `orders.json` | `order` command | Pilot at start (merged over `DEFAULT_ORDERS`) | standing orders `{key: value}` (only known keys are kept) |
 | `rates.json` | `rate_tick`, `track_gains` | Pilot (`xp_per_gold`, `prep`) | `{"buckets": [[epoch, xp, gold], ...30], "depth": {ft: [xp, seconds]}}` |
@@ -316,7 +316,7 @@ All paths relative to `runs/pilot/<nick lowercase>/` unless noted. "Pilot" = `pi
 | `keep.json` | `keep` command | item policy | item names the policy must not sell/destroy |
 | `navigator_debt.json` | `add_debt`, fight debts | `debt`, review, reports | `{"entries": [...]}`: gold the Navigator's overrides cost ([pilot-items.md](pilot-items.md)) |
 | `review.json` | item review | review, report ("Review") | items awaiting a sell/keep/wear decision and town-visit count |
-| `stash.json`, `house.json` | stash / HouseBank | the same, `house` | items stored in town ([goals-and-plans.md](goals-and-plans.md)) |
+| `house.json` (`stash.json` retired 2026-11-01, D10) | stash / HouseBank | the same, `house` | items stored in town ([goals-and-plans.md](goals-and-plans.md)) |
 | `stores.json` | `note_store` | town kit routing, prices | each store's owner and prices seen |
 | `deepest.json` | tick (new deepest level) | Pilot | `{"ft": N}` |
 | `uniques_killed.json` | `watch_kills` | gear estimator, hunts | uniques this character has killed |
@@ -339,7 +339,7 @@ Shared, outside the character directory: `runs/pilot/town.json` (the town's `>` 
 |---|---|
 | `act` | a command sent (`cmd`, `why`, `by`) |
 | `goal` | goal set / resumed (`goal`, `by`, `why`) |
-| `attention` | every `notify` (`what`, `detail`, `source`, crop; emergencies add `map21`, `map_at`, `mons`, `shadow`) |
+| `attention` | every `notify` (`what`, `detail`, `source`, crop; emergencies add `map21`, `map_at`, `mons`, `shadow`; `supplies` adds `supply` food\|light and `level` low\|out\|recalling -- D14, 2026-11-01, after 2.43.1: before, the kinds `low_supply` (out of food, light out/low) and `supply` (no food in the pack) with the facts only in `detail`; old logs keep those names) |
 | `note` | free-form Pilot notes (held commands, failures, explanations) |
 | `move` | mover plans and runs |
 | `mons` | monsters in view once a second (+ tracked monster's health bar, what we're hitting) |

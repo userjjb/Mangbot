@@ -20,6 +20,7 @@
   "usd": null,
   "transcript": "agent-abac5bbf9ee66b5bd.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 0,
   "compared": 0,
@@ -93,11 +94,11 @@
  "D": {
   "sale_shortfall": 41,
   "sale_shortfall_forced": 41,
-  "destroyed_est": 32,
+  "destroyed_est": 248,
   "loot_abandoned_est": 0,
   "stolen": 0,
   "destroyed_by_monsters_est": 0,
-  "total": 73,
+  "total": 289,
   "sales": 8,
   "sales_valued": 6,
   "worst_sales": [
@@ -119,6 +120,7 @@
    "3 Potions of Resist Cold"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 65,
   "commands": 141,
@@ -146,15 +148,17 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Snaga": 54,
+  "Snaga": 59,
   "Novice paladin": 28,
   "Lemure": 27,
   "Cave bear": 19,
   "Hippogriff": 17,
   "Cave spider": 14,
   "Black naga": 11,
-  "Skeleton orc": 9
+  "Skeleton orc": 9,
+  "unattributed": 73
  },
+ "damage_hp_lost": 278,
  "alerts": {
   "goal_done": 40,
   "tactic": 12,

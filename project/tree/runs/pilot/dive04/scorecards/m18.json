@@ -20,6 +20,7 @@
   "usd": null,
   "transcript": "agent-ac167d4f31db89dae.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 0,
   "compared": 0,
@@ -96,9 +97,9 @@
   "sale_shortfall_forced": 0,
   "destroyed_est": 13,
   "loot_abandoned_est": 0,
-  "stolen": 164,
+  "stolen": 166,
   "destroyed_by_monsters_est": 6,
-  "total": 251,
+  "total": 253,
   "sales": 11,
   "sales_valued": 10,
   "worst_sales": [
@@ -120,6 +121,7 @@
    "Potion of Speed"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 62,
   "commands": 109,
@@ -148,14 +150,17 @@
  },
  "damage_by_monster": {
   "Nighthawk": 135,
-  "Black orc": 78,
-  "Hill orc": 68,
+  "Black orc": 75,
+  "Hill orc": 71,
   "Pseudo-dragon": 22,
   "Swordsman": 18,
   "Dark elven warrior": 16,
-  "Baby black dragon": 13,
-  "Tengu": 11
+  "Baby black dragon": 12,
+  "Tengu": 11,
+  "unseen": 63,
+  "unattributed": 75
  },
+ "damage_hp_lost": 568,
  "alerts": {
   "goal_done": 35,
   "tactic": 11,

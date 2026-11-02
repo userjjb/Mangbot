@@ -20,6 +20,7 @@
   "usd": 0.014,
   "transcript": "agent-a78c16eb77224b5b8.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 9,
   "compared": 2,
@@ -98,11 +99,11 @@
  "D": {
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 214,
-  "loot_abandoned_est": 2969,
+  "destroyed_est": 266,
+  "loot_abandoned_est": 5683,
   "stolen": 0,
   "destroyed_by_monsters_est": 0,
-  "total": 3183,
+  "total": 5949,
   "sales": 10,
   "sales_valued": 3,
   "worst_sales": [],
@@ -126,6 +127,7 @@
    "a Potion of Resist Cold"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 15,
   "commands": 25,
@@ -153,15 +155,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Forest troll": 118,
-  "Uruk": 107,
-  "Orc shaman": 100,
+  "Forest troll": 134,
   "Giant flea": 95,
-  "Master yeek": 67,
-  "Black orc": 62,
+  "Uruk": 84,
+  "Orc shaman": 72,
   "Dark elven mage": 60,
-  "Half-orc": 47
+  "Half-orc": 45,
+  "Panther": 39,
+  "White wolf": 38,
+  "unseen": 221,
+  "unattributed": 161
  },
+ "damage_hp_lost": 1179,
  "alerts": {
   "tactic": 57,
   "lost": 4,

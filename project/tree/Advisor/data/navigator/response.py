@@ -13,7 +13,7 @@ Metrics (seconds):
           when a command comes before the next report (otherwise the Navigator just waited again: "no-op cycle").
   act     report received -> first ACTION (goal, order, item use, stairs, stop, ...), same condition.
   alert   urgent attention (emergency, danger_*, fight_going_badly, flee_failed, unseen_attacker, stat_drained,
-          low_supply, lost) -> first action after it. Pre-10-09 missions have no nav_cmd: there the action is the next
+          low_supply or, from 2026-11-01 (D14), supplies at level out/recalling, lost) -> first action after it. Pre-10-09 missions have no nav_cmd: there the action is the next
           Navigator-issued goal/act record (like latency.py), a weaker measure.
   burst   after the first command, the time until the Navigator's last command before its next report (its working time).
   reply   user message -> Navigator's say.
@@ -72,7 +72,8 @@ for name, a, b in MISSIONS:
                          (x["kind"] == "act" and str(x.get("why", "")).startswith("agent:")))
     alert = []
     for x in d:
-        if x["kind"] == "attention" and str(x.get("what", "")).startswith(URGENT):
+        if x["kind"] == "attention" and (str(x.get("what", "")).startswith(URGENT) or
+                                         (x.get("what") == "supplies" and x.get("level") in ("out", "recalling"))):
             j = bisect.bisect_right(order_t, x["t"])
             if j < len(order_t) and order_t[j] - x["t"] <= 300:
                 alert.append(order_t[j] - x["t"])

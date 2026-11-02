@@ -20,6 +20,7 @@
   "usd": null,
   "transcript": "agent-ad9dc54325fd045e5.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 0,
   "compared": 0,
@@ -96,11 +97,11 @@
  "D": {
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 97,
+  "destroyed_est": 227,
   "loot_abandoned_est": 0,
-  "stolen": 76,
+  "stolen": 546,
   "destroyed_by_monsters_est": 0,
-  "total": 173,
+  "total": 773,
   "sales": 8,
   "sales_valued": 4,
   "worst_sales": [],
@@ -111,6 +112,7 @@
    "an Amulet of Resist Acid"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 50,
   "commands": 143,
@@ -139,14 +141,16 @@
  },
  "damage_by_monster": {
   "White wolf": 84,
-  "Swordsman": 38,
+  "Swordsman": 32,
   "Nighthawk": 31,
   "Giant spider": 28,
+  "Zombified human": 19,
   "Drider": 17,
   "Hippogriff": 17,
-  "Zombified human": 13,
-  "Brigand": 12
+  "Brigand": 12,
+  "unattributed": 22
  },
+ "damage_hp_lost": 283,
  "alerts": {
   "goal_done": 32,
   "tactic": 9,

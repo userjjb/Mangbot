@@ -54,10 +54,13 @@ amulets with unknown plusses).
 `pseudo` (the feeling), `p_cursed`, and `irreplaceable` = gear or jewellery carrying any of `IRREPLACEABLE_FLAGS`
 (Free Action, See Invisible, the base and poison/blind/conf resists, Hold Life, Speed, Telepathy, Regen).
 
-**What a shop pays** (`pilot.py: SHOP_CUT = 0.38`, `Pilot.pay_cut(tval)`): the value a sale realises is
-`value x pay_cut`. `pay_cut` takes the best buying factor among the shops that buy that tval (`BUYERS`), using the
-owner last seen in each shop (`stores.json`) and the current CHR via `observe/shopmath.py`; for a shop never seen, the
-average of its possible owners. `SHOP_CUT` (38%, Dive04 at CHR 3) is only the fallback when nothing is known.
+**What a shop pays** (`shopmath.SHOP_CUT = 0.38`, `Pilot.pay_cut(tval)`): the value a sale realises is
+`value x pay_cut`. The rule is `observe/shopmath.py: pay_cut(tval, chr, owners_seen)` (D9, 2026-11-01: moved out of
+the Pilot so the scorecard uses the same one; the Pilot keeps its cache and passes the owners from `stores.json` and
+the current CHR): the best buying factor among the shops that buy that tval (`shopmath.BUYERS`, `Pilot.BUYERS` is the
+same table; spellbooks at the Temple and the Magic Shop since D3), using the owner last seen in each shop; for a shop
+never seen, the average of its possible owners. `SHOP_CUT` (38%, Dive04 at CHR 3) is only the fallback when no shop
+buys the tval.
 
 `Pilot.iv(name)` is the wrapper everything uses: it calls `itemvalue.value` with the current depth (or the deepest
 reached, or 750 ft) and the kinds the flavour table already knows.
@@ -70,7 +73,7 @@ by a unit test. The old `kinds.csv` and its fallback were removed in session 10 
 **Pickup** happens in the tick (`pickup` order `all`; anything else turns it off): after a step, a recent
 `You see X` message for the square underfoot is judged, then the Pilot stays (`custom ,`) to pick it up. Skipped:
 
-- known junk (`is_junk_name`): left, and destroyed where it lies at a quiet moment (`destroy_floor_junk`, `k` with the
+- known junk (`is_junk`, below): left, and destroyed where it lies at a quiet moment (`destroy_floor_junk`, `k` with the
   floor index, once per sighting);
 - squares in `skipped_items` (junk left before, items the Navigator dropped);
 - the tavern stash items in town (`is_stash_item`);
@@ -128,12 +131,18 @@ seen on the level map that aren't known junk; within reach the Pilot fetches the
 
 | Mechanism | What | When |
 |---|---|---|
-| `auto_destroy` | pack devices/scrolls/potions identified as a kind on the `junk` order or `JUNK_DEVICES` (Haste Monsters, Clone Monster, Heal Monster); then (only when the `autodestroy` order isn't empty: an empty one turns off only this pass, A16, 2.40.0) pack items whose pseudo-ID feeling is on `autodestroy` | no monsters in view, not in a shop, every 2 s; skips kept items in both passes (A15, 2.39.0) and anything inscribed with `@` (or `!` in the feeling tag) |
+| `auto_destroy` | pack items `is_junk` calls junk (below; refactor-candidates D3, 2026-11-01: before, devices/scrolls/potions of a `junk` order kind or `JUNK_DEVICES`, then the `autodestroy` feelings) | not busy, every 2 s |
 | `destroy_floor_junk` | known junk underfoot | a quiet moment (`quiet_moment`: no mobile monster in view, not hit for 5 s, HP >= think_hp, not fleeing/recalling/recovering, not blind/confused) |
 | make-room destroys | the cheapest pack item | in `pickup_room` (above) |
 
-**`is_junk_name`**: a name containing `of <junk>` for any `junk` order entry; spellbooks for a warrior; `Broken`; a
-feeling on the `autodestroy` list; or a flavour the flavour table marks junk (even if the character isn't aware of it).
+**`is_junk(it)`** (a pack item or a name; D3, 2026-11-01: one rule for pickup, the floor, the pack, the report's Items
+line and the far-item notices; the user's decision: the union of the three old lists). Never junk: a kept item, or one
+inscribed with `@` (or `!` in a tag). Junk: `of <kind>` as a whole word for a `junk` order entry or `JUNK_DEVICES` (Haste
+Monsters, Clone Monster, Heal Monster), or the bare name (Slime Mold); a kind the rulebook marks junk (`junk_kinds`); a
+flavour the flavour table marks junk (even if the character isn't aware of it); `Broken`; a feeling on the
+`autodestroy` order; for a warrior, the spellbooks the town sells (`town_books()`: the rulebook's shop_stock.csv,
+tvals 90/91 at the Magic-User store and the Temple). Books found only in the dungeon are loot (itemvalue values
+them at their kind's cost).
 
 ## 4. Identify and flavour learning
 
@@ -175,11 +184,13 @@ items become `ability_sources`, which are never sold, dropped or destroyed for r
 **`upgrade_step`** (from `policy_tick`; one change per call; off with `order autowear=off`):
 
 1. **Weapon**: `weapon_table` lists every carried weapon's blows (`weapon_blows`, the server's warrior blow table at
-   current STR/DEX) and damage per round (`weapon_damage`: dice average + to-dam, x blows; a brand from
+   current STR/DEX) and damage per round (`weapon_damage`: dice average + to-dam, x blows, read by `geareval.Item` since D6; a brand from
    `weapon_brand` counts half its x3). Wields one doing > 1.2x the current, never cursed, never losing an ability the
    wielded one gives (`weapon_abilities`, from `rulebook/ego_flags.csv`), never replacing an artifact.
-2. **Armour**, slot by slot: higher AC (`armour_ac`), plusses or a non-bad feeling known, not losing the worn piece's
-   abilities, not over an artifact or an ability source.
+2. **Armour**, slot by slot (the code's "step 3"): plusses or a non-bad feeling known, and better AC than worn by
+   `ac_better` (D13, 2026-11-01: the gear evaluator's verdict -- more AC, every ability and resist kept, no >5% EHP
+   loss; a plain AC comparison with the old artifact/ego guards only for what geareval can't read; never over an
+   ability source).
 3. **Jewellery into an empty ring/amulet slot**: identified, value > 0, not junk; the most valuable.
 4. **In town**: better jewellery over a worn piece (same kind with a bigger bonus, or a piece whose abilities other
    gear already gives, `redundant_worn`): takes the old one off; step 3 puts the new one on.

@@ -35,7 +35,7 @@
   "bought": "2026-10-27 18:00"
  },
  "banked": 19327,
- "t": "2026-10-28 19:15",
+ "t": "2026-11-02 14:11",
  "old_houses": [
   {
    "area": 1,
@@ -63,6 +63,12 @@
   }
  ],
  "items": {
-  "60,125": "a Potion of Restore Charisma"
+  "60,126": "a Potion of Restore Charisma"
+ },
+ "tavern": {
+  "entrance": [
+   27,
+   89
+  ]
  }
 }

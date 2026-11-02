@@ -20,6 +20,7 @@
   "usd": 0.22,
   "transcript": "agent-a677536635254f408.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 2,
   "compared": 1,
@@ -98,11 +99,11 @@
  "D": {
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 217,
-  "loot_abandoned_est": 574,
+  "destroyed_est": 304,
+  "loot_abandoned_est": 2027,
   "stolen": 0,
-  "destroyed_by_monsters_est": 239,
-  "total": 1030,
+  "destroyed_by_monsters_est": 366,
+  "total": 2697,
   "sales": 8,
   "sales_valued": 3,
   "worst_sales": [],
@@ -120,6 +121,7 @@
   ],
   "irreplaceable": []
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 13,
   "commands": 32,
@@ -148,14 +150,17 @@
  },
  "damage_by_monster": {
   "Uruk": 147,
-  "Mirkwood spider": 136,
-  "Water hound": 80,
+  "Mirkwood spider": 138,
+  "Water hound": 77,
   "White wolf": 59,
-  "Swordsman": 43,
-  "Baby green dragon": 39,
-  "Baby bronze dragon": 24,
-  "Snaga": 18
+  "Swordsman": 38,
+  "Baby green dragon": 37,
+  "Wood spider": 20,
+  "Snaga": 18,
+  "unseen": 137,
+  "unattributed": 53
  },
+ "damage_hp_lost": 831,
  "alerts": {
   "tactic": 45,
   "lost": 5,

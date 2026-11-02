@@ -15,6 +15,12 @@ Eight groups: A outcome, B efficiency (with a 17-category time budget), C safety
 lost, E Navigator, F Pilot health, G tokens (the Navigator's cost, from tokens.py), H the
 estimator in shadow mode; plus damage taken by monster. Figures that are estimates say so
 (docs/observe.md has every field). Cards are also written to runs/pilot/NICK/scorecards/LABEL.json.
+
+Since 2026-11-01 (2.44.0; the Advisor's memo 2026-11-01-d-merges): damage by monster is logs.damage_rows, the same
+attribution as damage_mix.py (D8), and lost items are valued as the Pilot values them -- itemvalue.value x
+shopmath.pay_cut -- with what it knew at the event (D9): the kinds known (state.jsonl's `aware`; today's
+runs/flavours.json for older logs, said in the card header), the dungeon level, the CHR and the shop owners then.
+Compare value numbers only between cards made with the same code.
 """
 import argparse
 import bisect
@@ -31,6 +37,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import logs  # noqa: E402  (the shared log readers and query-command lists)
 import shopmath  # noqa: E402
+sys.path.insert(0, os.path.join(HERE, "..", "pilot"))
+import itemvalue  # noqa: E402  (the Pilot's item values: read only)
 
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 RUNS = os.path.join(ROOT, "runs")
@@ -42,10 +50,8 @@ ESCALATION = {"emergency", "emergency_loop", "fight_going_badly", "danger_seen",
 CURE_RE = re.compile(r"Cure (Light|Serious|Critical) Wounds|Healing")
 IRREPLACEABLE = re.compile(r"Free Action|See Invisible|of Seeing|Telepathy|Hold Life|of Speed|Resistance|"
                            r"Resist (Fire|Cold|Acid|Lightning|Poison)|Regeneration", re.I)
-HOSTILE = re.compile(r"^(?:The |It )(.+?) (?:hits|bites|claws|stings|touches|kicks|butts|crushes|engulfs|"
-                     r"crawls on|spits on|gazes at|wails at|punches|grabs|breathes|casts|fires|shoots|"
-                     r"releases spores|hurls|begs|insults|drools)")
 URGENT_WOR = re.compile(r"low hp|flee|danger|emergency|monsters close|phasing|group|last resort|potions too")
+DEFS = "2026-11-01 (2.44.0)"     # the damage (D8) and value (D9) definitions' date, in every card's header
 
 
 # --- the game's tables --------------------------------------------------------
@@ -64,51 +70,102 @@ def exp_to_reach(clvl):
     return 0 if clvl <= 1 else PLAYER_EXP[clvl - 2] * EXPFACT // 100
 
 
-TV_WORD = {75: "potion", 70: "scroll", 45: "ring", 40: "amulet", 65: "wand", 55: "staff", 66: "rod", 80: "food"}
+# --- what the Pilot knew then (D9: a card values items as the Pilot did when it decided) -----------
+# the store screens' names -> the Pilot's store numbers (Pilot.STORE_NUM; shopmath.BUYERS uses them)
+STORE_NUM = {"General store": 1, "Armoury": 2, "Weapon Smith": 3, "Temple": 4, "Alchemist": 5, "Magic Shop": 6,
+             "Black Market": 7, "General Store": 1, "Weaponsmith": 3, "Alchemy shop": 5, "Magic-User store": 6,
+             "Black market": 7}
+KIND_WORD = re.compile(r"^(Potion|Scroll|Ring|Amulet|Wand|Staff|Rod) of ")
 
 
-def _kind_costs():
-    """{(type word or '', kind name lower): cost} from object.txt, for valuing lost items
-    when no shop listing exists (an estimate: no ego, no plusses). Keyed by type: Speed
-    is a ring (100000) and a potion (75)."""
-    out, name, tv = {}, None, None
-    for line in open(os.path.join(REPO, "lib", "edit", "object.txt")):
-        line = line.strip()
-        m = re.match(r"N:\d+:(.+)", line)
-        if m:
-            name, tv = re.sub(r"[&~]\s*", "", m.group(1)).strip().lower(), None
-            continue
-        m = re.match(r"I:(\d+):", line)
-        if m:
-            tv = int(m.group(1))
-            continue
-        m = re.match(r"W:\d+:\d+:\d+:(\d+)", line)
-        if m and name:
-            out[(TV_WORD.get(tv, ""), name)] = int(m.group(1))
-            name = None
-    return out
+class Then:
+    """The Pilot's knowledge over time, rebuilt from its logs: CHR (state.jsonl status records' ind stat5), the kinds
+    its flavour table knew (their `aware`, logged since 2026-11-01; before that, today's runs/flavours.json), and
+    the shop owners last seen (the store screens in events.jsonl: what its stores_seen / stores.json held)."""
+    _cache = {}
+
+    @classmethod
+    def of(cls, nick):
+        if nick not in cls._cache:
+            cls._cache[nick] = cls(nick)
+        return cls._cache[nick]
+
+    def __init__(self, nick):
+        self.chr_t, self.chr_v, self.aware_t, self.aware_v = [], [], [], []
+        for d in logs.states(nick, keep=lambda l: l.startswith('{"ev": "status"')):
+            st5 = (d.get("ind") or {}).get("stat5")
+            if st5:
+                self.chr_t.append(d["epoch"])
+                self.chr_v.append(st5[0])
+            if isinstance(d.get("aware"), list):
+                self.aware_t.append(d["epoch"])
+                self.aware_v.append(set(d["aware"]))
+        self.own = collections.defaultdict(lambda: ([], []))
+        for d in logs.events(nick, keep=lambda l: l.startswith('{"ev": "store"')):
+            num = STORE_NUM.get(d.get("name"))
+            if num and d.get("owner"):
+                self.own[num][0].append(d["epoch"])
+                self.own[num][1].append(d["owner"])
+        try:
+            fl = json.load(open(os.path.join(RUNS, "flavours.json")))
+        except (OSError, ValueError):
+            fl = {}
+        # (as Pilot.aware_kinds: the kind names, lower case, without the type word)
+        self.today = {KIND_WORD.sub("", f.get("kind", "")).lower() for f in fl.values()}
+
+    @staticmethod
+    def _at(ts, vs, t):
+        i = bisect.bisect_right(ts, t) - 1
+        return vs[i] if i >= 0 else None
+
+    def chr(self, t):
+        return self._at(self.chr_t, self.chr_v, t)
+
+    def aware(self, t):
+        """(the kinds known at t, True if from the log; else today's list and False)."""
+        a = self._at(self.aware_t, self.aware_v, t)
+        return (a, True) if a is not None else (self.today, False)
+
+    def owners(self, t):
+        return {num: o for num, (ts, os_) in self.own.items() for o in [self._at(ts, os_, t)] if o}
 
 
-KIND_COST = _kind_costs()
+class Valuer:
+    """What a lost item was worth to the Pilot at the event: itemvalue.value(name, level, aware) x shopmath.pay_cut
+    (tval, CHR, owners seen) x the count, as Pilot.iv and its pay cut value items (D9, 2026-11-01). The level is the
+    dungeon level (ft/50) of the last decision record at or before the event; in town the deepest level of the mission
+    so far, else 15 (the Pilot's 750 ft fallback). CHR from the state records, else the mission's last audit."""
 
+    def __init__(self, then, recs, chr_fallback):
+        self.then, self.chr_fallback = then, chr_fallback
+        dr = [(d["t"], d.get("depth") or 0) for d in recs if "depth" in d]
+        self.t = [t for t, _ in dr]
+        deep, self.lv = 0, []
+        for _, dp in dr:
+            deep = max(deep, dp)
+            self.lv.append(dp or deep or 15)
+        self.used_today = self.used_logged = 0
 
-def base_cost(name):
-    """A rough value for an item by name: its kind's cost x the count, or 0. Kind costs are
-    what the item is worth before a shop's cut (a shop pays ~35-43% of it to Dive04)."""
-    raw = name.strip()
-    cnt = re.match(r"(\d+) ", raw)
-    count = int(cnt.group(1)) if cnt else 1
-    n = re.sub(r"\s*[\[{(<].*", "", re.sub(r"^(an?|the|\d+|One of your) ", "", raw)).lower()
-    m = re.match(r"(potion|scroll|wand|staff|rod|ring|amulet)s? of (.+)", n)
-    typ, kind = (m.group(1), m.group(2)) if m else ("", n)
-    for k in (kind, re.sub(r"(es|s)$", "", kind)):
-        if (typ, k) in KIND_COST:
-            return KIND_COST[(typ, k)] * count
-        if not typ:
-            hit = next((v for (t, kk), v in KIND_COST.items() if kk == k), None)
-            if hit is not None:
-                return hit * count
-    return 0
+    def __call__(self, name, t):
+        i = bisect.bisect_right(self.t, t) - 1
+        level = self.lv[i] if i >= 0 else 15
+        aware, logged = self.then.aware(t)
+        if logged:
+            self.used_logged += 1
+        else:
+            self.used_today += 1
+        it = itemvalue.value(name, level, aware)
+        if not it.value:
+            return 0
+        chr_v = self.then.chr(t) or self.chr_fallback
+        return round(it.value * shopmath.pay_cut(it.tval, chr_v, self.then.owners(t)) * max(1, it.count))
+
+    def note(self):
+        """How the kinds known were had, for the card header."""
+        if not self.used_today:
+            return "kinds known as logged" if self.used_logged else "kinds known: nothing to value"
+        return "kinds known: today's runs/flavours.json (no `aware` in the log" + \
+            (f" for {self.used_today} of {self.used_today + self.used_logged} items)" if self.used_logged else ")")
 
 
 # --- loading ----------------------------------------------------------------------
@@ -136,17 +193,6 @@ def p90(v):
     return round(v[min(len(v) - 1, int(0.9 * len(v)))], 1) if v else None
 
 
-SHOP_CUT = 0.38   # a shop pays Dive04 ~34-43% of value at CHR 3 (shopmath); for estimates
-
-
-def est(name):
-    """Fair pay, estimated, for an item that never reached a shop: kind cost x the shop's
-    cut; nothing for junk (cursed, broken, worthless)."""
-    if re.search(r"\{(cursed|broken|worthless|terrible)|\bBroken\b|Rusty|Skeleton|Bone", name):
-        return 0
-    return round(base_cost(name) * SHOP_CUT)
-
-
 def singular(t):
     return re.sub(r"\b(\w+?)(?:es|s)\b", r"\1", t)
 
@@ -169,7 +215,7 @@ def card(m):
     aud = [d for d in recs if d.get("kind") == "audit_check"]
     c = {"label": m["label"], "nav_model": m.get("navigator"), "effort": m.get("effort"), "report": m.get("report"),
          "start": m["start"], "end": m.get("end") or "(running)", "minutes": round((t1 - t0) / 60, 1),
-         "notes": m.get("notes", ""), "tokens": m.get("tokens")}
+         "notes": m.get("notes", ""), "tokens": m.get("tokens"), "defs": DEFS}
     # shadow mode (2026-10-25): the estimator's answers beside the rules' emergency decisions
     est = [d for d in recs if d.get("kind") == "estimator"]
     cmp_ = [d for d in est if d.get("agree") is not None and d.get("trigger") != "hard_fight"]
@@ -273,7 +319,7 @@ def card(m):
               "recalls_landed": sum(1 for _, t in msgs if "yanked" in t)}
 
     # D. value lost
-    c["D"] = value_lost(recs, msgs, stores, aud)
+    c["D"], c["values_aware"] = value_lost(recs, msgs, stores, aud, Then.of(nick))
 
     # E. Navigator
     nc = [d for d in recs if d.get("kind") == "nav_cmd"]
@@ -312,17 +358,15 @@ def card(m):
               "runs_sent": sum(1 for d in moves if d.get("run")),
               "pilot_down_min": round(sum(gaps) / 60, 1), "server_crashes": len(server_crashes(t0, t1))}
 
-    # damage taken, by monster (HP drops shared among the monsters attacking in between)
+    # damage taken, by monster: logs.damage_rows (D8, damage_mix's attribution) summed over the mission; the top 8
+    # named attackers plus `unseen` and `unattributed`, and all the HP lost
     dmg = collections.Counter()
-    hostile = [(e, mm.group(1)) for e, t in msgs for mm in [HOSTILE.match(t)] if mm]
-    hts = [e for e, _ in hostile]
-    for (ta, _, ha, _), (tb, _, hb, _) in zip(hp, hp[1:]):
-        if hb < ha and tb - ta < 10:
-            i, j = bisect.bisect_left(hts, ta - 1), bisect.bisect_right(hts, tb)
-            who = [n for _, n in hostile[i:j]]
-            for n in who:
-                dmg[n] += (ha - hb) / len(who)
-    c["damage_by_monster"] = {k: round(v) for k, v in dmg.most_common(8)}
+    for r in logs.damage_rows(recs, msgs):
+        dmg[r.monster] += r.amount
+    unnamed = ("unseen", "unattributed")
+    c["damage_by_monster"] = {k: round(v) for k, v in [kv for kv in dmg.most_common() if kv[0] not in unnamed][:8]
+                              + [(k, dmg[k]) for k in unnamed if k in dmg]}
+    c["damage_hp_lost"] = round(sum(dmg.values()))
     c["alerts"] = dict(acount.most_common(12))
     c["plan_news"] = dict(plan_news.most_common(12))
     return c
@@ -441,13 +485,14 @@ def time_budget(recs, msgs, t0, t1):
     return out
 
 
-def value_lost(recs, msgs, stores, aud):
-    """Gold-equivalent losses by category (the Advisor's §3). Sales: fair pay = the
-    shop's re-listing x buy/sell adjust (shopmath, exact from the source); other items:
-    their kind's cost from object.txt (an estimate, flagged ~)."""
+def value_lost(recs, msgs, stores, aud, then):
+    """(gold-equivalent losses by category (the Advisor's §3), how the kinds known were had). Sales: fair pay = the
+    shop's re-listing x buy/sell adjust (shopmath, exact from the source); other items: what the Pilot valued them at
+    then (Valuer: itemvalue x pay cut, D9; an estimate, flagged ~)."""
     chr_v = 3
     if aud and aud[-1].get("stats"):
         chr_v = (aud[-1]["stats"].get("CHR") or [3])[0]
+    worth = Valuer(then, recs, chr_v)
     sale_recs = [d for d in recs if d.get("kind") == "sale"]
     forced_t = [d["t"] for d in recs if d.get("kind") == "nav_cmd" and d.get("cmd") == "goal" and
                 (d.get("args") or [None])[0] == "shop" and any("!" in str(a) for a in d.get("args", []))]
@@ -473,15 +518,16 @@ def value_lost(recs, msgs, stores, aud):
                           "forced": any(0 <= e - f <= 60 for f in forced_t)})
     short = [dict(s, shortfall=s["fair"] - s["received"]) for s in sales
              if s["fair"] is not None and s["fair"] > s["received"] + 1]
-    destroyed = [mm.group(1) for _, t in msgs for mm in [re.match(r"You destroy (.+?)\.$", t)] if mm]
-    by_monster = [mm.group(1) for _, t in msgs for mm in [re.match(r"(?:One of your |Your )(.+?) (?:\([a-w]\) )?"
-                                                                   r"was destroyed!", t)] if mm]
+    # (each lost item with its time, to value it as of then)
+    destroyed_t = [(e, mm.group(1)) for e, t in msgs for mm in [re.match(r"You destroy (.+?)\.$", t)] if mm]
+    by_monster_t = [(e, mm.group(1)) for e, t in msgs for mm in [re.match(r"(?:One of your |Your )(.+?) (?:\([a-w]\) )?"
+                                                                          r"was destroyed!", t)] if mm]
     stolen_gold = sum(int(mm.group(1)) for _, t in msgs for mm in [re.match(r"(\d+) coins were stolen", t)] if mm)
-    stolen_items = [mm.group(1) for _, t in msgs for mm in [re.match(r"(?:One of your |Your )(.+?) (?:\([a-w]\) )?"
-                                                                    r"was stolen", t)] if mm]
-    left = [i for d in recs if d.get("kind") == "left_behind" for i in d.get("items", [])]
-    left += [re.sub(r"^left (.+?) \(pack.*", r"\1", str(d.get("detail"))) for d in recs if d.get("kind") == "attention"
-             and d.get("what") == "tactic" and str(d.get("detail", "")).startswith("left ")]
+    stolen_t = [(e, mm.group(1)) for e, t in msgs for mm in [re.match(r"(?:One of your |Your )(.+?) (?:\([a-w]\) )?"
+                                                                      r"was stolen", t)] if mm]
+    left_t = [(d["t"], i) for d in recs if d.get("kind") == "left_behind" for i in d.get("items", [])]
+    left_t += [(d["t"], re.sub(r"^left (.+?) \(pack.*", r"\1", str(d.get("detail")))) for d in recs
+               if d.get("kind") == "attention" and d.get("what") == "tactic" and str(d.get("detail", "")).startswith("left ")]
     # items an interesting_item alert named that never came into the pack (for missions
     # before the left_behind records; the Clerks also used the journal)
     if not any(d.get("kind") == "left_behind" for d in recs):
@@ -490,22 +536,23 @@ def value_lost(recs, msgs, stores, aud):
             if d.get("kind") == "attention" and d.get("what") == "interesting_item":
                 nm = re.sub(r" seen on this level.*", "", str(d.get("detail", "")))
                 if nm and singular(bare(nm)) not in singular(got.lower()):
-                    left.append(nm)
+                    left_t.append((d["t"], nm))
+    destroyed, by_monster, stolen_items, left = ([n for _, n in x] for x in (destroyed_t, by_monster_t, stolen_t, left_t))
     irreplaceable = sorted({n for n in [s["item"] or "" for s in sales] + destroyed + stolen_items + left
                             if IRREPLACEABLE.search(n)})
     v = {"sale_shortfall": sum(s["shortfall"] for s in short),
          "sale_shortfall_forced": sum(s["shortfall"] for s in short if s["forced"]),
-         "destroyed_est": sum(est(n) for n in destroyed),
-         "loot_abandoned_est": sum(est(n) for n in left),
-         "stolen": stolen_gold + sum(est(n) for n in stolen_items),
-         "destroyed_by_monsters_est": sum(est(n) for n in by_monster)}
+         "destroyed_est": sum(worth(n, t) for t, n in destroyed_t),
+         "loot_abandoned_est": sum(worth(n, t) for t, n in left_t),
+         "stolen": stolen_gold + sum(worth(n, t) for t, n in stolen_t),
+         "destroyed_by_monsters_est": sum(worth(n, t) for t, n in by_monster_t)}
     v["total"] = sum(v[k] for k in ("sale_shortfall", "destroyed_est", "loot_abandoned_est", "stolen",
                                     "destroyed_by_monsters_est"))
     v.update({"sales": len(sales), "sales_valued": sum(1 for s in sales if s["fair"] is not None),
               "worst_sales": sorted(({"item": s["item"], "got": s["received"], "fair": s["fair"], "forced": s["forced"]}
                                      for s in short), key=lambda s: s["got"] - s["fair"])[:5],
               "left_behind": left[:10], "irreplaceable": irreplaceable})
-    return v
+    return v, worth.note()
 
 
 def server_crashes(t0, t1):
@@ -532,6 +579,8 @@ def show(c):
     lo = C.get("lowest_hp")
     out = [f"=== {c['label']}  {c['start']} - {c['end'][-5:]}  ({c['minutes']} min)  Navigator {c['nav_model']}"
            + (f" ({c['effort']})" if c.get("effort") else "") + f", {c['report']} report",
+           (f"  (damage D8 and item values D9 as of {c['defs']}; item values with {c.get('values_aware')})"
+            if c.get("defs") else None),
            f"  {c['notes']}" if c["notes"] else None,
            (f"  A outcome    clvl {A['clvl']}, exp +{A['exp_gain']}, gold {A['gold']} ({A['gold_change']:+d}), "
             f"deepest {A['max_depth_ft']} ft, deaths {A['deaths']}") if "clvl" in A else "  A outcome    -",
@@ -545,7 +594,7 @@ def show(c):
             f"{C['teleport']}; cures {C['cures_quaffed']}") if lo else "  C safety     -",
            f"  D value lost {D['total']} (sale shortfall {D['sale_shortfall']}, forced {D['sale_shortfall_forced']}; "
            f"destroyed ~{D['destroyed_est']}; abandoned ~{D['loot_abandoned_est']}; stolen {D['stolen']}; by monsters "
-           f"~{D['destroyed_by_monsters_est']})  [{D['sales_valued']}/{D['sales']} sales valued; ~ = kind cost x shop cut]",
+           f"~{D['destroyed_by_monsters_est']})  [{D['sales_valued']}/{D['sales']} sales valued; ~ = itemvalue x pay cut, as of then]",
            ("               IRREPLACEABLE: " + ", ".join(D["irreplaceable"])) if D["irreplaceable"] else None,
            ("               worst sales: " + "; ".join(f"{s['item']} {s['got']} vs fair {s['fair']}"
                                                      + (" (forced)" if s["forced"] else "") for s in D["worst_sales"][:3]))
@@ -559,7 +608,8 @@ def show(c):
            f"  F pilot      audit {F['audit_diffs']}/{F['audit_checks']}; goal_failed {F['goal_failed']}, stuck "
            f"{F['stuck']}, no-movement {F['stuck_looping_min']} min; runs {F['runs_sent']}; down {F['pilot_down_min']} "
            f"min; server crashes {F['server_crashes']}",
-           "  damage by    " + (", ".join(f"{k} {v}" for k, v in c["damage_by_monster"].items()) or "-"),
+           "  damage by    " + (", ".join(f"{k} {v}" for k, v in c["damage_by_monster"].items()) or "-")
+           + (f" (of {c['damage_hp_lost']} HP lost)" if c.get("damage_hp_lost") else ""),
            (lambda e: f"  H estimator  shadow: {e['n']} estimates ({e['skipped']} skipped while busy), {e['agree']}/"
                       f"{e['compared']} agree with the rules; in time: {e['in_time_turn']} within a turn, "
                       f"{e['before_next_act']} before the next action; slowest {e['compute_max_s']} s"

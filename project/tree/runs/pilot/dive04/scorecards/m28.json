@@ -20,6 +20,7 @@
   "usd": 0.251,
   "transcript": "agent-a727e9f67f81d2ef2.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 0,
   "compared": 0,
@@ -93,10 +94,10 @@
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
   "destroyed_est": 0,
-  "loot_abandoned_est": 1194,
+  "loot_abandoned_est": 4705,
   "stolen": 0,
-  "destroyed_by_monsters_est": 104,
-  "total": 1298,
+  "destroyed_by_monsters_est": 122,
+  "total": 4827,
   "sales": 14,
   "sales_valued": 3,
   "worst_sales": [],
@@ -116,6 +117,7 @@
    "Ring of Resist Fire"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 18,
   "commands": 50,
@@ -143,15 +145,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Black orc": 265,
-  "Snaga": 57,
-  "Uruk": 47,
+  "Black orc": 225,
+  "Snaga": 51,
+  "Orc shaman": 42,
   "Wolf": 38,
-  "Cave orc": 37,
-  "Orc shaman": 36,
-  "Hill orc": 29,
-  "Tiger": 20
+  "Cave orc": 38,
+  "Hill orc": 32,
+  "Uruk": 24,
+  "Tiger": 20,
+  "unseen": 90,
+  "unattributed": 54
  },
+ "damage_hp_lost": 718,
  "alerts": {
   "tactic": 28,
   "goal_done": 5,

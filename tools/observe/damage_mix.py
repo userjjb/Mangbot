@@ -5,7 +5,8 @@ Every HP drop in the decision log (records with "hp" and "depth") at LO-HI ft is
 that moment (events.jsonl, the wall clock): melee blows by the monster's blows (its share of HURT blows -> "hurt",
 which AC reduces twice -- hit chance and wounds, melee1.c --, the rest -> "melee_other": hit chance only), breaths,
 bolts, balls and traps by element (a resist cuts them), arrows and magic missiles -> "other". A drop with no attack
-message (poison, a cut, an unseen spell) is "other" too.
+message (poison, a cut, an unseen spell) is "other" too. The attribution is logs.damage (D8, 2026-11-01, 2.44.0: one
+definition with the scorecard's damage_by_monster, which sums the same rows by monster).
 
     python3 damage_mix.py [--nick dive04] [--mission LABEL] [--lo 700] [--hi 800] [--days 4] [--out FILE]
 
@@ -20,42 +21,12 @@ import argparse
 import json
 import math
 import os
-import re
 import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "..", "pilot"))
-import glyphs                      # noqa: E402
 sys.path.insert(0, HERE)
-import logs                        # noqa: E402
-
-MELEE = re.compile(r"^(?:The (.+?)|It|Something) (hits|bites|claws|stings|touches|kicks|butts|crushes|engulfs|"
-                   r"crawls on|spits on|gazes at|wails at|punches|grabs|drools on|releases spores|begs|insults|"
-                   r"moans) you")
-ELEMENTS = (("fire", r"fire|flames|burn"), ("cold", r"frost|cold|ice"), ("acid", r"acid"),
-            ("elec", r"lightning|elec"), ("pois", r"poison|gas|stinking cloud"), ("lite", r"breathes light"),
-            ("dark", r"darkness|breathes dark"), ("shard", r"shards"), ("nexus", r"nexus"), ("sound", r"sound"),
-            ("nether", r"nether"), ("chaos", r"chaos"), ("disen", r"disenchant"))
-RANGED = re.compile(r"^(?:(?:The .+?|It|Something) (breathes|casts|fires|hurls|spits)|You are hit by|"
-                    r"You are enveloped|You are blasted|You are struck)")
-
-
-def classify(text):
-    """('hurt'|'melee', monster name or None) for a blow; (element|'other', None) for the rest; None if not an
-    attack on us."""
-    m = MELEE.match(text)
-    if m:
-        return "melee", m.group(1)
-    if RANGED.match(text):
-        if "fearful illusion" in text or "burning your eyes" in text or "confus" in text or "scare" in text:
-            return None                     # (no damage: status spells)
-        for el, pat in ELEMENTS:
-            if re.search(pat, text):
-                return el, None
-        return "other", None
-    return None
-
+import logs                        # noqa: E402  (the shared readers and the damage attribution, D8)
 
 def mission_band(nick, label, min_share=0.10):
     """(lo, hi, played) ft: the 100 ft band of the dungeon depths mission LABEL spent at least MIN_SHARE of its
@@ -98,53 +69,20 @@ def main():
     a.lo = a.lo if a.lo is not None else band[0] if band else 700
     a.hi = a.hi if a.hi is not None else band[1] if band else 800
     since = time.time() - a.days * 86400
-    races = {r.name.lower(): r for r in glyphs.load_rulebook(glyphs.load_races()).values()}
 
-    # HP drops at the depth range: (t0, t1, amount)
-    drops, last = [], None
-    for r in logs.decisions(a.nick, since, keep=lambda l: '"hp": [' in l and '"depth": ' in l):
-        if not r.get("hp"):
-            continue
-        cur = (r["t"], r["hp"][0], r["hp"][1], r.get("depth") or 0)
-        if last and cur[2] == last[2] and cur[1] < last[1] and a.lo <= cur[3] * 50 <= a.hi and cur[0] - last[0] < 5:
-            drops.append((last[0], cur[0], last[1] - cur[1]))
-        last = cur
-
-    # attack messages in the same period
-    msgs = []
-    for e in logs.events(a.nick, since, keep=lambda l: '"message"' in l[:30] and (
-            "you" in l or "You" in l or "breathes" in l or "casts" in l or "fires" in l)):
-        c = classify(e.get("text", ""))
-        if c:
-            msgs.append((e["epoch"], c))
-    msgs.sort()
-
-    import bisect
-    times = [t for t, _ in msgs]
-    mix, lv_w, lv_sum, total = {}, 0.0, 0.0, 0.0
-    for t0, t1, amt in drops:
-        i, j = bisect.bisect_left(times, t0 - 0.6), bisect.bisect_right(times, t1 + 0.2)
-        here = [c for _, c in msgs[i:j]]
-        total += amt
-        if not here:
-            mix["other"] = mix.get("other", 0) + amt
-            continue
-        share = amt / len(here)
-        for kind, name in here:
-            if kind == "melee":
-                r = races.get((name or "").lower())
-                blows = [b.split(":") for b in (r.blows if r else [])]
-                hurt = sum(1 for b in blows if len(b) > 1 and b[1] in ("HURT", "SHATTER")) / len(blows) \
-                    if blows else 0.7
-                mix["hurt"] = mix.get("hurt", 0) + share * hurt
-                mix["melee_other"] = mix.get("melee_other", 0) + share * (1 - hurt)
-                if r:
-                    lv_w += share
-                    lv_sum += share * r.level
-            else:
-                mix[kind] = mix.get(kind, 0) + share
+    # the HP drops at the depth range, attributed (logs.damage: one row per drop and attack message)
+    rows = [r for r in logs.damage(a.nick, since) if a.lo <= r.depth * 50 <= a.hi]
+    races = logs._races()
+    mix, lv_w, lv_sum = {}, 0.0, 0.0
+    for r in rows:
+        mix[r.category] = mix.get(r.category, 0) + r.amount
+        if r.category in ("hurt", "melee_other") and r.monster.lower() in races:
+            lv_w += r.amount
+            lv_sum += r.amount * races[r.monster.lower()].level
+    total = sum(mix.values())
+    drops = len({r.drop for r in rows})
     out = {"mix": {k: round(v / total, 4) for k, v in sorted(mix.items(), key=lambda kv: -kv[1])} if total else {},
-           "melee_level": round(lv_sum / lv_w, 1) if lv_w else None, "hp_lost": round(total), "drops": len(drops),
+           "melee_level": round(lv_sum / lv_w, 1) if lv_w else None, "hp_lost": round(total), "drops": drops,
            "range": [a.lo, a.hi], "since": time.strftime("%Y-%m-%d %H:%M", time.localtime(since)),
            "made": time.strftime("%Y-%m-%d %H:%M")}
     json.dump(out, open(a.out or os.path.join(rundir, "damage_mix.json"), "w"), indent=1)

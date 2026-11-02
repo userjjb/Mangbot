@@ -22,7 +22,7 @@ The handoff between Architect sessions: the current state, what the next session
 ### >>> WHICH HANDOFF IS YOURS? <<<
 - **Session 10 is done** (2026-10-29: the Documentation in `docs/`, the cleanup list `docs/refactor-candidates.md`,
   bug fixes A1-A3/A6/A8-A11; continued that afternoon: A4/A5/A7/A12-A14, group C, B4, `CHANGELOG.md` and versions:
-  2.37.0, 2.37.1, 2.38.0, 2.39.0 (A15/A18/A20/A23/A24), 2.40.0 (A16/A17/A19/A21/A22), 2.41.0 (rations and oil by need), 2.42.0 (mushrooms by expected value), 2.43.0 (F1-F4), then 2.43.1 (B9-B18): review follow-ups, B1-B3/B5-B8, every docs/ file verified against the code; Part B
+  2.37.0, 2.37.1, 2.38.0, 2.39.0 (A15/A18/A20/A23/A24), 2.40.0 (A16/A17/A19/A21/A22), 2.41.0 (rations and oil by need), 2.42.0 (mushrooms by expected value), 2.43.0 (F1-F4), 2.43.1 (B9-B18), then 2.44.0 (group D): review follow-ups, B1-B3/B5-B8, every docs/ file verified against the code; Part B
   has it all). If the user asks for more cleanup from that list, HANDOFF 10 below has the rules.
 - **Session 11** (missions and implementation resume): read **"HANDOFF TO ARCHITECT 11"** below -- **Part B first**
   (by session 10), then Part A (by session 9).
@@ -239,7 +239,18 @@ approval:
   now a pointer, one home for the mission checklist (docs/process.md §3), and the Advisor's rulebook fixes synced
   (fight_sim reads the synced monsters_raw.csv).
 
-**Still open, waiting on the user:** groups **D** and **E**. (A: only A25, waiting for the test server.) **A25** (set-pieces A2I/A2L, FAIL on a stale criterion: the Pilot fought and won
+- **2.44.0 (11-01/02):** group D. Pure merges (D1 light parser, D2 name helpers, D4 find_item/phase_item, D5, D7
+  observe/logs.py, D11, D12 report formatters, D15, D16 inbox drift warning) and, by the user's choices: D3 one
+  `is_junk` (the union; for a warrior only the **town** spellbooks are junk, dungeon books are loot), D10 house.json the
+  stash's only record (stash.json retired), D13 the gear evaluator decides "better AC"; with the Advisor's
+  definitions: D8 one damage attribution, D9 card values as the Pilot knew them (`aware` in state.jsonl,
+  `shopmath.pay_cut`), D14 one `supplies` notice with `supply`/`level` fields. 138 unit cases.
+  **Incident 11-01:** a `plan town` test under a snapshot restore lost the banked gold and the stash (the restore
+  covers the character, not the world); recovered (DM drop, Dive04 picked it up, deposited) -- docs/harness-rulebook-ops.md
+  Gotchas. **The town visit on 2.44.0 is untested live**: the first `plan town` of session 11 is its test; watch the
+  stash and junk steps.
+
+**Still open, waiting on the user:** group **E**. (A: only A25, waiting for the test server.) **A25** (set-pieces A2I/A2L, FAIL on a stale criterion: the Pilot fought and won
 correctly; the scenarios need a unique above clvl 29) **waits until we have implemented the test server** (the
 user). C8: only the Pilot's dead-character whitelist changed; the scorecard/viewer query
 lists wait for D7. From the Advisor (29o): an optional `p["noise"]` in estimator snapshots (0 while the Pilot stands
@@ -255,6 +266,6 @@ directly), then one merging the candidates; bug fixes went to agents on disjoint
 Reuse that for big reading jobs. And: before continuing a session in a new job, `claude --resume` it -- a fresh chat
 lacks the context (how the parallel chat happened).
 
-**State now (10-31):** version **2.43.1**. Running in SGE job 8327794 (scc-va4, ends Tue
-11-03 08:47): the test server (gdb, freeze-enabled), Dive04's Pilot (2.43.1), the viewer (`tmux -L mang attach -t
-watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wilderness house. 131 unit cases pass.
+**State now (11-02):** version **2.44.0**. Running in SGE job 8327794 (scc-va4, ends Tue
+11-03 08:47): the test server (gdb, freeze-enabled), Dive04's Pilot (2.44.0), the viewer (`tmux -L mang attach -t
+watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wilderness house. 138 unit cases pass.

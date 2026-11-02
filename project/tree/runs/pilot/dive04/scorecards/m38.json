@@ -20,6 +20,7 @@
   "usd": 0.227,
   "transcript": "agent-a8501246231621039.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 4,
   "compared": 4,
@@ -99,11 +100,11 @@
  "D": {
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 262,
-  "loot_abandoned_est": 1491,
+  "destroyed_est": 653,
+  "loot_abandoned_est": 4107,
   "stolen": 0,
-  "destroyed_by_monsters_est": 139,
-  "total": 1892,
+  "destroyed_by_monsters_est": 249,
+  "total": 5009,
   "sales": 11,
   "sales_valued": 2,
   "worst_sales": [],
@@ -124,6 +125,7 @@
    "a Ring of Resist Cold"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 13,
   "commands": 20,
@@ -152,14 +154,17 @@
  },
  "damage_by_monster": {
   "Giant black louse": 241,
-  "Black orc": 111,
-  "White wolf": 86,
+  "Black orc": 103,
   "Black ogre": 85,
-  "Novice paladin": 67,
-  "Energy hound": 67,
-  "Hill orc": 58,
-  "Orc shaman": 53
+  "White wolf": 80,
+  "Energy hound": 62,
+  "Orc shaman": 59,
+  "Hill orc": 51,
+  "Tiger": 45,
+  "unseen": 214,
+  "unattributed": 168
  },
+ "damage_hp_lost": 1520,
  "alerts": {
   "tactic": 50,
   "lost": 3,

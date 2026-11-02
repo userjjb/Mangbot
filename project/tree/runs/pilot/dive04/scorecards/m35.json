@@ -20,6 +20,7 @@
   "usd": 0.17,
   "transcript": "agent-af7253a80cadc36b5.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 1,
   "compared": 1,
@@ -92,10 +93,10 @@
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
   "destroyed_est": 0,
-  "loot_abandoned_est": 784,
+  "loot_abandoned_est": 2455,
   "stolen": 0,
   "destroyed_by_monsters_est": 0,
-  "total": 784,
+  "total": 2455,
   "sales": 9,
   "sales_valued": 4,
   "worst_sales": [],
@@ -113,6 +114,7 @@
   ],
   "irreplaceable": []
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 13,
   "commands": 14,
@@ -140,15 +142,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Baby bronze dragon": 336,
-  "Black orc": 182,
-  "Baby green dragon": 54,
+  "Baby bronze dragon": 284,
+  "Black orc": 166,
+  "Baby green dragon": 56,
+  "Clear hound": 53,
   "Ogre": 52,
-  "Clear hound": 51,
   "Tiger": 44,
   "Orc shaman": 43,
-  "Priest": 29
+  "Priest": 27,
+  "unseen": 209,
+  "unattributed": 150
  },
+ "damage_hp_lost": 1228,
  "alerts": {
   "tactic": 25,
   "goal_done": 2,

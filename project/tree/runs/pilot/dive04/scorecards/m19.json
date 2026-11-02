@@ -20,6 +20,7 @@
   "usd": null,
   "transcript": "agent-ae774eb0e5857700c.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 0,
   "compared": 0,
@@ -95,11 +96,11 @@
  "D": {
   "sale_shortfall": 93,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 33,
-  "loot_abandoned_est": 95,
+  "destroyed_est": 29,
+  "loot_abandoned_est": 118,
   "stolen": 6,
-  "destroyed_by_monsters_est": 13,
-  "total": 240,
+  "destroyed_by_monsters_est": 14,
+  "total": 260,
   "sales": 7,
   "sales_valued": 6,
   "worst_sales": [
@@ -121,6 +122,7 @@
   ],
   "irreplaceable": []
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 60,
   "commands": 115,
@@ -149,14 +151,17 @@
  },
  "damage_by_monster": {
   "Ranger": 151,
-  "White wolf": 92,
-  "Tengu": 33,
+  "White wolf": 89,
+  "Tengu": 32,
   "Manes": 29,
   "Hill orc": 24,
   "Kobold archer": 14,
   "Snaga": 14,
-  "Black harpy": 12
+  "Black harpy": 12,
+  "unseen": 61,
+  "unattributed": 9
  },
+ "damage_hp_lost": 487,
  "alerts": {
   "goal_done": 32,
   "tactic": 9,

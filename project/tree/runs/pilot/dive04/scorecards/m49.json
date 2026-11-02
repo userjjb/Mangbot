@@ -8,6 +8,7 @@
  "minutes": 37.0,
  "notes": "",
  "tokens": null,
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 11,
   "compared": 8,
@@ -117,10 +118,10 @@
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
   "destroyed_est": 0,
-  "loot_abandoned_est": 1011,
+  "loot_abandoned_est": 1977,
   "stolen": 0,
   "destroyed_by_monsters_est": 0,
-  "total": 1011,
+  "total": 1977,
   "sales": 11,
   "sales_valued": 1,
   "worst_sales": [],
@@ -140,6 +141,7 @@
    "a Ring of Resist Fire"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 15,
   "commands": 95,
@@ -167,15 +169,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Warg": 192,
+  "Warg": 189,
   "3-headed hydra": 112,
-  "Black ogre": 97,
-  "Mirkwood spider": 56,
-  "Umber hulk": 48,
-  "Light hound": 32,
-  "Uruk": 27,
-  "Ogre": 23
+  "Black ogre": 96,
+  "Mirkwood spider": 53,
+  "Umber hulk": 47,
+  "Uruk": 33,
+  "Ogre": 23,
+  "Light hound": 21,
+  "unseen": 69,
+  "unattributed": 73
  },
+ "damage_hp_lost": 841,
  "alerts": {
   "tactic": 29,
   "user_message": 6,

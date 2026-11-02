@@ -13,6 +13,8 @@ import sys
 import threading
 import time
 
+import geareval
+
 ADVISOR = "/projectnb/jbrcs/mangband/Advisor/data/estimator"
 N = 40              # rollouts per option (the Advisor: median 0.39 s, max 1.3 s on the 21 replayed episodes)
 MAX_ADJ = 3         # calibrated (calib_adj.py): ~2 attackers at once in real fights, max 3
@@ -79,9 +81,9 @@ class Shadow:
 
 
 def weapon_profile(name, blows):
-    """dice, to-hit, to-dam from 'a Scimitar of Westernesse (2d5) (+9,+8) (+1)': the weapon's own plusses (the
-    Pilot's snapshot replaces to-hit and to-dam with the totals from geareval's model; this is the fallback)."""
-    d = re.search(r"\((\d+d\d+)\)", name or "")
-    m = re.search(r"\(([+-]\d+),([+-]\d+)\)", name or "")
-    return {"dice": d.group(1) if d else "1d4", "tohit": int(m.group(1)) if m else 0,
-            "todam": int(m.group(2)) if m else 0, "blows": max(1, blows or 1)}
+    """dice, to-hit, to-dam from 'a Scimitar of Westernesse (2d5) (+9,+8) (+1)': the weapon's own plusses, read by
+    geareval.Item (refactor-candidates D6; the Pilot's snapshot replaces to-hit and to-dam with the totals from
+    geareval's model; this is the fallback). No weapon: 1d4."""
+    it = geareval.Item(name) if name else None
+    dice = it.dice if it and it.dice != "0d0" else "1d4"
+    return {"dice": dice, "tohit": it.to_h if it else 0, "todam": it.to_d if it else 0, "blows": max(1, blows or 1)}

@@ -20,6 +20,7 @@
   "usd": 0.425,
   "transcript": "agent-aadb292f432e4b259.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 0,
   "compared": 0,
@@ -92,10 +93,10 @@
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
   "destroyed_est": 0,
-  "loot_abandoned_est": 501,
+  "loot_abandoned_est": 5353,
   "stolen": 0,
   "destroyed_by_monsters_est": 0,
-  "total": 501,
+  "total": 5353,
   "sales": 10,
   "sales_valued": 2,
   "worst_sales": [],
@@ -115,6 +116,7 @@
    "Soft Leather Armour of Resist Fire [4,+4]"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 9,
   "commands": 25,
@@ -145,12 +147,15 @@
   "Uruk": 157,
   "Black orc": 130,
   "Hill orc": 38,
-  "Dark elven priest": 26,
+  "Dark elven priest": 21,
   "Snaga": 20,
   "Orc shaman": 20,
   "Novice rogue": 18,
-  "Kobold archer": 17
+  "Kobold archer": 17,
+  "unseen": 102,
+  "unattributed": 3
  },
+ "damage_hp_lost": 565,
  "alerts": {
   "tactic": 11,
   "blows_changed": 3,

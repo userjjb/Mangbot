@@ -20,6 +20,7 @@
   "usd": null,
   "transcript": "agent-a76b0043524b24a90.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 0,
   "compared": 0,
@@ -94,11 +95,11 @@
  "D": {
   "sale_shortfall": 75,
   "sale_shortfall_forced": 75,
-  "destroyed_est": 451,
-  "loot_abandoned_est": 608,
+  "destroyed_est": 1590,
+  "loot_abandoned_est": 2232,
   "stolen": 0,
-  "destroyed_by_monsters_est": 38,
-  "total": 1172,
+  "destroyed_by_monsters_est": 41,
+  "total": 3938,
   "sales": 1,
   "sales_valued": 1,
   "worst_sales": [
@@ -124,6 +125,7 @@
    "Ring of Resist Fire"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 90,
   "commands": 143,
@@ -151,15 +153,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Hill orc": 304,
-  "White wolf": 217,
-  "Brown yeek": 192,
-  "Uruk": 176,
-  "Black orc": 175,
-  "Kobold archer": 143,
-  "Novice paladin": 110,
-  "Manes": 73
+  "Hill orc": 312,
+  "White wolf": 235,
+  "Brown yeek": 195,
+  "Uruk": 177,
+  "Black orc": 158,
+  "Kobold archer": 122,
+  "Manes": 73,
+  "Novice paladin": 66,
+  "unseen": 119,
+  "unattributed": 72
  },
+ "damage_hp_lost": 1867,
  "alerts": {
   "emergency": 49,
   "tactic": 33,

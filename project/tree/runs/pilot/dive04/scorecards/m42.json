@@ -20,6 +20,7 @@
   "usd": 0.242,
   "transcript": "agent-a3a229accb54f52e1.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 7,
   "compared": 7,
@@ -109,11 +110,11 @@
  "D": {
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 72,
-  "loot_abandoned_est": 2145,
+  "destroyed_est": 88,
+  "loot_abandoned_est": 5398,
   "stolen": 0,
   "destroyed_by_monsters_est": 0,
-  "total": 2217,
+  "total": 5486,
   "sales": 19,
   "sales_valued": 7,
   "worst_sales": [],
@@ -137,6 +138,7 @@
    "left a Ring of Resist Cold (~112): pack full and nothing cheaper to make room with"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 14,
   "commands": 28,
@@ -164,15 +166,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Priest": 113,
   "Ogre": 89,
-  "Umber hulk": 56,
-  "Master yeek": 56,
+  "Killer brown beetle": 60,
+  "Umber hulk": 51,
+  "Priest": 50,
   "Hill orc": 41,
-  "Panther": 36,
-  "Dark elven mage": 35,
-  "Griffon": 35
+  "Lemure": 41,
+  "Panther": 38,
+  "Master yeek": 38,
+  "unseen": 85,
+  "unattributed": 450
  },
+ "damage_hp_lost": 1245,
  "alerts": {
   "tactic": 61,
   "lost": 5,

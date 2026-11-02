@@ -200,38 +200,38 @@ none is fixed. **[N]** = Navigator-facing.
 - **D1** Light fuel parsed ~10 times (`with (\d+) turns`): `Pilot.light_left`, nested `light_left` in `wear_step`
   (counts a no-turns lantern as 0, the static one as 1), `keep_light`'s `left()`, TownFarm, `supply_gate`, `lantern_fuel`,
   `supply_lines`, `world.light_fuel`; Recall and TownFarm wear a light by hand. -- S/S -- **do** (one helper in
-  world.py + `wear_light`; pick 0 or 1: tiny *behaviour*).
+  world.py + `wear_light`; pick 0 or 1: tiny *behaviour*). **done (session 10, 2.44.0)**
 - **D2** Name normalising `re.sub(r"^(an?|\d+) ", "", re.sub(r"\s*\{[^}]*\}", "", n))` 12-15 times;
-  `{cursed|worthless|broken|terrible}` regex 8 times. -- S/S -- **do** (`kind_key_of` + one `bad_inscription()`).
+  `{cursed|worthless|broken|terrible}` regex 8 times. -- S/S -- **do** (`kind_key_of` + one `bad_inscription()`). **done (session 10, 2.44.0)**
 - **D3** Junk rules in three places (`is_junk_name`, `auto_destroy` + `JUNK_DEVICES`, the tick's `known_junk`) with
-  different lists and tval limits. -- M/M -- **ask** (one `is_junk(it)`; changes what gets destroyed: *behaviour*).
+  different lists and tval limits. -- M/M -- **ask** (one `is_junk(it)`; changes what gets destroyed: *behaviour*). **done (session 10, 2.44.0)**
 - **D4** Phase Door lookup 7x (some honour `@r1`, the fear phases don't), WoR 6x, potions by name. -- S/S -- **do**
-  (`find_item`, `phase_item()` always honouring `@r1`: small *behaviour*).
+  (`find_item`, `phase_item()` always honouring `@r1`: small *behaviour*). **done (session 10, 2.44.0)**
 - **D5** Consumables dict built twice (`shadow_decision`, `gear_character`: same `n(word, tv)`, staff regex). -- S/S --
-  **do** (`consumables_inv()`).
+  **do** (`consumables_inv()`). **done (session 10, 2.44.0)**
 - **D6** Weapon (dice, +h,+d) parsing 5x (`shadow.weapon_profile`, `fight_sim`, `fight_estimate`, a top-level helper,
-  `geareval.Item`). -- M/M -- **do** after A3 (use `geareval.Item`; hunt checks depend on it).
+  `geareval.Item`). -- M/M -- **do** after A3 (use `geareval.Item`; hunt checks depend on it). **done (session 10, 2.44.0)**
 - **D7** Log loaders: `load()` in scorecard and latency, decision scans in notes.py and damage_mix.py; three disagreeing
   "query command" lists (scorecard `QUERY_CMDS`, latency `NOT_ORDERS`, watch `NAV_QUERIES`). -- M/M -- **do**
-  (`observe/logs.py` + one list exported by pilot; scorecard equality checked with `--check`).
+  (`observe/logs.py` + one list exported by pilot; scorecard equality checked with `--check`). **done (session 10, 2.44.0)**
 - **D8** Two damage attributions (scorecard `damage_by_monster` vs damage_mix's regexes/windows). -- M/M -- **ask**
-  (Advisor's metric definitions).
+  (Advisor's metric definitions). **done (session 10, 2.44.0)**
 - **D9** `SHOP_CUT = 0.38` in scorecard.py and pilot.py; scorecard's own `est()` + junk regex instead of
   `itemvalue.value` and owner-aware `pay_cut`, so its value estimates diverge from the Pilot's. -- M/S -- **ask** (changes
-  scorecard numbers: Advisor).
+  scorecard numbers: Advisor). **done (session 10, 2.44.0)**
 - **D10** Stash recorded twice (`stash.json` items and `house.json` items; stash.json also keeps tavern squares,
-  free-text `where`/`lost`); the tavern path is now a no-house fallback. -- M/M -- **ask** (house.json the source of truth).
+  free-text `where`/`lost`); the tavern path is now a no-house fallback. -- M/M -- **ask** (house.json the source of truth). **done (session 10, 2.44.0)**
 - **D11** Three tval->slot tables (`ARMOUR_SLOTS`, `WEAR_TVALS`, `geareval.SLOT_OF_TVAL`), two `FLAVOURED`; `pickup_room`
-  uses `23` though `PACK_SLOTS` exists. -- S/S -- **do**.
+  uses `23` though `PACK_SLOTS` exists. -- S/S -- **do**. **done (session 10, 2.44.0)**
 - **D12** `compact()` and `report()` duplicate monster/structure/weapon/"since" formatting (both reset `self.since`). --
-  S/S -- **do** (shared formatters; report text unchanged).
+  S/S -- **do** (shared formatters; report text unchanged). **done (session 10, 2.44.0)**
 - **D13** Three static AC "better than worn" checks (`gear_line`, `gear_review`, `upgrade_step` step 3) with different
-  guards. -- M/M -- **ask**.
+  guards. -- M/M -- **ask**. **done (session 10, 2.44.0)**
 - **D14** Supply notice kinds `low_supply` / `supply` / `supplies`; `food_watch` overlaps `supply_watch`. -- S/S --
-  **ask** (event kinds are a log format: Advisor + viewer + HANDBOOK).
-- **D15** `goal recall`'s supply gate recomputes `planned_depth()` inline. -- S/S -- **do**.
+  **ask** (event kinds are a log format: Advisor + viewer + HANDBOOK). **done (session 10, 2.44.0)**
+- **D15** `goal recall`'s supply gate recomputes `planned_depth()` inline. -- S/S -- **do**. **done (session 10, 2.44.0)**
 - **D16** `inbox.sh` copied in `.claude/hooks/` and `Advisor/.claude/hooks/` with no check. -- S/S -- **do** (snapshot.sh
-  warns on drift; never edit the Advisor's copy).
+  warns on drift; never edit the Advisor's copy). **done (session 10, 2.44.0)**
 
 ## E. Splits and structure
 

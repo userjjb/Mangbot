@@ -8,6 +8,7 @@
  "minutes": 15.0,
  "notes": "",
  "tokens": null,
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 0,
   "compared": 0,
@@ -79,10 +80,10 @@
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
   "destroyed_est": 0,
-  "loot_abandoned_est": 312,
+  "loot_abandoned_est": 677,
   "stolen": 0,
-  "destroyed_by_monsters_est": 53,
-  "total": 365,
+  "destroyed_by_monsters_est": 64,
+  "total": 741,
   "sales": 7,
   "sales_valued": 2,
   "worst_sales": [],
@@ -100,6 +101,7 @@
   ],
   "irreplaceable": []
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 5,
   "commands": 29,
@@ -134,8 +136,11 @@
   "Novice ranger": 9,
   "Tiger": 9,
   "Giant black louse": 8,
-  "Giant grey rat": 7
+  "Dark elven priest": 7,
+  "unseen": 10,
+  "unattributed": 9
  },
+ "damage_hp_lost": 147,
  "alerts": {
   "tactic": 6,
   "rule": 3,

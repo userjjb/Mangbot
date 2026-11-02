@@ -20,6 +20,7 @@
   "usd": null,
   "transcript": "agent-a523187248aaba9d9.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 0,
   "compared": 0,
@@ -96,10 +97,10 @@
   "sale_shortfall": 8,
   "sale_shortfall_forced": 0,
   "destroyed_est": 0,
-  "loot_abandoned_est": 95,
+  "loot_abandoned_est": 878,
   "stolen": 166,
   "destroyed_by_monsters_est": 0,
-  "total": 269,
+  "total": 1052,
   "sales": 8,
   "sales_valued": 7,
   "worst_sales": [
@@ -117,6 +118,7 @@
   ],
   "irreplaceable": []
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 55,
   "commands": 87,
@@ -144,15 +146,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Black orc": 184,
-  "Wolf": 30,
+  "Black orc": 178,
   "Dark elven priest": 19,
   "Dark elven warrior": 19,
+  "Wolf": 17,
   "Squint-eyed rogue": 12,
   "Silver mouse": 6,
   "Tengu": 4,
-  "Scruffy looking hobbit": 4
+  "Scruffy looking hobbit": 4,
+  "unseen": 54,
+  "unattributed": 36
  },
+ "damage_hp_lost": 357,
  "alerts": {
   "goal_done": 26,
   "tactic": 14,

@@ -1,0 +1,18 @@
+STR 18/70 INT 5 WIS 8↓ DEX 18/20 CON 18/20 CHR 4 · Fed · Battle Axe of Westernesse 2 blows ~36
+== plan town:
+{"ok": true, "goal": "plan town"}
+NOTE: will buy (by the prices last seen): nothing (selling first may change this)
+== after 43 s: no plan
+Dive04 L29 HP 358/358 · -50 ft · 19627g · max 800ft · 13:46:19 · goal: plan town · r2
+STR 18/70 INT 5 WIS 8↓ DEX 18/20 CON 18/20 CHR 4 · Fed · Battle Axe of Westernesse 2 blows ~36
+Cures CSW 4 · CCW 18 | Escapes Phase 15 · WoR 2 · Tele 1 | Food 6 | Light 9730
+house: door 60,129, bought 2026-10-27 18:00 for 5455; 0 gold banked (as of 2026-10-28 19:15); 19627 carried; stash: a Potion of Restore Charisma
+1490 attention tactic plan town: came back with food ~163 dungeon min, light ~45 (reserves counted)
+1490 act walk 8 house: off the town's edge to the house's tile
+1494 act open 4 house: open the door
+1495 act walk 4 house: into the doorway
+1497 act walk 4 house: step inside (the pile is picked up)
+1498 act custom c dir=6 house: close the door behind us
+1501 act open 6 house: open the door to leave
+== tracebacks: 15
+STR 18/70 INT 5 WIS 8↓ DEX 18/20 CON 18/20 CHR 4 · Fed · Battle Axe of Westernesse 2 blows ~36

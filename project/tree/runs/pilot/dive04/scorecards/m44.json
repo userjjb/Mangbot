@@ -20,6 +20,7 @@
   "usd": 0.017,
   "transcript": "agent-a75f9dcfbb5148a1d.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 3,
   "compared": 1,
@@ -93,11 +94,11 @@
  "D": {
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 346,
-  "loot_abandoned_est": 445,
+  "destroyed_est": 375,
+  "loot_abandoned_est": 1087,
   "stolen": 1872,
-  "destroyed_by_monsters_est": 38,
-  "total": 2701,
+  "destroyed_by_monsters_est": 42,
+  "total": 3376,
   "sales": 15,
   "sales_valued": 2,
   "worst_sales": [],
@@ -119,6 +120,7 @@
    "left a Ring of Resist Cold (~105): pack full and nothing cheaper to make room with"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 13,
   "commands": 25,
@@ -146,15 +148,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Light hound": 139,
-  "Black ogre": 78,
+  "Black ogre": 80,
   "Wererat": 60,
-  "Uruk": 48,
-  "Black orc": 48,
-  "Clear hound": 33,
+  "Uruk": 46,
+  "Black orc": 35,
+  "Light hound": 28,
   "Hippogriff": 28,
-  "Paladin": 22
+  "Paladin": 22,
+  "Giant white mouse": 19,
+  "unseen": 313,
+  "unattributed": 224
  },
+ "damage_hp_lost": 1026,
  "alerts": {
   "tactic": 68,
   "plan_done": 3,

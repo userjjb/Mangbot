@@ -20,6 +20,7 @@
   "usd": 0.759,
   "transcript": "agent-a4ba6b596fd05dc16.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 1,
   "compared": 1,
@@ -94,11 +95,11 @@
  "D": {
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 310,
-  "loot_abandoned_est": 687,
+  "destroyed_est": 390,
+  "loot_abandoned_est": 2165,
   "stolen": 0,
   "destroyed_by_monsters_est": 0,
-  "total": 997,
+  "total": 2555,
   "sales": 9,
   "sales_valued": 3,
   "worst_sales": [],
@@ -119,6 +120,7 @@
    "a Ring of Resist Fire"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 16,
   "commands": 37,
@@ -148,13 +150,16 @@
  "damage_by_monster": {
   "Giant fruit fly": 142,
   "Black orc": 99,
-  "Novice ranger": 43,
-  "Half-orc": 33,
-  "Baby blue dragon": 32,
-  "Novice priest": 26,
+  "Novice ranger": 41,
+  "Half-orc": 30,
+  "Baby blue dragon": 27,
   "Ogre": 18,
-  "Novice paladin": 16
+  "Novice paladin": 16,
+  "Hill orc": 16,
+  "unseen": 82,
+  "unattributed": 40
  },
+ "damage_hp_lost": 649,
  "alerts": {
   "tactic": 28,
   "goal_done": 4,

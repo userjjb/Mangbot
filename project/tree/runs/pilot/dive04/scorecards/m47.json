@@ -20,6 +20,7 @@
   "usd": 0.011,
   "transcript": "agent-a4a6b0ae26b2ea240.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 2,
   "compared": 1,
@@ -92,11 +93,11 @@
  "D": {
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 168,
-  "loot_abandoned_est": 1376,
+  "destroyed_est": 670,
+  "loot_abandoned_est": 4056,
   "stolen": 0,
-  "destroyed_by_monsters_est": 6,
-  "total": 1550,
+  "destroyed_by_monsters_est": 7,
+  "total": 4733,
   "sales": 17,
   "sales_valued": 5,
   "worst_sales": [],
@@ -116,6 +117,7 @@
    "a Ring of Resist Fire"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 12,
   "commands": 36,
@@ -143,15 +145,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Uruk": 162,
-  "Warg": 91,
-  "White wolf": 86,
-  "Dark hound": 42,
-  "Giant black louse": 42,
-  "Novice ranger": 26,
-  "Wolf": 24,
-  "Black orc": 23
+  "Uruk": 138,
+  "White wolf": 87,
+  "Warg": 83,
+  "Dark hound": 34,
+  "Giant black louse": 26,
+  "Wolf": 23,
+  "Black orc": 20,
+  "Novice ranger": 19,
+  "unseen": 186,
+  "unattributed": 95
  },
+ "damage_hp_lost": 826,
  "alerts": {
   "tactic": 88,
   "parked": 2,

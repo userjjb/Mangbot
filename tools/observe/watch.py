@@ -135,7 +135,12 @@ def feed_line(e):
     elif k == "goal":
         txt = f"{tag}goal: {e.get('goal') or '(none)'}"
     elif k == "attention":
-        txt = f"{e.get('what')}: {e.get('detail') or ''}"
+        # (D14, 2026-11-01, 2.44.0: the supply notices are one kind, `supplies`, with fields supply food|light and
+        # level low|out|recalling, shown beside the kind; old logs' `low_supply` and `supply` show as before)
+        what = e.get("what")
+        if what == "supplies" and (e.get("supply") or e.get("level")):
+            what = f"supplies ({' '.join(str(x) for x in (e.get('supply'), e.get('level')) if x)})"
+        txt = f"{what}: {e.get('detail') or ''}"
     elif k == "user_note":
         txt = f"YOU: {e.get('note')}"
     elif k == "nav_say":

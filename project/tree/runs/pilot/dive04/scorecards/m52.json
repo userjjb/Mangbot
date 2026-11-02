@@ -8,6 +8,7 @@
  "minutes": 33.0,
  "notes": "",
  "tokens": null,
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 10,
   "compared": 6,
@@ -102,11 +103,11 @@
  "D": {
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 17,
-  "loot_abandoned_est": 1367,
+  "destroyed_est": 555,
+  "loot_abandoned_est": 3490,
   "stolen": 0,
   "destroyed_by_monsters_est": 0,
-  "total": 1384,
+  "total": 4045,
   "sales": 12,
   "sales_valued": 3,
   "worst_sales": [],
@@ -127,6 +128,7 @@
    "a Ring of Resist Fire"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 13,
   "commands": 78,
@@ -154,15 +156,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Black orc": 171,
-  "Novice ranger": 82,
+  "Black orc": 135,
   "Cave orc": 77,
-  "Light hound": 58,
-  "Blue icky thing": 55,
-  "Hill orc": 52,
+  "Novice ranger": 77,
+  "Hill orc": 46,
   "Kobold archer": 40,
-  "Uruk": 32
+  "Light hound": 37,
+  "Swordsman": 23,
+  "Dark elven priest": 22,
+  "unseen": 161,
+  "unattributed": 166
  },
+ "damage_hp_lost": 923,
  "alerts": {
   "tactic": 50,
   "plan_done": 5,

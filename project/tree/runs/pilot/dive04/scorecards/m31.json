@@ -20,6 +20,7 @@
   "usd": 0.126,
   "transcript": "agent-a71261e99e3f5e07e.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 0,
   "compared": 0,
@@ -93,10 +94,10 @@
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
   "destroyed_est": 0,
-  "loot_abandoned_est": 25,
+  "loot_abandoned_est": 316,
   "stolen": 315,
   "destroyed_by_monsters_est": 0,
-  "total": 340,
+  "total": 631,
   "sales": 8,
   "sales_valued": 1,
   "worst_sales": [],
@@ -114,6 +115,7 @@
   ],
   "irreplaceable": []
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 8,
   "commands": 17,
@@ -148,8 +150,10 @@
   "Orc shaman": 11,
   "Dark elven warrior": 10,
   "Novice warrior": 9,
-  "Swordsman": 8
+  "Swordsman": 8,
+  "unattributed": 14
  },
+ "damage_hp_lost": 335,
  "alerts": {
   "tactic": 7,
   "plan_done": 2,

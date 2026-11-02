@@ -85,3 +85,35 @@ def fair_pay(relist, owner, chr_value, race="Half-Orc"):
     buy, sell, store = f
     pay = relist * buy / sell
     return round(pay / 9 if store == 6 else pay)
+
+
+# --- what a shop pays of an item's value, owner-aware (refactor-candidates D9, 2026-11-01: moved from Pilot.pay_cut so
+# the scorecard uses the same rule without a Pilot object)
+SHOP_CUT = 0.38   # what a shop pays Dive04 of an item's value at CHR 3 when nothing is known (34-43%; Black Market 10%)
+# who buys what (store.c store_will_buy), by the Pilot's store numbers (1 General Store ... 6 Magic Shop), best first;
+# never the Black Market (7: it pays a third). Spellbooks: prayer books at the Temple, magic books at the Magic Shop
+BUYERS = {80: (1,), 39: (1,), 77: (1,), 16: (1, 3), 17: (1, 3), 18: (1, 3), 20: (3, 1), 35: (2, 1),
+          30: (2,), 31: (2,), 32: (2,), 33: (2,), 34: (2,), 36: (2,), 37: (2,), 38: (2,),
+          19: (3,), 21: (3, 4), 22: (3,), 23: (3,), 75: (5, 4, 6), 70: (5, 4, 6),
+          40: (6,), 45: (6,), 55: (6,), 65: (6,), 66: (6,), 90: (6,), 91: (4,)}
+
+
+def pay_cut(tval, chr_value, owners_seen=None, race="Half-Orc", default=SHOP_CUT):
+    """What a shop pays of an item's value (a fraction): the best of the shops that buy this tval (BUYERS; any of 1-6
+    for tval None), each by the owner last seen there, else the average owner of that shop, at this CHR; `default`
+    when no shop buys it. owners_seen: {store number 1-7 (int or str, as stores.json has them): the owner as the store
+    screen shows it ('Lyar-el the Comely (Elf)')}."""
+    owners_seen = owners_seen or {}
+    best = None
+    for st in (BUYERS.get(tval, ()) if tval is not None else (1, 2, 3, 4, 5, 6)):
+        owner = owners_seen.get(st) or owners_seen.get(str(st))
+        f = factors(re.sub(r"\s*\(.*\)$", "", owner), chr_value, race) if owner else None
+        if f:
+            cut = f[0] / 100         # (the shop's buying adjust: its pay, % of value)
+        else:
+            fs = [factors(o, chr_value, race) for o, (idx, _r, _g) in OWNERS.items() if idx == st - 1]
+            fs = [x for x in fs if x]
+            cut = sum(x[0] for x in fs) / len(fs) / 100 if fs else None
+        if cut is not None and (best is None or cut > best):
+            best = cut
+    return best if best is not None else default

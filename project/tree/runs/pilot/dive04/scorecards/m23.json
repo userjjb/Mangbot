@@ -20,6 +20,7 @@
   "usd": null,
   "transcript": "agent-a0517dec453247443.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 0,
   "compared": 0,
@@ -94,11 +95,11 @@
  "D": {
   "sale_shortfall": 1035,
   "sale_shortfall_forced": 1035,
-  "destroyed_est": 0,
-  "loot_abandoned_est": 106,
+  "destroyed_est": 243,
+  "loot_abandoned_est": 228,
   "stolen": 0,
   "destroyed_by_monsters_est": 0,
-  "total": 1141,
+  "total": 1506,
   "sales": 4,
   "sales_valued": 4,
   "worst_sales": [
@@ -130,6 +131,7 @@
    "an Amulet of Resist Acid"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 33,
   "commands": 65,
@@ -157,15 +159,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Half-orc": 71,
-  "Black orc": 61,
+  "Half-orc": 63,
+  "Black orc": 60,
   "White wolf": 43,
-  "Orc captain": 26,
+  "Orc captain": 30,
+  "Orc shaman": 17,
+  "Cave orc": 17,
   "Clear hound": 14,
-  "Cave orc": 14,
-  "Orc shaman": 14,
-  "Dark elven priest": 8
+  "Dark elven priest": 8,
+  "unseen": 5,
+  "unattributed": 24
  },
+ "damage_hp_lost": 295,
  "alerts": {
   "goal_done": 22,
   "unseen_attacker": 12,

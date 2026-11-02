@@ -8,6 +8,7 @@
  "minutes": 38.0,
  "notes": "",
  "tokens": null,
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 19,
   "compared": 11,
@@ -116,11 +117,11 @@
  "D": {
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 13,
-  "loot_abandoned_est": 1634,
+  "destroyed_est": 206,
+  "loot_abandoned_est": 5172,
   "stolen": 2392,
-  "destroyed_by_monsters_est": 835,
-  "total": 4874,
+  "destroyed_by_monsters_est": 1530,
+  "total": 9300,
   "sales": 19,
   "sales_valued": 3,
   "worst_sales": [],
@@ -140,6 +141,7 @@
    "Ring of Resist Fire"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 13,
   "commands": 103,
@@ -167,15 +169,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Uruk": 163,
-  "Novice ranger": 153,
-  "Light hound": 114,
-  "Cave orc": 75,
-  "Novice rogue": 70,
-  "Forest troll": 68,
-  "White wolf": 52,
-  "Mirkwood spider": 39
+  "Uruk": 162,
+  "Novice ranger": 144,
+  "Light hound": 65,
+  "Cave orc": 63,
+  "Forest troll": 61,
+  "Novice rogue": 42,
+  "Mirkwood spider": 37,
+  "Priest": 35,
+  "unseen": 204,
+  "unattributed": 125
  },
+ "damage_hp_lost": 1267,
  "alerts": {
   "tactic": 42,
   "lost": 7,

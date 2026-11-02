@@ -20,6 +20,7 @@
   "usd": 1.344,
   "transcript": "agent-a316efc9af062b150.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 0,
   "compared": 0,
@@ -93,11 +94,11 @@
  "D": {
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 470,
-  "loot_abandoned_est": 6167,
+  "destroyed_est": 708,
+  "loot_abandoned_est": 16011,
   "stolen": 0,
   "destroyed_by_monsters_est": 0,
-  "total": 6637,
+  "total": 16719,
   "sales": 8,
   "sales_valued": 2,
   "worst_sales": [],
@@ -117,6 +118,7 @@
    "a Potion of Resist Cold"
   ]
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 16,
   "commands": 86,
@@ -144,15 +146,18 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Kobold archer": 59,
-  "Kobold shaman": 39,
+  "Kobold archer": 69,
+  "Kobold shaman": 45,
   "Novice warrior": 33,
   "Cave spider": 19,
   "Novice mage": 14,
-  "Wild cat": 9,
+  "Wild cat": 8,
   "Copperhead snake": 7,
-  "Baby green dragon": 6
+  "Baby green dragon": 6,
+  "unseen": 14,
+  "unattributed": 398
  },
+ "damage_hp_lost": 628,
  "alerts": {
   "tactic": 125,
   "danger_avoided": 20,

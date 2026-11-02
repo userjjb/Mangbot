@@ -20,6 +20,7 @@
   "usd": 0.941,
   "transcript": "agent-a69297d825e19e4e4.jsonl"
  },
+ "defs": "2026-11-01 (2.44.0)",
  "estimator": {
   "n": 0,
   "compared": 0,
@@ -92,11 +93,11 @@
  "D": {
   "sale_shortfall": 0,
   "sale_shortfall_forced": 0,
-  "destroyed_est": 216,
-  "loot_abandoned_est": 745,
+  "destroyed_est": 381,
+  "loot_abandoned_est": 5981,
   "stolen": 292,
   "destroyed_by_monsters_est": 4,
-  "total": 1257,
+  "total": 6658,
   "sales": 12,
   "sales_valued": 3,
   "worst_sales": [],
@@ -114,6 +115,7 @@
   ],
   "irreplaceable": []
  },
+ "values_aware": "kinds known: today's runs/flavours.json (no `aware` in the log)",
  "E": {
   "reports": 22,
   "commands": 56,
@@ -142,14 +144,17 @@
  },
  "damage_by_monster": {
   "Stegocentipede": 143,
-  "Light hound": 126,
-  "Baby green dragon": 115,
-  "Black orc": 98,
-  "Cave orc": 94,
-  "Uruk": 56,
+  "Baby green dragon": 114,
+  "Cave orc": 87,
+  "Black orc": 84,
   "Baby bronze dragon": 47,
-  "Ogre": 42
+  "Uruk": 46,
+  "Light hound": 44,
+  "Ogre": 42,
+  "unseen": 294,
+  "unattributed": 36
  },
+ "damage_hp_lost": 1173,
  "alerts": {
   "tactic": 31,
   "goal_done": 10,

@@ -27,6 +27,22 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.44.0 -- 2026-11-02 (session 10, continued)
+No missions yet. Details: `docs/refactor-candidates.md` group D; the Advisor's memo 2026-11-01-d-merges.
+- **Junk** (D3): one rule, the union of the three old ones; kept and @-inscribed items never junk. For a warrior only
+  the spellbooks the town sells are junk; dungeon-only books are valued as loot (thousands of gold). Junk names match
+  whole words (Cure Blindness mushrooms are no longer "Blindness" junk).
+- **The stash** (D10): house.json is its only record; stash.json retired (renamed, kept as history).
+- **Better AC** (D13): the gear evaluator's verdict (nothing lost, at most 5% less EHP) in the gear line, the review
+  and upgrades; the plain AC comparison only when an item can't be parsed.
+- **Supply notices** (D14): `low_supply` and `supply` became `supplies` with `supply` (food|light) and `level`
+  (low|out|recalling) fields.
+- **Scorecards** (D8, D9): one damage attribution (the Advisor's definition; cards add `unseen` and `unattributed`);
+  item values as the Pilot knew them (itemvalue x the owner-aware pay cut), so cards' values rose (unknown flavours
+  and spellbooks used to count 0). The state snapshot carries `aware`.
+- Merges with no behaviour change (D1, D2, D4, D5, D6, D7, D11, D12, D15); D16 warns when the two inbox.sh copies
+  differ. Small: a permanent light ranks first among lights; the fear phases honour `@r1`.
+
 ## 2.43.1 -- 2026-10-31 (session 10, continued)
 No missions yet. Details: `docs/refactor-candidates.md` B9-B18.
 - Text only: design_pilot.md's old parts marked history; design_gear.md, operations.md, roles.md and the harness

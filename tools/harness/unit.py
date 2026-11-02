@@ -111,7 +111,7 @@ def pilot(w=None, **kw):
     p.band_warned, p.band_warned_t = (None, 0), 0.0
     p.log = lambda *a, **k: None
     p.notes = []
-    p.notify = lambda what, d=None, news=False, action=True: p.notes.append((what, d))
+    p.notify = lambda what, d=None, news=False, action=True, fields=None: p.notes.append((what, d))
     p.ability_seen_t = 0
     p.emerg_times = []
     p.plan = None
@@ -940,7 +940,7 @@ def bands_by_expected_cost_weak_drainers_news():
     p.drainers_seen = set()
     p.w.monsters = [(20, 25, BYNAME["giant red frog"])]
     said = []
-    p.notify = lambda what, d=None, news=False, action=True: said.append((what, news))
+    p.notify = lambda what, d=None, news=False, action=True, fields=None: said.append((what, news))
     p.watch_drainers()
     frog = said[-1] if said else None
     ok = novice < 155 and orcs22 > 155 and hill > 155 and hill_c < hill / 2 and frog == ("drainer", True)
@@ -1442,7 +1442,7 @@ def breeder_swarm_leaves():
     p = pilot(monsters=[(20, 22 + k, fly) for k in range(3)])
     p.goal, p.breeder_level, p.w.clvl = None, None, 27
     notes = []
-    p.notify = lambda what, d=None, news=False, action=True: notes.append((what, news))
+    p.notify = lambda what, d=None, news=False, action=True, fields=None: notes.append((what, news))
     p.watch_breeders()
     p.w.monsters = [(20, 22 + k, fly) for k in range(9)]
     p.watch_breeders()
@@ -1653,7 +1653,7 @@ def floor_junk_destroyed_when_quiet():
     hit.w.last_hit_t = P.gnow() - 2
     hit.destroy_floor_junk("a Potion of Salt Water", P.gnow())
     names = ["a Potion of Salt Water", "a Dagger {worthless}", "a Wand of Stinking Cloud", "a Broken Sword (1d2)"]
-    kept = [n for n in names if not quiet.is_junk_name(n)]
+    kept = [n for n in names if not quiet.is_junk(n)]
     ok = quiet.cmds == ["custom k item=-11 value=3"] and "confirm yes" in quiet.sent and busy.cmds == [] and \
         hit.cmds == [] and kept == ["a Wand of Stinking Cloud"]
     return ok, f"quiet: {quiet.cmds}; an orc in view: {busy.cmds}; hit 2 s ago: {hit.cmds}; not junk: {kept}"
@@ -1786,7 +1786,7 @@ def tavern_stash_and_one_lantern():
     p.flavour_of = lambda it: None
     stash = [i["name"] for i in p.w.items() if p.is_stash_item(i["name"])]
     ent = p.tavern_entrance()
-    p.stash_add("a Potion of Restore Dexterity")
+    p.tavern_state().setdefault("items", {})["27,90"] = "a Potion of Restore Dexterity"     # (D10: house.json)
     p.seen_drained = {"DEX": (18, 38)}
     want_with = p.stash_wanted()
     p.w.inven = [i for i in p.w.inven if "Restore" not in i["name"]]
@@ -2179,8 +2179,7 @@ def house_keeps_the_stash():
     w = p.w
     w.depth, w.in_dungeon, w.memory, w.pos = 0, False, mem, (60, 130)
     p.rundir, p.busy_until = tempfile.mkdtemp(), 0
-    p._house, p.stash = {"house": h, "banked": 0}, {"items": []}
-    p.stash_save = lambda: None
+    p._house = {"house": h, "banked": 0}
     floor = {}
     dirs = {4: (0, -1), 6: (0, 1)}
 
@@ -2245,8 +2244,7 @@ def tavern_stash_drops_inside():
     w = p.w
     w.depth, w.in_dungeon, w.memory, w.pos = 0, False, mem, (27, 88)
     p.rundir, p.busy_until = tempfile.mkdtemp(), 0
-    p.stash = {"items": [], "entrance": [27, 89]}
-    p.stash_save = lambda: None
+    p._house = {"tavern": {"entrance": [27, 89]}}
     floor = {}
 
     def cmd(line, why, hold=0.4):
@@ -2874,9 +2872,10 @@ def food_warning_and_trip_rate():
     p.c = object()
     p.w.ind["hunger"] = [3]
     p.plan = type("Pl", (), {"t0": 5.0})()
-    p.food_watch()
-    p.food_watch()
-    warned = [d for w, d in p.notes if w == "supply"]
+    p.supply_minutes = lambda: (60.0, None)       # (D14: the food notice is supply_watch's now, kind `supplies`)
+    p.supply_watch()
+    p.supply_watch()
+    warned = [d for w, d in p.notes if w == "supplies"]
     tp = P.TripPlan(650, 750, P.TripPlan.parse_until("minutes>30"))
     ok = len(warned) == 1 and "no food" in warned[0] and "xp0" in P.TripPlan.STATE and getattr(tp, "xp0", None) is None
     return ok, f"warnings {warned}"
@@ -3329,6 +3328,22 @@ def architect_role_needs_the_token():
 
 
 @case
+def house_reply_with_and_without_a_house():
+    """D10 (session 10): `house` with no argument answers with a house (door, banked, the stash in it) and without one
+    (no house; the tavern stash) -- the first version answered "no house owned" or crashed."""
+    out = []
+    for st in ({"house": {"door": [60, 129], "price": 5455, "bought": "2026-10-27"}, "banked": 100, "t": "x",
+                "items": {"60,125": "a Potion of Restore Charisma"}},
+               {"tavern": {"entrance": [27, 89], "items": {"27,90": "a Wand of Stone to Mud"}}}):
+        p = pilot()
+        p.house_state = lambda st=st: st
+        p.w.in_dungeon = True
+        out.append(p.house_info([]).get("text", ""))
+    return "door 60,129" in out[0] and "Restore Charisma" in out[0] and out[1].startswith("no house") and \
+        "Stone to Mud" in out[1], f"{out}"
+
+
+@case
 def pickup_none_no_loot_walks():
     """A5 (session 10): order pickup=none: loot_step makes no walk to the item 5 squares off (pickup=all does)."""
     def run(pickup):
@@ -3350,6 +3365,191 @@ def rings_of_damage_and_accuracy():
     got = [(i.to_h, i.to_d, i.pval) for i in (geareval.Item(n, tval=45) for n in (
         "a Ring of Damage (+6)", "a Ring of Accuracy (+8)", "a Ring of Strength (+3)"))]
     return got == [(0, 6, 0), (8, 0, 0), (0, 0, 3)], f"{got}"
+
+
+@case
+def junk_one_rule():
+    """D3 (the user, 11-01): one is_junk for the pack, the floor and the item list -- the union of the old lists (junk
+    order as a whole word, harmful devices, rulebook junk kinds, junk flavours, Broken, autodestroy feelings), never a
+    kept or @-inscribed item; for a warrior only the town's spellbooks (the dungeon-only books are loot); and
+    auto_destroy destroys what it calls junk."""
+    p = pilot(pack=[("a Wand of Clone Monster (5 charges)", 65), ("a Potion of Cure Light Wounds", 75)])
+    p.orders.update(junk="Salt Water,Poison,Blindness,Slime Mold", autodestroy="worthless,cursed")
+    p.junk_kinds = {"Potion of Water": True}
+    p.flavours = {"Puce Potion": {"kind": "Potion of Salt Water", "junk": True}}
+    p.w.ind["class_"] = "Warrior"
+    names = ["a Potion of Salt Water", "a Staff of Haste Monsters", "a Potion of Water", "a Puce Potion",
+             "a Broken Dagger (1d1)", "a Dagger (1d4) {worthless}", "3 Slime Molds",
+             "a Book of Magic Spells [Magic for Beginners]", "a Holy Book of Prayers [Words of Wisdom]",
+             "a Potion of Salt Water {@q1}", "a Dagger (1d4) {cursed, !k}",
+             "a Ring of Resist Poison", "a Mushroom of Cure Blindness", "a Potion of Neutralize Poison",
+             "a Book of Magic Spells [Resistances of Scarabtarices]", "a Holy Book of Prayers [Wrath of God]"]
+    got = [n for n in names if p.is_junk(n)]
+    want = names[:9]
+    p.keep = {"salt water"}
+    kept = p.is_junk("a Potion of Salt Water")
+    p.busy_until, p.autodestroy_t = 0.0, 0.0
+    p.sent, p.cmds = [], []
+    p.c = type("C", (), {"send": lambda self, x: p.sent.append(x)})()
+    p.cmd = lambda line, why, hold=0.4: p.cmds.append(line)
+    p.auto_destroy(P.gnow())
+    worth = itemvalue.value("a Book of Magic Spells [Resistances of Scarabtarices]").value
+    ok = got == want and not kept and p.cmds == ["custom k item=0 value=1"] and worth == 10000
+    return ok, f"junk: {got}; kept Salt Water junk: {kept}; auto_destroy: {p.cmds}; dungeon book value {worth}"
+
+
+@case
+def weapon_numbers_by_geareval():
+    """D6 (11-01): the weapon's dice and (+h,+d) are read by geareval.Item (weapon_damage, shadow.weapon_profile,
+    fight_estimate, fight_sim) -- the same numbers as the old regexes for ordinary weapons, so the hunt checks don't
+    change."""
+    import shadow
+
+    def old_damage(name, blows, mult=1):
+        m = re.search(r"\((\d+)d(\d+)\)", name)
+        if not m:
+            return 0.0
+        b = re.search(r"\([+-]\d+,([+-]\d+)\)", name)
+        return (int(m.group(1)) * (int(m.group(2)) + 1) / 2 * mult + (int(b.group(1)) if b else 0)) * blows
+
+    def old_profile(name, blows):
+        d = re.search(r"\((\d+d\d+)\)", name or "")
+        m = re.search(r"\(([+-]\d+),([+-]\d+)\)", name or "")
+        return {"dice": d.group(1) if d else "1d4", "tohit": int(m.group(1)) if m else 0,
+                "todam": int(m.group(2)) if m else 0, "blows": max(1, blows or 1)}
+    names = ["a Spear (1d6) (+5,+7)", "a Dagger (1d4)", "a Scimitar of Westernesse (2d5) (+9,+8) (+1)",
+             "a Lucerne Hammer of Venom (2d5) (-2,+3) {@w1}", "a Main Gauche (1d5) (+0,+0) {average}",
+             "a Sabre (Holy Avenger) (2d7) (+12,+10) [+4] (+2)", "3 Daggers (1d4) (+1,+2)", ""]
+    bad = [n for n in names if P.weapon_damage(n, 3) != old_damage(n, 3) or P.weapon_damage(n, 2, 3) !=
+           old_damage(n, 2, 3) or shadow.weapon_profile(n, 2) != old_profile(n, 2)]
+    p = pilot(hp=265, pack=[PHASE])
+    random.seed(1)
+    hunt = p.hunt_refusal("Hill giant")[0] is None
+    est = p.fight_estimate(BYNAME["hill giant"])          # (its to-hit is the profile's tohit, compared above)
+    return not bad and hunt and bool(est), \
+        f"differ: {bad}; Hill giant hunt allowed: {hunt}; fight_estimate turns {est and round(est[0], 1)}"
+
+
+@case
+def stash_in_house_json_only():
+    """D10 (the user, 11-01): house.json is the stash's only record. An old stash.json (Dive04's) is retired on load:
+    its tavern entrance moves into house.json `tavern`, the file is renamed (the notes stay there), nothing is lost;
+    stash_has/stash_where read the house's items (while a house is owned), else the tavern's; a fetch strikes the
+    item off."""
+    import tempfile
+    out = []
+    for house in (True, False):
+        p = pilot()
+        p.rundir = tempfile.mkdtemp()
+        hj = {"banked": 19327, "items": {"60,125": "a Potion of Restore Charisma"}}
+        if house:
+            hj["house"] = {"door": [60, 129], "box": [59, 124, 61, 129]}
+        json.dump(hj, open(os.path.join(p.rundir, "house.json"), "w"))
+        json.dump({"items": ["a Potion of Restore Charisma"] + ([] if house else ["a Potion of Restore Strength"]),
+                   "entrance": [27, 89], "squares": [[27, 92]], "lost": ["2 Wands..."], "where": "house"},
+                  open(os.path.join(p.rundir, "stash.json"), "w"))
+        where = (p.stash_where("Restore Charisma"), p.stash_where("Restore Strength"))
+        files = sorted(os.listdir(p.rundir))
+        saved = json.load(open(os.path.join(p.rundir, "house.json")))
+        retired = json.load(open(os.path.join(p.rundir, files[-1])))
+        p.stash_take(where[0] or "tavern", "Restore Charisma")
+        out.append((where, files[-1].startswith("stash.json.retired-"), saved.get("tavern"), retired.get("lost"),
+                    p.stash_has("Restore Charisma")))
+    ok = out[0] == (("house", None), True, {"entrance": [27, 89]}, ["2 Wands..."], False) and \
+        out[1][0] == ("tavern", "tavern") and out[1][2]["items"] == {"27,92": "a Potion of Restore Charisma",
+                                                                    "?1": "a Potion of Restore Strength"}
+    return ok, f"with a house, without: {out}"
+
+
+@case
+def better_ac_by_geareval():
+    """D13 (the user, 11-01): "better AC than worn" (gear_line, the gear review's shop ideas, upgrade_step step 3) is
+    the gear evaluator's verdict -- more AC, every ability and resist kept, no >5% EHP loss -- and a plain AC
+    comparison only for a piece geareval can't read. A Metal Scale Mail [38,+5] doesn't replace the Hard Studded
+    Leather of Resistance; a Leather Shield [8,+9] replaces the [8,+2]; an unreadable piece goes by its AC."""
+    worn = [("a Spear (1d6) (+5,+7)", 22, 50), ("Hard Studded Leather of Resistance (-1) [7,+9]", 37, 200),
+            ("a Leather Shield [8,+2]", 34, 60)]
+    p = pilot(pack=[("a Metal Scale Mail [38,+5]", 37), ("a Leather Shield [8,+9]", 34)], worn=worn)
+    p.w.ind.update({"stat1": [10], "stat2": [10], "stat4": [18]})
+    on = {tv: [i for i in p.w.items(equip=True) if i["tval"] == tv] for tv in (34, 37)}
+    mail = p.ac_better("a Metal Scale Mail [38,+5]", on[37], 37, 250)[0]
+    shield = p.ac_better("a Leather Shield [8,+9]", on[34], 34, 60)[0]
+    odd = p.ac_better("a Glittering Buckler [12,+0]", on[34], 34, 60)[0]
+    line = p.gear_line()
+    ok = not mail and shield and odd and "Leather Shield [8,+9] (AC 17 vs 10 worn)" in line and "Metal" not in line
+    return ok, f"mail {mail}, shield {shield}, unreadable {odd}; {line}"
+
+
+@case
+def supplies_one_kind_with_fields():
+    """D14 (the Advisor agreed, 11-01): the supply notices are one kind, `supplies`, with fields supply (food|light;
+    `what` is the record's kind) and level (low|out|recalling) on the attention event and its decisions.jsonl record;
+    the old kinds low_supply and supply are gone (every `supplies` notify passes fields); food_watch is merged into
+    supply_watch."""
+    import ast
+    import threading
+    tree = ast.parse(open(os.path.join(HERE, "..", "pilot", "pilot.py")).read())
+    kinds = [(n.args[0].value, n) for n in ast.walk(tree) if isinstance(n, ast.Call) and
+             getattr(n.func, "attr", None) == "notify" and n.args and isinstance(n.args[0], ast.Constant)]
+    old = [k for k, _ in kinds if k in ("low_supply", "supply")]
+    bare = [n.lineno for k, n in kinds if k == "supplies" and not any(x.arg == "fields" for x in n.keywords)]
+    p = pilot(pack=[("9 Potions of Cure Critical Wounds", 75)])
+    p.notify = P.Pilot.notify.__get__(p)
+    p.held_t, p.goal, p.news, p.attention, p.att_cond = 0.0, None, [], [], threading.Condition()
+    logs = []
+    p.log = lambda kind, **k: logs.append(dict(k, kind=kind))
+    p.light_warned_key, p.light_warned = None, 0.0
+    p.warn_light("lantern out", "the lantern is out")
+    p.w.ind["hunger"] = [3]
+    p.supply_minutes = lambda: (4.0, 30.0)
+    p.supply_watch()
+    got = [(r.get("supply"), r.get("level")) for r in logs if r["kind"] == "attention"]
+    evs = [(e.get("supply"), e.get("level")) for e in p.attention + p.news]
+    ok = not old and not bare and not hasattr(P.Pilot, "food_watch") and \
+        got == [("light", "out"), ("food", "out"), ("food", "low")] and sorted(evs) == sorted(got) and \
+        all(r["what"] == "supplies" for r in logs) and all(e["what"] == "supplies" for e in p.attention + p.news)
+    return ok, f"old kinds {old}; supplies without fields at {bare}; records {got}; events {evs}"
+
+
+@case
+def pay_cut_in_shopmath_and_aware():
+    """D9 (11-01, for the scorecard): the owner-aware pay cut is shopmath.pay_cut with its inputs explicit (tval, CHR,
+    the owners seen) and Pilot.pay_cut calls it -- the same results as the old in-Pilot rule; spellbooks now have
+    buyers (Temple, Magic Shop). aware_kinds() is what iv passes to itemvalue (and what state.jsonl logs)."""
+    sys.path.insert(0, os.path.join(HERE, "..", "observe"))
+    import shopmath
+
+    def old(tval, chr_v, seen):
+        best = None
+        for st in (P.Pilot.BUYERS.get(tval, ()) if tval is not None else (1, 2, 3, 4, 5, 6)):
+            owner = (seen.get(st) or {}).get("owner")
+            f = shopmath.factors(re.sub(r"\s*\(.*\)$", "", owner), chr_v) if owner else None
+            if f:
+                cut = f[0] / 100
+            else:
+                fs = [x for x in (shopmath.factors(o, chr_v) for o, (idx, _r, _g) in shopmath.OWNERS.items()
+                                  if idx == st - 1) if x]
+                cut = sum(x[0] for x in fs) / len(fs) / 100 if fs else None
+            if cut is not None and (best is None or cut > best):
+                best = cut
+        return best if best is not None else P.SHOP_CUT
+    owners = {}
+    for o, (idx, _r, _g) in shopmath.OWNERS.items():
+        owners.setdefault(idx + 1, o + " (Elf)")
+    bad = []
+    for seen in ({}, {st: {"owner": o} for st, o in owners.items()}):
+        for chr_v in (3, 10, 18, 68):
+            p = pilot()
+            p.stores_seen, p.w.ind["stat5"] = seen, [chr_v]
+            for tv in (None, 23, 37, 75, 70, 45, 66, 80, 99):
+                if abs(p.pay_cut(tv) - old(tv, chr_v, seen)) > 1e-12:
+                    bad.append((tv, chr_v, bool(seen)))
+    p = pilot()
+    p.flavours = {"Puce Potion": {"kind": "Potion of Cure Light Wounds"}, "Iron Ring": {"kind": "Ring of Protection"}}
+    aware = p.aware_kinds()
+    books = (p.pay_cut(90), p.pay_cut(91))
+    ok = not bad and aware == {"cure light wounds", "protection"} and all(b != P.SHOP_CUT for b in books)
+    return ok, f"differ: {bad}; aware {sorted(aware)}; book cuts {books}"
 
 
 def main():
