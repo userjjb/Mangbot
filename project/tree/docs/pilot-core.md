@@ -1,7 +1,9 @@
 # Pilot core: architecture, tick loop, perception, movement, logs, the report
 
-The **Pilot** (`github/tools/pilot/pilot.py`, ~10.6k lines, plus `world.py`, `mover.py`, `glyphs.py`,
-`structures.py`) is a Python daemon that plays one MAngband character second to second. It owns a tool-mode C
+The **Pilot** (`github/tools/pilot/pilot.py`, ~10.2k lines, plus `world.py`, `mover.py`, `glyphs.py`,
+`structures.py`; since E1 also `daemon.py`: `main()`, `Server`, `Handler`; `report.py`: `ReportMixin`, the report
+methods, still on `Pilot`; `common.py`: `VERSION`, `TV_*`, `DEFAULT_ORDERS` and helpers shared by these, re-exported by
+pilot.py) is a Python daemon that plays one MAngband character second to second. It owns a tool-mode C
 client (`mangclient -mtool`), builds a model of the game from the client's events and queries, and acts on it
 about 20 times a second: reflexes first (survival), then the Navigator's standing reactions, the Pilot's own item
 work, the current goal, and the trip plan. The Navigator (an LLM subagent) and the Architect steer it through a
@@ -32,9 +34,10 @@ mangclient -mtool  <--stdin/stdout JSON-->  pilot.py (daemon)  <--unix socket ru
                                      runs/pilot/<nick>/{decisions,events,state}.jsonl, levels/, *.json
 ```
 
-- **Start**: `python3 pilot.py --nick Dive04 --port 28346 [--hpwarn N] [--live]`, normally through `restart.sh`.
-  On import `pilot.py` reads the code's version once from `github/VERSION` (`VERSION`, "?" if missing; see
-  [process.md](process.md)). `main()` writes the unique-glyph table (`visuals.txt`, see Glyphs below), starts
+- **Start**: `python3 pilot.py --nick Dive04 --port 28346 [--hpwarn N] [--live]`, normally through `restart.sh`
+  (pilot.py's `__main__` registers itself as module `pilot`, so daemon.py's `import pilot` doesn't load a second copy,
+  and calls `daemon.main()`). On import `common.py` reads the code's version once from `github/VERSION` (`VERSION`,
+  "?" if missing; see [process.md](process.md)). `main()` writes the unique-glyph table (`visuals.txt`, see Glyphs below), starts
   `MangClient` (the C client as a child, with `--visuals` and `--hpwarn`; password `runs/private/<nick>.pass`, config
   `runs/private/<nick>.mangrc`), waits for it to log in, builds the `Pilot`, sets game options `avoid_other`,
   `stack_force_costs`, `disturb_near`, `disturb_panel`, logs the character's options, opens the control socket,

@@ -27,6 +27,12 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.44.5 -- 2026-11-02 (session 10, continued)
+No missions yet. No play change (refactor-candidates E1, step 1 of the pilot.py split).
+- `daemon.py` (the socket server, `main`), `report.py` (`ReportMixin`: the status reports and their formatters) and
+  `common.py` (shared constants and helpers) split out of pilot.py (11,060 -> 10,240 lines). `python3 pilot.py`
+  starts the Pilot as before. Reports byte-identical; a dry start identical; M2 PASS.
+
 ## 2.44.4 -- 2026-11-02 (session 10, continued)
 No missions yet. No play change (refactor-candidates E4, E9).
 - `Pilot.tick` is a short sequence of named steps (confusion, clock, lowest HP, floor items, redraw, item news, avoid

@@ -167,3 +167,5 @@
 - 2026-11-02 15:12:01 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261102-151201.json`
 - 2026-11-02 15:34:08 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261102-153408.json`
 - 2026-11-02 16:10:35 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261102-161035.json`
+- 2026-11-02 16:50:10 **M2** FAIL (a site FAIL) `M2-20261102-165010.json`
+- 2026-11-02 16:56:57 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261102-165657.json`

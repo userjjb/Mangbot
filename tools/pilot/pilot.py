@@ -11,7 +11,6 @@ The agent talks to it through pilotctl.py (a unix socket): status, goals, plans,
 (block until the pilot needs a decision). The code as it is: docs/pilot-core.md (this module, the tick loop),
 docs/pilot-combat.md (reflexes, escape), docs/goals-and-plans.md, docs/commands.md; the player's view: HANDBOOK.md.
 """
-import argparse
 import collections
 import functools
 import csv
@@ -22,49 +21,23 @@ import queue
 import random
 import re
 import socket
-import socketserver
 import sys
 import threading
 import time
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-try:
-    # the code's version (major.minor.patch, CHANGELOG.md; minor = play can differ, patch = it can't): read once at
-    # startup, so it names the code this Pilot runs
-    VERSION = open(os.path.join(HERE, "..", "..", "VERSION")).read().strip()
-except OSError:
-    VERSION = "?"
-
-ARCH_TOKEN_FILE = "architect.token"
-
-
-def architect_token(priv):
-    """The Architect's token (runs/private/architect.token, made on first use, mode 600): a request claiming the
-    architect role must carry it (refactor-candidates F3). The Navigator runs as the same Unix user, so this isn't
-    security: it stops a bare PILOT_ROLE=architect, and a claim without it is refused and reported."""
-    import secrets
-    path = os.path.join(priv, ARCH_TOKEN_FILE)
-    if not os.path.exists(path):
-        os.makedirs(priv, exist_ok=True)
-        fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
-        with os.fdopen(fd, "w") as f:
-            f.write(secrets.token_hex(16) + "\n")
-    return open(path).read().strip()
-sys.path.insert(0, os.path.join(HERE, "..", "client"))
-
-from mang import MangClient, ClientExited      # noqa: E402
-import glyphs                                   # noqa: E402
+from common import (HERE, VERSION, TV_SCROLL, TV_POTION, TV_FOOD, TV_FLASK, TV_LITE, DEFAULT_ORDERS, weapon_brand,
+                    weapon_damage, plural)
 from world import (World, gnow, set_time_factor, time_factor, model_factor, wall_of, wall_since, waited,  # noqa: E402
                    ghold, light_fuel, light_turns, set_fast_ok, measured_rate, _lt, frozen)
 import structures                                # noqa: E402
 import shadow                                    # noqa: E402
 import geareval                                  # noqa: E402
 import itemvalue                                 # noqa: E402
+from report import ReportMixin                   # noqa: E402
 sys.path.insert(0, os.path.join(HERE, "..", "observe"))
 import shopmath                                  # noqa: E402
 from mover import Mover, direction, passable, plan, drain_zone_of, MAX_HGT, MAX_WID   # noqa: E402
 
-TV_SCROLL, TV_POTION, TV_FOOD, TV_FLASK, TV_LITE = 70, 75, 80, 77, 39
 PY_FOOD_MAX = 15000          # Gorged (-10 speed) from here (mdefines.h)
 SHOP_CUT = shopmath.SHOP_CUT   # what a shop pays Dive04 of an item's value at CHR 3 (34-43%; Black Market 10%)
 CURE_POTIONS = ("Cure Critical Wounds", "Cure Serious Wounds", "Cure Light Wounds", "Healing")
@@ -114,27 +87,6 @@ def weapon_blows(weight, str_v, dex_v, cls=WARRIOR):
     s_i = min(11, ADJ_STR_BLOW[si] * cls[2] // div)
     d_i = min(11, ADJ_DEX_BLOW[di])
     return max(1, min(cls[0], BLOWS_TABLE[s_i][d_i]))
-
-
-# Brand egos: x3 on the dice against monsters that don't resist the element
-# (mission 21 compared a Lucerne Hammer of Venom at ~18 a round, brand ignored)
-BRANDS = {"Venom": "poison", "Burning": "fire", "Flame": "fire", "Freezing": "cold", "Frost": "cold",
-          "Melting": "acid", "Lightning": "lightning"}
-
-
-def weapon_brand(name):
-    """(element, multiplier) for a brand ego, else None."""
-    m = re.search(r"\bof (\*?)(" + "|".join(BRANDS) + r")\b", name)
-    return (BRANDS[m.group(2)], 3) if m else None
-
-
-def weapon_damage(name, blows, mult=1):
-    """Average damage per round: (dice average + to-dam) x blows (0 without dice)."""
-    it = geareval.Item(name)              # (the dice and plusses as the gear evaluator reads them: D6)
-    dn, ds = (int(x) for x in it.dice.split("d"))
-    if not dn:
-        return 0.0
-    return (dn * (ds + 1) / 2 * mult + it.to_d) * blows
 
 
 def shadow_agree(choice, actual, table):
@@ -241,37 +193,6 @@ STATUS_CURES = {
               "of Life"),
 }
 
-DEFAULT_ORDERS = {
-    "flee_hp": 0.5,        # emergency below this HP fraction
-    "think_hp": 0.65,      # tell the agent below this, while fighting
-    "rest_below": 0.7,     # rest when nothing is in view and HP is below this
-    "rest_to": 0.95,
-    "arrival_pack": 4,     # this many monsters in view on arrival -> leave by the stairs
-    "danger_level": 6,     # a monster this many levels above ours in view -> leave/avoid
-    "free_action": "no",   # yes once the character has Free Action: paralysers stop counting as danger
-    "resist_blind": "no",  # yes once worn: monsters that blind with their blows stop counting as danger
-    "resist_conf": "no",   # the same for confusing blows
-    "unseen_hp": "on",     # off: don't treat HP loss with nothing in view as an unseen attacker
-    "autowear": "on",      # off: the Pilot doesn't wear, wield or swap gear by itself (upgrade_step)
-    "enchant_max": 25,     # Scrolls of Enchant Armor plan town may buy a visit (0: none) -- m58: 25 for 5025 gold, unasked
-    "idle_recall_s": 600,  # no goal and no agent contact for this long -> recall to town
-                           # (long enough for a slow agent turn; 180 s fired mid-thought)
-    "pickup": "all",       # all | none
-    "stop_on": "unique,danger",  # what makes a dive stop and ask (also: items, pillared)
-    "pillared": "explore",       # dive: explore pillared rooms for a '>' by itself (or: ask, ignore)
-    "loot_radius": 10,           # dive: fetch items seen within this many squares (0 = off)
-    "choke": "on",               # meet packs in a corridor, not in the open (the user's advice)
-    "autodestroy": "worthless,cursed",   # pseudo-ID feelings whose items get destroyed (add 'average')
-    "junk": "Salt Water,Blindness,Weakness,Sleep,Poison,Lose Memories,Confusion,Sickliness,"
-            "Apple Juice,Slime Mold,Darkness,Aggravate Monster,Curse Weapon,Curse Armour,"
-            "Summon Undead,Summon Monster,Treasure Detection,Detect Invisible",
-                                 # items "of <these>" aren't picked up (unknown items still are)
-    "band_frac": 0.5,            # a band is serious (leave) when fighting it all costs more than this x HP
-    "nopickup": "",              # comma list of name parts never picked up (the Navigator's per-trip junk list)
-    "max_depth": 0,              # feet; 0 = no limit. Dives stop there, explore refuses below it,
-                                 # and after an emergency trip down the stairs we come back up
-}
-
 
 class Attention(Exception):
     pass
@@ -280,9 +201,6 @@ class Attention(Exception):
 # --------------------------------------------------------------------------
 # Goals: tick(pilot) -> None (still working) or (status, detail)
 # --------------------------------------------------------------------------
-
-def plural(n, word):
-    return f"{n} {word}" + ("" if n == 1 else "s")
 
 
 class Goal:
@@ -2899,7 +2817,7 @@ class QuietWait(Goal):
 
 # --------------------------------------------------------------------------
 
-class Pilot:
+class Pilot(ReportMixin):
     def __init__(self, client, rundir, orders=None, say=print):
         self._init_state()
         self.c = client
@@ -3584,23 +3502,6 @@ class Pilot:
         self.notify("tactic", f"cured, with {len(w.adjacent_monsters())} adjacent: teleported away before the next "
                               "bite", news=True)
         return True
-
-    def escape_line(self):
-        """The status header's escape marker (session 8: a staff's teleport showed "no change", then landed; a scroll
-        read on top was refused, and nobody could tell which escape was still landing)."""
-        t, (pos, name) = self.escape_read_t, self.escape_from
-        age = gnow() - t
-        if not name or age > 6:
-            return ""
-        # (m55: both staff uses failed confused -- "You failed to use the staff properly" -- and the line said LANDING)
-        if any(ts >= t - 0.3 and t_.startswith(("You failed to use", "You have no charges", "You can't see",
-                                                  "You are too confused")) for ts, t_ in self.w.messages):
-            return f" · escape FAILED ({name}, {age:.0f} s ago: the game refused it)"
-        if self.w.pos == pos and age <= 3:
-            return f" · ESCAPE LANDING ({name}, {age:.0f} s ago: don't repeat it yet)"
-        if self.w.pos != pos and pos and self.w.pos:
-            return f" · escaped ({name}, {age:.0f} s ago: moved {self.w.dist(pos)} squares)"
-        return ""
 
     def start_resting(self):
         if not self.w.resting and gnow() > self.busy_until:
@@ -5033,118 +4934,6 @@ class Pilot:
         gold = sum(x[2] for x in b) + seed_w * self.RATE_SEED[1]
         lo, hi = self.RATE_CLAMP
         return round(min(hi, max(lo, xp / gold)), 3) if gold > 0 else 1.0
-
-    def belief_lines(self):
-        """The report's belief-state lines: threats out of view, the fight so far, rates,
-        counts on this level, standing instructions."""
-        w, now = self.w, gnow()
-        out = []
-        if w.in_dungeon:
-            in_view = {r.name for *_, r in w.monsters}
-            gone = sorted(((n, m) for n, m in self.mons_mem.items() if m["level"] == w.level_t and n not in in_view
-                           and now - m["t"] < 120), key=lambda nm: (not nm[1]["unique"], not nm[1]["danger"],
-                                                                   now - nm[1]["t"]))
-            if gone:
-                out.append("Out of view (this level, last 2 min): " + "; ".join(
-                    f"{n}{' ×%d' % m['n'] if m['n'] > 1 else ''}"
-                    + (" (UNIQUE)" if m["unique"] else "") + (" (DANGER)" if m["danger"] else "")
-                    + f" {now - m['t']:.0f} s ago at {m['pos'][0]},{m['pos'][1]} ({w.dist(m['pos'])} away)"
-                    for n, m in gone[:5]))
-            wt = [x for x in self.weapon_table() if x[3]]
-            per_hit = wt[0][2] / max(1, wt[0][1]) if wt else 0
-            rows = self.fight_rows()
-            fights = []
-            for name in sorted(in_view):
-                k = self.hits.get((w.level_t, name.lower()), 0)
-                if not k:
-                    continue
-                race = next((r for *_, r in w.monsters if r.name == name), None)
-                row = rows.get(getattr(race, "idx", None)) or {}
-                hp = row.get("hp")
-                fights.append(f"{name}: {plural(k, 'hit')}, ~{k * per_hit:.0f} dealt" + (f" of ~{hp} HP" if hp else ""))
-            tr = w.ind.get("track") or [0, 0]
-            if fights:
-                out.append("Fight so far: " + "; ".join(fights) +
-                           (f" (the tracked monster's health bar: {10 * tr[1]}%)" if len(tr) > 1 and tr[1] else ""))
-        # rates: HP lost recently, XP and gold per 10 minutes
-        hh = [(t, hp) for t, hp in getattr(w, "hp_hist", []) if now - t <= 10]
-        bits = []
-        if hh and hh[0][1] - w.hp[0] > 0.05 * max(1, w.hp[1]):
-            bits.append(f"HP -{hh[0][1] - w.hp[0]} in the last {now - hh[0][0]:.0f} s")
-        found = self.gold_found
-        old = next((h for h in self.gain_hist if now - h[0] <= 600), None)
-        if old and now - old[0] > 60:
-            de = (w.ind.get("exp") or [0])[0] - old[1]
-            dg = w.ind.get("gold", [0])[0] - old[2]
-            bits.append(f"XP {de:+d}, gold found {found - old[3]:+d} (net {dg:+d}, with shopping) in the last "
-                        f"{(now - old[0]) / 60:.0f} min")
-        lb = self.level_base
-        if w.in_dungeon and lb and lb[2] == w.level_t and now - lb[0] >= 60:
-            de = (w.ind.get("exp") or [0])[0] - lb[1]
-            bits.append(f"this level: XP {de:+d} in {(now - lb[0]) / 60:.0f} min ({de / ((now - lb[0]) / 60):.0f} a minute)")
-        pl = self.plan
-        if pl and getattr(pl, "xp0", None) is not None and now - pl.t0 >= 60:
-            de = (w.ind.get("exp") or [0])[0] - pl.xp0
-            bits.append(f"this trip: XP {de:+d} in {(now - pl.t0) / 60:.0f} min ({de / ((now - pl.t0) / 60):.0f} a minute)")
-        mb = self.mission_base
-        if mb and self.mission_label:
-            bits.append(f"this mission: XP {(w.ind.get('exp') or [0])[0] - mb[1]:+d}, gold found "
-                        f"{found - (mb[3] if len(mb) > 3 else 0):+d} (net {w.ind.get('gold', [0])[0] - mb[2]:+d}) "
-                        f"in {(now - mb[0]) / 60:.0f} min")
-        if bits:
-            out.append("Rates: " + "; ".join(bits))
-        if w.in_dungeon:
-            cnt = []
-            if self.drains_here[0] == w.level_t and self.drains_here[1]:
-                cnt.append(plural(self.drains_here[1], "drain"))
-            if self.traps_here[0] == w.level_t and self.traps_here[1]:
-                cnt.append(plural(self.traps_here[1], "trap") + " sprung")
-            ns = sum(1 for lt, _ in self.searched if lt == w.level_t)
-            if ns:
-                cnt.append(f"{plural(ns, 'spot')} searched")
-            ph = sum(1 for t in self.phase_hist if now - t < 90)
-            em = sum(1 for t in self.emerg_times if now - t < 90)
-            recent = ([plural(em, "emergency")] if em else []) + ([plural(ph, "Phase Door")] if ph else [])
-            if cnt or recent:
-                out.append("Counts: " + (f"this level {', '.join(cnt)}" if cnt else "") +
-                           ("; " if cnt and recent else "") + (f"last 90 s {', '.join(recent)}" if recent else ""))
-        st = [f"keep {', '.join(sorted(self.keep))}"] if self.keep else []
-        if self.avoid_names:
-            st.append(f"avoid {', '.join(sorted(self.avoid_names))}")
-        if self.avoid_zones.get(w.level_t):
-            st.append(f"{plural(len(self.avoid_zones[w.level_t]), 'avoid zone')} here")
-        st += [f"\"{x['text']}\" ({x['by']})" for x in self.standing]
-        st += [f"react {x['kind']} {x['arg']}" for x in self.rules()]
-        nop = str(self.orders.get("nopickup", "")).strip()
-        if nop:
-            st.append(f"never pick up {nop}")
-        if st:
-            out.append("Standing: " + "; ".join(st))
-        rv = self.review_state()["items"]
-        if rv:
-            # (m55: the Navigator missed that undecided items are sold after 2 town visits -- the Boots of Stability)
-            tv = self.review_state()["town_visits"]
-
-            def left(v):
-                k = 2 - (tv - v["visit"])
-                return "SOLD at this town visit if undecided" if k <= 0 else \
-                    "sold at the next town visit if undecided" if k == 1 else \
-                    "sold at the second town visit from now if undecided"
-            out.append(f"Review ({len(rv)}, `review sell|keep|wear NAME`): " + "; ".join(
-                f"{n} ({v['why']}; {left(v)})" for n, v in rv.items()))
-        return out
-
-    def numbered(self, rep, kind):
-        """Number each report the Navigator gets and log it (id, kind, size), so
-        every later command can say which report it answered and how old that
-        was (the Advisor's starting-over memo: orders went stale on the way)."""
-        self.report_seq += 1
-        self.last_report = (self.report_seq, gnow())
-        # what the report showed, for the stale-order check (step 2.4)
-        self.report_state = {"level_t": self.w.level_t, "hp": self.w.hp_frac}
-        self.log("report", id=self.report_seq, report_kind=kind, chars=len(rep))
-        first, _, rest = rep.partition("\n")
-        return f"{first} · r{self.report_seq}" + ("\n" + rest if rest else "")
 
     def drainers_info(self, args):
         """`drainers [STAT] [MAXLEVEL]`: monsters whose blows drain a stat, by
@@ -9653,122 +9442,6 @@ class Pilot:
                 self.exp_t = now
             self.exp_seen = exp
 
-    def since_lines(self, reset):
-        sn = self.since
-        if not sn:
-            return []
-        now = gnow()
-        out = []
-        lo = sn["min_hp"]
-        mons = sorted(sn["mons"].items(), key=lambda kv: -kv[1])
-        out.append(f"Since the last report ({now - sn['t']:.0f} s): lowest HP "
-                   + (self.low_hp_text(lo) if lo else "?")
-                   + "; monsters seen (most at once): " + (", ".join(f"{n} x{k}" for n, k in mons[:12]) or "none")
-                   + (f"; UNIQUES: {', '.join(sorted(sn['uniques']))}" if sn["uniques"] else ""))
-        xt = self.exp_t
-        gt = now if self.goal_t is None else self.goal_t      # (a goal set without set_goal: for 0 s)
-        w = self.w
-        out.append("Progress: " + (f"last XP gain {self.ago(now - xt)} ago" if xt else "no XP gain seen yet")
-                   + (f"; on this level {self.ago(now - w.level_t)}" if w.level_t else "")
-                   + (f"; goal '{self.goal.describe()}' for {self.ago(now - gt)}"
-                      if self.goal else ""))
-        if reset:
-            self.since_reset(now)
-        return out
-
-    # --- formatting shared by compact() and report() (refactor-candidates D12) ---------------------------------------
-    def since_reset(self, now):
-        """Start the next report's "since last" window (HP low, monsters and uniques seen)."""
-        w = self.w
-        self.since = {"t": now, "min_hp": (w.hp[0], w.hp[1], now) if w.hp[1] > 1 else None,
-                      "mons": {}, "uniques": set()}
-
-    @staticmethod
-    def low_hp_text(lo):
-        """since["min_hp"] (hp, max, t) -> '100/265 at 02:59:10'."""
-        return f"{lo[0]}/{lo[1]} at {time.strftime('%H:%M:%S', _lt(lo[2]))}"
-
-    @staticmethod
-    def stat_text(v):
-        """A stat as the sheet shows it: 3..18, then 18/01..18/100+."""
-        return v if v <= 18 else '18/%02d' % (v - 18)
-
-    def conditions(self):
-        """(the status conditions on, the hunger word)."""
-        w = self.w
-        cond = [k for k in ("blind", "confused", "afraid", "poisoned", "cut", "stun") if w.flag(k)]
-        hunger = {0: "Weak", 1: "Weak", 2: "Hungry", 3: "Fed", 4: "Full", 5: "Gorged"}.get(w.hunger, w.hunger)
-        return cond, hunger
-
-    def unanswered_line(self):
-        return "USER MESSAGE(S) NOT YET ANSWERED (reply with say): " + " | ".join(
-            f"{time.strftime('%H:%M:%S', _lt(t))} {m}" for t, m in self.unanswered)
-
-    def news_line(self, head, news_since, n, now=None):
-        """The news since `news_since` (else of the last 10 minutes), the last n, after `head`; None if none."""
-        now = gnow() if now is None else now
-        recent = [e for e in self.news if (e["t"] > news_since if news_since is not None
-                                           else now - e["t"] < 600)][-n:]
-        if not recent:
-            return None
-        return head + " | ".join(f"{time.strftime('%H:%M:%S', _lt(e['t']))} {e['what']}: {e['detail']}" for e in recent)
-
-    def monster_groups(self):
-        """{name: [(y, x, race)]} of the monsters in view."""
-        seen = {}
-        for y, x, r in self.w.monsters:
-            seen.setdefault(r.name, []).append((y, x, r))
-        return seen
-
-    def weapon_text(self, n, b, d, eq, full=False):
-        """A weapon_table row for the reports: compact (the short name), or full (report(): the whole name, slays,
-        the longer hints)."""
-        brand = weapon_brand(n)
-        return (f"{'WIELDED ' if eq else ''}{n if full else self.short(n)} {b} blows ~{d:.0f}"
-                + (f" (~{weapon_damage(n, b, brand[1]):.0f} vs {'monsters ' if full else ''}not resisting {brand[0]})"
-                   if brand else "")
-                + (" (+ x2-3 vs its slain race)" if full and re.search(r"\bof \*?Slay ", n) else "")
-                + ((" (pluses unknown: identify it, it may be much better)" if full else " (pluses unknown: identify it)")
-                   if re.search(r"\{(good|excellent|special|magical)", n) and not re.search(r"\([+-]\d+,", n) else ""))
-
-    def structures_line(self, full=False):
-        """'Structures: ...' (the inner rooms and vaults here, with a door seen or 'searched') in compact()'s wording,
-        or report()'s (full); None outside the dungeon or with none."""
-        w = self.w
-        sts = self.structures_here() if w.in_dungeon else []
-        if not sts:
-            return None
-
-        def one(Y, X, st):
-            door = self.room_door(Y, X)
-            return (f"{st['kind']} {'centred ' if full else ''}{Y},{X}" + ("" if st["sure"] else " (likely)") +
-                    (f"{' - door at ' if full else ', door '}{door[0]},{door[1]}" if door else
-                     (" - searched" if full else ", searched")
-                     if all((w.level_t, r) in self.searched for _, r in structures.door_spots(Y, X)) else ""))
-        return "Structures: " + "; ".join(one(Y, X, st) for Y, X, st in sts)
-
-    def movement_line(self, window=60, step=8):
-        """Where we've been in the last minute, a point every ~8 s (the
-        Navigator's wish: it couldn't see what the Pilot's moves had been)."""
-        now = gnow()
-        pts = [(t, p, d) for t, p, d in self.pos_hist if now - t <= window]
-        if not pts:
-            return None
-        out, last_t, last_p = [], None, None
-        for t, p, d in pts:
-            if (last_t is None or t - last_t >= step) and p != last_p:
-                out.append(f"{time.strftime('%H:%M:%S', _lt(t))} {p[0]},{p[1]}")
-                last_t, last_p = t, p
-        if pts[-1][1] != last_p:
-            out.append(f"now {pts[-1][1][0]},{pts[-1][1][1]}")
-        n = len({p for _, p, _ in pts})
-        return f"Movement (last {window} s, {n} different squares): " + " -> ".join(out)
-
-    @staticmethod
-    def ago(secs):
-        secs = int(max(0, secs))
-        return f"{secs // 60}m{secs % 60:02d}s" if secs >= 60 else f"{secs}s"
-
     SLOTS = (("weapon", (20, 21, 22, 23), 1), ("bow", (19,), 1), ("ring", (45,), 2), ("amulet", (40,), 1),
              ("light", (39,), 1), ("body armour", (36, 37, 38), 1), ("cloak", (35,), 1), ("shield", (34,), 1),
              ("helm", (32, 33), 1), ("gloves", (31,), 1), ("boots", (30,), 1))
@@ -10554,507 +10227,14 @@ class Pilot:
             out.append("Bow slot empty (the Pilot doesn't shoot: a launcher is only worth it for its abilities)")
         return "\n".join(out)
 
-    # ---- the compact report (what the Navigator reads after every wait) ----
-    # The full report() ran to ~5 KB (the pack twice, every order, a 23 x 67 map
-    # even in town); the Navigator read it 100+ times a mission. This one keeps
-    # what decisions turn on and shows the rest only when it changes; `status
-    # full` gives the old one (the user, 2026-10-22).
-    CURE_ABBR = {"Cure Critical Wounds": "CCW", "Cure Serious Wounds": "CSW", "Cure Light Wounds": "CLW"}
-    ESCAPE_ABBR = {"Phase Door": "Phase", "Word of Recall": "WoR", "Teleportation": "Tele",
-                   "Teleport Level": "TeleLevel", "Deep Descent": "DeepDescent"}
-
-    @staticmethod
-    def short(name):
-        """'5 Potions of Heroism {75% off}' -> '5 Potions of Heroism' ('a '/'an ' dropped)."""
-        n = re.sub(r"\s*\{\d+% off\}", "", name)
-        return re.sub(r"^(a|an) ", "", n)
-
-    @staticmethod
-    def kind_of(name):
-        """'3 Potions of Cure Critical Wounds {25% off}' -> 'Cure Critical Wounds'."""
-        m = re.search(r"(?:Potions?|Scrolls?|Rations?|Flasks?) of ([^{(]+)", name)
-        return m.group(1).strip() if m else None
-
-    def supply_lines(self):
-        w = self.w
-        cures, esc, other, devices = {}, {}, {}, []
-        food = flasks = 0
-        for i in w.items():
-            n, k = i["number"], self.kind_of(i["name"])
-            if i["tval"] in (TV_POTION, TV_SCROLL) and k:
-                if k in self.CURE_ABBR:
-                    cures[self.CURE_ABBR[k]] = cures.get(self.CURE_ABBR[k], 0) + n
-                elif k in self.ESCAPE_ABBR:
-                    esc[self.ESCAPE_ABBR[k]] = esc.get(self.ESCAPE_ABBR[k], 0) + n
-                elif k == "Satisfy Hunger":
-                    food += n
-                else:
-                    other[k] = other.get(k, 0) + n
-            elif i["tval"] == TV_FOOD and "Mushroom" not in i["name"]:
-                food += n
-            elif i["tval"] == TV_FLASK:
-                flasks += n
-            elif i["tval"] in (55, 65, 66):
-                f = self.flavour_of(i)
-                devices.append(self.short(i["name"]) + (f" (= {f['kind']})" if f else ""))
-        for d in devices:
-            m = re.match(r"(Staff|Rod|Wand) of Cure Light Wounds \((\d+) charges\)", d)
-            if m:
-                cures["staff CLW"] = int(m.group(2))
-        worn_lite = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
-        lite = worn_lite or self.best_light()
-        lt = light_turns(lite["name"]) if lite else None
-        # (m40: "Light 408" while no light was worn and the fuller lantern sat in the pack)
-        light = ("none" if not lite else (str(lt) if lt is not None else "permanent")) + \
-            ("" if worn_lite or not lite else " (off, in the pack)") + \
-            (f" +{flasks} flask{'s' if flasks != 1 else ''}" if flasks else "")
-        out = ["Cures " + (" · ".join(f"{k} {v}" for k, v in cures.items()) or "NONE")
-               + " | Escapes " + " · ".join(f"{k} {esc.get(k, 0)}" for k in ("Phase", "WoR"))
-               + "".join(f" · {k} {v}" for k, v in esc.items() if k not in ("Phase", "WoR"))
-               + f" | Food {food} | Light {light}" + (f" ({self.supply_text()})" if w.in_dungeon or not w.depth else "")
-               + (f" | RECALL PENDING ({gnow() - w.recall_pending_t:.0f} s; 8-23 s)" if w.recall_pending else "")]
-        extra = [f"{k} {v}" for k, v in other.items()] + [d for d in devices if "Cure Light Wounds" not in d]
-        if extra:
-            out.append("Also: " + " · ".join(extra))
-        return out
-
-    def compact(self, news_since=None, map_r=9, snapshot=False):
-        w, ind, now = self.w, self.w.ind, gnow()
-        lines = []
-        where = ("Town (" + {True: "day", False: "night", None: "day/night?"}[w.is_day()] + ")") if not w.depth \
-            else f"{w.depth_ft} ft"
-        lines.append(f"{ind.get('hist_name_', '?')} L{w.clvl} HP {w.hp[0]}/{w.hp[1]} · {where} · "
-                     f"{ind.get('gold', [0])[0]}g" + (f" (+{self.banked()} banked)" if self.banked() else "")
-                     + f" · max {self.orders.get('max_depth')}ft · "
-                     f"{time.strftime('%H:%M:%S')} · goal: {self.goal.describe() if self.goal else 'none'}"
-                     + (" · TIME FROZEN (test server: nothing moves until it's thawed)" if frozen() else "")
-                     + self.escape_line())
-        if self.plan:
-            lines.append("Plan: " + self.plan.describe())
-        aa = [a for a in self.arch_answers if gnow() - a[0] < 600]
-        if aa:
-            lines.append("ARCHITECT ANSWER(S): " + " | ".join(f"#{i} {time.strftime('%H:%M:%S', _lt(t))} {m}"
-                                                               for t, i, m in aa))
-        if self.unanswered:
-            lines.append(self.unanswered_line())
-        drained = {n for n, (cur, top) in (self.seen_drained or {}).items() if cur < top}
-        stats = " ".join(f"{s} {self.stat_text(v[0])}{'↓' if s in drained else ''}"
-                         for s, v in zip(self.STAT_NAMES, (ind.get(f"stat{i}", [0]) for i in range(6))))
-        cond, hunger = self.conditions()
-        wt = self.weapon_table()
-        wield = next(((n, b, d) for n, b, d, eq in wt if eq), None) if wt else None
-        spd = int(ind.get("speed", [0])[0] or 0)
-        lines.append(f"{stats} · {hunger}" + (f" · {', '.join(cond).upper()}" if cond else "")
-                     + (" · resting" if w.resting else "") + (f" · speed {spd:+d}" if spd else "")
-                     + (f" · {re.sub(r' [(].*', '', self.short(wield[0]))} {wield[1]} blows ~{wield[2]:.0f}"
-                        if wield else ""))
-        lines += self.supply_lines()
-        here = (w.standing_on or "unknown (under @)") + \
-            (f" (item: {w.floor})" if w.floor else "") + (f" (arrived by {w.arrived_by})" if w.arrived_by else "")
-        stairs = sorted(w.find("<>"), key=w.dist)[:3]
-        lines.append(f"Here: {here}" + (" | Stairs " + ", ".join(f"{w.memory[q]} {q[0]},{q[1]} ({w.dist(q)})"
-                                                                  for q in stairs) if stairs else " | no stairs known"))
-        if w.monsters:
-            parts = []
-            for n, v in sorted(self.monster_groups().items(), key=lambda kv: min(w.dist(m[:2]) for m in kv[1])):
-                r = v[0][2]
-                ds = sorted(w.dist(m[:2]) for m in v)
-                zz = sum(1 for y, x, _ in v if self.is_asleep(y, x))
-                why = self.danger_why(r)
-                parts.append(f"{n}{' ×%d' % len(v) if len(v) > 1 else ''} (L{r.level}"
-                             + (", UNIQUE" if "UNIQUE" in r.flags else "")
-                             + f", {ds[0]}{'-%d' % ds[-1] if len(ds) > 1 and ds[-1] != ds[0] else ''} away"
-                             + ((", asleep" if zz == len(v) else f", {zz} asleep") if zz else "")
-                             + (f", DANGER: {why[:60]}" if why else "") + ")")
-            lines.append("Monsters: " + "; ".join(parts))
-        else:
-            lines.append("Monsters: none")
-        # items: the server's list (names) and the squares near us ($ grouped)
-        names = [l.strip()[2:].strip() for l in (w.itemlist or [])[1:]]
-        # (known junk left out: the user, 10-25 -- the Pilot destroys it when it passes over it at a quiet moment)
-        names = [n for n in names if not self.is_junk(n)]
-        sq = sorted((q for q in self.resolve_target("item") if w.memory.get(q, "?") not in "0123456789"),
-                    key=w.dist)[:10] if w.pos else []          # (not shop and house doors)
-        gold = [q for q in sq if w.memory.get(q) == "$"]
-        rest = [q for q in sq if w.memory.get(q) != "$"][:6]
-        gd = sorted(map(w.dist, gold))
-        # (the nearest pile's square: m49's Navigator guessed one from the map for `goal fetch`)
-        bits = ([f"$ ×{len(gold)} ({gd[0]}" + (f"-{gd[-1]}" if gd[-1] != gd[0] else "")
-                 + f"; nearest {gold[0][0]},{gold[0][1]})"] if gold else []) + \
-            [f"{w.memory.get(q, '?')} {q[0]},{q[1]} ({w.dist(q)})" for q in rest]
-        if names or bits:
-            lines.append("Items: " + (", ".join(names[:8]) or "-") + (" | near: " + ", ".join(bits) if bits else ""))
-        # the map: outside town (dungeon and wilderness), a square crop (distance is the same in every
-        # direction: radius 9 shows everything within 9 moves)
-        if w.depth and w.rows and w.pos:
-            y0, x0 = w.pos
-            ys = range(max(0, y0 - map_r), min(len(w.rows), y0 + map_r + 1))
-            xa, xb = max(0, x0 - map_r), x0 + map_r + 1
-            lines.append(f"Map (@ {y0},{x0}; rows {ys[0]}-{ys[-1]}, cols {xa}-{xb - 1}):")
-            lines += [f"{y:2d}|" + w.rows[y][xa:xb].rstrip() for y in ys]
-        st_line = self.structures_line()
-        if st_line:
-            lines.append(st_line)
-        lines += self.belief_lines()
-        news = self.news_line("News: ", news_since, 8, now)
-        if news:
-            lines.append(news)
-        if w.depth and (w.monsters or w.hp[0] < w.hp[1]):
-            msgs = w.recent(10)[-6:]
-            if msgs:
-                lines.append("Msgs: " + " | ".join(msgs))
-        sn = self.since
-        if sn:
-            lo = sn["min_hp"]
-            mons = sorted(sn["mons"].items(), key=lambda kv: -kv[1])
-            bits = []
-            if lo and lo[0] < lo[1]:
-                bits.append(f"low HP {self.low_hp_text(lo)}")
-            if mons:
-                bits.append("seen " + ", ".join(f"{n} ×{k}" if k > 1 else n for n, k in mons[:8]))
-            if sn["uniques"]:
-                bits.append("UNIQUES " + ", ".join(sorted(sn["uniques"])))
-            if bits:
-                lines.append(f"Since last ({self.ago(now - sn['t'])}): " + "; ".join(bits))
-            if news_since is not None:
-                self.since_reset(now)
-        if w.depth:
-            xt = self.exp_t
-            gt = now if self.goal_t is None else self.goal_t      # (a goal set without set_goal: 0 s)
-            lines.append("Progress: " + (f"XP {self.ago(now - xt)} ago" if xt else "no XP yet")
-                         + (f" · level {self.ago(now - w.level_t)}" if w.level_t else "")
-                         + (f" · goal {self.ago(now - gt)}" if self.goal else ""))
-        lines += self.compact_changes(snapshot)
-        return "\n".join(lines)
-
-    def compact_changes(self, snapshot=False):
-        """What changed since the Navigator's last report: equipment, the
-        non-consumables in the pack (with letters), weapons, abilities, empty
-        slots, changed orders, audit differences. All of it on an explicit
-        `status` (snapshot) and the first time; a wait report gets changes only
-        (90 of mission 22's 113 reports came with waits)."""
-        w = self.w
-        cons = (TV_POTION, TV_SCROLL, TV_FOOD, TV_FLASK)
-        now = {
-            "Equip": [f"{chr(65 + k)}) {self.short(i['name'])}" for k, i in enumerate(w.items(equip=True))],
-            "Pack (not consumables)": [f"{chr(97 + i['item'])}) {self.short(self.show(i))}" for i in w.items()
-                                       if i["tval"] not in cons and i["tval"] not in (55, 65, 66)],
-            "Weapons": [self.weapon_text(n, b, d, eq)
-                        for n, b, d, eq in self.weapon_table()],     # (always the wielded one: with
-            # the others sold in town the list went empty and the report said "Weapons: none", m27/m29/m31)
-            "Abilities": [k for k, v in (w.flags or {}).items() if v and k not in ("stealth", "search", "infra", "tunnel")],
-            "Gear": [self.gear_line()[len("Gear: "):]],
-            "Orders changed": [f"{k}={v}" for k, v in self.orders.items()
-                               if k in DEFAULT_ORDERS and str(v) != str(DEFAULT_ORDERS[k])],
-            "Audit differences": [f"{k} {n}" for k, n in self.audit_counts.items()],
-        }
-        prev = None if snapshot else self.compact_prev
-        self.compact_prev = now
-        # (a burning lantern's turns and a staff's charges change all the time:
-        # not a change worth a line)
-        def norm(v):
-            return [re.sub(r"\(with \d+ turns of light\)|\(\d+ charges?\)", "", t).strip() for t in v]
-        out = []
-        for k, v in now.items():
-            if prev is None:
-                if v:
-                    out.append(f"{k}: " + "; ".join(v))
-                continue
-            if norm(v) == norm(prev.get(k, [])):
-                continue
-            if k in ("Equip", "Pack (not consumables)"):
-                # (both carry letters now, which shift: compare the names)
-                strip = lambda t: norm([t.split(") ", 1)[-1]])[0]
-                old = {strip(t) for t in prev.get(k, [])}
-                new = {strip(t) for t in v}
-                ch = [f"+{t}" for t in v if strip(t) not in old] + [f"-{t}" for t in sorted(old - new)]
-                if ch:
-                    out.append(f"{k} changed: " + "; ".join(ch))
-            else:
-                out.append(f"{k}: " + ("; ".join(v) or "none"))
-        if prev is None and not self.compact_hinted:
-            self.compact_hinted = True
-            out.append("(this is the compact report: `status full` for everything; `pack`, `equip`, `orders`, "
-                       "`map [R]` for one part)")
-        return out
-
-    def report(self, rows=11, cols=33, news_since=None):
-        w = self.w
-        ind = w.ind
-        lines = []
-        stats = " ".join(f"{s}:{self.stat_text(v[0])}"
-                         for s, v in zip(("STR", "INT", "WIS", "DEX", "CON", "CHR"),
-                                         (ind.get(f"stat{i}", [0]) for i in range(6))))
-        lines.append(f"{ind.get('hist_name_', '?')} the {ind.get('race_', '?')} {ind.get('class_', '?')}, "
-                     f"level {w.clvl}" + (f" (max {ind['level'][0]})" if len(ind.get('level', [])) > 1 and ind['level'][0] != w.clvl else "") + f", HP {w.hp[0]}/{w.hp[1]}, "
-                     f"{('Town (' + {True: 'day', False: 'night', None: 'day/night?'}[w.is_day()] + ')') if not w.depth else str(w.depth_ft) + ' ft'}, gold {ind.get('gold', [0])[0]}, "
-                     f"blows {ind.get('skills2', ['?'])[0]}, speed {ind.get('speed', [0])[0]}"
-                     f" | now {time.strftime('%H:%M:%S')} | Pilot v{VERSION}")   # (the Navigator has no clock of its own)
-        cond, hunger = self.conditions()
-        lines.append(f"{stats}  | {hunger}" + (f" | {', '.join(cond)}" if cond else "")
-                     + (" | resting" if w.resting else ""))
-        # (after a login the map shows @ over whatever is there: mission 21 stood
-        # on a '<' reported as floor/unknown)
-        lines.append(f"Standing on: {w.standing_on or 'unknown (the map shows @ over it until you step off)'}"
-                     f"{' (item: ' + w.floor + ')' if w.floor else ''}"
-                     f"{' (arrived by ' + w.arrived_by + ')' if w.arrived_by else ''}"
-                     f" | goal: {self.goal.describe() if self.goal else 'none (idle)'}")
-        lines.append("Equipment: " + "; ".join(i["name"] for i in w.items(equip=True)))
-        lines.append("Pack: " + "; ".join(f"{chr(97 + i['item'])}) {self.show(i)}" for i in w.items()))
-        if w.rows and w.pos:
-            y0, x0 = w.pos
-            # Every row, numbered, and the column range: blank rows used to be
-            # dropped, so line numbers didn't match rows (mission 13)
-            lines.append(f"Map (you are @ at {y0},{x0}; columns {max(0, x0 - cols)}-{x0 + cols}; "
-                         "each line starts with its row):")
-            for y in range(max(0, y0 - rows), min(len(w.rows), y0 + rows + 1)):
-                seg = w.rows[y][max(0, x0 - cols):x0 + cols + 1]
-                lines.append(f"  {y:2d}|" + seg.rstrip())
-        if w.monsters:
-            lines.append("Monsters in view: " + "; ".join(
-                f"{n} x{len(v)} (lvl {v[0][2].level}{', UNIQUE' if 'UNIQUE' in v[0][2].flags else ''}) "
-                f"nearest {min(w.dist(m[:2]) for m in v)} away" for n, v in self.monster_groups().items()))
-        else:
-            lines.append("Monsters in view: none")
-        lines.append("Items seen: " + ("; ".join(l.strip() for l in w.itemlist) if w.itemlist else "?"))
-        near_items = sorted(self.resolve_target("item"), key=w.dist)[:8] if w.pos else []
-        if near_items:
-            lines.append("Item squares nearby (glyph at y,x, distance): " + ", ".join(
-                f"{w.memory.get(p, '?')} at {p[0]},{p[1]} ({w.dist(p)})" for p in near_items)
-                + "  -- `goal fetch Y,X`")
-        stairs = w.find("<>")
-        if stairs:
-            near = sorted(stairs, key=w.dist)[:4]
-            lines.append("Known stairs: " + ", ".join(f"{w.memory[p]} at {p[0]},{p[1]} ({w.dist(p)} away)"
-                                                     for p in near))
-        # Consumables at a glance (also in --brief: the Navigator decided
-        # without the pack, the game-state survey)
-        cons = [self.show(i) for i in w.items(tval=(TV_POTION, TV_SCROLL, TV_FOOD, TV_FLASK, 55, 65, 66, 40, 45))]
-        drained = [n for n, (cur, top) in (self.seen_drained or {}).items() if cur < top]
-        lines.append("Supplies: " + ("; ".join(cons) or "none")
-                     + (f" | RECALL PENDING (read {gnow() - w.recall_pending_t:.0f} s ago; it takes "
-                        "15-34 turns, 8-23 s)" if w.recall_pending else "")
-                     + f" | max_depth {self.orders.get('max_depth')}"
-                     + (f" | drained: {', '.join(drained)}" if drained else ""))
-        if self.unanswered:
-            # (mission 15: a message sent before the Navigator's first wait was
-            # only seen 4 minutes later in the news)
-            lines.insert(1, self.unanswered_line())
-        wt = self.weapon_table()
-        if wt:
-            lines.append("Weapons (blows, avg damage per round at your STR/DEX): " + "; ".join(
-                self.weapon_text(n, b, d, eq, full=True) for n, b, d, eq in wt))
-        if w.flags:
-            # from the character sheet's grid (tool query 'flags'): facts, not guesses
-            ab = [k for k, v in w.flags.items() if v and k not in ("stealth", "search", "infra", "tunnel")]
-            lines.append("Abilities: " + (", ".join(ab) if ab else "none"))
-        if self.audit_runs:
-            lines.append(f"State audit: {self.audit_runs} checks"
-                         + ("; differences: " + ", ".join(f"{k} {n}" for k, n in self.audit_counts.items())
-                            if self.audit_counts else ", no differences"))
-        # News of the last 10 minutes, every time (status calls used to clear it)
-        news = self.news_line("Since last report: ", news_since, 12)
-        if news:
-            lines.append(news)
-        lines.append("Recent messages: " + " | ".join(w.recent(30)[-12:]))
-        st_line = self.structures_line(full=True)
-        if st_line:
-            lines.append(st_line)
-        lines += self.since_lines(reset=news_since is not None)
-        mv = self.movement_line()
-        if mv:
-            lines.append(mv)
-        lines.append(self.gear_line())
-        changed = [f"{k}={v} (default {DEFAULT_ORDERS[k]})" for k, v in self.orders.items()
-                   if k in DEFAULT_ORDERS and str(v) != str(DEFAULT_ORDERS[k])]
-        # (Dive03 kept think_hp 0.55 for five missions without noticing)
-        lines.append("Orders changed from the defaults: " + ("; ".join(changed) if changed else "none"))
-        lines.append("Orders: " + ", ".join(f"{k}={v}" for k, v in self.orders.items()))
-        return "\n".join(lines)
-
 
 # --------------------------------------------------------------------------
-# control socket
+# run as a script (`python3 pilot.py --nick ...`: restart.sh, hotswap.sh, charsave.sh): the process lives in daemon.py.
+# This file is then __main__, and daemon's `import pilot` would load it a second time, with a second set of the
+# classes; naming this module `pilot` first makes that import return it, so the program runs one copy.
 # --------------------------------------------------------------------------
-
-class Handler(socketserver.StreamRequestHandler):
-    def handle(self):
-        pilot = self.server.pilot
-        line = self.rfile.readline()
-        if not line:
-            return
-        req = json.loads(line)
-        if req.get("cmd") == "wait-attention":
-            timeout = float(req.get("timeout", 600))
-            end = gnow() + timeout
-            with pilot.att_cond:
-                while not pilot.attention and gnow() < end and pilot.running:
-                    pilot.att_cond.wait(min(1.0, max(0.01, end - gnow())))
-                evs, pilot.attention = pilot.attention, []
-            pilot.last_agent = gnow()
-            out = {"ok": True, "events": evs}
-            pilot.nav_view_events = [f"ATTENTION {e['what']}: {e.get('detail') or ''}" for e in evs]
-            if pilot.running:        # (a quiet timeout gets one too: mission 3 missed a stall)
-                reply = queue.Queue()
-                pilot.requests.put(({"cmd": "status", "since_wait": True}, reply))
-                try:
-                    out["report"] = reply.get(timeout=10)["report"]
-                except queue.Empty:
-                    pass
-        else:
-            reply = queue.Queue()
-            pilot.requests.put((req, reply))
-            try:
-                out = reply.get(timeout=30)
-            except queue.Empty:
-                out = {"ok": False, "error": "pilot busy"}
-        try:
-            self.wfile.write((json.dumps(out) + "\n").encode())
-        except BrokenPipeError:
-            pass          # (the client gave up waiting -- pilotctl's timeout: nothing to tell it)
-
-
-class Server(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
-    daemon_threads = True
-
-
-def main():
-    repo = os.path.abspath(os.path.join(HERE, "..", ".."))
-    runs = os.path.abspath(os.path.join(repo, "..", "runs"))
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[1])
-    ap.add_argument("--nick", required=True)
-    ap.add_argument("--host", default="localhost")
-    ap.add_argument("--port", type=int, default=28346,
-                    help="default 28346, the test server; the live server (18346) needs --live too")
-    ap.add_argument("--passfile")
-    ap.add_argument("--config")
-    ap.add_argument("--rundir", help="default runs/pilot/<nick>")
-    ap.add_argument("--client", default=os.path.join(repo, "mangclient"))
-    ap.add_argument("--libdir", default=os.path.join(repo, "lib"))
-    ap.add_argument("--pktlog")
-    ap.add_argument("--live", action="store_true",
-                    help="live-server behaviour (default: test server). Test: mapping/detection devices are sold, not "
-                         "kept (the user: no crutches the live server won't give us)")
-    ap.add_argument("--hpwarn", type=int, default=5,
-                    help="hitpoint_warn 0-9: below N x 10%% HP the server slows our time bubble to 1/5; the "
-                         "Pilot's timers follow on its game clock (default 5, the user 2026-10-24; 0 = off)")
-    args = ap.parse_args()
-    # (refactor-candidates F1: the default was 18346, the live server; now the live port must be meant)
-    if args.port == 18346 and not args.live:
-        sys.exit("port 18346 is the live server: add --live (live-server behaviour) if that is meant")
-
-    nick = args.nick
-    priv = os.path.join(runs, "private")
-    arch_token = architect_token(priv)
-    rundir = args.rundir or os.path.join(runs, "pilot", nick.lower())
-    os.makedirs(rundir, exist_ok=True)
-    visuals = os.path.join(rundir, "visuals.txt")
-    glyphs.write_visuals(visuals, glyphs.assign(glyphs.load_races()))
-    evlog = open(os.path.join(rundir, "events.jsonl"), "a", buffering=1)
-    # --hpwarn N: below N x 10% HP the server runs our time bubble at 1/5. Since 2026-10-23 the
-    # Pilot's timers are on a game clock that follows it (world.gnow); before, they were
-    # wall-clock, and at low HP re-plans fired between our turns (mission 7), so it ran with 0.
-    # Missions run with 5 since 2026-10-24 (the user).
-    client = MangClient(args.client, args.libdir, nick,
-                        args.passfile or os.path.join(priv, nick.lower() + ".pass"),
-                        args.host, args.port, config=args.config or os.path.join(priv, nick.lower() + ".mangrc"),
-                        cwd=repo, pktlog=args.pktlog, extra_args=["--visuals", visuals, "--hpwarn", str(args.hpwarn)])
-    say = lambda *a: print(time.strftime("%H:%M:%S"), *a, file=sys.stderr, flush=True)
-    pilot = None
-    try:
-        ready = client.wait_ready()
-        say(f"in the game as {nick}: {ready}")
-        pilot = Pilot(client, rundir, say=say)
-        pilot.arch_token = arch_token
-        pilot.hpwarn = args.hpwarn
-        pilot.live = args.live
-        pilot.log("options", hpwarn=args.hpwarn, live=args.live)
-        orig = pilot.w._on_event
-        bulky = {"map", "status", "inven", "options", "commands"}   # query replies
-        # every event carries the wall clock too ('t' restarts at 0 with each
-        # Pilot process: ~12 log Clerks had to align segments by hand)
-        evlog.write(json.dumps({"ev": "pilot_start", "t": 0.0, "epoch": round(time.time(), 3), "nick": nick}) + "\n")
-        # the query replies go to state.jsonl, thinned (the Advisor's set-piece memo, blocker 2: a
-        # replay couldn't rebuild the map or the pack at second T): status every 2 s when it changes,
-        # the pack whenever it changes, the map's changed rows every 10 s
-        statelog = open(os.path.join(rundir, "state.jsonl"), "a", buffering=1)
-        last = {"status": [0.0, None], "inven": [0.0, None], "map": [0.0, None]}
-        last_aware = [None]
-
-        def log_state(ev):
-            # 'epoch' is the wall clock like events.jsonl's; the throttle stays on the game clock (session 8: logging
-            # gnow put state.jsonl ~3 minutes behind after freezes, and a theft was searched for in the wrong minutes)
-            k, now, wall = ev.get("ev"), gnow(), time.time()
-            if k not in last or now - last[k][0] < {"status": 2.0, "inven": 0.0, "map": 10.0}[k]:
-                return
-            if k == "status":
-                body = {"y": ev.get("y"), "x": ev.get("x"), "ind": ev.get("ind")}
-                # the kinds known (D9, for the scorecard's values as of then): in a status record when they changed
-                # since the last one, so always in the first after a start
-                try:
-                    aware = sorted(pilot.aware_kinds())
-                except RuntimeError:              # (the table changed under us: the next record has it)
-                    aware = last_aware[0]
-                if aware != last_aware[0]:
-                    last_aware[0] = aware
-                    last[k] = [now, body]
-                    statelog.write(json.dumps({"ev": k, "epoch": round(wall, 3), **body, "aware": aware}) + "\n")
-                    return
-            elif k == "inven":
-                body = {"items": ev.get("items")}
-            else:
-                rows = ev.get("rows") or []
-                prev = last[k][1] or []
-                body = {"rows": {i: r for i, r in enumerate(rows) if i >= len(prev) or prev[i] != r},
-                        "n": len(rows)}
-                if not body["rows"]:
-                    last[k][0] = now
-                    return
-                last[k] = [now, rows]
-                statelog.write(json.dumps({"ev": k, "epoch": round(wall, 3), **body}) + "\n")
-                return
-            if body == last[k][1]:
-                return
-            last[k] = [now, body]
-            statelog.write(json.dumps({"ev": k, "epoch": round(wall, 3), **body}) + "\n")
-
-        pilot.w.c.log = lambda ev: (orig(ev), log_state(ev) if ev.get("ev") in bulky else
-                                    evlog.write(json.dumps({**ev, "epoch": round(time.time(), 3)}) + "\n"))
-        # disturb_near/disturb_panel: the server stops a run the moment a monster
-        # in view moves, or at a sector edge (faster than our polling at run
-        # speed; the Advisor's running memo). disturb_move stays as the user plays.
-        for opt in ("avoid_other", "stack_force_costs", "disturb_near", "disturb_panel"):
-            client.send(f"option {opt} yes")
-        try:
-            # the character's options, once per login (the Advisor couldn't read them from the logs)
-            pilot.log("options", options=client.query("options", "options"))
-        except Exception as e:
-            pilot.log("note", text=f"options query failed: {e!r}")
-        sock = os.path.join(rundir, "ctl.sock")
-        if os.path.exists(sock):
-            os.unlink(sock)
-        srv = Server(sock, Handler)
-        srv.pilot = pilot
-        threading.Thread(target=srv.serve_forever, daemon=True).start()
-        say(f"control socket {sock}")
-        pilot.notify("started", f"in the game at {pilot.w.depth} (depth), Pilot v{VERSION}")
-        while pilot.running:
-            pilot.tick()
-            client.collect(0.05)          # drain the client's own queue; paces the loop
-        say("pilot stopping")
-    except ClientExited as e:
-        say(f"client exited: {e}")
-        if pilot is not None and pilot.dead:
-            # keep answering status/attention so the Navigator learns of the death
-            pilot.running = True
-            while pilot.running:
-                pilot.handle_requests()
-                time.sleep(0.2)
-            say("pilot stopping (dead)")
-        sys.exit(1)
-    finally:
-        client.quit()
-
 
 if __name__ == "__main__":
-    main()
+    sys.modules["pilot"] = sys.modules["__main__"]
+    import daemon
+    daemon.main()
