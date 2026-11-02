@@ -1,0 +1,8 @@
+[M2-20261102-171759] snapshot Dive04
+saved Dive04 to /projectnb/jbrcs/mangband/runs/setpieces/saves/M2-20261102-171759
+[M2-20261102-171759] Gandalf at 300 ft
+[M2-20261102-171759] Dive04 at (26, 142), an Aluminum-Plated Wand at (26, 158) (16 away), '>' at (29, 140)
+[M2-20261102-171759]   FAIL the wand fetched: picked up at None s; left behind [['Wand of Stinking Cloud']]
+[M2-20261102-171759]   PASS then down the '>' within 60 s: at 13.0 s
+[M2-20261102-171759] restored Dive04 from /projectnb/jbrcs/mangband/runs/setpieces/saves/M2-20261102-171759
+[M2-20261102-171759] FAIL -> /projectnb/jbrcs/mangband/runs/setpieces/M2-20261102-171759.json

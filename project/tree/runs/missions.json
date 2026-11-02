@@ -2668,5 +2668,60 @@
   "report": "compact",
   "notes": "set-piece M2",
   "version": "2.44.4"
+ },
+ {
+  "label": "sp-M2-20261102-171228",
+  "nick": "dive04",
+  "start": "2026-11-02 17:13",
+  "end": "2026-11-02 17:15",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M2",
+  "version": "2.44.5"
+ },
+ {
+  "label": "sp-M2-20261102-171520",
+  "nick": "dive04",
+  "start": "2026-11-02 17:15",
+  "end": "2026-11-02 17:18",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M2",
+  "version": "2.44.5"
+ },
+ {
+  "label": "sp-M2-20261102-171759",
+  "nick": "dive04",
+  "start": "2026-11-02 17:18",
+  "end": "2026-11-02 17:21",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M2",
+  "version": "2.44.5"
+ },
+ {
+  "label": "sp-M2-20261102-172116",
+  "nick": "dive04",
+  "start": "2026-11-02 17:21",
+  "end": "2026-11-02 17:23",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M2",
+  "version": "2.44.5"
+ },
+ {
+  "label": "sp-M2-20261102-172339",
+  "nick": "dive04",
+  "start": "2026-11-02 17:24",
+  "end": "2026-11-02 17:26",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M2",
+  "version": "2.44.5"
  }
 ]

@@ -12,6 +12,10 @@ Related: the tick loop and reflex order are in [pilot-core.md](pilot-core.md); t
 [pilot-combat.md](pilot-combat.md); what is sold, kept, identified and worn in [pilot-items.md](pilot-items.md);
 the `pilotctl` syntax of every command in [commands.md](commands.md).
 
+Where the code is (E1 step 2): `Goal` and the dungeon goals in `tools/pilot/goals.py`, the town goals (`Town`,
+`TownFarm`, `Shop`, `StashDeposit`/`StashFetch`, `HouseBank`, `TownKit`) in `town_goals.py`, `TripPlan` in `plan.py`;
+`pilot.py` imports them back, so `pilot.py: Goal` below still names them (the `Pilot` methods stay in pilot.py).
+
 ## What a goal is
 
 - **Class shape.** A subclass of `pilot.py: Goal` with a `name` (what `describe()` returns: shown in reports, logs

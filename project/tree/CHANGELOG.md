@@ -27,6 +27,13 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.44.6 -- 2026-11-02 (session 10, continued)
+No missions yet. No play change (refactor-candidates E1, step 2).
+- The goal classes left pilot.py: `goals.py` (Goal and the 15 dungeon goals), `town_goals.py` (Town, TownFarm, Shop,
+  the stash goals, HouseBank, TownKit), `plan.py` (TripPlan); pilot.py 10,240 -> 7,587 lines. A new unit case checks
+  the report text against a golden file (`harness/golden/reports.txt`; `unit.py --golden` regenerates it). 139 unit
+  cases; dry start and tick() equivalence identical; a live Shop goal and house visit; M2 PASS.
+
 ## 2.44.5 -- 2026-11-02 (session 10, continued)
 No missions yet. No play change (refactor-candidates E1, step 1 of the pilot.py split).
 - `daemon.py` (the socket server, `main`), `report.py` (`ReportMixin`: the status reports and their formatters) and

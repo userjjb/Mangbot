@@ -1,9 +1,12 @@
 # Pilot core: architecture, tick loop, perception, movement, logs, the report
 
-The **Pilot** (`github/tools/pilot/pilot.py`, ~10.2k lines, plus `world.py`, `mover.py`, `glyphs.py`,
+The **Pilot** (`github/tools/pilot/pilot.py`, ~7.6k lines, plus `world.py`, `mover.py`, `glyphs.py`,
 `structures.py`; since E1 also `daemon.py`: `main()`, `Server`, `Handler`; `report.py`: `ReportMixin`, the report
-methods, still on `Pilot`; `common.py`: `VERSION`, `TV_*`, `DEFAULT_ORDERS` and helpers shared by these, re-exported by
-pilot.py) is a Python daemon that plays one MAngband character second to second. It owns a tool-mode C
+methods, still on `Pilot`; `goals.py`: `Goal` and the dungeon goals; `town_goals.py`: `Town`, `TownFarm`, `Shop`,
+`StashDeposit`/`StashFetch`, `HouseBank`, `TownKit`, `edge_of`, `town_houses`; `plan.py`: `TripPlan`, `split_specs`;
+`common.py`: `VERSION`, `TV_*`, `DEFAULT_ORDERS` and helpers shared by these (`plural`, `one_of`, `kind_key`,
+`flavour_key`, `bare_name`, `singular`, `recall_level`, ...); pilot.py imports every one of these names back, so
+`pilot.Flee`, `pilot.TripPlan`, `pilot.VERSION` still work) is a Python daemon that plays one MAngband character second to second. It owns a tool-mode C
 client (`mangclient -mtool`), builds a model of the game from the client's events and queries, and acts on it
 about 20 times a second: reflexes first (survival), then the Navigator's standing reactions, the Pilot's own item
 work, the current goal, and the trip plan. The Navigator (an LLM subagent) and the Architect steer it through a
