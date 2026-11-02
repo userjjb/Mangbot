@@ -115,14 +115,14 @@ def states(nick, t0=-INF, t1=INF, keep=None):
 # says "The X ..."; "It"/"Something" and the unnamed "You are hit by/enveloped/blasted/struck" -> "unseen". A drop
 # with no attack message (poison, a cut, an unseen spell) -> category "other", monster "unattributed".
 DROP_GAP_S, BEFORE_S, AFTER_S = 5.0, 0.6, 0.2
-MELEE = re.compile(r"^(?:The (.+?)|It|Something) (hits|bites|claws|stings|touches|kicks|butts|crushes|engulfs|"
+MELEE = re.compile(r"^(.+?) (hits|bites|claws|stings|touches|kicks|butts|crushes|engulfs|"
                    r"crawls on|spits on|gazes at|wails at|punches|grabs|drools on|releases spores|begs|insults|"
                    r"moans) you")
 ELEMENTS = (("fire", r"fire|flames|burn"), ("cold", r"frost|cold|ice"), ("acid", r"acid"),
             ("elec", r"lightning|elec"), ("pois", r"poison|gas|stinking cloud"), ("lite", r"breathes light"),
             ("dark", r"darkness|breathes dark"), ("shard", r"shards"), ("nexus", r"nexus"), ("sound", r"sound"),
             ("nether", r"nether"), ("chaos", r"chaos"), ("disen", r"disenchant"))
-RANGED = re.compile(r"^(?:(?:The (.+?)|It|Something) (?:breathes|casts|fires|hurls|spits)|You are hit by|"
+RANGED = re.compile(r"^(?:(.+?) (?:breathes|casts|fires|hurls|spits|shoots)|You are hit by|"
                     r"You are enveloped|You are blasted|You are struck)")
 MELEE_HURT_UNKNOWN = 0.7       # the HURT share of an unknown attacker's blows
 Row = collections.namedtuple("Row", "t amount category monster depth drop")   # drop: the drop's index
@@ -138,18 +138,33 @@ def _races():
     return _RACES
 
 
+def _who(subject):
+    """The attacker a message names (the Advisor, 11-02): the subject less a leading "The ", if it is a race name
+    (any case; so uniques, whose names have no "The", count too); "It"/"Something" (or none) -> "unseen"; anything
+    else (a dart trap's "A small dart") -> None."""
+    if not subject or subject in ("It", "Something"):
+        return "unseen"
+    name = subject[4:] if subject.startswith("The ") else subject
+    return name if name.lower() in _races() else None
+
+
 def attack(text):
-    """An attack message on us -> (kind, monster): kind "melee" or an element or "other"; monster the name the
-    message gives, or "unseen". None if it isn't an attack on us (or a status-only spell: no damage)."""
+    """An attack message on us -> (kind, monster): kind "melee" or an element or "other"; monster the race the
+    message names, or "unseen". A subject that is no race (a trap) -> ("other", "unattributed"), never melee. None if
+    it isn't an attack on us (or a status-only spell: no damage)."""
     m = MELEE.match(text)
     if m:
-        return "melee", m.group(1) or "unseen"
+        who = _who(m.group(1))
+        return ("melee", who) if who else ("other", "unattributed")
     m = RANGED.match(text)
     if not m:
         return None
     if "fearful illusion" in text or "burning your eyes" in text or "confus" in text or "scare" in text:
         return None
-    return next((el for el, pat in ELEMENTS if re.search(pat, text)), "other"), m.group(1) or "unseen"
+    who = _who(m.group(1))
+    if who is None:
+        return "other", "unattributed"
+    return next((el for el, pat in ELEMENTS if re.search(pat, text)), "other"), who
 
 
 def hp_drops(recs):

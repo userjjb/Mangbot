@@ -145,14 +145,14 @@
  "damage_by_monster": {
   "Stegocentipede": 143,
   "Baby green dragon": 114,
-  "Cave orc": 87,
   "Black orc": 84,
+  "Golfimbul, the Hill Orc Chief": 62,
   "Baby bronze dragon": 47,
   "Uruk": 46,
   "Light hound": 44,
   "Ogre": 42,
   "unseen": 294,
-  "unattributed": 36
+  "unattributed": 31
  },
  "damage_hp_lost": 1173,
  "alerts": {

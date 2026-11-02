@@ -147,15 +147,15 @@
  },
  "damage_by_monster": {
   "Black orc": 178,
+  "Brodda, the Easterling": 23,
   "Dark elven priest": 19,
   "Dark elven warrior": 19,
   "Wolf": 17,
   "Squint-eyed rogue": 12,
   "Silver mouse": 6,
   "Tengu": 4,
-  "Scruffy looking hobbit": 4,
   "unseen": 54,
-  "unattributed": 36
+  "unattributed": 13
  },
  "damage_hp_lost": 357,
  "alerts": {

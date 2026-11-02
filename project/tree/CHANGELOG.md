@@ -27,6 +27,12 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.44.1 -- 2026-11-02 (session 10, continued)
+No missions yet. Scorecards only (no play change).
+- Damage attribution names any attacker whose name is a monster race, so uniques ("Ibun, Son of Mim hits you", no
+  "The") count as named melee; a subject that is no race (a dart trap) is `other`/`unattributed`, never melee (the
+  Advisor's definition, 11-02). m25's unattributed damage fell from 398 to 9 of 628 HP. Cards regenerated.
+
 ## 2.44.0 -- 2026-11-02 (session 10, continued)
 No missions yet. Details: `docs/refactor-candidates.md` group D; the Advisor's memo 2026-11-01-d-merges.
 - **Junk** (D3): one rule, the union of the three old ones; kept and @-inscribed items never junk. For a warrior only

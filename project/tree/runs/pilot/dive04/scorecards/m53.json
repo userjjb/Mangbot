@@ -169,15 +169,15 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Uruk": 162,
   "Novice ranger": 144,
+  "Uruk": 103,
+  "Gorbag, the Orc Captain": 67,
   "Light hound": 65,
   "Cave orc": 63,
   "Forest troll": 61,
   "Novice rogue": 42,
   "Mirkwood spider": 37,
-  "Priest": 35,
-  "unseen": 204,
+  "unseen": 203,
   "unattributed": 125
  },
  "damage_hp_lost": 1267,

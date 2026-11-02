@@ -148,6 +148,7 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
+  "Nar, the Dwarf": 150,
   "Black ogre": 80,
   "Wererat": 60,
   "Uruk": 46,
@@ -155,9 +156,8 @@
   "Light hound": 28,
   "Hippogriff": 28,
   "Paladin": 22,
-  "Giant white mouse": 19,
   "unseen": 313,
-  "unattributed": 224
+  "unattributed": 74
  },
  "damage_hp_lost": 1026,
  "alerts": {

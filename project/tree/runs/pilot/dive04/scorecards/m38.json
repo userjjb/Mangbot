@@ -157,11 +157,11 @@
   "Black orc": 103,
   "Black ogre": 85,
   "White wolf": 80,
-  "Energy hound": 62,
+  "Energy hound": 59,
   "Orc shaman": 59,
   "Hill orc": 51,
   "Tiger": 45,
-  "unseen": 214,
+  "unseen": 202,
   "unattributed": 168
  },
  "damage_hp_lost": 1520,

@@ -163,12 +163,11 @@
   "Black orc": 60,
   "White wolf": 43,
   "Orc captain": 30,
+  "Brodda, the Easterling": 24,
   "Orc shaman": 17,
   "Cave orc": 17,
   "Clear hound": 14,
-  "Dark elven priest": 8,
-  "unseen": 5,
-  "unattributed": 24
+  "unseen": 5
  },
  "damage_hp_lost": 295,
  "alerts": {

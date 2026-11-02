@@ -156,14 +156,14 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Black orc": 135,
-  "Cave orc": 77,
+  "Black orc": 124,
   "Novice ranger": 77,
-  "Hill orc": 46,
+  "Gorbag, the Orc Captain": 69,
+  "Hill orc": 40,
   "Kobold archer": 40,
-  "Light hound": 37,
+  "Cave orc": 36,
+  "Light hound": 27,
   "Swordsman": 23,
-  "Dark elven priest": 22,
   "unseen": 161,
   "unattributed": 166
  },

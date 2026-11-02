@@ -152,13 +152,13 @@
   "Nighthawk": 135,
   "Black orc": 75,
   "Hill orc": 71,
+  "Wormtongue, Agent of Saruman": 50,
   "Pseudo-dragon": 22,
   "Swordsman": 18,
   "Dark elven warrior": 16,
   "Baby black dragon": 12,
-  "Tengu": 11,
   "unseen": 63,
-  "unattributed": 75
+  "unattributed": 25
  },
  "damage_hp_lost": 568,
  "alerts": {

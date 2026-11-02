@@ -266,6 +266,6 @@ directly), then one merging the candidates; bug fixes went to agents on disjoint
 Reuse that for big reading jobs. And: before continuing a session in a new job, `claude --resume` it -- a fresh chat
 lacks the context (how the parallel chat happened).
 
-**State now (11-02):** version **2.44.0**. Running in SGE job 8327794 (scc-va4, ends Tue
-11-03 08:47): the test server (gdb, freeze-enabled), Dive04's Pilot (2.44.0), the viewer (`tmux -L mang attach -t
+**State now (11-02):** version **2.44.1** (2.44.0 + the uniques fix in the cards' damage attribution). Running in SGE job 8327794 (scc-va4, ends Tue
+11-03 08:47): the test server (gdb, freeze-enabled), Dive04's Pilot (2.44.1), the viewer (`tmux -L mang attach -t
 watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wilderness house. 138 unit cases pass.

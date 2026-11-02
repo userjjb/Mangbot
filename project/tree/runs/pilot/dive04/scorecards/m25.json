@@ -146,16 +146,16 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Kobold archer": 69,
-  "Kobold shaman": 45,
+  "Ibun, Son of Mim": 383,
+  "Kobold archer": 46,
+  "Kobold shaman": 38,
   "Novice warrior": 33,
+  "Mughash the Kobold Lord": 30,
   "Cave spider": 19,
   "Novice mage": 14,
   "Wild cat": 8,
-  "Copperhead snake": 7,
-  "Baby green dragon": 6,
   "unseen": 14,
-  "unattributed": 398
+  "unattributed": 9
  },
  "damage_hp_lost": 628,
  "alerts": {

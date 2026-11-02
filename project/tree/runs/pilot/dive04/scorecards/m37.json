@@ -157,14 +157,14 @@
  "damage_by_monster": {
   "Black orc": 158,
   "Uruk": 78,
-  "Brown yeek": 50,
   "White wolf": 48,
+  "Brown yeek": 46,
   "Novice paladin": 39,
   "Novice warrior": 34,
   "Hill orc": 30,
   "Ogre": 29,
   "unseen": 184,
-  "unattributed": 66
+  "unattributed": 55
  },
  "damage_hp_lost": 859,
  "alerts": {

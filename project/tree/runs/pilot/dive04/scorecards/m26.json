@@ -146,16 +146,16 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
-  "Brown yeek": 106,
-  "Dark hound": 83,
-  "Orc shaman": 72,
+  "Nar, the Dwarf": 150,
+  "Bullroarer the Hobbit": 149,
+  "Brown yeek": 85,
   "Hill orc": 70,
   "Novice ranger": 69,
+  "Dark hound": 61,
   "Dark elven mage": 53,
   "Energy hound": 49,
-  "Swordsman": 44,
-  "unseen": 254,
-  "unattributed": 216
+  "unseen": 225,
+  "unattributed": 64
  },
  "damage_hp_lost": 1345,
  "alerts": {

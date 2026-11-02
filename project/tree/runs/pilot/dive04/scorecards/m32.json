@@ -146,6 +146,7 @@
   "server_crashes": 0
  },
  "damage_by_monster": {
+  "Nar, the Dwarf": 184,
   "Clear hound": 27,
   "Black orc": 21,
   "Hill orc": 18,
@@ -153,9 +154,8 @@
   "Creeping mithril coins": 14,
   "Hippogriff": 13,
   "Kobold archer": 13,
-  "Wolf": 12,
   "unseen": 71,
-  "unattributed": 322
+  "unattributed": 138
  },
  "damage_hp_lost": 571,
  "alerts": {
