@@ -23,7 +23,7 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "..", "shopcat"))
+sys.path.insert(0, os.path.join(HERE, "..", "client"))
 from mang import MangClient            # noqa: E402
 
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))

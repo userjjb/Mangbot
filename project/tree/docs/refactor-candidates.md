@@ -270,7 +270,7 @@ none is fixed. **[N]** = Navigator-facing.
   `stop`, `abort`, `quiet`...): declare in `__init__` / on `Goal`; add `Pilot.for_test()` so unit.py's `pilot()` stops
   mirroring `__init__`. -- S-M/M -- **do** (first, before E1). **done (session 10, 2.44.2)**: `_init_state()` declares 235 attributes, `Goal` its outside-set ones, `Pilot.for_test()`; TownKit/Shop/TripPlan's own lazy flags left for E5
 - **E7** `MangClient` lives in `tools/shopcat/mang.py` but pilot.py, harness/dm.py, observe/scribe.py import it via
-  `sys.path` hacks: move to `tools/client/`, leave a shim. -- M/S -- **do**.
+  `sys.path` hacks: move to `tools/client/`, leave a shim. -- M/S -- **do**. **done (session 10, 2.44.3)**: `tools/client/mang.py`, a shim at `shopcat/mang.py`
 - **E8** `unit.py` (3,177 lines, 120 cases) -> files by family + `fixtures.py`; `setpiece.py` (1,492) -> `Run` framework
   vs 39 scenarios; harness/README -> reference table + findings log. -- S-M/M -- **do** (unit count must stay 120).
 - **E9** scorecard.py `card()` (~170 lines) -> one function per group. -- S/S -- **do** (cards byte-identical).

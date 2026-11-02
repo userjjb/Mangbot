@@ -27,6 +27,11 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.44.3 -- 2026-11-02 (session 10, continued)
+No missions yet. No play change (refactor-candidates E7).
+- The client wrapper `MangClient` moved from `tools/shopcat/mang.py` to `tools/client/mang.py`; the Pilot, the DM
+  helper and the Scribe import it from there; `shopcat/mang.py` is a shim for the shop-tour scripts. M2 PASS.
+
 ## 2.44.2 -- 2026-11-02 (session 10, continued)
 No missions yet. No play change (refactor-candidates E6, the first step of splitting pilot.py).
 - The Pilot declares all its state in one place (`_init_state()`, 235 attributes; ~110 used to be created lazily);

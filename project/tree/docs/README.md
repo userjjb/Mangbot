@@ -1,7 +1,7 @@
 # The Documentation
 
 What everything in this project does, so you can understand the whole and each part without reading the code.
-Written in session 10 (2026-10-29) from the code at git `d53ba3b` and kept in step since (now version 2.44.2, every claim checked against the code on 10-29; `github/VERSION`, `../CHANGELOG.md`). Where a doc and
+Written in session 10 (2026-10-29) from the code at git `d53ba3b` and kept in step since (now version 2.44.3, every claim checked against the code on 10-29; `github/VERSION`, `../CHANGELOG.md`). Where a doc and
 the code disagreed, these files follow the code. When you change a component, update its file here too.
 
 **In a hurry?** Read [CONDENSED.md](CONDENSED.md) (the 3-page version for Architects and Advisors).
@@ -27,7 +27,7 @@ The system has four roles ([process.md](process.md), `../roles.md`):
 MAngband server (test: ../testserver, port 28346; freeze file stops game time)       client-server.md
   ^ network protocol
 mangclient -mtool  (our headless client: JSON events out, one-line commands in)       client-server.md
-  ^ stdin/stdout, via tools/shopcat/mang.py: MangClient
+  ^ stdin/stdout, via tools/client/mang.py: MangClient
 Pilot daemon  pilot.py (+ world, mover, glyphs, structures, itemvalue, geareval)       pilot-core.md
   |  every tick: reflexes (stay alive) -> the goal (Explore, Dive, TownKit...) -> item policy
   |                                     pilot-combat.md / goals-and-plans.md / pilot-items.md

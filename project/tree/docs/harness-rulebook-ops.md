@@ -24,7 +24,7 @@ commands in [client-server.md](client-server.md); the viewer's freeze key in [ob
 | `harness/dm.py` | scripts the DM character Gandalf (summon, paint terrain, forge, pull a player) | `setpiece.py` | live |
 | `harness/charsave.sh` | save/restore a character's savefile + Pilot state | `setpiece.py`; the Architect for checkpoints | live |
 | `rulebook/` | 27 CSV tables (26 from the Advisor + `monsters_raw.csv`) + `rule.py`, `fight_sim.py` | the Pilot (loads tables), the Navigator (`pilotctl rule`), the Architect | live; synced 2026-10-24, identical to the Advisor's copy today |
-| `shopcat/mang.py` | Python wrapper for the tool-mode client | the Pilot, `dm.py`, `observe/study/scribe.py` | **live, core** |
+| `client/mang.py` | Python wrapper for the tool-mode client | the Pilot, `dm.py`, `observe/study/scribe.py` | **live, core** Moved from `shopcat/` on 2026-11-02 (E7); `shopcat/mang.py` is a shim that loads it under the same name (for shopcat.py, newchar.py). |
 | `shopcat/newchar.py` | create a throwaway character + its private files | the Architect (rarely); `scribe.py` imports two helpers | live, rarely used |
 | `shopcat/shopcat.py`, `nav.py`, `wild.py`, `report.py` | the player-shop cataloguer | nobody since 2026-09-25 | **stale** |
 | `freeze.sh` | stop/start game time on the test server | the Architect, `hotswap.sh`, set-piece H1 | live |
@@ -145,7 +145,7 @@ an A/B. A run takes a few minutes.
 
 ### `dm.py` -- the Dungeon Master driver
 
-`DM(nick="Gandalf", port=28346)` logs Gandalf in through `shopcat/mang.py` (private files `runs/private/gandalf.*`) and
+`DM(nick="Gandalf", port=28346)` logs Gandalf in through `client/mang.py` (private files `runs/private/gandalf.*`) and
 drives the server's DM menu (`server/xtra2.c do_cmd_dungeon_master`) with the tool client's `interactive 13`, `keys`
 and `special` events.
 

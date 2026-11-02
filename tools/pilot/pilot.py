@@ -50,7 +50,7 @@ def architect_token(priv):
         with os.fdopen(fd, "w") as f:
             f.write(secrets.token_hex(16) + "\n")
     return open(path).read().strip()
-sys.path.insert(0, os.path.join(HERE, "..", "shopcat"))
+sys.path.insert(0, os.path.join(HERE, "..", "client"))
 
 from mang import MangClient, ClientExited      # noqa: E402
 import glyphs                                   # noqa: E402

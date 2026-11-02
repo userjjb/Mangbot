@@ -267,9 +267,9 @@ Reuse that for big reading jobs. And: before continuing a session in a new job, 
 lacks the context (how the parallel chat happened).
 
 **Group E (the user, 11-02: in steps, a commit each; stop at a clean commit if the context runs short):** E6 done
-(2.44.2). Next: E7 (MangClient to tools/client/ with a shim), E4 (`Pilot.tick` pieces), E9 (scorecard `card()`), then
+(2.44.2), E7 done (2.44.3: tools/client/mang.py). Next: E4 (`Pilot.tick` pieces), E9 (scorecard `card()`), then
 E1 one module per commit (docs/refactor-candidates.md E1's layout), then E2, E3, E5, E8.
 
-**State now (11-02):** version **2.44.2**. Running in SGE job 8327794 (scc-va4, ends Tue
-11-03 08:47): the test server (gdb, freeze-enabled), Dive04's Pilot (2.44.2), the viewer (`tmux -L mang attach -t
+**State now (11-02):** version **2.44.3**. Running in SGE job 8327794 (scc-va4, ends Tue
+11-03 08:47): the test server (gdb, freeze-enabled), Dive04's Pilot (2.44.3), the viewer (`tmux -L mang attach -t
 watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wilderness house. 138 unit cases pass.

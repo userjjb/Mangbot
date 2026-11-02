@@ -401,7 +401,7 @@ studies read those `pkt.jsonl` files). No script calls them.
 
 `python3 study/scribe.py --to CHARNAME [--nick Scribe] [--port 28346] [--fifo runs/observe/scribe.fifo] &`, then
 `echo "text" > runs/observe/scribe.fifo`. Logs in a town-bound character through the shopcat client
-(`tools/shopcat/mang.py`, `newchar.py`; creates it if needed) and sends each line written to the FIFO as private
+(`tools/client/mang.py`, `newchar.py`; creates it if needed) and sends each line written to the FIFO as private
 chat to `--to`, split to fit the 59-character chat line. Lets Claude answer the user in game while they play.
 Local server only and only at the user's request (our characters otherwise never chat). Listed as the "Scribe"
 role in `operations.md`; last used 2026-09-25.

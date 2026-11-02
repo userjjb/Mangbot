@@ -1,7 +1,7 @@
 # The Documentation, condensed (for Architects and Advisors)
 
 The full version is [README.md](README.md) and its ten component files. This page is what a new Architect or Advisor
-needs in their head before touching anything. Session 10, 2026-10-29; matches version 2.44.2 (`github/VERSION`, CHANGELOG.md).
+needs in their head before touching anything. Session 10, 2026-10-29; matches version 2.44.3 (`github/VERSION`, CHANGELOG.md).
 
 ## What this is
 
@@ -21,7 +21,7 @@ imports live. **The user decides** policy; nobody else changes a user decision.
 - **`mangclient -mtool`**: our headless client. JSON-line events out (messages, position, level, monster/item lists,
   store, confirm, popup...), one-line commands in (walk, pathfind, any server command, look, clear, confirm; queries
   status, inven, map, flags). Prompt-less login, auto birth, packet logs with blanked passwords. Every tool starts it
-  through `tools/shopcat/mang.py: MangClient`.
+  through `tools/client/mang.py: MangClient`.
 - **The Pilot daemon** owns the client as a child process and serves `runs/pilot/<nick>/ctl.sock`. Each tick: update
   the `World` (`world.py`: map memory, monsters, items, player, clock `TICK_S = 0.625`), run the watchers, serve
   requests, then **the first layer that acts wins**: reflexes -> the Navigator's `react` rules -> item work -> one step

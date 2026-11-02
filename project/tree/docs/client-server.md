@@ -4,7 +4,7 @@ MAngband is client/server: the server (`mangband`) runs the world, and a client 
 commands. We play through a modified client: `mangclient -mtool` is a headless mode with no screen and no keyboard
 that prints what happens as JSON lines on stdout and takes one-line commands on stdin. Every program of ours that
 plays (the Pilot, shopcat, the set-piece harness, scribe) starts this client as a child process through the Python
-wrapper `tools/shopcat/mang.py: MangClient`. All client changes are client-only and work against any 1.5.3 server,
+wrapper `tools/client/mang.py: MangClient`. All client changes are client-only and work against any 1.5.3 server,
 the live one included. The few server changes (a time freeze, store guards, a wider depth indicator) exist only in
 our build, which runs only as the local **test server**.
 
@@ -32,7 +32,7 @@ Related docs: [pilot-core.md](pilot-core.md) (how the Pilot uses the client), [c
 | `src/server/net-server.c` | changed | The test-server time freeze (`time_frozen`). |
 | `src/server/store.c` | changed | Guards against a purchase/sale arriving when the player is not in a store. |
 | `src/server/tables.c` | changed | The `depth` indicator sent as 16 bits instead of one signed byte. |
-| `tools/shopcat/mang.py` | ours (Python) | `MangClient`: starts the client, reads events on a thread, `send`, `wait`, `query`, `wait_ready`, `quit`. Also `meta_servers()` (the metaserver list). |
+| `tools/client/mang.py` | ours (Python) | `MangClient`: starts the client, reads events on a thread, `send`, `wait`, `query`, `wait_ready`, `quit`. Also `meta_servers()` (the metaserver list). |
 | `tools/freeze.sh` | ours | `on | off | toggle | status` for the test-server freeze file. |
 
 ## Launching the client

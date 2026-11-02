@@ -21,7 +21,8 @@ import threading
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, "..", "..", "shopcat"))
+sys.path.insert(0, os.path.join(HERE, "..", "..", "client"))
+sys.path.insert(1, os.path.join(HERE, "..", "..", "shopcat"))
 from mang import MangClient      # noqa: E402
 from newchar import private_files, DEFAULT_BIRTH   # noqa: E402
 
