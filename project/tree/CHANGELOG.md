@@ -27,6 +27,12 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.44.2 -- 2026-11-02 (session 10, continued)
+No missions yet. No play change (refactor-candidates E6, the first step of splitting pilot.py).
+- The Pilot declares all its state in one place (`_init_state()`, 235 attributes; ~110 used to be created lazily);
+  goals declare the attributes set on them from outside; `Pilot.for_test()` builds a Pilot for the unit cases without
+  I/O (unit.py's fixture no longer copies `__init__`). Reports byte-identical; 138 unit cases; M2 PASS.
+
 ## 2.44.1 -- 2026-11-02 (session 10, continued)
 No missions yet. Scorecards only (no play change).
 - Damage attribution names any attacker whose name is a monster race, so uniques ("Ibun, Son of Mim hits you", no

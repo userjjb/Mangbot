@@ -51,9 +51,10 @@ server, no client, no network.
 **How it works:** it imports `pilot/pilot.py` (as `P`), `glyphs` and `itemvalue`, loads the monster races merged with
 the rulebook (`glyphs.load_rulebook`). `W` is a fake World: Dive04 as of 2026-10-23 (clvl 22, 265 HP, 300 ft, a Spear
 (+5,+7), AC 56, 172 gold) unless a case passes other HP, pack, worn items or monsters. `pilot(w)` makes a `Pilot` with
-`Pilot.__new__` (skipping `__init__`, so no connection), sets just the attributes the decision code reads (orders,
-deepest, drained stats, keep set, flavours...), stubs `log` and records `notify` calls in `p.notes`, and resets the
-game clock in `world` (a case that leaves the clock fast or frozen once made the Phase rule flaky). Some cases add
+`Pilot.for_test(w, ...)` (every attribute at its default from `_init_state()`, `log` a no-op, no client, rundir or
+decisions.jsonl: E6, 2026-11-02), sets the case's own (orders, deepest, drained stats, unique names), records `notify`
+calls in `p.notes`, and resets the game clock in `world` (a case that leaves the clock fast or frozen once made the
+Phase rule flaky). Some cases add
 small fakes (a `_Mover`, a town memory, a quiet level) or write temporary state files.
 
 **Run:**

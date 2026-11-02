@@ -268,7 +268,7 @@ none is fixed. **[N]** = Navigator-facing.
 - **E6** ~190 lazily created attributes (`__dict__.get/setdefault`, `getattr`: `item_cmd_t`, `gold_found`, `since`,
   `walkaway_failed`, Dive's `scummed`/`kept`) and goal attributes set from outside (`role`, `by_navigator`, `by_plan`,
   `stop`, `abort`, `quiet`...): declare in `__init__` / on `Goal`; add `Pilot.for_test()` so unit.py's `pilot()` stops
-  mirroring `__init__`. -- S-M/M -- **do** (first, before E1).
+  mirroring `__init__`. -- S-M/M -- **do** (first, before E1). **done (session 10, 2.44.2)**: `_init_state()` declares 235 attributes, `Goal` its outside-set ones, `Pilot.for_test()`; TownKit/Shop/TripPlan's own lazy flags left for E5
 - **E7** `MangClient` lives in `tools/shopcat/mang.py` but pilot.py, harness/dm.py, observe/scribe.py import it via
   `sys.path` hacks: move to `tools/client/`, leave a shim. -- M/S -- **do**.
 - **E8** `unit.py` (3,177 lines, 120 cases) -> files by family + `fixtures.py`; `setpiece.py` (1,492) -> `Run` framework

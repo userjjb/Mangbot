@@ -287,6 +287,19 @@ def plural(n, word):
 
 class Goal:
     name = "goal"
+    # set on a goal from outside it (refactor-candidates E6): declared here, at class level, so vars(g) -- what
+    # goalstate shows -- still lists only the goal's own state
+    role = None              # who it acts for: navigator / architect / pilot (set_goal, request_goal, TripPlan.mark)
+    by_navigator = False     # a hunt the Navigator ordered (hunt_ordered: the automatic flees don't replace it)
+    by_plan = False          # one of the trip plan's goals (TripPlan.mark)
+    stop = True              # Dive: stop for something interesting on a new level (the trip plan's dives don't)
+    abort = None             # why it ends at its next step (watch_progress: gone nowhere twice)
+    quiet = False            # its end is news, not an alert (the Pilot's own small goals)
+    overridden = None        # a hunt the Navigator forced past a refusal: judged by settle_hunt (the fight debt)
+    estimate = None          # a hunt's fight estimate (request_goal's reply notes it)
+    kept_warned = None       # the danger a Navigator's hunt was last kept against (told once each)
+    stuck_once = False       # watch_progress restarted its move once already
+    wait_answer = None       # QuietWait: the id of the Architect question it waits for (ask_architect)
 
     def describe(self):
         return self.name
@@ -592,7 +605,7 @@ class Dive(Goal):
             self.walking = False
             self.explore = None
             self.pillared_done = False
-            why = p.interesting() if getattr(self, "stop", True) else None
+            why = p.interesting() if self.stop else None
             if why:
                 return ("interesting", why)
         # Standing orders that save asking the agent: loot what's close...
@@ -627,7 +640,7 @@ class Dive(Goal):
             downs = [tuple(p.town_stairs)]
             w.memory.setdefault(downs[0], ">")
         # Just fled from the level these stairs lead to, arriving here: not straight back (find another)
-        fl = getattr(p, "fled_from", None)
+        fl = p.fled_from
         # (not when the way back is the way up to max_depth: m27 fled down to 700 ft past max_depth 650 and this kept
         # it there 4 minutes)
         md_now = int(p.orders.get("max_depth", 0))
@@ -636,8 +649,8 @@ class Dive(Goal):
         # On the test server -- one player, so a level is freed when we leave it -- no hold at all (the user, 10-26),
         # unless the level is kept: one we've seen the server keep (p.kept), or the one we logged in on (our own
         # previous logout made it static). Operations.md, Level persistence)
-        kept = fl and (fl[0] in getattr(p, "kept", ()) or (len(fl) > 3 and fl[3]))
-        hold = 300 if kept else self.FLED_HOLD if getattr(p, "live", False) else 0
+        kept = fl and (fl[0] in p.kept or (len(fl) > 3 and fl[3]))
+        hold = 300 if kept else self.FLED_HOLD if p.live else 0
         back = fl and fl[2] == w.level_t and fl[0] == w.depth + (-1 if up else 1) and not waited(fl[1], hold) and \
             not (up and md_now and w.depth_ft > md_now)
         if back and w.standing_on == want and (w.level_t, w.pos) not in self.bad_stairs:
@@ -686,8 +699,6 @@ class Dive(Goal):
         # server keeps (arrived on the very square we scummed from before: m25 took '<' and '>' between
         # 250 and 300 ft ~150 times in 4 minutes, landing on 33,24 each time): then explore it for a '>'
         # (kept on the Pilot: the trip plan starts a fresh Dive goal for each leg)
-        if not hasattr(p, "scummed"):
-            p.scummed, p.kept = set(), set()
         self.scummed, self.kept = p.scummed, p.kept
         here = (w.depth, w.arrive_pos)
         if w.standing_on == other and scum_ok and w.arrive_pos and here in self.scummed and w.depth not in self.kept:
@@ -1124,7 +1135,7 @@ class Flee(Goal):
                 # the server keeps, with the danger beside the arrival: m25 looped into Ibun at 450 ft)
                 # (and whether the level fled is one the server keeps: we logged in on it)
                 p.fled_from = (getattr(self, "from_depth", None), gnow(), w.level_t,
-                               self.took[0] == p.__dict__.get("first_level_t"))
+                               self.took[0] == p.first_level_t)
                 return ("done", f"left by the stairs; now at {w.depth_ft} ft")
             if waited(self.took[1], 5):
                 return ("done", "took the stairs, but no level change seen")
@@ -1140,7 +1151,7 @@ class Flee(Goal):
         if md and w.depth_ft >= md and not w.find("<") and not self.started:
             t = p.teleport_item()
             if t and not w.flag("blind") and (t[0] == "u" or not w.flag("confused")) and \
-                    gnow() - getattr(p, "flee_tele_t", -99.0) > 60:
+                    gnow() - p.flee_tele_t > 60:
                 p.flee_tele_t = gnow()
                 p.cmd(f"custom {t[0]} item={t[1]['item']}", f"flee at {w.depth_ft} ft (max_depth), only '>' known: "
                                                             f"{t[1]['name']}", hold=0.8)
@@ -1548,7 +1559,7 @@ class Shop(Goal):
                                if bare_name(i["name"]).lower() == key),
                               None) if w.store_t > sp["t"] else None
                 p.log("sale", **{k: v for k, v in sp.items() if k != "t"}, relist=relist)
-                if sp.get("forced") and getattr(self, "role", "navigator") != "architect":
+                if sp.get("forced") and self.role != "architect":
                     chr_v = (p.w.ind.get("stat5") or [3])[0]
                     fair = shopmath.fair_pay(relist, sp.get("owner"), chr_v)
                     if fair is None:
@@ -1626,10 +1637,10 @@ class Shop(Goal):
                     return None
                 why_not = p.unknown_sell_refusal(it, n) if it and not force else None
                 if not why_not and it and not force:
-                    why_not = p.value_refusal(it, "sell", getattr(self, "role", None))
+                    why_not = p.value_refusal(it, "sell", self.role)
                     if why_not:
                         why_not += "; `sell !NAME` overrides, and adds the value lost to your debt"
-                if force and getattr(self, "role", "navigator") != "architect" and not p.override_allowed():
+                if force and self.role != "architect" and not p.override_allowed():
                     self.done_log.append(f"NOT sold: your freedom to override the Pilot's value policy is "
                                          f"suspended (debt {p.debt_total()} gold): {it['name'] if it else idx}")
                     return None
@@ -2114,6 +2125,12 @@ class TownKit(Goal):
     the shops to restock (stock turns over every ~33 s)."""
 
     RESTOCK_WAITS = 4          # critical items out of stock: up to 4 waits of 35 s for the shops to restock
+    # set by the Pilot's town_make_room and provision_step (E6: class level, like Goal's)
+    room_tries = 0             # items sold or destroyed to make room for the buys (6 at most)
+    room_said = None           # "pack full: no room" logged
+    swapped = None             # the fuller lantern put on
+    fuelled = 0                # lantern fills (3 at most)
+    ate = 0                    # rations eaten to Fed (3 at most)
 
     def __init__(self, kit=None, buylist=()):
         self.kit, self.buylist = kit, list(buylist)
@@ -2512,7 +2529,7 @@ class TripPlan:
         if why and self.level == w.level_t and not self.level_done:
             self.level_done = f"left: {why}"
             g = p.goal
-            if g is None or getattr(g, "by_plan", False):
+            if g is None or g.by_plan:
                 if what == "band":
                     p.set_goal(self.mark(Flee("band: the trip leaves the level")))
                 else:
@@ -2589,12 +2606,12 @@ class TripPlan:
             # start a new dive meanwhile (m24: a dive walked the pit's ring while it charged)
             if self.phase != "home":
                 # (with the escape's trigger: m42's Navigator couldn't tell why its trip ended at 19:19)
-                le = getattr(p, "last_escape", None)
+                le = p.last_escape
                 why = f": {le[2]} (HP {le[3][0]}/{le[3][1]})" if le and gnow() - le[0] < 60 else ""
                 self.phase, self.home_why = "home", f"the Pilot's escape recall{why}"
                 p.notify("plan", f"trip: a recall is under way (the Pilot's escape{why}): coming home -- "
                                  "`why` for the details", news=True)
-            if p.goal is not None and getattr(p.goal, "by_plan", False) and isinstance(p.goal, (Dive, Explore)):
+            if p.goal is not None and p.goal.by_plan and isinstance(p.goal, (Dive, Explore)):
                 p.set_goal(None)
             if p.goal is None:
                 self.step = "waiting for the recall"
@@ -2605,15 +2622,15 @@ class TripPlan:
             if why:
                 self.phase, self.home_why = "home", why
                 p.notify("plan", f"trip: coming home ({why})", news=True)
-                if p.goal is not None and getattr(p.goal, "by_plan", False) and \
+                if p.goal is not None and p.goal.by_plan and \
                         not isinstance(p.goal, (Flee, Recover, Recall)):
                     p.set_goal(None)
-        if self.phase == "home" and isinstance(p.goal, Dive) and getattr(p.goal, "by_plan", False) and \
+        if self.phase == "home" and isinstance(p.goal, Dive) and p.goal.by_plan and \
                 now - (getattr(self, "climb_t0", None) or now) > 180 and self.value(p, "wor") >= 1 and \
                 not w.recall_pending:
             p.notify("plan", "trip: no way up found in 3 minutes: reading Word of Recall instead", news=True)
             p.set_goal(None)          # (the next tick reads it)
-        if self.phase == "level" and isinstance(p.goal, Explore) and getattr(p.goal, "by_plan", False) and \
+        if self.phase == "level" and isinstance(p.goal, Explore) and p.goal.by_plan and \
                 self.level == w.level_t and not self.level_done and now - self.level_t0 > 60 * self.level_min:
             self.level_done = f"{self.level_min:g} minutes on it"
             p.set_goal(None)
@@ -2627,11 +2644,11 @@ class TripPlan:
                 self.phase = "home"
                 self.home_why = f"couldn't leave {w.depth_ft} ft in {self.LEAVE_MAX / 60:g} minutes ({self.level_done})"
                 p.notify("plan", f"trip: coming home ({self.home_why})", news=True)
-                if p.goal is not None and getattr(p.goal, "by_plan", False) and \
+                if p.goal is not None and p.goal.by_plan and \
                         not isinstance(p.goal, (Flee, Recover, Recall)):
                     p.set_goal(None)
         quiet = self.quiet(p, now)
-        if self.phase == "level" and isinstance(p.goal, Explore) and getattr(p.goal, "by_plan", False) and \
+        if self.phase == "level" and isinstance(p.goal, Explore) and p.goal.by_plan and \
                 self.level == w.level_t and not self.level_done and quiet:
             self.level_done = quiet
             p.set_goal(None)
@@ -2663,7 +2680,7 @@ class TripPlan:
             self.phase = "level"
         if self.phase == "level":
             if w.depth == 0:
-                le = getattr(p, "last_escape", None)
+                le = p.last_escape
                 why = f": the Pilot's escape at HP {le[3][0]}/{le[3][1]}, {le[2]}" if le and gnow() - le[0] < 120 else ""
                 return ("done", f"back in town (not by the plan's recall{why}); {plural(self.levels, 'level')} done -- "
                                 "`why` for the details")
@@ -2850,9 +2867,9 @@ class QuietWait(Goal):
         mob = [r for _, _, r in w.monsters if "NEVER_MOVE" not in r.flags] if w.in_dungeon else []
         if mob or hit:
             return self.end(p, "woke: " + (f"{mob[0].name} came into view" if mob else "something hit us"))
-        aid = getattr(self, "wait_answer", None)
+        aid = self.wait_answer
         if aid is not None:
-            ans = [a for a in p.__dict__.get("arch_answers", []) if a[1] == aid and a[0] >= self.t0]
+            ans = [a for a in p.arch_answers if a[1] == aid and a[0] >= self.t0]
             if ans and not ans[-1][2].lower().startswith("more"):
                 return self.end(p, f"the Architect answered #{aid}")
         if gnow() - self.t0 >= self.secs:
@@ -2884,8 +2901,8 @@ class QuietWait(Goal):
 
 class Pilot:
     def __init__(self, client, rundir, orders=None, say=print):
+        self._init_state()
         self.c = client
-        self.recent_acts = collections.deque(maxlen=40)   # for the observer's note snapshots
         self.w = World(client)
         self.mover = Mover(client, self.w, log=lambda *a, **k: self.log("move", **k))
         self.rundir = rundir
@@ -2899,6 +2916,54 @@ class Pilot:
         self.orders = dict(DEFAULT_ORDERS, **saved, **(orders or {}))
         self.dlog = open(os.path.join(rundir, "decisions.jsonl"), "a", buffering=1)
         self.say = say
+        # what each shop's owner is and what it charged (the town kit's prices and routing)
+        self.stores_file = os.path.join(rundir, "stores.json")
+        try:
+            self.stores_seen = {int(k): v for k, v in json.load(open(self.stores_file)).items()}
+        except (OSError, ValueError):
+            self.stores_seen = {}
+        self.debt_path = os.path.join(rundir, "navigator_debt.json")
+        try:
+            self.debt = json.load(open(self.debt_path))
+        except (OSError, ValueError):
+            self.debt = {"entries": []}
+        try:
+            self.keep = set(json.load(open(os.path.join(rundir, "keep.json"))))
+        except (OSError, ValueError):
+            self.keep = set()
+        try:
+            self.standing = json.load(open(os.path.join(rundir, "standing.json")))
+        except (OSError, ValueError):
+            self.standing = []
+        self.plan = TripPlan.load(self)           # (a restart mid-trip carries on with it)
+        self.load_mission()                       # (and a mission with its label)
+        if self.plan:
+            self.log("plan_resumed", plan=self.plan.text, phase=self.plan.phase)
+        # Where the town's '>' is (remembered across runs: the town never changes)
+        self.town_file = os.path.join(os.path.dirname(rundir.rstrip("/")), "town.json")
+        # Server-wide flavour table and this character's deepest level
+        self.flavour_file = os.path.join(os.path.dirname(rundir.rstrip("/")), "..", "flavours.json")
+        self.load_flavours()
+        self.deepest_file = os.path.join(rundir, "deepest.json")
+        try:
+            with open(self.deepest_file) as f:
+                self.deepest_ft = json.load(f)["ft"]
+        except (OSError, ValueError, KeyError):
+            self.deepest_ft = 0
+        if os.path.exists(self.town_file):
+            with open(self.town_file) as f:
+                self.town_stairs = json.load(f).get("stairs")
+
+    def _init_state(self):
+        """Every attribute of the Pilot's state, with its default: no client, files or sockets (refactor-candidates E6:
+        nothing is created lazily). __init__ then does the I/O: the client, its World and Mover, the rundir and the
+        files loaded from it (orders, stores, debt, keep, standing, plan, mission, flavours, deepest, town). The I/O
+        handles themselves -- c, rundir, dlog, say and the file paths -- are set by __init__ only: a Pilot.for_test()
+        has none, and its file loads and saves fall back as with no files (they catch the AttributeError)."""
+        self.recent_acts = collections.deque(maxlen=40)   # for the observer's note snapshots
+        self.w = None                  # the World (__init__: on the client; for_test: the case's)
+        self.mover = None
+        self.orders = dict(DEFAULT_ORDERS)
         self.goal = None
         self.requests = queue.Queue()
         self.attention = []            # pending attention events (for wait-attention)
@@ -2922,23 +2987,11 @@ class Pilot:
         self.policy_t = 0.0
         self.room_t = 0.0
         self.ability_sources = set()   # unidentified worn items that may give them
-        # what each shop's owner is and what it charged (the town kit's prices and routing)
-        self.stores_file = os.path.join(rundir, "stores.json")
-        try:
-            self.stores_seen = {int(k): v for k, v in json.load(open(self.stores_file)).items()}
-        except (OSError, ValueError):
-            self.stores_seen = {}
+        self.stores_seen = {}          # what each shop's owner is and what it charged (stores.json)
         self.stores_noted_t = 0.0
         self.ability_seen_t = gnow()
-        self.debt_path = os.path.join(rundir, "navigator_debt.json")
-        try:
-            self.debt = json.load(open(self.debt_path))
-        except (OSError, ValueError):
-            self.debt = {"entries": []}
-        try:
-            self.keep = set(json.load(open(os.path.join(rundir, "keep.json"))))
-        except (OSError, ValueError):
-            self.keep = set()
+        self.debt = {"entries": []}    # navigator_debt.json
+        self.keep = set()              # keep.json
         self.report_seq, self.last_report = 0, (0, 0.0)   # Navigator reports: number, time of the last
         self.hp_min_since = None       # lowest HP since the last audit_check
         self.escalation_t = 0.0        # last emergency-type alert (escape records)
@@ -2963,33 +3016,14 @@ class Pilot:
         self.hits = collections.Counter()      # (level_t, name) -> hits landed since it was last slain
         self.belief_msg_t = 0.0
         self.gain_hist = collections.deque(maxlen=80)    # (t, exp, gold) every 15 s
-        try:
-            self.standing = json.load(open(os.path.join(rundir, "standing.json")))
-        except (OSError, ValueError):
-            self.standing = []
-        self.plan = TripPlan.load(self)           # (a restart mid-trip carries on with it)
-        self.load_mission()                       # (and a mission with its label)
-        if self.plan:
-            self.log("plan_resumed", plan=self.plan.text, phase=self.plan.phase)
+        self.standing = []             # standing.json
         self.autodestroy_t = 0.0
         self.parking = None
         self.light_t = self.light_warned = 0.0
         self.light_warned_key = None
-        # Where the town's '>' is (remembered across runs: the town never changes)
-        self.town_file = os.path.join(os.path.dirname(rundir.rstrip("/")), "town.json")
-        # Server-wide flavour table and this character's deepest level
-        self.flavour_file = os.path.join(os.path.dirname(rundir.rstrip("/")), "..", "flavours.json")
-        self.load_flavours()
-        self.deepest_file = os.path.join(rundir, "deepest.json")
-        try:
-            with open(self.deepest_file) as f:
-                self.deepest_ft = json.load(f)["ft"]
-        except (OSError, ValueError, KeyError):
-            self.deepest_ft = 0
-        self.town_stairs = None
-        if os.path.exists(self.town_file):
-            with open(self.town_file) as f:
-                self.town_stairs = json.load(f).get("stairs")
+        self.flavours, self.junk_kinds = {}, {}   # (load_flavours)
+        self.deepest_ft = 0            # deepest.json
+        self.town_stairs = None        # town.json
         self.recall_t = 0.0
         self.sidestep_t = 0.0
         self.unseen_warned = self.heard_warned = 0.0
@@ -3036,9 +3070,104 @@ class Pilot:
         self.searched = set()          # (level, square) dead ends searched for secret doors
         self.level_seen = None
         self.phase_t = self.cure_t = self.noescape_t = 0.0
-        self.escaping_to_stairs = False
+        self._escape_walk = None       # escaping_to_stairs: (mover walk_id, level_t) of escape()'s walk to stairs
         self.full_warned = 0.0
         self.running = True
+        # --- (E6) once created lazily, where first used; the defaults are the ones those uses had ---
+        # set by main() after the start
+        self.arch_token, self.hpwarn, self.live = None, 0, False
+        # control requests and the Navigator / Architect
+        self.acting = "pilot"          # who the action is for: pilot / plan / nav / arch (tick, handle_requests)
+        self.req_role = "navigator"    # the role of the request being handled
+        self.report_state = None       # (numbered: the last report's order state, for stale_order)
+        self.asks_sent, self.ask_seq = [], 0      # ask_architect: send times (rate limit), the last question's id
+        self.arch_answers = []         # (t, id, text) of the Architect's answers
+        self.nav_rules = None          # rules.json, loaded on first use (rules)
+        self.rules_done = {}
+        self.review = None             # review.json, loaded on first use (review_state)
+        self.mission_label = self.mission_base = None   # (load_mission, the mission command)
+        # goals
+        self.goal_t = None             # when the goal was set (None: never; each use keeps its old default)
+        self.goal_ending = None        # (step_goal: the goal just ended)
+        self.walkaway_failed = set()   # level_t where a WalkAway failed
+        self.scummed, self.kept = set(), set()    # Dive: (depth, arrival) scummed from; depths the server keeps
+        self.fled_from = None          # Flee: (depth, t, level_t, the login level) of the last level fled by stairs
+        self.flee_tele_t = -99.0
+        self.first_level_t = None      # the level we logged in on (save_level_map)
+        self.fetching = None           # StashFetch / HouseBank: the item being fetched
+        # commands sent
+        self.item_cmd_t = 0.0          # the last item command (cmd holds the next until the pack is back)
+        self.act_walls = collections.deque(maxlen=50)   # wall clock of each command (shadow_results)
+        self.escape_read_t, self.escape_from = -99.0, (None, None)   # the last escape read (escape_line)
+        self.last_escape = None        # (log_escape)
+        self.read_failed_t = -99.0
+        # reflexes, escapes and fights
+        self.conf_since, self.conf_cure_t, self.conf_tele_t, self.conf_cures = None, 0.0, 0.0, {}
+        self.summoner_hold_t = 0
+        self.smoke_t = 0
+        self.speed_t = 0
+        self.speed_start_t = 0         # (speed_start_tick)
+        self.berserk_t = 0             # (berserk_tick)
+        self.blind_tele_t = -99.0      # (group_tick)
+        self.blind_cures = []
+        self.nocure_t = 0
+        self.caster_t, self.caster_said = -99.0, None   # kill_caster_step
+        self.weak_band_said = None
+        self.band_shadow_seen, self.band_shadow_t = {}, -99.0
+        self.hard_fight_seen, self.hard_fight_t = {}, -99.0
+        self.shadow_est, self.shadow_gear_said = None, None   # shadow_decision
+        self.engage = {"target": None, "t0": 0.0, "replan_t": 0.0, "dropped": set()}
+        self.engage_ok = {}
+        self.band_soft_levels = set()
+        self.breeder_weak = False
+        self.junk_msgs_done = set()
+        self.frozen_said = False
+        self.unlit_try_t = 0
+        # looks (which monsters are asleep)
+        self.look_t, self.look_key, self.looks_read_t = -99.0, None, 0.0
+        self.asleep = {}
+        # items, town and house
+        self.loot_mem = {}
+        self.left_news = set()         # (level_t, name) "left ..." said
+        self.drop_fetched = set()
+        self.id_tries = {}
+        self.jewel_swap = None
+        self.gear_swapped_t = 0
+        self.food_warned = None
+        self.supply_told = set()
+        self.edge_cross, self.surface_last = None, None   # note_edge_cross
+        self.trapdoor = None           # (watch_traps)
+        self.recall_restored, self.recall_saved = False, None   # recall_memory (recall.json)
+        # gains and rates
+        self.gold_last = self.xp_last = None   # the last tick's gold and exp (None: none seen yet)
+        self.gold_found = self.gold_sold = self.gold_stolen = self.xp_gained = 0
+        self.depth_t = None
+        self.level_base = None         # (t, exp, level_t) on arriving on this level
+        self.rates = None              # rates.json, loaded on first use (rate_state)
+        self.rate_open = None
+        # reports
+        self.since = None              # since_reset / track_since
+        self.exp_seen = self.exp_t = None
+        self.compact_prev, self.compact_hinted = None, False
+        self.map_snap = None           # save_level_map
+        self.feeling_level = self.level_feeling = None
+        # caches: the rulebook's tables and the files read on first use (None: not read yet)
+        self._uk = self._drops = self._ego_flags = self._fight_rows = self._sim = self._stock = None
+        self._town_books = self._house = None
+        self._pay_cache, self._sim_cache, self.gear_eval_cache = {}, {}, {}
+
+    @classmethod
+    def for_test(cls, world, **overrides):
+        """A Pilot for the unit cases: its state declared (_init_state), `world` its World, and no I/O: log() a no-op,
+        and no client, rundir or decisions.jsonl (a case that needs one sets it, e.g. p.rundir = a temp dir; the file
+        loads and saves that catch the AttributeError run as with no files). Overrides set attributes (orders=...)."""
+        p = cls.__new__(cls)
+        p._init_state()
+        p.w = world
+        p.log = lambda *a, **k: None
+        for k, v in overrides.items():
+            setattr(p, k, v)
+        return p
 
     # --- logging / attention -------------------------------------------------
 
@@ -3137,7 +3266,7 @@ class Pilot:
         # letters had shifted and it drank a Cure Light Wounds; the Berserk "showed no effect" and was resent twice.
         # No item command until the pack has come back since the last one, 3 s at most)
         item_cmd = re.match(r"custom [qrEuzaF] item=", line) and not why.startswith("agent:")
-        lt = self.__dict__.get("item_cmd_t", 0.0)
+        lt = self.item_cmd_t
         stale = item_cmd and lt and self.w.inven_t < lt and gnow() - lt < 3
         if (self.pending_use and re.match(r"custom [rq] item=", line) and not why.startswith("agent:")) or stale:
             self.log("note", text=f"held ({'the pack has not come back since the last item command' if stale else 'a read/quaff is still unconfirmed'}): {why}")
@@ -3158,14 +3287,14 @@ class Pilot:
             self.w.inven_dirty = True        # (the next refresh fetches the pack: the hold above lasts ~0.3 s)
         self.last_action = (gnow(), line, why)
         self.busy_until = gnow() + ghold(hold)
-        self.__dict__.setdefault("act_walls", collections.deque(maxlen=50)).append(time.time())
+        self.act_walls.append(time.time())
         mr = re.match(r"custom [ru] item=(\d+)", line)
         if mr:
             iu = next((i for i in self.w.items() if i["item"] == int(mr.group(1))), None)
             if iu and re.search(r"Teleport|Phase Door", iu["name"]):
                 self.escape_read_t = gnow()
                 self.escape_from = (self.w.pos, one_of(iu["name"]))    # (the status line's ESCAPE LANDING)
-        self.log("act", cmd=line, why=why, by=self.__dict__.get("acting", "pilot"))
+        self.log("act", cmd=line, why=why, by=self.acting)
         self.log_escape(line, why)
         self.expect_effect(line, why)
         if re.match(r"custom [qruazE] item=", line):
@@ -3420,12 +3549,12 @@ class Pilot:
         if not w.flag("confused"):
             self.conf_since = None
             return False
-        self.conf_since = self.__dict__.get("conf_since") or now
-        if now - self.conf_since < 8 or not waited(self.__dict__.get("conf_cure_t", 0.0), 8) or now < self.busy_until:
+        self.conf_since = self.conf_since or now
+        if now - self.conf_since < 8 or not waited(self.conf_cure_t, 8) or now < self.busy_until:
             return False
         pot = next((i for k in ("Cure Serious", "Cure Critical") for i in w.items(tval=TV_POTION) if k in i["name"]),
                    None)
-        n = self.__dict__.setdefault("conf_cures", {})
+        n = self.conf_cures
         if not pot or n.get(w.level_t, 0) >= 4:          # (a swarm re-confuses: at most 4 cures a level)
             return False
         n[w.level_t] = n.get(w.level_t, 0) + 1
@@ -3442,9 +3571,9 @@ class Pilot:
         bite (M5, 10-28: 26 Hummerhorns re-confused Dive04 within a second of each of 4 cures; the m55 Navigator's
         way out was a cure and an immediate read). The goal carries on from the landing, unconfused."""
         w, now = self.w, gnow()
-        t = self.__dict__.get("conf_cure_t", 0.0)
+        t = self.conf_cure_t
         if not (w.in_dungeon and 0.3 < now - t < 4 and not w.flag("confused") and now >= self.busy_until) or \
-                self.__dict__.get("conf_tele_t", 0.0) >= t or len(w.adjacent_monsters()) < 3:
+                self.conf_tele_t >= t or len(w.adjacent_monsters()) < 3:
             return False
         tp = self.teleport_item()
         if not tp:
@@ -3459,7 +3588,7 @@ class Pilot:
     def escape_line(self):
         """The status header's escape marker (session 8: a staff's teleport showed "no change", then landed; a scroll
         read on top was refused, and nobody could tell which escape was still landing)."""
-        t, (pos, name) = getattr(self, "escape_read_t", -99.0), getattr(self, "escape_from", (None, None))
+        t, (pos, name) = self.escape_read_t, self.escape_from
         age = gnow() - t
         if not name or age > 6:
             return ""
@@ -3622,7 +3751,7 @@ class Pilot:
         wt = [x for x in self.weapon_table() if x[3]]
         key = (getattr(r, "idx", None), w.clvl, wt[0][0] if wt else None, (w.ind.get("armor") or [0])[0],
                round(w.hp_frac * 10))
-        cache = self.__dict__.setdefault("_sim_cache", {})
+        cache = self._sim_cache
         if key not in cache:
             sm = self.fight_sim(r, n=300)
             cache[key] = sm["loss_mean"] if sm else None
@@ -3761,7 +3890,7 @@ class Pilot:
         if near_danger and w.hp_frac >= 0.5 and all(self.danger_why(r) == "summons" for r in near_danger) and \
                 any(r.name not in {q.name for *_, q in w.monsters} for r in near_danger) and \
                 not isinstance(self.goal, (Flee, Recover, Recall, WalkAway)):
-            self.summoner_hold_t = getattr(self, "summoner_hold_t", 0) if now - getattr(self, "summoner_hold_t", 0) < 5 \
+            self.summoner_hold_t = self.summoner_hold_t if now - self.summoner_hold_t < 5 \
                 else now
             if now - self.summoner_hold_t < 1.5:
                 return False
@@ -3802,7 +3931,7 @@ class Pilot:
         # deeper, uniques allowed, appear around us -- m26's Nar group (the Advisor's structures memo). Phase Door at
         # once, before they act; the danger rules take it from there
         smoke = [ts for ts, t in w.messages if t.startswith("You are enveloped in a cloud of smoke") and now - ts < 2]
-        if smoke and w.in_dungeon and max(smoke) > getattr(self, "smoke_t", 0) and not w.flag("blind") \
+        if smoke and w.in_dungeon and max(smoke) > self.smoke_t and not w.flag("blind") \
                 and not w.flag("confused"):
             self.smoke_t = max(smoke)
             pd = self.phase_item()
@@ -3816,7 +3945,7 @@ class Pilot:
         # 3e. Slowed to half speed or worse with something on us: a Potion of Speed (m26: Gorged and slowed to
         # -20 among six monsters; the Architect quaffed one by hand)
         if self.our_slowness() >= 2 and (w.adjacent_monsters() or now - w.last_hit_t < 2) and \
-                waited(getattr(self, "speed_t", 0), 40) and not self.buff_on("fast"):    # (a potion lasts ~20-45 turns)
+                waited(self.speed_t, 40) and not self.buff_on("fast"):    # (a potion lasts ~20-45 turns)
             pot = self.find_item("Speed", TV_POTION)
             if pot:
                 self.speed_t = now
@@ -3970,7 +4099,7 @@ class Pilot:
                 # where it lies (the user, 10-25: less clutter on the map and in the report's Items line). Once per
                 # sighting: the message stays "recent" 3 s, and m44 stepped on while engaging an Ogre and sent the
                 # destroy again on 3 empty squares ("There's nothing on the floor")
-                done = self.__dict__.setdefault("junk_msgs_done", set())
+                done = self.junk_msgs_done
                 if (w.level_t, w.pos) not in self.skipped_items and seen[-1][0] not in done:
                     done.add(seen[-1][0])
                     self.destroy_floor_junk(seen[-1][1][8:].rstrip("."), now)
@@ -3979,7 +4108,7 @@ class Pilot:
             if seen and (w.level_t, w.pos) in self.skipped_items:
                 seen = []         # junk we left, or what the Navigator dropped here
             if seen and not w.in_dungeon and self.is_stash_item(seen[-1][1]) and \
-                    not (self.__dict__.get("fetching") and self.fetching in seen[-1][1]):
+                    not (self.fetching and self.fetching in seen[-1][1]):
                 seen = []         # (the tavern stash stays there: the user, 10-26)
             # By value (restructure step 2.1; the Advisor's set-pieces C3, C4): a unique's
             # drop always; with the pack full, swap the cheapest non-kit item for a
@@ -4035,7 +4164,7 @@ class Pilot:
         while the plan is leaving the level for a reason. The escapes, the group/choke rules and the walk-away run
         earlier in the reflexes, so they still win. Gives up after ENGAGE_GIVE_UP_S."""
         w = self.w
-        st = self.__dict__.setdefault("engage", {"target": None, "t0": 0.0, "replan_t": 0.0, "dropped": set()})
+        st = self.engage
         g = self.goal
         leaving = self.plan is not None and str(getattr(self.plan, "level_done", "") or "").startswith("left")
         ok = (w.in_dungeon and w.depth and w.pos and (g is None or isinstance(g, (Explore, Dive))) and not leaving
@@ -4067,7 +4196,7 @@ class Pilot:
                     continue
                 if r.level < w.clvl - 20:
                     continue                         # (no XP worth the detour)
-                cache = self.__dict__.setdefault("engage_ok", {})
+                cache = self.engage_ok
                 key = (w.level_t, r.name)
                 if key not in cache:
                     try:
@@ -4128,9 +4257,9 @@ class Pilot:
         22: hunts ordered on a danger alert were overridden by the flee).
         Emergencies and the 1x group-danger exit still apply."""
         g = self.goal
-        if not (isinstance(g, Hunt) and getattr(g, "by_navigator", False) and now - self.goal_t < 120):
+        if not (isinstance(g, Hunt) and g.by_navigator and now - self.goal_t < 120):
             return False
-        if getattr(g, "kept_warned", None) != what:
+        if g.kept_warned != what:
             g.kept_warned = what
             self.notify("tactic", f"hunting {g.target} as ordered: not fleeing from {what} (emergency escapes "
                                   "still apply)", news=True)
@@ -4141,7 +4270,7 @@ class Pilot:
         faster than us, nothing has been summoned yet, HP is at half or more, and walking away
         hasn't already failed on this level."""
         w = self.w
-        if w.hp_frac < 0.5 or self.__dict__.setdefault("walkaway_failed", set()) & {w.level_t}:
+        if w.hp_frac < 0.5 or self.walkaway_failed & {w.level_t}:
             return False
         if any(t for ts, t in w.messages if gnow() - ts < 10 and "summons" in t):
             return False
@@ -4162,7 +4291,7 @@ class Pilot:
         arriving, a stop, any later go() (Explore etc. reuse the mover) or a new level ends it. (It was a plain flag
         never reset: after the first escape walk every walk was ticked as one, and the emergency reflex stopped
         stopping the mover -- refactor-candidates A1.)"""
-        tag = getattr(self, "_escape_walk", None)
+        tag = self._escape_walk
         return tag is not None and bool(self.mover.active) and \
             tag == (getattr(self.mover, "walk_id", None), self.w.level_t)
 
@@ -4233,7 +4362,7 @@ class Pilot:
                                          f"adjacent): read {one_of(use['name'])}", action=True)
                 return True
         sp = self.find_item("Speed", TV_POTION)
-        if sp and not one_turn and not self.buff_on("fast") and waited(getattr(self, "speed_t", 0), 20):
+        if sp and not one_turn and not self.buff_on("fast") and waited(self.speed_t, 20):
             self.speed_t = now
             self.cmd(f"custom q item={sp['item']}", f"{why}: quaff {sp['name']} (an emergency: speed first)", hold=0.6)
             self.notify("emergency", f"{why}: quaffed {one_of(sp['name'])} first", action=True)
@@ -4436,7 +4565,7 @@ class Pilot:
         serious = cost > float(self.orders.get("band_frac", 0.5)) * max(w.hp[0], 1) or \
             any(self.danger_why(r) for *_, r in near)
         if not serious:
-            if getattr(self, "weak_band_said", None) != w.level_t:
+            if self.weak_band_said != w.level_t:
                 self.weak_band_said = w.level_t
                 self.notify("tactic", f"{len(near)} monsters together but weak (~{cost:.0f} HP expected to fight them "
                                       f"all, vs HP {w.hp[0]}): fighting on", news=True)
@@ -4475,7 +4604,7 @@ class Pilot:
         sc = self.find_item("Teleportation", TV_SCROLL)
         st = next((i for i in w.items(tval=55) if "Teleportation" in i["name"] and
                    not re.search(r"\(0 charges\)", i["name"])), None)
-        unreadable = w.flag("blind") or w.flag("confused") or gnow() - self.__dict__.get("read_failed_t", -99.0) < 10
+        unreadable = w.flag("blind") or w.flag("confused") or gnow() - self.read_failed_t < 10
         if st and (unreadable or not sc):
             return ("u", st)
         if sc and not unreadable:
@@ -4488,7 +4617,7 @@ class Pilot:
         """Attack an adjacent summoner or status caster (blind, confuse, hold, slow, scare...) that our blows kill in
         two rounds (rulebook hp vs the wielded weapon's damage). True if the attack was sent."""
         w = self.w
-        if not adj or not waited(getattr(self, "caster_t", -99.0), 0.6):
+        if not adj or not waited(self.caster_t, 0.6):
             return False
         rows = self.fight_rows()
         wt = [x for x in self.weapon_table() if x[3]]
@@ -4508,7 +4637,7 @@ class Pilot:
         self.caster_t = gnow()
         self.cmd(f"walk {direction(w.pos, (y, x))}", f"{why}: attack {r.name} first (a caster, dies in 2 rounds)",
                  hold=0.4)
-        if not getattr(self, "caster_said", None) == (w.level_t, r.name):
+        if not self.caster_said == (w.level_t, r.name):
             self.caster_said = (w.level_t, r.name)
             self.notify("emergency", f"{why}: attacking {r.name} first (summons or casts blind/confuse/hold; ~{best[0]:.0f} "
                                      f"HP, two rounds)", action=False)
@@ -4518,7 +4647,7 @@ class Pilot:
         """Shadow mode (the user, 10-25): hand this decision's state to the Advisor's estimator in the background
         (shadow.py): an emergency (all options), or the start of a hard fight (hard_fight_shadow: its own options).
         Never waits, never acts on it. Returns 'started', 'skipped' (one running) or 'off'."""
-        sh = self.__dict__.get("shadow_est")
+        sh = self.shadow_est
         if sh is None:
             sh = self.shadow_est = shadow.Shadow()
             if sh.error:
@@ -4538,7 +4667,7 @@ class Pilot:
             if d.get("wweight"):
                 prof["weight"] = d["wweight"]
         except Exception as e:                     # (the weapon's own numbers then; said once in the log)
-            if not self.__dict__.get("shadow_gear_said"):
+            if not self.shadow_gear_said:
                 self.shadow_gear_said = True
                 self.log("note", text=f"shadow mode: the gear model failed, the weapon's own (+h,+d) passed ({e!r})")
         stairs = min((sh.sim.adist(q[0] - w.pos[0], q[1] - w.pos[1]) for q in w.find("<>")), default=None) \
@@ -4594,7 +4723,7 @@ class Pilot:
     def shadow_results(self):
         """Log the estimator's answers (the main thread writes the log): with whether it would have arrived in time --
         within one player turn at the time factor of the decision, and before the Pilot's next action."""
-        sh = self.__dict__.get("shadow_est")
+        sh = self.shadow_est
         if not sh:
             return
         while not sh.results.empty():
@@ -4603,7 +4732,7 @@ class Pilot:
             sp = snap.get("speed", 0)
             energy = 1.0 + max(-0.5, min(1.0, sp / 10.0))          # (roughly: +10 doubles our turns)
             turn_s = shadow.TURN_S / max(0.05, snap.get("factor") or 1.0) / energy
-            nxt = next((t for t in self.__dict__.get("act_walls", ()) if t > snap.get("wall", 0) + 0.05), None)
+            nxt = next((t for t in self.act_walls if t > snap.get("wall", 0) + 0.05), None)
             in_turn = r.get("compute_s", 99) <= turn_s
             before_next = nxt is None or r.get("done_wall", 0) <= nxt
             # (no monster the estimator knows: nothing to compare -- agree is None). The estimator's "rules" row is
@@ -4630,7 +4759,7 @@ class Pilot:
         The hot-swap set-piece H1r: the new Pilot's plan read a second scroll, which cancelled the pending one."""
         w = self.w
         path = os.path.join(self.rundir, "recall.json")
-        if not getattr(self, "recall_restored", False):
+        if not self.recall_restored:
             if w.depth is None:
                 return
             self.recall_restored = True
@@ -4644,7 +4773,7 @@ class Pilot:
                 self.notify("tactic", "a Word of Recall read before the restart is still pending: not reading another",
                             news=True)
         now_st = (w.recall_pending, w.depth)
-        if now_st != getattr(self, "recall_saved", None):
+        if now_st != self.recall_saved:
             self.recall_saved = now_st
             try:
                 json.dump({"pending": w.recall_pending, "depth": w.depth, "t": time.time()}, open(path, "w"))
@@ -4704,7 +4833,7 @@ class Pilot:
         self.trap_seen_t = max([self.trap_seen_t] + [ts for ts, _ in w.messages])
         # (m50: a trap door dropped us to 850 ft, below max_depth 800; the climb back took ~4.5 minutes and only the
         # depth column showed it. Say so, and log it for the mission's record)
-        td = self.__dict__.get("trapdoor")
+        td = self.trapdoor
         if td and w.level_t > td[0]:
             self.trapdoor = None
             md = int(self.orders.get("max_depth", 0))
@@ -4775,7 +4904,7 @@ class Pilot:
             # gold from sales, for the rolling XP-per-gold rate (rate_tick)
             m = re.match(r"You sold .+? for (\d+) gold", t)
             if m:
-                self.gold_sold = self.__dict__.get("gold_sold", 0) + int(m.group(1))
+                self.gold_sold += int(m.group(1))
             # (m37: the cloak and the new helm lost +1 each to a Disenchanter mold; nothing in the news)
             m = re.match(r"Your (.+?) \(.\) (?:was|were) disenchanted!", t)
             if m:
@@ -4786,7 +4915,7 @@ class Pilot:
             if m:
                 gold = m.group(1).isdigit()
                 if gold:
-                    self.gold_stolen = self.__dict__.get("gold_stolen", 0) + int(m.group(1))
+                    self.gold_stolen += int(m.group(1))
                 self.notify("thief", f"{m.group(1) + ' gold' if gold else m.group(1)} stolen by a touch"
                                      + (f" ({self.gold_stolen} stolen since the Pilot started)" if gold else ""),
                             news=True)
@@ -4807,16 +4936,16 @@ class Pilot:
         # gold_found, the same way)
         w = self.w
         g = w.ind.get("gold", [0])[0]
-        if w.in_dungeon and g > self.__dict__.get("gold_last", g):
-            self.gold_found = self.__dict__.get("gold_found", 0) + g - self.gold_last
+        if w.in_dungeon and self.gold_last is not None and g > self.gold_last:
+            self.gold_found += g - self.gold_last
         self.gold_last = g
         xp = (w.ind.get("exp") or [0])[0]
-        dxp = max(0, xp - self.__dict__.get("xp_last", xp))
+        dxp = max(0, xp - (xp if self.xp_last is None else self.xp_last))
         if dxp:
-            self.xp_gained = self.__dict__.get("xp_gained", 0) + dxp
+            self.xp_gained += dxp
         self.xp_last = xp
         # XP and minutes by depth (for `prep`: where the XP has been), kept with the rates
-        last = self.__dict__.get("depth_t")
+        last = self.depth_t
         if w.in_dungeon and w.depth_ft:
             if last is not None and now - last < 5:
                 d = self.rate_state().setdefault("depth", {}).setdefault(str(w.depth_ft), [0, 0])
@@ -4827,22 +4956,22 @@ class Pilot:
             self.depth_t = None
         self.rate_tick(now)
         # XP since arriving on this level (the Navigators' "stay or leave": m31-m34 asked for a per-level rate)
-        lb = self.__dict__.get("level_base")
+        lb = self.level_base
         if w.in_dungeon and (not lb or lb[2] != w.level_t):
             self.level_base = (now, (w.ind.get("exp") or [0])[0], w.level_t)
         if not self.gain_hist or now - self.gain_hist[-1][0] >= 15:
-            self.gain_hist.append((now, (w.ind.get("exp") or [0])[0], g, self.__dict__.get("gold_found", 0)))
+            self.gain_hist.append((now, (w.ind.get("exp") or [0])[0], g, self.gold_found))
             self.save_mission()
 
     def save_mission(self):
         """The running mission (label, its start and the totals so far) in mission.json: a restart or hot-swap
         carries it on (m44/m45: the swap lost the label, so `mission end` needed it by name)."""
-        mb = getattr(self, "mission_base", None)
-        if not (mb and getattr(self, "mission_label", None)):
+        mb = self.mission_base
+        if not (mb and self.mission_label):
             return
         try:
             json.dump({"label": self.mission_label, "age": round(gnow() - mb[0], 1), "exp": mb[1], "gold": mb[2],
-                       "found": self.__dict__.get("gold_found", 0) - (mb[3] if len(mb) > 3 else 0)},
+                       "found": self.gold_found - (mb[3] if len(mb) > 3 else 0)},
                       open(os.path.join(self.rundir, "mission.json"), "w"))
         except OSError:
             pass
@@ -4856,7 +4985,7 @@ class Pilot:
             # (gold_found starts at 0 in a new process: the base goes negative by what was found before)
             self.mission_label = ms["label"]
             self.mission_base = (gnow() - ms["age"], ms["exp"], ms["gold"],
-                                 self.__dict__.get("gold_found", 0) - ms["found"])
+                                 self.gold_found - ms["found"])
         except (OSError, ValueError, KeyError, TypeError):
             pass
 
@@ -4871,7 +5000,7 @@ class Pilot:
     RATE_CLAMP = (0.1, 3.0)
 
     def rate_state(self):
-        st = self.__dict__.get("rates")
+        st = self.rates
         if st is None:
             try:
                 st = json.load(open(os.path.join(self.rundir, "rates.json")))
@@ -4882,8 +5011,8 @@ class Pilot:
         return st
 
     def rate_tick(self, now):
-        cur = (self.__dict__.get("xp_gained", 0), self.__dict__.get("gold_found", 0) + self.__dict__.get("gold_sold", 0))
-        op = self.__dict__.get("rate_open")
+        cur = (self.xp_gained, self.gold_found + self.gold_sold)
+        op = self.rate_open
         if op is None or now - op[0] >= self.RATE_BUCKET_S:
             if op is not None:
                 d = [c - b for c, b in zip(cur, op[1])]
@@ -4942,14 +5071,14 @@ class Pilot:
         bits = []
         if hh and hh[0][1] - w.hp[0] > 0.05 * max(1, w.hp[1]):
             bits.append(f"HP -{hh[0][1] - w.hp[0]} in the last {now - hh[0][0]:.0f} s")
-        found = self.__dict__.get("gold_found", 0)
+        found = self.gold_found
         old = next((h for h in self.gain_hist if now - h[0] <= 600), None)
         if old and now - old[0] > 60:
             de = (w.ind.get("exp") or [0])[0] - old[1]
             dg = w.ind.get("gold", [0])[0] - old[2]
             bits.append(f"XP {de:+d}, gold found {found - old[3]:+d} (net {dg:+d}, with shopping) in the last "
                         f"{(now - old[0]) / 60:.0f} min")
-        lb = self.__dict__.get("level_base")
+        lb = self.level_base
         if w.in_dungeon and lb and lb[2] == w.level_t and now - lb[0] >= 60:
             de = (w.ind.get("exp") or [0])[0] - lb[1]
             bits.append(f"this level: XP {de:+d} in {(now - lb[0]) / 60:.0f} min ({de / ((now - lb[0]) / 60):.0f} a minute)")
@@ -4957,8 +5086,8 @@ class Pilot:
         if pl and getattr(pl, "xp0", None) is not None and now - pl.t0 >= 60:
             de = (w.ind.get("exp") or [0])[0] - pl.xp0
             bits.append(f"this trip: XP {de:+d} in {(now - pl.t0) / 60:.0f} min ({de / ((now - pl.t0) / 60):.0f} a minute)")
-        mb = getattr(self, "mission_base", None)
-        if mb and getattr(self, "mission_label", None):
+        mb = self.mission_base
+        if mb and self.mission_label:
             bits.append(f"this mission: XP {(w.ind.get('exp') or [0])[0] - mb[1]:+d}, gold found "
                         f"{found - (mb[3] if len(mb) > 3 else 0):+d} (net {w.ind.get('gold', [0])[0] - mb[2]:+d}) "
                         f"in {(now - mb[0]) / 60:.0f} min")
@@ -5075,10 +5204,10 @@ class Pilot:
                                                       "This seems to be permanent", "The door "))
                       for ts, t in w.messages)
         # (acting in place is progress too: m57 12:20, plan town reading 7 Identify scrolls at the Alchemist for 20 s)
-        la = self.__dict__.get("last_action")
+        la = self.last_action
         working = working or bool(la and now - la[0] < 4 and not str(la[1]).startswith(("walk", "pathfind", "run")))
         if not idle_goal and self.mover.active and not w.adjacent_monsters() and not w.resting and not working and \
-                now - self.stuck_t > 60 and now - getattr(self, "goal_t", 0) > 20:
+                now - self.stuck_t > 60 and now - (self.goal_t or 0) > 20:
             recent = [q for t, q, d in self.pos_hist if now - t <= 20]
             if len(recent) >= 15 and len(set(recent)) == 1 and now - self.pos_hist[0][0] >= 20:
                 self.stuck_t = now
@@ -5087,7 +5216,7 @@ class Pilot:
                 self.notify("stuck", f"'{self.goal.describe()}' hasn't moved from {w.pos} for 20 s: cleared the "
                                      "command queue and restarted the move. If it happens again, give another goal")
                 return
-        if now - getattr(self, "goal_t", 0) < 110:
+        if now - (self.goal_t or 0) < 110:
             return      # (the demo mission: 'stuck' 3 s into a goal, counting the idle time before it)
         # (a fight in the window doesn't count: mission 6 fired this in a
         # corridor fight with a wolf pack)
@@ -5101,7 +5230,7 @@ class Pilot:
         self.mover.stop()
         # the second time for the same goal, end it: restarting the move can't fix a goal whose own logic loops
         # (m30: a dive at 600 ft went nowhere for 6 minutes, restarted twice; the trip plan then moves on)
-        if getattr(self.goal, "stuck_once", False):
+        if self.goal.stuck_once:
             self.goal.abort = f"went nowhere for 4 minutes (around {w.pos})"
             self.notify("stuck", f"'{self.goal.describe()}' has gone nowhere for 4 minutes (around {w.pos}): "
                                  "ending it", news=bool(self.plan))
@@ -5130,7 +5259,7 @@ class Pilot:
         """Why the Navigator shouldn't sell/destroy/drop this item, or None. The
         Pilot's own policy never does these; the Navigator may override with `!`,
         and the value lost is added to its debt (the user's decision)."""
-        if (role or getattr(self, "req_role", "navigator")) in ("architect", "pilot") or not it:
+        if (role or self.req_role) in ("architect", "pilot") or not it:
             return None
         name = it["name"]
         if self.is_kept(name):
@@ -5162,9 +5291,9 @@ class Pilot:
         last saw there, else the average owner of that shop, at the current CHR; SHOP_CUT when nothing is known
         (D9: the rule moved to shopmath for the scorecard; the cache stays here)."""
         chr_v = (self.w.ind.get("stat5") or [3])[0] if self.w.ind else 3
-        owners = {k: (v or {}).get("owner") for k, v in getattr(self, "stores_seen", {}).items()}
+        owners = {k: (v or {}).get("owner") for k, v in self.stores_seen.items()}
         key = (tval, chr_v, tuple(sorted(owners.items())))
-        cache = self.__dict__.setdefault("_pay_cache", {})
+        cache = self._pay_cache
         if key not in cache:
             cache[key] = shopmath.pay_cut(tval, chr_v, owners)
         return cache[key]
@@ -5172,7 +5301,7 @@ class Pilot:
     def iv(self, name):
         """itemvalue.value with the depth items now come from (for expectations) and
         the kinds already known (the flavour table)."""
-        level = max(1, (self.w.depth_ft or getattr(self, "deepest_ft", 0) or 750) // 50)
+        level = max(1, (self.w.depth_ft or self.deepest_ft or 750) // 50)
         return itemvalue.value(name, level, self.aware_kinds())
 
     def aware_kinds(self):
@@ -5403,7 +5532,7 @@ class Pilot:
     def town_books(self):
         """The spellbooks the town sells ('[magic for beginners]', ...): the rulebook's stock table, tvals 90/91
         (the Magic-User store and the Temple). Cheap, so junk for a warrior; the dungeon-only books sell well."""
-        if not hasattr(self, "_town_books"):
+        if self._town_books is None:
             self._town_books = {r["item_name"].lower() for r in self.stock_table() if r.get("tval_num") in ("90", "91")}
         return self._town_books
 
@@ -5500,7 +5629,7 @@ class Pilot:
             if wt > room:
                 self.skipped_items.add((w.level_t, w.pos))
                 # (once per item and level: m47 said "left a Battle Axe" 9 times walking past it)
-                said = self.__dict__.setdefault("left_news", set())
+                said = self.left_news
                 if (w.level_t, name) not in said:
                     said.add((w.level_t, name))
                     self.notify("tactic", f"left {name} (~{worth:.0f}): {wt / 10:.0f} lb would slow you (the weight "
@@ -5558,8 +5687,6 @@ class Pilot:
         if (w.level_t, w.pos) not in self.skipped_items:
             self.skipped_items.add((w.level_t, w.pos))
             # (once per item and level: m25 said "left a Rapier" 5 times and "left a Potion of Heroism" 7)
-            if not hasattr(self, "left_news"):
-                self.left_news = set()
             if (w.level_t, name) not in self.left_news:
                 self.left_news.add((w.level_t, name))
                 self.notify("tactic", f"left {name} (~{worth:.0f}): pack full and nothing cheaper to make room with",
@@ -5591,9 +5718,9 @@ class Pilot:
                 return True
         # 0a. a unique's drop: the items within 3 squares of where it died (the set-piece C3: Mughash's drop
         # was left -- looting runs only inside explore and dive, and a hunt ends idle)
-        ud = getattr(self, "unique_drop", None)
+        ud = self.unique_drop
         if self.goal is None and not self.mover.active and ud and ud[0] == w.level_t and now - ud[2] < 300 and w.pos:
-            fetched = self.__dict__.setdefault("drop_fetched", set())
+            fetched = self.drop_fetched
             drops = [q for q in self.resolve_target("item") if max(abs(q[0] - ud[1][0]), abs(q[1] - ud[1][1])) <= 3
                      and (w.level_t, q) not in fetched and w.memory.get(q, ".") not in "0123456789"]
             if drops:
@@ -5629,7 +5756,7 @@ class Pilot:
         if scroll or staff:
             # (three tries per item: at night in town a read without a light failed
             # twenty times in a row, "You have no light to read by")
-            tries = self.__dict__.setdefault("id_tries", {})
+            tries = self.id_tries
             cands = [(pr, it) for pr, it in self.identify_candidates(minimum) if tries.get(it["name"], 0) < 3]
             if cands:
                 _, it = max(cands, key=lambda pc: pc[0])
@@ -5697,7 +5824,7 @@ class Pilot:
                 self.notify("tactic", f"wore {it['name']} (AC {ac_new} vs {max(ac_on, 0)})", news=True)
                 return True
         # 4. good jewellery into an empty ring or amulet slot (identified only)
-        swap = self.__dict__.get("jewel_swap")
+        swap = self.jewel_swap
         for tv, k in ((45, 2), (40, 1)):
             if sum(1 for i in worn if i["tval"] == tv) >= k:
                 continue
@@ -5741,7 +5868,7 @@ class Pilot:
         # 6. in town: the gear evaluator's choice among the identified wearables in the pack (simulated fights, never
         # losing Free Action, See Invisible, resist blindness/confusion or hold life; the user, 10-26). A ring over a worn
         # one: off first, step 4 puts it on.
-        if not w.depth and not w.in_dungeon and not self.__dict__.get("gear_swapped_t", 0) > gnow() - 30:
+        if not w.depth and not w.in_dungeon and not self.gear_swapped_t > gnow() - 30:
             for it in pack:
                 got = self.gear_better(it)
                 if not got:
@@ -5817,7 +5944,7 @@ class Pilot:
     def weapon_abilities(self, name):
         """What a weapon (or armour) gives beyond damage and AC, from the rulebook's ego table (ego_flags.csv): Free
         Action, See Invisible, resists, sustains, stats... An unknown ego or a plain item: nothing."""
-        if not hasattr(self, "_ego_flags"):
+        if self._ego_flags is None:
             try:
                 self._ego_flags = {r["name"]: set(r["flags"].split()) for r in csv.DictReader(
                     open(os.path.join(HERE, "..", "rulebook", "ego_flags.csv")))}
@@ -5931,7 +6058,7 @@ class Pilot:
     def uniques_killed(self):
         """Uniques this character has killed (runs/pilot/NICK/uniques_killed.json, kept by watch_kills;
         seeded from the logs): a repeat kill drops nothing and gives no XP."""
-        if not hasattr(self, "_uk"):
+        if self._uk is None:
             try:
                 self._uk = set(json.load(open(os.path.join(self.rundir, "uniques_killed.json"))))
             except (OSError, ValueError, AttributeError):
@@ -5940,7 +6067,7 @@ class Pilot:
 
     def drop_row(self, race):
         """The rulebook's drops.csv row for a monster (at its native depth), or None."""
-        if not hasattr(self, "_drops"):
+        if self._drops is None:
             try:
                 self._drops = {r["idx"]: r for r in csv.DictReader(open(os.path.join(HERE, "..", "rulebook", "drops.csv")))}
             except OSError:
@@ -6053,7 +6180,7 @@ class Pilot:
                 return True
         # Blind or confused (no scroll can be read) with the group's worst above our HP: the staff, which works blind
         # (m48: 13 Light hounds, 7 Wargs, 5 Mirkwood spiders; blind for 40 s, HP 340 -> 82, no read got through)
-        if g > hp and not can_read and w.adjacent_monsters() and now - self.__dict__.get("blind_tele_t", -99.0) > 10:
+        if g > hp and not can_read and w.adjacent_monsters() and now - self.blind_tele_t > 10:
             tp = self.teleport_item()
             if tp and tp[0] == "u":
                 self.blind_tele_t = now
@@ -6137,7 +6264,7 @@ class Pilot:
         targets = [m for m in still if any(w.dist(g, m[:2]) <= 1 for g in goals)]
         # (an item beside a disenchanter isn't worth the enchantment: m37 meleed a Disenchanter mold to reach Boldor's
         # drops, and the cloak and the new helm lost +1 each. The item is left; stairs and the way on still count)
-        loot = self.__dict__.get("loot_mem") or {}
+        loot = self.loot_mem or {}
         for m in [m for m in targets if disenchants(m[2])]:
             items = [g for g in goals if w.dist(g, m[:2]) <= 1 and w.memory.get(g, " ") not in ".#%'+<>^:; "]
             if items and len(items) == len(goals):
@@ -6194,10 +6321,10 @@ class Pilot:
         w = self.w
         self.read_looks()
         if not w.in_dungeon or not w.monsters or w.adjacent_monsters() or w.resting or \
-                now - self.__dict__.get("look_t", -99.0) < self.LOOK_EVERY:
+                now - self.look_t < self.LOOK_EVERY:
             return
         key = (w.level_t, frozenset((y, x) for y, x, _ in w.monsters))
-        if key == self.__dict__.get("look_key"):
+        if key == self.look_key:
             return
         self.look_key, self.look_t = key, now
         self.c.send(f"look {min(12, len(w.monsters))}")
@@ -6206,11 +6333,11 @@ class Pilot:
         """The `target` answers since the last read -> self.asleep {(y, x): (t, name, asleep)}: by position when a
         visible monster stands there, else by name (the nearest of that name not yet placed)."""
         w = self.w
-        new = [t for t in w.targets if t[0] > self.__dict__.get("looks_read_t", 0.0)]
+        new = [t for t in w.targets if t[0] > self.looks_read_t]
         if not new:
             return
         self.looks_read_t = new[-1][0]
-        sl = self.__dict__.setdefault("asleep", {})
+        sl = self.asleep
         mons = {(y, x): r for y, x, r in w.monsters}
         placed = set()
         for t, y, x, text in new:
@@ -6231,7 +6358,7 @@ class Pilot:
                  sample=[(y, x, tx[:60]) for _, y, x, tx in new[:3]])
 
     def is_asleep(self, y, x):
-        v = self.__dict__.get("asleep", {}).get((y, x))
+        v = self.asleep.get((y, x))
         return v[2] if v and gnow() - v[0] < 60 else None
 
     # --- the Navigator's executable standing orders (the user, 10-26: "decide in advance, act at Pilot speed") ---
@@ -6241,7 +6368,7 @@ class Pilot:
                   "afraid": "teleport: afraid with no Heroism/Boldness/Berserk and monsters adjacent -> teleport"}
 
     def rules(self):
-        if "nav_rules" not in self.__dict__:
+        if self.nav_rules is None:
             try:
                 self.nav_rules = json.load(open(os.path.join(self.rundir, "rules.json")))
             except (OSError, ValueError, AttributeError):
@@ -6263,7 +6390,7 @@ class Pilot:
         w = self.w
         if not w.in_dungeon or not w.monsters or not self.rules() or isinstance(self.goal, (Flee, Recall, Recover)):
             return False
-        done = self.__dict__.setdefault("rules_done", {})
+        done = self.rules_done
         names = {r.name.lower(): (y, x, r) for y, x, r in w.monsters}
         for rl in self.rules():
             arg = rl["arg"]
@@ -6291,7 +6418,7 @@ class Pilot:
                 role = self.req_role
                 # (M5, 10-28: a Scruffy looking hobbit's hunt replaced a `goal dive` and the dive was lost when it
                 # ended. A plan resumes by itself; a plain goal comes back after the hunt)
-                prev = self.goal if self.goal is not None and not getattr(self.goal, "by_plan", False) else None
+                prev = self.goal if self.goal is not None and not self.goal.by_plan else None
                 try:
                     out = self.do_request({"cmd": "goal", "args": ["hunt", target.name.replace(" ", "_")],
                                            "role": "navigator"})
@@ -6309,7 +6436,7 @@ class Pilot:
     REVIEW_MIN_VALUE = 1000
 
     def review_state(self):
-        if "review" not in self.__dict__:
+        if self.review is None:
             try:
                 self.review = json.load(open(os.path.join(self.rundir, "review.json")))
             except (OSError, ValueError, AttributeError):
@@ -6319,7 +6446,7 @@ class Pilot:
             self.review.setdefault("town_visits", 0)
         # (m58: a Ring of Protection [+16] worn since m57 was still listed "SOLD at this town visit if undecided": what's
         # worn leaves the queue)
-        worn = {i["name"] for i in (self.w.items(equip=True) if getattr(self, "w", None) else [])}
+        worn = {i["name"] for i in (self.w.items(equip=True) if self.w else [])}
         for n in [n for n in self.review["items"] if n in worn]:
             del self.review["items"][n]
         return self.review
@@ -6388,8 +6515,8 @@ class Pilot:
         action: the stairs when known, else Word of Recall. Once per band and level (20 s apart). Never acts."""
         w, now = self.w, gnow()
         key = (w.level_t, frozenset(r.name for *_, r in w.monsters))
-        seen = self.__dict__.setdefault("band_shadow_seen", {})
-        if now - seen.get(key, -99.0) < 60 or now - self.__dict__.get("band_shadow_t", -99.0) < 20:
+        seen = self.band_shadow_seen
+        if now - seen.get(key, -99.0) < 60 or now - self.band_shadow_t < 20:
             return None
         seen[key], self.band_shadow_t = now, now
         rules = "stairs" if w.find("<>") else "recall+phase"
@@ -6413,14 +6540,14 @@ class Pilot:
         if not hard:
             return None
         key = (w.level_t, frozenset(r.name for r in adj))
-        seen = self.__dict__.setdefault("hard_fight_seen", {})
-        if now - seen.get(key, -99.0) < 60 or now - self.__dict__.get("hard_fight_t", -99.0) < 20:
+        seen = self.hard_fight_seen
+        if now - seen.get(key, -99.0) < 60 or now - self.hard_fight_t < 20:
             return None
         seen[key], self.hard_fight_t = now, now
         pot = any("Berserk" in i["name"] for i in w.items(tval=TV_POTION))
-        berserk = pot and not self.buff_on("shero") and waited(getattr(self, "berserk_t", 0), 30)
+        berserk = pot and not self.buff_on("shero") and waited(self.berserk_t, 30)
         fast = any("of Speed" in i["name"] for i in w.items(tval=TV_POTION)) and not self.buff_on("fast") and \
-            waited(getattr(self, "speed_start_t", 0), 30)
+            waited(self.speed_start_t, 30)
         label = "speed+berserk" if fast and berserk else "speed" if fast else "berserk" if berserk else "fight"
         names = ", ".join(sorted({r.name for r in adj}))
         return self.shadow_decision(f"hard fight with {names}: rules {label}", options=self.HARD_FIGHT_OPTIONS,
@@ -6431,7 +6558,7 @@ class Pilot:
         start rather than when the emergency fires, it beat the rules in 3 of 4 hard fights -- the gain is mostly
         timing, the same potion drunk earlier). Same test as Berserk (hard_fight); not when already hasted."""
         w = self.w
-        if not w.in_dungeon or self.buff_on("fast") or not waited(getattr(self, "speed_start_t", 0), 30):
+        if not w.in_dungeon or self.buff_on("fast") or not waited(self.speed_start_t, 30):
             return False
         adj, hard = self.hard_fight()
         pot = next((i for i in w.items(tval=TV_POTION) if "Potion" in i["name"] and "of Speed" in i["name"]), None)
@@ -6448,7 +6575,7 @@ class Pilot:
         +30 max HP and 30 healed, +24 to-hit, no fear, -10 AC for 25-50 turns (use-obj.c, xtra1.c). Hard: a
         unique, or a monster within 5 levels of ours, adjacent; or two or more adjacent and HP under 75%."""
         w = self.w
-        if not w.in_dungeon or self.buff_on("shero") or not waited(getattr(self, "berserk_t", 0), 30):
+        if not w.in_dungeon or self.buff_on("shero") or not waited(self.berserk_t, 30):
             return False
         adj, hard = self.hard_fight()
         pot = self.find_item("Berserk", TV_POTION)
@@ -6495,7 +6622,7 @@ class Pilot:
         # (and blind in a fight we were in a moment ago, or while an escape needs to read: m43 23:20, blinded in a
         # 10-monster band at 84% HP -- no monster "near" can be seen blind, so it rested three times while unseen
         # things bit it, and the flee couldn't read its Magic Mapping. The user: "doesn't a cure potion fix that?")
-        mm = self.__dict__.get("mons_mem") or {}
+        mm = self.mons_mem or {}
         seen_close = any(now - m["t"] < 10 and m.get("level") == w.level_t and w.pos and m.get("pos") and
                          w.dist(m["pos"]) <= 6 for m in mm.values())
         band_recent = self.band_warned[0] == w.level_t and now - self.band_warned_t < 30
@@ -6503,7 +6630,7 @@ class Pilot:
         # (but not again and again: m44's Light hounds re-blinded it with their breath and 16 CLW went in one fight.
         # After 2 blind cures in 30 s, fight on blind -- auto-retaliate needs no sight -- unless an escape must read or
         # HP is low)
-        bc = [t for t in self.__dict__.setdefault("blind_cures", []) if now - t < 30]
+        bc = [t for t in self.blind_cures if now - t < 30]
         self.blind_cures = bc
         spent = len(bc) >= 2 and not must_read and w.hp_frac >= self.orders["think_hp"]
         if w.flag("blind") and not spent and (mobile_near and threat or hit_unseen or seen_close or band_recent
@@ -6523,7 +6650,7 @@ class Pilot:
                     self.cmd(f"custom q item={pot['item']}", f"{status} in combat: quaff {pot['name']}", hold=0.6)
                     self.notify("tactic", f"{status} in combat: quaffed {one_of(pot['name'])}")
                     return True
-            if now - getattr(self, "nocure_t", 0) > 20:
+            if now - self.nocure_t > 20:
                 self.nocure_t = now
                 self.notify("tactic", f"{status} in combat and no potion cures it "
                                       f"(needs {' / '.join(STATUS_CURES[status][:2])})")
@@ -6787,7 +6914,7 @@ class Pilot:
         state: the goal's dict ({'looting': bool, 'target': square, 'level': t}). True while fetching."""
         w = self.w
         lr = int(self.orders.get("loot_radius", 0))
-        mem = self.__dict__.setdefault("loot_mem", {})
+        mem = self.loot_mem
         if mem.get("level") != w.level_t:
             mem.clear()
             mem.update(level=w.level_t, done=set(), tries=collections.Counter(), owed=set())
@@ -6861,7 +6988,7 @@ class Pilot:
     def loot_beside(self):
         """An item not yet looted within LOOT_PATH_R, and nothing against a detour (the dive walking to the stairs,
         which otherwise loots only before it sets off)."""
-        mem = self.__dict__.get("loot_mem") or {}
+        mem = self.loot_mem or {}
         if mem.get("level") != self.w.level_t or not int(self.orders.get("loot_radius", 0)):
             return False
         return any(self.w.dist(t) <= self.LOOT_PATH_R for t in self.resolve_target("item")
@@ -6880,16 +7007,16 @@ class Pilot:
 
     def set_goal(self, goal):
         old = self.goal
-        if old is not None and getattr(old, "overridden", None) and old is not goal:
+        if old is not None and old.overridden and old is not goal:
             self.settle_hunt(old, "replaced", goal.describe() if goal else "stopped")
         self.mover.stop()
         # (a goal set while handling the Navigator's or the Architect's request is theirs: goal_origin reads it)
-        if goal is not None and getattr(goal, "role", None) is None and self.__dict__.get("acting") in ("nav", "arch"):
+        if goal is not None and goal.role is None and self.acting in ("nav", "arch"):
             goal.role = "navigator" if self.acting == "nav" else "architect"
         self.goal = goal
         self.goal_t = gnow()             # (watch_progress counts from here)
         self.idle_recalled = False
-        self.log("goal", goal=goal.describe() if goal else None, by=self.__dict__.get("acting", "pilot"))
+        self.log("goal", goal=goal.describe() if goal else None, by=self.acting)
 
     def step_goal(self):
         if not self.goal:
@@ -6902,13 +7029,13 @@ class Pilot:
                 self.mover.stop()
             return True
         try:
-            r = ("failed", self.goal.abort) if getattr(self.goal, "abort", None) else self.goal.tick(self)
+            r = ("failed", self.goal.abort) if self.goal.abort else self.goal.tick(self)
         except Exception as e:           # a goal bug must not kill the pilot
             r = ("failed", f"error: {e!r}")
         if r:
             status, detail = r
             g = self.goal.describe()
-            quiet = getattr(self.goal, "quiet", False)     # the Pilot's own small goals: news only
+            quiet = self.goal.quiet     # the Pilot's own small goals: news only
             self.goal_ending = self.goal
             self.goal = None
             self.mover.stop()
@@ -6921,10 +7048,10 @@ class Pilot:
                                   "detail": f"{g}: {detail}; resumed '{self.goal.describe()}'", "goal": None})
                 return True
             ended = self.goal_ending
-            if getattr(ended, "overridden", None):
+            if ended.overridden:
                 self.settle_hunt(ended, status, detail)
             if isinstance(ended, WalkAway) and status == "failed":
-                self.__dict__.setdefault("walkaway_failed", set()).add(self.w.level_t)
+                self.walkaway_failed.add(self.w.level_t)
                 self.flee_t = 0.0             # (the danger flee may act at once)
             if isinstance(ended, Hunt) and status == "failed" and "blinked away" in str(detail) and self.w.in_dungeon:
                 self.notify({"done": "goal_done", "failed": "goal_failed"}[status], f"{g}: {detail}", news=quiet)
@@ -6935,7 +7062,7 @@ class Pilot:
                 self.log("goal", goal=self.goal.describe(), why="a blinker got away: rest is free (the user)")
                 return True
             if self.plan:
-                if getattr(ended, "by_plan", False):
+                if ended.by_plan:
                     self.plan.goal_ended(self, ended, status, detail)
                     quiet = True
                 elif self.plan.paused and ended is self.plan.pause_goal:
@@ -6955,7 +7082,7 @@ class Pilot:
         first looks for stairs (BandLeave), once per level."""
         w, now = self.w, gnow()
         self.flee_fail_t = now
-        soft = self.__dict__.setdefault("band_soft_levels", set())
+        soft = self.band_soft_levels
         if goal and "band" in goal and w.in_dungeon and w.level_t not in soft and w.hp_frac >= 0.8 and \
                 not w.adjacent_monsters() and not any(self.danger_why(r) for *_, r in w.monsters) and \
                 not self.recall_started(now):
@@ -7049,7 +7176,7 @@ class Pilot:
         br = [r for *_, r in w.monsters if "MULTIPLY" in r.flags]
         # (again when weak ones swarm: m40's Giant fruit flies grew to 16 after a news-only notice, boxed the Pilot in
         # and made it stuck; the trip only leaves on a notice that isn't news)
-        swarm = len(br) >= 8 and self.breeder_level == w.level_t and getattr(self, "breeder_weak", False)
+        swarm = len(br) >= 8 and self.breeder_level == w.level_t and self.breeder_weak
         if (len(br) >= 3 and self.breeder_level != w.level_t) or swarm:
             self.breeder_level = w.level_t
             if isinstance(self.goal, Dive):
@@ -7085,7 +7212,7 @@ class Pilot:
         out!", which is why nothing around it ever showed up on the map."""
         w = self.w
         worn = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
-        unlit = not worn and w.depth != 0 and now - getattr(self, "unlit_try_t", 0) > 1.5
+        unlit = not worn and w.depth != 0 and now - self.unlit_try_t > 1.5
         if (now < self.light_t and not unlit) or now < self.busy_until or w.store:
             return False
         if unlit:
@@ -7333,7 +7460,7 @@ class Pilot:
         # a fight) and 1x for resting and running: a clock running fast where the game doesn't would end
         # game timers early (a recall "overdue" and read again cancels it). Only the fuel's measured rate
         # raises it, while resting or running with nothing in view.
-        hw = getattr(self, "hpwarn", 0)
+        hw = self.hpwarn
         w, m = self.w, self.mover
         hp = w.hp
         slow = hw and hp[1] > 1 and hp[0] * 100 // max(1, hp[1]) <= hw * 10
@@ -7515,12 +7642,12 @@ class Pilot:
         # The test server's time freeze: nothing happens in the game, so act on nothing (commands sent now would
         # queue and run on stale reasons when it thaws); requests are still answered
         if frozen():
-            if not getattr(self, "frozen_said", False):
+            if not self.frozen_said:
                 self.frozen_said = True
                 self.mover.stop()
                 self.notify("time_frozen", "time is frozen on the test server: the Pilot holds until it's thawed")
             return
-        if getattr(self, "frozen_said", False):
+        if self.frozen_said:
             self.frozen_said = False
             self.notify("time_frozen", "time flows again: the Pilot carries on", news=True)
         # who each action is for (the user, 10-25: "when does the Navigator act vs the Pilot?"): stamped as `by` on
@@ -7553,9 +7680,9 @@ class Pilot:
         the Architect gave -> nav / arch; the Pilot's own (flee, recover, recall by reflex...) -> pilot."""
         if g is None:
             return "pilot"
-        if getattr(g, "by_plan", False) or isinstance(g, TownKit):
+        if g.by_plan or isinstance(g, TownKit):
             return "plan"
-        role = getattr(g, "role", None)
+        role = g.role
         return {"navigator": "nav", "architect": "arch"}.get(role, "pilot")
 
     # --- control requests (from the socket thread) ---------------------------
@@ -7565,7 +7692,7 @@ class Pilot:
     def authenticate(self, req):
         """A request claiming the architect role without the Architect's token is the Navigator's (F3); refused
         claims other than the viewer's read-only queries are logged and raised as an attention event."""
-        if req.get("role") != "architect" or req.get("token") == self.__dict__.get("arch_token"):
+        if req.get("role") != "architect" or req.get("token") == self.arch_token:
             return req
         req = dict(req, role="navigator")
         if req.get("cmd") not in self.READ_ONLY_CMDS:
@@ -7725,7 +7852,7 @@ class Pilot:
                 return {"ok": False, "error": "usage: mission start LABEL [navigator=MODEL] [effort=LEVEL] [notes=TEXT] | "
                                               "mission end [LABEL]"}
             kv = dict(a.split("=", 1) for a in args[1:] if "=" in a)
-            label = next((a for a in args[1:] if "=" not in a), None) or getattr(self, "mission_label", None)
+            label = next((a for a in args[1:] if "=" not in a), None) or self.mission_label
             if not label:
                 return {"ok": False, "error": "which mission? (mission start LABEL ...)"}
             path = os.path.join(os.path.dirname(os.path.dirname(self.rundir.rstrip("/"))), "missions.json")
@@ -7739,7 +7866,7 @@ class Pilot:
                 self.mission_label = label
                 # (the report's mission total: m25's Navigator had only the 10-minute rates)
                 self.mission_base = (gnow(), (self.w.ind.get("exp") or [0])[0], self.w.ind.get("gold", [0])[0],
-                                     self.__dict__.get("gold_found", 0))
+                                     self.gold_found)
                 self.save_mission()
                 self.log("mission_start", label=label, version=VERSION, **kv)
                 ms = [m for m in ms if m.get("label") != label] + [
@@ -8127,7 +8254,7 @@ class Pilot:
             extra = ""
             iname0 = next((i["name"] for i in self.w.inven if i["item"] == item), "")
             if c in ("read", "use") and re.search(r"Teleport|Phase Door", iname0) and "force" not in args[1:] and \
-                    not waited(getattr(self, "escape_read_t", -99.0), 3.0):
+                    not waited(self.escape_read_t, 3.0):
                 # (m30: the Navigator read a second Teleportation 2 s after the first landed, back beside the hounds)
                 return {"ok": False, "error": "an escape was read less than 3 s ago and may still be landing: look "
                                               "again (`status`), or add 'force'"}
@@ -8573,7 +8700,7 @@ class Pilot:
 
     def planned_depth(self):
         md = int(self.orders.get("max_depth", 0) or 0)
-        deepest = getattr(self, "deepest_ft", 0) or 0
+        deepest = self.deepest_ft or 0
         return min(md, deepest) if md and deepest else (md or deepest)
 
     def town_buyers(self, it):
@@ -8593,7 +8720,7 @@ class Pilot:
     CRUTCH_DEVICES = ("Enlightenment", "Detection", "Magic Mapping")
 
     def is_crutch(self, it):
-        return not getattr(self, "live", False) and it["tval"] in (55, 65, 66) and \
+        return not self.live and it["tval"] in (55, 65, 66) and \
             any(k in it["name"] for k in self.CRUTCH_DEVICES)
 
     def town_sell_count(self, it):
@@ -8655,11 +8782,11 @@ class Pilot:
         free = self.PACK_SLOTS - len(w.items())
         if len(new) <= free:
             return False
-        tries = kit.__dict__.setdefault("room_tries", 0)
+        tries = kit.room_tries
         cand = sorted(((self.pack_value(i), i) for i in w.items()), key=lambda vi: vi[0])
         cand = [(v, i) for v, i in cand if v < float("inf")]
         if not cand or tries >= 6:
-            if not kit.__dict__.get("room_said"):
+            if not kit.room_said:
                 kit.room_said = True
                 kit.done_log.append(f"pack full: no room for {', '.join(sorted(new))} (nothing the policy lets go)")
             return False
@@ -8687,23 +8814,23 @@ class Pilot:
         # the fuller lantern on first (m39 left town with 4383 turns worn and 13290 in the pack)
         spare = self.best_light()
         if fuel is not None and spare and self.light_left(spare) > fuel + 1000 and \
-                any(i["tval"] == TV_LITE for i in w.items(equip=True)) and not kit.__dict__.get("swapped"):
+                any(i["tval"] == TV_LITE for i in w.items(equip=True)) and not kit.swapped:
             kit.swapped = True
             self.cmd(f"custom w item={spare['item']}", f"town kit: wear the fuller lantern ({self.light_left(spare)} "
                                                        f"turns vs {fuel})", hold=0.8)
             return True
         flask = next((i for i in w.items(tval=TV_FLASK)), None)
-        if fuel is not None and fuel < self.FUEL_TOPUP and flask and kit.__dict__.get("fuelled", 0) < 3:
+        if fuel is not None and fuel < self.FUEL_TOPUP and flask and kit.fuelled < 3:
             worn = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
             if not worn or "Lantern" not in worn["name"]:
                 return self.wear_light("town kit: the lantern on to refuel it")
-            kit.fuelled = kit.__dict__.get("fuelled", 0) + 1
+            kit.fuelled += 1
             self.cmd(f"custom F item={flask['item']}", f"town kit: fill the lantern ({fuel} turns)", hold=0.8)
             kit.done_log.append(f"filled the lantern ({fuel} turns)")
             return True
         ration = self.find_item("Ration", TV_FOOD)
-        if ration and w.hunger <= 2 and kit.__dict__.get("ate", 0) < 3:
-            kit.ate = kit.__dict__.get("ate", 0) + 1
+        if ration and w.hunger <= 2 and kit.ate < 3:
+            kit.ate += 1
             self.cmd(f"eat {ration['item']}", "town kit: eat to Fed before the trip", hold=1.0)
             if kit.ate == 1:
                 kit.done_log.append("ate to Fed")
@@ -8855,7 +8982,7 @@ class Pilot:
         return None
 
     def stock_table(self):
-        if not hasattr(self, "_stock"):
+        if self._stock is None:
             try:
                 self._stock = list(csv.DictReader(open(os.path.join(HERE, "..", "rulebook", "shop_stock.csv"))))
             except OSError:
@@ -9033,7 +9160,7 @@ class Pilot:
 
     # --- order checks (restructure step 2.4) ------------------------------------
     def fight_rows(self):
-        if not hasattr(self, "_fight_rows"):
+        if self._fight_rows is None:
             try:
                 self._fight_rows = {int(r["idx"]): r for r in csv.DictReader(
                     open(os.path.join(HERE, "..", "rulebook", "monsters.csv")))}
@@ -9068,7 +9195,7 @@ class Pilot:
         """The Advisor's fight_sim.summary at our live profile, or None (tools/rulebook/fight_sim.py,
         synced from Advisor/data/rulebook; ~0.1 s for 600 duels)."""
         try:
-            if not hasattr(self, "_sim"):
+            if self._sim is None:
                 sys.path.insert(0, os.path.join(HERE, "..", "rulebook"))
                 import fight_sim
                 self._sim = (fight_sim, {r["idx"]: r for r in csv.DictReader(
@@ -9140,8 +9267,8 @@ class Pilot:
         if breath > 0.6 * hp:
             return (f"{race.name} breathes up to {breath:.0f} (you have {w.hp[0]}): one breath could take "
                     f"60% of your HP", info)
-        band_lt = (getattr(self, "band_warned", (None, 0)) or (None, 0))[0]
-        if band_lt == w.level_t and gnow() - getattr(self, "band_warned_t", 0) < 120 and \
+        band_lt = (self.band_warned or (None, 0))[0]
+        if band_lt == w.level_t and gnow() - self.band_warned_t < 120 and \
                 sum(1 for *_, r in w.monsters if "NEVER_MOVE" not in r.flags) >= 5:
             return (f"a band is about (flagged {gnow() - self.band_warned_t:.0f} s ago): leave first", info)
         return None, info
@@ -9150,7 +9277,7 @@ class Pilot:
         """An order whose premise is gone since the report it answers (the Advisor's
         starting-over memo: a goto written for a 17-s-old report walked beside Brodda).
         Returns the reason to hold it, or None."""
-        st = getattr(self, "report_state", None)
+        st = self.report_state
         rid, rt = self.last_report
         if not st or not rid:
             return None
@@ -9275,8 +9402,8 @@ class Pilot:
             if not m:
                 return {"ok": False, "error": "usage: goal fetch Y,X (an item's square, from the report)"}
             if self.req_role != "architect" and self.w.in_dungeon:
-                band_lt = (getattr(self, "band_warned", (None, 0)) or (None, 0))[0]
-                if band_lt == self.w.level_t and gnow() - getattr(self, "band_warned_t", 0) < 120:
+                band_lt = (self.band_warned or (None, 0))[0]
+                if band_lt == self.w.level_t and gnow() - self.band_warned_t < 120:
                     return {"ok": False, "error": "fetch refused: a band was flagged on this level in the last 2 "
                                                   "minutes; loot isn't worth it now (mission 22). Leave or fight first"}
                 if self.dangers():
@@ -9321,7 +9448,7 @@ class Pilot:
                 return {"ok": False, "error": f"not quiet: {', '.join(mob[:3])} in view (it would wake at once). "
                                               "Deal with it, or `goal leave`"}
             # (the goal it replaces carries on after; a plan's own goal comes back with the plan)
-            prev = self.goal if self.goal is not None and not getattr(self.goal, "by_plan", False) and \
+            prev = self.goal if self.goal is not None and not self.goal.by_plan and \
                 not isinstance(self.goal, QuietWait) else None
             g = QuietWait(secs, prev)
         else:
@@ -9329,7 +9456,7 @@ class Pilot:
         g.by_navigator = self.req_role != "architect"
         g.role = self.req_role
         self.set_goal(g)
-        if getattr(g, "estimate", None) and not self.plan:
+        if g.estimate and not self.plan:
             return {"ok": True, "goal": g.describe(), "note": g.estimate}
         if self.plan:
             # your goal first; the plan carries on when it ends (`plan stop` ends the plan)
@@ -9401,18 +9528,18 @@ class Pilot:
         w = self.w
         # the level this Pilot logged in on (None: in town): the previous Pilot's logout left it "static" on the
         # server, kept after we leave it (operations.md, Level persistence) -- Dive.FLED_HOLD's test-server edge case
-        if "first_level_t" not in self.__dict__ and w.depth is not None and w.level_t:
+        if self.first_level_t is None and w.depth is not None and w.level_t:
             self.first_level_t = w.level_t if w.in_dungeon else None
         # the arrival feeling, logged per level (the Advisor's structures memo: at <= 850 ft any pit, nest or
         # vault forces "special"; another feeling proves there is none)
-        if w.in_dungeon and getattr(self, "feeling_level", None) != w.level_t and waited(w.level_t, 3):
+        if w.in_dungeon and self.feeling_level != w.level_t and waited(w.level_t, 3):
             self.feeling_level = w.level_t
             fl = next((t for ts, t in w.messages if ts >= w.level_t - 0.5 and re.search(
                 r"special about this level|feeling|Looks like any other level|Omens of death|murderous|"
                 r"terribly dangerous|nervous|bad feeling|quiet, peaceful|safe|Luck is turning|lucky", t)), None)
             self.level_feeling = fl
             self.log("arrival_feeling", depth_ft=w.depth_ft, feeling=fl, arrived_by=w.arrived_by)
-        snap = getattr(self, "map_snap", None)
+        snap = self.map_snap
         if snap and snap["level"] != w.level_t:
             try:
                 d = os.path.join(self.rundir, "levels")
@@ -9432,8 +9559,8 @@ class Pilot:
         if w.in_dungeon and w.memory:
             self.map_snap = {"level": w.level_t, "mem": dict(w.memory), "ft": w.depth_ft,
                              "t0": snap["t0"] if snap else now, "t": now,
-                             "feeling": getattr(self, "level_feeling", None)
-                             if getattr(self, "feeling_level", None) == w.level_t else None}
+                             "feeling": self.level_feeling
+                             if self.feeling_level == w.level_t else None}
         else:
             self.map_snap = None
 
@@ -9443,7 +9570,7 @@ class Pilot:
 
     def track_since(self):
         w, now = self.w, gnow()
-        sn = getattr(self, "since", None)
+        sn = self.since
         if sn is None:
             sn = self.since = {"t": now, "min_hp": None, "mons": {}, "uniques": set()}
         if w.hp[1] > 1 and (sn["min_hp"] is None or w.hp[0] < sn["min_hp"][0]):
@@ -9455,13 +9582,13 @@ class Pilot:
             sn["mons"][n] = max(sn["mons"].get(n, 0), k)
         sn["uniques"] |= {r.name for *_, r in w.monsters if "UNIQUE" in r.flags}
         exp = (w.ind.get("exp") or [0])[0]
-        if exp != getattr(self, "exp_seen", None):
-            if getattr(self, "exp_seen", None) is not None and exp > self.exp_seen:
+        if exp != self.exp_seen:
+            if self.exp_seen is not None and exp > self.exp_seen:
                 self.exp_t = now
             self.exp_seen = exp
 
     def since_lines(self, reset):
-        sn = getattr(self, "since", None)
+        sn = self.since
         if not sn:
             return []
         now = gnow()
@@ -9472,11 +9599,12 @@ class Pilot:
                    + (self.low_hp_text(lo) if lo else "?")
                    + "; monsters seen (most at once): " + (", ".join(f"{n} x{k}" for n, k in mons[:12]) or "none")
                    + (f"; UNIQUES: {', '.join(sorted(sn['uniques']))}" if sn["uniques"] else ""))
-        xt = getattr(self, "exp_t", None)
+        xt = self.exp_t
+        gt = now if self.goal_t is None else self.goal_t      # (a goal set without set_goal: for 0 s)
         w = self.w
         out.append("Progress: " + (f"last XP gain {self.ago(now - xt)} ago" if xt else "no XP gain seen yet")
                    + (f"; on this level {self.ago(now - w.level_t)}" if w.level_t else "")
-                   + (f"; goal '{self.goal.describe()}' for {self.ago(now - getattr(self, 'goal_t', now))}"
+                   + (f"; goal '{self.goal.describe()}' for {self.ago(now - gt)}"
                       if self.goal else ""))
         if reset:
             self.since_reset(now)
@@ -9792,7 +9920,7 @@ class Pilot:
                 # (no mapping/detection devices on the test server: the user's no-crutch rule)
                 if price <= max(0, gold - self.town_reserve()) and re.match(r"(potion|scroll|ring|amulet|staff|rod|wand) of",
                                                                               name) and price >= 150 and \
-                        (getattr(self, "live", False) or not any(c.lower() in name for c in self.CRUTCH_DEVICES)):
+                        (self.live or not any(c.lower() in name for c in self.CRUTCH_DEVICES)):
                     notable.append(f"{name} {price} ({st}" + (f", seen {age:.0f} min ago" if age is not None else "") + ")")
         out += ["", "== Shop stock you could afford (Black Market 7, Magic 6, Alchemist 5; prices last seen): " +
                 ("; ".join(notable[:12]) if notable else "nothing notable")]
@@ -9824,7 +9952,7 @@ class Pilot:
         if not text:
             return {"ok": False, "error": "usage: ask [quiet] TEXT (a question or an escalation for the Architect)"}
         now = time.time()
-        asks = [a for a in self.__dict__.setdefault("asks_sent", []) if now - a < 3600]
+        asks = [a for a in self.asks_sent if now - a < 3600]
         self.asks_sent = asks
         # (the file runs/pilot/NICK/ask_unlimited lifts the limits: the user, 10-26, for "The Architect's Vacation"
         # session, when the Architect answers live all session; delete it to restore them)
@@ -9837,7 +9965,7 @@ class Pilot:
             return {"ok": False, "error": f"{self.ASK_PER_HOUR} questions in the last hour: use `complain` (read "
                                           "after the mission)"}
         asks.append(now)
-        aid = self.__dict__.get("ask_seq", 0) + 1
+        aid = self.ask_seq + 1
         self.ask_seq = aid
         rec = {"t": round(now, 1), "id": aid, "text": text, "depth_ft": self.w.depth_ft, "hp": list(self.w.hp[:2]),
                "goal": self.goal.describe() if self.goal else None}
@@ -9866,7 +9994,7 @@ class Pilot:
         if not args or not args[0].lstrip("#").isdigit():
             return {"ok": False, "error": "usage: answer ID TEXT"}
         aid, text = int(args[0].lstrip("#")), " ".join(args[1:])
-        self.__dict__.setdefault("arch_answers", []).append((gnow(), aid, text))
+        self.arch_answers.append((gnow(), aid, text))
         self.log("arch_answer", id=aid, text=text)
         self.notify("architect_answer", f"#{aid}: {text}")
         return {"ok": True, "text": f"answer #{aid} sent"}
@@ -9993,14 +10121,14 @@ class Pilot:
         if not w.in_dungeon:
             return
         key = getattr(self.plan, "t0", None) or w.level_t
-        if self.kit_count("Ration of Food") == 0 and self.__dict__.get("food_warned") != key:
+        if self.kit_count("Ration of Food") == 0 and self.food_warned != key:
             self.food_warned = key
             self.notify("supplies", f"no food left in the pack (hunger: "
                                     f"{('Weak', 'Weak', 'Hungry', 'Fed', 'Full')[min(4, max(0, w.hunger))]}): "
                                     "`plan town` buys rations; a Full character lasts ~20 dungeon minutes", news=True,
                         fields={"supply": "food", "level": "out"})
         food, light = self.supply_minutes()
-        told = self.__dict__.setdefault("supply_told", set())
+        told = self.supply_told
         for what, m, how in (("food", food, "rations"), ("light", light, "flasks of oil")):
             if m is None:
                 continue
@@ -10023,7 +10151,7 @@ class Pilot:
         """The last walk off the town's edge into a wilderness tile: {town square, wilderness square, depth} -- the
         way a wilderness house is reached (the user, 10-27: a small house just outside town, for the live server)."""
         w = self.w
-        last = self.__dict__.get("surface_last")
+        last = self.surface_last
         if w.pos and w.depth is not None and w.depth <= 0 and not w.in_dungeon:
             if last and last[0] == 0 and w.depth < 0 and self.edge_dir(last[1]):
                 self.edge_cross = {"town": list(last[1]), "wild": list(w.pos), "depth": w.depth}
@@ -10032,7 +10160,7 @@ class Pilot:
             self.surface_last = None
 
     def house_state(self):
-        if not hasattr(self, "_house"):
+        if self._house is None:
             try:
                 self._house = json.load(open(os.path.join(self.rundir, "house.json")))
             except (OSError, ValueError, AttributeError):
@@ -10108,7 +10236,7 @@ class Pilot:
             hh = {k: (list(v) if isinstance(v, tuple) else v) for k, v in houses[0].items() if k != "inside"}
             if self.w.depth:
                 # (a wilderness tile: remember how we came, the way back to it)
-                cr = self.__dict__.get("edge_cross")
+                cr = self.edge_cross
                 if not cr or cr["depth"] != self.w.depth:
                     return {"ok": False, "error": "walk here from town (off the town's edge) before buying, so the "
                                                   "Pilot knows the way"}
@@ -10196,7 +10324,7 @@ class Pilot:
                  else geareval.Item(i) for i in items]
         key = (tuple(c.name for c in cands), tuple(sorted(i.name for v in ch.worn.values() for i in v)),
                tuple(sorted(ch.sheet["stats"].items())), ch.clvl, ch.depth_ft, no_loss, n)
-        cache = self.__dict__.setdefault("gear_eval_cache", {})
+        cache = self.gear_eval_cache
         if key not in cache:
             try:
                 killed = set(json.load(open(os.path.join(self.rundir, "uniques_killed.json"))))
@@ -10437,7 +10565,7 @@ class Pilot:
                      + self.escape_line())
         if self.plan:
             lines.append("Plan: " + self.plan.describe())
-        aa = [a for a in self.__dict__.get("arch_answers", []) if gnow() - a[0] < 600]
+        aa = [a for a in self.arch_answers if gnow() - a[0] < 600]
         if aa:
             lines.append("ARCHITECT ANSWER(S): " + " | ".join(f"#{i} {time.strftime('%H:%M:%S', _lt(t))} {m}"
                                                                for t, i, m in aa))
@@ -10509,7 +10637,7 @@ class Pilot:
             msgs = w.recent(10)[-6:]
             if msgs:
                 lines.append("Msgs: " + " | ".join(msgs))
-        sn = getattr(self, "since", None)
+        sn = self.since
         if sn:
             lo = sn["min_hp"]
             mons = sorted(sn["mons"].items(), key=lambda kv: -kv[1])
@@ -10525,10 +10653,11 @@ class Pilot:
             if news_since is not None:
                 self.since_reset(now)
         if w.depth:
-            xt = getattr(self, "exp_t", None)
+            xt = self.exp_t
+            gt = now if self.goal_t is None else self.goal_t      # (a goal set without set_goal: 0 s)
             lines.append("Progress: " + (f"XP {self.ago(now - xt)} ago" if xt else "no XP yet")
                          + (f" · level {self.ago(now - w.level_t)}" if w.level_t else "")
-                         + (f" · goal {self.ago(now - getattr(self, 'goal_t', now))}" if self.goal else ""))
+                         + (f" · goal {self.ago(now - gt)}" if self.goal else ""))
         lines += self.compact_changes(snapshot)
         return "\n".join(lines)
 
@@ -10553,7 +10682,7 @@ class Pilot:
                                if k in DEFAULT_ORDERS and str(v) != str(DEFAULT_ORDERS[k])],
             "Audit differences": [f"{k} {n}" for k, n in self.audit_counts.items()],
         }
-        prev = None if snapshot else getattr(self, "compact_prev", None)
+        prev = None if snapshot else self.compact_prev
         self.compact_prev = now
         # (a burning lantern's turns and a staff's charges change all the time:
         # not a change worth a line)
@@ -10577,7 +10706,7 @@ class Pilot:
                     out.append(f"{k} changed: " + "; ".join(ch))
             else:
                 out.append(f"{k}: " + ("; ".join(v) or "none"))
-        if prev is None and not getattr(self, "compact_hinted", False):
+        if prev is None and not self.compact_hinted:
             self.compact_hinted = True
             out.append("(this is the compact report: `status full` for everything; `pack`, `equip`, `orders`, "
                        "`map [R]` for one part)")

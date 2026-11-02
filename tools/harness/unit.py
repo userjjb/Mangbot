@@ -98,23 +98,12 @@ def pilot(w=None, **kw):
         _W._HIST.clear()
         _W._HIST.append((now, now, 1.0))
         _W._FUEL.clear()
-    p = P.Pilot.__new__(P.Pilot)
-    p.w = w or W(**kw)
-    p.orders = {"max_depth": 650, "rest_to": 1.0}
-    p.deepest_ft = 650
-    p.seen_drained = {"CON": (18, 18), "STR": (58, 68), "WIS": (9, 10), "CHR": (3, 5)}
-    p.stores_seen, p.flavours, p.keep, p.ability_sources, p.inferred = {}, {}, set(), set(), set()
-    p.aware_cache = (-1, set())
-    p.unique_names = {r.name.lower() for r in RACES.values() if "UNIQUE" in r.flags}
-    p.junk_kinds = {}
-    p.req_role = "navigator"
-    p.band_warned, p.band_warned_t = (None, 0), 0.0
-    p.log = lambda *a, **k: None
+    p = P.Pilot.for_test(w or W(**kw), orders={"max_depth": 650, "rest_to": 1.0}, deepest_ft=650,
+                         seen_drained={"CON": (18, 18), "STR": (58, 68), "WIS": (9, 10), "CHR": (3, 5)},
+                         unique_names={r.name.lower() for r in RACES.values() if "UNIQUE" in r.flags},
+                         ability_seen_t=0)
     p.notes = []
     p.notify = lambda what, d=None, news=False, action=True, fields=None: p.notes.append((what, d))
-    p.ability_seen_t = 0
-    p.emerg_times = []
-    p.plan = None
     return p
 
 
