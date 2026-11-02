@@ -27,6 +27,12 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.44.4 -- 2026-11-02 (session 10, continued)
+No missions yet. No play change (refactor-candidates E4, E9).
+- `Pilot.tick` is a short sequence of named steps (confusion, clock, lowest HP, floor items, redraw, item news, avoid
+  zones, trail, monster record, watchers, freeze, the acting layers); equivalence checked on 28 scripted states.
+- The scorecard's `card()` computes each group in its own function; every card byte-identical.
+
 ## 2.44.3 -- 2026-11-02 (session 10, continued)
 No missions yet. No play change (refactor-candidates E7).
 - The client wrapper `MangClient` moved from `tools/shopcat/mang.py` to `tools/client/mang.py`; the Pilot, the DM

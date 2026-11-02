@@ -7441,18 +7441,57 @@ class Pilot:
             self.running = False
 
     def tick(self):
+        """One pass of the main loop (docs/pilot-core.md, "The tick loop"): perceive, cure confusion, keep the books,
+        watch, answer requests, then act. Each step is a method; one returning true ends the tick."""
         self.w.drain()
         self.w.refresh()
         self.note_edge_cross()
+        if self.confusion_tick():
+            return
+        self.supply_watch()
+        self.clock_tick()
+        self.note_town_stairs()
+        if self.wear_queue:
+            self.wear_step()
+        self.verify_use()
+        self.verify_effects()
+        self.learn_flavours_tick(gnow())
+        self.track_since()
+        now = gnow()
+        self.track_hp_min()
+        self.watch_floor()
+        self.resync_tick(now)
+        self.watch_items(now)
+        self.audit_tick(now)
+        self.structures_tick(now)
+        self.avoid_tick()
+        self.trail_tick()
+        self.mons_tick(now)
+        self.belief_tick(now)
+        self.watch_tick(now)
+        self.handle_requests()
+        if not self.running:
+            return
+        if self.freeze_tick():
+            return
+        self.act_tick(now)
+
+    def confusion_tick(self):
+        """Confusion: a cure while confused with a goal waiting or monsters adjacent (`confusion_lock`), a teleport
+        just after a cure among a crowd (`confusion_window`). True: it acted, the tick ends."""
         # (the M5 set-piece, 10-28: confused 40 s among 26 Hummerhorns with no goal, and nothing happened -- the check
         # lived in step_goal, which returns at once without a goal)
         if not self.w.flag("confused"):
             self.conf_since = None        # (m60: "confused for 1773 s" -- the clock ran on between confusions)
         elif self.w.in_dungeon and (self.w.adjacent_monsters() or self.goal) and self.confusion_lock():
-            return
+            return True
         if self.confusion_window():
-            return
-        self.supply_watch()
+            return True
+        return False
+
+    def clock_tick(self):
+        """The game clock's time factor: the model's factor, the fuel-measured speed-up allowed or not, the
+        `time_factor` log, and a redraw for fuel readings."""
         # the game clock (world.py). The server's rule (xtra2.c base_time_factor, time_factor): 1 in town;
         # 10x resting and 5x running with no awake monster in line of sight -- seen or not
         # (monsters_in_los), so after a fight in the dark it's often 1x (set-piece L2: a 6-s rest at 1x);
@@ -7485,19 +7524,19 @@ class Pilot:
         if self.w.in_dungeon and light_fuel(self.w.inven) is not None and \
                 wall_since(self.redraw_t) > (2 if fast_ok else 10):
             self.w.need_redraw = True
-        self.note_town_stairs()
-        if self.wear_queue:
-            self.wear_step()
-        self.verify_use()
-        self.verify_effects()
-        self.learn_flavours_tick(gnow())
-        self.track_since()
-        w, now = self.w, gnow()
+
+    def track_hp_min(self):
+        """The lowest HP since the last report, and an overridden goal's lowest HP."""
+        w = self.w
         if w.hp[1] > 1 and (self.hp_min_since is None or w.hp[0] < self.hp_min_since[0]):
             self.hp_min_since = [w.hp[0], w.hp[1]]
         ov = getattr(self.goal, "overridden", None) or getattr(self.resume_after, "overridden", None)
         if ov and w.hp[0] < ov["hp_min"]:
             ov["hp_min"] = w.hp[0]
+
+    def watch_floor(self):
+        """Floor items seen (`itemlist`) and what a level was left with (`left_behind`)."""
+        w = self.w
         # 2. floor items with full names, and what a level was left with (the
         # Advisor's scorecard memo §5.2: abandoned loot had to be reconstructed)
         names = [l.strip()[2:].strip() for l in (w.itemlist or [])[1:]]
@@ -7508,6 +7547,10 @@ class Pilot:
         if names != self.items_last and w.in_dungeon:
             self.items_last = names
             self.log("itemlist", items=names, depth_ft=w.depth_ft)
+
+    def resync_tick(self, now):
+        """A full `redraw` from the server after a level change or a loss -- never in or near a store."""
+        w = self.w
         # Full resync from the server after a level change or a loss (the
         # game-state survey, 2026-10-03: the client's copy is right, ours drifts)
         # Never inside a store, nor during a shop goal: the server's redraw
@@ -7521,6 +7564,11 @@ class Pilot:
             self.c.send("redraw")
             w.inven_dirty = True
             w.status_t = 0
+
+    def watch_items(self, now):
+        """Item news: `found` (a special item picked up), `interesting_item` (a device or jewellery seen on the
+        level, held 2.5 s), `lost` (stolen or destroyed)."""
+        w = self.w
         for ts, t in w.messages:
             if ts > self.found_t:
                 m = re.match(r"You have (.+) \([a-w]\)\.$", t)
@@ -7573,8 +7621,11 @@ class Pilot:
         while w.losses:
             t, text = w.losses.pop(0)
             self.notify("lost", text, news=True)
-        self.audit_tick(now)
-        self.structures_tick(now)
+
+    def avoid_tick(self):
+        """The avoid zones -> `World.avoid_zone` / `avoid_inside`: the Navigator's zones on this level and 3 squares
+        round a monster with an avoided name."""
+        w = self.w
         # the Navigator's avoid zones, as squares the planner won't enter
         zone = set()
         for y0, x0, r in self.avoid_zones.get(w.level_t, []):
@@ -7584,6 +7635,10 @@ class Pilot:
                 zone |= {(y0 + dy, x0 + dx) for dy in range(-3, 4) for dx in range(-3, 4)}
         w.avoid_inside = w.pos in zone
         w.avoid_zone = zone - {w.pos}
+
+    def trail_tick(self):
+        """On a new level: `deepest.json`, and the wilderness trail (the edge we came in by, per sector)."""
+        w = self.w
         # The wilderness trail: the edge we came in by, per sector (Town goal)
         if self.trail_level != w.level_t and w.arrive_pos is not None:
             self.trail_level = w.level_t
@@ -7605,6 +7660,10 @@ class Pilot:
                 if len(self.wild_trail) == 1 and not banking:
                     self.notify("left_town", f"walked off the town map into the wilderness ({w.depth_ft} ft); "
                                              "'goal town' walks back")
+
+    def mons_tick(self, now):
+        """The `mons` record: the monsters in view, once a second at most."""
+        w = self.w
         if w.in_dungeon and w.monsters and now - self.mons_log_t >= 1.0:
             # a steady record for replays (post-mortem memo §4.6: an 86 s gap
             # before the mission-7 death)
@@ -7617,7 +7676,9 @@ class Pilot:
                         for m in [re.match(r"You (?:hit|smite|bite|claw|miss) (?:the )?(.+?)[.!]$", t)] if m), None)
             self.log("mons", monsters=[(y, x, r.name) for y, x, r in w.monsters],
                      track=w.ind.get("track"), fighting=hit)
-        self.belief_tick(now)
+
+    def watch_tick(self, now):
+        """The watchers: they notify and log, and don't act (except `watch_progress`'s clear/abort)."""
         self.watch_character()
         if now - self.weapons_t > 10:
             self.weapons_t = now
@@ -7636,9 +7697,9 @@ class Pilot:
             self.notify("recall_cancelled", "a Word of Recall was cancelled (a second one was read): no recall is pending now")
         self.recall_memory()
         self.shadow_results()
-        self.handle_requests()
-        if not self.running:
-            return
+
+    def freeze_tick(self):
+        """The test server's time freeze. True while frozen: the tick acts on nothing."""
         # The test server's time freeze: nothing happens in the game, so act on nothing (commands sent now would
         # queue and run on stale reasons when it thaws); requests are still answered
         if frozen():
@@ -7646,10 +7707,15 @@ class Pilot:
                 self.frozen_said = True
                 self.mover.stop()
                 self.notify("time_frozen", "time is frozen on the test server: the Pilot holds until it's thawed")
-            return
+            return True
         if self.frozen_said:
             self.frozen_said = False
             self.notify("time_frozen", "time flows again: the Pilot carries on", news=True)
+        return False
+
+    def act_tick(self, now):
+        """The acting layers, first that acts wins: reflexes, parking, the Navigator's `react` rules, look (never
+        acts), the Pilot's item policy, the goal, the trip plan, idle."""
         # who each action is for (the user, 10-25: "when does the Navigator act vs the Pilot?"): stamped as `by` on
         # every act and goal record and shown in the viewer -- pilot (reflexes, policy, idle), plan (the Navigator's
         # plan town / plan trip, run by the Pilot), nav (a goal the Navigator gave directly), arch (the Architect)

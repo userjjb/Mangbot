@@ -203,6 +203,8 @@ def bare(name):
 
 
 # --- the card -----------------------------------------------------------------------
+# card() loads a mission's records once and asks one function per group for its part, in the card's key order
+# (header, H, A, B, C, D, E, F, damage, alerts); G (tokens) is the mission's own `tokens`, in the header.
 def card(m):
     nick = m["nick"]
     t0, t1 = logs.mission_window(m)       # (a running mission ends now)
@@ -216,33 +218,54 @@ def card(m):
     c = {"label": m["label"], "nav_model": m.get("navigator"), "effort": m.get("effort"), "report": m.get("report"),
          "start": m["start"], "end": m.get("end") or "(running)", "minutes": round((t1 - t0) / 60, 1),
          "notes": m.get("notes", ""), "tokens": m.get("tokens"), "defs": DEFS}
-    # shadow mode (2026-10-25): the estimator's answers beside the rules' emergency decisions
+    c["estimator"] = estimator_shadow(recs, att)
+    c["A"] = outcome(acount, aud)
+    budget = time_budget(recs, msgs, t0, t1)
+    c["B"] = efficiency(recs, aud, budget, c["A"].get("exp_gain", 0), t0, t1)
+    c["C"] = safety(recs, msgs, att)
+    c["D"], c["values_aware"] = value_lost(recs, msgs, stores, aud, Then.of(nick))
+    c["E"] = navigator(recs, t1, c["minutes"])
+    c["F"] = pilot_health(recs, aud, acount, budget, t0, t1)
+    c.update(damage_taken(recs, msgs))
+    c["alerts"] = dict(acount.most_common(12))
+    c["plan_news"] = dict(plan_news.most_common(12))
+    return c
+
+
+def estimator_shadow(recs, att):
+    """H. shadow mode (2026-10-25): the estimator's answers beside the rules' emergency decisions."""
     est = [d for d in recs if d.get("kind") == "estimator"]
     cmp_ = [d for d in est if d.get("agree") is not None and d.get("trigger") != "hard_fight"]
-    c["estimator"] = {"n": len(est), "compared": len(cmp_), "agree": sum(1 for d in cmp_ if d["agree"]),
-                      "in_time_turn": sum(1 for d in est if d.get("in_time_turn")),
-                      "before_next_act": sum(1 for d in est if d.get("before_next_act")),
-                      "skipped": sum(1 for d in att if d.get("what") == "emergency" and d.get("shadow") == "skipped"),
-                      "compute_max_s": max((d.get("compute_s") or 0 for d in est), default=None),
-                      "disagreements": [(d.get("rules"), d.get("choice"), (d.get("why") or "")[:80])
-                                        for d in cmp_ if not d["agree"]][:8]}
+    h = {"n": len(est), "compared": len(cmp_), "agree": sum(1 for d in cmp_ if d["agree"]),
+         "in_time_turn": sum(1 for d in est if d.get("in_time_turn")),
+         "before_next_act": sum(1 for d in est if d.get("before_next_act")),
+         "skipped": sum(1 for d in att if d.get("what") == "emergency" and d.get("shadow") == "skipped"),
+         "compute_max_s": max((d.get("compute_s") or 0 for d in est), default=None),
+         "disagreements": [(d.get("rules"), d.get("choice"), (d.get("why") or "")[:80])
+                           for d in cmp_ if not d["agree"]][:8]}
     # (since session 6 the estimator also runs at the start of hard fights: counted apart)
     hf = [d for d in est if d.get("agree") is not None and d.get("trigger") == "hard_fight"]
-    c["estimator"].update(hard_n=sum(1 for d in est if d.get("trigger") == "hard_fight"), hard_compared=len(hf),
-                          hard_agree=sum(1 for d in hf if d["agree"]),
-                          hard_choices=dict(collections.Counter(d.get("choice") for d in hf if not d["agree"])))
+    h.update(hard_n=sum(1 for d in est if d.get("trigger") == "hard_fight"), hard_compared=len(hf),
+             hard_agree=sum(1 for d in hf if d["agree"]),
+             hard_choices=dict(collections.Counter(d.get("choice") for d in hf if not d["agree"])))
+    return h
 
-    # A. outcome
-    c["A"] = {"deaths": acount.get("dead", 0)}
+
+def outcome(acount, aud):
+    """A. deaths; from the first and last audits: clvl, exp gained, gold (house-held), the deepest audit."""
+    a_ = {"deaths": acount.get("dead", 0)}
     if aud:
         a, b = aud[0], aud[-1]
         # (gold counts what the house holds: a deposit isn't a loss -- the gold bank, session 9)
         ga, gb = ((x.get("gold") or 0) + (x.get("banked") or 0) for x in (a, b))
-        c["A"].update(clvl=[a.get("clvl"), b.get("clvl")], exp_gain=(b.get("exp") or [0])[0] - (a.get("exp") or [0])[0],
-                      gold=[ga, gb], gold_change=gb - ga,
-                      max_depth_ft=max(d.get("depth_ft") or 0 for d in aud))
+        a_.update(clvl=[a.get("clvl"), b.get("clvl")], exp_gain=(b.get("exp") or [0])[0] - (a.get("exp") or [0])[0],
+                  gold=[ga, gb], gold_change=gb - ga,
+                  max_depth_ft=max(d.get("depth_ft") or 0 for d in aud))
+    return a_
 
-    # B. efficiency
+
+def efficiency(recs, aud, budget, exp_gain, t0, t1):
+    """B. dungeon and town minutes, exp, levels and gold found per dungeon time, the time budget, Navigator-wait."""
     dung = town = 0.0
     for p, q in zip(recs, recs[1:]):
         dt = q["t"] - p["t"]
@@ -261,16 +284,17 @@ def card(m):
             lv += de / max(1, exp_to_reach(cl + 1) - exp_to_reach(cl))
         if (q.get("depth_ft") or 0) > 0 and (q.get("gold") or 0) > (p.get("gold") or 0):
             gold_found += q["gold"] - p["gold"]
-    budget = time_budget(recs, msgs, t0, t1)
-    c["B"] = {"dungeon_min": round(dmin, 1), "town_min": round(town / 60, 1),
-              "exp_per_dmin": round(c["A"].get("exp_gain", 0) / dmin, 1) if dmin else None,
-              "levels_per_dhour": round(lv / (dung / 3600), 2) if dung else None,
-              "gold_found": int(gold_found), "gold_found_per_dmin": round(gold_found / dmin, 1) if dmin else None,
-              "time_budget_min": {k: round(v / 60, 1) for k, v in sorted(budget.items(), key=lambda kv: -kv[1])},
-              "navigator_wait_pct": round(100 * (budget.get("no_goal_dungeon", 0) + budget.get("town_no_goal", 0))
-                                          / max(1, t1 - t0))}
+    return {"dungeon_min": round(dmin, 1), "town_min": round(town / 60, 1),
+            "exp_per_dmin": round(exp_gain / dmin, 1) if dmin else None,
+            "levels_per_dhour": round(lv / (dung / 3600), 2) if dung else None,
+            "gold_found": int(gold_found), "gold_found_per_dmin": round(gold_found / dmin, 1) if dmin else None,
+            "time_budget_min": {k: round(v / 60, 1) for k, v in sorted(budget.items(), key=lambda kv: -kv[1])},
+            "navigator_wait_pct": round(100 * (budget.get("no_goal_dungeon", 0) + budget.get("town_no_goal", 0))
+                                        / max(1, t1 - t0))}
 
-    # C. safety
+
+def safety(recs, msgs, att):
+    """C. the lowest HP, close and near calls, emergency episodes, escapes and cures, recalls landed."""
     hp = [(d["t"], d["hp"][0] / d["hp"][1], d["hp"][0], d["hp"][1]) for d in recs
           if isinstance(d.get("hp"), list) and len(d["hp"]) > 1 and d["hp"][1] >= 20 and d["hp"][0] > 0]
 
@@ -309,19 +333,19 @@ def card(m):
             esc["stairs_flee"] += 1
         if cmd.startswith("custom q") and CURE_RE.search(why):
             esc["cures"] += 1
-    c["C"] = {"lowest_hp": [low[2], low[3], round(100 * low[1]), time.strftime("%H:%M:%S", time.localtime(low[0]))]
-              if low else None,
-              "close_calls_lt40": episodes(0, 0.40), "near_calls_40_50": episodes(0.40, 0.50),
-              "emergency_episodes": em_ep, "emergency_alerts": len(em),
-              "phase": esc["phase"], "wor_escape": esc["wor_escape"], "wor_travel": esc["wor_travel"],
-              "stairs_flee": esc["stairs_flee"], "teleport": esc["teleport"], "cures_quaffed": esc["cures"],
-              "escape_records": sum(1 for d in recs if d.get("kind") == "escape") or None,
-              "recalls_landed": sum(1 for _, t in msgs if "yanked" in t)}
+    return {"lowest_hp": [low[2], low[3], round(100 * low[1]), time.strftime("%H:%M:%S", time.localtime(low[0]))]
+            if low else None,
+            "close_calls_lt40": episodes(0, 0.40), "near_calls_40_50": episodes(0.40, 0.50),
+            "emergency_episodes": em_ep, "emergency_alerts": len(em),
+            "phase": esc["phase"], "wor_escape": esc["wor_escape"], "wor_travel": esc["wor_travel"],
+            "stairs_flee": esc["stairs_flee"], "teleport": esc["teleport"], "cures_quaffed": esc["cures"],
+            "escape_records": sum(1 for d in recs if d.get("kind") == "escape") or None,
+            "recalls_landed": sum(1 for _, t in msgs if "yanked" in t)}
 
-    # D. value lost
-    c["D"], c["values_aware"] = value_lost(recs, msgs, stores, aud, Then.of(nick))
 
-    # E. Navigator
+def navigator(recs, t1, minutes):
+    """E. reports and commands, report-to-action latency, silent reports, replies to the user, overrides, complaints,
+    report size and the orders' report age. `minutes` is the card's (rounded) mission length."""
     nc = [d for d in recs if d.get("kind") == "nav_cmd"]
     reports = [d["t"] for d in nc if d.get("wait_report")]
     cmds = [(d["t"], d.get("cmd"), d.get("args") or []) for d in nc if not d.get("wait_report")]
@@ -339,37 +363,39 @@ def card(m):
     rep = [says[j] - u for u in users for j in [bisect.bisect_right(says, u)] if j < len(says) and says[j] - u < 300]
     ages = [d["report_age"] for d in nc if d.get("report_age") is not None and d.get("cmd") not in logs.QUERY_CMDS]
     reps = [d for d in recs if d.get("kind") == "report"]
-    c["E"] = {"reports": len(reports), "commands": len(cmds), "commands_per_min": round(len(cmds) / max(1, c["minutes"]), 1),
-              "report_to_action_med_s": med(lat), "report_to_action_p90_s": p90(lat),
-              "reports_without_command_pct": round(100 * silent / len(reports)) if reports else None,
-              "user_messages": len(users), "user_reply_med_s": med(rep),
-              "forced_overrides": sum(1 for _, _, args in cmds for s in args if isinstance(s, str) and "!" in s[:2]),
-              "complaints": sum(1 for d in recs if d.get("kind") == "nav_complaint"),
-              "report_chars": sum(d.get("chars", 0) for d in reps) or None,
-              "order_report_age_med_s": med(ages), "order_report_age_p90_s": p90(ages)}
+    return {"reports": len(reports), "commands": len(cmds), "commands_per_min": round(len(cmds) / max(1, minutes), 1),
+            "report_to_action_med_s": med(lat), "report_to_action_p90_s": p90(lat),
+            "reports_without_command_pct": round(100 * silent / len(reports)) if reports else None,
+            "user_messages": len(users), "user_reply_med_s": med(rep),
+            "forced_overrides": sum(1 for _, _, args in cmds for s in args if isinstance(s, str) and "!" in s[:2]),
+            "complaints": sum(1 for d in recs if d.get("kind") == "nav_complaint"),
+            "report_chars": sum(d.get("chars", 0) for d in reps) or None,
+            "order_report_age_med_s": med(ages), "order_report_age_p90_s": p90(ages)}
 
-    # F. Pilot health
+
+def pilot_health(recs, aud, acount, budget, t0, t1):
+    """F. audit differences, perception gaps, failed goals, stuck, runs sent, time the Pilot was down, server
+    crashes."""
     gaps = [q["t"] - p["t"] for p, q in zip(recs, recs[1:]) if q["t"] - p["t"] > 45]
     moves = [d for d in recs if d.get("kind") == "move"]
-    c["F"] = {"audit_diffs": sum(d.get("differences") or 0 for d in aud), "audit_checks": len(aud),
-              "perception_gaps": sum(1 for d in recs if d.get("kind") == "perception_gap"),
-              "goal_failed": acount.get("goal_failed", 0), "stuck": acount.get("stuck", 0),
-              "stuck_looping_min": round(budget.get("stuck_looping", 0) / 60, 1),
-              "runs_sent": sum(1 for d in moves if d.get("run")),
-              "pilot_down_min": round(sum(gaps) / 60, 1), "server_crashes": len(server_crashes(t0, t1))}
+    return {"audit_diffs": sum(d.get("differences") or 0 for d in aud), "audit_checks": len(aud),
+            "perception_gaps": sum(1 for d in recs if d.get("kind") == "perception_gap"),
+            "goal_failed": acount.get("goal_failed", 0), "stuck": acount.get("stuck", 0),
+            "stuck_looping_min": round(budget.get("stuck_looping", 0) / 60, 1),
+            "runs_sent": sum(1 for d in moves if d.get("run")),
+            "pilot_down_min": round(sum(gaps) / 60, 1), "server_crashes": len(server_crashes(t0, t1))}
 
-    # damage taken, by monster: logs.damage_rows (D8, damage_mix's attribution) summed over the mission; the top 8
-    # named attackers plus `unseen` and `unattributed`, and all the HP lost
+
+def damage_taken(recs, msgs):
+    """damage taken, by monster: logs.damage_rows (D8, damage_mix's attribution) summed over the mission; the top 8
+    named attackers plus `unseen` and `unattributed`, and all the HP lost. ({damage_by_monster, damage_hp_lost})"""
     dmg = collections.Counter()
     for r in logs.damage_rows(recs, msgs):
         dmg[r.monster] += r.amount
     unnamed = ("unseen", "unattributed")
-    c["damage_by_monster"] = {k: round(v) for k, v in [kv for kv in dmg.most_common() if kv[0] not in unnamed][:8]
-                              + [(k, dmg[k]) for k in unnamed if k in dmg]}
-    c["damage_hp_lost"] = round(sum(dmg.values()))
-    c["alerts"] = dict(acount.most_common(12))
-    c["plan_news"] = dict(plan_news.most_common(12))
-    return c
+    return {"damage_by_monster": {k: round(v) for k, v in [kv for kv in dmg.most_common() if kv[0] not in unnamed][:8]
+                                  + [(k, dmg[k]) for k in unnamed if k in dmg]},
+            "damage_hp_lost": round(sum(dmg.values()))}
 
 
 def time_budget(recs, msgs, t0, t1):

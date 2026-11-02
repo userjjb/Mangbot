@@ -261,7 +261,7 @@ none is fixed. **[N]** = Navigator-facing.
 - **E3** `reflexes()` (374) and `escape()` (201): one method per numbered step, order kept in one list (keep the five
   Advisor-mirrored names). Moving light/hunger/pickup out of `reflexes` into `policy_tick` and `food_watch` into `tick()`
   changes order: *behaviour*. -- M/M -- **do** the split, **ask** the moves.
-- **E4** `Pilot.tick` (238): extract `watch_items()`, `trail_tick()`, `clock_tick()`, avoid-zone build. -- S/S -- **do**.
+- **E4** `Pilot.tick` (238): extract `watch_items()`, `trail_tick()`, `clock_tick()`, avoid-zone build. -- S/S -- **do**. **done (session 10, 2.44.4)**: tick() calls 12 named methods (confusion/clock/hp_min/floor/resync/items/avoid/trail/mons/watch/freeze/act)
 - **E5** `TownKit.tick` (~210, flags created via `getattr`/`setdefault`: withdrawn, fetched, id_bought, stashed, ...),
   `Shop.tick` (~180), `HouseBank.tick` (~200), `TripPlan.tick` (~190): one method per step/phase (`_trade_sell`,
   `_cross`/`_door`/`_inside`, `_phase_down`/`_level`/`_home`). -- M/M -- **do** after set-pieces cover the town visit.
@@ -273,7 +273,7 @@ none is fixed. **[N]** = Navigator-facing.
   `sys.path` hacks: move to `tools/client/`, leave a shim. -- M/S -- **do**. **done (session 10, 2.44.3)**: `tools/client/mang.py`, a shim at `shopcat/mang.py`
 - **E8** `unit.py` (3,177 lines, 120 cases) -> files by family + `fixtures.py`; `setpiece.py` (1,492) -> `Run` framework
   vs 39 scenarios; harness/README -> reference table + findings log. -- S-M/M -- **do** (unit count must stay 120).
-- **E9** scorecard.py `card()` (~170 lines) -> one function per group. -- S/S -- **do** (cards byte-identical).
+- **E9** scorecard.py `card()` (~170 lines) -> one function per group. -- S/S -- **do** (cards byte-identical). **done (session 10, 2.44.4)**: one function per group; cards byte-identical
 - **Skip:** move shopmath.py (Advisor constraint; shim only if ever needed); c-tool.c `tool_do_command` verb table (C
   rebuild, low value).
 
