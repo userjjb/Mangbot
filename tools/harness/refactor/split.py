@@ -1,8 +1,9 @@
 """E1 split helper: move methods and class constants of class Pilot (verbatim chunks: each statement with the blank
 lines and comments above it) from pilot.py into a mixin class in a new module, and module-level statements of
 pilot.py (MOVE_TOP) into that module's top level; pilot.py imports the module's names back. Used for step 4
-(town.py, TownMixin) and step 5 (combat.py, CombatMixin); for the next step edit TARGET, MIXIN, MOVE, MOVE_TOP,
-HEADER and BASES.
+(town.py, TownMixin), step 5 (combat.py, CombatMixin) and step 6 (commands.py, CommandsMixin: the command side,
+before E2); for another step edit TARGET, MIXIN, MOVE, MOVE_TOP, HEADER, CLASS_HEADER, BASES and ANCHOR (step 5's
+values: `git show 7898992:tools/harness/refactor/split.py`).
 
     python3 split.py PILOT_DIR            # writes PILOT_DIR/<TARGET>.py, rewrites PILOT_DIR/pilot.py
 
@@ -14,56 +15,45 @@ import re
 import sys
 import textwrap
 
-TARGET, MIXIN = "combat", "CombatMixin"
-BASES = ("ReportMixin, GearMixin, ItemsMixin, TownMixin", "ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin")
+TARGET, MIXIN = "commands", "CommandsMixin"
+BASES = ("ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin",
+         "ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, CommandsMixin")
+# the import line of pilot.py that the new module's import goes after
+ANCHOR = "from combat import CombatMixin, CURE_POTIONS, HEALS, choke_tier, heal_of, STATUS_CURES   # noqa: E402\n"
 
 # module-level statements of pilot.py that move to the top of TARGET (helpers and tables only the moved methods use)
 MOVE_TOP = """
-CURE_POTIONS HEALS choke_tier heal_of STATUS_CURES
 """.split()
 
 MOVE = """
-ESCAPE_WHY log_escape
-confusion_lock confusion_window
-danger_why worst_3turns sim_loss dangers danger_text
-reflexes ENGAGE_STEPS ENGAGE_GIVE_UP_S engage_tick count_escape emergency_loop hunt_ordered walk_away_ok phase_futile
-escaping_to_stairs escape
-watch_perception watch_band teleport_item STATUS_SPELLS kill_caster_step band_cost band_live watch_traps
-watch_thieves watch_kills
-watch_drainers watch_progress
-ABILITY_FLAGS has_ability
-group_danger ENERGY our_slowness group_tick stairs_beside_still still_fight_tick BUFF_MSGS buff_on
-RULE_KINDS rules save_rules has_rule rule_tick
-fear_cure hard_fight speed_start_tick berserk_tick status_tick unseen_tick sidestep retreat_step quiet_spot
-seen_pos
-flee_failed choke_tick watch_breeders use_stair_location watch_character
+READ_ONLY_CMDS authenticate handle_requests service_notes ACTIONS item_index pack_now DUNGEON_ITEM_CMDS do_request
+drainers_info user_note monster_info uniques_killed drop_row
+PLAN_USAGE request_trip request_plan hunt_refusal stale_order request_goal
+WHY_KINDS WHY_SKIP why_info prep_info ASK_GAP_S ASK_PER_HOUR ask_architect answer_navigator price_info house_info
 """.split()
 
-HEADER = '''"""combat -- the Pilot's combat and survival side, as a mixin of Pilot (refactor-candidates E1; docs/pilot-combat.md):
-the reflexes (reflexes, in priority order) and the emergency escape (escape, with its helpers emergency_loop,
-phase_futile, escaping_to_stairs, kill_caster_step, teleport_item, use_stair_location, log_escape, count_escape),
-what counts as dangerous (danger_why, worst_3turns, sim_loss, dangers, has_ability), the fight rules
-(engage_tick, group_danger/group_tick, still_fight_tick, status_tick, unseen_tick, choke_tick with choke_tier,
-confusion_lock/confusion_window, speed_start_tick, berserk_tick, hard_fight, fear_cure, buff_on, our_slowness), the
-movement helpers (sidestep, retreat_step, quiet_spot), flee_failed, the Navigator's react rules (rules, rule_tick)
-and the watches (watch_band/band_cost/band_live, watch_character, watch_drainers, watch_thieves, watch_traps,
-watch_breeders, watch_kills, watch_perception, watch_progress). The Advisor's estimator mirrors escape, group_tick,
-speed_start_tick, berserk_tick and fear_cure by name (Advisor/data/estimator/options_sim.py POLICY_VERSION): they
-stay Pilot's, as every method here does -- they read and write the Pilot's state through self; pilot.py imports
-this module's names back (P.heal_of, P.choke_tier, P.STATUS_CURES, ...).
+HEADER = '''"""commands -- the Pilot's command side, as a mixin of Pilot (refactor-candidates E1 step 6 and E2; docs/commands.md):
+the requests from the control socket (authenticate, handle_requests, service_notes), the dispatcher (do_request:
+the role, dungeon and stale-order refusals, then each command), the goal and plan requests (request_goal,
+request_plan, request_trip), the order checks (hunt_refusal, stale_order), the item commands' helpers (item_index,
+pack_now) and the query replies (why_info, prep_info, price_info, house_info, monster_info, drop_row, drainers_info,
+uniques_killed, user_note, ask_architect, answer_navigator). Every method stays Pilot's: it reads and writes the
+Pilot's state through self.
 """
-import collections
+import csv
 import json
-import math
 import os
+import queue
 import re
+import time
 
-from common import TV_SCROLL, TV_POTION, TV_FOOD, TV_LITE, plural, one_of
-from world import gnow, waited
-from mover import direction, passable
-from goals import (Wait, Goto, Explore, Dive, Search, Hunt, Recover, BandLeave, WalkAway, Flee, Recall,
-                   Resurrect, RestGoal)
-from town_goals import TownFarm, Shop
+import structures
+import geareval
+from common import HERE, VERSION, TV_SCROLL, TV_LITE, flavour_key, bare_name, recall_level, singular
+from world import gnow, waited, _lt
+from goals import Wait, Goto, Explore, Dive, Search, Hunt, Flee, Recall, Resurrect, RestGoal, QuietWait
+from town_goals import Town, TownFarm, Shop, town_houses, HouseBank, TownKit
+from plan import TripPlan, split_specs
 
 
 '''
@@ -71,8 +61,8 @@ from town_goals import TownFarm, Shop
 CLASS_HEADER = f'''
 
 class {MIXIN}:
-    """Pilot's combat and survival methods (`class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin,
-    CombatMixin)`: every name stays on Pilot)."""
+    """Pilot's command side (`class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin,
+    CommandsMixin)`: every name stays on Pilot)."""
 '''
 
 
@@ -143,7 +133,7 @@ def main(d):
     newp = newp.replace(old_hdr, new_hdr)
     top_names = [n for *_, ns in top for n in ns]
     # import the mixin and the moved top-level names back, after the last mixin's import
-    anchor = "from town import TownMixin                       # noqa: E402\n"
+    anchor = ANCHOR
     assert newp.count(anchor) == 1
     newp = newp.replace(anchor, anchor + f"from {TARGET} import " + ", ".join([MIXIN] + top_names) + "   # noqa: E402\n")
     # names pilot.py imports and no longer uses itself (they moved out with their users): kept, in REEXPORTED, when a

@@ -27,6 +27,22 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.44.11 -- 2026-11-02 (session 11)
+No missions yet. No play change (refactor-candidates E1 step 6 and E2; pilotctl's help text is new).
+- The command side left pilot.py for `commands.py` (CommandsMixin: authentication, request handling, `do_request`,
+  goals/plans requests, the order checks, the why/prep/ask/answer/price/house/monster/drainers replies); pilot.py
+  3,050 -> 1,512 lines -- E1 is complete. Bytecode identical for the move.
+- `do_request` dispatches through a command table, `cmdtable.py` (`COMMANDS`, 62 entries: method, call style, roles,
+  where, usage, help): look up, role, dungeon, stale, ghost checks, then one `cmd_*` method per command; the item
+  actions are `item_action` + `parse_item_args`/`action_refusal`/`action_reply`. Role checks for `raw`, `stairs`,
+  `goal goto`, `mission`, `answer`, the town-only item commands and the ghost rule are in one place (argument- or
+  item-dependent ones stay: `house buy`, `wear force`, the value refusal and `!` debt, `goal hunt`/`fetch`, Shop's
+  sell override). `pilotctl.py` with no command prints help generated from the table (works with the Pilot down).
+- Checks: a command matrix (`harness/refactor/cmdmatrix.py`: 203 requests x 6 roles x 5 contexts = 6,090 cases)
+  identical but for a non-string `cmd` to a ghost (pilotctl never sends one); tick() equivalence (64 states) and dry
+  start identical; 143 unit cases (+4 for the table); no undefined names. Live: role refusals, a Navigator Shop goal,
+  B3 PASS (M2's staging hit dark rooms 3 times).
+
 ## 2.44.10 -- 2026-11-02 (session 11)
 No missions yet. No play change (the harness).
 - Set-pieces A2/A2I/A2K/A2L: the criterion follows the Pilot's own danger call (the Advisor's 11-02 khim memo). If a

@@ -297,3 +297,11 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   A2K PASS. **For the user (a play change, not done):** Khim's/Ibun's UN_BONUS blow disenchants ~1-2.5 times a fight
   (~100 gold a plus); neither the hunt check nor geareval counts it. **Lesson:** a set-piece restarts the Pilot from
   the working tree -- never run one while an agent may be editing `tools/pilot/`.
+- **2.44.11 -- E1 step 6 + E2, `commands.py` + `cmdtable.py`**: E1 complete (pilot.py 11,060 -> 1,512 lines over
+  sessions 10-11); `do_request` dispatches from the table; pilotctl help generated. A 6,090-case command matrix
+  (`harness/refactor/cmdmatrix.py`/`cmpmatrix.py`) old vs new. 143 unit cases. Live: role refusals, Shop goal, B3 PASS.
+  **Found, not fixed (behaviour; for the user to decide):** (1) `park`, `quit`, `option(s)`, `dump`, `goalstate` have
+  no role check -- the Navigator can `quit`/`park` the Pilot; (2) a ghost refuses `park`/`stop`/`order`/`plan stop`,
+  so `restart.sh` on a dead character waits 330 s and fails; (3) some bad arguments return a raw exception text
+  (`goal explore radius=x`, `search x`, `view x`; `inscribe`/`option` with no args); (4) an unknown command to a
+  ghost gets the ghost refusal. Each is now a one-line change in `cmdtable.py` or a `cmd_*` method.

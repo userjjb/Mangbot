@@ -13,7 +13,9 @@ pack-side policy. Related files: town buying and selling (TownKit, `town_sell_co
 **Where the code is** (E1 step 3): the methods below live in `tools/pilot/items.py` as `ItemsMixin` (still `Pilot`'s
 names), with `weapon_blows`/`stat_index` and the blow tables; in combat.py (`CombatMixin`, E1 step 5;
 pilot-combat.md): `has_ability`, `watch_character`, `teleport_item`, `use_stair_location`, `heal_of`, `STATUS_CURES`;
-still in pilot.py: the command side (`item_index`, `pack_now`, `DUNGEON_ITEM_CMDS`), `expect_effect`/`verify_effects`. The town side (`identify_candidates`, `town_sell_count`,
+in commands.py (`CommandsMixin`, E1 step 6; commands.md): the command side (`item_action` with `parse_item_args`/
+`action_refusal`/`action_reply`, `item_index`, `pack_now`, `DUNGEON_ITEM_CMDS`); still in pilot.py:
+`expect_effect`/`verify_effects`. The town side (`identify_candidates`, `town_sell_count`,
 `kit_count`, `lantern_fuel`, `provisions_spare`, `KIT_ITEMS`, `FLASK_FUEL`, `TURNS_PER_DMIN`, ...) is in `town.py`
 (`TownMixin`, E1 step 4; goals-and-plans.md).
 
@@ -250,7 +252,7 @@ number**: the user or Architect revokes overrides by creating `runs/private/NICK
 Every mission prompt states the current debt.
 
 **Where the Navigator may act**: in the dungeon, `wear`, `takeoff`, `pickup`, `fuel`, `eat`, `inscribe`, `wearall`
-and identify-type reads are refused (`DUNGEON_ITEM_CMDS`); `destroy`, `drop`, `order nopickup=...` and `keep` work
+and identify-type reads are refused (the command table's `where` town / town_target entries, `DUNGEON_ITEM_CMDS`); `destroy`, `drop`, `order nopickup=...` and `keep` work
 everywhere. `item_index` resolves letters (pack `a`.., equipment `A`..) or name parts (whole word first; errors on
 ambiguity); `pack_now` re-reads the pack after an action so letters aren't stale.
 

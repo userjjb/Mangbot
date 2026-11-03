@@ -269,11 +269,29 @@ none is fixed. **[N]** = Navigator-facing.
   names, `heal_of`/`HEALS`, `STATUS_CURES`, `CURE_POTIONS`, `choke_tier`, imported back); `tick()` and its 12 steps,
   `take_stairs`, resting, `recall_started`, `look_tick` and the command side (`monster_info`, `drainers_info`,
   `hunt_refusal`) stay; `reflexes`/`escape` not split (E3). pilot.py 3,050 lines. Bytecode identical; tick()
-  equivalence over 64 states (31 new combat states) identical. Left: commands.py (with E2). See next_steps.md Part B.
+  equivalence over 64 states (31 new combat states) identical. **Step 6 done (session 11, 2.44.11, with E2):**
+  `commands.py` (`CommandsMixin`): first moved verbatim (30 methods and class constants: `authenticate`,
+  `handle_requests`, `service_notes`, `item_index`, `pack_now`, `do_request`, `request_goal`/`request_plan`/
+  `request_trip`/`PLAN_USAGE`, `hunt_refusal`, `stale_order`, `why_info`, `prep_info`, `ask_architect`,
+  `answer_navigator`, `price_info`, `house_info`, `monster_info`, `drop_row`, `drainers_info`, `uniques_killed`,
+  `user_note`, `ACTIONS`, `DUNGEON_ITEM_CMDS`, `READ_ONLY_CMDS`, `WHY_*`, `ASK_*`; bytecode identical, unit, dry start
+  and the 64-state equivalence identical), then restructured by E2. pilot.py 1,512 lines (core: state, log/notify/cmd,
+  verify/audit, the tick loop and its steps, goals, gains/rates, mission save, `plan_tick`, structures/level map).
+  E1 done.
 - **E2** `do_request` (626 lines of `if c == ...`) -> command table `{name: (method, roles, where, positional)}`; role
   checks now spread over `do_request`, `request_goal`, `house_info`, `answer_navigator`, `Shop.tick`, `wear`; extract
   the ~150-line item-action branch (`parse_item_args`, `action_refusal`, `action_reply`); pilotctl help from the table. --
-  M/M -- **do**.
+  M/M -- **do**. **done (session 11, 2.44.11)**: `cmdtable.py` (`COMMANDS`: 62 entries, `Cmd(method, call, reply,
+  roles, refusal, where, dead, logged, viewer, messages, subs, usage, help, group)`; plain data, no Pilot
+  imports); `do_request` = look up -> role check (raw, stairs, goal goto, mission, answer) -> dungeon check (item
+  commands) -> stale-order check -> ghost check -> the method; one method per command (`cmd_*`), `item_action` with
+  `parse_item_args`/`action_refusal`/`action_reply`; handle_requests'/authenticate's tuples come from the table;
+  pilotctl's help is generated (`cmdtable.help_text`). Left in place (they depend on the item, the arguments or the
+  state): `house buy` (after house_info's own dungeon check), `wear` unknown jewellery, destroy/drop value refusal and
+  override debt, `goal hunt` checks, `goal fetch` band/danger, `Shop.tick`'s sell override, `value_refusal`'s role
+  skip. Checked by a command-equivalence matrix (`harness/refactor/cmdmatrix.py`, `cmpmatrix.py`: every command x
+  arguments x 6 roles x 5 contexts, 6,090 cases) against the moved-only tree: identical but one edge (a non-string `cmd`, which pilotctl never sends, from the Architect to a ghost: TypeError, was the ghost refusal); tick() equivalence (64 states), dry start, names identical;
+  4 new unit cases (143).
 - **E3** `reflexes()` (374) and `escape()` (201): one method per numbered step, order kept in one list (keep the five
   Advisor-mirrored names). Moving light/hunger/pickup out of `reflexes` into `policy_tick` and `food_watch` into `tick()`
   changes order: *behaviour*. -- M/M -- **do** the split, **ask** the moves.

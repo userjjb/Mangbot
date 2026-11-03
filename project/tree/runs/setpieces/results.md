@@ -182,3 +182,7 @@
 - 2026-11-02 20:50:44 **A2K** FAIL (Word of Recall within 2 s of first sight FAIL, lowest HP >= 40%) `A2K-20261102-205044.json`
 - 2026-11-02 20:54:08 **B3** PASS (Brigand slain, nothing stolen) `B3-20261102-205408.json`
 - 2026-11-02 21:01:33 **A2K** PASS (no danger rule: a hard fight with Speed + Berserk, lowest HP >= 60%) `A2K-20261102-210133.json`
+- 2026-11-02 23:01:06 **M2** FAIL (a site FAIL) `M2-20261102-230106.json`
+- 2026-11-02 23:03:40 **M2** FAIL (a site FAIL) `M2-20261102-230340.json`
+- 2026-11-02 23:05:59 **M2** FAIL (a site FAIL) `M2-20261102-230559.json`
+- 2026-11-02 23:08:53 **B3** PASS (Brigand slain, nothing stolen) `B3-20261102-230853.json`

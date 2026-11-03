@@ -19,7 +19,7 @@ commands in [client-server.md](client-server.md); the viewer's freeze key in [ob
 
 | piece | what | who runs it | live / stale |
 |---|---|---|---|
-| `harness/unit.py` | 121 offline unit cases of the Pilot's decision code | the Architect, after every Pilot or rulebook change | live; the regression gate (all must pass) |
+| `harness/unit.py` | 143 offline unit cases of the Pilot's decision code | the Architect, after every Pilot or rulebook change | live; the regression gate (all must pass) |
 | `harness/setpiece.py` | 39 live scenarios staged on the test server and scored | the Architect, by hand, one at a time | live code, but last batch 10-23..10-28 (M2 re-run 10-29); not re-run as a suite since |
 | `harness/dm.py` | scripts the DM character Gandalf (summon, paint terrain, forge, pull a player) | `setpiece.py` | live |
 | `harness/charsave.sh` | save/restore a character's savefile + Pilot state | `setpiece.py`; the Architect for checkpoints | live |
@@ -44,9 +44,9 @@ criteria and result, staging facts and the bugs the harness found; read it befor
 
 ### `unit.py` -- offline unit cases
 
-**What:** 121 functions decorated `@case`, each building a situation by hand and calling the real Pilot decision code
+**What:** 143 functions decorated `@case`, each building a situation by hand and calling the real Pilot decision code
 on it, returning `(ok, detail)` (one, `emergency_notices_say_if_action`, is a static check of the Pilot's source: `pilot_ast()` parses pilot.py and the modules split out of it, combat.py
-among them). No
+and commands.py among them). No
 server, no client, no network.
 
 **How it works:** it imports `pilot/pilot.py` (as `P`), `glyphs` and `itemvalue`, loads the monster races merged with
@@ -83,7 +83,7 @@ The old handoffs (`history/handoffs-s1-s9.md`) record an intermittent failure (~
 | Shops and town | `shop_pay_by_owner`, `c1_valuable_sale_refused`, `town_kit_tiers`, `town_kit_townfarms_when_broke`, `crutch_devices_sold_on_test`, `town_makes_room_before_buying`, `town_identifies_scrolls_in_hand`, `town_waits_for_restock`, `ask_price_and_buy_commas`, `empty_devices_recharged_or_sold`, `enchant_armour_to_the_stopping_place`, `plan_town_survives_the_house_tile` |
 | House bank and stash | `house_bank_round_trip`, `house_bank_in_the_wilderness`, `house_keeps_the_stash`, `house_walk_stops_at_the_crossing`, `tavern_stash_and_one_lantern`, `tavern_stash_drops_inside`, `stash_in_house_json_only` |
 | Trips, supplies, clocks | `trip_conditions_parse`, `trip_clock_condition_across_midnight`, `trip_dmin_counts_dungeon_minutes`, `trip_level_state_survives_restart`, `trip_recalls_when_a_level_wont_let_go`, `e1_supply_gate`, `supply_minutes_and_quiet_cap`, `provisions_one_food_no_oil`, `food_warning_and_trip_rate`, `room_eat_never_gorges`, `game_clock_from_fuel`, `supplies_one_kind_with_fields` |
-| Orders, reports, rates, shadow | `f1_stale_order`, `react_hunt_resumes_the_goal`, `actions_say_who`, `ask_quiet_waits_for_the_answer`, `ask_limits_lifted_by_the_flag_file`, `item_commands_wait_for_the_pack`, `mission_label_survives_restart`, `prep_report_sections`, `rates_gold_found_not_shopping`, `xp_per_gold_rolling`, `shadow_estimator_logs`, `shadow_agrees_by_the_action_taken`, `hard_fight_shadow_once_per_fight` |
+| Orders, reports, rates, shadow | `command_table_methods_exist`, `command_table_fields_valid`, `command_table_help_lists_every_command`, `command_table_architect_only_refused` (E2: the command table), `f1_stale_order`, `react_hunt_resumes_the_goal`, `actions_say_who`, `ask_quiet_waits_for_the_answer`, `ask_limits_lifted_by_the_flag_file`, `item_commands_wait_for_the_pack`, `mission_label_survives_restart`, `prep_report_sections`, `rates_gold_found_not_shopping`, `xp_per_gold_rolling`, `shadow_estimator_logs`, `shadow_agrees_by_the_action_taken`, `hard_fight_shadow_once_per_fight` |
 
 Gotcha: because `pilot()` sets attributes by hand, a new attribute read by the decision code but set only in
 `Pilot.__init__` makes cases fail with `AttributeError`; add it to `pilot()`.

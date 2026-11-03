@@ -85,7 +85,7 @@ shows or counts attention kinds by name, so both spellings appear in older cards
 | PgUp / PgDn | scroll the feed by 10 lines |
 | Ctrl-C | quit (the character keeps playing) |
 
-**Notes.** The Pilot's `note` handler (`pilot.py: Pilot.user_note`) logs a `user_note` record in
+**Notes.** The Pilot's `note` handler (`commands.py: Pilot.user_note`, the `note` entry of the command table) logs a `user_note` record in
 `decisions.jsonl` and appends to `runs/pilot/<nick>/commentary.jsonl`: `{t, note, question, depth_ft, pos, hp,
 clvl, goal, last_action, monsters (first 12), standing_on, recent (last 8 acts)}`. If the Pilot doesn't answer,
 the viewer writes the note itself to `commentary.jsonl` with `pilot_down` and no snapshot. The Navigator's `say`

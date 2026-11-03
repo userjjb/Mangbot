@@ -49,18 +49,47 @@ The Pilot answers a JSON dict; pilotctl prints, in order:
 Every report the Navigator receives is numbered (`· rN` on its first line) and remembered with the level and HP it
 showed; that is what the stale-order check compares against.
 
+## How a command is dispatched: the command table
+
+Every command the Pilot answers is an entry of the **command table**, `COMMANDS` in
+`github/tools/pilot/cmdtable.py` (refactor-candidates E2, 2.44.11): its method (on `Pilot`, mostly `CommandsMixin`
+in `commands.py`: `cmd_status`, `cmd_order`, ..., the item commands' `item_action`, or a query method such as
+`why_info`), how the method takes the request (`call`: the argument list, the words joined, a name with `_` as a
+space, nothing, the command name too, or the whole request), whether its reply is a dict or a text, who may use it
+(`roles`: anyone, or the Architect only, with the refusal text), where (`where`: anywhere, or town only for anyone
+but the Architect -- with a target item only, for `read`/`use`), whether a ghost may use it (`dead`), whether it is logged as `nav_cmd` (`logged`: not the viewer's polls), whether it is one
+of the viewer's read-only queries (`viewer`), whether the reply carries the unanswered user messages (`messages`),
+sub-commands with their own rule (`subs`: `goal goto` is the Architect's, `goal resurrect` works for a ghost), and
+its usage, help line and group. `Pilot.do_request` (commands.py) looks the command up and runs the checks in one
+place, in this order, then calls the method:
+
+1. for anyone but the Architect: the **role check** (the entry's or its sub-command's `roles`);
+2. the **dungeon check** (`where`);
+3. the **stale-order check** (`stale_order`, for every request: it picks the positional orders by their arguments);
+4. for a ghost: the **dead check** (`dead`, or the sub-command's) -- an unknown command gets this far too;
+5. `unknown command NAME`, or the method.
+
+The table is plain data with no imports of the Pilot's code, so `pilotctl.py` prints its help from it (`pilotctl.py`
+with no command), Pilot up or down. **To add a command:** write the method (in `commands.py`, or in the mixin whose
+state it uses), add its entry to `COMMANDS` (method, call, reply, roles and refusal, where, dead, usage, help,
+group), and add a row to this file; `unit.py`'s `command_table_*` cases check that the method exists and takes what
+`call` passes, the fields are valid, and the help lists it. A new restriction that depends on the arguments or the
+game state (an item, a monster, a `!`) belongs in the method, like the ones listed below.
+
 ## Who may do what
 
-The checks at the top of `pilot.py: Pilot.do_request`, before any command runs, for any role other than `architect`:
+The checks `Pilot.do_request` runs from the command table before any command runs, for any role other than
+`architect` (above):
 
 | refusal | applies to | why |
 |---|---|---|
-| "in the dungeon the Pilot handles items itself" | in the dungeon: `wear takeoff pickup fuel eat inscribe wearall`, and `read`/`use` with a target item (an Identify-type read; `read X force` is not a target) | the item policy is the Pilot's in the dungeon (restructure step 2). `destroy`/`drop` are allowed there (pack control), as are `quaff`, plain `read`, `use`, `aim`, `zap` |
-| "`goal goto`/`stairs`/`raw` is the Pilot's now" | anywhere | movement is the Pilot's (step 2.6): use `goal leave`, `goal fetch Y,X`, `plan trip`, `goal dive` |
-| "order held: ..." (stale order) | positional orders: `goal goto/fetch/searchroom/hunt`, `avoid Y,X` | the report the order answers is from a level since left; or (`hunt`, report >5 s old) the monster is no longer in view; or (`goto`/`fetch`, >5 s old) HP fell by over 25 points (percent) since. Logged `order_held`. Look again and re-issue |
-| dead character | everything except `goal resurrect` and a handful of passive commands (`attention quit orders map note view say viewmap journal`; the query commands earlier in the dispatcher -- status, pack, keep, debt, monster... -- also still answer) | a ghost can only resurrect |
+| "`raw`/`stairs`/`goal goto` is the Pilot's now", "mission markers are the Architect's", "answers come from the Architect" | the table's Architect-only entries: `raw`, `stairs`, `goal goto`, `mission`, `answer` | movement is the Pilot's (step 2.6): use `goal leave`, `goal fetch Y,X`, `plan trip`, `goal dive`; mission markers (F4) and answers to `ask` are the Architect's |
+| "in the dungeon the Pilot handles items itself" | in the dungeon: `wear takeoff pickup fuel eat inscribe wearall` (`where` town), and `read`/`use` with a target item (`where` town_target: an Identify-type read; `read X force` is not a target) | the item policy is the Pilot's in the dungeon (restructure step 2). `destroy`/`drop` are allowed there (pack control), as are `quaff`, plain `read`, `use`, `aim`, `zap` |
+| "order held: ..." (stale order) | positional orders (`stale_order` picks them by their arguments): `goal goto/fetch/searchroom/hunt`, `avoid Y,X` | the report the order answers is from a level since left; or (`hunt`, report >5 s old) the monster is no longer in view; or (`goto`/`fetch`, >5 s old) HP fell by over 25 points (percent) since. Logged `order_held`. Look again and re-issue |
+| dead character | everything except `goal resurrect` and the entries with `dead`: the queries and notes (`status mission keep standing react review debt pack equip orders map view navview avoid viewmap note journal gate complain say ask answer price monster drainers gear gearcmp house loadout why prep`) and `attention`, `quit` | a ghost can only resurrect |
 
-Further role rules inside commands:
+Further role rules inside commands (they depend on the arguments, the item or the game state, so they stay in the
+command's code, not the table):
 
 | rule | Navigator | Architect |
 |---|---|---|
@@ -69,7 +98,8 @@ Further role rules inside commands:
 | `destroy`/`drop`/`goal shop ... sell` value refusals | refused unless `!NAME`; an override adds the value lost to the **item debt** | never refused (`value_refusal` skips the Architect); `goal shop ... sell` still holds unknown and probably-special items unless `!NAME`, at no debt |
 | overrides at all | allowed until revoked: the file `runs/private/<nick>.overrides_revoked` (items) or `<nick>.hunt_overrides_revoked` (hunts) exists. The Navigator isn't told the limit | always |
 | `wear` an unidentified ring/amulet | refused unless `force` (unknown jewellery is often cursed and can't come off) | allowed |
-| `house buy`, `answer` | refused | allowed |
+| `house buy` | refused (`house_info`: after its own "the house is in town" check, which comes first in the dungeon) | allowed |
+| `answer` | refused (the table) | allowed |
 | `ask` rate limit | 1 per 5 minutes, 4 per hour, unless `runs/pilot/<nick>/ask_unlimited` exists | (same code path; the Architect doesn't use `ask`) |
 
 ### `!` overrides and `force`
@@ -208,8 +238,8 @@ Goals.
 
 | command | does | who |
 |---|---|---|
-| `mission start LABEL [navigator=MODEL] [effort=LEVEL] [notes=TEXT]` | marks a mission's start: sets the label and the baseline (time, XP, gold, gold found) for the report's mission totals, saves `runs/pilot/<nick>/mission.json` (survives a restart or hot-swap), logs `mission_start` (with `version`), and adds/replaces the entry in `runs/missions.json` (`label nick start end navigator effort report notes version`; `version` = the Pilot's code version from `github/VERSION`) | the Architect (no role check in code) |
-| `mission end [LABEL]` | logs `mission_end`, sets the entry's `end` in `missions.json`, clears the label and deletes `mission.json`. LABEL defaults to the running mission | the Architect |
+| `mission start LABEL [navigator=MODEL] [effort=LEVEL] [notes=TEXT]` | marks a mission's start: sets the label and the baseline (time, XP, gold, gold found) for the report's mission totals, saves `runs/pilot/<nick>/mission.json` (survives a restart or hot-swap), logs `mission_start` (with `version`), and adds/replaces the entry in `runs/missions.json` (`label nick start end navigator effort report notes version`; `version` = the Pilot's code version from `github/VERSION`) | **Architect only** (F4, 2.43.0) |
+| `mission end [LABEL]` | logs `mission_end`, sets the entry's `end` in `missions.json`, clears the label and deletes `mission.json`. LABEL defaults to the running mission | **Architect only** |
 
 Prints `mission start: LABEL at YYYY-MM-DD HH:MM`. Scorecards and the viewer read these markers
 ([observe.md](observe.md)).
@@ -247,12 +277,15 @@ Prints `mission start: LABEL at YYYY-MM-DD HH:MM`. Scorecards and the viewer rea
   (B4, 2.37.1)**: it now points to `goal leave` / `goal fetch`, marks `goal goto` Architect-only, lists `autowear`,
   `enchant_max`, `band_frac`, `nopickup`, and describes the current emergency trigger and escape order.
 - **`plan trip` events:** both handbooks now list all eight, `emergency_loop` and `unseen_attacker` included.
-- **pilotctl.py's docstring** (printed with no arguments) is now a pointer to the handbooks and this file.
+- **pilotctl.py's help** (printed with no arguments): its docstring, a pointer to the handbooks and this file, then
+  every command from the command table (E2), grouped as here, with its usage, a few words and who may use it.
 - **Not in either handbook:** `attention`, `note`, `answer` (as a command; `ARCHITECT ANSWER` is), `mission`,
   `park`, `quit`, `option(s)`, `goalstate`, `dump`, `view`, `viewmap`, `navview` (Architect/viewer commands, which is
   fine). `orders`, `inspect`, `inscribe` and `wearall` are in HANDBOOK-reference.md; `goal town`, `goal wait`,
   `goal search`, `goal resurrect` are only in the reference.
-- **`mission`** is described as the Architect's but has no role check.
+- **`park`, `quit`, `option`, `options`, `dump`, `goalstate`** are the Architect's (or the viewer's) by use, but have
+  no role check: anyone may send them (the table has them as anyone's, as the code did). `mission` has had one since
+  F4 (2.43.0).
 - The viewer's and scorecard's query lists name commands that don't exist (`flags`, `commands`, `help`, `floor`,
   `quote`); kept on purpose, since Navigators did type them (D7 will merge the lists). The dead-character whitelist's
   `events`, `news`, `inventory` went in session 10 (C8).

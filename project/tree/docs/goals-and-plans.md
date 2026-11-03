@@ -25,8 +25,8 @@ Where the code is (E1 step 2): `Goal` and the dungeon goals in `tools/pilot/goal
 `supply_gate`, `supply_minutes`/`supply_text`/`supply_watch` (`TURNS_PER_DMIN`, `FOOD_MID`), the house and the stash
 (`house_state`, `house_save`, `retire_stash_json`, `banked`, `stash_places`/`stash_where`/`stash_has`/`stash_take`/
 `stash_wanted`, `is_stash_item`, `tavern_state`/`tavern_entrance`), `note_town_stairs`, `note_edge_cross`/`edge_dir`.
-Still in pilot.py: the commands that reach them (`plan town`/`plan trip`, `request_goal`, `house_info`, `price_info`,
-`plan_tick`).
+The commands that reach them (`plan town`/`plan trip`: `request_plan`/`request_trip`, `request_goal`, `house_info`,
+`price_info`) are in commands.py (`CommandsMixin`, E1 step 6; commands.md); `plan_tick` is still in pilot.py.
 
 ## What a goal is
 

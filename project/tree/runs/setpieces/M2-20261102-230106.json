@@ -1,0 +1,15 @@
+{
+ "id": "M2",
+ "tag": "M2-20261102-230106",
+ "depth_ft": 400,
+ "start": "2026-11-02 23:01:06",
+ "checks": {
+  "a site": {
+   "pass": false,
+   "detail": "no floor Dive04 sees 13-20 squares east of (13, 62) (a dark room?)"
+  }
+ },
+ "notes": [],
+ "end": "2026-11-02 23:03:20",
+ "pass": false
+}

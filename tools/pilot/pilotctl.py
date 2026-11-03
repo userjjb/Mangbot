@@ -7,6 +7,7 @@
 The commands: the Navigator's are in HANDBOOK.md (every goal, order, event and report line: HANDBOOK-reference.md);
 every command, who may use it and what it refuses: docs/commands.md (/projectnb/jbrcs/mangband/docs/).
 `wait [SECS] [--brief]` blocks until the Pilot asks for attention; `rule ...` queries the rulebook (no Pilot needed).
+The commands (from the Pilot's command table, cmdtable.py):
 """
 import json
 import os
@@ -51,7 +52,10 @@ def main():
     if argv[:1] == ["--nick"]:
         nick, argv = argv[1], argv[2:]
     if not argv:
+        # (the commands from the Pilot's own table, so the help can't fall behind: refactor-candidates E2, B6)
+        import cmdtable
         print(__doc__)
+        print(cmdtable.help_text())
         return
     if not nick:
         # (refactor-candidates F2: the default was dive01, long dead) the one Pilot whose socket answers

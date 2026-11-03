@@ -117,7 +117,7 @@ def pilot_ast():
     import ast
     body = []
     for f in ("pilot.py", "goals.py", "town_goals.py", "plan.py", "report.py", "daemon.py", "common.py", "gear.py",
-              "items.py", "town.py", "combat.py"):
+              "items.py", "town.py", "combat.py", "commands.py"):
         body += ast.parse(open(os.path.join(HERE, "..", "pilot", f)).read()).body
     return ast.Module(body=body, type_ignores=[])
 
@@ -3551,6 +3551,96 @@ def pay_cut_in_shopmath_and_aware():
     books = (p.pay_cut(90), p.pay_cut(91))
     ok = not bad and aware == {"cure light wounds", "protection"} and all(b != P.SHOP_CUT for b in books)
     return ok, f"differ: {bad}; aware {sorted(aware)}; book cuts {books}"
+
+
+# --- the command table (E2: cmdtable.COMMANDS, dispatched by Pilot.do_request) ----------------------------------
+import cmdtable                    # noqa: E402
+
+
+@case
+def command_table_methods_exist():
+    """E2: every command-table entry names a method Pilot has, taking what the entry's `call` passes (args, text,
+    name, none, cmd, req), and every item_action entry has its key in Pilot.ACTIONS."""
+    import inspect
+    want = {"args": 1, "text": 1, "name": 1, "none": 0, "cmd": 2, "req": 2}
+    bad = []
+    for n, s in cmdtable.COMMANDS.items():
+        f = getattr(P.Pilot, s.method, None)
+        if not callable(f):
+            bad.append(f"{n}: no Pilot.{s.method}")
+            continue
+        req = [x for x in list(inspect.signature(f).parameters.values())[1:] if x.default is inspect.Parameter.empty]
+        if s.call not in want or len(req) != want[s.call]:
+            bad.append(f"{n}: {s.method} takes {len(req)} arguments, call={s.call!r}")
+        if s.method == "item_action" and n not in P.Pilot.ACTIONS:
+            bad.append(f"{n}: not in ACTIONS")
+    return not bad, f"{len(cmdtable.COMMANDS)} entries; " + ("; ".join(bad) if bad else "every method found")
+
+
+@case
+def command_table_fields_valid():
+    """E2: each entry's roles are ANY or a non-empty subset of the known roles (with a refusal text for the others),
+    `where`/`reply` take known values, sub-commands carry only known rules, and the tuples handle_requests and
+    authenticate test are the table's (the viewer's polls, its read-only queries, the replies without user
+    messages; the dungeon item commands)."""
+    bad = []
+    for n, s in cmdtable.COMMANDS.items():
+        if s.roles != cmdtable.ANY and not (isinstance(s.roles, tuple) and s.roles and set(s.roles) <= set(cmdtable.ROLES)):
+            bad.append(f"{n}: roles {s.roles!r}")
+        if s.roles != cmdtable.ANY and not s.refusal:
+            bad.append(f"{n}: no refusal text")
+        if s.where not in ("any", "town", "town_target") or s.reply not in ("dict", "text") or s.group not in \
+                cmdtable.GROUPS or not s.usage.split()[0] == n:
+            bad.append(f"{n}: where {s.where!r} reply {s.reply!r} group {s.group!r} usage {s.usage!r}")
+        for sub, rule in (s.subs or {}).items():
+            if set(rule) - {"roles", "refusal", "dead"} or ("roles" in rule and not rule.get("refusal")):
+                bad.append(f"{n} {sub}: {rule}")
+    tuples = (set(P.Pilot.READ_ONLY_CMDS) == {"viewmap", "view", "navview", "goalstate"} and
+              set(cmdtable.POLLS) == {"viewmap", "view", "navview", "note", "goalstate", "mission"} and
+              set(cmdtable.NO_MESSAGES) == {"note", "say", "status"} and
+              P.Pilot.DUNGEON_ITEM_CMDS == {"wear", "takeoff", "pickup", "fuel", "eat", "inscribe", "wearall"})
+    return not bad and tuples, "; ".join(bad) or f"all valid; the request tuples as before: {tuples}"
+
+
+@case
+def command_table_help_lists_every_command():
+    """E2: pilotctl's help (cmdtable.help_text, printed with no command, Pilot up or down) lists every command of the
+    table and pilotctl's own (wait, rule), each at the start of a line, and pilotctl.py imports nothing of the
+    Pilot's but the table."""
+    text = cmdtable.help_text()
+    starts = {l.split()[0] for l in text.split("\n") if l.startswith("  ") and l.strip()}
+    missing = sorted(n for n in set(cmdtable.COMMANDS) | set(cmdtable.LOCAL) if n not in starts)
+    src = open(os.path.join(HERE, "..", "pilot", "pilotctl.py")).read()
+    imports = sorted(set(re.findall(r"^\s*(?:import|from) (\w+)", src, re.M)))
+    ok = not missing and imports == ["cmdtable", "json", "os", "socket", "subprocess", "sys", "time"]
+    return ok, f"{len(text.splitlines())} lines; missing {missing or 'none'}; pilotctl imports {imports}"
+
+
+@case
+def command_table_architect_only_refused():
+    """E2: an architect-only command (raw, stairs, goal goto, mission, answer) is refused for the Navigator (and for a
+    claim that didn't authenticate, which runs as the Navigator's), with the same texts as before the table; the
+    Architect's goes through. Nothing is sent to the game for the refused ones."""
+    out = {}
+    for role in ("navigator", "architect"):
+        p = pilot()
+        p.dead, p.last_report, p.report_state = False, (0, 0.0), None
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append(line)
+        p.log = lambda kind, **k: None
+        p.take_stairs = lambda which: p.cmds.append(f"stairs {which}")
+        for req in (["raw", "custom s"], ["stairs", ">"], ["mission", "bogus"], ["answer", "1", "yes"]):
+            out[(role, req[0])] = (p.do_request({"cmd": req[0], "args": req[1:], "role": role}), list(p.cmds))
+    nav = {k[1]: v for k, v in out.items() if k[0] == "navigator"}
+    arch = {k[1]: v for k, v in out.items() if k[0] == "architect"}
+    ok = not any(r["ok"] for r, _ in nav.values()) and not nav["answer"][1] and \
+        nav["raw"][0]["error"].startswith("`raw` is the Pilot's now: use `goal leave`") and \
+        nav["stairs"][0]["error"].startswith("`stairs` is the Pilot's now") and \
+        nav["mission"][0]["error"] == "mission markers are the Architect's (refactor-candidates F4)" and \
+        nav["answer"][0]["error"] == "answers come from the Architect" and \
+        arch["raw"][0]["ok"] and arch["stairs"][0]["ok"] and arch["answer"][0]["ok"] and \
+        arch["mission"][0]["error"].startswith("usage: mission start")
+    return ok, "; ".join(f"{r} {c}: {v[0].get('error', 'ok')[:40]}" for (r, c), v in out.items())
 
 
 # --- reports (E1: the report text against a golden file) ---------------------------------------

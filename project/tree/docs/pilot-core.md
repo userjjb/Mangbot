@@ -1,6 +1,6 @@
 # Pilot core: architecture, tick loop, perception, movement, logs, the report
 
-The **Pilot** (`github/tools/pilot/pilot.py`, ~3.1k lines, plus `world.py`, `mover.py`, `glyphs.py`,
+The **Pilot** (`github/tools/pilot/pilot.py`, ~1.5k lines, plus `world.py`, `mover.py`, `glyphs.py`,
 `structures.py`; since E1 also `daemon.py`: `main()`, `Server`, `Handler`; `report.py`: `ReportMixin`, the report
 methods, still on `Pilot`; `gear.py`: `GearMixin`, the gear evaluator's side, shadow mode and the duel estimates
 (gear-and-estimator.md), and `shadow_agree`; `items.py`: `ItemsMixin`, the item policy (pilot-items.md), with
@@ -17,8 +17,15 @@ the fight rules (`engage_tick`, `group_danger`/`group_tick`, `still_fight_tick`,
 `buff_on`, `our_slowness`), `sidestep`/`retreat_step`/`quiet_spot`, `flee_failed`, the `react` rules (`rules`,
 `rule_tick`) and the watches (`watch_band`, `watch_character`, `watch_drainers`, `watch_thieves`, `watch_traps`,
 `watch_breeders`, `watch_kills`, `watch_perception`, `watch_progress`), with `heal_of`, `HEALS`, `STATUS_CURES`,
-`CURE_POTIONS` and `choke_tier` (`class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin)`: the
-methods and class constants stay on `Pilot`, so the Advisor's mirrored `Pilot.escape`, `group_tick`,
+`CURE_POTIONS` and `choke_tier`; `commands.py` (~1,620 lines, E1 step 6 with E2): `CommandsMixin`, the command
+side (commands.md): the requests (`authenticate`, `handle_requests`, `service_notes`), `do_request` and one method
+per command (`cmd_status`, `cmd_order`, ...; the item commands' `item_action` with `parse_item_args`,
+`action_refusal`, `action_reply`), `request_goal`/`request_plan`/`request_trip`, `hunt_refusal`, `stale_order`,
+`item_index`, `pack_now` and the query replies (`why_info`, `prep_info`, `price_info`, `house_info`, `monster_info`,
+`drop_row`, `drainers_info`, `uniques_killed`, `user_note`, `ask_architect`, `answer_navigator`); `cmdtable.py`
+(~190 lines): the command table `COMMANDS` (each command's method, roles, where, arguments, help: plain data, read
+by `do_request` and by pilotctl's help) (`class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin,
+CommandsMixin)`: the methods and class constants stay on `Pilot`, so the Advisor's mirrored `Pilot.escape`, `group_tick`,
 `speed_start_tick`, `berserk_tick` and `fear_cure` still resolve); `goals.py`: `Goal` and the dungeon goals;
 `town_goals.py`: `Town`,
 `TownFarm`, `Shop`, `StashDeposit`/`StashFetch`, `HouseBank`, `TownKit`, `edge_of`, `town_houses`; `plan.py`:
@@ -165,9 +172,13 @@ TownKit, RestGoal, QuietWait). `TripPlan` is not a goal: it sits in `Pilot.plan`
 ### Requests (`handle_requests`, `service_notes`)
 Requests are answered on the main thread, once per tick, between the watchers and the acting layers, so a command
 never races the game logic. Each non-viewer request updates `last_agent` (the idle-recall clock) and logs
-`nav_cmd` (command, args, role, which report it answered and how old it was). `do_request` executes it (the
-command catalogue is [commands.md](commands.md)); an exception becomes `{"ok": false, "error": ...}`; unanswered
-user messages ride on every answer. `service_notes()` lets a long-running command (search, chest work) pull the
+`nav_cmd` (command, args, role, which report it answered and how old it was). `do_request` (commands.py) executes
+it: it looks the command up in the command table (`cmdtable.COMMANDS`), runs the checks in one place (for anyone but
+the Architect the role check, the dungeon check of the item commands and the stale-order check; then the ghost
+check) and calls the command's method (the catalogue, and how to add a command: [commands.md](commands.md)); an
+exception becomes `{"ok": false, "error": ...}`; unanswered user messages ride on every answer (the viewer's polls,
+the not-logged commands and the replies without user messages are the table's `logged`/`viewer`/`messages`
+fields). `service_notes()` lets a long-running command (search, chest work) pull the
 user's `note` requests out of the queue so they aren't stuck behind it.
 
 ### Attention and news (`notify`)

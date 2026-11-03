@@ -27,9 +27,9 @@ mirrors `Pilot.escape`, `group_tick`, `speed_start_tick`, `berserk_tick` and `fe
 `watch_thieves`, `watch_breeders`, `watch_traps`, `watch_kills`, `watch_perception`, `watch_progress`, and the
 potion tables `heal_of`/`HEALS`, `STATUS_CURES`, `CURE_POTIONS`. Still in `pilot.py`: `tick` and its steps
 (`confusion_tick` calls the confusion pair, `watch_tick` the watches, `act_tick` `reflexes` and `rule_tick`),
-`take_stairs`, `start_resting`/`stop_resting`, `recall_started`, `set_goal`/`step_goal`, `look_tick`/`is_asleep`, and
-the commands (`react` and `monster` in `do_request`, `monster_info`, `drainers_info`, `hunt_refusal`,
-`uniques_killed`). Elsewhere: `phase_item`, `find_item`, `keep_light`/`town_light`, `watch_weapons`/`watch_abilities`
+`take_stairs`, `start_resting`/`stop_resting`, `recall_started`, `set_goal`/`step_goal`, `look_tick`/`is_asleep`. The
+commands are in `commands.py` (`CommandsMixin`, E1 step 6: `cmd_react`, the `monster` entry of the command table,
+`monster_info`, `drainers_info`, `hunt_refusal`, `uniques_killed`; commands.md). Elsewhere: `phase_item`, `find_item`, `keep_light`/`town_light`, `watch_weapons`/`watch_abilities`
 in `items.py`; `supply_watch` in `town.py`; the shadow decisions and duel estimates in `gear.py`; the escape goals in
 `goals.py`.
 
@@ -256,7 +256,7 @@ able to read: Word of Recall, then Phase Door every 2.5 s while it charges, when
 
 These are executable standing orders: the Navigator decides in advance, and the Pilot acts at Pilot speed. They are
 stored in `<rundir>/rules.json` as `{kind, arg, by, t}`, shown on the report's `Standing:` line, and set with `pilotctl
-react …` (handled in `do_request`). They run in `rule_tick` after the reflexes, in the dungeon only, not while fleeing,
+react …` (`cmd_react`, commands.py). They run in `rule_tick` after the reflexes, in the dungeon only, not while fleeing,
 recalling or recovering.
 
 | Command | Effect |

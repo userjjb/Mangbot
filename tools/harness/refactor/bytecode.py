@@ -8,6 +8,7 @@ import sys
 import types
 
 d, clsname, modname, out = sys.argv[1:5]
+d = os.path.abspath(d)
 sys.path.insert(0, d)
 os.chdir(d)
 import pilot as P  # noqa: E402
@@ -41,7 +42,7 @@ def ident(v):
         return f"module {v.__name__}"
     if callable(v) and hasattr(v, "__qualname__"):
         return f"{getattr(v, '__module__', '?')}.{v.__qualname__}"
-    return f"{type(v).__name__} {v!r}"[:200]
+    return f"{type(v).__name__} {v!r}".replace(d, "<PILOT_DIR>")[:200]      # (HERE: the tree's own path)
 
 
 def func_digest(f):
