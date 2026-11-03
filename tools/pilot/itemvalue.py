@@ -159,6 +159,8 @@ def unknown_mushroom_value(aware=()):
 
 def _plural_free(s):
     s = re.sub(r"\b(Potion|Scroll|Ring|Amulet|Wand|Rod|Staff|Flask|Ration|Pair|Set|Mushroom)s\b", r"\1", s)   # (Staffs: m43 valued 2 at 0)
+    # (2.48.0: "3 Wooden Torches" and "2 Brass Lanterns" valued 0 -- the town sells spare torches now)
+    s = re.sub(r"\b(Torch)es\b|\b(Lantern)s\b", lambda m: m.group(1) or m.group(2), s)
     return re.sub(r"\bStaves\b", "Staff", s)
 
 

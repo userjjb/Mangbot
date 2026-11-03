@@ -7,6 +7,7 @@ import sys
 
 from fixtures import HERE, P, case, W, pilot
 import itemvalue                   # noqa: E402
+import town_goals as TG            # noqa: E402
 
 
 @case
@@ -62,7 +63,8 @@ def town_kit_townfarms_when_broke():
 @case
 def crutch_devices_sold_on_test():
     """The user: on the test server mapping/detection devices are sold (a crutch the live server won't give us);
-    with --live they're kept like any useful device. Magic Mapping scrolls (sold in shops) stay in the kit."""
+    with --live they're kept like any useful device. Magic Mapping scrolls: 2.48.0 (the user) by the same rule, sold
+    on the test server (mapping_scrolls_a_crutch_on_test), kept with --live."""
     def count(live, name, tval):
         p = pilot(pack=[(name, tval)])
         p.live = live
@@ -70,8 +72,8 @@ def crutch_devices_sold_on_test():
         return p.town_sell_count(p.w.items()[0])
     test = count(False, "a Rod of Enlightenment", 66)
     live = count(True, "a Rod of Enlightenment", 66)
-    scroll = count(False, "3 Scrolls of Magic Mapping", 70)
-    return test == 1 and live == 0 and scroll == 0, f"test sells {test}, live sells {live}, scrolls sold {scroll}"
+    scroll = count(True, "3 Scrolls of Magic Mapping", 70)
+    return test == 1 and live == 0 and scroll == 0, f"test sells {test}, live sells {live}, live scrolls sold {scroll}"
 
 
 @case
@@ -352,3 +354,208 @@ def buylist_counts_the_stash():
         return [(t, k, n) for t, k, s, n, c in p.town_needs(None, [("Restore Dexterity", 1, None, 5)]) if t == 5]
     have, none = need(True), need(False)
     return have == [] and none == [(5, "Restore Dexterity", 1)], f"stashed: {have}; not: {none}"
+
+
+# --- 2.48.0: the user's two principles for a weaker substitute (A fallback, B dungeon stopgap) and the Enchant /
+# Recharging scrolls the kit would read (docs/pilot-items.md). The fixture's planned depth, 650 ft, is kit B.
+
+def _town(p):
+    p.w.depth, p.w.depth_ft, p.w.in_dungeon = 0, 0, False
+    p.flavour_of = lambda it: None
+    p.unknown_flavour = lambda it: False
+    p.review_hold = lambda it: False
+    p.gear_better = lambda it: False
+    return p
+
+
+def _dungeon(p, left, hunger=3):
+    p.w.in_dungeon, p.w.hunger, p.w.flags = True, hunger, {}
+    p.trip_minutes_left = lambda: left
+    p.flavour_of = lambda it: None
+    p.rates = {"buckets": []}
+    return p
+
+
+@case
+def boldness_fallback_for_heroism():
+    """A (2.48.0, the user): Boldness is Heroism's fallback. In town it's kept while Heroism is under the kit's target
+    (kit B: 3) and sold once it's there; kit A (no Heroism) sells it. After the shops, Heroism still short (1 of 3):
+    the Temple's Boldness for the shortfall less what's carried (3 - 1 - 1 = 1), once, at 1.5x its 8 gold; none when
+    the Temple's listing this visit had no Boldness, or the gold the essentials leave doesn't stretch. In the dungeon
+    a Boldness found while Heroism is short is a kit item (priceless for room, its price as loot); with Heroism at 3,
+    loot."""
+    import types
+    def make(hero, kit=None, gold=1000, temple=("potion of boldnes", "potion of heroism")):
+        p = _town(pilot(pack=[("2 Potions of Boldness", 75)] + ([(f"{hero} Potions of Heroism", 75)] if hero else []),
+                        gold=gold))
+        p.stores_seen = {4: {"owner": "Keldon the Wise (Dwarf)", "t": round(P.gnow()),
+                             "prices": {k: (8 if "bold" in k else 43) for k in temple}}}
+        p.town_reserve = lambda: 0
+        if kit:
+            p.goal = P.TownKit(kit)
+        return p
+    sells = {k: make(h, kit).town_sell_count(make(h, kit).w.items()[0]) for k, h, kit in
+             (("hero1", 1, None), ("hero3", 3, None), ("kitA", 1, "A"))}
+
+    def fallback(p):
+        k = P.TownKit()
+        k.t0 = P.gnow() - 5
+        r = k._buying_fallback(p, types.SimpleNamespace(w=p.w, now=0.0))
+        return (k.sub.store, k.sub.buys) if k.sub else r is not TG.NEXT
+    one = make(1)
+    one.w.items()[0]["number"], one.w.items()[0]["name"] = 1, "a Potion of Boldness"
+    short = fallback(one)
+    none_stocked = fallback(make(0, temple=("potion of heroism",)))
+    broke = fallback(make(0, gold=5))
+    at_target = fallback(make(3))
+    d = _dungeon(make(1), 30)
+    dv = d.pack_value(d.w.items()[0])
+    loot = _dungeon(make(3), 30)
+    lv = loot.pack_value(loot.w.items()[0])
+    worth = d.kit_use_value("2 Potions of Boldness")
+    ok = sells == {"hero1": 0, "hero3": 2, "kitA": 2} and short == ("4", [("Boldness", 1, 12)]) and \
+        none_stocked is False and broke is False and at_target is False and dv == float("inf") and lv < 20 and \
+        worth == 16
+    return ok, (f"town sells {sells}; after the shops, Heroism 1/3 and 1 Boldness: {short}; no Boldness in the "
+                f"Temple's listing: {none_stocked}; 5 gold: {broke}; Heroism 3/3: {at_target}; dungeon value, Heroism "
+                f"short {dv}, at 3 {lv:.1f}; pickup worth {worth}")
+
+
+@case
+def satisfy_hunger_a_dungeon_stopgap():
+    """B (2.48.0, the user): a Scroll of Satisfy Hunger is a stopgap for rations. In town it's sold (the General Store
+    sells rations). In the dungeon, Hungry with no rations and 30 minutes to go, it's worth the dungeon time it covers,
+    make-room and the weight shed may destroy none of it (destroy_count 0), and it isn't junk even on the junk order;
+    with 3 rations and the trip ending in 2 minutes, it's worth its sale and may go."""
+    t = _town(pilot(pack=[("a Scroll of Satisfy Hunger", 70)]))
+    town = t.town_sell_count(t.w.items()[0])
+    d = _dungeon(pilot(pack=[("2 Scrolls of Satisfy Hunger", 70)]), 30, hunger=2)
+    d.orders["junk"] = "Satisfy Hunger"
+    sc = d.w.items()[0]
+    short = d.destroy_count(sc), round(d.pack_value(sc)), d.is_junk(sc), d.is_junk("a Scroll of Satisfy Hunger")
+    f = _dungeon(pilot(pack=[("2 Scrolls of Satisfy Hunger", 70), ("3 Rations of Food", P.TV_FOOD)]), 2)
+    sc = f.w.items()[0]
+    fed = f.destroy_count(sc), round(f.pack_value(sc), 1)
+    ok = town == 1 and short[0] == 0 and short[1] > 100 and short[2:] == (False, False) and fed[0] == 2 and fed[1] < 10
+    return ok, f"town sells {town}; no rations, 30 min: (destroy, value, junk, floor junk) {short}; 3 rations, 2 min: {fed}"
+
+
+@case
+def clw_sold_in_kits_b_and_c():
+    """B (2.48.0, the user): kits B and C heal with CSW and CCW, so plan town sells their Potions of Cure Light Wounds;
+    kit A buys CLW and keeps them (`plan town kit=A`, or a planned depth under 500 ft); a buy list asking for CLW keeps
+    them. In the dungeon CLW stays a kit consumable (priceless for room)."""
+    def sold(kit=None, depth=650, buylist=()):
+        p = _town(pilot(pack=[("5 Potions of Cure Light Wounds", 75)]))
+        p.orders["max_depth"], p.deepest_ft = depth, depth
+        if kit or buylist:
+            p.goal = P.TownKit(kit, buylist)
+        return p.town_sell_count(p.w.items()[0])
+    got = {"B": sold(), "C": sold(depth=1200), "A by depth": sold(depth=300), "kit=A": sold("A"),
+           "buy CLW": sold(buylist=[("Cure Light Wounds", 5, None, 4)])}
+    d = _dungeon(pilot(pack=[("5 Potions of Cure Light Wounds", 75)]), 30)
+    dv = d.pack_value(d.w.items()[0])
+    ok = got == {"B": 5, "C": 5, "A by depth": 0, "kit=A": 0, "buy CLW": 0} and dv == float("inf")
+    return ok, f"sold {got}; dungeon value {dv}"
+
+
+@case
+def mushrooms_sold_in_town_but_restores():
+    """2.48.0 (the user: sell them like other non-ration food, unless the town has no better source for what they do):
+    a Mushroom of Cure Serious Wounds is sold (the kit's potions cure); a Mushroom of Restoring or Restore Strength is
+    kept (the town sells that only as a ~490-gold Restore potion). In the dungeon a mushroom keeps its expected value
+    (2.42.0), not priceless."""
+    p = _town(pilot(pack=[("a Mushroom of Cure Serious Wounds", 80), ("2 Mushrooms of Restoring", 80),
+                          ("a Mushroom of Restore Strength", 80)]))
+    got = [p.town_sell_count(it) for it in p.w.items()]
+    d = _dungeon(pilot(pack=[("a Mushroom of Cure Serious Wounds", 80)]), 30)
+    d.review_state = lambda: {"items": {}}
+    dv = d.pack_value(d.w.items()[0])
+    return got == [1, 0, 0] and 0 < dv < float("inf"), f"sold {got}; dungeon value {dv:.0f}"
+
+
+@case
+def torches_the_lanterns_fallback():
+    """A + B (2.48.0, the user): with a lantern with fuel worn (or carried), plan town sells the Wooden Torches; with no
+    lantern they stay (the light). In the dungeon a torch beside a lantern at 2000 turns, no flasks and 60 minutes to
+    go is kept (destroy_count 0, worth the light it covers); a full lantern and 2 minutes to go: worth its sale, may go.
+    ("3 Wooden Torches" was worth 0 to itemvalue: the plural.)"""
+    lantern = ("a Brass Lantern (with 7000 turns of light)", P.TV_LITE, 50)
+    t = _town(pilot(worn=[lantern], pack=[("3 Wooden Torches (with 5000 turns of light)", P.TV_LITE)]))
+    town = t.town_sell_count(t.w.items()[0])
+    n = _town(pilot(worn=[], pack=[("3 Wooden Torches (with 5000 turns of light)", P.TV_LITE)]))
+    nolamp = n.town_sell_count(n.w.items()[0])
+
+    def dungeon(turns, left):
+        d = _dungeon(pilot(worn=[("a Brass Lantern (with %d turns of light)" % turns, P.TV_LITE, 50)],
+                           pack=[("3 Wooden Torches (with 5000 turns of light)", P.TV_LITE)]), left)
+        it = d.w.items()[0]
+        return d.destroy_count(it), round(d.pack_value(it), 1)
+    short, fine = dungeon(2000, 60), dungeon(15000, 2)
+    ok = town == 3 and nolamp == 0 and short[0] == 0 and short[1] > 50 and fine[0] == 3 and fine[1] < 10 and \
+        itemvalue.value("3 Wooden Torches (with 5000 turns of light)").value == 2
+    return ok, f"town sells {town} (no lantern: {nolamp}); dungeon, lantern 2000/60 min: {short}; 15000/2 min: {fine}"
+
+
+@case
+def mapping_scrolls_a_crutch_on_test():
+    """2.48.0 (the user): a Scroll of Magic Mapping is a crutch on the test server, as the mapping devices: sold in town,
+    not a kit item (loot in the dungeon: its sale value, no kit pickup worth), and never read by the flee; with --live
+    it's the kit's (kept, priceless, read). Deep Descent (travel) stays a kit scroll on the test server."""
+    def run(live):
+        p = _town(pilot(pack=[("3 Scrolls of Magic Mapping", 70), ("a Scroll of Deep Descent", 70)]))
+        p.live = live
+        p.town_buyers = lambda it: [5]
+        sold = [p.town_sell_count(it) for it in p.w.items()]
+        d = _dungeon(pilot(pack=[("4 Scrolls of Magic Mapping", 70)]), 30)
+        d.live = live
+        d.review_state = lambda: {"items": {}}
+        value = d.pack_value(d.w.items()[0])
+        worth = d.kit_use_value("a Scroll of Magic Mapping")
+        d.w.pos, d.w.level_t, d.w.depth, d.w.depth_ft = (20, 20), 5.0, 13, 650
+        d.w.memory = {(20, 20): ".", (20, 36): ">"}
+        d.w.find = lambda chars: [q for q, ch in d.w.memory.items() if ch in chars]
+        d.w.monsters, d.w.still_seen, d.w.avoid_zone, d.w.avoid_inside = [], {}, set(), False
+        d.w.adjacent_monsters = lambda: []
+        d.w.standing_on = "."
+        d.cmds = []
+        d.cmd = lambda line, why, hold=0.4: d.cmds.append(why)
+        d.mover = type("M", (), {"go": lambda self, *a, **k: True, "active": True, "unknown": True, "path": [1] * 9,
+                                 "tick": lambda self: "moving", "stop": lambda self: None})()
+        P.Flee("band").tick(d)
+        read = any("Magic Mapping" in c for c in d.cmds)
+        return sold, value, worth, read
+    test, live = run(False), run(True)
+    ok = test[0] == [3, 0] and test[1] < 100 and test[2] == 0 and test[3] is False and \
+        live[0] == [0, 0] and live[1] == float("inf") and live[2] > 0 and live[3] is True
+    return ok, f"test server (sold, value, worth, read): {test}; live: {live}"
+
+
+@case
+def enchant_and_recharge_scrolls_kept_to_read():
+    """2.48.0 (the user): before selling a Scroll of Enchant or Recharging, check whether the kit would read it. A
+    Dagger (+5,+5) wielded: the 2 To-Dam scrolls are kept (the town kit reads them before buying: 5 wanted - 2 carried =
+    3 bought), the Enchant Armor nothing would use is sold; a Scroll of Recharging with an empty Staff of Perception is
+    kept, without one sold. At (+9,+9) the To-Dam scrolls are sold. Kept ones are priceless for room in town, worth
+    their price in the dungeon."""
+    def make(weapon="a Dagger (1d4) (+5,+5)", staff=True):
+        p = _town(pilot(worn=[(weapon, 23, 12)], gold=5000,
+                        pack=[("2 Scrolls of Enchant Weapon To-Dam", 70), ("a Scroll of Enchant Armor", 70),
+                              ("a Scroll of Recharging", 70)] +
+                        ([("a Staff of Perception (0 charges)", 55)] if staff else [])))
+        p.stores_seen = {}
+        p.is_artifact = lambda n: False
+        p.orders["enchant_max"] = 25
+        return p
+    p = make()
+    got = [p.town_sell_count(it) for it in p.w.items()[:3]]
+    buys = p.enchant_buys(10 ** 6)
+    room = p.pack_value(p.w.items()[0])
+    q = make("a Dagger (1d4) (+9,+9)", staff=False)
+    high = [q.town_sell_count(it) for it in q.w.items()[:3]]
+    p.w.in_dungeon = True
+    dv = p.pack_value(p.w.items()[0])
+    ok = got == [0, 1, 0] and buys[:1] == [("Enchant Weapon To-Dam", 3, 190)] and room == float("inf") and \
+        high == [2, 1, 1] and dv == 380
+    return ok, f"sold (To-Dam, Armor, Recharging) {got}; buys {buys}; town room value {room}; (+9,+9), no staff: " \
+               f"{high}; dungeon value {dv}"

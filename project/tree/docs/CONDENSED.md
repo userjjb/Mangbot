@@ -1,7 +1,7 @@
 # The Documentation, condensed (for Architects and Advisors)
 
 The full version is [README.md](README.md) and its ten component files. This page is what a new Architect or Advisor
-needs in their head before touching anything. Session 11, 2026-11-03; matches version 2.47.0 (`github/VERSION`, CHANGELOG.md).
+needs in their head before touching anything. Session 11, 2026-11-03; matches version 2.48.0 (`github/VERSION`, CHANGELOG.md).
 
 ## What this is
 
@@ -63,6 +63,10 @@ shop owner's rate at our CHR). Notable identified wearables wait in the **review
 goes into its **item debt** (an overridden hunt's HP loss into **fight debt**). The limit is never a number and never
 told; the user and Architect revoke overrides with `runs/private/NICK.overrides_revoked`. Standing **orders**
 (`order KEY=VALUE`: flee_hp, autowear, pickup, loot_radius, junk, nopickup, enchant_max, band_frac...).
+Weaker substitutes (2.48.0, the user): a **fallback** (Boldness for Heroism) is kept and bought only while the kit
+item is short; a **dungeon stopgap** (Satisfy Hunger, a torch beside a lantern, CLW in kits B/C) is sold in town and
+kept by need in the dungeon; Enchant/Recharging scrolls the kit would read are kept and read before more are bought; on
+the test server Magic Mapping scrolls are a crutch (sold, not read).
 
 ## Goals and plans ([goals-and-plans.md](goals-and-plans.md))
 

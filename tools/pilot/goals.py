@@ -783,6 +783,7 @@ class BandLeave(Goal):
             used = p.use_stair_location("band, no stairs known")
             if not used:
                 mm = p.find_item("Magic Mapping", TV_SCROLL)
+                mm = None if mm and p.is_crutch(mm) else mm     # (2.48.0, the user: a crutch on the test server)
                 if mm and not w.flag("blind") and not w.flag("confused") and gnow() >= p.busy_until:
                     p.cmd(f"custom r item={mm['item']}", "band, no stairs known: Magic Mapping", hold=0.8)
                     used = True
@@ -902,7 +903,7 @@ class Flee(Goal):
         if not self.started and getattr(self, "mapped", None) != w.level_t and not plan(w, stairs) and \
                 not w.flag("blind") and not w.flag("confused") and not w.adjacent_monsters():
             mm = p.find_item("Magic Mapping", TV_SCROLL)
-            if mm:
+            if mm and not p.is_crutch(mm):         # (2.48.0, the user: not read on the test server, a crutch)
                 self.mapped = w.level_t
                 p.cmd(f"custom r item={mm['item']}", "flee: no known way to the stairs: read Magic Mapping", hold=0.8)
                 p.notify("tactic", "flee: stairs known but no known way to them: read Magic Mapping", news=True)

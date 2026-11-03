@@ -193,7 +193,7 @@ def town_plan_step_tables():
             P.HouseBank: dict(full_told=False, picks=0, last_step=None, seen_level=None, items_done=False),
             P.TownKit: dict(withdrawn=False, fetched=False, last_sell=None, id_bought=False, farmed=False, short=[],
                             quaffed=set(), restock_waits=0, recharged=set(), recharge_bought=False, enchanted=0,
-                            enchant_bought=False, stashed=False, deposited=False),
+                            enchant_bought=False, stashed=False, deposited=False, fallback_bought=False),
             P.TripPlan: dict(xp0=None, climb_t0=None, dungeon_t0=None, swarm_tele=None, clock_targets={}, xp_hist=[])}
     made = {P.Shop: P.Shop("5"), P.HouseBank: P.HouseBank("deposit"), P.TownKit: P.TownKit(),
             P.TripPlan: P.TripPlan(250, 500, P.TripPlan.parse_until("cures<3"))}

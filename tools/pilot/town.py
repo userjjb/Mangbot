@@ -18,10 +18,10 @@ import sys
 import time
 
 import geareval
-from common import HERE, TV_POTION, TV_FOOD, TV_FLASK, TV_LITE, bare_name, singular, bad_inscription
+from common import HERE, TV_POTION, TV_SCROLL, TV_FOOD, TV_FLASK, TV_LITE, bare_name, singular, bad_inscription
 from world import gnow, light_turns
 from mover import MAX_HGT, MAX_WID
-from town_goals import Shop
+from town_goals import Shop, TownKit
 if os.path.join(HERE, "..", "observe") not in sys.path:     # (shopmath, as pilot.py loads it)
     sys.path.insert(0, os.path.join(HERE, "..", "observe"))
 import shopmath                                  # noqa: E402
@@ -100,6 +100,9 @@ class TownMixin:
                  # (the only fear cure kept since Boldness went, the user 10-25; m41 ran out and phased 3 times
                  # afraid with three on it)
                  "Heroism": (75, 4, 55),
+                 # (2.48.0, the user: Heroism's fallback -- bought only for Heroism's shortfall, FALLBACKS; the Temple's
+                 # 8 gold in Dive04's stores.json)
+                 "Boldness": (75, 4, 20),
                  # (the user, 10-25: Speed drunk at the start of hard fights; only the Black Market sells it, ~383 in
                  # m40; the Advisor's replays: it pays below ~500-600 gold at the rolling XP-per-gold rate)
                  "Potion of Speed": (75, 7, 400)}
@@ -181,12 +184,15 @@ class TownMixin:
     def enchant_buys(self, spare=None):
         """[(kind, n, price)]: the Scrolls of Enchant plan town buys this visit -- Enchant Armor first, then the
         weapon's To-Dam and To-Hit, each the expected count to its stopping place (enchant_scrolls_wanted), within the
-        spare gold (`spare`, at 110% of the price; None: not counted) and `order enchant_max` for them all together."""
+        spare gold (`spare`, at 110% of the price; None: not counted) and `order enchant_max` for them all together.
+        Less the scrolls of the kind carried (2.48.0, the user: a carried scroll the kit would read is kept and read
+        before anything more is bought; the cap counts only what is bought)."""
         left = int(self.orders.get("enchant_max", 25))
         out = []
         for kind in self.ENCHANT_KINDS:
             price = self.price_of(kind, 5) or 190
-            n = min(int(round(self.enchant_scrolls_wanted(kind))), left)
+            carried = sum(i["number"] for i in self.w.items(tval=TV_SCROLL) if kind in i["name"])
+            n = min(int(round(self.enchant_scrolls_wanted(kind))) - carried, left)
             if spare is not None:
                 n = min(n, max(0, spare // max(1, int(price * 1.1))))
             if n > 0:
@@ -374,18 +380,141 @@ class TownMixin:
     # they're sold like loot (the user, 2026-10-24: "too much of a crutch ... in the live server we won't have the
     # rod"); with --live they're kept like any useful device
     CRUTCH_DEVICES = ("Enlightenment", "Detection", "Magic Mapping")
+    # (2.48.0, the user: the Scroll of Magic Mapping by the same rule -- sold in town and not read on the test server.
+    # Not Deep Descent: that's travel, not mapping)
+    CRUTCH_SCROLLS = ("Magic Mapping",)
 
     def is_crutch(self, it):
-        return not self.live and it["tval"] in (55, 65, 66) and \
-            any(k in it["name"] for k in self.CRUTCH_DEVICES)
+        if self.live:
+            return False
+        if it["tval"] == TV_SCROLL:
+            return any(k in it["name"] for k in self.CRUTCH_SCROLLS)
+        return it["tval"] in (55, 65, 66) and any(k in it["name"] for k in self.CRUTCH_DEVICES)
+
+    # --- 2.48.0, the user's two principles for a weaker substitute (docs/pilot-items.md, fallbacks and stopgaps) ---
+    # A. Fallback: kept, and bought, only while the better kit item is short -- below the kit's target and not in stock
+    #    at an affordable price this visit (Boldness for Heroism: the Temple runs out of Heroism).
+    # B. Dungeon stopgap: useful in the dungeon while the primary supply is short, but the primary is always on sale in
+    #    town -- so sold in town; in the dungeon kept, never auto-destroyed, and worth what it covers while the primary is
+    #    short (Satisfy Hunger for rations, a Wooden Torch for the lantern's fuel; CLW for kits B and C's CSW/CCW).
+    # And the user's addition: a Scroll of Enchant or Recharging the kit would read is kept (and read before more are
+    # bought); only the ones nothing would use are sold.
+    FALLBACKS = {"Boldness": "Heroism"}          # the fallback kind: the kit kind it stands in for
+    # (mushrooms whose effect the town sells only as a ~490-gold Restore potion: kept in town. The other mushrooms'
+    # cures are the kit's potions -- CLW (blindness), Heroism (fear), CSW/CCW (confusion, poison, wounds) -- so they sell)
+    KEEP_MUSHROOMS = ("Restore Strength", "Restore Constitution", "Restoring")
+
+    def kit_by_depth(self):
+        """The kit for the planned depth (town_needs: A < 500 ft <= B < 1000 ft <= C)."""
+        want = self.planned_depth()
+        return "A" if want < 500 else "B" if want < 1000 else "C"
+
+    def visit_kit(self):
+        """The kit this visit shops for, or the trip carries: plan town's kit=, else the planned depth's."""
+        g = self.goal
+        return g.kit if isinstance(g, TownKit) and g.kit else self.kit_by_depth()
+
+    def kit_target(self, kind):
+        return self.KITS.get(self.visit_kit(), {}).get(kind, 0)
+
+    def fallback_of(self, it):
+        """The kit kind a pack item is the fallback for ('Heroism' for a Potion of Boldness), or None."""
+        if it["tval"] != TV_POTION:
+            return None
+        return next((v for k, v in self.FALLBACKS.items() if k in it["name"]), None)
+
+    def fallback_kept(self, it):
+        """A: a fallback while its kit kind is below the kit's target (kept in town, kit-valued in the dungeon)."""
+        kind = self.fallback_of(it)
+        return bool(kind) and self.kit_count(kind) < self.kit_target(kind)
+
+    def clw_spare(self):
+        """B: kits B and C heal with CSW and CCW, so their Potions of Cure Light Wounds are sold in town -- unless the
+        supply gate's cure count would buy CLW back (250-499 ft planned under a kit= B/C) or the Navigator's buy list
+        asks for them. Kit A buys CLW: kept."""
+        if self.visit_kit() not in ("B", "C") or 250 <= self.planned_depth() < 500:
+            return False
+        g = self.goal
+        return not (isinstance(g, TownKit) and any("Cure Light" in str(b[0]) for b in g.buylist))
+
+    def lantern_lit(self):
+        """A lantern with fuel worn or carried (a torch is then the light's fallback)."""
+        return any("Lantern" in i["name"] and self.light_left(i) > 0
+                   for i in self.w.items(equip=True) + self.w.items(tval=TV_LITE))
+
+    def scroll_use(self, it):
+        """What the town kit would read this Scroll of Enchant Armor / Enchant Weapon To-Dam / To-Hit or Recharging on
+        (the item's name), or None: a worn piece or the wielded weapon whose next point is >= ENCHANT_MIN_CHANCE
+        (enchant_plan, weapon_enchant_plan), a device recharge_wanted names."""
+        name = it["name"]
+        if it["tval"] != TV_SCROLL:
+            return None
+        if "Recharging" in name:
+            r = self.recharge_wanted()
+            return r[0]["name"] if r else None
+        if "Enchant Armor" in name:
+            plan = self.enchant_plan()
+            return plan[0][0]["name"] if plan else None
+        return next((wit["name"] for wit, kind, _ in self.weapon_enchant_plan() if kind in name), None)
+
+    def town_rule(self, it):
+        """The 2.48.0 rules for a pack item in town: ("keep", why) -- the kit would use it; ("sell", why) -- the older
+        protections (a kit kind, food, a light) don't hold it, the shops' and the value policy's checks still apply;
+        None -- the older rules decide."""
+        name, tv = it["name"], it["tval"]
+        if it.get("equip"):
+            return None
+        kind = self.fallback_of(it)
+        if kind:
+            have, target, kit = self.kit_count(kind), self.kit_target(kind), self.visit_kit()
+            return ("keep", f"{kind}'s fallback: {kind} {have}/{target}, short (kit {kit})") if have < target else \
+                ("sell", f"{kind}'s fallback, not needed: {kind} {have}/{target} (kit {kit})")
+        if tv == TV_POTION and "Cure Light Wounds" in name and self.clw_spare():
+            return ("sell", f"a stopgap: kit {self.visit_kit()} heals with Cure Serious/Critical Wounds")
+        if tv == TV_SCROLL:
+            use = self.scroll_use(it)
+            if use:
+                return ("keep", f"the town kit reads it on {use}")
+            if "Satisfy Hunger" in name:
+                return ("sell", "a stopgap: the General Store sells rations")
+        if tv == TV_FOOD and "Mushroom" in name:
+            keep = next((m for m in self.KEEP_MUSHROOMS if f"of {m}" in name), None)
+            return ("keep", f"{keep}: the town restores a stat only with a ~490-gold potion") if keep else \
+                ("sell", "food other than rations (its cure is the kit's potions)")
+        if tv == TV_LITE and "Torch" in name and self.lantern_lit():
+            return ("sell", "a lantern with fuel is carried")
+        return None
+
+    def fallback_buys(self, spare, since=None):
+        """[(kind, store, n, cap)]: A -- each fallback for its kit kind's shortfall after the shops (none in stock, over
+        the cap or not the gold), less the fallbacks carried, within `spare` gold at 110% of the price; not when the
+        store's listing seen this visit (at or after `since`) had none. The cap: 1.5x the price."""
+        out = []
+        for fb, kind in self.FALLBACKS.items():
+            n = self.kit_target(kind) - self.kit_count(kind) - self.kit_count(fb)
+            store = self.KIT_ITEMS[fb][1]
+            seen = self.stores_seen.get(store) or {}
+            if n <= 0 or (since is not None and seen.get("t", 0) >= since - 1 and
+                          not any(singular(fb) in k for k in seen.get("prices", {}))):
+                continue
+            price = self.price_of(fb, store) or 20
+            n = min(n, max(0, spare) // max(1, int(price * 1.1)))
+            if n > 0:
+                out.append((fb, store, n, round(price * 1.5)))
+                spare -= n * max(1, int(price * 1.1))
+        return out
 
     def town_sell_count(self, it):
         """How many of this pack item the town kit sells (0: keep it)."""
         name = it["name"]
         if self.is_crutch(it) and not it.get("equip") and self.town_buyers(it):
             return it["number"]
+        rule = self.town_rule(it)
+        if rule and rule[0] == "keep":
+            return 0
+        freed = bool(rule)              # (2.48.0: a stopgap or a fallback not needed -- sold by the value checks below)
         # (food other than rations, and flasks the lantern doesn't need, are sold: one food source, no oil)
-        spare = (it["tval"] == TV_FOOD and "Ration" not in name and "Mushroom" not in name) or \
+        spare = freed or (it["tval"] == TV_FOOD and "Ration" not in name and "Mushroom" not in name) or \
             (it["tval"] == TV_FLASK and (self.lantern_fuel() or 0) >= self.FUEL_TOPUP)
         # (one lantern is enough -- the user, 10-26: "why two lanterns?" -- the fullest is kept, worn or in the pack;
         # a spare is sold)
@@ -397,7 +526,7 @@ class TownMixin:
         rod_dup = it["tval"] == 55 and any(i["tval"] == 66 and re.sub(r".*\bof ", "", re.sub(r"\s*\(.*", "", i["name"]))
                                            in name for i in self.w.items())
         if it.get("equip") or (it["tval"] in (TV_FOOD, TV_FLASK, TV_LITE) and not spare) or \
-                self.is_kit_item(it) \
+                (self.is_kit_item(it) and not freed) \
                 or (it["tval"] in (55, 65, 66) and any(d in name for d in self.USEFUL_DEVICES) and not rod_dup
                     and not (it["tval"] in (55, 65) and re.search(r"\(0 charges\)", name)
                              and not any("Recharging" in i["name"] for i in self.w.items())
@@ -424,7 +553,10 @@ class TownMixin:
         if self.review_hold(it):
             return 0
         iv = self.iv(name)
-        if iv.kind is None or iv.value <= 0 or iv.value * self.pay_cut(iv.tval) < 1:
+        # (a spare torch sells for a gold piece, under its 2-gold value's cut: "You sold 2 Wooden Torches (with 0 turns
+        # of light) for 2 gold", Dive04 2026-09 -- 2.48.0 sells them beside a lantern)
+        cheap_ok = freed and it["tval"] == TV_LITE
+        if iv.kind is None or iv.value <= 0 or (iv.value * self.pay_cut(iv.tval) < 1 and not cheap_ok):
             return 0
         return it["number"]
 
@@ -532,7 +664,7 @@ class TownMixin:
         1: Words of Recall to 2; 2: the supply gate's minimums for the planned depth;
         3: Restore for a drained STR/DEX/CON; 4: the kit; 5: the Navigator's buy list."""
         want = self.planned_depth()
-        kit = kit or ("A" if want < 500 else "B" if want < 1000 else "C")
+        kit = kit or self.kit_by_depth()
         plan = []
 
         def planned(kind):

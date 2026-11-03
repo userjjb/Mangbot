@@ -178,6 +178,11 @@ rules' role -- `value_refusal`, a forced sale's debt, the override check; a buy-
    first**); else `StashFetch` that Restore from the tavern; then wear what the gear policy prefers (`upgrade_step`).
 2. **sell**: one `Shop` per store that buys something the policy sells (`town_sell_stores`, `town_sells`), in store
    order; a store is revisited once if a sale taught an unknown flavour (the rest of the stack then sells).
+   (2.48.0, the user) This stage runs before the buying stage's recharge and enchant steps, so `town_sell_count`'s
+   exemption is what protects a Scroll of Enchant or Recharging the kit would read (`scroll_use`); a fallback
+   (Boldness) is kept while its kit kind (Heroism) is short, and the stopgaps are sold (Satisfy Hunger; CLW in kits B
+   and C; torches beside a lit lantern; mushrooms but the restoring ones; on the test server, Magic Mapping scrolls):
+   pilot-items.md, "Fallbacks, stopgaps, crutches".
 3. **identify**: read Identify scrolls on the candidates (`identify_step`, pilot-items.md); buy more at the Alchemist
    (5) for the unknowns worth it: `town_identify_wanted` counts unknown items whose expected sale value is at least
    twice the scroll's price (ability sources and likely-irreplaceable items always count), limited by gold beyond
@@ -190,14 +195,18 @@ rules' role -- `value_refusal`, a forced sale's debt, the override check; a buy-
 5. **buying**: one `Shop` per store; then wear what was bought; quaff a Restore bought for a drained stat
    (`restore_potion`); `provision_step` (wear the fuller lantern, fill it from flasks up to `FUEL_TOPUP` 9000 turns,
    eat rations while Hungry or worse, up to 3, to Fed); **restock waits**: if a critical item (the gate's minimums, a
-   Restore for a drained STR/DEX/CON) is still missing and a shop said "no ... in stock", `Wait(35)` and redo the buy
-   stage, up to `RESTOCK_WAITS` = 4 times; **recharge** each `recharge_wanted` device with a Scroll of Recharging
-   (bought once at the Alchemist, cap 1.5x); **enchant** worn armour per `enchant_plan` with Enchant Armor scrolls,
+   Restore for a drained STR/DEX/CON) is still missing and a shop said "no ... in stock" (not of a fallback), `Wait(35)`
+   and redo the buy stage, up to `RESTOCK_WAITS` = 4 times; **fallback** (2.48.0, the user's principle A): a kit kind
+   still under the kit's target after that (Heroism: none in stock, over its cap, or not the gold) gets its fallback
+   for the shortfall less the fallbacks carried (`fallback_buys`: Boldness at the Temple, cap 1.5x its price, within
+   the gold beyond `town_reserve` at 110%), once; not when the Temple's listing seen this visit had none; **recharge** each `recharge_wanted` device with a Scroll of Recharging
+   (bought once at the Alchemist, cap 1.5x; a carried scroll is read first); **enchant** worn armour per `enchant_plan` with Enchant Armor scrolls,
    and (2.46.0) the wielded melee weapon per `weapon_enchant_plan` with Enchant Weapon To-Dam and To-Hit scrolls --
    the same rule: while the next point is >= 50% (half the chance on an artifact), to about +8; never the bow, nor a
    weapon whose plusses aren't shown. One read a tick, the scroll read onto the piece (`custom r item=S dir=T`, T the
    worn item), armour first, then the weapon's to-dam, then its to-hit. The scrolls are bought once, in one Alchemist
-   visit (`enchant_buys`): the expected number each needs (sum of 1/chance to the stopping place), Enchant Armor
+   visit (`enchant_buys`): the expected number each needs (sum of 1/chance to the stopping place) less the scrolls
+   of the kind carried (2.48.0: those are read first, and the sell stage kept them), Enchant Armor
    first, then To-Dam, then To-Hit, within the gold beyond `town_reserve` (at 110% of the price) and **one**
    `order enchant_max` (default 25) for all three together, each capped at 1.5x its last price; **stash** to the
    tavern (`StashDeposit`, only without a house); and **deposits last**: `HouseBank("deposit")` when gold exceeds
@@ -213,11 +222,13 @@ stage, each testing `self.stage` -- `_kit_withdraw` and `_kit_fetch` (upgrade: t
 `_kit_upgrade`, `_kit_upgrade_again`, `_kit_sell` (sell and sell again), `_kit_identify`, `_kit_buy`, `_kit_buying`. A
 stage that finishes sets the next and the next step runs in the same tick (upgrade -> sell -> identify; upgrade again
 -> sell again -> buy). `_kit_buying` runs `BUYING_STEPS` -- `_buying_shop`, `_buying_upgrade`, `_buying_quaff`,
-`_buying_provision`, `_buying_restock`, `_buying_recharge`, `_buying_enchant` (armour and, 2.46.0, the weapon:
-one step, one purchase), `_buying_stash`, `_buying_deposit` --
+`_buying_provision`, `_buying_restock`, `_buying_fallback` (2.48.0: Boldness for Heroism's shortfall),
+`_buying_recharge`, `_buying_enchant` (armour and, 2.46.0, the weapon: one step, one purchase), `_buying_stash`,
+`_buying_deposit` --
 and `finish` when none acts. Its once-only flags (`withdrawn`, `fetched`, `id_bought`, `farmed`, `recharge_bought`,
-`enchant_bought`, `stashed`, `deposited`, the `quaffed`/`recharged` sets, `restock_waits`, `enchanted`, `last_sell`,
-`short`) are declared in `__init__`.
+`enchant_bought`, `fallback_bought`, `stashed`, `deposited`, the `quaffed`/`recharged` sets, `restock_waits`,
+`enchanted`, `last_sell`, `short`; and `t0`, the visit's start: a store listing seen since is this visit's stock) are
+declared in `__init__`.
 
 ### The shopping list (`Pilot.town_needs`, `town_shopping`)
 
@@ -247,8 +258,9 @@ scrolls come last of the buying stage's purchases (after the kit and the list), 
 
 | Pilot method | what it does |
 |---|---|
-| `town_sell_count(it)` | how many of an item the town visit sells (0 = keep). Keeps: worn items, kit kinds, needed food/light (sells other food, spare flasks once the lantern has 9000+, a second lantern no fuller than another), useful devices (`USEFUL_DEVICES`; not a staff duplicating a carried rod; an empty one only if no recharge is planned), `keep`-protected items, ability sources, cursed/worthless, unknowns the policy won't sell blind (unknown devices do sell when broke for a recall), probably-special or value-refused items, gear the evaluator would wear, items held for the Navigator's review, and anything worth nothing. Details in pilot-items.md |
-| `is_crutch(it)` | on the test server (not `--live`): Enlightenment, Detection and Magic Mapping devices are sold like loot, so exploring by hand stays honest |
+| `town_sell_count(it)` | how many of an item the town visit sells (0 = keep). First `town_rule` (2.48.0): keeps a fallback while its kit kind is short and a Scroll of Enchant/Recharging the kit would read, and the restoring mushrooms; frees for sale Boldness otherwise, Satisfy Hunger, CLW in kits B/C, other mushrooms, torches beside a lit lantern. Then keeps: worn items, kit kinds, needed food/light (sells other food, spare flasks once the lantern has 9000+, a second lantern no fuller than another), useful devices (`USEFUL_DEVICES`; not a staff duplicating a carried rod; an empty one only if no recharge is planned), `keep`-protected items, ability sources, cursed/worthless, unknowns the policy won't sell blind (unknown devices do sell when broke for a recall), probably-special or value-refused items, gear the evaluator would wear, items held for the Navigator's review, and anything worth nothing. Details in pilot-items.md |
+| `is_crutch(it)` | on the test server (not `--live`): Enlightenment, Detection and Magic Mapping devices, and (2.48.0) Scrolls of Magic Mapping (`CRUTCH_SCROLLS`; not Deep Descent), are sold like loot and the scrolls never read, so exploring by hand stays honest |
+| `town_rule(it)`, `visit_kit()`, `kit_target(kind)`, `fallback_kept(it)`, `clw_spare()`, `lantern_lit()`, `scroll_use(it)`, `fallback_buys(spare, since)` | 2.48.0, the user's two principles (A fallback, B dungeon stopgap) and the scrolls the kit would read: ("keep"\|"sell", why) for a pack item in town, which `town_sell_count` and `price` follow -- pilot-items.md, "Fallbacks, stopgaps, crutches" |
 | `town_buyers(it)` | the stores that buy its tval (`BUYERS`, from store.c; never the Black Market), the best-paying owner first (`shopmath.factors` with our CHR) |
 | `town_sell_stores()` / `town_sells(store)` | the stores to visit / the `(index, count)` sells for one store |
 | `town_make_room(kit, buys)` | see stage 4 (`PACK_SLOTS` = 23) |

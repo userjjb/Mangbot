@@ -14,6 +14,7 @@ def band_leave_finds_stairs():
     the stairs it shows. A second failure on the level, or HP low, still recalls."""
     def make(hp=265):
         p = pilot(hp=hp, pack=[("2 Scrolls of Word of Recall", 70), ("3 Scrolls of Magic Mapping", 70)])
+        p.live = True          # (2.48.0: on the test server the scroll is a crutch, never read -- mapping_scrolls_a_crutch_on_test)
         p.w.adjacent_monsters = lambda: []
         p.w.find = lambda chars: []
         p.w.in_dungeon, p.w.level_t = True, 5.0

@@ -1624,6 +1624,15 @@ class CommandsMixin:
             out.append(f"last seen for sale: {p} at the {self.STORE_LABEL.get(st, st)} ({st})")
         pol = "worn" if it.get("equip") else "kept (kit/kept/useful)" if not self.town_sell_count(it) else \
             "sold by plan town"
+        # (2.48.0: why, for the fallback/stopgap/crutch/would-be-read rules; and a stopgap's dungeon need)
+        rule = None if it.get("equip") else ("a crutch on the test server" if self.is_crutch(it) else
+                                              (self.town_rule(it) or (None, None))[1])
+        if rule and not it.get("equip"):
+            pol = ("kept" if not self.town_sell_count(it) else "sold by plan town") + f" ({rule})"
+        if not it.get("equip") and self.w.in_dungeon and self.is_stopgap(it):
+            cover = self.stopgap_cover(it["name"], it["number"])
+            pol += (f"; in the dungeon a stopgap covering ~{cover:.0f} min of the trip's shortfall: kept" if cover > 0
+                    else "; in the dungeon a stopgap, the primary not short: worth its sale")
         out.append(f"the policy: {pol}")
         return "\n".join(out)
 

@@ -40,12 +40,20 @@ Run commands from `github/tools/pilot/` with `python3 pilotctl.py --nick NAME
 
 `pilotctl.py --nick NAME plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@MAX],...]` hands the whole town visit to
 the Pilot. It wears upgrades, then **sells by policy** at the shop that buys each item (never the Black Market; kit
-consumables (not Boldness: Heroism does what it does), rations and mushrooms, the flasks the lantern needs, lights (not a second, emptier lantern), `keep` items and devices for escape, travel, detection, mapping, Perception, Stone to Mud and healing are kept; on the test server Detection, Magic Mapping and Enlightenment devices are sold). Next it **buys Identify**
+consumables, rations, the restoring mushrooms (Restore Strength/Constitution, Restoring), the flasks the lantern needs, lights (not a second, emptier lantern; not torches beside a lantern with fuel), `keep` items, Scrolls of Enchant and Recharging the kit would read, and devices for escape, travel, detection, mapping, Perception, Stone to Mud and healing are kept; on the test server Detection, Magic Mapping and Enlightenment devices and Scrolls of Magic Mapping are sold). Next it **buys Identify**
 for each unknown item worth more than a scroll, reads them and sells what they turn out to be. Then it **buys by
 priority**, each shop once: (1) Word of Recall up to 2, (2) the supply gate's minimums for the planned depth (the lower
 of `max_depth` and your deepest), (3) a Potion of Restore for a drained STR, DEX or CON (it drinks it), (4) the kit
-levels, (5) your buy list, (6) Restore Charisma if CHR is drained and you have 3,000+ gold (worth only ~125 gold a mission). An essential missing from stock gets up to 4 waits of 35 s for a restock. Then it recharges and enchants, fills the lantern, eats to Fed, and stashes and banks (`HANDBOOK.md`, "food and light" and `house`). The reply lists everything
+levels, (5) your buy list, (6) Restore Charisma if CHR is drained and you have 3,000+ gold (worth only ~125 gold a mission). An essential missing from stock gets up to 4 waits of 35 s for a restock. Heroism still short of the kit's 3 after that (none in stock, over its cap): Boldness for the shortfall. Then it recharges and enchants (reading the scrolls you carry first, buying only the rest), fills the lantern, eats to Fed, and stashes and banks (`HANDBOOK.md`, "food and light" and `house`). The reply lists everything
 sold and bought, what it couldn't afford, and whether the supplies cover a recall dive.
+- **Weaker substitutes: two rules** (2.48.0, the user). **A. Fallback**: a weaker stand-in for a kit item is kept, and
+  bought, only while the kit item is short (below the kit's number and not in stock at a price it will pay this visit):
+  **Boldness** for Heroism -- kept while Heroism is under 3, bought for the shortfall when the Temple is out, sold
+  once Heroism is at 3. **B. Dungeon stopgap**: useful in the dungeon when the primary runs short, but the primary is
+  always on sale in town -- so `plan town` **sells** it, and in the dungeon the Pilot **keeps** it (never destroyed
+  for room or as junk) while the primary is short of the trip's need: **Satisfy Hunger** (rations), **Wooden Torches**
+  beside a lantern (its fuel and flasks), **CLW in kits B and C** (CSW/CCW are their heals; kit A buys CLW). Mushrooms
+  sell like other non-ration food, except the restoring ones. `price LETTER` names the rule on its policy line.
 - **Kits** (default by the planned depth): A (to 500 ft) WoR 2, CLW 5, Phase 5, rations 3; B (to 1000 ft)
   WoR 2, CCW 4, CSW 4, Phase 10, rations 3, Heroism 3, Speed 2 (Black Market, at most 600 each); C (deeper) like B
   with CCW 6 and Phase 12. No flasks in any kit: flasks are bought only to top the lantern up to 9000 turns.

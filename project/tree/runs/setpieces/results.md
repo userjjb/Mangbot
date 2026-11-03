@@ -206,3 +206,5 @@
 - 2026-11-03 08:19:39 **A8w** FAIL () `A8w-20261103-081939.json`
 - 2026-11-03 08:25:48 **A8w** PASS (walked away, no Word of Recall read, HP >= 80%) `A8w-20261103-082548.json`
 - 2026-11-03 08:43:55 **A6** PASS (at most 3 Phase Door, Phase Door never runs out, lowest HP >= 40%) `A6-20261103-084355.json`
+- 2026-11-03 17:18:35 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261103-171835.json`
+- 2026-11-03 17:21:48 **A6** PASS (at most 3 Phase Door, Phase Door never runs out, lowest HP >= 40%) `A6-20261103-172148.json`

@@ -27,6 +27,24 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.48.0 -- 2026-11-03 (session 11, the user's two principles for spare items)
+No missions yet. **Play changes.** (A) a *fallback* is kept and bought only while the better item is short; (B) a
+*dungeon stopgap* is sold in town (the primary is always on sale) and kept in the dungeon while the primary is short;
+and a scroll the kit would read is never sold first.
+- Boldness: Heroism's fallback -- bought at the Temple for Heroism's shortfall after the shops (`_buying_fallback`),
+  kept while Heroism is under the kit's target, sold once it's there; priceless in the dungeon while Heroism is short.
+- Satisfy Hunger: sold in town (as before); in the dungeon never destroyed, junked or pushed out while food is short
+  of the trip's need (it was worth its ~4-gold sale and make-room could destroy it with no rations).
+- Cure Light Wounds potions sold in town in kits B and C (CSW/CCW are the heals); kept in kit A and in the dungeon.
+- Mushrooms sold in town like other spare food, except the restore ones (Restore Strength/Constitution, Restoring).
+- Wooden torches sold in town beside a fuelled lantern; in the dungeon a stopgap while lantern fuel + flasks fall short.
+  (itemvalue valued plural torches/lanterns at 0: fixed.)
+- Magic Mapping scrolls are a crutch on the test server like the devices: sold in town, not read (`--live`: as before).
+- Enchant/Recharging scrolls the kit would read (`scroll_use`) are never sold, read before buying more
+  (`enchant_buys` subtracts the carried ones).
+- `price LETTER` names the rule on its policy line. 166 unit cases (7 new); equivalence: behaviour differs only in the
+  two new states. Live: M2, A6 PASS. Judgement calls for the user in the SESSION 11 RECORD.
+
 ## 2.47.0 -- 2026-11-03 (session 11, the docs audit)
 No missions yet. Three agents audited every doc against 2.46.0 and fixed the text (the Navigator docs had the most
 drift: depths and AC, kit contents, the stash, restock timing, eating; CONDENSED, commands, gear, process, observe,

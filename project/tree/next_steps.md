@@ -358,8 +358,16 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   watcher; restart the test server (with `MANGBAND_FREEZE_FILE`), Dive04's Pilot (`tools/pilot/restart.sh Dive04`)
   and the viewer per operations.md; check `status full` says Pilot v2.45.0 and `house` shows 19,322 banked.
 - **11-03 (2.47.0): the docs audit** -- three agents checked every doc against the code and fixed the text; five
-  code bugs they found are fixed (CHANGELOG 2.47.0). Open for the user: buy-list consumables not in the kit (e.g.
-  Boldness) are sold at the next visit unless kept.
+  code bugs they found are fixed (CHANGELOG 2.47.0).
+- **2.48.0 -- the user's two principles for spare items** (fallback: keep/buy while the better item is short;
+  dungeon stopgap: sell in town, keep in the dungeon while the primary is short; scrolls the kit would read are
+  read, not sold). Judgement calls to confirm with the user: Boldness is bought when Heroism is short for any
+  reason (stock, the 1.5x cap, gold), once a visit, within the gold beyond the reserve; the whole Boldness stack is
+  priceless in the dungeon while Heroism is short; stopgaps are never discarded while short (stronger than
+  rations); CLW is still kept with a forced kit B/C on a 250-499 ft plan, on the buy list, or kit=none; restore
+  mushrooms are kept but the Pilot never eats one for a drain (follow-up?); Potions of Enlightenment are not
+  crutches. **Watch in session 12:** the first plan town's sells (CLW in kit B, Magic Mapping scrolls), M2's pickup
+  took 13 s (was ~4 s), Boldness bought when the Temple lacks Heroism.
 - **11-03 07:34, resumed in SGE job 8406367 (scc-va3, ends Sat 11-07 19:55):** the old job ended 07:32 (savefile
-  from 07:25, Dive04 idle in town); restarted the test server (gdb, freeze-enabled), Dive04's Pilot (v2.45.0; now 2.47.0) and
+  from 07:25, Dive04 idle in town); restarted the test server (gdb, freeze-enabled), Dive04's Pilot (v2.45.0; now 2.48.0) and
   the viewer (`tmux -L mang attach -t watch`). Dive04 358/358, 300 gold + 19,322 banked.

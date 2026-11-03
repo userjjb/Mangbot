@@ -1,0 +1,73 @@
+{
+ "id": "M2",
+ "tag": "M2-20261103-171835",
+ "depth_ft": 400,
+ "start": "2026-11-03 17:18:35",
+ "checks": {
+  "the wand fetched": {
+   "pass": true,
+   "detail": "picked up at 13.2 s; left behind []"
+  },
+  "then down the '>' within 60 s": {
+   "pass": true,
+   "detail": "at 25.2 s"
+  }
+ },
+ "notes": [],
+ "scene": {
+  "dive04": [
+   3,
+   173
+  ],
+  "wand": [
+   3,
+   190
+  ],
+  "stairs": [
+   6,
+   173
+  ],
+  "forged": "an Aluminum-Plated Wand"
+ },
+ "order_reply": "{\"ok\": true, \"goal\": \"dive 450ft\"}",
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   358,
+   358
+  ],
+  "attention": [
+   [
+    25.7,
+    "goal_done",
+    "dive 450ft: reached 450 ft"
+   ]
+  ],
+  "acts": [
+   [
+    3.4,
+    "custom ,",
+    "pick up: a Black Mushroom."
+   ],
+   [
+    13.2,
+    "custom ,",
+    "pick up: a Wand of Stinking Cloud."
+   ],
+   [
+    24.5,
+    "custom >",
+    "stairs >"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-11-03 17:21:33",
+ "pass": true
+}

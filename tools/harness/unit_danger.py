@@ -81,6 +81,7 @@ def flee_maps_before_unexplored():
     per level; with a known path, no scroll."""
     def run(mem):
         p = pilot(pack=[("4 Scrolls of Magic Mapping", 70)])
+        p.live = True          # (2.48.0: on the test server the scroll is a crutch, never read -- mapping_scrolls_a_crutch_on_test)
         p.w.pos, p.w.level_t, p.w.depth, p.w.depth_ft, p.w.in_dungeon = (20, 20), 5.0, 13, 650, True
         p.w.memory = mem
         p.w.find = lambda chars: [q for q, ch in p.w.memory.items() if ch in chars]

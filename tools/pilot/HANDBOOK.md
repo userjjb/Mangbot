@@ -42,7 +42,11 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
    other food and spare flasks are sold. In the dungeon, when loot needs room, the Pilot eats (if it won't Gorge) and
    fills the lantern first, then treats food and oil beyond what lasts to the expected recall + 5 minutes (40 minutes
    without a trip plan) as spare, worth only its sale price; what is needed is worth the dungeon time it buys. Don't
-   buy flasks or Satisfy Hunger. The reply says what it bought, what it couldn't afford,
+   buy flasks or Satisfy Hunger. **Two rules for weaker substitutes** (2.48.0, the user): a **fallback** (Boldness for
+   Heroism) is kept and bought only while the kit item is short (the Temple out of Heroism: Boldness for the gap); a
+   **dungeon stopgap** (Satisfy Hunger, torches beside a lantern, CLW in kits B and C) is sold in town, because the
+   primary is always on sale there, and kept in the dungeon while the primary runs short. Enchant and Recharging
+   scrolls the kit would read are kept and read before more are bought. The reply says what it bought, what it couldn't afford,
    and whether you're ready to recall down. (`until` can't name `wor<2`: the plan keeps one Word of Recall to come
    home by itself.)
 2. **Plan a trip:** `plan trip LO-HI until "COND or ..." then town [via=stairs|recall]`, then `wait`. The Pilot goes
@@ -145,7 +149,7 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 - **Hunts.** Hunt only for a reason (a unique's drop, a drainer that keeps coming, the user's request), after
   `monster NAME`. Killed uniques give nothing again. Don't override a refusal to "see what happens".
 - **Your buy list** goes beyond the kit: Restore Strength or Dexterity when blows were lost; Potions of Heroism
-  (fear stops a warrior; `plan town` sells Boldness); CCW over CLW once HP is 200+. Save for a Staff of Teleportation once clvl is ~20
+  (fear stops a warrior; `plan town` keeps Boldness only while Heroism is short of the kit's 3); CCW over CLW once HP is 200+. Save for a Staff of Teleportation once clvl is ~20
   (its fail rate is ~20% then). Free Action, the most important item of all, can't be bought: keep every unknown
   item that might give it.
 - **Items you know better than the policy:** `keep` it (free). Selling or destroying over a refusal costs debt.

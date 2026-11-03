@@ -24,6 +24,8 @@ a withdraw's fetched Restore struck off the house record at once: 173 states.
 Alchemist that sells the Enchant scrolls (Server `stock`) and reads that land (`reads`): a (+5,+5) weapon bought 5 + 5
 scrolls and read to (+8,+8); one scroll when the gold is short; `order enchant_max=8` shared by a +5 shield (5) and the
 weapon (3 To-Dam); a (+9,+9) weapon nothing: 177 states.
+2 town_248_* states (2.48.0, the user's fallback/stopgap rules: they differ from 2.47.x on purpose): a Temple out of
+Heroism (Boldness bought for the shortfall), and carried Enchant scrolls read instead of sold: 179 states.
 Schedule actions: req, ev, pos, depth, step (move with a pos event), hp, mons, ind, msg, ghost, fn (fn(p, c): set
 up a goal, a plan or the Pilot's state). A state's `react=lambda: Server(...)` answers its commands (shop trades, the
 house's pile and door: see Server).
@@ -119,13 +121,18 @@ for _num, _st in STORES.items():
         _it.update(slot=_i, weight=5)
 
 
+NEW_STORES = {"6": ("Magic Shop", "Ariel the Sorceress (Half-Elf)")}
+
+
 def stores_with(stock):
     """STORES with these lines added ({store: [(name, price, number)]}; None: STORES itself)."""
     if not stock:
         return STORES
     out = {k: dict(v, items=[dict(i) for i in v["items"]]) for k, v in STORES.items()}
     for k, rows in stock.items():
-        st = out[k]
+        # (2.48.0: a store STORES lacks, e.g. the Magic Shop (6), the best payer for potions and scrolls)
+        st = out.setdefault(k, {"ev": "store", "name": NEW_STORES.get(k, ("Store " + k,))[0],
+                                "owner": NEW_STORES.get(k, (None, "Nobody (Human)"))[1], "items": [], "flag": 0})
         for name, price, number in rows:
             st["items"].append({"name": name, "price": price, "number": number, "slot": len(st["items"]), "weight": 5})
         st["num"] = len(st["items"])
@@ -778,6 +785,24 @@ ENCH_46 = [
      {1: [kit(**BUYING)]}, 15, 0.3),
 ]
 SCENARIOS += ENCH_46
+
+# 2.48.0 (the user's two principles; they differ from 2.47.x on purpose): a Temple out of Heroism, Heroism 1 of kit B's
+# 3 -- "no Heroism in stock", then Boldness for the shortfall (2) from the same Temple; and 2 Scrolls of Enchant Weapon
+# To-Dam carried with the weapon at (+5,+5), from the start of the visit -- kept by the sell stage (2.47 sold them),
+# read, and only the rest bought (to-dam +7: 2 more; to-hit 5); the sell stage sells kit B's 5 CLW instead, at the
+# Magic Shop (6, the best payer; no flasks, so no General Store)
+BOLD_STOCK = {"4": [("Potions of Boldness", 8, 10)]}
+AT5_6 = dict(AT5, extra={**AT5["extra"], (30, 66): "6"})        # (the Magic Shop beside the Alchemist: it buys potions)
+ITEMS_248 = [
+    ("town_248_kit_heroism_out", dict(TOWN, gold=1500, heroism=1, react=lambda: Server(stock=BOLD_STOCK)),
+     {1: [kit(stage="buy")]}, 400, 0.3),
+    ("town_248_kit_enchant_read_not_sold", dict(AT5_6, gold=3000, flasks=0, worn=[DAGGER_5] + ARMOUR_8,
+                                                extra_pack=[("2 Scrolls of Enchant Weapon To-Dam", 70, 2)],
+                                                react=lambda: Server(stock=dict(ENCH_STOCK, **{"6": []}),
+                                                                     reads=True)),
+     {1: [kit(withdrawn=True, fetched=True)]}, 300, 0.3),
+]
+SCENARIOS += ITEMS_248
 
 
 def trip(lo, hi, until="cures<3 or phase<3 or minutes>45", then="recall", level_min=10, via=None, here=False,

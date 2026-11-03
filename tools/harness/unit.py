@@ -64,6 +64,9 @@ ORDER = """
     stash_in_house_json_only better_ac_by_geareval supplies_one_kind_with_fields pay_cut_in_shopmath_and_aware
     command_table_methods_exist command_table_fields_valid command_table_help_lists_every_command
     command_table_architect_only_refused reflex_escape_step_lists town_plan_step_tables reports_match_golden
+    boldness_fallback_for_heroism satisfy_hunger_a_dungeon_stopgap clw_sold_in_kits_b_and_c
+    mushrooms_sold_in_town_but_restores torches_the_lanterns_fallback mapping_scrolls_a_crutch_on_test
+    enchant_and_recharge_scrolls_kept_to_read
 """.split()
 
 

@@ -107,7 +107,7 @@ turns it off; not with a monster adjacent or in a store): after a step, a recent
 
 **`pack_value(it)`** (what an item is worth to the pack when making room): **priceless** (never destroyed for room) =
 kit consumables (`is_kit_item`: potions/scrolls of `KIT_KINDS` -- cures, Phase, Recall, Teleport, Identify, Magic
-Mapping, Speed, Heroism, Berserk, Restore, Deep Descent, Resist Poison), kept items, possible ability sources, the
+Mapping (with `--live` only, 2.48.0), Speed, Heroism, Berserk, Restore, Deep Descent, Resist Poison), kept items, possible ability sources, the
 best light, the last meal, the lantern's needed oil, items waiting in the review queue. **Mushrooms are not
 priceless food** (2.42.0): they are valued like any item (`itemvalue`: expected value when unknown; 0 when junk). Spare lights, food beyond the
 ration supply, and spare flasks are worth their sale price. **In the dungeon, food (not mushrooms) and flasks go by
@@ -118,11 +118,60 @@ destroys; with none spare, the stack is worth the minutes of the shortfall it co
 `xp_per_gold`, from the rate buckets) and is destroyed whole only for a find worth 1.5x that. Kept items stay
 priceless. In town the old rules hold (rations never destroyed; spare flasks only near a trip's end). Flavour-table junk and cursed/worthless items are 0,
 food, flasks and lights included (the junk test runs first, A17, 2.40.0); kit, kept and ability items stay priceless.
-Everything else: value x pay_cut x count. `destroy_count`: in the dungeon, the spare units of food and flasks (above). In town: never rations; other food
+Everything else: value x pay_cut x count. (2.48.0: a fallback while its kit kind is short is priceless too, a dungeon
+stopgap goes by need and a Scroll of Enchant/Recharging the kit would read is priceless in town -- below.)
+`destroy_count`: in the dungeon, the spare units of food and flasks (above), and none of a stopgap while its primary is
+short. In town: never rations; other food
 (not a ration or a mushroom: a Slime Mold, Waybread, Jerky...) keeps one piece when it's the only food carried (3 Slime
 Molds and no rations: 2 may go; with rations: all 3).
 `kit_use_value` values a kit consumable found in the dungeon at its replacement cost (last Alchemist price, else
 `KIT_USE`: Speed 600, Healing 1500, Berserk 500, ...).
+
+### Fallbacks, stopgaps, crutches and scrolls the kit would read (2.48.0, the user)
+
+Two principles for a weaker substitute of a kit item (`town.py`, beside `town_sell_count`):
+
+- **A. Fallback**: kept, and bought, only while the better kit item is **short**: below the kit's target and not in
+  stock at an affordable price this visit. `FALLBACKS = {"Boldness": "Heroism"}` (Heroism is the kit's fear cure; the
+  Temple runs out). `fallback_kept(it)`: a Potion of Boldness while `kit_count("Heroism")` is under
+  `kit_target("Heroism")` (kit B/C: 3; kit A: 0). In town it is then kept (`town_rule` "keep"), else sold by value. After
+  the shops, `TownKit._buying_fallback` buys Boldness at the Temple (4) for Heroism's shortfall, less the Boldness
+  carried, once (`fallback_buys`; see goals-and-plans.md). In the dungeon a Boldness found while Heroism is short is a
+  kit item: priceless in `pack_value`, its price as pickup worth (`kit_use_value`). `fear_cure` (combat) still quaffs
+  Heroism > Boldness > Berserk.
+- **B. Dungeon stopgap**: useful in the dungeon while the primary supply is short, but the primary is always on sale in
+  town. So it is **sold in town**, and **in the dungeon kept, never auto-destroyed, and worth the dungeon time it covers
+  while the primary is short** (`is_stopgap`, `stopgap_cover`, `supply_short`):
+  - **Scroll of Satisfy Hunger** (for rations): `supply_short("food")` is what the stomach (`FOOD_MID`) and every food
+    stack leave uncovered until `supply_horizon`; a scroll counts as `SATISFY_FOOD` (PY_FOOD_MAX - 2000) food. While
+    short: `destroy_count` 0 (make-room and the weight shed take none), `is_junk` False (even on the `junk` order, on the
+    floor too), `pack_value` = covered minutes x `gold_per_dmin` (at least its sale), pickup worth the same.
+    Otherwise its sale value.
+  - **Wooden Torch** while a lantern with fuel is worn or carried (`lantern_lit`): `supply_short("oil")` is what the
+    lantern (worn, else the fullest carried) and the flasks leave uncovered; a torch covers its turns. The same
+    protections while short; otherwise its sale value (before 2.48.0 the first spare light was always priceless). With
+    no lantern the torch is the light: the old light rules hold. In town, torches are sold beside a lit lantern (a
+    torch sells for 1 gold, under its value's cut, so `town_sell_count` lets that through).
+  - **Potions of Cure Light Wounds in kits B and C** (their heals are CSW/CCW): sold in town (`clw_spare`: kit B/C, not
+    when a 250-499 ft plan would buy CLW back for the supply gate, nor when the Navigator's buy list asks for CLW). Kit
+    A buys CLW and keeps them. In the dungeon CLW stays a kit consumable (priceless for room).
+  The kit is the one this visit shops for (`visit_kit`: `plan town kit=`, else by the planned depth, A < 500 ft <= B <
+  1000 ft <= C); in the dungeon, the planned depth's.
+- **Mushrooms in town**: sold like other non-ration food (their cures are the kit's potions), except `KEEP_MUSHROOMS`
+  (Restore Strength, Restore Constitution, Restoring), which the town sells only as a ~490-gold Restore potion. Unknown
+  ones follow the unknown-flavour rules. In the dungeon, the 2.42.0 expected value (unchanged). The Pilot doesn't eat
+  a restore mushroom for a drain (`restore_potion` reads potions only): the Navigator can.
+- **Scroll of Magic Mapping**: a crutch on the test server (`CRUTCH_SCROLLS`, `is_crutch`), as the mapping devices:
+  sold in town, not a kit item (loot in the dungeon: its sale value, no kit pickup worth), and never read (the band
+  leave and the flee skip it). With `--live` it is the kit's again. Deep Descent (travel) stays a kit scroll.
+- **Scrolls of Enchant Armor / Enchant Weapon To-Dam / To-Hit and Recharging** (the user's addition): `scroll_use(it)`
+  names what the town kit would read one on -- a worn piece or the wielded weapon whose next point is still >=
+  `ENCHANT_MIN_CHANCE` (`enchant_plan`, `weapon_enchant_plan`), a device `recharge_wanted` names. Such a scroll is never
+  sold (found in the dungeon or bought), priceless for room in town, worth its price in the dungeon; the town kit reads
+  it before buying more (`enchant_buys` subtracts the scrolls carried). Only scrolls nothing would use are sold.
+`town_rule(it)` returns the rule and why; `price LETTER` shows it on the policy line ("kept (Heroism's fallback:
+Heroism 1/3, short (kit B))", "sold by plan town (a crutch on the test server)", and in the dungeon a stopgap's
+covered minutes).
 
 **Loot fetching** (`loot_step`, used by the Dive and Explore goals; only with order `pickup=all`): walks to items
 within `loot_radius` (order, 10); items passed up while monsters mattered, within `LOOT_OWED_R` (25) once clear;
@@ -147,7 +196,7 @@ seen on the level map that aren't known junk; within reach the Pilot fetches the
 
 **`is_junk(it)`** (a pack item or a name; D3, 2026-11-01: one rule for pickup, the floor, the pack, the report's Items
 line and the far-item notices; the user's decision: the union of the three old lists). Never junk: a kept item, or one
-inscribed with `@` (or `!` in a tag). Junk: `of <kind>` as a whole word for a `junk` order entry or `JUNK_DEVICES` (Haste
+inscribed with `@` (or `!` in a tag), or (2.48.0) a dungeon stopgap while its primary is short. Junk: `of <kind>` as a whole word for a `junk` order entry or `JUNK_DEVICES` (Haste
 Monsters, Clone Monster, Heal Monster), or the bare name (Slime Mold); a kind the rulebook marks junk (`junk_kinds`); a
 flavour the flavour table marks junk (even if the character isn't aware of it); `Broken`; a feeling on the
 `autodestroy` order; for a warrior, the spellbooks the town sells (`town_books()`: the rulebook's shop_stock.csv,

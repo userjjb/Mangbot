@@ -1030,6 +1030,8 @@ class TownKit(Goal):
         self.short = []              # buy: what the gold doesn't buy [(kind, n)] (finish reports it)
         self.quaffed = set()         # buying: the Restore potions drunk
         self.restock_waits = 0       # buying: waits for new stock (RESTOCK_WAITS at most)
+        self.fallback_bought = False  # buying: the fallbacks for a kit kind still short looked for (2.48.0: Boldness)
+        self.t0 = gnow()             # (when the visit began: a store listing seen since is this visit's stock)
         self.recharged = set()       # buying: the devices recharged
         self.recharge_bought = False  # buying: Scrolls of Recharging bought
         self.enchanted = 0           # buying: Scrolls of Enchant Armor / Weapon read
@@ -1061,6 +1063,7 @@ class TownKit(Goal):
         "_buying_quaff",         # drink a Restore bought for a drained stat
         "_buying_provision",     # fed and fuelled (provision_step)
         "_buying_restock",       # an essential out of stock: wait 35 s for new stock (RESTOCK_WAITS)
+        "_buying_fallback",      # a kit kind still short (Heroism): its fallback for the shortfall (Boldness)
         "_buying_recharge",      # recharge an empty useful staff or wand (or buy the scroll)
         "_buying_enchant",       # enchant worn armour and the wielded weapon back up (or buy the scrolls)
         "_buying_stash",         # no house: the stash kinds to the tavern
@@ -1310,13 +1313,34 @@ class TownKit(Goal):
                 and not any(f"Restore {p.STAT_FULL[st]}" in i["name"] for i in w.items())
                 and not p.stash_has(f"Restore {p.STAT_FULL[st]}")]
         waits = self.restock_waits
-        if gap and waits < self.RESTOCK_WAITS and any("in stock" in l for l in self.done_log):
+        # (an essential the shops were out of: not a fallback the Temple was out of, 2.48.0)
+        out = [re.sub("|".join(f"no {fb} in stock" for fb in p.FALLBACKS), "", ln) for ln in self.done_log]
+        if gap and waits < self.RESTOCK_WAITS and any("in stock" in ln for ln in out):
             self.restock_waits = waits + 1
             self.stage = "buy"
             self.sub = Wait(35)
             self.done_log.append(f"still missing {'; '.join(gap)}: waiting 35 s for new stock "
                                  f"({self.restock_waits}/{self.RESTOCK_WAITS})")
             return None
+        return NEXT
+
+    def _buying_fallback(self, p, ctx):
+        """A kit kind still short of the kit's target after the shops and the restock waits (Heroism: none in stock,
+        over the cap, or not the gold): its fallback for the shortfall (Boldness, at the Temple), once, within the gold
+        the essentials leave (fallback_buys; 2.48.0, the user: a weaker substitute is bought only while the better kit
+        item is short)."""
+        w = ctx.w
+        if not self.fallback_bought:
+            self.fallback_bought = True
+            buys = p.fallback_buys(w.ind.get("gold", [0])[0] - p.town_reserve(), since=self.t0)
+            if buys:
+                st = buys[0][1]
+                self.sub = Shop(st, buys=[(kind, n, cap) for kind, s_, n, cap in buys if s_ == st])
+                self.sub.role = "pilot"      # (as the kit's other Shops; a buy-only visit reads no role)
+                self.done_log.append("; ".join(f"{p.FALLBACKS[kind]} short ({p.kit_count(p.FALLBACKS[kind])}/"
+                                               f"{p.kit_target(p.FALLBACKS[kind])}): {n} {kind} for it"
+                                               for kind, s_, n, cap in buys if s_ == st))
+                return None
         return NEXT
 
     def _buying_recharge(self, p, ctx):

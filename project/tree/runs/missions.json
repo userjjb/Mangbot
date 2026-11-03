@@ -3075,5 +3075,27 @@
   "report": "compact",
   "notes": "set-piece A6",
   "version": "2.45.1"
+ },
+ {
+  "label": "sp-M2-20261103-171835",
+  "nick": "dive04",
+  "start": "2026-11-03 17:19",
+  "end": "2026-11-03 17:21",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece M2",
+  "version": "2.47.0"
+ },
+ {
+  "label": "sp-A6-20261103-172148",
+  "nick": "dive04",
+  "start": "2026-11-03 17:22",
+  "end": "2026-11-03 17:25",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A6",
+  "version": "2.47.0"
  }
 ]

@@ -258,7 +258,8 @@ class ItemsMixin:
 
     KIT_KINDS = ("Cure Light Wounds", "Cure Serious Wounds", "Cure Critical Wounds", "Healing", "Phase Door",
                  "Word of Recall", "Teleport", "Identify", "Magic Mapping", "Speed", "Heroism", "Berserk",
-                 "Restore", "Deep Descent", "Resist Poison")    # (not Boldness: Heroism does all it does, the user)
+                 "Restore", "Deep Descent", "Resist Poison")    # (not Boldness: Heroism does all it does, the user;
+    # 2.48.0, the user: Heroism's fallback -- a kit item only while Heroism is short, town.FALLBACKS / fallback_kept)
     # what a kit consumable found in the dungeon is worth to us: what replacing it costs (the Alchemist's price
     # last seen, else these; Speed, Healing and Berserk only at the Black Market). m36 left a Potion of Speed,
     # "pack full and nothing cheaper (~34)", with no Speed in the pack and junk weapons in it
@@ -268,15 +269,22 @@ class ItemsMixin:
     def is_kit_item(self, it):
         """A kit consumable: a potion or scroll of a kit kind. (Not a staff or wand with the same words: m43 kept two
         Staffs of Cure Light Wounds as if they were the potions -- the user: "2 staffs of cure light wounds?")"""
-        return it["tval"] in (TV_POTION, TV_SCROLL) and any(k in it["name"] for k in self.KIT_KINDS)
+        return it["tval"] in (TV_POTION, TV_SCROLL) and any(k in it["name"] for k in self.KIT_KINDS) and \
+            not self.is_crutch(it)        # (2.48.0: a Scroll of Magic Mapping on the test server is loot)
 
     def kit_use_value(self, name):
-        """Replacement cost of a kit consumable (potion or scroll), else 0."""
-        kind = next((k for k in self.KIT_KINDS if k in name), None)
-        if not kind or not re.search(r"\b(Potions?|Scrolls?) of\b", name):
-            return 0
+        """Replacement cost of a kit consumable (potion or scroll), else 0. A fallback while its kit kind is short
+        (Boldness, Heroism under the kit's target) counts as one (2.48.0, the user's principle A); a crutch (a Scroll of
+        Magic Mapping on the test server) doesn't."""
         m = re.match(r"(\d+) ", name)
         n = int(m.group(1)) if m else 1
+        fb = next((k for k in self.FALLBACKS if k in name), None)
+        if fb and re.search(r"\bPotions? of\b", name) and self.fallback_kept({"name": name, "tval": TV_POTION}):
+            return (self.price_of(fb, self.KIT_ITEMS[fb][1]) or self.KIT_ITEMS[fb][2]) * n
+        kind = next((k for k in self.KIT_KINDS if k in name), None)
+        if not kind or not re.search(r"\b(Potions?|Scrolls?) of\b", name) or \
+                (re.search(r"\bScrolls? of\b", name) and self.is_crutch({"name": name, "tval": TV_SCROLL})):
+            return 0
         full = next((k for k in self.KIT_ITEMS if k in name), None)
         price = (self.price_of(full, self.KIT_ITEMS[full][1]) if full else None) or self.KIT_USE.get(kind, 0)
         return price * n
@@ -285,6 +293,20 @@ class ItemsMixin:
         """An item's worth to the pack, for making room: kit consumables, kept items,
         possible ability sources and the light count as priceless."""
         n = it["name"]
+        # (2.48.0, the user's principle B) a dungeon stopgap -- a Scroll of Satisfy Hunger, a Wooden Torch beside a
+        # lantern -- is worth the dungeon time it covers while the primary (food; the lantern's fuel and the flasks)
+        # falls short of the trip's need, else its sale (and destroy_count keeps it while short)
+        if self.w.in_dungeon and self.is_stopgap(it) and not self.is_kept(n):
+            sale = self.iv(n).value * self.pay_cut(it["tval"]) * it["number"]
+            cover = self.stopgap_cover(n, it["number"])
+            return max(sale, cover * self.gold_per_dmin()) if cover > 0 else sale
+        # (2.48.0, the user) a Scroll of Enchant or Recharging the town kit would read: priceless in town (kept, and
+        # read before more are bought), in the dungeon worth what buying it again costs
+        if self.scroll_use(it):
+            if not self.w.in_dungeon:
+                return float("inf")
+            kind = next((k for k in self.ENCHANT_KINDS + ("Recharging",) if k in n), "Recharging")
+            return max(self.iv(n).value * self.pay_cut(it["tval"]), self.price_of(kind, 5) or 190) * it["number"]
         # A spare light beyond the first, and food beyond 5 meals (Satisfy Hunger counts), are worth what they
         # sell for: m25 kept 2 spare lanterns and a ration while it destroyed a Rod of Trap Location and a
         # Staff of Object Location to make room
@@ -311,7 +333,8 @@ class ItemsMixin:
             return self.iv(n).value * self.pay_cut(TV_FOOD) * self.destroy_count(it)
         if it["tval"] == TV_FLASK and ((self.lantern_fuel() or 0) >= self.FUEL_TOPUP or self.provisions_spare()):
             return self.iv(n).value * self.pay_cut(TV_FLASK) * it["number"]
-        prized = self.is_kit_item(it) or self.is_kept(n) or \
+        # (a fallback while its kit kind is short is a kit item: Boldness, Heroism under the kit's target -- 2.48.0)
+        prized = self.is_kit_item(it) or self.fallback_kept(it) or self.is_kept(n) or \
             bare_name(n).lower() in self.ability_sources
         # junk first: food, flasks and lights were priceless before this test, so an unknown or table-junk Mushroom
         # was never destroyed to make room (refactor-candidates A17); kit, kept and ability items stay priceless
@@ -331,7 +354,10 @@ class ItemsMixin:
 
     def destroy_count(self, it):
         """How many of this pack item a make-room may destroy: all, except food -- rations never (one slot, cheap; the
-        town visit sells extras), other food not the last of it."""
+        town visit sells extras), other food not the last of it. A dungeon stopgap while its primary is short: none
+        (2.48.0, the user: never discarded then)."""
+        if self.w.in_dungeon and self.is_stopgap(it) and self.stopgap_cover(it["name"], it["number"]) > 0:
+            return 0
         if self.w.in_dungeon and self.supply_kind(it):
             spare, _ = self.supply_spare(it)
             return spare if spare > 0 else it["number"]      # (none spare: the whole stack, at the value of its time)
@@ -403,6 +429,52 @@ class ItemsMixin:
         units = min(it["number"], math.ceil(short / unit)) if unit > 0 else it["number"]
         return it["number"] - units, min(short, units * unit)
 
+    # the food a Scroll of Satisfy Hunger counts as: it fills to just under Gorged and is read at Weak (combat.py), less a
+    # potion's margin
+    SATISFY_FOOD = PY_FOOD_MAX - 2000
+
+    def supply_short(self, kind):
+        """Dungeon minutes of the horizon's need (supply_horizon) that the stomach and every food stack ('food'), or the
+        lantern and every flask ('oil': the worn lantern, else the fullest carried; none: 0), leave uncovered -- what a
+        stopgap covers (2.48.0)."""
+        w = self.w
+        need = self.supply_horizon()
+        if kind == "food":
+            per = (1.0 if (w.flags or {}).get("slow_digest") else 2.0) * self.TURNS_PER_DMIN
+            have = max(0.0, self.FOOD_MID.get(w.hunger, 6000) - 1000) / per + \
+                sum(self.food_value(i["name"]) * i["number"] for i in w.items() if self.supply_kind(i) == "food") / per
+        else:
+            fuel = self.lantern_fuel()
+            if fuel is None:
+                return 0.0
+            have = (fuel + self.FLASK_FUEL * sum(i["number"] for i in w.items(tval=TV_FLASK))) / self.TURNS_PER_DMIN
+        return max(0.0, need - have)
+
+    def is_stopgap(self, it):
+        """B (2.48.0, the user): a dungeon stopgap -- a Scroll of Satisfy Hunger (for rations), a Wooden Torch while a
+        lantern with fuel is worn or carried (for its fuel)."""
+        return (it["tval"] == TV_SCROLL and "Satisfy Hunger" in it["name"]) or \
+            (it["tval"] == TV_LITE and "Torch" in it["name"] and not it.get("equip") and self.lantern_lit())
+
+    def stopgap_cover(self, name, n=None):
+        """Dungeon minutes of the trip's shortfall `n` of this stopgap cover (a pack item's or the floor's name; n from
+        the name if not given): Scrolls of Satisfy Hunger while the food falls short (SATISFY_FOOD each), Wooden Torches
+        while a lantern's fuel and the flasks do (their turns). 0 in town, for anything else, or with the primary not
+        short."""
+        if not self.w.in_dungeon:
+            return 0.0
+        if n is None:
+            m = re.match(r"(\d+) ", name)
+            n = int(m.group(1)) if m else 1
+        if re.search(r"\bScrolls? of Satisfy Hunger\b", name):
+            per = (1.0 if (self.w.flags or {}).get("slow_digest") else 2.0) * self.TURNS_PER_DMIN
+            short, unit = self.supply_short("food"), self.SATISFY_FOOD / per
+        elif re.search(r"\bWooden Torch(es)?\b", name) and self.lantern_lit():
+            short, unit = self.supply_short("oil"), (light_turns(name) or 0) / self.TURNS_PER_DMIN
+        else:
+            return 0.0
+        return min(short, n * unit)
+
     def gold_per_dmin(self):
         """Gold-equivalent earned per minute of play (gold found + sold, plus XP at the XP-per-gold rate), from the
         rate buckets (10-minute buckets with a gain; seeded like xp_per_gold): what a minute more in the dungeon is worth."""
@@ -437,6 +509,9 @@ class ItemsMixin:
         name = name.rstrip(".")
         tags = re.findall(r"\{([^}]*)\}", name)
         if any("@" in t or "!" in t for t in tags) or self.is_kept(name):
+            return False
+        # (2.48.0, the user's principle B: a dungeon stopgap is never auto-destroyed while its primary is short)
+        if self.stopgap_cover(name) > 0:
             return False
         n = name.lower()
         bare = singular(bare_name(n).strip())
@@ -484,7 +559,8 @@ class ItemsMixin:
             self.skipped_items.add((w.level_t, w.pos))
             return False
         iv = self.iv(name)
-        worth = max(iv.value * self.pay_cut(iv.tval) * max(1, iv.count), self.kit_use_value(name))
+        worth = max(iv.value * self.pay_cut(iv.tval) * max(1, iv.count), self.kit_use_value(name),
+                    self.stopgap_cover(name) * self.gold_per_dmin())     # (2.48.0: a stopgap by need)
         ud = self.unique_drop
         unique = bool(ud and ud[0] == w.level_t and w.dist(ud[1]) <= 3)
         if not unique and iv.known and worth < 1 and not iv.irreplaceable:
