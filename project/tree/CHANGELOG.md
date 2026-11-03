@@ -27,6 +27,20 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.46.0 -- 2026-11-03 (session 11, the user: option 2 of the Advisor's disen-value memo)
+No missions yet. **Play changes:**
+- The town kit buys and reads **Scrolls of Enchant Weapon To-Dam/To-Hit** for the wielded melee weapon, by the armour's
+  rule: while the next point's chance is >= 50% (up to +8; an artifact at half), to-dam first; one shared
+  `order enchant_max` (25) for all enchant scrolls, armour first; bought last, from gold above the reserve, at the
+  Alchemist; read as `custom r item=SCROLL dir=24` (INVEN_WIELD). Not the bow, not unknown plusses.
+  `town_extras_note` names the kinds. Dive04's axe (+10,+9) is above the line: it buys none.
+- The disenchant valuation follows what the Pilot does: a lost step the town kit would buy back costs price / chance;
+  any other step is lost for good, valued at its resale (the Pilot's iv difference x the shop's pay cut). Its value
+  in play is NOT priced (geareval scores in XP per minute, not gold): DISEN_IN_PLAY = 0. The 100-scroll cap is gone.
+  Khim vs Dive04: ~480-880 gold (2.45.3: ~2,000-2,300); the text splits "in scrolls" from "lost for good".
+- 156 unit cases (3 new); tick() equivalence: no existing state changes behaviour (4 new town_ench_* states show the
+  buy and the reads). Live: `monster khim`. The weapon read itself awaits a weapon at +8 or below (not Dive04's).
+
 ## 2.45.3 -- 2026-11-03 (session 11, the user on valuing a plus)
 No missions yet. **Play change** (the hunt check's disenchant refusal uses it):
 - A plus lost to disenchantment is valued by the scrolls that put it back (the user: "+10 is worth a lot more than

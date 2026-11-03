@@ -270,16 +270,34 @@ neither the hunt check nor geareval counted what it takes. The server's rules:
   (2 - spell chance).
 - Disenchanting hits = rounds x p_hit x (UN_BONUS blows a round) + casts / (its spells) with BR_DISE. p_hit =
   `0.05 + 0.90 x max(0, i - 3AC/4) / i`, i = 20 + 3 x level, at the sheet's AC.
-- Gold per hit (`disen_loss`) = the mean over the 8 slots of each worn item's loss (`disen_item_loss`), x 0.4 for an
-  artifact. **Since 2.45.3 (the user) a plus lost is worth the scrolls that put it back** (`reenchant_cost`), not its
-  shop value (100 gold flat): a Scroll of Enchant Weapon To-Hit/To-Dam or Enchant Armor at plus x succeeds with
-  1 - enchant_table[x]/1000 (spells2.c:398, 2549-2553: 100% below 0, 99% at 0, 80% at 4, 50% at 7, 5% at 9, 1% at 10,
-  0 above 15; an artifact half as often), so each step x -> x+1 costs price / chance (the Alchemist's last price,
-  else ~190; capped at 100 scrolls a step). So +10 is worth far more than +5: a (+10,+10) weapon ~7,850 a hit, a
-  (+5,+5) one ~475, a +8 armour piece ~443, a +5 one ~238.
+- Gold per hit (`disen_loss`) = the mean over the 8 slots of each worn item's loss (`disen_item_loss(name, slot)`),
+  x 0.4 for an artifact. Each lost step x -> x+1 is valued by `reenchant_cost` (**2.46.0, the user's option 2** on
+  the Advisor's memo `memos/to_architect/2026-11-03-disen-value.md`: value a plus by what the Pilot would really do
+  about it):
+  - **a step plan town would buy back** (`disen_buys`: the town kit's own rule) costs the scrolls, **price /
+    chance**. A Scroll of Enchant Weapon To-Hit/To-Dam or Enchant Armor at plus x succeeds with 1 - enchant_table[x]/1000
+    (spells2.c:398, 2549-2553: 100% below 0, 99% at 0, 80% at 4, 50% at 7, 30% at 8, 5% at 9, 1% at 10, 0 above 15;
+    an artifact half as often), and the town kit buys while that is >= `ENCHANT_MIN_CHANCE` (50%) -- Enchant Armor on
+    the armour slots, Enchant Weapon on the wielded weapon (2.46.0: the town kit buys them too, goals-and-plans.md),
+    never on the bow, nothing at all with `order enchant_max=0`. Price: the Alchemist's last, else ~190. So such a
+    step is at most 2 scrolls (the 100-scrolls-a-step cap of 2.45.3 is gone: nothing reaches it).
+  - **any other step is lost for good**: the plus's **resale value** (`plus_resale`: the Pilot's `iv` of the item with
+    that plus one higher less as it is -- itemvalue's 100 gold a plus, object_value's -- x the shop's pay cut,
+    `pay_cut(tval)`; 100 x the pay cut when the name shows no plusses) **plus its in-play value, `DISEN_IN_PLAY` = 0:
+    not priced.** geareval prices gear in XP per real minute (its score), never gold; a one-plus difference in gold
+    would need how many minutes of play the item has left before it is replaced (nothing in the Pilot knows that),
+    and a simulation (~1-3 s) inside the hunt check. The Advisor's 11-03 estimate of what it is worth: one to-dam ~1.5
+    damage a turn for Dive04 (~4-5% of its melee), one to-hit ~1% hit chance, one AC a small cut in hit chance.
+  - So: a +8 armour piece ~443 a hit (+8 -> +7 at 80%: 7->8 bought at 190/0.5; -> +6 at 20%: + 190/0.6), a +5 one
+    ~238, a (+5,+5) weapon ~475 (all bought back); a (+10,+9) weapon ~160 (2.45.3: ~4,640): to-hit 9->10 and 8->9 lost
+    (~38 each at a 0.38 pay cut), to-dam 8->9 lost, 7->8 bought (380, in the 20% case); a bow ~2 x 38 a hit (never
+    bought back).
+  - The `monster` / hunt text splits it: "~N gold of enchantment -- ~S in scrolls the town kit would buy to put it
+    back, ~L lost for good (resale value)"; `disenchant_cost` returns `scrolls` and `lost` beside `gold`.
 - Expected disenchantments = hits x P(the pick takes a plus); gold = hits x gold per hit.
 - Zero with resist disenchantment (`has_ability("res_disen")`).
-- Plusses not shown (unidentified): valued as if +5 (`DISEN_UNSHOWN`); the text names those slots.
+- Plusses not shown (unidentified): valued as if +5 (`DISEN_UNSHOWN`; a step below +7 counts as bought back, as it
+  would be once identified); the text names those slots ("valued as if +5 (plusses not shown)").
 - Not counted: Speed or a faster character (about half the rounds with a Speed potion; the text says so), Khim's
   SLOW, protection from evil.
 
@@ -289,7 +307,7 @@ hunt's `order_refused` and `hunt_override` records and on the engage `act` recor
 check's last refusal:** when the expected enchantment gold is more than a kill brings -- the drop's expected value
 (drops.csv `e_gold` + `e_item_value_cap`) plus the kill's XP (`exp * level / clvl`, `Race.exp` from monster.txt W:)
 at the recent XP per gold -- "...would cost ~N gold of enchantment on average, more than a kill brings"; never with
-resist disenchantment (`kill_worth`/`kill_xp` go in `last_hunt`). It rarely fires: Khim is ~300 against ~3,160. geareval doesn't count it either:
+resist disenchantment (`kill_worth`/`kill_xp` go in `last_hunt`). It rarely fires: Khim at Dive04's 11-02 gear is ~880 (2.46.0, at the ~190 price guess; ~490 at the prices Dive04 last saw) against ~3,160. geareval doesn't count it either:
 options_sim reports no per-monster melee rounds, and it is the Advisor's file.
 
 ---

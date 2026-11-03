@@ -1032,8 +1032,8 @@ class TownKit(Goal):
         self.restock_waits = 0       # buying: waits for new stock (RESTOCK_WAITS at most)
         self.recharged = set()       # buying: the devices recharged
         self.recharge_bought = False  # buying: Scrolls of Recharging bought
-        self.enchanted = 0           # buying: Scrolls of Enchant Armor read
-        self.enchant_bought = False  # buying: Scrolls of Enchant Armor bought
+        self.enchanted = 0           # buying: Scrolls of Enchant Armor / Weapon read
+        self.enchant_bought = False  # buying: Scrolls of Enchant Armor / Weapon bought (one visit)
         self.stashed = False         # buying: the stash taken to the tavern (no house)
         self.deposited = False       # buying: the gold (and the stash) into the house
 
@@ -1062,7 +1062,7 @@ class TownKit(Goal):
         "_buying_provision",     # fed and fuelled (provision_step)
         "_buying_restock",       # an essential out of stock: wait 35 s for new stock (RESTOCK_WAITS)
         "_buying_recharge",      # recharge an empty useful staff or wand (or buy the scroll)
-        "_buying_enchant",       # enchant worn armour back up (or buy the scrolls)
+        "_buying_enchant",       # enchant worn armour and the wielded weapon back up (or buy the scrolls)
         "_buying_stash",         # no house: the stash kinds to the tavern
         "_buying_deposit",       # a house: the gold (and the stash) into it
     )
@@ -1344,7 +1344,9 @@ class TownKit(Goal):
         return NEXT
 
     def _buying_enchant(self, p, ctx):
-        """Enchant worn armour back up while the next point is >= 50% (enchant_plan), or buy the scrolls."""
+        """Enchant worn armour (enchant_plan) and the wielded weapon's to-dam and to-hit (weapon_enchant_plan, 2.46.0)
+        back up while the next point is >= 50%, one read a tick; or buy the scrolls, once (enchant_buys: one Alchemist
+        visit, `order enchant_max` for them all)."""
         w, now = ctx.w, ctx.now
         # enchant worn armour back up (disenchantment), while the next point is >= 50% (enchant_plan)
         plan = p.enchant_plan()
@@ -1357,17 +1359,26 @@ class TownKit(Goal):
                 self.enchanted = self.enchanted + 1
                 self.t = now + 1.0
                 return None
-            if not self.enchant_bought:
-                self.enchant_bought = True
-                price = p.price_of("Enchant Armor", 5) or 190
-                spare = w.ind.get("gold", [0])[0] - p.town_reserve()
-                n = min(int(round(p.enchant_scrolls_wanted())), max(0, spare // max(1, int(price * 1.1))),
-                        int(p.orders.get("enchant_max", 25)))
-                if n > 0:
-                    self.sub = Shop(5, buys=[("Enchant Armor", n, round(price * 1.5))])
-                    self.sub.role = "pilot"      # (as the kit's other Shops; a buy-only visit reads no role)
-                    self.done_log.append(f"Enchant Armor x{n} for {len(plan)} piece(s)")
-                    return None
+        # the wielded weapon the same way: the scroll read with the weapon as its item (dir=, as the armour's)
+        wplan = p.weapon_enchant_plan()
+        for it, kind, c in wplan:
+            sc = p.find_item(kind, TV_SCROLL)
+            if sc:
+                p.cmd(f"custom r item={sc['item']} dir={it['item']}",
+                      f"town kit: enchant {it['name']} {kind.split()[-1].lower()} ({c:.0%})", hold=1.0)
+                self.enchanted = self.enchanted + 1
+                self.t = now + 1.0
+                return None
+        if (plan or wplan) and not self.enchant_bought:
+            self.enchant_bought = True
+            buys = p.enchant_buys(w.ind.get("gold", [0])[0] - p.town_reserve())
+            if buys:
+                self.sub = Shop(5, buys=[(kind, n, round(price * 1.5)) for kind, n, price in buys])
+                self.sub.role = "pilot"      # (as the kit's other Shops; a buy-only visit reads no role)
+                arm = [f"Enchant Armor x{n} for {len(plan)} piece(s)" for kind, n, _ in buys if kind == "Enchant Armor"]
+                wpn = [f"{kind} x{n}" for kind, n, _ in buys if kind != "Enchant Armor"]
+                self.done_log.append("; ".join(arm + ([", ".join(wpn) + f" for {wplan[0][0]['name']}"] if wpn else [])))
+                return None
         return NEXT
 
     def _buying_stash(self, p, ctx):

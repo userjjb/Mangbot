@@ -166,7 +166,8 @@ within 3 minutes, or 20 when Full).
 `plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@MAX],...]` (`Pilot.request_plan`), town only. Each buy spec: STORE
 1-7 optional (else the rulebook's `shop_stock.csv` via `buy_store`, a shop listing seen, or the kit table), `NAME`
 with `_` for spaces, `:N` = **have** N in all, `@MAX` a price cap each. The reply forecasts what it will buy at the
-prices last seen, what it can't afford, and the extras (`town_extras_note`: Enchant Armor and Recharging scrolls).
+prices last seen, what it can't afford, and the extras (`town_extras_note`: Enchant Armor, Enchant Weapon To-Dam /
+To-Hit and Recharging scrolls).
 It starts a `TownKit` goal, which works through **stages**, one sub-goal (`Shop`, `HouseBank`, `StashFetch`,
 `TownFarm`, `Wait`) at a time, settling 1 s between steps. Its Shops act as the Pilot (`role = "pilot"`: the sale
 rules' role -- `value_refusal`, a forced sale's debt, the override check; a buy-only Shop reads none):
@@ -189,8 +190,14 @@ rules' role -- `value_refusal`, a forced sale's debt, the override check; a buy-
    eat rations while Hungry or worse, up to 3, to Fed); **restock waits**: if a critical item (the gate's minimums, a
    Restore for a drained STR/DEX/CON) is still missing and a shop said "no ... in stock", `Wait(35)` and redo the buy
    stage, up to `RESTOCK_WAITS` = 4 times; **recharge** each `recharge_wanted` device with a Scroll of Recharging
-   (bought once at the Alchemist, cap 1.5x); **enchant** worn armour per `enchant_plan` with Enchant Armor scrolls
-   (bought once: the expected number needed, within spare gold and `order enchant_max`, default 25); **stash** to the
+   (bought once at the Alchemist, cap 1.5x); **enchant** worn armour per `enchant_plan` with Enchant Armor scrolls,
+   and (2.46.0) the wielded melee weapon per `weapon_enchant_plan` with Enchant Weapon To-Dam and To-Hit scrolls --
+   the same rule: while the next point is >= 50% (half the chance on an artifact), to about +8; never the bow, nor a
+   weapon whose plusses aren't shown. One read a tick, the scroll read onto the piece (`custom r item=S dir=T`, T the
+   worn item), armour first, then the weapon's to-dam, then its to-hit. The scrolls are bought once, in one Alchemist
+   visit (`enchant_buys`): the expected number each needs (sum of 1/chance to the stopping place), Enchant Armor
+   first, then To-Dam, then To-Hit, within the gold beyond `town_reserve` (at 110% of the price) and **one**
+   `order enchant_max` (default 25) for all three together, each capped at 1.5x its last price; **stash** to the
    tavern (`StashDeposit`, only without a house); and **deposits last**: `HouseBank("deposit")` when gold exceeds
    `BANK_FLOAT` + 500 or stash items are carried.
 6. **finish**: a summary (sold for, bought for, identified, gold now and banked, `supply_text`, the supply gate for
@@ -204,7 +211,8 @@ stage, each testing `self.stage` -- `_kit_withdraw` and `_kit_fetch` (upgrade: t
 `_kit_upgrade`, `_kit_upgrade_again`, `_kit_sell` (sell and sell again), `_kit_identify`, `_kit_buy`, `_kit_buying`. A
 stage that finishes sets the next and the next step runs in the same tick (upgrade -> sell -> identify; upgrade again
 -> sell again -> buy). `_kit_buying` runs `BUYING_STEPS` -- `_buying_shop`, `_buying_upgrade`, `_buying_quaff`,
-`_buying_provision`, `_buying_restock`, `_buying_recharge`, `_buying_enchant`, `_buying_stash`, `_buying_deposit` --
+`_buying_provision`, `_buying_restock`, `_buying_recharge`, `_buying_enchant` (armour and, 2.46.0, the weapon:
+one step, one purchase), `_buying_stash`, `_buying_deposit` --
 and `finish` when none acts. Its once-only flags (`withdrawn`, `fetched`, `id_bought`, `farmed`, `recharge_bought`,
 `enchant_bought`, `stashed`, `deposited`, the `quaffed`/`recharged` sets, `restock_waits`, `enchanted`, `last_sell`,
 `short`) are declared in `__init__`.
@@ -230,7 +238,8 @@ scrolls and Restores from the Alchemist, 5; food and oil from the General Store,
 down the list: a line's price is `price_of` (the last seen, else the `KIT_ITEMS` guess), else its cap; tier 4 lines are capped at 1.5x the price
 seen, `KIT_CAP` caps Speed at 600; lines over their cap are reported as short. If Word of Recall (tier 1) can't be
 fully afforded, everything else but rations waits ("saving for Word of Recall"). `town_reserve()` is the gold tiers 1-2
-need: Identify, Enchant Armor and a house purchase only spend beyond it.
+need: Identify, the Enchant scrolls (armour and weapon) and a house purchase only spend beyond it. The Enchant
+scrolls come last of the buying stage's purchases (after the kit and the list), from what is left.
 
 ### Selling and the other town helpers
 
@@ -245,9 +254,11 @@ need: Identify, Enchant Armor and a house purchase only spend beyond it.
 | `broke_for_recall()` | fewer than 2 WoR and gold below one's price |
 | `identify_candidates(min)` / `town_identify_wanted()` | unknown items and their priority (expected sale value; infinite for ability sources) / the count worth a scroll |
 | `restore_potion(skip)` | a Restore in the pack for a drained STR/DEX/CON/CHR |
-| `enchant_chance(it)`, `enchant_plan()`, `enchant_scrolls_wanted()` | spells2.c's enchant table (`ENCHANT_TABLE`): +1 to-AC succeeds with `1 - table[to_a]/1000`, halved on artifacts; enchant while the chance is >= 50% (to about +8); the expected scrolls = sum of 1/chance |
+| `enchant_chance(it)`, `enchant_plan()`, `enchant_scrolls_wanted(kind)` | spells2.c's enchant table (`ENCHANT_TABLE`): +1 to-AC succeeds with `1 - table[to_a]/1000`, halved on artifacts; enchant while the chance is >= 50% (to about +8); the expected scrolls = sum of 1/chance (`kind` "Enchant Armor", the default, or an Enchant Weapon kind: the wielded weapon's to-dam / to-hit) |
+| `wielded_weapon()`, `weapon_plusses(it)`, `weapon_enchant_plan()` | 2.46.0: the wielded melee weapon (tval 20-23, not the bow); its shown (+h,+d); [(weapon, Enchant Weapon To-Dam / To-Hit, chance)] for each plus whose next point is >= 50% (half on an artifact), to-dam first |
+| `enchant_buys(spare)` | 2.46.0: [(kind, n, price)] for the visit: Enchant Armor, then To-Dam, then To-Hit, each its expected count, within `spare` gold (110% a scroll) and one `order enchant_max` for all |
 | `device_level(kind)`, `recharge_fail(it)`, `recharge_wanted()` | object.txt level; spells2.c's chance a Recharging scroll destroys a staff/wand; the useful devices at 0-1 charges each with at most 15% risk |
-| `town_extras_note()` | the `plan town` reply's note of Enchant Armor / Recharging spending |
+| `town_extras_note()` | the `plan town` reply's note of the Enchant scrolls (`enchant_buys` without the gold limit: "up to 3 Scrolls of Enchant Armor + 5 Scrolls of Enchant Weapon To-Dam (~1520 gold; `order enchant_max=N` caps them all, 0 skips)") and Recharging |
 | `note_store()` | on entering a shop: owner and the cheapest price per kind -> `stores.json` |
 | `price_of(kind, store)` | the cheapest price seen for a kind at a store, else the `KIT_ITEMS` guess |
 | `buy_store(name)`, `stock_table()` | which store sells a name (`rulebook/shop_stock.csv`, which gives 7 for its few Black Market rows such as Healing; else listings seen, never 7) |

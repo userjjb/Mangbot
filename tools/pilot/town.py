@@ -3,7 +3,8 @@ visit): the town kit's tables (STORE_NUM, KIT_ITEMS, KITS, BUYERS, SUPPLY_STAGES
 ask of the Pilot -- the shopping list and the gold (town_needs, town_shopping, town_reserve, price_of, note_store,
 buy_store), what to sell (town_buyers, town_sell_count, town_sells, is_crutch), making room and provisioning
 (town_make_room, provision_step, kit_count, lantern_fuel, trip_minutes_left, provisions_spare), Identify, Enchant
-Armour and Recharging (identify_candidates, enchant_plan, recharge_wanted), the supply gate (supply_gate) and the
+Armour and Weapon and Recharging (identify_candidates, enchant_plan, weapon_enchant_plan, enchant_buys,
+recharge_wanted), the supply gate (supply_gate) and the
 food/light clock (supply_minutes, supply_text, supply_watch, TURNS_PER_DMIN, FOOD_MID), the house and the stash
 (house_state, house_save, banked, stash_*, tavern_*, retire_stash_json) and the town's stairs and edge crossings
 (note_town_stairs, note_edge_cross). The methods stay Pilot's: they read and write the Pilot's state through self.
@@ -146,20 +147,84 @@ class TownMixin:
         out = [(it, self.enchant_chance(it)) for it in self.w.items(equip=True)]
         return sorted(((it, c) for it, c in out if c is not None and c >= self.ENCHANT_MIN_CHANCE), key=lambda x: -x[1])
 
+    # (2.46.0, the user's option 2 on the Advisor's 11-03 memo: the wielded weapon too, by the armour's rule. Its to-dam
+    # first: one to-dam is ~blows x P(hit) damage a turn, one to-hit ~1% hit chance. Not the bow: the Pilot doesn't
+    # shoot. Not a weapon whose plusses aren't shown: unidentified, a read wouldn't show what it did)
+    WEAPON_SCROLLS = (("todam", "Enchant Weapon To-Dam"), ("tohit", "Enchant Weapon To-Hit"))
+    ENCHANT_KINDS = ("Enchant Armor", "Enchant Weapon To-Dam", "Enchant Weapon To-Hit")
+
+    def wielded_weapon(self):
+        """The wielded melee weapon (tval 20-23), or None."""
+        return next((i for i in self.w.items(equip=True) if i["tval"] in (20, 21, 22, 23)), None)
+
+    def weapon_plusses(self, it):
+        """{"tohit": n, "todam": n} of a weapon whose (+h,+d) is shown, else None."""
+        m = re.search(r"\(([+-]\d+),([+-]\d+)\)", (it or {}).get("name", ""))
+        return {"tohit": int(m.group(1)), "todam": int(m.group(2))} if m else None
+
+    def weapon_enchant_plan(self):
+        """[(wielded weapon, scroll kind, chance)] worth a Scroll of Enchant Weapon To-Dam / To-Hit now (the chance
+        >= ENCHANT_MIN_CHANCE, half on an artifact), to-dam first."""
+        it = self.wielded_weapon()
+        pl = self.weapon_plusses(it)
+        if not pl:
+            return []
+        k = 0.5 if self.is_artifact(it["name"]) else 1.0
+        out = []
+        for which, kind in self.WEAPON_SCROLLS:
+            x = pl[which]
+            c = (1.0 if x < 0 else 0.0 if x > 15 else 1 - self.ENCHANT_TABLE[x] / 1000) * k
+            if c >= self.ENCHANT_MIN_CHANCE:
+                out.append((it, kind, c))
+        return out
+
+    def enchant_buys(self, spare=None):
+        """[(kind, n, price)]: the Scrolls of Enchant plan town buys this visit -- Enchant Armor first, then the
+        weapon's To-Dam and To-Hit, each the expected count to its stopping place (enchant_scrolls_wanted), within the
+        spare gold (`spare`, at 110% of the price; None: not counted) and `order enchant_max` for them all together."""
+        left = int(self.orders.get("enchant_max", 25))
+        out = []
+        for kind in self.ENCHANT_KINDS:
+            price = self.price_of(kind, 5) or 190
+            n = min(int(round(self.enchant_scrolls_wanted(kind))), left)
+            if spare is not None:
+                n = min(n, max(0, spare // max(1, int(price * 1.1))))
+            if n > 0:
+                out.append((kind, n, price))
+                left -= n
+                if spare is not None:
+                    spare -= n * max(1, int(price * 1.1))
+        return out
+
     def town_extras_note(self):
         """What plan town may spend beyond the kit and the list (m58: 5025 gold of Enchant Armor, never announced)."""
         bits = []
-        n = min(int(round(self.enchant_scrolls_wanted())), int(self.orders.get("enchant_max", 25)))
-        if n and self.enchant_plan():
-            pr = self.price_of("Enchant Armor", 5) or 190
-            bits.append(f"up to {n} Scrolls of Enchant Armor (~{n * pr} gold; `order enchant_max=N` caps it, 0 skips)")
+        buys = self.enchant_buys() if (self.enchant_plan() or self.weapon_enchant_plan()) else []
+        if buys:
+            what = " + ".join(f"{n} Scrolls of {kind}" for kind, n, _ in buys)
+            bits.append(f"up to {what} (~{sum(n * pr for _, n, pr in buys)} gold; `order enchant_max=N` caps "
+                        + ("it" if len(buys) == 1 else "them all") + ", 0 skips)")
         if self.recharge_wanted():
             bits.append("Scrolls of Recharging for " + ", ".join(i["name"] for i in self.recharge_wanted()))
         return ("; also, as stock allows: " + "; ".join(bits)) if bits else ""
 
-    def enchant_scrolls_wanted(self):
-        """Expected scrolls to bring every worn piece to the stopping place (sum of 1/chance per point)."""
+    def enchant_scrolls_wanted(self, kind="Enchant Armor"):
+        """Expected scrolls of this kind to bring every worn piece (Enchant Armor), or the wielded weapon's to-dam or
+        to-hit (Enchant Weapon To-Dam / To-Hit), to the stopping place (sum of 1/chance per point)."""
         n = 0.0
+        if kind != "Enchant Armor":
+            it = self.wielded_weapon()
+            pl = self.weapon_plusses(it)
+            which = next((w for w, k in self.WEAPON_SCROLLS if k == kind), None)
+            if not pl or not which:
+                return 0.0
+            k = 0.5 if self.is_artifact(it["name"]) else 1.0
+            for x in range(pl[which], 16):
+                c = (1.0 if x < 0 else 1 - self.ENCHANT_TABLE[x] / 1000) * k
+                if c < self.ENCHANT_MIN_CHANCE:
+                    break
+                n += 1 / c
+            return n
         for it in self.w.items(equip=True):
             m = re.search(r"\[(\d+),([+-]\d+)\]", it["name"])
             if not m or it["tval"] not in self.ARMOUR_SLOTS:

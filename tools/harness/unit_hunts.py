@@ -168,7 +168,8 @@ def disenchant_cost_in_the_hunt_check():
     """2.45.0 (the Advisor's Khim memo, 11-02): Khim's 4th blow is UN_BONUS. The hunt check counts the enchantment its
     landed blows take (apply_disenchant: 1 of 8 slots, a weapon -1/-1, armour -1 to-AC, +1 more with 20% above +5,
     artifacts resist 60%), at Dive04's 11-02 gear (clvl 29, AC 104): nonzero, in the `monster` text beside the drop and
-    in the `hunt` log record; none with resist disenchantment; nothing for a monster without UN_BONUS."""
+    in the `hunt` log record; none with resist disenchantment; nothing for a monster without UN_BONUS. 2.46.0: a lost
+    step plan town would buy back costs the scrolls, any other its resale value."""
     worn = [("a Battle Axe of Westernesse (2d8) (+10,+9) (+1)", 22, 170), ("a Ring of Protection [+16]", 45, 2),
             ("a Ring of Protection [+12]", 45, 2), ("an Amulet of Slow Digestion", 40, 3),
             ("Hard Studded Leather of Resistance (-1) [7,+8]", 36, 110), ("a Shadow Cloak [6,+8]", 35, 5),
@@ -196,24 +197,32 @@ def disenchant_cost_in_the_hunt_check():
     rtext = r.monster_info("Khim, Son of Mim")
     rdc = r.last_hunt.get("disen") or {}
     giant = p.monster_info("Hill giant")
-    # one disenchantment on one item, valued by the scrolls that put it back (2.45.3, the user; ~190 gold a scroll,
-    # success 1 - enchant_table[x]/1000): +8 armour -> +7 (80%: 190/0.5) or +6 (20%: + 190/0.6) = ~443; +5 -> +4:
-    # 190/0.8 = 237.5; +0 none; plusses not shown: as if +5; an artifact (+15, half the chance, each step capped at 100
-    # scrolls) 40% of it
-    loss = {n: p.disen_item_loss(n, False)[:2] for n in ("a Metal Cap [3,+8]", "a Metal Cap [3,+5]", "a Metal Cap [3,+0]",
-                                                         "a Metal Cap [3]")}
-    art = p.disen_item_loss("the Cloak 'Colluin' [1,+15]", False)
+    # one disenchantment on one item (2.46.0, the user's option 2): a step plan town would buy back costs the scrolls
+    # (~190 gold a scroll, success 1 - enchant_table[x]/1000; it buys while that is >= 50%), any other step the plus's
+    # resale value (itemvalue's 100 a plus x the pay cut: 0.425 armour, 0.3825 weapons here; in play: not priced).
+    # +8 armour -> +7 (80%: 190/0.5 = 380) or +6 (20%: 380 + 190/0.6) = ~443.3; +5 -> +4: 190/0.8 = 237.5; +0 none;
+    # plusses not shown: as if +5. Colluin (an artifact, +15: half the chance, never bought) loses 1 (80%) or 2 (20%)
+    # pluses at 42.5 each, 40% of the time: 0.4 x (0.8 x 42.5 + 0.2 x 85) = 20.4.
+    # The Battle Axe (+10,+9): to-hit 10 -> 9 (80%) or 8 (20%), steps 9->10 (5%) and 8->9 (30%) not bought: 1.2 x 38.25;
+    # to-dam 9 -> 8 (80%: 8->9 resale) or 7 (20%: 7->8 bought at 190/0.5 = 380, + 8->9 resale): 38.25 + 0.2 x 380 --
+    # 160.15 (76 scrolls, 84.15 lost; 2.45.3: ~4,370). Per hit: (6 x 443.33 + 160.15) / 8 = 352.5 -> 353 (was 912).
+    loss = {n: p.disen_item_loss(n, "helm")[:2] for n in ("a Metal Cap [3,+8]", "a Metal Cap [3,+5]",
+                                                          "a Metal Cap [3,+0]", "a Metal Cap [3]")}
+    art = p.disen_item_loss("the Cloak 'Colluin' [1,+15]", "cloak")
+    axe = p.disen_item_loss("a Battle Axe of Westernesse (2d8) (+10,+9) (+1)", "weapon")
     want = {"a Metal Cap [3,+8]": (443.3, True), "a Metal Cap [3,+5]": (237.5, True), "a Metal Cap [3,+0]": (0.0, True),
             "a Metal Cap [3]": (237.5, False)}
     loss = {n: (round(g, 1), v) for n, (g, v) in loss.items()}
-    ok = (dc.get("gold", 0) > 0 and dc.get("n", 0) > 0 and dc.get("per_hit") == 912 and abs(dc["p_hit"] - 0.187) < 0.001
+    ok = (dc.get("gold", 0) > 0 and dc.get("n", 0) > 0 and dc.get("per_hit") == 353 and abs(dc["p_hit"] - 0.187) < 0.001
           and "disenchants expected" in text and text.index("a kill drops") < text.index("disenchants expected")
+          and "lost for good" in text
           and rec.get("disen_gold", 0) > 0 and rec.get("est_by") == "fight_sim" and "disenchants expected" in (out.get("note") or "")
           and rdc.get("resisted") and rdc.get("gold") == 0 and "you resist disenchantment" in rtext
-          and "disenchant" not in giant and loss == want and art[2] and abs(art[0] - 0.4 * (0.8 * 19000 + 0.2 * 38000)) < 1e-6)
+          and "disenchant" not in giant and loss == want and art[2] and abs(art[0] - 0.4 * (0.8 * 42.5 + 0.2 * 85)) < 1e-6
+          and abs(axe[0] - (1.2 * 38.25 + 38.25 + 0.2 * 380)) < 1e-6 and abs(axe[3][0] - 76) < 1e-6)
     return ok, (f"Khim: {dc.get('hits')} hits, {dc.get('n')} disenchants, {dc.get('gold')} gold ({dc.get('per_hit')} a "
                 f"hit, p_hit {dc.get('p_hit')}); hunt record {rec}; resisted {rdc.get('resisted')} gold "
-                f"{rdc.get('gold')}; item losses {loss}; artifact {art}")
+                f"{rdc.get('gold')}; item losses {loss}; artifact {art}; axe {axe}")
 
 
 @case

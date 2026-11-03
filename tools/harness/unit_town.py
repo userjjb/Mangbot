@@ -214,6 +214,97 @@ def enchant_armour_to_the_stopping_place():
 
 
 @case
+def weapon_enchant_to_the_stopping_place():
+    """2.46.0 (the user's option 2 on the Advisor's 11-03 memo): plan town buys and reads Enchant Weapon To-Dam/To-Hit
+    for the wielded melee weapon by the armour's rule (the next point >= 50%, half the chance on an artifact). A
+    Dagger (+5,+5) with the gold: 5 of each (1/.7 + 1/.6 + 1/.5 = 5.1 a plus), to-dam first when the gold is short
+    (300 spare: one, 190 x 1.1 a scroll); at (+9,+9) (5%) none; an artifact at +0 half the chance (50%: 2 each), at +1
+    none (49.5%); not unidentified, not the bow. The buy is one Alchemist visit, the read targets the weapon."""
+    def make(weapon, gold=5000, tval=23, pack=()):
+        p = pilot(worn=[(weapon, tval, 12)], gold=gold, pack=pack)
+        p.stores_seen = {}
+        p.town_reserve = lambda: 0
+        p.orders["enchant_max"] = 25
+        return p
+    import types
+    sent = []
+    p = make("a Dagger (1d4) (+5,+5)")
+    rich = p.enchant_buys(5000)
+    poor = make("a Dagger (1d4) (+5,+5)").enchant_buys(300)
+    high = make("a Dagger (1d4) (+9,+9)")
+    art = make("the Dagger 'Narthanc' (1d4) (+0,+0)")
+    art1 = make("the Dagger 'Narthanc' (1d4) (+1,+1)")
+    unid = make("a Dagger (1d4) {good}")
+    bow = make("a Sling (x2) (+5,+5)", tval=19)
+    k = P.TownKit()
+    r = k._buying_enchant(p, types.SimpleNamespace(w=p.w, now=0.0))
+    shop = k.sub.buys if k.sub else None
+    rd = make("a Dagger (1d4) (+5,+5)", pack=[("5 Scrolls of Enchant Weapon To-Hit", 70)])
+    rd.cmd = lambda line, why="", hold=0: sent.append((line, why))
+    k2 = P.TownKit()
+    k2._buying_enchant(rd, types.SimpleNamespace(w=rd.w, now=0.0))
+    note = p.town_extras_note()
+    ok = rich == [("Enchant Weapon To-Dam", 5, 190), ("Enchant Weapon To-Hit", 5, 190)] and \
+        poor == [("Enchant Weapon To-Dam", 1, 190)] and not high.weapon_enchant_plan() and not high.enchant_buys(5000) \
+        and [round(c, 3) for _, _, c in art.weapon_enchant_plan()] == [0.5, 0.5] and \
+        art.enchant_buys(5000) == [("Enchant Weapon To-Dam", 2, 190), ("Enchant Weapon To-Hit", 2, 190)] and \
+        not art1.weapon_enchant_plan() and not unid.enchant_buys(5000) and not bow.enchant_buys(5000) and \
+        r is None and k.sub.store == "5" and shop == [("Enchant Weapon To-Dam", 5, 285), ("Enchant Weapon To-Hit", 5, 285)] \
+        and sent and sent[0][0] == "custom r item=0 dir=24" and "Enchant Weapon To-Dam" in note and \
+        "Enchant Weapon To-Hit" in note and not k2.sub
+    return ok, (f"rich {rich}; poor {poor}; +9 {high.enchant_buys(5000)}; artifact {art.weapon_enchant_plan()[:0]}"
+                f"{[(kd, round(c, 3)) for _, kd, c in art.weapon_enchant_plan()]} buys {art.enchant_buys(5000)}; "
+                f"artifact +1 {art1.weapon_enchant_plan()}; unidentified {unid.enchant_buys(5000)}; bow "
+                f"{bow.enchant_buys(5000)}; kit {r} {shop} {k.done_log}; read {sent}; note {note}")
+
+
+@case
+def enchant_cap_shared_by_armour_and_weapon():
+    """2.46.0: `order enchant_max` caps all the Scrolls of Enchant a visit buys, armour first. A cloak at -6 wants ~17
+    (6 sure points, then 1/1 + 1/.99 + ... + 1/.5 to +8) and a Dagger (+5,+5) 5 + 5: at 25, 17 + 5 + 3; at 10, 10 of
+    Enchant Armor; at 0 none, and no note."""
+    def buys(cap):
+        p = pilot(worn=[("a Dagger (1d4) (+5,+5)", 23, 12), ("a Shadow Cloak [6,-6]", 35, 10)])
+        p.stores_seen = {}
+        p.orders["enchant_max"] = cap
+        return [(kd, n) for kd, n, _ in p.enchant_buys(10 ** 6)], p.town_extras_note()
+    a, b, c = buys(25), buys(10), buys(0)
+    ok = a[0] == [("Enchant Armor", 17), ("Enchant Weapon To-Dam", 5), ("Enchant Weapon To-Hit", 3)] and \
+        b[0] == [("Enchant Armor", 10)] and c == ([], "") and "caps them all" in a[1]
+    return ok, f"cap 25: {a}; cap 10: {b}; cap 0: {c}"
+
+
+@case
+def disenchant_value_by_what_the_pilot_buys():
+    """2.46.0 (the user's option 2): a lost step plan town would buy back costs price / chance; any other step the
+    plus's resale value (itemvalue with the plus one higher less as it is, x the pay cut: 100 x 0.3825 for a weapon
+    here, 100 x 0.425 for armour) + its in-play value (DISEN_IN_PLAY: 0, not priced). Dagger (+5,+5) wielded: each plus
+    5 -> 4, step 4->5 at 80%: 190/0.8 = 237.5 each, 475 in scrolls; the same as a bow (never bought): 2 x 38.25 = 76.5
+    lost; (+10,+9): 9->10 (5%) lost, 7->8 (50%) bought (380); an artifact at +2: 1->2 (49.5%) lost, 0->1 (50%)
+    bought (380); +8 armour with `order enchant_max=0`: nothing bought, 0.8 x 42.5 + 0.2 x 85 = 51 lost."""
+    p = pilot()
+    p.stores_seen = {}
+    axe = "a Battle Axe of Westernesse (2d8) (+10,+9) (+1)"
+    dag = p.disen_item_loss("a Dagger (1d4) (+5,+5)", "weapon")
+    sling = p.disen_item_loss("a Sling (x2) (+5,+5)", "bow")
+    step_hit = p.reenchant_cost("tohit", 9, 10, False, "weapon", axe)
+    step_dam = p.reenchant_cost("todam", 7, 8, False, "weapon", axe)
+    narth = p.reenchant_cost("todam", 0, 2, True, "weapon", "the Dagger 'Narthanc' (1d4) (+2,+2)")
+    p.orders["enchant_max"] = 0
+    cap0 = p.disen_item_loss("a Metal Cap [3,+8]", "helm")
+    r = 100 * 0.3825 + p.DISEN_IN_PLAY
+
+    def near(a, b):
+        return abs(a - b) < 1e-6
+    ok = near(dag[3][0], 475) and near(dag[3][1], 0) and near(sling[3][0], 0) and near(sling[3][1], 2 * r) and \
+        near(step_hit[0], 0) and near(step_hit[1], r) and near(step_dam[0], 380) and near(step_dam[1], 0) and \
+        near(narth[0], 380) and near(narth[1], r) and near(cap0[3][0], 0) and near(cap0[3][1], 51) and \
+        p.DISEN_IN_PLAY == 0
+    return ok, (f"dagger {dag}; sling {sling}; axe to-hit 9->10 {step_hit}, to-dam 7->8 {step_dam}; Narthanc 0->2 "
+                f"{narth}; cap +8 at enchant_max=0 {cap0}")
+
+
+@case
 def town_waits_for_restock():
     """The user (10-28): shops restock every ~30 s -- wait for what's critically needed. A supply-gate essential missing
     because the shop was out (or a Restore for a drained STR/DEX/CON): up to 4 waits of 35 s, then it goes on; nothing

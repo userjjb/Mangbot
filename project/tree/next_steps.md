@@ -90,8 +90,10 @@ stop, the escape walk taking its stairs (and finishing after its emergency), the
 - Not done on purpose: the moves out of `reflexes` (light/hunger/pickup -> policy_tick, food_watch -> tick): an order
   change with no bug behind it (refactor-candidates E3).
 - Decided 11-03 (2.45.1): the summoner hold lets the later reflexes run (not engage); the hunt check refuses a
-  disenchanter whose expected loss exceeds the kill's worth. A plus is valued by the scrolls to re-enchant it since 2.45.3
-  (the user, 11-03; Khim now ~2,000 gold against a ~3,160 kill: still allowed, close to the line -- watch it); the reflex moves:
+  disenchanter whose expected loss exceeds the kill's worth. A plus is valued by what the Pilot would do since 2.46.0 (the user's
+  option 2 of the Advisor's disen-value memo): price/chance where the town kit re-enchants (armour, and now the wielded
+  weapon, to +8), else resale; its in-play value is not priced. **Watch in session 12:** the first Enchant Weapon
+  buy/read (`custom r item=N dir=24`; Dive04's axe at (+10,+9) won't trigger it unless disenchanted to +7); the reflex moves:
   decided 11-03 (2.45.2): only Hungry moved (to policy_tick), Weak stays a reflex and eats with monsters in view;
   light and pickup stay. **Watch in session 12:** pickup mid-fight (the user: monitor whether it causes issues); a
   character Weak in a fight now eats there (unless a monster is adjacent).
@@ -353,5 +355,5 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   watcher; restart the test server (with `MANGBAND_FREEZE_FILE`), Dive04's Pilot (`tools/pilot/restart.sh Dive04`)
   and the viewer per operations.md; check `status full` says Pilot v2.45.0 and `house` shows 19,322 banked.
 - **11-03 07:34, resumed in SGE job 8406367 (scc-va3, ends Sat 11-07 19:55):** the old job ended 07:32 (savefile
-  from 07:25, Dive04 idle in town); restarted the test server (gdb, freeze-enabled), Dive04's Pilot (v2.45.0; now 2.45.3) and
+  from 07:25, Dive04 idle in town); restarted the test server (gdb, freeze-enabled), Dive04's Pilot (v2.45.0; now 2.46.0) and
   the viewer (`tmux -L mang attach -t watch`). Dive04 358/358, 300 gold + 19,322 banked.

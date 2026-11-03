@@ -20,6 +20,10 @@ phase and watchdog): 168 states; the four ticks' every line but a dead fall-thro
 5 *_fix_* states (2.45.0, behaviour fixes: they differ from 2.44.x on purpose): no light to read Satisfy Hunger by,
 then rest or pickup; the escape walk reaching its stairs with the threat out of view, and outliving its emergency;
 a withdraw's fetched Restore struck off the house record at once: 173 states.
+4 town_ench_* states (2.46.0, the wielded weapon enchanted in town: they differ from 2.45.x on purpose), with an
+Alchemist that sells the Enchant scrolls (Server `stock`) and reads that land (`reads`): a (+5,+5) weapon bought 5 + 5
+scrolls and read to (+8,+8); one scroll when the gold is short; `order enchant_max=8` shared by a +5 shield (5) and the
+weapon (3 To-Dam); a (+9,+9) weapon nothing: 177 states.
 Schedule actions: req, ev, pos, depth, step (move with a pos event), hp, mons, ind, msg, ghost, fn (fn(p, c): set
 up a goal, a plan or the Pilot's state). A state's `react=lambda: Server(...)` answers its commands (shop trades, the
 house's pile and door: see Server).
@@ -69,12 +73,13 @@ def pack(rations=4, flasks=3, ccw=5, csw=4, clw=5, phase=12, wor=3, extra=(), he
     return [item(i, n, tv, num) for i, (n, tv, num) in enumerate(rows)]
 
 
-def worn(light=lantern(9000)):
-    rows = [("a Scimitar of Westernesse (2d5) (+10,+12) [+0]", 23, 130), ("a Ring of Protection [+16]", 45, 1),
-            ("an Amulet of Slow Digestion", 40, 3), ("Hard Studded Leather of Resistance (-1) [16,+12]", 37, 200),
-            ("a Leather Shield [8,+5]", 34, 60), ("a Hard Leather Cap [2,+3]", 32, 15),
-            ("a Set of Leather Gloves [1,+2]", 31, 10), ("a Pair of Leather Boots [2,+3]", 30, 20),
-            ("a Cloak [1,+2]", 35, 10)]
+def worn(light=lantern(9000), rows=None):
+    rows = list(rows or [
+        ("a Scimitar of Westernesse (2d5) (+10,+12) [+0]", 23, 130), ("a Ring of Protection [+16]", 45, 1),
+        ("an Amulet of Slow Digestion", 40, 3), ("Hard Studded Leather of Resistance (-1) [16,+12]", 37, 200),
+        ("a Leather Shield [8,+5]", 34, 60), ("a Hard Leather Cap [2,+3]", 32, 15),
+        ("a Set of Leather Gloves [1,+2]", 31, 10), ("a Pair of Leather Boots [2,+3]", 30, 20),
+        ("a Cloak [1,+2]", 35, 10)])
     if light:
         rows.insert(1, (light, 39, 50))
     return [item(24 + i, n, tv, 1, wt, equip=True) for i, (n, tv, wt) in enumerate(rows)]
@@ -112,6 +117,19 @@ for _num, _st in STORES.items():
     _st.update(flag=0, num=len(_st["items"]))
     for _i, _it in enumerate(_st["items"]):
         _it.update(slot=_i, weight=5)
+
+
+def stores_with(stock):
+    """STORES with these lines added ({store: [(name, price, number)]}; None: STORES itself)."""
+    if not stock:
+        return STORES
+    out = {k: dict(v, items=[dict(i) for i in v["items"]]) for k, v in STORES.items()}
+    for k, rows in stock.items():
+        st = out[k]
+        for name, price, number in rows:
+            st["items"].append({"name": name, "price": price, "number": number, "slot": len(st["items"]), "weight": 5})
+        st["num"] = len(st["items"])
+    return out
 DUNGEON = dict(depth=6, pos=(20, 40), stairs={(10, 70): ">", (35, 10): "<"})
 
 SCENARIOS = [
@@ -389,17 +407,21 @@ class Server:
     `price` (the door's "This house costs N gold.", or "already owned" with owned=True, or nothing with price=None);
     `buy_ok` (the purchase takes the gold); `door_shut` (the doorway can't be entered); `trap_inside` (once the door is
     closed behind us, the doorway can't be entered from inside); `pickup` (what 'custom ,' picks up). `buy_listing`: a buy brings a fresh listing; `silent`: buys get no answer at all;
-    `floor`: {square: item name} picked up on stepping there."""
+    `floor`: {square: item name} picked up on stepping there. `stock`: {store: [(name, price, number)]} added to that
+    store's listing (2.46.0: the Alchemist's Enchant scrolls); `reads`: a Scroll of Enchant read onto an item
+    (`custom r item=S dir=T`) takes the scroll and raises the plus it names on T (Enchant Armor the to-AC, To-Hit/To-Dam
+    the weapon's), always: "Your X glows brightly!"."""
 
     def __init__(self, relist=40, refuse=(), sold_as=None, quote=45, full=False, leave_after=None, house=None,
                  pile=0, drop_shows=True, price=None, owned=False, buy_ok=True, door_shut=False, trap_inside=False,
-                 pickup=None, sale_price=30, buy_listing=True, silent=False, floor=None):
+                 pickup=None, sale_price=30, buy_listing=True, silent=False, floor=None, stock=None, reads=False):
         self.relist, self.refuse, self.sold_as, self.quote, self.full = relist, refuse, sold_as or {}, quote, full
         self.leave_after, self.answers = dict(leave_after or {}), 0
         self.house, self.pile, self.drop_shows, self.price, self.owned = house, pile, drop_shows, price, owned
         self.buy_ok, self.door_shut, self.trap_inside, self.pickup = buy_ok, door_shut, trap_inside, pickup
         self.sale_price, self.closed_in = sale_price, False
         self.buy_listing, self.silent, self.floor = buy_listing, silent, dict(floor or {})
+        self.stores, self.reads = stores_with(stock), reads
 
     @staticmethod
     def msg(c, text):
@@ -415,9 +437,13 @@ class Server:
         c.ind["gold"] = [c.ind["gold"][0] + d]
 
     def __call__(self, p, c, t, sent):
-        st = STORES.get(c.extra.get(c.pos)) if c.depth == 0 else None
+        st = self.stores.get(c.extra.get(c.pos)) if c.depth == 0 else None
         h = self.house
         for line in sent:
+            m = re.match(r"^custom r item=(\d+) dir=(\d+)$", line)
+            if m and self.reads:
+                self.enchant(c, int(m.group(1)), int(m.group(2)))
+                continue
             m = re.match(r"^custom p store item=(\d+) value=(\d+) entry=(\d+)$", line)
             if m and st:
                 it, n, cost = st["items"][int(m.group(1))], int(m.group(2)), int(m.group(3))
@@ -497,6 +523,28 @@ class Server:
                 self.gold(c, self.pile)
                 self.msg(c, f"You have found {self.pile} gold pieces worth of gold.")
                 self.pile = 0
+
+    def enchant(self, c, s, t):
+        """A Scroll of Enchant read onto item t: one scroll gone, the plus raised."""
+        sc = next((i for i in c.items if i["item"] == s and not i.get("equip") and "Enchant" in i["name"]), None)
+        tg = next((i for i in c.items if i["item"] == t and i.get("equip")), None)
+        if not sc or not tg:
+            return
+        which = 2 if "To-Dam" in sc["name"] else 1 if "To-Hit" in sc["name"] else 0
+        rx = r"\[(\d+),([+-]\d+)\]" if which == 0 else r"\(([+-]\d+),([+-]\d+)\)"
+        mm = re.search(rx, tg["name"])
+        g = 2 if which in (0, 2) else 1
+        if mm:
+            tg["name"] = tg["name"][:mm.start(g)] + f"{int(mm.group(g)) + 1:+d}" + tg["name"][mm.end(g):]
+        if sc["number"] > 1:
+            sc["number"] -= 1
+            sc["name"] = re.sub(r"^\d+ ", f"{sc['number']} ", sc["name"])
+            if sc["number"] == 1:
+                sc["name"] = re.sub(r"^1 Scrolls", "a Scroll", sc["name"])
+        else:
+            c.items.remove(sc)
+            self.reslot(c)
+        self.msg(c, f"Your {re.sub(r'^(a|an) ', '', tg['name'])} glows brightly!")
 
     def answer(self, c, st, sold):
         self.answers += 1
@@ -699,6 +747,38 @@ TOWNKIT_E5 = [
 ]
 SCENARIOS += TOWNKIT_E5
 
+# 2.46.0 (the user's option 2): plan town buys and reads Enchant Weapon To-Dam/To-Hit for the wielded weapon, by the
+# armour's rule, under one `order enchant_max`. An Alchemist that sells the three scrolls; reads always succeed here
+ENCH_STOCK = {"5": [("Scrolls of Enchant Weapon To-Hit", 190, 10), ("Scrolls of Enchant Weapon To-Dam", 190, 10),
+                    ("Scrolls of Enchant Armor", 190, 10)]}
+ARMOUR_8 = [("a Ring of Protection [+16]", 45, 1), ("an Amulet of Slow Digestion", 40, 3),
+            ("Hard Studded Leather of Resistance (-1) [16,+8]", 37, 200), ("a Leather Shield [8,+8]", 34, 60),
+            ("a Hard Leather Cap [2,+8]", 32, 15), ("a Set of Leather Gloves [1,+8]", 31, 10),
+            ("a Pair of Leather Boots [2,+8]", 30, 20), ("a Cloak [1,+8]", 35, 10)]
+DAGGER_5 = ("a Dagger (1d4) (+5,+5)", 23, 12)
+ENCH_46 = [
+    # the weapon at (+5,+5), the armour at +8 (past its stopping place): 5 To-Dam + 5 To-Hit bought in one visit, read
+    # onto the weapon to (+8,+8), the stopping place (30%); the 2 + 2 left over stay in the pack
+    ("town_ench_kit_weapon_buy_read", dict(AT5, gold=3000, worn=[DAGGER_5] + ARMOUR_8,
+                                           react=lambda: Server(stock=ENCH_STOCK, reads=True)),
+     {1: [kit(**BUYING)]}, 70, 0.3),
+    # gold for one scroll beyond the reserve: to-dam first
+    ("town_ench_kit_weapon_poor", dict(AT5, gold=300, worn=[DAGGER_5] + ARMOUR_8,
+                                       react=lambda: Server(stock=ENCH_STOCK, reads=True)),
+     {1: [kit(**BUYING)]}, 40, 0.3),
+    # the cap shared: the shield at +5 wants 5 Enchant Armor, the weapon 5 + 5; `order enchant_max=8`: 5 + 3 + 0
+    ("town_ench_kit_cap_shared", dict(AT5, gold=5000, worn=[DAGGER_5] + [r if "Shield" not in r[0] else
+                                                                         ("a Leather Shield [8,+5]", 34, 60)
+                                                                         for r in ARMOUR_8],
+                                      react=lambda: Server(stock=ENCH_STOCK, reads=True)),
+     {1: [fn(lambda p, c: p.orders.update(enchant_max=8)), kit(**BUYING)]}, 70, 0.3),
+    # the weapon past its stopping place (+9,+9): nothing bought, though the shop sells it
+    ("town_ench_kit_weapon_high", dict(AT5, gold=3000, worn=[("a Dagger (1d4) (+9,+9)", 23, 12)] + ARMOUR_8,
+                                       react=lambda: Server(stock=ENCH_STOCK, reads=True)),
+     {1: [kit(**BUYING)]}, 15, 0.3),
+]
+SCENARIOS += ENCH_46
+
 
 def trip(lo, hi, until="cures<3 or phase<3 or minutes>45", then="recall", level_min=10, via=None, here=False,
          goal_=None, **attrs):
@@ -862,6 +942,7 @@ def run(name, kw, schedule, ticks, dt):
     template = kw.pop("template", True)
     nohouse = kw.pop("nohouse", False)
     light = kw.pop("light", lantern(9000))
+    worn_rows = kw.pop("worn", None)
     pk = {k: kw.pop(k) for k in ("rations", "flasks", "ccw", "csw", "clw", "phase", "wor", "heroism", "speed", "staff")
           if k in kw}
     extra_pack = kw.pop("extra_pack", [])
@@ -879,7 +960,7 @@ def run(name, kw, schedule, ticks, dt):
         json.dump(hj, open(os.path.join(rundir, "house.json"), "w"), indent=1)
     kw.setdefault("extra", {})
     kw["extra"] = {**kw["extra"], **extra_map}
-    c = fake.FakeClient(inven=pack(extra=extra_pack, **pk) + worn(light), **kw)
+    c = fake.FakeClient(inven=pack(extra=extra_pack, **pk) + worn(light, worn_rows), **kw)
     p = P.Pilot(c, rundir)
     town_extra = dict(c.extra)
     p.arch_token = TOKEN
@@ -969,7 +1050,7 @@ def run(name, kw, schedule, ticks, dt):
             if y0 < new[0] < y1 and x0 < new[1] < x1:
                 c.pos = new
                 c.log({"ev": "pos", "y": new[0], "x": new[1]})
-                st = STORES.get(c.extra.get(new))
+                st = (getattr(react, "stores", None) or STORES).get(c.extra.get(new))
                 if st and c.depth == 0:
                     c.log(dict(st))
         if react is not None:

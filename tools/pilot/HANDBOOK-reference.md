@@ -263,7 +263,7 @@ known it leaves by them. Keep plenty of Phase Door, Teleportation and cure potio
 | `pickup` | all | all or none (none: no walks to loot either) |
 | `nopickup` | (empty) | comma list of name parts never picked up (your per-trip junk list) |
 | `autowear` | on | `off`: the pilot never wields, wears or swaps gear by itself |
-| `enchant_max` | 25 | Scrolls of Enchant Armour `plan town` may buy in one visit (0: none) |
+| `enchant_max` | 25 | Scrolls of Enchant `plan town` may buy in one visit, for the armour and the wielded weapon together (0: none) |
 | `band_frac` | 0.5 | a band is serious (leave) when fighting all of it would cost more than this fraction of your HP |
 | `autodestroy` | worthless,cursed | pseudo-ID feelings (`{average}`, `{worthless}`, `{cursed}`...) whose items the pilot destroys by itself (never items you inscribed with `@` or `!`). Add `average` when pack space matters more than the few coins they sell for |
 | `junk` | Salt Water, Blindness, ... | comma list: items "of" these are never picked up (unknown items still are) |
@@ -438,7 +438,8 @@ Orders are remembered across pilot restarts.
   - identify items worth identifying before selling (wands, rings, good weapons: an identified Wand
     of Slow Monster fetched 225), but not `{average}` gear, which sells the same;
   - buy discounted things (`{75% off}` Word of Recall, Identify);
-  - until the weapon is about (+8,+8), discounted Enchant To-Hit/To-Dam scrolls are good buys.
+  - until the weapon is about (+8,+8), discounted Enchant To-Hit/To-Dam scrolls are good buys (`plan town` now
+    buys and reads them itself for the wielded weapon while the next point is at least 50% likely: to +8).
 - Town: sell the starting kit (the Broad Sword and Chain Mail fetch a lot compared with their use:
   the user). Buy a Main Gauche (light: more blows), Enchant To-Hit/To-Dam scrolls for it (discounted
   ones first), cheap unenchanted armour for every empty slot (cloak, gloves, boots, leather shield,

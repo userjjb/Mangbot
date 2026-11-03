@@ -270,7 +270,7 @@ with a usage error -- A22, 2.40.0), listed with `orders`, saved in `runs/pilot/N
 | `junk` | Salt Water, Blindness, Weakness, Sleep, Poison, Lose Memories, Confusion, Sickliness, Apple Juice, Slime Mold, Darkness, Aggravate Monster, Curse Weapon, Curse Armour, Summon Undead, Summon Monster, Treasure Detection, Detect Invisible | items "of" these aren't picked up; identified potions, scrolls and devices of these in the pack are destroyed |
 | `autodestroy` | `worthless,cursed` | pseudo-ID feelings whose items are destroyed (add `average`) |
 | `autowear` | `on` | `off`: no wielding/wearing/swapping by the Pilot (`upgrade_step`) |
-| `enchant_max` | 25 | Scrolls of Enchant Armor `plan town` may buy a visit (0: none) |
+| `enchant_max` | 25 | Scrolls of Enchant `plan town` may buy a visit, Enchant Armor and (2.46.0) Enchant Weapon To-Dam / To-Hit together (0: none; with 0 a lost plus is valued at resale, gear-and-estimator.md §3.1) |
 | `free_action` | `no` | `yes` once the character has Free Action (paralysers stop counting as danger; the sheet overrides once read, `has_ability`) |
 | `resist_blind` | `no` | the same for blinding blows |
 | `resist_conf` | `no` | the same for confusing blows |
