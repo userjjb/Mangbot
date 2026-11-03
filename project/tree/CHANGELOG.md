@@ -27,6 +27,13 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.44.14 -- 2026-11-03 (session 11)
+No missions yet. No play change (refactor-candidates E8, the harness; group E is complete).
+- `unit.py` is a runner over `fixtures.py` and 12 `unit_<family>.py` files (the same 145 cases in the old order);
+  `setpiece.py` an entry point over `setpiece_run.py` (`Run` and helpers) and `setpiece_a/bcd/l/mh.py` (39
+  scenarios); harness/README is a reference table and a dated findings log. Every function moved verbatim (AST-equal);
+  `setpiece.py list`/`--help` byte-identical; tick() equivalence and dry start identical. Live: B3, A6, A2K PASS.
+
 ## 2.44.13 -- 2026-11-03 (session 11)
 No missions yet. No play change (refactor-candidates E5).
 - The town and plan goals' long ticks run one method per step/phase: Shop (`STATES`, `TRADE_STEPS`), HouseBank

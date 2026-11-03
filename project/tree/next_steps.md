@@ -24,7 +24,10 @@ The handoff between Architect sessions: the current state, what the next session
 - **Session 10 is done** (2026-10-28 to 11-02): the Documentation (`docs/`), the cleanup list
   (`docs/refactor-candidates.md`) worked through groups A-D and F plus E6/E7/E4/E9 and E1 steps 1-3, `CHANGELOG.md` and
   versions (2.36.0 -> 2.44.7). Its full record: **"SESSION 10 RECORD"** at the bottom of this file. No missions ran.
-- **Session 11** (the refactor continues, **no missions**): read **"HANDOFF TO ARCHITECT 11"**.
+- **Session 11 is done** (2026-11-02 to 11-03): group E finished -- E1 steps 4-6 (town.py, combat.py, commands.py;
+  pilot.py now ~1.5k lines), E2 (cmdtable.py), E3, E5, E8, plus the A2 set-piece criterion (2.44.8 -> 2.44.14). Its
+  record: **"SESSION 11 RECORD"** at the bottom; the decisions it left for the user: "FOR THE USER (from session 11)"
+  in HANDOFF 12. Its brief ("HANDOFF TO ARCHITECT 11") stays below for reference. No missions ran.
 - **Session 12** (missions resume, **to test everything changed since m60**): read **"HANDOFF TO ARCHITECT 12"**.
 - Sessions 1-9 are over: `history/handoffs-s1-s9.md`; session 10's own brief: `history/handoff-s10.md`.
 
@@ -79,6 +82,22 @@ a lot of the Pilot's item, supply, junk, stash, scorecard and command behaviour,
 Read first: the SESSION 10 RECORD below, session 11's own record (it will add one), `CHANGELOG.md` (2.36.0 onwards),
 `docs/process.md` §3 (the mission checklist), `github/tools/pilot/BRIEF-TEMPLATE.md` (gear/stats are now fill-in
 fields), and Part "From session 9" below (Dive04, the model comparison, the routine).
+
+**FOR THE USER (from session 11; each would change play, so none was done -- ask before building any):**
+- Commands: the Navigator can `quit`/`park` the Pilot (`park`, `quit`, `option(s)`, `dump`, `goalstate` have no role
+  check); a ghost refuses `park`, so `restart.sh` on a dead character waits 330 s and fails; some bad arguments return
+  a raw exception text; an unknown command to a ghost gets the ghost refusal. Each is now a line in `cmdtable.py`.
+- Combat: the moves out of `reflexes` (light/hunger/pickup -> policy_tick, food_watch -> tick: refactor-candidates E3);
+  the hunger step's `return self.wear_light(...)` skips adjacent/pickup/engage/rest for a tick when no light can be worn;
+  escape's "arrived on stairs: take them" is dead (taken only while still threatened).
+- The hunt check doesn't count UN_BONUS (disenchant) blows: Khim/Ibun ~1-2.5 plusses a fight (~100 gold each).
+- Town: a fetched Restore stays on the house record until a later withdraw finds the square empty (E5 note).
+- Harness: A2I/A2L not re-run under the 11-02 criterion; M2's staging fails about half the time (dark rooms).
+
+**New since session 11 for this session:** `tools/harness/refactor/` holds the equivalence harness (`equiv.py`, 168
+scripted states on a fake client; `cmdmatrix.py`, every command x role x context) -- reuse it for any refactor.
+The first `plan town` and `plan trip` are the first live runs of E5's split TownKit/TripPlan (only Shop and
+HouseBank were run live): watch them (item 1 below).
 
 **Before the first mission:**
 - Restart the test server, the Pilot and the viewer if the job changed (operations.md). The Architect's pilotctl
@@ -313,3 +332,10 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   168-state equivalence). Live: Shop buy + quote, house withdraw + deposit. The full `plan town`/`plan trip` were
   not run live -- session 12's first mission is their test (HANDOFF 12 item 1). Oddities for the user (not fixed):
   in refactor-candidates E5.
+- **2.44.14 -- E8**: unit.py -> runner + `fixtures.py` + 12 family files; setpiece.py -> entry + `setpiece_run.py` +
+  4 scenario files; harness/README -> reference table + findings log. Pure move; 145 unit; B3, A6, A2K PASS live.
+  **Group E is complete.** Stale counts fixed in CONDENSED/ops/refactor-candidates.
+- **State at the end (11-03 ~01:40):** version **2.44.14**, git `restructure` tagged and pushed. SGE job 8327794
+  (scc-va4) ends 08:47: the test server, Dive04's Pilot (2.44.14), the viewer. Dive04 idle in town, 358/358, 300 gold
+  + 19,322 banked (5 gold went on a Flask of oil in E5's live Shop check). Open after session 11: the user's TODOs at
+  the top; "FOR THE USER (from session 11)" in HANDOFF 12; C14 A/B; A25 (a unique above clvl 29).

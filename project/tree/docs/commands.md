@@ -72,7 +72,7 @@ place, in this order, then calls the method:
 The table is plain data with no imports of the Pilot's code, so `pilotctl.py` prints its help from it (`pilotctl.py`
 with no command), Pilot up or down. **To add a command:** write the method (in `commands.py`, or in the mixin whose
 state it uses), add its entry to `COMMANDS` (method, call, reply, roles and refusal, where, dead, usage, help,
-group), and add a row to this file; `unit.py`'s `command_table_*` cases check that the method exists and takes what
+group), and add a row to this file; `unit.py`'s `command_table_*` cases (`harness/unit_structure.py`) check that the method exists and takes what
 `call` passes, the fields are valid, and the help lists it. A new restriction that depends on the arguments or the
 game state (an item, a monster, a `!`) belongs in the method, like the ones listed below.
 

@@ -14,6 +14,23 @@ Test cases from the Advisor's set-piece list (`memos/2026-10-24-setpieces.md` an
   `runs/pilot/NICK/state.jsonl`, next to `events.jsonl`, so a mission's state at second T can be rebuilt. No replay
   runner yet.
 
+This file: the files, how a live run goes, the **reference table** of the set-pieces (what each stages, when it
+passes, its status), the tools, then the **findings log** (staging facts, and the bugs the harness found, by date).
+`docs/harness-rulebook-ops.md` has the commands, the unit case families and the gotchas.
+
+## Files
+
+| file | what |
+|---|---|
+| `unit.py` | the unit runner: `python3 unit.py [NAME]`, `python3 unit.py --golden`; imports the family files and runs every `@case` in its `ORDER` (the order they were written in) |
+| `fixtures.py` | what the cases share: `W` (Dive04 as of 2026-10-23), `pilot()`, `PHASE`, `pilot_ast()`, RACES/BYNAME, the `@case` registry, `_Stub`, `_quiet_level`, the golden report text (`render_reports`) |
+| `unit_<family>.py` | the cases, one file per family: hunts, danger, status, levels, items, loot, gear, town, house, trips, orders, structure (the list: `docs/harness-rulebook-ops.md`) |
+| `golden/reports.txt` | the report text `reports_match_golden` compares with |
+| `setpiece.py` | the set-piece runner: `SETPIECES` (the IDs), `TOWN`, the command line |
+| `setpiece_run.py` | the framework: the `Run` class, `ctl`, `log_since`, `first_seen`, map helpers, `give_item`, WOR_KIND, `fresh_depth` |
+| `setpiece_a.py`, `setpiece_bcd.py`, `setpiece_l.py`, `setpiece_mh.py` | the scenarios: A; B, C, D; L; M, H |
+| `dm.py`, `charsave.sh` | the DM (Gandalf) and the snapshots (Tools, below) |
+
 ## Live runs
 
 Each run:
@@ -25,57 +42,73 @@ Each run:
    Navigator role is used, so the order checks apply.
 5. Scores the run, then restores Dive04. Dive04 keeps nothing from a set-piece, dying included.
 
-| id | scene | pass when |
-|---|---|---|
-| A7 | Hill giant adjacent, full HP, `goal hunt Hill_giant` | the hunt is allowed, the giant is slain, HP lost ≤ fight_sim's p90 |
-| A8 | Skeleton human at 2, Ranger at 3, `goal hunt Ranger` | refused (a summoner, not alone); lowest HP ≥ 40% |
-| A8o | the same, `goal hunt !Ranger` | the override is accepted; lowest HP ≥ 40% |
-| A8w | a Ranger 3 squares off, no orders | the Pilot walks away (no Word of Recall), HP ≥ 80% |
-| A1 | a trip plan working the level; Black orcs and a Hill orc group 6-7 off | lowest HP ≥ 40%; ≤ 3 Phase Door |
-| A2 | Ulwarth (a unique above our level) adjacent, no stairs known | if a danger rule fires for it: Word of Recall within 2 s of first sight, lowest HP ≥ 40%; if none fires (11-02: the A2 uniques are no longer above clvl-29 Dive04; the Advisor's `to_architect/2026-11-02-khim.md`): a hard fight with Speed + Berserk, lowest HP ≥ 60% (A2K PASS 11-02) |
-| A2I | the same with Ibun, Son of Mim (a unique exists once: a second Ulwarth summon fails while the first lives on an old level) | the same |
-| A2K | the same with Khim, Son of Mim | the same |
-| A2L | the same with Lugdush (no rule fired before the simulator danger rule) | the same |
-| A6 | a Gnome mage (blinks, summons) adjacent | ≤ 3 Phase Door; Phase never runs out; lowest HP ≥ 40% |
-| C3 | Ulfast adjacent, the Architect orders the hunt | slain; his drop picked up |
-| C8 | forged Boots of Free Action dropped beside Dive04, picked up and worn unidentified, then a Floating eye (paralysing gaze) adjacent | boots picked up unidentified; Free Action inferred from "You are unaffected!"; the boots protected: **not stageable** (the Forge's items come out identified: FAIL 10-23; unit `ability_proofs` covers it) |
-| A3 | a Sabre-tooth tiger (+10, alone) adjacent, then an Architect goto 12 off | the goto is held; no walking with it adjacent |
-| B1 | a Purple mushroom patch 2 off, a goto past it | never adjacent; no stat drained |
-| B2 | three Giant red ants (STR drainers) | at most 2 drains; the second acted on (leave, or kill the weak one) |
-| B3 | a Brigand (steals, teleports) adjacent | slain; nothing stolen |
-| D6 | `goal explore` 40 s | best 5-s window ≥ 3 tiles/s: passes since the mover uses server pathfind (4.2 best, 3.2 overall; was 1.4-1.6) |
-| L1 | a Hill giant 5-8 off, in sight | boulders thrown, no HP lost (a rulebook claim from the code: confirmed live) |
-| L2 | a Sabre-tooth tiger fight (17-40 HP lost), then `goal recall` at once, resting while it charges | ~10x sooner than standing: **FAILS, and the claim is wrong in practice**: the fuel (sampled every second) ran at 1x through a 6-s rest and the recall came after ~25 ticks (15-16 s). The speed-up needs no *awake monster in line of sight, seen or not* (`monsters_in_los`); after a fight at 650 ft there usually is one in the dark. The Advisor's CON-ring swap can't set HP here: MAngband scales HP with max HP (`xtra1.c calc_hitpoints`) |
-| L2g | L2 with Gandalf off the level | the same (so his bubble wasn't the cause) |
-| L3 | forged Boots of Free Action (identified) worn, an Illusionist 3 off with a clear line | "You are unaffected!" right after "stares deep into your eyes!" (HOLD): **confirmed live** (2 of 2); no BLIND cast came before it died, so the rBlind half is unseen |
-| L3b | a Metal Cap of Seeing (rBlind) worn, two Illusionists 5 off (L3's rBlind half) | "You are unaffected!" after each BLIND cast: **not stageable yet** -- the DM forge returns a plain "Metal Cap [0]" for kind 95 + ego 30 (with or without pval 2; the boots + Free Action ego 58 works), so the cap is never picked up (2 runs, 10-26) |
-| A2f | a Dark elven lord (rated 4) 8 off with a clear line, no stairs known | Word of Recall within 2 s of the danger rule (PASS, after a fix: the flee-failed escape counted only monsters within 5 squares, and A2I's Ibun at 12 got 7 s of free fire bolts and Slow) |
-| D3 | walled in: Gandalf carves a secret door and an 8-square corridor into rock off a floor square, Dive04 pulled to its far end (knowing ground outside it can't reach), `goal explore` | walks out through the door; no "nothing left" or "frontier unreachable" before it |
-| B4 | a Scruffy looking hobbit (steals gold) 2 off in town, Dive04 idle | no gold lost; the thief killed (passes as built: one blow kills it) |
-| B4w | the same while Dive04 walks a 20-30 square goto across town | the same (passes as built) |
-| B6 | a pit painted mid-room on the straight line between Dive04 and its goto | never springs it; arrives (passes: the mover plans round known traps and the server's pathfind refuses visible ones, `pathfind.c` `is_valid_pf`) |
-| A4 | Wormtongue 3 off, a '>' painted on the farthest known floor up to 12 off | ≤ 8 squares walked in his sight; HP ≥ 60%: **not stageable now** (a unique exists once: while he lives on another level the summon fails silently; its first "pass" was scored on nothing, so the run now checks he was seen) |
-| A5 | a Dark elven priest 5 off on unlit ground (placed from Gandalf's map, with a clear line) | no level change while HP > 80%; reported (PASS) |
-| A5s | a Potion mimic (never moves; curses, blinds, frost bolts) 5 off unseen, a '>' in view | the same (PASS; the old rule fled down known stairs at any HP above `think_hp`, now news only above 80% unless it may be a paralysing gaze: unit `a5_unseen_caster_news_above_80`) |
-| A7f | (the memo's first A7) a Novice paladin group (SCARE, CAUSE_1) 6 off with a clear line | once afraid, Boldness/Heroism (or an escape) within 5 s; HP ≥ 50% (PASS: afraid at 12 s, Boldness at once, lowest 94%; at 3 off they died before casting) |
-| A9 | `plan trip 300-300 via=recall` from town, then Snaga and Black orcs summoned 8-9 squares off | Door/Stair Location within 5 s of arriving; no second Word of Recall while one is pending |
-| M1 | a Brown mold (confuses: never fought) summoned beside a painted `>` 6 squares off, `goal dive` one level down (m25's 2-minute loop) | down those stairs within 45 s, `>` pressed nowhere else (FAILED as m25 did, looping 17,7 <-> 16,13; PASS after the fix: 8.7 s) |
-| M2 | a forged wand on floor Dive04 sees 13-20 squares off, a `>` painted 3 squares the other way, `goal dive` (the user's m29 `?`: a wand left 12 squares off) | the wand fetched, then down within 60 s (FAILED three ways on the way to the fix: a far Cave lizard blocked looting for good; a Jackal pack cut the walk short and the dive left; a Rock lizard's fight ended the walk and the dive took over. PASS: fetched at 5.3 s, down at 10.5 s) |
-| M3 | a Moaning spirit (invisible, passes walls, +10, TOUCH:LOSE_DEX: m29's and m30's drainer) summoned 2 off, a `>` painted 6 off, no orders | after a drain, off the level within 30 s (PASS: drained at 5.4 s, left at 8.8 s) |
-| H1 | the hot swap (`tools/pilot/hotswap.sh`) mid-trip: a trip plan working the level, a Cave orc 3 off; freeze, swap, compare before the thaw | swapped while frozen; the new Pilot sees Dive04 in place, same HP, the monsters where they were; the plan resumes and acts after the thaw (PASS: 4.3 s swap, first act 0.4 s after the thaw; logins work while frozen) |
-| H1r | H1 with a Word of Recall read just before | the recall still lands (FAILED first: the new Pilot didn't know a recall was pending, its plan read a second scroll and cancelled it; fixed with `recall.json`; PASS: in town 17 s after the thaw) |
-| M4 | a crowd round Dive04 in a room (the Advisor's estimator memo) | no HP cure with 2+ adjacent; teleport not Phase with 4+ about; lowest HP >= 40% (PASS both ways, but neither reached an emergency: four Uruks and a priest were beaten at 72% with Berserk; an Umber hulk/hound crowd made the danger rule recall at once, 97% HP -- the memo's rules are unit-tested) |
-| M5 | a confusing breeder swarm (m55: Hummerhorns kept Dive04 confused 15 minutes at 800 ft): Hummerhorns round Dive04, AC lowered (`order autowear=off`, armour off), `goal dive` once confused | a long confusion cured by the Pilot within 20 s, at most 4 cures, down the painted '>' within 120 s, HP >= 60%: **not reliably stageable** -- 6 runs (8-30 Hummerhorns, AC 60-76, up to 90 s) never confused Dive04: they move erratically 75% of the time (RAND_50 \| RAND_25) and a CONFUSE bite (power 10) rarely beats AC; m55's needed minutes of breeding. **Verified live instead (10-28 08:53-09:00)**, in the scene a killed run left: confused among 26-30, no goal -> nothing for 40 s (fixed: the check runs every tick); then confused 8 s -> CCW -> 0.6 s later the staff teleport from (3,76) to (25,13), clear of the swarm; a react-thieves hunt then dropped the dive (fixed: the goal resumes) |
-
-**A2, A2I, A2L are stale (10-29, refactor list A25):** the 10-29 re-runs of A2I and A2L FAIL only "Word of Recall
-within 2 s": Dive04 (clvl 29) now out-levels Ibun and Lugdush (and Ulwarth), so no rule calls for a recall; it drank
-Speed + Berserk, killed the unique and its band (lowest HP 76-80%) and fetched the drop. The Pilot was right; the
-scenarios need a unique above our level (rescaling them waits until we have implemented the test server: the user,
-10-29).
-
 The memo's A7 is at 1250 ft and its A8 Ranger at 6 squares; here they're at 300 ft and 3 squares. The DM summons any race
 at any depth. On unlit ground a monster is seen only within the lantern's 2 squares, or the Half-Orc's infravision of 3
 for warm-blooded ones. Farther off, the order is rightly held as stale.
+
+## Reference: the set-pieces
+
+Status: the latest run in `runs/setpieces/results.md` (as of 2026-11-03), with the PASS count; the history is in the
+findings log (the date in brackets).
+
+### A: danger, hunts, escapes (`setpiece_a.py`)
+
+| id | scene | pass when | status |
+|---|---|---|---|
+| A1 | a trip plan working the level; Black orcs and a Hill orc group 6-7 off | lowest HP ≥ 40%; ≤ 3 Phase Door | PASS 10-25 (4 of 7; and 1 of 1 with `--hpwarn 5`) |
+| A2 | Ulwarth (a unique above our level) adjacent, no stairs known | if a danger rule fires for it: Word of Recall within 2 s of first sight, lowest HP ≥ 40%; if none fires (11-02: the A2 uniques are no longer above clvl-29 Dive04; the Advisor's `to_architect/2026-11-02-khim.md`): a hard fight with Speed + Berserk, lowest HP ≥ 60% (A2K PASS 11-02) | PASS 10-23 (2 of 2); stale [10-29] |
+| A2I | the same with Ibun, Son of Mim (a unique exists once: a second Ulwarth summon fails while the first lives on an old level) | the same | FAIL 10-29 (Word of Recall within 2 s only) [10-29]; last PASS 10-24 |
+| A2K | the same with Khim, Son of Mim | the same | PASS 11-03 (no danger rule: the hard fight) [11-02] |
+| A2L | the same with Lugdush (no rule fired before the simulator danger rule) | the same | FAIL 10-29 (Word of Recall within 2 s only) [10-29]; last PASS 10-25, on the simulator's danger reason [10-23 batch] |
+| A2f | a Dark elven lord (rated 4) 8 off with a clear line, no stairs known | Word of Recall within 2 s of the danger rule | PASS 10-24, after a fix [10-24] |
+| A3 | a Sabre-tooth tiger (+10, alone) adjacent, then an Architect goto 12 off | the goto is held; no walking with it adjacent | PASS 10-24 (4 of 10) |
+| A4 | Wormtongue 3 off, a '>' painted on the farthest known floor up to 12 off | ≤ 8 squares walked in his sight; HP ≥ 60% | **not stageable now** (a unique exists once: while he lives on another level the summon fails silently; its first "pass" was scored on nothing, so the run now checks he was seen) |
+| A5 | a Dark elven priest 5 off on unlit ground (placed from Gandalf's map, with a clear line) | no level change while HP > 80%; reported | PASS 10-23 |
+| A5s | a Potion mimic (never moves; curses, blinds, frost bolts) 5 off unseen, a '>' in view | the same | PASS 10-23 [10-23: A5] |
+| A6 | a Gnome mage (blinks, summons) adjacent | ≤ 3 Phase Door; Phase never runs out; lowest HP ≥ 40% | PASS 11-02 (4 of 4) |
+| A7 | Hill giant adjacent, full HP, `goal hunt Hill_giant` | the hunt is allowed, the giant is slain, HP lost ≤ fight_sim's p90 | PASS 10-23 [10-23: the first runs] |
+| A7f | (the memo's first A7) a Novice paladin group (SCARE, CAUSE_1) 6 off with a clear line | once afraid, Boldness/Heroism (or an escape) within 5 s; HP ≥ 50% | PASS 10-23: afraid at 12 s, Boldness at once, lowest 94%; at 3 off they died before casting |
+| A8 | Skeleton human at 2, Ranger at 3, `goal hunt Ranger` | refused (a summoner, not alone); lowest HP ≥ 40% | PASS 10-23 |
+| A8o | the same, `goal hunt !Ranger` | the override is accepted; lowest HP ≥ 40% | PASS 10-23 [10-23: walk away] |
+| A8w | a Ranger 3 squares off, no orders | the Pilot walks away (no Word of Recall), HP ≥ 80% | PASS 10-23 [10-23: walk away] |
+| A9 | `plan trip 300-300 via=recall` from town, then Snaga and Black orcs summoned 8-9 squares off | Door/Stair Location within 5 s of arriving; no second Word of Recall while one is pending | PASS 10-24 (6 of 8) |
+
+### B: hazards; C: items and uniques; D: movement (`setpiece_bcd.py`)
+
+| id | scene | pass when | status |
+|---|---|---|---|
+| B1 | a Purple mushroom patch 2 off, a goto past it | never adjacent; no stat drained | PASS 10-24 |
+| B2 | three Giant red ants (STR drainers) | at most 2 drains; the second acted on (leave, or kill the weak one) | PASS 10-25 |
+| B3 | a Brigand (steals, teleports) adjacent | slain; nothing stolen | PASS 11-02 (5 of 5) |
+| B4 | a Scruffy looking hobbit (steals gold) 2 off in town, Dive04 idle | no gold lost; the thief killed | PASS 10-23 (passes as built: one blow kills it) |
+| B4w | the same while Dive04 walks a 20-30 square goto across town | the same | PASS 10-23 (passes as built) |
+| B6 | a pit painted mid-room on the straight line between Dive04 and its goto | never springs it; arrives | PASS 10-23 (passes: the mover plans round known traps and the server's pathfind refuses visible ones, `pathfind.c` `is_valid_pf`) |
+| C3 | Ulfast adjacent, the Architect orders the hunt | slain; his drop picked up | PASS 10-23 (1 of 11) [10-23 batch: the drop] |
+| C8 | forged Boots of Free Action dropped beside Dive04, picked up and worn unidentified, then a Floating eye (paralysing gaze) adjacent | boots picked up unidentified; Free Action inferred from "You are unaffected!"; the boots protected | **not stageable** (the Forge's items come out identified: FAIL 10-23; unit `ability_proofs` covers it) |
+| D3 | walled in: Gandalf carves a secret door and an 8-square corridor into rock off a floor square, Dive04 pulled to its far end (knowing ground outside it can't reach), `goal explore` | walks out through the door; no "nothing left" or "frontier unreachable" before it | PASS 10-23 [10-23: D3] |
+| D6 | `goal explore` 40 s | best 5-s window ≥ 3 tiles/s | PASS 10-24: passes since the mover uses server pathfind (4.2 best, 3.2 overall; was 1.4-1.6) [10-23: D6] |
+
+### L: rulebook claims checked live (`setpiece_l.py`)
+
+| id | scene | pass when | status |
+|---|---|---|---|
+| L1 | a Hill giant 5-8 off, in sight | boulders thrown, no HP lost | PASS 10-23 (a rulebook claim from the code: confirmed live) |
+| L2 | a Sabre-tooth tiger fight (17-40 HP lost), then `goal recall` at once, resting while it charges | ~10x sooner than standing | **FAILS, and the claim is wrong in practice** (0 of 7, latest 10-24) [10-24: L2] |
+| L2g | L2 with Gandalf off the level | the same (so his bubble wasn't the cause) | FAIL 10-24 |
+| L3 | forged Boots of Free Action (identified) worn, an Illusionist 3 off with a clear line | "You are unaffected!" right after "stares deep into your eyes!" (HOLD) | PASS 10-24: **confirmed live** (2 of 2); no BLIND cast came before it died, so the rBlind half is unseen |
+| L3b | a Metal Cap of Seeing (rBlind) worn, two Illusionists 5 off (L3's rBlind half) | "You are unaffected!" after each BLIND cast | **not stageable yet** [10-26: L3b] |
+
+### M: mission regressions; H: the hot swap (`setpiece_mh.py`)
+
+| id | scene | pass when | status |
+|---|---|---|---|
+| M1 | a Brown mold (confuses: never fought) summoned beside a painted `>` 6 squares off, `goal dive` one level down (m25's 2-minute loop) | down those stairs within 45 s, `>` pressed nowhere else | PASS 10-25 [10-24: M1] |
+| M2 | a forged wand on floor Dive04 sees 13-20 squares off, a `>` painted 3 squares the other way, `goal dive` (the user's m29 `?`: a wand left 12 squares off) | the wand fetched, then down within 60 s | FAIL 11-02 ("a site", three in a row); last PASS 11-02 20:20 (16 of 31) [10-25: M2] |
+| M3 | a Moaning spirit (invisible, passes walls, +10, TOUCH:LOSE_DEX: m29's and m30's drainer) summoned 2 off, a `>` painted 6 off, no orders | after a drain, off the level within 30 s | PASS 10-25: drained at 5.4 s, left at 8.8 s |
+| M4 | a crowd round Dive04 in a room (the Advisor's estimator memo) | no HP cure with 2+ adjacent; teleport not Phase with 4+ about; lowest HP >= 40% | PASS 10-25, both ways, but neither reached an emergency [10-25: M4] |
+| M5 | a confusing breeder swarm (m55: Hummerhorns kept Dive04 confused 15 minutes at 800 ft): Hummerhorns round Dive04, AC lowered (`order autowear=off`, armour off), `goal dive` once confused | a long confusion cured by the Pilot within 20 s, at most 4 cures, down the painted '>' within 120 s, HP >= 60% | **not reliably stageable**; **verified live instead (10-28 08:53-09:00)** [10-28: M5] |
+| H1 | the hot swap (`tools/pilot/hotswap.sh`) mid-trip: a trip plan working the level, a Cave orc 3 off; freeze, swap, compare before the thaw | swapped while frozen; the new Pilot sees Dive04 in place, same HP, the monsters where they were; the plan resumes and acts after the thaw | PASS 10-25: 4.3 s swap, first act 0.4 s after the thaw; logins work while frozen |
+| H1r | H1 with a Word of Recall read just before | the recall still lands | PASS 10-25 [10-25: H1r] |
 
 ## Tools
 
@@ -93,46 +126,56 @@ for warm-blooded ones. Farther off, the order is rightly held as stale.
   screen (the DM menu, 13) stays open while keys are queued, and its redraws arrive as `special` events.
 - `charsave.sh save|restore NICK TAG`: see the orphan rule below.
 
-## The orphan rule (why a restore waits)
+## Findings log
 
-A dropped connection doesn't remove a character from the world. It stays there, orphaned and vulnerable, until it has
-been idle 15 s, or at once in town (`net-server.c` `player_drop`; the idle timer in `dungeon.c`). Only then is it saved
-and freed (`player_leave`). **A login before that resumes the character in memory and ignores the savefile.** The
-savefile's time proves nothing: the server also saves every player, orphans too, every few minutes. So `charsave.sh`
-waits 20 s after the logout.
+### Staging facts (learned the hard way)
 
-The first harness runs restored nothing for this reason, and Dive04 carried their effects over, costing a Word of
-Recall and a ration. It was then restored properly from the first snapshot.
+- **The orphan rule (why a restore waits; 10-23).** A dropped connection doesn't remove a character from the world. It
+  stays there, orphaned and vulnerable, until it has been idle 15 s, or at once in town (`net-server.c`
+  `player_drop`; the idle timer in `dungeon.c`). Only then is it saved and freed (`player_leave`). **A login before
+  that resumes the character in memory and ignores the savefile.** The savefile's time proves nothing: the server
+  also saves every player, orphans too, every few minutes. So `charsave.sh` waits 20 s after the logout. The first
+  harness runs restored nothing for this reason, and Dive04 carried their effects over, costing a Word of Recall and
+  a ration. It was then restored properly from the first snapshot.
+- **A repeat kill of a unique drops nothing and gives no XP** (`xtra2.c` 'cheeze'; 10-23): use uniques the character
+  hasn't killed. Dive04 has killed Brodda, Bullroarer, Orfax, Wormtongue and Farmer Maggot. A restore resets
+  `r_killed`, since it lives in the savefile.
+- **The DM's summons come with their escorts** (10-23). Lagduf brought 27 orcs, Mughash 24 Kobold shamans and a Wolf
+  chieftain 38 wolves, so the run turns into a band fight. A3 now uses a Sabre-tooth tiger (+10, no escort).
+- **In town** (10-23) the open ground shows as ' ' in Dive04's view, and Gandalf can't walk through the buildings
+  (`gandalf_to` steps round them).
+- **Going up to town and back doesn't free a level** (10-23): the server keeps empty levels a while, with any monster
+  left on them (a leftover Ibun spoiled an A3 run). Runs rotate over 300-650 ft (`runs/setpieces/depths.json`), the
+  least recently used first.
+- **The Forge's items come out identified** (10-23): C8 (detecting Free Action from unidentified boots) can't be staged
+  with it. The unit test `ability_proofs` covers the inference.
+- **The Forge writes into Gandalf's pack slot a,** destroying whatever was there (the user allows it, 2026-10-24).
+  `forge(kind, ego, number, pval)`; `give_item` forges, drops it beside Dive04 and fetches it. Plusses come out
+  known, but a flavour Dive04 hasn't learnt stays unknown ("an Azurite Ring (+5)"); EASY_KNOW rings are learnt
+  on wearing, so C8 still can't be staged with a ring.
+- **A unique exists once** (10-23): a second summon fails silently while the first lives on another level (A4:
+  Wormtongue; A2I: a second Ulwarth). A4's first "pass" was scored on nothing, so the run now checks he was seen.
+- **The summon is slow** (10-23): the Pilot's own fighting kills a monster summoned beside it in the seconds before an
+  order, and a summon (menu and hook cleanup) takes longer than a hunt waits for its target. Orders now go in the
+  instant the monster lands (A7 staging).
 
-## Found by the harness (fixed)
+### 2026-10-23: the first runs (step 4)
 
 - **Light:** with no light worn in the dungeon after an unexpected recall, the light keeper waited (5-60 s, and never
   with a monster adjacent). A7 fought a Hill giant in the dark. Now it wields one at once.
 - **Hunger:** Satisfy Hunger scrolls weren't eaten. The town kit counts them as food, so with the ration gone Dive04
   went Weak and recalled "for lack of food" with four in the pack. Now the reflex reads one.
-- **A7 staging:** the Pilot's own fighting kills a monster summoned beside it in the seconds before an order, and a
-  summon (menu and hook cleanup) takes longer than a hunt waits for its target. Orders now go in the instant the
-  monster lands.
+- **A7 staging:** the summon-is-slow staging fact above.
 
-## Staging facts (learned the hard way)
+### 2026-10-23: walk away (A8o, A8w; observed, then changed by the user)
 
-- **A repeat kill of a unique drops nothing and gives no XP** (`xtra2.c` 'cheeze'): use uniques the character
-  hasn't killed. Dive04 has killed Brodda, Bullroarer, Orfax, Wormtongue and Farmer Maggot. A restore resets
-  `r_killed`, since it lives in the savefile.
-- **The DM's summons come with their escorts.** Lagduf brought 27 orcs, Mughash 24 Kobold shamans and a Wolf chieftain
-  38 wolves, so the run turns into a band fight. A3 now uses a Sabre-tooth tiger (+10, no escort).
-- **In town** the open ground shows as ' ' in Dive04's view, and Gandalf can't walk through the buildings
-  (`gandalf_to` steps round them).
-- **Going up to town and back doesn't free a level:** the server keeps empty levels a while, with any monster left on
-  them (a leftover Ibun spoiled an A3 run). Runs rotate over 300-650 ft (`runs/setpieces/depths.json`), the least recently used first.
-- **The Forge's items come out identified:** C8 (detecting Free Action from unidentified boots) can't be staged with
-  it. The unit test `ability_proofs` covers the inference.
-- **The Forge writes into Gandalf's pack slot a,** destroying whatever was there (the user allows it, 2026-10-24).
-  `forge(kind, ego, number, pval)`; `give_item` forges, drops it beside Dive04 and fetches it. Plusses come out
-  known, but a flavour Dive04 hasn't learnt stays unknown ("an Azurite Ring (+5)"); EASY_KNOW rings are learnt
-  on wearing, so C8 still can't be staged with a ring.
+- A8o showed the danger rule fleeing a summoner on sight, and with no stairs known reading Word of Recall at full HP. The
+  user: walk away if we just walked into its sight; other action only if walking away isn't safe. Now the `WalkAway`
+  goal (A8w). A summoner the server's list names before the map shows it gets 1.5 s for its position (A8w's first run
+  fled from the list alone). Walking away needs walked ground: after a recall or teleport arrival there is none, so the
+  existing escapes apply.
 
-## Found by the batch of 2026-10-23 (fixed)
+### 2026-10-23: the batch (A1, A2, A2L, A6, C3; fixed)
 
 - **Lugdush and Ugluk triggered no danger rule,** yet the duel simulator expects ~350-440 HP lost. New danger
   reason: the simulator's average loss is over 80% of current HP (A2L passes on it).
@@ -146,7 +189,7 @@ Recall and a ration. It was then restored properly from the first snapshot.
   fetches the items within 3 squares of the kill. Its first version marked the squares in the pickup's junk set
   and so never picked them up (C3's last FAIL).
 
-## From the Advisor's emergency-threshold memo (rulebook r4)
+### 2026-10-23: the Advisor's emergency-threshold memo (rulebook r4)
 
 - **The emergency rule's worst-case** is now the adjacent monsters' worst melee in the next 3 player turns at our AC
   (`worst_3turns_acNN`, a caster's `spell_max` if higher), summed. It was 2.5 raw worst rounds. The hunt check uses
@@ -158,7 +201,7 @@ Recall and a ration. It was then restored properly from the first snapshot.
 - **Unit tests for C4 and C5**, which live staging would need many forged items for (each forge destroys a stack in
   Gandalf's pack): `pack_full_makes_room`, `loot_band_stops_looting`.
 
-## D6: walking was capped at ~1.5 tiles/s; server runs aren't (fixed 2026-10-23)
+### 2026-10-23: D6 -- walking was capped at ~1.5 tiles/s; server runs aren't (fixed)
 
 Each step costs a player turn (~0.65 s at normal speed), so step-by-step walking can't beat ~1.5 tiles/s. The server's
 time factor runs **5x** while the player is running with nothing in line of sight (xtra2.c `base_time_factor`,
@@ -167,7 +210,7 @@ now sends `pathfind Y X` (mover.py `path_run`) for a leg of 4+ steps with no mon
 along its own path, and stops it like a free run. A square where a pathfind didn't move us isn't tried again. D6: best
 5-s window 4.2 tiles/s, 3.2 overall (1.4 before). Regressions A3, A9 and the unit tests still pass.
 
-## Found by D3 (fixed)
+### 2026-10-23: D3 (fixed)
 
 - **Walled in with known ground out of reach** (a teleport or a trap door into a pocket), Explore ended with
   "frontier unreachable" without searching a dead end. Now it searches the reachable dead ends first (15 each).
@@ -178,10 +221,66 @@ along its own path, and stops it like a free run. A square where a pathfind didn
   ("stuck"). Searches were also sent every 0.45 s, faster than a player turn (~0.65 s), so they queued on the
   server and the move after them waited behind them. Both fixed.
 
-## Observed, then changed (the user)
+### 2026-10-23: A5
 
-- A8o showed the danger rule fleeing a summoner on sight, and with no stairs known reading Word of Recall at full HP. The
-  user: walk away if we just walked into its sight; other action only if walking away isn't safe. Now the `WalkAway`
-  goal (A8w). A summoner the server's list names before the map shows it gets 1.5 s for its position (A8w's first run
-  fled from the list alone). Walking away needs walked ground: after a recall or teleport arrival there is none, so the
-  existing escapes apply.
+- A5s: the old rule fled down known stairs at any HP above `think_hp`; now an unseen caster is news only above 80%
+  unless it may be a paralysing gaze (unit `a5_unseen_caster_news_above_80`).
+
+### 2026-10-24: A2f (fixed)
+
+- A2f passed after a fix: the flee-failed escape counted only monsters within 5 squares, and A2I's Ibun at 12 got 7 s
+  of free fire bolts and Slow.
+
+### 2026-10-24: L2 (the claim is wrong in practice)
+
+- L2 ~10x sooner than standing **FAILS**: the fuel (sampled every second) ran at 1x through a 6-s rest and the recall
+  came after ~25 ticks (15-16 s). The speed-up needs no *awake monster in line of sight, seen or not*
+  (`monsters_in_los`); after a fight at 650 ft there usually is one in the dark. The Advisor's CON-ring swap can't set
+  HP here: MAngband scales HP with max HP (`xtra1.c calc_hitpoints`). L2g (Gandalf off the level) fails the same, so
+  his bubble wasn't the cause.
+
+### 2026-10-24: M1 (fixed)
+
+- M1 FAILED as m25 did, looping 17,7 <-> 16,13; PASS after the fix: 8.7 s.
+
+### 2026-10-25: M2 (fixed)
+
+- M2 FAILED three ways on the way to the fix: a far Cave lizard blocked looting for good; a Jackal pack cut the walk
+  short and the dive left; a Rock lizard's fight ended the walk and the dive took over. PASS: fetched at 5.3 s, down at
+  10.5 s.
+
+### 2026-10-25: H1r (fixed)
+
+- H1r FAILED first: the new Pilot didn't know a recall was pending, its plan read a second scroll and cancelled it;
+  fixed with `recall.json`; PASS: in town 17 s after the thaw.
+
+### 2026-10-25: M4
+
+- M4 PASSed both ways, but neither reached an emergency: four Uruks and a priest were beaten at 72% with Berserk; an
+  Umber hulk/hound crowd made the danger rule recall at once, 97% HP -- the memo's rules are unit-tested.
+
+### 2026-10-26: L3b (not stageable yet)
+
+- The DM forge returns a plain "Metal Cap [0]" for kind 95 + ego 30 (with or without pval 2; the boots + Free Action
+  ego 58 works), so the cap is never picked up (2 runs, 10-26).
+
+### 2026-10-28: M5 (not reliably stageable; verified live)
+
+- 6 runs (8-30 Hummerhorns, AC 60-76, up to 90 s) never confused Dive04: they move erratically 75% of the time
+  (RAND_50 \| RAND_25) and a CONFUSE bite (power 10) rarely beats AC; m55's needed minutes of breeding.
+- **Verified live instead (10-28 08:53-09:00)**, in the scene a killed run left: confused among 26-30, no goal ->
+  nothing for 40 s (fixed: the check runs every tick); then confused 8 s -> CCW -> 0.6 s later the staff teleport from
+  (3,76) to (25,13), clear of the swarm; a react-thieves hunt then dropped the dive (fixed: the goal resumes).
+
+### 2026-10-29: A2, A2I, A2L are stale (refactor list A25)
+
+- The 10-29 re-runs of A2I and A2L FAIL only "Word of Recall within 2 s": Dive04 (clvl 29) now out-levels Ibun and
+  Lugdush (and Ulwarth), so no rule calls for a recall; it drank Speed + Berserk, killed the unique and its band
+  (lowest HP 76-80%) and fetched the drop. The Pilot was right; the scenarios need a unique above our level (rescaling
+  them waits until we have implemented the test server: the user, 10-29).
+
+### 2026-11-02: the A2 criterion follows the danger call
+
+- The A2 uniques are no longer above clvl-29 Dive04 (the Advisor's `to_architect/2026-11-02-khim.md`). If a danger rule
+  fires: Word of Recall within 2 s of first sight, lowest HP ≥ 40%; if none fires: a hard fight with Speed + Berserk,
+  lowest HP ≥ 60%. A2K PASS 11-02.

@@ -19,8 +19,8 @@ commands in [client-server.md](client-server.md); the viewer's freeze key in [ob
 
 | piece | what | who runs it | live / stale |
 |---|---|---|---|
-| `harness/unit.py` | 143 offline unit cases of the Pilot's decision code | the Architect, after every Pilot or rulebook change | live; the regression gate (all must pass) |
-| `harness/setpiece.py` | 39 live scenarios staged on the test server and scored | the Architect, by hand, one at a time | live code, but last batch 10-23..10-28 (M2 re-run 10-29); not re-run as a suite since |
+| `harness/unit.py` (+ `fixtures.py`, `unit_<family>.py`) | 145 offline unit cases of the Pilot's decision code | the Architect, after every Pilot or rulebook change | live; the regression gate (all must pass) |
+| `harness/setpiece.py` (+ `setpiece_run.py`, `setpiece_a/bcd/l/mh.py`) | 39 live scenarios staged on the test server and scored | the Architect, by hand, one at a time | live code, but last batch 10-23..10-28 (M2 re-run 10-29); not re-run as a suite since |
 | `harness/dm.py` | scripts the DM character Gandalf (summon, paint terrain, forge, pull a player) | `setpiece.py` | live |
 | `harness/charsave.sh` | save/restore a character's savefile + Pilot state | `setpiece.py`; the Architect for checkpoints | live |
 | `rulebook/` | 27 CSV tables (26 from the Advisor + `monsters_raw.csv`) + `rule.py`, `fight_sim.py` | the Pilot (loads tables), the Navigator (`pilotctl rule`), the Architect | live; synced 2026-10-24, identical to the Advisor's copy today |
@@ -39,18 +39,34 @@ commands in [client-server.md](client-server.md); the viewer's freeze key in [ob
 The harness turns the Advisor's set-piece memo (`memos/2026-10-24-setpieces.md` and addendum) into tests, in three
 kinds: **U** unit cases on constructed states (`unit.py`), **L** live set-pieces on the test server (`setpiece.py`),
 **R** replays (not built: the Pilot logs thinned status/pack/map replies to `runs/pilot/NICK/state.jsonl` so a state
-could be rebuilt, but there is no replay runner). `harness/README.md` is the long-form record: each set-piece's pass
-criteria and result, staging facts and the bugs the harness found; read it before writing a new set-piece.
+could be rebuilt, but there is no replay runner). `harness/README.md` is the long-form record: a reference table of
+the set-pieces (what each stages, its pass criteria, its status) and a dated findings log (staging facts, the bugs the
+harness found); read it before writing a new set-piece.
+
+**Files** (E8, 2026-11-03: `unit.py` and `setpiece.py` split by family; the commands are unchanged):
+
+| file | holds |
+|---|---|
+| `unit.py` | the unit runner: imports the family files (`FAMILIES`), runs every `@case` in `ORDER` (the order the cases were written in), `main()` (name filter, `--golden`) |
+| `fixtures.py` | `P` (pilot.py), RACES/BYNAME, the `@case` registry `CASES`, `G`, `W`, `pilot()`, `PHASE`, `pilot_ast()`, the helpers two families share (`_Stub`, `_quiet_level`), the golden report text (`GOLDEN_REPORTS`, `render_reports`) |
+| `unit_<family>.py` | the cases, one file per family (the table below); a helper only one family uses lives in its file (`_Mover` in loot, `_dive_on_back_stairs` in levels, `_town_memory` in house, `_trip_on_level` in trips, `_dive04_character` in gear) |
+| `golden/reports.txt` | the golden report text (`reports_match_golden`) |
+| `setpiece.py` | the set-piece runner: `SETPIECES` (ID -> function, the `list` order), `TOWN`, `main()` |
+| `setpiece_run.py` | the framework: paths, `ctl`, `pilot_view`, `log_since`, `messages_since`, `hp_now`, `gold_now`, `first_seen`, the map helpers (`floor_near`, `clear_line`, `step_dir`, `find_pocket`, `find_floor_block`), the `Run` class, `give_item`/`con_swap`, FREEZE/HOTSWAP, WOR_KIND, `fresh_depth` |
+| `setpiece_a.py`, `setpiece_bcd.py`, `setpiece_l.py`, `setpiece_mh.py` | the scenario functions: group A; B, C and D; L; M and H |
 
 ### `unit.py` -- offline unit cases
 
-**What:** 143 functions decorated `@case`, each building a situation by hand and calling the real Pilot decision code
-on it, returning `(ok, detail)` (one, `emergency_notices_say_if_action`, is a static check of the Pilot's source: `pilot_ast()` parses pilot.py and the modules split out of it, combat.py
+**What:** 145 functions decorated `@case` (in `unit_<family>.py`), each building a situation by hand and calling the
+real Pilot decision code on it, returning `(ok, detail)` (one, `emergency_notices_say_if_action`, is a static check of the Pilot's source: `pilot_ast()` parses pilot.py and the modules split out of it, combat.py
 and commands.py among them). No
 server, no client, no network.
 
-**How it works:** it imports `pilot/pilot.py` (as `P`), `glyphs` and `itemvalue`, loads the monster races merged with
-the rulebook (`glyphs.load_rulebook`). `W` is a fake World: Dive04 as of 2026-10-23 (clvl 22, 265 HP, 300 ft, a Spear
+**How it works:** `fixtures.py` imports `pilot/pilot.py` (as `P`) and `glyphs` (the family files that use
+`itemvalue` import it themselves), and loads the monster races merged with the rulebook (`glyphs.load_rulebook`).
+`unit.py` imports the family files, whose `@case` functions register in `CASES`, sorts them into `ORDER` (a case not
+listed runs after the listed ones; a listed name with no case, or two cases of one name, stop the run) and runs them.
+`W` is a fake World: Dive04 as of 2026-10-23 (clvl 22, 265 HP, 300 ft, a Spear
 (+5,+7), AC 56, 172 gold) unless a case passes other HP, pack, worn items or monsters. `pilot(w)` makes a `Pilot` with
 `Pilot.for_test(w, ...)` (every attribute at its default from `_init_state()`, `log` a no-op, no client, rundir or
 decisions.jsonl: E6, 2026-11-02), sets the case's own (orders, deepest, drained stats, unique names), records `notify`
@@ -63,29 +79,31 @@ small fakes (a `_Mover`, a town memory, a quiet level) or write temporary state 
 ```
 cd github/tools/harness && python3 unit.py          # all cases; exit status 1 if any fails
 python3 unit.py hunt                                # only cases whose name contains "hunt"
+python3 unit.py --golden                            # rewrite golden/reports.txt after a report change on purpose
 ```
 
 Output: one `PASS|FAIL name: detail` line per case and a total. No files written by the suite itself. There is no
-`--help` (an argument is taken as a name filter). **Run today (2026-10-29, after session 10's changes): 121 passed, 0 failed.**
+`--help` (an argument is taken as a name filter). **Run 2026-11-03 (2.44.14): 145 passed, 0 failed.**
 The old handoffs (`history/handoffs-s1-s9.md`) record an intermittent failure (~1 in 20 runs, twice, not reproduced since).
 
-**Case families** (names are descriptive; grep `unit.py` for the full list):
+**Case families** (names are descriptive; one file each, `unit_<family>.py`; grep `unit_*.py` for the full list):
 
-| family | examples |
+| family (file) | examples |
 |---|---|
-| Hunt check and fight vetoes | `hunt_hill_giant_by_hp`, `hunt_ranger_summoner`, `hunt_qualitative_vetoes`, `hunt_repeat_unique`, `engage_nearby_monster_only_when_appropriate`, `disenchanter_beside_path_not_fought`, `weapon_numbers_by_geareval` |
-| Danger, emergency and escapes | `a5_unseen_caster_news_above_80`, `estimator_memo_rules`, `emergency_speed_first_berserk_hard_fights`, `speed_at_hard_fight_start_and_kit`, `flee_at_max_depth_teleports`, `flee_maps_before_unexplored`, `flee_replans_after_a_phase`, `why_explains_the_last_escape`, `escape_landing_and_trapdoor_notes`, `emergency_loop_counts_actions_only`, `emergency_notices_say_if_action` |
-| Status effects | `fear_cure_order`, `blind_cured_when_it_matters`, `blind_escape_uses_the_staff_and_sees_refused_reads`, `recall_cures_confusion_first`, `confusion_lock_is_cured`, `confusion_window_teleports`, `unseen_drainer_leaves`, `breeder_swarm_leaves`, `breeder_swarm_pin_teleports_once`, `theft_is_news` |
-| Bands and levels | `band_leave_finds_stairs`, `bands_by_expected_cost_weak_drainers_news`, `band_condition_only_while_live`, `quiet_level_left`, `quiet_wait_finds_a_spot_and_wakes`, `stairs_beside_mold`, `fled_stairs_refused_two_minutes_only`, `refused_stairs_dont_end_explore`, `structures_on_the_aligned_lattice`, `run_loop_walks` |
-| Item values and identification | `jewellery_unknown_plusses`, `bracketed_ego_valued`, `unique_drop_feeling`, `junk_kinds_from_rulebook`, `c2_unknown_charges`, `c6_ambiguous_names`, `c7_unknown_ring_not_worn`, `c9_identify_good_first`, `ability_proofs`, `asleep_flags_from_look_answers`, `junk_one_rule`, `pay_cut_in_shopmath_and_aware` |
-| Looting, pack room, destroying | `unique_drop_fetched`, `loot_band_stops_looting`, `loot_owed_and_valuables`, `dive_loots_beside_its_path`, `pack_full_makes_room`, `weight_limit_sheds_cheap_heavy_loot`, `unique_drop_pushes_out_only_cheap`, `floor_junk_destroyed_when_quiet`, `last_food_never_destroyed_and_heavy_loot_left`, `navigator_rules_review_and_nopickup`, `pickup_none_no_loot_walks` |
-| Gear (evaluator, loadout, review) | `gear_model_matches_dive04_sheet`, `gear_evaluator_no_loss_rules`, `gear_score_rests_and_paired_error`, `ehp_counts_ac_hp_and_resists`, `proxy_counts_resists_by_ehp`, `ehp_gate_and_tie_break`, `gear_review_finds_free_slot`, `better_ring_replaces_worn`, `gear_line_keeps_ability_armour`, `ability_weapon_kept`, `ability_armour_kept`, `loadout_moves_free_action`, `fullest_lantern_worn`, `speed_potion_over_junk_weapon`, `gear_items_parsed_from_names`, `rings_of_damage_and_accuracy`, `better_ac_by_geareval` |
-| Shops and town | `shop_pay_by_owner`, `c1_valuable_sale_refused`, `town_kit_tiers`, `town_kit_townfarms_when_broke`, `crutch_devices_sold_on_test`, `town_makes_room_before_buying`, `town_identifies_scrolls_in_hand`, `town_waits_for_restock`, `ask_price_and_buy_commas`, `empty_devices_recharged_or_sold`, `enchant_armour_to_the_stopping_place`, `plan_town_survives_the_house_tile` |
-| House bank and stash | `house_bank_round_trip`, `house_bank_in_the_wilderness`, `house_keeps_the_stash`, `house_walk_stops_at_the_crossing`, `tavern_stash_and_one_lantern`, `tavern_stash_drops_inside`, `stash_in_house_json_only` |
-| Trips, supplies, clocks | `trip_conditions_parse`, `trip_clock_condition_across_midnight`, `trip_dmin_counts_dungeon_minutes`, `trip_level_state_survives_restart`, `trip_recalls_when_a_level_wont_let_go`, `e1_supply_gate`, `supply_minutes_and_quiet_cap`, `provisions_one_food_no_oil`, `food_warning_and_trip_rate`, `room_eat_never_gorges`, `game_clock_from_fuel`, `supplies_one_kind_with_fields` |
-| Orders, reports, rates, shadow | `command_table_methods_exist`, `command_table_fields_valid`, `command_table_help_lists_every_command`, `command_table_architect_only_refused` (E2: the command table), `f1_stale_order`, `react_hunt_resumes_the_goal`, `actions_say_who`, `ask_quiet_waits_for_the_answer`, `ask_limits_lifted_by_the_flag_file`, `item_commands_wait_for_the_pack`, `mission_label_survives_restart`, `prep_report_sections`, `rates_gold_found_not_shopping`, `xp_per_gold_rolling`, `shadow_estimator_logs`, `shadow_agrees_by_the_action_taken`, `hard_fight_shadow_once_per_fight` |
+| Hunt check and fight vetoes (`unit_hunts.py`) | `hunt_hill_giant_by_hp`, `hunt_ranger_summoner`, `hunt_qualitative_vetoes`, `hunt_repeat_unique`, `engage_nearby_monster_only_when_appropriate`, `disenchanter_beside_path_not_fought`, `weapon_numbers_by_geareval` |
+| Danger, emergency and escapes (`unit_danger.py`) | `a5_unseen_caster_news_above_80`, `estimator_memo_rules`, `emergency_speed_first_berserk_hard_fights`, `speed_at_hard_fight_start_and_kit`, `flee_at_max_depth_teleports`, `flee_maps_before_unexplored`, `flee_replans_after_a_phase`, `why_explains_the_last_escape`, `escape_landing_and_trapdoor_notes`, `emergency_loop_counts_actions_only`, `emergency_notices_say_if_action` |
+| Status effects (`unit_status.py`) | `fear_cure_order`, `blind_cured_when_it_matters`, `blind_escape_uses_the_staff_and_sees_refused_reads`, `recall_cures_confusion_first`, `confusion_lock_is_cured`, `confusion_window_teleports`, `unseen_drainer_leaves`, `breeder_swarm_leaves`, `breeder_swarm_pin_teleports_once`, `theft_is_news` |
+| Bands and levels (`unit_levels.py`) | `band_leave_finds_stairs`, `bands_by_expected_cost_weak_drainers_news`, `band_condition_only_while_live`, `quiet_level_left`, `quiet_wait_finds_a_spot_and_wakes`, `stairs_beside_mold`, `fled_stairs_refused_two_minutes_only`, `refused_stairs_dont_end_explore`, `structures_on_the_aligned_lattice`, `run_loop_walks` |
+| Item values and identification (`unit_items.py`) | `jewellery_unknown_plusses`, `bracketed_ego_valued`, `unique_drop_feeling`, `junk_kinds_from_rulebook`, `c2_unknown_charges`, `c6_ambiguous_names`, `c7_unknown_ring_not_worn`, `c9_identify_good_first`, `ability_proofs`, `asleep_flags_from_look_answers`, `junk_one_rule`, `pay_cut_in_shopmath_and_aware` |
+| Looting, pack room, destroying (`unit_loot.py`) | `unique_drop_fetched`, `loot_band_stops_looting`, `loot_owed_and_valuables`, `dive_loots_beside_its_path`, `pack_full_makes_room`, `weight_limit_sheds_cheap_heavy_loot`, `unique_drop_pushes_out_only_cheap`, `floor_junk_destroyed_when_quiet`, `rations_by_need_and_heavy_loot_left`, `navigator_rules_review_and_nopickup`, `pickup_none_no_loot_walks` |
+| Gear (evaluator, loadout, review) (`unit_gear.py`) | `gear_model_matches_dive04_sheet`, `gear_evaluator_no_loss_rules`, `gear_score_rests_and_paired_error`, `ehp_counts_ac_hp_and_resists`, `proxy_counts_resists_by_ehp`, `ehp_gate_and_tie_break`, `gear_review_finds_free_slot`, `better_ring_replaces_worn`, `gear_line_keeps_ability_armour`, `ability_weapon_kept`, `ability_armour_kept`, `loadout_moves_free_action`, `fullest_lantern_worn`, `speed_potion_over_junk_weapon`, `gear_items_parsed_from_names`, `rings_of_damage_and_accuracy`, `better_ac_by_geareval` |
+| Shops and town (`unit_town.py`) | `shop_pay_by_owner`, `c1_valuable_sale_refused`, `town_kit_tiers`, `town_kit_townfarms_when_broke`, `crutch_devices_sold_on_test`, `town_makes_room_before_buying`, `town_identifies_scrolls_in_hand`, `town_waits_for_restock`, `ask_price_and_buy_commas`, `empty_devices_recharged_or_sold`, `enchant_armour_to_the_stopping_place`, `plan_town_survives_the_house_tile` |
+| House bank and stash (`unit_house.py`) | `house_bank_round_trip`, `house_bank_in_the_wilderness`, `house_keeps_the_stash`, `house_walk_stops_at_the_crossing`, `tavern_stash_and_one_lantern`, `tavern_stash_drops_inside`, `stash_in_house_json_only` |
+| Trips, supplies, clocks (`unit_trips.py`) | `trip_conditions_parse`, `trip_clock_condition_across_midnight`, `trip_dmin_counts_dungeon_minutes`, `trip_level_state_survives_restart`, `trip_recalls_when_a_level_wont_let_go`, `e1_supply_gate`, `supply_minutes_and_quiet_cap`, `provisions_one_food_no_oil`, `food_warning_and_trip_rate`, `room_eat_never_gorges`, `game_clock_from_fuel`, `supplies_one_kind_with_fields` |
+| Orders, reports, rates, shadow (`unit_orders.py`) | `f1_stale_order`, `react_hunt_resumes_the_goal`, `actions_say_who`, `ask_quiet_waits_for_the_answer`, `ask_limits_lifted_by_the_flag_file`, `item_commands_wait_for_the_pack`, `mission_label_survives_restart`, `prep_report_sections`, `rates_gold_found_not_shopping`, `xp_per_gold_rolling`, `shadow_estimator_logs`, `shadow_agrees_by_the_action_taken`, `hard_fight_shadow_once_per_fight` |
+| Code structure: the refactor's tables, the golden report (`unit_structure.py`) | `command_table_methods_exist`, `command_table_fields_valid`, `command_table_help_lists_every_command`, `command_table_architect_only_refused` (E2: the command table), `reflex_escape_step_lists` (E3), `town_plan_step_tables` (E5), `reports_match_golden` (E1) |
 
-Gotcha: because `pilot()` sets attributes by hand, a new attribute read by the decision code but set only in
+Gotcha: because `pilot()` (`fixtures.py`) sets attributes by hand, a new attribute read by the decision code but set only in
 `Pilot.__init__` makes cases fail with `AttributeError`; add it to `pilot()`.
 
 ### `setpiece.py` -- live set-pieces
@@ -99,13 +117,13 @@ the first docstring line. `--depth` defaults to the least recently used of 300-6
 B4/B4w run in town. `--keep` skips the restore. `--hpwarn N` restarts the Pilot with that option (via `PILOT_ARGS`) for
 an A/B. A run takes a few minutes.
 
-**How one is staged and run** (`Run` class):
+**How one is staged and run** (`Run` class, `setpiece_run.py`):
 
 1. `setup`: `charsave.sh save Dive04 TAG` (parks the Pilot, waits out the orphan timeout, copies the savefile and
    Pilot state, restarts the Pilot); `pilotctl mission start sp-TAG navigator=harness` (so the run is labelled as a
    mission); connects as Gandalf (`dm.DM`), clears the DM hooks, takes Gandalf up to town and back down to the chosen
    depth so the level is fresh.
-2. The scenario function (`a7(run)` etc.): `bring_dive04` (DM Invoke: a recall to Gandalf's depth, then a pull to his
+2. The scenario function (`a7(run)` etc., in `setpiece_<group>.py`): `bring_dive04` (DM Invoke: a recall to Gandalf's depth, then a pull to his
    square); `place(race, dist)` walks Gandalf to a floor square `dist` from Dive04 (from Dive04's map, or with
    `gmap=True` from Gandalf's full-level map with a clear line of sight) and summons there; `give_item` forges an item
    and has Dive04 fetch it; terrain is painted with `dm.paint`. The order under test goes in through `ctl(...)`
@@ -118,15 +136,15 @@ an A/B. A run takes a few minutes.
 
 **The set-pieces** (39 in `SETPIECES`; pass criteria and history in `harness/README.md`; status = latest run):
 
-| group | IDs | tests | latest |
+| group (file) | IDs | tests | latest |
 |---|---|---|---|
-| A: danger, hunts, escapes | A1 (trip plan vs orc groups), A2/A2I/A2K/A2L (an out-of-depth unique adjacent, no stairs: recall in 2 s), A2f (a rated caster 8 off), A3 (a goto held while a tiger is adjacent), A4 (Wormtongue near stairs), A5/A5s (unseen caster: no level change above 80% HP), A6 (blinking summoner, Phase budget), A7 (hunt a Hill giant), A7f (fear answered), A8/A8o/A8w (summoner hunt refused / overridden / walked away from), A9 (recall arrival: Door/Stair Location first) | danger rule, hunt check, WalkAway, escapes | all PASSed at least once; the latest A2I (10-24) and A2L (10-25: Lugdush never seen) runs FAIL and weren't re-run (why unverified); A4 not stageable (Wormtongue killed, a unique exists once) |
-| B: hazards | B1 (mold beside path), B2 (STR-draining ants), B3 (Brigand thief), B4/B4w (town gold thief, idle/walking), B6 (painted trap on the path) | avoidance, drain response, thieves, traps | all PASS |
-| C: items/uniques | C3 (hunt Ulfast, fetch his drop), C8 (unidentified Free Action boots vs a Floating eye) | drop fetching, ability inference | C3 PASS; C8 not stageable (the Forge's items come out identified; unit `ability_proofs` covers it) |
-| D: movement | D3 (walled in behind a secret door), D6 (explore speed >= 3 tiles/s) | explore, search, mover/pathfind | PASS |
-| L: rulebook claims checked live | L1 (Hill giant throws boulders), L2/L2g (resting speeds up recall), L3 (Free Action vs HOLD), L3b (rBlind cap) | game facts | L1, L3 PASS; L2/L2g FAIL (the claim is wrong in practice: any awake monster in LOS stops the speed-up); L3b not stageable (forge gives a plain cap) |
-| M: mission regressions | M1 (mold beside stairs loop), M2 (fetch a wand then dive), M3 (invisible DEX drainer), M4 (crowd emergency rules), M5 (confusing breeder swarm) | bugs seen in missions | M1-M4 PASS; M5 not reliably stageable (verified live instead) |
-| H: hot swap | H1 (hotswap.sh mid-trip), H1r (with a recall pending) | `hotswap.sh` | PASS |
+| A: danger, hunts, escapes (`setpiece_a.py`) | A1 (trip plan vs orc groups), A2/A2I/A2K/A2L (an out-of-depth unique adjacent, no stairs: recall in 2 s), A2f (a rated caster 8 off), A3 (a goto held while a tiger is adjacent), A4 (Wormtongue near stairs), A5/A5s (unseen caster: no level change above 80% HP), A6 (blinking summoner, Phase budget), A7 (hunt a Hill giant), A7f (fear answered), A8/A8o/A8w (summoner hunt refused / overridden / walked away from), A9 (recall arrival: Door/Stair Location first) | danger rule, hunt check, WalkAway, escapes | all PASSed at least once; the latest A2I (10-24) and A2L (10-25: Lugdush never seen) runs FAIL and weren't re-run (why unverified); A4 not stageable (Wormtongue killed, a unique exists once) |
+| B: hazards (`setpiece_bcd.py`) | B1 (mold beside path), B2 (STR-draining ants), B3 (Brigand thief), B4/B4w (town gold thief, idle/walking), B6 (painted trap on the path) | avoidance, drain response, thieves, traps | all PASS |
+| C: items/uniques (`setpiece_bcd.py`) | C3 (hunt Ulfast, fetch his drop), C8 (unidentified Free Action boots vs a Floating eye) | drop fetching, ability inference | C3 PASS; C8 not stageable (the Forge's items come out identified; unit `ability_proofs` covers it) |
+| D: movement (`setpiece_bcd.py`) | D3 (walled in behind a secret door), D6 (explore speed >= 3 tiles/s) | explore, search, mover/pathfind | PASS |
+| L: rulebook claims checked live (`setpiece_l.py`) | L1 (Hill giant throws boulders), L2/L2g (resting speeds up recall), L3 (Free Action vs HOLD), L3b (rBlind cap) | game facts | L1, L3 PASS; L2/L2g FAIL (the claim is wrong in practice: any awake monster in LOS stops the speed-up); L3b not stageable (forge gives a plain cap) |
+| M: mission regressions (`setpiece_mh.py`) | M1 (mold beside stairs loop), M2 (fetch a wand then dive), M3 (invisible DEX drainer), M4 (crowd emergency rules), M5 (confusing breeder swarm) | bugs seen in missions | M1-M4 PASS; M5 not reliably stageable (verified live instead) |
+| H: hot swap (`setpiece_mh.py`) | H1 (hotswap.sh mid-trip), H1r (with a recall pending) | `hotswap.sh` | PASS |
 
 **Gotchas** (more in `harness/README.md`, "Staging facts"):
 - **A snapshot restore covers the character, not the world** (2026-11-01). `charsave.sh` copies Dive04's savefile and

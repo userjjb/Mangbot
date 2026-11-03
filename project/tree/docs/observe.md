@@ -362,7 +362,7 @@ Market (store index 6) asks x3 and pays /3.
 | `SHOP_CUT`, `BUYERS`, `pay_cut(tval, chr, owners_seen, race, default)` | what a shop pays of an item's value: the best of the shops that buy the tval (`BUYERS`, by the Pilot's store numbers 1-7, never the Black Market), each by the owner last seen there, else that shop's average owner, at this CHR; `SHOP_CUT` (0.38) when none buys it. Moved from `Pilot.pay_cut` (D9, 2026-11-01) so the Pilot and the scorecard share one rule |
 
 Importers: `pilot.py` (the shop cut used in item values, sale records' fair pay), `scorecard.py`,
-`harness/unit.py` (a test), and the Advisor's `Advisor/data/rulebook/build_shops.py`, which imports it by the
+`harness/unit_town.py` and `harness/unit_items.py` (tests, run by `unit.py`), and the Advisor's `Advisor/data/rulebook/build_shops.py`, which imports it by the
 absolute path `/projectnb/jbrcs/mangband/github/tools/observe` -- **don't move or rename it**. The Advisor checked
 it against every identified sale: within 1 gold.
 

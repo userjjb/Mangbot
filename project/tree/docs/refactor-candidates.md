@@ -12,7 +12,7 @@ real attempts; D7 will merge the lists). C3, C4, C14 still await the user; group
 
 **Rules for every step**
 - Behaviour unchanged unless the item says otherwise and the user agreed (all of group A, and items marked *behaviour*).
-- After each step all 120 unit cases pass: `python3 tools/harness/unit.py`; Pilot changes also get a hotswap and one
+- After each step all unit cases pass (145 at 2.44.14): `python3 tools/harness/unit.py`; Pilot changes also get a hotswap and one
   set-piece before the next mission.
 - Advisor constraints: keep `tools/observe/shopmath.py` at its path (Advisor's `build_shops.py` imports it by absolute
   path); keep the log formats (decisions/events/state.jsonl kinds and fields, `levels/*.txt`, scorecards,
@@ -306,7 +306,7 @@ none is fixed. **[N]** = Navigator-facing.
 - **E7** `MangClient` lives in `tools/shopcat/mang.py` but pilot.py, harness/dm.py, observe/scribe.py import it via
   `sys.path` hacks: move to `tools/client/`, leave a shim. -- M/S -- **do**. **done (session 10, 2.44.3)**: `tools/client/mang.py`, a shim at `shopcat/mang.py`
 - **E8** `unit.py` (3,177 lines, 120 cases) -> files by family + `fixtures.py`; `setpiece.py` (1,492) -> `Run` framework
-  vs 39 scenarios; harness/README -> reference table + findings log. -- S-M/M -- **do** (unit count must stay 120).
+  vs 39 scenarios; harness/README -> reference table + findings log. -- S-M/M -- **do** (unit count must stay 120). **done (session 11, 2.44.14)**: `unit.py` -> runner (`FAMILIES`, `ORDER` = the old registration order) + `fixtures.py` + 12 `unit_<family>.py` (hunts, danger, status, levels, items, loot, gear, town, house, trips, orders, structure); `setpiece.py` -> entry (SETPIECES, `main`) + `setpiece_run.py` (`Run` and helpers) + `setpiece_a/bcd/l/mh.py`; harness/README -> reference table + dated findings log. Pure move (ast.dump-equal; the same 145 cases in order; `setpiece.py list`/`--help` byte-identical; equiv/dry identical). Live: B3, A6, A2K. Found: `con_swap` is dead; A2I/A2L not re-run under the 11-02 criterion; M2 staging fails ~half the time on site-finding.
 - **E9** scorecard.py `card()` (~170 lines) -> one function per group. -- S/S -- **do** (cards byte-identical). **done (session 10, 2.44.4)**: one function per group; cards byte-identical
 - **Skip:** move shopmath.py (Advisor constraint; shim only if ever needed); c-tool.c `tool_do_command` verb table (C
   rebuild, low value).

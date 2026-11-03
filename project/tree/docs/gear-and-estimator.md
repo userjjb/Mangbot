@@ -298,7 +298,7 @@ recall, the awake share from `look` answers (`p_awake`, `asleep_seen`), food fro
   `before_next_act` = the answer arrived before the Pilot's next action.
 - **It never acts.** No code reads `choice` to change behaviour. The records feed `observe/scorecard.py` (the
   `est` / `estHF` agreement columns and the "H estimator" line), the Advisor's replay studies, and `harness/unit.py`
-  (`shadow_estimator_logs`). `why` skips `estimator` records.
+  (`shadow_estimator_logs`, in `unit_orders.py`). `why` skips `estimator` records.
 - Emergency attention records also carry a 21x21 map window and the monsters (`map21`, `map_at`, `mons`) for the
   Advisor's replays.
 

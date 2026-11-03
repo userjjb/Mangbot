@@ -1,0 +1,102 @@
+{
+ "id": "A2K",
+ "tag": "A2K-20261103-013653",
+ "depth_ft": 450,
+ "start": "2026-11-03 01:36:53",
+ "checks": {
+  "no danger rule: a hard fight with Speed + Berserk": {
+   "pass": true,
+   "detail": "tactics ['a hard fight with Khim, Son of Mim: quaffed a Potion of Speed at the start', 'a hard fight with Khim, Son of Mim: quaffed a Potion of Berserk Strength (+to-hit, +30 HP, no fear)']"
+  },
+  "lowest HP >= 60%": {
+   "pass": true,
+   "detail": "lowest [342, 358]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   342,
+   358
+  ],
+  "attention": [
+   [
+    4.7,
+    "tactic",
+    "a hard fight with Khim, Son of Mim: quaffed a Potion of Speed at the start"
+   ],
+   [
+    5.3,
+    "tactic",
+    "a hard fight with Khim, Son of Mim: quaffed a Potion of Berserk Strength (+to-hit, +30 HP, no fear)"
+   ],
+   [
+    6.4,
+    "lost",
+    "Some of your Scrolls of Phase Door {for sale 200} (i) were destroyed!"
+   ],
+   [
+    8.3,
+    "lost",
+    "One of your Staffs of Teleportation (12 charges) (n) was destroyed!"
+   ],
+   [
+    12.9,
+    "disenchanted",
+    "Pair of Hard Leather Boots of Stability lost a plus (disenchanted)"
+   ],
+   [
+    13.8,
+    "unique_slain",
+    "Khim, Son of Mim slain at 15,116: uniques drop good items (look at 'Item squares' around there)"
+   ],
+   [
+    20.9,
+    "tactic",
+    "fetching the unique's drop at 14,116"
+   ],
+   [
+    21.3,
+    "found",
+    "picked up a Gnomish Shovel (1d2) {Khim, Son of Mim}: identify it before selling (`sell !NAME`)"
+   ],
+   [
+    23.4,
+    "goal_done",
+    "goto 14,116"
+   ],
+   [
+    25.1,
+    "unseen_attacker",
+    "'losing HP (9/s) with nothing in view': something unseen is casting at you; carrying on at HP 96% (i"
+   ]
+  ],
+  "acts": [
+   [
+    4.7,
+    "custom q item=2",
+    "a hard fight (Khim, Son of Mim): quaff 2 Potions of Speed at the start"
+   ],
+   [
+    5.3,
+    "custom q item=4",
+    "a hard fight (Khim, Son of Mim): quaff 2 Potions of Berserk Strength"
+   ],
+   [
+    21.0,
+    "custom ,",
+    "pick up: a Gnomish Shovel (1d2) {Khim, Son of Mim}."
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-11-03 01:39:46",
+ "pass": true
+}

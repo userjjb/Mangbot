@@ -189,3 +189,6 @@
 - 2026-11-02 23:53:16 **A6** PASS (at most 3 Phase Door, Phase Door never runs out, lowest HP >= 40%) `A6-20261102-235316.json`
 - 2026-11-02 23:57:01 **B3** PASS (Brigand slain, nothing stolen) `B3-20261102-235701.json`
 - 2026-11-03 00:00:10 **A2K** PASS (no danger rule: a hard fight with Speed + Berserk, lowest HP >= 60%) `A2K-20261103-000010.json`
+- 2026-11-03 01:25:30 **B3** PASS (Brigand slain, nothing stolen) `B3-20261103-012530.json`
+- 2026-11-03 01:33:20 **A6** PASS (at most 3 Phase Door, Phase Door never runs out, lowest HP >= 40%) `A6-20261103-013320.json`
+- 2026-11-03 01:36:53 **A2K** PASS (no danger rule: a hard fight with Speed + Berserk, lowest HP >= 60%) `A2K-20261103-013653.json`

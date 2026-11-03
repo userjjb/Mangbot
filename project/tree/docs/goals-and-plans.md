@@ -43,7 +43,7 @@ The commands that reach them (`plan town`/`plan trip`: `request_plan`/`request_t
   tick runs an ordered tuple whose steps test their own stage or phase (`TownKit.KIT_STEPS`/`BUYING_STEPS`,
   `TripPlan.TRIP_STEPS`). The flags these classes used to create on first use (`getattr(self, "x", default)`) are
   declared in `__init__` with those defaults (so `goalstate`, which shows `vars(goal)`, lists them from the start).
-  The tables and the method names are given with each class below; `unit.py: town_plan_step_tables` checks that they
+  The tables and the method names are given with each class below; `unit.py`'s `town_plan_step_tables` (in `unit_structure.py`) checks that they
   name existing methods.
 - **One at a time.** `Pilot.set_goal(g)` replaces the current goal (stopping the mover), stamps who set it (`role`:
   navigator / architect / pilot, read by `goal_origin` for the viewer and debts) and logs a `goal` record.
