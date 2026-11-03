@@ -27,6 +27,14 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.45.3 -- 2026-11-03 (session 11, the user on valuing a plus)
+No missions yet. **Play change** (the hunt check's disenchant refusal uses it):
+- A plus lost to disenchantment is valued by the scrolls that put it back (the user: "+10 is worth a lot more than
+  +5"), not its shop value (100 gold flat): price / chance per step, the chance 1 - enchant_table[x]/1000
+  (spells2.c; half for an artifact; capped at 100 scrolls a step). A (+10,+10) weapon ~7,850 gold a hit, (+5,+5)
+  ~475, +8 armour ~443. Khim vs Dive04: ~2,000-2,300 gold expected (was ~300), still under the kill's ~3,160: allowed.
+  153 unit cases.
+
 ## 2.45.2 -- 2026-11-03 (session 11, the user on the reflex moves)
 No missions yet. **Play change:**
 - Hunger split (the user): **Hungry** is `policy_tick`'s, eaten at a safe moment (not an emergency: a battle turn

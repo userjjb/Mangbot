@@ -270,13 +270,16 @@ neither the hunt check nor geareval counted what it takes. The server's rules:
   (2 - spell chance).
 - Disenchanting hits = rounds x p_hit x (UN_BONUS blows a round) + casts / (its spells) with BR_DISE. p_hit =
   `0.05 + 0.90 x max(0, i - 3AC/4) / i`, i = 20 + 3 x level, at the sheet's AC.
-- Gold per hit (`disen_loss`) = the mean over the 8 slots of each worn item's loss (`disen_item_loss`): its value by the
-  Pilot's own `iv` (itemvalue) less the expected value with the plusses the server takes, x 0.4 for an artifact.
-  itemvalue counts 100 gold a plus, so a +8 armour piece loses ~120 (1.2 plusses) and a (+10,+9) weapon ~240.
+- Gold per hit (`disen_loss`) = the mean over the 8 slots of each worn item's loss (`disen_item_loss`), x 0.4 for an
+  artifact. **Since 2.45.3 (the user) a plus lost is worth the scrolls that put it back** (`reenchant_cost`), not its
+  shop value (100 gold flat): a Scroll of Enchant Weapon To-Hit/To-Dam or Enchant Armor at plus x succeeds with
+  1 - enchant_table[x]/1000 (spells2.c:398, 2549-2553: 100% below 0, 99% at 0, 80% at 4, 50% at 7, 5% at 9, 1% at 10,
+  0 above 15; an artifact half as often), so each step x -> x+1 costs price / chance (the Alchemist's last price,
+  else ~190; capped at 100 scrolls a step). So +10 is worth far more than +5: a (+10,+10) weapon ~7,850 a hit, a
+  (+5,+5) one ~475, a +8 armour piece ~443, a +5 one ~238.
 - Expected disenchantments = hits x P(the pick takes a plus); gold = hits x gold per hit.
 - Zero with resist disenchantment (`has_ability("res_disen")`).
-- Flat (100 gold a plus, one for armour, two for a weapon or bow) only for an item whose plusses aren't shown, or
-  whose kind itemvalue can't read. The text names those slots.
+- Plusses not shown (unidentified): valued as if +5 (`DISEN_UNSHOWN`); the text names those slots.
 - Not counted: Speed or a faster character (about half the rounds with a Speed potion; the text says so), Khim's
   SLOW, protection from evil.
 

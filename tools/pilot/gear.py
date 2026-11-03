@@ -270,8 +270,30 @@ class GearMixin:
     # GF_DISENCHANT) disenchants whenever it lands, unless resisted (spells1.c:3801-3810).
     DISEN_SLOTS = (("weapon", (20, 21, 22, 23)), ("bow", (19,)), ("body armour", (36, 37, 38)), ("cloak", (35,)),
                    ("shield", (34,)), ("helm", (32, 33)), ("gloves", (31,)), ("boots", (30,)))
-    DISEN_FLAT = 100          # gold per plus lost when a slot's value can't be read (itemvalue's 100 per plus)
+    DISEN_FLAT = 100          # (unused since 2.45.3: a plus is valued by the scrolls to put it back)
     DISEN_ART_KEEPS = 0.4     # an artifact loses a plus 40% of the time (spells1.c:1345)
+    # A plus lost is worth the scrolls that put it back (2.45.3, the user: "+10 is worth a lot more than +5"): a
+    # scroll at plus x succeeds with 1 - enchant_table[x]/1000 (spells2.c:398, 2549-2553; x < 0 always, x > 15 never;
+    # an artifact half as often), so a step x -> x+1 costs price / chance; each step capped at DISEN_MAX_SCROLLS
+    # (+10 and up: 1% or less; +15: never by scroll). Prices: what the Alchemist asked last, else ~190 (base 125).
+    DISEN_SCROLLS = {"tohit": "Enchant Weapon To-Hit", "todam": "Enchant Weapon To-Dam", "toac": "Enchant Armor"}
+    DISEN_SCROLL_PRICE = 190
+    DISEN_MAX_SCROLLS = 100
+    DISEN_UNSHOWN = 5         # plusses not shown (unidentified): valued as if at +5
+
+    def enchant_p(self, x, art=False):
+        """The chance one Scroll of Enchant raises a plus that is now x (spells2.c:2549-2553)."""
+        c = 1.0 if x < 0 else 0.0 if x > 15 else 1 - self.ENCHANT_TABLE[x] / 1000
+        return c * (0.5 if art else 1.0)
+
+    def reenchant_cost(self, which, frm, to, art=False):
+        """Expected gold of scrolls to raise a plus from frm back to `to` (which: tohit, todam, toac)."""
+        kind = self.DISEN_SCROLLS[which]
+        try:
+            price = self.price_of(kind, 5) or self.DISEN_SCROLL_PRICE
+        except Exception:                  # (a bare test Pilot without the store memory)
+            price = self.DISEN_SCROLL_PRICE
+        return sum(price * min(self.DISEN_MAX_SCROLLS, 1 / max(self.enchant_p(x, art), 1e-9)) for x in range(frm, to))
 
     @staticmethod
     def _disen_steps(x):
@@ -281,9 +303,9 @@ class GearMixin:
         return [(0.8, x - 1), (0.2, x - 2)] if x - 1 > 5 else [(1.0, x - 1)]
 
     def disen_item_loss(self, name, weapon):
-        """(expected gold an item loses to one disenchantment that picks its slot, valued -- False when the flat
-        estimate was used --, artifact?): the Pilot's own valuation (iv: itemvalue) of the item minus its value with
-        the plusses the server takes off, the artifact resistance applied."""
+        """(expected gold an item loses to one disenchantment that picks its slot, valued -- False when the plusses
+        weren't shown --, artifact?): since 2.45.3 the scrolls that put the plusses back (reenchant_cost; it was the
+        shop value of the plusses, 100 gold each), the artifact resistance applied."""
         def val(n):
             try:
                 return self.iv(n)
@@ -294,22 +316,15 @@ class GearMixin:
         art = self.is_artifact(name) or bool(v0.artifact)
         keep = self.DISEN_ART_KEEPS if art else 1.0
         m = re.search(r"\(([+-]\d+),([+-]\d+)\)", name) if weapon else re.search(r"\[(\d+),([+-]\d+)\]", name)
+        def lost(which, x):
+            return sum(p * self.reenchant_cost(which, after, x, art) for p, after in self._disen_steps(x))
         if not m:
-            # plusses not shown (not identified): flat, as if each plus the server takes were positive
-            return keep * self.DISEN_FLAT * (2 if weapon else 1), False, art
+            # plusses not shown (not identified): as if each were +DISEN_UNSHOWN
+            u = self.DISEN_UNSHOWN
+            return keep * (lost("tohit", u) + lost("todam", u) if weapon else lost("toac", u)), False, art
         if weapon:
-            th, td = int(m.group(1)), int(m.group(2))
-            outs = [(p1 * p2, f"({h:+d},{d:+d})", (th - h) + (td - d))
-                    for p1, h in self._disen_steps(th) for p2, d in self._disen_steps(td)]
-        else:
-            ta = int(m.group(2))
-            outs = [(p, f"[{m.group(1)},{a:+d}]", ta - a) for p, a in self._disen_steps(ta)]
-        if not any(lost for _, _, lost in outs):
-            return 0.0, True, art
-        if not (v0.kind or v0.artifact):         # (a kind itemvalue doesn't know: flat per plus lost)
-            return keep * self.DISEN_FLAT * sum(p * lost for p, _, lost in outs), False, art
-        return keep * sum(p * (v0.value - val(name[:m.start()] + txt + name[m.end():]).value)
-                          for p, txt, _ in outs), True, art
+            return keep * (lost("tohit", int(m.group(1))) + lost("todam", int(m.group(2)))), True, art
+        return keep * lost("toac", int(m.group(2))), True, art
 
     def disen_loss(self):
         """What one disenchantment that gets through costs on average, over apply_disenchant's 8 slots (1 in 8

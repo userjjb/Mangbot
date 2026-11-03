@@ -16,7 +16,7 @@ Open `/projectnb/jbrcs/mangband/next_steps.md` and read **">>> WHICH HANDOFF IS 
   `github/tools/harness/refactor/` (equiv.py, cmdmatrix.py, ...). Decisions it left for the user: "FOR THE USER (from
   session 11)" in HANDOFF 12. The user then said "fix these issues now": **2.45.0** (play changes: command roles,
   ghost park, escape walk takes its stairs, hunger early stop, disenchant cost shown, house record strike); what is
-  still open is listed there -- remind the user. Then 2.45.1 (summoner hold, disenchant refusal) and 2.45.2 (Hungry eats at safe moments, Weak in the reflex), the user's decisions 11-03.
+  still open is listed there -- remind the user. Then 2.45.1 (summoner hold, disenchant refusal) and 2.45.2 (Hungry eats at safe moments, Weak in the reflex), 2.45.3 (a plus valued by its re-enchant scrolls), the user's decisions 11-03.
 - **Session 12**: **missions resume to test every change since m60** -- "HANDOFF TO ARCHITECT 12" (what to watch, the
   first `plan town` is its own test, the C14 A/B baseline).
 - Remind the user of the USER TODO at the top of next_steps.md (review the old handoffs in `history/`).

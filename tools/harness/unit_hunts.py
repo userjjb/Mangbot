@@ -196,18 +196,21 @@ def disenchant_cost_in_the_hunt_check():
     rtext = r.monster_info("Khim, Son of Mim")
     rdc = r.last_hunt.get("disen") or {}
     giant = p.monster_info("Hill giant")
-    # one disenchantment on one item: +8 armour loses 1.2 plusses (120 gold), +5 one, +0 none; an artifact 40% of it;
-    # plusses not shown: the flat estimate
+    # one disenchantment on one item, valued by the scrolls that put it back (2.45.3, the user; ~190 gold a scroll,
+    # success 1 - enchant_table[x]/1000): +8 armour -> +7 (80%: 190/0.5) or +6 (20%: + 190/0.6) = ~443; +5 -> +4:
+    # 190/0.8 = 237.5; +0 none; plusses not shown: as if +5; an artifact (+15, half the chance, each step capped at 100
+    # scrolls) 40% of it
     loss = {n: p.disen_item_loss(n, False)[:2] for n in ("a Metal Cap [3,+8]", "a Metal Cap [3,+5]", "a Metal Cap [3,+0]",
                                                          "a Metal Cap [3]")}
     art = p.disen_item_loss("the Cloak 'Colluin' [1,+15]", False)
-    want = {"a Metal Cap [3,+8]": (120.0, True), "a Metal Cap [3,+5]": (100.0, True), "a Metal Cap [3,+0]": (0.0, True),
-            "a Metal Cap [3]": (100.0, False)}
-    ok = (dc.get("gold", 0) > 0 and dc.get("n", 0) > 0 and dc.get("per_hit") == 120 and abs(dc["p_hit"] - 0.187) < 0.001
+    want = {"a Metal Cap [3,+8]": (443.3, True), "a Metal Cap [3,+5]": (237.5, True), "a Metal Cap [3,+0]": (0.0, True),
+            "a Metal Cap [3]": (237.5, False)}
+    loss = {n: (round(g, 1), v) for n, (g, v) in loss.items()}
+    ok = (dc.get("gold", 0) > 0 and dc.get("n", 0) > 0 and dc.get("per_hit") == 912 and abs(dc["p_hit"] - 0.187) < 0.001
           and "disenchants expected" in text and text.index("a kill drops") < text.index("disenchants expected")
           and rec.get("disen_gold", 0) > 0 and rec.get("est_by") == "fight_sim" and "disenchants expected" in (out.get("note") or "")
           and rdc.get("resisted") and rdc.get("gold") == 0 and "you resist disenchantment" in rtext
-          and "disenchant" not in giant and loss == want and art[2] and abs(art[0] - 0.4 * 120) < 1e-9)
+          and "disenchant" not in giant and loss == want and art[2] and abs(art[0] - 0.4 * (0.8 * 19000 + 0.2 * 38000)) < 1e-6)
     return ok, (f"Khim: {dc.get('hits')} hits, {dc.get('n')} disenchants, {dc.get('gold')} gold ({dc.get('per_hit')} a "
                 f"hit, p_hit {dc.get('p_hit')}); hunt record {rec}; resisted {rdc.get('resisted')} gold "
                 f"{rdc.get('gold')}; item losses {loss}; artifact {art}")
