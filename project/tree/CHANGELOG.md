@@ -27,6 +27,14 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.44.12 -- 2026-11-03 (session 11)
+No missions yet. No play change (refactor-candidates E3).
+- `reflexes()` and `escape()` (combat.py) run one method per step, in the order of `REFLEX_STEPS` (23) and
+  `ESCAPE_STEPS` (15); a per-call `ctx` carries the shared values; the Advisor-mirrored names kept. Checks: tick()
+  equivalence over 99 states (35 new; reflexes 261/261 lines, escape 162/163, the one left is dead code)
+  byte-identical; the step bodies in order are the old code verbatim (`stepdiff.py`); only reflexes/escape changed
+  bytecode (`bcall.py`); 144 unit cases. Live: A6, B3, A2K PASS.
+
 ## 2.44.11 -- 2026-11-02 (session 11)
 No missions yet. No play change (refactor-candidates E1 step 6 and E2; pilotctl's help text is new).
 - The command side left pilot.py for `commands.py` (CommandsMixin: authentication, request handling, `do_request`,

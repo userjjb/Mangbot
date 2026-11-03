@@ -305,3 +305,7 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   so `restart.sh` on a dead character waits 330 s and fails; (3) some bad arguments return a raw exception text
   (`goal explore radius=x`, `search x`, `view x`; `inscribe`/`option` with no args); (4) an unknown command to a
   ghost gets the ghost refusal. Each is now a one-line change in `cmdtable.py` or a `cmd_*` method.
+- **2.44.12 -- E3**: reflexes/escape split into `REFLEX_STEPS`/`ESCAPE_STEPS` methods (pure; 99-state equivalence,
+  100%/99% line coverage). Live A6, B3, A2K PASS. **For the user (behaviour, not done):** the moves out of reflexes
+  (light/hunger/pickup -> policy_tick, food_watch -> tick); and the hunger step's `return self.wear_light(...)`
+  skips adjacent/pickup/engage/rest for a tick when no light can be worn (A20's kind of early stop).

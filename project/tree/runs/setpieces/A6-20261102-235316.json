@@ -1,0 +1,126 @@
+{
+ "id": "A6",
+ "tag": "A6-20261102-235316",
+ "depth_ft": 600,
+ "start": "2026-11-02 23:53:16",
+ "checks": {
+  "at most 3 Phase Door": {
+   "pass": true,
+   "detail": "0 reads"
+  },
+  "Phase Door never runs out": {
+   "pass": true,
+   "detail": "15 -> 15"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [340, 358]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   340,
+   358
+  ],
+  "attention": [
+   [
+    4.2,
+    "lost",
+    "One of your Potions of Cure Critical Wounds {for sale 200} (f) was destroyed!"
+   ],
+   [
+    10.1,
+    "unseen_attacker",
+    "'It gestures in shadow.': probably the Novice paladin (lvl 4) in view; carrying on (HP 99%)"
+   ],
+   [
+    14.9,
+    "interesting_item",
+    "Amulet of Adornment seen on this level at 14,115 (3 away): fetching it once the area is clear"
+   ],
+   [
+    29.2,
+    "interesting_item",
+    "Rod of Light seen on this level at 18,116 (2 away): fetching it once the area is clear"
+   ],
+   [
+    34.4,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    34.5,
+    "goal_done",
+    "goto 18,113"
+   ],
+   [
+    37.5,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    37.6,
+    "goal_done",
+    "goto 18,114"
+   ],
+   [
+    40.5,
+    "tactic",
+    "picking up the gold 3 squares away"
+   ],
+   [
+    42.1,
+    "goal_done",
+    "goto 15,115"
+   ],
+   [
+    43.5,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    43.6,
+    "goal_done",
+    "goto 15,116"
+   ]
+  ],
+  "acts": [
+   [
+    8.9,
+    "engage",
+    "engage Gnome mage (L15, 2 away) on the way"
+   ],
+   [
+    12.2,
+    "engage",
+    "engage Gnome mage (L15, 3 away) on the way"
+   ],
+   [
+    14.9,
+    "engage",
+    "engage Gnome mage (L15, 2 away) on the way"
+   ],
+   [
+    20.3,
+    "engage",
+    "engage Gnome mage (L15, 6 away) on the way"
+   ],
+   [
+    40.6,
+    "custom ,",
+    "pick up: a Quarterstaff (1d9)."
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-11-02 23:56:41",
+ "pass": true
+}

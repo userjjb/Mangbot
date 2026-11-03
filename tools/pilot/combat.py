@@ -1,6 +1,7 @@
 """combat -- the Pilot's combat and survival side, as a mixin of Pilot (refactor-candidates E1; docs/pilot-combat.md):
-the reflexes (reflexes, in priority order) and the emergency escape (escape, with its helpers emergency_loop,
-phase_futile, escaping_to_stairs, kill_caster_step, teleport_item, use_stair_location, log_escape, count_escape),
+the reflexes (reflexes, in priority order) and the emergency escape (escape) -- each one method per step, in the order
+of REFLEX_STEPS / ESCAPE_STEPS (E3) -- with escape's helpers (emergency_loop, phase_futile, escaping_to_stairs,
+kill_caster_step, teleport_item, use_stair_location, log_escape, count_escape),
 what counts as dangerous (danger_why, worst_3turns, sim_loss, dangers, has_ability), the fight rules
 (engage_tick, group_danger/group_tick, still_fight_tick, status_tick, unseen_tick, choke_tick with choke_tier,
 confusion_lock/confusion_window, speed_start_tick, berserk_tick, hard_fight, fear_cure, buff_on, our_slowness), the
@@ -16,6 +17,7 @@ import json
 import math
 import os
 import re
+import types
 
 from common import TV_SCROLL, TV_POTION, TV_FOOD, TV_LITE, plural, one_of
 from world import gnow, waited
@@ -24,6 +26,9 @@ from goals import (Wait, Goto, Explore, Dive, Search, Hunt, Recover, BandLeave, 
                    Resurrect, RestGoal)
 from town_goals import TownFarm, Shop
 
+
+# a reflexes()/escape() step that didn't act: go on to the next one (REFLEX_STEPS, ESCAPE_STEPS)
+NEXT = object()
 
 CURE_POTIONS = ("Cure Critical Wounds", "Cure Serious Wounds", "Cure Light Wounds", "Healing")
 # HP each potion heals (server use-obj.c:483-540; CSW 20-24, CCW 25-29). Longest
@@ -247,9 +252,49 @@ class CombatMixin:
 
     # --- the rules -----------------------------------------------------------
 
+    # One method per step, in REFLEX_STEPS's order (refactor-candidates E3): each takes the per-call context `ctx`
+    # (w, o and now, read once per call; the values the steps share, set by the step that computes them) and
+    # returns NEXT to go on, or the value reflexes() returns. The order is the rule: docs/pilot-combat.md §2.
+    REFLEX_STEPS = (
+        "_reflex_death",            # 0. dead (a ghost): nothing else runs
+        "_reflex_busy",             # 0. an action on its way; inside a store during a Shop goal
+        "_reflex_survey",           # (not a rule: ctx.mons_near, the monsters within 7, for the steps below)
+        "_reflex_emergency",        # 2. emergency: escape()
+        "_reflex_group",            # 2'. group danger (group_tick)
+        "_reflex_hard_fight",       # 2a. a hard fight's start: speed_start_tick, berserk_tick
+        "_reflex_status",           # 2a. status cures (status_tick)
+        "_reflex_arrival",          # 3. arrival into danger
+        "_reflex_danger_in_view",   # 3a. something far above our level in view
+        "_reflex_unseen",           # 3b. an unseen attacker (unseen_tick)
+        "_reflex_choke",            # 3c. a pack in the open: back into a corridor (choke_tick)
+        "_reflex_summon_trap",      # 3d. a summon trap: Phase Door
+        "_reflex_slowed",           # 3e. slowed in a fight: a Potion of Speed
+        "_reflex_afraid",           # 3f. afraid
+        "_reflex_still",            # 3g. monsters that never move, adjacent
+        "_reflex_fearers",          # 3h. monsters that frighten again and again
+        "_reflex_light",            # 3i. light
+        "_reflex_hunger",           # 4. hunger
+        "_reflex_adjacent",         # 5. adjacent monster: auto-retaliate fights (sets ctx.adj)
+        "_reflex_pickup",           # 5. pick up what we're standing on
+        "_reflex_pack",             # 5. "no room" notice, auto-destroy junk
+        "_reflex_engage",           # 5b. a monster worth killing a few steps off
+        "_reflex_rest",             # 6. rest when hurt and alone
+    )
+
     def reflexes(self):
-        w, o = self.w, self.orders
-        now = gnow()
+        """The reflexes, in priority order (docs/pilot-combat.md §2): the first step that acts ends the call. True:
+        the tick ends here; False: the rest of the tick runs (the Navigator's rules, the item policy, the goal)."""
+        ctx = types.SimpleNamespace(w=self.w, o=self.orders, now=gnow())
+        for name in self.REFLEX_STEPS:
+            r = getattr(self, name)(ctx)
+            if r is not NEXT:
+                return r
+        return False
+
+    def _reflex_death(self, ctx):
+        """0. Dead: HP 0 or a ghost. Stop everything and tell the Navigator; nothing else runs
+        until 'goal resurrect'."""
+        w = ctx.w
         if self.dead and not w.ghost and w.hp[0] > 0:
             self.dead = False                 # resurrected
         if w.ghost or w.hp[0] <= 0 and w.hp[1] > 0 and w.ind:
@@ -264,23 +309,38 @@ class CombatMixin:
             if w.ghost and isinstance(self.goal, Resurrect):
                 return False
             return True
+        return NEXT
+
+    def _reflex_busy(self, ctx):
+        """0. An action still on its way (busy_until): hold. Inside a store during a Shop goal: skip
+        the rest, so the goal carries on."""
+        w, now = ctx.w, ctx.now
         if now < self.busy_until:
             return True
         if w.store and isinstance(self.goal, Shop):
             return False          # any command would leave the store
-        mons_near = [m for m in w.monsters if w.dist(m[:2]) <= 7]
-        # 2. Emergency
-        # Never fall through to the goal here, even when escape() has nothing
-        # usable this instant: in mission 7 the explore goal kept re-planning
-        # (the mover sends 'clear' and queues walks), which wiped every queued
-        # Phase Door, potion and Word of Recall, and the walks took the turns.
-        # Dive03 died at 750 ft without one of them being read.
-        # (and HP within 2.5 worst-case rounds of one adjacent monster: Brodda
-        # took 151 -> 27 in five rounds of 48 before flee_hp fired at 58 --
-        # the Advisor's missions 15-16 replay, change 3)
-        # (the Advisor's emergency-threshold memo, rulebook r4: the worst melee of the adjacent monsters in
-        # the next 3 player turns, against our AC and at their attack rate -- not 2.5 raw worst rounds,
-        # which broke off a vetted Ulfast hunt at 145 HP and under-counted fast monsters)
+        return NEXT
+
+    def _reflex_survey(self, ctx):
+        """(Not a rule: what the steps below share.) ctx.mons_near: the monsters within 7 squares."""
+        w = ctx.w
+        ctx.mons_near = [m for m in w.monsters if w.dist(m[:2]) <= 7]
+        return NEXT
+
+    def _reflex_emergency(self, ctx):
+        """2. Emergency
+        Never fall through to the goal here, even when escape() has nothing
+        usable this instant: in mission 7 the explore goal kept re-planning
+        (the mover sends 'clear' and queues walks), which wiped every queued
+        Phase Door, potion and Word of Recall, and the walks took the turns.
+        Dive03 died at 750 ft without one of them being read.
+        (and HP within 2.5 worst-case rounds of one adjacent monster: Brodda
+        took 151 -> 27 in five rounds of 48 before flee_hp fired at 58 --
+        the Advisor's missions 15-16 replay, change 3)
+        (the Advisor's emergency-threshold memo, rulebook r4: the worst melee of the adjacent monsters in
+        the next 3 player turns, against our AC and at their attack rate -- not 2.5 raw worst rounds,
+        which broke off a vetted Ulfast hunt at 145 HP and under-counted fast monsters)"""
+        w, o, now, mons_near = ctx.w, ctx.o, ctx.now, ctx.mons_near
         worst = self.worst_3turns([r for *_, r in w.adjacent_monsters()])
         hard = worst > 0 and w.hp[0] <= worst and w.hp_frac < 0.9
         if (w.hp_frac < o["flee_hp"] or hard) and (mons_near or now - w.last_hit_t < 5):
@@ -288,22 +348,40 @@ class CombatMixin:
             if not self.escape(why) and self.mover.active and not self.escaping_to_stairs:
                 self.mover.stop()
             return True
-        # 2'. Group danger (the Borg's rule, Advisor memo 2026-09-28 §3.1)
+        return NEXT
+
+    def _reflex_group(self, ctx):
+        """2'. Group danger (the Borg's rule, Advisor memo 2026-09-28 §3.1)"""
+        now = ctx.now
         if self.group_tick(now):
             return True
-        # 2a. Status cures, in combat only (out of combat, rest it off: the
-        # user). Stun can become a knock-out; blind or confused can't read.
+        return NEXT
+
+    def _reflex_hard_fight(self, ctx):
+        """2a. The start of a hard fight (hard_fight): the estimator's view first (never acts), then a Potion of
+        Speed (speed_start_tick) and Berserk Strength (berserk_tick)."""
+        now = ctx.now
         self.hard_fight_shadow(now)          # (never acts: the estimator's view of the fight's start)
         if self.speed_start_tick(now):
             return True
         if self.berserk_tick(now):
             return True
+        return NEXT
+
+    def _reflex_status(self, ctx):
+        """2a. Status cures, in combat only (out of combat, rest it off: the
+        user). Stun can become a knock-out; blind or confused can't read."""
+        now, mons_near = ctx.now, ctx.mons_near
         if self.status_tick(now, mons_near):
             return True
-        # 3. Arrival into danger (connected stairs: the way back is underfoot)
-        # A stairs command gets no answer at all if it comes too soon after the
-        # level change (seen: '<' 0.7 s after arriving was ignored), so retry
-        # after 1.2 s while still on the stairs
+        return NEXT
+
+    def _reflex_arrival(self, ctx):
+        """3. Arrival into danger (connected stairs: the way back is underfoot)
+        A stairs command gets no answer at all if it comes too soon after the
+        level change (seen: '<' 0.7 s after arriving was ignored), so retry
+        after 1.2 s while still on the stairs"""
+        w, o, now, mons_near = ctx.w, ctx.o, ctx.now, ctx.mons_near
         stairs_pending = w.last_stairs_cmd and not waited(w.last_stairs_cmd[1], 1.2)
         if now - w.level_t < 6 and w.standing_on in ("<", ">") and not stairs_pending:
             danger = self.dangers()
@@ -317,8 +395,12 @@ class CombatMixin:
                 self.take_stairs(w.standing_on)
                 self.notify("danger_avoided", why)
                 return True
-        # 3a. Something far above our level in view: leave before it reaches us
-        # (not only on arrival -- Dive03 met Stone trolls while exploring)
+        return NEXT
+
+    def _reflex_danger_in_view(self, ctx):
+        """3a. Something far above our level in view: leave before it reaches us
+        (not only on arrival -- Dive03 met Stone trolls while exploring)"""
+        w, o, now = ctx.w, ctx.o, ctx.now
         near_danger = [r for y, x, r in w.monsters if w.dist((y, x)) <= 12 and r in self.dangers()]
         # (and one the server's monster list names but the map decode misses:
         # present, position unknown -- the game-state survey, rule 4)
@@ -378,23 +460,35 @@ class CombatMixin:
             self.notify("danger_seen", f"{self.danger_text(near_danger[0])} in view"
                                        f"{' while ' + prev if prev else ''}: heading for the stairs")
             return True
-        # 3b. Something we can't see is attacking (an invisible monster, or one
-        # out of sight): we can't fight it, so leave (Advisor memo, Addendum 2
-        # item 3). Also HP falling with nothing in view and nothing else to
-        # explain it.
+        return NEXT
+
+    def _reflex_unseen(self, ctx):
+        """3b. Something we can't see is attacking (an invisible monster, or one
+        out of sight): we can't fight it, so leave (Advisor memo, Addendum 2
+        item 3). Also HP falling with nothing in view and nothing else to
+        explain it."""
+        now = ctx.now
         if self.unseen_tick(now):
             return True
-        # 3c. A pack coming at us in the open: back into a corridor so they
-        # trickle into melee one at a time ("retreat behind a turn")
-        # (never while fleeing: mission 10 backed into a corridor twice instead
-        # of walking to the stairs away from Mughash, and died there)
+        return NEXT
+
+    def _reflex_choke(self, ctx):
+        """3c. A pack coming at us in the open: back into a corridor so they
+        trickle into melee one at a time ("retreat behind a turn")
+        (never while fleeing: mission 10 backed into a corridor twice instead
+        of walking to the stairs away from Mughash, and died there)"""
+        w, o, now = ctx.w, ctx.o, ctx.now
         if o.get("choke") == "on" and not w.adjacent_monsters() and w.standing_on not in ("<", ">") \
                 and not isinstance(self.goal, (Flee, Recover, Recall)):
             if self.choke_tick(now):
                 return True
-        # 3d. A summon trap ("You are enveloped in a cloud of smoke!", cmd1.c 1049): 3-5 awake monsters from 5 levels
-        # deeper, uniques allowed, appear around us -- m26's Nar group (the Advisor's structures memo). Phase Door at
-        # once, before they act; the danger rules take it from there
+        return NEXT
+
+    def _reflex_summon_trap(self, ctx):
+        """3d. A summon trap ("You are enveloped in a cloud of smoke!", cmd1.c 1049): 3-5 awake monsters from 5 levels
+        deeper, uniques allowed, appear around us -- m26's Nar group (the Advisor's structures memo). Phase Door at
+        once, before they act; the danger rules take it from there"""
+        w, now = ctx.w, ctx.now
         smoke = [ts for ts, t in w.messages if t.startswith("You are enveloped in a cloud of smoke") and now - ts < 2]
         if smoke and w.in_dungeon and max(smoke) > self.smoke_t and not w.flag("blind") \
                 and not w.flag("confused"):
@@ -407,8 +501,12 @@ class CombatMixin:
                 self.notify("emergency", "a summon trap (monsters from 5 levels deeper appear around us): phased away "
                                          "at once", action=True)
                 return True
-        # 3e. Slowed to half speed or worse with something on us: a Potion of Speed (m26: Gorged and slowed to
-        # -20 among six monsters; the Architect quaffed one by hand)
+        return NEXT
+
+    def _reflex_slowed(self, ctx):
+        """3e. Slowed to half speed or worse with something on us: a Potion of Speed (m26: Gorged and slowed to
+        -20 among six monsters; the Architect quaffed one by hand)"""
+        w, now = ctx.w, ctx.now
         if self.our_slowness() >= 2 and (w.adjacent_monsters() or now - w.last_hit_t < 2) and \
                 waited(self.speed_t, 40) and not self.buff_on("fast"):    # (a potion lasts ~20-45 turns)
             pot = self.find_item("Speed", TV_POTION)
@@ -419,9 +517,13 @@ class CombatMixin:
                 self.notify("tactic", f"slowed to {(w.ind.get('speed') or [0])[0]} with monsters on us: quaffed "
                                       f"{one_of(pot['name'])}")
                 return True
-        # 3f. Afraid (a warrior can't melee). The user: if not in danger, don't
-        # spend consumables -- kite over cleared ground until it wears off; only
-        # in danger cure it (Boldness/Heroism/Berserk) or phase away.
+        return NEXT
+
+    def _reflex_afraid(self, ctx):
+        """3f. Afraid (a warrior can't melee). The user: if not in danger, don't
+        spend consumables -- kite over cleared ground until it wears off; only
+        in danger cure it (Boldness/Heroism/Berserk) or phase away."""
+        w, o, now, mons_near = ctx.w, ctx.o, ctx.now, ctx.mons_near
         if w.flag("afraid") and mons_near:
             # (or hit by several while we can't hit back: m26 kited, afraid, among a yeek band and a Dark hound
             # until the Navigator quaffed Heroism by hand)
@@ -457,11 +559,15 @@ class CombatMixin:
                     self.cmd(f"custom r item={pd['item']}", "afraid: phase door away", hold=0.6)
                     self.notify("afraid", "afraid (can't melee) and cornered: phased away")
                     return True
-        # 3g. Monsters that never move (molds, jellies, mushroom patches, floating
-        # eyes) only matter next to us, and there auto-retaliate fights them: a
-        # poison-mold cluster killed a forum player, a death mold disenchants, a
-        # floating eye paralyses. Step away quietly (no event), unless the
-        # Navigator is hunting that very monster.
+        return NEXT
+
+    def _reflex_still(self, ctx):
+        """3g. Monsters that never move (molds, jellies, mushroom patches, floating
+        eyes) only matter next to us, and there auto-retaliate fights them: a
+        poison-mold cluster killed a forum player, a death mold disenchants, a
+        floating eye paralyses. Step away quietly (no event), unless the
+        Navigator is hunting that very monster."""
+        w, now = ctx.w, ctx.now
         hunting = self.goal.target if isinstance(self.goal, Hunt) else None
         still = [m for m in w.adjacent_monsters() if "NEVER_MOVE" in m[2].flags
                  and not (hunting and hunting in m[2].name.lower())]
@@ -471,9 +577,13 @@ class CombatMixin:
             return True
         if still and (self.retreat_step(still, reach=6) or self.sidestep(still)):
             return True
-        # 3h. Monsters that frighten you again and again: not worth it. Walk
-        # away over cleared ground (phase if it's dangerous and next to us), and
-        # tell the Navigator once per level.
+        return NEXT
+
+    def _reflex_fearers(self, ctx):
+        """3h. Monsters that frighten you again and again: not worth it. Walk
+        away over cleared ground (phase if it's dangerous and next to us), and
+        tell the Navigator once per level."""
+        w, now, mons_near = ctx.w, ctx.now, ctx.mons_near
         fearers = [m for m in mons_near if m[2].repeat_fearer and "NEVER_MOVE" not in m[2].flags]
         if fearers and not isinstance(self.goal, (Flee, Recall)):
             f = fearers[0][2]
@@ -491,7 +601,11 @@ class CombatMixin:
                     return True
             if self.retreat_step(fearers):
                 return True
-        # 3i. Light
+        return NEXT
+
+    def _reflex_light(self, ctx):
+        """3i. Light"""
+        w, now = ctx.w, ctx.now
         if self.town_light(now):
             return True
         # (no light at all in the dungeon: wield one even with a monster adjacent -- the set-piece
@@ -499,9 +613,13 @@ class CombatMixin:
         unlit = w.depth != 0 and not any(i["tval"] == TV_LITE for i in w.items(equip=True))
         if (not w.adjacent_monsters() or unlit) and self.keep_light(now):
             return True
-        # 4. Hunger
-        # (not just "nothing on the map this instant": mission 9 ate a ration
-        # with Bullroarer a step out of view)
+        return NEXT
+
+    def _reflex_hunger(self, ctx):
+        """4. Hunger
+        (not just "nothing on the map this instant": mission 9 ate a ration
+        with Bullroarer a step out of view)"""
+        w, now = ctx.w, ctx.now
         if w.hunger <= 2 and not w.monsters and now - w.monster_seen_t > 5 and now - w.last_hit_t > 5:
             food = w.items(tval=TV_FOOD)
             # one meal, then wait for the hunger indicator to catch up (mission 13
@@ -529,8 +647,13 @@ class CombatMixin:
                 self.notify("supplies", "weak from hunger and no food: recalling",
                             fields={"supply": "food", "level": "recalling"})
                 self.set_goal(Recall())
-        # 5. Adjacent monster: let the server's auto-retaliate fight
-        adj = w.adjacent_monsters()
+        return NEXT
+
+    def _reflex_adjacent(self, ctx):
+        """5. Adjacent monster: let the server's auto-retaliate fight
+        (ctx.adj: the adjacent monsters, for the pickup's test.)"""
+        w, o, now = ctx.w, ctx.o, ctx.now
+        adj = ctx.adj = w.adjacent_monsters()
         if adj:
             if self.mover.active and not isinstance(self.goal, (Goto, Flee)):
                 self.mover.stop()
@@ -555,7 +678,11 @@ class CombatMixin:
                 self.cmd(f"walk {direction(w.pos, t[:2])}", f"hit the {t[2].name} first (a thief)", hold=0.2)
                 return True
             return not isinstance(self.goal, (Goto, Flee))
-        # Pick up what we're standing on ("You see a ..." right after a step)
+        return NEXT
+
+    def _reflex_pickup(self, ctx):
+        """Pick up what we're standing on ("You see a ..." right after a step)"""
+        w, o, now, adj = ctx.w, ctx.o, ctx.now, ctx.adj
         if o["pickup"] == "all" and not adj and not w.store:
             seen = [(ts, t) for ts, t in w.messages if now - ts < 3 and t.startswith("You see ")
                     and "no items" not in t]
@@ -593,16 +720,29 @@ class CombatMixin:
                 # (it waits for energy after the step: ~0.6 s at normal speed)
                 self.cmd("custom ,", f"pick up: {seen[-1][1][8:]}", hold=0.8)   # "Stay" picks up; "g" did nothing
                 return True
+        return NEXT
+
+    def _reflex_pack(self, ctx):
+        """5. The pack: a "no room" message is news (once per 30 s); with nothing in view, destroy the pack's junk."""
+        w, now = ctx.w, ctx.now
         full = [t for ts, t in w.messages if now - ts < 3 and t.startswith("You have no room for")]
         if full and now - self.full_warned > 30:
             self.full_warned = now
             self.notify("pack_full", full[-1])
         if not w.monsters and not w.store and self.auto_destroy(now):
             return True
-        # 5b. A monster worth killing a few steps off: go and fight it, then carry on (the user, m43)
+        return NEXT
+
+    def _reflex_engage(self, ctx):
+        """5b. A monster worth killing a few steps off: go and fight it, then carry on (the user, m43)"""
+        now = ctx.now
         if self.engage_tick(now):
             return True
-        # 6. Rest when hurt and alone
+        return NEXT
+
+    def _reflex_rest(self, ctx):
+        """6. Rest when hurt and alone"""
+        w, o = ctx.w, ctx.o
         if w.hp_frac < o["rest_below"] and not w.monsters and not isinstance(self.goal, (Recall,)):
             if not self.mover.active or isinstance(self.goal, Dive):
                 self.mover.stop()
@@ -615,7 +755,7 @@ class CombatMixin:
             # keep resting to rest_to (the Advisor's mission 13 replay: the rest
             # ended once HP passed rest_below and the explorer walked off at 76%)
             return True
-        return False
+        return NEXT
 
     ENGAGE_STEPS = 7          # how far a detour to fight may go (path steps)
     ENGAGE_GIVE_UP_S = 20
@@ -764,6 +904,27 @@ class CombatMixin:
     def escaping_to_stairs(self, on):
         self._escape_walk = (getattr(self.mover, "walk_id", None), self.w.level_t) if on else None
 
+    # escape()'s steps, in order (refactor-candidates E3; docs/pilot-combat.md §3, mirrored by the Advisor's estimator:
+    # tell the Advisor when the order changes). Each takes the per-call context `ctx` (w, now, why; the values the
+    # steps share, set by the step that computes them) and returns NEXT to go on, or escape()'s value.
+    ESCAPE_STEPS = (
+        "_escape_stairs_pending",   # 1. a stairs command on its way: wait
+        "_escape_loop",             # 2. emergency loop (3 escapes in 90 s): flee to stairs
+        "_escape_stairs_underfoot",  # 3. stairs underfoot while threatened: take them, then Recover
+        "_escape_survey",           # (not a rule: ctx.adj, can_read, pd, rate, in_combat for the steps below)
+        "_escape_out_of_combat",    # 4. out of combat: rest or step out of sight
+        "_escape_one_turn",         # 5. one turn from death: Teleportation, else Phase Door (sets ctx.one_turn)
+        "_escape_speed",            # 6. speed first
+        "_escape_recall",           # 7. HP < 30%: Word of Recall
+        "_escape_phase_futile",     # 8. phasing futile: Word of Recall (sets ctx.collapsing; may clear ctx.pd)
+        "_escape_kill_caster",      # 9. an adjacent caster that dies in 2 rounds: attack it
+        "_escape_teleport",         # 10. a crowd in the open, or afraid and pinned: teleport (sets ctx.crowd, tele)
+        "_escape_phase",            # 11. adjacent: Phase Door (rate-limited)
+        "_escape_to_stairs",        # 12. out of melee: walk to stairs <= 20 away
+        "_escape_potions",          # 13. potions by numbers
+        "_escape_nothing_left",     # 14. nothing usable: say so, fight on
+    )
+
     def escape(self, why):
         """Emergency: at most one action per call, the first that applies (docs/pilot-combat.md §3; the Advisor's
         estimator mirrors this order, so tell the Advisor when it changes): a stairs command on its way -> wait;
@@ -774,12 +935,31 @@ class CombatMixin:
         afraid with 2+ adjacent) -> Teleportation; adjacent -> Phase Door (rate-limited: phasing again and again
         doesn't shake a pack; it burned 10 scrolls in 10 s); out of melee -> walk to stairs <= 20 away; potions by
         numbers (or Phase/Recall when they're too small); else say there's nothing left and fight on."""
-        w = self.w
-        now = gnow()
+        ctx = types.SimpleNamespace(w=self.w, now=gnow(), why=why)
+        for name in self.ESCAPE_STEPS:
+            r = getattr(self, name)(ctx)
+            if r is not NEXT:
+                return r
+        return False
+
+    def _escape_stairs_pending(self, ctx):
+        """1. A stairs command is already on its way (< 1.2 s): wait."""
+        w = ctx.w
         if w.last_stairs_cmd and not waited(w.last_stairs_cmd[1], 1.2):
             return True           # already on our way (retried after 1.2 s)
+        return NEXT
+
+    def _escape_loop(self, ctx):
+        """2. The emergency loop (3 escape actions in 90 s): Flee to stairs (emergency_loop)."""
+        now = ctx.now
         if self.emergency_loop(now):
             return True
+        return NEXT
+
+    def _escape_stairs_underfoot(self, ctx):
+        """3. Stairs underfoot while threatened: take them, then goal Recover. On stairs with nothing
+        threatening: do nothing (stops stair-bouncing)."""
+        w, now, why = ctx.w, ctx.now, ctx.why
         # (only with something here: arriving by stairs you stand on stairs again, and m26 bounced 650 <-> 600
         # ft four times in 12 s at 18% HP with a recall pending and nothing in view)
         threatened = bool(w.monsters) or now - w.last_hit_t < 2
@@ -794,15 +974,27 @@ class CombatMixin:
                 self.goal = Recover(which, self.goal)
                 self.log("goal", goal=self.goal.describe())
             return True
-        adj = w.adjacent_monsters()
-        can_read = not w.flag("blind") and not w.flag("confused")
-        pd = self.phase_item()
+        return NEXT
+
+    def _escape_survey(self, ctx):
+        """(Not a rule: what the steps below share.) ctx.adj, ctx.can_read, ctx.pd (Phase Door), ctx.rate (HP/s
+        lost) and ctx.in_combat."""
+        w, now = ctx.w, ctx.now
+        adj = ctx.adj = w.adjacent_monsters()
+        ctx.can_read = not w.flag("blind") and not w.flag("confused")
+        ctx.pd = self.phase_item()
         # Out of combat, potions and scrolls are a waste: rest instead (the
         # user). In combat = something next to us, hit in the last 3 s (ranged
         # attacks count), or HP falling with a monster in view (not poison or
         # a cut on its own).
-        rate = w.damage_rate(3.0)
-        in_combat = adj or now - w.last_hit_t <= 3 or (rate > 0 and w.monsters)
+        rate = ctx.rate = w.damage_rate(3.0)
+        ctx.in_combat = adj or now - w.last_hit_t <= 3 or (rate > 0 and w.monsters)
+        return NEXT
+
+    def _escape_out_of_combat(self, ctx):
+        """4. Not in combat: rest if nothing is in view, else step back out of sight. No potions or scrolls
+        out of combat; an escape walk to stairs carries on instead (step 12)."""
+        w, in_combat = ctx.w, ctx.in_combat
         if not in_combat and \
                 not (self.mover.active and self.escaping_to_stairs):
             if not w.monsters:
@@ -811,10 +1003,15 @@ class CombatMixin:
             # something in view but not fighting (asleep, slow): back off over
             # walked ground, out of its sight, and rest there
             return self.retreat_step([m for m in w.monsters if w.dist(m[:2]) <= 7] or w.monsters)
-        # One turn from death (the adjacent monsters' worst turn at our AC is about our HP): get out now --
-        # Teleportation, else Phase Door, rate limit or not. Otherwise Speed first, at the start of an emergency:
-        # +10 doubles our turns against everything here (the user, 10-25; m30's crowd took 303 -> 115 in ~70 s)
-        one_turn = bool(adj) and self.worst_3turns([r for *_, r in adj]) / 3 >= 0.9 * w.hp[0]
+        return NEXT
+
+    def _escape_one_turn(self, ctx):
+        """5. One turn from death (the adjacent monsters' worst turn at our AC is about our HP): get out now --
+        Teleportation, else Phase Door, rate limit or not. Otherwise Speed first, at the start of an emergency:
+        +10 doubles our turns against everything here (the user, 10-25; m30's crowd took 303 -> 115 in ~70 s)
+        (ctx.one_turn, for the Speed step.)"""
+        w, now, why, adj, can_read, pd = ctx.w, ctx.now, ctx.why, ctx.adj, ctx.can_read, ctx.pd
+        one_turn = ctx.one_turn = bool(adj) and self.worst_3turns([r for *_, r in adj]) / 3 >= 0.9 * w.hp[0]
         if one_turn and can_read:
             tele = self.find_item("Teleportation", TV_SCROLL)
             if tele or pd:
@@ -826,13 +1023,22 @@ class CombatMixin:
                 self.notify("emergency", f"{why}: one turn from death ({', '.join(sorted({r.name for *_, r in adj}))} "
                                          f"adjacent): read {one_of(use['name'])}", action=True)
                 return True
+        return NEXT
+
+    def _escape_speed(self, ctx):
+        """6. Speed first: a Potion of Speed, if not already fast and not one turn from death (once per 20 s)."""
+        now, why, one_turn = ctx.now, ctx.why, ctx.one_turn
         sp = self.find_item("Speed", TV_POTION)
         if sp and not one_turn and not self.buff_on("fast") and waited(self.speed_t, 20):
             self.speed_t = now
             self.cmd(f"custom q item={sp['item']}", f"{why}: quaff {sp['name']} (an emergency: speed first)", hold=0.6)
             self.notify("emergency", f"{why}: quaffed {one_of(sp['name'])} first", action=True)
             return True
-        # Last resort, started early because it takes 15-34 turns (8-23 s): Word of Recall
+        return NEXT
+
+    def _escape_recall(self, ctx):
+        """7. Last resort, started early because it takes 15-34 turns (8-23 s): Word of Recall"""
+        w, now, why, can_read = ctx.w, ctx.now, ctx.why, ctx.can_read
         if w.hp_frac < 0.3 and can_read and not self.recall_started(now):
             wor = self.find_item("Word of Recall", TV_SCROLL)
             if wor and w.in_dungeon:
@@ -840,12 +1046,17 @@ class CombatMixin:
                 self.cmd(f"custom r item={wor['item']}", f"{why}: word of recall (last resort)", hold=0.5)
                 self.notify("emergency", f"{why}: read Word of Recall as a last resort", action=True)
                 return True
+        return NEXT
+
+    def _escape_phase_futile(self, ctx):
+        """8. Phasing that isn't working: 3 in 20 s and they're still on us (mission
+        22 read 10 in ~20 s, twice). Start the recall, keep one or two Phase
+        Doors for when HP is really low
+        (First ctx.collapsing, for the Phase Door step.)"""
+        w, now, why, adj, can_read, pd = ctx.w, ctx.now, ctx.why, ctx.adj, ctx.can_read, ctx.pd
         # Rate-limited (repeated phasing doesn't shake a pack), except when HP
         # is collapsing with something next to us
-        collapsing = w.hp_frac < 0.35
-        # Phasing that isn't working: 3 in 20 s and they're still on us (mission
-        # 22 read 10 in ~20 s, twice). Start the recall, keep one or two Phase
-        # Doors for when HP is really low
+        ctx.collapsing = w.hp_frac < 0.35
         if adj and pd and can_read and self.phase_futile(now) and w.hp_frac >= 0.2:
             if not self.recall_started(now) and w.in_dungeon:
                 wor = self.find_item("Word of Recall", TV_SCROLL)
@@ -856,15 +1067,24 @@ class CombatMixin:
                     self.notify("emergency", f"{why}: 3 Phase Doors in 20 s and they're still adjacent: read Word "
                                              "of Recall; Phase Door now only below 20% HP", action=True)
                     return True
-            pd = None
-        # A summoner or status caster beside us that dies in two rounds: kill it first (the Advisor's estimator
-        # memo: m30's Druid paralysed, blinded three times and summoned three times, and was never attacked)
+            ctx.pd = None
+        return NEXT
+
+    def _escape_kill_caster(self, ctx):
+        """9. A summoner or status caster beside us that dies in two rounds: kill it first (the Advisor's estimator
+        memo: m30's Druid paralysed, blinded three times and summoned three times, and was never attacked)"""
+        why, adj = ctx.why, ctx.adj
         if self.kill_caster_step(adj, why):
             return True
-        # Four or more about in the open: Teleportation, not Phase Door (no monster flow in this build: they walk
-        # straight back unless a wall intervenes; 4 of m30's 5 phases landed 6-7 squares from contact)
-        crowd = [m for m in w.monsters if "NEVER_MOVE" not in m[2].flags and w.dist(m[:2]) <= 5]
-        tele = self.teleport_item()
+        return NEXT
+
+    def _escape_teleport(self, ctx):
+        """10. Four or more about in the open: Teleportation, not Phase Door (no monster flow in this build: they walk
+        straight back unless a wall intervenes; 4 of m30's 5 phases landed 6-7 squares from contact)
+        (ctx.crowd and ctx.tele, for the potions step.)"""
+        w, now, why, adj, can_read = ctx.w, ctx.now, ctx.why, ctx.adj, ctx.can_read
+        crowd = ctx.crowd = [m for m in w.monsters if "NEVER_MOVE" not in m[2].flags and w.dist(m[:2]) <= 5]
+        tele = ctx.tele = self.teleport_item()
         # (afraid with 2+ adjacent: we can't hit back, and a phase lands within reach again -- m41 phased 3 times
         # with a Half-orc, a Master yeek and a 2-headed hydra on it, 156 -> 123 HP, then read Word of Recall)
         pinned = w.flag("afraid") and len(adj) >= 2
@@ -876,6 +1096,11 @@ class CombatMixin:
             self.cmd(f"custom {tele[0]} item={tele[1]['item']}", f"{why}: teleport ({what})", hold=0.6)
             self.notify("emergency", f"{why}: {what}: {one_of(tele[1]['name'])}", action=True)
             return True
+        return NEXT
+
+    def _escape_phase(self, ctx):
+        """11. Phase Door with a monster adjacent: every 2.5 s, or every 0.7 s when HP is collapsing (< 35%)."""
+        now, why, adj, can_read, pd, collapsing = ctx.now, ctx.why, ctx.adj, ctx.can_read, ctx.pd, ctx.collapsing
         if adj and pd and can_read and (waited(self.phase_t, 2.5) or (collapsing and waited(self.phase_t, 0.7))):
             self.phase_t = now
             self.phase_hist.append(now)
@@ -883,6 +1108,11 @@ class CombatMixin:
             self.notify("emergency", f"{why}: read Phase Door ({', '.join(sorted({r.name for *_, r in adj}))} adjacent)",
                         action=True)
             return True
+        return NEXT
+
+    def _escape_to_stairs(self, ctx):
+        """12. Out of melee: walk to stairs <= 20 away and take them on arrival (not within 2 s of another use)."""
+        w, why, adj = ctx.w, ctx.why, ctx.adj
         if not adj:
             # Out of melee: make for stairs if some are close, else heal
             stairs = [p for p in w.find("<>") if w.dist(p) <= 20]
@@ -899,6 +1129,13 @@ class CombatMixin:
                 if st == "arrived" and w.standing_on in ("<", ">"):
                     self.take_stairs(w.standing_on)
                 return True
+        return NEXT
+
+    def _escape_potions(self, ctx):
+        """13. Potions by numbers (every 1.5 s), or Phase/Recall when they're too small; with 2+ adjacent an escape
+        rather than a cure."""
+        w, now, why, adj, can_read, pd = ctx.w, ctx.now, ctx.why, ctx.adj, ctx.can_read, ctx.pd
+        rate, crowd, tele = ctx.rate, ctx.crowd, ctx.tele
         if waited(self.cure_t, 1.5):
             # Heal or escape, by numbers (Advisor memo P3: quaffing CLW while
             # taking 100+ a turn is the commonest fatal mistake). A potion must
@@ -967,6 +1204,11 @@ class CombatMixin:
                 self.notify("emergency", f"{why}: quaffed {one_of(pot['name'])}" + (f" (losing ~{rate:.0f} HP/s)" if rate else ""),
                             action=True)
                 return True
+        return NEXT
+
+    def _escape_nothing_left(self, ctx):
+        """14. Nothing usable: an emergency notice, every 10 s; fight on."""
+        w, now, why, pd = ctx.w, ctx.now, ctx.why, ctx.pd
         if now - self.noescape_t > 10:
             self.noescape_t = now
             left = [n for n, ok in (("Phase Door", pd), ("cure potions", any(

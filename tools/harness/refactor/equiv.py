@@ -6,7 +6,12 @@ recording every command sent, every notice and every log record. python3 equiv.p
 unseen attackers, low HP with and without Phase/Teleport/Speed, fear with and without a cure, Speed/Berserk, thieves,
 breeders, a drainer and a drain, traps, a corridor choke, hound packs, a walk to the stairs under attack, stairs
 underfoot, molds, a summoner, a confusion lock, blind with two adjacent, slowed, engage, the emergency loop, no stairs).
-Schedule actions: req, ev, pos, depth, step (move with a pos event), hp, mons, ind, msg.
+35 combat_e3_* states (E3, the reflexes()/escape() split) for the branches those leave unreached: death and
+resurrection, arrival into danger, the slow-caster exception, a summoner listed before the map shows it, fear on
+arrival and kiting, molds by the goto's square and by the stairs, repeat fearers, town light, Satisfy Hunger, the
+pickup cases, resting, the escape's out-of-combat rest/retreat, the caster kill and potions too weak: 99 states,
+every line of the old reflexes and all but one of escape (refactor-candidates E3).
+Schedule actions: req, ev, pos, depth, step (move with a pos event), hp, mons, ind, msg, ghost.
 Coverage: EQUIV_COVER=COV.json [EQUIV_COVER_FUNCS="reflexes escape"] records the lines (from each def) run per state
 in the named functions; covreport.py COV.json prints it per state. Run from a copy next to a rundir_template/ (see
 fake.py)."""
@@ -257,6 +262,106 @@ COMBAT = [
      {2: [req("goal", "leave")]}, 40, 0.3),
 ]
 SCENARIOS += COMBAT
+
+
+# --- E3 states (the reflexes()/escape() split): the branches the 64 states above leave unreached ------------------
+def walk_west(n, t0=1, y=20, x=40):
+    """n steps west from (y, x), one a tick from t0 (walked ground for the retreats)."""
+    return {t0 + i: [("step", (y, x - 1 - i))] for i in range(n)}
+
+
+def wobble(t0, t1, hi, lo, msg=None):
+    """HP alternating hi/lo each tick (damage_rate counts the drops only), with a hit message at each drop."""
+    out = {}
+    for t in range(t0, t1):
+        out[t] = [("hp", lo if (t - t0) % 2 else hi)] + ([("msg", msg)] if msg and (t - t0) % 2 else [])
+    return out
+
+
+SATISFY = [("a Scroll of Satisfy Hunger", 70, 1)]
+LOOK = "You see a Potion of Cure Light Wounds."
+FAR_STAIRS = {(35, 10): "<"}
+COMBAT_E3 = [
+    ("combat_e3_death_ghost_resurrect", dict(DUNGEON),
+     {2: [("hp", 0)], 4: [("ghost", True)], 5: [req("goal", "resurrect")], 12: [("ghost", False), ("hp", 300)]},
+     20, 0.3),
+    ("combat_e3_emergency_mover_stop", dict(DUNGEON, stairs=FAR_STAIRS, ccw=0, csw=0, clw=0, speed=0,
+                                            monsters=[mon("Cave orc", 20, 58)]),
+     sched({1: [req("goal", "goto", "20", "75", arch=True)]},
+           {6: [("hp", 160), ("msg", "The Cave orc hits you.")], 8: [("msg", "The Cave orc hits you.")]}), 14, 0.3),
+    ("combat_e3_stairs_not_threatened", dict(DUNGEON, pos=(34, 11)),
+     {1: [("step", (35, 10)), ("msg", "It hits you.")], 9: [("hp", 150)]}, 14, 0.3),
+    ("combat_e3_escape_rest_alone", dict(DUNGEON),
+     {1: [("msg", "It hits you.")], 13: [("hp", 150)]}, 18, 0.3),
+    ("combat_e3_escape_retreat_in_view", dict(DUNGEON, hp=(150, 358), monsters=[mon("Cave orc", 20, 46)]),
+     walk_west(4), 12, 0.3),
+    ("combat_e3_group_stairs_underfoot", dict(DUNGEON, pos=(34, 11)),
+     {1: [("step", (35, 10))], 2: [("mons", [mon("Hill giant", 33, 9), mon("Hill giant", 33, 11),
+                                             mon("Hill giant", 36, 12), mon("Hill giant", 37, 9)])]}, 8, 0.3),
+    ("combat_e3_stun_cure", dict(DUNGEON, ind={"stun": [2]}, monsters=[mon("Cave orc", 20, 41)]), {}, 8, 0.3),
+    ("combat_e3_arrival_danger", dict(DUNGEON, pos=(34, 11)),
+     {1: [ev({"ev": "level", "depth": 7}), ("depth", 7)], 2: [("step", (35, 10)), ("mons", [mon("Mind flayer", 31, 14)])]},
+     8, 0.3),
+    ("combat_e3_slow_caster_far_stairs", dict(DUNGEON, monsters=[mon("Mind flayer", 20, 49)]), {}, 12, 0.3),
+    ("combat_e3_summoner_listed_only", dict(DUNGEON),
+     {1: [ev({"ev": "monlist", "lines": ["Ogre mage ('O')/('O'):[1]"]})], 9: [("mons", [mon("Ogre mage", 20, 50)])]},
+     16, 0.3),
+    ("combat_e3_summoner_while_walking", dict(DUNGEON),
+     {1: [req("goal", "goto", "35", "70", arch=True)], 4: [("mons", [mon("Ogre mage", 28, 66)])]}, 14, 0.3),
+    ("combat_e3_unseen_flee", dict(DUNGEON, hp=(250, 358)),
+     {2: [("msg", "It hits you."), ("hp", 240)]}, 8, 0.3),
+    ("combat_e3_afraid_on_arrival", dict(DUNGEON, pos=(34, 11), ind={"afraid": [1]}),
+     {1: [ev({"ev": "level", "depth": 7}), ("depth", 7)],
+      2: [("step", (35, 10)), ("mons", [mon("Cave orc", 33, 12), mon("Cave orc", 32, 13)])]}, 6, 0.3),
+    ("combat_e3_afraid_kite", dict(DUNGEON, ind={"afraid": [1]}),
+     sched(walk_west(5), {6: [("step", (20, 36))], 7: [("step", (20, 37))], 8: [("step", (20, 38))],
+                          9: [("mons", [mon("Cave orc", 20, 43)])]}), 18, 0.3),
+    ("combat_e3_mold_blocks_goto", dict(DUNGEON, monsters=[mon("Grey mold", 19, 45)]),
+     {1: [req("goal", "goto", "20", "46", arch=True)]}, 16, 0.3),
+    ("combat_e3_mold_beside_stairs", dict(DUNGEON, stairs={(20, 46): ">", (35, 10): "<"},
+                                          monsters=[mon("Grey mold", 21, 46)]),
+     {1: [req("goal", "goto", ">", arch=True)]}, 16, 0.3),
+    ("combat_e3_fearer_phase_retreat", dict(DUNGEON, speed=0, ind={"level": [28, 28]}),
+     sched(walk_west(6), {7: [("step", (20, 35))], 8: [("mons", [mon("Troll priest", 20, 34)])]}), 22, 0.3),
+    ("combat_e3_fearer_retreat", dict(DUNGEON, speed=0),
+     sched(walk_west(6), {7: [("step", (20, 35))], 8: [("mons", [mon("Troll priest", 20, 31)])]}), 16, 0.3),
+    ("combat_e3_town_light_off", dict(TOWN), {}, 70, 0.5),
+    ("combat_e3_satisfy_hunger_dark", dict(TOWN, rations=0, hunger=1, light=None,
+                                           extra_pack=[(lantern(9000), 39, 1)] + SATISFY), {}, 6, 0.4),
+    ("combat_e3_satisfy_hunger_read", dict(DUNGEON, rations=0, hunger=1, extra_pack=SATISFY), {}, 8, 0.4),
+    ("combat_e3_adjacent_resting_hurt", dict(DUNGEON, hp=(210, 358), ind={"state": [0, 0, 1]},
+                                             monsters=[mon("Cave orc", 20, 41)]), {}, 8, 0.3),
+    ("combat_e3_townfarm_thief", dict(TOWN, monsters=[mon("Filthy street urchin", 20, 41)]),
+     {1: [req("goal", "townfarm", "100")]}, 8, 0.3),
+    ("combat_e3_pickup_here", dict(DUNGEON, floor="a Potion of Cure Light Wounds", extra_map={(20, 40): "!"}),
+     {2: [("msg", LOOK)]}, 8, 0.3),
+    ("combat_e3_pickup_while_walking", dict(DUNGEON), {1: [req("goal", "goto", "20", "75", arch=True)],
+                                                       5: [("msg", LOOK)]}, 10, 0.3),
+    ("combat_e3_floor_junk", dict(DUNGEON, floor="a Potion of Salt Water", extra_map={(20, 40): "!"}),
+     {2: [("msg", "You see a Potion of Salt Water.")]}, 8, 0.3),
+    ("combat_e3_nopickup_then_skipped", dict(DUNGEON, floor="a Potion of Cure Light Wounds", extra_map={(20, 40): "!"}),
+     {1: [req("order", "nopickup=Cure")], 3: [("msg", LOOK)]}, 8, 0.3),
+    ("combat_e3_town_stash_item", dict(TOWN, floor="a Potion of Restore Strength", extra_map={(20, 40): "!"}),
+     {2: [("msg", "You see a Potion of Restore Strength.")]}, 6, 0.3),
+    ("combat_e3_fleeing_cheap_find", dict(DUNGEON, monsters=[mon("Bert the Stone Troll", 20, 48)]),
+     {4: [("msg", LOOK)]}, 8, 0.3),
+    ("combat_e3_pack_full_msg", dict(DUNGEON), {2: [("msg", "You have no room for a Potion of Cure Light Wounds.")]},
+     6, 0.3),
+    ("combat_e3_rest_stop_and_keep", dict(DUNGEON, hp=(340, 358), ind={"state": [0, 0, 1]}), {6: [("hp", 358)]},
+     10, 0.3),
+    ("combat_e3_kill_caster", dict(DUNGEON, hp=(150, 358), speed=0, monsters=[mon("Priest", 20, 41)]),
+     hits("The Priest hits you.", range(1, 10, 2)), 10, 0.3),
+    ("combat_e3_potions_too_weak_adjacent", dict(DUNGEON, hp=(96, 200), speed=0, wor=0, stairs=FAR_STAIRS,
+                                                 monsters=[mon("Cave orc", 20, 41)]),
+     wobble(1, 24, 98, 72, "The Cave orc hits you."), 24, 0.3),
+    ("combat_e3_potions_too_weak_shot", dict(DUNGEON, hp=(96, 200), speed=0, wor=1, stairs=FAR_STAIRS,
+                                             monsters=[mon("Cave orc", 20, 44)]),
+     wobble(1, 20, 98, 72, "The Cave orc fires an arrow."), 20, 0.3),
+    ("combat_e3_potions_too_weak_shot_no_recall", dict(DUNGEON, hp=(96, 200), speed=0, wor=0, stairs=FAR_STAIRS,
+                                                       monsters=[mon("Cave orc", 20, 44)]),
+     wobble(1, 20, 98, 72, "The Cave orc fires an arrow."), 20, 0.3),
+]
+SCENARIOS += COMBAT_E3
 COVER_FUNCS = set(os.environ.get("EQUIV_COVER_FUNCS", "reflexes escape").split())
 
 
@@ -343,6 +448,8 @@ def run(name, kw, schedule, ticks, dt):
                 c.monsters = list(a)
             elif kind == "ind":
                 c.ind[a[0]] = list(a[1])
+            elif kind == "ghost":
+                c.ghost = a
             elif kind == "msg":
                 c.log({"ev": "message", "text": a})
         c.sent = []

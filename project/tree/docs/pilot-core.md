@@ -9,9 +9,10 @@ methods, still on `Pilot`; `gear.py`: `GearMixin`, the gear evaluator's side, sh
 and selling (`town_*`, `price_of`, `note_store`, `kit_count`, `provision_step`, `identify_candidates`...), the supply
 gate, the food/light clock (`supply_minutes`/`supply_text`/`supply_watch`, `TURNS_PER_DMIN`, `FOOD_MID`), the house
 and stash state (`house_state`, `house_save`, `banked`, `stash_*`, `tavern_*`) and `note_town_stairs`/
-`note_edge_cross`; `combat.py` (~2,040 lines): `CombatMixin`, combat and survival (pilot-combat.md): `reflexes`,
-`escape` and its helpers (`emergency_loop`, `phase_futile`, `escaping_to_stairs`, `kill_caster_step`, `teleport_item`,
-`use_stair_location`, `log_escape`, `count_escape`), `danger_why`/`worst_3turns`/`sim_loss`/`dangers`, `has_ability`,
+`note_edge_cross`; `combat.py` (~2,280 lines): `CombatMixin`, combat and survival (pilot-combat.md): `reflexes`
+(one method per step, in `REFLEX_STEPS`'s order: E3), `escape` (its steps in `ESCAPE_STEPS`) and its helpers
+(`emergency_loop`, `phase_futile`, `escaping_to_stairs`, `kill_caster_step`, `teleport_item`, `use_stair_location`,
+`log_escape`, `count_escape`), `danger_why`/`worst_3turns`/`sim_loss`/`dangers`, `has_ability`,
 the fight rules (`engage_tick`, `group_danger`/`group_tick`, `still_fight_tick`, `status_tick`, `unseen_tick`,
 `choke_tick`, `confusion_lock`/`confusion_window`, `speed_start_tick`, `berserk_tick`, `hard_fight`, `fear_cure`,
 `buff_on`, `our_slowness`), `sidestep`/`retreat_step`/`quiet_spot`, `flee_failed`, the `react` rules (`rules`,
@@ -127,13 +128,14 @@ Each tick runs, in this order (any `return` ends the tick):
 7. **Test-server freeze**: if `tools/freeze.sh` has frozen time (`world.frozen()`), stop the mover, say so once,
    and act on nothing (requests are still answered).
 8. **Acting**, first that acts wins:
-   1. `reflexes()` -- survival rules ([pilot-combat.md](pilot-combat.md)). Order inside: dead/ghost;
-      `busy_until` hold (after every command the Pilot waits ~0.4 s, blocking everything below); inside a store with
-      a Shop goal do nothing; emergency (`escape`); group danger; speed/berserk/status cures; arrival into danger
-      (stairs straight back); danger in view (walk away / flee); unseen attacker; choke (back into a corridor);
-      summon traps; slowness; fear; stationary monsters; light; hunger; adjacent monster (stand and let
-      auto-retaliate fight); pickup underfoot; auto-destroy; `engage_tick` (a worthwhile monster a few steps off);
-      rest when hurt and alone.
+   1. `reflexes()` -- survival rules ([pilot-combat.md](pilot-combat.md) §2). It runs the step methods named in
+      `REFLEX_STEPS`, in that order, and the first that acts ends it (`escape()` runs `ESCAPE_STEPS` the same way).
+      Order inside: dead/ghost; `busy_until` hold (after every command the Pilot waits ~0.4 s, blocking everything
+      below); inside a store with a Shop goal do nothing; emergency (`escape`); group danger; speed/berserk/status
+      cures; arrival into danger (stairs straight back); danger in view (walk away / flee); unseen attacker; choke
+      (back into a corridor); summon traps; slowness; fear; stationary monsters; repeat fearers; light; hunger;
+      adjacent monster (stand and let auto-retaliate fight); pickup underfoot; auto-destroy; `engage_tick` (a
+      worthwhile monster a few steps off); rest when hurt and alone.
    2. `park_tick` while parking.
    3. `rule_tick` -- the Navigator's `react` rules (leave on NAME, hunt NAME, kill thieves).
    4. `look_tick` -- never acts; asks the server's targeting which visible monsters are asleep (every 5 s at most).

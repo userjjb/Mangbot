@@ -1,0 +1,37 @@
+{
+ "id": "B3",
+ "tag": "B3-20261102-235701",
+ "depth_ft": 650,
+ "start": "2026-11-02 23:57:01",
+ "checks": {
+  "Brigand slain": {
+   "pass": true,
+   "detail": ""
+  },
+  "nothing stolen": {
+   "pass": true,
+   "detail": "[]"
+  }
+ },
+ "notes": [
+  "messages: ['You hit the Brigand.', 'You hit the Brigand.', 'You have slain the Brigand.']"
+ ],
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   358,
+   358
+  ],
+  "attention": [],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-11-02 23:59:50",
+ "pass": true
+}

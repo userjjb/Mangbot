@@ -15,23 +15,24 @@ background, never acting) in [gear-and-estimator.md](gear-and-estimator.md); `pi
 
 **Where the code is** (E1 step 5): the methods in this file live in `tools/pilot/combat.py` as `CombatMixin`, still
 `Pilot`'s names (`class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin)`; the Advisor's estimator
-mirrors `Pilot.escape`, `group_tick`, `speed_start_tick`, `berserk_tick` and `fear_cure` by name): `reflexes`,
-`escape` (with `emergency_loop`, `phase_futile`, `escaping_to_stairs`, `kill_caster_step`, `count_escape`,
-`log_escape`/`ESCAPE_WHY`), `danger_why`, `worst_3turns`, `sim_loss`, `dangers`, `danger_text`, `has_ability`, the
-§2 rules (`engage_tick`, `group_danger`/`group_tick`, `status_tick`, `confusion_lock`/`confusion_window`,
-`unseen_tick`, `still_fight_tick`/`stairs_beside_still`, `choke_tick` and the module's `choke_tier`,
-`speed_start_tick`, `berserk_tick`, `hard_fight`, `fear_cure`, `buff_on`, `our_slowness`, `hunt_ordered`,
-`walk_away_ok`), `flee_failed`, the §3.3 helpers except `take_stairs` (`retreat_step`, `sidestep`, `quiet_spot`,
-`teleport_item`, `use_stair_location`), the `react` rules (`RULE_KINDS`, `rules`, `save_rules`, `has_rule`,
-`rule_tick`), the §5 watches `watch_band` (`band_cost`, `band_live`), `watch_character`, `watch_drainers`,
-`watch_thieves`, `watch_breeders`, `watch_traps`, `watch_kills`, `watch_perception`, `watch_progress`, and the
-potion tables `heal_of`/`HEALS`, `STATUS_CURES`, `CURE_POTIONS`. Still in `pilot.py`: `tick` and its steps
-(`confusion_tick` calls the confusion pair, `watch_tick` the watches, `act_tick` `reflexes` and `rule_tick`),
-`take_stairs`, `start_resting`/`stop_resting`, `recall_started`, `set_goal`/`step_goal`, `look_tick`/`is_asleep`. The
-commands are in `commands.py` (`CommandsMixin`, E1 step 6: `cmd_react`, the `monster` entry of the command table,
-`monster_info`, `drainers_info`, `hunt_refusal`, `uniques_killed`; commands.md). Elsewhere: `phase_item`, `find_item`, `keep_light`/`town_light`, `watch_weapons`/`watch_abilities`
-in `items.py`; `supply_watch` in `town.py`; the shadow decisions and duel estimates in `gear.py`; the escape goals in
-`goals.py`.
+mirrors `Pilot.escape`, `group_tick`, `speed_start_tick`, `berserk_tick` and `fear_cure` by name): `reflexes` and
+`escape`, each running one method per step in the order of `REFLEX_STEPS` / `ESCAPE_STEPS` (E3; §2 and §3 name each
+step's method), `escape` (with `emergency_loop`, `phase_futile`, `escaping_to_stairs`, `kill_caster_step`,
+`count_escape`, `log_escape`/`ESCAPE_WHY`), `danger_why`, `worst_3turns`, `sim_loss`, `dangers`, `danger_text`,
+`has_ability`, the §2 rules (`engage_tick`, `group_danger`/`group_tick`, `status_tick`,
+`confusion_lock`/`confusion_window`, `unseen_tick`, `still_fight_tick`/`stairs_beside_still`, `choke_tick` and the
+module's `choke_tier`, `speed_start_tick`, `berserk_tick`, `hard_fight`, `fear_cure`, `buff_on`, `our_slowness`,
+`hunt_ordered`, `walk_away_ok`), `flee_failed`, the §3.3 helpers except `take_stairs` (`retreat_step`, `sidestep`,
+`quiet_spot`, `teleport_item`, `use_stair_location`), the `react` rules (`RULE_KINDS`, `rules`, `save_rules`,
+`has_rule`, `rule_tick`), the §5 watches `watch_band` (`band_cost`, `band_live`), `watch_character`, `watch_drainers`,
+`watch_thieves`, `watch_breeders`, `watch_traps`, `watch_kills`, `watch_perception`, `watch_progress`, and the potion
+tables `heal_of`/`HEALS`, `STATUS_CURES`, `CURE_POTIONS`. Still in `pilot.py`: `tick` and its steps (`confusion_tick`
+calls the confusion pair, `watch_tick` the watches, `act_tick` `reflexes` and `rule_tick`), `take_stairs`,
+`start_resting`/`stop_resting`, `recall_started`, `set_goal`/`step_goal`, `look_tick`/`is_asleep`. The commands are in
+`commands.py` (`CommandsMixin`, E1 step 6: `cmd_react`, the `monster` entry of the command table, `monster_info`,
+`drainers_info`, `hunt_refusal`, `uniques_killed`; commands.md). Elsewhere: `phase_item`, `find_item`,
+`keep_light`/`town_light`, `watch_weapons`/`watch_abilities` in `items.py`; `supply_watch` in `town.py`; the shadow
+decisions and duel estimates in `gear.py`; the escape goals in `goals.py`.
 
 ## 1. Where it runs in the tick
 
@@ -56,29 +57,37 @@ named `flee…`/`leave…` fails, it calls `flee_failed` (§3.4).
 
 Here and below, "within N levels of ours" means a monster level ≥ ours − N: higher monsters count too.
 
-| # | Step | Trigger | Action |
-|---|---|---|---|
-| 0 | Death | HP ≤ 0 or ghost | Stop everything; `dead` alert. Nothing else runs until `goal resurrect` is given (goal `Resurrect`). |
-| 0 | Busy / store | an action is still on its way (`busy_until`); inside a store during a `Shop` goal | Busy: hold. Store: skip the rest of the reflexes, so the `Shop` goal carries on (any reflex command would leave the store). |
-| 1 | **Emergency** | HP < `flee_hp` (0.5), **or** "hard": HP ≤ the adjacent monsters' worst melee over our next 3 turns (`worst_3turns`) while HP < 90%; and a monster is within 7 squares or we were hit in the last 5 s | `escape(why)` (§3). If it had nothing to do this instant, the mover stops anyway (unless it is escape's own walk to stairs): the goal never takes over during an emergency, because a new walk would wipe the queued reads. |
-| 2 | **Group danger** | `group_tick` (§2.1) | Retreat, stairs, flee, recall, staff or phase, by tier. |
-| 3 | Hard-fight start | `hard_fight()`: a unique or a monster within 5 levels of ours adjacent, or 2+ adjacent at < 75% HP | `speed_start_tick`: a Potion of Speed (not if already fast; once per 30 s). Then `berserk_tick`: Berserk Strength (same test, once per 30 s). `hard_fight_shadow` logs the estimator's view first. |
-| 4 | Status cures | `status_tick` (§2.3) | The cheapest potion that cures stun, confusion, blindness or poison. |
-| 5 | Arrival into danger | < 6 s on a new level, standing on stairs | Take the stairs back if `arrival_pack` (4) monsters within 5 levels of ours are within 7 squares, or a danger (`danger_why`) is in view (with `danger` in `stop_on`). `danger_avoided` news. |
-| 6 | Danger in view | a monster that `danger_why` flags, within 12 squares (or listed by the server but not yet on the map) | **Exception:** slow casters with weak melee (no faster than us, average and worst melee < HP/8) and stairs > 8 away are *not* fled: walking away gives them free casts (`danger_seen` alert says "fight it or recall"). **Summoners only**, HP ≥ 50%, 3+ squares away, no faster, nothing summoned yet, and walking away hasn't failed on this level (`walk_away_ok`): goal `WalkAway`. Otherwise goal `Flee` (`danger_seen` alert). There is a 10 s gap between flees. The flee is skipped if the Navigator ordered a hunt in the last 2 minutes (`hunt_ordered`). If a flee just failed, `flee_failed` runs again. A summoner listed before its map position is known gets up to 1.5 s for the map to place it. |
-| 7 | Unseen attacker | `unseen_tick` (§2.4) | Flee to known stairs, or advise a recall. |
-| 8 | Choke point | order `choke=on`; 3+ monsters within 5 levels of ours, within 10 squares; we're in the open, not on stairs, not fleeing | `choke_tick`: walk to a corridor square (best `choke_tier`) within 10 steps, further from the pack's centre, and hold it up to 25 s so they come one at a time. |
-| 9 | Summon trap | "You are enveloped in a cloud of smoke" in the last 2 s, not blind or confused | Phase Door at once (`@r1` first; `emergency`). |
-| 10 | Slowed | our speed makes monsters act ≥ 2× (`our_slowness`), in melee or hit in the last 2 s | Potion of Speed (once per 40 s). |
-| 11 | **Afraid** (a warrior can't melee) | afraid, a monster within 7 | Just arrived on stairs among 2+ monsters: take the stairs back. Not in danger (HP ≥ `think_hp`, no danger, < 2 adjacent, damage < 2% max HP/s): kite with `retreat_step` over ground already walked. In danger: `fear_cure` (Heroism > Boldness > Berserk), else teleport if `react afraid teleport` is set, else Phase Door if a monster is adjacent. |
-| 12 | Stationary monsters (molds, jellies, eyes) adjacent | NEVER_MOVE adjacent, not the hunt target | `stairs_beside_still`: the wanted stairs are a step away and these monsters are harmless for one turn, so take the stairs. `still_fight_tick` (§2.5): kill it if it blocks the way and is killable, or flee a strong disenchanter. Otherwise step away (`retreat_step` reach 6, else `sidestep`). |
-| 13 | Repeat fearers | a mobile monster that frightens again and again, within 7; not during Flee or Recall | `fearer` alert once per level; Phase Door if it is within 2 levels of ours and any monster is adjacent (every 2.5 s at most); otherwise retreat. |
-| 14 | Light | `town_light`, `keep_light` (§5) | Skipped with a monster adjacent, **unless we have no light at all** in the dungeon. |
-| 15 | Hunger | hunger ≤ 2 (Hungry), nothing in view for 5 s and not hit for 5 s | Eat (once per 10 s). No food: read Satisfy Hunger only when Weak (≤ 1), because it fills you to Gorged. Neither, and Weak in the dungeon: goal `Recall` (`supplies`, level `recalling`). While it waits (a meal under 10 s ago, or Hungry with only scrolls) the later steps still run (A20, 2.39.0). |
-| 16 | **Adjacent monster** | any adjacent | Stop the mover (except during Goto/Flee) and stop resting. Below `think_hp`: `fight_going_badly` alert (once per 10 s). With 2+ adjacent and one a thief (EAT_ITEM/EAT_GOLD blows), hit the thief first (item thieves before gold thieves). Otherwise hold, so auto-retaliate fights. A Goto or Flee goal keeps moving instead. |
-| 17 | Pickup / auto-destroy | standing on an item | Belongs to the item policy ([pilot-items.md](pilot-items.md)). While fleeing (Flee, BandLeave, WalkAway) with monsters in view, only items worth 500 or more are picked up. |
-| 18 | **Engage** | `engage_tick` (§2.2) | Walk to a weak monster a few steps off and fight it. |
-| 19 | Rest | HP < `rest_below` (0.7), nothing in view, not recalling | Rest. It stops at `rest_to` (0.95) or when a monster appears, and goes on resting until `rest_to` once started. |
+Each row is one method of `CombatMixin` (E3, session 11), and `reflexes()` runs them in the order of the class's
+`REFLEX_STEPS` tuple: a step returns `NEXT` to go on, or the value `reflexes()` returns (True ends the tick). One
+entry is not a rule: `_reflex_survey`, between the busy check and the emergency, puts the monsters within 7
+squares (`ctx.mons_near`) on the per-call context `ctx` for the steps that follow (`ctx` also carries `w`, the
+orders `o` and `now`, read once per call; `_reflex_adjacent` adds `ctx.adj` for the pickup's test). The code
+numbers the steps its own way (2, 2', 2a, 3, 3a-3i, 4, 5, 5b, 6, the comments of old): each method's docstring
+starts with that number.
+
+| # | Step | Trigger | Action | Method |
+|---|---|---|---|---|
+| 0 | Death | HP ≤ 0 or ghost | Stop everything; `dead` alert. Nothing else runs until `goal resurrect` is given (goal `Resurrect`). | `_reflex_death` |
+| 0 | Busy / store | an action is still on its way (`busy_until`); inside a store during a `Shop` goal | Busy: hold. Store: skip the rest of the reflexes, so the `Shop` goal carries on (any reflex command would leave the store). | `_reflex_busy` |
+| 1 | **Emergency** | HP < `flee_hp` (0.5), **or** "hard": HP ≤ the adjacent monsters' worst melee over our next 3 turns (`worst_3turns`) while HP < 90%; and a monster is within 7 squares or we were hit in the last 5 s | `escape(why)` (§3). If it had nothing to do this instant, the mover stops anyway (unless it is escape's own walk to stairs): the goal never takes over during an emergency, because a new walk would wipe the queued reads. | `_reflex_emergency` |
+| 2 | **Group danger** | `group_tick` (§2.1) | Retreat, stairs, flee, recall, staff or phase, by tier. | `_reflex_group` |
+| 3 | Hard-fight start | `hard_fight()`: a unique or a monster within 5 levels of ours adjacent, or 2+ adjacent at < 75% HP | `speed_start_tick`: a Potion of Speed (not if already fast; once per 30 s). Then `berserk_tick`: Berserk Strength (same test, once per 30 s). `hard_fight_shadow` logs the estimator's view first. | `_reflex_hard_fight` |
+| 4 | Status cures | `status_tick` (§2.3) | The cheapest potion that cures stun, confusion, blindness or poison. | `_reflex_status` |
+| 5 | Arrival into danger | < 6 s on a new level, standing on stairs | Take the stairs back if `arrival_pack` (4) monsters within 5 levels of ours are within 7 squares, or a danger (`danger_why`) is in view (with `danger` in `stop_on`). `danger_avoided` news. | `_reflex_arrival` |
+| 6 | Danger in view | a monster that `danger_why` flags, within 12 squares (or listed by the server but not yet on the map) | **Exception:** slow casters with weak melee (no faster than us, average and worst melee < HP/8) and stairs > 8 away are *not* fled: walking away gives them free casts (`danger_seen` alert says "fight it or recall"). **Summoners only**, HP ≥ 50%, 3+ squares away, no faster, nothing summoned yet, and walking away hasn't failed on this level (`walk_away_ok`): goal `WalkAway`. Otherwise goal `Flee` (`danger_seen` alert). There is a 10 s gap between flees. The flee is skipped if the Navigator ordered a hunt in the last 2 minutes (`hunt_ordered`). If a flee just failed, `flee_failed` runs again. A summoner listed before its map position is known gets up to 1.5 s for the map to place it. | `_reflex_danger_in_view` |
+| 7 | Unseen attacker | `unseen_tick` (§2.4) | Flee to known stairs, or advise a recall. | `_reflex_unseen` |
+| 8 | Choke point | order `choke=on`; 3+ monsters within 5 levels of ours, within 10 squares; we're in the open, not on stairs, not fleeing | `choke_tick`: walk to a corridor square (best `choke_tier`) within 10 steps, further from the pack's centre, and hold it up to 25 s so they come one at a time. | `_reflex_choke` |
+| 9 | Summon trap | "You are enveloped in a cloud of smoke" in the last 2 s, not blind or confused | Phase Door at once (`@r1` first; `emergency`). | `_reflex_summon_trap` |
+| 10 | Slowed | our speed makes monsters act ≥ 2× (`our_slowness`), in melee or hit in the last 2 s | Potion of Speed (once per 40 s). | `_reflex_slowed` |
+| 11 | **Afraid** (a warrior can't melee) | afraid, a monster within 7 | Just arrived on stairs among 2+ monsters: take the stairs back. Not in danger (HP ≥ `think_hp`, no danger, < 2 adjacent, damage < 2% max HP/s): kite with `retreat_step` over ground already walked. In danger: `fear_cure` (Heroism > Boldness > Berserk), else teleport if `react afraid teleport` is set, else Phase Door if a monster is adjacent. | `_reflex_afraid` |
+| 12 | Stationary monsters (molds, jellies, eyes) adjacent | NEVER_MOVE adjacent, not the hunt target | `stairs_beside_still`: the wanted stairs are a step away and these monsters are harmless for one turn, so take the stairs. `still_fight_tick` (§2.5): kill it if it blocks the way and is killable, or flee a strong disenchanter. Otherwise step away (`retreat_step` reach 6, else `sidestep`). | `_reflex_still` |
+| 13 | Repeat fearers | a mobile monster that frightens again and again, within 7; not during Flee or Recall | `fearer` alert once per level; Phase Door if it is within 2 levels of ours and any monster is adjacent (every 2.5 s at most); otherwise retreat. | `_reflex_fearers` |
+| 14 | Light | `town_light`, `keep_light` (§5) | Skipped with a monster adjacent, **unless we have no light at all** in the dungeon. | `_reflex_light` |
+| 15 | Hunger | hunger ≤ 2 (Hungry), nothing in view for 5 s and not hit for 5 s | Eat (once per 10 s). No food: read Satisfy Hunger only when Weak (≤ 1), because it fills you to Gorged. Neither, and Weak in the dungeon: goal `Recall` (`supplies`, level `recalling`). While it waits (a meal under 10 s ago, or Hungry with only scrolls) the later steps still run (A20, 2.39.0). | `_reflex_hunger` |
+| 16 | **Adjacent monster** | any adjacent | Stop the mover (except during Goto/Flee) and stop resting. Below `think_hp`: `fight_going_badly` alert (once per 10 s). With 2+ adjacent and one a thief (EAT_ITEM/EAT_GOLD blows), hit the thief first (item thieves before gold thieves). Otherwise hold, so auto-retaliate fights. A Goto or Flee goal keeps moving instead. | `_reflex_adjacent` |
+| 17 | Pickup / auto-destroy | standing on an item | Belongs to the item policy ([pilot-items.md](pilot-items.md)). While fleeing (Flee, BandLeave, WalkAway) with monsters in view, only items worth 500 or more are picked up. | `_reflex_pickup`, `_reflex_pack` |
+| 18 | **Engage** | `engage_tick` (§2.2) | Walk to a weak monster a few steps off and fight it. | `_reflex_engage` |
+| 19 | Rest | HP < `rest_below` (0.7), nothing in view, not recalling | Rest. It stops at `rest_to` (0.95) or when a monster appears, and goes on resting until `rest_to` once started. | `_reflex_rest` |
 
 ### 2.1 Group danger (`group_danger`, `group_tick`)
 
@@ -179,41 +188,47 @@ speed.
 ## 3. Escaping (`Pilot.escape`)
 
 `escape(why)` is called by the emergency reflex. It does at most one thing per call. The order (mirrored by the
-Advisor's estimator `base_policy`, `POLICY_VERSION pilot-escape-2026-10-29o` in `Advisor/data/estimator/options_sim.py`, so **tell the Advisor when it changes**):
+Advisor's estimator `base_policy`, `POLICY_VERSION pilot-escape-2026-10-29o` in `Advisor/data/estimator/options_sim.py`,
+so **tell the Advisor when it changes**) is that of `ESCAPE_STEPS`, one method per step (E3, session 11; each item below
+names its method), run like the reflexes' (§2). `_escape_survey`, after step 3, is not a step: it puts what the later
+steps share on `ctx` (`adj`, `can_read`, the Phase Door `pd`, the damage `rate`, `in_combat`); step 5 adds `one_turn`,
+step 8 `collapsing` (and clears `pd` when phasing is futile), step 10 `crowd` and `tele`:
 
-1. A stairs command is already on its way (< 1.2 s): wait.
-2. `emergency_loop`: 3 escape actions in 90 s (`emergency` notices except those sent with `action=False`, which report
-   no action: "waiting to use ... fighting on", "potions too weak", "attacking X first"; plus the weak-potions phase
-   door). With stairs ≤ 30 away: `Flee("emergency loop")` and resume the old
-   goal afterwards. Without stairs: an `emergency_loop` alert ("no stairs known nearby"); stairs known but already
-   fleeing: an `emergency_loop` alert saying so (A21, 2.40.0). At most once per 60 s.
-3. **Stairs underfoot** while threatened (something in view, or hit < 2 s ago): take them, then goal `Recover`. Standing
-   on stairs with nothing threatening: do nothing (stops stair-bouncing).
-4. **Not in combat** (nothing adjacent, not hit in 3 s, and HP not falling with a monster in view): rest if nothing is in
-   view, else `retreat_step` out of sight. No potions or scrolls out of combat. (An escape walk to stairs under way,
-   step 12, carries on instead.)
-5. **One turn from death** (adjacent worst over 3 turns ÷ 3 ≥ 90% HP), able to read: a Scroll of Teleportation, else
-   Phase Door, whatever the rate limit.
-6. **Speed first**: a Potion of Speed, if not already fast (once per 20 s).
-7. **HP < 30%**, able to read, no recall under way: Word of Recall (the last resort, started early because it takes
-   15–34 turns).
-8. **Phasing futile** (`phase_futile`: 3 Phase Doors in 20 s), still adjacent, HP ≥ 20%: Word of Recall. After that,
-   Phase Door is withheld until HP < 20%.
-9. **Kill the caster** (`kill_caster_step`): an adjacent summoner or status caster (blind, confuse, hold, slow, scare,
-   forget, drain mana, tele-to, tele-level) that our weapon kills in 2 rounds (rulebook HP vs. weapon damage): attack it.
-10. **Teleport, not phase**, with a monster adjacent: 4+ mobile monsters within 5 in the open (not a corridor), or
-    afraid with 2+ adjacent. Teleportation scroll or staff (`teleport_item`), rate-limited 2 s.
-11. **Phase Door** with a monster adjacent: every 2.5 s, or every 0.7 s when HP < 35%. An item inscribed `@r1` is used
-    first.
-12. **Out of melee**: walk to stairs ≤ 20 away (`escaping_to_stairs`: true only while that walk
-    is the mover's current one on this level) and take them on arrival. Not within 2 s of
-    another use, since a new move sends `clear` and would drop a queued read.
-13. **Potions by numbers** (every 1.5 s): need = max(2 s × damage rate, 10% max HP when HP < 30%). Drink the weakest
-    potion that heals more than need. If none is enough and damage isn't dire, drink the biggest. If every potion is too
-    small and death is < 8 s away at this rate: Phase Door (adjacent), else Word of Recall, else (not adjacent) the
-    biggest potion. With 2+ adjacent, a cure is outpaced, so: blind or confused, quaff the status cure so the next turn
-    can read; else read Phase/Teleport instead of the cure.
-14. Nothing usable: an `emergency` notice "waiting to use … / nothing left to escape with, fighting on" (every 10 s).
+1. `_escape_stairs_pending`: A stairs command is already on its way (< 1.2 s): wait.
+2. `_escape_loop`: `emergency_loop`: 3 escape actions in 90 s (`emergency` notices except those sent with
+   `action=False`, which report no action: "waiting to use ... fighting on", "potions too weak", "attacking X first";
+   plus the weak-potions phase door). With stairs ≤ 30 away: `Flee("emergency loop")` and resume the old goal
+   afterwards. Without stairs: an `emergency_loop` alert ("no stairs known nearby"); stairs known but already fleeing:
+   an `emergency_loop` alert saying so (A21, 2.40.0). At most once per 60 s.
+3. `_escape_stairs_underfoot`: **Stairs underfoot** while threatened (something in view, or hit < 2 s ago): take them,
+   then goal `Recover`. Standing on stairs with nothing threatening: do nothing (stops stair-bouncing).
+4. `_escape_out_of_combat`: **Not in combat** (nothing adjacent, not hit in 3 s, and HP not falling with a monster in
+   view): rest if nothing is in view, else `retreat_step` out of sight. No potions or scrolls out of combat. (An escape
+   walk to stairs under way, step 12, carries on instead.)
+5. `_escape_one_turn`: **One turn from death** (adjacent worst over 3 turns ÷ 3 ≥ 90% HP), able to read: a Scroll of
+   Teleportation, else Phase Door, whatever the rate limit.
+6. `_escape_speed`: **Speed first**: a Potion of Speed, if not already fast (once per 20 s).
+7. `_escape_recall`: **HP < 30%**, able to read, no recall under way: Word of Recall (the last resort, started early
+   because it takes 15–34 turns).
+8. `_escape_phase_futile`: **Phasing futile** (`phase_futile`: 3 Phase Doors in 20 s), still adjacent, HP ≥ 20%: Word of
+   Recall. After that, Phase Door is withheld until HP < 20%.
+9. `_escape_kill_caster`: **Kill the caster** (`kill_caster_step`): an adjacent summoner or status caster (blind,
+   confuse, hold, slow, scare, forget, drain mana, tele-to, tele-level) that our weapon kills in 2 rounds (rulebook HP
+   vs. weapon damage): attack it.
+10. `_escape_teleport`: **Teleport, not phase**, with a monster adjacent: 4+ mobile monsters within 5 in the open (not a
+    corridor), or afraid with 2+ adjacent. Teleportation scroll or staff (`teleport_item`), rate-limited 2 s.
+11. `_escape_phase`: **Phase Door** with a monster adjacent: every 2.5 s, or every 0.7 s when HP < 35%. An item
+    inscribed `@r1` is used first.
+12. `_escape_to_stairs`: **Out of melee**: walk to stairs ≤ 20 away (`escaping_to_stairs`: true only while that walk is
+    the mover's current one on this level) and take them on arrival. Not within 2 s of another use, since a new move
+    sends `clear` and would drop a queued read.
+13. `_escape_potions`: **Potions by numbers** (every 1.5 s): need = max(2 s × damage rate, 10% max HP when HP < 30%).
+    Drink the weakest potion that heals more than need. If none is enough and damage isn't dire, drink the biggest. If
+    every potion is too small and death is < 8 s away at this rate: Phase Door (adjacent), else Word of Recall, else
+    (not adjacent) the biggest potion. With 2+ adjacent, a cure is outpaced, so: blind or confused, quaff the status
+    cure so the next turn can read; else read Phase/Teleport instead of the cure.
+14. `_escape_nothing_left`: Nothing usable: an `emergency` notice "waiting to use … / nothing left to escape with,
+    fighting on" (every 10 s).
 
 Read and quaff are confirmed by `verify_use`: done when the server says "You have N … left" or the recall charges. An
 unconfirmed read or quaff is resent up to 2 times, 2.5 s apart. **Word of Recall and Teleport are never resent**, because a second read

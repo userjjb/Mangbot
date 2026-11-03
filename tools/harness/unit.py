@@ -3643,6 +3643,35 @@ def command_table_architect_only_refused():
     return ok, "; ".join(f"{r} {c}: {v[0].get('error', 'ok')[:40]}" for (r, c), v in out.items())
 
 
+@case
+def reflex_escape_step_lists():
+    """E3 (session 11): reflexes() and escape() run one method per step, in the order of REFLEX_STEPS and
+    ESCAPE_STEPS. Every name in the two lists is a method of Pilot taking (self, ctx), none twice; reflexes and
+    escape still exist as the entry points; and the five names the Advisor's estimator mirrors (escape, group_tick,
+    speed_start_tick, berserk_tick, fear_cure) are still Pilot's, with their signatures."""
+    import inspect
+    bad = []
+    for lst in ("REFLEX_STEPS", "ESCAPE_STEPS"):
+        names = getattr(P.Pilot, lst, None)
+        if not names:
+            bad.append(f"no Pilot.{lst}")
+            continue
+        if len(set(names)) != len(names):
+            bad.append(f"{lst} names a step twice")
+        for n in names:
+            f = getattr(P.Pilot, n, None)
+            if not callable(f) or list(inspect.signature(f).parameters) != ["self", "ctx"]:
+                bad.append(f"{lst}: {n} is not a step method (self, ctx)")
+    want = {"reflexes": ["self"], "escape": ["self", "why"], "group_tick": ["self", "now"],
+            "speed_start_tick": ["self", "now"], "berserk_tick": ["self", "now"], "fear_cure": ["self"]}
+    for n, params in want.items():
+        f = getattr(P.Pilot, n, None)
+        if not callable(f) or list(inspect.signature(f).parameters) != params:
+            bad.append(f"Pilot.{n} missing or not ({', '.join(params)})")
+    return not bad, "; ".join(bad) or (f"{len(P.Pilot.REFLEX_STEPS)} reflex steps, {len(P.Pilot.ESCAPE_STEPS)} escape "
+                                       "steps, all methods; the mirrored names kept")
+
+
 # --- reports (E1: the report text against a golden file) ---------------------------------------
 GOLDEN_REPORTS = os.path.join(HERE, "golden", "reports.txt")
 

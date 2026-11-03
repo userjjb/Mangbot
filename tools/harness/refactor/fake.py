@@ -110,6 +110,7 @@ class FakeClient:
                                                        "res_pois": "", "hold_life": "", "feather": "",
                                                        "slow_digest": "d", "res_fire": "e", "res_cold": "e"}
         self.floor = floor
+        self.ghost = False                  # (equiv.py's "ghost" action: the status reply's ghost flag)
 
     def send(self, cmd):
         self.sent.append(cmd)
@@ -119,7 +120,7 @@ class FakeClient:
         return []
 
     def status(self):
-        return {"ev": "status", "ind": copy.deepcopy(self.ind), "ghost": False, "y": self.pos[0], "x": self.pos[1]}
+        return {"ev": "status", "ind": copy.deepcopy(self.ind), "ghost": self.ghost, "y": self.pos[0], "x": self.pos[1]}
 
     def inven(self):
         return copy.deepcopy(self.items)

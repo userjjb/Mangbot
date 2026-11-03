@@ -1,0 +1,102 @@
+{
+ "id": "A2K",
+ "tag": "A2K-20261103-000010",
+ "depth_ft": 300,
+ "start": "2026-11-03 00:00:10",
+ "checks": {
+  "no danger rule: a hard fight with Speed + Berserk": {
+   "pass": true,
+   "detail": "tactics ['a hard fight with Khim, Son of Mim: quaffed a Potion of Speed at the start', 'a hard fight with Khim, Son of Mim: quaffed a Potion of Berserk Strength (+to-hit, +30 HP, no fear)']"
+  },
+  "lowest HP >= 60%": {
+   "pass": true,
+   "detail": "lowest [349, 358]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   349,
+   358
+  ],
+  "attention": [
+   [
+    3.7,
+    "tactic",
+    "a hard fight with Khim, Son of Mim: quaffed a Potion of Speed at the start"
+   ],
+   [
+    4.3,
+    "tactic",
+    "a hard fight with Khim, Son of Mim: quaffed a Potion of Berserk Strength (+to-hit, +30 HP, no fear)"
+   ],
+   [
+    12.3,
+    "unique_slain",
+    "Khim, Son of Mim slain at 15,115: uniques drop good items (look at 'Item squares' around there)"
+   ],
+   [
+    18.8,
+    "tactic",
+    "fetching the unique's drop at 16,114"
+   ],
+   [
+    19.6,
+    "found",
+    "picked up a Flail (2d6) {Khim, Son of Mim}: identify it before selling (`sell !NAME`)"
+   ],
+   [
+    21.3,
+    "goal_done",
+    "goto 16,114"
+   ],
+   [
+    21.9,
+    "tactic",
+    "fetching the unique's drop at 16,115"
+   ],
+   [
+    22.6,
+    "found",
+    "picked up a Lance (2d8) {Khim, Son of Mim}: identify it before selling (`sell !NAME`)"
+   ],
+   [
+    24.3,
+    "goal_done",
+    "goto 16,115"
+   ]
+  ],
+  "acts": [
+   [
+    3.7,
+    "custom q item=1",
+    "a hard fight (Khim, Son of Mim): quaff 2 Potions of Speed at the start"
+   ],
+   [
+    4.3,
+    "custom q item=3",
+    "a hard fight (Khim, Son of Mim): quaff 2 Potions of Berserk Strength"
+   ],
+   [
+    19.0,
+    "custom ,",
+    "pick up: a Flail (2d6) {Khim, Son of Mim}."
+   ],
+   [
+    22.0,
+    "custom ,",
+    "pick up: a Lance (2d8) {Khim, Son of Mim}."
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-11-03 00:03:05",
+ "pass": true
+}
