@@ -1,4 +1,4 @@
-# Advisor status and handoff (updated 2026-10-29, end of "Advisor 4" chat; next chat = "Advisor 5")
+# Advisor status and handoff (updated 2026-11-03 07:05, end of "Advisor 5" chat; next chat = "Advisor 6")
 
 Read this first in a new Advisor chat, then `METHOD.md` before starting any study. Check
 `../memos/to_advisor/` for unread memos (`.claude/hooks/inbox.sh unread ../memos/to_advisor`) and start the watcher.
@@ -7,13 +7,15 @@ System docs (Architect, 10-29): `../docs/README.md`, `../docs/CONDENSED.md`; our
 ## Current state (2026-10-29)
 
 **No study running.** The main line since 10-25 is the **danger-time option estimator**, `data/estimator/options_sim.py`
-(POLICY_VERSION `pilot-escape-2026-10-29o`). **It is a LIVE interface:** the Pilot imports it in shadow mode (`tools/pilot/shadow.py`:
+(POLICY_VERSION `pilot-escape-2026-11-03p`, 11-03: escape walk to stairs continues after its emergency, mirroring 2.45.0). **It is a LIVE interface:** the Pilot imports it in shadow mode (`tools/pilot/shadow.py`:
 emergency, hard_fight and band triggers -> `estimator` records in decisions.jsonl) and the gear evaluator imports it plus
 `scenarios.py` and reads the 21 replay files (`studies/2026-10-25-replay/replays/`). Rules: edit only via a copy + atomic `mv`,
 bump POLICY_VERSION, keep `choose()`/`rollout()` signatures, memo the Architect; `base_policy` must mirror the Pilot's escape rules
 (the Architect announces changes); never change user-decided values (XP_PER_GOLD is now passed per call; MIN_GAIN floor approved).
 Contract and player-dict keys: `../memos/to_architect/2026-10-28-advisor-docs.md` (+ `noise`, 29o).
 Pilot version 2.43.0 (10-31: 2.41 rations/oil valued by need, 2.42 mushrooms by itemvalue, 2.43 new log kind role_refused; nothing mirrored changed). 2.38.0 (10-29; no escape-order change, 29o still mirrors it; geareval encounters window days=3/min_n=20; replied on commands_per_min in to_architect/2026-10-29-commands-per-min.md); versions/missions in `../CHANGELOG.md`. Last missions m56-m60 (10-28); none since 2.37.0.
+
+**Session 5 (10-29..11-03):** no missions (Architect sessions 10-11 = refactor, versions 2.38-2.45); answered memos (commands_per_min, rulebook B18 fixes, D8/D9/D14 merges + D8 uniques rule, Khim/A2 criterion, escape walk mirrored in 11-03p, hunt check should use derive() totals). Missions resume in Architect session 12.
 
 **Next:** (1) review the `estimator` records of the next missions — three eras: before 10-29 08:35 (understated to-hit/to-dam),
 08:35-12:42 (no slays), from 12:42 (complete); compare agree rates per era and trigger; (2) re-check the wake calibration with

@@ -106,11 +106,15 @@ class CommandsMixin:
             # the rulebook (restructure step 3): the hunt check's verdict and what a kill drops
             refusal, est = self.hunt_refusal(r.name)
             out[-1] += f"; hunt check: {'REFUSED: ' + refusal if refusal else 'allowed (' + (est or '?') + ')'}"
+            dc = self.last_hunt.get("disen") if self.last_hunt.get("race") == r.name else None
             d = self.drop_row(r)
             if d:
                 out[-1] += (f"; a kill drops ~{float(d['e_gold']):.0f} gold and ~{float(d['e_items']):.1f} items worth "
                             f"~{float(d['e_item_value_cap']):.0f} (P(ego) {float(d['p_excellent_any']):.0%}, "
                             f"P(artifact) {float(d['p_artifact_any']):.0%})")
+            if dc:
+                # (2.45.0: what its UN_BONUS blows cost the worn gear, beside what the kill brings)
+                out[-1] += "; " + self.disen_text(dc)
         more = len(exact or found) - 6
         return "\n".join(out) + (f"\n(+{more} more)" if more > 0 else "")
 
@@ -263,8 +267,8 @@ class CommandsMixin:
         """One request from the socket (handle_requests): look the command up in the table (cmdtable.COMMANDS),
         then, for anyone but the Architect, the role check (raw, stairs, goal goto, mission, answer), the dungeon
         check (the item commands for town) and the stale-order check (positional orders); then, for a ghost, the
-        dead check; then the command's method. Unknown commands get past the checks to the dead check, then
-        `unknown command`."""
+        dead check; then the command's method (a ValueError/IndexError from a bad argument answers the usage). Unknown
+        commands get past the role checks, then `unknown command` (a ghost too)."""
         c = req.get("cmd")
         args = req.get("args", [])
         self.req_role = req.get("role", "navigator")
@@ -286,14 +290,20 @@ class CommandsMixin:
             if held:
                 self.log("order_held", cmd=c, args=args[:6], why=held)
                 return {"ok": False, "error": f"order held: {held}"}
-        if self.dead and not (spec and spec.dead) and not (sub and sub.get("dead")):
-            return {"ok": False, "error": DEAD}
-        if spec is None:
+        if spec is None:            # (before the dead check: a ghost too gets `unknown command`, 2.45.0)
             return {"ok": False, "error": f"unknown command {c}"}
+        if self.dead and not spec.dead and not (sub and sub.get("dead")):
+            return {"ok": False, "error": DEAD}
         f = getattr(self, spec.method)
         how = spec.call
-        out = f(args) if how == "args" else f() if how == "none" else f(" ".join(args)) if how == "text" else \
-            f(" ".join(args).replace("_", " ")) if how == "name" else f(c, args) if how == "cmd" else f(args, req)
+        try:
+            out = f(args) if how == "args" else f() if how == "none" else f(" ".join(args)) if how == "text" else \
+                f(" ".join(args).replace("_", " ")) if how == "name" else f(c, args) if how == "cmd" else f(args, req)
+        except (ValueError, IndexError) as e:
+            # a bad or missing argument (`search x`, `inscribe`, `goal explore radius=x`) answered the exception's
+            # bare text: the usage now, the error kept for a real bug (2.45.0)
+            self.log("request_error", cmd=c, args=args[:6], error=f"{type(e).__name__}: {e}")
+            return {"ok": False, "error": f"usage: {spec.usage or c} ({type(e).__name__}: {e})"}
         return {"ok": True, "text": out} if spec.reply == "text" else out
 
     # --- the item commands (ACTIONS) ---------------------------------------------------------------------------
@@ -1098,8 +1108,10 @@ class CommandsMixin:
         seen = [r for *_, r in w.monsters if key in r.name.lower()]
         race = seen[0] if seen else next((r for r in w.g.races.values() if r.name.lower() == key), None) or \
             next((r for r in w.g.races.values() if key in r.name.lower()), None)
+        self.last_hunt = {}
         if not race:
             return None, "no monster by that name in this game's data"
+        self.last_hunt = {"race": race.name}
         if "UNIQUE" in race.flags and race.name.lower() in self.uniques_killed():
             return (f"you've killed {race.name} before: a repeat kill gives no XP and no drop (the server's "
                     "'cheeze' rule), so there's nothing to hunt it for"), None
@@ -1116,6 +1128,15 @@ class CommandsMixin:
             # the Advisor's duel simulator (hunt-strictness memo, 2026-10-24): the 90th percentile of
             # the HP lost, at our live profile, replaces "twice the turns"
             turns, taken, worst = sim["turns_mean"], sim["loss_mean"], sim["loss_p90"]
+        # the enchantment its UN_BONUS blows (or disenchantment breath) take on average (2.45.0, the Advisor's Khim
+        # memo): shown and logged, never a refusal on its own -- the checks below are by HP
+        try:
+            dc = self.disenchant_cost(race, turns)
+        except Exception as e:             # (the valuation must not break the check)
+            self.log("note", text=f"disenchant_cost failed: {e!r}")
+            dc = None
+        self.last_hunt = {"race": race.name, "turns": round(turns, 1), "loss_mean": round(taken),
+                          "loss_p90": round(worst), "by": "fight_sim" if sim else "estimate", "disen": dc}
         info = (f"{race.name}: ~{turns:.0f} turns to kill, ~{taken:.0f} HP lost on average, ~{worst:.0f} in a bad "
                 f"fight (1 in 10; you have {w.hp[0]})")
         # a fight the Pilot's own emergency rule would break off on average: it phases away once HP is
@@ -1148,6 +1169,19 @@ class CommandsMixin:
                 sum(1 for *_, r in w.monsters if "NEVER_MOVE" not in r.flags) >= 5:
             return (f"a band is about (flagged {gnow() - self.band_warned_t:.0f} s ago): leave first", info)
         return None, info
+
+    def hunt_fields(self, disen_only=False):
+        """hunt_refusal's last numbers as log fields: est_turns, est_loss, est_loss_p90, est_by (fight_sim |
+        estimate), race; and for a disenchanter disen_hits, disen_n, disen_gold, disen_resisted (disenchant_cost).
+        disen_only: the disen_* fields alone (none for other monsters)."""
+        h, out = self.last_hunt or {}, {}
+        if not disen_only and "turns" in h:
+            out = {"race": h["race"], "est_turns": h["turns"], "est_loss": h["loss_mean"],
+                   "est_loss_p90": h["loss_p90"], "est_by": h["by"]}
+        dc = h.get("disen")
+        if dc:
+            out.update(disen_hits=dc["hits"], disen_n=dc["n"], disen_gold=dc["gold"], disen_resisted=dc["resisted"])
+        return out
 
     def stale_order(self, c, args):
         """An order whose premise is gone since the report it answers (the Advisor's
@@ -1257,21 +1291,26 @@ class CommandsMixin:
             force = target.startswith("!")
             target = target.lstrip("!").strip()
             why, info = self.hunt_refusal(target)
+            dfields = self.hunt_fields(disen_only=True)
             if why and self.req_role != "architect" and not force:
-                self.log("order_refused", order=f"hunt {target}", why=why)
+                self.log("order_refused", order=f"hunt {target}", why=why, **dfields)
                 return {"ok": False, "error": f"hunt refused: {why}. `goal hunt !NAME` overrides; if the fight goes "
                                               "wrong, the HP it costs goes into your fight debt"}
             if why and force and self.req_role != "architect" and not self.override_allowed("hunt"):
                 return {"ok": False, "error": f"hunt refused: {why}. Your freedom to override the Pilot's fight "
                                               f"checks is suspended (fight debt {self.fight_debt_total()} HP)"}
             g = Hunt(target)
-            g.estimate = info
+            dc = self.last_hunt.get("disen")
+            g.estimate = info + "; " + self.disen_text(dc) if info and dc else info
             if why and force and self.req_role != "architect":
                 # an override: judged when the hunt ends (the user, 2026-10-23: a separate debt)
                 w = self.w
                 g.overridden = {"why": why, "hp0": w.hp[0], "hp_min": w.hp[0], "t0": gnow(),
                                 "emerg0": len(self.emerg_times)}
-                self.log("hunt_override", target=target, why=why, hp=w.hp[0])
+                self.log("hunt_override", target=target, why=why, hp=w.hp[0], **dfields)
+            # (2.45.0) every hunt taken, with the check's numbers, so missions can set them against the outcome
+            self.log("hunt", target=target, by=self.req_role, refused=bool(why), overridden=g.overridden is not None,
+                     **self.hunt_fields())
         elif name == "fetch":
             # one item detour (the design's `fetch Y,X`): not with a band or danger about
             m = re.match(r"^(\d+)[ ,](\d+)$", " ".join(rest[:2]) if len(rest) > 1 else (rest[0] if rest else ""))

@@ -96,6 +96,42 @@ def command_table_architect_only_refused():
 
 
 @case
+def control_commands_ghost_and_usage():
+    """2.45.0: park/quit/option/dump are the Architect's (the Navigator could quit or park the Pilot); a ghost may
+    park, stop, order and `plan stop` (restart.sh on a dead character waited 330 s and failed), and an unknown
+    command to a ghost says `unknown command`; a bad or missing argument answers the usage, not a bare exception."""
+    def fresh(dead=False):
+        p = pilot()
+        p.dead, p.last_report, p.report_state = dead, (0, 0.0), None
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append(line)
+        p.log = lambda kind, **k: None
+        p.running = True
+        p.mover = type("M", (), {"stop": lambda s: None, "active": False})()
+        p.set_goal = lambda *a, **k: None        # (the dispatch is tested, not the methods)
+        p.stop_resting = lambda *a, **k: None
+        return p
+    r = {}
+    p = fresh()
+    for c in ("park", "quit", "option", "dump"):
+        r[("nav", c)] = p.do_request({"cmd": c, "args": ["a", "b"] if c == "option" else [], "role": "navigator"})
+    r[("nav", "running")] = p.running
+    g = fresh(dead=True)
+    for c, a in (("park", []), ("stop", []), ("order", ["flee_hp=0.5"]), ("plan", ["stop"]), ("bogus", []),
+                 ("goal", ["explore"])):
+        r[("ghost", c)] = g.do_request({"cmd": c, "args": a, "role": "architect" if c == "park" else "navigator"})
+    q = fresh()
+    r[("bad", "search")] = q.do_request({"cmd": "search", "args": ["x"], "role": "navigator"})
+    ok = all(not r[("nav", c)]["ok"] and "is the Architect's" in r[("nav", c)]["error"]
+             for c in ("park", "quit", "option", "dump")) and r[("nav", "running")] and \
+        all("dead" not in str(r[("ghost", c)].get("error", "")) for c in ("park", "stop", "order", "plan")) and \
+        r[("ghost", "bogus")]["error"] == "unknown command bogus" and \
+        "dead" in r[("ghost", "goal")]["error"] and \
+        r[("bad", "search")]["error"].startswith("usage: search")
+    return ok, "; ".join(f"{a} {b}: {str(v)[:70]}" for (a, b), v in r.items())
+
+
+@case
 def reflex_escape_step_lists():
     """E3 (session 11): reflexes() and escape() run one method per step, in the order of REFLEX_STEPS and
     ESCAPE_STEPS. Every name in the two lists is a method of Pilot taking (self, ctx), none twice; reflexes and

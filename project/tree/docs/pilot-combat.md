@@ -83,11 +83,11 @@ starts with that number.
 | 12 | Stationary monsters (molds, jellies, eyes) adjacent | NEVER_MOVE adjacent, not the hunt target | `stairs_beside_still`: the wanted stairs are a step away and these monsters are harmless for one turn, so take the stairs. `still_fight_tick` (§2.5): kill it if it blocks the way and is killable, or flee a strong disenchanter. Otherwise step away (`retreat_step` reach 6, else `sidestep`). | `_reflex_still` |
 | 13 | Repeat fearers | a mobile monster that frightens again and again, within 7; not during Flee or Recall | `fearer` alert once per level; Phase Door if it is within 2 levels of ours and any monster is adjacent (every 2.5 s at most); otherwise retreat. | `_reflex_fearers` |
 | 14 | Light | `town_light`, `keep_light` (§5) | Skipped with a monster adjacent, **unless we have no light at all** in the dungeon. | `_reflex_light` |
-| 15 | Hunger | hunger ≤ 2 (Hungry), nothing in view for 5 s and not hit for 5 s | Eat (once per 10 s). No food: read Satisfy Hunger only when Weak (≤ 1), because it fills you to Gorged. Neither, and Weak in the dungeon: goal `Recall` (`supplies`, level `recalling`). While it waits (a meal under 10 s ago, or Hungry with only scrolls) the later steps still run (A20, 2.39.0). | `_reflex_hunger` |
+| 15 | Hunger | hunger ≤ 2 (Hungry), nothing in view for 5 s and not hit for 5 s | Eat (once per 10 s). No food: read Satisfy Hunger only when Weak (≤ 1), because it fills you to Gorged. Neither, and Weak in the dungeon: goal `Recall` (`supplies`, level `recalling`). While it waits (a meal under 10 s ago, or Hungry with only scrolls) the later steps still run (A20, 2.39.0). Weak with only scrolls and no light worn: `wear_light` puts the best light in the pack on (that ends the call); with no light to put on, the later steps still run too (2.45.0; it used to return there). | `_reflex_hunger` |
 | 16 | **Adjacent monster** | any adjacent | Stop the mover (except during Goto/Flee) and stop resting. Below `think_hp`: `fight_going_badly` alert (once per 10 s). With 2+ adjacent and one a thief (EAT_ITEM/EAT_GOLD blows), hit the thief first (item thieves before gold thieves). Otherwise hold, so auto-retaliate fights. A Goto or Flee goal keeps moving instead. | `_reflex_adjacent` |
 | 17 | Pickup / auto-destroy | standing on an item | Belongs to the item policy ([pilot-items.md](pilot-items.md)). While fleeing (Flee, BandLeave, WalkAway) with monsters in view, only items worth 500 or more are picked up. | `_reflex_pickup`, `_reflex_pack` |
 | 18 | **Engage** | `engage_tick` (§2.2) | Walk to a weak monster a few steps off and fight it. | `_reflex_engage` |
-| 19 | Rest | HP < `rest_below` (0.7), nothing in view, not recalling | Rest. It stops at `rest_to` (0.95) or when a monster appears, and goes on resting until `rest_to` once started. | `_reflex_rest` |
+| 19 | Rest | HP < `rest_below` (0.7), nothing in view, not recalling | First, an escape walk to stairs (escape step 12) that outlived its emergency (escape() isn't called once nothing is within 7 and no hit for 5 s): keep walking, and on the stairs take them (escape step 3, then `Recover`). It ends when the walk does (blocked, stopped by another step, replaced by another walk) or on a new level; before 2.45.0 nothing ticked it and the character stood still, neither walking nor resting. Otherwise rest. It stops at `rest_to` (0.95) or when a monster appears, and goes on resting until `rest_to` once started. | `_reflex_rest` |
 
 ### 2.1 Group danger (`group_danger`, `group_tick`)
 
@@ -200,8 +200,11 @@ step 8 `collapsing` (and clears `pd` when phasing is futile), step 10 `crowd` an
    plus the weak-potions phase door). With stairs ≤ 30 away: `Flee("emergency loop")` and resume the old goal
    afterwards. Without stairs: an `emergency_loop` alert ("no stairs known nearby"); stairs known but already fleeing:
    an `emergency_loop` alert saying so (A21, 2.40.0). At most once per 60 s.
-3. `_escape_stairs_underfoot`: **Stairs underfoot** while threatened (something in view, or hit < 2 s ago): take them,
-   then goal `Recover`. Standing on stairs with nothing threatening: do nothing (stops stair-bouncing).
+3. `_escape_stairs_underfoot`: **Stairs underfoot** while threatened (something in view, or hit < 2 s ago), or
+   reached by the escape walk to stairs (step 12, `escaping_to_stairs`): take them, then goal `Recover`. Standing on
+   stairs with nothing threatening and no escape walk: do nothing (stops stair-bouncing: arriving by stairs you stand
+   on stairs, and the walk ends with the level). (Before 2.45.0 the escape walk's arrival was also left to this
+   threat test, so with its danger out of view for 2 s it stood on the stairs.)
 4. `_escape_out_of_combat`: **Not in combat** (nothing adjacent, not hit in 3 s, and HP not falling with a monster in
    view): rest if nothing is in view, else `retreat_step` out of sight. No potions or scrolls out of combat. (An escape
    walk to stairs under way, step 12, carries on instead.)
@@ -220,8 +223,9 @@ step 8 `collapsing` (and clears `pd` when phasing is futile), step 10 `crowd` an
 11. `_escape_phase`: **Phase Door** with a monster adjacent: every 2.5 s, or every 0.7 s when HP < 35%. An item
     inscribed `@r1` is used first.
 12. `_escape_to_stairs`: **Out of melee**: walk to stairs ≤ 20 away (`escaping_to_stairs`: true only while that walk is
-    the mover's current one on this level) and take them on arrival. Not within 2 s of another use, since a new move
-    sends `clear` and would drop a queued read.
+    the mover's current one on this level); step 3 takes them on arrival. Not within 2 s of another use, since a new
+    move sends `clear` and would drop a queued read. If the emergency ends first (escape() no longer called), the
+    reflexes' rest step (§2, row 19) keeps the walk going and takes the stairs.
 13. `_escape_potions`: **Potions by numbers** (every 1.5 s): need = max(2 s × damage rate, 10% max HP when HP < 30%).
     Drink the weakest potion that heals more than need. If none is enough and damage isn't dire, drink the biggest. If
     every potion is too small and death is < 8 s away at this rate: Phase Door (adjacent), else Word of Recall, else
@@ -325,7 +329,8 @@ All run every tick. Most only notify; the ones that act are marked.
 | `confusion_lock` / `confusion_window` (act) | see §2.3 | |
 
 `monster_info` (the `monster NAME` command) shows this server's facts for a monster, its `danger_why` verdict, the hunt
-check and the expected drop: the same rules the reflexes use. `our_slowness()` (1 at normal speed; 2 at −10; 3.3 at −20)
+check and the expected drop: the same rules the reflexes use. For a disenchanter it adds the expected disenchantment
+(`disenchant_cost`, gear-and-estimator.md §3.1). `our_slowness()` (1 at normal speed; 2 at −10; 3.3 at −20)
 scales `worst_3turns`, `group_danger` and `band_cost`. `buff_on(fast|hero|shero)` reads the start and end messages,
 because the status reply has no flag for them.
 
@@ -338,6 +343,7 @@ because the status reply has no flag for them.
 | `act` | every command sent | `cmd`, `why` (the reason, e.g. "low HP: phase door"), `by` (pilot/plan/nav/arch); `cmd=engage` for an engage |
 | `escape` | an escape sent (`log_escape`, from `cmd`) | `escape` = phase / teleport / wor_escape / wor_travel / stairs; `trigger`, `adjacent`, `goal`. Stairs count as an escape during Flee/Recover, with an escape reason, or within 10 s of an escalation notice. |
 | `attention` | every notice (`notify`) | `what` (below), `detail`, `crop`. `emergency`/`emergency_loop` add `map21` (21×21 remembered map), `map_at`, `mons`; `emergency` (in the dungeon) also `shadow`. `band` adds `shadow`. |
+| `hunt` | a `goal hunt` taken (2.45.0) | `target`, `by` (role), `refused` (the check said no: the Architect's or an override), `overridden`, `race`, `est_turns`, `est_loss`, `est_loss_p90`, `est_by` (fight_sim / estimate); for a disenchanter `disen_hits`, `disen_n`, `disen_gold`, `disen_resisted` (gear-and-estimator.md §3.1; also on its `order_refused`, `hunt_override` and engage `act` records) |
 | `note` | `effect_failed` (an action's effect not seen in 3 s), held item commands, "recall already under way" | `text` |
 | `audit_check` / `audit` | every 30 s: the model vs. a fresh server query (`audit_tick`) | differences by field; then a redraw |
 | `mons` | each second with monsters in view | positions, `track` (health bar), `fighting` |

@@ -16,7 +16,8 @@ Related docs: [pilot-items.md](pilot-items.md) (upgrade_step's static steps, sel
 
 **Where the code is** (E1 step 3): the Pilot-side methods named here (`gear_character`, `gear_eval`, `gear_better`,
 `loadout_info`, `gear_review`, `gear_line`, `ac_better`, `consumables_inv`, `shadow_decision`, `shadow_results`,
-`band_shadow`, `hard_fight_shadow`, `fight_rows`/`fight_estimate`/`fight_sim`) and `shadow_agree` live in
+`band_shadow`, `hard_fight_shadow`, `fight_rows`/`fight_estimate`/`fight_sim`, `disenchant_cost` with
+`disen_loss`/`disen_item_loss`/`disen_text`) and `shadow_agree` live in
 `tools/pilot/gear.py` as `GearMixin`, still `Pilot`'s names; `weapon_table` and `upgrade_step` are in items.py,
 `hard_fight` and the Speed/Berserk ticks (`speed_start_tick`, `berserk_tick`), with `escape`, `group_tick` and
 `fear_cure`, in combat.py (`CombatMixin`, E1 step 5).
@@ -240,11 +241,50 @@ Separate from the group simulator; used for single fights.
 |---|---|---|
 | `fight_rows()` | `tools/rulebook/monsters.csv` by race index (cached) | fight_estimate, worst_3turns, band_cost, others |
 | `fight_estimate(race)` | (turns to kill, HP taken meanwhile, pessimistic HP, worst breath, row): hit chance from level and the weapon's to-hit against 3/4 of its AC, its expected melee per turn at our AC (the 20/40/60 AC column nearest), spells and ranged. Pessimistic = twice the turns with spells at their maximum | `hunt_refusal` |
-| `fight_sim(race, n=600)` | the Advisor's duel simulator (`tools/rulebook/fight_sim.py summary`) at our live profile (level, blows, weapon dice and plusses, AC, current HP): mean turns, mean HP lost, 90th percentile HP lost. Errors are logged, return None | `hunt_refusal` (replaces the estimate when available), `sim_loss` |
+| `fight_sim(race, n=600)` | the Advisor's duel simulator (`tools/rulebook/fight_sim.py summary`) at our live profile (level, blows, weapon dice, the to-hit/to-dam **totals** from `derive()` since 2.45.0 -- the weapon's own plusses understated damage, the Advisor 11-03 --, AC, current HP): mean turns, mean HP lost, 90th percentile HP lost. Errors are logged, return None | `hunt_refusal` (replaces the estimate when available), `sim_loss` |
 | `sim_loss(r)` | fight_sim's mean HP lost (300 duels), cached by race, level, weapon, AC, HP to 10% | `danger_why`: "a fight costs ~N HP on average" when above 80% of current HP |
-| `hunt_refusal(name)` | the hunt check (refuses a fight that ends on average below the escape threshold, a bad fight > 60% HP, risky summoners, big breathers, a band about...) | `goal hunt`, `monster` info, the engage cache |
+| `disenchant_cost(race, turns)` | 2.45.0: the expected enchantment a duel of `turns` player turns costs the worn gear (below); None for a monster with no UN_BONUS blow and no BR_DISE breath | `hunt_refusal` (shown and logged, never a refusal) |
+| `hunt_refusal(name)` | the hunt check (refuses a fight that ends on average below the escape threshold, a bad fight > 60% HP, risky summoners, big breathers, a band about...). Leaves its numbers in `last_hunt` (race, turns, mean and p90 loss, fight_sim or estimate, `disen`) for the log fields (`hunt_fields`) | `goal hunt`, `monster` info, the engage cache |
 
 See pilot-combat.md for the danger rules these feed.
+
+### 3.1 Disenchantment (`disenchant_cost`, 2.45.0)
+
+The Advisor's Khim memo (`memos/to_architect/2026-11-02-khim.md`): Khim's and Ibun's 4th blow is HIT:UN_BONUS, and
+neither the hunt check nor geareval counted what it takes. The server's rules:
+
+| Rule | Source |
+|---|---|
+| The blow must hit first: `check_hit` with power 20 (5% always hit, 5% always miss, else `randint1(20 + 3 x level) > 3/4 x AC`). AC counts; there is no saving throw | melee1.c:245, 276; 106-127 |
+| Resist disenchantment (`p_ptr->resist_disen`, from any worn `RES_DISEN`) blocks it completely | melee1.c:543-548; xtra1.c:2353, 2537 |
+| One of 8 slots at random: weapon, bow, body armour, cloak, shield, helm, gloves, boots (never rings, amulet, light) | spells1.c:1316-1327 |
+| An empty slot, or an item with no positive to-hit, to-dam and to-AC, loses nothing | spells1.c:1332-1341 |
+| An artifact (`name1`: randarts too) resists 60% of the time | spells1.c:1348-1358 |
+| Weapon or bow: to-hit -1 and to-dam -1 (each if positive); armour: to-AC -1; a plus still above +5 after that loses 1 more with 20% | spells1.c:1360-1376 |
+| A disenchantment breath (BR_DISE) calls the same function whenever it lands, unless resisted | spells1.c:3801-3810 |
+
+**The formula.** `turns` = fight_sim's mean turns (the hunt check's), else the fight estimate's.
+
+- Monster melee rounds = turns x speed_x x (1 - spell chance) / (2 - spell chance), x `our_slowness()`. This is fight_sim's
+  count: a spell costs one action, a melee round two (MONSTER_RECOIL). Casts = turns x speed_x x spell chance /
+  (2 - spell chance).
+- Disenchanting hits = rounds x p_hit x (UN_BONUS blows a round) + casts / (its spells) with BR_DISE. p_hit =
+  `0.05 + 0.90 x max(0, i - 3AC/4) / i`, i = 20 + 3 x level, at the sheet's AC.
+- Gold per hit (`disen_loss`) = the mean over the 8 slots of each worn item's loss (`disen_item_loss`): its value by the
+  Pilot's own `iv` (itemvalue) less the expected value with the plusses the server takes, x 0.4 for an artifact.
+  itemvalue counts 100 gold a plus, so a +8 armour piece loses ~120 (1.2 plusses) and a (+10,+9) weapon ~240.
+- Expected disenchantments = hits x P(the pick takes a plus); gold = hits x gold per hit.
+- Zero with resist disenchantment (`has_ability("res_disen")`).
+- Flat (100 gold a plus, one for armour, two for a weapon or bow) only for an item whose plusses aren't shown, or
+  whose kind itemvalue can't read. The text names those slots.
+- Not counted: Speed or a faster character (about half the rounds with a Speed potion; the text says so), Khim's
+  SLOW, protection from evil.
+
+**Where it is used.** Shown in `monster NAME` after the drop value, and in the `goal hunt` reply's note. Logged in the
+`hunt` record (`disen_hits`, `disen_n`, `disen_gold`, `disen_resisted`). For a disenchanter the same fields go on a
+hunt's `order_refused` and `hunt_override` records and on the engage `act` record. **No decision changes:** the hunt
+check stays HP-based, and no Pilot rule weighs a kill's worth against a cost. geareval doesn't count it either:
+options_sim reports no per-monster melee rounds, and it is the Advisor's file.
 
 ---
 

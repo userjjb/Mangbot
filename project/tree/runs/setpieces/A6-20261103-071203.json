@@ -1,0 +1,76 @@
+{
+ "id": "A6",
+ "tag": "A6-20261103-071203",
+ "depth_ft": 650,
+ "start": "2026-11-03 07:12:03",
+ "checks": {
+  "at most 3 Phase Door": {
+   "pass": true,
+   "detail": "0 reads"
+  },
+  "Phase Door never runs out": {
+   "pass": true,
+   "detail": "15 -> 15"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [342, 358]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   342,
+   358
+  ],
+  "attention": [
+   [
+    14.0,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    14.1,
+    "goal_done",
+    "goto 47,83"
+   ],
+   [
+    17.0,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    17.1,
+    "goal_done",
+    "goto 48,83"
+   ],
+   [
+    30.8,
+    "thief",
+    "Brigand (lvl 10, 3 away) steals items from your pack with a touch, then teleports: kill it before it"
+   ],
+   [
+    41.7,
+    "interesting_item",
+    "Staff of Cure Light Wounds seen on this level at 49,86 (2 away): fetching it once the area is clear"
+   ]
+  ],
+  "acts": [
+   [
+    30.9,
+    "engage",
+    "engage Brigand (L10, 3 away) on the way"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-11-03 07:15:31",
+ "pass": true
+}

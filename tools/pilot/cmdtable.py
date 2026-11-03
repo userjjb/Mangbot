@@ -25,6 +25,8 @@ DUNGEON_ITEMS = ("in the dungeon the Pilot handles items itself (pickup, identif
                  "is for town, between trips. You may `destroy`/`drop` junk, and `order nopickup=NAME,...` keeps kinds "
                  "out. To protect an item from its policy use `keep NAME`")
 DEAD = "the character is dead (a ghost): only 'goal resurrect' works"
+CONTROL = ("`{name}` is the Architect's: it stops, logs out or reconfigures the Pilot (`restart.sh`/`charsave.sh` "
+           "pass the Architect's token; 2.45.0)")
 
 # method   the Pilot method that answers it
 # call     how the method takes the request: "args" (the argument list), "text" (the words joined by spaces),
@@ -115,11 +117,11 @@ COMMANDS = {
                      "resurrect (goto: the Architect's)",
                 subs={"goto": {"roles": ARCH, "refusal": PILOTS_NOW}, "resurrect": {"dead": True}},
                 group="Goals and plans"),
-    "plan": Cmd("request_plan", usage="plan [trip LO-HI ... | town ... | stop | resume]",
+    "plan": Cmd("request_plan", subs={"stop": {"dead": True}}, usage="plan [trip LO-HI ... | town ... | stop | resume]",
                 help="a whole trip or town visit", group="Goals and plans"),
-    "stop": Cmd("cmd_stop", call="none", usage="stop", help="drop the goal, stop resting, end the plan",
+    "stop": Cmd("cmd_stop", call="none", dead=True, usage="stop", help="drop the goal, stop resting, end the plan",
                 group="Goals and plans"),
-    "order": Cmd("cmd_order", usage="order KEY=VALUE ...", help="set standing orders", group="Orders"),
+    "order": Cmd("cmd_order", dead=True, usage="order KEY=VALUE ...", help="set standing orders", group="Orders"),
     "wear": Cmd(**_ITEM, where="town", usage="wear L [force]", help="wear"),
     "takeoff": Cmd(**_ITEM, where="town", usage="takeoff L", help="take off"),
     "quaff": Cmd(**_ITEM, usage="quaff L", help="drink"),
@@ -143,17 +145,17 @@ COMMANDS = {
                   group="Items"),
     "stairs": Cmd("cmd_stairs", roles=ARCH, refusal=PILOTS_NOW, usage="stairs [<|>]", help="take the stairs",
                   group="Control"),
-    "option": Cmd("cmd_option", usage="option NAME VALUE", help="set a client option", group="Control"),
+    "option": Cmd("cmd_option", roles=ARCH, refusal=CONTROL, usage="option NAME VALUE", help="set a client option", group="Control"),
     "goalstate": Cmd("cmd_goalstate", call="none", logged=False, viewer=True, usage="goalstate",
                      help="debug JSON: the goal and the mover", group="Viewer"),
     "options": Cmd("cmd_options", usage="options [FILTER ...]", help="the client's options", group="Control"),
-    "dump": Cmd("cmd_dump", call="none", usage="dump", help="write world_dump.json", group="Control"),
+    "dump": Cmd("cmd_dump", roles=ARCH, refusal=CONTROL, call="none", usage="dump", help="write world_dump.json", group="Control"),
     "raw": Cmd("cmd_raw", roles=ARCH, refusal=PILOTS_NOW, usage="raw TEXT", help="a raw tool-client command",
                group="Control"),
     "attention": Cmd("cmd_attention", call="none", dead=True, usage="attention",
                      help="the pending attention events (cleared)", group="Info"),
-    "quit": Cmd("cmd_quit", call="none", dead=True, usage="quit", help="stop the Pilot's main loop", group="Control"),
-    "park": Cmd("cmd_park", call="none", usage="park", help="log out when safe, for an update", group="Control"),
+    "quit": Cmd("cmd_quit", roles=ARCH, refusal=CONTROL, call="none", dead=True, usage="quit", help="stop the Pilot's main loop", group="Control"),
+    "park": Cmd("cmd_park", call="none", roles=ARCH, refusal=CONTROL, dead=True, usage="park", help="log out when safe, for an update", group="Control"),
 }
 
 # (tuples, as handle_requests and authenticate always tested them)

@@ -62,3 +62,11 @@ metadata:
 - 2026-10-29: Architect session 10 wrote docs (../docs/README.md, CONDENSED.md). A3: estimator snapshots before 2026-10-29 08:35 had weapon-only to-hit/to-dam (understated) — analyse separately; asked for slays/brands/weight in snapshots (`to_architect/2026-10-29-s10-reply.md`).
 - 2026-10-29: options_sim 29o: server wake rule (csleep = 2a + d(10a); per noticed turn -100/dist; noise +29/action, -2/turn) replaces P_WAKE; NOISE_FIGHT 18 calibrated on replays (rounds ratio 0.99, 10/21 inside) (`to_architect/2026-10-29-wake.md`).
 - 2026-10-29: Pilot v2.37.0 (semantic versions; ../CHANGELOG.md; missions.json `version`): snapshots now carry slays/brands/weight (12:42); estimator record eras: <08:35, 08:35-12:42, >=12:42. Files moved to ../history/ (restructure-step2, VACATION-NOTES). Pilot requires tools/rulebook/monsters.csv + kinds_by_level.csv.
+
+**Advisor 5 (10-29 → 11-03), memos to_architect only, no studies:** 10-29 commands-per-min (rate excludes wait_report);
+10-31 rulebook-b18 (README build path + depth_value row; fight_sim reads monsters_raw.csv beside it first); 11-01 d-merges
+(D8 damage attribution = damage_mix timing + names, D9 card values = itemvalue + shopmath.pay_cut as of then, D14 one
+`supplies` kind with supply/level fields; response.py updated); 11-02 d8-uniques (race-name subjects without "The"; trap
+darts unattributed); 11-02 khim (estimator agrees with fighting; A2* criterion adopted 2.44.10; UN_BONUS cost -> user);
+11-03 245-reply (options_sim 11-03p: escape walk continues after emergency; hunt check should use derive() totals,
+cmd1.c:1243-1285).

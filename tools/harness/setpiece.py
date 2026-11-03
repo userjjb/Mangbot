@@ -52,8 +52,10 @@ def main():
         run.setup()
         SETPIECES[a.sid](run)
     except Exception as e:
+        import traceback
         run.res["error"] = repr(e)
-        run.say(f"[{run.tag}] ERROR {e!r}")
+        run.res["traceback"] = traceback.format_exc()       # (2.45.0: where it failed, in the result file)
+        run.say(f"[{run.tag}] ERROR {e!r}\n{traceback.format_exc(limit=-3)}")
     finally:
         run.teardown()
         run.finish()

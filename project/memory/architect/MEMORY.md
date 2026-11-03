@@ -1,5 +1,5 @@
 - [MAngband roles](mangband-roles.md) — you are the Architect (the Advisor is a separate project in ./Advisor since 2026-09-27); Pilot/Navigator/Architect/Advisor (roles.md); memory is for main chats only
-- [MAngband next steps](mangband-next-steps.md) — READ FIRST: next_steps.md ">>> WHICH HANDOFF IS YOURS? <<<" (sessions 10-11 done: refactor complete, 2.44.14; session 12 = missions testing all changes; USER TODO: review old handoffs; FOR THE USER list in HANDOFF 12)
+- [MAngband next steps](mangband-next-steps.md) — READ FIRST: next_steps.md ">>> WHICH HANDOFF IS YOURS? <<<" (sessions 10-11 done: refactor complete 2.44.14, fixes 2.45.0; session 12 = missions testing all changes; USER TODO: review old handoffs; FOR THE USER list in HANDOFF 12)
 - [MAngband project map](mangband-project-map.md) — where everything lives (operations.md, notes_players.md, HANDBOOK, memos); critical gotchas; SYNC RULE: update memory pointers whenever project notes change
 - [MAngband advisor memos](mangband-advisor-memos.md) — where the memos live (memos/, to_architect, to_advisor: ls them); forum-scraping lessons
 - [Inbox watcher](mangband-inbox-watcher.md) — start the Architect inbox watcher first thing every session; restart it whenever it ends

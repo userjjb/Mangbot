@@ -6,7 +6,7 @@ import re
 import subprocess
 import time
 
-from setpiece_run import (race_idx, ctl, pilot_view, log_since, messages_since, floor_near, find_floor_block, FREEZE,
+from setpiece_run import (find_floor_blocks, race_idx, ctl, pilot_view, log_since, messages_since, floor_near, find_floor_block, FREEZE,
                          HOTSWAP)
 
 
@@ -51,18 +51,32 @@ def m2(run):
     Wand of Stinking Cloud dropped on floor Dive04 sees 13-20 squares away, a '>' painted 3 squares the other
     way, `goal dive` one level down: Dive04 fetches the wand first, then goes down, within 60 s."""
     rows = run.dm.c.map()
-    tl = find_floor_block(rows, 3, 24) or find_floor_block(rows, 3, 18)
-    if not tl:
+    # Gandalf sees the whole level, Dive04 only lit rooms: try up to 4 rooms (blocks of floor far apart) until
+    # Dive04 sees floor 13-20 squares east (8 of 17 runs on 11-02 failed on the first room, a dark one)
+    blocks, tried = find_floor_blocks(rows, 3, 24) or find_floor_blocks(rows, 3, 18), []
+    if not blocks:
         run.check("a site", False, "no 3 x 18 block of floor")
         return
-    run.gandalf_to((tl[0] + 1, tl[1] + 2))
-    v = run.bring_dive04()
-    me = tuple(v["pos"])
-    y0, x0 = v["y0"], v["x0"]
-    seen = [(y0 + i, x0 + j) for i, row in enumerate(v["rows"]) for j, ch in enumerate(row) if ch == "."]
-    far = [q for q in seen if 13 <= max(abs(q[0] - me[0]), abs(q[1] - me[1])) <= 20 and q[1] > me[1]]
+    for tl in blocks[:4]:
+        run.gandalf_to((tl[0] + 1, tl[1] + 2))
+        v = run.bring_dive04()
+        for _ in range(10):                      # (after a pull the view can lack the position a moment)
+            if v.get("pos") and v.get("rows"):
+                break
+            time.sleep(0.5)
+            v = pilot_view()
+        if not (v.get("pos") and v.get("rows")):
+            far = []
+            continue
+        me = tuple(v["pos"])
+        y0, x0 = v["y0"], v["x0"]
+        seen = [(y0 + i, x0 + j) for i, row in enumerate(v["rows"]) for j, ch in enumerate(row) if ch == "."]
+        far = [q for q in seen if 13 <= max(abs(q[0] - me[0]), abs(q[1] - me[1])) <= 20 and q[1] > me[1]]
+        tried.append(me)
+        if far:
+            break
     if not far:
-        run.check("a site", False, f"no floor Dive04 sees 13-20 squares east of {me} (a dark room?)")
+        run.check("a site", False, f"no floor Dive04 sees 13-20 squares east of {tried} (dark rooms?)")
         return
     spot = min(far, key=lambda q: (abs(q[0] - me[0]), -q[1]))
     stairs = floor_near(v, me, 3, taken={spot})

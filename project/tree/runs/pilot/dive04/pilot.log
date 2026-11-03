@@ -2101,3 +2101,42 @@ BrokenPipeError: [Errno 32] Broken pipe
 01:39:16 pilot stopping
 01:39:39 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
 01:39:39 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+01:40:21 pilot stopping
+01:40:23 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+01:40:23 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+06:57:06 pilot stopping
+06:57:09 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+06:57:09 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+06:57:55 pilot stopping
+06:58:18 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+06:58:18 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+06:59:31 pilot stopping
+06:59:55 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+06:59:55 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+07:00:24 pilot stopping
+07:00:48 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+07:00:48 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+07:07:51 pilot stopping
+07:08:15 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+07:08:15 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+07:08:44 pilot stopping
+07:09:07 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+07:09:07 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+07:11:13 pilot stopping
+07:11:36 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+07:11:36 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+07:12:05 pilot stopping
+07:12:28 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+07:12:28 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+07:15:00 pilot stopping
+07:15:24 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+07:15:24 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+07:16:47 pilot stopping
+07:16:49 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+07:16:49 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+07:17:19 pilot stopping
+07:17:43 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+07:17:43 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+07:19:31 pilot stopping
+07:19:54 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+07:19:54 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock

@@ -301,7 +301,7 @@ def escape_move(st, crowd):
     return any(use(st, it) for it in order)
 
 
-POLICY_VERSION = "pilot-escape-2026-10-29o"   # mirrors github/tools/pilot/pilot.py escape(), berserk_tick, fear_cure, status_tick
+POLICY_VERSION = "pilot-escape-2026-11-03p"   # mirrors github/tools/pilot/combat.py escape() (ESCAPE_STEPS), berserk_tick, fear_cure, status_tick
 CONF_LOCK_BLOCKS = 4   # the Pilot's 8 s of confusion with monsters adjacent, as player actions (~3 s a block in the HP bubble)
 
 
@@ -320,7 +320,8 @@ def base_policy(st):
     futile (3 phases, still adjacent) -> recall; kill a summoner/status caster that dies in 2 rounds; 4+ about (not
     stationary, within 5) in the open -> Teleportation/staff; Phase; out of melee: stairs within 20, else cure (none with
     2+ adjacent). Outside emergencies: status cure (blind/confused, CLW first) when threatened; fear cure (Heroism >
-    Berserk) when afraid with something adjacent; Berserk at the start of a hard melee; else fight."""
+    Berserk) when afraid with something adjacent; Berserk at the start of a hard melee; else fight; with nothing adjacent,
+    an escape walk to stairs that outlived its emergency goes on and takes its stairs (2.45.0, _reflex_rest)."""
     p = st.p
     adj = [m for m in st.mons if m.dist <= 1]
     can_read = not st.blind and not st.confused
@@ -376,6 +377,7 @@ def base_policy(st):
             return
         if not adj:
             if st.stairs is not None and st.stairs <= 20:
+                st.stairs_walk = True
                 st.stairs -= 1
                 if st.stairs <= 0:
                     st.escaped = "stairs"
@@ -406,6 +408,11 @@ def base_policy(st):
             any(m.unique or m.rl >= p["clvl"] - 5 for m in adj if "NEVER_MOVE" not in m.flags)
             or (len(adj) >= 2 and p["hp"] < 0.75 * p["mhp"])) and use(st, "berserk"):
         st.berserk_at = st.block
+        return
+    if not adj and getattr(st, "stairs_walk", False) and st.stairs is not None:
+        st.stairs -= 1                                        # the walk outlives its emergency (2.45.0, _reflex_rest)
+        if st.stairs <= 0:
+            st.escaped = "stairs"
         return
     attack(st)
 

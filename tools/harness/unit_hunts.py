@@ -12,16 +12,18 @@ from fixtures import P, RACES, BYNAME, case, pilot, PHASE
 
 @case
 def hunt_hill_giant_by_hp():
-    """A7: a Hill giant hunt: allowed at 100%; at 80% only with flee_hp 0.4 (with the default 0.5 the emergency
-    rule escapes below 132 HP, and the average fight ends at ~125); refused at 60% either way. (The abort point
-    is otherwise its worst 3 turns at our AC, ~100: the Advisor's emergency-threshold memo.)"""
+    """A7: a Hill giant hunt: allowed at 100% and at 80%; refused at 60% (the average fight, ~66 HP over ~8 turns,
+    ends below the emergency rule's line). (The abort point is otherwise its worst 3 turns at our AC, ~100: the
+    Advisor's emergency-threshold memo.) 2.45.0: fight_sim gets the derived to-hit/to-dam totals (the server's), not
+    the weapon's own plusses, so fights are shorter: 80% with the default flee_hp 0.5 is now allowed (it ended at
+    ~125 HP, below 132, with the understated damage; ~146 now)."""
     out = []
     for hp, flee in ((265, 0.5), (212, 0.5), (212, 0.4), (159, 0.4)):
         p = pilot(hp=hp, pack=[PHASE])
         p.orders["flee_hp"] = flee
         random.seed(1)          # (the duel simulator's 600 duels: 212/0.4 sits near the line, ~1 run in 20 flipped)
         out.append(p.hunt_refusal("Hill giant")[0] is None)
-    return out == [True, False, True, False], f"allowed at 265/0.5, 212/0.5, 212/0.4, 159/0.4: {out}"
+    return out == [True, True, True, False], f"allowed at 265/0.5, 212/0.5, 212/0.4, 159/0.4: {out}"
 
 
 @case
@@ -159,3 +161,53 @@ def weapon_numbers_by_geareval():
     est = p.fight_estimate(BYNAME["hill giant"])          # (its to-hit is the profile's tohit, compared above)
     return not bad and hunt and bool(est), \
         f"differ: {bad}; Hill giant hunt allowed: {hunt}; fight_estimate turns {est and round(est[0], 1)}"
+
+
+@case
+def disenchant_cost_in_the_hunt_check():
+    """2.45.0 (the Advisor's Khim memo, 11-02): Khim's 4th blow is UN_BONUS. The hunt check counts the enchantment its
+    landed blows take (apply_disenchant: 1 of 8 slots, a weapon -1/-1, armour -1 to-AC, +1 more with 20% above +5,
+    artifacts resist 60%), at Dive04's 11-02 gear (clvl 29, AC 104): nonzero, in the `monster` text beside the drop and
+    in the `hunt` log record; none with resist disenchantment; nothing for a monster without UN_BONUS."""
+    worn = [("a Battle Axe of Westernesse (2d8) (+10,+9) (+1)", 22, 170), ("a Ring of Protection [+16]", 45, 2),
+            ("a Ring of Protection [+12]", 45, 2), ("an Amulet of Slow Digestion", 40, 3),
+            ("Hard Studded Leather of Resistance (-1) [7,+8]", 36, 110), ("a Shadow Cloak [6,+8]", 35, 5),
+            ("an Orcish Shield [5,+8] (+1)", 34, 100), ("a Metal Cap [3,+8]", 32, 20),
+            ("a Set of Gauntlets [2,+8]", 31, 25), ("a Pair of Hard Leather Boots of Stability [3,+8]", 30, 40)]
+
+    def make(res_disen=False):
+        p = pilot(hp=358, worn=worn, pack=[PHASE])
+        p.orders = dict(P.DEFAULT_ORDERS, max_depth=750)
+        p.w.hp, p.w.clvl = [358, 358], 29
+        p.w.ind.update({"armor": [104], "stat0": [88], "stat3": [38]})
+        p.w.flags.update(free_act=1, res_disen=int(res_disen))
+        return p
+    random.seed(1)
+    p = make()
+    text = p.monster_info("Khim, Son of Mim")
+    dc = p.last_hunt.get("disen") or {}
+    p.logs = []
+    p.log = lambda kind, **kw: p.logs.append((kind, kw))
+    p.mover = type("M", (), {"active": False, "stop": lambda self: None})()
+    out = p.do_request({"cmd": "goal", "args": ["hunt", "Khim,_Son_of_Mim"], "role": "architect"})
+    rec = next((kw for k, kw in p.logs if k == "hunt"), {})
+    random.seed(1)
+    r = make(True)
+    rtext = r.monster_info("Khim, Son of Mim")
+    rdc = r.last_hunt.get("disen") or {}
+    giant = p.monster_info("Hill giant")
+    # one disenchantment on one item: +8 armour loses 1.2 plusses (120 gold), +5 one, +0 none; an artifact 40% of it;
+    # plusses not shown: the flat estimate
+    loss = {n: p.disen_item_loss(n, False)[:2] for n in ("a Metal Cap [3,+8]", "a Metal Cap [3,+5]", "a Metal Cap [3,+0]",
+                                                         "a Metal Cap [3]")}
+    art = p.disen_item_loss("the Cloak 'Colluin' [1,+15]", False)
+    want = {"a Metal Cap [3,+8]": (120.0, True), "a Metal Cap [3,+5]": (100.0, True), "a Metal Cap [3,+0]": (0.0, True),
+            "a Metal Cap [3]": (100.0, False)}
+    ok = (dc.get("gold", 0) > 0 and dc.get("n", 0) > 0 and dc.get("per_hit") == 120 and abs(dc["p_hit"] - 0.187) < 0.001
+          and "disenchants expected" in text and text.index("a kill drops") < text.index("disenchants expected")
+          and rec.get("disen_gold", 0) > 0 and rec.get("est_by") == "fight_sim" and "disenchants expected" in (out.get("note") or "")
+          and rdc.get("resisted") and rdc.get("gold") == 0 and "you resist disenchantment" in rtext
+          and "disenchant" not in giant and loss == want and art[2] and abs(art[0] - 0.4 * 120) < 1e-9)
+    return ok, (f"Khim: {dc.get('hits')} hits, {dc.get('n')} disenchants, {dc.get('gold')} gold ({dc.get('per_hit')} a "
+                f"hit, p_hit {dc.get('p_hit')}); hunt record {rec}; resisted {rdc.get('resisted')} gold "
+                f"{rdc.get('gold')}; item losses {loss}; artifact {art}")

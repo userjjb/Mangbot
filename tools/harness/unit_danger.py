@@ -379,3 +379,106 @@ def emergency_loop_says_already_fleeing():
     r = p.emergency_loop(now)
     said = [d for w_, d in p.notes if w_ == "emergency_loop"]
     return r is False and said and "already fleeing" in said[0], f"{r}, {said}"
+
+
+@case
+def hunger_without_a_light_lets_the_later_steps_run():
+    """refactor-candidates E3 (2.45.0): Weak, no food, a Scroll of Satisfy Hunger and no light to read it by: the hunger
+    step returned wear_light's False, which ended reflexes() there, so pickup, auto-destroy and rest never ran (A20's
+    kind of early stop). Now a light put on ends the call; with none to put on the steps below run (here: hurt and
+    alone, rest)."""
+    import types
+    import combat
+
+    def run(light):
+        p = pilot(hp=100, pack=[("a Scroll of Satisfy Hunger", 70)] +
+                  ([("a Wooden Torch (with 2500 turns of light)", 39)] if light else []))
+        w = p.w
+        w.hunger, w.monster_seen_t, w.last_hit_t, w.resting = 1, -99.0, -99.0, False
+        w.flag = lambda k: False
+        w.adjacent_monsters = lambda: []
+        p.goal, p.busy_until, p.eat_t = None, 0.0, -99.0
+        p.orders.update(rest_below=0.6, pickup="all")
+        sent = []
+        p.cmd = lambda line, why, hold=0.4: sent.append(line)
+        p.mover = type("M", (), {"active": False, "stop": lambda self: None})()
+        p.auto_destroy = lambda now: False
+        p.engage_tick = lambda now: False
+        ctx = types.SimpleNamespace(w=w, o=p.orders, now=P.gnow(), mons_near=[])
+        steps = P.Pilot.REFLEX_STEPS
+        for name in steps[steps.index("_reflex_hunger"):]:
+            r = getattr(p, name)(ctx)
+            if r is not combat.NEXT:
+                return name, r, sent
+        return None, False, sent
+    lit, dark = run(True), run(False)
+    ok = lit[:2] == ("_reflex_hunger", True) and lit[2] and lit[2][0].startswith("custom w ") and \
+        dark == ("_reflex_rest", True, ["rest"])
+    return ok, f"a torch in the pack: {lit}; no light: {dark}"
+
+
+@case
+def escape_walk_takes_the_stairs_it_reaches():
+    """refactor-candidates E3 (2.45.0): escape()'s walk to stairs (step 12) was to take them on arrival, but step 3
+    returned first: on stairs with nothing in view and no hit for 2 s it did nothing, so the walk took its stairs only
+    while still threatened. Now stairs reached by the escape walk are taken (then Recover); stairs underfoot with no
+    escape walk (just arrived by stairs) still aren't, which stops the bouncing (m26)."""
+    def run(walk):
+        p = pilot(hp=100)
+        w = p.w
+        w.ghost, w.standing_on, w.last_stairs_cmd, w.last_hit_t = False, ">", None, P.gnow() - 3.0
+        p.dead, p.busy_until, p.goal = False, 0.0, None
+        p.emergency_loop = lambda now: False
+        sent = []
+        p.cmd = lambda line, why, hold=0.4: sent.append(line)
+        m = P.Mover(None, w)
+        m._plan = lambda: bool(setattr(m, "path", [w.pos])) or True
+        p.mover = m
+        if walk:
+            m.go([w.pos])
+            p.escaping_to_stairs = True
+        r = p.escape("low HP")
+        return r, sent, type(p.goal).__name__
+    walked, arrived = run(True), run(False)
+    ok = walked == (True, ["custom >"], "Recover") and arrived == (False, [], "NoneType")
+    return ok, f"reached by the escape walk: {walked}; arrived by stairs: {arrived}"
+
+
+@case
+def escape_walk_outlives_its_emergency():
+    """2.45.0: escape() runs only while the emergency holds (a monster within 7, or a hit in the last 5 s); its walk to
+    stairs that outlived it was ticked by nobody: the mover stayed active, the rest step wouldn't rest, and the
+    character stood still at 42% HP. Now the rest step (after the steps that handle a monster) keeps the walk going
+    and takes the stairs on arrival (escape step 3). It can't loop: a walk that ends (stuck, stopped), another walk
+    or a new level ends it, and the step rests as before."""
+    import types
+
+    def run(case):
+        p = pilot(hp=100)
+        w = p.w
+        w.ghost, w.standing_on, w.last_stairs_cmd, w.last_hit_t, w.resting = False, ".", None, P.gnow() - 30, False
+        p.dead, p.busy_until, p.goal = False, 0.0, None
+        p.orders.update(rest_below=0.7)
+        sent, ticks = [], []
+        p.cmd = lambda line, why, hold=0.4: sent.append(line)
+        m = P.Mover(None, w)
+        m._plan = lambda: bool(setattr(m, "path", [(20, 30)])) or True
+        m.tick = lambda: ticks.append(1) or "moving"
+        p.mover = m
+        m.go([(20, 30)])
+        p.escaping_to_stairs = True
+        if case == "stairs":
+            w.standing_on = ">"
+        elif case == "stuck":
+            m.goals = None                     # (Mover.tick stopped it: blocked)
+        elif case == "other walk":
+            m.go([(5, 5)])                     # (a retreat, an engage...)
+        elif case == "new level":
+            w.level_t = 2.0
+        r = p._reflex_rest(types.SimpleNamespace(w=w, o=p.orders, now=P.gnow()))
+        return r is True, len(ticks), sent, type(p.goal).__name__
+    out = {c: run(c) for c in ("walking", "stairs", "stuck", "other walk", "new level")}
+    ok = out["walking"] == (True, 1, [], "NoneType") and out["stairs"] == (True, 0, ["custom >"], "Recover") and \
+        out["stuck"] == (True, 0, ["rest"], "NoneType") and out["other walk"][:3] == (False, 0, []) and \
+        out["new level"][:3] == (False, 0, [])
+    return ok, f"{out}"

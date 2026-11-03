@@ -4,11 +4,12 @@
 set -u
 NICK=${1:?usage: restart.sh NICK [PORT]}; PORT=${2:-28346}
 HERE=$(cd "$(dirname "$0")" && pwd); RUNS=$(cd "$HERE/../../.." && pwd)/runs
+ARCH_TOKEN=$RUNS/private/architect.token      # park is the Architect's (2.45.0)
 LOW=$(echo "$NICK" | tr A-Z a-z)
 module load python3/3.12.4 2>/dev/null
 cd "$HERE"
 if pgrep -f "^python3 pilot.py --nick $NICK" >/dev/null; then
-    python3 pilotctl.py --nick "$LOW" park || true
+    PILOT_ROLE=architect PILOT_TOKEN=$(cat "$ARCH_TOKEN" 2>/dev/null) python3 pilotctl.py --nick "$LOW" park || true
     for i in $(seq 1 330); do pgrep -f "^python3 pilot.py --nick $NICK" >/dev/null || break; sleep 1; done
     pgrep -f "^python3 pilot.py --nick $NICK" >/dev/null && { echo "old pilot still running"; exit 1; }
 fi

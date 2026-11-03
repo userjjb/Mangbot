@@ -83,16 +83,17 @@ Read first: the SESSION 10 RECORD below, session 11's own record (it will add on
 `docs/process.md` §3 (the mission checklist), `github/tools/pilot/BRIEF-TEMPLATE.md` (gear/stats are now fill-in
 fields), and Part "From session 9" below (Dive04, the model comparison, the routine).
 
-**FOR THE USER (from session 11; each would change play, so none was done -- ask before building any):**
-- Commands: the Navigator can `quit`/`park` the Pilot (`park`, `quit`, `option(s)`, `dump`, `goalstate` have no role
-  check); a ghost refuses `park`, so `restart.sh` on a dead character waits 330 s and fails; some bad arguments return
-  a raw exception text; an unknown command to a ghost gets the ghost refusal. Each is now a line in `cmdtable.py`.
-- Combat: the moves out of `reflexes` (light/hunger/pickup -> policy_tick, food_watch -> tick: refactor-candidates E3);
-  the hunger step's `return self.wear_light(...)` skips adjacent/pickup/engage/rest for a tick when no light can be worn;
-  escape's "arrived on stairs: take them" is dead (taken only while still threatened).
-- The hunt check doesn't count UN_BONUS (disenchant) blows: Khim/Ibun ~1-2.5 plusses a fight (~100 gold each).
-- Town: a fetched Restore stays on the house record until a later withdraw finds the square empty (E5 note).
-- Harness: A2I/A2L not re-run under the 11-02 criterion; M2's staging fails about half the time (dark rooms).
+**FOR THE USER (from session 11):** the user said "fix these issues now" (11-03): **done in 2.45.0** -- the command
+role checks (park/quit/option/dump), the ghost's park/stop/order/plan stop, usage on bad arguments, the hunger early
+stop, the escape walk taking its stairs (and finishing after its emergency), the disenchant cost in the hunt check
+(shown and logged, no decision yet), the house record strike, M2's staging (see CHANGELOG 2.45.0). **Still open:**
+- Not done on purpose: the moves out of `reflexes` (light/hunger/pickup -> policy_tick, food_watch -> tick): an order
+  change with no bug behind it (refactor-candidates E3).
+- Questions found while fixing: the 1.5 s summoner hold in `_reflex_danger_in_view` returns False and skips every
+  later reflex for up to 1.5 s (intended?); should the disenchant gold feed a decision (geareval: res_disen gear's
+  worth; the hunt check)? (The fight_sim to-hit/to-dam mismatch was fixed in 2.45.0, the Advisor's 11-03 reply.)
+- **Watch in session 12:** the hunt check is more permissive since 2.45.0 (fight_sim gets the derived totals): it
+  now ALLOWS Khim for Dive04 (~28 turns, ~138 HP of 358) and a Hill giant at 80% HP.
 
 **New since session 11 for this session:** `tools/harness/refactor/` holds the equivalence harness (`equiv.py`, 168
 scripted states on a fake client; `cmdmatrix.py`, every command x role x context) -- reuse it for any refactor.
@@ -335,7 +336,13 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
 - **2.44.14 -- E8**: unit.py -> runner + `fixtures.py` + 12 family files; setpiece.py -> entry + `setpiece_run.py` +
   4 scenario files; harness/README -> reference table + findings log. Pure move; 145 unit; B3, A6, A2K PASS live.
   **Group E is complete.** Stale counts fixed in CONDENSED/ops/refactor-candidates.
-- **State at the end (11-03 ~01:40):** version **2.44.14**, git `restructure` tagged and pushed. SGE job 8327794
-  (scc-va4) ends 08:47: the test server, Dive04's Pilot (2.44.14), the viewer. Dive04 idle in town, 358/358, 300 gold
+- **2.45.0 -- the user's "fix these issues now"** (play changes; CHANGELOG 2.45.0): command roles/ghost/usage, the
+  hunger early stop, the escape walk takes its stairs (and finishes after its emergency), the disenchant cost in the
+  hunt check, the house record strike, fight_sim on derived totals (the Advisor), M2 tries 4 rooms, set-piece
+  tracebacks in the result file. 151 unit cases. Live: Navigator refusals of park/quit/dump/option, usage text,
+  `monster khim`, set-pieces A2I, A2L (PASS under the 11-02 criterion), A6, M2 PASS. The Advisor mirrored the
+  escape walk (options_sim 2026-11-03p).
+- **State at the end (11-03 ~01:40):** version **2.45.0**, git `restructure` tagged and pushed. SGE job 8327794
+  (scc-va4) ends 08:47: the test server, Dive04's Pilot (2.45.0), the viewer. Dive04 idle in town, 358/358, 300 gold
   + 19,322 banked (5 gold went on a Flask of oil in E5's live Shop check). Open after session 11: the user's TODOs at
   the top; "FOR THE USER (from session 11)" in HANDOFF 12; C14 A/B; A25 (a unique above clvl 29).

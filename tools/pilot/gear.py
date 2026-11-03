@@ -242,6 +242,14 @@ class GearMixin:
             if not row or not wt:
                 return None
             prof = shadow.weapon_profile(wt[0][0], wt[0][1])      # (geareval.Item's numbers: D6)
+            # (2.45.0, the Advisor's 2026-11-03-245-reply: the server's to-hit and to-dam are the weapon's plus the
+            # rest -- rings, gloves, the STR/DEX tables, cmd1.c:1243-1285 -- so the totals from the gear model, as the
+            # shadow snapshot passes (A3); the weapon's own (+h,+d) understated our damage: Khim ~36 turns, not ~27)
+            try:
+                d = self.gear_character().derive()
+                prof.update(tohit=d["tohit"], todam=d["todam"])
+            except Exception:                  # (the weapon's own numbers then)
+                pass
             import argparse
             o = argparse.Namespace(clvl=self.w.clvl, blows=prof["blows"], dice=prof["dice"],
                                    todam=prof["todam"], tohit=prof["tohit"],
@@ -250,6 +258,120 @@ class GearMixin:
         except Exception as e:             # (a rulebook problem must not break the check)
             self.log("note", text=f"fight_sim failed: {e!r}")
             return None
+
+    # Disenchantment (2.45.0; the Advisor's Khim memo, 2026-11-02). The server's rules: an UN_BONUS blow must hit
+    # first (melee1.c:276 check_hit: 5% always, 5% never, else randint1(20 + 3 x level) > 3/4 AC, melee1.c:106-127,
+    # power 20 at melee1.c:245; AC counts, no saving throw), then without resist disenchantment (melee1.c:543-548,
+    # p_ptr->resist_disen from any TR2_RES_DISEN: xtra1.c:2353, 2537) apply_disenchant (spells1.c:1303) picks one of
+    # these 8 slots at random (spells1.c:1316-1327; never rings, amulet or light). An empty slot, or one with no
+    # positive to-hit, to-dam or to-AC, loses nothing (spells1.c:1332-1341); an artifact (name1: randarts too) resists
+    # 60% of the time (spells1.c:1348-1356); a weapon or bow loses 1 to-hit and 1 to-dam, armour 1 to-AC, and a plus
+    # still above +5 after that another 1 with 20% (spells1.c:1359-1376). A disenchantment breath (BR_DISE,
+    # GF_DISENCHANT) disenchants whenever it lands, unless resisted (spells1.c:3801-3810).
+    DISEN_SLOTS = (("weapon", (20, 21, 22, 23)), ("bow", (19,)), ("body armour", (36, 37, 38)), ("cloak", (35,)),
+                   ("shield", (34,)), ("helm", (32, 33)), ("gloves", (31,)), ("boots", (30,)))
+    DISEN_FLAT = 100          # gold per plus lost when a slot's value can't be read (itemvalue's 100 per plus)
+    DISEN_ART_KEEPS = 0.4     # an artifact loses a plus 40% of the time (spells1.c:1345)
+
+    @staticmethod
+    def _disen_steps(x):
+        """[(probability, plus after)] for one plus hit by apply_disenchant."""
+        if x <= 0:
+            return [(1.0, x)]
+        return [(0.8, x - 1), (0.2, x - 2)] if x - 1 > 5 else [(1.0, x - 1)]
+
+    def disen_item_loss(self, name, weapon):
+        """(expected gold an item loses to one disenchantment that picks its slot, valued -- False when the flat
+        estimate was used --, artifact?): the Pilot's own valuation (iv: itemvalue) of the item minus its value with
+        the plusses the server takes off, the artifact resistance applied."""
+        def val(n):
+            try:
+                return self.iv(n)
+            except AttributeError:              # (no flavour table: a bare test Pilot)
+                import itemvalue
+                return itemvalue.value(n)
+        v0 = val(name)
+        art = self.is_artifact(name) or bool(v0.artifact)
+        keep = self.DISEN_ART_KEEPS if art else 1.0
+        m = re.search(r"\(([+-]\d+),([+-]\d+)\)", name) if weapon else re.search(r"\[(\d+),([+-]\d+)\]", name)
+        if not m:
+            # plusses not shown (not identified): flat, as if each plus the server takes were positive
+            return keep * self.DISEN_FLAT * (2 if weapon else 1), False, art
+        if weapon:
+            th, td = int(m.group(1)), int(m.group(2))
+            outs = [(p1 * p2, f"({h:+d},{d:+d})", (th - h) + (td - d))
+                    for p1, h in self._disen_steps(th) for p2, d in self._disen_steps(td)]
+        else:
+            ta = int(m.group(2))
+            outs = [(p, f"[{m.group(1)},{a:+d}]", ta - a) for p, a in self._disen_steps(ta)]
+        if not any(lost for _, _, lost in outs):
+            return 0.0, True, art
+        if not (v0.kind or v0.artifact):         # (a kind itemvalue doesn't know: flat per plus lost)
+            return keep * self.DISEN_FLAT * sum(p * lost for p, _, lost in outs), False, art
+        return keep * sum(p * (v0.value - val(name[:m.start()] + txt + name[m.end():]).value)
+                          for p, txt, _ in outs), True, art
+
+    def disen_loss(self):
+        """What one disenchantment that gets through costs on average, over apply_disenchant's 8 slots (1 in 8
+        each): (gold, P(it takes a plus), [(slot, item name, gold when picked)], the slots valued flat)."""
+        worn = {}
+        for i in self.w.items(equip=True):
+            s = next((s for s, tvs in self.DISEN_SLOTS if i["tval"] in tvs), None)
+            if s and s not in worn:
+                worn[s] = i["name"]
+        rows, gold, p_takes, flat = [], 0.0, 0.0, []
+        for s, _ in self.DISEN_SLOTS:
+            name = worn.get(s)
+            g, valued, art = self.disen_item_loss(name, s in ("weapon", "bow")) if name else (0.0, True, False)
+            if not valued:
+                flat.append(s)
+            rows.append((s, name, round(g)))
+            gold += g / len(self.DISEN_SLOTS)
+            p_takes += ((self.DISEN_ART_KEEPS if art else 1.0) if g > 0 else 0.0) / len(self.DISEN_SLOTS)
+        return gold, p_takes, rows, flat
+
+    def disenchant_cost(self, race, turns):
+        """The expected cost of the disenchantment in a duel of `turns` player turns (fight_sim's mean, else the
+        fight estimate's), or None when the monster has no UN_BONUS blow and no disenchantment breath. Its melee
+        rounds per player turn as fight_sim counts them: speed_x actions, a spell with the spell chance, a melee round
+        costing two actions (MONSTER_RECOIL), x our_slowness; each UN_BONUS blow lands with check_hit at our AC;
+        BR_DISE is one of its spells, picked uniformly. Zero with resist disenchantment. A dict: hits (disenchanting
+        attacks that land), n (disenchantments that take a plus), gold, per_hit (gold per landed attack), p_hit (per
+        blow), rounds, turns, ac, resisted, flat (the slots valued flat), slots ([(slot, item, gold if picked)])."""
+        blows = [b for b in race.blows if (b.split(":")[1:2] or [""])[0] == "UN_BONUS"]
+        if "NEVER_BLOW" in race.flags:
+            blows = []
+        breath = "BR_DISE" in race.spells
+        if not blows and not breath:
+            return None
+        sx = race.speed_x if race.speed_x is not None else max(1.0, (race.speed - 100) / 10)   # (as Race.per_turn)
+        pct = (100 // race.spell_freq) / 100 if race.spell_freq else 0.0
+        try:
+            sx *= self.our_slowness()
+        except (AttributeError, TypeError, KeyError):
+            pass
+        rounds = turns * sx * (1 - pct) / (2 - pct)
+        casts = turns * sx * pct / (2 - pct)
+        ac = self.w.ind.get("armor", [0])[0] or 0
+        i = 20 + 3 * max(1, race.level)                       # (melee1.c:117: power + 3 x level)
+        p_hit = 0.05 + 0.90 * max(0, i - (3 * ac) // 4) / i
+        hits = rounds * p_hit * len(blows) + (casts / max(1, len(race.spells)) if breath else 0.0)
+        out = dict(hits=round(hits, 2), rounds=round(rounds, 1), p_hit=round(p_hit, 3), ac=ac, turns=round(turns, 1),
+                   resisted=bool(self.has_ability("res_disen")), n=0.0, gold=0, per_hit=0, flat=[], slots=[])
+        if out["resisted"]:
+            return out
+        gold, p_takes, rows, flat = self.disen_loss()
+        out.update(n=round(hits * p_takes, 2), gold=round(hits * gold), per_hit=round(gold), flat=flat, slots=rows)
+        return out
+
+    def disen_text(self, dc):
+        """The hunt check's words for disenchant_cost's dict."""
+        if dc["resisted"]:
+            return "disenchants: none (you resist disenchantment)"
+        return (f"~{dc['n']:.1f} disenchants expected (~{dc['gold']} gold of enchantment: ~{dc['hits']:.1f} "
+                f"disenchanting hits in ~{dc['turns']:.0f} turns at {dc['p_hit']:.0%} a blow, ~{dc['per_hit']} gold "
+                "each" + (f"; {', '.join(dc['flat'])} valued flat at {self.DISEN_FLAT} a plus" if dc["flat"] else "")
+                + "; about half with Speed)")
 
     SLOTS = (("weapon", (20, 21, 22, 23), 1), ("bow", (19,), 1), ("ring", (45,), 2), ("amulet", (40,), 1),
              ("light", (39,), 1), ("body armour", (36, 37, 38), 1), ("cloak", (35,), 1), ("shield", (34,), 1),

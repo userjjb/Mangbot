@@ -168,7 +168,8 @@ within 3 minutes, or 20 when Full).
 with `_` for spaces, `:N` = **have** N in all, `@MAX` a price cap each. The reply forecasts what it will buy at the
 prices last seen, what it can't afford, and the extras (`town_extras_note`: Enchant Armor and Recharging scrolls).
 It starts a `TownKit` goal, which works through **stages**, one sub-goal (`Shop`, `HouseBank`, `StashFetch`,
-`TownFarm`, `Wait`) at a time, settling 1 s between steps:
+`TownFarm`, `Wait`) at a time, settling 1 s between steps. Its Shops act as the Pilot (`role = "pilot"`: the sale
+rules' role -- `value_refusal`, a forced sale's debt, the override check; a buy-only Shop reads none):
 
 1. **upgrade**: first `HouseBank("withdraw")` if a house holds gold or the Restore a drained stat wants (**withdraws
    first**); else `StashFetch` that Restore from the tavern; then wear what the gear policy prefers (`upgrade_step`).
@@ -313,7 +314,9 @@ inside the door), `outside` (where to stand to open it) and `box`, smallest firs
   `bank` log record written.
 - *The stash in the house* (`item_step`): one stack a square on the other interior squares (farthest from the door
   first), mapped square -> name in house.json `items`. A deposit drops the stash items carried; a withdraw picks up the
-  kind a drained stat wants (`stash_wanted`), giving up after 4 tries.
+  kind a drained stat wants (`stash_wanted`), giving up after 4 tries, and strikes it off `items` as soon as the pack
+  shows it (`fetch_at`; 2.45.0 -- before, the record kept it, `house` still listed it, and a later withdraw spent its
+  4 tries on the empty square and said "no X after all").
 - `house` (no argument) shows the house, the banked gold and its timestamp; `banked()` feeds the status line's
   `(+N banked)`.
 - *In code* (E5): `tick` runs `TICK_STEPS` -- `_bank_house` (the house on record, town or its tile, one step a

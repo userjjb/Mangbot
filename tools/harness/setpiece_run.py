@@ -361,6 +361,18 @@ def find_pocket(rows, length):
     return None, None
 
 
+def find_floor_blocks(rows, h, w, apart=30):
+    """The top-lefts of h x w blocks of floor on Gandalf's map, at least `apart` squares from each other (one per
+    room, roughly), in map order; [] if none."""
+    out = []
+    for y in range(2, len(rows) - h - 2):
+        for x in range(2, len(rows[0]) - w - 2):
+            if all(rows[y + i][x:x + w] == "." * w for i in range(h)) and \
+                    all(max(abs(y - b[0]), abs(x - b[1])) >= apart for b in out):
+                out.append((y, x))
+    return out
+
+
 def find_floor_block(rows, h, w):
     """The top-left of an h x w block of floor on Gandalf's map (a room), or None."""
     for y in range(2, len(rows) - h - 2):

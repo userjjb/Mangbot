@@ -354,3 +354,63 @@ def stash_in_house_json_only():
         out[1][0] == ("tavern", "tavern") and out[1][2]["items"] == {"27,92": "a Potion of Restore Charisma",
                                                                     "?1": "a Potion of Restore Strength"}
     return ok, f"with a house, without: {out}"
+
+
+@case
+def house_withdraw_strikes_the_fetched_item():
+    """refactor-candidates E5 (2.45.0): a withdraw that fetched the Restore Strength left it on house.json `items` --
+    the strike waited for "already in the pack", but stash_wanted only names a kind the pack lacks -- so `house` still
+    listed it, and the next withdraw (STR drained again, the potion drunk) spent 5 pick-ups on the empty square and
+    said "no Restore Strength after all". Now it is struck off the record as soon as the pack shows it."""
+    import tempfile
+    mem = {}
+    for x in range(124, 130):
+        mem[(59, x)] = mem[(61, x)] = "#"
+    mem[(60, 124)], mem[(60, 129)] = "#", "0"
+    for x in range(125, 129):
+        mem[(60, x)] = "."
+    for y in range(57, 64):
+        for x in range(130, 134):
+            mem[(y, x)] = "."
+    hs = P.town_houses(mem)
+    h = {k: (list(v) if isinstance(v, tuple) else v) for k, v in hs[0].items() if k != "inside"}
+    p = pilot(gold=300)
+    w = p.w
+    w.depth, w.in_dungeon, w.memory, w.pos = 0, False, mem, (60, 130)
+    p.rundir, p.busy_until = tempfile.mkdtemp(), 0
+    p._house = {"house": h, "banked": 0, "items": {"60,125": "a Potion of Restore Strength"}}
+    floor = {(60, 125): "a Potion of Restore Strength"}
+    dirs = {4: (0, -1), 6: (0, 1)}
+    sent = []
+
+    def cmd(line, why, hold=0.4):
+        sent.append(line)
+        m = re.match(r"walk (\d)", line)
+        if m:
+            dy, dx = dirs[int(m.group(1))]
+            w.pos = (w.pos[0] + dy, w.pos[1] + dx)
+        if line == "custom ," and w.pos in floor:
+            w.inven.append({"item": 30, "name": floor.pop(w.pos), "tval": 75, "weight": 4, "number": 1,
+                            "equip": False})
+    p.cmd = cmd
+    p.mover = type("M", (), {"active": False, "go": lambda self, t: True, "tick": lambda self: "arrived",
+                             "stop": lambda self: None})()
+
+    def run(g):
+        for _ in range(80):
+            g.t = -99.0
+            r = g.tick(p)
+            if r:
+                return r
+    p.seen_drained = {"STR": (58, 68)}
+    a = run(P.HouseBank("withdraw"))
+    fetched = any("Restore Strength" in i["name"] for i in w.items())
+    record, said = dict(p._house.get("items", {})), p.house_info([])["text"]
+    w.inven = [i for i in w.inven if "Restore Strength" not in i["name"]]      # (drunk; STR drained again later)
+    sent.clear()
+    b = run(P.HouseBank("withdraw"))
+    picks = sent.count("custom ,")
+    ok = a and b and fetched and record == {} and "stash:" not in said and picks == 0 and \
+        not any("after all" in str(d) for _, d in p.notes)
+    return ok, f"withdraw {a}: fetched {fetched}, record {record}, `house`: {said!r}; the next withdraw {b}: " \
+               f"{picks} pick-ups, notes {p.notes}"

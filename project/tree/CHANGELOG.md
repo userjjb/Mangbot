@@ -27,6 +27,32 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.45.0 -- 2026-11-03 (session 11, the user: "fix these issues now")
+No missions yet. **Play changes** (the decisions session 11's refactor left for the user):
+- Commands: `park`, `quit`, `option`, `dump` are the Architect's (the Navigator could quit or park the Pilot);
+  `restart.sh`/`charsave.sh` pass the token. A ghost may `park`, `stop`, `order`, `plan stop` (a restart of a dead
+  character waited 330 s and failed); an unknown command says `unknown command` to a ghost too; a bad or missing
+  argument answers the usage (it was the bare exception text; logged as `request_error`).
+- Combat: the hunger step no longer ends the reflexes when no light can be worn (pickup, the pack step and rest ran
+  only next tick: A20's kind of early stop). An escape walk to stairs takes them on arrival even with the danger out
+  of view (the 10-24 m26 bounce fix had made step 3 require a threat, and the walk's own arrival branch was dead: the
+  character stood on the stairs), and the walk finishes after its emergency lapses (it stood still, neither walking
+  nor resting).
+- The hunt check counts disenchantment: for a monster with UN_BONUS blows or BR_DISE, the expected disenchants and
+  the enchantment value lost (the server's apply_disenchant rules; the Pilot's own item values), shown in `monster`
+  and the `goal hunt` note and logged in a new `hunt` record. No decision uses it yet (the hunt check is HP-based).
+  Khim vs Dive04: ~2.7 disenchants, ~374 gold at 36 turns (about 2 / ~280 with the totals below).
+- The duel simulator (`fight_sim`: the hunt and danger checks) gets the to-hit/to-dam **totals** from the gear model
+  (the server adds rings, gloves and the stat tables: the Advisor's 11-03 reply), not the weapon's own plusses: fights
+  are estimated shorter (Khim ~27 turns, not ~36); some hunts the check refused are now allowed (a Hill giant at 80%
+  HP with flee_hp 0.5: unit case updated).
+- Town: a house withdraw strikes the fetched item from the house record at once (it stayed listed until a later
+  withdraw wasted 4 pick-ups on the empty square); the kit's Recharging/Enchant Shops act as the Pilot's (no effect
+  on buying).
+- Harness: M2 tries up to 4 rooms for a lit site (half its runs failed on a dark room).
+- Checks: 151 unit cases (6 new, each failing on 2.44.14); tick() equivalence (173 states) changed only in the
+  states of these fixes. Live: role refusals, usage, `monster khim`; set-pieces in the SESSION 11 RECORD.
+
 ## 2.44.14 -- 2026-11-03 (session 11)
 No missions yet. No play change (refactor-candidates E8, the harness; group E is complete).
 - `unit.py` is a runner over `fixtures.py` and 12 `unit_<family>.py` files (the same 145 cases in the old order);

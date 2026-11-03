@@ -1,0 +1,11 @@
+{
+ "id": "M2",
+ "tag": "M2-20261103-065753",
+ "depth_ft": 500,
+ "start": "2026-11-03 06:57:53",
+ "checks": {},
+ "notes": [],
+ "error": "TypeError(\"'NoneType' object is not iterable\")",
+ "end": "2026-11-03 07:00:02",
+ "pass": false
+}

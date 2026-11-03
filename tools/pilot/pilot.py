@@ -283,6 +283,7 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.shadow_est, self.shadow_gear_said = None, None   # shadow_decision
         self.engage = {"target": None, "t0": 0.0, "replan_t": 0.0, "dropped": set()}
         self.engage_ok = {}
+        self.engage_disen = {}         # (level, race) -> the disen_* log fields of its hunt check (engage_tick)
         self.band_soft_levels = set()
         self.breeder_weak = False
         self.junk_msgs_done = set()
@@ -316,6 +317,7 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.compact_prev, self.compact_hinted = None, False
         self.map_snap = None           # save_level_map
         self.feeling_level = self.level_feeling = None
+        self.last_hunt = {}            # hunt_refusal's last numbers (race, turns, loss, disen): the hunt log fields
         # caches: the rulebook's tables and the files read on first use (None: not read yet)
         self._uk = self._drops = self._ego_flags = self._fight_rows = self._sim = self._stock = None
         self._town_books = self._house = None

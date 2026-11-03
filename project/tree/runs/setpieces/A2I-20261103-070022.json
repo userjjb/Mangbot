@@ -1,0 +1,72 @@
+{
+ "id": "A2I",
+ "tag": "A2I-20261103-070022",
+ "depth_ft": 550,
+ "start": "2026-11-03 07:00:22",
+ "checks": {
+  "no danger rule: a hard fight with Speed + Berserk": {
+   "pass": true,
+   "detail": "tactics ['a hard fight with Ibun, Son of Mim: quaffed a Potion of Speed at the start', 'a hard fight with Ibun, Son of Mim: quaffed a Potion of Berserk Strength (+to-hit, +30 HP, no fear)']"
+  },
+  "lowest HP >= 60%": {
+   "pass": true,
+   "detail": "lowest [336, 388]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   336,
+   388
+  ],
+  "attention": [
+   [
+    4.6,
+    "tactic",
+    "a hard fight with Ibun, Son of Mim: quaffed a Potion of Speed at the start"
+   ],
+   [
+    5.0,
+    "disenchanted",
+    "Set of Gauntlets lost a plus (disenchanted)"
+   ],
+   [
+    5.3,
+    "tactic",
+    "a hard fight with Ibun, Son of Mim: quaffed a Potion of Berserk Strength (+to-hit, +30 HP, no fear)"
+   ],
+   [
+    7.7,
+    "disenchanted",
+    "Metal Cap lost a plus (disenchanted)"
+   ],
+   [
+    12.8,
+    "unique_slain",
+    "Ibun, Son of Mim slain at 39,87: uniques drop good items (look at 'Item squares' around there)"
+   ]
+  ],
+  "acts": [
+   [
+    4.6,
+    "custom q item=2",
+    "a hard fight (Ibun, Son of Mim): quaff 2 Potions of Speed at the start"
+   ],
+   [
+    5.3,
+    "custom q item=4",
+    "a hard fight (Ibun, Son of Mim): quaff 2 Potions of Berserk Strength"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-11-03 07:08:22",
+ "pass": true
+}

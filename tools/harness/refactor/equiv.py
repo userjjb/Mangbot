@@ -17,6 +17,9 @@ steps), Shop (sales refused/forced/quoted/by the Architect, overrides revoked, b
 listing, walled in, stuck, thrown out), TownKit (each stage from a set-up kit: tavern fetch, upgrades, identify, broke
 by day/night, make room, quaff/provision, restock wait, recharge/enchant, stash, deposit, finish) and TripPlan (each
 phase and watchdog): 168 states; the four ticks' every line but a dead fall-through each (HouseBank all).
+5 *_fix_* states (2.45.0, behaviour fixes: they differ from 2.44.x on purpose): no light to read Satisfy Hunger by,
+then rest or pickup; the escape walk reaching its stairs with the threat out of view, and outliving its emergency;
+a withdraw's fetched Restore struck off the house record at once: 173 states.
 Schedule actions: req, ev, pos, depth, step (move with a pos event), hp, mons, ind, msg, ghost, fn (fn(p, c): set
 up a goal, a plan or the Pilot's state). A state's `react=lambda: Server(...)` answers its commands (shop trades, the
 house's pile and door: see Server).
@@ -775,6 +778,39 @@ TRIPPLAN_E5 = [
     ("plan_e5_paused", dict(DUNGEON), {1: [trip(250, 500, **LEVEL, paused=True)]}, 6, 0.3),
 ]
 SCENARIOS += TRIPPLAN_E5
+
+
+# --- 2.45.0 states: the behaviour fixes the E3/E5 splits found (each differs from 2.44.x on purpose) ----------------
+def drink(kind):
+    """fn: the pack's `kind` gone (drunk)."""
+    return fn(lambda p, c: c.items.__setitem__(slice(None), [i for i in c.items if kind not in i["name"]]))
+
+
+FIX_245 = [
+    # the hunger step with no light to read Satisfy Hunger by: rest (hurt, alone) and pickup now run (they didn't)
+    ("combat_fix_hunger_dark_rest", dict(DUNGEON, rations=0, hunger=1, light=None, hp=(200, 358), extra_pack=SATISFY),
+     {}, 12, 0.4),
+    ("combat_fix_hunger_dark_pickup", dict(DUNGEON, rations=0, hunger=1, light=None, extra_pack=SATISFY,
+                                           floor="a Potion of Cure Light Wounds", extra_map={(20, 40): "!"}),
+     {1: [("msg", LOOK)]}, 10, 0.4),
+    # the escape walk reaches its stairs with the orc out of view and the last hit 2-5 s ago: it takes them now
+    ("combat_fix_escape_walk_arrives_unseen", dict(DUNGEON, hp=(150, 358), speed=0,
+                                                   stairs={(20, 47): ">", (35, 10): "<"},
+                                                   monsters=[mon("Cave orc", 20, 37)]),
+     sched(hits("The Cave orc hits you.", (0,)), {3: [("mons", [])]}), 20, 0.3),
+    # the same walk outliving its emergency (no hit for 5 s, nothing in view: escape() isn't called): it walks on and
+    # takes the stairs (it stood still with the mover active, not resting)
+    ("combat_fix_escape_walk_outlives_emergency", dict(DUNGEON, hp=(150, 358), speed=0,
+                                                       stairs={(20, 50): ">", (35, 10): "<"},
+                                                       monsters=[mon("Cave orc", 20, 37)]),
+     sched(hits("The Cave orc hits you.", (0,)), {3: [("mons", [])]}), 45, 0.3),
+    # a withdraw that fetches the Restore: off the record at once (`house` shows no stash; the next withdraw, the
+    # potion drunk, makes no pick-ups on the empty square)
+    ("town_fix_house_withdraw_restore_struck", dict(WILD, gold=500, react=wild_server(pile=19327, pickup=RS)),
+     {1: [fn(lambda p, c: p.house_state()["items"].update({"60,125": RS})), req("house", "withdraw")],
+      90: [req("house")], 91: [drink("Restore Strength")], 92: [req("house", "withdraw")]}, 200, 0.3),
+]
+SCENARIOS += FIX_245
 COVER_FUNCS = set(os.environ.get("EQUIV_COVER_FUNCS", "reflexes escape").split())
 COVER_PATTERNS = [f for f in COVER_FUNCS if "*" in f]
 COVER_FILES = ("pilot.py", "combat.py", "town_goals.py", "plan.py")

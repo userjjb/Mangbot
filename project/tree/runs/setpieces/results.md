@@ -192,3 +192,8 @@
 - 2026-11-03 01:25:30 **B3** PASS (Brigand slain, nothing stolen) `B3-20261103-012530.json`
 - 2026-11-03 01:33:20 **A6** PASS (at most 3 Phase Door, Phase Door never runs out, lowest HP >= 40%) `A6-20261103-013320.json`
 - 2026-11-03 01:36:53 **A2K** PASS (no danger rule: a hard fight with Speed + Berserk, lowest HP >= 60%) `A2K-20261103-013653.json`
+- 2026-11-03 06:57:53 **M2** FAIL () `M2-20261103-065753.json`
+- 2026-11-03 07:00:22 **A2I** PASS (no danger rule: a hard fight with Speed + Berserk, lowest HP >= 60%) `A2I-20261103-070022.json`
+- 2026-11-03 07:08:42 **A2L** PASS (no danger rule: a hard fight with Speed + Berserk, lowest HP >= 60%) `A2L-20261103-070842.json`
+- 2026-11-03 07:12:03 **A6** PASS (at most 3 Phase Door, Phase Door never runs out, lowest HP >= 40%) `A6-20261103-071203.json`
+- 2026-11-03 07:17:17 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261103-071717.json`

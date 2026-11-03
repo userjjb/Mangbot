@@ -1,0 +1,242 @@
+{
+ "id": "A2L",
+ "tag": "A2L-20261103-070842",
+ "depth_ft": 600,
+ "start": "2026-11-03 07:08:42",
+ "checks": {
+  "no danger rule: a hard fight with Speed + Berserk": {
+   "pass": true,
+   "detail": "tactics ['a hard fight with Cave orc, Lugdush, the Uruk, Uruk: quaffed a Potion of Speed at the start', 'a hard fight with Cave orc, Lugdush, the Uruk, Uruk: quaffed a Potion of Berserk Strength (+to-hit, ']"
+  },
+  "lowest HP >= 60%": {
+   "pass": true,
+   "detail": "lowest [302, 388]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   302,
+   388
+  ],
+  "attention": [
+   [
+    3.7,
+    "band",
+    "a band within 10 squares: Cave orc \u00d77, Uruk \u00d73, Lugdush, the Uruk (11 monsters, ~1105 HP expected to"
+   ],
+   [
+    3.7,
+    "tactic",
+    "a hard fight with Cave orc, Lugdush, the Uruk, Uruk: quaffed a Potion of Speed at the start"
+   ],
+   [
+    4.3,
+    "tactic",
+    "a hard fight with Cave orc, Lugdush, the Uruk, Uruk: quaffed a Potion of Berserk Strength (+to-hit, "
+   ],
+   [
+    5.0,
+    "unseen_attacker",
+    "'It fires an arrow!': probably the Uruk (lvl 16) in view; carrying on (HP 96%)"
+   ],
+   [
+    11.8,
+    "unique_slain",
+    "Lugdush, the Uruk slain at 38,86: uniques drop good items (look at 'Item squares' around there)"
+   ],
+   [
+    12.1,
+    "tactic",
+    "7 monsters together but weak (~138 HP expected to fight them all, vs HP 302): fighting on"
+   ],
+   [
+    15.9,
+    "interesting_item",
+    "Staff of Trap Location seen on this level at 37,87 (1 away): fetching it once the area is clear"
+   ],
+   [
+    20.2,
+    "tactic",
+    "fetching the unique's drop at 37,85"
+   ],
+   [
+    20.4,
+    "goal_done",
+    "goto 37,85"
+   ],
+   [
+    23.3,
+    "tactic",
+    "fetching the unique's drop at 36,86"
+   ],
+   [
+    23.4,
+    "goal_done",
+    "goto 36,86"
+   ],
+   [
+    26.3,
+    "tactic",
+    "fetching the unique's drop at 37,86"
+   ],
+   [
+    27.0,
+    "found",
+    "picked up an Awl-Pike (1d8) {Lugdush, the Uruk}: identify it before selling (`sell !NAME`)"
+   ],
+   [
+    28.8,
+    "goal_done",
+    "goto 37,86"
+   ],
+   [
+    29.3,
+    "tactic",
+    "fetching the unique's drop at 37,87"
+   ],
+   [
+    30.9,
+    "goal_done",
+    "goto 37,87"
+   ],
+   [
+    32.3,
+    "tactic",
+    "fetching the unique's drop at 38,86"
+   ],
+   [
+    32.4,
+    "tactic",
+    "no effect seen: destroy junk on the floor: a Staff of Sleep Monsters"
+   ],
+   [
+    34.8,
+    "goal_done",
+    "goto 38,86"
+   ],
+   [
+    35.3,
+    "tactic",
+    "fetching the unique's drop at 38,85"
+   ],
+   [
+    35.5,
+    "goal_done",
+    "goto 38,85"
+   ],
+   [
+    38.4,
+    "tactic",
+    "fetching the unique's drop at 39,85"
+   ],
+   [
+    38.5,
+    "goal_done",
+    "goto 39,85"
+   ],
+   [
+    41.4,
+    "tactic",
+    "fetching the unique's drop at 39,86"
+   ],
+   [
+    43.8,
+    "goal_done",
+    "goto 39,86"
+   ],
+   [
+    44.4,
+    "tactic",
+    "fetching the unique's drop at 40,85"
+   ],
+   [
+    44.5,
+    "goal_done",
+    "goto 40,85"
+   ],
+   [
+    47.5,
+    "tactic",
+    "fetching the unique's drop at 40,86"
+   ],
+   [
+    47.6,
+    "goal_done",
+    "goto 40,86"
+   ],
+   [
+    50.5,
+    "tactic",
+    "fetching the unique's drop at 41,86"
+   ],
+   [
+    50.6,
+    "goal_done",
+    "goto 41,86"
+   ],
+   [
+    53.5,
+    "tactic",
+    "fetching the unique's drop at 37,88"
+   ],
+   [
+    55.7,
+    "goal_done",
+    "goto 37,88"
+   ]
+  ],
+  "acts": [
+   [
+    3.7,
+    "custom q item=2",
+    "a hard fight (Cave orc, Lugdush, the Uruk, Uruk): quaff 2 Potions of Speed at th"
+   ],
+   [
+    4.3,
+    "custom q item=4",
+    "a hard fight (Cave orc, Lugdush, the Uruk, Uruk): quaff 2 Potions of Berserk Str"
+   ],
+   [
+    15.8,
+    "rest",
+    "rest"
+   ],
+   [
+    16.8,
+    "rest",
+    "rest"
+   ],
+   [
+    26.4,
+    "custom ,",
+    "pick up: an Awl-Pike (1d8) {Lugdush, the Uruk}."
+   ],
+   [
+    29.4,
+    "custom k item=-11 value=1",
+    "destroy junk on the floor: a Staff of Sleep Monsters"
+   ],
+   [
+    32.4,
+    "custom ,",
+    "pick up: a Staff of Trap Location."
+   ],
+   [
+    41.5,
+    "custom ,",
+    "pick up: a Robe [2]."
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-11-03 07:11:43",
+ "pass": true
+}

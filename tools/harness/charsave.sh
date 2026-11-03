@@ -7,6 +7,7 @@
 set -u
 OP=${1:?usage: charsave.sh save|restore NICK TAG [PORT]}; NICK=${2:?}; TAG=${3:?}; PORT=${4:-28346}
 HERE=$(cd "$(dirname "$0")" && pwd); ROOT=$(cd "$HERE/../../.." && pwd)
+ARCH_TOKEN=$ROOT/runs/private/architect.token   # park is the Architect's (2.45.0)
 LOW=$(echo "$NICK" | tr A-Z a-z)
 SAVE=$ROOT/testserver/save/$NICK; RUN=$ROOT/runs/pilot/$LOW; DEST=$ROOT/runs/setpieces/saves/$TAG
 STATE="orders.json deepest.json plan.json standing.json navigator_debt.json keep.json stores.json uniques_killed.json rates.json recall.json"
@@ -14,7 +15,7 @@ module load python3/3.12.4 2>/dev/null
 cd "$HERE/../pilot"
 T0=$(date +%s)
 if pgrep -f "^python3 pilot.py --nick $NICK" >/dev/null; then
-    python3 pilotctl.py --nick "$LOW" park >/dev/null || true
+    PILOT_ROLE=architect PILOT_TOKEN=$(cat "$ARCH_TOKEN" 2>/dev/null) python3 pilotctl.py --nick "$LOW" park >/dev/null || true
     for i in $(seq 1 330); do pgrep -f "^python3 pilot.py --nick $NICK" >/dev/null || break; sleep 1; done
     pgrep -f "^python3 pilot.py --nick $NICK" >/dev/null && { echo "pilot still running"; exit 1; }
 fi

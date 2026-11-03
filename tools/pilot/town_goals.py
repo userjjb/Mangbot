@@ -642,6 +642,7 @@ class HouseBank(Goal):
         # (created on the way: refactor-candidates E5 declares them, with the values their reads assumed)
         self.full_told = False       # item_step: told once that the house had no free square
         self.picks = 0               # item_step: pick-ups tried on a stash square
+        self.fetch_at = None         # item_step: (kind, square) of the stash item being fetched, struck once picked up
         self.last_step = None        # the step the tries count for
         self.seen_level = None       # the level last seen (a new one stops the walk: m56)
         self.items_done = False      # inside: the stash moved (item_step)
@@ -650,8 +651,8 @@ class HouseBank(Goal):
         """Inside, door closed: the stash (the user, 10-27: "move the stash into the wilderness house" -- at 18:10 a
         town monster took a Wand of Stone to Mud off the tavern floor). One stack a square on the interior squares
         other than the gold's; house.json `items` maps square -> name. A deposit drops the stash kinds carried; a
-        withdraw fetches the kind a drained stat wants (stash_wanted). Then back to the gold's square. True while
-        acting."""
+        withdraw fetches the kind a drained stat wants (stash_wanted), struck off the record once the pack shows it.
+        Then back to the gold's square. True while acting."""
         w = p.w
         st = p.house_state()
         slots = st.setdefault("items", {})
@@ -678,20 +679,25 @@ class HouseBank(Goal):
                 p.notify("tactic", f"house: no free square for {it['name']} (one stack a square): kept in the pack",
                          news=True)
         if self.mode == "withdraw":
+            got = self.fetch_at
+            if got and any(got[0] in i["name"] for i in w.items()):
+                # picked up: off the house's record at once (stash_wanted names only a kind the pack lacks, so the
+                # strike that waited for "already in the pack" never ran, and the record kept it until a later
+                # withdraw spent 4 pick-ups on the empty square -- refactor-candidates E5)
+                self.fetch_at = None
+                p.fetching = None
+                p.stash_take("house", got[0], got[1])
             kind = p.stash_wanted("house")
             key = next((k for k, n in slots.items() if kind and kind in n), None)
             if key:
                 q = tuple(int(v) for v in key.split(","))
-                if any(kind in i["name"] for i in w.items()):
-                    del slots[key]
-                    p.fetching = None
-                    p.house_save()
-                    return True
+                self.fetch_at = (kind, q)
                 if w.pos != q:
                     return walk_to(q)
                 self.picks = getattr(self, "picks", 0) + 1
                 if self.picks > 4:
                     del slots[key]                 # (not there after all)
+                    self.fetch_at = None
                     p.house_save()
                     p.notify("tactic", f"house: no {kind} on {key} after all", news=True)
                     return True
@@ -1333,6 +1339,7 @@ class TownKit(Goal):
                 self.recharge_bought = True
                 self.sub = Shop(5, buys=[("Recharging", len(todo),
                                           round((p.price_of("Recharging", 5) or 250) * 1.5))])
+                self.sub.role = "pilot"          # (as the kit's other Shops; a buy-only visit reads no role)
                 return None
         return NEXT
 
@@ -1358,6 +1365,7 @@ class TownKit(Goal):
                         int(p.orders.get("enchant_max", 25)))
                 if n > 0:
                     self.sub = Shop(5, buys=[("Enchant Armor", n, round(price * 1.5))])
+                    self.sub.role = "pilot"      # (as the kit's other Shops; a buy-only visit reads no role)
                     self.done_log.append(f"Enchant Armor x{n} for {len(plan)} piece(s)")
                     return None
         return NEXT

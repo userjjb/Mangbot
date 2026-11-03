@@ -638,7 +638,11 @@ class CombatMixin:
             sat = None if food else self.find_item("Satisfy Hunger", TV_SCROLL)
             if sat and w.hunger <= 1 and now - self.eat_t > 10 and not w.flag("blind") and not w.flag("confused"):
                 if not any(i["tval"] == TV_LITE for i in w.items(equip=True)):
-                    return self.wear_light("a light to read Satisfy Hunger by")
+                    # (no light to put on: the steps below still run -- `return self.wear_light(...)` returned its
+                    # False and skipped pickup, auto-destroy and rest, A20's kind of early stop, refactor-candidates E3)
+                    if self.wear_light("a light to read Satisfy Hunger by"):
+                        return True
+                    return NEXT
                 self.eat_t = now
                 self.cmd(f"custom r item={sat['item']}", f"hungry ({w.hunger}), no food: read Satisfy Hunger", hold=1.0)
                 self.notify("tactic", "hungry and no food: read a Scroll of Satisfy Hunger")
@@ -741,8 +745,16 @@ class CombatMixin:
         return NEXT
 
     def _reflex_rest(self, ctx):
-        """6. Rest when hurt and alone"""
+        """6. Rest when hurt and alone. First, an escape walk to stairs that outlived its emergency: keep walking."""
         w, o = ctx.w, ctx.o
+        # (escape() isn't called once nothing is within 7 and no hit for 5 s, and nothing else ticked its walk: the
+        # mover stayed active, so this step didn't rest either, and the character stood still -- or a goal ticked the
+        # walk and its stairs weren't taken. Here, after the steps that handle a monster: on the stairs, escape step 3
+        # takes them; else the walk goes on. Blocked, stopped, replaced by another walk or a new level, it ends)
+        if self.escaping_to_stairs:
+            if self._escape_stairs_underfoot(types.SimpleNamespace(w=w, now=ctx.now, why="the escape walk")) is NEXT:
+                self.mover.tick()
+            return True
         if w.hp_frac < o["rest_below"] and not w.monsters and not isinstance(self.goal, (Recall,)):
             if not self.mover.active or isinstance(self.goal, Dive):
                 self.mover.stop()
@@ -806,6 +818,7 @@ class CombatMixin:
                 if key not in cache:
                     try:
                         cache[key] = self.hunt_refusal(r.name)[0] is None
+                        self.engage_disen[key] = self.hunt_fields(disen_only=True)   # (a disenchanter's cost)
                     except Exception:
                         cache[key] = False
                 if cache[key]:
@@ -814,7 +827,8 @@ class CombatMixin:
                 return False
             d, y, x, r = min(cands, key=lambda c: c[0])
             st.update(target=r.name, t0=now, replan_t=0.0)
-            self.log("act", cmd="engage", why=f"engage {r.name} (L{r.level}, {d} away) on the way", by="pilot")
+            self.log("act", cmd="engage", why=f"engage {r.name} (L{r.level}, {d} away) on the way", by="pilot",
+                     **self.engage_disen.get((w.level_t, r.name), {}))
             tgt = r.name
         cur = next(m for m in mons if m[2].name == tgt)
         if now - st["replan_t"] > 1.5 or not self.mover.active:
@@ -910,7 +924,7 @@ class CombatMixin:
     ESCAPE_STEPS = (
         "_escape_stairs_pending",   # 1. a stairs command on its way: wait
         "_escape_loop",             # 2. emergency loop (3 escapes in 90 s): flee to stairs
-        "_escape_stairs_underfoot",  # 3. stairs underfoot while threatened: take them, then Recover
+        "_escape_stairs_underfoot",  # 3. stairs underfoot while threatened, or reached by step 12's walk: take them
         "_escape_survey",           # (not a rule: ctx.adj, can_read, pd, rate, in_combat for the steps below)
         "_escape_out_of_combat",    # 4. out of combat: rest or step out of sight
         "_escape_one_turn",         # 5. one turn from death: Teleportation, else Phase Door (sets ctx.one_turn)
@@ -928,13 +942,14 @@ class CombatMixin:
     def escape(self, why):
         """Emergency: at most one action per call, the first that applies (docs/pilot-combat.md §3; the Advisor's
         estimator mirrors this order, so tell the Advisor when it changes): a stairs command on its way -> wait;
-        emergency loop (3 escapes in 90 s) -> Flee to stairs; stairs underfoot while threatened -> take them, then
-        Recover; out of combat -> rest or step out of sight (never potions); one turn from death -> Teleportation,
-        else Phase Door; a Potion of Speed if not fast; HP < 30% -> Word of Recall; phasing futile (3 in 20 s) ->
-        Word of Recall; an adjacent summoner/status caster we kill in 2 rounds -> attack it; a crowd in the open (or
-        afraid with 2+ adjacent) -> Teleportation; adjacent -> Phase Door (rate-limited: phasing again and again
-        doesn't shake a pack; it burned 10 scrolls in 10 s); out of melee -> walk to stairs <= 20 away; potions by
-        numbers (or Phase/Recall when they're too small); else say there's nothing left and fight on."""
+        emergency loop (3 escapes in 90 s) -> Flee to stairs; stairs underfoot while threatened, or reached by the
+        walk to stairs below -> take them, then Recover; out of combat -> rest or step out of sight (never potions);
+        one turn from death -> Teleportation, else Phase Door; a Potion of Speed if not fast; HP < 30% -> Word of
+        Recall; phasing futile (3 in 20 s) -> Word of Recall; an adjacent summoner/status caster we kill in 2 rounds
+        -> attack it; a crowd in the open (or afraid with 2+ adjacent) -> Teleportation; adjacent -> Phase Door
+        (rate-limited: phasing again and again doesn't shake a pack; it burned 10 scrolls in 10 s); out of melee ->
+        walk to stairs <= 20 away; potions by numbers (or Phase/Recall when they're too small); else say there's
+        nothing left and fight on."""
         ctx = types.SimpleNamespace(w=self.w, now=gnow(), why=why)
         for name in self.ESCAPE_STEPS:
             r = getattr(self, name)(ctx)
@@ -957,13 +972,16 @@ class CombatMixin:
         return NEXT
 
     def _escape_stairs_underfoot(self, ctx):
-        """3. Stairs underfoot while threatened: take them, then goal Recover. On stairs with nothing
-        threatening: do nothing (stops stair-bouncing)."""
+        """3. Stairs underfoot while threatened, or reached by escape()'s walk to stairs (step 12): take them, then
+        goal Recover. On stairs with nothing threatening and no escape walk: do nothing (stops stair-bouncing)."""
         w, now, why = ctx.w, ctx.now, ctx.why
         # (only with something here: arriving by stairs you stand on stairs again, and m26 bounced 650 <-> 600
         # ft four times in 12 s at 18% HP with a recall pending and nothing in view)
         threatened = bool(w.monsters) or now - w.last_hit_t < 2
-        if w.standing_on in ("<", ">") and not threatened:
+        # (but an escape walk that reaches its stairs takes them: the danger that started the walk is the reason to
+        # leave, out of view or not. The walk ends with a new level, so arriving by stairs still doesn't bounce; this
+        # step returned first, and step 12's "take them on arrival" never ran -- refactor-candidates E3)
+        if w.standing_on in ("<", ">") and not threatened and not self.escaping_to_stairs:
             return False
         if w.standing_on in ("<", ">"):
             which = w.standing_on
@@ -1111,7 +1129,8 @@ class CombatMixin:
         return NEXT
 
     def _escape_to_stairs(self, ctx):
-        """12. Out of melee: walk to stairs <= 20 away and take them on arrival (not within 2 s of another use)."""
+        """12. Out of melee: walk to stairs <= 20 away (not within 2 s of another use); step 3 takes them on
+        arrival."""
         w, why, adj = ctx.w, ctx.why, ctx.adj
         if not adj:
             # Out of melee: make for stairs if some are close, else heal
@@ -1125,9 +1144,9 @@ class CombatMixin:
                     self.notify("emergency", f"{why}: heading for the stairs {min(w.dist(p) for p in stairs)} away",
                                 action=True)
             if self.mover.active and self.escaping_to_stairs:
-                st = self.mover.tick()
-                if st == "arrived" and w.standing_on in ("<", ">"):
-                    self.take_stairs(w.standing_on)
+                # (on the stairs, step 3 has taken them already: standing_on doesn't change within a call, so the
+                # old "arrived and on stairs: take them" here never ran)
+                self.mover.tick()
                 return True
         return NEXT
 
