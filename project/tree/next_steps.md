@@ -277,3 +277,12 @@ old tree vs new (scratchpad e3_dry.py -- the scratchpad is session-local: rewrit
 **State now (11-02):** version **2.44.7**. Running in SGE job 8327794 (scc-va4, ends Tue
 11-03 08:47): the test server (gdb, freeze-enabled), Dive04's Pilot (2.44.7), the viewer (`tmux -L mang attach -t
 watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wilderness house. 139 unit cases pass (a golden-file report case).
+
+### SESSION 11 RECORD (2026-11-02 on; "finish the refactor", no missions)
+- **2.44.8 -- E1 step 4, `town.py`** (TownMixin, 50 methods + 19 constants, incl. `supply_gate`/`SUPPLY_STAGES` and
+  the town stairs/edge helpers; `house_info`/`price_info` stay for commands.py/E2): pilot.py 5,799 -> 5,060 lines.
+  Checks as in session 10 (bytecode identical, 139 unit, dry start, tick() equivalence over 33 states, pyflakes);
+  live: ~14 commands, `goal shop 5 list`, `house deposit`, M2 PASS (2nd try: the 1st staging hit a dark room).
+  The check scripts (split.py with its `MOVE` list, bytecode.py, dry.py, equiv.py, fake.py; run dry/equiv with
+  `PYTHONHASHSEED=0`) are in this session's scratchpad `e1s4/scripts/` -- copied to `github/tools/harness/refactor/`
+  for the next steps.

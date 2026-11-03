@@ -27,6 +27,14 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.44.8 -- 2026-11-02 (session 11)
+No missions yet. No play change (refactor-candidates E1, step 4).
+- The Pilot's town methods (`town.py`, TownMixin: the town kit's tables, the shopping list and gold, selling, making
+  room and provisioning, Identify/Enchant/Recharge, the supply gate, the food/light clock `supply_*` with
+  `TURNS_PER_DMIN`/`FOOD_MID`, the house and stash state, the town's stairs and edge crossings; 50 methods, 19
+  constants) left pilot.py: 5,799 -> 5,060 lines; verbatim (bytecode identical). 139 unit cases; dry start identical;
+  tick() equivalence over 33 states identical; no undefined names; live commands, a Shop goal, `house deposit`; M2 PASS.
+
 ## 2.44.7 -- 2026-11-02 (session 10, continued)
 No missions yet. No play change (refactor-candidates E1, step 3).
 - The Pilot's gear methods (`gear.py`, GearMixin: gear lines/review/eval, loadout, the shadow estimator, fight

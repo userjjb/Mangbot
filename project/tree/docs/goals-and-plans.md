@@ -14,7 +14,19 @@ the `pilotctl` syntax of every command in [commands.md](commands.md).
 
 Where the code is (E1 step 2): `Goal` and the dungeon goals in `tools/pilot/goals.py`, the town goals (`Town`,
 `TownFarm`, `Shop`, `StashDeposit`/`StashFetch`, `HouseBank`, `TownKit`) in `town_goals.py`, `TripPlan` in `plan.py`;
-`pilot.py` imports them back, so `pilot.py: Goal` below still names them (the `Pilot` methods stay in pilot.py).
+`pilot.py` imports them back, so `pilot.py: Goal` below still names them. The `Pilot` methods the town visit uses
+(E1 step 4) live in `town.py` as `TownMixin`, still `Pilot`'s names (`Pilot.town_needs` below is one): the kit's tables
+(`STORE_NUM`, `STORE_LABEL`, `BUYERS`, `KIT_ITEMS`, `KIT_CAP`, `KITS`, `SUPPLY_STAGES`, `FUEL_TOPUP`/`FLASK_FUEL`,
+`PACK_SLOTS`, `BANK_FLOAT`...), the shopping list and gold (`town_needs`, `town_shopping`, `town_reserve`,
+`price_of`, `note_store`, `buy_store`, `stock_table`), selling (`town_buyers`, `town_sell_count`, `town_sells`,
+`town_sell_stores`, `is_crutch`), `town_make_room`, `provision_step`, `kit_count`, `lantern_fuel`,
+`trip_minutes_left`, `provisions_spare`, `planned_depth`, `restore_potion`, Identify/Enchant/Recharging
+(`identify_candidates`, `town_identify_wanted`, `enchant_plan`, `recharge_wanted`, `town_extras_note`...),
+`supply_gate`, `supply_minutes`/`supply_text`/`supply_watch` (`TURNS_PER_DMIN`, `FOOD_MID`), the house and the stash
+(`house_state`, `house_save`, `retire_stash_json`, `banked`, `stash_places`/`stash_where`/`stash_has`/`stash_take`/
+`stash_wanted`, `is_stash_item`, `tavern_state`/`tavern_entrance`), `note_town_stairs`, `note_edge_cross`/`edge_dir`.
+Still in pilot.py: the commands that reach them (`plan town`/`plan trip`, `request_goal`, `house_info`, `price_info`,
+`plan_tick`).
 
 ## What a goal is
 

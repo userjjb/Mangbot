@@ -711,3 +711,4 @@
 - 19:12:01 750ft 100% | 19:12 750 ft, HP 100% | trip ended on minutes>20, recall pending | none, the Pilot is recalling home; wait for the town visit
 - 19:15:27 town 100% | 19:15 town, HP 100% | trip done (5 levels, 26 min: XP +930, gold +682); town kit done, 300 gold carried + 19327 banked | review: Ring of Protection [+6] is redundant beside the +16 and +12 rings, so sell it | the mission is at its end, stay idle in town
 - 19:16:33 town 100% | 19:16 town, HP 100% | mission over: one trip 750-800 ft, 5 levels, XP +930 and gold +682 in 26 min (~36 XP/dmin) | stopped in town idle, Ring of Protection [+6] sold by my word, debt unchanged (44 gold, 0 HP) | end
+- 20:16:47 town 100% | 

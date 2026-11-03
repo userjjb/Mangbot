@@ -1,11 +1,16 @@
 # Pilot core: architecture, tick loop, perception, movement, logs, the report
 
-The **Pilot** (`github/tools/pilot/pilot.py`, ~5.8k lines, plus `world.py`, `mover.py`, `glyphs.py`,
+The **Pilot** (`github/tools/pilot/pilot.py`, ~5.1k lines, plus `world.py`, `mover.py`, `glyphs.py`,
 `structures.py`; since E1 also `daemon.py`: `main()`, `Server`, `Handler`; `report.py`: `ReportMixin`, the report
 methods, still on `Pilot`; `gear.py`: `GearMixin`, the gear evaluator's side, shadow mode and the duel estimates
 (gear-and-estimator.md), and `shadow_agree`; `items.py`: `ItemsMixin`, the item policy (pilot-items.md), with
-`weapon_blows` and the blow tables, `type_word`, `PY_FOOD_MAX` (`class Pilot(ReportMixin, GearMixin, ItemsMixin)`:
-the methods and class constants stay on `Pilot`); `goals.py`: `Goal` and the dungeon goals; `town_goals.py`: `Town`,
+`weapon_blows` and the blow tables, `type_word`, `PY_FOOD_MAX`; `town.py` (~770 lines): `TownMixin`, the town side
+(goals-and-plans.md): the town kit's tables (`STORE_NUM`, `KIT_ITEMS`, `KITS`, `SUPPLY_STAGES`...), the shopping list
+and selling (`town_*`, `price_of`, `note_store`, `kit_count`, `provision_step`, `identify_candidates`...), the supply
+gate, the food/light clock (`supply_minutes`/`supply_text`/`supply_watch`, `TURNS_PER_DMIN`, `FOOD_MID`), the house
+and stash state (`house_state`, `house_save`, `banked`, `stash_*`, `tavern_*`) and `note_town_stairs`/
+`note_edge_cross` (`class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin)`: the methods and class constants stay
+on `Pilot`); `goals.py`: `Goal` and the dungeon goals; `town_goals.py`: `Town`,
 `TownFarm`, `Shop`, `StashDeposit`/`StashFetch`, `HouseBank`, `TownKit`, `edge_of`, `town_houses`; `plan.py`:
 `TripPlan`, `split_specs`; `common.py`: `VERSION`, `TV_*`, `DEFAULT_ORDERS` and helpers shared by these (`plural`,
 `one_of`, `kind_key`, `flavour_key`, `bare_name`, `singular`, `recall_level`, `bad_inscription`, ...); pilot.py
