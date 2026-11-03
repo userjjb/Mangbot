@@ -1,6 +1,6 @@
 # Pilot core: architecture, tick loop, perception, movement, logs, the report
 
-The **Pilot** (`github/tools/pilot/pilot.py`, ~5.1k lines, plus `world.py`, `mover.py`, `glyphs.py`,
+The **Pilot** (`github/tools/pilot/pilot.py`, ~3.1k lines, plus `world.py`, `mover.py`, `glyphs.py`,
 `structures.py`; since E1 also `daemon.py`: `main()`, `Server`, `Handler`; `report.py`: `ReportMixin`, the report
 methods, still on `Pilot`; `gear.py`: `GearMixin`, the gear evaluator's side, shadow mode and the duel estimates
 (gear-and-estimator.md), and `shadow_agree`; `items.py`: `ItemsMixin`, the item policy (pilot-items.md), with
@@ -9,13 +9,23 @@ methods, still on `Pilot`; `gear.py`: `GearMixin`, the gear evaluator's side, sh
 and selling (`town_*`, `price_of`, `note_store`, `kit_count`, `provision_step`, `identify_candidates`...), the supply
 gate, the food/light clock (`supply_minutes`/`supply_text`/`supply_watch`, `TURNS_PER_DMIN`, `FOOD_MID`), the house
 and stash state (`house_state`, `house_save`, `banked`, `stash_*`, `tavern_*`) and `note_town_stairs`/
-`note_edge_cross` (`class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin)`: the methods and class constants stay
-on `Pilot`); `goals.py`: `Goal` and the dungeon goals; `town_goals.py`: `Town`,
+`note_edge_cross`; `combat.py` (~2,040 lines): `CombatMixin`, combat and survival (pilot-combat.md): `reflexes`,
+`escape` and its helpers (`emergency_loop`, `phase_futile`, `escaping_to_stairs`, `kill_caster_step`, `teleport_item`,
+`use_stair_location`, `log_escape`, `count_escape`), `danger_why`/`worst_3turns`/`sim_loss`/`dangers`, `has_ability`,
+the fight rules (`engage_tick`, `group_danger`/`group_tick`, `still_fight_tick`, `status_tick`, `unseen_tick`,
+`choke_tick`, `confusion_lock`/`confusion_window`, `speed_start_tick`, `berserk_tick`, `hard_fight`, `fear_cure`,
+`buff_on`, `our_slowness`), `sidestep`/`retreat_step`/`quiet_spot`, `flee_failed`, the `react` rules (`rules`,
+`rule_tick`) and the watches (`watch_band`, `watch_character`, `watch_drainers`, `watch_thieves`, `watch_traps`,
+`watch_breeders`, `watch_kills`, `watch_perception`, `watch_progress`), with `heal_of`, `HEALS`, `STATUS_CURES`,
+`CURE_POTIONS` and `choke_tier` (`class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin)`: the
+methods and class constants stay on `Pilot`, so the Advisor's mirrored `Pilot.escape`, `group_tick`,
+`speed_start_tick`, `berserk_tick` and `fear_cure` still resolve); `goals.py`: `Goal` and the dungeon goals;
+`town_goals.py`: `Town`,
 `TownFarm`, `Shop`, `StashDeposit`/`StashFetch`, `HouseBank`, `TownKit`, `edge_of`, `town_houses`; `plan.py`:
 `TripPlan`, `split_specs`; `common.py`: `VERSION`, `TV_*`, `DEFAULT_ORDERS` and helpers shared by these (`plural`,
 `one_of`, `kind_key`, `flavour_key`, `bare_name`, `singular`, `recall_level`, `bad_inscription`, ...); pilot.py
-imports every one of these names back, so `pilot.Flee`, `pilot.TripPlan`, `pilot.VERSION`, `pilot.shadow_agree`
-still work) is a Python daemon that plays one MAngband character second to second. It owns a tool-mode C
+imports every one of these names back, so `pilot.Flee`, `pilot.TripPlan`, `pilot.VERSION`, `pilot.shadow_agree`,
+`pilot.heal_of` still work) is a Python daemon that plays one MAngband character second to second. It owns a tool-mode C
 client (`mangclient -mtool`), builds a model of the game from the client's events and queries, and acts on it
 about 20 times a second: reflexes first (survival), then the Navigator's standing reactions, the Pilot's own item
 work, the current goal, and the trip plan. The Navigator (an LLM subagent) and the Architect steer it through a

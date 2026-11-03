@@ -18,7 +18,8 @@ Related docs: [pilot-items.md](pilot-items.md) (upgrade_step's static steps, sel
 `loadout_info`, `gear_review`, `gear_line`, `ac_better`, `consumables_inv`, `shadow_decision`, `shadow_results`,
 `band_shadow`, `hard_fight_shadow`, `fight_rows`/`fight_estimate`/`fight_sim`) and `shadow_agree` live in
 `tools/pilot/gear.py` as `GearMixin`, still `Pilot`'s names; `weapon_table` and `upgrade_step` are in items.py,
-`hard_fight` and the Speed/Berserk ticks still in pilot.py.
+`hard_fight` and the Speed/Berserk ticks (`speed_start_tick`, `berserk_tick`), with `escape`, `group_tick` and
+`fear_cure`, in combat.py (`CombatMixin`, E1 step 5).
 
 ---
 

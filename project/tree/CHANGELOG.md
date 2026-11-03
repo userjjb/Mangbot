@@ -27,6 +27,16 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.44.9 -- 2026-11-02 (session 11)
+No missions yet. No play change (refactor-candidates E1, step 5).
+- The Pilot's combat methods (`combat.py`, CombatMixin: `reflexes`, `escape` and the emergency loop, the danger
+  estimate, the engage/group/still/status/unseen/choke ticks, Speed/Berserk/fear, the escape items and moves, the
+  react rules, the watches; 53 methods, a property, 8 class and 5 module-level names) left pilot.py: 5,060 -> 3,050
+  lines; verbatim (bytecode identical; the Advisor-mirrored names stay `Pilot.<name>`). 139 unit cases; dry start
+  identical; tick() equivalence over 64 states (31 new combat states; reflexes 168/261 lines, escape 136/163 reached)
+  identical; no undefined names. Live: commands, a Shop goal; A6 and B3 PASS; A2K FAIL "no recall" because Khim is
+  no longer dangerous for clvl-29 Dive04 (A25's cause, not the split). The check scripts grew (`harness/refactor/`).
+
 ## 2.44.8 -- 2026-11-02 (session 11)
 No missions yet. No play change (refactor-candidates E1, step 4).
 - The Pilot's town methods (`town.py`, TownMixin: the town kit's tables, the shopping list and gold, selling, making

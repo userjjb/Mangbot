@@ -1,0 +1,48 @@
+{
+ "id": "B3",
+ "tag": "B3-20261102-205408",
+ "depth_ft": 300,
+ "start": "2026-11-02 20:54:08",
+ "checks": {
+  "Brigand slain": {
+   "pass": true,
+   "detail": ""
+  },
+  "nothing stolen": {
+   "pass": true,
+   "detail": "[]"
+  }
+ },
+ "notes": [
+  "messages: ['You hit the Brigand.', 'You hit the Brigand.', 'You have slain the Brigand.']"
+ ],
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   358,
+   358
+  ],
+  "attention": [
+   [
+    5.8,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    5.9,
+    "goal_done",
+    "goto 49,150"
+   ]
+  ],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-11-02 20:56:48",
+ "pass": true
+}

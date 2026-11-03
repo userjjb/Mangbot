@@ -1,6 +1,6 @@
 # Pilot: combat and survival
 
-The Pilot (`github/tools/pilot/pilot.py`, class `Pilot`) keeps the character alive on its own, second to second, without
+The Pilot (`github/tools/pilot/`, class `Pilot`) keeps the character alive on its own, second to second, without
 waiting for the Navigator. Every tick (`Pilot.tick`, see [pilot-core.md](pilot-core.md)) first runs a fixed stack of
 safety checks (the *reflexes*), then the Navigator's standing reactions (`react`), and only then the current goal. The
 reflexes decide when to fight, when to drink or read something, and when to leave (stairs, Phase Door, Teleportation,
@@ -12,6 +12,26 @@ Related: goals and the trip plan in [goals-and-plans.md](goals-and-plans.md); th
 **shadow mode** (`shadow_decision`, `hard_fight_shadow`, `band_shadow`: the Advisor's estimator, consulted in the
 background, never acting) in [gear-and-estimator.md](gear-and-estimator.md); `pilotctl` commands in
 [commands.md](commands.md).
+
+**Where the code is** (E1 step 5): the methods in this file live in `tools/pilot/combat.py` as `CombatMixin`, still
+`Pilot`'s names (`class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin)`; the Advisor's estimator
+mirrors `Pilot.escape`, `group_tick`, `speed_start_tick`, `berserk_tick` and `fear_cure` by name): `reflexes`,
+`escape` (with `emergency_loop`, `phase_futile`, `escaping_to_stairs`, `kill_caster_step`, `count_escape`,
+`log_escape`/`ESCAPE_WHY`), `danger_why`, `worst_3turns`, `sim_loss`, `dangers`, `danger_text`, `has_ability`, the
+§2 rules (`engage_tick`, `group_danger`/`group_tick`, `status_tick`, `confusion_lock`/`confusion_window`,
+`unseen_tick`, `still_fight_tick`/`stairs_beside_still`, `choke_tick` and the module's `choke_tier`,
+`speed_start_tick`, `berserk_tick`, `hard_fight`, `fear_cure`, `buff_on`, `our_slowness`, `hunt_ordered`,
+`walk_away_ok`), `flee_failed`, the §3.3 helpers except `take_stairs` (`retreat_step`, `sidestep`, `quiet_spot`,
+`teleport_item`, `use_stair_location`), the `react` rules (`RULE_KINDS`, `rules`, `save_rules`, `has_rule`,
+`rule_tick`), the §5 watches `watch_band` (`band_cost`, `band_live`), `watch_character`, `watch_drainers`,
+`watch_thieves`, `watch_breeders`, `watch_traps`, `watch_kills`, `watch_perception`, `watch_progress`, and the
+potion tables `heal_of`/`HEALS`, `STATUS_CURES`, `CURE_POTIONS`. Still in `pilot.py`: `tick` and its steps
+(`confusion_tick` calls the confusion pair, `watch_tick` the watches, `act_tick` `reflexes` and `rule_tick`),
+`take_stairs`, `start_resting`/`stop_resting`, `recall_started`, `set_goal`/`step_goal`, `look_tick`/`is_asleep`, and
+the commands (`react` and `monster` in `do_request`, `monster_info`, `drainers_info`, `hunt_refusal`,
+`uniques_killed`). Elsewhere: `phase_item`, `find_item`, `keep_light`/`town_light`, `watch_weapons`/`watch_abilities`
+in `items.py`; `supply_watch` in `town.py`; the shadow decisions and duel estimates in `gear.py`; the escape goals in
+`goals.py`.
 
 ## 1. Where it runs in the tick
 

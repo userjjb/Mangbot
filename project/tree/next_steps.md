@@ -286,3 +286,9 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   The check scripts (split.py with its `MOVE` list, bytecode.py, dry.py, equiv.py, fake.py; run dry/equiv with
   `PYTHONHASHSEED=0`) are in this session's scratchpad `e1s4/scripts/` -- copied to `github/tools/harness/refactor/`
   for the next steps.
+- **2.44.9 -- E1 step 5, `combat.py`** (CombatMixin, 53 methods + `escaping_to_stairs` + 13 names; `tick()` and its
+  steps, shared primitives (take_stairs, resting, set_goal), perception helpers and the command side stay):
+  pilot.py 5,060 -> 3,050 lines. Same checks; equiv.py now has 64 states (31 combat; `EQUIV_COVER` for line coverage);
+  new helpers `bcdiff.py`, `names.py`, `covreport.py`, `summ.py`. Live: commands, A6 PASS, B3 PASS, **A2K FAIL** --
+  Khim no longer dangerous for Dive04 (~173 HP of 358): A25's cause, noted there. Advisor memo'd (options_sim.py's
+  mirror comment should point at combat.py).

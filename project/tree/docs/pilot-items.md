@@ -11,9 +11,9 @@ pack-side policy. Related files: town buying and selling (TownKit, `town_sell_co
 [commands.md](commands.md); the tick loop, report and logs are in [pilot-core.md](pilot-core.md).
 
 **Where the code is** (E1 step 3): the methods below live in `tools/pilot/items.py` as `ItemsMixin` (still `Pilot`'s
-names), with `weapon_blows`/`stat_index` and the blow tables; still in pilot.py: `has_ability`, `watch_character`,
-`teleport_item`, `use_stair_location`, the command side (`item_index`, `pack_now`, `DUNGEON_ITEM_CMDS`),
-`expect_effect`/`verify_effects`, `heal_of`, `STATUS_CURES`. The town side (`identify_candidates`, `town_sell_count`,
+names), with `weapon_blows`/`stat_index` and the blow tables; in combat.py (`CombatMixin`, E1 step 5;
+pilot-combat.md): `has_ability`, `watch_character`, `teleport_item`, `use_stair_location`, `heal_of`, `STATUS_CURES`;
+still in pilot.py: the command side (`item_index`, `pack_now`, `DUNGEON_ITEM_CMDS`), `expect_effect`/`verify_effects`. The town side (`identify_candidates`, `town_sell_count`,
 `kit_count`, `lantern_fuel`, `provisions_spare`, `KIT_ITEMS`, `FLASK_FUEL`, `TURNS_PER_DMIN`, ...) is in `town.py`
 (`TownMixin`, E1 step 4; goals-and-plans.md).
 

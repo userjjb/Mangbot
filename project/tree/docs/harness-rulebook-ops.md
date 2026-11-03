@@ -45,7 +45,8 @@ criteria and result, staging facts and the bugs the harness found; read it befor
 ### `unit.py` -- offline unit cases
 
 **What:** 121 functions decorated `@case`, each building a situation by hand and calling the real Pilot decision code
-on it, returning `(ok, detail)` (one, `emergency_notices_say_if_action`, is a static check of `pilot.py`'s source). No
+on it, returning `(ok, detail)` (one, `emergency_notices_say_if_action`, is a static check of the Pilot's source: `pilot_ast()` parses pilot.py and the modules split out of it, combat.py
+among them). No
 server, no client, no network.
 
 **How it works:** it imports `pilot/pilot.py` (as `P`), `glyphs` and `itemvalue`, loads the monster races merged with

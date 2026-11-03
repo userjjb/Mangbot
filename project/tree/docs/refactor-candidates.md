@@ -94,7 +94,7 @@ none is fixed. **[N]** = Navigator-facing.
   **do** (re-run before the next mission). **Re-run 10-29 on 2.38.0: both FAIL "Word of Recall within 2 s", but the
   Pilot was right:** Ibun and Lugdush are no longer above clvl-29 Dive04, so it drank Speed + Berserk, killed the unique
   and its band (lowest HP 76-80%) and fetched the drop. The scenarios are stale, not the Pilot: to test the recall rule
-  they need a unique above our level (A2's Ulwarth is also below 29 now). **ask** (rescale A2/A2I/A2L). **Waits until we have implemented the test server (the user, 10-29).**
+  they need a unique above our level (A2's Ulwarth is also below 29 now). **ask** (rescale A2/A2I/A2L). **Waits until we have implemented the test server (the user, 10-29).** **A2K too (11-02, 2.44.9 check):** Khim is now ~173 HP on average of 358 (hunt check), no danger rule fires; the Pilot fought (Speed + Berserk), killed him, lowest HP 325 -- the right call, same cause.
 - **Text only (add to B11/B16; done with them in 2.43.1, except the SIGTERM note, which is no text fix):** `loadout_info`'s header tells the Navigator "slays, brands and criticals aren't
   simulated" (they are) **[N]**; geareval's module docstring (optimizer "not built", no resists/criticals);
   `group_danger` docstring (+150 drain weight); world.py's `arrived_by` 'recall'; `compact()` "map: dungeon only";
@@ -259,8 +259,17 @@ none is fixed. **[N]** = Navigator-facing.
   methods and 19 class constants moved verbatim -- the town kit's tables, `town_*`, `price_of`, `note_store`,
   provisioning, Identify/Enchant/Recharging, `supply_gate`, `supply_minutes`/`supply_text`/`supply_watch` with
   `TURNS_PER_DMIN`/`FOOD_MID`, the house/stash state, `note_town_stairs`/`note_edge_cross`; `house_info`,
-  `price_info`, `plan_tick` and the plan requests stay with the commands); pilot.py 5,060 lines. Left: combat.py,
-  commands.py (with E2). See next_steps.md Part B.
+  `price_info`, `plan_tick` and the plan requests stay with the commands); pilot.py 5,060 lines. **Step 5 done
+  (session 11, 2.44.9):** `combat.py` (`CombatMixin`, 2,042 lines: 53 methods, the `escaping_to_stairs` property and 8
+  class constants moved verbatim -- `reflexes`, `escape` and its helpers, `danger_why`/`worst_3turns`/`sim_loss`/
+  `dangers`, `has_ability`, the engage/group/still/status/unseen/choke ticks, `confusion_lock`/`confusion_window`,
+  Speed/Berserk/fear (`speed_start_tick`, `berserk_tick`, `hard_fight`, `fear_cure`, `buff_on`, `our_slowness`),
+  `sidestep`/`retreat_step`/`quiet_spot`, `flee_failed`, `teleport_item`, `use_stair_location`, the `react` rules and
+  the watches (band, character, drainers, thieves, traps, breeders, kills, perception, progress); and 5 module-level
+  names, `heal_of`/`HEALS`, `STATUS_CURES`, `CURE_POTIONS`, `choke_tier`, imported back); `tick()` and its 12 steps,
+  `take_stairs`, resting, `recall_started`, `look_tick` and the command side (`monster_info`, `drainers_info`,
+  `hunt_refusal`) stay; `reflexes`/`escape` not split (E3). pilot.py 3,050 lines. Bytecode identical; tick()
+  equivalence over 64 states (31 new combat states) identical. Left: commands.py (with E2). See next_steps.md Part B.
 - **E2** `do_request` (626 lines of `if c == ...`) -> command table `{name: (method, roles, where, positional)}`; role
   checks now spread over `do_request`, `request_goal`, `house_info`, `answer_navigator`, `Shop.tick`, `wear`; extract
   the ~150-line item-action branch (`parse_item_args`, `action_refusal`, `action_reply`); pilotctl help from the table. --

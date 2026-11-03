@@ -117,7 +117,7 @@ def pilot_ast():
     import ast
     body = []
     for f in ("pilot.py", "goals.py", "town_goals.py", "plan.py", "report.py", "daemon.py", "common.py", "gear.py",
-              "items.py", "town.py"):
+              "items.py", "town.py", "combat.py"):
         body += ast.parse(open(os.path.join(HERE, "..", "pilot", f)).read()).body
     return ast.Module(body=body, type_ignores=[])
 

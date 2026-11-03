@@ -1,0 +1,56 @@
+{
+ "id": "A6",
+ "tag": "A6-20261102-204703",
+ "depth_ft": 600,
+ "start": "2026-11-02 20:47:03",
+ "checks": {
+  "at most 3 Phase Door": {
+   "pass": true,
+   "detail": "0 reads"
+  },
+  "Phase Door never runs out": {
+   "pass": true,
+   "detail": "15 -> 15"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [339, 358]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   339,
+   358
+  ],
+  "attention": [
+   [
+    13.9,
+    "unseen_attacker",
+    "'It gestures in shadow.': something unseen is casting at you; carrying on at HP 99% (it leaves below"
+   ],
+   [
+    33.9,
+    "unseen_attacker",
+    "'It gestures in shadow.': something unseen is casting at you; carrying on at HP 100% (it leaves belo"
+   ]
+  ],
+  "acts": [
+   [
+    41.7,
+    "engage",
+    "engage Gnome mage (L15, 2 away) on the way"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-11-02 20:50:24",
+ "pass": true
+}

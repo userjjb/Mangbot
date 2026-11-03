@@ -1,0 +1,92 @@
+{
+ "id": "A2K",
+ "tag": "A2K-20261102-205044",
+ "depth_ft": 650,
+ "start": "2026-11-02 20:50:44",
+ "checks": {
+  "Word of Recall within 2 s of first sight": {
+   "pass": false,
+   "detail": "seen at 3.627023696899414, recall read at None"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [325, 388]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   325,
+   388
+  ],
+  "attention": [
+   [
+    3.7,
+    "tactic",
+    "a hard fight with Khim, Son of Mim: quaffed a Potion of Speed at the start"
+   ],
+   [
+    4.3,
+    "tactic",
+    "a hard fight with Khim, Son of Mim: quaffed a Potion of Berserk Strength (+to-hit, +30 HP, no fear)"
+   ],
+   [
+    11.7,
+    "unique_slain",
+    "Khim, Son of Mim slain at 20,87: uniques drop good items (look at 'Item squares' around there)"
+   ],
+   [
+    15.4,
+    "unseen_attacker",
+    "'losing HP (6/s) with nothing in view': something unseen is casting at you; carrying on at HP 97% (i"
+   ],
+   [
+    18.8,
+    "tactic",
+    "fetching the unique's drop at 19,87"
+   ],
+   [
+    19.6,
+    "found",
+    "picked up a Pair of Metal Shod Boots [6] {Khim, Son of Mim}: identify it before selling (`sell !NAME"
+   ],
+   [
+    21.3,
+    "goal_done",
+    "goto 19,87"
+   ]
+  ],
+  "acts": [
+   [
+    3.7,
+    "custom q item=1",
+    "a hard fight (Khim, Son of Mim): quaff 2 Potions of Speed at the start"
+   ],
+   [
+    4.3,
+    "custom q item=3",
+    "a hard fight (Khim, Son of Mim): quaff 2 Potions of Berserk Strength"
+   ],
+   [
+    11.9,
+    "rest",
+    "rest"
+   ],
+   [
+    18.9,
+    "custom ,",
+    "pick up: a Pair of Metal Shod Boots [6] {Khim, Son of Mim}."
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-11-02 20:53:48",
+ "pass": false
+}

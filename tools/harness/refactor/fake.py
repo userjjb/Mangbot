@@ -2,6 +2,11 @@
 sleep, localtime, strftime...), a fake MangClient serving status/inven/map/flags/floor, and helpers to build maps.
 
 import fake (before pilot!), then fake.load(PILOT_DIR) -> the pilot module.
+
+Run the scripts from a scratch copy, SCRATCH/scripts/*.py: S is SCRATCH, the runs go to SCRATCH/eqrun and
+SCRATCH/dryrun, and SCRATCH/rundir_template/ must hold dive04/ (a copy of Dive04's state files: damage_mix, deepest,
+house, keep, navigator_debt, orders, rates, review, rules, standing, stores, uniques_killed .json), town.json and
+flavours.json (steps 4 and 5 used the same template).
 """
 import copy
 import os

@@ -178,3 +178,6 @@
 - 2026-11-02 18:32:44 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261102-183244.json`
 - 2026-11-02 20:17:53 **M2** FAIL (a site FAIL) `M2-20261102-201753.json`
 - 2026-11-02 20:20:30 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261102-202030.json`
+- 2026-11-02 20:47:03 **A6** PASS (at most 3 Phase Door, Phase Door never runs out, lowest HP >= 40%) `A6-20261102-204703.json`
+- 2026-11-02 20:50:44 **A2K** FAIL (Word of Recall within 2 s of first sight FAIL, lowest HP >= 40%) `A2K-20261102-205044.json`
+- 2026-11-02 20:54:08 **B3** PASS (Brigand slain, nothing stolen) `B3-20261102-205408.json`
