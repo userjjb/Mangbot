@@ -211,3 +211,32 @@ def disenchant_cost_in_the_hunt_check():
     return ok, (f"Khim: {dc.get('hits')} hits, {dc.get('n')} disenchants, {dc.get('gold')} gold ({dc.get('per_hit')} a "
                 f"hit, p_hit {dc.get('p_hit')}); hunt record {rec}; resisted {rdc.get('resisted')} gold "
                 f"{rdc.get('gold')}; item losses {loss}; artifact {art}")
+
+
+@case
+def disenchant_refused_when_more_than_the_kill():
+    """2.45.1 (the user): the hunt check refuses a disenchanter whose expected enchantment loss is more than a kill
+    brings (the drop's expected value + its XP, exp * level / clvl, at the recent XP per gold); Khim at Dive04's gear
+    is allowed (~300 gold against a ~2,555 drop); with no drop and XP valued low, refused; with resist
+    disenchantment, never."""
+    worn = [("a Battle Axe of Westernesse (2d8) (+10,+9) (+1)", 22, 170),
+            ("Hard Studded Leather of Resistance (-1) [7,+8]", 36, 110), ("a Shadow Cloak [6,+8]", 35, 5),
+            ("an Orcish Shield [5,+8] (+1)", 34, 100), ("a Metal Cap [3,+8]", 32, 20),
+            ("a Set of Gauntlets [2,+8]", 31, 25), ("a Pair of Hard Leather Boots of Stability [3,+8]", 30, 40)]
+
+    def make(res_disen=False, poor=False):
+        random.seed(1)
+        p = pilot(hp=358, worn=worn, pack=[PHASE])
+        p.orders = dict(P.DEFAULT_ORDERS, max_depth=750)
+        p.w.hp, p.w.clvl = [358, 358], 29
+        p.w.ind.update({"armor": [104], "stat0": [88], "stat3": [38]})
+        p.w.flags.update(free_act=1, res_disen=int(res_disen))
+        if poor:
+            p.drop_row = lambda race: {"e_gold": "0", "e_item_value_cap": "0"}
+            p.xp_per_gold = lambda: 10.0
+        return p
+    rich = make().hunt_refusal("Khim, Son of Mim")[0]
+    poor = make(poor=True).hunt_refusal("Khim, Son of Mim")[0]
+    resist = make(True, poor=True).hunt_refusal("Khim, Son of Mim")[0]
+    ok = rich is None and bool(poor) and "more than a kill brings" in poor and resist is None
+    return ok, f"rich: {rich}; poor: {(poor or '')[:110]}; resisted: {resist}"

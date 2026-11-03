@@ -1,0 +1,101 @@
+{
+ "id": "A8w",
+ "tag": "A8w-20261103-081546",
+ "depth_ft": 600,
+ "start": "2026-11-03 08:15:46",
+ "checks": {
+  "walked away": {
+   "pass": false,
+   "detail": "goals ['flee (Ogre shaman)']"
+  },
+  "no Word of Recall read": {
+   "pass": false,
+   "detail": "1 reads"
+  },
+  "HP >= 80%": {
+   "pass": true,
+   "detail": "lowest [342, 358]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   342,
+   358
+  ],
+  "attention": [
+   [
+    4.7,
+    "danger_seen",
+    "Ogre shaman (summons) in view: heading for the stairs"
+   ],
+   [
+    4.7,
+    "goal_failed",
+    "flee (Ogre shaman): no stairs known"
+   ],
+   [
+    4.8,
+    "emergency",
+    "couldn't reach the stairs with 1 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    5.3,
+    "tactic",
+    "a hard fight with Ogre shaman: quaffed a Potion of Speed at the start"
+   ],
+   [
+    5.9,
+    "tactic",
+    "a hard fight with Ogre shaman: quaffed a Potion of Berserk Strength (+to-hit, +30 HP, no fear)"
+   ],
+   [
+    6.5,
+    "fearer",
+    "Ogre shaman (lvl 27) keeps frightening: moving away from it; consider leaving the level"
+   ]
+  ],
+  "acts": [
+   [
+    4.7,
+    "custom r item=10",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    5.3,
+    "custom q item=2",
+    "a hard fight (Ogre shaman): quaff 2 Potions of Speed at the start"
+   ],
+   [
+    5.9,
+    "custom q item=4",
+    "a hard fight (Ogre shaman): quaff 2 Potions of Berserk Strength"
+   ],
+   [
+    6.5,
+    "custom r item=8",
+    "phase away from Ogre shaman"
+   ],
+   [
+    12.5,
+    "custom r item=8",
+    "phase away from Ogre shaman"
+   ],
+   [
+    22.3,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 1,
+  "phase_reads": 2,
+  "wor_reads": 1,
+  "cures": 0
+ },
+ "end": "2026-11-03 08:18:44",
+ "pass": false
+}

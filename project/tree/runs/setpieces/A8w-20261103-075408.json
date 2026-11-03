@@ -1,0 +1,45 @@
+{
+ "id": "A8w",
+ "tag": "A8w-20261103-075408",
+ "depth_ft": 350,
+ "start": "2026-11-03 07:54:08",
+ "checks": {
+  "walked away": {
+   "pass": false,
+   "detail": "goals []"
+  },
+  "no Word of Recall read": {
+   "pass": true,
+   "detail": "0 reads"
+  },
+  "HP >= 80%": {
+   "pass": true,
+   "detail": "lowest [343, 358]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   343,
+   358
+  ],
+  "attention": [],
+  "acts": [
+   [
+    5.3,
+    "engage",
+    "engage Ranger (L20, 2 away) on the way"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-11-03 07:56:50",
+ "pass": false
+}

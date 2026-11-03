@@ -1,0 +1,91 @@
+{
+ "id": "A8w",
+ "tag": "A8w-20261103-082548",
+ "depth_ft": 300,
+ "start": "2026-11-03 08:25:48",
+ "checks": {
+  "walked away": {
+   "pass": true,
+   "detail": "goals ['walk away from Ogre shaman']"
+  },
+  "no Word of Recall read": {
+   "pass": true,
+   "detail": "0 reads"
+  },
+  "HP >= 80%": {
+   "pass": true,
+   "detail": "lowest [358, 358]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   358,
+   358
+  ],
+  "attention": [
+   [
+    4.1,
+    "tactic",
+    "Ogre shaman (summons) in view, not adjacent: walking away out of its sight instead of fleeing the le"
+   ],
+   [
+    4.2,
+    "fearer",
+    "Ogre shaman (lvl 27) keeps frightening: moving away from it; consider leaving the level"
+   ],
+   [
+    6.0,
+    "tactic",
+    "afraid and in danger: quaffed a Potion of Heroism"
+   ],
+   [
+    6.7,
+    "tactic",
+    "a hard fight with Ogre shaman: quaffed a Potion of Speed at the start"
+   ],
+   [
+    7.4,
+    "tactic",
+    "a hard fight with Ogre shaman: quaffed a Potion of Berserk Strength (+to-hit, +30 HP, no fear)"
+   ],
+   [
+    8.6,
+    "goal_done",
+    "walk away from Ogre shaman: out of its sight; avoid zone set where it was"
+   ]
+  ],
+  "acts": [
+   [
+    6.0,
+    "custom q item=3",
+    "afraid and in danger: quaff 3 Potions of Heroism"
+   ],
+   [
+    6.7,
+    "custom q item=2",
+    "a hard fight (Ogre shaman): quaff 2 Potions of Speed at the start"
+   ],
+   [
+    7.4,
+    "custom q item=4",
+    "a hard fight (Ogre shaman): quaff 2 Potions of Berserk Strength"
+   ],
+   [
+    8.0,
+    "custom r item=8",
+    "phase away from Ogre shaman"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 1,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-11-03 08:28:40",
+ "pass": true
+}

@@ -1129,7 +1129,8 @@ class CommandsMixin:
             # the HP lost, at our live profile, replaces "twice the turns"
             turns, taken, worst = sim["turns_mean"], sim["loss_mean"], sim["loss_p90"]
         # the enchantment its UN_BONUS blows (or disenchantment breath) take on average (2.45.0, the Advisor's Khim
-        # memo): shown and logged, never a refusal on its own -- the checks below are by HP
+        # memo): shown and logged; a refusal (2.45.1, the user) only when it is more than the kill brings -- the
+        # last check, below the HP ones
         try:
             dc = self.disenchant_cost(race, turns)
         except Exception as e:             # (the valuation must not break the check)
@@ -1168,6 +1169,19 @@ class CommandsMixin:
         if band_lt == w.level_t and gnow() - self.band_warned_t < 120 and \
                 sum(1 for *_, r in w.monsters if "NEVER_MOVE" not in r.flags) >= 5:
             return (f"a band is about (flagged {gnow() - self.band_warned_t:.0f} s ago): leave first", info)
+        if dc and dc.get("gold", 0) > 0 and not dc.get("resisted"):
+            # (2.45.1, the user: the enchantment lost against what a kill brings -- the drop's expected value and
+            # its XP at our recent XP per gold; the server gives exp * level / clvl)
+            d = self.drop_row(race)
+            drop = float(d["e_gold"]) + float(d["e_item_value_cap"]) if d else 0.0
+            xpg = self.xp_per_gold()
+            xp = getattr(race, "exp", 0) * race.level / max(1, w.clvl or 1)
+            worth = drop + (xp / xpg if xpg > 0 else 0.0)
+            self.last_hunt.update(kill_worth=round(worth), kill_xp=round(xp))
+            if dc["gold"] > worth:
+                return (f"{race.name}'s disenchanting attacks would cost ~{dc['gold']:.0f} gold of enchantment on "
+                        f"average, more than a kill brings (~{drop:.0f} in drops + {xp:.0f} XP ~ {worth:.0f} gold at "
+                        f"{xpg} XP per gold): fight it with resist disenchantment, or leave it ({info})", info)
         return None, info
 
     def hunt_fields(self, disen_only=False):

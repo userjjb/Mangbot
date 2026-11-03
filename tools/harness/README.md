@@ -70,7 +70,7 @@ findings log (the date in brackets).
 | A7f | (the memo's first A7) a Novice paladin group (SCARE, CAUSE_1) 6 off with a clear line | once afraid, Boldness/Heroism (or an escape) within 5 s; HP ≥ 50% | PASS 10-23: afraid at 12 s, Boldness at once, lowest 94%; at 3 off they died before casting |
 | A8 | Skeleton human at 2, Ranger at 3, `goal hunt Ranger` | refused (a summoner, not alone); lowest HP ≥ 40% | PASS 10-23 |
 | A8o | the same, `goal hunt !Ranger` | the override is accepted; lowest HP ≥ 40% | PASS 10-23 [10-23: walk away] |
-| A8w | a Ranger 3 squares off, no orders | the Pilot walks away (no Word of Recall), HP ≥ 80% | PASS 10-23 [10-23: walk away] |
+| A8w | a Ranger 3 squares off, no orders | the Pilot walks away (no Word of Recall), HP ≥ 80% | PASS 10-23 [10-23: walk away] | (11-03, 2.45.1: an Ogre shaman 4 off -- the Ranger, lvl 20, no longer fires "summons" for clvl-29 Dive04, which engaged it; PASS)
 | A9 | `plan trip 300-300 via=recall` from town, then Snaga and Black orcs summoned 8-9 squares off | Door/Stair Location within 5 s of arriving; no second Word of Recall while one is pending | PASS 10-24 (6 of 8) |
 
 ### B: hazards; C: items and uniques; D: movement (`setpiece_bcd.py`)

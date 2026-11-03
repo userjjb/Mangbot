@@ -1,0 +1,50 @@
+{
+ "id": "A8w",
+ "tag": "A8w-20261103-080542",
+ "depth_ft": 450,
+ "start": "2026-11-03 08:05:42",
+ "checks": {
+  "walked away": {
+   "pass": false,
+   "detail": "goals ['goto 16,111']"
+  },
+  "no Word of Recall read": {
+   "pass": true,
+   "detail": "0 reads"
+  },
+  "HP >= 80%": {
+   "pass": true,
+   "detail": "lowest [358, 358]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   358,
+   358
+  ],
+  "attention": [
+   [
+    5.5,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    5.6,
+    "goal_done",
+    "goto 16,111"
+   ]
+  ],
+  "acts": [],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-11-03 08:08:30",
+ "pass": false
+}

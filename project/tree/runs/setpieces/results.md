@@ -197,3 +197,11 @@
 - 2026-11-03 07:08:42 **A2L** PASS (no danger rule: a hard fight with Speed + Berserk, lowest HP >= 60%) `A2L-20261103-070842.json`
 - 2026-11-03 07:12:03 **A6** PASS (at most 3 Phase Door, Phase Door never runs out, lowest HP >= 40%) `A6-20261103-071203.json`
 - 2026-11-03 07:17:17 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261103-071717.json`
+- 2026-11-03 07:54:08 **A8w** FAIL (walked away FAIL, no Word of Recall read, HP >= 80%) `A8w-20261103-075408.json`
+- 2026-11-03 07:57:05 **A6** PASS (at most 3 Phase Door, Phase Door never runs out, lowest HP >= 40%) `A6-20261103-075705.json`
+- 2026-11-03 08:05:42 **A8w** FAIL (walked away FAIL, no Word of Recall read, HP >= 80%) `A8w-20261103-080542.json`
+- 2026-11-03 08:08:45 **A8w** FAIL (walked away FAIL, no Word of Recall read, HP >= 80%) `A8w-20261103-080845.json`
+- 2026-11-03 08:12:37 **A8w** FAIL (walked away FAIL, no Word of Recall read FAIL, HP >= 80%) `A8w-20261103-081237.json`
+- 2026-11-03 08:15:46 **A8w** FAIL (walked away FAIL, no Word of Recall read FAIL, HP >= 80%) `A8w-20261103-081546.json`
+- 2026-11-03 08:19:39 **A8w** FAIL () `A8w-20261103-081939.json`
+- 2026-11-03 08:25:48 **A8w** PASS (walked away, no Word of Recall read, HP >= 80%) `A8w-20261103-082548.json`

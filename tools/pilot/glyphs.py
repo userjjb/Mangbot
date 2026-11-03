@@ -31,12 +31,13 @@ ATTR_MAX = 63
 
 
 class Race:
-    __slots__ = ("idx", "name", "char", "color", "level", "flags", "spells", "blows", "speed", "hp",
+    __slots__ = ("idx", "name", "char", "color", "level", "exp", "flags", "spells", "blows", "speed", "hp",
                  "spell_freq", "danger", "speed_x", "melee_avg", "melee_max", "drain_blows", "veto_reason")
 
     def __init__(self, idx, name):
         self.idx, self.name = idx, name
         self.char, self.color, self.level = "?", "w", 0
+        self.exp = 0            # experience for a kill at clvl 1 (W:'s 4th field; the server gives exp * level / clvl)
         self.flags, self.spells, self.blows = set(), set(), []
         self.speed, self.hp = 110, "1d1"
         self.spell_freq = 0     # casts 1 time in N (0 = no spells)
@@ -187,7 +188,9 @@ def load_races(path=None):
             parts = line.split(":")
             cur.speed, cur.hp = int(parts[1]), parts[2]
         elif line.startswith("W:"):
-            cur.level = int(line.split(":")[1])
+            parts = line.split(":")
+            cur.level = int(parts[1])
+            cur.exp = int(parts[4]) if len(parts) > 4 and parts[4].strip().isdigit() else 0
         elif line.startswith("F:"):
             cur.flags.update(f.strip() for f in line[2:].split("|") if f.strip())
         elif line.startswith("S:"):

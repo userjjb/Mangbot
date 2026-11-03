@@ -282,8 +282,11 @@ neither the hunt check nor geareval counted what it takes. The server's rules:
 
 **Where it is used.** Shown in `monster NAME` after the drop value, and in the `goal hunt` reply's note. Logged in the
 `hunt` record (`disen_hits`, `disen_n`, `disen_gold`, `disen_resisted`). For a disenchanter the same fields go on a
-hunt's `order_refused` and `hunt_override` records and on the engage `act` record. **No decision changes:** the hunt
-check stays HP-based, and no Pilot rule weighs a kill's worth against a cost. geareval doesn't count it either:
+hunt's `order_refused` and `hunt_override` records and on the engage `act` record. **Since 2.45.1 (the user) it is the hunt
+check's last refusal:** when the expected enchantment gold is more than a kill brings -- the drop's expected value
+(drops.csv `e_gold` + `e_item_value_cap`) plus the kill's XP (`exp * level / clvl`, `Race.exp` from monster.txt W:)
+at the recent XP per gold -- "...would cost ~N gold of enchantment on average, more than a kill brings"; never with
+resist disenchantment (`kill_worth`/`kill_xp` go in `last_hunt`). It rarely fires: Khim is ~300 against ~3,160. geareval doesn't count it either:
 options_sim reports no per-monster melee rounds, and it is the Advisor's file.
 
 ---

@@ -27,6 +27,17 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.45.1 -- 2026-11-03 (session 11, the user's decisions on the open items)
+No missions yet. **Play changes:**
+- The summoner hold (a summoner the server names before the map places it: up to 1.5 s for its position) no longer
+  pauses the whole reflex pass: the later reflexes run, except engage (A8w's first run engaged the summoner in the
+  wait).
+- The hunt check refuses a disenchanter when the expected enchantment loss is more than a kill brings (the drop's
+  expected value + its XP at the recent XP per gold; `Race.exp` from monster.txt); never with resist
+  disenchantment. Rare for Dive04 (Khim ~300 gold against ~3,160).
+- Harness: A8w stages an Ogre shaman 4 off (the Ranger no longer counts as a summoner danger for clvl-29 Dive04).
+- 152 unit cases. Live: A8w PASS, A6 PASS, `monster khim`/`disenchanter eye` allowed.
+
 ## 2.45.0 -- 2026-11-03 (session 11, the user: "fix these issues now")
 No missions yet. **Play changes** (the decisions session 11's refactor left for the user):
 - Commands: `park`, `quit`, `option`, `dump` are the Architect's (the Navigator could quit or park the Pilot);

@@ -107,11 +107,13 @@ def a9(run):
 
 
 def a8w(run):
-    """A8w: a Ranger (a summoner) comes into view 3 squares off, no orders: the Pilot walks away out of
-    its sight instead of fleeing the level (the user, 2026-10-23); no Word of Recall; HP stays >= 80%."""
+    """A8w: a summoner comes into view 3 squares off, no orders: the Pilot walks away out of its sight instead
+    of fleeing the level (the user, 2026-10-23); no Word of Recall; HP stays >= 80%. (11-03: an Ogre shaman, lvl 27,
+    speed +0 -- the Ranger, lvl 20, no longer fires the "summons" rule (level >= clvl - 5) for clvl-29 Dive04, which
+    engaged it, rightly.)"""
     run.bring_dive04()
     run.t_act = time.time()
-    run.place("Ranger", 3)
+    run.place("Ogre shaman", 4)          # (asked at 3 it landed 2 off twice: walk-away needs 3+)
     run.watch(40)
     st = run.stats(log_since(run.t_act))
     run.res["stats"] = st

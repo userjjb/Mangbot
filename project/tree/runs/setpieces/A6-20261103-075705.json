@@ -1,0 +1,56 @@
+{
+ "id": "A6",
+ "tag": "A6-20261103-075705",
+ "depth_ft": 400,
+ "start": "2026-11-03 07:57:05",
+ "checks": {
+  "at most 3 Phase Door": {
+   "pass": true,
+   "detail": "0 reads"
+  },
+  "Phase Door never runs out": {
+   "pass": true,
+   "detail": "15 -> 15"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [347, 358]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   358,
+   358
+  ],
+  "hp_min": [
+   347,
+   358
+  ],
+  "attention": [
+   [
+    3.6,
+    "lost",
+    "One of your Potions of Cure Critical Wounds {for sale 200} (g) was destroyed!"
+   ],
+   [
+    13.5,
+    "interesting_item",
+    "Ring of Slow Digestion seen on this level at 15,110 (2 away): fetching it once the area is clear"
+   ]
+  ],
+  "acts": [
+   [
+    4.6,
+    "walk 7",
+    "step away from Hairy mold"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-11-03 08:05:18",
+ "pass": true
+}

@@ -440,7 +440,10 @@ class CombatMixin:
             self.summoner_hold_t = self.summoner_hold_t if now - self.summoner_hold_t < 5 \
                 else now
             if now - self.summoner_hold_t < 1.5:
-                return False
+                # (the decision waits, the later reflexes run -- the user, 2.45.1 -- but not engage: A8w's first
+                # 2.45.1 run engaged the Ranger in the wait and never walked away)
+                ctx.summoner_hold = True
+                return NEXT
         if near_danger and not isinstance(self.goal, (Flee, Recover, Recall, WalkAway)) and now - self.flee_t > 10 \
                 and "danger" in o["stop_on"] and not self.hunt_ordered(now, near_danger[0].name) \
                 and self.walk_away_ok(near_danger):
@@ -740,6 +743,8 @@ class CombatMixin:
     def _reflex_engage(self, ctx):
         """5b. A monster worth killing a few steps off: go and fight it, then carry on (the user, m43)"""
         now = ctx.now
+        if getattr(ctx, "summoner_hold", False):     # (a summoner's walk-away decision is pending: 2.45.1)
+            return NEXT
         if self.engage_tick(now):
             return True
         return NEXT

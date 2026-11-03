@@ -89,9 +89,10 @@ stop, the escape walk taking its stairs (and finishing after its emergency), the
 (shown and logged, no decision yet), the house record strike, M2's staging (see CHANGELOG 2.45.0). **Still open:**
 - Not done on purpose: the moves out of `reflexes` (light/hunger/pickup -> policy_tick, food_watch -> tick): an order
   change with no bug behind it (refactor-candidates E3).
-- Questions found while fixing: the 1.5 s summoner hold in `_reflex_danger_in_view` returns False and skips every
-  later reflex for up to 1.5 s (intended?); should the disenchant gold feed a decision (geareval: res_disen gear's
-  worth; the hunt check)? (The fight_sim to-hit/to-dam mismatch was fixed in 2.45.0, the Advisor's 11-03 reply.)
+- Decided 11-03 (2.45.1): the summoner hold lets the later reflexes run (not engage); the hunt check refuses a
+  disenchanter whose expected loss exceeds the kill's worth. Open: a plus is valued at its shop price (100 gold, flat,
+  as the server's object_value), not its combat worth (geareval) -- the user asked (11-03); the reflex moves: being
+  discussed with the user.
 - **Watch in session 12:** the hunt check is more permissive since 2.45.0 (fight_sim gets the derived totals): it
   now ALLOWS Khim for Dive04 (~28 turns, ~138 HP of 358) and a Hill giant at 80% HP.
 
@@ -346,3 +347,9 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   (scc-va4) ends 08:47: the test server, Dive04's Pilot (2.45.0), the viewer. Dive04 idle in town, 358/358, 300 gold
   + 19,322 banked (5 gold went on a Flask of oil in E5's live Shop check). Open after session 11: the user's TODOs at
   the top; "FOR THE USER (from session 11)" in HANDOFF 12; C14 A/B; A25 (a unique above clvl 29).
+- **11-03 ~07:35:** the user will /resume this chat (session 11) in a new SGE job. Then, first: start the inbox
+  watcher; restart the test server (with `MANGBAND_FREEZE_FILE`), Dive04's Pilot (`tools/pilot/restart.sh Dive04`)
+  and the viewer per operations.md; check `status full` says Pilot v2.45.0 and `house` shows 19,322 banked.
+- **11-03 07:34, resumed in SGE job 8406367 (scc-va3, ends Sat 11-07 19:55):** the old job ended 07:32 (savefile
+  from 07:25, Dive04 idle in town); restarted the test server (gdb, freeze-enabled), Dive04's Pilot (v2.45.0) and
+  the viewer (`tmux -L mang attach -t watch`). Dive04 358/358, 300 gold + 19,322 banked.

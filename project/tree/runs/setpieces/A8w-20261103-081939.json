@@ -1,0 +1,12 @@
+{
+ "id": "A8w",
+ "tag": "A8w-20261103-081939",
+ "depth_ft": 650,
+ "start": "2026-11-03 08:19:39",
+ "checks": {},
+ "notes": [],
+ "error": "RuntimeError('no floor square 4 from Dive04 at (29, 118)')",
+ "traceback": "Traceback (most recent call last):\n  File \"/projectnb/jbrcs/mangband/github/tools/harness/setpiece.py\", line 53, in main\n    SETPIECES[a.sid](run)\n  File \"/projectnb/jbrcs/mangband/github/tools/harness/setpiece_a.py\", line 116, in a8w\n    run.place(\"Ogre shaman\", 4)          # (asked at 3 it landed 2 off twice: walk-away needs 3+)\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/projectnb/jbrcs/mangband/github/tools/harness/setpiece_run.py\", line 204, in place\n    raise RuntimeError(f\"no floor square {dist} from Dive04 at {me}\")\nRuntimeError: no floor square 4 from Dive04 at (29, 118)\n",
+ "end": "2026-11-03 08:25:33",
+ "pass": false
+}
