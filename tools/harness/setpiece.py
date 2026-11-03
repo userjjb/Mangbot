@@ -502,7 +502,9 @@ def a6(run):
 
 def a2(run, who="Ulwarth, Son of Ulfang"):
     """A2: a unique too strong for us appears adjacent, no stairs known (Ulwarth: the danger rule's 'unique
-    above your level'): Word of Recall read within 2 s of first sight; lowest HP >= 40%."""
+    above your level'): if a danger rule fires for it, Word of Recall read within 2 s of first sight and lowest HP
+    >= 40%; if none fires (the unique is no longer above us: 11-02), a hard fight with Speed + Berserk and lowest
+    HP >= 60%."""
     run.bring_dive04()
     run.t_act = time.time()
     run.place(who, 1)
@@ -512,10 +514,20 @@ def a2(run, who="Ulwarth, Son of Ulfang"):
     run.res["stats"] = st
     seen = first_seen(recs, who, run.t_act)
     wor = next((a[0] for a in st["acts"] if "word of recall" in str(a[2]).lower()), None)
-    run.check("Word of Recall within 2 s of first sight", seen is not None and wor is not None and wor - seen <= 2,
-              f"seen at {seen}, recall read at {wor}")
-    if st["hp_min"]:
-        run.check("lowest HP >= 40%", st["hp_min"][0] >= 0.4 * st["hp_min"][1], f"lowest {st['hp_min']}")
+    # The criterion follows the Pilot's own danger call (the Advisor, memos/to_architect/2026-11-02-khim.md): the
+    # A2 uniques were above clvl-22 Dive04, but at clvl 29 / AC 104 with Speed + Berserk the estimator says fight.
+    danger = next((a[0] for a in st["attention"] if a[1] == "danger_seen" and who.split(",")[0] in str(a[2])), None)
+    if danger is not None or not seen:
+        run.check("Word of Recall within 2 s of first sight", seen is not None and wor is not None and wor - seen <= 2,
+                  f"seen at {seen}, danger rule at {danger}, recall read at {wor}")
+        if st["hp_min"]:
+            run.check("lowest HP >= 40%", st["hp_min"][0] >= 0.4 * st["hp_min"][1], f"lowest {st['hp_min']}")
+    else:
+        kit = [a[2] for a in st["attention"] if a[1] == "tactic" and "hard fight" in str(a[2])]
+        run.check("no danger rule: a hard fight with Speed + Berserk",
+                  any("Speed" in k for k in kit) and any("Berserk" in k for k in kit), f"tactics {kit}")
+        if st["hp_min"]:
+            run.check("lowest HP >= 60%", st["hp_min"][0] >= 0.6 * st["hp_min"][1], f"lowest {st['hp_min']}")
 
 
 def a2i(run):

@@ -32,7 +32,7 @@ Each run:
 | A8o | the same, `goal hunt !Ranger` | the override is accepted; lowest HP ≥ 40% |
 | A8w | a Ranger 3 squares off, no orders | the Pilot walks away (no Word of Recall), HP ≥ 80% |
 | A1 | a trip plan working the level; Black orcs and a Hill orc group 6-7 off | lowest HP ≥ 40%; ≤ 3 Phase Door |
-| A2 | Ulwarth (a unique above our level) adjacent, no stairs known | Word of Recall within 2 s of first sight; lowest HP ≥ 40% |
+| A2 | Ulwarth (a unique above our level) adjacent, no stairs known | if a danger rule fires for it: Word of Recall within 2 s of first sight, lowest HP ≥ 40%; if none fires (11-02: the A2 uniques are no longer above clvl-29 Dive04; the Advisor's `to_architect/2026-11-02-khim.md`): a hard fight with Speed + Berserk, lowest HP ≥ 60% (A2K PASS 11-02) |
 | A2I | the same with Ibun, Son of Mim (a unique exists once: a second Ulwarth summon fails while the first lives on an old level) | the same |
 | A2K | the same with Khim, Son of Mim | the same |
 | A2L | the same with Lugdush (no rule fired before the simulator danger rule) | the same |

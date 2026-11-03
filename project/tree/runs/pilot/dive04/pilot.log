@@ -2014,3 +2014,12 @@ BrokenPipeError: [Errno 32] Broken pipe
 20:56:17 pilot stopping
 20:56:41 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
 20:56:41 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+20:58:07 pilot stopping
+20:58:10 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+20:58:10 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+21:01:35 pilot stopping
+21:01:59 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+21:01:59 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+21:03:49 pilot stopping
+21:04:13 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+21:04:13 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock

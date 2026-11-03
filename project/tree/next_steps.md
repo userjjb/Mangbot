@@ -292,3 +292,8 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   new helpers `bcdiff.py`, `names.py`, `covreport.py`, `summ.py`. Live: commands, A6 PASS, B3 PASS, **A2K FAIL** --
   Khim no longer dangerous for Dive04 (~173 HP of 358): A25's cause, noted there. Advisor memo'd (options_sim.py's
   mirror comment should point at combat.py).
+- **2.44.10 -- A2 set-pieces' criterion** (harness only): recall only when a danger rule fires, else Speed + Berserk
+  and lowest HP >= 60% (the Advisor's `to_architect/2026-11-02-khim.md`: its estimator agrees with fighting Khim).
+  A2K PASS. **For the user (a play change, not done):** Khim's/Ibun's UN_BONUS blow disenchants ~1-2.5 times a fight
+  (~100 gold a plus); neither the hunt check nor geareval counts it. **Lesson:** a set-piece restarts the Pilot from
+  the working tree -- never run one while an agent may be editing `tools/pilot/`.

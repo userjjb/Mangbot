@@ -72,6 +72,7 @@ Architect builds everything else.
 5e. 10-31: rulebook README (build_all path, depth_value row) + fight_sim MON prefers monsters_raw.csv beside it (B18); Architect to re-sync.
 5f. 11-01: replied D8/D9/D14 (to_architect/2026-11-01-d-merges.md): damage attribution = damage_mix timing + names; card values = itemvalue + pay_cut as of then; supplies kind with what/level fields. D14 done 11-01 (field is `supply`, not `what`); response.py updated. state.jsonl status now carries `aware`; shopmath.pay_cut(tval, chr, owners_seen). Released 2.44.0 (11-02, all 44 cards regenerated); D8 widened to race names without "The" (to_architect/2026-11-02-d8-uniques.md), in 2.44.1: m25 unattributed 398 -> 9 of 628 HP.
 5g. 11-02: Architect session 10 ended at 2.44.7 (pilot.py split into modules, same method names). Session 11 = more splits incl. combat.py (escape etc. stay on Pilot; memo if the escape ORDER changes); missions resume in session 12 -> then do the estimator-era review. options_sim only cites pilot.py in the POLICY_VERSION comment: point it at combat.py at the next policy bump.
+5h. 11-02: combat.py split (2.44.9, verbatim). Khim A2K: estimator agrees with fighting (memo to_architect/2026-11-02-khim.md); fight_sim and options_sim agree on the plain duel (138 vs 148 mean); suggested rewriting A2K criterion; UN_BONUS disenchant cost unmodelled.
 6. Housekeeping: the 09-29 shops memo assumed CHR 4 = Dive04's natural CHR; it is drained to 3 now (use `data/rulebook/shop_owners.csv`, CHR 3 columns, until restored).
 
 ## Architect schedule

@@ -27,6 +27,12 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.44.10 -- 2026-11-02 (session 11)
+No missions yet. No play change (the harness).
+- Set-pieces A2/A2I/A2K/A2L: the criterion follows the Pilot's own danger call (the Advisor's 11-02 khim memo). If a
+  danger rule fires for the unique: Word of Recall within 2 s, lowest HP >= 40%, as before. If none fires: a hard
+  fight with Speed + Berserk, lowest HP >= 60%. The A2 uniques are no longer above clvl-29 Dive04 (A25). A2K PASS.
+
 ## 2.44.9 -- 2026-11-02 (session 11)
 No missions yet. No play change (refactor-candidates E1, step 5).
 - The Pilot's combat methods (`combat.py`, CombatMixin: `reflexes`, `escape` and the emergency loop, the danger

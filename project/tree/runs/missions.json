@@ -2800,5 +2800,16 @@
   "report": "compact",
   "notes": "set-piece B3",
   "version": "2.44.8"
+ },
+ {
+  "label": "sp-A2K-20261102-210133",
+  "nick": "dive04",
+  "start": "2026-11-02 21:02",
+  "end": "2026-11-02 21:04",
+  "navigator": "harness",
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A2K",
+  "version": "2.44.9"
  }
 ]
