@@ -3672,6 +3672,50 @@ def reflex_escape_step_lists():
                                        "steps, all methods; the mirrored names kept")
 
 
+@case
+def town_plan_step_tables():
+    """E5 (session 11): the town goals' and the trip plan's ticks run one method per step, state or phase. Every name
+    in Shop.STATES / TRADE_STEPS, HouseBank.TICK_STEPS / STEPS, TownKit.KIT_STEPS / BUYING_STEPS and
+    TripPlan.TRIP_STEPS is a method of its class taking (self, p, ctx), none twice; the dispatches' keys are the
+    states/steps the goals set (Shop: walk, enter, trade; HouseBank: go .. closed, with back and home before them);
+    and the flags E5 declares start at the values their lazy reads assumed."""
+    import inspect
+    bad, n = [], 0
+    tables = {P.Shop: ("STATES", "TRADE_STEPS"), P.HouseBank: ("TICK_STEPS", "STEPS"),
+              P.TownKit: ("KIT_STEPS", "BUYING_STEPS"), P.TripPlan: ("TRIP_STEPS",)}
+    for cls, lists in tables.items():
+        for lst in lists:
+            t = getattr(cls, lst, None)
+            names = list(t.values()) if isinstance(t, dict) else list(t or ())
+            if not names:
+                bad.append(f"no {cls.__name__}.{lst}")
+            if len(set(names)) != len(names):
+                bad.append(f"{cls.__name__}.{lst} names a step twice")
+            for m in names:
+                f = getattr(cls, m, None)
+                n += 1
+                if not callable(f) or list(inspect.signature(f).parameters) != ["self", "p", "ctx"]:
+                    bad.append(f"{cls.__name__}.{lst}: {m} is not a step method (self, p, ctx)")
+    if set(P.Shop.STATES) != {"walk", "enter", "trade"}:
+        bad.append(f"Shop.STATES: {sorted(P.Shop.STATES)}")
+    if set(P.HouseBank.STEPS) != {"go", "open", "bought", "in1", "in2", "inside", "dropped", "out0", "out1", "closed"}:
+        bad.append(f"HouseBank.STEPS: {sorted(P.HouseBank.STEPS)}")
+    want = {P.Shop: dict(sale_pending=None, quoting=None, sale_ctx=None, selling_flavour=None, reentered=0,
+                         need_fresh=0),
+            P.HouseBank: dict(full_told=False, picks=0, last_step=None, seen_level=None, items_done=False),
+            P.TownKit: dict(withdrawn=False, fetched=False, last_sell=None, id_bought=False, farmed=False, short=[],
+                            quaffed=set(), restock_waits=0, recharged=set(), recharge_bought=False, enchanted=0,
+                            enchant_bought=False, stashed=False, deposited=False),
+            P.TripPlan: dict(xp0=None, climb_t0=None, dungeon_t0=None, swarm_tele=None, clock_targets={}, xp_hist=[])}
+    made = {P.Shop: P.Shop("5"), P.HouseBank: P.HouseBank("deposit"), P.TownKit: P.TownKit(),
+            P.TripPlan: P.TripPlan(250, 500, P.TripPlan.parse_until("cures<3"))}
+    for cls, flags in want.items():
+        for k, v in flags.items():
+            if made[cls].__dict__.get(k, "(missing)") != v:
+                bad.append(f"{cls.__name__}.{k} = {made[cls].__dict__.get(k, '(missing)')!r}, not {v!r}")
+    return not bad, "; ".join(bad) or f"{n} step methods named, all (self, p, ctx); the declared flags' defaults"
+
+
 # --- reports (E1: the report text against a golden file) ---------------------------------------
 GOLDEN_REPORTS = os.path.join(HERE, "golden", "reports.txt")
 

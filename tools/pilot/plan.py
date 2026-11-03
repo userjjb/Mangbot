@@ -7,11 +7,12 @@ import json
 import os
 import re
 import time
+import types
 
 from common import TV_SCROLL, TV_POTION, plural, one_of
 from world import gnow
 from goals import Wait, Explore, Dive, Recover, Flee, Recall
-from town_goals import Town, TownKit
+from town_goals import Town, TownKit, NEXT
 
 
 class TripPlan:
@@ -52,6 +53,13 @@ class TripPlan:
         self.home_why = None
         self.went_down = False
         self.town = None
+        # (created on the way: refactor-candidates E5 declares them, with the values their reads assumed)
+        self.xp0 = None              # the trip's XP base (the report's rate for this trip)
+        self.climb_t0 = None         # home: when the climb began (3 minutes, then Word of Recall)
+        self.dungeon_t0 = None       # when the trip first reached the dungeon (dmin)
+        self.swarm_tele = None       # the level a breeder swarm was teleported away from
+        self.clock_targets = {}      # time>HH:MM: the moment each HH:MM stands for
+        self.xp_hist = []            # (t, exp, level_t) every 5 s: the quiet rule
 
     @staticmethod
     def parse_until(text):
@@ -229,16 +237,54 @@ class TripPlan:
         g.stop = False
         return g
 
+    # One method per step (refactor-candidates E5), in this order: the watchdogs, then the phases -- each phase step
+    # tests its own phase, and down falls through to level on reaching the dungeon. Each takes the per-call ctx (w,
+    # now) and returns NEXT to go on, or what tick() returns. docs/goals-and-plans.md, the trip plan.
+    TRIP_STEPS = (
+        "_trip_xp0",             # the trip's XP base
+        "_trip_paused",          # paused for the Navigator's goal
+        "_trip_recall_pending",  # a recall under way: wait for it (an escape recall: home)
+        "_trip_until",           # a condition holds: home
+        "_trip_climb_watch",     # home: no way up in 3 minutes: Word of Recall instead
+        "_trip_level_time",      # level_min minutes on this level: done
+        "_trip_leave_max",       # a done level that won't let us go: home after LEAVE_MAX
+        "_trip_quiet",           # a quiet level: done
+        "_trip_goal_running",    # a goal running: nothing more this tick
+        "_phase_down",           # down: Word of Recall or the stairs (in the dungeon: level, this tick)
+        "_phase_level",          # level: explore it, or the next one
+        "_phase_home",           # home: Word of Recall or the stairs; then town (the town kit) or done
+        "_phase_town",           # town: the town kit ran, done
+    )
+
     def tick(self, p):
         """Called when no goal is running (and every 2 s under a plan goal, for the
         conditions). Returns (status, detail) when the plan ends."""
-        w, now = p.w, gnow()
+        ctx = types.SimpleNamespace(w=p.w, now=gnow())
+        for name in self.TRIP_STEPS:
+            r = getattr(self, name)(p, ctx)
+            if r is not NEXT:
+                return r
+        return None
+
+    def _trip_xp0(self, p, ctx):
+        """The trip's XP base (the report's "this trip" rate: m47's Navigator wanted XP a minute per trip)."""
+        w = ctx.w
         # (the trip's XP base, for the report's "this trip" rate: m47's Navigator wanted XP a minute per trip)
-        if getattr(self, "xp0", None) is None and (w.ind.get("exp") or [None])[0] is not None:
+        if self.xp0 is None and (w.ind.get("exp") or [None])[0] is not None:
             self.xp0 = w.ind["exp"][0]
+        return NEXT
+
+    def _trip_paused(self, p, ctx):
+        """Paused for the Navigator's own goal: LEAVE_MAX counts again from a resume."""
         if self.paused:
             self.leave_since = None     # (the Navigator's own goal: LEAVE_MAX counts again from a resume)
             return None
+        return NEXT
+
+    def _trip_recall_pending(self, p, ctx):
+        """A recall under way (the Pilot's escape, or the plan's own): wait for it, don't start a new dive meanwhile;
+        an escape's recall ends the trip (home)."""
+        w = ctx.w
         if w.in_dungeon and w.recall_pending and self.phase in ("down", "level", "home") and self.went_down:
             # a recall is under way (the Pilot's escape, or the plan's own): wait for it, don't
             # start a new dive meanwhile (m24: a dive walked the pit's ring while it charged)
@@ -255,6 +301,11 @@ class TripPlan:
                 self.step = "waiting for the recall"
                 p.set_goal(self.mark(Wait(3)))
             return None
+        return NEXT
+
+    def _trip_until(self, p, ctx):
+        """Down or on a level in the dungeon: a condition holds (holds): home."""
+        w = ctx.w
         if self.phase in ("down", "level") and w.in_dungeon:
             why = self.holds(p)
             if why:
@@ -263,15 +314,30 @@ class TripPlan:
                 if p.goal is not None and p.goal.by_plan and \
                         not isinstance(p.goal, (Flee, Recover, Recall)):
                     p.set_goal(None)
+        return NEXT
+
+    def _trip_climb_watch(self, p, ctx):
+        """home: no way up found in 3 minutes of climbing: Word of Recall instead."""
+        w, now = ctx.w, ctx.now
         if self.phase == "home" and isinstance(p.goal, Dive) and p.goal.by_plan and \
-                now - (getattr(self, "climb_t0", None) or now) > 180 and self.value(p, "wor") >= 1 and \
+                now - (self.climb_t0 or now) > 180 and self.value(p, "wor") >= 1 and \
                 not w.recall_pending:
             p.notify("plan", "trip: no way up found in 3 minutes: reading Word of Recall instead", news=True)
             p.set_goal(None)          # (the next tick reads it)
+        return NEXT
+
+    def _trip_level_time(self, p, ctx):
+        """level: level_min minutes on this level (under its exploration): done."""
+        w, now = ctx.w, ctx.now
         if self.phase == "level" and isinstance(p.goal, Explore) and p.goal.by_plan and \
                 self.level == w.level_t and not self.level_done and now - self.level_t0 > 60 * self.level_min:
             self.level_done = f"{self.level_min:g} minutes on it"
             p.set_goal(None)
+        return NEXT
+
+    def _trip_leave_max(self, p, ctx):
+        """level: a done level that won't let us go: home after LEAVE_MAX."""
+        w, now = ctx.w, ctx.now
         # a level that won't let us go: recall home after LEAVE_MAX (m45: 13 minutes leaving 750 ft -- the only '<'
         # led back to the level just fled, and a Giant flea swarm pinned the dive; the stuck watchdog doesn't count
         # time spent fighting, and the quiet rule only cuts an exploration short)
@@ -285,13 +351,28 @@ class TripPlan:
                 if p.goal is not None and p.goal.by_plan and \
                         not isinstance(p.goal, (Flee, Recover, Recall)):
                     p.set_goal(None)
+        return NEXT
+
+    def _trip_quiet(self, p, ctx):
+        """level: a quiet level (quiet: XP a minute over QUIET_MIN) ends its exploration."""
+        w, now = ctx.w, ctx.now
         quiet = self.quiet(p, now)
         if self.phase == "level" and isinstance(p.goal, Explore) and p.goal.by_plan and \
                 self.level == w.level_t and not self.level_done and quiet:
             self.level_done = quiet
             p.set_goal(None)
+        return NEXT
+
+    def _trip_goal_running(self, p, ctx):
+        """A goal running: nothing more this tick (the steps below pick the next goal)."""
         if p.goal is not None:
             return None
+        return NEXT
+
+    def _phase_down(self, p, ctx):
+        """down: from town, Word of Recall to the planned depth or the stairs near town; from the wilderness, town
+        first; in the dungeon, on to level (this tick)."""
+        w = ctx.w
         if self.phase == "down":
             if w.depth == 0:
                 if self.went_down:
@@ -316,6 +397,12 @@ class TripPlan:
                 return None
             self.went_down = True
             self.phase = "level"
+        return NEXT
+
+    def _phase_level(self, p, ctx):
+        """level: within LO-HI, the arrival protocol, then explore this level until it's done or level_min minutes
+        pass; then the next level (next_dive)."""
+        w, now = ctx.w, ctx.now
         if self.phase == "level":
             if w.depth == 0:
                 le = p.last_escape
@@ -376,6 +463,11 @@ class TripPlan:
             self.step = f"exploring {d} ft"
             p.set_goal(self.mark(Explore()))
             return None
+        return NEXT
+
+    def _phase_home(self, p, ctx):
+        """home: Word of Recall, or the stairs near town or without one; in town, the town kit (then town) or done."""
+        w, now = ctx.w, ctx.now
         if self.phase == "home":
             if self.fails > 10:
                 return ("failed", f"couldn't get home ({self.home_why}): the recall or the climb kept failing")
@@ -390,7 +482,7 @@ class TripPlan:
             if not w.in_dungeon:
                 p.set_goal(self.mark(Town()))
                 return None
-            self.climb_t0 = getattr(self, "climb_t0", None) or now
+            self.climb_t0 = self.climb_t0 or now
             if w.depth_ft <= 150 and not w.recall_pending and (now - self.climb_t0 < 180 or self.value(p, "wor") < 1):
                 self.step = "climbing home (near town: the stairs save a Word of Recall)"
                 g = Dive(0)
@@ -408,10 +500,15 @@ class TripPlan:
                 g.stop = False
                 p.set_goal(self.mark(g))
             return None
+        return NEXT
+
+    def _phase_town(self, p, ctx):
+        """town: the town kit ran: done."""
+        now = ctx.now
         if self.phase == "town":
             return ("done", f"home ({self.home_why}) and the town kit run; {plural(self.levels, 'level')} in "
                             f"{(now - self.t0) / 60:.0f} min")
-        return None
+        return NEXT
 
     LEAVE_MAX = 300                       # seconds to find a way off a finished level before recalling home
     QUIET_MIN, QUIET_XP = 3.0, 10.0       # a level that earned under 10 XP a minute over 3 minutes is left

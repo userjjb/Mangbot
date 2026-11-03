@@ -12,7 +12,7 @@ Open `/projectnb/jbrcs/mangband/next_steps.md` and read **">>> WHICH HANDOFF IS 
   vX.Y.Z on branch `restructure`). Its record: "SESSION 10 RECORD" at the bottom of next_steps.md.
 - **Session 11** (the user, 11-02): **finish the refactor, no missions** -- "HANDOFF TO ARCHITECT 11": E1 town.py, then
   combat.py on its own (the Advisor's mirrored names stay on Pilot), then E2, E3, E5, E8; the per-step method and checks
-  are written there. **In progress:** 2.44.8 = E1 step 4 town.py, 2.44.9 = step 5 combat.py, 2.44.10 = A2 set-piece criterion, 2.44.11 = E1 step 6 + E2 (commands.py, cmdtable.py) done; 2.44.12 = E3; left E5, E8 ("SESSION 11 RECORD" at the bottom of
+  are written there. **In progress:** 2.44.8 = E1 step 4 town.py, 2.44.9 = step 5 combat.py, 2.44.10 = A2 set-piece criterion, 2.44.11 = E1 step 6 + E2 (commands.py, cmdtable.py) done; 2.44.12 = E3, 2.44.13 = E5; left E8 ("SESSION 11 RECORD" at the bottom of
   next_steps.md); the check scripts now live in `github/tools/harness/refactor/` (split/bytecode/dry/equiv/fake).
 - **Session 12**: **missions resume to test every change since m60** -- "HANDOFF TO ARCHITECT 12" (what to watch, the
   first `plan town` is its own test, the C14 A/B baseline).

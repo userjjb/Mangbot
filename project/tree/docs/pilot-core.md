@@ -158,7 +158,9 @@ A goal is an object with `tick(pilot)` returning `None` (still working) or `(sta
 or `failed`, and `describe()`. Base class `Goal`; 22 subclasses (Wait, Goto, Explore, Dive, Search, Hunt, Recover,
 Reprieve, BandLeave, WalkAway, Flee, Recall, Resurrect, Town, TownFarm, Shop, StashDeposit, StashFetch, HouseBank,
 TownKit, RestGoal, QuietWait). `TripPlan` is not a goal: it sits in `Pilot.plan` and sets goals. See
-[goals-and-plans.md](goals-and-plans.md).
+[goals-and-plans.md](goals-and-plans.md). The long ticks (`Shop`, `HouseBank`, `TownKit`, `TripPlan`) run one method
+per step, state or phase, as `reflexes()` does (E5, after E3): a per-call `ctx`, `NEXT` to go on, the order in a class
+table (`TRADE_STEPS`, `TICK_STEPS`/`STEPS`, `KIT_STEPS`/`BUYING_STEPS`, `TRIP_STEPS`); goals-and-plans.md names them.
 
 - `Pilot.set_goal(goal)`: stops the mover, settles an overridden hunt's debt, tags the goal's `role`
   (navigator/architect) if set while handling a request, resets `goal_t` and the idle-recall flag, logs `goal`.

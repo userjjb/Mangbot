@@ -6,6 +6,7 @@ import os
 import re
 import sys
 import time
+import types
 
 from common import HERE, TV_SCROLL, TV_LITE, flavour_key, kind_key, bare_name, singular
 from world import gnow, waited, light_turns
@@ -15,6 +16,10 @@ if os.path.join(HERE, "..", "observe") not in sys.path:     # (shopmath, as pilo
     sys.path.insert(0, os.path.join(HERE, "..", "observe"))
 import shopmath                                  # noqa: E402
 
+
+# a step of a split tick that didn't end it: go on to the next (Shop.TRADE_STEPS, HouseBank.TICK_STEPS,
+# TownKit.KIT_STEPS / BUYING_STEPS, plan.TripPlan.TRIP_STEPS; refactor-candidates E5)
+NEXT = object()
 
 EDGE_DIR = {"E": 6, "W": 4, "N": 8, "S": 2}
 
@@ -210,192 +215,278 @@ class Shop(Goal):
         self.t = 0.0
         self.done_log = []
         self.pending = None
+        # (created on the way: refactor-candidates E5 declares them, with the values their reads assumed)
+        self.sale_pending = None     # the last sale's record, until its re-listing comes (the scorecard)
+        self.quoting = None          # the item a quote is waiting on
+        self.sale_ctx = None         # the sale under way: what was known before it
+        self.selling_flavour = None  # the unknown flavour being sold (its kind is learnt from the sale)
+        self.reentered = 0           # walked back in after our own command closed the store (twice at most)
+        self.need_fresh = 0          # when a purchase left a remainder: wait for the listing after it
+
+    # One method per state (refactor-candidates E5): walk to the door, wait for the listing, trade. Each takes the
+    # per-call ctx (w) and returns what tick() returns.
+    STATES = {"walk": "_walk", "enter": "_enter", "trade": "_trade"}
+    # The trade, one step a tick: each returns NEXT to go on, or what tick() returns (the first to act ends it).
+    TRADE_STEPS = (
+        "_trade_record",     # the last sale's record, once its re-listing is in (the scorecard memo)
+        "_trade_quote",      # a quote's answer: the offer, declined
+        "_trade_answer",     # a sale's or a purchase's answer
+        "_trade_left",       # out of the store: back in if our own command closed it, else thrown out
+        "_trade_list",       # the stock listed (list)
+        "_trade_sell",       # the next sale or quote
+        "_trade_fresh",      # a purchase's remainder: wait for the listing after it
+        "_trade_buy",        # the next purchase
+        "_trade_leave",      # all done: leave
+    )
 
     def tick(self, p):
-        w = p.w
+        ctx = types.SimpleNamespace(w=p.w)
+        w = ctx.w
         if w.depth:
             return ("failed", "not in town")
-        if self.state == "walk":
-            door = w.find(self.store)
-            if not door:
-                return ("failed", f"store {self.store} not on the map")
-            # Next to the door; unseen ground counts (at night the floor isn't drawn)
-            spots = [(door[0][0] + dy, door[0][1] + dx) for dy in (-1, 0, 1) for dx in (-1, 0, 1)
-                     if (dy or dx) and w.memory.get((door[0][0] + dy, door[0][1] + dx), " ") not in "#%*=012345678"]
-            if w.pos in spots:
-                p.cmd(f"walk {direction(w.pos, door[0])}", f"enter store {self.store}", hold=0.3)
-                self.state, self.t = "enter", gnow()
-                return None
-            if not p.mover.active and not p.mover.go(spots):
-                return ("failed", "can't reach the store")
-            if p.mover.tick() == "stuck":
-                return ("failed", "stuck on the way to the store")
+        state = self.STATES.get(self.state)
+        return getattr(self, state)(p, ctx) if state else None
+
+    def _walk(self, p, ctx):
+        """walk: to a square beside the door, then into it (the listing: enter)."""
+        w = ctx.w
+        door = w.find(self.store)
+        if not door:
+            return ("failed", f"store {self.store} not on the map")
+        # Next to the door; unseen ground counts (at night the floor isn't drawn)
+        spots = [(door[0][0] + dy, door[0][1] + dx) for dy in (-1, 0, 1) for dx in (-1, 0, 1)
+                 if (dy or dx) and w.memory.get((door[0][0] + dy, door[0][1] + dx), " ") not in "#%*=012345678"]
+        if w.pos in spots:
+            p.cmd(f"walk {direction(w.pos, door[0])}", f"enter store {self.store}", hold=0.3)
+            self.state, self.t = "enter", gnow()
             return None
-        if self.state == "enter":
-            if w.store and w.store_t >= self.t:
-                self.state = "trade"
-                return None
-            if waited(self.t, 4):
-                self.state = "walk"
-            return None
-        if self.state == "trade":
-            p.note_store()
-            sp = getattr(self, "sale_pending", None)
-            if sp and (w.store_t > sp["t"] or waited(sp["t"], 3)):
-                key = bare_name(sp["sold_as"]).lower()
-                relist = next((i["price"] for i in (w.store or {}).get("items", [])
-                               if bare_name(i["name"]).lower() == key),
-                              None) if w.store_t > sp["t"] else None
-                p.log("sale", **{k: v for k, v in sp.items() if k != "t"}, relist=relist)
-                if sp.get("forced") and self.role != "architect":
-                    chr_v = (p.w.ind.get("stat5") or [3])[0]
-                    fair = shopmath.fair_pay(relist, sp.get("owner"), chr_v)
-                    if fair is None:
-                        fair = round(p.iv(sp["sold_as"]).value * p.pay_cut(p.iv(sp["sold_as"]).tval))   # (p: self is the Shop goal)
-                    p.add_debt(fair - sp.get("received", 0), sp["sold_as"], "sold with ! over the value policy")
-                self.sale_pending = None
-            if self.pending and getattr(self, "quoting", None):
-                ts, prompt, _ = w.last_confirm
-                m = re.search(r"Accept (\d+) gold", prompt) if ts >= self.pending else None
-                if m is None and not waited(self.pending, 4):
-                    return None
-                self.done_log.append(f"quote: {self.quoting}: {m.group(1)} gold (not sold)" if m else
-                                     f"quote: {self.quoting}: no offer (the shop doesn't buy it?)")
-                self.pending, self.quoting = None, None
-                return None
-            if self.pending:
-                # The server's answer: a refreshed listing and/or a message
-                said = [t for ts, t in w.messages if ts >= self.pending]
-                verdict = next((t for t in said if t.startswith(("You sold", "You bought", "I don't want",
-                                                                 "You do not have enough", "You cannot carry",
-                                                                 "You have no room", "That item"))), None)
-                if verdict is None and w.store_t < self.pending and not waited(self.pending, 4):
-                    return None   # still waiting
-                self.done_log.append(verdict or f"{self.last} (no answer)")
-                ms = re.match(r"You sold (.+?) for (\d+) gold", verdict or "")
-                if ms and getattr(self, "sale_ctx", None):
-                    # the scorecard's sale record: the re-listing comes with the next
-                    # store listing (the Advisor's scorecard memo §5.1)
-                    self.sale_ctx.update(sold_as=ms.group(1), received=int(ms.group(2)), t=gnow())
-                    self.sale_pending = self.sale_ctx
-                self.sale_ctx = None
-                m = re.match(r"You sold (.+?) for \d+ gold", verdict or "")
-                if m and getattr(self, "selling_flavour", None):
-                    p.learn_flavour(self.selling_flavour, kind_key(m.group(1)), "sold in a shop")
-                    self.selling_flavour = None
-                self.pending = None
-                w.status_t = 0            # re-read gold before the next purchase
-                w.inven_dirty = True
-                return None
-            if not w.store:
-                # Our own non-store command closed it on the server (the client
-                # reports that as store_leave with a 'why'): walk back in, twice
-                # at most; anything else is the shopkeeper's doing
-                if getattr(w, "store_left_why", None) and getattr(self, "reentered", 0) < 2:
-                    self.reentered = getattr(self, "reentered", 0) + 1
-                    w.store_left_why = None
-                    self.state = "walk"
-                    return None
-                return ("failed", "thrown out of the store")
-            if self.list_stock:
-                # (mission 8 guessed names one shop trip at a time)
-                self.list_stock = False
-                self.done_log.append("stock: " + "; ".join(
-                    f"{i['name']} {i['price']}" for i in w.store["items"]))
-            if self.sells:
-                idx, n, *quote = self.sells.pop(0)
-                force = isinstance(idx, str) and idx.startswith("!")
-                if force:
-                    idx = idx[1:]
-                if isinstance(idx, str):
-                    # By name, resolved now (identifying items re-sorts the pack),
-                    # with the whole-word/ambiguity check (not the first substring)
-                    try:
-                        idx = p.item_index(idx.replace(" ", "_"), pack_only=True)
-                    except ValueError as e:
-                        self.done_log.append(f"not sold: {e}")
-                        return None
-                    w.inven_dirty = True
-                it = next((i for i in w.items() if i["item"] == idx), None)
-                if quote:
-                    p.c.send("confirm no")       # (disarm a 'yes' left over: the prompt gets 'no')
-                    p.cmd(f"custom s store item={idx} value=1", f"quote {idx}", hold=0.2)
-                    self.quoting = it["name"] if it else chr(97 + idx)
-                    self.pending = gnow()
-                    return None
-                why_not = p.unknown_sell_refusal(it, n) if it and not force else None
-                if not why_not and it and not force:
-                    why_not = p.value_refusal(it, "sell", self.role)
-                    if why_not:
-                        why_not += "; `sell !NAME` overrides, and adds the value lost to your debt"
-                if force and self.role != "architect" and not p.override_allowed():
-                    self.done_log.append(f"NOT sold: your freedom to override the Pilot's value policy is "
-                                         f"suspended (debt {p.debt_total()} gold): {it['name'] if it else idx}")
-                    return None
-                if why_not:
-                    # (mission 12 sold 2 Potions of Speed and 2 of Heroism for 8 each)
-                    self.done_log.append(f"NOT sold ({why_not}; sell !NAME to force): {it['name']}")
-                    return None
-                # selling an unknown flavour identifies it (store.c): learn the kind
-                self.selling_flavour = flavour_key(it["name"]) if it and p.unknown_flavour(it) else None
-                self.sale_ctx = {"name_before": it["name"] if it else None, "count": n, "forced": force,
-                                 "flavour_aware": not p.unknown_flavour(it) if it else None,
-                                 "pluses_known": bool(re.search(r"\([+-]\d+,[+-]\d+\)|\[\d+,[+-]\d+\]|<[+-]\d+>|"
-                                                                r"\(\d+ charges?\)|\bof\b", it["name"])) if it else None,
-                                 "store": self.store, "owner": (w.store or {}).get("owner")}
-                if it and not force and p.probably_special(it["name"]):
-                    # Wormtongue's armour was sold unseen for 17 gold: it was Soft
-                    # Studded Leather of Resistance (buyback 19834)
-                    self.done_log.append(f"NOT sold (probably special, inspect it first; sell !NAME to force): "
-                                         f"{it['name']}")
-                    return None
-                p.c.send("confirm yes")
-                p.cmd(f"custom s store item={idx} value={n}", f"sell {idx}x{n}", hold=0.2)
-                self.last = f"sell {chr(97 + idx)} x{n}"
-                self.pending = gnow()
-                return None
-            if self.buys and not waited(getattr(self, "need_fresh", 0), 3) and \
-                    w.store_t < getattr(self, "need_fresh", 0):
-                return None       # (a remainder: wait for the listing after the last purchase)
-            if self.buys:
-                name, n, cap = (self.buys.pop(0) + (None,))[:3]
-                # The cheapest match: the first one can be an expensive enchanted
-                # piece (bought a Cloak [1,+4] for 592 instead of a plain one)
-                matches = [i for i in w.store["items"] if name.lower() in i["name"].lower()] or \
-                    [i for i in w.store["items"] if singular(name) in singular(i["name"])]
-                it = min(matches, key=lambda i: i["price"]) if matches else None
-                if not it:
-                    self.done_log.append(f"no {name} in stock")
-                    return None
-                if cap is not None and it["price"] > cap:
-                    # (mission 8: 'buy To-Dam:3' spent 302 of 366 gold)
-                    self.done_log.append(f"NOT bought: {it['name']} costs {it['price']}, over your cap {cap}")
-                    return None
-                gold = w.ind.get("gold", [0])[0]
-                wanted, afford = n, gold // max(1, it["price"])
-                n = min(n, it["number"], afford)
-                if n <= 0:
-                    self.done_log.append(f"can't afford {it['name']} ({it['price']} each, the cheapest in stock)")
-                    return None
-                if n < wanted:
-                    if it["number"] < wanted and afford > it["number"]:
-                        # the cheap stack ran out: the rest at the next price, within
-                        # the cap (mission 20 asked for 2 Identify and got 1, silently)
-                        self.buys.insert(0, (name, wanted - n, cap))
-                        self.need_fresh = gnow()
-                    else:
-                        self.done_log.append(f"only {n} of {wanted} {name}: that's all the gold allows")
-                p.cmd(f"custom p store item={it['slot']} value={n} entry={it['price'] * n}",
-                      f"buy {it['name']} x{n}", hold=0.2)
-                self.last = f"buy {it['name']} x{n} at {it['price']} each"
-                self.pending = gnow()
-                return None
-            if getattr(self, "sale_pending", None):
-                return None       # (the last sale's re-listing first: the sale record)
-            p.cmd("leave", "leave store", hold=0.3)
-            w.store = None
-            return ("done", "; ".join(self.done_log) or "nothing to do")
+        if not p.mover.active and not p.mover.go(spots):
+            return ("failed", "can't reach the store")
+        if p.mover.tick() == "stuck":
+            return ("failed", "stuck on the way to the store")
         return None
+
+    def _enter(self, p, ctx):
+        """enter: the listing came (trade), or not in 4 s (walk again)."""
+        w = ctx.w
+        if w.store and w.store_t >= self.t:
+            self.state = "trade"
+            return None
+        if waited(self.t, 4):
+            self.state = "walk"
+        return None
+
+    def _trade(self, p, ctx):
+        """trade: the store's listing noted, then TRADE_STEPS in order."""
+        p.note_store()
+        for name in self.TRADE_STEPS:
+            r = getattr(self, name)(p, ctx)
+            if r is not NEXT:
+                return r
+
+    def _trade_record(self, p, ctx):
+        """The last sale's record (the Advisor's scorecard memo §5.1), once the next listing shows its re-listing
+        price (or 3 s pass); a forced sale's lost value goes on the Navigator's debt."""
+        w = ctx.w
+        sp = self.sale_pending
+        if sp and (w.store_t > sp["t"] or waited(sp["t"], 3)):
+            key = bare_name(sp["sold_as"]).lower()
+            relist = next((i["price"] for i in (w.store or {}).get("items", [])
+                           if bare_name(i["name"]).lower() == key),
+                          None) if w.store_t > sp["t"] else None
+            p.log("sale", **{k: v for k, v in sp.items() if k != "t"}, relist=relist)
+            if sp.get("forced") and self.role != "architect":
+                chr_v = (p.w.ind.get("stat5") or [3])[0]
+                fair = shopmath.fair_pay(relist, sp.get("owner"), chr_v)
+                if fair is None:
+                    fair = round(p.iv(sp["sold_as"]).value * p.pay_cut(p.iv(sp["sold_as"]).tval))   # (p: self is the Shop goal)
+                p.add_debt(fair - sp.get("received", 0), sp["sold_as"], "sold with ! over the value policy")
+            self.sale_pending = None
+        return NEXT
+
+    def _trade_quote(self, p, ctx):
+        """A quote's answer: the shop's offer (declined), or none in 4 s."""
+        w = ctx.w
+        if self.pending and self.quoting:
+            ts, prompt, _ = w.last_confirm
+            m = re.search(r"Accept (\d+) gold", prompt) if ts >= self.pending else None
+            if m is None and not waited(self.pending, 4):
+                return None
+            self.done_log.append(f"quote: {self.quoting}: {m.group(1)} gold (not sold)" if m else
+                                 f"quote: {self.quoting}: no offer (the shop doesn't buy it?)")
+            self.pending, self.quoting = None, None
+            return None
+        return NEXT
+
+    def _trade_answer(self, p, ctx):
+        """A sale's or a purchase's answer: its message, or 4 s; the scorecard's sale record and a sold flavour's
+        kind."""
+        w = ctx.w
+        if self.pending:
+            # The server's answer: a refreshed listing and/or a message
+            said = [t for ts, t in w.messages if ts >= self.pending]
+            verdict = next((t for t in said if t.startswith(("You sold", "You bought", "I don't want",
+                                                             "You do not have enough", "You cannot carry",
+                                                             "You have no room", "That item"))), None)
+            if verdict is None and w.store_t < self.pending and not waited(self.pending, 4):
+                return None   # still waiting
+            self.done_log.append(verdict or f"{self.last} (no answer)")
+            ms = re.match(r"You sold (.+?) for (\d+) gold", verdict or "")
+            if ms and self.sale_ctx:
+                # the scorecard's sale record: the re-listing comes with the next
+                # store listing (the Advisor's scorecard memo §5.1)
+                self.sale_ctx.update(sold_as=ms.group(1), received=int(ms.group(2)), t=gnow())
+                self.sale_pending = self.sale_ctx
+            self.sale_ctx = None
+            m = re.match(r"You sold (.+?) for \d+ gold", verdict or "")
+            if m and self.selling_flavour:
+                p.learn_flavour(self.selling_flavour, kind_key(m.group(1)), "sold in a shop")
+                self.selling_flavour = None
+            self.pending = None
+            w.status_t = 0            # re-read gold before the next purchase
+            w.inven_dirty = True
+            return None
+        return NEXT
+
+    def _trade_left(self, p, ctx):
+        """Out of the store: our own non-store command closed it (walk back in, twice at most), else the shopkeeper
+        threw us out."""
+        w = ctx.w
+        if not w.store:
+            # Our own non-store command closed it on the server (the client
+            # reports that as store_leave with a 'why'): walk back in, twice
+            # at most; anything else is the shopkeeper's doing
+            if getattr(w, "store_left_why", None) and self.reentered < 2:
+                self.reentered = self.reentered + 1
+                w.store_left_why = None
+                self.state = "walk"
+                return None
+            return ("failed", "thrown out of the store")
+        return NEXT
+
+    def _trade_list(self, p, ctx):
+        """list: the stock, into the result."""
+        w = ctx.w
+        if self.list_stock:
+            # (mission 8 guessed names one shop trip at a time)
+            self.list_stock = False
+            self.done_log.append("stock: " + "; ".join(
+                f"{i['name']} {i['price']}" for i in w.store["items"]))
+        return NEXT
+
+    def _trade_sell(self, p, ctx):
+        """The next sale (or quote): by letter or by name (resolved now), unless the value policy, an unknown flavour
+        or a special feeling says no (`!NAME` forces it, on the Navigator's debt)."""
+        w = ctx.w
+        if self.sells:
+            idx, n, *quote = self.sells.pop(0)
+            force = isinstance(idx, str) and idx.startswith("!")
+            if force:
+                idx = idx[1:]
+            if isinstance(idx, str):
+                # By name, resolved now (identifying items re-sorts the pack),
+                # with the whole-word/ambiguity check (not the first substring)
+                try:
+                    idx = p.item_index(idx.replace(" ", "_"), pack_only=True)
+                except ValueError as e:
+                    self.done_log.append(f"not sold: {e}")
+                    return None
+                w.inven_dirty = True
+            it = next((i for i in w.items() if i["item"] == idx), None)
+            if quote:
+                p.c.send("confirm no")       # (disarm a 'yes' left over: the prompt gets 'no')
+                p.cmd(f"custom s store item={idx} value=1", f"quote {idx}", hold=0.2)
+                self.quoting = it["name"] if it else chr(97 + idx)
+                self.pending = gnow()
+                return None
+            why_not = p.unknown_sell_refusal(it, n) if it and not force else None
+            if not why_not and it and not force:
+                why_not = p.value_refusal(it, "sell", self.role)
+                if why_not:
+                    why_not += "; `sell !NAME` overrides, and adds the value lost to your debt"
+            if force and self.role != "architect" and not p.override_allowed():
+                self.done_log.append(f"NOT sold: your freedom to override the Pilot's value policy is "
+                                     f"suspended (debt {p.debt_total()} gold): {it['name'] if it else idx}")
+                return None
+            if why_not:
+                # (mission 12 sold 2 Potions of Speed and 2 of Heroism for 8 each)
+                self.done_log.append(f"NOT sold ({why_not}; sell !NAME to force): {it['name']}")
+                return None
+            # selling an unknown flavour identifies it (store.c): learn the kind
+            self.selling_flavour = flavour_key(it["name"]) if it and p.unknown_flavour(it) else None
+            self.sale_ctx = {"name_before": it["name"] if it else None, "count": n, "forced": force,
+                             "flavour_aware": not p.unknown_flavour(it) if it else None,
+                             "pluses_known": bool(re.search(r"\([+-]\d+,[+-]\d+\)|\[\d+,[+-]\d+\]|<[+-]\d+>|"
+                                                            r"\(\d+ charges?\)|\bof\b", it["name"])) if it else None,
+                             "store": self.store, "owner": (w.store or {}).get("owner")}
+            if it and not force and p.probably_special(it["name"]):
+                # Wormtongue's armour was sold unseen for 17 gold: it was Soft
+                # Studded Leather of Resistance (buyback 19834)
+                self.done_log.append(f"NOT sold (probably special, inspect it first; sell !NAME to force): "
+                                     f"{it['name']}")
+                return None
+            p.c.send("confirm yes")
+            p.cmd(f"custom s store item={idx} value={n}", f"sell {idx}x{n}", hold=0.2)
+            self.last = f"sell {chr(97 + idx)} x{n}"
+            self.pending = gnow()
+            return None
+        return NEXT
+
+    def _trade_fresh(self, p, ctx):
+        """A purchase's remainder at the next price: wait for the listing after the purchase."""
+        w = ctx.w
+        if self.buys and not waited(self.need_fresh, 3) and \
+                w.store_t < self.need_fresh:
+            return None       # (a remainder: wait for the listing after the last purchase)
+        return NEXT
+
+    def _trade_buy(self, p, ctx):
+        """The next purchase: the cheapest match, within the cap and the gold; a stack that runs out leaves a
+        remainder."""
+        w = ctx.w
+        if self.buys:
+            name, n, cap = (self.buys.pop(0) + (None,))[:3]
+            # The cheapest match: the first one can be an expensive enchanted
+            # piece (bought a Cloak [1,+4] for 592 instead of a plain one)
+            matches = [i for i in w.store["items"] if name.lower() in i["name"].lower()] or \
+                [i for i in w.store["items"] if singular(name) in singular(i["name"])]
+            it = min(matches, key=lambda i: i["price"]) if matches else None
+            if not it:
+                self.done_log.append(f"no {name} in stock")
+                return None
+            if cap is not None and it["price"] > cap:
+                # (mission 8: 'buy To-Dam:3' spent 302 of 366 gold)
+                self.done_log.append(f"NOT bought: {it['name']} costs {it['price']}, over your cap {cap}")
+                return None
+            gold = w.ind.get("gold", [0])[0]
+            wanted, afford = n, gold // max(1, it["price"])
+            n = min(n, it["number"], afford)
+            if n <= 0:
+                self.done_log.append(f"can't afford {it['name']} ({it['price']} each, the cheapest in stock)")
+                return None
+            if n < wanted:
+                if it["number"] < wanted and afford > it["number"]:
+                    # the cheap stack ran out: the rest at the next price, within
+                    # the cap (mission 20 asked for 2 Identify and got 1, silently)
+                    self.buys.insert(0, (name, wanted - n, cap))
+                    self.need_fresh = gnow()
+                else:
+                    self.done_log.append(f"only {n} of {wanted} {name}: that's all the gold allows")
+            p.cmd(f"custom p store item={it['slot']} value={n} entry={it['price'] * n}",
+                  f"buy {it['name']} x{n}", hold=0.2)
+            self.last = f"buy {it['name']} x{n} at {it['price']} each"
+            self.pending = gnow()
+            return None
+        return NEXT
+
+    def _trade_leave(self, p, ctx):
+        """All done: the last sale's re-listing first, then leave."""
+        w = ctx.w
+        if self.sale_pending:
+            return None       # (the last sale's re-listing first: the sale record)
+        p.cmd("leave", "leave store", hold=0.3)
+        w.store = None
+        return ("done", "; ".join(self.done_log) or "nothing to do")
 
 
 class StashDeposit(Goal):
@@ -548,6 +639,12 @@ class HouseBank(Goal):
                      "withdraw": "take gold from the house"}[mode]
         self.step, self.t, self.tries, self.price = "go", 0.0, 0, None
         self.gold0 = None
+        # (created on the way: refactor-candidates E5 declares them, with the values their reads assumed)
+        self.full_told = False       # item_step: told once that the house had no free square
+        self.picks = 0               # item_step: pick-ups tried on a stash square
+        self.last_step = None        # the step the tries count for
+        self.seen_level = None       # the level last seen (a new one stops the walk: m56)
+        self.items_done = False      # inside: the stash moved (item_step)
 
     def item_step(self, p, h, inside):
         """Inside, door closed: the stash (the user, 10-27: "move the stash into the wilderness house" -- at 18:10 a
@@ -606,19 +703,49 @@ class HouseBank(Goal):
         p.fetching = None
         return False
 
+    # One method per step (refactor-candidates E5), in this order; each takes the per-call ctx (w, now; the values the
+    # steps share, set by the step that computes them) and returns NEXT to go on, or what tick() returns.
+    TICK_STEPS = (
+        "_bank_house",       # the house on record and where we are (ctx.h, hd, door, inside, outside); 1 s a step
+        "_bank_cross",       # a wilderness house: off the town's edge to its tile (ctx.cross)
+        "_bank_back",        # step back: from the house's tile into town
+        "_bank_home",        # step home: back in town, done
+        "_bank_turn",        # (not a step: ctx.gold, ctx.said -- the messages since the last step -- the tries)
+        "_bank_door",        # the step at the house (STEPS)
+    )
+    # the steps at the house, one method each (_bank_door dispatches on self.step)
+    STEPS = {"go": "_step_go", "open": "_step_open", "bought": "_step_bought", "in1": "_step_in1",
+             "in2": "_step_in2", "inside": "_step_inside", "dropped": "_step_dropped", "out0": "_step_out0",
+             "out1": "_step_out1", "closed": "_step_closed"}
+
     def tick(self, p):
-        w, now = p.w, gnow()
-        h = self.house or p.house_state().get("house")
+        ctx = types.SimpleNamespace(w=p.w, now=gnow())
+        for name in self.TICK_STEPS:
+            r = getattr(self, name)(p, ctx)
+            if r is not NEXT:
+                return r
+
+    def _bank_house(self, p, ctx):
+        """The house on record (or the one being bought), and that we're in town or on its tile; one step a second,
+        with nothing busy and the pack read."""
+        w, now = ctx.w, ctx.now
+        h = ctx.h = self.house or p.house_state().get("house")
         if not h:
             return ("failed", "no house owned (`house buy`)")
-        hd = int(h.get("depth", 0))
+        hd = ctx.hd = int(h.get("depth", 0))
         if w.in_dungeon or (w.depth not in (0, hd)):
             return ("failed", "the house is in town or the tile beside it: go to town first")
-        door, inside, outside = tuple(h["door"]), tuple(h["step_in"]), tuple(h["outside"])
+        ctx.door, ctx.inside, ctx.outside = tuple(h["door"]), tuple(h["step_in"]), tuple(h["outside"])
         if not waited(self.t, 1.0) or now < p.busy_until or w.inven_dirty:
             return None
+        return NEXT
+
+    def _bank_cross(self, p, ctx):
+        """A wilderness house: from town, walk off the town's edge where we did when it was found (closed, and back in
+        town: home)."""
+        w, now, h, hd = ctx.w, ctx.now, ctx.h, ctx.hd
         # a wilderness house: walk off the town's edge where we did when it was found, and back the same way
-        cross = h.get("cross")
+        cross = ctx.cross = h.get("cross")
         if hd and self.step not in ("back", "home"):
             if w.depth == 0:
                 if self.step == "closed":
@@ -634,6 +761,11 @@ class HouseBank(Goal):
                     self.t = now
                     p.cmd(f"walk {p.edge_dir(tc)}", "house: off the town's edge to the house's tile", hold=1.5)
                     return None
+        return NEXT
+
+    def _bank_back(self, p, ctx):
+        """back: from the house's tile, the same way back into town."""
+        w, now, cross = ctx.w, ctx.now, ctx.cross
         if self.step == "back":
             if w.depth == 0:
                 self.step = "home"
@@ -648,158 +780,207 @@ class HouseBank(Goal):
             self.t = now
             p.cmd(f"walk {p.edge_dir(wc)}", "house: back into town", hold=1.5)
             return None
+        return NEXT
+
+    def _bank_home(self, p, ctx):
+        """home: back in town, done."""
+        w = ctx.w
         if self.step == "home":
             st = p.house_state()
             return ("done", f"{self.name}: {st.get('banked', 0)} gold in the house, {w.ind.get('gold', [0])[0]} carried")
-        gold = w.ind.get("gold", [0])[0]
-        said = [t for ts, t in w.messages if ts >= self.t - 1.0]
+        return NEXT
+
+    def _bank_turn(self, p, ctx):
+        """(Not a step: what the steps at the house share.) ctx.gold, ctx.said (the messages since the last step); a
+        new step's tries start at 0; a new level stops the walk."""
+        w, now = ctx.w, ctx.now
+        ctx.gold = w.ind.get("gold", [0])[0]
+        ctx.said = [t for ts, t in w.messages if ts >= self.t - 1.0]
         self.t = now
-        if self.step != getattr(self, "last_step", None):
+        if self.step != self.last_step:
             self.last_step, self.tries = self.step, 0
         # (m56: from town, the walk to the edge was still running after the crossing, toward the town square's
         # coordinates on the new tile; it ran through the house's outside square, the bank took that for arrival and
         # opened the door from 10 squares off -- "the door didn't open". A new level stops the walk)
-        if w.level_t != getattr(self, "seen_level", None):
+        if w.level_t != self.seen_level:
             self.seen_level = w.level_t
             p.mover.stop()
-        if self.step == "go":
-            if w.pos == outside:
-                p.mover.stop()
-                self.step = "open"
-                self.gold_out, self.banked0 = gold, p.banked()
-                return None
-            if not p.mover.active:
-                self.tries += 1
-                if self.tries > 3 or not p.mover.go([outside]):
-                    return ("failed", f"couldn't reach the house door at {door[0]},{door[1]}")
-            p.mover.tick()
-            self.t = now - 1.0
+        return NEXT
+
+    def _bank_door(self, p, ctx):
+        """The step at the house (STEPS), or a failure for a step that isn't one."""
+        step = self.STEPS.get(self.step)
+        if step:
+            return getattr(self, step)(p, ctx)
+        return ("failed", f"unknown step {self.step}")
+
+    def _step_go(self, p, ctx):
+        """go: to the open square outside the door."""
+        w, now, door, outside, gold = ctx.w, ctx.now, ctx.door, ctx.outside, ctx.gold
+        if w.pos == outside:
+            p.mover.stop()
+            self.step = "open"
+            self.gold_out, self.banked0 = gold, p.banked()
             return None
-        if self.step == "open":
-            if self.mode == "buy" and self.price is None:
-                m = next((re.search(r"This house costs (\d+) gold", t) for t in said if "This house costs" in t), None)
-                if m:
-                    self.price = int(m.group(1))
-                elif any("already owned" in t for t in said):
-                    return ("failed", "that house is already owned")
-                elif self.tries < 6:
-                    self.tries += 1
-                    p.cmd(f"open {direction(w.pos, door)}", "house: open the door (its price)", hold=0.8)
-                    return None
-                else:
-                    return ("failed", "the door gave no price")
-                spare = gold - p.town_reserve()
-                if self.price > spare:
-                    return ("failed", f"the house costs {self.price}; {spare} gold to spare beyond the reserve")
-                self.gold0 = gold
-                p.c.send("confirm yes")
-                p.cmd(f"custom h dir={direction(w.pos, door)}", f"house: buy it for {self.price}", hold=1.0)
-                self.step = "bought"
-                return None
-            p.cmd(f"open {direction(w.pos, door)}", "house: open the door", hold=0.8)
-            self.step = "in1"
-            return None
-        if self.step == "bought":
-            if gold > self.gold0 - self.price:
-                self.tries += 1
-                if self.tries > 12:
-                    return ("failed", "the purchase didn't go through: " + "; ".join(said[-3:]))
-                return None
-            st = p.house_state()
-            if st.get("house"):
-                st.setdefault("old_houses", []).append(st["house"])   # (an earlier house: kept on record)
-            st["house"] = dict(h, price=self.price, bought=time.strftime("%Y-%m-%d %H:%M"))
-            st["banked"] = 0
-            p.house_save()
-            p.notify("tactic", f"bought the house at {door[0]},{door[1]} for {self.price} gold", news=True)
-            self.mode, self.step = "deposit", "in1"      # (the door stays open after a purchase)
-            return None
-        if self.step == "in1":
-            if w.pos == door:
-                self.step = "in2"
-                return None
+        if not p.mover.active:
             self.tries += 1
-            if self.tries > 8:
-                return ("failed", "the door didn't open: " + "; ".join(said[-3:]))
-            if self.tries % 3 == 0:
-                p.cmd(f"open {direction(w.pos, door)}", "house: open the door again", hold=0.8)
+            if self.tries > 3 or not p.mover.go([outside]):
+                return ("failed", f"couldn't reach the house door at {door[0]},{door[1]}")
+        p.mover.tick()
+        self.t = now - 1.0
+        return None
+
+    def _step_open(self, p, ctx):
+        """open: open the door (buy: its price first, then buy it if we can spare it)."""
+        w, door, gold, said = ctx.w, ctx.door, ctx.gold, ctx.said
+        if self.mode == "buy" and self.price is None:
+            m = next((re.search(r"This house costs (\d+) gold", t) for t in said if "This house costs" in t), None)
+            if m:
+                self.price = int(m.group(1))
+            elif any("already owned" in t for t in said):
+                return ("failed", "that house is already owned")
+            elif self.tries < 6:
+                self.tries += 1
+                p.cmd(f"open {direction(w.pos, door)}", "house: open the door (its price)", hold=0.8)
+                return None
             else:
-                p.cmd(f"walk {direction(w.pos, door)}", "house: into the doorway", hold=0.6)
+                return ("failed", "the door gave no price")
+            spare = gold - p.town_reserve()
+            if self.price > spare:
+                return ("failed", f"the house costs {self.price}; {spare} gold to spare beyond the reserve")
+            self.gold0 = gold
+            p.c.send("confirm yes")
+            p.cmd(f"custom h dir={direction(w.pos, door)}", f"house: buy it for {self.price}", hold=1.0)
+            self.step = "bought"
             return None
-        if self.step == "in2":
-            if w.pos == inside:
-                self.gold0 = gold
-                p.cmd(f"custom c dir={direction(inside, door)}", "house: close the door behind us", hold=0.8)
-                self.step = "inside"
-                return None
-            p.cmd(f"walk {direction(w.pos, inside)}", "house: step inside (the pile is picked up)", hold=0.8)
-            return None
-        if self.step == "inside":
-            st = p.house_state()
-            # (stepping in takes the pile. If it didn't, a second drop would find no free square and vanish)
-            if self.banked0 and gold < self.gold_out + 0.9 * self.banked0:
-                p.notify("tactic", f"house: the bank's {self.banked0} gold wasn't picked up on the way in (carrying "
-                                   f"{gold}); nothing dropped -- check the house square", news=True)
-                self.mode = "withdraw"
-                self.step = "out0"
-                return None
-            st["banked"] = 0
-            p.house_save()
-            if not getattr(self, "items_done", False):
-                if self.item_step(p, h, inside):
-                    return None
-                self.items_done = True
-            if self.mode == "deposit":
-                keep = int(self.keep if self.keep is not None else p.BANK_FLOAT)
-                amt = gold - keep
-                if amt > 0:
-                    p.cmd(f"custom $ value={amt}", f"house: bank {amt} gold (keep {keep})", hold=1.0)
-                    self.amt = amt
-                    self.step = "dropped"
-                    p.house_save()
-                    return None
-            p.house_save()
-            self.step = "out0"
-            return None
-        if self.step == "dropped":
-            if any(t.startswith("You drop") and "gold" in t for t in said) or gold <= self.gold0 - self.amt:
-                st = p.house_state()
-                st["banked"] = self.amt
-                st["t"] = time.strftime("%Y-%m-%d %H:%M")
-                p.house_save()
-                p.log("bank", banked=self.amt, purse=gold)
-                self.step = "out0"
-                return None
-            self.tries += 1
-            if self.tries > 10:
-                return ("failed", "the drop didn't show: " + "; ".join(said[-3:]))
-            return None
-        if self.step == "out0":
-            p.cmd(f"open {direction(w.pos, door)}", "house: open the door to leave", hold=0.8)
-            self.step = "out1"
-            return None
-        if self.step == "out1":
-            if w.pos == outside:
-                p.cmd(f"custom c dir={direction(outside, door)}", "house: close the door", hold=0.8)
-                self.step = "closed"
-                return None
-            nxt = door if w.pos == inside else outside
+        p.cmd(f"open {direction(w.pos, door)}", "house: open the door", hold=0.8)
+        self.step = "in1"
+        return None
+
+    def _step_bought(self, p, ctx):
+        """bought: the gold gone -- the house on record; then in, to deposit (the door stays open)."""
+        h, door, gold, said = ctx.h, ctx.door, ctx.gold, ctx.said
+        if gold > self.gold0 - self.price:
             self.tries += 1
             if self.tries > 12:
-                return ("failed", "couldn't leave the house: " + "; ".join(said[-3:]))
-            if self.tries % 4 == 0 and w.pos == inside:
-                p.cmd(f"open {direction(w.pos, door)}", "house: open the door again", hold=0.8)
-            else:
-                p.cmd(f"walk {direction(w.pos, nxt)}", "house: out", hold=0.6)
+                return ("failed", "the purchase didn't go through: " + "; ".join(said[-3:]))
             return None
-        if self.step == "closed":
-            st = p.house_state()
-            p.log("bank", banked=st.get("banked", 0), purse=gold)
-            if hd:
-                self.step = "back"
+        st = p.house_state()
+        if st.get("house"):
+            st.setdefault("old_houses", []).append(st["house"])   # (an earlier house: kept on record)
+        st["house"] = dict(h, price=self.price, bought=time.strftime("%Y-%m-%d %H:%M"))
+        st["banked"] = 0
+        p.house_save()
+        p.notify("tactic", f"bought the house at {door[0]},{door[1]} for {self.price} gold", news=True)
+        self.mode, self.step = "deposit", "in1"      # (the door stays open after a purchase)
+        return None
+
+    def _step_in1(self, p, ctx):
+        """in1: into the doorway (opening the door again every third try)."""
+        w, door, said = ctx.w, ctx.door, ctx.said
+        if w.pos == door:
+            self.step = "in2"
+            return None
+        self.tries += 1
+        if self.tries > 8:
+            return ("failed", "the door didn't open: " + "; ".join(said[-3:]))
+        if self.tries % 3 == 0:
+            p.cmd(f"open {direction(w.pos, door)}", "house: open the door again", hold=0.8)
+        else:
+            p.cmd(f"walk {direction(w.pos, door)}", "house: into the doorway", hold=0.6)
+        return None
+
+    def _step_in2(self, p, ctx):
+        """in2: onto the square inside (the bank's pile is picked up), then close the door behind us."""
+        w, door, inside, gold = ctx.w, ctx.door, ctx.inside, ctx.gold
+        if w.pos == inside:
+            self.gold0 = gold
+            p.cmd(f"custom c dir={direction(inside, door)}", "house: close the door behind us", hold=0.8)
+            self.step = "inside"
+            return None
+        p.cmd(f"walk {direction(w.pos, inside)}", "house: step inside (the pile is picked up)", hold=0.8)
+        return None
+
+    def _step_inside(self, p, ctx):
+        """inside: the pile picked up (else nothing is dropped); the stash (item_step); a deposit drops all but
+        `keep`."""
+        h, inside, gold = ctx.h, ctx.inside, ctx.gold
+        st = p.house_state()
+        # (stepping in takes the pile. If it didn't, a second drop would find no free square and vanish)
+        if self.banked0 and gold < self.gold_out + 0.9 * self.banked0:
+            p.notify("tactic", f"house: the bank's {self.banked0} gold wasn't picked up on the way in (carrying "
+                               f"{gold}); nothing dropped -- check the house square", news=True)
+            self.mode = "withdraw"
+            self.step = "out0"
+            return None
+        st["banked"] = 0
+        p.house_save()
+        if not self.items_done:
+            if self.item_step(p, h, inside):
                 return None
-            return ("done", f"{self.name}: {st.get('banked', 0)} gold in the house, {gold} carried")
-        return ("failed", f"unknown step {self.step}")
+            self.items_done = True
+        if self.mode == "deposit":
+            keep = int(self.keep if self.keep is not None else p.BANK_FLOAT)
+            amt = gold - keep
+            if amt > 0:
+                p.cmd(f"custom $ value={amt}", f"house: bank {amt} gold (keep {keep})", hold=1.0)
+                self.amt = amt
+                self.step = "dropped"
+                p.house_save()
+                return None
+        p.house_save()
+        self.step = "out0"
+        return None
+
+    def _step_dropped(self, p, ctx):
+        """dropped: the drop seen (its message, or the gold gone): the bank on record."""
+        gold, said = ctx.gold, ctx.said
+        if any(t.startswith("You drop") and "gold" in t for t in said) or gold <= self.gold0 - self.amt:
+            st = p.house_state()
+            st["banked"] = self.amt
+            st["t"] = time.strftime("%Y-%m-%d %H:%M")
+            p.house_save()
+            p.log("bank", banked=self.amt, purse=gold)
+            self.step = "out0"
+            return None
+        self.tries += 1
+        if self.tries > 10:
+            return ("failed", "the drop didn't show: " + "; ".join(said[-3:]))
+        return None
+
+    def _step_out0(self, p, ctx):
+        """out0: open the door to leave."""
+        w, door = ctx.w, ctx.door
+        p.cmd(f"open {direction(w.pos, door)}", "house: open the door to leave", hold=0.8)
+        self.step = "out1"
+        return None
+
+    def _step_out1(self, p, ctx):
+        """out1: out through the doorway, then close the door."""
+        w, door, inside, outside, said = ctx.w, ctx.door, ctx.inside, ctx.outside, ctx.said
+        if w.pos == outside:
+            p.cmd(f"custom c dir={direction(outside, door)}", "house: close the door", hold=0.8)
+            self.step = "closed"
+            return None
+        nxt = door if w.pos == inside else outside
+        self.tries += 1
+        if self.tries > 12:
+            return ("failed", "couldn't leave the house: " + "; ".join(said[-3:]))
+        if self.tries % 4 == 0 and w.pos == inside:
+            p.cmd(f"open {direction(w.pos, door)}", "house: open the door again", hold=0.8)
+        else:
+            p.cmd(f"walk {direction(w.pos, nxt)}", "house: out", hold=0.6)
+        return None
+
+    def _step_closed(self, p, ctx):
+        """closed: on record; a wilderness house: back to town, else done."""
+        hd, gold = ctx.hd, ctx.gold
+        st = p.house_state()
+        p.log("bank", banked=st.get("banked", 0), purse=gold)
+        if hd:
+            self.step = "back"
+            return None
+        return ("done", f"{self.name}: {st.get('banked', 0)} gold in the house, {gold} carried")
 
 
 class TownKit(Goal):
@@ -834,18 +1015,81 @@ class TownKit(Goal):
         self.sold = self.bought = 0
         self.identified = 0
         self.again = set()
+        # (created on the way: refactor-candidates E5 declares them, with the values their reads assumed)
+        self.withdrawn = False       # upgrade: the bank's gold taken (HouseBank withdraw)
+        self.fetched = False         # upgrade: the Restore a drained stat wants fetched from the tavern
+        self.last_sell = None        # the store of the last sale (one of an unknown stack taught: sell the rest)
+        self.id_bought = False       # identify: Identify scrolls bought
+        self.farmed = False          # buy: townfarmed for the Word of Recall (or decided not to, at night)
+        self.short = []              # buy: what the gold doesn't buy [(kind, n)] (finish reports it)
+        self.quaffed = set()         # buying: the Restore potions drunk
+        self.restock_waits = 0       # buying: waits for new stock (RESTOCK_WAITS at most)
+        self.recharged = set()       # buying: the devices recharged
+        self.recharge_bought = False  # buying: Scrolls of Recharging bought
+        self.enchanted = 0           # buying: Scrolls of Enchant Armor read
+        self.enchant_bought = False  # buying: Scrolls of Enchant Armor bought
+        self.stashed = False         # buying: the stash taken to the tavern (no house)
+        self.deposited = False       # buying: the gold (and the stash) into the house
+
+    # One method per step (refactor-candidates E5), in this order: the visit's stages run in sequence -- a stage that
+    # finishes sets the next and the next step runs in the same tick. Each takes the per-call ctx (w, now) and returns
+    # NEXT to go on, or what tick() returns. docs/goals-and-plans.md, the town visit.
+    KIT_STEPS = (
+        "_kit_where",            # in town (or on the house's tile, banking)
+        "_kit_count",            # the first tick: the visit counted, the supplies told
+        "_kit_sub",              # a sub-goal running (a Shop, HouseBank, StashFetch, TownFarm or Wait): its result
+        "_kit_settle",           # 1 s a step, nothing busy, the pack read
+        "_kit_withdraw",         # upgrade: the bank's gold (and a stash Restore) out of the house
+        "_kit_fetch",            # upgrade: a Restore waiting in the tavern
+        "_kit_upgrade",          # upgrade: wear/wield what the policy prefers; then sell
+        "_kit_upgrade_again",    # upgrade again (after Identify); then sell again
+        "_kit_sell",             # sell / sell again: one shop a tick; then identify / buy
+        "_kit_identify",         # identify: read Identify, or buy it; then upgrade again / buy
+        "_kit_buy",              # buy: townfarm when broke; the shopping list, room in the pack; then buying
+        "_kit_buying",           # buying: the shops, then BUYING_STEPS, then finish
+    )
+    # the buying stage, after the shops: one method per step, in this order (the last: finish)
+    BUYING_STEPS = (
+        "_buying_shop",          # the next shop of the plan
+        "_buying_upgrade",       # wear what was bought
+        "_buying_quaff",         # drink a Restore bought for a drained stat
+        "_buying_provision",     # fed and fuelled (provision_step)
+        "_buying_restock",       # an essential out of stock: wait 35 s for new stock (RESTOCK_WAITS)
+        "_buying_recharge",      # recharge an empty useful staff or wand (or buy the scroll)
+        "_buying_enchant",       # enchant worn armour back up (or buy the scrolls)
+        "_buying_stash",         # no house: the stash kinds to the tavern
+        "_buying_deposit",       # a house: the gold (and the stash) into it
+    )
 
     def tick(self, p):
-        w, now = p.w, gnow()
+        ctx = types.SimpleNamespace(w=p.w, now=gnow())
+        for name in self.KIT_STEPS:
+            r = getattr(self, name)(p, ctx)
+            if r is not NEXT:
+                return r
+        return None
+
+    def _kit_where(self, p, ctx):
+        """Plan town is for the town (the house's tile too, while banking there)."""
+        w = ctx.w
         # (m56: the house step walks to the wilderness tile, depth -1, and this check killed the visit there -- the
         # Opus Navigator's first `ask`)
         if w.in_dungeon or (w.depth and not isinstance(self.sub, HouseBank)):
             return ("failed", "plan town is for the town")
+        return NEXT
+
+    def _kit_count(self, p, ctx):
+        """The first tick: the visit counted (the review queue) and the supplies told."""
         if not self.counted:
             self.counted = True
             p.review_state()["town_visits"] += 1
             p.review_save()
             p.notify("tactic", f"plan town: came back with {p.supply_text()} (reserves counted)", news=True)
+        return NEXT
+
+    def _kit_sub(self, p, ctx):
+        """A sub-goal running: tick it; when it ends, its result into the log (sold, bought)."""
+        now = ctx.now
         if self.sub:
             r = self.sub.tick(p)
             if r is None:
@@ -857,27 +1101,50 @@ class TownKit(Goal):
             self.bought += sum(int(m) for m in re.findall(r"You bought .+? for (\d+) gold", r[1] or ""))
             self.sub, self.t = None, now
             return None
+        return NEXT
+
+    def _kit_settle(self, p, ctx):
+        """The pack and gold settle after each step: 1 s, nothing busy, the pack read."""
+        w, now = ctx.w, ctx.now
         if not waited(self.t, 1.0) or now < p.busy_until or w.inven_dirty or p.pending_use:
             return None             # (the pack and gold settle after each step)
+        return NEXT
+
+    def _kit_withdraw(self, p, ctx):
+        """upgrade: the bank first (HouseBank withdraw, and the stash kind a drained stat wants)."""
         # the bank first: the shopping needs the gold (HouseBank)
-        if self.stage == "upgrade" and not getattr(self, "withdrawn", False):
+        if self.stage == "upgrade" and not self.withdrawn:
             self.withdrawn = True
             if p.house_state().get("house") and (p.banked() or p.stash_wanted("house")):
                 self.sub = HouseBank("withdraw")   # (and the stash kind a drained stat wants)
                 return None
+        return NEXT
+
+    def _kit_fetch(self, p, ctx):
+        """upgrade: a drained stat's Restore waiting in the tavern (StashFetch)."""
         # a drained stat whose Restore waits in the tavern: fetch it first (bought only if it isn't there)
-        if self.stage == "upgrade" and not getattr(self, "fetched", False):
+        if self.stage == "upgrade" and not self.fetched:
             kind = p.stash_wanted("tavern")              # (the house's: fetched above)
             if kind:
                 self.sub = StashFetch(kind)
                 return None
             self.fetched = True
+        return NEXT
+
+    def _kit_upgrade(self, p, ctx):
+        """upgrade: wear/wield what the policy prefers before anything is sold; then sell."""
+        now = ctx.now
         if self.stage == "upgrade":
             # wear/wield what the policy prefers before anything is sold
             if p.upgrade_step():
                 self.t = now
                 return None
             self.stage, self.queue = "sell", p.town_sell_stores()
+        return NEXT
+
+    def _kit_upgrade_again(self, p, ctx):
+        """upgrade again: what Identify revealed may be worth wearing; then sell again."""
+        now = ctx.now
         if self.stage == "upgrade again":
             # what Identify revealed may be worth wearing (m26 identified a Ring of Protection [+12] and sold it
             # with a ring slot empty)
@@ -885,8 +1152,13 @@ class TownKit(Goal):
                 self.t = now
                 return None
             self.stage = "sell again"
+        return NEXT
+
+    def _kit_sell(self, p, ctx):
+        """sell / sell again: a Shop for the next store that buys something (one of an unknown stack sold: the rest at
+        the same shop); then identify (sell) or buy (sell again)."""
         if self.stage in ("sell", "sell again"):
-            last = getattr(self, "last_sell", None)
+            last = self.last_sell
             if last and last not in self.again and p.town_sells(last):
                 # one of an unknown stack sold taught the flavour: the rest, same shop
                 self.again.add(last)
@@ -904,6 +1176,12 @@ class TownKit(Goal):
                 self.stage = "buy"
             else:
                 self.stage = "identify"
+        return NEXT
+
+    def _kit_identify(self, p, ctx):
+        """identify: read Identify on the unknowns worth it, or buy the scrolls (within the gold the essentials
+        leave); then upgrade again (something identified) or buy."""
+        w, now = ctx.w, ctx.now
         if self.stage == "identify":
             # an Identify scroll for each unknown worth more than one, within the gold
             # that the essentials leave (m24: 3 scrolls when poor). Scrolls in hand are read at the idle
@@ -918,7 +1196,7 @@ class TownKit(Goal):
             have = p.kit_count("Identify")
             spare = w.ind.get("gold", [0])[0] - p.town_reserve()
             n = min(want - have, spare // max(1, p.price_of("Identify", 5)))
-            if n > 0 and not getattr(self, "id_bought", False):
+            if n > 0 and not self.id_bought:
                 self.id_bought = True
                 self.sub = Shop(5, buys=[("Identify", n, round(p.price_of("Identify", 5) * 1.5))])
                 self.sub.role = "pilot"
@@ -926,10 +1204,16 @@ class TownKit(Goal):
             self.stage = "upgrade again" if self.identified else "buy"
             self.queue = p.town_sell_stores() if self.identified else []
             return None
+        return NEXT
+
+    def _kit_buy(self, p, ctx):
+        """buy: short of a Word of Recall and its gold, townfarm by day; then the shopping list by priority, room in
+        the pack first, one Shop per store (buying)."""
+        w, now = ctx.w, ctx.now
         if self.stage == "buy":
             # Short of a Word of Recall and the gold for it, by day: townfarm the difference first (the user,
             # 2026-10-24: m27 ended broke; townfarm made ~120 gold a minute by day in m14, little at night)
-            if not self.queue and p.broke_for_recall() and not getattr(self, "farmed", False):
+            if not self.queue and p.broke_for_recall() and not self.farmed:
                 self.farmed = True
                 if w.is_day():
                     gold = w.ind.get("gold", [0])[0]
@@ -954,99 +1238,152 @@ class TownKit(Goal):
                 self.queue = order
                 self.stage = "buying"
             return None
+        return NEXT
+
+    def _kit_buying(self, p, ctx):
+        """buying: the plan's shops one by one, then BUYING_STEPS in order; when none acts, finish."""
         if self.stage == "buying":
-            if self.queue:
-                st = self.queue.pop(0)
-                self.sub = Shop(st, buys=self.plan[st])
-                self.sub.role = "pilot"
-                return None
-            # wear what was bought (m37: the Iron Helm the Navigator's buy list got stayed in the pack)
-            if p.upgrade_step():
-                self.t = now
-                return None
-            # drink the Restore bought for a drained stat (once each)
-            pot = p.restore_potion(self.__dict__.setdefault("quaffed", set()))
-            if pot:
-                self.quaffed.add(pot["name"])
-                p.cmd(f"custom q item={pot['item']}", f"town kit: quaff {pot['name']}", hold=0.8)
-                self.done_log.append(f"quaffed {pot['name']}")
+            for name in self.BUYING_STEPS:
+                r = getattr(self, name)(p, ctx)
+                if r is not NEXT:
+                    return r
+            return self.finish(p)
+        return NEXT
+
+    def _buying_shop(self, p, ctx):
+        """The next store of the plan (a Shop with its buys)."""
+        if self.queue:
+            st = self.queue.pop(0)
+            self.sub = Shop(st, buys=self.plan[st])
+            self.sub.role = "pilot"
+            return None
+        return NEXT
+
+    def _buying_upgrade(self, p, ctx):
+        """Wear what was bought (m37: the Iron Helm the Navigator's buy list got stayed in the pack)."""
+        now = ctx.now
+        # wear what was bought (m37: the Iron Helm the Navigator's buy list got stayed in the pack)
+        if p.upgrade_step():
+            self.t = now
+            return None
+        return NEXT
+
+    def _buying_quaff(self, p, ctx):
+        """Drink the Restore bought for a drained stat (once each)."""
+        now = ctx.now
+        # drink the Restore bought for a drained stat (once each)
+        pot = p.restore_potion(self.quaffed)
+        if pot:
+            self.quaffed.add(pot["name"])
+            p.cmd(f"custom q item={pot['item']}", f"town kit: quaff {pot['name']}", hold=0.8)
+            self.done_log.append(f"quaffed {pot['name']}")
+            self.t = now + 1.0
+            return None
+        return NEXT
+
+    def _buying_provision(self, p, ctx):
+        """Leave town fed and fuelled (provision_step)."""
+        now = ctx.now
+        # leave town fed and fuelled: no food is digested in town (dungeon.c), so eat rations to Fed here,
+        # and top the lantern up (the user, 10-25: no oil and one food stack in the pack)
+        if p.provision_step(self):
+            self.t = now + 1.5
+            return None
+        return NEXT
+
+    def _buying_restock(self, p, ctx):
+        """An essential still missing because the shop had none: wait 35 s for new stock and look again
+        (RESTOCK_WAITS)."""
+        w = ctx.w
+        # an essential still missing because the shop had none: wait for new stock and look again (the user, 10-28:
+        # shops restock every ~30 s -- wait for what's critical). Critical: the supply gate's minimums for the
+        # planned depth, and a Restore for a drained STR/DEX/CON (blows, HP); up to RESTOCK_WAITS x 35 s
+        gap = p.supply_gate(p.planned_depth(), True)
+        gap += [f"Restore {p.STAT_FULL[st]}" for st, (cur, top) in (p.seen_drained or {}).items()
+                if st in p.STAT_FULL and cur < top
+                and not any(f"Restore {p.STAT_FULL[st]}" in i["name"] for i in w.items())
+                and not p.stash_has(f"Restore {p.STAT_FULL[st]}")]
+        waits = self.restock_waits
+        if gap and waits < self.RESTOCK_WAITS and any("in stock" in l for l in self.done_log):
+            self.restock_waits = waits + 1
+            self.stage = "buy"
+            self.sub = Wait(35)
+            self.done_log.append(f"still missing {'; '.join(gap)}: waiting 35 s for new stock "
+                                 f"({self.restock_waits}/{self.RESTOCK_WAITS})")
+            return None
+        return NEXT
+
+    def _buying_recharge(self, p, ctx):
+        """Recharge an empty useful staff or wand, or buy the Scroll of Recharging."""
+        now = ctx.now
+        # recharge an empty useful staff or wand (a Scroll of Recharging from the Alchemist; the user, 10-28)
+        tried = self.recharged
+        todo = [d for d in p.recharge_wanted() if d["name"] not in tried]
+        dev = todo[0] if todo else None
+        if dev:
+            sc = p.find_item("Recharging", TV_SCROLL)
+            if sc:
+                tried.add(dev["name"])
+                p.cmd(f"custom r item={sc['item']} dir={dev['item']}",
+                      f"town kit: recharge {dev['name']} ({p.recharge_fail(dev):.0%} risk)", hold=1.0)
+                self.done_log.append(f"recharged {dev['name']}")
                 self.t = now + 1.0
                 return None
-            # leave town fed and fuelled: no food is digested in town (dungeon.c), so eat rations to Fed here,
-            # and top the lantern up (the user, 10-25: no oil and one food stack in the pack)
-            if p.provision_step(self):
-                self.t = now + 1.5
+            if not self.recharge_bought:
+                self.recharge_bought = True
+                self.sub = Shop(5, buys=[("Recharging", len(todo),
+                                          round((p.price_of("Recharging", 5) or 250) * 1.5))])
                 return None
-            # an essential still missing because the shop had none: wait for new stock and look again (the user, 10-28:
-            # shops restock every ~30 s -- wait for what's critical). Critical: the supply gate's minimums for the
-            # planned depth, and a Restore for a drained STR/DEX/CON (blows, HP); up to RESTOCK_WAITS x 35 s
-            gap = p.supply_gate(p.planned_depth(), True)
-            gap += [f"Restore {p.STAT_FULL[st]}" for st, (cur, top) in (p.seen_drained or {}).items()
-                    if st in p.STAT_FULL and cur < top
-                    and not any(f"Restore {p.STAT_FULL[st]}" in i["name"] for i in w.items())
-                    and not p.stash_has(f"Restore {p.STAT_FULL[st]}")]
-            waits = self.__dict__.get("restock_waits", 0)
-            if gap and waits < self.RESTOCK_WAITS and any("in stock" in l for l in self.done_log):
-                self.restock_waits = waits + 1
-                self.stage = "buy"
-                self.sub = Wait(35)
-                self.done_log.append(f"still missing {'; '.join(gap)}: waiting 35 s for new stock "
-                                     f"({self.restock_waits}/{self.RESTOCK_WAITS})")
+        return NEXT
+
+    def _buying_enchant(self, p, ctx):
+        """Enchant worn armour back up while the next point is >= 50% (enchant_plan), or buy the scrolls."""
+        w, now = ctx.w, ctx.now
+        # enchant worn armour back up (disenchantment), while the next point is >= 50% (enchant_plan)
+        plan = p.enchant_plan()
+        if plan:
+            sc = p.find_item("Enchant Armor", TV_SCROLL)
+            if sc:
+                it, c = plan[0]
+                p.cmd(f"custom r item={sc['item']} dir={it['item']}", f"town kit: enchant {it['name']} ({c:.0%})",
+                      hold=1.0)
+                self.enchanted = self.enchanted + 1
+                self.t = now + 1.0
                 return None
-            # recharge an empty useful staff or wand (a Scroll of Recharging from the Alchemist; the user, 10-28)
-            tried = self.__dict__.setdefault("recharged", set())
-            todo = [d for d in p.recharge_wanted() if d["name"] not in tried]
-            dev = todo[0] if todo else None
-            if dev:
-                sc = p.find_item("Recharging", TV_SCROLL)
-                if sc:
-                    tried.add(dev["name"])
-                    p.cmd(f"custom r item={sc['item']} dir={dev['item']}",
-                          f"town kit: recharge {dev['name']} ({p.recharge_fail(dev):.0%} risk)", hold=1.0)
-                    self.done_log.append(f"recharged {dev['name']}")
-                    self.t = now + 1.0
+            if not self.enchant_bought:
+                self.enchant_bought = True
+                price = p.price_of("Enchant Armor", 5) or 190
+                spare = w.ind.get("gold", [0])[0] - p.town_reserve()
+                n = min(int(round(p.enchant_scrolls_wanted())), max(0, spare // max(1, int(price * 1.1))),
+                        int(p.orders.get("enchant_max", 25)))
+                if n > 0:
+                    self.sub = Shop(5, buys=[("Enchant Armor", n, round(price * 1.5))])
+                    self.done_log.append(f"Enchant Armor x{n} for {len(plan)} piece(s)")
                     return None
-                if not getattr(self, "recharge_bought", False):
-                    self.recharge_bought = True
-                    self.sub = Shop(5, buys=[("Recharging", len(todo),
-                                              round((p.price_of("Recharging", 5) or 250) * 1.5))])
-                    return None
-            # enchant worn armour back up (disenchantment), while the next point is >= 50% (enchant_plan)
-            plan = p.enchant_plan()
-            if plan:
-                sc = p.find_item("Enchant Armor", TV_SCROLL)
-                if sc:
-                    it, c = plan[0]
-                    p.cmd(f"custom r item={sc['item']} dir={it['item']}", f"town kit: enchant {it['name']} ({c:.0%})",
-                          hold=1.0)
-                    self.enchanted = self.__dict__.get("enchanted", 0) + 1
-                    self.t = now + 1.0
-                    return None
-                if not getattr(self, "enchant_bought", False):
-                    self.enchant_bought = True
-                    price = p.price_of("Enchant Armor", 5) or 190
-                    spare = w.ind.get("gold", [0])[0] - p.town_reserve()
-                    n = min(int(round(p.enchant_scrolls_wanted())), max(0, spare // max(1, int(price * 1.1))),
-                            int(p.orders.get("enchant_max", 25)))
-                    if n > 0:
-                        self.sub = Shop(5, buys=[("Enchant Armor", n, round(price * 1.5))])
-                        self.done_log.append(f"Enchant Armor x{n} for {len(plan)} piece(s)")
-                        return None
-            # last: the stash kinds go to the tavern for the mission (Restore potions, Stone to Mud wands)
-            if not getattr(self, "stashed", False) and not p.house_state().get("house") and \
-                    any(p.is_stash_item(i["name"]) for i in w.items()):
-                self.stashed = True
-                self.sub = StashDeposit()
-                return None
-            # and last of all, the gold into the house: the dungeon has no use for it, its thieves do
-            if not getattr(self, "deposited", False) and p.house_state().get("house") and \
-                    (w.ind.get("gold", [0])[0] > p.BANK_FLOAT + 500 or any(p.is_stash_item(i["name"])
-                                                                         for i in w.items())):
-                self.deposited = True
-                self.sub = HouseBank("deposit")
-                return None
-            return self.finish(p)
-        return None
+        return NEXT
+
+    def _buying_stash(self, p, ctx):
+        """No house: the stash kinds go to the tavern for the mission (StashDeposit)."""
+        w = ctx.w
+        # last: the stash kinds go to the tavern for the mission (Restore potions, Stone to Mud wands)
+        if not self.stashed and not p.house_state().get("house") and \
+                any(p.is_stash_item(i["name"]) for i in w.items()):
+            self.stashed = True
+            self.sub = StashDeposit()
+            return None
+        return NEXT
+
+    def _buying_deposit(self, p, ctx):
+        """A house: the gold (and the stash) into it, last of all (HouseBank deposit)."""
+        w = ctx.w
+        # and last of all, the gold into the house: the dungeon has no use for it, its thieves do
+        if not self.deposited and p.house_state().get("house") and \
+                (w.ind.get("gold", [0])[0] > p.BANK_FLOAT + 500 or any(p.is_stash_item(i["name"])
+                                                                     for i in w.items())):
+            self.deposited = True
+            self.sub = HouseBank("deposit")
+            return None
+        return NEXT
 
     def finish(self, p):
         w = p.w

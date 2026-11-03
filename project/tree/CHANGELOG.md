@@ -27,6 +27,14 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.44.13 -- 2026-11-03 (session 11)
+No missions yet. No play change (refactor-candidates E5).
+- The town and plan goals' long ticks run one method per step/phase: Shop (`STATES`, `TRADE_STEPS`), HouseBank
+  (`TICK_STEPS`, `STEPS`), TownKit (`KIT_STEPS`, `BUYING_STEPS`), TripPlan (`TRIP_STEPS`); their 31 lazily created
+  flags are declared in `__init__`. Checks: tick() equivalence over 168 states (69 new town/plan states; the four
+  ticks 99-100% covered) byte-identical; only those ticks and `__init__`s changed bytecode; 145 unit cases. Live: a
+  Shop buy and quote, house withdraw and deposit (gold balanced).
+
 ## 2.44.12 -- 2026-11-03 (session 11)
 No missions yet. No play change (refactor-candidates E3).
 - `reflexes()` and `escape()` (combat.py) run one method per step, in the order of `REFLEX_STEPS` (23) and

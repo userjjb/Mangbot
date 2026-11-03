@@ -35,6 +35,16 @@ The commands that reach them (`plan town`/`plan trip`: `request_plan`/`request_t
   `(status, detail)` to end: `"done"`, `"failed"`, or (only `Dive`, when something interesting turns up)
   `"interesting"`. A goal keeps its own state in attributes; most are re-entrant per tick (no threads, no sleeps:
   they send one command with a `hold` and come back later).
+- **Long ticks, one method per step** (refactor-candidates E5). `Shop`, `HouseBank`, `TownKit` and `TripPlan` split
+  their `tick` into step methods `(self, p, ctx)`: `ctx` is a per-call namespace with what the steps share (`w`,
+  `now`, and values a step computes for later ones, set where the old code computed them); a step returns `NEXT`
+  (`town_goals.NEXT`) to go on, or what `tick` returns. A **state machine** whose states each end the tick dispatches
+  on its state attribute (`Shop.STATES`, `HouseBank.STEPS`); one whose stages fall through to the next in the same
+  tick runs an ordered tuple whose steps test their own stage or phase (`TownKit.KIT_STEPS`/`BUYING_STEPS`,
+  `TripPlan.TRIP_STEPS`). The flags these classes used to create on first use (`getattr(self, "x", default)`) are
+  declared in `__init__` with those defaults (so `goalstate`, which shows `vars(goal)`, lists them from the start).
+  The tables and the method names are given with each class below; `unit.py: town_plan_step_tables` checks that they
+  name existing methods.
 - **One at a time.** `Pilot.set_goal(g)` replaces the current goal (stopping the mover), stamps who set it (`role`:
   navigator / architect / pilot, read by `goal_origin` for the viewer and debts) and logs a `goal` record.
   `set_goal(None)` is the safe idle.
@@ -82,7 +92,7 @@ The commands that reach them (`plan town`/`plan trip`: `request_plan`/`request_t
 | `Resurrect` | `goal resurrect` (the only goal a ghost may give; read-only commands still work) | - | a ghost: `<` anywhere, one level a press; in town walks onto the Temple entrance (`4`), which resurrects (costs half the experience) | done resurrected; failed: no Temple on the map |
 | `Town` | `goal town`; the plan | - | from the wilderness back to town: walks off each sector by the edge it came in through (`Pilot.wild_trail`, else `edge_of` the arrival square) | done in town; failed in the dungeon or edge unknown |
 | `TownFarm` | `goal townfarm GOLD [MINUTES]` (default 10); TownKit when broke | target gold, minutes | in town: light on, then chase thieves within 8 squares first (item thieves before gold ones, hitting them directly), walk over dropped gold, kill the gold-dropping townspeople (`TARGETS`), else sweep the town in a zig-zag | done at the target, time up, or no gold gained in 2 minutes (townspeople thinned out / night) |
-| `Shop` | `goal shop N [list] [buy NAME:N[@MAX]] [buy NAME:+N] [sell NAME\|LETTER:N] [quote NAME]`; TownKit | store number, buys `(name, n, cap)`, sells `(index or name, n)`, list_stock | walks next to the door (unseen squares count, for night), enters, then: sells (from the end of the pack first; names resolved when their turn comes) with the item policy's refusals (unknown items, value policy, "probably special"; `!NAME` forces and the value lost goes into the Navigator's debt), learns a flavour sold unknown, logs a `sale` record with the re-listing price; quotes (offer and decline); buys the **cheapest** matching line, within the cap and the gold, continuing at the next price if the cheap stack runs out. `NAME:N` in `goal shop` means *have* N; `:+N` buys N more. Re-enters (twice) if its own command closed the store | done with a log of what happened; failed: not in town, store not on the map, can't reach, thrown out |
+| `Shop` | `goal shop N [list] [buy NAME:N[@MAX]] [buy NAME:+N] [sell NAME\|LETTER:N] [quote NAME]`; TownKit | store number, buys `(name, n, cap)`, sells `(index or name, n)`, list_stock | walks next to the door (unseen squares count, for night), enters, then: sells (from the end of the pack first; names resolved when their turn comes) with the item policy's refusals (unknown items, value policy, "probably special"; `!NAME` forces and the value lost goes into the Navigator's debt), learns a flavour sold unknown, logs a `sale` record with the re-listing price; quotes (offer and decline); buys the **cheapest** matching line, within the cap and the gold, continuing at the next price if the cheap stack runs out. `NAME:N` in `goal shop` means *have* N; `:+N` buys N more. Re-enters (twice) if its own command closed the store. In code: `STATES` -> `_walk`, `_enter`, `_trade`; the trade runs `TRADE_STEPS` (`_trade_record` the last sale's record, `_trade_quote`, `_trade_answer`, `_trade_left` back in or thrown out, `_trade_list`, `_trade_sell`, `_trade_fresh` a remainder's wait, `_trade_buy`, `_trade_leave`), one acting a tick | done with a log of what happened; failed: not in town, store not on the map, can't reach, stuck, thrown out |
 | `StashDeposit` | TownKit (no house only) | - | drops each stash item (below) on an empty square **inside** the tavern room (farthest from the door first; the entrance square holds no object, and drops from it land on the street where townsfolk take them); records square -> name in house.json `tavern.items` | done when none is carried; failed: no empty square seen inside |
 | `StashFetch` | TownKit, for a drained stat's Restore in the tavern | kind | lights up, walks the squares within 4 of the tavern entrance (item glyphs first) until the pickup reflex (`p.fetching`) takes the kind | done when in the pack; failed: none left / no tavern |
 | `HouseBank` | `house buy [Y,X]` (Architect only), `house deposit [KEEP]`, `house withdraw`; TownKit | mode buy/deposit/withdraw, keep, house | see "The gold bank" below | done: "N gold in the house, M carried" |
@@ -135,6 +145,14 @@ Always added: "no Word of Recall left" and "90 minutes". In town (unless `force`
    for with `Wait(3)` goals, and the reason is reported. More than 10 failures: plan **failed**.
 4. **town** (`then town`): runs `TownKit()`; when it ends, the plan is **done**.
 
+In code (E5), `TripPlan.tick` runs `TRIP_STEPS` in order, the first that ends the tick winning: the watchdogs first
+-- `_trip_xp0` (the trip's XP base), `_trip_paused` (a Navigator's goal pauses it), `_trip_recall_pending` (a recall
+under way: wait; an escape's recall means home), `_trip_until` (a condition holds: home), `_trip_climb_watch` (3
+minutes climbing: Word of Recall), `_trip_level_time` (`level_min`), `_trip_leave_max` (`LEAVE_MAX`), `_trip_quiet`,
+`_trip_goal_running` (a goal running: stop here) -- then one method per phase, each testing `self.phase`:
+`_phase_down` (which sets **level** on reaching the dungeon, so `_phase_level` runs in the same tick),
+`_phase_level`, `_phase_home`, `_phase_town`.
+
 The plan ends **done** at home (`then recall`), after the town kit (`then town`), or if the character turns up in
 town by another route (an escape recall: the reply names it and points to `why`). On end it logs `plan_end` and
 notifies `plan_done` / `plan_failed`. `plan` shows it, `plan stop` (or `stop`) ends it, `plan resume` ends the
@@ -178,6 +196,17 @@ It starts a `TownKit` goal, which works through **stages**, one sub-goal (`Shop`
    the planned depth: OK or MISSING, what couldn't be afforded, the step log); logs `town_kit`.
 
 On its first tick it counts a town visit for the item-review queue and notifies the supplies it came back with.
+
+In code (E5), `TownKit.tick` runs `KIT_STEPS` in order: `_kit_where` (town only), `_kit_count` (the first tick),
+`_kit_sub` (a sub-goal running: tick it; its result into the log), `_kit_settle` (1 s, nothing busy), then a step per
+stage, each testing `self.stage` -- `_kit_withdraw` and `_kit_fetch` (upgrade: the house's gold, a tavern Restore),
+`_kit_upgrade`, `_kit_upgrade_again`, `_kit_sell` (sell and sell again), `_kit_identify`, `_kit_buy`, `_kit_buying`. A
+stage that finishes sets the next and the next step runs in the same tick (upgrade -> sell -> identify; upgrade again
+-> sell again -> buy). `_kit_buying` runs `BUYING_STEPS` -- `_buying_shop`, `_buying_upgrade`, `_buying_quaff`,
+`_buying_provision`, `_buying_restock`, `_buying_recharge`, `_buying_enchant`, `_buying_stash`, `_buying_deposit` --
+and `finish` when none acts. Its once-only flags (`withdrawn`, `fetched`, `id_bought`, `farmed`, `recharge_bought`,
+`enchant_bought`, `stashed`, `deposited`, the `quaffed`/`recharged` sets, `restock_waits`, `enchanted`, `last_sell`,
+`short`) are declared in `__init__`.
 
 ### The shopping list (`Pilot.town_needs`, `town_shopping`)
 
@@ -287,6 +316,13 @@ inside the door), `outside` (where to stand to open it) and `box`, smallest firs
   kind a drained stat wants (`stash_wanted`), giving up after 4 tries.
 - `house` (no argument) shows the house, the banked gold and its timestamp; `banked()` feeds the status line's
   `(+N banked)`.
+- *In code* (E5): `tick` runs `TICK_STEPS` -- `_bank_house` (the house on record, town or its tile, one step a
+  second; `ctx.h`, `hd`, `door`, `inside`, `outside`), `_bank_cross` (off the town's edge to the tile; `ctx.cross`),
+  `_bank_back` and `_bank_home` (the steps `back` and `home`: into town, done), `_bank_turn` (`ctx.gold`, `ctx.said`,
+  a new step's tries, a new level stops the walk) and `_bank_door`, which dispatches `self.step` on `STEPS`: `go`
+  `_step_go`, `open` `_step_open` (buy: the price, then `h`), `bought` `_step_bought`, `in1` `_step_in1` (the
+  doorway), `in2` `_step_in2` (inside, door closed), `inside` `_step_inside` (the pile, `item_step`, the deposit),
+  `dropped` `_step_dropped`, `out0`/`out1` `_step_out0`/`_step_out1`, `closed` `_step_closed`; any other step fails.
 
 **The stash** = stat-restore potions (STR/INT/WIS/DEX/CON/CHR, not Restore Mana) and Wands of Stone to Mud
 (`is_stash_item`): kept in town during a mission. With a house they live there (above); without one, in the tavern

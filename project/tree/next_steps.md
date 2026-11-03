@@ -309,3 +309,7 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   100%/99% line coverage). Live A6, B3, A2K PASS. **For the user (behaviour, not done):** the moves out of reflexes
   (light/hunger/pickup -> policy_tick, food_watch -> tick); and the hunger step's `return self.wear_light(...)`
   skips adjacent/pickup/engage/rest for a tick when no light can be worn (A20's kind of early stop).
+- **2.44.13 -- E5**: Shop/HouseBank/TownKit/TripPlan ticks into step/phase methods, 31 lazy flags declared (pure;
+  168-state equivalence). Live: Shop buy + quote, house withdraw + deposit. The full `plan town`/`plan trip` were
+  not run live -- session 12's first mission is their test (HANDOFF 12 item 1). Oddities for the user (not fixed):
+  in refactor-candidates E5.
