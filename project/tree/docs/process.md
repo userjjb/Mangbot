@@ -54,7 +54,7 @@ Rules that cut across roles:
 A **mission** is one Navigator run of a fixed wall-clock budget (30 or 45 min) with character Dive04 on the local test
 server, scored and compared across Navigator models. Missions are numbered `mNN` (m60 is the latest, 2026-10-28);
 set-pieces from the harness use `sp-...` labels in the same records. The per-mission checklist below is distilled from
-`history/handoffs-s1-s9.md` (HANDOFF 8 "Per mission"), `next_steps.md` (HANDOFF 11 Part A "Routine") and `BRIEF-TEMPLATE.md`.
+`history/handoffs-s1-s9.md` (HANDOFF 8 "Per mission"), `next_steps.md` (HANDOFF 12, "From session 9": "Routine") and `BRIEF-TEMPLATE.md`.
 
 **Versions** (the user's decision, session 10): the code has a version `major.minor.patch` in `github/VERSION`
 (minor = play can differ, patch = it can't); `CHANGELOG.md` at the project top lists the versions and the missions

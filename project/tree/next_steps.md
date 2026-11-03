@@ -19,109 +19,104 @@ The handoff between Architect sessions: the current state, what the next session
   number with the same Navigator model and effort. Compare Navigator asks/questions, held or refused orders,
   report-to-action latency and the scorecards (BRIEF-TEMPLATE's "did you need HANDBOOK-reference.md?" answers too).
 
+
 ### >>> WHICH HANDOFF IS YOURS? <<<
-- **Session 10 is done** (2026-10-29: the Documentation in `docs/`, the cleanup list `docs/refactor-candidates.md`,
-  bug fixes A1-A3/A6/A8-A11; continued that afternoon: A4/A5/A7/A12-A14, group C, B4, `CHANGELOG.md` and versions:
-  2.37.0, 2.37.1, 2.38.0, 2.39.0 (A15/A18/A20/A23/A24), 2.40.0 (A16/A17/A19/A21/A22), 2.41.0 (rations and oil by need), 2.42.0 (mushrooms by expected value), 2.43.0 (F1-F4), 2.43.1 (B9-B18), then 2.44.0 (group D): review follow-ups, B1-B3/B5-B8, every docs/ file verified against the code; Part B
-  has it all). If the user asks for more cleanup from that list, HANDOFF 10 below has the rules.
-- **Session 11** (missions and implementation resume): read **"HANDOFF TO ARCHITECT 11"** below -- **Part B first**
-  (by session 10), then Part A (by session 9).
-- Sessions 1-9 are over; their handoffs are in `history/handoffs-s1-s9.md`.
+- **Session 10 is done** (2026-10-28 to 11-02): the Documentation (`docs/`), the cleanup list
+  (`docs/refactor-candidates.md`) worked through groups A-D and F plus E6/E7/E4/E9 and E1 steps 1-3, `CHANGELOG.md` and
+  versions (2.36.0 -> 2.44.7). Its full record: **"SESSION 10 RECORD"** at the bottom of this file. No missions ran.
+- **Session 11** (the refactor continues, **no missions**): read **"HANDOFF TO ARCHITECT 11"**.
+- **Session 12** (missions resume, **to test everything changed since m60**): read **"HANDOFF TO ARCHITECT 12"**.
+- Sessions 1-9 are over: `history/handoffs-s1-s9.md`; session 10's own brief: `history/handoff-s10.md`.
 
-### HANDOFF TO ARCHITECT 10: "Cataloging and housecleaning" (written 2026-10-28 ~20:00 by the session-9 Architect)
+### HANDOFF TO ARCHITECT 11: "Finish the refactor" (written 2026-11-02 by the session-10 Architect)
 
-**What this session is (the user, 10-28):** a special session. **No missions.** Three phases, in order:
-1. **The Documentation.** Go through everything that isn't data and isn't unmodified MAngband code, and write the
-   Documentation that catalogs all our functionality and says what each piece does -- so someone can read it and
-   understand the big picture *and* the components without reading the code. The user's examples: what does
-   `gearcmp` do? what are the functions in the `pilotctl` interface and what do they do? what are goals, plans, etc.?
-   what are the Architect, Advisor, Pilot, Navigator? Then a **condensed version** for future Architects and Advisors.
-2. **If context allows:** from that survey, identify what should be **refactored, removed, or broken up** (e.g.
-   pilot.py), and agree the list with the user.
-3. **Carry out** the agreed improvements.
+**What this session is (the user, 11-02):** continue session 10's work on the cleanup list. **No missions** (they
+resume in session 12). Read first: `docs/CONDENSED.md`, then **"SESSION 10 RECORD"** below (what changed and why),
+then `docs/refactor-candidates.md` group E. Start the inbox watcher first; remind the user of the USER TODO above.
 
-**In scope (not exclusive):** our modified MAngband code (the tool-mode client, the server changes), the Pilot
-(`github/tools/pilot/`), the viewer and observers (`tools/observe/`), the harness (`tools/harness/`), the rulebook
-(`tools/rulebook/`), `tools/shopcat/`, `tools/freeze.sh`, `tools/snapshot.sh`, the hooks (`.claude/hooks/inbox.sh`),
-the Navigator agent (`.claude/agents/navigator.md`), the project docs (roles.md, operations.md, design_*.md,
-HANDBOOK*.md, FIELD-NOTES.md, BRIEF-TEMPLATE.md, notes_*.md, restructure*.md, spells.md), the memory files, and
-how the Advisor's pieces plug in (its memos, `options_sim`/`scenarios` that geareval and the shadow estimator import)
--- **describe the Advisor's side, don't edit `Advisor/`** (its territory). **Out of scope:** data (runs/: mission
-transcripts, scorecards, decision/event logs, levels, reports) and unmodified upstream MAngband code (read it only
-where needed to explain ours).
+**Where E stands (version 2.44.7, git `restructure` 09ea62a):** E6, E7, E4, E9 done; **E1** steps 1-3 done --
+`pilot.py` went from 11,060 to **5,799 lines** with `daemon.py`, `report.py` (ReportMixin), `common.py`, `goals.py`,
+`town_goals.py`, `plan.py`, `gear.py` (GearMixin), `items.py` (ItemsMixin). **Left, in this order:**
+1. **E1 step 4, `town.py`** (a TownMixin): the `town_*` methods, `supply_minutes`/`supply_text`/`supply_watch` with
+   `TURNS_PER_DMIN`/`FOOD_MID`, `identify_candidates`, provisioning, price/house/stash state helpers.
+2. **E1 step 5, `combat.py`** -- **on its own, with care**: `reflexes`, `escape`, the engage/group/still/status/
+   unseen/choke ticks, Speed/Berserk/fear, `danger_why`, the watches, react rules, `has_ability`, `watch_character`,
+   `teleport_item`, `hard_fight`. **The Advisor's estimator mirrors `escape`, `group_tick`, `speed_start_tick`,
+   `berserk_tick`, `fear_cure` by name: they stay on Pilot (mixin inheritance keeps that)**; memo the Advisor when done.
+3. **E2** the command table (`do_request`'s ~600 lines of `if c == ...` -> a table of name, method, roles, where;
+   role checks in one place; pilotctl help from the table) -- with `commands.py`, E1's last module.
+4. **E3** split `reflexes()`/`escape()` into one method per numbered step (order kept in one list; the moves out of
+   `reflexes` are *behaviour*: ask the user); **E5** TownKit/Shop/HouseBank/TripPlan ticks into per-step methods (and
+   their own lazily created flags, left by E6); **E8** unit.py by family + fixtures, setpiece.py framework vs scenarios.
 
-**The inventory to start from (10-28):**
-- Pilot: `pilot.py` **10,558 lines** (the Pilot class, ~30 Goal classes, TripPlan, TownKit, HouseBank, the command
-  dispatcher, the status report), `geareval.py` 966, `world.py` 642, `mover.py` 604, `glyphs.py` 332,
-  `itemvalue.py` 318, `structures.py` 148, `pilotctl.py` 146, `shadow.py` 84, `replay_group.py` 71; shell:
-  `restart.sh`, `hotswap.sh`; docs: HANDBOOK.md 198, HANDBOOK-reference.md 569, FIELD-NOTES.md 137,
-  BRIEF-TEMPLATE.md 81.
-- Harness: `unit.py` 2,992 (112 cases), `setpiece.py` 1,492 (~40 live set-pieces), `dm.py` 219, `charsave.sh`, README.
-- Observe: `scorecard.py` 676, `watch.py` 567 (the user's viewer), `timeline.py`, `tokens.py`, `damage_mix.py`,
-  `record.py`, `latency.py`, `notes.py`, `shopmath.py`, `scribe.py`, `watch_mission.py`, `screen.py`, `wrap.sh`.
-- Rulebook: 34 files (CSV tables from the source, `build_monsters.py`).
-- MAngband changes: 15 files, +1520 lines since the tool client was added -- `src/client/c-tool.c` (+1087, the tool
-  mode), `main-tool.c`, `c-birth.c`, `c-init.c`, `c-pktlog.c`, `c-util.c`, `c-externs.h`, `client.c`,
-  `net-client.c`, `c-files.c`, `c-xtra2.c`, `Makefile.am`; server `net-server.c`, `store.c`, `tables.c` (and the
-  freeze build: operations.md "Test server"). `git diff --stat <first c-tool.c commit>^ HEAD -- src` lists them.
-- Git: branch `restructure`, ~360 commits; tag `pre-restructure`.
+**How each step was done and checked -- reuse it:**
+- A split script moves whole methods **verbatim** into the mixin module; `pilot.py` re-exports every module-level
+  name tools and unit cases use (`P.X`); no mixin imports pilot.py (shared helpers go to `common.py`).
+- Checks per step: `python3 harness/unit.py` (139, incl. `reports_match_golden`: the report text vs
+  `harness/golden/reports.txt`; regenerate with `--golden` only when a change is meant); a **dry start** of the real
+  `Pilot.__init__` on a fake client, old tree vs new; **`tick()` equivalence** over 28 scripted states, old vs new;
+  **pyflakes with no undefined names** (a goal's tick runs inside `except Exception`: a missed name fails silently as
+  "goal failed"); compare bytecode of moved methods if you can. The scripts were in session 10's scratchpad
+  (`e3_dry.py`, `e3_equiv.py`, `e3_split.py`) -- scratchpads are per session, so ask an agent to rewrite them.
+- Live: restart (Dive04 idle in town, **no set-piece running**), ~15 pilotctl commands, set-piece M2 (its staging often
+  fails on dark levels: retry), and for town code a real Shop goal (`goal shop 5 list`) and `house deposit` -- **never
+  test the town visit under a snapshot restore** (11-01: it lost the banked gold; docs/harness-rulebook-ops.md).
+- Commit + `tools/snapshot.sh` + tag a patch version (`docs/process.md` "Versions") + push; restart the Pilot.
+- Session 10 delegated each step to one agent (they read pilot.py; the main context stayed small): reuse that.
 
-**Suggested shape of the Documentation** (adjust as you see fit; the user cares about the content):
-`/projectnb/jbrcs/mangband/docs/` with an index (`README.md`: the big picture -- the roles, how a mission flows from
-brief to scorecard, the test vs live server, where state lives) and one file per component (tool client, Pilot core,
-goals, plans, the town kit and bank, gear evaluation, the command interface (`pilotctl`, every command: what it does,
-who may use it, what it refuses), observers and viewer, harness, rulebook, ops scripts, agents/hooks/memos). Then the
-condensed version (one file, ~2-3 pages) for Architects and Advisors. Point roles.md, operations.md and the memory at it
-(the SYNC RULE: memory pointers must match the docs).
+**Also open (not E):** A25 (set-pieces A2/A2I/A2L need a unique above clvl 29) waits for the separate test server;
+C14 (shrink HANDBOOK-reference) is an A/B test in session 12+ (TODO above); the user's TODOs from session 9 (the user
+playing the Navigator; a separate local test server; server-side test features -- HANDOFF 12 item 3).
 
-**How to read without burning context (the session-9 analysis, 10-28; use it):**
-- Session 9's output tokens: ~34% went to project code (thinking included, attributed per reply), ~24% to
-  investigating/running (much of it really code design), ~10% prose to the user, ~10% docs, ~9% scratch analysis code.
-- Its **input**: ~297M billed tokens, almost all cache reads -- the whole context (avg ~480k) re-read on each of 620
-  turns, no compaction. Of what was read in, ~44% was **our own tooling's code** (pilot.py above all), ~27% logs and
-  status, ~11% docs, ~7% MAngband source/data. Content read early is re-billed every later turn.
-- So: **survey big files by structure first** (`grep -n "^class \|    def \|if c == "` on pilot.py, the docstrings),
-  read only the parts you need, and consider **delegating per-component surveys to subagents** (Explore/general-purpose)
-  that return summaries -- the per-file reading then never enters the main context. Keep the main thread for writing.
-- `pilot.py` is the obvious split candidate (Goals, TripPlan/TownKit/HouseBank, the command dispatcher, the report,
-  the item policy, gear, supplies...); also: two `light_left` helpers (world/pilot), old handoff history in
-  next_steps.md (~1500 lines), HANDBOOK vs HANDBOOK-reference overlap, `shadow.py`/`replay_group.py` (still used?),
-  `tools/shopcat/`. Phase 2 decides; ask the user before removing anything.
+**State (11-02):** see "State now" at the end of SESSION 10 RECORD. The SGE job 8327794 (scc-va4) ends **Tue 11-03
+08:47** -- a new job needs the test server, the Pilot and the viewer restarted (operations.md).
 
-**Rules for phase 3 (the improvements):** behaviour must not change unless agreed; **all 112 unit cases pass after
-every step** (`python3 tools/harness/unit.py`); load Pilot changes only with `pilot/hotswap.sh` or `restart.sh` while
-Dive04 is idle in town; commit + `tools/snapshot.sh` + push after each step; keep the HANDBOOK/brief in step with any
-renamed command. Don't run missions (session 11 does).
+### HANDOFF TO ARCHITECT 12: "Missions: test everything since m60" (written 2026-11-02 by the session-10 Architect)
 
-**State at the end of session 9 (10-28 ~20:00):** Dive04 idle in town, clvl 29, 358/358, AC ~94 (armour re-enchanted),
-300 gold carried + **19,327 banked** in the wilderness house (tile north of town, door 60,129). Server, Pilot (all
-session-9 code loaded), viewer running; SGE job 8268425 (scc-pc4) ends **Thu 10-29 09:47** -- session 10 may run in a
-new job: check `pgrep -af "gdb -batch|pilot.py"` and operations.md for restarting. Start the inbox watcher first.
+**What this session is (the user, 11-02):** missions resume, **to test all the changes** of sessions 10 and 11 in
+real play. The last mission was **m60** (session 9, version ~2.34.0); since then 2.35-2.44.x (+ session 11's) changed
+a lot of the Pilot's item, supply, junk, stash, scorecard and command behaviour, and the code was split into modules.
+Read first: the SESSION 10 RECORD below, session 11's own record (it will add one), `CHANGELOG.md` (2.36.0 onwards),
+`docs/process.md` §3 (the mission checklist), `github/tools/pilot/BRIEF-TEMPLATE.md` (gear/stats are now fill-in
+fields), and Part "From session 9" below (Dive04, the model comparison, the routine).
 
-**The Advisor has already described its side for the Documentation: `memos/to_architect/2026-10-28-advisor-docs.md`**
-(read; quote or link it): its role and method (studies, Clerks, METHOD.md, STATUS.md), memo conventions, the files our
-tools import (`options_sim.py`, `scenarios.py`, the replays, the rulebook via `tools/rulebook/sync.sh`) and the
-estimator contract (`choose`, the player-dict keys). **Constraints for the refactor:** nothing in Advisor/ imports
-pilot.py/world.py -- except `data/rulebook/build_shops.py`, which imports **`tools/observe/shopmath.py`** (keep that
-path or tell the Advisor); **the logs are the real interface** (decisions/events/state.jsonl kinds and fields,
-levels/*.txt, scorecards, missions.json): keep their formats; `TICK_S = 0.625` (world.py) is mirrored in its replay.py;
-if escape()/group_tick/speed_start/berserk/fear functions are renamed, tell the Advisor (its POLICY_VERSION comment
-names them).
+**Before the first mission:**
+- Restart the test server, the Pilot and the viewer if the job changed (operations.md). The Architect's pilotctl
+  calls need **`export PILOT_ROLE=architect PILOT_TOKEN=$(cat /projectnb/jbrcs/mangband/runs/private/architect.token)`**
+  (a bare PILOT_ROLE is refused and raises `role_refused`); `mission start/end` are the Architect's only.
+- Check `status full` shows the expected version; `mission start` records it in missions.json.
+- The HANDBOOK/HANDBOOK-reference/FIELD-NOTES/navigator.md changed (B1-B8, B4): the Navigator's sources are current.
 
-**Session 11's handoff already exists** (below, Part A, by session 9). Anything session 10 wants session 11 to know
-goes in **Part B** of that handoff, marked as coming from session 10 -- don't rewrite Part A. Update the memory
-pointer (mangband-next-steps) at the end of session 10.
+**What to watch, in order of risk (each is new or changed and never seen in a mission):**
+1. **The first `plan town` is its own test** (2.44.0, D3/D10/D13): the stash is in `house.json` only (stash.json
+   retired); junk is one rule (union; **only the town's spellbooks** are junk for a warrior -- dungeon books are loot
+   worth thousands: watch that they're kept and sold); "better AC" by the gear evaluator; withdraw/deposit (the 300
+   reserve is normal). Watch the town visit closely; check `house` before and after.
+2. **Rations and oil by need** (2.41.0): spare food/flasks go for worthy loot in the dungeon (horizon: the expected
+   recall + 5 dmin, 40 dmin without a trip end); make-room eats and refuels first. Watch for "Food 0" or a dark lantern
+   late in a trip.
+3. **Mushrooms** valued by expected value (2.42.0); **D3's whole-word junk** (Cure Blindness mushrooms no longer junk);
+   auto-destroy now destroys any junk in the pack.
+4. **Supply notices** are one kind, `supplies` with `supply`/`level` (2.44.0 D14): the Navigator sees the same texts.
+5. **Emergency loop** counts escape actions only (A4); "already fleeing" alert (A21); `until wor<=1` refused (A18);
+   `order` all-or-nothing (A22); a failed override hunt charges fight debt (A23); kept `{cursed}` items survive (A15).
+6. **The module split** (E1): any "goal failed: error ..." or a traceback in pilot.log is a missed name -- report it.
+7. **Scorecards** (D8/D9): damage by monster now names uniques (2.44.1); values are what the Pilot believed. Compare
+   new cards only with cards made by the same code (`defs` in the card).
 
-### HANDOFF TO ARCHITECT 11 (missions and implementation resume)
+**Missions:** the user decides number, models and lengths. Suggested: first a supervised short mission (Sonnet- or
+Haiku-medium, 30 min, 700-800 ft) to shake out the town visit and the split; then the **C14 A/B baseline**: a few
+missions on the current HANDBOOK-reference (same model/effort), before any shrink (TODO above). Each mission: the
+checklist in docs/process.md §3, `observe/wrap.sh mNN` (refreshes the damage mix), a report, FIELD-NOTES lessons.
 
-#### Part A -- written 2026-10-28 ~20:00 by the session-9 Architect
+#### From session 9 (still current where session 10 didn't change it)
 
 **State (end of session 9; session 10 changes nothing in play):** Dive04 in town, clvl 29, 358/358, AC ~94, Battle Axe
 of Westernesse (FA, SI), Rings of Protection [+16]/[+12], Leather of Resistance, Boots of Stability; 300 gold carried +
 19,327 banked in the **wilderness house** (the tile north of town: walk off town's north edge at 1,130, arrive at
 64,130, door 60,129; operations.md "Houses and the gold bank"); the stash lives in that house (empty now).
 `max_depth` 800 (the user: keep). `runs/pilot/dive04/ask_unlimited` kept (the user). Missions run in session 9:
-m55-m60. Session 10 may have restructured the code: read its Part B first.
+m55-m60. Sessions 10-11 restructured the code: see the SESSION 10 RECORD.
 
 **Session 9 built** (details: VACATION-NOTES.md "Session 9 triage", design_gear.md, operations.md "Houses", the
 reports `runs/pilot/dive04/reports/2026-10-2[78]-mission5[5-9]*.md`, mission60):
@@ -147,7 +142,7 @@ m57 Sonnet-medium 94.0 (65%, $0.22); 30 min -- m58 Opus-medium 73.9 (63%, $0.40)
 $0.18), m60 Haiku-medium 47.1 (92%, $0.013); Haiku-low m43-m55 median 68.9. Sonnet-medium led twice; one mission each,
 level luck dominates. More interleaved missions would settle it (offered to the user).
 
-**Open items for session 11:**
+**Open items (from session 9, for session 12 unless done):**
 1. **Verify live** (built, not yet seen in a mission): `ask quiet` / `goal quiet` used by a Navigator; recharging; the
    restock waits; the flee replan after a phase (m59's case); the confusion clock reset; the house stash drop/fetch;
    `loadout shops`; older: the breeder-pin teleport, the blind staff escape, `react hunt`.
@@ -165,7 +160,8 @@ level luck dominates. More interleaved missions would settle it (offered to the 
    (Session 10, B17: **the full mission checklist now lives in `docs/process.md` §3** -- this line, HANDOFF 8's "Per
    mission" and VACATION-NOTES §5 were its pieces.)
 
-#### Part B -- from session 10
+
+### SESSION 10 RECORD (2026-10-28 to 11-02; formerly HANDOFF 11 Part B)
 
 *Session 10 ran in two chats on 2026-10-29: the original session (morning, SGE job 8268425) and "Architect 10
 parallel" (afternoon, job 8327794 on scc-va4, ends Tue 11-03 08:47), which carried on without the first chat's

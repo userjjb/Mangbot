@@ -1,25 +1,27 @@
 ---
 name: mangband-next-steps
-description: "READ FIRST - next_steps.md '>>> WHICH HANDOFF IS YOURS? <<<': session 10 done (docs/ + refactor list); session 11 resumes missions (HANDOFF 11, Part B first)"
+description: "READ FIRST - next_steps.md '>>> WHICH HANDOFF IS YOURS? <<<': session 10 done (2.44.7); session 11 = finish the refactor (no missions); session 12 = missions testing all changes"
 metadata:
-  node_type: memory
   type: project
-  originSessionId: 75300fb8-d685-4613-a748-bb6623db79b7
 ---
 
 Open `/projectnb/jbrcs/mangband/next_steps.md` and read **">>> WHICH HANDOFF IS YOURS? <<<"**:
-- **Session 10 is done** (2026-10-29): wrote the Documentation (`docs/CONDENSED.md`, `docs/README.md` + ten component
-  files) and the cleanup list `docs/refactor-candidates.md`; fixed the user-approved bugs A1-A3, A6, A8-A11 (dd2200d,
-  117 unit cases). Continued 10-29 afternoon (job 8327794): A4/A5/A7/A12-A14, group C, `CHANGELOG.md` + versions
-  (minor = play can differ, patch = can't; `github/VERSION` 2.44.7, tags vX.Y.Z; bump + CHANGELOG + tag every session).
-  Later: C3 moved to observe/study, C4 kept (live), B4 done, C14 deferred to an A/B test (TODO in next_steps.md). Then 2.38.0: review follow-ups, B1-B3/B5-B8, docs verified against the code. Then 2.39.0: A15/A18/A20/A23/A24 fixed. Then 2.40.0: A16/A17/A19/A21/A22(+F5); 2.41.0 (10-31): rations and oil by need (the user's play); 2.42.0: mushrooms by expected value; 2.43.0: F1-F4 (test-port defaults, pilotctl finds the Pilot, the Architect's token, mission Architect-only); 2.43.1: B9-B18 (text); 2.44.0: group D (junk union, town-only spellbooks junk, house.json stash, AC by geareval, `supplies` notice, D8/D9 scorecards). The 2.44.0 town visit is untested live. Never test plan town under a snapshot restore (11-01 incident). Group E under way (the user, 11-02): E6 (2.44.2), E7 (2.44.3), E4+E9 (2.44.4), E1 steps 1-3 (2.44.5-7) done, pilot.py 5,799 lines; next E1 town.py, then combat.py alone, then E2/E3/E5/E8 (method in next_steps.md Part B) module by module (state in next_steps.md Part B). A25 waits for the test server. **USER TODO** at the top of next_steps.md: the user reviews
-  the old handoffs (now `history/handoffs-s1-s9.md`); remind them at session start while it's open.
-- **Session 11** resumes missions and todos: "HANDOFF TO ARCHITECT 11" -- Part A by session 9, **Part B by session 10
-  (read it first: the docs, the fixes, the Navigator-facing HANDBOOK errors, the Architect's token for PILOT_ROLE=architect: runs/private/architect.token)**.
+- **Session 10 is done** (2026-10-28 to 11-02, ran in two chats: "Architect 10" and "Architect 10 parallel"): the
+  Documentation (`docs/`), the cleanup list `docs/refactor-candidates.md` worked through (A, B, C, D, F; E6/E7/E4/E9;
+  E1 steps 1-3: pilot.py 11,060 -> 5,799 lines), `CHANGELOG.md` and versions, now **2.44.7** (`github/VERSION`, git tags
+  vX.Y.Z on branch `restructure`). Its record: "SESSION 10 RECORD" at the bottom of next_steps.md.
+- **Session 11** (the user, 11-02): **finish the refactor, no missions** -- "HANDOFF TO ARCHITECT 11": E1 town.py, then
+  combat.py on its own (the Advisor's mirrored names stay on Pilot), then E2, E3, E5, E8; the per-step method and checks
+  are written there.
+- **Session 12**: **missions resume to test every change since m60** -- "HANDOFF TO ARCHITECT 12" (what to watch, the
+  first `plan town` is its own test, the C14 A/B baseline).
+- Remind the user of the USER TODO at the top of next_steps.md (review the old handoffs in `history/`).
 
-Git branch `restructure` (pushed). Dive04: clvl 29, max_depth 800, gold banked in its wilderness house (the tile north
-of town, door 60,129; operations.md "Houses and the gold bank"); `ask_unlimited` kept. SGE job 8327794 (scc-va4) ends Tue 11-03 08:47.
+Rules learned in session 10: the Architect's pilotctl calls need PILOT_ROLE=architect + PILOT_TOKEN (runs/private/
+architect.token); never restart the Pilot during a set-piece; never test the town visit under a snapshot restore
+(it lost the banked gold once); per version: docs in step, VERSION, CHANGELOG, tag, push, Pilot restart
+(docs/process.md "Versions"). Dive04: clvl 29, 300 carried + 19,327 banked in the wilderness house, idle in town.
 
 **Why:** continuity across chats and jobs. **How to apply:** find your handoff by session number; at the end of a
-session, write the next handoff at the top of next_steps.md and update this memory. Related: [[mangband-project-map]],
-[[mangband-roles]], [[mangband-inbox-watcher]], [[mangband-relay-agent-friction]]
+session, write the next handoff and update this memory. Related: [[mangband-project-map]], [[mangband-roles]],
+[[mangband-inbox-watcher]], [[mangband-relay-agent-friction]]
