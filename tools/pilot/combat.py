@@ -619,11 +619,14 @@ class CombatMixin:
         return NEXT
 
     def _reflex_hunger(self, ctx):
-        """4. Hunger
-        (not just "nothing on the map this instant": mission 9 ate a ration
-        with Bullroarer a step out of view)"""
+        """4. Weak from hunger: eat (a Scroll of Satisfy Hunger without food), or recall with neither. Hungry is
+        policy_tick's (2.45.2). (Hungry used to wait for no monster in view for 5 s: mission 9 ate a ration with
+        Bullroarer a step out of view.)"""
         w, now = ctx.w, ctx.now
-        if w.hunger <= 2 and not w.monsters and now - w.monster_seen_t > 5 and now - w.last_hit_t > 5:
+        # (2.45.2, the user: Hungry isn't an emergency -- a battle turn spent eating is wasted -- so it is
+        # policy_tick's, at a safe moment; Weak (1) and fainting (0) stay here and no longer wait for 5 s without a
+        # monster in view: Weak eats unless a monster is adjacent, fainting eats regardless)
+        if w.hunger <= 1 and (w.hunger <= 0 or not w.adjacent_monsters()):
             food = w.items(tval=TV_FOOD)
             # one meal, then wait for the hunger indicator to catch up (mission 13
             # ate 2 rations in a row: 3 -> 1, "Full", no news)

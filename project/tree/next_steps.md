@@ -91,8 +91,10 @@ stop, the escape walk taking its stairs (and finishing after its emergency), the
   change with no bug behind it (refactor-candidates E3).
 - Decided 11-03 (2.45.1): the summoner hold lets the later reflexes run (not engage); the hunt check refuses a
   disenchanter whose expected loss exceeds the kill's worth. Open: a plus is valued at its shop price (100 gold, flat,
-  as the server's object_value), not its combat worth (geareval) -- the user asked (11-03); the reflex moves: being
-  discussed with the user.
+  as the server's object_value), not its combat worth (geareval) -- the user asked (11-03); the reflex moves:
+  decided 11-03 (2.45.2): only Hungry moved (to policy_tick), Weak stays a reflex and eats with monsters in view;
+  light and pickup stay. **Watch in session 12:** pickup mid-fight (the user: monitor whether it causes issues); a
+  character Weak in a fight now eats there (unless a monster is adjacent).
 - **Watch in session 12:** the hunt check is more permissive since 2.45.0 (fight_sim gets the derived totals): it
   now ALLOWS Khim for Dive04 (~28 turns, ~138 HP of 358) and a Hill giant at 80% HP.
 
@@ -351,5 +353,5 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   watcher; restart the test server (with `MANGBAND_FREEZE_FILE`), Dive04's Pilot (`tools/pilot/restart.sh Dive04`)
   and the viewer per operations.md; check `status full` says Pilot v2.45.0 and `house` shows 19,322 banked.
 - **11-03 07:34, resumed in SGE job 8406367 (scc-va3, ends Sat 11-07 19:55):** the old job ended 07:32 (savefile
-  from 07:25, Dive04 idle in town); restarted the test server (gdb, freeze-enabled), Dive04's Pilot (v2.45.0) and
+  from 07:25, Dive04 idle in town); restarted the test server (gdb, freeze-enabled), Dive04's Pilot (v2.45.0; now 2.45.2) and
   the viewer (`tmux -L mang attach -t watch`). Dive04 358/358, 300 gold + 19,322 banked.

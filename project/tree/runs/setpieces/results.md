@@ -205,3 +205,4 @@
 - 2026-11-03 08:15:46 **A8w** FAIL (walked away FAIL, no Word of Recall read FAIL, HP >= 80%) `A8w-20261103-081546.json`
 - 2026-11-03 08:19:39 **A8w** FAIL () `A8w-20261103-081939.json`
 - 2026-11-03 08:25:48 **A8w** PASS (walked away, no Word of Recall read, HP >= 80%) `A8w-20261103-082548.json`
+- 2026-11-03 08:43:55 **A6** PASS (at most 3 Phase Door, Phase Door never runs out, lowest HP >= 40%) `A6-20261103-084355.json`

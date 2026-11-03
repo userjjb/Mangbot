@@ -593,6 +593,15 @@ class ItemsMixin:
                 w.flag("blind") or w.flag("confused"):
             return False
         self.policy_t = now
+        # 0-. Hungry (not Weak: the reflex's): eat at a safe moment (2.45.2, the user: not an emergency, a battle turn
+        # spent eating is wasted); one meal, then wait for the indicator (mission 13 ate 2 rations in a row)
+        if w.hunger == 2:
+            food = w.items(tval=TV_FOOD)
+            if food and now - self.eat_t > 10:
+                self.eat_t = now
+                self.cmd(f"eat {food[0]['item']}", f"hungry ({w.hunger}), a safe moment", hold=1.0)
+                self.notify("tactic", f"hungry: ate {one_of(food[0]['name'])}")
+                return True
         # 0. a drained STR/DEX/CON with its Restore in the pack: drink it now, the fight over (never mid-fight: m42's
         # Navigator quaffed one next to the Giant red ant and was drained again, ~480 gold lost) -- the reason a
         # spare Restore is carried at all (the user, m43: "why bring the restore potions?")

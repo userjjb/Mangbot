@@ -482,3 +482,42 @@ def escape_walk_outlives_its_emergency():
         out["stuck"] == (True, 0, ["rest"], "NoneType") and out["other walk"][:3] == (False, 0, []) and \
         out["new level"][:3] == (False, 0, [])
     return ok, f"{out}"
+
+
+@case
+def hungry_waits_for_a_safe_moment_weak_eats_now():
+    """2.45.2 (the user): Hungry isn't an emergency -- policy_tick eats at a safe moment, the reflex doesn't (not with a
+    monster in view, nor after the fight). Weak eats in the reflex even with a monster in view (it used to wait 5 s
+    with none), unless one is adjacent; fainting (0) eats even then."""
+    import types
+    import combat
+    orc = (22, 26, BYNAME["cave orc"])
+
+    def make(hunger, monsters=(), adjacent=False):
+        p = pilot(hp=300, pack=[("3 Rations of Food", 80)], monsters=list(monsters))
+        w = p.w
+        w.hunger, w.monster_seen_t, w.last_hit_t = hunger, (P.gnow() if monsters else -99.0), -99.0
+        w.flag = lambda k: False
+        w.adjacent_monsters = (lambda: [orc]) if adjacent else (lambda: [])
+        p.goal, p.busy_until, p.eat_t, p.policy_t = None, 0.0, -99.0, -99.0
+        p.sent = []
+        p.cmd = lambda line, why, hold=0.4: p.sent.append(line)
+        p.notify = lambda *a, **k: None
+        return p
+
+    def reflex(p):
+        ctx = types.SimpleNamespace(w=p.w, o=p.orders, now=P.gnow(), mons_near=[])
+        return p._reflex_hunger(ctx) is not combat.NEXT and any(s.startswith("eat ") for s in p.sent)
+    r = {"hungry, orc in view: reflex": reflex(make(2, [orc])),
+         "hungry, alone: reflex": reflex(make(2)),
+         "weak, orc in view: reflex": reflex(make(1, [orc])),
+         "weak, orc adjacent: reflex": reflex(make(1, [orc], adjacent=True)),
+         "fainting, orc adjacent: reflex": reflex(make(0, [orc], adjacent=True))}
+    q = make(2)
+    r["hungry, alone: policy_tick"] = bool(q.policy_tick(P.gnow())) and any(s.startswith("eat ") for s in q.sent)
+    q = make(2, [orc])
+    r["hungry, orc in view: policy_tick"] = bool(q.policy_tick(P.gnow())) and any(s.startswith("eat ") for s in q.sent)
+    want = {"hungry, orc in view: reflex": False, "hungry, alone: reflex": False, "weak, orc in view: reflex": True,
+            "weak, orc adjacent: reflex": False, "fainting, orc adjacent: reflex": True,
+            "hungry, alone: policy_tick": True, "hungry, orc in view: policy_tick": False}
+    return r == want, "; ".join(f"{k}: {v}" for k, v in r.items())

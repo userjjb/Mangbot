@@ -156,7 +156,7 @@ them at their kind's cost).
 ## 4. Identify and flavour learning
 
 **`policy_tick`** (every 3 s at a safe moment: no monsters in view, not hit for 8 s, HP >= 50%, not blind/confused,
-not fleeing/recalling/recovering/shopping) runs, in order: quaff a Restore for a drained STR/DEX/CON; fetch a unique's
+not fleeing/recalling/recovering/shopping) runs, in order: eat when Hungry (2.45.2; Weak is the hunger reflex's); quaff a Restore for a drained STR/DEX/CON; fetch a unique's
 drop; fetch nearby gold; `identify_step`; `upgrade_step`.
 
 **`identify_step(minimum=20)`**: with a Scroll of Identify or a charged Staff of Perception, identify the best
