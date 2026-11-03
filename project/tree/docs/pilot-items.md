@@ -79,7 +79,8 @@ by a unit test. The old `kinds.csv` and its fallback were removed in session 10 
 
 ## 2. Pickup and loot
 
-**Pickup** happens in the tick (`pickup` order `all`; anything else turns it off): after a step, a recent
+**Pickup** happens in the tick (the pickup reflex, `_reflex_pickup` in combat.py; `pickup` order `all`; anything else
+turns it off; not with a monster adjacent or in a store): after a step, a recent
 `You see X` message for the square underfoot is judged, then the Pilot stays (`custom ,`) to pick it up. Skipped:
 
 - known junk (`is_junk`, below): left, and destroyed where it lies at a quiet moment (`destroy_floor_junk`, `k` with the
@@ -101,7 +102,7 @@ by a unit test. The old `kinds.csv` and its fallback were removed in session 10 
 5. **Pack full**: first use something up (a flask into the lantern: a lone one under 14000 turns, from a bigger stack
    only when the lantern takes a whole flask (<= 7500 turns); food eaten, a lone item first, if it won't make us
    Gorged), then destroy the cheapest item by `pack_value` if the find is worth > 1.5x it + 5 (a unique's
-   drop may push out only things under `UNIQUE_DROP_BUMP` = 50). Otherwise: "left NAME: pack full and nothing cheaper",
+   drop, whatever its estimate, may also push out anything under `UNIQUE_DROP_BUMP` = 50). Otherwise: "left NAME: pack full and nothing cheaper",
    once per item and level.
 
 **`pack_value(it)`** (what an item is worth to the pack when making room): **priceless** (never destroyed for room) =
@@ -190,7 +191,8 @@ items become `ability_sources`, which are never sold, dropped or destroyed for r
 
 ## 5. Wearing upgrades
 
-**`upgrade_step`** (from `policy_tick`; one change per call; off with `order autowear=off`):
+**`upgrade_step`** (from `policy_tick`; one change per call; off with `order autowear=off`; the code numbers these
+steps 2-6, as gear-and-estimator.md does):
 
 1. **Weapon**: `weapon_table` lists every carried weapon's blows (`weapon_blows`, the server's warrior blow table at
    current STR/DEX) and damage per round (`weapon_damage`: dice average + to-dam, x blows, read by `geareval.Item` since D6; a brand from

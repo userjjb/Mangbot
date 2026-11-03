@@ -117,7 +117,7 @@ seconds with `quiet for N s`.
 | Source | Condition |
 |---|---|
 | `asks.jsonl` | any new line: `NAV ASK: {...}` (a Navigator question; answer with `pilotctl answer ID "text"`) |
-| `pilot.log` | a Python traceback's exception line (`TypeError: ...`, with the innermost `tools/` frame as `at pilot.py line N in fn`), except `BrokenPipeError`/`ConnectionResetError` in a control-socket request (a `pilotctl` client hung up); or the Pilot's `client exited` line |
+| `pilot.log` | a Python traceback's exception line (`TypeError: ...`, with the innermost `tools/` frame as `at FILE line N in fn`, e.g. `at combat.py line N in fn`), except `BrokenPipeError`/`ConnectionResetError` in a control-socket request (a `pilotctl` client hung up); or the Pilot's `client exited` line |
 | `decisions.jsonl` `kind: escape` | any escape except `escape: wor_travel` (a plain trip recall) |
 | `kind: gear_eval` | a gear evaluator swap |
 | `kind: plan_end` | the Navigator's plan (town/trip) ended |
@@ -295,8 +295,9 @@ Finds HP drops in `decisions.jsonl` (consecutive records with `hp` and `depth`, 
 depth in LO-HI ft, in the last DAYS days) and splits each over the attack messages in `events.jsonl` around it
 (0.6 s before to 0.2 s after). Since 2026-11-01 (2.44.0, D8) this is `logs.damage` -- one attribution shared with
 the scorecard's `damage_by_monster` (rows `t, amount, category, monster, depth`; the mix sums them by category);
-the output is unchanged. Gotcha: uniques' messages ("Ibun, Son of Mim hits you") have no "The", so they match no
-pattern and their damage goes to `other` (the card: `unattributed`). Melee blows are split by the attacker's blows in the rulebook: its share of
+the output is unchanged. Since 2.44.1 a unique's message with no "The" ("Ibun, Son of Mim hits you") counts as its
+melee (any subject that is a monster race does); a subject that is no race (a dart trap) goes to `other` (the card:
+`unattributed`). Melee blows are split by the attacker's blows in the rulebook: its share of
 HURT/SHATTER blows goes to `hurt` (AC cuts it twice: hit chance and damage), the rest to `melee_other`. Breaths,
 bolts, balls and traps go to their element (`fire, cold, acid, elec, pois, lite, dark, shard, nexus, sound, nether,
 chaos, disen`); arrows, magic missiles and drops with no message (poison, cuts, unseen spells) to `other`.
@@ -361,7 +362,8 @@ Market (store index 6) asks x3 and pays /3.
 | `fair_pay(relist, owner, chr, race)` | what the shop should have paid for an item it re-lists at `relist` (relist x buy / sell, /9 at the Black Market) |
 | `SHOP_CUT`, `BUYERS`, `pay_cut(tval, chr, owners_seen, race, default)` | what a shop pays of an item's value: the best of the shops that buy the tval (`BUYERS`, by the Pilot's store numbers 1-7, never the Black Market), each by the owner last seen there, else that shop's average owner, at this CHR; `SHOP_CUT` (0.38) when none buys it. Moved from `Pilot.pay_cut` (D9, 2026-11-01) so the Pilot and the scorecard share one rule |
 
-Importers: `pilot.py` (the shop cut used in item values, sale records' fair pay), `scorecard.py`,
+Importers: the Pilot (`pilot.py`, `items.py`, `gear.py`, `town.py`, `town_goals.py`: the shop cut used in item
+values, sale records' fair pay), `scorecard.py`,
 `harness/unit_town.py` and `harness/unit_items.py` (tests, run by `unit.py`), and the Advisor's `Advisor/data/rulebook/build_shops.py`, which imports it by the
 absolute path `/projectnb/jbrcs/mangband/github/tools/observe` -- **don't move or rename it**. The Advisor checked
 it against every identified sale: within 1 gold.

@@ -14,7 +14,7 @@ background, never acting) in [gear-and-estimator.md](gear-and-estimator.md); `pi
 [commands.md](commands.md).
 
 **Where the code is** (E1 step 5): the methods in this file live in `tools/pilot/combat.py` as `CombatMixin`, still
-`Pilot`'s names (`class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin)`; the Advisor's estimator
+`Pilot`'s names (`class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, CommandsMixin)`; the Advisor's estimator
 mirrors `Pilot.escape`, `group_tick`, `speed_start_tick`, `berserk_tick` and `fear_cure` by name): `reflexes` and
 `escape`, each running one method per step in the order of `REFLEX_STEPS` / `ESCAPE_STEPS` (E3; §2 and §3 name each
 step's method), `escape` (with `emergency_loop`, `phase_futile`, `escaping_to_stairs`, `kill_caster_step`,
@@ -32,7 +32,7 @@ calls the confusion pair, `watch_tick` the watches, `act_tick` `reflexes` and `r
 `commands.py` (`CommandsMixin`, E1 step 6: `cmd_react`, the `monster` entry of the command table, `monster_info`,
 `drainers_info`, `hunt_refusal`, `uniques_killed`; commands.md). Elsewhere: `phase_item`, `find_item`,
 `keep_light`/`town_light`, `watch_weapons`/`watch_abilities` in `items.py`; `supply_watch` in `town.py`; the shadow
-decisions and duel estimates in `gear.py`; the escape goals in `goals.py`.
+decisions, the duel estimates (`fight_sim`) and `disenchant_cost` in `gear.py`; the escape goals in `goals.py`.
 
 ## 1. Where it runs in the tick
 
@@ -74,7 +74,7 @@ starts with that number.
 | 3 | Hard-fight start | `hard_fight()`: a unique or a monster within 5 levels of ours adjacent, or 2+ adjacent at < 75% HP | `speed_start_tick`: a Potion of Speed (not if already fast; once per 30 s). Then `berserk_tick`: Berserk Strength (same test, once per 30 s). `hard_fight_shadow` logs the estimator's view first. | `_reflex_hard_fight` |
 | 4 | Status cures | `status_tick` (§2.3) | The cheapest potion that cures stun, confusion, blindness or poison. | `_reflex_status` |
 | 5 | Arrival into danger | < 6 s on a new level, standing on stairs | Take the stairs back if `arrival_pack` (4) monsters within 5 levels of ours are within 7 squares, or a danger (`danger_why`) is in view (with `danger` in `stop_on`). `danger_avoided` news. | `_reflex_arrival` |
-| 6 | Danger in view | a monster that `danger_why` flags, within 12 squares (or listed by the server but not yet on the map) | **Exception:** slow casters with weak melee (no faster than us, average and worst melee < HP/8) and stairs > 8 away are *not* fled: walking away gives them free casts (`danger_seen` alert says "fight it or recall"). **Summoners only**, HP ≥ 50%, 3+ squares away, no faster, nothing summoned yet, and walking away hasn't failed on this level (`walk_away_ok`): goal `WalkAway`. Otherwise goal `Flee` (`danger_seen` alert). There is a 10 s gap between flees. The flee is skipped if the Navigator ordered a hunt in the last 2 minutes (`hunt_ordered`). If a flee just failed, `flee_failed` runs again. A summoner listed before its map position is known gets up to 1.5 s for the map to place it. (Since 2.45.1 the later reflexes run during that wait; only the summoner decision waits.) | `_reflex_danger_in_view` |
+| 6 | Danger in view | a monster that `danger_why` flags, within 12 squares (or listed by the server but not yet on the map) | **Exception:** slow casters with weak melee (no faster than us, average and worst melee < HP/8) and stairs > 8 away are *not* fled: walking away gives them free casts (`danger_seen` alert says "fight it or recall"). **Summoners only**, HP ≥ 50%, 3+ squares away, no faster, nothing summoned yet, and walking away hasn't failed on this level (`walk_away_ok`): goal `WalkAway`. Otherwise goal `Flee` (`danger_seen` alert). There is a 10 s gap between flees. The flee is skipped if the Navigator ordered a hunt in the last 2 minutes (`hunt_ordered`). If a flee just failed, `flee_failed` runs again. A summoner listed before its map position is known gets up to 1.5 s for the map to place it. (Since 2.45.1 the later reflexes run during that wait, except engage (`ctx.summoner_hold`); only the summoner decision waits.) | `_reflex_danger_in_view` |
 | 7 | Unseen attacker | `unseen_tick` (§2.4) | Flee to known stairs, or advise a recall. | `_reflex_unseen` |
 | 8 | Choke point | order `choke=on`; 3+ monsters within 5 levels of ours, within 10 squares; we're in the open, not on stairs, not fleeing | `choke_tick`: walk to a corridor square (best `choke_tier`) within 10 steps, further from the pack's centre, and hold it up to 25 s so they come one at a time. | `_reflex_choke` |
 | 9 | Summon trap | "You are enveloped in a cloud of smoke" in the last 2 s, not blind or confused | Phase Door at once (`@r1` first; `emergency`). | `_reflex_summon_trap` |
@@ -83,7 +83,7 @@ starts with that number.
 | 12 | Stationary monsters (molds, jellies, eyes) adjacent | NEVER_MOVE adjacent, not the hunt target | `stairs_beside_still`: the wanted stairs are a step away and these monsters are harmless for one turn, so take the stairs. `still_fight_tick` (§2.5): kill it if it blocks the way and is killable, or flee a strong disenchanter. Otherwise step away (`retreat_step` reach 6, else `sidestep`). | `_reflex_still` |
 | 13 | Repeat fearers | a mobile monster that frightens again and again, within 7; not during Flee or Recall | `fearer` alert once per level; Phase Door if it is within 2 levels of ours and any monster is adjacent (every 2.5 s at most); otherwise retreat. | `_reflex_fearers` |
 | 14 | Light | `town_light`, `keep_light` (§5) | Skipped with a monster adjacent, **unless we have no light at all** in the dungeon. | `_reflex_light` |
-| 15 | Hunger | hunger ≤ 1 (Weak; since 2.45.2 Hungry, 2, is `policy_tick`'s, at a safe moment -- the user: a battle turn spent eating when not needed is wasted), no monster adjacent (fainting, 0: even then) -- it no longer waits for 5 s without a monster in view | Eat (once per 10 s). No food: read Satisfy Hunger only when Weak (≤ 1), because it fills you to Gorged. Neither, and Weak in the dungeon: goal `Recall` (`supplies`, level `recalling`). While it waits (a meal under 10 s ago, or Hungry with only scrolls) the later steps still run (A20, 2.39.0). Weak with only scrolls and no light worn: `wear_light` puts the best light in the pack on (that ends the call); with no light to put on, the later steps still run too (2.45.0; it used to return there). | `_reflex_hunger` |
+| 15 | Hunger | hunger ≤ 1 (Weak; since 2.45.2 Hungry, 2, is `policy_tick`'s, at a safe moment -- the user: a battle turn spent eating when not needed is wasted), no monster adjacent (fainting, 0: even then) -- it no longer waits for 5 s without a monster in view | Eat (once per 10 s). No food: read Satisfy Hunger only when Weak (≤ 1), because it fills you to Gorged. Neither, and Weak outside town: goal `Recall` (`supplies`, level `recalling`). While it waits (a meal under 10 s ago) the later steps still run (A20, 2.39.0). Weak with only scrolls and no light worn: `wear_light` puts the best light in the pack on (that ends the call); with no light to put on, the later steps still run too (2.45.0; it used to return there). | `_reflex_hunger` |
 | 16 | **Adjacent monster** | any adjacent | Stop the mover (except during Goto/Flee) and stop resting. Below `think_hp`: `fight_going_badly` alert (once per 10 s). With 2+ adjacent and one a thief (EAT_ITEM/EAT_GOLD blows), hit the thief first (item thieves before gold thieves). Otherwise hold, so auto-retaliate fights. A Goto or Flee goal keeps moving instead. | `_reflex_adjacent` |
 | 17 | Pickup / auto-destroy | standing on an item | Belongs to the item policy ([pilot-items.md](pilot-items.md)). While fleeing (Flee, BandLeave, WalkAway) with monsters in view, only items worth 500 or more are picked up. | `_reflex_pickup`, `_reflex_pack` |
 | 18 | **Engage** | `engage_tick` (§2.2) | Walk to a weak monster a few steps off and fight it. | `_reflex_engage` |
@@ -105,7 +105,8 @@ actually lost over the last 3 s, that figure is used instead. Tiers, against **c
 ### 2.2 Engaging on the way (`engage_tick`)
 
 While exploring or diving (or with no goal), the Pilot detours to fight a mobile monster 2–7 steps off. The monster must pass the hunt
-check (`hunt_refusal`; result cached per level and name). It must not be a breeder, on the `avoid` list, or more than
+check (`hunt_refusal`; result cached per level and name; since 2.45.1 it also refuses a disenchanter whose expected
+enchantment loss is more than a kill brings, §5). It must not be a breeder, on the `avoid` list, or more than
 20 levels below ours. The Pilot does this only when all of these hold: HP ≥ `think_hp`; no live band (`band_live`); not
 blind, confused, afraid or slowed; no recall pending; no danger in view; the trip plan isn't leaving the level. The path
 may be at most 9 steps. The Pilot gives up after 20 s (`ENGAGE_GIVE_UP_S`) and drops that target for the level. Logged
@@ -175,7 +176,8 @@ This one function decides "too dangerous to fight now". It is used by the arriva
 9. Brain Smash without Free Action plus resist blindness plus resist confusion;
 10. no-save blinding or confusing blows within 10 levels without the resist (mobile monsters only);
 11. the duel simulator (`sim_loss` → `fight_sim`, 300 duels, cached) says a fight costs > 80% of current HP (monsters
-    within 3 levels of ours or above, mobile only);
+    within 3 levels of ours or above, mobile only). Since 2.45.0 `fight_sim` takes our to-hit/to-dam **totals** from
+    the gear model (rings, gloves, the stat tables), not the weapon's own plusses (gear-and-estimator.md);
 12. a summoner within 5 levels.
 
 Abilities come from `has_ability`, which checks, in order: inferred in play, the character sheet's flags, then the
@@ -188,7 +190,7 @@ speed.
 ## 3. Escaping (`Pilot.escape`)
 
 `escape(why)` is called by the emergency reflex. It does at most one thing per call. The order (mirrored by the
-Advisor's estimator `base_policy`, `POLICY_VERSION pilot-escape-2026-10-29o` in `Advisor/data/estimator/options_sim.py`,
+Advisor's estimator `base_policy`, `POLICY_VERSION pilot-escape-2026-11-03p` in `Advisor/data/estimator/options_sim.py`,
 so **tell the Advisor when it changes**) is that of `ESCAPE_STEPS`, one method per step (E3, session 11; each item below
 names its method), run like the reflexes' (§2). `_escape_survey`, after step 3, is not a step: it puts what the later
 steps share on `ctx` (`adj`, `can_read`, the Phase Door `pd`, the damage `rate`, `in_combat`); step 5 adds `one_turn`,
@@ -329,8 +331,11 @@ All run every tick. Most only notify; the ones that act are marked.
 | `confusion_lock` / `confusion_window` (act) | see §2.3 | |
 
 `monster_info` (the `monster NAME` command) shows this server's facts for a monster, its `danger_why` verdict, the hunt
-check and the expected drop: the same rules the reflexes use. For a disenchanter it adds the expected disenchantment
-(`disenchant_cost`, gear-and-estimator.md §3.1). `our_slowness()` (1 at normal speed; 2 at −10; 3.3 at −20)
+check and the expected drop: the same rules the reflexes use. For a disenchanter (UN_BONUS blows or BR_DISE) it adds
+the expected disenchantment (`disenchant_cost`, gear-and-estimator.md §3.1; 2.45.0): a lost step the town kit would
+buy back is valued at the scrolls' price / chance, any other at its resale value (2.46.0). Since 2.45.1 the hunt check
+(`hunt_refusal`, so `goal hunt` and engage too) refuses the monster when that loss is more than a kill brings (the
+drop's expected value + its XP at `xp_per_gold`); never with resist disenchantment. `our_slowness()` (1 at normal speed; 2 at −10; 3.3 at −20)
 scales `worst_3turns`, `group_danger` and `band_cost`. `buff_on(fast|hero|shero)` reads the start and end messages,
 because the status reply has no flag for them.
 

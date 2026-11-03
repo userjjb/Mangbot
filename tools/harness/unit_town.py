@@ -338,3 +338,17 @@ def town_waits_for_restock():
     missing, fine, restore = run(["Word of Recall x2"]), run([]), run([], drained=True)
     return (missing, fine, restore) == (4, 0, 4), \
         f"waits with WoR missing {missing}; with nothing missing {fine}; STR drained, no Restore {restore}"
+
+
+@case
+def buylist_counts_the_stash():
+    """2.47.0 (the docs audit): `buy Restore_Dexterity:1` with one already in the house's stash buys none (plan town
+    deposits every Restore, so the pack never held it and one was bought a visit); with none stashed, one."""
+    def need(stashed):
+        w = W(pack=[("a Scroll of Word of Recall", 70), ("a Scroll of Word of Recall", 70)], gold=5000)
+        w.depth, w.depth_ft, w.in_dungeon = 0, 0, False
+        p = pilot(w)
+        p._house = {"items": {"3,4": "a Potion of Restore Dexterity"}} if stashed else {"items": {}}
+        return [(t, k, n) for t, k, s, n, c in p.town_needs(None, [("Restore Dexterity", 1, None, 5)]) if t == 5]
+    have, none = need(True), need(False)
+    return have == [] and none == [(5, "Restore Dexterity", 1)], f"stashed: {have}; not: {none}"

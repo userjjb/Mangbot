@@ -566,7 +566,10 @@ class TownMixin:
             add(4, kind, n)
         # NAME:N means "have N" (m26's "Word of Recall:3" bought 3 more, to 5)
         for name, n, cap, store in buylist:
-            more = n - planned(name)
+            # (2.47.0, the docs audit: a stash kind -- a stat Restore, a Stone to Mud wand -- in the house or the
+            # tavern counts as had: plan town deposits every Restore, so `buy Restore_Dexterity:1` bought one a visit)
+            more = n - planned(name) - (self.stash_count(name) if self.is_stash_item(f"Potion of {name}") or
+                                        self.is_stash_item(name) else 0)
             if more > 0:
                 plan.append([5, name, store, more, cap])
         # 6. Restore Charisma last: Dive04's natural CHR is 4, so it gives 3 -> 4, ~125 gold a
@@ -671,6 +674,17 @@ class TownMixin:
 
     def stash_has(self, kind):
         return self.stash_where(kind) is not None
+
+    def stash_count(self, kind):
+        """How many of this kind the house's and the tavern's records hold."""
+        key = singular(kind)
+        n = 0
+        for slots in (self.house_state().get("items", {}), self.tavern_state().get("items", {})):
+            for names in slots.values():
+                for nm in (names if isinstance(names, list) else [names]):
+                    if key in singular(str(nm)):
+                        n += 1
+        return n
 
     def stash_take(self, at, kind, square=None):
         """Strike one item of this kind off the record of `at` (house|tavern): the one on `square` if it's there."""

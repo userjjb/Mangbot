@@ -17,7 +17,8 @@ Related docs: [pilot-items.md](pilot-items.md) (upgrade_step's static steps, sel
 **Where the code is** (E1 step 3): the Pilot-side methods named here (`gear_character`, `gear_eval`, `gear_better`,
 `loadout_info`, `gear_review`, `gear_line`, `ac_better`, `consumables_inv`, `shadow_decision`, `shadow_results`,
 `band_shadow`, `hard_fight_shadow`, `fight_rows`/`fight_estimate`/`fight_sim`, `disenchant_cost` with
-`disen_loss`/`disen_item_loss`/`disen_text`) and `shadow_agree` live in
+`disen_loss`/`disen_item_loss`/`disen_text` and (2.46.0) `reenchant_cost`/`disen_buys`/`plus_resale`/`enchant_p`/
+`scroll_price`, `armour_ac`, `jewel_gives`, `redundant_worn`) and `shadow_agree` live in
 `tools/pilot/gear.py` as `GearMixin`, still `Pilot`'s names; `weapon_table` and `upgrade_step` are in items.py,
 `hard_fight` and the Speed/Berserk ticks (`speed_start_tick`, `berserk_tick`), with `escape`, `group_tick` and
 `fear_cure`, in combat.py (`CombatMixin`, E1 step 5).
@@ -28,8 +29,8 @@ Related docs: [pilot-items.md](pilot-items.md) (upgrade_step's static steps, sel
 
 | File | What it is | Used by |
 |---|---|---|
-| `tools/pilot/geareval.py` | The gear evaluator: item parser, character model, scenario sets, simulation, EHP, verdict, loadout optimizer, text report. `--demo` runs Dive04's session-7 Ring of Strength question | pilot.py (`gearcmp`, `loadout`, `gear_better`; also reused: the stat tables by the weight-limit check, `Item`/`label` by `review_hold`, `SIM_RES`/`SHEET_FLAG` by shadow mode). It does not use `itemvalue.py`; the Pilot filters its candidates with `itemvalue`'s `known` flag |
-| `tools/pilot/shadow.py` | Shadow mode: runs `options_sim.choose` in a background thread and queues the answers | pilot.py (`shadow_decision`, `shadow_results`) -- live |
+| `tools/pilot/geareval.py` | The gear evaluator: item parser, character model, scenario sets, simulation, EHP, verdict, loadout optimizer, text report. `--demo` runs Dive04's session-7 Ring of Strength question the Pilot's gear.py (`gearcmp`, `loadout`, `gear_better`, `ac_better`; also reused: the stat tables by the weight-limit check and `Item`/`label` by `review_hold`, both items.py, `SIM_RES`/`SHEET_FLAG` by shadow mode's snapshot). It does not use `itemvalue.py`; the Pilot filters its candidates with `itemvalue`'s `known` flag |
+| `tools/pilot/shadow.py` | Shadow mode: runs `options_sim.choose` in a background thread and queues the answers | gear.py (`shadow_decision`, `shadow_results`) -- live |
 | `tools/observe/damage_mix.py` | Splits the HP the character lost in a depth band (the last mission's, else 700-800 ft) into damage kinds; writes `runs/pilot/NICK/damage_mix.json` (EHP's input) | `observe/wrap.sh` after each mission; read by `geareval.load_mix` |
 | `tools/attic/replay_group.py` | An offline script: replays the Borg group-danger tiers over a run's logs. Retired to `tools/attic/` in session 10 (C1; see its README.md) | nobody. It was used once to tune `group_tick`. Not part of gear or the estimator |
 | `Advisor/data/estimator/options_sim.py` | The Advisor's Monte Carlo fight simulator and estimator (`rollout`, `choose`, `base_policy`, `OPTIONS`) | imported live by path by geareval and shadow. The Advisor's file: read, never edit |
@@ -214,7 +215,7 @@ option) when the pick isn't the current gear. Errors are logged as a note and re
 Callers:
 - **`upgrade_step` step 6** (town, at most one swap per 30 s): for each pack item, if `gear_better` picks it, the Pilot
   wears it (a ring or amulet over a worn one: takes the old one off first; step 4 then puts the new one on) and posts
-  the news "gear evaluator: LABEL (simulated fights; `gearcmp` for the table)". Steps 1-5 of `upgrade_step` are static
+  the news "gear evaluator: LABEL (simulated fights; `gearcmp` for the table)". Steps 2-5 of `upgrade_step` are static
   rules (weapon by damage x1.2, armour by AC, jewellery into empty slots or over a redundant piece): see pilot-items.md.
 - **The sell count** (`town_sell_count`): an item the evaluator would wear is not sold (after m45 sold a Ring of
   Strength unjudged).
@@ -243,8 +244,8 @@ Separate from the group simulator; used for single fights.
 | `fight_estimate(race)` | (turns to kill, HP taken meanwhile, pessimistic HP, worst breath, row): hit chance from level and the weapon's to-hit against 3/4 of its AC, its expected melee per turn at our AC (the 20/40/60 AC column nearest), spells and ranged. Pessimistic = twice the turns with spells at their maximum | `hunt_refusal` |
 | `fight_sim(race, n=600)` | the Advisor's duel simulator (`tools/rulebook/fight_sim.py summary`) at our live profile (level, blows, weapon dice, the to-hit/to-dam **totals** from `derive()` since 2.45.0 -- the weapon's own plusses understated damage, the Advisor 11-03 --, AC, current HP): mean turns, mean HP lost, 90th percentile HP lost. Errors are logged, return None | `hunt_refusal` (replaces the estimate when available), `sim_loss` |
 | `sim_loss(r)` | fight_sim's mean HP lost (300 duels), cached by race, level, weapon, AC, HP to 10% | `danger_why`: "a fight costs ~N HP on average" when above 80% of current HP |
-| `disenchant_cost(race, turns)` | 2.45.0: the expected enchantment a duel of `turns` player turns costs the worn gear (below); None for a monster with no UN_BONUS blow and no BR_DISE breath | `hunt_refusal` (shown and logged, never a refusal) |
-| `hunt_refusal(name)` | the hunt check (refuses a fight that ends on average below the escape threshold, a bad fight > 60% HP, risky summoners, big breathers, a band about...). Leaves its numbers in `last_hunt` (race, turns, mean and p90 loss, fight_sim or estimate, `disen`) for the log fields (`hunt_fields`) | `goal hunt`, `monster` info, the engage cache |
+| `disenchant_cost(race, turns)` | 2.45.0: the expected enchantment a duel of `turns` player turns costs the worn gear (below); None for a monster with no UN_BONUS blow and no BR_DISE breath | `hunt_refusal` (shown and logged; since 2.45.1 its last refusal, §3.1), `monster` |
+| `hunt_refusal(name)` | the hunt check (refuses a unique already killed, a paralyser without Free Action, a fight that ends on average below the escape threshold, an AVOID/LEAVE rating, a bad fight > 60% HP, risky summoners, big breathers, a band about, and since 2.45.1 a disenchanter that costs more than a kill brings; the order is in commands.md). Leaves its numbers in `last_hunt` (race, turns, mean and p90 loss, fight_sim or estimate, `disen`) for the log fields (`hunt_fields`) | `goal hunt`, `monster` info, the engage cache |
 
 See pilot-combat.md for the danger rules these feed.
 
@@ -276,7 +277,7 @@ neither the hunt check nor geareval counted what it takes. The server's rules:
   about it):
   - **a step plan town would buy back** (`disen_buys`: the town kit's own rule) costs the scrolls, **price /
     chance**. A Scroll of Enchant Weapon To-Hit/To-Dam or Enchant Armor at plus x succeeds with 1 - enchant_table[x]/1000
-    (spells2.c:398, 2549-2553: 100% below 0, 99% at 0, 80% at 4, 50% at 7, 30% at 8, 5% at 9, 1% at 10, 0 above 15;
+    (spells2.c:398, 2549-2553: 100% at 0 and below, 99% at 1, 80% at 4, 50% at 7, 30% at 8, 5% at 9, 1% at 10, 0 from 15;
     an artifact half as often), and the town kit buys while that is >= `ENCHANT_MIN_CHANCE` (50%) -- Enchant Armor on
     the armour slots, Enchant Weapon on the wielded weapon (2.46.0: the town kit buys them too, goals-and-plans.md),
     never on the bow, nothing at all with `order enchant_max=0`. Price: the Alchemist's last, else ~190. So such a
@@ -368,7 +369,7 @@ recall, the awake share from `look` answers (`p_awake`, `asleep_seen`), food fro
 
 ### 4.4 Are shadow.py and replay_group.py still used?
 
-- `shadow.py`: yes, live -- imported by pilot.py; every emergency, band and hard-fight decision in the dungeon goes
+- `shadow.py`: yes, live -- imported by gear.py; every emergency, band and hard-fight decision in the dungeon goes
   through it (117 `estimator` records in Dive04's log so far).
 - `replay_group.py`: no; moved to `tools/attic/` in session 10 (C1). An offline analysis of the Borg group-danger tiers over a
   run's logs (reads `danger_table.csv`, `decisions.jsonl`, `events.jsonl`), used once to tune the group-danger rule; the

@@ -2,14 +2,14 @@
 
 The **Pilot** (`github/tools/pilot/pilot.py`, ~1.5k lines, plus `world.py`, `mover.py`, `glyphs.py`,
 `structures.py`; since E1 also `daemon.py`: `main()`, `Server`, `Handler`; `report.py`: `ReportMixin`, the report
-methods, still on `Pilot`; `gear.py`: `GearMixin`, the gear evaluator's side, shadow mode and the duel estimates
-(gear-and-estimator.md), and `shadow_agree`; `items.py`: `ItemsMixin`, the item policy (pilot-items.md), with
-`weapon_blows` and the blow tables, `type_word`, `PY_FOOD_MAX`; `town.py` (~770 lines): `TownMixin`, the town side
+methods, still on `Pilot`; `gear.py`: `GearMixin`, the gear evaluator's side, shadow mode, the duel estimates (`fight_sim`) and
+the disenchant valuation (`disenchant_cost`, 2.45.0-2.46.0) (gear-and-estimator.md), and `shadow_agree`; `items.py`: `ItemsMixin`, the item policy (pilot-items.md), with
+`weapon_blows` and the blow tables, `type_word`, `PY_FOOD_MAX`; `town.py` (~830 lines): `TownMixin`, the town side
 (goals-and-plans.md): the town kit's tables (`STORE_NUM`, `KIT_ITEMS`, `KITS`, `SUPPLY_STAGES`...), the shopping list
 and selling (`town_*`, `price_of`, `note_store`, `kit_count`, `provision_step`, `identify_candidates`...), the supply
 gate, the food/light clock (`supply_minutes`/`supply_text`/`supply_watch`, `TURNS_PER_DMIN`, `FOOD_MID`), the house
 and stash state (`house_state`, `house_save`, `banked`, `stash_*`, `tavern_*`) and `note_town_stairs`/
-`note_edge_cross`; `combat.py` (~2,280 lines): `CombatMixin`, combat and survival (pilot-combat.md): `reflexes`
+`note_edge_cross`; `combat.py` (~2,310 lines): `CombatMixin`, combat and survival (pilot-combat.md): `reflexes`
 (one method per step, in `REFLEX_STEPS`'s order: E3), `escape` (its steps in `ESCAPE_STEPS`) and its helpers
 (`emergency_loop`, `phase_futile`, `escaping_to_stairs`, `kill_caster_step`, `teleport_item`, `use_stair_location`,
 `log_escape`, `count_escape`), `danger_why`/`worst_3turns`/`sim_loss`/`dangers`, `has_ability`,
@@ -18,7 +18,7 @@ the fight rules (`engage_tick`, `group_danger`/`group_tick`, `still_fight_tick`,
 `buff_on`, `our_slowness`), `sidestep`/`retreat_step`/`quiet_spot`, `flee_failed`, the `react` rules (`rules`,
 `rule_tick`) and the watches (`watch_band`, `watch_character`, `watch_drainers`, `watch_thieves`, `watch_traps`,
 `watch_breeders`, `watch_kills`, `watch_perception`, `watch_progress`), with `heal_of`, `HEALS`, `STATUS_CURES`,
-`CURE_POTIONS` and `choke_tier`; `commands.py` (~1,620 lines, E1 step 6 with E2): `CommandsMixin`, the command
+`CURE_POTIONS` and `choke_tier`; `commands.py` (~1,670 lines, E1 step 6 with E2): `CommandsMixin`, the command
 side (commands.md): the requests (`authenticate`, `handle_requests`, `service_notes`), `do_request` and one method
 per command (`cmd_status`, `cmd_order`, ...; the item commands' `item_action` with `parse_item_args`,
 `action_refusal`, `action_reply`), `request_goal`/`request_plan`/`request_trip`, `hunt_refusal`, `stale_order`,
@@ -32,8 +32,9 @@ CommandsMixin)`: the methods and class constants stay on `Pilot`, so the Advisor
 `TownFarm`, `Shop`, `StashDeposit`/`StashFetch`, `HouseBank`, `TownKit`, `edge_of`, `town_houses`; `plan.py`:
 `TripPlan`, `split_specs`; `common.py`: `VERSION`, `TV_*`, `DEFAULT_ORDERS` and helpers shared by these (`plural`,
 `one_of`, `kind_key`, `flavour_key`, `bare_name`, `singular`, `recall_level`, `bad_inscription`, ...); pilot.py
-imports every one of these names back, so `pilot.Flee`, `pilot.TripPlan`, `pilot.VERSION`, `pilot.shadow_agree`,
-`pilot.heal_of` still work) is a Python daemon that plays one MAngband character second to second. It owns a tool-mode C
+imports back the names the tools use (its imports and `REEXPORTED`), so `pilot.Flee`, `pilot.TripPlan`,
+`pilot.VERSION`, `pilot.shadow_agree`, `pilot.heal_of` still work -- not every name: `Goto`, `Recover`, `BandLeave`,
+`Resurrect`, `RestGoal`, `TownFarm`, `plural` and the other helpers are only in their modules) is a Python daemon that plays one MAngband character second to second. It owns a tool-mode C
 client (`mangclient -mtool`), builds a model of the game from the client's events and queries, and acts on it
 about 20 times a second: reflexes first (survival), then the Navigator's standing reactions, the Pilot's own item
 work, the current goal, and the trip plan. The Navigator (an LLM subagent) and the Architect steer it through a
@@ -86,14 +87,16 @@ mangclient -mtool  <--stdin/stdout JSON-->  pilot.py (daemon)  <--unix socket ru
   `status` report (the "wait report") and returns both.
 - **Death**: on death the Pilot stays up as a ghost and keeps answering (`notify("dead")`); if the client exits
   after a death, `main()` keeps serving requests so the Navigator learns of it.
-- **Exit**: `park` (log out at the next safe moment), `quit` (at once), SIGTERM (hotswap), or the client exiting.
+- **Exit**: `park` (log out at the next safe moment), `quit` (at once) -- both the Architect's since 2.45.0 --, SIGTERM
+  (hotswap), or the client exiting.
 
 ### pilotctl transport (`pilotctl.py`)
 One request per connection: `{"cmd", "args", "role"}` as a JSON line to `runs/pilot/<nick>/ctl.sock`, one JSON line
 back. The nick comes from `--nick` or `$PILOT_NICK`, else the one Pilot whose socket answers (F2). `role` is `$PILOT_ROLE`
 (default `navigator`; the Architect and harness set `architect` **with the token** `$PILOT_TOKEN`, from
 `runs/private/architect.token`, made by the Pilot at startup; without it the claim is refused, F3): the Pilot refuses some commands to the Navigator (movement
-verbs, item commands in the dungeon) and stamps who acted. `wait [SECS] [--brief]` sends `wait-attention` and
+verbs, item commands in the dungeon, and since 2.45.0 the control commands `park`, `quit`, `option`, `dump`:
+`restart.sh`/`charsave.sh` pass the token) and stamps who acted. `wait [SECS] [--brief]` sends `wait-attention` and
 prints the events and the report (brief form on a quiet timeout). `rule ...` runs `tools/rulebook/rule.py` without a
 Pilot. When the socket doesn't answer, `complain` appends straight to `runs/complaints.md`; other commands print
 "Pilot not answering ... restarting". The commands themselves: [commands.md](commands.md).
@@ -133,15 +136,17 @@ Each tick runs, in this order (any `return` ends the tick):
       Order inside: dead/ghost; `busy_until` hold (after every command the Pilot waits ~0.4 s, blocking everything
       below); inside a store with a Shop goal do nothing; emergency (`escape`); group danger; speed/berserk/status
       cures; arrival into danger (stairs straight back); danger in view (walk away / flee); unseen attacker; choke
-      (back into a corridor); summon traps; slowness; fear; stationary monsters; repeat fearers; light; hunger;
+      (back into a corridor); summon traps; slowness; fear; stationary monsters; repeat fearers; light; hunger (Weak or
+      fainting only, since 2.45.2);
       adjacent monster (stand and let auto-retaliate fight); pickup underfoot; auto-destroy; `engage_tick` (a
-      worthwhile monster a few steps off); rest when hurt and alone.
+      worthwhile monster a few steps off); rest when hurt and alone (or carry on an escape walk to stairs that
+      outlived its emergency, and take them: 2.45.0).
    2. `park_tick` while parking.
    3. `rule_tick` -- the Navigator's `react` rules (leave on NAME, hunt NAME, kill thieves).
    4. `look_tick` -- never acts; asks the server's targeting which visible monsters are asleep (every 5 s at most).
-   5. `policy_tick` -- the Pilot's item work at quiet moments (every 3 s at most, no monsters, HP >= 50%): restore a
-      drained stat, fetch a unique's drop, pick up nearby gold, then `identify_step`, `upgrade_step`
-      ([pilot-items.md](pilot-items.md)).
+   5. `policy_tick` -- the Pilot's item work at quiet moments (every 3 s at most, no monsters, HP >= 50%): eat when
+      Hungry (2.45.2; Weak is the reflex's), restore a drained stat, fetch a unique's drop, pick up nearby gold, then
+      `identify_step`, `upgrade_step` ([pilot-items.md](pilot-items.md)).
    6. `step_goal()` -- one step of the current goal; then `plan_tick(idle=False)` (the trip plan checks its
       conditions every 2 s).
    7. `plan_tick(idle=True)` -- no goal: the trip plan picks its next goal.
@@ -151,7 +156,7 @@ Each tick runs, in this order (any `return` ends the tick):
 `self.acting` is set around each layer (`pilot`, `plan`, `nav`, `arch`) and stamped as `by` on every `act` and
 `goal` record, so the viewer can show who each action was for (`goal_origin`).
 
-The module docstring at the top of `pilot.py` still lists the old 8-rule order; the list above is what runs.
+The module docstring at the top of `pilot.py` gives this order in brief; the list above (and `act_tick`) is what runs.
 
 ### Goals: how they are driven
 A goal is an object with `tick(pilot)` returning `None` (still working) or `(status, detail)` with status `done`
@@ -179,8 +184,11 @@ never races the game logic. Each non-viewer request updates `last_agent` (the id
 `nav_cmd` (command, args, role, which report it answered and how old it was). `do_request` (commands.py) executes
 it: it looks the command up in the command table (`cmdtable.COMMANDS`), runs the checks in one place (for anyone but
 the Architect the role check, the dungeon check of the item commands and the stale-order check; then the ghost
-check) and calls the command's method (the catalogue, and how to add a command: [commands.md](commands.md)); an
-exception becomes `{"ok": false, "error": ...}`; unanswered user messages ride on every answer (the viewer's polls,
+check: a ghost may still use the queries, notes, `park`, `stop`, `order`, `plan stop`, `quit` and `goal resurrect`,
+2.45.0) and calls the command's method (the catalogue, and how to add a command: [commands.md](commands.md)); an
+unknown command answers `unknown command` (a ghost too); a bad or missing argument (a `ValueError`/`IndexError`)
+answers the command's usage and is logged as `request_error` (2.45.0); any other exception becomes
+`{"ok": false, "error": ...}`; unanswered user messages ride on every answer (the viewer's polls,
 the not-logged commands and the replies without user messages are the table's `logged`/`viewer`/`messages`
 fields). `service_notes()` lets a long-running command (search, chest work) pull the
 user's `note` requests out of the queue so they aren't stuck behind it.
@@ -284,7 +292,7 @@ Pilot's `VERSION`). `save_mission` writes
   synced into the rulebook; all races): `rating` -> `Race.danger` (0 trivial .. 5 leave on sight), `veto_reason`,
   `speed_x` (actions per player turn), `melee_max`, `drain_blows`. Rows whose idx/name don't match this
   `monster.txt` are ignored. The file must exist: a missing one is a startup error (the old fallback to
-  `pilot/danger_table.csv`, `load_danger`, went in session 10, C9). `pilot.py` also reads `monsters.csv` directly for the
+  `pilot/danger_table.csv`, `load_danger`, went in session 10, C9). `gear.py` (GearMixin) also reads `monsters.csv` directly for the
   fight estimate (`fight_rows`). How these ratings drive danger decisions (`danger_why`, `worst_3turns`): see
   [pilot-combat.md](pilot-combat.md).
 
@@ -338,7 +346,7 @@ recognised here; the arrival feeling -- "special" at <= 850 ft means a pit, nest
 
 ## Per-character state: `runs/pilot/<nick>/`
 
-All paths relative to `runs/pilot/<nick lowercase>/` unless noted. "Pilot" = `pilot.py`.
+All paths relative to `runs/pilot/<nick lowercase>/` unless noted. "Pilot" = the `Pilot` class (`pilot.py` and its mixins); `main()` is `daemon.py`'s.
 
 | File | Written by | Read by | Format / contents |
 |---|---|---|---|
@@ -394,6 +402,8 @@ Shared, outside the character directory: `runs/pilot/town.json` (the town's `>` 
 | `report` | a report handed to the Navigator (`id`, `report_kind` status/full/wait, `chars`) |
 | `nav_cmd` | a request received (cmd, args, role, `after_report`, `report_age`) |
 | `order_refused`, `order_held` | a Navigator command refused / held as stale |
+| `request_error` | a command with a bad or missing argument, answered with its usage (2.45.0) |
+| `hunt` | every `goal hunt` taken, with the hunt check's numbers and a disenchanter's expected loss (2.45.0; [pilot-combat.md](pilot-combat.md) §6) |
 | `nav_say`, `nav_journal`, `nav_ask`, `nav_complaint`, `arch_answer`, `user_note` | conversation records |
 | `navigator_debt`, `navigator_fight_debt`, `hunt_override`, `hunt_override_end` | overrides and their cost |
 | `plan_start`, `plan_end`, `plan_resumed` | trip/town plans |
@@ -442,7 +452,8 @@ MESSAGE`, `Here:`, `Monsters:`, `News:`, `Since last (`, `Progress:`, `Cures` (a
 
 ## Updating a running Pilot
 
-- **`restart.sh NICK [PORT=28346]`** (the normal way): if a Pilot runs, `pilotctl park` (drop the goal unless it is a
+- **`restart.sh NICK [PORT=28346]`** (the normal way): if a Pilot runs, `pilotctl park` as the Architect (with the
+  token, 2.45.0; drop the goal unless it is a
   Recall; log out when nothing is within 15 squares, HP >= 70%, no store, no stairs just taken, no recall
   pending -- or after 5 minutes regardless; on logging out the Pilot sends a `parked` attention, then `clear`;
   restart.sh itself sends no `clear`), waits up to 330 s for the

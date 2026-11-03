@@ -2,7 +2,7 @@
 recording every command sent, every notice and every log record. python3 equiv.py PILOT_DIR OUT.json [NAME...]
 (run with PYTHONHASHSEED=0; compare the OUT files of the old and new trees).
 
-64 states: the 33 of E1 step 4 (town, supplies, queries, plans) and 31 combat_* states of step 5 (groups, uniques,
+177 states (2.46.0; 64 at E1 step 5): the 33 of E1 step 4 (town, supplies, queries, plans) and 31 combat_* states of step 5 (groups, uniques,
 unseen attackers, low HP with and without Phase/Teleport/Speed, fear with and without a cure, Speed/Berserk, thieves,
 breeders, a drainer and a drain, traps, a corridor choke, hound packs, a walk to the stairs under attack, stairs
 underfoot, molds, a summoner, a confusion lock, blind with two adjacent, slowed, engage, the emergency loop, no stairs).

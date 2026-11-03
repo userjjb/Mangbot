@@ -1029,7 +1029,7 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         near = [m for m in w.monsters if w.dist(m[:2]) <= 15]
         # (never during a pending recall: a logout reset its depth once, and
         # Dive03 landed at 1000 ft instead of the @R750 it had asked for)
-        safe = not near and w.hp_frac >= 0.7 and not w.store and \
+        safe = self.dead or not near and w.hp_frac >= 0.7 and not w.store and \
             not (w.last_stairs_cmd and gnow() - w.last_stairs_cmd[1] < 3) and \
             not self.recall_started(gnow()) and not isinstance(self.goal, Recall)
         if safe or gnow() - self.parking > 300:

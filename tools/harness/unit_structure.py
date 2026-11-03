@@ -222,3 +222,24 @@ def reports_match_golden():
     if len(got) != len(want):
         return False, f"{len(got)} lines, golden {len(want)}: first extra line {(got + want)[min(len(got), len(want))]!r}"
     return True, f"{len(got)} lines as the golden file"
+
+
+@case
+def ghost_park_logs_out():
+    """2.46.1: a ghost's `park` (allowed since 2.45.0) was accepted but never logged out -- the death reflex returned
+    first and act_tick's park check never ran, so restart.sh on a dead character still waited 330 s and failed. Now
+    the death step lets a pending park through and park_tick logs out at once (a ghost has nothing to be safe from)."""
+    p = pilot()
+    p.w.ghost, p.dead, p.goal = True, True, None
+    p.w.hp = [0, 300]
+    p.mover = type("M", (), {"stop": lambda s: None, "active": False})()
+    p.notify = lambda *a, **k: None
+    p.c = type("C", (), {"send": lambda s, line: None})()
+    p.running, p.parking = True, P.gnow()
+    import threading
+    p.att_cond = threading.Condition()
+    p.att_cond.wait = lambda t=None: None
+    r = p.reflexes()
+    if not r:
+        p.park_tick()
+    return (r is False and p.running is False), f"reflexes -> {r}; running after park_tick: {p.running}"

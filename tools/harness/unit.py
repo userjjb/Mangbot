@@ -23,7 +23,7 @@ FAMILIES = ("unit_hunts", "unit_danger", "unit_status", "unit_levels", "unit_ite
             "unit_gear", "unit_town", "unit_house", "unit_trips", "unit_orders", "unit_structure")
 ORDER = """
     hunt_hill_giant_by_hp disenchant_refused_when_more_than_the_kill hunt_ranger_summoner hunt_qualitative_vetoes hunt_repeat_unique jewellery_unknown_plusses
-    bracketed_ego_valued unique_drop_feeling junk_kinds_from_rulebook shop_pay_by_owner town_kit_tiers
+    bracketed_ego_valued override_debt_counts_the_stack unique_drop_feeling junk_kinds_from_rulebook shop_pay_by_owner town_kit_tiers
     trip_conditions_parse ability_proofs unique_drop_fetched loot_band_stops_looting a5_unseen_caster_news_above_80
     game_clock_from_fuel band_leave_finds_stairs town_kit_townfarms_when_broke crutch_devices_sold_on_test
     pack_full_makes_room c1_valuable_sale_refused c2_unknown_charges c6_ambiguous_names c7_unknown_ring_not_worn

@@ -24,7 +24,8 @@ PILOTS_NOW = ("`{name}` is the Pilot's now: use `goal leave` (this level, by the
 DUNGEON_ITEMS = ("in the dungeon the Pilot handles items itself (pickup, identify, wear upgrades, fuel, eat): `{name}` "
                  "is for town, between trips. You may `destroy`/`drop` junk, and `order nopickup=NAME,...` keeps kinds "
                  "out. To protect an item from its policy use `keep NAME`")
-DEAD = "the character is dead (a ghost): only 'goal resurrect' works"
+DEAD = ("the character is dead (a ghost): 'goal resurrect' floats it to town and resurrects it; until then only "
+        "queries, notes, park, stop, order and plan stop work")
 CONTROL = ("`{name}` is the Architect's: it stops, logs out or reconfigures the Pilot (`restart.sh`/`charsave.sh` "
            "pass the Architect's token; 2.45.0)")
 

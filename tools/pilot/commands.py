@@ -265,7 +265,7 @@ class CommandsMixin:
 
     def do_request(self, req):
         """One request from the socket (handle_requests): look the command up in the table (cmdtable.COMMANDS),
-        then, for anyone but the Architect, the role check (raw, stairs, goal goto, mission, answer), the dungeon
+        then, for anyone but the Architect, the role check (raw, stairs, goal goto, mission, answer; park, quit, option, dump since 2.45.0), the dungeon
         check (the item commands for town) and the stale-order check (positional orders); then, for a ghost, the
         dead check; then the command's method (a ValueError/IndexError from a bad argument answers the usage). Unknown
         commands get past the role checks, then `unknown command` (a ghost too)."""
@@ -355,14 +355,20 @@ class CommandsMixin:
             return refused
         if c in ("destroy", "drop"):
             it0 = next((i for i in self.w.inven if i["item"] == item), None)
-            if forced_cmd and self.req_role != "architect":
-                if self.value_refusal(it0, c):
-                    self.add_debt(round(self.iv(it0["name"]).value * self.pay_cut(self.iv(it0["name"]).tval)), it0["name"],
-                                  f"{c}ed with ! over the value policy")
             n = args[1] if len(args) > 1 else "1"
             if n == "all":
                 it = next((i for i in self.w.inven if i["item"] == item), None)
                 n = it["number"] if it else 1
+            if forced_cmd and self.req_role != "architect":
+                if self.value_refusal(it0, c):
+                    # (2.46.1: times the number destroyed/dropped -- iv's value is one item's, so `destroy !X all`
+                    # charged one)
+                    try:
+                        k = max(1, min(int(n), int((it0 or {}).get("number") or 1)))
+                    except ValueError:
+                        k = 1
+                    self.add_debt(round(k * self.iv(it0["name"]).value * self.pay_cut(self.iv(it0["name"]).tval)),
+                                  it0["name"], f"{c}ed with ! over the value policy" + (f" (x{k})" if k > 1 else ""))
             extra = f" value={n}"
             if c == "destroy":
                 self.c.send("confirm yes")
@@ -1390,7 +1396,9 @@ class CommandsMixin:
         if self.plan:
             # your goal first; the plan carries on when it ends (`plan stop` ends the plan)
             self.plan.paused, self.plan.pause_goal = True, g
-            return {"ok": True, "goal": g.describe(), "note": "the trip plan is paused until this goal ends"}
+            # (2.47.0: the hunt's estimate too -- the pause note replaced it, though the handbooks promise it)
+            return {"ok": True, "goal": g.describe(), "note": "the trip plan is paused until this goal ends"
+                    + (f"; {g.estimate}" if g.estimate else "")}
         return {"ok": True, "goal": g.describe()}
 
     WHY_KINDS = ("emergency", "emergency_loop", "stat_drained", "danger_seen", "band", "fight_going_badly",

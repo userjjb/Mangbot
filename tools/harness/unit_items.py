@@ -241,3 +241,27 @@ def pay_cut_in_shopmath_and_aware():
     books = (p.pay_cut(90), p.pay_cut(91))
     ok = not bad and aware == {"cure light wounds", "protection"} and all(b != P.SHOP_CUT for b in books)
     return ok, f"differ: {bad}; aware {sorted(aware)}; book cuts {books}"
+
+
+@case
+def override_debt_counts_the_stack():
+    """2.46.1 (the docs audit): `destroy !NAME all` / `drop !NAME N` charged one item's value to the Navigator's debt
+    (iv's value is per item); now the number destroyed or dropped times it."""
+    import os
+    import tempfile
+
+    def run(args):
+        p = pilot(pack=[("3 Potions of Cure Critical Wounds", 75)])
+        d = tempfile.mkdtemp()
+        p.rundir = os.path.join(d, "pilot", "x")
+        p.debt, p.debt_path = {}, os.path.join(d, "debt.json")
+        p.log = lambda k, **kw: None
+        p.cmd = lambda line, why, hold=0.4: None
+        p.c = type("C", (), {"send": lambda s, line: None})()
+        p.pack_now = lambda *a, **k: None
+        p.dead, p.last_report, p.report_state = False, (0, 0.0), None
+        p.do_request({"cmd": "destroy", "args": args, "role": "navigator"})
+        return sum(e["gold"] for e in p.debt.get("entries", []))
+    one, two, every = run(["!Cure_Critical_Wounds"]), run(["!Cure_Critical_Wounds", "2"]), \
+        run(["!Cure_Critical_Wounds", "all"])
+    return one > 0 and abs(two - 2 * one) <= 1 and abs(every - 3 * one) <= 1, f"1: {one}, 2: {two}, all: {every}"

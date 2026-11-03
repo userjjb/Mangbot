@@ -47,8 +47,9 @@ can read them. Memory now only points here.) Credentials are **not** in this fil
 - **Known crashes:**
   - A player disconnecting while walk/run commands are queued: NULL `pcommands[pkt]` in
     `process_player_commands` (net-game.c:2428). A crash rolls characters back to their last save.
-    Update the Pilot only with `tools/pilot/restart.sh` (it parks the Pilot first, and the parked Pilot sends
-    `clear` before it logs out).
+    Update the Pilot only with `tools/pilot/restart.sh` (it parks the Pilot first, passing the Architect's token
+    itself since `park` is the Architect's from 2.45.0, and the parked Pilot sends `clear` before it logs out), or
+    mid-mission `tools/pilot/hotswap.sh`.
   - A store purchase arriving when the player is no longer in a store (`store_num` -1): `get_store_item`
     read `store[-1]` and segfaulted (store.c:1625, 2026-10-17, mission 21's Gauntlets buy). Patched in the
     test server: get_store_item, store_purchase and store_sell refuse when not in a store or past the stock.

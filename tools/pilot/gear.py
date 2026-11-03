@@ -173,7 +173,8 @@ class GearMixin:
         """Shadow mode at the start of a hard fight (the user, 10-25, on the Advisor's shadow-review memo: its replays'
         one consistent gain was Speed or Speed+Berserk quaffed at the start of hard fights, which the rules only quaff
         in an emergency). Once per fight: a new set of adjacent monsters on this level, not within 60 s of the same set,
-        nor 20 s of the last. The rules' choice here is Berserk when berserk_tick would quaff it, else fighting on.
+        nor 20 s of the last. The rules' choice here is what speed_start_tick and berserk_tick would quaff (speed, berserk, both), else
+        fighting on.
         Never acts."""
         w = self.w
         if not w.in_dungeon or not w.pos:
@@ -661,7 +662,8 @@ class GearMixin:
     def gear_better(self, it):
         """(the evaluator's chosen option, (item, replaced)) when wearing this identified pack item beats what's worn
         (town only: a run takes ~2-3 s; never one that loses Free Action, See Invisible, resist blindness or
-        confusion, hold life -- geareval.NO_LOSS), else None."""
+        confusion, hold life -- geareval.NO_LOSS; with TRADE_RESISTS off, none that loses any ability or resist), else
+        None."""
         w = self.w
         if w.depth or w.in_dungeon or it.get("equip") or it["tval"] not in geareval.SLOT_OF_TVAL or \
                 it["tval"] == TV_LITE or bad_inscription(it["name"]) or \

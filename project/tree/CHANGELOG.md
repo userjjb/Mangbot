@@ -27,6 +27,20 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.47.0 -- 2026-11-03 (session 11, the docs audit)
+No missions yet. Three agents audited every doc against 2.46.0 and fixed the text (the Navigator docs had the most
+drift: depths and AC, kit contents, the stash, restock timing, eating; CONDENSED, commands, gear, process, observe,
+harness and operations too). **Code fixes they found (play can differ):**
+- A ghost's `park` (2.45.0) was accepted but never logged out (the death reflex returned first): now it logs out.
+- `sim_loss`'s cache keyed on the weapon only, but fight_sim uses the gear totals since 2.45.0: keyed on the worn set.
+- `destroy !NAME all` / `drop !NAME N` charged one item's value to the Navigator's debt: now times the number.
+- The buy list's "have N" ignored the stash: `buy Restore_Dexterity:1` bought one every visit (plan town deposits
+  every Restore). Stash kinds in the house/tavern now count (the buy list only).
+- A hunt ordered during a trip plan lost its estimate in the reply (the pause note replaced it).
+- The ghost refusal text lists what still works; stale comments (enchant_max, do_request, gear_better,
+  hard_fight_shadow, equiv.py).
+- 159 unit cases (3 new).
+
 ## 2.46.0 -- 2026-11-03 (session 11, the user: option 2 of the Advisor's disen-value memo)
 No missions yet. **Play changes:**
 - The town kit buys and reads **Scrolls of Enchant Weapon To-Dam/To-Hit** for the wielded melee weapon, by the armour's

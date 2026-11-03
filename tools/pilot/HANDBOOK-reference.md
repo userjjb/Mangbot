@@ -3,7 +3,8 @@
 **Not required reading.** Since restructure step 2.6 (2026-10-23) the Navigator's handbook is the short
 `HANDBOOK.md`; this is the full reference it replaced: every goal, order, event and report line in detail, and the
 lessons of missions 1-23. Search it (`grep -n WORD HANDBOOK-reference.md`) when you need a detail. Where the two
-differ, `HANDBOOK.md` wins (e.g. `goal goto`, `stairs` and `raw` are no longer yours).
+differ, `HANDBOOK.md` wins (e.g. `goal goto`, `stairs` and `raw` are no longer yours; `park`, `quit`, `option` and
+`dump` are the Architect's).
 
 You steer one MAngband character. A program called the **pilot** plays it
 second to second: it moves, fights, escapes, rests and eats on its own. You
@@ -39,15 +40,16 @@ Run commands from `github/tools/pilot/` with `python3 pilotctl.py --nick NAME
 
 `pilotctl.py --nick NAME plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@MAX],...]` hands the whole town visit to
 the Pilot. It wears upgrades, then **sells by policy** at the shop that buys each item (never the Black Market; kit
-consumables, Boldness, food, flasks, lights, `keep` items and devices for escape, travel, detection, mapping, Perception, Stone to Mud and healing are kept). Next it **buys Identify**
+consumables (not Boldness: Heroism does what it does), rations and mushrooms, the flasks the lantern needs, lights (not a second, emptier lantern), `keep` items and devices for escape, travel, detection, mapping, Perception, Stone to Mud and healing are kept; on the test server Detection, Magic Mapping and Enlightenment devices are sold). Next it **buys Identify**
 for each unknown item worth more than a scroll, reads them and sells what they turn out to be. Then it **buys by
 priority**, each shop once: (1) Word of Recall up to 2, (2) the supply gate's minimums for the planned depth (the lower
 of `max_depth` and your deepest), (3) a Potion of Restore for a drained STR, DEX or CON (it drinks it), (4) the kit
-levels, (5) your buy list, (6) Restore Charisma if CHR is drained (worth only ~125 gold a mission). An essential missing from stock gets one more look 40 s later. The reply lists everything
+levels, (5) your buy list, (6) Restore Charisma if CHR is drained and you have 3,000+ gold (worth only ~125 gold a mission). An essential missing from stock gets up to 4 waits of 35 s for a restock. Then it recharges and enchants, fills the lantern, eats to Fed, and stashes and banks (`HANDBOOK.md`, "food and light" and `house`). The reply lists everything
 sold and bought, what it couldn't afford, and whether the supplies cover a recall dive.
-- **Kits** (default by the planned depth): A (to 500 ft) WoR 2, CLW 5, Phase 5, flasks 3, food 3; B (to 1000 ft)
-  WoR 2, CCW 4, CSW 4, Phase 10, flasks 5, food 4; C (deeper) like B with CCW 6 and Phase 12. `kit=none` buys only
-  the essentials and your list.
+- **Kits** (default by the planned depth): A (to 500 ft) WoR 2, CLW 5, Phase 5, rations 3; B (to 1000 ft)
+  WoR 2, CCW 4, CSW 4, Phase 10, rations 3, Heroism 3, Speed 2 (Black Market, at most 600 each); C (deeper) like B
+  with CCW 6 and Phase 12. No flasks in any kit: flasks are bought only to top the lantern up to 9000 turns.
+  `kit=none` buys only the essentials and your list.
 - **Your buy list** is for things beyond the kit: upgrades, Restore Charisma, a Staff of Teleportation, the Free
   Action fund. Spaces as `_`, the shop is found from its stock table (name it as `7/` for the Black Market, which charges 3x):
   `plan town buy Restore_Charisma@500,Enchant_Weapon_To-Dam:2@120`. What the gold doesn't cover after the kit is
@@ -56,16 +58,18 @@ sold and bought, what it couldn't afford, and whether the supplies cover a recal
 
 ## Trips: `plan trip` runs one (restructure step 2.3)
 
-`pilotctl.py --nick NAME plan trip LO-HI [until "COND or COND..."] [then recall|town] [level_min=N] [force]` hands
-the trip to the Pilot. From town it goes down: by the stairs when the trip is near town, else by Word of Recall to
-the planned depth (the supply gate applies; `force` skips it). Then it works levels within LO-HI: it explores each
+`pilotctl.py --nick NAME plan trip LO-HI [until "COND or COND..."] [then recall|town] [level_min=N] [via=stairs|recall] [force]` hands
+the trip to the Pilot. From town it goes down: by the stairs when the trip reaches no deeper than 150 ft or you've
+never been to 250 ft, else by Word of Recall to the planned depth (`via=` chooses; the supply gate applies; `force`
+skips it). Then it works levels within LO-HI: it explores each
 level (fights, loot and the item policy as usual) until nothing is left or `level_min` minutes (default 10) have
 passed, then takes the next level (down while above HI, up one at HI). **It leaves a level at once** for a band (by
 the stairs), a pit or nest, breeders, a STR/DEX/CON drainer, a fearer, or a trap-laden level. **When a condition
 holds it comes home:** by the stairs from 150 ft or shallower (Word of Recall if no way up turns up in 3 minutes),
 else by Word of Recall. With `then town` it then runs `plan town`.
 - **Conditions** (joined by `or`): `cures<N` (CLW+CSW+CCW potions), `ccw`, `csw`, `clw`, `phase`, `wor`, `food`,
-  `hp` (percent), `minutes` (since the plan began), `levels` (worked so far), `clvl`, `gold`, `free` (pack slots),
+  `hp` (percent), `minutes` (since the plan began), `dmin` (minutes since the trip reached the dungeon), `levels`
+  (worked so far), `clvl`, `gold`, `free` (pack slots),
   `time>HH:MM`; and events since the plan began: `band`, `drained`, `emergency`, `emergency_loop`, `danger`,
   `pack_full`, `unique_slain`, `unseen_attacker`. Default: `cures<3 or phase<3 or minutes>45`. Always added: no Word
   of Recall left, and 90 minutes. (`wor<2` is refused: it would hold as soon as the trip has recalled down.)
@@ -184,7 +188,7 @@ The report is **compact** (since 2026-10-22: the old one ran to ~5 KB). Line by 
 | `goal search` | search for secret doors at dead ends, corridor ends and room corners, nearest first, skipping those already searched on this level (a dive does this by itself when a level seems to have no stairs) |
 | `goal explore [until=stairs] [radius=N]` | (dungeon only) walk to unexplored edges until nothing is left (or a `>` it can reach is seen, or within N squares). Before calling a level done it digs rubble that borders unexplored ground and searches each corridor dead end 15 times for a secret door (its reply says how many it searched; each dead end only once per level). It fetches items within `loot_radius` on the way, but not distant ones it saw earlier: when it's done, collect those from the report's item squares with `goal fetch Y,X` |
 | `goal goto Y,X` / `goto >` / `goto <` / `goto item` | **Architect only: refused to the Navigator** (use `goal leave` for stairs, `goal fetch Y,X` for an item). Walk there. With `pickup=all`, an item on the target square is picked up by itself, about half a second after arriving (it waits for the character's turn): check the pack before a manual `pickup`. **Held while a dangerous monster is adjacent, or a faster one is hitting you** (walking away gives it free hits; it fights on; mission 18: a Nighthawk took 110 HP over a 25 s goto): add `force` (`goal goto 50,175 force`) to walk anyway. **No known path:** it tries one through unexplored squares (news says so), and so does a flee to the stairs (walls it bumps into are marked and it replans). A path is missing when the squares between are unseen (e.g. a corridor seen only with monsters in it, or a Phase Door landing past them) |
-| `goal hunt NAME` (spaces as `_`) | walk up to the monster called NAME and fight it (standing still; the server swings for you). Ends when it's slain or out of sight 15 s. **A hunt you order isn't replaced by the pilot's automatic "dangerous monster" or "unseen attacker" flee for 2 minutes** (news says so); its emergency escapes and the leave-the-level group-danger rule still apply. **The Pilot checks every hunt first** (step 2.4) and refuses one rated AVOID or LEAVE in the Advisor's monster table, a monster that paralyses (blow or Hold Person) while you lack Free Action, a fight whose bad case (1 in 10, from the Advisor's duel simulator at your current level, weapon, AC and HP) costs over 60% of your HP, a **summoner** unless its bad case is under 30% of your HP, you're at 80%+ HP, nothing else is in view and you carry 5+ Phase Door (summons turn a duel into a band: the m19 Ranger), a breath over 60% of your HP, or a hunt with a band about. A blinker that can't be reached within ~2 turns of blinking away ends the hunt (it wins at range). Then the Pilot takes the reprieve (`reprieve` goal): with mortal danger near it leaves by the stairs; otherwise it steps out of sight and **rests** (free) rather than spending potions (the user: resources only when turns matter). The reply gives the estimate (turns to kill, HP lost on average and in a bad fight). **`goal hunt !NAME` overrides a refusal**; if the fight then goes wrong (not slain, HP below half, or an emergency escape), the HP it cost goes into your **fight debt**, kept apart from the item debt (`debt` shows both). Past a limit you aren't told, your freedom to override fight checks is taken away |
+| `goal hunt NAME` (spaces as `_`) | walk up to the monster called NAME and fight it (standing still; the server swings for you). Ends when it's slain or out of sight 15 s. **A hunt you order isn't replaced by the pilot's automatic "dangerous monster" or "unseen attacker" flee for 2 minutes** (news says so); its emergency escapes and the leave-the-level group-danger rule still apply. **The Pilot checks every hunt first** (step 2.4) and refuses a unique you've killed before (no XP, no drop), a fight that on average ends below the emergency rule's abort point (its worst 3 turns, or `flee_hp`), one rated AVOID or LEAVE in the Advisor's monster table, a monster that paralyses (blow or Hold Person) while you lack Free Action, a fight whose bad case (1 in 10, from the Advisor's duel simulator at your current level, weapon, AC and HP) costs over 60% of your HP, a **summoner** unless its bad case is under 30% of your HP, you're at 80%+ HP, nothing else is in view and you carry 5+ Phase Door (summons turn a duel into a band: the m19 Ranger), a breath over 60% of your HP, a hunt with a band about, or a disenchanter whose expected enchantment loss (shown in the reply and in `monster NAME`) is more than a kill brings in drops and XP (never with resist disenchantment). A blinker that can't be reached within ~2 turns of blinking away ends the hunt (it wins at range). Then the Pilot takes the reprieve (`reprieve` goal): with mortal danger near it leaves by the stairs; otherwise it steps out of sight and **rests** (free) rather than spending potions (the user: resources only when turns matter). The reply gives the estimate (turns to kill, HP lost on average and in a bad fight). **`goal hunt !NAME` overrides a refusal**; if the fight then goes wrong (not slain, HP below half, or an emergency escape), the HP it cost goes into your **fight debt**, kept apart from the item debt (`debt` shows both). Past a limit you aren't told, your freedom to override fight checks is taken away |
 | `goal fetch Y,X` | one item detour: walk to the square and pick the item up (by the pickup policy). Refused with a band flagged on this level in the last 2 minutes or a dangerous monster in view |
 | `goal leave` | leave this level now: to the nearest stairs and take them (up when at `max_depth`). Always allowed |
 | `goal shop N [list] [buy NAME:COUNT[@MAX]]... [sell NAME_OR_LETTER:COUNT]...` | names match singular or plural (`buy Flask_of_oil:5`); when the cheapest stack runs out, the rest are bought at the next price within the cap, and the reply says when gold or the cap stopped it. `list`: the result starts with the store's whole stock and prices (use it alone to look before buying). `@MAX`: don't pay more than MAX each (e.g. `buy To-Dam:2@120`). Town only: walk into store N (1 General, 2 Armoury, 3 Weaponsmith, 4 Temple, 5 Alchemist, 6 Magic shop, 7 Black market), sell, buy (by part of the name; spaces as `_`, e.g. `buy Cure_Light:5`; the cheapest matching item is bought), leave. The result lists what the shopkeeper actually said ("I don't want that!" for worthless or cursed items) `quote NAME_OR_LETTER` offers an item and declines: the reply says what this shop would pay (`goal shop 6 quote Trident quote b`), nothing is sold. Names are matched whole-word, and an ambiguous name is refused |
@@ -231,14 +235,14 @@ actions, and act from the last letter backwards.
 
 What the pilot does by itself in an emergency (HP below `flee_hp`, or below 90% HP and within the adjacent
 monsters' worst melee over your next 3 turns), one step at a time, in this order: take the staircase underfoot if
-threatened (then it rests on the other side, and comes back up if that's below `max_depth`; the goal is dropped and
+threatened, or when its own walk to stairs (below) arrives, even with the danger out of view (then it rests on the other side, and comes back up if that's below `max_depth`; the goal is dropped and
 you're told); out of combat, rest or step out of sight instead of using anything; one turn from death, read
 Teleportation or Phase Door at once; drink a Potion of Speed if not fast; below 30% HP read Word of Recall (it takes
 15-34 turns, 8-23 s here, so it starts early); after 3 Phase Doors in 20 s with monsters still adjacent, read Word of
 Recall (and phase again only below 20% HP); attack an adjacent caster that blinds, confuses, holds or summons if it
 dies in 2 rounds; with 4+ monsters close in the open (or afraid with 2+ adjacent), teleport rather than phase; with a
 monster next to you, read Phase Door (every 2.5 s, every 0.7 s below 35% HP; an item inscribed `@r1` first); out of
-melee, walk to stairs within 20 squares; otherwise drink the weakest cure that out-heals the damage (with 2+ adjacent
+melee, walk to stairs within 20 squares (the walk carries on to the stairs after the emergency is over); otherwise drink the weakest cure that out-heals the damage (with 2+ adjacent
 a cure is outpaced, so it reads an escape instead). Three escape actions in 90 s is an `emergency_loop`: with stairs
 known it leaves by them. Keep plenty of Phase Door, Teleportation and cure potions: it will use them.
 
@@ -325,7 +329,8 @@ Orders are remembered across pilot restarts.
   and death is seconds away, it escapes instead (Phase Door, then Word of Recall) rather than
   wasting turns drinking. **Out of combat it never drinks for HP: it rests** (and backs away
   first if a monster is in view but not fighting). Against weak monsters `flee_hp=0.4` saves potions.
-- **Buy Potions of Boldness or Heroism whenever the store has them.** Without them, leave a level
+- **Buy Potions of Heroism whenever the store has them** (`plan town` sells Boldness; the kit keeps 3 Heroism from
+  500 ft). Without them, leave a level
   with Priests (they summon) or packs of Novice paladins (they scare): two trips were lost to fear.
 - A character with a 1d6 weapon, 3 blows and AC ~30 struggled against groups at 650-700 ft;
   450-550 ft earned XP and gold more safely until the gear improves.

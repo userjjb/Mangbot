@@ -33,8 +33,10 @@ Rules that cut across roles:
 - **The `role` of a pilotctl call:** every request carries `role` from the env var `PILOT_ROLE` (default
   `navigator`; navigator.md tells the Navigator never to set it). `PILOT_ROLE=architect` with `PILOT_TOKEN` (the Architect's token, `runs/private/architect.token`; without it the claim is refused and reported, F3) marks the Architect's and the harness's calls: they skip the value refusals,
   the override limits and the stale-order hold, may use `goal goto`, `stairs` and `raw` and item commands in the
-  dungeon, and only they may `answer` asks. `mission start/end` is not enforced by role: the brief tells the Navigator
-  not to touch it. The decision log tags each command `nav_cmd ... role=`.
+  dungeon, and only they may `answer` asks, `mission start/end` (since 2.43.0, F4), `house buy`, and `park`, `quit`,
+  `option` and `dump` (since 2.45.0; `restart.sh` and `charsave.sh` pass the token for their `park` themselves). The
+  command table `tools/pilot/cmdtable.py` holds each command's roles ([commands.md](commands.md)). The decision log
+  tags each command `nav_cmd ... role=`.
 - **Main chats** (Architect, Advisor) load Claude memory; subagents (Navigator, Clerk) don't. Memory only points into
   the project docs; anything another agent needs must be in a project file (section 6).
 - **Terminology in old notes:** "agent" in `design_pilot.md` and the old handoffs (`history/handoffs-s1-s9.md`) means the Navigator; "the builder"
@@ -64,9 +66,11 @@ notice; `mission start` records it (`version` in `runs/missions.json` and the `m
 **Every version (the per-version checklist):** update the component file in `docs/` for each component the change
 touches, and the version line in `docs/README.md` and `docs/CONDENSED.md`; bump `github/VERSION` (minor if play can
 differ, else patch); add a CHANGELOG entry (with the missions on it); `tools/snapshot.sh`, commit, tag `vX.Y.Z` on the
-version's last commit, `git push origin restructure --tags`; restart the Pilot (idle in town, and **no set-piece
+version's last commit, `git push origin restructure --tags`; restart the Pilot with `tools/pilot/restart.sh Dive04`
+(it passes the Architect's token for `park` itself; idle in town, and **no set-piece
 running**: `pgrep -af setpiece.py` -- a restart's park mid-set-piece spoils the run and blocks its restore, 10-31) so it runs and reports
-the new version.
+the new version. A change to the Pilot's code or the rulebook is checked first with `tools/harness/unit.py` (all
+cases must pass; 156 at 2.46.0; [harness-rulebook-ops.md](harness-rulebook-ops.md)).
 
 **Before (once per session):** start the inbox watcher; check the processes (`pgrep -af "gdb -batch|pilot.py"`,
 `tmux -L mang ls`): the test server (under gdb, with `MANGBAND_FREEZE_FILE`), Dive04's Pilot, the user's viewer
@@ -76,7 +80,7 @@ if the SGE job ended. Ask the user what to run (model, effort, length).
 | # | Step | Command / tool (in `github/tools`, `module load python3/3.12.4`, `export PILOT_ROLE=architect PILOT_TOKEN=$(cat /projectnb/jbrcs/mangband/runs/private/architect.token)`) | Writes |
 |---|---|---|---|
 | 1 | Mark the start | `python3 pilot/pilotctl.py --nick dive04 mission start mNN navigator=MODEL [effort=L] [notes=..]` | `mission_start` in `decisions.jsonl`; a record in `runs/missions.json` (label, nick, start, navigator, effort, version); the Pilot's mission baseline for "this mission" rates |
-| 2 | Fill the brief | Copy `tools/pilot/BRIEF-TEMPLATE.md` below its `---`; fill `{...}` from `status`, `status full`, `equip`, `pack` (time budget START/END, clvl/HP/AC/gold, the weapon and the rest of `equip`, stats, supplies, debts, "New since the last mission"); keep the rest word for word so missions stay comparable. `[VACATION]` lines only in a vacation session. | -- |
+| 2 | Fill the brief | Copy `tools/pilot/BRIEF-TEMPLATE.md` below its `---`; fill `{...}` from `status`, `status full`, `equip`, `pack` (time budget START/END, clvl/HP/AC/gold, the weapon and the rest of `equip`, stats, supplies, the stash (`house`), debts, "New since the last mission"); keep the rest word for word so missions stay comparable. `[VACATION]` lines only in a vacation session. | -- |
 | 3 | Launch the Navigator | Agent tool: `subagent_type: "navigator"`, `model`/`effort` only as the user asks, `run_in_background: true`, the brief as prompt | its transcript (Claude's subagent jsonl; `observe/tokens.py` reads it for cost) |
 | 4 | Monitor | `python3 observe/watch_mission.py 1500` in the background; it exits on a Navigator question (`NAV ASK`), an emergency or escape, a death, a stat drain, a user message, a stuck plan, a plan end, a gear swap, a Python error in `pilot.log`, or after 1500 s quiet. Look, act, **restart it every time** with the same command line (it resumes from saved offsets; `--fresh` starts at the file ends). Kill it only with a bracketed pattern (`pkill -f "watch_mission[.]py"`). | -- |
 | 5 | Asks and answers | The Navigator's `ask TEXT` never blocks: it appends to `runs/pilot/dive04/asks.jsonl` and logs `nav_ask`. Rate limit 1 per 5 min and 4 per hour (`Pilot.ASK_GAP_S`, `ASK_PER_HOUR`) unless `runs/pilot/dive04/ask_unlimited` exists (it does: the user kept it, 10-27). `ask quiet TEXT` also starts a quiet wait (up to 10 min, ends on the answer or a threat). The Architect investigates (`status`, `why`, `decisions.jsonl`) and replies `pilotctl answer ID "text"` (logged `arch_answer`; shown to the Navigator as `ARCHITECT ANSWER #ID`). The Architect may also SendMessage the Navigator agent directly. | `asks.jsonl`, `decisions.jsonl` |
@@ -90,7 +94,7 @@ if the SGE job ended. Ask the user what to run (model, effort, length).
 | 13 | Friction | Read the Navigator's complaints (`runs/complaints.md`, also "NAVIGATOR LACKS" in the viewer) and its "What I lacked": fix what you can; relay recurring/unfixable ones to the user in the mission summary (memory: relay-agent-friction). | -- |
 | 14 | Publish | `github/tools/snapshot.sh`, commit (in `github/`), `git push origin restructure`. | `github/project/`, git |
 
-**Debts and overrides** (`pilot.py: Pilot.override_allowed`, `settle_hunt`; HANDBOOK "Who decides what"). When the
+**Debts and overrides** (`items.py: Pilot.override_allowed`, `settle_hunt`; HANDBOOK "Who decides what"). When the
 Navigator overrides a refusal with `!` (`sell !NAME`, `destroy !NAME`, `goal hunt !NAME`): value lost on items is added
 to its **item debt** (gold); HP lost when an overridden hunt goes wrong (not slain, HP below half, or an emergency
 escape fired) is added to its **fight debt** (HP). Both live in `runs/pilot/<nick>/navigator_debt.json`; `pilotctl
@@ -171,7 +175,7 @@ replays, the rulebook via `tools/rulebook/sync.sh`) and what a pilot.py split mu
 | `runs/phase0/` | an early birth packet log | History |
 | Claude memory | Architect: `~/.claude/projects/-projectnb-jbrcs-mangband/memory/`; Advisor: `...-Advisor/memory/` | Pointers only (section 6) |
 | `Advisor/` | The Advisor's studies, data (rulebook, estimator, monsters, forum corpus), `STATUS.md` | Read-only for us |
-| git: `github/` | Code; branch **`restructure`** (current work, ~370 commits, pushed), `master` (at tag `pre-restructure` = 767bf60, 2026-10-22); remote `origin` = https://github.com/userjjb/Mangbot | The public repo |
+| git: `github/` | Code; branch **`restructure`** (current work, ~400 commits, pushed), `master` (at tag `pre-restructure` = 767bf60, 2026-10-22); remote `origin` = https://github.com/userjjb/Mangbot | The public repo |
 | `github/project/` | The snapshot of everything above that isn't code or secret: `tree/` (the project dir minus `github/`), `memory/architect/`, `memory/advisor/`, `claude/global-CLAUDE.md`, `SNAPSHOT_TIME` | Made by `tools/snapshot.sh` (excludes passwords, saves, server logs, the forum corpus, raw event streams, files > 5 MB; refuses if a secret-looking string slipped in). Restoring: `project/README.md`. |
 
 ## 6. The Architect's memory
@@ -204,7 +208,7 @@ routine; **history** = a record of a past phase (may be stale).
 | `docs/` (this set) | The Documentation (session 10): an index and one file per component | current |
 | `roles.md` | The roles table, where knowledge lives, the SYNC RULE | current (the Navigator is "to be built": it is built) |
 | `operations.md` | Practical facts for every agent: environment (python module, the public repo and push routine, build), the test server (start under gdb, the time freeze, known crashes and their patches), the characters table (Dive04 is the mission character; Surveyor, Gandalf the DM ghost, Scribe...; passwords in `runs/private/`), tool-mode client facts, verified server behaviour (incl. houses and the gold bank), the live server (mangband.org:18346; ask the admins before a live run), user decisions (never chat, throwaway build, ghosts on), agent-tooling gotchas (the viewer, `pkill -f`, logs), live-server rules a bot must follow | current |
-| `next_steps.md` (~230 lines) | The Architect handoff: a header (pointers, the USER TODO, the TODO), then **">>> WHICH HANDOFF IS YOURS? <<<"**, which names the handoff for each session number, then the current handoffs. Each session writes the next handoff; session N+1 writes only its own Part. Older handoffs: `history/` | current |
+| `next_steps.md` (~360 lines) | The Architect handoff: a header (pointers, the USER TODO, the TODO), then **">>> WHICH HANDOFF IS YOURS? <<<"**, which names the handoff for each session number, then the current handoffs. Each session writes the next handoff; session N+1 writes only its own Part. Older handoffs: `history/` | current |
 | `CHANGELOG.md` | What changed when, by version (major.minor.patch: minor = play can differ, patch = it can't); missions per version | current |
 | `history/` | Retired notes: `handoffs-s1-s9.md` (the old handoffs, the 09-25 "state of play", "Reflections from the agent who built this"), `restructure-step2.md`, `VACATION-NOTES.md`, `notes_merge.md`, `spells.md` (moved 2026-10-29, C11), `survey-notes/` (session 10's per-component refactor candidates, merged into `docs/refactor-candidates.md`) | history |
 | `live-deploy-todo.md` | The checklist for going live (mangband.org:18346): before the first live run, after deploying; add items as they come up (the user, 2026-10-29) | current |

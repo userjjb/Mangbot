@@ -14,14 +14,16 @@ the `pilotctl` syntax of every command in [commands.md](commands.md).
 
 Where the code is (E1 step 2): `Goal` and the dungeon goals in `tools/pilot/goals.py`, the town goals (`Town`,
 `TownFarm`, `Shop`, `StashDeposit`/`StashFetch`, `HouseBank`, `TownKit`) in `town_goals.py`, `TripPlan` in `plan.py`;
-`pilot.py` imports them back, so `pilot.py: Goal` below still names them. The `Pilot` methods the town visit uses
+`pilot.py` imports the ones it uses back (`Goal`, `Flee`, `TownKit`, `TripPlan`...; not `Goto`, `Recover`,
+`BandLeave`, `Resurrect`, `RestGoal`, `TownFarm`), so read `pilot.py: Goal` below as `goals.py: Goal`. The `Pilot` methods the town visit uses
 (E1 step 4) live in `town.py` as `TownMixin`, still `Pilot`'s names (`Pilot.town_needs` below is one): the kit's tables
 (`STORE_NUM`, `STORE_LABEL`, `BUYERS`, `KIT_ITEMS`, `KIT_CAP`, `KITS`, `SUPPLY_STAGES`, `FUEL_TOPUP`/`FLASK_FUEL`,
 `PACK_SLOTS`, `BANK_FLOAT`...), the shopping list and gold (`town_needs`, `town_shopping`, `town_reserve`,
 `price_of`, `note_store`, `buy_store`, `stock_table`), selling (`town_buyers`, `town_sell_count`, `town_sells`,
 `town_sell_stores`, `is_crutch`), `town_make_room`, `provision_step`, `kit_count`, `lantern_fuel`,
 `trip_minutes_left`, `provisions_spare`, `planned_depth`, `restore_potion`, Identify/Enchant/Recharging
-(`identify_candidates`, `town_identify_wanted`, `enchant_plan`, `recharge_wanted`, `town_extras_note`...),
+(`identify_candidates`, `town_identify_wanted`, `enchant_plan`, `weapon_enchant_plan`, `enchant_buys`,
+`recharge_wanted`, `town_extras_note`...),
 `supply_gate`, `supply_minutes`/`supply_text`/`supply_watch` (`TURNS_PER_DMIN`, `FOOD_MID`), the house and the stash
 (`house_state`, `house_save`, `retire_stash_json`, `banked`, `stash_places`/`stash_where`/`stash_has`/`stash_take`/
 `stash_wanted`, `is_stash_item`, `tavern_state`/`tavern_entrance`), `note_town_stairs`, `note_edge_cross`/`edge_dir`.
@@ -78,11 +80,11 @@ The commands that reach them (`plan town`/`plan trip`: `request_plan`/`request_t
 | Class | Set by | Parameters | Behaviour | Ends |
 |---|---|---|---|---|
 | `Wait` | `goal wait [SECS]` (default 5); plan and TownKit internally | secs | does nothing | done when the time is up |
-| `Goto` | `goal goto TARGET [force]`, `goal fetch Y,X` (with band/danger refusals) | target: `<`, `>`, `stairs`, `item` (nearest non-junk item glyph), or `Y,X`; `force` | paths there (`Pilot.resolve_target`, mover; may path through unexplored squares and says so). **Holds** (doesn't walk) while a dangerous monster is adjacent or a faster monster hit us in the last 2 s, unless `force`: walking away gives free hits. Arriving on an item, waits up to 1.5 s for the pickup | done on arrival; failed: no such place, no path, stuck |
+| `Goto` | `goal goto TARGET [force]` (the Architect's; the Navigator is told to use `goal leave`/`fetch`), `goal fetch Y,X` (with band/danger refusals) | target: `<`, `>`, `stairs`, `item` (nearest non-junk item glyph), or `Y,X`; `force` | paths there (`Pilot.resolve_target`, mover; may path through unexplored squares and says so). **Holds** (doesn't walk) while a dangerous monster is adjacent or a faster monster hit us in the last 2 s, unless `force`: walking away gives free hits. Arriving on an item, waits up to 1.5 s for the pickup | done on arrival; failed: no such place, no path, stuck |
 | `Explore` | `goal explore [until=stairs\|upstairs] [radius=N]`; Dive; the trip plan | until, radius, skip (stairs not to count) | dungeon only; refuses below `max_depth` unless looking for stairs. Walks to the nearest frontier (known floor next to unknown), running along corridors and across dark rooms, looting on the way (`loot_step`); avoids drainer and avoid zones; digs rubble that borders the unknown; with no frontier left searches unsearched corridor dead ends (`Search(strict, 15 tries)`) | done: stairs seen (with `until`), or "nothing left to explore" (lists inner rooms not opened: `goal searchroom`); failed: frontier unreachable, or on the surface |
 | `Dive` | `goal dive [FEET] [scum] [force]` (default one level down); the trip plan | target_ft (capped by `max_depth`), scum | stair-scums: on a level with the wanted stairs known and reachable, walks there and takes them; standing on the other kind, takes them for a fresh level (not on a level the server keeps: then explores); else uses a Door/Stair Location device once, else explores for stairs (then searches dead ends). Puts the light on leaving town; loots what's close; explores pillared rooms (`order pillared`); refuses for FLED_HOLD (120 s, live server only; 300 s on a kept level) stairs back to a level just fled. On a climb never takes a `>` unless `scum`. Gate: going deeper checks `supply_gate` (overridden by `force`) | done: reached the depth; `interesting` on a new level when `p.interesting()` fires (not for plan dives); failed: no stairs after exploring and searching |
 | `Search` | `goal search`; `goal searchroom Y,X` (an inner room's 4 door spots, 20 tries) | tries (8), strict, spots | stands at each dead end / corridor end / given spot, nearest first, searching once a player turn | done "found a way on" when a new door or opening appears (summary lists spots and searches); failed: all spots searched |
-| `Hunt` | `goal hunt NAME` (checked; `!NAME` overrides into the fight debt); reflex | name, lost_s 15 | walk next to it, let auto-retaliate fight (see pilot-combat.md) | done slain; failed lost sight / blinked away |
+| `Hunt` | `goal hunt NAME` (checked by `hunt_refusal`: the HP rules on `fight_sim` at the gear model's to-hit/to-dam totals, 2.45.0, and a disenchanter refused when its expected enchantment loss is more than a kill brings, 2.45.1 -- pilot-combat.md §5; `!NAME` overrides into the fight debt; each taken hunt logs a `hunt` record); reflex | name, lost_s 15 | walk next to it, let auto-retaliate fight (see pilot-combat.md) | done slain; failed lost sight / blinked away |
 | `Recover` | reflex after a stairs escape | came_by, prev goal | rest on the stairs, go back up if past `max_depth`, then resume (pilot-combat.md) | done healed |
 | `Reprieve` | after a Hunt's target blinked away | who | rest out of its sight, or leave if mortal danger is near (pilot-combat.md) | done healed / 2 min |
 | `BandLeave` | `flee_failed` for a band at high HP | names | find stairs with Door/Stair Location or Magic Mapping, else walk out of sight (pilot-combat.md) | done/failed; a second failure recalls |

@@ -12,7 +12,7 @@ real attempts; D7 will merge the lists). C3, C4, C14 still await the user; group
 
 **Rules for every step**
 - Behaviour unchanged unless the item says otherwise and the user agreed (all of group A, and items marked *behaviour*).
-- After each step all unit cases pass (145 at 2.44.14): `python3 tools/harness/unit.py`; Pilot changes also get a hotswap and one
+- After each step all unit cases pass (159 at 2.47.0): `python3 tools/harness/unit.py`; Pilot changes also get a hotswap and one
   set-piece before the next mission.
 - Advisor constraints: keep `tools/observe/shopmath.py` at its path (Advisor's `build_shops.py` imports it by absolute
   path); keep the log formats (decisions/events/state.jsonl kinds and fields, `levels/*.txt`, scorecards,

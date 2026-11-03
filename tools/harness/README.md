@@ -30,6 +30,7 @@ passes, its status), the tools, then the **findings log** (staging facts, and th
 | `setpiece_run.py` | the framework: the `Run` class, `ctl`, `log_since`, `first_seen`, map helpers, `give_item`, WOR_KIND, `fresh_depth` |
 | `setpiece_a.py`, `setpiece_bcd.py`, `setpiece_l.py`, `setpiece_mh.py` | the scenarios: A; B, C, D; L; M, H |
 | `dm.py`, `charsave.sh` | the DM (Gandalf) and the snapshots (Tools, below) |
+| `refactor/` | the refactor's equivalence checks (tick() equivalence, the command matrix, bytecode and step-list checks; session 11): `docs/harness-rulebook-ops.md` |
 
 ## Live runs
 
@@ -57,20 +58,20 @@ findings log (the date in brackets).
 |---|---|---|---|
 | A1 | a trip plan working the level; Black orcs and a Hill orc group 6-7 off | lowest HP ≥ 40%; ≤ 3 Phase Door | PASS 10-25 (4 of 7; and 1 of 1 with `--hpwarn 5`) |
 | A2 | Ulwarth (a unique above our level) adjacent, no stairs known | if a danger rule fires for it: Word of Recall within 2 s of first sight, lowest HP ≥ 40%; if none fires (11-02: the A2 uniques are no longer above clvl-29 Dive04; the Advisor's `to_architect/2026-11-02-khim.md`): a hard fight with Speed + Berserk, lowest HP ≥ 60% (A2K PASS 11-02) | PASS 10-23 (2 of 2); stale [10-29] |
-| A2I | the same with Ibun, Son of Mim (a unique exists once: a second Ulwarth summon fails while the first lives on an old level) | the same | FAIL 10-29 (Word of Recall within 2 s only) [10-29]; last PASS 10-24 |
+| A2I | the same with Ibun, Son of Mim (a unique exists once: a second Ulwarth summon fails while the first lives on an old level) | the same | PASS 11-03 (no danger rule: the hard fight); FAIL 10-29 on the old criterion [10-29] |
 | A2K | the same with Khim, Son of Mim | the same | PASS 11-03 (no danger rule: the hard fight) [11-02] |
-| A2L | the same with Lugdush (no rule fired before the simulator danger rule) | the same | FAIL 10-29 (Word of Recall within 2 s only) [10-29]; last PASS 10-25, on the simulator's danger reason [10-23 batch] |
+| A2L | the same with Lugdush (no rule fired before the simulator danger rule) | the same | PASS 11-03 (no danger rule: the hard fight); FAIL 10-29 on the old criterion [10-29]; PASS 10-25, on the simulator's danger reason [10-23 batch] |
 | A2f | a Dark elven lord (rated 4) 8 off with a clear line, no stairs known | Word of Recall within 2 s of the danger rule | PASS 10-24, after a fix [10-24] |
 | A3 | a Sabre-tooth tiger (+10, alone) adjacent, then an Architect goto 12 off | the goto is held; no walking with it adjacent | PASS 10-24 (4 of 10) |
 | A4 | Wormtongue 3 off, a '>' painted on the farthest known floor up to 12 off | ≤ 8 squares walked in his sight; HP ≥ 60% | **not stageable now** (a unique exists once: while he lives on another level the summon fails silently; its first "pass" was scored on nothing, so the run now checks he was seen) |
 | A5 | a Dark elven priest 5 off on unlit ground (placed from Gandalf's map, with a clear line) | no level change while HP > 80%; reported | PASS 10-23 |
 | A5s | a Potion mimic (never moves; curses, blinds, frost bolts) 5 off unseen, a '>' in view | the same | PASS 10-23 [10-23: A5] |
-| A6 | a Gnome mage (blinks, summons) adjacent | ≤ 3 Phase Door; Phase never runs out; lowest HP ≥ 40% | PASS 11-02 (4 of 4) |
+| A6 | a Gnome mage (blinks, summons) adjacent | ≤ 3 Phase Door; Phase never runs out; lowest HP ≥ 40% | PASS 11-03 (6 of 6 since 11-02) |
 | A7 | Hill giant adjacent, full HP, `goal hunt Hill_giant` | the hunt is allowed, the giant is slain, HP lost ≤ fight_sim's p90 | PASS 10-23 [10-23: the first runs] |
 | A7f | (the memo's first A7) a Novice paladin group (SCARE, CAUSE_1) 6 off with a clear line | once afraid, Boldness/Heroism (or an escape) within 5 s; HP ≥ 50% | PASS 10-23: afraid at 12 s, Boldness at once, lowest 94%; at 3 off they died before casting |
 | A8 | Skeleton human at 2, Ranger at 3, `goal hunt Ranger` | refused (a summoner, not alone); lowest HP ≥ 40% | PASS 10-23 |
 | A8o | the same, `goal hunt !Ranger` | the override is accepted; lowest HP ≥ 40% | PASS 10-23 [10-23: walk away] |
-| A8w | a Ranger 3 squares off, no orders | the Pilot walks away (no Word of Recall), HP ≥ 80% | PASS 10-23 [10-23: walk away] | (11-03, 2.45.1: an Ogre shaman 4 off -- the Ranger, lvl 20, no longer fires "summons" for clvl-29 Dive04, which engaged it; PASS)
+| A8w | a Ranger 3 squares off, no orders (since 11-03, 2.45.1: an Ogre shaman 4 off -- the Ranger, lvl 20, no longer fires "summons" for clvl-29 Dive04, which engaged it) | the Pilot walks away (no Word of Recall), HP ≥ 80% | PASS 11-03 08:25 (the Ogre shaman, after 6 FAILs that morning with the Ranger); PASS 10-23 [10-23: walk away] |
 | A9 | `plan trip 300-300 via=recall` from town, then Snaga and Black orcs summoned 8-9 squares off | Door/Stair Location within 5 s of arriving; no second Word of Recall while one is pending | PASS 10-24 (6 of 8) |
 
 ### B: hazards; C: items and uniques; D: movement (`setpiece_bcd.py`)
@@ -103,7 +104,7 @@ findings log (the date in brackets).
 | id | scene | pass when | status |
 |---|---|---|---|
 | M1 | a Brown mold (confuses: never fought) summoned beside a painted `>` 6 squares off, `goal dive` one level down (m25's 2-minute loop) | down those stairs within 45 s, `>` pressed nowhere else | PASS 10-25 [10-24: M1] |
-| M2 | a forged wand on floor Dive04 sees 13-20 squares off, a `>` painted 3 squares the other way, `goal dive` (the user's m29 `?`: a wand left 12 squares off) | the wand fetched, then down within 60 s | FAIL 11-02 ("a site", three in a row); last PASS 11-02 20:20 (16 of 31) [10-25: M2] (2.45.0: staging tries up to 4 rooms for a lit one) |
+| M2 | a forged wand on floor Dive04 sees 13-20 squares off, a `>` painted 3 squares the other way, `goal dive` (the user's m29 `?`: a wand left 12 squares off) | the wand fetched, then down within 60 s | PASS 11-03 07:17 (2.45.0: staging tries up to 4 rooms for a lit one); before it, many "a site" FAILs (dark rooms) [10-25: M2] |
 | M3 | a Moaning spirit (invisible, passes walls, +10, TOUCH:LOSE_DEX: m29's and m30's drainer) summoned 2 off, a `>` painted 6 off, no orders | after a drain, off the level within 30 s | PASS 10-25: drained at 5.4 s, left at 8.8 s |
 | M4 | a crowd round Dive04 in a room (the Advisor's estimator memo) | no HP cure with 2+ adjacent; teleport not Phase with 4+ about; lowest HP >= 40% | PASS 10-25, both ways, but neither reached an emergency [10-25: M4] |
 | M5 | a confusing breeder swarm (m55: Hummerhorns kept Dive04 confused 15 minutes at 800 ft): Hummerhorns round Dive04, AC lowered (`order autowear=off`, armour off), `goal dive` once confused | a long confusion cured by the Pilot within 20 s, at most 4 cures, down the painted '>' within 120 s, HP >= 60% | **not reliably stageable**; **verified live instead (10-28 08:53-09:00)** [10-28: M5] |

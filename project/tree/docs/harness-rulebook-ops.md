@@ -19,10 +19,11 @@ commands in [client-server.md](client-server.md); the viewer's freeze key in [ob
 
 | piece | what | who runs it | live / stale |
 |---|---|---|---|
-| `harness/unit.py` (+ `fixtures.py`, `unit_<family>.py`) | 145 offline unit cases of the Pilot's decision code | the Architect, after every Pilot or rulebook change | live; the regression gate (all must pass) |
-| `harness/setpiece.py` (+ `setpiece_run.py`, `setpiece_a/bcd/l/mh.py`) | 39 live scenarios staged on the test server and scored | the Architect, by hand, one at a time | live code, but last batch 10-23..10-28 (M2 re-run 10-29); not re-run as a suite since |
+| `harness/unit.py` (+ `fixtures.py`, `unit_<family>.py`) | 156 offline unit cases of the Pilot's decision code | the Architect, after every Pilot or rulebook change | live; the regression gate (all must pass) |
+| `harness/setpiece.py` (+ `setpiece_run.py`, `setpiece_a/bcd/l/mh.py`) | 39 live scenarios staged on the test server and scored | the Architect, by hand, one at a time | live code; never re-run as a suite since the 10-23..10-28 batch (single IDs re-run 11-02..11-03: A2I/A2K/A2L, A6, A8w, B3, M2) |
 | `harness/dm.py` | scripts the DM character Gandalf (summon, paint terrain, forge, pull a player) | `setpiece.py` | live |
 | `harness/charsave.sh` | save/restore a character's savefile + Pilot state | `setpiece.py`; the Architect for checkpoints | live |
+| `harness/refactor/` | the refactor's equivalence checks (session 11: tick() equivalence, the command matrix, bytecode and step-order checks) | the Architect, for a change meant to leave play unchanged | live (by hand; not a suite) |
 | `rulebook/` | 27 CSV tables (26 from the Advisor + `monsters_raw.csv`) + `rule.py`, `fight_sim.py` | the Pilot (loads tables), the Navigator (`pilotctl rule`), the Architect | live; synced 2026-10-24, identical to the Advisor's copy today |
 | `client/mang.py` | Python wrapper for the tool-mode client | the Pilot, `dm.py`, `observe/study/scribe.py` | **live, core** Moved from `shopcat/` on 2026-11-02 (E7); `shopcat/mang.py` is a shim that loads it under the same name (for shopcat.py, newchar.py). |
 | `shopcat/newchar.py` | create a throwaway character + its private files | the Architect (rarely); `scribe.py` imports two helpers | live, rarely used |
@@ -57,7 +58,7 @@ harness found); read it before writing a new set-piece.
 
 ### `unit.py` -- offline unit cases
 
-**What:** 145 functions decorated `@case` (in `unit_<family>.py`), each building a situation by hand and calling the
+**What:** 156 functions decorated `@case` (in `unit_<family>.py`), each building a situation by hand and calling the
 real Pilot decision code on it, returning `(ok, detail)` (one, `emergency_notices_say_if_action`, is a static check of the Pilot's source: `pilot_ast()` parses pilot.py and the modules split out of it, combat.py
 and commands.py among them). No
 server, no client, no network.
@@ -83,7 +84,7 @@ python3 unit.py --golden                            # rewrite golden/reports.txt
 ```
 
 Output: one `PASS|FAIL name: detail` line per case and a total. No files written by the suite itself. There is no
-`--help` (an argument is taken as a name filter). **Run 2026-11-03 (2.44.14): 145 passed, 0 failed.**
+`--help` (an argument is taken as a name filter). **Run 2026-11-03 (2.46.0): 156 passed, 0 failed.**
 The old handoffs (`history/handoffs-s1-s9.md`) record an intermittent failure (~1 in 20 runs, twice, not reproduced since).
 
 **Case families** (names are descriptive; one file each, `unit_<family>.py`; grep `unit_*.py` for the full list):
@@ -138,7 +139,7 @@ an A/B. A run takes a few minutes.
 
 | group (file) | IDs | tests | latest |
 |---|---|---|---|
-| A: danger, hunts, escapes (`setpiece_a.py`) | A1 (trip plan vs orc groups), A2/A2I/A2K/A2L (an out-of-depth unique adjacent, no stairs: recall in 2 s), A2f (a rated caster 8 off), A3 (a goto held while a tiger is adjacent), A4 (Wormtongue near stairs), A5/A5s (unseen caster: no level change above 80% HP), A6 (blinking summoner, Phase budget), A7 (hunt a Hill giant), A7f (fear answered), A8/A8o/A8w (summoner hunt refused / overridden / walked away from), A9 (recall arrival: Door/Stair Location first) | danger rule, hunt check, WalkAway, escapes | all PASSed at least once; the latest A2I (10-24) and A2L (10-25: Lugdush never seen) runs FAIL and weren't re-run (why unverified); A4 not stageable (Wormtongue killed, a unique exists once) |
+| A: danger, hunts, escapes (`setpiece_a.py`) | A1 (trip plan vs orc groups), A2/A2I/A2K/A2L (an out-of-depth unique adjacent, no stairs: recall in 2 s), A2f (a rated caster 8 off), A3 (a goto held while a tiger is adjacent), A4 (Wormtongue near stairs), A5/A5s (unseen caster: no level change above 80% HP), A6 (blinking summoner, Phase budget), A7 (hunt a Hill giant), A7f (fear answered), A8/A8o/A8w (summoner hunt refused / overridden / walked away from), A9 (recall arrival: Door/Stair Location first) | danger rule, hunt check, WalkAway, escapes | all PASSed at least once; A2I, A2L, A2K, A6, A8w PASS 11-03 (A2's criterion follows the danger call since 11-02; A8w stages an Ogre shaman since 2.45.1); A4 not stageable (Wormtongue killed, a unique exists once) |
 | B: hazards (`setpiece_bcd.py`) | B1 (mold beside path), B2 (STR-draining ants), B3 (Brigand thief), B4/B4w (town gold thief, idle/walking), B6 (painted trap on the path) | avoidance, drain response, thieves, traps | all PASS |
 | C: items/uniques (`setpiece_bcd.py`) | C3 (hunt Ulfast, fetch his drop), C8 (unidentified Free Action boots vs a Floating eye) | drop fetching, ability inference | C3 PASS; C8 not stageable (the Forge's items come out identified; unit `ability_proofs` covers it) |
 | D: movement (`setpiece_bcd.py`) | D3 (walled in behind a secret door), D6 (explore speed >= 3 tiles/s) | explore, search, mover/pathfind | PASS |
@@ -181,12 +182,31 @@ and `special` events.
 
 ### `charsave.sh` -- character snapshots
 
-`charsave.sh save|restore NICK TAG [PORT]`. Parks the Pilot (`pilotctl park`, waits up to 330 s for it to exit),
+`charsave.sh save|restore NICK TAG [PORT]`. Parks the Pilot (`pilotctl park` as the Architect: the script passes
+the token from `runs/private/architect.token`, since `park` is the Architect's from 2.45.0; waits up to 330 s for it to exit),
 sleeps 20 s for the server to free and save the orphaned character, refuses to touch the savefile if the server
 hasn't saved since the logout, then copies `testserver/save/NICK` and the Pilot's state files (`orders deepest plan
 standing navigator_debt keep stores uniques_killed rates recall .json`) to or from `runs/setpieces/saves/TAG/`, and
 restarts the Pilot (`PILOT_ARGS` passed through). A restore deletes state files the snapshot lacks. Used by
 `setpiece.py` and by hand for checkpoints (e.g. `dive04-pre-m43`, restore only on the user's word).
+
+### `refactor/` -- the equivalence harness (session 11)
+
+The checks behind the refactor's "no play change" versions (2.44.x; refactor-candidates E1-E8), run on an old and a
+new tree and compared; no server. Each script's docstring has its command line. Run them from a scratch copy
+(`SCRATCH/scripts/*.py`, next to a `SCRATCH/rundir_template/` holding a copy of Dive04's state files: `fake.py`'s
+docstring), with `PYTHONHASHSEED=0`.
+
+| script | checks |
+|---|---|
+| `fake.py` | (library) a deterministic fake clock and fake `MangClient`, so the real Pilot runs without a server |
+| `equiv.py` | tick() equivalence: the real Pilot through scripted game states (177 at 2.46.0), recording every command, notice and log record; `EQUIV_COVER` records line coverage (`covreport.py`, `uncovered.py`; `summ.py` summarises a dump) |
+| `cmdmatrix.py`, `cmpmatrix.py` | the command matrix: every command x argument variants x 6 roles x 5 contexts (E2), and its comparison |
+| `dry.py` | a dry start: `Pilot.__init__` on a fake client, its state dumped |
+| `bytecode.py`, `bcdiff.py`, `bcall.py` | moved code is bytecode-identical (one class's names, or every function of the Pilot's modules) |
+| `stepdiff.py`, `stepdiff5.py`, `stepswap.py` | the step lists (E3, E5) are the old code moved verbatim; which adjacent step swaps a state can tell apart |
+| `flagcheck.py`, `names.py` | lazily created flags declared with the same default (E5); no name defined twice across Pilot and its mixins |
+| `split.py` | the E1 split helper (moves Pilot methods into a mixin module) |
 
 ---
 
@@ -268,9 +288,9 @@ the live server's shop tour once (`runs/live-tour*.jsonl/csv`, 416 doors) and a 
 README documents the options, output format and limits (including the server's 11th-arena crash).
 
 **Still used?** Only two pieces:
-- **`mang.py`** (`MangClient`, `ClientExited`, `meta_servers`): the Python wrapper for `mangclient -mtool` (start it,
-  send a command line, read JSON events, `wait`, `collect`, `query`, `status`/`map`/`inven`). **Everything imports it**:
-  `pilot/pilot.py`, `harness/dm.py`, `observe/study/scribe.py`. It lives here only for history.
+- **`mang.py`**: since 2026-11-02 (E7) a shim that loads `client/mang.py` (`MangClient`, `ClientExited`,
+  `meta_servers`: the Python wrapper for `mangclient -mtool`) under the same name, for `shopcat.py` and `newchar.py`.
+  The Pilot, `harness/dm.py` and `observe/study/scribe.py` import `client/mang.py` directly.
 - **`newchar.py`**: `newchar.py --nick NAME [--birth RACE:CLASS:SEX:STATS] [--privdir DIR]` writes
   `runs/private/NAME.pass` and `.mangrc` (mode 600), logs in with `--birth` (creates the character, or **replaces a
   dead one**), wields/wears the starting kit and prints a summary. Default build: Half-Orc Warrior,
@@ -313,7 +333,7 @@ requests, acts on nothing). Logins work while frozen. Without the variable (any 
 | | `restart.sh NICK [PORT]` | `hotswap.sh NICK [PORT]` |
 |---|---|---|
 | when | between missions, character idle in town; after a job/node restart | mid-mission, anywhere |
-| how | `pilotctl park` (logs out at a safe moment), waits up to 330 s, starts `pilot.py`, prints status | freeze, SIGTERM the Pilot (KILL after 10 s; no park), start the new one, wait for it to answer, thaw (left frozen if it was) |
+| how | `pilotctl park` as the Architect (the script passes the token; logs out at a safe moment), waits up to 330 s, starts `pilot.py`, prints status | freeze, SIGTERM the Pilot (KILL after 10 s; no park), start the new one, wait for it to answer, thaw (left frozen if it was) |
 | keeps | savefile and the Pilot's state files | the character in memory, in place; the trip plan (`plan.json`) and a pending recall (`recall.json`) |
 | loses | the Pilot's in-memory state (level map, refused stairs, fights) | the same |
 
@@ -327,6 +347,6 @@ and Advisor's Claude memories into `project/memory/{architect,advisor}/`, and `~
 `project/claude/`, writes `project/SNAPSHOT_TIME`, and fails if anything token-like slipped in. It excludes secrets and
 bulk on purpose (the repo is public: github.com/userjjb/Mangbot): `runs/private/`, `*.pass`, `*.mangrc`, savefiles
 (`testserver/save/`, `runs/setpieces/saves/`), server logs and crash dumps, the forum corpus and other third-party
-copies, raw event streams, packet logs, files over 5 MB. Run it before every commit and push (`git push origin master`
-per operations.md; the current work is on branch `restructure`). `project/README.md` explains how to restore a
+copies, raw event streams, packet logs, files over 5 MB. Run it before every commit and push (`git push origin
+restructure --tags` per operations.md; `master` stays at the tag `pre-restructure`). `project/README.md` explains how to restore a
 commit's state (copy `tree/` back, recreate `runs/private/` with `newchar.py`, copy the memories back).

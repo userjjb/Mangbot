@@ -21,7 +21,7 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
 - **Item commands** (selling with `goal shop N sell NAME`, `wear`, `wearall`, `takeoff`, `inscribe`, `read`/`use`
   on an item, `fuel`, `eat`, `pickup`) work **in town only**; `destroy` and `drop` work in the dungeon too. In the dungeon, combat consumables still work (`quaff`, `read` Phase/Recall, `use`, `zap`,
   `aim`), but the Pilot already uses them when it matters. `goal goto`, `stairs` and `raw` are the Pilot's: use
-  `goal leave` or `goal fetch Y,X`.
+  `goal leave` or `goal fetch Y,X`. `park`, `quit`, `option` and `dump` are the Architect's.
 
 ## Your loop
 
@@ -31,8 +31,8 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
    standing orders. Write that plan in your journal.
 1. **In town:** `status`, then `plan town [kit=A|B|C|none] [buy NAME[:N][@MAX],...]`, then `wait`. The Pilot sells
    by policy, identifies what pays, and buys in priority order: Word of Recall to 2, the supply gate's minimums,
-   Restore for a drained STR/DEX/CON, the kit, then your list (`NAME:N` means *have* N in all, not N more). Below
-   500 ft the kit keeps **3 Heroism** (the fear cure) and **2 Potions of Speed** (Black Market, at most 600 each; often
+   Restore for a drained STR/DEX/CON, the kit, then your list (`NAME:N` means *have* N in all, not N more). From
+   500 ft down the kit keeps **3 Heroism** (the fear cure) and **2 Potions of Speed** (Black Market, at most 600 each; often
    out of stock): the Pilot drinks Speed **at the start of a hard fight** (a unique or a monster near your level
    adjacent), not only in emergencies. **Restore potions and Wands of Stone to Mud stay in the stash** (the house, in the
    wilderness tile north of town) during a mission: `plan town` leaves them there as its last step, and fetches the right Restore when STR/DEX/CON is drained
@@ -87,7 +87,7 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 | `plan resume` | end your own goal and hand control back to the paused plan (a goal you give pauses the plan) |
 | `goal leave` | this level, now, by the nearest stairs (always allowed) |
 | `goal recall` | home now (or down, from town; supply gate applies) |
-| `goal hunt NAME` / `goal hunt !NAME` | fight one monster; checked (the Advisor's rating, paralysis without Free Action, the duel simulator's bad case over 60% of your HP, summoners, breath, bands); the reply gives turns and HP expected |
+| `goal hunt NAME` / `goal hunt !NAME` | fight one monster; checked (a unique you've killed, the Advisor's rating, paralysis without Free Action, an average fight ending where the emergency rule breaks off, the duel simulator's bad case over 60% of your HP, summoners, breath, bands, a disenchanter whose expected enchantment loss is more than a kill brings); the reply gives turns and HP expected |
 | `goal fetch Y,X` | one item detour (refused with a band or danger about) |
 | `goal dive FEET`, `goal explore`, `goal searchroom Y,X`, `goal rest`, `goal shop N ...`, `goal townfarm GOLD` | single steps, when a plan doesn't fit |
 | `goal quiet [SECS]` | **time to think** (10-600 s, default 120): pauses the plan (or your goal), walks to a quiet spot in a room already walked, rests there if hurt, and waits. It ends when a monster that moves comes into view, something hits you, or the time is up: you get a `quiet_end` alert and what it paused carries on. Refused with a moving monster in view. Use it to plan, read the map, sort the pack, `gearcmp` |
@@ -126,8 +126,8 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 - **Depth** (the Advisor's m24 memo, from our missions m17-24): **work 500-650 ft** (58 XP a minute, against 8.5 at
   300-450 ft; HP lost per XP is flat from 400 to 1500 ft). Go to 700 ft only when stocked (3+ WoR, 5+ CCW, 10+
   Phase), stay above ~750 ft until Free Action is found (paralysers), and plan 300-450 ft trips only to rebuild gold
-  when the gate refuses deeper ones. **Dive04 now (FA, See Invisible, AC ~77): `max_depth` 750 as a trial (the
-  user, 10-25); work 650-750** -- FIELD-NOTES.md says what each deeper step adds. Restore Strength is the best gold-for-XP buy (blows set every kill time).
+  when the gate refuses deeper ones. **Dive04 now (FA, See Invisible, AC ~94): `max_depth` 800 as a trial (the
+  user, 10-26); work 700-800** -- FIELD-NOTES.md says what each deeper step adds. Restore Strength is the best gold-for-XP buy (blows set every kill time).
 - **The arrival protocol** (the Pilot does it): after a recall, or when the level "feels special" (a pit, nest or
   vault), it maps the stairs with Door/Stair Location first and, on a special level, finds stairs before exploring.
   Carry the rod.
@@ -144,8 +144,8 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
   level with a pack: leave. A strange situation (repeated stuck, a level that keeps hurting you): leave or recall.
 - **Hunts.** Hunt only for a reason (a unique's drop, a drainer that keeps coming, the user's request), after
   `monster NAME`. Killed uniques give nothing again. Don't override a refusal to "see what happens".
-- **Your buy list** goes beyond the kit: Restore Strength or Dexterity when blows were lost; Potions of Boldness or
-  Heroism (fear stops a warrior); CCW over CLW once HP is 200+. Save for a Staff of Teleportation once clvl is ~20
+- **Your buy list** goes beyond the kit: Restore Strength or Dexterity when blows were lost; Potions of Heroism
+  (fear stops a warrior; `plan town` sells Boldness); CCW over CLW once HP is 200+. Save for a Staff of Teleportation once clvl is ~20
   (its fail rate is ~20% then). Free Action, the most important item of all, can't be bought: keep every unknown
   item that might give it.
 - **Items you know better than the policy:** `keep` it (free). Selling or destroying over a refusal costs debt.
@@ -163,7 +163,8 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 - **Stat drains** cost blows (STR, DEX) or HP (CON). Restore is ~480 at the Alchemist and levels never restore them.
   Dart traps drain too, at any depth. **Moaning spirits** (invisible, through walls) drain DEX at 600-650 ft: See
   Invisible shows them, and without it the Pilot leaves a level where an unseen monster drains. Restore Dexterity
-  is sometimes out of stock (m32): when blows matter, a spare one in the pack is worth its price.
+  is sometimes out of stock (m32): when blows matter, a spare one in the stash is worth its price (`plan town` keeps
+  it there and fetches it when the stat is drained).
 - **Packs that breathe or cast**, a capital `D`, pits and vaults: leave. Inner rooms are ordinary only when lit.
 - **Never go down without 2 Words of Recall**: one to go, one to come home. A recall arrival has no stairs underfoot.
 

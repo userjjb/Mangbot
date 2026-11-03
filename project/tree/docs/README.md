@@ -1,7 +1,7 @@
 # The Documentation
 
 What everything in this project does, so you can understand the whole and each part without reading the code.
-Written in session 10 (2026-10-29) from the code at git `d53ba3b` and kept in step since (now version 2.46.0, every claim checked against the code on 10-29; `github/VERSION`, `../CHANGELOG.md`). Where a doc and
+Written in session 10 (2026-10-29) from the code at git `d53ba3b` and kept in step since (now version 2.47.0, every claim checked against the code on 10-29; `github/VERSION`, `../CHANGELOG.md`). Where a doc and
 the code disagreed, these files follow the code. When you change a component, update its file here too.
 
 **In a hurry?** Read [CONDENSED.md](CONDENSED.md) (the 3-page version for Architects and Advisors).
@@ -28,12 +28,13 @@ MAngband server (test: ../testserver, port 28346; freeze file stops game time)  
   ^ network protocol
 mangclient -mtool  (our headless client: JSON events out, one-line commands in)       client-server.md
   ^ stdin/stdout, via tools/client/mang.py: MangClient
-Pilot daemon  pilot.py (+ world, mover, glyphs, structures, itemvalue, geareval)       pilot-core.md
+Pilot daemon  pilot.py + its mixins (combat, town, gear, items, commands, report) and   pilot-core.md
+  goals/town_goals/plan, cmdtable, daemon, common, world, mover, glyphs, structures, itemvalue, geareval
   |  every tick: reflexes (stay alive) -> the goal (Explore, Dive, TownKit...) -> item policy
   |                                     pilot-combat.md / goals-and-plans.md / pilot-items.md
-  |  writes runs/pilot/<nick>/ : decisions/events/state.jsonl, levels/, rates, stash, house...
+  |  writes runs/pilot/<nick>/ : decisions/events/state.jsonl, levels/, rates, house (and the stash)...
   ^ Unix socket runs/pilot/<nick>/ctl.sock (one JSON request per call)
-pilotctl.py  (PILOT_ROLE=navigator|architect decides what is refused)                  commands.md
+pilotctl.py  (PILOT_ROLE=navigator|architect + PILOT_TOKEN decides what is refused)     commands.md
   ^ Bash
 Navigator subagent (a mission)    Architect (missions, asks, code)    the user (watch.py viewer)
 ```
@@ -87,6 +88,7 @@ the **rulebook** tables and the ops scripts ([harness-rulebook-ops.md](harness-r
 | [gear-and-estimator.md](gear-and-estimator.md) | `gearcmp`, `loadout`, the simulator's fight sets, EHP, the verdict rules, auto-wear, shadow mode and the Advisor's estimator contract |
 | [observe.md](observe.md) | the viewer, the mission monitor, `wrap.sh`, scorecards (every metric), token costs, the damage mix, shop maths, study tools |
 | [harness-rulebook-ops.md](harness-rulebook-ops.md) | unit cases, live set-pieces and the Dungeon Master, the rulebook tables, shopcat, freeze/snapshot/restart/hotswap |
+| [refactor-candidates.md](refactor-candidates.md) | the one list of what to refactor, remove or split (groups A-F; items marked done with their session) |
 | `../history/survey-notes/*-candidates.md` | session 10's raw refactor/remove candidates per component (all merged into the refactor list; moved to history/ 10-29) |
 
 ## Other docs (not replaced by these)

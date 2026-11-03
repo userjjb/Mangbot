@@ -27,8 +27,9 @@ range, number of trips, conditions, and any `react` rules), and journal that pla
 {The weapon from `equip`, with what it gives, e.g. **Battle Axe of Westernesse (2d8) (+10,+9) (+1): Free Action and
 See Invisible**, 2 blows}. {The rest of `equip`, one line: body armour (resists), rings, amulet, cloak, shield, helm,
 gloves, boots, light}. {Stats from `status full`: STR, DEX, CON; any **drained** stat}. Supplies (check `status`): {CCW, CSW, Phase, Teleportation, Word of Recall,
-rations, Heroism, Magic Mapping, Rod of Door/Stair Location, **Staff of Teleportation (N charges)**, Speed}. Stone to
-Mud wands wait in the stash (the wilderness house). {Anything special: no Word of Recall left -> `plan town` buys them first.}
+rations, Heroism, Magic Mapping, Rod of Door/Stair Location, **Staff of Teleportation (N charges)**, Speed}. {What
+waits in the stash (the wilderness house; `house` lists it), e.g. a Potion of Restore Charisma.} {Anything special: no
+Word of Recall left -> `plan town` buys them first.}
 
 **`max_depth` is 800 (a trial, the user's decision): work 700-800 ft; don't go below 800 ft (don't raise
 max_depth).** Light hound packs (750-800 ft) blind you again and again, and a blind character can't read scrolls:

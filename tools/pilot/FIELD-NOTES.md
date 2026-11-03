@@ -34,8 +34,9 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
   Teleportation works blind: since m48 the Pilot uses it when it can't read. Resist blindness would end this; buy it
   when you see it (Metal Caps of Seeing, some amulets/rings). If a Light hound pack shows on arrival, leave at once.
 - **Don't drink potions while Full in a long fight: Gorged is -10 speed** (m48, and again in m49 at 800 ft: a potion
-  while Full, then a Warg pack took HP 302 -> 166 in a minute). The town now feeds to Fed only; in the dungeon, eat
-  to Fed before a fight, or leave the potion until the state is Fed.
+  while Full, then a Warg pack took HP 302 -> 166 in a minute). The town now feeds to Fed only; in the dungeon the
+  Pilot eats when Hungry at a quiet moment (nothing in view), and when Weak unless a monster is adjacent (`eat`
+  is town-only).
 - **Gold near a fight is still gold** (m49, 750-800 ft): two piles were left after a Drider fight and one more 7 steps
   off with a stationary monster in view. After a fight, `status` shows the `$` piles near you; fetch them.
 - **Warg packs at 800 ft (m49):** 3-4 Wargs with a Black ogre and a giant red ant took the Navigator from 340 to 170 in
@@ -67,7 +68,8 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
   carry.
 
 - **Black Market (store 7):** Speed ~383 (m40). The kit buys 2 Speed at no more than 600 each (450 until m45). A Black Market
-  buy needs the `7/` prefix. Stock is often missing.
+  buy of a non-kit item needs the `7/` prefix (kit items such as Speed find store 7 by themselves). Stock is often
+  missing.
 - **Exact lines:** to buy one particular line among several with the same name, copy the line `gear` prints (m41
   got plain gloves instead of [1,+5]).
 - **Restores** cost ~480 at the Alchemist. **Kill a drainer before quaffing Restore**: m42 quaffed mid-fight and
@@ -116,8 +118,8 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
   Pilot would fight and win: m43's first trip ended after 5 minutes on 5 Black orcs. The Pilot leaves dangerous bands
   by itself.
 - Since m43: the Pilot fights a killable monster a few steps off instead of walking past it (never while fleeing or
-  hurt). It cures blindness when it's in a fight or must read. It drinks a carried Restore once a fight is over (so 1
-  spare Restore STR/DEX is worth carrying). It sells spare staffs, such as Cure Light Wounds or a Staff of
+  hurt). It cures blindness when it's in a fight or must read. It drinks a Restore found in the dungeon once a fight is
+  over (spare Restores wait in the stash, above). It sells spare staffs, such as Cure Light Wounds or a Staff of
   Door/Stair Location beside the Rod. It destroys known junk on the floor when nothing is around.
 
 - The Pilot's own emergency recall often lands before your `goal recall`. Check `status` first; `why` explains it.

@@ -64,8 +64,9 @@ its usage, help line and group. `Pilot.do_request` (commands.py) looks the comma
 place, in this order, then calls the method:
 
 1. for anyone but the Architect: the **role check** (the entry's or its sub-command's `roles`);
-2. the **dungeon check** (`where`);
-3. the **stale-order check** (`stale_order`, for every request: it picks the positional orders by their arguments);
+2. (likewise not for the Architect) the **dungeon check** (`where`);
+3. (likewise not for the Architect) the **stale-order check** (`stale_order`, asked for every command, unknown ones
+   too: it picks the positional orders by their arguments);
 4. `unknown command NAME` (since 2.45.0 before the dead check: a ghost too gets it);
 5. for a ghost: the **dead check** (`dead`, or the sub-command's);
 6. the method; a `ValueError`/`IndexError` from a bad or missing argument answers `usage: USAGE (the error)` and
@@ -85,7 +86,7 @@ The checks `Pilot.do_request` runs from the command table before any command run
 
 | refusal | applies to | why |
 |---|---|---|
-| "`raw`/`stairs`/`goal goto` is the Pilot's now", "mission markers are the Architect's", "answers come from the Architect" | the table's Architect-only entries: `raw`, `stairs`, `goal goto`, `mission`, `answer` | movement is the Pilot's (step 2.6): use `goal leave`, `goal fetch Y,X`, `plan trip`, `goal dive`; mission markers (F4) and answers to `ask` are the Architect's |
+| "`raw`/`stairs`/`goal goto` is the Pilot's now", "mission markers are the Architect's", "answers come from the Architect", "`park`/`quit`/`option`/`dump` is the Architect's: it stops, logs out or reconfigures the Pilot" | the table's Architect-only entries: `raw`, `stairs`, `goal goto`, `mission`, `answer`, and since 2.45.0 `park`, `quit`, `option`, `dump` | movement is the Pilot's (step 2.6): use `goal leave`, `goal fetch Y,X`, `plan trip`, `goal dive`; mission markers (F4) and answers to `ask` are the Architect's; so are stopping, parking and reconfiguring the Pilot (2.45.0) |
 | "in the dungeon the Pilot handles items itself" | in the dungeon: `wear takeoff pickup fuel eat inscribe wearall` (`where` town), and `read`/`use` with a target item (`where` town_target: an Identify-type read; `read X force` is not a target) | the item policy is the Pilot's in the dungeon (restructure step 2). `destroy`/`drop` are allowed there (pack control), as are `quaff`, plain `read`, `use`, `aim`, `zap` |
 | "order held: ..." (stale order) | positional orders (`stale_order` picks them by their arguments): `goal goto/fetch/searchroom/hunt`, `avoid Y,X` | the report the order answers is from a level since left; or (`hunt`, report >5 s old) the monster is no longer in view; or (`goto`/`fetch`, >5 s old) HP fell by over 25 points (percent) since. Logged `order_held`. Look again and re-issue |
 | dead character | everything except `goal resurrect` and the entries with `dead`: the queries and notes (`status mission keep standing react review debt pack equip orders map view navview avoid viewmap note journal gate complain say ask answer price monster drainers gear gearcmp house loadout why prep`) and `attention`, `quit`, and since 2.45.0 `park`, `stop`, `order`, `plan stop` (restart.sh/charsave.sh could not park a ghost) | a ghost can only resurrect |
@@ -156,7 +157,7 @@ given, so the next `wait` is about it. A goal given while a trip plan runs **pau
 | `goal goto Y,X\|>\|<\|item [force]` | walk there | **Architect only** | Navigator: refused (use `leave`/`fetch`) |
 | `goal fetch Y,X` | one item detour (a Goto named `fetch`) | all | Navigator in the dungeon: a band flagged on this level in the last 2 min, or a dangerous monster in view; stale-order hold |
 | `goal leave` | leave this level by the nearest stairs (a `Flee` goal; up at `max_depth`) | all | in town/wilderness ("for dungeon levels") |
-| `goal hunt NAME` / `goal hunt !NAME` | walk up to NAME and fight it (spaces as `_`). The reply's note is the estimate, with a disenchanter's expected disenchantments and their gold (with a plan running, the pause note instead). Logged `hunt` (target, by, refused, overridden, the estimate and the `disen_*` fields) | all; checks for non-Architect | `hunt_refusal`: unique already killed (no XP/drop again); a paralyser without Free Action; the average fight ending below the Pilot's own abort line (worst 3 turns or `flee_hp`); the Advisor's rating AVOID/LEAVE (unless rated for strength alone); a bad fight (90th percentile of HP lost from the duel simulator, else twice the turns) over 60% of HP; a summoner unless bad case <30% HP, HP 80%+, nothing else in view and 5+ Phase Door; a breath over 60% of HP; a band flagged on this level in the last 2 min with 5+ mobile monsters in view; (2.45.1) a disenchanter whose expected enchantment loss is more than a kill brings (drop value + XP at the recent XP per gold; never with resist disenchantment) (the expected disenchantment is shown, never a reason). Logged `order_refused` (a disenchanter's `disen_*` fields too). `!` overrides (fight debt); refused if hunt overrides are revoked |
+| `goal hunt NAME` / `goal hunt !NAME` | walk up to NAME and fight it (spaces as `_`). The reply's note is the estimate, with a disenchanter's expected disenchantments and their gold (with a plan running, the pause note instead). Logged `hunt` (target, by, refused, overridden, the estimate and the `disen_*` fields) | all; checks for non-Architect | `hunt_refusal`: unique already killed (no XP/drop again); a paralyser without Free Action; the average fight ending below the Pilot's own abort line (worst 3 turns or `flee_hp`); the Advisor's rating AVOID/LEAVE (unless rated for strength alone); a bad fight (90th percentile of HP lost from the duel simulator, else twice the turns) over 60% of HP; a summoner unless bad case <30% HP, HP 80%+, nothing else in view and 5+ Phase Door; a breath over 60% of HP; a band flagged on this level in the last 2 min with 5+ mobile monsters in view; (2.45.1) a disenchanter whose expected enchantment loss is more than a kill brings (drop value + XP at the recent XP per gold; never with resist disenchantment) -- the last check; below that line the expected disenchantment is only shown. Logged `order_refused` (a disenchanter's `disen_*` fields too). `!` overrides (fight debt); refused if hunt overrides are revoked |
 | `goal recall [force]` | read Word of Recall (from town: down to `max_depth` or the deepest level, inscribing `@R`) | all | from town: supply gate for that depth by recall unless `force` |
 | `goal rest` | rest until healed | all | -- |
 | `goal wait [SECS]` | stand still (default 5 s) | all | -- |
@@ -229,12 +230,12 @@ Goals.
 
 | command | does | who | prints / refuses |
 |---|---|---|---|
-| `say TEXT` | answer the user: logged `nav_say`, written to `commentary.jsonl` (shown in the viewer), clears the unanswered-message flag | Navigator | `said` |
-| `journal TEXT` | append `- HH:MM:SS <depth> <HP%> \| TEXT` to `runs/pilot/<nick>/navigator.md`, logged `nav_journal` | Navigator | `journaled: ...` |
-| `complain TEXT` | append a dated line to `runs/complaints.md` (created with a header), logged `nav_complaint`; works with the Pilot down (pilotctl writes it) | Navigator | usage if empty |
-| `ask [quiet] TEXT` | a live question for the Architect: appended to `runs/pilot/<nick>/asks.jsonl` with an id, depth, HP and goal; logged `nav_ask` (the Architect's inbox watcher picks it up). Never blocks. `quiet` also starts `goal quiet 600` that waits for the answer | Navigator | rate limits (1 per 5 min, 4 per hour; lifted by the file `ask_unlimited`); if the quiet wait is refused the question still goes |
+| `say TEXT` | answer the user: logged `nav_say`, written to `commentary.jsonl` (shown in the viewer), clears the unanswered-message flag | all (the Navigator's) | `said` |
+| `journal TEXT` | append `- HH:MM:SS <depth> <HP%> \| TEXT` to `runs/pilot/<nick>/navigator.md`, logged `nav_journal` | all (the Navigator's) | `journaled: ...` |
+| `complain TEXT` | append a dated line to `runs/complaints.md` (created with a header), logged `nav_complaint`; works with the Pilot down (pilotctl writes it) | all (the Navigator's) | usage if empty |
+| `ask [quiet] TEXT` | a live question for the Architect: appended to `runs/pilot/<nick>/asks.jsonl` with an id, depth, HP and goal; logged `nav_ask` (the Architect's inbox watcher picks it up). Never blocks. `quiet` also starts `goal quiet 600` that waits for the answer | all (the Navigator's) | rate limits (1 per 5 min, 4 per hour; lifted by the file `ask_unlimited`); if the quiet wait is refused the question still goes |
 | `answer ID TEXT` | the Architect's answer: an `architect_answer` attention event (`ARCHITECT ANSWER #ID: ...` in the Navigator's reports), logged `arch_answer`; ends an `ask quiet` wait for that id unless the text starts with "more" | **Architect only** | Navigator ("answers come from the Architect"); usage |
-| `note TEXT` | the user's commentary (the viewer sends these): logged `user_note` with a snapshot (depth, HP, goal, monsters, recent actions) and to `commentary.jsonl`. `!TEXT` is a message for the Navigator (a `user_message` event that wakes `wait`, and the unanswered flag); `?TEXT` marks a question for the Architect | user / viewer | `noted at ...` |
+| `note TEXT` | the user's commentary (the viewer sends these): logged `user_note` with a snapshot (depth, HP, goal, monsters, recent actions) and to `commentary.jsonl`. `!TEXT` is a message for the Navigator (a `user_message` event that wakes `wait`, and the unanswered flag); `?TEXT` marks a question for the Architect | all (the user's, from the viewer) | `noted at ...` |
 
 ## Mission bookkeeping
 
@@ -257,7 +258,7 @@ Prints `mission start: LABEL at YYYY-MM-DD HH:MM`. Scorecards and the viewer rea
 | `raw TEXT` | send a raw tool-client command | **Architect only** |
 | `option NAME VALUE` | set a client/game option | Architect (role check since 2.45.0) |
 | `options [FILTER ...]` | the client's options as JSON | all (read-only) |
-| `goalstate` | debug JSON: the goal, its state (and its explore's), the mover, standing_on, busy | Architect / viewer |
+| `goalstate` | debug JSON: the goal, its state (and its explore's), the mover, standing_on, busy | all (read-only; the viewer polls it) |
 | `dump` | write `runs/pilot/<nick>/world_dump.json` (map, memory, monsters) | Architect (role check since 2.45.0) |
 | `search [N]` | search the 8 adjacent squares N times (1-40, default 15), waiting for a find; prints `searched N times here: <finds> \| nothing found` | all |
 | `disarm [DIR]`, `open [DIR]` | disarm / open a chest, trap or door in DIR (5 = underfoot); prints game messages and the pack | all |

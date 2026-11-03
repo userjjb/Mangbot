@@ -32,7 +32,7 @@ Related docs: [pilot-core.md](pilot-core.md) (how the Pilot uses the client), [c
 | `src/server/net-server.c` | changed | The test-server time freeze (`time_frozen`). |
 | `src/server/store.c` | changed | Guards against a purchase/sale arriving when the player is not in a store. |
 | `src/server/tables.c` | changed | The `depth` indicator sent as 16 bits instead of one signed byte. |
-| `tools/client/mang.py` | ours (Python) | `MangClient`: starts the client, reads events on a thread, `send`, `wait`, `query`, `wait_ready`, `quit`. Also `meta_servers()` (the metaserver list). |
+| `tools/client/mang.py` | ours (Python) | `MangClient`: starts the client, reads events on a thread, `send`, `wait`, `collect`, `query` (and the `status`/`map`/`inven` shorthands), `wait_ready`, `quit`. Also `meta_servers()` (the metaserver list). |
 | `tools/freeze.sh` | ours | `on | off | toggle | status` for the test-server freeze file. |
 
 ## Launching the client
@@ -42,7 +42,8 @@ mangclient -mtool --libdir github/lib [--visuals FILE] [--hpwarn N] --config CFG
            --passfile PASSFILE --nick NICK HOST PORT
 ```
 
-`MangClient` builds exactly this line (SERVER and PORT must come last). The Pilot (`pilot.py: main`) adds
+`MangClient` builds exactly this line (SERVER and PORT must come last). The Pilot (`daemon.py: main`, run as
+`python3 pilot.py --nick ...`) adds
 `--visuals runs/pilot/<nick>/visuals.txt` (written at start by `glyphs.write_visuals`) and `--hpwarn` (Pilot default
 5); passwords and configs default to `runs/private/<nick>.pass` and `runs/private/<nick>.mangrc`. The Pilot is
 normally started by `tools/pilot/restart.sh NICK [PORT]` (port 28346, the test server).

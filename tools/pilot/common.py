@@ -53,7 +53,7 @@ DEFAULT_ORDERS = {
     "resist_conf": "no",   # the same for confusing blows
     "unseen_hp": "on",     # off: don't treat HP loss with nothing in view as an unseen attacker
     "autowear": "on",      # off: the Pilot doesn't wear, wield or swap gear by itself (upgrade_step)
-    "enchant_max": 25,     # Scrolls of Enchant Armor plan town may buy a visit (0: none) -- m58: 25 for 5025 gold, unasked
+    "enchant_max": 25,     # Enchant scrolls (armour and, since 2.46.0, weapon) plan town may buy a visit (0: none) -- m58: 25 for 5025 gold, unasked
     "idle_recall_s": 600,  # no goal and no agent contact for this long -> recall to town
                            # (long enough for a slow agent turn; 180 s fired mid-thought)
     "pickup": "all",       # all | none

@@ -230,11 +230,13 @@ class CombatMixin:
 
     def sim_loss(self, r):
         """fight_sim's mean HP lost dueling r at our current profile, cached by race, level,
-        weapon, AC and HP to the nearest 10% (300 duels, ~0.05 s for a new key)."""
+        worn gear, AC and HP to the nearest 10% (300 duels, ~0.05 s for a new key)."""
         w = self.w
         wt = [x for x in self.weapon_table() if x[3]]
-        key = (getattr(r, "idx", None), w.clvl, wt[0][0] if wt else None, (w.ind.get("armor") or [0])[0],
-               round(w.hp_frac * 10))
+        # (2.46.1: the whole worn set, not just the weapon -- fight_sim uses the gear model's to-hit/to-dam totals since
+        # 2.45.0, so a ring or gloves swap must not keep a stale verdict)
+        key = (getattr(r, "idx", None), w.clvl, tuple(i["name"] for i in w.items(equip=True)),
+               (w.ind.get("armor") or [0])[0], round(w.hp_frac * 10))
         cache = self._sim_cache
         if key not in cache:
             sm = self.fight_sim(r, n=300)
@@ -308,6 +310,8 @@ class CombatMixin:
                                     "and resurrects it at the Temple (halves the experience for good)")
             if w.ghost and isinstance(self.goal, Resurrect):
                 return False
+            if self.parking:              # (2.46.1: a ghost's `park` was accepted but never logged out -- this
+                return False              # returned first and act_tick's park check never ran)
             return True
         return NEXT
 

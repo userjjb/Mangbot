@@ -29,6 +29,9 @@ The handoff between Architect sessions: the current state, what the next session
   record: **"SESSION 11 RECORD"** at the bottom; the decisions it left for the user: "FOR THE USER (from session 11)"
   in HANDOFF 12. Its brief ("HANDOFF TO ARCHITECT 11") stays below for reference. No missions ran.
 - **Session 12** (missions resume, **to test everything changed since m60**): read **"HANDOFF TO ARCHITECT 12"**.
+- **Session 13** (the user, 11-03): **the separate local test server** for set-pieces (own port, saves, config,
+  freeze file; copies of Dive04), then server-side test features (HANDOFF 12 item 3, TODOs 3-4). It unblocks A25's
+  remaining half (a unique above the character's level: the recall branch). Missions come first (session 12).
 - Sessions 1-9 are over: `history/handoffs-s1-s9.md`; session 10's own brief: `history/handoff-s10.md`.
 
 ### HANDOFF TO ARCHITECT 11: "Finish the refactor" (written 2026-11-02 by the session-10 Architect)
@@ -354,6 +357,9 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
 - **11-03 ~07:35:** the user will /resume this chat (session 11) in a new SGE job. Then, first: start the inbox
   watcher; restart the test server (with `MANGBAND_FREEZE_FILE`), Dive04's Pilot (`tools/pilot/restart.sh Dive04`)
   and the viewer per operations.md; check `status full` says Pilot v2.45.0 and `house` shows 19,322 banked.
+- **11-03 (2.47.0): the docs audit** -- three agents checked every doc against the code and fixed the text; five
+  code bugs they found are fixed (CHANGELOG 2.47.0). Open for the user: buy-list consumables not in the kit (e.g.
+  Boldness) are sold at the next visit unless kept.
 - **11-03 07:34, resumed in SGE job 8406367 (scc-va3, ends Sat 11-07 19:55):** the old job ended 07:32 (savefile
-  from 07:25, Dive04 idle in town); restarted the test server (gdb, freeze-enabled), Dive04's Pilot (v2.45.0; now 2.46.0) and
+  from 07:25, Dive04 idle in town); restarted the test server (gdb, freeze-enabled), Dive04's Pilot (v2.45.0; now 2.47.0) and
   the viewer (`tmux -L mang attach -t watch`). Dive04 358/358, 300 gold + 19,322 banked.
