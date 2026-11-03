@@ -265,6 +265,7 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.act_walls = collections.deque(maxlen=50)   # wall clock of each command (shadow_results)
         self.escape_read_t, self.escape_from = -99.0, (None, None)   # the last escape read (escape_line)
         self.last_escape = None        # (log_escape)
+        self.last_goal_order = None    # (t, goal, role) of the last `goal` request (plan_end's "who recalled")
         self.read_failed_t = -99.0
         # reflexes, escapes and fights
         self.conf_since, self.conf_cure_t, self.conf_tele_t, self.conf_cures = None, 0.0, 0.0, {}

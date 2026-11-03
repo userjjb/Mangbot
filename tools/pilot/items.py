@@ -405,6 +405,12 @@ class ItemsMixin:
         left = self.trip_minutes_left()
         return (self.SUPPLY_UNKNOWN_DMIN if left is None else left) + self.SUPPLY_MARGIN_DMIN
 
+    def food_floor(self):
+        """The least food the stomach can hold at this hunger level (the top of the level below: Fed is 2000-10000):
+        what spare/short decisions count on (2.48.1); the displays keep FOOD_MID."""
+        lv = self.w.hunger
+        return self.FOOD_TOP.get(lv - 1, 0) if lv > 0 else 0
+
     def supply_spare(self, it):
         """(units of this food or flask stack not needed before the horizon, dungeon minutes of the shortfall this
         stack covers). Needed = what the stomach (or the lantern) and the other stacks of the same supply don't cover
@@ -414,7 +420,9 @@ class ItemsMixin:
         need = self.supply_horizon()
         if kind == "food":
             per = (1.0 if (w.flags or {}).get("slow_digest") else 2.0) * self.TURNS_PER_DMIN
-            have = max(0.0, self.FOOD_MID.get(w.hunger, 6000) - 1000) / per
+            # (2.48.1, m61: the bottom of the hunger level, not its middle -- Fed is 2000-10000 food; the middle said ~25
+            # dungeon minutes left, make-room destroyed 8 of 9 rations as spare, and food ran out 5 minutes later)
+            have = max(0.0, self.food_floor() - 1000) / per
             unit = self.food_value(it["name"]) / per
         else:
             lamp = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE and "Lantern" in i["name"]), None)
@@ -441,7 +449,7 @@ class ItemsMixin:
         need = self.supply_horizon()
         if kind == "food":
             per = (1.0 if (w.flags or {}).get("slow_digest") else 2.0) * self.TURNS_PER_DMIN
-            have = max(0.0, self.FOOD_MID.get(w.hunger, 6000) - 1000) / per + \
+            have = max(0.0, self.food_floor() - 1000) / per + \
                 sum(self.food_value(i["name"]) * i["number"] for i in w.items() if self.supply_kind(i) == "food") / per
         else:
             fuel = self.lantern_fuel()
@@ -645,7 +653,10 @@ class ItemsMixin:
                          f"make room: destroy {cheapest[1]['name']} (~{cheapest[0]:.0f}) for {name} (~{worth:.0f})",
                          hold=0.6)
                 self.notify("tactic", f"pack full: destroyed {cheapest[1]['name']} (~{cheapest[0]:.0f} gold) to take "
-                                      f"{name} (~{worth:.0f}{', a unique drop' if unique else ''})", news=True)
+                                      f"{name} (~{worth:.0f}{', a unique drop' if unique else ''})"
+                                      # (2.48.1, m61: food or oil gone -- say what's left)
+                                      + (f"; now {self.supply_text()}" if self.supply_kind(cheapest[1]) else ""),
+                            news=True)
             return False                         # (picked up on the next look, once there's room)
         if (w.level_t, w.pos) not in self.skipped_items:
             self.skipped_items.add((w.level_t, w.pos))
@@ -672,7 +683,8 @@ class ItemsMixin:
         # 0-. Hungry (not Weak: the reflex's): eat at a safe moment (2.45.2, the user: not an emergency, a battle turn
         # spent eating is wasted); one meal, then wait for the indicator (mission 13 ate 2 rations in a row)
         if w.hunger == 2:
-            food = w.items(tval=TV_FOOD)
+            # (2.48.1, m61: not mushrooms -- it ate 2 unknown Wrinkled Mushrooms; rations and other real food only)
+            food = [i for i in w.items(tval=TV_FOOD) if "Mushroom" not in i["name"]]
             if food and now - self.eat_t > 10:
                 self.eat_t = now
                 self.cmd(f"eat {food[0]['item']}", f"hungry ({w.hunger}), a safe moment", hold=1.0)

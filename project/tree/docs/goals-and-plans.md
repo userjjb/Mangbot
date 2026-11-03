@@ -306,7 +306,7 @@ full lantern's 7500 turns in ~35 minutes).
   them plus spare torches' (A19, 2.40.0); `None` for a permanent light (one that shows no turns); 0 without one.
 - **Food** = (the middle of the current hunger level, `FOOD_MID`, plus the food value of rations and other food
   carried, minus 1000 for Weak) / (2 a turn, 1 with slow digestion, x 215). Food isn't digested in town.
-- `supply_text()`: "food ~N dungeon min, light ~M" (on the status line via `supply_lines`, at `plan town`'s start and
+- `supply_text()`: "food >=N dungeon min, light ~M" (food: since 2.48.1 the least it can be -- the stomach at the bottom of its hunger level, plus the food carried; the middle stood still for minutes in m61 and ran out) (on the status line via `supply_lines`, at `plan town`'s start and
   end, on reaching the dungeon). `supply_watch()` (every tick in the dungeon) alerts `supplies` once under 15 and once
   under 5 minutes, reset above 20. `QuietWait` is capped at a quarter of the smaller.
 - `supply_lines()`: the report's supplies line: cures, escapes, food, light (with flasks and the minutes), a pending

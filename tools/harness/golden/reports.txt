@@ -1,5 +1,5 @@
 --- variant 0 escape_line: ''
---- variant 0 supply_lines: ['Cures CLW 3 | Escapes Phase 11 · WoR 0 | Food 0 | Light none (food ~12 dungeon min, light ~0)']
+--- variant 0 supply_lines: ['Cures CLW 3 | Escapes Phase 11 · WoR 0 | Food 0 | Light none (food >=2 dungeon min, light ~0)']
 --- variant 0 belief_lines: []
 --- variant 0 gear_line: 'Gear: empty slots: bow, ring, amulet, light, body armour, cloak, shield, helm, gloves, boots'
 --- variant 0 since_lines: ["Since the last report (100 s): lowest HP 100/265 at 07:59:10; monsters seen (most at once): Cave spider x3, Grip, Farmer Maggot's Dog x1; UNIQUES: Grip, Farmer Maggot's Dog", 'Progress: last XP gain 1m10s ago; on this level 5m00s']
@@ -179,7 +179,7 @@ Orders: flee_hp=0.5, think_hp=0.55, rest_below=0.7, rest_to=0.95, arrival_pack=4
 {'t': 1800000000.0, 'min_hp': (265, 265, 1800000000.0), 'mons': {}, 'uniques': set()}
 ['Equip: A) a Spear (1d6) (+5,+7)', 'Pack (not consumables): c) a Dagger (1d4) (+2,+3) {good}; d) a Broad Sword of Slay Orc (2d5); e) a Main Gauche of Burning (1d5) (+4,+5)', 'Weapons: WIELDED a Spear (1d6) (+5,+7) 3 blows ~20; a Dagger (1d4) (+2,+3) {good} 4 blows ~9; a Broad Sword of Slay Orc (2d5) 2 blows ~14; a Main Gauche of Burning (1d5) (+4,+5) 3 blows ~18 (~42 vs not resisting fire); a Tulwar (2d4) {magical} 2 blows ~11 (pluses unknown: identify it)', 'Gear: fine', 'Orders changed: think_hp=0.55; max_depth=650', '(this is the compact report: `status full` for everything; `pack`, `equip`, `orders`, `map [R]` for one part)']
 --- variant 1 escape_line: ''
---- variant 1 supply_lines: ['Cures CLW 3 | Escapes Phase 11 · WoR 0 | Food 0 | Light none (food ~12 dungeon min, light ~0)']
+--- variant 1 supply_lines: ['Cures CLW 3 | Escapes Phase 11 · WoR 0 | Food 0 | Light none (food >=2 dungeon min, light ~0)']
 --- variant 1 belief_lines: []
 --- variant 1 gear_line: 'Gear: empty slots: bow, ring, amulet, light, body armour, cloak, shield, helm, gloves, boots'
 --- variant 1 since_lines: []
@@ -301,7 +301,7 @@ Orders: flee_hp=0.5, think_hp=0.55, rest_below=0.7, rest_to=0.95, arrival_pack=4
 None
 ['Equip: A) a Spear (1d6) (+5,+7)', 'Pack (not consumables): c) a Dagger (1d4) (+2,+3) {good}; d) a Broad Sword of Slay Orc (2d5); e) a Main Gauche of Burning (1d5) (+4,+5)', 'Weapons: WIELDED a Spear (1d6) (+5,+7) 3 blows ~20; a Dagger (1d4) (+2,+3) {good} 4 blows ~9; a Broad Sword of Slay Orc (2d5) 2 blows ~14; a Main Gauche of Burning (1d5) (+4,+5) 3 blows ~18 (~42 vs not resisting fire); a Tulwar (2d4) {magical} 2 blows ~11 (pluses unknown: identify it)', 'Gear: fine', 'Orders changed: think_hp=0.55; max_depth=650', 'Audit differences: hp 2', '(this is the compact report: `status full` for everything; `pack`, `equip`, `orders`, `map [R]` for one part)']
 --- variant 2 escape_line: ''
---- variant 2 supply_lines: ['Cures CLW 3 | Escapes Phase 11 · WoR 0 | Food 0 | Light none (food ~12 dungeon min, light ~0) | RECALL PENDING (5 s; 8-23 s)']
+--- variant 2 supply_lines: ['Cures CLW 3 | Escapes Phase 11 · WoR 0 | Food 0 | Light none (food >=2 dungeon min, light ~0) | RECALL PENDING (5 s; 8-23 s)']
 --- variant 2 belief_lines: ['Counts: this level 4 spots searched']
 --- variant 2 gear_line: 'Gear: empty slots: bow, ring, amulet, light, body armour, cloak, shield, helm, gloves, boots'
 --- variant 2 since_lines: ["Since the last report (100 s): lowest HP 100/265 at 07:59:10; monsters seen (most at once): Cave spider x3, Grip, Farmer Maggot's Dog x1; UNIQUES: Grip, Farmer Maggot's Dog", 'Progress: last XP gain 1m10s ago; on this level 5m00s']

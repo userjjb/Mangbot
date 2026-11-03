@@ -369,5 +369,10 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   crutches. **Watch in session 12:** the first plan town's sells (CLW in kit B, Magic Mapping scrolls), M2's pickup
   took 13 s (was ~4 s), Boldness bought when the Temple lacks Heroism.
 - **11-03 07:34, resumed in SGE job 8406367 (scc-va3, ends Sat 11-07 19:55):** the old job ended 07:32 (savefile
-  from 07:25, Dive04 idle in town); restarted the test server (gdb, freeze-enabled), Dive04's Pilot (v2.45.0; now 2.48.0) and
+  from 07:25, Dive04 idle in town); restarted the test server (gdb, freeze-enabled), Dive04's Pilot (v2.45.0; now 2.48.1) and
   the viewer (`tmux -L mang attach -t watch`). Dive04 358/358, 300 gold + 19,322 banked.
+- **m61 (11-03 18:03-18:45, Opus medium, 45 min, on 2.48.0)** -- session 11's test mission, the first since m60: 84.1
+  XP/dmin, no close calls, the restructured code held (no errors). Found and fixed in **2.48.1**: rations destroyed as
+  spare (the stomach counted at its level's middle), a food estimate that stood still, unknown mushrooms eaten, a
+  Navigator recall credited to the Pilot. Report: `runs/pilot/dive04/reports/2026-11-03-mission61.md`. For the user: the
+  town sold the only flask (lantern >= 9000: light ~41 dmin for a 35-min trip).

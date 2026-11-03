@@ -1390,6 +1390,7 @@ class CommandsMixin:
             return {"ok": False, "error": f"unknown goal {name}"}
         g.by_navigator = self.req_role != "architect"
         g.role = self.req_role
+        self.last_goal_order = (gnow(), g.describe(), self.req_role)   # (2.48.1: plan_end names who recalled)
         self.set_goal(g)
         if g.estimate and not self.plan:
             return {"ok": True, "goal": g.describe(), "note": g.estimate}

@@ -712,3 +712,11 @@
 - 19:15:27 town 100% | 19:15 town, HP 100% | trip done (5 levels, 26 min: XP +930, gold +682); town kit done, 300 gold carried + 19327 banked | review: Ring of Protection [+6] is redundant beside the +16 and +12 rings, so sell it | the mission is at its end, stay idle in town
 - 19:16:33 town 100% | 19:16 town, HP 100% | mission over: one trip 750-800 ft, 5 levels, XP +930 and gold +682 in 26 min (~36 XP/dmin) | stopped in town idle, Ring of Protection [+6] sold by my word, debt unchanged (44 gold, 0 HP) | end
 - 20:16:47 town 100% | 
+- 18:04:04 town 100% | mission start, town, 358 HP, 2 WoR, 18 CCW | plan: town buy 3rd WoR (+kit); one long trip 700-800 via recall until cures<6 or phase<5 or time>18:43; react thieves kill | handbook: 3 WoR for recall dive, one long trip beats two, 800 cap
+- 18:05:53 town 100% | town done: 3 WoR, light ~41 dmin | plan trip 700-800 via recall until cures<6 or phase<5 or time>18:43 | one long trip; light lasts the trip
+- 18:25:34 750ft 100% | 750ft, Pilot destroyed last rations for a Ring; food ~23 dmin | keep trip to time>18:43, complained | food lasts to the planned end; mushrooms unknown
+- 18:25:40 750ft 100% | 750ft trap drained CON (-8 HP) | carry on; buy Restore CON in final town | 2% HP not worth ending trip
+- 18:30:54 750ft 100% | 750ft Hungry, food 0 (estimate said ~23 dmin 5 min ago) | goal recall now | no food in pack; Weak would stop the trip anyway; 2200 XP banked this trip
+- 18:31:08 town 100% | town 18:31, trip 1: +2200 XP, +1958 gold in ~22 dmin; recall was early (Pilot ate mushrooms just as I recalled) | plan town buy WoR:3 + rations, then short trip 2 700-800 until time>18:42 | ~8 dmin at ~85 XP/min worth the recall pair
+- 18:34:35 town 100% | town done 18:34: 3 WoR, 3 rations, 4 CSW | trip 2 700-800 via recall until time>18:42 or cures<6 or phase<5; review sell Amulet of Resist Acid | acid already resisted by the armour; ~7 dmin left in budget
+- 18:44:58 town 100% | 18:45 town, idle, mission over: +2725 XP, +2402 gold found, no close calls (HP never below ~99% in reports) | marked Awl-Pike and Ring of Feather Falling for sale; stop | budget used; Awl-Pike is worse than the axe, FF not needed

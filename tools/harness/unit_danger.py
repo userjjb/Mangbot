@@ -522,3 +522,37 @@ def hungry_waits_for_a_safe_moment_weak_eats_now():
             "weak, orc adjacent: reflex": False, "fainting, orc adjacent: reflex": True,
             "hungry, alone: policy_tick": True, "hungry, orc in view: policy_tick": False}
     return r == want, "; ".join(f"{k}: {v}" for k, v in r.items())
+
+
+@case
+def hunger_never_eats_mushrooms():
+    """2.48.1 (m61): Hungry ate 2 unknown Wrinkled Mushrooms when the rations were gone. Neither the Hungry step
+    (policy_tick) nor the Weak reflex eats a mushroom; with rations both eat a ration."""
+    import types
+    import combat
+
+    def make(hunger, pack):
+        p = pilot(hp=300, pack=pack)
+        w = p.w
+        w.hunger, w.monster_seen_t, w.last_hit_t = hunger, -99.0, -99.0
+        w.flag = lambda k: False
+        w.adjacent_monsters = lambda: []
+        p.goal, p.busy_until, p.eat_t, p.policy_t = None, 0.0, -99.0, -99.0
+        p.sent = []
+        p.cmd = lambda line, why, hold=0.4: p.sent.append(line)
+        p.notify = lambda *a, **k: None
+        p.set_goal = lambda g: None
+        p.mover = type("M", (), {"stop": lambda s: None, "active": False})()
+        return p
+    shrooms = [("2 Wrinkled Mushrooms", 80)]
+    both = [("2 Wrinkled Mushrooms", 80), ("3 Rations of Food", 80)]
+    h = make(2, shrooms)
+    h.policy_tick(P.gnow())
+    wk = make(1, shrooms)
+    wk._reflex_hunger(types.SimpleNamespace(w=wk.w, o=wk.orders, now=P.gnow(), mons_near=[]))
+    hr = make(2, both)
+    hr.policy_tick(P.gnow())
+    eat_r = [s for s in hr.sent if s.startswith("eat ")]
+    ration_letter = next(i["item"] for i in hr.w.items() if "Ration" in i["name"])
+    ok = not any(s.startswith("eat ") for s in h.sent + wk.sent) and eat_r == [f"eat {ration_letter}"]
+    return ok, f"hungry, mushrooms only: {h.sent}; weak, mushrooms only: {wk.sent}; hungry, both: {hr.sent}"

@@ -255,7 +255,8 @@ def dive_loots_beside_its_path():
 @case
 def rations_by_need_and_heavy_loot_left():
     """Rations by need (the user, 10-31; was "never destroyed", after m46/m47): Fed with the trip ending in 2 minutes,
-    all 3 are spare (worth their sale price); Hungry with 60 minutes to go, all are needed and worth the dungeon time
+    2 of 3 are spare (worth their sale price) -- since 2.48.1 the stomach counts at the bottom of its level (Fed: 2000),
+    so one is kept for the horizon's margin (m61: the middle of Fed emptied the pack and food ran out 5 minutes later); Hungry with 60 minutes to go, all are needed and worth the dungeon time
     they buy. And m46's six weapons (speed -1): loot that would cross the weight limit's slow-down line (weapons,
     armour, staffs) is left unless worth 300+ gold."""
     p = pilot(pack=[("3 Rations of Food", P.TV_FOOD), ("a Rod of Trap Location", 66)])
@@ -285,7 +286,7 @@ def rations_by_need_and_heavy_loot_left():
     took_staff = q.pickup_room("a Staff of Light")
     for i in q.w.inven:
         i["weight"] = 1450 if not i["equip"] else 0
-    ok = n3 == 3 and v3 < 10 and n_need == 3 and v_need > 1000 and took_staff is False and room == 50 and slow == 0 and took_heavy is False and took_light is True and said == 1
+    ok = n3 == 2 and v3 < 10 and n_need == 3 and v_need > 1000 and took_staff is False and room == 50 and slow == 0 and took_heavy is False and took_light is True and said == 1
     return ok, f"3 rations, Fed, 2 min left: destroy {n3} (~{v3:.0f}); Hungry, 60 min left: {n_need} (~{v_need:.0f}); " \
                f"a staff taken {took_staff}; 145 lb carried: {room / 10:.0f} lb to spare, " \
                f"a Lucerne Hammer taken {took_heavy}, a potion {took_light}"

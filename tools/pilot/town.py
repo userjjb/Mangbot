@@ -844,7 +844,9 @@ class TownMixin:
         per_turn = 1.0 if (w.flags or {}).get("slow_digest") else 2.0
         reserve = sum(self.food_value(i["name"]) * i["number"] for i in w.items(tval=TV_FOOD)
                       if "Mushroom" not in i["name"])
-        food = max(0.0, self.FOOD_MID.get(w.hunger, 6000) + reserve - 1000) / (per_turn * self.TURNS_PER_DMIN)
+        # (2.48.1, m61: the bottom of the hunger level, not its middle -- "food ~23 dungeon min" stood still for 5
+        # minutes while Fed and ran out; the least it can be is what alerts and decisions need)
+        food = max(0.0, self.food_floor() + reserve - 1000) / (per_turn * self.TURNS_PER_DMIN)
         fuel = self.lantern_fuel()
         if fuel is None:
             # no lantern: a worn light that shows turns (a torch) burns out -- its turns plus spare torches'; one that
@@ -866,8 +868,8 @@ class TownMixin:
 
     def supply_text(self):
         food, light = self.supply_minutes()
-        return f"food ~{food:.0f} dungeon min, light ~{light:.0f}" if light is not None else \
-            f"food ~{food:.0f} dungeon min, light permanent"
+        return f"food >={food:.0f} dungeon min, light ~{light:.0f}" if light is not None else \
+            f"food >={food:.0f} dungeon min, light permanent"
 
     def supply_watch(self):
         """In the dungeon: tell the Navigator once when food or light (reserves counted) falls under 15, then 5,

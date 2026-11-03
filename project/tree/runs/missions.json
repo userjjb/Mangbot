@@ -3097,5 +3097,29 @@
   "report": "compact",
   "notes": "set-piece A6",
   "version": "2.47.0"
+ },
+ {
+  "label": "m61",
+  "nick": "dive04",
+  "start": "2026-11-03 18:03",
+  "end": "2026-11-03 18:46",
+  "navigator": "opus",
+  "effort": "medium",
+  "report": "compact",
+  "notes": "session 11 test: first mission since m60 (2.34) -- refactor E1-E8 and 2.45-2.48 play changes; 45 min",
+  "version": "2.48.0",
+  "tokens": {
+   "turns": 21,
+   "input": 42,
+   "output": 8686,
+   "cache_read": 734188,
+   "cache_write": 49637,
+   "write_5m": 49637,
+   "write_1h": 0,
+   "model": "claude-opus-5-5",
+   "final_usage_turns": 21,
+   "usd": 0.569,
+   "transcript": "agent-a6d8449516eac44f2.jsonl"
+  }
  }
 ]

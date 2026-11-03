@@ -18,7 +18,10 @@
   "a Cutlass of Flame (1d7) (+2,+7)": "sell",
   "a Quarterstaff of Slay Troll (1d9) (+6,+5)": "sell",
   "a Ring of Resist Cold": "sell",
-  "a Ring of Protection [+6]": "sell"
+  "a Ring of Protection [+6]": "sell",
+  "an Amulet of Resist Acid": "sell",
+  "an Awl-Pike (1d8) (+2,+5)": "sell",
+  "a Ring of Feather Falling": "sell"
  },
- "town_visits": 50
+ "town_visits": 53
 }

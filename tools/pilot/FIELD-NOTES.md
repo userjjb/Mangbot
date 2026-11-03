@@ -86,7 +86,13 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
 - **Breeders that confuse** (Hummerhorns, 800 ft, m55): confused, you can't read scrolls and staffs often fail. The
   Pilot now cures a long confusion itself (CSW, then CCW); leave such a level at once.
 
-## 700-800 ft at clvl 29, AC ~94 (m56-m60, 10-28)
+## 700-800 ft at clvl 29, AC ~104 (m56-m61)
+- **m61 (11-03): 84 XP/dmin** at 750-800 ft with 9 levels in trip 1 -- Light hounds blind (the Pilot cures with
+  CSW/CCW), breeders (fleas, worms, lice) and trap-laden levels make it change level often: that's normal. A Lost
+  soul drained WIS, a trap CON (a Restore found on the level undid it).
+- **Food (m61):** the Pilot destroyed rations as "spare" and the trip ran out of food; fixed in 2.48.1 (it now
+  counts the stomach at the bottom of its level, and the status line says `food >=N`: the least it can last). Still,
+  a glance at `Food N` in the status at a trip's start costs nothing.
 - **Mirkwood spider bands at 750 ft** ended or shortened three trips (m57, m59): the Pilot phases, drinks Speed and
   leaves; with 9+ close and no stairs reachable it recalls home. Let it -- a trip that ends early on a band is a good
   trip, not a failure.

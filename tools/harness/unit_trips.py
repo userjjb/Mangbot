@@ -180,7 +180,8 @@ def trip_dmin_counts_dungeon_minutes():
 def supply_minutes_and_quiet_cap():
     """The user (10-28): the Navigator should know how long food and light last. Food (reserves counted, slow
     digestion halves it) and light (lantern + flasks) in dungeon minutes; a reminder under 15 and 5 minutes; a quiet
-    wait capped at a quarter of what's left."""
+    wait capped at a quarter of what's left. (2.48.1: the stomach at the bottom of its level -- Fed 2000 -- not its
+    middle: m61's "food ~23 dungeon min" stood still while Fed and ran out.)"""
     p = pilot(pack=[("3 Rations of Food", P.TV_FOOD), ("2 Flasks of oil", P.TV_FLASK)],
               worn=[("a Spear (1d6) (+5,+7)", 22, 50), ("a Brass Lantern (with 2150 turns of light)", P.TV_LITE, 50)])
     p.w.hunger = 3
@@ -204,7 +205,7 @@ def supply_minutes_and_quiet_cap():
                              "stop": lambda self: None})()
     p.quiet_spot, p.w.last_hit_t, p.w.pos, p.cmd = (lambda: None), 0.0, (20, 20), (lambda *a, **k: None)
     g.tick(p)
-    ok = abs(slow[0] - (6000 + 15000 - 1000) / 215) < 1 and abs(fast[0] - slow[0] / 2) < 1 and \
+    ok = abs(slow[0] - (2000 + 15000 - 1000) / 215) < 1 and abs(fast[0] - slow[0] / 2) < 1 and \
         abs(slow[1] - (2150 + 15000) / 215) < 1 and len(told) == 1 and "light" in told[0] and g.secs < 600
     return ok, f"slow digestion {slow[0]:.0f}/{slow[1]:.0f} min, normal {fast[0]:.0f}; told {told}; quiet {g.secs} s"
 

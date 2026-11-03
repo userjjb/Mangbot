@@ -406,7 +406,11 @@ class TripPlan:
         if self.phase == "level":
             if w.depth == 0:
                 le = p.last_escape
+                lo = p.last_goal_order
                 why = f": the Pilot's escape at HP {le[3][0]}/{le[3][1]}, {le[2]}" if le and gnow() - le[0] < 120 else ""
+                if lo and gnow() - lo[0] < 120 and str(lo[1]).startswith("recall"):
+                    # (2.48.1, m61: the Navigator's `goal recall` was reported as "the Pilot's escape")
+                    why = ": " + ("your" if lo[2] != "architect" else "the Architect's") + " `goal recall`"
                 return ("done", f"back in town (not by the plan's recall{why}); {plural(self.levels, 'level')} done -- "
                                 "`why` for the details")
             d = w.depth_ft

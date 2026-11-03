@@ -27,6 +27,17 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.48.1 -- 2026-11-03 (session 11, after m61)
+**m61** (Opus, medium, 45 min) ran on 2.48.0: 84.1 XP/dmin, no close calls; the restructured code held. **Play
+changes from it:**
+- Spare food is judged with the stomach at the **bottom** of its hunger level (`food_floor`; Fed = 2000, not the
+  middle 6000): m61's make-room destroyed 8 of 9 rations as spare and the trip ran out of food 5 minutes later.
+- The food estimate is the least it can last (`food >=N dungeon min`) for the status line, the 15/5-minute alerts and
+  the quiet-wait cap (the middle stood still for minutes); a make-room destroy of food or oil says what's left.
+- Hungry and Weak never eat mushrooms (m61 ate 2 unknown ones when the rations were gone).
+- A trip that ends on the Navigator's `goal recall` says so (it said "the Pilot's escape").
+- 167 unit cases (1 new); the golden report changes only in the food text.
+
 ## 2.48.0 -- 2026-11-03 (session 11, the user's two principles for spare items)
 No missions yet. **Play changes.** (A) a *fallback* is kept and bought only while the better item is short; (B) a
 *dungeon stopgap* is sold in town (the primary is always on sale) and kept in the dungeon while the primary is short;

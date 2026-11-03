@@ -631,7 +631,9 @@ class CombatMixin:
         # policy_tick's, at a safe moment; Weak (1) and fainting (0) stay here and no longer wait for 5 s without a
         # monster in view: Weak eats unless a monster is adjacent, fainting eats regardless)
         if w.hunger <= 1 and (w.hunger <= 0 or not w.adjacent_monsters()):
-            food = w.items(tval=TV_FOOD)
+            # (not mushrooms, 2.48.1: unknown ones can poison, paralyse or confuse; with no real food the Satisfy
+            # Hunger scroll and the recall below take over)
+            food = [i for i in w.items(tval=TV_FOOD) if "Mushroom" not in i["name"]]
             # one meal, then wait for the hunger indicator to catch up (mission 13
             # ate 2 rations in a row: 3 -> 1, "Full", no news)
             if food and now - self.eat_t > 10:
