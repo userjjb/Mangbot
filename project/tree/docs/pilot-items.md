@@ -102,7 +102,7 @@ turns it off; not with a monster adjacent or in a store): after a step, a recent
 5. **Pack full**: first use something up (a flask into the lantern: a lone one under 14000 turns, from a bigger stack
    only when the lantern takes a whole flask (<= 7500 turns); food eaten, a lone item first, if it won't make us
    Gorged: the most the stomach can hold, `food_top` -- the stomach tracker's top once a crossing has calibrated it,
-   else the hunger level's top -- plus its food stays 1000 under PY_FOOD_MAX), then destroy the cheapest item by `pack_value` if the find is worth > 1.5x it + 5 (a unique's
+   else the hunger level's top -- plus its food stays 1000 under PY_FOOD_MAX), then destroy the cheapest item by `pack_value` if the find is worth > 1.5x it + 5 (2.51.0: the news names the count destroyed and kept, `destroyed_text`, and the supplies left without them, `supply_text(minus)`) (a unique's
    drop, whatever its estimate, may also push out anything under `UNIQUE_DROP_BUMP` = 50). Otherwise: "left NAME: pack full and nothing cheaper",
    once per item and level.
 
@@ -220,7 +220,12 @@ stairs detour up to `LOOT_PATH_R` (3) squares.
 
 Also (in `policy_tick`, when idle): fetching a slain unique's drop (items within 3 squares of where it died, for 5
 minutes) and gold within 10 squares. **`interesting_item` news**: devices, jewellery and `{excellent}/{special}` items
-seen on the level map that aren't known junk; within reach the Pilot fetches them, farther ones tell the Navigator to
+seen on the level map that aren't known junk, and (2.51.0, the user after m62) potions and scrolls worth a far fetch
+(`far_fetch_worth`: a kit item -- `is_kit_item`, a stat Restore only -- or worth `FAR_FETCH_MIN` = 200+ by itemvalue,
+an unknown flavour by its expectation; a Potion of Restore Mana, ~350, passes on value). Those are noted in
+`far_wanted` (level, glyph) and `loot_step` treats the '!'/'?' squares as valuable (within `LOOT_VALUABLE_R`, the same
+`loot_blocked` rules) while the wanted name is still on the item list -- the map gives glyphs, not names, so other
+potions or scrolls nearby may be walked to as well (the pickup policy decides); within reach the Pilot fetches them, farther ones tell the Navigator to
 `goal fetch Y,X` (a dive outside a trip plan pauses 20 s). Picking up a likely-special item gives `found` news
 ("identify it before selling").
 
@@ -336,9 +341,15 @@ lying in town (`stash_stored`).
 - **Backups** (`stash_backups`, town.py; cached on the pack, gear, stash, stats). A candidate (`backup_item`) is an
   unworn weapon, armour piece, ring, amulet or light (not a bow) the shops can't sell -- an ego or artifact (itemvalue
   `.ego`/`.artifact` or geareval's `art`), or jewellery/a light of a kind shops 1-6 don't stock (`shop_stock.csv`) --
-  identified (`known`, not an estimate: a felt `{excellent}` doesn't count), not cursed, worth `BACKUP_MIN_VALUE` = 200
-  gold (an artifact always; an ego's own cost is 200+ with few exceptions, so every real ego passes, and below it the
-  sale is ~75 gold, not worth one of the house's 3 squares). Candidates are the pack's and the stored ones (house and
+  identified (`known`, not an estimate: a felt `{excellent}` doesn't count), not cursed. It **qualifies**
+  (`backup_qualifies`; 2.51.0, the user after m62, replacing the 2.50.0 `BACKUP_MIN_VALUE` of 200) when it is worth
+  `BACKUP_MIN_SALE` = 1000 gold **at sale** (`backup_sale`: value x pay_cut, the figure its stash record stores), is an
+  artifact (itemvalue can't price artifact jewellery), or gives an ability the worn gear without that slot's pieces
+  doesn't (a Ring of Free Action when nothing else worn gives it; not m62's Ring of Slow Digestion, ~75 at sale,
+  beside the Amulet of Slow Digestion). Only qualifying candidates compete; a stored one that no longer qualifies is
+  `unqualified`, and like any stored item the stash no longer keeps (`stash_keeps`) it is fetched at the next plan
+  town and sold (`stash_fetch_list`; `stash_to_sell` lets it past `review_hold`). The label names what it backs up and
+  what it alone would give ("a backup for the ring slot (Free Action)"). Candidates are the pack's and the stored ones (house and
   tavern). Per worn slot the best is: most of the **abilities the worn gear gets from that slot's piece** (the gear
   model's flags with the piece, less without it) that it carries; then the `geareval.REQUIRED` abilities (Free Action,
   See Invisible) it carries at all (a Ring of Free Action backs up the axe's, though the worn rings give none); then

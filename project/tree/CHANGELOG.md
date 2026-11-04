@@ -27,6 +27,24 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.51.0 -- 2026-11-04 (session 12, the user's decisions after m62)
+No missions yet on it. **Play changes:**
+- **Far fetch for kit and valuable potions and scrolls:** seen on the level map, a potion or scroll that is a kit item
+  (Speed, Teleportation, Phase, the cures, Healing, Recall, Heroism, Berserk, a stat Restore...) or worth 200+ by
+  itemvalue (an unknown flavour by its expectation) gets `interesting_item` news and is fetched like devices and
+  jewellery (within 30 squares, once the area is clear; `far_fetch_worth`, `far_wanted`). m62 left a Potion of Speed
+  and a Scroll of Teleportation in view for minutes.
+- **The backup rule tightened:** a gear backup must be worth 1000+ at sale (value x pay_cut; `BACKUP_MIN_SALE`
+  replaces the 200-gold `BACKUP_MIN_VALUE`) or give an ability the rest of the worn gear doesn't (a Ring of Free
+  Action with nothing else giving it; not m62's Ring of Slow Digestion beside the Amulet of Slow Digestion). The
+  Scimitar of Westernesse stays the weapon backup. A stored item the stash no longer keeps (not the best backup, not
+  on the store list, not a Restore or Stone to Mud -- also one adopted from the floor) is fetched at the next
+  `plan town` and sold, past the review queue; a credited one's sale is debited (`stash_credit_sold`).
+- **Word of Recall: kits B and C keep 3** (kit A 2); every `plan town`, a trip's `then town` included, restocks to it.
+- Make-room news names the count destroyed ("2 of 3 Rations of Food (1 kept)") and the supplies left without them;
+  the `supplies` alert waits while an eat, fuel or destroy is fresh or a meal unconfirmed.
+- The Plan line says when a clock condition ends the trip: "ends ~09:46 (minutes>33)" (`minutes`, `dmin`, `time`).
+
 ## 2.50.0 -- 2026-11-04 (session 12, the user's decisions of 11-04)
 Missions: m62 (Sonnet medium, 79.5 XP/dmin, report runs/pilot/dive04/reports/2026-11-04-mission62.md). **Play changes:**
 - **The stash keeps valuable spares the shops can't sell** (the user: "spare items that are valuable and can't be

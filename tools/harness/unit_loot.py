@@ -376,3 +376,54 @@ def pickup_none_no_loot_walks():
         return p.loot_step({}), p.mover.went
     none, all_ = run("none"), run("all")
     return none == (False, []) and all_[0] and all_[1] == [[(20, 25)]], f"none: {none}; all: {all_}"
+
+
+@case
+def far_fetch_kit_and_valuable_potions():
+    """2.51.0 (the user after m62: a Potion of Speed in view 3 minutes at 750 ft, a Scroll of Teleportation 6 at 800 ft,
+    neither fetched): potions and scrolls seen on the level map are fetched like devices and jewellery (within
+    LOOT_VALUABLE_R 30, once the area is clear) when they are kit items or worth 200+. A Potion of Speed, a Scroll of
+    Teleportation, a Potion of Restore Strength, Cure Light Wounds: kit items; a Potion of Restore Mana: not the kit's
+    (a warrior can't use it) but worth ~350; a Scroll of Light: no; a Potion of Salt Water (junk): no. The '!' 25 squares off is walked to; a '?'
+    whose wanted scroll has left the item list is not."""
+    class Mover:
+        def __init__(self):
+            self.active, self.path, self.sent = False, [], []
+
+        def go(self, goals, **k):
+            g = list(goals)[0]
+            self.sent.append(g)
+            self.active, self.path = True, [g] * max(abs(g[0] - p.w.pos[0]), abs(g[1] - p.w.pos[1]))
+            return True
+
+        def tick(self):
+            return "moving"
+
+        def stop(self):
+            self.active = False
+    p = pilot()
+    worth = {n: p.far_fetch_worth(n) for n in ("a Potion of Speed", "a Scroll of Teleportation",
+                                                 "a Potion of Restore Strength", "a Potion of Restore Mana",
+                                                 "a Scroll of Light", "a Potion of Salt Water",
+                                                 "3 Potions of Cure Light Wounds")}
+    w = p.w
+    w.pos, w.level_t = (20, 20), 5.0
+    w.itemlist = ["Items:", "! a Potion of Speed", "? a Scroll of Light"]
+    w.messages.clear()
+    w.losses = []
+    p.found_t = P.gnow()
+    p.orders.update(loot_radius=10, think_hp=0.65, pickup="all")
+    p.band_warned, p.band_warned_t = (None, 0), 0.0
+    p.skipped_items = set()
+    p.mover = Mover()
+    p.danger_why = lambda r, *a, **k: None
+    w.memory = {(20, 45): "!", (20, 44): "?"}
+    p.resolve_target = lambda k: [q for q, ch in w.memory.items() if ch in "!?"]
+    p.watch_items(P.gnow())
+    wanted = dict(p.far_wanted)
+    went = p.loot_step({}), list(p.mover.sent)
+    ok = worth["a Potion of Speed"] and worth["a Scroll of Teleportation"] and worth["a Potion of Restore Strength"] \
+        and worth["a Potion of Restore Mana"] == "worth ~350" and not worth["a Scroll of Light"] and \
+        not worth["a Potion of Salt Water"] and worth["3 Potions of Cure Light Wounds"] and \
+        wanted == {(5.0, "!"): {"a Potion of Speed"}} and went == (True, [(20, 45)])
+    return ok, f"worth {worth}; wanted {wanted}; loot step {went}"

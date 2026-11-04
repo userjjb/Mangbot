@@ -772,3 +772,44 @@ def finds_marked_with_the_mission_label():
         sold == 1
     return ok, (f"labels {labels}; no mission {none}; inscribe {acted} {sent}; fresh {fresh}; helpers {helpers}; "
                 f"town rules {rules}; the Main Gauche sold {sold}")
+
+
+@case
+def backups_must_be_worth_it():
+    """2.51.0 (the user after m62: a Ring of Slow Digestion, ~75 at sale, the amulet already giving slow digestion,
+    took a tavern square): a backup is worth 1000+ at sale (value x pay_cut) or gives an ability the other worn gear
+    doesn't. The Scimitar of Westernesse (~8000 at sale) stays the weapon backup; the Ring of Slow Digestion is no
+    backup; a Ring of Free Action is one only when nothing else worn gives Free Action. The stored Ring of Slow
+    Digestion {m62} (credited to m62) is fetched at the next plan town to be sold -- past the review queue -- and its
+    sale debits the credit."""
+    sc = "a Scimitar of Westernesse (2d5) (+9,+8) (+1)"
+    p = _dive04_town([(sc, 23), ("a Ring of Slow Digestion {m62}", 45), ("a Ring of Free Action", 45)])
+    rules = {i["name"]: p.town_rule(i) for i in p.w.items()}
+    plain = [("a Spear (1d6) (+5,+7)", 22, 50)] + _DIVE04_WORN[1:]
+    q = _dive04_town([("a Ring of Free Action", 45)], worn=plain)
+    q.w.flags.update(free_act=0)
+    fa = q.town_rule(q.w.items()[0])
+    t = _dive04_town([])
+    logs = []
+    t.log = lambda kind, **kw: logs.append((kind, kw))
+    t.house_save = lambda: None
+    t._house = {"house": {"door": [60, 129], "box": [59, 124, 61, 129], "step_in": [60, 128]},
+                "items": {"60,125": {"name": sc, "value": 8000, "fresh": False, "mission": None}},
+                "tavern": {"entrance": [27, 89], "items": {"27,93": {"name": "a Ring of Slow Digestion {m62}",
+                                                                      "value": 95, "fresh": True, "mission": "m62"}}}}
+    fetch = t.stash_fetch_list("tavern")
+    house = t.stash_fetch_list("house")
+    t.stash_take("tavern", "Ring of Slow Digestion", (27, 93))
+    t.w.inven.append({"item": 0, "name": "a Ring of Slow Digestion {m62}", "tval": 45, "weight": 1, "number": 1,
+                      "equip": False})
+    t.review_hold = P.Pilot.review_hold.__get__(t)
+    held = t.review_hold(t.w.items()[0])
+    t.stash_credit_sold("a Ring of Slow Digestion {m62}", 90)
+    sold = [kw for k, kw in logs if k == "stash_credit_sold"]
+    ok = rules[sc] == ("keep", "a backup for the weapon slot (Free Action, See Invisible)") and \
+        rules["a Ring of Slow Digestion {m62}"] is None and rules["a Ring of Free Action"] is None and \
+        fa == ("keep", "a backup for the ring slot (Free Action)") and \
+        [n for n, _ in fetch] == ["a Ring of Slow Digestion {m62}"] and fetch[0][1].endswith("to sell") and \
+        house == [] and not held and len(sold) == 1 and sold[0]["credited_value"] == 95
+    return ok, f"rules {rules}; FA ring with no FA worn {fa}; tavern fetch {fetch}; house {house}; review held {held}; " \
+               f"debit {sold}"

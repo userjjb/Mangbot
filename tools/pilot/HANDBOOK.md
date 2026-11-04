@@ -30,7 +30,7 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
    to this file: lessons from past missions). Decide the mission: town buys, depth range, number of trips, conditions,
    standing orders. Write that plan in your journal.
 1. **In town:** `status`, then `plan town [kit=A|B|C|none] [buy NAME[:N][@MAX],...]`, then `wait`. The Pilot sells
-   by policy, identifies what pays, and buys in priority order: Word of Recall to 2, the supply gate's minimums,
+   by policy, identifies what pays, and buys in priority order: Word of Recall to 2 (kits B and C then keep 3), the supply gate's minimums,
    Restore for a drained STR/DEX/CON, the kit, then your list (`NAME:N` means *have* N in all, not N more). From
    500 ft down the kit keeps **3 Heroism** (the fear cure) and **2 Potions of Speed** (Black Market, at most 600 each; often
    out of stock): the Pilot drinks Speed **at the start of a hard fight** (a unique or a monster near your level
@@ -78,7 +78,7 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
 
 Character, stats (`↓` drained), supplies (Cures | Escapes | Food | Light), what's underfoot and the nearest stairs,
 monsters (with `DANGER: why`), items, the map, news. Then the Pilot's memory:
-- `Plan:` the trip and its step;
+- `Plan:` the trip and its step (with a clock condition, when it ends: "ends ~09:46 (minutes>33)");
 - `Out of view:` monsters seen in the last 2 minutes but not now (a unique that walked away is still there);
 - `Fight so far:` hits landed and estimated damage against the monster's HP;
 - `Rates:` HP lost in the last 10 s, XP and gold found in the dungeon per 10 minutes (net gold, with shopping, in brackets),

@@ -143,8 +143,29 @@ class TripPlan:
         return None
 
     def describe(self):
+        end = self.end_text()
         return f"{self.text} ({(gnow() - self.t0) / 60:.0f} min, {plural(self.levels, 'level')}: " \
-               f"{'paused for your goal' if self.paused else self.step})"
+               f"{'paused for your goal' if self.paused else self.step})" + (f"; {end}" if end else "")
+
+    def end_text(self):
+        """When a clock condition ends the trip (2.51.0, the Navigator's friction in m62: the report didn't say):
+        'ends ~09:46 (minutes>33)' -- the soonest of `minutes>N` (from the plan's start), `dmin>N` (from reaching the
+        dungeon; not before) and `time>HH:MM`, as a wall-clock time; None without one."""
+        now = gnow()
+        ends = []
+        for term, var, op, val in self.conds:
+            if op not in (">", ">="):
+                continue
+            if var == "minutes":
+                ends.append((time.time() + max(0.0, float(val) * 60 - (now - self.t0)), term))
+            elif var == "dmin" and self.__dict__.get("dungeon_t0"):
+                ends.append((time.time() + max(0.0, float(val) * 60 - (now - self.dungeon_t0)), term))
+            elif var == "time":
+                ends.append((self.clock_target(val), term))
+        if not ends:
+            return None
+        t, term = min(ends)
+        return f"ends ~{time.strftime('%H:%M', time.localtime(t))} ({term})"
 
     def on_event(self, p, what, detail, news):
         """Every notify passes here: count the events the conditions name, and leave a bad level."""

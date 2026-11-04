@@ -322,3 +322,31 @@ def restore_mushrooms_for_drains():
     return ok, (f"STR drained, mushroom: {a.sent}; potion + mushroom: {pick}; nearly gorged: {gorge}; DEX drained: "
                 f"{dex_use}; town tier 3 with the mushroom {needs}, DEX {dex_needs}; orc in view {orc.sent}; CHR "
                 f"{chr_use}; alert {text!r}")
+
+
+@case
+def make_room_news_counts_what_went():
+    """2.51.0 (m62 09:24): make-room destroyed 2 of 3 rations (value=2) and the news said "destroyed 3 Rations of Food",
+    with the food left counted before the pack update. Now it names the count destroyed and kept, and the supply text
+    leaves out what went; the supplies alert waits while an eat or destroy is fresh or a meal is unconfirmed."""
+    p = pilot(pack=[("3 Rations of Food", 80)])
+    it = p.w.items()[0]
+    text = p.destroyed_text(it, 2), p.destroyed_text(it, 3)
+    p.w.hunger = 3
+    p.w.flags = {}
+    food_all, food_one = p.supply_minutes()[0], p.supply_minutes({it["item"]: 2})[0]
+    p.last_action = (P.gnow(), "custom k item=0 value=2", "make room")
+    p.w.inven_dirty = False
+    p.trip_minutes_left = lambda: 30
+    p.plan = None
+    p.food_warned = None
+    p.supply_told = set()
+    p.w.inven = []                       # (the pack shows the rations gone, the destroy just sent)
+    p.supply_watch()
+    quiet = list(p.notes)
+    p.last_action = (P.gnow() - 10, "custom k item=0 value=2", "make room")
+    p.supply_watch()
+    later = [w for w, _ in p.notes]
+    ok = text == ("2 of 3 Rations of Food (1 kept)", "3 Rations of Food") and \
+        round(food_all - food_one) == round(2 * 5000 / (2 * p.TURNS_PER_DMIN)) and quiet == [] and "supplies" in later
+    return ok, f"news {text}; food {food_all:.0f} -> {food_one:.0f} min; within 3 s {quiet}; later {later}"

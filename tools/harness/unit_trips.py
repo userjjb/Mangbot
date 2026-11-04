@@ -580,3 +580,24 @@ def rations_kept_by_a_pinned_stomach():
     import math
     want = 4 - math.ceil((25 * 430 - 980) / 5000)
     return got == (want, 1, 3, 2) and want == 2, f"spare (Hungry pinned, unpinned, Fed pinned, unpinned): {got}"
+
+
+@case
+def plan_line_shows_the_trip_end():
+    """2.51.0 (m62's Navigator: the report after `plan trip` didn't say when it would end): the Plan line names the end
+    of a clock condition -- `minutes>33` from the plan's start, `dmin>N` once in the dungeon, `time>HH:MM` -- the
+    soonest: "ends ~09:46 (minutes>33)"; none without one."""
+    import time as _t
+    tp = P.TripPlan(700, 800, P.TripPlan.parse_until("cures<4 or minutes>33"))
+    tp.t0 = P.gnow() - 3 * 60
+    want = _t.strftime("%H:%M", _t.localtime(_t.time() + 30 * 60))
+    a = tp.end_text()
+    both = P.TripPlan(700, 800, P.TripPlan.parse_until("minutes>60 or dmin>20"))
+    both.t0 = P.gnow()
+    b0 = both.end_text()
+    both.dungeon_t0 = P.gnow() - 5 * 60
+    b1 = both.end_text()
+    none = P.TripPlan(700, 800, P.TripPlan.parse_until("cures<4")).end_text()
+    ok = a == f"ends ~{want} (minutes>33)" and a in tp.describe() and "(minutes>60)" in b0 and "(dmin>20)" in b1 \
+        and none is None
+    return ok, f"{a}; {b0} -> {b1}; none {none}; describe {tp.describe()}"

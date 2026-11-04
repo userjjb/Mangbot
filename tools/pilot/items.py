@@ -363,6 +363,14 @@ class ItemsMixin:
 
     UNIQUE_DROP_BUMP = 50
 
+    @staticmethod
+    def destroyed_text(it, n):
+        """'2 of 3 Rations of Food (1 kept)' when part of a stack goes, else the name (2.51.0: m62's news said
+        "destroyed 3 Rations of Food" for value=2)."""
+        if n >= it["number"]:
+            return it["name"]
+        return f"{n} of {it['name']} ({it['number'] - n} kept)"
+
     def eat_fits(self, name):
         """Eating this food can't make us Gorged: the most the stomach can hold (food_top) plus its food stays a
         potion margin (1000) under PY_FOOD_MAX -- the make-room rule (m49)."""
@@ -658,8 +666,9 @@ class ItemsMixin:
                     self.c.send("confirm yes")
                     self.cmd(f"custom k item={it['item']} value={self.destroy_count(it)}",
                              f"make weight room: destroy {it['name']} (~{v:.0f}) for {name} (~{worth:.0f})", hold=0.6)
-                    self.notify("tactic", f"at the weight limit: destroyed {it['name']} (~{v:.0f} gold) to take {name} "
-                                          f"(~{worth:.0f})", news=True)
+                    self.notify("tactic", f"at the weight limit: destroyed "
+                                          f"{self.destroyed_text(it, self.destroy_count(it))} (~{v:.0f} gold) to take "
+                                          f"{name} (~{worth:.0f})", news=True)
                 return False                     # (picked up on the next look, once there's room)
             if wt > room:
                 self.skipped_items.add((w.level_t, w.pos))
@@ -717,10 +726,13 @@ class ItemsMixin:
                 self.cmd(f"custom k item={cheapest[1]['item']} value={self.destroy_count(cheapest[1])}",
                          f"make room: destroy {cheapest[1]['name']} (~{cheapest[0]:.0f}) for {name} (~{worth:.0f})",
                          hold=0.6)
-                self.notify("tactic", f"pack full: destroyed {cheapest[1]['name']} (~{cheapest[0]:.0f} gold) to take "
+                gone = self.destroy_count(cheapest[1])
+                self.notify("tactic", f"pack full: destroyed {self.destroyed_text(cheapest[1], gone)} "
+                                      f"(~{cheapest[0]:.0f} gold) to take "
                                       f"{name} (~{worth:.0f}{', a unique drop' if unique else ''})"
-                                      # (2.48.1, m61: food or oil gone -- say what's left)
-                                      + (f"; now {self.supply_text()}" if self.supply_kind(cheapest[1]) else ""),
+                                      # (2.48.1, m61: food or oil gone -- say what's left; 2.51.0: without what went)
+                                      + (f"; now {self.supply_text({cheapest[1]['item']: gone})}"
+                                         if self.supply_kind(cheapest[1]) else ""),
                             news=True)
             return False                         # (picked up on the next look, once there's room)
         if (w.level_t, w.pos) not in self.skipped_items:
@@ -1073,6 +1085,8 @@ class ItemsMixin:
         or resist, or it's an artifact, or worth REVIEW_MIN_VALUE+ -- and the gear evaluator wouldn't wear it. Two town
         visits undecided: the policy sells it (news)."""
         name = it["name"]
+        if bare_name(name).lower() in self.stash_to_sell:
+            return False             # (2.51.0: fetched from the stash to be sold: no longer the stash's, no review)
         st = self.review_state()
         dec = st["decided"].get(name)
         if dec:
@@ -1214,6 +1228,34 @@ class ItemsMixin:
     LOOT_OWED_R = 25          # items passed up while monsters were in view: fetched once it's clear, this far
     LOOT_VALUABLE_R = 30      # devices and jewellery: the Pilot fetches them itself, this far
     VALUABLE_GLYPHS = "-_=\""   # wand/rod, staff, ring, amulet
+    FAR_FETCH_MIN = 200       # 2.51.0: a potion or scroll worth this (itemvalue; unknown: the expectation) is fetched
+
+    def far_fetch_worth(self, name):
+        """Why a potion or scroll seen on the level map is worth a far fetch (LOOT_VALUABLE_R, as devices and
+        jewellery; 2.51.0, the user after m62), or None: a kit consumable (KIT_KINDS: Speed, Teleportation, Phase,
+        the cures, Healing, Recall, Heroism, Berserk... -- a stat Restore only, not Restore Mana; not a crutch), or
+        worth FAR_FETCH_MIN+ by itemvalue (an unknown flavour by its expected value). Junk never."""
+        if not re.search(r"\b(Potions?|Scrolls?)\b", name) or self.is_junk(name):
+            return None
+        tv = TV_POTION if re.search(r"\bPotions?\b", name) else TV_SCROLL
+        if self.is_kit_item({"name": name, "tval": tv}) and \
+                ("Restore" not in name or re.search(self.STASH_KINDS, name)):
+            return "a kit item"
+        v = self.iv(name).value
+        return f"worth ~{v}" if v >= self.FAR_FETCH_MIN else None
+
+    def far_wanted_glyphs(self):
+        """The glyphs ('!', '?') of this level's far-fetch potions and scrolls still on the map (in the item list) and
+        not in the pack: loot_step treats those squares as valuable."""
+        w = self.w
+        if not self.far_wanted:
+            return set()
+        listed = {l.strip()[2:].strip() for l in (getattr(w, "itemlist", None) or [])[1:]}
+        out = set()
+        for (lt, glyph), names in self.far_wanted.items():
+            if lt == w.level_t and any(n in listed for n in names):
+                out.add(glyph)
+        return out
 
     def loot_step(self, state):
         """Fetch items (dive and explore share this): those within loot_radius; those passed up while
@@ -1268,7 +1310,8 @@ class ItemsMixin:
         for t in [t for t in items if mem["tries"][t] >= 3]:
             mem["done"].add(t)
         items = [t for t in items if t not in mem["done"]]
-        valuable = {t for t in items if w.memory.get(t) in self.VALUABLE_GLYPHS and w.dist(t) <= self.LOOT_VALUABLE_R}
+        far = self.VALUABLE_GLYPHS + "".join(self.far_wanted_glyphs())     # (2.51.0: and wanted potions/scrolls)
+        valuable = {t for t in items if w.memory.get(t) in far and w.dist(t) <= self.LOOT_VALUABLE_R}
         owed = {t for t in items if t in mem["owed"] and w.dist(t) <= self.LOOT_OWED_R}
         cands = {t for t in items if w.dist(t) <= lr} | owed | valuable
         if not cands:

@@ -160,7 +160,9 @@ minutes climbing: Word of Recall), `_trip_level_time` (`level_min`), `_trip_leav
 
 The plan ends **done** at home (`then recall`), after the town kit (`then town`), or if the character turns up in
 town by another route (an escape recall: the reply names it and points to `why`). On end it logs `plan_end` and
-notifies `plan_done` / `plan_failed`. `plan` shows it, `plan stop` (or `stop`) ends it, `plan resume` ends the
+notifies `plan_done` / `plan_failed`. `plan` shows it (2.51.0: `describe` adds `end_text`, the soonest clock end --
+`minutes>N` from the start, `dmin>N` once in the dungeon, `time>HH:MM` -- as "ends ~09:46 (minutes>33)", on the
+report's Plan line), `plan stop` (or `stop`) ends it, `plan resume` ends the
 Navigator's pausing goal. The Pilot's reflex goals (flee, recover, recall) replace a plan goal without pausing the
 plan; while a plan runs (not paused) `idle()` never recalls. `Pilot.trip_minutes_left` (from the recall, the `minutes`/`time`
 conditions and the 90-minute cap) tells the item policy when spare rations and flasks can go (`provisions_spare`:
@@ -247,14 +249,14 @@ already planned:
 
 | tier | what |
 |---|---|
-| 1 | Word of Recall up to 2 |
+| 1 | Word of Recall up to 2 (the supply gate's; kits B and C then keep a 3rd at tier 4, 2.51.0) |
 | 2 | the supply gate's minimums for `planned_depth()` (`min(max_depth, deepest)`): CCW, CSW (unless 3 CCW), total cures (CLW below 500 ft, CSW deeper), Phase Door; and the Flasks of oil that fill the lantern, `flasks_to_fill`: ceil((15000 - fuel) / 7500), none within `FILL_SLACK` = 300 turns of full (FUEL_LAMP, mdefines.h:187; a flask's 7500, object.txt; the refill caps at the top, cmd3.c:1365-1374; 2.49.0, was: to 9000) |
 | 3 | Restore STR/DEX/CON for a drained stat (unless one waits in the stash, or -- 2.50.0 -- a carried restore mushroom covers it: `restore_for`) |
 | 4 | the kit's stock levels (`KITS`; default by planned depth: A below 500 ft, B below 1000 ft, C deeper) |
 | 5 | the Navigator's buy list (`NAME:N` = have N) |
 | 6 | Restore Charisma, only with 3000+ gold |
 
-`KITS`: **A** = 2 Word of Recall, 5 CLW, 5 Phase Door, 3 rations. **B** = 2 WoR, 4 CCW, 4 CSW, 10 Phase, 3 rations,
+`KITS`: **A** = 2 Word of Recall, 5 CLW, 5 Phase Door, 3 rations. **B** = 3 WoR (2.51.0, the user: was 2), 4 CCW, 4 CSW, 10 Phase, 3 rations,
 3 Heroism, 2 Potion of Speed. **C** = as B with 6 CCW, 12 Phase. **none** = nothing. `KIT_ITEMS` gives each kind's
 tval, store and a price guess (Speed comes from the Black Market, 7; potions of healing and Heroism from the Temple, 4;
 scrolls and Restores from the Alchemist, 5; food and oil from the General Store, 1). `town_shopping` spends the gold
@@ -322,7 +324,8 @@ full lantern's 7500 turns in ~35 minutes).
 - `supply_text()`: "food >=N dungeon min, light ~M" (food: since 2.48.1 the least it can be; "food ~N" once the stomach
   tracker is exact, 2.49.0; the middle of the level stood still for minutes in m61 and ran out) (on the status line via `supply_lines`, at `plan town`'s start and
   end, on reaching the dungeon). `supply_watch()` (every tick in the dungeon) alerts `supplies` once under 15 and once
-  under 5 minutes, reset above 20. `QuietWait` is capped at a quarter of the smaller.
+  under 5 minutes, reset above 20 (2.51.0: not while the pack is being read, a meal is unconfirmed, or within 3 s of
+  an eat, fuel or destroy -- m62's "~5 minutes" right after a ration). `QuietWait` is capped at a quarter of the smaller.
 - `supply_lines()`: the report's supplies line: cures, escapes, food, light (with flasks and the minutes), a pending
   recall, and other potions/scrolls/devices.
 
@@ -386,7 +389,9 @@ when possible") the **best backup for each worn slot** and the **store list** (p
 during a mission, never sold. **Placement** (2.50.0): the house first; when its squares are used, inside the tavern room
 (the overflow); else kept in the pack with a `stash_full` alert to `ask` the Architect. **Retrieval**: plan town's
 withdraw stage fetches a stored backup to wear (its slot empty -- the piece stolen -- or the gear evaluator's choice
-over a disenchanted one) and an outclassed one to sell (`stash_fetch_list`); `house withdraw ITEM` fetches a named one
+over a disenchanted one) and an outclassed one to sell (`stash_fetch_list`; 2.51.0: any stored item the stash no
+longer keeps -- `stash_keeps`: not the best backup, not on the store list, not a Restore or Stone to Mud -- is fetched
+to be sold, past the review queue, its credit debited at the sale); `house withdraw ITEM` fetches a named one
 from the house or the tavern room. With a house they live there (above); without one, in the tavern
 room (`StashDeposit`/`StashFetch`, the entrance from `tavern_entrance`). **house.json is the stash's only record**
 (refactor-candidates D10, 2026-11-01): the house's `items`, and without a house `tavern` (`entrance`, `items`

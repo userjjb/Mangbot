@@ -114,9 +114,9 @@ class TownMixin:
     # A to 500 ft, B to 1000 ft, C deeper. No flasks: the town visit tops the lantern up instead (the user,
     # 10-25: oil, food and potions nobody uses fill the pack). Rations: one stack, eaten to Fed (at most 3) before a trip
     KITS = {"A": {"Word of Recall": 2, "Cure Light Wounds": 5, "Phase Door": 5, "Ration of Food": 3},
-            "B": {"Word of Recall": 2, "Cure Critical Wounds": 4, "Cure Serious Wounds": 4, "Phase Door": 10,
+            "B": {"Word of Recall": 3, "Cure Critical Wounds": 4, "Cure Serious Wounds": 4, "Phase Door": 10,
                   "Ration of Food": 3, "Heroism": 3, "Potion of Speed": 2},
-            "C": {"Word of Recall": 2, "Cure Critical Wounds": 6, "Cure Serious Wounds": 4, "Phase Door": 12,
+            "C": {"Word of Recall": 3, "Cure Critical Wounds": 6, "Cure Serious Wounds": 4, "Phase Door": 12,
                   "Ration of Food": 3, "Heroism": 3, "Potion of Speed": 2},
             "none": {}}
     # The lantern leaves town full (2.49.0, the user: oil is very cheap, and fuel past the top just caps; was: topped up
@@ -850,10 +850,11 @@ class TownMixin:
     # the stash also holds the best backup for each worn slot and the user's store list; the house first, the tavern
     # room when the house is full, and when neither has room the Navigator is told to `ask` the Architect)
     STASH_KINDS = r"Potions? of Restore (Strength|Intelligence|Wisdom|Dexterity|Constitution|Charisma)"
-    # a backup is worth at least this much (itemvalue): an ego or artifact under it is a weak or cursed-plussed one
-    # (an ego's own cost is 200+ in ego_item.txt with few exceptions, so 200 lets every real ego through), and below
-    # it the sale pays ~75 gold -- not worth a house square of the house's 3
-    BACKUP_MIN_VALUE = 200
+    # (2.51.0, the user after m62: a Ring of Slow Digestion, ~75 gold at sale, its ability already given by the amulet,
+    # took a tavern square) a backup is worth BACKUP_MIN_SALE at sale -- value x pay_cut, the figure its stash record
+    # stores -- or gives an ability the rest of the worn gear doesn't (the slot's own pieces left out: what losing them
+    # would cost). An artifact always qualifies (itemvalue can't price artifact jewellery)
+    BACKUP_MIN_SALE = 1000
     BACKUP_SLOT_LABEL = {"body": "body armour"}
 
     def is_stash_item(self, name):
@@ -900,7 +901,8 @@ class TownMixin:
     def backup_item(self, name, tval=None, weight=None):
         """geareval.Item for a wearable that may be a gear backup, else None: a weapon, armour piece, ring, amulet or
         light (not a bow) the shops can't sell -- an ego or an artifact, or jewellery/a light of a kind shops 1-6
-        don't stock -- identified (not merely felt), not cursed, worth BACKUP_MIN_VALUE+ (an artifact always)."""
+        don't stock -- identified (not merely felt), not cursed. (Whether it is worth storing -- BACKUP_MIN_SALE or an
+        ability not otherwise worn -- is backup_qualifies, with the gear model.)"""
         if bad_inscription(name):
             return None
         gi = geareval.Item(name, tval, weight)
@@ -914,14 +916,26 @@ class TownMixin:
         stocked = (gi.tval, geareval._norm(kind.get("name", ""))) in self._town_wearables()
         if not (art or iv.ego or gi.ego or (gi.slot in ("ring", "amulet", "light") and not stocked)):
             return None
-        if not art and iv.value < self.BACKUP_MIN_VALUE:
-            return None
         return gi
+
+    def backup_sale(self, name):
+        """What the town would pay for it: itemvalue x pay_cut (one item; the stash record's value)."""
+        iv = self.iv(name)
+        return iv.value * self.pay_cut(iv.tval)
+
+    def backup_qualifies(self, gi, name, ch):
+        """(ok, the abilities it would add): worth BACKUP_MIN_SALE+ at sale, an artifact, or giving an ability the
+        worn gear without this slot's pieces doesn't (a Ring of Free Action when nothing else worn gives it; not a Ring
+        of Slow Digestion beside an Amulet of Slow Digestion)."""
+        without = {s: (v if s != gi.slot else []) for s, v in ch.worn.items()}
+        new = gi.abilities() - set(ch.derive(without)["flags"])
+        return bool(gi.art or self.iv(name).artifact or self.backup_sale(name) >= self.BACKUP_MIN_SALE or new), new
 
     def stash_backups(self):
         """The best backup per worn slot among the pack's unworn wearables and the stored ones (house and tavern):
         {"best": {slot: (where, name, item or None, labels)}, "outclassed": [(where, name, slot)]} -- where is
-        "pack", "house" or "tavern". Best: first the most of the abilities the worn gear gets from the piece in that
+        "pack", "house" or "tavern" (2.51.0: and "unqualified": [(where, name, slot)], stored wearables no longer worth
+        storing -- backup_qualifies). Only a candidate that qualifies competes. Best: first the most of the abilities the worn gear gets from the piece in that
         slot (lost with it) that it carries; then the required abilities (geareval.REQUIRED: Free Action, See
         Invisible) it carries at all; then the gear evaluator's static score (geareval.proxy) as if it replaced the
         worn piece (rings: the weaker worn ring); a stored one wins a tie. One per slot. A slot with nothing worn has
@@ -936,7 +950,7 @@ class TownMixin:
                tuple(sorted(self.store_list)))
         if self._backup_cache and self._backup_cache[0] == key:
             return self._backup_cache[1]
-        out = {"best": {}, "outclassed": []}
+        out = {"best": {}, "outclassed": [], "unqualified": []}
         try:
             cands = []
             for i in pack:
@@ -962,6 +976,11 @@ class TownMixin:
                     on = ch.worn.get(gi.slot) or []
                     if not on and at == "pack":
                         continue        # (a slot with nothing worn: the gear policy wears into it, no backup)
+                    okq, new = self.backup_qualifies(gi, n, ch)
+                    if not okq:
+                        if at != "pack":
+                            out["unqualified"].append((at, n, gi.slot))
+                        continue
                     best = None
                     for j in range(max(1, len(on))):
                         if not on:
@@ -979,7 +998,8 @@ class TownMixin:
                     # Action backs up the weapon's, though the worn rings give none -- then the score)
                     req = len(gi.abilities() & set(geareval.REQUIRED))
                     rank = (n_ab, req, round(prox, 9), at != "pack")
-                    scored.setdefault(gi.slot, []).append((rank, at, n, i, carried))
+                    # (the label: what it backs up, and what it alone would give -- 2.51.0)
+                    scored.setdefault(gi.slot, []).append((rank, at, n, i, set(carried) | new))
                 for slot, lst in scored.items():
                     lst.sort(key=lambda r: r[0], reverse=True)
                     _, at, n, i, carried = lst[0]
@@ -988,7 +1008,7 @@ class TownMixin:
                     out["outclassed"] += [(a2, n2, slot) for _, a2, n2, _, _ in lst[1:] if a2 != "pack"]
         except Exception as e:              # (the evaluator must not stop the town visit: nothing is a backup then)
             self.log("note", text=f"stash backups failed: {e!r}")
-            out = {"best": {}, "outclassed": []}
+            out = {"best": {}, "outclassed": [], "unqualified": []}
         self._backup_cache = (key, out)
         return out
 
@@ -1022,7 +1042,16 @@ class TownMixin:
             return "a stat Restore"
         if "Stone to Mud" in name:
             return "Stone to Mud"
-        return "stored"
+        return "no longer a stash item: plan town fetches it to sell"
+
+    def stash_keeps(self, at, name):
+        """True while a stored item belongs in the stash: a stat Restore, Stone to Mud, the store list, or the best
+        backup for its slot (2.51.0: anything else stored -- outclassed, no longer qualifying, adopted from the floor
+        -- is fetched at the next plan town and sold)."""
+        if re.search(self.STASH_KINDS, name) or ("Stone to Mud" in name and "Wand" in name) or \
+                self.on_store_list(name):
+            return True
+        return any(a == at and n == name for a, n, i, labels in self.stash_backups()["best"].values())
 
     def stash_stored(self, text):
         """A floor message ("You see X.") naming something the stash holds: the pickup reflex leaves it in town."""
@@ -1056,7 +1085,9 @@ class TownMixin:
         """[(name, why)]: the stored items in `at` (house|tavern) the town visit fetches (2.50.0): (i) a stored backup
         the gear policy would wear over the worn piece -- its slot empty (the piece stolen), or the gear evaluator's
         choice over a disenchanted one (gear_better; town only) -- and (ii) a stored backup a better one now outclasses
-        (fetched so the shops sell it; the new one is deposited last)."""
+        (fetched so the shops sell it; the new one is deposited last); 2.51.0: and any other stored item the stash no
+        longer keeps (stash_keeps: one no longer worth storing, BACKUP_MIN_SALE; an item adopted from the floor), to
+        be sold (stash_to_sell: past the review queue; its credit, if any, debited at the sale)."""
         bk = self.stash_backups()
         out = []
         worn = self.w.items(equip=True)
@@ -1072,6 +1103,13 @@ class TownMixin:
         for a, n, slot in bk["outclassed"]:
             if a == at:
                 out.append((n, f"outclassed as the {self.BACKUP_SLOT_LABEL.get(slot, slot)} backup: to sell"))
+        for n in sorted(set(self.stash_places()[at].values())):
+            if n and not self.stash_keeps(at, n) and not any(n == x for x, _ in out):
+                why = "not worth storing any more (under 1000 gold at sale, its abilities worn)" if \
+                    any(a == at and n2 == n for a, n2, _ in bk["unqualified"]) else "not a stash item"
+                out.append((n, f"{why}: to sell"))
+        # (fetched to be sold: past the review queue -- m62's Ring of Slow Digestion would have waited 2 visits)
+        self.stash_to_sell |= {bare_name(n).lower() for n, why in out if why.endswith("to sell")}
         return out
 
     def tavern_state(self):
@@ -1317,12 +1355,17 @@ class TownMixin:
     TURNS_PER_DMIN = 215
     FOOD_MID = {0: 750, 1: 750, 2: 1500, 3: 6000, 4: 12500, 5: 15000}
 
-    def supply_minutes(self):
+    def supply_minutes(self, minus=None):
         """(food, light): dungeon minutes left counting the reserves (rations and other food; flasks), or None for a
-        light that needs no fuel."""
+        light that needs no fuel. minus: {pack index: count} just destroyed or eaten that the pack still shows
+        (2.51.0: m62's make-room news counted the rations it had just destroyed)."""
         w = self.w
+        minus = minus or {}
+
+        def num(i):
+            return max(0, i["number"] - minus.get(i["item"], 0)) if not i.get("equip") else i["number"]
         per_turn = 1.0 if (w.flags or {}).get("slow_digest") else 2.0
-        reserve = sum(self.food_value(i["name"]) * i["number"] for i in w.items(tval=TV_FOOD)
+        reserve = sum(self.food_value(i["name"]) * num(i) for i in w.items(tval=TV_FOOD)
                       if "Mushroom" not in i["name"])
         # (2.48.1, m61: the bottom of the hunger level, not its middle -- "food ~23 dungeon min" stood still for 5
         # minutes while Fed and ran out; the least it can be is what alerts and decisions need. 2.49.0: the stomach
@@ -1339,18 +1382,18 @@ class TownMixin:
             elif m is None:
                 light = None
             else:
-                spare = sum(t * i["number"] for i in w.items(tval=TV_LITE) if not i.get("equip")
+                spare = sum(t * num(i) for i in w.items(tval=TV_LITE) if not i.get("equip")
                             for t in [light_turns(i["name"])] if t is not None)
                 light = (m + spare) / self.TURNS_PER_DMIN
         else:
-            flasks = sum(i["number"] for i in w.items(tval=TV_FLASK))
+            flasks = sum(num(i) for i in w.items(tval=TV_FLASK))
             light = (fuel + flasks * self.FLASK_FUEL) / self.TURNS_PER_DMIN
         return food, light
 
-    def supply_text(self):
+    def supply_text(self, minus=None):
         """'food >=N dungeon min, light ~M': food the least it can last; '~N' once the stomach tracker is exact (a
-        hunger crossing or a Satisfy Hunger pinned it, 2.49.0)."""
-        food, light = self.supply_minutes()
+        hunger crossing or a Satisfy Hunger pinned it, 2.49.0). minus: as supply_minutes."""
+        food, light = self.supply_minutes(minus)
         f = f"food {'~' if self.stomach.exact(self.w.hunger) else '>='}{food:.0f} dungeon min"
         return f"{f}, light ~{light:.0f}" if light is not None else f"{f}, light permanent"
 
@@ -1361,6 +1404,12 @@ class TownMixin:
         here by D14). All are `supplies` notices with fields what (food|light) and level (low|out|recalling)."""
         w = self.w
         if not w.in_dungeon:
+            return
+        # (2.51.0, m62 09:32: "~5 minutes" right after a ration was eaten -- the pack and the stomach hadn't caught up.
+        # Not while a meal waits for the pack, nor within 3 s of an eat, fuel or destroy, nor with the pack being read)
+        la = self.last_action
+        if w.inven_dirty or (self.stomach is not None and self.stomach.pending) or \
+                (la and gnow() - la[0] < 3 and re.match(r"(eat |custom [kEF] )", la[1])):
             return
         key = getattr(self.plan, "t0", None) or w.level_t
         if self.kit_count("Ration of Food") == 0 and self.food_warned != key:

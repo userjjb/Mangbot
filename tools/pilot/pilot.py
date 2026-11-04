@@ -232,6 +232,7 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.structs, self.struct_t = {}, 0.0      # (level, (Y, X)) -> inner room / pit / nest found
         self.item_hold_until = 0.0            # a dive pauses after interesting_item
         self.far_seen = set()                 # (level, item) valuables seen beyond loot_radius
+        self.far_wanted = {}                  # (level, glyph) -> potions/scrolls worth a far fetch (2.51.0, loot_step)
         self.effect_failures = 0
         self.redraw_t, self.redraw_level = 0.0, None
         self.factor_logged, self.rate_logged, self.factor_log_t = 1.0, None, 0.0
@@ -344,6 +345,7 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self._backup_cache = None      # stash_backups: (key, result) -- 2.50.0
         self._acq = None               # acquired.json (acq_state): pickups, the trip start, pending credits -- 2.50.0
         self.to_inscribe = []          # finds to mark with the mission's label (inscribe_finds) -- 2.50.0
+        self.stash_to_sell = set()     # bare names fetched from the stash to be sold (review_hold lets them go) -- 2.51.0
         self.inscribe_t = 0.0
 
     @classmethod
@@ -1220,9 +1222,14 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         if w.in_dungeon and w.itemlist:
             for line in w.itemlist[1:]:
                 name = line.strip()[2:].strip()
-                if re.search(r"\b(Wand|Staff|Rod|Ring|Amulet)\b|\{(excellent|special)", name) and \
+                # (2.51.0, the user after m62: a Potion of Speed lay in view 3 minutes at 750 ft, a Scroll of
+                # Teleportation 6 at 800 ft -- potions and scrolls the kit uses or worth 200+ are fetched too)
+                far = self.far_fetch_worth(name) if line.strip()[:1] in "!?" else None
+                if (far or re.search(r"\b(Wand|Staff|Rod|Ring|Amulet)\b|\{(excellent|special)", name)) and \
                         not self.is_junk(name) and (w.level_t, name) not in self.far_seen:
                     self.far_seen.add((w.level_t, name))
+                    if far:
+                        self.far_wanted.setdefault((w.level_t, line.strip()[:1]), set()).add(name)
                     # (mission 15: the user spotted a Wand of Slow Monster 33 squares
                     # away, outside loot_radius; it sold for 210). Held 2.5 s: often
                     # the pilot is already stepping onto it (mission 18's amulet was in
@@ -1246,8 +1253,10 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
             # (the squares in the notice itself: m27's Navigator needed a `status full` for each fetch)
             sq = sorted((q for q, ch in w.memory.items() if ch == glyph), key=w.dist)[:3]
             where = ", ".join(f"{q[0]},{q[1]} ({w.dist(q)} away)" for q in sq) or "see 'Item squares' in `status full`"
-            # devices and jewellery this close: the loot step fetches them once it's clear (m29: nobody did)
-            if lr and self.orders.get("pickup") == "all" and glyph in self.VALUABLE_GLYPHS and sq and \
+            # devices and jewellery this close: the loot step fetches them once it's clear (m29: nobody did); 2.51.0:
+            # kit and valuable potions and scrolls too (far_wanted)
+            if lr and self.orders.get("pickup") == "all" and \
+                    (glyph in self.VALUABLE_GLYPHS or name in self.far_wanted.get((lt, glyph), ())) and sq and \
                     w.dist(sq[0]) <= self.LOOT_VALUABLE_R:
                 self.notify("interesting_item", f"{name} seen on this level at {where}: fetching it once the "
                                                  "area is clear", news=True)

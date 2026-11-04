@@ -26,7 +26,8 @@ def shop_pay_by_owner():
 
 @case
 def town_kit_tiers():
-    """Dive04's pack after m23: WoR to 2 first, Restore CON before the kit's extras, the kit's CSW/Phase."""
+    """Dive04's pack after m23: WoR to 2 first, Restore CON before the kit's extras, the kit's CSW/Phase (and, 2.51.0,
+    kit B's third Word of Recall)."""
     pack = [("3 Rations of Food", 80), ("3 Flasks of oil", 77), ("2 Potions of Cure Serious Wounds", 75),
             ("6 Potions of Cure Critical Wounds", 75), ("9 Scrolls of Phase Door", 70),
             ("a Scroll of Word of Recall {@R650}", 70), ("a Brass Lantern (with 6370 turns of light)", 39)]
@@ -36,8 +37,9 @@ def town_kit_tiers():
     p.seen_drained = {"CON": (17, 18)}
     need = [(t, k, n) for t, k, s, n, c in p.town_needs(None, ())]
     # (no flasks: the lantern's 6370 turns and the 3 flasks reach 9000; rations: kit B's 3, had)
-    want = [(1, "Word of Recall", 1), (3, "Restore Constitution", 1), (4, "Cure Serious Wounds", 2),
-            (4, "Phase Door", 1), (4, "Heroism", 3), (4, "Potion of Speed", 2)]   # (Heroism since m41, Speed since)
+    want = [(1, "Word of Recall", 1), (3, "Restore Constitution", 1), (4, "Word of Recall", 1),
+            (4, "Cure Serious Wounds", 2), (4, "Phase Door", 1), (4, "Heroism", 3),
+            (4, "Potion of Speed", 2)]   # (Heroism since m41, Speed since; 2.51.0: kit B keeps a 3rd Word of Recall)
     return need == want, f"{need}"
 
 
@@ -559,3 +561,20 @@ def enchant_and_recharge_scrolls_kept_to_read():
         high == [2, 1, 1] and dv == 380
     return ok, f"sold (To-Dam, Armor, Recharging) {got}; buys {buys}; town room value {room}; (+9,+9), no staff: " \
                f"{high}; dungeon value {dv}"
+
+
+@case
+def word_of_recall_three_in_kits_b_and_c():
+    """2.51.0 (the user after m62: the trip-end visit restocked Word of Recall to 2 and the Navigator asked for 3):
+    kits B and C keep 3 Words of Recall, kit A 2; every plan town restocks to it (a trip's `then town` too: TownKit()
+    takes the planned depth's kit). Tier 1 still buys the essential 2 first."""
+    def need(depth, kit=None):
+        w = W(pack=[("a Scroll of Word of Recall", 70)], gold=5000)
+        w.depth, w.depth_ft, w.in_dungeon = 0, 0, False
+        p = pilot(w)
+        p.orders["max_depth"], p.deepest_ft = depth, depth
+        return [(t, n) for t, k, s, n, c in p.town_needs(kit, ()) if k == "Word of Recall"]
+    got = {"B (650 ft)": need(650), "C (1100 ft)": need(1100), "A (300 ft)": need(300), "kit=A at 650": need(650, "A")}
+    ok = got == {"B (650 ft)": [(1, 1), (4, 1)], "C (1100 ft)": [(1, 1), (4, 1)], "A (300 ft)": [(1, 1)],
+                 "kit=A at 650": [(1, 1)]}
+    return ok, f"{got}"
