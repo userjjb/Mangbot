@@ -109,13 +109,26 @@ class Goto(Goal):
 
 
 class Explore(Goal):
+    TOWARD_SLACK = 3          # (2.54.0) frontier squares this much farther from the stairs than the nearest still count
     """Walk to the nearest frontier (known floor next to unknown) until none is
     left, or until stairs are seen (until='stairs')."""
 
-    def __init__(self, until=None, radius=None, skip=None):
+    def toward_frontier(self, frontier):
+        """The frontier squares nearest the stairs being sought (`toward`), within TOWARD_SLACK of the nearest, or []."""
+        if not self.toward or not frontier:
+            return []
+
+        def d(f):
+            return min(max(abs(f[0] - t[0]), abs(f[1] - t[1])) for t in self.toward)
+        best = min(d(f) for f in frontier)
+        return [f for f in frontier if d(f) <= best + self.TOWARD_SLACK]
+
+    def __init__(self, until=None, radius=None, skip=None, toward=None):
         self.until = until
         self.radius = radius
         self.skip = skip            # () -> stairs squares that don't count as seen (a dive's refused ones)
+        # (2.54.0, m64: known stairs no path reached -- explore the frontier nearest them first)
+        self.toward = [tuple(t) for t in toward] if toward else None
         self.name = "explore" + (f" until {until}" if until else "") + (f" radius {radius}" if radius else "")
         self.center = None
         self.fails = 0
@@ -216,7 +229,10 @@ class Explore(Goal):
                     (f"; not opened: {', '.join(rooms)} ('goal searchroom Y,X')" if rooms else ""))
         # (targets we failed to reach are dropped from the frontier, not avoided
         # as path squares: that once made walked corridors impassable)
-        if self.fails > 10 or not p.mover.go(frontier):
+        # (2.54.0, m64 at 750 ft: the '>' lay 2 squares past a room's unexplored east edge and the explore went
+        # elsewhere for 5 minutes. With stairs to reach, the frontier nearest them first)
+        near = self.toward_frontier(frontier)
+        if self.fails > 10 or not ((near and p.mover.go(near)) or p.mover.go(frontier)):
             if p.mover.forget_bump_walls() or (self.fails > 10 and p.unreachable and not self.retried):
                 # (go() already retried without bump walls; after many fails,
                 # forget what failed once: monsters in the way move on)
@@ -394,8 +410,12 @@ class Dive(Goal):
             return self._stairs(p, want)
         downs = [d for d in downs if (w.level_t, d) not in self.bad_stairs]
         if downs and not self.walking:
-            if p.mover.go(downs):
+            # (2.54.0, m64 at 750 ft: the '>' 2 squares past a room's unexplored east edge, "path 0" 15 times, the trip
+            # recalled after 5 minutes. As the flee does: no known path -> one through unexplored squares, replanned as
+            # they come into view; avoid zones and known traps as before)
+            if p.mover.go(downs, unknown=True):
                 self.walking = True
+                self.say_unknown(p, want, downs)
             elif p.zone_hold(downs, f"the '{want}' at " + ", ".join(f"{d[0]},{d[1]}" for d in downs[:3])):
                 return None           # (2.53.0: an avoid zone alone blocks them -- the Navigator decides)
             else:
@@ -452,12 +472,13 @@ class Dive(Goal):
         ups = [u for u in w.find(other) if (w.level_t, u) not in self.bad_stairs
                and scum_ok and (not climbing or w.dist(u) <= 8)]
         if ups and (self.explore is None or not isinstance(self.explore, Explore) or not p.mover.active):
-            if not p.mover.active and not p.mover.go(ups):
+            if not p.mover.active and not p.mover.go(ups, unknown=True):
                 # no path to any of them (it spun here re-planning 20x a second)
                 if p.zone_hold(ups, f"the '{other}' at " + ", ".join(f"{u[0]},{u[1]}" for u in ups[:3])):
                     return None       # (2.53.0: an avoid zone alone blocks them -- the Navigator decides)
                 self.mark_bad(w, ups)
             else:
+                self.say_unknown(p, other, ups)
                 st = p.mover.tick()
                 if st == "arrived" and w.standing_on == other:
                     return self._stairs(p, other)
@@ -466,8 +487,10 @@ class Dive(Goal):
                 if st == "stuck":
                     self.mark_bad(w, ups)
         if self.explore is None:
+            # (2.54.0: known stairs out of reach -- explore toward them first)
             self.explore = Search() if self.need_search else \
-                Explore(until="upstairs" if want == "<" else "stairs", skip=self.refused)
+                Explore(until="upstairs" if want == "<" else "stairs", skip=self.refused,
+                        toward=[d for d in w.find(want) if (w.level_t, d) not in self.bad_stairs] or None)
         r = self.explore.tick(p)
         if isinstance(self.explore, Search):
             if r and r[0] == "failed":
@@ -499,6 +522,14 @@ class Dive(Goal):
         if r:
             self.explore = None
         return None
+
+    def say_unknown(self, p, kind, tiles):
+        """News, once a level, when a stairs walk goes through unexplored squares (2.54.0)."""
+        w = p.w
+        if getattr(p.mover, "unknown", False) and self.__dict__.get("unknown_said") != w.level_t:
+            self.unknown_said = w.level_t
+            p.notify("tactic", f"no known path to the '{kind}' at {tiles[0][0]},{tiles[0][1]}: walking one through "
+                               "unexplored squares", news=True)
 
     def refused(self):
         """Stairs on this level the dive won't take (unreachable, or the way back to a level just fled)."""

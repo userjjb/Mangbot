@@ -412,8 +412,155 @@
    "known": false,
    "t": 1793806950.1,
    "mission": "m63"
+  },
+  {
+   "name": "a Scroll of Trap/Door Destruction",
+   "kind": "scroll of trap/door destruction",
+   "known": true,
+   "t": 1793809749.3,
+   "mission": "m64"
+  },
+  {
+   "name": "a Small Metal Shield [3]",
+   "kind": "small metal shield",
+   "known": false,
+   "t": 1793809784.8,
+   "mission": "m64"
+  },
+  {
+   "name": "a Lucerne Hammer (2d5)",
+   "kind": "lucerne hammer",
+   "known": false,
+   "t": 1793809964.4,
+   "mission": "m64"
+  },
+  {
+   "name": "a Potion of Healing",
+   "kind": "potion of healing",
+   "known": true,
+   "t": 1793810014.4,
+   "mission": "m64"
+  },
+  {
+   "name": "a Mace (2d4)",
+   "kind": "mace",
+   "known": false,
+   "t": 1793810182.1,
+   "mission": "m64"
+  },
+  {
+   "name": "a Scroll of Identify",
+   "kind": "scroll of identify",
+   "known": true,
+   "t": 1793810190.6,
+   "mission": "m64"
+  },
+  {
+   "name": "a Scroll of Object Detection",
+   "kind": "scroll of object detection",
+   "known": true,
+   "t": 1793810195.0,
+   "mission": "m64"
+  },
+  {
+   "name": "a Scroll of Remove Curse",
+   "kind": "scroll of remove curse",
+   "known": true,
+   "t": 1793810225.0,
+   "mission": "m64"
+  },
+  {
+   "name": "a Grey Mushroom",
+   "kind": "grey mushroom",
+   "known": false,
+   "t": 1793810718.2,
+   "mission": "m64"
+  },
+  {
+   "name": "a Scroll of Holy Chant",
+   "kind": "scroll of holy chant",
+   "known": true,
+   "t": 1793810744.0,
+   "mission": "m64"
+  },
+  {
+   "name": "a Pungent Potion",
+   "kind": "pungent potion",
+   "known": false,
+   "t": 1793810757.0,
+   "mission": "m64"
+  },
+  {
+   "name": "2 Grey Mushrooms",
+   "kind": "grey mushroom",
+   "known": false,
+   "t": 1793810759.3,
+   "mission": "m64"
+  },
+  {
+   "name": "4 Rations of Food",
+   "kind": "ration of food",
+   "known": true,
+   "t": 1793810760.9,
+   "mission": "m64"
+  },
+  {
+   "name": "a Mushroom of Cure Paranoia",
+   "kind": "mushroom of cure paranoia",
+   "known": true,
+   "t": 1793811176.2,
+   "mission": "m64"
+  },
+  {
+   "name": "a Potion of Neutralize Poison",
+   "kind": "potion of neutralize poison",
+   "known": true,
+   "t": 1793811177.1,
+   "mission": "m64"
+  },
+  {
+   "name": "a Pair of Soft Leather Boots [2]",
+   "kind": "pair of soft leather boots",
+   "known": false,
+   "t": 1793811257.0,
+   "mission": "m64"
+  },
+  {
+   "name": "a Rod of Light",
+   "kind": "rod of light",
+   "known": true,
+   "t": 1793811342.1,
+   "mission": "m64"
+  },
+  {
+   "name": "2 Scrolls of Holy Chant",
+   "kind": "scroll of holy chant",
+   "known": true,
+   "t": 1793811369.2,
+   "mission": "m64"
+  },
+  {
+   "name": "a Ring of Protection",
+   "kind": "protection",
+   "known": false,
+   "t": 1793811475.3,
+   "mission": "m64"
+  },
+  {
+   "name": "5 Rations of Food",
+   "kind": "ration of food",
+   "known": true,
+   "t": 1793811488.8,
+   "mission": "m64"
+  },
+  {
+   "name": "a Green Mushroom",
+   "kind": "green mushroom",
+   "known": false,
+   "t": 1793811614.4,
+   "mission": "m64"
   }
  ],
- "trip_t0": 1793806687.6,
+ "trip_t0": 1793810512.8,
  "credits": {}
 }

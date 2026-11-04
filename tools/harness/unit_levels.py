@@ -358,7 +358,7 @@ def _m63_level():
     p.structs = {(7.0, (5, 115)): {"t": 0.0, "lit": False, "kind": "inner room", "sure": True}}
     p.avoid_zones = {7.0: [(5, 108, 6), (5, 115, 6), (5, 122, 6)]}     # (structures_tick's three discs)
     p.quiet_spot = lambda reach=30: None
-    p.mover = type("M", (), {"active": False, "go": lambda self, t: False, "tick": lambda self: "idle",
+    p.mover = type("M", (), {"active": False, "go": lambda self, t, **k: False, "tick": lambda self: "idle",
                              "stop": lambda self: None})()
     p.avoid_tick()
     return p
@@ -421,3 +421,74 @@ def dive_holds_when_a_zone_blocks_its_stairs():
     ok = results == [None] * 3 and p.zone_wait and not p.zone_wait["end"] and not g.bad_stairs and \
         [k for k, _ in p.notes] == ["zone_blocks"]
     return ok, f"ticks {results}; hold {p.zone_wait}; bad stairs {g.bad_stairs}; notes {[k for k, _ in p.notes]}"
+
+
+# m64's 750 ft level (runs/pilot/dive04/levels/20261104-112824-750ft.txt, rows 17-29 from column 99): the '>' at 27,130
+# (found by the Rod of Door/Stair Location) two squares past the room's unexplored east edge (x 128-129 unknown)
+_M64_ROOMS = [".#%#%%%%%%####......#",
+              ".#           #......#",
+              ".#          ##......#",
+              ".#          #''######",
+              ".%          #%...'.",
+              "%            *#..##",
+              "              %..#",
+              "            %#%'+########''##",
+              "            %...............#",
+              "*#%#%%#######...............#",
+              "......................-......  >",
+              ".............................",
+              "#############################"]
+
+
+@case
+def dive_walks_to_stairs_past_unexplored_squares():
+    """2.54.0 (m64 11:32-11:37 at 750 ft): the '>' lay 2 squares past a room's unexplored east edge; every Dive move
+    found "path 0" (15 times), the explore went elsewhere and the trip recalled after 5 minutes. Now, as the flee does,
+    the stairs walk plans through unexplored squares when no known path exists (`go(..., unknown=True)`), and the
+    dive's explore tries the frontier nearest the stairs first."""
+    import mover
+    p = pilot(hp=388)
+    w = p.w
+    w.memory = {(17 + y, 99 + x): ch for y, row in enumerate(_M64_ROOMS) for x, ch in enumerate(row) if ch != " "}
+    w.pos, w.level_t, w.last_hit_t, w.monsters, w.standing_on = (28, 105), 9.0, -99.0, [], "."
+    w.depth, w.depth_ft, w.arrive_pos = 15, 750, (28, 105)
+    w.find = lambda g: [q for q, ch in w.memory.items() if ch in g]
+    p.avoid_tick()
+    known = mover.plan(w, [(27, 130)])
+    through = mover.plan(w, [(27, 130)], unknown_cost=6)
+    calls = []
+
+    class M:
+        active, path, unknown = False, [], False
+
+        def go(self, goals, avoid=(), unknown=False):
+            calls.append(unknown)
+            self.path = mover.plan(w, goals) or []
+            self.unknown = False
+            if not self.path and unknown:
+                self.path, self.unknown = mover.plan(w, goals, unknown_cost=6) or [], True
+            self.active = bool(self.path)
+            return self.active
+
+        def tick(self):
+            return "moving"
+
+        def stop(self):
+            self.active = False
+    p.mover = M()
+    p.item_hold_until, p.fled_from, p.kept, p.scummed = 0, None, set(), set()
+    p.orders["max_depth"] = 800
+    p.loot_step = lambda st: False
+    p.loot_beside = lambda: False
+    p.pillared = lambda: False
+    g = P.Dive(800)
+    g.start_ft, g.level_seen, g.probed = 750, w.level_t, (w.level_t, w.pos)
+    r = g.tick(p)
+    said = [d for k, d in p.notes if k == "tactic" and "unexplored" in str(d)]
+    near = P.Explore(toward=[(27, 130)]).toward_frontier(p.frontier())
+    ok = known is None and through and through[-1] == (27, 130) and any(q[1] in (128, 129) for q in through) and \
+        r is None and \
+        g.walking and calls == [True] and p.mover.unknown and said and near and \
+        all(max(abs(f[0] - 27), abs(f[1] - 130)) <= 6 for f in near)
+    return ok, (f"known path {known}; through unexplored {len(through or [])} steps; dive walking {g.walking} "
+                f"(go unknown={calls}); news {said}; explore toward the '>': {sorted(near)}")

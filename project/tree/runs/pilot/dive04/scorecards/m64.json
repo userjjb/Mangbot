@@ -1,0 +1,212 @@
+{
+ "label": "m64",
+ "nav_model": "sonnet",
+ "effort": "medium",
+ "report": "compact",
+ "start": "2026-11-04 11:25",
+ "end": "2026-11-04 12:06",
+ "minutes": 41.0,
+ "notes": "third mission of session 12, on 2.53.0",
+ "tokens": {
+  "turns": 19,
+  "input": 38,
+  "output": 5122,
+  "cache_read": 647981,
+  "cache_write": 45766,
+  "write_5m": 45766,
+  "write_1h": 0,
+  "model": "claude-sonnet-5-5",
+  "final_usage_turns": 19,
+  "usd": 0.231,
+  "transcript": "agent-a5326b6cd3f23ac1e.jsonl"
+ },
+ "defs": "2026-11-01 (2.44.0)",
+ "estimator": {
+  "n": 6,
+  "compared": 4,
+  "agree": 2,
+  "in_time_turn": 6,
+  "before_next_act": 6,
+  "skipped": 0,
+  "compute_max_s": 0.217,
+  "disagreements": [
+   [
+    "stairs",
+    "rules",
+    "rules (no option clearly better)"
+   ],
+   [
+    "stairs",
+    "rules",
+    "rules (no option clearly better)"
+   ]
+  ],
+  "hard_n": 2,
+  "hard_compared": 2,
+  "hard_agree": 1,
+  "hard_choices": {
+   "rules": 1
+  }
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   29,
+   29
+  ],
+  "exp_gain": 2334,
+  "gold": [
+   29389,
+   30000
+  ],
+  "gold_change": 611,
+  "max_depth_ft": 800,
+  "stored_value": 0,
+  "stash_debits": 0,
+  "gold_change_adj": 611
+ },
+ "B": {
+  "dungeon_min": 29.9,
+  "town_min": 10.7,
+  "exp_per_dmin": 78.0,
+  "levels_per_dhour": 0.17,
+  "gold_found": 1540,
+  "gold_found_per_dmin": 51.5,
+  "time_budget_min": {
+   "exploring": 12.3,
+   "fighting": 10.2,
+   "town_other": 8.9,
+   "travel_dive": 6.7,
+   "town_no_goal": 0.9,
+   "recall_wait": 0.8,
+   "town_idle_end": 0.5,
+   "escaping": 0.3,
+   "no_goal_dungeon": 0.1,
+   "stuck_looping": 0.0
+  },
+  "navigator_wait_pct": 2,
+  "gold_change_per_dmin": 20.4,
+  "gold_change_adj_per_dmin": 20.4
+ },
+ "C": {
+  "lowest_hp": [
+   250,
+   388,
+   64,
+   "11:36:41"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 1,
+  "emergency_alerts": 1,
+  "phase": 1,
+  "wor_escape": 0,
+  "wor_travel": 4,
+  "stairs_flee": 2,
+  "teleport": 1,
+  "cures_quaffed": 6,
+  "escape_records": 8,
+  "recalls_landed": 4
+ },
+ "D": {
+  "sale_shortfall": 3453,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 0,
+  "loot_abandoned_est": 2468,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 0,
+  "total": 5921,
+  "sales": 14,
+  "sales_valued": 5,
+  "worst_sales": [
+   {
+    "item": "a Potion of Strength",
+    "got": 9,
+    "fair": 3440,
+    "forced": false
+   },
+   {
+    "item": "a Mushroom of Cure Confusion",
+    "got": 2,
+    "fair": 24,
+    "forced": false
+   }
+  ],
+  "left_behind": [
+   "Grey Mushroom (x2)",
+   "Furry Mushroom",
+   "Arrows (1d4) (x21)",
+   "Awl-Pike (1d8)",
+   "Short Sword (1d7)",
+   "Small Metal Shield [3]",
+   "Wooden Torch (with 881 turns of light)",
+   "Ring of Searching",
+   "Staff of Door/Stair Location",
+   "Staff of Sleep Monsters"
+  ],
+  "irreplaceable": []
+ },
+ "values_aware": "kinds known as logged",
+ "E": {
+  "reports": 13,
+  "commands": 15,
+  "commands_per_min": 0.4,
+  "report_to_action_med_s": 4.9,
+  "report_to_action_p90_s": 4.9,
+  "reports_without_command_pct": 69,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 1,
+  "report_chars": 32494,
+  "order_report_age_med_s": 4.9,
+  "order_report_age_p90_s": 46.4
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 82,
+  "perception_gaps": 4,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 914,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Black orc": 140,
+  "Uruk": 52,
+  "Giant fruit fly": 38,
+  "Half-orc": 30,
+  "Mirkwood spider": 20,
+  "Light hound": 12,
+  "Orc captain": 10,
+  "Novice ranger": 9,
+  "unseen": 56,
+  "unattributed": 36
+ },
+ "damage_hp_lost": 440,
+ "alerts": {
+  "tactic": 31,
+  "rule": 3,
+  "plan_done": 2,
+  "review": 1,
+  "goal_done": 1,
+  "queued": 1,
+  "stat_drained": 1
+ },
+ "plan_news": {
+  "goal_done": 13,
+  "unseen_attacker": 13,
+  "plan": 12,
+  "interesting_item": 8,
+  "band": 4,
+  "breeders": 4,
+  "stuck": 3,
+  "drainer": 2,
+  "thief": 2,
+  "fight_going_badly": 1,
+  "structure": 1,
+  "emergency": 1
+ }
+}

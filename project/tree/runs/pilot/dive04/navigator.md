@@ -727,3 +727,6 @@
 - 10:20:29 town 100% | trip 1 ended 12min: couldn't leave 800ft level in 5 min, +706 XP; gold carried 25.9k (bank didn't take it, house full of stash?) | trip 2 700-800 minutes>22 | time budget
 - 10:23:42 town 100% | Architect resumed; WoR shows 1 | plan town first (restock WoR), wait goal_done, then trip until time>10:44
 - 10:37:58 town 100% | town 10:38, 3 WoR | short trip 3 until time>10:45 | 7 min left, ~45 XP/min
+- 11:26:04 town 100% | Mission start, town, 300g+29k banked | plan town buy WoR:3 + kit, then one long trip 700-800 until cures<4 or phase<5 or minutes>33, react thieves kill | one long trip beats two per notes
+- 11:41:00 town 100% | Trip1 ended 11:38 (couldn't leave 750 in 5 min, trap-laden level; dart drained STR) | wait for town to finish with Restore STR, then trip2 700-800 minutes>22 | time budget
+- 12:05:33 town 100% | Mission end, in town idle 12:05 | stopped; XP +2334 gold +1540 in 40 min | Potion of Strength learned then SOLD for 9 gold by policy (should be drunk)

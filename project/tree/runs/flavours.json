@@ -179,10 +179,20 @@
   "kind": "Staff of Sleep Monsters",
   "source": "Advisor L_items (Dive03 09-25 20:56:07)"
  },
+ "Green Mushroom": {
+  "junk": false,
+  "kind": "Mushroom of Cure Confusion",
+  "source": "sold in a shop"
+ },
  "Green Potion": {
   "junk": true,
   "kind": "Potion of Slowness",
   "source": "Advisor L_items (Dive04 09-29 22:46:20)"
+ },
+ "Grey Mushroom": {
+  "junk": false,
+  "kind": "Mushroom of Hallucination",
+  "source": "sold in a shop"
  },
  "Hickory Staff": {
   "junk": false,
@@ -318,6 +328,11 @@
   "junk": true,
   "kind": "Potion of Weakness",
   "source": "Advisor L_items (Dive04 10-07 09:14:06)"
+ },
+ "Pungent Potion": {
+  "junk": false,
+  "kind": "Potion of Strength",
+  "source": "sold in a shop"
  },
  "Quartz Ring": {
   "junk": false,

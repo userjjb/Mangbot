@@ -77,6 +77,7 @@ ORDER = """
     avoid_zone_blocking_the_stairs_asks_the_navigator dive_holds_when_a_zone_blocks_its_stairs
     plan_sent_during_plan_town_is_queued no_food_alert_on_the_crossing_tick
     refused_drops_end_the_stash_step a_permanent_light_beats_the_lantern
+    dive_walks_to_stairs_past_unexplored_squares
 """.split()
 
 

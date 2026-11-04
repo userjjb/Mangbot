@@ -27,6 +27,15 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.54.0 -- 2026-11-04 (session 12, a play fix from m64)
+No missions yet on it. **Play changes:**
+- **Known stairs reachable only through unexplored squares:** m64 at 750 ft, the `>` (found by the Rod of Door/Stair
+  Location) lay 2 squares past a room's unexplored east edge; every Dive walk found "path 0" (15 times), the explore went
+  elsewhere, and after 5 minutes the trip recalled. The Dive's stairs walks (the trip's leave and climb legs too) now
+  plan through unexplored squares when no known path exists, as the flee does (`mover.go(..., unknown=True)`,
+  replanned as squares come into view; traps and avoid zones as before), with news once a level; and the dive's
+  explore, with the wanted stairs known but out of reach, tries the frontier nearest them first (`Explore(toward=)`).
+
 ## 2.53.0 -- 2026-11-04 (session 12, the user's decisions after m63)
 No missions yet on it. **Play changes:**
 - **An avoid zone blocking the way: the Navigator decides** (the user: "allow it to decide if it should path through

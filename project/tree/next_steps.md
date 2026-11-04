@@ -456,5 +456,11 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   started in town took its first dungeon level as "kept" -> stairs back held 300 s). Open after m63 -> 2.53.0 (being
   built): the avoid zone over an inner room's ring blocks the only `<` -> the Navigator decides (the user); a plan
   sent during plan town is queued (the user); the false food alert at a hunger crossing.
+- **2.53.0** (the user after m63 + a live find): an avoid zone blocking the needed stairs -> the Pilot holds and the
+  Navigator decides (`zone_blocks` alert; `avoid pass` = cross the ring, never the room; 90 s, else recall); a plan
+  sent during plan town is queued; plan town's goal_done says `BANK: N gold still carried` when the bank step failed;
+  no false food alert at a hunger crossing; **artifacts are never stashed** (MAngband forbids dropping a true
+  artifact above its depth: object2.c inven_drop_okay -- plan town looped ~600 drops of m63's Phial); drops give up
+  after 3 failures; **a permanent light beats a fuelled one** (Dive04 now wears the Phial; lantern and flasks sold).
 - **Lessons:** `restart.sh` loads the working tree; hand-walking into the house picks up the bank pile (the step-in
   square) -- never do it; `goal goto` queued behind raw steps can path back through the house.
