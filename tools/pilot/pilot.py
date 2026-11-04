@@ -240,6 +240,8 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.artifact_told = set()            # artifacts told "kept in the pack: can't be stored" (town_rule)
         self.gear_events, self.gear_msg_t, self.gear_act_t = [], 0.0, 0.0   # equipment damage (gear_damage_tick, 2.57.0)
         self.gear_plus = {}                   # worn pieces' plusses before a hit (gear_damage_cost)
+        self.band_pending = None              # a band waiting for the estimator's word (band_resolve, 2.58.0)
+        self.band_result = None               # (wall, the estimator's last band answer) from shadow_results
         self.effect_failures = 0
         self.redraw_t, self.redraw_level = 0.0, None
         self.factor_logged, self.rate_logged, self.factor_log_t = 1.0, None, 0.0

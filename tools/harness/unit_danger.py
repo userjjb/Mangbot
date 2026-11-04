@@ -186,8 +186,10 @@ def flee_at_max_depth_teleports():
 
 @case
 def speed_at_hard_fight_start_and_kit():
-    """The user (10-25), on the Advisor's replays: a carried Potion of Speed is quaffed at the start of a hard fight
-    (berserk_tick's test), not only in an emergency; kits B/C keep 2, bought at the Black Market under a 600-gold cap (450 until 10-26)."""
+    """2.58.0 (the user, on the Advisor's estimator review: no safety gain from Speed at a hard fight's start, ~380
+    gold each): no Potion of Speed at the start of a hard fight; one when the fight is going badly -- a monster
+    adjacent and HP under think_hp -- not when hasted. Kits B/C keep 2, bought at the Black Market under a 600-gold
+    cap (450 until 10-26)."""
     def make(mons, pack):
         p = pilot(hp=300, pack=pack, monsters=mons)
         p.w.in_dungeon = True
@@ -204,7 +206,11 @@ def speed_at_hard_fight_start_and_kit():
     b.speed_start_tick(P.gnow())
     c = make([(20, 21, strong)], speed)
     c.buff_on = lambda k: k == "fast"
+    c.w.hp = [150, 300]
     c.speed_start_tick(P.gnow())
+    losing = make([(20, 21, strong)], speed)
+    losing.w.hp = [150, 300]
+    losing.speed_start_tick(P.gnow())
     # the kit: Speed at 383 bought; at 3000 over the cap
     k = pilot(pack=[], gold=20000)
     k.w.depth, k.w.depth_ft, k.w.in_dungeon = 0, 0, False
@@ -214,9 +220,10 @@ def speed_at_hard_fight_start_and_kit():
     buys2, short2 = k.town_shopping("B", ())
     sp = [b_ for b_ in buys if b_[1] == "Potion of Speed"]
     sp2 = [b_ for b_ in buys2 if b_[1] == "Potion of Speed"]
-    ok = (len(a.cmds) == 1 and "at the start" in a.cmds[0] and b.cmds == [] and c.cmds == []
+    ok = (a.cmds == [] and len(losing.cmds) == 1 and "losing" in losing.cmds[0] and b.cmds == [] and c.cmds == []
           and sp and sp[0][2] == 7 and sp[0][3] == 2 and not sp2 and any("over 600" in x[0] for x in short2))
-    return ok, f"{strong.name}: {a.cmds}; a Cave orc: {b.cmds}; hasted: {c.cmds}; kit at 383: {sp}; at 3000: {sp2}"
+    return ok, f"{strong.name} at the start: {a.cmds}; losing: {losing.cmds}; a Cave orc: {b.cmds}; hasted: {c.cmds}; " \
+               f"kit at 383: {sp}; at 3000: {sp2}"
 
 
 @case
@@ -588,7 +595,8 @@ def equipment_damage_is_danger():
     """2.57.0 (the user after m65: a Water hound pack breathed acid 31 times -- 26 from out of view -- and 21 "Your X is
     damaged!" took ~5,000 gold of armour plusses while resist acid kept HP up): two equipment-damage events within
     10 s are danger. A breather in view that dies quickly is killed (Hunt); an unseen one ("It breathes acid.") means
-    leaving -- the stairs within 20 (Flee), else Teleportation, else Word of Recall; one damage event alone, nothing.
+    leaving -- 2.58.0: the stairs only when adjacent, else Teleportation at once, else Word of Recall (the Advisor:
+    the walk costs ~5 more acid hits); one damage event alone, nothing.
     The `gear_damage` alert names what, by what and the cost to put it back: each +8 -> +7 hit costs the town kit's
     read at +7 (~190 / 0.5 = ~380), so the two hits ~760."""
     hound = (22, 23, BYNAME["water hound"])
@@ -598,9 +606,13 @@ def equipment_damage_is_danger():
     hunt = seen.goal.describe() if seen.goal else None
     alert = next((d for k, d in seen.notes if k == "gear_damage"), "")
     dark, now = _acid(["It breathes acid.", "Your Metal Cap is damaged!", "It breathes acid.",
-                       "Your Pair of Hard Leather Boots of Stability is damaged!"], stairs=[(30, 30)])
+                       "Your Pair of Hard Leather Boots of Stability is damaged!"], stairs=[(20, 21)])
     b = dark.gear_damage_tick(now)
     flee = type(dark.goal).__name__ if dark.goal else None
+    # (2.58.0: stairs 10 away and a Scroll of Teleportation: teleport at once, never the walk)
+    walk, now = _acid(["It breathes acid.", "Your Metal Cap is damaged!", "It breathes acid.",
+                       "Your Shadow Cloak is damaged!"], stairs=[(30, 30)], pack=[("2 Scrolls of Teleportation", 70)])
+    t = walk.gear_damage_tick(now)
     far, now = _acid(["It breathes acid.", "Your Metal Cap is damaged!", "It breathes acid.",
                       "Your Shadow Cloak is damaged!"], pack=[("2 Scrolls of Teleportation", 70)])
     c = far.gear_damage_tick(now)
@@ -610,6 +622,7 @@ def equipment_damage_is_danger():
     cost = int(re.search(r"~(\d+) gold to put back", alert).group(1)) if "gold to put back" in alert else 0
     ok = a and hunt and "Water hound" in hunt and "Shadow Cloak" in alert and 700 <= cost <= 820 and \
         b and flee == "Flee" and c and far.sent and far.sent[0].startswith("custom r item=0") and not d and \
+        t and walk.goal is None and walk.sent and walk.sent[0].startswith("custom r item=0") and \
         kind == "acid damages armour"
     return ok, (f"seen pack: {a} -> {hunt}, alert {alert!r}; unseen with stairs: {b} -> {flee}; unseen, no stairs: "
                 f"{c} {far.sent}; one hit: {d}; Water hound: {kind}")

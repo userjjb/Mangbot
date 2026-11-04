@@ -355,13 +355,21 @@ recall, the awake share from `look` answers (`p_awake`, `asleep_seen`), food fro
   `shadow: started|skipped|off`.
 - Every tick, `shadow_results()` drains the queue and writes an **`estimator`** record to `decisions.jsonl`: `trigger,
   options, xp_per_gold, rules, rules_detail, choice, why, agree, actual_row, compute_s, turn_s, in_time_turn,
-  before_next_act, next_act_after_s, team, p, inv, table` (top 6 rows), `error, policy_version, max_adj, arrivals`.
+  before_next_act, next_act_after_s, team, p, inv, table` (top 6 rows, and -- 2.58.0, `shadow.log_rows` -- always
+  the chosen row, the rules row and the actual action's row), `error, policy_version, max_adj, arrivals`. The
+  snapshot's `p` carries (2.58.0, options_sim 11-04q) `acid_gold` (1/6 of the six armour slots' one-point acid repair
+  cost: the read at the lowered plus, 0 for an empty, IGNORE_ACID or ac+to_a <= 0 slot; `gear_damage_gold`) and
+  `disen_gold` (`disen_loss`); geareval's `sim_player` passes the same from the Pilot's `Character`. The team's
+  `awake` comes from the look answers (`awake_of`: the square's own answer, else an awake answer for the race, or an
+  asleep one whose square the race has left).
 - **agree** (`shadow_agree`): true when the estimator chose what the Pilot did; when it chose `rules` and the table has
-  a row for the Pilot's actual action, that row must be safe and within max(10 XP, 2 SE) of the best safe row (the
-  estimator's `rules` copy can act differently from the Pilot). None when no monster was known.
+  a row for the Pilot's actual action, that row must be safe and not beaten by the best safe row by more than the
+  estimator's own threshold, max(`min_gain`, 2 SE) with `min_gain` = max(50, 48 x `xp_rate_per_block`) (2.58.0; was
+  max(10 XP, 2 SE)) -- "agree" means the estimator wouldn't change it. None when no monster was known.
 - **in time**: `in_time_turn` = compute time <= one player turn (0.625 s / time factor / speed energy);
   `before_next_act` = the answer arrived before the Pilot's next action.
-- **It never acts.** No code reads `choice` to change behaviour. The records feed `observe/scorecard.py` (the
+- **It acts in one place** (2.58.0, the user): the band decision (`band_verdict`, pilot-combat.md `watch_band`).
+  Elsewhere no code reads `choice` to change behaviour. The records feed `observe/scorecard.py` (the
   `est` / `estHF` agreement columns and the "H estimator" line), the Advisor's replay studies, and `harness/unit.py`
   (`shadow_estimator_logs`, in `unit_orders.py`). `why` skips `estimator` records.
 - Emergency attention records also carry a 21x21 map window and the monsters (`map21`, `map_at`, `mons`) for the

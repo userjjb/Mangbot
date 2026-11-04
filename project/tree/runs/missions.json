@@ -3217,5 +3217,16 @@
    "usd": 0.278,
    "transcript": "agent-ab8a5fcfea44549ab.jsonl"
   }
+ },
+ {
+  "label": "m66-aborted",
+  "nick": "dive04",
+  "start": "2026-11-04 17:27",
+  "end": "2026-11-04 17:27",
+  "navigator": "sonnet",
+  "effort": "medium",
+  "report": "compact",
+  "notes": "fifth mission of session 12, on 2.57.0 | aborted at 17:28 before the Navigator acted (the user: build 2.58.0 first)",
+  "version": "2.57.0"
  }
 ]

@@ -82,6 +82,7 @@ ORDER = """
     felt_good_gear_identified_average_sold
     caps_from_the_normal_price_not_a_sale navigator_clarity_losses_and_plan_town
     equipment_damage_is_danger
+    bands_decided_by_the_estimator gear_gold_for_the_estimator
 """.split()
 
 

@@ -569,6 +569,12 @@ def sim_player(d, ch, depth):
     p = dict(hp=d["mhp"], mhp=d["mhp"], ac=d["ac"], clvl=ch.clvl, depth=depth, stairs=None,
              free_action="FREE_ACT" in d["flags"], save=S.SAVE, max_adj=3, blows=d["blows"], dice=d["dice"],
              tohit=d["tohit"], todam=d["todam"], inv=inv)
+    # (options_sim 11-04q, 2.58.0: gold an acid hit / a disenchantment costs the worn gear; the Pilot's Character
+    # carries them -- 0 without)
+    if getattr(ch, "acid_gold", 0):
+        p["acid_gold"] = ch.acid_gold
+    if getattr(ch, "disen_gold", 0):
+        p["disen_gold"] = ch.disen_gold
     for f in d["flags"]:
         if f in SIM_RES:
             p[SIM_RES[f]] = True

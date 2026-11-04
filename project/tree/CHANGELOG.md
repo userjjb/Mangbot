@@ -27,6 +27,21 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.58.0 -- 2026-11-04 (session 12, the user's decisions on the Advisor's estimator review)
+No missions yet on it. **Play changes:**
+- **Bands: the estimator decides.** A band with no danger rule firing goes to the Advisor's estimator (options_sim, in
+  the shadow worker thread, never in the tick: median 0.14 s, max 0.56 s live); the decision waits up to 2 s. When it
+  rates fighting safe and better than the band rule's leave by more than its own threshold (max(50, 48 x the play rate
+  per block, 2 SE)), the Pilot fights ("band: fighting (the estimator: fight beats leaving by N XP)" news); otherwise
+  -- a leave choice, a thin margin, no answer in time, an error, a danger rule -- the `band` alert as before.
+- **Speed only when losing:** no Potion of Speed at a hard fight's start (no safety gain in the model, ~380 gold
+  each); one when a fight goes badly (a monster adjacent, HP under think_hp) and in emergencies.
+- **Gear-damage leave: teleport first** against a breather that can follow (or an unseen one): Teleportation at once,
+  then Word of Recall; the stairs only when adjacent (the Advisor: the walk costs ~5 more acid hits).
+- **Estimator tooling:** the shadow snapshot and geareval's scenarios pass `acid_gold` and `disen_gold` (options_sim
+  11-04q); `shadow_agree` uses the estimator's threshold; the log keeps the chosen, rules and actual rows beyond
+  table[:6]; the team's `awake` comes from the look answers (`awake_of`).
+
 ## 2.57.0 -- 2026-11-04 (session 12, the user's decision after m65)
 No missions yet on it. **Play changes:**
 - **Equipment damage is a cost the Pilot acts on** (m65 at 750 ft: a Water hound pack breathed acid 31 times, 26 from

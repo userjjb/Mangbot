@@ -36,8 +36,9 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
    Scrolls of Identify for them; a stat-gain potion is drunk, never sold), and buys in priority order: Word of Recall to 2 (kits B and C then keep 3), the supply gate's minimums,
    Restore for a drained STR/DEX/CON, the kit, then your list (`NAME:N` means *have* N in all, not N more). From
    500 ft down the kit keeps **3 Heroism** (the fear cure) and **2 Potions of Speed** (Black Market, at most 600 each; often
-   out of stock): the Pilot drinks Speed **at the start of a hard fight** (a unique or a monster near your level
-   adjacent), not only in emergencies. **Restore potions, Wands of Stone to Mud, the best spare for each worn slot (an
+   out of stock): the Pilot drinks Speed **when a fight goes badly** (HP under `think_hp` with a monster adjacent; since
+   2.58.0 no longer at a hard fight's start) and in emergencies. A band no longer always means leaving: the estimator
+   decides, and "band: fighting (the estimator: ...)" news means the Pilot stays and fights it. **Restore potions, Wands of Stone to Mud, the best spare for each worn slot (an
    ego/artifact the shops can't sell, e.g. a second Westernesse weapon) and the `store` list stay in the stash** (the
    house, in the wilderness tile north of town; when it's full, inside the tavern room) during a mission, never sold:
    `plan town` leaves them there as its last step, fetches the right Restore when STR/DEX/CON is drained (before buying

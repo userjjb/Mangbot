@@ -7,7 +7,7 @@ System docs (Architect, 10-29): `../docs/README.md`, `../docs/CONDENSED.md`; our
 ## Current state (2026-10-29)
 
 **No study running.** The main line since 10-25 is the **danger-time option estimator**, `data/estimator/options_sim.py`
-(POLICY_VERSION `pilot-escape-2026-11-03p`, 11-03: escape walk to stairs continues after its emergency, mirroring 2.45.0). **It is a LIVE interface:** the Pilot imports it in shadow mode (`tools/pilot/shadow.py`:
+(POLICY_VERSION `pilot-escape-2026-11-04q`: 11-03p escape walk continues after its emergency (2.45.0); 11-04q optional p["acid_gold"]/p["disen_gold"] gear-damage costs). **It is a LIVE interface:** the Pilot imports it in shadow mode (`tools/pilot/shadow.py`:
 emergency, hard_fight and band triggers -> `estimator` records in decisions.jsonl) and the gear evaluator imports it plus
 `scenarios.py` and reads the 21 replay files (`studies/2026-10-25-replay/replays/`). Rules: edit only via a copy + atomic `mv`,
 bump POLICY_VERSION, keep `choose()`/`rollout()` signatures, memo the Architect; `base_policy` must mirror the Pilot's escape rules
@@ -17,7 +17,7 @@ Pilot version 2.43.0 (10-31: 2.41 rations/oil valued by need, 2.42 mushrooms by 
 
 **Session 5 (10-29..11-03):** no missions (Architect sessions 10-11 = refactor, versions 2.38-2.49; merged to master 11-03); answered memos (commands_per_min, rulebook B18 fixes, D8/D9/D14 merges + D8 uniques rule, Khim/A2 criterion, escape walk mirrored in 11-03p, hunt check should use derive() totals). Missions resume in Architect session 12.
 
-**TODO (the user, 11-03: do it with the first real missions, not before) -- band-trigger XP ranking (set-piece A2L 11-03 07:10, 11-03p live):** band trigger, orc band + Lugdush at 600 ft: estimator chose `phase` (+201 XP, 206 vs fight 16 vs recall+phase 122 within 30 blocks). Phase out-earning fight looks like a horizon/arrival-order artefact (who reaches melee within 30 blocks) -- check before trusting band-trigger XP rankings.
+**11-04: missions resumed (m61-m65, 2.48-2.57). Estimator review done: `../memos/2026-11-04-estimator-review.md` (study `studies/2026-11-04-estimator-review/`); A2L TODO resolved (crowd-teleport in 'fight', not horizon). Waiting: user decisions on bands (estimator would fight 6/7, ~1,180 XP) and Speed at hard-fight start; Architect: pass acid_gold/disen_gold, shadow_agree threshold, log full table, fill awake.**
 
 **Next:** (1) review the `estimator` records of the next missions — three eras: before 10-29 08:35 (understated to-hit/to-dam),
 08:35-12:42 (no slays), from 12:42 (complete); compare agree rates per era and trigger; (2) re-check the wake calibration with
@@ -78,7 +78,7 @@ Architect builds everything else.
 5f. 11-01: replied D8/D9/D14 (to_architect/2026-11-01-d-merges.md): damage attribution = damage_mix timing + names; card values = itemvalue + pay_cut as of then; supplies kind with what/level fields. D14 done 11-01 (field is `supply`, not `what`); response.py updated. state.jsonl status now carries `aware`; shopmath.pay_cut(tval, chr, owners_seen). Released 2.44.0 (11-02, all 44 cards regenerated); D8 widened to race names without "The" (to_architect/2026-11-02-d8-uniques.md), in 2.44.1: m25 unattributed 398 -> 9 of 628 HP.
 5g. 11-02: Architect session 10 ended at 2.44.7 (pilot.py split into modules, same method names). Session 11 = more splits incl. combat.py (escape etc. stay on Pilot; memo if the escape ORDER changes); missions resume in session 12 -> then do the estimator-era review. options_sim only cites pilot.py in the POLICY_VERSION comment: point it at combat.py at the next policy bump.
 5h. 11-02: combat.py split (2.44.9, verbatim). Khim A2K: estimator agrees with fighting (memo to_architect/2026-11-02-khim.md); fight_sim and options_sim agree on the plain duel (138 vs 148 mean); suggested rewriting A2K criterion; UN_BONUS disenchant cost unmodelled. A2* criterion adopted 2.44.10 (A2K PASS, lowest 348/388). 2.44.12 (11-03): escape()/reflexes() = step lists CombatMixin.ESCAPE_STEPS (15) / REFLEX_STEPS (23), byte-identical; a change to ESCAPE_STEPS = order change (Architect memos). Dead branch "take stairs on arrival when nothing in view": base_policy ends the episode on arrival (escaped=stairs) -- same safety, no change needed.
-5i. **TODO (user, 11-03):** check the band-trigger XP ranking artefact (A2L record 11-03 07:10: phase 206 XP > fight 16 within 30 blocks) together with the first real missions' estimator review.
+5i. ~~TODO (user, 11-03)~~ done 11-04 (not an artefact): check the band-trigger XP ranking (A2L record 11-03 07:10: phase 206 XP > fight 16 within 30 blocks) together with the first real missions' estimator review.
 5j. 2.45.1-2.45.2 (11-03, user decisions): summoner hold no longer pauses later reflexes (engage skipped); hunt check refuses a disenchanter when expected enchantment loss > drop value + XP at xp_per_gold (Khim allowed ~300 vs ~3,160); hunger split (Hungry at a safe moment, Weak eats unless adjacent). options_sim has no eating action -> nothing to mirror.
 5k. 2.45.3 (11-03, the user's idea): a disenchanted plus = re-enchant scroll cost (Khim ~2,000 g vs ~3,160, allowed). My memo to_architect/2026-11-03-disen-value.md: cap by what the Pilot buys (armour up to ENCHANT_MIN_CHANCE 0.5 only; Pilot never buys Enchant Weapon) -- the user chose option 2: 2.46.0 adopted it (town kit now also buys Enchant Weapon to the 50% stop, up to +8; lost plus = scroll cost where the kit would rebuy, else resale value; Khim ~480-880 g). Optional later: a gold-per-damage figure for the DISEN_IN_PLAY hook (now 0).
 5l. 2.48.1-2.49.0 (11-03): food judged at the stomach floor (status `food >=N`); lantern filled to 15000 in town; stomach tracker pins food at hunger crossings. options_sim p["food"] accepts a number or (lo, hi) -- fine either way.
@@ -90,6 +90,8 @@ Architect builds everything else.
   in to_advisor memos. Old handoffs and moved notes: `../history/`.
 
 ## Waiting on the user
+
+- **Bands (11-04):** keep "leave while cheap" or fight orc/animal bands the estimator rates safe (~400 XP/mission on m63-m65)? **Speed at hard-fight start:** always, or only when the estimator finds it safer (~380 g per hard fight)? (`../memos/2026-11-04-estimator-review.md`)
 
 - **UN_BONUS (disenchant) cost** in the hunt check / geareval (11-02, passed to the user by the Architect): ~1-2.5 plusses x ~100 g per Khim/Ibun fight; input = expected gold per UN_BONUS round.
 

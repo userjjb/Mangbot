@@ -17,6 +17,7 @@ import json
 import math
 import os
 import re
+import time
 import types
 
 from common import TV_SCROLL, TV_POTION, TV_FOOD, TV_LITE, plural, one_of
@@ -25,6 +26,7 @@ from mover import direction, passable
 from goals import (Wait, Goto, Explore, Dive, Search, Hunt, Recover, BandLeave, WalkAway, Flee, Recall,
                    Resurrect, RestGoal)
 from town_goals import TownFarm, Shop
+from gear import band_verdict
 
 
 # a reflexes()/escape() step that didn't act: go on to the next one (REFLEX_STEPS, ESCAPE_STEPS)
@@ -1294,6 +1296,9 @@ class CombatMixin:
         w = self.w
         if not w.in_dungeon:
             return
+        if self.band_pending:
+            self.band_resolve()              # (2.58.0: waiting for the estimator's word on a band)
+            return
         # (not trivial: 6+ worst-case melee a turn; by level it missed an orc band
         # of Hill, Cave and Snaga orcs, all well below clvl 21)
         near = [(y, x, r) for y, x, r in w.monsters if "NEVER_MOVE" not in r.flags and w.dist((y, x)) <= 10
@@ -1323,11 +1328,53 @@ class CombatMixin:
         self.band_warned_t = gnow()
         names = ", ".join(f"{n} ×{c}" if c > 1 else n
                           for n, c in collections.Counter(r.name for *_, r in near).most_common(6))
+        # (2.58.0, the user: "let the estimator decide" -- its shadow answers would have fought 6 of m63-m65's 7 bands,
+        # ~1,180 XP. Without a danger rule firing, the band goes to the estimator in the shadow worker -- never in the
+        # tick -- and the decision waits for its answer up to BAND_EST_WAIT_S; the fights reflexes run meanwhile)
+        if not any(self.danger_why(r) for *_, r in near):
+            st = self.band_shadow(f"{names} ({len(near)} monsters, ~{cost:.0f} HP to fight them all)")
+            if st == "started":
+                self.band_pending = {"t": time.time(), "level": w.level_t, "names": names, "n": len(near),
+                                     "cost": cost}
+                return
+        self.band_notify(names, len(near), cost)
+
+    BAND_EST_WAIT_S = 2.0     # wall seconds the band decision waits for the estimator (it takes ~0.05-0.1 s for a band)
+
+    def band_notify(self, names, n, cost):
+        """The band rule's own answer: leave (a `band` alert; a trip plan leaves the level on it)."""
+        w = self.w
         stairs = min((w.dist(q) for q in w.find("<>")), default=None)
-        self.notify("band", f"a band within 10 squares: {names} ({len(near)} monsters, ~{cost:.0f} HP expected to fight "
+        self.notify("band", f"a band within 10 squares: {names} ({n} monsters, ~{cost:.0f} HP expected to fight "
                             f"them all, HP {w.hp[0]}): leave now while it's cheap -- "
                             + (f"stairs {stairs} away" if stairs is not None else "no stairs known: read Word of Recall")
                             + "; don't stop for loot")
+
+    def band_resolve(self):
+        """A band waiting for the estimator (band_pending): its confident "fight" (band_verdict) -> fight on, with news;
+        no answer within BAND_EST_WAIT_S, an error, a danger rule firing, or a "leave" -> the band rule (band_notify).
+        Both choices are logged (the shadow `estimator` record, and `band_decision`)."""
+        w = self.w
+        bp = self.band_pending
+        if bp["level"] != w.level_t:
+            self.band_pending = None
+            return
+        danger = [r for *_, r in w.monsters if self.danger_why(r)]
+        res = self.band_result[1] if self.band_result and self.band_result[0] >= bp["t"] - 1 else None
+        if res is None and not danger and time.time() - bp["t"] < self.BAND_EST_WAIT_S:
+            return
+        self.band_pending = None
+        gain = band_verdict(res) if res is not None and not danger else None
+        why = "a danger rule fired" if danger else "no estimator answer in time" if res is None else \
+            f"the estimator: {res.get('choice')} ({(res.get('why') or '')[:80]})"
+        self.log("band_decision", names=bp["names"], n=bp["n"], cost=round(bp["cost"]),
+                 choice="fight" if gain is not None else "leave", gain=round(gain) if gain is not None else None,
+                 why=why)
+        if gain is not None:
+            self.notify("tactic", f"band: fighting (the estimator: fight beats leaving by {gain:.0f} XP) -- "
+                                  f"{bp['names']}", news=True)
+            return
+        self.band_notify(bp["names"], bp["n"], bp["cost"])
 
     def teleport_item(self):
         """('r', a Scroll of Teleportation) or ('u', a Staff of Teleportation with charges), or None. Blind, confused
@@ -1895,20 +1942,24 @@ class CombatMixin:
         return adj, bool(adj) and hard
 
     def speed_start_tick(self, now):
-        """A Potion of Speed at the start of a hard fight (the user, 10-25, on the Advisor's replays: drunk at the
-        start rather than when the emergency fires, it beat the rules in 3 of 4 hard fights -- the gain is mostly
-        timing, the same potion drunk earlier). Same test as Berserk (hard_fight); not when already hasted."""
+        """A Potion of Speed when a fight is going badly (2.58.0, the user, on the Advisor's estimator review: Speed at
+        a hard fight's start bought no safety in the model, ~380 gold each; it was the rule since 10-25). Now: in
+        melee (a monster adjacent) with HP under `think_hp` -- the fight_going_badly line, falling toward flee_hp,
+        where the emergency's own Speed step takes over; not when already hasted, once per 30 s. (The name stays: the
+        Advisor's estimator mirrors it -- options_sim's copy of the rules needs telling.)"""
         w = self.w
         if not w.in_dungeon or self.buff_on("fast") or not waited(self.speed_start_t, 30):
             return False
-        adj, hard = self.hard_fight()
+        adj = w.adjacent_monsters()
         pot = next((i for i in w.items(tval=TV_POTION) if "Potion" in i["name"] and "of Speed" in i["name"]), None)
-        if not (hard and pot):
+        if not (adj and pot and w.hp_frac < self.orders.get("think_hp", 0.65)):
             return False
         self.speed_start_t = now
-        names = ", ".join(sorted({r.name for r in adj}))
-        self.cmd(f"custom q item={pot['item']}", f"a hard fight ({names}): quaff {pot['name']} at the start", hold=0.6)
-        self.notify("tactic", f"a hard fight with {names}: quaffed {one_of(pot['name'])} at the start", news=True)
+        names = ", ".join(sorted({r.name for *_, r in adj}))
+        self.cmd(f"custom q item={pot['item']}", f"losing a fight ({names}, HP {w.hp_frac:.0%}): quaff {pot['name']}",
+                 hold=0.6)
+        self.notify("tactic", f"the fight with {names} is going badly (HP {w.hp_frac:.0%}): quaffed "
+                              f"{one_of(pot['name'])}", news=True)
         return True
 
     def berserk_tick(self, now):
@@ -2194,8 +2245,25 @@ class CombatMixin:
                 self.set_goal(Hunt(race.name))
                 self.notify("gear_damage", f"{what}: killing the {race.name} ({n} in view, ~{turns * n:.0f} turns)")
                 return True
-        # otherwise leave the line, then the level
-        stairs = [q for q in w.find("<>") if w.dist(q) <= 20]
+        # otherwise leave the line, then the level. (2.58.0, the user, on the Advisor: against an awake breather that
+        # can follow -- or one unseen -- walking to the stairs costs ~5 more acid hits than fighting: Teleportation at
+        # once, then Word of Recall; the stairs only when adjacent)
+        follows = unseen or (race is not None and "NEVER_MOVE" not in race.flags) or \
+            any(e[3] for e in recent)
+        stairs = [q for q in w.find("<>") if w.dist(q) <= (1 if follows else 20)]
+        tele = self.teleport_item()
+        if follows and not stairs and tele:
+            self.phase_t = now
+            self.cmd(f"custom {tele[0]} item={tele[1]['item']}", "equipment damage: teleport away from the breather",
+                     hold=1.0)
+            self.notify("gear_damage", f"{what}: teleporting away at once (it can follow)")
+            return True
+        wor = self.find_item("Word of Recall", TV_SCROLL)
+        if follows and not stairs and wor and not w.recall_pending:
+            self.recall_t = now
+            self.cmd(f"custom r item={wor['item']}", "equipment damage: no teleport -- Word of Recall", hold=1.0)
+            self.notify("gear_damage", f"{what}: reading Word of Recall (no Teleportation to hand)")
+            return True
         if stairs:
             self.set_goal(Flee("equipment damage"))
             how = "heading for the stairs"

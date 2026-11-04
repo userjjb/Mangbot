@@ -70,3 +70,5 @@ metadata:
 darts unattributed); 11-02 khim (estimator agrees with fighting; A2* criterion adopted 2.44.10; UN_BONUS cost -> user);
 11-03 245-reply (options_sim 11-03p: escape walk continues after emergency; hunt check should use derive() totals,
 cmd1.c:1243-1285).
+
+- 2026-11-04: **estimator review m61-m65** -> `memos/2026-11-04-estimator-review.md` (+ to_architect same date); study `Advisor/studies/2026-11-04-estimator-review/`; options_sim 11-04q (acid_gold/disen_gold); bands: estimator would fight 6/7; Speed at hard-fight start no safety gain in model.

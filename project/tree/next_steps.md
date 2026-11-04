@@ -30,7 +30,8 @@ The handoff between Architect sessions: the current state, what the next session
   2.48.1); the restructure merged into `master` (branch deleted, revert material removed); the GitHub front page
   updated. Its record: **"SESSION 11 RECORD"** at the bottom; what session 12 watches: **"SESSION 12 WATCH LIST"** at
   the top of HANDOFF 12. Its brief ("HANDOFF TO ARCHITECT 11") stays below for reference.
-- **Session 12** (missions resume, **to test everything changed since m60**): read **"HANDOFF TO ARCHITECT 12"**.
+- **Session 12** (missions resume, **to test everything changed since m60**): read **"HANDOFF TO ARCHITECT 12"**;
+  in progress since 11-04 (job 8406367): m62-m65 and 2.50.0-2.57.0, see **"SESSION 12 RECORD"** at the bottom.
 - **Session 13** (the user, 11-03): **the separate local test server** for set-pieces (own port, saves, config,
   freeze file; copies of Dive04), then server-side test features (HANDOFF 12 item 3, TODOs 3-4). It unblocks A25's
   remaining half (a unique above the character's level: the recall branch), **and the repo as a patcher** (11-04).
@@ -472,5 +473,10 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   capped later buys at 46 < 63); news for items destroyed by attacks; a Navigator `plan town` during plan town is
   queued. Make-room churn: the user calls it a non-issue (leave it). Live 14:44: plan town bought 25 Enchant Armor
   (5,025 gold) and restored 3 of 4 disenchanted pieces to +8 (boots still +7) -- the session-9 rule, `enchant_max` 25.
+- **2.57.0** (the user, 11-04 afternoon): **equipment damage is danger.** m65's 22 lost armour points (+8 -> +0/+4
+  in a minute) came from a Water hound pack breathing acid 31 times (26 unseen; resist acid kept HP up, so nothing
+  reacted), not a Disenchanter. Now 2 acid/disenchant hits in 10 s (or 1000+ gold of repair in 30 s) -> kill a quick
+  visible source, else leave; `gear_damage` alert with the repair cost; `monster` shows GEAR. Advisor memo'd
+  (`memos/to_advisor/2026-11-04-gear-damage-reflex.md`: not in the estimator's mirrored functions).
 - **Lessons:** `restart.sh` loads the working tree; hand-walking into the house picks up the bank pile (the step-in
   square) -- never do it; `goal goto` queued behind raw steps can path back through the house.

@@ -126,7 +126,8 @@ def rates_gold_found_not_shopping():
 def hard_fight_shadow_once_per_fight():
     """The user (10-25): the estimator also runs at the start of a hard fight (berserk_tick's test), choosing among
     fight / speed / berserk / speed+berserk / phase; once per fight (a new set of adjacent monsters, not within 60 s of
-    the same set nor 20 s of the last). The rules' label: berserk when berserk_tick would quaff, else fight. Logged as
+    the same set nor 20 s of the last). The rules' label: berserk when berserk_tick would quaff, else fight (2.58.0: no
+    Speed at the start any more). Logged as
     an estimator record with trigger hard_fight. Never acts."""
     import time as _t
     def make(pack, mons):
@@ -158,7 +159,7 @@ def hard_fight_shadow_once_per_fight():
     weak = make(kit, [(20, 21, BYNAME["cave orc"])])
     none = weak.hard_fight_shadow(P.gnow())
     ok = (first == "started" and again is None and none is None and a.cmds == [] and rec.get("trigger") == "hard_fight"
-          and rec.get("rules") == "speed+berserk" and rec.get("options") == list(P.Pilot.HARD_FIGHT_OPTIONS)
+          and rec.get("rules") == "berserk" and rec.get("options") == list(P.Pilot.HARD_FIGHT_OPTIONS)
           and rec.get("choice") and not rec.get("error"))
     return ok, (f"{ogre.name}: {first}, 5 s later {again}; a Cave orc: {none}; record: trigger {rec.get('trigger')}, rules "
                 f"{rec.get('rules')}, choice {rec.get('choice')!r} ({rec.get('why')}), {rec.get('compute_s')} s, "
@@ -310,8 +311,8 @@ def mission_label_survives_restart():
 @case
 def shadow_agrees_by_the_action_taken():
     """m47: at the Wargs the estimator kept "rules" (its copy fought) while the Pilot read Word of Recall -- the table's
-    worst row, -102 XP -- and "agree" was logged. Now "rules" agrees only if the Pilot's own row is safe and within
-    noise of the best; a band's leave decision is shadowed too (once per band), with the resists passed."""
+    worst row, -102 XP -- and "agree" was logged. Now "rules" agrees only if the Pilot's own row is safe and not beaten
+    by more than the estimator's own threshold, max(50 XP, 2 SE) (2.58.0; was 10 XP); a band's leave decision is shadowed too (once per band), with the resists passed."""
     table = [{"option": "rules", "safe": True, "dxp": 0.0, "se": 0.0}, {"option": "fight", "safe": True, "dxp": 0.0},
              {"option": "phase", "safe": True, "dxp": -6.0, "se": 3.5},
              {"option": "ccw", "safe": True, "dxp": -12.5, "se": 3.5},
@@ -319,7 +320,7 @@ def shadow_agrees_by_the_action_taken():
     a1, row = P.shadow_agree("rules", "recall+phase", table)
     a2, _ = P.shadow_agree("rules", "phase", table)
     a3, _ = P.shadow_agree("rules", "cure", table)         # (no row for it: can't tell, agree)
-    a5, _ = P.shadow_agree("rules", "ccw", table)          # (-12.5: beyond 10 XP and 2 SE)
+    a5, _ = P.shadow_agree("rules", "ccw", table)          # (2.58.0: -12.5 is within the estimator's 50-XP floor)
     a4, _ = P.shadow_agree("fight", "recall+phase", table)
     warg = BYNAME["warg"]
     p = pilot(monsters=[(20, 22 + k, warg) for k in range(9)])
@@ -341,7 +342,7 @@ def shadow_agrees_by_the_action_taken():
     p.band_shadow_seen, p.band_shadow_t = {}, -99.0
     r1 = p.band_shadow("a band within 10 squares: Warg x9")
     r2 = p.band_shadow("a band within 10 squares: Warg x9")
-    ok = a1 is False and row["dxp"] == -101.8 and a2 is True and a3 is True and a4 is False and a5 is False and \
+    ok = a1 is False and row["dxp"] == -101.8 and a2 is True and a3 is True and a4 is False and a5 is True and \
         r1 == "started" and \
         r2 is None and calls == [("band", "stairs", P.Pilot.BAND_OPTIONS)] and len(via_notify) == 1
     return ok, f"recall row: {a1}; phase: {a2}; no row: {a3}; other choice: {a4}; band: {calls}, again {r2}; " \
@@ -416,3 +417,73 @@ def architect_role_needs_the_token():
     ok = bare["role"] == "navigator" and view["role"] == "navigator" and good["role"] == "architect" and \
         logs.count("role_refused") == 1 and [w for w, _ in p.notes] == ["role_refused"] and not refused["ok"]
     return ok, f"bare {bare['role']}, viewer {view['role']}, token {good['role']}; logs {logs}; mission: {refused}"
+
+
+@case
+def bands_decided_by_the_estimator():
+    """2.58.0 (the user: "let the estimator decide" bands -- it would have fought 6 of m63-m65's 7): a band without a
+    danger rule goes to the estimator in the shadow worker (never in the tick) and the decision waits up to 2 s; a
+    confident fight (its choice fights, safe, and beats the band rule's leave row by more than max(50, 48 x the play
+    rate per block, 2 SE)) is fought, with news; a leave, a thin margin, no answer in time or a danger rule: the band
+    rule (the `band` alert). The shadow log keeps the chosen, rules and actual rows beyond table[:6]; the team's
+    `awake` comes from the look answers (an asleep one whose square its race has left woke)."""
+    import time as _t
+    import shadow
+    m65 = {"choice": "rules", "why": "rules (no option clearly better)", "snap": {"rules": "stairs"},
+           "p": {"xp_rate_per_block": 0.45},
+           "table": [{"option": "rules", "safe": True, "dxp": 0.0, "se": 0.0},
+                     {"option": "fight", "safe": True, "dxp": 0.0, "se": 0.0},
+                     {"option": "phase", "safe": True, "dxp": -10.6, "se": 1.0},
+                     {"option": "stairs", "safe": True, "dxp": -176.2, "se": 1.9}]}
+    thin = dict(m65, table=m65["table"][:3] + [{"option": "stairs", "safe": True, "dxp": -30.0, "se": 2.0}])
+    breeders = dict(m65, choice="stairs")
+    import gear
+    verdicts = (gear.band_verdict(m65), gear.band_verdict(thin), gear.band_verdict(breeders),
+                gear.band_verdict({"error": "x"}))
+
+    def make(result, danger=False, waited_s=0.5):
+        p = pilot(monsters=[(20, 22 + k, BYNAME["cave orc"]) for k in range(6)])
+        p.w.find = lambda chars: [(30, 30)]
+        p.danger_why = (lambda r, *a: "breathes") if danger else (lambda r, *a: None)
+        p.band_pending = {"t": _t.time() - waited_s, "level": p.w.level_t, "names": "Cave orc ×6", "n": 6, "cost": 200}
+        p.band_result = (_t.time() - waited_s, result) if result else None
+        p.band_resolve()
+        return [k for k, _ in p.notes], p.notes, p.band_pending
+    fight = make(m65)
+    leave = make(breeders)
+    waiting = make(None)
+    late = make(None, waited_s=3.0)
+    danger = make(m65, danger=True)
+    rows = shadow.log_rows([{"option": f"o{k}"} for k in range(8)] + [{"option": "stairs"}, {"option": "rules"}],
+                           "stairs", "rules")
+    a = pilot(monsters=[(20, 21, BYNAME["cave orc"]), (25, 25, BYNAME["cave orc"])])
+    now = P.gnow()
+    a.asleep = {(20, 21): (now, "Cave orc", True), (24, 30): (now, "Cave orc", True)}
+    aw = (a.awake_of(20, 21, BYNAME["cave orc"]), a.awake_of(25, 25, BYNAME["cave orc"]))
+    ok = verdicts[0] and round(verdicts[0]) == 176 and verdicts[1:] == (None, None, None) and \
+        fight[0] == ["tactic"] and "fight beats leaving by 176 XP" in fight[1][0][1] and leave[0] == ["band"] and \
+        waiting[0] == [] and waiting[2] is not None and late[0] == ["band"] and danger[0] == ["band"] and \
+        [r["option"] for r in rows] == [f"o{k}" for k in range(6)] + ["stairs", "rules"] and aw == (False, True)
+    return ok, (f"verdicts {verdicts}; fight {fight[0]} {fight[1][:1]}; breeders {leave[0]}; waiting {waiting[0]}; "
+                f"late {late[0]}; danger {danger[0]}; logged rows {[r['option'] for r in rows]}; awake {aw}")
+
+
+@case
+def gear_gold_for_the_estimator():
+    """2.58.0 (options_sim 11-04q, the Advisor's estimator review): the shadow snapshot and the gear evaluator's
+    scenarios carry acid_gold (1/6 of the six armour slots' one-point repair cost: the read at the lowered plus; 0 for
+    an IGNORE_ACID piece -- Dive04's Leather of Resistance and Orcish Shield, "unaffected" in m65) and
+    disen_gold (one disenchantment's expected cost)."""
+    import geareval
+    worn = [("a Battle Axe of Westernesse (2d8) (+10,+9) (+1)", 22, 170),
+            ("Hard Studded Leather of Resistance (-1) [7,+8]", 36, 110), ("a Shadow Cloak [6,+8]", 35, 5),
+            ("an Orcish Shield [5,+8] (+1)", 34, 100), ("a Metal Cap [3,+8]", 32, 20),
+            ("a Set of Gauntlets [2,+8]", 31, 25), ("a Pair of Hard Leather Boots of Stability [3,+8]", 30, 40)]
+    p = pilot(hp=358, worn=worn)
+    p.w.clvl = 29
+    acid, disen = p.gear_damage_gold()
+    ch = p.gear_character()
+    sp = geareval.sim_player(ch.derive(), ch, 15)
+    # (the Leather of Resistance and the Orcish Shield ignore acid -- m65: "unaffected": 4 slots x ~380 / 6)
+    ok = 230 <= acid <= 280 and disen > 0 and sp.get("acid_gold") == acid and sp.get("disen_gold") == disen
+    return ok, f"acid_gold {acid}, disen_gold {disen}; sim_player {sp.get('acid_gold')}, {sp.get('disen_gold')}"

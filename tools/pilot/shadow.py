@@ -68,7 +68,8 @@ class Shadow:
             if snap.get("xp_per_gold"):
                 p["xp_per_gold"] = snap["xp_per_gold"]
             choice, why, table = self.sim.choose(p, team, n=N, options=snap.get("options"))
-            out = {"choice": choice, "why": why, "table": table[:6], "team": team}
+            out = {"choice": choice, "why": why, "table": log_rows(table, choice, snap.get("rules")),
+                   "table_all": table, "team": team}
         except Exception as e:
             out = {"error": repr(e)}
         out["compute_s"] = round(time.time() - t0, 3)
@@ -78,6 +79,17 @@ class Shadow:
         out["done_wall"] = time.time()
         self.results.put(out)
         self.busy.clear()
+
+
+def log_rows(table, choice, actual, k=6):
+    """The rows to log (2.58.0, the Advisor's estimator review: twice in m65 the chosen row -- stairs, 0 XP -- was cut
+    by table[:6]): the best k, and always the chosen row, the rules row and the actual action's row."""
+    out = list(table[:k])
+    for want in (choice, "rules", actual):
+        row = next((t for t in table if t.get("option") == want), None)
+        if row is not None and row not in out:
+            out.append(row)
+    return out
 
 
 def weapon_profile(name, blows):

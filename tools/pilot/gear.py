@@ -18,10 +18,19 @@ from common import HERE, TV_SCROLL, TV_POTION, TV_LITE, bare_name, bad_inscripti
 from world import gnow, time_factor, waited
 
 
-def shadow_agree(choice, actual, table):
+MIN_GAIN, MIN_GAIN_BLOCKS = 50, 48     # options_sim's override floor: max(50, 48 blocks x xp_rate_per_block)
+
+
+def min_gain_of(p):
+    """The estimator's own threshold for "clearly better" (options_sim.choose): max(50, 48 x xp_rate_per_block)."""
+    return max(MIN_GAIN, MIN_GAIN_BLOCKS * float((p or {}).get("xp_rate_per_block") or 0))
+
+
+def shadow_agree(choice, actual, table, p=None):
     """(agree, the actual action's row) for an estimator answer: the estimator chose the action the Pilot took; or it
     kept its copy of the rules ("rules") and the action the Pilot took (when the table has a row for it) is safe and
-    within noise of the best row (2 SE, at least 10 XP net of gold)."""
+    not beaten by a safe row by more than the estimator's own threshold -- max(min_gain, 2 SE) (2.58.0, the Advisor:
+    three m63-m65 "disagreements" were rows 17-35 XP better, under its 50-XP floor)."""
     rows = {t.get("option"): t for t in table or ()}
     row = rows.get(actual) if actual != "rules" else None
     if choice == actual:
@@ -29,9 +38,32 @@ def shadow_agree(choice, actual, table):
     if choice == "rules":
         if row is None:
             return True, None
-        best = max((t.get("dxp", 0) for t in rows.values() if t.get("safe")), default=0)
-        return bool(row.get("safe")) and row.get("dxp", 0) >= best - max(10, 2 * (row.get("se") or 0)), row
+        best = max((t for t in rows.values() if t.get("safe")), key=lambda t: t.get("dxp", 0), default=None)
+        if best is None:
+            return bool(row.get("safe")), row
+        margin = max(min_gain_of(p), 2 * max(best.get("se") or 0, row.get("se") or 0))
+        return bool(row.get("safe")) and row.get("dxp", 0) >= best.get("dxp", 0) - margin, row
     return False, row
+
+
+def band_verdict(r):
+    """2.58.0 (the user: "let the estimator decide" bands): the XP fighting beats leaving by, when the estimator's
+    answer `r` (shadow) is confident, else None. Confident: its choice is to fight -- "fight", or "rules", its copy of
+    the Pilot's rules, which fights a band -- that row is safe, and it beats the leave row (the Pilot's band rule:
+    stairs, else recall+phase) by more than max(min_gain, 2 SE)."""
+    if not r or r.get("error"):
+        return None
+    table = r.get("table_all") or r.get("table") or []
+    rows = {t.get("option"): t for t in table}
+    choice = r.get("choice")
+    if choice not in ("rules", "fight"):
+        return None
+    pick = rows.get(choice)
+    leave = rows.get((r.get("snap") or {}).get("rules") or "stairs") or rows.get("stairs") or rows.get("recall+phase")
+    if not pick or not leave or not pick.get("safe") or leave is pick:
+        return None
+    gain = (pick.get("dxp") or 0) - (leave.get("dxp") or 0)
+    return gain if gain > max(min_gain_of(r.get("p")), 2 * (leave.get("se") or 0)) else None
 
 
 class GearMixin:
@@ -100,12 +132,16 @@ class GearMixin:
         # rate; unlike xp_per_block it charges no time cost, so it goes in every snapshot, emergencies too)
         dr = (self.rate_state().get("depth") or {}).get(str(w.depth_ft))
         p["xp_rate_per_block"] = round(dr[0] / (dr[1] / 60) / 96, 3) if dr and dr[1] > 300 else 0
+        # (2.58.0, options_sim 11-04q: what an acid hit and a disenchantment cost the worn gear, in gold)
+        try:
+            p["acid_gold"], p["disen_gold"] = self.gear_damage_gold()
+        except Exception:
+            pass
         p.update(extra_p or {})
         # (name, distance, hp_frac, awake): options_sim 26h takes the asleep flag per member (the `look` answers; None =
         # unknown, the p_awake share then 0.4 stand in) -- the Advisor: 7 Wargs, six at 4 squares, ~11 HP lost if
         # known asleep, ~55 awake, ~23 unknown
-        team = [(r.name, max(1, sh.sim.adist(y - w.pos[0], x - w.pos[1])), None,
-                 None if self.is_asleep(y, x) is None else not self.is_asleep(y, x))
+        team = [(r.name, max(1, sh.sim.adist(y - w.pos[0], x - w.pos[1])), None, self.awake_of(y, x, r))
                 for y, x, r in w.monsters] if w.pos else []
         # (and what the server's list names but the map doesn't show yet, 3 squares off: A2K's first emergency had
         # Khim in the list only, and the estimator played an empty fight)
@@ -114,6 +150,52 @@ class GearMixin:
                 "wall": time.time(), "factor": time_factor(), "speed": (w.ind.get("speed") or [0])[0] or 0,
                 "options": list(options) if options else None, "trigger": trigger, "xp_per_gold": self.xp_per_gold()}
         return sh.submit(snap)
+
+    ACID_SLOTS = (36, 37, 38, 34, 35, 31, 32, 33, 30)     # body, shield, cloak, gloves, helm, boots (spells1.c minus_ac)
+
+    def gear_damage_gold(self):
+        """(acid_gold, disen_gold) for options_sim 11-04q (2.58.0, the Advisor's estimator review): acid_gold = 1/6 of
+        the sum over body, shield, cloak, gloves, helm and boots of what one to-AC lost costs to put back (the
+        gear-damage reflex's cost: the kit's read at the lowered plus, else the resale), 0 for an empty slot, an
+        IGNORE_ACID item or ac+to_a <= 0; disen_gold = one disenchantment's expected cost (disen_loss)."""
+        w = self.w
+        slots = {}
+        for i in w.items(equip=True):
+            if i["tval"] in self.ACID_SLOTS:
+                s = {36: "body", 37: "body", 38: "body", 34: "shield", 35: "cloak", 31: "gloves", 32: "helm",
+                     33: "helm", 30: "boots"}[i["tval"]]
+                slots.setdefault(s, i)
+        total = 0.0
+        for s, i in slots.items():
+            gi = geareval.Item(i["name"], i["tval"])
+            m = re.search(r"\[(\d+),([+-]\d+)\]", i["name"])
+            ac, x = (int(m.group(1)), int(m.group(2))) if m else (gi.ac, gi.to_a)
+            if "IGNORE_ACID" in gi.flags or ac + x <= 0:
+                continue
+            sc, lost = self.reenchant_cost("toac", x - 1, x, self.is_artifact(i["name"]), "armour", i["name"])
+            total += sc + lost
+        try:
+            disen = self.disen_loss()[0]
+        except Exception:
+            disen = 0.0
+        return round(total / 6, 1), round(disen, 1)
+
+    def awake_of(self, y, x, r):
+        """The monster at y,x awake (True), asleep (False), or unknown (None), from the `look` answers (2.58.0, the
+        Advisor: the model takes an unknown adjacent monster as awake -- m63's 7 Uruks, very likely asleep): its own
+        square's answer; else, for its race, a recent answer that it was awake, or an asleep one whose square that race
+        has left (it woke and moved)."""
+        v = self.is_asleep(y, x)
+        if v is not None:
+            return not v
+        now = gnow()
+        recent = [(q, a) for q, (t, n, a) in self.asleep.items() if n == r.name and now - t < 60]
+        if any(a is False for _, a in recent):
+            return True
+        here = {(yy, xx) for yy, xx, rr in self.w.monsters if rr.name == r.name}
+        if any(a and q not in here for q, a in recent):
+            return True
+        return None
 
     def shadow_results(self):
         """Log the estimator's answers (the main thread writes the log): with whether it would have arrived in time --
@@ -135,7 +217,10 @@ class GearMixin:
             # where the Pilot read Word of Recall, the table's worst row at -102 XP, and "agree" was logged). So
             # when the Pilot's actual action has its own row, "rules" agrees only if that row is safe and within noise
             # of the best (2 SE, at least 10 XP).
-            agree, actual_row = shadow_agree(r.get("choice"), snap.get("rules"), r.get("table"))
+            agree, actual_row = shadow_agree(r.get("choice"), snap.get("rules"), r.get("table_all") or r.get("table"),
+                                             r.get("p"))
+            if snap.get("trigger") == "band":
+                self.band_result = (snap.get("wall", 0), r)       # (2.58.0: the band decision reads it)
             if not r.get("team"):
                 agree = None
             self.log("estimator", trigger=snap.get("trigger", "emergency"), options=snap.get("options"),
@@ -189,9 +274,8 @@ class GearMixin:
         seen[key], self.hard_fight_t = now, now
         pot = any("Berserk" in i["name"] for i in w.items(tval=TV_POTION))
         berserk = pot and not self.buff_on("shero") and waited(self.berserk_t, 30)
-        fast = any("of Speed" in i["name"] for i in w.items(tval=TV_POTION)) and not self.buff_on("fast") and \
-            waited(self.speed_start_t, 30)
-        label = "speed+berserk" if fast and berserk else "speed" if fast else "berserk" if berserk else "fight"
+        # (2.58.0, the user: no Speed at a hard fight's start -- speed_start_tick drinks it only when losing)
+        label = "berserk" if berserk else "fight"
         names = ", ".join(sorted({r.name for r in adj}))
         return self.shadow_decision(f"hard fight with {names}: rules {label}", options=self.HARD_FIGHT_OPTIONS,
                                     trigger="hard_fight", rules=label)
@@ -598,8 +682,15 @@ class GearMixin:
         flags = {("SEE_INVIS" if f == "see_invis" else f.upper()) for f, on in (w.flags or {}).items() if on}
         inv = self.consumables_inv()
         depth = int(self.orders.get("max_depth", 0)) or (self.deepest_ft or 500)
-        return geareval.Character(w.clvl, stats, w.hp[1], (w.ind.get("armor") or [0])[0] or 0, worn, flags=flags,
-                                  depth_ft=depth, inv=inv, pack_weight=sum(i["weight"] for i in w.items()))
+        ch = geareval.Character(w.clvl, stats, w.hp[1], (w.ind.get("armor") or [0])[0] or 0, worn, flags=flags,
+                                depth_ft=depth, inv=inv, pack_weight=sum(i["weight"] for i in w.items()))
+        # (2.58.0: the worn gear's acid and disenchantment cost per hit, for the simulator's scenarios -- the current
+        # loadout's, for every option compared)
+        try:
+            ch.acid_gold, ch.disen_gold = self.gear_damage_gold()
+        except Exception:
+            pass
+        return ch
 
     def gear_eval(self, items, n=10, no_loss=False):
         """The item slot evaluator on these pack items (or names): geareval.compare_slot. Cached per item and gear."""

@@ -21,6 +21,10 @@ races (no best-of-2 boost), placed 1-3 squares away.
 Resists (26f): p flags res_acid/elec/fire/cold/pois (1/3), res_neth/chaos/shard/nexus/disen (x6/(d6+6)),
 res_sound/conf (x5/(d6+6)), res_lite/dark (x4/(d6+6)), res_blind; unresisted conf/chaos/water confuse, lite/dark blind;
 cause wounds / mind blast negated by a saving throw.
+Gear damage (11-04q, optional): p["acid_gold"] = expected gold per acid hit (any acid breath, bolt, ball or blow not
+immune -- p["imm_acid"] -- damages a random armour slot even when resisted: acid_dam -> minus_ac, spells1.c:924-1002);
+p["disen_gold"] = expected gold per disenchantment (BR_DISE or an UN_BONUS blow without res_disen). Both go into the
+line's gold (st.spent), so they weigh against XP at xp_per_gold like potions. Absent = 0 (no change).
 Placeholders: Phase landing (each monster ends 5-10 away; P_SEE_AFTER_PHASE), Teleport = escape, summon placement success
 P_SUMMON_PLACE, our saving throw SAVE, erratic movers treated as straight, no walls/corridors except max_adj.
 
@@ -301,7 +305,7 @@ def escape_move(st, crowd):
     return any(use(st, it) for it in order)
 
 
-POLICY_VERSION = "pilot-escape-2026-11-03p"   # mirrors github/tools/pilot/combat.py escape() (ESCAPE_STEPS), berserk_tick, fear_cure, status_tick
+POLICY_VERSION = "pilot-escape-2026-11-04q"   # mirrors github/tools/pilot/combat.py escape() (ESCAPE_STEPS), berserk_tick, fear_cure, status_tick
 CONF_LOCK_BLOCKS = 4   # the Pilot's 8 s of confusion with monsters adjacent, as player actions (~3 s a block in the HP bubble)
 
 
@@ -500,6 +504,8 @@ def monster_act(st, m):
                         st.blind += 10 + rng.randint(1, m.rl)
                     elif eff == "TERRIFY" and not (st.hero or st.berserk or saves(st)):
                         st.afraid += 3 + rng.randint(1, m.rl)
+                    elif eff == "UN_BONUS" and not p.get("res_disen"):
+                        st.spent += p.get("disen_gold", 0)    # melee1.c UN_BONUS -> apply_disenchant
                     elif eff == "PARALYZE" and not (p.get("free_action") or saves(st)):
                         st.paralyzed += 3 + rng.randint(1, m.rl)
                     p["hp"] -= d
@@ -531,6 +537,10 @@ def resisted(st, element, dam):
     """Damage after our resist to `element` (p flags res_<element>), plus the unresisted side effects we model:
     confusion (conf, chaos, water), blindness (lite, dark; res_blind stops it)."""
     p, rng = st.p, st.rng
+    if element == "acid" and not p.get("imm_acid"):
+        st.spent += p.get("acid_gold", 0)                     # minus_ac: a random armour slot loses 1 to-AC, resist or not
+    elif element == "disen" and not p.get("res_disen"):
+        st.spent += p.get("disen_gold", 0)                    # apply_disenchant
     if element in RES_THIRD:
         return (dam + 2) // 3 if p.get("res_" + element) else dam
     if element in RES_RAND and p.get("res_" + element):
