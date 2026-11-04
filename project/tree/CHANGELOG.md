@@ -37,7 +37,7 @@ No missions yet on it. **Play changes:**
   explore, with the wanted stairs known but out of reach, tries the frontier nearest them first (`Explore(toward=)`).
 
 ## 2.53.0 -- 2026-11-04 (session 12, the user's decisions after m63)
-No missions yet on it. **Play changes:**
+Missions: m64 (Sonnet medium, 78.0 XP/dmin, report runs/pilot/dive04/reports/2026-11-04-mission64.md). **Play changes:**
 - **An avoid zone blocking the way: the Navigator decides** (the user: "allow it to decide if it should path through
   or not"). m63 at 800 ft: a dark inner room's zone covered its ring and the only '<'; the trip recalled. Now when a
   Dive leg's stairs (or Explore's frontier) are out of reach only because of an avoid zone (a path exists with the
