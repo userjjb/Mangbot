@@ -27,6 +27,33 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.53.0 -- 2026-11-04 (session 12, the user's decisions after m63)
+No missions yet on it. **Play changes:**
+- **An avoid zone blocking the way: the Navigator decides** (the user: "allow it to decide if it should path through
+  or not"). m63 at 800 ft: a dark inner room's zone covered its ring and the only '<'; the trip recalled. Now when a
+  Dive leg's stairs (or Explore's frontier) are out of reach only because of an avoid zone (a path exists with the
+  zones ignored) and there is time (nothing dangerous in view, not hit for 8 s, HP >= think_hp, no flee or recall), the
+  Pilot holds on a quiet spot and raises `zone_blocks` (the stairs, the structure, the path's length). `avoid pass`
+  (new: the ring corridors of this level's structures may be crossed, never the rooms inside) or `avoid clear` goes
+  through; `goal recall`/`goal leave` leaves. No answer in 90 s (one or two Navigator turns), or no time: as before.
+  The trip's leave clocks don't count the hold.
+- **A plan sent while plan town runs is queued** (the user): a Navigator's `plan trip` or `goal ...` waits for plan
+  town's goal_done (a trip's `then town` too): "queued after plan town (it is at: <stage>)"; `plan` shows it, `stop` /
+  `plan stop` drop it; it starts after (news, or an alert if refused). plan town's summary starts "BANK: N gold still
+  carried -- `house deposit`" when a house is owned and the bank step failed or didn't run, with a `bank` alert.
+- No false `supplies` alert at a hunger crossing (m63: Full -> Fed said "food ~5 dungeon min"): supply_watch waits
+  until the stomach tracker has seen the new level. A meal from a stack is logged as one ("a Ration of Food").
+- **Artifacts are never stash items** (the live check: plan town dropped the Phial ~600 times, "You can not drop this
+  here." -- object2.c inven_drop_okay: no true artifact is dropped above its depth, and town and the house tile are
+  above every one). An unworn artifact wearable stays in the pack, never sold by the policy (`review sell` / `sell !`
+  can), with one news line; `price` says why.
+- **No drop loops:** a stash drop the server refuses gives the item up for the visit at once, any 3 drops that didn't
+  happen too (HouseBank, StashDeposit; news); plan town's stash steps skip it.
+- **A permanent light beats a fuelled one:** in the light slot a light needing no fuel with a radius at least the worn
+  one's (the Phial: an artifact, radius 3, xtra1.c calc_torch) is worn over a lantern (radius 2, fuel), else the larger
+  radius; the upgrade step does it (at a safe moment in the dungeon too). With one worn or carried no oil is needed:
+  no flasks bought, the lantern and the flasks sold in town, "light permanent" on the supply line.
+
 ## 2.52.0 -- 2026-11-04 (session 12, fixes found in m63)
 Missions: m63 (from 10:22; its first 14 minutes ran on 2.51.0; Sonnet medium, 58.7 XP/dmin, report runs/pilot/dive04/reports/2026-11-04-mission63.md). **Play changes (bug fixes):**
 - **The idle gold fetch never takes the bank's pile** (`house_square`): at 10:08 a Navigator `plan trip` cut plan

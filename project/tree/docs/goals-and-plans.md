@@ -168,6 +168,30 @@ plan; while a plan runs (not paused) `idle()` never recalls. `Pilot.trip_minutes
 conditions and the 90-minute cap) tells the item policy when spare rations and flasks can go (`provisions_spare`:
 within 3 minutes, or 20 when Full).
 
+## Avoid zones that block the way (2.53.0)
+
+The user (after m63, where a dark inner room's zone covered its ring corridor and the only '<' at max_depth, and the
+trip recalled): "When an avoid zone blocks the Pilot's path, but the Navigator has time to evaluate the situation,
+allow it to decide if it should path through or not." `Dive` (both its stairs walks) and `Explore` (the frontier) ask
+`Pilot.zone_hold(tiles, what)` before giving up on tiles they can't reach. `zone_blocks(tiles)` plans with the avoid
+zones ignored (`mover.plan` with `World.avoid_zone` emptied): a path means the zone alone blocks them. With time
+(`zone_time`: nothing dangerous in view, not hit for 8 s, HP >= `think_hp`, no Flee/Recall/Recover goal, no recall
+pending) the Pilot holds -- the goal returns nothing, the Pilot walks to a `quiet_spot` -- and raises `zone_blocks`
+once (fields `to`, `len`; logged `zone_hold`): what is blocked, the structures the path crosses, its length and the
+choices: `avoid pass` (`zone_pass`: `avoid_tick` takes the structure's 13 x 27 surroundings out of the zone and keeps
+its inner block, Y-3..Y+3 x X-10..X+10, in it), `avoid clear`, `goal recall`/`goal leave`. No answer within
+`ZONE_WAIT_S` = 90 s (a Navigator turn is 20-60 s after its wait report: one or two turns), or no time any more: the
+goal goes on as before (the stairs marked unreachable; the trip recalls). The trip plan's leave clocks (`LEAVE_MAX`,
+the 3-minute climb) leave the hold out (`zone_hold_spent`, at most 90 s a level).
+
+## Queued plans (2.53.0)
+
+A Navigator's `plan trip` or `goal ...` sent while a `TownKit` runs (its `plan town`, or a trip's `then town`) is
+queued (`Pilot.queued`, commands.py `do_request`) instead of replacing it -- m63's `plan trip` 6 s into plan town cut
+the house visit short. The reply names plan town's stage (`town_stage`); `plan` shows the queued request, `stop` and
+`plan stop` drop it; `queue_tick` (in the act layers, after the item work) runs it once no TownKit runs and no trip is
+in its town phase, telling the Navigator (`queued`: news if it started, an alert if it was refused).
+
 ## The town visit (`plan town`)
 
 `plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@MAX],...]` (`Pilot.request_plan`), town only. Each buy spec: STORE
@@ -223,7 +247,9 @@ rules' role -- `value_refusal`, a forced sale's debt, the override check; a buy-
    full, the stash items left go inside the tavern room (`StashDeposit`); **no room anywhere**: they stay in the pack
    (never sold) and a `stash_full` alert (once a visit per item; field `items`) tells the Navigator to `ask` the
    Architect about storage -- another house is their decision, never the policy's.
-6. **finish**: a summary (sold for, bought for, identified, gold now and banked, `supply_text`, the supply gate for
+6. **finish**: (2.53.0) first, with a house owned and more than `BANK_FLOAT` + 500 gold still carried, "BANK: N gold
+   still carried -- `house deposit`" (with the house step's failure line, else "the bank step didn't run") and a
+   `bank` alert; then a summary (sold for, bought for, identified, gold now and banked, `supply_text`, the supply gate for
    the planned depth: OK or MISSING, what couldn't be afforded, the step log); logs `town_kit`.
 
 On its first tick it counts a town visit for the item-review queue and notifies the supplies it came back with.
@@ -324,7 +350,8 @@ full lantern's 7500 turns in ~35 minutes).
 - `supply_text()`: "food >=N dungeon min, light ~M" (food: since 2.48.1 the least it can be; "food ~N" once the stomach
   tracker is exact, 2.49.0; the middle of the level stood still for minutes in m61 and ran out) (on the status line via `supply_lines`, at `plan town`'s start and
   end, on reaching the dungeon). `supply_watch()` (every tick in the dungeon) alerts `supplies` once under 15 and once
-  under 5 minutes, reset above 20 (2.51.0: not while the pack is being read, a meal is unconfirmed, or within 3 s of
+  under 5 minutes, reset above 20 (2.53.0: not on a hunger crossing until the stomach tracker has seen the new
+  level -- m63's Full -> Fed said "~5 min" from the level's bottom; 2.51.0: not while the pack is being read, a meal is unconfirmed, or within 3 s of
   an eat, fuel or destroy -- m62's "~5 minutes" right after a ration). `QuietWait` is capped at a quarter of the smaller.
 - `supply_lines()`: the report's supplies line: cures, escapes, food, light (with flasks and the minutes), a pending
   recall, and other potions/scrolls/devices.
@@ -403,6 +430,15 @@ holds; `stash_wanted(at)` names the Restore a drained stat needs when the pack l
 either) has it. `house` shows the stored items. The old `stash.json` (items, tavern squares, hand-written `where`/`lost`
 notes) is retired at load (`retire_stash_json`: entrance and tavern items into house.json, the file renamed
 `stash.json.retired-DATE`); Dive04's became `stash.json.retired-2026-11-01`.
+
+**Artifacts and refused drops** (2.53.0, the live check: the Phial was dropped ~600 times, "You can not drop this
+here."): the server never drops a true artifact above its depth (object2.c `inven_drop_okay`; town and the house tile
+are above every artifact), so `true_artifact` items (geareval's artifact, an INSTA_ART kind such as the Phial, or an
+artifact's name) are never stash items, never backups; `town_rule` keeps an unworn artifact wearable in the pack ("an
+artifact: the server won't let it be dropped above its depth") unless the review decided `sell`. Every stash drop is
+bounded: `drop_failed` counts a drop that didn't happen (HouseBank's pending drop not seen and still carried;
+StashDeposit's likewise), and the server's refusal counts as all `DROP_TRIES` = 3 at once; a given-up item is skipped
+(`stash_to_drop`) for the rest of the visit (reset at plan town's first tick and by `house deposit`), with news.
 
 **Stored finds are income** (2.50.0, the user: storing a valuable item instead of selling it deflated a mission's
 gold). Each new record carries `value` (iv.value x pay_cut x count: what the sell decision would have realised), `t`,

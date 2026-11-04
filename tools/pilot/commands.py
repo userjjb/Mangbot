@@ -290,6 +290,16 @@ class CommandsMixin:
             if held:
                 self.log("order_held", cmd=c, args=args[:6], why=held)
                 return {"ok": False, "error": f"order held: {held}"}
+        # (2.53.0, the user after m63: a `plan trip` sent 6 s into plan town cut its house visit short, and the bank's
+        # pile was left for the idle gold fetch. A Navigator's `plan trip` or `goal ...` sent while plan town -- or a
+        # trip's own `then town` visit -- runs waits for it: queue_tick starts it after plan town's goal_done)
+        if self.req_role != "architect" and isinstance(self.goal, TownKit) and \
+                (c == "goal" or (c == "plan" and args[:1] == ["trip"])):
+            self.queued = {"cmd": c, "args": list(args), "role": self.req_role, "t": gnow()}
+            self.log("queued", cmd=c, args=args[:12], stage=self.goal.stage)
+            return {"ok": True, "queued": True,
+                    "text": f"queued after plan town (it is at: {self.town_stage()}); it starts when plan town's "
+                            "goal_done comes. `plan` shows it; `stop` or `plan stop` drops it"}
         if spec is None:            # (before the dead check: a ghost too gets `unknown command`, 2.45.0)
             return {"ok": False, "error": f"unknown command {c}"}
         if self.dead and not spec.dead and not (sub and sub.get("dead")):
@@ -708,7 +718,22 @@ class CommandsMixin:
         w = self.w
         if args[:1] == ["clear"]:
             self.avoid_zones, self.avoid_names = {}, set()
+            if self.zone_wait and not self.zone_wait["end"]:
+                self.zone_wait["end"] = gnow()        # (2.53.0: the hold's answer)
             return {"ok": True, "text": "avoid zones cleared"}
+        if args[:1] == ["pass"]:
+            # (2.53.0, the user: the Navigator decides whether to path through a blocking zone -- its structures' ring
+            # corridors may be crossed on this level, never the rooms inside)
+            here = [(Y, X, st["kind"]) for Y, X, st in self.structures_here()]
+            if not here:
+                return {"ok": False, "error": "no inner room, pit or nest recognised on this level: `avoid clear` "
+                                              "clears every zone"}
+            self.zone_pass |= {(w.level_t, Y, X) for Y, X, _ in here}
+            if self.zone_wait and not self.zone_wait["end"]:
+                self.zone_wait["end"] = gnow()
+            return {"ok": True, "text": "paths may cross the ring corridors of " +
+                    ", ".join(f"the {k} centred {Y},{X}" for Y, X, k in here) +
+                    " on this level (never the rooms inside)"}
         if args:
             m = re.match(r"^(\d+)[ ,](\d+)$", args[0])
             if m:
@@ -830,7 +855,34 @@ class CommandsMixin:
                                           "`goal quiet` first (it waits somewhere clear), then loadout"}
         return {"ok": True, "text": self.loadout_info(shops="shops" in args)}
 
+    def town_stage(self):
+        """plan town's stage, and its sub-goal if one runs ("buying: shop 5")."""
+        g = self.goal
+        if not isinstance(g, TownKit):
+            return "done"
+        sub = getattr(g, "sub", None)
+        return g.stage + (f": {sub.describe() if hasattr(sub, 'describe') else type(sub).__name__}" if sub else "")
+
+    def queue_tick(self):
+        """2.53.0: a plan or goal queued while plan town ran starts once plan town (and a trip's town phase) is over;
+        the Navigator is told how it went (news if it started, an alert if it was refused). True if it ran."""
+        q = self.queued
+        if not q or isinstance(self.goal, TownKit) or (self.plan and self.plan.phase == "town"):
+            return False
+        self.queued = None
+        self.acting = "arch" if q["role"] == "architect" else "nav"
+        r = self.do_request({"cmd": q["cmd"], "args": q["args"], "role": q["role"]})
+        text = f"`{q['cmd']} {' '.join(q['args'])}`"
+        if r.get("ok"):
+            self.notify("queued", f"plan town is done: your queued {text} started", news=True)
+        else:
+            self.notify("queued", f"plan town is done, but your queued {text} was refused: {r.get('error')}")
+        return True
+
     def cmd_stop(self):
+        if self.queued:
+            self.log("queued_dropped", cmd=self.queued["cmd"], args=self.queued["args"][:12])
+            self.queued = None
         self.set_goal(None)
         self.stop_resting()
         if self.plan:
@@ -1063,11 +1115,15 @@ class CommandsMixin:
     def request_plan(self, args):
         """plan trip ... | plan town [kit=A|B|C|none] [buy [STORE/]NAME[:N][@CAP][,...]]... | plan stop | plan resume |
         plan"""
+        q = self.queued
+        queued = f"; queued after plan town ({self.town_stage()}): `{q['cmd']} {' '.join(q['args'])}`" if q else ""
         if not args:
-            return {"ok": True, "text": f"plan: {self.plan.describe()}" if self.plan else "no plan"}
+            return {"ok": True, "text": (f"plan: {self.plan.describe()}" if self.plan else "no plan") + queued}
         if args[0] == "stop":
+            if q:
+                self.queued = None           # (2.53.0: the queued plan goes too)
             if not self.plan:
-                return {"ok": True, "text": "no plan"}
+                return {"ok": True, "text": "no plan" + (" (the queued one dropped)" if q else "")}
             self.log("plan_end", plan=self.plan.text, status="stopped")
             self.plan = None
             self.clear_plan_file()
@@ -1737,6 +1793,7 @@ class CommandsMixin:
             if not st.get("house"):
                 return {"ok": False, "error": "no house owned"}
             keep = int(args[1]) if sub == "deposit" and len(args) > 1 and args[1].isdigit() else None
+            self.drop_fails, self.drop_told = {}, set()     # (2.53.0: the stash drops tried afresh)
             g = HouseBank(sub, keep=keep,
                           fetch=[n for n, _ in self.stash_fetch_list("house")] if sub == "withdraw" else ())
         else:

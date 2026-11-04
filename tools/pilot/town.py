@@ -327,8 +327,43 @@ class TownMixin:
             return min(seen)
         return self.KIT_ITEMS.get(kind, (0, 0, None))[2]
 
+    # light radius (xtra1.c calc_torch): a torch 1 and a lantern 2 while fuelled; a Dwarven Lantern 2 and a Feanorian
+    # Lamp 3, and any artifact light 3, need no fuel
+    def light_radius(self, it):
+        """(radius, permanent) of a light."""
+        n = it["name"]
+        if "Feanorian" in n or (it["tval"] == TV_LITE and self.true_artifact(n, TV_LITE)):
+            return 3, True
+        if "Dwarven" in n:
+            return 2, True
+        if "Torch" in n:
+            return 1, False
+        if "Lantern" in n:
+            return 2, False
+        return 1, light_turns(n) is None
+
+    def light_better(self, it, worn):
+        """2.53.0 (the user, m63: the Phial sat in the pack as "a backup for the light slot" beside the Brass Lantern;
+        the gear evaluator ignores radius and fuel): a light needing no fuel with a radius at least the worn one's
+        beats a fuelled one; otherwise, both alike, the larger radius wins."""
+        (r, perm), (rw, permw) = self.light_radius(it), self.light_radius(worn)
+        if self.light_left(it) <= 0:
+            return False
+        return (perm and not permw and r >= rw) or (perm == permw and r > rw)
+
+    def permanent_light(self):
+        """The light needing no fuel, of radius 2+, worn or carried (the best), or None: with one, the lantern's fuel
+        isn't needed -- no flasks bought, the lantern and the flasks sold, the supply line says "light permanent"."""
+        lights = [i for i in self.w.items(equip=True) + self.w.items(tval=TV_LITE) if i["tval"] == TV_LITE
+                  and not bad_inscription(i["name"])]
+        perm = [(r, i) for i in lights for r, pm in [self.light_radius(i)] if pm and r >= 2]
+        return max(perm, key=lambda ri: ri[0])[1] if perm else None
+
     def lantern_fuel(self):
-        """Turns of fuel in the lantern (worn, else the best in the pack), or None without one."""
+        """Turns of fuel in the lantern (worn, else the best in the pack), or None without one -- or (2.53.0) with a
+        permanent light worn or carried (permanent_light): no oil is needed then."""
+        if self.permanent_light():
+            return None
         def fuels(items):
             return [t for i in items if "Lantern" in i["name"] for t in [light_turns(i["name"])] if t is not None]
         worn = fuels(self.w.items(equip=True))      # (not the max of all: a full spare hid a half-empty worn one, m39)
@@ -481,6 +516,16 @@ class TownMixin:
         name, tv = it["name"], it["tval"]
         if it.get("equip"):
             return None
+        # (2.53.0: an artifact wearable can't be stored -- the server won't drop it above its depth -- so it stays in
+        # the pack, never sold by the policy; the Navigator's `review sell` or `sell !` can)
+        if tv in geareval.SLOT_OF_TVAL and self.true_artifact(name, tv) and \
+                self.review_state()["decided"].get(name) != "sell":
+            if name not in self.artifact_told:
+                self.artifact_told.add(name)
+                self.notify("tactic", f"{name}: an artifact -- the server won't let it be dropped above its depth, so "
+                                      "it can't be stored; kept in the pack (`review sell` / `sell !` to sell it)",
+                            news=True)
+            return ("keep", "an artifact: the server won't let it be dropped above its depth (kept in the pack)")
         # (2.50.0, the user: the stash -- a backup for a worn slot, the store list, the Restores, Stone to Mud -- is
         # stored, never sold; it wins over the keep list, which only holds an item in the pack)
         why = self.stash_reason(it)
@@ -545,6 +590,10 @@ class TownMixin:
             others = [i for i in self.w.items(equip=True) + self.w.items() if i["tval"] == TV_LITE and
                       "Lantern" in i["name"] and i["item"] != it["item"]]
             spare = any(self.light_left(o) >= self.light_left(it) for o in others)
+        # (2.53.0: beside a light needing no fuel -- the Phial -- lanterns and torches are spare lights)
+        perm = self.permanent_light() if it["tval"] == TV_LITE and not it.get("equip") else None
+        if perm is not None and perm["item"] != it["item"] and not self.light_radius(it)[1]:
+            spare = True
         # (a staff doing what a carried rod does is spare: m43 carried a Staff of Door/Stair Location beside the Rod)
         rod_dup = it["tval"] == 55 and any(i["tval"] == 66 and re.sub(r".*\bof ", "", re.sub(r"\s*\(.*", "", i["name"]))
                                            in name for i in self.w.items())
@@ -857,10 +906,44 @@ class TownMixin:
     BACKUP_MIN_SALE = 1000
     BACKUP_SLOT_LABEL = {"body": "body armour"}
 
+    @staticmethod
+    def true_artifact(name, tval=None):
+        """A true artifact (the Phial, 'Narthanc'...), identified or not: geareval reads its artifact, its kind exists
+        only as artifacts (INSTA_ART: the Phial, the Star, the Arkenstone), or its name is an artifact's."""
+        gi = geareval.Item(name, tval)
+        return bool(gi.art or "INSTA_ART" in (gi.kind or {}).get("flags", ()) or
+                    re.search(r"'\w|\bthe \w+ of [A-Z]", name or ""))
+
+    # (2.53.0, m63 11:11-11:14: `custom d` of the Phial answered "You can not drop this here." ~600 times) a drop the
+    # server refuses ends that item's stashing for the visit at once; any 3 drops that didn't happen do too
+    DROP_TRIES = 3
+
+    def drop_failed(self, name, since):
+        """A stash drop sent at `since` that didn't happen (the item still in the pack): counted; the server's "You can
+        not drop this here." gives up at once. True once the item is given up for this visit (news, once)."""
+        k = bare_name(name).lower()
+        refused = any(ts >= since - 0.5 and "can not drop this here" in t.lower() for ts, t in self.w.messages)
+        n = self.drop_fails.get(k, 0) + (self.DROP_TRIES if refused else 1)
+        self.drop_fails[k] = n
+        if n >= self.DROP_TRIES and k not in self.drop_told:
+            self.drop_told.add(k)
+            self.notify("tactic", f"{name}: " + ("the server won't let it be dropped here" if refused else
+                                                 f"{self.DROP_TRIES} drops didn't happen") +
+                        " -- not stashed this visit, kept in the pack", news=True)
+        return n >= self.DROP_TRIES
+
+    def stash_to_drop(self, it):
+        """A pack item the stash steps should drop now: a stash item not given up on this visit (drop_failed)."""
+        return self.is_stash_item(it["name"]) and \
+            self.drop_fails.get(bare_name(it["name"]).lower(), 0) < self.DROP_TRIES
+
     def is_stash_item(self, name):
         """A pack item's name the stash takes: the stat-restore potions (not Restore Mana) and Wands of Stone to Mud
         (10-26), a name on the user's store list, or (a pack item's name) the best backup for a worn slot
-        (stash_backup) -- 2.50.0."""
+        (stash_backup) -- 2.50.0. Never a true artifact (2.53.0: the server refuses to drop one above its depth,
+        object2.c inven_drop_okay -- town and the house tile are above every artifact; m63's Phial looped)."""
+        if self.true_artifact(name):
+            return False
         # (stat restores only: a Potion of Restore Mana went into the stash in m48 -- useless to a warrior)
         if re.search(self.STASH_KINDS, name) or ("Stone to Mud" in name and "Wand" in name) or \
                 self.on_store_list(name):
@@ -903,8 +986,8 @@ class TownMixin:
         light (not a bow) the shops can't sell -- an ego or an artifact, or jewellery/a light of a kind shops 1-6
         don't stock -- identified (not merely felt), not cursed. (Whether it is worth storing -- BACKUP_MIN_SALE or an
         ability not otherwise worn -- is backup_qualifies, with the gear model.)"""
-        if bad_inscription(name):
-            return None
+        if bad_inscription(name) or self.true_artifact(name, tval):
+            return None               # (2.53.0: an artifact can't be dropped in town or the house: never stored)
         gi = geareval.Item(name, tval, weight)
         if not gi.slot or gi.slot == "bow" or not (gi.kind or gi.art):
             return None
@@ -1397,6 +1480,8 @@ class TownMixin:
         else:
             flasks = sum(num(i) for i in w.items(tval=TV_FLASK))
             light = (fuel + flasks * self.FLASK_FUEL) / self.TURNS_PER_DMIN
+        if self.permanent_light():
+            light = None                     # (2.53.0: worn or carried -- in town the light is taken off when idle)
         return food, light
 
     def supply_text(self, minus=None):
@@ -1417,6 +1502,11 @@ class TownMixin:
         # (2.51.0, m62 09:32: "~5 minutes" right after a ration was eaten -- the pack and the stomach hadn't caught up.
         # Not while a meal waits for the pack, nor within 3 s of an eat, fuel or destroy, nor with the pack being read)
         la = self.last_action
+        # (2.53.0, m63 10:44:37: Full -> Fed and "food ~5 dungeon minutes" on that tick -- the level's bottom, 2000,
+        # before the tracker pinned 9990-9999 later in the tick. Not until the tracker has seen this hunger level)
+        st = self.stomach
+        if st is not None and st.level is not None and st.level != w.hunger:
+            return
         if w.inven_dirty or (self.stomach is not None and self.stomach.pending) or \
                 (la and gnow() - la[0] < 3 and re.match(r"(eat |custom [kEF] )", la[1])):
             return

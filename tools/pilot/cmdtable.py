@@ -78,7 +78,7 @@ COMMANDS = {
                 help="the long report with a bigger map", group="Viewer"),
     "navview": Cmd("cmd_navview", call="none", dead=True, logged=False, viewer=True, usage="navview",
                    help="what the Navigator last saw", group="Viewer"),
-    "avoid": Cmd("cmd_avoid", dead=True, usage="avoid [Y,X [R] | NAME | clear]",
+    "avoid": Cmd("cmd_avoid", dead=True, usage="avoid [Y,X [R] | NAME | clear | pass]",
                  help="no-go zones for paths", group="Orders"),
     "viewmap": Cmd("cmd_viewmap", dead=True, logged=False, viewer=True, usage="viewmap [ROWS] [COLS]",
                    help="JSON: the map and colours around @", group="Viewer"),

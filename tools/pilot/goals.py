@@ -229,6 +229,9 @@ class Explore(Goal):
             if not self.radius and Search.dead_ends(w, strict=True, skip=p.searched):
                 self.search = Search(tries=15, strict=True)
                 return None
+            # (2.53.0: the unexplored ground beyond an avoid zone -- the Navigator decides)
+            if p.zone_hold(frontier, "the unexplored ground"):
+                return None
             return ("failed", "frontier unreachable")
         self.target = p.mover.path[-1] if p.mover.path else None
         # In a corridor with nothing about: run along it the way the path
@@ -393,6 +396,8 @@ class Dive(Goal):
         if downs and not self.walking:
             if p.mover.go(downs):
                 self.walking = True
+            elif p.zone_hold(downs, f"the '{want}' at " + ", ".join(f"{d[0]},{d[1]}" for d in downs[:3])):
+                return None           # (2.53.0: an avoid zone alone blocks them -- the Navigator decides)
             else:
                 self.mark_bad(w, downs)
         if self.walking:
@@ -449,6 +454,8 @@ class Dive(Goal):
         if ups and (self.explore is None or not isinstance(self.explore, Explore) or not p.mover.active):
             if not p.mover.active and not p.mover.go(ups):
                 # no path to any of them (it spun here re-planning 20x a second)
+                if p.zone_hold(ups, f"the '{other}' at " + ", ".join(f"{u[0]},{u[1]}" for u in ups[:3])):
+                    return None       # (2.53.0: an avoid zone alone blocks them -- the Navigator decides)
                 self.mark_bad(w, ups)
             else:
                 st = p.mover.tick()

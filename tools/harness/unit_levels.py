@@ -329,3 +329,95 @@ def login_level_not_set_by_the_first_dungeon_level():
     d_first, d_after, _ = run(16)
     ok = t_first is None and t_after is None and d_first not in (None, False) and d_after == d_first
     return ok, f"started in town: {t_first} then {t_after}; started at 800 ft: {d_first} then {d_after}"
+
+
+# m63's 800 ft level (runs/pilot/dive04/levels/20261104-103417-800ft.txt, rows 0-13 from column 103): a dark inner room
+# centred 5,115, its ring corridor holding the only '<' (1,109, the arrival); Dive04 below it at 12,120
+_M63_ROOMS = ["#########################",
+              "#.....<.................#",
+              "#.#####################.'",
+              "#.#                   #.'",
+              "#.#                   #.#",
+              "#.#                   #.#",
+              "#.#                   #.#",
+              "#.#                   #.#",
+              "#.#####################.#",
+              "#.......................#",
+              "############..#..###..###",
+              "           #..........#",
+              "              #.......#",
+              "              #########"]
+
+
+def _m63_level():
+    p = pilot(hp=300)
+    w = p.w
+    w.memory = {(y, 103 + x): ch for y, row in enumerate(_M63_ROOMS) for x, ch in enumerate(row) if ch != " "}
+    w.pos, w.level_t, w.last_hit_t, w.monsters = (12, 120), 7.0, -99.0, []
+    w.depth, w.depth_ft = 16, 800
+    p.structs = {(7.0, (5, 115)): {"t": 0.0, "lit": False, "kind": "inner room", "sure": True}}
+    p.avoid_zones = {7.0: [(5, 108, 6), (5, 115, 6), (5, 122, 6)]}     # (structures_tick's three discs)
+    p.quiet_spot = lambda reach=30: None
+    p.mover = type("M", (), {"active": False, "go": lambda self, t: False, "tick": lambda self: "idle",
+                             "stop": lambda self: None})()
+    p.avoid_tick()
+    return p
+
+
+@case
+def avoid_zone_blocking_the_stairs_asks_the_navigator():
+    """2.53.0 (the user after m63: "when an avoid zone blocks the Pilot's path, but the Navigator has time to evaluate
+    the situation, allow it to decide"). m63 at 800 ft: the inner room's zone covered its ring and the only '<'. With
+    time (nothing dangerous in view, not hit, HP fine) the Pilot holds and a `zone_blocks` alert names the stairs, the
+    room and the path through; `avoid pass` opens the ring and its surroundings (never the room inside) and the path
+    to the '<' is found; no answer in 90 s, or danger in view: as before (the stairs are given up)."""
+    import mover
+    p = _m63_level()
+    w = p.w
+    stairs = [(1, 109)]
+    before = mover.plan(w, stairs)
+    blk = p.zone_blocks(stairs)
+    held = p.zone_hold(stairs, "the '<' at 1,109")
+    alert = next((d for k, d in p.notes if k == "zone_blocks"), "")
+    again = p.zone_hold(stairs, "the '<' at 1,109")
+    r = p.do_request({"cmd": "avoid", "args": ["pass"], "role": "navigator"})
+    p.avoid_tick()
+    path = mover.plan(w, stairs)
+    inner = [q for q in path or [] if 2 <= q[0] <= 8 and 105 <= q[1] <= 125]
+    after = p.zone_hold(stairs, "the '<' at 1,109")          # (answered: the hold is over)
+    t = _m63_level()
+    t.zone_hold(stairs, "the '<' at 1,109")
+    t.zone_wait["t0"] -= 100
+    timeout = t.zone_hold(stairs, "the '<' at 1,109")
+    spent = round(t.zone_hold_spent(7.0))
+    d = _m63_level()
+    d.dangers = lambda: ["a Young blue dragon"]
+    danger = d.zone_hold(stairs, "the '<' at 1,109")
+    ok = before is None and blk and blk["to"] == (1, 109) and blk["structs"] == [(5, 115, "inner room")] and held \
+        and again and "1,109" in alert and "avoid pass" in alert and "inner room centred 5,115" in alert and \
+        r["ok"] and path and path[-1] == (1, 109) and not inner and after is False and timeout is False and \
+        spent == 90 and danger is False and not any(k == "zone_blocks" for k, _ in d.notes)
+    return ok, (f"blocked {before is None}; ignoring the zone {blk}; held {held}/{again}: {alert!r}; avoid pass {r}: "
+                f"path {len(path or [])} steps, inside the room {inner}; timeout {timeout} (held {spent} s); "
+                f"danger {danger}")
+
+
+@case
+def dive_holds_when_a_zone_blocks_its_stairs():
+    """2.53.0: the Dive leg out of m63's 800 ft level (up, the '<' in the ring) holds instead of marking the stairs
+    unreachable: it returns no result, the hold is on, the alert raised once; the stairs aren't given up."""
+    p = _m63_level()
+    w = p.w
+    w.standing_on, w.arrive_pos = ".", (1, 109)
+    w.find = lambda g: [q for q, ch in w.memory.items() if ch in g]
+    p.item_hold_until, p.fled_from, p.kept, p.scummed = 0, None, set(), set()
+    p.orders["max_depth"] = 800
+    p.loot_step = lambda st: False
+    p.loot_beside = lambda: False
+    p.pillared = lambda: False
+    g = P.Dive(750)
+    g.start_ft, g.level_seen, g.probed = 800, w.level_t, (w.level_t, w.pos)
+    results = [g.tick(p) for _ in range(3)]
+    ok = results == [None] * 3 and p.zone_wait and not p.zone_wait["end"] and not g.bad_stairs and \
+        [k for k, _ in p.notes] == ["zone_blocks"]
+    return ok, f"ticks {results}; hold {p.zone_wait}; bad stairs {g.bad_stairs}; notes {[k for k, _ in p.notes]}"

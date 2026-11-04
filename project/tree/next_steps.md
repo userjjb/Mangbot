@@ -436,3 +436,25 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   (fba3d7e) and deleted locally and on GitHub; pushes go to `master --tags`. The revert instructions (`restructure.md`),
   the 10-22 backup (`runs/backup-pre-restructure-20261022/`) and the restructure memory were deleted; the tag
   `pre-restructure` and the version tags remain.
+
+### SESSION 12 RECORD (2026-11-04 on; "missions: test everything since m60"; SGE job 8406367, scc-va3, ends Sat 11-07 19:55)
+- **The user's decisions at the start (11-04):** store spares instead of selling ("spare items that are valuable and
+  can't be bought should be stored when possible": gear backups + a user store list; house first, then INSIDE the
+  tavern room; no room -> the Navigator `ask`s the Architect -- discuss buying another house); eat a restore mushroom
+  for a STR/DEX/CON drain; Potions of Enlightenment are not crutches; stored finds count as mission income, fresh
+  finds marked by a `{mNN}` inscription (the user's idea; acquired.json as the fallback).
+- **2.50.0** (the above + the stash record checked against the floor: a live check found an unrecorded second Restore
+  Charisma in the house and a Scimitar scattered by drop_near). The Scimitar of Westernesse is in the house (backup).
+- **m62** (Sonnet medium, 45 min, 2.50.0): 79.5 XP/dmin, clean; the stash overflow to the tavern, `{m62}` labels, the
+  first stomach pin all worked. Report `runs/pilot/dive04/reports/2026-11-04-mission62.md`.
+- **2.51.0** (the user after m62): far fetch for kit/valuable potions and scrolls; a backup must be worth 1000+ at sale
+  or add an ability the worn gear lacks (others fetched and sold); WoR 3 in kits B/C; make-room news counts; the
+  Plan line shows the trip's end.
+- **m63** (Sonnet medium, 2.51.0 -> 2.52.0): 58.7 XP/dmin. The Navigator's `plan trip` cut plan town's house visit
+  short and the idle gold fetch took the 25k bank pile (the record still said banked): the Architect recalled home
+  mid-mission. **2.52.0**: gold fetch never in the house; a stale bank record recovers; the login level bug (a Pilot
+  started in town took its first dungeon level as "kept" -> stairs back held 300 s). Open after m63 -> 2.53.0 (being
+  built): the avoid zone over an inner room's ring blocks the only `<` -> the Navigator decides (the user); a plan
+  sent during plan town is queued (the user); the false food alert at a hunger crossing.
+- **Lessons:** `restart.sh` loads the working tree; hand-walking into the house picks up the bank pile (the step-in
+  square) -- never do it; `goal goto` queued behind raw steps can path back through the house.

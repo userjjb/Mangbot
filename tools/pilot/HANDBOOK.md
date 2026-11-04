@@ -30,8 +30,8 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
    to this file: lessons from past missions). Decide the mission: town buys, depth range, number of trips, conditions,
    standing orders. Write that plan in your journal.
 1. **In town:** `status`, then `plan town [kit=A|B|C|none] [buy NAME[:N][@MAX],...]`, then `wait` **until its
-   goal_done** (m63: a `plan trip` sent 6 s after `plan town` cut its house visit short and the bank's gold left the
-   house; check the bank line, `(+N banked)`, before the trip). The Pilot sells
+   goal_done** (since 2.53.0 a `plan trip` or `goal` sent meanwhile is queued and starts after it: "queued after plan
+   town"; if the summary starts "BANK: N gold still carried", run `house deposit` before the trip). The Pilot sells
    by policy, identifies what pays, and buys in priority order: Word of Recall to 2 (kits B and C then keep 3), the supply gate's minimums,
    Restore for a drained STR/DEX/CON, the kit, then your list (`NAME:N` means *have* N in all, not N more). From
    500 ft down the kit keeps **3 Heroism** (the fear cure) and **2 Potions of Speed** (Black Market, at most 600 each; often
@@ -44,7 +44,9 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
    fetches one. A **`stash_full`** alert means there is no room left: `ask` the Architect (another house is their
    call). In the dungeon a found Restore is picked up and drunk, and a known Mushroom of Restore Strength / Restore
    Constitution / Restoring eaten, once the fight is over (STR/DEX/CON only). A `{m62}` on an item in the pack (or
-   `{good - m62}`) is the Pilot's mark: found in mission m62 (it counts a stored find as that mission's income); leave it. With
+   `{good - m62}`) is the Pilot's mark: found in mission m62 (it counts a stored find as that mission's income); leave it.
+   An artifact can't be stored (the server won't drop it in town): it stays in the pack. A light needing no fuel (the
+   Phial) is worn over a lantern; then no oil is bought and the lantern and flasks are sold. With
    3,000+ gold it also restores Charisma (better prices). Last it **eats rations to Fed (at most 3, when Hungry or
    worse) and fills the lantern to full** (food isn't digested in town; 15000 turns of light, ~70 dungeon minutes), so you carry one food stack and no oil:
    other food and spare flasks are sold. In the dungeon, when loot needs room, the Pilot eats (if it won't Gorge) and
@@ -111,7 +113,7 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 | `react leave NAME` / `react hunt NAME` / `react thieves kill` / `react afraid teleport`; `react -N`, `react clear`, `react` | **executable standing orders**: decided by you in advance, done by the Pilot at once -- leave the level when NAME is in view; hunt NAME on sight (the hunt checks apply); hunt a thief within 6 squares; afraid with no fear cure and monsters adjacent -> teleport. Shown on the `Standing:` line |
 | `review` / `review sell\|keep\|wear NAME` | **the item-review queue**: identified gear that gives an ability or resist, artifacts, and gear worth 1000+ that the gear evaluator wouldn't wear are held for your word instead of sold (the `Review:` line). Undecided after 2 town visits, the policy sells |
 | `keep NAME` / `keep -NAME` | protect an item from the policy (free) |
-| `avoid Y,X [R]` / `avoid NAME` / `avoid clear` | no-go zones and monsters for the Pilot's paths |
+| `avoid Y,X [R]` / `avoid NAME` / `avoid clear` / `avoid pass` | no-go zones and monsters for the Pilot's paths; `avoid pass` lets paths cross this level's inner-room/pit rings (never the rooms) -- the answer to a `zone_blocks` alert |
 | `order max_depth=FEET` (and the other orders in the reference) | standing orders; `max_depth` caps every plan; `band_frac=0.5` is what counts as a band to leave (fighting it all would cost more than this x your HP) |
 | `standing TEXT` / `standing -N` | standing instructions shown in every report (the user's "don't kill the Rot jelly") |
 | `monster NAME` | this server's data for a monster, whether a danger rule fires, **the hunt check's verdict** (turns, HP on average and in a bad fight) and **what a kill drops** |
@@ -184,7 +186,9 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 
 - **Bands** count only when together they could take 30% of your HP in a turn, or include a dangerous monster; weaker
   groups are fought (and looted) where they stand. **Dark inner rooms** get an avoid zone over their ring corridor (a
-  pit looks the same until it opens): `avoid clear` if you mean to open one.
+  pit looks the same until it opens): `avoid clear` if you mean to open one. When such a zone is all that keeps the
+  Pilot from the stairs it needs, it holds on a quiet spot and asks (`zone_blocks`, 90 s): `avoid pass` to walk the
+  ring (not the room), or `goal recall`; no answer: it recalls as before.
 
 - **The Pilot's own emergency recall can land before yours:** after an emergency, check `status` before sending
   `goal recall` (a second Word of Recall would cancel the first; the Pilot refuses to resend one, so yours is wasted

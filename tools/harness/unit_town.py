@@ -578,3 +578,50 @@ def word_of_recall_three_in_kits_b_and_c():
     ok = got == {"B (650 ft)": [(1, 1), (4, 1)], "C (1100 ft)": [(1, 1), (4, 1)], "A (300 ft)": [(1, 1)],
                  "kit=A at 650": [(1, 1)]}
     return ok, f"{got}"
+
+
+@case
+def plan_sent_during_plan_town_is_queued():
+    """2.53.0 (the user after m63: a `plan trip` 6 s into plan town cut its house visit short): a Navigator's
+    `plan trip` or `goal ...` sent while plan town runs is queued -- "queued after plan town (it is at: <stage>)" --
+    shown by `plan`, dropped by `stop`; once plan town is over it starts (news). The Architect's go through. plan
+    town's summary says plainly when gold is left in the purse with a house owned ("BANK: N gold still carried --
+    `house deposit`") and raises a `bank` alert."""
+    def make():
+        p = pilot(gold=300)
+        p.w.depth, p.w.depth_ft, p.w.in_dungeon, p.w.resting = 0, 0, False, False
+        p.mover = type("M", (), {"active": False, "stop": lambda self: None})()
+        p.stop_resting = lambda: None
+        k = P.TownKit()
+        k.stage = "buying"
+        p.goal = k
+        return p, k
+    p, k = make()
+    q = p.do_request({"cmd": "plan", "args": ["trip", "700-800", "then", "town"], "role": "navigator"})
+    shown = p.do_request({"cmd": "plan", "args": [], "role": "navigator"})["text"]
+    p.do_request({"cmd": "stop", "args": [], "role": "navigator"})
+    dropped = p.queued
+    p, k = make()
+    q2 = p.do_request({"cmd": "goal", "args": ["wait", "5"], "role": "navigator"})
+    early = p.queue_tick()
+    p.goal = None                           # (plan town's goal_done)
+    started = p.queue_tick()
+    goal = p.goal.describe() if p.goal else None
+    news = [d for k_, d in p.notes if k_ == "queued"]
+    a, _ = make()
+    arch = a.do_request({"cmd": "goal", "args": ["wait", "5"], "role": "architect"})
+    # the bank line
+    b, kit = make()
+    b.w.ind["gold"] = [26000]
+    b._house = {"house": {"door": [60, 129]}, "banked": 0}
+    b.supply_gate = lambda depth, recall: []
+    kit.done_log = ["house: failed (the bank's 25444 gold wasn't picked up on the way in)"]
+    r = kit.finish(b)
+    bank = [d for k_, d in b.notes if k_ == "bank"]
+    ok = q.get("queued") and "queued after plan town (it is at: buying)" in q["text"] and \
+        "queued after plan town" in shown and "plan trip" not in str(p.queued) and dropped is None and \
+        q2.get("queued") and early is False and started is True and goal and goal.startswith("wait") and news and \
+        "started" in news[0] and not arch.get("queued") and \
+        r[1].startswith("BANK: 26000 gold still carried -- `house deposit` (house: failed") and bank
+    return ok, f"queued {q}; plan {shown!r}; after stop {dropped}; goal queued {q2}, started {started} -> {goal}, " \
+               f"news {news}; architect {arch}; finish {r[1][:120]!r}; bank alert {bank}"

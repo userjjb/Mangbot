@@ -1,5 +1,11 @@
 {
- "items": {},
+ "items": {
+  "an Amulet of Searching (+5) {m63}": {
+   "why": "worth ~1100",
+   "visit": 63,
+   "t": "2026-11-04 11:08"
+  }
+ },
  "decided": {
   "a Ring of Resist Fire": "sell",
   "a Ring of Protection [+7]": "sell",
@@ -24,5 +30,5 @@
   "a Ring of Feather Falling": "sell",
   "a Ring of Resist Fire {m62}": "sell"
  },
- "town_visits": 62
+ "town_visits": 64
 }

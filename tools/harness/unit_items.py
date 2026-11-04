@@ -350,3 +350,27 @@ def make_room_news_counts_what_went():
     ok = text == ("2 of 3 Rations of Food (1 kept)", "3 Rations of Food") and \
         round(food_all - food_one) == round(2 * 5000 / (2 * p.TURNS_PER_DMIN)) and quiet == [] and "supplies" in later
     return ok, f"news {text}; food {food_all:.0f} -> {food_one:.0f} min; within 3 s {quiet}; later {later}"
+
+
+@case
+def no_food_alert_on_the_crossing_tick():
+    """2.53.0 (m63 10:44:37): Full -> Fed, and on that tick supply_watch said "food ~5 dungeon minutes" -- the new
+    level's bottom (2000), before the stomach tracker pinned 9990-9999 later in the tick. supply_watch now waits until
+    the tracker has seen the hunger level. And (m63 10:43:02) a meal from a stack is logged as one item ("a Ration of
+    Food", not "3 Rations of Food")."""
+    p = pilot(pack=[("a Flask of oil", 77)])
+    p.w.in_dungeon, p.w.flags = True, {}
+    p.trip_minutes_left = lambda: 30
+    p.plan, p.food_warned, p.supply_told = None, None, set()
+    p.w.hunger = 3
+    p.stomach.level = 4                      # (the tracker last saw Full)
+    p.supply_watch()
+    skipped = [k for k, _ in p.notes]
+    p.stomach.level = 3                      # (the tracker has seen Fed)
+    p.supply_watch()
+    fired = [k for k, _ in p.notes]
+    q = pilot(pack=[("3 Rations of Food", 80)])
+    q.stomach_sent("custom E item=0")
+    meal = q.stomach.pending[0]["name"] if q.stomach.pending else None
+    ok = skipped == [] and "supplies" in fired and meal == "a Ration of Food"
+    return ok, f"on the crossing tick {skipped}; after the pin {fired}; meal logged as {meal!r}"

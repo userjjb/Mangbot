@@ -524,7 +524,9 @@ class StashDeposit(Goal):
             key = f"{q[0]},{q[1]}"
             if not p.same_item(rec["name"], name):
                 if any(p.same_item(rec["name"], i["name"]) for i in w.items()):
-                    return None              # (the drop didn't happen: tried again below)
+                    # (the drop didn't happen: counted -- 3 of them, or the server's refusal, give it up this visit)
+                    p.drop_failed(rec["name"], t0)
+                    return None
                 key = next(f"?{n}" for n in range(len(tav) + 1) if f"?{n}" not in tav)
                 p.notify("tactic", f"tavern: dropped {rec['name']} at {q[0]},{q[1]} but it isn't there (scattered): "
                                    "recorded as somewhere in the room", news=True)
@@ -533,7 +535,7 @@ class StashDeposit(Goal):
             p.house_save()
             self.dropped.append(rec["name"])
             return None
-        items = [i for i in w.items() if p.is_stash_item(i["name"])]
+        items = [i for i in w.items() if p.stash_to_drop(i)]
         if not items:
             return ("done", "stashed " + ", ".join(self.dropped) if self.dropped else "nothing to stash")
         # Inside the room, on an empty square (the user, 10-27: the inside is walkable). Dropped from the entrance,
@@ -794,16 +796,22 @@ class HouseBank(Goal):
                 ok, name = self.read_square(p, q)
                 if not ok:
                     return True
+                refused = any(ts >= self.arrive[1] - 0.5 and "can not drop this here" in t.lower()
+                              for ts, t in w.messages)
                 if p.same_item(rec_name(rec), name):
                     slots[f"{q[0]},{q[1]}"] = self.pending.pop(q)
                     p.stash_commit(slots[f"{q[0]},{q[1]}"], "house")
                     self.seen[q] = name
                     p.house_save()
-                elif self.rechecks < 2:
+                elif not refused and self.rechecks < 2:
                     return recheck()             # (it went elsewhere: the next reconcile finds it)
                 else:
                     self.pending.pop(q)
-            items = [i for i in w.items() if p.is_stash_item(i["name"])]
+                    # (2.53.0: refused by the server, or still not seen: a failed drop -- 3 of them, or a refusal,
+                    # and the item is kept in the pack this visit; m63's Phial looped ~600 times)
+                    if refused or any(p.same_item(rec_name(rec), i["name"]) for i in w.items()):
+                        p.drop_failed(rec_name(rec), self.arrive[1])
+            items = [i for i in w.items() if p.stash_to_drop(i)]
             it = max(items, key=lambda i: p.iv(i["name"]).value * i["number"]) if items else None
             free = [q for q in others if self.seen.get(q) is None and f"{q[0]},{q[1]}" not in slots
                     and q not in self.pending]
@@ -1295,6 +1303,7 @@ class TownKit(Goal):
         """The first tick: the visit counted (the review queue) and the supplies told."""
         if not self.counted:
             self.counted = True
+            p.drop_fails, p.drop_told = {}, set()     # (2.53.0: a new visit tries the stash drops again)
             p.review_state()["town_visits"] += 1
             p.review_save()
             p.notify("tactic", f"plan town: came back with {p.supply_text()} (reserves counted)", news=True)
@@ -1632,7 +1641,7 @@ class TownKit(Goal):
         w = ctx.w
         # last: the stash kinds go to the tavern for the mission (Restore potions, Stone to Mud wands)
         if not self.stashed and not p.house_state().get("house") and \
-                any(p.is_stash_item(i["name"]) for i in w.items()):
+                any(p.stash_to_drop(i) for i in w.items()):
             self.stashed = True
             self.sub = StashDeposit()
             return None
@@ -1645,7 +1654,7 @@ class TownKit(Goal):
         # (2.50.0: for the stash only while the house has a free square -- else the tavern room takes it, below)
         if not self.deposited and p.house_state().get("house") and \
                 (w.ind.get("gold", [0])[0] > p.BANK_FLOAT + 500 or
-                 (any(p.is_stash_item(i["name"]) for i in w.items()) and p.stash_room()["house"])):
+                 (any(p.stash_to_drop(i) for i in w.items()) and p.stash_room()["house"])):
             self.deposited = True
             self.sub = HouseBank("deposit")
             return None
@@ -1656,7 +1665,7 @@ class TownKit(Goal):
         from the door first, never from the entrance), recorded in house.json `tavern.items`."""
         w = ctx.w
         if not self.overflowed and p.house_state().get("house") and p.stash_room()["house"] == 0 and \
-                any(p.is_stash_item(i["name"]) for i in w.items()):
+                any(p.stash_to_drop(i) for i in w.items()):
             self.overflowed = True
             if p.stash_room()["tavern"]:
                 self.sub = StashDeposit()
@@ -1672,7 +1681,7 @@ class TownKit(Goal):
         room = p.stash_room()
         if room["house"] or room["tavern"] is None or room["tavern"]:
             return NEXT
-        left = [i["name"] for i in w.items() if p.is_stash_item(i["name"]) and i["name"] not in self.full_told]
+        left = [i["name"] for i in w.items() if p.stash_to_drop(i) and i["name"] not in self.full_told]
         if left:
             self.full_told.update(left)
             whys = [f"{n} ({p.stash_reason(i) or 'stash'})" for n in left
@@ -1694,7 +1703,16 @@ class TownKit(Goal):
                 + f"; leaving with {p.supply_text()}")
         tail = (f"; supplies for recalling to {want} ft: " + ("OK" if not gap else "MISSING " + "; ".join(gap))) \
             if want else ""
+        # (2.53.0, m63: plan town ended with ~26k gold carried and its reply didn't say the bank step had failed)
+        gold = w.ind.get("gold", [0])[0]
+        bank = ""
+        if p.house_state().get("house") and gold > p.BANK_FLOAT + 500:
+            why = next((ln for ln in self.done_log if "house" in ln and ("fail" in ln or "couldn't" in ln
+                                                                          or "wasn't" in ln)), None)
+            bank = f"BANK: {gold} gold still carried -- `house deposit`" + (f" ({why})" if why else
+                                                                           " (the bank step didn't run)")
+            p.notify("bank", f"plan town left {gold} gold in the purse: {bank}")
         p.log("town_kit", sold=self.sold, bought=self.bought, identified=self.identified,
-              gold=w.ind.get("gold", [0])[0], short=short, gap=gap)
-        return ("done", head + tail + ("; not afforded: " + ", ".join(short) if short else "") +
+              gold=gold, short=short, gap=gap, bank_left=bool(bank))
+        return ("done", (bank + "; " if bank else "") + head + tail + ("; not afforded: " + ", ".join(short) if short else "") +
                 (" | " + " | ".join(self.done_log) if self.done_log else ""))

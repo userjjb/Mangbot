@@ -74,6 +74,9 @@ ORDER = """
     finds_marked_with_the_mission_label
     far_fetch_kit_and_valuable_potions backups_must_be_worth_it word_of_recall_three_in_kits_b_and_c
     make_room_news_counts_what_went plan_line_shows_the_trip_end login_level_not_set_by_the_first_dungeon_level stale_bank_record_recovers
+    avoid_zone_blocking_the_stairs_asks_the_navigator dive_holds_when_a_zone_blocks_its_stairs
+    plan_sent_during_plan_town_is_queued no_food_alert_on_the_crossing_tick
+    refused_drops_end_the_stash_step a_permanent_light_beats_the_lantern
 """.split()
 
 

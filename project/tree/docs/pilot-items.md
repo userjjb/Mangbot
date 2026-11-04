@@ -313,6 +313,14 @@ steps 2-6, as gear-and-estimator.md does):
 5. **In town**: the gear evaluator's choice (`gear_better`, simulated fights; see gear-and-estimator.md), at most once
    per 30 s.
 
+**Lights** (2.53.0, the user after m63: the gear evaluator reads neither radius nor fuel, so the Phial tied with the
+Brass Lantern): `light_radius` (xtra1.c calc_torch: a torch 1 and a lantern 2 while fuelled, a Dwarven Lantern 2 and a
+Feanorian Lamp 3 and any artifact light 3 with no fuel); `light_better(it, worn)`: a light needing no fuel with a radius
+at least the worn one's beats a fuelled one, else (both alike) the larger radius. `upgrade_step` wears it (step 2b, also
+at safe moments in the dungeon). `permanent_light()` (radius 2+, no fuel, worn or carried) makes `lantern_fuel` None:
+no flasks to fill or buy, the flasks and lanterns/torches are spare and sold in town, and `supply_minutes` reports the
+light as permanent.
+
 **`wear_step`** (after `wearall`): fills empty slots one per call, best light first, never unknown jewellery.
 **`watch_weapons`** gives news when a carried weapon would beat the wielded one by 20%. **`watch_character`** alerts
 on stat drains (pointing at the stash or the Alchemist for the Restore; an unseen drainer makes us leave the level) and

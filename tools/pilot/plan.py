@@ -341,7 +341,7 @@ class TripPlan:
         """home: no way up found in 3 minutes of climbing: Word of Recall instead."""
         w, now = ctx.w, ctx.now
         if self.phase == "home" and isinstance(p.goal, Dive) and p.goal.by_plan and \
-                now - (self.climb_t0 or now) > 180 and self.value(p, "wor") >= 1 and \
+                now - (self.climb_t0 or now) - p.zone_hold_spent(w.level_t) > 180 and self.value(p, "wor") >= 1 and \
                 not w.recall_pending:
             p.notify("plan", "trip: no way up found in 3 minutes: reading Word of Recall instead", news=True)
             p.set_goal(None)          # (the next tick reads it)
@@ -365,7 +365,9 @@ class TripPlan:
         if self.phase == "level" and w.in_dungeon and self.level == w.level_t and self.level_done:
             if not self.leave_since or self.leave_since[0] != w.level_t:
                 self.leave_since = (w.level_t, now)
-            elif now - self.leave_since[1] > self.LEAVE_MAX and self.value(p, "wor") >= 1 and not w.recall_pending:
+            # (2.53.0: a hold for the Navigator's word on an avoid zone isn't the level refusing to let us go)
+            elif now - self.leave_since[1] - p.zone_hold_spent(w.level_t) > self.LEAVE_MAX and \
+                    self.value(p, "wor") >= 1 and not w.recall_pending:
                 self.phase = "home"
                 self.home_why = f"couldn't leave {w.depth_ft} ft in {self.LEAVE_MAX / 60:g} minutes ({self.level_done})"
                 p.notify("plan", f"trip: coming home ({self.home_why})", news=True)

@@ -31,9 +31,9 @@ from stomach import Stomach                      # noqa: E402
 from report import ReportMixin                   # noqa: E402
 sys.path.insert(0, os.path.join(HERE, "..", "observe"))
 import shopmath                                  # noqa: E402
-from mover import Mover, MAX_HGT, MAX_WID   # noqa: E402
+from mover import Mover, MAX_HGT, MAX_WID, plan as mover_plan   # noqa: E402
 from goals import (Goal, Wait, Explore, Dive, Search, Hunt, Reprieve,  # noqa: E402
-                   WalkAway, Flee, Recall, QuietWait)
+                   WalkAway, Flee, Recall, Recover, QuietWait)
 from town_goals import (EDGE_DIR, edge_of, Town, Shop, StashDeposit, StashFetch,       # noqa: E402
                         town_houses, HouseBank, TownKit)
 from plan import TripPlan, split_specs           # noqa: E402
@@ -233,6 +233,11 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.item_hold_until = 0.0            # a dive pauses after interesting_item
         self.far_seen = set()                 # (level, item) valuables seen beyond loot_radius
         self.far_wanted = {}                  # (level, glyph) -> potions/scrolls worth a far fetch (2.51.0, loot_step)
+        self.zone_pass = set()                # (level, Y, X): structures whose ring paths may cross (`avoid pass`, 2.53.0)
+        self.zone_wait = None                 # a hold for the Navigator's word on a blocking avoid zone (zone_hold)
+        self.queued = None                    # a plan/goal the Navigator sent while plan town ran (2.53.0)
+        self.drop_fails, self.drop_told = {}, set()   # stash drops that didn't happen, this visit (drop_failed)
+        self.artifact_told = set()            # artifacts told "kept in the pack: can't be stored" (town_rule)
         self.effect_failures = 0
         self.redraw_t, self.redraw_level = 0.0, None
         self.factor_logged, self.rate_logged, self.factor_log_t = 1.0, None, 0.0
@@ -1281,8 +1286,99 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         for y0, x0, rc in w.monsters:
             if any(n in rc.name.lower() for n in self.avoid_names):
                 zone |= {(y0 + dy, x0 + dx) for dy in range(-3, 4) for dx in range(-3, 4)}
+        # (2.53.0, `avoid pass`: a structure's ring corridor and its surroundings may be crossed on this level --
+        # never its inner block, the room itself)
+        for lt, Y, X in self.zone_pass:
+            if lt == w.level_t:
+                zone -= {(y, x) for y in range(Y - 6, Y + 7) for x in range(X - 13, X + 14)}
+                zone |= {(y, x) for y in range(Y - 3, Y + 4) for x in range(X - 10, X + 11)}
         w.avoid_inside = w.pos in zone
         w.avoid_zone = zone - {w.pos}
+
+    # (2.53.0, the user after m63: "When an avoid zone blocks the Pilot's path, but the Navigator has time to evaluate
+    # the situation, allow it to decide if it should path through or not." m63 10:34: a dark inner room's zone covered
+    # its ring and the only '<' at max_depth; three "stairs known but unreachable" and the trip recalled.) 90 s: a
+    # Navigator turn takes 20-60 s from the wait report, so one or two turns to answer; the trip's own clocks (the
+    # 5-minute leave limit) don't count the hold
+    ZONE_WAIT_S = 90
+
+    def zone_blocks(self, tiles):
+        """When these tiles (stairs, a frontier) are out of reach only because of an avoid zone: {len, to, through,
+        structs} -- the path with the zones ignored, how many zone squares it crosses, the structures it passes --
+        else None."""
+        w = self.w
+        tiles = [tuple(t) for t in tiles or ()]
+        if not w.avoid_zone or not tiles or not w.pos:
+            return None
+        zone, inside = w.avoid_zone, w.avoid_inside
+        try:
+            w.avoid_zone, w.avoid_inside = set(), False
+            path = mover_plan(w, tiles)
+        finally:
+            w.avoid_zone, w.avoid_inside = zone, inside
+        if not path:
+            return None
+        structs = [(Y, X, st["kind"]) for Y, X, st in self.structures_here()
+                   if any(Y - 6 <= y <= Y + 6 and X - 13 <= x <= X + 13 for y, x in path)]
+        return {"len": len(path), "to": path[-1], "through": sum(1 for q in path if q in zone), "structs": structs}
+
+    def zone_time(self):
+        """Time for the Navigator to judge: no danger in view, not hit for 8 s, HP at least think_hp, no flee or
+        recall under way."""
+        w = self.w
+        return not self.dangers() and gnow() - getattr(w, "last_hit_t", 0) > 8 and \
+            w.hp_frac >= self.orders.get("think_hp", 0.65) and not isinstance(self.goal, (Flee, Recall, Recover)) \
+            and not w.recall_pending
+
+    def zone_hold(self, tiles, what):
+        """True while the Pilot holds for the Navigator's word on an avoid zone that alone blocks `tiles` (`what`:
+        "the '<' at 1,109", "the unexplored ground"): the first time, a `zone_blocks` alert names it and the choices;
+        meanwhile the Pilot waits on a quiet spot (quiet_spot). No answer in ZONE_WAIT_S, or no time (danger, a hit,
+        low HP, a flee): False -- the caller goes on as before (marks the stairs bad; the trip recalls)."""
+        w, now = self.w, gnow()
+        h = self.zone_wait
+        if h and h["level"] != w.level_t:
+            h = self.zone_wait = None
+        if h and h.get("end"):
+            return False
+        if not self.zone_time():
+            if h:
+                h["end"] = now
+                self.notify("tactic", f"zone hold ended: no time to wait any more ({what}): as before", news=True)
+            return False
+        if h is None:
+            blk = self.zone_blocks(tiles)
+            if not blk:
+                return False
+            h = self.zone_wait = {"level": w.level_t, "t0": now, "what": what, "end": None}
+            st = "; ".join(f"{k} centred {Y},{X}" for Y, X, k in blk["structs"]) or "an avoid zone"
+            self.notify("zone_blocks", f"{what} can't be reached without crossing {st} (the path through: "
+                                       f"{blk['len']} steps, {blk['through']} in the zone). Holding on a quiet "
+                                       f"spot for your word ({self.ZONE_WAIT_S} s): `avoid pass` (paths may cross "
+                                       "its ring corridor on this level, never the room inside) or `avoid clear` to "
+                                       "go through; `goal recall` or `goal leave` to leave it. No answer: as before "
+                                       "(the trip recalls)", fields={"to": list(blk["to"]), "len": blk["len"]})
+            self.log("zone_hold", what=what, to=list(blk["to"]), len=blk["len"], structs=blk["structs"])
+            return True
+        if now - h["t0"] > self.ZONE_WAIT_S:
+            h["end"] = now
+            self.notify("tactic", f"no word on the avoid zone in {self.ZONE_WAIT_S} s: {what} stays out of reach "
+                                  "(as before)", news=True)
+            return False
+        # (on a quiet spot meanwhile: the quiet-wait machinery's choice)
+        spot = self.quiet_spot()
+        if spot and w.pos != spot and not self.mover.active:
+            self.mover.go([spot])
+        if self.mover.active:
+            self.mover.tick()
+        return True
+
+    def zone_hold_spent(self, level_t):
+        """Seconds held for the Navigator on this level (the trip's leave clocks leave them out)."""
+        h = self.zone_wait
+        if not h or h["level"] != level_t:
+            return 0.0
+        return min(h["end"] or gnow(), h["t0"] + self.ZONE_WAIT_S) - h["t0"]
 
     def trail_tick(self):
         """On a new level: `deepest.json`, and the wilderness trail (the edge we came in by, per sector)."""
@@ -1377,6 +1473,8 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
             return
         self.look_tick(gnow())            # (never acts: asks the server which monsters are asleep)
         if self.policy_tick(gnow()):      # the Pilot's own item work, at safe moments
+            return
+        if self.queue_tick():             # (2.53.0: a plan or goal sent while plan town ran, now it's over)
             return
         self.acting = self.goal_origin(self.goal)
         if self.step_goal():

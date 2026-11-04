@@ -481,7 +481,8 @@ class ItemsMixin:
         eff = stomach.meal_effect(it["tval"], it["name"], self.food_value, unknown=self.unknown_flavour(it))
         if eff:
             key = self.kind_key_of(it["name"])
-            self.stomach.sent(key, self.kind_count(key), eff, gnow(), name=it["name"])
+            # (2.53.0: one of the stack is eaten -- m63 logged "3 Rations of Food" for one)
+            self.stomach.sent(key, self.kind_count(key), eff, gnow(), name=one_of(it["name"]))
 
     def supply_spare(self, it):
         """(units of this food or flask stack not needed before the horizon, dungeon minutes of the shortfall this
@@ -875,6 +876,23 @@ class ItemsMixin:
                              hold=0.8)
                     self.notify("tactic", f"wielded {it['name']}: ~{best[0]:.0f} a round vs ~{cur:.0f}", news=True)
                     return True
+        # 2b. (2.53.0, the user after m63) a better light: one needing no fuel, its radius at least the worn one's, over
+        # a fuelled one (the Phial over the Brass Lantern: the gear evaluator reads neither radius nor fuel); else the
+        # larger radius. Here at safe moments in the dungeon too (policy_tick)
+        lw = next((i for i in worn if i["tval"] == TV_LITE), None)
+        if lw:
+            cand = [i for i in pack if i["tval"] == TV_LITE and not bad_inscription(i["name"])
+                    and self.light_better(i, lw)]
+            if cand:
+                it = max(cand, key=lambda i: (self.light_radius(i)[1], self.light_radius(i)[0], self.light_left(i)))
+                self.cmd(f"custom w item={it['item']}", f"wield {it['name']} (light: radius "
+                                                        f"{self.light_radius(it)[0]}, "
+                                                        f"{'no fuel' if self.light_radius(it)[1] else 'fuel'})",
+                         hold=0.8)
+                self.notify("tactic", f"wielded {it['name']} as the light (radius {self.light_radius(it)[0]}"
+                                      f"{', needs no fuel' if self.light_radius(it)[1] else ''}) over {lw['name']}",
+                            news=True)
+                return True
         # 3. better armour, slot by slot (by AC; known not cursed; plusses or a feeling known)
         for it in pack:
             slot = self.ARMOUR_SLOTS.get(it["tval"])

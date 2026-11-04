@@ -896,3 +896,84 @@ def stale_bank_record_recovers():
         r2 and r2[0] == "done" and "custom ," in s2 and p2.banked() == 25674 and in_house and not outside and not town
     return ok, (f"bare: {r1}, banked {p1.banked()}, stale news {stale}; gold there: {r2}, banked {p2.banked()}, "
                 f"',' sent {'custom ,' in s2}; house_square inside {in_house}, outside {outside}, from town {town}")
+
+
+@case
+def refused_drops_end_the_stash_step():
+    """2.53.0 (m63 11:11-11:14: "You can not drop this here." ~600 times for the Phial -- a true artifact can't be
+    dropped above its depth, object2.c inven_drop_okay): artifacts are never stash items; and any drop the server
+    refuses ends that item's stashing for the visit at once (news), any 3 drops that didn't happen too -- in the house
+    (HouseBank) and in the tavern room (StashDeposit). The Phial in the pack is kept, never sold by the policy."""
+    p = _dive04_town([("a Potion of Restore Strength", 75)], gold=300)
+    floor = {}
+    run, sent, logs = _house_sim(p, floor)
+    sim = p.cmd
+
+    def refuse(line, why, hold=0.4):
+        if line.startswith("custom d"):
+            sent.append((p.w.pos, line))
+            p.w.messages.append((P.gnow(), "You can not drop this here."))
+            return
+        sim(line, why, hold)
+    p.cmd = refuse
+    r = run(P.HouseBank("deposit"))
+    drops = [line for _, line in sent if line.startswith("custom d")]
+    told = [d for k, d in p.notes if k == "tactic" and "not stashed this visit" in str(d)]
+    # the tavern room: drops that just don't happen (no message) -- 3, then given up
+    t = _dive04_town([("a Potion of Restore Strength", 75)])
+    t.w.memory = _tavern_room({})
+    t.w.pos = (27, 88)
+    t._house = {"tavern": {"entrance": [27, 89], "items": {}}}
+    t.house_save = lambda: None
+    tsent = []
+    t.cmd = lambda line, why, hold=0.4: tsent.append(line)
+
+    class M:
+        active = False
+        def go(self, tg):
+            t.w.pos = tuple(tg[0])
+            return True
+        def tick(self):
+            return "arrived"
+    t.mover = M()
+    g = P.StashDeposit()
+    tr = None
+    for _ in range(80):
+        g.t = -99.0
+        _floor_sync(t.w, {})
+        tr = g.tick(t)
+        if tr:
+            break
+    phial = _dive04_town([("a Phial {m63}", 39)])
+    ph = phial.w.items()[0]
+    ok = r and r[0] == "done" and len(drops) == 1 and told and tr and tr[0] == "done" and \
+        sum(1 for line in tsent if line.startswith("custom d")) == 3 and not phial.is_stash_item(ph["name"]) and \
+        phial.town_rule(ph)[0] == "keep" and "artifact" in phial.town_rule(ph)[1] and phial.town_sell_count(ph) == 0
+    return ok, f"house: {r}, drops {drops}, news {told}; tavern: {tr}, drops {tsent}; Phial rule {phial.town_rule(ph)}"
+
+
+@case
+def a_permanent_light_beats_the_lantern():
+    """2.53.0 (the user, m63: the Phial sat in the pack as "a backup for the light slot"; the gear evaluator ties it
+    with the Brass Lantern): a light needing no fuel with a radius at least the worn one's (the Phial: an artifact,
+    radius 3, xtra1.c calc_torch) beats a fuelled one (the lantern: 2). The upgrade step wields it (at a safe moment in
+    the dungeon too); then no oil is needed: no flasks to buy, the lantern and the flasks are sold in town, the supply
+    line says "light permanent"."""
+    lantern = ("a Brass Lantern (with 9000 turns of light)", 39, 50)
+    d = _dive04_town([("a Phial {m63}", 39)], worn=_DIVE04_WORN + [lantern])
+    d.w.in_dungeon, d.w.depth, d.w.depth_ft = True, 16, 800
+    sent = []
+    d.cmd = lambda line, why, hold=0.4: sent.append(line)
+    d.gear_swapped_t = P.gnow()
+    acted = d.upgrade_step()
+    ph, ln = d.w.items()[0], d.w.items(equip=True)[-1]
+    better = (d.light_better(ph, ln), d.light_better(ln, ph))
+    t = _dive04_town([lantern[:2], ("3 Flasks of oil", 77)], worn=_DIVE04_WORN + [("a Phial {m63}", 39, 10)])
+    t.w.hunger = 3
+    t.w.flags = {}
+    sells = [t.town_sell_count(i) for i in t.w.items()]
+    ok = acted and sent == [f"custom w item={ph['item']}"] and better == (True, False) and \
+        t.lantern_fuel() is None and t.flasks_to_fill() == 0 and "light permanent" in t.supply_text() and \
+        sells == [1, 3]
+    return ok, f"upgrade {acted} {sent}; better {better}; town: fuel {t.lantern_fuel()}, flasks {t.flasks_to_fill()}, " \
+               f"{t.supply_text()!r}, sells {sells}"
