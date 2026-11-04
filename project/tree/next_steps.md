@@ -24,10 +24,12 @@ The handoff between Architect sessions: the current state, what the next session
 - **Session 10 is done** (2026-10-28 to 11-02): the Documentation (`docs/`), the cleanup list
   (`docs/refactor-candidates.md`) worked through groups A-D and F plus E6/E7/E4/E9 and E1 steps 1-3, `CHANGELOG.md` and
   versions (2.36.0 -> 2.44.7). Its full record: **"SESSION 10 RECORD"** at the bottom of this file. No missions ran.
-- **Session 11 is done** (2026-11-02 to 11-03): group E finished -- E1 steps 4-6 (town.py, combat.py, commands.py;
-  pilot.py now ~1.5k lines), E2 (cmdtable.py), E3, E5, E8, plus the A2 set-piece criterion (2.44.8 -> 2.44.14). Its
-  record: **"SESSION 11 RECORD"** at the bottom; the decisions it left for the user: "FOR THE USER (from session 11)"
-  in HANDOFF 12. Its brief ("HANDOFF TO ARCHITECT 11") stays below for reference. No missions ran.
+- **Session 11 is done** (2026-11-02 to 11-04): group E finished -- E1 steps 4-6 (town.py, combat.py, commands.py;
+  pilot.py now ~1.5k lines), E2 (cmdtable.py), E3, E5, E8 (2.44.8 -> 2.44.14); then the user's play changes and the
+  docs audit (2.45.0 -> 2.49.0); one test mission, **m61** (Opus medium, 84.1 XP/dmin, clean; its food bugs fixed in
+  2.48.1); the restructure merged into `master` (branch deleted, revert material removed); the GitHub front page
+  updated. Its record: **"SESSION 11 RECORD"** at the bottom; what session 12 watches: **"SESSION 12 WATCH LIST"** at
+  the top of HANDOFF 12. Its brief ("HANDOFF TO ARCHITECT 11") stays below for reference.
 - **Session 12** (missions resume, **to test everything changed since m60**): read **"HANDOFF TO ARCHITECT 12"**.
 - **Session 13** (the user, 11-03): **the separate local test server** for set-pieces (own port, saves, config,
   freeze file; copies of Dive04), then server-side test features (HANDOFF 12 item 3, TODOs 3-4). It unblocks A25's
@@ -79,6 +81,22 @@ playing the Navigator; a separate local test server; server-side test features -
 08:47** -- a new job needs the test server, the Pilot and the viewer restarted (operations.md).
 
 ### HANDOFF TO ARCHITECT 12: "Missions: test everything since m60" (written 2026-11-02 by the session-10 Architect)
+
+**SESSION 12 WATCH LIST (session 11, 11-04; the version is 2.49.0, m61 ran on 2.48.0):**
+- **Food and light (2.48.1, 2.49.0):** the first `stomach` record `pinned` (~1980-1999 at Fed -> Hungry), the status
+  line turning `food >=N` into `food ~N`; no frequent `contradiction` records (a wrong digestion rate); make-room
+  keeping the rations the horizon needs; `plan town` filling the lantern to ~15000; no mushroom ever eaten.
+- **Items (2.48.0):** the first `plan town` sells of CLW (kit B), Magic Mapping scrolls (test server), torches and
+  spare mushrooms; Boldness bought only if the Temple lacks Heroism; Enchant scrolls read, not sold; the first
+  Enchant Weapon buy/read (`custom r item=N dir=24`; Dive04's axe at (+10,+9) won't need one unless disenchanted).
+- **Combat (2.45.x):** the escape walk taking its stairs (also after its emergency lapses); Weak eating with monsters
+  in view; the summoner hold (engage skipped); pickup mid-fight (the user: watch whether it causes issues).
+- **The hunt check (2.45.0-2.46.0):** more permissive since fight_sim gets the gear totals -- it ALLOWS Khim (~28 turns,
+  ~138 HP of 358); the disenchant figure in `monster`; the disenchant refusal (rare).
+- **m61's leftovers:** M2's pickup took 13 s (was ~4 s); the Navigator's standing note still says to wield the
+  Scimitar (the Battle Axe of Westernesse gives the same FA + SI): ask the user whether to drop it.
+- **Open decisions for the user** (CHANGELOG 2.48.0, the SESSION 11 RECORD): the 2.48.0 judgement calls; whether the
+  Pilot should eat a restore mushroom for a drain; Potions of Enlightenment as crutches; the USER TODO (old handoffs).
 
 **What this session is (the user, 11-02):** missions resume, **to test all the changes** of sessions 10 and 11 in
 real play. The last mission was **m60** (session 9, version ~2.34.0); since then 2.35-2.44.x (+ session 11's) changed

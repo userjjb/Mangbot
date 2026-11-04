@@ -94,6 +94,8 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
   counts the stomach at the bottom of its level, and the status line says `food >=N`: the least it can last; since
   2.49.0 `food ~N` once a hunger crossing has pinned the stomach exactly). Still,
   a glance at `Food N` in the status at a trip's start costs nothing.
+- **Word of Recall:** the kit keeps 2; for a third, put `buy Word_of_Recall:3` on every `plan town` (m61: the
+  later visits without it restocked to 2).
 - **Mirkwood spider bands at 750 ft** ended or shortened three trips (m57, m59): the Pilot phases, drinks Speed and
   leaves; with 9+ close and no stairs reachable it recalls home. Let it -- a trip that ends early on a band is a good
   trip, not a failure.
