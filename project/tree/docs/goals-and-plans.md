@@ -351,7 +351,9 @@ inside the door), `outside` (where to stand to open it) and `box`, smallest firs
   deposits.
 - *The pile.* Gold piles never merge and a drop with no free square vanishes, so the bank is **one pile on the
   `step_in` square**: walking in picks the whole bank up (checked: if the purse didn't grow by ~the banked amount,
-  nothing is dropped and the Navigator is told). Inside, door closed, it drops all but `keep` (default `BANK_FLOAT` =
+  the gold's square is read (2.52.0, m63): bare -> the record was stale, `bank_stale` is logged and the purse is
+  banked as usual; gold still there -> `,` picks it up first; anything else, or no reading in 4 s -> nothing is
+  dropped and the Navigator is told). The idle gold fetch never targets a square inside the house (`house_square`). Inside, door closed, it drops all but `keep` (default `BANK_FLOAT` =
   300) for a deposit, nothing for a withdraw, then opens, steps out and closes the door. `banked` is updated and a
   `bank` log record written.
 - *The stash in the house* (`item_step`): one stack a square on the other interior squares (farthest from the door

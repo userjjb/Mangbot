@@ -73,7 +73,7 @@ ORDER = """
     house_reconcile_rebuilds_the_record house_deposit_only_on_a_bare_square house_never_picks_up_the_wrong_item
     finds_marked_with_the_mission_label
     far_fetch_kit_and_valuable_potions backups_must_be_worth_it word_of_recall_three_in_kits_b_and_c
-    make_room_news_counts_what_went plan_line_shows_the_trip_end
+    make_room_news_counts_what_went plan_line_shows_the_trip_end login_level_not_set_by_the_first_dungeon_level stale_bank_record_recovers
 """.split()
 
 

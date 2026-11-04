@@ -306,3 +306,26 @@ def structures_on_the_aligned_lattice():
     off = [(Y, X) for Y, X, ev in ST.scan(room(16, 27))]
     ok = ST.ALIGNED and (16, 49) in on and (16, 27) not in off
     return ok, f"room at 16,49 -> {on}; at 16,27 -> {off}"
+
+
+@case
+def login_level_not_set_by_the_first_dungeon_level():
+    """m63 (2.52.0): `first_level_t = None` meant both "not yet seen" and "logged in in town", so a Pilot started in
+    town recorded the first dungeon level (the recall's arrival) as its login level; a band fled there made the
+    stairs back "a kept level" (held 300 s) on the test server and the trip recalled home. Started in town: stays
+    None through the dungeon; started in the dungeon: that level."""
+    def run(first_depth):
+        p = pilot()
+        w = p.w
+        w.depth, w.level_t, w.in_dungeon = first_depth, P.gnow() - 10, first_depth > 0
+        w.depth_ft, w.arrived_by, w.messages = first_depth * 50, None, []
+        p.map_snap = None
+        p.save_level_map(P.gnow())
+        first = p.first_level_t
+        w.depth, w.depth_ft, w.level_t, w.in_dungeon = 15, 750, P.gnow() - 5, True
+        p.save_level_map(P.gnow())
+        return first, p.first_level_t, w.level_t
+    t_first, t_after, _ = run(0)
+    d_first, d_after, _ = run(16)
+    ok = t_first is None and t_after is None and d_first not in (None, False) and d_after == d_first
+    return ok, f"started in town: {t_first} then {t_after}; started at 800 ft: {d_first} then {d_after}"

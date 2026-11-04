@@ -272,8 +272,43 @@
    "known": true,
    "t": 1793803429.4,
    "mission": "m62"
+  },
+  {
+   "name": "a Scroll of Door/Stair Location",
+   "kind": "scroll of door/stair location",
+   "known": true,
+   "t": 1793805001.8,
+   "mission": "m63"
+  },
+  {
+   "name": "a Scroll titled \"ionrol sanmung\"",
+   "kind": "scroll titled \"ionrol sanmung\"",
+   "known": false,
+   "t": 1793805222.7,
+   "mission": "m63"
+  },
+  {
+   "name": "a Staff of Light",
+   "kind": "staff of light",
+   "known": false,
+   "t": 1793805225.3,
+   "mission": "m63"
+  },
+  {
+   "name": "a Ring of Sustain Strength",
+   "kind": "sustain strength",
+   "known": true,
+   "t": 1793805287.5,
+   "mission": "m63"
+  },
+  {
+   "name": "a Cutlass (1d7)",
+   "kind": "cutlass",
+   "known": false,
+   "t": 1793805290.4,
+   "mission": "m63"
   }
  ],
- "trip_t0": 1793801584.7,
+ "trip_t0": 1793805641.8,
  "credits": {}
 }

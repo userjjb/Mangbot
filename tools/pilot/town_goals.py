@@ -1006,7 +1006,7 @@ class HouseBank(Goal):
         if w.pos == outside:
             p.mover.stop()
             self.step = "open"
-            self.gold_out, self.banked0 = gold, p.banked()
+            self.gold_out, self.banked0, self.gold_picks = gold, p.banked(), 0
             return None
         if not p.mover.active:
             self.tries += 1
@@ -1081,6 +1081,7 @@ class HouseBank(Goal):
         w, door, inside, gold = ctx.w, ctx.door, ctx.inside, ctx.gold
         if w.pos == inside:
             self.gold0 = gold
+            self.inside_t = gnow()       # (2.52.0: the floor reading of the gold's square must come after this)
             p.cmd(f"custom c dir={direction(inside, door)}", "house: close the door behind us", hold=0.8)
             self.step = "inside"
             return None
@@ -1094,11 +1095,29 @@ class HouseBank(Goal):
         st = p.house_state()
         # (stepping in takes the pile. If it didn't, a second drop would find no free square and vanish)
         if self.banked0 and gold < self.gold_out + 0.9 * self.banked0:
-            p.notify("tactic", f"house: the bank's {self.banked0} gold wasn't picked up on the way in (carrying "
-                               f"{gold}); nothing dropped -- check the house square", news=True)
-            self.mode = "withdraw"
-            self.step = "out0"
-            return None
+            # (2.52.0, m63: the record can be stale -- the bank's pile was taken outside HouseBank, by the idle gold
+            # fetch, and the record still said banked, so every deposit refused and 25k went to the dungeon. Read the
+            # gold's square: bare -> the record was stale, bank from the purse; gold still there -> pick it up first;
+            # anything else, or no reading in 4 s -> refuse as before: a drop with no free square would vanish)
+            read, name = p.floor_here(getattr(self, "inside_t", 0) + 0.3)
+            if not read and not waited(getattr(self, "inside_t", 0), 4):
+                return None
+            if read and name is None:
+                p.notify("tactic", f"house: the bank's {self.banked0} gold isn't on its square -- the record was stale "
+                                   f"(carrying {gold}); banking from the purse", news=True)
+                p.log("bank_stale", banked=self.banked0, purse=gold)
+                self.banked0 = 0
+            elif read and name and "gold" in name.lower() and getattr(self, "gold_picks", 0) < 3:
+                self.gold_picks = getattr(self, "gold_picks", 0) + 1
+                p.cmd("custom ,", "house: pick up the bank's pile", hold=1.0)
+                return None
+            else:
+                p.notify("tactic", f"house: the bank's {self.banked0} gold wasn't picked up on the way in (carrying "
+                                   f"{gold}; underfoot: {name if read else 'not read'}); nothing dropped -- check the "
+                                   "house square", news=True)
+                self.mode = "withdraw"
+                self.step = "out0"
+                return None
         st["banked"] = 0
         p.house_save()
         if not self.items_done:

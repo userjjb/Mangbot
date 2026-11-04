@@ -801,8 +801,10 @@ class ItemsMixin:
         # 0. gold lying within 10 squares while idle (the user, mission 23: the Pilot
         # left the gold beside it in town; the Navigator needed seven gotos)
         if self.goal is None and not self.mover.active and w.pos:
+            # (2.52.0, m63: never the bank's own pile inside the house -- the fetch took the 25k bank at 10:08 when a
+            # `plan trip` cut plan town's house visit short, and the record still said banked)
             gold = [q for q, ch in w.memory.items() if ch == "$" and 0 < w.dist(q) <= 10
-                    and (w.level_t, q) not in self.skipped_items]
+                    and (w.level_t, q) not in self.skipped_items and not self.house_square(q)]
             if gold and self.mover.go([min(gold, key=w.dist)]):
                 g = Goto(f"{min(gold, key=w.dist)[0]},{min(gold, key=w.dist)[1]}")
                 g.quiet = True

@@ -219,7 +219,7 @@ was warned in the last 90 s, HP is under `think_hp`, or we're blind/confused. `l
 stairs detour up to `LOOT_PATH_R` (3) squares.
 
 Also (in `policy_tick`, when idle): fetching a slain unique's drop (items within 3 squares of where it died, for 5
-minutes) and gold within 10 squares. **`interesting_item` news**: devices, jewellery and `{excellent}/{special}` items
+minutes) and gold within 10 squares (never inside the house: the bank's pile, 2.52.0). **`interesting_item` news**: devices, jewellery and `{excellent}/{special}` items
 seen on the level map that aren't known junk, and (2.51.0, the user after m62) potions and scrolls worth a far fetch
 (`far_fetch_worth`: a kit item -- `is_kit_item`, a stat Restore only -- or worth `FAR_FETCH_MIN` = 200+ by itemvalue,
 an unknown flavour by its expectation; a Potion of Restore Mana, ~350, passes on value). Those are noted in

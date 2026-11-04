@@ -813,3 +813,86 @@ def backups_must_be_worth_it():
         house == [] and not held and len(sold) == 1 and sold[0]["credited_value"] == 95
     return ok, f"rules {rules}; FA ring with no FA worn {fa}; tavern fetch {fetch}; house {house}; review held {held}; " \
                f"debit {sold}"
+
+
+def _stale_bank(floor_gold):
+    """m63 (2.52.0): the house record says 25444 banked but the pile is gone (the idle gold fetch took it; the purse
+    holds it). A deposit reads the gold's square: bare -> banks from the purse; still gold -> picks it up first."""
+    import tempfile
+    houses = P.town_houses(_town_memory())
+    h = dict({k: (list(v) if isinstance(v, tuple) else v) for k, v in houses[0].items() if k != "inside"},
+             depth=-1, cross={"town": [1, 130], "wild": [64, 130], "depth": -1})
+    p = pilot(gold=25974 if not floor_gold else 530)
+    w = p.w
+    w.depth, w.in_dungeon, w.memory, w.pos = 0, False, _town_memory(), (1, 130)
+    p.rundir, p.busy_until = tempfile.mkdtemp(), 0
+    p._house = {"house": h, "banked": 25444}
+    inside = tuple(h["step_in"]) if h.get("step_in") else None
+    floor = {inside: "gold"} if floor_gold else {}
+    dirs = {1: (1, -1), 2: (1, 0), 3: (1, 1), 4: (0, -1), 6: (0, 1), 7: (-1, -1), 8: (-1, 0), 9: (-1, 1)}
+    sent = []
+
+    def cmd(line, why, hold=0.4):
+        sent.append(line)
+        m = re.match(r"walk (\d)", line)
+        if m:
+            if w.depth == 0 and w.pos == (1, 130) and m.group(1) == "8":
+                w.depth, w.pos = -1, (38, 154)
+            elif w.depth == -1 and w.pos == (64, 130) and m.group(1) == "2":
+                w.depth, w.pos = 0, (1, 130)
+            else:
+                dy, dx = dirs.get(int(m.group(1)), (0, 0))
+                w.pos = (w.pos[0] + dy, w.pos[1] + dx)
+        if line == "custom ," and floor.get(w.pos) == "gold":
+            del floor[w.pos]
+            w.ind["gold"][0] += 25444
+        m = re.match(r"custom \$ value=(\d+)", line)
+        if m:
+            w.ind["gold"][0] -= int(m.group(1))
+            w.messages.append((P.gnow(), f"You drop {m.group(1)} pieces of gold."))
+        _floor_sync(w, {k: ("$gold" if v == "gold" else v) for k, v in floor.items()})
+        if floor.get(w.pos) == "gold":
+            w.floor = "gold"
+    p.cmd = cmd
+
+    class M:
+        active = False
+        def go(self, t):
+            w.pos = tuple(t[0])
+            return True
+        def tick(self):
+            return "arrived"
+        def stop(self):
+            pass
+    p.mover = M()
+    g = P.HouseBank("deposit")
+    r = None
+    for _ in range(120):
+        g.t = -99.0
+        r = g.tick(p)
+        if r:
+            break
+    return r, p, sent
+
+
+@case
+def stale_bank_record_recovers():
+    """m63 (2.52.0): the record said 25444 banked with the pile in the purse, so every deposit refused ("wasn't
+    picked up") and the gold went to the dungeon twice. Now the gold's square is read: bare -> the record was stale,
+    the purse is banked (keep 300); gold there -> `,` picks it up, then the deposit; and the idle gold fetch never
+    targets a square inside the house."""
+    r1, p1, s1 = _stale_bank(False)
+    r2, p2, s2 = _stale_bank(True)
+    stale = any(what == "tactic" and "record was stale" in d for what, d in p1.notes)
+    h = p1.house_state()["house"]
+    y1, x1, y2, x2 = h["box"]
+    inside_sq = ((y1 + y2) // 2, (x1 + x2) // 2)
+    p1.w.depth, p1.w.in_dungeon = -1, False
+    in_house = p1.house_square(inside_sq)
+    outside = p1.house_square((y1 - 1, x1))
+    p1.w.depth = 0
+    town = p1.house_square(inside_sq)
+    ok = r1 and r1[0] == "done" and p1.banked() == 25674 and stale and \
+        r2 and r2[0] == "done" and "custom ," in s2 and p2.banked() == 25674 and in_house and not outside and not town
+    return ok, (f"bare: {r1}, banked {p1.banked()}, stale news {stale}; gold there: {r2}, banked {p2.banked()}, "
+                f"',' sent {'custom ,' in s2}; house_square inside {in_house}, outside {outside}, from town {town}")

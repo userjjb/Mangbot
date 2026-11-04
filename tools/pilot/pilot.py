@@ -270,7 +270,7 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.scummed, self.kept = set(), set()    # Dive: (depth, arrival) scummed from; depths the server keeps
         self.fled_from = None          # Flee: (depth, t, level_t, the login level) of the last level fled by stairs
         self.flee_tele_t = -99.0
-        self.first_level_t = None      # the level we logged in on (save_level_map)
+        self.first_level_t = False     # the level we logged in on (save_level_map); None: logged in in town; False: not yet seen
         self.fetching = None           # StashFetch / HouseBank: the item being fetched
         # commands sent
         self.item_cmd_t = 0.0          # the last item command (cmd holds the next until the pack is back)
@@ -1488,7 +1488,9 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         w = self.w
         # the level this Pilot logged in on (None: in town): the previous Pilot's logout left it "static" on the
         # server, kept after we leave it (operations.md, Level persistence) -- Dive.FLED_HOLD's test-server edge case
-        if self.first_level_t is None and w.depth is not None and w.level_t:
+        # (2.52.0, m63: `None` meant both "not yet" and "in town", so a Pilot started in town took the first dungeon
+        # level as its login level -- the trip fled a band there and refused the stairs back for 300 s, then recalled)
+        if self.first_level_t is False and w.depth is not None and w.level_t:
             self.first_level_t = w.level_t if w.in_dungeon else None
         # the arrival feeling, logged per level (the Advisor's structures memo: at <= 850 ft any pit, nest or
         # vault forces "special"; another feeling proves there is none)

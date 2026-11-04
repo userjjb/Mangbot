@@ -722,3 +722,7 @@
 - 18:44:58 town 100% | 18:45 town, idle, mission over: +2725 XP, +2402 gold found, no close calls (HP never below ~99% in reports) | marked Awl-Pike and Ring of Feather Falling for sale; stop | budget used; Awl-Pike is worse than the axe, FF not needed
 - 09:10:40 town 100% | Mission plan | plan town buy WoR:3, Speed:2; one trip 700-800 until cures<4 or phase<5 or minutes>33 then town, no react except thieves kill | one long trip beats two; 45 min budget
 - 09:50:02 town 100% | End | in town idle; trip 15 levels 38 min, XP +2587, gold +2254 | review Ring of Resist Fire left undecided (redundant, armor has fire resist)
+- 10:08:17 town 100% | Mission start, town 300g+25k banked | plan town (kit B), then one 700-800 trip until cures<5 or phase<5 or minutes>33 then town | field notes: one long trip best; 3 WoR, supplies ok
+- 10:08:23 -50ft 100% | town done, nothing to buy | plan trip 700-800 until cures<6 or phase<5 or minutes>35 then town | one long trip
+- 10:20:29 town 100% | trip 1 ended 12min: couldn't leave 800ft level in 5 min, +706 XP; gold carried 25.9k (bank didn't take it, house full of stash?) | trip 2 700-800 minutes>22 | time budget
+- 10:23:42 town 100% | Architect resumed; WoR shows 1 | plan town first (restock WoR), wait goal_done, then trip until time>10:44

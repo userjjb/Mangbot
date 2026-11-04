@@ -1174,6 +1174,15 @@ class TownMixin:
             return True, w.floor
         return False, None
 
+    def house_square(self, q):
+        """A square inside the owned house on its tile (the bank's pile and the stash lie there), on this level."""
+        h = self.house_state().get("house")
+        w = self.w
+        if not h or not h.get("box") or w.in_dungeon or (w.depth or 0) != int(h.get("depth", 0)):
+            return False
+        y1, x1, y2, x2 = h["box"]
+        return y1 < q[0] < y2 and x1 < q[1] < x2
+
     def in_house(self):
         """Standing inside the owned house (its interior, on its tile): every item here is the stash's."""
         h = self.house_state().get("house")
