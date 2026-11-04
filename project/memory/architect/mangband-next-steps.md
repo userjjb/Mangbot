@@ -17,7 +17,7 @@ Open `/projectnb/jbrcs/mangband/next_steps.md` and read **">>> WHICH HANDOFF IS 
   session 11)" in HANDOFF 12. The user then said "fix these issues now": **2.45.0** (play changes: command roles,
   ghost park, escape walk takes its stairs, hunger early stop, disenchant cost shown, house record strike); what is
   still open is listed there -- remind the user. Then 2.45.1 (summoner hold, disenchant refusal) and 2.45.2 (Hungry eats at safe moments, Weak in the reflex), 2.45.3-2.46.0 (a plus valued by what the Pilot would rebuy; the kit now enchants the weapon too), the user's decisions 11-03.
-- **Session 13** (the user, 11-03): the separate local test server (HANDOFF 12 item 3), unblocking A25.
+- **Session 13** (the user, 11-03/04): "HANDOFF TO ARCHITECT 13" -- the repo as a patcher (build.sh + patches/ on pristine MAngband 1.5.3), then the separate local test server built with it, unblocking A25.
 - **Session 12**: **missions resume to test every change since m60** -- "HANDOFF TO ARCHITECT 12" (what to watch, the
   first `plan town` is its own test, the C14 A/B baseline).
 - Remind the user of the USER TODO at the top of next_steps.md (review the old handoffs in `history/`).

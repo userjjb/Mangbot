@@ -1,6 +1,6 @@
 ---
 name: mangband-next-steps
-description: READ FIRST (Advisor) - restructure since 2026-10-22; scorecard, set-pieces, rulebook r1-r3 (drops) done; next = live checks / set-piece recipes when enablers land; handoff = Advisor/STATUS.md
+description: READ FIRST (Advisor) - restructure DONE (merged to master 2.49.0, 2026-11-03); estimator options_sim live in shadow mode; next = review estimator records when missions resume; handoff = Advisor/STATUS.md
 metadata:
   type: project
 ---
@@ -9,7 +9,7 @@ metadata:
 (emergency, hard_fight, band triggers) and geareval imports it plus `scenarios.py`. Interface contract and player-dict keys:
 `memos/to_architect/2026-10-28-advisor-docs.md` (quoted in ../docs/process.md). Edit only via copy + atomic mv, bump
 POLICY_VERSION, memo the Architect; never change user-decided values (XP_PER_GOLD rolling/per call; MIN_GAIN floor = user-approved).
-**No missions since m60 (10-28); they resume in Architect session 12.** **Next:** (1) analyse estimator records before/after 2026-10-29 08:35 separately (A3 to-hit/to-dam fix); (2) wake rule done 10-29 (29o; re-check with more
+**No missions since m60 (10-28); they resume in Architect session 12. Restructure merged into `master` 11-03 (2.49.0); code is on master.** TODO (user): band-trigger XP-ranking check with the first missions. **Next:** (1) analyse estimator records before/after 2026-10-29 08:35 separately (A3 to-hit/to-dam fix); (2) wake rule done 10-29 (29o; re-check with more
 looks pairs in fights); (3) mirror any escape-rule change the Architect announces; (4) review new missions. The full handoff is
 **`/projectnb/jbrcs/mangband/Advisor/STATUS.md`**.
 

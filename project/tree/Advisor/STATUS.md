@@ -15,7 +15,7 @@ bump POLICY_VERSION, keep `choose()`/`rollout()` signatures, memo the Architect;
 Contract and player-dict keys: `../memos/to_architect/2026-10-28-advisor-docs.md` (+ `noise`, 29o).
 Pilot version 2.43.0 (10-31: 2.41 rations/oil valued by need, 2.42 mushrooms by itemvalue, 2.43 new log kind role_refused; nothing mirrored changed). 2.38.0 (10-29; no escape-order change, 29o still mirrors it; geareval encounters window days=3/min_n=20; replied on commands_per_min in to_architect/2026-10-29-commands-per-min.md); versions/missions in `../CHANGELOG.md`. Last missions m56-m60 (10-28); none since 2.37.0.
 
-**Session 5 (10-29..11-03):** no missions (Architect sessions 10-11 = refactor, versions 2.38-2.45); answered memos (commands_per_min, rulebook B18 fixes, D8/D9/D14 merges + D8 uniques rule, Khim/A2 criterion, escape walk mirrored in 11-03p, hunt check should use derive() totals). Missions resume in Architect session 12.
+**Session 5 (10-29..11-03):** no missions (Architect sessions 10-11 = refactor, versions 2.38-2.49; merged to master 11-03); answered memos (commands_per_min, rulebook B18 fixes, D8/D9/D14 merges + D8 uniques rule, Khim/A2 criterion, escape walk mirrored in 11-03p, hunt check should use derive() totals). Missions resume in Architect session 12.
 
 **TODO (the user, 11-03: do it with the first real missions, not before) -- band-trigger XP ranking (set-piece A2L 11-03 07:10, 11-03p live):** band trigger, orc band + Lugdush at 600 ft: estimator chose `phase` (+201 XP, 206 vs fight 16 vs recall+phase 122 within 30 blocks). Phase out-earning fight looks like a horizon/arrival-order artefact (who reaches melee within 30 blocks) -- check before trusting band-trigger XP rankings.
 
@@ -24,11 +24,12 @@ Pilot version 2.43.0 (10-31: 2.41 rations/oil valued by need, 2.42 mushrooms by 
 looks pairs taken during fights; (3) mirror any announced escape-rule change; (4) rulebook rebuilds must keep
 `monsters.csv` and `kinds_by_level.csv` (the Pilot now requires both).
 
-## Background: the RESTRUCTURE (since 2026-10-22; steps 1-4 done, step 5 = missions with scorecards)
+## Background: the RESTRUCTURE (2026-10-22 .. 11-03: DONE, merged into `master` at 2.49.0)
 
-**No study is running.** The project is restructuring its autonomous player (the user's decision after mission 23):
-restructure, not rewrite; keep Dive04; instruments first; mission-by-mission patching is frozen. The Architect works on git
-branch `restructure` (tag `pre-restructure` = 767bf60 is the restore point). Plan: `../memos/to_advisor/2026-10-22-restructure-plan.md`;
+The user declared the restructure a success on 11-03: branch `restructure` fast-forwarded into `master` (2.49.0, fba3d7e)
+and deleted; the revert path (restructure.md, the 10-22 backup) is gone; tags v2.36.0..v2.49.0 and `pre-restructure` remain.
+Code is on `master`. (Study briefs from 10-22..10-24 still say "branch restructure": historical, left as written.) It was
+the user's decision after mission 23: restructure, not rewrite; keep Dive04; instruments first. Plan: `../memos/to_advisor/2026-10-22-restructure-plan.md`;
 step-2 design: `../history/restructure-step2.md` (read only; moved 10-29). Basis: our `../memos/2026-10-19-starting-over.md`.
 
 **Roles agreed:** the Advisor owns **the rulebook tables** and **the set-piece list**, and defined **the scorecard**; the
@@ -80,6 +81,7 @@ Architect builds everything else.
 5i. **TODO (user, 11-03):** check the band-trigger XP ranking artefact (A2L record 11-03 07:10: phase 206 XP > fight 16 within 30 blocks) together with the first real missions' estimator review.
 5j. 2.45.1-2.45.2 (11-03, user decisions): summoner hold no longer pauses later reflexes (engage skipped); hunt check refuses a disenchanter when expected enchantment loss > drop value + XP at xp_per_gold (Khim allowed ~300 vs ~3,160); hunger split (Hungry at a safe moment, Weak eats unless adjacent). options_sim has no eating action -> nothing to mirror.
 5k. 2.45.3 (11-03, the user's idea): a disenchanted plus = re-enchant scroll cost (Khim ~2,000 g vs ~3,160, allowed). My memo to_architect/2026-11-03-disen-value.md: cap by what the Pilot buys (armour up to ENCHANT_MIN_CHANCE 0.5 only; Pilot never buys Enchant Weapon) -- the user chose option 2: 2.46.0 adopted it (town kit now also buys Enchant Weapon to the 50% stop, up to +8; lost plus = scroll cost where the kit would rebuy, else resale value; Khim ~480-880 g). Optional later: a gold-per-damage figure for the DISEN_IN_PLAY hook (now 0).
+5l. 2.48.1-2.49.0 (11-03): food judged at the stomach floor (status `food >=N`); lantern filled to 15000 in town; stomach tracker pins food at hunger crossings. options_sim p["food"] accepts a number or (lo, hi) -- fine either way.
 6. Housekeeping: the 09-29 shops memo assumed CHR 4 = Dive04's natural CHR; it is drained to 3 now (use `data/rulebook/shop_owners.csv`, CHR 3 columns, until restored).
 
 ## Architect schedule

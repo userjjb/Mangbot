@@ -31,7 +31,8 @@ The handoff between Architect sessions: the current state, what the next session
 - **Session 12** (missions resume, **to test everything changed since m60**): read **"HANDOFF TO ARCHITECT 12"**.
 - **Session 13** (the user, 11-03): **the separate local test server** for set-pieces (own port, saves, config,
   freeze file; copies of Dive04), then server-side test features (HANDOFF 12 item 3, TODOs 3-4). It unblocks A25's
-  remaining half (a unique above the character's level: the recall branch). Missions come first (session 12).
+  remaining half (a unique above the character's level: the recall branch), **and the repo as a patcher** (11-04).
+  Read **"HANDOFF TO ARCHITECT 13"**. Missions come first (session 12).
 - Sessions 1-9 are over: `history/handoffs-s1-s9.md`; session 10's own brief: `history/handoff-s10.md`.
 
 ### HANDOFF TO ARCHITECT 11: "Finish the refactor" (written 2026-11-02 by the session-10 Architect)
@@ -188,6 +189,40 @@ level luck dominates. More interleaved missions would settle it (offered to the 
    (Session 10, B17: **the full mission checklist now lives in `docs/process.md` §3** -- this line, HANDOFF 8's "Per
    mission" and VACATION-NOTES §5 were its pieces.)
 
+
+### HANDOFF TO ARCHITECT 13: "The patcher repo and the separate test server" (written 2026-11-04 by the session-11 Architect)
+
+**What this session is (the user, 11-03/11-04):** two linked projects, after session 12's missions.
+
+**1. The repo as a patcher (the user, 11-04: the GitHub repo is confusing -- most top-level files are unmodified
+MAngband).** Today `github/` is a fork: commit `6963c00` "Pristine MAngband 1.5.3 sources" (399 tracked upstream
+files: src/, lib/, build/, autotools), our C changes on top (16 files, +1,822/-9 lines, 26 commits, the last 10-31:
+the tool client `c-tool.c`/`main-tool.c` and its hooks, the packet logger `c-pktlog.c`, the test-server time freeze in
+`net-server.c`, the store-crash fixes in `store.c`, `tables.c`), plus ours: `tools/`, `project/`. The target:
+- Top level only ours: `README.md` (what this is, how to build and run), `tools/`, `project/`, `patches/`, `build.sh`.
+- `patches/`: our C changes against pristine 1.5.3, one readable patch per topic (`git diff 6963c00 HEAD -- src lib
+  configure.ac Makefile.am` is the whole set today; split it by topic).
+- `build.sh`: fetch MAngband 1.5.3 (find a reliable upstream source -- the MAngband GitHub repo's 1.5.3 tag or a
+  release tarball -- and verify a checksum; if none is reliable, keep the pristine tarball in the repo as one file),
+  apply the patches, `autogen.sh`/`configure`/`make`: the server (`mangband`) and the tool client (`mangclient`).
+- C work afterwards: a local build tree (pristine + patches, its own git) and `export-patches.sh` to regenerate
+  `patches/`; C changes are rare now.
+- One-time path changes: everything that points at `github/mangband`, `github/mangclient`, `github/src`, `github/lib`
+  -- the test-server start command (operations.md "Test server"), `tools/client/mang.py` (runs the `mangclient`
+  binary), restart/freeze/hotswap/charsave/set-piece scripts, the snapshot script, docs, memory. Grep first; keep
+  `github/tools/` where it is so the Pilot's paths don't move.
+- Check: a clean checkout + `build.sh` builds both binaries; the unit suite, a set-piece and a short mission run on
+  them. History stays (old commits keep the full tree); tag the switch.
+
+**2. The separate local test server** (HANDOFF 12 item 3, the user's TODOs 3-4): its own port, saves, config and
+freeze file, playing *copies* of Dive04, so set-pieces never touch the real character or its gold (snapshot
+restores have caveats: one lost the banked gold). **Build it with `build.sh`** -- the patcher's first real test,
+and proof that everything rebuilds from scratch (needed for the live deployment, `live-deploy-todo.md`). Then
+server-side test features on it (place monsters/items/terrain, set player state, step the AI, load levels, fixed
+seeds: the M5 lesson). **This unblocks A25's remaining half:** a set-piece with a unique above the character's level
+to test the recall branch (A2's criterion since 2.44.10 checks recall only when a danger rule fires).
+
+**Order:** the patcher first (the build script), then the test server built with it, then A25's set-piece.
 
 ### SESSION 10 RECORD (2026-10-28 to 11-02; formerly HANDOFF 11 Part B)
 
