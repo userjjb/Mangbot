@@ -1,0 +1,184 @@
+m63 10:10:42 d15 hp[347, 358] band rules=stairs choice=rules agree=False xpg=0.555 | rules (no option clearly better)
+   detail: band: rules stairs (a band within 10 squares: Uruk ×7 (7 monsters, ~492 HP expected to fight them all, HP 347): leave no)
+   team: Uruk@1, Uruk@1, Uruk@2, Uruk@1, Uruk@2, Uruk@1, Uruk@2 
+     rules           safe=True  near=0.0   low10=261.5  xp=181  dxp=0.0    se=0.0   gold=70
+     fight           safe=True  near=0.0   low10=261.5  xp=181  dxp=0.0    se=0.0   gold=70
+     phase           safe=True  near=0.0   low10=252.5  xp=164  dxp=-63.6  se=29.8  gold=153
+     recall+phase    safe=True  near=0.0   low10=246.5  xp=136  dxp=-247.8 se=33.8  gold=434
+     stairs          safe=False near=0.475 low10=-4.0   xp=0    dxp=-193.5 se=18.3  gold=0
+m63 10:13:19 d16 hp[269, 358] hard_fight rules=speed+berserk choice=berserk agree=False xpg=0.555 | +211 XP net of gold vs rules (SE 8), both safe
+   detail: hard fight with Hill orc, Light hound: rules speed+berserk
+   team: Hill orc@3, Light hound@1, Hill orc@1, Light hound@2, Hill orc@3, Light hound@1, Light hound@3 
+     rules           safe=True  near=0.0   low10=258    xp=116  dxp=0.0    se=0.0   gold=500
+     fight           safe=True  near=0.0   low10=255    xp=116  dxp=0.3    se=0.5   gold=500
+     speed           safe=True  near=0.0   low10=258    xp=116  dxp=0.0    se=0.0   gold=500
+     berserk         safe=True  near=0.0   low10=267    xp=116  dxp=211.1  se=7.6   gold=120
+     speed+berserk   safe=True  near=0.0   low10=258    xp=116  dxp=0.0    se=0.0   gold=500
+     phase           safe=True  near=0.0   low10=243    xp=116  dxp=-4.7   se=7.0   gold=508
+m64 11:35:59 d15 hp[348, 358] band rules=stairs choice=rules agree=False xpg=0.467 | rules (no option clearly better)
+   detail: band: rules stairs (a band within 10 squares: Uruk, Hill orc, Cave orc, Orc shaman, Black orc, Half-orc (6 monsters, ~19)
+   team: Giant fruit fly@3, Giant fruit fly@3, Giant fruit fly@1, Giant fruit fly@3a, Giant fruit fly@3, Uruk@1a, Hill orc@1, Cave orc@3, Orc shaman@2a, Black orc@3, Half-orc@3 
+     rules           safe=True  near=0.0   low10=270.5  xp=107  dxp=0.0    se=0.0   gold=50
+     fight           safe=True  near=0.0   low10=270.5  xp=107  dxp=0.0    se=0.0   gold=50
+     phase           safe=True  near=0.0   low10=270.0  xp=107  dxp=-10.2  se=16.6  gold=70
+     recall+phase    safe=True  near=0.0   low10=273.0  xp=104  dxp=-102.2 se=12.9  gold=258
+     stairs          safe=True  near=0.0   low10=152.5  xp=0    dxp=-111.6 se=11.2  gold=0
+m64 11:36:12 d15 hp[263, 358] hard_fight rules=speed+berserk choice=rules agree=False xpg=0.467 | rules (no option clearly better)
+   detail: hard fight with Black orc, Giant fruit fly, Half-orc, Uruk: rules speed+berserk
+   team: Giant fruit fly@3, Giant fruit fly@3, Giant fruit fly@3, Giant fruit fly@2, Giant fruit fly@2, Half-orc@1, Giant fruit fly@1, Giant fruit fly@3a, Black orc@2a, Giant fruit fly@1, Giant fruit fly@2, Half-orc@1 (+6)
+     phase           safe=True  near=0.0   low10=217.5  xp=189  dxp=17.2   se=24.0  gold=546
+     rules           safe=True  near=0.0   low10=224.5  xp=173  dxp=0.0    se=0.0   gold=550
+     speed           safe=True  near=0.0   low10=224.5  xp=173  dxp=0.0    se=0.0   gold=550
+     speed+berserk   safe=True  near=0.0   low10=224.5  xp=173  dxp=0.0    se=0.0   gold=550
+     fight           safe=True  near=0.0   low10=212.5  xp=167  dxp=-12.6  se=25.5  gold=563
+     berserk         safe=True  near=0.0   low10=213.0  xp=153  dxp=-34.6  se=25.0  gold=581
+m64 11:36:32 d15 hp[268, 388] hard_fight rules=fight choice=rules agree=True xpg=0.467 | rules (no option clearly better)
+   detail: hard fight with Black orc, Giant fruit fly: rules fight
+   team: Giant fruit fly@3, Giant fruit fly@1, Black orc@1, Cave orc@2, Cave orc@3 
+     rules           safe=True  near=0.0   low10=262    xp=26   dxp=0.0    se=0.0   gold=0
+     fight           safe=True  near=0.0   low10=262    xp=26   dxp=0.0    se=0.0   gold=0
+     speed           safe=True  near=0.0   low10=256    xp=26   dxp=-186.4 se=0.3   gold=400
+     speed+berserk   safe=True  near=0.0   low10=256    xp=26   dxp=-186.4 se=0.3   gold=400
+     phase           safe=True  near=0.0   low10=246.0  xp=25   dxp=-57.0  se=13.0  gold=120
+m64 11:54:29 d16 hp[358, 358] emergency rules=None choice=rules agree=True xpg=0.439 | rules (no option clearly better)
+   detail: a summon trap (monsters from 5 levels deeper appear around us): phased away at once
+   team: Green jelly@1, Illusionist@1, Zombified orc@1, Green icky thing@1 
+     rules           safe=True  near=0.0   low10=352    xp=41   dxp=0.0    se=0.0   gold=0
+     fight           safe=True  near=0.0   low10=352    xp=41   dxp=0.0    se=0.0   gold=0
+     speed           safe=True  near=0.0   low10=353    xp=38   dxp=-179.0 se=1.5   gold=401
+     speed+berserk   safe=True  near=0.0   low10=353    xp=38   dxp=-179.0 se=1.5   gold=401
+     ccw             safe=True  near=0.0   low10=351    xp=38   dxp=-70.3  se=1.6   gold=154
+     phase           safe=True  near=0.0   low10=355    xp=35   dxp=-18.5  se=2.0   gold=29
+m64 11:59:34 d16 hp[334, 358] band rules=stairs choice=rules agree=False xpg=0.439 | rules (no option clearly better)
+   detail: band: rules stairs (a band within 10 squares: Black orc ×6 (6 monsters, ~239 HP expected to fight them all, HP 333): lea)
+   team: Black orc@3, Black orc@2, Black orc@2, Black orc@1, Black orc@1, Black orc@1 
+     rules           safe=True  near=0.0   low10=278.0  xp=95   dxp=0.0    se=0.0   gold=10
+     fight           safe=True  near=0.0   low10=278.0  xp=95   dxp=0.0    se=0.0   gold=10
+     recall+phase    safe=True  near=0.0   low10=258.5  xp=86   dxp=-139.3 se=12.9  gold=300
+     phase           safe=True  near=0.0   low10=251.5  xp=85   dxp=-48.6  se=10.4  gold=90
+     stairs          safe=True  near=0.0   low10=251.0  xp=0    dxp=-87.3  se=5.0   gold=0
+m64 12:00:42 d16 hp[358, 358] band rules=stairs choice=stairs agree=True xpg=0.439 | +102 XP net of gold vs rules (SE 15), both safe
+   detail: band: rules stairs (a band within 10 squares: Hummerhorn ×18 (18 monsters, ~186 HP expected to fight them all, HP 358): )
+   team: Hummerhorn@3, Hummerhorn@3, Hummerhorn@3, Hummerhorn@2, Hummerhorn@3, Hummerhorn@2, Hummerhorn@1, Hummerhorn@1, Hummerhorn@2, Hummerhorn@2, Hummerhorn@3, Hummerhorn@2 (+6)
+     rules           safe=True  near=0.0   low10=351    xp=23   dxp=0.0    se=0.0   gold=284
+     fight           safe=True  near=0.0   low10=351    xp=23   dxp=0.0    se=0.0   gold=284
+     phase           safe=True  near=0.0   low10=351    xp=22   dxp=30.0   se=17.6  gold=204
+     recall+phase    safe=True  near=0.0   low10=351    xp=16   dxp=-113.5 se=21.6  gold=527
+     stairs          safe=True  near=0.0   low10=346    xp=0    dxp=102.2  se=15.3  gold=0
+m65 12:30:45 d16 hp[358, 358] band rules=stairs choice=rules agree=False xpg=0.481 | rules (no option clearly better)
+   detail: band: rules stairs (a band within 10 squares: Uruk ×2, Orc shaman ×2, Snaga ×2, Hill orc (7 monsters, ~184 HP expected t)
+   team: Uruk@1, Orc shaman@1, Orc shaman@1, Snaga@2, Uruk@3, Hill orc@3, Snaga@3 
+     rules           safe=True  near=0.0   low10=327.5  xp=72   dxp=0.0    se=0.0   gold=0
+     fight           safe=True  near=0.0   low10=327.5  xp=72   dxp=0.0    se=0.0   gold=0
+     recall+phase    safe=True  near=0.0   low10=304.0  xp=68   dxp=-110.2 se=1.7   gold=220
+     phase           safe=True  near=0.0   low10=324.0  xp=68   dxp=-13.4  se=1.6   gold=20
+     stairs          safe=True  near=0.0   low10=342.5  xp=0    dxp=-57.0  se=2.6   gold=0
+m65 12:41:45 d16 hp[264, 358] hard_fight rules=speed+berserk choice=berserk agree=False xpg=0.503 | +196 XP net of gold vs rules (SE 5), both safe
+   detail: hard fight with Gnome mage, White wolf: rules speed+berserk
+   team: White wolf@3, Clear mushroom patch@3, Clear mushroom patch@2, White wolf@2, White wolf@1a, White wolf@1, White wolf@1, Gnome mage@1 
+     phase           safe=True  near=0.0   low10=250    xp=86   dxp=17.8   se=13.4  gold=482
+     fight           safe=True  near=0.0   low10=255    xp=79   dxp=2.1    se=1.8   gold=500
+     rules           safe=True  near=0.0   low10=259    xp=77   dxp=0.0    se=0.0   gold=500
+     speed           safe=True  near=0.0   low10=259    xp=77   dxp=0.0    se=0.0   gold=500
+     speed+berserk   safe=True  near=0.0   low10=259    xp=77   dxp=0.0    se=0.0   gold=500
+     berserk         safe=True  near=0.0   low10=264    xp=76   dxp=195.7  se=5.0   gold=110
+m65 12:46:07 d15 hp[356, 358] band rules=stairs choice=rules agree=False xpg=0.503 | rules (no option clearly better)
+   detail: band: rules stairs (a band within 10 squares: Mirkwood spider ×4, Warg ×3, Grizzly bear, Energy hound, Hippogriff, Large)
+   team: Grizzly bear@1, Energy hound@1, Hippogriff@1, Large kobold@2, Giant white centipede@1, Warg@1, Mirkwood spider@1, Mirkwood spider@1, Warg@1, Mirkwood spider@2, Mirkwood spider@2, Warg@3 
+     rules           safe=True  near=0.0   low10=283    xp=173  dxp=0.0    se=0.0   gold=0
+     fight           safe=True  near=0.0   low10=283    xp=173  dxp=0.0    se=0.0   gold=0
+     phase           safe=True  near=0.0   low10=298    xp=171  dxp=-10.6  se=1.0   gold=20
+     recall+phase    safe=True  near=0.0   low10=284    xp=166  dxp=-120.8 se=6.5   gold=230
+     stairs          safe=True  near=0.0   low10=250    xp=0    dxp=-176.2 se=1.9   gold=0
+m65 12:46:21 d15 hp[304, 358] emergency rules=speed choice=ccw agree=False xpg=0.503 | +185 XP net of gold vs rules (SE 41), both safe
+   detail: HP 281 within 3 turns of the worst (358): quaffed a Potion of Speed first
+   team: Fire hound@3, Tiger@2, Fire hound@2, White wolf@2, White wolf@3, Fire hound@3, Fire hound@2, Fire hound@1, Hippogriff@1, Druid@1, White wolf@2, White wolf@3 (+14)
+     ccw             safe=True  near=0.0   low10=216.0  xp=292  dxp=184.6  se=40.8  gold=838
+     phase+ccw       safe=True  near=0.0   low10=211.0  xp=287  dxp=180.2  se=35.3  gold=838
+     fight           safe=True  near=0.0   low10=241    xp=53   dxp=-49.4  se=20.6  gold=828
+     speed           safe=True  near=0.0   low10=256    xp=53   dxp=-62.2  se=22.5  gold=854
+     speed+berserk   safe=True  near=0.0   low10=256    xp=53   dxp=-62.2  se=22.5  gold=854
+     rules           safe=True  near=0.0   low10=246.0  xp=52   dxp=0.0    se=0.0   gold=728
+m65 12:46:21 d15 hp[299, 358] emergency rules=teleport choice=rules agree=True xpg=0.503 | rules (no option clearly better)
+   detail: HP 299 within 3 turns of the worst (358): 25 about in the open: a Staff of Teleportation (12 charges)
+   team: Fire hound@3, White wolf@3, Fire hound@3, Tiger@2, Fire hound@2, White wolf@2, White wolf@3, Fire hound@3, Fire hound@1, Hippogriff@1, Druid@1, White wolf@3 (+13)
+     ccw             safe=True  near=0.0   low10=202    xp=469  dxp=-29.3  se=34.2  gold=384
+     rules           safe=True  near=0.0   low10=200    xp=431  dxp=0.0    se=0.0   gold=249
+     fight           safe=True  near=0.0   low10=200    xp=431  dxp=0.0    se=0.0   gold=249
+     phase+ccw       safe=True  near=0.0   low10=194.0  xp=389  dxp=-119.8 se=50.4  gold=404
+     phase           safe=True  near=0.0   low10=197.0  xp=255  dxp=-209.7 se=45.7  gold=318
+     recall+phase    safe=True  near=0.0   low10=202    xp=228  dxp=-326.0 se=43.0  gold=493
+m65 12:46:23 d15 hp[308, 358] hard_fight rules=fight choice=rules agree=True xpg=0.503 | rules (no option clearly better)
+   detail: hard fight with Black orc, Brigand, Gorbag, the Orc Captain, Uruk: rules fight
+   team: Black orc@3, Black orc@2, Black orc@1, Uruk@1, Cave orc@2, Cave orc@3, Black orc@3, Black orc@2, Black orc@1, Gorbag, the Orc Captain@1, Brigand@1, Cave orc@2 (+1)
+     rules           safe=True  near=0.0   low10=276.5  xp=65   dxp=0.0    se=0.0   gold=300
+     fight           safe=True  near=0.0   low10=276.5  xp=65   dxp=0.0    se=0.0   gold=300
+     phase           safe=True  near=0.0   low10=225.5  xp=36   dxp=-30.1  se=10.9  gold=301
+m65 12:46:36 d15 hp[254, 358] emergency rules=recall+phase choice=rules agree=False xpg=0.533 | rules (no option clearly better)
+   detail: Warg x4, Black orc x8 can deal 256 (HP 254) and no stairs are known: read Word of Recall now (it takes 8-23 s)
+   team: Warg@3, Warg@3, Black orc@3, Warg@2, Black orc@2, Black orc@2, Black orc@3, Warg@1, Black orc@1, Black orc@1, Black orc@1, Black orc@2 (+1)
+     ccw             safe=True  near=0.0   low10=210.0  xp=144  dxp=30.5   se=23.9  gold=194
+     phase+ccw       safe=True  near=0.0   low10=191.5  xp=120  dxp=-13.7  se=21.5  gold=232
+     rules           safe=True  near=0.0   low10=202.5  xp=100  dxp=0.0    se=0.0   gold=169
+     fight           safe=True  near=0.0   low10=202.5  xp=100  dxp=0.0    se=0.0   gold=169
+     phase           safe=True  near=0.0   low10=195.0  xp=99   dxp=15.6   se=21.6  gold=139
+     recall+phase    safe=True  near=0.0   low10=187.5  xp=91   dxp=-114.6 se=25.6  gold=368
+m65 12:46:43 d15 hp[195, 358] hard_fight rules=fight choice=rules agree=True xpg=0.533 | rules (no option clearly better)
+   detail: hard fight with Black orc, Uruk, Warg: rules fight
+   team: Warg@3, Warg@2, Warg@1, Warg@3a, Warg@2, Warg@1, Warg@1, Black orc@2, Uruk@1, Black orc@1, Black orc@1, Warg@3 (+4)
+     rules           safe=True  near=0.0   low10=163.5  xp=43   dxp=0.0    se=0.0   gold=275
+     fight           safe=True  near=0.0   low10=163.5  xp=43   dxp=0.0    se=0.0   gold=275
+     phase           safe=True  near=0.0   low10=163.0  xp=38   dxp=-16.6  se=11.1  gold=296
+m65 12:46:46 d15 hp[178, 358] emergency rules=teleport choice=stairs agree=False xpg=0.533 | +150 XP net of gold vs rules (SE 9), both safe
+   detail: low HP: 8 about in the open: a Staff of Teleportation (11 charges)
+   team: Warg@2, Uruk@3, Cave orc@2, Black orc@1, Brigand@3, Black orc@1, Warg@3, Warg@2 
+     recall+phase    safe=True  near=0.0   low10=160.5  xp=64   dxp=-77.0  se=18.6  gold=546
+     ccw             safe=True  near=0.0   low10=176.5  xp=46   dxp=18.9   se=20.9  gold=331
+     phase           safe=True  near=0.0   low10=167.5  xp=46   dxp=51.0   se=23.3  gold=272
+     phase+ccw       safe=True  near=0.0   low10=167.5  xp=46   dxp=51.0   se=23.3  gold=272
+     fight           safe=True  near=0.0   low10=163.5  xp=13   dxp=6.4    se=10.6  gold=294
+     rules           safe=True  near=0.0   low10=178    xp=0    dxp=0.0    se=0.0   gold=281
+m65 12:46:49 d15 hp[172, 358] emergency rules=ccw choice=rules agree=False xpg=0.533 | rules (no option clearly better)
+   detail: low HP: quaffed a Potion of Cure Critical Wounds {for sale 200} (losing ~8 HP/s)
+   team: Warg@3, Warg@2, Warg@1, Warg@3, Cave orc@2, Black orc@1, Black orc@2, Black orc@1, Black orc@3, Uruk@2, Black orc@3 
+     recall+phase    safe=True  near=0.0   low10=149.5  xp=56   dxp=-117.7 se=22.5  gold=632
+     ccw             safe=True  near=0.0   low10=170.0  xp=35   dxp=-11.3  se=18.2  gold=394
+     phase           safe=True  near=0.0   low10=161.5  xp=35   dxp=34.5   se=19.0  gold=307
+     phase+ccw       safe=True  near=0.0   low10=161.5  xp=35   dxp=34.5   se=19.0  gold=307
+     fight           safe=True  near=0.0   low10=154.5  xp=13   dxp=6.4    se=18.5  gold=319
+     rules           safe=True  near=0.0   low10=167    xp=0    dxp=0.0    se=0.0   gold=306
+m65 12:46:52 d15 hp[173, 358] emergency rules=phase choice=rules agree=True xpg=0.533 | rules (no option clearly better)
+   detail: low HP: waiting to use Phase Door, cure potions again, fighting on
+   team: Warg@3, Warg@2, Warg@1, Warg@3, Cave orc@2, Black orc@1, Warg@3, Black orc@2, Black orc@1, Uruk@1, Black orc@3, Black orc@2 (+1)
+     recall+phase    safe=True  near=0.0   low10=149.0  xp=46   dxp=-152.8 se=15.0  gold=654
+     ccw             safe=True  near=0.0   low10=162.5  xp=36   dxp=-41.1  se=14.4  gold=425
+     phase           safe=True  near=0.0   low10=162.5  xp=33   dxp=25.9   se=16.4  gold=294
+     phase+ccw       safe=True  near=0.0   low10=162.5  xp=33   dxp=25.9   se=16.4  gold=294
+     fight           safe=True  near=0.0   low10=152.5  xp=16   dxp=12.6   se=10.0  gold=288
+     rules           safe=True  near=0.0   low10=173    xp=0    dxp=0.0    se=0.0   gold=281
+m65 12:46:56 d15 hp[164, 358] emergency rules=teleport choice=rules agree=True xpg=0.533 | rules (no option clearly better)
+   detail: low HP: 13 about in the open: a Staff of Teleportation (11 charges)
+   team: Warg@3, Warg@2, Warg@1, Cave orc@2, Black orc@1, Cave orc@3, Black orc@1, Uruk@1, Black orc@1, Black orc@3, Brigand@2, Black orc@2 (+1)
+     recall+phase    safe=True  near=0.0   low10=140.0  xp=29   dxp=-190.4 se=11.2  gold=687
+     phase           safe=True  near=0.0   low10=153.5  xp=20   dxp=37.9   se=12.0  gold=241
+     phase+ccw       safe=True  near=0.0   low10=153.5  xp=20   dxp=37.9   se=12.0  gold=241
+     ccw             safe=True  near=0.0   low10=162.5  xp=17   dxp=-56.1  se=13.0  gold=412
+     fight           safe=True  near=0.0   low10=137.0  xp=14   dxp=0.2    se=11.8  gold=300
+     rules           safe=True  near=0.0   low10=164    xp=0    dxp=0.0    se=0.0   gold=275
+m65 12:46:58 d15 hp[187, 358] emergency rules=ccw choice=stairs agree=False xpg=0.533 | +118 XP net of gold vs rules (SE 5), both safe
+   detail: HP 187 within 3 turns of the worst (189): quaffed a Potion of Cure Critical Wounds {for sale 200} (losing ~7 HP/s)
+   team: Warg@2, Warg@1, Warg@3, Warg@2, Black orc@1, Cave orc@3, Cave orc@2, Black orc@1, Uruk@1, Black orc@1, Black orc@3, Brigand@2 (+4)
+     recall+phase    safe=True  near=0.0   low10=160.0  xp=34   dxp=-189.5 se=14.8  gold=640
+     ccw             safe=True  near=0.0   low10=165.5  xp=28   dxp=-0.0   se=13.0  gold=275
+     rules           safe=True  near=0.0   low10=161.5  xp=22   dxp=0.0    se=0.0   gold=262
+     fight           safe=True  near=0.0   low10=161.5  xp=22   dxp=0.0    se=0.0   gold=262
+     phase+ccw       safe=True  near=0.0   low10=166.0  xp=17   dxp=38.4   se=8.1   gold=182
+     phase           safe=True  near=0.0   low10=166.0  xp=14   dxp=54.5   se=13.8  gold=145
+m65 12:52:17 d15 hp[357, 358] band rules=stairs choice=rules agree=False xpg=0.533 | rules (no option clearly better)
+   detail: band: rules stairs (a band within 10 squares: Water hound ×4, Orc shaman (5 monsters, ~190 HP expected to fight them all)
+   team: Water hound@7, Water hound@14, Water hound@10, Water hound@9, Water hound@6, Orc shaman@5 
+     rules           safe=True  near=0.0   low10=269    xp=593  dxp=0.0    se=0.0   gold=130
+     fight           safe=True  near=0.0   low10=269    xp=593  dxp=0.0    se=0.0   gold=130
+     recall+phase    safe=True  near=0.0   low10=264    xp=593  dxp=-141.2 se=70.0  gold=395
+     phase           safe=True  near=0.0   low10=274    xp=575  dxp=-60.3  se=80.8  gold=211
+     stairs          safe=True  near=0.0   low10=119.0  xp=0    dxp=-556.2 se=56.8  gold=0

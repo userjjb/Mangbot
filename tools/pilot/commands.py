@@ -115,6 +115,10 @@ class CommandsMixin:
             if dc:
                 # (2.45.0: what its UN_BONUS blows cost the worn gear, beside what the kill brings)
                 out[-1] += "; " + self.disen_text(dc)
+            gd = self.gear_damage_kind(r)
+            if gd:
+                # (2.57.0: m65's Water hounds took ~5,000 gold of armour plusses with acid breath)
+                out[-1] += f"; GEAR: {gd} (2 hits in 10 s and the Pilot kills it if quick, else leaves)"
         more = len(exact or found) - 6
         return "\n".join(out) + (f"\n(+{more} more)" if more > 0 else "")
 

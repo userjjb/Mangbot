@@ -268,6 +268,7 @@ class CombatMixin:
         "_reflex_arrival",          # 3. arrival into danger
         "_reflex_danger_in_view",   # 3a. something far above our level in view
         "_reflex_unseen",           # 3b. an unseen attacker (unseen_tick)
+        "_reflex_gear_damage",      # 3b'. equipment damage (acid, disenchantment): kill it if quick, else leave (2.57.0)
         "_reflex_choke",            # 3c. a pack in the open: back into a corridor (choke_tick)
         "_reflex_summon_trap",      # 3d. a summon trap: Phase Door
         "_reflex_slowed",           # 3e. slowed in a fight: a Potion of Speed
@@ -476,6 +477,12 @@ class CombatMixin:
         explain it."""
         now = ctx.now
         if self.unseen_tick(now):
+            return True
+        return NEXT
+
+    def _reflex_gear_damage(self, ctx):
+        """3b'. Equipment damage as a cost (2.57.0, the user after m65): gear_damage_tick."""
+        if self.gear_damage_tick(ctx.now):
             return True
         return NEXT
 
@@ -2060,6 +2067,160 @@ class CombatMixin:
         else:
             self.notify("unseen_attacker", f"'{cause}': something unseen is attacking and no stairs are known: "
                                            "consider Word of Recall or Phase Door")
+        return True
+
+    # --- equipment damage (2.57.0, the user after m65: a Water hound pack breathed acid 31 times at 750 ft -- 26 of them
+    # "It breathes acid." from out of view -- and 21 "Your X is damaged!" took the armour's plusses; resist acid kept HP
+    # up, so the unseen-attacker rule (HP below 80%) never fired; ~5,000 gold of Enchant Armor put it back) ----------
+    GEAR_WINDOW_S = 10.0       # 2 damage events this close together: a pack breathing acid, not a stray bite
+    GEAR_EVENTS = 2
+    # or this much (gold to put back) within GEAR_COST_WINDOW_S: more than two armour points at +7 (each ~380: the
+    # read at +7, ~190 / 0.5) or one dear disenchantment -- what a trip earns in ~6-7 dungeon minutes (m63: ~150
+    # gold/dmin adjusted); a single acid hit (~380) stays under it, so one bite alone doesn't send us home
+    GEAR_COST_MAX = 1000
+    GEAR_COST_WINDOW_S = 30.0
+    GEAR_QUICK_TURNS = 6       # the source in view dies within this many of our turns (fight_sim, summed): kill it
+    GEAR_SOURCE_RE = re.compile(r"^(?:The |An? )?(.+?) (breathes|spits|bites|claws|touches|hits|stings|crushes|"
+                                r"engulfs|butts|kicks|gazes)\b")
+
+    def gear_damage_kind(self, r):
+        """What a race does to worn gear, or None: acid (BR_ACID breath, ACID blows: minus_ac, spells1.c) or
+        disenchantment (BR_DISE, UN_BONUS blows)."""
+        out = []
+        effects = {(b.split(":")[1:2] or [""])[0] for b in r.blows}
+        if "BR_ACID" in r.spells or "ACID" in effects:
+            out.append("acid damages armour")
+        if "BR_DISE" in r.spells or "UN_BONUS" in effects:
+            out.append("disenchants gear")
+        return " and ".join(out) or None
+
+    @staticmethod
+    def _gear_key(name):
+        """A worn piece's name without its numbers and inscription (the same piece before and after a hit)."""
+        return re.sub(r"\s*[\[({].*$", "", name).lower()
+
+    @staticmethod
+    def _gear_plus(it):
+        """(which, slot, the plus shown): to-dam for a weapon, to-AC for armour."""
+        if it["tval"] in (19, 20, 21, 22, 23):
+            m = re.search(r"\(([+-]\d+),([+-]\d+)\)", it["name"])
+            return "todam", ("bow" if it["tval"] == 19 else "weapon"), (int(m.group(2)) if m else 0)
+        m = re.search(r"\[\d+,([+-]\d+)\]", it["name"])
+        return "toac", "armour", (int(m.group(1)) if m else 0)
+
+    def gear_damage_cost(self, item):
+        """(the worn piece, gold to put the lost plus back): a hit takes the piece from the plus it had (remembered
+        before the hit, `gear_plus`; else the one shown) to one less, and the repair is the town kit's read at that
+        lower plus -- price / chance there (reenchant_cost from the plus it now has to the plus it had; the 2.46.0
+        valuation: the plus's resale where the kit wouldn't re-enchant). Successive hits each cost their own step."""
+        w = self.w
+        key = item.lower()
+        worn = next((i for i in w.items(equip=True) if key in i["name"].lower()), None)
+        if not worn:
+            return None, float(self.DISEN_SCROLL_PRICE)
+        which, slot, shown = self._gear_plus(worn)
+        gk = self._gear_key(worn["name"])
+        before = self.gear_plus.get(gk, shown)
+        after = before - 1
+        self.gear_plus[gk] = after
+        try:
+            sc, lost = self.reenchant_cost(which, after, before, self.is_artifact(worn["name"]), slot, worn["name"])
+        except Exception:
+            sc, lost = float(self.DISEN_SCROLL_PRICE), 0.0
+        return worn, sc + lost
+
+    def gear_damage_scan(self, now):
+        """New "Your X is damaged!" / "Your X (c) was disenchanted!" messages -> gear_events [(t, item, cost, source,
+        unseen)]; the source is the attack message just before it ("The Water hound breathes acid.", "It breathes
+        acid.")."""
+        w = self.w
+        msgs = list(w.messages)
+        # (the plusses as they stand, while no hit is fresh: what a hit is costed from -- the equipment list may show
+        # the lowered plus by the time the message is read, or not yet)
+        if not self.gear_events or now - self.gear_events[-1][0] > 3:
+            self.gear_plus = {self._gear_key(i["name"]): self._gear_plus(i)[2] for i in w.items(equip=True)}
+        for k, (ts, t) in enumerate(msgs):
+            if ts <= self.gear_msg_t:
+                continue
+            m = re.match(r"Your (.+?) is damaged!$", t)
+            d = re.match(r"Your (.+?) \(.\) (?:was|were) disenchanted!", t)
+            if not (m or d):
+                continue
+            item = (m or d).group(1)
+            worn, cost = self.gear_damage_cost(item)
+            src, unseen = None, False
+            for ts2, t2 in reversed(msgs[:k]):
+                if ts - ts2 > 2:
+                    break
+                s = self.GEAR_SOURCE_RE.match(t2)
+                if s:
+                    src, unseen = s.group(1), t2.startswith(("It ", "Something "))
+                    break
+            self.gear_events.append((ts, worn["name"] if worn else item, cost, src, unseen))
+        self.gear_msg_t = max([self.gear_msg_t] + [ts for ts, _ in msgs])
+        self.gear_events = [e for e in self.gear_events if now - e[0] <= self.GEAR_COST_WINDOW_S]
+
+    def gear_damage_tick(self, now):
+        """The equipment-damage rule (2.57.0): 2+ damage events within GEAR_WINDOW_S, or GEAR_COST_MAX gold of them
+        within GEAR_COST_WINDOW_S, is danger. The source in view, and the fight quick (fight_sim: all of that race in
+        view dead within GEAR_QUICK_TURNS of our turns): kill it (Hunt). Otherwise leave: the stairs if known within
+        20 (Flee), else Teleportation (or Phase Door) out of the line, else Word of Recall; an unseen breather ("It
+        breathes acid.") always means leaving. One action, then again only after 3 s; a `gear_damage` alert says what
+        was damaged, by what, and the cost so far. True if it acted."""
+        w = self.w
+        if not w.in_dungeon:
+            return False
+        self.gear_damage_scan(now)
+        ev = self.gear_events
+        recent = [e for e in ev if now - e[0] <= self.GEAR_WINDOW_S]
+        cost = sum(e[2] for e in ev)
+        if not (len(recent) >= self.GEAR_EVENTS or cost >= self.GEAR_COST_MAX) or now - self.gear_act_t < 3 or \
+                isinstance(self.goal, (Flee, Recall, Recover)) or w.recall_pending:
+            return False
+        self.gear_act_t = now
+        items = sorted({e[1] for e in ev})
+        src = next((e[3] for e in reversed(ev) if e[3]), None)
+        unseen = any(e[4] for e in recent) and not any(not e[4] and e[3] for e in recent)
+        what = f"{len(ev)} damaged ({', '.join(items)}) by {('something unseen: ' + src) if unseen and src else src or 'an attack'}" \
+               f", ~{cost:.0f} gold to put back"
+        self.gear_events = []
+        # the source in view and quick to kill: kill it
+        race = next((r for _, _, r in w.monsters if src and r.name.lower() == src.lower()), None)
+        if race and not unseen:
+            n = sum(1 for _, _, r in w.monsters if r.name == race.name)
+            est = self.fight_sim(race)
+            turns = (est or {}).get("turns_mean")
+            if turns is not None and turns * n <= self.GEAR_QUICK_TURNS:
+                self.set_goal(Hunt(race.name))
+                self.notify("gear_damage", f"{what}: killing the {race.name} ({n} in view, ~{turns * n:.0f} turns)")
+                return True
+        # otherwise leave the line, then the level
+        stairs = [q for q in w.find("<>") if w.dist(q) <= 20]
+        if stairs:
+            self.set_goal(Flee("equipment damage"))
+            how = "heading for the stairs"
+        else:
+            tele = self.teleport_item()
+            ph = self.phase_item()
+            if tele:
+                self.phase_t = now
+                self.cmd(f"custom {tele[0]} item={tele[1]['item']}", "equipment damage: teleport out of the line",
+                         hold=1.0)
+                how = "teleporting away"
+            elif ph and not unseen:
+                self.phase_t = now
+                self.cmd(f"custom r item={ph['item']}", "equipment damage: phase out of the line", hold=1.0)
+                how = "phasing out of the line"
+            else:
+                wor = self.find_item("Word of Recall", TV_SCROLL)
+                if wor and not w.recall_pending:
+                    self.recall_t = now
+                    self.cmd(f"custom r item={wor['item']}", "equipment damage: no stairs near -- Word of Recall",
+                             hold=1.0)
+                    how = "reading Word of Recall (no stairs near)"
+                else:
+                    how = "no stairs, teleport or recall to hand: fight on"
+        self.notify("gear_damage", f"{what}: {how}")
         return True
 
     def sidestep(self, threats):

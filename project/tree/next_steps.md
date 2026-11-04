@@ -467,5 +467,10 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   unknown potion for 9 gold: a Potion of Strength (the user: no buy-back) -> **2.55.0** (identify every unknown before
   selling, except gear felt average/worthless/cursed/broken; stat-gain potions quaffed). Live: 4 identified, ok.
   Small, open: a Ring of Protection [+11] (weaker than both worn) kept as "kit/kept/useful".
+- **m65** (Sonnet medium, 2.55.0): 75.7 XP/dmin; a summon trap at 750 ft (Gorbag, Uruk, Black orcs, Wargs): the
+  Pilot's own escapes, low 46%. 10 flavours identified. **2.56.0**: buy caps from the normal price (a 50%-off CSW had
+  capped later buys at 46 < 63); news for items destroyed by attacks; a Navigator `plan town` during plan town is
+  queued. Make-room churn: the user calls it a non-issue (leave it). Live 14:44: plan town bought 25 Enchant Armor
+  (5,025 gold) and restored 3 of 4 disenchanted pieces to +8 (boots still +7) -- the session-9 rule, `enchant_max` 25.
 - **Lessons:** `restart.sh` loads the working tree; hand-walking into the house picks up the bank pile (the step-in
   square) -- never do it; `goal goto` queued behind raw steps can path back through the house.

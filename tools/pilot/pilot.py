@@ -238,6 +238,8 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.queued = None                    # a plan/goal the Navigator sent while plan town ran (2.53.0)
         self.drop_fails, self.drop_told = {}, set()   # stash drops that didn't happen, this visit (drop_failed)
         self.artifact_told = set()            # artifacts told "kept in the pack: can't be stored" (town_rule)
+        self.gear_events, self.gear_msg_t, self.gear_act_t = [], 0.0, 0.0   # equipment damage (gear_damage_tick, 2.57.0)
+        self.gear_plus = {}                   # worn pieces' plusses before a hit (gear_damage_cost)
         self.effect_failures = 0
         self.redraw_t, self.redraw_level = 0.0, None
         self.factor_logged, self.rate_logged, self.factor_log_t = 1.0, None, 0.0

@@ -27,6 +27,19 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.57.0 -- 2026-11-04 (session 12, the user's decision after m65)
+No missions yet on it. **Play changes:**
+- **Equipment damage is a cost the Pilot acts on** (m65 at 750 ft: a Water hound pack breathed acid 31 times, 26 from
+  out of view; 21 "Your X is damaged!" took the armour's plusses -- ~5,000 gold of Enchant Armor -- while resist acid
+  kept HP up, so the unseen-attacker rule never fired). A new reflex after the unseen-attacker one
+  (`_reflex_gear_damage`, `gear_damage_tick`): "Your X is damaged!" and "Your X (c) was disenchanted!" are costed at
+  what restoring them costs -- the town kit's read at the lowered plus (+8 -> +7: the read at +7, ~380), each hit its
+  own step, the resale only where the kit wouldn't re-enchant; 2 within 10 s, or 1000+ gold within 30 s, is danger. A source in
+  view that dies within 6 of our turns (`fight_sim`, all of that race in view) is hunted; otherwise the Pilot leaves --
+  stairs within 20, else Teleportation, else Phase Door (not from an unseen breather), else Word of Recall; an unseen
+  breather always means leaving. A `gear_damage` alert says what, by what, and the cost. `monster NAME` shows
+  "GEAR: acid damages armour" / "disenchants gear".
+
 ## 2.56.0 -- 2026-11-04 (session 12, the user's choices after m65)
 No missions yet on it. **Play changes:**
 - **Buy caps from the normal price, not a sale:** a shop line shown "{N% off}" is recorded at its undiscounted price

@@ -2,6 +2,7 @@
 
 Run by unit.py (python3 unit.py [NAME]); W, pilot() and the other shared fixtures are in fixtures.py.
 """
+import re
 import collections
 import json
 import os
@@ -556,3 +557,59 @@ def hunger_never_eats_mushrooms():
     ration_letter = next(i["item"] for i in hr.w.items() if "Ration" in i["name"])
     ok = not any(s.startswith("eat ") for s in h.sent + wk.sent) and eat_r == [f"eat {ration_letter}"]
     return ok, f"hungry, mushrooms only: {h.sent}; weak, mushrooms only: {wk.sent}; hungry, both: {hr.sent}"
+
+
+_M65_WORN = [("a Battle Axe of Westernesse (2d8) (+10,+9) (+1)", 22, 170),
+             ("Hard Studded Leather of Resistance (-1) [7,+8]", 36, 110), ("a Shadow Cloak [6,+8]", 35, 5),
+             ("an Orcish Shield [5,+8] (+1)", 34, 100), ("a Metal Cap [3,+8]", 32, 20),
+             ("a Set of Gauntlets [2,+8]", 31, 25), ("a Pair of Hard Leather Boots of Stability [3,+8]", 30, 40)]
+
+
+def _acid(lines, monsters=(), stairs=(), pack=()):
+    """m65 at 750 ft (12:52): Water hounds breathing acid at Dive04 (resists acid), its armour damaged."""
+    p = pilot(hp=388, worn=_M65_WORN, pack=list(pack), monsters=list(monsters))
+    w = p.w
+    w.hp = [380, 388]
+    w.memory = {q: ">" for q in stairs}
+    w.find = lambda g: [q for q, ch in w.memory.items() if ch in g]
+    w.tagged = lambda c, n: None
+    p.mover = type("M", (), {"active": False, "stop": lambda self: None})()
+    p.sent = []
+    p.cmd = lambda line, why, hold=0.4: p.sent.append(line)
+    p.fight_sim = lambda race, n=600: {"turns_mean": 2.0}
+    now = P.gnow()
+    for k, t in enumerate(lines):
+        w.messages.append((now - len(lines) + k * 0.5, t))
+    return p, now
+
+
+@case
+def equipment_damage_is_danger():
+    """2.57.0 (the user after m65: a Water hound pack breathed acid 31 times -- 26 from out of view -- and 21 "Your X is
+    damaged!" took ~5,000 gold of armour plusses while resist acid kept HP up): two equipment-damage events within
+    10 s are danger. A breather in view that dies quickly is killed (Hunt); an unseen one ("It breathes acid.") means
+    leaving -- the stairs within 20 (Flee), else Teleportation, else Word of Recall; one damage event alone, nothing.
+    The `gear_damage` alert names what, by what and the cost to put it back: each +8 -> +7 hit costs the town kit's
+    read at +7 (~190 / 0.5 = ~380), so the two hits ~760."""
+    hound = (22, 23, BYNAME["water hound"])
+    seen, now = _acid(["The Water hound breathes acid.", "Your Shadow Cloak is damaged!",
+                       "The Water hound breathes acid.", "Your Set of Gauntlets is damaged!"], monsters=[hound])
+    a = seen.gear_damage_tick(now)
+    hunt = seen.goal.describe() if seen.goal else None
+    alert = next((d for k, d in seen.notes if k == "gear_damage"), "")
+    dark, now = _acid(["It breathes acid.", "Your Metal Cap is damaged!", "It breathes acid.",
+                       "Your Pair of Hard Leather Boots of Stability is damaged!"], stairs=[(30, 30)])
+    b = dark.gear_damage_tick(now)
+    flee = type(dark.goal).__name__ if dark.goal else None
+    far, now = _acid(["It breathes acid.", "Your Metal Cap is damaged!", "It breathes acid.",
+                      "Your Shadow Cloak is damaged!"], pack=[("2 Scrolls of Teleportation", 70)])
+    c = far.gear_damage_tick(now)
+    one, now = _acid(["The Water hound breathes acid.", "Your Shadow Cloak is damaged!"], monsters=[hound])
+    d = one.gear_damage_tick(now)
+    kind = seen.gear_damage_kind(BYNAME["water hound"])
+    cost = int(re.search(r"~(\d+) gold to put back", alert).group(1)) if "gold to put back" in alert else 0
+    ok = a and hunt and "Water hound" in hunt and "Shadow Cloak" in alert and 700 <= cost <= 820 and \
+        b and flee == "Flee" and c and far.sent and far.sent[0].startswith("custom r item=0") and not d and \
+        kind == "acid damages armour"
+    return ok, (f"seen pack: {a} -> {hunt}, alert {alert!r}; unseen with stairs: {b} -> {flee}; unseen, no stairs: "
+                f"{c} {far.sent}; one hit: {d}; Water hound: {kind}")

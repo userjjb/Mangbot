@@ -1,7 +1,7 @@
 # The Documentation, condensed (for Architects and Advisors)
 
 The full version is [README.md](README.md) and its ten component files. This page is what a new Architect or Advisor
-needs in their head before touching anything. Session 11, 2026-11-03; matches version 2.56.0 (`github/VERSION`, CHANGELOG.md).
+needs in their head before touching anything. Session 11, 2026-11-03; matches version 2.57.0 (`github/VERSION`, CHANGELOG.md).
 
 ## What this is
 
@@ -119,7 +119,7 @@ mode** (`shadow.py`) asks the estimator's `choose` in the background at emergenc
   `observe/watch_mission.py`: the Architect's monitor (exits on an ask, emergency, death, drain, stuck plan, plan end,
   Pilot error -- restart it each time). `observe/wrap.sh mNN` after a mission: scorecard, token cost, damage mix,
   complaints. `observe/shopmath.py` is imported by the Advisor's `build_shops.py`: keep its path.
-- `harness/unit.py`: 198 offline cases in `unit_<family>.py` + `fixtures.py` on the real decision code (~3 s; **must pass after every change**).
+- `harness/unit.py`: 199 offline cases in `unit_<family>.py` + `fixtures.py` on the real decision code (~3 s; **must pass after every change**).
   `harness/setpiece.py`: ~40 live scenes staged by the Dungeon Master (`dm.py`), Dive04 saved/restored by `charsave.sh`.
 - `rulebook/`: the Advisor's tables of game facts (copied by `sync.sh`); `pilotctl rule` queries them.
 - Ops: `freeze.sh`, `snapshot.sh` (whole project into `github/project/` for the public repo; no secrets), `restart.sh`,

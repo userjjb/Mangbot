@@ -185,6 +185,9 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 
 ## Housekeeping
 
+- **Equipment damage is a cost** (2.57.0): two "Your X is damaged!" (acid) or disenchantments within 10 s make the
+  Pilot kill a quick source in view or leave (a `gear_damage` alert); acid breathers you resist still eat your armour's
+  plusses (m65: ~5,000 gold of Enchant Armor). `monster NAME` shows "GEAR: ..." for them.
 - **Bands** count only when together they could take 30% of your HP in a turn, or include a dangerous monster; weaker
   groups are fought (and looted) where they stand. **Dark inner rooms** get an avoid zone over their ring corridor (a
   pit looks the same until it opens): `avoid clear` if you mean to open one. When such a zone is all that keeps the
