@@ -379,3 +379,7 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
 - **2.49.0 (the user after m61):** the lantern is filled in town (to 15000), and the stomach tracker (`stomach.py`)
   pins the food value at every hunger crossing. **Watch in session 12:** the first `stomach` record (`pinned`, ~1980-1999
   on Fed -> Hungry), `food ~N` on the status line, no frequent `contradiction` records (a wrong rate).
+- **11-03: the restructure is declared done (the user).** `restructure` was fast-forwarded into `master` at 2.49.0
+  (fba3d7e) and deleted locally and on GitHub; pushes go to `master --tags`. The revert instructions (`restructure.md`),
+  the 10-22 backup (`runs/backup-pre-restructure-20261022/`) and the restructure memory were deleted; the tag
+  `pre-restructure` and the version tags remain.

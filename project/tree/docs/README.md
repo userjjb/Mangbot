@@ -60,7 +60,7 @@ the **rulebook** tables and the ops scripts ([harness-rulebook-ops.md](harness-r
 
 | What | Where |
 |---|---|
-| Code (git, branch `restructure`, public repo https://github.com/userjjb/Mangbot) | `github/` -- our MAngband fork + `github/tools/` |
+| Code (git, branch `master`, public repo https://github.com/userjjb/Mangbot) | `github/` -- our MAngband fork + `github/tools/` |
 | Test server, its config and saves | `testserver/` (start/restart: `../operations.md`) |
 | The Pilot's per-character state and logs | `runs/pilot/<nick>/` ([pilot-core.md](pilot-core.md) lists every file) |
 | Missions, scorecards, reports | `runs/missions.json`, `runs/pilot/dive04/scorecards/`, `.../reports/` |

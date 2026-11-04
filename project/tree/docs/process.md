@@ -66,7 +66,7 @@ notice; `mission start` records it (`version` in `runs/missions.json` and the `m
 **Every version (the per-version checklist):** update the component file in `docs/` for each component the change
 touches, and the version line in `docs/README.md` and `docs/CONDENSED.md`; bump `github/VERSION` (minor if play can
 differ, else patch); add a CHANGELOG entry (with the missions on it); `tools/snapshot.sh`, commit, tag `vX.Y.Z` on the
-version's last commit, `git push origin restructure --tags`; restart the Pilot with `tools/pilot/restart.sh Dive04`
+version's last commit, `git push origin master --tags`; restart the Pilot with `tools/pilot/restart.sh Dive04`
 (it passes the Architect's token for `park` itself; idle in town, and **no set-piece
 running**: `pgrep -af setpiece.py` -- a restart's park mid-set-piece spoils the run and blocks its restore, 10-31) so it runs and reports
 the new version. A change to the Pilot's code or the rulebook is checked first with `tools/harness/unit.py` (all
@@ -92,7 +92,7 @@ if the SGE job ended. Ask the user what to run (model, effort, length).
 | 11 | Mission report | Write `runs/pilot/dive04/reports/YYYY-MM-DD-missionNN.md` (header: mission, Navigator model/effort, times; then what happened, numbers, problems, verdicts). Templates: the latest reports (mission60.md). | report |
 | 12 | Lessons | New play lessons into `github/tools/pilot/FIELD-NOTES.md` (newest first per section; Navigators read it each mission). System changes go in HANDBOOK.md instead. | FIELD-NOTES.md |
 | 13 | Friction | Read the Navigator's complaints (`runs/complaints.md`, also "NAVIGATOR LACKS" in the viewer) and its "What I lacked": fix what you can; relay recurring/unfixable ones to the user in the mission summary (memory: relay-agent-friction). | -- |
-| 14 | Publish | `github/tools/snapshot.sh`, commit (in `github/`), `git push origin restructure`. | `github/project/`, git |
+| 14 | Publish | `github/tools/snapshot.sh`, commit (in `github/`), `git push origin master --tags`. | `github/project/`, git |
 
 **Debts and overrides** (`items.py: Pilot.override_allowed`, `settle_hunt`; HANDBOOK "Who decides what"). When the
 Navigator overrides a refusal with `!` (`sell !NAME`, `destroy !NAME`, `goal hunt !NAME`): value lost on items is added
@@ -171,11 +171,10 @@ replays, the rulebook via `tools/rulebook/sync.sh`) and what a pilot.py split mu
 | `runs/docs/` | mangband.org player docs (HTML + text), the source of `notes_players.md` | |
 | `runs/observe/` | Recorded human sessions, Scribe's fifo/log | |
 | `runs/live-*`, `runs/regress.*` | The 2026-09-25 live shop tour and town catalogue; the shopcat regression run | History |
-| `runs/backup-pre-restructure-20261022/` | Saves and files from before the restructure (restore point; `restructure.md`) | History |
 | `runs/phase0/` | an early birth packet log | History |
 | Claude memory | Architect: `~/.claude/projects/-projectnb-jbrcs-mangband/memory/`; Advisor: `...-Advisor/memory/` | Pointers only (section 6) |
 | `Advisor/` | The Advisor's studies, data (rulebook, estimator, monsters, forum corpus), `STATUS.md` | Read-only for us |
-| git: `github/` | Code; branch **`restructure`** (current work, ~400 commits, pushed), `master` (at tag `pre-restructure` = 767bf60, 2026-10-22); remote `origin` = https://github.com/userjjb/Mangbot | The public repo |
+| git: `github/` | Code; branch **`master`** (the restructure merged 11-03 at 2.49.0, ~400 commits since tag `pre-restructure` = 767bf60, 2026-10-22; the `restructure` branch is deleted, its versions are tags); remote `origin` = https://github.com/userjjb/Mangbot | The public repo |
 | `github/project/` | The snapshot of everything above that isn't code or secret: `tree/` (the project dir minus `github/`), `memory/architect/`, `memory/advisor/`, `claude/global-CLAUDE.md`, `SNAPSHOT_TIME` | Made by `tools/snapshot.sh` (excludes passwords, saves, server logs, the forum corpus, raw event streams, files > 5 MB; refuses if a secret-looking string slipped in). Restoring: `project/README.md`. |
 
 ## 6. The Architect's memory
@@ -190,7 +189,6 @@ replays, the rulebook via `tools/rulebook/sync.sh`) and what a pilot.py split mu
 | `mangband-advisor-memos.md` | Log of Advisor memos to 10-26 and forum-scraping facts |
 | `mangband-inbox-watcher.md` | Start the watcher first thing every session, restart on exit (feedback) |
 | `mangband-relay-agent-friction.md` | A subagent's "my mistake" may be a missing capability; read `runs/complaints.md` after every mission; relay friction to the user (feedback) |
-| `mangband-restructure.md` | Restructure on branch `restructure` since 10-22; revert per `restructure.md` only on request; the Navigator debt rule |
 | `mangband-no-crutches.md` | Don't let test-server advantages (rare items, forged kits, DM help) hide live problems; `pilot.py --live`, crutch devices sold on test (feedback) |
 
 **The SYNC RULE** (the user, 2026-09-27; in roles.md and the project-map memory): project docs hold the substance,
@@ -212,7 +210,6 @@ routine; **history** = a record of a past phase (may be stale).
 | `CHANGELOG.md` | What changed when, by version (major.minor.patch: minor = play can differ, patch = it can't); missions per version | current |
 | `history/` | Retired notes: `handoffs-s1-s9.md` (the old handoffs, the 09-25 "state of play", "Reflections from the agent who built this"), `restructure-step2.md`, `VACATION-NOTES.md`, `notes_merge.md`, `spells.md` (moved 2026-10-29, C11), `survey-notes/` (session 10's per-component refactor candidates, merged into `docs/refactor-candidates.md`) | history |
 | `live-deploy-todo.md` | The checklist for going live (mangband.org:18346): before the first live run, after deploying; add items as they come up (the user, 2026-10-29) | current |
-| `restructure.md` | How to revert to before the restructure (tag `pre-restructure`, backups in `runs/backup-pre-restructure-20261022/`); only on the user's request | reference |
 | `history/restructure-step2.md` | The design of restructure step 2, "who decides what" (log analysis of missions 17-23, the Pilot/Navigator split, intents with conditions, the user's decisions 10-23) | history (built) |
 | `history/VACATION-NOTES.md` | Session 8 ("The Architect's Vacation": the Architect helped Navigators live, no coding): bugs, wishes, blind spots, interventions, the ask channel; plus session 9's triage at the top | history |
 | `design_pilot.md` | The original Pilot design: architecture and reflex list (still roughly current); its goals/orders/events lists are superseded by the HANDBOOK | history / partly reference |

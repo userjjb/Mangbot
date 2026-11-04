@@ -16,8 +16,8 @@ can read them. Memory now only points here.) Credentials are **not** in this fil
 - **Public repo: https://github.com/userjjb/Mangbot** (remote `origin` of `github/`, the user's,
   2026-10-07). Before a push run `tools/snapshot.sh` (copies the project state, both memories and
   the global CLAUDE.md into `github/project/`, minus secrets and bulk; see `project/README.md`),
-  commit, then `git push origin restructure --tags` (the current branch; `master` stays at tag
-  `pre-restructure`; docs/process.md has the per-version checklist). Auth: the user's token in git's
+  commit, then `git push origin master --tags` (one branch since 11-03: the restructure merged into
+  `master`; docs/process.md has the per-version checklist). Auth: the user's token in git's
   credential store.
 - Source tree: `github/`, a git repo (commit 1 = pristine MAngband 1.5.3; per the Advisor's
   versions memo, `memos/2026-09-29-versions-and-forum-rules.md`, it is upstream develop at

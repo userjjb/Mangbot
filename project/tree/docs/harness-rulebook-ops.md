@@ -348,5 +348,5 @@ and Advisor's Claude memories into `project/memory/{architect,advisor}/`, and `~
 bulk on purpose (the repo is public: github.com/userjjb/Mangbot): `runs/private/`, `*.pass`, `*.mangrc`, savefiles
 (`testserver/save/`, `runs/setpieces/saves/`), server logs and crash dumps, the forum corpus and other third-party
 copies, raw event streams, packet logs, files over 5 MB. Run it before every commit and push (`git push origin
-restructure --tags` per operations.md; `master` stays at the tag `pre-restructure`). `project/README.md` explains how to restore a
+master --tags` per operations.md). `project/README.md` explains how to restore a
 commit's state (copy `tree/` back, recreate `runs/private/` with `newchar.py`, copy the memories back).

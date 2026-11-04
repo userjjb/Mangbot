@@ -9,7 +9,7 @@ Open `/projectnb/jbrcs/mangband/next_steps.md` and read **">>> WHICH HANDOFF IS 
 - **Session 10 is done** (2026-10-28 to 11-02, ran in two chats: "Architect 10" and "Architect 10 parallel"): the
   Documentation (`docs/`), the cleanup list `docs/refactor-candidates.md` worked through (A, B, C, D, F; E6/E7/E4/E9;
   E1 steps 1-3: pilot.py 11,060 -> 5,799 lines), `CHANGELOG.md` and versions, now **2.44.7** (`github/VERSION`, git tags
-  vX.Y.Z on branch `restructure`). Its record: "SESSION 10 RECORD" at the bottom of next_steps.md.
+  vX.Y.Z; since 11-03 everything is on `master` -- the restructure branch was merged and deleted). Its record: "SESSION 10 RECORD" at the bottom of next_steps.md.
 - **Session 11 is done** (2026-11-02/03, one chat): refactor group E finished, 2.44.8 -> **2.44.14** (town.py,
   combat.py, commands.py + cmdtable.py, E3 step lists, E5 goal steps, E8 harness split, A2 set-piece criterion). Record:
   "SESSION 11 RECORD" at the bottom of next_steps.md. The equivalence harness for future refactors:

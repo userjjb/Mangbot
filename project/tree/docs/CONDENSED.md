@@ -129,7 +129,7 @@ mode** (`shadow.py`) asks the estimator's `choose` in the background at emergenc
 
 `mission start mNN navigator=M effort=E` -> fill `BRIEF-TEMPLATE.md` (with the debts) -> launch the Navigator in the
 background -> `watch_mission.py`, answer asks -> `wrap.sh mNN` -> report in `runs/pilot/dive04/reports/` -> lessons in
-`FIELD-NOTES.md` -> read `runs/complaints.md` -> `snapshot.sh`, commit, push (branch `restructure`).
+`FIELD-NOTES.md` -> read `runs/complaints.md` -> `snapshot.sh`, commit, push (`master`).
 
 **Versions:** `github/VERSION` holds `major.minor.patch` (minor = play can differ, patch = it can't); `../CHANGELOG.md`
 lists them. The Pilot shows `Pilot vX.Y.Z` in `status full` and `started`; `mission start` stores it in `missions.json`.
