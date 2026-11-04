@@ -462,5 +462,10 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   no false food alert at a hunger crossing; **artifacts are never stashed** (MAngband forbids dropping a true
   artifact above its depth: object2.c inven_drop_okay -- plan town looped ~600 drops of m63's Phial); drops give up
   after 3 failures; **a permanent light beats a fuelled one** (Dive04 now wears the Phial; lantern and flasks sold).
+- **m64** (Sonnet medium, 2.53.0): 78.0 XP/dmin; the plan queue worked. Trip 1 lost to stairs 2 squares past an
+  unexplored room edge -> **2.54.0** (the dive walks through unexplored squares to known stairs). Plan town sold an
+  unknown potion for 9 gold: a Potion of Strength (the user: no buy-back) -> **2.55.0** (identify every unknown before
+  selling, except gear felt average/worthless/cursed/broken; stat-gain potions quaffed). Live: 4 identified, ok.
+  Small, open: a Ring of Protection [+11] (weaker than both worn) kept as "kit/kept/useful".
 - **Lessons:** `restart.sh` loads the working tree; hand-walking into the house picks up the bank pile (the step-in
   square) -- never do it; `goal goto` queued behind raw steps can path back through the house.

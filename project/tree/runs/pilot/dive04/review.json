@@ -1,9 +1,14 @@
 {
  "items": {
-  "a Ring of Protection [+11] {m64}": {
-   "why": "worth ~1600",
-   "visit": 68,
-   "t": "2026-11-04 12:18"
+  "a Ring of Feather Falling {m65}": {
+   "why": "gives feather fall",
+   "visit": 70,
+   "t": "2026-11-04 12:48"
+  },
+  "an Amulet of Resist Acid {m65}": {
+   "why": "gives resist acid",
+   "visit": 70,
+   "t": "2026-11-04 12:48"
   }
  },
  "decided": {
@@ -29,7 +34,8 @@
   "an Awl-Pike (1d8) (+2,+5)": "sell",
   "a Ring of Feather Falling": "sell",
   "a Ring of Resist Fire {m62}": "sell",
-  "an Amulet of Searching (+5) {m63}": "sell"
+  "an Amulet of Searching (+5) {m63}": "sell",
+  "a Ring of Protection [+11] {m64}": "sell"
  },
- "town_visits": 68
+ "town_visits": 71
 }

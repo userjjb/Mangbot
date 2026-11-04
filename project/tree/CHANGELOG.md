@@ -28,7 +28,7 @@ From 2026-10-22: after mission 23 the user stopped patching mission by mission. 
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
 ## 2.55.0 -- 2026-11-04 (session 12, the user's decision after m64)
-No missions yet on it. **Play changes:**
+Missions: m65 (Sonnet medium, 75.7 XP/dmin, report runs/pilot/dive04/reports/2026-11-04-mission65.md). **Play changes:**
 - **Identify before selling** (the user: "identify everything other than weapon/armor with a pseudo-ID already"; m64's
   plan town sold an unknown Pungent Potion for 9 gold -- a Potion of Strength, relisted at 12,560). An unknown flavour,
   jewellery or a device with unknown plusses or charges, and a weapon/bow/armour piece unfelt or felt

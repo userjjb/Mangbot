@@ -559,8 +559,253 @@
    "known": false,
    "t": 1793811614.4,
    "mission": "m64"
+  },
+  {
+   "name": "a Whip (1d3)",
+   "kind": "whip",
+   "known": false,
+   "t": 1793813091.4,
+   "mission": "m65"
+  },
+  {
+   "name": "a Mushroom of Cure Paranoia",
+   "kind": "mushroom of cure paranoia",
+   "known": true,
+   "t": 1793813118.0,
+   "mission": "m65"
+  },
+  {
+   "name": "3 Scrolls of Word of Recall {@R750}",
+   "kind": "scroll of word of recall",
+   "known": true,
+   "t": 1793813200.5,
+   "mission": "m65"
+  },
+  {
+   "name": "a Furry Mushroom",
+   "kind": "furry mushroom",
+   "known": false,
+   "t": 1793813201.5,
+   "mission": "m65"
+  },
+  {
+   "name": "a Wand of Lightning Bolts",
+   "kind": "wand of lightning bolt",
+   "known": false,
+   "t": 1793813230.2,
+   "mission": "m65"
+  },
+  {
+   "name": "a Staff of Trap Location",
+   "kind": "staff of trap location",
+   "known": false,
+   "t": 1793813256.8,
+   "mission": "m65"
+  },
+  {
+   "name": "a Dark Blue Mushroom",
+   "kind": "dark blue mushroom",
+   "known": false,
+   "t": 1793813423.7,
+   "mission": "m65"
+  },
+  {
+   "name": "12 Scrolls of Phase Door {for sale 200}",
+   "kind": "scroll of phase door",
+   "known": true,
+   "t": 1793813557.1,
+   "mission": "m65"
+  },
+  {
+   "name": "a Scroll of Trap/Door Destruction",
+   "kind": "scroll of trap/door destruction",
+   "known": true,
+   "t": 1793813573.9,
+   "mission": "m65"
+  },
+  {
+   "name": "a Potion of Berserk Strength",
+   "kind": "potion of berserk strength",
+   "known": true,
+   "t": 1793813601.6,
+   "mission": "m65"
+  },
+  {
+   "name": "a Short Bow (x2)",
+   "kind": "short bow",
+   "known": false,
+   "t": 1793813627.8,
+   "mission": "m65"
+  },
+  {
+   "name": "a Scroll of Light",
+   "kind": "scroll of light",
+   "known": true,
+   "t": 1793813630.4,
+   "mission": "m65"
+  },
+  {
+   "name": "a Wand of Trap/Door Destruction",
+   "kind": "wand of trap/door destruction",
+   "known": false,
+   "t": 1793813664.8,
+   "mission": "m65"
+  },
+  {
+   "name": "2 Mushrooms of Cure Paranoia",
+   "kind": "mushroom of cure paranoia",
+   "known": true,
+   "t": 1793813899.9,
+   "mission": "m65"
+  },
+  {
+   "name": "a Wand of Stinking Cloud",
+   "kind": "wand of stinking cloud",
+   "known": false,
+   "t": 1793814093.7,
+   "mission": "m65"
+  },
+  {
+   "name": "2 Scrolls of Light",
+   "kind": "scroll of light",
+   "known": true,
+   "t": 1793814110.3,
+   "mission": "m65"
+  },
+  {
+   "name": "a Wand of Light",
+   "kind": "wand of light",
+   "known": false,
+   "t": 1793814121.3,
+   "mission": "m65"
+  },
+  {
+   "name": "a Scroll of Door/Stair Location",
+   "kind": "scroll of door/stair location",
+   "known": true,
+   "t": 1793814123.4,
+   "mission": "m65"
+  },
+  {
+   "name": "an Amulet of Resist Acid",
+   "kind": "resist acid",
+   "known": true,
+   "t": 1793814126.9,
+   "mission": "m65"
+  },
+  {
+   "name": "a Scroll titled \"um he skifu\"",
+   "kind": "scroll titled \"um he skifu\"",
+   "known": false,
+   "t": 1793814167.5,
+   "mission": "m65"
+  },
+  {
+   "name": "2 Potions of Healing",
+   "kind": "potion of healing",
+   "known": true,
+   "t": 1793814251.9,
+   "mission": "m65"
+  },
+  {
+   "name": "a Scroll titled \"vlybek arzex\"",
+   "kind": "scroll titled \"vlybek arzex\"",
+   "known": false,
+   "t": 1793814278.4,
+   "mission": "m65"
+  },
+  {
+   "name": "a Ring of Feather Falling",
+   "kind": "feather falling",
+   "known": true,
+   "t": 1793814280.6,
+   "mission": "m65"
+  },
+  {
+   "name": "a Sabre (1d7)",
+   "kind": "sabre",
+   "known": false,
+   "t": 1793814302.4,
+   "mission": "m65"
+  },
+  {
+   "name": "a Scroll of Enchant Weapon To-Dam",
+   "kind": "scroll of enchant weapon to-dam",
+   "known": true,
+   "t": 1793814825.8,
+   "mission": "m65"
+  },
+  {
+   "name": "a Wand of Lightning Bolts",
+   "kind": "wand of lightning bolt",
+   "known": false,
+   "t": 1793814864.5,
+   "mission": "m65"
+  },
+  {
+   "name": "8 Scrolls of Phase Door {for sale 200}",
+   "kind": "scroll of phase door",
+   "known": true,
+   "t": 1793814875.4,
+   "mission": "m65"
+  },
+  {
+   "name": "a Wand of Trap/Door Destruction",
+   "kind": "wand of trap/door destruction",
+   "known": false,
+   "t": 1793814888.5,
+   "mission": "m65"
+  },
+  {
+   "name": "a Wand of Stone to Mud",
+   "kind": "wand of stone to mud",
+   "known": false,
+   "t": 1793814945.6,
+   "mission": "m65"
+  },
+  {
+   "name": "a Flask of oil",
+   "kind": "flask of oil",
+   "known": true,
+   "t": 1793815017.9,
+   "mission": "m65"
+  },
+  {
+   "name": "a Staff of Door/Stair Location",
+   "kind": "staff of door/stair location",
+   "known": false,
+   "t": 1793815022.3,
+   "mission": "m65"
+  },
+  {
+   "name": "a Scroll of Trap/Door Destruction",
+   "kind": "scroll of trap/door destruction",
+   "known": true,
+   "t": 1793815023.5,
+   "mission": "m65"
+  },
+  {
+   "name": "a Whip (1d3)",
+   "kind": "whip",
+   "known": false,
+   "t": 1793815129.4,
+   "mission": "m65"
+  },
+  {
+   "name": "a Potion of Neutralize Poison",
+   "kind": "potion of neutralize poison",
+   "known": true,
+   "t": 1793815135.1,
+   "mission": "m65"
+  },
+  {
+   "name": "a Battle Axe (2d8)",
+   "kind": "battle axe",
+   "known": false,
+   "t": 1793815159.3,
+   "mission": "m65"
   }
  ],
- "trip_t0": 1793810512.8,
+ "trip_t0": 1793814679.9,
  "credits": {}
 }

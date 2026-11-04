@@ -139,6 +139,11 @@
   "kind": "Staff of Enlightenment",
   "source": "identified"
  },
+ "Dark Blue Mushroom": {
+  "junk": false,
+  "kind": "Mushroom of Naivety",
+  "source": "identified"
+ },
  "Dark Red Potion": {
   "junk": true,
   "kind": "Potion of Lose Memories",
@@ -158,6 +163,11 @@
   "junk": false,
   "kind": "Staff of Trap Location",
   "source": "Advisor L_items (Dive03 09-27 12:52:05)"
+ },
+ "Furry Mushroom": {
+  "junk": false,
+  "kind": "Mushroom of Cure Poison",
+  "source": "identified"
  },
  "Gnarled Staff": {
   "junk": false,
@@ -493,6 +503,16 @@
   "junk": false,
   "kind": "Scroll of Enchant Armor",
   "source": "sold in a shop"
+ },
+ "Scroll titled \"um he skifu\"": {
+  "junk": false,
+  "kind": "Scroll of *Destruction*",
+  "source": "identified"
+ },
+ "Scroll titled \"vlybek arzex\"": {
+  "junk": false,
+  "kind": "Scroll of *Enchant Armor*",
+  "source": "identified"
  },
  "Scroll titled \"xtox ipta sour\"": {
   "junk": false,

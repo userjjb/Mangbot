@@ -1,1 +1,2 @@
 {"t": 1793201846.7, "id": 1, "text": "plan town fails every time with 'plan town is for the town' once it walks to the house tile (-50 ft) for the withdraw/deposit step (11:03, 11:37). I'm working around with house withdraw / plan town / house deposit. Known issue?", "depth_ft": -50, "hp": [358, 358], "goal": null}
+{"t": 1793814287.1, "id": 1, "text": "Food shows 0 rations now (was 5 at 12:28; only 1 eaten). Heroism 3->1 and Speed 2->1 too. Were they stolen/destroyed? Food>=45 min left; trip ends 12:57. OK to continue?", "depth_ft": 800, "hp": [358, 358], "goal": "explore"}

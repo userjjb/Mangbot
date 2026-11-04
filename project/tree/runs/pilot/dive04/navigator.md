@@ -730,3 +730,6 @@
 - 11:26:04 town 100% | Mission start, town, 300g+29k banked | plan town buy WoR:3 + kit, then one long trip 700-800 until cures<4 or phase<5 or minutes>33, react thieves kill | one long trip beats two per notes
 - 11:41:00 town 100% | Trip1 ended 11:38 (couldn't leave 750 in 5 min, trap-laden level; dart drained STR) | wait for town to finish with Restore STR, then trip2 700-800 minutes>22 | time budget
 - 12:05:33 town 100% | Mission end, in town idle 12:05 | stopped; XP +2334 gold +1540 in 40 min | Potion of Strength learned then SOLD for 9 gold by policy (should be drunk)
+- 12:22:19 town 100% | mission start, town, 300g+29k banked, 3 WoR | plan town buy WoR:3, Speed:2, then one long trip 700-800 until minutes>33 or cures<4 or phase<5, via recall | one long trip beats two in 45 min
+- 12:48:03 -50ft 100% | recalled home after summon trap (Warg+Black orc), 12:48 | second short trip 700-800 until time>13:00 | 19 min left, XP rate 85/min, worth another
+- 13:05:09 town 100% | trip 2 done, town visit finishing 13:05 | idle | mission over
