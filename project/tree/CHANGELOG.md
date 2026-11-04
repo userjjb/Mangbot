@@ -28,7 +28,7 @@ From 2026-10-22: after mission 23 the user stopped patching mission by mission. 
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
 ## 2.52.0 -- 2026-11-04 (session 12, fixes found in m63)
-Missions: m63 (from 10:22; its first 14 minutes ran on 2.51.0). **Play changes (bug fixes):**
+Missions: m63 (from 10:22; its first 14 minutes ran on 2.51.0; Sonnet medium, 58.7 XP/dmin, report runs/pilot/dive04/reports/2026-11-04-mission63.md). **Play changes (bug fixes):**
 - **The idle gold fetch never takes the bank's pile** (`house_square`): at 10:08 a Navigator `plan trip` cut plan
   town's house visit short in the doorway, and the fetch ("gold within 10 squares while idle") walked in and picked up
   the 25,444-gold bank; the record still said banked, so both later deposits refused ("wasn't picked up") and the

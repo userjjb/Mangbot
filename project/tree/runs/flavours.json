@@ -489,6 +489,11 @@
   "kind": "Wand of Scare Monster",
   "source": "identified"
  },
+ "Slimy Mushroom": {
+  "junk": false,
+  "kind": "Mushroom of Blindness",
+  "source": "sold in a shop"
+ },
  "Spruce Staff": {
   "junk": false,
   "kind": "Staff of Detect Evil",

@@ -86,7 +86,10 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
 - **Breeders that confuse** (Hummerhorns, 800 ft, m55): confused, you can't read scrolls and staffs often fail. The
   Pilot now cures a long confusion itself (CSW, then CCW); leave such a level at once.
 
-## 700-800 ft at clvl 29, AC ~104 (m56-m62)
+## 700-800 ft at clvl 29, AC ~104 (m56-m63)
+- **m63 (11-04): 59 XP/dmin** (Sonnet), three short trips: two ended on stairs (both Pilot bugs: one fixed in
+  2.52.0; a dark inner room's avoid zone can cover the only `<` at max_depth -- if "stairs known but unreachable"
+  ends a trip, `avoid clear` lets it path through). Uruk bands (7) at 750 ft: the trip leaves the level, right.
 - **m62 (11-04): 80 XP/dmin**, one 38-minute trip of 15 levels (Sonnet): the same mix -- light hounds, lice and
   Hummerhorn breeders, a Moaning spirit that drains DEX (the Pilot leaves the level; plan town buys and drinks the
   Restore). One long trip with `minutes>33` fit the 45 minutes well.

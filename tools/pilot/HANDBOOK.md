@@ -29,7 +29,9 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
    would buy, affordable shop stock, XP by depth, XP per gold, standing orders), then read **`FIELD-NOTES.md`** (next
    to this file: lessons from past missions). Decide the mission: town buys, depth range, number of trips, conditions,
    standing orders. Write that plan in your journal.
-1. **In town:** `status`, then `plan town [kit=A|B|C|none] [buy NAME[:N][@MAX],...]`, then `wait`. The Pilot sells
+1. **In town:** `status`, then `plan town [kit=A|B|C|none] [buy NAME[:N][@MAX],...]`, then `wait` **until its
+   goal_done** (m63: a `plan trip` sent 6 s after `plan town` cut its house visit short and the bank's gold left the
+   house; check the bank line, `(+N banked)`, before the trip). The Pilot sells
    by policy, identifies what pays, and buys in priority order: Word of Recall to 2 (kits B and C then keep 3), the supply gate's minimums,
    Restore for a drained STR/DEX/CON, the kit, then your list (`NAME:N` means *have* N in all, not N more). From
    500 ft down the kit keeps **3 Heroism** (the fear cure) and **2 Potions of Speed** (Black Market, at most 600 each; often

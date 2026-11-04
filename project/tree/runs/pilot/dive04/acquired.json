@@ -307,8 +307,113 @@
    "known": false,
    "t": 1793805290.4,
    "mission": "m63"
+  },
+  {
+   "name": "a Holy Book of Prayers [Ethereal Openings]",
+   "kind": "holy book of prayer [ethereal opening]",
+   "known": true,
+   "t": 1793806228.4,
+   "mission": "m63"
+  },
+  {
+   "name": "a Lance (2d8)",
+   "kind": "lance",
+   "known": false,
+   "t": 1793806279.1,
+   "mission": "m63"
+  },
+  {
+   "name": "a Mushroom of Cure Paranoia",
+   "kind": "mushroom of cure paranoia",
+   "known": true,
+   "t": 1793806289.7,
+   "mission": "m63"
+  },
+  {
+   "name": "a Slimy Mushroom",
+   "kind": "slimy mushroom",
+   "known": false,
+   "t": 1793806302.0,
+   "mission": "m63"
+  },
+  {
+   "name": "a Scroll of Identify",
+   "kind": "scroll of identify",
+   "known": true,
+   "t": 1793806435.9,
+   "mission": "m63"
+  },
+  {
+   "name": "a Scroll titled \"oxtri ab od\"",
+   "kind": "scroll titled \"oxtri ab od\"",
+   "known": false,
+   "t": 1793806442.2,
+   "mission": "m63"
+  },
+  {
+   "name": "Hard Leather Armour [6]",
+   "kind": "hard leather armour",
+   "known": false,
+   "t": 1793806443.2,
+   "mission": "m63"
+  },
+  {
+   "name": "a Scroll titled \"ip anrog eresh\" {tried}",
+   "kind": "scroll titled \"ip anrog eresh\"",
+   "known": false,
+   "t": 1793806725.8,
+   "mission": "m63"
+  },
+  {
+   "name": "a Scroll of Enchant Armor",
+   "kind": "scroll of enchant armor",
+   "known": true,
+   "t": 1793806801.5,
+   "mission": "m63"
+  },
+  {
+   "name": "a Phial",
+   "kind": "phial",
+   "known": true,
+   "t": 1793806851.1,
+   "mission": "m63"
+  },
+  {
+   "name": "a Scroll of Satisfy Hunger",
+   "kind": "scroll of satisfy hunger",
+   "known": true,
+   "t": 1793806868.7,
+   "mission": "m63"
+  },
+  {
+   "name": "a Pair of Soft Leather Boots [2]",
+   "kind": "pair of soft leather boots",
+   "known": false,
+   "t": 1793806874.7,
+   "mission": "m63"
+  },
+  {
+   "name": "an Amulet of Searching",
+   "kind": "searching",
+   "known": false,
+   "t": 1793806915.5,
+   "mission": "m63"
+  },
+  {
+   "name": "a Pike (2d5)",
+   "kind": "pike",
+   "known": false,
+   "t": 1793806941.7,
+   "mission": "m63"
+  },
+  {
+   "name": "a Broad Sword (2d5)",
+   "kind": "broad sword",
+   "known": false,
+   "t": 1793806950.1,
+   "mission": "m63"
   }
  ],
- "trip_t0": 1793805641.8,
+ "trip_t0": 1793806687.6,
  "credits": {}
 }

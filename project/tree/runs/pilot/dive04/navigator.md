@@ -726,3 +726,4 @@
 - 10:08:23 -50ft 100% | town done, nothing to buy | plan trip 700-800 until cures<6 or phase<5 or minutes>35 then town | one long trip
 - 10:20:29 town 100% | trip 1 ended 12min: couldn't leave 800ft level in 5 min, +706 XP; gold carried 25.9k (bank didn't take it, house full of stash?) | trip 2 700-800 minutes>22 | time budget
 - 10:23:42 town 100% | Architect resumed; WoR shows 1 | plan town first (restock WoR), wait goal_done, then trip until time>10:44
+- 10:37:58 town 100% | town 10:38, 3 WoR | short trip 3 until time>10:45 | 7 min left, ~45 XP/min
