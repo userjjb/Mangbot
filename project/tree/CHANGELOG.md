@@ -27,8 +27,13 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.58.1 -- 2026-11-04 (session 12, during m66)
+No play change (patch). **pilotctl prints the "USER MESSAGE(S) NOT YET ANSWERED" line last as well as first:** m66's
+Navigator ran `wait 240 2>&1 | tail -30`, which cut the first line, and missed the user's message for 2 minutes
+(17:44-17:46). HANDBOOK: don't filter `wait`/`status` output with grep.
+
 ## 2.58.0 -- 2026-11-04 (session 12, the user's decisions on the Advisor's estimator review)
-No missions yet on it. **Play changes:**
+Missions: m66 (Sonnet medium, 115.2 XP/dmin; 2.58.1 from 18:00; report runs/pilot/dive04/reports/2026-11-04-mission66.md). **Play changes:**
 - **Bands: the estimator decides.** A band with no danger rule firing goes to the Advisor's estimator (options_sim, in
   the shadow worker thread, never in the tick: median 0.14 s, max 0.56 s live); the decision waits up to 2 s. When it
   rates fighting safe and better than the band rule's leave by more than its own threshold (max(50, 48 x the play rate

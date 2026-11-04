@@ -34,8 +34,8 @@
   "price": 5455,
   "bought": "2026-10-27 18:00"
  },
- "banked": 25885,
- "t": "2026-11-04 14:44",
+ "banked": 28380,
+ "t": "2026-11-04 18:07",
  "old_houses": [
   {
    "area": 1,
@@ -112,6 +112,13 @@
     "t": "2026-11-04 13:05",
     "fresh": false,
     "mission": null
+   },
+   "28,91": {
+    "name": "a Pair of Soft Leather Boots of Stability [2,+6] {excellent - m66}",
+    "value": 3645,
+    "t": "2026-11-04 18:08",
+    "fresh": true,
+    "mission": "m66"
    }
   }
  }

@@ -7,7 +7,7 @@ System docs (Architect, 10-29): `../docs/README.md`, `../docs/CONDENSED.md`; our
 ## Current state (2026-10-29)
 
 **No study running.** The main line since 10-25 is the **danger-time option estimator**, `data/estimator/options_sim.py`
-(POLICY_VERSION `pilot-escape-2026-11-04q`: 11-03p escape walk continues after its emergency (2.45.0); 11-04q optional p["acid_gold"]/p["disen_gold"] gear-damage costs). **It is a LIVE interface:** the Pilot imports it in shadow mode (`tools/pilot/shadow.py`:
+(POLICY_VERSION `pilot-escape-2026-11-04r`: 11-03p escape walk continues (2.45.0); 11-04q optional p["acid_gold"]/p["disen_gold"] costs; 11-04r speed_start_tick = only when losing (adjacent, HP < think_hp) + gear_damage_tick mirrored (2.57/2.58)). **It is a LIVE interface:** the Pilot imports it in shadow mode (`tools/pilot/shadow.py`:
 emergency, hard_fight and band triggers -> `estimator` records in decisions.jsonl) and the gear evaluator imports it plus
 `scenarios.py` and reads the 21 replay files (`studies/2026-10-25-replay/replays/`). Rules: edit only via a copy + atomic `mv`,
 bump POLICY_VERSION, keep `choose()`/`rollout()` signatures, memo the Architect; `base_policy` must mirror the Pilot's escape rules
@@ -17,7 +17,7 @@ Pilot version 2.43.0 (10-31: 2.41 rations/oil valued by need, 2.42 mushrooms by 
 
 **Session 5 (10-29..11-03):** no missions (Architect sessions 10-11 = refactor, versions 2.38-2.49; merged to master 11-03); answered memos (commands_per_min, rulebook B18 fixes, D8/D9/D14 merges + D8 uniques rule, Khim/A2 criterion, escape walk mirrored in 11-03p, hunt check should use derive() totals). Missions resume in Architect session 12.
 
-**11-04: missions resumed (m61-m65, 2.48-2.57). Estimator review done: `../memos/2026-11-04-estimator-review.md` (study `studies/2026-11-04-estimator-review/`); A2L TODO resolved (crowd-teleport in 'fight', not horizon). Waiting: user decisions on bands (estimator would fight 6/7, ~1,180 XP) and Speed at hard-fight start; Architect: pass acid_gold/disen_gold, shadow_agree threshold, log full table, fill awake.**
+**11-04: missions resumed (m61-m65, 2.48-2.57). Estimator review done: `../memos/2026-11-04-estimator-review.md` (study `studies/2026-11-04-estimator-review/`); A2L TODO resolved (crowd-teleport in 'fight', not horizon). User decided (2.58.0): estimator decides bands; Speed only when losing. Architect installed acid_gold/disen_gold, shadow_agree threshold, full-table log, awake. NEXT: review `band_decision` + estimator records from m66 on (watch arrivals, as m65 12:46).**
 
 **Next:** (1) review the `estimator` records of the next missions — three eras: before 10-29 08:35 (understated to-hit/to-dam),
 08:35-12:42 (no slays), from 12:42 (complete); compare agree rates per era and trigger; (2) re-check the wake calibration with
@@ -91,7 +91,7 @@ Architect builds everything else.
 
 ## Waiting on the user
 
-- **Bands (11-04):** keep "leave while cheap" or fight orc/animal bands the estimator rates safe (~400 XP/mission on m63-m65)? **Speed at hard-fight start:** always, or only when the estimator finds it safer (~380 g per hard fight)? (`../memos/2026-11-04-estimator-review.md`)
+- (decided 11-04 by the user: bands -> the estimator decides (band_decision records, review them next); Speed only when losing (2.58.0, mirrored in 11-04r).)
 
 - **UN_BONUS (disenchant) cost** in the hunt check / geareval (11-02, passed to the user by the Architect): ~1-2.5 plusses x ~100 g per Khim/Ibun fight; input = expected gold per UN_BONUS round.
 

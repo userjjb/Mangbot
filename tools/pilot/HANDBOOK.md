@@ -166,7 +166,7 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
   item that might give it.
 - **Items you know better than the policy:** `keep` it (free). Selling or destroying over a refusal costs debt.
 - **The user** outranks your plan, within safety. Answer every message with `say` before anything else (the replies
-  say `USER MESSAGE(S) NOT YET ANSWERED` until you do), relay their instructions into orders or `standing`, and
+  say `USER MESSAGE(S) NOT YET ANSWERED` until you do -- first and last in the output: don't filter `wait`/`status` with grep, m66), relay their instructions into orders or `standing`, and
   answer "why did you/the Pilot do X" honestly from your journal and the reports.
 
 ## The deadly few (why the rules exist)

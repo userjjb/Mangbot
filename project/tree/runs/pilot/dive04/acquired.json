@@ -804,8 +804,211 @@
    "known": false,
    "t": 1793815159.3,
    "mission": "m65"
+  },
+  {
+   "name": "an Amulet of Searching",
+   "kind": "searching",
+   "known": false,
+   "t": 1793832060.1,
+   "mission": "m66"
+  },
+  {
+   "name": "an Amulet of Slow Digestion",
+   "kind": "slow digestion",
+   "known": true,
+   "t": 1793832061.7,
+   "mission": "m66"
+  },
+  {
+   "name": "a Scroll of Trap/Door Destruction",
+   "kind": "scroll of trap/door destruction",
+   "known": true,
+   "t": 1793832066.7,
+   "mission": "m66"
+  },
+  {
+   "name": "a Scroll of Light",
+   "kind": "scroll of light",
+   "known": true,
+   "t": 1793832126.5,
+   "mission": "m66"
+  },
+  {
+   "name": "Leather Scale Mail [11]",
+   "kind": "leather scale mail",
+   "known": false,
+   "t": 1793832130.6,
+   "mission": "m66"
+  },
+  {
+   "name": "a Filthy Rag [1]",
+   "kind": "filthy rag",
+   "known": false,
+   "t": 1793832137.6,
+   "mission": "m66"
+  },
+  {
+   "name": "a Large Leather Shield [4]",
+   "kind": "large leather shield",
+   "known": false,
+   "t": 1793832322.2,
+   "mission": "m66"
+  },
+  {
+   "name": "12 Potions of Cure Critical Wounds {for sale 200}",
+   "kind": "potion of cure critical wound",
+   "known": true,
+   "t": 1793832324.0,
+   "mission": "m66"
+  },
+  {
+   "name": "an Awl-Pike (1d8)",
+   "kind": "awl-pike",
+   "known": false,
+   "t": 1793832334.8,
+   "mission": "m66"
+  },
+  {
+   "name": "a Rod of Light",
+   "kind": "rod of light",
+   "known": true,
+   "t": 1793832490.0,
+   "mission": "m66"
+  },
+  {
+   "name": "a Ring of Protection",
+   "kind": "protection",
+   "known": false,
+   "t": 1793832492.9,
+   "mission": "m66"
+  },
+  {
+   "name": "a Lucerne Hammer (2d5)",
+   "kind": "lucerne hammer",
+   "known": false,
+   "t": 1793832501.9,
+   "mission": "m66"
+  },
+  {
+   "name": "2 Rods of Light",
+   "kind": "rod of light",
+   "known": true,
+   "t": 1793832509.3,
+   "mission": "m66"
+  },
+  {
+   "name": "a Mace (2d4)",
+   "kind": "mace",
+   "known": false,
+   "t": 1793832599.5,
+   "mission": "m66"
+  },
+  {
+   "name": "a Nickel Wand",
+   "kind": "nickel wand",
+   "known": false,
+   "t": 1793832604.1,
+   "mission": "m66"
+  },
+  {
+   "name": "2 Scrolls of Light",
+   "kind": "scroll of light",
+   "known": true,
+   "t": 1793832691.0,
+   "mission": "m66"
+  },
+  {
+   "name": "a Black Spotted Mushroom",
+   "kind": "black spotted mushroom",
+   "known": false,
+   "t": 1793832694.9,
+   "mission": "m66"
+  },
+  {
+   "name": "a Pair of Soft Leather Boots [2]",
+   "kind": "pair of soft leather boots",
+   "known": false,
+   "t": 1793832742.8,
+   "mission": "m66"
+  },
+  {
+   "name": "Hard Leather Armour [6]",
+   "kind": "hard leather armour",
+   "known": false,
+   "t": 1793832814.0,
+   "mission": "m66"
+  },
+  {
+   "name": "a Wand of Magic Missile",
+   "kind": "wand of magic missile",
+   "known": false,
+   "t": 1793832815.5,
+   "mission": "m66"
+  },
+  {
+   "name": "a Staff of Perception",
+   "kind": "staff of perception",
+   "known": false,
+   "t": 1793832879.9,
+   "mission": "m66"
+  },
+  {
+   "name": "a Beaked Axe (2d6)",
+   "kind": "beaked axe",
+   "known": false,
+   "t": 1793832902.9,
+   "mission": "m66"
+  },
+  {
+   "name": "an Awl-Pike (1d8)",
+   "kind": "awl-pike",
+   "known": false,
+   "t": 1793833355.1,
+   "mission": "m66"
+  },
+  {
+   "name": "a Red Mushroom",
+   "kind": "red mushroom",
+   "known": false,
+   "t": 1793833356.7,
+   "mission": "m66"
+  },
+  {
+   "name": "a Scroll of Teleportation",
+   "kind": "scroll of teleportation",
+   "known": true,
+   "t": 1793833359.0,
+   "mission": "m66"
+  },
+  {
+   "name": "a Pike (2d5)",
+   "kind": "pike",
+   "known": false,
+   "t": 1793833375.8,
+   "mission": "m66"
+  },
+  {
+   "name": "a Broad Axe (2d6)",
+   "kind": "broad axe",
+   "known": false,
+   "t": 1793833376.8,
+   "mission": "m66"
+  },
+  {
+   "name": "2 Scrolls of Teleportation",
+   "kind": "scroll of teleportation",
+   "known": true,
+   "t": 1793833377.7,
+   "mission": "m66"
+  },
+  {
+   "name": "a Scroll of Identify",
+   "kind": "scroll of identify",
+   "known": true,
+   "t": 1793833380.0,
+   "mission": "m66"
   }
  ],
- "trip_t0": 1793814679.9,
+ "trip_t0": 1793833333.4,
  "credits": {}
 }

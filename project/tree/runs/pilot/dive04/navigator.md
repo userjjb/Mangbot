@@ -733,3 +733,7 @@
 - 12:22:19 town 100% | mission start, town, 300g+29k banked, 3 WoR | plan town buy WoR:3, Speed:2, then one long trip 700-800 until minutes>33 or cures<4 or phase<5, via recall | one long trip beats two in 45 min
 - 12:48:03 -50ft 100% | recalled home after summon trap (Warg+Black orc), 12:48 | second short trip 700-800 until time>13:00 | 19 min left, XP rate 85/min, worth another
 - 13:05:09 town 100% | trip 2 done, town visit finishing 13:05 | idle | mission over
+- 17:35:25 town 100% | Plan m66 | plan town buy Speed:2, Word_of_Recall:3; then one trip 700-800 until cures<4 or phase<5 or minutes>32 then town; react thieves kill | one long trip beats two; 300g only plus bank
+- 17:46:11 750ft 100% | user msg: ignored suggestion, left level | replied: saw no earlier message; level change was Pilot's | honest; ask to repeat
+- 17:47:03 750ft 97% | user msg Hummerhorn vault | answered: missed it (my grep filter), level gone, left for a fearer | stop filtering output
+- 18:01:56 town 100% | town done, 18:02 | short second trip 700-800 until time>18:11 then town | ~9 min left, mission ends 18:20

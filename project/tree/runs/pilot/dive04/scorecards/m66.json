@@ -1,0 +1,200 @@
+{
+ "label": "m66",
+ "nav_model": "sonnet",
+ "effort": "medium",
+ "report": "compact",
+ "start": "2026-11-04 17:34",
+ "end": "2026-11-04 18:11",
+ "minutes": 37.0,
+ "notes": "fifth mission of session 12, on 2.58.0",
+ "tokens": {
+  "turns": 29,
+  "input": 64,
+  "output": 7762,
+  "cache_read": 1108235,
+  "cache_write": 51460,
+  "write_5m": 51460,
+  "write_1h": 0,
+  "model": "claude-sonnet-5-5",
+  "final_usage_turns": 29,
+  "usd": 0.317,
+  "transcript": "agent-a33cb6af109471819.jsonl"
+ },
+ "defs": "2026-11-01 (2.44.0)",
+ "estimator": {
+  "n": 1,
+  "compared": 1,
+  "agree": 0,
+  "in_time_turn": 1,
+  "before_next_act": 1,
+  "skipped": 0,
+  "compute_max_s": 0.156,
+  "disagreements": [
+   [
+    "stairs",
+    "rules",
+    "rules (no option clearly better)"
+   ]
+  ],
+  "hard_n": 0,
+  "hard_compared": 0,
+  "hard_agree": 0,
+  "hard_choices": {}
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   29,
+   29
+  ],
+  "exp_gain": 2441,
+  "gold": [
+   26185,
+   28680
+  ],
+  "gold_change": 2495,
+  "max_depth_ft": 800,
+  "stored_value": 3645,
+  "stash_debits": 0,
+  "gold_change_adj": 6140
+ },
+ "B": {
+  "dungeon_min": 21.2,
+  "town_min": 14.6,
+  "exp_per_dmin": 115.2,
+  "levels_per_dhour": 0.25,
+  "gold_found": 1500,
+  "gold_found_per_dmin": 70.8,
+  "time_budget_min": {
+   "town_other": 10.8,
+   "exploring": 9.9,
+   "fighting": 8.4,
+   "town_no_goal": 2.2,
+   "stuck_looping": 1.2,
+   "travel_dive": 1.1,
+   "town_idle_end": 1.1,
+   "recall_wait": 1.0,
+   "pilot_down": 0.9,
+   "no_goal_dungeon": 0.0
+  },
+  "navigator_wait_pct": 6,
+  "gold_change_per_dmin": 117.7,
+  "gold_change_adj_per_dmin": 289.6
+ },
+ "C": {
+  "lowest_hp": [
+   293,
+   358,
+   82,
+   "17:41:47"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 0,
+  "emergency_alerts": 0,
+  "phase": 0,
+  "wor_escape": 1,
+  "wor_travel": 3,
+  "stairs_flee": 0,
+  "teleport": 0,
+  "cures_quaffed": 1,
+  "escape_records": 4,
+  "recalls_landed": 4
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 256,
+  "loot_abandoned_est": 2128,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 0,
+  "total": 2384,
+  "sales": 11,
+  "sales_valued": 3,
+  "worst_sales": [],
+  "left_behind": [
+   "Rhodonite Ring",
+   "Light Blue Mushroom",
+   "Broad Sword (2d5)",
+   "Small Metal Shield [3]",
+   "Soft Studded Leather [5]",
+   "Ring of Slow Digestion",
+   "Wand of Trap/Door Destruction",
+   "Wand of Lightning Bolts",
+   "Scroll of Detect Invisible",
+   "Potion of Neutralize Poison"
+  ],
+  "irreplaceable": [
+   "Ring of Resist Fire",
+   "left a Ring of Resist Fire (~75): pack full and nothing cheaper to make room with"
+  ]
+ },
+ "values_aware": "kinds known as logged",
+ "E": {
+  "reports": 16,
+  "commands": 54,
+  "commands_per_min": 1.5,
+  "report_to_action_med_s": 4.1,
+  "report_to_action_p90_s": 9.0,
+  "reports_without_command_pct": 62,
+  "user_messages": 2,
+  "user_reply_med_s": 57.0,
+  "forced_overrides": 0,
+  "complaints": 0,
+  "report_chars": 91665,
+  "order_report_age_med_s": 25.2,
+  "order_report_age_p90_s": 49.3
+ },
+ "F": {
+  "audit_diffs": 1,
+  "audit_checks": 73,
+  "perception_gaps": 1,
+  "goal_failed": 2,
+  "stuck": 0,
+  "stuck_looping_min": 1.2,
+  "runs_sent": 657,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Warg": 40,
+  "Black orc": 32,
+  "Uruk": 20,
+  "2-headed hydra": 19,
+  "Black ogre": 14,
+  "Novice paladin": 13,
+  "Grizzly bear": 10,
+  "Tiger": 10,
+  "unseen": 58,
+  "unattributed": 182
+ },
+ "damage_hp_lost": 443,
+ "alerts": {
+  "tactic": 55,
+  "time_frozen": 3,
+  "started": 2,
+  "goal_done": 2,
+  "user_message": 2,
+  "review": 2,
+  "plan_done": 2,
+  "goal_failed": 2,
+  "parked": 1,
+  "queued": 1,
+  "lost": 1,
+  "supplies": 1
+ },
+ "plan_news": {
+  "goal_failed": 128,
+  "unseen_attacker": 15,
+  "interesting_item": 12,
+  "goal_done": 10,
+  "plan": 5,
+  "breeders": 3,
+  "stuck": 2,
+  "thief": 2,
+  "drainer": 1,
+  "fearer": 1,
+  "pack_full": 1,
+  "structure": 1
+ }
+}

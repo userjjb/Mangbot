@@ -140,6 +140,7 @@ class State:
         self.recall = p.get("recall")
         self.stairs = p.get("stairs")
         self.spent = 0
+        self.gear_ev = []                                     # (block, gold, source monster) per acid/disenchant hit
         self.escaped = None
         self.lowest = p["hp"]
         self.block = 0
@@ -305,7 +306,46 @@ def escape_move(st, crowd):
     return any(use(st, it) for it in order)
 
 
-POLICY_VERSION = "pilot-escape-2026-11-04q"   # mirrors github/tools/pilot/combat.py escape() (ESCAPE_STEPS), berserk_tick, fear_cure, status_tick
+POLICY_VERSION = "pilot-escape-2026-11-04r"   # mirrors github/tools/pilot/combat.py escape() (ESCAPE_STEPS), berserk_tick, fear_cure, status_tick
+THINK_HP = 0.65         # the Pilot's think_hp order (speed_start_tick: Speed only below it with a monster adjacent)
+GEAR_EVENTS, GEAR_WINDOW_BLOCKS = 2, 16           # combat.py gear_damage_tick: 2 events in 10 s ...
+GEAR_COST_MAX, GEAR_COST_BLOCKS = 1000, 48        # ... or 1000 gold of them in 30 s (blocks of TICK_S 0.625 s)
+GEAR_QUICK_TURNS, GEAR_ACT_BLOCKS = 6, 5          # kill the source if it dies within 6 of our turns; act again after 3 s
+
+
+def gear_damage_rule(st, adj, can_read):
+    """The Pilot's gear_damage_tick (2.57.0, leave order 2.58.0): 2 gear hits within 10 s or 1000 gold within 30 s.
+    The source seen and all of its race dead within GEAR_QUICK_TURNS of our turns: hunt it (keep fighting). Else
+    leave: against one that can follow (or unseen), the stairs only if adjacent, else Teleportation (staff if we can't
+    read), else Word of Recall; against one that can't, the stairs within 20, else teleport, Phase, Recall."""
+    ev = [e for e in st.gear_ev if st.block - e[0] <= GEAR_COST_BLOCKS]
+    recent = [e for e in ev if st.block - e[0] <= GEAR_WINDOW_BLOCKS]
+    if not (len(recent) >= GEAR_EVENTS or sum(e[1] for e in ev) >= GEAR_COST_MAX) or st.recall is not None or \
+            st.block - getattr(st, "gear_act_at", -99) < GEAR_ACT_BLOCKS:
+        return False
+    st.gear_act_at, st.gear_ev = st.block, []
+    src = next((e[2] for e in reversed(ev) if e[2] is not None), None)
+    unseen = src is not None and not src.seen
+    if src is not None and src in st.mons and not unseen:
+        kin = [m for m in st.mons if m.name == src.name]
+        dpt = max(1e-6, our_damage_per_turn(st, src))
+        if sum(m.hp for m in kin) / dpt <= GEAR_QUICK_TURNS:
+            return False                                      # Hunt: the fight goes on
+    follows = src is None or unseen or "NEVER_MOVE" not in src.flags
+    if st.stairs is not None and st.stairs <= (1 if follows else 20):
+        if st.stairs <= 1:
+            st.escaped = "stairs"
+        else:
+            st.stairs_walk = True
+            st.stairs -= 1
+        return True
+    if (can_read and use(st, "tele")) or use(st, "staff"):
+        return True
+    if not follows and can_read and use(st, "phase"):
+        return True
+    return bool(can_read and st.recall is None and use(st, "wor"))
+
+
 CONF_LOCK_BLOCKS = 4   # the Pilot's 8 s of confusion with monsters adjacent, as player actions (~3 s a block in the HP bubble)
 
 
@@ -405,13 +445,16 @@ def base_policy(st):
                 return
     hard = adj and (any(m.unique or m.rl >= p["clvl"] - 5 for m in adj if "NEVER_MOVE" not in m.flags)
                     or (len(adj) >= 2 and p["hp"] < 0.75 * p["mhp"]))
-    if hard and not st.fast and st.block - getattr(st, "speed_at", -99) >= 48 and use(st, "speed"):
-        st.speed_at = st.block                                # speed_start_tick (643465e): Speed, then Berserk; 30 s apart
+    if adj and not st.fast and p["hp"] < p.get("think_hp", THINK_HP) * p["mhp"] and \
+            st.block - getattr(st, "speed_at", -99) >= 48 and use(st, "speed"):
+        st.speed_at = st.block                                # speed_start_tick (2.58.0): only when losing; 30 s apart
         return
     if adj and not st.berserk and st.block - getattr(st, "berserk_at", -99) >= 30 and (
             any(m.unique or m.rl >= p["clvl"] - 5 for m in adj if "NEVER_MOVE" not in m.flags)
             or (len(adj) >= 2 and p["hp"] < 0.75 * p["mhp"])) and use(st, "berserk"):
         st.berserk_at = st.block
+        return
+    if gear_damage_rule(st, adj, can_read):
         return
     if not adj and getattr(st, "stairs_walk", False) and st.stairs is not None:
         st.stairs -= 1                                        # the walk outlives its emergency (2.45.0, _reflex_rest)
@@ -497,7 +540,7 @@ def monster_act(st, m):
                     if eff in ("HURT", "SHATTER"):
                         d -= d * min(p["ac"], 150) // 250
                     elif eff in ("ACID", "ELEC", "FIRE", "COLD"):
-                        d = resisted(st, eff.lower(), d)          # melee1.c -> acid/elec/fire/cold_dam
+                        d = resisted(st, eff.lower(), d, m)       # melee1.c -> acid/elec/fire/cold_dam
                     elif eff == "CONFUSE" and not p.get("res_conf"):
                         st.confused += 3 + rng.randint(1, m.rl)
                     elif eff == "BLIND" and not p.get("res_blind"):
@@ -505,7 +548,7 @@ def monster_act(st, m):
                     elif eff == "TERRIFY" and not (st.hero or st.berserk or saves(st)):
                         st.afraid += 3 + rng.randint(1, m.rl)
                     elif eff == "UN_BONUS" and not p.get("res_disen"):
-                        st.spent += p.get("disen_gold", 0)    # melee1.c UN_BONUS -> apply_disenchant
+                        gear_hit(st, p.get("disen_gold", 0), m)   # melee1.c UN_BONUS -> apply_disenchant
                     elif eff == "PARALYZE" and not (p.get("free_action") or saves(st)):
                         st.paralyzed += 3 + rng.randint(1, m.rl)
                     p["hp"] -= d
@@ -533,14 +576,22 @@ RES_RAND = dict(neth=6, chaos=6, shard=6, nexus=6, disen=6, sound=5, conf=5, lit
 SAVE_DMG = ("CAUSE_1", "CAUSE_2", "CAUSE_3", "CAUSE_4", "MIND_BLAST", "BRAIN_SMASH")      # a saving throw negates them
 
 
-def resisted(st, element, dam):
+def gear_hit(st, gold, src):
+    """An acid/disenchant hit: its expected repair cost into the line's gold, and an event for the gear-damage rule
+    (only when the Pilot passed a cost: without one the rule stays off, as before 11-04q)."""
+    if gold:
+        st.spent += gold
+        st.gear_ev.append((st.block, gold, src))
+
+
+def resisted(st, element, dam, src=None):
     """Damage after our resist to `element` (p flags res_<element>), plus the unresisted side effects we model:
     confusion (conf, chaos, water), blindness (lite, dark; res_blind stops it)."""
     p, rng = st.p, st.rng
     if element == "acid" and not p.get("imm_acid"):
-        st.spent += p.get("acid_gold", 0)                     # minus_ac: a random armour slot loses 1 to-AC, resist or not
+        gear_hit(st, p.get("acid_gold", 0), src)              # minus_ac: a random armour slot loses 1 to-AC, resist or not
     elif element == "disen" and not p.get("res_disen"):
-        st.spent += p.get("disen_gold", 0)                    # apply_disenchant
+        gear_hit(st, p.get("disen_gold", 0), src)             # apply_disenchant
     if element in RES_THIRD:
         return (dam + 2) // 3 if p.get("res_" + element) else dam
     if element in RES_RAND and p.get("res_" + element):
@@ -597,7 +648,7 @@ def cast(st, m, sp):
     elif sp.startswith(RANGED):
         d = spell_dmg(sp, m.rl, m.hp)[0]
         el = ELEMENT.get(sp.split("_", 1)[1]) if "_" in sp else None
-        p["hp"] -= resisted(st, el, d) if el else d
+        p["hp"] -= resisted(st, el, d, m) if el else d
 
 
 # ---------------- rollout ----------------

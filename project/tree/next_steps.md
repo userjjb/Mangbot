@@ -478,5 +478,11 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   reacted), not a Disenchanter. Now 2 acid/disenchant hits in 10 s (or 1000+ gold of repair in 30 s) -> kill a quick
   visible source, else leave; `gear_damage` alert with the repair cost; `monster` shows GEAR. Advisor memo'd
   (`memos/to_advisor/2026-11-04-gear-damage-reflex.md`: not in the estimator's mirrored functions).
-- **Lessons:** `restart.sh` loads the working tree; hand-walking into the house picks up the bank pile (the step-in
+- **2.58.0** (the user + the Advisor's estimator review): bands decided by the estimator (old rule the fallback),
+  Speed only when losing, teleport first against breathers; acid/disen gold etc. for the estimator. **m66** started
+  17:35 on it. 2.58.1 (patch): pilotctl prints the user-message line last too (the Navigator's `wait | tail -30` cut
+  it). The user asked for a hot-swap at 18:00: it hit plan town mid house visit -- the bank's 28k in the purse, the
+  goal and the tile's map lost, the queued trip about to recall with it; the Architect stopped it, walked out, banked.
+- **Lessons:** never hot-swap (or restart) during a town or house visit -- `hotswap.sh` should wait for one to end;
+  `restart.sh` loads the working tree; hand-walking into the house picks up the bank pile (the step-in
   square) -- never do it; `goal goto` queued behind raw steps can path back through the house.

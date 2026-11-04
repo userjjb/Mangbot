@@ -143,6 +143,10 @@ def main():
         print(json.dumps({k: v for k, v in out.items() if k != "note"}))
     if out.get("note") and not note_said:
         print("NOTE: " + out["note"])
+    if out.get("user_messages"):
+        # (2.58.1, m66: also last -- the Navigator ran `wait 240 | tail -30`, which cut the first line, and missed
+        # the user's message for 2 minutes)
+        print("USER MESSAGE(S) NOT YET ANSWERED (reply with say): " + " | ".join(out["user_messages"]))
 
 
 if __name__ == "__main__":

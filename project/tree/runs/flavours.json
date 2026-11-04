@@ -34,6 +34,11 @@
   "kind": "Potion of Resist Heat",
   "source": "Advisor L_items (Dive03 09-26 15:45:42)"
  },
+ "Black Spotted Mushroom": {
+  "junk": false,
+  "kind": "Mushroom of Weakness",
+  "source": "identified"
+ },
  "Bloodstone Ring": {
   "junk": false,
   "kind": "Ring of Protection",
@@ -294,6 +299,11 @@
   "kind": "Staff of Slow Monsters",
   "source": "Advisor L_items (Dive03 09-26 16:31:54)"
  },
+ "Nickel Wand": {
+  "junk": false,
+  "kind": "Wand of Cold Balls",
+  "source": "identified"
+ },
  "Nickel-Plated Wand": {
   "junk": false,
   "kind": "Wand of Trap/Door Destruction",
@@ -347,6 +357,11 @@
  "Quartz Ring": {
   "junk": false,
   "kind": "Ring of Acid",
+  "source": "identified"
+ },
+ "Red Mushroom": {
+  "junk": false,
+  "kind": "Mushroom of Sickness",
   "source": "identified"
  },
  "Red Potion": {
