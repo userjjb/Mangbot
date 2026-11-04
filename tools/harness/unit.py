@@ -80,6 +80,7 @@ ORDER = """
     dive_walks_to_stairs_past_unexplored_squares
     unknowns_identified_before_sale
     felt_good_gear_identified_average_sold
+    caps_from_the_normal_price_not_a_sale navigator_clarity_losses_and_plan_town
 """.split()
 
 

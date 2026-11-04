@@ -667,9 +667,13 @@ class ItemsMixin:
                     self.c.send("confirm yes")
                     self.cmd(f"custom k item={it['item']} value={self.destroy_count(it)}",
                              f"make weight room: destroy {it['name']} (~{v:.0f}) for {name} (~{worth:.0f})", hold=0.6)
+                    gone = self.destroy_count(it)
                     self.notify("tactic", f"at the weight limit: destroyed "
-                                          f"{self.destroyed_text(it, self.destroy_count(it))} (~{v:.0f} gold) to take "
-                                          f"{name} (~{worth:.0f})", news=True)
+                                          f"{self.destroyed_text(it, gone)} (~{v:.0f} gold) to take "
+                                          f"{name} (~{worth:.0f})"
+                                          # (2.56.0: food or oil gone -- what's left, as the pack-full news says)
+                                          + (f"; now {self.supply_text({it['item']: gone})}"
+                                             if self.supply_kind(it) else ""), news=True)
                 return False                     # (picked up on the next look, once there's room)
             if wt > room:
                 self.skipped_items.add((w.level_t, w.pos))

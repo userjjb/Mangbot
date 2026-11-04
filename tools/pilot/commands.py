@@ -293,8 +293,10 @@ class CommandsMixin:
         # (2.53.0, the user after m63: a `plan trip` sent 6 s into plan town cut its house visit short, and the bank's
         # pile was left for the idle gold fetch. A Navigator's `plan trip` or `goal ...` sent while plan town -- or a
         # trip's own `then town` visit -- runs waits for it: queue_tick starts it after plan town's goal_done)
+        # (2.56.0, m65: `plan town` sent during the trip's own town visit answered "recall home first" -- the visit was
+        # on the house's tile. A second plan town is queued too: it runs again with the new buy list after this one)
         if self.req_role != "architect" and isinstance(self.goal, TownKit) and \
-                (c == "goal" or (c == "plan" and args[:1] == ["trip"])):
+                (c == "goal" or (c == "plan" and args[:1] in (["trip"], ["town"]))):
             self.queued = {"cmd": c, "args": list(args), "role": self.req_role, "t": gnow()}
             self.log("queued", cmd=c, args=args[:12], stage=self.goal.stage)
             return {"ok": True, "queued": True,
@@ -1145,8 +1147,14 @@ class CommandsMixin:
             return self.request_trip(args[1:])
         if args[0] != "town":
             return {"ok": False, "error": self.PLAN_USAGE}
-        if self.w.depth:
+        if isinstance(self.goal, TownKit):
+            return {"ok": False, "error": f"plan town is already running (stage {self.town_stage()}): `wait` for its "
+                                          "goal_done, then send yours (a Navigator's is queued)"}
+        if self.w.in_dungeon:
             return {"ok": False, "error": "plan town is for the town (recall home first)"}
+        if self.w.depth:
+            return {"ok": False, "error": "plan town is for the town: walk back into town first (you are on a "
+                                          "wilderness tile)"}
         kit, buylist, specs, i = None, [], [], 1
         while i < len(args):
             a = args[i]

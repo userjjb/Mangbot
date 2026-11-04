@@ -487,7 +487,9 @@ with a usage error -- A22, 2.40.0), listed with `orders`, saved in `runs/pilot/N
   `make room: destroy X (~12) for Y (~80)`, `autodestroy junk ...`, `identify X (policy)`, `wield X (~31/round vs ~22)`.
 - Debt: `navigator_debt` (gold, what, why, total), `navigator_fight_debt`, `hunt_override_end`; sales: `sale` (with
   the relist price).
-- Notifications (events; see pilot-core.md): `tactic` news for make-room destroys, left items, identify, wear/wield,
+- Notifications (events; see pilot-core.md): (2.56.0) `lost` news for what an attack destroyed in the pack names
+  what, how many ("one of", "some of", "all of", "the only") and by what (the message before it, `report_losses`); the
+  weight-limit destroy's news, like the pack-full one, adds the food and light left; `tactic` news for make-room destroys, left items, identify, wear/wield,
   learned flavours, fetches; `review` (held / auto-sold); `found`, `interesting_item`, `pack_full`, `ability`,
   `stat_drained`, `blows_changed`; (2.50.0) `stash_full`, and the log records `stash_store`, `stash_take`,
   `stash_credit_sold` (goals-and-plans.md).

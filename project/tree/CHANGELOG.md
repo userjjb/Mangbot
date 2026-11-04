@@ -27,6 +27,17 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.56.0 -- 2026-11-04 (session 12, the user's choices after m65)
+No missions yet on it. **Play changes:**
+- **Buy caps from the normal price, not a sale:** a shop line shown "{N% off}" is recorded at its undiscounted price
+  (`note_store`, `normal_price`), so the kit's 1.5x caps (and Identify, Recharging, Enchant, the fallback) rest on the
+  normal price; a sale only makes a buy cheaper. m65 bought one CSW at 50% off (31) and refused the normal 63 (cap 46).
+- **Navigator clarity:** `lost` news says what an attack destroyed, how many and by what ("destroyed: one of Potions of
+  Heroism -- by "The Fire hound breathes fire.""); the weight-limit destroy's news adds the food/light left. A
+  Navigator's `plan town` sent while plan town runs (a trip's own visit too) is queued for a second visit with its buy
+  list; the Architect's is answered "plan town is already running (stage ...)"; on the house's wilderness tile the
+  answer is "walk back into town first", no longer "recall home first".
+
 ## 2.55.0 -- 2026-11-04 (session 12, the user's decision after m64)
 Missions: m65 (Sonnet medium, 75.7 XP/dmin, report runs/pilot/dive04/reports/2026-11-04-mission65.md). **Play changes:**
 - **Identify before selling** (the user: "identify everything other than weapon/armor with a pseudo-ID already"; m64's

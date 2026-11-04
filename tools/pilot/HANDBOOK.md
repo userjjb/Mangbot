@@ -30,8 +30,8 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
    to this file: lessons from past missions). Decide the mission: town buys, depth range, number of trips, conditions,
    standing orders. Write that plan in your journal.
 1. **In town:** `status`, then `plan town [kit=A|B|C|none] [buy NAME[:N][@MAX],...]`, then `wait` **until its
-   goal_done** (since 2.53.0 a `plan trip` or `goal` sent meanwhile is queued and starts after it: "queued after plan
-   town"; if the summary starts "BANK: N gold still carried", run `house deposit` before the trip). The Pilot sells
+   goal_done** (since 2.53.0 a `plan trip` or `goal` -- since 2.56.0 a second `plan town` too -- sent meanwhile is
+   queued and starts after it: "queued after plan town"; if the summary starts "BANK: N gold still carried", run `house deposit` before the trip). The Pilot sells
    by policy, identifies every unknown before selling it (all but gear felt {average}/{worthless}/{cursed}/{broken}: since 2.55.0 it buys the
    Scrolls of Identify for them; a stat-gain potion is drunk, never sold), and buys in priority order: Word of Recall to 2 (kits B and C then keep 3), the supply gate's minimums,
    Restore for a drained STR/DEX/CON, the kit, then your list (`NAME:N` means *have* N in all, not N more). From

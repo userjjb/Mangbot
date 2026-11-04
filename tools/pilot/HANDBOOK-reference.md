@@ -511,7 +511,7 @@ Orders are remembered across pilot restarts.
   (free, and it teaches the flavour; the curse scrolls are native to 2500 ft, so a read is safe at
   our depths; mission 18 sold a Teleportation for 8). `sell !NAME` to force.
 - The `Cures | Escapes | Food | Light` and `Also:` lines (`Supplies:` in `status full`) list your potions,
-  scrolls, food, flasks, staffs and wands with counts, and a pending recall. `lost` news means
+  scrolls, food, flasks, staffs and wands with counts, and a pending recall. `lost` news (2.56.0: what, how many, and by what attack) means
   something was destroyed, stolen or overflowed (e.g. "Your purse feels lighter": a thief).
 - **The report's first line shows `Town (day)` or `Town (night)`**; townfarm says so when 2 minutes
   bring no gold.

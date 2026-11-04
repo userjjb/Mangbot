@@ -679,3 +679,56 @@ def felt_good_gear_identified_average_sold():
     ok = sells == (0, 1) and must == (True, False) and cands == ["a Cutlass (1d7) {good}"] and \
         dcands == ["a Cutlass (1d7) {good}"]
     return ok, f"sold (good, average) {sells}; must identify {must}; town candidates {cands}; dungeon {dcands}"
+
+
+@case
+def caps_from_the_normal_price_not_a_sale():
+    """2.56.0 (the user after m65: one Potion of Cure Serious Wounds bought at 50% off for 31, then the rest refused --
+    "cap 46" = 1.5 x the sale price -- with the normal price 63): the shop listing's discounted lines count at their
+    undiscounted price ({50% off} 31 -> 62), so caps (1.5x) and forecasts rest on the normal price; the Shop still
+    buys the cheapest line within the cap."""
+    import tempfile
+    p = pilot(gold=20000, pack=[("5 Potions of Cure Critical Wounds", 75)])
+    p.w.depth, p.w.depth_ft, p.w.in_dungeon = 0, 0, False
+    p.stores_file = os.path.join(tempfile.mkdtemp(), "stores.json")
+    p.w.store = {"name": "Temple", "owner": "Keldon", "items": [
+        {"name": "a Potion of Cure Serious Wounds {50% off}", "price": 31},
+        {"name": "5 Potions of Cure Serious Wounds", "price": 63}]}
+    p.w.store_t, p.stores_noted_t = 5.0, 0.0
+    p.note_store()
+    price = p.price_of("Cure Serious Wounds", 4)
+    buys, short = p.town_shopping("B", [])
+    csw = [b for b in buys if b[1] == "Cure Serious Wounds"]
+    norm = (P.Pilot.normal_price("a Potion of Heroism {75% off}", 11), P.Pilot.normal_price("a Potion of Heroism", 43))
+    kit_cap = [b[4] for b in csw if b[0] == 4]
+    ok = price == 62 and kit_cap == [93] and norm == (44, 43)
+    return ok, f"price recorded {price}; CSW lines {csw}; short {short}; normal prices {norm}"
+
+
+@case
+def navigator_clarity_losses_and_plan_town():
+    """2.56.0 (the Navigator after m65): an item destroyed by an attack is News naming what, how many and by what
+    ('destroyed: one of Potions of Heroism -- by "The Fire hound breathes fire."'); a `plan town` sent while plan town
+    runs is queued for a second visit (the Navigator) or answered "plan town is already running" (the Architect), and
+    on the house's wilderness tile the answer is "walk back into town", never "recall home first"."""
+    p = pilot()
+    now = P.gnow()
+    p.w.messages.extend([(now - 1, "The Fire hound breathes fire."),
+                         (now, "One of your Potions of Heroism (f) was destroyed!")])
+    p.w.losses = [(now, "One of your Potions of Heroism (f) was destroyed!")]
+    p.report_losses()
+    lost = [d for k, d in p.notes if k == "lost"]
+    q = pilot(gold=300)
+    q.w.depth, q.w.depth_ft, q.w.in_dungeon, q.w.resting = -1, 0, False, False
+    q.mover = type("M", (), {"active": False, "stop": lambda self: None})()
+    k = P.TownKit()
+    k.stage = "upgrade"
+    q.goal = k
+    nav = q.do_request({"cmd": "plan", "args": ["town", "buy", "Word_of_Recall:3"], "role": "navigator"})
+    arch = q.do_request({"cmd": "plan", "args": ["town"], "role": "architect"})
+    q.goal = None
+    tile = q.do_request({"cmd": "plan", "args": ["town"], "role": "architect"})
+    ok = lost and lost[0].startswith('destroyed: one of Potions of Heroism -- by "The Fire hound breathes fire."') \
+        and nav.get("queued") and "already running" in arch.get("error", "") and \
+        "walk back into town" in tile.get("error", "") and "recall" not in tile.get("error", "")
+    return ok, f"lost {lost}; navigator {nav}; architect {arch}; on the tile {tile}"

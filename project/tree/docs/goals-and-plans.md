@@ -316,7 +316,7 @@ scrolls come last of the buying stage's purchases (after the kit and the list), 
 | `enchant_buys(spare)` | 2.46.0: [(kind, n, price)] for the visit: Enchant Armor, then To-Dam, then To-Hit, each its expected count, within `spare` gold (110% a scroll) and one `order enchant_max` for all |
 | `device_level(kind)`, `recharge_fail(it)`, `recharge_wanted()` | object.txt level; spells2.c's chance a Recharging scroll destroys a staff/wand; the useful devices at 0-1 charges each with at most 15% risk |
 | `town_extras_note()` | the `plan town` reply's note of the Enchant scrolls (`enchant_buys` without the gold limit: "up to 3 Scrolls of Enchant Armor + 5 Scrolls of Enchant Weapon To-Dam (~1520 gold; `order enchant_max=N` caps them all, 0 skips)") and Recharging |
-| `note_store()` | on entering a shop: owner and the cheapest price per kind -> `stores.json` |
+| `note_store()` | on entering a shop: owner and the cheapest price per kind -> `stores.json`; (2.56.0, the user after m65) a line shown with the shop's discount ("{50% off}") counts at its undiscounted price (`normal_price`), so every cap built on `price_of` -- the kit's 1.5x, Identify, Recharging, the Enchant scrolls, the fallback -- rests on the normal price; the Shop still buys the cheapest line within the cap (m65: one CSW at 50% off, 31, made the cap 46 and the normal 63 went unbought) |
 | `price_of(kind, store)` | the cheapest price seen for a kind at a store, else the `KIT_ITEMS` guess |
 | `buy_store(name)`, `stock_table()` | which store sells a name (`rulebook/shop_stock.csv`, which gives 7 for its few Black Market rows such as Healing; else listings seen, never 7) |
 | `lantern_fuel()` | turns in the worn lantern, else the fullest in the pack |

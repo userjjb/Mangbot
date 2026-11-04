@@ -296,8 +296,19 @@ class TownMixin:
                 out.append(it)
         return out
 
+    @staticmethod
+    def normal_price(name, price):
+        """The price before the shop's discount: a line shown "{50% off}" (object1.c: the discount as the inscription)
+        at 31 normally costs ~62 (2.56.0)."""
+        m = re.search(r"\{(\d+)% off\}", name)
+        d = int(m.group(1)) if m else 0
+        return int(round(price * 100 / (100 - d))) if 0 < d < 100 else price
+
     def note_store(self):
-        """Remember the shop we're in: its owner and the cheapest price per kind."""
+        """Remember the shop we're in: its owner and the cheapest normal price per kind -- a discounted line counts at
+        its undiscounted price (2.56.0, the user after m65: one Potion of Cure Serious Wounds at 50% off, 31 gold,
+        made the next visit's cap 1.5 x 31 = 46 and the normal 63 went unbought; a sale only makes a buy cheaper --
+        the Shop still takes the cheapest line within the cap)."""
         st = self.w.store
         if not st or self.w.store_t <= self.stores_noted_t:
             return
@@ -308,7 +319,8 @@ class TownMixin:
         prices = {}
         for i in st.get("items", []):
             k = self.kind_key_of(i["name"])
-            prices[k] = min(prices.get(k, i["price"]), i["price"])
+            pr = self.normal_price(i["name"], i["price"])
+            prices[k] = min(prices.get(k, pr), pr)
         self.stores_seen[num] = {"owner": st.get("owner"), "t": round(gnow()), "prices": prices}
         try:
             json.dump(self.stores_seen, open(self.stores_file, "w"), indent=1)

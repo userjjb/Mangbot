@@ -1271,8 +1271,25 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
             self.notify("interesting_item", f"{name} seen on this level (devices and jewellery sell for 50-700 once "
                                              f"known): a '{glyph}' at {where}; `goal fetch Y,X`"
                                              + ("" if self.plan else ". A dive pauses 20 s for it"))
+        self.report_losses()
+
+    # (what attacks destroy pack items: the message just before "...was destroyed!")
+    LOSS_CAUSE_RE = re.compile(r"\b(breathes|casts|fires|spits|hurls|shoots|touches|bites|hits|claws|stings|crushes|"
+                               r"engulfs|explodes|burns|freezes|shocks|corrodes|gazes|You are (?:hit|enveloped))", re.I)
+
+    def report_losses(self):
+        """`lost` news for what went from the pack or purse behind our back (World.losses). 2.56.0 (the Navigator after
+        m65): an item destroyed by an attack names what, how many ("one of" / "some of" / "all of" / the only one, as
+        the server says, spells1.c inven_damage) and, when the message before it shows one, by what."""
+        w = self.w
         while w.losses:
             t, text = w.losses.pop(0)
+            m = re.match(r"(One of y|Some of y|All of y|Y)our (.+?) \(.\) (?:was|were) destroyed!", text)
+            if m:
+                how = {"One of y": "one of", "Some of y": "some of", "All of y": "all of", "Y": "the only"}[m.group(1)]
+                cause = next((x for ts, x in reversed(list(w.messages)) if t - 3 <= ts <= t and x != text
+                              and "destroyed!" not in x and self.LOSS_CAUSE_RE.search(x)), None)
+                text = f"destroyed: {how} {m.group(2)}" + (f" -- by \"{cause}\"" if cause else "") + f" ({text})"
             self.notify("lost", text, news=True)
 
     def avoid_tick(self):
