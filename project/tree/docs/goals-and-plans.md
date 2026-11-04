@@ -22,12 +22,14 @@ Where the code is (E1 step 2): `Goal` and the dungeon goals in `tools/pilot/goal
 `price_of`, `note_store`, `buy_store`, `stock_table`), selling (`town_buyers`, `town_sell_count`, `town_sells`,
 `town_sell_stores`, `is_crutch`), `town_make_room`, `provision_step`, `kit_count`, `lantern_fuel`, `flasks_to_fill`,
 `flasks_spare`,
-`trip_minutes_left`, `provisions_spare`, `planned_depth`, `restore_potion`, Identify/Enchant/Recharging
+`trip_minutes_left`, `provisions_spare`, `planned_depth`, `restore_item`/`restore_for` (2.50.0: potions and restore mushrooms), Identify/Enchant/Recharging
 (`identify_candidates`, `town_identify_wanted`, `enchant_plan`, `weapon_enchant_plan`, `enchant_buys`,
 `recharge_wanted`, `town_extras_note`...),
 `supply_gate`, `supply_minutes`/`supply_text`/`supply_watch` (`TURNS_PER_DMIN`, `FOOD_MID`), the house and the stash
 (`house_state`, `house_save`, `retire_stash_json`, `banked`, `stash_places`/`stash_where`/`stash_has`/`stash_take`/
-`stash_wanted`, `is_stash_item`, `tavern_state`/`tavern_entrance`), `note_town_stairs`, `note_edge_cross`/`edge_dir`.
+`stash_wanted`, `is_stash_item`, `tavern_state`/`tavern_entrance`; 2.50.0: `stash_backups`/`stash_backup`/`backup_item`,
+`on_store_list`, `stash_reason`/`stored_reason`, `stash_room`, `stash_fetch_list`, `stash_stored`, `stash_rec`, the
+acquisitions `acq_state`/`note_acquired`/`acquired_fresh`, `stash_credit_sold`/`stash_credit_worn`), `note_town_stairs`, `note_edge_cross`/`edge_dir`.
 The commands that reach them (`plan town`/`plan trip`: `request_plan`/`request_trip`, `request_goal`, `house_info`,
 `price_info`) are in commands.py (`CommandsMixin`, E1 step 6; commands.md); `plan_tick` is still in pilot.py.
 
@@ -96,9 +98,9 @@ The commands that reach them (`plan town`/`plan trip`: `request_plan`/`request_t
 | `Town` | `goal town`; the plan | - | from the wilderness back to town: walks off each sector by the edge it came in through (`Pilot.wild_trail`, else `edge_of` the arrival square) | done in town; failed in the dungeon or edge unknown |
 | `TownFarm` | `goal townfarm GOLD [MINUTES]` (default 10); TownKit when broke | target gold, minutes | in town: light on, then chase thieves within 8 squares first (item thieves before gold ones, hitting them directly), walk over dropped gold, kill the gold-dropping townspeople (`TARGETS`), else sweep the town in a zig-zag | done at the target, time up, or no gold gained in 2 minutes (townspeople thinned out / night) |
 | `Shop` | `goal shop N [list] [buy NAME:N[@MAX]] [buy NAME:+N] [sell NAME\|LETTER:N] [quote NAME]`; TownKit | store number, buys `(name, n, cap)`, sells `(index or name, n)`, list_stock | walks next to the door (unseen squares count, for night), enters, then: sells (from the end of the pack first; names resolved when their turn comes) with the item policy's refusals (unknown items, value policy, "probably special"; `!NAME` forces and the value lost goes into the Navigator's debt), learns a flavour sold unknown, logs a `sale` record with the re-listing price; quotes (offer and decline); buys the **cheapest** matching line, within the cap and the gold, continuing at the next price if the cheap stack runs out. `NAME:N` in `goal shop` means *have* N; `:+N` buys N more. Re-enters (twice) if its own command closed the store. In code: `STATES` -> `_walk`, `_enter`, `_trade`; the trade runs `TRADE_STEPS` (`_trade_record` the last sale's record, `_trade_quote`, `_trade_answer`, `_trade_left` back in or thrown out, `_trade_list`, `_trade_sell`, `_trade_fresh` a remainder's wait, `_trade_buy`, `_trade_leave`), one acting a tick | done with a log of what happened; failed: not in town, store not on the map, can't reach, stuck, thrown out |
-| `StashDeposit` | TownKit (no house only) | - | drops each stash item (below) on an empty square **inside** the tavern room (farthest from the door first; the entrance square holds no object, and drops from it land on the street where townsfolk take them); records square -> name in house.json `tavern.items` | done when none is carried; failed: no empty square seen inside |
-| `StashFetch` | TownKit, for a drained stat's Restore in the tavern | kind | lights up, walks the squares within 4 of the tavern entrance (item glyphs first) until the pickup reflex (`p.fetching`) takes the kind | done when in the pack; failed: none left / no tavern |
-| `HouseBank` | `house buy [Y,X]` (Architect only), `house deposit [KEEP]`, `house withdraw`; TownKit | mode buy/deposit/withdraw, keep, house | see "The gold bank" below | done: "N gold in the house, M carried" |
+| `StashDeposit` | TownKit: no house, or (2.50.0) the overflow of a full house | - | drops each stash item (below), the most valuable first, on an empty square **inside** the tavern room (farthest from the door first; never the entrance square: it holds no object, and drops from it land on the street where townsfolk take them); records square -> the record (2.50.0: `stash_rec`) in house.json `tavern.items` | done when none is carried; failed: no empty square seen inside |
+| `StashFetch` | TownKit, for a drained stat's Restore in the tavern (2.50.0: or a stored backup to wear or sell); `house withdraw ITEM` | kind (or full name) | lights up, walks the squares within 4 of the tavern entrance (item glyphs first) until the pickup reflex (`p.fetching`) takes the kind | done when in the pack; failed: none left / no tavern |
+| `HouseBank` | `house buy [Y,X]` (Architect only), `house deposit [KEEP]`, `house withdraw [ITEM]`; TownKit | mode buy/deposit/withdraw, keep, house, fetch (2.50.0: stored items to bring out by name) | see "The gold bank" below | done: "N gold in the house, M carried" |
 | `TownKit` | `plan town ...`; a trip plan with `then town` | kit, buylist | the whole town visit: see "plan town" below | done with a summary; failed outside town (the house's wilderness tile excepted) |
 | `RestGoal` | `goal rest` | - | rests until HP >= `rest_to` (0.95) and SP full | failed if monsters are in view |
 | `QuietWait` | `goal quiet [SECS]` (10-600, default 120; refused with a moving monster in view); `ask quiet` | secs, prev (the goal it replaced) | time for the Navigator to think: pauses the plan or the replaced goal, caps the wait at a quarter of the food/light minutes left, walks to a `quiet_spot` (a room on walked ground, away from doors and the unknown), rests if hurt, waits. In town it just waits | ends (alert `quiet_end`, then the paused goal or plan resumes) when a moving monster comes into view, something hits us, the Architect answers the `ask quiet`, or time is up |
@@ -175,8 +177,11 @@ It starts a `TownKit` goal, which works through **stages**, one sub-goal (`Shop`
 `TownFarm`, `Wait`) at a time, settling 1 s between steps. Its Shops act as the Pilot (`role = "pilot"`: the sale
 rules' role -- `value_refusal`, a forced sale's debt, the override check; a buy-only Shop reads none):
 
-1. **upgrade**: first `HouseBank("withdraw")` if a house holds gold or the Restore a drained stat wants (**withdraws
-   first**); else `StashFetch` that Restore from the tavern; then wear what the gear policy prefers (`upgrade_step`).
+1. **upgrade**: first `HouseBank("withdraw")` if a house holds gold or the Restore a drained stat wants, or (2.50.0)
+   stored items `stash_fetch_list` names -- a stored backup the gear policy would wear (its slot empty, or
+   `gear_better` over a damaged piece) and one a carried backup now outclasses (fetched so the shops sell it) --
+   (**withdraws first**); else `StashFetch` that Restore (and those items) from the tavern; then wear what the gear
+   policy prefers (`upgrade_step`).
 2. **sell**: one `Shop` per store that buys something the policy sells (`town_sell_stores`, `town_sells`), in store
    order; a store is revisited once if a sale taught an unknown flavour (the rest of the stack then sells).
    (2.48.0, the user) This stage runs before the buying stage's recharge and enchant steps, so `town_sell_count`'s
@@ -211,8 +216,11 @@ rules' role -- `value_refusal`, a forced sale's debt, the override check; a buy-
    of the kind carried (2.48.0: those are read first, and the sell stage kept them), Enchant Armor
    first, then To-Dam, then To-Hit, within the gold beyond `town_reserve` (at 110% of the price) and **one**
    `order enchant_max` (default 25) for all three together, each capped at 1.5x its last price; **stash** to the
-   tavern (`StashDeposit`, only without a house); and **deposits last**: `HouseBank("deposit")` when gold exceeds
-   `BANK_FLOAT` + 500 or stash items are carried.
+   tavern (`StashDeposit`, without a house); and **deposits last**: `HouseBank("deposit")` when gold exceeds
+   `BANK_FLOAT` + 500 or stash items are carried and the house has a free square; (2.50.0) the **overflow**: the house
+   full, the stash items left go inside the tavern room (`StashDeposit`); **no room anywhere**: they stay in the pack
+   (never sold) and a `stash_full` alert (once a visit per item; field `items`) tells the Navigator to `ask` the
+   Architect about storage -- another house is their decision, never the policy's.
 6. **finish**: a summary (sold for, bought for, identified, gold now and banked, `supply_text`, the supply gate for
    the planned depth: OK or MISSING, what couldn't be afforded, the step log); logs `town_kit`.
 
@@ -226,9 +234,9 @@ stage that finishes sets the next and the next step runs in the same tick (upgra
 -> sell again -> buy). `_kit_buying` runs `BUYING_STEPS` -- `_buying_shop`, `_buying_upgrade`, `_buying_quaff`,
 `_buying_provision`, `_buying_restock`, `_buying_fallback` (2.48.0: Boldness for Heroism's shortfall),
 `_buying_recharge`, `_buying_enchant` (armour and, 2.46.0, the weapon: one step, one purchase), `_buying_stash`,
-`_buying_deposit` --
+`_buying_deposit`, `_buying_overflow` and `_buying_stash_full` (2.50.0) --
 and `finish` when none acts. Its once-only flags (`withdrawn`, `fetched`, `id_bought`, `farmed`, `recharge_bought`,
-`enchant_bought`, `fallback_bought`, `stashed`, `deposited`, the `quaffed`/`recharged` sets, `restock_waits`,
+`enchant_bought`, `fallback_bought`, `stashed`, `deposited`, `overflowed`, `fetch_tried`, `full_told`, the `quaffed`/`recharged` sets, `restock_waits`,
 `enchanted`, `last_sell`, `short`; and `t0`, the visit's start: a store listing seen since is this visit's stock) are
 declared in `__init__`.
 
@@ -241,7 +249,7 @@ already planned:
 |---|---|
 | 1 | Word of Recall up to 2 |
 | 2 | the supply gate's minimums for `planned_depth()` (`min(max_depth, deepest)`): CCW, CSW (unless 3 CCW), total cures (CLW below 500 ft, CSW deeper), Phase Door; and the Flasks of oil that fill the lantern, `flasks_to_fill`: ceil((15000 - fuel) / 7500), none within `FILL_SLACK` = 300 turns of full (FUEL_LAMP, mdefines.h:187; a flask's 7500, object.txt; the refill caps at the top, cmd3.c:1365-1374; 2.49.0, was: to 9000) |
-| 3 | Restore STR/DEX/CON for a drained stat (unless one waits in the stash) |
+| 3 | Restore STR/DEX/CON for a drained stat (unless one waits in the stash, or -- 2.50.0 -- a carried restore mushroom covers it: `restore_for`) |
 | 4 | the kit's stock levels (`KITS`; default by planned depth: A below 500 ft, B below 1000 ft, C deeper) |
 | 5 | the Navigator's buy list (`NAME:N` = have N) |
 | 6 | Restore Charisma, only with 3000+ gold |
@@ -269,7 +277,7 @@ scrolls come last of the buying stage's purchases (after the kit and the list), 
 | `provision_step(kit)` | see stage 5 |
 | `broke_for_recall()` | fewer than 2 WoR and gold below one's price |
 | `identify_candidates(min)` / `town_identify_wanted()` | unknown items and their priority (expected sale value; infinite for ability sources) / the count worth a scroll |
-| `restore_potion(skip)` | a Restore in the pack for a drained STR/DEX/CON/CHR |
+| `restore_item(skip, stats)`, `restore_for(stat)` | (2.50.0; was `restore_potion`) the cheapest pack item restoring a drained stat: a Restore potion (STR/DEX/CON/CHR) or a known restore mushroom (STR/DEX/CON, not one that could gorge); `_buying_quaff` eats or quaffs it -- pilot-items.md, "Restore items" |
 | `enchant_chance(it)`, `enchant_plan()`, `enchant_scrolls_wanted(kind)` | spells2.c's enchant table (`ENCHANT_TABLE`): +1 to-AC succeeds with `1 - table[to_a]/1000`, halved on artifacts; enchant while the chance is >= 50% (to about +8); the expected scrolls = sum of 1/chance (`kind` "Enchant Armor", the default, or an Enchant Weapon kind: the wielded weapon's to-dam / to-hit) |
 | `wielded_weapon()`, `weapon_plusses(it)`, `weapon_enchant_plan()` | 2.46.0: the wielded melee weapon (tval 20-23, not the bow); its shown (+h,+d); [(weapon, Enchant Weapon To-Dam / To-Hit, chance)] for each plus whose next point is >= 50% (half on an artifact), to-dam first |
 | `enchant_buys(spare)` | 2.46.0: [(kind, n, price)] for the visit: Enchant Armor, then To-Dam, then To-Hit, each its expected count, within `spare` gold (110% a scroll) and one `order enchant_max` for all |
@@ -344,11 +352,25 @@ inside the door), `outside` (where to stand to open it) and `box`, smallest firs
   300) for a deposit, nothing for a withdraw, then opens, steps out and closes the door. `banked` is updated and a
   `bank` log record written.
 - *The stash in the house* (`item_step`): one stack a square on the other interior squares (farthest from the door
-  first), mapped square -> name in house.json `items`. A deposit drops the stash items carried; a withdraw picks up the
-  kind a drained stat wants (`stash_wanted`), giving up after 4 tries, and strikes it off `items` as soon as the pack
-  shows it (`fetch_at`; 2.45.0 -- before, the record kept it, `house` still listed it, and a later withdraw spent its
+  first), mapped square -> record in house.json `items`. **Reconcile first** (2.50.0, the live check of 11-04: the
+  house held two Restore Charisma, the record one; the Scimitar dropped on the "free" square scattered to another --
+  the server's drop_near, object2.c:3963, one object a grid -- and `,` on the recorded square took the potion): inside
+  with the door closed, each interior square but the gold's is walked and its floor read (the client's `floor` query,
+  `World.floor_pos`/`floor_t`, `Pilot.floor_here`), and the record rebuilt: an item it lacks is adopted
+  (`stash_found`: not fresh, valued by itemvalue; logged `stash_found`), a recorded item not on its square struck
+  (`stash_take` lost). A drop goes only on a square read bare and is recorded (`stash_commit`: the `stash_store` log
+  and credit) once the floor underfoot shows it; if not, the house is read again and it is recorded where it lies.
+  `,` is pressed only when the floor underfoot names the wanted item (else the house is read again, twice at most,
+  then the record is struck); a different item picked up anyway is dropped back. Inside the house the pickup reflex
+  takes nothing but the fetch target (`in_house`). The tavern room gets the same checks on the squares its goals walk
+  (StashDeposit drops only on a square read bare, adopting what it finds there, and records the drop where it is seen
+  -- else as somewhere in the room, `?N`; StashFetch strikes or adopts on the room squares it visits). A deposit drops the stash items carried, the most valuable
+  first (2.50.0; what doesn't fit goes to the tavern room); a withdraw picks up the kind a drained stat wants
+  (`stash_wanted`), then (2.50.0) the items named in `fetch`, giving up after 4 tries each, and strikes each off
+  `items` as soon as the pack holds one more (`fetch_at`; 2.45.0 -- before, the record kept it, `house` still listed it, and a later withdraw spent its
   4 tries on the empty square and said "no X after all").
-- `house` (no argument) shows the house, the banked gold and its timestamp; `banked()` feeds the status line's
+- `house` (no argument) shows the house, the banked gold and its timestamp, and (2.50.0) each stored item, what it is and
+  where (house or tavern room), its value and credit; `banked()` feeds the status line's
   `(+N banked)`.
 - *In code* (E5): `tick` runs `TICK_STEPS` -- `_bank_house` (the house on record, town or its tile, one step a
   second; `ctx.h`, `hd`, `door`, `inside`, `outside`), `_bank_cross` (off the town's edge to the tile; `ctx.cross`),
@@ -359,15 +381,46 @@ inside the door), `outside` (where to stand to open it) and `box`, smallest firs
   `dropped` `_step_dropped`, `out0`/`out1` `_step_out0`/`_step_out1`, `closed` `_step_closed`; any other step fails.
 
 **The stash** = stat-restore potions (STR/INT/WIS/DEX/CON/CHR, not Restore Mana) and Wands of Stone to Mud
-(`is_stash_item`): kept in town during a mission. With a house they live there (above); without one, in the tavern
+(`is_stash_item`), and since 2.50.0 (the user: "spare items that are valuable and can't be bought should be stored
+when possible") the **best backup for each worn slot** and the **store list** (pilot-items.md, section 6a): kept in town
+during a mission, never sold. **Placement** (2.50.0): the house first; when its squares are used, inside the tavern room
+(the overflow); else kept in the pack with a `stash_full` alert to `ask` the Architect. **Retrieval**: plan town's
+withdraw stage fetches a stored backup to wear (its slot empty -- the piece stolen -- or the gear evaluator's choice
+over a disenchanted one) and an outclassed one to sell (`stash_fetch_list`); `house withdraw ITEM` fetches a named one
+from the house or the tavern room. With a house they live there (above); without one, in the tavern
 room (`StashDeposit`/`StashFetch`, the entrance from `tavern_entrance`). **house.json is the stash's only record**
 (refactor-candidates D10, 2026-11-01): the house's `items`, and without a house `tavern` (`entrance`, `items`
 "Y,X" -> name). `stash_places()`, `stash_where(kind)` (house first, the house's items only while a house is owned),
-`stash_has(kind)`, `stash_take(at, kind, square)` read and strike off; `town_needs` doesn't buy a Restore the stash
+`stash_has(kind)`, `stash_take(at, kind, square, lost)` read and strike off; `town_needs` doesn't buy a Restore the stash
 holds; `stash_wanted(at)` names the Restore a drained stat needs when the pack lacks it and the stash (in `at`, or
 either) has it. `house` shows the stored items. The old `stash.json` (items, tavern squares, hand-written `where`/`lost`
 notes) is retired at load (`retire_stash_json`: entrance and tavern items into house.json, the file renamed
 `stash.json.retired-DATE`); Dive04's became `stash.json.retired-2026-11-01`.
+
+**Stored finds are income** (2.50.0, the user: storing a valuable item instead of selling it deflated a mission's
+gold). Each new record carries `value` (iv.value x pay_cut x count: what the sell decision would have realised), `t`,
+`fresh` and the `mission` credited (fresh only). **Fresh** (`acquired_fresh`), first **by inscription** (the user,
+11-04): during a mission each find that could be stored -- a single wearable (weapon, armour, ring, amulet; a light
+other than a torch or lantern; not a bow, nothing that stacks) -- is inscribed with the mission's label (`{m62}`;
+`inscribe_label`/`inscribe_finds`, the `{` command, which costs no game time -- tables.c energy_cost 0 -- sent one at a
+time from policy_tick's safe moments and at the start of plan town's upgrade stage). A feeling already shown is kept in
+the server's own format, `{excellent - m62}`; a pseudo-ID after the inscription prepends the same way (dungeon.c
+sense_inventory) and Identify keeps it (spells2.c clears only a bare feeling), so the unidentified case is solved. Never
+over another inscription (the Navigator's `@`/`!` tags, `@R750`, a unique's name), never with no mission running. An
+item inscribed with the running mission's label is fresh, with another mission's (`mission_tag`: m<N>, sp-...) not.
+**Else** (no label) its pickup was recorded (`note_acquired`,
+from the game's "You have X (c)." in the dungeon -- never a purchase or a town pickup -- and not while fetching from the
+stash; `acquired.json`) in the
+mission running now, or with none running, since we last left town for the dungeon (`trip_t0`). The pickup is matched
+by name, else -- an item identified since, whose name changed -- by the latest unidentified pickup of the same base
+kind (a Dagger {excellent} -> the Dagger of Westernesse) -- the fallback for a stackable or a Navigator-inscribed find;
+limit: two unidentified finds of one kind can be confused,
+and an item owned before 2.50.0 or bought has no record (not fresh: Dive04's Scimitar). Log records:
+`stash_store` {item, where, value, fresh, mission} on each deposit; `stash_take` {item, where, credited_value,
+credited_mission, lost} on each withdrawal; `stash_credit_sold` {item, credited_value, received, credited_mission} when
+a credited item, withdrawn, is sold (the debit: a find counted once); withdrawn and worn, no debit. The Pilot's gold
+rate (`rate_tick`: rates.json, `gold_per_dmin`, `xp_per_gold`) counts `gold_stored` - `gold_debited` beside the gold
+found and sold; the scorecard does the same (observe.md).
 
 ## State files (`runs/pilot/<nick>/`)
 
@@ -375,7 +428,9 @@ notes) is retired at load (`retire_stash_json`: entrance and tavern items into h
 |---|---|---|
 | `plan.json` | `TripPlan.save` every plan tick; removed by `clear_plan_file` when the plan ends or stops | the trip's `STATE` (range, then, level_min, start time, phase, levels, went_down, home_why, conditions text, via, XP base, dungeon start) and the current level's state (`lvl`: depth, age, done, arrival, located, special, stairs_first, fails). `TripPlan.load` at Pilot start resumes a plan under 90 minutes old (restart.sh parks mid-trip) |
 | `stores.json` | `note_store` | per store number: `owner`, `t`, `prices` (cheapest per kind key) |
-| `house.json` | `HouseBank`, `house_save` | `house` (area, door, step_in, outside, box, depth, cross, price, bought), `banked`, `t`, `items` ("Y,X" -> stash item), `old_houses`, `tavern` (no-house fallback: `entrance`, `items`) |
+| `house.json` | `HouseBank`, `house_save` | `house` (area, door, step_in, outside, box, depth, cross, price, bought), `banked`, `t`, `items` ("Y,X" -> stash record), `old_houses`, `tavern` (`entrance`, `items`: the no-house stash and, 2.50.0, the house's overflow). A record is a plain name (before 2.50.0, still read) or `{name, value, t, fresh, mission}` (`stash_rec`) |
+| `acquired.json` | `note_acquired`, `note_trip_start`, `stash_take`, `stash_credit_*` (2.50.0) | `items` (the last 400 pickups: name, kind, known, t, mission), `trip_t0` (when we last left town for the dungeon), `credits` (a fresh stored item withdrawn: bare name -> value, mission; debited if sold, dropped if worn or stored again) |
+| `store.json` | `store add|del` (2.50.0) | the store list: lower-case name parts |
 | `stash.json.retired-DATE` | `retire_stash_json` (rename) | the old stash record, kept as history (D10, 2026-11-01) |
 | `review.json` | TownKit's first tick | `town_visits` (the item-review queue's clock: pilot-items.md) |
 | `deepest.json` | the Pilot | `{"ft": N}`: the deepest level reached (`deepest_ft`), used by `planned_depth`, the recall depth and `stairs_down` |

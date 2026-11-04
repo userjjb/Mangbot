@@ -34,9 +34,15 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
    Restore for a drained STR/DEX/CON, the kit, then your list (`NAME:N` means *have* N in all, not N more). From
    500 ft down the kit keeps **3 Heroism** (the fear cure) and **2 Potions of Speed** (Black Market, at most 600 each; often
    out of stock): the Pilot drinks Speed **at the start of a hard fight** (a unique or a monster near your level
-   adjacent), not only in emergencies. **Restore potions and Wands of Stone to Mud stay in the stash** (the house, in the
-   wilderness tile north of town) during a mission: `plan town` leaves them there as its last step, and fetches the right Restore when STR/DEX/CON is drained
-   (before buying one). In the dungeon a found Restore is picked up and drunk once the fight is over. With
+   adjacent), not only in emergencies. **Restore potions, Wands of Stone to Mud, the best spare for each worn slot (an
+   ego/artifact the shops can't sell, e.g. a second Westernesse weapon) and the `store` list stay in the stash** (the
+   house, in the wilderness tile north of town; when it's full, inside the tavern room) during a mission, never sold:
+   `plan town` leaves them there as its last step, fetches the right Restore when STR/DEX/CON is drained (before buying
+   one), and fetches a stored spare when the worn piece is lost. `house` shows what is stored; `house withdraw ITEM`
+   fetches one. A **`stash_full`** alert means there is no room left: `ask` the Architect (another house is their
+   call). In the dungeon a found Restore is picked up and drunk, and a known Mushroom of Restore Strength / Restore
+   Constitution / Restoring eaten, once the fight is over (STR/DEX/CON only). A `{m62}` on an item in the pack (or
+   `{good - m62}`) is the Pilot's mark: found in mission m62 (it counts a stored find as that mission's income); leave it. With
    3,000+ gold it also restores Charisma (better prices). Last it **eats rations to Fed (at most 3, when Hungry or
    worse) and fills the lantern to full** (food isn't digested in town; 15000 turns of light, ~70 dungeon minutes), so you carry one food stack and no oil:
    other food and spare flasks are sold. In the dungeon, when loot needs room, the Pilot eats (if it won't Gorge) and
@@ -116,7 +122,7 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 | `gear` | the gear review (in town, before `plan town`): abilities had and missing, worn jewellery made redundant by another piece (a free slot), and shop stock that would improve a slot within your spare gold. Buy with `plan town buy STORE/NAME@MAX`: the Pilot wears armour itself; for jewellery, `takeoff` the redundant piece first (it then fills the empty slot) |
 | `gearcmp [LETTER\|NAME ...]` | the gear evaluator: each pack item (or an item name, e.g. one in a shop) against what's worn in its slot -- the numbers it would give (blows, damage a round, AC, HP, **EHP**: effective HP over the damage you actually take, AC and resists counted; abilities gained/lost) and simulated fights (the fights met at this depth, fights drawn for this depth and 100 ft deeper, hard ones): turns fighting and resting, a score (XP per turn net of consumables), lowest HP, near-death rate; a verdict with its error. No argument: every identified wearable in the pack. In town the Pilot wears the evaluator's pick itself and doesn't sell it (never losing Free Action, See Invisible, resist blindness/confusion or hold life) |
 | `loadout [shops]` | the loadout optimizer: changes across one or two slots that keep every ability and resist you wear, e.g. a better weapon without Free Action **plus** a ring that gives it. From the pack; with `shops`, also the shops' stock as last seen, within your spare gold (it says what to buy). The best few are simulated like `gearcmp`. Advice only: before you sell a good item because it would lose an ability, run it |
-| `house`, `house deposit [KEEP]`, `house withdraw` | **the gold bank**: Dive04 owns a house in the tile just north of town (the Pilot walks there and back, ~20 s each way); `plan town` takes the gold out at the start of the visit and puts all but ~300 back at the end (thieves take ~10% of what you carry a touch; the dungeon has no use for gold). The status line shows `(+N banked)`. Shopping without `plan town`? `house withdraw` first |
+| `house`, `house deposit [KEEP]`, `house withdraw [ITEM]`, `store` | **the gold bank**: Dive04 owns a house in the tile just north of town (the Pilot walks there and back, ~20 s each way); `plan town` takes the gold out at the start of the visit and puts all but ~300 back at the end (thieves take ~10% of what you carry a touch; the dungeon has no use for gold). The status line shows `(+N banked)`. Shopping without `plan town`? `house withdraw` first. `house` also lists what is stored (house and tavern room) and why; `house withdraw ITEM` fetches one; `store` lists the user's store list (adding is the Architect's) |
 | `say TEXT`, `journal "situation \| decision \| why"`, `complain TEXT` | the user, your journal, what you lacked |
 | `stop` | stop the goal and the plan (safe idle) |
 

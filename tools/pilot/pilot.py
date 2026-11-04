@@ -98,6 +98,11 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         except (OSError, ValueError):
             self.keep = set()
         try:
+            # (2.50.0, the user: the items the house keeps -- lower-case name parts, as keep.json)
+            self.store_list = set(json.load(open(os.path.join(rundir, "store.json"))))
+        except (OSError, ValueError):
+            self.store_list = set()
+        try:
             self.standing = json.load(open(os.path.join(rundir, "standing.json")))
         except (OSError, ValueError):
             self.standing = []
@@ -162,6 +167,7 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.ability_seen_t = gnow()
         self.debt = {"entries": []}    # navigator_debt.json
         self.keep = set()              # keep.json
+        self.store_list = set()        # store.json (2.50.0: the user's store list, `store`)
         self.report_seq, self.last_report = 0, (0, 0.0)   # Navigator reports: number, time of the last
         self.hp_min_since = None       # lowest HP since the last audit_check
         self.escalation_t = 0.0        # last emergency-type alert (escape records)
@@ -317,6 +323,9 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         # gains and rates
         self.gold_last = self.xp_last = None   # the last tick's gold and exp (None: none seen yet)
         self.gold_found = self.gold_sold = self.gold_stolen = self.xp_gained = 0
+        # (2.50.0: fresh finds stored in the house count as income; a credited one withdrawn and sold is debited)
+        self.gold_stored = self.gold_debited = 0
+        self.was_in_dungeon = None     # (note_trip_start: leaving town for the dungeon)
         self.depth_t = None
         self.level_base = None         # (t, exp, level_t) on arriving on this level
         self.rates = None              # rates.json, loaded on first use (rate_state)
@@ -332,6 +341,10 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self._uk = self._drops = self._ego_flags = self._fight_rows = self._sim = self._stock = None
         self._town_books = self._house = None
         self._pay_cache, self._sim_cache, self.gear_eval_cache = {}, {}, {}
+        self._backup_cache = None      # stash_backups: (key, result) -- 2.50.0
+        self._acq = None               # acquired.json (acq_state): pickups, the trip start, pending credits -- 2.50.0
+        self.to_inscribe = []          # finds to mark with the mission's label (inscribe_finds) -- 2.50.0
+        self.inscribe_t = 0.0
 
     @classmethod
     def for_test(cls, world, **overrides):
@@ -764,9 +777,18 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
             if m:
                 self.hits[(w.level_t, m.group(1).lower())] += 1
             # gold from sales, for the rolling XP-per-gold rate (rate_tick)
-            m = re.match(r"You sold .+? for (\d+) gold", t)
+            m = re.match(r"You sold (.+?) for (\d+) gold", t)
             if m:
-                self.gold_sold += int(m.group(1))
+                self.gold_sold += int(m.group(2))
+                self.stash_credit_sold(m.group(1), int(m.group(2)))    # (2.50.0: a credited stored find, sold)
+            # (2.50.0: what we pick up in the dungeon, with the mission it was found in -- a stored find is fresh
+            # income; not a purchase or anything taken in town, nor a stash item being fetched back)
+            m = re.match(r"You have (.+) \([a-w]\)\.$", t)
+            if m and w.in_dungeon and not w.store and not (self.fetching and self.fetching in m.group(1)):
+                self.note_acquired(m.group(1))
+            m = re.match(r"You are (?:wielding|wearing) (.+) \(.\)\.$", t)
+            if m:
+                self.stash_credit_worn(m.group(1))
             # (m37: the cloak and the new helm lost +1 each to a Disenchanter mold; nothing in the news)
             m = re.match(r"Your (.+?) \(.\) (?:was|were) disenchanted!", t)
             if m:
@@ -797,6 +819,9 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         # gold found: rises in the dungeon only (the Rates line counted purchases and sales; the scorecard's
         # gold_found, the same way)
         w = self.w
+        if w.in_dungeon and self.was_in_dungeon is False:
+            self.note_trip_start()          # (2.50.0: a find stored with no mission running is fresh since here)
+        self.was_in_dungeon = bool(w.in_dungeon)
         g = w.ind.get("gold", [0])[0]
         if w.in_dungeon and self.gold_last is not None and g > self.gold_last:
             self.gold_found += g - self.gold_last
@@ -873,7 +898,8 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         return st
 
     def rate_tick(self, now):
-        cur = (self.xp_gained, self.gold_found + self.gold_sold)
+        # (2.50.0: + fresh finds stored, - credited ones sold later: the scorecard's adjusted gold)
+        cur = (self.xp_gained, self.gold_found + self.gold_sold + self.gold_stored - self.gold_debited)
         op = self.rate_open
         if op is None or now - op[0] >= self.RATE_BUCKET_S:
             if op is not None:

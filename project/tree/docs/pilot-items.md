@@ -106,7 +106,10 @@ turns it off; not with a monster adjacent or in a store): after a step, a recent
    drop, whatever its estimate, may also push out anything under `UNIQUE_DROP_BUMP` = 50). Otherwise: "left NAME: pack full and nothing cheaper",
    once per item and level.
 
-**`pack_value(it)`** (what an item is worth to the pack when making room): **priceless** (never destroyed for room) =
+**`pack_value(it)`** (what an item is worth to the pack when making room): (2.50.0) in town a stash item
+(`is_stash_item`: a Restore, Stone to Mud, a gear backup, the store list) is priceless, so the town's make-room never
+sells or destroys it; in the dungeon it is valued as any item (unchanged: a backup's value -- thousands for an ego --
+already keeps it). **priceless** (never destroyed for room) =
 kit consumables (`is_kit_item`: potions/scrolls of `KIT_KINDS` -- cures, Phase, Recall, Teleport, Identify, Magic
 Mapping (with `--live` only, 2.48.0), Speed, Heroism, Berserk, Restore, Deep Descent, Resist Poison), kept items, possible ability sources, the
 best light, the last meal, the lantern's needed oil, items waiting in the review queue. **Mushrooms are not
@@ -194,8 +197,8 @@ Two principles for a weaker substitute of a kit item (`town.py`, beside `town_se
   1000 ft <= C); in the dungeon, the planned depth's.
 - **Mushrooms in town**: sold like other non-ration food (their cures are the kit's potions), except `KEEP_MUSHROOMS`
   (Restore Strength, Restore Constitution, Restoring), which the town sells only as a ~490-gold Restore potion. Unknown
-  ones follow the unknown-flavour rules. In the dungeon, the 2.42.0 expected value (unchanged). The Pilot doesn't eat
-  a restore mushroom for a drain (`restore_potion` reads potions only): the Navigator can.
+  ones follow the unknown-flavour rules. In the dungeon, the 2.42.0 expected value (unchanged). Since 2.50.0 (the user)
+  the Pilot **eats a known restore mushroom for a drain** (section 4, "Restore items").
 - **Scroll of Magic Mapping**: a crutch on the test server (`CRUTCH_SCROLLS`, `is_crutch`), as the mapping devices:
   sold in town, not a kit item (loot in the dungeon: its sale value, no kit pickup worth), and never read (the band
   leave and the flee skip it). With `--live` it is the kit's again. Deep Descent (travel) stays a kit scroll.
@@ -241,8 +244,21 @@ them at their kind's cost).
 ## 4. Identify and flavour learning
 
 **`policy_tick`** (every 3 s at a safe moment: no monsters in view, not hit for 8 s, HP >= 50%, not blind/confused,
-not fleeing/recalling/recovering/shopping) runs, in order: eat when Hungry (2.45.2; Weak is the hunger reflex's); quaff a Restore for a drained STR/DEX/CON; fetch a unique's
+not fleeing/recalling/recovering/shopping) runs, in order: eat when Hungry (2.45.2; Weak is the hunger reflex's); restore a drained STR/DEX/CON (in the dungeon, at a `quiet_moment`: a Restore potion quaffed or, 2.50.0, a restore mushroom eaten -- "Restore items" below); fetch a unique's
 drop; fetch nearby gold; `identify_step`; `upgrade_step`.
+
+**Restore items** (2.50.0, the user: "eat one for a drain that matters, at a safe moment"). `restore_for(stat)` is the
+cheapest pack item (`restore_cost`: a potion at the Alchemist's last price, else `KIT_USE` 480; a mushroom its
+itemvalue, 350 or 1000 for Restoring -- the town sells no mushroom, so it is valued as it sells) that restores that
+stat: a Potion of Restore <stat> (STR, DEX, CON; CHR in town), or for STR/DEX/CON a **known** restore mushroom covering
+it -- `RESTORE_MUSHROOMS` from use-obj.c:169-190: Restore Strength -> STR (`do_res_stat(A_STR)`), Restore Constitution
+-> CON, Restoring -> all six -- that `eat_fits` (the make-room rule: `food_top` + its 500 food stays 1000 under
+PY_FOOD_MAX). `restore_item(skip, stats)` walks the drained stats (STR, DEX, CON first). policy_tick asks for
+STR/DEX/CON only (INT/WIS/CHR are town's; a Restoring mushroom is not eaten for them) and eats a mushroom with
+`custom E item=N` (the make-room eat command, guarded by the pack-letter hold), quaffs a potion with `custom q`.
+Unknown mushrooms are never eaten. In town `town_needs` tier 3 buys no Restore a carried mushroom covers, the restock
+waits don't wait for it, and `_buying_quaff` eats it; `watch_character`'s `stat_drained` text names the carried item
+the Pilot will use ("a Mushroom of Restore Strength in the pack: the Pilot eats it at the next safe moment").
 
 **`identify_step(minimum=20)`**: with a Scroll of Identify or a charged Staff of Perception, identify the best
 candidate from `identify_candidates`: unknown items (`iv.known is False`, not junk) ranked by expected sale value;
@@ -309,6 +325,44 @@ The Navigator answers `review sell|keep|wear NAME` (`review` lists): `keep` also
 wears it in town (recorded as keep; in the dungeon it's only kept, not worn, and the reply says so). **Undecided after 2 town visits** (counted by TownKit), the policy sells it.
 State: `runs/pilot/NICK/review.json` (`items`, `decided`, `town_visits`).
 
+## 6a. The stash's backups and the store list (2.50.0)
+
+The user (11-04): "spare items that are valuable and can't be bought should be stored when possible". Besides the stat
+Restores and Wands of Stone to Mud, `is_stash_item(name)` takes (a) the **best backup for each worn slot** and (b) the
+**store list**. The town keeps them (`town_rule` "keep" with the reason, so `town_sell_count` 0 and `price` says it),
+`plan town` stores them (goals-and-plans.md, "The gold bank and the stash"), and the pickup reflex leaves stored items
+lying in town (`stash_stored`).
+
+- **Backups** (`stash_backups`, town.py; cached on the pack, gear, stash, stats). A candidate (`backup_item`) is an
+  unworn weapon, armour piece, ring, amulet or light (not a bow) the shops can't sell -- an ego or artifact (itemvalue
+  `.ego`/`.artifact` or geareval's `art`), or jewellery/a light of a kind shops 1-6 don't stock (`shop_stock.csv`) --
+  identified (`known`, not an estimate: a felt `{excellent}` doesn't count), not cursed, worth `BACKUP_MIN_VALUE` = 200
+  gold (an artifact always; an ego's own cost is 200+ with few exceptions, so every real ego passes, and below it the
+  sale is ~75 gold, not worth one of the house's 3 squares). Candidates are the pack's and the stored ones (house and
+  tavern). Per worn slot the best is: most of the **abilities the worn gear gets from that slot's piece** (the gear
+  model's flags with the piece, less without it) that it carries; then the `geareval.REQUIRED` abilities (Free Action,
+  See Invisible) it carries at all (a Ring of Free Action backs up the axe's, though the worn rings give none); then
+  the gear evaluator's static score (`geareval.proxy`: kill speed, EHP, speed) as if it replaced the worn piece (rings:
+  the weaker ring); a stored one wins a tie. One backup per slot ("ring" is one slot). A slot with nothing worn has no
+  pack backup (the gear policy wears into it); its best stored one is fetched to wear. Text: "a backup for the weapon
+  slot (Free Action, See Invisible)" (`stash_backup`). Example: beside the wielded Battle Axe of Westernesse the
+  Scimitar of Westernesse is the weapon backup; a Main Gauche of Slay Evil is sold.
+- **The store list** (`rundir/store.json`, `store add|del NAME`, the Architect's; `on_store_list`): lower-case name
+  parts matched as keep.json is (a substring of the bare name, singular too). Reason "on the store list".
+- **Precedence**: storing wins over `keep` (a kept item that is a stash item is stored, not held in the pack), over a
+  review decision and over the review queue (a deposited item leaves the queue). The keep list still protects what
+  isn't a stash item.
+- **Dungeon**: no change (valued as any item; the Navigator's sell/destroy/drop of one is refused, `!` overrides).
+
+**Mission labels on finds** (2.50.0, the user): during a mission a single wearable picked up in the dungeon is
+inscribed with the mission's label (`{m62}`, or `{excellent - m62}` keeping a feeling): the stash's freshness test
+(goals-and-plans.md, "Stored finds are income"). The name helpers ignore it: `bare_name`, `kind_key`, `flavour_key` and
+`same_item` drop the braces (so `keep`, the store list and the stash records match), `bad_inscription` reads only
+cursed/worthless/broken/terrible, the junk test only `@`/`!`, itemvalue takes the feeling before ` - `, and
+`probably_special` ignores a feeling left on an identified item by the label (the server clears only a bare
+feeling). Shops may show the label in the sale message: harmless. The review queue is keyed by the full name: an item
+is labelled before its first town visit.
+
 ## 7. Keep list, value refusals and the debt
 
 **`keep NAME` / `keep -NAME` / `keep`** (`runs/pilot/NICK/keep.json`, lower-case name parts): a kept item is never
@@ -321,7 +375,8 @@ own). Refused, with the reason:
 - a kept item;
 - an unidentified item that may be an ability source (identify first);
 - unidentified with `p_irreplaceable >= 20%`, or worth ~30+ sold once identified (identify first);
-- destroy/drop of an irreplaceable item, or of one a shop would pay ~20+ for (sell it instead).
+- destroy/drop of an irreplaceable item, or of one a shop would pay ~20+ for (sell it instead);
+- (2.50.0) sell/destroy/drop of a gear backup or a store-list item ("plan town stores it in the house").
 
 Table-junk and cursed/worthless items are never refused. Selling also applies `unknown_sell_refusal` and
 `probably_special`.
@@ -398,6 +453,7 @@ with a usage error -- A22, 2.40.0), listed with `orders`, saved in `runs/pilot/N
   the relist price).
 - Notifications (events; see pilot-core.md): `tactic` news for make-room destroys, left items, identify, wear/wield,
   learned flavours, fetches; `review` (held / auto-sold); `found`, `interesting_item`, `pack_full`, `ability`,
-  `stat_drained`, `blows_changed`.
+  `stat_drained`, `blows_changed`; (2.50.0) `stash_full`, and the log records `stash_store`, `stash_take`,
+  `stash_credit_sold` (goals-and-plans.md).
 - Files: `runs/flavours.json` (server-wide), and per character in `runs/pilot/NICK/`: `keep.json`, `review.json`,
   `navigator_debt.json`, `orders.json`, `stores.json` (shop owners and prices, read by `pay_cut`).

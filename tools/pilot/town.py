@@ -19,10 +19,11 @@ import sys
 import time
 
 import geareval
-from common import HERE, TV_POTION, TV_SCROLL, TV_FOOD, TV_FLASK, TV_LITE, bare_name, singular, bad_inscription
+from common import HERE, TV_POTION, TV_SCROLL, TV_FOOD, TV_FLASK, TV_LITE, bare_name, singular, bad_inscription, rec_name, \
+    inscription, mission_tag, FEELING_TAGS
 from world import gnow, light_turns
 from mover import MAX_HGT, MAX_WID
-from town_goals import Shop, TownKit
+from town_goals import Shop, TownKit, town_houses
 if os.path.join(HERE, "..", "observe") not in sys.path:     # (shopmath, as pilot.py loads it)
     sys.path.insert(0, os.path.join(HERE, "..", "observe"))
 import shopmath                                  # noqa: E402
@@ -480,6 +481,11 @@ class TownMixin:
         name, tv = it["name"], it["tval"]
         if it.get("equip"):
             return None
+        # (2.50.0, the user: the stash -- a backup for a worn slot, the store list, the Restores, Stone to Mud -- is
+        # stored, never sold; it wins over the keep list, which only holds an item in the pack)
+        why = self.stash_reason(it)
+        if why:
+            return ("keep", why)
         kind = self.fallback_of(it)
         if kind:
             have, target, kit = self.kit_count(kind), self.kit_target(kind), self.visit_kit()
@@ -709,7 +715,8 @@ class TownMixin:
             add(2, "Flask of oil", self.flasks_to_fill())
         for stat, (cur, top) in (self.seen_drained or {}).items():
             if stat in self.STAT_FULL and cur < top:
-                if not self.stash_has(f"Restore {self.STAT_FULL[stat]}"):     # (fetched from the stash instead)
+                # (fetched from the stash instead; 2.50.0: or a carried restore mushroom eats it -- restore_for)
+                if not self.stash_has(f"Restore {self.STAT_FULL[stat]}") and not self.restore_for(stat):
                     add(3, f"Restore {self.STAT_FULL[stat]}", 1)
         for kind, n in self.KITS.get(kit, {}).items():
             add(4, kind, n)
@@ -729,15 +736,53 @@ class TownMixin:
             add(6, "Restore Charisma", 1)
         return plan
 
-    def restore_potion(self, skip=()):
-        """A Potion of Restore <stat> in the pack for a drained STR/DEX/CON, or None."""
+    # the restore mushrooms (use-obj.c:169-190: SV_FOOD_RESTORE_STR do_res_stat(A_STR), SV_FOOD_RESTORE_CON
+    # do_res_stat(A_CON), SV_FOOD_RESTORING all six stats); food pval 500 each (object.txt)
+    RESTORE_MUSHROOMS = {"Restore Strength": {"STR"}, "Restore Constitution": {"CON"},
+                         "Restoring": {"STR", "INT", "WIS", "DEX", "CON", "CHR"}}
+
+    def restore_mushroom_stats(self, name):
+        """The stats a known restore mushroom restores ('a Mushroom of Restoring': all six), else an empty set (an
+        unknown mushroom is never eaten for a drain)."""
+        m = re.search(r"\bMushrooms? of (Restore Strength|Restore Constitution|Restoring)\b", name)
+        return self.RESTORE_MUSHROOMS[m.group(1)] if m else set()
+
+    def restore_cost(self, it):
+        """What using this restore item costs: a potion its price at the Alchemist (last seen, else KIT_USE's 480), a
+        mushroom its value (itemvalue: 350, Restoring 1000) -- the town sells no mushroom, so it is valued as it sells."""
+        if it["tval"] == TV_POTION:
+            kind = re.sub(r"^.*?(Restore \w+).*$", r"\1", it["name"])
+            return self.price_of(kind, 5) or self.KIT_USE["Restore"]
+        return self.iv(it["name"]).value
+
+    def restore_for(self, stat, skip=()):
+        """The cheapest pack item (restore_cost) that restores this stat: a Potion of Restore <stat> (STR, DEX, CON,
+        CHR), or (2.50.0, the user) for STR/DEX/CON a known restore mushroom that covers it and won't make us Gorged
+        (eat_fits), or None. Names in `skip` are left out."""
         full = dict(self.STAT_FULL, CHR="Charisma")
-        for stat, (cur, top) in (self.seen_drained or {}).items():
-            if stat in full and cur < top:
-                pot = next((i for i in self.w.items(tval=TV_POTION) if f"Restore {full[stat]}" in i["name"]
-                            and i["name"] not in skip), None)
-                if pot:
-                    return pot
+        if stat not in full:
+            return None
+        cands = []
+        for it in self.w.items():
+            if it["name"] in skip:
+                continue
+            if it["tval"] == TV_POTION and f"Restore {full[stat]}" in it["name"]:
+                cands.append((self.restore_cost(it), 1, it))
+            elif it["tval"] == TV_FOOD and stat in self.STAT_FULL and stat in self.restore_mushroom_stats(it["name"]) \
+                    and self.eat_fits(it["name"]):
+                cands.append((self.restore_cost(it), 0, it))
+        return min(cands, key=lambda c: c[:2])[2] if cands else None
+
+    def restore_item(self, skip=(), stats=("STR", "DEX", "CON", "CHR")):
+        """A pack item that restores a drained stat of `stats` (STR, DEX and CON first: blows and HP), the cheapest
+        for it (restore_for), or None. A mushroom (tval TV_FOOD) is eaten, a potion quaffed. The dungeon's policy_tick
+        asks for STR/DEX/CON only (INT/WIS/CHR wait for town); TownKit also drinks a Restore Charisma it bought."""
+        for stat in stats:
+            cur, top = (self.seen_drained or {}).get(stat, (0, 0))
+            if cur < top:
+                it = self.restore_for(stat, skip)
+                if it:
+                    return it
         return None
 
     def town_reserve(self):
@@ -801,10 +846,233 @@ class TownMixin:
     # In the house: house.json `items` ("Y,X" -> name, HouseBank.item_step). Without a house, the tavern room:
     # house.json `tavern` ({"entrance": [Y, X], "items": {"Y,X": name}}; StashDeposit/StashFetch). The old stash.json
     # (its items, tavern squares and the hand-written where/lost notes) was retired on 2026-11-01.
+    # (2.50.0, the user, 11-04: "spare items that are valuable and can't be bought should be stored when possible" --
+    # the stash also holds the best backup for each worn slot and the user's store list; the house first, the tavern
+    # room when the house is full, and when neither has room the Navigator is told to `ask` the Architect)
+    STASH_KINDS = r"Potions? of Restore (Strength|Intelligence|Wisdom|Dexterity|Constitution|Charisma)"
+    # a backup is worth at least this much (itemvalue): an ego or artifact under it is a weak or cursed-plussed one
+    # (an ego's own cost is 200+ in ego_item.txt with few exceptions, so 200 lets every real ego through), and below
+    # it the sale pays ~75 gold -- not worth a house square of the house's 3
+    BACKUP_MIN_VALUE = 200
+    BACKUP_SLOT_LABEL = {"body": "body armour"}
+
     def is_stash_item(self, name):
+        """A pack item's name the stash takes: the stat-restore potions (not Restore Mana) and Wands of Stone to Mud
+        (10-26), a name on the user's store list, or (a pack item's name) the best backup for a worn slot
+        (stash_backup) -- 2.50.0."""
         # (stat restores only: a Potion of Restore Mana went into the stash in m48 -- useless to a warrior)
-        return bool(re.search(r"Potions? of Restore (Strength|Intelligence|Wisdom|Dexterity|Constitution|Charisma)",
-                              name)) or ("Stone to Mud" in name and "Wand" in name)
+        if re.search(self.STASH_KINDS, name) or ("Stone to Mud" in name and "Wand" in name) or \
+                self.on_store_list(name):
+            return True
+        it = next((i for i in self.w.items() if i["name"] == name), None) if self.w else None
+        return bool(it and self.stash_backup(it))
+
+    def on_store_list(self, name):
+        """On the user's store list (rundir/store.json, `store add NAME`): lower-case name parts, matched as keep.json
+        is (is_kept: a substring of the bare name, singular too)."""
+        b = bare_name(name).lower()
+        return any(k and (k in b or k in singular(b)) for k in self.store_list)
+
+    def stash_reason(self, it):
+        """Why the town keeps a pack item for the stash (town_rule's text), or None: "a backup for the weapon slot
+        (Free Action, See Invisible)", "on the store list", "the stash: a stat Restore" / "...: Stone to Mud"."""
+        name = it["name"]
+        if it.get("equip"):
+            return None
+        if self.on_store_list(name):
+            return "on the store list"
+        why = self.stash_backup(it)
+        if why:
+            return why
+        if re.search(self.STASH_KINDS, name):
+            return "the stash: a stat Restore (the house keeps it)"
+        if "Stone to Mud" in name and "Wand" in name:
+            return "the stash: a Wand of Stone to Mud (the house keeps it)"
+        return None
+
+    @functools.lru_cache(maxsize=None)
+    def _town_wearables(self):
+        """(tval, kind name) of the wearables the town's shops 1-6 stock (the rulebook's shop_stock.csv): what can be
+        bought back."""
+        return frozenset((int(r["tval_num"]), geareval._norm(r["item_name"])) for r in self.stock_table()
+                         if r.get("tval_num", "").isdigit() and "black" not in r.get("store", "").lower())
+
+    def backup_item(self, name, tval=None, weight=None):
+        """geareval.Item for a wearable that may be a gear backup, else None: a weapon, armour piece, ring, amulet or
+        light (not a bow) the shops can't sell -- an ego or an artifact, or jewellery/a light of a kind shops 1-6
+        don't stock -- identified (not merely felt), not cursed, worth BACKUP_MIN_VALUE+ (an artifact always)."""
+        if bad_inscription(name):
+            return None
+        gi = geareval.Item(name, tval, weight)
+        if not gi.slot or gi.slot == "bow" or not (gi.kind or gi.art):
+            return None
+        iv = self.iv(name)
+        if iv.known is not True or iv.estimate:
+            return None
+        art = bool(iv.artifact or gi.art)
+        kind = gi.kind or {}
+        stocked = (gi.tval, geareval._norm(kind.get("name", ""))) in self._town_wearables()
+        if not (art or iv.ego or gi.ego or (gi.slot in ("ring", "amulet", "light") and not stocked)):
+            return None
+        if not art and iv.value < self.BACKUP_MIN_VALUE:
+            return None
+        return gi
+
+    def stash_backups(self):
+        """The best backup per worn slot among the pack's unworn wearables and the stored ones (house and tavern):
+        {"best": {slot: (where, name, item or None, labels)}, "outclassed": [(where, name, slot)]} -- where is
+        "pack", "house" or "tavern". Best: first the most of the abilities the worn gear gets from the piece in that
+        slot (lost with it) that it carries; then the required abilities (geareval.REQUIRED: Free Action, See
+        Invisible) it carries at all; then the gear evaluator's static score (geareval.proxy) as if it replaced the
+        worn piece (rings: the weaker worn ring); a stored one wins a tie. One per slot. A slot with nothing worn has
+        no pack backup (the gear policy wears into it), only the best stored one (stash_fetch_list fetches it to
+        wear). Cached on the pack, the gear, the stash and the stats."""
+        w = self.w
+        pack, worn = w.items(), w.items(equip=True)
+        places = self.stash_places()
+        stored = [(at, n) for at, slots in places.items() for n in slots.values() if isinstance(n, str)]
+        key = (tuple((i["item"], i["name"]) for i in pack), tuple(i["name"] for i in worn), tuple(sorted(stored)),
+               tuple(sorted((k, tuple(v)) for k, v in (w.ind or {}).items() if k.startswith("stat"))), w.clvl,
+               tuple(sorted(self.store_list)))
+        if self._backup_cache and self._backup_cache[0] == key:
+            return self._backup_cache[1]
+        out = {"best": {}, "outclassed": []}
+        try:
+            cands = []
+            for i in pack:
+                if i["tval"] not in geareval.SLOT_OF_TVAL or (self.flavour_of(i) or {}).get("junk"):
+                    continue
+                gi = self.backup_item(i["name"], i["tval"], i["weight"] // max(1, i.get("number", 1)))
+                if gi:
+                    cands.append(("pack", i["name"], i, gi))
+            for at, n in stored:
+                gi = self.backup_item(n)
+                if gi:
+                    cands.append((at, n, None, gi))
+            if cands:
+                ch = self.gear_character()
+                cur = ch.derive()
+                try:
+                    mix = geareval.load_mix(os.path.join(self.rundir, "damage_mix.json"))
+                except AttributeError:
+                    mix = None
+                lost = {}                       # (slot, j) -> the abilities the worn piece j of the slot gives alone
+                scored = {}
+                for at, n, i, gi in cands:
+                    on = ch.worn.get(gi.slot) or []
+                    if not on and at == "pack":
+                        continue        # (a slot with nothing worn: the gear policy wears into it, no backup)
+                    best = None
+                    for j in range(max(1, len(on))):
+                        if not on:
+                            lost[(gi.slot, j)] = set()          # (empty -- the piece stolen: a stored one to wear)
+                        elif (gi.slot, j) not in lost:
+                            without = {s: [x for k, x in enumerate(v) if not (s == gi.slot and k == j)]
+                                       for s, v in ch.worn.items()}
+                            lost[(gi.slot, j)] = set(cur["flags"]) - set(ch.derive(without)["flags"])
+                        carried = gi.abilities() & lost[(gi.slot, j)]
+                        sc = (len(carried), geareval.proxy(ch.derive(ch.swap(gi, j)), cur, ch.depth_ft, mix))
+                        if best is None or sc > best[0]:
+                            best = (sc, carried)
+                    (n_ab, prox), carried = best
+                    # (then the required abilities it carries at all -- Free Action, See Invisible: a ring of Free
+                    # Action backs up the weapon's, though the worn rings give none -- then the score)
+                    req = len(gi.abilities() & set(geareval.REQUIRED))
+                    rank = (n_ab, req, round(prox, 9), at != "pack")
+                    scored.setdefault(gi.slot, []).append((rank, at, n, i, carried))
+                for slot, lst in scored.items():
+                    lst.sort(key=lambda r: r[0], reverse=True)
+                    _, at, n, i, carried = lst[0]
+                    labels = [geareval.label(f) for f in sorted(carried, key=lambda f: (f not in geareval.REQUIRED, f))]
+                    out["best"][slot] = (at, n, i, labels)
+                    out["outclassed"] += [(a2, n2, slot) for _, a2, n2, _, _ in lst[1:] if a2 != "pack"]
+        except Exception as e:              # (the evaluator must not stop the town visit: nothing is a backup then)
+            self.log("note", text=f"stash backups failed: {e!r}")
+            out = {"best": {}, "outclassed": []}
+        self._backup_cache = (key, out)
+        return out
+
+    def backup_text(self, slot, labels):
+        s = self.BACKUP_SLOT_LABEL.get(slot, slot)
+        return f"a backup for the {s} slot" + (f" ({', '.join(labels)})" if labels else "")
+
+    def stash_backup(self, it):
+        """"a backup for the weapon slot (Free Action, See Invisible)" when this unworn pack item is the best backup for
+        its worn slot (stash_backups), else None."""
+        if it.get("equip") or it["tval"] not in geareval.SLOT_OF_TVAL:
+            return None
+        for slot, (at, n, i, labels) in self.stash_backups()["best"].items():
+            if at == "pack" and i is not None and i["item"] == it["item"] and i["name"] == it["name"]:
+                return self.backup_text(slot, labels)
+        return None
+
+    def stored_reason(self, at, name):
+        """What a stored item is (the `house` listing): a backup, an outclassed backup (fetched to sell), on the store
+        list, a stat Restore, Stone to Mud, else just stored."""
+        if self.on_store_list(name):
+            return "store list"
+        bk = self.stash_backups()
+        for slot, (a, n, i, labels) in bk["best"].items():
+            if a == at and n == name:
+                return self.backup_text(slot, labels).replace("a backup for the", "backup:")
+        for a, n, slot in bk["outclassed"]:
+            if a == at and n == name:
+                return f"outclassed {self.BACKUP_SLOT_LABEL.get(slot, slot)} backup: plan town fetches it to sell"
+        if re.search(self.STASH_KINDS, name):
+            return "a stat Restore"
+        if "Stone to Mud" in name:
+            return "Stone to Mud"
+        return "stored"
+
+    def stash_stored(self, text):
+        """A floor message ("You see X.") naming something the stash holds: the pickup reflex leaves it in town."""
+        low = text.lower()
+        return any(rec_name(n) and bare_name(rec_name(n)).lower() in low
+                   for slots in self.stash_places().values() for n in slots.values())
+
+    def stash_room(self):
+        """{"house": free squares in the house (None: no house), "tavern": free floor squares seen in the tavern room
+        (None: not mapped -- only in town)}: the house's interior but the gold's square, less the recorded items; the
+        tavern room's '.' squares less the recorded items."""
+        st = self.house_state()
+        out = {"house": None, "tavern": None}
+        h = st.get("house")
+        if h and h.get("box"):
+            y1, x1, y2, x2 = h["box"]
+            inside = tuple(h.get("step_in") or ())
+            slots = st.get("items", {})
+            out["house"] = sum(1 for y in range(y1 + 1, y2) for x in range(x1 + 1, x2)
+                               if (y, x) != inside and f"{y},{x}" not in slots)
+        ent = self.tavern_entrance() if not self.w.depth and not self.w.in_dungeon else None
+        if ent:
+            room = next((r for r in town_houses(self.w.memory, door="8") if r["door"] == tuple(ent)), None)
+            if room:
+                used = set(self.tavern_state().get("items", {}))
+                out["tavern"] = sum(1 for q in room["inside"] if q != tuple(ent) and self.w.memory.get(q) == "."
+                                    and f"{q[0]},{q[1]}" not in used)
+        return out
+
+    def stash_fetch_list(self, at):
+        """[(name, why)]: the stored items in `at` (house|tavern) the town visit fetches (2.50.0): (i) a stored backup
+        the gear policy would wear over the worn piece -- its slot empty (the piece stolen), or the gear evaluator's
+        choice over a disenchanted one (gear_better; town only) -- and (ii) a stored backup a better one now outclasses
+        (fetched so the shops sell it; the new one is deposited last)."""
+        bk = self.stash_backups()
+        out = []
+        worn = self.w.items(equip=True)
+        for slot, (a, n, i, labels) in bk["best"].items():
+            if a != at:
+                continue
+            gi = geareval.Item(n)
+            k = 2 if slot == "ring" else 1
+            empty = sum(1 for x in worn if geareval.SLOT_OF_TVAL.get(x["tval"]) == slot) < k
+            pseudo = {"name": n, "tval": gi.tval, "weight": gi.weight, "number": 1, "item": -1, "equip": False}
+            if empty or self.gear_better(pseudo):
+                out.append((n, f"to wear: {self.backup_text(slot, labels).replace('a backup for', 'the backup for')}"))
+        for a, n, slot in bk["outclassed"]:
+            if a == at:
+                out.append((n, f"outclassed as the {self.BACKUP_SLOT_LABEL.get(slot, slot)} backup: to sell"))
+        return out
 
     def tavern_state(self):
         """The no-house fallback's record in house.json: the tavern's entrance and the stash items in its room."""
@@ -812,10 +1080,194 @@ class TownMixin:
 
     def stash_places(self):
         """{'house': {"Y,X": name}, 'tavern': {"Y,X": name}}: what the stash holds and where (the house's items count
-        only while a house is owned)."""
+        only while a house is owned). The names only: a record is a plain name (before 2.50.0) or a dict with its
+        metadata (stash_rec)."""
         st = self.house_state()
-        return {"house": st.get("items", {}) if st.get("house") else {},
-                "tavern": st.get("tavern", {}).get("items", {})}
+        return {"house": {k: rec_name(v) for k, v in st.get("items", {}).items()} if st.get("house") else {},
+                "tavern": {k: rec_name(v) for k, v in st.get("tavern", {}).get("items", {}).items()}}
+
+    # --- 2.50.0 (the user, 11-04): storing a find is income. Each record carries what the town would have paid for
+    # it, when it was stored, and whether it was FRESH -- acquired in the current mission (or, with none running,
+    # since the last time we left town for the dungeon) -- and the mission it was credited to. `stash_store` /
+    # `stash_take` log records; the scorecard and the Pilot's gold rate add the fresh values, and subtract a credited
+    # item's value when it is withdrawn and sold (`stash_credit_sold`), so a find isn't counted twice.
+    def stash_rec(self, it, at, commit=True):
+        """The house.json record for this pack item stored at `at` (house|tavern): {name, value (value x pay_cut x
+        count: what the sell decision would have realised), t, fresh, mission}; committed (stash_commit: the
+        `stash_store` log and the credit) at once, or -- commit=False -- once the drop is seen on the floor."""
+        name = it["name"]
+        iv = self.iv(name)
+        value = int(round(iv.value * self.pay_cut(iv.tval) * max(1, it.get("number", 1))))
+        fresh, mission = self.acquired_fresh(name)
+        rec = {"name": name, "value": value, "t": time.strftime("%Y-%m-%d %H:%M"), "fresh": fresh,
+               "mission": mission if fresh else None}
+        if commit:
+            self.stash_commit(rec, at)
+        return rec
+
+    def stash_commit(self, rec, at):
+        """A stored item on record: logged `stash_store`, its value credited when fresh."""
+        name = rec["name"]
+        self.log("stash_store", item=name, where=at, value=rec["value"], fresh=rec["fresh"], mission=rec["mission"])
+        if rec["fresh"]:
+            self.gold_stored += rec["value"]
+        self.acq_state()["credits"].pop(bare_name(name).lower(), None)    # (stored again: no debit pending)
+        self.acq_save()
+
+    def stash_found(self, name, at):
+        """An item seen on a stash square that the record didn't hold (the live check of 11-04: a second Restore
+        Charisma lay in the house): adopted -- not fresh, its value from itemvalue -- and logged `stash_found`."""
+        iv = self.iv(name)
+        value = int(round(iv.value * self.pay_cut(iv.tval) * max(1, iv.count)))
+        self.log("stash_found", item=name, where=at, value=value)
+        return {"name": name, "value": value, "t": time.strftime("%Y-%m-%d %H:%M"), "fresh": False, "mission": None,
+                "found": True}
+
+    @staticmethod
+    def same_item(a, b):
+        """Two names of one item (a record's and the floor's): the bare names, singular, alike."""
+        return bool(a and b) and singular(bare_name(a).lower()) == singular(bare_name(b).lower())
+
+    def floor_here(self, since):
+        """(read, name): the item underfoot as the client's floor query read it at our square after `since` (game
+        clock), name None for a bare floor; (False, None) until such a reading."""
+        w = self.w
+        if getattr(w, "floor_pos", None) == w.pos and (getattr(w, "floor_t", 0) or 0) > since:
+            return True, w.floor
+        return False, None
+
+    def in_house(self):
+        """Standing inside the owned house (its interior, on its tile): every item here is the stash's."""
+        h = self.house_state().get("house")
+        w = self.w
+        if not h or not h.get("box") or not w.pos or w.in_dungeon or (w.depth or 0) != int(h.get("depth", 0)):
+            return False
+        y1, x1, y2, x2 = h["box"]
+        return y1 < w.pos[0] < y2 and x1 < w.pos[1] < x2
+
+    def acq_state(self):
+        """rundir/acquired.json: `items` (what was picked up: name, kind, known, t, mission; the last ACQ_KEEP),
+        `trip_t0` (when we last left town for the dungeon), `credits` (bare name -> value, mission: a fresh stored
+        item withdrawn, debited if it is sold)."""
+        if self._acq is None:
+            try:
+                self._acq = json.load(open(os.path.join(self.rundir, "acquired.json")))
+            except (OSError, ValueError, AttributeError):
+                self._acq = {}
+            self._acq.setdefault("items", [])
+            self._acq.setdefault("trip_t0", 0)
+            self._acq.setdefault("credits", {})
+        return self._acq
+
+    def acq_save(self):
+        try:
+            json.dump(self.acq_state(), open(os.path.join(self.rundir, "acquired.json"), "w"), indent=1)
+        except (OSError, AttributeError):
+            pass
+
+    ACQ_KEEP = 400
+
+    def acq_kind(self, name):
+        """The base kind a name keeps when identified ('a Scimitar (2d5) {excellent}' and 'a Scimitar of Westernesse
+        (2d5) (+9,+8) (+1)': 'scimitar'): the gear kind, else the flavour/kind key."""
+        gi = geareval.Item(name)
+        if gi.kind:
+            return geareval._norm(gi.kind.get("name", ""))
+        return singular(self.kind_key_of(name))
+
+    def note_acquired(self, name):
+        """A pickup in the dungeon ("You have X (c)."; not in town, so never a purchase, nor a stash item being
+        fetched): recorded with the mission running, if any (acquired.json)."""
+        st = self.acq_state()
+        iv = self.iv(name)
+        st["items"] = (st["items"] + [{"name": name, "kind": self.acq_kind(name), "known": bool(iv.known is True
+                                                                                               and not iv.estimate),
+                                       "t": round(time.time(), 1), "mission": self.mission_label}])[-self.ACQ_KEEP:]
+        self.acq_save()
+        if self.mission_label:
+            self.to_inscribe = (self.to_inscribe + [name])[-20:]     # (inscribed at a safe moment: inscribe_finds)
+
+    # (the user, 11-04: mark a fresh find by inscribing it with the mission's label; `{` costs no game time --
+    # tables.c: energy_cost 0 -- and is sent from policy_tick's safe moments and the town visit's start)
+    INSCRIBE_SKIP_LIGHTS = ("Torch", "Lantern")          # (they stack: two missions' labels would take two slots)
+
+    def inscribe_label(self, it):
+        """The inscription that marks this pack item as found in the running mission, or None: a single wearable
+        (weapon, armour, ring, amulet; a light other than a torch or lantern -- not a bow, nothing that stacks) whose
+        inscription is empty or only a feeling ('excellent' -> 'excellent - m62', the server's own format) or the
+        server's tried/empty marks. Never over anything else (the Navigator's @/! tags, @R750, a unique's name)."""
+        label = self.mission_label
+        if not label or it.get("equip") or it.get("number", 1) != 1 or mission_tag(it["name"]):
+            return None
+        tv = it["tval"]
+        if tv not in geareval.SLOT_OF_TVAL or tv == 19 or \
+                (tv == TV_LITE and any(k in it["name"] for k in self.INSCRIBE_SKIP_LIGHTS)):
+            return None
+        tag = inscription(it["name"])
+        if not tag or tag in ("tried", "empty") or tag.endswith("% off"):
+            return label
+        if tag in FEELING_TAGS:
+            return f"{tag} - {label}"
+        return None
+
+    def inscribe_finds(self):
+        """Inscribe one find picked up in this mission (note_acquired's queue, `to_inscribe`) with the mission's
+        label (inscribe_label). True if it sent one. The acquired.json match stays the fallback."""
+        q = self.to_inscribe
+        if not q or not self.mission_label or self.w.inven_dirty or gnow() - self.inscribe_t < 2:
+            return False
+        name = q.pop(0)
+        it = next((i for i in self.w.items() if self.same_item(i["name"], name)
+                   and not mission_tag(i["name"])), None)
+        text = self.inscribe_label(it) if it else None
+        if not text:
+            return False
+        self.inscribe_t = gnow()
+        self.cmd(f"custom {{ item={it['item']} entry={text}", f"mark a find of {self.mission_label}: {it['name']}",
+                 hold=0.4)
+        self.w.inven_dirty = True
+        return True
+
+    def note_trip_start(self):
+        """Left town for the dungeon: the start of the trip a find is fresh in when no mission runs."""
+        self.acq_state()["trip_t0"] = round(time.time(), 1)
+        self.acq_save()
+
+    def acquired_fresh(self, name):
+        """(fresh, mission) for an item being stored. First its inscription (2.50.0, the user): inscribed with the
+        running mission's label (`{m62}`, `{excellent - m62}`) -- fresh; with another mission's -- not. Else (no label:
+        a stackable, a Navigator's inscription, no mission running) its pickup record -- the latest of the same name,
+        else (an item identified since: its name changed) the latest of the same base kind picked up unidentified --
+        made in the mission running now (with none: since we last left town). No record (owned before 2.50.0, bought):
+        not fresh."""
+        tag = mission_tag(name)
+        if tag:
+            return (bool(self.mission_label) and tag == self.mission_label), self.mission_label
+        st = self.acq_state()
+        b = singular(bare_name(name).lower())
+        recs = st["items"]
+        rec = next((r for r in reversed(recs) if singular(bare_name(r["name"]).lower()) == b), None) or \
+            next((r for r in reversed(recs) if not r.get("known") and r.get("kind") == self.acq_kind(name)), None)
+        if not rec:
+            return False, self.mission_label
+        if self.mission_label:
+            return rec.get("mission") == self.mission_label, self.mission_label
+        return rec.get("t", 0) >= st.get("trip_t0", 0), None
+
+    def stash_credit_sold(self, name, received):
+        """A sale ("You sold X for N gold."): if X was stored fresh, credited, and withdrawn, its credit is debited
+        (`stash_credit_sold`) -- the find counted once."""
+        cr = self.acq_state()["credits"].pop(bare_name(name).lower(), None)
+        if cr:
+            self.gold_debited += cr.get("value", 0)
+            self.log("stash_credit_sold", item=name, credited_value=cr.get("value", 0), received=received,
+                     credited_mission=cr.get("mission"))
+            self.acq_save()
+
+    def stash_credit_worn(self, name):
+        """A withdrawn credited item worn (a backup replacing a lost piece): no debit, the credit is settled."""
+        if self.acq_state()["credits"].pop(bare_name(name).lower(), None):
+            self.acq_save()
 
     def stash_where(self, kind):
         """'house' or 'tavern' where a stash item of this kind waits (the house first), else None."""
@@ -831,17 +1283,27 @@ class TownMixin:
         for slots in (self.house_state().get("items", {}), self.tavern_state().get("items", {})):
             for names in slots.values():
                 for nm in (names if isinstance(names, list) else [names]):
-                    if key in singular(str(nm)):
+                    if key in singular(rec_name(nm)):
                         n += 1
         return n
 
-    def stash_take(self, at, kind, square=None):
-        """Strike one item of this kind off the record of `at` (house|tavern): the one on `square` if it's there."""
+    def stash_take(self, at, kind, square=None, lost=False):
+        """Strike one item of this kind off the record of `at` (house|tavern): the one on `square` if it's there.
+        Logged `stash_take` (2.50.0) with the value it was credited with (fresh) -- kept in acquired.json `credits`
+        until it is sold (debited) or worn; `lost`: not found there (no credit kept)."""
         slots = self.house_state().get("items", {}) if at == "house" else self.tavern_state().get("items", {})
         key = f"{square[0]},{square[1]}" if square else None
-        key = key if key in slots and kind in slots[key] else next((k for k, n in slots.items() if kind in n), None)
+        key = key if key in slots and kind in rec_name(slots[key]) else \
+            next((k for k, n in slots.items() if kind in rec_name(n)), None)
         if key:
-            del slots[key]
+            rec = slots.pop(key)
+            name = rec_name(rec)
+            val = rec.get("value", 0) if isinstance(rec, dict) and rec.get("fresh") else 0
+            mission = rec.get("mission") if isinstance(rec, dict) else None
+            self.log("stash_take", item=name, where=at, credited_value=val, credited_mission=mission, lost=lost)
+            if val and not lost:
+                self.acq_state()["credits"][bare_name(name).lower()] = {"value": val, "mission": mission}
+                self.acq_save()
             self.house_save()
 
     BANK_FLOAT = 300           # gold carried out of town when a house holds the rest (no use for it in the dungeon)

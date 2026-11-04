@@ -68,6 +68,10 @@ ORDER = """
     mushrooms_sold_in_town_but_restores torches_the_lanterns_fallback mapping_scrolls_a_crutch_on_test
     enchant_and_recharge_scrolls_kept_to_read lantern_filled_in_town stomach_pinned_by_hunger_crossings
     stomach_through_the_pilot rations_kept_by_a_pinned_stomach
+    stash_backups_for_worn_slots store_list_matches_and_command house_full_overflows_to_the_tavern_then_asks
+    stash_records_fresh_and_credited restore_mushrooms_for_drains
+    house_reconcile_rebuilds_the_record house_deposit_only_on_a_bare_square house_never_picks_up_the_wrong_item
+    finds_marked_with_the_mission_label
 """.split()
 
 

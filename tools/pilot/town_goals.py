@@ -8,7 +8,7 @@ import sys
 import time
 import types
 
-from common import HERE, TV_SCROLL, TV_LITE, flavour_key, kind_key, bare_name, singular
+from common import HERE, TV_SCROLL, TV_LITE, TV_FOOD, flavour_key, kind_key, bare_name, singular, rec_name
 from world import gnow, waited, light_turns
 from mover import direction, MAX_HGT, MAX_WID
 from goals import Goal, Wait
@@ -497,19 +497,42 @@ class StashDeposit(Goal):
     Town objects aren't wiped (depth 0 is skipped), but on a live server another player could take them, and a full
     object list compacts objects anywhere. **Dropped from the entrance, a drop can land on the street outside**
     (10-27: the wands went to 27,88 and 28,88 and townsfolk with TAKE_ITEM took them): with a house, HouseBank keeps
-    the stash instead (TownKit skips this goal)."""
+    the stash instead, and this goal takes only what the full house leaves (2.50.0: TownKit's overflow step)."""
     name = "stash in the tavern"
 
     def __init__(self):
         self.t = 0.0
         self.tries = 0
         self.dropped = []
+        self.arrive = None           # (square, game time) we reached the target: a floor reading after it counts
+        self.pending = None          # (square, record, game time) of a drop not yet seen underfoot (2.50.0)
 
     def tick(self, p):
         w, now = p.w, gnow()
         ent = p.tavern_entrance()
         if not ent:
             return ("done", "no tavern seen on the town map: nothing stashed")
+        tav = p.tavern_state().setdefault("items", {})
+        if self.pending:
+            # (2.50.0: recorded once the floor underfoot shows it; scattered elsewhere -- an occupied square, as in the
+            # house on 11-04 -- it is recorded as somewhere in the room, and StashFetch searches the room anyway)
+            q, rec, t0 = self.pending
+            ok, name = p.floor_here(t0 + 0.3) if w.pos == q else (True, None)
+            if not ok:
+                return None
+            self.pending = None
+            key = f"{q[0]},{q[1]}"
+            if not p.same_item(rec["name"], name):
+                if any(p.same_item(rec["name"], i["name"]) for i in w.items()):
+                    return None              # (the drop didn't happen: tried again below)
+                key = next(f"?{n}" for n in range(len(tav) + 1) if f"?{n}" not in tav)
+                p.notify("tactic", f"tavern: dropped {rec['name']} at {q[0]},{q[1]} but it isn't there (scattered): "
+                                   "recorded as somewhere in the room", news=True)
+            tav[key] = rec
+            p.stash_commit(rec, "tavern")
+            p.house_save()
+            self.dropped.append(rec["name"])
+            return None
         items = [i for i in w.items() if p.is_stash_item(i["name"])]
         if not items:
             return ("done", "stashed " + ", ".join(self.dropped) if self.dropped else "nothing to stash")
@@ -517,9 +540,11 @@ class StashDeposit(Goal):
         # which takes no object, the wands landed on the street and townsfolk with TAKE_ITEM took them
         room = next((h for h in town_houses(w.memory, door="8") if h["door"] == tuple(ent)), None)
         used = {tuple(int(v) for v in k.split(",")) for k in p.tavern_state().get("items", {}) if "," in k}
-        free = [q for q in (room["inside"] if room else []) if q not in used and w.memory.get(q) == "."]
+        free = [q for q in (room["inside"] if room else []) if q not in used and q != tuple(ent)
+                and w.memory.get(q) == "."]
         if not free:
-            return ("failed", "no empty square seen inside the tavern room: not dropping at the door")
+            return ("failed", "no empty square seen inside the tavern room: not dropping at the door"
+                    + (f" (stashed {', '.join(self.dropped)})" if self.dropped else ""))
         target = max(free, key=lambda q: (w.dist(q, tuple(ent)), q))
         if w.pos != target:
             if not p.mover.active:
@@ -530,12 +555,21 @@ class StashDeposit(Goal):
             return None
         if not waited(self.t, 1.0) or now < p.busy_until or w.inven_dirty:
             return None
-        it = items[0]
+        # (2.50.0: drop only on a square the floor reading shows bare; an item already there is adopted)
+        if self.arrive is None or self.arrive[0] != target:
+            self.arrive = (target, now)
+            return None
+        ok, name = p.floor_here(self.arrive[1] + 0.3)
+        if not ok:
+            return None
+        if name:
+            tav[f"{target[0]},{target[1]}"] = p.stash_found(name, "tavern")
+            p.house_save()
+            return None
+        it = max(items, key=lambda i: p.iv(i["name"]).value * i["number"])     # (the most valuable first)
         self.t = now
         p.cmd(f"custom d item={it['item']} value={it['number']}", f"stash in the tavern: {it['name']}", hold=0.8)
-        p.tavern_state().setdefault("items", {})[f"{target[0]},{target[1]}"] = it["name"]
-        p.house_save()
-        self.dropped.append(it["name"])
+        self.pending = (target, p.stash_rec(it, "tavern", commit=False), now)
         return None
 
 
@@ -548,6 +582,7 @@ class StashFetch(Goal):
         self.visited = set()
         self.target = None
         self.lit = False
+        self.arrive = None           # (square, game time) we reached the target: a floor reading after it counts
 
     def tick(self, p):
         w = p.w
@@ -565,7 +600,25 @@ class StashFetch(Goal):
             if p.wear_light("the tavern floor"):
                 return None
         if self.target and w.pos == self.target:
-            self.visited.add(self.target)
+            # (2.50.0: a square of the room walked is read, and its record set right -- a recorded item not there is
+            # struck, an item there the record lacks adopted; the pickup reflex takes only the one being fetched)
+            q = self.target
+            if self.arrive is None or self.arrive[0] != q:
+                self.arrive = (q, gnow())
+                return None
+            ok, name = p.floor_here(self.arrive[1] + 0.3)
+            if not ok and gnow() - self.arrive[1] < 3:
+                return None
+            room = next((h for h in town_houses(w.memory, door="8") if h["door"] == tuple(ent)), None)
+            if ok and room and q in room["inside"] and not (name and self.kind in name):
+                tav = p.tavern_state().setdefault("items", {})
+                key = f"{q[0]},{q[1]}"
+                if key in tav and not p.same_item(rec_name(tav[key]), name):
+                    p.stash_take("tavern", rec_name(tav[key]), q, lost=True)
+                if name and key not in tav:
+                    tav[key] = p.stash_found(name, "tavern")
+                    p.house_save()
+            self.visited.add(q)
             self.target = None
             return None                      # (a tick for the pickup reflex)
         if self.target is None or not p.mover.active:
@@ -573,10 +626,10 @@ class StashFetch(Goal):
                      and ch not in "#%8+'" and not ch.isdigit()]
             if not cands:
                 p.fetching = None
-                p.stash_take("tavern", self.kind)
+                p.stash_take("tavern", self.kind, lost=True)
                 return ("failed", f"no {self.kind} left in the tavern")
-            # (item glyphs first: '!' potions, '-' wands)
-            self.target = min(cands, key=lambda q: (w.memory.get(q) not in "!-?", w.dist(q)))
+            # (item glyphs first: '!' potions, '-' wands; 2.50.0: weapons, armour, jewellery, lights for a backup)
+            self.target = min(cands, key=lambda q: (w.memory.get(q) not in "!-?|\\/()[]=\"~_{}", w.dist(q)))
             if not p.mover.go([self.target]):
                 self.visited.add(self.target)
                 self.target = None
@@ -633,8 +686,10 @@ class HouseBank(Goal):
     (open the door: "This house costs N gold."; buy with 'h' if we can spare it, then deposit), 'deposit' or
     'withdraw'."""
 
-    def __init__(self, mode, keep=None, house=None):
+    def __init__(self, mode, keep=None, house=None, fetch=()):
         self.mode, self.keep, self.house = mode, keep, house
+        self.fetch = list(fetch)     # withdraw: stored items to bring out by name (2.50.0: stash_fetch_list, `house
+        #                              withdraw ITEM`), after the Restore a drained stat wants
         self.name = {"buy": "buy a house", "deposit": "bank gold in the house",
                      "withdraw": "take gold from the house"}[mode]
         self.step, self.t, self.tries, self.price = "go", 0.0, 0, None
@@ -642,67 +697,192 @@ class HouseBank(Goal):
         # (created on the way: refactor-candidates E5 declares them, with the values their reads assumed)
         self.full_told = False       # item_step: told once that the house had no free square
         self.picks = 0               # item_step: pick-ups tried on a stash square
-        self.fetch_at = None         # item_step: (kind, square) of the stash item being fetched, struck once picked up
+        self.fetch_at = None         # item_step: (kind, square, count carried before) of the stash item being fetched,
+        #                              struck once the pack holds one more
         self.last_step = None        # the step the tries count for
         self.seen_level = None       # the level last seen (a new one stops the walk: m56)
         self.items_done = False      # inside: the stash moved (item_step)
+        # (2.50.0, the live check of 11-04: the record and the floor disagreed -- a second Restore Charisma on a square
+        # the record called free; the Scimitar scattered from it, and `,` there took the potion. Reconcile first)
+        self.seen = {}               # item_step: interior square -> the item read there (None: bare floor)
+        self.reconciled = False      # item_step: every interior square but the gold's read and the record rebuilt
+        self.arrive = None           # item_step: (square, game time) we reached it (a floor reading after counts)
+        self.pending = {}            # item_step: square -> the record of an item dropped there, not yet seen on it
+        self.rechecks = 0            # item_step: re-reconciles after a floor that didn't match (2 at most)
+        self.pick_snap = None        # item_step: (square, kind, pack names) before a pick-up (a wrong pick goes back)
+
+    def read_square(self, p, q):
+        """At q: (True, the item there or None) once a floor reading taken after we arrived; (False, None) before."""
+        if self.arrive is None or self.arrive[0] != q:
+            self.arrive = (q, gnow())
+            return False, None
+        return p.floor_here(self.arrive[1] + 0.3)
+
+    def rebuild(self, p, slots):
+        """The house's `items` from what the reconcile saw: a recorded item not on its square is struck (stash_take,
+        lost); an item there that the record lacks is adopted (stash_found) -- or, dropped by us and scattered, its
+        pending record moves there (committed)."""
+        for q, name in sorted(self.seen.items()):
+            key = f"{q[0]},{q[1]}"
+            rec = slots.get(key)
+            if rec is not None and p.same_item(rec_name(rec), name):
+                continue
+            if rec is not None:
+                p.stash_take("house", rec_name(rec), q, lost=True)
+            if name:
+                pend = next((k for k, r in self.pending.items() if p.same_item(rec_name(r), name)), None)
+                if pend is not None:
+                    slots[key] = self.pending.pop(pend)
+                    p.stash_commit(slots[key], "house")
+                else:
+                    slots[key] = p.stash_found(name, "house")
+        for q, rec in self.pending.items():          # (dropped, not seen in the house: said, not recorded)
+            if not any(p.same_item(rec_name(rec), i["name"]) for i in p.w.items()):
+                p.notify("tactic", f"house: dropped {rec_name(rec)} at {q[0]},{q[1]} but it wasn't seen on any "
+                                   "square inside -- check the house", news=True)
+        self.pending = {}
+        p.house_save()
 
     def item_step(self, p, h, inside):
         """Inside, door closed: the stash (the user, 10-27: "move the stash into the wilderness house" -- at 18:10 a
         town monster took a Wand of Stone to Mud off the tavern floor). One stack a square on the interior squares
-        other than the gold's; house.json `items` maps square -> name. A deposit drops the stash kinds carried; a
-        withdraw fetches the kind a drained stat wants (stash_wanted), struck off the record once the pack shows it.
-        Then back to the gold's square. True while acting."""
+        other than the gold's; house.json `items` maps square -> record. 2.50.0: first the **reconcile** -- each of
+        those squares is walked and its floor read, and the record rebuilt from what lies there (rebuild). A deposit
+        drops the stash items carried, the most valuable first, only on a square read empty, and records it once the
+        floor shows it there (else re-reconciles to find where it went; what doesn't fit goes to the tavern room,
+        TownKit's overflow); a withdraw fetches the kind a drained stat wants (stash_wanted), then the items named
+        in `fetch`, pressing `,` only when the floor underfoot names the item (else re-reconciles), each struck off
+        the record once the pack holds one more; a wrong item picked up is dropped back. Then back to the gold's
+        square. True while acting."""
         w = p.w
         st = p.house_state()
         slots = st.setdefault("items", {})
         y1, x1, y2, x2 = h["box"]
         interior = [(y, x) for y in range(y1 + 1, y2) for x in range(x1 + 1, x2)]
-        free = [q for q in interior if q != inside and f"{q[0]},{q[1]}" not in slots]
+        others = [q for q in interior if q != inside]
 
         def walk_to(q):
             dy, dx = (q[0] > w.pos[0]) - (q[0] < w.pos[0]), (q[1] > w.pos[1]) - (q[1] < w.pos[1])
             p.cmd(f"walk {direction(w.pos, (w.pos[0] + dy, w.pos[1] + dx))}", f"house: to {q[0]},{q[1]}", hold=0.6)
             return True
+
+        def carried(kind):
+            return sum(i["number"] for i in w.items() if kind in i["name"])
+
+        def recheck():
+            self.reconciled, self.seen, self.arrive = False, {}, None
+            self.rechecks += 1
+            return True
+        # the reconcile: read every square, then rebuild the record from the floor
+        if not self.reconciled:
+            todo = [q for q in others if q not in self.seen]
+            if todo:
+                q = min(todo, key=lambda q: (w.dist(q), q))
+                if w.pos != q:
+                    return walk_to(q)
+                ok, name = self.read_square(p, q)
+                if ok:
+                    self.seen[q] = name
+                return True
+            self.reconciled = True
+            self.rebuild(p, slots)
         if self.mode == "deposit":
-            it = next((i for i in w.items() if p.is_stash_item(i["name"])), None)
-            if it and free:
-                q = max(free, key=lambda q: w.dist(q, inside))      # (the far squares first)
+            # a drop waiting to be seen underfoot
+            for q, rec in list(self.pending.items()):
+                if w.pos != q:
+                    return walk_to(q)
+                ok, name = self.read_square(p, q)
+                if not ok:
+                    return True
+                if p.same_item(rec_name(rec), name):
+                    slots[f"{q[0]},{q[1]}"] = self.pending.pop(q)
+                    p.stash_commit(slots[f"{q[0]},{q[1]}"], "house")
+                    self.seen[q] = name
+                    p.house_save()
+                elif self.rechecks < 2:
+                    return recheck()             # (it went elsewhere: the next reconcile finds it)
+                else:
+                    self.pending.pop(q)
+            items = [i for i in w.items() if p.is_stash_item(i["name"])]
+            it = max(items, key=lambda i: p.iv(i["name"]).value * i["number"]) if items else None
+            free = [q for q in others if self.seen.get(q) is None and f"{q[0]},{q[1]}" not in slots
+                    and q not in self.pending]
+            if it and free and not self.pending:
+                q = max(free, key=lambda q: (w.dist(q, inside), q))     # (the far squares first)
                 if w.pos != q:
                     return walk_to(q)
                 p.cmd(f"custom d item={it['item']} value={it['number']}", f"house: stash {it['name']}", hold=0.8)
-                slots[f"{q[0]},{q[1]}"] = it["name"]
-                p.house_save()
+                self.pending[q] = p.stash_rec(it, "house", commit=False)   # (recorded once seen underfoot)
+                self.arrive = (q, gnow())
+                p.review_state()["items"].pop(it["name"], None)    # (stored: not waiting for a review any more)
                 return True
-            if it and not getattr(self, "full_told", False):
+            if it and not self.pending and not getattr(self, "full_told", False):
                 self.full_told = True
-                p.notify("tactic", f"house: no free square for {it['name']} (one stack a square): kept in the pack",
-                         news=True)
+                p.notify("tactic", f"house: no free square for {it['name']} (one stack a square): the tavern room "
+                                   "takes it (plan town), else it stays in the pack", news=True)
         if self.mode == "withdraw":
             got = self.fetch_at
-            if got and any(got[0] in i["name"] for i in w.items()):
+            if got and carried(got[0]) > got[2]:
                 # picked up: off the house's record at once (stash_wanted names only a kind the pack lacks, so the
                 # strike that waited for "already in the pack" never ran, and the record kept it until a later
                 # withdraw spent 4 pick-ups on the empty square -- refactor-candidates E5)
                 self.fetch_at = None
                 p.fetching = None
+                self.pick_snap = None
                 p.stash_take("house", got[0], got[1])
+                self.seen[got[1]] = None
+                if got[0] in self.fetch:
+                    self.fetch.remove(got[0])
+            snap = self.pick_snap
+            if snap and w.pos == snap[0]:
+                # a pick-up that took something else: drop it back where it lay
+                new = [i for i in w.items() if i["name"] not in snap[2] and snap[1] not in i["name"]]
+                if new:
+                    self.pick_snap = None
+                    p.cmd(f"custom d item={new[0]['item']} value={new[0]['number']}",
+                          f"house: put back {new[0]['name']} (not the {snap[1]})", hold=0.8)
+                    return recheck()
             kind = p.stash_wanted("house")
-            key = next((k for k, n in slots.items() if kind and kind in n), None)
+            key = next((k for k, n in slots.items() if kind and kind in rec_name(n)), None)
+            if not key:
+                # (2.50.0: the named items -- a backup to wear or to sell, `house withdraw ITEM`)
+                for name in list(self.fetch):
+                    key = next((k for k, n in slots.items() if rec_name(n) == name), None) or \
+                        next((k for k, n in slots.items() if name in rec_name(n)), None)
+                    if key:
+                        kind = name
+                        break
+                    self.fetch.remove(name)          # (not in the house: nothing to fetch)
             if key:
                 q = tuple(int(v) for v in key.split(","))
-                self.fetch_at = (kind, q)
+                if not self.fetch_at or self.fetch_at[:2] != (kind, q):
+                    self.fetch_at = (kind, q, carried(kind))
+                    self.picks = 0
                 if w.pos != q:
                     return walk_to(q)
+                ok, name = self.read_square(p, q)
+                if not ok:
+                    return True
+                if not name or kind not in name:
+                    # (the floor holds something else, or nothing: never press `,` -- read the house again)
+                    if self.rechecks < 2:
+                        return recheck()
+                    p.stash_take("house", rec_name(slots[key]), q, lost=True)
+                    self.fetch_at = None
+                    if kind in self.fetch:
+                        self.fetch.remove(kind)
+                    return True
                 self.picks = getattr(self, "picks", 0) + 1
                 if self.picks > 4:
-                    del slots[key]                 # (not there after all)
+                    p.stash_take("house", rec_name(slots[key]), q, lost=True)     # (not there after all)
                     self.fetch_at = None
-                    p.house_save()
-                    p.notify("tactic", f"house: no {kind} on {key} after all", news=True)
+                    if kind in self.fetch:
+                        self.fetch.remove(kind)
                     return True
                 p.fetching = kind
+                self.pick_snap = (q, kind, [i["name"] for i in w.items()])
                 p.cmd("custom ,", f"house: pick up the {kind}", hold=0.8)
+                self.arrive = (q, gnow())
                 return True
         if w.pos != inside:
             return walk_to(inside)
@@ -1038,6 +1218,9 @@ class TownKit(Goal):
         self.enchant_bought = False  # buying: Scrolls of Enchant Armor / Weapon bought (one visit)
         self.stashed = False         # buying: the stash taken to the tavern (no house)
         self.deposited = False       # buying: the gold (and the stash) into the house
+        self.overflowed = False      # buying: what the full house left taken to the tavern room (2.50.0)
+        self.fetch_tried = set()     # upgrade: stored items fetched from the tavern (2.50.0: backups to wear or sell)
+        self.full_told = set()       # buying: the stash items told "no room" (stash_full) this visit (2.50.0)
 
     # One method per step (refactor-candidates E5), in this order: the visit's stages run in sequence -- a stage that
     # finishes sets the next and the next step runs in the same tick. Each takes the per-call ctx (w, now) and returns
@@ -1047,8 +1230,8 @@ class TownKit(Goal):
         "_kit_count",            # the first tick: the visit counted, the supplies told
         "_kit_sub",              # a sub-goal running (a Shop, HouseBank, StashFetch, TownFarm or Wait): its result
         "_kit_settle",           # 1 s a step, nothing busy, the pack read
-        "_kit_withdraw",         # upgrade: the bank's gold (and a stash Restore) out of the house
-        "_kit_fetch",            # upgrade: a Restore waiting in the tavern
+        "_kit_withdraw",         # upgrade: the bank's gold (a stash Restore, backups to wear or sell) out of the house
+        "_kit_fetch",            # upgrade: a Restore (a backup to wear or sell) waiting in the tavern
         "_kit_upgrade",          # upgrade: wear/wield what the policy prefers; then sell
         "_kit_upgrade_again",    # upgrade again (after Identify); then sell again
         "_kit_sell",             # sell / sell again: one shop a tick; then identify / buy
@@ -1068,6 +1251,8 @@ class TownKit(Goal):
         "_buying_enchant",       # enchant worn armour and the wielded weapon back up (or buy the scrolls)
         "_buying_stash",         # no house: the stash kinds to the tavern
         "_buying_deposit",       # a house: the gold (and the stash) into it
+        "_buying_overflow",      # the house full: the stash it left to the tavern room (2.50.0)
+        "_buying_stash_full",    # no room anywhere: kept in the pack, the Navigator told to `ask` (2.50.0)
     )
 
     def tick(self, p):
@@ -1120,13 +1305,17 @@ class TownKit(Goal):
         return NEXT
 
     def _kit_withdraw(self, p, ctx):
-        """upgrade: the bank first (HouseBank withdraw, and the stash kind a drained stat wants)."""
+        """upgrade: the bank first (HouseBank withdraw, and the stash kind a drained stat wants; 2.50.0: a stored
+        backup the gear policy would wear, and one a carried backup outclasses -- stash_fetch_list)."""
         # the bank first: the shopping needs the gold (HouseBank)
         if self.stage == "upgrade" and not self.withdrawn:
             self.withdrawn = True
-            if p.house_state().get("house") and (p.banked() or p.stash_wanted("house")):
-                self.sub = HouseBank("withdraw")   # (and the stash kind a drained stat wants)
-                return None
+            if p.house_state().get("house"):
+                fetch = p.stash_fetch_list("house")
+                if p.banked() or p.stash_wanted("house") or fetch:
+                    self.sub = HouseBank("withdraw", fetch=[n for n, _ in fetch])
+                    self.done_log += [f"from the house: {n} ({why})" for n, why in fetch]
+                    return None
         return NEXT
 
     def _kit_fetch(self, p, ctx):
@@ -1137,6 +1326,13 @@ class TownKit(Goal):
             if kind:
                 self.sub = StashFetch(kind)
                 return None
+            # (2.50.0: a backup in the tavern room to wear or to sell -- stash_fetch_list; each tried once)
+            for name, why in p.stash_fetch_list("tavern"):
+                if name not in self.fetch_tried:
+                    self.fetch_tried.add(name)
+                    self.sub = StashFetch(name)
+                    self.done_log.append(f"from the tavern: {name} ({why})")
+                    return None
             self.fetched = True
         return NEXT
 
@@ -1144,6 +1340,10 @@ class TownKit(Goal):
         """upgrade: wear/wield what the policy prefers before anything is sold; then sell."""
         now = ctx.now
         if self.stage == "upgrade":
+            # (2.50.0: the last finds of the mission marked with its label before anything is stored)
+            if p.inscribe_finds():
+                self.t = now
+                return None
             # wear/wield what the policy prefers before anything is sold
             if p.upgrade_step():
                 self.t = now
@@ -1278,14 +1478,17 @@ class TownKit(Goal):
         return NEXT
 
     def _buying_quaff(self, p, ctx):
-        """Drink the Restore bought for a drained stat (once each)."""
+        """Drink the Restore bought for a drained stat (once each); 2.50.0: or eat the restore mushroom carried that
+        covers it (restore_item: the cheapest; town_needs bought no potion for it)."""
         now = ctx.now
         # drink the Restore bought for a drained stat (once each)
-        pot = p.restore_potion(self.quaffed)
-        if pot:
-            self.quaffed.add(pot["name"])
-            p.cmd(f"custom q item={pot['item']}", f"town kit: quaff {pot['name']}", hold=0.8)
-            self.done_log.append(f"quaffed {pot['name']}")
+        it = p.restore_item(self.quaffed)
+        if it:
+            food = it["tval"] == TV_FOOD
+            self.quaffed.add(it["name"])
+            p.cmd(f"custom {'E' if food else 'q'} item={it['item']}",
+                  f"town kit: {'eat' if food else 'quaff'} {it['name']}", hold=0.8)
+            self.done_log.append(f"{'ate' if food else 'quaffed'} {it['name']}")
             self.t = now + 1.0
             return None
         return NEXT
@@ -1311,7 +1514,7 @@ class TownKit(Goal):
         gap += [f"Restore {p.STAT_FULL[st]}" for st, (cur, top) in (p.seen_drained or {}).items()
                 if st in p.STAT_FULL and cur < top
                 and not any(f"Restore {p.STAT_FULL[st]}" in i["name"] for i in w.items())
-                and not p.stash_has(f"Restore {p.STAT_FULL[st]}")]
+                and not p.stash_has(f"Restore {p.STAT_FULL[st]}") and not p.restore_for(st)]
         waits = self.restock_waits
         # (an essential the shops were out of: not a fallback the Temple was out of, 2.48.0)
         out = [re.sub("|".join(f"no {fb} in stock" for fb in p.FALLBACKS), "", ln) for ln in self.done_log]
@@ -1420,12 +1623,46 @@ class TownKit(Goal):
         """A house: the gold (and the stash) into it, last of all (HouseBank deposit)."""
         w = ctx.w
         # and last of all, the gold into the house: the dungeon has no use for it, its thieves do
+        # (2.50.0: for the stash only while the house has a free square -- else the tavern room takes it, below)
         if not self.deposited and p.house_state().get("house") and \
-                (w.ind.get("gold", [0])[0] > p.BANK_FLOAT + 500 or any(p.is_stash_item(i["name"])
-                                                                     for i in w.items())):
+                (w.ind.get("gold", [0])[0] > p.BANK_FLOAT + 500 or
+                 (any(p.is_stash_item(i["name"]) for i in w.items()) and p.stash_room()["house"])):
             self.deposited = True
             self.sub = HouseBank("deposit")
             return None
+        return NEXT
+
+    def _buying_overflow(self, p, ctx):
+        """2.50.0 (the user): the house full, the stash it left goes inside the tavern room (StashDeposit: farthest
+        from the door first, never from the entrance), recorded in house.json `tavern.items`."""
+        w = ctx.w
+        if not self.overflowed and p.house_state().get("house") and p.stash_room()["house"] == 0 and \
+                any(p.is_stash_item(i["name"]) for i in w.items()):
+            self.overflowed = True
+            if p.stash_room()["tavern"]:
+                self.sub = StashDeposit()
+                self.done_log.append("the house is full: the stash's overflow to the tavern room")
+                return None
+        return NEXT
+
+    def _buying_stash_full(self, p, ctx):
+        """2.50.0 (the user): a stash item still carried with no free square in the house (or no house) nor in the
+        tavern room: it stays in the pack (never sold) and the Navigator is told, once a visit per item, to `ask` the
+        Architect about storage (another house: their decision, never bought by the policy). A `stash_full` notice."""
+        w = ctx.w
+        room = p.stash_room()
+        if room["house"] or room["tavern"] is None or room["tavern"]:
+            return NEXT
+        left = [i["name"] for i in w.items() if p.is_stash_item(i["name"]) and i["name"] not in self.full_told]
+        if left:
+            self.full_told.update(left)
+            whys = [f"{n} ({p.stash_reason(i) or 'stash'})" for n in left
+                    for i in [next(x for x in w.items() if x["name"] == n)]]
+            where = ("the house's squares are all used and " if p.house_state().get("house") else "no house, and ")
+            p.notify("stash_full", f"no room to store {'; '.join(whys)}: {where}no free square is seen in the tavern "
+                                   "room -- kept in the pack (never sold). `ask` the Architect about storage (another "
+                                   "house?)", fields={"items": left})
+            self.done_log.append(f"no room to store {', '.join(left)}: the Navigator told")
         return NEXT
 
     def finish(self, p):

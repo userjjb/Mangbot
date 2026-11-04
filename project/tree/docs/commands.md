@@ -89,7 +89,7 @@ The checks `Pilot.do_request` runs from the command table before any command run
 | "`raw`/`stairs`/`goal goto` is the Pilot's now", "mission markers are the Architect's", "answers come from the Architect", "`park`/`quit`/`option`/`dump` is the Architect's: it stops, logs out or reconfigures the Pilot" | the table's Architect-only entries: `raw`, `stairs`, `goal goto`, `mission`, `answer`, and since 2.45.0 `park`, `quit`, `option`, `dump` | movement is the Pilot's (step 2.6): use `goal leave`, `goal fetch Y,X`, `plan trip`, `goal dive`; mission markers (F4) and answers to `ask` are the Architect's; so are stopping, parking and reconfiguring the Pilot (2.45.0) |
 | "in the dungeon the Pilot handles items itself" | in the dungeon: `wear takeoff pickup fuel eat inscribe wearall` (`where` town), and `read`/`use` with a target item (`where` town_target: an Identify-type read; `read X force` is not a target) | the item policy is the Pilot's in the dungeon (restructure step 2). `destroy`/`drop` are allowed there (pack control), as are `quaff`, plain `read`, `use`, `aim`, `zap` |
 | "order held: ..." (stale order) | positional orders (`stale_order` picks them by their arguments): `goal goto/fetch/searchroom/hunt`, `avoid Y,X` | the report the order answers is from a level since left; or (`hunt`, report >5 s old) the monster is no longer in view; or (`goto`/`fetch`, >5 s old) HP fell by over 25 points (percent) since. Logged `order_held`. Look again and re-issue |
-| dead character | everything except `goal resurrect` and the entries with `dead`: the queries and notes (`status mission keep standing react review debt pack equip orders map view navview avoid viewmap note journal gate complain say ask answer price monster drainers gear gearcmp house loadout why prep`) and `attention`, `quit`, and since 2.45.0 `park`, `stop`, `order`, `plan stop` (restart.sh/charsave.sh could not park a ghost) | a ghost can only resurrect |
+| dead character | everything except `goal resurrect` and the entries with `dead`: the queries and notes (`status mission keep store standing react review debt pack equip orders map view navview avoid viewmap note journal gate complain say ask answer price monster drainers gear gearcmp house loadout why prep`) and `attention`, `quit`, and since 2.45.0 `park`, `stop`, `order`, `plan stop` (restart.sh/charsave.sh could not park a ghost) | a ghost can only resurrect |
 
 Further role rules inside commands (they depend on the arguments, the item or the game state, so they stay in the
 command's code, not the table):
@@ -219,11 +219,14 @@ for an escape "its landing can take ~2 s". An Identify-type read also tells the 
 
 | command | does | who | refuses |
 |---|---|---|---|
-| `house` | the house: door, when bought and price, gold banked, gold carried (or the smallest house on the map) | all | -- |
+| `house` | the house: door, when bought and price, gold banked, gold carried (or the smallest house on the map); (2.50.0) what is stored and where -- `stash:` (the house, with its free squares) and `tavern stash:` (the tavern room), each item tagged with what it is (`backup: weapon slot (Free Action, See Invisible)`, `outclassed weapon backup: plan town fetches it to sell`, `store list`, `a stat Restore`, `Stone to Mud`), its value when stored and, for a fresh find, the mission credited | all | -- |
 | `house buy [Y,X]` | buy the smallest house (or the one with that door) -- a `HouseBank` goal | **Architect only** | Navigator; in the dungeon; a house that still holds gold; no such house; on a wilderness tile not walked to from town |
-| `house deposit [KEEP]`, `house withdraw` | bank gold (keeping KEEP) / take it out -- a `HouseBank` goal | all | no house; in the dungeon |
+| `house deposit [KEEP]`, `house withdraw` | bank gold (keeping KEEP) / take it out -- a `HouseBank` goal (a withdraw also brings out the Restore a drained stat wants and, 2.50.0, `stash_fetch_list`'s backups to wear or sell) | all | no house; in the dungeon |
+| `house withdraw ITEM` | (2.50.0) fetch a named stored item (a name fragment, `_` for spaces) from the house (`HouseBank` with `fetch`, gold too) or the tavern room (`StashFetch`) | all | nothing stored matches (the reply lists what is); in the dungeon |
+| `store` / `store add NAME` / `store del NAME` | (2.50.0) the user's **store list** (`store.json`): lower-case name parts, matched as `keep`; `plan town` stores such items in the house (else the tavern room), never sells them | list: all; add/del: **Architect only** (cmdtable `subs`) | add/del by the Navigator; usage; del of a name not on it |
 
-`plan town` handles the house, the tavern stash and shopping by itself; `goal shop` and `goal townfarm` are under
+`plan town` handles the house, the tavern stash (2.50.0: the gear backups and the store list too; the overflow to the
+tavern room; `stash_full` when nothing has room) and shopping by itself; `goal shop` and `goal townfarm` are under
 Goals.
 
 ## Notes, journal, user and Architect

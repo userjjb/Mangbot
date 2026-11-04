@@ -715,9 +715,12 @@ class CombatMixin:
                 self.skipped_items.add((w.level_t, w.pos))
             if seen and (w.level_t, w.pos) in self.skipped_items:
                 seen = []         # junk we left, or what the Navigator dropped here
-            if seen and not w.in_dungeon and self.is_stash_item(seen[-1][1]) and \
+            # (2.50.0, the live check of 11-04: inside the house every item is the stash's -- only the fetch target is
+            # taken; the reflex took a Scimitar the record had on another square)
+            if seen and not w.in_dungeon and (self.is_stash_item(seen[-1][1]) or self.stash_stored(seen[-1][1])
+                                              or self.in_house()) and \
                     not (self.fetching and self.fetching in seen[-1][1]):
-                seen = []         # (the tavern stash stays there: the user, 10-26)
+                seen = []         # (the tavern stash stays there: the user, 10-26; 2.50.0: a stored backup too)
             # By value (restructure step 2.1; the Advisor's set-pieces C3, C4): a unique's
             # drop always; with the pack full, swap the cheapest non-kit item for a
             # better find; otherwise leave it and say so. (The bulky-gear rule this
@@ -2272,6 +2275,12 @@ class CombatMixin:
                 # Restore Dexterity waiting in the tavern)
                 def where(n):
                     k = f"Restore {full[n]}"
+                    # (2.50.0, the user: a restore mushroom or a Restore carried is used at the next safe moment)
+                    use = self.restore_for(n) if n in self.STAT_FULL else None
+                    if use:
+                        return f"{one_of(use['name'])} in the pack: the Pilot " \
+                               f"{'eats' if use['tval'] == TV_FOOD else 'quaffs'} it at the next safe moment (no " \
+                               "monster in view)"
                     at = self.stash_where(k)
                     if at:
                         return f"Potion of {k}: one is in the {'house' if at == 'house' else 'tavern stash'} -- " \

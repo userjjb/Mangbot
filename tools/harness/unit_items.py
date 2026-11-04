@@ -265,3 +265,60 @@ def override_debt_counts_the_stack():
     one, two, every = run(["!Cure_Critical_Wounds"]), run(["!Cure_Critical_Wounds", "2"]), \
         run(["!Cure_Critical_Wounds", "all"])
     return one > 0 and abs(two - 2 * one) <= 1 and abs(every - 3 * one) <= 1, f"1: {one}, 2: {two}, all: {every}"
+
+
+@case
+def restore_mushrooms_for_drains():
+    """2.50.0 (the user): a drained STR/DEX/CON is restored at a safe moment (no monster in view) by the cheapest
+    covering item -- a known restore mushroom (use-obj.c: Restore Strength -> STR, Restore Constitution -> CON,
+    Restoring -> all six) is eaten (`custom E`) before a ~480-gold potion; never one that could gorge us; never for
+    INT/WIS/CHR (town's). In town, tier 3 buys no Restore Strength a carried mushroom covers; with DEX drained and
+    only a Restore Strength mushroom, none is used and the potion is bought. The stat_drained text names the mushroom."""
+    def make(pack, drained, monsters=()):
+        p = pilot(hp=300, pack=pack, monsters=list(monsters))
+        w = p.w
+        w.monster_seen_t, w.last_hit_t = -99.0, -99.0
+        w.flag = lambda k: False
+        w.find = lambda g: []
+        w.adjacent_monsters = lambda: []
+        p.seen_drained = drained
+        p.goal, p.busy_until, p.eat_t, p.policy_t = None, 0.0, -99.0, -99.0
+        p.sent = []
+        p.cmd = lambda line, why, hold=0.4: p.sent.append(line)
+        p.flavour_of = lambda it: None
+        return p
+    STR = {"STR": (58, 68), "DEX": (28, 28), "CON": (18, 18)}
+    shroom = ("a Mushroom of Restore Strength", 80)
+    a = make([shroom], STR)
+    a.policy_tick(P.gnow())
+    both = make([("a Potion of Restore Strength", 75), shroom], STR)
+    pick = both.restore_item()["name"]
+    full = make([shroom], STR)
+    full.food_top = lambda: 14000
+    gorge = full.restore_item()
+    dex = make([shroom], {"DEX": (18, 28)})
+    dex_use = dex.restore_item()
+    town = make([shroom], STR)
+    town.w.depth, town.w.depth_ft, town.w.in_dungeon = 0, 0, False
+    needs = [k for t, k, *_ in town.town_needs(None, ()) if t == 3]
+    dex.w.depth, dex.w.depth_ft, dex.w.in_dungeon = 0, 0, False
+    dex_needs = [k for t, k, *_ in dex.town_needs(None, ()) if t == 3]
+    orc = make([shroom], STR, monsters=[(22, 26, BYNAME["cave orc"])])
+    orc.policy_tick(P.gnow())
+    chr_ = make([("a Mushroom of Restoring", 80)], {"CHR": (3, 5)})
+    chr_use = chr_.restore_item(stats=("STR", "DEX", "CON"))
+    w = make([shroom], {"STR": (68, 68)})
+    w.w.ind["stat0"] = [58, 68]
+    for i in range(1, 6):
+        w.w.ind[f"stat{i}"] = [18, 18]
+    w.seen_drained = {n: (68 if n == "STR" else 18, 68 if n == "STR" else 18) for n in w.STAT_NAMES}
+    w.w.ind["skills2"] = [3]
+    w.seen_blows = 3
+    w.watch_character()
+    text = next((d for k, d in w.notes if k == "stat_drained"), "")
+    ok = a.sent == ["custom E item=0"] and pick == "a Mushroom of Restore Strength" and gorge is None and \
+        dex_use is None and needs == [] and dex_needs == ["Restore Dexterity"] and orc.sent == [] and \
+        chr_use is None and "Mushroom of Restore Strength in the pack" in text and "eats" in text
+    return ok, (f"STR drained, mushroom: {a.sent}; potion + mushroom: {pick}; nearly gorged: {gorge}; DEX drained: "
+                f"{dex_use}; town tier 3 with the mushroom {needs}, DEX {dex_needs}; orc in view {orc.sent}; CHR "
+                f"{chr_use}; alert {text!r}")

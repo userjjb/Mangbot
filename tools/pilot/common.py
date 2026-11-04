@@ -125,6 +125,33 @@ def singular(t):
     return re.sub(r"\b(\w+?)(?:es|s)\b", r"\1", t.lower())
 
 
+# (2.50.0, the user: a find picked up during a mission is inscribed with the mission's label, `{m62}`; the server
+# prepends a later pseudo-ID feeling, `{excellent - m62}`, and Identify keeps it -- cmd3.c/dungeon.c sense_inventory,
+# spells2.c only clears a bare feeling)
+FEELING_TAGS = ("average", "good", "excellent", "special", "worthless", "cursed", "broken", "terrible", "magical",
+                "uncursed")
+MISSION_TAG_RE = re.compile(r"^(m\d+[a-z]?|sp-[\w.-]+)$")
+
+
+def inscription(name):
+    """The text between the braces of an item name ('{excellent - m62}' -> 'excellent - m62'), else ''."""
+    m = re.search(r"\{([^}]*)\}", name)
+    return m.group(1).strip() if m else ""
+
+
+def mission_tag(name):
+    """The mission label an item is inscribed with ('m62' for '{m62}' or '{excellent - m62}'), else None: the last
+    ' - ' part of the inscription when it looks like a mission label (m<N>, sp-...)."""
+    last = inscription(name).split(" - ")[-1].strip()
+    return last if MISSION_TAG_RE.match(last) else None
+
+
+def rec_name(rec):
+    """A stash record's item name (house.json `items`, `tavern.items`): a plain name (before 2.50.0) or the dict's
+    `name` (2.50.0: with value, t, fresh, mission)."""
+    return rec.get("name", "") if isinstance(rec, dict) else str(rec)
+
+
 def bad_inscription(name):
     """True if the name shows a curse or a bad feeling: {cursed}, {worthless}, {broken}, {terrible}."""
     return bool(re.search(r"\{(cursed|worthless|broken|terrible)", name))

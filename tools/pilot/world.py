@@ -253,6 +253,7 @@ class World:
         self.avoid_inside = False              # we stand inside one (its squares then only cost more)
         self.flags, self.flags_t = None, 0.0    # {flag: slots granting it} from the resist grid
         self.floor, self.floor_t = None, 0.0    # the item under us (tool query 'floor')
+        self.floor_pos = None                   # where we stood for that reading (2.50.0: the stash's floor checks)
         self.losses = []                       # (t, message): items/gold lost or destroyed
         self.unseen = (0.0, "")                # last message from an unseen monster acting on us
         self.heard = (0.0, "")                 # last "You hear a door burst open!"
@@ -490,8 +491,10 @@ class World:
         if now - self.floor_t > 1.0:
             self.floor_t = now
             try:
+                pos = self.pos
                 fl = self.c.query("floor", "floor")
                 self.floor = fl["name"] or None
+                self.floor_pos = pos if self.pos == pos else None
             except Exception:
                 pass
 

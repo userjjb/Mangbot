@@ -18,7 +18,7 @@ import time
 import geareval
 import itemvalue
 from common import (HERE, TV_SCROLL, TV_POTION, TV_FOOD, TV_FLASK, TV_LITE, weapon_brand, weapon_damage, flavour_key,
-                    kind_key, bare_name, one_of, singular, bad_inscription)
+                    kind_key, bare_name, one_of, singular, bad_inscription, mission_tag)
 import stomach
 from world import gnow, light_fuel, light_turns, waited
 from goals import Wait, Goto, Recover, Flee, Recall, RestGoal
@@ -152,6 +152,11 @@ class ItemsMixin:
         name = it["name"]
         if self.is_kept(name):
             return "you said keep it (`keep -NAME` releases it)"
+        # (2.50.0, the user: a backup for a worn slot and the store list are stored in the house, never sold)
+        why = (self.stash_backup(it) or ("on the store list" if self.on_store_list(name) else None)) \
+            if action in ("sell", "destroy", "drop") and not it.get("equip") and "tval" in it else None
+        if why:
+            return f"{why}: plan town stores it in the house (`house withdraw NAME` fetches it back)"
         if self.ability_sources and self.iv(name).known is False and \
                 any(s == bare_name(name).lower() for s in self.ability_sources):
             return (f"it may be what gives you {', '.join(sorted(self.inferred))} (seen in play, not identified): "
@@ -301,6 +306,10 @@ class ItemsMixin:
             sale = self.iv(n).value * self.pay_cut(it["tval"]) * it["number"]
             cover = self.stopgap_cover(n, it["number"])
             return max(sale, cover * self.gold_per_dmin()) if cover > 0 else sale
+        # (2.50.0, the user) in town a stash item -- a backup for a worn slot, the store list, a Restore -- is stored,
+        # never sold or destroyed for room (in the dungeon it is valued as any item: unchanged)
+        if not self.w.in_dungeon and not it.get("equip") and self.is_stash_item(n):
+            return float("inf")
         # (2.48.0, the user) a Scroll of Enchant or Recharging the town kit would read: priceless in town (kept, and
         # read before more are bought), in the dungeon worth what buying it again costs
         if self.scroll_use(it):
@@ -353,6 +362,11 @@ class ItemsMixin:
         return iv.value * self.pay_cut(iv.tval) * max(1, iv.count)
 
     UNIQUE_DROP_BUMP = 50
+
+    def eat_fits(self, name):
+        """Eating this food can't make us Gorged: the most the stomach can hold (food_top) plus its food stays a
+        potion margin (1000) under PY_FOOD_MAX -- the make-room rule (m49)."""
+        return self.food_top() + self.food_value(name) < PY_FOOD_MAX - 1000
 
     def destroy_count(self, it):
         """How many of this pack item a make-room may destroy: all, except food -- rations never (one slot, cheap; the
@@ -743,13 +757,19 @@ class ItemsMixin:
                 return True
         # 0. a drained STR/DEX/CON with its Restore in the pack: drink it now, the fight over (never mid-fight: m42's
         # Navigator quaffed one next to the Giant red ant and was drained again, ~480 gold lost) -- the reason a
-        # spare Restore is carried at all (the user, m43: "why bring the restore potions?")
+        # spare Restore is carried at all (the user, m43: "why bring the restore potions?"). 2.50.0 (the user): or eat
+        # a known restore mushroom that covers it, the cheapest first (restore_item; never one that could gorge us).
+        # Not INT/WIS/CHR: town does those
         if w.in_dungeon and self.quiet_moment(now):
-            pot = self.restore_potion()
-            if pot and any(f"Restore {v}" in pot["name"] for v in self.STAT_FULL.values()):   # (not CHR: town does it)
-                self.cmd(f"custom q item={pot['item']}", f"restore a drained stat now the fight is over: quaff "
-                                                         f"{pot['name']}", hold=0.8)
-                self.notify("tactic", f"quaffed {one_of(pot['name'])}: the drain is undone, the fight over", news=True)
+            it = self.restore_item(stats=tuple(self.STAT_FULL))
+            if it:
+                food = it["tval"] == TV_FOOD
+                line = f"custom {'E' if food else 'q'} item={it['item']}"
+                self.cmd(line, f"restore a drained stat now the fight is over: {'eat' if food else 'quaff'} "
+                               f"{it['name']}", hold=0.8)
+                if self.last_action and self.last_action[1] == line:      # (not held)
+                    self.notify("tactic", f"{'ate' if food else 'quaffed'} {one_of(it['name'])}: the drain is undone, "
+                                          "the fight over", news=True)
                 return True
         # 0a. a unique's drop: the items within 3 squares of where it died (the set-piece C3: Mughash's drop
         # was left -- looting runs only inside explore and dive, and a hunt ends idle)
@@ -778,7 +798,8 @@ class ItemsMixin:
                 self.notify("tactic", f"picking up the gold {min(w.dist(q) for q in gold)} squares away", news=True)
                 return True
 
-        return self.identify_step(now) or self.upgrade_step()
+        # (2.50.0: mark this mission's finds -- `{m62}` -- so the stash credits them; free, one at a safe moment)
+        return self.inscribe_finds() or self.identify_step(now) or self.upgrade_step()
 
     def identify_step(self, now, minimum=20):
         """Read Identify (or use Perception) on the most valuable unknown worth at
@@ -1170,6 +1191,10 @@ class ItemsMixin:
         feeling: worth inspecting (or identifying) before selling."""
         m = re.search(r"\{([^}]*)\}", name)
         tags = m.group(1).lower() if m else ""
+        # (2.50.0: a feeling stays shown after Identify when the item was inscribed -- `{excellent - m62}`, the server
+        # clears only a bare feeling: an identified item's feeling says nothing more)
+        if " - " in tags and mission_tag(name) and self.iv(name).known is True and not self.iv(name).estimate:
+            tags = ""
         if any(f in tags for f in ("excellent", "special", "artifact")):
             return True
         # {good} weapons/armour whose pluses aren't known yet (mission 16: a Trident

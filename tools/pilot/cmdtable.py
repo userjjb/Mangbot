@@ -105,8 +105,15 @@ COMMANDS = {
                 group="Info"),
     "gearcmp": Cmd("cmd_gearcmp", dead=True, usage="gearcmp [LETTER|NAME ...]", help="the slot evaluator",
                    group="Info"),
-    "house": Cmd("house_info", dead=True, usage="house [buy [Y,X] | deposit [KEEP] | withdraw]",
-                 help="the house; buy is the Architect's", group="Town"),
+    "house": Cmd("house_info", dead=True, usage="house [buy [Y,X] | deposit [KEEP] | withdraw [ITEM]]",
+                 help="the house and what is stored (house, tavern room); buy is the Architect's", group="Town"),
+    "store": Cmd("cmd_store", dead=True, usage="store [add NAME | del NAME]",
+                 help="the store list: items plan town stores in the house (add/del: the Architect's)",
+                 subs={"add": {"roles": ARCH, "refusal": "the store list is the Architect's (and the user's): `ask` "
+                                                         "to have an item stored", "dead": True},
+                       "del": {"roles": ARCH, "refusal": "the store list is the Architect's (and the user's): `ask` "
+                                                         "to have an item stored", "dead": True}},
+                 group="Orders"),
     "loadout": Cmd("cmd_loadout", dead=True, usage="loadout [shops]", help="the loadout optimizer", group="Info"),
     "why": Cmd("why_info", reply="text", dead=True, usage="why [HH:MM[:SS]]",
                help="what the Pilot saw and did around a moment", group="Info"),

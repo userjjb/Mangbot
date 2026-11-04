@@ -316,7 +316,7 @@ def town_waits_for_restock():
         p.seen_drained = {"STR": (58, 68)} if drained else {}
         p.w.depth, p.w.in_dungeon = 0, False
         p.upgrade_step = lambda: False
-        p.restore_potion = lambda skip=(): None
+        p.restore_item = lambda skip=(), stats=(): None
         p.provision_step = lambda k: False
         p.supply_gate = lambda depth, recall: list(gap)
         p.planned_depth = lambda: 750

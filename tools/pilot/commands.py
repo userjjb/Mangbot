@@ -18,10 +18,10 @@ import time
 
 import structures
 import geareval
-from common import HERE, VERSION, TV_SCROLL, TV_LITE, flavour_key, bare_name, recall_level, singular
+from common import HERE, VERSION, TV_SCROLL, TV_LITE, flavour_key, bare_name, recall_level, singular, rec_name
 from world import gnow, waited, _lt
 from goals import Wait, Goto, Explore, Dive, Search, Hunt, Flee, Recall, Resurrect, RestGoal, QuietWait
-from town_goals import Town, TownFarm, Shop, town_houses, HouseBank, TownKit
+from town_goals import Town, TownFarm, Shop, town_houses, HouseBank, TownKit, StashFetch
 from plan import TripPlan, split_specs
 from cmdtable import (COMMANDS, ANY, DUNGEON_ITEMS, DEAD, POLLS, READ_ONLY, NO_MESSAGES,
                       DUNGEON_ITEM_CMDS)
@@ -558,6 +558,30 @@ class CommandsMixin:
             self.keep.add(name.strip())
         json.dump(sorted(self.keep), open(os.path.join(self.rundir, "keep.json"), "w"))
         return {"ok": True, "text": "kept: " + (", ".join(sorted(self.keep)) or "nothing")}
+
+    def cmd_store(self, args):
+        """`store` lists the user's store list (rundir/store.json); `store add NAME` / `store del NAME` (the
+        Architect's: cmdtable's subs) change it. Lower-case name parts, matched as keep.json is; an item on it is
+        stored in the house by plan town, never sold (2.50.0, the user)."""
+        def listing():
+            return "store list: " + (", ".join(sorted(self.store_list)) or "empty") + \
+                " (plan town stores these in the house, else the tavern room; `house` shows what is stored)"
+        if not args:
+            return {"ok": True, "text": listing()}
+        sub, name = args[0], " ".join(args[1:]).replace("_", " ").lower().strip()
+        if sub not in ("add", "del") or not name:
+            return {"ok": False, "error": "usage: store [add NAME | del NAME]"}
+        if sub == "add":
+            self.store_list.add(name)
+        elif name in self.store_list:
+            self.store_list.discard(name)
+        else:
+            return {"ok": False, "error": f"'{name}' is not on the store list; {listing()}"}
+        try:
+            json.dump(sorted(self.store_list), open(os.path.join(self.rundir, "store.json"), "w"))
+        except (OSError, AttributeError):
+            pass
+        return {"ok": True, "text": listing()}
 
     def cmd_standing(self, args):
         # standing instructions shown in every report (the Advisor's belief-state table:
@@ -1639,22 +1663,42 @@ class CommandsMixin:
 
     def house_info(self, args):
         """`house` (state), `house buy [Y,X]` (the Architect: the smallest house, or the one with that door),
-        `house deposit [KEEP]`, `house withdraw`."""
+        `house deposit [KEEP]`, `house withdraw [ITEM]` (2.50.0: a named stored item, from the house or the
+        tavern room)."""
         st = self.house_state()
         sub = args[0] if args else ""
+        places = self.stash_places()
+
+        def listed(at):
+            # (2.50.0: what each stored item is -- a backup and for what, the store list, a Restore -- where, and
+            # what the town would have paid for it when stored, credited to a mission if it was a fresh find)
+            raw = (st.get("items", {}) if st.get("house") else {}) if at == "house" else \
+                st.get("tavern", {}).get("items", {})
+            out = []
+            for rec in sorted(raw.values(), key=rec_name):
+                n = rec_name(rec)
+                meta = ""
+                if isinstance(rec, dict):
+                    meta = f"; ~{rec.get('value', 0)} gold" + (f", a fresh find credited to {rec.get('mission') or 'the trip'}"
+                                                              if rec.get("fresh") else "")
+                out.append(f"{n} [{self.stored_reason(at, n)}{meta}]")
+            return ", ".join(out)
         if not sub:
             h = st.get("house")
+            room = self.stash_room()
+            tav = listed("tavern")
             if not h:
                 houses = town_houses(self.w.memory) if not self.w.in_dungeon else []
-                tav = sorted(self.stash_places()["tavern"].values())
                 return {"ok": True, "text": "no house owned" + (f"; the smallest on the map: {houses[0]['area']} "
                                                                    f"square(s), door {houses[0]['door']}" if houses else "")
-                                            + (f"; tavern stash: {', '.join(tav)}" if tav else "")}
-            held = sorted(self.stash_places()["house"].values())
+                                            + (f"; tavern stash: {tav}" if tav else "")}
+            held = listed("house")
             return {"ok": True, "text": f"house: door {h['door'][0]},{h['door'][1]}, bought {h.get('bought')} for "
                                         f"{h.get('price')}; {st.get('banked', 0)} gold banked (as of {st.get('t')}); "
                                         f"{self.w.ind.get('gold', [0])[0]} carried"
-                                        + (f"; stash: {', '.join(held)}" if held else "")}
+                                        + (f"; stash: {held}" if held else "")
+                                        + (f" ({room['house']} square(s) free)" if room["house"] is not None else "")
+                                        + (f"; tavern stash: {tav}" if tav else "")}
         if self.w.in_dungeon:
             return {"ok": False, "error": "the house is in town or the tile beside it"}
         if sub == "buy":
@@ -1678,13 +1722,25 @@ class CommandsMixin:
                                                   "Pilot knows the way"}
                 hh.update(depth=self.w.depth, cross=cr)
             g = HouseBank("buy", house=hh)
+        elif sub == "withdraw" and len(args) > 1:
+            # (2.50.0: `house withdraw ITEM` -- a named stored item, from the house or the tavern room)
+            want = " ".join(args[1:]).replace("_", " ").lower()
+            hit = next(((at, n) for at in ("house", "tavern") for n in places[at].values()
+                        if isinstance(n, str) and want in n.lower()), None)
+            if not hit:
+                stored = [n for at in places for n in places[at].values() if isinstance(n, str)]
+                return {"ok": False, "error": f"nothing stored matches '{want}'; stored: "
+                                              + (", ".join(sorted(stored)) or "nothing")}
+            at, name = hit
+            g = HouseBank("withdraw", fetch=[name]) if at == "house" else StashFetch(name)
         elif sub in ("deposit", "withdraw"):
             if not st.get("house"):
                 return {"ok": False, "error": "no house owned"}
             keep = int(args[1]) if sub == "deposit" and len(args) > 1 and args[1].isdigit() else None
-            g = HouseBank(sub, keep=keep)
+            g = HouseBank(sub, keep=keep,
+                          fetch=[n for n, _ in self.stash_fetch_list("house")] if sub == "withdraw" else ())
         else:
-            return {"ok": False, "error": "usage: house [buy [Y,X] | deposit [KEEP] | withdraw]"}
+            return {"ok": False, "error": "usage: house [buy [Y,X] | deposit [KEEP] | withdraw [ITEM]]"}
         g.by_navigator = self.req_role != "architect"
         self.set_goal(g)
         return {"ok": True, "goal": g.describe()}

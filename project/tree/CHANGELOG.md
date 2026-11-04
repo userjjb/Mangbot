@@ -27,6 +27,46 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.50.0 -- 2026-11-04 (session 12, the user's decisions of 11-04)
+No missions yet on it. **Play changes:**
+- **The stash keeps valuable spares the shops can't sell** (the user: "spare items that are valuable and can't be
+  bought should be stored when possible"). Besides the stat Restores and Wands of Stone to Mud it now holds (a) the
+  **best backup for each worn slot**: an unworn, identified ego/artifact wearable (or jewellery/a light of a kind
+  shops 1-6 don't stock) worth 200+ gold, ranked by the slot's abilities it carries (lost with the worn piece), then
+  Free Action/See Invisible carried at all, then the gear evaluator's static score as a replacement (rings: for the
+  weaker ring); one per slot -- Dive04's Scimitar of Westernesse beside the Battle Axe of Westernesse -- and (b) the
+  **store list** (`store`, `rundir/store.json`, the Architect's). Stash items are never sold or destroyed in town
+  (`town_rule` "keep": "a backup for the weapon slot (Free Action, See Invisible)" / "on the store list"; storing
+  wins over `keep`). The dungeon values them as before.
+- **Placement:** the house first (the most valuable first); when its squares are used, inside the tavern room (never
+  from the entrance); when neither has room the item stays in the pack and a **`stash_full`** alert tells the Navigator
+  to `ask` the Architect about storage (no house is ever bought by the policy). `plan town`'s withdraw stage fetches
+  a stored backup the gear policy would wear (its slot empty, or the evaluator's choice over a damaged piece) and one
+  a carried backup now outclasses (to be sold; the new one is deposited last). `house withdraw ITEM` fetches a named
+  stored item from the house or the tavern; `house` says what each stored item is, where, and its value.
+- **Restore mushrooms are eaten for a drain:** a drained STR/DEX/CON is restored at a safe moment by the cheapest
+  covering item -- a known Mushroom of Restore Strength (STR), Restore Constitution (CON) or Restoring (all six,
+  use-obj.c:169-190), eaten if it can't make us Gorged, before a ~480-gold potion; INT/WIS/CHR still wait for town.
+  `plan town` doesn't buy the Restore a carried mushroom covers and eats it; the `stat_drained` alert names it.
+- **Stored finds are income:** each stash record (house.json `items`, `tavern.items`) carries its value (value x
+  pay_cut), when, whether it was a **fresh** find (picked up in the running mission, else since we last left town;
+  pickups recorded in `acquired.json`) and the mission credited. Logged `stash_store`, `stash_take`,
+  `stash_credit_sold` (a credited item withdrawn and sold: debited). The scorecard adds `stored_value`,
+  `stash_debits`, `gold_change_adj` (A), `gold_change_per_dmin`/`gold_change_adj_per_dmin` (B) and a last table
+  column `adj$/dm`; the Pilot's gold rate (rates.json) counts the same. Old plain-name records still read.
+- **Finds are marked with the mission's label** (the user, 11-04): during a mission a single wearable picked up in the
+  dungeon is inscribed `{m62}` (a feeling kept: `{excellent - m62}`; the `{` command is free, sent at safe moments and
+  at plan town's start; never over another inscription, never on stackables). Stored with the running mission's label
+  it is fresh, with another's not; unlabelled items fall back to the acquired.json match. Inscriptions survive
+  Identify (spells2.c clears only a bare feeling); the name helpers ignore the label, and `probably_special` ignores a
+  feeling left on an identified item.
+- **The stash record is checked against the floor** (the Architect's live check, 11-04: the house held an unrecorded
+  second Restore Charisma; the Scimitar dropped on its square scattered to another, and `,` there took the potion).
+  Inside the house the Pilot first reads every interior square but the gold's and rebuilds the record (unknown items
+  adopted, `stash_found`; missing ones struck); drops only on a square read bare and records them once seen underfoot;
+  presses `,` only when the floor names the wanted item (a wrong pick is dropped back); and inside the house the
+  pickup reflex takes only the fetch target. The tavern room's goals check the squares they walk the same way.
+
 ## 2.49.0 -- 2026-11-03 (session 11, the user after m61)
 No missions yet on it. **Play changes:**
 - **The lantern is filled in town:** `plan town` buys the flasks that fill it to 15000 (FUEL_LAMP; a flask adds 7500,

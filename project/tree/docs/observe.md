@@ -191,12 +191,20 @@ baseline `baseline_m17-m23.csv` used a third value definition (fair pay from the
 A. Outcome (from the first and last `audit_check` records)
 - `deaths`: `attention: dead` count. `clvl` [start, end]. `exp_gain`. `gold` [start, end] and `gold_change`,
   where gold = carried + `banked` (the house), so a deposit isn't a loss. `max_depth_ft`.
+- (2.50.0, the user: storing a valuable find instead of selling it deflated the mission's gold) `stored_value`: the
+  values of the fresh finds stored in the mission (`stash_store` records with `fresh`: value x pay_cut, what the sale
+  would have realised; goals-and-plans.md, "Stored finds are income"); `stash_debits`: the credited values of stored
+  finds withdrawn and sold in it (`stash_credit_sold`), so a find isn't counted twice; `gold_change_adj` =
+  `gold_change` + `stored_value` - `stash_debits`. `gold_change` stays the raw figure.
 
 B. Efficiency
 - `dungeon_min` / `town_min`: time between consecutive records by depth (gaps over 60 s skipped).
 - `exp_per_dmin`: exp gained per dungeon minute. `levels_per_dhour`: exp gains between audits, each divided by the
   exp needed for the next level at that clvl (Half-Orc expfact 110), per dungeon hour.
-- `gold_found` (and per dungeon minute): gold rises between audits while in the dungeon.
+- `gold_found` (and per dungeon minute): gold rises between audits while in the dungeon. (No sales: storing doesn't
+  move it.)
+- (2.50.0) `gold_change_per_dmin` and `gold_change_adj_per_dmin`: A's `gold_change` and `gold_change_adj` per dungeon
+  minute (`gold_rates`).
 - `time_budget_min`: every second of the mission in exactly one category, from the current goal and recent
   events (`time_budget`). Dungeon: `escaping` (goal flee*, an emergency in the last 10 s, Phase in the last 5 s,
   or an urgent recall not yet landed, <40 s), `fighting` (a combat message in the last 5 s or goal hunt*),
@@ -261,8 +269,10 @@ decision, `in_time_turn`, `before_next_act`, `skipped` (emergencies while the es
 `hard_agree`, `hard_choices`). The printed card's group G shows `tokens` (from `tokens.py`).
 
 **The table** (`--table`, several cards, or no labels) has one row per mission: `mission nav min dmin lv/dh exp/dm $/dm low%
-close near phase woresc cures lost forced$ r->a reply wait% est estHF usd usd/dh usd/kxp gold/usd` (the last four:
-Navigator cost, per dungeon hour, per 1000 exp, and gold found per dollar).
+close near phase woresc cures lost forced$ r->a reply wait% est estHF usd usd/dh usd/kxp gold/usd adj$/dm` (usd to
+gold/usd: Navigator cost, per dungeon hour, per 1000 exp, and gold found per dollar; `adj$/dm`, 2.50.0, last so the
+other columns keep their places: `gold_change_adj_per_dmin`, empty on cards written before). `$/dm` stays the gold found
+in the dungeon.
 
 ---
 

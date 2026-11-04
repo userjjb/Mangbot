@@ -35,7 +35,7 @@
   "bought": "2026-10-27 18:00"
  },
  "banked": 22915,
- "t": "2026-11-03 23:55",
+ "t": "2026-11-04 09:06",
  "old_houses": [
   {
    "area": 1,
@@ -63,7 +63,21 @@
   }
  ],
  "items": {
-  "60,126": "a Potion of Restore Charisma"
+  "60,126": "a Potion of Restore Charisma",
+  "60,127": {
+   "name": "a Potion of Restore Charisma",
+   "value": 135,
+   "t": "2026-11-04 08:55",
+   "fresh": false,
+   "mission": null
+  },
+  "60,125": {
+   "name": "a Scimitar of Westernesse (2d5) (+9,+8) (+1)",
+   "value": 8780,
+   "t": "2026-11-04 09:06",
+   "fresh": false,
+   "mission": null
+  }
  },
  "tavern": {
   "entrance": [

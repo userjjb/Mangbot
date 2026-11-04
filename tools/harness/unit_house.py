@@ -7,6 +7,8 @@ import os
 import re
 
 from fixtures import P, case, pilot
+import town_goals as TG  # noqa: E402
+from common import rec_name  # noqa: E402
 
 
 @case
@@ -36,6 +38,13 @@ def tavern_stash_and_one_lantern():
           and want_with is None and want == "Restore Dexterity" and "Restore Dexterity" not in needs
           and lamps == {"1977": 1, "14943": 0})
     return ok, f"stash kinds {stash}; tavern {ent}; fetch {want!r}; buy list {needs}; lanterns sold {lamps}"
+
+
+def _floor_sync(w, floor):
+    """The client's floor reading for the square we stand on (2.50.0: the stash reads it): the item there, not gold."""
+    n = floor.get(w.pos)
+    w.floor = None if not n or n.startswith("$") else n
+    w.floor_pos, w.floor_t = w.pos, P.gnow() + 10
 
 
 # a piece of Dive04's town (10-27): the 1-square house at 37-39,155-157 (door 38,155) and a 4-square one
@@ -214,8 +223,9 @@ def house_keeps_the_stash():
                              "stop": lambda self: None})()
 
     def run(g):
-        for _ in range(80):
+        for _ in range(200):
             g.t = -99.0
+            _floor_sync(w, floor)
             r = g.tick(p)
             if r:
                 return r
@@ -271,8 +281,9 @@ def tavern_stash_drops_inside():
     p.mover = M()
     g = P.StashDeposit()
     r = None
-    for _ in range(30):
+    for _ in range(60):
         g.t = -99.0
+        _floor_sync(w, floor)
         r = g.tick(p)
         if r:
             break
@@ -397,8 +408,9 @@ def house_withdraw_strikes_the_fetched_item():
                              "stop": lambda self: None})()
 
     def run(g):
-        for _ in range(80):
+        for _ in range(200):
             g.t = -99.0
+            _floor_sync(w, floor)
             r = g.tick(p)
             if r:
                 return r
@@ -414,3 +426,349 @@ def house_withdraw_strikes_the_fetched_item():
         not any("after all" in str(d) for _, d in p.notes)
     return ok, f"withdraw {a}: fetched {fetched}, record {record}, `house`: {said!r}; the next withdraw {b}: " \
                f"{picks} pick-ups, notes {p.notes}"
+
+
+# --- 2.50.0 (the user, 11-04): the stash holds the best backup for each worn slot and the store list; the house first,
+# the tavern room when it's full, else a stash_full notice; each record carries its value and whether it was a fresh
+# find (credited to the mission)
+
+_DIVE04_WORN = [("a Battle Axe of Westernesse (2d8) (+10,+9) (+1)", 22, 170), ("a Ring of Protection [+16]", 45, 2),
+                ("a Ring of Protection [+12]", 45, 2), ("an Amulet of Slow Digestion", 40, 3),
+                ("Hard Studded Leather of Resistance (-1) [7,+8]", 36, 110), ("a Shadow Cloak [6,+8]", 35, 5),
+                ("an Orcish Shield [5,+8] (+1)", 34, 100), ("a Metal Cap [3,+8]", 32, 20),
+                ("a Set of Gauntlets [2,+8]", 31, 25), ("a Pair of Hard Leather Boots of Stability [3,+8]", 30, 40)]
+
+
+def _dive04_town(pack, worn=None, **kw):
+    """Dive04's 11-02 gear (clvl 29, the Battle Axe of Westernesse: Free Action, See Invisible) in town."""
+    p = pilot(hp=358, worn=_DIVE04_WORN if worn is None else worn, pack=pack, **kw)
+    w = p.w
+    w.clvl = 29
+    w.ind.update({"armor": [104], "stat0": [88], "stat3": [38]})
+    w.flags.update(free_act=1)
+    w.depth, w.depth_ft, w.in_dungeon = 0, 0, False
+    p.flavour_of = lambda it: None
+    p.unknown_flavour = lambda it: False
+    p.review_hold = lambda it: False
+    p.gear_better = lambda it: None
+    return p
+
+
+@case
+def stash_backups_for_worn_slots():
+    """2.50.0 (the user): an unworn, unbuyable (ego/artifact), identified wearable worth 200+ that is the best backup for
+    its worn slot is stored, never sold. Beside the wielded Battle Axe of Westernesse (Free Action, See Invisible) the
+    Scimitar of Westernesse is the weapon backup ("a backup for the weapon slot (Free Action, See Invisible)") and a
+    Main Gauche of Slay Evil is not (sold); an ability carrier beats a harder hitter (a Dagger of Westernesse over a
+    Trident of Venom); the store wins over the keep list; a stored backup a carried one outclasses is fetched to sell,
+    and with the axe gone (nothing wielded) the stored Scimitar is fetched to wear."""
+    p = _dive04_town([("a Scimitar of Westernesse (2d5) (+9,+8) (+1)", 23), ("a Main Gauche of Slay Evil (1d5) (+3,+4)", 23)])
+    p.keep = {"scimitar of westernesse"}
+    sc, mg = p.w.items()
+    rules = (p.town_rule(sc), p.town_rule(mg))
+    sells = (p.town_sell_count(sc), p.town_sell_count(mg))
+    stash = (p.is_stash_item(sc["name"]), p.is_stash_item(mg["name"]))
+    d = _dive04_town([("a Trident of Venom (1d8) (+13,+4)", 22), ("a Dagger of Westernesse (1d4) (+1,+1) (+1)", 23)])
+    carrier = d.stash_backups()["best"].get("weapon", (None, None))[1]
+    o = _dive04_town([("a Scimitar of Westernesse (2d5) (+9,+8) (+1)", 23)])
+    o._house = {"house": {"door": [60, 129], "box": [59, 124, 61, 129], "step_in": [60, 128]},
+                "items": {"60,125": "a Dagger of Westernesse (1d4) (+1,+1) (+1)"}}
+    outclassed = o.stash_fetch_list("house")
+    s = _dive04_town([], worn=_DIVE04_WORN[1:])
+    s._house = {"house": {"door": [60, 129], "box": [59, 124, 61, 129], "step_in": [60, 128]},
+                "items": {"60,125": {"name": "a Scimitar of Westernesse (2d5) (+9,+8) (+1)", "value": 8000}}}
+    to_wear = s.stash_fetch_list("house")
+    ok = rules == (("keep", "a backup for the weapon slot (Free Action, See Invisible)"), None) and sells[0] == 0 and \
+        sells[1] == 1 and stash == (True, False) and carrier == "a Dagger of Westernesse (1d4) (+1,+1) (+1)" and \
+        [n for n, _ in outclassed] == ["a Dagger of Westernesse (1d4) (+1,+1) (+1)"] and "to sell" in outclassed[0][1] \
+        and [n for n, _ in to_wear] == ["a Scimitar of Westernesse (2d5) (+9,+8) (+1)"] and "to wear" in to_wear[0][1]
+    return ok, (f"rules {rules}; sold {sells}; stash {stash}; Trident vs Dagger of Westernesse: {carrier}; stored dagger "
+                f"vs carried Scimitar: {outclassed}; axe gone: {to_wear}")
+
+
+@case
+def store_list_matches_and_command():
+    """2.50.0 (the user): rundir/store.json, lower-case name parts matched as keep.json is (singular too): "scroll of
+    deep descent" takes 2 Scrolls of Deep Descent, which plan town keeps ("on the store list"). `store` lists for all;
+    `store add/del NAME` are the Architect's (the Navigator is refused)."""
+    import tempfile
+    p = _dive04_town([("2 Scrolls of Deep Descent", 70), ("a Scroll of Light", 70)])
+    p.rundir = tempfile.mkdtemp()
+    nav_add = p.do_request({"cmd": "store", "args": ["add", "scroll_of_deep_descent"], "role": "navigator"})
+    arch_add = p.do_request({"cmd": "store", "args": ["add", "Scroll_of_Deep_Descent"], "role": "architect"})
+    listing = p.do_request({"cmd": "store", "args": [], "role": "navigator"})
+    dd, light = p.w.items()
+    rule = p.town_rule(dd)
+    match = (p.on_store_list(dd["name"]), p.on_store_list(light["name"]))
+    saved = json.load(open(os.path.join(p.rundir, "store.json")))
+    gone = p.do_request({"cmd": "store", "args": ["del", "scroll of deep descent"], "role": "architect"})
+    ok = not nav_add["ok"] and arch_add["ok"] and "scroll of deep descent" in listing["text"] and \
+        rule == ("keep", "on the store list") and match == (True, False) \
+        and saved == ["scroll of deep descent"] and gone["ok"] and not p.store_list
+    return ok, f"navigator add {nav_add}; architect add {arch_add}; list {listing}; rule {rule}; del {gone}"
+
+
+def _tavern_room(mem):
+    """The tavern (entrance 27,89) and its room: 27-28 x 90-93 (8 squares)."""
+    for x in range(89, 95):
+        mem[(26, x)] = mem[(29, x)] = "#"
+    for y in (27, 28):
+        mem[(y, 94)] = "#"
+        for x in range(90, 94):
+            mem[(y, x)] = "."
+    mem[(27, 89)], mem[(28, 89)] = "8", "#"
+    return mem
+
+
+@case
+def house_full_overflows_to_the_tavern_then_asks():
+    """2.50.0 (the user): with the house's 3 squares used, the deposit doesn't go for the stash; the overflow goes
+    inside the tavern room (StashDeposit); with the tavern room full too, the item stays in the pack (never sold) and
+    a stash_full notice tells the Navigator to `ask` the Architect -- once a visit per item."""
+    import types
+    p = _dive04_town([("a Scimitar of Westernesse (2d5) (+9,+8) (+1)", 23)], gold=500)
+    p.w.memory = _tavern_room({})
+    full = {f"60,{x}": f"a Potion of Restore {s}" for x, s in ((125, "Charisma"), (126, "Wisdom"), (127, "Intelligence"))}
+    p._house = {"house": {"door": [60, 129], "box": [59, 124, 61, 129], "step_in": [60, 128], "depth": -1},
+                "items": full, "tavern": {"entrance": [27, 89], "items": {}}}
+    p.house_save = lambda: None
+    ctx = types.SimpleNamespace(w=p.w, now=0.0)
+    k = P.TownKit()
+    room = p.stash_room()
+    dep = k._buying_deposit(p, ctx)
+    over = k._buying_overflow(p, ctx)
+    sub = type(k.sub).__name__
+    k.sub = None
+    p.tavern_state()["items"] = {f"{y},{x}": "a Flask of oil" for y in (27, 28) for x in range(90, 94)}
+    k2 = P.TownKit()
+    k2._buying_overflow(p, ctx)
+    sub2 = k2.sub
+    k2._buying_stash_full(p, ctx)
+    k2._buying_stash_full(p, ctx)
+    told = [d for what, d in p.notes if what == "stash_full"]
+    sold = p.town_sell_count(p.w.items()[0])
+    ok = room == {"house": 0, "tavern": 8} and dep is TG.NEXT and over is None and sub == "StashDeposit" and \
+        sub2 is None and len(told) == 1 and "`ask` the Architect" in told[0] and "Scimitar" in told[0] and sold == 0
+    return ok, f"room {room}; deposit step {dep}; overflow {sub}; tavern full: overflow {sub2}, notices {told}; sold {sold}"
+
+
+@case
+def stash_records_fresh_and_credited():
+    """2.50.0 (the user): each stash record carries its value (x pay_cut), when, fresh, and the mission credited. A find
+    picked up in the running mission is fresh -- also once identified (a Dagger {excellent} picked up, stored as the
+    Dagger of Westernesse: matched by its base kind); one owned before (no pickup record: Dive04's Scimitar) is not.
+    `stash_store` and `stash_take` are logged; a credited item withdrawn and sold logs `stash_credit_sold` (debited);
+    withdrawn and worn, no debit. Old plain-name records still read. The scorecard adds the fresh stored values and
+    subtracts the debits: gold_change_adj."""
+    import tempfile
+    import scorecard
+    p = _dive04_town([("a Dagger of Westernesse (1d4) (+1,+1) (+1)", 23),
+                      ("a Scimitar of Westernesse (2d5) (+9,+8) (+1)", 23)])
+    p.rundir = tempfile.mkdtemp()
+    logs = []
+    p.log = lambda kind, **kw: logs.append((kind, kw))
+    p.mission_label = "m70"
+    p.note_acquired("a Dagger (1d4) {excellent}")
+    dg, sc = p.w.items()
+    r_dg, r_sc = p.stash_rec(dg, "house"), p.stash_rec(sc, "tavern")
+    p._house = {"house": {"door": [60, 129], "box": [59, 124, 61, 129], "step_in": [60, 128]},
+                "items": {"60,125": r_dg, "60,126": "a Potion of Restore Charisma"}, "tavern": {"items": {"27,90": r_sc}}}
+    names = p.stash_places()
+    p.stash_take("house", "Dagger of Westernesse")
+    p.stash_take("tavern", "Scimitar")
+    p.stash_credit_sold(dg["name"], 7000)
+    p.stash_credit_sold(sc["name"], 7000)
+    kinds = [k for k, _ in logs]
+    store = [kw for k, kw in logs if k == "stash_store"]
+    take = [kw for k, kw in logs if k == "stash_take"]
+    sold = [kw for k, kw in logs if k == "stash_credit_sold"]
+    # worn after the withdrawal: no debit
+    p.acq_state()["credits"]["dagger of westernesse (1d4) (+1,+1) (+1)"] = {"value": 100, "mission": "m70"}
+    p.stash_credit_worn("a Dagger of Westernesse (1d4) (+1,+1) (+1)")
+    n0 = len(logs)
+    p.stash_credit_sold(dg["name"], 7000)
+    aud = [{"gold": 1000, "banked": 0, "exp": [0], "clvl": 29, "depth_ft": 0},
+           {"gold": 900, "banked": 0, "exp": [10], "clvl": 29, "depth_ft": 0}]
+    recs = [{"kind": "stash_store", "value": 7500, "fresh": True}, {"kind": "stash_store", "value": 9000, "fresh": False},
+            {"kind": "stash_credit_sold", "credited_value": 2000}]
+    A = scorecard.outcome({}, aud, recs)
+    ok = r_dg["fresh"] and r_dg["mission"] == "m70" and r_dg["value"] > 1000 and not r_sc["fresh"] and \
+        r_sc["mission"] is None and names["house"]["60,126"] == "a Potion of Restore Charisma" and \
+        store[0]["fresh"] and take[0]["credited_value"] == r_dg["value"] and take[1]["credited_value"] == 0 and \
+        len(sold) == 1 and sold[0]["credited_value"] == r_dg["value"] and p.gold_debited == r_dg["value"] and \
+        p.gold_stored == r_dg["value"] and len(logs) == n0 and \
+        (A["gold_change"], A["stored_value"], A["stash_debits"], A["gold_change_adj"]) == (-100, 7500, 2000, 5400)
+    return ok, (f"dagger {r_dg}; scimitar {r_sc}; logs {kinds}; takes {take}; sold {sold}; scorecard A {A}")
+
+
+def _house_sim(p, floor, scatter=None):
+    """Dive04's 4-square house (door 60,129, the gold's square 60,128) on the town map, and a server for it: walks
+    move, `custom d` drops onto the square underfoot -- or, `scatter` {from: to}, where the server's drop_near puts it
+    (object2.c:3963: one object a grid) -- `custom ,` takes what lies underfoot, the gold pile is picked up on 60,128."""
+    mem = {}
+    for x in range(124, 130):
+        mem[(59, x)] = mem[(61, x)] = "#"
+    mem[(60, 124)], mem[(60, 129)] = "#", "0"
+    for x in range(125, 129):
+        mem[(60, x)] = "."
+    for y in range(57, 64):
+        for x in range(130, 134):
+            mem[(y, x)] = "."
+    h = {k: (list(v) if isinstance(v, tuple) else v) for k, v in P.town_houses(mem)[0].items() if k != "inside"}
+    w = p.w
+    w.memory, w.pos = mem, (60, 130)
+    p.busy_until = 0
+    p._house = {"house": h, "banked": 0, "items": {}}
+    p.house_save = lambda: None
+    sent, logs = [], []
+    p.log = lambda kind, **kw: logs.append((kind, kw))
+    dirs = {4: (0, -1), 6: (0, 1)}
+    scatter = dict(scatter or {})
+
+    def cmd(line, why, hold=0.4):
+        sent.append((w.pos, line))
+        m = re.match(r"walk (\d)", line)
+        if m:
+            dy, dx = dirs[int(m.group(1))]
+            w.pos = (w.pos[0] + dy, w.pos[1] + dx)
+        m = re.match(r"custom d item=(\d+)", line)
+        if m:
+            it = next(i for i in w.inven if i["item"] == int(m.group(1)))
+            w.inven.remove(it)
+            floor[scatter.pop(w.pos, w.pos)] = it["name"]
+        if line == "custom ," and w.pos in floor:
+            w.inven.append({"item": 30, "name": floor.pop(w.pos), "tval": 23, "weight": 4, "number": 1,
+                            "equip": False})
+    p.cmd = cmd
+    p.mover = type("M", (), {"active": False, "go": lambda self, t: True, "tick": lambda self: "arrived",
+                             "stop": lambda self: None})()
+
+    def run(g):
+        for _ in range(300):
+            g.t = -99.0
+            _floor_sync(w, floor)
+            r = g.tick(p)
+            if r:
+                return r
+    return run, sent, logs
+
+
+@case
+def house_reconcile_rebuilds_the_record():
+    """The live check of 11-04: the house held two Potions of Restore Charisma (60,125 and 60,126), house.json knew
+    one. Now a visit inside first reads every square but the gold's and rebuilds the record from the floor: an item
+    the record lacks is adopted (stash_found, not fresh), a recorded one not there is struck (stash_take, lost)."""
+    p = _dive04_town([], gold=300)
+    floor = {(60, 125): "a Potion of Restore Charisma", (60, 127): "a Potion of Restore Wisdom"}
+    run, sent, logs = _house_sim(p, floor)
+    p._house["items"] = {"60,126": "a Potion of Restore Charisma", "60,127": "a Potion of Restore Charisma"}
+    r = run(P.HouseBank("withdraw"))
+    items = {k: rec_name(v) for k, v in p._house["items"].items()}
+    found = [kw["item"] for k, kw in logs if k == "stash_found"]
+    lost = [kw["item"] for k, kw in logs if k == "stash_take" and kw["lost"]]
+    ok = r and r[0] == "done" and items == {"60,125": "a Potion of Restore Charisma",
+                                             "60,127": "a Potion of Restore Wisdom"} and \
+        sorted(found) == ["a Potion of Restore Charisma", "a Potion of Restore Wisdom"] and len(lost) == 2 and \
+        not any(line == "custom ," for _, line in sent)
+    return ok, f"{r}; record {items}; found {found}; struck {lost}"
+
+
+@case
+def house_deposit_only_on_a_bare_square():
+    """The live check of 11-04: `house deposit` dropped the Scimitar on 60,125, which held an unrecorded potion; the
+    server scattered it to 60,127 and the record said 125. Now the drop goes only on a square read bare (60,127, the
+    one left), and is recorded once seen underfoot; a drop the server scattered anyway (simulated) is found by a
+    second reading of the house and recorded where it lies."""
+    sc = "a Scimitar of Westernesse (2d5) (+9,+8) (+1)"
+    p = _dive04_town([(sc, 23)], gold=300)
+    floor = {(60, 125): "a Potion of Restore Charisma", (60, 126): "a Potion of Restore Charisma"}
+    run, sent, logs = _house_sim(p, floor)
+    p._house["items"] = {"60,126": "a Potion of Restore Charisma"}
+    r = run(P.HouseBank("deposit"))
+    items = {k: rec_name(v) for k, v in p._house["items"].items()}
+    drops = [pos for pos, line in sent if line.startswith("custom d")]
+    q = _dive04_town([(sc, 23)], gold=300)
+    qfloor = {}
+    run2, sent2, logs2 = _house_sim(q, qfloor, scatter={(60, 125): (60, 127)})
+    r2 = run2(P.HouseBank("deposit"))
+    items2 = {k: rec_name(v) for k, v in q._house["items"].items()}
+    stored2 = [kw["item"] for k, kw in logs2 if k == "stash_store"]
+    ok = r and r[0] == "done" and drops == [(60, 127)] and items.get("60,127") == sc and floor[(60, 127)] == sc and \
+        items.get("60,125") == "a Potion of Restore Charisma" and r2 and r2[0] == "done" and \
+        items2 == {"60,127": sc} and qfloor == {(60, 127): sc} and stored2 == [sc]
+    return ok, f"{r}: drops at {drops}, record {items}; scattered: {r2}, record {items2}, floor {qfloor}, logs {stored2}"
+
+
+@case
+def house_never_picks_up_the_wrong_item():
+    """The live check of 11-04: `house withdraw scimitar` pressed `,` on 60,125 (the record's square), took the
+    potion lying there, and the pickup reflex took the Scimitar from 60,127 on the way out. Now `,` is pressed only
+    when the floor underfoot names the item: the record is read again and the Scimitar fetched from 60,127; the potion
+    stays (adopted on 60,125). Inside the house the pickup reflex takes nothing but the fetch target (in_house)."""
+    sc = "a Scimitar of Westernesse (2d5) (+9,+8) (+1)"
+    p = _dive04_town([], gold=300)
+    floor = {(60, 125): "a Potion of Restore Charisma", (60, 127): sc}
+    run, sent, logs = _house_sim(p, floor)
+    p._house["items"] = {"60,125": sc}
+    r = run(P.HouseBank("withdraw", fetch=[sc]))
+    picks = [pos for pos, line in sent if line == "custom ,"]
+    items = {k: rec_name(v) for k, v in p._house["items"].items()}
+    p.w.pos = (60, 126)
+    inside = p.in_house()
+    p.w.pos = (60, 130)
+    outside = p.in_house()
+    ok = r and r[0] == "done" and picks == [(60, 127)] and [i["name"] for i in p.w.items()] == [sc] and \
+        floor == {(60, 125): "a Potion of Restore Charisma"} and items == {"60,125": "a Potion of Restore Charisma"} \
+        and inside and not outside
+    return ok, f"{r}: picked up at {picks}; pack {[i['name'] for i in p.w.items()]}; floor {floor}; record {items}; " \
+               f"in_house inside {inside}, outside {outside}"
+
+
+@case
+def finds_marked_with_the_mission_label():
+    """2.50.0 (the user, 11-04): during a mission a find that could be stored -- a single wearable -- is inscribed with
+    the mission's label (`{m62}`; a feeling kept: `{excellent - m62}`, the server's own format, which Identify keeps),
+    never over the Navigator's tags nor on a stackable or a potion; with no mission, nothing. At store time an item
+    inscribed with the running mission's label is fresh, one with another mission's is not, and an unlabelled one
+    (a Navigator-inscribed item) falls back to the pickup record. The name helpers ignore the label."""
+    import tempfile
+    import itemvalue
+    from common import bare_name, bad_inscription
+    sc = "a Scimitar of Westernesse (2d5) (+9,+8) (+1)"
+    p = _dive04_town([("a Dagger (1d4)", 23), ("a Main Gauche (1d5) {excellent}", 23), ("a Spear (1d6) {@w1}", 22),
+                      ("a Potion of Restore Strength", 75), ("2 Wooden Torches (with 5000 turns of light)", 39),
+                      ("a Pair of Leather Boots (1d1) {tried}", 30)])
+    p.rundir = tempfile.mkdtemp()
+    p.mission_label = "m62"
+    labels = [p.inscribe_label(i) for i in p.w.items()]
+    p.mission_label = None
+    none = [p.inscribe_label(i) for i in p.w.items()]
+    p.mission_label = "m62"
+    sent = []
+    p.cmd = lambda line, why, hold=0.4: sent.append(line)
+    p.note_acquired("a Dagger (1d4)")
+    p.w.inven_dirty = False
+    acted = p.inscribe_finds()
+    # freshness at store time
+    p.note_acquired("a Spear (1d6) {@w1}")
+    fresh = {n: p.acquired_fresh(n)[0] for n in (f"{sc} {{m62}}", f"{sc} {{excellent - m62}}", f"{sc} {{m61}}",
+                                                    "a Spear (1d6) {@w1}", sc)}
+    # the name helpers
+    p.keep = {"scimitar of westernesse"}
+    mg = "a Main Gauche of Slay Evil (1d5) (+3,+4) {excellent - m62}"
+    helpers = (p.is_kept(f"{sc} {{m62}}"), bad_inscription(f"{sc} {{m62}}"), bare_name(f"{sc} {{excellent - m62}}"),
+               p.same_item(f"{sc} {{m62}}", sc), p.probably_special(mg),
+               p.probably_special("a Main Gauche (1d5) {excellent - m62}"),
+               itemvalue.value(mg).value == itemvalue.value("a Main Gauche of Slay Evil (1d5) (+3,+4)").value)
+    t = _dive04_town([(f"{sc} {{m62}}", 23), (mg, 23)])
+    rules = [t.town_rule(i) for i in t.w.items()]
+    sold = t.town_sell_count(t.w.items()[1])
+    ok = labels == ["m62", "excellent - m62", None, None, None, "m62"] and none == [None] * 6 and acted and \
+        sent == ["custom { item=0 entry=m62"] and \
+        fresh == {f"{sc} {{m62}}": True, f"{sc} {{excellent - m62}}": True, f"{sc} {{m61}}": False,
+                  "a Spear (1d6) {@w1}": True, sc: False} and \
+        helpers == (True, False, "Scimitar of Westernesse (2d5) (+9,+8) (+1)", True, False, True, True) and \
+        rules[0] == ("keep", "a backup for the weapon slot (Free Action, See Invisible)") and rules[1] is None and \
+        sold == 1
+    return ok, (f"labels {labels}; no mission {none}; inscribe {acted} {sent}; fresh {fresh}; helpers {helpers}; "
+                f"town rules {rules}; the Main Gauche sold {sold}")

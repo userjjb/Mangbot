@@ -219,9 +219,10 @@ def card(m):
          "start": m["start"], "end": m.get("end") or "(running)", "minutes": round((t1 - t0) / 60, 1),
          "notes": m.get("notes", ""), "tokens": m.get("tokens"), "defs": DEFS}
     c["estimator"] = estimator_shadow(recs, att)
-    c["A"] = outcome(acount, aud)
+    c["A"] = outcome(acount, aud, recs)
     budget = time_budget(recs, msgs, t0, t1)
     c["B"] = efficiency(recs, aud, budget, c["A"].get("exp_gain", 0), t0, t1)
+    gold_rates(c["A"], c["B"])
     c["C"] = safety(recs, msgs, att)
     c["D"], c["values_aware"] = value_lost(recs, msgs, stores, aud, Then.of(nick))
     c["E"] = navigator(recs, t1, c["minutes"])
@@ -251,8 +252,27 @@ def estimator_shadow(recs, att):
     return h
 
 
-def outcome(acount, aud):
-    """A. deaths; from the first and last audits: clvl, exp gained, gold (house-held), the deepest audit."""
+def stash_credit(recs):
+    """(stored_value, debits) in these records (2.50.0, the user: storing a find instead of selling it deflated the
+    mission's gold): the values of the fresh finds stored (`stash_store` fresh), and the credited values of stored
+    finds withdrawn and sold (`stash_credit_sold`), subtracted so a find isn't counted twice."""
+    stored = sum(int(d.get("value") or 0) for d in recs if d.get("kind") == "stash_store" and d.get("fresh"))
+    debits = sum(int(d.get("credited_value") or 0) for d in recs if d.get("kind") == "stash_credit_sold")
+    return stored, debits
+
+
+def gold_rates(A, B):
+    """B's gold change per dungeon minute, raw and adjusted (A's gold_change and gold_change_adj; 2.50.0). The table's
+    $/dm stays gold_found_per_dmin (gold picked up in the dungeon: no sales, so storing doesn't move it); adj$/dm is the
+    adjusted change."""
+    dmin = B.get("dungeon_min")
+    B["gold_change_per_dmin"] = round(A["gold_change"] / dmin, 1) if dmin and "gold_change" in A else None
+    B["gold_change_adj_per_dmin"] = round(A["gold_change_adj"] / dmin, 1) if dmin and "gold_change_adj" in A else None
+
+
+def outcome(acount, aud, recs=()):
+    """A. deaths; from the first and last audits: clvl, exp gained, gold (house-held), the deepest audit; the stash's
+    credit (2.50.0): stored_value, stash_debits and gold_change_adj = gold_change + stored_value - stash_debits."""
     a_ = {"deaths": acount.get("dead", 0)}
     if aud:
         a, b = aud[0], aud[-1]
@@ -261,6 +281,8 @@ def outcome(acount, aud):
         a_.update(clvl=[a.get("clvl"), b.get("clvl")], exp_gain=(b.get("exp") or [0])[0] - (a.get("exp") or [0])[0],
                   gold=[ga, gb], gold_change=gb - ga,
                   max_depth_ft=max(d.get("depth_ft") or 0 for d in aud))
+        stored, debits = stash_credit(recs)
+        a_.update(stored_value=stored, stash_debits=debits, gold_change_adj=gb - ga + stored - debits)
     return a_
 
 
@@ -608,7 +630,9 @@ def show(c):
            (f"  (damage D8 and item values D9 as of {c['defs']}; item values with {c.get('values_aware')})"
             if c.get("defs") else None),
            f"  {c['notes']}" if c["notes"] else None,
-           (f"  A outcome    clvl {A['clvl']}, exp +{A['exp_gain']}, gold {A['gold']} ({A['gold_change']:+d}), "
+           (f"  A outcome    clvl {A['clvl']}, exp +{A['exp_gain']}, gold {A['gold']} ({A['gold_change']:+d}"
+            + (f"; {A['gold_change_adj']:+d} with {A['stored_value']} stored, {A['stash_debits']} debited"
+               if A.get("stored_value") or A.get("stash_debits") else "") + "), "
             f"deepest {A['max_depth_ft']} ft, deaths {A['deaths']}") if "clvl" in A else "  A outcome    -",
            f"  B efficiency {B['dungeon_min']} dungeon min; {B['exp_per_dmin']} exp/dmin; {B['levels_per_dhour']} "
            f"levels/dungeon h; gold found {B['gold_found']} ({B['gold_found_per_dmin']}/dmin); Navigator-wait "
@@ -665,7 +689,8 @@ TABLE = [("mission", lambda c: c["label"]), ("nav", lambda c: c["nav_model"]), (
          ("usd", lambda c: _usd(c)),
          ("usd/dh", lambda c: _per(_usd(c), c["B"]["dungeon_min"] / 60)),
          ("usd/kxp", lambda c: _per(_usd(c), c["A"].get("exp_gain", 0) / 1000)),
-         ("gold/usd", lambda c: _per(c["B"].get("gold_found"), _usd(c), 0))]
+         ("gold/usd", lambda c: _per(c["B"].get("gold_found"), _usd(c), 0)),
+         ("adj$/dm", lambda c: c["B"].get("gold_change_adj_per_dmin"))]      # (2.50.0: last, so older readers' columns hold)
 
 
 def _usd(c):
