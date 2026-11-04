@@ -1,5 +1,11 @@
 {
- "items": {},
+ "items": {
+  "a Ring of Resist Fire {m62}": {
+   "why": "gives resist fire",
+   "visit": 56,
+   "t": "2026-11-04 09:46"
+  }
+ },
  "decided": {
   "a Ring of Resist Fire": "sell",
   "a Ring of Protection [+7]": "sell",
@@ -23,5 +29,5 @@
   "an Awl-Pike (1d8) (+2,+5)": "sell",
   "a Ring of Feather Falling": "sell"
  },
- "town_visits": 54
+ "town_visits": 56
 }

@@ -1,0 +1,189 @@
+{
+ "label": "m62",
+ "nav_model": "sonnet",
+ "effort": "medium",
+ "report": "compact",
+ "start": "2026-11-04 09:09",
+ "end": "2026-11-04 09:51",
+ "minutes": 42.0,
+ "notes": "first mission on 2.50.0 (session 12): tests sessions 10-12 changes",
+ "tokens": {
+  "turns": 17,
+  "input": 34,
+  "output": 4920,
+  "cache_read": 531711,
+  "cache_write": 40575,
+  "write_5m": 40575,
+  "write_1h": 0,
+  "model": "claude-sonnet-5-5",
+  "final_usage_turns": 17,
+  "usd": 0.204,
+  "transcript": "agent-af50df41c67e4f197.jsonl"
+ },
+ "defs": "2026-11-01 (2.44.0)",
+ "estimator": {
+  "n": 0,
+  "compared": 0,
+  "agree": 0,
+  "in_time_turn": 0,
+  "before_next_act": 0,
+  "skipped": 0,
+  "compute_max_s": null,
+  "disagreements": [],
+  "hard_n": 0,
+  "hard_compared": 0,
+  "hard_agree": 0,
+  "hard_choices": {}
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   29,
+   29
+  ],
+  "exp_gain": 2587,
+  "gold": [
+   23215,
+   25683
+  ],
+  "gold_change": 2468,
+  "max_depth_ft": 800,
+  "stored_value": 305,
+  "stash_debits": 0,
+  "gold_change_adj": 2773
+ },
+ "B": {
+  "dungeon_min": 32.5,
+  "town_min": 8.8,
+  "exp_per_dmin": 79.5,
+  "levels_per_dhour": 0.17,
+  "gold_found": 2254,
+  "gold_found_per_dmin": 69.3,
+  "time_budget_min": {
+   "exploring": 16.3,
+   "fighting": 11.5,
+   "town_other": 6.5,
+   "travel_dive": 4.2,
+   "town_no_goal": 1.5,
+   "town_idle_end": 1.0,
+   "recall_wait": 0.6,
+   "no_goal_dungeon": 0.1
+  },
+  "navigator_wait_pct": 4,
+  "gold_change_per_dmin": 75.9,
+  "gold_change_adj_per_dmin": 85.3
+ },
+ "C": {
+  "lowest_hp": [
+   322,
+   358,
+   90,
+   "09:28:43"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 0,
+  "emergency_alerts": 0,
+  "phase": 0,
+  "wor_escape": 0,
+  "wor_travel": 2,
+  "stairs_flee": 0,
+  "teleport": 0,
+  "cures_quaffed": 2,
+  "escape_records": 3,
+  "recalls_landed": 2
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 747,
+  "loot_abandoned_est": 5975,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 0,
+  "total": 6722,
+  "sales": 7,
+  "sales_valued": 2,
+  "worst_sales": [],
+  "left_behind": [
+   "Staff of Sleep Monsters",
+   "Scroll titled \"ip anrog eresh\"",
+   "Potion of Speed",
+   "Ring of Weakness",
+   "Long Bow (x3)",
+   "Light Crossbow (x3)",
+   "Hard Leather Armour [6]",
+   "Brass Lantern (with 4307 turns of light)",
+   "Amulet of Resist Acid",
+   "Scroll of Teleportation"
+  ],
+  "irreplaceable": [
+   "4 Amulets of Resist Acid {m62}",
+   "Amulet of Resist Acid",
+   "Potion of Speed"
+  ]
+ },
+ "values_aware": "kinds known as logged",
+ "E": {
+  "reports": 11,
+  "commands": 19,
+  "commands_per_min": 0.5,
+  "report_to_action_med_s": 2.6,
+  "report_to_action_p90_s": 2.6,
+  "reports_without_command_pct": 64,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 0,
+  "report_chars": 50092,
+  "order_report_age_med_s": 1.4,
+  "order_report_age_p90_s": 137.8
+ },
+ "F": {
+  "audit_diffs": 1,
+  "audit_checks": 84,
+  "perception_gaps": 1,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.0,
+  "runs_sent": 1251,
+  "pilot_down_min": 0.0,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Orc shaman": 36,
+  "Half-orc": 20,
+  "Druid": 18,
+  "Gnome mage": 16,
+  "Dark hound": 13,
+  "Lemure": 12,
+  "Cave orc": 12,
+  "Black orc": 12,
+  "unseen": 26,
+  "unattributed": 64
+ },
+ "damage_hp_lost": 295,
+ "alerts": {
+  "tactic": 53,
+  "rule": 3,
+  "lost": 2,
+  "supplies": 2,
+  "parked": 1,
+  "started": 1,
+  "goal_done": 1,
+  "stat_drained": 1,
+  "review": 1,
+  "plan_done": 1
+ },
+ "plan_news": {
+  "goal_done": 23,
+  "unseen_attacker": 18,
+  "plan": 13,
+  "interesting_item": 11,
+  "breeders": 5,
+  "drainer": 4,
+  "fearer": 3,
+  "thief": 2,
+  "pack_full": 2,
+  "structure": 1
+ }
+}

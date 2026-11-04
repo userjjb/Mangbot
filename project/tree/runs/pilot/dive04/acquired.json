@@ -1,5 +1,279 @@
 {
- "items": [],
- "trip_t0": 0,
+ "items": [
+  {
+   "name": "a Scroll of Identify",
+   "kind": "scroll of identify",
+   "known": true,
+   "t": 1793801593.9,
+   "mission": "m62"
+  },
+  {
+   "name": "a Long Sword (2d5)",
+   "kind": "long sword",
+   "known": false,
+   "t": 1793801595.2,
+   "mission": "m62"
+  },
+  {
+   "name": "a Lucerne Hammer (2d5)",
+   "kind": "lucerne hammer",
+   "known": false,
+   "t": 1793801757.0,
+   "mission": "m62"
+  },
+  {
+   "name": "a Rapier (1d6)",
+   "kind": "rapier",
+   "known": false,
+   "t": 1793801763.3,
+   "mission": "m62"
+  },
+  {
+   "name": "Soft Studded Leather [5]",
+   "kind": "soft studded leather",
+   "known": false,
+   "t": 1793801854.1,
+   "mission": "m62"
+  },
+  {
+   "name": "a Wand of Stone to Mud",
+   "kind": "wand of stone to mud",
+   "known": false,
+   "t": 1793801884.5,
+   "mission": "m62"
+  },
+  {
+   "name": "a Dagger (1d4)",
+   "kind": "dagger",
+   "known": false,
+   "t": 1793802093.8,
+   "mission": "m62"
+  },
+  {
+   "name": "a Rapier (1d6)",
+   "kind": "rapier",
+   "known": false,
+   "t": 1793802270.4,
+   "mission": "m62"
+  },
+  {
+   "name": "a Wand of Stone to Mud",
+   "kind": "wand of stone to mud",
+   "known": false,
+   "t": 1793802272.0,
+   "mission": "m62"
+  },
+  {
+   "name": "a Potion of Neutralize Poison",
+   "kind": "potion of neutralize poison",
+   "known": true,
+   "t": 1793802272.9,
+   "mission": "m62"
+  },
+  {
+   "name": "a Furry Mushroom",
+   "kind": "furry mushroom",
+   "known": false,
+   "t": 1793802273.9,
+   "mission": "m62"
+  },
+  {
+   "name": "a Tan Mushroom",
+   "kind": "tan mushroom",
+   "known": false,
+   "t": 1793802277.6,
+   "mission": "m62"
+  },
+  {
+   "name": "a Light Crossbow (x3)",
+   "kind": "light crossbow",
+   "known": false,
+   "t": 1793802298.8,
+   "mission": "m62"
+  },
+  {
+   "name": "a Main Gauche (1d5)",
+   "kind": "main gauche",
+   "known": false,
+   "t": 1793802320.8,
+   "mission": "m62"
+  },
+  {
+   "name": "16 Potions of Cure Critical Wounds {for sale 200}",
+   "kind": "potion of cure critical wound",
+   "known": true,
+   "t": 1793802323.4,
+   "mission": "m62"
+  },
+  {
+   "name": "a Broad Sword (2d5)",
+   "kind": "broad sword",
+   "known": false,
+   "t": 1793802345.5,
+   "mission": "m62"
+  },
+  {
+   "name": "3 Potions of Speed",
+   "kind": "potion of speed",
+   "known": true,
+   "t": 1793802536.4,
+   "mission": "m62"
+  },
+  {
+   "name": "a Short Sword (1d7)",
+   "kind": "short sword",
+   "known": false,
+   "t": 1793802537.4,
+   "mission": "m62"
+  },
+  {
+   "name": "a Sling (x2)",
+   "kind": "sling",
+   "known": false,
+   "t": 1793802543.5,
+   "mission": "m62"
+  },
+  {
+   "name": "an Amulet of Resist Acid",
+   "kind": "resist acid",
+   "known": true,
+   "t": 1793802584.0,
+   "mission": "m62"
+  },
+  {
+   "name": "a Dagger (1d4)",
+   "kind": "dagger",
+   "known": false,
+   "t": 1793802586.5,
+   "mission": "m62"
+  },
+  {
+   "name": "a Lance (2d8)",
+   "kind": "lance",
+   "known": false,
+   "t": 1793802621.0,
+   "mission": "m62"
+  },
+  {
+   "name": "a Ring of Resist Fire",
+   "kind": "resist fire",
+   "known": true,
+   "t": 1793802725.1,
+   "mission": "m62"
+  },
+  {
+   "name": "a Wand of Slow Monster",
+   "kind": "wand of slow monster",
+   "known": false,
+   "t": 1793802767.4,
+   "mission": "m62"
+  },
+  {
+   "name": "a Staff of Door/Stair Location",
+   "kind": "staff of door/stair location",
+   "known": false,
+   "t": 1793802777.6,
+   "mission": "m62"
+  },
+  {
+   "name": "a Wand of Stinking Cloud",
+   "kind": "wand of stinking cloud",
+   "known": false,
+   "t": 1793802811.1,
+   "mission": "m62"
+  },
+  {
+   "name": "a Scroll of Identify",
+   "kind": "scroll of identify",
+   "known": true,
+   "t": 1793802996.2,
+   "mission": "m62"
+  },
+  {
+   "name": "a Broad Axe (2d6)",
+   "kind": "broad axe",
+   "known": false,
+   "t": 1793802999.7,
+   "mission": "m62"
+  },
+  {
+   "name": "a Sabre (1d7)",
+   "kind": "sabre",
+   "known": false,
+   "t": 1793803015.1,
+   "mission": "m62"
+  },
+  {
+   "name": "2 Amulets of Resist Acid {m62}",
+   "kind": "amulet of resist acid",
+   "known": true,
+   "t": 1793803113.6,
+   "mission": "m62"
+  },
+  {
+   "name": "a Piece of Elvish Waybread",
+   "kind": "piece of elvish waybread",
+   "known": true,
+   "t": 1793803153.3,
+   "mission": "m62"
+  },
+  {
+   "name": "a Ring of Slow Digestion",
+   "kind": "slow digestion",
+   "known": true,
+   "t": 1793803209.1,
+   "mission": "m62"
+  },
+  {
+   "name": "a Scroll titled \"ip anrog eresh\" {tried}",
+   "kind": "scroll titled \"ip anrog eresh\"",
+   "known": false,
+   "t": 1793803227.7,
+   "mission": "m62"
+  },
+  {
+   "name": "a Trident (1d8)",
+   "kind": "trident",
+   "known": false,
+   "t": 1793803258.6,
+   "mission": "m62"
+  },
+  {
+   "name": "a Cutlass (1d7)",
+   "kind": "cutlass",
+   "known": false,
+   "t": 1793803262.6,
+   "mission": "m62"
+  },
+  {
+   "name": "a Staff of Light",
+   "kind": "staff of light",
+   "known": false,
+   "t": 1793803284.4,
+   "mission": "m62"
+  },
+  {
+   "name": "a Wand of Magic Missile",
+   "kind": "wand of magic missile",
+   "known": false,
+   "t": 1793803319.8,
+   "mission": "m62"
+  },
+  {
+   "name": "3 Amulets of Resist Acid {m62}",
+   "kind": "amulet of resist acid",
+   "known": true,
+   "t": 1793803324.6,
+   "mission": "m62"
+  },
+  {
+   "name": "4 Amulets of Resist Acid {m62}",
+   "kind": "amulet of resist acid",
+   "known": true,
+   "t": 1793803429.4,
+   "mission": "m62"
+  }
+ ],
+ "trip_t0": 1793801584.7,
  "credits": {}
 }

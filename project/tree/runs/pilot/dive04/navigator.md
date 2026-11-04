@@ -720,3 +720,5 @@
 - 18:31:08 town 100% | town 18:31, trip 1: +2200 XP, +1958 gold in ~22 dmin; recall was early (Pilot ate mushrooms just as I recalled) | plan town buy WoR:3 + rations, then short trip 2 700-800 until time>18:42 | ~8 dmin at ~85 XP/min worth the recall pair
 - 18:34:35 town 100% | town done 18:34: 3 WoR, 3 rations, 4 CSW | trip 2 700-800 via recall until time>18:42 or cures<6 or phase<5; review sell Amulet of Resist Acid | acid already resisted by the armour; ~7 dmin left in budget
 - 18:44:58 town 100% | 18:45 town, idle, mission over: +2725 XP, +2402 gold found, no close calls (HP never below ~99% in reports) | marked Awl-Pike and Ring of Feather Falling for sale; stop | budget used; Awl-Pike is worse than the axe, FF not needed
+- 09:10:40 town 100% | Mission plan | plan town buy WoR:3, Speed:2; one trip 700-800 until cures<4 or phase<5 or minutes>33 then town, no react except thieves kill | one long trip beats two; 45 min budget
+- 09:50:02 town 100% | End | in town idle; trip 15 levels 38 min, XP +2587, gold +2254 | review Ring of Resist Fire left undecided (redundant, armor has fire resist)

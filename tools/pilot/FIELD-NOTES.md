@@ -86,7 +86,10 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
 - **Breeders that confuse** (Hummerhorns, 800 ft, m55): confused, you can't read scrolls and staffs often fail. The
   Pilot now cures a long confusion itself (CSW, then CCW); leave such a level at once.
 
-## 700-800 ft at clvl 29, AC ~104 (m56-m61)
+## 700-800 ft at clvl 29, AC ~104 (m56-m62)
+- **m62 (11-04): 80 XP/dmin**, one 38-minute trip of 15 levels (Sonnet): the same mix -- light hounds, lice and
+  Hummerhorn breeders, a Moaning spirit that drains DEX (the Pilot leaves the level; plan town buys and drinks the
+  Restore). One long trip with `minutes>33` fit the 45 minutes well.
 - **m61 (11-03): 84 XP/dmin** at 750-800 ft with 9 levels in trip 1 -- Light hounds blind (the Pilot cures with
   CSW/CCW), breeders (fleas, worms, lice) and trap-laden levels make it change level often: that's normal. A Lost
   soul drained WIS, a trap CON (a Restore found on the level undid it).
@@ -95,7 +98,8 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
   2.49.0 `food ~N` once a hunger crossing has pinned the stomach exactly). Still,
   a glance at `Food N` in the status at a trip's start costs nothing.
 - **Word of Recall:** the kit keeps 2; for a third, put `buy Word_of_Recall:3` on every `plan town` (m61: the
-  later visits without it restocked to 2).
+  later visits without it restocked to 2). The `plan town` a trip plan runs at its end (`then town`) uses the kit
+  alone: it also restocks to 2 (m62); the third WoR is bought again on your next own `plan town`.
 - **Mirkwood spider bands at 750 ft** ended or shortened three trips (m57, m59): the Pilot phases, drinks Speed and
   leaves; with 9+ close and no stairs reachable it recalls home. Let it -- a trip that ends early on a band is a good
   trip, not a failure.

@@ -3121,5 +3121,29 @@
    "usd": 0.569,
    "transcript": "agent-a6d8449516eac44f2.jsonl"
   }
+ },
+ {
+  "label": "m62",
+  "nick": "dive04",
+  "start": "2026-11-04 09:09",
+  "end": "2026-11-04 09:51",
+  "navigator": "sonnet",
+  "effort": "medium",
+  "report": "compact",
+  "notes": "first mission on 2.50.0 (session 12): tests sessions 10-12 changes",
+  "version": "2.50.0",
+  "tokens": {
+   "turns": 17,
+   "input": 34,
+   "output": 4920,
+   "cache_read": 531711,
+   "cache_write": 40575,
+   "write_5m": 40575,
+   "write_1h": 0,
+   "model": "claude-sonnet-5-5",
+   "final_usage_turns": 17,
+   "usd": 0.204,
+   "transcript": "agent-af50df41c67e4f197.jsonl"
+  }
  }
 ]

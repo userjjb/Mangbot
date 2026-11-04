@@ -28,7 +28,7 @@ From 2026-10-22: after mission 23 the user stopped patching mission by mission. 
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
 ## 2.50.0 -- 2026-11-04 (session 12, the user's decisions of 11-04)
-No missions yet on it. **Play changes:**
+Missions: m62 (Sonnet medium, 79.5 XP/dmin, report runs/pilot/dive04/reports/2026-11-04-mission62.md). **Play changes:**
 - **The stash keeps valuable spares the shops can't sell** (the user: "spare items that are valuable and can't be
   bought should be stored when possible"). Besides the stat Restores and Wands of Stone to Mud it now holds (a) the
   **best backup for each worn slot**: an unworn, identified ego/artifact wearable (or jewellery/a light of a kind
