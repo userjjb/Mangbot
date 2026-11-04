@@ -1368,6 +1368,10 @@ class TownKit(Goal):
         """upgrade: wear/wield what the policy prefers before anything is sold; then sell."""
         now = ctx.now
         if self.stage == "upgrade":
+            # (2.55.0: a stat-gain potion carried is drunk first)
+            if p.quaff_gain("plan town"):
+                self.t = now + 1.0
+                return None
             # (2.50.0: the last finds of the mission marked with its label before anything is stored)
             if p.inscribe_finds():
                 self.t = now

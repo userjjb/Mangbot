@@ -78,6 +78,8 @@ ORDER = """
     plan_sent_during_plan_town_is_queued no_food_alert_on_the_crossing_tick
     refused_drops_end_the_stash_step a_permanent_light_beats_the_lantern
     dive_walks_to_stairs_past_unexplored_squares
+    unknowns_identified_before_sale
+    felt_good_gear_identified_average_sold
 """.split()
 
 

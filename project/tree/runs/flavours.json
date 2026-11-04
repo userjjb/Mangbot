@@ -404,6 +404,16 @@
   "kind": "Scroll of Light",
   "source": "Advisor L_items (Dive04 09-29 22:46:19)"
  },
+ "Scroll titled \"ionrol sanmung\"": {
+  "junk": false,
+  "kind": "Scroll of *Enchant Weapon*",
+  "source": "identified"
+ },
+ "Scroll titled \"ip anrog eresh\"": {
+  "junk": true,
+  "kind": "Scroll of Trap Creation",
+  "source": "identified"
+ },
  "Scroll titled \"ishx therbin\"": {
   "junk": false,
   "kind": "Scroll of Satisfy Hunger",
@@ -453,6 +463,11 @@
   "junk": false,
   "kind": "Scroll of Magic Mapping",
   "source": "sold in a shop"
+ },
+ "Scroll titled \"oxtri ab od\"": {
+  "junk": false,
+  "kind": "Scroll of *Identify*",
+  "source": "identified"
  },
  "Scroll titled \"pay dalfvom\"": {
   "junk": true,

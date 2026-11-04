@@ -285,7 +285,24 @@ the Identify price (the TownKit buys scrolls for them).
 level. `flavour_of(it)` returns the table entry for an item the character isn't aware of yet (`unknown_flavour`:
 flavoured tval or a Mushroom, no ` of ` in the name); `show()` adds "(= KIND; not aware)" in the `pack` listing.
 
-**Rules for unknowns**: `unknown_sell_refusal` (used by selling): table-junk sells; a flavour the table knows as a non-junk kind doesn't (use or identify it);
+**Identify before selling** (2.55.0, the user after m64, whose plan town sold an unknown Pungent Potion for 9 gold --
+a Potion of Strength, relisted at 12,560 -- "identify everything other than weapon/armor with a pseudo-ID already"):
+`must_identify(it)` names an unworn item the policy keeps until it is identified -- an unknown flavour (potion, scroll,
+wand, staff, rod, ring, amulet, mushroom) unless the flavour table knows it as junk; jewellery or a device whose plusses
+or charges aren't known; a weapon, bow or armour piece (`ID_WEAR_TVALS`) whose plusses aren't shown, unfelt or felt
+{good}/{excellent}/{special} (the user's correction). Only gear felt {average}, {worthless}, {cursed}, {broken} or
+{terrible} (`PLAIN_FEELING_RE`) goes by its feeling without identifying. `town_rule` keeps them ("unknown:
+identified before it is sold"), so `town_sell_count` is 0 (except unknown wands/staffs/rods when broke for a Word of
+Recall, as since m27), `town_make_room` never picks them, and `identify_candidates` includes them whatever their value
+(in the dungeon not the unfelt weapons and armour, `unfelt`: pseudo-ID feels them for free), ranked by expected sale value, so
+`town_identify_wanted` buys a scroll for each (Staff of Perception charges count). The identify news names the cost
+(a ~N-gold scroll or a Perception charge); a flavour learned is learned for the server (runs/flavours.json). The
+dungeon's make-room still values an unknown flavour by its expectation and never calls it junk.
+**Stat-gain potions** (`gain_potion`: Strength, Intelligence, Wisdom, Dexterity, Constitution, Charisma, Augmentation,
+Experience; not Enlightenment, not the Restores) are never sold (`town_rule` "keep"; priceless for room) and drunk at
+once (`quaff_gain`: policy_tick at a safe moment, and plan town's upgrade stage).
+
+**Rules for unknowns** (before 2.55.0 the selling rule; now behind `must_identify`): `unknown_sell_refusal` (used by selling): table-junk sells; a flavour the table knows as a non-junk kind doesn't (use or identify it);
 one of a stack sells (a free
 identification); a lone unknown scroll should be read; potions/scrolls sell while we've never been below 1000 ft;
 deeper potions/scrolls, and all unknown devices and jewellery, should be identified first. `probably_special(name)`:

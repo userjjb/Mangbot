@@ -625,3 +625,57 @@ def plan_sent_during_plan_town_is_queued():
         r[1].startswith("BANK: 26000 gold still carried -- `house deposit` (house: failed") and bank
     return ok, f"queued {q}; plan {shown!r}; after stop {dropped}; goal queued {q2}, started {started} -> {goal}, " \
                f"news {news}; architect {arch}; finish {r[1][:120]!r}; bank alert {bank}"
+
+
+@case
+def unknowns_identified_before_sale():
+    """2.55.0 (the user after m64: plan town sold an unknown Pungent Potion for 9 gold -- a Potion of Strength,
+    relisted at 12,560 -- "identify everything other than weapon/armor with a pseudo-ID already"): an unknown flavour,
+    unknown jewellery/devices and unfelt weapons/armour are kept until identified, and all count for plan town's
+    Identify scrolls whatever their value (unfelt weapons not in the dungeon: pseudo-ID feels them free); a felt
+    {average} sword sells as before. A known stat-gain potion is never sold and is drunk (plan town's upgrade stage,
+    a safe moment)."""
+    p = _town(pilot(pack=[("a Pungent Potion", 75), ("a Cutlass (1d7)", 23), ("a Long Sword (2d5) {average}", 23),
+                          ("a Ring of Protection", 45)], gold=2000))
+    p.unknown_flavour = P.Pilot.unknown_flavour.__get__(p)
+    p.flavours = {}
+    pot, cut, sword, ring = p.w.items()
+    sells = {i["name"]: p.town_sell_count(i) for i in p.w.items()}
+    rules = p.town_rule(pot)
+    cands = sorted(i["name"] for _, i in p.identify_candidates(2 * 80))
+    wanted = p.town_identify_wanted()
+    p.w.in_dungeon = True
+    dcands = sorted(i["name"] for _, i in p.identify_candidates(20))
+    p.w.in_dungeon = False
+    g = _town(pilot(pack=[("a Potion of Strength", 75), ("a Potion of Restore Strength", 75),
+                          ("a Potion of Enlightenment", 75)]))
+    gains = [g.gain_potion(i) for i in g.w.items()]
+    gsell = g.town_sell_count(g.w.items()[0])
+    sent = []
+    g.cmd = lambda line, why, hold=0.4: sent.append(line)
+    g.pending_use, g.busy_until = None, 0
+    drank = g.quaff_gain("plan town")
+    ok = sells == {"a Pungent Potion": 0, "a Cutlass (1d7)": 0, "a Long Sword (2d5) {average}": 1,
+                   "a Ring of Protection": 0} and rules[0] == "keep" and "identified before" in rules[1] and \
+        cands == ["a Cutlass (1d7)", "a Pungent Potion", "a Ring of Protection"] and wanted == 3 and \
+        dcands == ["a Pungent Potion", "a Ring of Protection"] and gains == [True, False, False] and gsell == 0 and \
+        drank and sent == ["custom q item=0"]
+    return ok, (f"sells {sells}; rule {rules}; town candidates {cands} ({wanted} wanted); dungeon {dcands}; gain "
+                f"potions {gains}, Strength sold {gsell}, drunk {drank} {sent}")
+
+
+@case
+def felt_good_gear_identified_average_sold():
+    """2.55.0, the user's correction: gear felt {good}, {excellent} or {special} is identified before selling too
+    (whatever its value); only {average}, {worthless}, {cursed}, {broken} gear goes by its feeling. A {good} Cutlass
+    is kept and counted for Identify (in the dungeon too); an {average} one sells as is."""
+    p = _town(pilot(pack=[("a Cutlass (1d7) {good}", 23), ("a Cutlass (1d7) {average}", 23)], gold=2000))
+    good, avg = p.w.items()
+    sells = (p.town_sell_count(good), p.town_sell_count(avg))
+    must = (p.must_identify(good), p.must_identify(avg))
+    cands = [i["name"] for _, i in p.identify_candidates(10 ** 6)]
+    p.w.in_dungeon = True
+    dcands = [i["name"] for _, i in p.identify_candidates(10 ** 6)]
+    ok = sells == (0, 1) and must == (True, False) and cands == ["a Cutlass (1d7) {good}"] and \
+        dcands == ["a Cutlass (1d7) {good}"]
+    return ok, f"sold (good, average) {sells}; must identify {must}; town candidates {cands}; dungeon {dcands}"

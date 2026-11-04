@@ -516,6 +516,11 @@ class TownMixin:
         name, tv = it["name"], it["tval"]
         if it.get("equip"):
             return None
+        # (2.55.0, the user: a stat-gain potion is never sold -- the Pilot drinks it, quaff_gain)
+        if self.gain_potion(it):
+            return ("keep", "a stat-gain potion: the Pilot drinks it")
+        if self.must_identify(it):
+            return ("keep", "unknown: identified before it is sold (plan town buys the Scrolls of Identify)")
         # (2.53.0: an artifact wearable can't be stored -- the server won't drop it above its depth -- so it stays in
         # the pack, never sold by the policy; the Navigator's `review sell` or `sell !` can)
         if tv in geareval.SLOT_OF_TVAL and self.true_artifact(name, tv) and \
@@ -608,9 +613,13 @@ class TownMixin:
             return 0
         if not self.town_buyers(it) or bad_inscription(name):
             return 0
+        # (2.55.0, the user after m64 -- a Pungent Potion sold for 9 gold was a Potion of Strength, relisted at 12,560:
+        # "identify everything other than weapon/armor with a pseudo-ID already". An unknown item is identified
+        # before it is sold: kept until then. Only unknown wands, staffs and rods still sell when broke for a Word of
+        # Recall -- m27 had nothing else to sell and no gold for Identify)
+        if self.must_identify(it) and not (it["tval"] in (55, 65, 66) and self.broke_for_recall()):
+            return 0
         if self.unknown_flavour(it):
-            # (broke for a Word of Recall: unknown wands, staffs and rods sell anyway -- m27 had nothing to sell but
-            # unknown devices and no gold for Identify; jewellery stays)
             if self.unknown_sell_refusal(it, 1) and not (it["tval"] in (55, 65, 66) and self.broke_for_recall()):
                 return 0
             f = self.flavour_of(it)
@@ -644,7 +653,8 @@ class TownMixin:
             return False
         tries = kit.room_tries
         cand = sorted(((self.pack_value(i), i) for i in w.items()), key=lambda vi: vi[0])
-        cand = [(v, i) for v, i in cand if v < float("inf")]
+        # (2.55.0: never an unknown waiting for Identify, nor a stat-gain potion)
+        cand = [(v, i) for v, i in cand if v < float("inf") and not self.must_identify(i) and not self.gain_potion(i)]
         if not cand or tries >= 6:
             if not kit.room_said:
                 kit.room_said = True
@@ -717,18 +727,22 @@ class TownMixin:
             if (self.flavour_of(it) or {}).get("junk") or bad_inscription(name):
                 continue
             iv = self.iv(name)
-            if iv.known is not False:
+            # (2.55.0, the user: every unknown but felt weapons/armour is identified before it is sold, whatever its
+            # expected value -- in the dungeon not the unfelt weapons and armour, which a warrior's pseudo-ID feels for
+            # free soon enough)
+            must = self.must_identify(it) and (not self.w.in_dungeon or not self.unfelt(it))
+            if iv.known is not False and not must:
                 continue
             bare = bare_name(name).lower()
             prio = float("inf") if bare in self.ability_sources or iv.p_irreplaceable >= 0.2 else iv.value * self.pay_cut(iv.tval)
-            if prio >= minimum:
+            if prio >= minimum or must:
                 out.append((prio, it))
         return out
 
     def town_identify_wanted(self):
         # worth a scroll when its expected value sold is at least twice the scroll's price (likely
         # egos and ability sources always count; m24 bought 3 for 189 of 718 gold, partly for a
-        # Staff of Detect Invisible)
+        # Staff of Detect Invisible); 2.55.0: and every item must_identify names, whatever its value
         return len(self.identify_candidates(2 * (self.price_of("Identify", 5) or 80)))
 
     def town_needs(self, kit, buylist):

@@ -345,7 +345,7 @@ class ItemsMixin:
         if it["tval"] == TV_FLASK and (self.provisions_spare() or self.flasks_spare(it)):
             return self.iv(n).value * self.pay_cut(TV_FLASK) * self.destroy_count(it)
         # (a fallback while its kit kind is short is a kit item: Boldness, Heroism under the kit's target -- 2.48.0)
-        prized = self.is_kit_item(it) or self.fallback_kept(it) or self.is_kept(n) or \
+        prized = self.is_kit_item(it) or self.fallback_kept(it) or self.is_kept(n) or self.gain_potion(it) or \
             bare_name(n).lower() in self.ability_sources
         # junk first: food, flasks and lights were priceless before this test, so an unknown or table-junk Mushroom
         # was never destroyed to make room (refactor-candidates A17); kit, kept and ability items stay priceless
@@ -773,6 +773,9 @@ class ItemsMixin:
         # spare Restore is carried at all (the user, m43: "why bring the restore potions?"). 2.50.0 (the user): or eat
         # a known restore mushroom that covers it, the cheapest first (restore_item; never one that could gorge us).
         # Not INT/WIS/CHR: town does those
+        # (2.55.0: a stat-gain potion carried is drunk at the first safe moment)
+        if self.quiet_moment(now) and self.quaff_gain("a safe moment"):
+            return True
         if w.in_dungeon and self.quiet_moment(now):
             it = self.restore_item(stats=tuple(self.STAT_FULL))
             if it:
@@ -840,7 +843,10 @@ class ItemsMixin:
                                       "letter": None if it["equip"] else chr(97 + it["item"])}
                 self.cmd(f"custom {'r' if tool is scroll else 'u'} item={tool['item']} dir={it['item']}",
                          f"identify {it['name']} (policy)", hold=1.0)
-                self.notify("tactic", f"identifying {it['name']} (the most valuable unknown)", news=True)
+                cost = self.price_of("Identify", 5) or 80
+                self.notify("tactic", f"identifying {it['name']} (the most valuable unknown; "
+                                      f"{'a Perception charge' if tool is staff else f'a ~{cost}-gold Scroll of Identify'}"
+                                      "; a flavour is learned once for the server)", news=True)
                 return True
         return False
 
@@ -1185,6 +1191,61 @@ class ItemsMixin:
         """An item's name, with the flavour table's kind for an unknown flavour."""
         f = self.flavour_of(it)
         return it["name"] + (f" (= {f['kind']}{', junk' if f['junk'] else ''}; not aware)" if f else "")
+
+    # weapons, bows and armour: identified by pseudo-ID's feeling for free once carried a while (a light never shows
+    # plusses: not here)
+    ID_WEAR_TVALS = (19, 20, 21, 22, 23, 30, 31, 32, 33, 34, 35, 36, 37, 38)
+    FEELING_RE = r"\{(average|good|excellent|special|worthless|cursed|broken|terrible|magical|uncursed)"
+    PLAIN_FEELING_RE = r"\{(average|worthless|cursed|broken|terrible)"   # (sold or destroyed by the feeling)
+    GAIN_KINDS = ("Strength", "Intelligence", "Wisdom", "Dexterity", "Constitution", "Charisma", "Augmentation",
+                  "Experience")
+
+    def must_identify(self, it):
+        """2.55.0 (the user after m64: a Pungent Potion sold for 9 gold was a Potion of Strength, relisted at 12,560 --
+        "identify everything other than weapon/armor with a pseudo-ID already"): this unworn item is identified before
+        the policy sells or destroys it. An unknown flavour (potion, scroll, wand, staff, rod, ring, amulet,
+        mushroom) unless the flavour table knows it as junk; jewellery or a device whose plusses or charges aren't
+        known; a weapon, bow or armour piece whose plusses aren't shown, unfelt or felt {good}/{excellent}/{special}
+        (the user's correction: only gear felt {average}, {worthless}, {cursed}, {broken} or {terrible} goes by its
+        feeling without identifying)."""
+        name = it["name"]
+        if it.get("equip") or bad_inscription(name):
+            return False
+        if self.unknown_flavour(it):
+            return not (self.flavour_of(it) or {}).get("junk")
+        tv = it["tval"]
+        if tv in (40, 45, 55, 65, 66):
+            return self.iv(name).known is False
+        if tv in self.ID_WEAR_TVALS:
+            if re.search(r"\([+-]\d+,[+-]\d+\)|\[\d+,[+-]\d+\]", name) or re.search(self.PLAIN_FEELING_RE, name):
+                return False
+            return True
+        return False
+
+    def unfelt(self, it):
+        """A weapon, bow or armour piece with no feeling and no plusses shown (pseudo-ID feels it for free soon)."""
+        n = it["name"]
+        return it["tval"] in self.ID_WEAR_TVALS and not re.search(self.FEELING_RE, n) and \
+            not re.search(r"\([+-]\d+,[+-]\d+\)|\[\d+,[+-]\d+\]", n)
+
+    def gain_potion(self, it):
+        """A known stat-gain potion (Strength ... Charisma, Augmentation, Experience; not Enlightenment, not the
+        Restores): never sold, drunk at once (quaff_gain; 2.55.0, the user)."""
+        return it.get("tval") == TV_POTION and bool(
+            re.search(r"\bPotions? of (" + "|".join(self.GAIN_KINDS) + r")\b", it["name"]))
+
+    def quaff_gain(self, why):
+        """Drink a stat-gain potion carried (one a call; 2.55.0). True if it sent one."""
+        if self.pending_use or gnow() < self.busy_until:
+            return False
+        it = next((i for i in self.w.items(tval=TV_POTION) if self.gain_potion(i)), None)
+        if not it:
+            return False
+        line = f"custom q item={it['item']}"
+        self.cmd(line, f"drink {it['name']}: a stat gain ({why})", hold=0.8)
+        if self.last_action and self.last_action[1] == line:
+            self.notify("tactic", f"quaffed {one_of(it['name'])}: a permanent stat gain", news=True)
+        return True
 
     def unknown_sell_refusal(self, it, n):
         """Why not to sell this unknown item now, or None (the memo's §4.4):

@@ -27,6 +27,18 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.55.0 -- 2026-11-04 (session 12, the user's decision after m64)
+No missions yet on it. **Play changes:**
+- **Identify before selling** (the user: "identify everything other than weapon/armor with a pseudo-ID already"; m64's
+  plan town sold an unknown Pungent Potion for 9 gold -- a Potion of Strength, relisted at 12,560). An unknown flavour,
+  jewellery or a device with unknown plusses or charges, and a weapon/bow/armour piece unfelt or felt
+  {good}/{excellent}/{special} (the user's correction) are kept until identified (`must_identify`; `town_rule` "keep"; never make-room's pick in town); plan town buys a Scroll of
+  Identify for each whatever its value (Perception charges count), the most valuable first when the gold runs short,
+  the rest kept for the next visit. Only gear felt {average}, {worthless}, {cursed} or {broken} goes by its feeling. The identify news names
+  the cost.
+- **Stat-gain potions** (Strength ... Charisma, Augmentation, Experience) are never sold and are drunk at once: at a
+  safe moment, and at the start of plan town.
+
 ## 2.54.0 -- 2026-11-04 (session 12, a play fix from m64)
 No missions yet on it. **Play changes:**
 - **Known stairs reachable only through unexplored squares:** m64 at 750 ft, the `>` (found by the Rod of Door/Stair

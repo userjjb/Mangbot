@@ -215,7 +215,12 @@ rules' role -- `value_refusal`, a forced sale's debt, the override check; a buy-
    (Boldness) is kept while its kit kind (Heroism) is short, and the stopgaps are sold (Satisfy Hunger; CLW in kits B
    and C; torches beside a lit lantern; mushrooms but the restoring ones; on the test server, Magic Mapping scrolls):
    pilot-items.md, "Fallbacks, stopgaps, crutches".
-3. **identify**: read Identify scrolls on the candidates (`identify_step`, pilot-items.md); buy more at the Alchemist
+3. **identify** (2.55.0, the user after m64: "identify everything other than weapon/armor with a pseudo-ID already"
+   -- clarified: only gear felt {average}/{worthless}/{cursed}/{broken} is sold by its feeling; felt
+   {good}/{excellent}/{special} gear is identified too -- every `must_identify` item counts, whatever its value, and is kept, not sold, until identified; with gold for
+   fewer scrolls than unknowns, the most valuable by expectation go first and the rest wait for the next visit; the
+   upgrade stage first drinks any stat-gain potion carried, `quaff_gain`): read Identify scrolls on the candidates
+   (`identify_step`, pilot-items.md); buy more at the Alchemist
    (5) for the unknowns worth it: `town_identify_wanted` counts unknown items whose expected sale value is at least
    twice the scroll's price (ability sources and likely-irreplaceable items always count), limited by gold beyond
    `town_reserve`, capped at 1.5x the price. Staff of Perception charges count as Identify scrolls. If anything was

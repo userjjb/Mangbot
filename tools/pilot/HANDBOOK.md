@@ -32,7 +32,8 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
 1. **In town:** `status`, then `plan town [kit=A|B|C|none] [buy NAME[:N][@MAX],...]`, then `wait` **until its
    goal_done** (since 2.53.0 a `plan trip` or `goal` sent meanwhile is queued and starts after it: "queued after plan
    town"; if the summary starts "BANK: N gold still carried", run `house deposit` before the trip). The Pilot sells
-   by policy, identifies what pays, and buys in priority order: Word of Recall to 2 (kits B and C then keep 3), the supply gate's minimums,
+   by policy, identifies every unknown before selling it (all but gear felt {average}/{worthless}/{cursed}/{broken}: since 2.55.0 it buys the
+   Scrolls of Identify for them; a stat-gain potion is drunk, never sold), and buys in priority order: Word of Recall to 2 (kits B and C then keep 3), the supply gate's minimums,
    Restore for a drained STR/DEX/CON, the kit, then your list (`NAME:N` means *have* N in all, not N more). From
    500 ft down the kit keeps **3 Heroism** (the fear cure) and **2 Potions of Speed** (Black Market, at most 600 each; often
    out of stock): the Pilot drinks Speed **at the start of a hard fight** (a unique or a monster near your level

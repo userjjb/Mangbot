@@ -1,5 +1,11 @@
 {
- "items": {},
+ "items": {
+  "a Ring of Protection [+11] {m64}": {
+   "why": "worth ~1600",
+   "visit": 68,
+   "t": "2026-11-04 12:18"
+  }
+ },
  "decided": {
   "a Ring of Resist Fire": "sell",
   "a Ring of Protection [+7]": "sell",
@@ -25,5 +31,5 @@
   "a Ring of Resist Fire {m62}": "sell",
   "an Amulet of Searching (+5) {m63}": "sell"
  },
- "town_visits": 67
+ "town_visits": 68
 }
