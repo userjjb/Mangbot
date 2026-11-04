@@ -1,7 +1,7 @@
 # The Documentation, condensed (for Architects and Advisors)
 
 The full version is [README.md](README.md) and its ten component files. This page is what a new Architect or Advisor
-needs in their head before touching anything. Session 11, 2026-11-03; matches version 2.48.1 (`github/VERSION`, CHANGELOG.md).
+needs in their head before touching anything. Session 11, 2026-11-03; matches version 2.49.0 (`github/VERSION`, CHANGELOG.md).
 
 ## What this is
 
@@ -76,11 +76,14 @@ QuietWait...). A **plan** sits above goals:
   home when a condition holds (supplies, time, XP...), pauses while the Navigator runs its own goal, survives restarts.
 - **`plan town`** (TownKit): the whole town visit by policy -- withdraw gold from the **wilderness house** (the tile
   north of town, door 60,129) first, upgrade, sell, identify, buy a tiered list (2 Recall, the supply gate's minimums,
-  Restores, kit A/B/C, the Navigator's list), fuel, eat, wait for restocks, recharge, enchant worn armour and (2.46.0)
+  Restores, kit A/B/C, the Navigator's list), fill the lantern to full (2.49.0: the flasks for it, the rest sold), eat,
+  wait for restocks, recharge, enchant worn armour and (2.46.0)
   the wielded melee weapon (while the next point's chance is >= 50%, ~+8; one `order enchant_max` for all the Enchant
   scrolls), then deposit gold and the stash in the house last.
 - **Supplies are counted in dungeon minutes.** `supply_gate` refuses a trip without the cures, Phase, Recall and light
-  the depth needs.
+  the depth needs. Food counts from the least the stomach holds: the **stomach tracker** (2.49.0, `stomach.py`) keeps
+  a range of the food from the server's digestion rule (the worn light's fuel is its tick clock) and the meals, pinned
+  exact when the hunger level falls a step (`food ~N` on the status line; `>=N` until then).
 
 ## The command surface ([commands.md](commands.md))
 

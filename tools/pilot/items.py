@@ -19,7 +19,8 @@ import geareval
 import itemvalue
 from common import (HERE, TV_SCROLL, TV_POTION, TV_FOOD, TV_FLASK, TV_LITE, weapon_brand, weapon_damage, flavour_key,
                     kind_key, bare_name, one_of, singular, bad_inscription)
-from world import gnow, light_turns, waited
+import stomach
+from world import gnow, light_fuel, light_turns, waited
 from goals import Wait, Goto, Recover, Flee, Recall, RestGoal
 from town_goals import Shop, TownKit
 if os.path.join(HERE, "..", "observe") not in sys.path:     # (shopmath, as pilot.py loads it)
@@ -331,8 +332,9 @@ class ItemsMixin:
             if self.destroy_count(it) == 0:
                 return float("inf")
             return self.iv(n).value * self.pay_cut(TV_FOOD) * self.destroy_count(it)
-        if it["tval"] == TV_FLASK and ((self.lantern_fuel() or 0) >= self.FUEL_TOPUP or self.provisions_spare()):
-            return self.iv(n).value * self.pay_cut(TV_FLASK) * it["number"]
+        # (2.49.0: in town the flasks beyond those that fill the lantern, `flasks_spare`; was: all once it had 9000)
+        if it["tval"] == TV_FLASK and (self.provisions_spare() or self.flasks_spare(it)):
+            return self.iv(n).value * self.pay_cut(TV_FLASK) * self.destroy_count(it)
         # (a fallback while its kit kind is short is a kit item: Boldness, Heroism under the kit's target -- 2.48.0)
         prized = self.is_kit_item(it) or self.fallback_kept(it) or self.is_kept(n) or \
             bare_name(n).lower() in self.ability_sources
@@ -354,13 +356,15 @@ class ItemsMixin:
 
     def destroy_count(self, it):
         """How many of this pack item a make-room may destroy: all, except food -- rations never (one slot, cheap; the
-        town visit sells extras), other food not the last of it. A dungeon stopgap while its primary is short: none
-        (2.48.0, the user: never discarded then)."""
+        town visit sells extras), other food not the last of it; flasks in town, those the lantern doesn't need to fill
+        it (2.49.0). A dungeon stopgap while its primary is short: none (2.48.0, the user: never discarded then)."""
         if self.w.in_dungeon and self.is_stopgap(it) and self.stopgap_cover(it["name"], it["number"]) > 0:
             return 0
         if self.w.in_dungeon and self.supply_kind(it):
             spare, _ = self.supply_spare(it)
             return spare if spare > 0 else it["number"]      # (none spare: the whole stack, at the value of its time)
+        if it["tval"] == TV_FLASK and not self.provisions_spare():
+            return self.flasks_spare(it)      # (2.49.0: in town, not those that fill the lantern)
         if it["tval"] == TV_FOOD and "Ration" in it["name"]:
             return 0          # (rations: never in town -- m47 cut 3 to 1 for a Staff of CLW and the Navigator bought food)
         if it["tval"] == TV_FOOD and "Mushroom" not in it["name"]:
@@ -379,9 +383,8 @@ class ItemsMixin:
         slow = (load - limit // 2) // (limit // 10) if load > limit // 2 else 0
         return limit // 2 - load, slow
 
-    # the top of each hunger level (the client sends only the level: Weak, Hungry, Fed, Full) and the food in each
-    # kind we may eat (object.txt pvals; mushrooms 500)
-    FOOD_TOP = {0: 1000, 1: 1000, 2: 2000, 3: 10000, 4: PY_FOOD_MAX}
+    # the food in each kind we may eat (object.txt pvals; mushrooms 500). The hunger levels' bounds are stomach.BOUNDS
+    # (2.49.0: FOOD_TOP went with the tracker)
     FOOD_VALUES = (("Ration", 5000), ("Biscuit", 500), ("Jerky", 1500), ("Slime Mold", 3000), ("Waybread", 7500),
                    ("Ale", 500), ("Wine", 1000), ("Potato", 1500), ("Cabbage", 1500), ("Carrot", 500), ("Beet", 750),
                    ("Squash", 2000), ("Corn", 1500))
@@ -405,11 +408,58 @@ class ItemsMixin:
         left = self.trip_minutes_left()
         return (self.SUPPLY_UNKNOWN_DMIN if left is None else left) + self.SUPPLY_MARGIN_DMIN
 
-    def food_floor(self):
-        """The least food the stomach can hold at this hunger level (the top of the level below: Fed is 2000-10000):
-        what spare/short decisions count on (2.48.1); the displays keep FOOD_MID."""
-        lv = self.w.hunger
-        return self.FOOD_TOP.get(lv - 1, 0) if lv > 0 else 0
+    # --- the stomach tracker (2.49.0, the user: calibrated by the hunger crossings; stomach.py has the server's rules)
+    def food_now(self):
+        """The least food the stomach can hold now: the bottom of the tracker's range (exact once a crossing has pinned
+        it), else of the hunger level (Fed: 2000) -- what spare/short decisions and the food minutes count on (2.48.1
+        took the level's bottom, `food_floor`; the middle stood still and ran out in m61)."""
+        return self.stomach.range(self.w.hunger)[0]
+
+    def food_top(self):
+        """The most food the stomach can hold now: the top of the tracker's range, else of the hunger level."""
+        return self.stomach.range(self.w.hunger)[1]
+
+    def stomach_tick(self, now):
+        """Every tick: the tracker's look at the hunger indicator (once the server has sent one), the game clock, the
+        worn light's fuel (its tick clock), the depth, the speed and the regeneration / slow-digestion flags; a log
+        record for a pin, a meal, a re-widening; saved for a restart on a change and every 30 s (no clock read
+        otherwise: the equivalence harness's fake clock moves on each read)."""
+        w = self.w
+        if "hunger" not in w.ind or w.depth is None:
+            return
+        flags = w.flags or {}
+        ev = self.stomach.update(w.hunger, now, fuel=light_fuel(w.inven), depth=w.depth,
+                                 speed=(w.ind.get("speed") or [0])[0] or 0, regen=bool(flags.get("regen")),
+                                 slow=bool(flags.get("slow_digest")), count_of=self.kind_count,
+                                 ghost=bool(getattr(w, "ghost", False)),
+                                 wall=time.time() if self.stomach.level is None else None)
+        for e in ev:
+            self.log("stomach", **e)
+        if ev or now - self.stomach_saved_t > 30:
+            self.stomach_saved_t = now
+            try:
+                with open(os.path.join(self.rundir, "stomach.json"), "w") as f:
+                    json.dump(self.stomach.to_json(time.time(), w.depth), f)
+            except (AttributeError, OSError):
+                pass
+
+    def kind_count(self, key):
+        """The pack's count of a kind (kind_key_of), from the pack as last read (no new query)."""
+        return sum(i["number"] for i in self.w.inven or () if not i.get("equip") and self.kind_key_of(i["name"]) == key)
+
+    def stomach_sent(self, line):
+        """An eat / quaff / read command just sent (ours or the Navigator's): the tracker waits for the pack to show
+        the item eaten, then adds its food (stomach.meal_effect)."""
+        m = re.match(r"(?:eat |custom [Eqr] item=)(\d+)\b", line)
+        if not m or self.stomach is None:
+            return
+        it = next((i for i in self.w.inven or () if not i.get("equip") and i["item"] == int(m.group(1))), None)
+        if not it:
+            return
+        eff = stomach.meal_effect(it["tval"], it["name"], self.food_value, unknown=self.unknown_flavour(it))
+        if eff:
+            key = self.kind_key_of(it["name"])
+            self.stomach.sent(key, self.kind_count(key), eff, gnow(), name=it["name"])
 
     def supply_spare(self, it):
         """(units of this food or flask stack not needed before the horizon, dungeon minutes of the shortfall this
@@ -422,7 +472,7 @@ class ItemsMixin:
             per = (1.0 if (w.flags or {}).get("slow_digest") else 2.0) * self.TURNS_PER_DMIN
             # (2.48.1, m61: the bottom of the hunger level, not its middle -- Fed is 2000-10000 food; the middle said ~25
             # dungeon minutes left, make-room destroyed 8 of 9 rations as spare, and food ran out 5 minutes later)
-            have = max(0.0, self.food_floor() - 1000) / per
+            have = max(0.0, self.food_now() - 1000) / per
             unit = self.food_value(it["name"]) / per
         else:
             lamp = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE and "Lantern" in i["name"]), None)
@@ -449,7 +499,7 @@ class ItemsMixin:
         need = self.supply_horizon()
         if kind == "food":
             per = (1.0 if (w.flags or {}).get("slow_digest") else 2.0) * self.TURNS_PER_DMIN
-            have = max(0.0, self.food_floor() - 1000) / per + \
+            have = max(0.0, self.food_now() - 1000) / per + \
                 sum(self.food_value(i["name"]) * i["number"] for i in w.items() if self.supply_kind(i) == "food") / per
         else:
             fuel = self.lantern_fuel()
@@ -634,8 +684,9 @@ class ItemsMixin:
                          hold=0.6)
                 return False
             # (m49: a Piece of Elvish Waybread, 7500 food, eaten for room while Fed beside Wargs and a Black ogre: Gorged,
-            # -10 speed. Eaten only if the top of our hunger level plus the food stays a potion margin under Gorged)
-            if food and self.FOOD_TOP.get(w.hunger, PY_FOOD_MAX) + self.food_value(food["name"]) < PY_FOOD_MAX - 1000:
+            # -10 speed. Eaten only if the most the stomach can hold -- the tracker's top once a crossing has calibrated
+            # it, else the top of the hunger level -- plus the food stays a potion margin under Gorged)
+            if food and self.food_top() + self.food_value(food["name"]) < PY_FOOD_MAX - 1000:
                 self.room_t = now
                 self.cmd(f"custom E item={food['item']}", f"make room: eat {food['name']} for {name}", hold=0.6)
                 return False

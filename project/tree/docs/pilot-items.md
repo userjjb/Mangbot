@@ -101,7 +101,8 @@ turns it off; not with a monster adjacent or in a store): after a step, a recent
 4. A free slot (of 23) or a stack it joins: pick up.
 5. **Pack full**: first use something up (a flask into the lantern: a lone one under 14000 turns, from a bigger stack
    only when the lantern takes a whole flask (<= 7500 turns); food eaten, a lone item first, if it won't make us
-   Gorged), then destroy the cheapest item by `pack_value` if the find is worth > 1.5x it + 5 (a unique's
+   Gorged: the most the stomach can hold, `food_top` -- the stomach tracker's top once a crossing has calibrated it,
+   else the hunger level's top -- plus its food stays 1000 under PY_FOOD_MAX), then destroy the cheapest item by `pack_value` if the find is worth > 1.5x it + 5 (a unique's
    drop, whatever its estimate, may also push out anything under `UNIQUE_DROP_BUMP` = 50). Otherwise: "left NAME: pack full and nothing cheaper",
    once per item and level.
 
@@ -111,12 +112,15 @@ Mapping (with `--live` only, 2.48.0), Speed, Heroism, Berserk, Restore, Deep Des
 best light, the last meal, the lantern's needed oil, items waiting in the review queue. **Mushrooms are not
 priceless food** (2.42.0): they are valued like any item (`itemvalue`: expected value when unknown; 0 when junk). Spare lights, food beyond the
 ration supply, and spare flasks are worth their sale price. **In the dungeon, food (not mushrooms) and flasks go by
-need** (2.41.0, the user): `supply_spare` counts what the stomach (`FOOD_MID`) or the worn lantern and the other stacks
+need** (2.41.0, the user): `supply_spare` counts what the stomach (`food_now`: the least it holds, the stomach
+tracker's bottom -- below) or the worn lantern and the other stacks
 don't cover until `supply_horizon` (the trip's `trip_minutes_left`, else `SUPPLY_UNKNOWN_DMIN` = 40, plus
 `SUPPLY_MARGIN_DMIN` = 5 dungeon minutes); spare units are worth their sale price and are what `destroy_count`
 destroys; with none spare, the stack is worth the minutes of the shortfall it covers x `gold_per_dmin` (gold + XP at
 `xp_per_gold`, from the rate buckets) and is destroyed whole only for a find worth 1.5x that. Kept items stay
-priceless. In town the old rules hold (rations never destroyed; spare flasks only near a trip's end). Flavour-table junk and cursed/worthless items are 0,
+priceless. In town: rations never destroyed; the flasks beyond those that fill the lantern (`flasks_spare`, 2.49.0;
+was: all once it had 9000 turns) are worth their sale price and are what `destroy_count` destroys, all of them near a
+trip's end (`provisions_spare`). Flavour-table junk and cursed/worthless items are 0,
 food, flasks and lights included (the junk test runs first, A17, 2.40.0); kit, kept and ability items stay priceless.
 Everything else: value x pay_cut x count. (2.48.0: a fallback while its kit kind is short is priceless too, a dungeon
 stopgap goes by need and a Scroll of Enchant/Recharging the kit would read is priceless in town -- below.)
@@ -126,6 +130,37 @@ short. In town: never rations; other food
 Molds and no rations: 2 may go; with rations: all 3).
 `kit_use_value` values a kit consumable found in the dungeon at its replacement cost (last Alchemist price, else
 `KIT_USE`: Speed 600, Healing 1500, Berserk 500, ...).
+
+### The stomach tracker (2.49.0, the user)
+
+The client is sent only the hunger level (xtra1.c:241 `prt_hunger`): 0 under 500, 1 Weak 500-999, 2 Hungry
+1000-1999, 3 Fed 2000-9999, 4 Full 10000-14999, 5 Gorged 15000 up (mdefines.h:242-247; set_food caps at 20000,
+xtra2.c:1597). `stomach.py`'s `Stomach` keeps the food as a range [lo, hi], the level's bounds until something narrows
+it; `stomach_tick` (every tick, items.py) gives it the level, `gnow()`, the worn light's fuel, the depth, the speed
+(`ind` speed) and the `regen`/`slow_digest` flags.
+- **Digestion** (dungeon.c:1111-1152): a food tick every `time * 10` game turns (`time` = level_speed(depth) / 1000,
+  scaled by our time bubble) digests (extract_energy[pspeed] / 100) x 2 (tables.c:2171): 20 at normal speed, 40 at
+  +10 (a Potion of Speed), 10 at -10; +30 with regeneration, -10 with slow digestion; 100 while Gorged. None in town
+  (depth 0) or on a special level unless Gorged (dungeon.c:1124-1127); the wilderness digests. **The clock**: the worn
+  light burns a turn of fuel every `time` game turns (dungeon.c:1183, 1484-1492), so 10 turns of fuel are exactly one
+  food tick, speed-ups, the HP bubble and the freeze included. With no burning light (none, permanent, out, refuelled,
+  swapped) the game clock stands in and the range widens: the bottom at `TURNS_PER_DMIN` (215 ticks a dungeon minute),
+  the top at the slowest the server runs (one tick per `time` game turns at FPS 75).
+- **Meals**: an `eat`/`quaff`/`read` command sent (`stomach_sent`, from `cmd`: the Pilot's and the Navigator's) waits
+  up to 5 s for the pack to show one fewer of the kind, then adds its food to both ends (`meal_effect`): food its
+  object.txt pval (`FOOD_VALUES`, use-obj.c:235), potions theirs (use-obj.c:713: CLW 50, CSW/CCW 100, Healing 200,
+  Water 200, Apple Juice 250, Slime Mold 400; an unknown potion 0-400), a Scroll of Satisfy Hunger sets 14999
+  (use-obj.c:943), Salt Water 99 (use-obj.c:265). A level change in the 2 s after a meal is the meal's (its
+  arithmetic, then the new level's bounds); a rise while a meal is unconfirmed waits for the pack.
+- **Crossings**: the level falling by one (digestion, no meal) pins the food just under the old level's bottom:
+  [bottom - one tick's digestion, bottom - 1] (Fed -> Hungry at normal speed: 1980-1999). A rise with no meal, a fall
+  of more than one level, or a range outside the level's bounds (a contradiction) re-widens it to the level's bounds.
+  The range is clamped to the level's bounds on every look.
+- **Exposure**: `food_now()` (the bottom: the spare/short decisions, `supply_minutes`; the level's bottom before any
+  crossing, as `food_floor` was in 2.48.1), `food_top()` (the top: eat-for-room), `stomach.exact(level)` (the range
+  within 250 food: the status text says `food ~N dungeon min`, else `food >=N`). Log records `stomach` (pinned, meal,
+  unexplained, contradiction, restart). Saved to `rundir/stomach.json`: a restart keeps it for the same level (the
+  bottom digested at the fast rate for the wall time since, the top not at all), else it starts at the level's bounds.
 
 ### Fallbacks, stopgaps, crutches and scrolls the kit would read (2.48.0, the user)
 
@@ -142,7 +177,7 @@ Two principles for a weaker substitute of a kit item (`town.py`, beside `town_se
 - **B. Dungeon stopgap**: useful in the dungeon while the primary supply is short, but the primary is always on sale in
   town. So it is **sold in town**, and **in the dungeon kept, never auto-destroyed, and worth the dungeon time it covers
   while the primary is short** (`is_stopgap`, `stopgap_cover`, `supply_short`):
-  - **Scroll of Satisfy Hunger** (for rations): `supply_short("food")` is what the stomach (`FOOD_MID`) and every food
+  - **Scroll of Satisfy Hunger** (for rations): `supply_short("food")` is what the stomach (`food_now`) and every food
     stack leave uncovered until `supply_horizon`; a scroll counts as `SATISFY_FOOD` (PY_FOOD_MAX - 2000) food. While
     short: `destroy_count` 0 (make-room and the weight shed take none), `is_junk` False (even on the `junk` order, on the
     floor too), `pack_value` = covered minutes x `gold_per_dmin` (at least its sale), pickup worth the same.

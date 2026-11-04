@@ -75,8 +75,9 @@ def e1_supply_gate():
 @case
 def provisions_one_food_no_oil():
     """The user (10-25): food AND Satisfy Hunger, flasks by the handful. One food source (rations), eaten to Full
-    in town; the lantern topped up to 9000 in town (flasks bought for it, then used); no oil carried. Near a
-    trip's end the spare rations and flasks go first when loot needs room."""
+    in town; the lantern filled in town (flasks bought for it, then used: 2.49.0, to full -- was to 9000; 2000 turns
+    buys 2, 12000 one); no oil carried. Near a trip's end the spare rations and flasks go first when loot needs
+    room; in town the flask the 12000-turn lantern doesn't need is sold."""
     def make(pack, hunger=3, worn=None):
         p = pilot(pack=pack, worn=worn)
         p.w.depth, p.w.depth_ft, p.w.in_dungeon = 0, 0, False
@@ -89,7 +90,7 @@ def provisions_one_food_no_oil():
     low = make([("3 Rations of Food", 80)], worn=[("a Brass Lantern (with 2000 turns of light)", 39, 50)])
     flasks = [(t, k, n) for t, k, s, n, c in low.town_needs("C", ()) if k == "Flask of oil"]
     full = make([("3 Rations of Food", 80)], worn=[("a Brass Lantern (with 12000 turns of light)", 39, 50)])
-    none = [k for t, k, s, n, c in full.town_needs("C", ()) if k == "Flask of oil"]
+    one = [(t, k, n) for t, k, s, n, c in full.town_needs("C", ()) if k == "Flask of oil"]
     # the town step: fill the lantern first, then eat
     kit = P.TownKit("C")
     tw = make([("a Flask of oil", 77), ("3 Rations of Food", 80)], hunger=2,
@@ -113,10 +114,13 @@ def provisions_one_food_no_oil():
     # (since 10-26 rations are never destroyed for room, near a trip's end too: m46-m47 ended trips short of food)
     spare = pv.pack_value(it["3 Rations of Food"]) == float("inf")
     sells = [n for n in it if pv.town_sell_count(it[n])]
-    ok = flasks == [(2, "Flask of oil", 1)] and not none and first.startswith("custom F") and \
+    sold = pv.town_sell_count(it["2 Flasks of oil"])
+    ok = flasks == [(2, "Flask of oil", 2)] and one == [(2, "Flask of oil", 1)] and sold == 1 and \
+        first.startswith("custom F") and \
         second.startswith("eat") and third is False and kept and len(cheap) == 3 and spare and \
         "a Piece of Elvish Waybread" in sells and "2 Flasks of oil" in sells and "3 Rations of Food" not in sells
-    return ok, (f"lantern 2000: buy {flasks}; 12000: {none}; town step: {first!r}, then {second!r}, then Full: "
+    return ok, (f"lantern 2000: buy {flasks}; 12000: {one} (of 2 carried, {sold} sold); town step: {first!r}, then "
+                f"{second!r}, then Full: "
                 f"{third}; rations kept {kept}; worth their price: {cheap}; recall pending, rations kept for room: {spare}; "
                 f"town sells {sells}")
 
@@ -378,3 +382,201 @@ def supplies_one_kind_with_fields():
         got == [("light", "out"), ("food", "out"), ("food", "low")] and sorted(evs) == sorted(got) and \
         all(r["what"] == "supplies" for r in logs) and all(e["what"] == "supplies" for e in p.attention + p.news)
     return ok, f"old kinds {old}; supplies without fields at {bare}; records {got}; events {evs}"
+
+
+@case
+def lantern_filled_in_town():
+    """2.49.0 (the user): `plan town` buys the Flasks of oil that fill the lantern and fills it to full after the buys
+    (was: to 9000). FUEL_LAMP 15000, a flask 7500, the refill capped at the top (cmd3.c:1365-1374): 9050 turns buys 1
+    flask and fills to 15000; 2000 buys 2 (9500, then 15000); a lantern within FILL_SLACK of full buys none. The sell
+    rule agrees: at 9050 with 3 flasks carried, 2 are sold and 1 kept for the fill."""
+    def make(turns, pack=()):
+        p = pilot(pack=list(pack) + [("3 Rations of Food", 80)],
+                  worn=[(f"a Brass Lantern (with {turns} turns of light)", P.TV_LITE, 50)])
+        p.w.depth, p.w.depth_ft, p.w.in_dungeon = 0, 0, False
+        p.w.ind["hunger"] = [3]
+        p.plan, p.w.recall_pending = None, False
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append(line)
+        p.flavour_of = lambda it: None
+        return p
+
+    def fill(turns):
+        """The buys, then provision_step to the end, the server's refill rule applied to each `custom F`."""
+        p = make(turns)
+        n = sum(r[3] for r in p.town_needs("C", ()) if r[1] == "Flask of oil")
+        if n:
+            p.w.inven.append({"item": 9, "name": f"{n} Flasks of oil" if n > 1 else "a Flask of oil", "tval": 77,
+                              "weight": 10, "equip": False, "number": n})
+        kit, fuels = P.TownKit("C"), [turns]
+        for _ in range(5):
+            p.cmds.clear()
+            if not p.provision_step(kit) or not p.cmds[-1].startswith("custom F"):
+                break
+            fuels.append(min(p.FUEL_LAMP, fuels[-1] + p.FLASK_FUEL))         # (cmd3.c:1365-1374)
+            lamp = next(i for i in p.w.inven if i["equip"] and i["tval"] == P.TV_LITE)
+            lamp["name"] = f"a Brass Lantern (with {fuels[-1]} turns of light)"
+            fl = next(i for i in p.w.inven if i["tval"] == 77)
+            fl["number"] -= 1
+            if not fl["number"]:
+                p.w.inven.remove(fl)
+        return n, fuels
+    a, b, c = fill(9050), fill(2000), fill(14800)
+    s = make(9050, pack=[("3 Flasks of oil", 77)])
+    sold = s.town_sell_count(next(i for i in s.w.inven if i["tval"] == 77))
+    ok = a == (1, [9050, 15000]) and b == (2, [2000, 9500, 15000]) and c == (0, [14800]) and sold == 2
+    return ok, f"9050: {a}; 2000: {b}; 14800: {c} (flasks bought, the fuel after each fill); 9050 with 3: {sold} sold"
+
+
+def _stomach(level=3, now=0.0, fuel=None, depth=6):
+    st = P.Stomach(215)
+    st.update(level, now, fuel=fuel, depth=depth)
+    return st
+
+
+@case
+def stomach_pinned_by_hunger_crossings():
+    """2.49.0 (the user): the stomach tracker. The server digests a food tick every 10 turns of a burning light's fuel
+    (dungeon.c:1111-1152, 1183-1492): 20 food at normal speed, 10 with slow digestion, 40 at +10 speed (tables.c:2171);
+    none in town unless Gorged (100). A Fed -> Hungry crossing pins the food just under 2000; then 2 dungeon minutes
+    (430 turns of fuel: 43 ticks) digest 860, 430 slowly, 1720 hasted; a ration eaten (the pack shows one fewer) adds
+    5000 and the indicator's rise to Fed is the meal's; a Scroll of Satisfy Hunger sets 14999 (use-obj.c:943). Without
+    a light the clock widens the range (the bottom at 215 turns a dungeon minute, the top at the server's slowest). An
+    unexplained rise re-widens to the level's bounds."""
+    def _up(st, *a, **k):
+        k.setdefault("depth", 6)
+        return st.update(*a, **k)
+    out = {}
+    st = _stomach(3, 0.0, fuel=9000)
+    _up(st, 2, 1.0, fuel=8990)                       # (1 tick of fuel; the indicator falls: pinned)
+    out["pin"] = (st.lo, st.hi, st.exact(2))
+    for name, kw in (("normal", {}), ("slow", {"slow": True}), ("speed", {"speed": 10})):
+        s2 = _stomach(3, 0.0, fuel=9000)
+        s2.lo = s2.hi = 6000
+        _up(s2, 3, 120.0, fuel=9000 - 430, **kw)        # (2 dungeon minutes of fuel)
+        out[name] = (6000 - s2.lo, 6000 - s2.hi)
+    # a ration: sent (3 in the pack), the indicator rises before the pack shows it; then the pack
+    pack = {"Ration of Food": 3}
+    st.sent("Ration of Food", 3, ("add", 5000, 5000), 2.0)
+    _up(st, 3, 2.5, fuel=8990, count_of=pack.get)    # (rise, meal unconfirmed: waits)
+    waited = (st.level, st.lo)
+    pack["Ration of Food"] = 2
+    _up(st, 3, 3.0, fuel=8990, count_of=pack.get)
+    _up(st, 3, 6.0, fuel=8990, count_of=pack.get)
+    out["ration"] = (waited, st.lo, st.hi, st.exact(3))
+    st.sent("Scroll of Satisfy Hunger", 1, ("set", 14999), 7.0)
+    _up(st, 4, 7.5, fuel=8990, count_of=lambda k: 0)
+    _up(st, 4, 10.0, fuel=8990, count_of=lambda k: 0)
+    out["satisfy"] = (st.lo, st.hi)
+    town = _stomach(3, 0.0, fuel=9000, depth=0)
+    town.lo = town.hi = 5000
+    town.update(3, 600.0, fuel=9000 - 960, depth=0)
+    gorged = _stomach(5, 0.0, fuel=9000, depth=0)
+    gorged.lo = gorged.hi = 16000
+    gorged.update(5, 60.0, fuel=9000 - 100, depth=0)
+    out["town"] = (town.lo, gorged.lo)
+    clock = _stomach(3, 0.0)
+    clock.lo = clock.hi = 6000
+    _up(clock, 3, 60.0)                               # (no light: 1 game minute)
+    out["clock"] = (round(6000 - clock.lo), round(6000 - clock.hi))
+    _up(clock, 4, 61.0)                               # (a rise with no meal)
+    out["unexplained"] = (clock.lo, clock.hi, clock.how)
+    ok = out["pin"] == (1980, 1999, True) and out["normal"] == (860, 860) and out["slow"] == (430, 430) and \
+        out["speed"] == (1720, 1720) and out["ration"] == ((2, 1980), 6980, 6999, True) and \
+        out["satisfy"] == (14999, 14999) and out["town"] == (5000, 15000) and out["clock"] == (430, 191) and \
+        out["unexplained"] == (10000, 14999, "unknown")
+    return ok, f"{out}"
+
+
+@case
+def stomach_through_the_pilot():
+    """2.49.0: the Pilot's side of the tracker -- the hunger indicator and the worn lantern's fuel each tick
+    (stomach_tick), the meal from its own `eat` command once the pack shows one fewer ration (stomach_sent), the
+    status text `food ~N` once pinned (`>=N` before), the eat-for-room check on the tracker's top (a ration eaten for
+    room at a pinned 3500 -- the level's top, 10000, refused it), and the tracker's range saved to rundir/stomach.json
+    and carried over a restart."""
+    import tempfile
+    import items as I
+    clock = [1000.0]
+    real = I.gnow
+    I.gnow = lambda: clock[0]
+    try:
+        p = pilot(pack=[("3 Rations of Food", P.TV_FOOD), ("a Strip of Beef Jerky", P.TV_FOOD)] +
+                  [(f"{n} Potions of Cure Critical Wounds", 75) for n in range(2, 24)],
+                  worn=[("a Spear (1d6) (+5,+7)", 22, 50), ("a Brass Lantern (with 9000 turns of light)", P.TV_LITE, 50)])
+        p.rundir = tempfile.mkdtemp()
+        p.w.ind["hunger"] = [3]
+        p.flavour_of = lambda it: None
+        lamp = next(i for i in p.w.inven if i["tval"] == P.TV_LITE)
+        p.stomach_tick(clock[0])
+        before = p.supply_text()
+        clock[0] += 1
+        lamp["name"] = "a Brass Lantern (with 8990 turns of light)"
+        p.w.ind["hunger"] = [2]
+        p.stomach_tick(clock[0])
+        pinned = (p.food_now(), p.food_top(), p.supply_text())
+        # the Jerky (1500): sent, then the pack and the indicator show it
+        p.c = types.SimpleNamespace(send=lambda *a: None)
+        jerky = next(i for i in p.w.inven if "Jerky" in i["name"])
+        p.stomach_sent(f"eat {jerky['item']}")
+        p.w.inven.remove(jerky)
+        clock[0] += 1
+        p.w.ind["hunger"] = [3]
+        p.stomach_tick(clock[0])
+        clock[0] += 3
+        p.stomach_tick(clock[0])
+        fed = (p.food_now(), p.food_top())
+        # pack full: a ration eaten for room at the pinned 3480-3499 (3499 + 5000 < 14000), refused at the level's top
+        p.skipped_items, p.room_t, p.unique_drop = set(), 0.0, None
+        sent = []
+        p.cmd = lambda line, why, hold=0.4: sent.append(why)
+        p.pickup_room("a Scroll of Enchant Weapon To-Dam")
+        room = any("make room: eat" in x for x in sent)
+        q = pilot(pack=[(i["name"], i["tval"]) for i in p.w.items()])
+        q.w.ind["hunger"] = [3]
+        q.flavour_of, q.skipped_items, q.room_t, q.unique_drop = (lambda it: None), set(), 0.0, None
+        sent2 = []
+        q.cmd = lambda line, why, hold=0.4: sent2.append(why)
+        q.c = p.c
+        q.pickup_room("a Scroll of Enchant Weapon To-Dam")
+        room_unknown = any("make room: eat" in x for x in sent2)
+        # a restart: the saved range, the bottom digested for the wall time since (none: just now)
+        p.stomach_saved_t = 0.0
+        p.stomach_tick(clock[0])
+        r = pilot()
+        r.w.ind["hunger"] = [3]
+        import json as _j
+        import os as _o
+        r.stomach.from_json(_j.load(open(_o.path.join(p.rundir, "stomach.json"))))
+        r.stomach_tick(clock[0])
+        carried = (round(r.food_now()), r.food_top())
+    finally:
+        I.gnow = real
+        import shutil
+        shutil.rmtree(p.rundir, ignore_errors=True)
+    ok = before.startswith("food >=41 ") and pinned[:2] == (1980, 1999) and pinned[2].startswith("food ~41 ") and \
+        fed == (3480, 3499) and room and not room_unknown and carried[1] == 3499 and 3470 <= carried[0] <= 3480
+    return ok, (f"before: {before!r}; pinned: {pinned}; after the Jerky: {fed}; eaten for room: pinned {room}, "
+                f"unknown {room_unknown}; after a restart: {carried}")
+
+
+@case
+def rations_kept_by_a_pinned_stomach():
+    """2.49.0 (the user's rations by need, made precise): make-room may destroy the rations the horizon doesn't need
+    (the trip's 20 minutes left + SUPPLY_MARGIN_DMIN 5 = 25 dungeon minutes, 430 food a minute). Hungry and pinned at
+    1980: the stomach covers (1980 - 1000) / 430 = 2.3 minutes, so ceil((25 x 430 - 980) / 5000) = 2 of 4 rations are
+    needed, 2 spare; unpinned (the level's bottom, 1000) 3 are needed. Fed and pinned at 6980 (a ration after the pin):
+    1 needed, 3 spare; unpinned (2000) 2."""
+    def setup(level, lo=None):
+        p = pilot(pack=[("4 Rations of Food", P.TV_FOOD)])
+        p.w.in_dungeon, p.w.ind["hunger"], p.w.flags = True, [level], {}
+        p.trip_minutes_left = lambda: 20
+        p.flavour_of = lambda it: None
+        p.rates = {"buckets": []}
+        if lo is not None:
+            p.stomach.level, p.stomach.lo, p.stomach.hi = level, lo, lo + 19
+        return p.supply_spare(p.w.items()[0])[0]
+    got = (setup(2, 1980), setup(2), setup(3, 6980), setup(3))
+    import math
+    want = 4 - math.ceil((25 * 430 - 980) / 5000)
+    return got == (want, 1, 3, 2) and want == 2, f"spare (Hungry pinned, unpinned, Fed pinned, unpinned): {got}"

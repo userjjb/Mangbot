@@ -27,6 +27,19 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.49.0 -- 2026-11-03 (session 11, the user after m61)
+No missions yet on it. **Play changes:**
+- **The lantern is filled in town:** `plan town` buys the flasks that fill it to 15000 (FUEL_LAMP; a flask adds 7500,
+  the excess caps) and refuels it, instead of topping up to 9000; only flasks beyond the fill are sold. Live: 9390 ->
+  one flask (5 gold) -> 14922 (it burned walking at night), light ~69 dungeon min.
+- **The stomach tracker** (`stomach.py`): the client shows only the hunger level, so the Pilot keeps a range of the
+  food value -- digestion at the server's rate (dungeon.c: speed, slow digestion, regeneration; none in town unless
+  Gorged; clocked by the burning light's fuel, which runs on the same tick), meals added at their pval (food, potions;
+  Satisfy Hunger sets 14999) -- and pins it at every hunger crossing (the user chose the crossings over reading a
+  Satisfy Hunger, which would make the first potion Gorge). Decisions use its bottom (`food_now`), eat-for-room its
+  top; the status says `food ~N` once pinned, `food >=N` before. Saved in `stomach.json` across restarts.
+- 171 unit cases (4 new); equivalence: only town-kit states differ (the flask buy and refuel).
+
 ## 2.48.1 -- 2026-11-03 (session 11, after m61)
 **m61** (Opus, medium, 45 min) ran on 2.48.0: 84.1 XP/dmin, no close calls; the restructured code held. **Play
 changes from it:**

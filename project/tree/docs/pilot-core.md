@@ -7,7 +7,8 @@ the disenchant valuation (`disenchant_cost`, 2.45.0-2.46.0) (gear-and-estimator.
 `weapon_blows` and the blow tables, `type_word`, `PY_FOOD_MAX`; `town.py` (~830 lines): `TownMixin`, the town side
 (goals-and-plans.md): the town kit's tables (`STORE_NUM`, `KIT_ITEMS`, `KITS`, `SUPPLY_STAGES`...), the shopping list
 and selling (`town_*`, `price_of`, `note_store`, `kit_count`, `provision_step`, `identify_candidates`...), the supply
-gate, the food/light clock (`supply_minutes`/`supply_text`/`supply_watch`, `TURNS_PER_DMIN`, `FOOD_MID`), the house
+gate, the food/light clock (`supply_minutes`/`supply_text`/`supply_watch`, `TURNS_PER_DMIN`; the stomach tracker is
+`stomach.py`'s `Stomach`, 2.49.0), the house
 and stash state (`house_state`, `house_save`, `banked`, `stash_*`, `tavern_*`) and `note_town_stairs`/
 `note_edge_cross`; `combat.py` (~2,310 lines): `CombatMixin`, combat and survival (pilot-combat.md): `reflexes`
 (one method per step, in `REFLEX_STEPS`'s order: E3), `escape` (its steps in `ESCAPE_STEPS`) and its helpers
@@ -113,7 +114,9 @@ Each tick runs, in this order (any `return` ends the tick):
 3. **Bookkeeping, every tick**: `supply_watch` (food/light minutes), the game clock's time factor (HP bubble model,
    fuel-measured speed-up; logged as `time_factor`), a redraw request for fuel readings, `note_town_stairs`,
    `wear_step` (queued wear), `verify_use` / `verify_effects` (did our read/quaff/command take effect; resend or
-   report), `learn_flavours_tick`, `track_since` (the report's "since last" accumulator), HP minimum tracking.
+   report), `learn_flavours_tick`, `track_since` (the report's "since last" accumulator), `stomach_tick` (2.49.0: the
+   stomach tracker, `stomach.py` -- pilot-items.md -- given the hunger level, the game clock and the worn light's fuel),
+   HP minimum tracking.
 4. **Floor items**: logs `itemlist` changes and `left_behind` on leaving a level; requests a full `redraw` after a
    level change or a loss (never in or near a store: a redraw closes the store server-side and once crashed the
    server); `found` news for special items picked up; `interesting_item` alerts for devices/jewellery seen (held
@@ -359,6 +362,7 @@ All paths relative to `runs/pilot/<nick lowercase>/` unless noted. "Pilot" = the
 | `mission.json` | `save_mission` (every 15 s while a mission runs) | `load_mission` at start (if < 30 min old) | `{label, age, exp, gold, found}` |
 | `plan.json` | `TripPlan.save` | `TripPlan.load` at start (a restart mid-trip resumes); removed when the plan ends | the trip plan and this level's state |
 | `recall.json` | `recall_memory` | the same, at start | `{pending, depth, t}`: a pending Word of Recall survives a restart |
+| `stomach.json` | `stomach_tick` (on a pin, meal or re-widening, and every 30 s) | `__init__`, used on the first look at the hunger indicator | `{level, lo, hi, how, wall, depth}`: the stomach tracker's range (2.49.0), kept if the level is the same and under an hour old; the bottom digested at the fast rate for the time since |
 | `rules.json` | `react` command | `rule_tick` | the Navigator's executable reactions `[{kind, arg}]` |
 | `standing.json` | `standing` command | report ("Standing:") | standing instructions `[{text, by}]` (shown, not executed) |
 | `keep.json` | `keep` command | item policy | item names the policy must not sell/destroy |

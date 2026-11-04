@@ -27,6 +27,7 @@ from common import (HERE, VERSION, TV_FOOD, TV_FLASK, TV_LITE, DEFAULT_ORDERS, w
 from world import (World, gnow, set_time_factor, time_factor, model_factor, wall_of, wall_since, waited,  # noqa: E402
                    ghold, light_fuel, set_fast_ok, measured_rate, _lt, frozen)
 import structures                                # noqa: E402
+from stomach import Stomach                      # noqa: E402
 from report import ReportMixin                   # noqa: E402
 sys.path.insert(0, os.path.join(HERE, "..", "observe"))
 import shopmath                                  # noqa: E402
@@ -110,6 +111,10 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.flavour_file = os.path.join(os.path.dirname(rundir.rstrip("/")), "..", "flavours.json")
         self.load_flavours()
         self.deepest_file = os.path.join(rundir, "deepest.json")
+        try:
+            self.stomach.from_json(json.load(open(os.path.join(rundir, "stomach.json"))))
+        except (OSError, ValueError):
+            pass
         try:
             with open(self.deepest_file) as f:
                 self.deepest_ft = json.load(f)["ft"]
@@ -302,6 +307,10 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.gear_swapped_t = 0
         self.food_warned = None
         self.supply_told = set()
+        # the stomach tracker (2.49.0, stomach.py): the food held, calibrated by the hunger crossings; saved in
+        # rundir/stomach.json for a restart
+        self.stomach = Stomach(self.TURNS_PER_DMIN)
+        self.stomach_saved_t = 0.0
         self.edge_cross, self.surface_last = None, None   # note_edge_cross
         self.trapdoor = None           # (watch_traps)
         self.recall_restored, self.recall_saved = False, None   # recall_memory (recall.json)
@@ -449,6 +458,7 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
             else:
                 self.cure_t = 0.0
             return
+        self.stomach_sent(line)              # (a meal: the tracker waits for the pack to show it eaten)
         self.c.send(line)
         if item_cmd:
             self.item_cmd_t = gnow()
@@ -1060,6 +1070,7 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.learn_flavours_tick(gnow())
         self.track_since()
         now = gnow()
+        self.stomach_tick(now)
         self.track_hp_min()
         self.watch_floor()
         self.resync_tick(now)

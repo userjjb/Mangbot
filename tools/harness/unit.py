@@ -66,7 +66,8 @@ ORDER = """
     command_table_architect_only_refused reflex_escape_step_lists town_plan_step_tables reports_match_golden
     boldness_fallback_for_heroism satisfy_hunger_a_dungeon_stopgap clw_sold_in_kits_b_and_c
     mushrooms_sold_in_town_but_restores torches_the_lanterns_fallback mapping_scrolls_a_crutch_on_test
-    enchant_and_recharge_scrolls_kept_to_read
+    enchant_and_recharge_scrolls_kept_to_read lantern_filled_in_town stomach_pinned_by_hunger_crossings
+    stomach_through_the_pilot rations_kept_by_a_pinned_stomach
 """.split()
 
 

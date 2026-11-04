@@ -2,7 +2,8 @@
 visit): the town kit's tables (STORE_NUM, KIT_ITEMS, KITS, BUYERS, SUPPLY_STAGES...) and what TownKit/Shop/HouseBank
 ask of the Pilot -- the shopping list and the gold (town_needs, town_shopping, town_reserve, price_of, note_store,
 buy_store), what to sell (town_buyers, town_sell_count, town_sells, is_crutch), making room and provisioning
-(town_make_room, provision_step, kit_count, lantern_fuel, trip_minutes_left, provisions_spare), Identify, Enchant
+(town_make_room, provision_step, kit_count, lantern_fuel, flasks_to_fill, flasks_spare, trip_minutes_left,
+provisions_spare), Identify, Enchant
 Armour and Weapon and Recharging (identify_candidates, enchant_plan, weapon_enchant_plan, enchant_buys,
 recharge_wanted), the supply gate (supply_gate) and the
 food/light clock (supply_minutes, supply_text, supply_watch, TURNS_PER_DMIN, FOOD_MID), the house and the stash
@@ -117,9 +118,24 @@ class TownMixin:
             "C": {"Word of Recall": 2, "Cure Critical Wounds": 6, "Cure Serious Wounds": 4, "Phase Door": 12,
                   "Ration of Food": 3, "Heroism": 3, "Potion of Speed": 2},
             "none": {}}
-    # The lantern leaves town with this much fuel: a full lantern (15000) burned ~7500 in ~35 dungeon minutes
-    # (m29-m30), and a trip ends within 30; a flask adds 7500 (object.txt; FUEL_LAMP 15000, mdefines.h)
-    FUEL_TOPUP, FLASK_FUEL = 9000, 7500
+    # The lantern leaves town full (2.49.0, the user: oil is very cheap, and fuel past the top just caps; was: topped up
+    # to 9000): FUEL_LAMP 15000 (mdefines.h:187), a flask adds its pval, 7500 (object.txt:3027 "I:77:0:7500"), and
+    # do_cmd_refill_lamp caps the sum at FUEL_LAMP (cmd3.c:1365-1374: "Your lamp is full."). A lantern within
+    # FILL_SLACK turns of the top counts as full (a flask for a few hundred turns, e.g. a second `plan town`)
+    FUEL_LAMP, FLASK_FUEL, FILL_SLACK = 15000, 7500, 300
+
+    def flasks_to_fill(self, fuel="lantern"):
+        """Flasks that fill the lantern (fuel: its turns, default the lantern's): ceil((15000 - fuel) / 7500), 0 when
+        it is within FILL_SLACK of full or there's no lantern."""
+        fuel = self.lantern_fuel() if fuel == "lantern" else fuel
+        if fuel is None or fuel >= self.FUEL_LAMP - self.FILL_SLACK:
+            return 0
+        return -(-(self.FUEL_LAMP - fuel) // self.FLASK_FUEL)
+
+    def flasks_spare(self, it):
+        """How many of this flask stack the lantern doesn't need to fill it (the other stacks first): sold in town."""
+        others = sum(i["number"] for i in self.w.items(tval=TV_FLASK) if i["item"] != it["item"])
+        return max(0, it["number"] - max(0, self.flasks_to_fill() - others))
     # devices never sold by the kit (the Advisor's rulebook-r3 memo: escapes, travel, detection and
     # mapping, Perception, Stone to Mud, healing)
     USEFUL_DEVICES = ("Teleport", "Recall", "Deep Descent", "Detect", "Door/Stair Location", "Mapping", "Enlightenment",
@@ -341,7 +357,7 @@ class TownMixin:
         """Near a trip's end, the spare rations and flasks are no longer needed (the user, 10-25: eat, refill,
         and the rest frees pack slots): Word of Recall under way, or the trip ending within 3 minutes, or
         within 20 while Full (Full is 10000+ food, ~22 dungeon minutes before Hungry; the lantern leaves town
-        with 9000+ turns)."""
+        full, 15000 turns)."""
         left = self.trip_minutes_left()
         return left is not None and (left <= 3 or (left <= 20 and self.w.hunger >= 4))
 
@@ -513,9 +529,10 @@ class TownMixin:
         if rule and rule[0] == "keep":
             return 0
         freed = bool(rule)              # (2.48.0: a stopgap or a fallback not needed -- sold by the value checks below)
-        # (food other than rations, and flasks the lantern doesn't need, are sold: one food source, no oil)
-        spare = freed or (it["tval"] == TV_FOOD and "Ration" not in name and "Mushroom" not in name) or \
-            (it["tval"] == TV_FLASK and (self.lantern_fuel() or 0) >= self.FUEL_TOPUP)
+        # (food other than rations, and flasks the lantern doesn't need, are sold: one food source, no oil -- 2.49.0:
+        # the flasks beyond those that fill the lantern, `flasks_spare`; it is filled after the buys)
+        flask_spare = self.flasks_spare(it) if it["tval"] == TV_FLASK else 0
+        spare = freed or (it["tval"] == TV_FOOD and "Ration" not in name and "Mushroom" not in name) or flask_spare > 0
         # (one lantern is enough -- the user, 10-26: "why two lanterns?" -- the fullest is kept, worn or in the pack;
         # a spare is sold)
         if it["tval"] == TV_LITE and "Lantern" in name and not it.get("equip"):
@@ -558,7 +575,7 @@ class TownMixin:
         cheap_ok = freed and it["tval"] == TV_LITE
         if iv.kind is None or iv.value <= 0 or (iv.value * self.pay_cut(iv.tval) < 1 and not cheap_ok):
             return 0
-        return it["number"]
+        return flask_spare if it["tval"] == TV_FLASK and not freed else it["number"]
 
     PACK_SLOTS = 23
 
@@ -593,8 +610,8 @@ class TownMixin:
         return True
 
     def provision_step(self, kit):
-        """The town visit's last step: fill the lantern from the flasks bought for it (worn: it refuels the
-        light in hand), then eat rations until Fed (at most 3) -- not Full: a ration is 5000 food, Full starts at 10000
+        """The town visit's last step: fill the lantern from the flasks bought for it, to full (2.49.0; worn: it
+        refuels the light in hand), then eat rations until Fed (at most 3) -- not Full: a ration is 5000 food, Full starts at 10000
         and Gorged (-10 speed) at 15000, so a Full character is a few potions from Gorged (m48: the 5th Cure Critical in
         a blind fight). The Pilot eats its ration in the dungeon when Hungry. True if it acted."""
         w = self.w
@@ -608,7 +625,7 @@ class TownMixin:
                                                        f"turns vs {fuel})", hold=0.8)
             return True
         flask = next((i for i in w.items(tval=TV_FLASK)), None)
-        if fuel is not None and fuel < self.FUEL_TOPUP and flask and kit.fuelled < 3:
+        if fuel is not None and self.flasks_to_fill(fuel) and flask and kit.fuelled < 3:
             worn = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
             if not worn or "Lantern" not in worn["name"]:
                 return self.wear_light("town kit: the lantern on to refuel it")
@@ -687,9 +704,9 @@ class TownMixin:
                 k = "Cure Serious Wounds" if want >= 500 else "Cure Light Wounds"
                 add(2, k, planned(k) + cures - total)
             add(2, "Phase Door", ph)
-        fuel = self.lantern_fuel()
-        if fuel is not None and fuel < self.FUEL_TOPUP:
-            add(2, "Flask of oil", -(-(self.FUEL_TOPUP - fuel) // self.FLASK_FUEL))
+        # (the flasks that fill the lantern, less those carried: 2.49.0, full -- was to 9000)
+        if self.flasks_to_fill():
+            add(2, "Flask of oil", self.flasks_to_fill())
         for stat, (cur, top) in (self.seen_drained or {}).items():
             if stat in self.STAT_FULL and cur < top:
                 if not self.stash_has(f"Restore {self.STAT_FULL[stat]}"):     # (fetched from the stash instead)
@@ -833,7 +850,8 @@ class TownMixin:
     # The lantern burns a turn of fuel a player turn, ~215 a dungeon minute with the resting/running speed-ups
     # (FIELD-NOTES: 15000 -> 7500 in ~35 dungeon minutes, m29-m30). Food: 20 a food tick every 10 player turns at
     # normal speed, 10 with slow digestion (dungeon.c:1129-1147), none in town -- 1 or 2 a player turn, so on the same
-    # clock. Food runs from the hunger level's middle (the client sends the level only) down to Weak (1000).
+    # clock. Food runs from the least the stomach holds (the tracker's bottom, stomach.py: exact once a hunger crossing
+    # has pinned it, else the hunger level's bottom -- the client sends the level only) down to Weak (1000).
     TURNS_PER_DMIN = 215
     FOOD_MID = {0: 750, 1: 750, 2: 1500, 3: 6000, 4: 12500, 5: 15000}
 
@@ -845,8 +863,9 @@ class TownMixin:
         reserve = sum(self.food_value(i["name"]) * i["number"] for i in w.items(tval=TV_FOOD)
                       if "Mushroom" not in i["name"])
         # (2.48.1, m61: the bottom of the hunger level, not its middle -- "food ~23 dungeon min" stood still for 5
-        # minutes while Fed and ran out; the least it can be is what alerts and decisions need)
-        food = max(0.0, self.food_floor() + reserve - 1000) / (per_turn * self.TURNS_PER_DMIN)
+        # minutes while Fed and ran out; the least it can be is what alerts and decisions need. 2.49.0: the stomach
+        # tracker's bottom, the level's until a crossing calibrates it)
+        food = max(0.0, self.food_now() + reserve - 1000) / (per_turn * self.TURNS_PER_DMIN)
         fuel = self.lantern_fuel()
         if fuel is None:
             # no lantern: a worn light that shows turns (a torch) burns out -- its turns plus spare torches'; one that
@@ -867,9 +886,11 @@ class TownMixin:
         return food, light
 
     def supply_text(self):
+        """'food >=N dungeon min, light ~M': food the least it can last; '~N' once the stomach tracker is exact (a
+        hunger crossing or a Satisfy Hunger pinned it, 2.49.0)."""
         food, light = self.supply_minutes()
-        return f"food >={food:.0f} dungeon min, light ~{light:.0f}" if light is not None else \
-            f"food >={food:.0f} dungeon min, light permanent"
+        f = f"food {'~' if self.stomach.exact(self.w.hunger) else '>='}{food:.0f} dungeon min"
+        return f"{f}, light ~{light:.0f}" if light is not None else f"{f}, light permanent"
 
     def supply_watch(self):
         """In the dungeon: tell the Navigator once when food or light (reserves counted) falls under 15, then 5,

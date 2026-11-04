@@ -17,10 +17,11 @@ Where the code is (E1 step 2): `Goal` and the dungeon goals in `tools/pilot/goal
 `pilot.py` imports the ones it uses back (`Goal`, `Flee`, `TownKit`, `TripPlan`...; not `Goto`, `Recover`,
 `BandLeave`, `Resurrect`, `RestGoal`, `TownFarm`), so read `pilot.py: Goal` below as `goals.py: Goal`. The `Pilot` methods the town visit uses
 (E1 step 4) live in `town.py` as `TownMixin`, still `Pilot`'s names (`Pilot.town_needs` below is one): the kit's tables
-(`STORE_NUM`, `STORE_LABEL`, `BUYERS`, `KIT_ITEMS`, `KIT_CAP`, `KITS`, `SUPPLY_STAGES`, `FUEL_TOPUP`/`FLASK_FUEL`,
+(`STORE_NUM`, `STORE_LABEL`, `BUYERS`, `KIT_ITEMS`, `KIT_CAP`, `KITS`, `SUPPLY_STAGES`, `FUEL_LAMP`/`FLASK_FUEL`/`FILL_SLACK`,
 `PACK_SLOTS`, `BANK_FLOAT`...), the shopping list and gold (`town_needs`, `town_shopping`, `town_reserve`,
 `price_of`, `note_store`, `buy_store`, `stock_table`), selling (`town_buyers`, `town_sell_count`, `town_sells`,
-`town_sell_stores`, `is_crutch`), `town_make_room`, `provision_step`, `kit_count`, `lantern_fuel`,
+`town_sell_stores`, `is_crutch`), `town_make_room`, `provision_step`, `kit_count`, `lantern_fuel`, `flasks_to_fill`,
+`flasks_spare`,
 `trip_minutes_left`, `provisions_spare`, `planned_depth`, `restore_potion`, Identify/Enchant/Recharging
 (`identify_candidates`, `town_identify_wanted`, `enchant_plan`, `weapon_enchant_plan`, `enchant_buys`,
 `recharge_wanted`, `town_extras_note`...),
@@ -193,7 +194,8 @@ rules' role -- `value_refusal`, a forced sale's debt, the override check; a buy-
    `town_make_room` frees pack slots for new kinds (sells the least valuable unprotected item, else destroys it; 6 tries),
    and the stores are ordered by the highest-priority line each holds.
 5. **buying**: one `Shop` per store; then wear what was bought; quaff a Restore bought for a drained stat
-   (`restore_potion`); `provision_step` (wear the fuller lantern, fill it from flasks up to `FUEL_TOPUP` 9000 turns,
+   (`restore_potion`); `provision_step` (wear the fuller lantern, fill it to full from the flasks bought for it,
+   `flasks_to_fill` -- 2.49.0, the user: oil is cheap and fuel past 15000 just caps; was: up to 9000 turns --
    eat rations while Hungry or worse, up to 3, to Fed); **restock waits**: if a critical item (the gate's minimums, a
    Restore for a drained STR/DEX/CON) is still missing and a shop said "no ... in stock" (not of a fallback), `Wait(35)`
    and redo the buy stage, up to `RESTOCK_WAITS` = 4 times; **fallback** (2.48.0, the user's principle A): a kit kind
@@ -238,7 +240,7 @@ already planned:
 | tier | what |
 |---|---|
 | 1 | Word of Recall up to 2 |
-| 2 | the supply gate's minimums for `planned_depth()` (`min(max_depth, deepest)`): CCW, CSW (unless 3 CCW), total cures (CLW below 500 ft, CSW deeper), Phase Door; and Flasks of oil to bring the lantern to 9000 turns (7500 a flask) |
+| 2 | the supply gate's minimums for `planned_depth()` (`min(max_depth, deepest)`): CCW, CSW (unless 3 CCW), total cures (CLW below 500 ft, CSW deeper), Phase Door; and the Flasks of oil that fill the lantern, `flasks_to_fill`: ceil((15000 - fuel) / 7500), none within `FILL_SLACK` = 300 turns of full (FUEL_LAMP, mdefines.h:187; a flask's 7500, object.txt; the refill caps at the top, cmd3.c:1365-1374; 2.49.0, was: to 9000) |
 | 3 | Restore STR/DEX/CON for a drained stat (unless one waits in the stash) |
 | 4 | the kit's stock levels (`KITS`; default by planned depth: A below 500 ft, B below 1000 ft, C deeper) |
 | 5 | the Navigator's buy list (`NAME:N` = have N) |
@@ -258,7 +260,7 @@ scrolls come last of the buying stage's purchases (after the kit and the list), 
 
 | Pilot method | what it does |
 |---|---|
-| `town_sell_count(it)` | how many of an item the town visit sells (0 = keep). First `town_rule` (2.48.0): keeps a fallback while its kit kind is short and a Scroll of Enchant/Recharging the kit would read, and the restoring mushrooms; frees for sale Boldness otherwise, Satisfy Hunger, CLW in kits B/C, other mushrooms, torches beside a lit lantern. Then keeps: worn items, kit kinds, needed food/light (sells other food, spare flasks once the lantern has 9000+, a second lantern no fuller than another), useful devices (`USEFUL_DEVICES`; not a staff duplicating a carried rod; an empty one only if no recharge is planned), `keep`-protected items, ability sources, cursed/worthless, unknowns the policy won't sell blind (unknown devices do sell when broke for a recall), probably-special or value-refused items, gear the evaluator would wear, items held for the Navigator's review, and anything worth nothing. Details in pilot-items.md |
+| `town_sell_count(it)` | how many of an item the town visit sells (0 = keep). First `town_rule` (2.48.0): keeps a fallback while its kit kind is short and a Scroll of Enchant/Recharging the kit would read, and the restoring mushrooms; frees for sale Boldness otherwise, Satisfy Hunger, CLW in kits B/C, other mushrooms, torches beside a lit lantern. Then keeps: worn items, kit kinds, needed food/light (sells other food, the flasks beyond those that fill the lantern -- `flasks_spare`, 2.49.0 -- a second lantern no fuller than another), useful devices (`USEFUL_DEVICES`; not a staff duplicating a carried rod; an empty one only if no recharge is planned), `keep`-protected items, ability sources, cursed/worthless, unknowns the policy won't sell blind (unknown devices do sell when broke for a recall), probably-special or value-refused items, gear the evaluator would wear, items held for the Navigator's review, and anything worth nothing. Details in pilot-items.md |
 | `is_crutch(it)` | on the test server (not `--live`): Enlightenment, Detection and Magic Mapping devices, and (2.48.0) Scrolls of Magic Mapping (`CRUTCH_SCROLLS`; not Deep Descent), are sold like loot and the scrolls never read, so exploring by hand stays honest |
 | `town_rule(it)`, `visit_kit()`, `kit_target(kind)`, `fallback_kept(it)`, `clw_spare()`, `lantern_lit()`, `scroll_use(it)`, `fallback_buys(spare, since)` | 2.48.0, the user's two principles (A fallback, B dungeon stopgap) and the scrolls the kit would read: ("keep"\|"sell", why) for a pack item in town, which `town_sell_count` and `price` follow -- pilot-items.md, "Fallbacks, stopgaps, crutches" |
 | `town_buyers(it)` | the stores that buy its tval (`BUYERS`, from store.c; never the Black Market), the best-paying owner first (`shopmath.factors` with our CHR) |
@@ -277,6 +279,7 @@ scrolls come last of the buying stage's purchases (after the kit and the list), 
 | `price_of(kind, store)` | the cheapest price seen for a kind at a store, else the `KIT_ITEMS` guess |
 | `buy_store(name)`, `stock_table()` | which store sells a name (`rulebook/shop_stock.csv`, which gives 7 for its few Black Market rows such as Healing; else listings seen, never 7) |
 | `lantern_fuel()` | turns in the worn lantern, else the fullest in the pack |
+| `flasks_to_fill(fuel)`, `flasks_spare(it)` | 2.49.0: the flasks that fill the lantern (0 within `FILL_SLACK` of 15000, or no lantern); how many of a flask stack it doesn't need (the other stacks first): what the town visit sells, its make-room values at their sale price and destroys |
 | `kit_count(kind)` | how many carried (rations only for food; Perception charges count as Identify) |
 | `planned_depth()` | `min(max_depth, deepest)` (or whichever is set) |
 
@@ -304,9 +307,12 @@ full lantern's 7500 turns in ~35 minutes).
 
 - **Light** = (lantern fuel + flasks x 7500) / 215; without a lantern, a worn light that shows turns (a torch) counts
   them plus spare torches' (A19, 2.40.0); `None` for a permanent light (one that shows no turns); 0 without one.
-- **Food** = (the middle of the current hunger level, `FOOD_MID`, plus the food value of rations and other food
-  carried, minus 1000 for Weak) / (2 a turn, 1 with slow digestion, x 215). Food isn't digested in town.
-- `supply_text()`: "food >=N dungeon min, light ~M" (food: since 2.48.1 the least it can be -- the stomach at the bottom of its hunger level, plus the food carried; the middle stood still for minutes in m61 and ran out) (on the status line via `supply_lines`, at `plan town`'s start and
+- **Food** = (the least the stomach holds, `food_now()` -- the stomach tracker's bottom, exact once a hunger crossing
+  has pinned it, else the hunger level's bottom (2.49.0; 2.48.1 took the level's bottom, `food_floor`) -- plus the food
+  value of rations and other food carried, minus 1000 for Weak) / (2 a turn, 1 with slow digestion, x 215). Food
+  isn't digested in town. The tracker: pilot-items.md, "The stomach tracker".
+- `supply_text()`: "food >=N dungeon min, light ~M" (food: since 2.48.1 the least it can be; "food ~N" once the stomach
+  tracker is exact, 2.49.0; the middle of the level stood still for minutes in m61 and ran out) (on the status line via `supply_lines`, at `plan town`'s start and
   end, on reaching the dungeon). `supply_watch()` (every tick in the dungeon) alerts `supplies` once under 15 and once
   under 5 minutes, reset above 20. `QuietWait` is capped at a quarter of the smaller.
 - `supply_lines()`: the report's supplies line: cures, escapes, food, light (with flasks and the minutes), a pending

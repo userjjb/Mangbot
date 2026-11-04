@@ -56,7 +56,7 @@ sold and bought, what it couldn't afford, and whether the supplies cover a recal
   sell like other non-ration food, except the restoring ones. `price LETTER` names the rule on its policy line.
 - **Kits** (default by the planned depth): A (to 500 ft) WoR 2, CLW 5, Phase 5, rations 3; B (to 1000 ft)
   WoR 2, CCW 4, CSW 4, Phase 10, rations 3, Heroism 3, Speed 2 (Black Market, at most 600 each); C (deeper) like B
-  with CCW 6 and Phase 12. No flasks in any kit: flasks are bought only to top the lantern up to 9000 turns.
+  with CCW 6 and Phase 12. No flasks in any kit: flasks are bought only to fill the lantern (to 15000 turns; the rest are sold).
   `kit=none` buys only the essentials and your list.
 - **Your buy list** is for things beyond the kit: upgrades, Restore Charisma, a Staff of Teleportation, the Free
   Action fund. Spaces as `_`, the shop is found from its stock table (name it as `7/` for the Black Market, which charges 3x):
