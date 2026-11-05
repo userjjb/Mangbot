@@ -676,3 +676,77 @@ def a_failing_tick_step_doesnt_stop_the_pilot():
     return ok, (f"steps run twice past the failing vault_tick: watch_tick {ran.count('watch_tick')}, act_tick "
                 f"{ran.count('act_tick')}; notices {errs}; reflexes after a confusion_tick error {before}, after a goal "
                 f"error (already ran) {after}; ClientExited passes {passed}; errors {sorted(q.step_errors)}")
+
+
+M69_ROWS = [      # m69 09:13, 750 ft: rows 17-45, columns 60-124 of the map (Dive04 at 31,89 in a 2-wide corridor)
+    '                                                  #....#',
+    '                                                  #..###',
+    '                                                  %..%       ####',
+    '                                                  %..%       #..#',
+    '                                                  %..#      ##...',
+    '                                                  %..########..#.',
+    '                                                  %..%%.........#',
+    '                                                 #%..##.........#',
+    '                                                 ....%%..####...#',
+    '                                                 ........#  #....',
+    '                                                  .......#  #....',
+    "                    ''            +'               #%#%##   #...#",
+    '                           ####                                .',
+    '                           #..%',
+    '                           %@.%',
+    '                           %..#',
+    '                           #..#',
+    '                           #..#',
+    '                           #..#',
+    '                          ##..#',
+    '                          #.....',
+    '                   %%%%####....                          ########',
+    '                #%%#.........##                          #.......',
+    '                #............#                           #.......',
+    '                %.....#######                            #..#####',
+    '                *..%###                                  #..#',
+    '                %..#                                     #..#',
+    '                #..#                                 #####..#',
+    '        ###%%###%..#                                 #......#',
+]
+
+
+@case
+def wide_corridor_dead_end_searched():
+    """2.67.0, the user (m69 09:14, 750 ft): "a corridor 2 squares wide that dead-ends is a giveaway for secret doors"
+    -- the 2-wide corridor at rows 30-36, columns 89-90, ends against "####" at row 29; the wanted '>' at 27,109 had
+    no known path and the dive turned round to walk one through unexplored squares. The detector finds that end
+    (pointing up), not the corridors that go on; before the unknown walk the dive searches there (WIDE_TRIES) with news;
+    a plain Search takes 2-wide ends first."""
+    import goals as G
+    p = pilot(hp=369)
+    w = p.w
+    w.memory = {}
+    for k, row in enumerate(M69_ROWS):
+        for j, ch in enumerate(row):
+            if ch != " ":
+                w.memory[(17 + k, 60 + j)] = "." if ch == "@" else ch
+    w.memory[(27, 109)] = ">"
+    w.pos = (31, 89)
+    w.depth, w.in_dungeon = 15, True
+    p.searched = set()
+    ends = G.Search.wide_dead_ends(w)
+    wide = [(q, d) for q, d, n in ends if n == 2]
+    went = []
+    p.mover = type("M", (), {"active": False, "unknown": True, "path": [],
+                             "go": lambda self, g, unknown=False: went.append(list(g)) or True,
+                             "tick": lambda self: "moving", "stop": lambda self: None})()
+    d = G.Dive(800)
+    started = d.search_wide_end(p, [(27, 109)])
+    first = d.wide.fixed if d.wide else None
+    again = [d.search_wide_end(p, [(27, 109)]) for _ in range(3)]
+    s = G.Search()
+    s.known, s.doors = 0, G.Search.door_count(w)
+    p.frontier = lambda: []
+    s.tick(p)
+    news = [x for k, x in p.notes if k == "tactic"]
+    ok = wide == [((30, 88), (-1, 0))] and started and first == [(30, 88)] and \
+        d.wide.tries == G.Search.WIDE_TRIES and news and "2-wide corridor dead-ends at 30,88" in news[0] and \
+        again.count(True) <= 1 and s.spot == (30, 88) and s.spot_tries == G.Search.WIDE_TRIES
+    return ok, f"2-wide ends {wide}; 1-wide {[(q, d) for q, d, n in ends if n == 1][:4]}; dive search {started} " \
+               f"{first} (more: {again}); news {news[:1]}; plain Search spot {s.spot} x{s.spot_tries}"

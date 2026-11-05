@@ -305,6 +305,8 @@ class Dive(Goal):
         self.bad_t = {}
         self.bad_cleared = 0
         self.located = None         # level we used Door/Stair Location on
+        self.wide = None            # (2.67.0) a Search at a 2-wide dead end before walking through unexplored squares
+        self.wide_tried = set()     # (level_t, spot) searched that way
 
     def locate_stairs(self, p):
         """No stairs known on a fresh level: use a Staff (or zap a Rod) of
@@ -352,6 +354,7 @@ class Dive(Goal):
             self.level_seen = w.level_t
             self.walking = False
             self.explore = None
+            self.wide = None
             self.pillared_done = False
             why = p.interesting() if self.stop else None
             if why:
@@ -409,11 +412,18 @@ class Dive(Goal):
         if w.standing_on == want and (w.level_t, w.pos) not in self.bad_stairs:
             return self._stairs(p, want)
         downs = [d for d in downs if (w.level_t, d) not in self.bad_stairs]
+        if downs and not self.walking and self.wide is not None:
+            r = self.wide.tick(p)
+            if r is None:
+                return None
+            self.wide = None          # (found a way on, or nothing there: walk on, by the known way if there is one now)
         if downs and not self.walking:
             # (2.54.0, m64 at 750 ft: the '>' 2 squares past a room's unexplored east edge, "path 0" 15 times, the trip
             # recalled after 5 minutes. As the flee does: no known path -> one through unexplored squares, replanned as
             # they come into view; avoid zones and known traps as before)
             if p.mover.go(downs, unknown=True):
+                if getattr(p.mover, "unknown", False) and self.search_wide_end(p, downs):
+                    return None
                 self.walking = True
                 self.say_unknown(p, want, downs)
             elif p.zone_hold(downs, f"the '{want}' at " + ", ".join(f"{d[0]},{d[1]}" for d in downs[:3])):
@@ -523,6 +533,43 @@ class Dive(Goal):
             self.explore = None
         return None
 
+    WIDE_CAP = 2            # 2-wide dead ends searched a level before a walk through unexplored squares
+    WIDE_MAX_DIST = 40
+
+    def search_wide_end(self, p, tiles):
+        """2.67.0 (the user, m69 09:14): no known path to the wanted stairs -- before walking one through unexplored
+        squares, search the best 2-wide corridor dead end (a secret door's giveaway: Search.wide_dead_ends), else a
+        1-wide one that points toward the stairs, within WIDE_MAX_DIST, WIDE_CAP a level: the one pointing toward the
+        stairs first, then the nearest (its distance plus its distance to the stairs). True if a search started."""
+        w = p.w
+        if sum(1 for lt, _ in self.wide_tried if lt == w.level_t) >= self.WIDE_CAP:
+            return False
+
+        def toward(q, d):
+            return any((t[0] - q[0]) * d[0] + (t[1] - q[1]) * d[1] > 0 for t in tiles)
+
+        cands = []
+        for q, d, n in Search.wide_dead_ends(w, p.searched):
+            if (w.level_t, q) in self.wide_tried or w.dist(q) > self.WIDE_MAX_DIST:
+                continue
+            tw = toward(q, d)
+            if n == 1 and (not tw or w.dist(q) > 20):
+                continue                  # (a 1-wide dead end: a weaker hint -- only one pointing at the stairs)
+            far = min(max(abs(t[0] - q[0]), abs(t[1] - q[1])) for t in tiles)
+            cands.append(((n != 2, not tw, w.dist(q) + far), q, d, n))
+        if not cands:
+            return False
+        _, q, d, n = min(cands)
+        self.wide_tried.add((w.level_t, q))
+        p.mover.stop()
+        self.wide = Search(tries=Search.WIDE_TRIES, spots=[q], wide=[q])
+        self.wide.name = "search a dead end"
+        p.notify("tactic", (f"a 2-wide corridor dead-ends at {q[0]},{q[1]}" if n == 2 else
+                            f"a corridor dead-ends at {q[0]},{q[1]} toward the stairs") +
+                 f": searching for a secret door before walking through unexplored squares to the stairs at "
+                 f"{tiles[0][0]},{tiles[0][1]}", news=True)
+        return True
+
     def say_unknown(self, p, kind, tiles):
         """News, once a level, when a stairs walk goes through unexplored squares (2.54.0)."""
         w = p.w
@@ -560,7 +607,7 @@ class Search(Goal):
     corridor ends. Done when a new door/opening shows up (explore again).
     strict=True: true corridor dead ends only (explore's own pass)."""
 
-    def __init__(self, tries=8, strict=False, spots=None):
+    def __init__(self, tries=8, strict=False, spots=None, wide=()):
         self.name = "search dead ends"
         self.tries = tries
         self.strict = strict
@@ -570,6 +617,8 @@ class Search(Goal):
         self.known = None
         self.done_n = 0
         self.spots_log = []           # (spot, searches; 0 = couldn't reach it)
+        self.wide = set(wide)         # (2.67.0) the 2-wide dead ends among the spots: WIDE_TRIES searches each
+        self.spot_tries = None
 
     @staticmethod
     def door_count(w):
@@ -612,6 +661,50 @@ class Search(Goal):
                     out.append((y, x))
         return out
 
+    WIDE_TRIES = 20        # searches at a 2-wide dead end (a warrior's searching is poor: 2.67.0)
+
+    @staticmethod
+    def wide_dead_ends(w, skip=()):
+        """2.67.0 (the user, m69 09:14: a 2-wide corridor ending in "####" at 750 ft, and the dive turned to walk
+        through unexplored squares): [(spot, (dy, dx), width)] -- a corridor 2 squares wide that stops against wall
+        (WIDE_CORRIDORS: one never just stops -- a secret door is the giveaway), its two end squares side by side, the
+        wall ahead of both and on both sides for 3 squares back; spot = one end square (searching there covers both
+        squares ahead), (dy, dx) the way it would go on. Then, as a weaker hint (width 1), a 1-wide corridor's dead end
+        (one way out). Squares in `skip` ((level_t, square)) are left out."""
+        mem = w.memory
+
+        def opn(q):
+            return mem.get(q, " ") not in "#%*: 12345678"
+
+        def wall(q):
+            return mem.get(q) in ("#", "%", "*")
+        out, seen = [], set()
+        for (y, x) in list(mem):
+            if not opn((y, x)):
+                continue
+            for dy, dx in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+                py, px = abs(dx), abs(dy)                  # (the side the pair's other square is on)
+                b = (y + py, x + px)
+                if not opn(b) or not (wall((y + dy, x + dx)) and wall((b[0] + dy, b[1] + dx))):
+                    continue
+                ok = True
+                for k in range(3):
+                    ak, bk = (y - k * dy, x - k * dx), (b[0] - k * dy, b[1] - k * dx)
+                    if not (opn(ak) and opn(bk) and wall((ak[0] - py, ak[1] - px)) and wall((bk[0] + py, bk[1] + px))):
+                        ok = False
+                        break
+                if ok and (w.level_t, (y, x)) not in skip and (w.level_t, b) not in skip:
+                    out.append(((y, x), (dy, dx), 2))
+                    seen |= {(y, x), b}
+        for q in Search.dead_ends(w, strict=True, skip=skip):
+            ring = [(dy, dx) for dy in (-1, 0, 1) for dx in (-1, 0, 1) if dy or dx]
+            nbs = [d for d in ring if opn((q[0] + d[0], q[1] + d[1]))]
+            # (walled all round but the way back: not the edge of what we've seen)
+            if len(nbs) == 1 and q not in seen and not (nbs[0][0] and nbs[0][1]) and \
+                    all(wall((q[0] + d[0], q[1] + d[1])) for d in ring if d != nbs[0]):
+                out.append((q, (-nbs[0][0], -nbs[0][1]), 1))
+        return out
+
     def tick(self, p):
         w = p.w
         if self.known is None:
@@ -630,7 +723,7 @@ class Search(Goal):
             if not self.searching:
                 p.searched.add((w.level_t, self.spot))
                 self.done_n += 1
-                self.spots_log.append((self.spot, self.tries))
+                self.spots_log.append((self.spot, self.spot_tries or self.tries))
                 self.spot = None
             return None
         if p.mover.active:
@@ -638,7 +731,7 @@ class Search(Goal):
             if st == "moving":
                 return None
             if st == "arrived" and w.pos == self.spot:
-                self.searching = self.tries
+                self.searching = self.spot_tries or self.tries
                 return None
         if self.spot:
             # couldn't get there: don't try it again on this level
@@ -649,13 +742,18 @@ class Search(Goal):
         if self.fixed is not None:
             spots = sorted((q for q in self.fixed if (w.level_t, q) not in p.searched), key=w.dist)
         else:
-            spots = sorted(self.dead_ends(w, self.strict, p.searched), key=w.dist)
+            # (2.67.0: a 2-wide corridor's dead end first -- the surest sign of a secret door -- searched longer)
+            wide = sorted((q for q, _, n in self.wide_dead_ends(w, p.searched) if n == 2), key=w.dist)
+            spots = wide + sorted((q for q in self.dead_ends(w, self.strict, p.searched) if q not in wide),
+                                  key=w.dist)
+            self.wide = set(wide)
         if not spots:
             return ("failed", ("searched every spot, nothing found" if self.fixed is not None else
                                "searched every dead end, nothing found") + self.summary())
         self.spot = spots[0]
+        self.spot_tries = max(self.tries, self.WIDE_TRIES) if self.spot in self.wide else None
         if w.pos == self.spot:
-            self.searching = self.tries
+            self.searching = self.spot_tries or self.tries
         elif not p.mover.go([self.spot]):
             p.searched.add((w.level_t, self.spot))
             self.spots_log.append((self.spot, 0))

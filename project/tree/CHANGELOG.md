@@ -27,6 +27,17 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.67.0 -- 2026-11-05 (session 12, during m69: 2-wide dead ends are searched)
+No missions yet on it. **Play changes:**
+- **A 2-wide corridor that dead-ends is a giveaway for a secret door** (the user, m69 09:14 at 750 ft: the corridor at
+  rows 30-36, columns 88-89, ends against "####" at row 29; the '>' at 27,109 had no known path and the dive turned
+  round to walk one through unexplored squares). `Search.wide_dead_ends` finds them on the known map (two floor lines
+  ending side by side against wall, walled on both sides 3 squares back), and walled 1-wide dead ends as a weaker hint.
+  Before a dive walks to its stairs through unexplored squares, it searches the best one (a 2-wide one first, one
+  pointing toward the stairs first; within 40 squares, at most 2 a level, 20 searches each) with news "a 2-wide
+  corridor dead-ends at Y,X: searching for a secret door ..."; then walks on, by a known way if one opened. A plain
+  `Search` (explore's walled-in pass, `goal search`) takes 2-wide dead ends first, 20 searches each.
+
 ## 2.66.0 -- 2026-11-05 (session 12, during m69: monsters in view are fought)
 No missions yet on it (m69 runs on it from the hot-swap). **Play changes:**
 - **"If there is a monster in view we should kill it, unless we have a reason not to"** (the user, m69 09:05: a Baby
