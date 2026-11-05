@@ -17,6 +17,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "pilot"))
 import pilot as P                  # noqa: E402
 import glyphs                      # noqa: E402
+import world as _world             # noqa: E402
+# (2.61.0: the cases never see the test server's live freeze -- m67's freezes failed the golden report, "TIME FROZEN",
+# and game_clock_from_fuel)
+_world.FREEZE_FILE = os.path.join(HERE, "no-such-freeze-file")
+_world._FROZEN.update(t=0.0, on=False)
 
 RACES = glyphs.load_rulebook(glyphs.load_races())
 

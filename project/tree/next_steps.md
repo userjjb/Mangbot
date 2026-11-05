@@ -483,6 +483,11 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   17:35 on it. 2.58.1 (patch): pilotctl prints the user-message line last too (the Navigator's `wait | tail -30` cut
   it). The user asked for a hot-swap at 18:00: it hit plan town mid house visit -- the bank's 28k in the purse, the
   goal and the tile's map lost, the queued trip about to recall with it; the Architect stopped it, walked out, banked.
-- **Lessons:** never hot-swap (or restart) during a town or house visit -- `hotswap.sh` should wait for one to end;
+- **m66** (Sonnet medium, 2.58.0/2.58.1): **115.2 XP/dmin**, the session's best; the first estimator band decision
+  (fight Black orc x6, Warg x3, Umber hulk: low 82%). **2.59.0**: restart/hotswap wait for town/house visits
+  (`swapsafe`, `--now`; live-tested: waited through plan town's stages); the Town goal goes home by the overworld
+  offset (wilderness.c world_index: -1 N, -2 E, -3 S, -4 W, then rings; live-tested from mid-tile with no trail);
+  the trip plan stops re-issuing a failing goal; `wait` repeats its alerts last ("ALERTS:").
+- **Lessons:** never hot-swap (or restart) during a town or house visit (2.59.0 enforces it) -- `hotswap.sh` should wait for one to end;
   `restart.sh` loads the working tree; hand-walking into the house picks up the bank pile (the step-in
   square) -- never do it; `goal goto` queued behind raw steps can path back through the house.

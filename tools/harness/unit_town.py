@@ -732,3 +732,65 @@ def navigator_clarity_losses_and_plan_town():
         and nav.get("queued") and "already running" in arch.get("error", "") and \
         "walk back into town" in tile.get("error", "") and "recall" not in tile.get("error", "")
     return ok, f"lost {lost}; navigator {nav}; architect {arch}; on the tile {tile}"
+
+
+@case
+def review_decided_in_the_same_visit():
+    """2.63.0 (the user: "We shouldn't defer deciding to sell gear multiple dungeon visits. It should be decided while
+    we are in town the first time"): plan town raises the held items at its start as one `review` alert (the default,
+    why, a gearcmp hint); the Navigator answers during the visit; at the visit's last step before banking, after at
+    least 60 s from the alert (a Wait; the shops ran meanwhile), anything undecided gets the default -- sold there. A
+    `review keep` during the visit keeps it."""
+    def make(answer=None):
+        import tempfile
+        p = pilot(pack=[("an Amulet of Resist Lightning", 40)], gold=500)
+        p.rundir = tempfile.mkdtemp()
+        p.w.depth, p.w.depth_ft, p.w.in_dungeon = 0, 0, False
+        p.flavour_of = lambda it: None
+        p.unknown_flavour = lambda it: False
+        p.gear_better = lambda it: None
+        p.house_state = lambda: {}
+        k = P.TownKit()
+        p.goal = k
+        k._kit_count(p, None)
+        alert = next((d for w_, d in p.notes if w_ == "review"), "")
+        if answer:
+            p.do_request({"cmd": "review", "args": [answer, "amulet"], "role": "navigator"})
+        ctx = types.SimpleNamespace(w=p.w, now=P.gnow())
+        first = k._buying_review(p, ctx)
+        waited = type(k.sub).__name__ if k.sub else None
+        k.sub = None
+        k._buying_review(p, ctx)
+        k._buying_review(p, ctx)
+        shop = (k.sub.store, k.sub.sells) if k.sub else None
+        return alert, first, waited, shop, p.review_state()["decided"].get("an Amulet of Resist Lightning")
+    import types
+    alert, first, waited, shop, dec = make()
+    kept = make("keep")
+    ok = "decide these now" in alert and "default: sell" in alert and "gearcmp" in alert and first is None and \
+        waited == "Wait" and shop and shop[1] == [(0, 1)] and dec == "sell" and kept[3] is None and kept[4] == "keep"
+    return ok, f"alert {alert[:120]!r}; first {first}, {waited}; then sold at {shop} ({dec}); kept: {kept[3:]} "
+
+
+@case
+def debt_waive_and_floor_price():
+    """2.63.0: `debt waive N|all [REASON]` (the Architect's) strikes an item-debt entry, keeping it as waived (who,
+    when, why) and logging debt_waived; the Navigator is refused. `price NAME` values an item on the floor (the item
+    list, its glyph's square) at this depth -- m67's Navigator couldn't price unidentified boots in a vault."""
+    import tempfile
+    p = pilot()
+    p.debt_path = os.path.join(tempfile.mkdtemp(), "navigator_debt.json")
+    p.debt = {"entries": [{"t": "x", "gold": 276, "what": "a Lead-Filled Mace", "why": "destroy"},
+                          {"t": "y", "gold": 40, "what": "a Dagger", "why": "sell"}]}
+    nav = p.do_request({"cmd": "debt", "args": ["waive", "1"], "role": "navigator"})
+    arch = p.do_request({"cmd": "debt", "args": ["waive", "1", "the", "user", "waived", "it"], "role": "architect"})
+    listing = p.do_request({"cmd": "debt", "args": [], "role": "navigator"})["text"]
+    q = pilot()
+    q.w.itemlist = ["Items:", "] a Pair of Hard Leather Boots", "! a Potion of Cure Light Wounds"]
+    q.w.memory = {(30, 40): "]"}
+    q.w.floor = None
+    q.vaults = {}
+    price = q.price_info("boots")
+    ok = not nav["ok"] and arch["ok"] and p.debt_total() == 40 and p.debt["waived"][0]["waived_why"] == \
+        "the user waived it" and "#1" in listing and "on the floor at 30,40" in price and "unfelt" in price
+    return ok, f"navigator {nav}; architect {arch}; listing {listing!r}; price {price!r}"

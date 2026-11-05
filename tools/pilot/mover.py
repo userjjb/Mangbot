@@ -465,7 +465,8 @@ class Mover:
         uc = 6 if getattr(self, "unknown", False) else None
         # Known traps: round them when there's another way (cost 25 still sent
         # explore over them; two stat drains from dart traps in mission 22)
-        traps = {q for q, ch in self.w.memory.items() if ch == "^"} - set(self.goals)
+        traps = ({q for q, ch in self.w.memory.items() if ch == "^"} |
+                 set(getattr(self.w, "extra_traps", ()) or ())) - set(self.goals)   # (2.62.0: a vault's predicted traps)
         self.path = (plan(self.w, self.goals, self.avoid | traps, unknown_cost=uc) if traps else None) or \
             plan(self.w, self.goals, self.avoid, unknown_cost=uc) or []
         self.sent = self.done = 0

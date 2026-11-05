@@ -1,0 +1,210 @@
+{
+ "label": "m67",
+ "nav_model": "sonnet",
+ "effort": "medium",
+ "report": "compact",
+ "start": "2026-11-04 21:18",
+ "end": "2026-11-04 22:49",
+ "minutes": 47.0,
+ "frozen_min": 44.0,
+ "budget": null,
+ "notes": "sixth mission of session 12, on 2.59.0",
+ "tokens": {
+  "turns": 70,
+  "input": 144,
+  "output": 21169,
+  "cache_read": 4459176,
+  "cache_write": 105223,
+  "write_5m": 105223,
+  "write_1h": 0,
+  "model": "claude-sonnet-5-5",
+  "final_usage_turns": 70,
+  "usd": 0.921,
+  "transcript": "agent-acc2a61cfd3b907c7.jsonl"
+ },
+ "defs": "2026-11-01 (2.44.0)",
+ "estimator": {
+  "n": 7,
+  "compared": 2,
+  "agree": 0,
+  "in_time_turn": 7,
+  "before_next_act": 7,
+  "skipped": 0,
+  "compute_max_s": 0.079,
+  "disagreements": [
+   [
+    "stairs",
+    "phase",
+    "+320 XP net of gold vs rules (SE 49), both safe"
+   ],
+   [
+    "stairs",
+    "rules",
+    "rules (no option clearly better)"
+   ]
+  ],
+  "hard_n": 5,
+  "hard_compared": 5,
+  "hard_agree": 5,
+  "hard_choices": {}
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   29,
+   30
+  ],
+  "exp_gain": 5136,
+  "gold": [
+   30094,
+   39447
+  ],
+  "gold_change": 9353,
+  "max_depth_ft": 800,
+  "stored_value": 0,
+  "stash_debits": 0,
+  "gold_change_adj": 9353
+ },
+ "B": {
+  "dungeon_min": 32.4,
+  "town_min": 14.4,
+  "exp_per_dmin": 158.6,
+  "levels_per_dhour": 0.35,
+  "gold_found": 2447,
+  "gold_found_per_dmin": 75.6,
+  "time_budget_min": {
+   "pilot_down": 35.6,
+   "exploring": 19.3,
+   "fighting": 14.2,
+   "town_other": 10.0,
+   "town_no_goal": 3.3,
+   "recall_wait": 3.0,
+   "travel_dive": 2.6,
+   "no_goal_dungeon": 1.4,
+   "town_idle_end": 0.8,
+   "escaping": 0.4,
+   "dungeon_other": 0.2,
+   "stuck_looping": 0.1,
+   "resting": 0.1
+  },
+  "navigator_wait_pct": 5,
+  "gold_change_per_dmin": 288.7,
+  "gold_change_adj_per_dmin": 288.7
+ },
+ "C": {
+  "lowest_hp": [
+   193,
+   368,
+   52,
+   "21:23:03"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 0,
+  "emergency_alerts": 0,
+  "phase": 1,
+  "wor_escape": 1,
+  "wor_travel": 3,
+  "stairs_flee": 1,
+  "teleport": 0,
+  "cures_quaffed": 9,
+  "escape_records": 6,
+  "recalls_landed": 4
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 1656,
+  "loot_abandoned_est": 6758,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 0,
+  "total": 8414,
+  "sales": 17,
+  "sales_valued": 7,
+  "worst_sales": [],
+  "left_behind": [
+   "Metal Cap [3]",
+   "Brown Mushroom",
+   "Long Bow (x3)",
+   "Metal Cap [3]",
+   "Filthy Rag [1]",
+   "Scroll of Identify",
+   "Piece of Elvish Waybread",
+   "Holy Book of Prayers [Words of Wisdom]",
+   "Scroll of Aggravate Monster",
+   "Scroll of Trap Creation"
+  ],
+  "irreplaceable": [
+   "a Ring of Resist Cold {m67}",
+   "a Ring of Resist Fire {m67}"
+  ]
+ },
+ "values_aware": "kinds known as logged",
+ "E": {
+  "reports": 39,
+  "commands": 96,
+  "commands_per_min": 2.0,
+  "report_to_action_med_s": 3.5,
+  "report_to_action_p90_s": 7.1,
+  "reports_without_command_pct": 36,
+  "user_messages": 16,
+  "user_reply_med_s": 5.2,
+  "forced_overrides": 1,
+  "complaints": 3,
+  "report_chars": 162863,
+  "order_report_age_med_s": 3.3,
+  "order_report_age_p90_s": 6.9
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 99,
+  "perception_gaps": 8,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.1,
+  "runs_sent": 994,
+  "pilot_down_min": 35.7,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Earth hound": 86,
+  "Orc shaman": 84,
+  "Black ogre": 60,
+  "Black orc": 58,
+  "Wererat": 55,
+  "Crebain": 42,
+  "Tiger": 38,
+  "Wolf": 32,
+  "unseen": 432,
+  "unattributed": 309
+ },
+ "damage_hp_lost": 1458,
+ "alerts": {
+  "tactic": 157,
+  "user_message": 16,
+  "time_frozen": 11,
+  "review": 6,
+  "supplies": 5,
+  "found": 3,
+  "goal_done": 2,
+  "queued": 2,
+  "plan_done": 2,
+  "rule": 1,
+  "started": 1,
+  "architect_answer": 1
+ },
+ "plan_news": {
+  "unseen_attacker": 31,
+  "interesting_item": 22,
+  "goal_done": 16,
+  "plan": 16,
+  "fearer": 4,
+  "drainer": 4,
+  "unique_slain": 2,
+  "structure": 2,
+  "thief": 1,
+  "band": 1,
+  "fight_going_badly": 1,
+  "breeders": 1
+ }
+}

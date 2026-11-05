@@ -296,7 +296,8 @@ def rations_by_need_and_heavy_loot_left():
 def navigator_rules_review_and_nopickup():
     """The user (10-26, the Navigator empowerment list): executable standing orders (`rule leave NAME` acts at Pilot
     speed; `rule thieves kill` hunts a thief in view), the item-review queue (an identified wearable with an ability is
-    held, not sold, until the Navigator decides; released after 2 town visits), and `order nopickup=`."""
+    held, not sold, until the Navigator decides; 2.63.0: at the town visit's end undecided items get the default, sold),
+    and `order nopickup=`."""
     import tempfile
     warg, rogue = BYNAME["warg"], BYNAME["novice rogue"]
     p = pilot(monsters=[(20, 25, warg)])
@@ -318,14 +319,16 @@ def navigator_rules_review_and_nopickup():
     r.rundir = tempfile.mkdtemp()
     amu = r.w.items()[0]
     held = r.review_hold(amu)
-    r.review_state()["town_visits"] += 2
+    held_later = r.review_hold(amu)        # (2.63.0: held until the town visit's end, not for 2 visits)
+    r.review_closing = True                # (plan town's last step: the default)
     released = r.review_hold(amu)
+    r.review_closing = False
     r.orders["nopickup"] = "Lance,Pike"
     r.unique_drop, r.skipped_items, r.room_t = None, set(), 0.0
     lance = r.pickup_room("a Lance (2d8)")
     ok = acted and left and not again and hunted and asked == [["hunt", "Novice_rogue"]] and held is True and \
-        released is False and lance is False
-    return ok, f"leave: {acted}/{left}, again {again}; thief hunt {asked}; review held {held}, after 2 visits " \
+        held_later is True and released is False and lance is False
+    return ok, f"leave: {acted}/{left}, again {again}; thief hunt {asked}; review held {held}, at the visit's end " \
                f"{released}; Lance picked up {lance}"
 
 
@@ -427,3 +430,58 @@ def far_fetch_kit_and_valuable_potions():
         not worth["a Potion of Salt Water"] and worth["3 Potions of Cure Light Wounds"] and \
         wanted == {(5.0, "!"): {"a Potion of Speed"}} and went == (True, [(20, 45)])
     return ok, f"worth {worth}; wanted {wanted}; loot step {went}"
+
+
+@case
+def m67_small_fixes():
+    """2.62.0, m67's small fixes: news names a flavour the table knows ("a Rhodonite Ring (= Ring of Stupidity,
+    junk)"); a floor destroy is checked by the floor and the "You destroy" message, not the pack, and sent only standing
+    still on the square; a Brass Lantern is junk while a light needing no fuel is worn; no food, oil or kit consumable
+    is destroyed for a find under 100 gold; no supplies alert before the stomach tracker has a level (just after a
+    restart); "light off" in town once per idle period."""
+    import time as _t
+    p = pilot(worn=[("a Spear (1d6) (+5,+7)", 22, 50), ("a Phial {m63}", 39, 10)])
+    p.flavours = {"Rhodonite Ring": {"kind": "Ring of Stupidity", "junk": True}}
+    named = p.named("a Rhodonite Ring")
+    junk = (p.is_junk("a Brass Lantern (with 7500 turns of light)"), p.is_junk("a Wooden Torch (with 2500 turns of light)"))
+    p.w.floor = "a Ring of Aggravate Monster"
+    sig0 = p.effect_sig("floor")
+    p.w.floor = None
+    p.w.messages.append((P.gnow(), "You destroy a Ring of Aggravate Monster."))
+    sig1 = p.effect_sig("floor")
+    p.mover = type("M", (), {"active": True})()
+    p.w.monsters, p.w.last_hit_t = [], -99.0
+    moving = p.destroy_floor_junk("a Ring of Aggravate Monster", P.gnow())
+    # make-room: 3 rations and a cheap find
+    q = pilot(pack=[("3 Rations of Food", 80)] + [(f"a Dagger (1d4) (+9,+{k})", 23) for k in range(22)])
+    q.w.monsters, q.w.last_hit_t = [], -99.0
+    q.mover = type("M", (), {"active": False})()
+    q.trip_minutes_left = lambda: 2          # (the rations are spare: the old rule would destroy them)
+    q.room_t, q.sent = -99.0, []
+    q.cmd = lambda line, why, hold=0.4: q.sent.append(why)
+    q.c = type("C", (), {"send": lambda self, x: None})()
+    q.food_top = lambda: 14800               # (too full to eat for room)
+    q.pickup_room("a Brass Lantern (with 7500 turns of light)")
+    ration_gone = any("Ration" in s for s in q.sent)
+    # supplies alert before the tracker has a level
+    s = pilot(pack=[])
+    s.w.in_dungeon, s.w.flags = True, {}
+    s.trip_minutes_left = lambda: 30
+    s.plan, s.food_warned, s.supply_told = None, None, set()
+    s.stomach.level = None
+    s.supply_watch()
+    quiet = [k for k, _ in s.notes]
+    # light off once per idle period
+    t = pilot(worn=[("a Brass Lantern (with 7500 turns of light)", 39, 50)])
+    t.w.depth, t.w.in_dungeon, t.w.store = 0, False, None
+    t.goal, t.last_agent, t.busy_until, t.light_t = None, P.gnow() - 60, 0.0, 0.0
+    t.sent = []
+    t.cmd = lambda line, why, hold=0.4: t.sent.append(line)
+    a = t.town_light(P.gnow())
+    t.light_t = 0.0
+    b = t.town_light(P.gnow() + 6)
+    ok = named == "a Rhodonite Ring (= Ring of Stupidity, junk)" and junk == (True, True) and sig0 != sig1 and \
+        moving is False and not ration_gone and quiet == [] and a is True and b is False and len(t.sent) == 1
+    return ok, (f"named {named!r}; lantern/torch junk beside the Phial {junk}; floor sig changed {sig0 != sig1}; "
+                f"destroy while moving {moving}; rations destroyed for a lantern {ration_gone} ({q.sent}); supplies "
+                f"before the tracker {quiet}; light off {a}, {b} ({t.sent})")

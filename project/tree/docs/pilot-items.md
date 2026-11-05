@@ -239,7 +239,7 @@ potions or scrolls nearby may be walked to as well (the pickup policy decides); 
 
 **`is_junk(it)`** (a pack item or a name; D3, 2026-11-01: one rule for pickup, the floor, the pack, the report's Items
 line and the far-item notices; the user's decision: the union of the three old lists). Never junk: a kept item, or one
-inscribed with `@` (or `!` in a tag), or (2.48.0) a dungeon stopgap while its primary is short. Junk: `of <kind>` as a whole word for a `junk` order entry or `JUNK_DEVICES` (Haste
+inscribed with `@` (or `!` in a tag), or (2.48.0) a dungeon stopgap while its primary is short. Junk: `of <kind>` as the whole kind (2.60.0: only an inscription, pluses or charges may follow -- "Sleep" no longer junks the Wand of Sleep Monster) for a `junk` order entry or `JUNK_DEVICES` (Haste
 Monsters, Clone Monster, Heal Monster), or the bare name (Slime Mold); a kind the rulebook marks junk (`junk_kinds`); a
 flavour the flavour table marks junk (even if the character isn't aware of it); `Broken`; a feeling on the
 `autodestroy` order; for a warrior, the spellbooks the town sells (`town_books()`: the rulebook's shop_stock.csv,
@@ -352,7 +352,14 @@ priceless in `pack_value`, appear on the report's `Review (N, ...)` line with ho
 `review` alert. Worn items leave the queue.
 
 The Navigator answers `review sell|keep|wear NAME` (`review` lists): `keep` also adds it to the keep list; `wear`
-wears it in town (recorded as keep; in the dungeon it's only kept, not worn, and the reply says so). **Undecided after 2 town visits** (counted by TownKit), the policy sells it.
+wears it in town (recorded as keep; in the dungeon it's only kept, not worn, and the reply says so). **Decided in the
+same town visit** (2.63.0, the user: "It should be decided while we are in town the first time"; before: sold after 2
+visits undecided): `plan town` (a trip's `then town` too) raises the held items at its start as one `review` alert
+(`TownKit.review_raise`: each with its default -- sell -- why, and a `gearcmp` hint); the Navigator answers during the
+visit; at the visit's last step before the stash and the bank (`_buying_review`), after waiting at least
+`REVIEW_WAIT_S` = 60 s from the alert (the shops ran meanwhile), anything undecided gets the default (`review_closing`:
+decided `sell`) and is sold there. Nothing is carried to a later visit. A decision made in the dungeon applies at the
+next visit; items held outside a visit are raised at the next one.
 State: `runs/pilot/NICK/review.json` (`items`, `decided`, `town_visits`).
 
 ## 6a. The stash's backups and the store list (2.50.0)
@@ -487,6 +494,13 @@ with a usage error -- A22, 2.40.0), listed with `orders`, saved in `runs/pilot/N
   `make room: destroy X (~12) for Y (~80)`, `autodestroy junk ...`, `identify X (policy)`, `wield X (~31/round vs ~22)`.
 - Debt: `navigator_debt` (gold, what, why, total), `navigator_fight_debt`, `hunt_override_end`; sales: `sale` (with
   the relist price).
+- (2.62.0, m67's small fixes) news names what the flavour table knows of an unidentified flavour ("a Rhodonite Ring
+  (= Ring of Stupidity, junk)": `named`, in the left/autodestroy news); a floor destroy is confirmed by the floor
+  reading and the "You destroy" message (effect kind `floor`), not the pack, and sent only standing still on the item's
+  square; a Brass Lantern or Wooden Torch is junk while a light needing no fuel is worn; make-room and the weight shed
+  never destroy food, oil or a kit consumable for a find worth under `SUPPLY_SWAP_MIN` = 100 gold (~2 dungeon minutes
+  of play; short food or light ends a trip early); `supply_watch` stays quiet until the stomach tracker has a hunger
+  level (just after a restart); in town "light off" is sent once per idle period.
 - Notifications (events; see pilot-core.md): (2.56.0) `lost` news for what an attack destroyed in the pack names
   what, how many ("one of", "some of", "all of", "the only") and by what (the message before it, `report_losses`); the
   weight-limit destroy's news, like the pack-full one, adds the food and light left; `tactic` news for make-room destroys, left items, identify, wear/wield,

@@ -1287,6 +1287,9 @@ class TownKit(Goal):
         self.overflowed = False      # buying: what the full house left taken to the tavern room (2.50.0)
         self.fetch_tried = set()     # upgrade: stored items fetched from the tavern (2.50.0: backups to wear or sell)
         self.full_told = set()       # buying: the stash items told "no room" (stash_full) this visit (2.50.0)
+        self.review_done = False     # buying: the review queue's undecided items given the default (2.63.0)
+        self.review_waited = False   # buying: waited for the Navigator's word (at least REVIEW_WAIT_S from the alert)
+        self.review_queue = None     # buying: stores still to visit to sell what the review decided
 
     # One method per step (refactor-candidates E5), in this order: the visit's stages run in sequence -- a stage that
     # finishes sets the next and the next step runs in the same tick. Each takes the per-call ctx (w, now) and returns
@@ -1315,6 +1318,7 @@ class TownKit(Goal):
         "_buying_fallback",      # a kit kind still short (Heroism): its fallback for the shortfall (Boldness)
         "_buying_recharge",      # recharge an empty useful staff or wand (or buy the scroll)
         "_buying_enchant",       # enchant worn armour and the wielded weapon back up (or buy the scrolls)
+        "_buying_review",        # the review queue decided: the Navigator's word, else the default (sell) -- 2.63.0
         "_buying_stash",         # no house: the stash kinds to the tavern
         "_buying_deposit",       # a house: the gold (and the stash) into it
         "_buying_overflow",      # the house full: the stash it left to the tavern room (2.50.0)
@@ -1346,7 +1350,72 @@ class TownKit(Goal):
             p.review_state()["town_visits"] += 1
             p.review_save()
             p.notify("tactic", f"plan town: came back with {p.supply_text()} (reserves counted)", news=True)
+            self.review_raise(p)
         return NEXT
+
+    REVIEW_WAIT_S = 60       # the Navigator's time to answer a review alert, at least (the visit runs meanwhile)
+
+    def review_raise(self, p):
+        """2.63.0 (the user: decide the gear in this town visit): the items held for review -- the queue, and what the
+        sell policy holds now -- raised as one `review` alert at the visit's start, each with the default and why."""
+        st = p.review_state()
+        p.review_raising = True
+        try:
+            for i in p.w.items():
+                try:
+                    p.town_sell_count(i)       # (registers what the policy would hold for review)
+                except Exception:
+                    pass
+        finally:
+            p.review_raising = False
+        names = {i["name"] for i in p.w.items()}
+        held = [(n, v) for n, v in st["items"].items() if n in names]
+        if held:
+            now = gnow()
+            for _, v in held:
+                v["held_t"] = now
+            p.notify("review", "plan town: decide these now -- `review keep|sell|wear NAME` (undecided at the visit's "
+                               f"end, at least {self.REVIEW_WAIT_S} s from now, they get the policy's default): "
+                     + "; ".join(f"{n} ({v['why']}; default: sell; `gearcmp {n.replace(' ', '_')[:30]}`)" for n, v in held))
+
+    def _buying_review(self, p, ctx):
+        """The visit's last step before the stash and the bank (2.63.0): review items still undecided wait for the
+        Navigator at least REVIEW_WAIT_S from their alert (a Wait; the shops ran meanwhile), then get the policy's
+        default -- sold here (a Shop per store); kept ones stay. Nothing is carried to a later visit."""
+        now = ctx.now
+        if self.review_done:
+            if self.review_queue:
+                st = self.review_queue.pop(0)
+                sells = p.town_sells(st)
+                if sells:
+                    self.sub = Shop(st, sells=sells)
+                    self.sub.role = "pilot"
+                    return None
+                return NEXT if not self.review_queue else None
+            return NEXT
+        rs = p.review_state()
+        names = {i["name"] for i in p.w.items()}
+        pending = [(n, v) for n, v in rs["items"].items() if n in names]
+        if not pending:
+            self.review_done = True
+            return NEXT
+        last = max(v.get("held_t") or 0 for _, v in pending)
+        if not self.review_waited and now - last < self.REVIEW_WAIT_S:
+            self.review_waited = True
+            self.sub = Wait(int(self.REVIEW_WAIT_S - (now - last)) + 1)
+            self.done_log.append(f"waiting for your review of {', '.join(n for n, _ in pending)}")
+            return None
+        p.review_closing = True
+        try:
+            for i in p.w.items():
+                if i["name"] in rs["items"]:
+                    p.review_hold(i)               # (the default: decided `sell`)
+        finally:
+            p.review_closing = False
+        self.review_done = True
+        self.review_queue = p.town_sell_stores()
+        self.done_log.append(f"review undecided -> sold (the default): {', '.join(n for n, _ in pending)}")
+        return None
 
     def _kit_sub(self, p, ctx):
         """A sub-goal running: tick it; when it ends, its result into the log (sold, bought)."""

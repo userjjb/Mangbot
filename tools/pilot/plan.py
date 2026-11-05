@@ -38,6 +38,9 @@ class TripPlan:
         self.until_text = " or ".join(c[0] for c in until)
         self.text = f"trip {lo}-{hi} until \"{' or '.join(c[0] for c in until)}\" then {then}"
         self.t0 = gnow()
+        # (2.61.0, the user: "pause the mission timer when the game is frozen" -- the wall clock at the start, and
+        # the conditions' minutes count it less the frozen time since: Pilot.frozen_between, kept across restarts)
+        self.t0_wall = time.time()
         self.phase = "down"
         self.level = None           # level_t of the level being worked
         self.level_t0 = 0.0
@@ -85,6 +88,7 @@ class TripPlan:
         w = p.w
         if w.in_dungeon and not self.__dict__.get("dungeon_t0"):
             self.dungeon_t0 = gnow()
+            self.dungeon_t0_wall = time.time()
             p.notify("plan", f"trip: down at {w.depth_ft} ft with {p.supply_text()}", news=True)
 
         def n(word, tv=TV_POTION):
@@ -94,13 +98,28 @@ class TripPlan:
         return {"ccw": lambda: n("Cure Critical Wounds"), "csw": lambda: n("Cure Serious Wounds"),
                 "clw": lambda: n("Cure Light Wounds"), "phase": lambda: n("Phase Door", TV_SCROLL),
                 "wor": lambda: n("Word of Recall", TV_SCROLL), "food": lambda: p.kit_count("Ration of Food"),
-                "hp": lambda: round(100 * w.hp_frac), "minutes": lambda: (gnow() - self.t0) / 60,
+                "hp": lambda: round(100 * w.hp_frac), "minutes": lambda: self.unfrozen_min(p, "t0"),
                 # (m57: `minutes>30` counted the town visit and the recall down; dmin = minutes since the trip first
                 # reached the dungeon)
-                "dmin": lambda: (gnow() - self.__dict__["dungeon_t0"]) / 60 if self.__dict__.get("dungeon_t0") else 0,
+                "dmin": lambda: self.unfrozen_min(p, "dungeon_t0") if self.__dict__.get("dungeon_t0") else 0,
                 "clvl": lambda: w.clvl, "gold": lambda: w.ind.get("gold", [0])[0],
                 "free": lambda: p.PACK_SLOTS - len(w.items()), "levels": lambda: self.levels,
                 "time": lambda: time.strftime("%H:%M:%S")}[var]()
+
+    def unfrozen_min(self, p, which):
+        """Minutes since `which` (t0, the plan's start; dungeon_t0, the dungeon reached) not counting the time the test
+        server was frozen (2.61.0, the user: the timer pauses while the game is frozen): the wall clock less
+        Pilot.frozen_between -- kept on disk, so a restart or hot-swap doesn't lose it. A plan saved before 2.61.0: the
+        game clock, as before (it stood still while frozen within one Pilot process)."""
+        wall = self.__dict__.get(which + "_wall")
+        if wall and hasattr(p, "frozen_between"):
+            return (time.time() - wall - p.frozen_between(wall)) / 60
+        return (gnow() - self.__dict__[which]) / 60
+
+    def frozen_since_start(self, p):
+        """Seconds the server was frozen since the plan started (time>HH:MM moves on by this)."""
+        wall = self.__dict__.get("t0_wall")
+        return p.frozen_between(wall) if wall and hasattr(p, "frozen_between") else 0.0
 
     def clock_target(self, hhmm):
         """The epoch of the first HH:MM at or after the plan's start (wall clock; across midnight too)."""
@@ -135,33 +154,38 @@ class TripPlan:
             x = val + ":00" if var == "time" else int(val)
             if var == "time":
                 # as a moment, not a string: the next HH:MM after the plan started (m44's "time>00:26" set at 23:54
-                # held at once -- "23:54:41" > "00:26:00" -- and the trip came home on arrival)
-                v, x = time.time(), self.clock_target(val)
+                # held at once -- "23:54:41" > "00:26:00" -- and the trip came home on arrival). 2.61.0: shifted by
+                # the time frozen since the plan started (the user: frozen time isn't counted)
+                v, x = time.time() - self.frozen_since_start(p), self.clock_target(val)
             if (op == "<" and v < x) or (op == ">" and v > x) or (op == "<=" and v <= x) or \
                     (op == ">=" and v >= x) or (op == "=" and v == x):
                 return term
         return None
 
-    def describe(self):
-        end = self.end_text()
+    def describe(self, p=None):
+        end = self.end_text(p)
         return f"{self.text} ({(gnow() - self.t0) / 60:.0f} min, {plural(self.levels, 'level')}: " \
                f"{'paused for your goal' if self.paused else self.step})" + (f"; {end}" if end else "")
 
-    def end_text(self):
+    def end_text(self, p=None):
         """When a clock condition ends the trip (2.51.0, the Navigator's friction in m62: the report didn't say):
         'ends ~09:46 (minutes>33)' -- the soonest of `minutes>N` (from the plan's start), `dmin>N` (from reaching the
-        dungeon; not before) and `time>HH:MM`, as a wall-clock time; None without one."""
+        dungeon; not before) and `time>HH:MM`, as a wall-clock time; None without one. 2.61.0: with the Pilot `p`,
+        frozen time isn't counted, so the end moves with every freeze."""
         now = gnow()
         ends = []
+
+        def elapsed(which):
+            return self.unfrozen_min(p, which) * 60 if p is not None else now - self.__dict__[which]
         for term, var, op, val in self.conds:
             if op not in (">", ">="):
                 continue
             if var == "minutes":
-                ends.append((time.time() + max(0.0, float(val) * 60 - (now - self.t0)), term))
+                ends.append((time.time() + max(0.0, float(val) * 60 - elapsed("t0")), term))
             elif var == "dmin" and self.__dict__.get("dungeon_t0"):
-                ends.append((time.time() + max(0.0, float(val) * 60 - (now - self.dungeon_t0)), term))
+                ends.append((time.time() + max(0.0, float(val) * 60 - elapsed("dungeon_t0")), term))
             elif var == "time":
-                ends.append((self.clock_target(val), term))
+                ends.append((self.clock_target(val) + (self.frozen_since_start(p) if p is not None else 0), term))
         if not ends:
             return None
         t, term = min(ends)
@@ -204,7 +228,7 @@ class TripPlan:
                 p.notify("plan", f"trip: leaving {w.depth_ft} ft ({why})", news=True)
 
     STATE = ("lo", "hi", "then", "level_min", "t0", "phase", "levels", "went_down", "home_why", "until_text", "via",
-             "xp0", "dungeon_t0")
+             "xp0", "dungeon_t0", "t0_wall", "dungeon_t0_wall")
 
     def save(self, p):
         st = {k: getattr(self, k, None) for k in self.STATE}
@@ -232,6 +256,11 @@ class TripPlan:
         pl = cls(st["lo"], st["hi"], cls.parse_until(st["until_text"]), st["then"], st["level_min"], st.get("via"))
         for k in ("t0", "phase", "levels", "went_down", "home_why", "dungeon_t0"):
             setattr(pl, k, st[k])
+        for k in ("t0_wall", "dungeon_t0_wall"):          # (2.61.0; an older plan.json: the game clock as before)
+            if st.get(k):
+                setattr(pl, k, st[k])
+            elif k == "t0_wall":
+                pl.t0_wall = None
         pl.xp0 = st.get("xp0")
         pl.resume_lvl = st.get("lvl")
         return pl

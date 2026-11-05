@@ -17,8 +17,10 @@ series flown with this same brief by different Navigators: XP and gold per dunge
 consumables used are measured and compared. Read `/projectnb/jbrcs/mangband/github/tools/pilot/HANDBOOK.md`
 completely before your first command (it is short), then `/projectnb/jbrcs/mangband/github/tools/pilot/FIELD-NOTES.md`.
 
-**Time budget: 45 minutes of wall-clock, from {START} (the report's first line shows the time). Be back in town and
-idle by {END = START + 45}.** If a trip is still running at ~{END - 7}, end it (`goal recall`).
+**Time budget: 45 minutes of wall-clock, from {START}, not counting the time the user freezes the game (the report's
+`Mission:` line shows the minutes used and the real end time, which moves with every freeze). Be back in town and
+idle by {END = START + 45} plus any frozen time -- the `Mission:` line's end.** If a trip is still running ~7
+minutes before that end, end it (`goal recall`).
 
 **Plan first** (the HANDBOOK's loop, step 0): run `prep`, read the field notes, decide the mission (town buys, depth
 range, number of trips, conditions, and any `react` rules), and journal that plan before your first `plan town`.

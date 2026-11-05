@@ -181,7 +181,10 @@ the printed card/table. With no labels and no `--all` it only reads the existing
 
 **The card** (JSON keys; the printed card shows the same groups):
 
-Header: `label, nav_model, effort, report` (full/compact), `start, end, minutes, notes, tokens`; `defs` (the date
+Header: `label, nav_model, effort, report` (full/compact), `start, end, minutes, notes, tokens`; (2.61.0, the user:
+"pause the mission timer when the game is frozen") `frozen_min` and `budget` -- `minutes` and B's dungeon/town minutes
+(so every per-minute rate) leave out the spans the test server was frozen (`frozen_spans`, from the Pilot's
+`time_frozen` notices); table column `frz` (last); `defs` (the date
 and version of the damage and value definitions: `2026-11-01 (2.44.0)`, D8/D9 below; cards without it were made by
 the older code) and `values_aware` (how the kinds known were had for the item values: "as logged", or "today's
 runs/flavours.json" when the log has no `aware`, i.e. every mission before 2026-11-01). The printed card shows both

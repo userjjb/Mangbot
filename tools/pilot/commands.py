@@ -524,7 +524,7 @@ class CommandsMixin:
         # mission_start / mission_end markers with the Navigator's model (the
         # Advisor's scorecard memo §5.5); also kept in runs/missions.json
         if not args or args[0] not in ("start", "end"):
-            return {"ok": False, "error": "usage: mission start LABEL [navigator=MODEL] [effort=LEVEL] [notes=TEXT] | "
+            return {"ok": False, "error": "usage: mission start LABEL [navigator=MODEL] [effort=LEVEL] [budget=MIN] [notes=TEXT] | "
                                           "mission end [LABEL]"}
         kv = dict(a.split("=", 1) for a in args[1:] if "=" in a)
         label = next((a for a in args[1:] if "=" not in a), None) or self.mission_label
@@ -542,10 +542,14 @@ class CommandsMixin:
             # (the report's mission total: m25's Navigator had only the 10-minute rates)
             self.mission_base = (gnow(), (self.w.ind.get("exp") or [0])[0], self.w.ind.get("gold", [0])[0],
                                  self.gold_found)
+            # (2.61.0: the mission clock -- its budget, default 45 min, and the wall start; frozen time isn't counted)
+            self.mission_t0_wall = time.time()
+            self.mission_budget = float(kv.get("budget") or 45)
             self.save_mission()
             self.log("mission_start", label=label, version=VERSION, **kv)
             ms = [m for m in ms if m.get("label") != label] + [
                 {"label": label, "nick": nick, "start": stamp, "end": None, "navigator": kv.get("navigator"),
+                 "budget": float(kv.get("budget") or 45),
                  "effort": kv.get("effort"), "report": "compact", "notes": kv.get("notes", ""),
                  "version": VERSION}]
         else:
@@ -674,12 +678,35 @@ class CommandsMixin:
             return {"ok": True, "text": f"review: {name} -> kept; wearing it now"}
         return {"ok": True, "text": f"review: {name} -> {args[0]}"}
 
-    def cmd_debt(self):
+    def cmd_debt(self, args):
         e = self.debt.get("entries", [])
         fe = self.debt.get("fight_entries", [])
+        if args[:1] == ["waive"]:
+            # (2.63.0, the user waived m67's Lead-Filled Mace: `debt waive N|all [REASON]`, the Architect's; the entry
+            # kept as waived -- who, when, why -- and a debt_waived record)
+            if len(args) < 2 or not (args[1] == "all" or args[1].isdigit()):
+                return {"ok": False, "error": "usage: debt waive N|all [REASON] (N as `debt` numbers the entries)"}
+            idx = list(range(len(e))) if args[1] == "all" else [int(args[1]) - 1]
+            if any(not 0 <= k < len(e) for k in idx) or not idx:
+                return {"ok": False, "error": f"no item-debt entry {args[1]} ({len(e)} entries)"}
+            why = " ".join(args[2:]) or "waived"
+            gone = [e[k] for k in idx]
+            self.debt["entries"] = [x for k, x in enumerate(e) if k not in idx]
+            stamp = time.strftime("%Y-%m-%d %H:%M:%S")
+            self.debt.setdefault("waived", []).extend(dict(x, waived_by=self.req_role, waived_t=stamp, waived_why=why)
+                                                      for x in gone)
+            try:
+                json.dump(self.debt, open(self.debt_path, "w"), indent=1)
+            except (OSError, AttributeError):
+                pass
+            self.log("debt_waived", entries=[{"gold": x["gold"], "what": x["what"]} for x in gone], why=why,
+                     by=self.req_role, total=self.debt_total())
+            return {"ok": True, "text": f"waived {sum(x['gold'] for x in gone)} gold ({len(gone)} entr"
+                                        f"{'y' if len(gone) == 1 else 'ies'}: {why}); item debt now {self.debt_total()}"}
         return {"ok": True, "text": f"Navigator debt: {self.debt_total()} gold of value lost over the Pilot's value "
-                                    f"policy ({len(e)} entries)" + "".join(f"\n  {x['t']} {x['gold']}: {x['what']} "
-                                                                            f"({x['why']})" for x in e[-8:]) +
+                                    f"policy ({len(e)} entries)" + "".join(f"\n  #{k + 1} {x['t']} {x['gold']}: {x['what']} "
+                                                                            f"({x['why']})" for k, x in enumerate(e)
+                                                                            if k >= len(e) - 8) +
                                     f"\nFight debt: {self.fight_debt_total()} HP lost in hunts ordered over the "
                                     f"Pilot's refusal that went wrong ({len(fe)} entries)" +
                                     "".join(f"\n  {x['t']} {x['hp']} HP: {x['what']} ({x['why']})" for x in fe[-8:])}
@@ -722,6 +749,8 @@ class CommandsMixin:
         # (this level), 'avoid NAME' (keep 3 squares from that monster, all
         # levels), 'avoid clear', 'avoid' to list
         w = self.w
+        if args[:1] in (["clear"], ["pass"]) and self.vaults.get(w.level_t):
+            self.vault_pass.add(w.level_t)             # (2.62.0: a greater vault's zone lifted too)
         if args[:1] == ["clear"]:
             self.avoid_zones, self.avoid_names = {}, set()
             if self.zone_wait and not self.zone_wait["end"]:
@@ -731,6 +760,8 @@ class CommandsMixin:
             # (2.53.0, the user: the Navigator decides whether to path through a blocking zone -- its structures' ring
             # corridors may be crossed on this level, never the rooms inside)
             here = [(Y, X, st["kind"]) for Y, X, st in self.structures_here()]
+            if not here and self.vaults.get(w.level_t):
+                return {"ok": True, "text": "the vault's avoid zone is lifted on this level"}
             if not here:
                 return {"ok": False, "error": "no inner room, pit or nest recognised on this level: `avoid clear` "
                                               "clears every zone"}
@@ -1134,7 +1165,7 @@ class CommandsMixin:
         q = self.queued
         queued = f"; queued after plan town ({self.town_stage()}): `{q['cmd']} {' '.join(q['args'])}`" if q else ""
         if not args:
-            return {"ok": True, "text": (f"plan: {self.plan.describe()}" if self.plan else "no plan") + queued}
+            return {"ok": True, "text": (f"plan: {self.plan.describe(self)}" if self.plan else "no plan") + queued}
         if args[0] == "stop":
             if q:
                 self.queued = None           # (2.53.0: the queued plan goes too)
@@ -1150,13 +1181,13 @@ class CommandsMixin:
             if not self.plan:
                 return {"ok": True, "text": "no plan"}
             if not self.plan.paused:
-                return {"ok": True, "text": f"the plan isn't paused: {self.plan.describe()}"}
+                return {"ok": True, "text": f"the plan isn't paused: {self.plan.describe(self)}"}
             ended = self.goal.describe() if self.goal else None
             self.set_goal(None)
             self.plan.paused, self.plan.pause_goal = False, None
             self.log("plan_resumed", plan=self.plan.text, ended=ended)
             return {"ok": True, "text": f"plan resumed{' (ended ' + repr(ended) + ')' if ended else ''}: "
-                                        f"{self.plan.describe()}"}
+                                        f"{self.plan.describe(self)}"}
         if args[0] == "trip":
             return self.request_trip(args[1:])
         if args[0] != "town":
@@ -1438,6 +1469,10 @@ class CommandsMixin:
             m = re.match(r"^(\d+)[ ,](\d+)$", " ".join(rest[:2]) if len(rest) > 1 else (rest[0] if rest else ""))
             if not m:
                 return {"ok": False, "error": "usage: goal fetch Y,X (an item's square, from the report)"}
+            # (2.62.0: a fetch into a greater vault's avoid zone is the Navigator's word to go in)
+            vb = (self.vaults.get(self.w.level_t) or {}).get("box")
+            if vb and vb[0] <= int(m.group(1)) <= vb[2] and vb[1] <= int(m.group(2)) <= vb[3]:
+                self.vault_pass.add(self.w.level_t)
             if self.req_role != "architect" and self.w.in_dungeon:
                 band_lt = (self.band_warned or (None, 0))[0]
                 if band_lt == self.w.level_t and gnow() - self.band_warned_t < 120:
@@ -1695,6 +1730,36 @@ class CommandsMixin:
         self.notify("architect_answer", f"#{aid}: {text}")
         return {"ok": True, "text": f"answer #{aid} sent"}
 
+    def floor_price(self, what):
+        """2.63.0 (m67: the Navigator couldn't value unidentified boots lying in a vault): `price NAME` for an item on
+        this level's floor -- the item list (names), underfoot (the floor reading), its glyph's squares -- valued by
+        itemvalue at this depth (unfelt gear: the apply_magic expectation; on a vault's good/great square, made
+        good/great deeper: iv_at). None when nothing on the floor matches."""
+        w = self.w
+        frag = what.strip().replace("_", " ").lower()
+        if not frag:
+            return None
+        cands = [(l.strip()[:1], l.strip()[2:].strip()) for l in (getattr(w, "itemlist", None) or [])[1:]]
+        if getattr(w, "floor", None):
+            cands.insert(0, ("@", w.floor))
+        hit = next(((g, n) for g, n in cands if frag in n.lower()), None)
+        if not hit:
+            return None
+        glyph, name = hit
+        sq = [w.pos] if glyph == "@" else sorted((q for q, ch in w.memory.items() if ch == glyph), key=w.dist)
+        q = sq[0] if sq else None
+        iv = self.iv_at(name, q) if q else self.iv(name)
+        cut = self.pay_cut(iv.tval)
+        n = max(1, iv.count or 1)
+        where = "underfoot" if glyph == "@" else (f"on the floor at {q[0]},{q[1]}" if q else "on this level's floor")
+        vb = (getattr(self, "vaults", {}) or {}).get(w.level_t) or {}
+        tag = " (a vault's great-object square: made great 20 levels deeper)" if q in vb.get("great", ()) else \
+            " (a vault's good-object square: made good 7 levels deeper)" if q in vb.get("good", ()) else ""
+        return (f"{name}, {where}{tag}: worth ~{iv.value} each ({'an estimate' if iv.estimate else 'known'}"
+                + (", unfelt: the expectation over what the dungeon makes at this depth" if iv.unfelt else "")
+                + (f", P(irreplaceable) {iv.p_irreplaceable:.2f}" if iv.p_irreplaceable else "") + "); a shop pays "
+                f"~{iv.value * cut:.0f} each ({cut:.0%})" + (f"; x{n} = ~{iv.value * cut * n:.0f}" if n > 1 else ""))
+
     def price_info(self, what):
         """`price NAME|LETTER` (the user, m43: "so the Pilot knows item values, but you have no way to check?"): the
         Pilot's own valuation of a pack or worn item -- value, what a shop pays and which, the last price seen, and
@@ -1704,10 +1769,10 @@ class CommandsMixin:
         try:
             idx = self.item_index(what.strip().replace(" ", "_"))
         except ValueError as e:
-            return str(e)
+            return self.floor_price(what) or str(e)
         it = next((i for i in self.w.items() + self.w.items(equip=True) if i["item"] == idx), None)
         if not it:
-            return f"no item {what}"
+            return self.floor_price(what) or f"no item {what}"
         iv = self.iv(it["name"])
         cut = self.pay_cut(iv.tval)
         buyers = self.town_buyers(it) if not it.get("equip") else []

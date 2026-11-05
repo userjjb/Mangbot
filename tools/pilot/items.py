@@ -138,6 +138,14 @@ class ItemsMixin:
             return tag
         return self.find_item("Phase Door", TV_SCROLL)
 
+    def named(self, name):
+        """A name with what the flavour table knows of it (2.62.0, m67): 'a Rhodonite Ring (= Ring of Stupidity,
+        junk)'; unchanged for a known kind or an unknown flavour."""
+        if " of " in name:
+            return name
+        f = self.flavours.get(flavour_key(name))
+        return f"{name} (= {f['kind']}{', junk' if f.get('junk') else ''})" if f and f.get("kind") else name
+
     def find_item(self, word, tval):
         """The first pack item of `tval` whose name holds `word` (case as written), or None (refactor-candidates D4)."""
         return next((i for i in self.w.items(tval=tval) if word in i["name"]), None)
@@ -190,6 +198,20 @@ class ItemsMixin:
         if key not in cache:
             cache[key] = shopmath.pay_cut(tval, chr_v, owners)
         return cache[key]
+
+    def iv_at(self, name, q):
+        """itemvalue for an item lying on square q (2.62.0, generate.c build_vault): on a matched vault's '9' square it
+        was made good at the depth + 7, on an '8' square great at the depth + 20 -- an unfelt weapon or armour piece
+        there is valued as felt {good} / {excellent} at that level; anywhere else, iv."""
+        v = (self.vaults or {}).get(self.w.level_t) or {} if self.w else {}
+        kind = "great" if q in v.get("great", ()) else "good" if q in v.get("good", ()) else None
+        if not kind:
+            return self.iv(name)
+        level = max(1, (self.w.depth_ft or self.deepest_ft or 750) // 50) + (20 if kind == "great" else 7)
+        base = itemvalue.value(name, level, self.aware_kinds())
+        if base.tval in geareval.SLOT_OF_TVAL and not re.search(r"\{[^}]*\}|\([+-]\d+,|\[\d+,", name):
+            return itemvalue.value(f"{name} {{{'excellent' if kind == 'great' else 'good'}}}", level, self.aware_kinds())
+        return base
 
     def iv(self, name):
         """itemvalue.value with the depth items now come from (for expectations) and
@@ -362,6 +384,10 @@ class ItemsMixin:
         return iv.value * self.pay_cut(iv.tval) * max(1, iv.count)
 
     UNIQUE_DROP_BUMP = 50
+    # (2.62.0, m67 21:29: 4 rations destroyed for a ~16-gold lantern) no food, oil or kit consumable is destroyed to
+    # take a find worth less than this: about two dungeon minutes of play at the recent rates, and short food or light
+    # ends a trip early (a recall, ~250 gold of scroll and the trip's remaining time)
+    SUPPLY_SWAP_MIN = 100
 
     @staticmethod
     def destroyed_text(it, n):
@@ -594,12 +620,19 @@ class ItemsMixin:
         # (2.48.0, the user's principle B: a dungeon stopgap is never auto-destroyed while its primary is short)
         if self.stopgap_cover(name) > 0:
             return False
+        # (2.62.0, m67 21:29: a Brass Lantern, ~16 gold, picked up -- 4 rations destroyed for its weight -- with the
+        # Phial worn: a fuelled light is junk while a light needing no fuel is worn)
+        if re.search(r"\b(Brass Lantern|Wooden Torch)", name) and any(
+                i["tval"] == TV_LITE and self.light_radius(i)[1] for i in self.w.items(equip=True)):
+            return True
         n = name.lower()
         bare = singular(bare_name(n).strip())
         kind = kind_key(name)
         junk = [j.strip().lower() for j in self.orders.get("junk", "").split(",") if j.strip()] + \
             [j.lower() for j in self.JUNK_DEVICES]
-        if any(re.search(rf"\bof {re.escape(j)}\b", n) or bare == j for j in junk):
+        # (2.60.0, m67: the whole kind, not its first word -- "Sleep" (Potion of Sleep) junked the Wand of Sleep
+        # Monster; after the kind only an inscription, pluses or charges may follow)
+        if any(re.search(rf"\bof {re.escape(j)}(?=\s*(?:$|[\(\{{\[]))", n) or bare == j for j in junk):
             return True
         if self.junk_kinds.get(kind) or (self.flavours.get(flavour_key(name)) or {}).get("junk"):
             return True
@@ -619,10 +652,12 @@ class ItemsMixin:
             and not isinstance(self.goal, (Flee, Recall, Recover)) and not w.recall_pending and not w.flag("blind") \
             and not w.flag("confused")
 
-    def destroy_floor_junk(self, name, now):
+    def destroy_floor_junk(self, name, now, seen_t=None):
         """Destroy the junk underfoot (k with the floor index -11, as the client sends it: any negative item is the floor, cmd3.c do_cmd_destroy) at a quiet moment.
-        One try per square (the caller marks it skipped); True if sent."""
-        if not self.quiet_moment(now) or now < self.busy_until:
+        One try per square (the caller marks it skipped); True if sent. (2.62.0, m67 21:46: sent while walking --
+        "There's nothing on the floor": only standing still on the square the "You see" was for)"""
+        if not self.quiet_moment(now) or now < self.busy_until or getattr(self.mover, "active", False) or \
+                (seen_t is not None and self.w.pos != self.seen_pos(seen_t)):
             return False
         m = re.match(r"(\d+) ", name)
         n = int(m.group(1)) if m else 1
@@ -644,6 +679,10 @@ class ItemsMixin:
                     self.stopgap_cover(name) * self.gold_per_dmin())     # (2.48.0: a stopgap by need)
         ud = self.unique_drop
         unique = bool(ud and ud[0] == w.level_t and w.dist(ud[1]) <= 3)
+        # (2.62.0: on a vault's good/great square the find is valued as made good/great, deeper)
+        iv = self.iv_at(name, w.pos)
+        worth = max(iv.value * self.pay_cut(iv.tval) * max(1, iv.count), self.kit_use_value(name),
+                    self.stopgap_cover(name) * self.gold_per_dmin())
         if not unique and iv.known and worth < 1 and not iv.irreplaceable:
             if (w.level_t, w.pos) not in self.skipped_items:
                 self.skipped_items.add((w.level_t, w.pos))
@@ -658,7 +697,8 @@ class ItemsMixin:
             # Staff of Trap Location was left. As for a full pack: shed the cheapest thing heavy enough, if this is
             # worth 1.5x it)
             shed = sorted(((self.pack_value(i), i) for i in w.items() if self.destroy_count(i) > 0
-                           and i["weight"] * self.destroy_count(i) // max(1, i["number"]) >= wt - room),
+                           and i["weight"] * self.destroy_count(i) // max(1, i["number"]) >= wt - room
+                           and not (worth < self.SUPPLY_SWAP_MIN and (self.supply_kind(i) or self.is_kit_item(i)))),
                           key=lambda vi: vi[0]) if wt > room else []
             if shed and worth > 1.5 * shed[0][0] + 5:
                 if now - self.room_t > 1.5:
@@ -681,7 +721,7 @@ class ItemsMixin:
                 said = self.left_news
                 if (w.level_t, name) not in said:
                     said.add((w.level_t, name))
-                    self.notify("tactic", f"left {name} (~{worth:.0f}): {wt / 10:.0f} lb would slow you (the weight "
+                    self.notify("tactic", f"left {self.named(name)} (~{worth:.0f}): {wt / 10:.0f} lb would slow you (the weight "
                                           f"limit; {max(0, room) / 10:.0f} lb to spare)", news=True)
                 return False
         free = self.PACK_SLOTS - len(w.items())
@@ -719,7 +759,8 @@ class ItemsMixin:
                 self.cmd(f"custom E item={food['item']}", f"make room: eat {food['name']} for {name}", hold=0.6)
                 return False
         cand = sorted(((self.pack_value(i), i) for i in w.items()), key=lambda vi: vi[0])
-        cand = [(v, i) for v, i in cand if self.destroy_count(i) > 0]
+        cand = [(v, i) for v, i in cand if self.destroy_count(i) > 0
+                and not (worth < self.SUPPLY_SWAP_MIN and (self.supply_kind(i) or self.is_kit_item(i)))]
         cheapest = cand[0] if cand else None
         # (a unique's drop is "good" but unknown: it may push out only cheap things. m37 destroyed a Tulwar (~76)
         # for Boldor's 4-gold Dagger, and an Amulet of Infravision (~86) for boots it then destroyed for a Katana)
@@ -745,7 +786,7 @@ class ItemsMixin:
             # (once per item and level: m25 said "left a Rapier" 5 times and "left a Potion of Heroism" 7)
             if (w.level_t, name) not in self.left_news:
                 self.left_news.add((w.level_t, name))
-                self.notify("tactic", f"left {name} (~{worth:.0f}): pack full and nothing cheaper to make room with",
+                self.notify("tactic", f"left {self.named(name)} (~{worth:.0f}): pack full and nothing cheaper to make room with",
                             news=True)
         return False
 
@@ -1112,8 +1153,10 @@ class ItemsMixin:
 
     def review_hold(self, it):
         """True while this identified wearable waits for the Navigator's word instead of being sold: it gives an ability
-        or resist, or it's an artifact, or worth REVIEW_MIN_VALUE+ -- and the gear evaluator wouldn't wear it. Two town
-        visits undecided: the policy sells it (news)."""
+        or resist, or it's an artifact, or worth REVIEW_MIN_VALUE+ -- and the gear evaluator wouldn't wear it. 2.63.0
+        (the user: "decided while we are in town the first time"): plan town raises the held items at its start, and at
+        its last step before banking (`review_closing`) anything still undecided gets the policy's default -- sold.
+        Nothing is carried to a later visit (before: sold after 2 visits undecided)."""
         name = it["name"]
         if bare_name(name).lower() in self.stash_to_sell:
             return False             # (2.51.0: fetched from the stash to be sold: no longer the stash's, no review)
@@ -1131,18 +1174,24 @@ class ItemsMixin:
         if not why or not iv.known:
             return False
         q = st["items"].get(name)
+        in_visit = type(self.goal).__name__ == "TownKit"
         if q is None:
-            st["items"][name] = {"why": why, "visit": st["town_visits"], "t": time.strftime("%Y-%m-%d %H:%M")}
+            st["items"][name] = {"why": why, "visit": st["town_visits"], "t": time.strftime("%Y-%m-%d %H:%M"),
+                                 "held_t": gnow()}
             self.review_save()
-            self.notify("review", f"held for your decision: {name} ({why}). `gearcmp {name.replace(' ', '_')[:30]}` "
-                                  "compares it; `review sell|keep|wear NAME`. Undecided after 2 town visits, the "
-                                  "policy sells it", news=True)
+            if not self.review_raising:          # (plan town's start says them all in one alert: review_raise)
+                self.notify("review", f"held for your decision: {name} ({why}; the policy's default: sell). `gearcmp "
+                                      f"{name.replace(' ', '_')[:30]}` compares it; `review sell|keep|wear NAME`. "
+                                      + ("Undecided at the end of this town visit, it is sold" if in_visit else
+                                         "Decided at the next town visit: undecided by its end, it is sold"),
+                            news=not in_visit)
             return True
-        if st["town_visits"] - q["visit"] >= 2:
+        if self.review_closing:
             st["decided"][name] = "sell"
             st["items"].pop(name, None)
             self.review_save()
-            self.notify("review", f"{name}: undecided for 2 town visits, the policy sells it", news=True)
+            self.notify("review", f"{name}: undecided at the end of the town visit -- the policy's default, sold",
+                        news=True)
             return False
         return True
 
@@ -1366,6 +1415,11 @@ class ItemsMixin:
                 self.mover.stop()
             return False
         items = [t for t in self.resolve_target("item") if t not in mem["done"]]
+        # (2.62.0: a lesser vault with weak defenders -- its treasure squares are loot, seen or not)
+        v = self.vaults.get(w.level_t) or {}
+        if v.get("loot"):
+            items += [t for t in v.get("treasure", ()) if t not in mem["done"] and t not in items
+                      and w.memory.get(t) not in ("#", "%") and w.dist(t) <= self.LOOT_VALUABLE_R]
         # (no detours while a band is about: the Advisor's set-piece C5, mission 22's loot room. A band out of
         # view now may be round the corner. Molds don't count: the planner keeps clear of them; nor do weak
         # monsters, 10+ levels below us and not dangerous: auto-retaliate kills them if they come. The set-piece
@@ -1396,7 +1450,8 @@ class ItemsMixin:
             mem["done"].add(t)
         items = [t for t in items if t not in mem["done"]]
         far = self.VALUABLE_GLYPHS + "".join(self.far_wanted_glyphs())     # (2.51.0: and wanted potions/scrolls)
-        valuable = {t for t in items if w.memory.get(t) in far and w.dist(t) <= self.LOOT_VALUABLE_R}
+        valuable = {t for t in items if (w.memory.get(t) in far or t in set(v.get("treasure", ()) if v.get("loot")
+                                                                             else ())) and w.dist(t) <= self.LOOT_VALUABLE_R}
         owed = {t for t in items if t in mem["owed"] and w.dist(t) <= self.LOOT_OWED_R}
         cands = {t for t in items if w.dist(t) <= lr} | owed | valuable
         if not cands:
@@ -1444,7 +1499,11 @@ class ItemsMixin:
             return False
         idle = self.goal is None or isinstance(self.goal, (Wait, RestGoal))
         worn = next((i for i in w.items(equip=True) if i["tval"] == TV_LITE), None)
-        if idle and worn and now - self.last_agent > 20:
+        # (2.62.0, m67 22:00: "in town and idle: light off" every 5 s -- once per idle period: until the Navigator or a
+        # goal acts again)
+        period = (self.last_agent, id(self.goal))
+        if idle and worn and now - self.last_agent > 20 and self.light_off_period != period:
+            self.light_off_period = period
             self.light_t = now + 5
             self.cmd(f"custom t item={worn['item']}", "in town and idle: light off (it burns while resting)",
                      hold=0.6)
@@ -1545,7 +1604,8 @@ class ItemsMixin:
             if self.is_junk(it):
                 self.autodestroy_t = now
                 self.c.send("confirm yes")
-                self.cmd(f"custom k item={it['item']} value={it['number']}", f"autodestroy junk {it['name']}", hold=0.6)
+                self.cmd(f"custom k item={it['item']} value={it['number']}", f"autodestroy junk {self.named(it['name'])}",
+                         hold=0.6)
                 w.inven_dirty = True
                 return True
         return False

@@ -1,4 +1,9 @@
 {
+ "Adamantite Ring": {
+  "junk": false,
+  "kind": "Ring of Free Action",
+  "source": "identified"
+ },
  "Aluminum Rod": {
   "junk": false,
   "kind": "Rod of Door/Stair Location",
@@ -77,6 +82,11 @@
  "Carnelian Ring": {
   "junk": false,
   "kind": "Ring of Resist Cold",
+  "source": "identified"
+ },
+ "Cast Iron Wand": {
+  "junk": false,
+  "kind": "Wand of Polymorph",
   "source": "identified"
  },
  "Chartreuse Potion": {
@@ -169,6 +179,11 @@
   "kind": "Staff of Trap Location",
   "source": "Advisor L_items (Dive03 09-27 12:52:05)"
  },
+ "Fossilized Amulet": {
+  "junk": false,
+  "kind": "Amulet of Weaponmastery",
+  "source": "identified"
+ },
  "Furry Mushroom": {
   "junk": false,
   "kind": "Mushroom of Cure Poison",
@@ -194,6 +209,11 @@
   "kind": "Staff of Sleep Monsters",
   "source": "Advisor L_items (Dive03 09-25 20:56:07)"
  },
+ "Granite Ring": {
+  "junk": false,
+  "kind": "Ring of Sustain Wisdom",
+  "source": "identified"
+ },
  "Green Mushroom": {
   "junk": false,
   "kind": "Mushroom of Cure Confusion",
@@ -208,6 +228,11 @@
   "junk": false,
   "kind": "Mushroom of Hallucination",
   "source": "sold in a shop"
+ },
+ "Hemlock Staff": {
+  "junk": false,
+  "kind": "Staff of Starlight",
+  "source": "identified"
  },
  "Hickory Staff": {
   "junk": false,
@@ -402,6 +427,11 @@
  "Sandstone Amulet": {
   "junk": false,
   "kind": "Amulet of Slow Digestion",
+  "source": "identified"
+ },
+ "Sapphire Ring": {
+  "junk": false,
+  "kind": "Ring of Damage",
   "source": "identified"
  },
  "Scroll titled \"arzener micbit\"": {
@@ -617,6 +647,11 @@
  "Zinc Wand": {
   "junk": false,
   "kind": "Wand of Stone to Mud",
+  "source": "identified"
+ },
+ "Zinc-Plated Wand": {
+  "junk": false,
+  "kind": "Wand of Disarming",
   "source": "identified"
  },
  "Zirconium Wand": {

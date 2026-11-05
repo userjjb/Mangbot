@@ -342,6 +342,7 @@ def make_room_news_counts_what_went():
     p.food_warned = None
     p.supply_told = set()
     p.w.inven = []                       # (the pack shows the rations gone, the destroy just sent)
+    p.stomach.level = p.w.hunger      # (2.62.0: the tracker has seen the level)
     p.supply_watch()
     quiet = list(p.notes)
     p.last_action = (P.gnow() - 10, "custom k item=0 value=2", "make room")
@@ -374,3 +375,18 @@ def no_food_alert_on_the_crossing_tick():
     meal = q.stomach.pending[0]["name"] if q.stomach.pending else None
     ok = skipped == [] and "supplies" in fired and meal == "a Ration of Food"
     return ok, f"on the crossing tick {skipped}; after the pin {fired}; meal logged as {meal!r}"
+
+
+@case
+def junk_matches_the_whole_kind():
+    """m67 (2.60.0): the junk entry 'Sleep' (Potion of Sleep) matched "of Sleep" as a word and junked the Wand of Sleep
+    Monster; now the whole kind must match (an inscription, pluses or charges may follow)."""
+    p = pilot()
+    p.orders["junk"] = "Sleep,Poison,Darkness,Aggravate Monster"
+    cases = {"a Wand of Sleep Monster (5 charges)": False, "a Potion of Sleep": True, "3 Potions of Sleep {tried}": True,
+             "a Potion of Resist Poison": False, "a Potion of Poison": True, "a Staff of Darkness": True,
+             "a Staff of Darkness Storm": False, "a Ring of Aggravate Monster {cursed}": True,
+             "a Potion of Neutralize Poison": False, "a Mushroom of Cure Blindness": False}
+    got = {n: p.is_junk(n) for n in cases}
+    bad = {n: g for n, g in got.items() if g != cases[n]}
+    return not bad, f"wrong: {bad}" if bad else "all as expected"

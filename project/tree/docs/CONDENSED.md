@@ -1,7 +1,7 @@
 # The Documentation, condensed (for Architects and Advisors)
 
 The full version is [README.md](README.md) and its ten component files. This page is what a new Architect or Advisor
-needs in their head before touching anything. Session 11, 2026-11-03; matches version 2.59.0 (`github/VERSION`, CHANGELOG.md).
+needs in their head before touching anything. Session 11, 2026-11-03; matches version 2.63.0 (`github/VERSION`, CHANGELOG.md).
 
 ## What this is
 
@@ -26,7 +26,7 @@ imports live. **The user decides** policy; nobody else changes a user decision.
   the `World` (`world.py`: map memory, monsters, items, player, clock `TICK_S = 0.625`), run the watchers, serve
   requests, then **the first layer that acts wins**: reflexes -> the Navigator's `react` rules -> item work -> one step
   of the goal -> the trip plan -> idle. Pathing is Dijkstra over the remembered map (`mover.py`, never blocks);
-  monsters are known by glyph (`glyphs.py`, ratings from `rulebook/monsters.csv`); inner rooms/pits/nests by `structures.py` (not vaults).
+  monsters are known by glyph (`glyphs.py`, ratings from `rulebook/monsters.csv`); inner rooms/pits/nests by `structures.py`, vaults by `vault.py` (2.62.0: the server's templates).
 - **The code** (split in 2.44.5-2.44.11, behaviour unchanged): `pilot.py` (~1.5k lines: `Pilot`, the tick, goals'
   driving) with the mixins `report.py`, `gear.py`, `items.py`, `town.py`, `combat.py`, `commands.py` (the methods stay
   `Pilot`'s, so the Advisor's mirrored `Pilot.escape` etc. resolve); the goals in `goals.py`, `town_goals.py`, `plan.py`;
@@ -58,8 +58,8 @@ Watches flag bands, stat drainers, thieves, breeders, traps, perception gaps, st
 
 The Pilot picks up, makes room, destroys junk, identifies, learns flavours and wears upgrades by itself. Values come
 from `itemvalue.py` (mirrors the server's `object_value_real`, the rulebook for unknowns) times `pay_cut` (the best
-shop owner's rate at our CHR). Notable identified wearables wait in the **review** queue for the Navigator (sold after
-2 town visits undecided). The Navigator can `keep` items or override a value refusal with **`!`**: the value lost
+shop owner's rate at our CHR). Notable identified wearables wait in the **review** queue for the Navigator (2.63.0: decided
+in the same town visit -- undecided at its end, sold). The Navigator can `keep` items or override a value refusal with **`!`**: the value lost
 goes into its **item debt** (an overridden hunt's HP loss into **fight debt**). The limit is never a number and never
 told; the user and Architect revoke overrides with `runs/private/NICK.overrides_revoked`. Standing **orders**
 (`order KEY=VALUE`: flee_hp, autowear, pickup, loot_radius, junk, nopickup, enchant_max, band_frac...).
@@ -119,7 +119,7 @@ mode** (`shadow.py`) asks the estimator's `choose` in the background at emergenc
   `observe/watch_mission.py`: the Architect's monitor (exits on an ask, emergency, death, drain, stuck plan, plan end,
   Pilot error -- restart it each time). `observe/wrap.sh mNN` after a mission: scorecard, token cost, damage mix,
   complaints. `observe/shopmath.py` is imported by the Advisor's `build_shops.py`: keep its path.
-- `harness/unit.py`: 204 offline cases in `unit_<family>.py` + `fixtures.py` on the real decision code (~3 s; **must pass after every change**).
+- `harness/unit.py`: 211 offline cases in `unit_<family>.py` + `fixtures.py` on the real decision code (~3 s; **must pass after every change**).
   `harness/setpiece.py`: ~40 live scenes staged by the Dungeon Master (`dm.py`), Dive04 saved/restored by `charsave.sh`.
 - `rulebook/`: the Advisor's tables of game facts (copied by `sync.sh`); `pilotctl rule` queries them.
 - Ops: `freeze.sh`, `snapshot.sh` (whole project into `github/project/` for the public repo; no secrets), `restart.sh`,

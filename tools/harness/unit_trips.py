@@ -170,11 +170,13 @@ def trip_dmin_counts_dungeon_minutes():
     p = pilot()
     tp = P.TripPlan(700, 800, P.TripPlan.parse_until("dmin>20"))
     tp.t0 -= 600
+    tp.t0_wall -= 600              # (2.61.0: the conditions count the wall clock less frozen time)
     p.w.in_dungeon = False
     town = tp.value(p, "dmin")
     p.w.in_dungeon = True
     tp.value(p, "minutes")
     tp.dungeon_t0 -= 21 * 60
+    tp.dungeon_t0_wall -= 21 * 60
     later = tp.value(p, "dmin")
     ok = town == 0 and 20.9 < later < 21.1 and tp.value(p, "minutes") > 9.9
     return ok, f"in town {town}; 21 min after arriving {later:.1f}; minutes {tp.value(p, 'minutes'):.1f}"
@@ -202,6 +204,7 @@ def supply_minutes_and_quiet_cap():
     for it in p.w.inven:
         if it["tval"] == P.TV_LITE:
             it["name"] = "a Brass Lantern (with 900 turns of light)"
+    p.stomach.level = p.w.hunger      # (2.62.0: the tracker has seen the level, as each tick of a running Pilot)
     p.supply_watch()
     told = [d for what, d in p.notes if what == "supplies"]
     g = P.QuietWait(600)
@@ -288,6 +291,7 @@ def food_warning_and_trip_rate():
     p.w.ind["hunger"] = [3]
     p.plan = type("Pl", (), {"t0": 5.0})()
     p.supply_minutes = lambda: (60.0, None)       # (D14: the food notice is supply_watch's now, kind `supplies`)
+    p.stomach.level = p.w.hunger      # (2.62.0: the tracker has seen the level, as each tick of a running Pilot)
     p.supply_watch()
     p.supply_watch()
     warned = [d for w, d in p.notes if w == "supplies"]
@@ -375,6 +379,7 @@ def supplies_one_kind_with_fields():
     p.warn_light("lantern out", "the lantern is out")
     p.w.ind["hunger"] = [3]
     p.supply_minutes = lambda: (4.0, 30.0)
+    p.stomach.level = p.w.hunger      # (2.62.0: the tracker has seen the level, as each tick of a running Pilot)
     p.supply_watch()
     got = [(r.get("supply"), r.get("level")) for r in logs if r["kind"] == "attention"]
     evs = [(e.get("supply"), e.get("level")) for e in p.attention + p.news]
@@ -601,3 +606,50 @@ def plan_line_shows_the_trip_end():
     ok = a == f"ends ~{want} (minutes>33)" and a in tp.describe() and "(minutes>60)" in b0 and "(dmin>20)" in b1 \
         and none is None
     return ok, f"{a}; {b0} -> {b1}; none {none}; describe {tp.describe()}"
+
+
+@case
+def frozen_time_not_counted():
+    """2.61.0 (the user: "pause the mission timer when the game is frozen"; m67 froze 21:36:47-21:38:18 and
+    21:46:14-21:56:33). The Pilot's freeze ledger (rundir/frozen.json, kept across a restart -- a freeze still open
+    stays open while frozen, else is closed) gives the frozen seconds of any window; the mission line says "N of 45 min
+    (M min frozen, not counted) -- ends ~HH:MM"; a trip's minutes>N counts unfrozen minutes, its end moves with the
+    freeze; the scorecard leaves frozen spans (from the time_frozen notices) out of its minutes and dungeon minutes."""
+    import json
+    import os
+    import tempfile
+    import time as _t
+    import scorecard
+    p = pilot()
+    p.rundir = tempfile.mkdtemp()
+    now = _t.time()
+    p.freeze_ledger = {"intervals": [[now - 1500, now - 900]], "open": None}      # 10 frozen minutes
+    fz = p.frozen_between(now - 2400)
+    p.freeze_mark(True)
+    saved = json.load(open(os.path.join(p.rundir, "frozen.json")))
+    q = pilot()
+    q.rundir = p.rundir
+    q.freeze_load()                       # (not frozen now: the open freeze is closed at load)
+    closed = q.freeze_ledger["open"] is None and len(q.freeze_ledger["intervals"]) == 2
+    p.freeze_ledger = {"intervals": [[now - 1500, now - 900]], "open": None}
+    p.mission_label, p.mission_t0_wall, p.mission_budget = "m67", now - 2400, 45
+    line = p.mission_line()
+    end = _t.strftime("%H:%M", _t.localtime(now + 15 * 60))
+    tp = P.TripPlan(700, 800, P.TripPlan.parse_until("minutes>33"))
+    tp.t0_wall = now - 2400
+    mins = tp.value(p, "minutes")
+    holds = tp.holds(p)
+    trip_end = tp.end_text(p)
+    recs = [{"t": 100.0, "kind": "act", "depth": 15}, {"t": 110.0, "kind": "attention", "what": "time_frozen",
+                                                     "detail": "time is frozen on the test server: ...", "depth": 15},
+            {"t": 140.0, "kind": "act", "depth": 15},
+            {"t": 150.0, "kind": "attention", "what": "time_frozen", "detail": "time flows again: ...", "depth": 15},
+            {"t": 160.0, "kind": "act", "depth": 15}]
+    spans = scorecard.frozen_spans(recs, 100.0, 160.0)
+    B = scorecard.efficiency(recs, [], {}, 0, 100.0, 160.0, spans)
+    ok = round(fz) == 600 and saved["open"] and closed and line.startswith("Mission m67: 30 of 45 min (10 min frozen") \
+        and f"ends ~{end}" in line and 29.9 < mins < 30.1 and holds is None and \
+        trip_end == "ends ~" + _t.strftime("%H:%M", _t.localtime(now + 3 * 60)) + " (minutes>33)" and \
+        spans == [(110.0, 150.0)] and abs(B["dungeon_min"] - 20 / 60) < 0.05
+    return ok, (f"frozen in the window {fz:.0f} s; saved {saved}; reloaded closed {closed}; {line!r}; trip minutes "
+                f"{mins:.1f}, holds {holds}, {trip_end}; scorecard spans {spans}, dungeon min {B['dungeon_min']}")

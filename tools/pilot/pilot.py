@@ -27,6 +27,7 @@ from common import (HERE, VERSION, TV_FOOD, TV_FLASK, TV_LITE, DEFAULT_ORDERS, w
 from world import (World, gnow, set_time_factor, time_factor, model_factor, wall_of, wall_since, waited,  # noqa: E402
                    ghold, light_fuel, set_fast_ok, measured_rate, _lt, frozen)
 import structures                                # noqa: E402
+import vault                                     # noqa: E402
 from stomach import Stomach                      # noqa: E402
 from report import ReportMixin                   # noqa: E402
 sys.path.insert(0, os.path.join(HERE, "..", "observe"))
@@ -106,6 +107,7 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
             self.standing = json.load(open(os.path.join(rundir, "standing.json")))
         except (OSError, ValueError):
             self.standing = []
+        self.freeze_load()                        # (2.61.0: before the plan and the mission, whose clocks read it)
         self.plan = TripPlan.load(self)           # (a restart mid-trip carries on with it)
         self.load_mission()                       # (and a mission with its label)
         if self.plan:
@@ -238,6 +240,17 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.queued = None                    # a plan/goal the Navigator sent while plan town ran (2.53.0)
         self.goal_fail_last = None            # (text, count, t) of the last goal_failed notice (2.59.0: repeats collapsed)
         self.park_now = False                 # `park now`: log out without waiting for a town visit to end (2.59.0)
+        # (2.61.0, the user: "pause the mission timer when the game is frozen") the test server's freezes, by the wall
+        # clock: rundir/frozen.json {"intervals": [[start, end]], "open": start or null}; the mission's start and budget
+        self.freeze_ledger = {"intervals": [], "open": None}
+        # (2.62.0, the vault detector: vault.py) per level: the vault found ({name, kind, box, squares...}), the matcher's
+        # last run (t, known squares), a run in a worker thread, the levels whose vault zone the Navigator lifted
+        self.vaults, self.vault_runs, self.vault_job, self.vault_pass = {}, {}, None, set()
+        self.vault_zones = {}
+        self.light_off_period = None          # (town_light: the idle period the light was taken off in, 2.62.0)
+        self.review_closing = False           # (2.63.0: plan town's last step -- undecided review items get the default)
+        self.review_raising = False           # (2.63.0: plan town's start gathers the held items into one alert)                 # level -> avoid discs over a greater vault (avoid_tick, unless vault_pass)
+        self.mission_t0_wall, self.mission_budget = None, 45
         self.drop_fails, self.drop_told = {}, set()   # stash drops that didn't happen, this visit (drop_failed)
         self.artifact_told = set()            # artifacts told "kept in the pack: can't be stored" (town_rule)
         self.gear_events, self.gear_msg_t, self.gear_act_t = [], 0.0, 0.0   # equipment damage (gear_damage_tick, 2.57.0)
@@ -516,6 +529,7 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
     # Commands whose effect shows in the pack, the equipment or the level
     # (the game-state survey, rule 3: an action is done when its signal comes)
     EFFECTS = (
+        (re.compile(r"custom k item=-\d"), "floor"),       # (2.62.0: a floor destroy -- its message or the floor)
         (re.compile(r"custom [wt] item="), "equip"),
         (re.compile(r"custom [kdEF] item=|eat \d|custom ,"), "pack"),
         (re.compile(r"custom [<>]$"), "level"),
@@ -525,6 +539,9 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         w = self.w
         if kind == "level":
             return w.level_t
+        if kind == "floor":
+            # (m67 21:35: the Ring of Aggravate Monster WAS destroyed, and "no effect seen" came from the pack)
+            return (getattr(w, "floor", None), sum(1 for _, t in w.messages if t.startswith("You destroy")))
         return tuple((i["name"], i["number"]) for i in w.items(equip=(kind == "equip")))
 
     def expect_effect(self, line, why):
@@ -871,7 +888,8 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
             return
         try:
             json.dump({"label": self.mission_label, "age": round(gnow() - mb[0], 1), "exp": mb[1], "gold": mb[2],
-                       "found": self.gold_found - (mb[3] if len(mb) > 3 else 0)},
+                       "found": self.gold_found - (mb[3] if len(mb) > 3 else 0),
+                       "t0_wall": self.mission_t0_wall, "budget": self.mission_budget},
                       open(os.path.join(self.rundir, "mission.json"), "w"))
         except OSError:
             pass
@@ -886,6 +904,7 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
             self.mission_label = ms["label"]
             self.mission_base = (gnow() - ms["age"], ms["exp"], ms["gold"],
                                  self.gold_found - ms["found"])
+            self.mission_t0_wall, self.mission_budget = ms.get("t0_wall"), ms.get("budget") or 45
         except (OSError, ValueError, KeyError, TypeError):
             pass
 
@@ -1152,6 +1171,7 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.watch_items(now)
         self.audit_tick(now)
         self.structures_tick(now)
+        self.vault_tick(now)
         self.avoid_tick()
         self.trail_tick()
         self.mons_tick(now)
@@ -1351,6 +1371,12 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
             if lt == w.level_t:
                 zone -= {(y, x) for y in range(Y - 6, Y + 7) for x in range(X - 13, X + 14)}
                 zone |= {(y, x) for y in range(Y - 3, Y + 4) for x in range(X - 10, X + 11)}
+        # (2.62.0: a greater vault's zone unless the Navigator lifted it; a vault's predicted traps kept off paths)
+        if w.level_t not in self.vault_pass:
+            for y0, x0, r in self.vault_zones.get(w.level_t, []):
+                zone |= {(y0 + dy, x0 + dx) for dy in range(-r, r + 1) for dx in range(-r, r + 1)}
+        v = self.vaults.get(w.level_t) or {}
+        w.extra_traps = {q for q in v.get("traps", ()) if w.memory.get(q) not in ("#", "%")}
         w.avoid_inside = w.pos in zone
         w.avoid_zone = zone - {w.pos}
 
@@ -1511,12 +1537,63 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
             if not self.frozen_said:
                 self.frozen_said = True
                 self.mover.stop()
+                self.freeze_mark(True)
                 self.notify("time_frozen", "time is frozen on the test server: the Pilot holds until it's thawed")
             return True
         if self.frozen_said:
             self.frozen_said = False
+            self.freeze_mark(False)
             self.notify("time_frozen", "time flows again: the Pilot carries on", news=True)
         return False
+
+    FREEZE_KEEP_S = 2 * 86400     # freezes older than this are dropped from frozen.json
+
+    def freeze_load(self):
+        """rundir/frozen.json (2.61.0). A freeze still open when the Pilot started (a hot-swap freezes, swaps, thaws):
+        kept open if the server is still frozen, else closed now."""
+        try:
+            led = json.load(open(os.path.join(self.rundir, "frozen.json")))
+            self.freeze_ledger = {"intervals": [list(x) for x in led.get("intervals", [])], "open": led.get("open")}
+        except (OSError, ValueError, AttributeError):
+            return
+        if self.freeze_ledger["open"] and not frozen():
+            self.freeze_mark(False)
+
+    def freeze_mark(self, on):
+        """A freeze begins (on) or ends: the wall time into the ledger, saved."""
+        led, now = self.freeze_ledger, time.time()
+        if on:
+            led["open"] = led.get("open") or now        # (kept from before a restart while still frozen)
+        elif led.get("open"):
+            led["intervals"].append([led["open"], now])
+            led["open"] = None
+        led["intervals"] = [x for x in led["intervals"] if now - x[1] < self.FREEZE_KEEP_S]
+        try:
+            json.dump(led, open(os.path.join(self.rundir, "frozen.json"), "w"))
+        except (OSError, AttributeError):
+            pass
+
+    def frozen_between(self, a, b=None):
+        """Wall seconds the test server was frozen between a and b (default now), the open freeze included."""
+        b = time.time() if b is None else b
+        led = self.freeze_ledger
+        spans = list(led.get("intervals", [])) + ([[led["open"], time.time()]] if led.get("open") else [])
+        return sum(max(0.0, min(e, b) - max(s, a)) for s, e in spans)
+
+    def mission_line(self):
+        """'Mission m67: 23 of 45 min (12 min frozen, not counted) -- ends ~22:31' while a mission runs (2.61.0, the
+        user: frozen time isn't counted; the end moves with every freeze), else None."""
+        t0 = self.mission_t0_wall
+        if not (self.mission_label and t0):
+            return None
+        now = time.time()
+        fz = self.frozen_between(t0)
+        used = (now - t0 - fz) / 60
+        budget = self.mission_budget or 45
+        end = now + max(0.0, budget - used) * 60
+        return (f"Mission {self.mission_label}: {used:.0f} of {budget:g} min"
+                + (f" ({fz / 60:.0f} min frozen, not counted)" if fz >= 30 else "")
+                + (f" -- ends ~{time.strftime('%H:%M', time.localtime(end))}" if used < budget else " -- time is up"))
 
     def act_tick(self, now):
         """The acting layers, first that acts wins: reflexes, parking, the Navigator's `react` rules, look (never
@@ -1602,6 +1679,109 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         "orc pit": "an ORC PIT (95 awake orcs, archers inside, no loot): leave the level. Avoid zone set",
         "nest": "a NEST (jellies, molds, icky things; some breed; no loot): don't open it. Avoid zone set",
     }
+
+    VAULT_EVERY_S = 30         # the matcher at most this often on a level (it takes ~0.3 s: a worker thread)
+
+    def vault_tick(self, now):
+        """2.62.0 (the user: "build the vault detector"; m67 at 800 ft walked into the lesser vault "zelazny" with no
+        notice). On a level that feels special, or with a compact walled cluster of 3+ items: match the known map
+        against the server's vault templates (vault.match, in a worker thread, at most every VAULT_EVERY_S and only
+        when the map has grown); a confident match -> a `vault` alert and the vault on record (vault_found); none,
+        but special and a walled item cluster -> "likely vault", once a level."""
+        w = self.w
+        if not w.in_dungeon or not w.memory:
+            return
+        job = self.vault_job
+        if job and not job["thread"].is_alive():
+            self.vault_job = None
+            if job["level"] == w.level_t and job.get("match") and w.level_t not in self.vaults:
+                self.vault_found(job["match"])
+            elif job["level"] == w.level_t and job.get("likely") and w.level_t not in self.vaults:
+                self.vault_found(None, likely=job["likely"])
+        if w.level_t in self.vaults and self.vaults[w.level_t].get("name"):
+            return
+        if self.vault_job:
+            return
+        special = "special" in str(self.level_feeling or "")
+        cl = vault.item_cluster(w.memory)
+        walled = cl and vault.walled(w.memory, cl[1]) >= 0.5
+        if not (special or walled) or not cl:
+            return
+        last = self.vault_runs.get(w.level_t)
+        n = len(w.memory)
+        if last and (now - last[0] < self.VAULT_EVERY_S or n < last[1] * 1.05):
+            return
+        self.vault_runs[w.level_t] = (now, n)
+        mem, centre = dict(w.memory), cl[0]
+        job = {"level": w.level_t}
+        likely = {"centre": centre, "items": len(cl[1]), "squares": cl[1]} if special and walled else None
+
+        def run():
+            try:
+                job["match"] = vault.match(mem, centre)
+            except Exception as e:                   # (the matcher must never stop the Pilot)
+                job["error"] = repr(e)
+            if not job.get("match"):
+                job["likely"] = likely
+        job["thread"] = threading.Thread(target=run, daemon=True)
+        self.vault_job = job
+        job["thread"].start()
+
+    def vault_found(self, m, likely=None):
+        """A vault on record and the Navigator told (`vault`, an alert): what and where, the items and monsters seen
+        inside, the predicted traps, and what to do. A greater vault becomes an avoid zone (`vault_zones`, lifted by
+        `avoid pass`/`avoid clear`/`goal fetch` into it); a lesser one with weak defenders has its treasure squares
+        fetched as loot (loot_step); predicted trap squares are kept off paths like known traps (World.extra_traps)."""
+        w = self.w
+        if m:
+            sq = vault.squares(m)
+            box = (m["y0"], m["x0"], m["y0"] + m["h"] - 1, m["x0"] + m["w"] - 1)
+            rec = {"name": m["name"], "kind": m["kind"], "box": box, "idx": m["idx"], **sq,
+                   "fit": f"{m['agree']:.0f} known squares agree, {m['bad']:.0f} don't"}
+        else:
+            ys, xs = [q[0] for q in likely["squares"]], [q[1] for q in likely["squares"]]
+            box = (min(ys) - 2, min(xs) - 2, max(ys) + 2, max(xs) + 2)
+            rec = {"name": None, "kind": "likely vault", "box": box, "traps": [], "treasure": list(likely["squares"]),
+                   "monsters": [], "doors": [], "good": [], "great": []}
+        self.vaults[w.level_t] = rec
+        y0, x0, y1, x1 = box
+        inside = [(y, x, r) for y, x, r in w.monsters if y0 <= y <= y1 and x0 <= x <= x1]
+        items = [ch for (y, x), ch in w.memory.items() if y0 <= y <= y1 and x0 <= x <= x1 and ch in vault.ITEM_GLYPHS]
+        strong = [r for _, _, r in inside if r.level > w.clvl - 5 or self.danger_why(r)]
+        if rec["kind"] == "greater vault":
+            advice = ("monsters of much deeper levels (up to 40 levels out of depth): leave it -- an avoid zone is set; "
+                      "`avoid pass`/`avoid clear` or `goal fetch Y,X` if you mean to go in")
+            self.vault_zones[w.level_t] = self.box_discs(box)
+        elif strong:
+            advice = (f"defended by {', '.join(sorted({r.name for r in strong}))}: your call -- fight in, or leave it "
+                      "(the Pilot doesn't fetch its loot by itself)")
+        else:
+            advice = "weak defenders seen: the Pilot fetches its treasure squares (the loot rules apply)"
+            rec["loot"] = True
+        where = f"{y0}-{y1}, {x0}-{x1}"
+        what = (f"a {rec['kind']} \"{rec['name']}\" ({rec['fit']})" if rec["name"] else
+                "likely a vault (the level feels special; a walled cluster of items)")
+        mons = collections.Counter(r.name for _, _, r in inside)
+        self.notify("vault", f"{what} at {where}: {len(items)} item(s) seen inside"
+                    + (f"; monsters: {', '.join(f'{n} x{c}' if c > 1 else n for n, c in mons.most_common(6))}"
+                       if mons else "")
+                    + (f"; great-object squares (a great item 20 levels deeper) {', '.join(f'{q[0]},{q[1]}' for q in rec['great'][:6])}"
+                       if rec.get("great") else "")
+                    + (f"; good-object squares (a good item 7 levels deeper) {', '.join(f'{q[0]},{q[1]}' for q in rec['good'][:6])}"
+                       if rec.get("good") else "")
+                    + (f"; predicted traps at {', '.join(f'{q[0]},{q[1]}' for q in rec['traps'][:8])}"
+                       + (" (a '*' is an object or, 1 in 4, a trap)" if rec["traps"] else "") if rec["traps"] else "")
+                    + f" -- {advice}", fields={"box": list(box), "vault": rec["name"], "kind": rec["kind"]})
+        self.log("vault", name=rec["name"], kind=rec["kind"], box=list(box), items=len(items),
+                 monsters=dict(mons), traps=rec["traps"][:20])
+
+    @staticmethod
+    def box_discs(box):
+        """Avoid-zone discs (y, x, r) covering a box."""
+        y0, x0, y1, x1 = box
+        r = (y1 - y0) // 2 + 1
+        cy = (y0 + y1) // 2
+        return [(cy, x, r) for x in range(x0 + r - 1, x1 + r, 2 * r - 1)]
 
     def structures_tick(self, now):
         w = self.w

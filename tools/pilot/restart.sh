@@ -18,7 +18,7 @@ swap_wait() {
     local t0=$(date +%s) last=""
     while :; do
         local out
-        out=$(python3 pilotctl.py --nick "$LOW" swapsafe 2>&1 | head -1)
+        out=$(python3 pilotctl.py --nick "$LOW" swapsafe 2>&1 | grep -v "^USER MESSAGE\|^ALERTS:\|^ARCHITECT ANSWER" | head -1)
         case "$out" in safe|"(Pilot not answering"*|"which Pilot"*) return 0 ;; esac
         [ "$out" != "$last" ] && echo "$(date +%T) $out" && last="$out"
         [ $(( $(date +%s) - t0 )) -ge "${SWAP_WAIT_S:-900}" ] && { echo "still $out after ${SWAP_WAIT_S:-900} s: rerun with --now to go ahead"; exit 1; }

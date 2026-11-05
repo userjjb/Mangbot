@@ -492,3 +492,94 @@ def dive_walks_to_stairs_past_unexplored_squares():
         all(max(abs(f[0] - 27), abs(f[1] - 130)) <= 6 for f in near)
     return ok, (f"known path {known}; through unexplored {len(through or [])} steps; dive walking {g.walking} "
                 f"(go unknown={calls}); news {said}; explore toward the '>': {sorted(near)}")
+
+
+# m67's 800 ft level (state.jsonl's map replies, 22:05-22:27), rows 17-31 from column 160: the lesser vault "zelazny"
+# (a walled corridor of items and orcs, diagonal walls above it) that Dive04 walked into with no notice
+_M67_VAULT = ["              #########",
+              "              #_......##.",
+              "             .#.....<##S_}",
+              "         ####.#..##.##@S=#",
+              "         #....#.##.##??.##",
+              "         #....###.##...##",
+              "        ##..#.##.##.._##",
+              "  #######...#...##...##     #.#",
+              "  #.........#..##...##      #.#",
+              "  #........##.##...##########$#",
+              "  #..###### #.#!?|,!_?.]-==$'$#",
+              "  ##..#     #.###############.#",
+              "   #..#     #..   ............#",
+              "   #..#            #''#########",
+              "   #..#            #..#"]
+
+
+@case
+def vault_templates_matched():
+    """2.62.0 (the user: "build the vault detector"). vault.txt's built templates: 67 lesser (type 7), 75 greater (type
+    8; type 9 is never built). build_vault lays a template as written -- no rotation or flip (generate.c:2332) -- so
+    the matcher tries every placement whose box holds the evidence. A partial copy of a template (60% of its squares
+    known, a corridor through its outer wall) is found at the right place; m67's 800 ft map is the lesser vault
+    "zelazny"; past levels with item clusters match nothing (checked offline: 18 levels, no false match)."""
+    import random
+    import vault
+    t = vault.templates()
+    kinds = (sum(1 for v in t if v["type"] == "7"), sum(1 for v in t if v["type"] == "8"))
+    tm = next(v for v in t if v["name"] == "Lesser vault (zelazny)")
+    rnd = random.Random(3)
+    mem = {}
+    y0, x0 = 20, 60
+    for dy, row in enumerate(tm["rows"]):
+        for dx, ch in enumerate(row):
+            if ch == " " or rnd.random() > 0.6:
+                continue
+            mem[(y0 + dy, x0 + dx)] = "#" if ch in "%#X+" else "."
+    mem[(y0 + 8, x0)] = "."                      # (a corridor broke through the outer wall)
+    m = vault.match(mem, (y0 + 9, x0 + 9))
+    m67 = {(17 + y, 160 + x): ch for y, row in enumerate(_M67_VAULT) for x, ch in enumerate(row) if ch != " "}
+    cl = vault.item_cluster(m67)
+    m2 = vault.match(m67, cl[0]) if cl else None
+    sq = vault.squares(m2) if m2 else {}
+    ok = kinds == (67, 75) and m and m["name"] == "Lesser vault (zelazny)" and (m["y0"], m["x0"]) == (y0, x0) and \
+        m2 and m2["name"] == "Lesser vault (zelazny)" and m2["kind"] == "lesser vault" and sq.get("doors")
+    return ok, (f"templates lesser/greater {kinds}; partial copy: {m and (m['name'], m['y0'], m['x0'], m['agree'], m['bad'])}; "
+                f"m67: {m2 and (m2['name'], m2['y0'], m2['x0'], m2['agree'], m2['bad'], m2['second'])}")
+
+
+@case
+def vault_notice_traps_loot_and_zones():
+    """2.62.0: a vault found raises a `vault` alert (what, where, items and monsters inside, predicted traps, the
+    good/great squares, advice); its predicted trap squares are kept off paths like known traps (World.extra_traps);
+    a lesser vault with weak defenders has its treasure squares fetched; a greater vault becomes an avoid zone, lifted
+    by `avoid pass`; an unfelt item on a '9' square is valued as made good 7 levels deeper (iv_at)."""
+    import vault
+    tm = next(v for v in vault.templates() if v["name"] == "Lesser vault (zelazny)")
+    p = pilot(hp=369)
+    w = p.w
+    w.clvl, w.depth, w.depth_ft = 30, 16, 800
+    w.monsters = [(30, 70, BYNAME["cave orc"])]
+    p.danger_why = lambda r, *a: None
+    m = dict(name=tm["name"], idx=tm["idx"], type="7", kind="lesser vault", y0=20, x0=60, h=tm["h"], w=tm["w"],
+             agree=150.0, bad=2.0, known=152.0, rows=tm["rows"])
+    p.vault_found(m)
+    rec = p.vaults[w.level_t]
+    alert = next((d for k, d in p.notes if k == "vault"), "")
+    p.avoid_tick()
+    traps = set(w.extra_traps)
+    g = pilot(hp=369)
+    g.w.depth, g.w.depth_ft = 16, 800
+    g.danger_why = lambda r, *a: None
+    gm = dict(m, type="8", kind="greater vault")
+    g.vault_found(gm)
+    g.avoid_tick()
+    zoned = (25, 70) in g.w.avoid_zone
+    g.do_request({"cmd": "avoid", "args": ["pass"], "role": "navigator"})
+    g.avoid_tick()
+    lifted = (25, 70) not in g.w.avoid_zone
+    q9 = (24, 66)                         # (zelazny has no '9' square: one marked for the valuation)
+    rec["good"] = [q9]
+    plain = p.iv("a Cutlass (1d7)").value
+    good = p.iv_at("a Cutlass (1d7)", q9).value
+    ok = rec["loot"] and "lesser vault" in alert and "Cave orc" in alert and traps == set(rec["traps"]) and traps \
+        and zoned and lifted and good > plain
+    return ok, (f"alert {alert[:200]!r}; loot {rec.get('loot')}; traps {len(traps)}; greater zoned {zoned}, lifted "
+                f"{lifted}; a Cutlass plain {plain} vs on a '9' square {good}")

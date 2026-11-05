@@ -73,7 +73,7 @@ ORDER = """
     house_reconcile_rebuilds_the_record house_deposit_only_on_a_bare_square house_never_picks_up_the_wrong_item
     finds_marked_with_the_mission_label
     far_fetch_kit_and_valuable_potions backups_must_be_worth_it word_of_recall_three_in_kits_b_and_c
-    make_room_news_counts_what_went plan_line_shows_the_trip_end login_level_not_set_by_the_first_dungeon_level stale_bank_record_recovers
+    make_room_news_counts_what_went plan_line_shows_the_trip_end login_level_not_set_by_the_first_dungeon_level stale_bank_record_recovers junk_matches_the_whole_kind
     avoid_zone_blocking_the_stairs_asks_the_navigator dive_holds_when_a_zone_blocks_its_stairs
     plan_sent_during_plan_town_is_queued no_food_alert_on_the_crossing_tick
     refused_drops_end_the_stash_step a_permanent_light_beats_the_lantern
@@ -84,6 +84,10 @@ ORDER = """
     equipment_damage_is_danger
     bands_decided_by_the_estimator gear_gold_for_the_estimator
     wilderness_home_by_world_offset plan_stops_reissuing_a_failing_goal no_restart_during_a_town_visit
+    frozen_time_not_counted
+    vault_templates_matched vault_notice_traps_loot_and_zones
+    m67_small_fixes
+    review_decided_in_the_same_visit debt_waive_and_floor_price
 """.split()
 
 

@@ -215,13 +215,18 @@ def card(m):
     acount = collections.Counter(d.get("what") for d in att if d.get("source") != "plan")
     plan_news = collections.Counter(d.get("what") for d in att if d.get("source") == "plan")
     aud = [d for d in recs if d.get("kind") == "audit_check"]
+    # (2.61.0, the user: "pause the mission timer when the game is frozen": the test server's freezes, from the
+    # Pilot's time_frozen notices, are left out of the minutes and the dungeon/town minutes -- every per-minute rate)
+    spans = frozen_spans(recs, t0, t1)
+    frozen_s = sum(e - s for s, e in spans)
     c = {"label": m["label"], "nav_model": m.get("navigator"), "effort": m.get("effort"), "report": m.get("report"),
-         "start": m["start"], "end": m.get("end") or "(running)", "minutes": round((t1 - t0) / 60, 1),
+         "start": m["start"], "end": m.get("end") or "(running)", "minutes": round((t1 - t0 - frozen_s) / 60, 1),
+         "frozen_min": round(frozen_s / 60, 1), "budget": m.get("budget"),
          "notes": m.get("notes", ""), "tokens": m.get("tokens"), "defs": DEFS}
     c["estimator"] = estimator_shadow(recs, att)
     c["A"] = outcome(acount, aud, recs)
     budget = time_budget(recs, msgs, t0, t1)
-    c["B"] = efficiency(recs, aud, budget, c["A"].get("exp_gain", 0), t0, t1)
+    c["B"] = efficiency(recs, aud, budget, c["A"].get("exp_gain", 0), t0, t1, spans)
     gold_rates(c["A"], c["B"])
     c["C"] = safety(recs, msgs, att)
     c["D"], c["values_aware"] = value_lost(recs, msgs, stores, aud, Then.of(nick))
@@ -286,13 +291,43 @@ def outcome(acount, aud, recs=()):
     return a_
 
 
-def efficiency(recs, aud, budget, exp_gain, t0, t1):
-    """B. dungeon and town minutes, exp, levels and gold found per dungeon time, the time budget, Navigator-wait."""
+def frozen_spans(recs, t0, t1):
+    """[(start, end)] the test server was frozen within [t0, t1], from the Pilot's `time_frozen` attention records
+    ("time is frozen on the test server..." / "time flows again..."; 2.61.0). A freeze still on at t1 ends there; a
+    thaw with no freeze seen began at t0."""
+    spans, start, first = [], None, True
+    for d in recs:
+        if d.get("kind") != "attention" or d.get("what") != "time_frozen":
+            continue
+        det = str(d.get("detail") or "")
+        if det.startswith("time is frozen"):
+            start = d["t"] if start is None else start
+        elif det.startswith("time flows again"):
+            if start is not None:
+                spans.append((start, d["t"]))
+            elif first:
+                spans.append((t0, d["t"]))
+            start = None
+        first = False
+    if start is not None:
+        spans.append((start, t1))
+    return [(max(s, t0), min(e, t1)) for s, e in spans if min(e, t1) > max(s, t0)]
+
+
+def unfrozen(a, b, spans):
+    """Seconds of [a, b] outside the frozen spans."""
+    return max(0.0, (b - a) - sum(max(0.0, min(e, b) - max(s, a)) for s, e in spans))
+
+
+def efficiency(recs, aud, budget, exp_gain, t0, t1, spans=()):
+    """B. dungeon and town minutes, exp, levels and gold found per dungeon time, the time budget, Navigator-wait.
+    (2.61.0: frozen time -- `spans` -- is not counted in the dungeon or town minutes.)"""
     dung = town = 0.0
     for p, q in zip(recs, recs[1:]):
         dt = q["t"] - p["t"]
         if dt > 60:
             continue
+        dt = unfrozen(p["t"], q["t"], spans) if spans else dt
         if (p.get("depth") or 0) > 0:
             dung += dt
         else:
@@ -625,7 +660,8 @@ def show(c):
     A, B, C, D, E, F = (c.get(k, {}) for k in "ABCDEF")
     tb = ", ".join(f"{k} {v}" for k, v in list(B["time_budget_min"].items())[:8])
     lo = C.get("lowest_hp")
-    out = [f"=== {c['label']}  {c['start']} - {c['end'][-5:]}  ({c['minutes']} min)  Navigator {c['nav_model']}"
+    out = [f"=== {c['label']}  {c['start']} - {c['end'][-5:]}  ({c['minutes']} min"
+           + (f", {c['frozen_min']} frozen not counted" if c.get("frozen_min") else "") + f")  Navigator {c['nav_model']}"
            + (f" ({c['effort']})" if c.get("effort") else "") + f", {c['report']} report",
            (f"  (damage D8 and item values D9 as of {c['defs']}; item values with {c.get('values_aware')})"
             if c.get("defs") else None),
@@ -690,7 +726,8 @@ TABLE = [("mission", lambda c: c["label"]), ("nav", lambda c: c["nav_model"]), (
          ("usd/dh", lambda c: _per(_usd(c), c["B"]["dungeon_min"] / 60)),
          ("usd/kxp", lambda c: _per(_usd(c), c["A"].get("exp_gain", 0) / 1000)),
          ("gold/usd", lambda c: _per(c["B"].get("gold_found"), _usd(c), 0)),
-         ("adj$/dm", lambda c: c["B"].get("gold_change_adj_per_dmin"))]      # (2.50.0: last, so older readers' columns hold)
+         ("adj$/dm", lambda c: c["B"].get("gold_change_adj_per_dmin")),
+         ("frz", lambda c: c.get("frozen_min"))]      # (2.61.0: minutes frozen, left out of min and dmin)      # (2.50.0: last, so older readers' columns hold)
 
 
 def _usd(c):

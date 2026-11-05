@@ -737,3 +737,20 @@
 - 17:46:11 750ft 100% | user msg: ignored suggestion, left level | replied: saw no earlier message; level change was Pilot's | honest; ask to repeat
 - 17:47:03 750ft 97% | user msg Hummerhorn vault | answered: missed it (my grep filter), level gone, left for a fearer | stop filtering output
 - 18:01:56 town 100% | town done, 18:02 | short second trip 700-800 until time>18:11 then town | ~9 min left, mission ends 18:20
+- 21:19:14 town 100% | Plan | one town visit (withdraw gold, buy WoR:3, kit, look for res blind), one trip 700-800 until cures<4 or phase<5 or minutes>35 | single long trip beats two
+- 21:32:38 800ft 97% | Food shows 0 rations (>=33 min) at 21:32, 23 min left in trip | watch; recall if supplies alert | enough per status
+- 21:37:35 750ft 100% | User asked why wand left | answered: not left, fetch queued after louse clear | honest from news
+- 21:41:04 750ft 100% | User asked about brass lantern | destroyed it, answered | junk loot weight
+- 21:48:33 750ft 100% | Architect corrected: Sleep Monster wand existed, I misanswered | told user; plan still running | time frozen
+- 21:48:39 750ft 100% | Food alert ~5 min, no rations, time near end | goal recall now, then plan town | supplies
+- 21:58:52 town 100% | Budget extended to 22:16 (freeze excluded) | plan town (banks gold, rations) then short trip 700-800 until time>22:08 | one more trip fits ~10 dmin
+- 22:08:14 800ft 99% | User asked about vault | answered honestly, orc fight going well 400xp/min, trip end time>22:08 passing during freeze | stay unless user says
+- 22:13:10 800ft 99% | User: finish vault, overrun ok | extended trip to time>22:30, normal escapes | corridor chokepoint, HP full, supplies ok
+- 22:21:26 800ft 99% | Architect: no vault data in Pilot; prefer goal fetch square by square; keep HP>70%, leave by < (8 away) if stronger shows | will follow, orcs weak
+- 22:29:15 800ft 100% | Vault looted (rings, amulet, wands); food 0 (~11 min) | let trip end at time>22:30 then town | food
+- 22:30:20 800ft 100% | User: don't leave unID gear | explained weight limit, offered fetch; food ~11 min limits | awaiting user
+- 22:32:23 800ft 100% | Destroyed Mace (!, debt 276); skipping plain boots | vault done, let trip end and recall for food
+- 22:36:28 800ft 100% | User corrected: unID boots have expected value above base | conceded, no coordinates to fetch, complaint filed | mistake in judging by visible name
+- 22:38:54 800ft 100% | User: return to vault for boots | goal fetch 27,183 (metal cap spot near boots) | food ~11 min bound, slow digestion
+- 22:45:08 town 100% | Review: sell Katana (~3300) and Morning Star (our axe 36/round better), keep Ring of FA as spare | weapon outclassed; FA ring is backup for the axe
+- 22:47:38 town 100% | User asked amulet comparison | gearcmp: Weaponmastery +3.9%, loses slow digest; offered, waiting user | marginal

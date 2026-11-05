@@ -1531,7 +1531,9 @@ class TownMixin:
         # (2.53.0, m63 10:44:37: Full -> Fed and "food ~5 dungeon minutes" on that tick -- the level's bottom, 2000,
         # before the tracker pinned 9990-9999 later in the tick. Not until the tracker has seen this hunger level)
         st = self.stomach
-        if st is not None and st.level is not None and st.level != w.hunger:
+        # (2.62.0, m67 21:48: right after a hot-swap, before the tracker had a level -- "food ~5 dungeon min", and
+        # the Navigator ended the trip early)
+        if st is not None and (st.level is None or st.level != w.hunger):
             return
         if w.inven_dirty or (self.stomach is not None and self.stomach.pending) or \
                 (la and gnow() - la[0] < 3 and re.match(r"(eat |custom [kEF] )", la[1])):

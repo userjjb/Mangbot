@@ -12,6 +12,8 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
 - **The Pilot decides by policy, computed from data** (the server's formulas and the Advisor's rulebook). It picks up,
   identifies, wears upgrades, destroys junk and sells. It chooses fights, flees, phases, quaffs and rests, and it
   leaves bad levels.
+- **Time frozen by the user doesn't count** (2.61.0): the `Mission:` line shows the minutes used of the budget and the
+  real end time; a trip's `minutes>N` and `time>HH:MM` skip frozen time too.
 - **Never filter `wait`/`status` with grep; `tail` is safe: alerts (`ALERTS:`) and user messages are repeated last**
   (m66: a `zone_blocks` alert was grepped away and the trip recalled).
 - **You may always order something safer**: `goal leave`, `goal recall`, `plan stop`, `stop`, `avoid`, `keep`.
@@ -115,7 +117,7 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 | `goal shop N sell NAME[:N]`, `destroy NAME [N\|all]`, `drop NAME` | selling in town; `destroy`/`drop` in the dungeon too (pack control: the pack fills ~10 minutes into a trip); `!NAME` overrides the value policy and adds to your debt. `plan town` already sells by policy and makes pack room before it buys |
 | `order nopickup=NAME,NAME` | name parts the Pilot never picks up this trip (e.g. `nopickup=Lance,Pike,Cloak`); `order nopickup=` clears it |
 | `react leave NAME` / `react hunt NAME` / `react thieves kill` / `react afraid teleport`; `react -N`, `react clear`, `react` | **executable standing orders**: decided by you in advance, done by the Pilot at once -- leave the level when NAME is in view; hunt NAME on sight (the hunt checks apply); hunt a thief within 6 squares; afraid with no fear cure and monsters adjacent -> teleport. Shown on the `Standing:` line |
-| `review` / `review sell\|keep\|wear NAME` | **the item-review queue**: identified gear that gives an ability or resist, artifacts, and gear worth 1000+ that the gear evaluator wouldn't wear are held for your word instead of sold (the `Review:` line). Undecided after 2 town visits, the policy sells |
+| `review` / `review sell\|keep\|wear NAME` | **the item-review queue**: identified gear that gives an ability or resist, artifacts, and gear worth 1000+ that the gear evaluator wouldn't wear are held for your word instead of sold (the `Review:` line). **Decided in the same town visit** (2.63.0): `plan town` raises them at its start as one `review` alert (each with its default, sell); answer during the visit -- undecided at its end (at least 60 s after the alert), they are sold |
 | `keep NAME` / `keep -NAME` | protect an item from the policy (free) |
 | `avoid Y,X [R]` / `avoid NAME` / `avoid clear` / `avoid pass` | no-go zones and monsters for the Pilot's paths; `avoid pass` lets paths cross this level's inner-room/pit rings (never the rooms) -- the answer to a `zone_blocks` alert |
 | `order max_depth=FEET` (and the other orders in the reference) | standing orders; `max_depth` caps every plan; `band_frac=0.5` is what counts as a band to leave (fighting it all would cost more than this x your HP) |
@@ -191,6 +193,9 @@ with the reason (a level you've left, a monster no longer in view, HP fallen sin
 - **Equipment damage is a cost** (2.57.0): two "Your X is damaged!" (acid) or disenchantments within 10 s make the
   Pilot kill a quick source in view or leave (a `gear_damage` alert); acid breathers you resist still eat your armour's
   plusses (m65: ~5,000 gold of Enchant Armor). `monster NAME` shows "GEAR: ..." for them.
+- **Vaults** (2.62.0): a `vault` alert names a vault the Pilot recognised (lesser: it loots one with weak defenders;
+  greater: an avoid zone -- `avoid pass`/`goal fetch` to go in) or a likely one; `status full` shows it on the
+  Structures line.
 - **Bands** count only when together they could take 30% of your HP in a turn, or include a dangerous monster; weaker
   groups are fought (and looted) where they stand. **Dark inner rooms** get an avoid zone over their ring corridor (a
   pit looks the same until it opens): `avoid clear` if you mean to open one. When such a zone is all that keeps the

@@ -1007,8 +1007,386 @@
    "known": true,
    "t": 1793833380.0,
    "mission": "m66"
+  },
+  {
+   "name": "a Beaked Axe (2d6)",
+   "kind": "beaked axe",
+   "known": false,
+   "t": 1793845247.5,
+   "mission": "m67"
+  },
+  {
+   "name": "a War Hammer (3d3)",
+   "kind": "war hammer",
+   "known": false,
+   "t": 1793845279.9,
+   "mission": "m67"
+  },
+  {
+   "name": "4 Rations of Food",
+   "kind": "ration of food",
+   "known": true,
+   "t": 1793845281.4,
+   "mission": "m67"
+  },
+  {
+   "name": "a Staff of Slow Monsters",
+   "kind": "staff of slow monster",
+   "known": false,
+   "t": 1793845284.3,
+   "mission": "m67"
+  },
+  {
+   "name": "11 Potions of Cure Critical Wounds {for sale 200}",
+   "kind": "potion of cure critical wound",
+   "known": true,
+   "t": 1793845325.6,
+   "mission": "m67"
+  },
+  {
+   "name": "a Ring of Slow Digestion",
+   "kind": "slow digestion",
+   "known": true,
+   "t": 1793845394.2,
+   "mission": "m67"
+  },
+  {
+   "name": "a Broad Axe (2d6)",
+   "kind": "broad axe",
+   "known": false,
+   "t": 1793845395.5,
+   "mission": "m67"
+  },
+  {
+   "name": "a Spear (1d6)",
+   "kind": "spear",
+   "known": false,
+   "t": 1793845423.5,
+   "mission": "m67"
+  },
+  {
+   "name": "2 Rings of Slow Digestion {m67}",
+   "kind": "ring of slow digestion",
+   "known": true,
+   "t": 1793845430.8,
+   "mission": "m67"
+  },
+  {
+   "name": "a Flail (2d6)",
+   "kind": "flail",
+   "known": false,
+   "t": 1793845466.4,
+   "mission": "m67"
+  },
+  {
+   "name": "a Pair of Soft Leather Boots [2]",
+   "kind": "pair of soft leather boots",
+   "known": false,
+   "t": 1793845473.3,
+   "mission": "m67"
+  },
+  {
+   "name": "a Ring of Protection",
+   "kind": "protection",
+   "known": false,
+   "t": 1793845479.4,
+   "mission": "m67"
+  },
+  {
+   "name": "Soft Studded Leather [5]",
+   "kind": "soft studded leather",
+   "known": false,
+   "t": 1793845567.8,
+   "mission": "m67"
+  },
+  {
+   "name": "a Ring of Resist Cold",
+   "kind": "resist cold",
+   "known": true,
+   "t": 1793845669.7,
+   "mission": "m67"
+  },
+  {
+   "name": "a Small Leather Shield [2]",
+   "kind": "small leather shield",
+   "known": false,
+   "t": 1793845697.6,
+   "mission": "m67"
+  },
+  {
+   "name": "Soft Studded Leather [5]",
+   "kind": "soft studded leather",
+   "known": false,
+   "t": 1793845703.8,
+   "mission": "m67"
+  },
+  {
+   "name": "a Brass Lantern (with 5536 turns of light)",
+   "kind": "brass lantern",
+   "known": true,
+   "t": 1793845749.1,
+   "mission": "m67"
+  },
+  {
+   "name": "a Ring of Protection",
+   "kind": "protection",
+   "known": false,
+   "t": 1793845809.7,
+   "mission": "m67"
+  },
+  {
+   "name": "a Scroll of Identify",
+   "kind": "scroll of identify",
+   "known": true,
+   "t": 1793845811.2,
+   "mission": "m67"
+  },
+  {
+   "name": "a Scroll of Light",
+   "kind": "scroll of light",
+   "known": true,
+   "t": 1793845814.1,
+   "mission": "m67"
+  },
+  {
+   "name": "a Wand of Trap/Door Destruction",
+   "kind": "wand of trap/door destruction",
+   "known": false,
+   "t": 1793845816.3,
+   "mission": "m67"
+  },
+  {
+   "name": "a Pick (1d3) {Lagduf, the Snaga}",
+   "kind": "pick",
+   "known": false,
+   "t": 1793845819.6,
+   "mission": "m67"
+  },
+  {
+   "name": "a Rapier (1d6) {Lagduf, the Snaga}",
+   "kind": "rapier",
+   "known": false,
+   "t": 1793845824.2,
+   "mission": "m67"
+  },
+  {
+   "name": "a Broad Sword (2d5) {Ulfast, Son of Ulfang}",
+   "kind": "broad sword",
+   "known": false,
+   "t": 1793845931.4,
+   "mission": "m67"
+  },
+  {
+   "name": "a Broad Sword (2d5)",
+   "kind": "broad sword",
+   "known": false,
+   "t": 1793845956.6,
+   "mission": "m67"
+  },
+  {
+   "name": "a Potion of Resist Heat",
+   "kind": "potion of resist heat",
+   "known": true,
+   "t": 1793846128.6,
+   "mission": "m67"
+  },
+  {
+   "name": "a Wand of Slow Monster",
+   "kind": "wand of slow monster",
+   "known": false,
+   "t": 1793846303.1,
+   "mission": "m67"
+  },
+  {
+   "name": "2 Potions of Heroism",
+   "kind": "potion of heroism",
+   "known": true,
+   "t": 1793846432.4,
+   "mission": "m67"
+  },
+  {
+   "name": "a Scroll of Trap/Door Destruction",
+   "kind": "scroll of trap/door destruction",
+   "known": true,
+   "t": 1793846558.3,
+   "mission": "m67"
+  },
+  {
+   "name": "a Ring of Resist Fire",
+   "kind": "resist fire",
+   "known": true,
+   "t": 1793846597.9,
+   "mission": "m67"
+  },
+  {
+   "name": "a Morning Star (2d6)",
+   "kind": "morning star",
+   "known": false,
+   "t": 1793846715.6,
+   "mission": "m67"
+  },
+  {
+   "name": "a Piece of Elvish Waybread",
+   "kind": "piece of elvish waybread",
+   "known": true,
+   "t": 1793847806.4,
+   "mission": "m67"
+  },
+  {
+   "name": "a Staff of Slow Monsters",
+   "kind": "staff of slow monster",
+   "known": false,
+   "t": 1793847807.2,
+   "mission": "m67"
+  },
+  {
+   "name": "a Staff of Slow Monsters",
+   "kind": "staff of slow monster",
+   "known": false,
+   "t": 1793847809.5,
+   "mission": "m67"
+  },
+  {
+   "name": "a Ring of Resist Fire",
+   "kind": "resist fire",
+   "known": true,
+   "t": 1793847953.8,
+   "mission": "m67"
+  },
+  {
+   "name": "5 Potions of Cure Serious Wounds {25% off}",
+   "kind": "potion of cure seriou wound",
+   "known": true,
+   "t": 1793847955.6,
+   "mission": "m67"
+  },
+  {
+   "name": "a Long Sword (2d5)",
+   "kind": "long sword",
+   "known": false,
+   "t": 1793847957.1,
+   "mission": "m67"
+  },
+  {
+   "name": "a Scroll of Door/Stair Location",
+   "kind": "scroll of door/stair location",
+   "known": true,
+   "t": 1793848035.2,
+   "mission": "m67"
+  },
+  {
+   "name": "a Granite Ring",
+   "kind": "granite ring",
+   "known": false,
+   "t": 1793848053.2,
+   "mission": "m67"
+  },
+  {
+   "name": "an Amulet of Adornment",
+   "kind": "adornment",
+   "known": true,
+   "t": 1793848056.9,
+   "mission": "m67"
+  },
+  {
+   "name": "a Cutlass (1d7)",
+   "kind": "cutlass",
+   "known": false,
+   "t": 1793848059.0,
+   "mission": "m67"
+  },
+  {
+   "name": "a Morning Star (2d6)",
+   "kind": "morning star",
+   "known": false,
+   "t": 1793849221.3,
+   "mission": "m67"
+  },
+  {
+   "name": "an Adamantite Ring",
+   "kind": "adamantite ring",
+   "known": false,
+   "t": 1793849236.9,
+   "mission": "m67"
+  },
+  {
+   "name": "a Black Mushroom",
+   "kind": "black mushroom",
+   "known": false,
+   "t": 1793849241.4,
+   "mission": "m67"
+  },
+  {
+   "name": "a Scroll of Identify",
+   "kind": "scroll of identify",
+   "known": true,
+   "t": 1793849243.0,
+   "mission": "m67"
+  },
+  {
+   "name": "a Cast Iron Wand",
+   "kind": "cast iron wand",
+   "known": false,
+   "t": 1793849244.8,
+   "mission": "m67"
+  },
+  {
+   "name": "a Katana (3d4)",
+   "kind": "katana",
+   "known": false,
+   "t": 1793849246.4,
+   "mission": "m67"
+  },
+  {
+   "name": "a Fossilized Amulet",
+   "kind": "fossilized amulet",
+   "known": false,
+   "t": 1793849249.7,
+   "mission": "m67"
+  },
+  {
+   "name": "a Hemlock Staff",
+   "kind": "hemlock staff",
+   "known": false,
+   "t": 1793849261.3,
+   "mission": "m67"
+  },
+  {
+   "name": "a Sapphire Ring",
+   "kind": "sapphire ring",
+   "known": false,
+   "t": 1793849263.0,
+   "mission": "m67"
+  },
+  {
+   "name": "a Wand of Stone to Mud",
+   "kind": "wand of stone to mud",
+   "known": false,
+   "t": 1793849274.8,
+   "mission": "m67"
+  },
+  {
+   "name": "a Lead-Filled Mace (3d4)",
+   "kind": "lead-filled mace",
+   "known": false,
+   "t": 1793849287.3,
+   "mission": "m67"
+  },
+  {
+   "name": "a Zinc-Plated Wand",
+   "kind": "zinc-plated wand",
+   "known": false,
+   "t": 1793849295.2,
+   "mission": "m67"
+  },
+  {
+   "name": "a Ring of Protection",
+   "kind": "protection",
+   "known": false,
+   "t": 1793849297.2,
+   "mission": "m67"
   }
  ],
- "trip_t0": 1793833333.4,
+ "trip_t0": 1793847770.2,
  "credits": {}
 }

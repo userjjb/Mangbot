@@ -120,14 +120,11 @@ class ReportMixin:
             out.append("Standing: " + "; ".join(st))
         rv = self.review_state()["items"]
         if rv:
-            # (m55: the Navigator missed that undecided items are sold after 2 town visits -- the Boots of Stability)
-            tv = self.review_state()["town_visits"]
-
+            # (m55: the Navigator missed that undecided items are sold after 2 town visits -- the Boots of Stability;
+            # 2.63.0, the user: decided in the same town visit)
             def left(v):
-                k = 2 - (tv - v["visit"])
-                return "SOLD at this town visit if undecided" if k <= 0 else \
-                    "sold at the next town visit if undecided" if k == 1 else \
-                    "sold at the second town visit from now if undecided"
+                return "SOLD at the end of this town visit if undecided" if type(self.goal).__name__ == "TownKit" \
+                    else "decided at the next town visit: sold there if undecided"
             out.append(f"Review ({len(rv)}, `review sell|keep|wear NAME`): " + "; ".join(
                 f"{n} ({v['why']}; {left(v)})" for n, v in rv.items()))
         return out
@@ -227,8 +224,12 @@ class ReportMixin:
         or report()'s (full); None outside the dungeon or with none."""
         w = self.w
         sts = self.structures_here() if w.in_dungeon else []
+        v = (getattr(self, "vaults", None) or {}).get(w.level_t) if w.in_dungeon else None
+        vtxt = (f"{v['kind']}" + (f" \"{v['name']}\"" if v.get("name") else "") +
+                f" {v['box'][0]}-{v['box'][2]},{v['box'][1]}-{v['box'][3]}"
+                + (f" ({len(v['traps'])} predicted traps)" if full and v.get("traps") else "")) if v else None
         if not sts:
-            return None
+            return f"Structures: {vtxt}" if vtxt else None
 
         def one(Y, X, st):
             door = self.room_door(Y, X)
@@ -236,7 +237,7 @@ class ReportMixin:
                     (f"{' - door at ' if full else ', door '}{door[0]},{door[1]}" if door else
                      (" - searched" if full else ", searched")
                      if all((w.level_t, r) in self.searched for _, r in structures.door_spots(Y, X)) else ""))
-        return "Structures: " + "; ".join(one(Y, X, st) for Y, X, st in sts)
+        return "Structures: " + "; ".join([one(Y, X, st) for Y, X, st in sts] + ([vtxt] if vtxt else []))
 
     def movement_line(self, window=60, step=8):
         """Where we've been in the last minute, a point every ~8 s (the
@@ -335,8 +336,11 @@ class ReportMixin:
                      f"{time.strftime('%H:%M:%S')} · goal: {self.goal.describe() if self.goal else 'none'}"
                      + (" · TIME FROZEN (test server: nothing moves until it's thawed)" if frozen() else "")
                      + self.escape_line())
+        ml = self.mission_line() if hasattr(self, "mission_line") else None
+        if ml:
+            lines.append(ml)             # (2.61.0: the mission clock, frozen time not counted)
         if self.plan:
-            lines.append("Plan: " + self.plan.describe())
+            lines.append("Plan: " + self.plan.describe(self))
         aa = [a for a in self.arch_answers if gnow() - a[0] < 600]
         if aa:
             lines.append("ARCHITECT ANSWER(S): " + " | ".join(f"#{i} {time.strftime('%H:%M:%S', _lt(t))} {m}"

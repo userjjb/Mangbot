@@ -718,10 +718,11 @@ class CombatMixin:
                 # destroy again on 3 empty squares ("There's nothing on the floor")
                 done = self.junk_msgs_done
                 if (w.level_t, w.pos) not in self.skipped_items and seen[-1][0] not in done:
-                    done.add(seen[-1][0])
-                    self.destroy_floor_junk(seen[-1][1][8:].rstrip("."), now)
+                    # (2.62.0: marked done only once sent -- standing still on the square)
+                    if self.destroy_floor_junk(seen[-1][1][8:].rstrip("."), now, seen[-1][0]):
+                        done.add(seen[-1][0])
+                        self.skipped_items.add((w.level_t, w.pos))
                 seen = []
-                self.skipped_items.add((w.level_t, w.pos))
             if seen and (w.level_t, w.pos) in self.skipped_items:
                 seen = []         # junk we left, or what the Navigator dropped here
             # (2.50.0, the live check of 11-04: inside the house every item is the stash's -- only the fetch target is

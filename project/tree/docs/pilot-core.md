@@ -343,9 +343,30 @@ lit: `orc pit` / `monster pit (c)` (4+ of one letter, dark), `nest` (3+ stationa
 
 Every 2 s `structures_tick` scans the remembered map; a new pit/nest/inner room gets three avoid zones (radius 6)
 over it and its ring and a `structure` notice (attention for a pit or nest, news for an inner room or a large
-room). A pit stays a pit after its monsters leave. The report lists this level's structures. (Vaults are not
-recognised here; the arrival feeling -- "special" at <= 850 ft means a pit, nest or vault -- is logged as
-`arrival_feeling` and used by the trip plan.)
+room). A pit stays a pit after its monsters leave. The report lists this level's structures. The arrival feeling --
+"special" at <= 850 ft means a pit, nest or vault -- is logged as `arrival_feeling` and used by the trip plan.
+
+**Vaults** (2.62.0, the user: "build the vault detector"; m67 walked into the lesser vault "zelazny" at 800 ft with no
+notice): `vault.py`. The server's templates are `lib/edit/vault.txt` (N:index:name, X:type:rating:rows:columns, D:
+rows): **67 lesser vaults (type 7), 75 greater (type 8)**, 7 of type 9 that `room_build` never builds. `build_vault`
+(generate.c:2332) lays a template **as written -- no rotation, no flip** -- centred on the room's centre. Its legend:
+`%` outer granite (corridors may break it), `#` inner granite, `X` permanent wall, `+` secret door, `^` trap, `*` an
+object at the depth (75%) or a trap (25%), `&` a monster 5 levels deeper, `@` 11 deeper, `9` a monster 9 deeper and a
+good object 7 deeper, `8` a monster 40 deeper and a great object 20 deeper, `,` a monster 3 deeper (50%) and/or an
+object 7 deeper (50%), `.` and anything else floor. On our map every wall shows `#`; the rest is open. `vault.match`
+scores each template at every placement whose box holds the evidence's centre (an FFT correlation, numpy; ~0.3 s for
+all 142): agreeing known squares, disagreeing ones (`%` counts half), confident when at most 4% disagree, enough are
+known (40, or a fifth of the template) and no other template scores within 1/1.25 of it. `Pilot.vault_tick` (every
+2 s, beside `structures_tick`) runs it in a worker thread, at most every 30 s and only when the map grew 5%, on a level
+that feels special or shows a walled cluster of 3+ items (`item_cluster`, `walled`); no match but special and a walled
+cluster: "likely vault". `vault_found` keeps the vault (`Pilot.vaults`: name, kind, box, traps, treasure, monsters,
+doors, good/great squares) and raises a **`vault`** alert: what and where, the items and monsters seen inside, the
+great ('8') and good ('9') object squares, the predicted traps, and advice. Its predicted trap squares (`^`, and `*`
+which is a trap one time in four) are kept off paths like known traps (`World.extra_traps`, mover `_plan`); a lesser
+vault whose defenders in view are weak (5+ levels below us, no danger rule) has its treasure squares fetched as loot
+(`loot_step`, its `loot_blocked` rules); a greater vault becomes an avoid zone (`vault_zones`), lifted by `avoid pass`,
+`avoid clear` or a `goal fetch` into it. An item on a `9` square is valued as made good 7 levels deeper, on an `8`
+square great 20 deeper (`iv_at`, used by `pickup_room`). The Structures line shows the vault.
 
 ## Per-character state: `runs/pilot/<nick>/`
 

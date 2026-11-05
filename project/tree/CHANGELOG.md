@@ -27,8 +27,55 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
-## 2.59.0 -- 2026-11-04 (session 12, the user's decisions after m66)
+## 2.63.0 -- 2026-11-04 (session 12, the user's decisions during m67)
+Also (Architect, after m67): `restart.sh`/`hotswap.sh` read `swapsafe` ignoring the USER MESSAGE / ALERTS / ARCHITECT ANSWER
+lines (since 2.58.1 the user-message line is printed first and last, so the first line was not "safe" and the restart
+waited forever with a message pending). Dive04 now wears the Amulet of Weaponmastery (the user: object.txt gives it
+STR, SUST_STR, SUST_CON, FREE_ACT, RES_FEAR, RES_DISEN -- gearcmp's +3.9% left out fear and disenchantment).
 No missions yet on it. **Play changes:**
+- **Review decided in the same town visit** (the user: "We shouldn't defer deciding to sell gear multiple dungeon
+  visits"): plan town (a trip's `then town` too) raises the held items at its start as one `review` alert (default
+  sell, why, a gearcmp hint); the Navigator answers during the visit; at its last step before the stash and the bank,
+  at least 60 s after the alert, anything undecided gets the default and is sold there. Nothing carries over (before:
+  sold after 2 visits). `review` in the dungeon still records a decision for the next visit.
+- **`debt waive N|all [REASON]`** (the Architect's): strikes item-debt entries, kept as waived (who, when, why), logged
+  `debt_waived`; `debt` numbers the entries.
+- **`price` for floor items:** an item in the item list or underfoot is valued at this depth (unfelt: the expectation;
+  a vault's good/great square: made good/great deeper), "on the floor at Y,X".
+
+## 2.62.0 -- 2026-11-04 (session 12, during m67: the vault detector and m67's small fixes)
+No missions yet on it. **Play changes:**
+- **The vault detector** (the user; m67 walked into the lesser vault "zelazny" at 800 ft with no notice): `vault.py`
+  matches the known map against the server's 142 built templates (vault.txt: 67 lesser, 75 greater; build_vault lays
+  them unrotated) with an FFT correlation, on a level that feels special or shows a walled item cluster, in a worker
+  thread. A `vault` alert says what and where, the items and monsters inside, the great/good object squares and the
+  predicted traps; the traps are kept off paths; a lesser vault with weak defenders is looted, a greater one becomes an
+  avoid zone (`avoid pass`/`clear`, or `goal fetch` into it, to go in); an item on a '9'/'8' square is valued as made
+  good 7 / great 20 levels deeper. No match but special and a walled cluster: "likely vault". m67's map matches
+  "zelazny"; 18 past levels with item clusters match nothing.
+- **m67's small fixes:** news names a flavour the table knows ("(= Ring of Stupidity, junk)"); a floor destroy is
+  confirmed by the floor and its message, and sent only standing on the square; a lantern or torch is junk beside a
+  worn permanent light; no food, oil or kit consumable is destroyed for a find under 100 gold; no `supplies` alert
+  before the stomach tracker has a level (after a restart); "light off" in town once per idle period.
+
+## 2.61.0 -- 2026-11-04 (session 12, the user's rule during m67)
+No missions yet on it. **Play changes:**
+- **The mission timer pauses while the game is frozen** (the user: fairness when they freeze time to talk with the
+  Navigator). The Pilot keeps a freeze ledger by the wall clock (`frozen.json`, across restarts and hot-swaps: a freeze
+  open at start-up stays open while still frozen). `mission start ... [budget=MIN]` (default 45) sets the mission
+  clock; the report shows "Mission LABEL: N of 45 min (M min frozen, not counted) -- ends ~HH:MM", the end moving with
+  every freeze. A trip's `minutes>N` and `dmin>N` count unfrozen minutes, `time>HH:MM` moves on by the time frozen
+  since the plan started, and the Plan line's "ends ~HH:MM" follows. The scorecard leaves frozen spans (from the
+  `time_frozen` notices) out of `minutes` and the dungeon/town minutes, so out of every per-minute rate (`frozen_min`,
+  table column `frz`). The unit cases no longer see the live freeze file.
+
+## 2.60.0 -- 2026-11-04 (session 12, during m67; hot-swapped at 21:48 under the user's freeze)
+Missions: m67 (from 21:48; Sonnet medium, 158.6 XP/dmin with 44 frozen minutes excluded; report runs/pilot/dive04/reports/2026-11-04-mission67.md). **Play change:** a `junk` order entry matches the **whole kind** -- "of KIND" followed only
+by an inscription, pluses or charges -- not its first word: "Sleep" (Potions of Sleep) had junked the Wand of Sleep
+Monster at 750 ft (m67 21:35, the user asked why it was left). Unit case `junk_matches_the_whole_kind` (205).
+
+## 2.59.0 -- 2026-11-04 (session 12, the user's decisions after m66)
+Missions: m67 (21:19-21:48, then 2.60.0). **Play changes:**
 - **No restart or hot-swap during a town or house visit** (m66: hotswap.sh hit plan town mid house visit, the bank's
   28k in the purse). `restart.sh` and `hotswap.sh` poll the new `pilotctl swapsafe` until no plan town, house bank,
   shop or tavern-stash goal runs and the character isn't in a store, on the house tile or in the house ("waiting for

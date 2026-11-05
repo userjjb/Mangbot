@@ -28,7 +28,13 @@
   "a Ring of Feather Falling {m65}": "sell",
   "an Amulet of Resist Acid {m65}": "sell",
   "a Ring of Protection [+11] {m66}": "sell",
-  "a Beaked Axe (2d6) (+5,+5) {good - m66}": "sell"
+  "a Beaked Axe (2d6) (+5,+5) {good - m66}": "sell",
+  "a Pick (1d3) (+4,+7) (+1) {good - Lagduf, the Snaga}": "sell",
+  "a Ring of Resist Cold {m67}": "sell",
+  "a Katana of Slay Giant (3d4) (+3,+1)": "sell",
+  "a Morning Star of Lightning (2d6) (+6,+3) {excellent - m67}": "sell",
+  "a Ring of Free Action": "keep",
+  "a Ring of Protection [+7] {m67}": "sell"
  },
- "town_visits": 76
+ "town_visits": 79
 }

@@ -121,8 +121,8 @@ under a goal (to check the conditions). Its own goals are marked `by_plan`; thei
 | `phase`, `wor` | Phase Door, Word of Recall scrolls (`wor` is ignored until the trip has gone down; `wor<N` for N ≥ 2 and `wor<=N` for N ≥ 1 are refused, since they hold with the one recall kept for coming home; `wor<1` and `wor<=0` are allowed but redundant: "no Word of Recall left" is built in -- A18, 2.39.0) |
 | `food` | rations (`kit_count`) |
 | `hp` | HP percent |
-| `minutes`, `dmin` | minutes since the plan was given / since it first reached the dungeon |
-| `time` | wall clock `HH:MM` (the next such moment after the plan started; across midnight) |
+| `minutes`, `dmin` | minutes since the plan was given / since it first reached the dungeon (2.61.0, the user: not counting the time the test server was frozen -- the wall clock less `Pilot.frozen_between`, the freeze ledger in `frozen.json`, so a restart or hot-swap keeps it; `unfrozen_min`) |
+| `time` | wall clock `HH:MM` (the next such moment after the plan started; across midnight); 2.61.0: shifted by the time frozen since the plan started (`frozen_since_start`), so a freeze moves it on |
 | `clvl`, `gold`, `free` (pack slots free of 23), `levels` (levels worked) | |
 | events | `band` (only while the band is live: `Pilot.band_live`), `drained`, `emergency`, `emergency_loop`, `danger`, `pack_full`, `unique_slain`, `unseen_attacker`: counted since the plan began from the Pilot's notifications (`TripPlan.on_event`) |
 
@@ -257,7 +257,10 @@ rules' role -- `value_refusal`, a forced sale's debt, the override check; a buy-
    `bank` alert; then a summary (sold for, bought for, identified, gold now and banked, `supply_text`, the supply gate for
    the planned depth: OK or MISSING, what couldn't be afforded, the step log); logs `town_kit`.
 
-On its first tick it counts a town visit for the item-review queue and notifies the supplies it came back with.
+On its first tick it counts a town visit for the item-review queue and notifies the supplies it came back with;
+(2.63.0) it raises the items held for review as one `review` alert (`review_raise`), and its buying stage ends
+(before the stash and the bank) with `_buying_review`: undecided items, after at least 60 s from the alert, get the
+policy's default and are sold there (pilot-items.md, the review queue) -- nothing is carried to a later visit.
 
 In code (E5), `TownKit.tick` runs `KIT_STEPS` in order: `_kit_where` (town only), `_kit_count` (the first tick),
 `_kit_sub` (a sub-goal running: tick it; its result into the log), `_kit_settle` (1 s, nothing busy), then a step per
