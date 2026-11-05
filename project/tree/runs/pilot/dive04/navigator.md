@@ -761,3 +761,4 @@
 - 00:22:46 town 100% | End: in town idle, XP +2579 in 40 min, no close calls | stop | budget
 - 08:53:30 town 100% | Plan m69 | one town visit (WoR:3, rations by need), one long trip 700-800 via recall, until cures<4 or phase<5 or time>09:30, then town | one long trip beats two; stocked
 - 09:15:09 750ft 100% | Architect: secret door likely at dead-end 30,88 | goal searchroom 30,88 (goto refused) | then plan resume
+- 09:32:14 town 100% | Trip1 ended: stuck level, no stairs (frontier unreachable), recalled; only 14 of 45 min used (26 frozen) | second trip 700-800 until time>09:55, buy WoR:3 + rations | budget ends ~10:03

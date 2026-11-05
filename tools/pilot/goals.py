@@ -534,6 +534,7 @@ class Dive(Goal):
         return None
 
     WIDE_CAP = 2            # 2-wide dead ends searched a level before a walk through unexplored squares
+    DETECT_CAP = 3          # (2.68.0) door detections a level before a walk through unexplored squares
     WIDE_MAX_DIST = 40
 
     def search_wide_end(self, p, tiles):
@@ -542,6 +543,17 @@ class Dive(Goal):
         1-wide one that points toward the stairs, within WIDE_MAX_DIST, WIDE_CAP a level: the one pointing toward the
         stairs first, then the nearest (its distance plus its distance to the stairs). True if a search started."""
         w = p.w
+        # (2.68.0: a door detector first -- from here when no detection on this level covered our surroundings: the
+        # arrival zap may have been far off. Then the dead ends it covered are known to hold no secret door)
+        if hasattr(p, "door_detect") and not p.detect_covered(w.pos, p.DETECT_DY // 2, p.DETECT_DX // 2) and \
+                sum(1 for lt, _ in p.detect_zaps if lt == w.level_t) < self.DETECT_CAP and \
+                any(d[0] == 0 for d in p.door_detectors()):
+            p.mover.stop()
+            if p.door_detect(f"no known path to the stairs at {tiles[0][0]},{tiles[0][1]}: detect secret doors here"):
+                p.notify("tactic", f"no known path to the stairs at {tiles[0][0]},{tiles[0][1]}: Door/Stair Location "
+                                   f"from {w.pos[0]},{w.pos[1]} (secret doors) before walking through unexplored "
+                                   "squares", news=True)
+            return True
         if sum(1 for lt, _ in self.wide_tried if lt == w.level_t) >= self.WIDE_CAP:
             return False
 
@@ -550,8 +562,9 @@ class Dive(Goal):
 
         cands = []
         for q, d, n in Search.wide_dead_ends(w, p.searched):
-            if (w.level_t, q) in self.wide_tried or w.dist(q) > self.WIDE_MAX_DIST:
-                continue
+            if (w.level_t, q) in self.wide_tried or w.dist(q) > self.WIDE_MAX_DIST or \
+                    (hasattr(p, "detect_covered") and p.detect_covered(q)):
+                continue                  # (2.68.0: a detection covered it -- no secret door there)
             tw = toward(q, d)
             if n == 1 and (not tw or w.dist(q) > 20):
                 continue                  # (a 1-wide dead end: a weaker hint -- only one pointing at the stairs)
@@ -564,9 +577,11 @@ class Dive(Goal):
         p.mover.stop()
         self.wide = Search(tries=Search.WIDE_TRIES, spots=[q], wide=[q])
         self.wide.name = "search a dead end"
+        how = "detecting (a door detector, from there)" if hasattr(p, "door_detectors") and p.door_detectors() \
+            else "searching"
         p.notify("tactic", (f"a 2-wide corridor dead-ends at {q[0]},{q[1]}" if n == 2 else
                             f"a corridor dead-ends at {q[0]},{q[1]} toward the stairs") +
-                 f": searching for a secret door before walking through unexplored squares to the stairs at "
+                 f": {how} for a secret door before walking through unexplored squares to the stairs at "
                  f"{tiles[0][0]},{tiles[0][1]}", news=True)
         return True
 
@@ -747,6 +762,23 @@ class Search(Goal):
             spots = wide + sorted((q for q in self.dead_ends(w, self.strict, p.searched) if q not in wide),
                                   key=w.dist)
             self.wide = set(wide)
+        # (2.68.0: a 2-wide dead end a door detection covered has no secret door -- it would show now -- and one not
+        # covered gets a detection before any searching: certain, where a warrior's search is a dice roll)
+        if self.wide and hasattr(p, "detect_covered"):
+            gone = [q for q in spots if q in self.wide and p.detect_covered(q)]
+            for q in gone:
+                p.searched.add((w.level_t, q))
+                self.spots_log.append((q, "detected"))
+            spots = [q for q in spots if q not in gone]
+            if spots and spots[0] in self.wide:
+                q = spots[0]
+                dets = p.door_detectors()
+                if dets and abs(q[0] - w.pos[0]) <= p.DETECT_DY and abs(q[1] - w.pos[1]) <= p.DETECT_DX:
+                    if dets[0][0] == 0:
+                        p.door_detect(f"a dead end at {q[0]},{q[1]}: detect secret doors")
+                        return None
+                    if dets[0][0] <= p.DETECT_WAIT_S:
+                        return None           # (a rod nearly recharged: wait for it rather than search)
         if not spots:
             return ("failed", ("searched every spot, nothing found" if self.fixed is not None else
                                "searched every dead end, nothing found") + self.summary())
@@ -767,7 +799,7 @@ class Search(Goal):
         log = list(self.spots_log)
         if self.spot and (self.spot, 0) not in log:
             log.append((self.spot, self.tries - self.searching if self.searching else 0))
-        done = [f"{q[0]},{q[1]} x{n}" for q, n in log if n]
+        done = [f"{q[0]},{q[1]} " + (n if isinstance(n, str) else f"x{n}") for q, n in log if n]
         here = [f"{q[0]},{q[1]} (on the way)" for q, n in log if not n and q == self.spot]
         log = [(q, n) for q, n in log if not (not n and q == self.spot)]
         unreached = [f"{q[0]},{q[1]}" for q, n in log if not n]

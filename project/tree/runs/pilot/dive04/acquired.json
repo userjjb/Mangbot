@@ -1735,8 +1735,43 @@
    "known": false,
    "t": 1793887111.7,
    "mission": "m69"
+  },
+  {
+   "name": "a Wand of Stinking Cloud",
+   "kind": "wand of stinking cloud",
+   "known": false,
+   "t": 1793889000.1,
+   "mission": "m69"
+  },
+  {
+   "name": "a Long Bow (x3)",
+   "kind": "long bow",
+   "known": false,
+   "t": 1793889326.7,
+   "mission": "m69"
+  },
+  {
+   "name": "a Hard Leather Cap [2]",
+   "kind": "hard leather cap",
+   "known": false,
+   "t": 1793889328.3,
+   "mission": "m69"
+  },
+  {
+   "name": "a Set of Leather Gloves [1]",
+   "kind": "set of leather gloves",
+   "known": false,
+   "t": 1793889365.5,
+   "mission": "m69"
+  },
+  {
+   "name": "a Mace (2d4)",
+   "kind": "mace",
+   "known": false,
+   "t": 1793889385.2,
+   "mission": "m69"
   }
  ],
- "trip_t0": 1793886933.7,
+ "trip_t0": 1793889290.3,
  "credits": {}
 }

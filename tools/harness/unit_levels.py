@@ -750,3 +750,60 @@ def wide_corridor_dead_end_searched():
         again.count(True) <= 1 and s.spot == (30, 88) and s.spot_tries == G.Search.WIDE_TRIES
     return ok, f"2-wide ends {wide}; 1-wide {[(q, d) for q, d, n in ends if n == 1][:4]}; dive search {started} " \
                f"{first} (more: {again}); news {news[:1]}; plain Search spot {s.spot} x{s.spot_tries}"
+
+
+@case
+def door_detector_before_searching():
+    """2.68.0 (m69 09:26-09:28: 20 searches at each of the 2-wide dead ends at 30,88 and 30,102 found nothing, and the
+    doors were there -- a warrior's search is a dice roll; Door/Stair Location's detect_sdoor is certain within 23 rows
+    and 52 columns). With no known path to the '>' at 27,109 the dive uses a Rod of Door/Stair Location from where it
+    stands (the arrival zap was far off), remembers where; a dead end that detection covered isn't searched (no door
+    there) and the walk goes on; a dead end not covered gets a detection before any search, and a rod recharging
+    within 30 s is waited for; no detector: the 20 searches as before. A rod stack with one charging is still ready."""
+    import goals as G
+    rows = M69_ROWS
+
+    def make(pack, zaps=()):
+        p = pilot(hp=369, pack=pack)
+        w = p.w
+        w.memory = {}
+        for k, row in enumerate(rows):
+            for j, ch in enumerate(row):
+                if ch != " ":
+                    w.memory[(17 + k, 60 + j)] = "." if ch == "@" else ch
+        w.memory[(27, 109)] = ">"
+        w.pos = (31, 89)
+        w.depth, w.in_dungeon = 15, True
+        p.searched = set()
+        p.detect_zaps = [(w.level_t, z) for z in zaps]
+        p.busy_until = 0.0
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append((line, why))
+        p.mover = type("M", (), {"active": False, "unknown": True, "path": [],
+                                 "go": lambda self, g, unknown=False: True,
+                                 "tick": lambda self: "moving", "stop": lambda self: None})()
+        p.frontier = lambda: []
+        return p
+    rods = [("2 Rods of Door/Stair Location (1 charging)", 66)]
+    a = make(rods, zaps=[(10, 170)])
+    d = G.Dive(800)
+    first = d.search_wide_end(a, [(27, 109)])
+    zapped = [c for c, _ in a.cmds]
+    second = d.search_wide_end(a, [(27, 109)])        # (no door showed: the dead end was covered)
+    # a dead end not covered (the zap was far off and we stood in range already): detect, don't search
+    b = make(rods, zaps=[(31, 30)])
+    s = G.Search(tries=20, spots=[(30, 88)], wide=[(30, 88)])
+    s.known, s.doors = 0, G.Search.door_count(b.w)
+    s.tick(b)
+    b_cmds = [c for c, _ in b.cmds]
+    # recharging, ready in ~10 s: wait
+    c = make([("2 Rods of Door/Stair Location (2 charging)", 66)], zaps=[(31, 30)])
+    c.zap_t = {"Door/Stair Location": P.gnow() - 34}
+    s2 = G.Search(tries=20, spots=[(30, 88)], wide=[(30, 88)])
+    s2.known, s2.doors = 0, G.Search.door_count(c.w)
+    r2 = s2.tick(c)
+    ok = first is True and zapped and zapped[0].startswith("custom z item=0") and second is False and \
+        (a.w.level_t, (31, 89)) in a.detect_zaps and b_cmds and b_cmds[0].startswith("custom z") and \
+        r2 is None and not c.cmds and s2.searching == 0 and s2.spot is None
+    return ok, (f"no path: zap here {first} {zapped}, then the covered dead end skipped ({second}); uncovered: "
+                f"{b_cmds}; recharging (10 s): waited {r2 is None and not c.cmds}")

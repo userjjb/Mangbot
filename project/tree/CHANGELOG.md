@@ -27,6 +27,18 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.68.0 -- 2026-11-05 (session 12, during m69: a door detector before searching)
+No missions yet on it. **Play changes:**
+- **Door detection before searching** (m69 09:26-09:28: 2.67.0 searched the 2-wide dead ends at 30,88 and 30,102, 20
+  times each, and found nothing -- the doors were there; a warrior's search is a dice roll, detect_sdoor is certain
+  within 23 rows and 52 columns). With no known path to the stairs the dive first uses a door detector from where it
+  stands, when no detection on this level covered its surroundings (the arrival zap may have been far off; at most 3
+  a level): a Rod of Door/Stair Location or Detection (a stack with one rod not charging is ready), a Staff of
+  Door/Stair Location, a Scroll of Door/Stair Location. Where each was used is remembered: a dead end a detection
+  covered isn't searched (a secret door there would show), and the walk goes on, through a shown door if one appeared.
+  At a dead end not covered, a detection comes first, a rod recharging within 30 s is waited for, and the 20 searches
+  only with no detector.
+
 ## 2.67.0 -- 2026-11-05 (session 12, during m69: 2-wide dead ends are searched)
 No missions yet on it. **Play changes:**
 - **A 2-wide corridor that dead-ends is a giveaway for a secret door** (the user, m69 09:14 at 750 ft: the corridor at

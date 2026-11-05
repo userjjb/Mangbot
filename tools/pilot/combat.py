@@ -23,6 +23,7 @@ import types
 from common import TV_SCROLL, TV_POTION, TV_FOOD, TV_LITE, plural, one_of
 from world import gnow, waited
 from mover import direction, passable
+from shadow import TURN_S as _TURN_S
 from goals import (Wait, Goto, Explore, Dive, Search, Hunt, Recover, BandLeave, WalkAway, Flee, Recall,
                    Resurrect, RestGoal)
 from town_goals import TownFarm, Shop
@@ -2542,20 +2543,68 @@ class CombatMixin:
             self.notify("breeders", f"{len(br)} breeding monsters in view ({br[0].name}): leave this level "
                                     "(stairs, or recall)" + (" if they get in the way" if weak else ""), news=weak)
 
+    # (2.68.0) door detectors: detect_sdoor (spells2.c) shows secret doors and stairs within DETECT_DIST_Y/X of us --
+    # certain, where a warrior's search is a dice roll (m69 09:26: 20 searches at each of two 2-wide dead ends, nothing)
+    DETECT_DY, DETECT_DX = 23, 52            # spells2.c DETECT_DIST_Y / DETECT_DIST_X
+    ROD_TURNS = {"Door/Stair Location": 70, "Detection": 99}   # a rod's recharge in player turns (object.txt I: pval)
+    DETECT_WAIT_S = 30                       # a charging rod this close to ready is waited for rather than searching
+
+    def door_detectors(self, scrolls=True):
+        """[(ready_in_s, item, command letter, kind)], ready first: Rods of Door/Stair Location or Detection (a stack
+        with one not charging is ready; else the time left from our last zap, the rod's full recharge if unknown),
+        Staffs of Door/Stair Location with charges, Scrolls of Door/Stair Location (not blind or confused). An unknown
+        flavour the flavour table knows counts."""
+        w = self.w
+        out = []
+        unread = w.flag("blind") or w.flag("confused")
+        for it in w.items():
+            name = it["name"]
+            kind = name if " of " in name else (self.flavour_of(it) or {}).get("kind", "")
+            if it["tval"] == 66 and any(k in kind for k in self.ROD_TURNS):
+                k = next(k for k in self.ROD_TURNS if k in kind)
+                m = re.search(r"\((\d+) charging\)", name)
+                busy = int(m.group(1)) if m else (it["number"] if "charging" in name else 0)
+                if busy < it["number"]:
+                    out.append((0.0, it, "z", k))
+                else:
+                    full = self.ROD_TURNS[k] * _TURN_S
+                    t = self.zap_t.get(k)
+                    out.append((max(0.5, t + full - gnow()) if t else full, it, "z", k))
+            elif it["tval"] == 55 and "Door/Stair Location" in kind and "(0 charges)" not in name and not unread:
+                out.append((0.0, it, "u", "Door/Stair Location"))
+            elif scrolls and it["tval"] == TV_SCROLL and "Door/Stair Location" in kind and not unread:
+                out.append((0.0, it, "r", "Door/Stair Location"))
+        return sorted(out, key=lambda d: (d[0], {"z": 0, "u": 1, "r": 2}[d[2]]))
+
+    def door_detect(self, why, scrolls=True):
+        """Use the first ready door detector (door_detectors) and remember where (detect_zaps). True if it acted."""
+        w = self.w
+        if gnow() < self.busy_until:
+            return False
+        ready = [d for d in self.door_detectors(scrolls) if d[0] == 0]
+        if not ready:
+            return False
+        _, it, c, kind = ready[0]
+        self.cmd(f"custom {c} item={it['item']}", f"{why}: {one_of(it['name'])}", hold=0.8)
+        self.zap_t[kind] = gnow()
+        self.detect_zaps.append((w.level_t, w.pos))
+        return True
+
+    def detect_covered(self, q, dy=None, dx=None):
+        """A door detection on this level covered square q (within DETECT_DY/DX of where it was used)."""
+        w = self.w
+        dy, dx = dy or self.DETECT_DY, dx or self.DETECT_DX
+        return any(lt == w.level_t and pos and abs(q[0] - pos[0]) <= dy and abs(q[1] - pos[1]) <= dx
+                   for lt, pos in self.detect_zaps)
+
     def use_stair_location(self, why):
-        """Use a Staff or zap a Rod of Door/Stair Location (an unknown flavour too, when the
-        flavour table knows it). True if it acted."""
+        """Use a Staff or zap a Rod of Door/Stair Location (an unknown flavour too, when the flavour table knows it);
+        2.68.0: a Rod of Detection too, a rod stack with one not charging, and the place remembered. True if it
+        acted."""
         w = self.w
         if gnow() < self.busy_until or w.flag("blind") or w.flag("confused"):
             return False
-        for it in w.items():
-            kind = it["name"] if " of " in it["name"] else (self.flavour_of(it) or {}).get("kind", "")
-            if it["tval"] in (55, 66) and "Door/Stair Location" in kind and "(0 charges)" not in it["name"] \
-                    and "charging" not in it["name"]:
-                self.cmd(f"custom {'u' if it['tval'] == 55 else 'z'} item={it['item']}",
-                         f"{why}: Door/Stair Location", hold=0.8)
-                return True
-        return False
+        return self.door_detect(why, scrolls=False)
 
     def watch_character(self):
         """Tell the agent when a stat gets drained or the blows change (the

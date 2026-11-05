@@ -280,7 +280,8 @@ able to read: Word of Recall, then Phase Door every 2.5 s while it charges, when
 | `quiet_spot(reach=30)` | A walked room square, 4+ from unexplored squares and 3+ from doors (used by `QuietWait`). |
 | `take_stairs(which)` | Stop the mover; send `<`/`>`; remember it (`last_stairs_cmd`: retried after 1.2 s, since the server ignores a stairs press right after arrival). |
 | `teleport_item()` | Scroll of Teleportation, or a charged Staff when we can't read. |
-| `use_stair_location(why)` | Staff/rod of Door/Stair Location (by flavour too). |
+| `use_stair_location(why)` | Staff/rod of Door/Stair Location (by flavour too); 2.68.0: a Rod of Detection too, a rod stack with one not charging, and where it was used is remembered (`detect_zaps`). |
+| `door_detectors()`, `door_detect(why)`, `detect_covered(q)` | (2.68.0) door detectors ready first -- rods of Door/Stair Location or Detection (a charging stack: the time left from our last zap, `zap_t`, `ROD_TURNS` x 0.625 s), staffs, Scrolls of Door/Stair Location (not blind/confused); use the first ready one and remember where; whether a detection on this level covered a square (detect_sdoor: `DETECT_DY`/`DETECT_DX` = 23/52 around where it was used). |
 
 ## 4. The Navigator's reactions (`react`)
 

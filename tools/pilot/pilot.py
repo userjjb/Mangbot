@@ -277,6 +277,8 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.unreachable = set()       # frontier tiles we failed to reach (this level)
         self.visited = set()           # squares we've stood on while exploring (not frontier)
         self.searched = set()          # (level, square) dead ends searched for secret doors
+        self.detect_zaps = []          # (2.68.0) (level_t, square): where a door detector was used
+        self.zap_t = {}                # (2.68.0) rod kind -> gnow() of our last zap (its recharge)
         self.level_seen = None
         self.phase_t = self.cure_t = self.noescape_t = 0.0
         self._escape_walk = None       # escaping_to_stairs: (mover walk_id, level_t) of escape()'s walk to stairs
