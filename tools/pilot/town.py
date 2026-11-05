@@ -517,6 +517,39 @@ class TownMixin:
         return any("Lantern" in i["name"] and self.light_left(i) > 0
                    for i in self.w.items(equip=True) + self.w.items(tval=TV_LITE))
 
+    # (2.71.0, the user in m70: a found Scroll of Enchant Weapon To-Dam, "just read it now") a found enchant scroll is
+    # read on its best target at any chance above 0; ENCHANT_MIN_CHANCE (50%) stays the rule for BUYING them. A
+    # permanent +1 is worth PLUS_PLAY_VALUE gold to the pack (a to-dam ~1.5 damage a turn, ~4-5% of Dive04's melee --
+    # the Advisor, 11-03 -- ~3.5 XP a dungeon minute, ~9 gold a minute at 0.4 XP a gold, over ~300 minutes of a
+    # weapon's life: ~2,700; to-hit and to-AC less, the same order): a scroll's room value is chance x that
+    PLUS_PLAY_VALUE = 3000
+
+    def enchant_target(self, it):
+        """(target item, chance) a carried Scroll of Enchant Armor / Weapon To-Dam / To-Hit (or *Enchant Armor* /
+        *Enchant Weapon*) would be read on: the worn armour piece (plusses shown) or the wielded weapon with the best
+        chance above 0 (the ENCHANT_TABLE; half on an artifact) -- or None."""
+        name = it["name"]
+        if it.get("tval") != TV_SCROLL or "Enchant" not in name:
+            return None
+
+        def ch(x, art):
+            return (1.0 if x < 0 else 0.0 if x > 15 else 1 - self.ENCHANT_TABLE[x] / 1000) * (0.5 if art else 1.0)
+        best = None
+        if "Enchant Armor" in name:
+            for a in self.w.items(equip=True):
+                c = self.enchant_chance(a)
+                if c and (best is None or c > best[1]):
+                    best = (a, c)
+            return best
+        wpn = self.wielded_weapon()
+        pl = self.weapon_plusses(wpn)
+        if not pl:
+            return None
+        art = self.is_artifact(wpn["name"])
+        which = ("todam",) if "To-Dam" in name else ("tohit",) if "To-Hit" in name else ("todam", "tohit")
+        c = max(ch(pl[k], art) for k in which)
+        return (wpn, c) if c > 0 else None
+
     def scroll_use(self, it):
         """What the town kit would read this Scroll of Enchant Armor / Enchant Weapon To-Dam / To-Hit or Recharging on
         (the item's name), or None: a worn piece or the wielded weapon whose next point is >= ENCHANT_MIN_CHANCE
@@ -529,8 +562,15 @@ class TownMixin:
             return r[0]["name"] if r else None
         if "Enchant Armor" in name:
             plan = self.enchant_plan()
-            return plan[0][0]["name"] if plan else None
-        return next((wit["name"] for wit, kind, _ in self.weapon_enchant_plan() if kind in name), None)
+            if plan:
+                return plan[0][0]["name"]
+        else:
+            got = next((wit["name"] for wit, kind, _ in self.weapon_enchant_plan() if kind in name), None)
+            if got:
+                return got
+        # (2.71.0: found, the planned steps done -- the best target at any chance)
+        t = self.enchant_target(it)
+        return t[0]["name"] if t else None
 
     def town_rule(self, it):
         """The 2.48.0 rules for a pack item in town: ("keep", why) -- the kit would use it; ("sell", why) -- the older

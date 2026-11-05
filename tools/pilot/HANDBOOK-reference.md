@@ -233,7 +233,8 @@ The report is **compact** (since 2026-10-22: the old one ran to ~5 KB). Line by 
 
 `wearall` (put on everything that fills an empty slot), `wear L`, `takeoff L`, `quaff L`, `read L [TARGET]`
 (TARGET = the item a scroll works on, e.g. `read Identify Rapier` or `read Enchant_Weapon_To-Dam Rapier`;
-without it the game picks the first item in the pack), `eat L`, `fuel L` (refill a lantern
+without it the game picks the first item in the pack; 2.71.0: in the dungeon too, at a quiet moment; `read floor
+TARGET` for the scroll underfoot, `use floor` for a staff), `eat L`, `fuel L` (refill a lantern
 from a flask; rarely needed: the pilot refills the lantern by itself when it runs low; in town, where the pilot keeps
 the lantern off, `fuel` puts it on first), `inspect L`, `destroy L [N|all]`, `drop L [N|all]`, `inscribe L TEXT`,
 `use L [TARGET]` (a staff; TARGET = the item a Staff of Perception identifies, like `read`), `aim L [DIR]` (a wand; DIR 1-9, 5 = at the nearest target), `zap L` (a rod),

@@ -763,3 +763,8 @@
 - 09:15:09 750ft 100% | Architect: secret door likely at dead-end 30,88 | goal searchroom 30,88 (goto refused) | then plan resume
 - 09:32:14 town 100% | Trip1 ended: stuck level, no stairs (frontier unreachable), recalled; only 14 of 45 min used (26 frozen) | second trip 700-800 until time>09:55, buy WoR:3 + rations | budget ends ~10:03
 - 09:59:46 town 100% | Mission end: in town, idle, 41 of 45 min | XP +1602 (clvl30), gold +1564 | trip1 stuck on no-stairs level (frozen time), trip2 good (249 XP/min on a half-orc vault level)
+- 11:57:23 town 100% | mission start, town, 300g+49k banked | plan town (buy WoR:3, Speed:2, Healing/CCW per kit), then ONE trip 700-800 until cures<4 or phase<5 or minutes>31, then town | one long trip beats two; end by 12:42
+- 11:57:27 -50ft 100% | town done fast, kit full | plan trip 700-800 until cures<4 or phase<5 or minutes>33 then town | one long trip
+- 12:18:20 750ft 100% | user: use enchant scroll on weapon | answered; plan town reads enchants anyway; scroll on floor, Pilot may loot | item reads are town-only
+- 12:19:50 750ft 100% | scroll lost to pack-full policy | continue trip | complaint filed
+- 12:33:51 town 100% | town visit, long sword worse than axe | review sell | no ability

@@ -501,6 +501,9 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
 - **m69** (Sonnet medium, 2.65.0 -> 2.68.0 hot-swapped under the user's freezes): 52.4 XP/dmin (a secret-door level).
   **2.66.0** monsters in view are fought unless there's a reason not to (the user); **2.67.0** 2-wide dead ends =
   secret doors (the user); **2.68.0** the Rod of Door/Stair Location (detect_sdoor) before searching.
+- **2.69.0** unfelt gear waits for its feeling; **2.70.x** the house by value, stacking, Restores only for
+  unsustained STR/DEX/CON. **m70** (Sonnet medium, 2.70.2): 77.3 XP/dmin, 11 levels; the gear-damage rule fired live.
+  **2.71.0** targeted reads in the dungeon, found enchant scrolls read at any chance.
 - **Lessons:** never hot-swap (or restart) during a town or house visit (2.59.0 enforces it); a monitor started with
   `&` and output to /dev/null eats the saved offsets -- always run_in_background; watch for asks while frozen -- `hotswap.sh` should wait for one to end;
   `restart.sh` loads the working tree; hand-walking into the house picks up the bank pile (the step-in

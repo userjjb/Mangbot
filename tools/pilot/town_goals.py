@@ -9,7 +9,7 @@ import time
 import types
 
 from common import HERE, TV_SCROLL, TV_LITE, TV_FOOD, flavour_key, kind_key, bare_name, singular, rec_name, \
-    world_xy
+    world_xy, one_of
 from world import gnow, waited, light_turns
 from mover import direction, MAX_HGT, MAX_WID
 from goals import Goal, Wait
@@ -1820,6 +1820,18 @@ class TownKit(Goal):
             if sc:
                 p.cmd(f"custom r item={sc['item']} dir={it['item']}",
                       f"town kit: enchant {it['name']} {kind.split()[-1].lower()} ({c:.0%})", hold=1.0)
+                self.enchanted = self.enchanted + 1
+                self.t = now + 1.0
+                return None
+        # (2.71.0: a carried enchant scroll the plans above don't use -- found, its target under 50% -- read anyway on
+        # the best target with any chance: a scroll in hand costs nothing more)
+        for sc in [i for i in w.items(tval=TV_SCROLL) if "Enchant" in i["name"]]:
+            if any(kind in sc["name"] for _, kind, _ in wplan) or ("Enchant Armor" in sc["name"] and plan):
+                continue
+            t = p.enchant_target(sc)
+            if t:
+                p.cmd(f"custom r item={sc['item']} dir={t[0]['item']}",
+                      f"town kit: read a found {one_of(sc['name'])} on {t[0]['name']} ({t[1]:.0%})", hold=1.0)
                 self.enchanted = self.enchanted + 1
                 self.t = now + 1.0
                 return None

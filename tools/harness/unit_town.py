@@ -540,8 +540,9 @@ def enchant_and_recharge_scrolls_kept_to_read():
     """2.48.0 (the user): before selling a Scroll of Enchant or Recharging, check whether the kit would read it. A
     Dagger (+5,+5) wielded: the 2 To-Dam scrolls are kept (the town kit reads them before buying: 5 wanted - 2 carried =
     3 bought), the Enchant Armor nothing would use is sold; a Scroll of Recharging with an empty Staff of Perception is
-    kept, without one sold. At (+9,+9) the To-Dam scrolls are sold. Kept ones are priceless for room in town, worth
-    their price in the dungeon."""
+    kept, without one sold. 2.71.0: at (+9,+9) the To-Dam scrolls are kept too (a found scroll is read at any chance
+    above 0; 50% stays the buying rule). Kept ones are priceless for room in town; in the dungeon an enchant scroll is
+    worth its expected gain, chance x PLUS_PLAY_VALUE (70% x 3000 each at +5)."""
     def make(weapon="a Dagger (1d4) (+5,+5)", staff=True):
         p = _town(pilot(worn=[(weapon, 23, 12)], gold=5000,
                         pack=[("2 Scrolls of Enchant Weapon To-Dam", 70), ("a Scroll of Enchant Armor", 70),
@@ -560,7 +561,7 @@ def enchant_and_recharge_scrolls_kept_to_read():
     p.w.in_dungeon = True
     dv = p.pack_value(p.w.items()[0])
     ok = got == [0, 1, 0] and buys[:1] == [("Enchant Weapon To-Dam", 3, 190)] and room == float("inf") and \
-        high == [2, 1, 1] and dv == 380
+        high == [0, 1, 1] and abs(dv - 2 * 0.7 * 3000) < 1e-6
     return ok, f"sold (To-Dam, Armor, Recharging) {got}; buys {buys}; town room value {room}; (+9,+9), no staff: " \
                f"{high}; dungeon value {dv}"
 

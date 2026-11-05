@@ -354,6 +354,11 @@
   "kind": "Ring of Slow Digestion",
   "source": "identified or used"
  },
+ "Pewter Wand": {
+  "junk": false,
+  "kind": "Wand of Drain Life",
+  "source": "identified"
+ },
  "Pink Potion": {
   "junk": false,
   "kind": "Potion of Restore Mana",

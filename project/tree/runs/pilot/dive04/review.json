@@ -41,7 +41,8 @@
   "a Lance of Slay Evil (2d8) (+5,+5) {excellent - m68}": "sell",
   "a Flail (2d6) (+5,+6) {good - m68}": "sell",
   "a Ring of Resist Cold {m69}": "sell",
-  "a Long Bow (x3) (+5,+4)": "sell"
+  "a Long Bow (x3) (+5,+4)": "sell",
+  "a Long Sword (2d5) (+3,+5) {good - m70}": "sell"
  },
- "town_visits": 88
+ "town_visits": 90
 }

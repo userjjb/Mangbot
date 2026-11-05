@@ -1826,9 +1826,226 @@
    "known": false,
    "t": 1793890473.7,
    "mission": "m69"
+  },
+  {
+   "name": "a Scroll of Trap Detection",
+   "kind": "scroll of trap detection",
+   "known": true,
+   "t": 1793897942.8,
+   "mission": "m70"
+  },
+  {
+   "name": "a Lance (2d8)",
+   "kind": "lance",
+   "known": false,
+   "t": 1793897971.8,
+   "mission": "m70"
+  },
+  {
+   "name": "2 Scrolls of Trap Detection",
+   "kind": "scroll of trap detection",
+   "known": true,
+   "t": 1793898255.8,
+   "mission": "m70"
+  },
+  {
+   "name": "a Staff of Light",
+   "kind": "staff of light",
+   "known": false,
+   "t": 1793898256.7,
+   "mission": "m70"
+  },
+  {
+   "name": "a Small Metal Shield [3]",
+   "kind": "small metal shield",
+   "known": false,
+   "t": 1793898260.3,
+   "mission": "m70"
+  },
+  {
+   "name": "a Staff of Trap Location",
+   "kind": "staff of trap location",
+   "known": false,
+   "t": 1793898283.1,
+   "mission": "m70"
+  },
+  {
+   "name": "a Long Bow (x3)",
+   "kind": "long bow",
+   "known": false,
+   "t": 1793898287.2,
+   "mission": "m70"
+  },
+  {
+   "name": "a Ring of Resist Fire",
+   "kind": "resist fire",
+   "known": true,
+   "t": 1793898337.1,
+   "mission": "m70"
+  },
+  {
+   "name": "a Long Sword (2d5)",
+   "kind": "long sword",
+   "known": false,
+   "t": 1793898339.1,
+   "mission": "m70"
+  },
+  {
+   "name": "a Tulwar (2d4)",
+   "kind": "tulwar",
+   "known": false,
+   "t": 1793898343.2,
+   "mission": "m70"
+  },
+  {
+   "name": "a Wand of Sleep Monster",
+   "kind": "wand of sleep monster",
+   "known": false,
+   "t": 1793898379.0,
+   "mission": "m70"
+  },
+  {
+   "name": "8 Potions of Cure Critical Wounds {for sale 200}",
+   "kind": "potion of cure critical wound",
+   "known": true,
+   "t": 1793898514.4,
+   "mission": "m70"
+  },
+  {
+   "name": "a Light Blue Mushroom",
+   "kind": "light blue mushroom",
+   "known": false,
+   "t": 1793898649.7,
+   "mission": "m70"
+  },
+  {
+   "name": "a Small Metal Shield [3]",
+   "kind": "small metal shield",
+   "known": false,
+   "t": 1793898651.3,
+   "mission": "m70"
+  },
+  {
+   "name": "an Awl-Pike (1d8)",
+   "kind": "awl-pike",
+   "known": false,
+   "t": 1793898654.3,
+   "mission": "m70"
+  },
+  {
+   "name": "a Scroll titled \"gar annag\"",
+   "kind": "scroll titled \"gar annag\"",
+   "known": false,
+   "t": 1793898685.3,
+   "mission": "m70"
+  },
+  {
+   "name": "a Pewter Wand",
+   "kind": "pewter wand",
+   "known": false,
+   "t": 1793898702.0,
+   "mission": "m70"
+  },
+  {
+   "name": "a Rod of Trap Location",
+   "kind": "rod of trap location",
+   "known": true,
+   "t": 1793898982.6,
+   "mission": "m70"
+  },
+  {
+   "name": "a Scroll of Holy Chant",
+   "kind": "scroll of holy chant",
+   "known": true,
+   "t": 1793898984.9,
+   "mission": "m70"
+  },
+  {
+   "name": "a Scroll of Enchant Weapon To-Dam",
+   "kind": "scroll of enchant weapon to-dam",
+   "known": true,
+   "t": 1793899131.2,
+   "mission": "m70"
+  },
+  {
+   "name": "a Potion of Cure Serious Wounds",
+   "kind": "potion of cure seriou wound",
+   "known": true,
+   "t": 1793899151.9,
+   "mission": "m70"
+  },
+  {
+   "name": "a Lance (2d8)",
+   "kind": "lance",
+   "known": false,
+   "t": 1793899155.5,
+   "mission": "m70"
+  },
+  {
+   "name": "a Ring of Feather Falling",
+   "kind": "feather falling",
+   "known": true,
+   "t": 1793899202.7,
+   "mission": "m70"
+  },
+  {
+   "name": "a Long Bow (x3)",
+   "kind": "long bow",
+   "known": false,
+   "t": 1793899208.5,
+   "mission": "m70"
+  },
+  {
+   "name": "a Main Gauche (1d5)",
+   "kind": "main gauche",
+   "known": false,
+   "t": 1793899210.4,
+   "mission": "m70"
+  },
+  {
+   "name": "2 Rings of Resist Fire {m70}",
+   "kind": "ring of resist fire",
+   "known": true,
+   "t": 1793899213.4,
+   "mission": "m70"
+  },
+  {
+   "name": "a Hard Leather Cap [2]",
+   "kind": "hard leather cap",
+   "known": false,
+   "t": 1793899489.8,
+   "mission": "m70"
+  },
+  {
+   "name": "a Morning Star (2d6)",
+   "kind": "morning star",
+   "known": false,
+   "t": 1793899605.4,
+   "mission": "m70"
+  },
+  {
+   "name": "a Dagger (1d4)",
+   "kind": "dagger",
+   "known": false,
+   "t": 1793899711.8,
+   "mission": "m70"
+  },
+  {
+   "name": "a Brown Mushroom",
+   "kind": "brown mushroom",
+   "known": false,
+   "t": 1793899734.0,
+   "mission": "m70"
+  },
+  {
+   "name": "a Staff of Perception",
+   "kind": "staff of perception",
+   "known": false,
+   "t": 1793899887.3,
+   "mission": "m70"
   }
  ],
- "trip_t0": 1793889290.3,
+ "trip_t0": 1793897922.3,
  "credits": {
   "wands of stone to mud": {
    "value": 277,

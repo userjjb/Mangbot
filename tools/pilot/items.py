@@ -338,7 +338,14 @@ class ItemsMixin:
             if not self.w.in_dungeon:
                 return float("inf")
             kind = next((k for k in self.ENCHANT_KINDS + ("Recharging",) if k in n), "Recharging")
-            return max(self.iv(n).value * self.pay_cut(it["tval"]), self.price_of(kind, 5) or 190) * it["number"]
+            sale = self.iv(n).value * self.pay_cut(it["tval"])
+            # (2.71.0: an enchant scroll at its expected gain -- chance x PLUS_PLAY_VALUE -- or, on a step the kit would
+            # buy (>= 50%), what buying it again costs; m70 destroyed a found To-Dam (~56 by sale) for a ~202 Lance)
+            t = self.enchant_target(it) if "Enchant" in n else None
+            if t:
+                rebuy = (self.price_of(kind, 5) or 190) if t[1] >= self.ENCHANT_MIN_CHANCE else 0
+                return max(sale, rebuy, t[1] * self.PLUS_PLAY_VALUE) * it["number"]
+            return max(sale, self.price_of(kind, 5) or 190) * it["number"]
         # A spare light beyond the first, and food beyond 5 meals (Satisfy Hunger counts), are worth what they
         # sell for: m25 kept 2 spare lanterns and a ration while it destroyed a Rod of Trap Location and a
         # Staff of Object Location to make room
@@ -648,6 +655,20 @@ class ItemsMixin:
         return bool(self.w.ind.get("class_") == "Warrior" and re.search(r"\bbooks? of (magic spells|prayers)\b", n)
                     and book and book.group(0) in self.town_books())
 
+    def read_found_enchant(self, why):
+        """Read a carried Scroll of Enchant ... on its best target (enchant_target, any chance > 0). True if sent."""
+        if self.pending_use or gnow() < self.busy_until or self.w.flag("blind") or self.w.flag("confused"):
+            return False
+        for sc in [i for i in self.w.items(tval=TV_SCROLL) if "Enchant" in i["name"]]:
+            t = self.enchant_target(sc)
+            if t:
+                self.cmd(f"custom r item={sc['item']} dir={t[0]['item']}",
+                         f"{why}: read {one_of(sc['name'])} on {t[0]['name']} ({t[1]:.0%})", hold=1.0)
+                self.notify("tactic", f"read {one_of(sc['name'])} on {t[0]['name']} ({t[1]:.0%} chance of +1)",
+                            news=True)
+                return True
+        return False
+
     def quiet_moment(self, now):
         """Not in combat (the user, 10-25: floor junk is destroyed only then): no awake mobile monster in view, not
         hit in the last 5 s, HP at least think_hp, not blind or confused, and not fleeing, recalling or recovering."""
@@ -707,6 +728,8 @@ class ItemsMixin:
                            and not (worth < self.SUPPLY_SWAP_MIN and (self.supply_kind(i) or self.is_kit_item(i)))),
                           key=lambda vi: vi[0]) if wt > room else []
             if shed and worth > 1.5 * shed[0][0] + 5:
+                if w.inven_dirty:
+                    return False             # (2.71.0: the pack's weight read first)
                 if now - self.room_t > 1.5:
                     v, it = shed[0]
                     self.room_t = now
@@ -764,6 +787,8 @@ class ItemsMixin:
                 self.room_t = now
                 self.cmd(f"custom E item={food['item']}", f"make room: eat {food['name']} for {name}", hold=0.6)
                 return False
+        if w.inven_dirty:
+            return False                     # (2.71.0: the pack -- and its weight -- read first; asked again next look)
         cand = sorted(((self.pack_value(i), i) for i in w.items()), key=lambda vi: vi[0])
         cand = [(v, i) for v, i in cand if self.destroy_count(i) > 0 and not self.awaiting_feeling(i)
                 and not (worth < self.SUPPLY_SWAP_MIN and (self.supply_kind(i) or self.is_kit_item(i)))]
@@ -832,6 +857,10 @@ class ItemsMixin:
         # Not INT/WIS/CHR: town does those
         # (2.55.0: a stat-gain potion carried is drunk at the first safe moment)
         if self.quiet_moment(now) and self.quaff_gain("a safe moment"):
+            return True
+        # (2.71.0, the user in m70: "Why wait til town? Just read it now" -- a found enchant scroll is read on its best
+        # target at a quiet moment in the dungeon, at any chance above 0)
+        if w.in_dungeon and self.quiet_moment(now) and self.read_found_enchant("a quiet moment"):
             return True
         if w.in_dungeon and self.quiet_moment(now):
             it = self.restore_item(stats=tuple(self.STAT_FULL))

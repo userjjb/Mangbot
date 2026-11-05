@@ -348,8 +348,20 @@ class CommandsMixin:
             if not again:
                 return {"ok": False, "error": f"wore the lantern, but can't find '{was}' in the pack now"}
             args = [chr(97 + again["item"])] + list(args[1:])
+        floor = None
+        if c in ("read", "use") and args[0].lower() in ("floor", "-"):
+            # (2.71.0: the scroll or staff underfoot -- the client sends the floor as a negative item, as the destroy's
+            # item=-11; cmd6.c do_cmd_read_scroll / do_cmd_use_staff take the object on our square)
+            floor = getattr(self.w, "floor", None) if getattr(self.w, "floor_pos", None) == self.w.pos else None
+            want = TV_SCROLL if c == "read" else 55
+            if not floor or (c == "read" and not re.search(r"\bScrolls? of\b", floor)) or \
+                    (c == "use" and not re.search(r"\bStaffs? of\b|\bStaves of\b", floor)):
+                return {"ok": False, "error": f"no {'scroll' if want == TV_SCROLL else 'staff'} on the floor here "
+                                              f"(the floor reads: {floor or 'nothing'})"}
         try:
-            if c in ("destroy", "drop", "quaff", "read", "eat", "fuel") and not \
+            if floor:
+                item = -11
+            elif c in ("destroy", "drop", "quaff", "read", "eat", "fuel") and not \
                     (len(args[0]) == 1 or args[0].isdigit()):
                 # by name: only the pack (a name that matched nothing there once
                 # fell through to the equipment -- "You destroy (nothing)"), and
@@ -365,7 +377,7 @@ class CommandsMixin:
         except ValueError as e:
             return {"ok": False, "error": str(e)}
         extra = ""
-        iname0 = next((i["name"] for i in self.w.inven if i["item"] == item), "")
+        iname0 = floor or next((i["name"] for i in self.w.inven if i["item"] == item), "")
         refused = self.action_refusal(c, args, item, iname0, forced_cmd)
         if refused:
             return refused
@@ -441,11 +453,29 @@ class CommandsMixin:
             args = [" ".join(args)] + tail
         return args, forced_cmd
 
+    def targeted_refusal(self, c, args):
+        """2.71.0 (m70: a found Scroll of Enchant Weapon To-Dam, the user: "just read it now"): a read or use with a
+        target item in the dungeon only at a quiet moment -- no mobile monster in view, not hit in 5 s, not blind or
+        confused, HP >= think_hp, not fleeing or recalling (quiet_moment) -- else why not, or None."""
+        w = self.w
+        if c not in ("read", "use") or len(args) < 2 or args[1] == "force" or not w.in_dungeon:
+            return None
+        if self.quiet_moment(gnow()):
+            return None
+        why = "blind" if w.flag("blind") else "confused" if w.flag("confused") else \
+            "a monster in view" if any("NEVER_MOVE" not in r.flags for *_, r in w.monsters) else \
+            f"HP under think_hp ({w.hp_frac:.0%})" if w.hp_frac < self.orders.get("think_hp", 0.65) else \
+            "hit in the last 5 s" if gnow() - getattr(w, "last_hit_t", 0) <= 5 else "fleeing or recalling"
+        return f"{c} with a target in the dungeon waits for a quiet moment: {why} -- `goal quiet` first"
+
     def action_refusal(self, c, args, item, iname0, forced_cmd):
         """Why not do this item command now, as a reply, or None: an escape read <3 s after the last, a second Word
         of Recall, a Word of Recall without @R in town (each unless `force`); unknown jewellery to wear (not the
         Architect's, unless `force`); a destroy/drop over the value policy (without `!`), or with `!` once the
         Navigator's overrides are revoked."""
+        tr = self.targeted_refusal(c, args)
+        if tr:
+            return {"ok": False, "error": tr}
         if c in ("read", "use") and re.search(r"Teleport|Phase Door", iname0) and "force" not in args[1:] and \
                 not waited(self.escape_read_t, 3.0):
             # (m30: the Navigator read a second Teleportation 2 s after the first landed, back beside the hounds)

@@ -191,8 +191,8 @@ ambiguous names are refused with the candidates). Words after a name: a trailing
 | command | does | who | refuses |
 |---|---|---|---|
 | `quaff L` | drink | all | -- |
-| `read L [TARGET\|force]` | read a scroll; TARGET = the item an Identify/Enchant scroll works on | all; with TARGET town only for the Navigator | an escape (Teleport/Phase) read <3 s after the last one; Word of Recall while one is pending; Word of Recall in town without a valid `@R` inscription -- each unless `force` |
-| `use L [TARGET]`, `aim L [DIR]`, `zap L` | staff (TARGET for Perception), wand (DIR 1-9, 5 = nearest target), rod | all; `use` with TARGET town only for the Navigator | escape-read 3 s rule for `use` |
+| `read L\|floor [TARGET\|force]` | read a scroll; TARGET = the item an Identify/Enchant scroll works on; 2.71.0: `floor` = the scroll underfoot (sent as item -11, cmd6.c reads the object on our square) | all; with TARGET in the dungeon only at a quiet moment (`targeted_refusal`: no mobile monster in view, not hit in 5 s, not blind/confused, HP >= think_hp, not fleeing/recalling) | an escape (Teleport/Phase) read <3 s after the last one; Word of Recall while one is pending; Word of Recall in town without a valid `@R` inscription -- each unless `force` |
+| `use L\|floor [TARGET]`, `aim L [DIR]`, `zap L` | staff (TARGET for Perception; `floor`: the staff underfoot), wand (DIR 1-9, 5 = nearest target), rod | all; `use` with TARGET in the dungeon only at a quiet moment (as `read`) | escape-read 3 s rule for `use` |
 | `eat L`, `fuel L` | eat; refill the lantern (puts the lantern on first if it's off, as in town) | all; town only for the Navigator | `fuel`: no lantern |
 | `wear L [force]`, `takeoff L`, `wearall` | wear; take off; put on everything that fills an empty slot (queued) | all; town only for the Navigator | Navigator: unidentified ring/amulet unless `force` |
 | `destroy L [N\|all]`, `drop L [N\|all]` | destroy (auto-confirmed) / drop (the square is then skipped by auto-pickup and looting) | all, also in the dungeon | Navigator: value refusal ("not destroyed: why. `destroy !NAME` overrides...") unless `!`; `!` refused when overrides are revoked |

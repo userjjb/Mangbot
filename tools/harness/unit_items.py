@@ -390,3 +390,57 @@ def junk_matches_the_whole_kind():
     got = {n: p.is_junk(n) for n in cases}
     bad = {n: g for n, g in got.items() if g != cases[n]}
     return not bad, f"wrong: {bad}" if bad else "all as expected"
+
+
+@case
+def found_enchant_scrolls_read_and_kept():
+    """2.71.0, m70 12:18-12:19: the user wanted a found Scroll of Enchant Weapon To-Dam read "now, off the floor"; item
+    reads were town-only, the Pilot carried it, then destroyed it (~56 by sale) for a Lance (~202). Now: a found enchant
+    scroll is worth its expected gain for room (chance x PLUS_PLAY_VALUE: 5% x 3000 on the (+10,+9) axe), so the Lance
+    is left and the scroll kept; at a quiet moment it is read on the axe at that low chance (50% stays the rule for
+    buying); a targeted read in the dungeon is refused with a monster in view and sent at a quiet moment; `read floor
+    TARGET` reads the scroll underfoot (the floor as item -11)."""
+    import types as _t
+    axe = ("a Battle Axe of Westernesse (2d8) (+10,+9) (+1)", 22, 170)
+    pack = [("a Scroll of Enchant Weapon To-Dam", 70)] + [("a Potion of Cure Critical Wounds", 75)] * 22
+    p = pilot(hp=369, worn=[axe], pack=pack)
+    w = p.w
+    w.depth, w.depth_ft, w.in_dungeon, w.hp = 15, 750, True, [369, 369]
+    p.weight_room = lambda: (2000, 0)
+    p.cmds = []
+    p.cmd = lambda line, why, hold=0.4: p.cmds.append(line)
+    p.c = _t.SimpleNamespace(send=lambda line: None)
+    p.room_t, p.busy_until = 0.0, 0.0
+    p.is_artifact = lambda n: False
+    sc = w.items()[0]
+    t = p.enchant_target(sc)
+    val = p.pack_value(sc)
+    took = p.pickup_room("a Lance (2d8)")
+    destroyed = [c for c in p.cmds if c.startswith("custom k")]
+    left = [d for k, d in p.notes if "left a Lance" in (d or "")]
+    # a quiet moment: read it on the axe
+    p.cmds = []
+    w.monsters = []
+    w.last_hit_t = -99.0
+    read = p.read_found_enchant("a quiet moment")
+    axe_item = w.items(equip=True)[0]["item"]
+    # the Navigator's targeted read: refused with a monster in view, sent at a quiet moment; and from the floor
+    q = pilot(hp=369, worn=[axe], pack=[("a Scroll of Enchant Weapon To-Dam", 70)],
+              monsters=[(20, 25, BYNAME["cave orc"])])
+    q.w.depth, q.w.in_dungeon, q.w.hp = 15, True, [369, 369]
+    q.w.last_hit_t = -99.0
+    q.cmds = []
+    q.cmd = lambda line, why, hold=0.4: q.cmds.append(line)
+    q.pack_now = lambda *a: q.w.inven
+    q.action_reply = lambda *a: {"ok": True}
+    refused = q.item_action("read", ["a", "A"])
+    q.w.monsters = []
+    sent = q.item_action("read", ["a", "A"])
+    q.w.floor, q.w.floor_pos = "a Scroll of Enchant Weapon To-Hit", q.w.pos
+    fl = q.item_action("read", ["floor", "A"])
+    ok = t and abs(t[1] - 0.05) < 1e-9 and abs(val - 150) < 1e-6 and not took and not destroyed and left and \
+        read and p.cmds == [f"custom r item=0 dir={axe_item}"] and not refused["ok"] and \
+        "a monster in view" in refused["error"] and sent["ok"] and q.cmds[0] == f"custom r item=0 dir={axe_item}" \
+        and fl["ok"] and q.cmds[-1] == f"custom r item=-11 dir={axe_item}"
+    return ok, (f"target {t and (t[0]['name'], t[1])}, room value {val}; the Lance: took {took}, destroyed "
+                f"{destroyed}, news {left[:1]}; quiet read {p.cmds}; refused {refused}; sent {q.cmds}")

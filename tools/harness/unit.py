@@ -93,7 +93,7 @@ ORDER = """
     rations_by_digestion_and_the_last_kept monsters_in_view_are_fought_unless_a_reason
     wide_corridor_dead_end_searched door_detector_before_searching
     unfelt_gear_waits_for_its_feeling house_stacks_and_keeps_the_most_valuable restores_by_sustain
-    stash_fetch_judges_by_kind
+    stash_fetch_judges_by_kind found_enchant_scrolls_read_and_kept
 """.split()
 
 

@@ -22,8 +22,11 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
   override is scored. Value lost on items goes into your **item debt** (gold). HP lost when an overridden hunt goes
   wrong goes into your **fight debt** (HP). `debt` shows both. **Past limits you aren't told, the user and the
   Architect take that freedom away.** Override only when you're sure, and say why in your journal.
-- **Item commands** (selling with `goal shop N sell NAME`, `wear`, `wearall`, `takeoff`, `inscribe`, `read`/`use`
-  on an item, `fuel`, `eat`, `pickup`) work **in town only**; `destroy` and `drop` work in the dungeon too. In the dungeon, combat consumables still work (`quaff`, `read` Phase/Recall, `use`, `zap`,
+- **Item commands** (selling with `goal shop N sell NAME`, `wear`, `wearall`, `takeoff`, `inscribe`, `fuel`, `eat`,
+  `pickup`) work **in town only**; `destroy` and `drop` work in the dungeon too. (2.71.0) `read`/`use` on an item
+  (`read L TARGET`) work in the dungeon at a quiet moment (no monster in view, not hit in 5 s, HP >= think_hp);
+  `read floor TARGET` reads the scroll underfoot. A found Scroll of Enchant is read by the Pilot itself, on its best
+  target, at the next quiet moment. In the dungeon, combat consumables still work (`quaff`, `read` Phase/Recall, `use`, `zap`,
   `aim`), but the Pilot already uses them when it matters. `goal goto`, `stairs` and `raw` are the Pilot's: use
   `goal leave` or `goal fetch Y,X`. `park`, `quit`, `option` and `dump` are the Architect's.
 

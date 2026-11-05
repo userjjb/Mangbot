@@ -216,6 +216,14 @@ Two principles for a weaker substitute of a kit item (`town.py`, beside `town_se
   `ENCHANT_MIN_CHANCE` (`enchant_plan`, `weapon_enchant_plan`), a device `recharge_wanted` names. Such a scroll is never
   sold (found in the dungeon or bought), priceless for room in town, worth its price in the dungeon; the town kit reads
   it before buying more (`enchant_buys` subtracts the scrolls carried). Only scrolls nothing would use are sold.
+  **2.71.0 (m70: a found To-Dam carried to town, then destroyed for a Lance):** a found enchant scroll is read on its
+  best target at any chance above 0 (`enchant_target`: the worn armour piece or the wielded weapon, `*Enchant*` too) --
+  by the Pilot at a quiet moment in the dungeon (`read_found_enchant`, policy_tick) and by the town kit after its
+  planned >= 50% reads (`_buying_enchant`); `ENCHANT_MIN_CHANCE` stays the rule for buying. For room in the dungeon
+  such a scroll is worth its expected gain, chance x `PLUS_PLAY_VALUE` (3000: a permanent +1 to-dam ~4-5% of the melee
+  over ~300 dungeon minutes), or its rebuy price on a step the kit would buy. Make-room and the weight shed destroy
+  nothing while the pack read is pending (`inven_dirty`: its weight could be stale), and a find already picked up isn't
+  judged again (the false "left a Lance ... would slow you" news).
 `town_rule(it)` returns the rule and why; `price LETTER` shows it on the policy line ("kept (Heroism's fallback:
 Heroism 1/3, short (kit B))", "sold by plan town (a crutch on the test server)", and in the dungeon a stopgap's
 covered minutes).

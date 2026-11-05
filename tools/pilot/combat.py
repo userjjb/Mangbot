@@ -742,6 +742,10 @@ class CombatMixin:
             if seen and isinstance(self.goal, (Flee, BandLeave, WalkAway)) and w.monsters and \
                     self.iv(seen[-1][1][8:].rstrip(".")).value < 500:
                 seen = []
+            # (2.71.0, m70 12:19:15: a find already picked up -- its "You see" still recent -- was judged again and the news
+            # said "left a Lance ... 30 lb would slow you" with the Lance in the pack)
+            if seen and seen[-1][0] <= self.picked_t:
+                seen = []
             if seen and not self.pickup_room(seen[-1][1][8:].rstrip(".")):
                 seen = []
             if seen and seen[-1][0] > self.picked_t and w.pos == self.seen_pos(seen[-1][0]):

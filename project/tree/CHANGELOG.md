@@ -27,8 +27,20 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.71.0 -- 2026-11-05 (session 12, during m70: found enchant scrolls are read)
+No missions yet on it. **Play changes:**
+- **Found enchant scrolls are read** (m70 12:18-12:19: the user wanted a found Scroll of Enchant Weapon To-Dam read
+  "now, off the floor"; reads with a target were town-only, and the Pilot destroyed it, ~56 by sale, for a ~202
+  Lance). A found Enchant Armor / Weapon To-Dam / To-Hit (and *Enchant*) is read on its best target at any chance
+  above 0 -- at a quiet moment in the dungeon, or by the town kit after its planned reads; 50% stays the rule for
+  buying. For room it is worth chance x 3000 (a permanent +1), so cheap loot no longer pushes it out.
+- **Targeted reads in the dungeon:** `read L TARGET` / `use L TARGET` work in the dungeon at a quiet moment (refused
+  otherwise, with the reason); `read floor TARGET` / `use floor` read or use the item underfoot.
+- **Make-room:** nothing is destroyed while the pack read is pending (stale weight), and a find already picked up is
+  no longer judged again (m70's false "left a Lance ... would slow you" -- the Lance was in the pack).
+
 ## 2.70.2 -- 2026-11-05 (session 12, the Architect)
-No missions yet on it. **Play change (small):** a carried Restore potion whose stat isn't drained and that the stash
+Missions: m70 (Sonnet medium, 77.3 XP/dmin; report runs/pilot/dive04/reports/2026-11-05-mission70.md). **Play change (small):** a carried Restore potion whose stat isn't drained and that the stash
 doesn't keep (INT/WIS/CHR, or a sustained STR/DEX/CON) is sold in town (`town_rule`): 2.70.0 took the two Restore
 Charismas out of the house to sell, but the kit protection (Restore Charisma is a kit kind for a drained CHR) kept them.
 
@@ -56,7 +68,7 @@ No missions yet on it. **Play changes:**
   Re-read each visit from the worn gear.
 
 ## 2.69.0 -- 2026-11-05 (session 12, after m69: unfelt gear waits for its feeling)
-No missions yet on it. **Play changes:**
+Missions: m70 (via 2.70.x). **Play changes:**
 - **"Churning weapons is fine if we wait for the pseudo-ID first"** (the user after m69: a Lance destroyed to take
   another, then the better one left for weight). In the dungeon an unfelt weapon or armour piece in the pack is not
   destroyed for room or for the weight limit until it has its pseudo-ID feeling, for at most 3 minutes of game time
