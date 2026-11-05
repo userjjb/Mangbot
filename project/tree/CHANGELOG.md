@@ -27,6 +27,16 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.72.0 -- 2026-11-05 (session 12, after m71: weapons and armour fetched for gold)
+No missions yet on it. **Play changes:**
+- **Weapons and armour are far-fetched for their sale** (the user after m71 13:11: "the point isn't just to find
+  another weapon, but also to make gold; selling weapons is a good income" -- a Beaked Axe ~42 squares off, ~652 by
+  expectation, ~247 at a shop, never fetched). A weapon, bow or armour piece on the item list that a shop would pay
+  150+ for by expectation at this depth (unfelt: the apply_magic expectation; felt: by its feeling, {average} for its
+  sale; on a vault's good/great square the made-better value) is fetched like devices and jewellery once the area is
+  clear, from as far as its sale pays (1.3 gold a step there and back, 30-60 squares), unless the weight limit would
+  make the pickup leave it. Make-room is unchanged.
+
 ## 2.71.0 -- 2026-11-05 (session 12, during m70: found enchant scrolls are read)
 Missions: m71 (Haiku medium; report runs/pilot/dive04/reports/2026-11-05-mission71.md). **Play changes:**
 - **Found enchant scrolls are read** (m70 12:18-12:19: the user wanted a found Scroll of Enchant Weapon To-Dam read

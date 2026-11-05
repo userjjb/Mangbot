@@ -237,6 +237,7 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.item_hold_until = 0.0            # a dive pauses after interesting_item
         self.far_seen = set()                 # (level, item) valuables seen beyond loot_radius
         self.far_wanted = {}                  # (level, glyph) -> potions/scrolls worth a far fetch (2.51.0, loot_step)
+        self.far_reach = {}                   # (level, glyph) -> squares a wanted weapon/armour may be fetched from (2.72.0)
         self.zone_pass = set()                # (level, Y, X): structures whose ring paths may cross (`avoid pass`, 2.53.0)
         self.zone_wait = None                 # a hold for the Navigator's word on a blocking avoid zone (zone_hold)
         self.queued = None                    # a plan/goal the Navigator sent while plan town ran (2.53.0)
@@ -1357,7 +1358,15 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
                 name = line.strip()[2:].strip()
                 # (2.51.0, the user after m62: a Potion of Speed lay in view 3 minutes at 750 ft, a Scroll of
                 # Teleportation 6 at 800 ft -- potions and scrolls the kit uses or worth 200+ are fetched too)
-                far = self.far_fetch_worth(name) if line.strip()[:1] in "!?" else None
+                glyph = line.strip()[:1]
+                far = self.far_fetch_worth(name) if glyph in "!?" else None
+                # (2.72.0: weapons and armour worth selling -- gear_fetch_worth, with their own reach)
+                gear = self.gear_fetch_worth(name, glyph) if not far and glyph in self.GEAR_GLYPHS and \
+                    (w.level_t, name) not in self.far_seen else None
+                if gear:
+                    far = gear[0]
+                    key = (w.level_t, glyph)
+                    self.far_reach[key] = max(self.far_reach.get(key, 0), gear[1])
                 if (far or re.search(r"\b(Wand|Staff|Rod|Ring|Amulet)\b|\{(excellent|special)", name)) and \
                         not self.is_junk(name) and (w.level_t, name) not in self.far_seen:
                     self.far_seen.add((w.level_t, name))
@@ -1390,7 +1399,7 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
             # kit and valuable potions and scrolls too (far_wanted)
             if lr and self.orders.get("pickup") == "all" and \
                     (glyph in self.VALUABLE_GLYPHS or name in self.far_wanted.get((lt, glyph), ())) and sq and \
-                    w.dist(sq[0]) <= self.LOOT_VALUABLE_R:
+                    w.dist(sq[0]) <= max(self.LOOT_VALUABLE_R, self.far_reach.get((lt, glyph), 0)):
                 self.notify("interesting_item", f"{name} seen on this level at {where}: fetching it once the "
                                                  "area is clear", news=True)
                 continue

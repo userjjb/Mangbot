@@ -1428,6 +1428,51 @@ class ItemsMixin:
     VALUABLE_GLYPHS = "-_=\""   # wand/rod, staff, ring, amulet
     FAR_FETCH_MIN = 200       # 2.51.0: a potion or scroll worth this (itemvalue; unknown: the expectation) is fetched
 
+    # (2.72.0, the user after m71: "the point isn't just to find another weapon, but also to make gold; selling weapons
+    # is a good income" -- a Beaked Axe ~42 squares off, ~652 by expectation, ~247 at a shop, never fetched.) Weapons
+    # and armour seen on the level are fetched when a shop would pay GEAR_FETCH_MIN for them by expectation: a far
+    # fetch costs about twice its distance in steps (there, and the exploring it interrupts), ~1.3 gold a step at
+    # Dive04's ~270 gold-equivalent a dungeon minute (~215 player turns a minute) -- ~115 gold at 45 steps, the old
+    # reach's longest path; 150 pays for that with a margin for the pickup and the sale. Worth more, it may be further:
+    # GEAR_FETCH_GOLD_STEP gold a step there and back, up to GEAR_FETCH_MAX_R squares
+    GEAR_FETCH_MIN = 150
+    GEAR_FETCH_GOLD_STEP = 1.3
+    GEAR_FETCH_MAX_R = 60
+    GEAR_GLYPHS = "|\\/([])}"          # weapons, armour, bows, shields
+
+    def gear_fetch_worth(self, name, glyph=None):
+        """(why, reach) for a weapon or armour piece seen on the level map worth a far fetch for its sale (2.72.0), or
+        None: what a shop would pay by expectation at this depth -- unfelt: itemvalue's apply_magic expectation; felt:
+        by its feeling ({average} etc. for its sale value alone); on a vault's good/great square the made-better value
+        (iv_at) -- at least GEAR_FETCH_MIN; its reach the squares that sale pays for (at least LOOT_VALUABLE_R, at most
+        GEAR_FETCH_MAX_R). Not one the weight limit would make the pickup leave (pickup_room's rule: under
+        HEAVY_LOOT_MIN with no cheaper heavy pack item to shed)."""
+        gi = geareval.Item(name)
+        if not gi.slot or gi.slot in ("ring", "amulet", "light") or self.is_junk(name) or bad_inscription(name):
+            return None
+        w = self.w
+        iv = self.iv(name)
+        if glyph:
+            for q, ch in (w.memory or {}).items():
+                if ch == glyph:
+                    v = self.iv_at(name, q)
+                    if v.value > iv.value:
+                        iv = v
+        sale = iv.value * self.pay_cut(iv.tval)
+        if sale < self.GEAR_FETCH_MIN:
+            return None
+        wt = gi.weight
+        try:
+            room, _ = self.weight_room()
+        except Exception:
+            room = wt
+        if wt > room and sale < self.HEAVY_LOOT_MIN and not any(
+                i["weight"] * i["number"] >= wt - room and self.pack_value(i) * 1.5 + 5 < sale and
+                not self.awaiting_feeling(i) for i in w.items()):
+            return None
+        reach = int(min(self.GEAR_FETCH_MAX_R, max(self.LOOT_VALUABLE_R, sale / (2 * self.GEAR_FETCH_GOLD_STEP))))
+        return f"sells for ~{sale:.0f} by expectation", reach
+
     def far_fetch_worth(self, name):
         """Why a potion or scroll seen on the level map is worth a far fetch (LOOT_VALUABLE_R, as devices and
         jewellery; 2.51.0, the user after m62), or None: a kit consumable (KIT_KINDS: Speed, Teleportation, Phase,
@@ -1441,6 +1486,11 @@ class ItemsMixin:
             return "a kit item"
         v = self.iv(name).value
         return f"worth ~{v}" if v >= self.FAR_FETCH_MIN else None
+
+    def far_reach_of(self, q):
+        """How far a valuable square may be fetched from: LOOT_VALUABLE_R, or a wanted gear glyph's reach (2.72.0)."""
+        w = self.w
+        return max(self.LOOT_VALUABLE_R, self.far_reach.get((w.level_t, w.memory.get(q)), 0))
 
     def far_wanted_glyphs(self):
         """The glyphs ('!', '?') of this level's far-fetch potions and scrolls still on the map (in the item list) and
@@ -1515,7 +1565,7 @@ class ItemsMixin:
         items = [t for t in items if t not in mem["done"]]
         far = self.VALUABLE_GLYPHS + "".join(self.far_wanted_glyphs())     # (2.51.0: and wanted potions/scrolls)
         valuable = {t for t in items if (w.memory.get(t) in far or t in set(v.get("treasure", ()) if v.get("loot")
-                                                                             else ())) and w.dist(t) <= self.LOOT_VALUABLE_R}
+                                                                             else ())) and w.dist(t) <= self.far_reach_of(t)}
         owed = {t for t in items if t in mem["owed"] and w.dist(t) <= self.LOOT_OWED_R}
         cands = {t for t in items if w.dist(t) <= lr} | owed | valuable
         if not cands:
@@ -1525,7 +1575,7 @@ class ItemsMixin:
             mem["done"].add(tgt)
             return False
         # (a wall between: a walk far longer than the distance isn't worth it)
-        reach = self.LOOT_VALUABLE_R if tgt in valuable else self.LOOT_OWED_R if tgt in owed else lr
+        reach = self.far_reach_of(tgt) if tgt in valuable else self.LOOT_OWED_R if tgt in owed else lr
         if len(self.mover.path) > reach * 3 // 2:
             self.mover.stop()
             mem["done"].add(tgt)

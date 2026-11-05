@@ -94,6 +94,7 @@ ORDER = """
     wide_corridor_dead_end_searched door_detector_before_searching
     unfelt_gear_waits_for_its_feeling house_stacks_and_keeps_the_most_valuable restores_by_sustain
     stash_fetch_judges_by_kind found_enchant_scrolls_read_and_kept
+    gear_far_fetched_for_its_sale
 """.split()
 
 

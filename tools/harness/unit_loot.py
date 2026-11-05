@@ -519,3 +519,37 @@ def unfelt_gear_waits_for_its_feeling():
         not felt.awaiting_feeling(felt.w.items()[0])
     return ok, (f"unfelt Lance in the pack: took {t1}, cmds {unfelt.cmds}, news {news[:1]}; felt {{average}}: "
                 f"{felt.cmds}; after 200 s unfelt: protected {old.awaiting_feeling(old.w.items()[0])}")
+
+
+@case
+def gear_far_fetched_for_its_sale():
+    """2.72.0, the user after m71 13:11 ("the point isn't just to find another weapon, but also to make gold"): a
+    Beaked Axe (2d6) seen ~42 squares off at 750 ft, ~652 by expectation unfelt (~247 at a shop), was never fetched --
+    far fetch took devices, jewellery and potions/scrolls only. Now a weapon or armour piece a shop would pay
+    GEAR_FETCH_MIN (150) for by expectation is fetched like them (`interesting_item` "fetching it once the area is
+    clear"), from as far as its sale pays (~247 -> the 60-square cap); a felt {average} one for its sale alone; not a
+    cheap Dagger (~125), a cursed piece, or one the weight limit would leave."""
+    axe = "Beaked Axe (2d6)"
+    p = pilot(hp=369)
+    w = p.w
+    w.depth, w.depth_ft, w.in_dungeon = 15, 750, True
+    w.pos = (20, 20)
+    w.memory = {(20, 62): "/"}
+    w.itemlist = ["Items:", f"/ {axe}"]
+    p.weight_room = lambda: (2000, 0)
+    p.orders["loot_radius"], p.orders["pickup"] = 10, "all"
+    p.plan = object()
+    p.report_losses = lambda: None
+    now = P.gnow()
+    p.watch_items(now)
+    p.watch_items(now + 3)
+    news = [d for k, d in p.notes if k == "interesting_item"]
+    reach = p.far_reach_of((20, 62))
+    worth = {n: p.gear_fetch_worth(n) for n in ("Dagger (1d4)", "a Beaked Axe (2d6) {average}",
+                                                 "a Beaked Axe (2d6) {cursed}")}
+    p.weight_room = lambda: (100, 0)
+    heavy = p.gear_fetch_worth(axe)
+    ok = news and "fetching it once the area is clear" in news[0] and "20,62 (42 away)" in news[0] and \
+        reach >= 42 and axe in p.far_wanted.get((w.level_t, "/"), ()) and worth["Dagger (1d4)"] is None and \
+        worth["a Beaked Axe (2d6) {average}"] and worth["a Beaked Axe (2d6) {cursed}"] is None and heavy is None
+    return ok, f"news {news}; reach {reach}; worth {worth}; at the weight limit {heavy}"

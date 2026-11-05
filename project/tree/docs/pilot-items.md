@@ -245,6 +245,18 @@ an unknown flavour by its expectation; a Potion of Restore Mana, ~350, passes on
 potions or scrolls nearby may be walked to as well (the pickup policy decides); within reach the Pilot fetches them, farther ones tell the Navigator to
 `goal fetch Y,X` (a dive outside a trip plan pauses 20 s). Picking up a likely-special item gives `found` news
 ("identify it before selling").
+**Weapons and armour for their sale** (2.72.0, the user after m71: "the point isn't just to find another weapon, but
+also to make gold"; a Beaked Axe ~42 squares off, ~652 by expectation, ~247 at a shop, was never fetched):
+`gear_fetch_worth` takes a weapon, bow or armour piece seen on the item list when a shop would pay `GEAR_FETCH_MIN`
+(150) for it by expectation at this depth -- unfelt: itemvalue's apply_magic expectation; felt: by its feeling
+(`{average}` for its sale alone; worthless or cursed never); on a vault's good/great square the made-better value
+(`iv_at`). 150: a far fetch costs about twice its distance in steps (there, and the exploring it interrupts), ~1.3 gold
+a step at ~270 gold-equivalent a dungeon minute -- ~115 at the old reach's 45-step path, plus a margin for the pickup
+and the sale. Its reach is what the sale pays for (`GEAR_FETCH_GOLD_STEP` 1.3 gold a step there and back, at least
+`LOOT_VALUABLE_R`, at most `GEAR_FETCH_MAX_R` = 60; `far_reach`, `far_reach_of`), and it isn't fetched when the weight
+limit would make the pickup leave it (under `HEAVY_LOOT_MIN` with no cheaper heavy pack item to shed). Then as the
+potions: `far_wanted`, the `interesting_item` "fetching it once the area is clear" news, `loot_step`, `loot_blocked`.
+Make-room is unchanged (pack churn is fine; unfelt gear waits for its feeling, 2.69.0).
 
 ## 3. Destroying junk
 
