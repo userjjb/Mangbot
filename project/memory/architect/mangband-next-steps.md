@@ -16,8 +16,9 @@ Open `/projectnb/jbrcs/mangband/next_steps.md` and read **">>> WHICH HANDOFF IS 
   clean; its food bugs fixed in 2.48.1), the restructure merged into `master` (branch deleted, revert material and the
   10-22 backup removed; tags remain), the GitHub front page `github/.github/README.md` updated. Record: "SESSION 11
   RECORD" at the bottom of next_steps.md.
-- **Session 12 (in progress, 11-04, job 8406367)**: m62-m65 (Sonnet medium) and 2.50.0-2.57.0 -- see "SESSION 12 RECORD"
-  at the bottom of next_steps.md (stash/backups, {mNN} income labels, plan queue, identify-before-sale, gear damage).
+- **Session 12 (in progress, 11-04/05, job 8406367 ends Sat 11-07 19:55)**: m62-m69 (Sonnet medium) and 2.50.0-2.68.0 --
+  see "SESSION 12 RECORD" at the bottom of next_steps.md (stash, income labels, plan queue, identify-before-sale, gear
+  damage, estimator bands, frozen time, vaults, hallucination, fight-what's-in-view, secret doors via the rod).
 - **Session 12 brief**: missions resume to test everything since m60 -- "HANDOFF TO ARCHITECT 12", starting with its
   **"SESSION 12 WATCH LIST"** (stomach tracker pins, lantern fill, 2.48.0 item rules, the more permissive hunt check,
   open user decisions).

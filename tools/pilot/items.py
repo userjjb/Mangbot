@@ -702,6 +702,7 @@ class ItemsMixin:
             # Staff of Trap Location was left. As for a full pack: shed the cheapest thing heavy enough, if this is
             # worth 1.5x it)
             shed = sorted(((self.pack_value(i), i) for i in w.items() if self.destroy_count(i) > 0
+                           and not self.awaiting_feeling(i)
                            and i["weight"] * self.destroy_count(i) // max(1, i["number"]) >= wt - room
                            and not (worth < self.SUPPLY_SWAP_MIN and (self.supply_kind(i) or self.is_kit_item(i)))),
                           key=lambda vi: vi[0]) if wt > room else []
@@ -727,7 +728,7 @@ class ItemsMixin:
                 if (w.level_t, name) not in said:
                     said.add((w.level_t, name))
                     self.notify("tactic", f"left {self.named(name)} (~{worth:.0f}): {wt / 10:.0f} lb would slow you (the weight "
-                                          f"limit; {max(0, room) / 10:.0f} lb to spare)", news=True)
+                                          f"limit; {max(0, room) / 10:.0f} lb to spare)" + self.waiting_text(), news=True)
                 return False
         free = self.PACK_SLOTS - len(w.items())
         if free >= 1:
@@ -764,7 +765,7 @@ class ItemsMixin:
                 self.cmd(f"custom E item={food['item']}", f"make room: eat {food['name']} for {name}", hold=0.6)
                 return False
         cand = sorted(((self.pack_value(i), i) for i in w.items()), key=lambda vi: vi[0])
-        cand = [(v, i) for v, i in cand if self.destroy_count(i) > 0
+        cand = [(v, i) for v, i in cand if self.destroy_count(i) > 0 and not self.awaiting_feeling(i)
                 and not (worth < self.SUPPLY_SWAP_MIN and (self.supply_kind(i) or self.is_kit_item(i)))]
         cheapest = cand[0] if cand else None
         # (a unique's drop is "good" but unknown: it may push out only cheap things. m37 destroyed a Tulwar (~76)
@@ -791,9 +792,15 @@ class ItemsMixin:
             # (once per item and level: m25 said "left a Rapier" 5 times and "left a Potion of Heroism" 7)
             if (w.level_t, name) not in self.left_news:
                 self.left_news.add((w.level_t, name))
-                self.notify("tactic", f"left {self.named(name)} (~{worth:.0f}): pack full and nothing cheaper to make room with",
-                            news=True)
+                self.notify("tactic", f"left {self.named(name)} (~{worth:.0f}): pack full and nothing cheaper to make room with"
+                            + self.waiting_text(), news=True)
         return False
+
+    def waiting_text(self):
+        """'; kept waiting for its feeling: a Lance (2d8)' -- the pack's unfelt gear make-room may not touch yet."""
+        wait = [i["name"] for i in self.w.items() if self.awaiting_feeling(i)]
+        return f"; kept waiting for {'its feeling' if len(wait) == 1 else 'their feelings'} (pseudo-ID, usually " \
+               f"within a minute): {', '.join(wait[:4])}" if wait else ""
 
     # (the gear evaluator's tval -> slot table, armour only: boots..body armour, tvals 30-38; refactor-candidates D11)
     ARMOUR_SLOTS = {tv: s for tv, s in geareval.SLOT_OF_TVAL.items() if 30 <= tv <= 38}
@@ -1279,6 +1286,29 @@ class ItemsMixin:
                 return False
             return True
         return False
+
+    # (2.69.0, the user after m69: "Churning weapons is fine if we wait for the pseudo-ID first.") A warrior's
+    # pseudo-ID (dungeon.c sense_inventory, CF_PSEUDO_ID_HEAVY | IMPROV): each player turn a 1 in 9000 / (clvl^2 + 40)
+    # chance to sense -- 1 in 9 at clvl 30 -- and then each pack item 1 in 5: ~1 in 45 a player turn, ~45 turns (~13 s
+    # of dungeon time at ~215 player turns a dungeon minute) on average, 99% within ~210 turns (~1 minute). An
+    # unfelt weapon or armour piece is kept from make-room and the weight shed until it has its feeling, at most
+    # FEELING_WAIT_S of game time after it was first seen in the pack (3 minutes: ~650 turns at the dungeon's pace, ~290
+    # at 1x -- (44/45)^290 ~ 0.15%; sensing stops while confused, so an item can stay unfelt longer: then it loses it)
+    FEELING_WAIT_S = 180
+
+    def track_unfelt(self):
+        """First-seen times of the unfelt weapons and armour in the pack (unfelt_since; gone ones forgotten)."""
+        now = gnow()
+        names = {i["name"] for i in self.w.items() if self.unfelt(i)}
+        self.unfelt_since = {n: self.unfelt_since.get(n, now) for n in names}
+
+    def awaiting_feeling(self, it):
+        """2.69.0: a pack weapon or armour piece still waiting for its pseudo-ID feeling (unfelt, first seen in the
+        pack less than FEELING_WAIT_S ago): not destroyed or dropped to make room."""
+        if it.get("equip") or not self.w.in_dungeon or not self.unfelt(it):
+            return False
+        t = self.unfelt_since.get(it["name"])
+        return t is None or gnow() - t < self.FEELING_WAIT_S
 
     def unfelt(self, it):
         """A weapon, bow or armour piece with no feeling and no plusses shown (pseudo-ID feels it for free soon)."""

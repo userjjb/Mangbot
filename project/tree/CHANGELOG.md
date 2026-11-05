@@ -27,6 +27,16 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.69.0 -- 2026-11-05 (session 12, after m69: unfelt gear waits for its feeling)
+No missions yet on it. **Play changes:**
+- **"Churning weapons is fine if we wait for the pseudo-ID first"** (the user after m69: a Lance destroyed to take
+  another, then the better one left for weight). In the dungeon an unfelt weapon or armour piece in the pack is not
+  destroyed for room or for the weight limit until it has its pseudo-ID feeling, for at most 3 minutes of game time
+  after it was first seen (a clvl-30 warrior's pseudo-ID: ~1 in 45 a player turn per pack item, ~13 s of dungeon time
+  on average, 99% within a minute -- dungeon.c sense_inventory). The find is left meanwhile, with news "kept waiting
+  for its feeling: NAME". Once felt, churn as before: a felt {average} piece goes for an unfelt find worth more by
+  expectation; {good} and better are identified in town (2.55.0).
+
 ## 2.68.0 -- 2026-11-05 (session 12, during m69: a door detector before searching)
 Missions: m69 (from 09:36; Sonnet medium, 52.4 XP/dmin; report runs/pilot/dive04/reports/2026-11-05-mission69.md). **Play changes:**
 - **Door detection before searching** (m69 09:26-09:28: 2.67.0 searched the 2-wide dead ends at 30,88 and 30,102, 20

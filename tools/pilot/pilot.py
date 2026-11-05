@@ -277,6 +277,7 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.unreachable = set()       # frontier tiles we failed to reach (this level)
         self.visited = set()           # squares we've stood on while exploring (not frontier)
         self.searched = set()          # (level, square) dead ends searched for secret doors
+        self.unfelt_since = {}         # (2.69.0) unfelt pack gear name -> gnow() first seen (awaiting_feeling)
         self.detect_zaps = []          # (2.68.0) (level_t, square): where a door detector was used
         self.zap_t = {}                # (2.68.0) rod kind -> gnow() of our last zap (its recharge)
         self.level_seen = None
@@ -1237,6 +1238,7 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         g("watch_floor", self.watch_floor)
         for name in ("resync_tick", "watch_items", "audit_tick", "structures_tick", "vault_tick"):
             g(name, getattr(self, name), now)
+        g("track_unfelt", self.track_unfelt)
         g("avoid_tick", self.avoid_tick)
         g("trail_tick", self.trail_tick)
         for name in ("mons_tick", "belief_tick", "watch_tick"):

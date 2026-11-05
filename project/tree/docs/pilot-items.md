@@ -105,6 +105,15 @@ turns it off; not with a monster adjacent or in a store): after a step, a recent
    else the hunger level's top -- plus its food stays 1000 under PY_FOOD_MAX), then destroy the cheapest item by `pack_value` if the find is worth > 1.5x it + 5 (2.51.0: the news names the count destroyed and kept, `destroyed_text`, and the supplies left without them, `supply_text(minus)`) (a unique's
    drop, whatever its estimate, may also push out anything under `UNIQUE_DROP_BUMP` = 50). Otherwise: "left NAME: pack full and nothing cheaper",
    once per item and level.
+6. **Waiting for the feeling** (2.69.0, the user after m69: "Churning weapons is fine if we wait for the pseudo-ID
+   first"): in the dungeon an unfelt weapon or armour piece in the pack (`unfelt`: no feeling, no plusses shown;
+   `awaiting_feeling`) is never destroyed by steps 3 and 5 until it has its feeling, at most `FEELING_WAIT_S` = 180 s of
+   game time after it was first seen in the pack (`track_unfelt`, each tick: `unfelt_since`). A warrior's pseudo-ID
+   (dungeon.c `sense_inventory`, heavy and improving): 1 in 9000/(clvl^2 + 40) a player turn, then 1 in 5 per pack item
+   -- ~1 in 45 a turn at clvl 30, ~13 s of dungeon time on average, 99% within ~1 minute; 3 minutes leaves ~0.15% even
+   at 1x (sensing stops while confused: after the cap it loses the protection). The "left" news then adds "kept waiting
+   for its feeling: NAME". A felt `{average}` piece still goes for an unfelt find worth more by expectation (m69
+   09:54); `{good}`+ is identified in town (2.55.0).
 
 **`pack_value(it)`** (what an item is worth to the pack when making room): (2.50.0) in town a stash item
 (`is_stash_item`: a Restore, Stone to Mud, a gear backup, the store list) is priceless, so the town's make-room never

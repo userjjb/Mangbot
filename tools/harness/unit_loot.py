@@ -485,3 +485,37 @@ def m67_small_fixes():
     return ok, (f"named {named!r}; lantern/torch junk beside the Phial {junk}; floor sig changed {sig0 != sig1}; "
                 f"destroy while moving {moving}; rations destroyed for a lantern {ration_gone} ({q.sent}); supplies "
                 f"before the tracker {quiet}; light off {a}, {b} ({t.sent})")
+
+
+@case
+def unfelt_gear_waits_for_its_feeling():
+    """2.69.0, the user after m69 ("Churning weapons is fine if we wait for the pseudo-ID first"): an unfelt weapon or
+    armour piece in the pack isn't destroyed or dropped for room until it has its pseudo-ID feeling (~13 s of dungeon
+    time on average for a clvl-30 warrior), at most FEELING_WAIT_S (3 minutes) after it was first seen; the find is
+    left, with news "kept waiting for its feeling". A felt {average} one goes for an unfelt find worth more by
+    expectation, as in m69 09:54 (a Lance {average} ~92 for a Lance ~210)."""
+    def make(pack_lance, age=0.0):
+        p = pilot(pack=[(pack_lance, 22)])
+        p.w.depth, p.w.depth_ft, p.w.in_dungeon = 15, 750, True
+        lance = p.w.items()[0]
+        lance["weight"] = 300
+        p.weight_room = lambda: (100, None)
+        p.cmds = []
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append(line)
+        p.c = types.SimpleNamespace(send=lambda line: None)
+        p.room_t = 0.0
+        p.track_unfelt()
+        if age:
+            p.unfelt_since = {k: P.gnow() - age for k in p.unfelt_since}
+        took = p.pickup_room("a Lance (2d8)")
+        return p, took
+    unfelt, t1 = make("a Lance (2d8) {m69}")
+    felt, t2 = make("a Lance (2d8) {average - m69}")
+    old, _ = make("a Lance (2d8) {m69}", age=200)
+    news = [d for k, d in unfelt.notes if k == "tactic"]
+    ok = not t1 and not unfelt.cmds and news and "kept waiting for its feeling" in news[0] and \
+        felt.cmds and felt.cmds[0].startswith("custom k item=0") and \
+        unfelt.awaiting_feeling(unfelt.w.items()[0]) and not old.awaiting_feeling(old.w.items()[0]) and \
+        not felt.awaiting_feeling(felt.w.items()[0])
+    return ok, (f"unfelt Lance in the pack: took {t1}, cmds {unfelt.cmds}, news {news[:1]}; felt {{average}}: "
+                f"{felt.cmds}; after 200 s unfelt: protected {old.awaiting_feeling(old.w.items()[0])}")
