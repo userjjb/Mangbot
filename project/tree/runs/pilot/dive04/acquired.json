@@ -1385,8 +1385,295 @@
    "known": false,
    "t": 1793849297.2,
    "mission": "m67"
+  },
+  {
+   "name": "a Mace (2d4)",
+   "kind": "mace",
+   "known": false,
+   "t": 1793853860.5,
+   "mission": "m68"
+  },
+  {
+   "name": "a Lucerne Hammer (2d5)",
+   "kind": "lucerne hammer",
+   "known": false,
+   "t": 1793853954.1,
+   "mission": "m68"
+  },
+  {
+   "name": "a Scroll of Identify",
+   "kind": "scroll of identify",
+   "known": true,
+   "t": 1793853976.7,
+   "mission": "m68"
+  },
+  {
+   "name": "a Dagger (1d4)",
+   "kind": "dagger",
+   "known": false,
+   "t": 1793853995.9,
+   "mission": "m68"
+  },
+  {
+   "name": "a Scimitar (2d5)",
+   "kind": "scimitar",
+   "known": false,
+   "t": 1793854296.0,
+   "mission": "m68"
+  },
+  {
+   "name": "a Lance (2d8)",
+   "kind": "lance",
+   "known": false,
+   "t": 1793854298.4,
+   "mission": "m68"
+  },
+  {
+   "name": "an Amulet of Resist Acid",
+   "kind": "resist acid",
+   "known": true,
+   "t": 1793854343.1,
+   "mission": "m68"
+  },
+  {
+   "name": "a Flail (2d6)",
+   "kind": "flail",
+   "known": false,
+   "t": 1793854343.7,
+   "mission": "m68"
+  },
+  {
+   "name": "a Scroll of Identify",
+   "kind": "scroll of identify",
+   "known": true,
+   "t": 1793854384.0,
+   "mission": "m68"
+  },
+  {
+   "name": "a Piece of Elvish Waybread",
+   "kind": "piece of elvish waybread",
+   "known": true,
+   "t": 1793854386.0,
+   "mission": "m68"
+  },
+  {
+   "name": "a Scroll of Remove Curse",
+   "kind": "scroll of remove curse",
+   "known": true,
+   "t": 1793854499.6,
+   "mission": "m68"
+  },
+  {
+   "name": "a Rod of Trap Location",
+   "kind": "rod of trap location",
+   "known": true,
+   "t": 1793854507.5,
+   "mission": "m68"
+  },
+  {
+   "name": "a Wand of Wonder",
+   "kind": "wand of wonder",
+   "known": false,
+   "t": 1793854517.9,
+   "mission": "m68"
+  },
+  {
+   "name": "a Ring of Protection",
+   "kind": "protection",
+   "known": false,
+   "t": 1793854561.6,
+   "mission": "m68"
+  },
+  {
+   "name": "a Copper-Plated Rod",
+   "kind": "copper-plated rod",
+   "known": false,
+   "t": 1793854564.1,
+   "mission": "m68"
+  },
+  {
+   "name": "2 Pieces of Elvish Waybread",
+   "kind": "piec of elvish waybread",
+   "known": true,
+   "t": 1793854568.4,
+   "mission": "m68"
+  },
+  {
+   "name": "a Staff of Sleep Monsters",
+   "kind": "staff of sleep monster",
+   "known": false,
+   "t": 1793854727.5,
+   "mission": "m68"
+  },
+  {
+   "name": "an Amulet of Resist Lightning",
+   "kind": "resist lightning",
+   "known": true,
+   "t": 1793854806.9,
+   "mission": "m68"
+  },
+  {
+   "name": "3 Amulets of Slow Digestion {m67}",
+   "kind": "amulet of slow digestion",
+   "known": true,
+   "t": 1793855293.5,
+   "mission": "m68"
+  },
+  {
+   "name": "a Ring of Feather Falling",
+   "kind": "feather falling",
+   "known": true,
+   "t": 1793855324.0,
+   "mission": "m68"
+  },
+  {
+   "name": "a Ring of Protection",
+   "kind": "protection",
+   "known": false,
+   "t": 1793855332.8,
+   "mission": "m68"
+  },
+  {
+   "name": "a Staff of Light",
+   "kind": "staff of light",
+   "known": false,
+   "t": 1793855370.2,
+   "mission": "m68"
+  },
+  {
+   "name": "2 Rings of Feather Falling {m68}",
+   "kind": "ring of feather falling",
+   "known": true,
+   "t": 1793855397.0,
+   "mission": "m68"
+  },
+  {
+   "name": "a Ring of Resist Fire",
+   "kind": "resist fire",
+   "known": true,
+   "t": 1793855399.4,
+   "mission": "m68"
+  },
+  {
+   "name": "3 Scrolls of Word of Recall {@R750}",
+   "kind": "scroll of word of recall",
+   "known": true,
+   "t": 1793855401.1,
+   "mission": "m68"
+  },
+  {
+   "name": "Hard Studded Leather [7]",
+   "kind": "hard studded leather",
+   "known": false,
+   "t": 1793855409.4,
+   "mission": "m68"
+  },
+  {
+   "name": "a Scroll of Trap Detection",
+   "kind": "scroll of trap detection",
+   "known": true,
+   "t": 1793855424.9,
+   "mission": "m68"
+  },
+  {
+   "name": "a Scroll of Identify",
+   "kind": "scroll of identify",
+   "known": true,
+   "t": 1793855435.9,
+   "mission": "m68"
+  },
+  {
+   "name": "a Wand of Magic Missile",
+   "kind": "wand of magic missile",
+   "known": false,
+   "t": 1793855438.0,
+   "mission": "m68"
+  },
+  {
+   "name": "a Flail (2d6)",
+   "kind": "flail",
+   "known": false,
+   "t": 1793855440.3,
+   "mission": "m68"
+  },
+  {
+   "name": "4 Rations of Food",
+   "kind": "ration of food",
+   "known": true,
+   "t": 1793855444.5,
+   "mission": "m68"
+  },
+  {
+   "name": "a Cloak [1]",
+   "kind": "cloak",
+   "known": false,
+   "t": 1793855468.2,
+   "mission": "m68"
+  },
+  {
+   "name": "a Staff of Trap Location",
+   "kind": "staff of trap location",
+   "known": false,
+   "t": 1793855470.4,
+   "mission": "m68"
+  },
+  {
+   "name": "a Cutlass (1d7)",
+   "kind": "cutlass",
+   "known": false,
+   "t": 1793855471.9,
+   "mission": "m68"
+  },
+  {
+   "name": "a Potion of Berserk Strength",
+   "kind": "potion of berserk strength",
+   "known": true,
+   "t": 1793855474.5,
+   "mission": "m68"
+  },
+  {
+   "name": "2 Rods of Door/Stair Location",
+   "kind": "rod of door/stair location",
+   "known": true,
+   "t": 1793855524.4,
+   "mission": "m68"
+  },
+  {
+   "name": "a Battle Axe (2d8)",
+   "kind": "battle axe",
+   "known": false,
+   "t": 1793855592.8,
+   "mission": "m68"
+  },
+  {
+   "name": "a Ring of Protection",
+   "kind": "protection",
+   "known": false,
+   "t": 1793855615.2,
+   "mission": "m68"
+  },
+  {
+   "name": "4 Scrolls of Word of Recall {@R750}",
+   "kind": "scroll of word of recall",
+   "known": true,
+   "t": 1793855639.1,
+   "mission": "m68"
+  },
+  {
+   "name": "a Lead-Filled Mace (3d4)",
+   "kind": "lead-filled mace",
+   "known": false,
+   "t": 1793855782.1,
+   "mission": "m68"
+  },
+  {
+   "name": "a Scimitar (2d5)",
+   "kind": "scimitar",
+   "known": false,
+   "t": 1793855862.6,
+   "mission": "m68"
   }
  ],
- "trip_t0": 1793847770.2,
+ "trip_t0": 1793855139.6,
  "credits": {}
 }

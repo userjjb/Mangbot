@@ -48,6 +48,20 @@ weapon would give 3 blows at STR 18/70, DEX 18/20.
   weight); the static `~N/round` ignores them (`weapon_brand` in pilot.py counts brands at half). No speed from
   gear (the simulator's speed is the Speed potion's timer; a slower loadout is ruled out instead), no stealth, no
   light radius, no stat sustains or drains over time.
+- **The abilities it doesn't play are terms since 2.64.0** (m67: an Amulet of Weaponmastery came out only +3.9% over
+  Slow Digestion; its resist disenchantment and sustains counted for nothing, and its resist fear and Free Action
+  were missing from the diff because a clvl-30 warrior resists fear itself and the axe gives Free Action). Resist
+  fear, resist disenchantment, the six sustains, hold life, See Invisible and slow digestion are each valued in XP per
+  dungeon minute from the character's own rates per dungeon hour (`observe/ability_rates.py`, refreshed by wrap.sh;
+  a seed of Dive04's 30 days without it): the gold it saves (cures, Restores, re-enchanting) at XP-per-gold plus the
+  minutes it saves (afraid, resting from unseen hits, damage lost while STR is drained) at XP per dungeon minute.
+  `compare` adds an option's terms to its score as a share of the current score; the report prints each term with
+  its numbers and lists what the loadout "already had (no gain)" and from where (the grid's `@`, another worn
+  piece). Free Action, resist blindness/confusion and the resists stay with the simulator (it plays them; a term
+  would count them twice). The m67 comparison now: simulated ~+6%, abilities +10.3% (resist disenchantment +4.7%,
+  sustain STR +4.8%, sustain CON +0.9%, slow digestion -0.04%). Details: docs/gear-and-estimator.md 2.6a.
+  Open: rates measured while the ability was worn undercount it (selection); CON's HP loss while drained, regeneration,
+  telepathy, feather fall and light radius are shown, not valued.
 - Scenario sets: most fights are trivial (the Advisor: the differences live in the tail), hence the 500-fight depth
   sets and the tail gates. Escorts aren't modelled in `scenarios.make`; the hard set is 21 old emergencies (300-700
   ft, Spear-era) and one Light hound pack (750 ft).

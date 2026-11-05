@@ -207,7 +207,7 @@ def main():
         say(f"control socket {sock}")
         pilot.notify("started", f"in the game at {pilot.w.depth} (depth), Pilot v{VERSION}")
         while pilot.running:
-            pilot.tick()
+            pilot.safe_tick()             # (2.64.0: no step's exception ends the Pilot; the game link's still does)
             client.collect(0.05)          # drain the client's own queue; paces the loop
         say("pilot stopping")
     except ClientExited as e:

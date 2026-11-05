@@ -1,7 +1,7 @@
 #!/bin/bash
 # wrap.sh LABEL [NICK] -- the Architect's per-mission wrap-up (session 6): end the mission by its label (a hot-swap
 # loses the Pilot's in-memory label, so always by name), record the Navigator's tokens and cost, print the scorecard
-# row, refresh the damage mix at the mission's depth band, the complaints and the viewer's ? notes since the mission
+# row, refresh the damage mix at the mission's depth band and the ability rates (2.64.0), the complaints and the viewer's ? notes since the mission
 # start, and the character's state. Then write the report in runs/pilot/NICK/reports/ and the mission's lessons in
 # tools/pilot/FIELD-NOTES.md.
 LABEL=${1:?usage: wrap.sh LABEL [NICK]}; NICK=${2:-dive04}
@@ -13,6 +13,10 @@ python3 observe/tokens.py "$LABEL" 2>&1 | tail -1
 python3 observe/scorecard.py --table "$LABEL" 2>&1 | tail -2
 BAND=$(python3 observe/damage_mix.py --nick "$NICK" --mission "$LABEL" 2>&1 >/dev/null) \
   && echo "damage mix refreshed (runs/pilot/$NICK/damage_mix.json: the EHP column; $BAND)" || echo "damage mix FAILED: $BAND"
+# (2.64.0: the rates behind the gear evaluator's ability terms -- fear, disenchantment, drains... per dungeon hour)
+python3 observe/ability_rates.py --nick "$NICK" --days 30 >/dev/null 2>&1 \
+  && echo "ability rates refreshed (runs/pilot/$NICK/ability_rates.json: gearcmp's ability terms, 30 days)" \
+  || echo "ability rates FAILED (gearcmp uses the seed rates)"
 # the mission's start ("YYYY-MM-DD HH:MM", runs/missions.json); 2 hours ago if the label isn't there
 START=$(python3 -c 'import json, sys; print(next((m["start"] for m in json.load(open(sys.argv[1]))[::-1]
                                                    if m.get("label") == sys.argv[2]), ""))' ../../runs/missions.json "$LABEL")

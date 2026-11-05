@@ -2311,3 +2311,20 @@ BrokenPipeError: [Errno 32] Broken pipe
 23:00:01 pilot stopping
 23:00:04 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
 23:00:04 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+Traceback (most recent call last):
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/pilot.py", line 1902, in <module>
+    daemon.main()
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/daemon.py", line 210, in main
+    pilot.tick()
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/pilot.py", line 1174, in tick
+    self.vault_tick(now)
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/pilot.py", line 1700, in vault_tick
+    self.vault_found(None, likely=job["likely"])
+  File "/projectnb/jbrcs/mangband/github/tools/pilot/pilot.py", line 1775, in vault_found
+    self.log("vault", name=rec["name"], kind=rec["kind"], box=list(box), items=len(items),
+TypeError: Pilot.log() got multiple values for argument 'kind'
+23:54:35 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+23:54:35 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+00:23:36 pilot stopping
+00:23:38 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+00:23:38 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock

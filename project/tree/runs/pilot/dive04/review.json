@@ -34,7 +34,12 @@
   "a Katana of Slay Giant (3d4) (+3,+1)": "sell",
   "a Morning Star of Lightning (2d6) (+6,+3) {excellent - m67}": "sell",
   "a Ring of Free Action": "keep",
-  "a Ring of Protection [+7] {m67}": "sell"
+  "a Ring of Protection [+7] {m67}": "sell",
+  "a Ring of Protection [+9] {m68}": "sell",
+  "an Amulet of Resist Acid {m68}": "sell",
+  "an Amulet of Resist Lightning {m68}": "sell",
+  "a Lance of Slay Evil (2d8) (+5,+5) {excellent - m68}": "sell",
+  "a Flail (2d6) (+5,+6) {good - m68}": "sell"
  },
- "town_visits": 79
+ "town_visits": 82
 }

@@ -473,7 +473,8 @@ def gear_gold_for_the_estimator():
     """2.58.0 (options_sim 11-04q, the Advisor's estimator review): the shadow snapshot and the gear evaluator's
     scenarios carry acid_gold (1/6 of the six armour slots' one-point repair cost: the read at the lowered plus; 0 for
     an IGNORE_ACID piece -- Dive04's Leather of Resistance and Orcish Shield, "unaffected" in m65) and
-    disen_gold (one disenchantment's expected cost)."""
+    disen_gold (one disenchantment's expected cost) -- 2.64.0: disen_gold only without the ability terms (they value
+    resist disenchantment from the log's rate)."""
     import geareval
     worn = [("a Battle Axe of Westernesse (2d8) (+10,+9) (+1)", 22, 170),
             ("Hard Studded Leather of Resistance (-1) [7,+8]", 36, 110), ("a Shadow Cloak [6,+8]", 35, 5),
@@ -484,6 +485,11 @@ def gear_gold_for_the_estimator():
     acid, disen = p.gear_damage_gold()
     ch = p.gear_character()
     sp = geareval.sim_player(ch.derive(), ch, 15)
+    # (2.64.0: with the ability terms valuing resist disenchantment, the scenarios leave it out -- one account of it)
+    terms = sp.get("disen_gold") is None and "RES_DISEN" in ch.ability_worth
+    ch.ability_worth = {}
+    sp = geareval.sim_player(ch.derive(), ch, 15)
     # (the Leather of Resistance and the Orcish Shield ignore acid -- m65: "unaffected": 4 slots x ~380 / 6)
-    ok = 230 <= acid <= 280 and disen > 0 and sp.get("acid_gold") == acid and sp.get("disen_gold") == disen
-    return ok, f"acid_gold {acid}, disen_gold {disen}; sim_player {sp.get('acid_gold')}, {sp.get('disen_gold')}"
+    ok = 230 <= acid <= 280 and disen > 0 and sp.get("acid_gold") == acid and sp.get("disen_gold") == disen and terms
+    return ok, f"acid_gold {acid}, disen_gold {disen}; sim_player {sp.get('acid_gold')}, {sp.get('disen_gold')} " \
+               f"(none while the ability terms value resist disenchantment: {terms})"

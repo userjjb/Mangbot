@@ -27,6 +27,8 @@ from common import (HERE, VERSION, TV_FOOD, TV_FLASK, TV_LITE, DEFAULT_ORDERS, w
 from world import (World, gnow, set_time_factor, time_factor, model_factor, wall_of, wall_since, waited,  # noqa: E402
                    ghold, light_fuel, set_fast_ok, measured_rate, _lt, frozen)
 import structures                                # noqa: E402
+sys.path.insert(0, os.path.join(HERE, "..", "client"))
+from mang import ClientExited                    # noqa: E402  (2.64.0: the crash guard lets the game link's end through)
 import vault                                     # noqa: E402
 from stomach import Stomach                      # noqa: E402
 from report import ReportMixin                   # noqa: E402
@@ -264,6 +266,8 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.mons_log_t = 0.0
         self.drains_here = (None, 0)          # (level, stat drains seen on it)
         self.still_goals = (None, set())      # (level, mover goals) before a stationary-monster fight
+        self.step_errors = {}                  # (2.64.0, the crash guard) {(step, error, where): times}
+        self.reflexed = False                  # (this tick's reflexes ran: safe_tick's fallback skips them)
         self.still_fighting = None            # (level, position) of the stationary monster we're killing
         self.seen_blows = None
         self.unreachable = set()       # frontier tiles we failed to reach (this level)
@@ -396,7 +400,11 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         y, x = w.pos
         return [r[max(0, x - cols):x + cols + 1] for r in w.rows[max(0, y - rows):y + rows + 1]]
 
-    def log(self, kind, **kw):
+    def log(self, kind, /, **kw):
+        # (2.64.0: `kind` positional-only -- m68's vault alert passed a field named kind= and the TypeError killed the
+        # Navigator's notice; a field of that name is kept as "field_kind", never replacing the record's kind)
+        if "kind" in kw:
+            kw["field_kind"] = kw.pop("kind")
         rec = {"t": round(time.time(), 3), "kind": kind, "depth": self.w.depth, "pos": self.w.pos,
                "hp": self.w.hp, **kw}
         if kind in ("attention", "nav_journal", "user_note") and "crop" not in rec:
@@ -1146,38 +1154,86 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
                 self.att_cond.wait(1.5)   # let a waiting Navigator collect the event
             self.running = False
 
+    # --- the crash guard (2.64.0, m68: a TypeError in vault_found killed the Pilot at 800 ft) ---
+    # what is never caught: the game link gone (the daemon ends on it, as before)
+    GUARD_PASS = (ClientExited, BrokenPipeError, ConnectionError)
+
+    def guarded(self, name, fn, *args):
+        """fn(*args), an exception logged by step_error and None returned: an optional tick step never kills the
+        Pilot."""
+        try:
+            return fn(*args)
+        except self.GUARD_PASS:
+            raise
+        except Exception as e:
+            self.step_error(name, e)
+            return None
+
+    def step_error(self, name, e):
+        """Log an internal error once per (step, error, where it was raised): a `pilot_error` record with the trace,
+        the trace on stderr (pilot.log), and a `pilot_error` attention for the Navigator ("... -- playing on");
+        after that only counted."""
+        import traceback
+        tb = traceback.extract_tb(e.__traceback__)
+        where = f"{os.path.basename(tb[-1].filename)}:{tb[-1].lineno}" if tb else "?"
+        key = (name, type(e).__name__, where)
+        n = self.step_errors.get(key, 0) + 1
+        self.step_errors[key] = n
+        if n > 1:
+            return
+        text = "".join(traceback.format_exception(type(e), e, e.__traceback__))
+        print(f"pilot_error in {name} (playing on):\n{text}", file=sys.stderr, flush=True)
+        try:
+            self.log("pilot_error", step=name, error=repr(e)[:300], where=where, trace=text[-2000:])
+            self.notify("pilot_error", f"an internal error in {name}: {e!r} at {where} -- playing on (logged once; "
+                                       "the Architect fixes it)", action=False)
+        except Exception:                      # (the report path itself broken: stderr has it)
+            pass
+
+    def safe_tick(self):
+        """The daemon's tick: tick(), and if something unguarded in it raises, the error logged (step_error) and --
+        unless this tick's reflexes already ran -- the reflexes run (escapes and cures never skipped silently)."""
+        self.reflexed = False
+        try:
+            self.tick()
+        except self.GUARD_PASS:
+            raise
+        except Exception as e:
+            self.step_error("tick", e)
+            if not self.reflexed and self.running:
+                self.guarded("reflexes", self.reflexes)
+
     def tick(self):
         """One pass of the main loop (docs/pilot-core.md, "The tick loop"): perceive, cure confusion, keep the books,
-        watch, answer requests, then act. Each step is a method; one returning true ends the tick."""
+        watch, answer requests, then act. Each step is a method; one returning true ends the tick. 2.64.0: the
+        optional steps (the watches, the books, the detectors, requests) run guarded -- an exception in one is
+        logged once and the tick goes on (step_error); perceiving, confusion and acting are not (safe_tick)."""
         self.w.drain()
         self.w.refresh()
-        self.note_edge_cross()
+        g = self.guarded
+        g("note_edge_cross", self.note_edge_cross)
         if self.confusion_tick():
             return
-        self.supply_watch()
-        self.clock_tick()
-        self.note_town_stairs()
+        g("supply_watch", self.supply_watch)
+        g("clock_tick", self.clock_tick)
+        g("note_town_stairs", self.note_town_stairs)
         if self.wear_queue:
-            self.wear_step()
-        self.verify_use()
-        self.verify_effects()
-        self.learn_flavours_tick(gnow())
-        self.track_since()
+            g("wear_step", self.wear_step)
+        g("verify_use", self.verify_use)
+        g("verify_effects", self.verify_effects)
+        g("learn_flavours_tick", self.learn_flavours_tick, gnow())
+        g("track_since", self.track_since)
         now = gnow()
-        self.stomach_tick(now)
-        self.track_hp_min()
-        self.watch_floor()
-        self.resync_tick(now)
-        self.watch_items(now)
-        self.audit_tick(now)
-        self.structures_tick(now)
-        self.vault_tick(now)
-        self.avoid_tick()
-        self.trail_tick()
-        self.mons_tick(now)
-        self.belief_tick(now)
-        self.watch_tick(now)
-        self.handle_requests()
+        g("stomach_tick", self.stomach_tick, now)
+        g("track_hp_min", self.track_hp_min)
+        g("watch_floor", self.watch_floor)
+        for name in ("resync_tick", "watch_items", "audit_tick", "structures_tick", "vault_tick"):
+            g(name, getattr(self, name), now)
+        g("avoid_tick", self.avoid_tick)
+        g("trail_tick", self.trail_tick)
+        for name in ("mons_tick", "belief_tick", "watch_tick"):
+            g(name, getattr(self, name), now)
+        g("handle_requests", self.handle_requests)
         if not self.running:
             return
         if self.freeze_tick():
@@ -1602,17 +1658,20 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         # every act and goal record and shown in the viewer -- pilot (reflexes, policy, idle), plan (the Navigator's
         # plan town / plan trip, run by the Pilot), nav (a goal the Navigator gave directly), arch (the Architect)
         self.acting = "pilot"
-        if self.reflexes():
+        acted = self.reflexes()           # (never guarded: an error here goes to safe_tick, which logs it)
+        self.reflexed = True
+        if acted:
             return
         if self.parking and not isinstance(self.goal, Recall):
             self.park_tick()
             return
-        if self.rule_tick(gnow()):        # the Navigator's executable standing orders (`react`)
+        g = self.guarded                  # (2.64.0: the optional layers -- a failure is logged, the next layer acts)
+        if g("rule_tick", self.rule_tick, gnow()):        # the Navigator's executable standing orders (`react`)
             return
-        self.look_tick(gnow())            # (never acts: asks the server which monsters are asleep)
-        if self.policy_tick(gnow()):      # the Pilot's own item work, at safe moments
+        g("look_tick", self.look_tick, gnow())            # (never acts: asks the server which monsters are asleep)
+        if g("policy_tick", self.policy_tick, gnow()):    # the Pilot's own item work, at safe moments
             return
-        if self.queue_tick():             # (2.53.0: a plan or goal sent while plan town ran, now it's over)
+        if g("queue_tick", self.queue_tick):              # (2.53.0: a plan or goal sent while plan town ran)
             return
         self.acting = self.goal_origin(self.goal)
         if self.step_goal():
@@ -1771,8 +1830,8 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
                        if rec.get("good") else "")
                     + (f"; predicted traps at {', '.join(f'{q[0]},{q[1]}' for q in rec['traps'][:8])}"
                        + (" (a '*' is an object or, 1 in 4, a trap)" if rec["traps"] else "") if rec["traps"] else "")
-                    + f" -- {advice}", fields={"box": list(box), "vault": rec["name"], "kind": rec["kind"]})
-        self.log("vault", name=rec["name"], kind=rec["kind"], box=list(box), items=len(items),
+                    + f" -- {advice}", fields={"box": list(box), "vault": rec["name"], "vkind": rec["kind"]})
+        self.log("vault", name=rec["name"], vkind=rec["kind"], box=list(box), items=len(items),
                  monsters=dict(mons), traps=rec["traps"][:20])
 
     @staticmethod

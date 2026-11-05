@@ -20,9 +20,10 @@ test server in [harness-rulebook-ops.md](harness-rulebook-ops.md).
 |---|---|---|---|---|
 | `watch.py` | the user | any time, live | `ctl.sock` (`view`, `viewmap`, `navview`, `note`), `decisions.jsonl`, `navigator.md` | notes via the Pilot (`commentary.jsonl`, `user_note` records); `testserver/FREEZE` (F5) |
 | `watch_mission.py` | Architect | during a mission, in the background, restarted on each exit | new lines of `decisions.jsonl`, `asks.jsonl`, `pilot.log` | stdout; its read offsets in `runs/pilot/<nick>/watch_mission.state` |
-| `wrap.sh` | Architect | after each mission | (runs the tools below + `pilotctl`) | `missions.json` (end, tokens), scorecard JSON, `damage_mix.json` |
+| `wrap.sh` | Architect | after each mission | (runs the tools below + `pilotctl`) | `missions.json` (end, tokens), scorecard JSON, `damage_mix.json`, `ability_rates.json` |
 | `scorecard.py` | Architect, Advisor (reads cards) | after a mission (via `wrap.sh`), or ad hoc | `missions.json`, `decisions.jsonl`, `events.jsonl`, `state.jsonl`, `runs/flavours.json`, `testserver/gdb_run.log`, game tables, `itemvalue` | `runs/pilot/<nick>/scorecards/<label>.json` |
 | `tokens.py` | Architect | after `mission end` (via `wrap.sh`) | `missions.json`, Claude Code subagent transcripts | `missions.json` (`tokens`, `effort`) |
+| `ability_rates.py` | Architect | after each mission (via `wrap.sh`, 2.64.0) | `decisions.jsonl`, `events.jsonl` (fear, blindness, confusion, disenchantment, drains, meals, the cures quaffed; unseen attackers' HP via `logs.damage`), last 30 days | `runs/pilot/<nick>/ability_rates.json` (read by the Pilot's `ability_worth`: gearcmp/loadout/autowear's ability terms) |
 | `damage_mix.py` | Architect | after each mission (via `wrap.sh`) | `decisions.jsonl`, `events.jsonl`, the rulebook | `runs/pilot/<nick>/damage_mix.json` (read by the Pilot's gear evaluator) |
 | `notes.py` | Architect | after a mission (via `wrap.sh`), to answer `?` notes | `commentary.jsonl`, `decisions.jsonl` | stdout |
 | `logs.py` | library | imported by `scorecard.py`, `notes.py`, `damage_mix.py`, `watch.py` | `missions.json`, `decisions.jsonl`, `events.jsonl`, `state.jsonl`, the monster rulebook (damage) | nothing |
@@ -145,6 +146,8 @@ file ends, so what happened meanwhile is not reported. It does not report the us
 3. `scorecard.py --table LABEL` -- writes the card JSON and prints the table row (header + row).
 4. `damage_mix.py --nick NICK --mission LABEL` -- refreshes `runs/pilot/NICK/damage_mix.json` at the mission's
    depth band (see damage_mix.py below) and the 4-day window; prints one confirmation line with the band.
+   4a. (2.64.0) `ability_rates.py --nick NICK --days 30` -- refreshes `runs/pilot/NICK/ability_rates.json`, the rates
+   per dungeon hour behind the gear evaluator's ability terms (gear-and-estimator.md 2.6a); one confirmation line.
 5. Complaints: lines of `runs/complaints.md` stamped (`- YYYY-MM-DD HH:MM...`) at or after the mission's start in
    `missions.json` (2 hours back if the label isn't there).
 6. Questions: `notes.py --nick NICK --questions --mission LABEL` (the `?` notes made during the mission), cut to

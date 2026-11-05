@@ -488,6 +488,14 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   (`swapsafe`, `--now`; live-tested: waited through plan town's stages); the Town goal goes home by the overworld
   offset (wilderness.c world_index: -1 N, -2 E, -3 S, -4 W, then rings; live-tested from mid-tile with no trail);
   the trip plan stops re-issuing a failing goal; `wait` repeats its alerts last ("ALERTS:").
-- **Lessons:** never hot-swap (or restart) during a town or house visit (2.59.0 enforces it) -- `hotswap.sh` should wait for one to end;
+- **m67** (Sonnet medium, 2.59.0 -> 2.60.0): **158.6 XP/dmin** (44 frozen min excluded), a lesser vault (zelazny);
+  2.60.0 exact-kind junk; 2.61.0 frozen time excluded; 2.62.0 the vault detector + small fixes; 2.63.0 review decided in
+  the same visit, `debt waive` (the mace's 276 waived), `price` for floor items. Dive04 wears the **Amulet of
+  Weaponmastery** (STR, SUST_STR/CON, FA, RES_FEAR, RES_DISEN; gearcmp undervalued it -> 2.64.0 values them).
+- **m68** (23:41, 2.63.0): the Pilot CRASHED at 23:53 on vault_found's log kind clash (uncaught in tick); the
+  Architect froze time, renamed the key (pilot.py 1774-1775), restarted from the working tree (2.64.0 partly built
+  there), thawed. 2.64.0 adds a crash guard.
+- **Lessons:** never hot-swap (or restart) during a town or house visit (2.59.0 enforces it); a monitor started with
+  `&` and output to /dev/null eats the saved offsets -- always run_in_background; watch for asks while frozen -- `hotswap.sh` should wait for one to end;
   `restart.sh` loads the working tree; hand-walking into the house picks up the bank pile (the step-in
   square) -- never do it; `goal goto` queued behind raw steps can path back through the house.

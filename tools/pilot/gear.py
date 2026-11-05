@@ -680,17 +680,64 @@ class GearMixin:
                 worn.setdefault(it.slot, []).append(it)
         stats = {n: (w.ind.get(f"stat{k}") or [3])[0] for k, n in enumerate(self.STAT_NAMES)}
         flags = {("SEE_INVIS" if f == "see_invis" else f.upper()) for f, on in (w.flags or {}).items() if on}
+        # (2.64.0: the grid's '@' -- what the character has itself, kept by every loadout)
+        own = {("SEE_INVIS" if f == "see_invis" else f.upper()) for f, on in (w.flags or {}).items()
+               if isinstance(on, str) and "@" in on}
         inv = self.consumables_inv()
         depth = int(self.orders.get("max_depth", 0)) or (self.deepest_ft or 500)
         ch = geareval.Character(w.clvl, stats, w.hp[1], (w.ind.get("armor") or [0])[0] or 0, worn, flags=flags,
-                                depth_ft=depth, inv=inv, pack_weight=sum(i["weight"] for i in w.items()))
+                                depth_ft=depth, inv=inv, pack_weight=sum(i["weight"] for i in w.items()), intrinsic=own)
         # (2.58.0: the worn gear's acid and disenchantment cost per hit, for the simulator's scenarios -- the current
         # loadout's, for every option compared)
         try:
             ch.acid_gold, ch.disen_gold = self.gear_damage_gold()
         except Exception:
             pass
+        # (2.64.0: the abilities the simulator doesn't play, valued from the character's own rates)
+        try:
+            self.ability_worth(ch)
+        except Exception as e:                 # (the evaluator runs without the terms)
+            self.log("note", text=f"ability terms failed: {e!r}")
         return ch
+
+    ABILITY_PRICED = ("Heroism", "Boldness", "Cure Light Wounds", "Cure Serious Wounds", "Cure Critical Wounds",
+                      "Ration of Food", "Restore Life Levels") + tuple(f"Restore {v}" for v in
+                                                                       geareval.STAT_FULL.values())
+
+    def xp_per_dmin(self):
+        """XP per dungeon minute from recent play: the rate buckets (seeded like xp_per_gold)."""
+        b = self.rate_state()["buckets"]
+        seed_w = max(0.0, 1 - len(b) / self.RATE_WINDOW)
+        xp = sum(x[1] for x in b) + seed_w * self.RATE_SEED[0]
+        mins = len(b) * self.RATE_BUCKET_S / 60 + seed_w * self.RATE_SEED_MIN
+        return xp / max(1.0, mins)
+
+    def ability_worth(self, ch):
+        """Set ch.ability_worth (geareval.ability_worth: the abilities the simulator doesn't play, in XP per dungeon
+        minute), ch.xp_per_dmin and ch.ability_src: from runs/pilot/NICK/ability_rates.json (observe/ability_rates.py,
+        wrap.sh refreshes it), else geareval.ABILITY_RATES_SEED; the prices as last seen (the kit's otherwise); a
+        disenchantment's cost from the worn gear (disen_loss)."""
+        try:
+            rates = json.load(open(os.path.join(self.rundir, "ability_rates.json")))
+            src = f"rates: ability_rates.json, {rates.get('dungeon_h')} dungeon hours since {rates.get('since')}"
+        except (OSError, ValueError, TypeError, AttributeError):
+            rates, src = None, "rates: the seed (Dive04's 30 days to 2026-11-04)"
+        prices = {}
+        for k in self.ABILITY_PRICED:
+            try:
+                prices[k] = self.price_of(k, self.KIT_ITEMS.get(k, (0, 5, None))[1])
+            except Exception:
+                pass
+        take = None
+        try:
+            gold, p_takes = self.disen_loss()[:2]
+            take = gold / p_takes if p_takes else None
+        except Exception:
+            pass
+        ch.xp_per_dmin = round(self.xp_per_dmin(), 1)
+        ch.ability_worth = geareval.ability_worth(ch, rates, prices, self.xp_per_gold(), ch.xp_per_dmin, take)
+        ch.ability_src = src
+        return ch.ability_worth
 
     def gear_eval(self, items, n=10, no_loss=False):
         """The item slot evaluator on these pack items (or names): geareval.compare_slot. Cached per item and gear."""

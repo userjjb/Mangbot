@@ -3,6 +3,7 @@
 Run by unit.py (python3 unit.py [NAME]); W, pilot() and the other shared fixtures are in fixtures.py.
 """
 import collections
+import os
 
 from fixtures import P, case, pilot
 
@@ -394,3 +395,107 @@ def better_ac_by_geareval():
     line = p.gear_line()
     ok = not mail and shield and odd and "Leather Shield [8,+9] (AC 17 vs 10 worn)" in line and "Metal" not in line
     return ok, f"mail {mail}, shield {shield}, unreadable {odd}; {line}"
+
+
+def _m67_character():
+    """Dive04 as in m67 (clvl 30: a warrior's own resist fear, CF_BRAVERY_30; the grid's '@'), an Amulet of Slow
+    Digestion worn, the ability terms from the seed rates."""
+    import geareval as GE
+    worn = {}
+    for n in GE.DIVE04_WORN:
+        it = GE.Item(n)
+        worn.setdefault(it.slot, []).append(it)
+    worn["amulet"] = [GE.Item("an Amulet of Slow Digestion")]
+    ch = GE.Character(30, {"STR": 88, "INT": 5, "WIS": 8, "DEX": 38, "CON": 38, "CHR": 4}, mhp=340, ac=76, worn=worn,
+                      flags={"FREE_ACT", "SEE_INVIS", "RES_FIRE", "RES_COLD", "RES_ELEC", "RES_ACID", "RES_DARK",
+                             "RES_FEAR", "SLOW_DIGEST"}, depth_ft=750, inv=dict(ccw=20, phase=18, wor=2),
+                      intrinsic={"RES_DARK", "RES_FEAR"})
+    ch.xp_per_dmin = 44.5
+    ch.ability_worth = GE.ability_worth(ch, None, None, 0.41, ch.xp_per_dmin, None)
+    return GE, ch
+
+
+@case
+def gear_abilities_valued_m67():
+    """2.64.0, m67: `gearcmp Weaponmastery` put an Amulet of Weaponmastery (+2,+2) (+1) (STR, sustain STR/CON, Free
+    Action, resist fear and disenchantment) only +3.9% over Slow Digestion -- the abilities the simulator doesn't play
+    counted for nothing. Now each is a term (XP per dungeon minute from the log's rates: disenchantments x the cost to
+    put a plus back, drains x a Restore + the damage lost, ...) added to the score; the diff names what the loadout
+    has anyway (resist fear: the clvl-30 warrior's own; Free Action: the weapon's) -- no term for those. The amulet
+    comes out clearly ahead: the terms add over 8% to the simulated gain."""
+    GE, ch = _m67_character()
+    res = GE.compare_slot(ch, [GE.Item("an Amulet of Weaponmastery (+2,+2) (+1)")], hard=False, depth_n=60, n=3)
+    k = res["options"][1]
+    r = res["rules"][k]
+    terms = {f: x for f, x, _ in r["terms"]}
+    text = GE.report(res)
+    share = res["ability_adj"][k] / res["sim_score"]["current"]
+    ok = res["best"] == k and set(r["gained"]) == {"RES_DISEN", "SUST_STR", "SUST_CON"} and \
+        r["lost"] == ["SLOW_DIGEST"] and ("RES_FEAR", "yourself") in r["redundant"] and \
+        ("FREE_ACT", "weapon") in r["redundant"] and "RES_FEAR" not in terms and terms["RES_DISEN"] > 1 and \
+        terms["SUST_STR"] > 1 and -0.1 < terms["SLOW_DIGEST"] < 0 and share > 0.08 and \
+        "resist fear (yourself)" in text and "resist disenchantment: +" in text and "+ abilities +" in text
+    return ok, f"terms {terms}; abilities {share:+.1%} of the score; redundant {r['redundant']}; best {res['best']}"
+
+
+@case
+def gear_ability_terms_from_rates():
+    """2.64.0: the ability terms from a rates file (observe/ability_rates.py): resist fear = the time afraid + the
+    potions quaffed for it; resist disenchantment = plusses taken x the cost to put one back (the Pilot's disen_loss);
+    sustains = drains x the Restore (+ the damage a STR drain costs for DRAINED_H); none of it for an ability every
+    option has; the Pilot's ability_worth falls back to the seed rates without the file."""
+    import geareval as GE
+    GE_, ch = _m67_character()
+    rates = {"dungeon_h": 10, "counts": {"fear": 20, "afraid_s": 600, "disenchanted": 5, "food": 10},
+             "drained": {"STR": 5}, "cures": {"fear": {"Heroism": 10}}}
+    w = GE.ability_worth(ch, rates, {"Heroism": 60}, 0.5, 50.0, 400)
+    fear = w["RES_FEAR"]
+    # fear: 60 s afraid an hour = 1 min of 60 at 50 XP/min (0.83) + 1 Heroism an hour, 60 g x 0.5 / 60 (0.5)
+    ok_fear = abs(fear["xpm"] - (50 / 60 + 0.5)) < 0.01 and "2.0 fear episodes/hour" in fear["text"]
+    ok_dis = abs(w["RES_DISEN"]["xpm"] - 0.5 * 400 * 0.5 / 60) < 0.01
+    s = w["SUST_STR"]
+    ok_str = s["gold_h"] == 0.5 * 490 and s["min_h"] > 0 and w["SUST_DEX"]["xpm"] == 0
+    lose = GE.ability_terms(ch, {"SUST_STR", "RES_FEAR"}, {"RES_FEAR"})
+    same = GE.ability_terms(ch, {"RES_FEAR"}, {"RES_FEAR"})
+    p = pilot()
+    p.w.clvl = 30
+    p.w.flags = {"free_act": "a", "res_fear": "@"}
+    pc = p.gear_character()
+    ok_p = "RES_FEAR" in pc.intrinsic and "RES_DISEN" in pc.ability_worth and "seed" in pc.ability_src and \
+        pc.xp_per_dmin > 0
+    ok = ok_fear and ok_dis and ok_str and [f for f, _, _ in lose] == ["SUST_STR"] and lose[0][1] < 0 and not same \
+        and ok_p
+    return ok, f"fear {fear}; disen {w['RES_DISEN']['xpm']}; STR {s}; losing sustain STR {lose}; the Pilot: " \
+               f"intrinsic {pc.intrinsic}, {pc.ability_src}, {pc.xp_per_dmin} XP/dmin"
+
+
+@case
+def geareval_flag_names():
+    """2.64.0: every ability and resist the character sheet's grid shows (c-tool.c's flag names) has its F: name in
+    the game's object/ego/artifact files and a label in the gear diff (the grid's perm_lite is LITE: 'permanent
+    light'); every RES_/IM_/SUST_ flag in those files is an ability the diff shows; an intrinsic flag ('@') is kept by
+    a loadout that takes off the piece also giving it."""
+    import geareval as GE
+    grid = ("res_acid res_elec res_fire res_cold res_pois res_fear res_lite res_dark res_blind res_conf res_sound "
+            "res_shard res_nexus res_nether res_chaos res_disen slow_digest feather perm_lite regen telepathy "
+            "see_invis free_act hold_life").split()
+    fl = set()
+    for f in ("object.txt", "ego_item.txt", "artifact.txt"):
+        for line in open(os.path.join(GE.LIB, f)):
+            if line.startswith("F:"):
+                fl |= {x.strip() for x in line[2:].split("|") if x.strip()}
+    names = {g: GE.SHEET_FLAG.get(g.upper(), g.upper()) for g in grid}
+    unknown = [g for g, n in names.items() if n not in fl]
+    unlabelled = [n for n in names.values() if n not in GE.LABEL and not GE.label(n).startswith(("resist ", "immune "))]
+    res = {f for f in fl if f.startswith(("RES_", "IM_", "SUST_"))}
+    fake = GE.Item("Ring of Protection [+12]")
+    fake.flags = res | {"LITE"}
+    not_shown = sorted((res | {"LITE"}) - fake.abilities())
+    worn = {"amulet": [GE.Item("an Amulet of Weaponmastery (+2,+2) (+1)")]}
+    ch = GE.Character(30, {"STR": 98, "INT": 5, "WIS": 8, "DEX": 38, "CON": 38, "CHR": 4}, mhp=340, ac=10, worn=worn,
+                      flags={"RES_FEAR", "RES_DISEN", "FREE_ACT"}, intrinsic={"RES_FEAR"})
+    off = ch.derive({})
+    ok = not unknown and not unlabelled and not not_shown and "RES_FEAR" in off["flags"] and \
+        "RES_DISEN" not in off["flags"]
+    return ok, f"grid names not in the files: {unknown}; unlabelled: {unlabelled}; not in the diff: {not_shown}; " \
+               f"amulet off: resist fear kept {'RES_FEAR' in off['flags']}"

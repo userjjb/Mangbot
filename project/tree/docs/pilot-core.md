@@ -104,6 +104,19 @@ Pilot. When the socket doesn't answer, `complain` appends straight to `runs/comp
 
 ## The tick loop (`Pilot.tick`)
 
+**The crash guard (2.64.0; m68: a TypeError in `vault_found` went uncaught and the Pilot died at 800 ft).** The daemon
+calls `safe_tick()`. Inside `tick()` every optional step -- the bookkeeping, the watches, the detectors
+(`structures_tick`, `vault_tick`), `handle_requests`, and in `act_tick` the layers `rule_tick`, `look_tick`,
+`policy_tick`, `queue_tick` -- runs through `guarded(name, fn, ...)`: an exception is logged by `step_error` once per
+(step, error type, file:line) -- a `pilot_error` record with the trace, the trace on stderr (pilot.log), and a
+`pilot_error` attention for the Navigator ("an internal error in vault_tick: ... -- playing on") -- then only counted
+(`step_errors`), and the tick goes on. Perception, confusion, the reflexes, parking, the goal and the plan are not
+guarded step by step: an exception there reaches `safe_tick`, which logs it as step `tick` and runs `reflexes()` if
+this tick's hadn't run yet (`reflexed`), so escapes and cures are never skipped silently. The game link's end
+(`ClientExited`, a broken pipe, `GUARD_PASS`) is never caught: the daemon ends as before. Unit case
+`a_failing_tick_step_doesnt_stop_the_pilot`. (`Pilot.log`'s `kind` is positional-only since 2.64.0: a field named
+`kind` is kept as `field_kind`.)
+
 Each tick runs, in this order (any `return` ends the tick):
 
 1. **Perception**: `World.drain()` applies queued client events; `World.refresh()` polls the client (map every

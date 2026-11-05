@@ -31,6 +31,7 @@ Related docs: [pilot-items.md](pilot-items.md) (upgrade_step's static steps, sel
 |---|---|---|
 | `tools/pilot/geareval.py` | The gear evaluator: item parser, character model, scenario sets, simulation, EHP, verdict, loadout optimizer, text report. `--demo` runs Dive04's session-7 Ring of Strength question the Pilot's gear.py (`gearcmp`, `loadout`, `gear_better`, `ac_better`; also reused: the stat tables by the weight-limit check and `Item`/`label` by `review_hold`, both items.py, `SIM_RES`/`SHEET_FLAG` by shadow mode's snapshot). It does not use `itemvalue.py`; the Pilot filters its candidates with `itemvalue`'s `known` flag |
 | `tools/pilot/shadow.py` | Shadow mode: runs `options_sim.choose` in a background thread and queues the answers | gear.py (`shadow_decision`, `shadow_results`) -- live |
+| `tools/observe/ability_rates.py` | 2.64.0: how often the character met what the abilities the simulator doesn't play would stop, per dungeon hour (fear, disenchantment, stat and experience drains, unseen attackers, meals; the potions quaffed for fear/blindness/confusion), last 30 days; writes `runs/pilot/NICK/ability_rates.json` | `observe/wrap.sh` after each mission; read by the Pilot's `ability_worth` (section 2.6a); `geareval.ABILITY_RATES_SEED` without it |
 | `tools/observe/damage_mix.py` | Splits the HP the character lost in a depth band (the last mission's, else 700-800 ft) into damage kinds; writes `runs/pilot/NICK/damage_mix.json` (EHP's input) | `observe/wrap.sh` after each mission; read by `geareval.load_mix` |
 | `tools/attic/replay_group.py` | An offline script: replays the Borg group-danger tiers over a run's logs. Retired to `tools/attic/` in session 10 (C1; see its README.md) | nobody. It was used once to tune `group_tick`. Not part of gear or the estimator |
 | `Advisor/data/estimator/options_sim.py` | The Advisor's Monte Carlo fight simulator and estimator (`rollout`, `choose`, `base_policy`, `OPTIONS`) | imported live by path by geareval and shadow. The Advisor's file: read, never edit |
@@ -64,20 +65,27 @@ amulet, ring; two rings). The first option is always what is worn now ("current"
   "(Holy Avenger)"), artifact, slot, weight, flags, dice, to-hit/to-dam, AC/to-AC, pval. A Ring of Damage's or
   Accuracy's lone "(+n)" is its to-dam or to-hit (the server prints it so: `object1.c`), not a pval. An unidentified item (`{good}`,
   no plusses shown) is read as its base kind. `abilities()` = the ability flags (Free Action, See Invisible, hold life,
-  feather fall, telepathy, regeneration, slow digestion) plus every `RES_*`, `IM_*`, `SUST_*`.
-- `Character(clvl, stats, mhp, ac, worn, flags, depth_ft, inv, pack_weight)` backs the gear-free parts out of the sheet
-  once (base stats before gear bonuses, base HP before CON, AC from spells/effects, race abilities such as a Half-Orc's
-  resist darkness).
+  feather fall, telepathy, regeneration, slow digestion, permanent light -- `LITE`, the grid's `perm_lite`, since
+  2.64.0) plus every `RES_*`, `IM_*`, `SUST_*`. Every ability and resist the sheet's flags grid shows has its `F:` name
+  in the three files (`SHEET_FLAG` maps the grid's names; unit case `geareval_flag_names` checks it). Not in the diff:
+  curses (aggravation, teleportation, experience drain) and the slays and brands (in the numbers instead).
+- `Character(clvl, stats, mhp, ac, worn, flags, depth_ft, inv, pack_weight, intrinsic)` backs the gear-free parts out of
+  the sheet once (base stats before gear bonuses, base HP before CON, AC from spells/effects, the abilities the sheet
+  shows that no worn piece gives). `intrinsic` (2.64.0) = the grid's `@` column: what the character has itself --
+  race, class and level (a Half-Orc's resist darkness; a warrior's resist fear from clvl 30, `xtra1.c player_flags`
+  `CF_BRAVERY_30`) -- kept by every loadout, also when a worn piece gives it too.
 - `Character.derive(worn)` recomputes what the server would show for any loadout (as `xtra1.c` does): stats
   (`modify_stat_value`), blows (the warrior's blows table from STR, DEX and weapon weight), damage per round, to-hit,
   to-dam, AC (with DEX), max HP (with CON), speed (gear speed less the encumbrance penalty above half the weight limit),
-  flags, the weapon's slays and brands, weapon weight.
+  flags, the weapon's slays and brands, weapon weight, and the minor pvals (stealth, searching, infravision,
+  tunnelling: shown in the diff, not valued).
 - `Character.check()` compares the model with the sheet; mismatches are printed at the top of the report ("model vs
   sheet (the model is off here)").
 - The Pilot builds the character with `Pilot.gear_character()`: the sheet's stats, max HP and AC; worn items with their
   inventory weights; the sheet's flags; consumable counts (CCW/CSW/CLW, Phase, Teleportation, staff charges, Word of
   Recall, Speed, Berserk, Heroism); depth = the `max_depth` order, else the deepest depth reached, else 500 ft; the pack
-  weight.
+  weight; `intrinsic` = the grid flags with `@`; and (2.58.0) `acid_gold`/`disen_gold`, (2.64.0) `ability_worth`,
+  `xp_per_dmin` and `ability_src` (section 2.6a).
 
 ### 2.3 Slays and brands
 
@@ -147,6 +155,49 @@ missiles and drops with no message as "other". Output: `{"mix", "melee_level", "
 depths that mission spent at least 10% of its dungeon time at (750 -> 700-800, 700-850 -> 700-900), last 4 days;
 700-800 ft if it had no dungeon time or without `--mission`.
 
+### 2.6a The abilities the simulator doesn't play (2.64.0)
+
+m67: `gearcmp Weaponmastery` put an Amulet of Weaponmastery (+2,+2) (+1) -- STR, sustain STR and CON, Free Action,
+resist fear and disenchantment -- only +3.9% over an Amulet of Slow Digestion: the simulator plays none of resist
+disenchantment's or the sustains' worth. (Its resist fear and Free Action weren't in the diff because Dive04 has them
+anyway: a clvl-30 warrior resists fear itself, the weapon gives Free Action. The diff now says so.)
+
+**The terms.** `geareval.ability_worth(ch, rates, prices, xp_per_gold, xp_per_dmin, disen_take_gold)` values each
+ability in `VALUED` in **XP per dungeon minute**: the gold it saves an hour x XP-per-gold / 60, plus the dungeon
+minutes it saves an hour / 60 x the character's XP per dungeon minute:
+
+| Ability | What it saves an hour (rates per dungeon hour, from `ability_rates.json`) |
+|---|---|
+| resist fear | the seconds afraid (no melee: "too afraid to attack", kiting until it wears off; each episode to "You feel bolder now", at most 60 s) + the potions quaffed for it (Heroism, Boldness) |
+| resist disenchantment | the plusses disenchanted ("was disenchanted!") x what putting one back costs: the Pilot's `disen_loss` per disenchantment that takes a plus (the 2.46.0/2.57.0 model: scrolls the town kit would buy, else the resale lost), else ~380 |
+| sustain STAT | that stat's drains ("You feel very weak/clumsy/sickly...") x its Restore's price; STR and DEX also the damage a drain costs (`drain_loss`: dec_stat's mean points; `derive` with the stat lowered) for `DRAINED_H` = 30 min each. CON's HP loss is not valued |
+| hold life | experience drains x a Restore Life Levels |
+| See Invisible | the rest the HP lost to unseen attackers takes (an upper bound: some were out of sight, not invisible). Below 600 ft the `REQUIRED` rule rules out losing it anyway |
+| slow digestion | meals x a ration x 50% (`dungeon.c`: 20 -> 10 food a turn at normal speed) |
+
+Not valued here: Free Action, resist blindness and confusion and every elemental or high resist -- the simulator plays
+them (paralysis, blindness and confusion with their cures; a resist cuts its element), so a term would count them twice.
+Feather fall, telepathy, regeneration, permanent light and the minor pvals are shown, not valued.
+
+**Into the score.** `compare` adds an option's terms (gained less lost, `ability_terms`) as the same share of the
+current score: `share = sum(terms) / xp_per_dmin`, `score += share x score(current)`, and the paired gain moves by the
+same (its SE doesn't). With the terms valuing resist disenchantment, `sim_player` leaves `disen_gold` out of the
+scenarios -- one account of it. `optimize` adds the share to its proxy. An ability every option has (the character's
+own, or another worn piece's) has no term: the report lists it as "already had (no gain)".
+
+**The Pilot's inputs** (`Pilot.ability_worth(ch)`, called by `gear_character`): the rates from
+`runs/pilot/NICK/ability_rates.json`, else `ABILITY_RATES_SEED` (Dive04's 30 days to 2026-11-04: 32.6 dungeon hours;
+0.80 disenchantments, 0.49 STR / 0.40 DEX / 0.12 CON drains, 4.1 fear episodes and 14 s afraid an hour -- mostly before
+its clvl-30 resist fear); the prices as last seen (`price_of`, the kit's otherwise; `PRICE_SEED`); the disenchantment
+cost from the worn gear; XP per dungeon minute from the rate buckets (`xp_per_dmin`, seeded like `xp_per_gold`).
+For Dive04 at m67's gear: resist disenchantment +2.1 XP/min-equivalent (+4.7%), sustain STR +2.1 (+4.8%), sustain CON
++0.4 (+0.9%), slow digestion -0.02: +10.3% on top of the simulated gain.
+
+`observe/ability_rates.py [--nick dive04] [--days 30] [--mission LABEL] [--out FILE]`: the dungeon hours (decision
+records at depth > 0, gaps capped at 60 s) and the message and decision counts above. `observe/wrap.sh` refreshes it
+after each mission. A caveat: rates measured while the character had an ability undercount what it stops (Dive04's
+fear before and after clvl 30).
+
 ### 2.7 The verdict (`compare`)
 
 For each option other than the current one, any of these rules it out (printed as "against: ..."):
@@ -159,8 +210,8 @@ For each option other than the current one, any of these rules it out (printed a
 | slower | the loadout's speed is lower (the weight limit) |
 | less safe | in a safety set (hard, depth, deeper): P(near death) higher by more than max(0.5 points, 2 SE); otherwise the worst 5% of fights' lowest HP is lower, with the whole bootstrap 95% interval (300 resamples of the scenarios, paired) below zero |
 
-Then among the current gear and the options left: an option counts only if its paired gain is **more than 3% of the
-current score and more than 2 standard errors**. The best score among those is found; every option within 1% of it is a
+Then among the current gear and the options left: an option counts only if its paired gain (the simulated gain plus
+the ability terms, 2.6a) is **more than 3% of the current score and more than 2 standard errors**. The best score among those is found; every option within 1% of it is a
 tie, and the tie goes to the safer one: the mean lowest HP in the hard set (or the deeper set), then EHP, then the
 current gear. That option is `best` (`*` in the report).
 
@@ -177,10 +228,14 @@ There is no `MIN_GAIN` in geareval: the "+3% and 2 SE" bar is its equivalent. `M
 - **Prints** (`geareval.report`): items it couldn't read; model-vs-sheet mismatches; then per option:
   - `* label` (the `*` is the verdict's pick);
   - `STR .. DEX .. CON .. | blows N | ~D/round | to-hit | AC | HP | EHP (+x% vs current) | speed`;
-  - `abilities: +gained, -lost`;
+  - `abilities: +gained, -lost` and the minor pvals' changes ("stealth +2");
+  - (2.64.0) `already had (no gain): LABEL (where)` -- an ability the new piece gives that the loadout has anyway:
+    "yourself" (the grid's `@`: race, class, level), "the sheet", or the slot of the other piece giving it;
+  - (2.64.0) one line per ability term: `resist disenchantment: +2.07 XP/min-equivalent (+4.7%; 0.80 plusses
+    disenchanted/hour x ~380 g to put one back)`;
   - one `sim SET (fights x seeds)` line per set: turns + resting per fight, XP per real minute, lowest HP (mean, worst
     5%, worst 1%), near death %, consumables in gold;
-  - `X vs Y XP per real minute: +z% (+/- w% at 2 SE)`;
+  - `X vs Y XP per real minute: +z% (+/- w% at 2 SE)`, with the terms: `= simulated +a% + abilities +b%`;
   - `against: ...` (the reasons it was ruled out);
   - finally the EHP definition and the `verdict:` line (the pick, its gain, the seconds taken, and the scoring rule).
 
@@ -308,8 +363,8 @@ hunt's `order_refused` and `hunt_override` records and on the engage `act` recor
 check's last refusal:** when the expected enchantment gold is more than a kill brings -- the drop's expected value
 (drops.csv `e_gold` + `e_item_value_cap`) plus the kill's XP (`exp * level / clvl`, `Race.exp` from monster.txt W:)
 at the recent XP per gold -- "...would cost ~N gold of enchantment on average, more than a kill brings"; never with
-resist disenchantment (`kill_worth`/`kill_xp` go in `last_hunt`). It rarely fires: Khim at Dive04's 11-02 gear is ~880 (2.46.0, at the ~190 price guess; ~490 at the prices Dive04 last saw) against ~3,160. geareval doesn't count it either:
-options_sim reports no per-monster melee rounds, and it is the Advisor's file.
+resist disenchantment (`kill_worth`/`kill_xp` go in `last_hunt`). It rarely fires: Khim at Dive04's 11-02 gear is ~880 (2.46.0, at the ~190 price guess; ~490 at the prices Dive04 last saw) against ~3,160. geareval's sims carry it as
+`disen_gold` (2.58.0); since 2.64.0 its comparisons value resist disenchantment by the log's rate instead (2.6a).
 
 ---
 

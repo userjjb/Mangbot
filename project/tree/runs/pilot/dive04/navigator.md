@@ -754,3 +754,8 @@
 - 22:38:54 800ft 100% | User: return to vault for boots | goal fetch 27,183 (metal cap spot near boots) | food ~11 min bound, slow digestion
 - 22:45:08 town 100% | Review: sell Katana (~3300) and Morning Star (our axe 36/round better), keep Ring of FA as spare | weapon outclassed; FA ring is backup for the axe
 - 22:47:38 town 100% | User asked amulet comparison | gearcmp: Weaponmastery +3.9%, loses slow digest; offered, waiting user | marginal
+- 23:41:37 town 100% | Mission start, town, 3 WoR, supplies full | plan town buy WoR:3, then one trip 700-800 via recall until cures<4 or phase<5 or time>00:17 then town | one long trip beats two
+- 23:55:03 800ft 100% | Architect msg: pilot crashed on vault notice, fixed, time thawed | carry on, read vault alert if it comes | frozen minutes not counted
+- 00:01:15 town 100% | Trip1 recalled early (escape at max depth w/ only > known), 78xp/min; town review: amulets resist already had, lance/flail not better | let default sell; then new trip 700-800 until time>00:19
+- 00:05:26 town 100% | Town done, queued trip got dropped by plan_done | re-issue trip 700-800 until time>00:19 then town | budget
+- 00:22:46 town 100% | End: in town idle, XP +2579 in 40 min, no close calls | stop | budget

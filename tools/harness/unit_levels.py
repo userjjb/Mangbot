@@ -579,7 +579,100 @@ def vault_notice_traps_loot_and_zones():
     rec["good"] = [q9]
     plain = p.iv("a Cutlass (1d7)").value
     good = p.iv_at("a Cutlass (1d7)", q9).value
+    # (2.64.0, m68: through the real Pilot.log and notify -- the stubs took the vault record's kind= field that the
+    # real log() refused with a TypeError, so the alert never reached the Navigator)
+    import io
+    import json
+    import types
+    r = pilot(hp=369)
+    r.w.clvl, r.w.depth, r.w.depth_ft = 30, 16, 800
+    r.danger_why = lambda q, *a: None
+    r.dlog = io.StringIO()
+    r.crop = lambda *a, **k: []                 # (the test World has no screen rows)
+    r.log = types.MethodType(P.Pilot.log, r)
+    r.notify = types.MethodType(P.Pilot.notify, r)
+    err = None
+    try:
+        r.vault_found(dict(m))
+    except Exception as e:
+        err = e
+    recs = [json.loads(x) for x in r.dlog.getvalue().splitlines()]
+    real = [x for x in recs if x["kind"] == "vault"]
+    att = [x for x in recs if x["kind"] == "attention" and x.get("what") == "vault"]
+    clash = io.StringIO()
+    r.dlog = clash
+    r.log("note", kind="x", text="a field named kind")
+    kept = json.loads(clash.getvalue())
+    ok_real = err is None and real and real[0].get("vkind") == "lesser vault" and att and \
+        att[0].get("vkind") == "lesser vault" and kept["kind"] == "note" and kept["field_kind"] == "x"
     ok = rec["loot"] and "lesser vault" in alert and "Cave orc" in alert and traps == set(rec["traps"]) and traps \
-        and zoned and lifted and good > plain
+        and zoned and lifted and good > plain and ok_real
     return ok, (f"alert {alert[:200]!r}; loot {rec.get('loot')}; traps {len(traps)}; greater zoned {zoned}, lifted "
-                f"{lifted}; a Cutlass plain {plain} vs on a '9' square {good}")
+                f"{lifted}; a Cutlass plain {plain} vs on a '9' square {good}; the real log/notify: error {err!r}, "
+                f"vault records {len(real)}, attention {len(att)}; a kind= field kept as {kept.get('field_kind')!r}")
+
+
+@case
+def a_failing_tick_step_doesnt_stop_the_pilot():
+    """2.64.0, m68: a TypeError in vault_found (vault_tick) went uncaught and the Pilot died at 800 ft. Now an optional
+    tick step that raises is logged once per (step, error, place) -- a `pilot_error` attention, "playing on" -- and
+    the tick goes on (the later watches, requests and acting run); a failure outside the guarded steps (confusion,
+    the goal) is caught by safe_tick, which runs the reflexes unless this tick's already ran; the game link's end
+    (ClientExited, a broken pipe) still ends the Pilot."""
+    p = pilot(hp=369)
+    ran = []
+    steps = ("note_edge_cross supply_watch clock_tick note_town_stairs verify_use verify_effects learn_flavours_tick "
+             "track_since stomach_tick track_hp_min watch_floor resync_tick watch_items audit_tick structures_tick "
+             "avoid_tick trail_tick mons_tick belief_tick watch_tick handle_requests freeze_tick").split()
+    for name in steps:
+        setattr(p, name, (lambda n: lambda *a: ran.append(n) and None)(name))
+    p.w.drain = p.w.refresh = lambda: None
+    p.confusion_tick = lambda: False
+
+    def boom(now):
+        raise TypeError("Pilot.log() got multiple values for argument 'kind'")
+    p.vault_tick = boom
+    p.act_tick = lambda now: ran.append("act_tick")
+    p.running = True
+    p.safe_tick()
+    p.safe_tick()
+    errs = [d for k, d in p.notes if k == "pilot_error"]
+    ok1 = ran.count("watch_tick") == 2 and ran.count("act_tick") == 2 and ran.count("handle_requests") == 2 and \
+        len(errs) == 1 and "vault_tick" in errs[0] and "playing on" in errs[0] and sum(p.step_errors.values()) == 2
+    # an unguarded part fails before the reflexes: they run anyway; after them: not twice
+    q = pilot(hp=369)
+    for name in steps:
+        setattr(q, name, lambda *a: None)
+    q.w.drain = q.w.refresh = lambda: None
+    refl = []
+    q.reflexes = lambda: refl.append(1) and False
+    q.running = True
+
+    def conf():
+        raise KeyError("confused")
+    q.confusion_tick = conf
+    q.safe_tick()
+    before = len(refl)
+    q.confusion_tick = lambda: False
+    q.parking = False
+
+    def goal():
+        raise ValueError("a goal's bug")
+    q.rule_tick = q.policy_tick = q.queue_tick = lambda *a: False
+    q.look_tick = lambda *a: None
+    q.step_goal = goal
+    q.safe_tick()
+    after = len(refl) - before
+    # the game link's end is not caught
+    import mang
+    q.step_goal = lambda: (_ for _ in ()).throw(mang.ClientExited("gone"))
+    try:
+        q.safe_tick()
+        passed = False
+    except mang.ClientExited:
+        passed = True
+    kinds = sorted(k[0] for k in q.step_errors)
+    ok = ok1 and before == 1 and after == 1 and passed and kinds == ["tick", "tick"]
+    return ok, (f"steps run twice past the failing vault_tick: watch_tick {ran.count('watch_tick')}, act_tick "
+                f"{ran.count('act_tick')}; notices {errs}; reflexes after a confusion_tick error {before}, after a goal "
+                f"error (already ran) {after}; ClientExited passes {passed}; errors {sorted(q.step_errors)}")

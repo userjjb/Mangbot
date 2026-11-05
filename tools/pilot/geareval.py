@@ -12,7 +12,12 @@ An option is a loadout: the worn set with some slots changed. Each option is jud
                (its decision log's `mons` records), generated fights at the depth and 100 ft deeper, and the
                replayed emergencies (the Advisor's replay study). Kill speed, XP per turn, lowest HP, P(near
                death), consumables used.
-  4. verdict   vetoes first, then safety (near-death rate in the safety sets), then XP per turn net of consumables.
+  4. abilities (2.64.0) what the simulator doesn't play -- resist fear and disenchantment, sustains, hold life, See
+               Invisible, slow digestion -- as XP per dungeon minute from the character's own rates (ability_worth,
+               observe/ability_rates.py), added to the score as a share; the diff also names the abilities an option
+               adds that the loadout has anyway (the character's own, the grid's '@', or another worn piece's).
+  5. verdict   vetoes first, then safety (near-death rate in the safety sets), then XP per turn net of consumables
+               and the ability terms.
 
 The item slot evaluator (`compare_slot`) builds one option per candidate for one slot (both ring slots for a ring).
 The loadout optimizer (`optimize`, the Pilot's `loadout [shops]`) searches the worn set with one or two slots
@@ -50,10 +55,14 @@ PVAL_FLAGS = set(STATS) | {"SPEED", "BLOWS", "STEALTH", "SEARCH", "INFRA", "TUNN
 # Homunculi), See Invisible (ghosts, Clear hounds; FIELD-NOTES "Dangers met at 600-700 ft")
 REQUIRED = {"FREE_ACT": 0, "SEE_INVIS": 600}
 LABEL = {"FREE_ACT": "Free Action", "SEE_INVIS": "See Invisible", "HOLD_LIFE": "hold life", "FEATHER": "feather fall",
-         "TELEPATHY": "telepathy", "REGEN": "regeneration", "SLOW_DIGEST": "slow digestion"}
+         "TELEPATHY": "telepathy", "REGEN": "regeneration", "SLOW_DIGEST": "slow digestion", "LITE": "permanent light"}
 ABILITY_FLAGS = set(LABEL)
+# (the sheet grid's names -> the F: names of object.txt / ego_item.txt / artifact.txt; 2.64.0: the grid's perm_lite is
+# the LITE flag -- every grid ability and resist now has its F: name, test geareval_flag_names)
 SHEET_FLAG = {"RES_CONF": "RES_CONFU", "RES_NETHER": "RES_NETHR", "RES_SHARDS": "RES_SHARD", "SEE_INV": "SEE_INVIS",
-              "FREE_ACTION": "FREE_ACT"}
+              "FREE_ACTION": "FREE_ACT", "PERM_LITE": "LITE"}
+# the grid's pval columns: shown in the ability diff (2.64.0), not valued
+MINOR_PVALS = ("STEALTH", "SEARCH", "INFRA", "TUNNEL")
 
 
 def label(f):
@@ -329,7 +338,7 @@ class Character:
     stats: {'STR': value as used (18/70 = 88), ...}; mhp, ac: the sheet's totals; worn: {slot: [Item]}.
     The gear-free parts (stat_cur, player_hp, the base AC and to-hit) are backed out of the sheet once."""
 
-    def __init__(self, clvl, stats, mhp, ac, worn, flags=(), depth_ft=700, inv=None, pack_weight=0):
+    def __init__(self, clvl, stats, mhp, ac, worn, flags=(), depth_ft=700, inv=None, pack_weight=0, intrinsic=()):
         self.clvl, self.depth_ft = clvl, depth_ft
         self.pack_weight = pack_weight          # (tenth-pounds carried in the pack: the weight limit's other half)
         self.worn = {s: list(v) for s, v in worn.items()}
@@ -344,7 +353,11 @@ class Character:
         self.player_hp = mhp - t[con_i]["adj_con_mhp"] * clvl // 100
         gear_ac = sum(i.ac + i.to_a for v in self.worn.values() for i in v)
         self.ac_other = ac - gear_ac - t[stat_index(stats["DEX"])]["adj_dex_ta"]     # (spells, timed effects)
-        self.extra_flags = self.sheet_flags - self._flags(self.worn)                 # (race: Half-Orc resist dark)
+        # (the grid's '@' column, 2.64.0: what the character has itself -- race, class and level: a Half-Orc's resist
+        # dark, a warrior's resist fear from clvl 30 (xtra1.c player_flags, CF_BRAVERY_30) -- kept by every loadout,
+        # also when a worn piece gives it too)
+        self.intrinsic = {SHEET_FLAG.get(f, f) for f in intrinsic}
+        self.extra_flags = (self.sheet_flags - self._flags(self.worn)) | self.intrinsic
 
     @staticmethod
     def _stat_bonus(worn):
@@ -385,7 +398,8 @@ class Character:
             speed -= (load - limit // 2) // (limit // 10)
         flags = self._flags(worn) | self.extra_flags
         slays, brands = weapon_mults(weapon)
-        return dict(stats=st, blows=nb, dice=f"{dn}d{ds}", tohit=w_h + to_h, todam=w_d + to_d, dmg=round(dmg, 1),
+        minor = {f: sum(i.pval for v in worn.values() for i in v if f in i.flags) for f in MINOR_PVALS}
+        return dict(minor=minor, stats=st, blows=nb, dice=f"{dn}d{ds}", tohit=w_h + to_h, todam=w_d + to_d, dmg=round(dmg, 1),
                     ac=ac, mhp=mhp, speed=speed, flags=flags, slays=slays, brands=brands,
                     wweight=weapon.weight if weapon else 0)
 
@@ -573,7 +587,8 @@ def sim_player(d, ch, depth):
     # carries them -- 0 without)
     if getattr(ch, "acid_gold", 0):
         p["acid_gold"] = ch.acid_gold
-    if getattr(ch, "disen_gold", 0):
+    # (2.64.0: not when the ability terms value resist disenchantment -- one account of it, the log's rate)
+    if getattr(ch, "disen_gold", 0) and "RES_DISEN" not in (getattr(ch, "ability_worth", None) or {}):
         p["disen_gold"] = ch.disen_gold
     for f in d["flags"]:
         if f in SIM_RES:
@@ -661,6 +676,134 @@ def paired_gain(rows_a, rows_b, xp_per_gold):
     return rb - ra, se
 
 
+# ------------------------------------------------------------------ the abilities the simulator doesn't play
+# (2.64.0, m67: an Amulet of Weaponmastery came out +3.9% over Slow Digestion -- its resist disenchantment and
+# sustains counted for nothing). Each such ability gets a term in XP per dungeon minute: what it saves an hour (gold
+# at XP-per-gold, and minutes at the character's XP per dungeon minute) from how often the character met what it
+# stops (observe/ability_rates.py -> runs/pilot/NICK/ability_rates.json; ABILITY_RATES_SEED without it). compare adds
+# an option's terms (gained less lost) to its score as the same share of the current score.
+# Not here: Free Action, resist blindness and confusion, the elemental and high resists -- the simulator plays them
+# (paralysis, blindness, confusion and their cures in the fights; a resist cuts its element): a term would count
+# them twice. Feather fall, telepathy, regeneration, permanent light, the minor pvals: shown, not valued.
+# The seed: Dive04's log over the 30 days to 2026-11-04 (32.6 dungeon hours; most of it before its clvl-30 resist fear).
+ABILITY_RATES_SEED = {
+    "dungeon_h": 32.62,
+    "counts": {"fear": 133, "too_afraid": 48, "afraid_s": 461, "blind": 257, "confused": 103, "paralysed": 4,
+               "disenchanted": 26, "life": 1, "food": 33, "unseen_hp": 6520},
+    "drained": {"STR": 16, "CON": 4, "WIS": 1, "DEX": 13},
+    "cures": {"fear": {"Boldness": 7, "Heroism": 44}, "confused": {"Cure Serious Wounds": 20, "Cure Critical Wounds": 4},
+              "blind": {"Cure Light Wounds": 18, "Cure Serious Wounds": 84, "Cure Critical Wounds": 26}},
+    "since": "2026-10-05 23:47", "made": "2026-11-04 23:47 (seed)"}
+# gold, when the Pilot has no store price: the kit's (town.py KIT_ITEMS), object.txt's for Restore Life Levels
+PRICE_SEED = {"Heroism": 55, "Boldness": 20, "Ration of Food": 5, "Restore Life Levels": 400,
+              "Restore Strength": 490, "Restore Intelligence": 490, "Restore Wisdom": 490, "Restore Dexterity": 490,
+              "Restore Constitution": 490, "Restore Charisma": 490}
+STAT_FULL = {"STR": "Strength", "INT": "Intelligence", "WIS": "Wisdom", "DEX": "Dexterity", "CON": "Constitution",
+             "CHR": "Charisma"}
+DISEN_TAKE_SEED = 380        # gold a disenchantment that takes a plus costs (2.57.0: ~380 for an armour +8 -> +7)
+DRAINED_H = 0.5              # hours a drained stat stays drained: the Restore after the fight, or at the next town
+SLOW_DIGEST_SAVES = 0.5      # food slow digestion saves (dungeon.c: 2 x energy/100 - 10 a turn, 20 -> 10 at normal speed)
+VALUED = ("RES_FEAR", "RES_DISEN", "SUST_STR", "SUST_INT", "SUST_WIS", "SUST_DEX", "SUST_CON", "SUST_CHR",
+          "HOLD_LIFE", "SEE_INVIS", "SLOW_DIGEST")
+
+
+def drain_loss(v):
+    """Expected points one stat drain takes from a current stat value v (18/70 = 88): spells2.c do_dec_stat ->
+    spells1.c dec_stat(stat, 10, temporary): 1 point at 18 or less; above, (d(L) + L) x 10 / 100, at least 5, with
+    L = ((v - 18) / 2 + 1) / 2 + 1; never under 18."""
+    if v <= 18:
+        return 1.0 if v > 3 else 0.0
+    big = ((v - 18) // 2 + 1) // 2 + 1
+    mean = sum(max(5, (r + big) * 10 // 100) for r in range(1, big + 1)) / big
+    return min(mean, v - 18)
+
+
+def ability_worth(ch, rates=None, prices=None, xp_per_gold=0.41, xp_per_dmin=40.0, disen_take_gold=None):
+    """{flag: dict(xpm, gold_h, min_h, text)} for VALUED: xpm = what having it is worth in XP per dungeon minute,
+    from gold_h (gold it saves an hour, at xp_per_gold) and min_h (dungeon minutes it saves an hour, at
+    xp_per_dmin). rates: ability_rates.json's dict (ABILITY_RATES_SEED); prices: {kind: gold} (PRICE_SEED fills
+    in); disen_take_gold: what a disenchantment that takes a plus costs the worn gear (the Pilot's disen_loss)."""
+    r = rates or ABILITY_RATES_SEED
+    h = max(0.1, float(r.get("dungeon_h") or 0))
+    c = r.get("counts") or {}
+    price = dict(PRICE_SEED)
+    price.update({k: v for k, v in (prices or {}).items() if v})
+
+    def per_h(n):
+        return (n or 0) / h
+
+    def cures(what):
+        got = (r.get("cures") or {}).get(what) or {}
+        gold = sum(n * price.get(k, 0) for k, n in got.items()) / h
+        return gold, ", ".join(f"{n / h:.2f} {k}" for k, n in sorted(got.items(), key=lambda kv: -kv[1]))
+    out = {}
+
+    def put(flag, gold_h, min_h, text):
+        xpm = gold_h * xp_per_gold / 60 + min_h / 60 * xp_per_dmin
+        out[flag] = dict(xpm=round(xpm, 3), gold_h=round(gold_h, 1), min_h=round(min_h, 2), text=text)
+    # resist fear: the time afraid (no melee: "You are too afraid to attack", kiting until it wears off) and the
+    # potions quaffed for it
+    g, what = cures("fear")
+    put("RES_FEAR", g, per_h(c.get("afraid_s")) / 60,
+        f"{per_h(c.get('fear')):.1f} fear episodes/hour, {per_h(c.get('afraid_s')):.0f} s afraid/hour "
+        f"({per_h(c.get('too_afraid')):.1f} 'too afraid to attack'/hour)" + (f", quaffed {what}/hour" if what else ""))
+    # resist disenchantment: the plusses it takes, at what putting them back costs (the 2.46.0/2.57.0 model)
+    take = disen_take_gold if disen_take_gold is not None else DISEN_TAKE_SEED
+    put("RES_DISEN", per_h(c.get("disenchanted")) * take, 0.0,
+        f"{per_h(c.get('disenchanted')):.2f} plusses disenchanted/hour x ~{take:.0f} g to put one back")
+    # sustains: the Restore a drain needs, and (STR, DEX) the damage lost while drained
+    d0 = ch.derive()
+    for s, full in STAT_FULL.items():
+        n = per_h((r.get("drained") or {}).get(s))
+        rp = price.get(f"Restore {full}", 0)
+        lost_min, extra = 0.0, ""
+        if s in ("STR", "DEX") and d0["dmg"] > 0:
+            import copy
+            dr = copy.copy(ch)
+            dr.stat_cur = dict(ch.stat_cur)
+            dr.stat_cur[s] = max(3, round(ch.stat_cur[s] - drain_loss(ch.stat_cur[s])))
+            d1 = dr.derive()
+            frac = max(0.0, 1 - d1["dmg"] / d0["dmg"])
+            lost_min = n * DRAINED_H * 60 * frac
+            extra = (f"; {frac:.0%} less damage ({fmt_stat(ch.stat_cur[s])} -> {fmt_stat(dr.stat_cur[s])}, blows "
+                     f"{d0['blows']} -> {d1['blows']}) for ~{DRAINED_H * 60:.0f} min each") if frac else \
+                f"; no damage lost ({fmt_stat(ch.stat_cur[s])} -> {fmt_stat(dr.stat_cur[s])})"
+        elif s == "CON":
+            extra = "; the HP lost while drained not valued"
+        put(f"SUST_{s}", n * rp, lost_min, f"{n:.2f} {s} drains/hour x Restore {full} {rp} g{extra}")
+    # hold life: the experience drains, at a Restore Life Levels each
+    n = per_h(c.get("life"))
+    put("HOLD_LIFE", n * price["Restore Life Levels"], 0.0,
+        f"{n:.2f} experience drains/hour x Restore Life Levels {price['Restore Life Levels']} g")
+    # See Invisible (beyond the 600 ft rule): the rest the HP lost to unseen attackers takes (an upper bound: some
+    # were out of sight, not invisible)
+    hp = per_h(c.get("unseen_hp"))
+    mhp = max(1, ch.sheet["mhp"])
+    rest_min = rest_turns(hp, mhp) / REST_SPEEDUP * BLOCK_S / 60
+    put("SEE_INVIS", 0.0, rest_min, f"{hp:.0f} HP/hour lost to unseen attackers: ~{rest_min * 60:.0f} s resting/hour "
+                                    "(at most: some were out of sight, not invisible)")
+    # slow digestion: half the food
+    n = per_h(c.get("food"))
+    put("SLOW_DIGEST", n * price["Ration of Food"] * SLOW_DIGEST_SAVES, 0.0,
+        f"{n:.1f} meals/hour x {price['Ration of Food']} g x {SLOW_DIGEST_SAVES:.0%}")
+    return out
+
+
+def ability_terms(ch, cur_flags, flags):
+    """[(flag, xpm, text)]: the valued abilities `flags` gains (+) and loses (-) against cur_flags
+    (ch.ability_worth, the Pilot's; none without it)."""
+    worth = getattr(ch, "ability_worth", None) or {}
+    out = [(f, worth[f]["xpm"], worth[f]["text"]) for f in sorted(set(flags) - set(cur_flags)) if f in worth]
+    out += [(f, -worth[f]["xpm"], worth[f]["text"]) for f in sorted(set(cur_flags) - set(flags)) if f in worth]
+    return out
+
+
+def ability_share(ch, terms):
+    """The terms' sum as a share of the character's XP per dungeon minute (compare adds it to an option's score as
+    that share of the current score)."""
+    return sum(x for _, x, _ in terms) / max(1e-9, getattr(ch, "xp_per_dmin", 0) or 40.0)
+
+
 # ------------------------------------------------------------------ the evaluator
 SCORE_SETS = ("met", "depth")              # where the score comes from (pooled)
 SAFETY_SETS = ("hard", "depth", "deeper")  # where an option can be less safe
@@ -674,6 +817,25 @@ def _paired_gain_sets(sims, cur, k, xp_per_gold):
 
 def d_slower(derived, cur, k):
     return derived[k]["speed"] < derived[cur]["speed"]
+
+
+def redundant(ch, cur_worn, worn, gained):
+    """[(flag, where)]: the abilities the pieces `worn` adds (against cur_worn) give that the loadout has anyway --
+    no gain (m67: an Amulet of Weaponmastery's resist fear and Free Action, a clvl-30 warrior's own and the weapon's).
+    where: "yourself" (the grid's '@': race, class, level), "the sheet" (not from worn gear), or the slots of the
+    loadout's other pieces that give it."""
+    old = {id(i) for v in cur_worn.values() for i in v}
+    new = [i for v in worn.values() for i in v if id(i) not in old]
+    out = []
+    for f in sorted(set().union(*[i.abilities() for i in new]) - set(gained)) if new else ():
+        if f in ch.intrinsic:
+            out.append((f, "yourself"))
+        elif f in ch.extra_flags:
+            out.append((f, "the sheet"))
+        else:
+            slots = sorted({s for s, v in worn.items() for i in v if i not in new and f in i.abilities()})
+            out.append((f, ", ".join(slots) or "?"))
+    return out
 
 
 def compare(ch, options, decisions=None, n=10, lo_ft=None, hi_ft=None, hard=True, depth_n=500, xp_per_gold=0.41,
@@ -694,7 +856,11 @@ def compare(ch, options, decisions=None, n=10, lo_ft=None, hi_ft=None, hard=True
         lost = derived[cur]["flags"] - d["flags"]
         gained = d["flags"] - derived[cur]["flags"]
         veto = sorted(label(f) for f in lost if f in REQUIRED and ch.depth_ft >= REQUIRED[f])
-        rules[k] = dict(lost=sorted(lost), gained=sorted(gained), veto=veto)
+        rules[k] = dict(lost=sorted(lost), gained=sorted(gained), veto=veto,
+                        redundant=redundant(ch, options[cur], options[k], gained),
+                        minor={f: v - derived[cur]["minor"].get(f, 0) for f, v in d.get("minor", {}).items()
+                               if v != derived[cur]["minor"].get(f, 0)},
+                        terms=ability_terms(ch, derived[cur]["flags"], d["flags"]))
     sets = {}
     if decisions:
         sets["met"] = (encounters(decisions, lo_ft, hi_ft), n, 1.0)
@@ -719,6 +885,11 @@ def compare(ch, options, decisions=None, n=10, lo_ft=None, hi_ft=None, hard=True
     for k in options:
         rows = [r for s in SCORE_SETS if s in raw for r in raw[s][k]]
         score[k] = summary(rows, xp_per_gold)["score"] if rows else 0.0
+    # (2.64.0: the abilities the simulator doesn't play, as the same share of the current score)
+    sim_score = dict(score)
+    adj = {k: ability_share(ch, rules[k]["terms"]) * abs(sim_score[cur]) for k in options}
+    for k in options:
+        score[k] += adj[k]
     mx, lvl, src = mix or (DEFAULT_MIX, DEFAULT_MELEE_LEVEL, "the default mix")
     ehps = {k: ehp(d, mx, lvl) for k, d in derived.items()}
     notes, gains = {}, {}
@@ -751,7 +922,8 @@ def compare(ch, options, decisions=None, n=10, lo_ft=None, hi_ft=None, hard=True
                     if hi < 0:
                         why.append(f"less safe ({s}: the worst 5% of fights end at {b['low_p5']:.0%} HP vs "
                                    f"{a['low_p5']:.0%}; 95% interval {lo:+.1%} to {hi:+.1%})")
-            gains[k] = _paired_gain_sets(raw, cur, k, xp_per_gold)
+            g, se = _paired_gain_sets(raw, cur, k, xp_per_gold)
+            gains[k] = (g + adj[k], se)
         notes[k] = why
     # the verdict: a change must beat the current gear by 3% and by 2 standard errors of the paired difference (the
     # Advisor, 10-26); ties within 1% go to the safer option (the hard fights' lowest HP, then EHP: the user, 10-28)
@@ -764,7 +936,8 @@ def compare(ch, options, decisions=None, n=10, lo_ft=None, hi_ft=None, hard=True
         return (round(h["low_mean"], 2) if h else 0, round(ehps[k]), k == cur)
     best = max((k for k in ok if score[k] >= top * 0.99), key=safety)
     return dict(options=list(options), derived=derived, rules=rules, sims=sims, score=score, notes=notes,
-                gains=gains, best=best, sets={s: len(v[0]) for s, v in sets.items()},
+                gains=gains, best=best, sim_score=sim_score, ability_adj=adj,
+                xp_per_dmin=getattr(ch, "xp_per_dmin", None), ability_src=getattr(ch, "ability_src", None), sets={s: len(v[0]) for s, v in sets.items()},
                 seconds=round(time.time() - t0, 1), check=ch.check(),
                 ehp={k: round(v) for k, v in ehps.items()}, ehp_src=src)
 
@@ -952,7 +1125,9 @@ def optimize(ch, pool, budget=0, max_sim=5, **kw):
         d = ch.derive(worn)
         if auto_swap_losses(cur["flags"], d["flags"]) or d["speed"] < cur["speed"]:
             continue
-        scored.append((proxy(d, cur, ch.depth_ft, kw.get("mix")), worn, changes, cost))
+        # (2.64.0: + the ability terms' share, as compare adds them)
+        scored.append((proxy(d, cur, ch.depth_ft, kw.get("mix")) +
+                       ability_share(ch, ability_terms(ch, cur["flags"], d["flags"])), worn, changes, cost))
     scored.sort(key=lambda x: -x[0])
     options, changes = {"current": ch.worn}, {"current": []}
     for pr, worn, chg, cost in scored[:max_sim]:
@@ -990,10 +1165,16 @@ def report(res):
                      f"HP {d['mhp']}" + (f" | EHP {e}" + (f" ({e / e0 - 1:+.1%})" if e0 and k != res["options"][0]
                                                           else "") if e else "")
                      + (f" | speed +{d['speed']}" if d["speed"] else ""))
-        if r["lost"] or r["gained"]:
-            lines.append("    abilities: " + (("+" + ", +".join(label(f) for f in r["gained"])) if r["gained"]
-                                              else "") + (" " if r["gained"] and r["lost"] else "") +
-                         (("-" + ", -".join(label(f) for f in r["lost"])) if r["lost"] else ""))
+        if r["lost"] or r["gained"] or r.get("minor"):
+            lines.append("    abilities: " + " ".join(
+                [("+" + ", +".join(label(f) for f in r["gained"]))] * bool(r["gained"]) +
+                [("-" + ", -".join(label(f) for f in r["lost"]))] * bool(r["lost"]) +
+                [", ".join(f"{f.lower()} {v:+d}" for f, v in sorted(r.get("minor", {}).items()))] * bool(r.get("minor"))))
+        if r.get("redundant"):
+            lines.append("    already had (no gain): " + ", ".join(f"{label(f)} ({w})" for f, w in r["redundant"]))
+        for f, x, text in r.get("terms", ()):
+            sh = x / res["xp_per_dmin"] if res.get("xp_per_dmin") else 0
+            lines.append(f"    {label(f)}: {x:+.2f} XP/min-equivalent ({sh:+.1%}; {text})")
         for s, sim in res["sims"].items():
             m = sim[k]
             lines.append(f"    sim {s:6} ({res['sets'][s]} x {m['runs'] // max(1, res['sets'][s])}): "
@@ -1003,10 +1184,16 @@ def report(res):
         cur = res["options"][0]
         if k != cur and res["score"][cur]:
             g, se = res["gains"][k]
+            a = (res.get("ability_adj") or {}).get(k, 0)
             lines.append(f"    {res['score'][k]:.1f} vs {res['score'][cur]:.1f} XP per real minute: {g / res['score'][cur]:+.1%} "
-                         f"(+/- {2 * se / res['score'][cur]:.1%} at 2 SE)")
+                         f"(+/- {2 * se / res['score'][cur]:.1%} at 2 SE)" +
+                         (f" = simulated {(g - a) / res['score'][cur]:+.1%} + abilities {a / res['score'][cur]:+.1%}"
+                          if a else ""))
         if res["notes"][k]:
             lines.append("    against: " + "; ".join(res["notes"][k]))
+    if any(res["rules"].get(k, {}).get("terms") for k in res["options"]):
+        lines.append(f"abilities the simulator doesn't play: XP per dungeon minute they save, as a share of "
+                     f"{res.get('xp_per_dmin') or 40:.0f} XP per dungeon minute, added to the score ({res.get('ability_src') or 'the seed rates'})")
     if res.get("ehp"):
         lines.append(f"EHP = the HP an unarmoured, unresisted character would need to last as long, over "
                      f"{res.get('ehp_src')} (AC cuts melee hits and wounds; resists cut their element)")

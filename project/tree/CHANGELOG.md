@@ -27,6 +27,35 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.64.0 -- 2026-11-04 (session 12, during m68: the abilities the gear evaluator didn't value; the crash guard)
+No missions yet on it. **Play changes:**
+- **The gear evaluator values the abilities the simulator doesn't play** (m67: `gearcmp Weaponmastery` put the Amulet
+  of Weaponmastery only +3.9% over Slow Digestion). Resist fear, resist disenchantment, the six sustains, hold life,
+  See Invisible and slow digestion are each a term in XP per dungeon minute from the character's own rates per dungeon
+  hour (new `observe/ability_rates.py`, refreshed by `wrap.sh`; `geareval.ABILITY_RATES_SEED`, Dive04's 30 days,
+  without it): the gold it saves (Heroism/Boldness, Restores, re-enchanting a disenchanted plus by the 2.46.0/2.57.0
+  model) at XP-per-gold, plus the minutes it saves (time afraid, resting from unseen attackers, damage lost while STR
+  or DEX is drained) at XP per dungeon minute. `compare` adds an option's terms to its score as a share of the current
+  score -- so `gearcmp`, `loadout` and the automatic town swaps all count them; the scenarios drop `disen_gold` when the
+  term values resist disenchantment (one account). Free Action, resist blindness/confusion and the resists stay
+  simulated. `gearcmp` prints each term ("resist disenchantment: +2.07 XP/min-equivalent (+4.7%; 0.80 plusses
+  disenchanted/hour x ~380 g to put one back)") and splits the gain ("= simulated +6.2% + abilities +10.3%").
+- **The ability diff is complete:** it names what an option adds that the loadout has anyway, "already had (no gain):
+  Free Action (weapon), resist fear (yourself)" -- m67's "missing" resist fear was Dive04's own (a warrior resists fear
+  from clvl 30: `xtra1.c player_flags`, `CF_BRAVERY_30`, the grid's `@`). The grid's `@` flags are kept by every
+  loadout (`Character(intrinsic=...)`); the grid's `perm_lite` is the `LITE` flag (permanent light: an ability now, so
+  automatic swaps never lose it); stealth/searching/infravision/tunnelling changes are shown. The m67 comparison: +16.5%
+  (simulated ~+6%, abilities +10.3%: resist disenchantment +4.7%, sustain STR +4.8%, sustain CON +0.9%).
+- **The crash guard** (the Architect, m68: a TypeError in `vault_found` killed the Pilot at 800 ft; the Architect
+  renamed the field `vkind`): the daemon calls `safe_tick`; every optional tick step (the watches and books,
+  `structures_tick`, `vault_tick`, `handle_requests`; `rule_tick`, `look_tick`, `policy_tick`, `queue_tick`) runs
+  guarded -- an exception is logged once per (step, error, place) as `pilot_error` (record, stderr trace, and a
+  `pilot_error` attention "... -- playing on") and the tick goes on; anything else that raises is caught by
+  `safe_tick`, which runs the reflexes if this tick's hadn't run. The game link's end still ends the Pilot.
+  `Pilot.log`'s `kind` is positional-only (a field named `kind` is kept as `field_kind`). The vault unit case now runs
+  through the real `log`/`notify`. (pilot.log's other TypeError, "'str' - 'int'" at line 1077, is from 10-24: m25's
+  free-run goals in `still_fight_tick`, fixed then in d544338.)
+
 ## 2.63.0 -- 2026-11-04 (session 12, the user's decisions during m67)
 Also (Architect, after m67): `restart.sh`/`hotswap.sh` read `swapsafe` ignoring the USER MESSAGE / ALERTS / ARCHITECT ANSWER
 lines (since 2.58.1 the user-message line is printed first and last, so the first line was not "safe" and the restart

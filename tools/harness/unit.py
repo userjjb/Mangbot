@@ -88,6 +88,7 @@ ORDER = """
     vault_templates_matched vault_notice_traps_loot_and_zones
     m67_small_fixes
     review_decided_in_the_same_visit debt_waive_and_floor_price
+    gear_abilities_valued_m67 gear_ability_terms_from_rates geareval_flag_names a_failing_tick_step_doesnt_stop_the_pilot
 """.split()
 
 
