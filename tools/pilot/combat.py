@@ -26,7 +26,7 @@ from mover import direction, passable
 from goals import (Wait, Goto, Explore, Dive, Search, Hunt, Recover, BandLeave, WalkAway, Flee, Recall,
                    Resurrect, RestGoal)
 from town_goals import TownFarm, Shop
-from gear import band_verdict
+from gear import band_choice
 
 
 # a reflexes()/escape() step that didn't act: go on to the next one (REFLEX_STEPS, ESCAPE_STEPS)
@@ -872,6 +872,7 @@ class CombatMixin:
     def count_escape(self):
         """One escape action towards emergency_loop's three in 90 s (A4: actions only, never mere notices)."""
         self.emerg_times.append(gnow())
+        self.escape_n += 1
 
     def emergency_loop(self, now):
         """Three emergency actions within 90 s: phasing and drinking isn't
@@ -1295,6 +1296,7 @@ class CombatMixin:
         fetched loot in Orfax's room while an orc band assembled; HP 78/241, all
         10 Phase Door and 5 CCW later)."""
         w = self.w
+        self.band_outcome_tick()
         if not w.in_dungeon:
             return
         if self.band_pending:
@@ -1365,17 +1367,54 @@ class CombatMixin:
         if res is None and not danger and time.time() - bp["t"] < self.BAND_EST_WAIT_S:
             return
         self.band_pending = None
-        gain = band_verdict(res) if res is not None and not danger else None
+        c = band_choice(res) if res is not None and not danger else None
+        pd = None
+        if c and c[0] == "phase":
+            # (no Phase Door to read, or blind/confused: the fight row is judged instead)
+            pd = self.phase_item() if not (w.flag("blind") or w.flag("confused")) else None
+            if not pd:
+                c = band_choice(res, phase_ok=False)
+        action, gain = c if c else ("leave", None)
         why = "a danger rule fired" if danger else "no estimator answer in time" if res is None else \
             f"the estimator: {res.get('choice')} ({(res.get('why') or '')[:80]})"
         self.log("band_decision", names=bp["names"], n=bp["n"], cost=round(bp["cost"]),
-                 choice="fight" if gain is not None else "leave", gain=round(gain) if gain is not None else None,
-                 why=why)
-        if gain is not None:
+                 choice=action, gain=round(gain) if gain is not None else None, why=why)
+        # (2.65.0, the Advisor: the minute after, for the review -- band_outcome)
+        self.band_followups.append({"t": time.time(), "level": w.level_t, "names": bp["names"], "choice": action,
+                                    "hp_min": w.hp[0], "mhp": w.hp[1], "xp0": self.xp_gained,
+                                    "kills0": self.kill_n, "escapes0": self.escape_n})
+        if action == "phase":
+            self.phase_t = gnow()
+            self.phase_hist.append(self.phase_t)
+            self.cmd(f"custom r item={pd['item']}", "band: Phase Door first, then fight (the estimator)", hold=0.6)
+            self.notify("tactic", f"band: Phase Door, then fighting them as they come (the estimator: beats leaving "
+                                  f"by {gain:.0f} XP) -- {bp['names']}", news=True)
+            return
+        if action == "fight":
             self.notify("tactic", f"band: fighting (the estimator: fight beats leaving by {gain:.0f} XP) -- "
                                   f"{bp['names']}", news=True)
             return
         self.band_notify(bp["names"], bp["n"], bp["cost"])
+
+    BAND_OUTCOME_S = 60       # wall seconds after a band_decision: its band_outcome record
+
+    def band_outcome_tick(self):
+        """2.65.0 (the Advisor's band review, done by hand for m66-m68): BAND_OUTCOME_S after each band_decision, a
+        `band_outcome` record -- lowest HP, XP gained, monsters killed, escape actions, whether we left the level."""
+        if not self.band_followups:
+            return
+        w = self.w
+        now = time.time()
+        for f in list(self.band_followups):
+            if w.level_t == f["level"] and w.hp[1] > 1:
+                f["hp_min"] = min(f["hp_min"], w.hp[0])
+            if now - f["t"] < self.BAND_OUTCOME_S:
+                continue
+            self.band_followups.remove(f)
+            self.log("band_outcome", names=f["names"], choice=f["choice"], decided_t=round(f["t"], 3),
+                     lowest_hp=[f["hp_min"], f["mhp"]], xp=round(self.xp_gained - f["xp0"]),
+                     kills=self.kill_n - f["kills0"], escapes=self.escape_n - f["escapes0"],
+                     left_level=w.level_t != f["level"])
 
     def teleport_item(self):
         """('r', a Scroll of Teleportation) or ('u', a Staff of Teleportation with charges), or None. Blind, confused
@@ -1513,6 +1552,8 @@ class CombatMixin:
             if ts <= self.kills_t:
                 continue
             m = re.match(r"You have (?:slain|destroyed) (.+?)\.$", t)
+            if m or t.startswith("You have killed"):
+                self.kill_n += 1             # (2.65.0: band_outcome's count)
             if m and m.group(1).lower() in self.unique_names:
                 self.unique_drop = (w.level_t, w.pos, ts)     # its drop is always picked up
                 uk = self.uniques_killed()

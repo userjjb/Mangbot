@@ -27,6 +27,30 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.65.0 -- 2026-11-05 (session 12, after m68: hallucination, the estimator's phase line, the queued trip, rations)
+No missions yet on it. **Play changes:**
+- **Hallucination** (m68 00:00:46: "The Magic mushroom patch releases spores at you. You feel drugged!" scrambled the
+  map's monster glyphs -- Draugluin adjacent, a Gelugon, a Dreadlord at 750 ft -- and the emergency read Word of
+  Recall). The server sends no status flag for it; the World tracks "You feel drugged!" .. "You can see clearly
+  again." (at most 120 s). The server's monster list stays true (display_monlist has no image check; cave.c scrambles
+  the map, 1 square in 256 anywhere too): meanwhile `World.monsters` puts the listed races (worst first, as many as
+  listed) on the decoded squares nearest us and drops the rest (no list: a depth-typical stand-in within 10 squares),
+  so the danger rules, the group danger, the band estimate, hunt checks and the estimator team see the real monsters;
+  no objects or stationary monsters are remembered from the scrambled map. A `hallucinating` alert (news when it ends).
+- **Unconfirmed deep monsters:** whatever the cause, a race (a unique too) 20+ levels deeper than the level that no
+  message named, the server's list doesn't name and that didn't just hit us from an adjacent square is read as a
+  depth-typical monster (`perception` news once per level): no recall on a glyph alone.
+- **The estimator's `phase` line** (the Advisor's band review): Phase Door first, then fight -- the Pilot reads Phase
+  Door and fights on (was: the old leave; m67 21:34 lost +320 XP that way); with no Phase Door to read, the fight row
+  is judged; `recall+phase`/`stairs` leave; the same threshold against the leave row. **`band_outcome`** 60 s after
+  each `band_decision`: lowest HP, XP, kills, escapes, whether the level was left.
+- **A plan queued behind a trip's `then town` visit** starts at that trip's end and its `plan_done` says so (m68: the
+  Navigator, woken by plan_done a tick before the queue ran, read the trip as dropped and sent it again).
+- **Food:** plan town's rations follow the worn gear's digestion (4 without slow digestion, the kits' 3 with it; the
+  rate was already read from the grid, not cached); make-room keeps the pack's last ration in the dungeon too (m68
+  00:11 destroyed all 4 for a Staff of Trap Location, 8 minutes before the trip's end: then "no food" and "~15 min");
+  a "low" supplies notice is news when the trip ends first.
+
 ## 2.64.0 -- 2026-11-04 (session 12, during m68: the abilities the gear evaluator didn't value; the crash guard)
 No missions yet on it. **Play changes:**
 - **The gear evaluator values the abilities the simulator doesn't play** (m67: `gearcmp Weaponmastery` put the Amulet

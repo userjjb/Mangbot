@@ -89,6 +89,8 @@ ORDER = """
     m67_small_fixes
     review_decided_in_the_same_visit debt_waive_and_floor_price
     gear_abilities_valued_m67 gear_ability_terms_from_rates geareval_flag_names a_failing_tick_step_doesnt_stop_the_pilot
+    hallucination_and_unconfirmed_deep_monsters band_phase_line_and_band_outcome queued_plan_starts_with_the_trips_plan_done
+    rations_by_digestion_and_the_last_kept
 """.split()
 
 

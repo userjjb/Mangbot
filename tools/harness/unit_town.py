@@ -36,10 +36,12 @@ def town_kit_tiers():
     p = pilot(w)
     p.seen_drained = {"CON": (17, 18)}
     need = [(t, k, n) for t, k, s, n, c in p.town_needs(None, ())]
-    # (no flasks: the lantern's 6370 turns and the 3 flasks reach 9000; rations: kit B's 3, had)
+    # (no flasks: the lantern's 6370 turns and the 3 flasks reach 9000; rations: kit B's 3 had, a 4th without slow
+    # digestion)
     want = [(1, "Word of Recall", 1), (3, "Restore Constitution", 1), (4, "Word of Recall", 1),
-            (4, "Cure Serious Wounds", 2), (4, "Phase Door", 1), (4, "Heroism", 3),
-            (4, "Potion of Speed", 2)]   # (Heroism since m41, Speed since; 2.51.0: kit B keeps a 3rd Word of Recall)
+            (4, "Cure Serious Wounds", 2), (4, "Phase Door", 1), (4, "Ration of Food", 1), (4, "Heroism", 3),
+            (4, "Potion of Speed", 2)]   # (Heroism since m41, Speed since; 2.51.0: kit B keeps a 3rd Word of Recall;
+    # 2.65.0: a 4th ration without slow digestion -- rations_for_trip)
     return need == want, f"{need}"
 
 
@@ -794,3 +796,30 @@ def debt_waive_and_floor_price():
     ok = not nav["ok"] and arch["ok"] and p.debt_total() == 40 and p.debt["waived"][0]["waived_why"] == \
         "the user waived it" and "#1" in listing and "on the floor at 30,40" in price and "unfelt" in price
     return ok, f"navigator {nav}; architect {arch}; listing {listing!r}; price {price!r}"
+
+
+@case
+def rations_by_digestion_and_the_last_kept():
+    """2.65.0 (m68, the first trips without the Amulet of Slow Digestion): plan town's rations follow the worn gear's
+    digestion -- 4 without slow digestion (a trip of unknown length, 45 dungeon minutes, at ~11.6 a ration), the
+    kit's 3 with it; in the dungeon make-room keeps the last ration (m68 00:11 destroyed all 4 for a Staff of Trap
+    Location, the trip 8 minutes from its end) and values it at the minutes it gives."""
+    p = pilot(pack=[("4 Rations of Food", 80)])
+    p.w.depth, p.w.in_dungeon = 0, False
+    fast = p.rations_for_trip(3)
+    p.w.flags = dict(p.w.flags, slow_digest="e")
+    slow = p.rations_for_trip(3)
+    p.w.flags = dict(p.w.flags, slow_digest="")
+    d = pilot(pack=[("4 Rations of Food", 80)])
+    d.w.depth, d.w.in_dungeon = 15, True
+    d.trip_minutes_left = lambda: 8.0
+    d.food_now = lambda: 9990
+    rat = d.w.items()[0]
+    spare4 = d.supply_spare(rat)
+    one = pilot(pack=[("a Ration of Food", 80)])
+    one.w.depth, one.w.in_dungeon = 15, True
+    one.trip_minutes_left = lambda: 8.0
+    one.food_now = lambda: 9990
+    spare1 = one.supply_spare(one.w.items()[0])
+    ok = fast == 4 and slow == 3 and spare4[0] == 3 and spare1[0] == 0 and spare1[1] > 10
+    return ok, f"rations without/with slow digestion {fast}/{slow}; 4 carried, 8 min left: spare {spare4}; one: {spare1}"

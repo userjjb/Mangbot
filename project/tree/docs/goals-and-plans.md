@@ -190,7 +190,10 @@ A Navigator's `plan trip` or `goal ...` sent while a `TownKit` runs (its `plan t
 queued (`Pilot.queued`, commands.py `do_request`) instead of replacing it -- m63's `plan trip` 6 s into plan town cut
 the house visit short. The reply names plan town's stage (`town_stage`); `plan` shows the queued request, `stop` and
 `plan stop` drop it; `queue_tick` (in the act layers, after the item work) runs it once no TownKit runs and no trip is
-in its town phase, telling the Navigator (`queued`: news if it started, an alert if it was refused).
+in its town phase, telling the Navigator (`queued`: news if it started, an alert if it was refused). **2.65.0 (m68
+00:05):** one queued behind a trip's own `then town` visit starts at that trip's end, before the `plan_done` goes out,
+and the `plan_done` says so ("... -- your queued `plan trip ...` started", or refused and why): the Navigator, woken by
+the plan_done a tick before the queue ran, read the trip as dropped and sent it again (`start_queued`).
 
 ## The town visit (`plan town`)
 
@@ -290,6 +293,11 @@ already planned:
 | 5 | the Navigator's buy list (`NAME:N` = have N) |
 | 6 | Restore Charisma, only with 3000+ gold |
 
+(2.65.0) Rations follow the worn gear's digestion (`rations_for_trip`): at least enough for a trip of unknown length
+(`SUPPLY_UNKNOWN_DMIN` 40 + `SUPPLY_MARGIN_DMIN` 5 dungeon minutes, the stomach not counted) at 2 food a player turn, or
+1 with slow digestion (the grid's `slow_digest`) -- 4 without it, the kits' 3 with it. In the dungeon make-room keeps
+the pack's last ration (valued at the minutes it gives: m68 destroyed all 4 for a Staff of Trap Location 8 minutes
+before the trip's end), and a `supplies` "low" notice is news when the trip's own end, plus the margin, comes first.
 `KITS`: **A** = 2 Word of Recall, 5 CLW, 5 Phase Door, 3 rations. **B** = 3 WoR (2.51.0, the user: was 2), 4 CCW, 4 CSW, 10 Phase, 3 rations,
 3 Heroism, 2 Potion of Speed. **C** = as B with 6 CCW, 12 Phase. **none** = nothing. `KIT_ITEMS` gives each kind's
 tval, store and a price guess (Speed comes from the Black Market, 7; potions of healing and Heroism from the Temple, 4;

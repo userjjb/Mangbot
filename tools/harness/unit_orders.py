@@ -493,3 +493,159 @@ def gear_gold_for_the_estimator():
     ok = 230 <= acid <= 280 and disen > 0 and sp.get("acid_gold") == acid and sp.get("disen_gold") == disen and terms
     return ok, f"acid_gold {acid}, disen_gold {disen}; sim_player {sp.get('acid_gold')}, {sp.get('disen_gold')} " \
                f"(none while the ability terms value resist disenchantment: {terms})"
+
+
+@case
+def hallucination_and_unconfirmed_deep_monsters():
+    """2.65.0, m68 00:00:46: "The Magic mushroom patch releases spores at you. You feel drugged!" scrambled the map's
+    monster glyphs -- Draugluin adjacent, a Gelugon, a Dreadlord at 750 ft -- and the emergency read Word of Recall
+    ("Draugluin ... can deal 504"). The server's monster list stayed true (a Magic mushroom patch, Hill orcs): while
+    hallucinating its races stand on the decoded squares nearest us (worst first, as many as it counts), the rest are
+    dropped; the group danger is the orcs'. "You can see clearly again." ends it; a `hallucinating` notice says so.
+    Whatever the cause, a race (a unique too) 20+ levels deeper than the level that no message, no adjacent hit and
+    not the server's list confirms is read as a depth-typical monster (news once per level); a unique in depth isn't
+    touched (hunts name them)."""
+    import world as WD
+
+    class G:
+        races = RACES
+        by_name = {r.name: r for r in RACES.values()}
+    g = G()
+    drau, gel, dread = BYNAME["draugluin, sire of all werewolves"], BYNAME["gelugon"], BYNAME["dreadlord"]
+    beetle, quasit = BYNAME["killer red beetle"], BYNAME["quasit"]
+    pos = (20, 20)
+    decoded = [(20, 21, drau), (21, 21, beetle), (22, 23, quasit), (19, 24, gel), (20, 26, beetle), (40, 90, dread),
+               (5, 120, gel), (30, 60, quasit)]
+    monlist = [("Magic mushroom patch", 1, ","), ("Hill orc", 4, "o")]
+    mons, odd = WD.stand_in_monsters(decoded, monlist, g, pos, 15, {}, False, True)
+    names = sorted(r.name for *_, r in mons)
+    p = pilot(hp=369, monsters=mons)
+    p.w.hp = [369, 369]
+    p.w.clvl, p.w.depth, p.w.depth_ft = 30, 15, 750
+    gd, who = p.group_danger()
+    raw = pilot(hp=369, monsters=decoded)
+    raw.w.hp = [369, 369]
+    raw.w.clvl, raw.w.depth = 30, 15
+    gd_raw, _ = raw.group_danger()
+    ok_h = names == ["Hill orc"] * 4 + ["Magic mushroom patch"] and mons[0][2].name == "Magic mushroom patch" and \
+        gd < 0.3 * 369 < gd_raw
+    # no monster list: a depth-typical stand-in within 10 squares only
+    gen, _ = WD.stand_in_monsters(decoded, [], g, pos, 15, {}, False, True)
+    typical = WD.generic_race(g, 15)
+    ok_g = typical and "UNIQUE" not in typical.flags and 10 <= typical.level <= 15 and \
+        all(r is typical for *_, r in gen) and len(gen) == 5
+    # not hallucinating: an unconfirmed Draugluin is the stand-in; a message, the list or an adjacent hit confirms it
+    plain, odd2 = WD.stand_in_monsters([(20, 21, drau), (21, 21, beetle)], [], g, pos, 15, {}, False, False)
+    named, _ = WD.stand_in_monsters([(20, 21, drau)], [], g, pos, 15, {drau.name: 1.0}, False, False)
+    listed, _ = WD.stand_in_monsters([(20, 21, drau)], [(drau.name, 1, "C")], g, pos, 15, {}, False, False)
+    hit, _ = WD.stand_in_monsters([(20, 21, drau)], [], g, pos, 15, {}, True, False)
+    grip = next(r for r in RACES.values() if "UNIQUE" in r.flags and r.level <= 15)
+    shallow, _ = WD.stand_in_monsters([(20, 21, grip)], [], g, pos, 15, {}, False, False)
+    ok_s = shallow[0][2] is grip and plain[0][2] is typical and plain[1][2] is beetle and odd2 == [drau.name] and named[0][2] is drau and \
+        listed[0][2] is drau and hit[0][2] is drau
+
+    # the messages: drugged / clear, and a message naming a race
+    class FW:
+        pass
+    fw = FW()
+    fw.g = g
+    nm = [WD.World.named_in(fw, t) for t in ("The Magic mushroom patch releases spores at you.", "The Hill orc's "
+                                              "spear misses you.", "Draugluin, Sire of All Werewolves bites you.",
+                                              "You feel drugged!", "It blinks away.")]
+    ok_m = nm == ["Magic mushroom patch", "Hill orc", drau.name, None, None]
+    # the notices
+    q = pilot(hp=369)
+    q.w.monlist = monlist
+    q.w.hallucinating = True
+    q.w.implausible = {}
+    q.watch_hallucination()
+    q.w.hallucinating = False
+    q.w.implausible = {drau.name: 1}
+    q.watch_hallucination()
+    kinds = [k for k, _ in q.notes]
+    ok_n = kinds == ["hallucinating", "hallucinating", "perception"] and "Hill orc x4" in q.notes[0][1]
+    ok = ok_h and ok_g and ok_s and ok_m and ok_n
+    return ok, (f"hallucinating: {names} (group danger {gd:.0f} vs the map's {gd_raw:.0f}); no list: {len(gen)} x "
+                f"{typical and typical.name}; unconfirmed {[r.name for *_, r in plain]} {odd2}, named/listed/hit kept "
+                f"{[x[0][2].name == drau.name for x in (named, listed, hit)]}; message names {nm}; notices {kinds}")
+
+
+@case
+def band_phase_line_and_band_outcome():
+    """2.65.0 (the Advisor's band review): the estimator's `phase` line is Phase Door first, then the rules (fight) --
+    read Phase Door and fight on (m67 21:34 chose it, +320 XP, and the old mapping left); without a Phase Door the
+    fight row is judged instead; `recall+phase` and `stairs` leave. 60 s after each band_decision a `band_outcome`
+    record: lowest HP, XP gained, kills, escapes."""
+    import time as _t
+    import gear
+    base = {"why": "x", "snap": {"rules": "stairs"}, "p": {"xp_rate_per_block": 0.45},
+            "table": [{"option": "rules", "safe": True, "dxp": 0.0, "se": 1.0},
+                      {"option": "fight", "safe": True, "dxp": 280.0, "se": 40.0},
+                      {"option": "phase", "safe": True, "dxp": 320.0, "se": 49.0},
+                      {"option": "stairs", "safe": True, "dxp": 0.0, "se": 2.0},
+                      {"option": "recall+phase", "safe": True, "dxp": -50.0, "se": 2.0}]}
+    phase = dict(base, choice="phase")
+    choices = (gear.band_choice(phase), gear.band_choice(phase, phase_ok=False),
+               gear.band_choice(dict(base, choice="recall+phase")), gear.band_choice(dict(base, choice="stairs")),
+               gear.band_choice(dict(base, choice="fight")))
+    p = pilot(monsters=[(20, 22 + k, BYNAME["cave orc"]) for k in range(6)],
+              pack=[("9 Scrolls of Phase Door", 70)])
+    p.w.find = lambda chars: [(30, 30)]
+    p.w.tagged = lambda c, n: None
+    p.danger_why = lambda r, *a: None
+    p.cmds = []
+    p.cmd = lambda line, why, hold=0.4: p.cmds.append(line)
+    logs = []
+    p.log = lambda kind, **k: logs.append((kind, k))
+    p.band_pending = {"t": _t.time() - 0.5, "level": p.w.level_t, "names": "Cave orc ×6", "n": 6, "cost": 200}
+    p.band_result = (_t.time() - 0.5, phase)
+    p.band_resolve()
+    read = [c for c in p.cmds if c.startswith("custom r item=")]
+    dec = [k for kind, k in logs if kind == "band_decision"]
+    p.w.hp = [250, p.w.hp[1]]
+    p.band_outcome_tick()
+    p.band_followups[0]["t"] -= 61
+    p.xp_gained += 420
+    p.kill_n += 5
+    p.w.hp = [300, p.w.hp[1]]
+    p.band_outcome_tick()
+    out = [k for kind, k in logs if kind == "band_outcome"]
+    ok = choices[0] == ("phase", 320.0) and choices[1] == ("fight", 280.0) and choices[2] is None and \
+        choices[3] is None and choices[4] == ("fight", 280.0) and read and dec and dec[0]["choice"] == "phase" and \
+        any("Phase Door, then fighting" in d for k, d in p.notes) and out and out[0]["lowest_hp"][0] == 250 and \
+        out[0]["xp"] == 420 and out[0]["kills"] == 5 and out[0]["escapes"] == 0 and not p.band_followups
+    return ok, f"choices {choices}; read {read}; decision {dec[:1]}; outcome {out}"
+
+
+@case
+def queued_plan_starts_with_the_trips_plan_done():
+    """2.65.0, m68 00:05: a `plan trip` queued behind the trip's own `then town` visit started a tick after the trip's
+    plan_done -- the Navigator, woken by plan_done, read it as dropped and sent it again. It starts at the plan_done,
+    which says so."""
+    p = pilot()
+    p.w.depth, p.w.in_dungeon = 0, False
+
+    class Plan:
+        text, levels, t0, phase = "trip 700-800 then town", 3, P.gnow() - 600, "town"
+
+        def tick(self, pp):
+            return ("done", "home and the town kit run")
+
+        def save(self, pp):
+            pass
+    p.plan = Plan()
+    p.goal = None
+    p.clear_plan_file = lambda: None
+    sent = []
+
+    def req(r):
+        sent.append(r)
+        return {"ok": True}
+    p.do_request = req
+    p.queued = {"cmd": "plan", "args": ["trip", "700-800", "until", "time>00:19"], "role": "navigator", "t": 0}
+    acted = p.plan_tick(P.gnow(), True)
+    done = [d for k, d in p.notes if k == "plan_done"]
+    ok = acted and len(sent) == 1 and sent[0]["args"][0] == "trip" and p.queued is None and done and \
+        "your queued `plan trip 700-800 until time>00:19` started" in done[0] and \
+        not any(k == "queued" for k, _ in p.notes)
+    return ok, f"plan_done {done}; requests {sent}"

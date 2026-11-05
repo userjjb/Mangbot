@@ -267,6 +267,10 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.drains_here = (None, 0)          # (level, stat drains seen on it)
         self.still_goals = (None, set())      # (level, mover goals) before a stationary-monster fight
         self.step_errors = {}                  # (2.64.0, the crash guard) {(step, error, where): times}
+        self.band_followups = []               # (2.65.0) band_decision follow-ups for band_outcome
+        self.kill_n = self.escape_n = 0        # (2.65.0) running counts: kills seen, escape actions
+        self.halluc_said = False               # (2.65.0) the `hallucinating` notice given for the current spell
+        self.implausible_said = set()          # (level_t, race name): the unconfirmed-glyph news given
         self.reflexed = False                  # (this tick's reflexes ran: safe_tick's fallback skips them)
         self.still_fighting = None            # (level, position) of the stationary monster we're killing
         self.seen_blows = None
@@ -1579,11 +1583,37 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.watch_abilities()
         self.watch_progress()
         self.watch_perception()
+        self.watch_hallucination()
         if self.w.recall_cancelled:
             self.w.recall_cancelled = False
             self.notify("recall_cancelled", "a Word of Recall was cancelled (a second one was read): no recall is pending now")
         self.recall_memory()
         self.shadow_results()
+
+    def watch_hallucination(self):
+        """2.65.0 (m68): a `hallucinating` notice when "You feel drugged!" starts it (the map's monster names are
+        scrambled: the server's monster list stands in, World.stand_in_monsters) and news when it ends; news once per
+        level and name for a glyph read as a monster (a unique too) 20+ levels deeper that nothing confirmed (read as
+        a depth-typical monster)."""
+        w = self.w
+        on = bool(getattr(w, "hallucinating", False))
+        if on != self.halluc_said:
+            self.halluc_said = on
+            if on:
+                listed = ", ".join(f"{n} x{c}" if c > 1 else n for n, c, _ in (w.monlist or [])) or "nothing"
+                self.notify("hallucinating", "You feel drugged: the map's monster names are scrambled until it wears "
+                                             f"off (the server's list, which stays true, shows {listed}); the danger "
+                                             "rules use the listed monsters and the damage taken, not the map's names. "
+                                             "A Cure Serious/Critical Wounds ends it", action=False)
+            else:
+                self.notify("hallucinating", "you see clearly again: the map's monster names are real", news=True)
+        odd = getattr(w, "implausible", None) or {}
+        for name in odd:
+            if (w.level_t, name) not in self.implausible_said:
+                self.implausible_said.add((w.level_t, name))
+                self.notify("perception", f"the map shows a {name} at {w.depth_ft} ft that no message, no hit and "
+                                          "not the server's monster list confirms: read as a typical monster of this "
+                                          "depth until something does", news=True)
 
     def freeze_tick(self):
         """The test server's time freeze. True while frozen: the tick acts on nothing."""
@@ -1710,7 +1740,14 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
             self.plan = None
             self.log("plan_end", plan=pl.text, status=r[0], detail=r[1], levels=pl.levels,
                      minutes=round((now - pl.t0) / 60, 1))
-            self.notify("plan_done" if r[0] == "done" else "plan_failed", f"{pl.text}: {r[1]}")
+            # (2.65.0, m68: a `plan trip` queued behind the trip's own `then town` visit started a tick after this
+            # plan_done -- the Navigator, woken by it, read the queued trip as dropped and sent it again. It starts
+            # here, and the plan_done says so)
+            q = self.start_queued() if self.queued else None
+            then = f" -- {q[1]}" if q else ""
+            self.notify("plan_done" if r[0] == "done" else "plan_failed", f"{pl.text}: {r[1]}{then}")
+            if q:
+                return True
         return idle and self.goal is not None
 
     def clear_plan_file(self):

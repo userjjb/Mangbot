@@ -534,6 +534,11 @@ class ItemsMixin:
                      for i in w.items() if self.supply_kind(i) == kind and i["item"] != it["item"])
         short = max(0.0, need - have - others)
         units = min(it["number"], math.ceil(short / unit)) if unit > 0 else it["number"]
+        # (2.65.0, m68 00:11: all 4 rations destroyed for a Staff of Trap Location -- the trip ended in 8 minutes and
+        # the stomach held 19, so none were "needed"; then "no food left" and a "~15 min" alert. The last ration of the
+        # pack's food stays: the m46 rule, now in the dungeon too)
+        if kind == "food" and not others and units < 1:
+            return it["number"] - 1, unit          # (valued as the dungeon minutes it gives)
         return it["number"] - units, min(short, units * unit)
 
     # the food a Scroll of Satisfy Hunger counts as: it fills to just under Gorged and is read at Weak (combat.py), less a

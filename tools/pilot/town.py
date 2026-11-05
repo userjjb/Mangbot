@@ -13,6 +13,7 @@ food/light clock (supply_minutes, supply_text, supply_watch, TURNS_PER_DMIN, FOO
 import csv
 import functools
 import json
+import math
 import os
 import re
 import sys
@@ -479,7 +480,17 @@ class TownMixin:
         return g.kit if isinstance(g, TownKit) and g.kit else self.kit_by_depth()
 
     def kit_target(self, kind):
-        return self.KITS.get(self.visit_kit(), {}).get(kind, 0)
+        n = self.KITS.get(self.visit_kit(), {}).get(kind, 0)
+        return self.rations_for_trip(n) if kind == "Ration of Food" and n else n
+
+    def rations_for_trip(self, n):
+        """2.65.0 (m68, the first trips without the Amulet of Slow Digestion): the kit's rations, or more -- enough for
+        a trip of unknown length (SUPPLY_UNKNOWN_DMIN + SUPPLY_MARGIN_DMIN) at the digestion rate the worn gear gives
+        now (the grid's slow_digest: 1 food a player turn, else 2; dungeon.c), the stomach not counted: 4 without
+        slow digestion (a ration ~11.6 dungeon minutes), the kit's 3 with it."""
+        per = (1.0 if (self.w.flags or {}).get("slow_digest") else 2.0) * self.TURNS_PER_DMIN
+        unit = self.food_value("Ration of Food") / per
+        return max(n, math.ceil((self.SUPPLY_UNKNOWN_DMIN + self.SUPPLY_MARGIN_DMIN) / unit))
 
     def fallback_of(self, it):
         """The kit kind a pack item is the fallback for ('Heroism' for a Potion of Boldness), or None."""
@@ -794,7 +805,7 @@ class TownMixin:
                 if not self.stash_has(f"Restore {self.STAT_FULL[stat]}") and not self.restore_for(stat):
                     add(3, f"Restore {self.STAT_FULL[stat]}", 1)
         for kind, n in self.KITS.get(kit, {}).items():
-            add(4, kind, n)
+            add(4, kind, self.rations_for_trip(n) if kind == "Ration of Food" else n)
         # NAME:N means "have N" (m26's "Word of Recall:3" bought 3 more, to 5)
         for name, n, cap, store in buylist:
             # (2.47.0, the docs audit: a stash kind -- a stat Restore, a Stone to Mud wand -- in the house or the
@@ -1553,6 +1564,14 @@ class TownMixin:
             new = [th for th in (15, 5) if m < th and (what, th) not in told]
             if new:
                 told.update((what, th) for th in new)     # (both crossed at once: one notice)
+                # (2.65.0, m68 00:15: "~15 min" mid-trip with the trip ending at 00:19 -- enough, and the Navigator
+                # worried: news when the trip's own end comes first, with the margin)
+                left = self.trip_minutes_left()
+                if left is not None and m >= left + self.SUPPLY_MARGIN_DMIN:
+                    self.notify("supplies", f"{what}: ~{m:.0f} dungeon minutes left with the {how} carried; the trip "
+                                            f"ends in ~{left:.0f}: enough", news=True,
+                                fields={"supply": what, "level": "low"})
+                    continue
                 self.notify("supplies", f"{what}: ~{m:.0f} dungeon minutes left with the {how} carried -- plan to "
                                         f"be home before then (`goal recall`)", fields={"supply": what, "level": "low"})
             if m >= 20:

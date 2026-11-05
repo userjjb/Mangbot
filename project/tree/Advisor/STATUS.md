@@ -17,7 +17,7 @@ Pilot version 2.43.0 (10-31: 2.41 rations/oil valued by need, 2.42 mushrooms by 
 
 **Session 5 (10-29..11-03):** no missions (Architect sessions 10-11 = refactor, versions 2.38-2.49; merged to master 11-03); answered memos (commands_per_min, rulebook B18 fixes, D8/D9/D14 merges + D8 uniques rule, Khim/A2 criterion, escape walk mirrored in 11-03p, hunt check should use derive() totals). Missions resume in Architect session 12.
 
-**11-04: missions resumed (m61-m65, 2.48-2.57). Estimator review done: `../memos/2026-11-04-estimator-review.md` (study `studies/2026-11-04-estimator-review/`); A2L TODO resolved (crowd-teleport in 'fight', not horizon). User decided (2.58.0): estimator decides bands; Speed only when losing. Architect installed acid_gold/disen_gold, shadow_agree threshold, full-table log, awake. NEXT: review `band_decision` + estimator records from m66 on (watch arrivals, as m65 12:46).**
+**11-04: missions resumed (m61-m65, 2.48-2.57). Estimator review done: `../memos/2026-11-04-estimator-review.md` (study `studies/2026-11-04-estimator-review/`); A2L TODO resolved (crowd-teleport in 'fight', not horizon). User decided (2.58.0): estimator decides bands; Speed only when losing. Architect installed acid_gold/disen_gold, shadow_agree threshold, full-table log, awake. 11-05: first band_decision review (m66-m68): 3 fights at/near predicted p10, 1 leave worst (to_architect/2026-11-05-band-review.md: map phase->fight; m68 00:00:46 implausible deep-unique team = HALLUCINATION (Magic mushroom patch spores "You feel drugged!" .. "You can see clearly again."): discard estimator records in that window; 2.65.0 maps phase->fight, adds band_outcome records (~60 s after band_decision: lowest HP, XP, kills, escapes) and the out-of-depth sanity filter). NEXT: keep reviewing band_decision records as missions accrue.**
 
 **Next:** (1) review the `estimator` records of the next missions — three eras: before 10-29 08:35 (understated to-hit/to-dam),
 08:35-12:42 (no slays), from 12:42 (complete); compare agree rates per era and trigger; (2) re-check the wake calibration with
@@ -165,6 +165,7 @@ The user struck one lead (2026-10-07): the live fetch of Bug Reports / Technical
 - A repeat kill of a unique gives no XP and no drop (xtra2.c 'cheeze'); Dive04 has killed Brodda, Bullroarer, Orfax, Wormtongue, Farmer Maggot.
 - Hunt checks: `fight_sim.py` p90 (FIGHT-rated: none > 60% HP at Dive04's profile); summoners and blinkers are outside the duel model
   (m19 Ranger: duel p90 44, real 153 from summons + ranged phase). The `threats` column of monsters.csv is stale 09-27 text (boulder ~30).
+- Hallucination ("You feel drugged!" .. "You can see clearly again.") scrambles the client's monster names: drop estimator/team records in between (m68 00:00:46). "drains power from your muscles / You are unaffected!" = sustain STR working.
 - Boulders do 0 damage to players (live-confirmed, set-piece L1); BO_POIS and BR_MANA are empty; breaths use current HP.
 - "You are unaffected!" = Free Action only after HOLD/SLOW/paralysis; after BLIND = rBlind; after TELE_LEVEL = rNexus.
   "You resist the effects!" = a save, so the player LACKS the resist. The `flags` query shows identified flags only.

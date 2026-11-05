@@ -42,7 +42,8 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
    500 ft down the kit keeps **3 Heroism** (the fear cure) and **2 Potions of Speed** (Black Market, at most 600 each; often
    out of stock): the Pilot drinks Speed **when a fight goes badly** (HP under `think_hp` with a monster adjacent; since
    2.58.0 no longer at a hard fight's start) and in emergencies. A band no longer always means leaving: the estimator
-   decides, and "band: fighting (the estimator: ...)" news means the Pilot stays and fights it. **Restore potions, Wands of Stone to Mud, the best spare for each worn slot (an
+   decides, and "band: fighting (the estimator: ...)" news means the Pilot stays and fights it ("band: Phase Door, then
+   fighting them as they come": it phases first, 2.65.0). **Restore potions, Wands of Stone to Mud, the best spare for each worn slot (an
    ego/artifact the shops can't sell, e.g. a second Westernesse weapon) and the `store` list stay in the stash** (the
    house, in the wilderness tile north of town; when it's full, inside the tavern room) during a mission, never sold:
    `plan town` leaves them there as its last step, fetches the right Restore when STR/DEX/CON is drained (before buying
@@ -197,6 +198,9 @@ No argument: every identified wearable in the pack. In town the Pilot wears the 
 - **Equipment damage is a cost** (2.57.0): two "Your X is damaged!" (acid) or disenchantments within 10 s make the
   Pilot kill a quick source in view or leave (a `gear_damage` alert); acid breathers you resist still eat your armour's
   plusses (m65: ~5,000 gold of Enchant Armor). `monster NAME` shows "GEAR: ..." for them.
+- **Hallucination** (2.65.0): "You feel drugged!" scrambles the map's monster names until "You can see clearly again."
+  (a `hallucinating` alert): ignore the names in `status` meanwhile -- the Pilot judges danger by the server's monster
+  list and the damage taken. A monster 20+ levels too deep that nothing confirms is read as a typical one (news).
 - **Vaults** (2.62.0): a `vault` alert names a vault the Pilot recognised (lesser: it loots one with weak defenders;
   greater: an avoid zone -- `avoid pass`/`goal fetch` to go in) or a likely one; `status full` shows it on the
   Structures line.

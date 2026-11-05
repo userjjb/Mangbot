@@ -254,6 +254,7 @@ Built from client events (`drain`) and polled queries (`refresh`):
 | `monsters` | `[(y, x, Race)]` decoded from the map by unique glyphs |
 | `still_seen` | stationary (NEVER_MOVE) monsters seen this level, remembered out of view until killed |
 | `monlist`, `listed_only()` | the server's monster list; races it names that the map decode doesn't place |
+| `hallucinating`, `named`, `implausible` | (2.65.0) "You feel drugged!" .. "You can see clearly again." (`halluc_since`, at most `HALLUC_MAX_S` 120 s); races a message named on this level (`named_in`: "The X ...", a unique's name without "The"); glyph reads not trusted (`stand_in_monsters`) |
 | `itemlist`, `floor` | the server's item list lines; the item underfoot |
 | `ind` | status indicators (HP, gold, exp, stats, speed, hunger, flags, track bar ...); `hp`, `hp_frac`, `clvl`, `hunger`, `resting`, `flag(name)` |
 | `inven`, `items(tval=, name=, equip=)`, `tagged(cmd, digit)` | pack and equipment |
@@ -301,6 +302,12 @@ Pilot's `VERSION`). `save_mission` writes
   uploads it with `--visuals` and the server draws the map with it. With `avoid_other` on, the server draws every
   monster that way (mimics and hallucination still lie). `Glyphs.monsters(rows, attrs)` decodes the map into
   `[(y, x, Race)]`; `check_monlist` flags names the server lists that our table would draw differently.
+  **2.65.0:** `World.refresh_map` passes the decode through `world.stand_in_monsters`: while hallucinating, the server's
+  list's races (worst first, as many as it counts) go to the decoded squares nearest us and the rest are dropped (no
+  list: `generic_race`, the depth's median-experience ordinary race, for squares within 10); objects and stationary
+  monsters aren't remembered then, terrain is. Always: a race more than `OUT_OF_DEPTH` = 20 levels deeper than the level
+  that no message named, the list doesn't name and that didn't just hit us from an adjacent square is read as
+  `generic_race` (m68's scrambled Draugluin).
 - **Race data** (`load_races`): from `lib/edit/monster.txt` (N/G/I/W/F/S/B lines): name, char, colour, level,
   speed, HP dice, flags, spells and frequency, blows. Derived properties: `repeat_fearer`, `summoner`,
   `paralyser`, `per_turn`, `drains`/`drained_stats`, `worst_melee`, `max_hp`, `max_breath` (breath table `BREATHS`).

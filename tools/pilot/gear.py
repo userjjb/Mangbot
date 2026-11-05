@@ -46,24 +46,38 @@ def shadow_agree(choice, actual, table, p=None):
     return False, row
 
 
-def band_verdict(r):
-    """2.58.0 (the user: "let the estimator decide" bands): the XP fighting beats leaving by, when the estimator's
-    answer `r` (shadow) is confident, else None. Confident: its choice is to fight -- "fight", or "rules", its copy of
-    the Pilot's rules, which fights a band -- that row is safe, and it beats the leave row (the Pilot's band rule:
-    stairs, else recall+phase) by more than max(min_gain, 2 SE)."""
+def band_choice(r, phase_ok=True):
+    """2.65.0 (the Advisor's band review): (action, gain) for the estimator's answer `r` when it is confident, else
+    None. action "fight" for its "fight" or "rules" line; "phase" for its "phase" line -- options_sim's Phase Door
+    first, then the rules (fight): the band comes back one or two at a time (m67 21:34 chose it, +320 XP, and the old
+    mapping left). Without a Phase Door to read (phase_ok False) the "fight" row is judged instead. "recall+phase" and
+    "stairs" are leaving: None. Confident: the row is safe and beats the leave row (the Pilot's band rule: stairs, else
+    recall+phase) by more than max(min_gain, 2 SE)."""
     if not r or r.get("error"):
         return None
     table = r.get("table_all") or r.get("table") or []
     rows = {t.get("option"): t for t in table}
     choice = r.get("choice")
-    if choice not in ("rules", "fight"):
+    if choice not in ("rules", "fight", "phase"):
         return None
+    action = "phase" if choice == "phase" else "fight"
+    if choice == "phase" and not phase_ok:
+        choice, action = "fight", "fight"
     pick = rows.get(choice)
     leave = rows.get((r.get("snap") or {}).get("rules") or "stairs") or rows.get("stairs") or rows.get("recall+phase")
     if not pick or not leave or not pick.get("safe") or leave is pick:
         return None
     gain = (pick.get("dxp") or 0) - (leave.get("dxp") or 0)
-    return gain if gain > max(min_gain_of(r.get("p")), 2 * (leave.get("se") or 0)) else None
+    return (action, gain) if gain > max(min_gain_of(r.get("p")), 2 * (leave.get("se") or 0)) else None
+
+
+def band_verdict(r):
+    """2.58.0 (the user: "let the estimator decide" bands): the XP fighting beats leaving by, when the estimator's
+    answer `r` (shadow) is confident, else None. Confident: its choice is to fight -- "fight", or "rules", its copy of
+    the Pilot's rules, which fights a band -- that row is safe, and it beats the leave row (the Pilot's band rule:
+    stairs, else recall+phase) by more than max(min_gain, 2 SE). (2.65.0: band_choice's gain, "phase" included.)"""
+    c = band_choice(r)
+    return c[1] if c else None
 
 
 class GearMixin:

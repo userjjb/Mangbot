@@ -268,6 +268,12 @@ class World:
         self.recall_pending_t = 0.0
         self.recall_pending = False            # a Word of Recall is active ("becomes charged" until "yanked" or "A tension leaves")
         self.store = None                      # last store listing while inside a store
+        # (2.65.0, m68: "You feel drugged!" scrambled the map's monster glyphs -- Draugluin, a Gelugon... at 750 ft --
+        # and the emergency read Word of Recall. The server's monster list stays true (monster2.c display_monlist
+        # has no image check); the map doesn't (cave.c image_monster, and 1 square in 256 anywhere: image_random))
+        self.halluc_since = None               # gnow() of "You feel drugged!", None after "You can see clearly again."
+        self.named = {}                        # race name -> gnow(): monsters a message named on this level
+        self.implausible = {}                  # race name -> times: glyph reads not trusted (stand_in_monsters)
         self.store_t = 0.0
         client.log = self._on_event            # every event, from the reader thread
 
@@ -340,6 +346,7 @@ class World:
                 self.rows = None
                 self.monsters, self.itemlist = [], []
                 self.still_seen = {}
+                self.named, self.implausible = {}, {}
                 sc = self.last_stairs_cmd
                 if sc and gnow() - sc[1] < 5 and old is not None:
                     # Connected stairs: '>' leaves you on an up staircase and vice versa
@@ -357,6 +364,13 @@ class World:
             elif k == "message":
                 t = ev["text"]
                 self.messages.append((gnow(), t))
+                if t.startswith("You feel drugged!"):
+                    self.halluc_since = gnow()
+                elif t.startswith("You can see clearly again"):
+                    self.halluc_since = None
+                nm = self.named_in(t)
+                if nm:
+                    self.named[nm] = gnow()
                 km = re.match(r"You have (?:slain|destroyed|killed) (?:the )?(.+?)\.$", t)
                 if km and self.still_seen:
                     dead = [q for q, r in self.still_seen.items() if r.name.lower() == km.group(1).lower()]
@@ -498,12 +512,48 @@ class World:
             except Exception:
                 pass
 
+    HALLUC_MAX_S = 120          # (no "You can see clearly again." after this long: the state is dropped)
+
+    @property
+    def hallucinating(self):
+        """Since "You feel drugged!" until "You can see clearly again." (at most HALLUC_MAX_S)."""
+        return self.halluc_since is not None and gnow() - self.halluc_since < self.HALLUC_MAX_S
+
+    def named_in(self, t):
+        """The race a message names ("The Hill orc misses you." -> "Hill orc"), or None."""
+        g = getattr(self, "g", None)
+        if not g or not t or t.startswith(("You ", "Your ", "It ", "Something ")):
+            return None
+        words = (t[4:] if t.startswith("The ") else t).split()      # (a unique has no "The")
+        for i in range(min(len(words), 7), 0, -1):
+            name = " ".join(words[:i]).rstrip(".,!")
+            if name.endswith("'s"):
+                name = name[:-2]
+            if name in g.by_name:
+                return name
+        return None
+
     def refresh_map(self):
         m = self.c.query("map", "map")
         self.rows, self.attrs = m["rows"], m["attrs"]
         self.map_t = gnow()
         self.map_pos = self.pos
-        self.monsters = self.g.monsters(self.rows, self.attrs, skip=self.pos)
+        decoded = self.g.monsters(self.rows, self.attrs, skip=self.pos)
+        halluc = self.hallucinating
+        self.monsters, odd = stand_in_monsters(decoded, self.monlist, self.g, self.pos, self.depth or 0, self.named,
+                                               gnow() - self.last_hit_t < 3, halluc)
+        for n in odd:
+            self.implausible[n] = self.implausible.get(n, 0) + 1
+        if halluc:
+            # (the map's glyphs are scrambled: no stationary-monster memory, no objects or monsters remembered --
+            # terrain is real, a random square's monster/object glyph isn't)
+            for y, r in enumerate(self.rows):
+                for x, ch in enumerate(r):
+                    if ch in TERRAIN and ch != " ":
+                        self.memory[(y, x)] = ch
+            if self.monsters:
+                self.monster_seen_t = self.map_t
+            return
         # (a monster that never moves stays where it was seen, in view or not: m26 walked next to a Radiation eye
         # out of the lantern's reach, and its gaze drained STR)
         for y, x, r in self.monsters:
@@ -649,3 +699,56 @@ class World:
     def recent(self, secs):
         now = gnow()
         return [t for (ts, t) in self.messages if now - ts <= secs]
+
+
+# --- monster identities the map can't vouch for (2.65.0) ---------------------------------------------------------
+OUT_OF_DEPTH = 20          # levels: a race (a unique too) this far below the level needs confirming
+_GENERIC = {}
+
+
+def generic_race(g, depth):
+    """A depth-typical stand-in: the median-experience ordinary race (not unique, moves, has blows) of the levels
+    depth-5 .. depth (cached per depth)."""
+    if depth not in _GENERIC:
+        pool = sorted((r for r in g.races.values() if "UNIQUE" not in r.flags and "NEVER_MOVE" not in r.flags
+                       and r.blows and max(1, depth - 5) <= r.level <= max(1, depth)), key=lambda r: (r.exp, r.name))
+        _GENERIC[depth] = pool[len(pool) // 2] if pool else None
+    return _GENERIC[depth]
+
+
+def implausible(r, depth):
+    """A race more than OUT_OF_DEPTH levels deeper than the level (uniques alike: a unique in depth -- Grip,
+    Wormtongue -- is ordinary, and hunts name them)."""
+    return r.level > depth + OUT_OF_DEPTH
+
+
+def stand_in_monsters(decoded, monlist, g, pos, depth, named, hit_recently, hallucinating):
+    """(monsters, untrusted names) from the map decode [(y, x, Race)].
+    Hallucinating: the map's glyphs are scrambled but the server's monster list is true -- its races (worst first) go
+    to the decoded squares nearest us, as many as it counts; the other squares are dropped (1 in 256 squares shows a
+    random glyph). With no list: a depth-typical stand-in (generic_race) for each square within 10.
+    Always: a race (a unique too) more than OUT_OF_DEPTH levels below the depth that no message named on this level,
+    the server's list doesn't name, and that didn't just hit us from next to us, is read as the stand-in (m68: a glyph
+    read as Draugluin set off Word of Recall)."""
+    dist = (lambda q: max(abs(q[0] - pos[0]), abs(q[1] - pos[1]))) if pos else (lambda q: 0)
+    listed = [(g.by_name[n], c) for n, c, _ in (monlist or []) if n in g.by_name]
+    odd = []
+    if hallucinating:
+        sq = sorted(((y, x) for y, x, _ in decoded), key=dist)
+        if listed:
+            races = [r for r, c in sorted(listed, key=lambda rc: -rc[0].level) for _ in range(max(1, c))]
+            return [(y, x, r) for (y, x), r in zip(sq, races)], odd
+        gen = generic_race(g, depth)
+        return ([(y, x, gen) for y, x in sq if dist((y, x)) <= 10] if gen else []), odd
+    names = {r.name for r, _ in listed}
+    out = []
+    for y, x, r in decoded:
+        if implausible(r, depth) and r.name not in names and r.name not in named and \
+                not (hit_recently and dist((y, x)) <= 1):
+            gen = generic_race(g, depth)
+            odd.append(r.name)
+            if gen is None:
+                continue
+            r = gen
+        out.append((y, x, r))
+    return out, odd

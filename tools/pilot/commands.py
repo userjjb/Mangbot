@@ -903,18 +903,30 @@ class CommandsMixin:
     def queue_tick(self):
         """2.53.0: a plan or goal queued while plan town ran starts once plan town (and a trip's town phase) is over;
         the Navigator is told how it went (news if it started, an alert if it was refused). True if it ran."""
+        r = self.start_queued()
+        if r is None:
+            return False
+        ok, text = r
+        if ok:
+            self.notify("queued", f"plan town is done: {text}", news=True)
+        else:
+            self.notify("queued", f"plan town is done, but {text}")
+        return True
+
+    def start_queued(self):
+        """Start the queued plan or goal if plan town (and a trip's town phase) is over: (ok, "your queued `...`
+        started" | "your queued `...` was refused: ..."), or None (nothing queued, or not yet)."""
         q = self.queued
         if not q or isinstance(self.goal, TownKit) or (self.plan and self.plan.phase == "town"):
-            return False
+            return None
         self.queued = None
         self.acting = "arch" if q["role"] == "architect" else "nav"
         r = self.do_request({"cmd": q["cmd"], "args": q["args"], "role": q["role"]})
         text = f"`{q['cmd']} {' '.join(q['args'])}`"
         if r.get("ok"):
-            self.notify("queued", f"plan town is done: your queued {text} started", news=True)
-        else:
-            self.notify("queued", f"plan town is done, but your queued {text} was refused: {r.get('error')}")
-        return True
+            self.log("queued_started", cmd=q["cmd"], args=q["args"][:12])
+            return True, f"your queued {text} started"
+        return False, f"your queued {text} was refused: {r.get('error')}"
 
     def cmd_stop(self):
         if self.queued:
