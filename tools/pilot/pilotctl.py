@@ -46,6 +46,14 @@ def brief_report(report):
     return "\n".join(lines[:2] + [l for l in lines[2:] if l.startswith(BRIEF_KEEP)])
 
 
+def alerts_last(events):
+    """2.59.0 (m66: the first live `zone_blocks` woke the Navigator's wait, but its `| grep`/`| tail` dropped the line;
+    it never answered and the trip recalled): the alerts that woke the wait, again as the LAST line, so `tail` keeps
+    them (the user-message line is printed last too, 2.58.1)."""
+    if events:
+        print("ALERTS: " + " | ".join(f"{ev['what']}: {(ev.get('detail') or '')[:160]}" for ev in events))
+
+
 def main():
     argv = sys.argv[1:]
     nick = os.environ.get("PILOT_NICK")
@@ -102,6 +110,7 @@ def main():
         if out.get("report"):
             # a quiet timeout: the short form (progress check), unless there's news
             print(brief_report(out["report"]) if brief or not out.get("events") else out["report"])
+        alerts_last(out.get("events"))
         return
     try:
         # (PILOT_ROLE=architect marks the Architect's and the harness's own calls;
@@ -139,6 +148,7 @@ def main():
     elif "events" in out:
         for ev in out["events"]:
             print(f"ATTENTION {ev['what']}: {ev.get('detail') or ''}")
+        alerts_last(out["events"])
     else:
         print(json.dumps({k: v for k, v in out.items() if k != "note"}))
     if out.get("note") and not note_said:

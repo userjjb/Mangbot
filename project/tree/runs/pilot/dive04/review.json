@@ -1,16 +1,5 @@
 {
- "items": {
-  "a Ring of Protection [+11] {m66}": {
-   "why": "worth ~1600",
-   "visit": 74,
-   "t": "2026-11-04 17:57"
-  },
-  "a Beaked Axe (2d6) (+5,+5) {good - m66}": {
-   "why": "worth ~1408",
-   "visit": 74,
-   "t": "2026-11-04 17:57"
-  }
- },
+ "items": {},
  "decided": {
   "a Ring of Resist Fire": "sell",
   "a Ring of Protection [+7]": "sell",
@@ -37,7 +26,9 @@
   "an Amulet of Searching (+5) {m63}": "sell",
   "a Ring of Protection [+11] {m64}": "sell",
   "a Ring of Feather Falling {m65}": "sell",
-  "an Amulet of Resist Acid {m65}": "sell"
+  "an Amulet of Resist Acid {m65}": "sell",
+  "a Ring of Protection [+11] {m66}": "sell",
+  "a Beaked Axe (2d6) (+5,+5) {good - m66}": "sell"
  },
- "town_visits": 75
+ "town_visits": 76
 }

@@ -1036,13 +1036,23 @@ class CommandsMixin:
         self.running = False
         return {"ok": True}
 
-    def cmd_park(self):
+    def cmd_park(self, args):
         # Log out at the next safe moment (for a Pilot update): the goal is
-        # dropped now, the logout waits until nothing is close and HP is OK
-        if not isinstance(self.goal, Recall):
+        # dropped now, the logout waits until nothing is close and HP is OK.
+        # (2.59.0: a town or house visit -- plan town, the bank, a shop, the tavern stash -- runs to its end first, up
+        # to 10 minutes; `park now` doesn't wait)
+        now_ = bool(args) and args[0] == "now"
+        busy = None if now_ else self.swap_unsafe()
+        if not isinstance(self.goal, Recall) and not busy:
             self.set_goal(None)       # a pending recall is allowed to finish first
         self.parking = gnow()
-        return {"ok": True, "note": "will log out when safe"}
+        self.park_now = now_
+        return {"ok": True, "note": "will log out when safe" + (f"; first waiting: {busy}" if busy else "")}
+
+    def cmd_swapsafe(self):
+        """2.59.0: may restart.sh / hotswap.sh go ahead now? {safe, why}: why names what must end first."""
+        why = self.swap_unsafe()
+        return {"ok": True, "safe": why is None, "text": "safe" if why is None else f"waiting for {why}"}
 
     PLAN_USAGE = ("usage: plan trip LO-HI [until \"COND or COND...\"] [then recall|town] [level_min=N] [via=stairs|recall] "
                   "[force] | "

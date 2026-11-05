@@ -27,6 +27,21 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.59.0 -- 2026-11-04 (session 12, the user's decisions after m66)
+No missions yet on it. **Play changes:**
+- **No restart or hot-swap during a town or house visit** (m66: hotswap.sh hit plan town mid house visit, the bank's
+  28k in the purse). `restart.sh` and `hotswap.sh` poll the new `pilotctl swapsafe` until no plan town, house bank,
+  shop or tavern-stash goal runs and the character isn't in a store, on the house tile or in the house ("waiting for
+  plan town to finish (stage ...)", up to 900 s); `--now` overrides. `park` lets such a visit end first (`park now`
+  doesn't wait).
+- **Home from the wilderness by the overworld position** (the user): without a trail, the Town goal reads the
+  sector's world offset from its level number (the server's `world_index`, wilderness.c, inverted: `world_xy`) and
+  walks west/east until x is 0, then south/north, recomputing after each crossing; from inside the house, out by its
+  door first (house.json). The trip plan stops re-issuing a goal after 3 identical failures (Word of Recall once), and
+  repeated identical goal_failed notices are one, the count said with the next.
+- **`wait` repeats its alerts last** (`ALERTS: ...`), as the user-message line (m66: a grep dropped the first live
+  `zone_blocks`); the HANDBOOK says never to filter `wait`/`status` with grep.
+
 ## 2.58.1 -- 2026-11-04 (session 12, during m66)
 No play change (patch). **pilotctl prints the "USER MESSAGE(S) NOT YET ANSWERED" line last as well as first:** m66's
 Navigator ran `wait 240 2>&1 | tail -30`, which cut the first line, and missed the user's message for 2 minutes

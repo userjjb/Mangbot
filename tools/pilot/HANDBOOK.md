@@ -12,6 +12,8 @@ line are in `HANDBOOK-reference.md` (search it, don't read it all). Where the tw
 - **The Pilot decides by policy, computed from data** (the server's formulas and the Advisor's rulebook). It picks up,
   identifies, wears upgrades, destroys junk and sells. It chooses fights, flees, phases, quaffs and rests, and it
   leaves bad levels.
+- **Never filter `wait`/`status` with grep; `tail` is safe: alerts (`ALERTS:`) and user messages are repeated last**
+  (m66: a `zone_blocks` alert was grepped away and the trip recalled).
 - **You may always order something safer**: `goal leave`, `goal recall`, `plan stop`, `stop`, `avoid`, `keep`.
 - **Something riskier or irreversible is checked** (a hunt, a fetch, selling or destroying). A refusal says why and
   what would allow it. You may override with `!` (`goal hunt !NAME`, `goal shop N sell !NAME`, `destroy !NAME`), but every

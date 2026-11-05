@@ -163,7 +163,11 @@ COMMANDS = {
     "attention": Cmd("cmd_attention", call="none", dead=True, usage="attention",
                      help="the pending attention events (cleared)", group="Info"),
     "quit": Cmd("cmd_quit", roles=ARCH, refusal=CONTROL, call="none", dead=True, usage="quit", help="stop the Pilot's main loop", group="Control"),
-    "park": Cmd("cmd_park", call="none", roles=ARCH, refusal=CONTROL, dead=True, usage="park", help="log out when safe, for an update", group="Control"),
+    "park": Cmd("cmd_park", roles=ARCH, refusal=CONTROL, dead=True, usage="park [now]",
+                help="log out when safe, for an update (after a town or house visit ends; `now`: don't wait for it)",
+                group="Control"),
+    "swapsafe": Cmd("cmd_swapsafe", call="none", dead=True, logged=False, viewer=True, usage="swapsafe",
+                    help="may a restart or hot-swap go ahead now (no town or house visit running)", group="Control"),
 }
 
 # (tuples, as handle_requests and authenticate always tested them)

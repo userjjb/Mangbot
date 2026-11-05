@@ -8,7 +8,8 @@ import sys
 import time
 import types
 
-from common import HERE, TV_SCROLL, TV_LITE, TV_FOOD, flavour_key, kind_key, bare_name, singular, rec_name
+from common import HERE, TV_SCROLL, TV_LITE, TV_FOOD, flavour_key, kind_key, bare_name, singular, rec_name, \
+    world_xy
 from world import gnow, waited, light_turns
 from mover import direction, MAX_HGT, MAX_WID
 from goals import Goal, Wait
@@ -44,11 +45,47 @@ def edge_of(pos):
 class Town(Goal):
     """From the wilderness back to town: leave each sector by the edge we came
     in through (a stack of arrival edges; mission 13 ran off the town map at
-    night and no goal could walk back)."""
+    night and no goal could walk back). 2.59.0 (the user: "look at our position relative to town on the overworld map
+    and head accordingly"; m66: after a hot-swap, inside the house on the tile north of town, it failed "don't know
+    which edge leads back" ~130 times): without the trail, the sector's world offset from its level number
+    (common.world_xy, the server's world_index inverted) says which edge -- west/east until x is 0, then south/north
+    until y is 0 -- recomputed after each crossing; inside the owned house, out by its door first (house.json)."""
     name = "town"
 
     def __init__(self):
         self.step_t = 0.0
+
+    def leave_house(self, p):
+        """Inside the owned house (house.json): to the square inside the door, open it, out through it. True while
+        acting."""
+        h = p.house_state().get("house") or {}
+        w = p.w
+        door, inside, outside = (tuple(h[k]) if h.get(k) else None for k in ("door", "step_in", "outside"))
+        if not (door and inside and outside) or not waited(self.step_t, 0.8):
+            return True
+        self.step_t = gnow()
+        if w.pos == door:
+            p.cmd(f"walk {direction(w.pos, outside)}", "town: out of the house", hold=0.5)
+        elif w.pos == inside:
+            if w.memory.get(door) == "'":
+                p.cmd(f"walk {direction(w.pos, door)}", "town: into the house's doorway", hold=0.5)
+            else:
+                p.cmd(f"open {direction(w.pos, door)}", "town: open the house's door", hold=0.5)
+        else:
+            dy, dx = (inside[0] > w.pos[0]) - (inside[0] < w.pos[0]), (inside[1] > w.pos[1]) - (inside[1] < w.pos[1])
+            p.cmd(f"walk {direction(w.pos, (w.pos[0] + dy, w.pos[1] + dx))}", "town: to the house's door", hold=0.5)
+        return True
+
+    @staticmethod
+    def edge_home(depth):
+        """The edge of this wilderness sector toward town by its world offset: W/E while x isn't 0, then S/N."""
+        xy = world_xy(depth)
+        if not xy or xy == (0, 0):
+            return None
+        x, y = xy
+        if x:
+            return "W" if x > 0 else "E"
+        return "S" if y > 0 else "N"
 
     def tick(self, p):
         w = p.w
@@ -56,7 +93,9 @@ class Town(Goal):
             return ("done", "in town")
         if w.in_dungeon:
             return ("failed", "in the dungeon: use goal dive 0 or goal recall")
-        edge = p.wild_trail[-1] if p.wild_trail else edge_of(w.arrive_pos or w.pos)
+        if p.in_house():
+            return self.leave_house(p) and None
+        edge = p.wild_trail[-1] if p.wild_trail else (self.edge_home(w.depth) or edge_of(w.arrive_pos or w.pos))
         if edge is None:
             return ("failed", "don't know which edge leads back: read Word of Recall")
         d = EDGE_DIR[edge]

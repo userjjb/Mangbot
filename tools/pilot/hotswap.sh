@@ -7,12 +7,30 @@
 # Pilot's own memory (the level map it built, refused stairs, fights) starts over, as in any restart.
 # Tested in the dungeon by set-pieces H1 (mid-trip) and H1r (with a recall pending), both passed 2026-10-25 (~4 s swap).
 set -u
-NICK=${1:?usage: hotswap.sh NICK [PORT]}; PORT=${2:-28346}
+# (2.59.0, the user after m66: never during a town or house visit -- hotswap.sh hit plan town mid house visit, the
+# bank's 28k in the purse. Wait until `pilotctl swapsafe` says safe, up to SWAP_WAIT_S (default 900); --now skips)
+NOW=0; ARGS=()
+for a in "$@"; do [ "$a" = "--now" ] && NOW=1 || ARGS+=("$a"); done
+set -- "${ARGS[@]}"
+NICK=${1:?usage: hotswap.sh NICK [PORT] [--now]}; PORT=${2:-28346}
 HERE=$(cd "$(dirname "$0")" && pwd); RUNS=$(cd "$HERE/../../.." && pwd)/runs
 LOW=$(echo "$NICK" | tr A-Z a-z)
 FREEZE="$HERE/../freeze.sh"
 module load python3/3.12.4 2>/dev/null
 cd "$HERE"
+swap_wait() {
+    [ "$NOW" = 1 ] && return 0
+    local t0=$(date +%s) last=""
+    while :; do
+        local out
+        out=$(python3 pilotctl.py --nick "$LOW" swapsafe 2>&1 | head -1)
+        case "$out" in safe|"(Pilot not answering"*|"which Pilot"*) return 0 ;; esac
+        [ "$out" != "$last" ] && echo "$(date +%T) $out" && last="$out"
+        [ $(( $(date +%s) - t0 )) -ge "${SWAP_WAIT_S:-900}" ] && { echo "still $out after ${SWAP_WAIT_S:-900} s: rerun with --now to go ahead"; exit 1; }
+        sleep 3
+    done
+}
+swap_wait
 was=$("$FREEZE" status)
 "$FREEZE" on >/dev/null; echo "$(date +%T) frozen"; sleep 1
 PID=$(pgrep -f "^python3 pilot.py --nick $NICK")

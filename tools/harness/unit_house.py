@@ -977,3 +977,133 @@ def a_permanent_light_beats_the_lantern():
         sells == [1, 3]
     return ok, f"upgrade {acted} {sent}; better {better}; town: fuel {t.lantern_fuel()}, flasks {t.flasks_to_fill()}, " \
                f"{t.supply_text()!r}, sells {sells}"
+
+
+@case
+def wilderness_home_by_world_offset():
+    """2.59.0 (the user: "look at our position relative to town on the overworld map and head accordingly"; m66: after
+    a hot-swap, inside the house on the tile north of town, Town failed "don't know which edge leads back" ~130 times).
+    The server's numbering (wilderness.c world_index: ring |x|+|y|, base 2r(r-1)+1, offset r-y or 3r+y, depth -(base +
+    offset)) and its inverse agree everywhere; -1 is north of town (Dive04's house tile: town 1,130 <-> wild 64,130),
+    -2 east, -3 south, -4 west. With no trail, Town walks out of the house by its door, then to the south edge."""
+    from common import world_index, world_xy
+    roundtrip = all(world_xy(world_index(x, y)) == (x, y) for x in range(-12, 13) for y in range(-12, 13))
+    numbering = [world_index(*c) for c in ((0, 1), (1, 0), (0, -1), (-1, 0), (1, 1), (0, 2))]
+    edges = [P.Town.edge_home(d) for d in (-1, -2, -3, -4, -6)]
+    p = pilot()
+    w = p.w
+    w.in_dungeon, w.depth, w.depth_ft = False, -1, 0
+    mem = {}
+    for x in range(124, 130):
+        mem[(59, x)] = mem[(61, x)] = "#"
+    mem[(60, 124)], mem[(60, 129)] = "#", "0"
+    for x in range(125, 129):
+        mem[(60, x)] = "."
+    w.memory, w.pos = mem, (60, 126)
+    p._house = {"house": {"door": [60, 129], "step_in": [60, 128], "outside": [60, 130], "box": [59, 124, 61, 129],
+                          "depth": -1}}
+    p.wild_trail = []
+    sent, went = [], []
+    dirs = {4: (0, -1), 6: (0, 1), 2: (1, 0), 8: (-1, 0)}
+
+    def cmd(line, why, hold=0.4):
+        sent.append(line)
+        m = re.match(r"(walk|open) (\d)", line)
+        if m and m.group(1) == "walk":
+            dy, dx = dirs[int(m.group(2))]
+            w.pos = (w.pos[0] + dy, w.pos[1] + dx)
+        elif m:
+            w.memory[(60, 129)] = "'"
+    p.cmd = cmd
+    p.mover = type("M", (), {"active": False, "go": lambda self, t, **k: went.append(t[0]) or True,
+                             "tick": lambda self: "moving", "stop": lambda self: None})()
+    g = P.Town()
+    for _ in range(8):
+        g.step_t = -99.0
+        r = g.tick(p)
+        if went:
+            break
+    ok = roundtrip and numbering == [-1, -2, -3, -4, -6, -5] and edges == ["S", "W", "N", "E", "W"] and \
+        w.pos in ((60, 129), (60, 130)) and went and went[0][0] == 64 and "open 6" in sent and r is None
+    return ok, (f"roundtrip {roundtrip}; numbering {numbering}; edges {edges}; out of the house {sent}, at {w.pos}; "
+                f"then to the edge row {went[:1]}")
+
+
+@case
+def plan_stops_reissuing_a_failing_goal():
+    """2.59.0 (m66: the trip plan re-issued Town ~130 times in 13 s, each failing "don't know which edge leads back"):
+    after 3 identical failures in a row the plan doesn't issue that goal again -- it reads Word of Recall once, as the
+    message says -- and the repeated goal_failed notices are one, the count said with the next different one."""
+    p = pilot()
+    p.mover = type("M", (), {"active": False, "stop": lambda self: None})()
+    tp = P.TripPlan(700, 800, P.TripPlan.parse_until("minutes>30"))
+    fails = []
+    for _ in range(3):
+        tp.goal_ended(p, P.Town(), "failed", "don't know which edge leads back: read Word of Recall")
+        fails.append(tp.reissue_ok(p, P.Town))
+    goal = type(p.goal).__name__ if p.goal else None
+    again = tp.reissue_ok(p, P.Town)
+
+    class Bad:
+        name, abort, quiet, overridden, by_plan, role = "town", None, False, None, False, None
+        def __init__(self, why):
+            self.why = why
+        def tick(self, p):
+            return ("failed", self.why)
+        def describe(self):
+            return "town"
+    q = pilot()
+    q.mover = type("M", (), {"active": False, "stop": lambda self: None})()
+    q.plan, q.resume_after = None, None
+    q.w.flag = lambda k: False
+    for k in range(5):
+        q.goal = Bad("don't know which edge leads back")
+        q.step_goal()
+    q.goal = Bad("no path to the S edge")
+    q.step_goal()
+    fl = [d for k, d in q.notes if k == "goal_failed"]
+    ok = fails == [True, True, False] and goal == "Recall" and again is False and len(fl) == 2 and \
+        "failed 5 times in a row" in fl[1]
+    return ok, f"reissue after 1-3 failures {fails}; goal {goal}; again {again}; notices {fl}"
+
+
+@case
+def no_restart_during_a_town_visit():
+    """2.59.0 (the user after m66: hotswap.sh hit plan town mid house visit, the bank's 28k in the purse): `swapsafe`
+    names what must end first -- plan town (and its stage), the house bank, a shop, the tavern stash, a store, the
+    house tile, the house -- and `park` keeps such a goal running and logs out only after it (`park now` doesn't
+    wait). restart.sh and hotswap.sh poll `swapsafe` (and take --now)."""
+    p = pilot(gold=300)
+    w = p.w
+    w.in_dungeon, w.depth, w.depth_ft = False, 0, 0
+    p.mover = type("M", (), {"active": False, "stop": lambda self: None})()
+    p._house = {"house": {"door": [60, 129], "step_in": [60, 128], "outside": [60, 130], "box": [59, 124, 61, 129],
+                          "depth": -1}}
+    k = P.TownKit()
+    k.stage = "buying"
+    p.goal = k
+    town = p.do_request({"cmd": "swapsafe", "args": [], "role": "architect"})
+    park = p.do_request({"cmd": "park", "args": [], "role": "architect"})
+    kept = p.goal is k
+    p.running = True
+    p.park_tick()
+    still = p.running
+    w.depth = -1
+    p.goal = None
+    tile = p.swap_unsafe()
+    w.depth = 0
+    w.store = {"name": "Alchemist"}
+    store = p.swap_unsafe()
+    w.store = None
+    free = p.do_request({"cmd": "swapsafe", "args": [], "role": "navigator"})
+    p.goal = k
+    now = p.do_request({"cmd": "park", "args": ["now"], "role": "architect"})
+    import os as _os
+    scripts = all("swapsafe" in open(_os.path.join(P.HERE, s)).read() and "--now" in open(_os.path.join(P.HERE, s)).read()
+                  for s in ("restart.sh", "hotswap.sh"))
+    ok = not town["safe"] and town["text"].startswith("waiting for plan town to finish (stage buying") and \
+        "first waiting" in park["note"] and kept and still and "house's wilderness tile" in tile and \
+        "inside a store" in store and \
+        free["safe"] and p.goal is None and "first waiting" not in now["note"] and scripts
+    return ok, f"town {town}; park {park} (goal kept {kept}, still running {still}); tile {tile}; store {store}; " \
+               f"free {free}; park now {now}; scripts {scripts}"

@@ -124,7 +124,7 @@ command's code, not the table):
 |---|---|---|---|
 | `status` | the compact report (`compact(snapshot=True)`: character, supplies, here, monsters, news, gear/pack snapshot) | all | -- |
 | `status full` | the long report (`report()`: stats, map, equipment, pack, messages, orders...; the first line ends with `Pilot vX.Y.Z · rN`, the code's version and the report number) | all | -- |
-| `wait [SECS] [--brief]` | blocks (default 600 s) until an attention event, then prints `ATTENTION what: detail (goal: ...)` per event and the wait report (`compact(news_since=last wait)`: only what changed). A quiet timeout prints `(no attention events)` and the brief form; `--brief` always keeps only the first two lines and the lines starting `USER MESSAGE`, `Supplies:`, `Here:`, `Monsters:`, `News:`, `Since last`, `Progress:`, `Cures`... Pass a Bash timeout above SECS | all | -- |
+| `wait [SECS] [--brief]` | (2.59.0: the alerts that woke it are repeated as the last line, `ALERTS: what: detail | ...`, so `tail` keeps them; the user-message line is last too, 2.58.1) blocks (default 600 s) until an attention event, then prints `ATTENTION what: detail (goal: ...)` per event and the wait report (`compact(news_since=last wait)`: only what changed). A quiet timeout prints `(no attention events)` and the brief form; `--brief` always keeps only the first two lines and the lines starting `USER MESSAGE`, `Supplies:`, `Here:`, `Monsters:`, `News:`, `Since last`, `Progress:`, `Cures`... Pass a Bash timeout above SECS | all | -- |
 | `attention` | the pending attention events without waiting (and clears them) | all | -- |
 | `pack` | `Pack: a) ...; b) ...` with the Pilot's short names and values | all | -- |
 | `equip` | `Equipment (use these letters, capitals...)`: `A) ...` plus the gear line (empty slots, pack items better than worn) | all | -- |
@@ -256,7 +256,8 @@ Prints `mission start: LABEL at YYYY-MM-DD HH:MM`. Scorecards and the viewer rea
 | command | does | who |
 |---|---|---|
 | `stop` | drop the goal, stop resting, end the plan (note: "the trip plan is stopped too") | all |
-| `park` | log out at the next safe moment (nothing close, HP 70%+, no recall pending; after 5 min it logs out anyway) for a Pilot update; drops the goal unless it's a pending recall; note "will log out when safe". The Navigator sees a `parked` event | Architect (role check since 2.45.0; restart.sh / charsave.sh pass the token; a ghost may park) |
+| `park [now]` | log out at the next safe moment (nothing close, HP 70%+, no recall pending; after 5 min it logs out anyway) for a Pilot update; (2.59.0) first lets a town or house visit end (`swap_unsafe`: plan town, the bank, a shop, the tavern stash, a store, the house tile; up to 10 min) -- `park now` doesn't wait; drops the goal unless it's a pending recall or such a visit; note "will log out when safe". The Navigator sees a `parked` event | Architect (role check since 2.45.0; restart.sh / charsave.sh pass the token; a ghost may park) |
+| `swapsafe` | (2.59.0) "safe", or "waiting for <what must end first>" (`swap_unsafe`): restart.sh's and hotswap.sh's poll; read-only | all | -- |
 | `quit` | stop the Pilot's main loop | Architect (role check since 2.45.0) |
 | `stairs [<\|>]` | take the stairs (default: the kind underfoot) | **Architect only** |
 | `raw TEXT` | send a raw tool-client command | **Architect only** |

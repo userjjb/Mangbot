@@ -236,6 +236,8 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.zone_pass = set()                # (level, Y, X): structures whose ring paths may cross (`avoid pass`, 2.53.0)
         self.zone_wait = None                 # a hold for the Navigator's word on a blocking avoid zone (zone_hold)
         self.queued = None                    # a plan/goal the Navigator sent while plan town ran (2.53.0)
+        self.goal_fail_last = None            # (text, count, t) of the last goal_failed notice (2.59.0: repeats collapsed)
+        self.park_now = False                 # `park now`: log out without waiting for a town visit to end (2.59.0)
         self.drop_fails, self.drop_told = {}, set()   # stash drops that didn't happen, this visit (drop_failed)
         self.artifact_told = set()            # artifacts told "kept in the pack: can't be stored" (town_rule)
         self.gear_events, self.gear_msg_t, self.gear_act_t = [], 0.0, 0.0   # equipment damage (gear_damage_tick, 2.57.0)
@@ -1053,8 +1055,18 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
                 elif self.plan.paused and ended is self.plan.pause_goal:
                     self.plan.paused = False
                     self.notify("plan", f"your goal ended ({g}: {detail}); the trip plan carries on")
-            self.notify({"done": "goal_done", "failed": "goal_failed"}.get(status, status),
-                        f"{g}: {detail}" if detail else g, news=quiet)
+            text = f"{g}: {detail}" if detail else g
+            # (2.59.0, m66: ~130 identical "town: don't know which edge leads back" in 13 s -- one notice, the
+            # repeats counted and said with the next different one)
+            lf = self.goal_fail_last
+            if status == "failed" and lf and lf[0] == text and gnow() - lf[2] < 60:
+                self.goal_fail_last = (text, lf[1] + 1, gnow())
+                self.log("note", text=f"goal_failed repeated ({lf[1] + 1}x): {text[:120]}")
+            else:
+                self.goal_fail_last = (text, 1, gnow()) if status == "failed" else None
+                if lf and lf[1] > 1:
+                    text += f" (before this: '{lf[0][:80]}' failed {lf[1]} times in a row)"
+                self.notify({"done": "goal_done", "failed": "goal_failed"}.get(status, status), text, news=quiet)
             if status == "failed" and g.startswith(("flee", "leave")):    # (m26's `goal leave` got stuck too)
                 self.flee_failed(g)
         return True
@@ -1071,9 +1083,35 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
 
     STAT_NAMES = ("STR", "INT", "WIS", "DEX", "CON", "CHR")
 
-    def park_tick(self):
-        """Parking: log out once it's safe (restarting mid-fight is dangerous)."""
+    def swap_unsafe(self):
+        """Why a restart or hot-swap must wait now, or None (2.59.0, the user after m66: hotswap.sh hit plan town in
+        the middle of its house visit -- the bank's 28k in the purse, the TownKit and the house tile's map lost): a town
+        or house goal running (plan town -- a trip's own visit too --, the house bank, a shop, the tavern stash),
+        standing inside a store, on the house's wilderness tile, or inside the house."""
+        g = self.goal
+        sub = getattr(g, "sub", None)
+        if isinstance(g, TownKit):
+            return f"plan town to finish (stage {g.stage}" + (f": {sub.describe()}" if sub else "") + ")"
+        for cls, what in ((HouseBank, "the house bank"), (Shop, "a shop visit"), (StashDeposit, "the tavern stash"),
+                          (StashFetch, "a tavern fetch")):
+            if isinstance(g, cls):
+                return f"{what} to finish ({g.describe()})"
         w = self.w
+        if w.store:
+            return "the store visit to end (inside a store)"
+        h = self.house_state().get("house") or {}
+        if h and not w.in_dungeon and w.depth and int(h.get("depth", 0)) == w.depth:
+            return "the walk back from the house's wilderness tile"
+        if self.in_house():
+            return "the house visit to end (inside the house)"
+        return None
+
+    def park_tick(self):
+        """Parking: log out once it's safe (restarting mid-fight is dangerous; 2.59.0: nor during a town or house
+        visit -- swap_unsafe -- unless `park now`)."""
+        w = self.w
+        if not self.park_now and self.swap_unsafe() and gnow() - self.parking < 600:
+            return
         near = [m for m in w.monsters if w.dist(m[:2]) <= 15]
         # (never during a pending recall: a logout reset its depth once, and
         # Dive03 landed at 1000 ft instead of the @R750 it had asked for)
@@ -1416,8 +1454,10 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
                     pass
             if w.depth == 0 or w.in_dungeon:
                 self.wild_trail = []
-            elif isinstance(self.goal, Town) and self.wild_trail:
-                self.wild_trail.pop()             # retracing: one sector closer
+            elif isinstance(self.goal, Town):
+                if self.wild_trail:
+                    self.wild_trail.pop()         # retracing: one sector closer
+                # (2.59.0: without a trail the Town goal steers by the world offset -- no arrival edge is pushed)
             elif edge_of(w.arrive_pos):
                 self.wild_trail.append(edge_of(w.arrive_pos))
                 # (not for the bank's own trip to the house tile: m57 read it as the Pilot wandering off)

@@ -83,6 +83,7 @@ ORDER = """
     caps_from_the_normal_price_not_a_sale navigator_clarity_losses_and_plan_town
     equipment_damage_is_danger
     bands_decided_by_the_estimator gear_gold_for_the_estimator
+    wilderness_home_by_world_offset plan_stops_reissuing_a_failing_goal no_restart_during_a_town_visit
 """.split()
 
 

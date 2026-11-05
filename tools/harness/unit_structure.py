@@ -47,8 +47,9 @@ def command_table_fields_valid():
         for sub, rule in (s.subs or {}).items():
             if set(rule) - {"roles", "refusal", "dead"} or ("roles" in rule and not rule.get("refusal")):
                 bad.append(f"{n} {sub}: {rule}")
-    tuples = (set(P.Pilot.READ_ONLY_CMDS) == {"viewmap", "view", "navview", "goalstate"} and
-              set(cmdtable.POLLS) == {"viewmap", "view", "navview", "note", "goalstate", "mission"} and
+    # (2.59.0: swapsafe, restart.sh's and hotswap.sh's poll, is a read-only query too)
+    tuples = (set(P.Pilot.READ_ONLY_CMDS) == {"viewmap", "view", "navview", "goalstate", "swapsafe"} and
+              set(cmdtable.POLLS) == {"viewmap", "view", "navview", "note", "goalstate", "mission", "swapsafe"} and
               set(cmdtable.NO_MESSAGES) == {"note", "say", "status"} and
               P.Pilot.DUNGEON_ITEM_CMDS == {"wear", "takeoff", "pickup", "fuel", "eat", "inscribe", "wearall"})
     return not bad and tuples, "; ".join(bad) or f"all valid; the request tuples as before: {tuples}"

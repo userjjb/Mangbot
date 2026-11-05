@@ -115,7 +115,7 @@ need the map, equipment, pack or messages. A `wait` that times out with no
 events always prints the short form: check that the depth or position is
 changing (the pilot also raises `stuck` if a goal goes nowhere for 2 minutes).
 
-Attention events:
+Attention events (never filter `wait`/`status` with grep; `tail` is safe: since 2.59.0 the alerts that woke a `wait` are repeated as its last line, `ALERTS: ...`, and user messages are printed last):
 
 | event | meaning |
 |---|---|

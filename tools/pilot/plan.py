@@ -416,7 +416,8 @@ class TripPlan:
                 return None
             if not w.in_dungeon:
                 self.step = "back to town from the wilderness"
-                p.set_goal(self.mark(Town()))
+                if self.reissue_ok(p, Town):
+                    p.set_goal(self.mark(Town()))
                 return None
             self.went_down = True
             self.phase = "level"
@@ -507,7 +508,8 @@ class TripPlan:
                 return ("done", f"home ({self.home_why}); {plural(self.levels, 'level')} in "
                                 f"{(now - self.t0) / 60:.0f} min")
             if not w.in_dungeon:
-                p.set_goal(self.mark(Town()))
+                if self.reissue_ok(p, Town):
+                    p.set_goal(self.mark(Town()))
                 return None
             self.climb_t0 = self.climb_t0 or now
             if w.depth_ft <= 150 and not w.recall_pending and (now - self.climb_t0 < 180 or self.value(p, "wor") < 1):
@@ -560,8 +562,31 @@ class TripPlan:
             return f"quiet: {gained} XP in {self.QUIET_MIN:g} minutes"
         return None
 
+    FAIL_REISSUE = 3          # (2.59.0) a plan goal failing the same way this often in a row is not issued again
+
+    def reissue_ok(self, p, cls):
+        """May the plan issue a `cls` goal again? Not after FAIL_REISSUE identical failures in a row (2.59.0, m66: Town
+        failed "don't know which edge leads back" ~130 times in 13 s): then Word of Recall, as the failure says, once
+        -- and nothing more while it charges."""
+        streak = self.__dict__.get("fail_streak")
+        if not streak or streak[0][0] != cls.__name__ or streak[1] < self.FAIL_REISSUE:
+            return True
+        if not self.__dict__.get("streak_recalled"):
+            self.streak_recalled = True
+            p.notify("plan", f"trip: {cls.__name__.lower()} failed {streak[1]} times in a row ({streak[0][1]}): "
+                             "reading Word of Recall instead", news=True)
+            p.set_goal(self.mark(Recall()))
+        return False
+
     def goal_ended(self, p, g, status, detail):
-        """A plan goal finished: the level is done when its exploration is."""
+        """A plan goal finished: the level is done when its exploration is. (2.59.0: identical failures in a row are
+        counted, `fail_streak`, for reissue_ok.)"""
+        key = (type(g).__name__, str(detail)[:80])
+        if status == "failed":
+            st = self.__dict__.get("fail_streak")
+            self.fail_streak = (key, st[1] + 1 if st and st[0] == key else 1)
+        else:
+            self.fail_streak = None
         if isinstance(g, Explore) and self.phase == "level" and self.level == p.w.level_t:
             self.level_done = detail or status
         if isinstance(g, (Dive, Recall)) and status == "failed":

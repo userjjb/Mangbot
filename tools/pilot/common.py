@@ -146,6 +146,38 @@ def mission_tag(name):
     return last if MISSION_TAG_RE.match(last) else None
 
 
+def world_index(x, y):
+    """The server's wilderness level number of the sector at world offset (x east, y north) of town
+    (src/server/wilderness.c:44 world_index): ring = |x|+|y|, base = 2r(r-1)+1, offset = r - y (x >= 0) or 3r + y
+    (x < 0), depth = -(base + offset); the town is 0. The tile north of town is -1, east -2, south -3, west -4."""
+    r = abs(x) + abs(y)
+    if not r:
+        return 0
+    base = 2 * r * (r - 1) + 1
+    off = r - y if x >= 0 else 3 * r + y
+    return -(base + off)
+
+
+def world_xy(depth):
+    """(x east, y north) of a wilderness level (depth < 0) from town: world_index's inverse (2.59.0, the user: "look at
+    our position relative to town on the overworld map and head accordingly"). The town (0) is (0, 0); None for a
+    dungeon level."""
+    if depth == 0:
+        return 0, 0
+    if depth > 0:
+        return None
+    n = -depth
+    r = 1
+    while 2 * (r + 1) * r + 1 <= n:            # (the ring whose base 2r(r-1)+1 <= n < the next ring's)
+        r += 1
+    off = n - (2 * r * (r - 1) + 1)
+    if off <= 2 * r:
+        y = r - off
+        return r - abs(y), y
+    y = off - 3 * r
+    return -(r - abs(y)), y
+
+
 def rec_name(rec):
     """A stash record's item name (house.json `items`, `tavern.items`): a plain name (before 2.50.0) or the dict's
     `name` (2.50.0: with value, t, fresh, mission)."""

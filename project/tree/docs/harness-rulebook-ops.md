@@ -330,8 +330,9 @@ requests, acts on nothing). Logins work while frozen. Without the variable (any 
 
 ### `pilot/restart.sh` and `pilot/hotswap.sh` (operational use)
 
-| | `restart.sh NICK [PORT]` | `hotswap.sh NICK [PORT]` |
+| | `restart.sh NICK [PORT] [--now]` | `hotswap.sh NICK [PORT] [--now]` |
 |---|---|---|
+| guard (2.59.0) | both first poll `pilotctl swapsafe` every 3 s until no town or house visit runs (plan town -- a trip's own visit too --, the house bank, a shop, the tavern stash; inside a store; on the house's tile or inside the house), printing "waiting for plan town to finish (stage ...)", up to `SWAP_WAIT_S` (900 s, then they stop and say so); `--now` skips the wait (and restart.sh parks with `park now`). The user, after m66: hotswap.sh hit plan town mid house visit, the bank's 28k in the purse | the same, before freezing |
 | when | between missions, character idle in town; after a job/node restart | mid-mission, anywhere |
 | how | `pilotctl park` as the Architect (the script passes the token; logs out at a safe moment), waits up to 330 s, starts `pilot.py`, prints status | freeze, SIGTERM the Pilot (KILL after 10 s; no park), start the new one, wait for it to answer, thaw (left frozen if it was) |
 | keeps | savefile and the Pilot's state files | the character in memory, in place; the trip plan (`plan.json`) and a pending recall (`recall.json`) |
