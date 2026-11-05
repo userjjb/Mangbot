@@ -87,7 +87,7 @@ starts with that number.
 | 15 | Hunger | hunger ≤ 1 (Weak; since 2.45.2 Hungry, 2, is `policy_tick`'s, at a safe moment -- the user: a battle turn spent eating when not needed is wasted), no monster adjacent (fainting, 0: even then) -- it no longer waits for 5 s without a monster in view | Eat (once per 10 s). No food: read Satisfy Hunger only when Weak (≤ 1), because it fills you to Gorged. Neither, and Weak outside town: goal `Recall` (`supplies`, level `recalling`). While it waits (a meal under 10 s ago) the later steps still run (A20, 2.39.0). Weak with only scrolls and no light worn: `wear_light` puts the best light in the pack on (that ends the call); with no light to put on, the later steps still run too (2.45.0; it used to return there). | `_reflex_hunger` |
 | 16 | **Adjacent monster** | any adjacent | Stop the mover (except during Goto/Flee) and stop resting. Below `think_hp`: `fight_going_badly` alert (once per 10 s). With 2+ adjacent and one a thief (EAT_ITEM/EAT_GOLD blows), hit the thief first (item thieves before gold thieves). Otherwise hold, so auto-retaliate fights. A Goto or Flee goal keeps moving instead. | `_reflex_adjacent` |
 | 17 | Pickup / auto-destroy | standing on an item | Belongs to the item policy ([pilot-items.md](pilot-items.md)). While fleeing (Flee, BandLeave, WalkAway) with monsters in view, only items worth 500 or more are picked up. | `_reflex_pickup`, `_reflex_pack` |
-| 18 | **Engage** | `engage_tick` (§2.2) | Walk to a weak monster a few steps off and fight it. | `_reflex_engage` |
+| 18 | **Engage** | `engage_tick` (§2.2) | Fight a monster in view the hunt check allows (2.66.0: any level, adjacent ones attacked, pursuers first, also while the trip leaves for a non-danger reason). | `_reflex_engage` |
 | 19 | Rest | HP < `rest_below` (0.7), nothing in view, not recalling | First, an escape walk to stairs (escape step 12) that outlived its emergency (escape() isn't called once nothing is within 7 and no hit for 5 s): keep walking, and on the stairs take them (escape step 3, then `Recover`). It ends when the walk does (blocked, stopped by another step, replaced by another walk) or on a new level; before 2.45.0 nothing ticked it and the character stood still, neither walking nor resting. Otherwise rest. It stops at `rest_to` (0.95) or when a monster appears, and goes on resting until `rest_to` once started. | `_reflex_rest` |
 
 ### 2.1 Group danger (`group_danger`, `group_tick`)
@@ -105,13 +105,21 @@ actually lost over the last 3 s, that figure is used instead. Tiers, against **c
 
 ### 2.2 Engaging on the way (`engage_tick`)
 
-While exploring or diving (or with no goal), the Pilot detours to fight a mobile monster 2–7 steps off. The monster must pass the hunt
-check (`hunt_refusal`; result cached per level and name; since 2.45.1 it also refuses a disenchanter whose expected
-enchantment loss is more than a kill brings, §5). It must not be a breeder, on the `avoid` list, or more than
-20 levels below ours. The Pilot does this only when all of these hold: HP ≥ `think_hp`; no live band (`band_live`); not
-blind, confused, afraid or slowed; no recall pending; no danger in view; the trip plan isn't leaving the level. The path
-may be at most 9 steps. The Pilot gives up after 20 s (`ENGAGE_GIVE_UP_S`) and drops that target for the level. Logged
-as `act cmd=engage`. Every safety rule above runs first, so they still win.
+**2.66.0, the user after m69 ("If there is a monster in view we should kill it, unless we have a reason not to"):**
+while exploring or diving (or with no goal), the Pilot fights any mobile monster within 12 steps (`ENGAGE_STEPS`) that
+the hunt check allows (`hunt_refusal`; cached per level and name; it refuses a disenchanter whose expected enchantment
+loss is more than a kill brings, §5), **whatever its level** (the old "20 levels below ours: no XP worth the detour" is
+gone), **adjacent ones included** -- attacked by moving into them, the mover stopped (auto-retaliate only hits while we
+stand still; m69's Baby bronze dragon tailed Dive04 one or two squares behind while the mover walked on) -- and
+**pursuers first** (`track_pursuers`: within 2 squares after 2+ of our moves, or adjacent), then the nearest.
+It also does this while the trip leaves a level for breeders, traps, a pit or nest, a feeling or time.
+The reasons not to: a goal other than Explore/Dive (Flee, Recall, Recover, escape walks...), a recall pending, HP <
+`think_hp`, blind/confused/afraid/slowed, a live band (the estimator decides), a danger rule in view (or a summoner hold,
+`_reflex_engage`), a breeder (`MULTIPLY`), an `avoid`-list name, a stationary monster (`still_fight_tick`'s), the hunt
+check's refusals, and the trip leaving for a danger (`leaving_for_danger`: `LEAVE_FOR_DANGER` -- a band, drainer, fearer,
+danger, gear damage, an unseen attacker, an emergency, the Navigator's leave rule, a disenchanter). The path may be at
+most 14 steps. The Pilot gives up after 20 s (`ENGAGE_GIVE_UP_S`) and drops that target for the level. Logged as `act
+cmd=engage` ("..., following us" for a pursuer). Every safety rule above runs first, so they still win.
 
 ### 2.3 Status cures (`status_tick`, `confusion_lock`, `confusion_window`)
 

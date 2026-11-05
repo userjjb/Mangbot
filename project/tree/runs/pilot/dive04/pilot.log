@@ -2331,3 +2331,5 @@ TypeError: Pilot.log() got multiple values for argument 'kind'
 08:52:16 pilot stopping
 08:52:18 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
 08:52:19 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock
+09:09:16 in the game as Dive04: {'ev': 'ready', 't': 0.0, 'nick': 'Dive04', 'door': '0', 'visuals': 616}
+09:09:17 control socket /projectnb/jbrcs/mangband/runs/pilot/dive04/ctl.sock

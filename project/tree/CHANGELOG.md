@@ -27,6 +27,19 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.66.0 -- 2026-11-05 (session 12, during m69: monsters in view are fought)
+No missions yet on it (m69 runs on it from the hot-swap). **Play changes:**
+- **"If there is a monster in view we should kill it, unless we have a reason not to"** (the user, m69 09:05: a Baby
+  bronze dragon, L9, hunt check ~3 turns, tailed Dive04 one or two squares behind while the trip walked off the level
+  for breeders; seen over many versions). `engage_tick` now fights any mobile monster within 12 steps (was 7) that the
+  hunt check allows, whatever its level (was: none 20+ levels below us), adjacent ones attacked by moving into them
+  (auto-retaliate doesn't hit while the mover walks), pursuers first (within 2 squares after 2+ of our moves, or
+  adjacent), also while the trip leaves a level for breeders, traps, a pit, a feeling or time. The reasons not to stay:
+  danger rules and summoner holds, a live band, Flee/Recall/Recover/escape goals, a recall pending,
+  blind/confused/afraid/slowed, HP < think_hp, breeders, the avoid list, stationary monsters, the hunt check's refusals
+  (a disenchanter's cost), and the trip leaving for a danger (band, drainer, fearer, gear damage, unseen attacker,
+  emergency, the Navigator's leave rule).
+
 ## 2.65.0 -- 2026-11-05 (session 12, after m68: hallucination, the estimator's phase line, the queued trip, rations)
 No missions yet on it. **Play changes:**
 - **Hallucination** (m68 00:00:46: "The Magic mushroom patch releases spores at you. You feel drugged!" scrambled the

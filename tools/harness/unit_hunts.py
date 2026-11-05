@@ -252,3 +252,59 @@ def disenchant_refused_when_more_than_the_kill():
     resist = make(True, poor=True).hunt_refusal("Khim, Son of Mim")[0]
     ok = rich is None and bool(poor) and "more than a kill brings" in poor and resist is None
     return ok, f"rich: {rich}; poor: {(poor or '')[:110]}; resisted: {resist}"
+
+
+@case
+def monsters_in_view_are_fought_unless_a_reason():
+    """2.66.0, the user after m69 09:05: "If there is a monster in view we should kill it, unless we have a reason not
+    to". A Baby bronze dragon (L9, the hunt check: ~3 turns) tailed Dive04 one or two squares behind while the trip
+    walked off the level for breeders -- not engaged (20+ levels below us; the trip leaving; adjacent left to
+    auto-retaliate, which doesn't hit while the mover walks). Now: the adjacent follower is attacked while leaving for
+    breeders; a low-level monster 5 away is engaged; a pursuer goes first; a breeder, a disenchanter mold (the hunt
+    check refuses its cost) and the trip leaving for a drainer are not."""
+    dragon = BYNAME["baby bronze dragon"]
+    jackal = BYNAME["jackal"]
+    louse = BYNAME["giant white louse"]
+
+    def make(mons, level_done=None, refuse=()):
+        p = pilot(hp=369, monsters=mons)
+        p.w.hp = [369, 369]
+        p.w.in_dungeon, p.w.depth, p.w.clvl = True, 15, 30
+        p.goal = P.Dive(800)
+        p.plan = types.SimpleNamespace(level_done=level_done) if level_done else None
+        p.orders["think_hp"] = 0.65
+        p.band_live = lambda: False
+        p.our_slowness = lambda: 1.0
+        p.w.recall_pending = False
+        p.danger_why = lambda r, *a: None
+        p.hunt_refusal = lambda name: (("its enchantment cost" if name in refuse else None), None)
+        p.hunt_fields = lambda disen_only=False: {}
+        p.avoid_names = set()
+        p.logs, p.cmds = [], []
+        p.log = lambda kind, **kw: p.logs.append((kind, kw))
+        p.cmd = lambda line, why, hold=0.4: p.cmds.append((line, why))
+        p.mover = type("M", (), {"active": True, "path": [1, 2, 3], "go": lambda self, g, unknown=False: True,
+                                 "tick": lambda self: "moving", "stop": lambda self: None})()
+        return p
+    m69 = make([(20, 21, dragon)], level_done="left: breeders")
+    a = m69.engage_tick(P.gnow())
+    low = make([(20, 25, jackal)])
+    b = low.engage_tick(P.gnow())
+    # a pursuer first: the dragon followed 2 moves (4 away now), a jackal 3 away
+    pur = make([(20, 23, jackal), (24, 20, dragon)])
+    pur.pursuit, pur.pursuit_pos = {dragon.name: 2}, (19, 20)
+    pur.w.monsters = [(20, 23, jackal), (21, 20, dragon)]
+    pur.track_pursuers()
+    pur.w.monsters = [(20, 23, jackal), (24, 20, dragon)]
+    c = pur.engage_tick(P.gnow())
+    breeder = make([(20, 22, louse)])
+    mold = make([(20, 23, dragon)], refuse=(dragon.name,))
+    drainer = make([(20, 21, dragon)], level_done="left: a stat drainer")
+    dmold = make([(20, 21, BYNAME["disenchanter mold"])], level_done="left: breeders")
+    others = [x.engage_tick(P.gnow()) for x in (breeder, mold, drainer, dmold)]
+    ok = a is True and m69.cmds and m69.cmds[0][0].startswith("walk ") and "attack the Baby bronze dragon" in \
+        m69.cmds[0][1] and b is True and low.engage["target"] == jackal.name and c is True and \
+        pur.engage["target"] == dragon.name and others == [False, False, False, False]
+    return ok, (f"m69's dragon, leaving for breeders: {a} {m69.cmds[:1]}; a jackal 5 away: {b} "
+                f"{low.engage['target']}; pursuer first: {pur.engage['target']}; breeder/refused/leaving for a "
+                f"drainer/Disenchanter mold: {others}")

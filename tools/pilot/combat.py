@@ -796,22 +796,48 @@ class CombatMixin:
             return True
         return NEXT
 
-    ENGAGE_STEPS = 7          # how far a detour to fight may go (path steps)
+    ENGAGE_STEPS = 12         # how far a detour to fight may go (path steps; 2.66.0: was 7)
     ENGAGE_GIVE_UP_S = 20
+    # (2.66.0) the trip's leaves that stay leaves: a danger the level holds. Breeders, trap-laden, a pit or nest, a
+    # feeling, time: the monsters in view are still fought on the way out
+    LEAVE_FOR_DANGER = ("band", "drainer", "fearer", "danger", "damage", "unseen", "emergency", "your rule", "disench")
+
+    def leaving_for_danger(self):
+        """The trip plan is leaving this level for a danger (LEAVE_FOR_DANGER), not for breeders, traps, a pit..."""
+        why = str(getattr(self.plan, "level_done", "") or "") if self.plan is not None else ""
+        return why.startswith("left") and any(k in why for k in self.LEAVE_FOR_DANGER)
+
+    def track_pursuers(self):
+        """{race name: moves}: monsters within 2 squares after each of our moves -- a pursuer follows 2+ moves (m69:
+        a Baby bronze dragon tailed Dive04 one or two squares behind while the trip walked off the level)."""
+        w = self.w
+        pos = w.pos
+        if pos == self.pursuit_pos:
+            return self.pursuit
+        self.pursuit_pos = pos
+        near = {r.name for y, x, r in w.monsters if w.dist((y, x)) <= 2}
+        self.pursuit = {n: self.pursuit.get(n, 0) + 1 for n in near}
+        return self.pursuit
 
     def engage_tick(self, now):
         """The user (m43): "The char often is near enemies but doesn't engage them ... it could kill the monster and
-        then run after" -- "and this mustn't override legit reasons not to engage (kiting, fleeing...)". A mobile
-        monster a few steps off that the hunt check allows: walk to it and let auto-retaliate fight (section 5),
-        then the goal carries on. Only while exploring or diving, HP at least think_hp, not blind/confused/afraid/
-        slowed, no live band, no dangerous monster or summoner in view, not a breeder, not on the avoid list, not
-        while the plan is leaving the level for a reason. The escapes, the group/choke rules and the walk-away run
-        earlier in the reflexes, so they still win. Gives up after ENGAGE_GIVE_UP_S."""
+        then run after" -- "and this mustn't override legit reasons not to engage (kiting, fleeing...)". 2.66.0, the
+        user after m69: "If there is a monster in view we should kill it, unless we have a reason not to" -- any mobile
+        monster within ENGAGE_STEPS path steps that the hunt check allows, whatever its level (was: none 20+ levels
+        below us), adjacent ones too (attacked: walk into it -- auto-retaliate only hits while we stand still, and the
+        mover kept walking), pursuers first (followed 2+ of our moves, or adjacent), also while the trip leaves a level
+        for breeders, traps, a pit or a feeling. The reasons not to: exploring/diving only (no Flee, Recall, Recover,
+        escape walk), a recall pending, HP under think_hp, blind/confused/afraid/slowed, a live band, a danger rule or
+        a summoner hold, a breeder, an avoid-list name, a stationary monster (still_fight_tick's), the hunt check's
+        refusals (a disenchanter's cost...), the trip leaving for a danger (LEAVE_FOR_DANGER). The escapes, the
+        group/choke rules and the walk-away run earlier in the reflexes, so they still win. Gives up after
+        ENGAGE_GIVE_UP_S."""
         w = self.w
         st = self.engage
         g = self.goal
-        leaving = self.plan is not None and str(getattr(self.plan, "level_done", "") or "").startswith("left")
-        ok = (w.in_dungeon and w.depth and w.pos and (g is None or isinstance(g, (Explore, Dive))) and not leaving
+        pursuit = self.track_pursuers() if w.pos else {}
+        ok = (w.in_dungeon and w.depth and w.pos and (g is None or isinstance(g, (Explore, Dive)))
+              and not self.leaving_for_danger()
               and w.hp_frac >= self.orders.get("think_hp", 0.65) and not self.band_live()
               and not any(w.flag(k) for k in ("blind", "confused", "afraid")) and self.our_slowness() <= 1
               and not w.recall_pending)
@@ -835,11 +861,10 @@ class CombatMixin:
         else:
             cands = []
             for y, x, r in mons:
-                if w.dist((y, x)) < 2 or w.dist((y, x)) > self.ENGAGE_STEPS or "MULTIPLY" in r.flags or \
+                d = w.dist((y, x))
+                if d > self.ENGAGE_STEPS or "MULTIPLY" in r.flags or \
                         (w.level_t, r.name) in st["dropped"] or any(n in r.name.lower() for n in self.avoid_names):
                     continue
-                if r.level < w.clvl - 20:
-                    continue                         # (no XP worth the detour)
                 cache = self.engage_ok
                 key = (w.level_t, r.name)
                 if key not in cache:
@@ -849,15 +874,24 @@ class CombatMixin:
                     except Exception:
                         cache[key] = False
                 if cache[key]:
-                    cands.append((w.dist((y, x)), y, x, r))
+                    chased = d <= 1 or pursuit.get(r.name, 0) >= 2
+                    cands.append((not chased, d, y, x, r))
             if not cands:
                 return False
-            d, y, x, r = min(cands, key=lambda c: c[0])
+            chased, d, y, x, r = min(cands, key=lambda c: (c[0], c[1]))
             st.update(target=r.name, t0=now, replan_t=0.0)
-            self.log("act", cmd="engage", why=f"engage {r.name} (L{r.level}, {d} away) on the way", by="pilot",
-                     **self.engage_disen.get((w.level_t, r.name), {}))
+            self.log("act", cmd="engage", why=f"engage {r.name} (L{r.level}, {d} away{', following us' if not chased else ''})"
+                     " on the way", by="pilot", **self.engage_disen.get((w.level_t, r.name), {}))
             tgt = r.name
-        cur = next(m for m in mons if m[2].name == tgt)
+        cur = min((m for m in mons if m[2].name == tgt), key=lambda m: w.dist(m[:2]))
+        if w.dist(cur[:2]) <= 1:
+            # (adjacent: attack it -- a move into it is an attack; the mover stops so we don't walk away)
+            if self.mover.active:
+                self.mover.stop()
+            if waited(self.engage_hit_t, 0.35):
+                self.engage_hit_t = now
+                self.cmd(f"walk {direction(w.pos, cur[:2])}", f"attack the {tgt} (engaged)", hold=0.3)
+            return True
         if now - st["replan_t"] > 1.5 or not self.mover.active:
             st["replan_t"] = now
             near = [(cur[0] + dy, cur[1] + dx) for dy in (-1, 0, 1) for dx in (-1, 0, 1) if dy or dx]

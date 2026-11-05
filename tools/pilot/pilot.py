@@ -328,6 +328,8 @@ class Pilot(ReportMixin, GearMixin, ItemsMixin, TownMixin, CombatMixin, Commands
         self.shadow_est, self.shadow_gear_said = None, None   # shadow_decision
         self.engage = {"target": None, "t0": 0.0, "replan_t": 0.0, "dropped": set()}
         self.engage_ok = {}
+        self.engage_hit_t = 0.0                # (2.66.0) the last attack sent on an adjacent engage target
+        self.pursuit, self.pursuit_pos = {}, None   # (2.66.0) {race: our moves it stayed within 2}, at which square
         self.engage_disen = {}         # (level, race) -> the disen_* log fields of its hunt check (engage_tick)
         self.band_soft_levels = set()
         self.breeder_weak = False

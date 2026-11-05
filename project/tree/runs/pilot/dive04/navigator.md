@@ -759,3 +759,4 @@
 - 00:01:15 town 100% | Trip1 recalled early (escape at max depth w/ only > known), 78xp/min; town review: amulets resist already had, lance/flail not better | let default sell; then new trip 700-800 until time>00:19
 - 00:05:26 town 100% | Town done, queued trip got dropped by plan_done | re-issue trip 700-800 until time>00:19 then town | budget
 - 00:22:46 town 100% | End: in town idle, XP +2579 in 40 min, no close calls | stop | budget
+- 08:53:30 town 100% | Plan m69 | one town visit (WoR:3, rations by need), one long trip 700-800 via recall, until cures<4 or phase<5 or time>09:30, then town | one long trip beats two; stocked
