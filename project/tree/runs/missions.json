@@ -3306,12 +3306,25 @@
   "label": "m69",
   "nick": "dive04",
   "start": "2026-11-05 08:52",
-  "end": null,
+  "end": "2026-11-05 10:01",
   "navigator": "sonnet",
   "budget": 45.0,
   "effort": "medium",
   "report": "compact",
   "notes": "eighth mission of session 12, on 2.65.0",
-  "version": "2.65.0"
+  "version": "2.65.0",
+  "tokens": {
+   "turns": 36,
+   "input": 80,
+   "output": 7555,
+   "cache_read": 1518324,
+   "cache_write": 114571,
+   "write_5m": 114571,
+   "write_1h": 0,
+   "model": "claude-sonnet-5-5",
+   "final_usage_turns": 36,
+   "usd": 0.514,
+   "transcript": "agent-a629cca1023486c14.jsonl"
+  }
  }
 ]

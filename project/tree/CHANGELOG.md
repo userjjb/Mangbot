@@ -28,7 +28,7 @@ From 2026-10-22: after mission 23 the user stopped patching mission by mission. 
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
 ## 2.68.0 -- 2026-11-05 (session 12, during m69: a door detector before searching)
-No missions yet on it. **Play changes:**
+Missions: m69 (from 09:36; Sonnet medium, 52.4 XP/dmin; report runs/pilot/dive04/reports/2026-11-05-mission69.md). **Play changes:**
 - **Door detection before searching** (m69 09:26-09:28: 2.67.0 searched the 2-wide dead ends at 30,88 and 30,102, 20
   times each, and found nothing -- the doors were there; a warrior's search is a dice roll, detect_sdoor is certain
   within 23 rows and 52 columns). With no known path to the stairs the dive first uses a door detector from where it
@@ -40,7 +40,7 @@ No missions yet on it. **Play changes:**
   only with no detector.
 
 ## 2.67.0 -- 2026-11-05 (session 12, during m69: 2-wide dead ends are searched)
-No missions yet on it. **Play changes:**
+Missions: m69 (09:18-09:36). **Play changes:**
 - **A 2-wide corridor that dead-ends is a giveaway for a secret door** (the user, m69 09:14 at 750 ft: the corridor at
   rows 30-36, columns 88-89, ends against "####" at row 29; the '>' at 27,109 had no known path and the dive turned
   round to walk one through unexplored squares). `Search.wide_dead_ends` finds them on the known map (two floor lines
@@ -64,7 +64,7 @@ No missions yet on it (m69 runs on it from the hot-swap). **Play changes:**
   emergency, the Navigator's leave rule).
 
 ## 2.65.0 -- 2026-11-05 (session 12, after m68: hallucination, the estimator's phase line, the queued trip, rations)
-No missions yet on it. **Play changes:**
+Missions: m69 (08:53-09:09). **Play changes:**
 - **Hallucination** (m68 00:00:46: "The Magic mushroom patch releases spores at you. You feel drugged!" scrambled the
   map's monster glyphs -- Draugluin adjacent, a Gelugon, a Dreadlord at 750 ft -- and the emergency read Word of
   Recall). The server sends no status flag for it; the World tracks "You feel drugged!" .. "You can see clearly

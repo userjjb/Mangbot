@@ -1770,6 +1770,62 @@
    "known": false,
    "t": 1793889385.2,
    "mission": "m69"
+  },
+  {
+   "name": "a Scroll of Trap Detection",
+   "kind": "scroll of trap detection",
+   "known": true,
+   "t": 1793889657.6,
+   "mission": "m69"
+  },
+  {
+   "name": "a Ring of Resist Cold",
+   "kind": "resist cold",
+   "known": true,
+   "t": 1793889727.4,
+   "mission": "m69"
+  },
+  {
+   "name": "a Lance (2d8)",
+   "kind": "lance",
+   "known": false,
+   "t": 1793890144.9,
+   "mission": "m69"
+  },
+  {
+   "name": "a Metal Cap [3]",
+   "kind": "metal cap",
+   "known": false,
+   "t": 1793890173.6,
+   "mission": "m69"
+  },
+  {
+   "name": "a Staff of Slow Monsters",
+   "kind": "staff of slow monster",
+   "known": false,
+   "t": 1793890178.0,
+   "mission": "m69"
+  },
+  {
+   "name": "a Scroll of Enchant Armor",
+   "kind": "scroll of enchant armor",
+   "known": true,
+   "t": 1793890245.6,
+   "mission": "m69"
+  },
+  {
+   "name": "a Scroll of Door/Stair Location",
+   "kind": "scroll of door/stair location",
+   "known": true,
+   "t": 1793890419.4,
+   "mission": "m69"
+  },
+  {
+   "name": "a Lance (2d8)",
+   "kind": "lance",
+   "known": false,
+   "t": 1793890473.7,
+   "mission": "m69"
   }
  ],
  "trip_t0": 1793889290.3,

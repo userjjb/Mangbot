@@ -39,7 +39,9 @@
   "an Amulet of Resist Acid {m68}": "sell",
   "an Amulet of Resist Lightning {m68}": "sell",
   "a Lance of Slay Evil (2d8) (+5,+5) {excellent - m68}": "sell",
-  "a Flail (2d6) (+5,+6) {good - m68}": "sell"
+  "a Flail (2d6) (+5,+6) {good - m68}": "sell",
+  "a Ring of Resist Cold {m69}": "sell",
+  "a Long Bow (x3) (+5,+4)": "sell"
  },
- "town_visits": 84
+ "town_visits": 85
 }

@@ -495,6 +495,12 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
 - **m68** (23:41, 2.63.0): the Pilot CRASHED at 23:53 on vault_found's log kind clash (uncaught in tick); the
   Architect froze time, renamed the key (pilot.py 1774-1775), restarted from the working tree (2.64.0 partly built
   there), thawed. 2.64.0 adds a crash guard.
+- **2.64.0** gear evaluator values non-simulated abilities (ability_rates.py; Weaponmastery +16.5%; a warrior has
+  resist fear at clvl 30), the tick crash guard. **2.65.0** hallucination (m68's "Draugluin" was a Magic mushroom
+  patch's spores), the estimator's phase line = phase then fight, band_outcome records, queue fix, rations by digestion.
+- **m69** (Sonnet medium, 2.65.0 -> 2.68.0 hot-swapped under the user's freezes): 52.4 XP/dmin (a secret-door level).
+  **2.66.0** monsters in view are fought unless there's a reason not to (the user); **2.67.0** 2-wide dead ends =
+  secret doors (the user); **2.68.0** the Rod of Door/Stair Location (detect_sdoor) before searching.
 - **Lessons:** never hot-swap (or restart) during a town or house visit (2.59.0 enforces it); a monitor started with
   `&` and output to /dev/null eats the saved offsets -- always run_in_background; watch for asks while frozen -- `hotswap.sh` should wait for one to end;
   `restart.sh` loads the working tree; hand-walking into the house picks up the bank pile (the step-in

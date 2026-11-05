@@ -1,11 +1,11 @@
 {
- "dungeon_h": 33.07,
+ "dungeon_h": 33.73,
  "counts": {
   "fear": 133,
   "fear_end": 133,
   "too_afraid": 48,
-  "blind": 257,
-  "confused": 108,
+  "blind": 261,
+  "confused": 109,
   "paralysed": 4,
   "disenchanted": 26,
   "disen_resisted": 0,
@@ -15,24 +15,24 @@
   "life_held": 0,
   "food": 34,
   "afraid_s": 461,
-  "unseen_hp": 6565
+  "unseen_hp": 6614
  },
  "per_hour": {
-  "fear": 4.022,
-  "fear_end": 4.022,
-  "too_afraid": 1.452,
-  "blind": 7.772,
-  "confused": 3.266,
-  "paralysed": 0.121,
-  "disenchanted": 0.786,
+  "fear": 3.943,
+  "fear_end": 3.943,
+  "too_afraid": 1.423,
+  "blind": 7.738,
+  "confused": 3.231,
+  "paralysed": 0.119,
+  "disenchanted": 0.771,
   "disen_resisted": 0.0,
   "sustained": 0.0,
-  "drained": 1.028,
+  "drained": 1.008,
   "life": 0.03,
   "life_held": 0.0,
-  "food": 1.028,
-  "afraid_s": 13.941,
-  "unseen_hp": 198.531
+  "food": 1.008,
+  "afraid_s": 13.667,
+  "unseen_hp": 196.081
  },
  "drained": {
   "STR": 16,
@@ -52,10 +52,10 @@
   },
   "blind": {
    "Cure Light Wounds": 18,
-   "Cure Serious Wounds": 84,
+   "Cure Serious Wounds": 87,
    "Cure Critical Wounds": 26
   }
  },
- "since": "2026-10-06 01:23",
- "made": "2026-11-05 00:23"
+ "since": "2026-10-06 11:00",
+ "made": "2026-11-05 10:00"
 }

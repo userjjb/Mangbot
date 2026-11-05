@@ -1,0 +1,201 @@
+{
+ "label": "m69",
+ "nav_model": "sonnet",
+ "effort": "medium",
+ "report": "compact",
+ "start": "2026-11-05 08:52",
+ "end": "2026-11-05 10:01",
+ "minutes": 43.4,
+ "frozen_min": 25.6,
+ "budget": 45.0,
+ "notes": "eighth mission of session 12, on 2.65.0",
+ "tokens": {
+  "turns": 36,
+  "input": 80,
+  "output": 7555,
+  "cache_read": 1518324,
+  "cache_write": 114571,
+  "write_5m": 114571,
+  "write_1h": 0,
+  "model": "claude-sonnet-5-5",
+  "final_usage_turns": 36,
+  "usd": 0.514,
+  "transcript": "agent-a629cca1023486c14.jsonl"
+ },
+ "defs": "2026-11-01 (2.44.0)",
+ "estimator": {
+  "n": 2,
+  "compared": 2,
+  "agree": 1,
+  "in_time_turn": 2,
+  "before_next_act": 2,
+  "skipped": 0,
+  "compute_max_s": 0.141,
+  "disagreements": [
+   [
+    "stairs",
+    "rules",
+    "rules (no option clearly better)"
+   ]
+  ],
+  "hard_n": 0,
+  "hard_compared": 0,
+  "hard_agree": 0,
+  "hard_choices": {}
+ },
+ "A": {
+  "deaths": 0,
+  "clvl": [
+   30,
+   30
+  ],
+  "exp_gain": 1602,
+  "gold": [
+   47420,
+   49971
+  ],
+  "gold_change": 2551,
+  "max_depth_ft": 800,
+  "stored_value": 0,
+  "stash_debits": 0,
+  "gold_change_adj": 2551
+ },
+ "B": {
+  "dungeon_min": 30.5,
+  "town_min": 11.9,
+  "exp_per_dmin": 52.4,
+  "levels_per_dhour": 0.11,
+  "gold_found": 1564,
+  "gold_found_per_dmin": 51.2,
+  "time_budget_min": {
+   "pilot_down": 24.2,
+   "exploring": 14.9,
+   "town_other": 9.6,
+   "fighting": 8.7,
+   "travel_dive": 7.5,
+   "town_no_goal": 1.4,
+   "searching_doors": 1.0,
+   "recall_wait": 0.8,
+   "town_idle_end": 0.4,
+   "escaping": 0.2,
+   "stuck_looping": 0.1,
+   "no_goal_dungeon": 0.0
+  },
+  "navigator_wait_pct": 2,
+  "gold_change_per_dmin": 83.6,
+  "gold_change_adj_per_dmin": 83.6
+ },
+ "C": {
+  "lowest_hp": [
+   305,
+   369,
+   83,
+   "09:50:16"
+  ],
+  "close_calls_lt40": 0,
+  "near_calls_40_50": 0,
+  "emergency_episodes": 1,
+  "emergency_alerts": 1,
+  "phase": 1,
+  "wor_escape": 0,
+  "wor_travel": 4,
+  "stairs_flee": 0,
+  "teleport": 1,
+  "cures_quaffed": 4,
+  "escape_records": 6,
+  "recalls_landed": 4
+ },
+ "D": {
+  "sale_shortfall": 0,
+  "sale_shortfall_forced": 0,
+  "destroyed_est": 104,
+  "loot_abandoned_est": 1278,
+  "stolen": 0,
+  "destroyed_by_monsters_est": 0,
+  "total": 1382,
+  "sales": 17,
+  "sales_valued": 4,
+  "worst_sales": [],
+  "left_behind": [
+   "Large wooden chest",
+   "Bolts (1d5) (x19)",
+   "Light Crossbow (x3)",
+   "Soft Studded Leather [5]",
+   "Staff of Detect Invisible",
+   "Scroll of Treasure Detection",
+   "Scroll of Detect Invisible",
+   "Scroll of Aggravate Monster",
+   "Long Bow (x3)",
+   "Broad Sword (2d5)"
+  ],
+  "irreplaceable": [
+   "a Ring of Resist Cold {m69}"
+  ]
+ },
+ "values_aware": "kinds known as logged",
+ "E": {
+  "reports": 19,
+  "commands": 40,
+  "commands_per_min": 0.9,
+  "report_to_action_med_s": 207.4,
+  "report_to_action_p90_s": 301.0,
+  "reports_without_command_pct": 53,
+  "user_messages": 0,
+  "user_reply_med_s": null,
+  "forced_overrides": 0,
+  "complaints": 0,
+  "report_chars": 115715,
+  "order_report_age_med_s": 0.0,
+  "order_report_age_p90_s": 30506.0
+ },
+ "F": {
+  "audit_diffs": 0,
+  "audit_checks": 87,
+  "perception_gaps": 0,
+  "goal_failed": 0,
+  "stuck": 0,
+  "stuck_looping_min": 0.1,
+  "runs_sent": 1092,
+  "pilot_down_min": 23.4,
+  "server_crashes": 0
+ },
+ "damage_by_monster": {
+  "Half-orc": 71,
+  "Kobold archer": 54,
+  "Sabre-tooth tiger": 50,
+  "Giant flea": 31,
+  "Novice mage": 14,
+  "Warg": 13,
+  "Dark hound": 10,
+  "Rattlesnake": 8,
+  "unseen": 50,
+  "unattributed": 28
+ },
+ "damage_hp_lost": 355,
+ "alerts": {
+  "tactic": 31,
+  "time_frozen": 9,
+  "started": 4,
+  "review": 4,
+  "rule": 2,
+  "plan_done": 2,
+  "parked": 1,
+  "goal_done": 1,
+  "queued": 1,
+  "vault": 1
+ },
+ "plan_news": {
+  "unseen_attacker": 28,
+  "goal_done": 12,
+  "plan": 8,
+  "breeders": 4,
+  "interesting_item": 3,
+  "thief": 3,
+  "stuck": 2,
+  "structure": 2,
+  "emergency": 1,
+  "goal_failed": 1,
+  "drainer": 1,
+  "fearer": 1
+ }
+}
