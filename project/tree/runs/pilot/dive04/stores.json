@@ -73,10 +73,10 @@
  },
  "5": {
   "owner": "Wizzle the Chaotic (Hobbit)",
-  "t": 1793890688,
+  "t": 1793894297,
   "prices": {
    "potion of resist heat": 47,
-   "potion of resist cold": 46,
+   "potion of resist cold": 47,
    "potion of restore strength": 465,
    "potion of restore intelligence": 465,
    "potion of restore wisdom": 465,
@@ -92,7 +92,6 @@
    "scroll of recharging": 310,
    "scroll of light": 23,
    "scroll of magic mapping": 62,
-   "scroll of trap detection": 54,
    "scroll of door/stair location": 54,
    "scroll of detect invisible": 23,
    "scroll of satisfy hunger": 16,

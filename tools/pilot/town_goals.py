@@ -561,6 +561,17 @@ class StashDeposit(Goal):
                 return None
             self.pending = None
             key = f"{q[0]},{q[1]}"
+            old = tav.get(key)
+            if old is not None and name and kind_key(rec_name(old)) == kind_key(rec["name"]) and \
+                    name != rec_name(old):
+                # (2.70.0: dropped onto its kind -- one record for the combined stack, both values)
+                p.stash_commit(rec, "tavern")
+                merged = dict(old) if isinstance(old, dict) else {"name": old, "value": 0}
+                merged.update(name=name, value=(merged.get("value") or 0) + (rec.get("value") or 0))
+                tav[key] = merged
+                p.house_save()
+                self.dropped.append(rec["name"])
+                return None
             if not p.same_item(rec["name"], name):
                 if any(p.same_item(rec["name"], i["name"]) for i in w.items()):
                     # (the drop didn't happen: counted -- 3 of them, or the server's refusal, give it up this visit)
@@ -583,10 +594,12 @@ class StashDeposit(Goal):
         used = {tuple(int(v) for v in k.split(",")) for k in p.tavern_state().get("items", {}) if "," in k}
         free = [q for q in (room["inside"] if room else []) if q not in used and q != tuple(ent)
                 and w.memory.get(q) == "."]
-        if not free:
+        it = max(items, key=lambda i: p.iv(i["name"]).value * i["number"])     # (the most valuable first)
+        stack = p.stack_square(tav, it)      # (2.70.0: onto its kind's square -- the floor combines them)
+        if not free and not stack:
             return ("failed", "no empty square seen inside the tavern room: not dropping at the door"
                     + (f" (stashed {', '.join(self.dropped)})" if self.dropped else ""))
-        target = max(free, key=lambda q: (w.dist(q, tuple(ent)), q))
+        target = stack or max(free, key=lambda q: (w.dist(q, tuple(ent)), q))
         if w.pos != target:
             if not p.mover.active:
                 self.tries += 1
@@ -603,11 +616,10 @@ class StashDeposit(Goal):
         ok, name = p.floor_here(self.arrive[1] + 0.3)
         if not ok:
             return None
-        if name:
+        if name and not (stack and kind_key(name) == kind_key(it["name"])):
             tav[f"{target[0]},{target[1]}"] = p.stash_found(name, "tavern")
             p.house_save()
             return None
-        it = max(items, key=lambda i: p.iv(i["name"]).value * i["number"])     # (the most valuable first)
         self.t = now
         p.cmd(f"custom d item={it['item']} value={it['number']}", f"stash in the tavern: {it['name']}", hold=0.8)
         self.pending = (target, p.stash_rec(it, "tavern", commit=False), now)
@@ -623,11 +635,19 @@ class StashFetch(Goal):
         self.visited = set()
         self.target = None
         self.lit = False
+        self.n0 = None               # (2.70.1) the pack's count of the kind when the fetch began
         self.arrive = None           # (square, game time) we reached the target: a floor reading after it counts
+
+    def held(self, p):
+        """The pack's count of the kind fetched (2.70.1: by kind -- a pick-up may merge into a stack)."""
+        kk = kind_key(self.kind)
+        return sum(i["number"] for i in p.w.items() if self.kind in i["name"] or kind_key(i["name"]) == kk)
 
     def tick(self, p):
         w = p.w
-        if any(self.kind in i["name"] for i in w.items()):
+        if self.n0 is None:
+            self.n0 = self.held(p)
+        if self.held(p) > self.n0:
             p.fetching = None
             p.stash_take("tavern", self.kind, w.pos)     # (its square is free for the next stash drop)
             return ("done", f"fetched {self.kind} from the tavern")
@@ -651,7 +671,8 @@ class StashFetch(Goal):
             if not ok and gnow() - self.arrive[1] < 3:
                 return None
             room = next((h for h in town_houses(w.memory, door="8") if h["door"] == tuple(ent)), None)
-            if ok and room and q in room["inside"] and not (name and self.kind in name):
+            if ok and room and q in room["inside"] and not (name and (self.kind in name or
+                                                                      kind_key(name) == kind_key(self.kind))):
                 tav = p.tavern_state().setdefault("items", {})
                 key = f"{q[0]},{q[1]}"
                 if key in tav and not p.same_item(rec_name(tav[key]), name):
@@ -751,6 +772,8 @@ class HouseBank(Goal):
         self.pending = {}            # item_step: square -> the record of an item dropped there, not yet seen on it
         self.rechecks = 0            # item_step: re-reconciles after a floor that didn't match (2 at most)
         self.pick_snap = None        # item_step: (square, kind, pack names) before a pick-up (a wrong pick goes back)
+        self.swaps = 0               # (2.70.0) house items swapped out for a better one this visit
+        self.swap_at = None          # (2.70.0) ("Y,X", count carried before, pick-ups) of the swap's pick-up
 
     def read_square(self, p, q):
         """At q: (True, the item there or None) once a floor reading taken after we arrived; (False, None) before."""
@@ -784,6 +807,49 @@ class HouseBank(Goal):
         self.pending = {}
         p.house_save()
 
+    def swap_step(self, p, it, slots, walk_to, carried):
+        """2.70.0 (the user: the house held two ~135-gold Restore Charismas while ~3,600-gold boots lay in the tavern
+        room): the house full and the stash item carried worth more than the house's cheapest -- pick that one up (it
+        goes to the tavern room after: TownKit's overflow), and the carried one takes its square. At most HOUSE_SWAPS
+        a visit. True while acting, None when there is nothing to swap."""
+        w = p.w
+        cheap = p.house_cheapest()
+        if not cheap or cheap[0] >= p.stash_value(it) or self.swaps >= p.HOUSE_SWAPS:
+            return None
+        v, key, rec = cheap
+        name = rec_name(rec)
+        q = tuple(int(x) for x in key.split(","))
+        kk = kind_key(name)
+        got = self.swap_at
+        if got and got[0] == key and sum(i["number"] for i in w.items() if kind_key(i["name"]) == kk) > got[1]:
+            self.swap_at = None
+            self.swaps += 1
+            p.fetching = None
+            p.stash_take("house", name, q)
+            self.seen[q] = None
+            p.house_save()
+            p.notify("tactic", f"house: {name} (~{v}) out for {it['name']} (~{p.stash_value(it)}) -- the house keeps "
+                               "the most valuable; the tavern room takes the other", news=True)
+            return True
+        if w.pos != q:
+            return walk_to(q)
+        ok, fl = self.read_square(p, q)
+        if not ok:
+            return True
+        if not fl or kind_key(fl) != kk:
+            return None                      # (not what the record says: leave it)
+        if not got or got[0] != key:
+            self.swap_at = (key, sum(i["number"] for i in w.items() if kind_key(i["name"]) == kk), 0)
+        n = self.swap_at[2] + 1
+        if n > 4:
+            self.swaps = p.HOUSE_SWAPS       # (it won't come up: stop swapping this visit)
+            return None
+        self.swap_at = self.swap_at[:2] + (n,)
+        p.fetching = name
+        p.cmd("custom ,", f"house: pick up {name} to make room for {it['name']}", hold=0.8)
+        self.arrive = (q, gnow())
+        return True
+
     def item_step(self, p, h, inside):
         """Inside, door closed: the stash (the user, 10-27: "move the stash into the wilderness house" -- at 18:10 a
         town monster took a Wand of Stone to Mud off the tavern floor). One stack a square on the interior squares
@@ -808,7 +874,10 @@ class HouseBank(Goal):
             return True
 
         def carried(kind):
-            return sum(i["number"] for i in w.items() if kind in i["name"])
+            # (2.70.1: by kind -- a pick-up merges into the pack's stack: "2 Potions of Restore Charisma" holds the
+            # fetched "a Potion of Restore Charisma")
+            kk = kind_key(kind)
+            return sum(i["number"] for i in w.items() if kind in i["name"] or kind_key(i["name"]) == kk)
 
         def recheck():
             self.reconciled, self.seen, self.arrive = False, {}, None
@@ -837,7 +906,18 @@ class HouseBank(Goal):
                     return True
                 refused = any(ts >= self.arrive[1] - 0.5 and "can not drop this here" in t.lower()
                               for ts, t in w.messages)
-                if p.same_item(rec_name(rec), name):
+                old = slots.get(f"{q[0]},{q[1]}")
+                if old is not None and name and kind_key(rec_name(old)) == kind_key(rec_name(rec)) and \
+                        name != rec_name(old):
+                    # (2.70.0: dropped onto its kind -- the floor shows the combined stack: one record, both values)
+                    rec = self.pending.pop(q)
+                    p.stash_commit(rec, "house")
+                    merged = dict(old) if isinstance(old, dict) else {"name": old, "value": 0}
+                    merged.update(name=name, value=(merged.get("value") or 0) + (rec.get("value") or 0))
+                    slots[f"{q[0]},{q[1]}"] = merged
+                    self.seen[q] = name
+                    p.house_save()
+                elif old is None and p.same_item(rec_name(rec), name):
                     slots[f"{q[0]},{q[1]}"] = self.pending.pop(q)
                     p.stash_commit(slots[f"{q[0]},{q[1]}"], "house")
                     self.seen[q] = name
@@ -854,8 +934,14 @@ class HouseBank(Goal):
             it = max(items, key=lambda i: p.iv(i["name"]).value * i["number"]) if items else None
             free = [q for q in others if self.seen.get(q) is None and f"{q[0]},{q[1]}" not in slots
                     and q not in self.pending]
-            if it and free and not self.pending:
-                q = max(free, key=lambda q: (w.dist(q, inside), q))     # (the far squares first)
+            # (2.70.0, the user: "potions stack" -- a stackable item goes onto the square holding its kind)
+            stack = p.stack_square({k: v for k, v in slots.items()}, it) if it else None
+            if it and not free and not stack and not self.pending:
+                r = self.swap_step(p, it, slots, walk_to, carried)
+                if r is not None:
+                    return r
+            if it and (free or stack) and not self.pending:
+                q = stack or max(free, key=lambda q: (w.dist(q, inside), q))     # (the far squares first)
                 if w.pos != q:
                     return walk_to(q)
                 p.cmd(f"custom d item={it['item']} value={it['number']}", f"house: stash {it['name']}", hold=0.8)
@@ -883,7 +969,8 @@ class HouseBank(Goal):
             snap = self.pick_snap
             if snap and w.pos == snap[0]:
                 # a pick-up that took something else: drop it back where it lay
-                new = [i for i in w.items() if i["name"] not in snap[2] and snap[1] not in i["name"]]
+                new = [i for i in w.items() if i["name"] not in snap[2] and snap[1] not in i["name"]
+                       and kind_key(i["name"]) != kind_key(snap[1])]      # (2.70.1: a merged stack is the right item)
                 if new:
                     self.pick_snap = None
                     p.cmd(f"custom d item={new[0]['item']} value={new[0]['number']}",
@@ -910,7 +997,7 @@ class HouseBank(Goal):
                 ok, name = self.read_square(p, q)
                 if not ok:
                     return True
-                if not name or kind not in name:
+                if not name or (kind not in name and kind_key(name) != kind_key(kind)):
                     # (the floor holds something else, or nothing: never press `,` -- read the house again)
                     if self.rechecks < 2:
                         return recheck()
@@ -1764,9 +1851,12 @@ class TownKit(Goal):
         w = ctx.w
         # and last of all, the gold into the house: the dungeon has no use for it, its thieves do
         # (2.50.0: for the stash only while the house has a free square -- else the tavern room takes it, below)
+        cheap = p.house_cheapest() if p.house_state().get("house") else None
         if not self.deposited and p.house_state().get("house") and \
                 (w.ind.get("gold", [0])[0] > p.BANK_FLOAT + 500 or
-                 (any(p.stash_to_drop(i) for i in w.items()) and p.stash_room()["house"])):
+                 (any(p.stash_to_drop(i) for i in w.items()) and p.stash_room()["house"]) or
+                 # (2.70.0: a carried stash item worth more than the house's cheapest: swapped in)
+                 (cheap and any(p.stash_to_drop(i) and p.stash_value(i) > cheap[0] for i in w.items()))):
             self.deposited = True
             self.sub = HouseBank("deposit")
             return None

@@ -374,7 +374,10 @@ State: `runs/pilot/NICK/review.json` (`items`, `decided`, `town_visits`).
 ## 6a. The stash's backups and the store list (2.50.0)
 
 The user (11-04): "spare items that are valuable and can't be bought should be stored when possible". Besides the stat
-Restores and Wands of Stone to Mud, `is_stash_item(name)` takes (a) the **best backup for each worn slot** and (b) the
+Restores (2.70.0: only Restore Strength, Dexterity and Constitution, and only while no worn piece sustains the stat --
+`stash_restore`, `worn_sustains` from the worn items' flags, re-read each visit; Restore Intelligence/Wisdom/Charisma
+aren't stash items: a stored one is fetched and sold, and plan town buys Restore Charisma for a drained CHR when gold
+allows) and Wands of Stone to Mud, `is_stash_item(name)` takes (a) the **best backup for each worn slot** and (b) the
 **store list**. The town keeps them (`town_rule` "keep" with the reason, so `town_sell_count` 0 and `price` says it),
 `plan town` stores them (goals-and-plans.md, "The gold bank and the stash"), and the pickup reflex leaves stored items
 lying in town (`stash_stored`).

@@ -1829,5 +1829,14 @@
   }
  ],
  "trip_t0": 1793889290.3,
- "credits": {}
+ "credits": {
+  "wands of stone to mud": {
+   "value": 277,
+   "mission": "m62"
+  },
+  "wand of stone to mud": {
+   "value": 115,
+   "mission": "m62"
+  }
+ }
 }

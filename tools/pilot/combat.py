@@ -20,7 +20,7 @@ import re
 import time
 import types
 
-from common import TV_SCROLL, TV_POTION, TV_FOOD, TV_LITE, plural, one_of
+from common import TV_SCROLL, TV_POTION, TV_FOOD, TV_LITE, plural, one_of, kind_key
 from world import gnow, waited
 from mover import direction, passable
 from shadow import TURN_S as _TURN_S
@@ -730,7 +730,8 @@ class CombatMixin:
             # taken; the reflex took a Scimitar the record had on another square)
             if seen and not w.in_dungeon and (self.is_stash_item(seen[-1][1]) or self.stash_stored(seen[-1][1])
                                               or self.in_house()) and \
-                    not (self.fetching and self.fetching in seen[-1][1]):
+                    not (self.fetching and (self.fetching in seen[-1][1] or
+                                            kind_key(self.fetching) == kind_key(seen[-1][1][8:].rstrip(".")))):
                 seen = []         # (the tavern stash stays there: the user, 10-26; 2.50.0: a stored backup too)
             # By value (restructure step 2.1; the Advisor's set-pieces C3, C4): a unique's
             # drop always; with the pack full, swap the cheapest non-kit item for a

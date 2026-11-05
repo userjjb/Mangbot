@@ -27,6 +27,34 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.70.2 -- 2026-11-05 (session 12, the Architect)
+No missions yet on it. **Play change (small):** a carried Restore potion whose stat isn't drained and that the stash
+doesn't keep (INT/WIS/CHR, or a sustained STR/DEX/CON) is sold in town (`town_rule`): 2.70.0 took the two Restore
+Charismas out of the house to sell, but the kit protection (Restore Charisma is a kit kind for a drained CHR) kept them.
+
+## 2.70.1 -- 2026-11-05 (session 12: the stash fetch judges by kind)
+No missions yet on it. **Play changes (the bug only):** the live check of 2.70.0 (plan town 10:47-10:51) fetched the
+house's two Restore Charismas to sell them, but the second merged into the pack's stack ("2 Potions of Restore
+Charisma"), the wrong-pick check compared the exact name "a Potion of Restore Charisma", dropped the stack back, and
+nothing was sold. The house withdraw, the tavern fetch (StashFetch) and the pickup reflex's fetch target now judge by
+kind (`kind_key`) and the pack's count of it rising; a stack on one square comes up in one `,`. A wand whose charges
+aren't shown is no longer dropped onto one whose are (the server doesn't combine them).
+
+## 2.70.0 -- 2026-11-05 (session 12, after m69: the stash stacks and keeps the valuable)
+No missions yet on it. **Play changes:**
+- **The stash stacks** (the user: "we have two potions of restore charisma, each on its own tile. First of all potions
+  stack"): a stackable stash item (potions, scrolls, food, wands, staffs, rods) is dropped onto the house or tavern
+  square already holding its kind -- the server combines them -- and the record becomes one stack with both values.
+- **The house keeps the most valuable** ("why hold on to relatively cheap potions when there are more valuable
+  things?"): with the house full, a stash item worth more than its cheapest takes that square (the cheaper one is
+  picked up and goes to the tavern room -- not sold: a cheap kind the shops restock costs ~3x to buy back), at most 3
+  swaps a visit, with news; a tavern-room item worth more than the house's cheapest (or with a square free) is
+  fetched at the visit's start and stored in the house.
+- **Restores in the stash:** only Restore Strength, Dexterity and Constitution, and only while no worn piece sustains
+  the stat (Dive04's Amulet of Weaponmastery sustains STR and CON: only Restore Dexterity now); Restore
+  Intelligence/Wisdom/Charisma are no longer stash items -- the house's two Restore Charismas are fetched and sold.
+  Re-read each visit from the worn gear.
+
 ## 2.69.0 -- 2026-11-05 (session 12, after m69: unfelt gear waits for its feeling)
 No missions yet on it. **Play changes:**
 - **"Churning weapons is fine if we wait for the pseudo-ID first"** (the user after m69: a Lance destroyed to take

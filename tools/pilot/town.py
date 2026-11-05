@@ -21,7 +21,7 @@ import time
 
 import geareval
 from common import HERE, TV_POTION, TV_SCROLL, TV_FOOD, TV_FLASK, TV_LITE, bare_name, singular, bad_inscription, rec_name, \
-    inscription, mission_tag, FEELING_TAGS
+    inscription, mission_tag, FEELING_TAGS, kind_key
 from world import gnow, light_turns
 from mover import MAX_HGT, MAX_WID
 from town_goals import Shop, TownKit, town_houses
@@ -544,6 +544,15 @@ class TownMixin:
             return ("keep", "a stat-gain potion: the Pilot drinks it")
         if self.must_identify(it):
             return ("keep", "unknown: identified before it is sold (plan town buys the Scrolls of Identify)")
+        # (2.70.2, the user: "why hold on to relatively cheap potions" -- a Restore for a stat that isn't drained now and
+        # that the stash doesn't keep (INT/WIS/CHR, or a sustained STR/DEX/CON) is sold; a drained stat's is drunk)
+        m = re.search(self.STASH_KINDS, name) if tv == TV_POTION else None
+        if m and not self.stash_restore(name):
+            stat = next((k for k, v in dict(self.STAT_FULL, INT="Intelligence", WIS="Wisdom", CHR="Charisma").items()
+                         if v == m.group(1)), None)
+            cur, top = (self.seen_drained or {}).get(stat, (0, 0))
+            if not (stat and cur < top):
+                return ("sell", f"a Restore {m.group(1)}: the stat isn't drained and the stash doesn't keep it")
         # (2.53.0: an artifact wearable can't be stored -- the server won't drop it above its depth -- so it stays in
         # the pack, never sold by the policy; the Navigator's `review sell` or `sell !` can)
         if tv in geareval.SLOT_OF_TVAL and self.true_artifact(name, tv) and \
@@ -974,6 +983,59 @@ class TownMixin:
         return self.is_stash_item(it["name"]) and \
             self.drop_fails.get(bare_name(it["name"]).lower(), 0) < self.DROP_TRIES
 
+    # (2.70.0, the user: "why hold on to relatively cheap potions") the Restores the stash keeps: STR, DEX and CON (blows
+    # and HP), and only while no worn piece sustains that stat -- INT/WIS/CHR are sold (plan town buys Restore Charisma
+    # for a drained CHR when gold allows: town_needs tier 6)
+    STASH_RESTORES = {"Strength": "SUST_STR", "Dexterity": "SUST_DEX", "Constitution": "SUST_CON"}
+    STACK_TVALS = (55, 65, 66, 70, 75, 80)   # (staffs, wands, rods, scrolls, potions, food: the floor combines them,
+    #                                          object2.c object_similar_floor via drop_near on the same square)
+    HOUSE_SWAPS = 3                          # house items swapped out for a better one in a visit, at most
+
+    def worn_sustains(self):
+        """The sustain flags the worn gear gives (geareval.Item: the sheet's grid has no sustain columns)."""
+        out = set()
+        for i in self.w.items(equip=True):
+            try:
+                out |= {f for f in geareval.Item(i["name"], i["tval"]).flags if f.startswith("SUST_")}
+            except Exception:
+                pass
+        return out
+
+    def stash_restore(self, name):
+        """A stat Restore the stash keeps (STASH_RESTORES, not sustained by the worn gear: 2.70.0)."""
+        m = re.search(self.STASH_KINDS, name)
+        return bool(m) and m.group(1) in self.STASH_RESTORES and \
+            self.STASH_RESTORES[m.group(1)] not in self.worn_sustains()
+
+    def stash_value(self, rec_or_item):
+        """A stash item's worth for the house-by-value rule: a record's value, else value x pay_cut x count."""
+        if isinstance(rec_or_item, dict) and "value" in rec_or_item and "item" not in rec_or_item:
+            return rec_or_item.get("value") or 0
+        name = rec_or_item["name"] if isinstance(rec_or_item, dict) else rec_or_item
+        iv = self.iv(name)
+        n = rec_or_item.get("number", 1) if isinstance(rec_or_item, dict) else max(1, iv.count)
+        return int(round(iv.value * self.pay_cut(iv.tval) * max(1, n)))
+
+    def house_cheapest(self):
+        """(value, "Y,X", record) of the cheapest item in the house, or None."""
+        slots = self.house_state().get("items", {}) if self.house_state().get("house") else {}
+        recs = [(self.stash_value(r) if isinstance(r, dict) else self.stash_value(rec_name(r)), k, r)
+                for k, r in slots.items() if "," in k]
+        return min(recs, key=lambda x: x[0]) if recs else None
+
+    def stack_square(self, slots, it):
+        """The recorded square holding this item's kind, for a stackable item (STACK_TVALS: the server combines it
+        with the one lying there), else None."""
+        if it.get("tval") not in self.STACK_TVALS:
+            return None
+        key = kind_key(it["name"])
+        # (2.70.1: and as known -- a wand whose charges aren't shown doesn't combine with one whose are, object2.c
+        # object_similar_floor; the live check put "a Wand of Stone to Mud" beside "(4 charges)")
+        known = bool(re.search(r"\(\d+ charges?\)", it["name"]))
+        return next((tuple(int(v) for v in k.split(",")) for k, r in slots.items() if "," in k and
+                     kind_key(rec_name(r)) == key and
+                     bool(re.search(r"\(\d+ charges?\)", rec_name(r))) == known), None)
+
     def is_stash_item(self, name):
         """A pack item's name the stash takes: the stat-restore potions (not Restore Mana) and Wands of Stone to Mud
         (10-26), a name on the user's store list, or (a pack item's name) the best backup for a worn slot
@@ -982,7 +1044,7 @@ class TownMixin:
         if self.true_artifact(name):
             return False
         # (stat restores only: a Potion of Restore Mana went into the stash in m48 -- useless to a warrior)
-        if re.search(self.STASH_KINDS, name) or ("Stone to Mud" in name and "Wand" in name) or \
+        if self.stash_restore(name) or ("Stone to Mud" in name and "Wand" in name) or \
                 self.on_store_list(name):
             return True
         it = next((i for i in self.w.items() if i["name"] == name), None) if self.w else None
@@ -1005,7 +1067,7 @@ class TownMixin:
         why = self.stash_backup(it)
         if why:
             return why
-        if re.search(self.STASH_KINDS, name):
+        if self.stash_restore(name):
             return "the stash: a stat Restore (the house keeps it)"
         if "Stone to Mud" in name and "Wand" in name:
             return "the stash: a Wand of Stone to Mud (the house keeps it)"
@@ -1158,7 +1220,7 @@ class TownMixin:
         for a, n, slot in bk["outclassed"]:
             if a == at and n == name:
                 return f"outclassed {self.BACKUP_SLOT_LABEL.get(slot, slot)} backup: plan town fetches it to sell"
-        if re.search(self.STASH_KINDS, name):
+        if self.stash_restore(name):
             return "a stat Restore"
         if "Stone to Mud" in name:
             return "Stone to Mud"
@@ -1168,7 +1230,7 @@ class TownMixin:
         """True while a stored item belongs in the stash: a stat Restore, Stone to Mud, the store list, or the best
         backup for its slot (2.51.0: anything else stored -- outclassed, no longer qualifying, adopted from the floor
         -- is fetched at the next plan town and sold)."""
-        if re.search(self.STASH_KINDS, name) or ("Stone to Mud" in name and "Wand" in name) or \
+        if self.stash_restore(name) or ("Stone to Mud" in name and "Wand" in name) or \
                 self.on_store_list(name):
             return True
         return any(a == at and n == name for a, n, i, labels in self.stash_backups()["best"].values())
@@ -1223,8 +1285,27 @@ class TownMixin:
         for a, n, slot in bk["outclassed"]:
             if a == at:
                 out.append((n, f"outclassed as the {self.BACKUP_SLOT_LABEL.get(slot, slot)} backup: to sell"))
-        for n in sorted(set(self.stash_places()[at].values())):
-            if n and not self.stash_keeps(at, n) and not any(n == x for x, _ in out):
+        # (2.70.0: the house holds the most valuable stash items -- a tavern-room item worth more than the house's
+        # cheapest, or with a free square there, is fetched for the house's deposit to take)
+        if at == "tavern" and self.house_state().get("house"):
+            cheap = self.house_cheapest()
+            room = self.stash_room()["house"]
+            recs = self.tavern_state().get("items", {})
+            for k, r in sorted(recs.items(), key=lambda kr: -self.stash_value(kr[1] if isinstance(kr[1], dict)
+                                                                              else rec_name(kr[1]))):
+                n = rec_name(r)
+                v = self.stash_value(r if isinstance(r, dict) else n)
+                if n and self.stash_keeps(at, n) and not any(n == x for x, _ in out) and \
+                        (room or (cheap and v > cheap[0])):
+                    out.append((n, f"to the house (~{v}" + (f", over its cheapest, ~{cheap[0]})" if not room and cheap
+                                                            else ")")))
+                    room = max(0, (room or 0) - 1)
+                    if not room:
+                        break
+        # (2.70.0: one entry per square -- two Restore Charismas on two squares are both fetched)
+        listed = [x for x, _ in out]
+        for n in sorted(self.stash_places()[at].values()):
+            if n and not self.stash_keeps(at, n) and n not in listed:
                 why = "not worth storing any more (under 1000 gold at sale, its abilities worn)" if \
                     any(a == at and n2 == n for a, n2, _ in bk["unqualified"]) else "not a stash item"
                 out.append((n, f"{why}: to sell"))
@@ -1451,7 +1532,8 @@ class TownMixin:
             for names in slots.values():
                 for nm in (names if isinstance(names, list) else [names]):
                     if key in singular(rec_name(nm)):
-                        n += 1
+                        m = re.match(r"(\d+) ", rec_name(nm))          # (2.70.0: a stack counts its number)
+                        n += int(m.group(1)) if m else 1
         return n
 
     def stash_take(self, at, kind, square=None, lost=False):

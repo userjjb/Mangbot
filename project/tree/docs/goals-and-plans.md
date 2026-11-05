@@ -408,7 +408,19 @@ inside the door), `outside` (where to stand to open it) and `box`, smallest firs
   300) for a deposit, nothing for a withdraw, then opens, steps out and closes the door. `banked` is updated and a
   `bank` log record written.
 - *The stash in the house* (`item_step`): one stack a square on the other interior squares (farthest from the door
-  first), mapped square -> record in house.json `items`. **Reconcile first** (2.50.0, the live check of 11-04: the
+  first), mapped square -> record in house.json `items`. **2.70.0, the user ("potions stack ... why hold on to
+  relatively cheap potions when there are more valuable things?"):** a stackable item (`STACK_TVALS`: potions,
+  scrolls, food, wands, staffs, rods) goes onto the square already holding its kind (`stack_square`, `kind_key`: the
+  server's drop_near combines it with the object there, object_similar_floor), and the record becomes the floor's
+  combined name with both values (the tavern room's StashDeposit too); `stash_count` counts a stack's number. **The
+  house holds the most valuable stash items** (`stash_value`: the record's value, else value x pay_cut x count): with
+  no free square and no stack, a carried stash item worth more than the house's cheapest (`house_cheapest`) has that one
+  picked up (`swap_step`, at most `HOUSE_SWAPS` = 3 a visit; news "house: X (~N) out for Y (~M)") and takes its square;
+  the one swapped out goes to the tavern room (TownKit's overflow). It isn't sold: a cheap kind the shops restock
+  (Stone to Mud) costs ~3x its sale to buy back, and the tavern room costs nothing (its risk: a town thief). A
+  tavern-room item worth more than the house's cheapest, or with a house square free, is fetched at the visit's start
+  (`stash_fetch_list("tavern")`: "to the house") so the deposit takes it in; `_buying_deposit` runs for such a swap
+  too. **Reconcile first** (2.50.0, the live check of 11-04: the
   house held two Restore Charisma, the record one; the Scimitar dropped on the "free" square scattered to another --
   the server's drop_near, object2.c:3963, one object a grid -- and `,` on the recorded square took the potion): inside
   with the door closed, each interior square but the gold's is walked and its floor read (the client's `floor` query,

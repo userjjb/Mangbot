@@ -5,6 +5,7 @@ Run by unit.py (python3 unit.py [NAME]); W, pilot() and the other shared fixture
 import json
 import os
 import re
+import types
 
 from fixtures import P, case, pilot
 import town_goals as TG  # noqa: E402
@@ -528,7 +529,9 @@ def house_full_overflows_to_the_tavern_then_asks():
     import types
     p = _dive04_town([("a Scimitar of Westernesse (2d5) (+9,+8) (+1)", 23)], gold=500)
     p.w.memory = _tavern_room({})
-    full = {f"60,{x}": f"a Potion of Restore {s}" for x, s in ((125, "Charisma"), (126, "Wisdom"), (127, "Intelligence"))}
+    # (2.70.0: the house keeps the most valuable -- these outvalue the Scimitar, so no swap)
+    full = {f"60,{x}": {"name": f"a Potion of Restore {s}", "value": 20000}
+            for x, s in ((125, "Strength"), (126, "Dexterity"), (127, "Constitution"))}
     p._house = {"house": {"door": [60, 129], "box": [59, 124, 61, 129], "step_in": [60, 128], "depth": -1},
                 "items": full, "tavern": {"entrance": [27, 89], "items": {}}}
     p.house_save = lambda: None
@@ -1107,3 +1110,164 @@ def no_restart_during_a_town_visit():
         free["safe"] and p.goal is None and "first waiting" not in now["note"] and scripts
     return ok, f"town {town}; park {park} (goal kept {kept}, still running {still}); tile {tile}; store {store}; " \
                f"free {free}; park now {now}; scripts {scripts}"
+
+
+def _house_sim2(pack, floor0, slots, gold=200, store=()):
+    """A 4-square house (door 60,129; the gold's square 60,128; stash squares 60,125-127) with floor0 lying there and
+    `slots` on record; the commands act on the floor as the server does (a drop onto its kind combines: 2.70.0)."""
+    import tempfile
+    mem = {}
+    for x in range(124, 130):
+        mem[(59, x)] = mem[(61, x)] = "#"
+    mem[(60, 124)], mem[(60, 129)] = "#", "0"
+    for x in range(125, 129):
+        mem[(60, x)] = "."
+    for y in range(57, 64):
+        for x in range(130, 134):
+            mem[(y, x)] = "."
+    hs = P.town_houses(mem)
+    h = {k: (list(v) if isinstance(v, tuple) else v) for k, v in hs[0].items() if k != "inside"}
+    p = pilot(gold=gold, pack=pack)
+    w = p.w
+    w.depth, w.in_dungeon, w.memory, w.pos = 0, False, mem, (60, 130)
+    p.rundir, p.busy_until = tempfile.mkdtemp(), 0
+    p._house = {"house": h, "banked": 0, "items": dict(slots)}
+    p.store_list = set(store)
+    floor = dict(floor0)
+    dirs = {4: (0, -1), 6: (0, 1)}
+    from common import kind_key
+
+    def combine(a, b):
+        na = int(re.match(r"(\d+) ", a).group(1)) if re.match(r"\d+ ", a) else 1
+        nb = int(re.match(r"(\d+) ", b).group(1)) if re.match(r"\d+ ", b) else 1
+        k = kind_key(a)
+        ch = sum(int(c) for c in re.findall(r"\((\d+) charges\)", a + b))
+        base = k.replace("Potion", "Potions").replace("Wand", "Wands")
+        return f"{na + nb} {base}" + (f" ({ch} charges)" if ch else "")
+
+    def cmd(line, why, hold=0.4):
+        m = re.match(r"walk (\d)", line)
+        if m:
+            dy, dx = dirs[int(m.group(1))]
+            w.pos = (w.pos[0] + dy, w.pos[1] + dx)
+            if "$" in floor.get(w.pos, ""):
+                w.ind["gold"][0] += int(floor.pop(w.pos)[1:])
+        m = re.match(r"custom d item=(\d+)", line)
+        if m:
+            it = next(i for i in w.inven if i["item"] == int(m.group(1)))
+            w.inven.remove(it)
+            here = floor.get(w.pos)
+            floor[w.pos] = combine(here, it["name"]) if here and kind_key(here) == kind_key(it["name"]) else it["name"]
+        m = re.match(r"custom \$ value=(\d+)", line)
+        if m:
+            w.ind["gold"][0] -= int(m.group(1))
+            floor[w.pos] = "$" + m.group(1)
+        if line == "custom ,":
+            n = floor.pop(w.pos)
+            tv = 65 if "Wand" in n else 75
+            num = int(re.match(r"(\d+) ", n).group(1)) if re.match(r"\d+ ", n) else 1
+            same = next((i for i in w.inven if not i.get("equip") and kind_key(i["name"]) == kind_key(n)), None)
+            if same:                     # (the pack combines it with its kind: 2.70.1's live check)
+                w.inven.remove(same)
+                n = combine(same["name"], n)
+                num += same["number"]
+            w.inven.append({"item": 40 + len(w.inven), "name": n, "tval": tv, "weight": 4, "number": num,
+                            "equip": False})
+    p.cmd = cmd
+    p.mover = type("M", (), {"active": False, "go": lambda self, t: True, "tick": lambda self: "arrived",
+                             "stop": lambda self: None})()
+
+    def run(g):
+        for _ in range(300):
+            g.t = -99.0
+            _floor_sync(w, floor)
+            r = g.tick(p)
+            if r:
+                return r
+    return p, floor, run
+
+
+@case
+def house_stacks_and_keeps_the_most_valuable():
+    """2.70.0, the user: "we have two potions of restore charisma, each on its own tile. First of all potions stack,
+    second of all why hold on to relatively cheap potions when there are more valuable things?" A carried Wand of Stone
+    to Mud goes onto the square holding its kind (the server combines them): one record, both values. With the house
+    full, a stash item worth more than its cheapest (Soft Leather Boots of Stability, ~3,600, vs a wand stack ~110)
+    takes that square -- the cheaper one is picked up for the tavern room -- with news."""
+    wand = "a Wand of Stone to Mud (5 charges)"
+    # stacking: a free square, and the wand's kind on record at 60,126
+    p, floor, run = _house_sim2([("a Wand of Stone to Mud (6 charges)", 65)],
+                               {(60, 126): wand}, {"60,126": {"name": wand, "value": 110}})
+    run(P.HouseBank("deposit"))
+    rec = p._house["items"].get("60,126")
+    stacked = floor.get((60, 126)) == "2 Wands of Stone to Mud (11 charges)" and rec and \
+        rec["name"] == "2 Wands of Stone to Mud (11 charges)" and rec["value"] > 110 and len(p._house["items"]) == 1
+    # the house full, the boots carried (on the store list): the cheapest (the wand, ~110) goes out
+    boots = "a Pair of Soft Leather Boots of Stability [2,+6]"
+    full = {(60, 125): "a Potion of Restore Dexterity", (60, 126): wand, (60, 127): "a Potion of Restore Constitution"}
+    recs = {"60,125": {"name": full[(60, 125)], "value": 150}, "60,126": {"name": wand, "value": 110},
+            "60,127": {"name": full[(60, 127)], "value": 140}}
+    q, floor2, run2 = _house_sim2([(boots, 30)], full, recs, store=("boots of stability",))
+    q.iv = lambda n: types.SimpleNamespace(value=3645 if "Stability" in n else 100, tval=30, count=1, known=True,
+                                           estimate=False, artifact=False, ego=True)
+    q.pay_cut = lambda tv: 1.0
+    r2 = run2(P.HouseBank("deposit"))
+    names = sorted(rec_name(v) for v in q._house["items"].values())
+    news = [d for k, d in q.notes if k == "tactic" and "out for" in d]
+    ok = stacked and r2 and floor2.get((60, 126)) == boots and \
+        names == sorted([boots, full[(60, 125)], full[(60, 127)]]) and \
+        any(wand == i["name"] for i in q.w.items()) and news
+    return ok, (f"stack: floor {floor.get((60, 126))!r}, record {rec}; swap: floor {sorted(floor2.items())}, records "
+                f"{names}, pack {[i['name'] for i in q.w.items()]}, news {news[:1]}")
+
+
+@case
+def restores_by_sustain():
+    """2.70.0, the user ("why hold on to relatively cheap potions"): the stash keeps Restore Strength, Dexterity and
+    Constitution only while no worn piece sustains the stat (Dive04's Amulet of Weaponmastery sustains STR and CON);
+    Restore Intelligence/Wisdom/Charisma aren't stash items any more -- the house's two Restore Charismas are fetched
+    to be sold."""
+    amulet = [("a Spear (1d6) (+5,+7)", 22, 50), ("an Amulet of Weaponmastery (+2,+2) (+1)", 40, 3)]
+    p = pilot(worn=amulet, pack=[])
+    p.w.depth, p.w.in_dungeon = 0, False
+    keeps = {k: p.stash_restore(f"a Potion of Restore {k}") for k in
+             ("Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma")}
+    p._house = {"house": {"box": [59, 124, 61, 129], "step_in": [60, 128], "door": [60, 129]},
+                "items": {"60,125": "a Potion of Restore Charisma", "60,126": "a Potion of Restore Charisma"}}
+    fetch = p.stash_fetch_list("house")
+    plain = pilot(pack=[])
+    ok = keeps == {"Strength": False, "Dexterity": True, "Constitution": False, "Intelligence": False,
+                   "Wisdom": False, "Charisma": False} and \
+        [n for n, why in fetch] == ["a Potion of Restore Charisma"] * 2 and fetch[0][1].endswith("to sell") and \
+        plain.stash_restore("a Potion of Restore Strength") and not plain.is_stash_item("2 Potions of Restore Wisdom")
+    return ok, f"with the amulet: {keeps}; fetched {fetch}"
+
+
+@case
+def stash_fetch_judges_by_kind():
+    """2.70.1, the live check of 2.70.0 (plan town 10:47-10:51): the house's two Restore Charismas, fetched to be sold
+    -- the second merged into the pack's stack ("2 Potions of Restore Charisma"), the wrong-pick check compared the
+    exact name "a Potion of Restore Charisma" and dropped the stack back; the reconcile adopted it and nothing was sold.
+    Now a pick-up is judged by kind and the pack's count of it rising: both are fetched and struck; a stack on one
+    square comes up in one `,`; a wand whose charges aren't shown isn't dropped onto one whose are (the server won't
+    combine them)."""
+    pot = "a Potion of Restore Charisma"
+    p, floor, run = _house_sim2([], {(60, 125): pot, (60, 126): pot},
+                                {"60,125": {"name": pot, "value": 135}, "60,126": {"name": pot, "value": 135}})
+    fetch = [n for n, _ in p.stash_fetch_list("house")]
+    r = run(P.HouseBank("withdraw", fetch=fetch))
+    pack = [(i["name"], i["number"]) for i in p.w.items()]
+    back = [d for k, d in p.notes if "put back" in (d or "")]
+    two = "2 Potions of Restore Charisma"
+    q, floor2, run2 = _house_sim2([], {(60, 125): two}, {"60,125": {"name": two, "value": 270}})
+    r2 = run2(P.HouseBank("withdraw", fetch=[two]))
+    pack2 = [(i["name"], i["number"]) for i in q.w.items()]
+    slots = {"60,126": {"name": "a Wand of Stone to Mud (4 charges)", "value": 110}}
+    unknown = p.stack_square(slots, {"name": "a Wand of Stone to Mud", "tval": 65})
+    known = p.stack_square(slots, {"name": "a Wand of Stone to Mud (6 charges)", "tval": 65})
+    ok = r and fetch == [pot, pot] and not floor and pack == [(two, 2)] and not back and \
+        not p._house["items"] and r2 and not floor2 and pack2 == [(two, 2)] and not q._house["items"] and \
+        unknown is None and known == (60, 126)
+    return ok, (f"two squares: fetched {fetch}, pack {pack}, floor {floor}, put back {back}, records "
+                f"{p._house['items']}; one stack: pack {pack2}, floor {floor2}; wand stack square unknown/known "
+                f"{unknown}/{known}")
