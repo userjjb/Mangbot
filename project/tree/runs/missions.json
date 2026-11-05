@@ -3351,5 +3351,30 @@
    "usd": 0.29,
    "transcript": "agent-a8d579535cfe8c785.jsonl"
   }
+ },
+ {
+  "label": "m71",
+  "nick": "dive04",
+  "start": "2026-11-05 12:43",
+  "end": "2026-11-05 13:24",
+  "navigator": "haiku",
+  "budget": 45.0,
+  "effort": "medium",
+  "report": "compact",
+  "notes": "tenth mission of session 12, on 2.71.0; first Haiku since m60",
+  "version": "2.71.0",
+  "tokens": {
+   "turns": 20,
+   "input": 40,
+   "output": 12275,
+   "cache_read": 789921,
+   "cache_write": 56577,
+   "write_5m": 56577,
+   "write_1h": 0,
+   "model": "claude-haiku-5-5",
+   "final_usage_turns": 20,
+   "usd": 0.017,
+   "transcript": "agent-a6bbde127a1c30f7d.jsonl"
+  }
  }
 ]

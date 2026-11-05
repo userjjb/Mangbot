@@ -2043,9 +2043,198 @@
    "known": false,
    "t": 1793899887.3,
    "mission": "m70"
+  },
+  {
+   "name": "a Pair of Hard Leather Boots [3]",
+   "kind": "pair of hard leather boots",
+   "known": false,
+   "t": 1793900815.4,
+   "mission": "m71"
+  },
+  {
+   "name": "a Wand of Wonder",
+   "kind": "wand of wonder",
+   "known": false,
+   "t": 1793900820.3,
+   "mission": "m71"
+  },
+  {
+   "name": "2 Potions of Healing",
+   "kind": "potion of healing",
+   "known": true,
+   "t": 1793900864.6,
+   "mission": "m71"
+  },
+  {
+   "name": "a Long Bow (x3)",
+   "kind": "long bow",
+   "known": false,
+   "t": 1793901051.8,
+   "mission": "m71"
+  },
+  {
+   "name": "a Scroll of Identify",
+   "kind": "scroll of identify",
+   "known": true,
+   "t": 1793901060.6,
+   "mission": "m71"
+  },
+  {
+   "name": "2 Scrolls of Identify",
+   "kind": "scroll of identify",
+   "known": true,
+   "t": 1793901063.6,
+   "mission": "m71"
+  },
+  {
+   "name": "a Mace (2d4)",
+   "kind": "mace",
+   "known": false,
+   "t": 1793901065.8,
+   "mission": "m71"
+  },
+  {
+   "name": "a Wand of Light",
+   "kind": "wand of light",
+   "known": false,
+   "t": 1793901090.6,
+   "mission": "m71"
+  },
+  {
+   "name": "a Scroll of Trap/Door Destruction",
+   "kind": "scroll of trap/door destruction",
+   "known": true,
+   "t": 1793901099.1,
+   "mission": "m71"
+  },
+  {
+   "name": "a Staff of Cure Light Wounds",
+   "kind": "staff of cure light wound",
+   "known": false,
+   "t": 1793901133.9,
+   "mission": "m71"
+  },
+  {
+   "name": "a Main Gauche (1d5)",
+   "kind": "main gauche",
+   "known": false,
+   "t": 1793901215.9,
+   "mission": "m71"
+  },
+  {
+   "name": "a Pair of Hard Leather Boots [3]",
+   "kind": "pair of hard leather boots",
+   "known": false,
+   "t": 1793901346.4,
+   "mission": "m71"
+  },
+  {
+   "name": "a Mushroom of Cure Paranoia",
+   "kind": "mushroom of cure paranoia",
+   "known": true,
+   "t": 1793901419.9,
+   "mission": "m71"
+  },
+  {
+   "name": "a Wand of Stinking Cloud",
+   "kind": "wand of stinking cloud",
+   "known": false,
+   "t": 1793901427.7,
+   "mission": "m71"
+  },
+  {
+   "name": "a Mushroom of Cure Poison",
+   "kind": "mushroom of cure poison",
+   "known": true,
+   "t": 1793901860.1,
+   "mission": "m71"
+  },
+  {
+   "name": "a Ring of Protection",
+   "kind": "protection",
+   "known": false,
+   "t": 1793902002.9,
+   "mission": "m71"
+  },
+  {
+   "name": "an Awl-Pike (1d8)",
+   "kind": "awl-pike",
+   "known": false,
+   "t": 1793902033.1,
+   "mission": "m71"
+  },
+  {
+   "name": "2 Rations of Food",
+   "kind": "ration of food",
+   "known": true,
+   "t": 1793902051.5,
+   "mission": "m71"
+  },
+  {
+   "name": "an Amulet of Resist Lightning",
+   "kind": "resist lightning",
+   "known": true,
+   "t": 1793902053.8,
+   "mission": "m71"
+  },
+  {
+   "name": "a Pair of Soft Leather Boots [2]",
+   "kind": "pair of soft leather boots",
+   "known": false,
+   "t": 1793902143.1,
+   "mission": "m71"
+  },
+  {
+   "name": "a Robe [2]",
+   "kind": "robe",
+   "known": false,
+   "t": 1793902145.8,
+   "mission": "m71"
+  },
+  {
+   "name": "a Broad Sword (2d5)",
+   "kind": "broad sword",
+   "known": false,
+   "t": 1793902165.7,
+   "mission": "m71"
+  },
+  {
+   "name": "a Staff of Slow Monsters",
+   "kind": "staff of slow monster",
+   "known": false,
+   "t": 1793902167.9,
+   "mission": "m71"
+  },
+  {
+   "name": "4 Potions of Cure Serious Wounds",
+   "kind": "potion of cure seriou wound",
+   "known": true,
+   "t": 1793902231.8,
+   "mission": "m71"
+  },
+  {
+   "name": "a Long Sword (2d5)",
+   "kind": "long sword",
+   "known": false,
+   "t": 1793902240.4,
+   "mission": "m71"
+  },
+  {
+   "name": "a Quarterstaff (1d9)",
+   "kind": "quarterstaff",
+   "known": false,
+   "t": 1793902249.5,
+   "mission": "m71"
+  },
+  {
+   "name": "a Potion of Berserk Strength",
+   "kind": "potion of berserk strength",
+   "known": true,
+   "t": 1793902404.6,
+   "mission": "m71"
   }
  ],
- "trip_t0": 1793897922.3,
+ "trip_t0": 1793900801.3,
  "credits": {
   "wands of stone to mud": {
    "value": 277,

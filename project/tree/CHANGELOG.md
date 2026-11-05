@@ -28,7 +28,7 @@ From 2026-10-22: after mission 23 the user stopped patching mission by mission. 
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
 ## 2.71.0 -- 2026-11-05 (session 12, during m70: found enchant scrolls are read)
-No missions yet on it. **Play changes:**
+Missions: m71 (Haiku medium; report runs/pilot/dive04/reports/2026-11-05-mission71.md). **Play changes:**
 - **Found enchant scrolls are read** (m70 12:18-12:19: the user wanted a found Scroll of Enchant Weapon To-Dam read
   "now, off the floor"; reads with a target were town-only, and the Pilot destroyed it, ~56 by sale, for a ~202
   Lance). A found Enchant Armor / Weapon To-Dam / To-Hit (and *Enchant*) is read on its best target at any chance
