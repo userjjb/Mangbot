@@ -551,4 +551,7 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   for long: m69); the gear-damage window (10 s missed hits 11 s apart, m70); prefer a Teleportation scroll to a
   warrior's failure-prone staff when not blind (m70); the Ring of Protection [+11] kept as "kit/kept/useful" (m64);
   the C14 A/B (the HANDBOOK-reference shrink) never started; the model comparison: Haiku-medium (m71, $0.017) matched
-  Sonnet-medium's XP on the current Pilot -- more Haiku missions would settle it.
+  Sonnet-medium's XP on the current Pilot -- more Haiku missions would settle it; the item-square list omits some floor
+  items (m67: the vault's boots had no coordinates for `goal fetch`).
+- **Backup:** the test server's save directory + Dive04's house/orders/keep/standing files as of 11-07 08:41 are in
+  `runs/backups/save-end-session12-20261107/` (the server also autosaves every few minutes).
