@@ -30,12 +30,15 @@ The handoff between Architect sessions: the current state, what the next session
   2.48.1); the restructure merged into `master` (branch deleted, revert material removed); the GitHub front page
   updated. Its record: **"SESSION 11 RECORD"** at the bottom; what session 12 watches: **"SESSION 12 WATCH LIST"** at
   the top of HANDOFF 12. Its brief ("HANDOFF TO ARCHITECT 11") stays below for reference.
-- **Session 12** (missions resume, **to test everything changed since m60**): read **"HANDOFF TO ARCHITECT 12"**;
-  in progress since 11-04 (job 8406367): m62-m65 and 2.50.0-2.57.0, see **"SESSION 12 RECORD"** at the bottom.
+- **Session 12 is done** (2026-11-04 to 11-07): ten missions m62-m71 (Sonnet medium; m71 Haiku medium) and versions
+  2.50.0 -> 2.72.0, each change the user's decision after a mission or a live find: the stash and income labels,
+  identify-before-sale, the plan queue, gear damage, estimator bands, frozen time, vaults, hallucination, fight
+  what's in view, secret doors, the Phial and the Amulet of Weaponmastery. Its record: **"SESSION 12 RECORD"** at
+  the bottom (lessons, the user's standing decisions, the state, open items). Its brief (HANDOFF 12) stays below.
 - **Session 13** (the user, 11-03): **the separate local test server** for set-pieces (own port, saves, config,
   freeze file; copies of Dive04), then server-side test features (HANDOFF 12 item 3, TODOs 3-4). It unblocks A25's
   remaining half (a unique above the character's level: the recall branch), **and the repo as a patcher** (11-04).
-  Read **"HANDOFF TO ARCHITECT 13"**. Missions come first (session 12).
+  Read **"HANDOFF TO ARCHITECT 13"** (its "Before you start" first).
 - Sessions 1-9 are over: `history/handoffs-s1-s9.md`; session 10's own brief: `history/handoff-s10.md`.
 
 ### HANDOFF TO ARCHITECT 11: "Finish the refactor" (written 2026-11-02 by the session-10 Architect)
@@ -210,6 +213,15 @@ level luck dominates. More interleaved missions would settle it (offered to the 
 
 
 ### HANDOFF TO ARCHITECT 13: "The patcher repo and the separate test server" (written 2026-11-04 by the session-11 Architect)
+
+**Before you start (written 11-07 by the session-12 Architect):** read the SESSION 12 RECORD (bottom): the version
+is **2.72.0**, the user's standing decisions, the lessons (hot-swap/restart only outside town visits; monitors; verify
+against the server source). A new SGE job needs the test server (with `MANGBAND_FREEZE_FILE`), the Pilot
+(`tools/pilot/restart.sh Dive04`) and the viewer restarted (operations.md). Start the inbox watcher; remind the user
+of the USER TODO (old handoffs). This session is build work, not missions -- but the patcher touches every path the
+Pilot uses (`github/mangband`, `github/mangclient`, `lib/`): after the switch, a short mission (Haiku medium is
+cheap and matched Sonnet in m71) is the end-to-end check. The new test server must not share Dive04's savefile or
+house.json (copies only).
 
 **What this session is (the user, 11-03/11-04):** two linked projects, after session 12's missions.
 
@@ -504,7 +516,39 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
 - **2.69.0** unfelt gear waits for its feeling; **2.70.x** the house by value, stacking, Restores only for
   unsustained STR/DEX/CON. **m70** (Sonnet medium, 2.70.2): 77.3 XP/dmin, 11 levels; the gear-damage rule fired live.
   **2.71.0** targeted reads in the dungeon, found enchant scrolls read at any chance.
-- **Lessons:** never hot-swap (or restart) during a town or house visit (2.59.0 enforces it); a monitor started with
-  `&` and output to /dev/null eats the saved offsets -- always run_in_background; watch for asks while frozen -- `hotswap.sh` should wait for one to end;
-  `restart.sh` loads the working tree; hand-walking into the house picks up the bank pile (the step-in
-  square) -- never do it; `goal goto` queued behind raw steps can path back through the house.
+- **m71** (Haiku medium, 2.71.0): 74.5 XP/dmin at $0.017 (Sonnet ~75-90 at ~$0.25-0.33); the first live `zone_blocks`
+  answered (`avoid pass`). **2.72.0**: weapons/armour far-fetched for their sale (the user: selling weapons is income;
+  pack churn and food within the margin are fine -- leave them).
+- **Lessons (session 12):**
+  - Never hot-swap or restart during a town or house visit (2.59.0's `swapsafe` enforces it; `--now` overrides).
+    `restart.sh`/`hotswap.sh` load the working tree: an agent's half-built next version goes live with them
+    (units first). `hotswap.sh` keeps a freeze the user set.
+  - Never hand-walk into the house: the step-in square holds the bank pile (2.52.0's stale-record recovery copes).
+  - Monitors: always `run_in_background`; one at a time (they share saved offsets); never `&` to /dev/null; a
+    `pkill -f "watch_mission[.]py"` in the same command line as a new monitor kills it too. Watch for asks while
+    the user has time frozen (the monitor may have ended).
+  - pilotctl prints USER MESSAGE / ALERTS / ARCHITECT ANSWER lines first and last: scripts parsing a reply must skip
+    them (restart.sh/hotswap.sh's swapsafe parse hung on it once).
+  - `goal goto` and `raw` are the Architect's: tell Navigators `goal fetch` / `goal searchroom`.
+  - Verify against the server source before answering the user (the vault squares, detect_sdoor, inven_drop_okay,
+    hallucination, warrior BRAVERY_30): twice the first answer was wrong.
+  - Every brief: "never filter `wait`/`status` with grep" (m66's Navigator missed a user message and an alert).
+- **The user's standing decisions from session 12** (in CHANGELOG too): store unbuyable valuable spares (house by value,
+  then the tavern room, else ask); stored finds count as income (`{mNN}`); identify every unknown before selling (felt
+  average/worthless/cursed/broken gear excepted); review decided in the same town visit; frozen time doesn't count;
+  fight what's in view unless there's a reason not to; bands by the Advisor's estimator; Speed only when losing; a
+  monster's gear damage is danger; selling weapons is income -- pack churn is fine (after pseudo-ID) and food within
+  the margin is fine; WoR 3 in kits B/C; Enlightenment potions are not crutches.
+- **State at the end (11-07 08:40):** version **2.72.0** (git `df90997`, tagged, pushed; the Pilot runs it). Dive04
+  clvl 30, 369/369, in town, 300 gold + **53,898 banked**; wears the Battle Axe of Westernesse (+10,+9), Rings of
+  Protection [+16]/[+12], **Amulet of Weaponmastery**, Hard Studded Leather of Resistance [7,+9], Shadow Cloak,
+  Orcish Shield, Metal Cap, Gauntlets, Boots of Stability (all +8), **the Phial**. House: Scimitar of Westernesse,
+  Soft Leather Boots of Stability [2,+6], 3 Wands of Stone to Mud (17 ch.); the tavern room empty. Item debt 44.
+  Missions m62-m71 (Sonnet medium, m71 Haiku medium): 79.5 / 58.7 / 78.0 / 75.7 / 115.2 / 158.6 / 88.5 / 52.4 /
+  77.3 / 74.5 XP/dmin; no deaths, one 46% low (m65 summon trap). SGE job 8406367 (scc-va3) ends Sat 11-07 19:55: the
+  next job must restart the test server (with MANGBAND_FREEZE_FILE), the Pilot (`restart.sh Dive04`) and the viewer.
+- **Open after session 12 (not done; for a later session or the user):** a dead-end-level warning (stairs unreachable
+  for long: m69); the gear-damage window (10 s missed hits 11 s apart, m70); prefer a Teleportation scroll to a
+  warrior's failure-prone staff when not blind (m70); the Ring of Protection [+11] kept as "kit/kept/useful" (m64);
+  the C14 A/B (the HANDBOOK-reference shrink) never started; the model comparison: Haiku-medium (m71, $0.017) matched
+  Sonnet-medium's XP on the current Pilot -- more Haiku missions would settle it.

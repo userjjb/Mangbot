@@ -86,6 +86,19 @@ lessons are first in each section. Mission numbers (m24...) point to `runs/pilot
 - **Breeders that confuse** (Hummerhorns, 800 ft, m55): confused, you can't read scrolls and staffs often fail. The
   Pilot now cures a long confusion itself (CSW, then CCW); leave such a level at once.
 
+## 700-800 ft at clvl 30 (m64-m71, session 12)
+- **m64-m71 (Sonnet, m71 Haiku): 52-159 XP/dmin**; the best were a lesser vault with weak orc defenders (m67: 158.6,
+  the Pilot loots lesser vaults itself now) and a clean 11-level trip (m70). One long trip with `minutes>33` fits.
+- **`zone_blocks`:** answer `avoid pass` when the inner room isn't a pit you can see -- m71 walked the ring on at full
+  HP instead of recalling (~13 min saved). **Secret doors:** a 2-wide corridor that dead-ends hides one; the Pilot
+  zaps the Rod of Door/Stair Location there (searching rarely finds them for a warrior).
+- **Summon traps** at 750 ft (m65: Gorbag, Uruks, Wargs; low 46%) and **hallucination** (a Magic mushroom patch: the
+  monsters' names go wild -- m68's "Draugluin") are handled by the Pilot; let it.
+- **Water hounds/vortices breathe acid unseen:** the Pilot leaves after 2 armour hits (`gear_damage`); a warrior's
+  Staff of Teleportation can fail -- the Pilot tries again or uses a scroll.
+- Weapons found are income: the Pilot keeps and sells them (unfelt ones wait ~13 s for their feeling); food can run to
+  0 rations within the margin (`food >=N` still counts the stomach): that's fine.
+
 ## 700-800 ft at clvl 29, AC ~104 (m56-m63)
 - **m63 (11-04): 59 XP/dmin** (Sonnet), three short trips: two ended on stairs (both Pilot bugs: one fixed in
   2.52.0; a dark inner room's avoid zone can cover the only `<` at max_depth -- if "stairs known but unreachable"

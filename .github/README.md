@@ -44,19 +44,23 @@ mission's problems become Pilot rules.
 
 ## What it can do now
 
-- **Play a warrior at clvl 29, 700-800 ft**, in 30-45 minute scored missions (61 so far; the latest, m61:
-  84 XP and 74 gold per dungeon minute, no close calls).
+- **Play a warrior at clvl 30, 700-800 ft**, in 30-45 minute scored missions (71 so far; session 12's ten ran 52-159
+  XP per dungeon minute -- the best through a lesser vault -- with no deaths; a Haiku Navigator matched Sonnet's XP
+  at a seventeenth of the cost).
 - **Whole plans, not just moves:** `plan town` (sell by a value policy, identify, enchant armour and weapon, buy the
   kit by depth, fill the lantern, bank gold in a house) and `plan trip LO-HI until CONDITIONS` (recall down, explore,
-  leave bad levels -- breeders, traps, hounds, vaults -- and come home on the Navigator's conditions).
+  leave bad levels -- breeders, traps, hounds -- and come home on the Navigator's conditions). It recognises vaults
+  from the game's templates, finds secret doors with a door-detection rod, keeps valuable spares in a house, identifies
+  unknowns before selling, and counts stored finds as income.
 - **Survive by rules** learned from deaths and close calls: an ordered reflex and escape stack (`combat.py`), a
   danger estimate from the Advisor's duel simulator, a hunt check before any fight it's ordered into (HP, summoners,
-  breath, disenchantment's cost), group and band awareness, cures and status handling.
+  breath, disenchantment's cost), bands judged by the Advisor's estimator, acid/disenchant damage to gear treated as
+  danger, hallucination detected, a crash guard so one failing step never stops play.
 - **Know the game state reliably:** a resist/ability grid, a fresh inventory per decision, a state audit, a game
   clock that follows the server's time bubble, a stomach tracker pinned by the hunger crossings.
 - **Judge gear:** a gear evaluator and loadout optimizer (`geareval.py`), item values from the server's rules
   (`itemvalue.py`), learned item flavours (`runs/flavours.json`).
-- **Be measured and tested:** a scorecard per mission, ~170 offline unit cases, 39 live set-pieces staged on a test
+- **Be measured and tested:** a scorecard per mission, ~230 offline unit cases, 39 live set-pieces staged on a test
   server by a Dungeon Master character, and an equivalence harness for refactors (`tools/harness/`).
 - **Watch and talk:** a colour terminal viewer (map, the Pilot's actions and alerts, the Navigator's reasoning), live
   messages to the Navigator (`!`), questions to the Architect (`?`), a complaints channel for missing tools.
@@ -82,14 +86,13 @@ Versions are `major.minor.patch` (`VERSION`, git tags `vX.Y.Z`; minor = play can
 
 ## Major TODOs
 
-1. **Missions on the restructured Pilot** (the next session): test every change since m60 in real play.
-2. **The repo as a patcher:** only our work at the top level, our C changes as patches against pristine MAngband
+1. **The repo as a patcher** (the next session): only our work at the top level, our C changes as patches against pristine MAngband
    1.5.3, and a `build.sh` that fetches, patches and builds.
-3. **A separate local test server** (built with that script) for set-pieces on copies of the character, and
+2. **A separate local test server** (built with that script) for set-pieces on copies of the character, and
    server-side test features: a unique above the character's level, fixed levels and seeds.
-4. **Model comparisons and the handbook A/B:** Haiku, Sonnet and Opus Navigators at different efforts; a shorter
+3. **Model comparisons and the handbook A/B:** Haiku, Sonnet and Opus Navigators at different efforts; a shorter
    reference handbook against the current one.
-5. **A live-server run**, only with the server admins' agreement (the checklist: `project/tree/live-deploy-todo.md`;
+4. **A live-server run**, only with the server admins' agreement (the checklist: `project/tree/live-deploy-todo.md`;
    the rules for bots: `operations.md`).
 
 The current state is in `project/tree/next_steps.md` (">>> WHICH HANDOFF IS YOURS? <<<").
