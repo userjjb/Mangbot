@@ -1,0 +1,51 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: jbevan <jbevan@bu.edu>
+Date: Sat, 17 Oct 2026 00:58:45 -0400
+Subject: [PATCH 4/5] Server: refuse a store purchase or sale when not in a
+ store
+
+A purchase that arrived after the server had silently closed the store
+(store_num -1) read store[-1] in get_store_item() and crashed the server.
+get_store_item(), store_purchase() and store_sell() now refuse when the
+player is not in a store or the slot is past the stock.
+---
+ src/server/store.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/src/server/store.c b/src/server/store.c
+index 2995a7e10698f8190f062719ccb7e852fe9e5dfe..ccf52a38694fc5026b6eb809bed28db878579bb6 100644
+--- a/src/server/store.c
++++ b/src/server/store.c
+@@ -1569,6 +1569,12 @@ bool get_store_item(player_type *p_ptr, int item, object_type *i_ptr)
+ 	int stocked,x,y;
+ 	object_type		*o_ptr;
+ 	
++	/* Not in a store, or a slot past the stock: refuse (a purchase sent as the
++	 * player left the store read store[-1] and crashed the test server,
++	 * 2026-10-17; Mangbot patch) */
++	if (st < 0 || st > 8) return FALSE;
++	if (st != 8 && (item < 0 || item >= st_ptr->stock_num)) return FALSE;
++
+ 	/* Player owned stores */
+ 	if (p_ptr->store_num == 8)
+ 	{
+@@ -1703,6 +1709,9 @@ void store_purchase(player_type *p_ptr, int item, int amt, cptr checksum)
+ 	/* Before doing anything else, extract "offer" from checksum */
+ 	offer = atoi(checksum);
+ 
++	/* Not in a store (Mangbot patch: see get_store_item) */
++	if (st < 0 || st > 8) return;
++
+ 	/* Empty && Not player-owned? */
+ 	if (st != 8 && st_ptr->stock_num <= 0)
+ 	{
+@@ -1974,6 +1983,9 @@ void store_sell(player_type *p_ptr, int item, int amt)
+ 	/* You can't sell 0 of something. */
+ 	if (amt <= 0) return;
+ 
++	/* Not in a store (Mangbot patch: see get_store_item) */
++	if (p_ptr->store_num < 0 || p_ptr->store_num > 8) return;
++
+ 	/* Get the item (in the pack) */
+ 	if (item >= 0)
+ 	{

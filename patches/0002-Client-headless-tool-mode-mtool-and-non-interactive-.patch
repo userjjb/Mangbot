@@ -1,0 +1,1729 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: jbevan <jbevan@bu.edu>
+Date: Sat, 31 Oct 2026 13:41:56 -0400
+Subject: [PATCH 2/5] Client: headless tool mode (-mtool) and non-interactive
+ login (--noprompt)
+
+A display module with no UI for programs that play: the client reads one
+command per line on stdin (walk, pathfind, custom commands, store actions,
+look, rest, chat, option, queries for the map, inventory, flags, ...) and
+reports what happens as JSON lines on stdout (messages, popups, the full-level
+map with attributes, monster and item lists, store contents, position and
+level changes, confirm prompts). The full list of events and commands is at
+the top of src/client/c-tool.c.
+
+Also: --noprompt logs in without the interactive prompts, --birth creates the
+character without the birth menus, --visuals FILE uploads a glyph table, and
+--hpwarn sets the time-bubble warning. The tool client tracks the server's
+silent store exit and refuses store commands and redraws outside a store.
+
+New files src/client/c-tool.c and main-tool.c (the -mtool module); hooks in
+c-init.c, c-birth.c, c-util.c, c-xtra2.c, c-files.c, c-variable.c, client.c,
+net-client.c, c-externs.h and src/client/Makefile.am.
+---
+ src/client/Makefile.am  |    2 +-
+ src/client/c-birth.c    |   97 +++-
+ src/client/c-externs.h  |   17 +
+ src/client/c-files.c    |    7 +
+ src/client/c-init.c     |  105 +++-
+ src/client/c-tool.c     | 1090 +++++++++++++++++++++++++++++++++++++++
+ src/client/c-util.c     |    8 +
+ src/client/c-variable.c |    1 +
+ src/client/c-xtra2.c    |    8 +
+ src/client/client.c     |   17 +
+ src/client/main-tool.c  |   80 +++
+ src/client/net-client.c |   13 +
+ 12 files changed, 1437 insertions(+), 8 deletions(-)
+ create mode 100644 src/client/c-tool.c
+ create mode 100644 src/client/main-tool.c
+
+diff --git a/src/client/Makefile.am b/src/client/Makefile.am
+index 93cef63d6f2857f6af8c51286f70ab81ee4a2944..4b02a437c4e8d39253615f6dbcf1aa72f78654a6 100644
+--- a/src/client/Makefile.am
++++ b/src/client/Makefile.am
+@@ -14,7 +14,7 @@ endif
+ 
+ mangclient_SOURCES = \
+ 		src/client/c-birth.c src/client/c-cmd.c src/client/c-files.c \
+-		src/client/c-pktlog.c \
++		src/client/c-pktlog.c src/client/c-tool.c src/client/main-tool.c \
+ 		src/client/c-init.c src/client/c-inven.c src/client/c-spell.c \
+ 		src/client/c-store.c src/client/c-tables.c src/client/c-util.c \
+ 		src/client/c-xtra1.c src/client/c-xtra2.c src/client/client.c \
+diff --git a/src/client/c-birth.c b/src/client/c-birth.c
+index 42750b15d493e60d8fe1e489148e33a48b54f35e..8ad6b980410bebe2d919fb21c7d780c295d253a3 100644
+--- a/src/client/c-birth.c
++++ b/src/client/c-birth.c
+@@ -496,11 +496,19 @@ void get_char_name(void)
+ 
+ 	/* Display some helpful information XXX XXX XXX */
+ 
+-	/* Choose a name */
+-	choose_name();
++	/* Tool mode -- name/pass are preset; hash exactly like enter_password() */
++	if (no_prompt)
++	{
++		MD5Password(pass);
++	}
++	else
++	{
++		/* Choose a name */
++		choose_name();
+ 
+-	/* Enter password */
+-	enter_password();
++		/* Enter password */
++		enter_password();
++	}
+ 	
+ 	/* Capitalize the name */
+ 	nick[0] = toupper(nick[0]);
+@@ -519,6 +527,87 @@ void get_char_name(void)
+ 	c_message_add(" ", MSG_LOCAL);
+ }
+ 
++/*
++ * Tool mode -- the character to create, from --birth, as
++ * "RACE:CLASS:SEX:STAT,STAT,..." e.g. "Half-Orc:Warrior:m:DEX,STR,CON,WIS,CHR,INT".
++ * Names match the server's lists case-insensitively; stats not listed
++ * follow in their usual order. Empty means "never create a character".
++ */
++char tool_birth_spec[160] = "";
++
++static int tool_birth_find(cptr want, int max, cptr (*name_of)(int))
++{
++	int i;
++
++	for (i = 0; i < max; i++)
++	{
++		if (!my_stricmp(want, name_of(i))) return i;
++	}
++	return -1;
++}
++
++static cptr tool_race_name(int i) { return p_name + race_info[i].name; }
++static cptr tool_class_name(int i) { return c_name + c_info[i].name; }
++static cptr tool_stat_name(int i)
++{
++	/* The server sends e.g. "STR: "; match on the letters only */
++	static char buf[16];
++	int n = 0;
++	cptr s;
++
++	for (s = stat_names[i]; *s && n < (int)sizeof(buf) - 1; s++)
++	{
++		if (isalpha((unsigned char)*s)) buf[n++] = *s;
++	}
++	buf[n] = '\0';
++	return buf;
++}
++
++/*
++ * Fill race, pclass, sex and stat_order from tool_birth_spec (instead of
++ * get_char_info()'s menus). Needs the race/class/stat lists the server
++ * sends with its login reply. Returns NULL on success, else an error.
++ */
++cptr tool_birth_apply(void)
++{
++	char buf[160], *f[4], *s, *tok;
++	int i, n = 0, used[A_CAP];
++
++	my_strcpy(buf, tool_birth_spec, sizeof(buf));
++	for (s = buf; n < 4; n++)
++	{
++		f[n] = s;
++		if (n == 3) break;
++		if (!(s = strchr(s, ':'))) return "Birth spec: expected RACE:CLASS:SEX:STATS";
++		*s++ = '\0';
++	}
++
++	if ((race = tool_birth_find(f[0], z_info.p_max, tool_race_name)) < 0)
++		return format("Birth spec: no race '%s' on this server", f[0]);
++	if ((pclass = tool_birth_find(f[1], z_info.c_max, tool_class_name)) < 0)
++		return format("Birth spec: no class '%s' on this server", f[1]);
++	if (!my_stricmp(f[2], "m") || !my_stricmp(f[2], "male")) sex = TRUE;
++	else if (!my_stricmp(f[2], "f") || !my_stricmp(f[2], "female")) sex = FALSE;
++	else return format("Birth spec: sex must be m or f, not '%s'", f[2]);
++
++	/* Listed stats first, in the given order; the rest after them */
++	for (i = 0; i < A_MAX; i++) used[i] = 0;
++	n = 0;
++	for (tok = strtok(f[3], ","); tok; tok = strtok(NULL, ","))
++	{
++		i = tool_birth_find(tok, A_MAX, tool_stat_name);
++		if (i < 0) return format("Birth spec: no stat '%s'", tok);
++		if (used[i]) return format("Birth spec: stat '%s' listed twice", tok);
++		used[i] = 1;
++		stat_order[n++] = i;
++	}
++	for (i = 0; i < A_MAX; i++)
++	{
++		if (!used[i]) stat_order[n++] = i;
++	}
++	return NULL;
++}
++
+ /*
+  * Get the other info for this character.
+  */
+diff --git a/src/client/c-externs.h b/src/client/c-externs.h
+index 8efa26fc35ed6c81f569b828680bc7fbd3085beb..ce85c5fe7514cec97b08b92380f045d2ea21fb88 100644
+--- a/src/client/c-externs.h
++++ b/src/client/c-externs.h
+@@ -43,6 +43,9 @@ extern event_type inkey_ex(void);
+ /* variable.c */
+ extern char nick[MAX_CHARS];
+ extern char pass[MAX_CHARS];
++extern bool no_prompt;
++extern char tool_birth_spec[160];
++extern cptr tool_birth_apply(void);
+ 
+ extern char real_name[MAX_CHARS];
+ 
+@@ -458,6 +461,20 @@ extern void pktlog_recv(byte id, cptr name, const char *buf, int len, int res);
+ extern void pktlog_send(const char *buf, int len);
+ extern int pktlog_send_cb(int data1, void *data2);
+ 
++/* c-tool.c */
++extern bool tool_mode;
++extern void tool_loop(void);
++extern void tool_emit_message(cptr mesg, u16b type);
++extern void tool_emit_popup(void);
++extern void tool_blocked_input(cptr where);
++extern void tool_note_term_fresh(byte win);
++extern void tool_note_cursor(byte vis, byte y, byte x);
++extern void tool_note_target(byte x, byte y, byte win, cptr text);
++extern void tool_setup_visuals(void);
++
++/* main-tool.c */
++extern errr init_tool(void);
++
+ /* net-client.c */
+ extern cptr pktlog_recv_name(byte pkt, char *buf, size_t len);
+ 
+diff --git a/src/client/c-files.c b/src/client/c-files.c
+index ac0d9b5bb5325b643e1fd8a1ff020d1b472c6e44..1875a3bf99008dc381d2154b92202e2be5c6d767 100644
+--- a/src/client/c-files.c
++++ b/src/client/c-files.c
+@@ -1789,6 +1789,13 @@ void show_popup(void)
+ 	byte n;
+ 	int cols = 80; //TODO: fixme
+ 
++	/* Tool mode -- report the popup instead of drawing it */
++	if (tool_mode)
++	{
++		if (special_line_onscreen) tool_emit_popup();
++		return;
++	}
++
+ 	/* Hack -- if the screen is already icky, ignore this command */
+ 	if (screen_icky && !shopping) return;
+ 
+diff --git a/src/client/c-init.c b/src/client/c-init.c
+index 846a52b5dd6e5985ed008403fdafbe7ffa605eba..18c540fb0db824e3cbd489a744121da4e827c961 100644
+--- a/src/client/c-init.c
++++ b/src/client/c-init.c
+@@ -475,18 +475,45 @@ static void Setup_loop()
+ 				/* Send login */
+ 				client_login();
+ 			}
++			/* Tool mode -- never run the interactive birth screens;
++			 * only create a character if --birth says what it is */
++			if (no_prompt && !tool_birth_spec[0] && (state == PLAYER_NAMED || state == PLAYER_BONE))
++			{
++				quit(format("Character '%s' %s; log in interactively first (or use --birth).",
++				     nick, (state == PLAYER_BONE ? "is dead" : "does not exist")));
++			}
+ 			/* No character is ready */
+ 			if (state == PLAYER_NAMED)
+ 			{
+ 				/* Generate one */
+-				get_char_info();
++				if (no_prompt)
++				{
++					cptr err;
++					int tries = 0;
++
++					/* The race/class/stat lists come with the login reply */
++					while (!race_info || !c_info || !stat_names)
++					{
++						if (++tries > 500) quit("No race/class lists from the server.");
++						network_loop();
++						Term_xtra(TERM_XTRA_DELAY, 10);
++					}
++					if ((err = tool_birth_apply()) != NULL) quit(err);
++				}
++				else get_char_info();
+ 				send_char_info();
+ 				send_play(PLAY_ROLL);
+ 			}
+ 			/* Character is dead! */
+ 			if (state == PLAYER_BONE)
+ 			{
+-				if (get_bone_decision())
++				/* Tool mode with --birth: a dead character is replaced
++				 * by a new one of the same name */
++				if (no_prompt)
++				{
++					send_play(PLAY_RESTART);
++				}
++				else if (get_bone_decision())
+ 				{
+ 					/* Ask for similar one */
+ 					send_play(PLAY_REROLL);
+@@ -551,6 +578,9 @@ static void Setup_loop()
+ 	Term_clear();
+ 	Term_fresh();
+ 
++	/* Headless tool mode has its own loop */
++	if (tool_mode) tool_loop();
++
+ 	Game_loop();
+ }
+ 
+@@ -685,6 +715,19 @@ void gather_settings()
+ 	/* Hitpoint warning */
+ 	Client_setup.settings[3] = p_ptr->hitpoint_warn;
+ 
++	/* Tool mode: the warning level also slows our time bubble below
++	 * that much HP (xtra2.c), which gives the Pilot time to react.
++	 * Default 6 (60%), --hpwarn N (0..9) to change it. */
++	if (tool_mode)
++	{
++		s32b warn = 6;
++		clia_read_int(&warn, "hpwarn");
++		if (warn < 0) warn = 0;
++		if (warn > 9) warn = 9;
++		p_ptr->hitpoint_warn = (byte)warn;
++		Client_setup.settings[3] = (byte)warn;
++	}
++
+ 	/* Support slash fx */
+ 	Client_setup.settings[5] = (refresh_char_aux) ? TRUE : FALSE;
+ }
+@@ -768,6 +811,9 @@ void init_subscriptions()
+ 			if (st_ptr->addr == NTERM_WIN_OVERHEAD) window_flag[0] |= (1L << n);
+ 			/* HACK! Enforce Special View on window 0 */
+ 			if (st_ptr->addr == NTERM_WIN_SPECIAL) window_flag[0] |= (1L << n);
++			/* Tool mode: the monster and item lists too (c-tool.c reports them) */
++			if (tool_mode && (st_ptr->addr == NTERM_WIN_MONLIST || st_ptr->addr == NTERM_WIN_ITEMLIST))
++				window_flag[0] |= (1L << n);
+ 			/* Save "string" */
+ 			window_flag_desc[n] = st_ptr->window_desc;
+ 		}
+@@ -790,7 +836,9 @@ bool client_login()
+ {
+ 	u16b version = CLIENT_VERSION;
+ 
+-	send_login(version, real_name, host_name, nick, pass);
++	/* Tool mode: don't show our Unix login and host in the player list */
++	if (tool_mode) send_login(version, "player", "localhost", nick, pass);
++	else send_login(version, real_name, host_name, nick, pass);
+ 
+ 	return TRUE;
+ }
+@@ -823,6 +871,9 @@ bool client_setup()
+ 
+ 	send_options();
+ 
++	/* Tool mode -- distinctive glyphs (e.g. house doors) */
++	if (tool_mode) tool_setup_visuals();
++
+ 	/* Send visual preferences */
+ 	for (i = 0; i < VISUAL_INFO_PR + 1; i++)
+ 	{
+@@ -869,6 +920,8 @@ int client_failed(void)
+ 	if (try_count++ > 2000)
+ 	{
+ 		try_count = 0;
++		/* Tool mode -- don't ask, just fail */
++		if (no_prompt) return 0;
+ 		/* Prompt for auto-retry [grk] */
+ 		put_str("Couldn't connect to server, keep trying? [Y/N]", 21, 1);
+ 		/* Make sure the message is shown */
+@@ -899,6 +952,45 @@ int client_failed(void)
+ 	return 1;
+ }
+ 
++/*
++ * Tool mode -- fetch the password without prompting.
++ * Sources, in order of preference: --passfile PATH (first line),
++ * MANG_PASS environment variable, "pass" in the config file.
++ * (No --pass option: command lines are visible to other users.)
++ */
++static void read_noprompt_password(void)
++{
++	char path[1024] = { 0 };
++	const char *env;
++
++	if (clia_read_string(path, sizeof(path), "passfile"))
++	{
++		FILE *fp = fopen(path, "r");
++		char buf[MAX_CHARS] = { 0 };
++		size_t n;
++
++		if (!fp) quit(format("Unable to open password file '%s'", path));
++		if (!fgets(buf, sizeof(buf), fp)) buf[0] = '\0';
++		fclose(fp);
++
++		/* Strip trailing newline */
++		n = strlen(buf);
++		while (n && (buf[n - 1] == '\n' || buf[n - 1] == '\r')) buf[--n] = '\0';
++		my_strcpy(pass, buf, MAX_CHARS);
++	}
++	else if ((env = getenv("MANG_PASS")) != NULL)
++	{
++		my_strcpy(pass, env, MAX_CHARS);
++	}
++
++	/* Match enter_password(), whose prompt accepts at most 15 characters */
++	pass[15] = '\0';
++
++	/* "passwd" is the built-in placeholder, refused by enter_password() too */
++	if (STRZERO(pass) || streq(pass, "passwd"))
++		quit("No password given (use --passfile PATH, MANG_PASS, or 'pass' in the config).");
++}
++
+ /*
+  * Initialize everything, contact the server, and start the loop.
+  */
+@@ -951,6 +1043,13 @@ void client_init(void)
+ 	/* Nick from command line */
+ 	clia_read_string(nick, MAX_CHARS, "nick");
+ 
++	/* Non-interactive login (--noprompt) */
++	clia_read_bool(&no_prompt, "noprompt");
++	if (no_prompt) read_noprompt_password();
++
++	/* Tool mode: character to create if it doesn't exist (--birth SPEC) */
++	clia_read_string(tool_birth_spec, sizeof(tool_birth_spec), "birth");
++
+ 	/* Get character name and pass */
+ 	get_char_name();
+ 
+diff --git a/src/client/c-tool.c b/src/client/c-tool.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..895c33c86bc73251ad6dbd504f7143927b733264
+--- /dev/null
++++ b/src/client/c-tool.c
+@@ -0,0 +1,1090 @@
++/*
++ * File: c-tool.c
++ * Purpose: Tool mode main loop (used with the headless -mtool module).
++ *
++ * Replaces the interactive Game_loop(): keeps pumping the network (so
++ * keepalives flow), services the server's requests without any UI, and
++ * reports what happens as JSON lines on stdout. Commands are read as
++ * lines from stdin.
++ *
++ * Events (one JSON object per line, always with "ev" and "t"):
++ *   ready        {nick, door, visuals}      -- in the game; door = map glyph
++ *                                             of closed house doors; visuals =
++ *                                             glyphs set from --visuals FILE
++ *   message      {type, text}
++ *   popup        {header, lines[]}          -- e.g. MOTD, examine text
++ *   pause        {}                         -- server asked for "any key"
++ *   interactive  {header, kept}             -- remote browser; ESC sent back unless
++ *                                             keys are queued ('interactive' verb)
++ *   special      {lines[]}                  -- the special screen (DM menu), on refresh
++ *   local_browser {header}                  -- server asked for a local file browser (reported only)
++ *   confirm      {type, id, prompt, answer} -- declined unless "confirm yes"
++ *                                             was sent within the last 5 s
++ *   monlist      {lines[]}                  -- the server's list of visible monsters
++ *   itemlist     {lines[]}                  -- ... and of seen objects
++ *   target       {y, x, win, text}          -- one 'look' step, e.g. "a Warg (unhurt, asleep) [r,...]"
++ *   level        {depth}                    -- depth changed (also once at start)
++ *   store        {flag, name, owner, num, items[]}
++ *   store_leave  {why?}                     -- server closed the store (why: we sent a non-store command, which closes it on the server)
++ *   blocked_input {where}                   -- a prompt wanted a key; got ESC
++ *   pos          {y, x}                     -- own position (absolute), on change
++ *   ack          {cmd}                      -- command accepted and sent
++ *   error        {text[, cmd]}
++ *   (replies)    commands, status, inven, map, flags, floor, options,
++ *                minimap -- see tool_do_command(); map has rows[] (chars)
++ *                and attrs[] (chr(48+attr) per cell)
++ *
++ * Commands (one per line; DIR is a keypad digit 1-9, 5/0 = none):
++ *   walk DIR                                -- also leaves a store
++ *   pathfind Y X                            -- server-side path (<= ~25 tiles)
++ *   open DIR | alter DIR                    -- e.g. enter a player shop
++ *   examine SLOT                            -- in a store; reply is a popup
++ *   leave                                   -- leave the store
++ *   eat ITEM                                -- ITEM = inventory index (a=0)
++ *   look N                                  -- N steps of the server's targeting: "target" events
++ *   clear                                   -- drop our queued commands on the server
++ *                                             (PKT_CLEAR, what ESC sends)
++ *   redraw                                  -- ask the server to resend all our state (PKT_REDRAW)
++ *   flags                                   -- query: resist/ability grid {flag: slots granting it}
++ *   floor                                   -- query: the item under us {name, tval, number}
++ *   rest                                    -- toggle resting (PKT_REST; the
++ *                                             'state' indicator shows it)
++ *   custom KEY [store] [item=N] [dir=N] [value=N] [entry=TEXT]
++ *   confirm yes|no                          -- answer the next confirm prompt
++ *                                             (yes expires after 5 s)
++ *   option NAME yes|no                      -- set a game option (sent to server)
++ *   options                                 -- query: every option and its value
++ *   chat TEXT                               -- send a chat line (as typed after ':';
++ *                                             "Name: text" is private). Only
++ *                                             when the user asks for it
++ *   suicide NICK                            -- kill this character for good
++ *                                             (NICK must match; for throwaways)
++ *   commands | status | inven | map         -- queries
++ *   minimap                                 -- query: the (M)ap screen's rows, after
++ *                                             'custom M'; its frame shows the
++ *                                             wilderness position, e.g. [14N, 2W]
++ *   interactive TYPE                        -- open a server screen (e.g. 13 =
++ *                                             SPECIAL_FILE_MASTER, the DM menu, '&');
++ *                                             it stays open while keys are queued,
++ *                                             and its text arrives as 'special' events
++ *   keys TEXT                               -- queue keys for it (\e ESC, \r Enter,
++ *                                             ^X Ctrl-X, \xNN, \\); ESC closes it
++ *   special                                 -- query: the special screen's rows
++ *   quit                                    -- leave the game and exit
++ */
++
++#include "c-angband.h"
++
++#include "../common/net-basics.h"
++#include "../common/net-imps.h"
++
++extern connection_type *serv;
++
++bool tool_mode = FALSE;
++
++static struct timeval tool_t0;
++
++/* Prompts that asked for a key since the last loop iteration */
++static int tool_blocked = 0;
++
++/* Keys queued by the 'keys' verb for a server screen (the DM menu: restructure step 4,
++ * the set-piece harness), sent one per loop; the screen stays open while any are left */
++static char tool_keyq[2048];
++static int tool_keyq_head = 0, tool_keyq_tail = 0;
++static bool tool_interactive = FALSE;
++
++/* Own position, from the server's MCURSOR_PLAYER cursor packets */
++static int tool_py = -1, tool_px = -1;
++
++/* "confirm yes": answer the next confirm prompt with yes until this time */
++static double tool_confirm_until = 0;
++
++/* Last depth reported by a level event (-9999: none yet) */
++static long tool_last_depth = -9999;
++
++/* Glyphs set from --visuals */
++static int tool_visuals = 0;
++
++/* Partial command line from stdin */
++static char tool_cmd_buf[1024];
++static int tool_cmd_len = 0;
++
++/*** JSON output ***/
++
++static void tool_json_str(cptr s)
++{
++	putchar('"');
++	for (; *s; s++)
++	{
++		unsigned char c = (unsigned char)*s;
++		if (c == '"' || c == '\\') printf("\\%c", c);
++		else if (c < 0x20 || c >= 0x7f) printf("\\u%04x", c);
++		else putchar(c);
++	}
++	putchar('"');
++}
++
++static double tool_now(void)
++{
++	struct timeval now;
++	gettimeofday(&now, NULL);
++	return (double)now.tv_sec + (double)now.tv_usec / 1000000.0;
++}
++
++static void tool_ev_begin(cptr ev)
++{
++	struct timeval now;
++	gettimeofday(&now, NULL);
++	printf("{\"ev\":\"%s\",\"t\":%.3f", ev,
++	       (double)(now.tv_sec - tool_t0.tv_sec)
++	       + (double)(now.tv_usec - tool_t0.tv_usec) / 1000000.0);
++}
++
++static void tool_kv_str(cptr key, cptr val)
++{
++	printf(",\"%s\":", key);
++	tool_json_str(val);
++}
++
++static void tool_kv_int(cptr key, long val)
++{
++	printf(",\"%s\":%ld", key, val);
++}
++
++static void tool_ev_end(void)
++{
++	printf("}\n");
++	fflush(stdout);
++}
++
++/* Copy a stream row to buf as text, right-trimmed */
++static void tool_row_text(cave_view_type *row, int wid, char *buf, size_t len)
++{
++	int i, n = 0;
++
++	for (i = 0; i < wid && n < (int)len - 1; i++)
++	{
++		buf[n++] = (row[i].c ? row[i].c : ' ');
++	}
++	while (n > 0 && buf[n - 1] == ' ') n--;
++	buf[n] = '\0';
++}
++
++/*** Hooks called from the rest of the client ***/
++
++/* Server feature indices (server/mdefines.h); closed house doors */
++#define TOOL_FEAT_HOME_HEAD	0x71
++#define TOOL_FEAT_HOME_TAIL	0x78
++
++/* Map glyph for closed house doors (unused by any game data) */
++#define TOOL_HOUSE_DOOR_CHAR	'0'
++
++/*
++ * client_setup() -- adjust the visual tables before they're uploaded.
++ * The server draws our map with them, so closed house doors become
++ * unambiguous. (The *open* house door mimics a plain open door on the
++ * server, so it can't be told apart this way.)
++ */
++void tool_setup_visuals(void)
++{
++	int i;
++	char path[1024] = { 0 };
++
++	for (i = TOOL_FEAT_HOME_HEAD; i <= TOOL_FEAT_HOME_TAIL && i < z_info.f_max; i++)
++	{
++		Client_setup.f_char[i] = TOOL_HOUSE_DOOR_CHAR;
++	}
++
++	/*
++	 * --visuals FILE: more glyphs, one per line "KIND INDEX CHARCODE ATTR"
++	 * with KIND r (monster race), k (object kind) or v (flavour), e.g.
++	 * "r 57 111 21" = race 57 drawn as 'o' in colour 21. The tool picks
++	 * pairs that tell every race apart on the map. Attrs must be 1..63
++	 * (the map stream can't carry bit 0x40), chars printable.
++	 */
++	if (clia_read_string(path, sizeof(path), "visuals"))
++	{
++		FILE *fp = fopen(path, "r");
++		char line[128];
++
++		if (!fp) quit(format("Unable to open visuals file '%s'", path));
++		while (fgets(line, sizeof(line), fp))
++		{
++			char kind;
++			int idx, c, a;
++
++			if (sscanf(line, " %c %d %d %d", &kind, &idx, &c, &a) != 4) continue;
++			if (c < 33 || c > 126 || a < 1 || a > 63 || idx < 0) continue;
++			if (kind == 'r' && idx < z_info.r_max && idx > 0)
++			{
++				/* (race 0 is the player's own '@') */
++				Client_setup.r_char[idx] = (char)c;
++				Client_setup.r_attr[idx] = (byte)a;
++				tool_visuals++;
++			}
++			else if (kind == 'k' && idx < z_info.k_max)
++			{
++				Client_setup.k_char[idx] = (char)c;
++				Client_setup.k_attr[idx] = (byte)a;
++				tool_visuals++;
++			}
++			else if (kind == 'v' && idx < MAX_FLVR_IDX)
++			{
++				Client_setup.flvr_x_char[idx] = (char)c;
++				Client_setup.flvr_x_attr[idx] = (byte)a;
++				tool_visuals++;
++			}
++		}
++		fclose(fp);
++	}
++}
++
++/* do_handle_message() */
++void tool_emit_message(cptr mesg, u16b type)
++{
++	tool_ev_begin("message");
++	tool_kv_int("type", type);
++	tool_kv_str("text", mesg);
++	tool_ev_end();
++}
++
++/* show_popup() -- the popup text is complete */
++void tool_emit_popup(void)
++{
++	byte win = p_ptr->remote_term;
++	byte st = window_to_stream[win];
++	int wid = p_ptr->stream_wid[st];
++	int n;
++	char buf[1024];
++
++	tool_ev_begin("popup");
++	tool_kv_str("header", special_line_header);
++	printf(",\"lines\":[");
++	for (n = 0; n <= last_remote_line[win]; n++)
++	{
++		tool_row_text(stream_cave(st, n), wid, buf, sizeof(buf));
++		if (n) putchar(',');
++		tool_json_str(buf);
++	}
++	printf("]");
++	tool_ev_end();
++
++	/* Popup handled */
++	special_line_onscreen = FALSE;
++}
++
++/* recv_term_info() -- a remote window was refreshed (NTERM_FRESH) */
++void tool_note_term_fresh(byte win)
++{
++	byte st = window_to_stream[win];
++	int wid = p_ptr->stream_wid[st];
++	int n;
++	char buf[1024];
++
++	if (win != NTERM_WIN_MONLIST && win != NTERM_WIN_ITEMLIST && win != NTERM_WIN_SPECIAL) return;
++	if (!p_ptr->stream_hgt[st]) return;
++
++	tool_ev_begin(win == NTERM_WIN_MONLIST ? "monlist" : win == NTERM_WIN_ITEMLIST ? "itemlist" : "special");
++	printf(",\"lines\":[");
++	for (n = 0; (win == NTERM_WIN_SPECIAL || n <= last_remote_line[win]) && n < p_ptr->stream_hgt[st]; n++)
++	{
++		tool_row_text(stream_cave(st, n), wid, buf, sizeof(buf));
++		if (n) putchar(',');
++		tool_json_str(buf);
++	}
++	printf("]");
++	tool_ev_end();
++}
++
++/* inkey_ex() / Term_inkey() -- some prompt wants a key */
++void tool_blocked_input(cptr where)
++{
++	tool_ev_begin("blocked_input");
++	tool_kv_str("where", where);
++	tool_ev_end();
++
++	/* A prompt that keeps re-asking would spin forever */
++	if (++tool_blocked > 1000) quit("Tool mode: stuck in an input prompt.");
++}
++
++/*** Requests from the server ***/
++
++/* Inside a store, as far as the tool knows (a redraw there makes the server
++ * drop the store silently -- recv_redraw sets store_num = -1 -- and the next
++ * purchase crashed the test server, 2026-10-17) */
++static bool tool_in_store = FALSE;
++
++static void tool_emit_store(void)
++{
++	int i;
++
++	tool_ev_begin("store");
++	tool_kv_int("flag", store_flag);
++	tool_kv_str("name", store_name);
++	tool_kv_str("owner", store_owner_name);
++	tool_kv_int("num", store.stock_num);
++	printf(",\"items\":[");
++	for (i = 0; i < store.stock_num && i < STORE_INVEN_MAX; i++)
++	{
++		object_type *o_ptr = &store.stock[i];
++
++		if (i) putchar(',');
++		printf("{\"slot\":%d", i);
++		tool_kv_str("name", store_names[i]);
++		tool_kv_int("number", o_ptr->number);
++		tool_kv_int("price", store_prices[i]);
++		tool_kv_int("weight", o_ptr->weight);
++		/* recv_store() stashes the glyph in ix/iy and tval attr in sval */
++		tool_kv_int("ga", (byte)o_ptr->ix);
++		tool_kv_int("gc", (byte)o_ptr->iy);
++		tool_kv_int("attr", (byte)o_ptr->sval);
++		putchar('}');
++	}
++	printf("]");
++	tool_ev_end();
++}
++
++/* Tool-mode counterpart of process_requests(): no UI, never blocks */
++static void tool_process_requests(void)
++{
++	if (pause_requested)
++	{
++		pause_requested = FALSE;
++		tool_ev_begin("pause");
++		tool_ev_end();
++	}
++	if (local_browser_requested)
++	{
++		local_browser_requested = FALSE;
++		tool_ev_begin("local_browser");
++		tool_kv_str("header", special_line_header);
++		tool_ev_end();
++	}
++	if (simple_popup_requested)
++	{
++		/* Accept the popup; tool_emit_popup() reports it when complete */
++		simple_popup_requested = FALSE;
++		special_line_onscreen = TRUE;
++	}
++	if (special_line_requested)
++	{
++		/* Remote browser / interactive mode: decline by sending ESC, unless the
++		 * tool opened it ('interactive') or has keys queued for it */
++		bool keep = tool_interactive || tool_keyq_head != tool_keyq_tail;
++		special_line_requested = FALSE;
++		tool_ev_begin("interactive");
++		tool_kv_str("header", special_line_header);
++		tool_kv_int("kept", keep);
++		tool_ev_end();
++		if (keep) tool_interactive = interactive_mode = TRUE;
++		else send_term_key(ESCAPE);
++	}
++	if (confirm_requested)
++	{
++		/* Decline (not answering is how get_check() says no) unless the
++		 * tool asked for a yes just before (e.g. selling to a store) */
++		bool yes = (tool_now() < tool_confirm_until);
++
++		confirm_requested = FALSE;
++		tool_confirm_until = 0;
++		if (yes) send_confirm(confirm_type, confirm_id);
++		tool_ev_begin("confirm");
++		tool_kv_int("type", confirm_type);
++		tool_kv_int("id", confirm_id);
++		tool_kv_str("prompt", confirm_prompt);
++		printf(",\"answer\":%s", yes ? "true" : "false");
++		tool_ev_end();
++	}
++	if (enter_store)
++	{
++		enter_store = FALSE;
++		tool_in_store = TRUE;
++		tool_emit_store();
++	}
++	if (leave_store)
++	{
++		leave_store = FALSE;
++		tool_in_store = FALSE;
++		tool_ev_begin("store_leave");
++		tool_ev_end();
++	}
++}
++
++/*** Commands from stdin ***/
++
++/* recv_cursor() -- server marks our own position (absolute y, x) */
++void tool_note_cursor(byte vis, byte y, byte x)
++{
++	int ny, nx;
++
++	if (!(vis & MCURSOR_PLAYER)) return;
++
++	/* Offline: we're outside the panel the server is showing */
++	if (vis & MCURSOR_OFFLINE) return;
++
++	ny = y;
++	nx = x;
++	if (ny == tool_py && nx == tool_px) return;
++	tool_py = ny;
++	tool_px = nx;
++
++	tool_ev_begin("pos");
++	tool_kv_int("y", tool_py);
++	tool_kv_int("x", tool_px);
++	tool_ev_end();
++}
++
++/* recv_target_info() -- the server describes the grid targeting points at (screen x, y): for a monster
++ * "a Warg (unhurt, asleep) [r,...]" (xtra2.c look_mon_desc). The `look` verb's events. */
++void tool_note_target(byte x, byte y, byte win, cptr text)
++{
++	tool_ev_begin("target");
++	tool_kv_int("y", y);
++	tool_kv_int("x", x);
++	tool_kv_int("win", win);
++	tool_kv_str("text", text);
++	tool_ev_end();
++}
++
++static void tool_error(cptr cmd, cptr text)
++{
++	tool_ev_begin("error");
++	tool_kv_str("text", text);
++	if (cmd) tool_kv_str("cmd", cmd);
++	tool_ev_end();
++}
++
++static void tool_ack(cptr cmd)
++{
++	tool_ev_begin("ack");
++	tool_kv_str("cmd", cmd);
++	tool_ev_end();
++}
++
++/* Find a server-defined custom command by key (never hard-code indices) */
++static int tool_find_custom(char key, bool store_cmd)
++{
++	int i;
++
++	for (i = 0; i < custom_commands; i++)
++	{
++		custom_command_type *cc_ptr = &custom_command[i];
++		bool is_store = (cc_ptr->flag & COMMAND_STORE) ? TRUE : FALSE;
++		if (cc_ptr->m_catch == key && is_store == store_cmd) return i;
++	}
++	return -1;
++}
++
++/* The server leaves the store on every non-store command, without a
++ * store_leave packet ("Exit store on every non-store command", net-game.c).
++ * Mirror that, and tell the agent, so it never sends a purchase the server
++ * would resolve against store[-1] (that crashed the test server, 2026-10-17;
++ * a live server has no patch). */
++static void tool_left_store(cptr why)
++{
++	if (!tool_in_store) return;
++	tool_in_store = FALSE;
++	tool_ev_begin("store_leave");
++	tool_kv_str("why", why);
++	tool_ev_end();
++}
++
++static void tool_send_custom(cptr cmd, char key, bool store_cmd, int item, int dir, s32b value, cptr entry)
++{
++	char buf[60];
++	int i = tool_find_custom(key, store_cmd);
++
++	if (store_cmd && !tool_in_store)
++	{
++		tool_error(cmd, "not in a store (the server would act on no store)");
++		return;
++	}
++	if (i < 0)
++	{
++		tool_error(cmd, format("No %scommand '%c' on this server", store_cmd ? "store " : "", key));
++		return;
++	}
++	my_strcpy(buf, entry ? entry : "", sizeof(buf));
++	if (!send_custom_command((byte)i, (char)item, (char)dir, value, buf))
++	{
++		tool_error(cmd, "send failed");
++		return;
++	}
++	if (!store_cmd) tool_left_store("a non-store command closes the store on the server");
++	tool_ack(cmd);
++}
++
++static bool tool_valid_dir(int dir)
++{
++	return (dir >= 0 && dir <= 9);
++}
++
++static void tool_query_commands(void)
++{
++	int i;
++
++	tool_ev_begin("commands");
++	printf(",\"list\":[");
++	for (i = 0; i < custom_commands; i++)
++	{
++		custom_command_type *cc_ptr = &custom_command[i];
++		char key[2];
++
++		key[0] = cc_ptr->m_catch;
++		key[1] = '\0';
++		if (i) putchar(',');
++		printf("{\"i\":%d", i);
++		tool_kv_str("key", key);
++		tool_kv_int("pkt", (byte)cc_ptr->pkt);
++		tool_kv_int("scheme", cc_ptr->scheme);
++		printf(",\"flag\":\"0x%08lx\"", (unsigned long)cc_ptr->flag);
++		printf(",\"store\":%s", (cc_ptr->flag & COMMAND_STORE) ? "true" : "false");
++		tool_kv_str("display", cc_ptr->display);
++		putchar('}');
++	}
++	printf("]");
++	tool_ev_end();
++}
++
++static void tool_query_status(void)
++{
++	int i, j;
++
++	tool_ev_begin("status");
++	tool_kv_int("y", tool_py);
++	tool_kv_int("x", tool_px);
++	printf(",\"ghost\":%s", p_ptr->ghost ? "true" : "false");
++	printf(",\"ind\":{");
++	for (i = 0; i < known_indicators; i++)
++	{
++		indicator_type *i_ptr = &indicators[i];
++
++		if (i) putchar(',');
++		tool_json_str(i_ptr->mark ? i_ptr->mark : "?");
++		putchar(':');
++		if (i_ptr->type == INDITYPE_STRING)
++		{
++			tool_json_str(str_coffers[i] ? str_coffers[i] : "");
++		}
++		else
++		{
++			putchar('[');
++			for (j = 0; j < i_ptr->amnt; j++)
++			{
++				if (j) putchar(',');
++				printf("%ld", (long)coffers[coffer_refs[i] + j]);
++			}
++			putchar(']');
++		}
++	}
++	printf("}");
++	tool_ev_end();
++}
++
++static void tool_query_inven(void)
++{
++	int i;
++	bool first = TRUE;
++
++	tool_ev_begin("inven");
++	printf(",\"items\":[");
++	for (i = 0; i < INVEN_TOTAL; i++)
++	{
++		object_type *o_ptr = &inventory[i];
++
++		if (!o_ptr->tval) continue;
++		if (!first) putchar(',');
++		first = FALSE;
++		printf("{\"item\":%d", i);
++		printf(",\"equip\":%s", (i >= INVEN_WIELD) ? "true" : "false");
++		tool_kv_str("name", inventory_name[i]);
++		tool_kv_int("tval", o_ptr->tval);
++		tool_kv_int("number", o_ptr->number);
++		tool_kv_int("weight", o_ptr->weight);
++		putchar('}');
++	}
++	printf("]");
++	tool_ev_end();
++}
++
++/*
++ * flags: the character sheet's resist/ability grid (PKT_OBJFLAGS), which the
++ * client already stores in p_ptr->hist_flags. For each flag, the equipment
++ * slots that grant it ("a".."l", "@" = the character itself). Free Action,
++ * See Invisible and the resists become facts, not guesses (the Advisor's
++ * game-state survey, 2026-10-03).
++ */
++static cptr tool_flag_names[32] =
++{
++	"res_acid", "res_elec", "res_fire", "res_cold", "res_pois", "res_fear", "res_lite", "res_dark",
++	"res_blind", "res_conf", "res_sound", "res_shard", "res_nexus", "res_nether", "res_chaos", "res_disen",
++	"slow_digest", "feather", "perm_lite", "regen", "telepathy", "see_invis", "free_act", "hold_life",
++	"stealth", "search", "infra", "tunnel", "speed", "blows", "shots", "might"
++};
++
++static void tool_query_flags(void)
++{
++	int f, i;
++	cptr slots = "abcdefghijkl@";
++
++	tool_ev_begin("flags");
++	printf(",\"flags\":{");
++	for (f = 0; f < 32; f++)
++	{
++		int off = 7 + f;
++		char buf[16];
++		int n = 0;
++
++		for (i = 0; i < 13 && i < MAX_OBJFLAGS_ROWS; i++)
++		{
++			char c;
++			if (off >= MAX_OBJFLAGS_COLS) break;
++			c = p_ptr->hist_flags[i][off].c;
++			if (c && c != '.' && c != ' ') buf[n++] = slots[i];
++		}
++		buf[n] = '\0';
++		if (f) putchar(',');
++		tool_json_str(tool_flag_names[f]);
++		putchar(':');
++		tool_json_str(buf);
++	}
++	printf("}");
++	tool_ev_end();
++}
++
++/* floor: the item under the character (only the top one: the client keeps no piles) */
++static void tool_query_floor(void)
++{
++	tool_ev_begin("floor");
++	tool_kv_str("name", floor_item.tval ? floor_name : "");
++	tool_kv_int("tval", floor_item.tval);
++	tool_kv_int("number", floor_item.number);
++	tool_ev_end();
++}
++
++static void tool_query_map(void)
++{
++	int st, wid, hgt, n;
++	char buf[1024];
++
++	/* The subscribed stream that draws the dungeon view */
++	for (st = 0; st < known_streams; st++)
++	{
++		if (streams[st].addr == NTERM_WIN_OVERHEAD && p_ptr->stream_hgt[st]) break;
++	}
++	if (st >= known_streams)
++	{
++		tool_error("map", "no dungeon stream subscribed");
++		return;
++	}
++	wid = p_ptr->stream_wid[st];
++	hgt = p_ptr->stream_hgt[st];
++
++	tool_ev_begin("map");
++	tool_kv_str("stream", streams[st].mark);
++	tool_kv_int("wid", wid);
++	tool_kv_int("hgt", hgt);
++	printf(",\"rows\":[");
++	for (n = 0; n < hgt; n++)
++	{
++		int i;
++
++		/* Keep full width (no trim) so columns line up */
++		for (i = 0; i < wid && i < (int)sizeof(buf) - 1; i++)
++		{
++			char c = stream_cave(st, n)[i].c;
++			buf[i] = (c ? c : ' ');
++		}
++		buf[i] = '\0';
++		if (n) putchar(',');
++		tool_json_str(buf);
++	}
++	printf("]");
++
++	/* Colours, one character per cell: chr(48 + attr) for attr < 64
++	 * (the stream can't carry attrs with bit 0x40 anyway), '~' otherwise */
++	printf(",\"attrs\":[");
++	for (n = 0; n < hgt; n++)
++	{
++		int i;
++
++		for (i = 0; i < wid && i < (int)sizeof(buf) - 1; i++)
++		{
++			byte a = stream_cave(st, n)[i].a;
++			buf[i] = (a < 64) ? (char)('0' + a) : '~';
++		}
++		buf[i] = '\0';
++		if (n) putchar(',');
++		tool_json_str(buf);
++	}
++	printf("]");
++	tool_ev_end();
++}
++
++static void tool_do_command(char *line)
++{
++	char verb[32] = { 0 };
++	int a = 0, b = 0, n;
++
++	n = sscanf(line, "%31s %d %d", verb, &a, &b);
++	if (n < 1) return;
++
++	if (streq(verb, "quit"))
++	{
++		quit(NULL);
++	}
++	else if (streq(verb, "walk"))
++	{
++		if (n < 2 || !tool_valid_dir(a)) { tool_error(line, "usage: walk DIR"); return; }
++		send_walk((char)a);
++		tool_left_store("a walk closes the store on the server");
++		tool_ack(line);
++	}
++	else if (streq(verb, "pathfind"))
++	{
++		if (n < 3 || a < 0 || a > 255 || b < 0 || b > 255)
++		{
++			tool_error(line, "usage: pathfind Y X");
++			return;
++		}
++		cq_printf(&serv->wbuf, "%c%c%c", PKT_PATHFIND, (byte)a, (byte)b);
++		tool_left_store("a pathfind closes the store on the server");
++		tool_ack(line);
++	}
++	else if (streq(verb, "open") || streq(verb, "alter"))
++	{
++		if (n < 2 || !tool_valid_dir(a)) { tool_error(line, "usage: open|alter DIR"); return; }
++		tool_send_custom(line, (verb[0] == 'o' ? 'o' : '+'), FALSE, 0, a, 0, NULL);
++	}
++	else if (streq(verb, "examine"))
++	{
++		if (n < 2 || a < 0 || a >= STORE_INVEN_MAX) { tool_error(line, "usage: examine SLOT"); return; }
++		tool_send_custom(line, 'l', TRUE, a, 0, 0, NULL);
++	}
++	else if (streq(verb, "leave"))
++	{
++		tool_in_store = FALSE;
++		send_store_leave();
++		tool_ack(line);
++	}
++	else if (streq(verb, "look"))
++	{
++		/* look N (session 7: the per-monster asleep flag): the server's targeting in 'kill' mode cycles
++		 * the visible monsters in line of sight, nearest first; N steps (space), then ESC. Each step's
++		 * description comes back as a "target" event. Looking takes no game time. */
++		int i, steps = (n >= 2 && a > 0) ? (a < 30 ? a : 30) : 10;
++
++		send_target_interactive(TARGET_KILL, 0);
++		for (i = 1; i < steps; i++) send_target_interactive(TARGET_KILL, ' ');
++		send_target_interactive(TARGET_KILL, ESCAPE);
++		tool_ack(line);
++	}
++	else if (streq(verb, "clear"))
++	{
++		/* What ESC sends: the server empties our command queue (sent before
++		 * logging out -- the test server crashed on queued commands of a
++		 * player who had just disconnected) */
++		send_clear();
++		tool_ack(line);
++	}
++	else if (streq(verb, "redraw"))
++	{
++		/* A full resync (net-game.c recv_redraw): inventory, equipment,
++		 * indicators, map. The Advisor's game-state survey (2026-10-03).
++		 * Never inside a store: the server would close it without telling
++		 * us, and a purchase after that reads store[-1] (a crash on any
++		 * server without our patch). */
++		if (tool_in_store) { tool_error(line, "in a store: leave first (a redraw closes the store on the server)"); return; }
++		send_redraw();
++		tool_ack(line);
++	}
++	else if (streq(verb, "rest"))
++	{
++		/* Not a custom command: a fixed packet the server treats as a toggle */
++		send_rest();
++		tool_left_store("resting closes the store on the server");
++		tool_ack(line);
++	}
++	else if (streq(verb, "eat"))
++	{
++		if (n < 2 || a < 0 || a >= INVEN_PACK) { tool_error(line, "usage: eat ITEM"); return; }
++		tool_send_custom(line, 'E', FALSE, a, 0, 0, NULL);
++	}
++	else if (streq(verb, "custom"))
++	{
++		/* custom KEY [store] [item=N] [dir=N] [value=N] [entry=TEXT (rest of line)] */
++		char *s = line + strlen("custom");
++		char key;
++		bool store_cmd = FALSE;
++		int item = 0, dir = 0;
++		long value = 0;
++		char *entry = NULL;
++		char *tok;
++
++		while (*s == ' ') s++;
++		if (!*s) { tool_error(line, "usage: custom KEY [store] [item=N] [dir=N] [value=N] [entry=TEXT]"); return; }
++		key = *s++;
++
++		/* entry= swallows the rest of the line, so cut it off first */
++		if ((tok = strstr(s, "entry=")) != NULL)
++		{
++			entry = tok + strlen("entry=");
++			*tok = '\0';
++		}
++		for (tok = strtok(s, " "); tok; tok = strtok(NULL, " "))
++		{
++			if (streq(tok, "store")) store_cmd = TRUE;
++			else if (prefix(tok, "item=")) item = atoi(tok + 5);
++			else if (prefix(tok, "dir=")) dir = atoi(tok + 4);
++			else if (prefix(tok, "value=")) value = atol(tok + 6);
++			else { tool_error(line, format("bad argument '%s'", tok)); return; }
++		}
++		tool_send_custom(line, key, store_cmd, item, dir, (s32b)value, entry);
++	}
++	else if (streq(verb, "confirm"))
++	{
++		char ans[8] = { 0 };
++
++		if (sscanf(line, "%*s %7s", ans) < 1 || (!streq(ans, "yes") && !streq(ans, "no")))
++		{
++			tool_error(line, "usage: confirm yes|no");
++			return;
++		}
++		tool_confirm_until = streq(ans, "yes") ? tool_now() + 5.0 : 0;
++		tool_ack(line);
++	}
++	else if (streq(verb, "option"))
++	{
++		char name[64] = { 0 }, val[8] = { 0 }, cmd[80];
++		int i;
++
++		if (sscanf(line, "%*s %63s %7s", name, val) < 2 || (!streq(val, "yes") && !streq(val, "no")))
++		{
++			tool_error(line, "usage: option NAME yes|no");
++			return;
++		}
++		for (i = 0; i < options_max; i++)
++		{
++			if (option_info[i].o_text && streq(option_info[i].o_text, name)) break;
++		}
++		if (i >= options_max)
++		{
++			tool_error(line, "no such option on this server");
++			return;
++		}
++		/* Same path as a pref file line "Y:name" / "X:name" */
++		strnfmt(cmd, sizeof(cmd), "%c:%s", streq(val, "yes") ? 'Y' : 'X', name);
++		process_pref_file_command(cmd);
++		send_options();
++		tool_ack(line);
++	}
++	else if (streq(verb, "options"))
++	{
++		int i;
++		bool first = TRUE;
++
++		tool_ev_begin("options");
++		printf(",\"list\":{");
++		for (i = 0; i < options_max; i++)
++		{
++			if (!option_info[i].o_text) continue;
++			if (!first) putchar(',');
++			first = FALSE;
++			tool_json_str(option_info[i].o_text);
++			printf(":%s", p_ptr->options[i] ? "true" : "false");
++		}
++		printf("}");
++		tool_ev_end();
++	}
++	else if (streq(verb, "chat"))
++	{
++		/* The rest of the line, as the chat prompt would take it (59 chars) */
++		char msg[60];
++		cptr s = line + strlen("chat");
++
++		while (*s == ' ') s++;
++		if (!*s) { tool_error(line, "usage: chat TEXT"); return; }
++		my_strcpy(msg, s, sizeof(msg));
++		send_msg(msg);
++		tool_ack(line);
++	}
++	else if (streq(verb, "suicide"))
++	{
++		/* Irreversible: insist on the character's name, like get_check() */
++		char who[MAX_CHARS] = { 0 };
++
++		if (sscanf(line, "%*s %79s", who) < 1 || my_stricmp(who, nick))
++		{
++			tool_error(line, "usage: suicide NICK (the logged-in character's name)");
++			return;
++		}
++		send_suicide();
++		tool_ack(line);
++	}
++	else if (streq(verb, "minimap"))
++	{
++		int st, n;
++		char buf[1024];
++
++		for (st = 0; st < known_streams; st++)
++		{
++			if (streams[st].mark && streq(streams[st].mark, "MINIMAP_ASCII")) break;
++		}
++		if (st >= known_streams) { tool_error(line, "no minimap stream"); return; }
++		tool_ev_begin("minimap");
++		printf(",\"rows\":[");
++		for (n = 0; n < p_ptr->stream_hgt[st]; n++)
++		{
++			tool_row_text(stream_cave(st, n), p_ptr->stream_wid[st], buf, sizeof(buf));
++			if (n) putchar(',');
++			tool_json_str(buf);
++		}
++		printf("]");
++		tool_ev_end();
++	}
++	else if (streq(verb, "interactive"))
++	{
++		if (n < 2) { tool_error(line, "usage: interactive TYPE"); return; }
++		tool_interactive = interactive_mode = TRUE;     /* (else the screen's ICKY refreshes are dropped) */
++		send_interactive((byte)a);
++		tool_ack(line);
++	}
++	else if (streq(verb, "keys"))
++	{
++		/* keys TEXT: \e ESC, \r Enter, \t Tab, \\ backslash, ^X Ctrl-X, \xNN a byte */
++		char *s = line + strlen("keys");
++		if (*s == ' ') s++;
++		while (*s)
++		{
++			int k = (unsigned char)*s++;
++			if (k == '\\' && *s)
++			{
++				int c = *s++;
++				if (c == 'e') k = ESCAPE;
++				else if (c == 'r' || c == 'n') k = '\r';
++				else if (c == 't') k = '\t';
++				else if (c == 'b') k = '\b';
++				else if (c == 'x' && s[0] && s[1]) { char hx[3] = { s[0], s[1], 0 }; k = (int)strtol(hx, NULL, 16); s += 2; }
++				else k = c;
++			}
++			else if (k == '^' && *s) k = KTRL(*s++);
++			if ((tool_keyq_tail + 1) % (int)sizeof(tool_keyq) == tool_keyq_head) { tool_error(line, "key queue full"); return; }
++			tool_keyq[tool_keyq_tail] = (char)k;
++			tool_keyq_tail = (tool_keyq_tail + 1) % (int)sizeof(tool_keyq);
++		}
++		tool_ack(line);
++	}
++	else if (streq(verb, "special"))
++	{
++		tool_note_term_fresh(NTERM_WIN_SPECIAL);
++	}
++	else if (streq(verb, "commands")) tool_query_commands();
++	else if (streq(verb, "status")) tool_query_status();
++	else if (streq(verb, "inven")) tool_query_inven();
++	else if (streq(verb, "map")) tool_query_map();
++	else if (streq(verb, "flags")) tool_query_flags();
++	else if (streq(verb, "floor")) tool_query_floor();
++	else
++	{
++		tool_error(line, "Unknown command");
++	}
++}
++
++static void tool_poll_stdin(void)
++{
++	char buf[256];
++	int n, i;
++
++	n = read(0, buf, sizeof(buf));
++
++	/* Tool went away */
++	if (n == 0) quit(NULL);
++
++	/* Nothing ready (EAGAIN) */
++	if (n < 0) return;
++
++	for (i = 0; i < n; i++)
++	{
++		if (buf[i] == '\n' || buf[i] == '\r')
++		{
++			tool_cmd_buf[tool_cmd_len] = '\0';
++			tool_cmd_len = 0;
++			tool_do_command(tool_cmd_buf);
++		}
++		else if (tool_cmd_len < (int)sizeof(tool_cmd_buf) - 1)
++		{
++			tool_cmd_buf[tool_cmd_len++] = buf[i];
++		}
++	}
++}
++
++/* Report depth changes (the "depth" indicator) as level events */
++static void tool_check_level(void)
++{
++	static int ind = -1;
++	long depth;
++
++	if (ind < 0 || ind >= known_indicators || !indicators[ind].mark
++	    || strcmp(indicators[ind].mark, "depth"))
++	{
++		for (ind = 0; ind < known_indicators; ind++)
++		{
++			if (indicators[ind].mark && streq(indicators[ind].mark, "depth")) break;
++		}
++		if (ind >= known_indicators) { ind = -1; return; }
++	}
++	depth = (long)coffers[coffer_refs[ind]];
++	if (depth == tool_last_depth) return;
++	tool_last_depth = depth;
++	tool_ev_begin("level");
++	tool_kv_int("depth", depth);
++	tool_ev_end();
++}
++
++/*** Main loop ***/
++
++void tool_loop(void)
++{
++	int flags;
++
++	gettimeofday(&tool_t0, NULL);
++
++	/* Commands arrive on stdin; never block on it */
++	flags = fcntl(0, F_GETFL, 0);
++	if (flags >= 0) fcntl(0, F_SETFL, flags | O_NONBLOCK);
++
++	tool_ev_begin("ready");
++	tool_kv_str("nick", nick);
++	tool_kv_str("door", format("%c", TOOL_HOUSE_DOOR_CHAR));
++	tool_kv_int("visuals", tool_visuals);
++	tool_ev_end();
++
++	while (TRUE)
++	{
++		tool_blocked = 0;
++
++		/* Do networking (also runs the keepalive timer) */
++		network_loop();
++
++		/* Service server requests */
++		tool_process_requests();
++
++		/* Level changes */
++		tool_check_level();
++
++		/* Read commands */
++		tool_poll_stdin();
++
++		/* A server screen we keep open: one queued key per pass */
++		if (tool_interactive && tool_keyq_head != tool_keyq_tail)
++		{
++			char k = tool_keyq[tool_keyq_head];
++			tool_keyq_head = (tool_keyq_head + 1) % (int)sizeof(tool_keyq);
++			send_term_key(k);
++			if (k == ESCAPE && tool_keyq_head == tool_keyq_tail) tool_interactive = interactive_mode = FALSE;
++		}
++
++		/* Keep client-side state (and the virtual screen) current */
++		flush_updates();
++	}
++}
+diff --git a/src/client/c-util.c b/src/client/c-util.c
+index 7b2b4c5f0855e7a75834c9d56261ec4cb845fdfd..7c86a4f970791d1ec5de87edb625e82823d7452c 100644
+--- a/src/client/c-util.c
++++ b/src/client/c-util.c
+@@ -572,6 +572,14 @@ static event_type inkey_ex_aux(void)
+ 	/* Initialise keypress */
+ 	ke.key = 0;
+ 	ke.type = EVT_KBRD;
++
++	/* Tool mode -- nobody is at the keyboard; cancel whatever is asking */
++	if (tool_mode)
++	{
++		tool_blocked_input("inkey");
++		ke.key = ESCAPE;
++		return (ke);
++	}
+ 	
+ 	/* Hack -- Use the "inkey_next" pointer */
+ 	if (inkey_next && *inkey_next && !inkey_xtra)
+diff --git a/src/client/c-variable.c b/src/client/c-variable.c
+index da215f695daad9c4ee7f48192840415086035b72..e668c8269ab9118008aa8d3432c20f8f853ef831 100644
+--- a/src/client/c-variable.c
++++ b/src/client/c-variable.c
+@@ -4,6 +4,7 @@
+ 
+ char nick[MAX_CHARS];
+ char pass[MAX_CHARS];
++bool no_prompt = FALSE;	/* Tool mode: never block on login prompts */
+ 
+ char real_name[MAX_CHARS];
+ 
+diff --git a/src/client/c-xtra2.c b/src/client/c-xtra2.c
+index fe28dd95fb18b7d7927eeec6eb9012ae09573bb2..2b20cbe65fd4bd860025de46492828094424400a 100644
+--- a/src/client/c-xtra2.c
++++ b/src/client/c-xtra2.c
+@@ -302,6 +302,14 @@ void do_handle_message(cptr mesg, u16b type)
+ 
+ 	//TODO: older code used tons of hacks here, maybe return them
+ 
++	/* Tool mode -- report it; never show it (a -more- prompt would block) */
++	if (tool_mode)
++	{
++		tool_emit_message(mesg, type);
++		c_message_add(mesg, type);
++		return;
++	}
++
+ 	/* Hack -- we're shopping/party_managing, where icky mode doesn't matter
+ 	 * or we're not in icky mode at all, so let's display the message. */
+ 	if (!topline_icky && (party_mode || shopping || (!screen_icky && !section_icky_col)))
+diff --git a/src/client/client.c b/src/client/client.c
+index c9f3cc790b8b2ff45bf8184b6bce9f90d95e7d9c..9a22123654a4e8878115f28b78874b4a2f96b017 100644
+--- a/src/client/client.c
++++ b/src/client/client.c
+@@ -87,6 +87,7 @@ const static char frontends[][8] = {
+ #ifdef USE_GCU
+ 	"gcu",
+ #endif
++	"tool",
+ };
+ static int num_frontends = sizeof(frontends) / 8;
+ static void show_version()
+@@ -132,6 +133,13 @@ static void show_help()
+ 	printf("      --userdir PATH        Writable user dir location.\n");
+ 	printf("      --nick NICKNAME       Character name to use.\n");
+ 	printf("      --pktlog PATH         Append a JSON-lines packet log to PATH.\n");
++	printf("      --noprompt            Log in without prompts (existing character only).\n");
++	printf("                            Put it before another --option, not before SERVER.\n");
++	printf("      --passfile PATH       Password for --noprompt (else MANG_PASS or config).\n");
++	printf("      --visuals FILE        Tool mode: extra glyphs (\"r|k|v INDEX CHARCODE ATTR\" lines).\n");
++	printf("      --birth RACE:CLASS:SEX:STATS  With --noprompt: create the character if it\n");
++	printf("                            doesn't exist (or is dead), e.g.\n");
++	printf("                            Half-Orc:Warrior:m:DEX,STR,CON,WIS,CHR,INT\n");
+ 	printf("\nDisplay modules might support additional arguments.\n");
+ #ifdef USE_SDL
+ 	{ extern const char help_sdl[];
+@@ -149,6 +157,8 @@ static void show_help()
+ 	{ extern const char help_gcu[];
+ 	printf("%s", help_gcu); }
+ #endif
++	{ extern const char help_tool[];
++	printf("%s", help_tool); }
+ }
+ static bool exit_promptly(int argc, char *argv[])
+ {
+@@ -225,6 +235,13 @@ int main(int argc, char *argv[])
+ 	init_stuff();
+ 
+ 	/* Attempt to initialize a visual module */
++
++	/* Headless tool mode -- only when asked for explicitly */
++	if (!done && !strcmp(prefer_module, "tool"))
++	{
++		if (0 == init_tool()) done = TRUE;
++		if (done) ANGBAND_SYS = "tool";
++	}
+ #ifdef USE_SDL
+ 	/* Attempt to use the "main-sdl.c" support */
+ 	if (!done && (!strcmp(prefer_module, "sdl") || STRZERO(prefer_module)))
+diff --git a/src/client/main-tool.c b/src/client/main-tool.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..8189bd71ce3d2d04cfbc818d86ec3d66a17defd1
+--- /dev/null
++++ b/src/client/main-tool.c
+@@ -0,0 +1,80 @@
++/*
++ * File: main-tool.c
++ * Purpose: Headless "display module" for tool-driven clients (-mtool).
++ *
++ * Provides a single large in-memory term (z-term keeps its screen buffer) with
++ * no-op output hooks and no keyboard. Selecting it turns on tool mode:
++ * login never prompts, and c-init.c runs tool_loop() (c-tool.c) instead
++ * of the interactive Game_loop().
++ */
++
++#include "c-angband.h"
++
++static term tool_term_body;
++
++/*
++ * Nobody is at the keyboard. If some code path blocks waiting for a key
++ * anyway, feed it ESCAPE (and report it) rather than hanging.
++ */
++static errr Term_xtra_tool(int n, int v)
++{
++	switch (n)
++	{
++		case TERM_XTRA_EVENT:
++		if (v)
++		{
++			tool_blocked_input("Term_inkey");
++			Term_keypress(ESCAPE);
++			return (0);
++		}
++		return (1);
++
++		case TERM_XTRA_DELAY:
++		if (v > 0) usleep(1000 * v);
++		return (0);
++
++		case TERM_XTRA_FLUSH:
++		case TERM_XTRA_CLEAR:
++		case TERM_XTRA_FRESH:
++		case TERM_XTRA_NOISE:
++		case TERM_XTRA_SHAPE:
++		case TERM_XTRA_ALIVE:
++		return (0);
++	}
++	return (1);
++}
++
++static errr Term_curs_tool(int x, int y) { return (0); }
++static errr Term_wipe_tool(int x, int y, int n) { return (0); }
++static errr Term_text_tool(int x, int y, int n, byte a, cptr s) { return (0); }
++
++const char help_tool[] =
++	"  -mtool                    Headless tool mode: JSON-lines events on stdout,\n"
++	"                            commands on stdin (implies --noprompt).\n";
++
++errr init_tool(void)
++{
++	term *t = &tool_term_body;
++
++	/* Big enough that the dungeon stream subscribes at the full level size
++	 * (MAX_WID x MAX_HGT = 198 x 66, plus sidebar and status lines). The
++	 * server then pins the panel at (0,0), so map coordinates are absolute. */
++	term_init(t, MAX_WID + SCREEN_CLIP_X + 1, MAX_HGT + 4, 256);
++
++	t->attr_blank = TERM_WHITE;
++	t->char_blank = ' ';
++
++	t->text_hook = Term_text_tool;
++	t->wipe_hook = Term_wipe_tool;
++	t->curs_hook = Term_curs_tool;
++	t->xtra_hook = Term_xtra_tool;
++
++	Term_activate(t);
++	ang_term[0] = t; /* == term_screen */
++
++	/* Headless means nobody can answer prompts */
++	tool_mode = TRUE;
++	no_prompt = TRUE;
++
++	return (0);
++}
+diff --git a/src/client/net-client.c b/src/client/net-client.c
+index d08f1243f7c2e24a66b49832e79f5186ac07765e..71e3d834e32a9f5749e3f289c820d6d08eb8fd4e 100644
+--- a/src/client/net-client.c
++++ b/src/client/net-client.c
+@@ -1576,6 +1576,9 @@ int recv_term_info(connection_type *ct) {
+ 	if (flag & NTERM_FRESH)
+ 	{
+ 		p_ptr->window |= streams[window_to_stream[win]].window_flag;
++
++		/* Tool mode: report the monster/item lists */
++		if (tool_mode) tool_note_term_fresh(win);
+ 	}
+ 
+ 	/* Icky test */
+@@ -1628,6 +1631,9 @@ int recv_term_info(connection_type *ct) {
+ 		{
+ 			caveprt(stream_cave(st, n), wid, xoff, n + yoff);
+ 		}
++
++		/* Tool mode: report a server screen we keep open (the DM menu) */
++		if (tool_mode && win == NTERM_WIN_SPECIAL) tool_note_term_fresh(win);
+ 	}
+ 
+ 	/* Browse NTerm contents locally */
+@@ -1710,6 +1716,10 @@ int recv_cursor(connection_type *ct) {
+ 
+ 	if (cq_scanf(&ct->rbuf, "%c%c%c", &vis, &x, &y) < 3) return 0;
+ 
++	/* Tool mode -- track own position. Note: the server's send_cursor()
++	 * is called as (vis, y, x) for the player, so "x" here holds y. */
++	if (tool_mode) tool_note_cursor(vis, x, y);
++
+ 	/* Hack -- ignore weird states */
+ 	if ((byte)vis > 1)
+ 	{
+@@ -1732,6 +1742,9 @@ int recv_target_info(connection_type *ct) {
+ 
+ 	if (cq_scanf(&ct->rbuf, "%c%c%c%s", &x, &y, &win, buf) < 4) return 0;
+ 
++	/* The tool client's `look` (session 7): each target's description is an event */
++	if (tool_mode) tool_note_target(x, y, win, buf);
++
+ 	if (!looking) return 1;
+ 
+ 	/* Hack -- information recall */

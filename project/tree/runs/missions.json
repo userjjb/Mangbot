@@ -3376,5 +3376,17 @@
    "usd": 0.017,
    "transcript": "agent-a6bbde127a1c30f7d.jsonl"
   }
+ },
+ {
+  "label": "sp-A6-20261107-091527",
+  "nick": "dive04",
+  "start": "2026-11-07 09:16",
+  "end": null,
+  "navigator": "harness",
+  "budget": 45.0,
+  "effort": null,
+  "report": "compact",
+  "notes": "set-piece A6",
+  "version": "2.72.1"
  }
 ]

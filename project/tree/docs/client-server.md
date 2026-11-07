@@ -218,11 +218,29 @@ client reads either. On the live server depth still wraps: use the `minimap` que
 
 ## Building
 
-`cd /projectnb/jbrcs/mangband/github && make` builds both `mangclient` and `mangband` in `github/` (already
-configured GCU-only: `--with-gcu=yes`, X11/SDL off). To regenerate the build system: `./autogen.sh -n` (plain
-autogen fails once `.git` exists; copy `config.guess`/`config.sub` from `/usr/share/automake-1.16/`), then the
-GCU-only configure. New client source files go in `src/client/Makefile.am`. A rebuilt client is picked up by the
-next Pilot start (`restart.sh` parks first); a rebuilt server needs the test server restarted.
+`cd /projectnb/jbrcs/mangband/github && ./build.sh` builds both `mangband` (the server) and `mangclient` (the
+client, GCU-only: `--with-gcu=yes`, X11/SDL off) -- since 2026-11-07 (session 13) the repo is a patcher:
+- **Upstream:** MAngband c97e873 (develop at 2022-03-13 = 1.5.3 + 46 commits), downloaded once as a GitHub tarball
+  (`build/mangband-<commit>.tar.gz`, kept; `MANGBAND_TARBALL=PATH` for an offline copy) and checked by its git tree hash
+  (`UPSTREAM_TREE` in build.sh: independent of the tarball's compression).
+- **Our changes:** `patches/0001-0005` (`git format-patch` files, one per topic): the packet logger, the tool client
+  (`c-tool.c`, `main-tool.c` and their hooks), the time freeze (net-server.c), the store-crash fix (store.c), the 16-bit
+  depth indicator (tables.c). The license travels with them (`patches/COPYING-MAngband`).
+- **The build tree:** `build/mangband/`, a git repo -- upstream is its first commit, one commit per patch (`git am`).
+  `autoreconf -i` (not upstream's `autogen.sh`, which downloads config.guess/sub from GNU.org and gets empty files),
+  configure, `make -j$NSLOTS`. Then `./mangband`, `./mangclient`, `./lib`, `./src` at the repo top are links into it
+  (gitignored), so every path the tools, the test server's config and the Advisor's source readers use still works.
+- **Rebuilds:** a second `./build.sh` only runs `make`. If `patches/` changed since the tree was made (a pull), it
+  stops: `./build.sh --fresh` rebuilds from upstream (it refuses while the tree has uncommitted changes).
+- **C work:** edit in `build/mangband/src/...`, commit there (a new commit for a new topic; `git commit --fixup` +
+  `git rebase -i --autosquash` to amend a topic), `./build.sh`, then `./build.sh --export` rewrites `patches/` (full
+  blob hashes, zero commit ids: an unchanged series exports byte-identical) -- review and commit them in `github/`.
+  New client source files go in `src/client/Makefile.am`.
+- Checked at the switch (11-07): the binaries built this way have the same machine code as the old in-repo build
+  (objdump), and a fresh offline build + export reproduces `patches/` exactly.
+
+A rebuilt client is picked up by the next Pilot start (`restart.sh` parks first); a rebuilt server needs the test
+server restarted.
 
 ## Test server vs live server
 

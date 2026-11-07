@@ -6,7 +6,7 @@
 #
 # Left out on purpose (it's a PUBLIC repo): passwords (runs/private, and any private/, *.pass, *.mangrc,
 # e.g. inside runs/backup-*: they leaked from 2026-10-22 to 10-23), game
-# savefiles (they hold passwords), server logs and crash dumps (they name the
+# savefiles (they hold passwords; runs/backups/ too: session 12's save backup leaked in 130e7b8 until v2.72.1), server logs and crash dumps (they name the
 # Unix login and host), third-party material (the forum corpus, the Borg and
 # upstream MAngband source copies), bulky recordings and raw event streams,
 # sockets, packet logs (a login packet carries the password), raw timeline
@@ -22,7 +22,7 @@ mkdir -p "$DST/tree" "$DST/memory/architect" "$DST/memory/advisor" "$DST/claude"
 rsync -a --delete --delete-excluded --max-size=5m \
   --exclude '/github/' \
   --exclude '/runs/private/' --exclude 'private/' --exclude '*.pass' --exclude '*.mangrc' \
-  --exclude '/runs/backup-*/' --exclude '/runs/setpieces/saves/' \
+  --exclude '/runs/backup-*/' --exclude '/runs/backups/' --exclude '/runs/setpieces/saves/' \
   --exclude '/testserver/save/' --exclude '/testserver/crash*' --exclude '/testserver/bone/' \
   --exclude '/testserver/*.log' \
   --exclude '/Advisor/data/forum/' --exclude '/Advisor/data/borg/' --exclude '/Advisor/data/versions/' \

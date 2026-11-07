@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: jbevan <jbevan@bu.edu>
+Date: Wed, 7 Oct 2026 08:49:06 -0400
+Subject: [PATCH 5/5] Server: send the depth indicator as 16 bits
+
+The depth indicator was a signed byte (TINY), which wraps in the far
+wilderness. Sent as NORMAL (16 bits) instead. This changes what the server
+sends: a client must have the same indicator table (the patched client
+does; the tables are shared source).
+---
+ src/server/tables.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/server/tables.c b/src/server/tables.c
+index 1a002012f1398c4e393a6ba4fa9917f7b338a143..7136464b171c6fa707a72dc7b7240f9c5b373500 100644
+--- a/src/server/tables.c
++++ b/src/server/tables.c
+@@ -770,7 +770,9 @@ const indicator_type indicators[MAX_INDICATORS] =
+ 		(PR_STUDY),  "study"
+ 	},
+ 	{
+-		INDICATOR_PKT(DEPTH, TINY, 1),   	IPW_2,	ROW_DEPTH, COL_DEPTH,
++		/* NORMAL (16 bits), not TINY: a signed byte wraps in the far
++		 * wilderness (test-server change; the Advisor's game-state survey) */
++		INDICATOR_PKT(DEPTH, NORMAL, 1),   	IPW_2,	ROW_DEPTH, COL_DEPTH,
+ 		(0),
+ 		"Lev \aw%3d",
+ 		(PR_DEPTH),  "depth"

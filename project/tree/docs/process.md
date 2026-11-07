@@ -65,7 +65,7 @@ notice; `mission start` records it (`version` in `runs/missions.json` and the `m
 
 **Every version (the per-version checklist):** update the component file in `docs/` for each component the change
 touches, and the version line in `docs/README.md` and `docs/CONDENSED.md`; when the big picture changes (what it can do,
-the layout, the major TODOs), the GitHub front page `github/.github/README.md` (it went stale from 10-08 to 11-04); bump `github/VERSION` (minor if play can
+the layout, the major TODOs), the GitHub front page `github/README.md` (it went stale from 10-08 to 11-04; `.github/README.md` until 11-07); bump `github/VERSION` (minor if play can
 differ, else patch); add a CHANGELOG entry (with the missions on it); `tools/snapshot.sh`, commit, tag `vX.Y.Z` on the
 version's last commit, `git push origin master --tags`; restart the Pilot with `tools/pilot/restart.sh Dive04`
 (it passes the Architect's token for `park` itself; idle in town, and **no set-piece

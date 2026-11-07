@@ -1,26 +1,7 @@
-# autotools / build outputs
-Makefile
-Makefile.in
-aclocal.m4
-autom4te.cache/
-compile
-config.guess
-config.h
-config.h.in
-config.log
-config.status
-config.sub
-configure
-depcomp
-install-sh
-missing
-stamp-h1
-.deps/
-*.o
-*.a
+# build.sh output: the patched MAngband tree (its own git) and the links to it
+/build/
 /mangband
 /mangclient
-src/server/mangband
-src/client/mangclient
-.dirstamp
+/lib
 __pycache__/
+/src

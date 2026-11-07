@@ -19,18 +19,20 @@ can read them. Memory now only points here.) Credentials are **not** in this fil
   commit, then `git push origin master --tags` (one branch since 11-03: the restructure merged into
   `master`; docs/process.md has the per-version checklist). Auth: the user's token in git's
   credential store.
-- Source tree: `github/`, a git repo (commit 1 = pristine MAngband 1.5.3; per the Advisor's
-  versions memo, `memos/2026-09-29-versions-and-forum-rules.md`, it is upstream develop at
-  2022-03-13, c97e873, not the v1.5.3 tag: 6 files differ, mostly archery energy; plays as 1.5.3). Build: `cd github &&
-  make`. To regenerate: `./autogen.sh -n` (plain autogen fails once `.git` exists; its
-  config.guess/sub download gives empty files, so copy them from `/usr/share/automake-1.16/`),
-  then a GCU-only configure.
+- Source tree (since 2026-11-07, session 13, the patcher): `github/` holds only our work; MAngband is built by
+  `github/build.sh`: it fetches upstream at c97e873 (upstream develop at 2022-03-13, not the v1.5.3 tag: 6 files differ,
+  mostly archery energy; plays as 1.5.3 -- the Advisor's `memos/2026-09-29-versions-and-forum-rules.md`), checks its git
+  tree hash, applies `github/patches/*.patch` in `github/build/mangband/` (a git tree of its own: upstream = its first
+  commit, one commit per patch) and makes; `github/mangband`, `mangclient`, `lib` and `src` are links into it
+  (gitignored), so every older path still works. C work: edit and commit in `build/mangband`, `./build.sh`, then
+  `./build.sh --export` and commit `patches/`. Full description: docs/client-server.md "Building". Commits before
+  v2.72.1 (the switch) hold the whole MAngband tree.
 - Run output, logs and credentials go in `runs/` (credentials in `runs/private/`, mode 700).
   Session scratchpads get wiped.
 - The client rewrites its config file on exit. Give every concurrent client its own `--config`,
-  and never let it rewrite the tracked `github/.mangrc`. The interactive client also rewrites
-  `github/lib/user/options.prf` / `window.prf` when options change: revert those with
-  `git checkout` rather than committing them.
+  and never let it rewrite upstream's `.mangrc` (in `github/build/mangband/`). The interactive client also rewrites
+  `github/lib/user/options.prf` / `window.prf` (in the build tree) when options change: revert those with
+  `git -C github/build/mangband checkout lib/user` (uncommitted changes there make `build.sh --fresh` refuse).
 
 ## Test server
 

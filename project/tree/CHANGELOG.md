@@ -27,6 +27,18 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.72.1 -- 2026-11-07 (session 13: the repo as a patcher)
+Nothing in play changes (the binaries have the same machine code). **The repo holds only our work** (the user, 11-04:
+most top-level files were unmodified MAngband): `README.md` (the front page, was `.github/README.md`), `build.sh`,
+`patches/`, `tools/`, `project/`, `VERSION`. `build.sh` fetches upstream MAngband c97e873 (1.5.3 + develop to
+2022-03-13, the tree we always ran), checks its git tree hash, applies `patches/0001-0005` (packet logger, tool
+client, time freeze, store-crash fix, 16-bit depth indicator -- the old 26 C commits regrouped by topic) in
+`build/mangband/` (its own git, one commit per patch), builds with `autoreconf -i` + the GCU-only configure, and links
+`mangband`, `mangclient`, `lib` and `src` at the top into it, so no path changes. C work: commit in the build tree,
+`./build.sh --export`. Checked: same machine code as the old build (objdump), a fresh offline build + export
+reproduces `patches/` byte for byte. The old in-repo tree is in git history (before this version) and in
+`runs/backups/github-prepatcher-20261107/`. Docs: client-server.md "Building", operations.md.
+
 ## 2.72.0 -- 2026-11-05 (session 12, after m71: weapons and armour fetched for gold)
 No missions yet on it. **Play changes:**
 - **Weapons and armour are far-fetched for their sale** (the user after m71 13:11: "the point isn't just to find

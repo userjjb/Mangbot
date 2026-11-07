@@ -1,0 +1,97 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: jbevan <jbevan@bu.edu>
+Date: Sun, 25 Oct 2026 08:36:44 -0400
+Subject: [PATCH 3/5] Server: test-server time freeze (MANGBAND_FREEZE_FILE)
+
+While the file named by $MANGBAND_FREEZE_FILE exists, the server processes
+no game turns: monsters, players and timers wait, connections stay up and
+commands queue until the thaw. Players are told when it changes. Checked
+every 10 passes of the server loop. Without the variable the server never
+freezes, so other servers are unaffected.
+---
+ src/server/net-server.c | 45 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 44 insertions(+), 1 deletion(-)
+
+diff --git a/src/server/net-server.c b/src/server/net-server.c
+index c3a6fe9b01eed9e9faaec45e44d64c01f1b9d3bc..4606c8ec4f50df981b102adb38df9791c7b873f5 100644
+--- a/src/server/net-server.c
++++ b/src/server/net-server.c
+@@ -13,6 +13,7 @@
+  *
+  */
+ #include "mangband.h"
++#include <sys/stat.h>
+ #include "net-server.h"
+ 
+ #define ONE_SECOND	1000000 /* 1 million "microseconds" */
+@@ -464,9 +465,13 @@ void setup_network_server()
+    arrived. So this little function flushes them all right after
+    we handled network.
+ */
++static bool time_frozen(void);
++
+ void post_process_players(void)
+ {
+ 	int Ind;
++	/* (frozen, test server: commands wait in the queue -- a step with stored energy ran at once otherwise) */
++	bool frozen = time_frozen();
+ 	for (Ind = 1; Ind <= NumPlayers; Ind++)
+ 	{
+ 		player_type *p_ptr = Players[Ind];
+@@ -475,7 +480,7 @@ void post_process_players(void)
+ 		if (p_ptr->new_level_flag == TRUE) continue;
+ 		
+ 		/* Try to execute any commands on the command queue. */
+-		(void) process_player_commands(p_ptr);
++		if (!frozen) (void) process_player_commands(p_ptr);
+ 	}
+ 	/* Next loop flushes all potential update flags Players have set
+ 	 * for each other. */
+@@ -696,9 +701,47 @@ int second_tick(int data1, data data2) {
+ 	return 1;
+ }
+ 
++/*
++ * Test-server time freeze (2026-10-25): while the file named by $MANGBAND_FREEZE_FILE exists, no game turns are
++ * processed -- monsters, players and timers all wait; connections stay up and commands queue. Without the
++ * variable the server never freezes. Checked every 10 ticks; players are told when it changes.
++ */
++static bool time_frozen(void)
++{
++	static bool checked = FALSE, frozen = FALSE;
++	static char *path = NULL;
++	static int countdown = 0;
++	struct stat st;
++	bool now;
++	int i;
++
++	if (!checked)
++	{
++		path = getenv("MANGBAND_FREEZE_FILE");
++		checked = TRUE;
++		if (path && *path) plog_fmt("Time freeze enabled: %s", path);
++	}
++	if (!path || !*path) return FALSE;
++	if (--countdown > 0) return frozen;
++	countdown = 10;
++
++	now = (stat(path, &st) == 0);
++	if (now != frozen)
++	{
++		frozen = now;
++		plog(frozen ? "Time frozen" : "Time thawed");
++		for (i = 1; i <= NumPlayers; i++)
++			msg_print(Players[i], frozen ? "*** Time is frozen (test server) ***" : "*** Time flows again ***");
++	}
++	return frozen;
++}
++
+ int dungeon_tick(int data1, data data2) {
+ 	/* plog("The Clock Ticked"); */ ticks++;
+ 
++	/* Frozen (test server): no game turn */
++	if (time_frozen()) return 2;
++
+ 	/* Game Turn */
+ 	dungeon();
+ 	return 2;
