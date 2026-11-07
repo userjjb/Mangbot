@@ -81,7 +81,7 @@ shows or counts attention kinds by name, so both spellings appear in older cards
 | F2 or Ctrl-E | the equipment as the game's 12 slots a)-l), `(nothing)` in empty ones (`equipment_slots`; uses `itemvalue` for item types) |
 | F3 or Ctrl-P | the whole pack |
 | F2/F3 again or Esc | back to the game view |
-| F5 or Ctrl-F | toggle the test server's time freeze: creates/removes `testserver/FREEZE` (same as `github/tools/freeze.sh toggle`; `spserver/FREEZE` when the viewer runs with `MANGBOT_SERVER=sp`). The note line then shows `*** TIME FROZEN (F5/Ctrl-F to thaw) ***`. Only the test server (started with `MANGBAND_FREEZE_FILE`) honours it; the Pilot holds while it exists |
+| F5 or Ctrl-F | toggle the test server's time freeze: creates/removes `testserver/FREEZE` (same as `github/tools/freeze.sh toggle`; `debugserver/FREEZE` when the viewer runs with `MANGBOT_SERVER=debug`). The note line then shows `*** TIME FROZEN (F5/Ctrl-F to thaw) ***`. Only the test server (started with `MANGBAND_FREEZE_FILE`) honours it; the Pilot holds while it exists |
 | Esc | clear the typed line (when no panel is open) |
 | PgUp / PgDn | scroll the feed by 10 lines |
 | Ctrl-C | quit (the character keeps playing) |

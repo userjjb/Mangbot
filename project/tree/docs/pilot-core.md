@@ -75,9 +75,9 @@ mangclient -mtool  <--stdin/stdout JSON-->  pilot.py (daemon)  <--unix socket ru
   `stack_force_costs`, `disturb_near`, `disturb_panel`, logs the character's options, opens the control socket,
   notifies `started` (with `Pilot vX.Y.Z`) and loops `pilot.tick(); client.collect(0.05)` until `pilot.running` is
   false.
-- **Options**: `--nick` (required), `--host` (localhost), `--port` (default 28346, the test server, since 2.43.0; 28350 with `MANGBOT_SERVER=sp`, the set-piece server, 2.72.2;
+- **Options**: `--nick` (required), `--host` (localhost), `--port` (default 28346, the test server, since 2.43.0; 28350 with `MANGBOT_SERVER=debug`, the debug server, 2.72.2;
   the live port 18346 is refused without `--live`: F1), `--passfile`, `--config`, `--rundir` (default
-  `runs/pilot/<nick lowercase>`; `runs/sp/pilot/...` with `MANGBOT_SERVER=sp`), `--client`, `--libdir`, `--pktlog`, `--live` (live-server behaviour: keep
+  `runs/pilot/<nick lowercase>`; `runs/debug/pilot/...` with `MANGBOT_SERVER=debug`), `--client`, `--libdir`, `--pktlog`, `--live` (live-server behaviour: keep
   mapping/detection devices instead of selling them as crutches), `--hpwarn N` (0-9, default 5: below N x 10% HP the
   server slows our time to 1/5; the Pilot's game clock follows).
 - **Threads**: the client's reader thread only queues events (`World._on_event`) and writes `events.jsonl` /
@@ -238,7 +238,7 @@ nothing in view (`set_fast_ok`), the factor is measured from the worn light's fu
 `TICK_S` = 0.625 s at factor 1; the Pilot requests free redraws to read it). Every Pilot timer that means game time
 (cooldowns, holds, damage per second, "out of view for N s") uses `gnow()`; timers that mean the network use
 `wall_since(t)`; `waited(t, s)` needs both; `ghold(s)` turns a wall span into a game-clock deadline. While the test
-server is frozen (the file `testserver/FREEZE` -- `spserver/FREEZE` with `MANGBOT_SERVER=sp` -- or `$MANGBAND_FREEZE_FILE`) the clock stops. Logs and displayed
+server is frozen (the file `testserver/FREEZE` -- `debugserver/FREEZE` with `MANGBOT_SERVER=debug` -- or `$MANGBAND_FREEZE_FILE`) the clock stops. Logs and displayed
 times stay on the wall clock (`wall_of`, `_lt`).
 
 ### `World` state
@@ -497,7 +497,7 @@ MESSAGE`, `Here:`, `Monsters:`, `News:`, `Since last (`, `Progress:`, `Cures` (a
 
 ## Updating a running Pilot
 
-- **`restart.sh NICK [PORT=28346]`** (the normal way; `MANGBOT_SERVER=sp`: 28350 and runs/sp, and a Pilot is matched by nick *and* port): if a Pilot runs, `pilotctl park` as the Architect (with the
+- **`restart.sh NICK [PORT=28346]`** (the normal way; `MANGBOT_SERVER=debug`: 28350 and runs/debug, and a Pilot is matched by nick *and* port): if a Pilot runs, `pilotctl park` as the Architect (with the
   token, 2.45.0; drop the goal unless it is a
   Recall; log out when nothing is within 15 squares, HP >= 70%, no store, no stairs just taken, no recall
   pending -- or after 5 minutes regardless; on logging out the Pilot sends a `parked` attention, then `clear`;

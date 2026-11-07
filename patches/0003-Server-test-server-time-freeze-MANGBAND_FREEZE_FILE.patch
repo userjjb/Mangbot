@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: jbevan <jbevan@bu.edu>
 Date: Sun, 25 Oct 2026 08:36:44 -0400
-Subject: [PATCH 3/5] Server: test-server time freeze (MANGBAND_FREEZE_FILE)
+Subject: [PATCH] Server: test-server time freeze (MANGBAND_FREEZE_FILE)
 
 While the file named by $MANGBAND_FREEZE_FILE exists, the server processes
 no game turns: monsters, players and timers wait, connections stay up and

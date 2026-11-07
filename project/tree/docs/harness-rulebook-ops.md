@@ -323,29 +323,53 @@ has its own mover).
   (`charsave.sh` does); the freeze stops the idle timer, which is what makes `hotswap.sh` safe.
 - **Keep tool characters out of the wilderness** on the test server (the arena crash).
 
-### The set-piece server (`MANGBOT_SERVER=sp`, session 13, 2.72.2)
+### The debug server (`MANGBOT_SERVER=debug`, session 13, 2.72.2)
 
-A second local server, `spserver/` (port **28350**; a server also holds port + 1 for its console, so 28347 is the test
+A second local server, `debugserver/` (port **28350**; a server also holds port + 1 for its console, so 28347 is the test
 server's), for set-pieces on **copies**: nothing there touches the real Dive04, its gold or its house. Its own
-`mangband.cfg` (the test server's with its port and `spserver/{data,save,bone}`), freeze file and runs root
-`runs/sp/` (`pilot/<nick>`, `setpieces/` with its own `results.md`, `missions.json`, `flavours.json`; `private` is a
+`mangband.cfg` (the test server's with its port and `debugserver/{data,save,bone}`), freeze file and runs root
+`runs/debug/` (`pilot/<nick>`, `setpieces/` with its own `results.md`, `missions.json`, `flavours.json`; `private` is a
 link to `runs/private`). Same binary (`github/mangband`).
-- **Choose the server with `MANGBOT_SERVER`** (`test`, the default, or `sp`) in the environment of every command:
+- **Choose the server with `MANGBOT_SERVER`** (`local`, the default -- the local server, `testserver/` -- or `debug`) in the environment of every command:
   `tools/servers.py` / `tools/servers.sh` (one table) give the port, the server directory, the freeze file and the runs
   root to the Pilot (`daemon.py`: default `--port`, the run directory), `pilotctl.py`, `world.py` (freeze), `watch.py`,
   `watch_mission.py`, `logs.py`, `restart.sh`, `hotswap.sh`, `charsave.sh`, `freeze.sh`, `setpiece_run.py`, `dm.py`.
   The Pilot scripts match a Pilot by `--nick NICK --port PORT`, so Dive04's two Pilots (28346, 28350) never mix.
-- **Make the copy:** `MANGBOT_SERVER=sp tools/server.sh clone [NICK...]` (the sp server stopped): `testserver/save/` ->
-  `spserver/save/` (every savefile, the houses, the levels, Gandalf), each NICK's Pilot state files (`*.json`,
-  `visuals.txt`; default Dive04) -> `runs/sp/pilot/<nick>/`, `runs/flavours.json`. The copy is as of the test server's
+- **Make the copy:** `MANGBOT_SERVER=debug tools/server.sh clone [NICK...]` (the sp server stopped): `testserver/save/` ->
+  `debugserver/save/` (every savefile, the houses, the levels, Gandalf), each NICK's Pilot state files (`*.json`,
+  `visuals.txt`; default Dive04) -> `runs/debug/pilot/<nick>/`, `runs/flavours.json`. The copy is as of the test server's
   last save of each file. Re-clone whenever the copy should catch up (or after it dies).
-- **Run:** `MANGBOT_SERVER=sp tools/server.sh start`, `MANGBOT_SERVER=sp tools/pilot/restart.sh Dive04`, then
-  `MANGBOT_SERVER=sp python3 setpiece.py ID`. Set-pieces that can kill the character are refused elsewhere
-  (`setpiece.py` `SP_ONLY`: A2U).
+- **Run:** `MANGBOT_SERVER=debug tools/server.sh start`, `MANGBOT_SERVER=debug tools/pilot/restart.sh Dive04`, then
+  `MANGBOT_SERVER=debug python3 setpiece.py ID`. Set-pieces that can kill the character are refused elsewhere
+  (`setpiece.py` `DEBUG_ONLY`: A2U).
+
+### The debug server's test commands (`tools/debugctl.py`, 2.72.3)
+
+The debug server is started (by `server.sh`) with `MANGBAND_DEBUG_COMMANDS=1`, which enables a console command `dbg`
+(`patches/0006`, `src/server/dbgcmd.c`; refused on any other server and from a non-local connection, so the local
+server plays unchanged). `MANGBOT_SERVER=debug python3 tools/debugctl.py CMD NICK ...` (or `debugctl.Debug().cmd(...)`,
+`.truth(nick)`) speaks the console (port + 1, the cfg's CONSOLE_PASSWORD). Everything acts on NICK's level; positions
+`at=Y,X` or `rel=DY,DX` (absolute level coordinates, as the Pilot's `pos`); names with `_` for spaces, any case, or a
+unique part of a race/kind name (`Lokkak`, `Soft_Leather_Boots`), or an index.
+
+| command | does |
+|---|---|
+| `place NICK RACE [at=|rel=] [awake|sleep=N] [hp=N] [force]` | one monster on an empty floor square; `force`: a unique even if alive elsewhere (that one is deleted), dead, or killed by NICK |
+| `item NICK KIND [at=|rel=] [ego=E] [number= pval= tohit= todam= toac= lev=] [known]` | an item made like a floor find with the ego forced (of two egos with one name, the one that fits the kind), **unidentified** unless `known`; dropped there or nearest |
+| `terrain NICK FEAT [at=|rel=] [to=Y2,X2]` | a square or rectangle of a feature (`granite_wall`, `open_floor`, `secret_door`, `down_staircase`...; never buries a monster or player) |
+| `player NICK KEY=N ...` | hp sp food gold exp lev confused blind poisoned afraid paralyzed image fast slow stun cut |
+| `teleport NICK at=|rel=` / `depth NICK D` | move on the level / to dungeon level D (random spot) |
+| `clear NICK monsters|objects|all` | empty the level |
+| `truth NICK [FILE]` | the level as JSON in the server's directory (`truth.json`): players, monsters (hp, maxhp, sleep, speed, seen/los by NICK), floor objects (true kind, ego, artifact, and NICK's description `as_seen`), `map` (feature characters) and `known` (what NICK remembers) -- **for the tools and scoring only, never the Pilot** (no crutches) |
+
+The set-piece framework uses it: on the debug server `Run.place` puts the monster on the chosen square directly
+(awake, `force`) instead of Gandalf's walk and summon hook. Found on the way: the DM forge's ego check compares the
+item's tval with the ego's sval range (`xtra2.c` DM_PAGE_ITEM), so egos rarely "fit" -- why L3b's Metal Cap of Seeing
+came out plain; `item` checks tval and sval.
 
 ### `freeze.sh`
 
-`freeze.sh on|off|toggle|status` creates/removes `testserver/FREEZE` (`spserver/FREEZE` with `MANGBOT_SERVER=sp`; contents "frozen by USER HH:MM:SS"). With the
+`freeze.sh on|off|toggle|status` creates/removes `testserver/FREEZE` (`debugserver/FREEZE` with `MANGBOT_SERVER=debug`; contents "frozen by USER HH:MM:SS"). With the
 server started with `MANGBAND_FREEZE_FILE`, no game turns run while the file exists (`net-server.c time_frozen`,
 checked every 10 ticks; players see "*** Time is frozen (test server) ***"); the Pilot stops its game clock and holds (answers
 requests, acts on nothing). Logins work while frozen. Without the variable (any other server) nothing freezes.

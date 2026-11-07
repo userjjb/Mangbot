@@ -225,7 +225,8 @@ client, GCU-only: `--with-gcu=yes`, X11/SDL off) -- since 2026-11-07 (session 13
   (`UPSTREAM_TREE` in build.sh: independent of the tarball's compression).
 - **Our changes:** `patches/0001-0005` (`git format-patch` files, one per topic): the packet logger, the tool client
   (`c-tool.c`, `main-tool.c` and their hooks), the time freeze (net-server.c), the store-crash fix (store.c), the 16-bit
-  depth indicator (tables.c). The license travels with them (`patches/COPYING-MAngband`).
+  depth indicator (tables.c), and (2.72.3) `0006` the debug server's test commands (`dbgcmd.c`, the console's `dbg`, off
+  unless `MANGBAND_DEBUG_COMMANDS=1`: docs/harness-rulebook-ops.md). The license travels with them (`patches/COPYING-MAngband`).
 - **The build tree:** `build/mangband/`, a git repo -- upstream is its first commit, one commit per patch (`git am`).
   `autoreconf -i` (not upstream's `autogen.sh`, which downloads config.guess/sub from GNU.org and gets empty files),
   configure, `make -j$NSLOTS`. Then `./mangband`, `./mangclient`, `./lib`, `./src` at the repo top are links into it
@@ -246,7 +247,7 @@ server restarted.
 
 | | Test server | Live server |
 |---|---|---|
-| Where | local, port 28346, `testserver/` (own `mangband.cfg`, `save/`, `bone/`, `data/`; game data from `github/lib`); the set-piece server `spserver/`, port 28350, a copy (2.72.2) | mangband.org:18346, a shared world with real players; the operator allows automated clients |
+| Where | local, port 28346, `testserver/` (own `mangband.cfg`, `save/`, `bone/`, `data/`; game data from `github/lib`); the debug server `debugserver/`, port 28350, a copy (2.72.2) | mangband.org:18346, a shared world with real players; the operator allows automated clients |
 | Binary | our `github/mangband` (freeze, store guards, 16-bit depth) | upstream 1.5.3 (patched by its admins for the arena overflow) |
 | Started | `cd testserver && MANGBAND_FREEZE_FILE=$PWD/FREEZE nohup gdb -batch -ex run -ex bt --args ../github/mangband >> gdb_run.log 2>&1 &` (run from its directory: `-c` is broken); stop with SIGTERM (clean save) | — |
 | Config | DM `Gandalf` (secret), `NEWBIES_CANNOT_DROP=false`, `LEVEL_UNSTATIC_CHANCE=30`, `MAX_HOUSES=0`, not on the metaserver | unknown |
@@ -275,7 +276,7 @@ The client is the same for both.
 - **Same nickname twice:** a second login kicks the first ("Reconnect from other location").
 - **Ports:** `pilot.py`, `MangClient`, `shopcat.py`, `newchar.py` and `record.py` default to 28346, the test server
   (2.43.0, F1; they defaulted to the live 18346); `pilot.py` refuses 18346 without `--live`. `pilot.py`, `dm.py` and
-  the scripts take `MANGBOT_SERVER=sp`'s 28350 instead (the set-piece server, 2.72.2; `tools/servers.py`). Each server
+  the scripts take `MANGBOT_SERVER=debug`'s 28350 instead (the debug server, 2.72.2; `tools/servers.py`). Each server
   also listens on port + 1 (the console).
 - **Config rewrite:** the client rewrites its `--config` file on exit; never point it at the tracked `github/.mangrc`.
 - `quit(msg)` treats a message starting with `-` as an exit code. Stat names arrive as `"STR: "`.

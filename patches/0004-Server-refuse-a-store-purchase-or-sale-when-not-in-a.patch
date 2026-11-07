@@ -1,8 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: jbevan <jbevan@bu.edu>
 Date: Sat, 17 Oct 2026 00:58:45 -0400
-Subject: [PATCH 4/5] Server: refuse a store purchase or sale when not in a
- store
+Subject: [PATCH] Server: refuse a store purchase or sale when not in a store
 
 A purchase that arrived after the server had silently closed the store
 (store_num -1) read store[-1] in get_store_item() and crashed the server.

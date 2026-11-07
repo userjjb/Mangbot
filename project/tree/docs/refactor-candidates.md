@@ -90,7 +90,7 @@ none is fixed. **[N]** = Navigator-facing.
   memo it. -- S/S -- **ask**. **The Advisor (memo 10-29 commands-per-min): not intended; fix it** (same
   population as `commands`; a separate `reports_per_min` if wanted; regenerating past cards is fine), and reword the
   `deaths` comment to "deaths, emergencies and escalations come from acount (plan news excluded)". **done (session 10, 2.39.0)**
-- **A25** **done (session 13, 2.72.2): A2U (Lokkak, level 32) on the set-piece server PASS 11-07 -- the recall branch.** Set-pieces A2I (10-24) and A2L (10-25, "Lugdush never seen") last ran FAIL and were never re-run. -- S/S --
+- **A25** **done (session 13, 2.72.2): A2U (Lokkak, level 32) on the debug server PASS 11-07 -- the recall branch.** Set-pieces A2I (10-24) and A2L (10-25, "Lugdush never seen") last ran FAIL and were never re-run. -- S/S --
   **do** (re-run before the next mission). **Re-run 10-29 on 2.38.0: both FAIL "Word of Recall within 2 s", but the
   Pilot was right:** Ibun and Lugdush are no longer above clvl-29 Dive04, so it drank Speed + Berserk, killed the unique
   and its band (lowest HP 76-80%) and fetched the drop. The scenarios are stale, not the Pilot: to test the recall rule

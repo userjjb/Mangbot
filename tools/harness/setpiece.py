@@ -29,7 +29,7 @@ SETPIECES = {"M5": m5, "M4": m4, "H1": h1, "H1r": h1r, "M1": m1, "M2": m2, "M3":
 
 
 TOWN = {"B4", "B4w"}
-SP_ONLY = {"A2U"}          # can kill the character: only on the set-piece server's copy (MANGBOT_SERVER=sp)
+DEBUG_ONLY = {"A2U"}          # can kill the character: only on the debug server's copy (MANGBOT_SERVER=debug)
 
 
 def main():
@@ -45,9 +45,9 @@ def main():
         for k, f in SETPIECES.items():
             print(k, "-", (f.__doc__ or "").strip().splitlines()[0])
         return
-    if a.sid in SP_ONLY and os.environ.get("MANGBOT_SERVER") != "sp":
-        raise SystemExit(f"{a.sid} can kill the character: run it on the set-piece server's copy "
-                         f"(MANGBOT_SERVER=sp; tools/server.sh clone, start)")
+    if a.sid in DEBUG_ONLY and os.environ.get("MANGBOT_SERVER") != "debug":
+        raise SystemExit(f"{a.sid} can kill the character: run it on the debug server's copy "
+                         f"(MANGBOT_SERVER=debug; tools/server.sh clone, start)")
     depth = 0 if a.sid in TOWN else (a.depth or fresh_depth())
     if a.hpwarn is not None:
         os.environ["PILOT_ARGS"] = f"--hpwarn {a.hpwarn}"    # (charsave's save starts the Pilot with it)

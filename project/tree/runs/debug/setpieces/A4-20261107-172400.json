@@ -1,0 +1,83 @@
+{
+ "id": "A4",
+ "tag": "A4-20261107-172400",
+ "depth_ft": 400,
+ "start": "2026-11-07 17:24:00",
+ "checks": {
+  "Wormtongue staged (seen)": {
+   "pass": true,
+   "detail": "first seen 0.2654914855957031 s"
+  },
+  "<= 8 squares walked in his sight": {
+   "pass": true,
+   "detail": "0 squares (stairs None)"
+  },
+  "lowest HP >= 60%": {
+   "pass": true,
+   "detail": "lowest [342, 369]"
+  }
+ },
+ "notes": [],
+ "stairs": null,
+ "stats": {
+  "hp_start": [
+   369,
+   369
+  ],
+  "hp_min": [
+   342,
+   369
+  ],
+  "attention": [
+   [
+    0.3,
+    "thief",
+    "Wormtongue, Agent of Saruman (lvl 8, 3 away) steals gold with a touch, then teleports: kill it befor"
+   ],
+   [
+    0.3,
+    "rule",
+    "Wormtongue, Agent of Saruman in view: no hunt (hunt refused: you've killed Wormtongue, Agent of Saru"
+   ],
+   [
+    5.0,
+    "unique_slain",
+    "Wormtongue, Agent of Saruman slain at 2,83: uniques drop good items (look at 'Item squares' around t"
+   ],
+   [
+    12.0,
+    "tactic",
+    "fetching the unique's drop at 3,84"
+   ],
+   [
+    14.5,
+    "goal_done",
+    "goto 3,84"
+   ]
+  ],
+  "acts": [
+   [
+    12.1,
+    "custom ,",
+    "pick up: a Short Sword (1d7)."
+   ],
+   [
+    15.1,
+    "custom { item=14 entry=sp-A4-20261107-172400",
+    "mark a find of sp-A4-20261107-172400: a Short Sword (1d7)"
+   ],
+   [
+    29.7,
+    "custom k item=14 value=1",
+    "autodestroy junk a Short Sword (1d7) {cursed - sp-A4-20261107-172400}"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "walked_in_sight": 0,
+ "end": "2026-11-07 17:27:41",
+ "pass": true
+}

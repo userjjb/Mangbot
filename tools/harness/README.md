@@ -9,9 +9,9 @@ Test cases from the Advisor's set-piece list (`memos/2026-10-24-setpieces.md` an
   town kit's tiers, trip conditions, ability proofs.
 - **L: live set-pieces** (`setpiece.py ID`): staged on the test server with the DM (Gandalf), played by Dive04's real
   Pilot, scored from its decision log. `python3 setpiece.py list`. Results: `runs/setpieces/ID-TIME.json` and a line
-  in `runs/setpieces/results.md`. **Since 2.72.2 also on the set-piece server** (`MANGBOT_SERVER=sp`: a copy of the
-  test world, port 28350, results in `runs/sp/setpieces/`; `docs/harness-rulebook-ops.md` "The set-piece server"), where
-  a run can't hurt the real Dive04; `SP_ONLY` set-pieces (A2U) run only there.
+  in `runs/setpieces/results.md`. **Since 2.72.2 also on the debug server** (`MANGBOT_SERVER=debug`: a copy of the
+  test world, port 28350, results in `runs/debug/setpieces/`; `docs/harness-rulebook-ops.md` "The debug server"), where
+  a run can't hurt the real Dive04; `DEBUG_ONLY` set-pieces (A2U) run only there.
 - **R: replays**: since 2026-10-23 the Pilot logs its status, pack and map replies (thinned) to
   `runs/pilot/NICK/state.jsonl`, next to `events.jsonl`, so a mission's state at second T can be rebuilt. No replay
   runner yet.
@@ -63,10 +63,10 @@ findings log (the date in brackets).
 | A2I | the same with Ibun, Son of Mim (a unique exists once: a second Ulwarth summon fails while the first lives on an old level) | the same | PASS 11-03 (no danger rule: the hard fight); FAIL 10-29 on the old criterion [10-29] |
 | A2K | the same with Khim, Son of Mim | the same | PASS 11-03 (no danger rule: the hard fight) [11-02] |
 | A2L | the same with Lugdush (no rule fired before the simulator danger rule) | the same | PASS 11-03 (no danger rule: the hard fight); FAIL 10-29 on the old criterion [10-29]; PASS 10-25, on the simulator's danger reason [10-23 batch] |
-| A2U | the same with Lokkak, the Ogre Chieftain (level 32: a unique above clvl-30 Dive04, the rule `unique, lvl 32`); **the set-piece server only** (refactor list A25) | Word of Recall within 2 s of first sight, lowest HP ≥ 40% | PASS 11-07 on the set-piece server (rule at 3.9 s, recall 4.0 s, lowest 246/369) [11-07] |
+| A2U | the same with Lokkak, the Ogre Chieftain (level 32: a unique above clvl-30 Dive04, the rule `unique, lvl 32`); **the debug server only** (refactor list A25) | Word of Recall within 2 s of first sight, lowest HP ≥ 40% | PASS 11-07 on the debug server (rule at 3.9 s, recall 4.0 s, lowest 246/369) [11-07] |
 | A2f | a Dark elven lord (rated 4) 8 off with a clear line, no stairs known | Word of Recall within 2 s of the danger rule | PASS 10-24, after a fix [10-24] |
 | A3 | a Sabre-tooth tiger (+10, alone) adjacent, then an Architect goto 12 off | the goto is held; no walking with it adjacent | PASS 10-24 (4 of 10) |
-| A4 | Wormtongue 3 off, a '>' painted on the farthest known floor up to 12 off | ≤ 8 squares walked in his sight; HP ≥ 60% | **not stageable now** (a unique exists once: while he lives on another level the summon fails silently; its first "pass" was scored on nothing, so the run now checks he was seen) |
+| A4 | Wormtongue 3 off, a '>' painted on the farthest known floor up to 12 off | ≤ 8 squares walked in his sight; HP ≥ 60% | PASS 11-07 on the debug server (`Run.place` via `dbg place ... force`: first staged; seen at 0.3 s, 0 squares walked, lowest 342/369; no '>' 4-12 off that run); before: **not stageable** (a unique exists once) |
 | A5 | a Dark elven priest 5 off on unlit ground (placed from Gandalf's map, with a clear line) | no level change while HP > 80%; reported | PASS 10-23 |
 | A5s | a Potion mimic (never moves; curses, blinds, frost bolts) 5 off unseen, a '>' in view | the same | PASS 10-23 [10-23: A5] |
 | A6 | a Gnome mage (blinks, summons) adjacent | ≤ 3 Phase Door; Phase never runs out; lowest HP ≥ 40% | PASS 11-03 (6 of 6 since 11-02) |
@@ -179,9 +179,18 @@ findings log (the date in brackets).
   fled from the list alone). Walking away needs walked ground: after a recall or teleport arrival there is none, so the
   existing escapes apply.
 
-### 2026-11-07: the set-piece server; A2U closes A25
+### 2026-11-07: the debug server's test commands; A4 staged at last
 
-- The set-piece server (`MANGBOT_SERVER=sp`, 2.72.2) staged its first runs on a copy of Dive04: A6 PASS (as on the
+- `dbg place` (2.72.3) puts the monster on the chosen square directly; `force` makes a unique that lives on another
+  level. **A4 PASS** on the debug server: Wormtongue 3 off, seen at 0.3 s, Dive04 walked 0 squares in his sight,
+  lowest HP 342/369 (no '>' 4-12 squares off that run). C8 stays unstageable for another reason: Dive04's Amulet of
+  Weaponmastery gives Free Action, so the boots' "You are unaffected!" proves nothing (take the amulet off first, or
+  stage on a character without FA). L3b (a Metal Cap of Seeing) can now be made (`item ... ego=of_Seeing`): the DM forge
+  failed because its ego check compares the tval with the ego's sval range.
+
+### 2026-11-07: the debug server; A2U closes A25
+
+- The debug server (`MANGBOT_SERVER=debug`, 2.72.2) staged its first runs on a copy of Dive04: A6 PASS (as on the
   test server 7 minutes earlier, both on the patcher-built binaries) and **A2U PASS**: Lokkak (level 32) summoned
   adjacent at 350 ft, the danger rule `unique, lvl 32` at 3.9 s, Word of Recall read at 4.0 s, lowest HP 246/369. The
   recall branch of A2's criterion, untestable since Dive04 out-levelled the A2 uniques (10-29), works. The real

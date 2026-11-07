@@ -28,7 +28,7 @@ from mang import MangClient            # noqa: E402
 
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, os.path.join(HERE, ".."))
-import servers                          # noqa: E402  ($MANGBOT_SERVER: test or sp)
+import servers                          # noqa: E402  ($MANGBOT_SERVER: local or debug)
 DM_MENU = 13                           # SPECIAL_FILE_MASTER (server/mdefines.h)
 DIRS = {1: (1, -1), 2: (1, 0), 3: (1, 1), 4: (0, -1), 6: (0, 1), 7: (-1, -1), 8: (-1, 0), 9: (-1, 1)}
 

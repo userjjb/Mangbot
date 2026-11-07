@@ -1,6 +1,6 @@
 ---
 name: mangband-next-steps
-description: "READ FIRST - next_steps.md '>>> WHICH HANDOFF IS YOURS? <<<': sessions 10-12 done (2.72.0 on master; m62-m71); session 13 = the patcher repo + separate test server (HANDOFF 13, Before you start)"
+description: "READ FIRST - next_steps.md '>>> WHICH HANDOFF IS YOURS? <<<': sessions 10-12 done; session 13 (11-07) did the patcher repo (2.72.1) + the debug server (2.72.2, MANGBOT_SERVER=debug; the old one is "the local server") + its test commands (2.72.3); see SESSION 13 RECORD"
 metadata:
   node_type: memory
   type: project
@@ -17,6 +17,11 @@ Open `/projectnb/jbrcs/mangband/next_steps.md` and read **">>> WHICH HANDOFF IS 
   of next_steps.md -- its lessons, the user's standing decisions, the state at the end and the open items.
 - **Session 13 is next**: "HANDOFF TO ARCHITECT 13" -- read its **"Before you start"** first; then the repo as a patcher
   (build.sh + patches/ on pristine MAngband 1.5.3), the separate local test server built with it, A25's set-piece.
+- **Session 13 (11-07, same job 8406367)**: 2.72.1 the repo as a patcher (`github/build.sh` + `patches/`; github/mangband,
+  mangclient, lib, src are links into `github/build/mangband`), 2.72.2 the debug server (`debugserver/`, port 28350,
+  runs/debug, `MANGBOT_SERVER=debug`; the old one is "the local server"), `tools/server.sh start|stop|status|clone`, A25
+  closed; 2.72.3 its test commands (`dbg` on the console, `tools/debugctl.py`). Record: "SESSION 13 RECORD".
+  Open: server-side test features, the public-history purge of 130e7b8's savefiles (user's call).
 - Remind the user of the USER TODO at the top of next_steps.md (review the old handoffs in `history/`).
 
 Rules learned in sessions 10-12: everything is on `master` (`git push origin master --tags`); per version: docs in

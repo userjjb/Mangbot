@@ -39,6 +39,10 @@ The handoff between Architect sessions: the current state, what the next session
   freeze file; copies of Dive04), then server-side test features (HANDOFF 12 item 3, TODOs 3-4). It unblocks A25's
   remaining half (a unique above the character's level: the recall branch), **and the repo as a patcher** (11-04).
   Read **"HANDOFF TO ARCHITECT 13"** (its "Before you start" first).
+- **Session 13** (2026-11-07, SGE job 8406367, scc-va3): **done so far** -- the repo is a patcher (**2.72.1**:
+  `github/build.sh` + `patches/`), the debug server (**2.72.2**: `debugserver/`, port 28350, `MANGBOT_SERVER=debug`,
+  `tools/server.sh`), A25 closed (A2U PASS on the copy); then (the user's names) the **local** and the **debug** server,
+  and the debug server's test commands (**2.72.3**, `tools/debugctl.py`). Its record: **"SESSION 13 RECORD"** at the bottom.
 - Sessions 1-9 are over: `history/handoffs-s1-s9.md`; session 10's own brief: `history/handoff-s10.md`.
 
 ### HANDOFF TO ARCHITECT 11: "Finish the refactor" (written 2026-11-02 by the session-10 Architect)
@@ -555,3 +559,49 @@ watch`). Dive04 idle in town, 358/358, 300 gold + 19,327 banked in the wildernes
   items (m67: the vault's boots had no coordinates for `goal fetch`).
 - **Backup:** the test server's save directory + Dive04's house/orders/keep/standing files as of 11-07 08:41 are in
   `runs/backups/save-end-session12-20261107/` (the server also autosaves every few minutes).
+
+### SESSION 13 RECORD (2026-11-07; "the patcher repo and the separate test server"; SGE job 8406367, scc-va3, ends 19:55)
+- **2.72.1, the repo as a patcher** (the user, 11-04). `github/` holds only `README.md` (the front page, was
+  `.github/README.md`), `build.sh`, `patches/` (0001 packet logger, 0002 tool client, 0003 time freeze, 0004 store
+  crash fix, 0005 16-bit depth indicator -- the 26 old C commits regrouped; `patches/COPYING-MAngband`), `tools/`,
+  `project/`, `VERSION`. The "pristine 1.5.3" commit was really **upstream develop c97e873** (2022-03-13; the Advisor
+  had said so): build.sh fetches that commit's GitHub tarball (cached in `build/`), checks its **git tree hash**,
+  `git am`s the patches in `build/mangband/` (its own git), `autoreconf -i` (upstream autogen.sh downloads
+  config.guess/sub and gets empty files; `-fi` dirties upstream's INSTALL), the GCU-only configure, make; links
+  `github/{mangband,mangclient,lib,src}` into it -- **no path changed anywhere** (the Advisor reads `github/src`;
+  memo'd `to_advisor/2026-11-07-patcher-repo.md`). C work: commit in `build/mangband`, `./build.sh --export`.
+  Checked: same machine code as the old build (objdump), fresh offline build + export reproduces `patches/` byte for
+  byte, a clean clone + `./build.sh` (real download) builds, 228 unit cases, A6 PASS. The old in-repo tree:
+  `runs/backups/github-prepatcher-20261107/` and git history before `fb5dee2`.
+- **2.72.2, the debug server** (HANDOFF 12 item 3, the user's TODOs 3-4): `debugserver/` (port **28350**: a server
+  also holds port + 1, its console -- 28347 is the test server's, and the first try silently moved to 28348), runs root
+  `runs/debug/`, chosen by `MANGBOT_SERVER=debug` (`tools/servers.py`/`servers.sh`, used by every tool that reads a port, a
+  Pilot's state, the freeze file or a savefile). `tools/server.sh start|stop|status|clone`; **gdb now passes SIGTERM
+  on, so a stop is the server's clean save** (before, gdb caught it and the server died unsaved -- every restart until
+  now relied on the 10-minute autosave). Dive04 runs twice (28346 real, 28350 copy); the scripts match nick + port.
+- **A25 closed:** set-piece **A2U** (Lokkak, level 32, `DEBUG_ONLY`) PASS on the copy: the danger rule at 3.9 s, Word of
+  Recall at 4.0 s, lowest HP 246/369. A6 PASS on both servers. The real Dive04 idle in town throughout.
+- **Found: session 12's last commit `130e7b8` pushed `runs/backups/save-end-session12-20261107/` (savefiles, which
+  hold the characters' passwords) to the public repo** -- snapshot.sh excluded `/runs/backup-*/` but not
+  `/runs/backups/`. Fixed in 2.72.1 (excluded, removed from the tree); **still in the public history** -- purging it
+  needs a history rewrite + force push: the user's decision.
+- **Permissions:** the auto-mode classifier blocked (1) compiling downloaded upstream source and (2) `kill -TERM` of the
+  test server; the user approved both. `server.sh stop` sends the same kill: expect a prompt.
+- **State (09:50):** version **2.72.2** (`139558c`, tagged, pushed). Test server (28346) and debug server (28350)
+  both on the patcher build; Dive04's real Pilot on 28346 (2.72.2, idle in town, 53,898 banked); the copy's Pilot on
+  28350. Backups: `runs/backups/save-pre-patcher-20261107/` (the test saves before the switch).
+- **Names (the user, 11-07 afternoon):** "the **local** server" = the one we always used (`testserver/`, 28346,
+  `MANGBOT_SERVER=local`, the default; the directory keeps its name); "the **debug** server" = the new one
+  (`debugserver/`, 28350, `runs/debug/`, `MANGBOT_SERVER=debug`; was `spserver`/`sp` for a few hours). Older docs still
+  say "test server" for the local server: a terminology pass is open.
+- **2.72.3, the debug server's test commands** (the user: "we are free to modify the debug server"; chose the first
+  batch "staging + truth" from the menu: A staging, B speed/time, C reproducibility, D ground truth, E batch safety --
+  docs/harness-rulebook-ops.md "The debug server's test commands"): `patches/0006`, the console command `dbg` (off
+  unless `MANGBAND_DEBUG_COMMANDS=1`, local only): place / item / terrain / player / teleport / depth / clear / truth;
+  `tools/debugctl.py`; `Run.place` uses it on the debug server. **A4 PASS** (Wormtongue, never staged before). The DM
+  forge's ego bug found (tval vs sval range). build.sh exports `[PATCH]` unnumbered.
+- **Open:** the other batches from the menu -- reproducibility (fixed level seeds; build a level from a mission's logged
+  map: incident regressions), speed/time (in-server checkpoint/restore, `step N` while frozen, time scale), the damage
+  log by source (seen/unseen) for the Advisor's estimator, a no-death HP floor for batches; C8 (needs the amulet off),
+  L3b (now makeable), M5 (`player confused=`) to restage on the debug server; set-piece scoring from `truth`; the
+  "test server" -> "local server" terminology pass; the short end-to-end mission (optional); the public-history purge.

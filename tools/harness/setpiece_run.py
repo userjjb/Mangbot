@@ -24,7 +24,7 @@ import glyphs                           # noqa: E402
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, os.path.join(HERE, ".."))
 import servers                          # noqa: E402
-# MANGBOT_SERVER=sp: the set-piece server -- its copy of Dive04 (runs/sp/pilot/dive04), its results (runs/sp/setpieces)
+# MANGBOT_SERVER=debug: the debug server -- its copy of Dive04 (runs/debug/pilot/dive04), its results (runs/debug/setpieces)
 RUN = os.path.join(servers.RUNS, "pilot", "dive04")
 OUT = os.path.join(servers.RUNS, "setpieces")
 RACES = {r.name.lower(): r for r in glyphs.load_races().values()}
@@ -190,7 +190,8 @@ class Run:
 
     def place(self, race_name, dist, after=None, gmap=False):
         """Summon race_name about `dist` squares from Dive04 (on a floor square of its map; gmap=True: of
-        Gandalf's, who sees the whole level, with a clear line to Dive04 -- for a monster out of its sight)."""
+        Gandalf's, who sees the whole level, with a clear line to Dive04 -- for a monster out of its sight). On the
+        debug server (MANGBOT_SERVER=debug) it is placed there directly, awake, a unique even if it lives elsewhere."""
         if self._depth() != self.depth:
             raise RuntimeError(f"Dive04 isn't on Gandalf's level ({self._depth()} ft): it left before the scene was set")
         v = pilot_view()
@@ -205,10 +206,18 @@ class Run:
                     None)
         if not spot:
             raise RuntimeError(f"no floor square {dist} from Dive04 at {me}")
-        self.gandalf_to(spot)
-        away = step_dir(me, spot) or 8               # step on, away from Dive04
         idx = race_name if isinstance(race_name, int) else race_idx(race_name)
-        name = self.dm.summon(idx, step=away, after=after)
+        if servers.name() == "debug":
+            # the debug server places it directly (dbgcmd.c): no walk, no hook; a unique always appears (force)
+            import debugctl
+            reply = debugctl.Debug().cmd("place", "Dive04", idx, f"at={spot[0]},{spot[1]}", "awake", "force")
+            name = reply.split("placed ", 1)[1].split(" m_idx=")[0]
+            if after:
+                after()
+        else:
+            self.gandalf_to(spot)
+            away = step_dir(me, spot) or 8               # step on, away from Dive04
+            name = self.dm.summon(idx, step=away, after=after)
         self.placed = taken | {spot}
         self.say(f"[{self.tag}] summoned {name} at {spot}, {dist} from Dive04 at {me}")
         return spot

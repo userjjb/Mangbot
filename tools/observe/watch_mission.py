@@ -18,7 +18,7 @@ import time
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 import servers                          # noqa: E402
-RUNS = servers.get()["pilot"]           # runs/pilot, or runs/sp/pilot with MANGBOT_SERVER=sp
+RUNS = servers.get()["pilot"]           # runs/pilot, or runs/debug/pilot with MANGBOT_SERVER=debug
 NAMES = ("decisions.jsonl", "asks.jsonl", "pilot.log")
 QUIET_STUCK = re.compile(r"hasn't moved from .* for 20 s")
 # pilot.log: a traceback's last line names the exception (column 0); stack frames are indented

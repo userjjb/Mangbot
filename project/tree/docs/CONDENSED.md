@@ -1,7 +1,7 @@
 # The Documentation, condensed (for Architects and Advisors)
 
 The full version is [README.md](README.md) and its ten component files. This page is what a new Architect or Advisor
-needs in their head before touching anything. Session 11, 2026-11-03; matches version 2.72.2 (`github/VERSION`, CHANGELOG.md).
+needs in their head before touching anything. Session 11, 2026-11-03; matches version 2.72.3 (`github/VERSION`, CHANGELOG.md).
 
 ## What this is
 
@@ -23,8 +23,8 @@ imports live. **The user decides** policy; nobody else changes a user decision.
   status, inven, map, flags). Prompt-less login, auto birth, packet logs with blanked passwords. Every tool starts it
   through `tools/client/mang.py: MangClient`. Built by `github/build.sh` (2.72.1): upstream MAngband + our
   `patches/` in `github/build/mangband/` (its own git); `github/mangband`, `mangclient`, `lib`, `src` link into it.
-- **Two local servers** (2.72.2): the test server (`testserver/`, 28346: Dive04's world) and the set-piece server
-  (`spserver/`, 28350: a copy, `tools/server.sh clone`), chosen by `MANGBOT_SERVER=test|sp` (`tools/servers.py`).
+- **Two servers of ours** (2.72.2): the local server (`testserver/`, 28346: Dive04's world, plays like the live one) and the debug server
+  (`debugserver/`, 28350: a copy, `tools/server.sh clone`), chosen by `MANGBOT_SERVER=local|debug` (`tools/servers.py`); the debug server has test commands (`tools/debugctl.py`).
 - **The Pilot daemon** owns the client as a child process and serves `runs/pilot/<nick>/ctl.sock`. Each tick: update
   the `World` (`world.py`: map memory, monsters, items, player, clock `TICK_S = 0.625`), run the watchers, serve
   requests, then **the first layer that acts wins**: reflexes -> the Navigator's `react` rules -> item work -> one step

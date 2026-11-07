@@ -344,7 +344,7 @@ def items_in_view(seen, squares):
 HELP = ("Enter: note · '!' to the Navigator · '?' for the Architect · Tab: Navigator's view · F2: equipment · "
         "F3: pack · F5/Ctrl-F: freeze time · Esc: back/clear · PgUp/PgDn: feed")
 # The test server's time freeze (tools/freeze.sh; the server checks this file, the Pilot holds while it exists)
-import servers                          # noqa: E402  ($MANGBOT_SERVER: test or sp; pilotctl put tools/ on the path)
+import servers                          # noqa: E402  ($MANGBOT_SERVER: local or debug; pilotctl put tools/ on the path)
 FREEZE_FILE = servers.FREEZE
 MSG_T = [0.0]                          # when the last message was set (it shows 6 s, then the keys again)
 

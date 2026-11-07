@@ -8,7 +8,7 @@ NOW=0; ARGS=()
 for a in "$@"; do [ "$a" = "--now" ] && NOW=1 || ARGS+=("$a"); done
 set -- "${ARGS[@]}"
 HERE=$(cd "$(dirname "$0")" && pwd)
-source "$HERE/../servers.sh" || exit 1     # $MANGBOT_SERVER: test (default) or sp, the set-piece server
+source "$HERE/../servers.sh" || exit 1     # $MANGBOT_SERVER: local (default) or debug, the debug server
 NICK=${1:?usage: restart.sh NICK [PORT] [--now]}; PORT=${2:-$MB_PORT}; RUNS=$MB_RUNS
 ARCH_TOKEN=$RUNS/private/architect.token      # park is the Architect's (2.45.0)
 LOW=$(echo "$NICK" | tr A-Z a-z)

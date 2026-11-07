@@ -1,0 +1,595 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: jbevan <jbevan@bu.edu>
+Date: Sat, 7 Nov 2026 17:23:14 -0500
+Subject: [PATCH] Server: debug-server test commands on the remote console
+ (dbg, MANGBAND_DEBUG_COMMANDS)
+
+A console command "dbg" for automated tests, refused unless the server was started with
+MANGBAND_DEBUG_COMMANDS=1 and the console connection is local, so a server without it plays
+unchanged. On a logged-in player's level: place a monster (any square, asleep or awake, set HP;
+"force" makes a unique that lives elsewhere, is dead or was killed), make an item (kind and ego
+by name, the ego that fits the kind; unidentified unless "known"), set terrain (a square or a
+rectangle), set the player's state (HP, food, gold, level, timed effects), teleport on the level
+or to another depth, clear the level's monsters/objects, and write the level's ground truth as
+JSON (players, monsters with HP/sleep/seen, objects with their true kind and ego, the map, what
+the player remembers). The full syntax is at the top of src/server/dbgcmd.c.
+---
+ src/server/Makefile.am |   2 +-
+ src/server/control.c   |   4 +
+ src/server/dbgcmd.c    | 533 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 538 insertions(+), 1 deletion(-)
+ create mode 100644 src/server/dbgcmd.c
+
+diff --git a/src/server/Makefile.am b/src/server/Makefile.am
+index 2abbebb6741ec5e2683a9eea158b322413010167..d6a8d1cb371268d54174632137a1c9660235e1c2 100644
+--- a/src/server/Makefile.am
++++ b/src/server/Makefile.am
+@@ -6,7 +6,7 @@ mangband_SOURCES = \
+ 		src/server/birth.c src/server/cave.c src/server/pathfind.c \
+ 		src/server/cmd1.c src/server/cmd2.c src/server/cmd3.c \
+ 		src/server/cmd4.c src/server/cmd5.c src/server/cmd6.c \
+-		src/server/control.c src/server/dungeon.c src/server/files.c \
++		src/server/control.c src/server/dbgcmd.c src/server/dungeon.c src/server/files.c \
+ 		src/server/generate.c src/server/init1.c src/server/init2.c \
+ 		src/server/load2.c src/server/main.c src/server/melee1.c \
+ 		src/server/melee2.c src/server/monster1.c src/server/monster2.c \
+diff --git a/src/server/control.c b/src/server/control.c
+index 67fe76140091f4696c1c91e3c5bec6cdf374dfc6..fe543604bd2b9491926f1a28c50a7d00714130fd 100644
+--- a/src/server/control.c
++++ b/src/server/control.c
+@@ -598,6 +598,8 @@ static void console_help(connection_type* ct, char *name)
+ 
+ }
+ 
++extern void console_dbg(connection_type *ct, char *params);   /* dbgcmd.c (Mangbot patch) */
++
+ console_command_ops console_commands[] = {
+ 	{ "help",      console_help,        0, "[TOPIC]\nExplain a command or list all avaliable" },
+ 	{ "listen",    console_listen,      0, "[CHANNEL]\nAttach self to #public or specified"   },
+@@ -613,5 +615,7 @@ console_command_ops console_commands[] = {
+ 	{ "dngtest",   console_dng_test,    2, "[N] [DEPTH]\nGenerate dungeon N times"            },
+ #endif
+ 	{ "debug",     console_debug,       0, "\nUnused"                                         },
++	/* Mangbot patch: the debug server's test commands (dbgcmd.c; off unless MANGBAND_DEBUG_COMMANDS=1) */
++	{ "dbg",       console_dbg,         0, "SUBCOMMAND NICK ...\nDebug-server test commands (dbg help)" },
+ };
+ int command_len = sizeof(console_commands) / sizeof(console_command_ops);
+diff --git a/src/server/dbgcmd.c b/src/server/dbgcmd.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..71f7bc2309ba9997a8e48e18c5fad354e9fb0fbc
+--- /dev/null
++++ b/src/server/dbgcmd.c
+@@ -0,0 +1,533 @@
++/*
++ * File: dbgcmd.c
++ * Purpose: debug-server test commands on the remote console (Mangbot patch, 2026-11-07).
++ *
++ * The console command "dbg" stages and inspects the game for automated tests. It is refused unless the server was
++ * started with MANGBAND_DEBUG_COMMANDS=1 in its environment (the project's "debug server"; a server without it,
++ * like a live one, plays unchanged) and the console connection is local.
++ *
++ * Every command answers one line: "ok ..." or "error ...". NICK is a logged-in player; the level a command acts on
++ * is NICK's. A position is at=Y,X (absolute) or rel=DY,DX (from NICK); the default is NICK's own square for items and
++ * terrain. Names with spaces are written with underscores (Lokkak,_the_Ogre_Chieftain), any case; a number is an
++ * index (r_info, k_info, e_info, f_info). A race or kind may also be a part of one name only (Soft_Leather_Boots).
++ *
++ *   dbg help
++ *   dbg place NICK RACE [at=|rel=] [awake|sleep=N] [hp=N] [force]
++ *         one monster on an empty floor square (no group). force: a unique is made even if it lives elsewhere (that
++ *         one is deleted), is dead, or NICK killed it.
++ *   dbg item NICK KIND [at=|rel=] [ego=E] [number=N] [pval=N] [tohit=N] [todam=N] [toac=N] [lev=N] [known]
++ *         KIND: k_idx, TVAL:SVAL, or the kind's name; made like a floor find at depth lev (default NICK's) with
++ *         the ego forced; left unidentified unless `known`. Dropped at the square (or the nearest free one).
++ *   dbg terrain NICK FEAT [at=|rel=] [to=Y2,X2]      a square or rectangle (FEAT: f_info index or name; with
++ *                                                    rel=, to= is relative to NICK too)
++ *   dbg player NICK KEY=N ...    hp sp food gold exp lev confused blind poisoned afraid paralyzed image fast slow
++ *                                stun cut (timed effects: turns)
++ *   dbg teleport NICK at=Y,X|rel=DY,DX               on the same level (nearest free floor)
++ *   dbg depth NICK DEPTH                             to another level (arrives at a random spot, as a deep descent)
++ *   dbg clear NICK monsters|objects|all              empty NICK's level of monsters and/or floor objects
++ *   dbg truth NICK [FILE]                            NICK's level as JSON (default truth.json in the server's
++ *                                                    directory): players, monsters (hp, sleep, seen by NICK),
++ *                                                    floor objects (true kind/ego and NICK's description), the
++ *                                                    map's features and what NICK remembers
++ */
++
++#include "mangband.h"
++#include "net-server.h"
++
++static int dbg_state = -1;	/* -1 unknown, 0 off, 1 on */
++
++static bool dbg_enabled(void)
++{
++	if (dbg_state < 0)
++	{
++		cptr e = getenv("MANGBAND_DEBUG_COMMANDS");
++		dbg_state = (e && e[0] == '1') ? 1 : 0;
++		if (dbg_state) plog("Debug commands enabled (MANGBAND_DEBUG_COMMANDS)");
++	}
++	return dbg_state == 1;
++}
++
++static void reply(connection_type *ct, cptr fmt, ...)
++{
++	char buf[1024];
++	va_list vp;
++	va_start(vp, fmt);
++	vstrnfmt(buf, sizeof(buf) - 2, fmt, vp);
++	va_end(vp);
++	my_strcat(buf, "\n", sizeof(buf));
++	cq_printf(&ct->wbuf, "%T", buf);
++}
++
++/* Compare a game name with an argument: case-insensitive, '_' = ' ', "& " and '~' in the game name ignored;
++ * part = TRUE: the argument is a part of the name ("Soft_Leather_Boots" in "& Pair~ of Soft Leather Boots") */
++static bool name_match_aux(cptr game, cptr arg, bool part);
++static bool name_match(cptr game, cptr arg) { return name_match_aux(game, arg, FALSE); }
++static bool name_match_aux(cptr game, cptr arg, bool part)
++{
++	char a[160], b[160];
++	int i, j;
++	for (i = j = 0; game[i] && j < 158; i++)
++	{
++		if (game[i] == '&' && game[i + 1] == ' ') { i++; continue; }
++		if (game[i] == '~') continue;
++		a[j++] = tolower((unsigned char)game[i]);
++	}
++	a[j] = '\0';
++	for (i = j = 0; arg[i] && j < 158; i++)
++		b[j++] = (arg[i] == '_') ? ' ' : tolower((unsigned char)arg[i]);
++	b[j] = '\0';
++	return part ? (strstr(a, b) != NULL) : !strcmp(a, b);
++}
++
++/* The one index whose name contains arg (no exact match): 0 when none or several */
++static int part_match(int max, u32b (*name_of)(int), char *names, cptr arg)
++{
++	int i, found = 0;
++	for (i = 1; i < max; i++)
++		if (name_of(i) && name_match_aux(names + name_of(i), arg, TRUE))
++		{
++			if (found) return 0;
++			found = i;
++		}
++	return found;
++}
++static u32b r_name_of(int i) { return r_info[i].name; }
++static u32b k_name_of(int i) { return k_info[i].name; }
++
++static bool is_number(cptr s)
++{
++	if (!s || !*s) return FALSE;
++	if (*s == '-') s++;
++	for (; *s; s++) if (!isdigit((unsigned char)*s)) return FALSE;
++	return TRUE;
++}
++
++static int find_race(cptr arg)
++{
++	int i;
++	if (is_number(arg)) return (atoi(arg) > 0 && atoi(arg) < z_info->r_max) ? atoi(arg) : 0;
++	for (i = 1; i < z_info->r_max; i++)
++		if (r_info[i].name && name_match(r_name + r_info[i].name, arg)) return i;
++	return part_match(z_info->r_max, r_name_of, r_name, arg);
++}
++
++static int find_kind(cptr arg)
++{
++	int i;
++	cptr colon = strchr(arg, ':');
++	if (is_number(arg)) return (atoi(arg) > 0 && atoi(arg) < z_info->k_max) ? atoi(arg) : 0;
++	if (colon) return lookup_kind(atoi(arg), atoi(colon + 1));
++	for (i = 1; i < z_info->k_max; i++)
++		if (k_info[i].name && name_match(k_name + k_info[i].name, arg)) return i;
++	return part_match(z_info->k_max, k_name_of, k_name, arg);
++}
++
++/* An ego by number or name; of several with the name (two "of Free Action": gloves 48, boots 58), the one that fits
++ * the kind (tval, sval in range -- the DM forge compares the tval with the sval range: no ego fits it reliably) */
++static bool ego_fits(int e_idx, int k_idx)
++{
++	int j;
++	object_kind *k_ptr = &k_info[k_idx];
++	for (j = 0; j < EGO_TVALS_MAX; j++)
++		if (e_info[e_idx].tval[j] == k_ptr->tval && k_ptr->sval >= e_info[e_idx].min_sval[j] &&
++			k_ptr->sval <= e_info[e_idx].max_sval[j]) return TRUE;
++	return FALSE;
++}
++
++static int find_ego(cptr arg, int k_idx)
++{
++	int i, any = 0;
++	if (is_number(arg)) return (atoi(arg) > 0 && atoi(arg) < z_info->e_max) ? atoi(arg) : 0;
++	for (i = 1; i < z_info->e_max; i++)
++		if (e_info[i].name && name_match(e_name + e_info[i].name, arg))
++		{
++			if (ego_fits(i, k_idx)) return i;
++			if (!any) any = i;
++		}
++	return any;
++}
++
++static int find_feat(cptr arg)
++{
++	int i;
++	if (is_number(arg)) return (atoi(arg) >= 0 && atoi(arg) < z_info->f_max) ? atoi(arg) : -1;
++	for (i = 0; i < z_info->f_max; i++)
++		if (f_info[i].name && name_match(f_name + f_info[i].name, arg)) return i;
++	return -1;
++}
++
++/* key=value lookup among the arguments; NULL if absent */
++static cptr opt(int argc, char **argv, cptr key)
++{
++	int i;
++	size_t n = strlen(key);
++	for (i = 0; i < argc; i++)
++		if (!strncmp(argv[i], key, n) && argv[i][n] == '=') return argv[i] + n + 1;
++	return NULL;
++}
++
++static bool flag(int argc, char **argv, cptr word)
++{
++	int i;
++	for (i = 0; i < argc; i++) if (!strcmp(argv[i], word)) return TRUE;
++	return FALSE;
++}
++
++/* at=Y,X or rel=DY,DX (from p_ptr); defaults to p_ptr's square. FALSE (and an error sent) if malformed/out of bounds */
++static bool get_pos(connection_type *ct, player_type *p_ptr, int argc, char **argv, cptr akey, cptr rkey,
++	int *y, int *x)
++{
++	cptr a = opt(argc, argv, akey), r = opt(argc, argv, rkey);
++	*y = p_ptr->py; *x = p_ptr->px;
++	if (a && sscanf(a, "%d,%d", y, x) != 2) { reply(ct, "error %s=Y,X", akey); return FALSE; }
++	if (r)
++	{
++		int dy, dx;
++		if (sscanf(r, "%d,%d", &dy, &dx) != 2) { reply(ct, "error %s=DY,DX", rkey); return FALSE; }
++		*y = p_ptr->py + dy; *x = p_ptr->px + dx;
++	}
++	if (!in_bounds(p_ptr->dun_depth, *y, *x)) { reply(ct, "error %d,%d is out of bounds", *y, *x); return FALSE; }
++	return TRUE;
++}
++
++static void level_changed(int Depth, int y, int x)
++{
++	note_spot_depth(Depth, y, x);
++	everyone_lite_spot(Depth, y, x);
++	spot_updates(Depth, y, x, (PU_VIEW | PU_LITE | PU_FLOW | PU_MONSTERS));
++}
++
++/* dbg place NICK RACE ... */
++static void dbg_place(connection_type *ct, player_type *p_ptr, int argc, char **argv)
++{
++	int Depth = p_ptr->dun_depth, y, x, r_idx, i, m_idx;
++	monster_race *r_ptr;
++	monster_type *m_ptr;
++	bool force = flag(argc, argv, "force"), ok;
++	s16b old_max = 0;
++	byte killed[MAX_PLAYERS + 1];
++	cptr v;
++
++	if (argc < 1 || !(r_idx = find_race(argv[0]))) { reply(ct, "error unknown race %s", argc ? argv[0] : ""); return; }
++	r_ptr = &r_info[r_idx];
++	if (!get_pos(ct, p_ptr, argc, argv, "at", "rel", &y, &x)) return;
++	if (!cave_empty_bold(Depth, y, x)) { reply(ct, "error %d,%d is not an empty floor square", y, x); return; }
++
++	if (force && (r_ptr->flags1 & RF1_UNIQUE))
++	{
++		/* the one alive elsewhere goes; a dead one lives again; nobody here has killed it, for now */
++		for (i = 1; i < m_max; i++)
++			if (m_list[i].r_idx == r_idx) delete_monster_idx(i);
++		old_max = r_ptr->max_num;
++		if (r_ptr->max_num <= r_ptr->cur_num) r_ptr->max_num = r_ptr->cur_num + 1;
++		for (i = 1; i <= NumPlayers; i++)
++		{
++			killed[i] = Players[i]->r_killed[r_idx] ? 1 : 0;
++			if (Players[i]->dun_depth == Depth) Players[i]->r_killed[r_idx] = 0;
++		}
++	}
++	ok = place_monster_aux(Depth, y, x, r_idx, TRUE, FALSE);
++	if (force && (r_ptr->flags1 & RF1_UNIQUE))
++	{
++		r_ptr->max_num = MAX(old_max, 1);
++		for (i = 1; i <= NumPlayers; i++)
++			if (killed[i]) Players[i]->r_killed[r_idx] = TRUE;
++	}
++	if (!ok)
++	{
++		reply(ct, "error %s not placed%s", r_name + r_ptr->name,
++			(r_ptr->flags1 & RF1_UNIQUE) && !force ? " (a unique alive elsewhere or killed: add force)" : "");
++		return;
++	}
++	m_idx = cave[Depth][y][x].m_idx;
++	m_ptr = &m_list[m_idx];
++	if (flag(argc, argv, "awake")) m_ptr->csleep = 0;
++	if ((v = opt(argc, argv, "sleep"))) m_ptr->csleep = atoi(v);
++	if ((v = opt(argc, argv, "hp")))
++	{
++		m_ptr->hp = atoi(v);
++		if (m_ptr->hp > m_ptr->maxhp) m_ptr->maxhp = m_ptr->hp;
++	}
++	update_mon(m_idx, TRUE);
++	reply(ct, "ok placed %s m_idx=%d at %d,%d hp=%d/%d sleep=%d", r_name + r_ptr->name, m_idx, y, x,
++		m_ptr->hp, m_ptr->maxhp, m_ptr->csleep);
++}
++
++/* dbg item NICK KIND ... */
++static void dbg_item(connection_type *ct, player_type *p_ptr, int argc, char **argv)
++{
++	int Depth = p_ptr->dun_depth, y, x, k_idx, ego = 0, lev, tries;
++	object_type forge, *o_ptr = &forge;
++	char name[160];
++	cptr v;
++
++	if (argc < 1 || !(k_idx = find_kind(argv[0]))) { reply(ct, "error unknown kind %s", argc ? argv[0] : ""); return; }
++	if ((v = opt(argc, argv, "ego")) && !(ego = find_ego(v, k_idx))) { reply(ct, "error unknown ego %s", v); return; }
++	if (ego && !ego_fits(ego, k_idx)) { reply(ct, "error ego %d does not fit %s", ego, k_name + k_info[k_idx].name); return; }
++	if (!get_pos(ct, p_ptr, argc, argv, "at", "rel", &y, &x)) return;
++	lev = (v = opt(argc, argv, "lev")) ? atoi(v) : (Depth > 0 ? Depth : 1);
++
++	/* made like a find (apply_magic), the ego forced: apply_magic can roll an ego of its own, so retry until it
++	 * keeps ours (it applies a preset ego's bonuses and flags) */
++	for (tries = 0; tries < 200; tries++)
++	{
++		WIPE(o_ptr, object_type);
++		object_prep(o_ptr, k_idx);
++		o_ptr->name2 = ego;
++		apply_magic(Depth, o_ptr, lev, FALSE, FALSE, FALSE);
++		if (o_ptr->name2 == ego && !o_ptr->name1) break;
++	}
++	if (o_ptr->name2 != ego || o_ptr->name1) { reply(ct, "error the ego did not hold (wrong kind for it?)"); return; }
++	if ((v = opt(argc, argv, "number"))) o_ptr->number = MAX(1, MIN(99, atoi(v)));
++	if ((v = opt(argc, argv, "pval"))) o_ptr->pval = atoi(v);
++	if ((v = opt(argc, argv, "tohit"))) o_ptr->to_h = atoi(v);
++	if ((v = opt(argc, argv, "todam"))) o_ptr->to_d = atoi(v);
++	if ((v = opt(argc, argv, "toac"))) o_ptr->to_a = atoi(v);
++	o_ptr->origin = ORIGIN_FLOOR;
++	o_ptr->origin_depth = Depth;
++	if (flag(argc, argv, "known")) { object_aware(p_ptr, o_ptr); object_known(o_ptr); }
++	object_desc(p_ptr, name, sizeof(name), o_ptr, TRUE, 3);
++	drop_near(o_ptr, -1, Depth, y, x);
++	reply(ct, "ok item %s (k_idx=%d ego=%d) near %d,%d", name, k_idx, ego, y, x);
++}
++
++/* dbg terrain NICK FEAT [at=|rel=] [to=Y2,X2] */
++static void dbg_terrain(connection_type *ct, player_type *p_ptr, int argc, char **argv)
++{
++	int Depth = p_ptr->dun_depth, y1, x1, y2, x2, y, x, feat, n = 0;
++	cptr v;
++
++	if (argc < 1 || (feat = find_feat(argv[0])) < 0) { reply(ct, "error unknown feature %s", argc ? argv[0] : ""); return; }
++	if (!get_pos(ct, p_ptr, argc, argv, "at", "rel", &y1, &x1)) return;
++	y2 = y1; x2 = x1;
++	if ((v = opt(argc, argv, "to")) && sscanf(v, "%d,%d", &y2, &x2) != 2) { reply(ct, "error to=Y2,X2"); return; }
++	/* with rel=, to= is relative to NICK too */
++	if (v && opt(argc, argv, "rel")) { y2 += p_ptr->py; x2 += p_ptr->px; }
++	if (!in_bounds(Depth, y2, x2)) { reply(ct, "error %d,%d is out of bounds", y2, x2); return; }
++	for (y = MIN(y1, y2); y <= MAX(y1, y2); y++)
++		for (x = MIN(x1, x2); x <= MAX(x1, x2); x++)
++		{
++			/* never bury a player or a monster */
++			if (cave[Depth][y][x].m_idx && (feat & 0x20)) continue;    /* (walls have bit 0x20: cave_floor_bold) */
++			cave_set_feat(Depth, y, x, feat);
++			level_changed(Depth, y, x);
++			n++;
++		}
++	reply(ct, "ok terrain %s on %d square(s)", f_name + f_info[feat].name, n);
++}
++
++/* dbg player NICK KEY=N ... */
++static void dbg_player(connection_type *ct, player_type *p_ptr, int argc, char **argv)
++{
++	int i, n;
++	char done[512] = "";
++	for (i = 0; i < argc; i++)
++	{
++		char key[32];
++		cptr eq = strchr(argv[i], '=');
++		if (!eq || eq - argv[i] >= (int)sizeof(key)) { reply(ct, "error KEY=N expected, got %s", argv[i]); return; }
++		my_strcpy(key, argv[i], eq - argv[i] + 1);
++		n = atoi(eq + 1);
++		if (!strcmp(key, "hp")) { p_ptr->chp = MIN(n, p_ptr->mhp); p_ptr->chp_frac = 0; p_ptr->redraw |= PR_HP; }
++		else if (!strcmp(key, "sp")) { p_ptr->csp = MIN(n, p_ptr->msp); p_ptr->redraw |= PR_MANA; }
++		else if (!strcmp(key, "food")) set_food(p_ptr, n);
++		else if (!strcmp(key, "gold")) { p_ptr->au = n; p_ptr->redraw |= PR_GOLD; }
++		else if (!strcmp(key, "exp")) { p_ptr->exp = p_ptr->max_exp = n; check_experience(p_ptr); }
++		else if (!strcmp(key, "lev"))
++		{
++			if (n < 1 || n > PY_MAX_LEVEL) { reply(ct, "error lev 1-%d", PY_MAX_LEVEL); return; }
++			p_ptr->exp = p_ptr->max_exp = (n == 1) ? 0 : (s32b)(player_exp[n - 2] * p_ptr->expfact / 100L);
++			check_experience(p_ptr);
++		}
++		else if (!strcmp(key, "confused")) set_confused(p_ptr, n);
++		else if (!strcmp(key, "blind")) set_blind(p_ptr, n);
++		else if (!strcmp(key, "poisoned")) set_poisoned(p_ptr, n);
++		else if (!strcmp(key, "afraid")) set_afraid(p_ptr, n);
++		else if (!strcmp(key, "paralyzed")) set_paralyzed(p_ptr, n);
++		else if (!strcmp(key, "image")) set_image(p_ptr, n);
++		else if (!strcmp(key, "fast")) set_fast(p_ptr, n);
++		else if (!strcmp(key, "slow")) set_slow(p_ptr, n);
++		else if (!strcmp(key, "stun")) set_stun(p_ptr, n);
++		else if (!strcmp(key, "cut")) set_cut(p_ptr, n);
++		else { reply(ct, "error unknown key %s", key); return; }
++		my_strcat(done, " ", sizeof(done));
++		my_strcat(done, argv[i], sizeof(done));
++	}
++	p_ptr->update |= (PU_BONUS | PU_HP | PU_MANA);
++	reply(ct, "ok player %s:%s (hp %d/%d, lev %d)", p_ptr->name, done, p_ptr->chp, p_ptr->mhp, p_ptr->lev);
++}
++
++/* dbg teleport NICK at=|rel= */
++static void dbg_teleport(connection_type *ct, player_type *p_ptr, int argc, char **argv)
++{
++	int y, x;
++	if (!opt(argc, argv, "at") && !opt(argc, argv, "rel")) { reply(ct, "error at=Y,X or rel=DY,DX"); return; }
++	if (!get_pos(ct, p_ptr, argc, argv, "at", "rel", &y, &x)) return;
++	teleport_player_to(p_ptr, y, x);
++	reply(ct, "ok %s at %d,%d", p_ptr->name, p_ptr->py, p_ptr->px);
++}
++
++/* dbg depth NICK DEPTH (as teleport_player_level, to a chosen depth) */
++static void dbg_depth(connection_type *ct, player_type *p_ptr, int argc, char **argv)
++{
++	int Depth = p_ptr->dun_depth, d;
++	if (argc < 1 || !is_number(argv[0]) || (d = atoi(argv[0])) < 0 || d >= MAX_DEPTH)
++	{
++		reply(ct, "error DEPTH 0-%d (dungeon levels; not the wilderness)", MAX_DEPTH - 1);
++		return;
++	}
++	if (d == Depth) { reply(ct, "ok %s already at depth %d", p_ptr->name, d); return; }
++	msg_print(p_ptr, "The floor opens beneath you (debug).");
++	players_on_depth[Depth]--;
++	if (players_on_depth[Depth] < 0) players_on_depth[Depth] = 0;
++	cave[Depth][p_ptr->py][p_ptr->px].m_idx = 0;
++	everyone_lite_spot(Depth, p_ptr->py, p_ptr->px);
++	update_player(p_ptr);
++	forget_lite(p_ptr);
++	forget_view(p_ptr);
++	p_ptr->dun_depth = d;
++	players_on_depth[d]++;
++	p_ptr->new_level_flag = TRUE;
++	p_ptr->new_level_method = LEVEL_RAND;
++	reply(ct, "ok %s to depth %d (%d ft)", p_ptr->name, d, d * 50);
++}
++
++/* dbg clear NICK monsters|objects|all */
++static void dbg_clear(connection_type *ct, player_type *p_ptr, int argc, char **argv)
++{
++	int Depth = p_ptr->dun_depth, i, nm = 0, no = 0;
++	cptr what = argc ? argv[0] : "";
++	bool mons = !strcmp(what, "monsters") || !strcmp(what, "all");
++	bool objs = !strcmp(what, "objects") || !strcmp(what, "all");
++	if (!mons && !objs) { reply(ct, "error clear monsters|objects|all"); return; }
++	if (mons)
++		for (i = 1; i < m_max; i++)
++			if (m_list[i].r_idx && m_list[i].dun_depth == Depth) { delete_monster_idx(i); nm++; }
++	if (objs)
++		for (i = 1; i < o_max; i++)
++			if (o_list[i].k_idx && o_list[i].dun_depth == Depth && (o_list[i].iy || o_list[i].ix))
++			{ delete_object_idx(i); no++; }
++	reply(ct, "ok cleared %d monster(s), %d object(s) at depth %d", nm, no, Depth);
++}
++
++static void json_str(FILE *fp, cptr s)
++{
++	fputc('"', fp);
++	for (; *s; s++)
++	{
++		if (*s == '"' || *s == '\\') { fputc('\\', fp); fputc(*s, fp); }
++		else if ((unsigned char)*s < 32) fputc(' ', fp);
++		else fputc(*s, fp);
++	}
++	fputc('"', fp);
++}
++
++/* dbg truth NICK [FILE] */
++static void dbg_truth(connection_type *ct, player_type *p_ptr, int argc, char **argv)
++{
++	int Depth = p_ptr->dun_depth, i, y, x, nm = 0, no = 0;
++	cptr path = argc ? argv[0] : "truth.json";
++	char tmp[1024], tmppath[1024], name[160];
++	FILE *fp;
++	bool first;
++
++	strnfmt(tmppath, sizeof(tmppath), "%s.tmp", path);
++	if (!(fp = fopen(tmppath, "w"))) { reply(ct, "error cannot write %s", tmppath); return; }
++	fprintf(fp, "{\"depth\": %d, \"turn\": %.0f, \"nick\": ", Depth, (double)turn.era * HTURN_ERA_FLIP + (double)turn.turn);
++	json_str(fp, p_ptr->name);
++	fprintf(fp, ",\n\"players\": [");
++	for (i = 1, first = TRUE; i <= NumPlayers; i++)
++	{
++		player_type *q_ptr = Players[i];
++		if (q_ptr->dun_depth != Depth) continue;
++		fprintf(fp, "%s\n {\"name\": ", first ? "" : ",");
++		json_str(fp, q_ptr->name);
++		fprintf(fp, ", \"y\": %d, \"x\": %d, \"hp\": %d, \"mhp\": %d, \"lev\": %d, \"dm\": %s}", q_ptr->py, q_ptr->px,
++			q_ptr->chp, q_ptr->mhp, q_ptr->lev, is_dm_p(q_ptr) ? "true" : "false");
++		first = FALSE;
++	}
++	fprintf(fp, "],\n\"monsters\": [");
++	for (i = 1, first = TRUE; i < m_max; i++)
++	{
++		monster_type *m_ptr = &m_list[i];
++		if (!m_ptr->r_idx || m_ptr->dun_depth != Depth) continue;
++		fprintf(fp, "%s\n {\"m_idx\": %d, \"race\": ", first ? "" : ",", i);
++		json_str(fp, r_name + r_info[m_ptr->r_idx].name);
++		fprintf(fp, ", \"r_idx\": %d, \"y\": %d, \"x\": %d, \"hp\": %d, \"maxhp\": %d, \"sleep\": %d, \"speed\": %d,"
++			" \"seen\": %s, \"los\": %s}", m_ptr->r_idx, m_ptr->fy, m_ptr->fx, m_ptr->hp, m_ptr->maxhp, m_ptr->csleep,
++			m_ptr->mspeed, p_ptr->mon_vis[i] ? "true" : "false", p_ptr->mon_los[i] ? "true" : "false");
++		first = FALSE;
++		nm++;
++	}
++	fprintf(fp, "],\n\"objects\": [");
++	for (i = 1, first = TRUE; i < o_max; i++)
++	{
++		object_type *o_ptr = &o_list[i];
++		if (!o_ptr->k_idx || o_ptr->dun_depth != Depth || (!o_ptr->iy && !o_ptr->ix)) continue;
++		object_desc(p_ptr, name, sizeof(name), o_ptr, TRUE, 3);
++		fprintf(fp, "%s\n {\"o_idx\": %d, \"kind\": ", first ? "" : ",", i);
++		json_str(fp, k_name + k_info[o_ptr->k_idx].name);
++		fprintf(fp, ", \"k_idx\": %d, \"tval\": %d, \"sval\": %d, \"ego\": ", o_ptr->k_idx, o_ptr->tval, o_ptr->sval);
++		json_str(fp, o_ptr->name2 ? e_name + e_info[o_ptr->name2].name : "");
++		fprintf(fp, ", \"artifact\": %d, \"number\": %d, \"y\": %d, \"x\": %d, \"as_seen\": ", o_ptr->name1,
++			o_ptr->number, o_ptr->iy, o_ptr->ix);
++		json_str(fp, name);
++		fprintf(fp, "}");
++		first = FALSE;
++		no++;
++	}
++	/* the map: each square's feature as its f_info character; and what NICK remembers (1) or not (0) */
++	fprintf(fp, "],\n\"map\": [");
++	for (y = 0; y < MAX_HGT; y++)
++	{
++		for (x = 0; x < MAX_WID; x++)
++		{
++			char c = f_info[cave[Depth][y][x].feat].d_char;
++			tmp[x] = (c >= 32 && c != '"' && c != '\\') ? c : '?';
++		}
++		tmp[MAX_WID] = '\0';
++		fprintf(fp, "%s\n \"%s\"", y ? "," : "", tmp);
++	}
++	fprintf(fp, "],\n\"known\": [");
++	for (y = 0; y < MAX_HGT; y++)
++	{
++		for (x = 0; x < MAX_WID; x++) tmp[x] = (p_ptr->cave_flag[y][x] & CAVE_MARK) ? '1' : '0';
++		tmp[MAX_WID] = '\0';
++		fprintf(fp, "%s\n \"%s\"", y ? "," : "", tmp);
++	}
++	fprintf(fp, "]}\n");
++	fclose(fp);
++	if (rename(tmppath, path)) { reply(ct, "error cannot rename %s to %s", tmppath, path); return; }
++	reply(ct, "ok truth %s: %d monster(s), %d object(s), depth %d", path, nm, no, Depth);
++}
++
++void console_dbg(connection_type *ct, char *params)
++{
++	char buf[1024], *argv[32], *s;
++	int argc = 0, Ind;
++	player_type *p_ptr;
++
++	if (!dbg_enabled()) { reply(ct, "error debug commands are off (start the server with MANGBAND_DEBUG_COMMANDS=1)"); return; }
++	if (!islocalfd(ct->conn_fd)) { reply(ct, "error debug commands are local only"); return; }
++	my_strcpy(buf, params ? params : "", sizeof(buf));
++	for (s = strtok(buf, " "); s && argc < 32; s = strtok(NULL, " ")) argv[argc++] = s;
++	if (!argc || !strcmp(argv[0], "help"))
++	{
++		reply(ct, "ok dbg place|item|terrain|player|teleport|depth|clear|truth NICK ... (src/server/dbgcmd.c)");
++		return;
++	}
++	if (argc < 2) { reply(ct, "error dbg %s NICK ...", argv[0]); return; }
++	if (!(Ind = find_player_name(argv[1]))) { reply(ct, "error no player %s logged in", argv[1]); return; }
++	p_ptr = Players[Ind];
++	if (!cave[p_ptr->dun_depth]) { reply(ct, "error %s's level is not loaded", p_ptr->name); return; }
++
++	if (!strcmp(argv[0], "place")) dbg_place(ct, p_ptr, argc - 2, argv + 2);
++	else if (!strcmp(argv[0], "item")) dbg_item(ct, p_ptr, argc - 2, argv + 2);
++	else if (!strcmp(argv[0], "terrain")) dbg_terrain(ct, p_ptr, argc - 2, argv + 2);
++	else if (!strcmp(argv[0], "player")) dbg_player(ct, p_ptr, argc - 2, argv + 2);
++	else if (!strcmp(argv[0], "teleport")) dbg_teleport(ct, p_ptr, argc - 2, argv + 2);
++	else if (!strcmp(argv[0], "depth")) dbg_depth(ct, p_ptr, argc - 2, argv + 2);
++	else if (!strcmp(argv[0], "clear")) dbg_clear(ct, p_ptr, argc - 2, argv + 2);
++	else if (!strcmp(argv[0], "truth")) dbg_truth(ct, p_ptr, argc - 2, argv + 2);
++	else reply(ct, "error unknown dbg command %s", argv[0]);
++}

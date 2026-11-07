@@ -52,7 +52,7 @@ if [ $export = 1 ]; then
     say "uncommitted changes in $TREE: commit them first"; exit 1
   fi
   rm -f "$HERE"/patches/*.patch
-  git -C "$TREE" format-patch -q --zero-commit --no-signature --full-index -o "$HERE/patches" "$base"..HEAD
+  git -C "$TREE" format-patch -q --no-numbered --zero-commit --no-signature --full-index -o "$HERE/patches" "$base"..HEAD
   patches_sum > "$TREE/$STAMP"
   ls "$HERE"/patches/*.patch
   say "patches/ rewritten from $TREE; review with git diff, then commit"

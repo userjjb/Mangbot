@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: jbevan <jbevan@bu.edu>
 Date: Wed, 7 Oct 2026 08:49:06 -0400
-Subject: [PATCH 5/5] Server: send the depth indicator as 16 bits
+Subject: [PATCH] Server: send the depth indicator as 16 bits
 
 The depth indicator was a signed byte (TINY), which wraps in the far
 wilderness. Sent as NORMAL (16 bits) instead. This changes what the server

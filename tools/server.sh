@@ -1,21 +1,22 @@
 #!/bin/bash
 # server.sh start|stop|status|clone -- run a local MAngband server (session 13, 2026-11-07).
-# Which server: $MANGBOT_SERVER (test = testserver/, port 28346, the default; sp = spserver/, port 28350, the
-# set-piece server: tools/servers.sh).
+# Which server: $MANGBOT_SERVER (local = testserver/, port 28346, the default; debug = debugserver/, port 28350, the
+# debug server: tools/servers.sh).
 #
 #   server.sh status            running? (pid, binary, port, players' savefiles, freeze)
 #   server.sh start             start it from its directory, under gdb (a crash leaves a backtrace in gdb_run.log),
 #                               with MANGBAND_FREEZE_FILE=<dir>/FREEZE (tools/freeze.sh) and gdb passing SIGTERM on,
-#                               so `stop` is a clean save (files.c handle_signal_simple -> shutdown_server)
+#                               so `stop` is a clean save (files.c handle_signal_simple -> shutdown_server); the debug
+#                               server also gets MANGBAND_DEBUG_COMMANDS=1 (its test commands: tools/debugctl.py)
 #   server.sh stop [--now]      park the profile's Pilots first (restart.sh's way; a Pilot left connected would see
 #                               the server vanish), then SIGTERM. A server started before 2.72.2 (plain gdb: gdb
 #                               catches the SIGTERM and kills the server unsaved) is stopped only after its next
 #                               autosave, unless --now
-#   MANGBOT_SERVER=sp server.sh clone [NICK...]
-#                               the set-piece server becomes a copy of the test world: testserver/save -> spserver/save
+#   MANGBOT_SERVER=debug server.sh clone [NICK...]
+#                               the debug server becomes a copy of the local world: testserver/save -> debugserver/save
 #                               (every savefile, the houses, the levels; Gandalf too), and each NICK's Pilot state
-#                               (default Dive04) runs/pilot/<nick> -> runs/sp/pilot/<nick> (state files only, no logs),
-#                               plus runs/flavours.json. The sp server must be stopped. The copy is as of the test
+#                               (default Dive04) runs/pilot/<nick> -> runs/debug/pilot/<nick> (state files only, no logs),
+#                               plus runs/flavours.json. The debug server must be stopped. The copy is as of the local
 #                               server's last save of each file (a character online there: its last autosave)
 set -u
 HERE=$(cd "$(dirname "$0")" && pwd)
@@ -46,7 +47,9 @@ start)
     [ -f "$MB_DIR/mangband.cfg" ] || { echo "no $MB_DIR/mangband.cfg"; exit 1; }
     [ -x "$BIN" ] || { echo "no server binary at $BIN: run github/build.sh"; exit 1; }
     cd "$MB_DIR"    # (the -c flag is broken, init2.c:2362: the server reads mangband.cfg from its cwd)
-    MANGBAND_FREEZE_FILE=$MB_FREEZE nohup gdb -batch -ex "handle SIGTERM nostop noprint pass" -ex run -ex bt \
+    # the debug server's test commands (dbgcmd.c, tools/debugctl.py): on for the debug server only
+    DBG=0; [ "$MB_SERVER" = debug ] && DBG=1
+    MANGBAND_DEBUG_COMMANDS=$DBG MANGBAND_FREEZE_FILE=$MB_FREEZE nohup gdb -batch -ex "handle SIGTERM nostop noprint pass" -ex run -ex bt \
         --args "$BIN" >> gdb_run.log 2>&1 &
     for i in $(seq 1 30); do grep -q "Server is running" <(tail -5 gdb_run.log) && break; sleep 1; done
     pid=$(server_pid) || { echo "did not start: see $MB_DIR/gdb_run.log"; tail -5 gdb_run.log; exit 1; }
@@ -77,8 +80,8 @@ stop)
     echo "$MB_SERVER server stopped"; tail -3 "$MB_DIR/gdb_run.log" | grep -v "^\["
     ;;
 clone)
-    [ "$MB_SERVER" = sp ] || { echo "clone makes the set-piece server a copy: run it as MANGBOT_SERVER=sp server.sh clone"; exit 1; }
-    pid=$(server_pid) && { echo "the sp server is running (pid $pid): MANGBOT_SERVER=sp tools/server.sh stop first"; exit 1; }
+    [ "$MB_SERVER" = debug ] || { echo "clone makes the debug server a copy: run it as MANGBOT_SERVER=debug server.sh clone"; exit 1; }
+    pid=$(server_pid) && { echo "the debug server is running (pid $pid): MANGBOT_SERVER=debug tools/server.sh stop first"; exit 1; }
     SRC=$MB_ROOT/testserver
     [ $# -gt 0 ] || set -- Dive04
     mkdir -p "$MB_DIR/save" "$MB_DIR/data" "$MB_DIR/bone" "$MB_RUNS/pilot"
@@ -95,7 +98,7 @@ clone)
             "$MB_ROOT/runs/pilot/$low/" "$MB_RUNS/pilot/$low/"
         echo "cloned $nick: savefile $(date -r "$MB_DIR/save/$nick" +%m-%d_%H:%M:%S 2>/dev/null), Pilot state $(ls "$MB_RUNS/pilot/$low" | wc -l) files"
     done
-    echo "the sp world is a copy of the test world as of its last saves (server file $(date -r "$MB_DIR/save/server" +%m-%d_%H:%M:%S))"
+    echo "the debug world is a copy of the local world as of its last saves (server file $(date -r "$MB_DIR/save/server" +%m-%d_%H:%M:%S))"
     ;;
 *) sed -n '2,22p' "$0"; exit 2 ;;
 esac

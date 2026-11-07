@@ -3,11 +3,11 @@
 # (restructure step 4: set-pieces hurt the character on purpose; Dive04 keeps nothing from them)
 # The Pilot is parked (it logs out at a safe moment, and the server writes the savefile), then
 # the savefile and the Pilot's own state (orders, deepest, plan, standing, debt, keep, stores)
-# are copied to runs/setpieces/saves/TAG/ (save) or back (restore), and the Pilot is started. MANGBOT_SERVER=sp:
-# spserver/save and runs/sp/ instead (tools/servers.sh).
+# are copied to runs/setpieces/saves/TAG/ (save) or back (restore), and the Pilot is started. MANGBOT_SERVER=debug:
+# debugserver/save and runs/debug/ instead (tools/servers.sh).
 set -u
 HERE=$(cd "$(dirname "$0")" && pwd); ROOT=$(cd "$HERE/../../.." && pwd)
-source "$HERE/../servers.sh" || exit 1     # $MANGBOT_SERVER: test (default) or sp, the set-piece server
+source "$HERE/../servers.sh" || exit 1     # $MANGBOT_SERVER: local (default) or debug, the debug server
 OP=${1:?usage: charsave.sh save|restore NICK TAG [PORT]}; NICK=${2:?}; TAG=${3:?}; PORT=${4:-$MB_PORT}
 RUNS=$MB_RUNS
 ARCH_TOKEN=$ROOT/runs/private/architect.token   # park is the Architect's (2.45.0)

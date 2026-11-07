@@ -70,7 +70,7 @@ mission's problems become Pilot rules.
 | Path | What |
 |---|---|
 | `build.sh` | fetches upstream MAngband (1.5.3 + its master branch to 2022-03-13, pinned and hash-checked), applies `patches/`, builds the server `mangband` and the tool client `mangclient` in `build/mangband/`, and links `./mangband`, `./mangclient`, `./lib` and `./src` to them |
-| `patches/` | our C changes, one `git format-patch` file per topic: packet logger, tool-mode client, time freeze, store-crash fix, 16-bit depth indicator. `./build.sh --export` rewrites them after C work in `build/mangband` |
+| `patches/` | our C changes, one `git format-patch` file per topic: packet logger, tool-mode client, time freeze, store-crash fix, 16-bit depth indicator, the debug server's test commands (`dbg` on the console: place monsters/items/terrain, set player state, dump the level's ground truth; off unless enabled). `./build.sh --export` rewrites them after C work in `build/mangband` |
 | `tools/pilot/` | the Pilot: `pilot.py` (core and tick loop) and its modules -- `combat.py`, `items.py`, `town.py`, `gear.py`, `commands.py` + `cmdtable.py` (every `pilotctl` command), `goals.py`, `town_goals.py`, `plan.py`, `stomach.py`, `world.py`, `mover.py`...; `pilotctl.py` (the Navigator's interface); **`HANDBOOK.md`** and `FIELD-NOTES.md` (the Navigator's manual and lessons) |
 | `tools/harness/` | unit cases (`unit.py`, `unit_*.py`), live set-pieces (`setpiece.py`), the DM driver, the refactor equivalence harness |
 | `tools/observe/` | `watch.py` (live viewer), `watch_mission.py` (the Architect's monitor), `scorecard.py`, `tokens.py`, `wrap.sh` |
