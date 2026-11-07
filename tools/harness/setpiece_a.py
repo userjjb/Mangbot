@@ -208,6 +208,13 @@ def a2l(run):
     a2(run, who="Lugdush, the Uruk")
 
 
+def a2u(run):
+    """A2U (refactor list A25, session 13): as A2 with Lokkak, the Ogre Chieftain -- level 32, a unique above clvl-30
+    Dive04, so the danger rule 'unique, lvl 32' fires: Word of Recall within 2 s of first sight, lowest HP >= 40%.
+    The set-piece server only (MANGBOT_SERVER=sp: a copy of Dive04 -- this one can kill it)."""
+    a2(run, who="Lokkak, the Ogre Chieftain")
+
+
 def a3(run):
     """A3: a fast hitter (a Sabre-tooth tiger, +10, alone) adjacent, then a goto 12+ squares off: the goto is held
     (walking away hands it free hits) and Dive04 doesn't walk while it's adjacent. (A Nighthawk died to auto-retaliate

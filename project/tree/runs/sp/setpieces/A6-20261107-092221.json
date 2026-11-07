@@ -1,0 +1,116 @@
+{
+ "id": "A6",
+ "tag": "A6-20261107-092221",
+ "depth_ft": 300,
+ "start": "2026-11-07 09:22:21",
+ "checks": {
+  "at most 3 Phase Door": {
+   "pass": true,
+   "detail": "0 reads"
+  },
+  "Phase Door never runs out": {
+   "pass": true,
+   "detail": "10 -> 10"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [337, 369]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   369,
+   369
+  ],
+  "hp_min": [
+   337,
+   369
+  ],
+  "attention": [
+   [
+    5.5,
+    "lost",
+    "destroyed: one of Potions of Cure Serious Wounds -- by \"The Gnome mage casts a frost bolt.\" (One of "
+   ],
+   [
+    13.1,
+    "interesting_item",
+    "Scimitar (2d5) seen on this level at 15,173 (6 away): fetching it once the area is clear"
+   ],
+   [
+    17.4,
+    "tactic",
+    "picking up the gold 5 squares away"
+   ],
+   [
+    18.5,
+    "goal_done",
+    "goto 15,174"
+   ],
+   [
+    20.4,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    20.5,
+    "goal_done",
+    "goto 14,173"
+   ],
+   [
+    23.4,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    23.5,
+    "goal_done",
+    "goto 15,172"
+   ],
+   [
+    26.4,
+    "tactic",
+    "picking up the gold 1 squares away"
+   ],
+   [
+    26.5,
+    "goal_done",
+    "goto 14,173"
+   ],
+   [
+    29.5,
+    "tactic",
+    "picking up the gold 2 squares away"
+   ],
+   [
+    31.1,
+    "goal_done",
+    "goto 16,172"
+   ]
+  ],
+  "acts": [
+   [
+    7.2,
+    "engage",
+    "engage Gnome mage (L15, 6 away) on the way"
+   ],
+   [
+    29.6,
+    "custom ,",
+    "pick up: a Scimitar (2d5)."
+   ],
+   [
+    32.5,
+    "custom { item=15 entry=sp-A6-20261107-092221",
+    "mark a find of sp-A6-20261107-092221: a Scimitar (2d5)"
+   ]
+  ],
+  "emergencies": 0,
+  "phase_reads": 0,
+  "wor_reads": 0,
+  "cures": 0
+ },
+ "end": "2026-11-07 09:25:34",
+ "pass": true
+}

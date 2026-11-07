@@ -208,3 +208,4 @@
 - 2026-11-03 08:43:55 **A6** PASS (at most 3 Phase Door, Phase Door never runs out, lowest HP >= 40%) `A6-20261103-084355.json`
 - 2026-11-03 17:18:35 **M2** PASS (the wand fetched, then down the '>' within 60 s) `M2-20261103-171835.json`
 - 2026-11-03 17:21:48 **A6** PASS (at most 3 Phase Door, Phase Door never runs out, lowest HP >= 40%) `A6-20261103-172148.json`
+- 2026-11-07 09:15:27 **A6** PASS (at most 3 Phase Door, Phase Door never runs out, lowest HP >= 40%) `A6-20261107-091527.json`

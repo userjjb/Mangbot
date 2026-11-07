@@ -38,8 +38,13 @@ can read them. Memory now only points here.) Credentials are **not** in this fil
 
 - `testserver/` has its own `mangband.cfg` (port 28346, `NEWBIES_CANNOT_DROP=false`). The `-c`
   flag is broken (init2.c:2362), so run it from that directory. Stop it with SIGTERM (clean save).
-- Run it under gdb to catch crashes: `cd testserver && MANGBAND_FREEZE_FILE=$PWD/FREEZE nohup gdb -batch -ex run
-  -ex bt --args ../github/mangband >> gdb_run.log 2>&1 &`.
+- Start/stop/status: `github/tools/server.sh start|stop|status` (2.72.2): under gdb (crash backtraces in
+  `gdb_run.log`), gdb passing SIGTERM on so `stop` is a clean save, with `MANGBAND_FREEZE_FILE` set; `stop` parks the
+  server's Pilots first. (By hand: `cd testserver && MANGBAND_FREEZE_FILE=$PWD/FREEZE nohup gdb -batch -ex "handle
+  SIGTERM nostop noprint pass" -ex run -ex bt --args ../github/mangband >> gdb_run.log 2>&1 &`.)
+- **The set-piece server** (2.72.2): `spserver/`, port 28350, runs root `runs/sp/`, selected by `MANGBOT_SERVER=sp`
+  in every command's environment; a copy of this world (`MANGBOT_SERVER=sp tools/server.sh clone`), so set-pieces
+  never touch the real Dive04. docs/harness-rulebook-ops.md "The set-piece server".
 - **Time freeze (test server only, 2026-10-25, the user):** with `MANGBAND_FREEZE_FILE` set, the server processes
   no game turns while that file exists (net-server.c `time_frozen`; checked on every 10th pass of the server loop, many times a second; players get "*** Time
   is frozen ***"). Toggle: `github/tools/freeze.sh on|off|toggle|status`, or F5/Ctrl-F in the viewer. The Pilot

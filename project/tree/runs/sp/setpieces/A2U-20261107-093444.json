@@ -1,0 +1,117 @@
+{
+ "id": "A2U",
+ "tag": "A2U-20261107-093444",
+ "depth_ft": 350,
+ "start": "2026-11-07 09:34:44",
+ "checks": {
+  "Word of Recall within 2 s of first sight": {
+   "pass": true,
+   "detail": "seen at 4.186239242553711, danger rule at 3.9, recall read at 4.0"
+  },
+  "lowest HP >= 40%": {
+   "pass": true,
+   "detail": "lowest [246, 369]"
+  }
+ },
+ "notes": [],
+ "stats": {
+  "hp_start": [
+   369,
+   369
+  ],
+  "hp_min": [
+   246,
+   369
+  ],
+  "attention": [
+   [
+    3.9,
+    "danger_seen",
+    "Lokkak, the Ogre Chieftain (unique, lvl 32) in view: heading for the stairs"
+   ],
+   [
+    4.0,
+    "goal_failed",
+    "flee (Lokkak, the Ogre Chieftain): no stairs known"
+   ],
+   [
+    4.0,
+    "emergency",
+    "couldn't reach the stairs with 2 monsters close: read Word of Recall (8-23 s); phasing while it char"
+   ],
+   [
+    4.2,
+    "band",
+    "a band within 10 squares: Cave ogre \u00d74, Ogre \u00d74, Lokkak, the Ogre Chieftain, Ogre shaman (10 monster"
+   ],
+   [
+    4.5,
+    "emergency",
+    "HP 330 within 3 turns of the worst (406): quaffed a Potion of Speed first"
+   ],
+   [
+    5.1,
+    "emergency",
+    "HP 287 within 3 turns of the worst (406): 10 about in the open: a Scroll of Teleportation"
+   ],
+   [
+    6.8,
+    "unseen_attacker",
+    "'It makes a high pitched shriek.': a shrieker (no damage; it wakes monsters nearby); carrying on"
+   ]
+  ],
+  "acts": [
+   [
+    4.0,
+    "custom r item=9",
+    "flee failed with monsters close: word of recall"
+   ],
+   [
+    4.5,
+    "custom q item=1",
+    "HP 330 within 3 turns of the worst (406): quaff 2 Potions of Speed (an emergency"
+   ],
+   [
+    5.1,
+    "custom r item=8",
+    "HP 287 within 3 turns of the worst (406): teleport (10 about in the open)"
+   ],
+   [
+    5.7,
+    "rest",
+    "rest"
+   ],
+   [
+    6.8,
+    "rest",
+    "rest"
+   ],
+   [
+    7.8,
+    "rest",
+    "rest"
+   ],
+   [
+    8.8,
+    "rest",
+    "rest"
+   ],
+   [
+    9.9,
+    "rest",
+    "rest"
+   ],
+   [
+    21.9,
+    "custom t item=29",
+    "in town and idle: light off (it burns while resting)"
+   ]
+  ],
+  "emergencies": 3,
+  "phase_reads": 0,
+  "wor_reads": 1,
+  "cures": 0
+ },
+ "end": "2026-11-07 09:37:29",
+ "pass": true
+}

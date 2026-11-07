@@ -9,6 +9,7 @@ import collections
 import os
 import re
 import threading
+import sys
 import time
 
 from glyphs import Glyphs
@@ -46,8 +47,10 @@ _LOCK = threading.Lock()
 # The test server's time freeze (the user, 10-25): while this file exists the server processes no game turns
 # (net-server.c time_frozen, with $MANGBAND_FREEZE_FILE), so our game clock stops too. `tools/freeze.sh`, the
 # viewer's F key. The live server has no such file: never frozen there.
-FREEZE_FILE = os.environ.get("MANGBAND_FREEZE_FILE") or \
-    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "testserver", "FREEZE")
+# ($MANGBOT_SERVER picks the server: testserver/FREEZE or spserver/FREEZE; tools/servers.py)
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
+import servers                                   # noqa: E402
+FREEZE_FILE = os.environ.get("MANGBAND_FREEZE_FILE") or servers.FREEZE
 FROZEN_F = 1e-6
 _FROZEN = {"t": 0.0, "on": False}
 

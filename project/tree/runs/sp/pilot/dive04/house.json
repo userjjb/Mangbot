@@ -1,0 +1,95 @@
+{
+ "house": {
+  "area": 4,
+  "door": [
+   60,
+   129
+  ],
+  "step_in": [
+   60,
+   128
+  ],
+  "outside": [
+   60,
+   130
+  ],
+  "box": [
+   59,
+   124,
+   61,
+   129
+  ],
+  "depth": -1,
+  "cross": {
+   "town": [
+    1,
+    130
+   ],
+   "wild": [
+    64,
+    130
+   ],
+   "depth": -1
+  },
+  "price": 5455,
+  "bought": "2026-10-27 18:00"
+ },
+ "banked": 53898,
+ "t": "2026-11-05 13:22",
+ "old_houses": [
+  {
+   "area": 1,
+   "door": [
+    38,
+    155
+   ],
+   "step_in": [
+    38,
+    156
+   ],
+   "outside": [
+    38,
+    154
+   ],
+   "box": [
+    37,
+    155,
+    39,
+    157
+   ],
+   "price": 10125,
+   "bought": "2026-10-27 17:34",
+   "sold": "2026-10-27 19:53 for 1012"
+  }
+ ],
+ "items": {
+  "60,125": {
+   "name": "a Scimitar of Westernesse (2d5) (+9,+8) (+1)",
+   "value": 8780,
+   "t": "2026-11-04 09:06",
+   "fresh": false,
+   "mission": null
+  },
+  "60,126": {
+   "name": "a Pair of Soft Leather Boots of Stability [2,+6] {excellent - m66}",
+   "value": 3645,
+   "t": "2026-11-05 10:50",
+   "fresh": false,
+   "mission": null
+  },
+  "60,127": {
+   "name": "3 Wands of Stone to Mud (17 charges)",
+   "value": 520,
+   "t": "2026-11-05 10:55",
+   "fresh": false,
+   "mission": null
+  }
+ },
+ "tavern": {
+  "entrance": [
+   27,
+   89
+  ],
+  "items": {}
+ }
+}

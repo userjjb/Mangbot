@@ -27,6 +27,18 @@ chats; "session 1" covers the unnamed chats before the evening of 2026-09-27.
 From 2026-10-22: after mission 23 the user stopped patching mission by mission. Instruments came first, then plans
 (`plan town`, `plan trip`), the Advisor's rulebook, the set-piece harness, scored missions, and gear tools.
 
+## 2.72.2 -- 2026-11-07 (session 13: the set-piece server)
+Nothing in play changes. **A second local server for set-pieces on copies** (the user's TODOs 3-4, HANDOFF 12 item 3):
+`spserver/`, port 28350 (a server also holds port + 1 for its console: 28347 is the test server's), its own config,
+saves, freeze file and runs root `runs/sp/`. `MANGBOT_SERVER=sp` in a command's environment selects it everywhere
+(`tools/servers.py` / `servers.sh`: the Pilot's default port and run directory, pilotctl, the freeze, the viewer, the
+monitors, restart/hotswap/charsave, the set-piece framework, the DM). `tools/server.sh start|stop|status|clone`: gdb now
+passes SIGTERM on, so a stop is the server's clean save (before, gdb caught it and the server died unsaved); `stop`
+parks the server's Pilots first; `clone` copies the test world (every savefile, houses, levels) and Dive04's Pilot
+state into the set-piece server. The Pilot scripts match a Pilot by nick and port (Dive04 runs twice). New set-piece
+**A2U** (refactor list A25): Lokkak, a unique above Dive04's level -- refused outside the set-piece server; PASS 11-07 on the copy (recall read 0.1 s after the danger rule, lowest HP 67%). A6 PASS there and on the test server.
+`snapshot.sh` keeps `spserver/` saves and logs and `runs/sp/private` out of the public repo.
+
 ## 2.72.1 -- 2026-11-07 (session 13: the repo as a patcher)
 Nothing in play changes (the binaries have the same machine code). **The repo holds only our work** (the user, 11-04:
 most top-level files were unmodified MAngband): `README.md` (the front page, was `.github/README.md`), `build.sh`,

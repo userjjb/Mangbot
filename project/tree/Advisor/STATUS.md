@@ -139,7 +139,7 @@ The user struck one lead (2026-10-07): the live fetch of Bug Reports / Technical
 
 ## Facts a new chat tends to re-derive (verified; cite the memos)
 
-- Server = upstream develop c97e873 (plays as 1.5.3). `monster.txt` unchanged since 2008.
+- Server = upstream develop c97e873 (plays as 1.5.3). Since 2.72.1 (11-07) github/ is a patcher: github/src, github/lib are links into github/build/mangband/ (byte-identical); C history: git -C github/build/mangband log. `monster.txt` unchanged since 2008.
 - **Dive04** (10-22): Half-Orc Warrior clvl 22, 254 HP (265 after Restore CON 10-23), **CHR 3 (natural 4, Rot-jelly drain)** (shop % from `shop_owners.csv`), **no Free Action** (it had it m18–m23 from
   unidentified Boots of Free Action, force-sold for 3 gold in m23). Navigator: Opus to m21, Sonnet m22–23.
 - Selling identifies (price set before the item is known): an UNIDENTIFIED item sells at its kind's base cost (`store.c:192`, object_value_base;

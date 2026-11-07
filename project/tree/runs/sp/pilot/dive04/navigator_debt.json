@@ -1,0 +1,21 @@
+{
+ "entries": [
+  {
+   "t": "2026-10-24 04:29:21",
+   "gold": 44,
+   "what": "a Staff of Object Location (11 charges)",
+   "why": "sold with ! over the value policy"
+  }
+ ],
+ "waived": [
+  {
+   "t": "2026-11-04 22:32:13",
+   "gold": 276,
+   "what": "a Lead-Filled Mace (3d4) {average - m67}",
+   "why": "destroyed with ! over the value policy",
+   "waived_by": "architect",
+   "waived_t": "2026-11-04 23:00:21",
+   "waived_why": "the user waived it: their order to destroy the Lead-Filled Mace (m67 22:38)"
+  }
+ ]
+}

@@ -306,9 +306,11 @@ has its own mover).
 
 ### Test-server procedures (summary of [`operations.md`](../operations.md))
 
-- **Start the server:** from `testserver/` (the `-c` flag is broken), under gdb to catch crashes, **with the freeze
-  variable**: `cd testserver && MANGBAND_FREEZE_FILE=$PWD/FREEZE nohup gdb -batch -ex run -ex bt --args
-  ../github/mangband >> gdb_run.log 2>&1 &`. Stop with SIGTERM (clean save). Port 28346. A crash rolls characters back
+- **Start/stop the server (2.72.2):** `tools/server.sh start|stop|status` -- from `testserver/` (the `-c` flag is
+  broken), under gdb (a crash leaves a backtrace in `gdb_run.log`) with `handle SIGTERM nostop noprint pass` (so a
+  stop is the server's clean shutdown, "Server state saved"; before 2.72.2 gdb caught the SIGTERM and killed the
+  server unsaved), **with the freeze variable** `MANGBAND_FREEZE_FILE=<dir>/FREEZE`. `stop` parks the server's Pilots
+  first; for an old-style gdb it waits for the next autosave (`--now` skips). Port 28346. A crash rolls characters back
   to their last save. Check processes with `pgrep -af "gdb -batch|pilot.py"`.
 - **Freeze:** `tools/freeze.sh on|off|toggle|status` (or F5 / Ctrl-F in the viewer). Test server only.
 - **Start or update the Pilot:** `tools/pilot/restart.sh Dive04` while Dive04 is idle in town; mid-mission,
@@ -321,9 +323,29 @@ has its own mover).
   (`charsave.sh` does); the freeze stops the idle timer, which is what makes `hotswap.sh` safe.
 - **Keep tool characters out of the wilderness** on the test server (the arena crash).
 
+### The set-piece server (`MANGBOT_SERVER=sp`, session 13, 2.72.2)
+
+A second local server, `spserver/` (port **28350**; a server also holds port + 1 for its console, so 28347 is the test
+server's), for set-pieces on **copies**: nothing there touches the real Dive04, its gold or its house. Its own
+`mangband.cfg` (the test server's with its port and `spserver/{data,save,bone}`), freeze file and runs root
+`runs/sp/` (`pilot/<nick>`, `setpieces/` with its own `results.md`, `missions.json`, `flavours.json`; `private` is a
+link to `runs/private`). Same binary (`github/mangband`).
+- **Choose the server with `MANGBOT_SERVER`** (`test`, the default, or `sp`) in the environment of every command:
+  `tools/servers.py` / `tools/servers.sh` (one table) give the port, the server directory, the freeze file and the runs
+  root to the Pilot (`daemon.py`: default `--port`, the run directory), `pilotctl.py`, `world.py` (freeze), `watch.py`,
+  `watch_mission.py`, `logs.py`, `restart.sh`, `hotswap.sh`, `charsave.sh`, `freeze.sh`, `setpiece_run.py`, `dm.py`.
+  The Pilot scripts match a Pilot by `--nick NICK --port PORT`, so Dive04's two Pilots (28346, 28350) never mix.
+- **Make the copy:** `MANGBOT_SERVER=sp tools/server.sh clone [NICK...]` (the sp server stopped): `testserver/save/` ->
+  `spserver/save/` (every savefile, the houses, the levels, Gandalf), each NICK's Pilot state files (`*.json`,
+  `visuals.txt`; default Dive04) -> `runs/sp/pilot/<nick>/`, `runs/flavours.json`. The copy is as of the test server's
+  last save of each file. Re-clone whenever the copy should catch up (or after it dies).
+- **Run:** `MANGBOT_SERVER=sp tools/server.sh start`, `MANGBOT_SERVER=sp tools/pilot/restart.sh Dive04`, then
+  `MANGBOT_SERVER=sp python3 setpiece.py ID`. Set-pieces that can kill the character are refused elsewhere
+  (`setpiece.py` `SP_ONLY`: A2U).
+
 ### `freeze.sh`
 
-`freeze.sh on|off|toggle|status` creates/removes `testserver/FREEZE` (contents "frozen by USER HH:MM:SS"). With the
+`freeze.sh on|off|toggle|status` creates/removes `testserver/FREEZE` (`spserver/FREEZE` with `MANGBOT_SERVER=sp`; contents "frozen by USER HH:MM:SS"). With the
 server started with `MANGBAND_FREEZE_FILE`, no game turns run while the file exists (`net-server.c time_frozen`,
 checked every 10 ticks; players see "*** Time is frozen (test server) ***"); the Pilot stops its game clock and holds (answers
 requests, acts on nothing). Logins work while frozen. Without the variable (any other server) nothing freezes.

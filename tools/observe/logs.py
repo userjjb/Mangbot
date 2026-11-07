@@ -25,7 +25,9 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-RUNS = os.path.abspath(os.path.join(HERE, "..", "..", "..", "runs"))
+sys.path.insert(0, os.path.join(HERE, ".."))
+import servers                          # noqa: E402
+RUNS = servers.RUNS                     # runs/, or runs/sp/ with MANGBOT_SERVER=sp
 INF = float("inf")
 
 

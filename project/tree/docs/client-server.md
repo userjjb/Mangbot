@@ -246,7 +246,7 @@ server restarted.
 
 | | Test server | Live server |
 |---|---|---|
-| Where | local, port 28346, `testserver/` (own `mangband.cfg`, `save/`, `bone/`, `data/`; game data from `github/lib`) | mangband.org:18346, a shared world with real players; the operator allows automated clients |
+| Where | local, port 28346, `testserver/` (own `mangband.cfg`, `save/`, `bone/`, `data/`; game data from `github/lib`); the set-piece server `spserver/`, port 28350, a copy (2.72.2) | mangband.org:18346, a shared world with real players; the operator allows automated clients |
 | Binary | our `github/mangband` (freeze, store guards, 16-bit depth) | upstream 1.5.3 (patched by its admins for the arena overflow) |
 | Started | `cd testserver && MANGBAND_FREEZE_FILE=$PWD/FREEZE nohup gdb -batch -ex run -ex bt --args ../github/mangband >> gdb_run.log 2>&1 &` (run from its directory: `-c` is broken); stop with SIGTERM (clean save) | — |
 | Config | DM `Gandalf` (secret), `NEWBIES_CANNOT_DROP=false`, `LEVEL_UNSTATIC_CHANCE=30`, `MAX_HOUSES=0`, not on the metaserver | unknown |
@@ -274,7 +274,9 @@ The client is the same for both.
   `wilderness.c`) and the server segfaults later. Keep tool characters out of the far wilderness there (live is patched).
 - **Same nickname twice:** a second login kicks the first ("Reconnect from other location").
 - **Ports:** `pilot.py`, `MangClient`, `shopcat.py`, `newchar.py` and `record.py` default to 28346, the test server
-  (2.43.0, F1; they defaulted to the live 18346); `pilot.py` refuses 18346 without `--live`.
+  (2.43.0, F1; they defaulted to the live 18346); `pilot.py` refuses 18346 without `--live`. `pilot.py`, `dm.py` and
+  the scripts take `MANGBOT_SERVER=sp`'s 28350 instead (the set-piece server, 2.72.2; `tools/servers.py`). Each server
+  also listens on port + 1 (the console).
 - **Config rewrite:** the client rewrites its `--config` file on exit; never point it at the tracked `github/.mangrc`.
 - `quit(msg)` treats a message starting with `-` as an exit code. Stat names arrive as `"STR: "`.
 - Inventory data arrives ~1 s after `ready`.

@@ -12,8 +12,9 @@ set -u
 NOW=0; ARGS=()
 for a in "$@"; do [ "$a" = "--now" ] && NOW=1 || ARGS+=("$a"); done
 set -- "${ARGS[@]}"
-NICK=${1:?usage: hotswap.sh NICK [PORT] [--now]}; PORT=${2:-28346}
-HERE=$(cd "$(dirname "$0")" && pwd); RUNS=$(cd "$HERE/../../.." && pwd)/runs
+HERE=$(cd "$(dirname "$0")" && pwd)
+source "$HERE/../servers.sh" || exit 1     # $MANGBOT_SERVER: test (default) or sp, the set-piece server
+NICK=${1:?usage: hotswap.sh NICK [PORT] [--now]}; PORT=${2:-$MB_PORT}; RUNS=$MB_RUNS
 LOW=$(echo "$NICK" | tr A-Z a-z)
 FREEZE="$HERE/../freeze.sh"
 module load python3/3.12.4 2>/dev/null
@@ -33,7 +34,7 @@ swap_wait() {
 swap_wait
 was=$("$FREEZE" status)
 "$FREEZE" on >/dev/null; echo "$(date +%T) frozen"; sleep 1
-PID=$(pgrep -f "^python3 pilot.py --nick $NICK")
+PID=$(pgrep -f "^python3 pilot.py --nick $NICK --port $PORT( |$)")
 if [ -n "$PID" ]; then
     kill -TERM $PID
     for i in $(seq 1 20); do kill -0 $PID 2>/dev/null || break; sleep 0.5; done

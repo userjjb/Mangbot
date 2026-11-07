@@ -1,0 +1,2 @@
+- 2026-11-07 09:22:21 **A6** PASS (at most 3 Phase Door, Phase Door never runs out, lowest HP >= 40%) `A6-20261107-092221.json`
+- 2026-11-07 09:34:44 **A2U** PASS (Word of Recall within 2 s of first sight, lowest HP >= 40%) `A2U-20261107-093444.json`

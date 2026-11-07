@@ -59,13 +59,13 @@ def command_table_fields_valid():
 def command_table_help_lists_every_command():
     """E2: pilotctl's help (cmdtable.help_text, printed with no command, Pilot up or down) lists every command of the
     table and pilotctl's own (wait, rule), each at the start of a line, and pilotctl.py imports nothing of the
-    Pilot's but the table."""
+    Pilot's but the table (and tools/servers.py, the server table: 2.72.2)."""
     text = cmdtable.help_text()
     starts = {l.split()[0] for l in text.split("\n") if l.startswith("  ") and l.strip()}
     missing = sorted(n for n in set(cmdtable.COMMANDS) | set(cmdtable.LOCAL) if n not in starts)
     src = open(os.path.join(HERE, "..", "pilot", "pilotctl.py")).read()
     imports = sorted(set(re.findall(r"^\s*(?:import|from) (\w+)", src, re.M)))
-    ok = not missing and imports == ["cmdtable", "json", "os", "socket", "subprocess", "sys", "time"]
+    ok = not missing and imports == ["cmdtable", "json", "os", "servers", "socket", "subprocess", "sys", "time"]
     return ok, f"{len(text.splitlines())} lines; missing {missing or 'none'}; pilotctl imports {imports}"
 
 

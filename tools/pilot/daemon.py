@@ -19,6 +19,8 @@ from pilot import Pilot, HERE, VERSION
 from world import gnow
 sys.path.insert(0, os.path.join(HERE, "..", "client"))
 from mang import MangClient, ClientExited      # noqa: E402
+sys.path.insert(0, os.path.join(HERE, ".."))
+import servers                                   # noqa: E402  ($MANGBOT_SERVER: test or sp)
 
 # --help's description, as before E1 (pilot's docstring line 1 is blank: none)
 DESCRIPTION = pilot.__doc__.split("\n")[1]
@@ -88,15 +90,16 @@ class Server(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
 
 def main():
     repo = os.path.abspath(os.path.join(HERE, "..", ".."))
-    runs = os.path.abspath(os.path.join(repo, "..", "runs"))
+    runs = servers.RUNS                  # runs/ (test) or runs/sp/ (the set-piece server)
     ap = argparse.ArgumentParser(description=DESCRIPTION)
     ap.add_argument("--nick", required=True)
     ap.add_argument("--host", default="localhost")
-    ap.add_argument("--port", type=int, default=28346,
-                    help="default 28346, the test server; the live server (18346) needs --live too")
+    ap.add_argument("--port", type=int, default=servers.PORT,
+                    help="default: $MANGBOT_SERVER's (28346, the test server; sp: 28347); the live server (18346) "
+                         "needs --live too")
     ap.add_argument("--passfile")
     ap.add_argument("--config")
-    ap.add_argument("--rundir", help="default runs/pilot/<nick>")
+    ap.add_argument("--rundir", help="default runs/pilot/<nick> (MANGBOT_SERVER=sp: runs/sp/pilot/<nick>)")
     ap.add_argument("--client", default=os.path.join(repo, "mangclient"))
     ap.add_argument("--libdir", default=os.path.join(repo, "lib"))
     ap.add_argument("--pktlog")

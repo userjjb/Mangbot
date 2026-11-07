@@ -22,8 +22,11 @@ from dm import DM                       # noqa: E402
 import glyphs                           # noqa: E402
 
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
-RUN = os.path.join(ROOT, "runs", "pilot", "dive04")
-OUT = os.path.join(ROOT, "runs", "setpieces")
+sys.path.insert(0, os.path.join(HERE, ".."))
+import servers                          # noqa: E402
+# MANGBOT_SERVER=sp: the set-piece server -- its copy of Dive04 (runs/sp/pilot/dive04), its results (runs/sp/setpieces)
+RUN = os.path.join(servers.RUNS, "pilot", "dive04")
+OUT = os.path.join(servers.RUNS, "setpieces")
 RACES = {r.name.lower(): r for r in glyphs.load_races().values()}
 
 
@@ -247,7 +250,7 @@ class Run:
                 # (after a good restore, keep only the newest 5 timestamped snapshots -- 158, 55 MB, had piled up by
                 # 10-29 -- in case a bad restore shows up later; named checkpoints such as dive04-pre-m43 never match)
                 if out and out[0].startswith("restored "):
-                    saves = os.path.join(ROOT, "runs", "setpieces", "saves")
+                    saves = os.path.join(OUT, "saves")
                     stamped = sorted((re.search(r"(\d{8}-\d{6})$", d).group(1), d) for d in os.listdir(saves)
                                      if re.search(r"-\d{8}-\d{6}$", d))
                     for _, d in stamped[:-5]:

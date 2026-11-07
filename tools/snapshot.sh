@@ -25,6 +25,9 @@ rsync -a --delete --delete-excluded --max-size=5m \
   --exclude '/runs/backup-*/' --exclude '/runs/backups/' --exclude '/runs/setpieces/saves/' \
   --exclude '/testserver/save/' --exclude '/testserver/crash*' --exclude '/testserver/bone/' \
   --exclude '/testserver/*.log' \
+  --exclude '/spserver/save/' --exclude '/spserver/crash*' --exclude '/spserver/bone/' --exclude '/spserver/*.log' \
+  --exclude '/runs/sp/private' --exclude '/runs/sp/pilot/*/events.jsonl' --exclude '/runs/sp/pilot/*/*navigators*.txt' \
+  --exclude '/runs/sp/setpieces/saves/' \
   --exclude '/Advisor/data/forum/' --exclude '/Advisor/data/borg/' --exclude '/Advisor/data/versions/' \
   --exclude '/runs/observe/' --exclude '/runs/pilot/*/events.jsonl' --exclude '/runs/live-*-events.jsonl' \
   --exclude '*.sock' --exclude '*.fifo' --exclude '__pycache__/' --exclude '*.pyc' \

@@ -7,8 +7,9 @@ set -u
 NOW=0; ARGS=()
 for a in "$@"; do [ "$a" = "--now" ] && NOW=1 || ARGS+=("$a"); done
 set -- "${ARGS[@]}"
-NICK=${1:?usage: restart.sh NICK [PORT] [--now]}; PORT=${2:-28346}
-HERE=$(cd "$(dirname "$0")" && pwd); RUNS=$(cd "$HERE/../../.." && pwd)/runs
+HERE=$(cd "$(dirname "$0")" && pwd)
+source "$HERE/../servers.sh" || exit 1     # $MANGBOT_SERVER: test (default) or sp, the set-piece server
+NICK=${1:?usage: restart.sh NICK [PORT] [--now]}; PORT=${2:-$MB_PORT}; RUNS=$MB_RUNS
 ARCH_TOKEN=$RUNS/private/architect.token      # park is the Architect's (2.45.0)
 LOW=$(echo "$NICK" | tr A-Z a-z)
 module load python3/3.12.4 2>/dev/null
@@ -25,12 +26,12 @@ swap_wait() {
         sleep 3
     done
 }
-if pgrep -f "^python3 pilot.py --nick $NICK" >/dev/null; then
+if pgrep -f "^python3 pilot.py --nick $NICK --port $PORT( |$)" >/dev/null; then
     swap_wait
     PILOT_ROLE=architect PILOT_TOKEN=$(cat "$ARCH_TOKEN" 2>/dev/null) python3 pilotctl.py --nick "$LOW" park \
         $([ "$NOW" = 1 ] && echo now) || true
-    for i in $(seq 1 330); do pgrep -f "^python3 pilot.py --nick $NICK" >/dev/null || break; sleep 1; done
-    pgrep -f "^python3 pilot.py --nick $NICK" >/dev/null && { echo "old pilot still running"; exit 1; }
+    for i in $(seq 1 330); do pgrep -f "^python3 pilot.py --nick $NICK --port $PORT( |$)" >/dev/null || break; sleep 1; done
+    pgrep -f "^python3 pilot.py --nick $NICK --port $PORT( |$)" >/dev/null && { echo "old pilot still running"; exit 1; }
 fi
 nohup python3 pilot.py --nick "$NICK" --port "$PORT" ${PILOT_ARGS:-} >> "$RUNS/pilot/$LOW/pilot.log" 2>&1 &
 sleep 9
